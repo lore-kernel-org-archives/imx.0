@@ -1,189 +1,143 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010054.outbound.protection.outlook.com [52.101.69.54])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19084248F48
-	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 07:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762156032; cv=fail; b=fE8rQwEOPgLauUGeXy3GPPxpN0Z3koaYEfTlwFa9CF7usKXXepNi/fu/vh7LrpmwDT7fXooLTcEF9MSOEcjQxlZHFj3G/RYlt6fTBQonvmfK45Q+P2k7gKgzUz+aBLq5Z8Wvfvt8jaRj/jw/RVfnyWQUKODMOm4z8XprpwjStt4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762156032; c=relaxed/simple;
-	bh=uypx649WMTX+YRW++hbE6HDR6V0DqAgHENYEgSPDgxQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=kApvCsMm2+KxknystK6DiM2rTT1Ijs3lmLis4ISWveMrKnDMHru8nSSaaJv9QNb+3w7yAv7nXi74ggfv5I4UrrGQmZxCxzlO7XixFn37uenjnGYSuwtdap0NXFAkaf0+AkdPe3gzQfsgoNF74+BpdG8l+RG1NYozxeKDP88AKCI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=LXM3/8Px; arc=fail smtp.client-ip=52.101.69.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF912D73B0
+	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 08:03:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762157034; cv=none; b=olnjZb9JbFf6uaPOSD9ZIs7HEvOwzdFl4BpdR10BqEFl9RQr020nYvxCo3Imz9OPm3nFuRRH8RR2Rk1giTMThNC2BVYPG/6ZZOJxCkecr1/Btudh6HoGihpiDBhd5UKObQHBUBOu6hajG98UQFCvRCSLeNXeyBoUkk0cTYiavzg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762157034; c=relaxed/simple;
+	bh=5pXyRXIxVt0Iau8mWou9oXadjFJmaZdgpbKlkoLVbSU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fUXaCZtYhiWEbqoW01lh2j2f9eM2qTyTZMksau9KaQBZfMKQaquiIC84cCxZFOCpxhusqfF2XMrAV7VQCYWZDz7+JphBgbD7kWU21PZBtTJGHKOewwaf6uIz8HY9RyVoX8uaBjdXsqD6vFOjdWcNFpuRf8fjLt8/cL7DVKO2jjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DLzwhkf6; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="LXM3/8Px"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jkIrG6XTMHDM6RzGc/QSxvetN5e/SwHUE8Vn3KzuLz6UW1qzSfNtZGBoOJrUDjqB0HfVq6ObPTCCJzWzB9xGuBYXvdubD2vMqePgYN1XRuAPRfDjt3mpInIJqCOsDfgHcogzmNHNQe57wGFb1s7BC1O4gD5qP3/HUOiGkARgf264xQnQNuqKFDHeFM8fB1yiHFpd7mXZAtYpfSAsAZwFnJR0p3Z56M3S72pdAG+s0/JtFt4rIc38fwabwkLVXzA9MXbqOTu2pog0YNOSfoRT+PY75thUGPznmweoMLp4Tp6vH18E6QzbGR6dKeUB9twcL7YU9nwPUIKh4L2VxJOkDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hJPjDtX81MIbT+rib2vs4mPM6eY6mIGIZy8e1nZAwQE=;
- b=Vb4Fnd62Ob02ZBYyZL2Bt3NN5wieZZwmLff1KjospA7TeWyG7o5KC/Py6hdplQ9NTHwavpJYb7yWD+VjwOpAPjRnfVx6V0gs5Po2T4REXeJ9q++QHGvuYIbguO5M5U1/EjG4i9KNGl2B8ZBrTwjCrqDvHYHJZybsDy6BqS1yixny4zOnqd9NcsA8RUcJqklX+LjCh261ynbqIJ6c8WkZujM5nfZfkQ1cQHwQUjyHt3cMELvvSwbzf14WaP32znabWYhrPGd98tNHQKmi/b/BwoilkkXXsFvm12LKqMt4ayZoi6n9oGA6R8c30z7ccHX/sOS/m1mj4EvPPfTIFC7GHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hJPjDtX81MIbT+rib2vs4mPM6eY6mIGIZy8e1nZAwQE=;
- b=LXM3/8Pxxk9EUI4ilfLhsSylfUQSfKzZhnSLE1YfSpF2u3RPUZq+/a0t0acIpyhdDCDZSFo9UbEKyklLulJNZXdiGjLOeryOpGM8bMza2rF0w9i/caPQ+g0/bYMVkhPsFHFY5OdYZelljv3w4UN0lrzZpGVaFPDTc2Q3jysnQsmfyjAHgNBt9hvBFjN8SxptWnY+Obuyxb1PpAxGLpqwnlpLFB3V5f7ob/1JOqcV9x0b0HGkAGR9y0xTDVtoc9EEMp0WNkqMrGEq1rX/vVRW+xShFBd4MORU5GeYGGE5TBQPm1Wax40sfPEcl28E0JWHBNYI6Zwec6lC9baXXV5XGg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AS4PR04MB9624.eurprd04.prod.outlook.com (2603:10a6:20b:4ce::9)
- by FRWPR04MB11198.eurprd04.prod.outlook.com (2603:10a6:d10:171::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.15; Mon, 3 Nov
- 2025 07:47:04 +0000
-Received: from AS4PR04MB9624.eurprd04.prod.outlook.com
- ([fe80::fa4e:dc6f:3f71:13b7]) by AS4PR04MB9624.eurprd04.prod.outlook.com
- ([fe80::fa4e:dc6f:3f71:13b7%4]) with mapi id 15.20.9275.015; Mon, 3 Nov 2025
- 07:47:01 +0000
-Date: Mon, 3 Nov 2025 15:46:25 +0800
-From: Rain Yang <jiyu.yang@oss.nxp.com>
-To: Marek Vasut <marek.vasut@mailbox.org>
-Cc: shawnguo2@yeah.net, airlied@gmail.com, boris.brezillon@collabora.com,
-	conor+dt@kernel.org, devicetree@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, festevam@gmail.com,
-	imx@lists.linux.dev, jiyu.yang@oss.nxp.com, kernel@pengutronix.de,
-	krzk+dt@kernel.org, linux-arm-kernel@lists.infradead.org,
-	liviu.dudau@arm.com, maarten.lankhorst@linux.intel.com,
-	marek.vasut@mailbox.org, mripard@kernel.org, p.zabel@pengutronix.de,
-	robh@kernel.org, s.hauer@pengutronix.de, shawnguo@kernel.org,
-	simona@ffwll.ch, sre@kernel.org, steven.price@arm.com,
-	tzimmermann@suse.de, xianzhong.li@nxp.com
-Subject: Re: [PATCH v3 2/2] arm64: dts: imx95: Describe Mali G310 GPU
-Message-ID: <aQhd0Ri4CviuGMOE@oss.nxp.com>
-References: <20250925203938.169880-1-marek.vasut@mailbox.org>
- <20250925203938.169880-2-marek.vasut@mailbox.org>
- <ba95487c-ada7-48a4-90b7-fd99a0278f51@mailbox.org>
- <aP7DZCMk1pQ7wsFo@dragon>
- <aQB88c_AEC1RAZtH@oss.nxp.com>
- <aQCIAfyUC6N5y2fB@dragon>
- <f9057853-8b43-4ab6-ae65-ee5e4d569c46@mailbox.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f9057853-8b43-4ab6-ae65-ee5e4d569c46@mailbox.org>
-X-ClientProxiedBy: SG2PR02CA0119.apcprd02.prod.outlook.com
- (2603:1096:4:92::35) To AS4PR04MB9624.eurprd04.prod.outlook.com
- (2603:10a6:20b:4ce::9)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DLzwhkf6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762157032; x=1793693032;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5pXyRXIxVt0Iau8mWou9oXadjFJmaZdgpbKlkoLVbSU=;
+  b=DLzwhkf6JVtn5aygnbhHB9zYbfO9dnSoPkNSp1SpCq4UGOTRGGCPwhGH
+   U2ux0/j0ZbeBeaOv3AdzrxHACPQP65Vwsxq+CZhR6l0QkHoHTzicNrhXR
+   shg3KEjxQ6cuSwt8em6lMjP9nt1sbLhx3SchVWNi0m3no/95/y5zsAqey
+   bn6O2BFEt0KWmd5ugh7mpZWFy9zWlyh0nifVBezZfupI0/VURnXo5z1S8
+   Ok+YdKx8t9xue71f8yLwPfjTVBHP5+EydkDgOodmgCd0oDrx6LrASTTvK
+   riiEeWGsS6MDPj/Qrm4/CTpeAJfQQEyIkRP/KktXa1+yldfeoi9CjZGl9
+   A==;
+X-CSE-ConnectionGUID: 0EwRBFzNSpqUy/j+U2nQ1Q==
+X-CSE-MsgGUID: 9mdA9SoGTP6OuDjOh2FIxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="64143994"
+X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
+   d="scan'208";a="64143994"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:03:51 -0800
+X-CSE-ConnectionGUID: W2KynLE4QPibqsxiZlCTFg==
+X-CSE-MsgGUID: x44oWC41SpWrm2y4Xsghpg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
+   d="scan'208";a="186042022"
+Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:03:47 -0800
+Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1vFpXQ-000000055GF-3PTd;
+	Mon, 03 Nov 2025 10:03:40 +0200
+Date: Mon, 3 Nov 2025 10:03:39 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
+	devicetree@vger.kernel.org, linux@roeck-us.net,
+	Carlos Song <carlos.song@nxp.com>
+Subject: Re: [PATCH v9 4/6] i3c: master: svc: Add basic HDR mode support
+Message-ID: <aQhh2zZVxh1oVuJz@smile.fi.intel.com>
+References: <20251031-i3c_ddr-v9-0-f1e523ebaf78@nxp.com>
+ <20251031-i3c_ddr-v9-4-f1e523ebaf78@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9624:EE_|FRWPR04MB11198:EE_
-X-MS-Office365-Filtering-Correlation-Id: 48047412-4a7c-44b6-ec1c-08de1aad2c42
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|19092799006|52116014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?fCBJ1yM24PvP18WiYcM/HYZYcyW28a4+GUzhLCy7vIq06mHIGcGvR2ncINtV?=
- =?us-ascii?Q?tXTlJSVefOtZeiCyTDbDrdXUkF1jPOYlDu+hJ9CVx9pCmaqGPmu7S6YZzBoa?=
- =?us-ascii?Q?3SmLDyf7QdNZ1UBB88m0l9ZoBbJq9wJLTUYJfuTEEkA1isAszr1dZ2dZtvr/?=
- =?us-ascii?Q?8mCp6QD0JFArNOCVzs91ScJAhhFal+DmbsMtu0hYpOZEIw2+emZfHXOmTd0s?=
- =?us-ascii?Q?17Ya0PnCkLqD7GO5vStnX1wv5Ifrf+sghXDtYVSf9J+7PzfT2YvTNDoJMGRl?=
- =?us-ascii?Q?PiGllcErA/3Fd1qnE871mpd1trYBhR4TqG4uifO0lZwRh1Zi3lmTIEN3Wa6e?=
- =?us-ascii?Q?CmvuzRNWAYFlByUqliltAFf6JpgtZ31tbsXgp8TPfrYv13ng7mYic2BsgYND?=
- =?us-ascii?Q?c7TFVMIypvnMTgML697Qw7s+8rIRmH/nS8akKoiemk92Wd+X8J/0PwaVno9G?=
- =?us-ascii?Q?Bl7Jrc8qEepIt1qmmQ+vW2Z5D01hgHFwxcYtArpO6SAIsiXxCdDvlbsNOpwv?=
- =?us-ascii?Q?lOe+MyMe3xvqEl9UG2DizAMmvlazftxSjB2W3nZyBJtAkxeUIsZ/PsYJHmvK?=
- =?us-ascii?Q?bIOmBdKNc7s4aEDIFTC/E+zQU0XfAG6++NizboGLbQNvdrT3VotrvGY1Hszn?=
- =?us-ascii?Q?7bfCPhtnrA2cr7Ay95tKbCq+3Hl28zEWuasjtXon/jNG45V0YCLUtN6xeIPG?=
- =?us-ascii?Q?JOOB4lFdYBMnppNOBxHS+ew5nuyemRdp3ZMJWpjkl3wOmIjU/8xmErJnqu/l?=
- =?us-ascii?Q?vt6hkkZvocushP2cwo1w6FrIcfZKj+Uyq5JfGvkezObS0/pA1JFhVoENZjs0?=
- =?us-ascii?Q?8O/6rxAtjPp9ToqnzfX7F8pHB8W1y7EkgU5eztLig8sTNa40M3bxuEgGpQ+a?=
- =?us-ascii?Q?7R1gAr/APJx7O86ATNeIKywEc/sWA6iMHsUDMG6b0YxUBdN5wgMQXfL/Q3zt?=
- =?us-ascii?Q?7cVJphAVs6EhHZK2lLKWZiOBhAsHnVcKy+E+EPjdoednsTC7nDh1VmmQuyN/?=
- =?us-ascii?Q?OfSfJIuJKfXXnYeI3P4LOB+FvtV98MvWuxiuJpqpG15QjgWp3nlIh4iAtVfl?=
- =?us-ascii?Q?Jd2dVfHAMpiLl+IMpGTjNxujEO7HoHktVJ4/+5SDBXxjhlGxblVz1wB5ihUh?=
- =?us-ascii?Q?4dz4fublFnNkVS7qF1nOHbB08YW4HXGaS2xXch3uu0SAhvGWMzUv4K0b75nH?=
- =?us-ascii?Q?CHJkIZyoqwhQE7pQjn8ULnYkGz9HtfPo7l4nEkhtbDdSV6PFQsaOBu/9DAq5?=
- =?us-ascii?Q?yA+VHY6AenzkVakGrmbw3fvMNqmg4msAixhfzt2TC4fO4XC6bDX3mftJL8Lr?=
- =?us-ascii?Q?cebEiJ6kzNuioZtwRYVDoalFqH8NzYX6odWyOTKYUJogHKgO3P/uONHNs325?=
- =?us-ascii?Q?AiCocOz+K6rAyppPM7zOJ23sra8ihX7sbbYmsgZHGvkNdOV2HDecuLB6FlCc?=
- =?us-ascii?Q?oySqrgxfPas8S+e4OF36l9vVWWBl9rLDpzz1FP8MQHxSEZgMNAAfvw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9624.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/xil5HMShN+zqD0cJjWXpM4t9/7SH9p8HcnzClP+IcWMlBKCdW05KxKS7qwu?=
- =?us-ascii?Q?i+k9QoYgHLhyuJO3r/dQAKtmViOdVofcLZpt+N6WOP+yvXFGrrsZozD9LxU/?=
- =?us-ascii?Q?1a6kCk9iv5tVpgotFvQqS86h9a0jmhskZuesTZbrQtAq5Ro2h9BLei8SNJAJ?=
- =?us-ascii?Q?r5Rd0cceun0Fo9Yc0VN+0ixsXsbw+CQ5OKRs7jq5wPu8UyX4jOZYUrXpU/Yj?=
- =?us-ascii?Q?8eRPxI6soARlIFyCYEmus4DExJQXjG9aROSVPzwNEBaCzEyVG0xom4dJnrgF?=
- =?us-ascii?Q?ZCVdYNSvGAQ2jtgTZzRYzBvbw5jcOOGN+CAJNAHegtYqrTcPi+826KSJWOR9?=
- =?us-ascii?Q?LEkRVxBMDBcGRVY/+rH7Yut9dJlqw57m8UR4bjRNEYOXemJzoNaJmayYeKSd?=
- =?us-ascii?Q?laNI4S3U/QoyzgJW/vBO6+xcGRvE+6kWsybPBsLPO+3fBq/xXCAHqI6HF0Mb?=
- =?us-ascii?Q?K30zrHXRdVFje1ycez340hpgzzZWEkjmAuIQSq7O/BileV4X8aiAzLnkKpwk?=
- =?us-ascii?Q?7MG8AdnglSAJAto2i5sg8a2y297adyEETJrpl6dR5foowFYMYRglLWUDs0wn?=
- =?us-ascii?Q?q0LogmZDFY+osTHylE3Qnwf0gaosF+K2DQWXHkAC8z4G+jnRToMBu3vDtTHz?=
- =?us-ascii?Q?igEUa0nT88Z1r71f6FcSjMW32S8c7WcWWxHHWswy8l52jn1YWzcqLovVsyN1?=
- =?us-ascii?Q?bVmc11FUI9mRZ2VUn1fNJZKkjl5/BHnmnYWDhHgTdgrCIoGG+QH9XmMNdPgK?=
- =?us-ascii?Q?ABhEV5P0iIQJE9AdSzYwZQCBzQST3STGkDRk8nZn8u+rLZhW6jBf07h0CZzV?=
- =?us-ascii?Q?qeiTU2l5KHdXYV4v2ZPPsftBugc5xpvGVOOGEjdMEWZZ606CfEDbgqYce0c2?=
- =?us-ascii?Q?zWzBwuuQToxNHSaOHlTy0HjLuku4Ay+HfCZGypYdczDSHefD3OPbjT4+pJTq?=
- =?us-ascii?Q?Cyk+4WqWUoAiXEp6x09644wFqrDfJAh3Ra4QoJQ0HLrnJCWGBbsAFNwNoD1F?=
- =?us-ascii?Q?P2QXqWFcbHI63/UsM+aD4Xu51Vnr/AjodQHU/XnhbpSgqIj/vhR1BXMBy9RU?=
- =?us-ascii?Q?yyY/2QvsZFXsFs6/G9Y/ujuH9GkiUvwkgnZSEdJ6wzRYIkJA96u1xbPKgIKL?=
- =?us-ascii?Q?fHjjQkYpgrqn9Z058UJCITToAgVzV7L7WacN+b3wk0JvEwRvzqfrcerh7QAa?=
- =?us-ascii?Q?4D9PxrgTGbHdqA+ZyBwCrKibykR7CLRFN2dIOxeu8BtoM8rb9i89SUX7Zfx8?=
- =?us-ascii?Q?p5HN2ywqjUsn+BcytuppFTXeNlASFXWKtzbGrvxYgIuxVviqYFa/Dw2lM6oT?=
- =?us-ascii?Q?6a72DHfAG3Z4zz6JfTOp+XhEX9wvrrQ2JWHXKu33jT3e0NVYYMKsphwaAMxw?=
- =?us-ascii?Q?6/ldL3hHb6HI1jTscRNhJhJxC/1QsoGLUeW3QaY4lDjzoP4oYU/lofwX2UEF?=
- =?us-ascii?Q?lTLmZxPiMd0RjrhbjhkUF+Z4IBRJLGA8KkTdOjBJYD+dP9XFgYtdERdwierE?=
- =?us-ascii?Q?cHYuRDLH1IedcrcTbq910zK7++gsCC0WUnmj36bzgT2K/pAPHpkQ09IEXx+z?=
- =?us-ascii?Q?VTWAXjCq1vKmt/go6St/hvOEac4vDpVpC9aexr3K?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 48047412-4a7c-44b6-ec1c-08de1aad2c42
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9624.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2025 07:47:01.5101
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IfXytg699uakdkun4LZMA6vnkqxO3vPglciSjNMaGbv987JArP1NYO/SqryGdoOdBbtJ9u2TEoKRe4azv3whhw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRWPR04MB11198
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251031-i3c_ddr-v9-4-f1e523ebaf78@nxp.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Sun, Nov 02, 2025 at 05:02:37PM +0100, Marek Vasut wrote:
->On 10/28/25 10:08 AM, Shawn Guo wrote:
->> On Tue, Oct 28, 2025 at 04:21:05PM +0800, Rain Yang wrote:
->> > On Mon, Oct 27, 2025 at 08:57:08AM +0800, Shawn Guo wrote:
->> > > On Sat, Oct 11, 2025 at 12:53:29PM +0200, Marek Vasut wrote:
->> > > > On 9/25/25 10:38 PM, Marek Vasut wrote:
->> > > > > The instance of the GPU populated in i.MX95 is the G310, describe this
->> > > > > GPU in the DT. Include dummy GPU voltage regulator and OPP tables.
->> > > > Is there still anything that should be changed with this patchset, or can it
->> > > > be applied ?
->> > > 
->> > > I'm waiting binding change to be applied first.  Or is it already done?
->> > > 
->> > > Shawn
->> > > 
->> > Hi Shawn,
->> > It might be better for Marek to remove the always-on GPUAPB clock from the DTS, given that
->> > it's an SCMI protocol clock and the kernel expects it to be available during operations.
->> > 
->> > Also, the gpu_fix_reg appears unnecessary for the driver and could be removed[1].
->> > 
->> > [1] https://cgit.freedesktop.org/drm/drm-misc/commit/?id=a8cb5ca53690aa809f4f65e14192753073e61a71,
->> > https://cgit.freedesktop.org/drm/drm-misc/commit/?id=02df3543f3e0ea572e2c739605ebd6c20e1149c4
->> 
->> Ah, sorry! I did not know we haven't reached agreement on the change.
->The feedback above is new to me, so I am somewhat surprised too.
->
->I'll just send a rebased V4 now.
-Hi Marek,
-thanks for your patch to make i.MX95 GPU upstreamed.
-Maybe I didn't express it clearly in the previous e-mails.
-the always-on GPUAPB clock must be removed, otherwise, it will result in redundant and unnecessary
-function call to M33.
+On Fri, Oct 31, 2025 at 12:39:16PM -0400, Frank Li wrote:
+> Add basic HDR mode support for the svs I3C master driver.
+> 
+> Only support for private transfers and does not support sending CCC
+> commands in HDR mode.
+> 
+> Key differences:
+> - HDR uses commands (0x00-0x7F for write, 0x80-0xFF for read) to
+> distinguish transfer direction.
+> - HDR read/write commands must be written to FIFO before issuing the I3C
+> address command. The hardware automatically sends the standard CCC command
+> to enter HDR mode.
+> - HDR exit pattern must be sent instead of send a stop after transfer
+> completion.
+> - Read/write data size must be an even number.
+
+...
+
+>  static bool svc_cmd_is_read(u32 rnw_cmd, u32 type)
+>  {
+> -	return rnw_cmd;
+> +	return (type == SVC_I3C_MCTRL_TYPE_DDR) ? !!(rnw_cmd & 0x80) : rnw_cmd;
+
+This seems confusing. Either !! is redundant (which is actually the case) or
+I don't know what the idea behind this.
+
+> +}
+
+...
+
+> +static void svc_i3c_master_emit_force_exit(struct svc_i3c_master *master)
+> +{
+> +	u32 reg;
+> +
+> +	writel(SVC_I3C_MCTRL_REQUEST_FORCE_EXIT, master->regs + SVC_I3C_MCTRL);
+> +
+> +	/*
+> +	 * Not need check error here because it is never happen at hardware. IP
+
+If you move 'IP' to the next line it will be better to read.
+
+> +	 * just wait for few fclk cycle to complete DDR exit pattern. Even
+> +	 * though fclk stop, timeout happen here, the whole data actually
+> +	 * already finish transfer. The next command will be timeout because
+> +	 * wrong hardware state.
+> +	 */
+> +	readl_poll_timeout_atomic(master->regs + SVC_I3C_MSTATUS, reg,
+> +				  SVC_I3C_MSTATUS_MCTRLDONE(reg), 0, 1000);
+> +
+> +	/*
+> +	 * This delay is necessary after the emission of a stop, otherwise eg.
+> +	 * repeating IBIs do not get detected. There is a note in the manual
+> +	 * about it, stating that the stop condition might not be settled
+> +	 * correctly if a start condition follows too rapidly.
+> +	 */
+> +	udelay(1);
+>  }
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
