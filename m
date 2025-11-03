@@ -1,73 +1,90 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535662D249A
-	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 08:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCBA1E51E1
+	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 08:46:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762157725; cv=none; b=svA46D0V7XNrUyxCwyDInNRqGZqTNI0fjEkZn+c2E6qyciCErqZ0cofg1LfEoWEsmUnzRt50SKqfO9cs7ErYo+KKqA5Si1AidlXd2to05f22bNXZa6g76h2c1+gvjhIPwf8N/dqVJ1Zy7M4IBTDM02tnm9juvnXR6KowOJYwTn4=
+	t=1762159599; cv=none; b=HJEsOnxCoe8K3l2XYUn8kTNgBmDmBh8za9Li3/eQYYWiSURSWCzBFyZpzvWkpeuDGCHTraFDwakTH6AV38ffByKQnak9EjeBCtGHBSFL/jiPMBZ0lTwATeZxDIOMZyRTVyJy/uaN8PeMCcGE/JVY+SWwOQU0TVodkaUtX4hmOVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762157725; c=relaxed/simple;
-	bh=VufkWrtuA/KSjpuq1x6sOOrO8BVr8XELL5F/FJgAris=;
+	s=arc-20240116; t=1762159599; c=relaxed/simple;
+	bh=VleiOzfdhxXGkrltlLI7VGd619PMR4vVeDp7yRBj93k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QqLqxgKcYKi8tjNzr6yxZ50F0oE0e2R10zcT5/23VJjnb3GZx3qY+PMZOwRYxwGDhYMrwudlX9Zb1g6KuxfT62bwREghdxb+l+ih95D/2XKwYPkpKUhBgXu00XBirMosgA7TaS9GX72VNSFnF0VczqdlrQoHiKFXBgVrtKU2Cf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KdMTjMM/; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=OfNzI83kTTHIEg2ioF0fYZx0QQQEp2eWu9gO4d3casCdWHMSM3hKJeH3JB9GIZe5N3Carhf3F6qSZ3z9GhcDqG+3pT/Jdscay2h8ksPc+z6cWIEfgEn98N9oADUIzMuaczetsdSGRx2tdh0SNIUJXqtm3JuKalWRbrPy/kfaMnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=sIw5I3sk; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=U80RCbYC; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=sIw5I3sk; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=U80RCbYC; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KdMTjMM/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762157724; x=1793693724;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VufkWrtuA/KSjpuq1x6sOOrO8BVr8XELL5F/FJgAris=;
-  b=KdMTjMM/rsvbiB3ygy1NfkWkNEH0xvktl0toKV1+N5MfoU6S2iWWW4dB
-   wxRZCashaKLOinfGAMXf2CUKMXYYvFhh69rZswifPeowQUv7DGl46C4LR
-   hIVGfrxXeC6qDljvnMJ0waGYgPz0vNJM1z1mQcA4hBQZzDKPosJi61v4S
-   GZJAU1JSfGSjakpCo5d7sltFWm7D3z3gf5s3WPUepkh+7tv5/5e+22qr+
-   +Rkg1aM+4qM/2zDCsyHUKToABsk4aOqPwm6jyGAjieMyEmIzQ63uetrGz
-   ddCLrZQxInW44IDXMCBRsD2+pucQ6MtTN+/JpJt5tl7vMsSLTx7NSIY+j
-   w==;
-X-CSE-ConnectionGUID: go+i0vD7Q62JkQS8ytEyDQ==
-X-CSE-MsgGUID: WmqrAO0rSziFWEGlnfndzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11601"; a="63432657"
-X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
-   d="scan'208";a="63432657"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:15:23 -0800
-X-CSE-ConnectionGUID: xxrSDRuvS4a2Km8/zCjM/A==
-X-CSE-MsgGUID: jgG0tFbES6C1Q/WdN6bt/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,275,1754982000"; 
-   d="scan'208";a="191914908"
-Received: from smoehrl-linux.amr.corp.intel.com (HELO ashevche-desk.local) ([10.124.220.216])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 00:15:20 -0800
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vFpib-000000055PN-1HjE;
-	Mon, 03 Nov 2025 10:15:13 +0200
-Date: Mon, 3 Nov 2025 10:15:12 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org, linux@roeck-us.net,
-	Carlos Song <carlos.song@nxp.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Adrian Fluturel <fluturel.adrian@gmail.com>
-Subject: Re: [PATCH v9 0/6] i3c: Add basic HDR mode support
-Message-ID: <aQhkkEh5C6vl2nbT@smile.fi.intel.com>
-References: <20251031-i3c_ddr-v9-0-f1e523ebaf78@nxp.com>
- <20251101162525.44c9862b@jic23-huawei>
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="sIw5I3sk";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="U80RCbYC";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="sIw5I3sk";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="U80RCbYC"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 609ED1F7A5;
+	Mon,  3 Nov 2025 08:46:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762159595; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5agJgW16EOeEZtDnEWS52BJBid49sEn0gLBvpaWf7Tw=;
+	b=sIw5I3skk3JxqWJ8h2wdU8vXPeJiyFbGpa8lcdHHLXPQkeJeoVeJTaMKDo5lrmqoFNYR3l
+	12qACNzhBUSCsjpO/p3f5+//+1fmj+901lRpMHPY1xONz2KfMRH8tUsCelk4vgtPiV919q
+	0ymKa034IaM5W6V/INLiVDf+xqTvR8k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762159595;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5agJgW16EOeEZtDnEWS52BJBid49sEn0gLBvpaWf7Tw=;
+	b=U80RCbYCk0mUtgVzijxgOG8i7ZxZEVbHnjfyjs3p7A3DgbrcuNWV3CrEar54//vaBRbQ7p
+	hCGHuckI4WqOdVAQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762159595; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5agJgW16EOeEZtDnEWS52BJBid49sEn0gLBvpaWf7Tw=;
+	b=sIw5I3skk3JxqWJ8h2wdU8vXPeJiyFbGpa8lcdHHLXPQkeJeoVeJTaMKDo5lrmqoFNYR3l
+	12qACNzhBUSCsjpO/p3f5+//+1fmj+901lRpMHPY1xONz2KfMRH8tUsCelk4vgtPiV919q
+	0ymKa034IaM5W6V/INLiVDf+xqTvR8k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762159595;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5agJgW16EOeEZtDnEWS52BJBid49sEn0gLBvpaWf7Tw=;
+	b=U80RCbYCk0mUtgVzijxgOG8i7ZxZEVbHnjfyjs3p7A3DgbrcuNWV3CrEar54//vaBRbQ7p
+	hCGHuckI4WqOdVAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 505EE139A9;
+	Mon,  3 Nov 2025 08:46:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id gjidE+trCGkiBAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 03 Nov 2025 08:46:35 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id B690FA2A66; Mon,  3 Nov 2025 09:46:34 +0100 (CET)
+Date: Mon, 3 Nov 2025 09:46:34 +0100
+From: Jan Kara <jack@suse.cz>
+To: Bough Chen <haibo.chen@nxp.com>
+Cc: Theodore Tso <tytso@mit.edu>, "jack@suse.cz" <jack@suse.cz>, 
+	"adilger.kernel@dilger.ca" <adilger.kernel@dilger.ca>, "linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Subject: Re: ext4 issue on  linux-next(next-20251030)
+Message-ID: <xrytdoegosn2qbvqdx6idvardvsbhj4blxnuschvgnl4i2bhxj@ezuawpusl6sn>
+References: <20251023-qm_dts-v1-0-9830d6a45939@nxp.com>
+ <20251023-qm_dts-v1-2-9830d6a45939@nxp.com>
+ <DU0PR04MB9496D99F17904D1B2EFB9E5090FBA@DU0PR04MB9496.eurprd04.prod.outlook.com>
+ <20251031013335.GA10593@macsyma-3.local>
+ <DU0PR04MB9496B72135BFB95A93DB577E90F8A@DU0PR04MB9496.eurprd04.prod.outlook.com>
+ <AS1PR04MB950288682BF1CA58C32AE0F390C7A@AS1PR04MB9502.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,22 +93,84 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251101162525.44c9862b@jic23-huawei>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+In-Reply-To: <AS1PR04MB950288682BF1CA58C32AE0F390C7A@AS1PR04MB9502.eurprd04.prod.outlook.com>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	URIBL_BLOCKED(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Score: -3.80
 
-On Sat, Nov 01, 2025 at 04:25:25PM +0000, Jonathan Cameron wrote:
-> On Fri, 31 Oct 2025 12:39:12 -0400
-> Frank Li <Frank.Li@nxp.com> wrote:
+On Mon 03-11-25 03:57:37, Bough Chen wrote:
+> Hi All,
+> 
+> I find something when debug, share the finding here:
+> 
+> I notice every time this issue happen, the log always show inode 1, so I
+> think this is supper inode related. And seems related to the
+> i_state_flags of struct ext4_inode_info
+> 
+> [  210.104663] 48812578: f6bffadf 00000000 00000000 00000000
+> 
+> Here the i_state_flags = 0xf6bffadf, the Inode dynamic state flags only
+> touch to bit0~bit12, so this i_state_flags is abnormal.
+> 
+> When I add the following changes, this issue gone:
+> 
+> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+> index 66f92f832b0fb..c6c2d32d5531b 100644
+> --- a/fs/ext4/super.c
+> +++ b/fs/ext4/super.c
+> @@ -1396,6 +1396,7 @@ static struct inode *ext4_alloc_inode(struct super_block *sb)
+> 
+>         inode_set_iversion(&ei->vfs_inode, 1);
+>         ei->i_flags = 0;
+> +       ext4_clear_state_flags(ei);
+>         spin_lock_init(&ei->i_raw_lock);
+>         ei->i_prealloc_node = RB_ROOT;
+>         atomic_set(&ei->i_prealloc_active, 0);
 
-> Assuming everyone is happy with this version,
+OK, that's a good catch. I was scratching my head how inode with ino 1
+could get orphan bit set when the kernel should never touch it. Now I've
+found out mbcache abuses EXT4_BAD_INO for its internal purposes so what we
+complain about is an in-memory auxiliary inode used by mbcache. Indeed it
+looks safer to initialize i_state_flags in ext4_alloc_inode() and we can
+drop the initialization from __ext4_iget() and __ext4_new_inode().
 
-Almost. Some nit-picks, but the main comments are:
-1) arrays out of a single entry;
-2) seems unneeded calls to regmap_dev_attach().
+> This can explain why this issue can't be reproduce 100%. And can also
+> explain why only imx6/7 series meet this issue, but imx8/9 not, because
+> imx6/7 is arm32 core, it use i_state_flags, but imx8/9 use arm64 core, do
+> not use i_state_flags.
+> 
+> This issue may exist long time, but Jack's patch trigger this issue.
+> 
+> I also have the following concern:
+> Why need to distinguish arch32 and arch64, why not use u64 to merge these
+> two casees?
 
+Because atomic bit operations are only guaranteed to work on unsigned long
+type (32-bit on 32-bit architectures), not on u64 type.
+
+								Honza
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
