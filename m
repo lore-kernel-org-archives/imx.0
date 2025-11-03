@@ -1,146 +1,187 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010013.outbound.protection.outlook.com [52.101.84.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4644BEACD
-	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 03:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762139960; cv=none; b=ARhhDSjGg3WGsc9sZHyJFLJOKvGa7pdGpY1u6IAEQEzuGlpFL7dL4bTPq2qFwPgNIKXp+SMSFsZ4Y1Wn06rVCO6/mvONMoELILoJ+4KPv4AaODk/JCIQA3iCbZZQRdeVUtSTUJ/bN+oFGYenCAmLQjeH41bgRXZQWkEmcXaoaiU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762139960; c=relaxed/simple;
-	bh=ziBDk35TYk7YiW6K7GPffNVDP98Fs1iA4htR5FdmfDY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LxBSffZi7TNh3P1H710XlC/ZJq20bx9DpKjW0oLLfaZwGf5EH3aCP7qmbIdRoGNZU7go18t+qwYmXFYxXCmw+P/ykmAUeNlFFG0IrANxo+ZP6/7na9bcCwKDwL3bRp+an3eNpT39YOTx0Lx3SdhcfCoHC7g6T2C6L/Dym8rj67w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dSIubuUi; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD49264638
+	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 03:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762140507; cv=fail; b=K8JdcgGawOlVp/0JqrTJqG6U6NT5xIwm0zNuU9T8fIiTc1k8sxJYPZ7Ljzbuq69t2aRHqYHECfzXs0MhJxp9a0LWzkGLHKwcrbvLTEc3oCNMDrGej0MNQLd2RaGjDeMoVKO5enC1yteDMMQARU+9NTB4iWK4X16J6Ge3eQnnAac=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762140507; c=relaxed/simple;
+	bh=zTezPdwWEMhC3uliXnqLqybFt1fSSEWDm+4NE2Yu7mU=;
+	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
+	 To:Cc:MIME-Version; b=ElwHpdrpsUOD7ULMQhWhdWLYmpC8hYKN4eUk0xlL5L9IcZs7y5V5wGCTy0T8hkG7tntsApb88XF/6QGAR0K6K3lz1UBwLdm12TetwFlpXuPeokqrkEJ6mJsRBRKLYc5nZYx5nhV9vJXqPDaOqMZKJtIoxntZPgrBYxO1ZAE/x+8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kvf9bzmJ; arc=fail smtp.client-ip=52.101.84.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dSIubuUi"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-89f07fee490so544414685a.0
-        for <imx@lists.linux.dev>; Sun, 02 Nov 2025 19:19:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762139958; x=1762744758; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QiKTLSU3N8p12FQc+H8NuC8MRpkLZYq4zZdU+gN4fiI=;
-        b=dSIubuUiQRXYY3CuJbtcHiP/6DyG30bj7MtycHDFiV7jmfBERxUfOH+D3FK/oZH+3g
-         XuBhUbwPcexmOC8i8rY7SUVWBb7oJT7aYOFmM1YHi96HqHy5JolCM91zJ+49T1UDJka8
-         9nyp9VIRarpMoVvN/7ZOId6wAhhRr7PvOzr0jUvbt2OJ7ML9wOBJ/d12uC2bA8Xl8Q/6
-         gUvY3ReViHDBKQIrLcN6exMnDmBCKuMholpFQaTpQQRKrsSoweeLVGfIK+3KJroroz/f
-         ULh4brfORWNu6fMiK6aSJO/Gt5ot1NwuQ/duWtbasnZ1RlWlOEwuKPEaPYgs3XQ4GpKb
-         lGPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762139958; x=1762744758;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QiKTLSU3N8p12FQc+H8NuC8MRpkLZYq4zZdU+gN4fiI=;
-        b=C4ReF6SIYHZBHbQsMYw2OABl3t79Pm0/hFQNKB1QxW0LNjPeSTZWq3c8P/MrKlJZaM
-         PUQ+IklvPuSpyA7oyIYgQlsBgOUQ4imLWciCzCljTXNT/CDzkBGuWA50E9oRNzYuhHKZ
-         6xrq6XrxN6UR04emZHjqeB2zxi7JrTI2tFKILH5Wf7iUXRgrtHwFd2xekHx2KUVETHBM
-         k4+QCAgWyQDFRAk8JPkVBSBd61RXgyWG3pwy9fre2PJdiInPnjO73RUdGORuJxB+5uBz
-         n3YTGmd5Jyz4ARGSuRJk/7e7QnE83R3H5Wobw4sTH+6yWByQ4eGFPnPUsjRr3u/jlVXf
-         tqaA==
-X-Forwarded-Encrypted: i=1; AJvYcCVSnamILMXeiU3T0DbxkdsKRYCubtBLH829KTt53Xov3A2FcZTpqoS4BMfIuB3HW3lTdd0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyXi9GM4NpGHOB046SYz6Tf+VzyD44jXZUZ1Nx8t3KMarPP2AZf
-	LBtzWj099IF0qcWHtEcFzC4bJvRlWarpKu9DhtjQeNvzMdkuo3YWfjF5
-X-Gm-Gg: ASbGncumLhdl/il+qiWDX/pgNG5YBh4c10D6gFJTgsHWwP89iilDjRJOxeoxEF8fxQ6
-	2u93U6eZ9Hv6D0dijwObv35YyNujIvLSrRYhROCm9smCoB037lY2Ehk3v4euJMhQNWRtsSRUZvd
-	PCkVeODVtiJjgtunOvTVDpH8/e4KES9s4As/WD4TqgHC89yn6jrfQ0m7zS6hgkqzl4ILHghcsfS
-	/L7NY5RTRZmSv3FGdiKAs5uA8oO2cVC7V72dPq8MxJZnHyi/PxOBNIwOKt67pZLO2jZIUKA0FvK
-	rvXh5eG72ftRNvC4MTNOtxwfuZUXBPVGprEfOs0yakntDg9/1Cfw1G+2huB4qvbj2KhSFu9sxot
-	wbSwtzx25slewXGMU0sSzqbSBJ4EzGzHBfbz/hkWPuEy/RuGD3yqXmRAqTq5xYIxJ1PiUQCqEBm
-	7HtgFu2w==
-X-Google-Smtp-Source: AGHT+IE4NH3mqhfFMGevhbXMAQxKll+ttwxjlpittKvsFjn+CaMQpOl2cv8RmzF3ghkopKQb71oVug==
-X-Received: by 2002:a05:620a:370f:b0:892:636a:5675 with SMTP id af79cd13be357-8ab9ade53ffmr1387887285a.58.1762139958109;
-        Sun, 02 Nov 2025 19:19:18 -0800 (PST)
-Received: from [10.73.222.215] ([142.182.130.176])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ac03f50616sm586898685a.58.2025.11.02.19.19.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Nov 2025 19:19:17 -0800 (PST)
-From: Samuel Kayode <samkay014@gmail.com>
-Date: Sun, 02 Nov 2025 22:19:08 -0500
-Subject: [PATCH v3] MAINTAINERS: update PF1550 driver email address
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kvf9bzmJ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xFBwMqcZ6f7NibzBJBBE60cRaWX/8t5hQOiXnK1UgjsSvXBWtwulW9J3B7FaPccpQAj/NyRGp7V8bbPKH6FujQo1muyv1TTQ1gNfDVF0hieTxrqVdhgobICyT9cWaRmdQXXD00nDVekA0HcH8Ti+jaOtK7zh/SMJAf31VRrK1FCl0ZojoH3q4sOWScuYdJkC/easakqn5VkAb0ymYbEoS6F0RySZLPrLmx6kd11CcZoiIndjJVsl3WNBYdD/3iuWBLsUx9WS9+opQqaKQIewKvAdbA1wzQRxhebgVmqdZXt12kc7zPCiP5y/3ASeNua8CQTqlrVLXgcexLuPYYencQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=T6+C2AJ33QS+dB53abeevt309D7WKzSbKJczG5+8msE=;
+ b=C6PmqCb1krmgN4o2nNbfTtGgwvcS7nhBahoiB4aJLQ7DAX1qSZYAGN8JBC9F5O1anEU8flcj5tgtEOZLzM13skliBPv/ISl61+L/fe7aXbKbfkyUvuyvfzrfLCDNFkfkaC13KkvntBEEzXhsmVryqprSWHvZ1d0i9BDvDVMAjhJv5u5dVE5TXGfUakd58r/t4uslXQqCi2Op+wYDScEHmIxfx/PeO/br/36wbxG487d/4WvPj8QnNZ8MTVwhYFXRJI+0PuTgWhMI155OTP+HpxRSuIuARpYJ/RucGf2QrD/VTkRoODLOVHTx7dUcvp9gdF+kfpj4UoaEd66l+spbNA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=T6+C2AJ33QS+dB53abeevt309D7WKzSbKJczG5+8msE=;
+ b=kvf9bzmJXPYL14Qk4h5+Kea9AQAOl7Tdd6njeBwUszEJ0rzz/khwPgrm0TZEvc6ni1BzIoSgG/dPihBtuk+VXfr0SSpy9Vb5b1dPurmlChZRgUVLhebe5T+xEcDe+eu9ukfxedL/AokfEz3cfbU+MaH0hcx3170umIa9evDIt5Fu5BbZ/rIoVrbPUdDDJ4PnDxMpdDfbUq/WY/Msw3AMeRfpBPIj51FhEZMCNjZl4evkT5xsAuL1vc0g6MwXH8k8TkjulSbhVt/QQEEiq62CmgiDs9Vk2H7NNsV6jABzeG8UawPVGFfPffpt9VlQ0oT0jWs3Mjg+qtQ/605RhRRxsw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS4PR04MB9386.eurprd04.prod.outlook.com (2603:10a6:20b:4e9::8)
+ by DU2PR04MB8744.eurprd04.prod.outlook.com (2603:10a6:10:2e2::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.16; Mon, 3 Nov
+ 2025 03:27:12 +0000
+Received: from AS4PR04MB9386.eurprd04.prod.outlook.com
+ ([fe80::261e:eaf4:f429:5e1c]) by AS4PR04MB9386.eurprd04.prod.outlook.com
+ ([fe80::261e:eaf4:f429:5e1c%4]) with mapi id 15.20.9275.015; Mon, 3 Nov 2025
+ 03:27:12 +0000
+From: Joy Zou <joy.zou@nxp.com>
+Date: Mon, 03 Nov 2025 11:26:47 +0800
+Subject: [PATCH 1/3] regulator: pf9453: change the device ID register
+ address
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251103-b4-next-pf9453-v1-1-a025d536eee1@nxp.com>
+References: <20251103-b4-next-pf9453-v1-0-a025d536eee1@nxp.com>
+In-Reply-To: <20251103-b4-next-pf9453-v1-0-a025d536eee1@nxp.com>
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>
+Cc: linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ Joy Zou <joy.zou@nxp.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: SGXP274CA0021.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b8::33)
+ To AS4PR04MB9386.eurprd04.prod.outlook.com (2603:10a6:20b:4e9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251102-update-email-v3-1-8e2c4a4507f4@gmail.com>
-X-B4-Tracking: v=1; b=H4sIACsfCGkC/3WPQW7CMBBFrxJ5XVeecWwMq96j6mJij8FSQ6gdI
- hDi7p3AolWlLv8fvac/N9W4Fm5q191U5aW0Mh0l2JdOxQMd96xLkqzQoAODW30+JZpZ80jlU+d
- AQ48JyPFWCXKqnMvloXv/kHwobZ7q9WFfYG3/ES2gQWcbcu+IInJ426/9a5xGtYoW/IHBwB8YB
- YaNS4jAsTf5N3x/zqr8dZbn5uc2NVBjLfexzLuONsmjc2SGbA1Gg4GiD8b53ltLXga57AGSyO7
- f9chebTEBAAA=
-X-Change-ID: 20251029-update-email-f8ab42d1a5e9
-To: Lee Jones <lee@kernel.org>
-Cc: Lukas Bulwahn <lbulwahn@redhat.com>, 
- Jerome Oufella <jerome.oufella@savoirfairelinux.com>, 
- Samuel Kayode <samkay014@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
- Sean Nyekjaer <sean@geanix.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1762139957; l=1937;
- i=samkay014@gmail.com; s=20251028; h=from:subject:message-id;
- bh=ziBDk35TYk7YiW6K7GPffNVDP98Fs1iA4htR5FdmfDY=;
- b=ziXHDkBCkPPalk7Y9MwodVSJGPE4Eb2svQ5s3l1Q1PdMrCt3OHBJY5qgsSHpibllG+gdqqxfr
- mgZ2ua0CkxjCFisZ5ZJczWkKvmrDNjmZgKgh+KP6FptmivPHA4+Zeaa
-X-Developer-Key: i=samkay014@gmail.com; a=ed25519;
- pk=favoK08ilD1j62PrGf+RHihBzbqJGWMC6f2nszR5UIc=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR04MB9386:EE_|DU2PR04MB8744:EE_
+X-MS-Office365-Filtering-Correlation-Id: a670088e-96bd-4f88-3084-08de1a88e0ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|52116014|376014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?V29MNkZqZTRDNERMbTJsYXlYTU1WQTZCd3VZbXYxSnJnWnpubU9qS0gwNjJz?=
+ =?utf-8?B?Ump4UStURE5IcHNIT3JHRGszeEJTZzIrZ1h6NHJMa0pnSlgzcW1KSm00SnlC?=
+ =?utf-8?B?ZUc4RnFnVVQ4RDczaWtiQ0RmR3c3MDJYN2hpWngxT2xDQVNlZnBuNGdIaUVu?=
+ =?utf-8?B?bkxaVmd4anBnTXpaM2J0SmUzWFFxdW1TSnpmRmZKeXJOS3lBMEJ1ZFBNYkVO?=
+ =?utf-8?B?dXhVMFRWWFIxeUxRcEZGWUVGQU9yTmh3Q2ZEMERwclJlSExjL0NmbFBMWXMy?=
+ =?utf-8?B?KzBGSFdqRTdOdFBkcC9sVkd3SGZFSzVRQnc2K2RkSjBxc3VVWW1QSU01d3FL?=
+ =?utf-8?B?ZWVJMFlhTzZCZHZzRWJLeFRRVDFyaTZSSmd0KzJoV1dVUUdjYVlUZkFTRkd2?=
+ =?utf-8?B?VE9uV1BaeDRBa0lvbVFxaHRYM2dCdU9jUWxlVm94TzY2aDFBQmsxL0pVYWNS?=
+ =?utf-8?B?N0htS0FMVWJlbXhnWFVxTGZXSGhKaTNTN2dEbFpnSGZQSUtOeUF4SXZ0TS9z?=
+ =?utf-8?B?OVNSYURDRTEwUFhuYW4rQmlkOWFFa3p4RE1RalUvUzN5dzNyQng3ZU5ad2R6?=
+ =?utf-8?B?azA0bnZ2SW4rSTZOSTdVazFoYmhWVXEwbmt2OXJ3U1lmdC85aXQ3ZTV2aUJE?=
+ =?utf-8?B?djh6T1lpYlRWVmNhSEUwV1dqL2RVK2tkS2pGOGs4TTNpTEsyYktWTnZnT3Jl?=
+ =?utf-8?B?a2s4VEJoaHlQcndzZjl5YTFaK3FXY01CeWtLWVNnL3ZpaHprclQ0a2tpZW8x?=
+ =?utf-8?B?Wm9jWG5WSVBOeUp4WXF1MEFSZytOR2ZIM21TZ0VzRUdqYUwwK2xwUFNWeCtK?=
+ =?utf-8?B?N3NrVzlmQlhvVTB4dFhhMDFsUTk3aS9xRGlVTUZBYjh1aEVGczJQbisrcUp2?=
+ =?utf-8?B?cFhMbmtLSjkzQSt2K3RzdS92N2hmU295Szhub1RHa2hSRjd1RnJNOXdkTCtp?=
+ =?utf-8?B?cnRLUXF3YXdhMTRlcTdGZjBSbEZLWU9SZDN3Sk1lUzVwQ2EzbklybHJ5RXlx?=
+ =?utf-8?B?aXJpSElzNjMwdEcwYWh0dlRGQk55YXJOc0liRkdoV0h3U2l2aUM2ZTZuamEw?=
+ =?utf-8?B?VEkzN2c0S0JacWtXRHg4aVlUbk9MN0U0ZzBFSzNHMXBka1NHQURWVmdBQ05q?=
+ =?utf-8?B?Wlg2Nmc3SWhzSGRQa3QwTDdibDgxWWlQVStnL09RcHdJMUJmdXlBd21tczVq?=
+ =?utf-8?B?eFltWEZLTGpoem9HSi9CbjdVNnhtamx5ZW55eEhKdkNjekRZSC9Rc3RwcGp4?=
+ =?utf-8?B?WnFLa0w0YWtrekY5clNEUVhEd1lhWGlHcGRoNjc1cTlydW92djJ5d1dnY1hi?=
+ =?utf-8?B?U3RTdnNDbWtFTmdCaXBpanRBR3lINzVWWkZKa1ozblE3QVgvTGJRRmdLbXpU?=
+ =?utf-8?B?dmI5emlROEU1Q0xEVjRFWTdkZ0xjTXNvR05PcUExalJqaktJcmtlQkNUdFNk?=
+ =?utf-8?B?NnhoSS9PQkluRXp0MDJjMFFzelhwNEdxRGVOT0J0cVlVaHdreXJmd0NaaHJx?=
+ =?utf-8?B?SVBCS0s0Qmh5UVJxVHpnenpMTk5Hc2dTKzFzcnQ1UWZsaEp6T3FBVm9wTE9J?=
+ =?utf-8?B?WmRYME9FQ3dacnFKa1VCVlQ5d0ZKMDlNdnZHZjVFR2tvb3BOL1V6TUxHc3Jp?=
+ =?utf-8?B?K0Y0VThRc2RyeFBZTHgvVjgrU0M4WDhLbVVkNEhIdk41eUhVb21laFpPS25j?=
+ =?utf-8?B?NGNyVTNORFBDMWNzd3BHZE5OWVlkSzIyOHQ4MVh4RjMwdUF3d3NwV3FkaXpt?=
+ =?utf-8?B?c3J6SE9uZlBKUFpNWGxvdklYOHVtQ2Zmcm9aVE9KNzg3WDlaM0krTmRtVnJC?=
+ =?utf-8?B?T2dZR2Iwbjk5VkNyUEx0QmVJZWRUVm9wcXhOWjBqVmIyWWJXa29uQUtYbkhn?=
+ =?utf-8?B?TU5yRWpxQ25hVnVmWEY2Sm5yNGNjbWNYZ3grS05EallYZm9lcnNMSU9Ua1I3?=
+ =?utf-8?B?YUpZRWpiMzRaVFZrbURBNGs3MWNRTW9HN0hwdTBvRHdNZmFOSU5lNlBsaUNC?=
+ =?utf-8?B?VElxZmptYVBmTmVZWEJCTXg0Q2FkdGxzK0E5NHdHT2taZlpLNnFWS3RlZnBr?=
+ =?utf-8?Q?sZkFru?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR04MB9386.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(52116014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TG9welFGZkxnWCtHY3J3aXBDUys1Wk13WXdUbkNhSUphSDhxOExwS3RLMWhn?=
+ =?utf-8?B?MHZ1TStzV3ZBR1dPNzQ2djJ0MGNjQm1uSDMrcndTQjJnUW9qdE8wbGVkcVJ4?=
+ =?utf-8?B?NUhjK2N5endSakxEZ1F4T3BwQWdGNGhyZGZVUkZ5eFhseXhBRUxQc2RuQTNT?=
+ =?utf-8?B?c2lqMysrbWxuQW02OWlXbm5qNEJWRk0xOHN6VXkxYmxyUkxicXVNNjI5cldk?=
+ =?utf-8?B?dnRQK29YbGJYYjVKMUhHUTA4d0xHVmJOY2dYdHBpSTdMdjQrb1lkSGNtNGRI?=
+ =?utf-8?B?RmNFU3djempzWGtGc2dDWisrZk1FUncxNHovdENhWW5OeDlEV1R2RHNOWFg2?=
+ =?utf-8?B?SlNzYnk0dlp6Z0lVbWhwbFcxZlJjYTVaNnJFcWRlRGF5ZHVJUXdyeER0WTV1?=
+ =?utf-8?B?cHF5VDhjSFdxa0x0RURBdXVrdDBNV2JML0hxbU5pOCtDc082aHkrTWpIaFF2?=
+ =?utf-8?B?Yis5MjUzUnlrdkcvcHRBalQ5UHU1dWdZL1lLZ3VsZUl5RTFwYkxYNTdoSlgv?=
+ =?utf-8?B?bGEzOXdoNUhQL0FmZlhoc1BPZnBTVXFSWXozek1saHBXVTRSOGFod1pHWVNL?=
+ =?utf-8?B?ZlQ0MVhQTkdQK0lvTktqUEJZbzRrWUJFMTVadkd2M1BWSTVVcEFrck9JWW1q?=
+ =?utf-8?B?RUNCTUFUSWx2aGI4aGkrS3ZFQy85NVlFZHRLVERkdmFJS3k3VGFPYzZkR1R1?=
+ =?utf-8?B?cmNqRkh1UUNWZTUvSWxTYmhhRjFlOXAxQ0Y1amZWb3B2N0ZYWHBWTWNSaFJs?=
+ =?utf-8?B?ZUViMllnMVk4NTU4QVdiQzdFUTNKZSthS25qUzY2bml1SU12YUNUMk15TmRB?=
+ =?utf-8?B?cW04aHdGRCthd21OTUcySEt6MStzRGhiVEgvS2RXWEJDYmZFeDMwMjhBZ3hQ?=
+ =?utf-8?B?QTVxTUJ4VWpGeEVxbkt1c011dEI4Unpsck1TUVE1UHZxdytuQVFEakJEcUZQ?=
+ =?utf-8?B?Mlc1alpNUGl1RjExaVhqRWYyWG9vTUwzVjhXWFo2NVZ4Mkc1ZVV1aFVNN2Fz?=
+ =?utf-8?B?aUVlZ3JUU0pOdzVrQlh5NkxhcHFsc1NGa0gxdXl5VlQvanY5S1U1UEdFZStP?=
+ =?utf-8?B?eHovQVBCYVdPb29vdUkwS0ZCaEVaWHJZSnQ4VU9lTTBDUGE5YWx4WHpYdkRC?=
+ =?utf-8?B?ZEVnNjc0M1dGWHRJUTVtcTUxUmRQa0R2ODNubVJCT1RWQlBGdTQwMzRZNkFE?=
+ =?utf-8?B?U084cUVaVmdNVlE1Vmk0VUhIcWR6M1ppMGd1MkxDbldoU0xvd3FVTkVnaHgw?=
+ =?utf-8?B?Q1JBamJOQkdGZER6U0xmUEZCMW1Hbm82bFJmSVpmNUpUUFhLM2FvMXpHVDMy?=
+ =?utf-8?B?WkRydTFnMnkwbE1vcm5CN3BJeTdvSjhQanJ5a3ZQMWZzbXNzWDJKMXZWYVpo?=
+ =?utf-8?B?VXNlNVR3NGhobGpUUmZMOHQ1eG9naE40eERkZTVJMUpqT2dQM2RVYW1URkNO?=
+ =?utf-8?B?YlI2bW8xZkoyNXl0RXloVmxZMHNhamZuYUFrZThTSVhTaFhYZUVmTXRXTVB6?=
+ =?utf-8?B?Y3ZQenhzK3JaUWdqU1lOZWRRa3VnWWJ3QTlUSGpCaFEveTJtS2tkUFlCQ082?=
+ =?utf-8?B?WW1MSzRUMU1hZmlEalRURTlsYkRrdWRnQzFyNUpLbE9KVlNuT2NyakdERkd4?=
+ =?utf-8?B?OFJ3c0lINDBqM2FjL0w2Z3pwUHdNdWdlOFF5V0I5b3h6Njh1eU9QNkhEWVg5?=
+ =?utf-8?B?OVNQTm1rcFBUMVhtM1FjenNXeDBGTHkvY3NxNUpQWDQ4M1VCYlpJMHltQTZR?=
+ =?utf-8?B?Nk1tN21BdFhyQnJvQWZsL2tCS1NYcEtPbStSTmEyQ2NhVWdZdEd4UVgyV2xl?=
+ =?utf-8?B?ZFNVR2tKeXJqR0dVOFBjWTI0aGpoWFNGeXBYYkVkTC93cDdoeEVyTDJkajEy?=
+ =?utf-8?B?dW1nMGlzQTRWazFBT2gyQ3VJOUtRN0hBTVdEQlFzbStCQytnbVdDdS8yaWhy?=
+ =?utf-8?B?cm9sMGs1TUEzUXh3eStkWjlYclZaRnEyZFVDQ3RVV0svWE9mTHE0S0MyUnZV?=
+ =?utf-8?B?NElyamYrazBsRFRuTUgyVHhYazh1MGhTYnBlZXFzRHNYVm43NnpWekZ6cVFG?=
+ =?utf-8?B?UDhEcWNheXhTUFJrWTJ4UnlKbTl2ZjUwaEN5dDVCamRuQ2dXUTJvT2Zud0Vh?=
+ =?utf-8?Q?eLeCanwYORid9ZFKblIa+dnTd?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a670088e-96bd-4f88-3084-08de1a88e0ec
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR04MB9386.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2025 03:27:12.6051
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gqm+50aIrXHF7s/MAmYuVbrsq4bPoITSQb+5mPZHeI54vYnTZmk2WgObZvjoeNb1
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8744
 
-Update Sam's email address for the PF1550 PMIC driver.
+Remove unnecessary register OTP_Ver and change the device ID address to
+0x1. Previous version chip is never mass production. So not broken
+compatibility.
 
-Signed-off-by: Samuel Kayode <samkay014@gmail.com>
+Signed-off-by: Joy Zou <joy.zou@nxp.com>
 ---
-Changes in v3:
-- update .mailmap
-- Link to v2: https://lore.kernel.org/r/20251101-update-email-v2-1-175d221ec40f@gmail.com
+ drivers/regulator/pf9453-regulator.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Changes in v2:
-- rebase on ib-mfd-input-power-regulator-v6.19
-- Link to v1: https://lore.kernel.org/r/20251029-update-email-v1-1-f38f45aac2e8@gmail.com
----
-I left Savoir-faire Linux but I do intend to continue maintaining this
-driver.
----
- .mailmap    | 1 +
- MAINTAINERS | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/.mailmap b/.mailmap
-index d2edd256b19d6d68e2f4268b098b1845b9bddf08..857054460bd9f971421082b958e207ebdedf63cd 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -686,6 +686,7 @@ Sachin P Sant <ssant@in.ibm.com>
- Sai Prakash Ranjan <quic_saipraka@quicinc.com> <saiprakash.ranjan@codeaurora.org>
- Sakari Ailus <sakari.ailus@linux.intel.com> <sakari.ailus@iki.fi>
- Sam Ravnborg <sam@mars.ravnborg.org>
-+Samuel Kayode <samkay014@gmail.com> <samuel.kayode@savoirfairelinux.com>
- Sankeerth Billakanti <quic_sbillaka@quicinc.com> <sbillaka@codeaurora.org>
- Santosh Shilimkar <santosh.shilimkar@oracle.org>
- Santosh Shilimkar <ssantosh@kernel.org>
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2a9330f05e2fca6b8661bb698dea17dcfd7fc254..c44d2cf7e7b85104a6eb09142da8ef3d9fa7e55d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18608,7 +18608,7 @@ F:	Documentation/devicetree/bindings/regulator/nxp,pf5300.yaml
- F:	drivers/regulator/pf530x-regulator.c
+diff --git a/drivers/regulator/pf9453-regulator.c b/drivers/regulator/pf9453-regulator.c
+index be627f49b61762bb2b3a1830c14ae3a7255034e2..d522715a7c74908b39880ce9f0bfc252a4dd4ba2 100644
+--- a/drivers/regulator/pf9453-regulator.c
++++ b/drivers/regulator/pf9453-regulator.c
+@@ -65,8 +65,7 @@ enum {
+ #define PF9453_LDOSNVS_VOLTAGE_NUM	0x59
  
- NXP PF1550 PMIC MFD DRIVER
--M:	Samuel Kayode <samuel.kayode@savoirfairelinux.com>
-+M:	Samuel Kayode <samkay014@gmail.com>
- L:	imx@lists.linux.dev
- S:	Maintained
- F:	Documentation/devicetree/bindings/mfd/nxp,pf1550.yaml
+ enum {
+-	PF9453_REG_DEV_ID		= 0x00,
+-	PF9453_REG_OTP_VER		= 0x01,
++	PF9453_REG_DEV_ID		= 0x01,
+ 	PF9453_REG_INT1			= 0x02,
+ 	PF9453_REG_INT1_MASK		= 0x03,
+ 	PF9453_REG_INT1_STATUS		= 0x04,
 
----
-base-commit: a7d6255a0bf302c028ac680564633a6aac5f611d
-change-id: 20251029-update-email-f8ab42d1a5e9
-
-Best regards,
 -- 
-Samuel Kayode <samkay014@gmail.com>
+2.37.1
 
