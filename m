@@ -1,180 +1,134 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69FF3064AC
-	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 13:35:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D199A27EC7C;
+	Mon,  3 Nov 2025 14:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762176914; cv=none; b=pVZrzAhkFqrIhydmc5zGxgeAO2p6EzP9L3TyQN0rJPOzvsda/qyoThus+AhpduhKZQyOzPkNXQ6AGQhh2CbVanA/odELJHIRWqoh8IjYO0pvAWbKALGihmGd9hkPY9u1rzzTYX5kYSk+bfSwdG17Hzz4l8GCBgxHC48ur0eAPQA=
+	t=1762180272; cv=none; b=TvIz9jsuaK6PHgUElAVEt9wY7fJE8M4P9HjfuVllDcfCXqZSqUMWqJqn73u/EbMIrF3cmiKegIVD8RUzAfQY2pf4/TE24FfDTC24x4NqYrkycUchsxnV+lePO654G3Gz2r8uVYNfZuGiM1Y3iAwoKZr4s7QAxEDLl61i6+Urhqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762176914; c=relaxed/simple;
-	bh=HUhCBMZvZipHgUmjcVZ0eOSnMcg+HbQiCeJ/7jxn+Gg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P6p/dLO60d+vtjssYhbMGrfTt+v/z6HcloMASoeQsnvO97hK4x3hSMMuGUEuDVKjpijL/da5jfWHB91CVgzDfuZ/IJD1mqn42ZCUxrl3dn7x4B+0HYI8+H1dN+Bwcy2EubRCnHKz2vys0hke6Kbdxm8WyQfcq+ja+rA21zxZXTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=iSuStlNC; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1762180272; c=relaxed/simple;
+	bh=s5mGY2hJlehqy9L4juCXHyC5hvvTQy2D2clApxv+kos=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O14zvMFNEhwdbERRn9aX89n2bfWw9/lmVue3DMPydL2F0moAJ7WTxuKO1Jur0d6n9sH9/7d9E6jSVI5sJAvmOTLXDrVgFhEOO7ObZA0cYvml+Vlbj6DkhPjD27/fILFktIZRhGP8dbOGQfn93Sc6aonfyryeO+Ka0GvLaIQc+UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TRyxR9At; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="iSuStlNC"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id D1B854E414CE;
-	Mon,  3 Nov 2025 13:35:09 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9CE9160628;
-	Mon,  3 Nov 2025 13:35:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F194010B500FE;
-	Mon,  3 Nov 2025 14:34:53 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1762176907; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=koLz65BvAsRdOTOjAYYzE2T1rPDi7AByKsxkPawhxGI=;
-	b=iSuStlNC/qPWehMW5QtSxmK7/Ek+OmtM952H+Xk5cz64yvAI1dRLRJl2LFnH1Saj3uIcSn
-	Tfo0dDHHxzLe5rPhwCbyehjx3KhF+kWXpLRNtBcibrsD5eWlEhe06L8+GQDP7gihuHb7M4
-	aMb4hr5u64HA2jT9649n28R3LSuMyiMLHcAn1aj1T2djrGGH2TKUKnNVTaabRGpAWKTAUy
-	xDNG39m9CDfMAnKBAqtJttRhZlsDSxkcO7NokNzenCtkiwC6nxpHFV3TZc+Gz2qOhJ3anH
-	P5/UUwG3W53ojB0Z3tCqPkFB8BoZl0mckys6ra3FPqO4z9ocBaUZIcIEe7GxPQ==
-Date: Mon, 3 Nov 2025 14:34:52 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Andi Shyti <andi.shyti@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter
- Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>, Saravana Kannan
- <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax
- <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
- <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
- Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Mark Brown <broonie@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, Davidlohr
- Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Dave Jiang <dave.jiang@intel.com>, Alison Schofield
- <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
- Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, Geert
- Uytterhoeven <geert+renesas@glider.be>, Wolfram Sang <wsa@kernel.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
- patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v4 18/29] i2c: mux: Create missing devlink between mux
- and adapter physical device
-Message-ID: <20251103143452.080c3503@bootlin.com>
-In-Reply-To: <6tgbavtf2dqc44ebfighrs5chzx4j4zdmjk77fmulwqbhrex2b@lou7ekbsjekr>
-References: <20251015071420.1173068-1-herve.codina@bootlin.com>
-	<20251015071420.1173068-19-herve.codina@bootlin.com>
-	<6tgbavtf2dqc44ebfighrs5chzx4j4zdmjk77fmulwqbhrex2b@lou7ekbsjekr>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TRyxR9At"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4B2C4CEE7;
+	Mon,  3 Nov 2025 14:31:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762180271;
+	bh=s5mGY2hJlehqy9L4juCXHyC5hvvTQy2D2clApxv+kos=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TRyxR9AtU8LB5uO5mPIUStqZ2gK47Cih9yqBxGo0WaoNe4WcQ2pp440PncVgN3Zmq
+	 AIVF4XbvcczvPP7ZRexr5K+3DtxNWyOlIuaB0BmtDHYLFaEMvLQ+Sf8d5biA0B396p
+	 RNJIJ2qfEiKVpakKEOuqQLJ55IngPgJcIoIVccBWrfP7RhjhcJIX9IeTFKqJnY3E89
+	 HQBmIJGYdXV00RYiRPPP/r7xScsWeCgh/eno8CH4dKzUTNFx3Mwh55szuZKnL6YOLR
+	 aCmbpmhJiQ69oY0lUZE/jaO4Q8Jqa6tg/T6z/2svECVynbfBVCH/Kn5yQb3tpF3Sw7
+	 t6gTMp7QkdraQ==
+Date: Mon, 3 Nov 2025 14:31:05 +0000
+From: Will Deacon <will@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Xu Yang <xu.yang_2@nxp.com>, Mark Rutland <mark.rutland@arm.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-perf-users@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Joakim Zhang <qiangqing.zhang@nxp.com>
+Subject: Re: [PATCH v2 4/6] perf/imx_ddr: Add support for PMU in DB (system
+ interconnects)
+Message-ID: <aQi8qUzLHypULQJP@willie-the-truck>
+References: <20251024-qm_dts-v2-0-7a7e07022ed6@nxp.com>
+ <20251024-qm_dts-v2-4-7a7e07022ed6@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251024-qm_dts-v2-4-7a7e07022ed6@nxp.com>
 
-Hi Andi,
+On Fri, Oct 24, 2025 at 02:17:14PM -0400, Frank Li wrote:
+> From: Joakim Zhang <qiangqing.zhang@nxp.com>
+> 
+> There is a PMU in DB, which has the same function with PMU in DDR
+> subsystem, the difference is PMU in DB only supports cycles, axid-read,
+> axid-write events.
+> 
+> e.g.
+> perf stat -a -e imx8_db0/axid-read,axi_mask=0xMMMM,axi_id=0xDDDD,axi_port=0xPP,axi_channel=0xH/ cmd
+> perf stat -a -e imx8_db0/axid-write,axi_mask=0xMMMM,axi_id=0xDDDD,axi_port=0xPP,axi_channel=0xH/ cmd
+> 
+> Signed-off-by: Joakim Zhang <qiangqing.zhang@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/perf/fsl_imx8_ddr_perf.c | 65 ++++++++++++++++++++++++++++++++++------
+>  1 file changed, 56 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/perf/fsl_imx8_ddr_perf.c b/drivers/perf/fsl_imx8_ddr_perf.c
+> index 2a8426a74af98cf46725c2c70534829e198746f3..328287ab6326e3832aed85633957196548435d67 100644
+> --- a/drivers/perf/fsl_imx8_ddr_perf.c
+> +++ b/drivers/perf/fsl_imx8_ddr_perf.c
+> @@ -53,18 +53,27 @@
+>  #define to_ddr_pmu(p)		container_of(p, struct ddr_pmu, pmu)
+>  
+>  #define DDR_PERF_DEV_NAME	"imx8_ddr"
+> +#define DB_PERF_DEV_NAME	"imx8_db"
+>  #define DDR_CPUHP_CB_NAME	DDR_PERF_DEV_NAME "_perf_pmu"
+>  
+>  static DEFINE_IDA(ddr_ida);
+> +static DEFINE_IDA(db_ida);
+>  
+>  /* DDR Perf hardware feature */
+>  #define DDR_CAP_AXI_ID_FILTER			0x1     /* support AXI ID filter */
+>  #define DDR_CAP_AXI_ID_FILTER_ENHANCED		0x3     /* support enhanced AXI ID filter */
+>  #define DDR_CAP_AXI_ID_PORT_CHANNEL_FILTER	0x4	/* support AXI ID PORT CHANNEL filter */
+>  
+> +/* Perf type */
+> +enum fsl_ddr_type {
+> +	DDR_PERF_TYPE = 0,	/* ddr Perf (default) */
+> +	DB_PERF_TYPE,		/* db Perf */
+> +};
+> +
+>  struct fsl_ddr_devtype_data {
+>  	unsigned int quirks;    /* quirks needed for different DDR Perf core */
+>  	const char *identifier;	/* system PMU identifier for userspace */
+> +	enum fsl_ddr_type type;	/* types of Perf, ddr or db */
+>  };
+>  
+>  static const struct fsl_ddr_devtype_data imx8_devtype_data;
+> @@ -98,6 +107,12 @@ static const struct fsl_ddr_devtype_data imx8dxl_devtype_data = {
+>  	.identifier = "i.MX8DXL",
+>  };
+>  
+> +static const struct fsl_ddr_devtype_data imx8dxl_db_devtype_data = {
+> +	.quirks = DDR_CAP_AXI_ID_PORT_CHANNEL_FILTER,
+> +	.identifier = "i.MX8DXL",
 
-On Thu, 30 Oct 2025 16:23:24 +0100
-Andi Shyti <andi.shyti@kernel.org> wrote:
+Is this identifier useful given that you don't add
+'ddr_perf_identifier_attrs' here:
 
-> Hi Herve,
-> 
-> ...
-> 
-> > When an i2c mux is involved in an i2c path, the struct dev topology is
-> > the following:  
-> 
-> supernitpick: I'd leave blank line here.
+> +static const struct attribute_group *db_attr_groups[] = {
+> +	&db_perf_events_attr_group,
+> +	&ddr_perf_format_attr_group,
+> +	&ddr_perf_cpumask_attr_group,
+> +	&ddr_perf_filter_cap_attr_group,
+> +	NULL,
+> +};
 
-Will be added.
+?
 
-> 
-> >     +----------------+                +-------------------+
-> >     | i2c controller |                |      i2c mux      |
-> >     |     device     |                |      device       |
-> >     |       ^        |                |                   |
-> >     |       |        |                |                   |
-> >     |  dev's parent  |                |                   |
-> >     |       |        |                |                   |
-> >     |   i2c adapter  |                | i2c adapter chanX |
-> >     |     device  <---- dev's parent ------  device       |
-> >     |   (no driver)  |                |    (no driver)    |
-> >     +----------------+                +-------------------+
-> >   
-> 
-> ...
-> 
-> > No relationship exists between the i2c mux device itself and the i2c
-> > controller device (physical device) in order to have the i2c mux device
-> > calling i2c_del_adapter() to remove its downtream adapters and so,  
-> 
-> /downtream/downstream/
+Perhaps it would be better if you avoided adding a new array of attribute
+groups and instead implemented the '.is_visible' callback for
+'ddr_perf_events_attr_group'? That way, you avoid the duplication and
+you can hide everything except for the three events you want in the DB
+PMU.
 
-Will be fixed
-
-> 
-> > release references taken to the upstream adapter.  
-> 
-> ...
-> 
-> > +	/*
-> > +	 * There is no relationship set between the mux device and the physical
-> > +	 * device handling the parent adapter. Create this missing relationship
-> > +	 * in order to remove the i2c mux device (consumer) and so the dowstream
-> > +	 * channel adapters before removing the physical device (supplier) which
-> > +	 * handles the i2c mux upstream adapter.
-> > +	 */
-> > +	parent_physdev = i2c_get_adapter_physdev(parent);
-> > +	if (!parent_physdev) {
-> > +		dev_err(muxc->dev, "failed to get the parent physical device\n");
-> > +		ret = -EINVAL;  
-> 
-> -ENODEV?
-
-Yes, -ENODEV makes sense here. Will be changed in the next iteration.
-
-> 
-> > +		goto err_free_priv;
-> > +	}
-> > +	dl = device_link_add(muxc->dev, parent_physdev, DL_FLAG_AUTOREMOVE_CONSUMER);  
-> 
-> Not to call twice put_device, I would add it once here and then
-> check for !dl.
-
-As Andy already mentioned, we cannot do that. Indeed, dev_name(parent_physdev)
-is called in the error path and so the device reference has to be kept.
-
-> 
-> > +	if (!dl) {
-> > +		dev_err(muxc->dev, "failed to create device link to %s\n",
-> > +			dev_name(parent_physdev));
-> > +		put_device(parent_physdev);
-> > +		ret = -EINVAL;  
-> 
-> same here, should this be -ENODEV?
-
-For this one, I am not so sure.
-
-The failure is related to the device link creation and probably due to some
-devlink invalid internal flags or state instead of a missing device.
-
-That's said, if you really want the -ENODEV here, let me know.
-
-Best regards,
-Hervé
+Will
