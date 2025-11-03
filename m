@@ -1,176 +1,377 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCBA1E51E1
-	for <imx@lists.linux.dev>; Mon,  3 Nov 2025 08:46:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596FD1A8F84;
+	Mon,  3 Nov 2025 09:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762159599; cv=none; b=HJEsOnxCoe8K3l2XYUn8kTNgBmDmBh8za9Li3/eQYYWiSURSWCzBFyZpzvWkpeuDGCHTraFDwakTH6AV38ffByKQnak9EjeBCtGHBSFL/jiPMBZ0lTwATeZxDIOMZyRTVyJy/uaN8PeMCcGE/JVY+SWwOQU0TVodkaUtX4hmOVY=
+	t=1762161852; cv=none; b=PPoXiHdvx4QIxoUOyCXLJzO2H/2uCzHWhd/zIr4s8T/AiLogr9wdPf9jXmHRoIPF0pwOZYkhsZqJoR5ypHxp6aIaBFiDc0KMPLkma5fEI7PKoGpOgbVYeCTQshfMIclNh1GShKJZn+NIif+oc4xtiWWbn15RY7hPRAFhS6Pqx+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762159599; c=relaxed/simple;
-	bh=VleiOzfdhxXGkrltlLI7VGd619PMR4vVeDp7yRBj93k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OfNzI83kTTHIEg2ioF0fYZx0QQQEp2eWu9gO4d3casCdWHMSM3hKJeH3JB9GIZe5N3Carhf3F6qSZ3z9GhcDqG+3pT/Jdscay2h8ksPc+z6cWIEfgEn98N9oADUIzMuaczetsdSGRx2tdh0SNIUJXqtm3JuKalWRbrPy/kfaMnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=sIw5I3sk; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=U80RCbYC; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=sIw5I3sk; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=U80RCbYC; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1762161852; c=relaxed/simple;
+	bh=Iv1UHyn9z0KTC/aKtkDuLNggMhiMp5MUe84RvmuDC0M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=sPQmBbsgXKatMNuUJqYHtJpRbp/KbhaUSkzzmU0ooIsbCwQ0m4iX1tPaeXG1kz+NtpIYUWk/ogRL6svWQCupR5J5qnj1E7bwuSfcuTZpXpbBoXbUmmz27+nFmgqATvHVE/DwfmjRecy8Xd3y7ZRaiCZ/QTfD0JP7J5MUIll8oU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o/R3kv25; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="sIw5I3sk";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="U80RCbYC";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="sIw5I3sk";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="U80RCbYC"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 609ED1F7A5;
-	Mon,  3 Nov 2025 08:46:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762159595; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5agJgW16EOeEZtDnEWS52BJBid49sEn0gLBvpaWf7Tw=;
-	b=sIw5I3skk3JxqWJ8h2wdU8vXPeJiyFbGpa8lcdHHLXPQkeJeoVeJTaMKDo5lrmqoFNYR3l
-	12qACNzhBUSCsjpO/p3f5+//+1fmj+901lRpMHPY1xONz2KfMRH8tUsCelk4vgtPiV919q
-	0ymKa034IaM5W6V/INLiVDf+xqTvR8k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762159595;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5agJgW16EOeEZtDnEWS52BJBid49sEn0gLBvpaWf7Tw=;
-	b=U80RCbYCk0mUtgVzijxgOG8i7ZxZEVbHnjfyjs3p7A3DgbrcuNWV3CrEar54//vaBRbQ7p
-	hCGHuckI4WqOdVAQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762159595; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5agJgW16EOeEZtDnEWS52BJBid49sEn0gLBvpaWf7Tw=;
-	b=sIw5I3skk3JxqWJ8h2wdU8vXPeJiyFbGpa8lcdHHLXPQkeJeoVeJTaMKDo5lrmqoFNYR3l
-	12qACNzhBUSCsjpO/p3f5+//+1fmj+901lRpMHPY1xONz2KfMRH8tUsCelk4vgtPiV919q
-	0ymKa034IaM5W6V/INLiVDf+xqTvR8k=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762159595;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5agJgW16EOeEZtDnEWS52BJBid49sEn0gLBvpaWf7Tw=;
-	b=U80RCbYCk0mUtgVzijxgOG8i7ZxZEVbHnjfyjs3p7A3DgbrcuNWV3CrEar54//vaBRbQ7p
-	hCGHuckI4WqOdVAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 505EE139A9;
-	Mon,  3 Nov 2025 08:46:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gjidE+trCGkiBAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 03 Nov 2025 08:46:35 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id B690FA2A66; Mon,  3 Nov 2025 09:46:34 +0100 (CET)
-Date: Mon, 3 Nov 2025 09:46:34 +0100
-From: Jan Kara <jack@suse.cz>
-To: Bough Chen <haibo.chen@nxp.com>
-Cc: Theodore Tso <tytso@mit.edu>, "jack@suse.cz" <jack@suse.cz>, 
-	"adilger.kernel@dilger.ca" <adilger.kernel@dilger.ca>, "linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: Re: ext4 issue on  linux-next(next-20251030)
-Message-ID: <xrytdoegosn2qbvqdx6idvardvsbhj4blxnuschvgnl4i2bhxj@ezuawpusl6sn>
-References: <20251023-qm_dts-v1-0-9830d6a45939@nxp.com>
- <20251023-qm_dts-v1-2-9830d6a45939@nxp.com>
- <DU0PR04MB9496D99F17904D1B2EFB9E5090FBA@DU0PR04MB9496.eurprd04.prod.outlook.com>
- <20251031013335.GA10593@macsyma-3.local>
- <DU0PR04MB9496B72135BFB95A93DB577E90F8A@DU0PR04MB9496.eurprd04.prod.outlook.com>
- <AS1PR04MB950288682BF1CA58C32AE0F390C7A@AS1PR04MB9502.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o/R3kv25"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BAA02C4CEE7;
+	Mon,  3 Nov 2025 09:24:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762161851;
+	bh=Iv1UHyn9z0KTC/aKtkDuLNggMhiMp5MUe84RvmuDC0M=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=o/R3kv250XYLYXugeI4In64pFNyrF7xfhx1alIAwZKYuqJuodmKfxDfxq0S0jJTxM
+	 yERTN7RNS23F1IMbZtxaPxvloo1v16VEhaqfBu00jQaDZHI94+NKTQPm2YnqMbcjTJ
+	 xAOyK+eUSzpwUy/WYgcFVf+9H8NNuawkOovmj2KAfitWcQjLnKzxp/ENKEYpJiRjOa
+	 zlN+nVUXhE88TGRTuuK8ii47D9iZNmvIf82S/SrkvPHyZ3RpXiDM24ENolctmbYO4q
+	 hsfDhihtsm33vu6OFsVZEdyDCPt0wJWyuG1sA2ljfYwmn6Y6SfMRl6c0JUhJ1RcqIY
+	 qBEvXik4NUD+w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4D3DCCF9F8;
+	Mon,  3 Nov 2025 09:24:11 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Mon, 03 Nov 2025 10:24:01 +0100
+Subject: [PATCH v3] arm64: dts: freescale: Add GMAC Ethernet for S32G2 EVB
+ and RDB2 and S32G3 RDB3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AS1PR04MB950288682BF1CA58C32AE0F390C7A@AS1PR04MB9502.eurprd04.prod.outlook.com>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	URIBL_BLOCKED(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	MISSING_XM_UA(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Score: -3.80
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251103-nxp-s32g-boards-v3-1-b51db0b8b3ff@oss.nxp.com>
+X-B4-Tracking: v=1; b=H4sIALB0CGkC/3XNzQ6CMAzA8VchO1uyFsbQk+9hPPCxwQ4yspoFQ
+ 3h3ByeN8fhv2l9XwSY4w+KSrSKY6Nj5KUVxykQ3NtNgwPWpBUlSKGUF0zIDFzRA65vQM1CPqiK
+ lWnUmka7mYKxbDvF2Tz06fvrwOh5E3Kf/rYiAYLVslG5rWWt79cx52so7/xC7FulDKPBXoCRUh
+ rC0VGpbmm9h27Y3bneKWfIAAAA=
+To: Chester Lin <chester62515@gmail.com>, 
+ Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>
+Cc: linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, Enric Balletbo i Serra <eballetb@redhat.com>, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1762161850; l=7554;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=DK5VZJZF7Vbw11r1n/9G6cmdxTjk1B3EYH+R4E80448=;
+ b=HRZuPICxx85rF8EeeytZJbzyjVf6gz/jkQ+AKuRjPQDTKco/lraChauLmgRpffvJiWOG1PFa4
+ OO8roWLfNtHCuldVfWk++48LPGD6oo19Ah6PrIuZcruvWUCaSXtdext
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-On Mon 03-11-25 03:57:37, Bough Chen wrote:
-> Hi All,
-> 
-> I find something when debug, share the finding here:
-> 
-> I notice every time this issue happen, the log always show inode 1, so I
-> think this is supper inode related. And seems related to the
-> i_state_flags of struct ext4_inode_info
-> 
-> [  210.104663] 48812578: f6bffadf 00000000 00000000 00000000
-> 
-> Here the i_state_flags = 0xf6bffadf, the Inode dynamic state flags only
-> touch to bit0~bit12, so this i_state_flags is abnormal.
-> 
-> When I add the following changes, this issue gone:
-> 
-> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-> index 66f92f832b0fb..c6c2d32d5531b 100644
-> --- a/fs/ext4/super.c
-> +++ b/fs/ext4/super.c
-> @@ -1396,6 +1396,7 @@ static struct inode *ext4_alloc_inode(struct super_block *sb)
-> 
->         inode_set_iversion(&ei->vfs_inode, 1);
->         ei->i_flags = 0;
-> +       ext4_clear_state_flags(ei);
->         spin_lock_init(&ei->i_raw_lock);
->         ei->i_prealloc_node = RB_ROOT;
->         atomic_set(&ei->i_prealloc_active, 0);
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-OK, that's a good catch. I was scratching my head how inode with ino 1
-could get orphan bit set when the kernel should never touch it. Now I've
-found out mbcache abuses EXT4_BAD_INO for its internal purposes so what we
-complain about is an in-memory auxiliary inode used by mbcache. Indeed it
-looks safer to initialize i_state_flags in ext4_alloc_inode() and we can
-drop the initialization from __ext4_iget() and __ext4_new_inode().
+Add support for the Ethernet connection over GMAC controller connected to
+the Micrel KSZ9031 Ethernet RGMII PHY located on the boards.
 
-> This can explain why this issue can't be reproduce 100%. And can also
-> explain why only imx6/7 series meet this issue, but imx8/9 not, because
-> imx6/7 is arm32 core, it use i_state_flags, but imx8/9 use arm64 core, do
-> not use i_state_flags.
-> 
-> This issue may exist long time, but Jack's patch trigger this issue.
-> 
-> I also have the following concern:
-> Why need to distinguish arch32 and arch64, why not use u64 to merge these
-> two casees?
+The mentioned GMAC controller is one of two network controllers
+embedded on the NXP Automotive SoCs S32G2 and S32G3.
 
-Because atomic bit operations are only guaranteed to work on unsigned long
-type (32-bit on 32-bit architectures), not on u64 type.
+The supported boards:
+ * EVB:  S32G-VNP-EVB with S32G2 SoC
+ * RDB2: S32G-VNP-RDB2
+ * RDB3: S32G-VNP-RDB3
 
-								Honza
+Tested-by: Enric Balletbo i Serra <eballetb@redhat.com>
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+Changes in v3:
+ - moved compatible to the head of mdio node
+ - removed redundant cell size declaration
+ - Link to v2: https://lore.kernel.org/r/20251031-nxp-s32g-boards-v2-1-6e214f247f4e@oss.nxp.com
+
+Changes in v2:
+ - fixed correct instance orders, include blank lines
+ - Link to v1: https://lore.kernel.org/r/20251006-nxp-s32g-boards-v1-1-f70a57b8087f@oss.nxp.com
+---
+ arch/arm64/boot/dts/freescale/s32g2.dtsi        | 58 ++++++++++++++++++++++++-
+ arch/arm64/boot/dts/freescale/s32g274a-evb.dts  | 18 +++++++-
+ arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts | 16 +++++++
+ arch/arm64/boot/dts/freescale/s32g3.dtsi        | 58 ++++++++++++++++++++++++-
+ arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts | 18 +++++++-
+ 5 files changed, 164 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+index d167624d1f0c..51d00dac12de 100644
+--- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+@@ -3,7 +3,7 @@
+  * NXP S32G2 SoC family
+  *
+  * Copyright (c) 2021 SUSE LLC
+- * Copyright 2017-2021, 2024 NXP
++ * Copyright 2017-2021, 2024-2025 NXP
+  */
+ 
+ #include <dt-bindings/interrupt-controller/arm-gic.h>
+@@ -727,6 +727,62 @@ usdhc0: mmc@402f0000 {
+ 			status = "disabled";
+ 		};
+ 
++		gmac0: ethernet@4033c000 {
++			compatible = "nxp,s32g2-dwmac";
++			reg = <0x4033c000 0x2000>, /* gmac IP */
++			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
++			interrupt-parent = <&gic>;
++			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "macirq";
++			snps,mtl-rx-config = <&mtl_rx_setup>;
++			snps,mtl-tx-config = <&mtl_tx_setup>;
++			status = "disabled";
++
++			mtl_rx_setup: rx-queues-config {
++				snps,rx-queues-to-use = <5>;
++
++				queue0 {
++				};
++
++				queue1 {
++				};
++
++				queue2 {
++				};
++
++				queue3 {
++				};
++
++				queue4 {
++				};
++			};
++
++			mtl_tx_setup: tx-queues-config {
++				snps,tx-queues-to-use = <5>;
++
++				queue0 {
++				};
++
++				queue1 {
++				};
++
++				queue2 {
++				};
++
++				queue3 {
++				};
++
++				queue4 {
++				};
++			};
++
++			gmac0mdio: mdio {
++				compatible = "snps,dwmac-mdio";
++				#address-cells = <1>;
++				#size-cells = <0>;
++			};
++		};
++
+ 		gic: interrupt-controller@50800000 {
+ 			compatible = "arm,gic-v3";
+ 			reg = <0x50800000 0x10000>,
+diff --git a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
+index c4a195dd67bf..aa40a52f8e53 100644
+--- a/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
++++ b/arch/arm64/boot/dts/freescale/s32g274a-evb.dts
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+ /*
+  * Copyright (c) 2021 SUSE LLC
+- * Copyright 2019-2021, 2024 NXP
++ * Copyright 2019-2021, 2024-2025 NXP
+  */
+ 
+ /dts-v1/;
+@@ -14,6 +14,7 @@ / {
+ 	compatible = "nxp,s32g274a-evb", "nxp,s32g2";
+ 
+ 	aliases {
++		ethernet0 = &gmac0;
+ 		serial0 = &uart0;
+ 	};
+ 
+@@ -43,3 +44,18 @@ &usdhc0 {
+ 	no-1-8-v;
+ 	status = "okay";
+ };
++
++&gmac0 {
++	clocks = <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
++	clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
++	phy-mode = "rgmii-id";
++	phy-handle = <&rgmiiaphy4>;
++	status = "okay";
++};
++
++&gmac0mdio {
++	/* KSZ 9031 on RGMII */
++	rgmiiaphy4: ethernet-phy@4 {
++		reg = <4>;
++	};
++};
+diff --git a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
+index 4f58be68c818..ee3121b192e5 100644
+--- a/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
++++ b/arch/arm64/boot/dts/freescale/s32g274a-rdb2.dts
+@@ -14,6 +14,7 @@ / {
+ 	compatible = "nxp,s32g274a-rdb2", "nxp,s32g2";
+ 
+ 	aliases {
++		ethernet0 = &gmac0;
+ 		serial0 = &uart0;
+ 		serial1 = &uart1;
+ 	};
+@@ -77,3 +78,18 @@ &usdhc0 {
+ 	no-1-8-v;
+ 	status = "okay";
+ };
++
++&gmac0 {
++	clocks = <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
++	clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
++	phy-mode = "rgmii-id";
++	phy-handle = <&rgmiiaphy1>;
++	status = "okay";
++};
++
++&gmac0mdio {
++	/* KSZ 9031 on RGMII */
++	rgmiiaphy1: ethernet-phy@1 {
++		reg = <1>;
++	};
++};
+diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+index be3a582ebc1b..eff7673e7f34 100644
+--- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+ /*
+- * Copyright 2021-2024 NXP
++ * Copyright 2021-2025 NXP
+  *
+  * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
+  *          Ciprian Costea <ciprianmarian.costea@nxp.com>
+@@ -804,6 +804,62 @@ usdhc0: mmc@402f0000 {
+ 			status = "disabled";
+ 		};
+ 
++		gmac0: ethernet@4033c000 {
++			compatible = "nxp,s32g2-dwmac";
++			reg = <0x4033c000 0x2000>, /* gmac IP */
++			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
++			interrupt-parent = <&gic>;
++			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "macirq";
++			snps,mtl-rx-config = <&mtl_rx_setup>;
++			snps,mtl-tx-config = <&mtl_tx_setup>;
++			status = "disabled";
++
++			mtl_rx_setup: rx-queues-config {
++				snps,rx-queues-to-use = <5>;
++
++				queue0 {
++				};
++
++				queue1 {
++				};
++
++				queue2 {
++				};
++
++				queue3 {
++				};
++
++				queue4 {
++				};
++			};
++
++			mtl_tx_setup: tx-queues-config {
++				snps,tx-queues-to-use = <5>;
++
++				queue0 {
++				};
++
++				queue1 {
++				};
++
++				queue2 {
++				};
++
++				queue3 {
++				};
++
++				queue4 {
++				};
++			};
++
++			gmac0mdio: mdio {
++				compatible = "snps,dwmac-mdio";
++				#address-cells = <1>;
++				#size-cells = <0>;
++			};
++		};
++
+ 		swt8: watchdog@40500000 {
+ 			compatible = "nxp,s32g3-swt", "nxp,s32g2-swt";
+ 			reg = <40500000 0x1000>;
+diff --git a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
+index e94f70ad82d9..326322b62192 100644
+--- a/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
++++ b/arch/arm64/boot/dts/freescale/s32g399a-rdb3.dts
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+ /*
+- * Copyright 2021-2024 NXP
++ * Copyright 2021-2025 NXP
+  *
+  * NXP S32G3 Reference Design Board 3 (S32G-VNP-RDB3)
+  */
+@@ -15,6 +15,7 @@ / {
+ 	compatible = "nxp,s32g399a-rdb3", "nxp,s32g3";
+ 
+ 	aliases {
++		ethernet0 = &gmac0;
+ 		mmc0 = &usdhc0;
+ 		serial0 = &uart0;
+ 		serial1 = &uart1;
+@@ -93,3 +94,18 @@ &usdhc0 {
+ 	disable-wp;
+ 	status = "okay";
+ };
++
++&gmac0 {
++	clocks = <&clks 24>, <&clks 19>, <&clks 18>, <&clks 15>;
++	clock-names = "stmmaceth", "tx", "rx", "ptp_ref";
++	phy-mode = "rgmii-id";
++	phy-handle = <&rgmiiaphy1>;
++	status = "okay";
++};
++
++&gmac0mdio {
++	/* KSZ 9031 on RGMII */
++	rgmiiaphy1: ethernet-phy@1 {
++		reg = <1>;
++	};
++};
+
+---
+base-commit: fd94619c43360eb44d28bd3ef326a4f85c600a07
+change-id: 20251006-nxp-s32g-boards-2d156255b592
+
+Best regards,
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+
+
