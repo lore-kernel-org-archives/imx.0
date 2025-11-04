@@ -1,247 +1,665 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457C433E361
-	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 17:07:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB618328B7E
+	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 17:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762276057; cv=none; b=PNwVIGQKxi+BJK0ij8rV6gM3LhIlq44dPCq1febkYnr8jfsOxGKo+vJzCTsMJhX6i9YuD8Q28vTynkm9D6X8x9m22JBJDp3w718bt3smDzTpYJ5zemFvjYcT6Yj6Qw3No5xPtASc+kVC0MO5lh1h0T0U25yDZ9MitokD5jXD9gE=
+	t=1762278030; cv=none; b=nDiY+Gh4tvOCmbvlMS7dQ+7ZYDQ6I+ha+gYFPZdlUgE7zmfnjsEPcU+FBf7K9GkjMpHdWDoyq2BVOM3ukBKCkkMWA92cwmx8eCOGKiCveDakPJzXacSNx7FD0xeXWF9Ts6grgHfheWcMjQKi2h3heHYyB15r98/9IA0pewkmCCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762276057; c=relaxed/simple;
-	bh=tjZDy+bbfTRIT7A33Ys+suJnpcHjHb0ey6JSW0sBkh4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WYzn9ChMeNLEcklZm/PAKQS2fKozAUQqlyPurS8PxxoEiTqTqs2iXYon3KZAJmbMdhfgcFhNNSm7YhxROlqAJZQZKucg4U8tDcCH1ctFFGl1aoOu3da3hiEd6LFm6GVfC2po+AAlTVZNYChuwZqpSXqlun3r0ELCxFmY5JLnW1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OfgtDVt/; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1762278030; c=relaxed/simple;
+	bh=KamOxSeAipgU1rbqbwPiN5PXNmG3Cc1tJF2iWAItvPc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ftmmwHJvtd6ZJV1Mrr8Lc+TuWi7JqTx4hXQSQp13LPq6Ttz6LUPwPOmxItasTSnE/KF+eBhDB0oEruKSMEQJaGFQDHaW8ms0SlCubtcju1jIHpkxEFMKH/sOggEhbM7vI5tDzPQiy4R6Snk1ZeLn6TQyl1jBl6W/wP/oDUhA/wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vazzMgl/; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OfgtDVt/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762276053; x=1793812053;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tjZDy+bbfTRIT7A33Ys+suJnpcHjHb0ey6JSW0sBkh4=;
-  b=OfgtDVt/xaf1jiIMmQgyu/PTCRFqojlbhJC95fsb6MD5KEZEa85RbQMX
-   6GgrQTFivneSeuBFlPaGUzS5AbEZZ5Md0gp4d6xG6czAtJMEB4CCEZkV1
-   gtwM3mYMqC67cD7R6yUHoPTx+x/KktBIYsoJgf/VFfvYYZfmw6S910cwP
-   VWeBZWRRUJpAcNmhcGV6WOyYSm6heUw7x7BhWo5GSaRm/hIHoSeY02cDW
-   zv3NJaQxf8esJjY8gIpvJMjO/jZYnPUEXGdWZOwlUAtK+KAVZVfPpepEa
-   5uRkM1LVt/rg+w1e6a1ZgUP1ShQayPH31hrKbzpW0AR+53NhF57Qy7EiZ
-   w==;
-X-CSE-ConnectionGUID: IUy62JIvQ6+Y6Q3l1/CJxQ==
-X-CSE-MsgGUID: 6Q43jXCcRLaYWT3klFZhPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="64527234"
-X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; 
-   d="scan'208";a="64527234"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 09:07:31 -0800
-X-CSE-ConnectionGUID: h07Mzje5RYuXU8oKHsBsng==
-X-CSE-MsgGUID: Kaqmb30wTj+M6epZeJiUpA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,279,1754982000"; 
-   d="scan'208";a="210708461"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO ashevche-desk.local) ([10.245.245.146])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 09:07:28 -0800
-Received: from andy by ashevche-desk.local with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1vGKVA-00000005WPE-32wY;
-	Tue, 04 Nov 2025 19:07:24 +0200
-Date: Tue, 4 Nov 2025 19:07:24 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-i3c@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-iio@vger.kernel.org, joshua.yeong@starfivetech.com,
-	devicetree@vger.kernel.org, linux@roeck-us.net,
-	Carlos Song <carlos.song@nxp.com>,
-	Adrian Fluturel <fluturel.adrian@gmail.com>
-Subject: Re: [PATCH v10 6/6] iio: magnetometer: Add mmc5633 sensor
-Message-ID: <aQoyzHrQB-egSPqR@smile.fi.intel.com>
-References: <20251104-i3c_ddr-v10-0-e3e4cbc17034@nxp.com>
- <20251104-i3c_ddr-v10-6-e3e4cbc17034@nxp.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vazzMgl/"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-27d67abd215so4555ad.0
+        for <imx@lists.linux.dev>; Tue, 04 Nov 2025 09:40:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762278028; x=1762882828; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/jfT88xD0KOzcLyagDzpznKX6WWcQ4Tbie23BrW5FcA=;
+        b=vazzMgl/B8raUGD/HoXsdgzRJFBgi/1+8lhx6e7dTCI8Vkui8MsjpVEzwX33FhOqwW
+         p3eZAciImHkqCQy0akMBmVP154oJ/QtUspdT/+s0j30waiLfL1FrlVRN2nrNhTnuX2B4
+         dvaSLn5eAR46trF+KcfcL3n70ZOZSmu0nsUGSDJrz45OWs0isVfPWpi23EzVFyJGbI5n
+         WVb/0OI0AqptFK2Of74A1TNwhl/vRojiCJo5TX+qeGD1MabgNiTbFXf6TjFY/dutgXOZ
+         xM9gvpdf0coL4VHbWrmqld6eZHNno049aejlg5g7JSkeYGtGarGsnj5ApMiwa3OJenq0
+         ZWrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762278028; x=1762882828;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/jfT88xD0KOzcLyagDzpznKX6WWcQ4Tbie23BrW5FcA=;
+        b=F3H+QF55cQhN/De1bfUD3KkUgRWKveZTro+BkrrT9AnsW671KiB99gB8ZdE90E9Xr2
+         Dx+aHKXw8mhd0iYPQEY5ZhBPX3TIdupMVs2SnaVG2uRIMBkKse6yZTdpqtktUDPLPc4u
+         m9Yno7Sd3Re+XaAwonztlXHF/6WvllFb/zmoMq7LVFyHgKybY1WjCwjFOQN//RIeGPhZ
+         yeqTf5by1v66mI7OepSFtnjhIiqvIzljSr28RYYkow+pRYsRInDmTsduQp3RM+NM8tbZ
+         TDSOMkbtZka2/csmG7eUEfr+ikap/VvN31UsWxFX7LI4dNH9/43rUt2SjETdR2jpuT1B
+         rW8A==
+X-Forwarded-Encrypted: i=1; AJvYcCWH5EAK+wESmvnx3rcdl7NP+fL8OygG1hX+laS28oIDvZWgi/ghQMyDvVfZj+zCfivgXFQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz+Lf5d+6825LqvBG55vymc/qRXQFXxiqs5iu+oRlXW4NOyoYRr
+	0jjW8ohtMZWZuJM9JXlzYU4wGBZ2KnPPRJnVALZPVOkwcKQUcvJ5zlFwd+IYPtIo7YGHi2ESJd6
+	w5aKnl6om9coxePhVeWQvsMPVTl/CdFx0EMbh8H47
+X-Gm-Gg: ASbGncscav2hyJpJ2Em1cvFQfE8iDlmCHi8z5TCHMPuuyCtpkAcGeQa7o9eDfQqXlMM
+	5c0zz7C0BsN9vAoku8yfC3QxJNcvdtO5zj+TTXSOYwlHMh9Kpo0Aj9IbLz/+Uxxtk8FfuOb9mV3
+	WBuhxc4MKc82ZlneEnjVz0EhmUzZWSxJWxDltMZxLo84x8l8xZI7tQZE1zGuE3pydqoQEjMY8W9
+	0Kmvf5Con2zkLJlkmA33xGTHK4q1VvUcNEJfskk2xNTBTeeNchM/kk/Wa6YHHRhO2HCak+am3sI
+	GZrtnbplJ566NCI=
+X-Google-Smtp-Source: AGHT+IFtI0ANt6r/2+hZEYdPo9MIQ3FgcReJoH72fieCO+sc5XMcyfjciKQKi955Fim4SjjM2xy1Dd4lSJ7bJl+AH0k=
+X-Received: by 2002:a17:902:e888:b0:26a:befc:e7e1 with SMTP id
+ d9443c01a7336-295fdaee3aemr6120715ad.12.1762278027330; Tue, 04 Nov 2025
+ 09:40:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251104-i3c_ddr-v10-6-e3e4cbc17034@nxp.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+References: <20250821-imx94-ddr-pmu-v2-0-052c6420605d@nxp.com> <20250821-imx94-ddr-pmu-v2-3-052c6420605d@nxp.com>
+In-Reply-To: <20250821-imx94-ddr-pmu-v2-3-052c6420605d@nxp.com>
+From: Ian Rogers <irogers@google.com>
+Date: Tue, 4 Nov 2025 09:40:15 -0800
+X-Gm-Features: AWmQ_bmwvZDCteGTl9ZAIX7nqQG3lPWAF4Bp-vTXqzNi5uHkHP-MkyAZWUz5qN8
+Message-ID: <CAP-5=fUd24kWOG7=8DpmiaMXkwdf9=BOzmoTrjn9b5Da0ZfP3g@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] perf vendor events arm64:: Add i.MX94 DDR
+ Performance Monitor metrics
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Frank Li <Frank.li@nxp.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	John Garry <john.g.garry@oracle.com>, James Clark <james.clark@linaro.org>, 
+	Mike Leach <mike.leach@linaro.org>, Leo Yan <leo.yan@linux.dev>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, linux-arm-kernel@lists.infradead.org, 
+	linux-perf-users@vger.kernel.org, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 04, 2025 at 10:46:44AM -0500, Frank Li wrote:
-> Add mmc5633 sensor basic support.
-> - Support read 20 bits X/Y/Z magnetic.
-> - Support I3C HDR mode to send start measurememt command.
-> - Support I3C HDR mode to read all sensors data by one command.
+On Thu, Aug 21, 2025 at 4:02=E2=80=AFAM Xu Yang <xu.yang_2@nxp.com> wrote:
+>
+> Add JSON metrics for i.MX94 DDR Performance Monitor.
+>
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-with some nit-picks below.
+Acked-by: Ian Rogers <irogers@google.com>
 
-...
+> ---
+> Changes in v2:
+>  - add Rb tag
+> ---
+>  .../arch/arm64/freescale/imx94/sys/ddrc.json       |   9 +
+>  .../arch/arm64/freescale/imx94/sys/metrics.json    | 450 +++++++++++++++=
+++++++
+>  2 files changed, 459 insertions(+)
+>
+> diff --git a/tools/perf/pmu-events/arch/arm64/freescale/imx94/sys/ddrc.js=
+on b/tools/perf/pmu-events/arch/arm64/freescale/imx94/sys/ddrc.json
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..aa7b58721dc7e23dc9d9905a7=
+9e0c1778b7bbf11
+> --- /dev/null
+> +++ b/tools/perf/pmu-events/arch/arm64/freescale/imx94/sys/ddrc.json
+> @@ -0,0 +1,9 @@
+> +[
+> +   {
+> +           "BriefDescription": "ddr cycles event",
+> +           "EventCode": "0x00",
+> +           "EventName": "imx94_ddr.cycles",
+> +           "Unit": "imx9_ddr",
+> +           "Compat": "imx94"
+> +   }
+> +]
+> diff --git a/tools/perf/pmu-events/arch/arm64/freescale/imx94/sys/metrics=
+.json b/tools/perf/pmu-events/arch/arm64/freescale/imx94/sys/metrics.json
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..629f1f52761e2210ef43a9cbb=
+a175871817e1230
+> --- /dev/null
+> +++ b/tools/perf/pmu-events/arch/arm64/freescale/imx94/sys/metrics.json
+> @@ -0,0 +1,450 @@
+> +[
+> +       {
+> +               "BriefDescription": "bandwidth usage for lpddr5 evk board=
+",
+> +               "MetricName": "imx94_bandwidth_usage.lpddr5",
+> +               "MetricExpr": "(( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi=
+_mask\\=3D0x000\\,axi_id\\=3D0x000@ + imx9_ddr0@eddrtq_pm_wr_beat_filt\\,ax=
+i_mask\\=3D0x000\\,axi_id\\=3D0x000@ ) * 32 / duration_time) / (4266 * 1000=
+000 * 4)",
 
-> +static int mmc5633_take_measurement(struct mmc5633_data *data, int address)
-> +{
-> +	unsigned int reg_status;
-> +	int ret;
+nit: It is possible to have metrics use other metrics, this may read
+better as (although I can't recall if the '.' needs escaping - I'm not
+sure if the 4266 is significant):
 
-> +	int val;
+((imx94_ddr_read.all + imx94_ddr_write.all) / duration_time)  / 17064e6
 
-regmap API uses unsigned int for value field.
+> +               "ScaleUnit": "1e2%",
 
-> +	val = (address == MMC5633_TEMPERATURE) ? MMC5633_CTRL0_MEAS_T : MMC5633_CTRL0_MEAS_M;
-> +	ret = regmap_write(data->regmap, MMC5633_REG_CTRL0, val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	val = (address == MMC5633_TEMPERATURE) ?
-> +	      MMC5633_STATUS1_MEAS_T_DONE_BIT : MMC5633_STATUS1_MEAS_M_DONE_BIT;
-> +	ret = regmap_read_poll_timeout(data->regmap, MMC5633_REG_STATUS1, reg_status,
-> +				       reg_status & val,
-> +				       10 * USEC_PER_MSEC,
-> +				       100 * 10 * USEC_PER_MSEC);
-> +	if (ret) {
-> +		dev_err(regmap_get_device(data->regmap), "data not ready\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
+nit: I think this would read more easily as "100%"
 
-...
+Thanks,
+Ian
 
-> +static int mmc5633_read_measurement(struct mmc5633_data *data, int address, void *buf, size_t sz)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	u8 data_cmd[2], status[2];
-> +	int ret, val, ready;
-
-Ditto.
-
-> +	if (mmc5633_is_support_hdr(data)) {
-> +		struct i3c_xfer xfers_wr_cmd[] = {
-> +			{
-> +				.cmd = 0x3b,
-> +				.len = 2,
-> +				.data.out = data_cmd,
-> +			}
-> +		};
-> +		struct i3c_xfer xfers_rd_sta_cmd[] = {
-> +			{
-> +				.cmd = 0x23 | BIT(7), /* RDSTA CMD */
-> +				.len = 2,
-> +				.data.in = status,
-> +			},
-> +		};
-> +		struct i3c_xfer xfers_rd_data_cmd[] = {
-> +			{
-> +				.cmd = 0x22 | BIT(7), /* RDLONG CMD */
-> +				.len = sz,
-> +				.data.in = buf,
-> +			},
-> +		};
-
-Still do not see a justification for an array to use, but as I said I leave it
-to Jonathan to decide.
-
-> +		data_cmd[0] = 0;
-> +		data_cmd[1] = (address == MMC5633_TEMPERATURE) ?
-> +			      MMC5633_HDR_CTRL0_MEAS_T : MMC5633_HDR_CTRL0_MEAS_M;
-> +
-> +		ret = i3c_device_do_xfers(data->i3cdev, xfers_wr_cmd,
-> +					  ARRAY_SIZE(xfers_wr_cmd), I3C_HDR_DDR);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		ready = (address == MMC5633_TEMPERATURE) ?
-> +			MMC5633_STATUS1_MEAS_T_DONE_BIT : MMC5633_STATUS1_MEAS_M_DONE_BIT;
-> +		ret = read_poll_timeout(i3c_device_do_xfers, val,
-
-> +					val ||
-> +					status[0] & ready,
-
-One line and probably you want to add parentheses for better understanding, not
-everybody remembers the operator precedence by heart.
-
-> +					10 * USEC_PER_MSEC,
-> +					100 * 10 * USEC_PER_MSEC, 0,
-> +					data->i3cdev, xfers_rd_sta_cmd,
-> +					ARRAY_SIZE(xfers_rd_sta_cmd), I3C_HDR_DDR);
-> +		if (ret) {
-> +			dev_err(dev, "data not ready\n");
-> +			return ret;
-> +		}
-> +		if (val) {
-> +			dev_err(dev, "i3c transfer error\n");
-> +			return val;
-> +		}
-> +		return i3c_device_do_xfers(data->i3cdev, xfers_rd_data_cmd,
-> +					   ARRAY_SIZE(xfers_rd_data_cmd), I3C_HDR_DDR);
-> +	}
-> +
-> +	/* Fallback to use SDR/I2C mode */
-> +	ret = mmc5633_take_measurement(data, address);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (address == MMC5633_TEMPERATURE)
-> +		/*
-> +		 * Put tempeature to last byte of buff to align HDR case.
-> +		 * I3C will early terminate data read if previous data is not
-> +		 * available.
-> +		 */
-> +		return regmap_bulk_read(data->regmap, MMC5633_REG_TOUT, buf + sz - 1, 1);
-> +
-> +	return regmap_bulk_read(data->regmap, MMC5633_REG_XOUT0, buf, sz);
-> +}
-
-...
-
-> +static int mmc5633_read_avail(struct iio_dev *indio_dev,
-> +			      struct iio_chan_spec const *chan,
-> +			      const int **vals,
-> +			      int *type,
-> +			      int *length,
-> +			      long mask)
-
-Other functions use different style, I believe it can occupy less LoCs.
-
-...
-
-> +static int mmc5633_i3c_probe(struct i3c_device *i3cdev)
-> +{
-> +	struct device *dev = i3cdev_to_dev(i3cdev);
-> +	struct regmap *regmap;
-> +	char *name;
-
-> +	name = devm_kasprintf(dev, GFP_KERNEL, "mmc5633(%s)", dev_name(dev));
-
-I agree on idea behind this, but I think () can be problematic for some shell
-scripts, I would go with the simple mmc5633_%s or similar.
-
-> +	if (!name)
-> +		return -ENOMEM;
-> +
-> +	regmap = devm_regmap_init_i3c(i3cdev, &mmc5633_regmap_config);
-> +	if (IS_ERR(regmap))
-> +		return dev_err_probe(dev, PTR_ERR(regmap),
-> +				     "Failed to register i3c regmap\n");
-> +
-> +	return mmc5633_common_probe(regmap, name, i3cdev);
-> +}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bandwidth usage for lpddr4 evk board=
+",
+> +               "MetricName": "imx94_bandwidth_usage.lpddr4",
+> +               "MetricExpr": "(( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi=
+_mask\\=3D0x000\\,axi_id\\=3D0x000@ + imx9_ddr0@eddrtq_pm_wr_beat_filt\\,ax=
+i_mask\\=3D0x000\\,axi_id\\=3D0x000@ ) * 32 / duration_time) / (4266 * 1000=
+000 * 4)",
+> +               "ScaleUnit": "1e2%",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of all masters read from ddr",
+> +               "MetricName": "imx94_ddr_read.all",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_=
+mask\\=3D0x000\\,axi_id\\=3D0x000@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of all masters write to ddr",
+> +               "MetricName": "imx94_ddr_write.all",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x000\\,axi_id\\=3D0x000@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of all a55 read from ddr",
+> +               "MetricName": "imx94_ddr_read.a55_all",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_=
+mask\\=3D0x3fc\\,axi_id\\=3D0x000@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of all a55 write from ddr",
+> +               "MetricName": "imx94_ddr_write.a55_all",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x3fc\\,axi_id\\=3D0x000@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of a55 core 0 read from ddr",
+> +               "MetricName": "imx94_ddr_read.a55_0",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_=
+mask\\=3D0x3ff\\,axi_id\\=3D0x000@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of a55 core 0 write to ddr",
+> +               "MetricName": "imx94_ddr_write.a55_0",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x3ff\\,axi_id\\=3D0x000@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of a55 core 1 read from ddr",
+> +               "MetricName": "imx94_ddr_read.a55_1",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_=
+mask\\=3D0x00f\\,axi_id\\=3D0x001@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of a55 core 1 write to ddr",
+> +               "MetricName": "imx94_ddr_write.a55_1",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x00f\\,axi_id\\=3D0x001@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of a55 core 2 read from ddr",
+> +               "MetricName": "imx94_ddr_read.a55_2",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_=
+mask\\=3D0x00f\\,axi_id\\=3D0x002@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of a55 core 2 write to ddr",
+> +               "MetricName": "imx94_ddr_write.a55_2",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x00f\\,axi_id\\=3D0x002@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of a55 core 3 read from ddr",
+> +               "MetricName": "imx94_ddr_read.a55_3",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_=
+mask\\=3D0x00f\\,axi_id\\=3D0x003@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of a55 core 3 write to ddr",
+> +               "MetricName": "imx94_ddr_write.a55_3",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x00f\\,axi_id\\=3D0x003@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of m7 core1 read from ddr",
+> +               "MetricName": "imx94_ddr_read.m7_1",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_=
+mask\\=3D0x00f\\,axi_id\\=3D0x004@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of m7 core1 write to ddr",
+> +               "MetricName": "imx94_ddr_write.m7_1",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x00f\\,axi_id\\=3D0x004@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of m33 core1 (in netc) read fr=
+om ddr",
+> +               "MetricName": "imx94_ddr_read.m33_1",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_=
+mask\\=3D0x00f\\,axi_id\\=3D0x005@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of m33 core1 (in netc) write t=
+o ddr",
+> +               "MetricName": "imx94_ddr_write.m33_1",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x00f\\,axi_id\\=3D0x005@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of pcie2 read from ddr",
+> +               "MetricName": "imx94_ddr_read.pcie2",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_=
+mask\\=3D0x00f\\,axi_id\\=3D0x006@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of pcie2 write to ddr",
+> +               "MetricName": "imx94_ddr_write.pcie2",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x00f\\,axi_id\\=3D0x006@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of Cortex-A DSU L3 evicted/ACP=
+ transactions read from ddr",
+> +               "MetricName": "imx94_ddr_read.cortex_a_dsu",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_=
+mask\\=3D0x00f\\,axi_id\\=3D0x007@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of Cortex-A DSU L3 evicted/ACP=
+ transactions write to ddr",
+> +               "MetricName": "imx94_ddr_write.cortex_a_dsu",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x00f\\,axi_id\\=3D0x007@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of m33 core0 read from ddr",
+> +               "MetricName": "imx94_ddr_read.m33_0",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_=
+mask\\=3D0x00f\\,axi_id\\=3D0x008@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of m33 core0 write to ddr",
+> +               "MetricName": "imx94_ddr_write.m33_0",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x00f\\,axi_id\\=3D0x008@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of m7 core0 read from ddr",
+> +               "MetricName": "imx94_ddr_read.m7_0",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_=
+mask\\=3D0x00f\\,axi_id\\=3D0x009@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of m7 core0 write to ddr",
+> +               "MetricName": "imx94_ddr_write.m7_0",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x00f\\,axi_id\\=3D0x009@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of sentinel read from ddr",
+> +               "MetricName": "imx94_ddr_read.sentinel",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_=
+mask\\=3D0x00f\\,axi_id\\=3D0x00a@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of sentinel write to ddr",
+> +               "MetricName": "imx94_ddr_write.sentinel",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x00f\\,axi_id\\=3D0x00a@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of edma1 read from ddr",
+> +               "MetricName": "imx94_ddr_read.edma1",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_=
+mask\\=3D0x00f\\,axi_id\\=3D0x00b@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of edma1 write to ddr",
+> +               "MetricName": "imx94_ddr_write.edma1",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x00f\\,axi_id\\=3D0x00b@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of edma2 read from ddr",
+> +               "MetricName": "imx94_ddr_read.edma2",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_=
+mask\\=3D0x00f\\,axi_id\\=3D0x00c@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of edma2 write to ddr",
+> +               "MetricName": "imx94_ddr_write.edma2",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x00f\\,axi_id\\=3D0x00c@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of netc read from ddr",
+> +               "MetricName": "imx94_ddr_read.netc",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_=
+mask\\=3D0x00f\\,axi_id\\=3D0x00d@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of netc write to ddr",
+> +               "MetricName": "imx94_ddr_write.netc",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x00f\\,axi_id\\=3D0x00d@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of aonmix read from ddr",
+> +               "MetricName": "imx94_ddr_read.aonmix",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_=
+mask\\=3D0x00f\\,axi_id\\=3D0x00f@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of aonmix write to ddr",
+> +               "MetricName": "imx94_ddr_write.aonmix",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x00f\\,axi_id\\=3D0x00f@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of npumix read from ddr",
+> +               "MetricName": "imx94_ddr_read.npumix",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_=
+mask\\=3D0x3f0\\,axi_id\\=3D0x010@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of npumix write to ddr",
+> +               "MetricName": "imx94_ddr_write.npumix",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x3f0\\,axi_id\\=3D0x010@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of usdhc1 read from ddr",
+> +               "MetricName": "imx94_ddr_read.usdhc1",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_=
+mask\\=3D0x3f0\\,axi_id\\=3D0x0b0@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of usdhc1 write to ddr",
+> +               "MetricName": "imx94_ddr_write.usdhc1",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x3f0\\,axi_id\\=3D0x0b0@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of usdhc2 read from ddr",
+> +               "MetricName": "imx94_ddr_read.usdhc2",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_=
+mask\\=3D0x3f0\\,axi_id\\=3D0x0c0@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of usdhc2 write to ddr",
+> +               "MetricName": "imx94_ddr_write.usdhc2",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x3f0\\,axi_id\\=3D0x0c0@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of usdhc3 read from ddr",
+> +               "MetricName": "imx94_ddr_read.usdhc3",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_=
+mask\\=3D0x3f0\\,axi_id\\=3D0x0d0@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of usdhc3 write to ddr",
+> +               "MetricName": "imx94_ddr_write.usdhc3",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x3f0\\,axi_id\\=3D0x0d0@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of xspi read from ddr",
+> +               "MetricName": "imx94_ddr_read.xspi",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_=
+mask\\=3D0x3f0\\,axi_id\\=3D0x0f0@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of xspi write to ddr",
+> +               "MetricName": "imx94_ddr_write.xspi",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x3f0\\,axi_id\\=3D0x0f0@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of pcie1 read from ddr",
+> +               "MetricName": "imx94_ddr_read.pcie1",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_=
+mask\\=3D0x3f0\\,axi_id\\=3D0x100@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of pcie1 write to ddr",
+> +               "MetricName": "imx94_ddr_write.pcie1",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x3f0\\,axi_id\\=3D0x100@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of usb1 read from ddr",
+> +               "MetricName": "imx94_ddr_read.usb1",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_=
+mask\\=3D0x3f0\\,axi_id\\=3D0x140@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of usb1 write to ddr",
+> +               "MetricName": "imx94_ddr_write.usb1",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x3f0\\,axi_id\\=3D0x140@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of usb2 read from ddr",
+> +               "MetricName": "imx94_ddr_read.usb2",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt2\\,axi_=
+mask\\=3D0x3f0\\,axi_id\\=3D0x150@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of usb2 write to ddr",
+> +               "MetricName": "imx94_ddr_write.usb2",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x3f0\\,axi_id\\=3D0x150@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of pxp read from ddr",
+> +               "MetricName": "imx94_ddr_read.pxp",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt0\\,axi_=
+mask\\=3D0x3f0\\,axi_id\\=3D0x2a0@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of pxp write to ddr",
+> +               "MetricName": "imx94_ddr_write.pxp",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x3f0\\,axi_id\\=3D0x2a0@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of dcif read from ddr",
+> +               "MetricName": "imx94_ddr_read.dcif",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_rd_beat_filt1\\,axi_=
+mask\\=3D0x3f0\\,axi_id\\=3D0x2b0@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       },
+> +       {
+> +               "BriefDescription": "bytes of dcif write to ddr",
+> +               "MetricName": "imx94_ddr_write.dcif",
+> +               "MetricExpr": "( imx9_ddr0@eddrtq_pm_wr_beat_filt\\,axi_m=
+ask\\=3D0x3f0\\,axi_id\\=3D0x2b0@ ) * 32",
+> +               "ScaleUnit": "9.765625e-4KB",
+> +               "Unit": "imx9_ddr",
+> +               "Compat": "imx94"
+> +       }
+> +]
+>
+> --
+> 2.34.1
+>
