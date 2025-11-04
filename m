@@ -1,149 +1,105 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BBF26E165
-	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 09:08:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95C51DF987
+	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 09:37:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762247287; cv=none; b=EdRy6gU7lsFJd9t6yacPbNKtr9ii/lMUPztTRcUirIjYU/Hzesz/RPcaVf/fb2lQBQ1xsz7Z3qBq89sTb2pxV7c43JPNRzt5pS8DIAPW4PrLBEfyu7Z0+EXiagfm6f0E3Ee1FsB9VYCywPQFdYzRjwUH3rUSYG1WSX13Hz+fGpk=
+	t=1762249043; cv=none; b=uwunfvLNszFtzhLhn5QGAnbDewMzu1gXyv+dX9gOhyDoma279YOcME0bLa3/cPmJGucQ50uVqdYE61jEWV0PWHD+Ntihs9OGRGkmwde10G+iMcVKp9Ijl10rAzKHeeBGfqYWB5VuJ0cxy4aAMnVQ/SIwNiD7EkqQlLphOnWQBjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762247287; c=relaxed/simple;
-	bh=I5meXsbfDv4eqSgOU75PkFg654Y2B9HIEkAHF3oTK4Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=suG03EN5LI6OfvUUvoOuOsmiS7f9eN4QP213L/iXAj5roalVQZv/Nq2Z96eWzcmU7C6J2ONRxKW753eKHGzo6pti3y1f64N6uQk64PQcNoZN2MiQ7hCwV0cqMeEte4LcZqHbRIpyBVCHs4RkUihKZcbMNvtoQ9FaJ7J0ClhIKFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=aPVPylMf; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="aPVPylMf"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 188A4C0E604;
-	Tue,  4 Nov 2025 09:07:42 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D2ACD606EF;
-	Tue,  4 Nov 2025 09:08:02 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 87FD110B50499;
-	Tue,  4 Nov 2025 10:07:55 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1762247281; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=IqrKvT/39GIw4bETHcXxm6B86XwJZy5zQulp7Zkzg80=;
-	b=aPVPylMf2uPJTc5vq8FUwy26OuucAub5M8J+o+CEOCkoo6sjLGddx2uuKXPLxChca5uE9n
-	rCXLuYN1N5fV0jjH/bgGSLJaTrW4CvemCkaJB58wOL+bN8kMOtZUORX0zHjAvWGVCblCRL
-	1mOBICgLxRa47LV5NCBmyt104DOWZex53RAm0Lhb9Yok62+5FpbXSPK3BuCkl9tKKzmAUQ
-	tbxFO3TU5e2f50fJyb69LnMQWuCzGv6/9rCll6F26cvAbX8GJofb+wJvvg2nZA3WXgI79A
-	/g9jd600NqLXDLBVOrJk4PHYNpsN0UOSDA7OAEXG7oR8YBNadRWHBTijAJ96/w==
-Message-ID: <4f029450-df4f-419d-adb4-493a8ca03e63@bootlin.com>
-Date: Tue, 4 Nov 2025 10:07:54 +0100
+	s=arc-20240116; t=1762249043; c=relaxed/simple;
+	bh=iRvoS7EKii9nQ3eFT/bShvE8cVFKgcD7Qj1aV7DZQCk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gpVfaq974sya3F9fRwbQazo9cViEZajq04vyAV9dYqk4mLWH0Mhpinlmu7uLeG6+mrzT/uQKvWjdeO1EsvmkNUHK1odUnvMykIZhO6VFOcPX2VK8F68emrALFtkjNGr/78N1j+XAqG8RbBOdw/QVT5QJNppl8wknZnMiwY9lKEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id E01321A0135;
+	Tue,  4 Nov 2025 10:37:10 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id D26211A004C;
+	Tue,  4 Nov 2025 10:37:10 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 38F12202E8;
+	Tue,  4 Nov 2025 10:37:10 +0100 (CET)
+Date: Tue, 4 Nov 2025 10:37:10 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, s32@nxp.com,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH net-next 02/11] net: stmmac: s32: move PHY_INTF_SEL_x
+ definitions out of the way
+Message-ID: <aQnJRgJqFY99kDUj@lsv051416.swis.nl-cdc01.nxp.com>
+References: <aQiWzyrXU_2hGJ4j@shell.armlinux.org.uk>
+ <E1vFt4S-0000000ChoS-2Ahi@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 04/11] net: stmmac: add stmmac_get_phy_intf_sel()
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
- Jakub Kicinski <kuba@kernel.org>, Jan Petrous <jan.petrous@oss.nxp.com>,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, s32@nxp.com,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>
-References: <aQiWzyrXU_2hGJ4j@shell.armlinux.org.uk>
- <E1vFt4c-0000000Choe-3SII@rmk-PC.armlinux.org.uk>
- <db01f926-d5bb-4317-beac-e6dcc0025a80@bootlin.com>
- <aQm-LnN0LifBvkoz@shell.armlinux.org.uk>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <aQm-LnN0LifBvkoz@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <E1vFt4S-0000000ChoS-2Ahi@rmk-PC.armlinux.org.uk>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-
-
-On 04/11/2025 09:49, Russell King (Oracle) wrote:
-> On Tue, Nov 04, 2025 at 09:34:31AM +0100, Maxime Chevallier wrote:
->>> +int stmmac_get_phy_intf_sel(phy_interface_t interface)
->>> +{
->>> +	int phy_intf_sel = -EINVAL;
->>> +
->>> +	if (interface == PHY_INTERFACE_MODE_MII ||
->>> +	    interface == PHY_INTERFACE_MODE_GMII)
->>> +		phy_intf_sel = PHY_INTF_SEL_GMII_MII;
->>> +	else if (phy_interface_mode_is_rgmii(interface))
->>> +		phy_intf_sel = PHY_INTF_SEL_RGMII;
->>> +	else if (interface == PHY_INTERFACE_MODE_SGMII)
->>> +		phy_intf_sel = PHY_INTF_SEL_SGMII;
->>> +	else if (interface == PHY_INTERFACE_MODE_RMII)
->>> +		phy_intf_sel = PHY_INTF_SEL_RMII;
->>> +	else if (interface == PHY_INTERFACE_MODE_REVMII)
->>> +		phy_intf_sel = PHY_INTF_SEL_REVMII;
->>> +
->>> +	return phy_intf_sel;
->>> +}
->>> +EXPORT_SYMBOL_GPL(stmmac_get_phy_intf_sel);
->>
->> Nothng wrong with your code, this is out of curiosity.
->>
->> I'm wondering how we are going to support cases like socfpga (and
->> probably some other) where the PHY_INTF_SEL_xxx doesn't directly
->> translate to the phy_interface, i.e.  when you have a PCS or other
->> IP that serialises the MAC interface ?
+On Mon, Nov 03, 2025 at 11:50:00AM +0000, Russell King (Oracle) wrote:
+> S32's PHY_INTF_SEL_x definitions conflict with those for the dwmac
+> cores as they use a different bitmapping. Add a S32 prefix so that
+> they are unique.
 > 
-> It also doesn't differentiate between MII and GMII. That's fine for
-> this - this is about producing the configuration for the dwmac's
-> phy_intf_sel_i signals. It isn't for configuring the glue hardware
-> for any other parameters such as RGMII delays.
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> index ee095ac13203..2b7ad64bfdf7 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> @@ -24,10 +24,10 @@
+>  #define GMAC_INTF_RATE_125M	125000000	/* 125MHz */
 >  
->> for socfpga for example, we need to set the PHY_INTF_SEL to GMII_MII
->> when we want to use SGMII / 1000BaseX, but we do set it to RGMII when
->> we need to output RGMII.
+>  /* SoC PHY interface control register */
+> -#define PHY_INTF_SEL_MII	0x00
+> -#define PHY_INTF_SEL_SGMII	0x01
+> -#define PHY_INTF_SEL_RGMII	0x02
+> -#define PHY_INTF_SEL_RMII	0x08
+> +#define S32_PHY_INTF_SEL_MII	0x00
+> +#define S32_PHY_INTF_SEL_SGMII	0x01
+> +#define S32_PHY_INTF_SEL_RGMII	0x02
+> +#define S32_PHY_INTF_SEL_RMII	0x08
+>  
+>  struct s32_priv_data {
+>  	void __iomem *ioaddr;
+> @@ -40,7 +40,7 @@ struct s32_priv_data {
+>  
+>  static int s32_gmac_write_phy_intf_select(struct s32_priv_data *gmac)
+>  {
+> -	writel(PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
+> +	writel(S32_PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
+>  
+>  	dev_dbg(gmac->dev, "PHY mode set to %s\n", phy_modes(*gmac->intf_mode));
+>  
+> -- 
+> 2.47.3
 > 
-> From what I remember for socfpga, you use an external PCS that needs
-> GMII. This function doesn't take account of external PCS, and thus
-> platform glue that makes use of an external PCS can't implement
-> .set_phy_intf_sel() yet.
 
-Makes sense
+Reviewed-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 
-> As noted, it also doesn't handle TBI (which,
-> although we have PHY_INTERFACE_MODE_TBI, Synopsys intended this mode
-> to be used to connect to a SerDes for 1000BASE-X.)
+Thanks.
+/Jan
 
-That's fine by me, thanks for the clarifications :)
-
-> 
->> Do you have a plan in mind for that ? (maybe a .get_phy_intf_sel() ops ?)
-> 
-> Yes, there will need to be a way to override this when an external
-> PCS is being used. I suspect that all external 1G PCS will use GMII,
-> thus we can probably work it out in core code.
-> 
-> Note, however, that socfpga doesn't use the phy_intf_sel encoding:
-> 
-> #define SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_GMII_MII 0x0
-> #define SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_RGMII 0x1
-> #define SYSMGR_EMACGRP_CTRL_PHYSEL_ENUM_RMII 0x2
-> 
-> #define PHY_INTF_SEL_GMII_MII   0
-> #define PHY_INTF_SEL_RGMII      1
-> #define PHY_INTF_SEL_RMII       4
-> 
-> It's close, but it isn't the phy_intf_sel_i[2:0] signal values.
-
-> 
-Yeah :/
-
-I'll give this series a try on dwmac-imx once I get a bit of time then !
-
-thanks,
-
-Maxime
