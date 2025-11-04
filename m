@@ -1,78 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D313B3112D5;
-	Tue,  4 Nov 2025 10:13:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CB222333D
+	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 10:16:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762251182; cv=none; b=H5c1QnwTFq7nw0NOkmq5Bu/pgUIOpntgRkv4JwLp3Z/JyhnPNMkUKhr8f6Ae9YkAvyE8KFJdGzSHS5lMpJUGvNN6e7q1jgKaDLFNFIof+8+HmZYjDhA92JKjw4jM0r3owmbhm9OBJkv1Qc2hPyBTQxnzoKADuAPJoOTwVpR2esc=
+	t=1762251382; cv=none; b=jHgEw/0PEO9hzexVTqVNdL5T+q93Ok1GidRb1AoQ1nFwrstdDYc+3uUOk9Qd75+PRYkbG/RPu1eWuP590J5o7XIQmEB5ku8iVkmOJfTFaAFwGIG84O0bbYYua3qxAy9+1RnH7ARgqc507oefKYragmraYz7QpWbUKeVxaMRXFXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762251182; c=relaxed/simple;
-	bh=icqyozgXuJp3TFyBwx6Aw0nfD5vxd8pkStCNlIhPD0Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rlXCYxmAoo0o1lXqIjQ2ZpveH5hm9pyAGSj4tXdh/FyCz+8HFz6rUdPCH3J/TuC4nWaoY+KXHIyZt+uS5rI09UyWmENJSkgCjZMfBYh3jQYw8PV2sdNABeFC0Iex+MlOG73aQ1+pdByZlWdYtLG4YKDDFLSOVfqlEvgJj5bbrjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SuNKL8Dg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762251382; c=relaxed/simple;
+	bh=b0NWX2NHAto+3Odhbhmhi+Qkza46c6iqSStc0dGyRT4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lVcqOgx6SFCtzcFsPYu9geDW//+YSDRg6P3ui2gzVrT5yNH5jc0977354bp/z1zGLedsq59GE8/8Gtnhse0onuJbOfO6Bq75PxzNo6NQDkIgYslGWD6b/74oMnRv2tX307YRUEWyw7mX5cnObSmE+fkHyMhXy2bYZY4iIT+K6zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nZxxKFQk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ISp9s7bN; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SuNKL8Dg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69DDAC4CEF7;
-	Tue,  4 Nov 2025 10:13:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762251182;
-	bh=icqyozgXuJp3TFyBwx6Aw0nfD5vxd8pkStCNlIhPD0Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SuNKL8DgiuWqZRNbOeP0J8D6oiYE8NmQg6mxYwpn9jb1acj/P5hvg8b8HqNzTLoEb
-	 OWYb874u2QM9b3GYVsCPiWArerXQ5Ts/9+6jw1l3xkx6VcjHrEyGWN48PFRaGm8UYA
-	 +WyQg4m0J+XB6skEnw6SOAj5glof0emhU3w0B3XwmeuzHxtwpoe+8XBH4b3N+v1zfs
-	 uZ/wEf5Wnvxv9vc4n1LK6SEDtge3Tkgl+3my8HidKuqNij8V+VhD3aoOiogdJ2OIOj
-	 7OebDqwQwa7dBTuMXN+Qm/rGpcK4nerGjfmfX5gAJTrcvX2i5p4UacfgkFE1OB91uU
-	 RgIEOnuUPxSfQ==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vGE2D-000000006G3-1Ycg;
-	Tue, 04 Nov 2025 11:13:05 +0100
-Date: Tue, 4 Nov 2025 11:13:05 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, Frank Li <Frank.Li@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] media: imx8-isi: Drop unused module alias
-Message-ID: <aQnRsVPq1ndQrLr_@hovoldconsulting.com>
-References: <20251102234438.8022-1-laurent.pinchart@ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nZxxKFQk";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ISp9s7bN"
+From: John Ogness <john.ogness@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1762251372;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ahD5Q7OGPrmb6gtHMTBb/j+mcYIc6r9oz8m1gCQKzkw=;
+	b=nZxxKFQkQxDeTEhMor0tYsjLgHi2Q3lUykSIczYPuW12V5RDnTRuUFkKYSyi+JhAjyklpU
+	2qVmRCsZ5sLnToWUhvz96tZ5qMqFTJq0eu5uW+ovMNTiQWE4fj/vfOseCtZGUzk/UBSTiF
+	9HOoU0Gq3eK/xnK+wSmNpRgUlU5reEWESRNYUujAxkIXSFXVyQ9apSjg8R5vd1TtmraZvY
+	RNeUDkRqTMHzN9DJRm0o/eafE4ZQig7COmAHyQfshsZ1AASowIIHmTThD4jveOETYWe+I2
+	JpJ0KuzKWqt0qfGzqrBQXy3dVzl1+PTMnELkKMzU/28DTrMjeO/LIwdsEY1AbQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1762251372;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ahD5Q7OGPrmb6gtHMTBb/j+mcYIc6r9oz8m1gCQKzkw=;
+	b=ISp9s7bNn0PZzFlxM7xLGL4vfVk2NJSIv1Mkt600MNf1fC+g/Ncv3tYL3fni+HZVWtA9Mu
+	A9iRmYbPaRlBMbCA==
+To: Sherry Sun <sherry.sun@nxp.com>, "esben@geanix.com" <esben@geanix.com>,
+ "pmladek@suse.com" <pmladek@suse.com>, "senozhatsky@chromium.org"
+ <senozhatsky@chromium.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
+ Greg KH <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ "ryotkkr98@gmail.com" <ryotkkr98@gmail.com>, "kkartik@nvidia.com"
+ <kkartik@nvidia.com>, "fj6611ie@aa.jp.fujitsu.com"
+ <fj6611ie@aa.jp.fujitsu.com>
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-serial
+ <linux-serial@vger.kernel.org>, "imx@lists.linux.dev"
+ <imx@lists.linux.dev>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
+Subject: RE: [BUG] Suspend failure with nbcon + pm_debug_messages (Linux
+ 6.18-rc4)
+In-Reply-To: <DB9PR04MB842977523C92FDE8AF4B714A92C4A@DB9PR04MB8429.eurprd04.prod.outlook.com>
+References: <DB9PR04MB8429E7DDF2D93C2695DE401D92C4A@DB9PR04MB8429.eurprd04.prod.outlook.com>
+ <87tszamcaz.fsf@jogness.linutronix.de>
+ <DB9PR04MB842977523C92FDE8AF4B714A92C4A@DB9PR04MB8429.eurprd04.prod.outlook.com>
+Date: Tue, 04 Nov 2025 11:22:11 +0106
+Message-ID: <87qzuem7bo.fsf@jogness.linutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251102234438.8022-1-laurent.pinchart@ideasonboard.com>
+Content-Type: text/plain
 
-Hi Laurent,
+On 2025-11-04, Sherry Sun <sherry.sun@nxp.com> wrote:
+>> Thanks for reporting! I believe this is the same issue reported by NVIDIA [0]
+>> when we tried to switch the 8250 UART driver to nbcon.
+>>
+>> We have been working with NVIDIA recently to address the issue. There is a
+>> patch [1] we are currently testing that looks good so far. It is based on 6.17
+>> but should work fine for 6.18-rc4 as well. Can you give it a spin?
+>
+> Thanks a lot for your quick reply, I just tried the patch [1] on my
+> i.MX8MP EVK with L6.18-rc4, it does fix the suspend issue.  Now i.MX
+> UART nbcon can enter suspend with `pm_debug_messages` is turned on.
+> May I know what is the upstream plan for the patch [1]?
 
-On Mon, Nov 03, 2025 at 01:44:38AM +0200, Laurent Pinchart wrote:
-> The driver has never supported anything but OF probing so drop the
-> unused platform module alias.
+Thanks for confirming the fix. I will make an official post on LKML with
+the patch today. Since the i.MX nbcon-driver is already mainline, I will
+CC stable. I will CC you as well.
 
-The commit message needs some more work since this isn't a platform
-module alias (i.e. has a "platform:" prefix), and judging from a quick
-look it seems like the driver did support platform probing before commit
-605b57c4e888 ("media: nxp: imx8-isi: Drop partial support for i.MX8QM
-and i.MX8QXP"), at least in theory.
+Note that the patch still needs a formal review from the printk folks
+once it hits LKML.
 
-It's probably fine to remove the "ISI" alias, but it should not affect
-module autoloading.
- 
-> Suggested-by: Johan Hovold <johan@kernel.org>
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> ---
-> Johan, I've got the idea from similar patches you submitted for other
-> NXP media drivers, hence the Suggested-by tag. Please let me know if I
-> can keep it.
+John Ogness
 
-Sure, please do.
-
-> -MODULE_ALIAS("ISI");
-
-Johan
+>> [1] https://github.com/Linutronix/linux/commit/ae173249d9028ef159fba040bdab260d80dda43f
