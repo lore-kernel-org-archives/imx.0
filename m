@@ -1,62 +1,64 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D321B0439
-	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 15:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A8B24A058
+	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 15:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762268820; cv=none; b=sE8qV4Bo0qLytNnjpdmXrMnifhiwIF0mqIcnPETAjhh8uGktOoAUg3xZ0A4ENesVP+k1jw0JpnFS2JarEMT1vb4USymcHIcmlv4aEur3e2KBFU/JTROCi0HuJLvTpjkgv4fJv1WEHd7YUlXY7KogL7ZhkD0Ez0yK+3ghMhubU4w=
+	t=1762268824; cv=none; b=WkrgrTPjDjEw5iLcOBb3Q0jt0IjCGIStIJOdNSnpfGvadD8cYSnz3Rmn2DkIMGufUYlGSI+Ti9UCzAXa3IWAydz2MHqWImcSlwLjDu+gyAxa5K6MGXaMG2XN5GkHLARqWNUMFDE45xlZQ8AyNlk1kh0nuxHgAXutsCm49GyW1cY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762268820; c=relaxed/simple;
-	bh=p5LFmwEX6fbf6gDhCZzGUh0cp3wC6wAYcyXldsJFIIg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F4Q4ptov1Kr/arNX+Asr3fXX3uIXXB6wXzZVwceHqnOfcGv0mYzAlGsk+EQjDblT/y0DgO4iUqnf5N+HC79i7+oZJT2TYQfXpjonCPFlP+kyIU3XUHBK2xuk4INOd0aKyogqDoxZv+/jal2x9pxxz6A48xGdwFDknA6YPelWMFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eneBn+GJ; arc=none smtp.client-ip=209.85.208.41
+	s=arc-20240116; t=1762268824; c=relaxed/simple;
+	bh=+xLPW149u0EPQxrFFbkLg6mu/X+Jh93ibtFPT6VV7Pc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=raQXoeHsMNbz9XbscdkK2YAbfoBHHTNB/Dd5fvUqrMV1mP0ruaP7uV6GuLZWjDNZ+tnnh4dK0oVXnzpX3GJ1o9CjNLFZoPpCv0ntz52r4v3AChjl2Z0DFBOBMoTvYbuhivHkN456fPwVTOFGzDcJ4+rYeYi+oATD4T0jmyesUjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=abio38w+; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eneBn+GJ"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-641018845beso122204a12.3
-        for <imx@lists.linux.dev>; Tue, 04 Nov 2025 07:06:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="abio38w+"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-640f8a7aba2so538599a12.0
+        for <imx@lists.linux.dev>; Tue, 04 Nov 2025 07:07:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762268817; x=1762873617; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5mpUIW6+CyzXZCjIETW1X/eFRIiBeTonduLxFWGZK/o=;
-        b=eneBn+GJuuPEfVDR/ztxWg1dltpwM23SBvTOuNaTxdrUhhOf7uq0kn7YqQyP9JJ0Is
-         Lx06Ep995IbwhyvA4BF0YOWnd27ikfrox7FXMJ/F7ShTGXI+c/R6Ae7io6wwAuboOuur
-         B9AmvPzNjR9N6bTJZssZDFEXWWY+KGIaB3zbTBbcenKXA8Aj9nLici8UkwRdKgsx2Kmm
-         ifbb+v1edIaHiGorKH1yMtlfPQVi7GzMUxY2xrIYfNSvy4rfBdzwu/QsT11JANif1gVE
-         arbYLoq2Ux43WUF+msP9aLZB4qNSrG7881OuvqCL2UraWGC7/WxWodcWZ3DcN+ekLrgr
-         6dDA==
+        d=gmail.com; s=20230601; t=1762268821; x=1762873621; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=knoBTxhys0G5L6IMAZNao0/3R6GsTIMb0vdRqZYYHho=;
+        b=abio38w+POAkQpF/LAPcotiaxY7elnEfsv/wxScPgT/9agZlh9iUGvqxlhffvNJwcM
+         iDbqK6Lmy6kVVYLK5VgBVsOywvn7MFQFDK5CeKfIpoofk7BBM1hIsu3l99H/D867x6yl
+         lMnwWlpM4Isu2w8V0uYmzlUfAfOo6dCfDAC0nzwFaLElQbfp06AnvRGdp0dNyp2AcvSA
+         fYPkG8JfVmeVzGqUWzgl4qFCc+kqMZOnwDgnThoH9YKS31bmXK3ro0PAhQIBY6XgqGTa
+         E/Bfsbx9PiyIaroHhz2bCEs9UxblCeIKlQOQM61dmcTXZc7vuunVDCbnB5wCgUPK7wNQ
+         jzjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762268817; x=1762873617;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5mpUIW6+CyzXZCjIETW1X/eFRIiBeTonduLxFWGZK/o=;
-        b=KKnppo+MFXX6oDzbc6+3JtyHhDnOMmrnihCMLDK0hjdFV9bURMJgvD683o9EMCE0f0
-         PmhTxEZt6R8guR7gB6pqZ/uPJAY2BTazWPYTsfdbFGmMYYdNfOVS3rM02LaJquTUaMDe
-         sA6lKzZKnuyNuXrhheyu0Z1EaIUJFo/bj0+r8k5zcfNRB+Sc4ijj1LgLY96wYGPePQo8
-         PdnUgwrgGlTGPNS9dr0HmEH89nQQhnBIH6vScDKycKWk3/GTP6orMwnJjwius7cKcHgS
-         +0rMzuvAOlJhTjVXZL+rtDCVTTiHq6k3pTilRfORxffKyrnRLBnTvGoUfvFgOsVFBGgz
-         GWTg==
-X-Forwarded-Encrypted: i=1; AJvYcCX/4LpZRJiKUMaWqlG17bIc3YQ73lSNpReIFDXOegmVHFnYzfCjb2wAsoHQcV2MP8fj0/o=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy+yRrPRanHLih3qG47Lygk6lnA3xQbGT3dXZxF/pdW3DGXXAGi
-	P+3POoafRageXCnAmIflbMckS4bqL4K2Ri/MWvEfmk4MafQXPgaCnGex
-X-Gm-Gg: ASbGncu8I9Kip3nuiGMWfUtQtD2mD/CRjIo+GIAYOLtPQtT+mxUoxkb/3+bx5jm1uLZ
-	/7QZPG0B+Fctu8UFwSdYzNyVZ5d9oMl4fRd8EzlFVR0iVJbVc4yxXdiwWzn99L+QjiXU5sggIXJ
-	eaYKbJPqErBQtTU6Iz4lFoKKVOmdAUHQNAcrMZs6C9/anczcuJrrdH5DRss6tC1KKjxnEZf1mI0
-	GnQi8J47I+EQkpBevQkuVbZz6v/LuAlO+q2I09T28HZR5HUo30Lts4cLqQNdy54dxU8P7f4A+50
-	sojCzPt1lvhPmFcl6haxnbF0bS400wbHH0tNQSumEbKiFQp62xwVBjb4nKnTOq6M1eWkfbVd5GJ
-	NB5Ty7ybbUrnBfrywUAoOnJeUpy2AyI70q6jo0GWC4L1npaQS2Z6yKXu0VH3k9m7UKrncoetdn/
-	4vFCZsO59quv5EbAK6OT4kJFRCUQ==
-X-Google-Smtp-Source: AGHT+IHpPTJa2+j0h+Cs4K2bC2PC8wb2EuNR51cOnJgsXf5x4woRyQv45qLS4utiEScOeGGzpAw/cg==
-X-Received: by 2002:a05:6402:50c8:b0:63c:4537:75c0 with SMTP id 4fb4d7f45d1cf-640770823a5mr12779586a12.38.1762268817213;
-        Tue, 04 Nov 2025 07:06:57 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762268821; x=1762873621;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=knoBTxhys0G5L6IMAZNao0/3R6GsTIMb0vdRqZYYHho=;
+        b=UD/rCEvBfmpCFGMEAZNFT7Pb+MhopLqM9/1qlYSkm3P6HzIqZ4gK0VTupouA9IWkCv
+         EE6ibXTzHKgMw/WCrgHrEEDb0okpAL/+fGR0pwMxgeVlN/nzZjAPvXpQDO0kCeomDA8I
+         K4euYsVkSS3ulHilxTGk2Yazrbvx9k2J0UlGhK1jbbi1G40nam8RhsiZGmzJR6IE8w75
+         cym2yXG3e3aD7gU+cfWr2A3yfUsPpMwQIKvEIaGQkBad2KKi8pQ4hRj4U00+1cHPC7/2
+         FBCchvju4yrrj/StUkgpkgf9HEY/ZlSt7hLlE8hl2Qj8F/288PbP/B4iiF9ZZkbnU67E
+         6dXw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUakSKOci5gx17Z2ZHWe2ogDwFes7pjw1fxKaxupYrGiQMtEaBO0oZKyG95E8mr2izxGA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyXZ2XEydghqlDOxJarrHb3n4uB3rfHhdO3ntwq0T5EA8df+/lP
+	+pCuLhEbMeOm/BtxfW58eO3bwxMTMc66FBZtvlENPRID8YKmnkURnYAX
+X-Gm-Gg: ASbGncuJhqehSBdv0PeCqt0QRxys3qqluqx+9cNrOCHlNLtEKFWrEpb3Y1DS0HuzkMi
+	f69R3anFLZSxzZR4yv7Reot+Ap9526xz8UFqpf95UbkbVXKLfsX2dv7UjKmALOmdmsrJz2XpAMa
+	EKBp9y8o9TI56WkrUZN4KdRSQ/9jF7eYjI00ziC5ByFfxKRDfFTgkg5icdtb87EPzQyL1idQnJb
+	48yHEJAR4F1MlnuFYvxyd8IZkPLulONqlQwd4UHISblP347o/HIOhqpuKj/Kq7N6C/Z5Z5OR9rD
+	08GvCxljNUC89zwuu1wGMemIc04BIySAWOJNOqg0m4qQnHF0Os+Ql0CTyyPIXfF8dAbZ1qGV6Eu
+	yGQvF6TFJPL93qEWlPFahbtUqnoiYrwQ3WDtvO8W4v8H9x2+Zp5Jf3Ylol2ABx2NHz+9mSY7Lt7
+	BrX42J/lBetqX3uLv0zQHJKnxupA==
+X-Google-Smtp-Source: AGHT+IH3QQar3AAy6xFUftSUi+POCA8TYsQTXR01XqUsEDkX3Cp2Kija0BWAy5x9Z/zOTkdgKsJWSA==
+X-Received: by 2002:a05:6402:350a:b0:640:976f:13b0 with SMTP id 4fb4d7f45d1cf-640976f1865mr10596262a12.12.1762268820845;
+        Tue, 04 Nov 2025 07:07:00 -0800 (PST)
 Received: from SMW024614.wbi.nxp.com ([128.77.115.157])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-640e6805da3sm2342014a12.15.2025.11.04.07.06.54
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-640e6805da3sm2342014a12.15.2025.11.04.07.06.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Nov 2025 07:06:55 -0800 (PST)
+        Tue, 04 Nov 2025 07:06:59 -0800 (PST)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -70,10 +72,12 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/3] Switch to using AIPSTZ5 on i.MX8MP
-Date: Tue,  4 Nov 2025 07:06:09 -0800
-Message-ID: <20251104150612.1874-1-laurentiumihalcea111@gmail.com>
+Subject: [PATCH v2 1/3] arm64: defconfig: enable i.MX AIPSTZ driver
+Date: Tue,  4 Nov 2025 07:06:10 -0800
+Message-ID: <20251104150612.1874-2-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251104150612.1874-1-laurentiumihalcea111@gmail.com>
+References: <20251104150612.1874-1-laurentiumihalcea111@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -84,35 +88,26 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-This series is a combination of the previously dropped patches from [1]
-and the config-related patch from [2]. This enables the usage of AIPSTZ5
-on i.MX8MP-based platforms.
+Enable the i.MX AIPSTZ driver, which is used for i.MX8MP-based boards such
+as NXP's IMX8MP-EVK.
 
-[1]: https://lore.kernel.org/lkml/20250610160152.1113930-1-laurentiumihalcea111@gmail.com/
-[2]: https://lore.kernel.org/lkml/20250707234628.164151-1-laurentiumihalcea111@gmail.com/
-
+Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
-Changes in v2:
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-* squash patch 3 into patch 4.
-* rewrite commit message of patch 1 to state that this driver is used
-  for the IMX8MP-EVK board.
-* rewrite commit message of patch 2 to (hopefully) better describe
-  why we need this change.
-* link to v1: https://lore.kernel.org/lkml/20250821105634.1893-1-laurentiumihalcea111@gmail.com/
----
-
-Laurentiu Mihalcea (3):
-  arm64: defconfig: enable i.MX AIPSTZ driver
-  arm64: dts: imx8mp: convert 'aips5' to 'aipstz5'
-  arm64: dts: imx8mp: make 'dsp' node depend on 'aips5'
-
- arch/arm64/boot/dts/freescale/imx8mp-aipstz.h | 33 +++++++++++++++++++
- arch/arm64/boot/dts/freescale/imx8mp.dtsi     | 16 ++++++---
- arch/arm64/configs/defconfig                  |  1 +
- 3 files changed, 46 insertions(+), 4 deletions(-)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-aipstz.h
-
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 03d89f29e7c1..ae5d32ea9fc3 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -271,6 +271,7 @@ CONFIG_GOOGLE_FIRMWARE=y
+ CONFIG_GOOGLE_CBMEM=m
+ CONFIG_GOOGLE_COREBOOT_TABLE=m
+ CONFIG_EFI_CAPSULE_LOADER=y
++CONFIG_IMX_AIPSTZ=y
+ CONFIG_IMX_SCU=y
+ CONFIG_QCOM_TZMEM_MODE_SHMBRIDGE=y
+ CONFIG_QCOM_QSEECOM=y
 -- 
 2.43.0
 
