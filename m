@@ -1,92 +1,117 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AE126B973
-	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 08:28:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3D223B61B
+	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 08:34:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762244920; cv=none; b=s1eq0tsTm+ydQSrnUAZS/7lW5KsVGb2gpWETb17JG3EkBo4MHxX6VzvnMUcY4DH/7JhZgnKtwMQuvsKCr43wjyAWObGDPl3HJsX677PdpPHHbl8EfPMYB/jqF+NoIXUGqYpdxGuqsMVeRotD768UwI12t/XwQsu+awYB/DHPDMk=
+	t=1762245288; cv=none; b=NbAj1sLGgzLxz6wRMHK6gVvYaeJQzZQa88x3DYeklQuPmiOL0tmvGn4PU7MFAgAAusT6kdwMcNo+ZezBy1WYgn7SUb0VUZYjFM4zmXPXnU+78OvnIwTDfZgg5TWOr4VpxfDD3VYMJToetHStxOY/9kpv5Vn4IB7wCEMDdmAtuvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762244920; c=relaxed/simple;
-	bh=KRgnztshsryrhUg3jdsgqyFuCbUMtBMYBmlbKr9IW+U=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Dvj41mggBg0mB5aNLEGcuyAha2XApoZLq6li4ot+CmC3usLBkq7K64g1GWKt9T9SyLWxykan/0Qh89plB0+cvE93ZlHi2yNwcETSxYv4tknWgXNWpLs35/7GblN+Z5NUBMUMD2uT03OfX4nb1H6kVmRTr4ybujRw26/MuJdOSEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IKZmuY5x; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eex7FxTa; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1762245288; c=relaxed/simple;
+	bh=CHxw+7FmZsoqysMXyJbR5lHvF2gHjVBt5q7NIDGlf+U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PZLKVOnkHHbi0CXH8+PLqD2hu/63eInzik3gI9O/Mdp8J8BUlwmzBkxKxFO/barMworbNz/X/6A/rw47QQpza6DhHtE5m5np1ZIAkhaDlgybKRrWL+4eM0U7q3lY8rv7s/hdo2JBmi/t+ltvlojCLaqQuTmjiWZgSStYa/Mcl/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DCd+FqUx; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IKZmuY5x";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eex7FxTa"
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762244917;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KRgnztshsryrhUg3jdsgqyFuCbUMtBMYBmlbKr9IW+U=;
-	b=IKZmuY5xEME0fUnU+ODBigfDbR+GDPF0wsKdSVh7NOi0bmWHRzMOE1+0gnFtaFQt7K91Rz
-	E04TcsoIRqznH5cFa9OSmu3xy29RxdOC55tX2z1bSHMqtM8qHadmIWKAkhDtXbvuIe1tBU
-	K4RbiKQjDYBb5Mw1NaCvQvWD2I7w8GsEe7XlKItzPPXsGtmTI48td9ACPTPdw1uBXMzREk
-	W278jp0r3Zw0t+VfuaxbbPP9dZ/WDVrmrV4vRW1F9Q5u6Ck78mImmH2yLPBnhiQTQSLExJ
-	ZeAvo11+JhYTJmBZHxgLXPglB25/mYc5dGndQrXI9Z3aU0oELQnh5TRyqrRh6w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762244917;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KRgnztshsryrhUg3jdsgqyFuCbUMtBMYBmlbKr9IW+U=;
-	b=eex7FxTaHfR53OT+DalJPlNTNLYO8jGKZD67BZ8V9MMyZJtH0QV8Sb1L7hk0hnTx2mgWoJ
-	rTfNJ2OPUF/kHqCA==
-To: Sherry Sun <sherry.sun@nxp.com>, "esben@geanix.com" <esben@geanix.com>,
- "pmladek@suse.com" <pmladek@suse.com>, "senozhatsky@chromium.org"
- <senozhatsky@chromium.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
- Greg KH <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- "ryotkkr98@gmail.com" <ryotkkr98@gmail.com>, "kkartik@nvidia.com"
- <kkartik@nvidia.com>, "fj6611ie@aa.jp.fujitsu.com"
- <fj6611ie@aa.jp.fujitsu.com>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-serial
- <linux-serial@vger.kernel.org>, "imx@lists.linux.dev"
- <imx@lists.linux.dev>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
-Subject: Re: [BUG] Suspend failure with nbcon + pm_debug_messages (Linux
- 6.18-rc4)
-In-Reply-To: <DB9PR04MB8429E7DDF2D93C2695DE401D92C4A@DB9PR04MB8429.eurprd04.prod.outlook.com>
-References: <DB9PR04MB8429E7DDF2D93C2695DE401D92C4A@DB9PR04MB8429.eurprd04.prod.outlook.com>
-Date: Tue, 04 Nov 2025 09:34:36 +0106
-Message-ID: <87tszamcaz.fsf@jogness.linutronix.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DCd+FqUx"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 2F0A4C0E605;
+	Tue,  4 Nov 2025 08:34:22 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 046FE606EF;
+	Tue,  4 Nov 2025 08:34:43 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 94FB810B50919;
+	Tue,  4 Nov 2025 09:34:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1762245281; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=R2k3S0JM3GjzlqSiHtx7uGU4oJqackuOaOdMcXWCQD4=;
+	b=DCd+FqUxRxIK4KCVyBl2bY1jDIpBnI7OcnY2/p/8CRdl0Idsdm5miT0nvhZL9+PvxW/5g4
+	uhT2R3FGkTAnueao/HshktnCuxoAsYmnJz/QIr9rsKpKRWHbD/9lwGb3brlyQyb7aNQJSt
+	6YMA05A4UmvBNktmLqQJKBPdxwrZrGQRtExXpstbIvUBv96Huj5Myjkdm3+opAabia8Uf7
+	q6GlH55zcK9qoVuUD50tEindxjboWWp7lMVIRDUeZrHEX3xj2vL8O0eLvOCV/rqiffM6KU
+	jPOeZdZ6P2OK58ZUes2loyO+XbaQ4HDYIsO8PfB7/dVQd0zJE+R1XEGXcKBQJw==
+Message-ID: <db01f926-d5bb-4317-beac-e6dcc0025a80@bootlin.com>
+Date: Tue, 4 Nov 2025 09:34:31 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 04/11] net: stmmac: add stmmac_get_phy_intf_sel()
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+ Jakub Kicinski <kuba@kernel.org>, Jan Petrous <jan.petrous@oss.nxp.com>,
+ linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, s32@nxp.com,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>
+References: <aQiWzyrXU_2hGJ4j@shell.armlinux.org.uk>
+ <E1vFt4c-0000000Choe-3SII@rmk-PC.armlinux.org.uk>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <E1vFt4c-0000000Choe-3SII@rmk-PC.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Sherry,
+Hi Russell,
 
-On 2025-11-04, Sherry Sun <sherry.sun@nxp.com> wrote:
-> Since the latest i.MX UART switch to nbcon console with commit
-> 70acca67bdd3 ("serial: imx: Switch to nbcon console"), I'm
-> encountering a suspend issue on an i.MX8MP EVK board while testing
-> with Linux 6.18-rc4.
->
-> The system fails to suspend when both nbcon is enabled and
-> `pm_debug_messages` is turned on. When `pm_debug_messages` is
-> disabled, suspend works normally. Additionally, if I revert the patch
-> that adds nbcon support for the i.MX UART, suspend also works fine
-> even with `pm_debug_messages` enabled.
+On 03/11/2025 12:50, Russell King (Oracle) wrote:
+> Provide a function to translate the PHY interface mode to the
+> phy_intf_sel pin configuration for dwmac1000 and dwmac4 cores that
+> support multiple interfaces. We currently handle MII, GMII, RGMII,
+> SGMII, RMII and REVMII, but not TBI, RTBI nor SMII as drivers do not
+> appear to use these three and the driver doesn't currently support
+> these.
+> 
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-Thanks for reporting! I believe this is the same issue reported by
-NVIDIA [0] when we tried to switch the 8250 UART driver to nbcon.
+First, thanks for this work !
 
-We have been working with NVIDIA recently to address the issue. There is
-a patch [1] we are currently testing that looks good so far. It is based
-on 6.17 but should work fine for 6.18-rc4 as well. Can you give it a
-spin?
+[...]
 
-John Ogness
+> +int stmmac_get_phy_intf_sel(phy_interface_t interface)
+> +{
+> +	int phy_intf_sel = -EINVAL;
+> +
+> +	if (interface == PHY_INTERFACE_MODE_MII ||
+> +	    interface == PHY_INTERFACE_MODE_GMII)
+> +		phy_intf_sel = PHY_INTF_SEL_GMII_MII;
+> +	else if (phy_interface_mode_is_rgmii(interface))
+> +		phy_intf_sel = PHY_INTF_SEL_RGMII;
+> +	else if (interface == PHY_INTERFACE_MODE_SGMII)
+> +		phy_intf_sel = PHY_INTF_SEL_SGMII;
+> +	else if (interface == PHY_INTERFACE_MODE_RMII)
+> +		phy_intf_sel = PHY_INTF_SEL_RMII;
+> +	else if (interface == PHY_INTERFACE_MODE_REVMII)
+> +		phy_intf_sel = PHY_INTF_SEL_REVMII;
+> +
+> +	return phy_intf_sel;
+> +}
+> +EXPORT_SYMBOL_GPL(stmmac_get_phy_intf_sel);
 
-[0] https://lore.kernel.org/lkml/80b020fc-c18a-4da4-b222-16da1cab2f4c@nvidia.com
+Nothng wrong with your code, this is out of curiosity.
 
-[1] https://github.com/Linutronix/linux/commit/ae173249d9028ef159fba040bdab260d80dda43f
+I'm wondering how we are going to support cases like socfpga (and
+probably some other) where the PHY_INTF_SEL_xxx doesn't directly
+translate to the phy_interface, i.e.  when you have a PCS or other
+IP that serialises the MAC interface ?
+
+for socfpga for example, we need to set the PHY_INTF_SEL to GMII_MII
+when we want to use SGMII / 1000BaseX, but we do set it to RGMII when
+we need to output RGMII.
+
+Do you have a plan in mind for that ? (maybe a .get_phy_intf_sel() ops ?)
+
+Maxime
