@@ -1,173 +1,108 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013013.outbound.protection.outlook.com [52.101.72.13])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACF51552FD
-	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 12:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762260322; cv=fail; b=LJmBd4eoL9UY6nYIA9hLRNkeufq5JydHpkWW6cdVbBfv8bt1mw0nco3l66xNfytwRNOECuqyzDc6+4LAWhLYs8pDwNdsMN4W7nRpBoKrUcSntV+HjcIrQu5S1lgWcC/6tFrAydsy7xl2fcfQWSm25468kQjt4AOMOUwQOuJ+DhA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762260322; c=relaxed/simple;
-	bh=rN1OwvELmtEtwPp8gjeyUCVdjs7sXQgXjr/896K/c28=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=XSd18rUrSAE+JmsNqHTZG7f4kbx9/NJqQXveDeVQpgxdU5lzC02Yy1Tw0gcZym9Cz9ctL0nb1iRnWJkib/I0Syxl4AxZ3g4gc8yyh3bdtI3kQtbzV39KDwhrLy87OU5HeO0zGT+4r1L3TqmGhlhq7i9jXnHjFiJEDxNCGA37lGQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dt2pAaql; arc=fail smtp.client-ip=52.101.72.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dt2pAaql"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aU+4xUncqjHMKw052z6UcJ4GZJ7RTdTO3P/EsaZMF7kLiYzTob4DxrZb1hN6IIxjfpA7hIKwdQLV33f8mzuS+AnCCG8brnvPwPX87NHCbOMg5GzMewU/zz/7mGJM/IHDWkytTWgVi3dd1IXtSYKrpkI0FLnu4Xz8GUqubiqzYFaXT086gP8YgvPW+MOJorqGyHfZBz8fuv4lRG4hWSYK8CoZjr89lGvKARmX67LSGfJ85HQIaMX8nsU8Zwg/jNyjpn1CETwB0aADthF6/Gf3ak058ghT4rcvwi1BCUklWSYumk9AZX6svq4HAWNQMjCoZIZ8Q5QAlqS19Pt4jIKZ2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rN1OwvELmtEtwPp8gjeyUCVdjs7sXQgXjr/896K/c28=;
- b=e2Sk7nAXCMU0lVmybsdUVCBrrci3sa5sr81+kpSS7MAJHsCOXwBbT47DZCOC0Li8Lg+I+qSNju5V5t8e86PnIuovRm0P1k7zW218Ccn4F54SAUo2luv2NXycWHDGeCPrZ8c5VLcPnwUWEGUEZOuSRB/fuMnAS1YwQnj0cDQXJacaP5hkTXePEE9hr0Hw1c10GwmWKiZdHTtJRZ5r50qtXQe7dhyv1wwKAuvMcqZ4cDNtuy0pKl5tYTktk5Axe3bUiHPfE+WyKJH946aKru7izxXvfC0P7ghbs6/TT50IQchV6KdNNYXDAV7Ia3R+ZO2o+mnOrLwuJb7Kcttkb/XYJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rN1OwvELmtEtwPp8gjeyUCVdjs7sXQgXjr/896K/c28=;
- b=dt2pAaqlC4JQMA8yf76W2HuBg+HgkB3g6UehphgQiLhhJ0LUokqBzRTcqvfKyZB7wu39Xjg2ETqF13cOWt/m5CuWXV+Nbmdm++APWW3+BQxD7917eAOUWoeKP0RPLERWVpfSAt3JzYZjT79v9/iPpZH/7MAK9Qsgwyx2YZcRAnNbMvRre6FUqoB15oDN0vwmosIGbPHPOjegQieNhgRruZrnhsoQlP7/+wR2DQ4Tn0EtDNnHYALPuLSpBv8a6X6XUJvfd+fekBdPGArlR9zUk/8cvnB1EYAZiLF1bj+orbTovFhgUvmU+q6py+pyambL78fGATuIwaHPI237pdNHLw==
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by AM7PR04MB6790.eurprd04.prod.outlook.com (2603:10a6:20b:dd::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.15; Tue, 4 Nov
- 2025 12:45:17 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9298.006; Tue, 4 Nov 2025
- 12:45:17 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>, Abel Vesa
-	<abelvesa@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Stephen
- Boyd <sboyd@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Fabio Estevam
-	<festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, Daniel Baluta
-	<daniel.baluta@nxp.com>, "S.J. Wang" <shengjiu.wang@nxp.com>, Frank Li
-	<frank.li@nxp.com>
-CC: "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>
-Subject: RE: [PATCH v4 3/8] clk: imx: add driver for imx8ulp's sim lpav
-Thread-Topic: [PATCH v4 3/8] clk: imx: add driver for imx8ulp's sim lpav
-Thread-Index: AQHcTYNXHATylbq+lEOFLnjYuXp+VrTidpcg
-Date: Tue, 4 Nov 2025 12:45:17 +0000
-Message-ID:
- <PAXPR04MB845969CF96F1AFAD5EB1DE4E88C4A@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20251104120301.913-1-laurentiumihalcea111@gmail.com>
- <20251104120301.913-4-laurentiumihalcea111@gmail.com>
-In-Reply-To: <20251104120301.913-4-laurentiumihalcea111@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|AM7PR04MB6790:EE_
-x-ms-office365-filtering-correlation-id: 8d359ef1-2754-4f58-5a7f-08de1ba0021d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|7416014|366016|19092799006|38070700021|921020;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?Y3J8u6AZ9NtGVm7B7tbIMeV2rFLgHmpK+PjOMgH6jHf1ChkTOGuEuzyNmjJP?=
- =?us-ascii?Q?m+sDEkeY7YQehxnSLv5AzItibuhSkJdQnxkVhH1VYjdApps/eKEJCiDEglLG?=
- =?us-ascii?Q?DTYCfdt4aXhuLITZlNxtNYK1zUSS0lOZXpptUq/70u86HgxBOG/AwoligJoY?=
- =?us-ascii?Q?X3DdOjERDnlLCA2mQNwD2Ejm5boIeArkjKWt7H27Izmt/It8CjV+eJgDlxuT?=
- =?us-ascii?Q?nYGZVnoXg+jSbnPwIcG3ZPm6iQGxubfHJCO4FOgz9AQnvrW1d/v9Og0XMDBA?=
- =?us-ascii?Q?NOR9BDbqKcHcE0epiVKxLB+LQHe8yWuG3STYJd0Kmux0mDi9vzhEDUA8y/0Z?=
- =?us-ascii?Q?XzZdfSJ0nGuPMX+3dhVgL7IJpQZKZuCnCVbEG90Y/hjmraPg7+nxFcalQSCP?=
- =?us-ascii?Q?XaRbzP2jx1Q6J3mCmEltVs2klu0QIHmayMBy592ycxccJC+Qd7FgNH9kEOZB?=
- =?us-ascii?Q?fanNutOtE02LMzbxDiynPFF/XDBJp2DsOo0/RiOIIevZZ4KC4LmFQNzDoXhu?=
- =?us-ascii?Q?g/9loJ8JZFm6qxcP1K+p1b4lavz+kgRIkE4d9LHU5eWzQgNrUINqAV88CE9m?=
- =?us-ascii?Q?kl7vk6M5c1IMlvJByRLscq8txotLYPj0TP1J7+UFo9gg6sBu5vT0fQI8IC4W?=
- =?us-ascii?Q?4Q/F5a0nz0YXTH8NE70udxlkUpQTAkXnBSO7Zpb/LV2cikcbWG8MS1mULR0V?=
- =?us-ascii?Q?K3L8Bc3sMdzPHx/kDrrdjyrnVlLR0z++qiKX/485rUakpZR1GSocBenn+Htg?=
- =?us-ascii?Q?VvTe07IrG/L9cR+bgPg4mTXBKvQg0W6gbisclUM/bymLMsBMrREYHp3YTh3J?=
- =?us-ascii?Q?aSmo5ei5nKBW8qrSM8h7tPjaEesMzKjvu7Fwpgtb6urex+Eb0BejWXniG1/4?=
- =?us-ascii?Q?19bSbmxD/lDrNJSNiZQMXkQh1a5sJZTMlIIh5I9zZ1k1rQM6gvoZu8OpuoVL?=
- =?us-ascii?Q?ZdLXjWYsziEYe0RIxRrm62+A9gmGCzaEhg6yw/ghbeg1TgSC6IlYHt1h1q3g?=
- =?us-ascii?Q?87iq088nxfymjcI9eI9TXazzRbi0bQq/yAZ9K44vyKmPY1D0CMJAs+jZRUmc?=
- =?us-ascii?Q?fw9otOJzqWyIXfvYNuUw2JKL1RbXSUojmRLJQxf5rNZESfM3vxOvsrUXzBMt?=
- =?us-ascii?Q?xETDwGw61vyOZ5WcLmMkWpWjhXT9j5JqrFt58u+5IYmCu46wGxRYx6Q+GRLh?=
- =?us-ascii?Q?Pk/sAYzFuQLtPNX/pOhno+3ieAHNd+NmDFlemJ9+d2hx3K+i1uHlzOoSIfgf?=
- =?us-ascii?Q?SzD8IibBr5i6TIW+iNrVqUctVSpdWgb0kvX6go1ROoh+i0+OtazjfHuLVYdD?=
- =?us-ascii?Q?leDZ0AFdRKXg9qv/Nl8ZFCk68jGGcrg+wHRPUdBPezoWWLcNdk8PEN33J1k+?=
- =?us-ascii?Q?wpHQgfQUTH1/RTJIITyJCloW5ppy6rhjlQGHc82DRzJYKFGJuLN39jUctuWc?=
- =?us-ascii?Q?BABD7cVjKl078cfQIQyN6w6WA92IQMuHzspgJJtTlyXrklxwiGUiR3Hyq6Ne?=
- =?us-ascii?Q?WG1+mq5VJF2+jjWW6SnwroaQtOjNYYHwSL2FgN2uO/Mu+eb6yqIxyAi66A?=
- =?us-ascii?Q?=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(19092799006)(38070700021)(921020);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?TegaraErJJP0Bo+iRDROIzG6ZpqBJ/Xq695T0g2PP9+QVEnwWKbMD4nEbk8q?=
- =?us-ascii?Q?Q8Ri/HtQyYXxpZN+OYs3D4txxRolJS7oYdgKDS+U9qd+TUBebRuwd2m0glBZ?=
- =?us-ascii?Q?s5BgnGHHbTAlm5saqp5Qmg1K20xNGAqggCrKh+eYSTVl57Dc5y0IbzpFPKhd?=
- =?us-ascii?Q?7Oqb6XDPe9NOWfl4VZtXuUEa+Wzf+zECauGvhJwEjc2Y5w3CjVD+2OBLkilh?=
- =?us-ascii?Q?Vg6RnuhwE1nl/vCnTvhIRJYOBrRh//vjSTb9NbWo5laOD1CTZfRnrOaxGphY?=
- =?us-ascii?Q?FpVAHAszkAlZoOT9nGco3815Uhz2FXcQnc+t5RZH1YHrBA4W9b73g11rB7uV?=
- =?us-ascii?Q?UX7zE5CwXOkGEU4Ov5g8NgI0AB8It5M1/kYRkzd0jPUmaN4CCJCaypojtOKe?=
- =?us-ascii?Q?3U0tU9FIMu6Z05MQp9zNsLOZdcHaHSsnBnCAh37akYzDdVWV4CqRoTfgI+q2?=
- =?us-ascii?Q?mq4ob+3iG1M4AOwXZQWXTBCK21rMgrKrxWvITDujDf+qGJptMtlyD8IPum8R?=
- =?us-ascii?Q?STOgQNTkmhoMP5ZZonSumwsLdCh3axQGU2PH/rtIajJVy5v30lxA960V/UqP?=
- =?us-ascii?Q?cvVLCXZJXrCdiQAVlZJFS8k/0KW4a3Uf5Z0cNsW286nENQ+D8HYAYr7I3F3U?=
- =?us-ascii?Q?njthCyGws5cs0q7EiiechmeQ2pcFQPX8baAi/JUhdlNFrDebSRvztjq6RdCC?=
- =?us-ascii?Q?N0W/Kt5ZFltogGxkrjJAdno/R6bt5H/qL/tSY33urwpZQs8fkF5J/o3XKSrm?=
- =?us-ascii?Q?n1/w2fR+lZSLT+du6J6d2ISqPOthYP8Nu6nfxTwYqM6j4/n4DIz7LQBRdP0h?=
- =?us-ascii?Q?jWSKn16qsrfCpqaCiCEd3qAGbPM3LxG6wvjmi3hHiUT5VhzL2NZ12LAizkx8?=
- =?us-ascii?Q?n6oK4PZRE2g5R+wfAIHjwbjgH0q8nI3utmPz1JsmhFCvyH/UpNSruXGddf5i?=
- =?us-ascii?Q?TQRfOdkf2f+TaLXib/eDMHRe63U/3Hw/feWEyDkKojIHQiXmS8k8AU27Ue5J?=
- =?us-ascii?Q?4kmtd2/RiLLEJ+LZ/aLxIFbdnO5d/APiwZtGIAWstNMigcP/cvBsYl8WMm3K?=
- =?us-ascii?Q?LrRFFDJ5fj1iqodJ+K8Dui9yFElKWxMUV5QRLQYy4uxQXs5h8/3Uoa/QjHOE?=
- =?us-ascii?Q?wP8qAa9iTYXINynnwptMizKI3bJysCRv6jjUAnM+Kc47cNcv4r8doH+8cwVv?=
- =?us-ascii?Q?HtakkNG7mGZeLPvDZ3wN0VsWMANOwGx8AidPTHtQhpME9bBjJxGjZtwgWHIh?=
- =?us-ascii?Q?U/oD+7GGjACQoB6X4ISneL8WkE97VWaz7ipVrhwBoOBPTpPcsFIih8CFePLW?=
- =?us-ascii?Q?QdFyzEZ1la3g9OsJUMHnF/zZX9x++y+9UqCxPGzXUnDvKqbMMpCQn/txLJdK?=
- =?us-ascii?Q?9E0dXFBeIL1AyY7f9mzNS7bs12sAkLoMZ5zZ2my/+RdanDDyV5uLqJuQGgej?=
- =?us-ascii?Q?ZVc8DPRibmmUkdCqjDUbhe/HZ8nNeiGUdZpkrgRsJAE/K4meAERxt92YKLXE?=
- =?us-ascii?Q?imTtT905X5CSwYv6hEzm1f1D+1f+fwarHYc8Lg+mS35YFfnupMwudgfNs/hD?=
- =?us-ascii?Q?ynGxHV4rK3Fc5Z6pd0I=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4EA158DA3
+	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 13:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762261469; cv=none; b=liEeGFycai2dyXuDrlmODfGTPZj4umoqpwVY/bY80oV1X0Dj9IhtcYriyGRWnAryCS5KRv94VQF8UcvWSs6ff73Ovj8thA4h+sCbQ9uzdmsn55mvE/3Y7z2OyR9QJGwV/Bf9YVKC8TC2rWqEohhxGYonU25YVwU5BtiD8K/V6LY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762261469; c=relaxed/simple;
+	bh=AGyEpwYEioYBmSj9xKbMDznM0ls2s0eCibPm8Q1dRP4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FLJPoHRYgDnK9sN9cvvZZGIVZLTJZG8vC8NyOMvQn6NKyjwTbX3e7OnSarjTpvicvtYtLLsPbrF1EOKa4UfkbVQ9kLFb9rNiPhdLrlMxZUV4Xb3QvOXq8H2up+raPznA0bESkXj7+/QK2/M0/vcyf3osgHZGdD5TcYJouv+WvME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id B59C81A0A39;
+	Tue,  4 Nov 2025 14:04:25 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A77171A09FE;
+	Tue,  4 Nov 2025 14:04:25 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 08A68202E8;
+	Tue,  4 Nov 2025 14:04:25 +0100 (CET)
+Date: Tue, 4 Nov 2025 14:04:25 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, s32@nxp.com,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH net-next 02/11] net: stmmac: s32: move PHY_INTF_SEL_x
+ definitions out of the way
+Message-ID: <aQn52d7B6HfVSS22@lsv051416.swis.nl-cdc01.nxp.com>
+References: <aQiWzyrXU_2hGJ4j@shell.armlinux.org.uk>
+ <E1vFt4S-0000000ChoS-2Ahi@rmk-PC.armlinux.org.uk>
+ <aQnJRgJqFY99kDUj@lsv051416.swis.nl-cdc01.nxp.com>
+ <aQnNjWuytebZpZyW@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8d359ef1-2754-4f58-5a7f-08de1ba0021d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Nov 2025 12:45:17.7342
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: m0fDfhr/+OV2N/xIqcYTtxLw50+/f785gX5ewU76Msk17aZAk15cTHqBTagCDzKpwFre19iwzsasYRt6mziBsw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6790
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aQnNjWuytebZpZyW@shell.armlinux.org.uk>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-> Subject: [PATCH v4 3/8] clk: imx: add driver for imx8ulp's sim lpav
->=20
-> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->=20
-> The i.MX8ULP System Integration Module (SIM) LPAV module is a
-> block control module found inside the LPAV subsystem, which offers
-> some clock gating options and reset line assertion/de-assertion
-> capabilities.
->=20
-> Therefore, the clock gate management is supported by registering the
-> module's driver as a clock provider, while the reset capabilities are
-> managed via the auxiliary device API to allow the DT node to act as a
-> reset and clock provider.
->=20
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On Tue, Nov 04, 2025 at 09:55:25AM +0000, Russell King (Oracle) wrote:
+> On Tue, Nov 04, 2025 at 10:37:10AM +0100, Jan Petrous wrote:
+> > On Mon, Nov 03, 2025 at 11:50:00AM +0000, Russell King (Oracle) wrote:
+> > >  /* SoC PHY interface control register */
+> > > -#define PHY_INTF_SEL_MII	0x00
+> > > -#define PHY_INTF_SEL_SGMII	0x01
+> > > -#define PHY_INTF_SEL_RGMII	0x02
+> > > -#define PHY_INTF_SEL_RMII	0x08
+> > > +#define S32_PHY_INTF_SEL_MII	0x00
+> > > +#define S32_PHY_INTF_SEL_SGMII	0x01
+> > > +#define S32_PHY_INTF_SEL_RGMII	0x02
+> > > +#define S32_PHY_INTF_SEL_RMII	0x08
+> > 
+> > Reviewed-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> 
+> Thanks. One question: is it possible that bits 3:1 are the dwmac
+> phy_intf_sel_i inputs, and bit 0 selects an external PCS which
+> is connected to the dwmac using GMII (and thus would be set bits
+> 3:1 to zero) ?
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+I guess so, as the S32G3 Reference Manual says regarding
+GMAC_0_CTRL_STS register bits the following:
+
+[3-1] PHY_INTF_SEL: PHY Interface Select
+      Selects the PHY interface. These values are valid only
+      for PHY_MODE=0.
+
+      000b - MII
+      001b - RGMII
+      100b - RMII
+
+[0-0] PHY_MODE: Select the PHY mode.
+      Selects the PHY mode.
+
+      0b - Other PHY modes (for ex. RGMII, RMII, ...)
+      1b - SGMII mode
+
+> 
+> It's not really relevant as the driver only appears to support
+> RGMII.
+
+Yes. The RGMII was the simplest way to upstream review, so
+I decided to stick on it.
+
+The SGMII support is ongoing.
+
+/Jan
+
