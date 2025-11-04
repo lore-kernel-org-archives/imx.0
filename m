@@ -1,135 +1,184 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB542F619D
-	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 12:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75D32F360F
+	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 12:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762257857; cv=none; b=Rp8F/o8PNMJdOeQ7UKvq9JINuXGoTUbFWJjRw89Blu6SNcFnKV80mD7PmTX/UCYliHQsR0mM4xTbwUJip0YF0KRACDxHBv5HvJoCK8QemyFl6UE6f27w4H/kwDwfLY1oeXtO/jU9rML99a6LoOxHKOVSo5PigpezxIvfae6XSpU=
+	t=1762258443; cv=none; b=qrUtmIQqRIHtF5k5RYv02hVnAUK5FuElcBYVl4NvNRH5iiHf+KxtU0NrVyc7m2ovxMhei7hnZ6f3LdlJiEZ8kaga3tWvBN8VpxCHEBkowdVfxq+nPew4wcDUd/l3rJxfvmtFTGPC+o2n5fdECCZuYoD0l3dz5XJNmtyqiL1ZIAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762257857; c=relaxed/simple;
-	bh=v9PIaHoOGqn87lRlESH/AuFgCy5K1+8Bo9hGHBVSeHs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OdLpYNehc/6fygWFnrO5mG9RxL/Esa3duLYnCUW89sKm5lDaFHJ0wiRTokjxp5A32Z2OBTcXwYU+Ry07yJ5CtHRPN7wdWEAe/G6O6veIsUJHp0jAbJzeauS+GuLp1kh3X2i97yGE0K966oETAuzktGHNZmeXetJcaWpFs9VL1gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BRJuMJOs; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762258443; c=relaxed/simple;
+	bh=tAcoZy4oj3w+179fFvx0GB1P3rEhxC/3Ddbdavei1sw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zw2UxtaPF63yFDfjkSkRpu0IOcqetkrv794Q36JCESbocG6xwmFlitomiS8/aqlkTxK7lrvD4gC1iXEaf+JTJ6dOBbBn3QwHBM73TXe3KaBDK9yYj0PJzbqOC4yb5n7C51lACE3kS/l2GvZ6iuD5N+R4VSImaTJlcbXtniMbkFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=jKqB0r84; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=FC0oHVL3; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dPhQDD6K; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=VgbjsyHg; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BRJuMJOs"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b4aed12cea3so977820566b.1
-        for <imx@lists.linux.dev>; Tue, 04 Nov 2025 04:04:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762257854; x=1762862654; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xHtOrvUe+VoHbx7eNPs1dlQDZqVpXM8AHRrOkF3QMQM=;
-        b=BRJuMJOslJqLyD8DxUxuPsY5jQ8sqLFk0MuZFXX2HHVGfzBqigdX6V0DDerew5auaz
-         l4EVeRaJuUDirxMXqKCckKjLG3hst2qQxbptrfZzbdkK1iY30PtcI24NloUUmvF9zg50
-         U9fojsKZqH60Q9VEyy9m+GGIvHYG3CX8UK0l5Vx2QoWThUs2YtJuWdNActq3IRpptFqO
-         pVKnq3ONzv0WmnJT40qBO3KQp7Tulpkw/3/Hwb1O244/q9P+SfG1la3Bprl793DeIWFe
-         GKNRR0Rvx/Zz2JXdlRirUzPOToc8PCmer2tBXUqAZGMx4kg6AbFOFQZO2oaMt4m+ibrq
-         zvlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762257854; x=1762862654;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xHtOrvUe+VoHbx7eNPs1dlQDZqVpXM8AHRrOkF3QMQM=;
-        b=d0JFykbCIxS0PxY7ACK5Dj8nCeEeenRkvxhFHZtdPt6lt2JfS3GgxvvEiPeJ6bXge9
-         qXmvPBEupL/Xwpgs3kzej+G8GXmcJ0xsnFyA1ydt69lXmXOPaHwA3ARv7X2FzI+xNdR9
-         n5QmwYnKQNQnTSTAcgn7FJGfKRZD6Fw3pb8hQ3xRSmoDK4siBWXLqVZdVFxJAwxSEAlf
-         j5trF7BAiKzTnEoiC2qU3WvZCN/QEZOrCyeITo3BLDICnLUBP7KOzFvqysX/JlZSzZIz
-         JvJyBHgx+ihapaCiekdANPut+cRlP5yg+uTirJ242H3t18dzQ2IK/CjOiwh1evOP+WsB
-         t/mQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVKhdrpkXAwFUvMS6hlGHttos6aIcELIFrdhcpqym0MimYWPv2zArnKVd67+SlOyDKIg6o=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxNWK83mfD8ogpN4uTHjb/wyLdSrVOAKPoNofKo2I0Lyfqy9Ip6
-	LaoSr1t/XSkYl/CP4dOqhk58WTcP9JiKlakVXoWh4mCov5S9bX3f195s
-X-Gm-Gg: ASbGncsfHvFDb2nq7NRHwhPu3TnfUK8CmwIwU01phPGY6Lgak+htysT+1XBSgCiz8lE
-	EK/2s0S/jehc1Qbku/cAp+Hp7sV0aeAPhDm0cSAkrF5HzkYzz4+fsRW0z9zea9Da/Z1NZ6rXuiL
-	r7orWfyDJ8dr3PdoevTU4luK3UTy1t8Q1x7jFDoA/9QES+bIdoL2BEiqnz6PPUGDzUEXJ2QsSNA
-	ACVXWWY9hYuNc7xo43TdKyRMX4yJ3K5FY3ZiqBZu98fAXua2Ac0A7avwN0kU7x6h9OyhofiosdU
-	AQ3H02KFcec83dnPZ9EoJApSrZuAny/1QN/y9z+RC2yoPM2PU3hWATOiUSFRs3dknOR2hFgGT/Z
-	pcC/Cuedz/Z7xHW6Yc/0Vjh96xzerIS7wUnKxdwYb0Embb9z3T285+sq9sVo8yFqf2jxiwbhsBE
-	ZlJUx0i+KzGkJerNCwq5m6D1qAxA==
-X-Google-Smtp-Source: AGHT+IGGkO48Aav2aGVAeolzrPvhX0A2pS6by5Y49cTXFSpgxjQYcLbUpUeQ6msVNN8zrd86kzhCLg==
-X-Received: by 2002:a17:906:a24f:b0:b6d:6c8f:6af6 with SMTP id a640c23a62f3a-b7070139726mr1396558966b.16.1762257853806;
-        Tue, 04 Nov 2025 04:04:13 -0800 (PST)
-Received: from SMW024614.wbi.nxp.com ([128.77.115.157])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b723fa038e0sm200894166b.54.2025.11.04.04.04.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Nov 2025 04:04:12 -0800 (PST)
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-To: Abel Vesa <abelvesa@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>
-Cc: linux-clk@vger.kernel.org,
-	imx@lists.linux.dev,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH v4 8/8] arm64: dts: imx8ulp: add sim lpav node
-Date: Tue,  4 Nov 2025 04:03:01 -0800
-Message-ID: <20251104120301.913-9-laurentiumihalcea111@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251104120301.913-1-laurentiumihalcea111@gmail.com>
-References: <20251104120301.913-1-laurentiumihalcea111@gmail.com>
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="jKqB0r84";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="FC0oHVL3";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dPhQDD6K";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="VgbjsyHg"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 05E711F451;
+	Tue,  4 Nov 2025 12:13:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762258440; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6L517dqg4zC4ueTOGdaUNqBUzNrp/dN+azzWPFGThJ4=;
+	b=jKqB0r840XjaL3dTaBxaFpve8i27EAA2sluuR5SuTVLwdyZLHQlyapPWS7llR7Lyvutouo
+	BYMkZwJF6+rNANa4Kh2h+prHPfYOxa37t3StaW9EgRXLGNAgPWZSbX/HFAU4AQy1Ds5z9r
+	UhZXPcZrvnDhW9GWlyQR4nt7AbNMjqw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762258440;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6L517dqg4zC4ueTOGdaUNqBUzNrp/dN+azzWPFGThJ4=;
+	b=FC0oHVL3V3pLJ/rGKNpdE0c5lcI64gGPeeCeYDO12A/+TNC8L559IUzBILOHKP5kn4TkTw
+	cn4jvrGY1syVZhBQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762258439; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6L517dqg4zC4ueTOGdaUNqBUzNrp/dN+azzWPFGThJ4=;
+	b=dPhQDD6K/TmYvYJLEg47ZaYojZHgXRl2xKd+NnU7nqgMvGH5qFVPFLL1/QJNMrJrToI3Rs
+	AsjtxMOH92LlzEKGk5Ks0g6FennHR3qi66HQxNzfl8X8mk3y787aDKOx88U/fpRPh7czrA
+	AZXLi+RTdHaznLj3Z49N9ELRjLq6wl8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762258439;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6L517dqg4zC4ueTOGdaUNqBUzNrp/dN+azzWPFGThJ4=;
+	b=VgbjsyHgSIf015H97Db/8UfA3g94K4C4AGgG2LkxPgj+YdIquY7rG6wfjtNZNMVlld8V9o
+	NcsvCTTlxEbExdAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EF8A6136D1;
+	Tue,  4 Nov 2025 12:13:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id b4JyOgbuCWmEQwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 04 Nov 2025 12:13:58 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id AFC9AA28E6; Tue,  4 Nov 2025 13:13:58 +0100 (CET)
+Date: Tue, 4 Nov 2025 13:13:58 +0100
+From: Jan Kara <jack@suse.cz>
+To: Haibo Chen <haibo.chen@nxp.com>
+Cc: Theodore Ts'o <tytso@mit.edu>, 
+	Andreas Dilger <adilger.kernel@dilger.ca>, Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>, 
+	linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH] ext4: clear i_state_flags when alloc inode
+Message-ID: <a5du4tx2ugmhjwzwtkwcf2fk6jzj3athhheojitnxwcz222lxu@4ntqpbfjehgo>
+References: <20251104-ext4-v1-1-73691a0800f9@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251104-ext4-v1-1-73691a0800f9@nxp.com>
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email,suse.cz:email]
+X-Spam-Flag: NO
+X-Spam-Score: -3.80
+X-Spam-Level: 
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On Tue 04-11-25 16:12:24, Haibo Chen wrote:
+> i_state_flags used on 32-bit archs, need to clear this flag when
+> alloc inode.
+> Find this issue when umount ext4, sometimes track the inode as orphan
+> accidently, cause ext4 mesg dump.
+> 
+> Fixes: acf943e9768e ("ext4: fix checks for orphan inodes")
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
-Add DT node for the SIM LPAV module.
+Looks good to me. Feel free to add:
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx8ulp.dtsi | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-index 13b01f3aa2a4..9b5d98766512 100644
---- a/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8ulp.dtsi
-@@ -776,6 +776,23 @@ edma2: dma-controller@2d800000 {
- 						"ch28", "ch29", "ch30", "ch31";
- 			};
- 
-+			sim_lpav: clock-controller@2da50000 {
-+				compatible = "fsl,imx8ulp-sim-lpav";
-+				reg = <0x2da50000 0x10000>;
-+				clocks = <&cgc2 IMX8ULP_CLK_LPAV_BUS_DIV>,
-+					 <&cgc2 IMX8ULP_CLK_HIFI_DIVCORE>,
-+					 <&cgc2 IMX8ULP_CLK_HIFI_DIVPLAT>;
-+				clock-names = "bus", "core", "plat";
-+				#clock-cells = <1>;
-+				#reset-cells = <1>;
-+
-+				sim_lpav_mux: mux-controller {
-+					compatible = "reg-mux";
-+					#mux-control-cells = <1>;
-+					mux-reg-masks = <0x8 0x00000200>;
-+				};
-+			};
-+
- 			cgc2: clock-controller@2da60000 {
- 				compatible = "fsl,imx8ulp-cgc2";
- 				reg = <0x2da60000 0x10000>;
+								Honza
+
+> ---
+>  fs/ext4/ialloc.c | 1 -
+>  fs/ext4/inode.c  | 1 -
+>  fs/ext4/super.c  | 1 +
+>  3 files changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
+> index ba4fd9aba1c14de56b89ebbeb4597f7becf947ff..b20a1bf866abedf3a768ee8a147f108ea09ecb01 100644
+> --- a/fs/ext4/ialloc.c
+> +++ b/fs/ext4/ialloc.c
+> @@ -1293,7 +1293,6 @@ struct inode *__ext4_new_inode(struct mnt_idmap *idmap,
+>  		ei->i_csum_seed = ext4_chksum(csum, (__u8 *)&gen, sizeof(gen));
+>  	}
+>  
+> -	ext4_clear_state_flags(ei); /* Only relevant on 32-bit archs */
+>  	ext4_set_inode_state(inode, EXT4_STATE_NEW);
+>  
+>  	ei->i_extra_isize = sbi->s_want_extra_isize;
+> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+> index a163c087137314c541ec10c011488c5392fb7011..bf6786d373ff57c32d5a84cfd73ea8a33cb68b16 100644
+> --- a/fs/ext4/inode.c
+> +++ b/fs/ext4/inode.c
+> @@ -5285,7 +5285,6 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+>  	ei->i_projid = make_kprojid(&init_user_ns, i_projid);
+>  	set_nlink(inode, le16_to_cpu(raw_inode->i_links_count));
+>  
+> -	ext4_clear_state_flags(ei);	/* Only relevant on 32-bit archs */
+>  	ei->i_inline_off = 0;
+>  	ei->i_dir_start_lookup = 0;
+>  	ei->i_dtime = le32_to_cpu(raw_inode->i_dtime);
+> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+> index 33e7c08c9529c357d291f40269863398753dc650..3dcc9410c09a55d5dce2dbff388a97bf4f133818 100644
+> --- a/fs/ext4/super.c
+> +++ b/fs/ext4/super.c
+> @@ -1396,6 +1396,7 @@ static struct inode *ext4_alloc_inode(struct super_block *sb)
+>  
+>  	inode_set_iversion(&ei->vfs_inode, 1);
+>  	ei->i_flags = 0;
+> +	ext4_clear_state_flags(ei);	/* Only relevant on 32-bit archs */
+>  	spin_lock_init(&ei->i_raw_lock);
+>  	ei->i_prealloc_node = RB_ROOT;
+>  	atomic_set(&ei->i_prealloc_active, 0);
+> 
+> ---
+> base-commit: 9823120909776bbca58a3c55ef1f27d49283c1f3
+> change-id: 20251104-ext4-3f9647dcedd0
+> 
+> Best regards,
+> -- 
+> Haibo Chen <haibo.chen@nxp.com>
+> 
 -- 
-2.43.0
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
