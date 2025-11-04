@@ -1,187 +1,95 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47B431E0ED
-	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 13:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E9E223DCF
+	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 14:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762262294; cv=none; b=hGOITOR7OOq1R0ilyFp464VBtmTRjOB5Tj38KxbidY3K1rYTovnag9U7aRjdy5oBnwUIzQq9OVR+qJABwKTXfcJVinsWijQCqCzoLhwWbqv+xtckLkGzTRxtKoz6cAABqjK/Dbf6Ikfhhci6waJAiTkfF+rnw/D0ORk6I4DpTYs=
+	t=1762267003; cv=none; b=IQccYJLd+VDH2o0dsfXdiJzVdj9Mm2PhdVPkcJNChFwV6C51iGXDHpiA2USvsXBMrVIXYzQdyn2Snw1SiaVf72/AWaBtS07Db167KeU6Np6ZDY+YPeHVxcvt4FKgYMVX+CsX6CSqS0olSdA8aQJFYgJzaDt0NsOuIqAJfWZ7G1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762262294; c=relaxed/simple;
-	bh=8kmZ/q6oT5r81KRtmusYK/Tj9QGxFrkmbMHy66Q9HJg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nUe9qt6h9xVGq+QRcoubH2A+ZgAbdERUCDbJ46Ww/DX4Hgoxh1GQnavTBvwXC3jQebs/XHfjJNh18TVSvBoqBT/rMvfhocYtAHqS/5CgeiB6Uu08VaAiGMhydeM0G2huoalGBDl2oiLS+4Rz+Go62M91k3CsMxn/BsZju6WXCUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=L5dysWud; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=mvUya3UA; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Kj2AuuMI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Eju4QiKg; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1762267003; c=relaxed/simple;
+	bh=YbNQZmQDRHZuJEslGSplhQKbIwrxt/EXEnw5WMnSajg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q6g9twCJei7mn43uq/WzvHAVEfFyuPpzJnJFHzMQ5Lz+3IcJS01pEw0n0GeFmDlFr7S9ivn5QDS15VyE8+OQgxNNM0xKw0L5iurT+bDFsKnIOoSZ7kedHlKDY1Es3YyYrEiF5gN2Sf4dZ8E1QkGmG/vxOQyqx0GJMO+cyVYntyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=bc4uA7j1; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="L5dysWud";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="mvUya3UA";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Kj2AuuMI";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Eju4QiKg"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id BBB291F385;
-	Tue,  4 Nov 2025 13:18:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1762262288; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=8I2k12PqhaohH81SnpOZtIgku1siAzcIeNEK95fSU9s=;
-	b=L5dysWudkNHvMO8s+VocZO9X+LhiJuC7UpFXuPunkHcWh5j4qeCoTZ84d/t+IyCoPH6Izc
-	DLU00ITrr66QvfyxlRfhWWxIgXTYtcAd4OP6MGpki18mJDn4I1PC24NRdTs30DtL4Np9RV
-	QyhoPGjeYO0sqTo1smRlRO6XaTVv3xs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1762262288;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=8I2k12PqhaohH81SnpOZtIgku1siAzcIeNEK95fSU9s=;
-	b=mvUya3UAOBGNdkh0pyL2z2w4DAB01zqhlZ2+UuGwEEGaKjTt5xqBo1ZMStD54ykw6lktWV
-	lqx9sKIzjavVW0Cg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1762262287; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=8I2k12PqhaohH81SnpOZtIgku1siAzcIeNEK95fSU9s=;
-	b=Kj2AuuMIlrQ11caOjtJe09asAigbQTbCDqsmZcC1cSp6ryiSVTN4B57noXtZ6ktLNw8lZY
-	cIEQnE9Sw+2OA8bzHe8ROA3ItXDxgSRal+xVVPqRBqCgVJSxNqzaKStmYxTZfxSVbMd8lB
-	B9fCju7SEeNS7oc1ILTV2edW7nSAhCM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1762262287;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=8I2k12PqhaohH81SnpOZtIgku1siAzcIeNEK95fSU9s=;
-	b=Eju4QiKg0udlYdNC3N4wgdBVk0S5E8EM5uz5K1Nl3u6mooL3zIQbn8WLonDi/I0UG6t2Sq
-	J066O+qY9eCzR3Ag==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 600C5139A9;
-	Tue,  4 Nov 2025 13:18:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id I+wGFg/9CWmeBAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 04 Nov 2025 13:18:07 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: p.zabel@pengutronix.de,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com,
-	dmitry.baryshkov@oss.qualcomm.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH] drm/imx/ipuv3: Fix dumb-buffer allocation for non-RGB formats
-Date: Tue,  4 Nov 2025 14:14:56 +0100
-Message-ID: <20251104131803.180126-1-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.51.1
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="bc4uA7j1"
+Received: from pendragon.ideasonboard.com (82-203-160-149.bb.dnainternet.fi [82.203.160.149])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id CBD982B3;
+	Tue,  4 Nov 2025 15:34:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1762266886;
+	bh=YbNQZmQDRHZuJEslGSplhQKbIwrxt/EXEnw5WMnSajg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bc4uA7j1fURx+NgskT53wh2ZAmze2XORP0DL6w/60BjHQTInlUYGg+aBc/Juord0Y
+	 Am4zn3UAhJ1g/+uVpaWceLyhuEVDMrnUmnrqKjIFHBbZI+9V0bYfDVrv5vTAQjYFRC
+	 wDY2AstzUCvKWZAjsxgHeHJDFezq5rd6QkSm1guA=
+Date: Tue, 4 Nov 2025 16:36:36 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: linux-media@vger.kernel.org, Frank Li <Frank.Li@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] media: imx8-isi: Drop unused module alias
+Message-ID: <20251104143636.GD27255@pendragon.ideasonboard.com>
+References: <20251102234438.8022-1-laurent.pinchart@ideasonboard.com>
+ <aQnRsVPq1ndQrLr_@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email,suse.de:mid,qualcomm.com:email,linux.dev:email];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FREEMAIL_TO(0.00)[pengutronix.de,kernel.org,gmail.com,oss.qualcomm.com,linux.intel.com,ffwll.ch];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aQnRsVPq1ndQrLr_@hovoldconsulting.com>
 
-Align pitch to multiples of 8 pixels for bpp values that do not map
-to RGB formats. The call to drm_driver_color_mode_format() fails with
-DRM_INVALID_FORMAT in these cases. Fall back to manually computing
-the pitch alignment from which drm_mode_size_dumb() can compute the
-correct pitch.
+On Tue, Nov 04, 2025 at 11:13:05AM +0100, Johan Hovold wrote:
+> On Mon, Nov 03, 2025 at 01:44:38AM +0200, Laurent Pinchart wrote:
+> > The driver has never supported anything but OF probing so drop the
+> > unused platform module alias.
+> 
+> The commit message needs some more work since this isn't a platform
+> module alias (i.e. has a "platform:" prefix),
 
-Fixes userspace that allocates dumb buffers for YUV formats, where
-bpp equals 12. A common example is the IGT kms_getfb test.
+Oops indeed.
 
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: b1d0e470f881 ("drm/imx/ipuv3: Compute dumb-buffer sizes with drm_mode_size_dumb()")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
----
-This patch is based on Dmitry's fix for msm. [1] Please test.
+> and judging from a quick
+> look it seems like the driver did support platform probing before commit
+> 605b57c4e888 ("media: nxp: imx8-isi: Drop partial support for i.MX8QM
+> and i.MX8QXP"), at least in theory.
 
-There could later be a helper to contain these aligmentment calculations
-in a single place.
+That has never been used upstream. It was code from the BSP that should
+never have been imported in the first place, I missed removing it when I
+rewrote the driver for upstreaming.
 
-[1] https://lore.kernel.org/dri-devel/20251103-drm-msm-fix-nv12-v2-1-75103b64576e@oss.qualcomm.com/
----
- drivers/gpu/drm/imx/ipuv3/imx-drm-core.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+> It's probably fine to remove the "ISI" alias, but it should not affect
+> module autoloading.
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
-index 465b5a6ad5bb..5116f33a5973 100644
---- a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
-+++ b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
-@@ -144,7 +144,6 @@ static int imx_drm_dumb_create(struct drm_file *file_priv,
- 			       struct drm_mode_create_dumb *args)
- {
- 	u32 fourcc;
--	const struct drm_format_info *info;
- 	u64 pitch_align;
- 	int ret;
- 
-@@ -156,12 +155,15 @@ static int imx_drm_dumb_create(struct drm_file *file_priv,
- 	 * the allocated buffer.
- 	 */
- 	fourcc = drm_driver_color_mode_format(drm, args->bpp);
--	if (fourcc == DRM_FORMAT_INVALID)
--		return -EINVAL;
--	info = drm_format_info(fourcc);
--	if (!info)
--		return -EINVAL;
--	pitch_align = drm_format_info_min_pitch(info, 0, SZ_8);
-+	if (fourcc != DRM_FORMAT_INVALID) {
-+		const struct drm_format_info *info = drm_format_info(fourcc);
-+
-+		if (!info)
-+			return -EINVAL;
-+		pitch_align = drm_format_info_min_pitch(info, 0, 8);
-+	} else {
-+		pitch_align = round_up(args->width, 8) * DIV_ROUND_UP(args->bpp, SZ_8);
-+	}
- 	if (!pitch_align || pitch_align > U32_MAX)
- 		return -EINVAL;
- 	ret = drm_mode_size_dumb(drm, args, pitch_align, 0);
+How about the following commit message ?
+
+
+media: imx8-isi: Drop unneeded module alias
+
+The imx8-isi driver has a module alias named "ISI". This is not
+required, as there is no reason to load this module through an alias:
+the device is probed through OF, and the module has never been named
+"ISI". Drop the alias.
+
+> > Suggested-by: Johan Hovold <johan@kernel.org>
+> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > ---
+> > Johan, I've got the idea from similar patches you submitted for other
+> > NXP media drivers, hence the Suggested-by tag. Please let me know if I
+> > can keep it.
+> 
+> Sure, please do.
+> 
+> > -MODULE_ALIAS("ISI");
+
 -- 
-2.51.1
+Regards,
 
+Laurent Pinchart
