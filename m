@@ -1,163 +1,140 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011017.outbound.protection.outlook.com [52.101.65.17])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3777B18FDBE
-	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 01:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762220332; cv=fail; b=WwhJUO9CKgSiny7IaaeKzIYdyIWUAA5e7qF3BYb/sxa2buot+rourWYf2h9FTprAGs1v2P85+XDPqXReajwq9SVBTUp76/OpS4E0o47u2xQFBGukFazunG2td5PAzyKWWB6PKLB5aiQ1/dMW9uWaHPfUkVSF1XOu50NfYQObZSo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762220332; c=relaxed/simple;
-	bh=Rur/HVDmk6GKaclAMzClTS4zhV/XW5psecGHbLUpOaE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=iGz1OlusfRoeTIvQn5iRropEkBD0HP+T03NT1alopD0+PaSCr2p6r5EngvHxzTBEGVyFOeQhvcIEe5x0hgvlBgSvyf+KCQeukchEWJkTPIyCCoiNeSGRT3w/QzTHOCD0M8GU5ZOFuQ7OFp4KnJP+R3BtH90Hog0FCrtkTJ+qV5Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=whN9TSeE; arc=fail smtp.client-ip=52.101.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAEE236A8B
+	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 01:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762221041; cv=none; b=Zcw96Nyj9oUAgSCC9NPRLN/ypxW9Ppj17+07WrbrDbd5ZJP+ilsf5o9Y8DQg3zSqhfzLnZPCfp2a/cnDdfDm7N+nquRrMUYWwuG7Xy3vZGXcp6AZPnLTnKjjZTXaMCqrhhmf6F1zSbVNhVlgJ8vd6D2mI5/szodFjo8LxhJL7A0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762221041; c=relaxed/simple;
+	bh=SAgtMFsubG/8VFAlFqC1sgnxtzgYTVufuKhUVFsu2ts=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qILOf6ttUSPtOBBbV29h4qSSj5/vUd7tkUNwuQABBhDzaVypDU5Ts26mr4+qAR2zMpoDb+Ud5RdWMGaaudXowMovJ8cqIKbJxfiVVt57CigWUn1dHa8GYoDRIiLFGqAE9BElB5A1R3oUi4q+AGf98zys1eIp3B29EP3WecjKRZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ukJVPvGh; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Nz0/zpV2; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="whN9TSeE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=E+x7RZmo2+c9Qon+AF9nzf/Pxq/vWMhM7LfDZBCMimDRLYbk1RO0UehID0cS2bkcihiMyA4LnLT02UsbQX+liZB//6jdj3HQ8NbP6dDVQkxVPVa7wwh0fIP9jOUmeQtljI21t5m3QoSpcEI4/QiJMfFoJ/SARrC6C87kh5lFgqv3u7X87SFsBrmP0/b5AqtWAJBL6ffBOcjPvGjE6HBQvAfmdEPyANnNhh9n5zw7jePCV8PySOJ+tW9qDVGOe0JnIgXNeXTv5OUgg1whRGiNtTHcBvlRX7w81RhwHI+c4FPGn9KpRisnr9Rz+dUkM46KKrt5YhE62o1phZl8J8a23A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=N6Skzn8swGqaG/aXBbbQkq45BrvqeZEpMrAgh2eGIBg=;
- b=Mt1CAo6Bd5QQy2tuvJiLnKog9ufImdHLPamkizIk+hTzQ5l0lmVWTye9hMcMRkqUe6CE7GB4jROK0PPNY/jzv4d9pPz08oPgu6zEh8+hB/YgpSC4tl5FbJpl+/7DyoEMEPLROceazMEROfC02yF/IYIMdgokwofZ3hbzMvqDUDSb2caQWH4zK6CLRqqtja7uiGmFPnffprfwyHT7v1e9wlPmxynLoNQelstLkrKWLXhYSFeIsla+tkAKtlnkvAO+q9yYhCpTl+ZNis5QUjfshrxBepgxrutgQSR7PJMm5HTMt5Hl0U7WcGzn6ZKdxTOvte3isEYxTVWUA1MGTatCTA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=N6Skzn8swGqaG/aXBbbQkq45BrvqeZEpMrAgh2eGIBg=;
- b=whN9TSeEn19weihqKyda0WkF+nJHWduIdBq/greHx1SlUnTZlCGdNOkSUg1Yu2QdAM0o3BFlfILKLfVdU3MfbdiJiBUWgZzzkYl0LmXxQgFNUvSuLn1xzZPzfG3l861RjWJYZa7sd7Y+mgHGfnZdPubHnnLT5Aii20ZOh9sfNzbLvaFT9fS3An36BObJr7hkKsOVXP2vRjotCDRnrtvlmZmHZuL+pjVuYcxQYSJOyH1seusNn8biCvB/jys8V1sI0R56s2IprzUGRGLRTLulzsxjC88n/QXh8KMcId2WNZ0Of6pDPvJ5PhPOboka6n9ZoAoDWyo12ILu9Rk95j7GRQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by DB9PR04MB8364.eurprd04.prod.outlook.com (2603:10a6:10:24c::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.16; Tue, 4 Nov
- 2025 01:38:47 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9275.015; Tue, 4 Nov 2025
- 01:38:46 +0000
-Date: Tue, 4 Nov 2025 10:51:10 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Anson Huang <Anson.Huang@nxp.com>, Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ukJVPvGh";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Nz0/zpV2"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4d0ry56v23z9srX;
+	Tue,  4 Nov 2025 02:50:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1762221038;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vUDHSpaYhTM0MBeAOADgsVN/8YIxpgXSREgpli9VDxQ=;
+	b=ukJVPvGh+jPAzd2bTJM3eVvURU44gCZP64EThJ2NRe4oMxdWMz2Rbsn/MjNztsTKjVWYEx
+	oDzzNfVo4WxMvt+WUAy35xZT8ABUEAZcdysCVTnZbnHWTgemkbqKtBVgAs33cLBlvyh8B7
+	BLRqHb90xE3HuF0abJZNO8L+ec3n/6P2M1nxzXe/zRW6VgaJLGAHqxQ9e8jb3t8ihvUvym
+	opB5SI4auDxm3szd9iUCYAMZYn9oWYQT41kTYaMxyuzeYM05nplqqsVX85gOA939JUN5IB
+	ZcLHUlv/NM0kQiznvblVcfj6JvUBaHWpKcEXRptPcL/q8YsPzKcDGpufiai8PQ==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b="Nz0/zpV2";
+	spf=pass (outgoing_mbo_mout: domain of marek.vasut@mailbox.org designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=marek.vasut@mailbox.org
+From: Marek Vasut <marek.vasut@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1762221036;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vUDHSpaYhTM0MBeAOADgsVN/8YIxpgXSREgpli9VDxQ=;
+	b=Nz0/zpV2VQ8MgfMYtlSwdN3MtmMNXbZWWCs7Na3VxwDqQWNNUzmsvSWzkY0PXgOZElGZKK
+	1eoqvJspPTAUyEzoFv8U3HIzTzo/bKbiBiLIen/eUZ5xNdZ4viALN1Ow9f/jlkkGFkMtKL
+	tYpWtT8E1emmoWDmSSQXYcFMfB/EETCat25k0HKnJYit80h3wwogHn7AbgNOxQDoS5W/AE
+	Ylw0F/K7EoVfg+RlVhBd8wetjya0e4gv25dHH+CWqR8alt2X0gXQadlKTNRR/TTExT85zn
+	DHI8SWyozPIY2azVYU5ZRtgnQ4lE0gVFSCmdRw1anCBde25I5TUZSqWjgMY4vA==
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marek.vasut@mailbox.org>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] Input: imx_sc_key - Fix memory corruption on unload
-Message-ID: <20251104024527.GA8752@nxa18884-linux.ap.freescale.net>
-References: <aQYKR75r2VMFJutT@stanley.mountain>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQYKR75r2VMFJutT@stanley.mountain>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-ClientProxiedBy: SI2PR01CA0006.apcprd01.prod.exchangelabs.com
- (2603:1096:4:191::14) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	kernel@dh-electronics.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] arm64: dts: imx8mp: Add missing LED enumerators for DH electronics i.MX8M Plus DHCOM on PDK2
+Date: Tue,  4 Nov 2025 02:50:13 +0100
+Message-ID: <20251104015031.219863-1-marek.vasut@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DB9PR04MB8364:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8882cb4a-058d-4214-94d2-08de1b42e575
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|7416014|366016|1800799024|19092799006|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?kLB+Gl81tkolRLsWiPWVoei8qi/1FxWtjPtws4mBfkvIm70fSDBfr59u5MWh?=
- =?us-ascii?Q?W/PAZ9wUdfftDTXNiuTHMBloKABThj4UkLcj/smMgmT+hPW+HUd9NoCjGGDt?=
- =?us-ascii?Q?Zy4/gDz4C6va04yXuC44r9K+UW9yylEvbv18aGMX6aLvStoqFpsYHeoFCyQr?=
- =?us-ascii?Q?3OlRtsTl6/P9ITXiMriZHOnNRBqtACFDCZk4c+yvbGnU+yRICv+PTS4YJ8te?=
- =?us-ascii?Q?DsJ0EyWc4wmqJB9L0jNkIw2dgmPu227bIYHZoYQ4p96Mu47dAHQ6TAaCJfpg?=
- =?us-ascii?Q?/17vWY8zi4IMIq4cwIb0poQMQ9TNmTOxtH1tbDB9saeOsKke6vYHtVU48y9w?=
- =?us-ascii?Q?lSQl0zw0BJUjpXFHS5VGl4crzzTK+GEHMQtpzhFE9wnki/GZZpqvdgucaB0g?=
- =?us-ascii?Q?LLVsMd8T43eQ3N/W+2LlnBWY4LA+fQ9gTY3Tm9w2X938ponwvlet5+jkqx4M?=
- =?us-ascii?Q?cUOqm600/6np82fiKRBrLjy+kQaTUq1qN72dHFPSk2lHba+gK2tbtFKFSGDL?=
- =?us-ascii?Q?Wg70ncG9Ff6SWXIEuIIiEfztXOuauOpnQlvzEjukzRwGmDE5uAfyuYy36b07?=
- =?us-ascii?Q?3PY65+TDwUhg+/OUCrjiciKUGGKqYV+P0Uu8ELiXamjREv6tsYsRUqn1u6YI?=
- =?us-ascii?Q?C7arKkvAONdpjTbo2mOQPX02yCJpzJ/DQtVvDBGkSGWgtCmPwCOlINPC5V4F?=
- =?us-ascii?Q?U8eiAIjB+18CuZd6LbwTrtQFGZjfgZ7J/4zksXOeo7JAHyzti0pTKOq0J7JH?=
- =?us-ascii?Q?HlTcLK8otZ3d84Juw3XGwfoXQRBE+c+N9V/+MOKksUdO7jHkBu9pYqGXtr+F?=
- =?us-ascii?Q?68ZGF3Z6sCe+E99DEjOAOYSzpKPU1nAH/b84tY0yArbnA3XeUCzf94mvlTYK?=
- =?us-ascii?Q?xVDzNOhP86vu729IWb+UH4WhIocK730N7XzihBw8nY9D4MzHwULEOXVzoKn8?=
- =?us-ascii?Q?GwRm1Ws0394+nw1YGPD5raFhSMI3hAU5lsotDorGntABmQMgie1HlF4QXy3g?=
- =?us-ascii?Q?xo7on2YpoMwTIt3JtxcBGlCxC+Fj3Lm5YzNNZj36xLboh0o7RKK3PzJTJX84?=
- =?us-ascii?Q?wr04AIRjQP1ya7Y71jnZp7IG+N9B2wfdZCOYUNmU+Z9ntI73pK07hZ2t/gG4?=
- =?us-ascii?Q?F6fLCfaQZgl/JI1nGfH2tjW7tV2NgGVc8X+KSzxMxAAw6SlyLo+yIL/s1THY?=
- =?us-ascii?Q?R1SgUOVGyyNjRy4sk/Y+2k6VuYSEOvRpweUag+EF4WOfFkSW9qRyqwPsPg25?=
- =?us-ascii?Q?EQ+qCmK/jO3hZ1zbKZ9ajzPg4o088xpGscV48HVrD5fJNMe8TSfSe+FV0WYH?=
- =?us-ascii?Q?eYzADUtR4Sfp5YT0LXBXjv8WF1b5r0rV+Q56JohQqV5VWyf/KA01S3rJsH/j?=
- =?us-ascii?Q?vdk6nemZ7B7mnzFKExY0ubxSZKEW5yoxIa9Qo2nfkOkj5zNmoK3Tqkx7sMJS?=
- =?us-ascii?Q?qXL1A52Qo//s8iVEOYYMraJa3Eg81V9HVPajBP8FEisRc14n/xR2apXiVCxq?=
- =?us-ascii?Q?eNnTywKknS+XhvyY7TGLyYZdZQAbJG+k8+eO?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(1800799024)(19092799006)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?y9ysDJQaEwO5hetl7JBUuHk2U+ZvIDaCqbodRga2la2hX6+gatxexdFue7Cv?=
- =?us-ascii?Q?6IUbQ7Ay4aFtVeu8JpwaWkiz4KUyh85LCW+uZkDTpxVGbP3w4SPvZcJCzXmT?=
- =?us-ascii?Q?2Fb/jEHUtu8rN02dv/ygHF5RQgdvF31Uwk+LJClHsSMNLlo6GX+c28AFuxJl?=
- =?us-ascii?Q?A3faN71DAmUKHywBT686qajBK1Jmnhz9D2AdoUjvnBh1lFWngEVeQSBT6uWs?=
- =?us-ascii?Q?998gTpM6LffiIks7jHpvmMYfIGZHnrO7k64IkHD7eYcJn13eM554t4XtUFGP?=
- =?us-ascii?Q?kobAZT8ymSxdKwYC8qzbTtdGAi4gOTQUTTEZy0zkyllroePdmNQtc7GyVvee?=
- =?us-ascii?Q?DDL9F2kari5Q7AbGVfsut0aGuPn7FhfiyhgbDx6nrURfXF+6iSnxoMpje6ST?=
- =?us-ascii?Q?q7Tn7PQkuOQAaywpU4u9tKsE7UpMASPSNuhGtrGCw69h8xc1pjBLZD4864Sq?=
- =?us-ascii?Q?JT/2dVqkEqRm1B5OEdWPJT9RzcPxRrUJw+8u1mY/F5S/tJIOOEkRcpoB+N6l?=
- =?us-ascii?Q?zodm2RMyZk9wSxhuvcSScFtxOssXLI6a0FSKadXsqfD78dUcHJMQRQW56QJd?=
- =?us-ascii?Q?FJ5kDCyuIh3AMniipapShD0cOBcdQ0O/aSOBj5bCuTu5xlOS4iT4DHgvmzj8?=
- =?us-ascii?Q?6nu6IVb1Hpy6U25Zem0C8UrNEqVlbXhFjYDvKgC+6qBCsdqpXQ8eSm7AQk76?=
- =?us-ascii?Q?HePmCyG7+56+2uJmrhNZbvoIdXhkkRbLzEnApaQBKavPZ8MEKXoR5gCOttfi?=
- =?us-ascii?Q?RH/0QdMAIRdueG90Wo+4RoyhFjCEi7PWty2wGbVS1T4qvSZFxS2Pc3ezM+8F?=
- =?us-ascii?Q?6gJj0AYgEg6M69p9vyOw5Wa18AWf7mYGzBQlXjQKWcgf+D2eqLCM5WF0bZcK?=
- =?us-ascii?Q?ci78BhjrgW8vcEm4W943OcyaQY+h51GyMwdsyX0YGoijHvXoiwJkQb9wcG10?=
- =?us-ascii?Q?hb79SVPdLH3pZu18b7Kse4juN+YFUcwZHCaELNIzYrMokJs7APMzzrXss4zs?=
- =?us-ascii?Q?40mXfUJ1DR4zq2JWU6y4+p2Mc8b+iLKBdi2lX+UgYmwof+2J1vLAP693kuax?=
- =?us-ascii?Q?CFbWnmJEPL5Pd6z6xkGpktan9qCcT+Pq56i6bbdafoglYe3Xfd9NSGjAT2F4?=
- =?us-ascii?Q?8Nm/LjW2BKrISOqPJuW1hz2CpVqTI7SatEMnLoxNvLSTeY3gEiic2Kqi3tKB?=
- =?us-ascii?Q?fDhuwROIrs6OFPpL+JcMxpjGUV4blIdqwRfaVjlGfpQqFaS0Sl4cwprAbuMV?=
- =?us-ascii?Q?nX6dBiqhkHkRVBtgg9h7nSHl36qItG1DRhhJhlQJ2AHFQOnfKJeuAau7UKdJ?=
- =?us-ascii?Q?+8LMzDhkqH2aRV7OILBNhxPvlXLEOl+fa20utGtO2YFTAoygkJMTlnLEBZ6M?=
- =?us-ascii?Q?Cb1rBFtVgUNmw9Ges65mT4QclLp9QdEdzTXbRVTBafiz5M35pj/PvyxfTSks?=
- =?us-ascii?Q?yKmCES9et82ubuIE/VNikRcMSk8eTBiwriVzc87ANyW6g+lTNjASsYAT0V29?=
- =?us-ascii?Q?Jw7IHK32J8kegLveZVr18+CKDO5BruNg65LboaPGLgnUulmpTxsJCSSh1VMH?=
- =?us-ascii?Q?kCbBkQGtMxNcU7B/nKHBRk9VpV7dPGhcon+D4acH?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8882cb4a-058d-4214-94d2-08de1b42e575
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2025 01:38:46.8245
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: I21kV0kjjhpvbUWshvhpO21z4MVxdDLmCq+NtTUr3fKE3PzpDCklpV5QyzCum5TxuIGfOmmnCJR2KyNMRb52SQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8364
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: d7f6xkzgu6my1hhenurh89d46ohba76d
+X-MBO-RS-ID: b536646df4ffa1c32ed
+X-Rspamd-Queue-Id: 4d0ry56v23z9srX
 
-On Sat, Nov 01, 2025 at 04:25:27PM +0300, Dan Carpenter wrote:
->This is supposed to be "priv" but we accidentally pass "&priv" which is
->an address in the stack and so it will lead to memory corruption when
->the imx_sc_key_action() function is called.  Remove the &.
->
->Fixes: 768062fd1284 ("Input: imx_sc_key - use devm_add_action_or_reset() to handle all cleanups")
->Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+The LED enumerators are missing, which prevents the LEDs from being
+accurately told apart by label. Fill in the enumerators the same way
+they are already present on PDK3.
 
-Thanks for the fix.
+Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+---
+Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: kernel@dh-electronics.com
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+ arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dts b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dts
+index ebdf13e97b4e2..3d18c964a22cd 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-pdk2.dts
+@@ -88,6 +88,7 @@ led-0 {
+ 			color = <LED_COLOR_ID_GREEN>;
+ 			default-state = "off";
+ 			function = LED_FUNCTION_INDICATOR;
++			function-enumerator = <0>;
+ 			gpios = <&gpio5 22 GPIO_ACTIVE_HIGH>; /* GPIO E */
+ 			pinctrl-0 = <&pinctrl_dhcom_e>;
+ 			pinctrl-names = "default";
+@@ -97,6 +98,7 @@ led-1 {
+ 			color = <LED_COLOR_ID_GREEN>;
+ 			default-state = "off";
+ 			function = LED_FUNCTION_INDICATOR;
++			function-enumerator = <1>;
+ 			gpios = <&gpio5 23 GPIO_ACTIVE_HIGH>; /* GPIO F */
+ 			pinctrl-0 = <&pinctrl_dhcom_f>;
+ 			pinctrl-names = "default";
+@@ -106,6 +108,7 @@ led-2 {
+ 			color = <LED_COLOR_ID_GREEN>;
+ 			default-state = "off";
+ 			function = LED_FUNCTION_INDICATOR;
++			function-enumerator = <2>;
+ 			gpios = <&gpio1 11 GPIO_ACTIVE_HIGH>; /* GPIO H */
+ 			pinctrl-0 = <&pinctrl_dhcom_h>;
+ 			pinctrl-names = "default";
+@@ -115,6 +118,7 @@ led-3 {
+ 			color = <LED_COLOR_ID_GREEN>;
+ 			default-state = "off";
+ 			function = LED_FUNCTION_INDICATOR;
++			function-enumerator = <3>;
+ 			gpios = <&gpio1 5 GPIO_ACTIVE_HIGH>; /* GPIO I */
+ 			pinctrl-0 = <&pinctrl_dhcom_i>;
+ 			pinctrl-names = "default";
+-- 
+2.51.0
+
