@@ -1,124 +1,143 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F345F242D97
-	for <imx@lists.linux.dev>; Wed,  5 Nov 2025 17:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7DD273803
+	for <imx@lists.linux.dev>; Wed,  5 Nov 2025 18:13:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762363690; cv=none; b=u2fovLkmc5oxe6T3M2L/GfTAsNM+kG1zV8DunqH00CS+PkCL4KrpiSfMgVWNMbZ1KR0rGHRAzaG+Ui++Pb2Xm8wzRI3bAmU8axh2562Xvq2716N3p9snpuV8DWVPdcAVzPDtor+DJytWuUxJUIQS9j5DXqtfFvnuBkTZTZJoJ4I=
+	t=1762366404; cv=none; b=gF4ES1wrLVg41QZLcp3xwNTH7mFTRdZdWg+ic37QB0LEUBmYqHm9ph2JZqHuyEDIlvMZXaqT2aX0JWcntvF7/a9VXBo7bB4IgGJQaw29l6BtOjwe2sLoPPPv0xvho4xJOC5qA8EQghIXJYyO2z160hmWN0vd9ZFYdNEbLCc+13E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762363690; c=relaxed/simple;
-	bh=A9meDTqC5tJJ9U1Z7d2WJ+ZnrwYNX1upajzsMqtt0GA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tESJeHkDohGpgfdkibCa5nuYMad7uWNm6HmsUJed1cvOdJc1af5trJZ2HaEeJabqZoHfx+uUCsCrZTG6bRnVb5ZdM9VyZBTCXFiqpYg6qS1t4DtGnd+yjOZH4UKkiJcGOZaJmscRK960poJW0RR6FjqfVMIxewS2u2YvemIp3G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=IVu3H3vk; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1762366404; c=relaxed/simple;
+	bh=Ug4epuCkcaJAg+e8KIyZD2/iemxtXmnOnHGjOrCEs/o=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=oeLoxbodkqJgzZvoLwrj1+p4HKsCeWO0mneEopYe4RX9U0ciJUTat1X/aqoanbDA0n++fAi1cPqVDI/K2mFjxrvo0IQjbZN9N1uwWVbdYQxbayi/qK4SicW023Dmfb9GLKd9iXIgst2/VtyFOQNNKYT+0Lb0AdgDsR6/a4/vzQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vVMTH8oh; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="IVu3H3vk"
-Received: from pendragon.ideasonboard.com (82-203-161-95.bb.dnainternet.fi [82.203.161.95])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 91ED17E0;
-	Wed,  5 Nov 2025 18:26:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1762363573;
-	bh=A9meDTqC5tJJ9U1Z7d2WJ+ZnrwYNX1upajzsMqtt0GA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IVu3H3vkW9ImWiDmVZWXQk25mP1UZAc5e0AIFNxJj8bJ+jylfadg6y1p31lKqCBdJ
-	 DkKyukRbSJQyviLKV0480hplT/mE0jZ1CX7PSmqg13Op9pJtuOSy27QUe6d0nNeLd4
-	 /G2ArQYKft0dqux/Xct+HTMnxAkqwbdvmcWrEXa0=
-Date: Wed, 5 Nov 2025 19:28:03 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Guoniu Zhou <guoniu.zhou@nxp.com>
-Subject: Re: [PATCH v3 3/3] media: nxp: imx8-isi: Add ISI support for i.MX95
-Message-ID: <20251105172803.GD6046@pendragon.ideasonboard.com>
-References: <20251105-isi_imx95-v3-0-3987533cca1c@nxp.com>
- <20251105-isi_imx95-v3-3-3987533cca1c@nxp.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vVMTH8oh"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id E7D404E4153C;
+	Wed,  5 Nov 2025 18:03:56 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A597E60693;
+	Wed,  5 Nov 2025 18:03:56 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B833410B510C2;
+	Wed,  5 Nov 2025 19:03:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1762365835; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=FCxsKgZxhNgnJkvj/KGRREoRR8EGeTXpZ8jT6eg79s4=;
+	b=vVMTH8ohHbUDKCAY5bjisKQTkA5E7XO7aW5dd5QnefShbzI9TBfbfer0ecT2S47DQwHrk5
+	ocCj35krYsCkye6YFFj6xLJ+WP1uNrYBY0Fe0lBr7p8+AF0Ai1lkzetCQFaV2UOuKI3TKM
+	n90TQy49xvU3plCaFhv4lmVSFeI0EOyUpv0wqv2HkAGFLiwmTVw+dG9C6XpBg/PxhE5h34
+	/2w62xT5eU9HLv3N4Iy4hdHByhGz6phq74ak7WZI2a8AkNBcPqoqF1NyYe2FpvCRePQGHa
+	hkZl8u3GOYy2zs/p8h2JCbNB6dHcXA0M+PbQZn6aBzZ9gsfEyNRhfqCKOWWWMg==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251105-isi_imx95-v3-3-3987533cca1c@nxp.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 05 Nov 2025 19:03:50 +0100
+Message-Id: <DE0YJPERKME9.2CYGFAPULFMZV@bootlin.com>
+Cc: "Abel Vesa" <abelvesa@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Fabio Estevam" <festevam@gmail.com>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Laurent Pinchart"
+ <Laurent.pinchart@ideasonboard.com>, "Liu Ying" <victor.liu@nxp.com>,
+ "Lucas Stach" <l.stach@pengutronix.de>, "Peng Fan" <peng.fan@nxp.com>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Rob Herring"
+ <robh@kernel.org>, "Shawn Guo" <shawnguo@kernel.org>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>, <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-clk@vger.kernel.org>
+Subject: Re: [PATCH v2] drm/bridge: fsl-ldb: Parse register offsets from DT
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+To: "Marek Vasut" <marek.vasut@mailbox.org>,
+ <dri-devel@lists.freedesktop.org>, "Laurentiu Palcu"
+ <laurentiu.palcu@oss.nxp.com>
+X-Mailer: aerc 0.20.1
+References: <20251102170257.65491-1-marek.vasut@mailbox.org>
+ <DDZ6KCUVYB55.330X4X5ETRXR3@bootlin.com>
+ <25cd3b11-8417-44d3-af28-fa73419c713b@mailbox.org>
+In-Reply-To: <25cd3b11-8417-44d3-af28-fa73419c713b@mailbox.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Nov 05, 2025 at 01:55:12PM +0800, Guoniu Zhou wrote:
-> From: Guoniu Zhou <guoniu.zhou@nxp.com>
-> 
-> The ISI module on i.MX95 supports up to eight channels and four link
-> sources to obtain the image data for processing in its pipelines. It
-> can process up to eight image sources at the same time.
-> 
-> Add ISI basic functions support for i.MX95.
-> 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+Hi Marek,
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+On Tue Nov 4, 2025 at 12:08 AM CET, Marek Vasut wrote:
+> On 11/3/25 4:55 PM, Luca Ceresoli wrote:
+>
+> Hello Luca,
+>
+>> On Sun Nov 2, 2025 at 6:02 PM CET, Marek Vasut wrote:
+>>> The DT binding for this bridge describe register offsets for the LDB,
+>>> parse the register offsets from DT instead of hard-coding them in the
+>>> driver. No functional change.
+>>>
+>>> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+>>
+>> I was initially a bit skeptical because normally register offsets are
+>> derived from the compatible string, not from device tree. But then I
+>> realized this is about the LDB which has its two registers in the
+>> MEDIA_BLK. This means all in all this looks somewhat like an integration
+>> aspect (the LDB component uses two resources of the MEDIA_CLK component)
+>> and your patch mekse sense.
+>>
+>> So my only remark is that the above may be in the commit message, to mak=
+e
+>> the "why" clear from the beginning. It took a bit of research for me to
+>> find out.
+>
+> Actually, the LDB was always meant to parse the 'reg' offsets out of the
+> DT, it then went somewhat ... wrong ... and we ended up with hard-coded
+> reg<->compatible mapping. It was never intended to be that way. That is
+> all there is to it, there isn't any deeper reason behind it.
+>
+> What would you add into the commit message ?
 
-I will take this series in my tree and include it in my next pull
-request.
+The above paragraph is a good draft of what I woudl add.
 
-> ---
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c | 12 ++++++++++++
->  drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h |  1 +
->  2 files changed, 13 insertions(+)
-> 
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> index adc8d9960bf0df87d4e475661a3439beaf5ce9f6..cf609320f19e91c9c0f57634fabd62e0ff65123b 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
-> @@ -337,6 +337,17 @@ static const struct mxc_isi_plat_data mxc_imx93_data = {
->  	.has_36bit_dma		= false,
->  };
->  
-> +static const struct mxc_isi_plat_data mxc_imx95_data = {
-> +	.model			= MXC_ISI_IMX95,
-> +	.num_ports		= 4,
-> +	.num_channels		= 8,
-> +	.reg_offset		= 0x10000,
-> +	.ier_reg		= &mxc_imx8_isi_ier_v2,
-> +	.set_thd		= &mxc_imx8_isi_thd_v1,
-> +	.buf_active_reverse	= true,
-> +	.has_36bit_dma		= true,
-> +};
-> +
->  static const struct mxc_isi_plat_data mxc_imx8qm_data = {
->  	.model			= MXC_ISI_IMX8QM,
->  	.num_ports		= 5,
-> @@ -548,6 +559,7 @@ static const struct of_device_id mxc_isi_of_match[] = {
->  	{ .compatible = "fsl,imx8qxp-isi", .data = &mxc_imx8qxp_data },
->  	{ .compatible = "fsl,imx8ulp-isi", .data = &mxc_imx8ulp_data },
->  	{ .compatible = "fsl,imx93-isi", .data = &mxc_imx93_data },
-> +	{ .compatible = "fsl,imx95-isi", .data = &mxc_imx95_data },
->  	{ /* sentinel */ },
->  };
->  MODULE_DEVICE_TABLE(of, mxc_isi_of_match);
-> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> index e84af5127e4e7938e55e31b7063bee5e2cd4cb11..e52c7fc334b0f5624ade600914c275e7539290b4 100644
-> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
-> @@ -161,6 +161,7 @@ enum model {
->  	MXC_ISI_IMX8QXP,
->  	MXC_ISI_IMX8ULP,
->  	MXC_ISI_IMX93,
-> +	MXC_ISI_IMX95,
->  };
->  
->  struct mxc_isi_plat_data {
+>> [0] https://lore.kernel.org/dri-devel/20251103-dcif-upstreaming-v6-3-76f=
+cecfda919@oss.nxp.com/
+>>
+>>> @@ -309,6 +302,27 @@ static int fsl_ldb_probe(struct platform_device *p=
+dev)
+>>>   	fsl_ldb->dev =3D &pdev->dev;
+>>>   	fsl_ldb->bridge.of_node =3D dev->of_node;
+>>>
+>>> +	/* No "reg-names" property likely means single-register LDB */
+>>
+>> Uh? If it is "likely" it means we are not sure this code is not introduc=
+ing
+>> regressions, and that would be bad.
+>
+> I can drop the 'likely' part.
 
--- 
-Regards,
+If you are sure it's not "likely" but "sure", then OK. However it all
+depends on the bindings, which leads to the below question.
 
-Laurent Pinchart
+>>> +	idx =3D of_property_match_string(dev->of_node, "reg-names", "ldb");
+>>> +	if (idx < 0) {
+>>> +		fsl_ldb->single_ctrl_reg =3D true;
+>>> +		idx =3D 0;
+>>> +	}
+>>
+>>  From the bindings I understand that having two 'reg' values and no
+>> 'reg-names' at all is legal. Your patch implies differently. Who's right
+>> here?
+> I think if you have two two reg values, you should have reg-names , so
+> the binding should be updated ?
+
+If the bindings are unclear or ambiguous (or wrong) then they should be
+fixed in the first place. With bad bindings we can either have a bad but
+compliant implementation or a good but non-compliant implementation.
+
+Best regards,
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
