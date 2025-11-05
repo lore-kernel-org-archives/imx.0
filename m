@@ -1,59 +1,59 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFE22475D0
-	for <imx@lists.linux.dev>; Wed,  5 Nov 2025 09:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECB92FD7A4
+	for <imx@lists.linux.dev>; Wed,  5 Nov 2025 09:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762334498; cv=none; b=VQr5r8GRoGnZwY4hBv+laCuCzwyiU3ZyP2cJSvQxyWV6lHSfYw1jPkMEmD23Bp29Rm5yq+f0ZEdlN0RPRioyiLY4r+0JqpAztMU9MyHZAfjaNWBqcjlECQ3szZ+Ljnvo4Ss2bBij6JATcIq+kQnyhJg0cqJ75BpMU0W44X0jsd0=
+	t=1762334965; cv=none; b=VMzPLpmP6/XUqNnC1HBxdhAwB5CkqmxYPIb7otHFD6WxY1yX3loCyKvZxmPEroDXD7bhx5txMNfe4yDpmv+0N+FLXXx9vlxUiuR5i4pj1NYzWB1/vrE9wbm9ac8hfXjG0HuY2pQVjnwHshUkqniZvrXQVpsF3ExZBFopLbdnSAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762334498; c=relaxed/simple;
-	bh=r6IAr6ThWrXT0VQC+S0LBlsjUYHMVkUu3AebSU18ydI=;
+	s=arc-20240116; t=1762334965; c=relaxed/simple;
+	bh=0XgQsaPK8SkvjG5BCRqme8oV5Z9wnVFe1B2vfhJEqDo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ffZnIjt08uHegXuxWTW3rRTUHWWly5HhbO0eP8MWqXmvv3NNW5yYXoeipMt3aBGmXkzLRqUvIzHzy5RhBACQkHLa8YeNnHCOVkYLEt6Bz5Z0juOKr6gMtnmsAJGuY3WT1vIZ1s7Ga8vp9fKU07etjEJ1YXgQY+G+yMNE6Ksgqtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XkaFCGuc; arc=none smtp.client-ip=209.85.210.171
+	 To:Cc:Content-Type; b=JwL3qOne5Fm9xJIrdxk146kYZDEPFOguzHDxxV7t/sZgnqo78x8xatpuebZT0TfQCgFjVQ2upkX8hr5H58++zzBPPLGatzUFxBmMEz3oLMkSGLvHY7WfnDn0phql1R/7f9EP83qYX8HqYq2/fTJGLulolCBsY0KWuoLIoYE6Av4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aybyUNml; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XkaFCGuc"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-794e300e20dso531859b3a.1
-        for <imx@lists.linux.dev>; Wed, 05 Nov 2025 01:21:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aybyUNml"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b9ab6cdf64bso316828a12.0
+        for <imx@lists.linux.dev>; Wed, 05 Nov 2025 01:29:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762334497; x=1762939297; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1762334962; x=1762939762; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=r6IAr6ThWrXT0VQC+S0LBlsjUYHMVkUu3AebSU18ydI=;
-        b=XkaFCGuc8l3OYIuT9PtLe1B7OyungdIncJxlcBpJ8uqll+z/u6mPQFTIc8wO5+IYBy
-         ZpSh9PDHYdpUbL8JdQmAd7OQxrMgk3NRMToIoK3CSNzx8IIPWSPRXUvU6UZ2A+8x86Fa
-         tboIgvSg0e6rwYh1WfYveHomY6ku1xYhPJ6eXyKqvmfNyyG14flEWJHQt4yr4iAmNXPE
-         FmKPdJ6e547l66xkfTQrBgNB+5/8/B8u6ygng1OzcAsZz+P61bsnNMP5WzH1LsTnTmq8
-         We5NoJiKuFfe3Kh+Tg2z5L//rXoDmnbJtvodiLNhYxD1hq/x4O71SMUygomYJgheSTd5
-         in4A==
+        bh=txxoHQsD9SBr+0uAjaOafgKfJPgFXKi5Q4JCWLCgjxk=;
+        b=aybyUNmlNZU8d+s0MEN6xl0Lnf/pnBI5+Z37+gbK5TcdMrUiWSl/6x9r73aga+fJ0q
+         aPyjdT1/w3P6OW1pEiW2mAhmUgz72PD0jTpu3kg6xk/NbZKiMDZMxFrfWbiQPs0kNJVC
+         7hzkV8F3IMDjbTdzwf298zqkUV4C7Kt76D+Xrq/V0ask/GwalD7pSWS7jBkeeXD+8UZA
+         Y7z3H0YQ+8nr/4oBg6Q0AlDu5Vzu/LDByJQn+EjPGGpQ8iaFo57NzMVk/uZW479hvHdP
+         t8ilwWvHdocrVks/bKfe8lnzJKIAlPPeRaJvuIn4Y7fpvML3uVLQBUc1z9yZKyRTq2AW
+         c0jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762334497; x=1762939297;
+        d=1e100.net; s=20230601; t=1762334962; x=1762939762;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=r6IAr6ThWrXT0VQC+S0LBlsjUYHMVkUu3AebSU18ydI=;
-        b=elPLstVOcJp/w3N2GtJnly8JwxBqARY9hbaiMDk67cwpkhw7IT97NHdAbR0NdLh/Aj
-         eECj1LJuOh1MBQ4cltHBoqpqHKUQ8seNOYzykHl6g0hHNj3zBMxEHyG1LmdMsc4GPbj/
-         l5oDt+18eXZ/ndzeGk96exst0UC841ELlGS25WFQr/ILeHSfcumkFfBsvoBIZEF7tmJi
-         K+6RiGzYXfmTH2uA1uLYdLpYJqYxugUkvp3TsjoDct2lAikKO5PNLH8dUCKHQEbUHGZg
-         hiGCkfhg1AC0Z+dipMJHnZ2yYvXDkES75zoH9Buja/c+JOB+Dhi3kLCrBPI+VdnUZkSR
-         85Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCX+0xg8wHUWhQLpxsRRujT3uByQOd7hrhsU3B73QPr4r3ObHPT7tFG561V3WEY1Xd147Gg=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywluu1SwbuEBih3528Cu3KjAoxS6iHtb8NjadFR0l1IK9e8gCNL
-	J1FV+2oSjI6vg3mKZIKS5PhnfVx/ypleJvZH9SxpozBrtxF7cTK/AldFN/9Dn3ke6rDiLgLdrdR
-	lMLuSVjpqhPaPFmGxuFnmkXKpl1QYNCQ=
-X-Gm-Gg: ASbGncuFREWnHCuYzhXih/cAkJ1KKBtWEnkV/kbp/cPnU7392U2pwKI26+g+J/t6pTm
-	ILDqc85FYr4/vJnHkrkF2htXps0TrcMYofks5rnfwwZNZvE47Vqdr/R2WlBd6HvezwBvK94LoTQ
-	UH7F0Rf50lp2WIHAlhlL807NQp/YgDhu2MrAxsjYRfwfTqUkbsRrVJnvVa9rFu/ndgs01idxMay
-	VYuaiY9aX7UWllSlIEmta5e1pZ9VTadrWfBeqEEdrLH2WEY8hJj1OVujQ==
-X-Google-Smtp-Source: AGHT+IEhLgnnarruJw6eIIB+8bTnN8uYAF3Chn6W7iyK13efG69zCQaoyAaLYmuTmnpZholD6kqVshKjrwpDBWN3vSI=
-X-Received: by 2002:a05:6a20:d049:b0:345:4b5a:16b7 with SMTP id
- adf61e73a8af0-34e278f999bmr7748938637.11.1762334496625; Wed, 05 Nov 2025
- 01:21:36 -0800 (PST)
+        bh=txxoHQsD9SBr+0uAjaOafgKfJPgFXKi5Q4JCWLCgjxk=;
+        b=YCF0OWUKPqDbaXpdb1tfSI8TPjqtKNGz5VOthme91QMhtIHwLkzUGbl5CpWMOYIPON
+         JEwHARm0bCHMTW523ApFME18Wd+Xn/GWAzipn+g+PaK+lNIaZE1RH+6JTYjMl3UUWd2r
+         YDAUUYi8r2W5t0N4pVXcK+AdBsX6U8jIYWvOW4DUBAWxO7DXCT/a/Gw7coe0+yYbLKaZ
+         ks94l3LcZHnt8UUJJsfYDVZUz3Tn35GyiWOM9TJOoT8alNez/3mkoK6g9FKoeQvSJmeI
+         E+Nphp26ri6rsVAnj0ha/YQcFyNav7PBrmW58x5R0elE46K9waGfvRhoSZgGYe7cvSea
+         gTgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUHq9x6+0b+nCZ8pcJ7nao54zhIX1HFznkgU5qWBgxg+S2rpb0oRjCQ4bLwUqBuNilPuRk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YywrD5YsRrnT5tpd3Mt0dU9kwj/4gGJXUZ7dzs3XsIAwSFUW4vk
+	gobraT5VxhmG9n3YoBh2kWnPigFqoRmj4vSLOPNADRcYGoLJ7Ka47T8xXx3L2bnbEKSXyzxnCM8
+	rskOzOuQkZ8cTfdmI4GSBIVIwNKEThvw=
+X-Gm-Gg: ASbGncuOquzmXEAMzoIr7Ck1Ms0Es970ZC8pEFLp4Ka/f+53mBvkJFBSiGhHSbhABa5
+	wDkJJeo+YeLVmmKbxpLWuPYZYp5dqs3dfrfpOZSQRYsYNMTCXkYUTanc5ykm4SXbGWYAwMBZHP1
+	cp357sEwKTcWgRP0+Dl5oCezocnaJ6PDENqsiZ0ZC7e5p2uIDirAgh6yoV4eH0W34TlzllJ3nsS
+	Ykm3NtDLMIGLTnemM4kY+NJ2vke6uUl1Slrce3VHv2ND11NKNmCKnebXw==
+X-Google-Smtp-Source: AGHT+IGkCxRvJh3fC5yidm37chqdIHgljJdYABqu7mHMgdmlemqRQI0lkZmwfrypszqAHRlZ8j+gATWb4FCpIOGaggI=
+X-Received: by 2002:a05:6a21:999f:b0:334:7e78:7030 with SMTP id
+ adf61e73a8af0-34e278f99b1mr8298964637.8.1762334962544; Wed, 05 Nov 2025
+ 01:29:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -61,50 +61,60 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20251031-imx-dsp-2025-10-31-v1-0-282f66f55804@nxp.com>
- <20251031-imx-dsp-2025-10-31-v1-3-282f66f55804@nxp.com> <aQUEzx6sobI4Yes5@lizhi-Precision-Tower-5810>
-In-Reply-To: <aQUEzx6sobI4Yes5@lizhi-Precision-Tower-5810>
+In-Reply-To: <20251031-imx-dsp-2025-10-31-v1-0-282f66f55804@nxp.com>
 From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Wed, 5 Nov 2025 11:24:04 +0200
-X-Gm-Features: AWmQ_blaxwVbzKBmJKN_0Fj3HFefT03QXEkDQ4Lh8h-h3RbucXTuRrqR5o2qb58
-Message-ID: <CAEnQRZBNzo6RKjNf4JxxxjxtLCFfEGMMt2fSK4MdVeSjtF5aag@mail.gmail.com>
-Subject: Re: [PATCH 03/11] remoteproc: imx_dsp_rproc: Use devm_pm_runtime_enable()
- helper
-To: Frank Li <Frank.li@nxp.com>
-Cc: Peng Fan <peng.fan@nxp.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Shengjiu Wang <shengjiu.wang@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>, 
+Date: Wed, 5 Nov 2025 11:31:49 +0200
+X-Gm-Features: AWmQ_bkrt0ospuWqleJ6w_sx1LCaBE7SCRpsPmV7R0cWe73tR0hYLHwUvfH1Zeg
+Message-ID: <CAEnQRZAOTFw=sBppHTYQAdfDBuNqkqk6gVO4FyP0EBsva3Oi+Q@mail.gmail.com>
+Subject: Re: [PATCH 00/11] remoteproc: imx_dsp_rproc: Refactor to use new ops
+ and remove switch-case logic
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
+	Frank Li <frank.li@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>, 
 	Iuliana Prodan <iuliana.prodan@nxp.com>, linux-remoteproc@vger.kernel.org, 
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 31, 2025 at 8:50=E2=80=AFPM Frank Li <Frank.li@nxp.com> wrote:
+On Fri, Oct 31, 2025 at 11:20=E2=80=AFAM Peng Fan <peng.fan@nxp.com> wrote:
 >
-> On Fri, Oct 31, 2025 at 05:08:32PM +0800, Peng Fan wrote:
-> > Replace manual pm_runtime_enable() with devm_pm_runtime_enable() to
-> > leverage device-managed cleanup and simplify resource handling.
-> >
-> > pm_runtime_disable_action() not only calls pm_runtime_disable(), but
-> > also calls pm_runtime_dont_use_autosuspend(). The current driver
-> > only calls pm_runtime_disable(). But this should be fine here to use
-> > devm_pm_runtime_enable().
+> This patchset aligns imx_dsp_rproc with the cleanup and modernization
+> previously applied to imx_rproc.c. The goal is to simplify the driver by
+> transitioning to the new ops-based method, eliminating the legacy
+> switch-case logic for a cleaner and more maintainable design.
 >
-> looks like this paragaph is reduntant.
+> Patches 1=E2=80=935: General cleanup, including code simplification and a=
+doption
+>              of the devres API.
+> Patches 6=E2=80=9310: Transition to the new ops-based approach, removing =
+the
+>               switch-case structure.
+> Patch 11: Remove the obsolete enum imx_rproc_method.
+>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+> Peng Fan (11):
+>       remoteproc: imx_dsp_rproc: simplify power domain attach and error h=
+andling
+>       remoteproc: imx_dsp_rproc: Use devm_rproc_add() helper
+>       remoteproc: imx_dsp_rproc: Use devm_pm_runtime_enable() helper
+>       remoteproc: imx_dsp_rproc: Use dev_err_probe() for firmware and mod=
+e errors
+>       remoteproc: imx_dsp_rproc: Drop extra space
+>       remoteproc: imx_dsp_rproc: Use start/stop/detect_mode ops from imx_=
+rproc_dcfg
+>       remoteproc: imx_dsp_rproc: Move imx_dsp_rproc_dcfg closer to imx_ds=
+p_rproc_of_match
+>       remoteproc: imx_dsp_rproc: Simplify IMX_RPROC_MMIO switch case
+>       remoteproc: imx_dsp_rproc: Simplify IMX_RPROC_SCU_API switch case
+>       remoteproc: imx_dsp_rproc: Simplify IMX_RPROC_RESET_CONTROLLER swit=
+ch case
+>       remoteproc: imx_rproc: Remove enum imx_rproc_method
 
-This is not redundant! But it can be phrased better.
+Thanks Peng patchseries looks good to me.
 
-```
-Current code on the cleanup path just disables runtime PM for a device.
-
-Using resource managed version devm_pm_runtime_enable registers a
-cleanup callback that
-sets autosuspend to false and then disables runtime PM for a device.
-So, basically the same
-functionality as we don't use autosuspend anyway.
-```
-
-thanks,
-Daniel.
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
