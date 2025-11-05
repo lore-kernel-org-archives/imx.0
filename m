@@ -1,103 +1,100 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2655727F166
-	for <imx@lists.linux.dev>; Tue,  4 Nov 2025 23:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D72EEAB;
+	Wed,  5 Nov 2025 00:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762298399; cv=none; b=rh4cZ5SbTMOAyF0tEjkBr67KVseCCJYcaDHXWFT+UGJvja0GZPY+YeQK49QsPP82q1TmuFibote88gb3hn6BQdw60ynBwYkFNiFfpAon5eejtdbUu0QdZVm0gKG3G8/MtBTjRyVXXjBNI3blj4+YVvDgk60iy3hRJnQZZDMT+88=
+	t=1762302049; cv=none; b=sgRbJw9wn8IhysxE6lGtBd8JKqf3pWmrGzPrYLWi/ByHUcAbqSj1BiYeIu4tEv50KG6KDbFcl5QGSLLS/AGBiXXEoiArhKRnQ9eqlfsUbWrr8hb1d+Vv3zvAUZyKobjvDXumVBrjs4gJSMcxyYVWRRg4b8wDtlfziUw5tvcz0dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762298399; c=relaxed/simple;
-	bh=6hW9k9llq8m1Kkjc+boksRi0fM+t9oeMFc+qhPZB7To=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JTH1XhkT15wtTER6tKogrCS2dFCleM4ytPZWz4pMlrsc9MY8YIuPkSqvfmYokwHGFLKZMM3DEoZPGNUkVyLB99bbaQf+IPf3nyoNFh9UkOyst8R6EsVBN6fcvnWdYuIzgLOhS0f+u6KpqYMt6dTUyBLN1/UcoCm3RlxBCv/wxXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ck9/Kb0e; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TbUwdjEF; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1762302049; c=relaxed/simple;
+	bh=3MKFuCG76JthLJcZE3T3Op7stJ2k8Ttv8bqnfs9tWiE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=T97Rh9wrCVvt4jTugOrKVZIU6btRhSD64m0ad0XuoCamYIJ0vCjerJVRih/9DXpvhwJsKQ0WJIL1rFY0MZrohaQJEP5qqlA7JYajZUkJLOB7LP+YurUm7408fpOwDRQs5afjfioD27+FzbJennKACScLBRFHst6JS07M2fBQgMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=INojycZy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ck9/Kb0e";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TbUwdjEF"
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762298396;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6hW9k9llq8m1Kkjc+boksRi0fM+t9oeMFc+qhPZB7To=;
-	b=Ck9/Kb0eie7pz087suaUDAtbkFYyXpqXdxCHZTr5dWeJ5JqTwCy4nK9zrYog/1fIyAMm2n
-	dyJS74bDt+JVfKR5IF+H6zdNSZLJf3zemFdD3gvEtoNYdpgqzO3Vmv27+9t5VwUu5TpaQn
-	WnJB0TH4DpkXp4w00HXwtcpFV9ECl7hLLo07hWwaOgEBvaxKw9aV5EjyKbxu6raIurTRtr
-	mGlakJxJF/kvIVrs+9lpqvZRSlNMsjjrsncQc0j/KKr5JBhi3H3PMnO53flZXsfgwt7VKM
-	t0a88iXi5qjpGE+2yqs3WYjBkOR9hDgJk8jBRd88j55/GxhR3IiaSNYRHvjugw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762298396;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6hW9k9llq8m1Kkjc+boksRi0fM+t9oeMFc+qhPZB7To=;
-	b=TbUwdjEFjcX/Ax3oYG35NLH4DurhRtvskG1RxFeDEChnx2+zg6lkfLxuLJV5+6skNFttVO
-	70tcpXjJhCVmMEAA==
-To: Sherry Sun <sherry.sun@nxp.com>, "esben@geanix.com" <esben@geanix.com>,
- "pmladek@suse.com" <pmladek@suse.com>, "senozhatsky@chromium.org"
- <senozhatsky@chromium.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
- Greg KH <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- "ryotkkr98@gmail.com" <ryotkkr98@gmail.com>, "kkartik@nvidia.com"
- <kkartik@nvidia.com>, "fj6611ie@aa.jp.fujitsu.com"
- <fj6611ie@aa.jp.fujitsu.com>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-serial
- <linux-serial@vger.kernel.org>, "imx@lists.linux.dev"
- <imx@lists.linux.dev>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>
-Subject: RE: [BUG] Suspend failure with nbcon + pm_debug_messages (Linux
- 6.18-rc4)
-In-Reply-To: <DB9PR04MB8429F50811DDC648DD8A7B8792C4A@DB9PR04MB8429.eurprd04.prod.outlook.com>
-References: <DB9PR04MB8429E7DDF2D93C2695DE401D92C4A@DB9PR04MB8429.eurprd04.prod.outlook.com>
- <87tszamcaz.fsf@jogness.linutronix.de>
- <DB9PR04MB842977523C92FDE8AF4B714A92C4A@DB9PR04MB8429.eurprd04.prod.outlook.com>
- <87qzuem7bo.fsf@jogness.linutronix.de>
- <DB9PR04MB8429F50811DDC648DD8A7B8792C4A@DB9PR04MB8429.eurprd04.prod.outlook.com>
-Date: Wed, 05 Nov 2025 00:25:55 +0106
-Message-ID: <87bjlhz8pw.fsf@jogness.linutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="INojycZy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C497C116B1;
+	Wed,  5 Nov 2025 00:20:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762302049;
+	bh=3MKFuCG76JthLJcZE3T3Op7stJ2k8Ttv8bqnfs9tWiE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=INojycZy/a78lhVsLvVbeiECZLvsgpUyNONTu4veLZSMfi2e3lJyk0lhbjUy3QZHZ
+	 NGDkYI9wKuMd+GNF8uaYyfmeV5vBqYG0eNH75xE9lfqkLTr6by2JUbcU2MxPGWLMNY
+	 wjqIqv4bXs0DnB0y1BJG5h7QYMVEH01j69TJfwp9D1CNtZ1GKdR3YLFkYEgU89DU9H
+	 3qJgmPG4RulqybvIwgtHGcVoUQR9GI0YGS1eP6mJzlwxLW39Q+Ha8g3OunNUZMxdz+
+	 mYWN4bT+tNgUNH9kDvYI8/YyHC9cMX7rIZ2X0P+YdUkW7agsF7NY7onfZo5qshndfO
+	 CmVHFirNLCsOA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33CB2380AA54;
+	Wed,  5 Nov 2025 00:20:24 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 00/11] net: stmmac: multi-interface stmmac
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176230202300.3035250.17732707564655810857.git-patchwork-notify@kernel.org>
+Date: Wed, 05 Nov 2025 00:20:23 +0000
+References: <aQiWzyrXU_2hGJ4j@shell.armlinux.org.uk>
+In-Reply-To: <aQiWzyrXU_2hGJ4j@shell.armlinux.org.uk>
+To: Russell King (Oracle) <linux@armlinux.org.uk>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, alexandre.torgue@foss.st.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ festevam@gmail.com, imx@lists.linux.dev, kuba@kernel.org,
+ jan.petrous@oss.nxp.com, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, mcoquelin.stm32@gmail.com,
+ netdev@vger.kernel.org, pabeni@redhat.com, kernel@pengutronix.de,
+ s32@nxp.com, s.hauer@pengutronix.de, shawnguo@kernel.org
 
-Hi Sherry,
+Hello:
 
-On 2025-11-04, Sherry Sun <sherry.sun@nxp.com> wrote:
->> Thanks for confirming the fix. I will make an official post on LKML
->> with the patch today. Since the i.MX nbcon-driver is already
->> mainline, I will CC stable. I will CC you as well.
->
-> I'll keep an eye on any fixes you send later and verify them if
-> necessary. Hope this fix can be applied to the mainline and the stable
-> tree ASAP.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Even with this patch [1] I am able to reproduce the problem on one of my
-test boards. I am using the following extra boot arguments:
+On Mon, 3 Nov 2025 11:49:35 +0000 you wrote:
+> Hi,
+> 
+> This series adds a callback for platform glue to configure the stmmac
+> core interface mode depending on the PHY interface mode that is being
+> used. This is currently only called justbefore the dwmac core is reset
+> since these signals are latched on reset.
+> 
+> [...]
 
-no_console_suspend loglevel=8 initcall_debug
+Here is the summary with links:
+  - [net-next,01/11] net: stmmac: imx: use phylink's interface mode for set_clk_tx_rate()
+    https://git.kernel.org/netdev/net-next/c/42190a188fdb
+  - [net-next,02/11] net: stmmac: s32: move PHY_INTF_SEL_x definitions out of the way
+    https://git.kernel.org/netdev/net-next/c/d8df08b0df02
+  - [net-next,03/11] net: stmmac: add phy_intf_sel and ACTPHYIF definitions
+    https://git.kernel.org/netdev/net-next/c/38e8c0fb0fc3
+  - [net-next,04/11] net: stmmac: add stmmac_get_phy_intf_sel()
+    https://git.kernel.org/netdev/net-next/c/2f2a7b907446
+  - [net-next,05/11] net: stmmac: add support for configuring the phy_intf_sel inputs
+    https://git.kernel.org/netdev/net-next/c/15ade7dbf64f
+  - [net-next,06/11] net: stmmac: imx: convert to PHY_INTF_SEL_xxx
+    https://git.kernel.org/netdev/net-next/c/8088ca0d88f8
+  - [net-next,07/11] net: stmmac: imx: use FIELD_PREP()/FIELD_GET() for PHY_INTF_SEL_x
+    https://git.kernel.org/netdev/net-next/c/27db57875c08
+  - [net-next,08/11] net: stmmac: imx: use stmmac_get_phy_intf_sel()
+    https://git.kernel.org/netdev/net-next/c/cb09d1b9582a
+  - [net-next,09/11] net: stmmac: imx: simplify set_intf_mode() implementations
+    https://git.kernel.org/netdev/net-next/c/8fc75fe5948d
+  - [net-next,10/11] net: stmmac: imx: cleanup arguments for set_intf_mode() method
+    https://git.kernel.org/netdev/net-next/c/fb526d0c16c1
+  - [net-next,11/11] net: stmmac: imx: use ->set_phy_intf_sel()
+    https://git.kernel.org/netdev/net-next/c/da836959c78a
 
-And then:
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-# echo 1 > /sys/power/pm_debug_messages
-# echo mem > /sys/power/state
 
-This generates a lot of output and leads to the same suspend
-failure. This may be due to the out-of-tree nbcon-8250 driver I am
-using, which introduces extra irq_work usage within the driver. Could
-you please try the above boot arguments with your i.MX board?
-
-I am wondering if blocking the queueing of irq_work during suspend
-should be generally implemented rather than just printk avoiding it. It
-also seems to only be a problem for ARM32 so perhaps it needs to be
-addressed at the architecture level.
-
-John Ogness
-
->> [1] https://github.com/Linutronix/linux/commit/ae173249d9028ef159fba040bdab260d80dda43f
