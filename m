@@ -1,135 +1,163 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF90280024
-	for <imx@lists.linux.dev>; Wed,  5 Nov 2025 08:04:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01592652B2;
+	Wed,  5 Nov 2025 08:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762329879; cv=none; b=ipPGiCCbb3HuonsoW3nEVqi00m8umwUwFOls2wz/81Qz/qJ5DdWI+fifCqg2d1iPgocUWi262/MX/ikZVTh5OZLGK5u9QSvjwXLmn3+nLUDw8QuMGG3j/qjwx4nP7cNQKzWpQzguGy1fehvqsgNrGiPUlA4+7TFnU/w4FUnkeAo=
+	t=1762331610; cv=none; b=tbktahSzfSNcFJp0SWfG2YbCPYoItudDb/MvDY4hPxDJzH1H56Tz1/B/Vnc6wfpyyYKhEIHrMuENZ9zd11VEtRLbwfL5TmhI8Mx9g8SlzwJmPu63HyhOVUfNorOEjUeYXxs9JGf+PAdNsyZnMt8r6mjVl3OEzKSJ1ne/ykYhE4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762329879; c=relaxed/simple;
-	bh=LsTjAm09M/yGM5svcRs8AIkfB2f/URAn2Y/ln47haPc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BzUQgr3aLvsKJfxBgB0SH83LDmhIr4Hqk7RH75B/oTWYmb7Z8adBJ+FkuSOLD1TY4XUbL6k52+nlDLKyHxqUVydhiNC0x43avd0E+zF3tiwL0vTKdjF4rwwEbKzj4vrIuOMF00xuUvNr77ZkM4gf4onLZnOTy5jzRfjjKi/NnTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E+DeDOHc; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762331610; c=relaxed/simple;
+	bh=N9DVJZLHg/ikq7JcKb017+GXdHTNHUl1swp5I6YFwKg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CeWoqolGP0OuPswEsquv1ISDKHux62wYqkumOO6wOdoiA/NXMHYlQR3/yDlfuYtTtTp4jdOOodgoL4Nd1ugqayzl/dlwHDky+AJEpiwbDhTXOSG2XYvhH65k8XaqgL5R9jnqpSYSptV11xUA+d+gnyHV5yRFoeKbDk6+JCo7MoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FWRtcGLQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E+DeDOHc"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3418ac74bffso976088a91.1
-        for <imx@lists.linux.dev>; Wed, 05 Nov 2025 00:04:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762329877; x=1762934677; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GDe6kRSygVEphf3RSRGt9HkF/eyEhvziT45X27VBXsM=;
-        b=E+DeDOHcywU2DOJlOd1Yb2ABdwtN/WvEyPZ5BYZ33SugwmouSZoRGuj8ernaaHdgsB
-         CA8GSHfwg3HOnA4gM1TxobJf4KzIx4gNhJArRlsjnrLJVLAxFXZ8ZDCkd9vPORoE0hVs
-         8qqWccMcxg8uUl3P+55ymgrjdY2FQFLUkoM1FbTGC20obkj0EzB0nreqccpm1PWppqmf
-         DSUV1TvjVMuQGKcL3bu9sgDM+aGH+SVcLdJa5a1rqG2sXU6cR63ucn7Z/HF0emD2UI9D
-         6/ttsi880K2Lwf2kgEvRLtY4mLJfzbaHt0B7sORnzwu/Ss0sZQoXCrwMnaJmXahmOGSZ
-         Qx9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762329877; x=1762934677;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GDe6kRSygVEphf3RSRGt9HkF/eyEhvziT45X27VBXsM=;
-        b=iJNy9r5L+n+Lq4O1kEWATYMTmKPoQW+0abQ06tymqfwiby/30/8SJLc7p5ELQoZK5E
-         MgPACr9RfTS+dR8eSfWAottKoo92fkZHgg3oFcco62sZ454dt/eP2eKnEijj3e76dOr4
-         CSPtPOm2H/6lqv5wd+nQLMFyNl5UeQRJpIU98ncTjAlkoKswXMJPALCBw9YLrfECovYe
-         BB3pUDf81pECHSTnsbtU/wWeITYzrReFdTcALSVSi0uWeqseC4tL41uWPzrVLdNXYEkL
-         uId3ryiBo7Iy7G2ADFu5VgfkvNKrXtE0BZazbMB+8TA54jIEq1mT10LtpIlcsOffzx1M
-         Gb7g==
-X-Forwarded-Encrypted: i=1; AJvYcCW/sz/roe2/qxYKdzIwtLcDgBMLxWbsY+Y780FkNYu49wc9bMCwVINBJQ/ADwA6gJ0gJfM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzec3h1DjHf41ZJjZLNluskvi03ITb9wVn+34FB8ySHh5qAdSYT
-	V3XkstNcvpnni2zrLDOPYEysg1jlQfp4BIJDqgol6eRDo1iw5uu361sdtMkNiCJRU42Gww84L6Y
-	xt7vOZyrKy8/nsGk0Ktj/WVjBqXW4gcg=
-X-Gm-Gg: ASbGncsAwsS4iGT1f6W1w7nXyTyxSXuuBCGQb5nY+4lqpwIE5ASK2f/X7MBNImcEogS
-	WNrMkXz8iO/JnBWEKaY5fqHPWLniC4rvOFSgH6XpxXw8qugNBq7x0ONb8Rs9FTJnZThvh74Z2+k
-	y0Mj0IApg5TcjBtfmSyrupW+vEV4ctbLURnLL2fA1OFvO2nY6dBr62J8bsssy82HF6blL+KF3fm
-	TBWk6pIYRTKjupSbEUOkfZpIdtxy8BzhYtjTNHboraMzNJQxZAlClXO4m7QOWAWEviizz0=
-X-Google-Smtp-Source: AGHT+IE3kiYdO6A81tH3ocwujCNPCljvOzypJY9CyERGKSeoHzPi5nZ+xfnpKr+voNC9lIaFIPYuRWd+eHWQF6ZoNDQ=
-X-Received: by 2002:a17:90b:582e:b0:32e:6fae:ba52 with SMTP id
- 98e67ed59e1d1-341a6c1e406mr2591161a91.6.1762329876771; Wed, 05 Nov 2025
- 00:04:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FWRtcGLQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA45C4CEF8;
+	Wed,  5 Nov 2025 08:33:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762331610;
+	bh=N9DVJZLHg/ikq7JcKb017+GXdHTNHUl1swp5I6YFwKg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FWRtcGLQVHMZgFcfCcC2Ue5biDzICOqxbsTH9uRs3nHuk4V9OMogHP0jGb51Z/R1/
+	 jJxkWdC8AHsbMqgtuTPgrjWZOlEwVVOpsHrziXpskkAkKCA1xrAzVVi07M2Ld7UyTP
+	 VJIqW87HIEtASx13s4C1VM/y6/X7on3YXHn7gwZzVxCFO470mCBBKSCNdU9LIk5Cyc
+	 1XM/bvkZNvlVnWDHYXq4thAk5z0FFtDTWqf6wOzceEzFJa6Pqtp/I85AxdCnbThUg5
+	 dL17TQbIUFUeUW15dIGkbb9zPwlX5ZkCMOZjeOPxSyuT7pqNhvIJS5W4nOvExPXANQ
+	 M6yn12bRbQ/3Q==
+Date: Wed, 5 Nov 2025 09:33:27 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, Chen-Yu Tsai <wens@kernel.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Matthew Gerlach <matthew.gerlach@altera.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Keguang Zhang <keguang.zhang@gmail.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, Romain Gantois <romain.gantois@bootlin.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
+	Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>, 
+	Emil Renner Berthing <kernel@esmil.dk>, Minda Chen <minda.chen@starfivetech.com>, 
+	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>, 
+	Shuang Liang <liangshuang@eswincomputing.com>, Zhi Li <lizhi2@eswincomputing.com>, 
+	Shangjuan Wei <weishangjuan@eswincomputing.com>, "G. Jaya Kumaran" <vineetha.g.jaya.kumaran@intel.com>, 
+	Clark Wang <xiaoning.wang@nxp.com>, Linux Team <linux-imx@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+	David Wu <david.wu@rock-chips.com>, Samin Guo <samin.guo@starfivetech.com>, 
+	Christophe Roullier <christophe.roullier@foss.st.com>, Swathi K S <swathi.ks@samsung.com>, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
+	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org, 
+	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH v4 1/8] dt-bindings: net: qcom: document the ethqos
+ device for SCMI-based systems
+Message-ID: <20251105-fat-aromatic-nightingale-1ef8ac@kuoka>
+References: <20251104-qcom-sa8255p-emac-v4-0-f76660087cea@linaro.org>
+ <20251104-qcom-sa8255p-emac-v4-1-f76660087cea@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251031-imx-dsp-2025-10-31-v1-0-282f66f55804@nxp.com>
-In-Reply-To: <20251031-imx-dsp-2025-10-31-v1-0-282f66f55804@nxp.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Wed, 5 Nov 2025 16:04:23 +0800
-X-Gm-Features: AWmQ_bka9Xr4B-LvpKHRbIbtt5BkAdNQKoTwEnWv8Ppu3FZE5Ou4N-m9M6c5JNE
-Message-ID: <CAA+D8AMgXCcQuH3SWh2UU5ib0h3EqdJOdXTkwyFx4duv7qL2Ug@mail.gmail.com>
-Subject: Re: [PATCH 00/11] remoteproc: imx_dsp_rproc: Refactor to use new ops
- and remove switch-case logic
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
-	Frank Li <frank.li@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>, 
-	Iuliana Prodan <iuliana.prodan@nxp.com>, linux-remoteproc@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251104-qcom-sa8255p-emac-v4-1-f76660087cea@linaro.org>
 
-On Fri, Oct 31, 2025 at 5:14=E2=80=AFPM Peng Fan <peng.fan@nxp.com> wrote:
->
-> This patchset aligns imx_dsp_rproc with the cleanup and modernization
-> previously applied to imx_rproc.c. The goal is to simplify the driver by
-> transitioning to the new ops-based method, eliminating the legacy
-> switch-case logic for a cleaner and more maintainable design.
->
-> Patches 1=E2=80=935: General cleanup, including code simplification and a=
-doption
->              of the devres API.
-> Patches 6=E2=80=9310: Transition to the new ops-based approach, removing =
-the
->               switch-case structure.
-> Patch 11: Remove the obsolete enum imx_rproc_method.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+On Tue, Nov 04, 2025 at 02:08:52PM +0100, Bartosz Golaszewski wrote:
+> diff --git a/Documentation/devicetree/bindings/net/qcom,ethqos-scmi.yaml b/Documentation/devicetree/bindings/net/qcom,ethqos-scmi.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..ff70d785d326f39a8fe5698759c56ab2cb7f7eef
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/qcom,ethqos-scmi.yaml
+> @@ -0,0 +1,97 @@
+> +# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/qcom,ethqos-scmi.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm Ethernet ETHQOS device (firmware managed)
+> +
+> +maintainers:
+> +  - Bjorn Andersson <andersson@kernel.org>
+> +  - Konrad Dybcio <konradybcio@kernel.org>
+> +  - Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> +
+> +description:
+> +  dwmmac based Qualcomm ethernet devices which support Gigabit
+> +  ethernet (version v2.3.0 and onwards) with clocks, interconnects, etc.
+> +  managed by firmware
+> +
+> +allOf:
+> +  - $ref: snps,dwmac.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    const: qcom,sa8255p-ethqos
+> +
+> +  reg:
+> +    maxItems: 2
+> +
+> +  reg-names:
+> +    items:
+> +      - const: stmmaceth
+> +      - const: rgmii
+> +
+> +  interrupts:
+> +    items:
+> +      - description: Combined signal for various interrupt events
+> +      - description: The interrupt that occurs when HW safety error triggered
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: macirq
+> +      - const: sfty
+> +
+> +  power-domains:
+> +    minItems: 3
 
-Reviewed-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+You should have here both constraints - min and maxItems. Current code
+works fine, but usually we want it to be explicit.
 
-Best regards
-Shengjiu wang
-> ---
-> Peng Fan (11):
->       remoteproc: imx_dsp_rproc: simplify power domain attach and error h=
-andling
->       remoteproc: imx_dsp_rproc: Use devm_rproc_add() helper
->       remoteproc: imx_dsp_rproc: Use devm_pm_runtime_enable() helper
->       remoteproc: imx_dsp_rproc: Use dev_err_probe() for firmware and mod=
-e errors
->       remoteproc: imx_dsp_rproc: Drop extra space
->       remoteproc: imx_dsp_rproc: Use start/stop/detect_mode ops from imx_=
-rproc_dcfg
->       remoteproc: imx_dsp_rproc: Move imx_dsp_rproc_dcfg closer to imx_ds=
-p_rproc_of_match
->       remoteproc: imx_dsp_rproc: Simplify IMX_RPROC_MMIO switch case
->       remoteproc: imx_dsp_rproc: Simplify IMX_RPROC_SCU_API switch case
->       remoteproc: imx_dsp_rproc: Simplify IMX_RPROC_RESET_CONTROLLER swit=
-ch case
->       remoteproc: imx_rproc: Remove enum imx_rproc_method
->
->  drivers/remoteproc/imx_dsp_rproc.c | 344 ++++++++++++++++++++-----------=
-------
->  drivers/remoteproc/imx_rproc.h     |  14 --
->  2 files changed, 184 insertions(+), 174 deletions(-)
-> ---
-> base-commit: 131f3d9446a6075192cdd91f197989d98302faa6
-> change-id: 20251031-imx-dsp-2025-10-31-260b2b979258
->
-> Best regards,
-> --
-> Peng Fan <peng.fan@nxp.com>
->
->
+I found two more nits which I did not notice earlier, so when fixing
+above please also:
+
+1. Please name the file following compatible, so:
+qcom,sa8255p-ethqos.yaml
+(unless this was already discussed...)
+
+> +        snps,tso;
+> +        snps,pbl = <32>;
+> +        rx-fifo-depth = <16384>;
+> +        tx-fifo-depth = <16384>;
+> +
+> +        phy-handle = <&ethernet_phy>;
+> +        phy-mode = "2500base-x";
+> +
+> +        snps,mtl-rx-config = <&mtl_rx_setup1>;
+> +        snps,mtl-tx-config = <&mtl_tx_setup1>;
+> +
+> +        power-domains = <&scmi8_pd 0>, <&scmi8_pd 1>, <&scmi8_dvfs 0>;
+> +        power-domain-names = "core", "mdio","serdes";
+
+2. Missing space after ,
+
+
+Best regards,
+Krzysztof
+
