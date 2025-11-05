@@ -1,199 +1,157 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011004.outbound.protection.outlook.com [52.101.65.4])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C5D32F75C
-	for <imx@lists.linux.dev>; Wed,  5 Nov 2025 15:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762356557; cv=fail; b=ZFlxSmOpiBQWfFW6j1qXUwXWsestUWMpwzZSFH2L4fwxV2VItwYIf5jZ2jQ4HoWIhM1gPEaIQNUy75p/MykzUjO5ay8EUZuotYERDgfCHqHnY2mZhBc+aLlnxpwarR15aitpOm1nSS8TNhhc24hHABQgAjG4VBl7ZIQr4u1A3wI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762356557; c=relaxed/simple;
-	bh=Qn7PN4GQeVKws6B+WvPgsNfD/+MdDnHU4hP/Fm21Vhg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=gzUQe0eYmYXWVM1D6yMe/yGZEYEKADfLN2IfOtiho3pW+oVteAsLnDhJT8NaMg4YC1Vsm4qg3EahcNaLYDLJ6wv7HnroPvWeJQ4EDfdpKKbIPpEnt/3nDYf8r898Kqw8lkl1G3pRvn5cT701SNkwXZuJ7siMg4yz0ThU4XMMNgk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ab3nb7Nv; arc=fail smtp.client-ip=52.101.65.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ab3nb7Nv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ve1UFjsBdyq4LPLKUkyfE2+5xA4T/87r1LNFX3Wf0ULQB5r3vAJEN5q0KOcvpryD1BlmIL7YZeRjbwZl0iOAPI0Z4lSGRt39yIiz55VmHMLjPOtw1F/9/WvVvNZyoNQdsaxtPSWnew4lR2KxrNujwuTGLWoGiD5kx7EcZaO8l9wpY4MGxiJqPzMmRGY6xsbedIBFBRApDCum1aWZ2Z2exUH0Yqw0DDykqRbKy2mT/9ICwHgw8uEMJ58uvI3GlGxt4XNiwPpUQVrt84VRW3X5QBINuAYInaZXh68rHiYQ4aPuNO0bJLKIghAdDEVTf9OI4QAbgICvSy2KKHb2XgwHyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ETyxeNJA58ZLhc4Z3bQ7nC6bmEJtQCNo9t1Gb30otwo=;
- b=vhKpQfHO4XKQshXM4UESVn6cHRN5Q4cEn9I2vgY/lLNd11EuBjXTg06OZ3Q4BcyJ1axJ6jUKiBB9Bsm8PlnoLyACsi/dPE56CSti79G4DqmUvHs3NFI4LfJyBCw35nyu8GJ8M2JeZ3X+Nkh36B+gQlU1dTORea/S8c0mtsBJGTOqXjB4Hl5KpVzwCal3m9fY5fe87JPg1HL03A4ktO2RLpDyfCdMMOffbkAqDXQgh/jHlOu2MXkNjc8awUnnJtErJAAJdYX1XXbP3ckFxlhkdAO2HNQ1WiPpOsvGUgdbYzR0M9nDeW1OV3o32U24wpQWZWDYFgO1t1HkaNABM0A57w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ETyxeNJA58ZLhc4Z3bQ7nC6bmEJtQCNo9t1Gb30otwo=;
- b=ab3nb7Nveus+oiQIL7eSeh+hXqUSPwNKnN8dQ7rl5XP+2ADFAw1e0WewICWVKHQjtUQgKfSaslz2J5vqeLAEO8x1PGrI/GEhPQV1pfOU+Fo58JZYRdzraJRdm8ApXBYgMNlcwbKR9pumSp+kvwLoifzymqZTGnTJKxIhAu2pOklRhHVFywpx84DQ/9vzsUqVPHI2HW8tPfU008Prs/wEGMtvROYFi+PctKYroexWEmC+6b3bPvxHON4PyTM3R1fC3mQkLXjVnCSDurwWQKyEHmVUAUaWY1bin5DuV8Hem5w8kiektNXUof5EbHPoREHQERFsIMBqo1MfLi6qSOSZtQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by AS8PR04MB9173.eurprd04.prod.outlook.com (2603:10a6:20b:448::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.8; Wed, 5 Nov
- 2025 15:29:12 +0000
-Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
- ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9298.006; Wed, 5 Nov 2025
- 15:29:12 +0000
-Date: Wed, 5 Nov 2025 10:29:05 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] ARM: dts: imx: move nand related property under
- nand@0
-Message-ID: <aQttQb5GesjUtBw6@lizhi-Precision-Tower-5810>
-References: <20251104-gpmi_dts-v1-0-886865393d0f@nxp.com>
- <20251104-gpmi_dts-v1-3-886865393d0f@nxp.com>
- <20251105115538.GA17091@francesco-nb>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251105115538.GA17091@francesco-nb>
-X-ClientProxiedBy: PH7P220CA0069.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:510:32c::18) To PAXSPRMB0053.eurprd04.prod.outlook.com
- (2603:10a6:102:23f::21)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2186E22D4C3
+	for <imx@lists.linux.dev>; Wed,  5 Nov 2025 15:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762356844; cv=none; b=sqowJsA9GaLhtHt97dAkKIqSiK4jm2zzfWxnqorCC+b4nWr8rdzyzHn8KY4tXfHZmVWlsygcAjqtITAVTPMjvkXzKdEbInUQ915i0lllPOYrOFHPhXXoCmEGDHZfR15uAZRgzE5uPlCGg4pdVQBqn0UsKw/EJXtpK6BxWCil1JA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762356844; c=relaxed/simple;
+	bh=5E+JnmRJxKFbZjtKlkibE/W4om0Z6FVCgs6dlKMkkAM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ewq6wr+P3R+W8G+Ky7rhlyCA224cWsxqRAxmuQxX/BHiPaFk3qF5MLe5gtwz07vulMVURzxteojz49KHEqbHMRSUYkduiITHD3FlGpO5Q2if2C+wAU+LP15wMs/9s8kBhjEaNpj+FfACcuNQmpxn0brbIgUv8YUg8+4lDWlQ8No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vGfWG-0004ZV-Fp; Wed, 05 Nov 2025 16:33:56 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vGfWG-007DdL-0W;
+	Wed, 05 Nov 2025 16:33:56 +0100
+Received: from pza by lupine with local (Exim 4.98.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vGfWG-00000000By3-0HJ8;
+	Wed, 05 Nov 2025 16:33:56 +0100
+Message-ID: <18cf6a292f8e3335092b39249712569d46327a5b.camel@pengutronix.de>
+Subject: Re: [PATCH 2/2] media: staging: imx: configure src_mux in csi_start
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Michael Tretter <m.tretter@pengutronix.de>, Steve Longerbeam
+	 <slongerbeam@gmail.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Pengutronix Kernel Team
+	 <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Hans Verkuil
+	 <hans.verkuil@cisco.com>
+Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, Michael
+ Tretter	 <michael.tretter@pengutronix.de>
+Date: Wed, 05 Nov 2025 16:33:55 +0100
+In-Reply-To: <20251105-media-imx-fixes-v1-2-99e48b4f5cbc@pengutronix.de>
+References: <20251105-media-imx-fixes-v1-0-99e48b4f5cbc@pengutronix.de>
+	 <20251105-media-imx-fixes-v1-2-99e48b4f5cbc@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1-1+deb13u1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|AS8PR04MB9173:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2fa14c80-23f8-4d47-a79a-08de1c80128e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|1800799024|7416014|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ymx3ocpop12WE7Hy8rGTC1iXWfk8vvWJplS8+aFbzeHL1cN2a+0CjseCFnMB?=
- =?us-ascii?Q?8pA7qpMH0BxUkWEYQhZGplnm1BoThFLdD+nJYCufKioLIxQJXY2ju+xf0JE6?=
- =?us-ascii?Q?GdTWs85iXTA9p38vofHP8LPHQcfIsnYR3h7Z0e0QK81By9aqYKuL22zR/2a0?=
- =?us-ascii?Q?tsxo89Iiy6IICzcb+PeuIkdizK7J2wItcnhDfCIJox5dgaIGIJnSjuXgHx0f?=
- =?us-ascii?Q?0LG4LsGF8lufa5fxqkgHzi/LIFocSKi/dzPk8Qm2mmPsIxWdX3pzqahJp672?=
- =?us-ascii?Q?0vno0NJetTOVXvFPfnF9vgiXQ5qRjVrJGgRRpden21e+vXXTVDfqhNX+Fua1?=
- =?us-ascii?Q?DFLRGdV4KX02RWCDR1xI+PKDH4PbnMCWzqy6Y00tWOByRKJUXxNT0AQ0Uvls?=
- =?us-ascii?Q?BCVzgHAhRYRW9c3lg3X7xBrBFFp46ZiOnB2Jp4wM4RdS3HdcOdqnp2gawDTh?=
- =?us-ascii?Q?/SsEcuV9ZNFONQhhroOu5nOKpEl3/Kh6TblgU9ARAeS8gYhmjaFd2uQXLlYi?=
- =?us-ascii?Q?FjlkydBGWHIStWMXVq3S/90w1ZqBUe/HvCAnMs70gRIFlf+DoswdkvW983w6?=
- =?us-ascii?Q?wZpvDV2LVce6kDD8js6yMG4f/14VA9Dq9Rju0AS88iRsckoOLg7tKC52pwX9?=
- =?us-ascii?Q?sLR/qq7+/01ojf5Bg9hO9tO8Mklq3oJKX0fYd1PvVN7H9pW8/WFpFYxKrPGP?=
- =?us-ascii?Q?7mUYWYVqMOcyqzOSHLn82Y7oCHZoEEFOcqH3eR6hWPCyn2VJIkYa0nR9zMOk?=
- =?us-ascii?Q?FHR0mv2OaBtgEgKwLPtpKDSn678KIt/ukFhZ/gMFy5xUsG06h8sF11k/aZXz?=
- =?us-ascii?Q?/mTWEi8aSQB5C1+nE09ox8fZ2dBwnzbEzMD8ppegqf7Yd7qOEoVSz13FNSfe?=
- =?us-ascii?Q?/ZmK52h6dqG2BXIqHEtgQ0IN0OdRSx8i6vMPB5Gg6xZ91iroQ51wcpDb/t6c?=
- =?us-ascii?Q?5xdCRxe8YRn+S6VRbP7UsyphdHTMBZqTFddgWSy1l+iQgEcVZeVsIXwmDJLZ?=
- =?us-ascii?Q?9OiphIlBbobdMNnsLgnmbj651vnRifEA88E8Yf36ZL18cr96xq079X+TBFop?=
- =?us-ascii?Q?417johyDY9my/C5pn/7XM9B6wTAQHQFLP/dx7x6EqAhXM0KOTLPvsUcYIhx1?=
- =?us-ascii?Q?7DAhFaa9OpwWJm0uDHw4B/amb0slRDTW5VII0ghkdL20DY1rT0zPIyeK18UE?=
- =?us-ascii?Q?462p9DBZl9o8FKoVKqNNoPfQTfUHbokM5gvNMGy4IuBcpcPWN7qzuYzGUAwT?=
- =?us-ascii?Q?3AxciY9zv8gCys6QeyO3Qikd7ftrwrULiZgc3W0nXUVxxVBnZQ4XiF17nrXm?=
- =?us-ascii?Q?g4Ytk27qIMXOA9D7LXSmjGcK/SF8iy5shgqYFILxHtvxfH8OyuIidtcGud6C?=
- =?us-ascii?Q?AofRqbJ57RUs++5B2MCE5/1i6hAN2XjubZcKrSculRyzlmgwor54CfwpNqeO?=
- =?us-ascii?Q?zDwySe9e9otzxusINsx3Nk1bTbOQoT2j?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(7416014)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?BdyfNuY7kReJwpXnay4FcjYQEGOTSz10VX2QbZ5/JsBEO+p2W4osGqYvOnRz?=
- =?us-ascii?Q?fDbu73C20ncZrWe2fVRUCXmkMkkWNjx0jczuRV5kbqpuUNe87JTId8xfeAi6?=
- =?us-ascii?Q?f1SIbGfHvB3lMEgL0tQdcsEva56upIGLRFFgzIJc497U50H8sPTCK+vi3+Lu?=
- =?us-ascii?Q?OUBFqNnGLHRyT5K99Y9nkr2UcW8QsxwDu/HCQQAq1wLE+in1FOdA7abarlMU?=
- =?us-ascii?Q?E/Cf9rCJ2ux4Ik8GNMZTRoJ9ooaUxy2YiLaxNrVrosJxogBi71kRyy3PTeRg?=
- =?us-ascii?Q?uV6p3vOj0jHg3UgkkzU5G73/9If25Bli20W3SJrva1HzDzHK/MFxcdxN/8K5?=
- =?us-ascii?Q?6oGzFzil4WkDl5EYGF+Cc8FNyXfQr71x/1eAV07YA0uaXGqKaJndBEctHlsq?=
- =?us-ascii?Q?F828FFUuLCfNjd4QHO3TvtLmKSQOWPJj+Y/SF3bj+xS3l9hM7bHAe/t33uFj?=
- =?us-ascii?Q?hZ5lsXy5yfwjI6vMq0XXsmhYBKcL3DcDP67eC7HhlAmM3OWWsDW069SL/TIK?=
- =?us-ascii?Q?kfuzRjogNhQflCI3yFKUNFoxOEkQsZdV9JuWp0pYHtWnK02W7d8t82th+Q43?=
- =?us-ascii?Q?N+xnDOuSd6AsQwk+YqRphTcUEODeD2tM4FEjX3MxRHAbBAUZVin4ka2qhQQ6?=
- =?us-ascii?Q?bzGBMxByMLBftuuxUh0HFhvGWbNt1a8JRshCFAv4S0wZAvjGI1FDYz+uo9w5?=
- =?us-ascii?Q?GGtRIBBleSSPcwEH7fVOwF9Nm+LaDl02gAHa18ylXw1ZinlHCDF9tZJrY/NS?=
- =?us-ascii?Q?B04hh21E/FSHN+5K/ls3IlW50YsD8yne6qikAHHX/oTHwVqIdNgigJQBkL7n?=
- =?us-ascii?Q?Eb8R7qU3hHXED91bDG1XVx90LWX3bSIIrDwkxdWNcwEDi1Z2jG+A98ZXKwd/?=
- =?us-ascii?Q?nL1+QTv+ocxD72zVYgSMxJulapMMrgi2Ydf+1fI24DVjgDq+szNhdkLiESwd?=
- =?us-ascii?Q?fVbr5ScSKmXOKg1gEKMsPiRYSbpymmVDtIzZkcUuEfBOPDKgr4pujccvhyFn?=
- =?us-ascii?Q?Eg72Sk+paQLeYmWAiWJgeM2R25LTmALBT2WKJWpu0cR82LvkzbsZH7L8vCCW?=
- =?us-ascii?Q?YkegZEwCxXnSsKSqPwzM+qphKmAGQXQwE5YWDWIjXBj4Z2WkCixsLDzbx+7l?=
- =?us-ascii?Q?RC/wnMTrMjiHdoksxSOYBQyat85N/Gi/3A54czZqcK0kwsoAh+qUFXsXPIfr?=
- =?us-ascii?Q?5+NO5NyjtzVFXMmTOogf+jfYqXrcoC4Bc4/fYX8I3UYCgY1L5TkuStqLAslg?=
- =?us-ascii?Q?C8MRufk6w89vQjmknMjfRssKbwJ+cRazEFZL5tF5yxmW0q8po6nxwhyBuaFe?=
- =?us-ascii?Q?+B8V6khht0Y0jgKjIY3kzPjNYGuEhmu0v7+Wx7ASEhtt7DmLgGWGnyYA24ST?=
- =?us-ascii?Q?HFcFlmViq4ZjyzlSmjG0U98d4DPly68XZ/Z3LTABDOJ32VWBreCiuAzYvSAW?=
- =?us-ascii?Q?s1x+TJZJsgopbkXalTxHiKpKgVAnflS3MmwJ23J8Lt46sGEeGKbtVKsNFf/E?=
- =?us-ascii?Q?jc2dh0pUmpt3sNEvBjGv2lcNJG7wgdKrcee9fB4wC6cXwo+ckhZCbevjzgYS?=
- =?us-ascii?Q?yB9fwld7Y7fSob6ctsc=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2fa14c80-23f8-4d47-a79a-08de1c80128e
-X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2025 15:29:12.7595
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aAu3bz66A9Ngk8aMPbrdWN3Jp8QGEWZspBWnqDNEHsDv0C2Yibar7TtDLXpsltQUp2rX8mPuMowLnUSuW/n6Rw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9173
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Wed, Nov 05, 2025 at 12:55:38PM +0100, Francesco Dolcini wrote:
-> Hello Frank,
->
-> On Tue, Nov 04, 2025 at 05:27:14PM -0500, Frank Li wrote:
-> > Add child node nand@0 and move NAND related property under it to align
-> > modern nand-controller.yaml.
-> >
-> > Fix below CHECK_DTBS warnings:
-> >   arch/arm/boot/dts/nxp/imx/imx6ull-colibri-aster.dtb: nand-controller@1806000 (fsl,imx6q-gpmi-nand): Unevaluated properties are not allowed ('nand-ecc-mode', 'nand-ecc-step-size', 'nand-ecc-strength', 'nand-on-flash-bbt' were unexpected)
-> >         from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
-> >
-> > Since 2019 year, commit
-> > (212e496935929 dt-bindings: mtd: Add YAML schemas for the generic NAND options)
-> > NAND related property is preferred located under nand@<n> even though only
-> > one NAND chip supported.
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  arch/arm/boot/dts/nxp/imx/imx6-logicpd-som.dtsi           |  6 +++++-
-> >  arch/arm/boot/dts/nxp/imx/imx6qdl-icore.dtsi              |  6 +++++-
-> >  arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-pfla02.dtsi      |  6 +++++-
-> >  arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi |  6 +++++-
-> >  arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi           |  6 +++++-
-> >  arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi                |  6 +++++-
-> >  arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts                 |  6 +++++-
-> >  arch/arm/boot/dts/nxp/imx/imx6ul-isiot.dtsi               |  6 +++++-
-> >  arch/arm/boot/dts/nxp/imx/imx6ul-phytec-phycore-som.dtsi  |  6 +++++-
-> >  arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi               |  6 +++++-
-> >  arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi            | 12 ++++++++----
-> >  arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi   | 12 ++++++++----
-> >  arch/arm/boot/dts/nxp/imx/imx6ull-myir-mys-6ulx.dtsi      |  6 +++++-
-> >  arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts          |  6 +++++-
-> >  arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi               |  8 ++++++--
-> >  15 files changed, 82 insertions(+), 22 deletions(-)
-> >
->
-> Was any of these changes tested? Is the driver able to cope with the
-> binding change?
+On Mi, 2025-11-05 at 16:18 +0100, Michael Tretter wrote:
+> After media_pipeline_start() was called, the media graph is assumed to
+> be validated. It won't be validated again if a second stream starts.
+>=20
+> The imx-media-csi driver, however, changes hardware configuration in the
+> link_validate() callback. This can result in started streams with
+> misconfigured hardware.
+>=20
+> In the concrete example, the ipu2_csi1_mux is driven by a parallel video
+> input. After the media pipeline has been started with this
+> configuration, a second stream is configured to use ipu1_csi0 with
+> MIPI-CSI input from imx6-mipi-csi2. This may require the reconfiguration
+> of ipu1_csi0 with ipu_set_csi_src_mux(). Since the media pipeline is
+> already running, link_validate won't be called, and the ipu1_csi0 won't
+> be reconfigured. The resulting video is broken, because the
+> ipu1_csi0_mux is misconfigured, but no error is reported.
+  ^^^^^^^^^^^^^
+   ipu1_csi0 ?
 
-I have not board to do direct test. This format is used at imx8 platform,
-which use the same gpmi driver.
+> Move ipu_set_csi_src_mux from csi_link_validate to csi_start to ensure
+> that input to ipu1_csi0 is configured correctly when starting the
+> stream. This is a local reconfiguration in ipu1_csi0 and is possible
+> while the media pipeline is running.
+>=20
+> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+> Fixes: 4a34ec8e470c ("[media] media: imx: Add CSI subdev driver")
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/staging/media/imx/imx-media-csi.c | 44 +++++++++++++++++--------=
+------
+>  1 file changed, 24 insertions(+), 20 deletions(-)
+>=20
+> diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/=
+media/imx/imx-media-csi.c
+> index 55a7d8f38465..1bc644f73a9d 100644
+> --- a/drivers/staging/media/imx/imx-media-csi.c
+> +++ b/drivers/staging/media/imx/imx-media-csi.c
+> @@ -744,6 +744,28 @@ static int csi_setup(struct csi_priv *priv,
+>  	return 0;
+>  }
+> =20
+> +static void csi_set_src(struct csi_priv *priv,
+> +			struct v4l2_mbus_config *mbus_cfg)
+> +{
+> +	bool is_csi2;
+> +
+> +	is_csi2 =3D !is_parallel_bus(mbus_cfg);
+> +	if (is_csi2) {
+> +		/*
+> +		 * NOTE! It seems the virtual channels from the mipi csi-2
+> +		 * receiver are used only for routing by the video mux's,
+> +		 * or for hard-wired routing to the CSI's. Once the stream
+> +		 * enters the CSI's however, they are treated internally
+> +		 * in the IPU as virtual channel 0.
+> +		 */
+> +		ipu_csi_set_mipi_datatype(priv->csi, 0,
+> +					  &priv->format_mbus[CSI_SINK_PAD]);
+> +	}
+> +
+> +	/* select either parallel or MIPI-CSI2 as input to CSI */
+> +	ipu_set_csi_src_mux(priv->ipu, priv->csi_id, is_csi2);
+> +}
+> +
+>  static int csi_start(struct csi_priv *priv)
+>  {
+>  	struct v4l2_mbus_config mbus_cfg =3D { .type =3D 0 };
+> @@ -760,6 +782,8 @@ static int csi_start(struct csi_priv *priv)
+>  	input_fi =3D &priv->frame_interval[CSI_SINK_PAD];
+>  	output_fi =3D &priv->frame_interval[priv->active_output_pad];
+> =20
+> +	csi_set_src(priv, &mbus_cfg);
+> +
+>  	/* start upstream */
+>  	ret =3D v4l2_subdev_call(priv->src_sd, video, s_stream, 1);
+>  	ret =3D (ret && ret !=3D -ENOIOCTLCMD) ? ret : 0;
+> @@ -1130,7 +1154,6 @@ static int csi_link_validate(struct v4l2_subdev *sd=
+,
+>  {
+>  	struct csi_priv *priv =3D v4l2_get_subdevdata(sd);
+>  	struct v4l2_mbus_config mbus_cfg =3D { .type =3D 0 };
+> -	bool is_csi2;
+>  	int ret;
+> =20
+>  	ret =3D v4l2_subdev_link_validate_default(sd, link,
+> @@ -1145,25 +1168,6 @@ static int csi_link_validate(struct v4l2_subdev *s=
+d,
+>  		return ret;
+>  	}
+> =20
+> -	mutex_lock(&priv->lock);
 
-This properties are parsed at mtd common part
-drivers/mtd/nand/raw/nand_base.c
+This warrants a comment in the patch description: csi_start() is called
+with priv->lock already locked.
 
-If you have one of above board to test it, it will be appericated.
 
-Frank
->
-> Francesco
->
->
+regards
+Philipp
