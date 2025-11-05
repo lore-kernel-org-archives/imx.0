@@ -1,216 +1,121 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012041.outbound.protection.outlook.com [52.101.66.41])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8205531329C
-	for <imx@lists.linux.dev>; Wed,  5 Nov 2025 14:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762351968; cv=fail; b=WxaMKbb6Nv3veA7+/iKXUaPgaIRa9ZW8tbr6ImlbK0R28Jn/1Hyfg8oiZQl8QD5KBVxzBwNgEZNew75B4pSI7xklLMYe2EIzxKkvYo/JtiMa1OIrmeSWznKQPxboPBq0bfn+jxeXZhOvDveFr8id7TvW5T56rl1+5JE6rXt50fM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762351968; c=relaxed/simple;
-	bh=TDJXGlustZDnrVY87SwDTupAo8zNTPktltf/7fSVt2A=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=VoUlIAHF0t3FKM5zCRf6rXt2XYeiVo6xr1s6t7Q5aI4NZQT/0MkV9A6OGnUVLmZq8aHX9TwPmCdIKlRmN3Usp0KbJ3gZVFqR4b4hMJLzFCpne1CIPhlQ+UuaqTTisIhajcdgjf/0LOcV+bcrYhExKUentZPsFdN2LLTA3LwF4Q0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=C/XHsbgQ; arc=fail smtp.client-ip=52.101.66.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="C/XHsbgQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V7YnjH9EGLU9w+msn3TckTjlMU4f7xvM/IYXe6jGRa1/o5y0xHCEH7nRdpRtbY9ec53lfFEuykW908Ytks9er8hL0z9hmfRCrN69CsIzpYNuSaES0GZSMfupLidOe7NVQSkONfGSfMHk5v6dkrD8f7HUpXmdzlZ1jPDf/fq6kyFCi+qoZhaG3fRlIHh56KHNwSAgyCSnR7BeJP1J/cXifsTJ3G2Z3bJv5J8R6SdFksGZaw2bn3JqqtSyqgQ1UTw8qdgVnJqLkIdEjCV8+6kPTHCxgyjyCuYvdd5b20ahRNubZ0WYEn/NbDCkQU07JJIA99lSlSeGSwMqK7N+cd/z+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TDJXGlustZDnrVY87SwDTupAo8zNTPktltf/7fSVt2A=;
- b=q+r3SrXJQlaXRdZr3NfiDJlyuqX881Je7jB/1eQP8RVhEfzrVIp8cyvkW+/3irP3jntsN1ZEkAlasyW7RW6Hq6vsVwDVibFQFeZxMvaaGfNQQlxKZAwzPi7neH1FDBUV3MRZO8xFNKYODsy+3GprPrCpLSnvuL7ztC8kxdvxwTog3H6ydH1Zxv3yxQZ96b0Ox/Wm8FtmoDPxnU/3A8Lx4qn7n/6rSkoO5CPCOq8naiUZWVTSuXbR+kJfCmCxjMAE6ZMzxdAMNM/TYZaOI6WN/4X48+5JA8/nhMd3DOvrYfRrf2J5my6K2YWBHJaiVaJqZob75+wPxLH6eZ8QuQSU4w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TDJXGlustZDnrVY87SwDTupAo8zNTPktltf/7fSVt2A=;
- b=C/XHsbgQ2DnFI/QJrGHwx/vOB3kJcA4MGdqC+ZSPfCx7p/HpVAY6SERuQqDW17muPOUuYFsoIgnDW+9/O6kzFy+aa1FLAf0eNPtaKpVjTDpq0+l13tsGh+aHJcFRVJgoAe9tsMsnLeMi8STwdPQ2hXV1Cvm6O4SC9i2c5Hs+pmT4DVF25jSrnZh1xARZYyiC4Ou6voAupaVLCu07NTDK59ARxaRZlU54M4sKAX9xZGc1fz0cITssAuz17TMqnp3Z+1AAckaYQ4C03dq8ffkdkwgbQjrP/k+y5BYrEYAMxzwQPPKPrNUNe+6N4nMbdoEtP9seARIaHOEbaE5wu3xbzw==
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by PR3PR04MB7403.eurprd04.prod.outlook.com (2603:10a6:102:8b::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.7; Wed, 5 Nov
- 2025 14:12:43 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::21bf:975e:f24d:1612%5]) with mapi id 15.20.9298.006; Wed, 5 Nov 2025
- 14:12:43 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>, Peng Fan
-	<peng.fan@nxp.com>, Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier
-	<mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Jonathan Corbet
-	<corbet@lwn.net>, Linus Walleij <linus.walleij@linaro.org>, Bartosz
- Golaszewski <brgl@bgdev.pl>
-CC: Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>, "linux-remoteproc@vger.kernel.org"
-	<linux-remoteproc@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>, Randy Dunlap
-	<rdunlap@infradead.org>, Andrew Lunn <andrew@lunn.ch>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-Subject: Re: [PATCH v5 0/5] Enable Remote GPIO over RPMSG on i.MX Platform
-Thread-Topic: [PATCH v5 0/5] Enable Remote GPIO over RPMSG on i.MX Platform
-Thread-Index: AQHcTl5ANC5U96uYo02NDScvc4wsJQ==
-Date: Wed, 5 Nov 2025 14:12:42 +0000
-Message-ID:
- <PAXPR04MB91858EA1057672295ECF793889C5A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20251104203315.85706-1-shenwei.wang@nxp.com>
- <PAXPR04MB8459C54EAF106184E7A378D888C5A@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <05a0c630-3bd5-4307-8b94-1889ba191c33@foss.st.com>
-In-Reply-To: <05a0c630-3bd5-4307-8b94-1889ba191c33@foss.st.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|PR3PR04MB7403:EE_
-x-ms-office365-filtering-correlation-id: 749455c9-37c1-43a5-f8d4-08de1c7562dd
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|366016|1800799024|19092799006|376014|921020|38070700021;
-x-microsoft-antispam-message-info:
- =?utf-8?B?OEE5ZHdLTHFXblorOGZqUzRvblVnVUUzSWg2WjhQRzFNVTFuRStNUTZJV2hq?=
- =?utf-8?B?QXhhNkpHRytzc0t1dzJsdHgyWTFqS0ZNaHBlc3QrRUYwODIzZEp5MlE0YXhL?=
- =?utf-8?B?NTVhZDVBcmZBQVlrdFh5cy9CalRYSENGRkxIYnB3aHlXZEtFbElZMTRvc1JW?=
- =?utf-8?B?WXVobVJQRks3U1lPQ1QzU20yMXJIeGlEUFVLSVNYSUZQR2xNU0h1b0ZWeWhU?=
- =?utf-8?B?Q2ZrT1VXbmJNMnE2NWpJUnM0T0FscWoza3gwMjhXdExnL2ZxVVJjRVNkTWIw?=
- =?utf-8?B?OXgxZEwxdGpHODBDZUU3eDFvNlg3Qys4S2RLb0JQc1lYeXpqNS9tZklpTjFH?=
- =?utf-8?B?ZGVwMWVyT2lzSWljOFArbXU4UkUzdk56NVRVQ3Z4d2piOXNmTnJISnRRQTlW?=
- =?utf-8?B?cWNBR3cvUkdxVWk1eXVuQ3FiUVVpOHU3MUdrQ2VHd3RzdDdBZkdGVjBFY3Fx?=
- =?utf-8?B?Q0hKVFFSWTAyMXQvNUdPRGI0dUkzM3J3Y1RVd1RDTS9jQ0trcXlqUDRRSS9r?=
- =?utf-8?B?eTMraUd4N3V5Y0xUY3JPZmQrN1JpKy81aG1lSkFkd1hRaEhQYUllalgrOFVt?=
- =?utf-8?B?SWdqUGhNNHV6ZUtWVjc5ZXpibFJDQjduWVltdmUxbXM4SjBTREh4L0R5Z0J4?=
- =?utf-8?B?MkxXRUc2cUhlR0drZVY2d0l2WnZtMEFXczNCOGZSRkJ3Tnl0M3g5MlFLWU13?=
- =?utf-8?B?ZWR6WDRGT2VyTmYvc1I0RExTWDZFZzBsdU9Fb3dyUDlEMnlzR29xOE1EWi9Q?=
- =?utf-8?B?Vmo0TW4rYys3ZmRkQ0cyaFcwQU81Vjg3b0xUUzJqQjFjOFN0WlgwRzZOQXBt?=
- =?utf-8?B?RjM1bENYRUdlQkw0cmM5QWRsNkhQamhwUGdoUEFlbzN5SlJVcHlMKzZQK0RR?=
- =?utf-8?B?KytTVW1iVDJ2bUVRajZqb2tJVm0zWWtBK0MydVRLdGxzQVkrNTMrR0ptYTY1?=
- =?utf-8?B?VHhxZG9KWXV4M1VtTllOU2kvdXZkZ1ZxZFFnVHpOcDVuU1VrSnJiNVJwZzJL?=
- =?utf-8?B?WDBNd0svSWRDR296dE5vMVc5dmJ5YW5CZlRIamFJNi9rMG9SQjlxS1FiSmFN?=
- =?utf-8?B?VkQ5bHlSQ21ya3F4U3l4NG5sY08rb29nUHR2RXZnM05kL000NGFHd2RyWmdS?=
- =?utf-8?B?ZCtvRktXMndEZW1Gc3JpQVg1YzhHb0J6elhGQS9oZG8rcHhrT1dJY1FSbE1a?=
- =?utf-8?B?aVg0SjRST2w4U294RE56WkM1MWdScURPalgybmRmRDhPa2UraW9BY082bFNr?=
- =?utf-8?B?RzBwSHFDWm1pczg0UlJ6cVRLS3NQaElmSU5WOWs3VGJMeTVaclp0Z3FBNmc3?=
- =?utf-8?B?Z2pEQWloOXhsdEYya3dMVGJ6Rmd1Z0FwTzQ4bVlyQlNFQ05QOHpRZWE4NWtT?=
- =?utf-8?B?MlhTcUpOVnhBTlYrMlVSNW84U3hKQmVvWVlqTnYvUFBJNXBINnFYbnhDMEpz?=
- =?utf-8?B?QnVZcHVXUlVBQTU5YWRJOEhUYk03REpOMVMyeFhYaFNnSW1GYXRENitIeXUv?=
- =?utf-8?B?RURGclBKRGM0V05wMEVpMGtNbWpiVGxxQWlnbUpCd3gyVEtjdThKS3dqL3Z3?=
- =?utf-8?B?N2htU3NaMVdtekxscUs2TkJjMjc1R3NER0lYQnVHVCs5SjlsUk9mSlpYeVh0?=
- =?utf-8?B?SmFNR2E1dlNtRysrRURZaUx0TXNwV1AxM1c3bFJYSGpzVkxUV09YVHJPbStv?=
- =?utf-8?B?RkNmaU4zTkMwWUxmWHZDa3hsLzdsRHRjQWJtWHhrbXZtQUx6Z21iNUIrL0d4?=
- =?utf-8?B?cUlZVGc0U2oxdjFJeVQ5THNSbElTQXZFMVNKSnRKUlMzRlB4by9WSXNFSU1P?=
- =?utf-8?B?THpGVlVQcjZoeVNLN2kzWElkRlArNUNHdGp6eVRiZmRYTERBb0UyUE1zK3hv?=
- =?utf-8?B?OVl5Zmw1UkxYMjVkYUtTZ3dGblkvcm9VNVAvcE9CeXB1MlhRMjJuSFRPNzNT?=
- =?utf-8?B?U0tTeFRqa3lYY3B0bUpJYlduMUtRSXhkeG1DbFhaZE9hMGgvSzlyTmtROTBh?=
- =?utf-8?B?eUtMRytEbVN5QVNoZjRKd1JCQ0RNdUFtZ3BNMTVHZ2E4c3NtaW5vaGpkeXd0?=
- =?utf-8?B?eHU5SEwwUkRoaDczSTB2QTkwT0RlcG1Tc1N4QT09?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(19092799006)(376014)(921020)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?ajc4NWdaR2lXTFpOVnhPYWxYNEUrUjdybEhFUTZ0V0d6OTNoT1l1MzZVU0h3?=
- =?utf-8?B?TkIvdWpuRmc0SnorVC9OYlVqTGIyYjJjT2c4T2pKUS9WVkxJYjJlZjdWWmZl?=
- =?utf-8?B?M3UyMGVBTStQNjZpV2tDYmtrdTd6Yk9KaFcyRytEQnpzMUhNWEpoODBEbHI5?=
- =?utf-8?B?M3JOSEVCaWl6WEhHYzA5c0Y0WkdGWm0vU1FJUmlTZWoreTErZnp4bjFqUUhr?=
- =?utf-8?B?OXBzdDlBdWozTXQ3SkVDMTlmb1VEdWJ2c0NvSnYzQ2plalpvSHp3VkxoTFVu?=
- =?utf-8?B?OEFEWllMZXI4WG8zREdDSlU3N3BidjJVUzhiTlVSbFZubzJIYnVUUFJzaW4w?=
- =?utf-8?B?TmdHTkdVK0ZEZ0dRZTF4RjZ2ZHI5bzZ3VzVpWE1SR1lCTmJLSnhVSldLTUMr?=
- =?utf-8?B?M3BpZ0JXbU5nZmpjSlNsUGR3NHo1d3BiUVRXb3N0VjY5aEVLS0puSkJZTGd6?=
- =?utf-8?B?QWUyU1NYRytCeG5XR2wzbmQ5eUlrR2RDM1ZyNTFVcHU2Zm1sT25WOEZFL2tD?=
- =?utf-8?B?MEVWUVBMNllLY3NOc2w0aDVzbXBoUjR5VzcxQWJETUN0SjNBZUVMZkJwMTJu?=
- =?utf-8?B?RGtzaXBQejRmNGlaRS9xVnRnQUwwY1dIa0c5N1J4NXlJU2Z3dFVQTnMzS1lP?=
- =?utf-8?B?YlVZanREakNHS245MFV6Y1RiRlZKTmVtOTFxZnkwMThBckdDQS9HQkFxR2xo?=
- =?utf-8?B?VXJSOCtraHlrZFgvc00vQ0N5TVRuc0xwY2l0T01MYUlvMWh2cm1WSXMwTllu?=
- =?utf-8?B?Z043WHBmcjdzaGJIcnVDMGI3OXIrVnhYb01LbWEyWDhOcUhWZ3h6THNLTUx6?=
- =?utf-8?B?SjhKZmhDYnlYVDdVak56a3krMXlhbDB2YWl2MHhzdGc3Z0xVVEQvNFdsMHhM?=
- =?utf-8?B?ZW5DN251QlZLOTNZU0R6azErME9aS0xBZUhCakxQMnd5Vm1ETmFkSTBnamQw?=
- =?utf-8?B?YzBtVExPTW9tWWVZN3kzTkhpUmhOZndyZ3Zvdm9yWU1IN0pJTnRWUDRGNGNK?=
- =?utf-8?B?bERhU1JKd1phaDBUSEZwak5kRlcrNUdjc3JDVjBQRXduYmxac3ZlaEkvS0Nr?=
- =?utf-8?B?OUhvcmJMQkpJeWNLKzY4UDRteUxEWFk3Q2VTS2U2VDI2Y0Z6U3NqdmV0ZWhM?=
- =?utf-8?B?U213LzZPRWhuSHpJeU5hWVBldVBiNTlyMDBicXlmd0IwbVVDUk91T2FsMnpB?=
- =?utf-8?B?STBFSnZXMUVIWmNyKzJGOFBYRVpTalV1d2xqVDF4NVU5MVArSTRDNG83ZklW?=
- =?utf-8?B?cFBNbkIvckR3V1VNRE5sZURZN1drNE9paFA0bS82Sm5JR1QvSUdsaEZ4WmF3?=
- =?utf-8?B?cVdXeTBGT0RLM0tnRFR5OW5LV3JRM3hDOHBwNDJlemhUQWE3TVBOSGdIYWpI?=
- =?utf-8?B?cWpuSm8rMFZWb2hpdjR4azd2QU83RjRQUUN6akRYcjQ1OEFvd2NDMXIzdTZO?=
- =?utf-8?B?eExOY3g2ZVNVbDMwUDA3bGdKaVd3TWdWWk91UG9YYkh0Mlo5QkpiTjRKeGU1?=
- =?utf-8?B?aXV0V01mdUZjeGR2Wlh6clpBV0Vwcm9RbEdVRjhTSkpuOUs5NmgweHFlei9p?=
- =?utf-8?B?aytCblRmMzgzdlFaeUlWWG4yWlR0eU4wYk5QeGlKak1CWFNGOTZYZnJ0SzMy?=
- =?utf-8?B?ejJNSDY3Z0VlcHVrRldlc3Q5TytxQVJNbFl3K3JFemZyWkhvZ3E5dWxSb2l2?=
- =?utf-8?B?RDhveEoySHJVQTg2eXlMNUJsTVJjdWZzRXk4NGRuZlZtZ29IcUxtUCtNaUY4?=
- =?utf-8?B?RndTQkY0bzV0bWFnYnhOWjBQV0xDT0N5OVQxOGVlT05LMW0vSkFpMDF0S2JP?=
- =?utf-8?B?WjNwc0VKVVE3d3dLQWpja1NqMHk1ZkR1VjRDMXMrU3lVdit2eWI2eUxkdCt0?=
- =?utf-8?B?alluOVZEK25SQkswZ2c0UGN5dVo4Mjhqb21BWU03dDNrSmlsdmR4UDJIYWxN?=
- =?utf-8?B?bWlrbmgvd0VISFBWWS9DbHVCTTdhWkJjV25qRmR2KzgwaDJtZ3dpQmFoSGcr?=
- =?utf-8?B?dWdJaUFNbW5leWE4c2I4dlBrV1d0Nm1keERpV3g3TnlHWE8zMVdVcm12THBy?=
- =?utf-8?B?NGc4OTFkQnhjYzB1eUxIa2EvRWZINzhtTk1wWmhFU1QrNUN2dmtCR2Y4WEhy?=
- =?utf-8?Q?oSeY=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D203168F3
+	for <imx@lists.linux.dev>; Wed,  5 Nov 2025 15:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762355452; cv=none; b=SZj3+jrvnI85w118fYkw6bVD25AxAgyF/kG4AE1Spn5chOLF9/P2vVDJvxwU1vv5L876gLCq13cqZx/CAH+YeDqsorOX9BKj0a1y83pde6jNUDGEtwbsL0HIT1i2OWiL/FeuCKrKr1TQWssOPFz0ylRRdR9enh6aA6AZGyvQcPg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762355452; c=relaxed/simple;
+	bh=OjAxb9QR8u9JQcXq77eKB8IeA/NNyxUQGl+cwvR4fiA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=eExD2cKJqCdWlNlmVX46T7qx6MjovdKtgPFhNY+6iKZFVWGnXdjZHerlInF3EA6qRApX6rikym6FG425OGFiH1XpaL6r6oTk73HAgzF7tXqhMcscF9nB1kdQlTzv0kXjSTT13SeBMwFW32nzmmT42eTJffQSicfvw73jKrEBU9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vGf9j-0000l2-8Q; Wed, 05 Nov 2025 16:10:39 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vGf9i-007DbY-21;
+	Wed, 05 Nov 2025 16:10:38 +0100
+Received: from pza by lupine with local (Exim 4.98.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vGf9i-00000000BT8-2G0G;
+	Wed, 05 Nov 2025 16:10:38 +0100
+Message-ID: <5535d4dbf94b01fe775b5f905afea8c860f9c03a.camel@pengutronix.de>
+Subject: Re: [PATCH v4 4/8] reset: imx8mp-audiomix: Drop unneeded macros
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>, Abel Vesa	
+ <abelvesa@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Stephen
+ Boyd <sboyd@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley	 <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Fabio
+ Estevam	 <festevam@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>,
+ Shengjiu Wang	 <shengjiu.wang@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev,
+ devicetree@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org,  Pengutronix Kernel Team	
+ <kernel@pengutronix.de>
+Date: Wed, 05 Nov 2025 16:10:38 +0100
+In-Reply-To: <20251104120301.913-5-laurentiumihalcea111@gmail.com>
+References: <20251104120301.913-1-laurentiumihalcea111@gmail.com>
+	 <20251104120301.913-5-laurentiumihalcea111@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1-1+deb13u1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 749455c9-37c1-43a5-f8d4-08de1c7562dd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Nov 2025 14:12:42.8467
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: do023iXIPG9CLhib44S5b6tvZ7ilPYn1k0lJSRSuG5uXodiG7a0tcfAiLo28bpEEJtCo7Qu/rQ+gLK0hIxco6g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7403
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-SGkgQXJuYXVkLA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEFybmF1
-ZCBQT1VMSVFVRU4gPGFybmF1ZC5wb3VsaXF1ZW5AZm9zcy5zdC5jb20+DQo+IFNlbnQ6IFdlZG5l
-c2RheSwgTm92ZW1iZXIgNSwgMjAyNSA0OjI2IEFNDQo+IFRvOiBQZW5nIEZhbiA8cGVuZy5mYW5A
-bnhwLmNvbT47IFNoZW53ZWkgV2FuZyA8c2hlbndlaS53YW5nQG54cC5jb20+Ow0KPiBCam9ybiBB
-bmRlcnNzb24gPGFuZGVyc3NvbkBrZXJuZWwub3JnPjsgTWF0aGlldSBQb2lyaWVyDQo+IDxtYXRo
-aWV1LnBvaXJpZXJAbGluYXJvLm9yZz47IFJvYiBIZXJyaW5nIDxyb2JoQGtlcm5lbC5vcmc+OyBL
-cnp5c3p0b2YNCj4gS296bG93c2tpIDxrcnprK2R0QGtlcm5lbC5vcmc+OyBDb25vciBEb29sZXkg
-PGNvbm9yK2R0QGtlcm5lbC5vcmc+OyBTaGF3bg0KPiBHdW8gPHNoYXduZ3VvQGtlcm5lbC5vcmc+
-OyBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+Ow0KPiBKb25hdGhhbiBDb3Ji
-ZXQgPGNvcmJldEBsd24ubmV0PjsgTGludXMgV2FsbGVpaiA8bGludXMud2FsbGVpakBsaW5hcm8u
-b3JnPjsNCj4gQmFydG9zeiBHb2xhc3pld3NraSA8YnJnbEBiZ2Rldi5wbD4NCj4gQ2M6IFBlbmd1
-dHJvbml4IEtlcm5lbCBUZWFtIDxrZXJuZWxAcGVuZ3V0cm9uaXguZGU+OyBGYWJpbyBFc3RldmFt
-DQo+IDxmZXN0ZXZhbUBnbWFpbC5jb20+OyBsaW51eC1yZW1vdGVwcm9jQHZnZXIua2VybmVsLm9y
-ZzsNCj4gZGV2aWNldHJlZUB2Z2VyLmtlcm5lbC5vcmc7IGlteEBsaXN0cy5saW51eC5kZXY7IGxp
-bnV4LWFybS0NCj4ga2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2Vy
-Lmtlcm5lbC5vcmc7IGxpbnV4LQ0KPiBkb2NAdmdlci5rZXJuZWwub3JnOyBkbC1saW51eC1pbXgg
-PGxpbnV4LWlteEBueHAuY29tPjsgUmFuZHkgRHVubGFwDQo+IDxyZHVubGFwQGluZnJhZGVhZC5v
-cmc+OyBBbmRyZXcgTHVubiA8YW5kcmV3QGx1bm4uY2g+OyBsaW51eC0NCj4gZ3Bpb0B2Z2VyLmtl
-cm5lbC5vcmcNCj4gU3ViamVjdDogW0VYVF0gUmU6IFtQQVRDSCB2NSAwLzVdIEVuYWJsZSBSZW1v
-dGUgR1BJTyBvdmVyIFJQTVNHIG9uIGkuTVgNCj4gUGxhdGZvcm0NCj4gSGksDQo+IA0KPiBPbiAx
-MS81LzI1IDAyOjEyLCBQZW5nIEZhbiB3cm90ZToNCj4gPiBIaSBTaGVud2VpDQo+ID4NCj4gPj4g
-U3ViamVjdDogW1BBVENIIHY1IDAvNV0gRW5hYmxlIFJlbW90ZSBHUElPIG92ZXIgUlBNU0cgb24g
-aS5NWA0KPiA+PiBQbGF0Zm9ybQ0KPiA+Pg0KPiA+PiBTdXBwb3J0IHRoZSByZW1vdGUgZGV2aWNl
-cyBvbiB0aGUgcmVtb3RlIHByb2Nlc3NvciB2aWEgdGhlIFJQTVNHIGJ1cw0KPiA+PiBvbiBpLk1Y
-IHBsYXRmb3JtLg0KPiA+Pg0KPiA+DQo+ID4gSSBoYXZlIG5vdCBsb29rIGludG8gdGhlIGRldGFp
-bHMgb2YgbmV3IHZlcnNpb24sIGJ1dCBiZWZvcmUgdGhhdCwganVzdA0KPiA+IHdhbnQgdG8gY2hl
-Y2ssIGhhdmUgd2UgYWdyZWVkIG9uIHdoYXQgQXJuYXVkIHN1Z2dlc3RlZD8NCj4gPiBvciBjb250
-aW51ZSB0byBwcm9jZWVkIHRvIGJlIHRoaXMgYXMgaS5NWCBzcGVjaWZpYz8NCj4gDQo+IFRoYW5r
-cywgUGVuZywgZm9yIHBvaW50aW5nIHRoaXMgb3V0LiBSZWdhcmRpbmcgdGhlIFYzIGRpc2N1c3Np
-b25zLCBpdCBzZWVtcyB0aGF0IEkNCj4gYW0gbm90IHRoZSBvbmx5IG9uZSBzdWdnZXN0aW5nIGEg
-Z2VuZXJpYyBkcml2ZXIuDQo+IA0KDQpBcyBJIG1lbnRpb25lZCBiZWZvcmUsIHRoZSBvbmx5IGku
-TVgtc3BlY2lmaWMgcGFydCBpcyB0aGUgdHJhbnNwb3J0IHByb3RvY29sIG92ZXIgdGhlIFJQTVNH
-IGJ1cy4gDQpJbiB0aGlzIHY1IHBhdGNoZXMsIHdl4oCZdmUgaW5jbHVkZWQgZGV0YWlsZWQgZG9j
-dW1lbnRhdGlvbiBmb3IgdGhlIHByb3RvY29sIGluIGEgc2VwYXJhdGUgZmlsZS4gQW55IA0KcGxh
-dGZvcm0gdGhhdCBmb2xsb3dzIHRoZSBzYW1lIHByb3RvY29sIHNob3VsZCB3b3JrIHJpZ2h0IG91
-dCBvZiB0aGUgYm94LiANCg0KSWYgeW91IHNwb3QgYW55dGhpbmcgdGhhdCBjb3VsZCBiZSBpbXBy
-b3ZlZCwgcGxlYXNlIGxldCBtZSBrbm93IQ0KDQpUaGFua3MsDQpTaGVud2VpIA0KDQo+IFRoYW5r
-cywNCj4gQXJuYXVkDQo+IA0KPiA+DQo+ID4gVGhhbmtzDQo+ID4gUGVuZy4NCg0K
+On Di, 2025-11-04 at 04:02 -0800, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>=20
+> The macros defining the mask values for the EARC, EARC PHY resets,
+> and the DSP RUN_STALL signal can be dropped as they are not and will
+> not be used anywhere else except to set the value of the "mask" field
+> from "struct imx8mp_reset_map". In this particular case, based on the
+> name of the "mask" field, you can already deduce what these values are
+> for, which is why defining macros for them doesn't offer any new
+> information, nor does it help with the code readability.
+>=20
+> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> ---
+>  drivers/reset/reset-imx8mp-audiomix.c | 10 +++-------
+>  1 file changed, 3 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-=
+imx8mp-audiomix.c
+> index eceb37ff5dc5..e9643365a62c 100644
+> --- a/drivers/reset/reset-imx8mp-audiomix.c
+> +++ b/drivers/reset/reset-imx8mp-audiomix.c
+> @@ -14,11 +14,7 @@
+>  #include <linux/reset-controller.h>
+> =20
+>  #define IMX8MP_AUDIOMIX_EARC_RESET_OFFSET	0x200
+> -#define IMX8MP_AUDIOMIX_EARC_RESET_MASK		BIT(0)
+> -#define IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK	BIT(1)
+> -
+>  #define IMX8MP_AUDIOMIX_DSP_RUNSTALL_OFFSET	0x108
+> -#define IMX8MP_AUDIOMIX_DSP_RUNSTALL_MASK	BIT(5)
+> =20
+>  struct imx8mp_reset_map {
+>  	unsigned int offset;
+> @@ -29,17 +25,17 @@ struct imx8mp_reset_map {
+>  static const struct imx8mp_reset_map reset_map[] =3D {
+>  	[IMX8MP_AUDIOMIX_EARC_RESET] =3D {
+>  		.offset	=3D IMX8MP_AUDIOMIX_EARC_RESET_OFFSET,
+> -		.mask	=3D IMX8MP_AUDIOMIX_EARC_RESET_MASK,
+> +		.mask =3D BIT(0),
+
+Since the masks are all single-bit, and you make that mandatory in the
+next patch, I suggest storing the bit offset in the reset map instead:
+
+-		.mask	=3D IMX8MP_AUDIOMIX_EARC_RESET_MASK,
++		.bit =3D 0,
+
+and so on. That way it's clear that no reset control ever manipulates
+multiple bits at the same time.
+
+Either way, either in this patch or the next, add an
+
+  #include <linux/bits.h>
+
+for BIT().
+
+regards
+Philipp
