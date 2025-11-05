@@ -1,211 +1,289 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011063.outbound.protection.outlook.com [52.101.70.63])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B93339701
-	for <imx@lists.linux.dev>; Wed,  5 Nov 2025 15:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762355966; cv=none; b=FLTkABCWmCG6ytFoPnnJdyPlgyjWV9XYYNVdbMKO3E7jJNX++PXdMQtLpfsSiynUwyyGGwFPVQEhug3d5/HXkCSWMWtjdj3qsRVbmP7TXswLjxBqCFmIkgzS8PGsvOfVi7RqB9hp0dcwjfM2Uund9Vf8XzWC3/uJ2RsqcTkHREA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762355966; c=relaxed/simple;
-	bh=aDtRd1YbDn4OZAWtUGQbZix7GE3spO38WtrKr1DsKRM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fIH5VNAVZGZIZ0IbU/Rs4bCiVDHz8Kf+jc1OMWdqhgMidoRERMgmekPpPJzgTc0KAfdd/MoNLzQ5YS8Wy91EvBkDbuMqgpSpxSV58a5yrL9BuIWSdbeK6rQbPNBU4if4VXozI2lhMiR9rZ+TdLSxA5/I9rzkc0f/cjj/yS6FO1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.tretter@pengutronix.de>)
-	id 1vGfHy-0002IK-3E; Wed, 05 Nov 2025 16:19:10 +0100
-From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Wed, 05 Nov 2025 16:18:49 +0100
-Subject: [PATCH 1/2] media: staging: imx: request mbus_config in csi_start
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC12232ED55
+	for <imx@lists.linux.dev>; Wed,  5 Nov 2025 15:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762356237; cv=fail; b=fw+dIrFL9vlVTKXK8OJB2L1I7z4N/LcUt7ze3D++tpnyGNCriVVfjXQry5yYGEgFmfdYBNsH4oPcEiEX0dFgXqa7VoUAyQs6+ZZyoqMyqL4WuIc0hJSw2hcUmcDWBRgxrvLyyQ/jXUkQGVy8rWTAiAmM0gSnLZzg3TTcYzJp8k8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762356237; c=relaxed/simple;
+	bh=HaSddJa8xyiR3to2yVU5WThIUJwmyAYAUJ5nc3xJUA0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=sCLgK50C98FU+60VZUanz/sF8M7UlA6UxO3+ztvct+wewnAMEQQ1Xu0LB3SMVlFjp98Jk9g759b5UskSW24UToDk5u46f1tVT5rA2SCXBaWHRrTPqwvl+EMfuoV/WkrPSC2DiL8gwaPKm1CwagwIS6l3Ua6Bt0DZayNikNj1NdY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Do9uWj1S; arc=fail smtp.client-ip=52.101.70.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Do9uWj1S"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RmyY52IeAe66U8NICHDDYqML33WeMCvVstd9KMzhtE2MxvpdVfiin3KDtnoU6hDRj5Ux1QKAculzldegM2mCgZV2D/nihDajxh6MohBIXa8LFflu1HwOV0GwUWjkZV/UbOv0Q1ThFxv2hqgWtGpUWEDLN/Nj1Ou1978tyqGEufOnqdnqciJF1FYkfNE6icbvej16/eBx+dpgeD6KNeqaeBIk8mZM470s0mKs1S27cNBX4RL1pUTjKNvbuWIy8YPFhLveuQmRJy1dFHZHn9nGHeeS2cAoFHNsyzSsfTwRqrxcctq9YSxF4uoaI7eRHrfUjum+ZGlgNtiJsTX5fnxLFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=j7tv+JWcsa7YIrCRHQPIVirO6xsIEfIT81Z6+1xuJk8=;
+ b=s8AItk8i49+mQwASUCShgiUjHA41fk1RAzBofruggmUfonuVYNPysH7nE+v2pOf3QBysu/jq/ETytyu+IiWdkx23TNACvGZiXUiuY5OqwYwsQS2qQ4RfYJcuLTfmZ39+JD7u32vDnwFMNSbksuTsJZ3GII+T5vIk05MkbZW7W4qKAzD1ClMbGpHPJrbGXkHRHFWz8XpJtrFVFbUMTxh84yDYma2s5iOX6uJ10CHrctL2vRkzXRYjZXyMkrfUxmryoXvoYo/I4K2aYUCRNJNUFRSFDUokn2LKzxDHek/QQl9ifiJV55VxjgrcZGof9vm9+xe6QrRRtNYPcC94WyQiqw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=j7tv+JWcsa7YIrCRHQPIVirO6xsIEfIT81Z6+1xuJk8=;
+ b=Do9uWj1SD8CorxioVdxHaqnIXf/SKKjpQSIWDHbRvSrDZvZK7QSeCpS1NuwPWRCTtvvjg40Z4yBl/1Rg2XMYoOwky6NvnU86HdSuBZp4eP3iwtaMaQa1LT5n/O66C2ku8hxBG4MFAMDkfPBmcYSlES8NlOa2ILFQAmYX43LJruxv9aPhcZ5KcB6exx4+k93WsrduEappOuq9ylhoq6gUPNIZUNuDkN3PoTM4CZSsdOH4HEmMbaylBy3gLXy0LON/j48woVwFhZejtclGQzij5WMNTWX0FaIXorzOBfAj4TiULlyXwurSgXrthsSzCuyHd4dkfbbyCaVPlL40YuXkgg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
+ by FRWPR04MB11199.eurprd04.prod.outlook.com (2603:10a6:d10:172::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.9; Wed, 5 Nov
+ 2025 15:23:51 +0000
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9298.006; Wed, 5 Nov 2025
+ 15:23:50 +0000
+Date: Wed, 5 Nov 2025 10:23:42 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Abel Vesa <abelvesa@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>, linux-clk@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH v4 5/8] reset: imx8mp-audiomix: Switch to using regmap API
+Message-ID: <aQtr/uvGFJEjSKnH@lizhi-Precision-Tower-5810>
+References: <20251104120301.913-1-laurentiumihalcea111@gmail.com>
+ <20251104120301.913-6-laurentiumihalcea111@gmail.com>
+ <aQothuvsclJoP74u@lizhi-Precision-Tower-5810>
+ <e7481838-af1a-46ad-9f94-8de4e20a9611@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e7481838-af1a-46ad-9f94-8de4e20a9611@gmail.com>
+X-ClientProxiedBy: PH7P221CA0017.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:32a::32) To PAXSPRMB0053.eurprd04.prod.outlook.com
+ (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251105-media-imx-fixes-v1-1-99e48b4f5cbc@pengutronix.de>
-References: <20251105-media-imx-fixes-v1-0-99e48b4f5cbc@pengutronix.de>
-In-Reply-To: <20251105-media-imx-fixes-v1-0-99e48b4f5cbc@pengutronix.de>
-To: Steve Longerbeam <slongerbeam@gmail.com>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Hans Verkuil <hans.verkuil@cisco.com>
-Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
- Michael Tretter <michael.tretter@pengutronix.de>, 
- Michael Tretter <m.tretter@pengutronix.de>
-X-Mailer: b4 0.14.3
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::54
-X-SA-Exim-Mail-From: m.tretter@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|FRWPR04MB11199:EE_
+X-MS-Office365-Filtering-Correlation-Id: 59541948-ce66-4e27-109c-08de1c7f52a1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|1800799024|376014|7416014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?BUXgp3q6/OPsQHlfk+OajyxEgIhVpFDeTNpB5PFZcXRuyqE95i0akQ8c9JFQ?=
+ =?us-ascii?Q?RmiCJ/toITbVQOdjQN1x/Zd25QAXPVeCdvdYKnpVlaqkIsbaEuszxBCtxv/o?=
+ =?us-ascii?Q?vmsIc4YFZEKvkHTuSCp2Lvz4PiqNG76c0ghPyRhs1s521zWJnm205YOQ1NyO?=
+ =?us-ascii?Q?JuD892dqjjo5XsZ72iVs18X+4G/g82IJQWDuN1l5wIfj+Si+irtYBfrYeA82?=
+ =?us-ascii?Q?zytt7vnEW/kdUE8+XzlM/CQk4Egc2Aj4nhohFtfsfkr3sR+aKta+jyZLd071?=
+ =?us-ascii?Q?DzvOHoanWy3VyR3dKTr66rcWFPOLF0jh8lFh5EWd6UywqY60yj5v2RKZhWL8?=
+ =?us-ascii?Q?PumDVQGYO8u+eGt4b5LUc9UpsIpwzGRsbM0XnvOHda2Ue4Lni2CBbAzwuban?=
+ =?us-ascii?Q?x+CIwW3sIPwPZK1N9Pj5SNMmpvffMt/tNrtc02RTQIrAvubfFoikmojRa+uF?=
+ =?us-ascii?Q?3eTUnGrTIpWp3AIvYjbxGJxoaKiUuRp0sEJM7Thp01eeqhW8ZJ/hl+icdDzW?=
+ =?us-ascii?Q?jmX9yDhTtJ38h0ddew7Z0SHtBpbgbZjkaQBqvCT3payL6pex/h7NcsFMfQ8S?=
+ =?us-ascii?Q?UvoVqqoCwAyGO58VXLx+HzzdjbhKkyPA3WRX00SS/ho3HzYATq60TtHyZxhG?=
+ =?us-ascii?Q?9wKsQL1UwEoWYiPNHAyyzy7ZpOMtZ72rjnSHOJ7TJIHBng3bzdz8ky3CNhVY?=
+ =?us-ascii?Q?wLqofKS14l9GmCmX3K32ssSlRAgDPEVz+b/HQQ3ydBpyuhLWjXDHgCzko8v3?=
+ =?us-ascii?Q?TbJ5AiNtQhTJC+LX1P2bly6zzxpFtBWRiruNEz+E0DRTT148vHqFgw8IM8w7?=
+ =?us-ascii?Q?dUrBQ9XT1snnY7SfiyCNakE4Cvk2R2WrHUwbDS1T4PYT1vw/suYMy/bkExw+?=
+ =?us-ascii?Q?udJ4Pwotv4L+o1Zr1wVVWG2kzHjxyYrHkAKph6t5CxYElcEdQZ2+mQFiNqp5?=
+ =?us-ascii?Q?CwlIhHeTl9PxOO+vjh9/5A7W4Z9A2bwto07EMv5rWiIEzaDQAOjnkNs9drQB?=
+ =?us-ascii?Q?q7g57SwUw/V4ndIvlCenv6j6pOlYkreqfM8j/kcVQfLEP9dKEqa9iuqnlFlv?=
+ =?us-ascii?Q?yWNB21mPH05oV/VkiMUmcQqaYyzPW2hZ5JTCK8zsnbsfK7ukWmEUXnsPe6Bs?=
+ =?us-ascii?Q?fZFtn20lY9F9qMTq5tUtM8Znwe8ywv6Sy0o2xEQ6VWPuB3opdgX9PnsnH03v?=
+ =?us-ascii?Q?iCJqHM3vPDWd1wjaIqez2svrz1qwQauwqhJJ8xN8l9ZATmoOBvasQ0UYZKiQ?=
+ =?us-ascii?Q?ZIcGz8PzHhMvMjekA1HX/PDYnSYnJkoAJOvLZkP4aq4E1IkEpJKXAW83pzdJ?=
+ =?us-ascii?Q?rXMMVT0TgtvRDV/G427o2Tsz/RmM7S9ncRGiMgV9odUQHOBgz7c/gWeFiCcO?=
+ =?us-ascii?Q?Em2JkOqy4ZczgAAUurVUTIcAKyVf03Pv36qxZLL8KJ/T6ocNSYaFQzvr2ZtS?=
+ =?us-ascii?Q?O2btp04UsjysILy3Y7tQ+ObkDnf7NbZXz8ZWGGHfHxXpWNFeedNL3hNLm8fX?=
+ =?us-ascii?Q?6zBL0HPvQ6MeY80yYRJ7nTEEUksH/FFw4ygd?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?2bvheMViLm2RjrrG/IeP5peJ01LvHUKhFmvmGcQvS5LE7H7Z4ypKK+J3T3D+?=
+ =?us-ascii?Q?8H0dfSS2X/hZj3hbck9K+P9lvIdlaJoJ2yLwG46i6huU+p+rfdfjN4An8sg5?=
+ =?us-ascii?Q?dHL28qR0c7AhxYagXYgC5o03hNi/V0NIt7lhaxLnM5VLuLJJmoqt1e3eyPg9?=
+ =?us-ascii?Q?QyaPIHjcVAJ3GHeaUwvhu71t44qgFWa2ASF+bFLAPlkq2Bc62xsONkT4SP+i?=
+ =?us-ascii?Q?ySW34hcFyrqrn7gFfnY1l3xVr2bKq514L5DPpMOaFrtkbjDfxkGHbIuqzu5n?=
+ =?us-ascii?Q?xH7jOv3p0n5m5sfAYdc4Qy0qM0O24mNYlP6hVDGEaJHWBvuQYnC1qOLVv3jt?=
+ =?us-ascii?Q?5QcNSZlErIMX/56eO4IGrQXNu0/Qtc7GHKj4IhsCYUjxoXL7df8NYjtZl8w0?=
+ =?us-ascii?Q?64MJYwk0Ljiznmj0f3vl9Ems0P5yojgJMvLUeziFx3+nBf5cv5QWaXJtibPY?=
+ =?us-ascii?Q?h7cHa68R03sKoGBSQLr6eKEe8lNiIcNuNu9VORmYDwIhQ7w3Mw6MqaQ0jcsY?=
+ =?us-ascii?Q?KIKHzmAt6SFTOV6UPnIEe6mS36fMV2TMZLH3UG9oAWt4dcB185iFLvCA6Jby?=
+ =?us-ascii?Q?kHelikcXbDqpWC+XnESEbEY5CJaESE1Zt84JyIQidHQl3GQZqHf6CTvuMLnr?=
+ =?us-ascii?Q?/57MmpCq8kBbxUTusdywSLG9TTPqY4YhOFmmX/Gg7YAxdu27tIVAcHgUp8we?=
+ =?us-ascii?Q?/VdKDq/EqH8Pczck/giuMAyegV/RiG9awHKcbO/7RHAaDP4+Wf2K8x7CgpoV?=
+ =?us-ascii?Q?6F0lQRt/ll8if59w/VHRtIZa3JKhbrlIn92r1VV6h035HlnRUtd3+XvImhUL?=
+ =?us-ascii?Q?wRt+6ErDXN0WDXkJ0tIAzqt3CoxvXcqd5ZWe3zzejkJFw1ayjIAeNp5tn27a?=
+ =?us-ascii?Q?8pP469kpfa+V+ruhEGQzY/GxnimsvwC9DNHreDDSxhuBRywC0JDvq6Y9X3XH?=
+ =?us-ascii?Q?DsGXpZ3FSO7xtTjs2orfyq/5kD5rFJHA4j0h8kcHB2kzKU5RLTu+uXFx79qW?=
+ =?us-ascii?Q?Xcjedo1ri8Y673q74ASRbXIlXkUT8et6Ekut83cRQnyWytKx4uz2xF8DvKw6?=
+ =?us-ascii?Q?kbg7mIzxPyTdbGOsRhHBUzWEwMGK1QnkhLJmeYTDB8TRXzrnge3hS2IboRCt?=
+ =?us-ascii?Q?0oOndm7F5ezuNXcoLrsOKuKLUS8VdhhbqPyidqqVC40xq+qmmY13Dq/oUyXr?=
+ =?us-ascii?Q?U/C6fFYfP5FsXGgqfUEDQ9eVaJaRWiTUBwfkdeJ/ZiwCzcqCjkfuNsS/xYui?=
+ =?us-ascii?Q?RWmHiP8qG/9+f/46gSvaKO4OXIc/cRbcuq4H0oOfs3M0lSrAF8EyMJXA08x0?=
+ =?us-ascii?Q?Fj5/QnX7mhKY9NJjCe1wFFxDyjy2oxjYps8r5Q65a29NLreAkWscExIAWQFI?=
+ =?us-ascii?Q?gQoj+16Y3EULGlxA4w8FA2DOYuAeaJ1AFxtG96jniD3uNLK64Ua8UyJ2KC1n?=
+ =?us-ascii?Q?kjc6MHtPNCoZnLBuF4SksYAuRRGzZMF8Hl3Bh/qEEnnM8glbI/5By1x8Noit?=
+ =?us-ascii?Q?cZAkBCWQIllETzL8H+SinaQa/+rKuabN8hpc4iShjVbkdkJtJ9+okgJfKZay?=
+ =?us-ascii?Q?VPz92uHOSK6m60BLXZY=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59541948-ce66-4e27-109c-08de1c7f52a1
+X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2025 15:23:50.7976
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mCOSjwXhZphT0MbpPJyMKRyoH6tizEOcz00o9YlMJJdtf0xz5HGyfhz+bRyWMllIB1F6Q8Jxti3NekaKiMec3Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRWPR04MB11199
 
-Request the upstream mbus_config in csi_start, which starts the stream,
-instead of caching it in link_validate.
+On Wed, Nov 05, 2025 at 03:53:59AM -0800, Laurentiu Mihalcea wrote:
+>
+> On 11/4/2025 8:44 AM, Frank Li wrote:
+> > On Tue, Nov 04, 2025 at 04:02:58AM -0800, Laurentiu Mihalcea wrote:
+> >> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >>
+> >> Switch to using the regmap API to allow performing register operations
+> >> under the same lock. This is needed for cases such as i.MX8ULP's SIM LPAV
+> >> where clock gating, reset control and MUX-ing is performed via the same
+> >> register (i.e. SYSCTRL0) and different subsystem APIs.
+> >>
+> >> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >> ---
+> >>  drivers/reset/reset-imx8mp-audiomix.c | 93 +++++++++++++++++----------
+> >>  1 file changed, 58 insertions(+), 35 deletions(-)
+> >>
+> >> diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-imx8mp-audiomix.c
+> >> index e9643365a62c..18a7f68aa59f 100644
+> >> --- a/drivers/reset/reset-imx8mp-audiomix.c
+> >> +++ b/drivers/reset/reset-imx8mp-audiomix.c
+> >> @@ -11,6 +11,7 @@
+> >>  #include <linux/module.h>
+> >>  #include <linux/of.h>
+> >>  #include <linux/of_address.h>
+> >> +#include <linux/regmap.h>
+> >>  #include <linux/reset-controller.h>
+> >>
+> >>  #define IMX8MP_AUDIOMIX_EARC_RESET_OFFSET	0x200
+> >> @@ -42,8 +43,7 @@ static const struct imx8mp_reset_map reset_map[] = {
+> >>
+> >>  struct imx8mp_audiomix_reset {
+> >>  	struct reset_controller_dev rcdev;
+> >> -	spinlock_t lock; /* protect register read-modify-write cycle */
+> >> -	void __iomem *base;
+> >> +	struct regmap *regmap;
+> >>  };
+> >>
+> >>  static struct imx8mp_audiomix_reset *to_imx8mp_audiomix_reset(struct reset_controller_dev *rcdev)
+> >> @@ -55,26 +55,15 @@ static int imx8mp_audiomix_update(struct reset_controller_dev *rcdev,
+> >>  				  unsigned long id, bool assert)
+> >>  {
+> >>  	struct imx8mp_audiomix_reset *priv = to_imx8mp_audiomix_reset(rcdev);
+> >> -	void __iomem *reg_addr = priv->base;
+> >> -	unsigned int mask, offset, active_low;
+> >> -	unsigned long reg, flags;
+> >> +	unsigned int mask, offset, active_low, shift, val;
+> >>
+> >>  	mask = reset_map[id].mask;
+> >>  	offset = reset_map[id].offset;
+> >>  	active_low = reset_map[id].active_low;
+> >> +	shift = ffs(mask) - 1;
+> >> +	val = (active_low ^ assert) << shift;
+> >>
+> >> -	spin_lock_irqsave(&priv->lock, flags);
+> >> -
+> >> -	reg = readl(reg_addr + offset);
+> >> -	if (active_low ^ assert)
+> >> -		reg |= mask;
+> >> -	else
+> >> -		reg &= ~mask;
+> >> -	writel(reg, reg_addr + offset);
+> >> -
+> >> -	spin_unlock_irqrestore(&priv->lock, flags);
+> >> -
+> >> -	return 0;
+> >> +	return regmap_update_bits(priv->regmap, offset, mask, val);
+> >>  }
+> >>
+> >>  static int imx8mp_audiomix_reset_assert(struct reset_controller_dev *rcdev,
+> >> @@ -94,6 +83,52 @@ static const struct reset_control_ops imx8mp_audiomix_reset_ops = {
+> >>  	.deassert = imx8mp_audiomix_reset_deassert,
+> >>  };
+> >>
+> >> +static const struct regmap_config regmap_config = {
+> >> +	.reg_bits = 32,
+> >> +	.val_bits = 32,
+> >> +	.reg_stride = 4,
+> >> +};
+> >> +
+> >> +/* assumption: registered only if not using parent regmap */
+> >> +static void imx8mp_audiomix_reset_iounmap(void *data)
+> >> +{
+> >> +	void __iomem *base = (void __iomem *)data;
+> >> +
+> >> +	iounmap(base);
+> >> +}
+> >> +
+> >> +static int imx8mp_audiomix_reset_get_regmap(struct imx8mp_audiomix_reset *priv)
+> >> +{
+> >> +	void __iomem *base;
+> >> +	struct device *dev;
+> >> +	int ret;
+> >> +
+> >> +	dev = priv->rcdev.dev;
+> >> +
+> >> +	/* try to use the parent's regmap */
+> >> +	priv->regmap = dev_get_regmap(dev->parent, NULL);
+> >> +	if (priv->regmap)
+> >> +		return 0;
+> >> +
+> >> +	/* ... if that's not possible then initialize the regmap right now */
+> >> +	base = of_iomap(dev->parent->of_node, 0);
+> >> +	if (!base)
+> >> +		return dev_err_probe(dev, -ENOMEM, "failed to iomap address space\n");
+> >> +
+> >> +	ret = devm_add_action_or_reset(dev,
+> >> +				       imx8mp_audiomix_reset_iounmap,
+> >> +				       (void __force *)base);
+> >> +	if (ret)
+> >> +		return dev_err_probe(dev, ret, "failed to register action\n");
+> >> +
+> >> +	priv->regmap = devm_regmap_init_mmio(dev, base, &regmap_config);
+> >> +	if (IS_ERR(priv->regmap))
+> >> +		return dev_err_probe(dev, PTR_ERR(priv->regmap),
+> >> +				     "failed to initialize regmap\n");
+> > Does anyone still base?  Supposed aux device probed by parent devices,
+> > if all parent already switch to regmap, you can remove this part.
+> >
+> > Frank
+>
+>
+> both clk-imx8ulp-sim-lpav and clk-imx8mp-audiomix don't handle the clock gate
+>
+> functionality by themselves. Instead, they use the generic clock gate driver, which
+>
+> doesn't use regmap. ATM, I don't plan on extending that to use regmap (how would
+>
+> that work? would we want that? would it be useful for other people as well?)
 
-This allows to get rid of the mbus_cfg field in the struct csi_priv and
-avoids state in the driver.
+Okay, I suppose parent clock driver use iomap also, which cause map the
+same area twice. Although it works, I think it'd better pass down mapped
+address to this driver. Anyways you may improve later.
 
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-Fixes: 4a34ec8e470c ("[media] media: imx: Add CSI subdev driver")
-Cc: stable@vger.kernel.org
----
- drivers/staging/media/imx/imx-media-csi.c | 40 ++++++++++++++++++-------------
- 1 file changed, 24 insertions(+), 16 deletions(-)
+Frank
 
-diff --git a/drivers/staging/media/imx/imx-media-csi.c b/drivers/staging/media/imx/imx-media-csi.c
-index fd7e37d803e7..55a7d8f38465 100644
---- a/drivers/staging/media/imx/imx-media-csi.c
-+++ b/drivers/staging/media/imx/imx-media-csi.c
-@@ -97,9 +97,6 @@ struct csi_priv {
- 	/* the mipi virtual channel number at link validate */
- 	int vc_num;
- 
--	/* media bus config of the upstream subdevice CSI is receiving from */
--	struct v4l2_mbus_config mbus_cfg;
--
- 	spinlock_t irqlock; /* protect eof_irq handler */
- 	struct timer_list eof_timeout_timer;
- 	int eof_irq;
-@@ -403,7 +400,8 @@ static void csi_idmac_unsetup_vb2_buf(struct csi_priv *priv,
- }
- 
- /* init the SMFC IDMAC channel */
--static int csi_idmac_setup_channel(struct csi_priv *priv)
-+static int csi_idmac_setup_channel(struct csi_priv *priv,
-+				   struct v4l2_mbus_config *mbus_cfg)
- {
- 	struct imx_media_video_dev *vdev = priv->vdev;
- 	const struct imx_media_pixfmt *incc;
-@@ -432,7 +430,7 @@ static int csi_idmac_setup_channel(struct csi_priv *priv)
- 	image.phys0 = phys[0];
- 	image.phys1 = phys[1];
- 
--	passthrough = requires_passthrough(&priv->mbus_cfg, infmt, incc);
-+	passthrough = requires_passthrough(mbus_cfg, infmt, incc);
- 	passthrough_cycles = 1;
- 
- 	/*
-@@ -572,11 +570,12 @@ static void csi_idmac_unsetup(struct csi_priv *priv,
- 	csi_idmac_unsetup_vb2_buf(priv, state);
- }
- 
--static int csi_idmac_setup(struct csi_priv *priv)
-+static int csi_idmac_setup(struct csi_priv *priv,
-+			   struct v4l2_mbus_config *mbus_cfg)
- {
- 	int ret;
- 
--	ret = csi_idmac_setup_channel(priv);
-+	ret = csi_idmac_setup_channel(priv, mbus_cfg);
- 	if (ret)
- 		return ret;
- 
-@@ -595,7 +594,8 @@ static int csi_idmac_setup(struct csi_priv *priv)
- 	return 0;
- }
- 
--static int csi_idmac_start(struct csi_priv *priv)
-+static int csi_idmac_start(struct csi_priv *priv,
-+			   struct v4l2_mbus_config *mbus_cfg)
- {
- 	struct imx_media_video_dev *vdev = priv->vdev;
- 	int ret;
-@@ -619,7 +619,7 @@ static int csi_idmac_start(struct csi_priv *priv)
- 	priv->last_eof = false;
- 	priv->nfb4eof = false;
- 
--	ret = csi_idmac_setup(priv);
-+	ret = csi_idmac_setup(priv, mbus_cfg);
- 	if (ret) {
- 		v4l2_err(&priv->sd, "csi_idmac_setup failed: %d\n", ret);
- 		goto out_free_dma_buf;
-@@ -701,7 +701,8 @@ static void csi_idmac_stop(struct csi_priv *priv)
- }
- 
- /* Update the CSI whole sensor and active windows */
--static int csi_setup(struct csi_priv *priv)
-+static int csi_setup(struct csi_priv *priv,
-+		     struct v4l2_mbus_config *mbus_cfg)
- {
- 	struct v4l2_mbus_framefmt *infmt, *outfmt;
- 	const struct imx_media_pixfmt *incc;
-@@ -719,7 +720,7 @@ static int csi_setup(struct csi_priv *priv)
- 	 * if cycles is set, we need to handle this over multiple cycles as
- 	 * generic/bayer data
- 	 */
--	if (is_parallel_bus(&priv->mbus_cfg) && incc->cycles) {
-+	if (is_parallel_bus(mbus_cfg) && incc->cycles) {
- 		if_fmt.width *= incc->cycles;
- 		crop.width *= incc->cycles;
- 	}
-@@ -730,7 +731,7 @@ static int csi_setup(struct csi_priv *priv)
- 			     priv->crop.width == 2 * priv->compose.width,
- 			     priv->crop.height == 2 * priv->compose.height);
- 
--	ipu_csi_init_interface(priv->csi, &priv->mbus_cfg, &if_fmt, outfmt);
-+	ipu_csi_init_interface(priv->csi, mbus_cfg, &if_fmt, outfmt);
- 
- 	ipu_csi_set_dest(priv->csi, priv->dest);
- 
-@@ -745,9 +746,17 @@ static int csi_setup(struct csi_priv *priv)
- 
- static int csi_start(struct csi_priv *priv)
- {
-+	struct v4l2_mbus_config mbus_cfg = { .type = 0 };
- 	struct v4l2_fract *input_fi, *output_fi;
- 	int ret;
- 
-+	ret = csi_get_upstream_mbus_config(priv, &mbus_cfg);
-+	if (ret) {
-+		v4l2_err(&priv->sd,
-+			 "failed to get upstream media bus configuration\n");
-+		return ret;
-+	}
-+
- 	input_fi = &priv->frame_interval[CSI_SINK_PAD];
- 	output_fi = &priv->frame_interval[priv->active_output_pad];
- 
-@@ -758,7 +767,7 @@ static int csi_start(struct csi_priv *priv)
- 		return ret;
- 
- 	/* Skip first few frames from a BT.656 source */
--	if (priv->mbus_cfg.type == V4L2_MBUS_BT656) {
-+	if (mbus_cfg.type == V4L2_MBUS_BT656) {
- 		u32 delay_usec, bad_frames = 20;
- 
- 		delay_usec = DIV_ROUND_UP_ULL((u64)USEC_PER_SEC *
-@@ -769,12 +778,12 @@ static int csi_start(struct csi_priv *priv)
- 	}
- 
- 	if (priv->dest == IPU_CSI_DEST_IDMAC) {
--		ret = csi_idmac_start(priv);
-+		ret = csi_idmac_start(priv, &mbus_cfg);
- 		if (ret)
- 			goto stop_upstream;
- 	}
- 
--	ret = csi_setup(priv);
-+	ret = csi_setup(priv, &mbus_cfg);
- 	if (ret)
- 		goto idmac_stop;
- 
-@@ -1138,7 +1147,6 @@ static int csi_link_validate(struct v4l2_subdev *sd,
- 
- 	mutex_lock(&priv->lock);
- 
--	priv->mbus_cfg = mbus_cfg;
- 	is_csi2 = !is_parallel_bus(&mbus_cfg);
- 	if (is_csi2) {
- 		/*
-
--- 
-2.47.3
-
+>
