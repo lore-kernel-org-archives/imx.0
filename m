@@ -1,190 +1,221 @@
-Received: from uho.ysoft.cz (uho.ysoft.cz [81.19.3.130])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011015.outbound.protection.outlook.com [52.101.70.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52EF2C3247
-	for <imx@lists.linux.dev>; Wed,  5 Nov 2025 15:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.3.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762356947; cv=none; b=g0L62PctabBwWCrJJm9VY7MiYGF7EFk8/lmxJvWITlSKnVsC9DxY4JTT6G6APjjF8DC/GJYUmHjwFrqKEeDb0BifxFXRv6wNqIy1GmiMo31e3wZcg5srNdy64GpC00zgQkIDx5EXwYhsCmFVMXw+PFJiEWi3ZUB/rVSBfz3sThk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762356947; c=relaxed/simple;
-	bh=iYV/0gxlfsnY/0FDjlyewNo1A9AIsLgh3s2Ej2a9ycY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=L6DPbxfiZUMUmyT6tfZOD1rF5E3StovlyFvpQAp+hRyauoMQuzlD5NN8OsYaaG4IOHRWfOhXLfXWAGW6/9+sdh+ndO17wYE8Qu41fQGghpz2yTjisVANlBUQ7Suy0bvRw1YuUnt+3OsWivHPAZcX8Le+4yOzifycvy1/tJ1Fvn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ysoft.com; spf=pass smtp.mailfrom=ysoft.com; dkim=pass (1024-bit key) header.d=ysoft.com header.i=@ysoft.com header.b=ahmy7OJE; arc=none smtp.client-ip=81.19.3.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ysoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ysoft.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EA6325717
+	for <imx@lists.linux.dev>; Wed,  5 Nov 2025 15:45:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762357512; cv=fail; b=DVt9+wFbJLP/3r4xkCFghDW04YfgStfF5kjd51FfwtBMVECp9DG5YF1q4tEtAGcivIjZuVRqEYg6ql51n+U7p9OOhPFsfY4jK/NV5Y77Z6aCc6TXBevabEtDWGIcAwvHGbDzgyT/mBSQD0xNDjUThhzz7K4B6ypQO8Wj2csZUKA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762357512; c=relaxed/simple;
+	bh=ZgZr4mGAAbI5wkl96eC2iGJmNLJWKQsxjKIyjMuzZug=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=cO92hTx9+UhDQly0xsQGOpHMwCsiUNdedjGMJApOAVR5/HWGwOEhT7EJHCTVfHzkZNOJFZioIJfKwn8ISR/ReLlZqrg9BbSAtKBvsWBWc50jGk/FvJZfZDw0KeLvmi1YCMoet3Pjc57CTcv5MuM909jVckT/JBoo0sya2ccmis4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=R2BtQPgO; arc=fail smtp.client-ip=52.101.70.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ysoft.com header.i=@ysoft.com header.b="ahmy7OJE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ysoft.com;
-	s=20160406-ysoft-com; t=1762356407;
-	bh=/3nfux16ZKQG2m9VQWPawdpfD+7ff1vFtMyoP8aJnbw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ahmy7OJElGvW+VWqcGKDd7BljNCRMBG3J3Yj+OMXH3WQOJY9n76Ytzzb80Lgt/YV6
-	 0ZpDQEHZb75zGY6vE0m5HkyLMqwhyE/2iksjc73v7G5V8QUx0JXj1Bs5XSgGuQuYAe
-	 JORaRFJzODjLuw/SvqUeWwGXPMIM7nb0U9sOmSSc=
-Received: from vokac-nb.ysoft.local (unknown [10.1.8.111])
-	by uho.ysoft.cz (Postfix) with ESMTP id 05B17A0364;
-	Wed,  5 Nov 2025 16:26:47 +0100 (CET)
-From: =?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>
-To: Shawn Guo <shawnguo@kernel.org>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>
-Subject: [PATCH 1/2] ARM: dts: imx6dl-yapp43: Enable pwm-beeper on boards with speaker
-Date: Wed,  5 Nov 2025 16:25:53 +0100
-Message-ID: <20251105152555.1992513-1-michal.vokac@ysoft.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="R2BtQPgO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=s9R7FiyJIZvmSTPQB5lrqLunhnICpG2B/fAmYCicq5nxyIBrYMcAsBsgnXaLz5cJFvvVyTR97F2hAMjb3Zy8aE6O0TKXCV08FOzV0wrO1hLylvLKA9gqL+E8KAcKaCEbD7RotEife7OLCPXAt/eH9KZI6tQ55CnyaotXPodKzzQZME5Tn5UcpSqRuZ5oy3ZlDq1SaOQ/ejymcuS7LU29AWqlY1tgTOfqK4ybtRjo/4EU8fwnhjfmHa471ConcY5a07n71gx2ooqxb8vg26okh+zkJsJbuG15WVFIStb4dFT4yP626xZp+kfQqjz5e6DDjt/OCCo476hMi38U56oolg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HhyJgJAodYpYZ55IQ8duFjwzfIlhFZCXd7zYj9y0RVg=;
+ b=Qc4ieMxVJ48zSPajKNVonSDXIDffmMO+ZrGsymZ/3qj4NyDiFh+xNfqovdOGMbJUwqQ/JuHB3Ix7nGXbQEqtKWCLnc895FJauHduY/spM9mQm8tUuG/y/lTKiaIG7/BNA9uEDO6IHrE1SkoeYAXN6Q3aiTR4jAee8+OEG0NCVm9hBRf2FRK57rTg9zzclAw13ECdzIPl+ZKIdMO2Sg9GAfDn3/FEp5A04AX9aaHfiueWmTTKowOcXPpW+ACUAzIaDrcRH6IhegHpIfyg3eN4GN7DVf4AfN2++vWemYXKO8RT/G79/fDOlkgHTJ/4Q28fR84yeQNRQhZEH8WI8v3D+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HhyJgJAodYpYZ55IQ8duFjwzfIlhFZCXd7zYj9y0RVg=;
+ b=R2BtQPgONaQHNtM8wb8DcVVRs/j/kJvt0cMwzEDJQLsxg6L9D5NX/4ze8FXxCQsQSKouOHGBLm84ZnRtvgH+qsCl1bbJ4kXfXmm3MU/PVomrS8vaoXLtubf29/qol/EYh88azKMhMAMel9/hXXB+/G+ngCgkMRoETMktnqvNkZLiEIHXE/lumTk0f0jJVaujzezBvO5g3WqvTzYWAO650RHeVFhj5t7juDZcfcGkHsA9ZOGdaCUQ2tKZwOmo8rya2C1FJd2bqRmUP1nSyV11NlmRW4TNy8ZrW/WBOAfLGqIhI/TnMcr+15bW0xPS+2Mh3kvyIO0FkqN9GWtXSvBu2g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
+ by DB9PR04MB9992.eurprd04.prod.outlook.com (2603:10a6:10:4c1::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.9; Wed, 5 Nov
+ 2025 15:45:06 +0000
+Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
+ ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9298.006; Wed, 5 Nov 2025
+ 15:45:06 +0000
+Date: Wed, 5 Nov 2025 10:44:57 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, jun.li@nxp.com
+Subject: Re: [PATCH 2/2] usb: dwc3: imx8mp: disable auto suspend for host role
+Message-ID: <aQtw+dNQEWkKxs5D@lizhi-Precision-Tower-5810>
+References: <20251105074504.1427926-1-xu.yang_2@nxp.com>
+ <20251105074504.1427926-2-xu.yang_2@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251105074504.1427926-2-xu.yang_2@nxp.com>
+X-ClientProxiedBy: PH7PR13CA0001.namprd13.prod.outlook.com
+ (2603:10b6:510:174::7) To PAXSPRMB0053.eurprd04.prod.outlook.com
+ (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|DB9PR04MB9992:EE_
+X-MS-Office365-Filtering-Correlation-Id: 99a28e0f-1037-4616-6621-08de1c824ace
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|7416014|366016|1800799024|19092799006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?5SCjYKKkUf4FJD/BUT5xXTXTde4Gx3g2hIkHfqKhZwhPIihOUBihfu3x0PhC?=
+ =?us-ascii?Q?2T8H7lf0GqHU7PnY4NGpHPa0VMlzEBmxH9GkcTXP6tQSxJ40btADlL6bgoKz?=
+ =?us-ascii?Q?6YEqLz9bNEXA2hz71CmnRVDSuQpl5S6pYhh1/FRggCWVXagN6ZhzI+9QH5cJ?=
+ =?us-ascii?Q?Ino3ooB5TQOt0jHsq6q4m+KNIFTT2+Bjyf1MzoaqVgIbBrlqmPdXqEA/cDrs?=
+ =?us-ascii?Q?lnfmzN8SfozQDcAVQGZdgXeuJ+krV7kMgIWX/sCHh4hGgjUv2jBPjij/qGf+?=
+ =?us-ascii?Q?LyDvAPLeLb9czUnrgVYq2+Gd76cgJM0zw4+wq7nN9R8UCXXVoOvxVq7zRR+r?=
+ =?us-ascii?Q?IgryvOvTW6jBdBGSTPnO6yoYC8or7ocq7xqXvFugu+fMaEnVFzV067Yv7AKT?=
+ =?us-ascii?Q?9BtiEnYl5C17U6MBwU/OrHjCdNNk6eUQD7u4ig1jBNRNJK+l0Ze61a1+qBbT?=
+ =?us-ascii?Q?VtNxrTrWGz4m0Q5LFAYe6+lTzAYSWaRi2O1vI/VAScpyUXQOHDmnmrHHxy1k?=
+ =?us-ascii?Q?Psb57gfP1ZkDzNZUMeNFHiHXNHj6coknLcMmfTNFStgslQUtUk/UXa9eEQJb?=
+ =?us-ascii?Q?Ov3lKV2kzX4QWcR9azVEOQvbx0Iu5lNHjJzOAoMewsUs0WQwdizAI+VwUzRo?=
+ =?us-ascii?Q?MhLCVEjlv5dKjaYI6IBsxrYbYR1uEa4gZWkDgrg/Jk81dfnmkUP1rsU04ckd?=
+ =?us-ascii?Q?qW8bWfVFY1q1t6d6oeDqqU9nCYEqMJlECVExgu0lmcJz0JkSFcuC6DCrKcbJ?=
+ =?us-ascii?Q?YQbbZdoGjIqGbd7Y2caAEd2zg/BOzm4kUTpM1TA2y4seb9FU5ibMxK/OgoN1?=
+ =?us-ascii?Q?d2ZoM634suNRdcnqFO/lMwN3zMtjrBeVTTDR2Bo7H6EAUcXgrHhtoNpwOJrf?=
+ =?us-ascii?Q?VQZBX771IA1d7xfrc7BH1Q/bmX0AZhE/inHtmTWsSD0ONatKjwH+3aJaxEes?=
+ =?us-ascii?Q?bW8zb+1Sq6qsarzm1lSTp2Zjk6iZ4Qx1wgRZh3x9Rj6ox2ydqcimBI0wzjGC?=
+ =?us-ascii?Q?PL+bh7okIXTvO9b/LmcDkxgLGuq1Awg6zMLHkz6ApnsINNDG9bqRA0XtCg4J?=
+ =?us-ascii?Q?7/aSGXtzj0awfJCiAcvj7P1qbEmwafonKNpJKdHjwFmvXENnzyk9/rsVSvAW?=
+ =?us-ascii?Q?pRcPSn955/5Gs5S7Siqqqpoh7xfn2BzuvSl/1RfSOStKzjmYaTyJE76yRxMM?=
+ =?us-ascii?Q?+Df6vBRXFc+XZH+ZUCgVj8EIc5lfF/I6za+vfIMcs60o0yj3OlHn/0L11UlH?=
+ =?us-ascii?Q?w7VxLv/hkeJGyeS+AH5MMNTSZozsigc18r4JrLqpI5LMrCHfY2Dmi2R7p7Gn?=
+ =?us-ascii?Q?B+vTcP47MJDDl645RWufiaRZllKUg/8pmg3UVXo19LBR0YK8ODetFqhzr+ns?=
+ =?us-ascii?Q?YEJq49/ubooVuIBYxRImqDL6/H1oRx9w+tSBAq1OpSFU7sNZUcTCZAIIOnHD?=
+ =?us-ascii?Q?6LtTjF1ftDofLuBhpuEZ6nfY1FaFZ/Aj7lEz4KNNC35xf+jjH4m6rs3VqO7o?=
+ =?us-ascii?Q?8s7JyGi3f9QyAxmvg0NBxJnxwFQv4PwZP82V?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(1800799024)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?yHYimF+mgVYCY9vv/TKSttoSbmG+FcgscSgz9YRHKwlVI9DBju/D+LlML/aR?=
+ =?us-ascii?Q?HeXXhrQfHhENHAOzlMO8Eq+Eq6h0XqktWN17Go19aqs5GYZgVPcysETPNfoS?=
+ =?us-ascii?Q?4K0Wxd3f+g8HuzRElRW+BWH2X9LfHamX1puDLGlDnUydnHr5FGiqmA0U3oWG?=
+ =?us-ascii?Q?v5bv0FEik9Phvf+Gkg2aWGR6qZspIsp32aqAGo7cFbFTqSUn1bpwuY3jrMr7?=
+ =?us-ascii?Q?It26hv/D/IEUfE3WFsiLFA33v6JeVHM1QA6URKw7m3a/ETuBJfwZO2msQ3XR?=
+ =?us-ascii?Q?NsZ/w6aSsiwAL+pBjr7lGjfEGiDmCLXUUVJ385rf0OF0n+oRi+tfV1pGifz8?=
+ =?us-ascii?Q?xG/acbML8uP9En2SEVrokcGk1ZYZHehCLy25CvOlT+EKSOOB677ZQGwr3zHH?=
+ =?us-ascii?Q?v0nYwC7TsH+FiA0q+126jppMKddQyxwtbijLoB6Mi/2c3BCKL93/tYY0GQdC?=
+ =?us-ascii?Q?zXt5nazUZRc/Mt8W3FhhLbds5CCxmidALYSf0Bf53F7TM+J/gPjWKSp6wy28?=
+ =?us-ascii?Q?PX4ZY3E0YdBH74VYA0qxCeBa/RXZd4gRP2DvZ0B0gs7dW3MzSdFOzdRF7AEr?=
+ =?us-ascii?Q?U7CvjSODagPeOuVV8sCvwStKzs3Y8WCMSa3GhurEQeqWb9NPI2XSA7ZXiYUq?=
+ =?us-ascii?Q?mv7giDpHQpWocsTeZx7PzFuWPClSSSWMlCDxz2D3raYLPNxxe8hK1WrOQfbW?=
+ =?us-ascii?Q?XPTwmCEkZvSJi50zDVIzT8hYqWtaX7Fe0W2odvQdvbUU9HB+Ka6wiHUYUgA/?=
+ =?us-ascii?Q?fzwZ5nMt5KqF+ZUwyP/dSD12I5b1N/j3yDGZHTfrJ6mpfQdfphM7H6crdGFX?=
+ =?us-ascii?Q?mBVZXA0TJQ0asNCrjC1Y6R94BUHfPfGfE1gQlabgmEo1hgkNP0DheEOfTu1c?=
+ =?us-ascii?Q?NWarkwwyOKKBS45OQ3mSra5r4DS6siRpwN7bM03DcwCMwvsy8sOKVD5zXSWX?=
+ =?us-ascii?Q?zF3wNOE+/2eiL56JPmFX1YWovWs9/TtiA/nwlJ/yDbaCXd2lonwHrrVYweRK?=
+ =?us-ascii?Q?AHAHuaWusYedDpVd9Ppo4phrPEEKUs+mo7VrnA8iTECzr6naqzx8qtPltap+?=
+ =?us-ascii?Q?9ybEBiMBv/ZDs79/tBxhXyJQV6pABIVUu410DlC9kwPdEU/yzKl0XHp/F0uj?=
+ =?us-ascii?Q?Vt+jUM6b1pCfltmEoXCv8+FBNjweRs/R9l6C8hG8CJeFiBNwbEDiueuospif?=
+ =?us-ascii?Q?6fm30WXISPAQ/TEPJS4EOhNrkJISflPQ2qklDLMQrzuyGlwzaLdoSs1vU1IH?=
+ =?us-ascii?Q?Rr2F07GLVh54MtfMC/Y9YhAgh6gv0XT7HB2muRIwbtRTrMED/HngH82q0bV0?=
+ =?us-ascii?Q?MSsouisD9nYUYRhFLQGcAOGuj/oe4GfnhzCfzk3gUopaZxAoMvel9RS8dLKi?=
+ =?us-ascii?Q?BXZ4yfvvfxvxIE0kKV9MZmn+wzAEwF0QkIboa5Oy/xt9MDdfZ9+w1PusrKMj?=
+ =?us-ascii?Q?2aPFekRyK30hiIixMsKP21sJj0jy3qpKJFe/UoRzom3QJ92dcsPwh6Kfc/5x?=
+ =?us-ascii?Q?LF/E+s8svLIxmZOj6PTWmzmNnXUrFiELQl6n08QmfTRt5OHQ2aDvmYtu/e4G?=
+ =?us-ascii?Q?rqfLDAaEiaFtFzV6ikGlzRYcXg4namnevixK0S2X?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99a28e0f-1037-4616-6621-08de1c824ace
+X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2025 15:45:06.1713
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9BDUmGm8ydlT5fDBTXVkPiRzas32ZSX2ztQl3oho3azJd9jggpgAkpzHmpaRPICjPPJventrDFb3VyOvlkIFmg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9992
 
-Lynx, Pegasus and Pegasus+ boards have a speaker connected to the PWM3.
-Enable a pwm-beeper on these boards so the system can produce simple
-sounds.
+On Wed, Nov 05, 2025 at 03:45:03PM +0800, Xu Yang wrote:
+> Do dwc3 core auto suspend enable for device and disable for host
+> , this can make sure dwc3 core device auto suspend setting is
+> correct all the time, the background of disable dwc3 core device
+> auto suspend is to make its parent device suspend immediately
+> (so wakeup enable can be enabled) after xhci-plat device suspended,
 
-Signed-off-by: Michal Vokáč <michal.vokac@ysoft.com>
----
- .../boot/dts/nxp/imx/imx6dl-yapp4-lynx.dts    |  8 ++++++++
- .../dts/nxp/imx/imx6dl-yapp43-common.dtsi     | 19 +++++++++++++++++++
- .../boot/dts/nxp/imx/imx6q-yapp4-pegasus.dts  |  8 ++++++++
- .../dts/nxp/imx/imx6qp-yapp4-pegasus-plus.dts |  8 ++++++++
- 4 files changed, 43 insertions(+)
+Does wakeup only enable at runtime pm suspend? why core delay runtime
+pm suspend impact wakeup function?
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-yapp4-lynx.dts b/arch/arm/boot/dts/nxp/imx/imx6dl-yapp4-lynx.dts
-index 5c2cd517589b..0a6b668428a3 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6dl-yapp4-lynx.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-yapp4-lynx.dts
-@@ -21,6 +21,10 @@ &backlight {
- 	status = "okay";
- };
- 
-+&beeper {
-+	status = "okay";
-+};
-+
- &lcd_display {
- 	status = "okay";
- };
-@@ -37,6 +41,10 @@ &pwm1 {
- 	status = "okay";
- };
- 
-+&pwm3 {
-+	status = "okay";
-+};
-+
- &reg_usb_h1_vbus {
- 	status = "okay";
- };
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi
-index 2f42c56c21f6..6f9bd163ffbe 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6dl-yapp43-common.dtsi
-@@ -26,6 +26,12 @@ backlight: backlight {
- 		status = "disabled";
- 	};
- 
-+	beeper: beeper {
-+		compatible = "pwm-beeper";
-+		pwms = <&pwm3 0 500000 0>;
-+		status = "disabled";
-+	};
-+
- 	gpio_keys: gpio-keys {
- 		compatible = "gpio-keys";
- 		pinctrl-names = "default";
-@@ -466,6 +472,13 @@ MX6QDL_PAD_GPIO_9__PWM1_OUT	0x8
- 		>;
- 	};
- 
-+	pinctrl_sound: soundgrp {
-+		fsl,pins = <
-+			MX6QDL_PAD_SD1_DAT0__GPIO1_IO16	0x1b0b0
-+			MX6QDL_PAD_SD1_DAT1__PWM3_OUT	0x8
-+		>;
-+	};
-+
- 	pinctrl_touch: touchgrp {
- 		fsl,pins = <
- 			MX6QDL_PAD_GPIO_19__GPIO4_IO05	0x1b098
-@@ -551,6 +564,12 @@ &pwm1 {
- 	status = "disabled";
- };
- 
-+&pwm3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_sound>;
-+	status = "disabled";
-+};
-+
- &uart1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_uart1>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-yapp4-pegasus.dts b/arch/arm/boot/dts/nxp/imx/imx6q-yapp4-pegasus.dts
-index ec6651ba4ba2..7332f2718982 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-yapp4-pegasus.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-yapp4-pegasus.dts
-@@ -17,6 +17,10 @@ memory@10000000 {
- 	};
- };
- 
-+&beeper {
-+	status = "okay";
-+};
-+
- &gpio_oled {
- 	status = "okay";
- };
-@@ -37,6 +41,10 @@ &oled_1309 {
- 	status = "okay";
- };
- 
-+&pwm3 {
-+	status = "okay";
-+};
-+
- &reg_pu {
- 	regulator-always-on;
- };
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qp-yapp4-pegasus-plus.dts b/arch/arm/boot/dts/nxp/imx/imx6qp-yapp4-pegasus-plus.dts
-index 4a961a33bf2d..770a85e0561c 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qp-yapp4-pegasus-plus.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qp-yapp4-pegasus-plus.dts
-@@ -17,6 +17,10 @@ memory@10000000 {
- 	};
- };
- 
-+&beeper {
-+	status = "okay";
-+};
-+
- &gpio_oled {
- 	status = "okay";
- };
-@@ -37,6 +41,10 @@ &oled_1309 {
- 	status = "okay";
- };
- 
-+&pwm3 {
-+	status = "okay";
-+};
-+
- &reg_pu {
- 	regulator-always-on;
- };
--- 
-2.43.0
+Frank
 
+> for device mode, we keep the dwc3 core device auto suspend is to
+> give some wait for gadget to be enumerated.
+>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> ---
+>  drivers/usb/dwc3/dwc3-imx8mp.c | 31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
+>
+> diff --git a/drivers/usb/dwc3/dwc3-imx8mp.c b/drivers/usb/dwc3/dwc3-imx8mp.c
+> index bce6af82f54c..80a431cb6fed 100644
+> --- a/drivers/usb/dwc3/dwc3-imx8mp.c
+> +++ b/drivers/usb/dwc3/dwc3-imx8mp.c
+> @@ -158,11 +158,31 @@ static irqreturn_t dwc3_imx8mp_interrupt(int irq, void *_dwc3_imx)
+>  	return IRQ_HANDLED;
+>  }
+>
+> +static void dwc3_imx_pre_set_role(struct dwc3 *dwc, enum usb_role role)
+> +{
+> +	if (role == USB_ROLE_HOST)
+> +		/*
+> +		 * For xhci host, we need disable dwc core auto
+> +		 * suspend, because during this auto suspend delay(5s),
+> +		 * xhci host RUN_STOP is cleared and wakeup is not
+> +		 * enabled, if device is inserted, xhci host can't
+> +		 * response the connection.
+> +		 */
+> +		pm_runtime_dont_use_autosuspend(dwc->dev);
+> +	else
+> +		pm_runtime_use_autosuspend(dwc->dev);
+> +}
+> +
+> +struct dwc3_glue_ops dwc3_imx_glue_ops = {
+> +	.pre_set_role   = dwc3_imx_pre_set_role,
+> +};
+> +
+>  static int dwc3_imx8mp_probe(struct platform_device *pdev)
+>  {
+>  	struct device		*dev = &pdev->dev;
+>  	struct device_node	*node = dev->of_node;
+>  	struct dwc3_imx8mp	*dwc3_imx;
+> +	struct dwc3		*dwc3;
+>  	struct resource		*res;
+>  	int			err, irq;
+>
+> @@ -240,6 +260,17 @@ static int dwc3_imx8mp_probe(struct platform_device *pdev)
+>  		goto depopulate;
+>  	}
+>
+> +	dwc3 = platform_get_drvdata(dwc3_imx->dwc3);
+> +	if (!dwc3) {
+> +		err = dev_err_probe(dev, -EPROBE_DEFER, "failed to get dwc3 platform data\n");
+> +		goto depopulate;
+> +	}
+> +
+> +	dwc3->glue_ops = &dwc3_imx_glue_ops;
+> +
+> +	if (dwc3->dr_mode == USB_DR_MODE_HOST)
+> +		pm_runtime_dont_use_autosuspend(dwc3->dev);
+> +
+>  	err = devm_request_threaded_irq(dev, irq, NULL, dwc3_imx8mp_interrupt,
+>  					IRQF_ONESHOT, dev_name(dev), dwc3_imx);
+>  	if (err) {
+> --
+> 2.34.1
+>
