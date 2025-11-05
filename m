@@ -1,96 +1,85 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB676305056
-	for <imx@lists.linux.dev>; Wed,  5 Nov 2025 11:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF72E2F56;
+	Wed,  5 Nov 2025 13:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762343746; cv=none; b=FNDSCGmuWyHUD55mRZDUHTRGBcoyYLgip8hhk7Uktc6P5UcPry537Vso4VUWllp9NFTrX+LZ97gh2K1nfRB+dHh3k7qUodVb1ASta9t/x7iQhkb30ZQw7NFQu1KuBjWV++XrCvFTFat1ZfYTP/qrNbM+uW3PkuO4kpIOddwwu74=
+	t=1762348977; cv=none; b=KidZOA+M8wiKvS5d5Lb9XMSXymsBQa/TpH0kKY8Tftr0lRwlpOEnN+Pui34fWiMnld6G1203tkSBrMF8OnKsWVUcYwHFEpx/Z3ytOi3M4vzNpvus9iJfJJ2yY3ApKPK8CmcUFEtwlDD5c5Yb53dcUHQ4tnJM6Fl+44XIkt3kAjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762343746; c=relaxed/simple;
-	bh=DvN0RKWA+eilY5co1nbi5PahhEXS/9e51XhcakcWZ1o=;
+	s=arc-20240116; t=1762348977; c=relaxed/simple;
+	bh=B95eVH4gIcSqc/WQ/YtpqJQxu1TLbgEzFDA9oDcpFHY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=phZMlOu0VRD6H4kmesfsrJEpha1WS6/0SnkCrf9jCacWm4zEw7rHemgrQTXGYmvDd5HY04VpZydqK5ZvRSujdC5Ik9hxCeSemadP5iPTZjtXzvHlb5ddYkdWFvvq+J2izC92nB77nblxxIeuQhIydNS/4sRu0GQpoPL/J1/wNKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=kNpqG3G4; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=tN8nagSlIJKOfrPyL5OUfTB1iKIBAkBEPSiMO13pXx0CWbJ4AiMJQa9Hrc+W4J3RM31KinytVNb+tWqPuBsXdoaKfrwS2hrq7yOeyjnDwMxYuIZg/tFrWTQ/FSep2Mdlg8Fv0LjiwVZgDnZ+NlEnZn76oig9OyQzxNu7eSS4GdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fHM5sXvF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="kNpqG3G4"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 94AD01F842;
-	Wed,  5 Nov 2025 12:55:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1762343743;
-	bh=5jbA9aezDlJiuk2X1xT0BLwTokZ2YLI3EDgl9yTbOXQ=; h=From:To:Subject;
-	b=kNpqG3G4Hsyvb9z4ilOi6Dy803JvAxDoY+VekOn3c4RdY4SWM9QzdABbvQ7z/qVt8
-	 cuLeVHLAvpOUNdF4eHpe+7auA0bG1W524fOCsCIb1zt8wXpakNWFzbyAO6qt4OldsJ
-	 8WYWJHgZGe+kTafoVoElL46+3KoDT/a2bVqL2pC0iSxKIHU9dRQJdT+G2qGQM6jibd
-	 u2YMHAT0RqBeFasTjDKmcEnvH3TBGzFZG4peHu4eOxQHFn6MYnAnnceDkq5r35+za9
-	 tH4wnP+es9awN8snj2ycAjQPur22vqIU0RBPJOhRhUbXV+tJVNMw5McPeHA+0tU3IC
-	 M+xqXL2e8vxrg==
-Date: Wed, 5 Nov 2025 12:55:38 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] ARM: dts: imx: move nand related property under
- nand@0
-Message-ID: <20251105115538.GA17091@francesco-nb>
-References: <20251104-gpmi_dts-v1-0-886865393d0f@nxp.com>
- <20251104-gpmi_dts-v1-3-886865393d0f@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fHM5sXvF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8B2C4CEF8;
+	Wed,  5 Nov 2025 13:22:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762348976;
+	bh=B95eVH4gIcSqc/WQ/YtpqJQxu1TLbgEzFDA9oDcpFHY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fHM5sXvFq3Mrtro4l2Ena35Nqj5NrO95Y9KqOhQvHQMg40NvBil4Ahe1sG4vNEbJp
+	 QlFHUpOMm7tPm77MqQKlSX3qCD09BqqwxntL0tS/xZ2fwv9dgonUI5mdv2qUGvej50
+	 v+wKjKVAa3tj0PTF0lEEc8edino/1ixZce8FFv6WUAAAQRG+iMOnDEMDcLkOvWVzce
+	 o62QMfkONd4O2F9he7d0E26hjJGnu2Tefsw8gWGp+5NZi5/7RKKs+kHQSVfZ88Iy1t
+	 YHnjz0xmz9fGhr8L2Odpgt5mCbCL8rUi7RdRwui7UPxNfwwuk7c6sOh/Vu2cWChsQc
+	 Fa+YR4JEEUc9Q==
+Date: Wed, 5 Nov 2025 13:22:53 +0000
+From: Mark Brown <broonie@kernel.org>
+To: carlos.song@nxp.com
+Cc: frank.li@nxp.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com,
+	linux-spi@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: imx: keep dma request disabled before dma transfer
+ setup
+Message-ID: <aQtPrS6_spVEzKSu@finisterre.sirena.org.uk>
+References: <20251024055320.408482-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="zw4qTt7we2Pp5ch+"
+Content-Disposition: inline
+In-Reply-To: <20251024055320.408482-1-carlos.song@nxp.com>
+X-Cookie: If in doubt, mumble.
+
+
+--zw4qTt7we2Pp5ch+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251104-gpmi_dts-v1-3-886865393d0f@nxp.com>
 
-Hello Frank,
+On Fri, Oct 24, 2025 at 01:53:20PM +0800, carlos.song@nxp.com wrote:
 
-On Tue, Nov 04, 2025 at 05:27:14PM -0500, Frank Li wrote:
-> Add child node nand@0 and move NAND related property under it to align
-> modern nand-controller.yaml.
-> 
-> Fix below CHECK_DTBS warnings:
->   arch/arm/boot/dts/nxp/imx/imx6ull-colibri-aster.dtb: nand-controller@1806000 (fsl,imx6q-gpmi-nand): Unevaluated properties are not allowed ('nand-ecc-mode', 'nand-ecc-step-size', 'nand-ecc-strength', 'nand-on-flash-bbt' were unexpected)
->         from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
-> 
-> Since 2019 year, commit
-> (212e496935929 dt-bindings: mtd: Add YAML schemas for the generic NAND options)
-> NAND related property is preferred located under nand@<n> even though only
-> one NAND chip supported.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  arch/arm/boot/dts/nxp/imx/imx6-logicpd-som.dtsi           |  6 +++++-
->  arch/arm/boot/dts/nxp/imx/imx6qdl-icore.dtsi              |  6 +++++-
->  arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-pfla02.dtsi      |  6 +++++-
->  arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi |  6 +++++-
->  arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi           |  6 +++++-
->  arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi                |  6 +++++-
->  arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts                 |  6 +++++-
->  arch/arm/boot/dts/nxp/imx/imx6ul-isiot.dtsi               |  6 +++++-
->  arch/arm/boot/dts/nxp/imx/imx6ul-phytec-phycore-som.dtsi  |  6 +++++-
->  arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi               |  6 +++++-
->  arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi            | 12 ++++++++----
->  arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi   | 12 ++++++++----
->  arch/arm/boot/dts/nxp/imx/imx6ull-myir-mys-6ulx.dtsi      |  6 +++++-
->  arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts          |  6 +++++-
->  arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi               |  8 ++++++--
->  15 files changed, 82 insertions(+), 22 deletions(-)
-> 
+> From: Robin Gong <yibin.gong@nxp.com>
 
-Was any of these changes tested? Is the driver able to cope with the
-binding change?
+...
 
-Francesco
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Signed-off-by: Robin Gong <yibin.gong@nxp.com>
 
+If you're sending a patch your signoff should go last in the chain, here
+it looks like you're forwarding something Robin wrote so his signoff
+should be first then you add yours after that.
 
+--zw4qTt7we2Pp5ch+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkLT6wACgkQJNaLcl1U
+h9ARBwf/ZKAAS4rKRLsk0T/vrm4mhVcNoHt8+qTOhmw6TJ1mFFM1eVJE7j4ugOg0
++pmTj5wFiv3+g9MEegx35jOweJ0X2mYKsjzShLksgVQERU/va5xd2pG7rdzd8UyJ
+KzQnAwnEdPCRuAX/pLoe7HTjcizpaYqg9yNJO9e/pFmBOKS9JqfRWjKurWUIj6XB
+pMIVkFxWE0aPKANXEZm1u5aeOtgHp8/GEWYC66vpQagTWaXzXaaUm1kPuP6G3Uwa
+culMCwQviacBrXO4gBSGRAHV4V1XaeIfJ7qc0i8ht2BeO3afCme+DeodlrKwrx+h
+0XZ0VjHDO0keZWqudi99I1h4TtAI4w==
+=Y+p6
+-----END PGP SIGNATURE-----
+
+--zw4qTt7we2Pp5ch+--
