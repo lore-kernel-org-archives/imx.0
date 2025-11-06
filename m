@@ -1,290 +1,213 @@
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B711D63F3
-	for <imx@lists.linux.dev>; Thu,  6 Nov 2025 10:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=91.207.212.93
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762424275; cv=fail; b=X7A1FF5BXZOWJCFiQm8h6eJ5lKioKQ200SUgwTpK1qD56UDlL9gIirDSKsOFObFI7jDrZEree1pGD29kSGOfhjylHw+Mt8GYwTiA/gtPBbgfiGvR1oQSuhuO5a4ghg1hqDqET119kJ+NM/izFKOpN9YH8V2IjPExM5Av/+XhOhU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762424275; c=relaxed/simple;
-	bh=nOexW13r3GuxFsUsmf2GsX8F46xtYZ+n5TACb8pfn5w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=MGUSA6jh602sFpwv4r4MQ1dZHd1DZjHTN1m9b/epUqEZlgOVY6YapGHhUQ0qqvjECb7WrSeIT6ba2eb991o2d2HPfaQEWX6EyOmp9LEUBT1hxWyDkvuPnG0pjEaV3yYbPPc1lhxe68mKh+4WAaZqIio7fnKsucpbnFNVAotPqvQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Z9t715dy; arc=fail smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649FE45C0B
+	for <imx@lists.linux.dev>; Thu,  6 Nov 2025 10:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762425294; cv=none; b=aXKYEERqeOz7FiVj2W2/8ohk3OcaxVb+wQBxIw1DD47BxbE7cHxo7l3MHy/BhqGb7s8NoANTyRTqYTkj9Pf5cSVtZg0FEh7Ek/QbGXrhin04H+W6GJ/DtGVfnB6LnlH57HFvGENvA9X1wtE1wG44vhPPZljDt69+L6Er2asAgEU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762425294; c=relaxed/simple;
+	bh=E2F1rxwXrrsb8NRrX5W8HOH3YovBH/tPEh/j8MJhtCQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=gRjzzyR7N+YjiUCb1lmF+u/mnKTBTFC3MWacfnDRl+LyQ1gw3qfS0sAdb3S4eiz66bhKKI3BaCOvlHw/zsMg1AyUbbSat1LhADomQaimbgiBHJ8IJARf9ieLgg/zRSz7SHhMIZj3oEb+3emCuRCj8bQBpS7B3DWlwMjrYdxauqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ue9qfjlE; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Z9t715dy"
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A6A5UMc1422413;
-	Thu, 6 Nov 2025 11:17:18 +0100
-Received: from osppr02cu001.outbound.protection.outlook.com (mail-norwayeastazon11013034.outbound.protection.outlook.com [40.107.159.34])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 4a8e57tq52-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 06 Nov 2025 11:17:17 +0100 (CET)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fLI+b9/2+KY7m+uIYDhugm4J5tNtwRdeMe9GWsu8st6R0O1PBuzzjSoY3p68vx0DWvT3CSu+IIOkfrmzbFXCS5BXdmiqgfkmoxHMhpX+J3Fb/B3UNiT5X97AwylCoib/Pu/qv+uc2t4HpVWQWlJF1Iv/XtwdB10HS0oPAoPoRzzTEAJlEawzgx3C+BF1JzaUKec7sSrkhk+UdAi7ldgHstlQpFVfGWrmKjXZB3AuY8oqwmtcsQbiUrEos2Psb73isPZ2n+4mZey/qT42BSV6yE1HkY7Z4YPnY034hKC1+AEYTytmNcoiMvVVohIbO9+DGIy+Ry1Zw+ouBkzpWY2XDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0LPwIjnDbBwbClFrNFPJK371RcwxKeQqm0SqrsJvzPc=;
- b=M2VF8G77C1kCJQZHSFx6gYW68lp6I2awYniM8ju32MTbCb9kaSVOTJF6z9z1i9vJXRKJZMUDsQ3pJz29umNyxSrpVQwtCo+Pvpl9rOWUi9PVVozAx8XJa98eUNC3kJEmMTyY7BYOgc7UlBSMSO0vDEM32fQqxLZctGshOaBosQB1Fff4OMiuKHyv0lpu//dFLVFtPw/LSlpHWT2+j2igPFKDeGgz200wx6vz847yHkqic7HmEaU0p4ZuF4/ctfX5fWpn1THq2P41sUtlmSS9QBs8WuBJztTDm10L2fdjlBCp0NAk0abEp23kxgQdOrxP20M4vJGbWTCflQ2pHZdlFg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 164.130.1.44) smtp.rcpttodomain=nxp.com smtp.mailfrom=foss.st.com; dmarc=fail
- (p=none sp=none pct=100) action=none header.from=foss.st.com; dkim=none
- (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0LPwIjnDbBwbClFrNFPJK371RcwxKeQqm0SqrsJvzPc=;
- b=Z9t715dy93VxMKeKbZEx4iMKTk1aF+/88U2R9NejuqQJxF2EVWHim+VDXPwYIxyveIw+K0PJq02jyX87AUPhYaml5wj/6sRVLnfGXavkuUNT3tZ3G+KiHcij3b4QT/lq4aJeKvZCD9xYGVxEEwaOwq0p943LLUYiZX/gkRJAcyU5pQVDD/SthW3hW7UVa8FfqvnrVjTwWUvJTU76d184QkCz5QOXEFewMmezzFU1dIkN/aEjkc84bMcpAKayJ3Bfu5aJ1aIMlbqeJg8JdbdsYZQQQIw8KNMLbcLop8TWtliSV3omgtn8gxoa3e51avfjNQjLWVB+KhlzwRzr5U9HTw==
-Received: from DU7PR01CA0003.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:50f::17) by AM0PR10MB3505.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:15a::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.13; Thu, 6 Nov
- 2025 10:17:15 +0000
-Received: from DB1PEPF000509EA.eurprd03.prod.outlook.com
- (2603:10a6:10:50f:cafe::e4) by DU7PR01CA0003.outlook.office365.com
- (2603:10a6:10:50f::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.12 via Frontend Transport; Thu,
- 6 Nov 2025 10:17:17 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.44)
- smtp.mailfrom=foss.st.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=foss.st.com;
-Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
- designate 164.130.1.44 as permitted sender) receiver=protection.outlook.com;
- client-ip=164.130.1.44; helo=smtpO365.st.com;
-Received: from smtpO365.st.com (164.130.1.44) by
- DB1PEPF000509EA.mail.protection.outlook.com (10.167.242.68) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9298.6 via Frontend Transport; Thu, 6 Nov 2025 10:17:14 +0000
-Received: from EQNCAS1NODE4.st.com (10.75.129.82) by smtpO365.st.com
- (10.250.44.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Thu, 6 Nov
- 2025 11:09:53 +0100
-Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNCAS1NODE4.st.com
- (10.75.129.82) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Thu, 6 Nov
- 2025 11:17:12 +0100
-Received: from [10.252.17.135] (10.252.17.135) by SAFDAG1NODE1.st.com
- (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.57; Thu, 6 Nov
- 2025 11:17:11 +0100
-Message-ID: <aff734de-0d61-4239-9e67-78a4ab258c30@foss.st.com>
-Date: Thu, 6 Nov 2025 11:17:10 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ue9qfjlE"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47118259fd8so5723915e9.3
+        for <imx@lists.linux.dev>; Thu, 06 Nov 2025 02:34:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762425291; x=1763030091; darn=lists.linux.dev;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=khqybK/xlzWlMQBHPxk0XD3yxDB1oxoxHdP7w8UG3E0=;
+        b=Ue9qfjlEanYAP/zegJ38E1jxeHtOwMDPIhsawBDujJ9TrBGnK9g26z4yjT2ELFApZ0
+         3LavNkZvvxft3+I5I5TZiG7F2PyPiyzE+x2X3RqMhBaNk5JinSvnb46DEXx1L/J+evbP
+         JikcD3icAMDRND3ztczEa8z2d+qPNQYajgkKN/d5cfo3Wd+3LDr3SJbl8m3XG6ztayHp
+         3Rs/KY4LaFex7RAw+0KXjsisJ1l4pcNO3to5A5ke9j2CIeiZmaC6jZRFE9XgtmVuyMUI
+         fJAdSzd/o58NZ7XE3cVy0HuirXcyZXmPDncz8ZdwHIzzk2ML8UKs/tNwvDyuCh5rXQOj
+         EjdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762425291; x=1763030091;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=khqybK/xlzWlMQBHPxk0XD3yxDB1oxoxHdP7w8UG3E0=;
+        b=AhD9+Bo6lYzYIPsw11LjN5dW/eTBEYz5lFphGIm8rHMzyVO8u2LHmxMOZcT8BppNiL
+         zmAxvYm0m20rlRNvNQ/td1EFfB6L+xDX6zTI51V6LAqGMIaMsLhvi6apJCh/1/Mdopga
+         dklwWKqz4AKU+BspZ11afHwvzK18bP2HsTBj6U2S+gS35EqoFr9RJN5GR930Bt4YPVeS
+         DKpVUQAN+rvtBLLO5PKWGhBRCurvvqhAcS9A4UcdKUr27bskCXoth0G1EiypdOv+S+7f
+         SaghVTaU+NvKZse2oPsUwmTmumze7YQRW6rg6bohcuagPpp72poEaUu4d8vUdNPQIR64
+         zt3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVnC4CJXbsc/pUJIvDyVeShsmwNwJpPk3XfXdlWMxzjhA0iCKxUndxOi2m8hHIzbZx4oBw=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywlj4NFd8BYaX/YRGu9vJr+SWZr7LW5OsOjgo9bDfOCMDsyDxts
+	dT3TVCOPQc3XK24/AEtDKrYu9Wlvivt0vtE70J/bhlska2ogny2h4M6f
+X-Gm-Gg: ASbGncuY00HtJTsFL96evYsnksiN040Su7sYknnP0L6W27Z0Lv/mKTiU6itmd6TJuSR
+	DXdFH8ZihETZvtFcFvdabzxVIz09UUN1lTJYyfNKs8HrjpxpvWwMGCTisgWuLag0HxT/+TyELVM
+	LtiW8v4Ip6Y921DeyQo4xgzQeQfSfvfKt1GagqJxC0ky++IHj+gY+fChmsuSulL+ry+t8GOEmBb
+	jJ3g5WcxlRiATx25Rz02TlPcw9utbexCgMmGIhOGJo0/rQ1iHL5WmxZybrMaEPag0BQ/3SqJgrP
+	xfE7ZxfO9duO06Ri9zijAFJDhjMq9PIfsfidTjm8KUARb80XBh49syIHiEFR5mNN6Mg0Qv+BRl4
+	kojydMM5VRqBk/21+0eFgDqATxOpAmSTHBHo9cvMmQsECaiUfveBnzXoV7Rs3SQS1GNHLU4GxLG
+	pJLZuNNQYHktuKKBtRU5OSDgsLGi8qc/875Q==
+X-Google-Smtp-Source: AGHT+IHK/oWaeWq7uP78JwTb75evD9pbxUOakU4Fr3bQ3oQuz8S08wrBQPzwEF9doMfvThWNXoaycA==
+X-Received: by 2002:a05:600c:6388:b0:458:a7fa:211d with SMTP id 5b1f17b1804b1-4775ce1874bmr49277875e9.29.1762425290379;
+        Thu, 06 Nov 2025 02:34:50 -0800 (PST)
+Received: from localhost (a95-94-245-170.cpe.netcabo.pt. [95.94.245.170])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4775cdcc552sm107269485e9.6.2025.11.06.02.34.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Nov 2025 02:34:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/5] Enable Remote GPIO over RPMSG on i.MX Platform
-To: Shenwei Wang <shenwei.wang@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-        "Bjorn
- Andersson" <andersson@kernel.org>,
-        Mathieu Poirier
-	<mathieu.poirier@linaro.org>,
-        Rob Herring <robh@kernel.org>,
-        "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, "Shawn
- Guo" <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        "Jonathan
- Corbet" <corbet@lwn.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "Bartosz
- Golaszewski" <brgl@bgdev.pl>
-CC: Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam
-	<festevam@gmail.com>,
-        "linux-remoteproc@vger.kernel.org"
-	<linux-remoteproc@vger.kernel.org>,
-        "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>,
-        "imx@lists.linux.dev" <imx@lists.linux.dev>,
-        "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>,
-        dl-linux-imx <linux-imx@nxp.com>,
-        Randy Dunlap
-	<rdunlap@infradead.org>, Andrew Lunn <andrew@lunn.ch>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-References: <20251104203315.85706-1-shenwei.wang@nxp.com>
- <PAXPR04MB8459C54EAF106184E7A378D888C5A@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <05a0c630-3bd5-4307-8b94-1889ba191c33@foss.st.com>
- <PAXPR04MB91858EA1057672295ECF793889C5A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
-In-Reply-To: <PAXPR04MB91858EA1057672295ECF793889C5A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SAFDAG1NODE1.st.com
- (10.75.90.17)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF000509EA:EE_|AM0PR10MB3505:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f0b9171-d950-4481-aa7e-08de1d1da879
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|7416014|376014|82310400026|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?N256N2hNaEdvRXl3NG4rZ2hwc0tjb3Ftd2U0bXRIZkc1T1MxeTdIRGhlQlU2?=
- =?utf-8?B?V2l1L3dDRytpU3lKOHdveEVYZk13RmNOMitZY0E2WFljM1paZ0dyR1l0UEhW?=
- =?utf-8?B?UkpJV1pqQ2duV2RoUGRsV0FkZU1CNXBybXpnVXQrMy85b3VPOWNmaHFndVNk?=
- =?utf-8?B?ei84MnR2N2JNd2x1dE9JSGJyVllYbVRGTDNtUGs4empQQ1pzUFU3Y3dwWU4v?=
- =?utf-8?B?QURocDgwS2o2YmFkLzdKZjFIL29RTDcxUHNhUkRkRmM5OUI0c1dlcmVpNXhJ?=
- =?utf-8?B?Y1ZQU3V4OHQ2NVFQa0dTSm0xNEFpb0M5anM1OVJnS1BuVmp6ZCtHdVV6UVFl?=
- =?utf-8?B?UEp0UzRRYmZHRFN5UjZoa1pVSTdjTmxSc0k2WmtTajFwa2ZtcUFUZVJvM0pw?=
- =?utf-8?B?cUYya1YwN09TSDJhNjVKeWxwNXpjRUR2Y29JazFDZGRuaEpucVVjTXJWcDFW?=
- =?utf-8?B?aWl6SkRoNW5ialBNRUJLSENjcmpwa3hGLzFta2hSRmhHTnJLVzZKaVBJbXdk?=
- =?utf-8?B?WWxTLy96anlrcUg2MzY0RCtwdnFjR1lOYlBXQ1NQaFllZXJTYlBJTDA4RUNh?=
- =?utf-8?B?Z01sblVjRE5VeDNITzZzbytKdC9yRmRndlZtOWd1aXBBUnFvTDgyaG93VnRm?=
- =?utf-8?B?NCs2M3N5cENTblpHeW4xU1M2MTFReFQzTzN1RSswSzlnMS9meDM5UnF2NlFB?=
- =?utf-8?B?RThGKzUvWVNVVDhTMnl2eWJUSWRYSFI0UVFncFk4anlPWVZ0bHNLN1J2Z3py?=
- =?utf-8?B?SFNaSGFSL08xeFRRbG1sa3llVk5LeCsvL2RCMmJoOGRLc04wVUF5OWEvNnlN?=
- =?utf-8?B?R3dLT1VaNW94Uit5SUxxNTRLOTE1bjh1R3A5OUVDVG5Vb0VuNVc4VnFHQThF?=
- =?utf-8?B?TElHWTVxcEZmU1N3ZmdIYXRtbVhtY1UvMDlSb2g3bTZhRXFtMHZKRUJIbTBk?=
- =?utf-8?B?UVJaTjl3VHZ5dFIrd2E0MW5rczlDa2xML3AxaWZTT3VCRUY1ZDV5V0hMc1BK?=
- =?utf-8?B?U3pMSjduL0ZuVzV1SnRGTzhxQTJIWVZIK0o2ek5DYXlMSjBRTDlTTXZ0eEw3?=
- =?utf-8?B?U1lZQlExN3BocGJFcEEwdHIrZGpMZEFvUmswa2dTYlBtUVBUWHJsT0M0VWFG?=
- =?utf-8?B?NmNvYzcxWFY1MTVrSFJ0M210QURWa1dQQzBFSlB5b0RmZ0lnc1g3Q0hyaFFM?=
- =?utf-8?B?KzAxVTRuM2VicDQzVEo3UGcvNVRHTkt3Y1ZWMGpySm1veVZqbW96NURGM29s?=
- =?utf-8?B?VDhlMEZZNEx1S2VKVC9lQVNzRE1wcnZOUGRRRXFqd0Q5Q3pOWGxhMVhadCtL?=
- =?utf-8?B?NEV3SjI3OFU1MFRCMlQ1a2UwNEthdEdCTUNKS3BaZlpmWTlmTXZGclQ4aHpI?=
- =?utf-8?B?eUxmUXl1WFZVT21PZ0R1aUJacXhXUnZWczZCbXlGald4WWZHVkJPdTJNa1JV?=
- =?utf-8?B?VjNmckwrV2VRZGtLeDVrL1BKUkFCZ1gxRU9rallVTXNRTUJTVzE0YWNIcTJ2?=
- =?utf-8?B?WDFBYjJVdGFYOVdsejhVQVNUNHprTUZVZVZ5RnBGWlZuY3RLMVFSbzI0blJa?=
- =?utf-8?B?M1pYcDNZaTNnVzJPbE1ZN3pYMnVpYWsycjduV1hsSjY4TkFpZ2t1NGpKSnlD?=
- =?utf-8?B?OElJM0NRTk4vUVlScU16RjY3NmswTlFLTm85Q2M1VTZRdGRLeFNhc3NLaGcx?=
- =?utf-8?B?U0RhSFdvSUFieWNjQm90NmJEYmUwUzZaM3c1cDdjaE9TeUdBdTJoVzg0YzZQ?=
- =?utf-8?B?ZXpLMURLUXpicG52QldOV0J5dkdZbk1MTEZvNnBpZEEwQjE5UDZlZEdRU0xK?=
- =?utf-8?B?dzl2NVBUQ2NJWjhjSTFGOE4rcUJFMkRKdEFYR2dzZUhuSmZwbnJJNEtDRzhY?=
- =?utf-8?B?VXl4ZmdkTnFoeUhWUFg1QUo4OTk4ZlpUdzFlOVhjMmgxWjdOaGdZa0lxQWgz?=
- =?utf-8?B?TzByeEJPSXpibVlTZmVTeTk2aXR0Z2JsRnZHN1JIZ3NtNzNQbnpTUXJWeitI?=
- =?utf-8?B?ektJMDczUVBaQmlnUnd5bDJOdVZRVkphK2tYcE1vY2pTbVN5L1Mrb3J6b2Qr?=
- =?utf-8?B?Z2JoSUx6K2FBZ0doNmw0MUtMY015ZTRwQkYvcHhRMEMwd2NCTFNpaXdyb0I4?=
- =?utf-8?Q?kWL4dWsDmWfN3zCAKXc8k6wwj?=
-X-Forefront-Antispam-Report:
-	CIP:164.130.1.44;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(7416014)(376014)(82310400026)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: foss.st.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 10:17:14.9745
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f0b9171-d950-4481-aa7e-08de1d1da879
-X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.44];Helo=[smtpO365.st.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF000509EA.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR10MB3505
-X-Proofpoint-ORIG-GUID: 2R9hU18N5EFlUZduFRlGv1sgGl6ujz7T
-X-Proofpoint-GUID: 2R9hU18N5EFlUZduFRlGv1sgGl6ujz7T
-X-Authority-Analysis: v=2.4 cv=QuRTHFyd c=1 sm=1 tr=0 ts=690c75ad cx=c_pps
- a=sVz80lr63r+noJKTyf6duQ==:117 a=Tm9wYGWyy1fMlzdxM1lUeQ==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=i8swKbHhBpcA:10 a=IkcTkHD0fZMA:10
- a=6UeiqGixMTsA:10 a=s63m1ICgrNkA:10 a=KrXZwBdWH7kA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=8b9GpE9nAAAA:8 a=8AirrxEcAAAA:8 a=VwQbUJbxAAAA:8
- a=KKAkSRfTAAAA:8 a=07d9gI8wAAAA:8 a=pGLkceISAAAA:8 a=JfrnYn6hAAAA:8
- a=yGR9Ld5_Y51QbCr_SjcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=T3LWEMljR5ZiDmsYVIUa:22 a=ST-jHhOKWsTCqRlWije3:22 a=cvBusfyB2V15izCimMoJ:22
- a=e2CUPOnPG4QKp8I52DXD:22 a=1CNFftbPRP8L7MoqJWF3:22 a=HhbK4dLum7pmb74im6QT:22
- a=nl4s5V0KI7Kw-pW0DWrs:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA2MDA4MCBTYWx0ZWRfX5Bm0EnE1pnqB
- JLQPiKh2htH4p+6uucevcqem9AOINgeGS2CCxe2k7a7KdkfHEgs648p2tLjmlirRUwrglnNBKLU
- KQI3jrc5R/7s1l5Wr6+Pg/7/5AzA+LKOzNh2sqxCa+UdQ1JrXxGohviAo5bZumP3QO+MGD64psT
- xiUefgyGjxQElf6NGC14fQVNdB4twtWJ7PiLYiZDdRTPuh9/BjGoRxIf1+fBu1LP6ZhjTCgy4hj
- 4y414y4YB8oJK5dtEzhTN/7t22/pFl8XAgdDwN3F9rHdmxomF8inI8n4Ga1ZYZM8o+wo0/IozmA
- XRfNNbmRK7EBQJf4iyWy3n2JwvIrRTyMqfTVoCnpUchzbpBKvidPeAP2f53tsiq5xH7new6AYdK
- pAob8hmNuChmFqyI+VvvRjQakw1m9Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-06_02,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015
- spamscore=0 priorityscore=1501 malwarescore=0 lowpriorityscore=0
- impostorscore=0 bulkscore=0 suspectscore=0 phishscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2511060080
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 06 Nov 2025 10:34:48 +0000
+Message-Id: <DE1JMG95RZME.2YSV10RI9AME4@gmail.com>
+Cc: "Shawn Guo" <shawnguo@kernel.org>, "Sascha Hauer"
+ <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Martin
+ Kepplinger" <martink@posteo.de>, "Purism Kernel Team" <kernel@puri.sm>,
+ "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Philipp Zabel"
+ <p.zabel@pengutronix.de>, <linux-media@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>, "Alice Yuan"
+ <alice.yuan@nxp.com>, "Krzysztof Kozlowski"
+ <krzysztof.kozlowski@linaro.org>, "Robert Chiras" <robert.chiras@nxp.com>,
+ "Zhipeng Wang" <zhipeng.wang_1@nxp.com>, "Hans Verkuil"
+ <hans@jjverkuil.nl>, "Sakari Ailus" <sakari.ailus@iki.fi>, "Kieran Bingham"
+ <kieran.bingham@ideasonboard.com>
+Subject: Re: [PATCH v4 0/5] media: imx8qxp: add parallel camera support
+From: "Rui Miguel Silva" <rmfrfs@gmail.com>
+To: "Frank Li" <Frank.li@nxp.com>, "Laurent Pinchart"
+ <laurent.pinchart@ideasonboard.com>, "Mauro Carvalho Chehab"
+ <mchehab@kernel.org>, "Hans Verkuil" <hverkuil+cisco@kernel.org>
+References: <20250729-imx8qxp_pcam-v4-0-4dfca4ed2f87@nxp.com>
+ <20250805010822.GC24627@pendragon.ideasonboard.com>
+ <aLbcpEZXm5G1Onq7@lizhi-Precision-Tower-5810>
+ <20250902123920.GM13448@pendragon.ideasonboard.com>
+ <aLhJDXnz9HPGrWcp@lizhi-Precision-Tower-5810>
+ <aQuDSROHLGHIhtlh@lizhi-Precision-Tower-5810>
+ <20251105171928.GB6046@pendragon.ideasonboard.com>
+ <aQul/VGG8e3MJxhx@lizhi-Precision-Tower-5810>
+In-Reply-To: <aQul/VGG8e3MJxhx@lizhi-Precision-Tower-5810>
 
-Hi Shenwei,
+On Wed Nov 5, 2025 at 7:31 PM WET, Frank Li wrote:
 
-On 11/5/25 15:12, Shenwei Wang wrote:
-> Hi Arnaud,
-> 
->> -----Original Message-----
->> From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
->> Sent: Wednesday, November 5, 2025 4:26 AM
->> To: Peng Fan <peng.fan@nxp.com>; Shenwei Wang <shenwei.wang@nxp.com>;
->> Bjorn Andersson <andersson@kernel.org>; Mathieu Poirier
->> <mathieu.poirier@linaro.org>; Rob Herring <robh@kernel.org>; Krzysztof
->> Kozlowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Shawn
->> Guo <shawnguo@kernel.org>; Sascha Hauer <s.hauer@pengutronix.de>;
->> Jonathan Corbet <corbet@lwn.net>; Linus Walleij <linus.walleij@linaro.org>;
->> Bartosz Golaszewski <brgl@bgdev.pl>
->> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
->> <festevam@gmail.com>; linux-remoteproc@vger.kernel.org;
->> devicetree@vger.kernel.org; imx@lists.linux.dev; linux-arm-
->> kernel@lists.infradead.org; linux-kernel@vger.kernel.org; linux-
->> doc@vger.kernel.org; dl-linux-imx <linux-imx@nxp.com>; Randy Dunlap
->> <rdunlap@infradead.org>; Andrew Lunn <andrew@lunn.ch>; linux-
->> gpio@vger.kernel.org
->> Subject: [EXT] Re: [PATCH v5 0/5] Enable Remote GPIO over RPMSG on i.MX
->> Platform
->> Hi,
+> On Wed, Nov 05, 2025 at 07:19:28PM +0200, Laurent Pinchart wrote:
+>> Hi Frank,
 >>
->> On 11/5/25 02:12, Peng Fan wrote:
->>> Hi Shenwei
->>>
->>>> Subject: [PATCH v5 0/5] Enable Remote GPIO over RPMSG on i.MX
->>>> Platform
->>>>
->>>> Support the remote devices on the remote processor via the RPMSG bus
->>>> on i.MX platform.
->>>>
->>>
->>> I have not look into the details of new version, but before that, just
->>> want to check, have we agreed on what Arnaud suggested?
->>> or continue to proceed to be this as i.MX specific?
+>> On Wed, Nov 05, 2025 at 12:03:05PM -0500, Frank Li wrote:
+>> > On Wed, Sep 03, 2025 at 09:56:29AM -0400, Frank Li wrote:
+>> > > On Tue, Sep 02, 2025 at 02:39:20PM +0200, Laurent Pinchart wrote:
+>> > > > On Tue, Sep 02, 2025 at 08:01:40AM -0400, Frank Li wrote:
+>> > > > > On Tue, Aug 05, 2025 at 04:08:22AM +0300, Laurent Pinchart wrote=
+:
+>> > > > > > Hi Frank,
+>> > > > > >
+>> > > > > > Thank you for the patches.
+>> > > > > >
+>> > > > > > I've quite busy these days, and I don't believe I will have ti=
+me to
+>> > > > > > review this series before coming back from OSS Europe at the b=
+eginning
+>> > > > > > of September. Let's see if anyone on CC could volunteer.
+>> > > > >
+>> > > > > Laurent Pincha
+>> > > > > 	I hope you have good time at OSS.
+>> > > > >
+>> > > > > 	Do you have chance to review this patch?
+>> > > >
+>> > > > I'm going through my mail backlog, which is really big at the mome=
+nt.
+>> > >
+>> > > Understand.
+>> > >
+>> > > > I'd like someone else to volunteer to review this series. It won't=
+ scale
+>> > > > if I have to review all NXP media patches in my spare time :-/
+>> > >
+>> > > Yes, but none volunteer review this in passed months. Expecially key
+>> > > reviewer. I am reviewing i3c patches. but Not familiar v4l system ye=
+t. It
+>> > > need scalable solution. I can help filter some common and simple pro=
+blem
+>> > > from beginning.
+>> >
+>> > Laurent Pinchart:
+>> >
+>> > 	Do you have chance to check this serise? this one should be related s=
+imple.
+>> > 	This one sent at 7/29. Still not any volunteer to review it.
 >>
->> Thanks, Peng, for pointing this out. Regarding the V3 discussions, it seems that I
->> am not the only one suggesting a generic driver.
+>> I'm afraid I won't have time to review this for the time being. My spare
+>> time is already exhausted by all the other drivers I maintain upstream.
 >>
-> 
-> As I mentioned before, the only i.MX-specific part is the transport protocol over the RPMSG bus.
-> In this v5 patches, we’ve included detailed documentation for the protocol in a separate file. Any
-> platform that follows the same protocol should work right out of the box.
-> 
-> If you spot anything that could be improved, please let me know!
-
-My concerns remain the same as those shared previously:
-
-1) The simpler one: gpio-imx-rpmsg.c should be renamed to gpio-rpmsg.c.
-
-2) The more complex one: the driver should be independent of the 
-remoteproc driver. The rpmsg protocol relies on virtio and can be used 
-in contexts other than remoteproc. In other words, the struct 
-rpmsg_driver and its associated operations should be defined within the 
-rpmsg-gpio driver, not in the remoteproc driver.
-
-
-Thanks,
-Arnaud
-
-> 
-> Thanks,
-> Shenwei
-> 
->> Thanks,
->> Arnaud
+>> > 	How do we move forward?
 >>
->>>
->>> Thanks
->>> Peng.
-> 
+>> I think this is a question for the subsystem maintainers. Hans, Mauro ?
+>
+> Mauro Carvalho Chehab and Hans Verkuil:
+>
+> 	Laurent provided great help about review and land i.MX related
+> patches in past, who are quite famillar with i.MX chips. But he is quite
+> busy. So the whole reviews cycles takes quite long time and offten cross
+> some merge windows.
+>
+> 	In pull requests for 6.19:
+> https://lore.kernel.org/all/4989c563-47f4-478c-80c4-41f7e98597e4@kernel.o=
+rg/
+> only 10 patches, and 4 patches is trivial clean up.
+>
+> 	In reviewing patch queue, there are
+> 	1: media: nxp: imx8-isi: Add ISI support for i.MX95
+> 	   https://lore.kernel.org/imx/20251105-isi_imx95-v3-0-3987533cca1c@nxp.=
+com/T/#t
+> 	   This one already review, but I am not sure if it capture 6.19 cycle b=
+ecause
+> PULL-request already sent.
+>
+> 	2: Add MIPI CSI-2 support for i.MX8ULP
+> 	   https://lore.kernel.org/imx/20251023-csi2_imx8ulp-v7-0-5ecb081ce79b@n=
+xp.com/
+>
+> 	3: media: add imx93 mipi/controller csi support
+> 	   https://lore.kernel.org/imx/20250821-95_cam-v3-0-c9286fbb34b9@nxp.com=
+/
+> 	   This one is quite big, but first 10 patches is simple trivial cleanup=
+ patches.
+> 	   I post at 8/27, but get first feedback around 10/27, I am not
+> 	   sure if missing somethings.
+>
+> 	4: This series, laurent already said no time review it.
+>
+> 	5: ap1302 sensor patches
+>            https://lore.kernel.org/imx/20250811-ap1302-v4-0-80cc41b91662@=
+nxp.com/
+>            binding already ACK, most maintainer want to pick binding with
+> 	   driver together, but not an feedback since 8/11.
+>
+> 	I jump into and help do some review.
+>
+> 	The questions is how to move forward pending patches, like [3], [4],
+> [5]. How to keep good community channel to avoid long time pending?
 
+Sorry, but like Laurent I am really without spare cycles to go over the
+patch series that have arrived in media (also I do not have any hw anymore)=
+.
+So, Frank or maybe Laurent knows someone that would like to be add also as
+maintainer of this drivers for me would be great, that would also help to
+avoid such bottlenecks.
+
+Thanks in advance,
+Cheers,
+    Rui
+>
+> Best regards
+> Frank Li
