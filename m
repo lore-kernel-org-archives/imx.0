@@ -1,255 +1,182 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011044.outbound.protection.outlook.com [40.107.130.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463E73002B0
-	for <imx@lists.linux.dev>; Thu,  6 Nov 2025 08:09:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762416556; cv=none; b=ETYmt/bU6CGgaJUL6RAV/droJoCuqTy0wD8jVyLz0fqJB6sWKKBnzyBOtq7TiERip5DbM9gSObOucs/NBUYyG7V8TooW76rIjkrzLcFWFGJD1APwsfXnWYkvErwHv55OgMqTb4nxkvOJQO18S/te0UAFMT/Pm427dsKfODrBp1w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762416556; c=relaxed/simple;
-	bh=lRfiaPilGCbrJdjqrBIGDPtcN225cI7Hh21G5/DO+Lw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=taSxH+8YF1114Y/QXGDoPz6kgLM6ZoFKxpSRswO1vrFqbgE7fW1b78Eun0u+xGsakqZlE9fhzah5o1kxT9/fIrnuv2+BrZ++2lmgxZc7LaUsnXmOC0xe9gNXO6l6IudoiBex2KkoK8D/RyeyNWIpoBHG4sDEwkXWFZYlNtR1wFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bTVugf2d; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D06E3009E4
+	for <imx@lists.linux.dev>; Thu,  6 Nov 2025 08:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762416685; cv=fail; b=M+C5NlQw7nnbwVE9llG7g+17B6/CgEFL9ARkG+wCoiGarO+nfhYKMSQnRf0/SorQuPzvxA6D4r+kxV4OvTOQX2QnOtw0P9gGX13s+d42wsFwzGhB7Y79R/OV2yGFfX1yZ0+3eciQn9M6x0e0hPKvHfB8vg0hiYQu5S3pUYA8RMg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762416685; c=relaxed/simple;
+	bh=CWiFC+mlVsZIaCxPUB5IXAJ69D+1oTFmZzWQO2eBH/o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=lX9heEcG6mN95kP1GeVba/9hYl4RYYVlCAWDvbsDVdZI8OyZCeyPwB1fMNyVJp4WH3+8S9MXpAkhdqMmrsf5Hn5JIhO89uGsBBOJtd7RcnAagAx1ad8w6vtv4D0j1nbBLX+N4+QWIu0ddls0SjAc1xQZ6wrxwDHnnDe29gIz7CQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=CWm0QPK9; arc=fail smtp.client-ip=40.107.130.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bTVugf2d"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-640b0639dabso1311223a12.3
-        for <imx@lists.linux.dev>; Thu, 06 Nov 2025 00:09:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762416553; x=1763021353; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DqG4Vhl3gJVR6ZhqmKUIStjnvxpVzC8nlU32UMscO8w=;
-        b=bTVugf2dX5E0m9OyRLY40/CxxzxICsyEBLn9W2GV77fewfyBofw3Wdti1zrX4ZgW6V
-         QR6fyg4+vNzNir6ua/8Q0djWxaOKiU+PP7YxIoA7WdTm5P/SLdn1FicZo8Un9Eer4qoQ
-         7wOgyyTE7ershsVJZEzGvSf85mzNL44P6gGVdCduJLpI6NdL5DOj74k1pEKNv+Fj9gG5
-         GaIegFhX15lCWCZQ9jnSS4lywHq/mylXIu/TlXWDa+/cgMUK6xjPYhQgW5ZtOBxNJop2
-         AmRK72EgyFo7OSh8Mynnf5LSWQ8cyPUicm/uVkiEeFTnhRRI03VOJXkT6mw/u5GyUuFO
-         YS4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762416553; x=1763021353;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DqG4Vhl3gJVR6ZhqmKUIStjnvxpVzC8nlU32UMscO8w=;
-        b=pJZ2NwSGJnhnCUJfaniwzFPiP3HDi/p5jcdJZmSid4/rppc90Vy1+QiqyX+l54VYXO
-         1QLsKyP+d8E9qw/8kOo92CMtQOnyJxOaeXO23z5RgDZb4Ewgb7tu5SRRpq4d0SQbdncF
-         fD7vbgH6Dv7bb5SFHIU9vDvm1yfBal62ivxY5siWJDdlJyP53y4Lq6s6WvOzl5jB7aCa
-         u+jhvRG1TfJBgAdIp9hlVfDui1Qk8p/W9mAnyrLca5dz5XQU1+pF49vSb/MEqjxqWfRF
-         dYX8AyP70Bn4fbcyWQXHYUA+xCKUfkbCmSfTLqgL1LZj//nHw7JApg2T112AQdcOb0qx
-         32ww==
-X-Forwarded-Encrypted: i=1; AJvYcCUqVjCDNCu2y6aiqRAX81zFpQFc0vGDToqYPqz81wUi9IxHue+lLpTm/F2BnASvqXoFE6U=@lists.linux.dev
-X-Gm-Message-State: AOJu0YydSaW5Q5/EcfxMxQggkizWKGM+wZXuZBCqZkc+ENYrG8UDRXLT
-	WLbbv3atPLF8IpxCkpmgnA3sSJZt8Yi1JV9ByTfj5VDSWirK2V7sGlidnwmF7I7BD/QYUPSDflL
-	7uE+wlNgqqXlpHi9b3WSlgVLfIspMWcV2MD9LhKWk6w==
-X-Gm-Gg: ASbGncvfArH/JxHtX6ZtBHx+7+sqMoEScdmpN/t+V2G+5Qz0j6xDWFEt7H7xoVV2lG5
-	PPgOGGFiB0GtR2Ld0ID3C0wbVz6l0JSFwGLaYjTuYCGQHuANPZ3AjMhdUgZYTNSQdg4wx11PEK0
-	l8XEAB6rEslFvGWBKiH8wH3SDus0cJyQFCm8UOUa+v0i/ghvBnIPM5RWD/sy2o8zLaG0eo/OcMp
-	rQKQiNhaC5DrvENQmCZ2rHr28K2msGXl152/ch2eWRYPzSoa6fxrw1HHTh44Pgn8X+tHQCK
-X-Google-Smtp-Source: AGHT+IFpGXTLSElm/iJX28AkNKWJysbi+VSdMAhhXx+DpEVvXomYFy1/eZ4xIzIhBa3g0OBlHb0wiAGdwqeYIeUCjdY=
-X-Received: by 2002:a05:6402:3508:b0:640:c779:909 with SMTP id
- 4fb4d7f45d1cf-64105a5c833mr5111127a12.27.1762416552602; Thu, 06 Nov 2025
- 00:09:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="CWm0QPK9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=epvA3VlrCqJAcxq1HHShqwnkMIDeLVCxPZ5mf2NgF2pHm4H8P2h4BlGOSovrOtUHyBNYuZFbUHLbJd+X0ZxZZ0KuYfG7BIzmUEhCBwTOUrvOvZhstWgNMQqre5kmpfkENHHPJK4pMs9ADjyZB/tBnHi2rfzIQsbMseutlAhb2zajdseNN3Oor7e8skP6rmeQyuMBZV3pHrYoapOC1G4sKnVxe1Zcfm701y7scSN1N3ZWJU7c5mgPse1qhDQH6aG2HDJbO9t/7OctU9Br5MOD28NKXuyMZmJ8+9l6KnvOWCCJ7c5jV09Nnb0GFOlAaGW6W3yJnfNGfoUdQ+clvDrY4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eSvqKvuRYnnqc0g1AAY5YP/eDbwIrO8ljMhMS7PfyhQ=;
+ b=F2IUcC2BzWn67JkN7V4PEEz/LpyeCp/lu35cqJggXxD3iQy7E3FN7xRL1yELzKxVFgVUSYjNmTsbNOTo+4vef/3sNkfUfxHd9DuaVa19/y6uUQljh2C7Q+DSxKSjp1+RJq72JV6zhU/IxsZ0131NVLU2bn2r0Grdzsb3mZ/u29w+MgAmbI+/9yVCCUCJSa37ghpuUJfuROIBLWsVh3NyqcFcrafZ5JaD9GNg/znVvKhEQcnBby/gCvFlAzJ/H/zHv9oxXX5AM6+ycc8d2dRgurYPnwlkYKFjeSzn229nzdN9Yxlg6OPgyUGT9G7Va+8cQRj7HitUYQGc0hNfHZMxWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=eSvqKvuRYnnqc0g1AAY5YP/eDbwIrO8ljMhMS7PfyhQ=;
+ b=CWm0QPK9QKsk0PA7LEHdI0B3P5Oxj43pYajUHLiEIwRgWERSCcxV9XHX7j/uS9pVRl/yODjzlK4mMzwdVFVtG6oxxSBpoxrrnJ3u5COQ99TqcgqZjJ4hEWwAEafGNG+WN1I2osuh/VS8yKMFSfMDa4uuuOMednwXkVYg+fLXeK0tArl2mSONx5uHYc97iNW+8cUl21H5V3od5xjzKbhaB0JPnJpyvAIv566k+ePdFY3rmiKPkS6nrR7vkoxu1IICumc/zpUhrctF7TPJaksdP1FOmFN6FZbi6VQN6hdJBvSLU3fpathhP3wkoBNSf34QEp4oyeXW9mLqCRj58A/VZA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by DB9PR04MB8396.eurprd04.prod.outlook.com (2603:10a6:10:24a::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Thu, 6 Nov
+ 2025 08:11:20 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9298.010; Thu, 6 Nov 2025
+ 08:11:20 +0000
+Date: Thu, 6 Nov 2025 16:12:03 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-imx@nxp.com, Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [PATCH v5 4/5] gpio: imx-rpmsg: add imx-rpmsg GPIO driver
+Message-ID: <aQxYU+QN+8hLZC7n@shlinux89>
+References: <20251104203315.85706-1-shenwei.wang@nxp.com>
+ <20251104203315.85706-5-shenwei.wang@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251104203315.85706-5-shenwei.wang@nxp.com>
+X-ClientProxiedBy: SI2PR01CA0048.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:193::17) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251022174309.1180931-1-vincent.guittot@linaro.org>
- <20251022174309.1180931-2-vincent.guittot@linaro.org> <6k5zdhbhtqg2dghdm2bkbymr5rwzcowziaahfdvgw4dk22y43y@npsrperinzue>
-In-Reply-To: <6k5zdhbhtqg2dghdm2bkbymr5rwzcowziaahfdvgw4dk22y43y@npsrperinzue>
-From: Vincent Guittot <vincent.guittot@linaro.org>
-Date: Thu, 6 Nov 2025 09:09:01 +0100
-X-Gm-Features: AWmQ_blssT-7N0Jk7hsjbSupnpo_HEbqq26DIoOJgn8hufRZY427ml3fisK5oFk
-Message-ID: <CAKfTPtC87w7RVSDAXWXRX1sjgo4s=_Z_k62+mfTXrMZwmkEpFg@mail.gmail.com>
-Subject: Re: [PATCH 1/4 v3] dt-bindings: PCI: s32g: Add NXP PCIe controller
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: chester62515@gmail.com, mbrugger@suse.com, ghennadi.procopciuc@oss.nxp.com, 
-	s32@nxp.com, bhelgaas@google.com, jingoohan1@gmail.com, lpieralisi@kernel.org, 
-	kwilczynski@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com, 
-	Ghennadi.Procopciuc@nxp.com, ciprianmarian.costea@nxp.com, 
-	bogdan.hamciuc@nxp.com, Frank.li@nxp.com, 
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	cassel@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DB9PR04MB8396:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6aa1f7c9-578d-4cf9-b9c7-08de1d0c1148
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|19092799006|52116014|7416014|376014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?xq+q+InOCS3+rEfq7kO4l0pJHotmrRuVTdKRCj+KFkbRcYlqAQHip2RMgXiI?=
+ =?us-ascii?Q?i06SyHgxD6mcELyKO0/KgdXOGPsUtdSBEcPuChAFnH9K5Cf94JxpTq691C0y?=
+ =?us-ascii?Q?FTl/Ybc/cThFQ2UGZil3epdfev/HUfhdYTlFR8YeuKaBbnixB4cEV/+UBSaJ?=
+ =?us-ascii?Q?nlE5IWzqlVh7Zt7Wn3gVrOOEp0+1M9FjHshu49lkNLZfNbjgpOrrExG7gir5?=
+ =?us-ascii?Q?cEqa5iYiebIDtgHAIuKdYBSrbWl1xMPYhiKCQExzsN0LIJt7rSy6TYJq/HHr?=
+ =?us-ascii?Q?N/xNytn0FSgaw0Iv6g3PXT3zuc6YA0xjxEX80V//spmJzmuYP0p5ZMe4Kaq3?=
+ =?us-ascii?Q?ayEJxb1pm+uHwxO0OvrvVQAwWGbZpCTuVOdRqFSCYKAp1EAivd6TiyBoUsPs?=
+ =?us-ascii?Q?XiRn/oRfr0WBO6pGR+O5QsrUe7quSi0s6u69hFsqv9kroPk4yUdp0v88ZorW?=
+ =?us-ascii?Q?AH/L9oGRLxsCQAo1oXDYIj4ks42Y5T4TNwqtoARukPay1+Ygvrz9x094DdUD?=
+ =?us-ascii?Q?eBPsAZn2kTdMoHphdPnu1wNxa3gQpjzWFniDa7wdj2fy9YlF2p39ILgxzKSn?=
+ =?us-ascii?Q?qwlpVVTyqKILxKb6aFiUsL6esf4xPXp43C0AmfTKjySoKH23vXjrKg6sTOQJ?=
+ =?us-ascii?Q?27Q98TOdKhxkpekkA+KcnbR+MU/a4++yEqu43asPP92WNQKNOX5nDx92ReqW?=
+ =?us-ascii?Q?3PglslxRlwfhtzPJ5Oxm6kFuisnQ9FwFxxIZFSYoImeleCdV6eKZipjmFpXR?=
+ =?us-ascii?Q?+iQ6FKWpTFn4IiBJOWF/akCW+Gzpea5lu4EqTS/W0krvF5Q437GYY77KdgKW?=
+ =?us-ascii?Q?8ulSwJPLsXr0SkQhE0wN51ZdAhOXwpmWQunffsOaEq/8kd6oMmgXy2uYQKiA?=
+ =?us-ascii?Q?2rwXv/cvgpDGOfWpLerAFvfHVUEB17IzUSAhU2+rBPg8sNIA9rmVfAe9pti8?=
+ =?us-ascii?Q?8ZXpzqAnocjIO5lB9RJGymjJHM7GorY4rlx8VI0Ag6GVwzddUfQWs72NwVKL?=
+ =?us-ascii?Q?4T/YlgLFd3oiS+X3SA6uEzw76TETlRoXB8KVjD9CSkq+vaQAOwS9pkHELNKo?=
+ =?us-ascii?Q?/5RVSVUuQCAKbsgGQ2V/lnOnmNmh5uuFwioX45r+8EtEXNOvGEzvUQpVVVfb?=
+ =?us-ascii?Q?ZCavCu9saHKc0izY7v+X7XrZ9PEHVVfXejLl7KqFf7lQjgNps86MPrRp/ixh?=
+ =?us-ascii?Q?VVd6Wei5L8S6t13lEg7Ep1t17dgUuJ90tSra6uHWA1YjLgQt2b8U+2gzsOSS?=
+ =?us-ascii?Q?V8utEEz8Advn26gjHYQekbVwYH4gf6Nm3DM3390TCxvXXnfpiOiOIkihFz7i?=
+ =?us-ascii?Q?rwgiqVHkzP1eymmGai3TKP1Sab/3Gq4+bJvDGBKN0uWtnCmTD27OyykROcRF?=
+ =?us-ascii?Q?ORg4o8OKjUrfuWbryBiL0hwENgI1/6s3wbek5gn1uQur1ytnhV+pTt5tkELF?=
+ =?us-ascii?Q?ShNDGF0XnqCQxkDwNDzPH0NH4N8YfoTxGKr37s7KNFGj8e7Lb91h1mUqm3JV?=
+ =?us-ascii?Q?57m4d8eQpOeEgpKpnFMpDX95cBdhTG7K3jXx?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(52116014)(7416014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?GkydEkXo/N0Hhe3SF4un+5xfPrGxpJ8YRMIlJukAvKVVnFjuxLAyhLXzMZnc?=
+ =?us-ascii?Q?LTEn0w5BzzDSPHdM9Ib1jAKl611iDbR1DbUjrk3BR19FaZbF9xBP0mqg69P8?=
+ =?us-ascii?Q?I7Ry0ZD4GIdLoeah95tSwrM+3xp1oKl5TzE0wNTLrRz6/fsdWYfL4suD1jQN?=
+ =?us-ascii?Q?tpiP6UQXxr/I/DSuSbrzX301iWwzENXYgNt9/w8DHZAx/ZDfsL03b5KTny77?=
+ =?us-ascii?Q?/J3OnmJc4B1aFF/r4r2Som6yA7XPWJSTbXL49MlH2hPC5YcQdk+G7H71MJqM?=
+ =?us-ascii?Q?bqV+EBF1Ceqx0pPySDLorWaTPhCK2ke4ndDlK/1Ki/olAOJESjzNkWrgN5Lg?=
+ =?us-ascii?Q?9xAlvh8l5PNp8Y7AsgRRVr4oc6MGZcPagkO/WnAhcN/8bMuSLLvR9VHBvnnm?=
+ =?us-ascii?Q?sCg/4cVxTRrXKpX4PlVKTsPyRUrjFkF7QXo1bKqNmfA2Oshm9q7r8NdmRwFB?=
+ =?us-ascii?Q?MVfbOApNuXPWUnkWyO8K3WEtxO52ixhvT4CdH+nEPKCPchOxzM9y55LKxPxf?=
+ =?us-ascii?Q?TvwQMhRbpw635v4Pz/EIRnQpKs5dU9Bv8DtMdJBT70GxdCfm02bhWOD5VHzY?=
+ =?us-ascii?Q?/mlxC/47TAA+LLfv9XcEvCR/JQnSae/dMEhuwQ/tq3gU+JMak2pEjY1g95cM?=
+ =?us-ascii?Q?OGa3ob6W9dRxZkGbyuNBlRS1tom9oQUDM28X1kWqNPCKKgzfY8adepIlt8Mm?=
+ =?us-ascii?Q?nFd7agewItFRl6keBvSoYDdZhkzMsgHYvVqRWtXymqNldm66x1ufGoT506xX?=
+ =?us-ascii?Q?uVk+CZdb3sFgJyM+SkHZMUVA4GB2+QQmpxxZisk50PrOH8mRiU+iAzNMjDKl?=
+ =?us-ascii?Q?4cRwLebT8oGvE1Pp2XPeqLESc+vmpfTcNlPN4SbuYcNKKV7wVcLq7yH10sVG?=
+ =?us-ascii?Q?78vKM2tTxbg67iTeWna6XmBOmEzOZN5PYONpEh19BwSpkarQyjFyVMXZWZm+?=
+ =?us-ascii?Q?LNSaPyx1jCDMGtQFT24nChgLjDwG9cUQ3Y5KTjIIyDkjAMhLMcUzwvoFrJKV?=
+ =?us-ascii?Q?LMLWb3PE8rYq+gtG4JuChVsNP8/AyqOOBz793CnfMh45x1B5yyWNpDsGblT9?=
+ =?us-ascii?Q?6jbjULY1vItm7qXIUz/hymSeZDdtiQJCyV74GgbAWFr9rvTYxH0l8U3W+QW8?=
+ =?us-ascii?Q?yWhrbR3i9FzDxsBPCLRo/A3tt+zF2VSuRNh2slUQfnZF5KNXU4tR6pCtHHjv?=
+ =?us-ascii?Q?CzYE4Y/gmWO8l9/nLfWPzSidRQuDSAR8KItiZKSzU2kuAVzbU2L3O9aEdWb7?=
+ =?us-ascii?Q?D+ZXX5GkaIhP1eEFlZiEsb2c6mY6UoeEPVuPvTLi05eHEBqxchC+ifSs+759?=
+ =?us-ascii?Q?kzust5qz6rIa8UbBopxG84aZ1kMHHBmkCOMQcAHjParWypHJsLLWlduNZmFX?=
+ =?us-ascii?Q?N3lBh5UY/B79xtddSeR4/htDsOKeeAIva0hwGr/iNxu7OFA53ZwYShxw4WB3?=
+ =?us-ascii?Q?4TMmNtW9MDWeSkjXanZzvEibBLiBmhbGsECQLeOfd600Ekjlxw3upaZ/A+F1?=
+ =?us-ascii?Q?SgijUHM9jY5eU/32fMHpVMGiKZ15tDJ//erKhHrSoE0RCfRlgtLHTLVKbHfo?=
+ =?us-ascii?Q?V9dCfwWmmha1H9p6a6NAO2Z6ioEu4lu2qxD/yqzb?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6aa1f7c9-578d-4cf9-b9c7-08de1d0c1148
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 08:11:20.3571
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7V+W7zJLxp/ojyS8+dXsbRSZ/NCMvx7WT7M8Bo4rknNhlHRuFO++3Z9Ir6EkBToHK0jJEU3q84fmPDBzeTnXWg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8396
 
-On Thu, 6 Nov 2025 at 08:12, Manivannan Sadhasivam <mani@kernel.org> wrote:
+Hi Shenwei,
+
+On Tue, Nov 04, 2025 at 02:33:14PM -0600, Shenwei Wang wrote:
+>On i.MX SoCs, the system may include two processors:
+>	- An MCU running an RTOS
+>	- An MPU running Linux
 >
-> On Wed, Oct 22, 2025 at 07:43:06PM +0200, Vincent Guittot wrote:
-> > Describe the PCIe host controller available on the S32G platforms.
-> >
-> > Co-developed-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
-> > Signed-off-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
-> > Co-developed-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
-> > Signed-off-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
-> > Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
-> > Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
-> > Co-developed-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
-> > Signed-off-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
-> > Co-developed-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
-> > Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
-> > Co-developed-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
-> > Signed-off-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
-> > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-> > ---
-> >  .../bindings/pci/nxp,s32g-pcie.yaml           | 102 ++++++++++++++++++
-> >  1 file changed, 102 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/pci/nxp,s32g-pcie=
-.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml b=
-/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
-> > new file mode 100644
-> > index 000000000000..2d8f7ad67651
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
-> > @@ -0,0 +1,102 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/pci/nxp,s32g-pcie.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: NXP S32G2xxx/S32G3xxx PCIe Root Complex controller
-> > +
-> > +maintainers:
-> > +  - Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
-> > +  - Ionut Vicovan <ionut.vicovan@nxp.com>
-> > +
-> > +description:
-> > +  This PCIe controller is based on the Synopsys DesignWare PCIe IP.
-> > +  The S32G SoC family has two PCIe controllers, which can be configure=
-d as
-> > +  either Root Complex or Endpoint.
-> > +
-> > +allOf:
-> > +  - $ref: /schemas/pci/snps,dw-pcie.yaml#
-> > +
-> > +properties:
-> > +  compatible:
-> > +    oneOf:
-> > +      - enum:
-> > +          - nxp,s32g2-pcie
-> > +      - items:
-> > +          - const: nxp,s32g3-pcie
-> > +          - const: nxp,s32g2-pcie
-> > +
-> > +  reg:
-> > +    maxItems: 6
-> > +
-> > +  reg-names:
-> > +    items:
-> > +      - const: dbi
-> > +      - const: dbi2
-> > +      - const: atu
-> > +      - const: dma
-> > +      - const: ctrl
-> > +      - const: config
-> > +
-> > +  interrupts:
-> > +    maxItems: 2
-> > +
-> > +  interrupt-names:
-> > +    items:
-> > +      - const: dma
-> > +      - const: msi
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - reg-names
-> > +  - interrupts
-> > +  - interrupt-names
-> > +  - ranges
-> > +  - phys
-> > +
-> > +unevaluatedProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> > +    #include <dt-bindings/phy/phy.h>
-> > +
-> > +    bus {
-> > +        #address-cells =3D <2>;
-> > +        #size-cells =3D <2>;
-> > +
-> > +        pcie@40400000 {
-> > +            compatible =3D "nxp,s32g3-pcie",
-> > +                         "nxp,s32g2-pcie";
-> > +            reg =3D <0x00 0x40400000 0x0 0x00001000>,   /* dbi registe=
-rs */
-> > +                  <0x00 0x40420000 0x0 0x00001000>,   /* dbi2 register=
-s */
-> > +                  <0x00 0x40460000 0x0 0x00001000>,   /* atu registers=
- */
-> > +                  <0x00 0x40470000 0x0 0x00001000>,   /* dma registers=
- */
-> > +                  <0x00 0x40481000 0x0 0x000000f8>,   /* ctrl register=
-s */
-> > +                  <0x5f 0xffffe000 0x0 0x00002000>;  /* config space *=
-/
-> > +            reg-names =3D "dbi", "dbi2", "atu", "dma", "ctrl", "config=
-";
-> > +            dma-coherent;
-> > +            #address-cells =3D <3>;
-> > +            #size-cells =3D <2>;
-> > +            device_type =3D "pci";
-> > +            ranges =3D
-> > +                     <0x81000000 0x0 0x00000000 0x5f 0xfffe0000 0x0 0x=
-00010000>,
-> > +                     <0x82000000 0x0 0x00000000 0x58 0x00000000 0x0 0x=
-80000000>,
-> > +                     <0x82000000 0x1 0x00000000 0x59 0x00000000 0x6 0x=
-fffe0000>;
-> > +
-> > +            bus-range =3D <0x0 0xff>;
-> > +            interrupts =3D <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>,
-> > +                         <GIC_SPI 125 IRQ_TYPE_LEVEL_HIGH>;
-> > +            interrupt-names =3D "dma", "msi";
-> > +            #interrupt-cells =3D <1>;
-> > +            interrupt-map-mask =3D <0 0 0 0x7>;
-> > +            interrupt-map =3D <0 0 0 1 &gic 0 0 GIC_SPI 128 IRQ_TYPE_L=
-EVEL_HIGH>,
-> > +                            <0 0 0 2 &gic 0 0 GIC_SPI 129 IRQ_TYPE_LEV=
-EL_HIGH>,
-> > +                            <0 0 0 3 &gic 0 0 GIC_SPI 130 IRQ_TYPE_LEV=
-EL_HIGH>,
-> > +                            <0 0 0 4 &gic 0 0 GIC_SPI 131 IRQ_TYPE_LEV=
-EL_HIGH>;
-> > +
-> > +            phys =3D <&serdes0 PHY_TYPE_PCIE 0 0>;
+>These processors communicate via the RPMSG protocol.
+>The driver implements the standard GPIO interface, allowing
+>the Linux side to control GPIO controllers which reside in
+>the remote processor via RPMSG protocol.
 >
-> PHY is a Root Port specific resource, not Root Complex. So it should be m=
-oved to
-> the Root Port node and the controller driver should parse the Root Port n=
-ode and
-> control PHY. Most of the existing platforms still specify PHY and other R=
-oot
-> Port properties in controller node, but they are wrong.
+>Cc: Bartosz Golaszewski <brgl@bgdev.pl>
+>Cc: Andrew Lunn <andrew@lunn.ch>
+>Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+>---
+> drivers/gpio/Kconfig          |  17 ++
+> drivers/gpio/Makefile         |   1 +
+> drivers/gpio/gpio-imx-rpmsg.c | 475 ++++++++++++++++++++++++++++++++++
 
-Yeah, we had similar discussion on v1 and as designware core code
-doesn't support it, the goal was to follow other implementations until
-designware core is able to parse root port nodes.
-I can add a root port node for the phy and parse it in s32 probe
-function but then If I need to restrict the number of lane to 1
-instead of the default 2 with num-lanes then I have to put it the
-controller node otherwise designware core node will not get it.
+The patch looks good to me, but since the protocol is already generic
+enough, I would prefer to drop "imx" in this patch.
 
-
-
->
-> - Mani
->
-> --
-> =E0=AE=AE=E0=AE=A3=E0=AE=BF=E0=AE=B5=E0=AE=A3=E0=AF=8D=E0=AE=A3=E0=AE=A9=
-=E0=AF=8D =E0=AE=9A=E0=AE=A4=E0=AE=BE=E0=AE=9A=E0=AE=BF=E0=AE=B5=E0=AE=AE=
-=E0=AF=8D
+Thanks,
+Peng
