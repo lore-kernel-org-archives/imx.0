@@ -1,68 +1,68 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF123081B5
-	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 10:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E795319614
+	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 10:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762511415; cv=none; b=KnHJT21BzYycRyh6CFeTDKVsgUhbUAibaN0no/4LCz7X0vQ76ghOIn/+q+zFzLcX8wW7STd2WZ5tKVxhqmZro0L5KW26z/IXasPbsipPY/esn3lV5yu4XkgI1Aeki3D1hl6l8wnhDOK3H44/SqFNt4FASr1p5J2ql4rqIRCBRhc=
+	t=1762511419; cv=none; b=CkeyQ5XrN6UaXCe+vpac+HotTEcM8C+dUHpz+FbcEWmjPT/HFSN2cYaxbiO1AbVKxJvGeScJfIxana2u2EHP3HIwxWQwLLw9jP+4Q013Pag8p4iynaZzMa/zxxNggXewVjv0AX8LmUC7vRgjQNHv4OtMAhe4Q1tRhj5JVYzm3Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762511415; c=relaxed/simple;
-	bh=NBuMo3fA0T+jYUYuxAjSnoU2gctigcAN7afLM+xxwVQ=;
+	s=arc-20240116; t=1762511419; c=relaxed/simple;
+	bh=yY8w0En7ifAOHnUc2TsFrwM8BU5vXAiE+eQSw5KxyCk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DkH0HqAfSJCzwb67/zZVQw9mw6iaXyg6Ib9uzYbFxH8Kn6eU3cgPJWijs++Kx21dxm7QohXYZo2rgSV92pJMzhgPrTV16K1rNkM9o9quhCGUXO1pzSqo5I2jfDFs8FbUW1+YnkdBR37PulD0qBU19Oy8BDnYPOYTg271nH7P6DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=wJ0RF1AU; arc=none smtp.client-ip=209.85.221.43
+	 In-Reply-To:To:Cc; b=uhCUuGoVI4SMyPZ9w6wgbiS8dcfaYiUYmJnqT4C8UFCgqcK4Yx0jAmd7/cwypoo29x2+ko2dYgfW7Ez35kEDm5rtqz1XSfSeFSHDJV4RQdqW5PhntxpA05gjJuzvBa65DGnvBzBZETzMqbG7GomLELjqPPsUGGeVBYpNKu4Tw1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=CVNIYDOh; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="wJ0RF1AU"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-429bccca1e8so311762f8f.0
-        for <imx@lists.linux.dev>; Fri, 07 Nov 2025 02:30:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="CVNIYDOh"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-42421b1514fso289649f8f.2
+        for <imx@lists.linux.dev>; Fri, 07 Nov 2025 02:30:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1762511409; x=1763116209; darn=lists.linux.dev;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1762511413; x=1763116213; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=EeInQQFLiIKx9a2aZ0cucvmhXeQc/nRxrd1ryoO5rZk=;
-        b=wJ0RF1AUSyrmavLihIp+FF90DH4hhQqXQqjIk6byHkEYLFJCUEKAtwssOd9TE3NVTc
-         7/7r004djtWdaa8oOQ71LuXn1M7Hu7c3jarmrZsZnFGSP6AKBRUe3oNlj6oI+PgdG83n
-         FrL4kXf8aWq6hARZosJ8dXInhCAJC66Nhs+M1Ln+3KRLuw28jJP8DE6uwvLWMXYFJR5g
-         aveNscc5THN+ENl6nShcZkF+27dAozI3Oeevb92mUfHSJe3QxETPWyfNiiachlkQhCj3
-         YluVHeeCW7ZcC/ZPtKPjp8V/XouR6ThAJJOz3EK5Qfa9ysQ3Wvz9MzHUMKECnaAyOVfb
-         Avzg==
+        bh=Y+bD9XMSY/PxNEVtej7SYELNOHLIlDJsCB53kL01eGk=;
+        b=CVNIYDOhk29Fnxesi1Cb0ueIsRlJHzW7yIyPfcSeKL241qzoj2gTnngUW3aKTAO+Ts
+         uqoMKcR1IYAdTR+mMmEAsHpVYiAxbAyziZTCmWLywMlPfmpGd4BAgc5lxMJv3svJg4le
+         Bi36hFvaue8kMWYD5dLJuMx0a+G2dzM7K0CfaXdMhyY5PBlUsAOjfwoVsWU8Qof8oAPt
+         vOEAFOOcDN/cXvaVRaDqTdKkB5KM2H4s0wY+J0VnvyeGq/oo877ZkkwlgGeuFbhsPLEb
+         6SNEAXFdXpTarJO7MqgxxNtAl4c4ilMj7QcG/dLfekw4MSPCScdrOv27fB3aFhiMkbHN
+         UAjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762511409; x=1763116209;
+        d=1e100.net; s=20230601; t=1762511413; x=1763116213;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=EeInQQFLiIKx9a2aZ0cucvmhXeQc/nRxrd1ryoO5rZk=;
-        b=kr4AsQmsL+z19ptu2SAxDeIv3IRlvmDePYnCO25EFwWnzm6XO00Or0OngcUL79rCmz
-         4k8qaBCVEaUVnkV5h9XmaPiew23Om36OKu0Lev9cgNkVuBvbr/Gx2uzU4fZZi9llGSI0
-         6iBk1gIXfQVJJwbZ6HfZGep7cIU4D74/dC0wA9hxbR0KKgkX4Txm9S1uxKAh9N9d15TF
-         y4p8GoHMoqcb1hQJW2CsDlwivyhsISjTL4hGq8t1D1kROmBnJFdxQMbhpLdGNf2CP/GI
-         JqolZtx1flsu9zZ+KD8Wkel6G3gpCTY3fdkleeHnficPW+lB909bK52n+6UF8WqLbAWO
-         mMaw==
-X-Forwarded-Encrypted: i=1; AJvYcCWOTiQjzJx7MkuuWl5XV8+CVmpqtne5GDmKkaswoBWC4+A6/CHuUbsJRFcXK2eP2bTTirQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwWK6IWA6puXFM9jltXlqGz9YNhv/9j4yMdSTENv0qXZ/Cdf5fV
-	pdXSn0S7GKBY72MzhcExCnKpHZmhgAvBnbzeEFwxS2OZNJt7fJISpIi4EQCfisRdrsA=
-X-Gm-Gg: ASbGncuuxdh+TbKYUH5FKrZ/QpaNENnrGVdyfPdRg1eXTQpas+Zv0fgOeSbfkk9hdqE
-	dEesDlMVp6Fz1svcVFX5DbdxMKD4+3/p83vFDxTAzuK6zV+q/ECywI3RH8VivXFNacsP0xIr/MU
-	NAuPbupYs33cjRpBCYBBC6UBNklirZS0lyuSwCiiZiWZ6KJrYf7r1hscz3s9yg++Pyu9e5G6Zil
-	OLbHfZu9axKf26LKsZIxQrwgezAvC+sVSPEThSTFx2Ev1J9F995ZfowTmx8GD0MhrFDlLLTt4xT
-	cpid3naQw4zqmlMk/ZWKfQ7cd4/wdzK3Lvtp2w2FdkS9CSvUdaPKtFzTcCzblzUi1LsjAsoSUM9
-	Jh7dm/ZFmtlYskrxKIUv4ALkkn1FQ44AULCDOfIOSSXLBm/7uaTB8nIzTEQxCEckvw9WlUkAZfj
-	Lkprg=
-X-Google-Smtp-Source: AGHT+IFWpZ4poiZ9SDXbV8ON2MHdizseFiZAt8VOLHhvPsXxDGeYll4+fwCN9jkQCS4Zle5ZwgVqIg==
-X-Received: by 2002:a05:6000:4285:b0:429:c774:dc08 with SMTP id ffacd0b85a97d-42ae5aebaf5mr2437383f8f.53.1762511409391;
-        Fri, 07 Nov 2025 02:30:09 -0800 (PST)
+        bh=Y+bD9XMSY/PxNEVtej7SYELNOHLIlDJsCB53kL01eGk=;
+        b=CjzjYDP6gUbxEFxD0sbTk8YCbyAP3kHAYO/MKqIqGOrAAy+Xp1s6dhw6ugtYxSNvn5
+         rm5g65A2ZrB6CFL1os15R3T2kQdg7vxO29xPhikzski/cWWuP8wMz/OCdYaKcDUCdZFW
+         9fWaYivVbIaRDtzwxPVEPH+fned7z67oLEiksoZGjuwmDIixe2EmGUrcpUIvNM7znat9
+         JKbDpTdM9LhqxJkoc9r0EnlnBMreOdtq0C3kzk1FJRoBGPqmxoneXcYxGgGhomUywHgx
+         BgxLF1n22gRTzHqI80EPW1ArN0xnSG7ZdrQeWLJNypSNxT3Vg1FtmURyoFCZKmg4fc5/
+         ju3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXdRKUR21kZUC9ETky88DIs2+YscoeaoSuP4HkfXu0/9UPRmfsDkj/rxd0C0AGN958lhaQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwufZk5xLMiPc8JdoQ2UXvyjJS7RXqyInx+QpL92DEX7Yy3H3Xa
+	J2bUX5JUcqbO2Q9iso3i0cRkEafscp3/hmQLXs0CNbzaffH0bgKZfXQI4Fqv+Sf7pno=
+X-Gm-Gg: ASbGncsZJ5p7+xN7g342oy7yB9YyJK7Rs9OfNdiADylYlIMdtZ9ug0AfGXSCfoLjljE
+	ygSA3OQ/p5I1Cfisctm0tpbOAiHz2Un2xdoZ8AJNDT62xrf5AmNFCOOPbKdojmNh3XjrztDok//
+	f+cS+bRmkGVO9IrjqsAzCVun/uvS2UsRVm7H6rJ6ah0AIhwIKiXF9BZ3IgsGXFNFl8PDsNqhEw9
+	gsY6yf6g42PF0Ntr5u1132FMlIqBQWiK4zA1aiaI3p3N1jDf6V5Tk9McHBwlfhim7Cwewtibv0f
+	P0lOBrKub4XUduDgq3ndxIr2oRXlvDsu9STqRMWBXXOqD+xTFt6gr1Wfx5og0/4YVgp/eEM2reW
+	b+Iyk5owtttEP943KzFOtW0p+1P6S0Uijrs40gVTGOIQkE5ovppsBXlcZLSviZYTAzhmmejgB7m
+	RXxfY=
+X-Google-Smtp-Source: AGHT+IERkMxY/OdgqWfaZ7AT7DwdB4UOki9h9A7muZP3Z616/ajyEOm8UxRI695/XTN9HnuI+cZyWg==
+X-Received: by 2002:a05:6000:2012:b0:427:8c85:a4ac with SMTP id ffacd0b85a97d-42aefb43605mr2064791f8f.47.1762511412542;
+        Fri, 07 Nov 2025 02:30:12 -0800 (PST)
 Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:fb6d:2ee:af61:f551])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42ac67920fcsm4414864f8f.39.2025.11.07.02.30.06
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42ac67920fcsm4414864f8f.39.2025.11.07.02.30.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Nov 2025 02:30:08 -0800 (PST)
+        Fri, 07 Nov 2025 02:30:11 -0800 (PST)
 From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Fri, 07 Nov 2025 11:29:52 +0100
-Subject: [PATCH v5 2/8] net: stmmac: qcom-ethqos: use generic device
- properties
+Date: Fri, 07 Nov 2025 11:29:53 +0100
+Subject: [PATCH v5 3/8] net: stmmac: qcom-ethqos: improve typing in devres
+ callback
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251107-qcom-sa8255p-emac-v5-2-01d3e3aaf388@linaro.org>
+Message-Id: <20251107-qcom-sa8255p-emac-v5-3-01d3e3aaf388@linaro.org>
 References: <20251107-qcom-sa8255p-emac-v5-0-01d3e3aaf388@linaro.org>
 In-Reply-To: <20251107-qcom-sa8255p-emac-v5-0-01d3e3aaf388@linaro.org>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -125,92 +125,50 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-riscv@lists.infradead.org, 
  Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2896;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1037;
  i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
- bh=POv+vDF2xSPchjLMqtdcREByAr5wVSRC/4xfmqCj4bM=;
- b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBpDcon0J86/ZOn2V7ZnaixLSQbUE+OOX0GyGHbN
- J0IncBZa6SJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaQ3KJwAKCRARpy6gFHHX
- ciIrEADVzOpNMnNgNcWPwGlAIVMHEpqCfHtBeXPJvQn07MHtxYl3U9LGnzv620nVLy60nQXmdAj
- pl3ZH62GP+XUvTaa+j/Z2gCKkYsYElWtU+zFXoq3HYslfFES+CnYlKKCUmQophJ5kf0OtQCt7fO
- 5abxCLdbNTLSvsEW8oVYqioJeULR4+HfOiPNUiahqO/7PrqApBkNAhtmqdbVH+Y/EeNbiYnOCf2
- ZE6sCBDEzpxLPiYAwB0GUT6G6dzFKvCnBMKGLQ8w7g0Y2Ir6rZD+Un4BWa0CNrGKvNHwo5xO8bo
- nGfuSWFYUqibed/x5q6cbRcrqIv4AmIJq3gc7On4l7G7nPtxCppRhvhSChUmt0Gwl3nU7ag+EdT
- 9+tJ2dVjWe5HNxZ6uYIO5iCQkTDt3zHGuEI7sIwGGyMuQUb7feOaRdvBOk3Uzk12VujF7tf0KFh
- b+OPkxYIl6dR2V2vM6Iltg5uvz1odCEojGxY4X1ssONLOPT4Io72HgrU4Ic0feuQA8hwoch6sR/
- FRi9jKn6EJVxMvcjNsmigzOuuZ657/JCBDLfzmcsTY+k/jtVm8lTErQTHQN+xZDKdPke/55kcro
- 7TpPf1P6vZKDWhTuWJQrIlPA/9Y2Tcn9d3fifuHIRnt/DqPTlrMScJeQkcUIZjtMw0xYQmGCR4I
- ViImRD8T6UC/KGg==
+ bh=/4v1a8QAtlU1YFnwlRQMWe0GMJqjCY4EA0FHsr43o1A=;
+ b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBpDconjyIV+fTbtiiEvLmwzz2XANDPioDzvoKtm
+ cu4MX5qD8GJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaQ3KJwAKCRARpy6gFHHX
+ chguD/48PDKdlDmcnZzg7JiW0mzCIguyJgTHeZLzPIFm5p89jeT2Xw9rJg2JOadHllTnAvDXe/U
+ rvDQsGndzvsN+xzFpJ61PEzm5YAScMgZDW64C34/Cog5rNgiNs3vkk1gLmgscNeF3Cna5YA+RA5
+ BsXoQWCIq5UtEFkXesDvEfFmouRUOeTDINymGLKpCE65eO7kIWIQCZpYBDo6AnW06NlTq2DlOKQ
+ Fdp3E4YMrkhab74JdTcn39x/INJvXk9K5y23XTeiGCMlvPmiqtmboUlQPDXdOIU3C8lUqWRkUTT
+ 7xxipK88IcZ8YiSyegvj+0NLjo7dDc8AMkfyOkibQMiUh/K2t0tz7bIjKXZlNxdWPVJhkqswNyW
+ R0evKvs6IKV+2Q71flHCD3rcRH0yK0gW7fA59gChceGBjLKGchAkERDHwwqrOpUqNy0WePVlsn8
+ rAUWS+/a13WqCZG7ZoL926vFHV/gx8tYhJhWbKsM+aXcbTkr7WgNPhL6O6LPGZg6LIPL3+052yp
+ Eld9SE0yD3WZLc0ux9XwhoD9yRGy+e1dAMCzD8+Ghg/k5pxeRe7x5u5SfcOx2RTT0x4yr6yuL5d
+ fGW0aKXSXdHWQw7ECZ/W67Bn6p5RJUhQVVzQNg5VS3/UwDyQK9uldBujAYSXuMLCQV77tfpiZfF
+ FazfeeIRG8/+w/g==
 X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
  fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
 
 From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-In order to drop the dependency on CONFIG_OF, convert all device property
-getters from OF-specific to generic device properties and stop pulling
-in any linux/of.h symbols.
+It's bad practice to just directly pass void pointers to functions which
+expect concrete types. Make it more clear what type ethqos_clks_config()
+expects.
 
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/Kconfig             | 2 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 9 ++++-----
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-index 87c5bea6c2a243f3be998b2c3935bc1dc23bfe22..22d0eaab35eaffac0bca58f8625ecc5c955b6631 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-+++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-@@ -135,7 +135,7 @@ config DWMAC_MESON
- config DWMAC_QCOM_ETHQOS
- 	tristate "Qualcomm ETHQOS support"
- 	default ARCH_QCOM
--	depends on OF && (ARCH_QCOM || COMPILE_TEST)
-+	depends on ARCH_QCOM || COMPILE_TEST
- 	help
- 	  Support for the Qualcomm ETHQOS core.
- 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index 1a616a71c36ace29a74a0aa23fc8173443aa49a5..8578a2df8cf0d1d8808bcf7e7b57c93eb14c87db 100644
+index 8578a2df8cf0d1d8808bcf7e7b57c93eb14c87db..8493131ca32f5c6ca7e1654da0bbf4ffa1eefa4e 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -1,8 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0
- // Copyright (c) 2018-19, Linaro Limited
+@@ -726,7 +726,9 @@ static int ethqos_clks_config(void *priv, bool enabled)
  
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
--#include <linux/of.h>
- #include <linux/of_net.h>
- #include <linux/platform_device.h>
- #include <linux/phy.h>
-@@ -748,7 +748,6 @@ static void ethqos_ptp_clk_freq_config(struct stmmac_priv *priv)
- 
- static int qcom_ethqos_probe(struct platform_device *pdev)
+ static void ethqos_clks_disable(void *data)
  {
--	struct device_node *np = pdev->dev.of_node;
- 	const struct ethqos_emac_driver_data *data;
- 	struct plat_stmmacenet_data *plat_dat;
- 	struct stmmac_resources stmmac_res;
-@@ -799,7 +798,7 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
+-	ethqos_clks_config(data, false);
++	struct qcom_ethqos *ethqos = data;
++
++	ethqos_clks_config(ethqos, false);
+ }
  
- 	ethqos->mac_base = stmmac_res.addr;
- 
--	data = of_device_get_match_data(dev);
-+	data = device_get_match_data(dev);
- 	ethqos->por = data->por;
- 	ethqos->num_por = data->num_por;
- 	ethqos->rgmii_config_loopback_en = data->rgmii_config_loopback_en;
-@@ -836,9 +835,9 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
- 	if (ethqos->has_emac_ge_3)
- 		plat_dat->dwmac4_addrs = &data->dwmac4_addrs;
- 	plat_dat->pmt = 1;
--	if (of_property_read_bool(np, "snps,tso"))
-+	if (device_property_present(dev, "snps,tso"))
- 		plat_dat->flags |= STMMAC_FLAG_TSO_EN;
--	if (of_device_is_compatible(np, "qcom,qcs404-ethqos"))
-+	if (device_is_compatible(dev, "qcom,qcs404-ethqos"))
- 		plat_dat->flags |= STMMAC_FLAG_RX_CLK_RUNS_IN_LPI;
- 	if (data->dma_addr_width)
- 		plat_dat->host_dma_width = data->dma_addr_width;
+ static void ethqos_ptp_clk_freq_config(struct stmmac_priv *priv)
 
 -- 
 2.51.0
