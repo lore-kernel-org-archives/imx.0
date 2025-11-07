@@ -1,31 +1,31 @@
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5ACC2FBE13
-	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 01:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F25E2FCC16
+	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 01:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762480714; cv=none; b=R6nsbpVlgRr73NurucfPMV6cc2dSoKvMvZ2zLcb/kuIhGV0KJ9Oh7W+Q19/jnwterANJ/F14fRTOJdU5pC45tpqPt1k0VLHh/pmFSUpn1j//4LoIMoh4pYinas1rqksYOO1BNxW4PCrjNT/W2TTOp1DB/g1wqmlyuJlG1Ar8OdQ=
+	t=1762480717; cv=none; b=rNikhRaMRmMdE8VFB2vOfLgoO1xRIYUxHxIlULTgW6Dh/4vgQVnKW/Lo1Yswber5HE8DGJkrfV9jaj7oYC0t03CyLFhsXcY6pNCYDlYgS+Asv0lV+JweVi/DBQhu4OU8NvGrIZ1PGD8i2Vvsz++MJ918kEjKbyT6M8l0edICM3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762480714; c=relaxed/simple;
-	bh=kz2MpXhV1Ha9S9mU1z1qGENKYDeOPjL7Z2VdiDb5rjE=;
+	s=arc-20240116; t=1762480717; c=relaxed/simple;
+	bh=0vLPsMfAzRK7VoF8LC6/vKTDFB4O+nqy22RI4H7uGzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gsN5Z2Ekz8DMRDFUFwnz82hNlS48WmZNDQ6Fvbtv6jKCbUbEt0XYgHehAt2Ia2G4NcTg8WMK4oDe4r1nB8DekvbaLGEUBzpYiNN68UX0qyx6Ksh19zp9tssiLTK3XDuCKYVcWaLZPQaZtjYtqj3fkLuX+GQKdn//Fge/cXMAo9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=HzjCwE8I; arc=none smtp.client-ip=213.167.242.64
+	 MIME-Version; b=p6oDEYhsnsrbpHFsJlu8ClWyPZZcTR4xqdKHO/VycnUhpRfaSMWRw7IPRuOF1saGj21y2BdiMew+XnJErTZk3lqvNCT8uXtutfJqpv3XVHMV4nmOLoDvZv0Rus07vQvVc3tAvLHXa6nHchpjOLO/jXGiENRLru2Gv3ROBsof3KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Ypo1kN1H; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="HzjCwE8I"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Ypo1kN1H"
 Received: from pendragon.ideasonboard.com (82-203-161-95.bb.dnainternet.fi [82.203.161.95])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id E924619E5;
-	Fri,  7 Nov 2025 02:56:27 +0100 (CET)
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 4ECED1D33;
+	Fri,  7 Nov 2025 02:56:31 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1762480588;
-	bh=kz2MpXhV1Ha9S9mU1z1qGENKYDeOPjL7Z2VdiDb5rjE=;
+	s=mail; t=1762480591;
+	bh=0vLPsMfAzRK7VoF8LC6/vKTDFB4O+nqy22RI4H7uGzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HzjCwE8I5YVEFDAJ+fRZXyAyXcOMw4IKCRSOX1Z3RWJIYrvNBfCHqpwYRy/7rkHSz
-	 1Mrb57vDIW6IT45PTZenAKVbeE7QYYG/4ibDgd/4CA5u0h4LRgj2+TRKVJ9QBbZYGN
-	 elXaR9+AWHkBODSUJazlMRNraOssV4r93kEJ4h5M=
+	b=Ypo1kN1HpkBIKf8NTTFyJ+KROSjTMa9phIJg2geRItnx0fLTZ5rfKrqT4qO19QYlb
+	 C7TKKW9hSEgHuH94ZyAuyEZqfp1fmvxsDfCFP2jas1pgC5mmBtzVlyiDIj8x2Gi2G6
+	 GG4Xi5YFQTlgY/Apz3orXjc5wsZSiFT+4AnKAlxc=
 From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 To: linux-media@vger.kernel.org
 Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
@@ -36,9 +36,9 @@ Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
 	Frank Li <Frank.Li@nxp.com>,
 	Stefan Klug <stefan.klug@ideasonboard.com>,
 	Sakari Ailus <sakari.ailus@iki.fi>
-Subject: [PATCH v1 3/6] media: imx-mipi-csis: Implement the .set_routing() operation
-Date: Fri,  7 Nov 2025 03:58:10 +0200
-Message-ID: <20251107015813.5834-4-laurent.pinchart@ideasonboard.com>
+Subject: [PATCH v1 5/6] media: imx-mipi-csis: Set all per-channel registers in one function
+Date: Fri,  7 Nov 2025 03:58:12 +0200
+Message-ID: <20251107015813.5834-6-laurent.pinchart@ideasonboard.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251107015813.5834-1-laurent.pinchart@ideasonboard.com>
 References: <20251107015813.5834-1-laurent.pinchart@ideasonboard.com>
@@ -50,115 +50,76 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-To prepare for multi-stream support, implement the .set_routing()
-operation. The routing table is currently hardcoded to a single route.
+The __mipi_csis_set_format() function programs most of the per-channel
+registers, with the exception of the MIPI_CSIS_ISP_SYNC_CH register. To
+prepare for multi-channel support, move programming of that register to
+the function, and rename it to mipi_csis_set_channel_params() to clearly
+indicate its purpose.
 
 Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 ---
- drivers/media/platform/nxp/imx-mipi-csis.c | 73 ++++++++++++++++++----
- 1 file changed, 60 insertions(+), 13 deletions(-)
+ drivers/media/platform/nxp/imx-mipi-csis.c | 23 +++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-index f142e79acbcf..f4b19576a235 100644
+index 9dd264af181f..d8c11223ed0a 100644
 --- a/drivers/media/platform/nxp/imx-mipi-csis.c
 +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-@@ -1154,6 +1154,52 @@ static int mipi_csis_get_frame_desc(struct v4l2_subdev *sd, unsigned int pad,
- 	return 0;
+@@ -597,13 +597,14 @@ static void mipi_csis_system_enable(struct mipi_csis_device *csis, int on)
+ 	mipi_csis_write(csis, MIPI_CSIS_DPHY_CMN_CTRL, val);
  }
  
-+static int __mipi_csis_set_routing(struct v4l2_subdev *sd,
-+				   struct v4l2_subdev_state *state,
-+				   struct v4l2_subdev_krouting *routing)
-+{
-+	static const struct v4l2_mbus_framefmt format = {
-+		.width = MIPI_CSIS_DEF_PIX_WIDTH,
-+		.height = MIPI_CSIS_DEF_PIX_HEIGHT,
-+		.code = mipi_csis_formats[0].code,
-+		.field = V4L2_FIELD_NONE,
-+		.colorspace = V4L2_XFER_FUNC_709,
-+		.ycbcr_enc = V4L2_YCBCR_ENC_601,
-+		.quantization = V4L2_QUANTIZATION_LIM_RANGE,
-+		.xfer_func = V4L2_XFER_FUNC_SRGB,
-+	};
-+	int ret;
-+
-+	ret = v4l2_subdev_routing_validate(sd, routing,
-+					   V4L2_SUBDEV_ROUTING_NO_1_TO_N);
-+	if (ret)
-+		return ret;
-+
-+	/* Only a single route is supported for now. */
-+	if (routing->num_routes != 1 ||
-+	    !(routing->routes[0].flags & V4L2_SUBDEV_ROUTE_FL_ACTIVE))
-+		return -EINVAL;
-+
-+	ret = v4l2_subdev_set_routing_with_fmt(sd, state, routing, &format);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int mipi_csis_set_routing(struct v4l2_subdev *sd,
-+				 struct v4l2_subdev_state *state,
-+				 enum v4l2_subdev_format_whence which,
-+				 struct v4l2_subdev_krouting *routing)
-+{
-+	struct mipi_csis_device *csis = sd_to_mipi_csis_device(sd);
-+
-+	if (which == V4L2_SUBDEV_FORMAT_ACTIVE && csis->source.enabled_streams)
-+		return -EBUSY;
-+
-+	return __mipi_csis_set_routing(sd, state, routing);
-+}
-+
- static int mipi_csis_enable_streams(struct v4l2_subdev *sd,
- 				    struct v4l2_subdev_state *state,
- 				    u32 pad, u64 streams_mask)
-@@ -1240,22 +1286,22 @@ static int mipi_csis_disable_streams(struct v4l2_subdev *sd,
- static int mipi_csis_init_state(struct v4l2_subdev *sd,
- 				struct v4l2_subdev_state *state)
+-static void __mipi_csis_set_format(struct mipi_csis_device *csis,
+-				   const struct mipi_csis_channel_params *params)
++static void mipi_csis_set_channel_params(struct mipi_csis_device *csis,
++					 unsigned int channel,
++					 const struct mipi_csis_channel_params *params)
  {
--	struct v4l2_subdev_format fmt = {
--		.pad = CSIS_PAD_SINK,
-+	struct v4l2_subdev_route routes[] = {
-+		{
-+			.sink_pad = CSIS_PAD_SINK,
-+			.sink_stream = 0,
-+			.source_pad = CSIS_PAD_SOURCE,
-+			.source_stream = 0,
-+			.flags = V4L2_SUBDEV_ROUTE_FL_ACTIVE,
-+		},
- 	};
+ 	u32 val;
  
--	fmt.format.code = mipi_csis_formats[0].code;
--	fmt.format.width = MIPI_CSIS_DEF_PIX_WIDTH;
--	fmt.format.height = MIPI_CSIS_DEF_PIX_HEIGHT;
-+	struct v4l2_subdev_krouting routing = {
-+		.num_routes = ARRAY_SIZE(routes),
-+		.routes = routes,
-+	};
+ 	/* Color format */
+-	val = mipi_csis_read(csis, MIPI_CSIS_ISP_CONFIG_CH(0));
++	val = mipi_csis_read(csis, MIPI_CSIS_ISP_CONFIG_CH(channel));
+ 	val &= ~(MIPI_CSIS_ISPCFG_PARALLEL | MIPI_CSIS_ISPCFG_PIXEL_MODE_MASK |
+ 		 MIPI_CSIS_ISPCFG_DATAFORMAT_MASK |
+ 		 MIPI_CSIS_ISPCFG_VIRTUAL_CHANNEL_MASK);
+@@ -627,10 +628,15 @@ static void __mipi_csis_set_format(struct mipi_csis_device *csis,
+ 	val |= MIPI_CSIS_ISPCFG_DATAFORMAT(params->data_type);
+ 	val |= MIPI_CSIS_ISPCFG_VIRTUAL_CHANNEL(0);
  
--	fmt.format.colorspace = V4L2_COLORSPACE_SMPTE170M;
--	fmt.format.xfer_func = V4L2_MAP_XFER_FUNC_DEFAULT(fmt.format.colorspace);
--	fmt.format.ycbcr_enc = V4L2_MAP_YCBCR_ENC_DEFAULT(fmt.format.colorspace);
--	fmt.format.quantization =
--		V4L2_MAP_QUANTIZATION_DEFAULT(false, fmt.format.colorspace,
--					      fmt.format.ycbcr_enc);
--
--	return mipi_csis_set_fmt(sd, state, &fmt);
-+	return __mipi_csis_set_routing(sd, state, &routing);
+-	mipi_csis_write(csis, MIPI_CSIS_ISP_CONFIG_CH(0), val);
++	mipi_csis_write(csis, MIPI_CSIS_ISP_CONFIG_CH(channel), val);
++
++	mipi_csis_write(csis, MIPI_CSIS_ISP_SYNC_CH(channel),
++			MIPI_CSIS_ISP_SYNC_HSYNC_LINTV(0) |
++			MIPI_CSIS_ISP_SYNC_VSYNC_SINTV(0) |
++			MIPI_CSIS_ISP_SYNC_VSYNC_EINTV(0));
+ 
+ 	/* Pixel resolution */
+-	mipi_csis_write(csis, MIPI_CSIS_ISP_RESOL_CH(0),
++	mipi_csis_write(csis, MIPI_CSIS_ISP_RESOL_CH(channel),
+ 			MIPI_CSIS_ISP_RESOL_VRESOL(params->height) |
+ 			MIPI_CSIS_ISP_RESOL_HRESOL(params->width));
  }
+@@ -711,17 +717,12 @@ static void mipi_csis_set_params(struct mipi_csis_device *csis,
  
- static int mipi_csis_log_status(struct v4l2_subdev *sd)
-@@ -1297,6 +1343,7 @@ static const struct v4l2_subdev_pad_ops mipi_csis_pad_ops = {
- 	.get_fmt		= v4l2_subdev_get_fmt,
- 	.set_fmt		= mipi_csis_set_fmt,
- 	.get_frame_desc		= mipi_csis_get_frame_desc,
-+	.set_routing		= mipi_csis_set_routing,
- 	.enable_streams		= mipi_csis_enable_streams,
- 	.disable_streams	= mipi_csis_disable_streams,
- };
+ 	mipi_csis_write(csis, MIPI_CSIS_CMN_CTRL, val);
+ 
+-	__mipi_csis_set_format(csis, &params->channels[0]);
++	mipi_csis_set_channel_params(csis, 0, &params->channels[0]);
+ 
+ 	mipi_csis_write(csis, MIPI_CSIS_DPHY_CMN_CTRL,
+ 			MIPI_CSIS_DPHY_CMN_CTRL_HSSETTLE(params->hs_settle) |
+ 			MIPI_CSIS_DPHY_CMN_CTRL_CLKSETTLE(params->clk_settle));
+ 
+-	mipi_csis_write(csis, MIPI_CSIS_ISP_SYNC_CH(0),
+-			MIPI_CSIS_ISP_SYNC_HSYNC_LINTV(0) |
+-			MIPI_CSIS_ISP_SYNC_VSYNC_SINTV(0) |
+-			MIPI_CSIS_ISP_SYNC_VSYNC_EINTV(0));
+-
+ 	val = mipi_csis_read(csis, MIPI_CSIS_CLK_CTRL);
+ 	val |= MIPI_CSIS_CLK_CTRL_WCLK_SRC(0);
+ 	val |= MIPI_CSIS_CLK_CTRL_CLKGATE_TRAIL(0, 15);
 -- 
 Regards,
 
