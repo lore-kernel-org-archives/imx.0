@@ -1,87 +1,88 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE011F03D2;
-	Fri,  7 Nov 2025 17:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E50223DD0;
+	Fri,  7 Nov 2025 17:47:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762536467; cv=none; b=q6S91yRR3E006HauyKUOZY4whSCIC4bzfi4Osjqqh/Ewzu9hZnqGFxYU4JZ55VqCZhYvhnnb5WxnAwx4j8RynVMPTIQ5vi7/zeuGjohhzGIFf6kIcwJ9bJvpqvS4zqtCFD+Gi5CGDpMokvdcn0Ysnu9L596Rn8Lc8HVF5OGemM8=
+	t=1762537641; cv=none; b=KouRodtupXNHi+nS/SW4q9xc9nTe4nRn2OqDNkhkrgWdVxVEJ7o8MHt6bFvlLH8AQXWOV0QYTAjaRJO60OwexJ8zu0cTIQS7YZ8wi+xqmO8jLjrFBQwcmVgz7mXWR75De/G7CUgW+Cof8MwtwtuVR6SeCTjF9giQMxwOpD/kTfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762536467; c=relaxed/simple;
-	bh=E74RBG0cAvccvJgzcVT8lXWEYJpmGIAhsol1RsQ57ao=;
+	s=arc-20240116; t=1762537641; c=relaxed/simple;
+	bh=Jg+/cSmWZ3S0pISvENcp84Pxt0oIzICkqotwu2cofT4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pnW5M2f1Ma+Swi94QxN4KsnEN7aDSTU/wfV9XeFtopFm8E8MePnZcUt3+6iEKABiRe925p7hbrM0Hh2qDQ3wt+p2ct32qpPiY2yJSCEm2lk53RJmEw1VEvB6qDjjNmtYl24drQA9AMhs9fMVW3yPUw9ELjkNeTsSauqGzMBDSag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=gjE3elCV; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=WDq7rf12S5fIZt2dr4pipmjIhQxgNFNcfbGodoxSVjlIZb2vrGSIH8m/pNbcT9HCQZhYaYC2jqzkygY8/XP7N6bhIz2x3nvruNAaI4VUjIilxRx8Dk0i3rVQuINQaMB8zyMZ+IBhcZDKisrAMwCo0jygKOk9XwMkXXMn2SZ4PbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ggrlbcpe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="gjE3elCV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=xK9cdU7Jd08ydspHZ/LYkJ6UQeomzAplwBThlP1vwpc=; b=gjE3elCVS4gAloZakaMWCavQF0
-	VVu0WRaiT/L3wbBnqluVfYLju8y6wohorJRj0IEcmb8E5DSUzE5LC0FFiLQqAz/pCdpm+tNEZ6ODD
-	oQ/M/uhYaW+ycEkvcICDP+IxH1BBnfOL2y1dxJBnHf+gFXwlgTxSiJ3HiXH3VxHRE2HY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vHQFI-00DFmK-VG; Fri, 07 Nov 2025 18:27:32 +0100
-Date: Fri, 7 Nov 2025 18:27:32 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
-Cc: Shenwei Wang <shenwei.wang@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ggrlbcpe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B71C4CEF7;
+	Fri,  7 Nov 2025 17:47:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762537640;
+	bh=Jg+/cSmWZ3S0pISvENcp84Pxt0oIzICkqotwu2cofT4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GgrlbcpeNMyuSBzVJ/24KfJakT1KJ5Rk75Ti6+p+3gxKmupwC9NqmAszXV3M+OlLk
+	 K0gOAHVOF9/FRq/f+M33yLVDGpP+SXUcC48KqI5OPCAFY5ygZahRT28Sn6r5kG/tI4
+	 51JhTBK50mO01g/+AgXzqfbeiJGrUyQ+KTBoWIy6W1TPXZ7O/CDYCfGlGeJUPEL+6F
+	 1S5dlvzkmxaLLaTE0ARraLJO0D3xo77z5OxRRViI3yz3z8xzc1ZFcqtUj4lH7fqB+B
+	 A50s21Br7ar3hlAIEN3xMo//nOVBKvIo7L77VzHtjm1hzf9SrJr2753heWG3R5Z6zU
+	 H03pYVM5nd92w==
+Date: Fri, 7 Nov 2025 17:47:13 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Josua Mayer <josua@solid-run.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	dl-linux-imx <linux-imx@nxp.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>
-Subject: Re: [PATCH v5 0/5] Enable Remote GPIO over RPMSG on i.MX Platform
-Message-ID: <7db35257-de36-4eb5-9205-ca7fb8343401@lunn.ch>
-References: <20251104203315.85706-1-shenwei.wang@nxp.com>
- <PAXPR04MB8459C54EAF106184E7A378D888C5A@PAXPR04MB8459.eurprd04.prod.outlook.com>
- <05a0c630-3bd5-4307-8b94-1889ba191c33@foss.st.com>
- <PAXPR04MB91858EA1057672295ECF793889C5A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <aff734de-0d61-4239-9e67-78a4ab258c30@foss.st.com>
- <PAXPR04MB918581030A9FC05E13874BDB89C2A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <734f830c-947c-495b-ac9f-98d439e821f2@foss.st.com>
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jon Nettleton <jon@solid-run.com>,
+	Mikhail Anikin <mikhail.anikin@solid-run.com>,
+	Yazan Shhady <yazan.shhady@solid-run.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 03/11] dt-bindings: panel: lvds: add Winstar
+ WF70A8SYJHLNGA
+Message-ID: <20251107-cubbyhole-certified-2de627004084@spud>
+References: <20251107-imx8mp-hb-iiot-v2-0-d8233ded999e@solid-run.com>
+ <20251107-imx8mp-hb-iiot-v2-3-d8233ded999e@solid-run.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="9f64Ubgv4dqrvjxG"
+Content-Disposition: inline
+In-Reply-To: <20251107-imx8mp-hb-iiot-v2-3-d8233ded999e@solid-run.com>
+
+
+--9f64Ubgv4dqrvjxG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <734f830c-947c-495b-ac9f-98d439e821f2@foss.st.com>
 
-> For your information, I'm facing a similar issue with my remoteproc_tee
-> series [1]. The advice I received was to look at the PCIe DT implementation
-> (I haven't had time to explore it yet). This advice also seems relevant to
-> your series.
-> 
-> Do you also have a look to rpmsg_virtio_bus ? it seems a good candidate to
-> match the device tree properties with the rpmsg device?
-> 
-> In the end, this is my point of view. Perhaps it is better to wait for
-> others before deciding on the direction...
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+pw-bot: not-applicable
 
-There might also be some ideas which can be take from greybus. It also
-implements remote devices over a communication medium. 
+--9f64Ubgv4dqrvjxG
+Content-Type: application/pgp-signature; name="signature.asc"
 
-	Andrew
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaQ4woQAKCRB4tDGHoIJi
+0lYNAP982+xPMTBA8hmMHUV0GMWimASaZ/P0l9HC8fXdcwGPNAD7BF9R7aUisARG
+9v0SFmVQrHfXao9nLlNa46MCEI3asgU=
+=tZOE
+-----END PGP SIGNATURE-----
+
+--9f64Ubgv4dqrvjxG--
