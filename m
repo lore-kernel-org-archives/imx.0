@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D20290D81
-	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 10:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A2E227599
+	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 10:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762511802; cv=none; b=ilOqPtS46BvSCniudm6YkT2bLcDtH8Xo3+BQQr4Xf3tbkxFCLNuPVTOIwXzE50+fLvbfHNqzkoj9fUs1welb2j/zwbGSFrvzynEjTdwnXj/zEUTfyPTJa/gLtMnB6+2gQzkV3pWQk+mAICl5GFR1rHMFL+GvcR5VyC8ZB0ucmR8=
+	t=1762511803; cv=none; b=P0Ls3FFiAMiNTFnPRT7D+7QHWeFirSjRyy03OkBmrjRhQsDzIr8pWWHmAe7pH6jLukn9f3SowrPNTy4K1B8zwfxAWQzh9/D5TG15KlKtw3AzCGAFC/tBE5HIrhalvRm6/jDtJET6Fox/z3R7QkYfZn45vONZuXRuL7wmvehA0WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762511802; c=relaxed/simple;
-	bh=292WAxpEB52jiI3fHCRPNW1lPGzvVg2oecSIVi2nkiA=;
+	s=arc-20240116; t=1762511803; c=relaxed/simple;
+	bh=D3MYsOwUR4ontrP/Jui3taLN5zLST+IKcpEwg+9F4BE=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jacJ/hfccPXAxig8KodLcnfr7MjJDKRypZDkrsuSIB6VNG7dgwaQN6x6ZRoPhfoPGGkJcGEu9r9kygKWhcr/xWVZUSdpT4PWDIt4d8kIuPIxgidK+u1G8T1Y6tz5OPXACeONXAjH+4pQgYUt1NfxKsCuiC2jICHWZOhESxkOhT8=
+	 Content-Type:MIME-Version; b=eai67wY3hk8n2KVE7bLtjlYXkDd+Ei1IWuwxBS8M5TlaI9ngeb1q+kEglUPL03Yz6qLLlThHgEXqfLOOQS39+boIkpUKA9N9u5LJwT5bud8gXZssal4G7lGHx4Cwa1SHLjGIeMg7w+3sCIQM+3+66if2g5KEST03z7UtGZawz78=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vHJpc-0008OG-Nu; Fri, 07 Nov 2025 11:36:36 +0100
+	id 1vHJpd-0008P1-Hn; Fri, 07 Nov 2025 11:36:37 +0100
 Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vHJpc-007VwC-1L;
-	Fri, 07 Nov 2025 11:36:36 +0100
+	id 1vHJpd-007VwK-17;
+	Fri, 07 Nov 2025 11:36:37 +0100
 Received: from pza by lupine with local (Exim 4.98.2)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vHJpc-0000000041J-1PL2;
-	Fri, 07 Nov 2025 11:36:36 +0100
-Message-ID: <85335f1cd661741594316c68457a9b943d0d50d1.camel@pengutronix.de>
-Subject: Re: [PATCH v2 1/2] media: staging: imx: request mbus_config in
+	id 1vHJpd-0000000041V-14PK;
+	Fri, 07 Nov 2025 11:36:37 +0100
+Message-ID: <70dda82cef6a916475cf05e3c2e06b95b66402cf.camel@pengutronix.de>
+Subject: Re: [PATCH v2 2/2] media: staging: imx: configure src_mux in
  csi_start
 From: Philipp Zabel <p.zabel@pengutronix.de>
 To: Michael Tretter <m.tretter@pengutronix.de>, Steve Longerbeam
@@ -40,11 +40,11 @@ To: Michael Tretter <m.tretter@pengutronix.de>, Steve Longerbeam
 	 <hans.verkuil@cisco.com>
 Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, Michael
- Tretter	 <michael.tretter@pengutronix.de>, Frank Li <Frank.Li@nxp.com>
-Date: Fri, 07 Nov 2025 11:36:36 +0100
-In-Reply-To: <20251107-media-imx-fixes-v2-1-07d949964194@pengutronix.de>
+ Tretter	 <michael.tretter@pengutronix.de>
+Date: Fri, 07 Nov 2025 11:36:37 +0100
+In-Reply-To: <20251107-media-imx-fixes-v2-2-07d949964194@pengutronix.de>
 References: <20251107-media-imx-fixes-v2-0-07d949964194@pengutronix.de>
-	 <20251107-media-imx-fixes-v2-1-07d949964194@pengutronix.de>
+	 <20251107-media-imx-fixes-v2-2-07d949964194@pengutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.1-1+deb13u1 
@@ -60,16 +60,34 @@ X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expand
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
 On Fr, 2025-11-07 at 11:34 +0100, Michael Tretter wrote:
-> Request the upstream mbus_config in csi_start, which starts the stream,
-> instead of caching it in link_validate.
+> After media_pipeline_start() was called, the media graph is assumed to
+> be validated. It won't be validated again if a second stream starts.
 >=20
-> This allows to get rid of the mbus_cfg field in the struct csi_priv and
-> avoids state in the driver.
+> The imx-media-csi driver, however, changes hardware configuration in the
+> link_validate() callback. This can result in started streams with
+> misconfigured hardware.
 >=20
+> In the concrete example, the ipu2_csi1 is driven by a parallel video
+> input. After the media pipeline has been started with this
+> configuration, a second stream is configured to use ipu1_csi0 with
+> MIPI-CSI input from imx6-mipi-csi2. This may require the reconfiguration
+> of ipu1_csi0 with ipu_set_csi_src_mux(). Since the media pipeline is
+> already running, link_validate won't be called, and the ipu1_csi0 won't
+> be reconfigured. The resulting video is broken, because the ipu1_csi0 is
+> misconfigured, but no error is reported.
+>=20
+> Move ipu_set_csi_src_mux from csi_link_validate to csi_start to ensure
+> that input to ipu1_csi0 is configured correctly when starting the
+> stream. This is a local reconfiguration in ipu1_csi0 and is possible
+> while the media pipeline is running.
+>=20
+> Since csi_start() is called with priv->lock already locked,
+> csi_set_src() must not lock priv->lock again. Thus, the mutex_lock() is
+> dropped.
+>=20
+> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 > Fixes: 4a34ec8e470c ("[media] media: imx: Add CSI subdev driver")
 > Cc: stable@vger.kernel.org
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 
 Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 
