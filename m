@@ -1,107 +1,168 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFCA30BBA5
-	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 09:11:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634102222A0
+	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 09:31:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762506696; cv=none; b=O0gLg7BSGpQ0g97pu+ecq2CCyr/9YWGGbn/Shew5Q85xT3LYCF5O1BeuSd6LBln2ZbaT1Ph72X/b/kMBGfmG/N72+iuRYSX8JBvF4fDaz0Cl0KsAmmQ7l27AClIaD8dtpbFHCkbaAncwbZJ7Rpd1yCcFxakBOTdw423GQdTaj8c=
+	t=1762507910; cv=none; b=ixG6pB+5j6ZcMLsf5Mpj5SO3ayTH1hKAvepZ/AvP5E+ttoOgTWCRe+tVZFGbm57/NM//uwg+QX4XV9/loenwXbMXthYAr8OcK4S66/xA+e4me1HnYt31pVcuNxlLa9wtxir4ENWJVY1BtMxclWbyKQ4TQUpUm2F+i/aoAxHRUCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762506696; c=relaxed/simple;
-	bh=Xm0T+ra2WFrzdRdP3JxtuaEukspvdWnhUZFpw+N+Mdo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CNFTF1GxrSaH/WN+raTtJ9XqnfisOCkfUpq6tbyGC3tzDr6VryXi2epKe+Q4P31EbwAuYMtNErm0T4lCuyUtxyRTmpyDdXV2fOuXq0jNwUnjicO5/dcRz5FhtSqLyHD0WlCfyVm+82q1KPzCAz1eY8ZhO9hIZl6XJDIJ7s3Zg50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iE6lyiSp; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762507910; c=relaxed/simple;
+	bh=cq2v5sb0cXY8GZI0jcJDW3FaxEStFtvApCLAlKv/1/0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MCm06M16yVDTfbkh/gYbeCGr/u+9kBDXCIVvNFmxdbJxFJTspIeglcIeAr6rgf79l0AW+KcVVvFik5PZMOUh3WIaubfRFhfijO/Coj3cpSbQ6d/zrY+tAN9j0yzcqI1/F3ywTHsPoCXUO7NKIsL86i6AsitmBvSL8/uuCS2nfTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=oGj30N54; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iE6lyiSp"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-29470bc80ceso5706535ad.1
-        for <imx@lists.linux.dev>; Fri, 07 Nov 2025 01:11:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762506694; x=1763111494; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hW8/cbGR87ObHsZ6SNcI+MXLmQ5paXElRz+RxrOT/SU=;
-        b=iE6lyiSpf9kLskccVjUQ8omBGWdlhzHh23qJ8p+bj8PFS1n/LN9M7pa7GrDlsLSQot
-         BWBju6jD6cKmzlY1ci8RjHlZ/p6Nk3tsFbYpw/cNo/rQ6Stm43Psls2MciQH4XW9QK5P
-         mbMx4eoZsPgmLVp1Ba7ZGU8JUIBgCrjhNdun9GdsfW30vZqEES2fdKHFf4VVGJh1/qVS
-         3NWUFAJonH+WAiBAkZOH9ZVIr24Sb93jzVIzrOXvtXaxscN6IOkQkK3+wiApn+ybsspQ
-         Q6IbEKr6egnFxcY5MO7UiNAILyvI6GR5XTBAP+c9N5lVyWGQ7KEgciHuI5gcQTPqkOYy
-         vW1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762506694; x=1763111494;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hW8/cbGR87ObHsZ6SNcI+MXLmQ5paXElRz+RxrOT/SU=;
-        b=lNJ4nrufviB0zTzBScBhQP00r8ZUG3e1/8PlEtbNVe5wsEsyxV0VyZW52epSmUiCi1
-         BKcmHwnEV5+vPJU6ch3N6x3t44Ao0aOJGg6BeMhlX/8rdljmeirbTsibGFRotpUS11A7
-         SOeL5ZY0DOcJLToXFiTa5WywdJsLeyMWUAEgVZbQTLuRlEn1UC/atT0P39ekzxJe6z5N
-         K2mvv8RXbC5jVm0X/NuD0PHB0acvzZNFHGjiPeTbH/3qVQ9OYUOIe5wh8C+uillR2Wcm
-         BXS2VzThCStqehquzYPsk3D+XA3inlIOKbV9U502Z436wUZblf3qYG2dqHYQIzkkN1Tx
-         omnw==
-X-Forwarded-Encrypted: i=1; AJvYcCXnoJv/HZSDc6BOFkH13I/O277VzGSzbjqrDRbEGt7TOII0bvWkSK1UTPWba76IvW4yvEQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwWelx5ZyCm/GjXlDZOVqw1SKTWa0rRDtjgME56GGXM2G6+aTyE
-	hTmnV8lLnzMbqybNOeM7ZdVB3DXIvphjhZ/eJPQEKHAMMRY7SR5RcqZrB3jqn0aogKelggrc0Ka
-	Vef8LI6TpmVQoEZK/Bi6TZ3cjZDx53Ik=
-X-Gm-Gg: ASbGnct8AXLMcUPxMKM/KXKskBBNW2F/uTF6ipsU5pxsI5MN4c0jqcGal4nHlGXKvlR
-	ODbCRtZoes3L2Lg/RNWubVoSQCCADCrRMbGAgMwswDBfCOIVToZN3h86GyBsJDvM6MEOZlCSWcw
-	305qgcRT/OBVhPtZ6xN+x4TGMYFJQzwSiUt8R9qKJO8+uvsCv+UsHI2uFBYlzDJngYrSIXPDdZE
-	Rw43oAabCXq3jgKkvCan0+OVTqUlmUlvaYC6wcCRWckf5vX9a/vPk0m7g==
-X-Google-Smtp-Source: AGHT+IFsw4Qh5yQvF8GQ7bDn+i+78HlvDDo9Xlss7dAXe32EJJ3DKG/FTpv0vFs5HihRB4beIyG1MovPvmR4t9DxwLk=
-X-Received: by 2002:a17:902:f705:b0:295:57f6:759 with SMTP id
- d9443c01a7336-297c95acc53mr15301995ad.15.1762506694201; Fri, 07 Nov 2025
- 01:11:34 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="oGj30N54"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id B3A92240027
+	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 10:31:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.de; s=2017;
+	t=1762507899; bh=Xkg3j82jHgx45swNrHI04pUtVRZQ6Cd3uf1V88lBztM=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:From;
+	b=oGj30N54+zHZ3t9nPEWckxXm6EBZt1X2CG9WxJpC3pG+uGtlYBEVP1w5XZjw2V5M1
+	 ZNCrb2jwKGlDqhlLFFZEHHLj5gLBYhaXPOAbRUgVJdpptgUdjlmbdfkjFKIm/cZZ8B
+	 NZMl5xsbhvxy3tQ1kCd2jgcLM4eORuh3VSsZNG9pooWxoKRXcR43l5mGX8bBkdWocs
+	 1hPTa9Z1or6ap6mz7TZYyylXfWe9zh2CSmSuHjS6beyWhZvDiB2OVU4bp7k5otEtM3
+	 5UGrocwzj6W5bzOnkUgTL3AHyMVuq7UYNozWRnhAFYwOOvxbNbsX3SMxOfqo1r3PRo
+	 O8QVw51Bqbc1w==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4d2v2d3zbXz9rxF;
+	Fri,  7 Nov 2025 10:31:37 +0100 (CET)
+Message-ID: <60dac85af5ed941c40cfb55dff0ccf7864f0e681.camel@posteo.de>
+Subject: Re: [PATCH v1 0/6] media: imx-mipi-csis: Add streams support
+From: Martin Kepplinger <martink@posteo.de>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	linux-media@vger.kernel.org
+Cc: Rui Miguel Silva <rmfrfs@gmail.com>, Purism Kernel Team
+ <kernel@puri.sm>,  Pengutronix Kernel Team	 <kernel@pengutronix.de>,
+ imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,  Stefan Klug
+ <stefan.klug@ideasonboard.com>, Sakari Ailus <sakari.ailus@iki.fi>
+Date: Fri, 07 Nov 2025 09:31:39 +0000
+In-Reply-To: <20251107015813.5834-1-laurent.pinchart@ideasonboard.com>
+References: <20251107015813.5834-1-laurent.pinchart@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251031-imx95-rproc-2025-10-31-v2-0-758b2e547a55@nxp.com> <20251031-imx95-rproc-2025-10-31-v2-5-758b2e547a55@nxp.com>
-In-Reply-To: <20251031-imx95-rproc-2025-10-31-v2-5-758b2e547a55@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Fri, 7 Nov 2025 11:13:59 +0200
-X-Gm-Features: AWmQ_bkGy3n9ih8PCPlxo3uy5k4L6qRRgXRYWv7PUkhd8VPxIzhklJdDlhNWAZ4
-Message-ID: <CAEnQRZDcrWdAFqJkcbjy-jL=EczgmSM9grv5zp6bntWnqou_kQ@mail.gmail.com>
-Subject: Re: [PATCH v2 5/5] remoteproc: imx_rproc: Add support for i.MX95
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Daniel Baluta <daniel.baluta@nxp.com>, Frank Li <frank.li@nxp.com>, 
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 31, 2025 at 4:27=E2=80=AFAM Peng Fan <peng.fan@nxp.com> wrote:
->
-> Add imx_rproc_cfg_imx95_m7 and address(TCM and DDR) mapping.
-> Add i.MX95 of_device_id entry.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Am Freitag, dem 07.11.2025 um 03:58 +0200 schrieb Laurent Pinchart:
+> Hello,
+>=20
+> The reference manual for the NXP i.MX7D in which the CSIS is
+> integrated
+> lists four outputs named "channels" in various diagrams and tables,
+> but=20
+> only documents registers for channel 0. Reference manuals for i.MX8
+> SoCs
+> that integrate the CSIS gradually removed mentions of channels 1 to 3
+> as
+> newer revisions of the documents got released, which was interpreted
+> as
+> an indication that the CSIS has only a single output.
+>=20
+> That interpretation turned out not to be correct. In the i.MX8MP, the
+> CSIS features multiple output channels. Channel 0 is connected to the
+> ISI, and channels 0, 1 and 2 are connected to the ISP. Multi-channel
+> support towards the ISP is meant to support HDR, where camera sensors
+> transmit multiple exposures or gains over different virtual channels.
+> The glue logic between the CSIS and ISP hardcodes this use case and
+> combines the channels in a way suitable for the ISP's single input
+> port.
 
-With the minor comment below, you can add my:
+Hi Laurent,
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+This is going to be a dumb question, I know this, but I'm equally
+confused as interested:
 
-<snip>
+What you implement here is *not* muxing CSIS to (one of the 2) ISI-
+pipes, right? This specifically is something I still need to do on
+mainline (nxp-tree has a way to "mux" this, with rather cryptic
+devicetree properties) where a board physically has the camera
+connected to the *second* CSI interface but I need data to run through
+the *first* ISI pipe. By default the second ISI pipe is used for the
+second CSI interface but only the first ISI pipe can do 4k. Is this
+"muxing" implemented in mainline right now? (ISI driver most
+probably?).
 
-> +static const struct imx_rproc_dcfg imx_rproc_cfg_imx95_m7 =3D {
-> +       .att            =3D imx_rproc_att_imx95_m7,
-> +       .att_size       =3D ARRAY_SIZE(imx_rproc_att_imx95_m7),
-> +       .ops            =3D &imx_rproc_ops_sm,
-> +       /* Must align with System Manager Firmware */
+Also, your patch is not about the connection CSIS->ISP, right? Because
+that is something I tested using libcamera a while ago and have a dtso
+lying around for.
 
-I would add a comment here like this:
+Can you put this new functionality into perspective for lazy people
+like me? :) For the ISI-case this doesn't seem to have any implication
+right?
 
-> +       .cpuid          =3D 1, /* Use 1 as default cpu id for M7 core */
-> +       .lmid           =3D 1, /* Use 1 as default Logical Machine where =
-M7 resides */
-> +};
-> +
+anyways, fascinating :)
+
+                          martin
+
+
+>=20
+> With a time machine, we would probably redesign the CSIS DT bindings
+> to
+> model each output channel with a port, and the V4L2 subdev would use
+> multiple source pads. Without a time machine, we need to preserve
+> backward compatibility with userspace. Not only would the addition of
+> new ports and pads make this tricky, they would also require
+> modelling
+> the glue logic between the CSIS and ISP with a subdev. This would
+> conflict with the need to preserve backward compatibility.
+>=20
+> Fortunately for us, the CSIS is an old IP. The NXP i.MX9 series uses
+> a
+> different CSI-2 receiver, and the probability of needing to support
+> an
+> SoC that connects different output channels to different devices is
+> extremely low. We can therefore implement a solution tailored to the
+> needs of the i.MX8MP, and model the output channels as separate
+> streams
+> instead of separate pads. Should the need arise in the future to
+> support
+> connecting output channels to different devices in a new SoC, we will
+> still be able to model this with extra ports in the device tree
+> without
+> breaking backward compatibility. The driver could then create extra
+> subdev pads accordingly.
+>=20
+> The series starts with 5 preparatory patches to ease review. Patch
+> 1/6
+> adds missing register definitions. Patch 2/6 then switches from
+> .s_stream() to .enable_streams() and .disable_streams(), a pre-
+> requisite
+> for multi-stream support. Patch 3/6 follows by implementing the
+> .s_routing() operation, supporting a single route exactly as done
+> implicitly so far. Patches 4/6 and 5/6 refactor the code to group
+> parameters in structures and clean up how they are written to
+> registers.
+> Finally, patch 6/6 adds multi-channel support.
+>=20
+> The series has been tested on an i.MX8MP with libcamera, both without
+> changes to verify that backward compatibility is preserved, and with
+> HDR
+> support (work still in progress) to verify that VC filtering works as
+> expected.
+>=20
+> Laurent Pinchart (6):
+> =C2=A0 media: imx-mipi-csis: Add VC-related register fields
+> =C2=A0 media: imx-mipi-csis: Switch to .enable_streams()
+> =C2=A0 media: imx-mipi-csis: Implement the .set_routing() operation
+> =C2=A0 media: imx-mipi-csis: Group runtime parameters in structure
+> =C2=A0 media: imx-mipi-csis: Set all per-channel registers in one functio=
+n
+> =C2=A0 media: imx-mipi-csis: Add multi-channel support
+>=20
+> =C2=A0drivers/media/platform/nxp/imx-mipi-csis.c | 551 ++++++++++++++++--=
+-
+> --
+> =C2=A01 file changed, 429 insertions(+), 122 deletions(-)
+>=20
+>=20
+> base-commit: dcb6fa37fd7bc9c3d2b066329b0d27dedf8becaa
