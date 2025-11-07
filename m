@@ -1,68 +1,64 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011027.outbound.protection.outlook.com [52.101.70.27])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013001.outbound.protection.outlook.com [52.101.83.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9F62DF146
-	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 16:07:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA10B2DAFBE
+	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 16:10:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762531643; cv=fail; b=aTiGahI7NhSnIHbjWjNMXRCtswHIdTXwHgMxough7IYRa5EP0fYTZgqXcy/w3c7DhqeF7AxvTBt2AbgzfLOVzPvokI7Y0tAwqT6Kv8iA6RsHXRG1ZV/N9Nc7f0xC1izPuey1fQwXiDfa/CgKjK6xuvGAa7Yq1vF6SLRXqJxuitM=
+	t=1762531853; cv=fail; b=YPHcU81QhGxTyMc7Uf/iFWl3tvAoSybxX5CIzKoyc4at0smr/xmZyC2OT2QMwYaa5ytfzfsbpVQaCcFt1zOsxYY+zgBSw0kE2JqlbLa8ARf8Eb0+fkdJtV66O2gjXljF3Ro5vlFR6lxW3BC3svFj7kKydpHdNHlNhHOwEPhPguM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762531643; c=relaxed/simple;
-	bh=aX4lZzAeMmLhy3/paUSOTrH6yWWzSnCN6eiDPbe5Shs=;
+	s=arc-20240116; t=1762531853; c=relaxed/simple;
+	bh=B75V/Xk2pBGOZqiPAXtJZPpL/fk/2wkLynk9B+m0vZA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=m7GPzIRBgbmyHIQGcMidSwN5LNxCull5StPwzM2JqK3LIWPMsx20O7AkMRwWrHGYCkkD3Vmg2Bgx8uc0iOUnm8n8aYhFo0NxKDuQx8mHRTSatqYrHotJ/vgSoWxyM+OufVpY0WuDqYSJbyCL3hLoIW9a0f67CtaQRZPiiIxpO6Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lsTi7U6C; arc=fail smtp.client-ip=52.101.70.27
+	 Content-Disposition:In-Reply-To:MIME-Version; b=JPlnkaAL7mA9hAhYAOaqWmqiqW717wN58M8hJNBA7r9jdD5v78WgtW8keHd9eJ5Pv4OSOg+vNi800rCxKenjePeMolOcI6qoNAzmlEgZTBzl5/TnMpA+Cn2g2vHrmu8XS2pKvFlFNwnlJBU5E2fiICoFgcB7nkAl7sB/1EF0qz0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WnZ/+VUV; arc=fail smtp.client-ip=52.101.83.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lsTi7U6C"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WnZ/+VUV"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vWMuu87uPJt71J6bAdN5jn81C7uUuxjT9wAY/1OK7qkVFqMqOYMtytZFo1I6EkfbaEioX1nQq/9Zst4h8iiheapSFv3s23cmuQ0TJt2nAUZWj4xHitrEPeIf+W1ZXEBxpQ7q8j21Qal+HmDAYEv+inIi5jkuAQZ7zQ7plC4H5CXEl/dPZZG0x0bfNJRqFYQfzaxvXXHlTL4rkwz+ZUDQxJSa6Ow+qbL3jfIDLnpXs1fWaZg6zwmC3jSPnIP9/qBKkAJbxkec00DqdG4KrKxoYkNd+TxGxp1NmZSVO7xSrRRUt5z5q63H6YuLQxnPLQrWeD6yf9ffb75CBjOdgXgcrA==
+ b=yR6PnHun9YTdek4M6Kjp/DnJQ2MSL7kA4Da9IyrIEUG2IYyba6X3Oe+EnQZppbE4o6vEzx2T3r0Hk+kOr8fFzbrGnCbBIf4gCmq3Z+NTmoVtzPlyDJ1Ta5M8q8II1B6u7QpkYLv5Ot31tFxAsZ0IZbjTKtkO3RNgWxDLGns3DQgLcukiPdJRVKESuD9OH0gHT6T8Aj25n54R/+0quomvnew1tqAMUKZbOvkgnJ/H2d5VGlu6kuLijG+2hPQslG1VgeooutHdHh9p3S4HGRBvfRRH4PEgEgDxUQSfjKsIWwACzyMJKhBFeP5zaE2gPSMdlnDFl0qAUC46VeNoiwnRFQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ignJJ/zs0uCbDy3q0POoF2zk9UX7LXrHcFu2an2F6pM=;
- b=nAB8NHOqKJ81+hGv0waudy4ewrMRT2djZ6g4iCF/E6Eh2lANyTXRwT7JyISAHztnuHM9sxhzyVWmyzwqQ4iDleCQgF/BL+0cUZXjexRLFaTkQbJ/DDe5vDzlnTcPm9+l1rk2yulYxAUYW0GRM2h6yeGWXB1bxFyXFSJE+lHEva4/S1lT+xTMgKVfcW2Hz6Sc9Pf2KdE7eN7p3XvBGVfFMqWQFXMLTIvG1KWGGFO2omfHhuhjuBqKbHQ4HwniwMJ66Yr7JLiV1p/wbM9ufmB5rgmb+xorc45TljG6MA9w3bLu2YE8fz+p0xm2CUvdoGUhk++0nbWzp30r2s3D5jzjZA==
+ bh=PNbm5M/50yaHoDp5XTlZKE4c1RlcfihjzhbMGfYEdq4=;
+ b=slh+NyIteI/tiM4qVK76LFTnTfq0VMFDsmTBDP5I9Zz/c7NdC8/2+Dd7Np5TJ3FHDHzenrM+zFE2hsUlc7uWLEFfwhS6hdjdWLbgBC5d+zhmjg8VdBSay9LvvvhTI8lFphO4CxgYGTjThHTQiI7T8AbNL6ysRazJWi5fXe5Sa/Lz6ipxu+epA2UxejE4GQhE9E8ADsFOvJ2LX6+h/BybsJFsgahFUU5rp8zM+/RQOZCFd+NTid4I+9EMC8rfDRdQQ9bSK3rskdBazllwjabHGG56SNNlbl1vGussv+/6xVtqzUZg1a4xGzqGmN7t4p96714bOKeZEnRXHSUi+TLAAw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ignJJ/zs0uCbDy3q0POoF2zk9UX7LXrHcFu2an2F6pM=;
- b=lsTi7U6CP1AgmOgCghcypqAP6v8BaUjjJDsGYEDIPLOhxTJsLTuGxn6ZY6SnA3EEVkVxcE1akoFdfld3wKpzrjf7+PrPcMAfQ95OjIgn6MgTUl3iWqZW0P2RK5ifRuaqzMZ2QVuwFF23B54VtR2jiL63LxfLV3GnUCH5F3d+gcU0SbOLWa/bX/RmTIm2I5q8WFEHOO5i7GxyYBV0unlESWfjnbGgcd4wHqsI2WWrBzIgWDsmQ3RhlA7ePL/AujAWcT91880AyAqD495WlXqIBWrESryt4IgcN9DmxLmyJ5VKzRE5yW5haktuirfjsySzrtQyKEstTUbF557H+sPoeg==
+ bh=PNbm5M/50yaHoDp5XTlZKE4c1RlcfihjzhbMGfYEdq4=;
+ b=WnZ/+VUVX53P5oP+ca8eScm+zbcIdp+54N8zf7gX/M/+vW7MK8vm7Ot0jnRDbZHHPukhWKqQUkKfucJCBWCGG+PdyaxE1V1Hc2paGUzpSdL/ChwpsfDeVMFGJwXFthn5QT0WqY+zljkGP/+Sx9XZ9qkjnUs8/0EdJ2goMQI6kdVvKqKLJF7ZrAzWfYCeHmqiOK9fM/4/zrnETavCk9dHl4AtcjTT+v2Im8x0Oq/kmY5nG4dIrqYqX41iaFxRspblyZNXz7141Pq0Ee/ZDu/jhabpUgKx0DP164omj9QBfVg7KSxP12gOgf6zz5gZMx2QG2dYsSGSXq1JhIRmBL4fIg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
  by GVXPR04MB10110.eurprd04.prod.outlook.com (2603:10a6:150:1b2::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.16; Fri, 7 Nov
- 2025 16:07:18 +0000
+ 2025 16:10:48 +0000
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9298.010; Fri, 7 Nov 2025
- 16:07:17 +0000
-Date: Fri, 7 Nov 2025 11:07:10 -0500
+ 16:10:48 +0000
+Date: Fri, 7 Nov 2025 11:10:41 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-Cc: Greg Ungerer <gerg@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Olivia Mackall <olivia@selenic.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-m68k@lists.linux-m68k.org,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 2/2] m68k: coldfire: Add RNG support for MCF54418
-Message-ID: <aQ4ZLl5ssB/4uq2f@lizhi-Precision-Tower-5810>
-References: <20251107-b4-m5441x-add-rng-support-v2-0-f91d685832b9@yoseli.org>
- <20251107-b4-m5441x-add-rng-support-v2-2-f91d685832b9@yoseli.org>
+To: Michael Tretter <m.tretter@pengutronix.de>
+Cc: Steve Longerbeam <slongerbeam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH 1/3] media: imx-csi: move media_pipeline to video device
+Message-ID: <aQ4aAUZY4jrFKjwA@lizhi-Precision-Tower-5810>
+References: <20251107-media-imx-cleanup-v1-0-f82a693c28f4@pengutronix.de>
+ <20251107-media-imx-cleanup-v1-1-f82a693c28f4@pengutronix.de>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251107-b4-m5441x-add-rng-support-v2-2-f91d685832b9@yoseli.org>
-X-ClientProxiedBy: PH7PR13CA0016.namprd13.prod.outlook.com
- (2603:10b6:510:174::9) To PAXSPRMB0053.eurprd04.prod.outlook.com
+In-Reply-To: <20251107-media-imx-cleanup-v1-1-f82a693c28f4@pengutronix.de>
+X-ClientProxiedBy: PH7PR02CA0004.namprd02.prod.outlook.com
+ (2603:10b6:510:33d::7) To PAXSPRMB0053.eurprd04.prod.outlook.com
  (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -72,244 +68,185 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|GVXPR04MB10110:EE_
-X-MS-Office365-Filtering-Correlation-Id: c958bbd4-d4ec-4f72-d199-08de1e17b971
+X-MS-Office365-Filtering-Correlation-Id: cd22d11b-990b-4b15-2922-08de1e183717
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|7416014|376014|19092799006|1800799024|38350700014|7053199007;
+	BCL:0;ARA:13230040|366016|52116014|376014|19092799006|1800799024|38350700014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?nbAqEQApJfpzTmIs4zfqb3aUodaogG8LwfVnV5Rfg6IRCRZuN1jehLkuEYsg?=
- =?us-ascii?Q?dy0tjbuB8uZqF67CUvpC/TdL4Vw3ul9CS4ahMIOCHK04ZUiIlEA0T1DivPym?=
- =?us-ascii?Q?uSvUNQQqU83B13YHubJnXW9n5RmIO/Ag+If1E7pqmZ3MZhkqfzzLWEmq3fnz?=
- =?us-ascii?Q?11G48Mxdo8UpAFfoLUXQLnrrJwFMh9xvENBCFaIuFOQN9hWjnwj5omkwUyj3?=
- =?us-ascii?Q?tjqs4Cv9XV2oeUtWUUZ5VGMLwts+CjkF4XkvBcSuY5KX3h6+cbjvbMrBsoEq?=
- =?us-ascii?Q?OSL59OEF/peBecm2pFV6cUwl85u+weKCKR23c4unDzXoOk2ujNdS531KzoAI?=
- =?us-ascii?Q?kUPp7Ryt/Hjuyi1JNrqq11s294S10xKaSykIvjgDCDZZjfOY8wm62dOJsIQ0?=
- =?us-ascii?Q?QKJDVf2fYd2Hr3ZnDhmNSwfyQwTLLBYVAeOdDSOTZ0aXWug7q5gYKQOfrBRQ?=
- =?us-ascii?Q?zor64eOUs1llAPMH4rxR81kf3prIw4/LG8ssMoVtFA4T2Eztqmlssh4fqsAp?=
- =?us-ascii?Q?eDZPbDvKVtpSzl/jHJzg7U0fqyxwz3kLOax7gW6L5H2uQgLDseEfLegvmwoW?=
- =?us-ascii?Q?9cgE8OPMyGQ/vOYsptwBYpnPxspNN/rWRLDorgr25S1FxyUbCyTklYVRLUiX?=
- =?us-ascii?Q?+jx4qAXRODw1gaIsbGf+zyX12eHEDcVWbuUpJnUq129kIVsBfR5zqhVdatNM?=
- =?us-ascii?Q?eZV1RCr3XoCFdCgLEn1kVj+HJ5KHuSSifDo9sZ+atN03NcrcmmYQ3dRlwpQe?=
- =?us-ascii?Q?lU7W6EximC9V5a6yWHJT5A3J1s/3TF2YAybCQKuok6dTHrnwYayMxEKMBStT?=
- =?us-ascii?Q?1bEUJvNl1itEzcZSyoBWm7cfI++9l6x81uliNBrMUcaznQlhS5slHoT3MrtO?=
- =?us-ascii?Q?3fkiqub3qRoqWzsRf/d/Wy0IbU6w3am/hwQEeReL1D5oA9Gs0r/VVuJVdbzF?=
- =?us-ascii?Q?k0YJhQCHb4j2rtDv/q5mo0WC3bBsjDYpXdG/3tufVCZCQ05qGunpkcBGjHO3?=
- =?us-ascii?Q?XDrWgEkENegjy5heqFB4nGkkHyfaLDI2k0ZR3u3AZ6txtoF+DUT+4fQ7dCjw?=
- =?us-ascii?Q?ve7u3afVILGU2s06dsHHzAUz3jdx+7QfhO+7OPuUw5Ob6j8kTcyi3rOLZKea?=
- =?us-ascii?Q?3K0H1LykhFZOvfYq8+kjYNBupZQKeIHIapRnXU+BUTJyGgwjXBdmNG3AVruP?=
- =?us-ascii?Q?+2RFGyJOFRTlm+7gKpdSBI9ipE+nVmEMH7uvkJCVVeBL2+CHGJFBwvHnEfGT?=
- =?us-ascii?Q?x7Y8m7evxea8csw5vYNq/aT/H2ksVaHax9fc2MTO/1yIj7y6z5f1oKDb3VSN?=
- =?us-ascii?Q?oixAFQ3LWZhQOsWzqBkYELK9Zuj3yUPJTQkeKjhMP2Hi7KQHFgIxgId57P//?=
- =?us-ascii?Q?shhYlaVuE94vvUjJWsnhGegX7VJzcEDV9MjGsQayEYM9ZdmS5kkc39XaIhMB?=
- =?us-ascii?Q?5zJyRCJtA9RqVL1Fo49NIY+34hImCsTeeyLYVETYv2a6MDfO4YEWKeFzCIkO?=
- =?us-ascii?Q?tCiy6tM61AT+RWdvMYuOtiyltcf3DDbX8Mpu?=
+	=?us-ascii?Q?yKN7RepJ89H5Q1ldr6yBRNqJO9u/NECqxc8Pn4mnBPWMtd9LfxmXQZLtvDuO?=
+ =?us-ascii?Q?VV5JC9ps3tpSVD1XMfIrkL8cD/UlQSX61C4whWYU6+g1Y7nvuDiRR9i8Gc7M?=
+ =?us-ascii?Q?B6EqGfz/zKi6y+zh0FaEsNNAtVCW6SoteK4kcHYtBjVypYVW1cbgCs0QcFIU?=
+ =?us-ascii?Q?7NWgohHEY/l8JfBF5GfdflqOC6HZaynq+/iJIN8VW9ZEg/bNanVEYGfzYNsm?=
+ =?us-ascii?Q?k5WFQbXf+tWvLg6MSzNadYwGh77R6uDTZr++8x49oV9jviEd5Wq4WstkCmj5?=
+ =?us-ascii?Q?6E3BB+cwecqdFNt5N1donDiqJi95BwAnv7d8jeFSi1NakUTRAZmP94F6fIoq?=
+ =?us-ascii?Q?/ktuJMDSIfjMQ/oDyt9FqbCA6pA7SH5onxYtObj3xTDL/M7aJPALRYRr8YC7?=
+ =?us-ascii?Q?I0FS2AIj38pdW+d3QGXTnVcR4spoh6gYpMSoQf/NfwLeTB/Yn8Of66TtF73/?=
+ =?us-ascii?Q?9Txqgn1GeRwShjwDz1daRDZ+43hchPPSyruCglCYvT0pLSb38n4n9wa/B2yl?=
+ =?us-ascii?Q?3Zoumi9lJTJecL3lahXn7xAv9dG72b4HbduSxZm/ob3csEm+Q8I8I1Gs2xnR?=
+ =?us-ascii?Q?NXNINVyUYPhf65KWqHVcB4gNpApf/GGo2ewl0dzY454QsFESkupXHXxTsTLs?=
+ =?us-ascii?Q?bafN+6RReeQXKQQ8XWFMTMhBDL2geZddPfBRSgDR2G7oosAtb9YJsXOrg7BC?=
+ =?us-ascii?Q?e2fgQNUSCutkFaJAF7dKDgfb63oJRccsy80h0kHy4HDZa88lUgYooOoN7BtX?=
+ =?us-ascii?Q?wA3RcwsyQTTE+CjDpAlF7pdzVhzk8QyMW2ArUyY5bsxo72NZmrRZ0hal+X7M?=
+ =?us-ascii?Q?GVjKJV+FtQtkWITiS5/Sn0ES+rI5ZsfXIoqrNIlTEiN56XIuvmY876FWpL/9?=
+ =?us-ascii?Q?IaSoR3OfVbN3TRF/Lhxn5aO309Z/LsOul3nWiIZaPoHzZl0ouhSj2Mr5ymqB?=
+ =?us-ascii?Q?4/FPeJdQWL1e/2/e9gvw18yBVegWicX9P4ote+/oYY+9Ro5/kSPZ3tGPpi+f?=
+ =?us-ascii?Q?/BU9kt2S8DXjWOQmyiybd6bnGqaUnGq8oeNq14r2tmJ/fEDBmrc5zObtoJBJ?=
+ =?us-ascii?Q?zCJlpKzOD2dm8DVXhBMD05pc8gq5R/b6tDXlCtnnoivK8RrDIOdpOc1k3Qkh?=
+ =?us-ascii?Q?lICWL8w7RFcU0tqfanqJunRkcHZn3X/gIzZibDNUHc7C/rEZRfVapxp3EV7y?=
+ =?us-ascii?Q?OF1kocgJzsDjpqp+shDcOfQBqTrsMlI34etw7kYkxiRUkPRmBteXnjJLOGEE?=
+ =?us-ascii?Q?EfGky6scjH8YTxMauPn5YxSpNQEueI+lwyH1gCtAUvehDRX0474gnpRpi9ao?=
+ =?us-ascii?Q?bQa0Vv7+/bVMCrnieYwAEqykD6Tr0w+NkSrO20F4QYy4+Y958SrTiC5+2+rT?=
+ =?us-ascii?Q?NoX7V/UdiVMfnk8t9qP0W+BDBantgolRcDjhkfNuihZhTWhF6BU+J3EVcmSG?=
+ =?us-ascii?Q?SyPSVIJR3F13Zimw2LBEXG82RkCalEfdDnVQOu0NJIldcVY+y7y8xRtKHHv8?=
+ =?us-ascii?Q?F7zj7rRKrCshS4ulhQqZgDwmCVlKm0y17p3t?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(19092799006)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(19092799006)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?qTBS51/RpLT8aYQfAniUhwdNJFkVpA+i5doVn/PCe0wszCyjs8jOHFL6NEVo?=
- =?us-ascii?Q?frLym+ILBvekGm23TaPb7/sxaz16nKWJYwnvgQ1kxXIilWArNuCYmgcoBMYq?=
- =?us-ascii?Q?yIIRO+IfWKXZwMoNBpvEXfnnFtXsrcuQ/hyF/96waFnX8u2elBZLK9BDNQ8w?=
- =?us-ascii?Q?bE5ylADAdF5DtyAwOWmV8jQyBAVp+OJa9YYqOMmNyJI14F4ZzrtsY6jmPKv5?=
- =?us-ascii?Q?xNWpgIpCcoWnRBlu1Po6s0q/CoVaI+sLFtsjrtAFTbOoGvw2QLzc3rMXPj8K?=
- =?us-ascii?Q?Ex+uZMzEqnUvz3TD9mTHcWLrmUdG0MEkqZl+i4rD9ejqxIJ8Bh7eG3A295Zc?=
- =?us-ascii?Q?h7HOzkT7kYsWb0iXqLysm8+k87IC6gRVcQctUAMZdWR4bJlgXd1AyIrVhJtd?=
- =?us-ascii?Q?MvsYikGE+px41egpDgxn/vidlRGZ5NlIecfEOhwe3Nc8Yuqm1EEHrwnzK9z5?=
- =?us-ascii?Q?n4qjNBuYFNSc1swaDP1eHK0KUzzYpg7bAEEEmkxrFZM44uAdlaRB4Flwo5Q5?=
- =?us-ascii?Q?Kqw/AwvlGcj7+ghQY7O0nInfkzZjucKYSlqNNtpp8I8wftAugtJNOuvkuP+O?=
- =?us-ascii?Q?AtL1MhX5LvmV0ygQPXnuQt/rKs7x8CBBoLJZoTvcRdPJae1emMuAVb0Kl21r?=
- =?us-ascii?Q?jIkGYP8ouMhSkoVCxDdGM1Ab1C8dVaJ+B24U7WmBSAGyZe8iVUuSVTU9JlLW?=
- =?us-ascii?Q?SkLxfC4PkWTIHidpZM1WtxjabWMt+LfuhmOqJgHX/CWX1WLi1FAXlpqjkfw/?=
- =?us-ascii?Q?PGj6J5kfU54DfcUxPPgd2SHIWYRhOGwBcne0zuCirZTjUPEjiM4SPnvqiPDq?=
- =?us-ascii?Q?gL44o+qICO65fHNLL5CMtofQiye/25aBwoCXS1uX+yrSkDbYbRDAIKPLtmbG?=
- =?us-ascii?Q?RbsYSPkLyMivhWiW08V3E1sKip26pkWjPenp5AWDuAPHAmepn72T7KqZdLJg?=
- =?us-ascii?Q?jBQgnSxw80AtOs4GAPiuSLIRFzs4Nx/fLfHLU3TnISuXDgnVRlMCW8W+Vx/w?=
- =?us-ascii?Q?bqbyTNt61joCAqDNCnGYPT/T4wWKBMKsRXmGL/q3tktrd+V/f1E5TFUIWcbg?=
- =?us-ascii?Q?O1/5Gb8Pk9WAMGhmJVJIyQYUZ5FgXPmB1mI4IGqoqdPiDrHuym9ojmcbXlJy?=
- =?us-ascii?Q?0GBOJdr2+1oZAxkwYzdPMBu45gf4nFcA6kwItz8oS/DEzrqZvDZwHe/l13lL?=
- =?us-ascii?Q?1Le3fE7W/6PahiwXVwqQFeYX0P14LSZ4G4oQgYAWKOfX8V884vFUFONUvx3A?=
- =?us-ascii?Q?1m26hnVDzqgJo5Os6hDXUrXxVBU7i/lUrU68Q5cEqUGe2V22vuPAxkw0I/JA?=
- =?us-ascii?Q?EZ9xw2k2YrV//wsUQaODIEhCUThQiIkUd2zsXyRygrdjmrSnpMapsTZi240F?=
- =?us-ascii?Q?MALIE9x+WnvQC0ed0iYz2Jldl+9cnrmgnckKseqcY/qI8i/hrvMSfx+/aCxt?=
- =?us-ascii?Q?D3PsNS1uwKrB6s0XYUeeDpEplL+yuRqv4JBv8Rwdr6bEIJRZsOQqai4s5+QK?=
- =?us-ascii?Q?BHeqDyUCuUA5vBztVYCQsCW4zyKp0xosksx3AX4ZPjexPOnNtA7B526Re/Jx?=
- =?us-ascii?Q?Yae9BAIuCpfTiszRTu4=3D?=
+	=?us-ascii?Q?wrKcPOPwkwvTH1GTeBTikhqZ2E1TMnGMMW53+wrPL10uqGjz8yJv8iABjAV3?=
+ =?us-ascii?Q?qtJm6TPRHuYIS6+rYtSBeMmxabR3eAMX8c4PhVjORqerZ21U+ILExjyanmia?=
+ =?us-ascii?Q?VWLP4Nkl+kIawfxXxLVLD3JhM/lT9zopq4EMY+Ac8zOnmHYnilal1pSGaqHB?=
+ =?us-ascii?Q?X5v2DJfyQtgKW+Yau/2lqIs1wAjXjst7wJbAnxUkMsLAsoaoETypqun5a9yo?=
+ =?us-ascii?Q?1udKE//igr6eETsDmRBWYifU+rIgqefwC7iLrjsAs7nrpoIWDUtvTTMUpW44?=
+ =?us-ascii?Q?aoY1cp0Wa7hI3/+YCiDPZelAlp3EVf7lslzL4Xk28ljoMeeCVDHzWMBimxtQ?=
+ =?us-ascii?Q?EAc+lcigH/yIgt0EcAiVXW11I9zSvjXXmyho09WEuZKAnpfoO20Lv6JwR5Nd?=
+ =?us-ascii?Q?HoQpQAZsuS3RYxPznljYay1SMvTMM/qB0vuj8f0m/1/xCEzT48dVPwe/q0FB?=
+ =?us-ascii?Q?Qo4yCJJN5wcaLnMjtH92oS1BAPFufVkOFwKRq5feDIUmoXNT2NX7/k+KK2qj?=
+ =?us-ascii?Q?BwkqblhDelqYMETs0zgD+jCl08BXrzA+NCtYLzZgXgowuiAtUAjZV+nF2uEG?=
+ =?us-ascii?Q?2C7iiIREiYeXWsaO+juGFv91jbHj2Ruf1lWmSDPdj0VfrUjDe95XGvxX4Sbb?=
+ =?us-ascii?Q?rtKmlq3gv9rebuglFuJ4HGRc8orVGy7Y7vaWfQV7erkmwLR3cA2Qqq2i45MI?=
+ =?us-ascii?Q?qWoPvNH6gJ5OGFemtN7vUDj4VsJSHHNAqg9QLdczlO/lSDR92YPrYW8BUsKH?=
+ =?us-ascii?Q?LOjjm9FoHlTj3Q5fhNANZu5NinTth88DuBSdQGl3Zr1jmBrPWAH7LaquyWXr?=
+ =?us-ascii?Q?QuSPpk7TL+Ssi5H6Vobcnsv1z2SH9/Cw5ffZ+2bslgol/aH2qzJVBXVFNTu6?=
+ =?us-ascii?Q?hS9FgU4b1PywyVKwxtLLxghjR9Y3ra+OFsIfVkf/b1mfzFLTd8SZScsE1GCz?=
+ =?us-ascii?Q?vORCGVufOeONQEFxkaca7F0OY1SXnUygO5N5jHiQ/5fIu0ozErLM8UtehGR6?=
+ =?us-ascii?Q?dKizgebSPVlGeKwfKU1iGTBcDYwv76t0C+kZHyzFBz2InmADFgV5LMbIWtTK?=
+ =?us-ascii?Q?yRFd9Uwr5zr8m5A+vU6QjwARuQDEAy4ndr0CgikRJr++46clKP6v3P3+6wYl?=
+ =?us-ascii?Q?/KXyiEY5U29+ZNlJ3GrAJ7Ik9nYp+lWrKvYwBGPNF1XVA0RmSRc+wDAzYfp1?=
+ =?us-ascii?Q?tdeG6/4p4QUBpb78A6s7S12yss/zLcEvQ13tCOk6E+aueSIaFdChcUh0KCPC?=
+ =?us-ascii?Q?isHxPWZNMaja4ITJrZNTp/bvvxrzg898zaNnZVe+yPkZLGwiEmvChsRCwIk6?=
+ =?us-ascii?Q?3N+oXAOGAqhKyDQhThIoF+7CNw4Cgfzaz5s8ZpHUARZcElDk7NxvYLEC50kA?=
+ =?us-ascii?Q?j9klOj3geRgWS3o0N18g1TbGBdO0DZJzHzMn+5AVMT8hBDj4nLyvjMmRD6M0?=
+ =?us-ascii?Q?GTWhHD6eLs+/6f3CwH+IVKaShSAI0damdzW6QzPpsDGfM6FH+Eecs/yNNH+o?=
+ =?us-ascii?Q?o05YUeQV6FnvtpmxJhV9Fef/SBLoNHglSrGMTsZUTA3vaNZiluAHY3XqpQz1?=
+ =?us-ascii?Q?JoNWewB0MGbVPXLegxKvO8l+m2mLcBBVXz+eoRZj?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c958bbd4-d4ec-4f72-d199-08de1e17b971
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd22d11b-990b-4b15-2922-08de1e183717
 X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 16:07:17.9571
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 16:10:48.7174
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: w/cA4urNFENOKdbSk5aAfEMwy4ajd78Ywqt0DPbbbdDmJLD5CrvWkuhE+3GMz8yOiEgyKqvnMXV9ZlYoz5Qd6w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZpXL3dg+Sk6FNqyib2XYGPA7gBDky1Bs0ia3IcM8TsW0M6i2R1au0uiZsFwxkEWM6ToKU2nbqSOfwVaffWWzbw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10110
 
-On Fri, Nov 07, 2025 at 11:29:44AM +0100, Jean-Michel Hautbois wrote:
-> Add platform device support for the MCF54418 RNGB hardware with clock
-> enabled at platform initialization.
+On Fri, Nov 07, 2025 at 11:16:33AM +0100, Michael Tretter wrote:
+> The imx-media driver has a single imx_media_device. Attaching the
+> media_pipeline to the imx_media_device prevents the execution of
+> multiple media pipelines on the device. This should be possible as long
+> as the media_pipelines don't use the same pads or pads that be
+> configured while the other media pipeline is streaming.
 >
-> The imx-rngc driver now uses devm_clk_get_optional() to support both
-> Coldfire (always-on clock) and i.MX platforms (managed clock).
+> Move the media_pipeline to the imx_media_video_dev to be able to
+> construct media pipelines per imx capture device.
 >
-> Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+> If different media pipelines in the media device conflict, the
+> validation will fail. Thus, the pipeline will fail to start and signal
+> an error to user space.
+>
+> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 > ---
->  arch/m68k/coldfire/device.c       | 28 ++++++++++++++++++++++++++++
->  arch/m68k/coldfire/m5441x.c       |  2 +-
->  arch/m68k/include/asm/m5441xsim.h |  9 +++++++++
->  drivers/char/hw_random/Kconfig    |  3 ++-
->  drivers/char/hw_random/imx-rngc.c |  9 ++++++++-
->  5 files changed, 48 insertions(+), 3 deletions(-)
 
-Most likely need two patches, one patch change rngc use devm_clk_get_optional().
-one patch update arch/m68k/coldfire.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-so difference mantainer can pick up easily.
-
-Frank
-
+>  drivers/staging/media/imx/imx-media-capture.c | 8 ++++----
+>  drivers/staging/media/imx/imx-media-utils.c   | 3 ++-
+>  drivers/staging/media/imx/imx-media.h         | 7 ++++---
+>  3 files changed, 10 insertions(+), 8 deletions(-)
 >
-> diff --git a/arch/m68k/coldfire/device.c b/arch/m68k/coldfire/device.c
-> index 20adba27a687029ef53249bad71b342d563d612b..4183929b0b501459da25d1b4cde7d77f19c3dc16 100644
-> --- a/arch/m68k/coldfire/device.c
-> +++ b/arch/m68k/coldfire/device.c
-> @@ -622,6 +622,31 @@ static struct platform_device mcf_flexcan0 = {
->  };
->  #endif /* MCFFLEXCAN_SIZE */
+> diff --git a/drivers/staging/media/imx/imx-media-capture.c b/drivers/staging/media/imx/imx-media-capture.c
+> index e9cef7af000a..bfd71d25facc 100644
+> --- a/drivers/staging/media/imx/imx-media-capture.c
+> +++ b/drivers/staging/media/imx/imx-media-capture.c
+> @@ -722,8 +722,8 @@ static int capture_start_streaming(struct vb2_queue *vq, unsigned int count)
+>  		goto return_bufs;
+>  	}
 >
-> +#ifdef MCF_RNG_BASE
-> +/*
-> + * Random Number Generator (RNG) - only on MCF54418
-> + */
-> +static const struct resource mcf_rng_resource[] = {
-> +	{
-> +		.start = MCF_RNG_BASE,
-> +		.end   = MCF_RNG_BASE + MCF_RNG_SIZE - 1,
-> +		.flags = IORESOURCE_MEM,
-> +	},
-> +	{
-> +		.start = MCF_IRQ_RNG,
-> +		.end   = MCF_IRQ_RNG,
-> +		.flags = IORESOURCE_IRQ,
-> +	},
-> +};
-> +
-> +static struct platform_device mcf_rng = {
-> +	.name           = "imx-rngc",
-> +	.id             = -1,
-> +	.num_resources  = ARRAY_SIZE(mcf_rng_resource),
-> +	.resource       = mcf_rng_resource,
-> +};
-> +#endif /* MCF_RNG_BASE */
-> +
->  static struct platform_device *mcf_devices[] __initdata = {
->  	&mcf_uart,
->  #ifdef MCFFEC_BASE0
-> @@ -660,6 +685,9 @@ static struct platform_device *mcf_devices[] __initdata = {
->  #ifdef MCFFLEXCAN_SIZE
->  	&mcf_flexcan0,
->  #endif
-> +#ifdef MCF_RNG_BASE
-> +	&mcf_rng,
-> +#endif
->  };
+> -	ret = imx_media_pipeline_set_stream(priv->md, &priv->src_sd->entity,
+> -					    true);
+> +	ret = imx_media_pipeline_set_stream(priv->md, &priv->vdev,
+> +					    &priv->src_sd->entity, true);
+>  	if (ret) {
+>  		dev_err(priv->dev, "pipeline start failed with %d\n", ret);
+>  		goto return_bufs;
+> @@ -749,8 +749,8 @@ static void capture_stop_streaming(struct vb2_queue *vq)
+>  	unsigned long flags;
+>  	int ret;
 >
->  /*
-> diff --git a/arch/m68k/coldfire/m5441x.c b/arch/m68k/coldfire/m5441x.c
-> index 7a25cfc7ac07570ff15da3c55d080a717cf93a06..ab5b006372379294db3b522820de88137bfb7e78 100644
-> --- a/arch/m68k/coldfire/m5441x.c
-> +++ b/arch/m68k/coldfire/m5441x.c
-> @@ -158,6 +158,7 @@ static struct clk * const enable_clks[] __initconst = {
->  	&__clk_0_33, /* pit.1 */
->  	&__clk_0_37, /* eport */
->  	&__clk_0_48, /* pll */
-> +	&__clk_0_49, /* rng */
->  	&__clk_0_51, /* esdhc */
+> -	ret = imx_media_pipeline_set_stream(priv->md, &priv->src_sd->entity,
+> -					    false);
+> +	ret = imx_media_pipeline_set_stream(priv->md, &priv->vdev,
+> +					    &priv->src_sd->entity, false);
+>  	if (ret)
+>  		dev_warn(priv->dev, "pipeline stop failed with %d\n", ret);
 >
->  	&__clk_1_36, /* CCM/reset module/Power management */
-> @@ -179,7 +180,6 @@ static struct clk * const disable_clks[] __initconst = {
->  	&__clk_0_44, /* usb otg */
->  	&__clk_0_45, /* usb host */
->  	&__clk_0_47, /* ssi.0 */
-> -	&__clk_0_49, /* rng */
->  	&__clk_0_50, /* ssi.1 */
->  	&__clk_0_53, /* enet-fec */
->  	&__clk_0_54, /* enet-fec */
-> diff --git a/arch/m68k/include/asm/m5441xsim.h b/arch/m68k/include/asm/m5441xsim.h
-> index f48cf63bd7822fd53c33788128f984585c0c421a..dd64cdfcad3e810254c6854b9de5b6bbeb67b950 100644
-> --- a/arch/m68k/include/asm/m5441xsim.h
-> +++ b/arch/m68k/include/asm/m5441xsim.h
-> @@ -198,6 +198,15 @@
->  #define MCFRTC_SIZE		(0xfc0a8840 - 0xfc0a8000)
->  #define MCF_IRQ_RTC		(MCFINT2_VECBASE + MCFINT2_RTC)
->
-> +/*
-> + *  Random Number Generator (RNG) Module.
-> + *  Note: Only present in MCF54418, not in MCF54410/54415/54417
-> + */
-> +#define MCF_RNG_BASE		0xfc0c4000
-> +#define MCF_RNG_SIZE		0x1c
-> +#define MCFINT2_RNG		28
-> +#define MCF_IRQ_RNG		(MCFINT2_VECBASE + MCFINT2_RNG)
-> +
->  /*
->   *  GPIO Module.
+> diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/media/imx/imx-media-utils.c
+> index 1b5af8945e6b..f520529a7cfe 100644
+> --- a/drivers/staging/media/imx/imx-media-utils.c
+> +++ b/drivers/staging/media/imx/imx-media-utils.c
+> @@ -749,6 +749,7 @@ EXPORT_SYMBOL_GPL(imx_media_pipeline_subdev);
+>   * Turn current pipeline streaming on/off starting from entity.
 >   */
-> diff --git a/drivers/char/hw_random/Kconfig b/drivers/char/hw_random/Kconfig
-> index 492a2a61a65be8bd9e46b0a70f3e43703973512e..e046eabaac2d9053a5a4a98c6e3733bb19258e54 100644
-> --- a/drivers/char/hw_random/Kconfig
-> +++ b/drivers/char/hw_random/Kconfig
-> @@ -270,12 +270,13 @@ config HW_RANDOM_MXC_RNGA
->  config HW_RANDOM_IMX_RNGC
->  	tristate "Freescale i.MX RNGC Random Number Generator"
->  	depends on HAS_IOMEM
-> -	depends on SOC_IMX25 || SOC_IMX6SL || SOC_IMX6SLL || SOC_IMX6UL || COMPILE_TEST
-> +	depends on SOC_IMX25 || SOC_IMX6SL || SOC_IMX6SLL || SOC_IMX6UL || M5441x || COMPILE_TEST
->  	default HW_RANDOM
->  	help
->  	  This driver provides kernel-side support for the Random Number
->  	  Generator Version C hardware found on some Freescale i.MX
->  	  processors. Version B is also supported by this driver.
-> +	  Also supports RNGB on Freescale MCF54418 (Coldfire V4e).
+>  int imx_media_pipeline_set_stream(struct imx_media_dev *imxmd,
+> +				  struct imx_media_video_dev *vdev,
+>  				  struct media_entity *entity,
+>  				  bool on)
+>  {
+> @@ -762,7 +763,7 @@ int imx_media_pipeline_set_stream(struct imx_media_dev *imxmd,
+>  	mutex_lock(&imxmd->md.graph_mutex);
 >
->  	  To compile this driver as a module, choose M here: the
->  	  module will be called imx-rngc.
-> diff --git a/drivers/char/hw_random/imx-rngc.c b/drivers/char/hw_random/imx-rngc.c
-> index 241664a9b5d9ac7244f15cbe5d5302ca3787ebea..44f20a05de0a425cb6ff7b2a347b111750ac3702 100644
-> --- a/drivers/char/hw_random/imx-rngc.c
-> +++ b/drivers/char/hw_random/imx-rngc.c
-> @@ -259,7 +259,7 @@ static int __init imx_rngc_probe(struct platform_device *pdev)
->  	if (IS_ERR(rngc->base))
->  		return PTR_ERR(rngc->base);
+>  	if (on) {
+> -		ret = __media_pipeline_start(entity->pads, &imxmd->pipe);
+> +		ret = __media_pipeline_start(entity->pads, &vdev->pipe);
+>  		if (ret)
+>  			goto out;
+>  		ret = v4l2_subdev_call(sd, video, s_stream, 1);
+> diff --git a/drivers/staging/media/imx/imx-media.h b/drivers/staging/media/imx/imx-media.h
+> index f095d9134fee..8b65f79b125f 100644
+> --- a/drivers/staging/media/imx/imx-media.h
+> +++ b/drivers/staging/media/imx/imx-media.h
+> @@ -104,6 +104,9 @@ struct imx_media_buffer {
+>  struct imx_media_video_dev {
+>  	struct video_device *vfd;
 >
-> -	rngc->clk = devm_clk_get(&pdev->dev, NULL);
-> +	rngc->clk = devm_clk_get_optional(&pdev->dev, NULL);
->  	if (IS_ERR(rngc->clk))
->  		return dev_err_probe(&pdev->dev, PTR_ERR(rngc->clk), "Cannot get rng_clk\n");
->
-> @@ -353,12 +353,19 @@ static const struct of_device_id imx_rngc_dt_ids[] = {
->  };
->  MODULE_DEVICE_TABLE(of, imx_rngc_dt_ids);
->
-> +static const struct platform_device_id imx_rngc_devtype[] = {
-> +	{ .name = "imx-rngc" },
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(platform, imx_rngc_devtype);
+> +	/* the pipeline object */
+> +	struct media_pipeline pipe;
 > +
->  static struct platform_driver imx_rngc_driver = {
->  	.driver = {
->  		.name = KBUILD_MODNAME,
->  		.pm = pm_ptr(&imx_rngc_pm_ops),
->  		.of_match_table = imx_rngc_dt_ids,
->  	},
-> +	.id_table = imx_rngc_devtype,
->  };
+>  	/* the user format */
+>  	struct v4l2_pix_format fmt;
+>  	/* the compose rectangle */
+> @@ -145,9 +148,6 @@ struct imx_media_dev {
+>  	struct media_device md;
+>  	struct v4l2_device  v4l2_dev;
 >
->  module_platform_driver_probe(imx_rngc_driver, imx_rngc_probe);
+> -	/* the pipeline object */
+> -	struct media_pipeline pipe;
+> -
+>  	struct mutex mutex; /* protect elements below */
+>
+>  	/* master video device list */
+> @@ -223,6 +223,7 @@ int imx_media_alloc_dma_buf(struct device *dev,
+>  			    int size);
+>
+>  int imx_media_pipeline_set_stream(struct imx_media_dev *imxmd,
+> +				  struct imx_media_video_dev *vdev,
+>  				  struct media_entity *entity,
+>  				  bool on);
+>
 >
 > --
-> 2.39.5
+> 2.47.3
 >
