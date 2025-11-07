@@ -1,64 +1,72 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010010.outbound.protection.outlook.com [52.101.69.10])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013043.outbound.protection.outlook.com [40.107.162.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89499328B40
-	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 15:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FE632C954
+	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 15:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762529318; cv=fail; b=GYCqNco++4bT5aG9Dt7mQq2UBg/QH5N026ko3gDV1Eh3GNJWOfUFUopXUQA34tJtAI4SZPWLGKAXiNA9gou6zQUwwMaKESk80+5QV/AKjKy4P4VsyF6G0GwaHl9+fxNSiwQvIANNvNZ9bMEgTf14YZ8RvUfFLezJyLGoXe0LaEw=
+	t=1762529719; cv=fail; b=luHnc2meA9dm6AYdFyNZMbZL2F1TM4zT5Ul5fOFKTImvWFRRKyptJ5M4qL5DE2I4iWEz8ZUY4/vTyDi1atHzg1mvYjOfQ48TLA5H+2c+o/smjLFTR3+c1nxKfSSqiV/GuMCpTQQcV23dAeONI+/1WMR/i4MKTF/6LAIbssVFJ1k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762529318; c=relaxed/simple;
-	bh=cbtogd2XibhtgoLICNEGzZjAShisCz4go8PSPHvtAGc=;
+	s=arc-20240116; t=1762529719; c=relaxed/simple;
+	bh=50hXVWS2cnKWlIdkes7/7HdouFNDbOoicEPEa7rrWgE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=sWY4sy3z5mZx9KqUGtlaf2NNVtQ5giRaY5GWzl0/k8zoHiQa1GTA8ONqp0EdbjYd3gmLTuqlsqu4LSTcifU8larRB+/2ARCuVGItp+7Glr6OH42MkUGvq/F01QMtatkFylPy16XKpJt2hb89uBrITecdwsJ+yh+zf1U4GrnkPHE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iJjHdCdK; arc=fail smtp.client-ip=52.101.69.10
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Rhh8lZ+muCn2QX2KrY5EjoCv/piRaEJ5aRSI/XJlFvB7fCrOFjyo6UKjKtPLO8jcdtPUaMlISarCi0MV1f7W/T25ZlFIxPmtvKnPxHKNPFbM8RRSsJZKfjmywv/+weyTrnI1I3m0hwoPEwveO8zdKWwdN4TwSZTY4YPhMgHUpNk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MEq4rgTh; arc=fail smtp.client-ip=40.107.162.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iJjHdCdK"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MEq4rgTh"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m+C462w1YGUrC1yn3Xzy7piON222PzlEsmJds8n4pZfEO08yLU0h5X2p3H67YtTKIJQh4s7ZmC2BEoBjWAUA+TSnlCkPJr68h4hv4Q7+uKW6mbqT/khdYgZOaByoFSFtrPAXVrzC/mlcJIHsddTQYqHEZQfCebGR+9GuVvjCt1k4JMfbk2acRIQrucDhXe9gx6TtHyjFm2pTJYmUSX0RabKyi+01TJrUTw36sytaiMylh/GSiaEsOJERPrN9VeYO+sH9/fL2DCP65vB/9Nb3L6QPDYMBQOdZQHprR8DMiar5LmJm2w4zAMhSM/nn5CERGCllNLdH4cbCKSdUva+GRg==
+ b=GxYgbaWsBffjhAKxZvEbIngCcQrCYzQisOsWVwQffPSIYMFGEz4wDztPXmzqka8YGx2AOktCNQ74qolDR6dAjzdXSNRjxXFvTQw8ehTmHAV0HnzLmxyV0YD6K/SwrhgANP4oPfZcs4PahDmwZvLmnzVYzTv50HMHXiZ9qcv+OMSQtkAfvFyuvvAWNnJnzPfXR8Vgz44WJMuqWuAZjRMpQlTs1di8DJODN677R2Y9hdD+aOL97MKz+6/uSO+pZiMFUfEvhsGFxQVhtrnzCq6YMs5r4p30r+CScyndB5QL805vKZXy3R+8W01ZIDiRD1iXcBIcX0nx8i232P+w1T05hA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DKm1j6ejRL/AH2ui09sTXphE6xORgTQz36q6N8k/Ek4=;
- b=oJMrwrY+mybif4jrMjrwHSlf7C/agaVq1I55CEGAnWOb9+OG5fHdVBGYfNP6+kCf/NaV5YErWRIR4wAf/MI1yRsM4tAuFww5hTWB0NpuGB23kn9qONXwdLz5Mg4nKpClaYqxFaPECRGjqdnnBZBZNsee2i6V0KPoJyhzfKVd3xVnxV+phPxYo7y//WGXHBBm3m4fC++zFQYxwlTkTLdnpQ9jaj+epuyqS1CLLhkkdl2zhciNJ0AW4IF0ikJKT1jamOOnKUrtpp8nvCY4+YqcT5y28Me9d3BHSEK0dRITio0/cA4ifbGecis2U24G2tTPKi4hUWdyCBjofYtNCMFBjw==
+ bh=fxdY7zx2Lcq6leZZ6u+7BHY3IvlcL6bHKJEGfWYK4jg=;
+ b=PZbEEY9+9cKp6lMOZfcZ3XoYJDVlJgix95vxP5Z6IgCHh2Co97mTxTj017rg8eJCk3HxR3FiJS1Ry251QIe1bPb2yUwGA5HQeClELNl+NDaq4xdhZa9NPiL5zUYYEthWVigOeMNoCpj+NiiJl+hT2XuZSUGpBn38SeKN5RfAR62bRjbJdwtDn5RY8EbfPVArQ1fOb1bLAv+RP/PNHMFn3SIf4Pr/G3H6OrHPN8x+WFd/BlZJJjNVhpFG6CRqSycrJrrXtMzaOTbjentaYy1/2T9OpH+8CirK4iyDSABnLkseX9wo7KpT1CwYxQRTVXHZtZf17th09R0EO+sDcEQqjA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DKm1j6ejRL/AH2ui09sTXphE6xORgTQz36q6N8k/Ek4=;
- b=iJjHdCdKOvt2iMLkDsQLZwcpQptT7XX4/JJvJIoUfkjMMtAJvGfNJHSkQRmzvS2xXQMcc8i5mw+4LzBLywoJkCXrHIxkiLrmPwyVKrv3LuQbum4TsKKLqQ6fWFLHiguE2RgiKv+KAN9h35xugL/ivdiIOYXFl4kt5SW+TrUtOzvCMaoaFbKlcN/8Kgud+UFTTmGjZ2//wqmxEoVtyDJoGQKoGPrD/UT+xEHtrMpx/eBaYOIrU0mj3Jlm6BmYwCGye8ncvGUM0dnpzBKQGMFrLlVzm35iXpdFvnZgadU8E6eXpC5rKH1zkhCJCeSZLaVgTTKkvMdKtNIKdut3UTM/+g==
+ bh=fxdY7zx2Lcq6leZZ6u+7BHY3IvlcL6bHKJEGfWYK4jg=;
+ b=MEq4rgTh7ppdfkph/GGngIGaJSFdJA0zGWiLwiXoTSojPZODhhql9etQY1QJgdKON0lYQIfoZDzMM8q4hHMwBP/hikUiaHmxDN0T/ZcB4c9JJCmLzmhgho6tN9Sn/ubx4FR0eUwUxItBp/GaPFRluQ7w8mUQ7kLFm+9YpNfGfZV7BlX3BzRb9tNfmHCp+Wt1XQG+V9rm0LVbqk2Z2BNYfmx9Z9+IW+8f+UWATU7LE7eh0+W09MVUiNNrKwDe7ksSL6SOyFuCLt3WupTQxeSM+qt4W0nNil9w3v9IhVW+Cj9r9+o4GYWi59gU7P3THSNMIA9U+Z8Ui1VPcW7eA38lpQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com (2603:10a6:102:23f::21)
- by DB9PR04MB11627.eurprd04.prod.outlook.com (2603:10a6:10:60c::20) with
+ by DU2PR04MB8678.eurprd04.prod.outlook.com (2603:10a6:10:2dd::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.12; Fri, 7 Nov
- 2025 15:28:33 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.16; Fri, 7 Nov
+ 2025 15:35:14 +0000
 Received: from PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15]) by PAXSPRMB0053.eurprd04.prod.outlook.com
  ([fe80::504f:2a06:4579:5f15%6]) with mapi id 15.20.9298.010; Fri, 7 Nov 2025
- 15:28:33 +0000
-Date: Fri, 7 Nov 2025 10:28:24 -0500
+ 15:35:14 +0000
+Date: Fri, 7 Nov 2025 10:35:04 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: ming.qian@oss.nxp.com
-Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca,
-	sebastian.fricke@collabora.com, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	linux-imx@nxp.com, xiahong.bao@nxp.com, eagle.zhou@nxp.com,
-	imx@lists.linux.dev, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 1/4] media: v4l: dev-decoder: Add source change
- V4L2_EVENT_SRC_CH_COLORSPACE
-Message-ID: <aQ4QGN2kdHxKwLBj@lizhi-Precision-Tower-5810>
-References: <20250418085422.193-1-ming.qian@oss.nxp.com>
+To: maudspierings@gocontroll.com
+Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
+	Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, dri-devel@lists.freedesktop.org,
+	linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v5 1/4] dt-bindings: backlight: Add max25014 supporty
+Message-ID: <aQ4RqNiGsngOWrV5@lizhi-Precision-Tower-5810>
+References: <20251107-max25014-v5-0-9a6aa57306bf@gocontroll.com>
+ <20251107-max25014-v5-1-9a6aa57306bf@gocontroll.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250418085422.193-1-ming.qian@oss.nxp.com>
-X-ClientProxiedBy: PH0PR07CA0071.namprd07.prod.outlook.com
- (2603:10b6:510:f::16) To PAXSPRMB0053.eurprd04.prod.outlook.com
+In-Reply-To: <20251107-max25014-v5-1-9a6aa57306bf@gocontroll.com>
+X-ClientProxiedBy: PH7P221CA0009.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:510:32a::28) To PAXSPRMB0053.eurprd04.prod.outlook.com
  (2603:10a6:102:23f::21)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -67,155 +75,236 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|DB9PR04MB11627:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc8b188b-2ca4-494f-17eb-08de1e124fe1
+X-MS-TrafficTypeDiagnostic: PAXSPRMB0053:EE_|DU2PR04MB8678:EE_
+X-MS-Office365-Filtering-Correlation-Id: b91d1534-99a9-46e3-485d-08de1e133ec7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|7416014|366016|1800799024|19092799006|38350700014;
+	BCL:0;ARA:13230040|366016|52116014|376014|19092799006|7416014|1800799024|38350700014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?C10Y84H3NfzF3U11zeHj9CsIetnFvArbpEqIbG/cxI9PkhZn8j3gDV6hsGys?=
- =?us-ascii?Q?t1xuN+Lbx/ynSb9e8jiu8L2hbauJyBmxmsXhdFTatg9ZBVqFXPCz69Msm2Kp?=
- =?us-ascii?Q?WCrV4T8eERj7og7x6rXsQfn7u7L/sdbBNH9alSSNrk6SStqXFbaACfslqocR?=
- =?us-ascii?Q?5LR/qvuAVxnVcZLaYp7MaUKlzP/Pza+w3zuhzIsLbNtrp/FiWn1CBMXwlIuB?=
- =?us-ascii?Q?2KU97x/pUq3oj1fFqhg1bTi3+ojLBT/mCJ+FgC9faN6DamsYqF3wuTt+BytL?=
- =?us-ascii?Q?SfIkLoWiqGKJQPVOl2qK+b5IxaW141IUm67HJCyDCp96D0VVcrtcS/e4BwC6?=
- =?us-ascii?Q?wlYPB48p7l/H9Jh70J+PwMHUDuDrxxFPuR8eOl7OTtoiuAeo/WRl27PQhgzk?=
- =?us-ascii?Q?6tKO9WqNA5FyFgSF30tRw8Za3vaHSsYZJw9vTSG/UrD/U5cVupeMvgh3bhBX?=
- =?us-ascii?Q?b9MxLpYgNkQMkPDjKJrhF5GNTQLzOFBpEiUYvimGexleBivGn58CI2PWIGhG?=
- =?us-ascii?Q?kGfsK7/fhVHz+1lnfhW/qQIXQYAPbnYbJzf4qJ6P2JJZTw4Kqx3LE4Omi6uB?=
- =?us-ascii?Q?kRAYK9C5LSwLc7uHPvHMS3ZLziZvfvmQqe68TNuHOoWxt4AlG4oSiYjt1dKj?=
- =?us-ascii?Q?1H5D3ijAPushNyz797dh5Rr/YuokL81qVqeVdSMUCZK4OnK1WLB5Hif3LZRx?=
- =?us-ascii?Q?KF8WBqsD166taKiseCEJB6ZwxtIUknnyTjGqqep15Oxx2WkZOHzJy0k515/+?=
- =?us-ascii?Q?KqyzBNavTXGR7XjmY2h7mEZHomYfFDEUP8Pht7YUbG0S73QBHl8vGxbCzhQP?=
- =?us-ascii?Q?JX+2M8okobGH+MrDRCfThFaxd5pdl0bHdZspfQilu5/hxMRdcfIv3RpoAwIy?=
- =?us-ascii?Q?VZVkSW+owR3eBLcNYkc/KWaPOyltPbXLaKIpOT852/YH4B3mRrCtaRuLKv6W?=
- =?us-ascii?Q?vr+j0G8fTvL7sFGs1yGmZ+/OwlTp7etq/qjeELRW2i4XhbsHOdS8Hzn/2qGf?=
- =?us-ascii?Q?dxSl63fZLF3198dxfpAr9oL75tPTuv4nxcqejw7SFp81rmB7jrjM7Z+cMI+z?=
- =?us-ascii?Q?WSJ0A8E/vq+VstGfpN6t81SfUgXAO7RgRMCBDA43Kiu5Fc7+razAfIaKgRH1?=
- =?us-ascii?Q?yg65f+NZnc4MBYmZqEd0g0Yt4BNXh/chXEGTDYF3ozFcIzsTzE0jn4Fn0lng?=
- =?us-ascii?Q?TS1YINZQkzkxhRGSk/vztoAS1KVqVymu6uvYBtWQezmymVPIo09ZkIoDtYag?=
- =?us-ascii?Q?kSNezIMxJjXGw/+/2IiGVoam28249OXtaJiioKIbF/j9IRg1c46cLstHfN/j?=
- =?us-ascii?Q?ZIrY2n7eEwJ0KLZG62zlF4B6wnSxaq3U5KwcL56MVtTr5c4xTWbmJc+e7A1/?=
- =?us-ascii?Q?Np0QV/DkNiIu84n+WSV4u5lP1UZBg17tRV2tiIXkvEZGPiHsoIJh26nwzltQ?=
- =?us-ascii?Q?roo+/xkh5pkH7C1MgAeQjx06MhvEm2k4pY43XezP/mH+94lUjQ46F34XvXbo?=
- =?us-ascii?Q?BzDdsi5kVAZkoVibl7tWOcqD13ZDqVW8WnO4?=
+	=?us-ascii?Q?1jjV/zd1wp+BAG12hsPVj2OBns4xmWKmaVt1g3Gt359ntAe0femZq/VJApd4?=
+ =?us-ascii?Q?3M/xFgCp0sj/ANlA5ljYlnnASKEkPRuy7krO1tsv8E/V9CCrgRwDjo+A6tSa?=
+ =?us-ascii?Q?P9O4rI1PbfhS81I3sD+7MruyCGVtJa0Gxag8l/XQ6CdWx7xJzED/NBJhlM0+?=
+ =?us-ascii?Q?zf1XqtGJlafp8o71XtipddFb9ed7UXMimzG0u9jR8TKG8J2KKD6l0jNP9TYO?=
+ =?us-ascii?Q?zUAMgZXKNY7VpjPy+L/AXfDHWMiiLXXNcB2c2QFH+ize5xCePoyPdmOsXk8o?=
+ =?us-ascii?Q?ed1tXzm0OcEZMdQutGLAayawAwoE2w/ug4jbG8asIZ1gMTfgJ6wfTb2QeRCi?=
+ =?us-ascii?Q?t3L0tQNKRJbMi7OJD74/DwqKn4XWfFy+F+A9OziTuy0v8jCp/ANfsTL70tkt?=
+ =?us-ascii?Q?pyFe/iQH1720syvGdN6SZDzzdPY6hQwcCMRZICz+sl44ORX5bYjuUj34m+1z?=
+ =?us-ascii?Q?ERZQUiwS8orogXeMGHL7/1qrbpa7xshfpYHwvUcOTsHnmXtoAV4DQXego9Kk?=
+ =?us-ascii?Q?uMB0iU7N4TIQxNx9E9mcvyaRAT/N385CrqIPX5O7CCzB7Ogow0Qb0kLU8NgJ?=
+ =?us-ascii?Q?eedffQKohEkdtBvVA3iZ1DMyW2A5RK4GvKOCWS8FTG4jVL8R9nv9suZfEvdv?=
+ =?us-ascii?Q?6aYJVuYBtLoEnheN51glabOvqqIxRb+IJP2x4IKhn16ItiPG1aTFN4ykNpow?=
+ =?us-ascii?Q?Fy7nIOcJF/R8aU9w4d2xvd53LtY3oLKFNmnTJoya0bIZ7Xxm9xpQbdMcG4OL?=
+ =?us-ascii?Q?A+nW8R8T5akr1upgU3iV4fUrvLdQW7ey34c7zOnQ9YyYzUjA9froqp78ER79?=
+ =?us-ascii?Q?j067vlRkMYwm6/PJpPuiiKH+M6RGUeux1ycMD9fO5GrcfaDPHBLEb8fhM2oy?=
+ =?us-ascii?Q?F1j22RgVtLYc7qut3j9NqT3ZLAwnKm8QX5r1+nmpgHnD5vlPjDRe/kP4ZOKk?=
+ =?us-ascii?Q?KfZiXs59m4qe78uR21qEFp58FEPigxm6mqhrOpEq+He4YhuPMaXoffEURcyC?=
+ =?us-ascii?Q?TRo9yrJpOY7cY9CRXDfJUXP5H13AwmKCAlkMdKV6QdSVHD5lM5Cz3OI1cyeg?=
+ =?us-ascii?Q?biY0e+MV/vOIVZuiur1S8bjPEal5OjsX+Sa99kzXiu/0uDrkFEyKkPkw0JNT?=
+ =?us-ascii?Q?HZoB4c7KCEdOpANGWIDyBsVunNbgq9vNmNzQpQKBsDFIeqD0GlEQtkQ05sTg?=
+ =?us-ascii?Q?sl9nWXSCLFN/wI7nH/5Y4yr4Phg3Xqvo/usmQGlvwbidRrNE5EH+Oj0fW+I+?=
+ =?us-ascii?Q?N9EtoBflIlLzka/HaUgFHz//kJPeDkQxflEC2dfOy3y8quE0BlNhJGr+TRPk?=
+ =?us-ascii?Q?keljw0u0VDYlOE/XZfF5V1AY+GF9mhXvbrcLV3A4Z+Ci/P1cbD3IQC1MP3DP?=
+ =?us-ascii?Q?ABXIvOZg24XXLA9ESol7a6WNCN7X+KxzYwojK+MMc4+enT3OemWKvIfa1RiO?=
+ =?us-ascii?Q?so+LVVtQuOGFgMZ8WlRNijeXMOJXYxvnlYVpoQZBEjDmV7uOArHJVQ=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(1800799024)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXSPRMB0053.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(19092799006)(7416014)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7VyTY0iD5T43awPUS/I9GykcE27Jc4yM6IteMC/LRYRsS++sNtr+pK/NZfpk?=
- =?us-ascii?Q?eu0EfmRrEWyKjVkNQoghLQxCBOi2JSijW/W071ZU7Ku8oakpr4lbNdGqL0ux?=
- =?us-ascii?Q?iV6UQW/EsbfSPF+SJze6uFUOABCDMrPlRuoMrkJRDtbCs4uWcmsgF0xmXKYD?=
- =?us-ascii?Q?ob1HGtJuMomevq4D1r17OEnZMdKKZnsoGJlAvdukbV8ZP2b0r1qvcxniL8Ii?=
- =?us-ascii?Q?C3J4Tpek0TYA2rPh9tpuVxezaPFTq5POcGioNmj45J0Qtr3o0JGpje4uNwmd?=
- =?us-ascii?Q?7YeYVm9CF/CYGfqLlKueIJIfShLHmABfIXeIDnYK3m1O0EAR/eA7qoj43cOr?=
- =?us-ascii?Q?hd9p01AovGUwFnLoxwz3toUfynPtncE96Zp3wqRB88ZddsqxhNgtIoSv9Wzg?=
- =?us-ascii?Q?4hld1cfSTYpZt+EqcbHhMC0LVleF5FihwWNCzIPqqxTyrShhKyBWCDyK4Ar1?=
- =?us-ascii?Q?9upylprGVqFFXpmAWAht1abkdrTEU382LWkIJeW+Eax0lCnBLgWUUDSC0HCp?=
- =?us-ascii?Q?HdVU7JjanWNcoTrG2uO09wwIsPhPwas/NniTZzQMk2KFQysTlf4F3B3AjMR2?=
- =?us-ascii?Q?iqjpStFInXiTfQ/lHDKi2gim1p0rSLkWq5kR40hImSsUMXhrtBLD1rjAjYnv?=
- =?us-ascii?Q?9mccFJWQ9ATA0qFudKUvTCQmz5AbWAhFdeVX5n8Jkc3LqkctuAuj1CLMmAbQ?=
- =?us-ascii?Q?9eSlvh8yLDhRrF4E4SbUkuJLd+URlR9XAnmNHfcJ+6FkvYkgt44glNvlrVoM?=
- =?us-ascii?Q?3Xth9IPjMcw3XgpIlS6/c2hKNbVj8R64MQTHqVeqmjMR05dG6JI+3knXhsmA?=
- =?us-ascii?Q?X74DnQ+VcFP0aBFdsVfYiaEjNdWmesNr7PounTGrOtUgdwna0JyV1V7Gvnix?=
- =?us-ascii?Q?5REOmgeSPTs14kSkuh9CaSz6GkNX/KJ9po3ZlwrAFKqmPiWNJRjg80hVj6Ws?=
- =?us-ascii?Q?Dzp3/5vda03XqnrcFZkLQOziwCfKrPxx9OT55RC4R1gmUU4SNGbjLjREwJD6?=
- =?us-ascii?Q?Iuj0oh1bC5W5eJxKXdZ4DzTZcTUXsJjCGsqOgok1tNf19QyfnfafOCdI+QRN?=
- =?us-ascii?Q?HNqxoGDzVG3VXnZOMSuBdJkrXq3Z3IeSvBjqWLQkcdb4grBiKLTcqvqZAqDe?=
- =?us-ascii?Q?0mTDVayM46R1CK78y9kho6hJYQN98cu0q5Pz/uV0ys4x2tToOQhmV34UPQ7h?=
- =?us-ascii?Q?reamkXTL2wPFrvZvWofqeOxUrvfCRMvaz+/m7Ww1hMBXtCRBcpjI72QddSKm?=
- =?us-ascii?Q?9gCbw5bRsAGlwf+CGa5K7CJosZ9u4AZUlzMVhremwxwukEGmtJJjn6IqyI14?=
- =?us-ascii?Q?04AtDs+knVo7DY4aepAThleJMAlm+LP8rDBYAYz5RX/gaUKc25y1dMluTdkq?=
- =?us-ascii?Q?wN6Fvq29+ZuNCHJR19DXoMbUaQXt8m+3CSLyLnAiun2FyUR+sSLRWGReVvO1?=
- =?us-ascii?Q?33LPQwe+0xyKJQ/pyhkQNa68hQmd0PXfVrlCjqUKJBe8SG8RMS/eC2dygi9B?=
- =?us-ascii?Q?MftnqteX8CHUJ8e0BVoYeOTeiFAtZ/hnp7DEWlR8llix/qtDfBPyL0y/EEAo?=
- =?us-ascii?Q?v8gpJsO5++AdRJxAhHs=3D?=
+	=?us-ascii?Q?5yHpDm0E3kp9MZG/kEvQw+ByFUWCnpD/SLJQ//+2YgJTIqooR4e5XByiR8f0?=
+ =?us-ascii?Q?kHLyWFLgnW1HAnCQQbzuLBBlUSxgOLmBEyD8vnA8tYqa82KI9yf8X2enRVuz?=
+ =?us-ascii?Q?oerS5upgt50mLwgnU+WJq7EEs/+AAPlpIgUaHB0zbUEmVeKXNTmT9bNcaaKX?=
+ =?us-ascii?Q?XUIvS/039ZbBNLhd+jZiJmHU/34X+nzcN2Vk7jUFvGGX9P5Tnk9C0BrbAXY6?=
+ =?us-ascii?Q?29MdPSbW50UoBfQtqThF0CvESzM3LuVVNgXiea8YwsJ1MRuWcWM8tu+B5Yje?=
+ =?us-ascii?Q?mw7kQJfw0uWMnyyCeq1an26D6fM5zTn7NNc6cAe7jH5uxVsWXkgUcwj145oy?=
+ =?us-ascii?Q?8VYhh+u5Fb9M7yu6X3jytR+XvBTC0G+Um6517WCWwoqpHE9eA6jq1rpI28Ki?=
+ =?us-ascii?Q?k79t5YVCXWCYaLcbazvYfEJ0yFGzI48/oSRRCRcwNUIrI8yk90Gf8sLZChKw?=
+ =?us-ascii?Q?B10vpF/gmz9APy9DAq04cNFgYRn32w6/FmWqhY0qsOqvwq/536jOlOaeQ8F5?=
+ =?us-ascii?Q?Y/f8+RUaaWKOMq3obP1KcvGhHFl7DPlJMERqAunzUwXoUv4kTSbQma9at6pB?=
+ =?us-ascii?Q?buSBLGs7gHYIgrORTD6Bs32DuvecxWxzSbxmqSak2zYidehtW0V0paMvRDfE?=
+ =?us-ascii?Q?syaNiUkr0bPyhV/MGGUtltNj/LNNgqh+2mQ9YU1Fm2m1e0Jr22hhP2JEjSJJ?=
+ =?us-ascii?Q?LLbBYmJNP96yKtB/KUkaNcQ1+HbTQbQZrgTP3ceMBWfq5O92rdgMB4AodEXg?=
+ =?us-ascii?Q?SkGrnKnGuAIfgD4Y4lrYq/AYgl9UF5q4Bxrif11hiuz//Mb50UhG7zNm92ce?=
+ =?us-ascii?Q?kuT3U7sTDmYXZm5OLxEtbYg09fbKZJ+91ehkqIPh46qbNJG/ytJZvom7+yGd?=
+ =?us-ascii?Q?/JUmaN59PTbUvTsku1CZ2+8btpTUmEsZnnKdc38mhzBibEqNfJc/TIBmoa+5?=
+ =?us-ascii?Q?RQ9YWeZjPazeM6csXLY7ZCada4QjX1KYPBy7YeTM3BDCDYu2dpX+grV6wFIH?=
+ =?us-ascii?Q?0pdSJ20iWSCwxDGpk1LoRNne73S+iwxTjt90boa/3IzdP9ql3xC6VJAPlCbu?=
+ =?us-ascii?Q?m4oMdC7FGx8yHgc7CCul+DwwM3xhg3B37cbaQKqE+A9J7egy50erFtjjBUZW?=
+ =?us-ascii?Q?PBfktyyyw8qozfhJXeLUv62egX3AZ9fZNFNnCQEH74tP8dxySEotQO7jjkno?=
+ =?us-ascii?Q?oimfbQhf4EwMKc69kayN9qVw2/jJ+bmTLbYl+Vdl7Yq1bpVuYuAK9X7ZWi1O?=
+ =?us-ascii?Q?dW2DRtDNzBvYEdn1aeJl2E18tln2V5wldvLmnt0gDZp46KyoNqrUG7D7r/6m?=
+ =?us-ascii?Q?GGGzJ6b/h2Yz+y5HtsDzIlQ4gXKI81r6uRKElcyiykGgLhYQbpU2yLacxjBb?=
+ =?us-ascii?Q?tT+mP68vCy2ZQK5/IKU7JRKJHgSEYkOEDooSdP0dYlXLp5vOxa6YhfNVZA7W?=
+ =?us-ascii?Q?Ny3o9dc5FMKCuqsKoQ4prSW3DRweSSfKdm/oT4mg/0oDgwBDfahf57kvxSKs?=
+ =?us-ascii?Q?A8ex4sHsHg7VrjjIYzYOL0sSOzzhbxW86GZgXh1f7qf3bql3UdcbjLDxyXh1?=
+ =?us-ascii?Q?YXmt/8cedWSyCDzQDImpAmuJAJWj/Ek0c2xN1rej?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc8b188b-2ca4-494f-17eb-08de1e124fe1
+X-MS-Exchange-CrossTenant-Network-Message-Id: b91d1534-99a9-46e3-485d-08de1e133ec7
 X-MS-Exchange-CrossTenant-AuthSource: PAXSPRMB0053.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 15:28:33.4011
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 15:35:14.1050
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dUenlaFeULeBvUHJkS8KiJ4OfBwCok06y2yKDZICXEs8mTfoslf+6N8ufU0xLTQo7tOSJQRpaJBhzENiQ5dFjA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB11627
+X-MS-Exchange-CrossTenant-UserPrincipalName: i6FxjrVkt4O6LYxbvDIz+Bn6geZHK4ShUX47ySzRizXvGgtBO1c+xZe+d1NfnLaffJhHlda3znCkFn10eeG2Kg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8678
 
-On Fri, Apr 18, 2025 at 04:54:16PM +0800, ming.qian@oss.nxp.com wrote:
-> From: Ming Qian <ming.qian@oss.nxp.com>
+On Fri, Nov 07, 2025 at 01:49:58PM +0100, Maud Spierings via B4 Relay wrote:
+> From: Maud Spierings <maudspierings@gocontroll.com>
 >
-> Add a new source change V4L2_EVENT_SRC_CH_COLORSPACE that
-                   change event V4l2...
+> The Maxim MAX25014 is a 4-channel automotive grade backlight driver IC
+> with integrated boost controller.
+>
+> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+>
+> ---
+>
+> In the current implementation the control registers for channel 1,
+> control all channels. So only one led subnode with led-sources is
+> supported right now. If at some point the driver functionality is
+> expanded the bindings can be easily extended with it.
+> ---
+>  .../bindings/leds/backlight/maxim,max25014.yaml    | 107 +++++++++++++++++++++
+>  MAINTAINERS                                        |   5 +
+>  2 files changed, 112 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml b/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
+> new file mode 100644
+> index 000000000000..e83723224b07
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
+> @@ -0,0 +1,107 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/leds/backlight/maxim,max25014.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Maxim max25014 backlight controller
+> +
+> +maintainers:
+> +  - Maud Spierings <maudspierings@gocontroll.com>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - maxim,max25014
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +  enable-gpios:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  power-supply:
+> +    description: Regulator which controls the boost converter input rail.
+> +
+> +  pwms:
+> +    maxItems: 1
+> +
+> +  maxim,iset:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    maximum: 15
+> +    default: 11
+> +    description:
+> +      Value of the ISET field in the ISET register. This controls the current
+> +      scale of the outputs, a higher number means more current.
+> +
+> +  led@0:
+> +    type: object
+> +    description: Properties for a string of connected LEDs.
+> +    $ref: common.yaml#
+> +
+> +    properties:
+> +      reg:
+> +        const: 0
 
-> indicates colorspace change in the stream.
-
-wrap at 75 char and add empty line between paragraph.
-
-> The change V4L2_EVENT_SRC_CH_RESOLUTION will always affect
-  The event ...
+If reg is const 0, why need use led@0?
 
 Frank
-> the allocation, but V4L2_EVENT_SRC_CH_COLORSPACE won't.
->
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> ---
-> v3
-> - Improve the description according to comments
->
->  .../userspace-api/media/v4l/vidioc-dqevent.rst       | 12 ++++++++++++
->  .../userspace-api/media/videodev2.h.rst.exceptions   |  1 +
->  include/uapi/linux/videodev2.h                       |  1 +
->  3 files changed, 14 insertions(+)
->
-> diff --git a/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst b/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst
-> index 8db103760930..f317af57a92c 100644
-> --- a/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst
-> +++ b/Documentation/userspace-api/media/v4l/vidioc-dqevent.rst
-> @@ -369,6 +369,18 @@ call.
->  	loss of signal and so restarting streaming I/O is required in order for
->  	the hardware to synchronize to the video signal.
->
-> +    * - ``V4L2_EVENT_SRC_CH_COLORSPACE``
-> +      - 0x0002
-> +      - This event gets triggered when a colorspace change is detected at
-> +	an input. This can come from a video decoder or a video receiver.
-> +	Applications will query the new colorspace information
-> +	(if any, the signal may also have been lost). If the signal is lost,
-> +	then that is a CH_RESOLUTION change, not CH_COLORSPACE.
+
 > +
-> +	For stateful decoders follow the guidelines in :ref:`decoder`.
-> +	If CH_COLORSPACE is set, but not CH_RESOLUTION, then only the
-> +	colorspace changed and there is no need to reallocate buffers.
+> +      led-sources:
+> +        allOf:
+> +          - minItems: 1
+> +            maxItems: 4
+> +            items:
+> +              minimum: 0
+> +              maximum: 3
+> +            default: [0, 1, 2, 3]
 > +
->  Return Value
->  ============
+> +      default-brightness:
+> +        minimum: 0
+> +        maximum: 100
+> +        default: 50
+> +
+> +    required:
+> +      - reg
+> +
+> +    additionalProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        backlight@6f {
+> +            compatible = "maxim,max25014";
+> +            reg = <0x6f>;
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +            enable-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
+> +            interrupt-parent = <&gpio1>;
+> +            interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
+> +            power-supply = <&reg_backlight>;
+> +            pwms = <&pwm1>;
+> +            maxim,iset = <7>;
+> +
+> +            led@0 {
+> +                reg = <0>;
+> +                led-sources = <0 1 2 3>;
+> +                default-brightness = <50>;
+> +            };
+> +        };
+> +    };
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 58c7e3f678d8..606ce086f758 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -15261,6 +15261,11 @@ F:	Documentation/userspace-api/media/drivers/max2175.rst
+>  F:	drivers/media/i2c/max2175*
+>  F:	include/uapi/linux/max2175.h
 >
-> diff --git a/Documentation/userspace-api/media/videodev2.h.rst.exceptions b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-> index 35d3456cc812..ac47c6d9448b 100644
-> --- a/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-> +++ b/Documentation/userspace-api/media/videodev2.h.rst.exceptions
-> @@ -526,6 +526,7 @@ replace define V4L2_EVENT_CTRL_CH_RANGE ctrl-changes-flags
->  replace define V4L2_EVENT_CTRL_CH_DIMENSIONS ctrl-changes-flags
+> +MAX25014 BACKLIGHT DRIVER
+> +M:	Maud Spierings <maudspierings@gocontroll.com>
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
+> +
+>  MAX31335 RTC DRIVER
+>  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+>  L:	linux-rtc@vger.kernel.org
 >
->  replace define V4L2_EVENT_SRC_CH_RESOLUTION src-changes-flags
-> +replace define V4L2_EVENT_SRC_CH_COLORSPACE src-changes-flags
->
->  replace define V4L2_EVENT_MD_FL_HAVE_FRAME_SEQ :c:type:`v4l2_event_motion_det`
->
-> diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
-> index c8cb2796130f..242242c8e57b 100644
-> --- a/include/uapi/linux/videodev2.h
-> +++ b/include/uapi/linux/videodev2.h
-> @@ -2559,6 +2559,7 @@ struct v4l2_event_frame_sync {
->  };
->
->  #define V4L2_EVENT_SRC_CH_RESOLUTION		(1 << 0)
-> +#define V4L2_EVENT_SRC_CH_COLORSPACE		(1 << 1)
->
->  struct v4l2_event_src_change {
->  	__u32 changes;
 > --
-> 2.43.0-rc1
+> 2.51.2
+>
 >
