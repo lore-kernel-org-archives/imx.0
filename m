@@ -1,74 +1,78 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B692D738A
-	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 10:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A87B302153
+	for <imx@lists.linux.dev>; Fri,  7 Nov 2025 10:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762510603; cv=none; b=s4SolQi4nuiNyeV0+vxXIQmAnCwEdpupKG7M2wg8KrQ03GlLgbO6LTOLNCrgm/vFdtTll/CFGaLOVo5S3SpO8ZC18LslIu/J7nxQOP7uLKxn7OdOWq1SkJBIKujn56YpHi5RRrU72A5CNijyeP+TpPRvutHF29stsz2mrgDP46g=
+	t=1762511283; cv=none; b=JQI9ifbiCwCqodNdmccb8VjOGf6NalypK9WSevWFjmKpOcdQ4s2maUuTdfUD7yl8eeerXG+RmzUrTSPDtbCuHLK6+tdtlakz49+U6tRBSN4e4wReSA/o3xRY2MgDB2Q+k1Namk1eHCJ0I6uEQs8fYHeuRersKVBx6eEjxnr/b0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762510603; c=relaxed/simple;
-	bh=+lhyce2/09h420i5kzs3n3f8hzA5AvvilpI4thgjv1k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jau4JDV0F9x2lWoeCjiaslWnPOimquyp5DgCgd47+aC94paREVQUQdHjm5PPJVdTRBkYmy3QgnkZfbChtdNTenUAwpqGGeHLPDN0ropmL4+KgBrv3zUaFETcKNyww6+O7BeABzxTzLoDL2oFrmOuFUYd+aRsu7+GRHz7BQWtPRY=
+	s=arc-20240116; t=1762511283; c=relaxed/simple;
+	bh=d3nAVq26ABkLe7YbYTpBzgZzTSoZK7RuOBFNBuFqk7o=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cCjWRLwWLG36DB1aKfXb8+obPmLgB4pkJUGa1NGrqXFAS9F4BMdnKIEULLO7gIbSnsGbQlwEaV4+gItKg1ZjubtyfvX9hYBneHK4if3dav4X1Gs/d8RFcQobs1jAtVzRTpZ7qxjPsonpvYhU+s0B+UvwZRZxYjQcqQbmVNJaxGY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.tretter@pengutronix.de>)
-	id 1vHJWH-0003HZ-Nv; Fri, 07 Nov 2025 11:16:37 +0100
-From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Fri, 07 Nov 2025 11:16:35 +0100
-Subject: [PATCH 3/3] media: imx-csi: use media_pad_is_streaming helper
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vHJhF-0005T7-TE; Fri, 07 Nov 2025 11:27:57 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vHJhF-007VqL-0L;
+	Fri, 07 Nov 2025 11:27:57 +0100
+Received: from pza by lupine with local (Exim 4.98.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vHJhF-000000003eq-02yK;
+	Fri, 07 Nov 2025 11:27:57 +0100
+Message-ID: <3f97f737c00ce9d82a6b54955241458d0f77c4ec.camel@pengutronix.de>
+Subject: Re: [PATCH 1/3] media: imx-csi: move media_pipeline to video device
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Michael Tretter <m.tretter@pengutronix.de>, Steve Longerbeam	
+ <slongerbeam@gmail.com>, Frank Li <Frank.Li@nxp.com>, Mauro Carvalho Chehab
+	 <mchehab@kernel.org>, Fabio Estevam <festevam@gmail.com>
+Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Pengutronix Kernel Team
+	 <kernel@pengutronix.de>
+Date: Fri, 07 Nov 2025 11:27:56 +0100
+In-Reply-To: <20251107-media-imx-cleanup-v1-1-f82a693c28f4@pengutronix.de>
+References: <20251107-media-imx-cleanup-v1-0-f82a693c28f4@pengutronix.de>
+	 <20251107-media-imx-cleanup-v1-1-f82a693c28f4@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1-1+deb13u1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251107-media-imx-cleanup-v1-3-f82a693c28f4@pengutronix.de>
-References: <20251107-media-imx-cleanup-v1-0-f82a693c28f4@pengutronix.de>
-In-Reply-To: <20251107-media-imx-cleanup-v1-0-f82a693c28f4@pengutronix.de>
-To: Steve Longerbeam <slongerbeam@gmail.com>, 
- Philipp Zabel <p.zabel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Michael Tretter <m.tretter@pengutronix.de>
-X-Mailer: b4 0.14.3
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::54
-X-SA-Exim-Mail-From: m.tretter@pengutronix.de
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-The media_pad_is_streaming helper is explicitly for checking, if a pad
-has been started with media_pipeline_start. Use it instead of relying on
-the implicit knowledge, that a pad that has a pipeline is streaming.
+On Fr, 2025-11-07 at 11:16 +0100, Michael Tretter wrote:
+> The imx-media driver has a single imx_media_device. Attaching the
+> media_pipeline to the imx_media_device prevents the execution of
+> multiple media pipelines on the device. This should be possible as long
+> as the media_pipelines don't use the same pads or pads that be
+> configured while the other media pipeline is streaming.
+>=20
+> Move the media_pipeline to the imx_media_video_dev to be able to
+> construct media pipelines per imx capture device.
+>=20
+> If different media pipelines in the media device conflict, the
+> validation will fail. Thus, the pipeline will fail to start and signal
+> an error to user space.
+>=20
+> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
----
- drivers/staging/media/imx/imx-media-utils.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 
-diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/media/imx/imx-media-utils.c
-index 6d69f69c16c1..4ea9b3fc59d0 100644
---- a/drivers/staging/media/imx/imx-media-utils.c
-+++ b/drivers/staging/media/imx/imx-media-utils.c
-@@ -774,7 +774,7 @@ int imx_media_pipeline_set_stream(struct imx_media_dev *imxmd,
- 			__media_pipeline_stop(pad);
- 	} else {
- 		v4l2_subdev_call(sd, video, s_stream, 0);
--		if (media_pad_pipeline(pad))
-+		if (media_pad_is_streaming(pad))
- 			__media_pipeline_stop(pad);
- 	}
- 
-
--- 
-2.47.3
-
+regards
+Philipp
