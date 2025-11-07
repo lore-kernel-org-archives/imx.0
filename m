@@ -1,103 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCC1223DD0;
-	Fri,  7 Nov 2025 17:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CD333711C;
+	Fri,  7 Nov 2025 17:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762537722; cv=none; b=nxKDMuqKTaKFKZMtBapmtC9rJMhZc1deILHRp4YnWkd94ZCRXRd9VAgIYMv3sdJ7iS7vVJdc8Wt7WwM++urBuFyMjOaufzMF9041Jn9LS+fKAPnJLAGOPZqAEngO3xG99tlh2pgjMAPKmEtFhwKDG4bJPb4MnDJX3sef07EH99Y=
+	t=1762538085; cv=none; b=NRXATdhIV4F7/vAWSWzMa+5DYyp8iNmEljGsJGZLZjHDJjJ0BNnGjwo/QQvguOPbNeBSln730bm8QufHXyjQ1gRgWztAHvrvwuKYo9c42Uif/OWYLMDwY4wJ/+3dP6KZIFUgU5KHponbYMJu/MTvTJG7fD/fgyB5z8lI+OzH238=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762537722; c=relaxed/simple;
-	bh=tvD9gG0Rr9652jF+dmwkHloaVheVup3vGLAOVr0Cclw=;
+	s=arc-20240116; t=1762538085; c=relaxed/simple;
+	bh=WU7NZ37QH/2z1O6WY2Xy4ePTQRdnSUSd/yHy/qMlRHU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j9HundGX2t2NCgl7wFsdDNHcQRatUCRUWsABll+EQON4JieU5zlMFeMaM2WH+P+8VrXCXBX9DAo+gpcz1yASqpg07/BWafD8ORHMeMxTDPbDEV6l3+JwAMg6FWQSi98itYk8tcTBMvPOcqwdNHB+dOC+OkuJ9w6mQwYIHQbA9pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LbBrPZTH; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=kKlAB0Y2zZ0B5b3eB9egwNeDsAeJfjPnRSV0btaOYnhk0Qjpy4hfaPAmQtSvoEwT22bjEPYu1DZlXV3KiuNzgph5R0MhFeWHGE5AfQM4fn12AAOPiPkkIXDy0YU3FgTcxWXVl2Wdukzd4xMr6eNvSVpCuXebEA7iSiKeWB2VN30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dp9UCJ+Z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LbBrPZTH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C145C113D0;
-	Fri,  7 Nov 2025 17:48:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dp9UCJ+Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C74BC4CEF8;
+	Fri,  7 Nov 2025 17:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762537721;
-	bh=tvD9gG0Rr9652jF+dmwkHloaVheVup3vGLAOVr0Cclw=;
+	s=k20201202; t=1762538085;
+	bh=WU7NZ37QH/2z1O6WY2Xy4ePTQRdnSUSd/yHy/qMlRHU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LbBrPZTHP9790hXjz8W5gFMTY6U6EZ9xMudqw8cNp2fuc9XcIsvaJlR9Fn121/pFT
-	 ejvHsi9TvMhq0roGgWGdDfZAmWYSlWFkPNnCceH6F++LlzWYTD7XJDyGYYoqJZyunZ
-	 PK11xIlA/yLpWFsVbwKA7wcI3xyNcEeglB5idacnS7T3fe6ruSNiU2oBQO8LX/CAJx
-	 IAtDRtXU8qwuVZQCJGgEAgo4uH5yYQOqolvMsuvN7WsosjWLWpH2Ko4jOE4Xnz+FqL
-	 aFkj+iaaEf9qo4xSb8lufcme6AN4mstXJ/ZS6x3gu8fkBrJ/LUtVqlrGMH/VgoWAId
-	 m0Hl8nQayiW2w==
-Date: Fri, 7 Nov 2025 17:48:33 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Josua Mayer <josua@solid-run.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	b=Dp9UCJ+Z/kBOTJt3aGLyKq1STWGqL4lxGta15RFcLRyICCUFoaK6Rq0sfjWgvZ+OT
+	 n0sKB+wSxSUizC+aMLa7mcKpH+Rl8IdfwHrEX8ynDWNa5MI/7SnmknEgLwqGIiMRh4
+	 GhmwTybgneQ8atuqnI/EOSiCGk9pNwwagw9qQDCde0LiI5a74a/oDI3IzoadSkdG9T
+	 oIjHJeM7paDgpcjVrTlZLKGcJ4SIY0ZYk0rKJGk9fveb98CodKSuxZsA+KvK7uS83r
+	 ZdIEs2wSLsdIbbEQVskAEUy2B9bI4SpU5py4QuSGE49ISXKdNEdvEtd7nB4numSoyC
+	 dsMr8J3KiHOYg==
+Date: Fri, 7 Nov 2025 09:54:42 -0800
+From: Namhyung Kim <namhyung@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Frank Li <Frank.li@nxp.com>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jon Nettleton <jon@solid-run.com>,
-	Mikhail Anikin <mikhail.anikin@solid-run.com>,
-	Yazan Shhady <yazan.shhady@solid-run.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-input@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 02/11] dt-bindings: display: panel: ronbo,rb070d30:
- panel-common ref
-Message-ID: <20251107-cornbread-juggling-2e7e69bcac10@spud>
-References: <20251107-imx8mp-hb-iiot-v2-0-d8233ded999e@solid-run.com>
- <20251107-imx8mp-hb-iiot-v2-2-d8233ded999e@solid-run.com>
+	John Garry <john.g.garry@oracle.com>,
+	James Clark <james.clark@linaro.org>,
+	Mike Leach <mike.leach@linaro.org>, Leo Yan <leo.yan@linux.dev>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-perf-users@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v2 3/5] perf vendor events arm64:: Add i.MX94 DDR
+ Performance Monitor metrics
+Message-ID: <aQ4yYi05pYL9j-Mt@google.com>
+References: <20250821-imx94-ddr-pmu-v2-0-052c6420605d@nxp.com>
+ <20250821-imx94-ddr-pmu-v2-3-052c6420605d@nxp.com>
+ <wlziowwtfqbhzsltffm4l3pxntev3lgjan44wfixztnk3gw5d7@z2selm5eczsq>
+ <aQ1Pp6GF6svXDXoy@google.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="E1JSShyRa8hSS1cg"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251107-imx8mp-hb-iiot-v2-2-d8233ded999e@solid-run.com>
+In-Reply-To: <aQ1Pp6GF6svXDXoy@google.com>
 
+On Thu, Nov 06, 2025 at 05:47:19PM -0800, Namhyung Kim wrote:
+> Hello,
+> 
+> On Tue, Nov 04, 2025 at 02:33:08PM +0800, Xu Yang wrote:
+> > Hi Namhyung,
+> > 
+> > Could you please take this one?
+> 
+> Yep, will add this patch to perf-tools-next soon.
 
---E1JSShyRa8hSS1cg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to perf-tools-next, thanks!
 
-On Fri, Nov 07, 2025 at 12:46:09PM +0100, Josua Mayer wrote:
-> Add missing ref on panel-common.yaml for this dsi panel so that common
-> properties can be shared.
->=20
-> Drop reset-gpios and backlight as they are already in panel-common.
->=20
-> Switch from additionalProperties to unevaluatedProperties so that common
-> panel properties are available without repeating them in this binding.
->=20
-> Notably panel-common defines the "port" property for linking panels to a
-> source - which was missing from this panel. Mark it as required.
->=20
-> Signed-off-by: Josua Mayer <josua@solid-run.com>
+Best regards,
+Namhyung
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
-
---E1JSShyRa8hSS1cg
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaQ4w8QAKCRB4tDGHoIJi
-0lf8AP9B3ouklPfp54vvg9I3TJdfddEIiCt1NbmFTMHP0V8FsgEAlb/T0FlPIhwK
-pozK27QDQ5mObhibwyqfrqzCa6WnmA4=
-=sj27
------END PGP SIGNATURE-----
-
---E1JSShyRa8hSS1cg--
