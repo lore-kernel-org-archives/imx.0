@@ -1,125 +1,326 @@
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE07253956
-	for <imx@lists.linux.dev>; Sat,  8 Nov 2025 03:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E5619005E
+	for <imx@lists.linux.dev>; Sat,  8 Nov 2025 08:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762572194; cv=none; b=n28C7PVoZwNg25/CZnN6/q1/W/2v2ew7BPPrI86bqqZ5Rk5ceM2QLRF4UBkegJv8VVl5pg98OX15y3lnriytjbm2DFwjmE6B/2j50yIFu2/Y9Lk7WWKi8mdMpcdtaR24JIteE8NqoVO3yCbUaj4upHriNg82y+O2PfEmZqfNz8Q=
+	t=1762591431; cv=none; b=gr2XHs/ADrqXgBjcy1I6AgIU8GzauVPmZn3mOcVLX2le9IFD0wV+qt/fFR7A7FcWsAYIrnNY86Vrcp8tC1sXH/CJzB5sFK3te3KiHmVLC26/fIvB41mlqktVQOkVL8jgaFwrug+DVQeQmj1UrmtTz50k0N+aHsTR6vYqNv4gXUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762572194; c=relaxed/simple;
-	bh=3db6kDgcp6ZBaCWoMiT07aEdoBIn2fyq56Cj1ZzUUFw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=CaaKVE8X34ol31IDBqyGYhdTb2gefY4lxtWPwySdQPlwG7sze+ZsIxHHGqqC77DM5e9dDArCBO1iWd7Hw9q2ROaashjuBP6bUjwLtRgbTtvZVFNHsiuXkWTVAYZf8ddNZX1GxHSOaFFSVvlGLCJeRzzOqwotsVGN5oXjVnGPxhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=WYG3dmFb; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1762591431; c=relaxed/simple;
+	bh=5o1jmw1ugnnlqthUeXKypat9tshdvTcJmP6bGzLfukw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eEb+XOkAmzauZ8hkZixX2EGRaVRyV8zaFlZA0CQoAvEgGinubbCJ6spPynlqn06WfsMsElIN1DMubB+nuXzG7TB3myXNZlwLg8j5UZCzMsQ/GU2ug3CT6g9uPiiEM081k4DRQ9IWBxaQAoH+YUgjSTtjtnTcEKtVDI/UN//bd+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoseli.org; spf=pass smtp.mailfrom=yoseli.org; dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b=jdvq+Ua5; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoseli.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoseli.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="WYG3dmFb"
-Received: from canpmsgout03.his.huawei.com (unknown [172.19.92.159])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4d3LjT040bzTh5b
-	for <imx@lists.linux.dev>; Sat,  8 Nov 2025 11:18:21 +0800 (CST)
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=qZpdxuNaZJ5yTrvmKWL9bmcWjXTZFnV3j45z8dY7gZo=;
-	b=WYG3dmFbG8rzR/MN5MvXPHAcQZowG4JneABCdOdvePd0iFkkb4zAHegLxioAyhiAdD703l7Jn
-	mxY8fVF2zjY3X8SV23ant75X/iLdJT9pAOguu6oKemTSKGqugFwfSPYtFRQj4tCq7m9CX2wxHTB
-	XSugBg9Q17r3T1oGSAMVO1U=
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4d3Lmz0SyfzpStp;
-	Sat,  8 Nov 2025 11:21:23 +0800 (CST)
-Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
-	by mail.maildlp.com (Postfix) with ESMTPS id 83D16180B69;
-	Sat,  8 Nov 2025 11:22:58 +0800 (CST)
-Received: from [127.0.0.1] (10.174.178.254) by dggpemf500013.china.huawei.com
- (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 8 Nov
- 2025 11:22:57 +0800
-Message-ID: <e564bcc0-c4ea-466c-b6a9-5bce5406c475@huawei.com>
-Date: Sat, 8 Nov 2025 11:22:56 +0800
+	dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b="jdvq+Ua5"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7685F43DB2;
+	Sat,  8 Nov 2025 08:43:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yoseli.org; s=gm1;
+	t=1762591421;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1BcSff+w7XN9iYMNztCvj5o73XF0ex3886lxRpX6opI=;
+	b=jdvq+Ua5v3P0+4sjeVU2QwvTQcdchBd48JjlGqw12TMjMJs/FNc+iWt3lAsKvW5LKRwfg2
+	fDE07lD46EAayqriwKSAxbVBS5aVYShSOyga8wwCFLYdIf/gADx+xwZo057hwWSSypBBLV
+	iuYi3aWbCm7ErYz5bNVNqDuhJy4MVm7xoKU0jQoAGM3tC+d11xReLI4JTLnXVBwo2oteBt
+	ND4N0OK70MUHg88zHzGw3sL9eRYS9wU+TRzH4K4dvt8Yh+qjVVdd6IfxiRL9GLhEnJoFYv
+	WhgOhjwTAm7YJA7+ZW/Ei9vUPb4K5TvesitIPnRfyeilXL8PMsGHXMqccbVEww==
+From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Greg Ungerer <gerg@linux-m68k.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ Olivia Mackall <olivia@selenic.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-m68k@lists.linux-m68k.org,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject:
+ Re: [PATCH v2 1/2] m68k: coldfire: Mark platform device resource arrays as
+ const
+Date: Sat, 08 Nov 2025 09:43:25 +0100
+Message-ID: <12775316.O9o76ZdvQC@jeanmichel-ms7b89>
+In-Reply-To: <aQ4YELHOH/38d2aL@lizhi-Precision-Tower-5810>
+References:
+ <20251107-b4-m5441x-add-rng-support-v2-0-f91d685832b9@yoseli.org>
+ <20251107-b4-m5441x-add-rng-support-v2-1-f91d685832b9@yoseli.org>
+ <aQ4YELHOH/38d2aL@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ext4: clear i_state_flags when alloc inode
-Content-Language: en-GB
-To: Haibo Chen <haibo.chen@nxp.com>
-CC: Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>,
-	Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>,
-	<linux-ext4@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<imx@lists.linux.dev>
-References: <20251104-ext4-v1-1-73691a0800f9@nxp.com>
-From: Baokun Li <libaokun1@huawei.com>
-In-Reply-To: <20251104-ext4-v1-1-73691a0800f9@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf500013.china.huawei.com (7.185.36.188)
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduledvtdelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtqhertddttdejnecuhfhrohhmpeflvggrnhdqofhitghhvghlucfjrghuthgsohhishcuoehjvggrnhhmihgthhgvlhdrhhgruhhtsghoihhsseihohhsvghlihdrohhrgheqnecuggftrfgrthhtvghrnhepffevhfduvdeludeugfdtleduuedvhfeuvdevgfeiieefieevteektdettdeifeetnecukfhppedvrgdtudemvgdtrgemudeileemjedugedtmedvrgegtdemfhefrggrmeejudejvgemudefsgdvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmeduieelmeejudegtdemvdgrgedtmehffegrrgemjedujegvmedufegsvddphhgvlhhopehjvggrnhhmihgthhgvlhdqmhhsjegskeelrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpehjvggrnhhmihgthhgvlhdrhhgruhhtsghoihhsseihohhsvghlihdrohhrghdpnhgspghrtghpthhtohepudegpdhrtghpthhtohephfhrrghnkhdrlhhisehngihprdgtohhmpdhrtghpthhtohepghgvrhhgsehlihhnuhigqdhmieekkhdrohhrghdprhgtphhtthhopehgvggvrhhtsehlihhnu
+ higqdhmieekkhdrohhrghdprhgtphhtthhopeholhhivhhirgesshgvlhgvnhhitgdrtghomhdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprghnrgdrohhrghdrrghupdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggv
+X-GND-Sasl: jeanmichel.hautbois@yoseli.org
 
-On 2025-11-04 16:12, Haibo Chen wrote:
-> i_state_flags used on 32-bit archs, need to clear this flag when
-> alloc inode.
-> Find this issue when umount ext4, sometimes track the inode as orphan
-> accidently, cause ext4 mesg dump.
->
-> Fixes: acf943e9768e ("ext4: fix checks for orphan inodes")
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Hi Frank,
 
-Looks good. Feel free to add:
+Le vendredi 7 novembre 2025, 17:02:24 heure normale d=E2=80=99Europe centra=
+le Frank Li=20
+a =C3=A9crit :
+> On Fri, Nov 07, 2025 at 11:29:43AM +0100, Jean-Michel Hautbois wrote:
+> > Add 'const' qualifier to all static resource arrays in device.c.
+> > These arrays are never modified at runtime, they are only read by
+> > platform device registration functions.
+> >=20
+> > Suggested-by: Frank Li <Frank.Li@nxp.com>
+> > Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+>=20
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Thanks. It must be noted though that it generates warnings when building:
 
-> ---
->  fs/ext4/ialloc.c | 1 -
->  fs/ext4/inode.c  | 1 -
->  fs/ext4/super.c  | 1 +
->  3 files changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
-> index ba4fd9aba1c14de56b89ebbeb4597f7becf947ff..b20a1bf866abedf3a768ee8a147f108ea09ecb01 100644
-> --- a/fs/ext4/ialloc.c
-> +++ b/fs/ext4/ialloc.c
-> @@ -1293,7 +1293,6 @@ struct inode *__ext4_new_inode(struct mnt_idmap *idmap,
->  		ei->i_csum_seed = ext4_chksum(csum, (__u8 *)&gen, sizeof(gen));
->  	}
->  
-> -	ext4_clear_state_flags(ei); /* Only relevant on 32-bit archs */
->  	ext4_set_inode_state(inode, EXT4_STATE_NEW);
->  
->  	ei->i_extra_isize = sbi->s_want_extra_isize;
-> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-> index a163c087137314c541ec10c011488c5392fb7011..bf6786d373ff57c32d5a84cfd73ea8a33cb68b16 100644
-> --- a/fs/ext4/inode.c
-> +++ b/fs/ext4/inode.c
-> @@ -5285,7 +5285,6 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
->  	ei->i_projid = make_kprojid(&init_user_ns, i_projid);
->  	set_nlink(inode, le16_to_cpu(raw_inode->i_links_count));
->  
-> -	ext4_clear_state_flags(ei);	/* Only relevant on 32-bit archs */
->  	ei->i_inline_off = 0;
->  	ei->i_dir_start_lookup = 0;
->  	ei->i_dtime = le32_to_cpu(raw_inode->i_dtime);
-> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-> index 33e7c08c9529c357d291f40269863398753dc650..3dcc9410c09a55d5dce2dbff388a97bf4f133818 100644
-> --- a/fs/ext4/super.c
-> +++ b/fs/ext4/super.c
-> @@ -1396,6 +1396,7 @@ static struct inode *ext4_alloc_inode(struct super_block *sb)
->  
->  	inode_set_iversion(&ei->vfs_inode, 1);
->  	ei->i_flags = 0;
-> +	ext4_clear_state_flags(ei);	/* Only relevant on 32-bit archs */
->  	spin_lock_init(&ei->i_raw_lock);
->  	ei->i_prealloc_node = RB_ROOT;
->  	atomic_set(&ei->i_prealloc_active, 0);
->
-> ---
-> base-commit: 9823120909776bbca58a3c55ef1f27d49283c1f3
-> change-id: 20251104-ext4-3f9647dcedd0
->
-> Best regards,
+  CC      arch/m68k/coldfire/device.o
+arch/m68k/coldfire/device.c:141:35: warning: initialization discards =E2=80=
+=98const=E2=80=99=20
+qualifier from pointer target type [-Wdiscarded-qualifiers]
+  141 |         .resource               =3D mcf_fec0_resources,
+      |                                   ^~~~~~~~~~~~~~~~~~
+arch/m68k/coldfire/device.c:178:35: warning: initialization discards =E2=80=
+=98const=E2=80=99=20
+qualifier from pointer target type [-Wdiscarded-qualifiers]
+  178 |         .resource               =3D mcf_fec1_resources,
+      |                                   ^~~~~~~~~~~~~~~~~~
+arch/m68k/coldfire/device.c:360:35: warning: initialization discards =E2=80=
+=98const=E2=80=99=20
+qualifier from pointer target type [-Wdiscarded-qualifiers]
+  360 |         .resource               =3D mcf_i2c0_resources,
+      |                                   ^~~~~~~~~~~~~~~~~~
+arch/m68k/coldfire/device.c:381:35: warning: initialization discards =E2=80=
+=98const=E2=80=99=20
+qualifier from pointer target type [-Wdiscarded-qualifiers]
+  381 |         .resource               =3D mcf_i2c1_resources,
+      |                                   ^~~~~~~~~~~~~~~~~~
+arch/m68k/coldfire/device.c:405:35: warning: initialization discards =E2=80=
+=98const=E2=80=99=20
+qualifier from pointer target type [-Wdiscarded-qualifiers]
+  405 |         .resource               =3D mcf_i2c2_resources,
+      |                                   ^~~~~~~~~~~~~~~~~~
+arch/m68k/coldfire/device.c:429:35: warning: initialization discards =E2=80=
+=98const=E2=80=99=20
+qualifier from pointer target type [-Wdiscarded-qualifiers]
+  429 |         .resource               =3D mcf_i2c3_resources,
+      |                                   ^~~~~~~~~~~~~~~~~~
+arch/m68k/coldfire/device.c:453:35: warning: initialization discards =E2=80=
+=98const=E2=80=99=20
+qualifier from pointer target type [-Wdiscarded-qualifiers]
+  453 |         .resource               =3D mcf_i2c4_resources,
+      |                                   ^~~~~~~~~~~~~~~~~~
+arch/m68k/coldfire/device.c:477:35: warning: initialization discards =E2=80=
+=98const=E2=80=99=20
+qualifier from pointer target type [-Wdiscarded-qualifiers]
+  477 |         .resource               =3D mcf_i2c5_resources,
+      |                                   ^~~~~~~~~~~~~~~~~~
+arch/m68k/coldfire/device.c:548:35: warning: initialization discards =E2=80=
+=98const=E2=80=99=20
+qualifier from pointer target type [-Wdiscarded-qualifiers]
+  548 |         .resource               =3D mcf_edma_resources,
+      |                                   ^~~~~~~~~~~~~~~~~~
+arch/m68k/coldfire/device.c:579:35: warning: initialization discards =E2=80=
+=98const=E2=80=99=20
+qualifier from pointer target type [-Wdiscarded-qualifiers]
+  579 |         .resource               =3D mcf_esdhc_resources,
+      |                                   ^~~~~~~~~~~~~~~~~~~
+arch/m68k/coldfire/device.c:620:21: warning: initialization discards =E2=80=
+=98const=E2=80=99=20
+qualifier from pointer target type [-Wdiscarded-qualifiers]
+  620 |         .resource =3D mcf5441x_flexcan0_resource,
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~
+
+JM
+
+>=20
+> > ---
+> >=20
+> >  arch/m68k/coldfire/device.c | 24 ++++++++++++------------
+> >  1 file changed, 12 insertions(+), 12 deletions(-)
+> >=20
+> > diff --git a/arch/m68k/coldfire/device.c b/arch/m68k/coldfire/device.c
+> > index
+> > b6958ec2a220cf91a78a14fc7fa18749451412f7..20adba27a687029ef53249bad71b3=
+42
+> > d563d612b 100644 --- a/arch/m68k/coldfire/device.c
+> > +++ b/arch/m68k/coldfire/device.c
+> > @@ -111,7 +111,7 @@ static struct fec_platform_data fec_pdata =3D {
+> >=20
+> >   *	block. It is Freescale's own hardware block. Some ColdFires
+> >   *	have 2 of these.
+> >   */
+> >=20
+> > -static struct resource mcf_fec0_resources[] =3D {
+> > +static const struct resource mcf_fec0_resources[] =3D {
+> >=20
+> >  	{
+> >  =09
+> >  		.start		=3D MCFFEC_BASE0,
+> >  		.end		=3D MCFFEC_BASE0 + MCFFEC_SIZE0 -=20
+1,
+> >=20
+> > @@ -148,7 +148,7 @@ static struct platform_device mcf_fec0 =3D {
+> >=20
+> >  #endif /* MCFFEC_BASE0 */
+> > =20
+> >  #ifdef MCFFEC_BASE1
+> >=20
+> > -static struct resource mcf_fec1_resources[] =3D {
+> > +static const struct resource mcf_fec1_resources[] =3D {
+> >=20
+> >  	{
+> >  =09
+> >  		.start		=3D MCFFEC_BASE1,
+> >  		.end		=3D MCFFEC_BASE1 + MCFFEC_SIZE1 -=20
+1,
+> >=20
+> > @@ -189,7 +189,7 @@ static struct platform_device mcf_fec1 =3D {
+> >=20
+> >   *	The ColdFire QSPI module is an SPI protocol hardware block used
+> >   *	on a number of different ColdFire CPUs.
+> >   */
+> >=20
+> > -static struct resource mcf_qspi_resources[] =3D {
+> > +static const struct resource mcf_qspi_resources[] =3D {
+> >=20
+> >  	{
+> >  =09
+> >  		.start		=3D MCFQSPI_BASE,
+> >  		.end		=3D MCFQSPI_BASE + MCFQSPI_SIZE -=20
+1,
+> >=20
+> > @@ -340,7 +340,7 @@ static struct platform_device mcf_qspi =3D {
+> >=20
+> >  #endif /* IS_ENABLED(CONFIG_SPI_COLDFIRE_QSPI) */
+> > =20
+> >  #if IS_ENABLED(CONFIG_I2C_IMX)
+> >=20
+> > -static struct resource mcf_i2c0_resources[] =3D {
+> > +static const struct resource mcf_i2c0_resources[] =3D {
+> >=20
+> >  	{
+> >  =09
+> >  		.start          =3D MCFI2C_BASE0,
+> >  		.end            =3D MCFI2C_BASE0 + MCFI2C_SIZE0 - 1,
+> >=20
+> > @@ -361,7 +361,7 @@ static struct platform_device mcf_i2c0 =3D {
+> >=20
+> >  };
+> >  #ifdef MCFI2C_BASE1
+> >=20
+> > -static struct resource mcf_i2c1_resources[] =3D {
+> > +static const struct resource mcf_i2c1_resources[] =3D {
+> >=20
+> >  	{
+> >  =09
+> >  		.start          =3D MCFI2C_BASE1,
+> >  		.end            =3D MCFI2C_BASE1 + MCFI2C_SIZE1 - 1,
+> >=20
+> > @@ -385,7 +385,7 @@ static struct platform_device mcf_i2c1 =3D {
+> >=20
+> >  #ifdef MCFI2C_BASE2
+> >=20
+> > -static struct resource mcf_i2c2_resources[] =3D {
+> > +static const struct resource mcf_i2c2_resources[] =3D {
+> >=20
+> >  	{
+> >  =09
+> >  		.start          =3D MCFI2C_BASE2,
+> >  		.end            =3D MCFI2C_BASE2 + MCFI2C_SIZE2 - 1,
+> >=20
+> > @@ -409,7 +409,7 @@ static struct platform_device mcf_i2c2 =3D {
+> >=20
+> >  #ifdef MCFI2C_BASE3
+> >=20
+> > -static struct resource mcf_i2c3_resources[] =3D {
+> > +static const struct resource mcf_i2c3_resources[] =3D {
+> >=20
+> >  	{
+> >  =09
+> >  		.start          =3D MCFI2C_BASE3,
+> >  		.end            =3D MCFI2C_BASE3 + MCFI2C_SIZE3 - 1,
+> >=20
+> > @@ -433,7 +433,7 @@ static struct platform_device mcf_i2c3 =3D {
+> >=20
+> >  #ifdef MCFI2C_BASE4
+> >=20
+> > -static struct resource mcf_i2c4_resources[] =3D {
+> > +static const struct resource mcf_i2c4_resources[] =3D {
+> >=20
+> >  	{
+> >  =09
+> >  		.start          =3D MCFI2C_BASE4,
+> >  		.end            =3D MCFI2C_BASE4 + MCFI2C_SIZE4 - 1,
+> >=20
+> > @@ -457,7 +457,7 @@ static struct platform_device mcf_i2c4 =3D {
+> >=20
+> >  #ifdef MCFI2C_BASE5
+> >=20
+> > -static struct resource mcf_i2c5_resources[] =3D {
+> > +static const struct resource mcf_i2c5_resources[] =3D {
+> >=20
+> >  	{
+> >  =09
+> >  		.start          =3D MCFI2C_BASE5,
+> >  		.end            =3D MCFI2C_BASE5 + MCFI2C_SIZE5 - 1,
+> >=20
+> > @@ -507,7 +507,7 @@ static struct mcf_edma_platform_data mcf_edma_data =
+=3D {
+> >=20
+> >  	.slavecnt		=3D ARRAY_SIZE(mcf_edma_map),
+> > =20
+> >  };
+> >=20
+> > -static struct resource mcf_edma_resources[] =3D {
+> > +static const struct resource mcf_edma_resources[] =3D {
+> >=20
+> >  	{
+> >  =09
+> >  		.start		=3D MCFEDMA_BASE,
+> >  		.end		=3D MCFEDMA_BASE + MCFEDMA_SIZE -=20
+1,
+> >=20
+> > @@ -560,7 +560,7 @@ static struct mcf_esdhc_platform_data mcf_esdhc_dat=
+a =3D
+> > {>=20
+> >  	.cd_type =3D ESDHC_CD_NONE,
+> > =20
+> >  };
+> >=20
+> > -static struct resource mcf_esdhc_resources[] =3D {
+> > +static const struct resource mcf_esdhc_resources[] =3D {
+> >=20
+> >  	{
+> >  =09
+> >  		.start =3D MCFSDHC_BASE,
+> >  		.end =3D MCFSDHC_BASE + MCFSDHC_SIZE - 1,
+> >=20
+> > @@ -590,7 +590,7 @@ static struct flexcan_platform_data
+> > mcf5441x_flexcan_info =3D {>=20
+> >  	.clock_frequency =3D 120000000,
+> > =20
+> >  };
+> >=20
+> > -static struct resource mcf5441x_flexcan0_resource[] =3D {
+> > +static const struct resource mcf5441x_flexcan0_resource[] =3D {
+> >=20
+> >  	{
+> >  =09
+> >  		.start =3D MCFFLEXCAN_BASE0,
+> >  		.end =3D MCFFLEXCAN_BASE0 + MCFFLEXCAN_SIZE,
+> >=20
+> > --
+> > 2.39.5
+
+
 
 
