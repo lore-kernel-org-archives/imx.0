@@ -1,79 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1706D748F;
-	Sat,  8 Nov 2025 03:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE07253956
+	for <imx@lists.linux.dev>; Sat,  8 Nov 2025 03:23:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762570835; cv=none; b=ez+2iBHJahSV28XGhuyQB1AC0jkaJ864/1E/Z5eNuSf5t8CtEzokz4w+mSGKkJd0FLM0xXT2ghz88zGAIkBD+4U/6L3mLk4zXcvisFSQSQweaUfHFbRModwbO8uRqNUP/0VEnET1JjuMgZtbfLbodjmlOmI4gqUKmVkgJIS94hY=
+	t=1762572194; cv=none; b=n28C7PVoZwNg25/CZnN6/q1/W/2v2ew7BPPrI86bqqZ5Rk5ceM2QLRF4UBkegJv8VVl5pg98OX15y3lnriytjbm2DFwjmE6B/2j50yIFu2/Y9Lk7WWKi8mdMpcdtaR24JIteE8NqoVO3yCbUaj4upHriNg82y+O2PfEmZqfNz8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762570835; c=relaxed/simple;
-	bh=Vy1J3SyqFWlVAbP05a62I5YuDOrB6SkejVaOSzy3d98=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=CPDUddtL9N603V8zwmoA50qpSxUEqDo57uUqrZcWBXcp2Pju10cSdYtJk9MJRXN7lpsEBIf3aCm/J14FJ+LRHbrN0ntrGSOFtEZxdg6S9ltKYDQZZmbBhdX2M1ZeHJPY5f9vRshDU3cCTS50Yc63jshgC+M9nyeCiK1E1EVXbvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XZT0FYEl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762572194; c=relaxed/simple;
+	bh=3db6kDgcp6ZBaCWoMiT07aEdoBIn2fyq56Cj1ZzUUFw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=CaaKVE8X34ol31IDBqyGYhdTb2gefY4lxtWPwySdQPlwG7sze+ZsIxHHGqqC77DM5e9dDArCBO1iWd7Hw9q2ROaashjuBP6bUjwLtRgbTtvZVFNHsiuXkWTVAYZf8ddNZX1GxHSOaFFSVvlGLCJeRzzOqwotsVGN5oXjVnGPxhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=WYG3dmFb; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XZT0FYEl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4588C19421;
-	Sat,  8 Nov 2025 03:00:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762570834;
-	bh=Vy1J3SyqFWlVAbP05a62I5YuDOrB6SkejVaOSzy3d98=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=XZT0FYElu90WYbbDSDLHzO9cbv4q5shUgjxmKjjKxTVM5+mIcqErRxRruQJNdVvL7
-	 xSQ3vTiR6eJ450D1K7D+0ReR3Wrwl4jo1QTrC7tgzYRsd+yIL4fHEB4VLC88/fzUt3
-	 48ZF9LtSUEPqX5uOisLh2v/94cIR4OWP1kMb/YG/dGiq6BgIizcIErnUBgMJyS47nN
-	 GdjuQhYIjuQx19B2drWR+1KFQt8Sid8nYNPl4zXExJmj53pEHt5kCNhcsMId3qGL6B
-	 +k7jL1KnjsvdXfkPvw6MMcGhYZ2vtXolgy0ZJU8rjsvf099B1HLReSqMDPfoo9/Rju
-	 f+gJzCD68VteA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33E4A3A40FCA;
-	Sat,  8 Nov 2025 03:00:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="WYG3dmFb"
+Received: from canpmsgout03.his.huawei.com (unknown [172.19.92.159])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4d3LjT040bzTh5b
+	for <imx@lists.linux.dev>; Sat,  8 Nov 2025 11:18:21 +0800 (CST)
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=qZpdxuNaZJ5yTrvmKWL9bmcWjXTZFnV3j45z8dY7gZo=;
+	b=WYG3dmFbG8rzR/MN5MvXPHAcQZowG4JneABCdOdvePd0iFkkb4zAHegLxioAyhiAdD703l7Jn
+	mxY8fVF2zjY3X8SV23ant75X/iLdJT9pAOguu6oKemTSKGqugFwfSPYtFRQj4tCq7m9CX2wxHTB
+	XSugBg9Q17r3T1oGSAMVO1U=
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4d3Lmz0SyfzpStp;
+	Sat,  8 Nov 2025 11:21:23 +0800 (CST)
+Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
+	by mail.maildlp.com (Postfix) with ESMTPS id 83D16180B69;
+	Sat,  8 Nov 2025 11:22:58 +0800 (CST)
+Received: from [127.0.0.1] (10.174.178.254) by dggpemf500013.china.huawei.com
+ (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Sat, 8 Nov
+ 2025 11:22:57 +0800
+Message-ID: <e564bcc0-c4ea-466c-b6a9-5bce5406c475@huawei.com>
+Date: Sat, 8 Nov 2025 11:22:56 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: fec: correct rx_bytes statistic for the case
- SHIFT16
- is set
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176257080700.1232193.7245500159998786642.git-patchwork-notify@kernel.org>
-Date: Sat, 08 Nov 2025 03:00:07 +0000
-References: <20251106021421.2096585-1-wei.fang@nxp.com>
-In-Reply-To: <20251106021421.2096585-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: shenwei.wang@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- eric@nelint.com, imx@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ext4: clear i_state_flags when alloc inode
+Content-Language: en-GB
+To: Haibo Chen <haibo.chen@nxp.com>
+CC: Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>,
+	Zhang Yi <yi.zhang@huawei.com>, Jan Kara <jack@suse.cz>,
+	<linux-ext4@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<imx@lists.linux.dev>
+References: <20251104-ext4-v1-1-73691a0800f9@nxp.com>
+From: Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <20251104-ext4-v1-1-73691a0800f9@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf500013.china.huawei.com (7.185.36.188)
 
-Hello:
+On 2025-11-04 16:12, Haibo Chen wrote:
+> i_state_flags used on 32-bit archs, need to clear this flag when
+> alloc inode.
+> Find this issue when umount ext4, sometimes track the inode as orphan
+> accidently, cause ext4 mesg dump.
+>
+> Fixes: acf943e9768e ("ext4: fix checks for orphan inodes")
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Looks good. Feel free to add:
 
-On Thu,  6 Nov 2025 10:14:21 +0800 you wrote:
-> Two additional bytes in front of each frame received into the RX FIFO if
-> SHIFT16 is set, so we need to subtract the extra two bytes from pkt_len
-> to correct the statistic of rx_bytes.
-> 
-> Fixes: 3ac72b7b63d5 ("net: fec: align IP header in hardware")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> 
-> [...]
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
 
-Here is the summary with links:
-  - [net] net: fec: correct rx_bytes statistic for the case SHIFT16 is set
-    https://git.kernel.org/netdev/net/c/ad17e7e92a7c
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> ---
+>  fs/ext4/ialloc.c | 1 -
+>  fs/ext4/inode.c  | 1 -
+>  fs/ext4/super.c  | 1 +
+>  3 files changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/fs/ext4/ialloc.c b/fs/ext4/ialloc.c
+> index ba4fd9aba1c14de56b89ebbeb4597f7becf947ff..b20a1bf866abedf3a768ee8a147f108ea09ecb01 100644
+> --- a/fs/ext4/ialloc.c
+> +++ b/fs/ext4/ialloc.c
+> @@ -1293,7 +1293,6 @@ struct inode *__ext4_new_inode(struct mnt_idmap *idmap,
+>  		ei->i_csum_seed = ext4_chksum(csum, (__u8 *)&gen, sizeof(gen));
+>  	}
+>  
+> -	ext4_clear_state_flags(ei); /* Only relevant on 32-bit archs */
+>  	ext4_set_inode_state(inode, EXT4_STATE_NEW);
+>  
+>  	ei->i_extra_isize = sbi->s_want_extra_isize;
+> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+> index a163c087137314c541ec10c011488c5392fb7011..bf6786d373ff57c32d5a84cfd73ea8a33cb68b16 100644
+> --- a/fs/ext4/inode.c
+> +++ b/fs/ext4/inode.c
+> @@ -5285,7 +5285,6 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
+>  	ei->i_projid = make_kprojid(&init_user_ns, i_projid);
+>  	set_nlink(inode, le16_to_cpu(raw_inode->i_links_count));
+>  
+> -	ext4_clear_state_flags(ei);	/* Only relevant on 32-bit archs */
+>  	ei->i_inline_off = 0;
+>  	ei->i_dir_start_lookup = 0;
+>  	ei->i_dtime = le32_to_cpu(raw_inode->i_dtime);
+> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+> index 33e7c08c9529c357d291f40269863398753dc650..3dcc9410c09a55d5dce2dbff388a97bf4f133818 100644
+> --- a/fs/ext4/super.c
+> +++ b/fs/ext4/super.c
+> @@ -1396,6 +1396,7 @@ static struct inode *ext4_alloc_inode(struct super_block *sb)
+>  
+>  	inode_set_iversion(&ei->vfs_inode, 1);
+>  	ei->i_flags = 0;
+> +	ext4_clear_state_flags(ei);	/* Only relevant on 32-bit archs */
+>  	spin_lock_init(&ei->i_raw_lock);
+>  	ei->i_prealloc_node = RB_ROOT;
+>  	atomic_set(&ei->i_prealloc_active, 0);
+>
+> ---
+> base-commit: 9823120909776bbca58a3c55ef1f27d49283c1f3
+> change-id: 20251104-ext4-3f9647dcedd0
+>
+> Best regards,
 
 
