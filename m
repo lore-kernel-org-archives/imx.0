@@ -1,526 +1,142 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF0E1A58D
-	for <imx@lists.linux.dev>; Sun,  9 Nov 2025 21:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C7B1A58D;
+	Sun,  9 Nov 2025 21:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762724737; cv=none; b=QFV5fABoG0cILjQRVa6TNrv9VS6b2Ouyk9K6nLqqXyyf2EhZbZw5bgzXS8g5k1VbDgsHmPhIW+tXttH2vz3hRpPgFx461dSNNqA+g3kSJvvR/oN3xi8WVABLVCcc5HTyZ9TrUCWxbnzcEJfkaqifW57CsG50FIGAyftHsk1Yruc=
+	t=1762724932; cv=none; b=TywQlqDcV7wjAoTj5bzOoM31ejOjH0yUbU2mCRXw7PdjsVvgM3fddskHcrNi2xu3bbzLo1FkhUb0TeD2uhEQCZJSYuMYgiTdeIGrhFbHnSUyIoUF/dcmZMV2S/xok2CIv6guRCQYjA7vzIwvO130BbAi1cHK6IRRu9Hbc+ZBagI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762724737; c=relaxed/simple;
-	bh=tSZxGlnXBnq7838TNSON9kqtz4vvu0mn0wFZkfTEnaA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cW7gyYsoDJjFTgkdTLx+7LntA2KiFer5GjBDvzQaN0w3qaSO/pMZX1NDaVWzRS83x8g73jEDW9ugZBr56TqA5iI94i7A/exer/Io29EhQV32PdpbzyDsp0Y/G88Hb+KF8hAIed/ZZn5rcKXGnETE0K09aY6Y7tSCT3eHe7vozek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kSfzJThB; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762724932; c=relaxed/simple;
+	bh=Q2KbBtdvFBz63OxXv1wztUo9rT/L1z8KKdXs98sTjzo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TgbMKLKouuJ3FBry8ehwnB3SV6hpezvUn2ZS1f/YzTtnJHmRPNlLq+SiSnxn5dFit/StsLy7sYXFX14cOm1CkA0vJd/BFuJD39gfjZnubZ6nrJoVEFxvtnayykIn+SZtPGEb8q0HfU75L2N/5h0UvkMidkzdVcM3O04T7lDA1sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ag2QPTyW; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kSfzJThB"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-4ed861eb98cso29065381cf.3
-        for <imx@lists.linux.dev>; Sun, 09 Nov 2025 13:45:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762724735; x=1763329535; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yNrJmLaCsrgBc2B+SAbFKGUOJ+6J2+s6460zXxnPNWY=;
-        b=kSfzJThB+EGNWn8oJrBqntEa9rlLTNhOPs+XeCk8gKBBobY7uJIisXYEO2aCgY1+ud
-         7w22SDyuRdiUpElxjBvU4fDIv5eWfN+QUd1bjoOJH+KahOTdCYu1k8Jvi73k42YXFAwU
-         UvpN4MMIM0GuDBHNVMdQAyluFM1KVDaqIFjWChTBLu1ZGz18QIUFH5roqlRMZRsPz7mt
-         vQ/XLYRcsxy2zYcM9vagXBkZoMggM7k7U7LVqeCIt/qHW5quHIueARD9doatLsEYi6DV
-         2yJYKyTyKng46VOn13JIXi7hBBN5ATSuATacwAQ33GvnamaIFmOe3HdzR16nWrALA6Jj
-         bQaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762724735; x=1763329535;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yNrJmLaCsrgBc2B+SAbFKGUOJ+6J2+s6460zXxnPNWY=;
-        b=LfnlOuVj8FtQfTk7eBeuL91PhZdcvp0fg1H3YWFZqP+E63xdN4ljVjJcPcmWf/KqdM
-         vdagg7hZcktiuFs/tvh69pDdzFjQnaVTC4q+JEPwVl4/EPNa9IjsekZMZigz6KYqBJyS
-         PlSFOvBClDlt6oJClQONfrHdcxiF7Nk4Nr/5zD2l7QwAbWXi8D0qeerexrAIDmOwnU6e
-         VaLEQ812x7tGH8u30IKrvxqljAc00No+ppS9u+ihKPwSsmItDUigeOdAMNBLjFdx0zpm
-         jOd6ATKTE4U7GTgrLg4phizkGpf6gjwiOP36TVgBgFrwYmT6zxfWDL696QUXpXJoS6e7
-         0Nlg==
-X-Forwarded-Encrypted: i=1; AJvYcCUf2zrfq0ZgnXXFC1mWJr/NCbUaxr8WruAWV0POHqUL4ACN+uTa+bVs3e1zOrClBjWIzbs=@lists.linux.dev
-X-Gm-Message-State: AOJu0YydJ8yZdXI4i/kMXX/PaCfPEmTe92TzCKMfL8fkk2LHtCaa/bs2
-	ul4fKlSOw51wD5eOAIWx4t3AMHAP7PvUdStMN1EWnZkyGr0Ln2nd5myB
-X-Gm-Gg: ASbGncvciS4R75+L3AU8mlRCnSsbNP+CIScOkZXOoooTiJI6WpR1JgkjDrYVOJf4rP4
-	VN5ZEfqC6aRZnm2Bjwjq0C5Jdh7nq3Ecuzx5CtHjnL5wf1pDGotBl2liu/c2f6luP2Y4/ZQ9cK+
-	jQGKNy7RKWu5eSjH6ud6BEpBH2yi+nM4hP6zZRjxQbmtZUqINP4blTiotvDc/Zaa9v24Yqf/OJG
-	U5LnANWDBb8BYm9xl4Wa2ayVuin9o1LqBtyuNsvxPzE0c0kpvEbb/VscZCztYYqq3lUNO1Kcp90
-	MwEGBwpkljgoMb9X0z+KI8aQeToxf4Io+fK7sd9sPFkGOLonNoCLJ2ltecZcdAgVXAR3kuf1Uga
-	33vbYNgXephIqYiArJ3oKlqbLUh6Jh29QrgGqKlCs+cz1pgNMxlWig3+5+fS23Spil8APKo2CFZ
-	oPAIoEFWq9Hf9d6IZAzzqv6uMbv2UE
-X-Google-Smtp-Source: AGHT+IGOPudXIs3dJtU5un3OT6hJM+whov8IiY7UK+1C1iDPNZNiyG2w606NwSkW5iHJyvIjBOSNRQ==
-X-Received: by 2002:ac8:58d1:0:b0:4d8:67fb:418a with SMTP id d75a77b69052e-4eda4e7b58cmr68519771cf.2.1762724734687;
-        Sun, 09 Nov 2025 13:45:34 -0800 (PST)
-Received: from rogerio-laptop.home ([142.188.15.215])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4eda578532csm34422821cf.19.2025.11.09.13.45.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Nov 2025 13:45:33 -0800 (PST)
-From: Rogerio Pimentel <rpimentel.silva@gmail.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de
-Cc: kernel@pengutronix.de,
-	festevam@gmail.com,
-	alexander.stein@ew.tq-group.com,
-	dario.binacchi@amarulasolutions.com,
-	marex@denx.de,
-	Markus.Niebel@tq-group.com,
-	y.moog@phytec.de,
-	joao.goncalves@toradex.com,
-	frieder.schrempf@kontron.de,
-	josua@solid-run.com,
-	francesco.dolcini@toradex.com,
-	primoz.fiser@norik.com,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Rogerio Pimentel <rpimentel.silva@gmail.com>,
-	Xiaofeng Wei <xiaofeng.wei@nxp.com>
-Subject: [PATCH v4 2/2] arm64: dts: add support for NXP i.MX8MP FRDM board
-Date: Sun,  9 Nov 2025 16:45:15 -0500
-Message-Id: <20251109214515.121742-2-rpimentel.silva@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20251109214515.121742-1-rpimentel.silva@gmail.com>
-References: <20251109214515.121742-1-rpimentel.silva@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ag2QPTyW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762724931; x=1794260931;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Q2KbBtdvFBz63OxXv1wztUo9rT/L1z8KKdXs98sTjzo=;
+  b=Ag2QPTyWEUdn56jVr9gCO43OYvPN9nD1wEm7d+Ism6Wi8bpg8gvnakos
+   BbcI8Bek7QgSRpH85LLZASJVPWsRkwPLYaviRCASRnDEa58/GVUEASn0k
+   ZAtZq0e+bV5ovJFW0ldJ08ATtd0Yr1wGy67AL6NruARajUCKK/YOGb0Lo
+   /dTFe3JJavIkyauqW7fZY5eNc+DBEGyCRUnhQO5kLtw/1xccwyvnHBJid
+   ymW/1ygyY9yDvyRwiWAfRidN6GEUgAWGGVQyPw4iYG8nZNcbm5ssiYzug
+   GoBjPlq9HiUx7MqmiLKvRISskv2Efr389JmgTFThY8PlPDSamhzT+uSjq
+   w==;
+X-CSE-ConnectionGUID: Q9Vqfa+3Q7euCErnF/cbKw==
+X-CSE-MsgGUID: N1lDt/vfRIe8zuHIny3qHg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11608"; a="82408603"
+X-IronPort-AV: E=Sophos;i="6.19,292,1754982000"; 
+   d="scan'208";a="82408603"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2025 13:48:50 -0800
+X-CSE-ConnectionGUID: yZi8cpxlTAmH/01aimhL0A==
+X-CSE-MsgGUID: 016R6T/9TRG4taXsPRCqpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,292,1754982000"; 
+   d="scan'208";a="188775217"
+Received: from lkp-server01.sh.intel.com (HELO 6ef82f2de774) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 09 Nov 2025 13:48:47 -0800
+Received: from kbuild by 6ef82f2de774 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vIDHB-0002Qd-2b;
+	Sun, 09 Nov 2025 21:48:45 +0000
+Date: Mon, 10 Nov 2025 05:48:29 +0800
+From: kernel test robot <lkp@intel.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-media@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@iki.fi>
+Subject: Re: [PATCH v1 3/6] media: imx-mipi-csis: Implement the
+ .set_routing() operation
+Message-ID: <202511100531.4skNcchV-lkp@intel.com>
+References: <20251107015813.5834-4-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251107015813.5834-4-laurent.pinchart@ideasonboard.com>
 
-The FRDM-i.MX8MP is an NXP development platform based on the i.MX8M Plus
-SoC, featuring a quad Cortex-A53, Cortex-M7 co-processor, 4GB LPDDR4,
-32GB eMMC, Wi-Fi 6/Bluetooth 5.4/802.15.4 tri-radio, Ethernet, HDMI/MIPI
-display interfaces, camera connectors, and standard expansion headers.
+Hi Laurent,
 
-Based on the device tree found in the NXP repository at github
-https://github.com/nxp-imx-support/meta-imx-frdm and on imx8mp-evk
-board kernel mainline device tree.
+kernel test robot noticed the following build errors:
 
-This is a basic device tree supporting:
+[auto build test ERROR on dcb6fa37fd7bc9c3d2b066329b0d27dedf8becaa]
 
- - Quad Cortex-A53
- - 4GB LPDDR4 DRAM
- - PCA9450C PMIC with regulators
- - Two NXP PCAL6416 GPIO expanders
- - RGB LEDs via GPIO expander
- - I2C1, I2C2, I2C3 controllers
- - UART2 (console) and UART3 (with RTS/CTS)
- - USDHC3 (8-bit eMMC)
- - SNVS power key (onboard power button)
+url:    https://github.com/intel-lab-lkp/linux/commits/Laurent-Pinchart/media-imx-mipi-csis-Add-VC-related-register-fields/20251107-100134
+base:   dcb6fa37fd7bc9c3d2b066329b0d27dedf8becaa
+patch link:    https://lore.kernel.org/r/20251107015813.5834-4-laurent.pinchart%40ideasonboard.com
+patch subject: [PATCH v1 3/6] media: imx-mipi-csis: Implement the .set_routing() operation
+config: arm-randconfig-003-20251110 (https://download.01.org/0day-ci/archive/20251110/202511100531.4skNcchV-lkp@intel.com/config)
+compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251110/202511100531.4skNcchV-lkp@intel.com/reproduce)
 
-Signed-off-by: Rogerio Pimentel <rpimentel.silva@gmail.com>
-Signed-off-by: Xiaofeng Wei <xiaofeng.wei@nxp.com>
----
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511100531.4skNcchV-lkp@intel.com/
 
-Changes in v4:
+All errors (new ones prefixed by >>):
 
- - Change label pcal6416 to pcal6416_0
+>> drivers/media/platform/nxp/imx-mipi-csis.c:1164:32: error: initializer element is not a compile-time constant
+                   .code = mipi_csis_formats[0].code,
+                           ~~~~~~~~~~~~~~~~~~~~~^~~~
+   1 error generated.
 
-Changes in v3:
 
- - Removing the following tags and names added
- on v2 by mistake:
- Reviewed-by: Daniel Baluta <daniel.baluta@gmail.com>
- Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
- Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+vim +1164 drivers/media/platform/nxp/imx-mipi-csis.c
 
-Changes in v2:
+  1156	
+  1157	static int __mipi_csis_set_routing(struct v4l2_subdev *sd,
+  1158					   struct v4l2_subdev_state *state,
+  1159					   struct v4l2_subdev_krouting *routing)
+  1160	{
+  1161		static const struct v4l2_mbus_framefmt format = {
+  1162			.width = MIPI_CSIS_DEF_PIX_WIDTH,
+  1163			.height = MIPI_CSIS_DEF_PIX_HEIGHT,
+> 1164			.code = mipi_csis_formats[0].code,
+  1165			.field = V4L2_FIELD_NONE,
+  1166			.colorspace = V4L2_XFER_FUNC_709,
+  1167			.ycbcr_enc = V4L2_YCBCR_ENC_601,
+  1168			.quantization = V4L2_QUANTIZATION_LIM_RANGE,
+  1169			.xfer_func = V4L2_XFER_FUNC_SRGB,
+  1170		};
+  1171		int ret;
+  1172	
+  1173		ret = v4l2_subdev_routing_validate(sd, routing,
+  1174						   V4L2_SUBDEV_ROUTING_NO_1_TO_N);
+  1175		if (ret)
+  1176			return ret;
+  1177	
+  1178		/* Only a single route is supported for now. */
+  1179		if (routing->num_routes != 1 ||
+  1180		    !(routing->routes[0].flags & V4L2_SUBDEV_ROUTE_FL_ACTIVE))
+  1181			return -EINVAL;
+  1182	
+  1183		ret = v4l2_subdev_set_routing_with_fmt(sd, state, routing, &format);
+  1184		if (ret)
+  1185			return ret;
+  1186	
+  1187		return 0;
+  1188	}
+  1189	
 
- - Fixed dt-binding schema warnings
- - Renamed nodes 'red, green and blue' to
-   'led-0, led-1 and led-2'
- - Renamed led labels 'led-0, led-1 and led-2'
-   to 'red, green and blue'
- - Added Reviewed-by and Signed-off-by tags
-
- arch/arm64/boot/dts/freescale/Makefile        |   1 +
- arch/arm64/boot/dts/freescale/imx8mp-frdm.dts | 355 ++++++++++++++++++
- 2 files changed, 356 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mp-frdm.dts
-
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 75676b908299..323e98c0cb48 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -206,6 +206,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk3.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-picoitx.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mp-frdm.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-hummingboard-mate.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-hummingboard-pro.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mp-hummingboard-pulse.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-frdm.dts b/arch/arm64/boot/dts/freescale/imx8mp-frdm.dts
-new file mode 100644
-index 000000000000..242cce2f2029
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-frdm.dts
-@@ -0,0 +1,355 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2019 NXP
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx8mp.dtsi"
-+
-+/ {
-+	model = "NXP i.MX8MPlus FRDM board";
-+	compatible = "fsl,imx8mp-frdm", "fsl,imx8mp";
-+
-+	chosen {
-+		stdout-path = &uart2;
-+	};
-+
-+	gpio-leds {
-+		compatible = "gpio-leds";
-+
-+		led-0 {
-+			label = "red";
-+			gpios = <&pcal6416_0 13 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+
-+		led-1 {
-+			label = "green";
-+			gpios = <&pcal6416_0 14 GPIO_ACTIVE_HIGH>;
-+			default-state = "on";
-+		};
-+
-+		led-2 {
-+			label = "blue";
-+			gpios = <&pcal6416_0 15 GPIO_ACTIVE_HIGH>;
-+			default-state = "off";
-+		};
-+	};
-+
-+	memory@40000000 {
-+		device_type = "memory";
-+		reg = <0x0 0x40000000 0 0xc0000000>,
-+		      <0x1 0x00000000 0 0x40000000>;
-+	};
-+};
-+
-+&A53_0 {
-+	cpu-supply = <&reg_arm>;
-+};
-+
-+&A53_1 {
-+	cpu-supply = <&reg_arm>;
-+};
-+
-+&A53_2 {
-+	cpu-supply = <&reg_arm>;
-+};
-+
-+&A53_3 {
-+	cpu-supply = <&reg_arm>;
-+};
-+
-+&i2c1 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c1>;
-+	status = "okay";
-+
-+	pmic@25 {
-+		compatible = "nxp,pca9450c";
-+		reg = <0x25>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_pmic>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
-+
-+		regulators {
-+			BUCK1 {
-+				regulator-name = "BUCK1";
-+				regulator-min-microvolt = <720000>;
-+				regulator-max-microvolt = <1000000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+				regulator-ramp-delay = <3125>;
-+			};
-+
-+			reg_arm: BUCK2 {
-+				regulator-name = "BUCK2";
-+				regulator-min-microvolt = <720000>;
-+				regulator-max-microvolt = <1025000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+				regulator-ramp-delay = <3125>;
-+				nxp,dvs-run-voltage = <950000>;
-+				nxp,dvs-standby-voltage = <850000>;
-+			};
-+
-+			BUCK4 {
-+				regulator-name = "BUCK4";
-+				regulator-min-microvolt = <3000000>;
-+				regulator-max-microvolt = <3600000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			reg_buck5: BUCK5 {
-+				regulator-name = "BUCK5";
-+				regulator-min-microvolt = <1650000>;
-+				regulator-max-microvolt = <1950000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			BUCK6 {
-+				regulator-name = "BUCK6";
-+				regulator-min-microvolt = <1045000>;
-+				regulator-max-microvolt = <1155000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			LDO1 {
-+				regulator-name = "LDO1";
-+				regulator-min-microvolt = <1650000>;
-+				regulator-max-microvolt = <1950000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			LDO3 {
-+				regulator-name = "LDO3";
-+				regulator-min-microvolt = <1710000>;
-+				regulator-max-microvolt = <1890000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			LDO5 {
-+				regulator-name = "LDO5";
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+		};
-+	};
-+
-+	pcal6416_0: gpio@20 {
-+		compatible = "nxp,pcal6416";
-+		reg = <0x20>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_pcal6416_0_int>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <16 IRQ_TYPE_LEVEL_LOW>;
-+		gpio-line-names = "CSI1_nRST",
-+			"CSI2_nRST",
-+			"DSI_CTP_RST",
-+			"EXT_PWREN1",
-+			"CAN_STBY",
-+			"EXP_P0_5",
-+			"EXP_P0_6",
-+			"P0_7",
-+			"LVDS0_BLT_EN",
-+			"LVDS1_BLT_EN",
-+			"LVDS0_CTP_RST",
-+			"LVDS1_CTP_RST",
-+			"SPK_PWREN",
-+			"RLED_GPIO",
-+			"GLED_GPIO",
-+			"BLED_GPIO";
-+	};
-+
-+	pcal6416_1: gpio@21 {
-+		compatible = "nxp,pcal6416";
-+		reg = <0x21>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_pcal6416_1_int>;
-+		interrupt-parent = <&gpio2>;
-+		interrupts = <11 IRQ_TYPE_LEVEL_LOW>;
-+		gpio-line-names = "P0_0",
-+			"P0_1",
-+			"AUD_nINT",
-+			"RTC_nINTA",
-+			"USB1_SS_SEL",
-+			"USB2_PWR_EN",
-+			"SPI_EXP_SEL",
-+			"P0_7",
-+			"W2_HOST_WAKE_SD_3V3",
-+			"W2_HOST_WAKE_BT_3V3",
-+			"EXP_WIFI_BT_PDN_3V3",
-+			"EXP_BT_RST_3V3",
-+			"W2_RST_IND_3V3",
-+			"SPI_nINT_3V3",
-+			"KEYM_PCIE_nWAKE",
-+			"P1_7";
-+	};
-+};
-+
-+&i2c2 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c2>;
-+	status = "okay";
-+};
-+
-+&i2c3 {
-+	clock-frequency = <400000>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_i2c3>;
-+	status = "okay";
-+};
-+
-+&snvs_pwrkey {
-+	status = "okay";
-+};
-+
-+&uart2 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart2>;
-+	status = "okay";
-+};
-+
-+&uart3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart3>;
-+	assigned-clocks = <&clk IMX8MP_CLK_UART3>;
-+	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_80M>;
-+	uart-has-rtscts;
-+	status = "okay";
-+};
-+
-+&usdhc3 {
-+	assigned-clocks = <&clk IMX8MP_CLK_USDHC3>;
-+	assigned-clock-rates = <400000000>;
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc3>;
-+	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-+	bus-width = <8>;
-+	non-removable;
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl_i2c1: i2c1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL	0x400001c2
-+			MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA	0x400001c2
-+		>;
-+	};
-+
-+	pinctrl_i2c2: i2c2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL	0x400001c2
-+			MX8MP_IOMUXC_I2C2_SDA__I2C2_SDA	0x400001c2
-+		>;
-+	};
-+
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C3_SCL__I2C3_SCL	0x400001c2
-+			MX8MP_IOMUXC_I2C3_SDA__I2C3_SDA	0x400001c2
-+		>;
-+	};
-+
-+	pinctrl_pmic: pmicgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03	0x000001c0
-+		>;
-+	};
-+
-+	pinctrl_pcal6416_0_int: pcal6416_0_int_grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_NAND_READY_B__GPIO3_IO16	0x146
-+		>;
-+	};
-+
-+	pinctrl_pcal6416_1_int: pcal6416_1_int_grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SD1_STROBE__GPIO2_IO11	0x146
-+		>;
-+	};
-+
-+	pinctrl_uart2: uart2grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX	0x140
-+			MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX	0x140
-+		>;
-+	};
-+
-+	pinctrl_uart3: uart3grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_ECSPI1_SCLK__UART3_DCE_RX	0x140
-+			MX8MP_IOMUXC_ECSPI1_MOSI__UART3_DCE_TX	0x140
-+			MX8MP_IOMUXC_ECSPI1_SS0__UART3_DCE_RTS	0x140
-+			MX8MP_IOMUXC_ECSPI1_MISO__UART3_DCE_CTS	0x140
-+		>;
-+	};
-+
-+	pinctrl_usdhc3: usdhc3grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK	0x190
-+			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD	0x1d0
-+			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0	0x1d0
-+			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1	0x1d0
-+			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2	0x1d0
-+			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3	0x1d0
-+			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4	0x1d0
-+			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5	0x1d0
-+			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6	0x1d0
-+			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7	0x1d0
-+			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE	0x190
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK	0x194
-+			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD	0x1d4
-+			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0	0x1d4
-+			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1	0x1d4
-+			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2	0x1d4
-+			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3	0x1d4
-+			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4	0x1d4
-+			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5	0x1d4
-+			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6	0x1d4
-+			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7	0x1d4
-+			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE	0x194
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK	0x196
-+			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD	0x1d6
-+			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0	0x1d6
-+			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1	0x1d6
-+			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2	0x1d6
-+			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3	0x1d6
-+			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4	0x1d6
-+			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5	0x1d6
-+			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6	0x1d6
-+			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7	0x1d6
-+			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE	0x196
-+		>;
-+	};
-+};
 -- 
-2.25.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
