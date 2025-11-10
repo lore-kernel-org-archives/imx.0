@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2102F99B5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8596B2FA0F3
 	for <imx@lists.linux.dev>; Mon, 10 Nov 2025 08:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762763318; cv=none; b=NYqgCS+6NS89sHcZdSWQ3rR8qOjGvjG39cpj12lkB4j1DBjY6bNmM0kjiLSpecJTEOu+31At36bBpcNve1Xh9/0Pe9bF7fV0dRVEw8+4TuYxROHr2uNuzk59z4565oxIf8m2V5zGHRmCGYjPu7SpSOX+3lLVxMRMhCncezoX9Hk=
+	t=1762763319; cv=none; b=YjwkR/a8W5kQ++97llqtMm/Agc97EmDYSMO58RASkaYGMcy0cQi6Ee9mcPKot3zE54xq/dv3nByu8AzBJfLwn1qPPmh9qz/FrUMMJsm8nTT39Uh3G7fiFwiu/oeq3icNTms/GRLVUfx/5wSXtwvT+ZFY7qcS5Ycu8S6NOLrmwjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762763318; c=relaxed/simple;
-	bh=kyu+20DkV5kinnkQIrgNeoTMEyekh1Z2TQjxvDpjCHE=;
+	s=arc-20240116; t=1762763319; c=relaxed/simple;
+	bh=EvtWBQFRZV7DO1p3ObWpe4+6Z7KE718cU+MX/WiuSB4=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QLg9n2+/+KR9FghI8k9/nAAC8OdXdYo3shE+VX3XE/foZokzbQlhgT73B/sL4fLhFeO/vMh2etyKgk6x/6AXFKMnS6SIUR4Bo7OW29TD7J2GYxaufVAti2MqcIMNsT4AJkA7XHI7dbm7zq+81V1NgjR9j86K78oh4ooReAX+l4Y=
+	 Content-Type:MIME-Version; b=W8Ow8Eh3N7M7fEelGWdFkiXVPVBrEgCVS3VrNnX4EDoQ6GHM6dGLLqvJiwZdn7AALFKo3HT0neHUtqGEncFlAv0DwY6OfbP2HXNAQDIr1G813AbErBfW0w9VTBK6pgrqvBilInnSPvQh+HeJusyj5w0+nNpo4SrZNAjWC0BVDTg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,20 +18,20 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vINGI-0006Qj-Bo; Mon, 10 Nov 2025 09:28:30 +0100
+	id 1vINGJ-0006Rp-SA; Mon, 10 Nov 2025 09:28:31 +0100
 Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vINGI-007zQs-00;
-	Mon, 10 Nov 2025 09:28:30 +0100
+	id 1vINGJ-007zQw-2A;
+	Mon, 10 Nov 2025 09:28:31 +0100
 Received: from pza by lupine with local (Exim 4.98.2)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vINGC-0000000048w-3mgZ;
-	Mon, 10 Nov 2025 09:28:24 +0100
-Message-ID: <6ec725f916737f2f25bf3ce4df412b4c07f6449e.camel@pengutronix.de>
-Subject: Re: [PATCH 2/6] media: staging: media: imx6-mipi-csi2: use
- devm_add_action_or_reset() to simplify code
+	id 1vINGJ-0000000049R-2T7U;
+	Mon, 10 Nov 2025 09:28:31 +0100
+Message-ID: <b198e853113e39397803d9651f7126566d269601.camel@pengutronix.de>
+Subject: Re: [PATCH 1/6] media: staging: media: imx6-mipi-csi2: replace
+ space with tab for alignment
 From: Philipp Zabel <p.zabel@pengutronix.de>
 To: Frank Li <Frank.Li@nxp.com>, Steve Longerbeam <slongerbeam@gmail.com>, 
  Mauro Carvalho Chehab	 <mchehab@kernel.org>, Greg Kroah-Hartman
@@ -41,10 +41,10 @@ To: Frank Li <Frank.Li@nxp.com>, Steve Longerbeam <slongerbeam@gmail.com>,
 Cc: imx@lists.linux.dev, linux-media@vger.kernel.org, 
 	linux-staging@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
 	linux-kernel@vger.kernel.org
-Date: Mon, 10 Nov 2025 09:28:24 +0100
-In-Reply-To: <20251107-stage-csi2-cleanup-v1-2-5d42535243ac@nxp.com>
+Date: Mon, 10 Nov 2025 09:28:31 +0100
+In-Reply-To: <20251107-stage-csi2-cleanup-v1-1-5d42535243ac@nxp.com>
 References: <20251107-stage-csi2-cleanup-v1-0-5d42535243ac@nxp.com>
-	 <20251107-stage-csi2-cleanup-v1-2-5d42535243ac@nxp.com>
+	 <20251107-stage-csi2-cleanup-v1-1-5d42535243ac@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.1-1+deb13u1 
@@ -60,67 +60,88 @@ X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expand
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
 On Fr, 2025-11-07 at 15:44 -0500, Frank Li wrote:
-> Use devm_add_action_or_reset() to simplify the code. No functional change=
-.
->=20
+> Replace space with tab to follow coding convention. No functional change.
+
+Which convention? To be honest, this feels a bit like unnecessary churn
+to me.
+
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>
 > ---
->  drivers/staging/media/imx/imx6-mipi-csi2.c | 16 ++++++++++++----
->  1 file changed, 12 insertions(+), 4 deletions(-)
+>  drivers/staging/media/imx/imx6-mipi-csi2.c | 92 +++++++++++++++---------=
+------
+>  1 file changed, 46 insertions(+), 46 deletions(-)
 >=20
 > diff --git a/drivers/staging/media/imx/imx6-mipi-csi2.c b/drivers/staging=
 /media/imx/imx6-mipi-csi2.c
-> index 42256441b881d9f132ad7ff899d6f1e35643b4ac..eba9a650030f5e380aa900b94=
-728ad375171c6a5 100644
+> index dd8c7b3233bccfc34b59e0f0ff813b36752e1526..42256441b881d9f132ad7ff89=
+9d6f1e35643b4ac 100644
 > --- a/drivers/staging/media/imx/imx6-mipi-csi2.c
 > +++ b/drivers/staging/media/imx/imx6-mipi-csi2.c
-> @@ -716,6 +716,14 @@ static int csi2_async_register(struct csi2_dev *csi2=
-)
->  	return ret;
->  }
+> @@ -23,65 +23,65 @@
+>   * there must be 5 pads: 1 input pad from sensor, and
+>   * the 4 virtual channel output pads
+>   */
+> -#define CSI2_SINK_PAD       0
+> -#define CSI2_NUM_SINK_PADS  1
+> -#define CSI2_NUM_SRC_PADS   4
+> -#define CSI2_NUM_PADS       5
+> +#define CSI2_SINK_PAD		0
+> +#define CSI2_NUM_SINK_PADS	1
+> +#define CSI2_NUM_SRC_PADS	4
+> +#define CSI2_NUM_PADS		5
 > =20
-> +static void csi2_nf_cleanup(void *data)
-> +{
-> +	struct csi2_dev *csi2 =3D data;
-> +
-> +	v4l2_async_nf_unregister(&csi2->notifier);
-> +	v4l2_async_nf_cleanup(&csi2->notifier);
-> +}
-> +
->  static int csi2_probe(struct platform_device *pdev)
->  {
->  	struct csi2_dev *csi2;
-> @@ -749,6 +757,10 @@ static int csi2_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
-> =20
-> +	ret =3D devm_add_action_or_reset(&pdev->dev, csi2_nf_cleanup, csi2);
-> +	if (ret)
-> +		return ret;
-> +
->  	csi2->pllref_clk =3D devm_clk_get(&pdev->dev, "ref");
->  	if (IS_ERR(csi2->pllref_clk)) {
->  		v4l2_err(&csi2->sd, "failed to get pll reference clock\n");
-> @@ -800,8 +812,6 @@ static int csi2_probe(struct platform_device *pdev)
->  	return 0;
-> =20
->  clean_notifier:
-> -	v4l2_async_nf_unregister(&csi2->notifier);
-> -	v4l2_async_nf_cleanup(&csi2->notifier);
->  	clk_disable_unprepare(csi2->dphy_clk);
->  pllref_off:
->  	clk_disable_unprepare(csi2->pllref_clk);
-> @@ -815,8 +825,6 @@ static void csi2_remove(struct platform_device *pdev)
->  	struct v4l2_subdev *sd =3D platform_get_drvdata(pdev);
->  	struct csi2_dev *csi2 =3D sd_to_dev(sd);
-> =20
-> -	v4l2_async_nf_unregister(&csi2->notifier);
-> -	v4l2_async_nf_cleanup(&csi2->notifier);
->  	v4l2_async_unregister_subdev(sd);
+>  /*
+>   * The default maximum bit-rate per lane in Mbps, if the
+>   * source subdev does not provide V4L2_CID_LINK_FREQ.
+>   */
+> -#define CSI2_DEFAULT_MAX_MBPS 849
+> +#define CSI2_DEFAULT_MAX_MBPS	849
 
-This effectively moves the notifier unregister after the subdev
-unregister. Is that safe to do?
+Personally, I like these changes.
 
+>  struct csi2_dev {
+> -	struct device          *dev;
+> -	struct v4l2_subdev      sd;
+> -	struct v4l2_async_notifier notifier;
+> -	struct media_pad       pad[CSI2_NUM_PADS];
+> -	struct clk             *dphy_clk;
+> -	struct clk             *pllref_clk;
+> -	struct clk             *pix_clk; /* what is this? */
+> -	void __iomem           *base;
+> -
+> -	struct v4l2_subdev	*remote;
+> -	unsigned int		remote_pad;
+> -	unsigned short		data_lanes;
+> +	struct device			*dev;
+> +	struct v4l2_subdev		sd;
+> +	struct v4l2_async_notifier	notifier;
+> +	struct media_pad		pad[CSI2_NUM_PADS];
+> +	struct clk			*dphy_clk;
+> +	struct clk			*pllref_clk;
+> +	struct clk			*pix_clk; /* what is this? */
+> +	void __iomem			*base;
+> +
+> +	struct v4l2_subdev		*remote;
+> +	unsigned int			remote_pad;
+> +	unsigned short			data_lanes;
+> =20
+>  	/* lock to protect all members below */
+> -	struct mutex lock;
+> +	struct mutex			lock;
+> =20
+> -	struct v4l2_mbus_framefmt format_mbus;
+> +	struct v4l2_mbus_framefmt	format_mbus;
+> =20
+> -	int                     stream_count;
+> -	struct v4l2_subdev      *src_sd;
+> -	bool                    sink_linked[CSI2_NUM_SRC_PADS];
+> +	int				stream_count;
+> +	struct v4l2_subdev		*src_sd;
+> +	bool				sink_linked[CSI2_NUM_SRC_PADS];
+>  };
+
+Here I'd prefer just a single space between type and identifier.
 
 regards
 Philipp
