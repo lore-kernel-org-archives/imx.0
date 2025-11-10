@@ -1,219 +1,88 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013018.outbound.protection.outlook.com [52.101.72.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F0323C4F3;
-	Mon, 10 Nov 2025 15:39:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762789167; cv=fail; b=JRrXx4FyBCN+kdyBkymsUdmx+gYhUtYLpJ+iceB8eRVjZMyzCAQglDmXt9HN7RMnPSOmdJ50KmcEALXjU9dCv2t7pto6pbOXoEwS4e+HLcNSmYIDn6YbU0kW1YMuWLORcoVCKMdSpNt0cw20InowgEIP5MtpLpSU6XVnoVh5OnY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762789167; c=relaxed/simple;
-	bh=3pzeKBf9DP8CGrezU+8M0HoBoD8XDPa0muyFOVzaUZs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=jh5LkwauxqIUGlLii1OrvS7tA9Vq3T7ovWxmhSshdRPDmJTEyBpTvDJCNwla8JQTMChICgA5FhTXuFpklkRK6+sCs8Gat2c891LcdiSpBcktPHl0bjKJ2SNsOkcpapjqWCwJ4F/LFwT3Cmt3zW5SiigpzbXmf4oHeohJ5XCeedA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=F9tKZ9RP; arc=fail smtp.client-ip=52.101.72.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DCD26F2AB;
+	Mon, 10 Nov 2025 15:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762790377; cv=none; b=TAwP6BCwZlR4BlxQy+WRDSI13yXifC62TZ9lcVvZ6pYOYZvLMQPUaRS4HVP71O8/JfvTVjgeLwKqGj5r5Z/cyuyttxGmUDgUpHZQuu0+VR3GtJI7AHjVIKpsPVSzPGNQZPhxMITfKZhS4GoTVGgGlE/ENKPcxLYzP4rNfrnUV4E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762790377; c=relaxed/simple;
+	bh=aVjo65n8JMiOdMaIDnZuK3b1Ua/36ApF5ZunmCQlPsA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sye40yQOkbv/ExVgTgFE+tRNMpYUYOcriv8kR/dZZ/DKAIAzDtv8K/EB59IuTQehtMWzbudsG84HZDG7u/9r8iXtNNYT/XqbMgI4AkfFTMkj1NsE2vAZGbEH3g3pcE5NrQcs+UzmPmDvRCWEw4uud7Fe3NyU7gCh+ZwyBrO+GmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Ox6XwAOd; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="F9tKZ9RP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AhIq/kmCZwzJG7H+8caFhzYrGviZzoncq9+baWsn3a1pOlFEPFI1UhEJ/QVtYF11+CXgaA3dv80w4ObYbKNjva+MG7cNJbyvNC1TIc/dhdKdYcH0JKMFl0JNPQUgMAk4k+zwmJMoOYTI2H+oGhSfNK44G+owUySaewFW4vYHtWwPFigz6SELKobwSJc4MmQyHvVepzMNk1r2Fx7GZfCsRJscAK+ZC52JW7B82wB4MVquS6CPThpbiyt56YoghTZ3jz4bQHPWAGNuTJj4bH9XXbDoYTgdm8WYhq4k5GUJ7WaSjjBknJyMwE8hgDhlVGffTK1IweTSrMAslfWo26fjOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fzkM6wmvWMVhmJtqe/0A14bzFJ+fST6vzms7KVx6r5Y=;
- b=pJNUFB26mBW2QRGvx32vulUvo2/rkx/OKpj1fhtaYHurpUsINRMLmLZUGVgl0bat5M2pePfZCRRl5M0dbGxig00H3sRlPK/D++SbgDmxvD3GazF0rk1ePlx8uBu+L2l8bHgSclY2THYyOqDj42kKc9MYgcpGG3xdAF2qQZTQiD4jOqxSbsbKfFyuY+VtcHlFrWgRFwjohd5wGm+TFtGoKpBKKo9o9GPBWvyVBIhDXdvOopwr8nySzmZI0K8xBR6Mrlm5Em5qw/VsFh8qbq2TcsbVguTOWbivtDUp4Xi13gNEoS+fPrL5RPvoIvNe3Dj4/sLIo0mPCWm7uTbZH2mB1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fzkM6wmvWMVhmJtqe/0A14bzFJ+fST6vzms7KVx6r5Y=;
- b=F9tKZ9RP8D/QicoUO+ckPLjoL27XnVIxypvivdoJYxqQVoWYuHQUe0djP2qPMAxD41PuHjRAqhnkoIMwgEsjICMrJTAxtoGkyaRYR/TTXQDpk0oK1TT/cE1rqOP+wgSVQ+TMw7TAgOUaerINrBmEyXg/avQ1xo+0ENz+A9mk2uLeGtL/kEUoJSZNDDDL/sGc08bZ9ff4FXmvxmO7JrOXp5w4vxEgku1Ogpxbr8T/RRaMH45nD7QVcSpwbu3HIiXpZRvKc6R7GJXR3S6rUcIm5ydrAYpenJE65bHYgODSFhQIRkIFe+3EGVEAXcJj6d9+BrOLMW4SrSPtHyHeGrGZkg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by PA2PR04MB10121.eurprd04.prod.outlook.com (2603:10a6:102:408::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Mon, 10 Nov
- 2025 15:39:19 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd%4]) with mapi id 15.20.9298.015; Mon, 10 Nov 2025
- 15:39:19 +0000
-Date: Mon, 10 Nov 2025 10:39:11 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Steve Longerbeam <slongerbeam@gmail.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Ox6XwAOd"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=u6EdUrtGOgPUXIy8ofOhog5nFCSibC5nE5AJRWXwH2A=; b=Ox6XwAOdURwqkScwgJ8DNjCjRY
+	uWzTHKNjxNlzagA73QE5DzDgE+I3YQNw8jLQXx8sVaoeAcu6ArCpjXL4xvTysJSHI2/p8mNzXXdsW
+	SKEl0LDR4mbTNZ1yaiDeTWJHVEv3JIRxKO2422IJC/vGyvhb8wT6G7K5J0YYMNcHRa88=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vIUIh-00DXM5-90; Mon, 10 Nov 2025 16:59:27 +0100
+Date: Mon, 10 Nov 2025 16:59:27 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/6] media: staging: media: imx6-mipi-csi2: use
- devm_add_action_or_reset() to simplify code
-Message-ID: <aRIHH4czX7dm+ZAo@lizhi-Precision-Tower-5810>
-References: <20251107-stage-csi2-cleanup-v1-0-5d42535243ac@nxp.com>
- <20251107-stage-csi2-cleanup-v1-2-5d42535243ac@nxp.com>
- <6ec725f916737f2f25bf3ce4df412b4c07f6449e.camel@pengutronix.de>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6ec725f916737f2f25bf3ce4df412b4c07f6449e.camel@pengutronix.de>
-X-ClientProxiedBy: PH8PR21CA0004.namprd21.prod.outlook.com
- (2603:10b6:510:2ce::11) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	dl-linux-imx <linux-imx@nxp.com>
+Subject: Re: [PATCH v5 3/5] docs: staging: gpio-rpmsg: gpio over rpmsg bus
+Message-ID: <638dac3d-ddcb-4d53-b06d-e0bd3d9077c3@lunn.ch>
+References: <20251104203315.85706-1-shenwei.wang@nxp.com>
+ <20251104203315.85706-4-shenwei.wang@nxp.com>
+ <9fd8ccd9-560a-43b4-a48d-f7a3eaa07eb1@lunn.ch>
+ <PAXPR04MB9185C4A4B91F863CFD49718E89C2A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <0be8c911-3c31-40da-b431-e5a24339c0f9@lunn.ch>
+ <PAXPR04MB9185D9EBE8F46715FD114A2989C2A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <cadcbbc7-2024-413a-8e9b-bde5fa233df5@lunn.ch>
+ <PAXPR04MB9185E2C3E50D365F64F10E3A89C3A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <0980eb35-b3fd-4383-af86-433769a4fd97@lunn.ch>
+ <PAXPR04MB9185156672C7B334E717F11789CEA@PAXPR04MB9185.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|PA2PR04MB10121:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4267279e-f93a-4912-d2eb-08de206f504d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|52116014|19092799006|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?TFhIxHjj4eT+7n1KOEgVGwslcY2mA7lqBTOC0sr4JTVroGX6t90X3EOxUPde?=
- =?us-ascii?Q?7ZeJDsuRIdAwd7LBDEqX+QxGiF7CQz6XjbghqFgOv0C/bj12a9Z2Mr8dPIAN?=
- =?us-ascii?Q?mh5B+He6Uzuov748J0Y813uEYPsWE4QNIQTnM6Aqx8j/VQUpfJmmkX89/uuG?=
- =?us-ascii?Q?I+ILYQ+jr32Df+O9wBL5ck6vBm3T/pj4AUXHtfiRwIIY0AZ+Mw98GirMeykD?=
- =?us-ascii?Q?udjWT7k2w/BmbJnwIBxOPjuKNPx9Bgb+B2zUqErSy7wTjgNA/vnaWsyNO96y?=
- =?us-ascii?Q?IqgASFxzlnWhVkiWo43dhxpuhM+N/DXeCwJ/rXY03AU7YGNC/uQMbW0A6b6x?=
- =?us-ascii?Q?0YXBl7ubPJyx7jQYIXoGqQnp4mOQKIt667nFYwqH5IMozWWjzUK2bG1jWfX4?=
- =?us-ascii?Q?NibR/L7UvctKb7rutS2amJKMRAqUq8jLvNUCmAvo4mkrmH9lc40Sr1xDZjyI?=
- =?us-ascii?Q?L7WcS981Pyvk+zjkLoj8z5tTsaK7+epp0TRtXbhKrKFK+PitQZK0RYIHNVbv?=
- =?us-ascii?Q?8OEt0ouM5381nLPHAcyX4Aq35lOQKonU3VQD/KFZJHFc0WDqxmZFhpOZWUTz?=
- =?us-ascii?Q?XMtRAfZS9IkLNbLBha+z8RNEMH/Gw/dnOOszqemygp0mw9Hz/MjRU2Sgmqgk?=
- =?us-ascii?Q?wRcoZy08pm6lTHNclAYsn40y4/PShASA0cTnNBJPJ4BpKZh3R0y+c/OW6r3K?=
- =?us-ascii?Q?C72EQ8mDwMu6WDB/31Jg7oZhf/WB2VDjPgj4sgU0LpB3cAkrdIKX2TkNDLbp?=
- =?us-ascii?Q?JnMQAi23LNjzWOJqlJ49a7V44goosHGDI/gtrOf/K76nvwdkSIBFLtRwPrDK?=
- =?us-ascii?Q?gmLGyQpZFIZsoRIp3jrHot5v5xZOrzmNF1ZKJAAdpJ9w+zvyLNwm+txTF7KV?=
- =?us-ascii?Q?DZW1ap3DvHRZtPqEZw7O4JfTuKLhDPDXbafA0KYlBdtmp4ckmi1SwaNtzr1U?=
- =?us-ascii?Q?0q5Vlb/WiR+5s5/wtWG5lPaY46b3c5TLkDOuzz7J1iovGdjQ1mdRsQt5Br9p?=
- =?us-ascii?Q?ZI/jRQ5QHonyRqVinHuckQmEh6DUWDOQvVPLtwirjCciuW+SmGsXhek0kQZb?=
- =?us-ascii?Q?gfc1zZHtyOOSPRtKPoMNtB5hkMjIrwv6zZe+e65L41mR6iI8+VVbVrFBfQKl?=
- =?us-ascii?Q?ec8vY0CsvBB4pkj7/oFUNIdzevzjn/UK0gFZzsFQmCYEXQLqNRb2qe7t7gC6?=
- =?us-ascii?Q?iNqLbH5gl92fOle4ggcJ2FaL/B1efq3MQv03XECy+jYGo+ssyxngfai6yyLs?=
- =?us-ascii?Q?FO+TFOJEmgKLOFgSGXd2W+uWFmzhN8rZmnlX1C0X3HGSX+/yYVVw63pM7QlW?=
- =?us-ascii?Q?5xWnkAKI2V/+OjiLDtNCQjWdrfxpeWbKB10Q1IVcB4KQhwx0yWrXAw8ICw2I?=
- =?us-ascii?Q?PPQWc2TQUWi5coSD+k55csBvONmq3kaOkBF4+70k5irBY4H8JJ20wz/hm4tf?=
- =?us-ascii?Q?8C8SoR7OI7UfIN8ZZgJeuaa4oymoIDK9mSrEan0gxNIs8rWKO4FxbKKTYXgN?=
- =?us-ascii?Q?1OZ2J8yGNrh/m52eAdCfbaWRg0tnnIYiUMoU?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(19092799006)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7jehfK/eYMiaWXKmtBgfCtaZRVJSNnEJu2U3qj1X3hAKALemhd1uQP81QqkC?=
- =?us-ascii?Q?vDriYQjGtU8YsZ/sk0MxABytE2Fmp20o+JezlcbFa9ocUGQzmz6Vzp8do/6G?=
- =?us-ascii?Q?+jP2a/FVMRknJ2pajC5GAOKrbx8joRIqusyNlm6mqPohXJZc74po9McL420B?=
- =?us-ascii?Q?CRwQkNKRfVggpl+J7kSdEbPXXJzhuagLbYEnEJXUizbopuYltAOfJm3BwWuj?=
- =?us-ascii?Q?nNvYM4gO53XHbOF/5mNjbWmCdN3eP6teM2mtFkFWSeg7exN1vVpbRSAhOZ5p?=
- =?us-ascii?Q?fCXQv19F/ikd2PL3JnPAX1WBJNhHFIjcxOZVIUvcZbKfBXaokJFwBnXfstTS?=
- =?us-ascii?Q?eDXi9NyI415zQ2RsLSuP3ZZofCQ6LisR//81xEaL2TeEbUl8MakbZL24/gq8?=
- =?us-ascii?Q?4gkmybwT402tNuwryJsQGQsnBe8NR17fOfXDnRx61MA6kI8Pfm7AMOkZvcP1?=
- =?us-ascii?Q?n4VJxZfp0Bkf0Gm3UW37TkWWZUN0efzHsdyLMe3q+atNCtg/QKNjW+aHW5QJ?=
- =?us-ascii?Q?PGAuzTTf437fJ0cAJas/vYB6OV5CF2/NWxUFBEkH1dinrm+5v6aNqNG2wYUD?=
- =?us-ascii?Q?ahHhXkPstD9BCoihJci6fOP66/eWkic82UKItBZGzoRMTJPA84KFXUTZzUmG?=
- =?us-ascii?Q?rDMXh2ynGeB+Spc8AL1IpRwhrjHSK3SB/P/1mtAt7ztSj9vPCfGP2NhC5c7F?=
- =?us-ascii?Q?bVgC1BAbxS8Kx4E0ua5gimQD2ROG29s8hnDsAJoXUVf+8M9pI9lNoXF5rG8e?=
- =?us-ascii?Q?gT6vJGAf5mL7NTwQ1LeyzFML+4GwGpAXZYANC7m8KOeejSsQdeBGkfHQ5rfL?=
- =?us-ascii?Q?U9DyEQEFgLtc+VZrY053imY9Xnl/PhmXG7VIqj5r8XdTymPmOn6lZqkaPIYd?=
- =?us-ascii?Q?/ALhPn8w2BLY04evd6qPcQKSL+nC36CxDjRV2lRCo/2wDGPfzZh4ej8n5xCc?=
- =?us-ascii?Q?1kFM2EPOsjHTITBYTTYUJu+elkKYz5rYOodTem2OVhKDmksEpyaxuJPuECsa?=
- =?us-ascii?Q?KyBSvUEXFP48bDFYY5eIOHR1OGHgwB/HRmL1VchDT5OwnMVOAM905dsVlrIp?=
- =?us-ascii?Q?akouJobyllpJydQu98pBrKQjC0XprErbTu5Qyp/v3zTUTpwLUkYz1JZy5ikA?=
- =?us-ascii?Q?VzmsQjr1zYKgOUCD2KZKDqGwhI+exs+dh8iLtfNpGS8P0k3YIRMreDF1+Adb?=
- =?us-ascii?Q?BxHLR2gddT/flvBdyhEOuoJ9fZQHddrkvs7dABxlSvRKnA5/dtjFj8AIw5HO?=
- =?us-ascii?Q?2qQrmYPS7N9Qy+7m/+KdLp6caZj/jwvLM79G0R2zIJRr+kpLZd7iWYbhWODK?=
- =?us-ascii?Q?oeAI3tcxhH4PVgkEczM9qAmycyU2xVX6rCYr0LOoqlWs5wDwNlXKmFuXeO9f?=
- =?us-ascii?Q?LIDeNoIX0CeBrm3GbCnAgywvRFi4HGdvaJkujhaCjkpDx1aCr8U7WCaNtNPa?=
- =?us-ascii?Q?3yzbZc/9Hz5qeph1Gcam6eHIsKJZa4Xa3pLMhMLLvMHZOYhImYVPEYJksH5C?=
- =?us-ascii?Q?rXVvLe6if3UfHXngwFcbP5JOfCtU3PxP4KJ6Tthb9FU6KldF+EEkyBFXr+wJ?=
- =?us-ascii?Q?fclujaKZ4CcxIy9014o=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4267279e-f93a-4912-d2eb-08de206f504d
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2025 15:39:19.5362
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: D9ci+y1jwVLIUFgu/4MpzvT/s5mRtxXbKWr0VdUc76aZZ3DsRXgN6Guy+52GIPbXzs/d887IbcGfpTl/gUJ7sA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10121
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PAXPR04MB9185156672C7B334E717F11789CEA@PAXPR04MB9185.eurprd04.prod.outlook.com>
 
-On Mon, Nov 10, 2025 at 09:28:24AM +0100, Philipp Zabel wrote:
-> On Fr, 2025-11-07 at 15:44 -0500, Frank Li wrote:
-> > Use devm_add_action_or_reset() to simplify the code. No functional change.
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  drivers/staging/media/imx/imx6-mipi-csi2.c | 16 ++++++++++++----
-> >  1 file changed, 12 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/staging/media/imx/imx6-mipi-csi2.c b/drivers/staging/media/imx/imx6-mipi-csi2.c
-> > index 42256441b881d9f132ad7ff899d6f1e35643b4ac..eba9a650030f5e380aa900b94728ad375171c6a5 100644
-> > --- a/drivers/staging/media/imx/imx6-mipi-csi2.c
-> > +++ b/drivers/staging/media/imx/imx6-mipi-csi2.c
-> > @@ -716,6 +716,14 @@ static int csi2_async_register(struct csi2_dev *csi2)
-> >  	return ret;
-> >  }
-> >
-> > +static void csi2_nf_cleanup(void *data)
-> > +{
-> > +	struct csi2_dev *csi2 = data;
-> > +
-> > +	v4l2_async_nf_unregister(&csi2->notifier);
-> > +	v4l2_async_nf_cleanup(&csi2->notifier);
-> > +}
-> > +
-> >  static int csi2_probe(struct platform_device *pdev)
-> >  {
-> >  	struct csi2_dev *csi2;
-> > @@ -749,6 +757,10 @@ static int csi2_probe(struct platform_device *pdev)
-> >  	if (ret)
-> >  		return ret;
-> >
-> > +	ret = devm_add_action_or_reset(&pdev->dev, csi2_nf_cleanup, csi2);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> >  	csi2->pllref_clk = devm_clk_get(&pdev->dev, "ref");
-> >  	if (IS_ERR(csi2->pllref_clk)) {
-> >  		v4l2_err(&csi2->sd, "failed to get pll reference clock\n");
-> > @@ -800,8 +812,6 @@ static int csi2_probe(struct platform_device *pdev)
-> >  	return 0;
-> >
-> >  clean_notifier:
-> > -	v4l2_async_nf_unregister(&csi2->notifier);
-> > -	v4l2_async_nf_cleanup(&csi2->notifier);
-> >  	clk_disable_unprepare(csi2->dphy_clk);
-> >  pllref_off:
-> >  	clk_disable_unprepare(csi2->pllref_clk);
-> > @@ -815,8 +825,6 @@ static void csi2_remove(struct platform_device *pdev)
-> >  	struct v4l2_subdev *sd = platform_get_drvdata(pdev);
-> >  	struct csi2_dev *csi2 = sd_to_dev(sd);
-> >
-> > -	v4l2_async_nf_unregister(&csi2->notifier);
-> > -	v4l2_async_nf_cleanup(&csi2->notifier);
-> >  	v4l2_async_unregister_subdev(sd);
->
-> This effectively moves the notifier unregister after the subdev
-> unregister. Is that safe to do?
+> The remote firmware does not need to know whether Linux is asleep. The GPIO is not used 
+> to wake Linux directly; instead, it serves as a wake-up source for the remote firmware if configured 
+> accordingly. Once the remote firmware is awake, it sends a notification message to Linux. This 
+> notification is the actual event that wakes Linux.
+> 
+> This works because there is always a physical interface connecting Linux and the remote firmware. 
+> On i.MX platforms, this interface is the MU block. When the remoteproc driver is running, the MU 
+> block is automatically configured as a wake-up source for Linux by default. As a result, the notification 
+> message can wake the Linux system if it is asleep.
 
-Good question:
+You need to add a lot more documentation to the specification to make
+this clear. As you said, the firmware and Linux have different
+sleep/wake life cycles. How does the firmware know it is safe to go to
+sleep, if it has no idea Linux is running or suspended?
 
-I think, it'd better to provide devm_v4l2_*() helper functions for these.
-I am not sure why there are not devm_v4l2*() helper functions now.
-
-Frank
->
->
-> regards
-> Philipp
+	Andrew
