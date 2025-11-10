@@ -1,71 +1,73 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8395D2F25FE
-	for <imx@lists.linux.dev>; Mon, 10 Nov 2025 08:21:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DB62E8B83
+	for <imx@lists.linux.dev>; Mon, 10 Nov 2025 08:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762762897; cv=none; b=Qps6ah5dbD+4GuB6Ah5yw5TZwnM//BMxCQjrTO2jBhrQ2BQ9osJmQhVaWiVTqrnTw2i2hproI9qCOfIZiSs5TfSqLNK1VWC3rulJQsKzse3+tjIvzLWl7uYwNMxt24gmdQ3dKh3QXivsRCsVsf2nlwKrXvrPwZkBdYbZynrzCG8=
+	t=1762762958; cv=none; b=jwEkIwfMoU2R0my7MqWnpwHQQYzFqnO3YNVH8LNs1+sIDSMUmUMqQXJILQfWhU10IhTrC61I+umHyY6xiBfPiR1+jyB346AuwuI1ZBQKVyzgdEFvfeMBVi00n73jT9xhwvCTKNFah0VWQiB0cGKE83O4eYyYRRHPGx+WrKuQW2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762762897; c=relaxed/simple;
-	bh=+L5S8M9NwbNFyLKE+NHHxSeXwcBoQ3PcgR08aMX1pM0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nUxOv686VA8oVFB4M8rkDiDv8lJGicRM9aIWFlqU3K1pRP6saYxJg9fu6MXJAjK3134442Vwx5dbBhOzeM2c/BzBHoM3ZCHNP+r8cbP+DzozS8YXqnAfrSw8Jabc1g6jMKpdVcuvt93DelgA9azdQ7R7oIb3DYOAk220hjiXtmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=P/ZGYtgC; arc=none smtp.client-ip=1.95.21.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="P/ZGYtgC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=eQQspempRuzg+/pvUMO0GYbWj2MHdaUyQn/zQ2LI1C4=;
-	b=P/ZGYtgCijSMXhLYalW9PVAkJcjLLbjO1JUKQ17kYv7Ru7y1JTttSu2clAwYhq
-	UpFNPU6g1yrnhJVCGxF1Slop7Gggkb28gQvHoZEfZVoKNAy1SnShAmvPq/WhA96H
-	K36S1WBv6bZblvkVJHTGX4rZ6T2r4tOVKkMj/yQU6L96c=
-Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgBXQNHKnRFpNY2yAQ--.4669S3;
-	Mon, 10 Nov 2025 16:09:48 +0800 (CST)
-Date: Mon, 10 Nov 2025 16:09:46 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Inbaraj E <inbaraj.e@samsung.com>,
-	Isaac Scott <isaac.scott@ideasonboard.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Martin Kepplinger <martink@posteo.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>, Rui Miguel Silva <rmfrfs@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Purism Kernel Team <kernel@puri.sm>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 13/13] arm64: dts: imx8mp: Specify the number of
- channels for CSI-2 receivers
-Message-ID: <aRGdyj3B_KMCiJiL@dragon>
-References: <20250822002734.23516-1-laurent.pinchart@ideasonboard.com>
- <20250822002734.23516-14-laurent.pinchart@ideasonboard.com>
+	s=arc-20240116; t=1762762958; c=relaxed/simple;
+	bh=OxTYCu6RPB9p/Wk4BXZhXkRvVuWvgUVw9tNaOk3NdA0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uxb4t2UbGMtSlBL5qVU5GNYMrKWtwO+HGjWdbaqmNRmeejJPeY974uo6S1LI8t+MZ3/ex9aY/O5y7lSoqHDmtJNkgo9f2tEhHLkEJ8JS+R6ezP3VWxuoVH4W7uHe9XGPX1uP5p8eThsMMZEteYJgTd+y8Dqkacu0N0U2U4fCzpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vINAV-0005gU-8i; Mon, 10 Nov 2025 09:22:31 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vINAU-007zQ8-2n;
+	Mon, 10 Nov 2025 09:22:30 +0100
+Received: from pza by lupine with local (Exim 4.98.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vINAU-0000000042S-3C6F;
+	Mon, 10 Nov 2025 09:22:30 +0100
+Message-ID: <0af422ff5881ec875ad7eea272e229ce3426956a.camel@pengutronix.de>
+Subject: Re: [PATCH 3/6] media: staging: media: imx6-mipi-csi2: use
+ devm_clk_bulk_get_all() to fetch clocks
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Frank Li <Frank.Li@nxp.com>, Steve Longerbeam <slongerbeam@gmail.com>, 
+ Mauro Carvalho Chehab	 <mchehab@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team	 <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: imx@lists.linux.dev, linux-media@vger.kernel.org, 
+	linux-staging@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Date: Mon, 10 Nov 2025 09:22:30 +0100
+In-Reply-To: <20251107-stage-csi2-cleanup-v1-3-5d42535243ac@nxp.com>
+References: <20251107-stage-csi2-cleanup-v1-0-5d42535243ac@nxp.com>
+	 <20251107-stage-csi2-cleanup-v1-3-5d42535243ac@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1-1+deb13u1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250822002734.23516-14-laurent.pinchart@ideasonboard.com>
-X-CM-TRANSID:M88vCgBXQNHKnRFpNY2yAQ--.4669S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUOKsjUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNg05nmkRnc1hEgAA3H
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Fri, Aug 22, 2025 at 03:27:33AM +0300, Laurent Pinchart wrote:
-> The CSI-2 receivers in the i.MX8MP have 3 output channels. Specify this
-> in the device tree, to enable support for more than one channel.
-> 
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+On Fr, 2025-11-07 at 15:44 -0500, Frank Li wrote:
+> Use devm_clk_bulk_get_all_enabled() helper to simplify clock handling.
+>=20
+> Defer all clock prepare and enable to csi2_start(), which previous only
+> enable pix clock here.
+>=20
+> Do that safely because there are not register access before csi2_start().
 
-Applied, thanks!
+What about log_status()?
 
+regards
+Philipp
