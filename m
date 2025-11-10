@@ -1,128 +1,132 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0DB2475CF
-	for <imx@lists.linux.dev>; Mon, 10 Nov 2025 09:15:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD6E2E8E0E
+	for <imx@lists.linux.dev>; Mon, 10 Nov 2025 09:31:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762766103; cv=none; b=m/Ti4W5IMqkjUCxbleJXkr/Pjq//NkaOoMGK80DFplCz5Lxu8Nhf+Xdp527JJDl55MI0rnvq7pamdeW5las0Vpu3wF2EOJmeOwvsnWY6RiqR0/3Uj0bF8skuJ6liXC/5yzqYClXKROBoFiXpUmv4OqmYUrzBb/9JyzdufnD99tQ=
+	t=1762767114; cv=none; b=r9ilEMT5nT3vS6NwtxUlPaKwUChCScphM+Sx4CPjF89LcxDPOa7/+7TVJ85e1Z8/qJ50wFlsMXajeBfVIVYJvaa12wtFiD60r2TE8milhlD8ps4LTj19Jra65ngLbroFT8vHupUb/PmzYqp4bf2Zf+PFO3tN4xbddeZiLUOBqNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762766103; c=relaxed/simple;
-	bh=2+PqvTsIgaNTk/7uCk6kfDMTr3xQc57xAYsQHUDudqM=;
+	s=arc-20240116; t=1762767114; c=relaxed/simple;
+	bh=/fJzjpPCho25zV5kgp+Mt+JXbM7T0RiVyjwGWi7iCBY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NmeSVWb7w9Wq5D6qjfpfmc17rWRXuSg90RD8gWCVKYw4s9vxihbaQfI2h5NDgQ3xgvES7oJ2Zr6Qeac6hNAz0/OYTsu61ItW9bgZFdQ1ZXJ/Pr6buOUzA3+maXutoKqXiaYTaCBdKxVdGeKrugePieYeURl6QansnM5oz4Bf7ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GW/u6nYa; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GW/u6nYa"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6419e6dab7fso642971a12.2
-        for <imx@lists.linux.dev>; Mon, 10 Nov 2025 01:15:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762766100; x=1763370900; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NXFnmmWcp+T86M4X7Xk/v6jPWKY4nv9UjyUBijcqLEQ=;
-        b=GW/u6nYaecfMxdf5KDX/llaxABIUZlezKQjoyEzJv77Kk64tXXe64S+AK1iZLiMp/v
-         g6jSzTW/6jlUhiaiCwZzL/0cwJze7P5HEoJnKpTQsCUDBqSYVIE2T0aao714iE10ydWR
-         3bPUMg/JdqXYuTR8faP1a3bTi+vMPnYh01em/NK6V38k6CYXO7ZE9vzG8OJeSsjeShNr
-         VhduZwwr8pWMPdil1CIYP+uh2RjzsJiNIwESJoLlrv4vfXLeXOlYp+4O3GOQC5cSwvJw
-         cvrVGnCjuQ5inrps8G52hF2/zO+PBZRE8fMY8qv8Yj5GgyjO5yFB3FsX3jphfmjw4+ef
-         iJ5g==
+	 To:Cc:Content-Type; b=DoFigdI6jWTFumTuMEUMTzTxLJmf+LI6Ew0wHaGXHghrTDYcYcE3FZn+eLt/m+9R7aB1482xu8XNqi/WClv4nLUCFVsOsveMeiN5i3wpyYHYqeCy9YO7DjgeZ4+UjZ0C7d7EcJTeYrWtaaMhETJnopwg7kKqymAODiFYutcRlpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5597a426807so1871437e0c.2
+        for <imx@lists.linux.dev>; Mon, 10 Nov 2025 01:31:51 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762766100; x=1763370900;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NXFnmmWcp+T86M4X7Xk/v6jPWKY4nv9UjyUBijcqLEQ=;
-        b=hUtXkIY95FlAZcCWbMW/RRmXb73iYWJap3ZhPFIN/X6b3btYqGNOA6ZzPp81KTcb/F
-         b3ZkofnRXIYCsFJ3F0uQ4HmdD59hIolqtEdh9SLyCEsBlLBPfBCFRaxOlMLwk2tz3iHK
-         3kAuiljHwWrh0p0TZQKTPeYrQNSfF+PpGCaXT+R615W/2tmPdiA8rw2dTV2gJHRv+uO5
-         qG2/9/oDAXqXK5hf6HCEWsvp12AJvL7r5MkxzmNTtMmJbB3MNVheqaBG4NHgDEHOCTkw
-         7g3RMjsjqh02I4/iKrQNjjbyQKOc/q3LfNdRO2gsAG34ARePPqEYNioFV3uxUTw8a+SN
-         Z+EQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXdzZSwyl5yUAgl84xMPnhb3r+FfLXOtghKpNwHBENnoXhMbIWgXJMCLoOCYpT7opcw9v0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwdaRLWTvqKRCizIaqpnSHBf0p1HVBYGfIsZbSLODdbCJV7xeIe
-	GR441cDACzPnzQsTCKOBebrKAi4Uu7x2zQImAUhvR8kc54cl/ogahsfIsDqxU8ovZDx93KmOKz0
-	8aRt9S2iLmwWu/nVXSLKPu+rur3sDw9uKoSVnF2+YfA==
-X-Gm-Gg: ASbGncsVgXQFwHSsXGcMI6lJjB4or9pIyLDMaGBR7vfyNkB8upP4KmsW19pbGuAxony
-	kKgq/LYwrnbZP1EWz+aHNUUdWYMMKgvOJI6/NokCnODcTbm/NjE62BFWI7EVCTnzLnHoBQxHRYJ
-	64g7V/JwsGb6rC6SkFuKuI9cwrw0o3jxKIHSCw3TnbiDUzqrfktrfck1ekQq5RGUqXJU8aWibeY
-	v0nsravEw8VUN4EJTDBpxNwC3GTqJlWL06bsHY7hXsGuHLGKjtP887OgxseuK+jOaUQHilhbbTI
-	FSV5eQ3vKQvjgty3RIhQs90TRZqc1rZSwvA=
-X-Google-Smtp-Source: AGHT+IG5jsntiKbL9XDoTScxbX6sK0/o8ty8iuXm+qmOqxUowPC2iS+ovEiKsBoSdXQkOeKy6r5NlaZELkfmqB0OJxc=
-X-Received: by 2002:a05:6402:26d0:b0:640:cd2a:3cc1 with SMTP id
- 4fb4d7f45d1cf-6415db564bbmr5934589a12.0.1762766100006; Mon, 10 Nov 2025
- 01:15:00 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762767111; x=1763371911;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hRtPdzI1Yw78zykFlB0XCziKqeVOXzigJtW+jsiVzcI=;
+        b=AJZpquKlfA1VDm1xP7hv7LXi1gPTyoDQyyAfxIk9+btbp/Cs5QsIZ4a2BzdiCO41r2
+         Ld0znzwAAQbQOGaARBnsLzU5p1/6MzqC7vPpPRNBvO8AyCeO3VQ8SKyZHONt1syb8SUU
+         qBLjYDyF0/NQkNubwZCncqf18RSxa1ZRI/4xRx+c9+hAziYxHM14qYStwQmNJlQJsNiW
+         YaymonY6k1Ud/5N5k8m497OBCRBvK2Z9LvpdCb4u7IGEqBpuAh2rQr9U4Bt4fMLh4k/u
+         DX4KSz3zFBYKBGYSBBX6ZwajWbRB24mCE2YVdCPIs3p2ndv13e1uJJceI/9WnfKZc4S3
+         /JIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXCD353LOMH//NNxhViNg2QgxbaBH+sIM6Y9ER/AGogzW+4b0nL1wN3drHbVQdjzASaepI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YweLcCFw4l2uZEWl1/kwQKS5L/Q3kBpobEvEOiUCyTtfyzilTuR
+	3GotuAfzOkgECzt8HGZvgHqTT8VVaTTZoujTjkJ6cYChEeC67aA3U9/uVcE4HgCu
+X-Gm-Gg: ASbGncvupn554OT65OuijFf+ubQFbPvpDgiydI/SgvyKGWwh1WYW84Z1ThhBVmRqMXU
+	60yjzRDH9j3YYza5K/0S9nyGvchz6oczIHuZDkXAWnCp6brmHGqkTOpuqNRosd3FlOBqX3+xLbJ
+	txdpq6U9oXTC05HUKFwu0Tw5SAKwP+36p2NTPRA4QWhbG/OckVG5uur1FIOKj/GoBWo4D804xrt
+	ybNeuiTI0kMgXzw/sUsFceNkZefC8X4ZRTNptylh56zFd9ZwUAf1Xkx+my8ErnDY9fUfQla2mvU
+	KofSe8kdX7sQyeHxBHjz3kyYK5M/7tJ7EGSI5UTAlYMzDUUx/ZlGXkPqUC/SfunF696XZzgEC9I
+	hFLbP2gcpgtM4iS0iqWYh2UPo6r3eX2+Gev2ikP+psOsTxRVmBKMZ9D9WL3i4eKzq37Yt/+BFH4
+	J3WrXDzc6wREAbSrVPEJ/sgKM2jrqoDvE9h6dMvWjV6NahcJCkS0BO
+X-Google-Smtp-Source: AGHT+IFH63clIl+80CiN41tLXq96usQtskCITemzfQVXQ+cWeBk+Phdnb1M6XghqLgPLleCzSDNWiA==
+X-Received: by 2002:a05:6102:8356:20b0:5dd:c533:1655 with SMTP id ada2fe7eead31-5ddc5331670mr1969960137.20.1762767110533;
+        Mon, 10 Nov 2025 01:31:50 -0800 (PST)
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com. [209.85.217.49])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5dda200bbb3sm5468526137.11.2025.11.10.01.31.50
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Nov 2025 01:31:50 -0800 (PST)
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-5dbd2b7a7e3so2336509137.0
+        for <imx@lists.linux.dev>; Mon, 10 Nov 2025 01:31:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXF6QgfhMukxA1jT+GXYep18MMj6M5Kza3OwqvDV7yfEekEQ/l8eU+wCUPX83hIaO6AKsw=@lists.linux.dev
+X-Received: by 2002:a05:6102:c04:b0:520:dbc0:6ac4 with SMTP id
+ ada2fe7eead31-5ddc46497a0mr2779273137.2.1762767109934; Mon, 10 Nov 2025
+ 01:31:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <CAKfTPtC87w7RVSDAXWXRX1sjgo4s=_Z_k62+mfTXrMZwmkEpFg@mail.gmail.com>
- <20251106173853.GA1959661@bhelgaas>
-In-Reply-To: <20251106173853.GA1959661@bhelgaas>
-From: Vincent Guittot <vincent.guittot@linaro.org>
-Date: Mon, 10 Nov 2025 10:14:48 +0100
-X-Gm-Features: AWmQ_bmdJnu871GRec3avwkB2KMRGJUSatF4zpeqoF6tG3-YU67MrrGvp-or-eI
-Message-ID: <CAKfTPtD3UUXq=PwBJKx2q5VEBbAie-M1XgTbx3hmxZV1yQGBww@mail.gmail.com>
-Subject: Re: [PATCH 1/4 v3] dt-bindings: PCI: s32g: Add NXP PCIe controller
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, chester62515@gmail.com, mbrugger@suse.com, 
-	ghennadi.procopciuc@oss.nxp.com, s32@nxp.com, bhelgaas@google.com, 
-	jingoohan1@gmail.com, lpieralisi@kernel.org, kwilczynski@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com, Ghennadi.Procopciuc@nxp.com, 
-	ciprianmarian.costea@nxp.com, bogdan.hamciuc@nxp.com, Frank.li@nxp.com, 
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	cassel@kernel.org, Senchuan Zhang <zhangsenchuan@eswincomputing.com>
+References: <20251107-b4-m5441x-add-rng-support-v2-0-f91d685832b9@yoseli.org>
+ <20251107-b4-m5441x-add-rng-support-v2-2-f91d685832b9@yoseli.org>
+ <CAMuHMdWL76hY-Pv30ooSM1J6XkVWbRXSLTDCjfpPOvhFN4tKyA@mail.gmail.com> <12779401.O9o76ZdvQC@jeanmichel-ms7b89>
+In-Reply-To: <12779401.O9o76ZdvQC@jeanmichel-ms7b89>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 10 Nov 2025 10:31:37 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdW26uKBUnYB5c3XAzKPKFVGNoOOwra_u_NOjPCV20Y-AA@mail.gmail.com>
+X-Gm-Features: AWmQ_blSVM0mC21k2j7-_pQqo1T8ZhoFgD5EPrlyILfYI73Lumvke_itdhGi4eY
+Message-ID: <CAMuHMdW26uKBUnYB5c3XAzKPKFVGNoOOwra_u_NOjPCV20Y-AA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] m68k: coldfire: Add RNG support for MCF54418
+To: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+Cc: Greg Ungerer <gerg@linux-m68k.org>, Olivia Mackall <olivia@selenic.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, linux-m68k@lists.linux-m68k.org, 
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 6 Nov 2025 at 18:38, Bjorn Helgaas <helgaas@kernel.org> wrote:
->
-> [+cc Senchuan]
->
-> On Thu, Nov 06, 2025 at 09:09:01AM +0100, Vincent Guittot wrote:
-> > On Thu, 6 Nov 2025 at 08:12, Manivannan Sadhasivam <mani@kernel.org> wrote:
-> > > On Wed, Oct 22, 2025 at 07:43:06PM +0200, Vincent Guittot wrote:
-> > > > Describe the PCIe host controller available on the S32G platforms.
->
-> > > > +            phys = <&serdes0 PHY_TYPE_PCIE 0 0>;
+Hi Jean-Michel,
+
+On Mon, 10 Nov 2025 at 09:34, Jean-Michel Hautbois
+<jeanmichel.hautbois@yoseli.org> wrote:
+> Le lundi 10 novembre 2025, 09:15:11 heure normale d=E2=80=99Europe centra=
+le Geert
+> Uytterhoeven a =C3=A9crit :
+> > On Fri, 7 Nov 2025 at 11:29, Jean-Michel Hautbois
+> > <jeanmichel.hautbois@yoseli.org> wrote:
+> > > Add platform device support for the MCF54418 RNGB hardware with clock
+> > > enabled at platform initialization.
 > > >
-> > > PHY is a Root Port specific resource, not Root Complex. So it
-> > > should be moved to the Root Port node and the controller driver
-> > > should parse the Root Port node and control PHY. Most of the
-> > > existing platforms still specify PHY and other Root Port
-> > > properties in controller node, but they are wrong.
+> > > The imx-rngc driver now uses devm_clk_get_optional() to support both
+> > > Coldfire (always-on clock) and i.MX platforms (managed clock).
+> > >
+> > > Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
 > >
-> > Yeah, we had similar discussion on v1 and as designware core code
-> > doesn't support it, the goal was to follow other implementations
-> > until designware core is able to parse root port nodes.  I can add a
-> > root port node for the phy and parse it in s32 probe function but
-> > then If I need to restrict the number of lane to 1 instead of the
-> > default 2 with num-lanes then I have to put it the controller node
-> > otherwise designware core node will not get it.
+> > Thanks for your patch!
+> >
+> > > --- a/drivers/char/hw_random/Kconfig
+> > > +++ b/drivers/char/hw_random/Kconfig
+> > > @@ -270,12 +270,13 @@ config HW_RANDOM_MXC_RNGA
+> > >
+> > >  config HW_RANDOM_IMX_RNGC
+> > >
+> > >         tristate "Freescale i.MX RNGC Random Number Generator"
+> > >         depends on HAS_IOMEM
+> > >
+> > > -       depends on SOC_IMX25 || SOC_IMX6SL || SOC_IMX6SLL || SOC_IMX6=
+UL ||
+> > > COMPILE_TEST +       depends on SOC_IMX25 || SOC_IMX6SL || SOC_IMX6SL=
+L ||
+> > > SOC_IMX6UL || M5441x || COMPILE_TEST
+> > Is the same RNG present in other Coldfire SoCs?
 >
-> I think it's better to put the PHY info, including num-lanes, in Root
-> Port DT nodes now even thought the DWC core doesn't explicitly support
-> that yet because it's much easier to change the DWC core and the
-> driver code than it is to change the DT structure.
->
-> That will mean a little extra code in the s32g driver now, but we will
-> be able to remove that eventually.  If we leave the PHY in the DT
-> controller node, we may eventually end up having to support two s32g
-> DT structures: the single RP style with PHY in the controller, and a
-> multiple RP style with PHY in the RP.
->
-> We'll likely have both structures for many existing drivers, but I
-> think it will be simpler if new drivers can avoid the old one.
+> According to the RM, it is only present in MCF54416 and MCF54418.
 
-Okay, i will add a RP node
+I guess that is sufficient to make it depend on COLDFIRE?
 
->
-> The eic7700 driver is an example of num-lanes support in the driver:
-> https://lore.kernel.org/linux-pci/20251030083143.1341-1-zhangsenchuan@eswincomputing.com/
->
-> Bjorn
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
