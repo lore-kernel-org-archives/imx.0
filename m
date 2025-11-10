@@ -1,132 +1,162 @@
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD6E2E8E0E
-	for <imx@lists.linux.dev>; Mon, 10 Nov 2025 09:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504F9218AC4
+	for <imx@lists.linux.dev>; Mon, 10 Nov 2025 09:59:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762767114; cv=none; b=r9ilEMT5nT3vS6NwtxUlPaKwUChCScphM+Sx4CPjF89LcxDPOa7/+7TVJ85e1Z8/qJ50wFlsMXajeBfVIVYJvaa12wtFiD60r2TE8milhlD8ps4LTj19Jra65ngLbroFT8vHupUb/PmzYqp4bf2Zf+PFO3tN4xbddeZiLUOBqNc=
+	t=1762768744; cv=none; b=Y+0QzSWQKM0VXhzBY3+Zti2wtB7bXIID8pOU+qVIISCH8zgCu/ITPPPFsgJ0fOgByXUnLspyQBtg2c0+C1zPriPlh4ZQmzbP4121Khu1Lbo2yK1q68lrktepEkW5+pxrM1yDgerd1Yd30Ez0/MXWch+jLM+Uch5HMHF5s2jGosc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762767114; c=relaxed/simple;
-	bh=/fJzjpPCho25zV5kgp+Mt+JXbM7T0RiVyjwGWi7iCBY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DoFigdI6jWTFumTuMEUMTzTxLJmf+LI6Ew0wHaGXHghrTDYcYcE3FZn+eLt/m+9R7aB1482xu8XNqi/WClv4nLUCFVsOsveMeiN5i3wpyYHYqeCy9YO7DjgeZ4+UjZ0C7d7EcJTeYrWtaaMhETJnopwg7kKqymAODiFYutcRlpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5597a426807so1871437e0c.2
-        for <imx@lists.linux.dev>; Mon, 10 Nov 2025 01:31:51 -0800 (PST)
+	s=arc-20240116; t=1762768744; c=relaxed/simple;
+	bh=Ldxb3xiosslpoOJubQchwtbD2Q0t8Tiz2RiN7Ya71NU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XpV/j4d7qEij7fI406kbmP/wJ0Bdc04dJf4yPqEl8UYaqgjDEArGPzqez4JDcxBD3nwUb4ykWFv3kiUBSW03JnYXQQ3NsdjdFLyLzJ7TFzRgbjYHAXdYJUU8TCukifQ8u4FdVfx+yjYKyo6zWhqSFHbZ7NF/Dcw0CHZM1kUtYvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b=SRS3uUQ7; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b="SRS3uUQ7"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42b3d7c1321so260862f8f.3
+        for <imx@lists.linux.dev>; Mon, 10 Nov 2025 01:59:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=riscstar-com.20230601.gappssmtp.com; s=20230601; t=1762768741; x=1763373541; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wKdtCn/XoTBMU0W91zbNyyVRdCbCwPGBIxEuE5k5q+8=;
+        b=SRS3uUQ7TSd+VPK8Y2vznnkIgYTcBQT69RbnvaPfbEj1SMUlXkRdCyAhKRsMcTtkJJ
+         uaDJ4x+9WywUyOhtzKw4Ea7DFzlhZ9P2kZ2CmwEeKjeoWv0vWQDdTStR8zm8JDQCuKcq
+         MUXJkjy4n1q1bJ9P8RmAwN+Fa4yd1FCCiYeaAt8rIoZ2VvHXwoF0/B+9RbpWar4AoqBY
+         /PVcPyw6g1QwKXadI74eTtQSxhS/joQhUF5v1uWMoJrR7HQn06tMEa2dm54PexR4lbPY
+         PD7+8lT1DWx3JeiatzMcPahsG8R3PIe4YH6+M8JYuYGBa00g8gqq+NktnHtCQbX/jza1
+         eSqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762767111; x=1763371911;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hRtPdzI1Yw78zykFlB0XCziKqeVOXzigJtW+jsiVzcI=;
-        b=AJZpquKlfA1VDm1xP7hv7LXi1gPTyoDQyyAfxIk9+btbp/Cs5QsIZ4a2BzdiCO41r2
-         Ld0znzwAAQbQOGaARBnsLzU5p1/6MzqC7vPpPRNBvO8AyCeO3VQ8SKyZHONt1syb8SUU
-         qBLjYDyF0/NQkNubwZCncqf18RSxa1ZRI/4xRx+c9+hAziYxHM14qYStwQmNJlQJsNiW
-         YaymonY6k1Ud/5N5k8m497OBCRBvK2Z9LvpdCb4u7IGEqBpuAh2rQr9U4Bt4fMLh4k/u
-         DX4KSz3zFBYKBGYSBBX6ZwajWbRB24mCE2YVdCPIs3p2ndv13e1uJJceI/9WnfKZc4S3
-         /JIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXCD353LOMH//NNxhViNg2QgxbaBH+sIM6Y9ER/AGogzW+4b0nL1wN3drHbVQdjzASaepI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YweLcCFw4l2uZEWl1/kwQKS5L/Q3kBpobEvEOiUCyTtfyzilTuR
-	3GotuAfzOkgECzt8HGZvgHqTT8VVaTTZoujTjkJ6cYChEeC67aA3U9/uVcE4HgCu
-X-Gm-Gg: ASbGncvupn554OT65OuijFf+ubQFbPvpDgiydI/SgvyKGWwh1WYW84Z1ThhBVmRqMXU
-	60yjzRDH9j3YYza5K/0S9nyGvchz6oczIHuZDkXAWnCp6brmHGqkTOpuqNRosd3FlOBqX3+xLbJ
-	txdpq6U9oXTC05HUKFwu0Tw5SAKwP+36p2NTPRA4QWhbG/OckVG5uur1FIOKj/GoBWo4D804xrt
-	ybNeuiTI0kMgXzw/sUsFceNkZefC8X4ZRTNptylh56zFd9ZwUAf1Xkx+my8ErnDY9fUfQla2mvU
-	KofSe8kdX7sQyeHxBHjz3kyYK5M/7tJ7EGSI5UTAlYMzDUUx/ZlGXkPqUC/SfunF696XZzgEC9I
-	hFLbP2gcpgtM4iS0iqWYh2UPo6r3eX2+Gev2ikP+psOsTxRVmBKMZ9D9WL3i4eKzq37Yt/+BFH4
-	J3WrXDzc6wREAbSrVPEJ/sgKM2jrqoDvE9h6dMvWjV6NahcJCkS0BO
-X-Google-Smtp-Source: AGHT+IFH63clIl+80CiN41tLXq96usQtskCITemzfQVXQ+cWeBk+Phdnb1M6XghqLgPLleCzSDNWiA==
-X-Received: by 2002:a05:6102:8356:20b0:5dd:c533:1655 with SMTP id ada2fe7eead31-5ddc5331670mr1969960137.20.1762767110533;
-        Mon, 10 Nov 2025 01:31:50 -0800 (PST)
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com. [209.85.217.49])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5dda200bbb3sm5468526137.11.2025.11.10.01.31.50
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Nov 2025 01:31:50 -0800 (PST)
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-5dbd2b7a7e3so2336509137.0
-        for <imx@lists.linux.dev>; Mon, 10 Nov 2025 01:31:50 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXF6QgfhMukxA1jT+GXYep18MMj6M5Kza3OwqvDV7yfEekEQ/l8eU+wCUPX83hIaO6AKsw=@lists.linux.dev
-X-Received: by 2002:a05:6102:c04:b0:520:dbc0:6ac4 with SMTP id
- ada2fe7eead31-5ddc46497a0mr2779273137.2.1762767109934; Mon, 10 Nov 2025
- 01:31:49 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762768741; x=1763373541;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wKdtCn/XoTBMU0W91zbNyyVRdCbCwPGBIxEuE5k5q+8=;
+        b=sU04nbd27diT+1cIPWN8z8iydTCqSXwFyPl5d3EXsntzLJW4C1cNnORESRasV5zn5w
+         UULOH3RLJKOOYme/8+XrA+7x8z/3TreOKvjHiLoaphfJgJM7rJTF5KA/XFyPeHDtJS8c
+         WsneLFXZEUk3SdIylrgA5OPmJ9cizOVihyHg6O+q6KJUInR0yePIsSKrcnUV1wmFmuKF
+         ES03oBgI/hvYWr6/DD6PlBhMEv3VjRM3fGWoIeTSWEbzav/eTDmOzk7xYdfTYQwdMesU
+         caRLKjl8/zs5LGTCaiAq/owEFhZzG0FZi9azw6k/rhm3EFJKVssPZJl2e+21bWtxuJnR
+         D+wg==
+X-Forwarded-Encrypted: i=1; AJvYcCUBMGnG3Mh+6FbxfdNd/e0OZAB9Brhq8aneYx33a7XEtIWI9Z0yhKndev1DKj7aFe2npUw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyPmKaWrtz7CowNIrbh/hjb1VLSKVwtgLc8EjHm08uxc+2TEG/6
+	As8XXKsgEw4j6P95hqzWR4FRSCpcAM8zuRDQDq+g2KvmT/PZkcVeiQEKQQOxI4sSMfY=
+X-Gm-Gg: ASbGncvbxL9KoNxAwu8xQQ5WSC2wRsbWzL+p2iM6aeEat3YYvmrXhlOyx01UgOg1Xo3
+	tlquQQ1yR8ca7ySp+2Avs91+2gwnuw+jHpBJHekYTLHD08GUVrfIZTh6YoogHBJChqO8hEpJnbE
+	6aAGETRllzPuCYO3sIUeecKe3iOgC5ASJUK6awnTbYSls67xesIS2IiYSemKWO+GYKPnCmOuMYX
+	txhtu7nZmc8qJBdo1mu3u1cSipAnmILAcdbkW6MyhsX7IObY1Zi0EyI+k42gTrdLJq3y1rhhaTW
+	RnOGOA4wTsE7DOXwCngNBPqY4PGJklQetCM5jHk3QW0yhTHUL1vqZifv9kFYFdZr3JwQFq42S/i
+	e4ILbAMCWKzDxCCiz8y7qhf/8FDZevyz4xkQN3foeCd24xub12PoX/MzIgv03qIPaMevolu9WPn
+	skouOj4MOAQcSf0uHCX4TKy0SL80ZfQkeaqc3S2fiMsv7nOd2/dY1wqAbOXvI=
+X-Google-Smtp-Source: AGHT+IESDCHlcbXRXRa2TG5aApGtSH2moJB6JVIAkSw02ybwWPI2qmXCnmEZcdOIcRiKJ320ee1qvg==
+X-Received: by 2002:a5d:5885:0:b0:429:d19f:d959 with SMTP id ffacd0b85a97d-42b2dc1ab24mr7071023f8f.15.1762768740534;
+        Mon, 10 Nov 2025 01:59:00 -0800 (PST)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42b32ecf522sm9799000f8f.45.2025.11.10.01.58.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Nov 2025 01:58:59 -0800 (PST)
+Date: Mon, 10 Nov 2025 10:01:11 +0000
+From: Daniel Thompson <daniel@riscstar.com>
+To: Maud Spierings <maudspierings@gocontroll.com>
+Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
+	Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, dri-devel@lists.freedesktop.org,
+	linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v5 2/4] backlight: add max25014atg backlight
+Message-ID: <aRG359gIeP48V2ZZ@aspen.lan>
+References: <20251107-max25014-v5-0-9a6aa57306bf@gocontroll.com>
+ <20251107-max25014-v5-2-9a6aa57306bf@gocontroll.com>
+ <aQ4a2SBDldYgQb56@aspen.lan>
+ <f4e52cc1-9c5f-4069-9079-83be794ab2b3@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251107-b4-m5441x-add-rng-support-v2-0-f91d685832b9@yoseli.org>
- <20251107-b4-m5441x-add-rng-support-v2-2-f91d685832b9@yoseli.org>
- <CAMuHMdWL76hY-Pv30ooSM1J6XkVWbRXSLTDCjfpPOvhFN4tKyA@mail.gmail.com> <12779401.O9o76ZdvQC@jeanmichel-ms7b89>
-In-Reply-To: <12779401.O9o76ZdvQC@jeanmichel-ms7b89>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 10 Nov 2025 10:31:37 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdW26uKBUnYB5c3XAzKPKFVGNoOOwra_u_NOjPCV20Y-AA@mail.gmail.com>
-X-Gm-Features: AWmQ_blSVM0mC21k2j7-_pQqo1T8ZhoFgD5EPrlyILfYI73Lumvke_itdhGi4eY
-Message-ID: <CAMuHMdW26uKBUnYB5c3XAzKPKFVGNoOOwra_u_NOjPCV20Y-AA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] m68k: coldfire: Add RNG support for MCF54418
-To: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-Cc: Greg Ungerer <gerg@linux-m68k.org>, Olivia Mackall <olivia@selenic.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-m68k@lists.linux-m68k.org, 
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f4e52cc1-9c5f-4069-9079-83be794ab2b3@gocontroll.com>
 
-Hi Jean-Michel,
-
-On Mon, 10 Nov 2025 at 09:34, Jean-Michel Hautbois
-<jeanmichel.hautbois@yoseli.org> wrote:
-> Le lundi 10 novembre 2025, 09:15:11 heure normale d=E2=80=99Europe centra=
-le Geert
-> Uytterhoeven a =C3=A9crit :
-> > On Fri, 7 Nov 2025 at 11:29, Jean-Michel Hautbois
-> > <jeanmichel.hautbois@yoseli.org> wrote:
-> > > Add platform device support for the MCF54418 RNGB hardware with clock
-> > > enabled at platform initialization.
-> > >
-> > > The imx-rngc driver now uses devm_clk_get_optional() to support both
-> > > Coldfire (always-on clock) and i.MX platforms (managed clock).
-> > >
-> > > Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+On Mon, Nov 10, 2025 at 09:40:07AM +0100, Maud Spierings wrote:
+> On 11/7/25 17:14, Daniel Thompson wrote:
+> > On Fri, Nov 07, 2025 at 01:49:59PM +0100, Maud Spierings via B4 Relay wrote:
+> > > +/**
+> > > + * @brief control the brightness with i2c registers
+> > > + *
+> > > + * @param regmap trivial
+> > > + * @param brt brightness
+> > > + * @return int
+> > > + */
+> > > +static int max25014_register_control(struct regmap *regmap, uint32_t brt)
 > >
-> > Thanks for your patch!
-> >
-> > > --- a/drivers/char/hw_random/Kconfig
-> > > +++ b/drivers/char/hw_random/Kconfig
-> > > @@ -270,12 +270,13 @@ config HW_RANDOM_MXC_RNGA
-> > >
-> > >  config HW_RANDOM_IMX_RNGC
-> > >
-> > >         tristate "Freescale i.MX RNGC Random Number Generator"
-> > >         depends on HAS_IOMEM
-> > >
-> > > -       depends on SOC_IMX25 || SOC_IMX6SL || SOC_IMX6SLL || SOC_IMX6=
-UL ||
-> > > COMPILE_TEST +       depends on SOC_IMX25 || SOC_IMX6SL || SOC_IMX6SL=
-L ||
-> > > SOC_IMX6UL || M5441x || COMPILE_TEST
-> > Is the same RNG present in other Coldfire SoCs?
+> > This isn't a good name for a function. It doesn't really say what it
+> > does. Please find a more descriptive name.
 >
-> According to the RM, it is only present in MCF54416 and MCF54418.
+> Having a lot of difficulties find a succinct name that fits better,
+> max25014_register_brightness_control()?
+> max25014_i2c_brightness_control()?
 
-I guess that is sufficient to make it depend on COLDFIRE?
+I'd focus on what it does rather than how it does it meaning something
+like max25014_update_brightness() would work.
 
-Gr{oetje,eeting}s,
+However, at present, this code is only called from
+max25014_update_status() so the simplest thing to do is to move the
+code into max25014_update_status() and remove this function entirely
+(then it doesn't matter what it is called ;-) ).
 
-                        Geert
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+> > > +/*
+> > > + * 1. disable unused strings
+> > > + * 2. set dim mode
+> > > + * 3. set initial brightness
+> >
+> > How does this code set the initial brightness? It doens't set the
+> > MAX25014_TON* registers.
+>
+> Yep forgot to remove that, I discovered the backlight core takes care of the
+> default brightness, so I removed it from here.
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+What do you mean by this? Are you sure you aren't relying on another
+driver to enable the backlight rather than the backlight core?
+
+> > > + * 4. set setting register
+> > > + * 5. enable the backlight
+> > > + */
+> > > +static int max25014_configure(struct max25014 *maxim)
+
+
+> > > +static int max25014_probe(struct i2c_client *cl)
+> > > <snip>
+> > > +
+> > > +	/* Enable can be tied to vin rail wait if either is available */
+> > > +	if (maxim->enable || maxim->vin) {
+> > > +		/* Datasheet Electrical Characteristics tSTARTUP 2ms */
+> > > +		usleep_range(2000, 2500);
+> > > +	}
+> >
+> > If you really want to keep the devm_regulator_get_optional() I guess
+> > maybe you could persuade me it's need to avoid this sleep... although
+> > I'd be fairly happy to remove the NULL checks here too!
+>
+> Just wait unconditionally?
+
+If you think it will be unusual for the driver to be used without enable
+or regulator then it's ok to wait unconditionally (all examples you
+have added so far have an enable pin).
+
+
+Daniel.
