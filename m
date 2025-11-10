@@ -1,57 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A11218AB0;
-	Mon, 10 Nov 2025 07:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826AB25334B;
+	Mon, 10 Nov 2025 07:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762760526; cv=none; b=cxRFnIkP6oWaACV4IvKuQM7mnmG0vg5rXeetNvLCy1r7Dp8tCLpD6EmClFIN4LPUrxIfzRyQhtyg+5EDpBC5dY3fbSOBqjVfyNC3ApnHFW5ZV8YBTjwCxpFJYd0wAPpyWxhhUZfmdH5rfGxif/v0TA75huy+WhL/XvQlve1qU9A=
+	t=1762761201; cv=none; b=tm5jzH+92LOEsmEH1RRC/Jy2weMAuAFEZNmKfvi1JgR02sFV3op0ezIXC9hc0rTM3u9vKP5ibhAnwv0hcaS22jlDhuImgfCDjz+kEbblVDYEON1yP5mjuRwnxBYQ0c42IZBzJ/pE+G15sZBxQ1groP+JlX7T1RlSFvJOETySMh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762760526; c=relaxed/simple;
-	bh=eoQpss3r6FYo/VoSTS5AtWz2fEfHuakzCuCNoTPYihE=;
+	s=arc-20240116; t=1762761201; c=relaxed/simple;
+	bh=aD0bXMxM8CDFNwDaCde/4X7QKwASqM9PdFPOKWf2baY=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Gknpk9+eShB4ukjLeSRkytqvAVF8Uoiug6Ot4IkH/dzhrjW+MPNXSALckh47IwzZBG+eW4kOTNsMUlKsh8fwIUQxhqbKjup0sITDg/69ajuBminYFd9N3Fx/FJ8zZHdnWiAbwAyj1eUHfbKLpT0juqXykohhyNRjd4KjJ/hdM2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SkY1ybXw; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=FODcfAa2Zq+BrwVcoTPmENiQYeAQ/iok27GLIf0KUTmPvqLYtNhqIDvLyqsqDTmGwPl2/WzuCITjaAW6r1JRvWJG8JQFPM269klo/yqzPs8kmfm8moRpVSjqLo9cr4GIYUNSiNs/JC73im68gsylqGomDMIy+E5Lu1XvnG6uc/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hexuYCT4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SkY1ybXw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20230C116B1;
-	Mon, 10 Nov 2025 07:41:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hexuYCT4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D485BC19421;
+	Mon, 10 Nov 2025 07:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762760525;
-	bh=eoQpss3r6FYo/VoSTS5AtWz2fEfHuakzCuCNoTPYihE=;
+	s=k20201202; t=1762761201;
+	bh=aD0bXMxM8CDFNwDaCde/4X7QKwASqM9PdFPOKWf2baY=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=SkY1ybXw4AE6CFT9Tnb2fjXUIAbi+gLXED5B4FtiMQLdokuofcghcxD+xY8/DB3dJ
-	 RsFOoMuXNQq3d5SOBbdv5jiaHYA5OLCtdNUvt1z1m1Cfg0fR6V8suAOhTd7pG+PJlt
-	 mgyglzWBw2jENzcWsjico9PyLr+Y+XkjC7+xTM9+tplbMS+EV9IAIe56PThbWWCukY
-	 2dSGCF9Ip5CDKH+ldtwdtxsvV8pavZqjVHWAST1KoYe7bzXRRpYAvYCUY/8Y7iMYpx
-	 z/6yPHa9cE79YCuAb2g/xvHnjCKsj4bj9ba/mmWaFKT0WkrJS/k1D54JNUOK67LcBG
-	 HHreGSjFECDgA==
+	b=hexuYCT4AMkN1E6qvheK7tISxjHWRQ4H/TNG/8ZbbB+/RdyRFtKW9X5ECOzbZ9/6w
+	 dwPqPtFd4IcRWwiYZXfvrUFPg/8bmKLhS7A6fnyWMmulvoBl9KHF/k20dbmse+gp3H
+	 s8ojxcNbRZ8U1VTKpqZUM32zWNDYRVN5FlyxnM44duK8lcJCWmQjvWBdmKzU5annFb
+	 66geaZnQb2qxwDXwpq8OSQ7UB0pF2Ow6YUrXy/Gue+aZdyMhcoj5xidZYAhSVDlrCV
+	 S2c9KP2XfH2UMZYD5YjDXVU5I/8feh9AT+Tg4Txa86WhCToi3/FcrBVHOHYColYLyu
+	 TcQYEYc68EvFQ==
 From: Srinivas Kandagatla <srini@kernel.org>
-To: devicetree@vger.kernel.org, 
- Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Chen-Yu Tsai <wens@csie.org>, Conor Dooley <conor+dt@kernel.org>, 
- Fabio Estevam <festevam@gmail.com>, 
- Fabrice Gasnier <fabrice.gasnier@foss.st.com>, 
- Gatien Chevallier <gatien.chevallier@foss.st.com>, imx@lists.linux.dev, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Liam Girdwood <lgirdwood@gmail.com>, linux-arm-kernel@lists.infradead.org, 
- linux-arm-msm@vger.kernel.org, linux-sound@vger.kernel.org, 
- linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-sunxi@lists.linux.dev, Liu Ying <victor.liu@nxp.com>, 
- Mark Brown <broonie@kernel.org>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Maxime Ripard <mripard@kernel.org>, 
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Rob Herring <robh@kernel.org>, Samuel Holland <samuel@sholland.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>
-In-Reply-To: <20251020060951.30776-6-wsa+renesas@sang-engineering.com>
-References: <20251020060951.30776-6-wsa+renesas@sang-engineering.com>
-Subject: Re: (subset) [PATCH 0/4] dt-bindings: treewide: don't check node
- names
-Message-Id: <176276050899.18134.7729831344719556570.b4-ty@kernel.org>
-Date: Mon, 10 Nov 2025 07:41:48 +0000
+ Fabio Estevam <festevam@gmail.com>, alice.guo@oss.nxp.com
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Alice Guo <alice.guo@nxp.com>, Conor Dooley <conor.dooley@microchip.com>, 
+ Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20251020-imx94-v1-0-0b4b58a57bf9@nxp.com>
+References: <20251020-imx94-v1-0-0b4b58a57bf9@nxp.com>
+Subject: Re: (subset) [PATCH v2 0/3] Add i.MX94 OCOTP support
+Message-Id: <176276119135.18911.11093560408618836361.b4-ty@kernel.org>
+Date: Mon, 10 Nov 2025 07:53:11 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,23 +52,26 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 
 
-On Mon, 20 Oct 2025 08:09:49 +0200, Wolfram Sang wrote:
-> Node names are already and properly checked by the core schema. No need
-> to do it again.
+On Mon, 20 Oct 2025 18:50:41 +0800, alice.guo@oss.nxp.com wrote:
+> This patch series adds support for the OCOTP controller on the i.MX94
+> SoC. The OCOTP controller provides access to eFuse regions.
 > 
-> These are all occurrences I found in linux-next as of 20251015. I did
-> run dt_bindings_check successfully. I haven't done a way to run
-> dtbs_check yet because I would need to identify the proper architecture
-> first, right? Is there some tool which tests all DTs of a certain
-> binding? At least build bot is happy, I don't know if it checks DTs as
-> well, though.
+> Tested on an i.MX943 EVK board with successful NVMEM read access via
+> sysfs.
+> 
+> Changes for v2:
+>  - improved commit messages for each patch
+>  - added Acked-by and Reviewed-by tags from reviewers
+>  - updated the efuse@47510000 node
 > 
 > [...]
 
 Applied, thanks!
 
-[2/4] dt-bindings: nvmem: don't check node names
-      commit: 65c1bc002b27d1ac398e37ce031a45d59999cb13
+[1/3] dt-bindings: nvmem: imx-ocotp: Add support for i.MX94
+      commit: 294e0add7bb8eca991f7e8d064c71acfffd10462
+[2/3] nvmem: imx-ocotp-ele: Add i.MX94 OCOTP support
+      commit: 9e8d7c3115f4eceaae2d5282518be78bcb7ca188
 
 Best regards,
 -- 
