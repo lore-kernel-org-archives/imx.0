@@ -1,231 +1,188 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E0B30DED0
-	for <imx@lists.linux.dev>; Mon, 10 Nov 2025 13:20:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD4D3128BF;
+	Mon, 10 Nov 2025 14:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762780857; cv=none; b=PZjEP1BykS8MAFSKQqR53AlNLtAQm3/Ah6fV1USF9zfC7Y7a0fhv1IH7JA2XxhcBkA5McqBpA1fKXbL3b3GOs+nDXfrWPjm110CB2juOnXmy59Y+s0ftUo8vv8Rcq7xwuhkPDeKX/4dwGX6Xp5pw0V6ojDYv3S8rmAacJ1kOvEw=
+	t=1762785272; cv=none; b=HUIqbR+0Vrx/d7Bz5KsADWZ9jy8J22VRO6EYbL2N+97QUpmUwga2uICZkHfCnWzID3mDtwexqX7v1v/woK5wDbrefRrBwktFNb/T/K1zXYxaEnFRWuXr+PpTafPYVNEXbIPB/bPLvJ2qdWV+lhCSRfoqfA/hoiY+D7mR8nTkygQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762780857; c=relaxed/simple;
-	bh=zUvuS15FZN/th4tW11pDY+SWmVOm/y9iUImxuTLYLmQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k3UPSMhOBOAACzNzRN991rv6LIrfYf2PcNRICvWs4cQP2+gSLqVVgLkCsbfVGgesda8z0+DUQMqNfG3O6NbM7SKZuMqocDX3/6F4Y5tp6/zsFryP7hnjCPdTm+vJ6Ni1ksfRCUe8BTeiN5tQxCbIz6cNsYIQqTMz8Q54Y8iUp3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=g/qKhIEy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+MaGcHd9; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=g/qKhIEy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+MaGcHd9; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1762785272; c=relaxed/simple;
+	bh=j2fpe8eJvApgn7cYpHzNxA3KOm/6F5GzlUkdK+ztIrg=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=QEaIoSVU4IHHm63Mel0DyM7hge30MlwmLdnV8wT9IWMcuqrWheA7xtfgO6MSPFotHr4gnY4tPyDwYSKiBGBKTG32h0bKT8q7I9DKOLp8wKYDD4pGzpK4OYxgZ/NiAjjyXZjUryxnZmHn3PPSBKV0scU3zHNk4OSQ0ubEUAxznN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bVK12m3s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="g/qKhIEy";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+MaGcHd9";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="g/qKhIEy";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+MaGcHd9"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6E7911FB4D;
-	Mon, 10 Nov 2025 13:20:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1762780853; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wvsW++HoXUNBBIn7BmS/GQ5PoNHaRl9/FEA7cJ1fZHY=;
-	b=g/qKhIEyrX91dH0lQukw8C/m7aO1SycGbvjdkM2W+DmsolUg2VwqrQ4MJV/zO17hugJu2y
-	McP+akC3MbOXTIJO+yhPr6Td5Y3foGM3R7gHFMxJYbE2qm6+p+IhdL385JlxRnZsfSdK/A
-	stBrhVwlFRh+sFitbpGnzHA87xeLpRE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1762780853;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wvsW++HoXUNBBIn7BmS/GQ5PoNHaRl9/FEA7cJ1fZHY=;
-	b=+MaGcHd9EuCjutXVtuW0EO0lRwUUVXB4eLWVYFLxMf+tzp7uUeJp10t45Wk/T0KLCLfVaW
-	80xsUKT20CF6FcBQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1762780853; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wvsW++HoXUNBBIn7BmS/GQ5PoNHaRl9/FEA7cJ1fZHY=;
-	b=g/qKhIEyrX91dH0lQukw8C/m7aO1SycGbvjdkM2W+DmsolUg2VwqrQ4MJV/zO17hugJu2y
-	McP+akC3MbOXTIJO+yhPr6Td5Y3foGM3R7gHFMxJYbE2qm6+p+IhdL385JlxRnZsfSdK/A
-	stBrhVwlFRh+sFitbpGnzHA87xeLpRE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1762780853;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wvsW++HoXUNBBIn7BmS/GQ5PoNHaRl9/FEA7cJ1fZHY=;
-	b=+MaGcHd9EuCjutXVtuW0EO0lRwUUVXB4eLWVYFLxMf+tzp7uUeJp10t45Wk/T0KLCLfVaW
-	80xsUKT20CF6FcBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 132B1143F1;
-	Mon, 10 Nov 2025 13:20:53 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2kx3A7XmEWnOTQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 10 Nov 2025 13:20:53 +0000
-Message-ID: <63e82aac-d9b2-4b85-bda5-6654127b7c8c@suse.de>
-Date: Mon, 10 Nov 2025 14:20:52 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bVK12m3s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 140EDC19424;
+	Mon, 10 Nov 2025 14:34:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762785271;
+	bh=j2fpe8eJvApgn7cYpHzNxA3KOm/6F5GzlUkdK+ztIrg=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=bVK12m3sOJGDFFJAv7gcPUux0ZlsYHoz8PnH2HKGIBWWMecav0QArZACBn4ru6Zi7
+	 81FXrM/RxNg5UaJP+58ouJd/IAe9bT0UdbIrt3BGw+wvsuqGauYu/MdJv499XO1ymW
+	 OvlJ8WNaHJ5+nM5qMJlQC1T9p0sSju+KfQt+BZ797sGrupVW+xNeFqZJ11hNggGazj
+	 0EwZu3VofGPuIndZRHNGCaoH8uAwfS1rASsSCSnLIZbQVwd+DH6aiya+kryDtOBFFG
+	 hqHwEn55hpzNouM515HEJISFkEIZh5gILJl7r4NHoQANUD0kwSqasEu/KjQNYV/DfZ
+	 oeduGCVhBNhUg==
+Date: Mon, 10 Nov 2025 08:34:30 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/imx/ipuv3: Fix dumb-buffer allocation for non-RGB
- formats
-To: p.zabel@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
- festevam@gmail.com, dmitry.baryshkov@oss.qualcomm.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
- simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org,
- Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20251104153832.189666-1-tzimmermann@suse.de>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20251104153832.189666-1-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.985];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_TO(0.00)[pengutronix.de,kernel.org,gmail.com,oss.qualcomm.com,linux.intel.com,ffwll.ch];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,imap1.dmz-prg2.suse.org:helo,infradead.org:email]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>, 
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, dri-devel@lists.freedesktop.org, 
+ linux-arm-kernel@lists.infradead.org, linux-input@vger.kernel.org, 
+ Mikhail Anikin <mikhail.anikin@solid-run.com>, 
+ Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
+ Conor Dooley <conor+dt@kernel.org>, David Airlie <airlied@gmail.com>, 
+ Yazan Shhady <yazan.shhady@solid-run.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Jessica Zhang <jessica.zhang@oss.qualcomm.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Simona Vetter <simona@ffwll.ch>, Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jon Nettleton <jon@solid-run.com>, devicetree@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Maxime Ripard <mripard@kernel.org>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Josua Mayer <josua@solid-run.com>
+In-Reply-To: <20251107-imx8mp-hb-iiot-v2-0-d8233ded999e@solid-run.com>
+References: <20251107-imx8mp-hb-iiot-v2-0-d8233ded999e@solid-run.com>
+Message-Id: <176278493126.154536.17870405687578843628.robh@kernel.org>
+Subject: Re: [PATCH v2 00/11] arm64: dts: add description for solidrun
+ imx8mp hummingboard-iiot
 
-Ping! Could this patch please get a timely review from imx maintainers?  
-Not fixing this bug could break user space.
 
-Am 04.11.25 um 16:38 schrieb Thomas Zimmermann:
-> Align pitch to multiples of 8 pixels for bpp values that do not map
-> to RGB formats. The call to drm_driver_color_mode_format() fails with
-> DRM_INVALID_FORMAT in these cases. Fall back to manually computing
-> the pitch alignment from which drm_mode_size_dumb() can compute the
-> correct pitch.
->
-> Fixes userspace that allocates dumb buffers for YUV formats, where
-> bpp equals 12. A common example is the IGT kms_getfb test.
->
-> v2:
-> - ignore width in calculation
->
-> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Fixes: b1d0e470f881 ("drm/imx/ipuv3: Compute dumb-buffer sizes with drm_mode_size_dumb()")
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
+On Fri, 07 Nov 2025 12:46:07 +0100, Josua Mayer wrote:
+> This patchset mainl adds description for 3 SolidRun boards:
+> - i.MX8MP Hummingboard IIoT
+> - SolidSense N8 Compact
+> - i.MX8MM Hummingboard Ripple
+> 
+> This includes dt bindings and a range of bug-fixes:
+> 
+> - dt bindings for the boards
+> - fix to dsi panel bindings referncing panel-common and adding port
+>   property
+> - cosmetic fix to some  solidrun imx8mp boards for regulator gpio
+>    polarity
+> - fix dsi hdmi bridge on hummingboard pulse
+> - compile dtbs with symbols to support overlays
+> - gpiod_set_value _can_sleep conversion for panel and touchscreen
+>    drivers
+> 
+> Open Questions:
+> 
+> - How to describe HX3 USB-2.0/3.0 Hub placed on a USB-2.0-only Bus
+>   (affects imx8mm-hummingboard-ripple.dts)
+> - Is "description for" implied not only on dt-bindings patches, but also
+>   dts? E.g. is this commit subject acceptable?:
+>   "arm64: dts: add solidrun solidsense-n8 board"
+> 
+> Signed-off-by: Josua Mayer <josua@solid-run.com>
 > ---
-> This patch is based on Dmitry's fix for msm. [1] Please test.
->
-> There could later be a helper to contain these aligmentment calculations
-> in a single place.
->
-> [1] https://lore.kernel.org/dri-devel/20251103-drm-msm-fix-nv12-v2-1-75103b64576e@oss.qualcomm.com/
+> Changes in v2:
+> - fix spelling mistakes in commit descriptions.
+> - remove redundant "binding for" from subject:
+>   https://elixir.bootlin.com/linux/v6.17-rc3/source/Documentation/devicetree/bindings/submitting-patches.rst
+>   (Reported-by: Krzysztof Kozlowski <krzk@kernel.org>)
+> - remove one useless comment from imx8mm-sr-som.dtsi to fix long line
+>   warning.
+> - change ronbo panel binding to inherit panel-common and switch
+>   additionalProperties to unevaluatedProperties.
+>   (Reported-by: Krzysztof Kozlowski <krzk@kernel.org>)
+> - add dt binding for winstar lvds panel
+> - fix dtbs_check for dsi & lvds panel addons
+> - change n8 board dts comment-style in header
+> - collected ack on solidrun boards bindings patch (patch 1 in the series)
+>   (Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>)
+> - added standard led label property to hb-iiot multi-purpose leds
+>   ensuring consistent names in case lp5562 driver starts using it.
+> - Link to v1: https://lore.kernel.org/r/20251027-imx8mp-hb-iiot-v1-0-683f86357818@solid-run.com
+> 
 > ---
->   drivers/gpu/drm/imx/ipuv3/imx-drm-core.c | 16 +++++++++-------
->   1 file changed, 9 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
-> index 465b5a6ad5bb..eddb471119c6 100644
-> --- a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
-> +++ b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
-> @@ -144,7 +144,6 @@ static int imx_drm_dumb_create(struct drm_file *file_priv,
->   			       struct drm_mode_create_dumb *args)
->   {
->   	u32 fourcc;
-> -	const struct drm_format_info *info;
->   	u64 pitch_align;
->   	int ret;
->   
-> @@ -156,12 +155,15 @@ static int imx_drm_dumb_create(struct drm_file *file_priv,
->   	 * the allocated buffer.
->   	 */
->   	fourcc = drm_driver_color_mode_format(drm, args->bpp);
-> -	if (fourcc == DRM_FORMAT_INVALID)
-> -		return -EINVAL;
-> -	info = drm_format_info(fourcc);
-> -	if (!info)
-> -		return -EINVAL;
-> -	pitch_align = drm_format_info_min_pitch(info, 0, SZ_8);
-> +	if (fourcc != DRM_FORMAT_INVALID) {
-> +		const struct drm_format_info *info = drm_format_info(fourcc);
-> +
-> +		if (!info)
-> +			return -EINVAL;
-> +		pitch_align = drm_format_info_min_pitch(info, 0, 8);
-> +	} else {
-> +		pitch_align = DIV_ROUND_UP(args->bpp, SZ_8) * 8;
-> +	}
->   	if (!pitch_align || pitch_align > U32_MAX)
->   		return -EINVAL;
->   	ret = drm_mode_size_dumb(drm, args, pitch_align, 0);
+> Josua Mayer (11):
+>       dt-bindings: arm: fsl: Add various solidrun i.mx8m boards
+>       dt-bindings: display: panel: ronbo,rb070d30: panel-common ref
+>       dt-bindings: panel: lvds: add Winstar WF70A8SYJHLNGA
+>       Input: ilitek_ts_i2c: fix warning with gpio controllers that sleep
+>       drm/panel: ronbo-rb070d30: fix warning with gpio controllers that sleep
+>       arm64: dts: imx8mp-hummingboard-pulse/cubox-m: fix vmmc gpio polarity
+>       arm64: dts: imx8mp-hummingboard-pulse: fix mini-hdmi dsi port reference
+>       arm64: dts: imx8mp-sr-som: build dtbs with symbols for overlay support
+>       arm64: dts: add description for solidrun imx8mp hummingboard-iiot
+>       arm64: dts: add description for solidrun solidsense-n8 board
+>       arm64: dts: add description for solidrun i.mx8mm som and evb
+> 
+>  Documentation/devicetree/bindings/arm/fsl.yaml     |   9 +
+>  .../bindings/display/panel/panel-lvds.yaml         |   2 +
+>  .../bindings/display/panel/ronbo,rb070d30.yaml     |  14 +-
+>  arch/arm64/boot/dts/freescale/Makefile             |  15 +
+>  .../dts/freescale/imx8mm-hummingboard-ripple.dts   | 335 ++++++++
+>  arch/arm64/boot/dts/freescale/imx8mm-sr-som.dtsi   | 395 ++++++++++
+>  .../dts/freescale/imx8mn-solidsense-n8-compact.dts | 853 +++++++++++++++++++++
+>  arch/arm64/boot/dts/freescale/imx8mp-cubox-m.dts   |   2 +-
+>  ...hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtso |  69 ++
+>  ...ummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtso | 105 +++
+>  .../imx8mp-hummingboard-iiot-rs485-a.dtso          |  18 +
+>  .../imx8mp-hummingboard-iiot-rs485-b.dtso          |  18 +
+>  .../dts/freescale/imx8mp-hummingboard-iiot.dts     | 712 +++++++++++++++++
+>  .../imx8mp-hummingboard-pulse-common.dtsi          |   2 +-
+>  .../imx8mp-hummingboard-pulse-mini-hdmi.dtsi       |  11 +-
+>  drivers/gpu/drm/panel/panel-ronbo-rb070d30.c       |   8 +-
+>  drivers/input/touchscreen/ilitek_ts_i2c.c          |   4 +-
+>  17 files changed, 2548 insertions(+), 24 deletions(-)
+> ---
+> base-commit: 607bcb1e539a7f2b2ba6832ba96fe3ad73b7401c
+> change-id: 20251026-imx8mp-hb-iiot-525b03beea62
+> 
+> Best regards,
+> --
+> Josua Mayer <josua@solid-run.com>
+> 
+> 
+> 
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
+
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: base-commit 607bcb1e539a7f2b2ba6832ba96fe3ad73b7401c not known, ignoring
+ Base: attempting to guess base-commit...
+ Base: tags/v6.18-rc1 (exact match)
+ Base: tags/v6.18-rc1 (use --merge-base to override)
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20251107-imx8mp-hb-iiot-v2-0-d8233ded999e@solid-run.com:
+
+arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot.dtb: accelerometer@53 (adi,adxl345): 'interrupt-names' is a dependency of 'interrupts-extended'
+	from schema $id: http://devicetree.org/schemas/iio/accel/adi,adxl345.yaml
+
+
+
 
 
