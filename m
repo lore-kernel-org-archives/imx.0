@@ -1,239 +1,128 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013059.outbound.protection.outlook.com [40.107.159.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137052FE06C
-	for <imx@lists.linux.dev>; Mon, 10 Nov 2025 09:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762766020; cv=fail; b=oB6X4K87u4CSD9NX+0o4Wk7agv8vqD3xNoqf6KZo8Pq7/ce9zaixxkDXhj7ez81Lsfd9MljhB0ilqvgr10mB9bqTIkdOsGICpOPopc0LpPF296qLgj/vXrBFb9CP04JxWYTPR6h/Waw2cTSNK2dD251ugwoxIoH6en0mCaMdA2w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762766020; c=relaxed/simple;
-	bh=dhOQs1dyuHnrSGBuR5KsK1mCLKYGJmTaQdC62Bj+3nE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=O2eChGsuNfdKvyAuUUm5LZvxmBSQtG+v9i6qb6ObZTxswVHCn2Qu0ua2kKY5uKtvF6ZS2+oALnTiivFbNnTn4SQc4BlXPcyuy+r2WgKNqq3b7BQztNW8moclTpzcVYvb6AUrjazYzGvjfVGcVID+Y+eMnJv8EI50ZuI3ayF14HU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=GwVV8IVq; arc=fail smtp.client-ip=40.107.159.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0DB2475CF
+	for <imx@lists.linux.dev>; Mon, 10 Nov 2025 09:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762766103; cv=none; b=m/Ti4W5IMqkjUCxbleJXkr/Pjq//NkaOoMGK80DFplCz5Lxu8Nhf+Xdp527JJDl55MI0rnvq7pamdeW5las0Vpu3wF2EOJmeOwvsnWY6RiqR0/3Uj0bF8skuJ6liXC/5yzqYClXKROBoFiXpUmv4OqmYUrzBb/9JyzdufnD99tQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762766103; c=relaxed/simple;
+	bh=2+PqvTsIgaNTk/7uCk6kfDMTr3xQc57xAYsQHUDudqM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NmeSVWb7w9Wq5D6qjfpfmc17rWRXuSg90RD8gWCVKYw4s9vxihbaQfI2h5NDgQ3xgvES7oJ2Zr6Qeac6hNAz0/OYTsu61ItW9bgZFdQ1ZXJ/Pr6buOUzA3+maXutoKqXiaYTaCBdKxVdGeKrugePieYeURl6QansnM5oz4Bf7ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GW/u6nYa; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="GwVV8IVq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ixk+JvzlYGoi1eu7IGdxJ7QkEkx5iwH9ZimfFjlhTtwMpvLxV6/m4HsJFslopPlqa7jvrHQP2L7Jo45mKLE5xRscKYezjh/HclbDTNTL1sccNcKMxQL7ztpOPjwsa5nizvR8LtEOkxuq01OjBBLmqDvkMcDeA31/w/oPxjtLPBDzaV8xIkl0NheRj+r6mQuUmdWWlkBNIyGoGpekBBQ5H26TnQpZi6akctxw86pA+rNVZTe/NnqkzoWQhUyyHYPHfhyxyS2W/GbndUKc4KtXMj69Aa8DiuqfE4sXWOUcewIHrquXkgCRqdsG7BPVNKHqT08gCbiMOi9XyhOOISX1kQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2t7AAZ1Rje6eWEWcEGdoBWDIc1KivwHFWU4maR0dxg0=;
- b=XXo3Q83mgulWDGJR1WI6tV22jS1i7LHXxAqWMmQmwc+9HqbXeeDA7/MkE4R5Pnc5taYQ2F8fEJNA+QdC5B3zYsI+hazfoXjZjyBR/61eER+CNnooFbYkx4HLSrBOXpkBDB8R+9syiBwpE+x5BgOuaToUK2STI6LeA/is6uyKJxgSvPahjf7rrU7+x419EtOIFsQntE37BPNkxIZ7d60Q/BEEpf2jwANSTLM4D3pPwRWsWzfFM3QhIqf7OIgN1Zvd3Z2l+tEsgzv8+k2bSOFu1Dg9stjkeGEbWXAcOT9vI/5h79X+Pj3VSxfsHOo7gzl3j+Kj8IG4OgngQ0KgYY8zfA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2t7AAZ1Rje6eWEWcEGdoBWDIc1KivwHFWU4maR0dxg0=;
- b=GwVV8IVqGCRJfmZOV48xVlS94K41bh8/NoYEWRSWhYH/Bi4lUgttDqrQHukJCMBWIxTVY/O7fLEQrvDTSh+oR0seOiHMfiZ9/MgAmVZ5I0GvK4Gj3AUsdV63EJwnc6GYk3/A+CbCco3JOZA44rs09wmlHC/kdW6h7Ba880n5lq8MVQV2pfCNpn2MEnVJWpaQZs+koUa8vANyq8N7FamWw4GEhB8X3Sz+fOx+tlB7Ui79LFY9V/qjEb52paSvpJ8vT/2dXPfrPzUch2sOD7DaZuN4KYCl+ENm7lakIFJy7GSDwNrdKH44vANwLj0bnFUP3itBrWIjB7SxkLHyDPvo9g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
- by GV2PR04MB11957.eurprd04.prod.outlook.com (2603:10a6:150:2f3::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Mon, 10 Nov
- 2025 09:13:34 +0000
-Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
- ([fe80::4609:64af:8a4b:fd64%6]) with mapi id 15.20.9298.015; Mon, 10 Nov 2025
- 09:13:34 +0000
-Message-ID: <42eb2d42-47b0-46b6-92e9-c59473113c2d@nxp.com>
-Date: Mon, 10 Nov 2025 17:14:01 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v4 1/3] dt-bindings: lcdif: Document a imx6sx-lcdif
- fallback
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
-Cc: marex@denx.de, stefan@agner.ch, airlied@gmail.com, simona@ffwll.ch,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- shawnguo@kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20251013205155.1187947-1-festevam@gmail.com>
- <4bd512fd-b3df-484a-8a04-a1ed066c42fa@nxp.com>
- <CAOMZO5AGRejEwNvkH0Di0HVi8QPduTeCSud+_GqOkD4tqEcsdA@mail.gmail.com>
- <37b8d968-a725-404e-8fd4-84c2a0bb464c@nxp.com>
- <CAOMZO5B+VcGxx9Xa6FFXxeka0qcqBmATrartguqMLMDK4fGduA@mail.gmail.com>
- <da41c891-db89-436f-a262-61dfd33d57f9@pengutronix.de>
-From: Liu Ying <victor.liu@nxp.com>
-Content-Language: en-US
-In-Reply-To: <da41c891-db89-436f-a262-61dfd33d57f9@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SG2PR02CA0012.apcprd02.prod.outlook.com
- (2603:1096:3:17::24) To AM7PR04MB7046.eurprd04.prod.outlook.com
- (2603:10a6:20b:113::22)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GW/u6nYa"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6419e6dab7fso642971a12.2
+        for <imx@lists.linux.dev>; Mon, 10 Nov 2025 01:15:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1762766100; x=1763370900; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=NXFnmmWcp+T86M4X7Xk/v6jPWKY4nv9UjyUBijcqLEQ=;
+        b=GW/u6nYaecfMxdf5KDX/llaxABIUZlezKQjoyEzJv77Kk64tXXe64S+AK1iZLiMp/v
+         g6jSzTW/6jlUhiaiCwZzL/0cwJze7P5HEoJnKpTQsCUDBqSYVIE2T0aao714iE10ydWR
+         3bPUMg/JdqXYuTR8faP1a3bTi+vMPnYh01em/NK6V38k6CYXO7ZE9vzG8OJeSsjeShNr
+         VhduZwwr8pWMPdil1CIYP+uh2RjzsJiNIwESJoLlrv4vfXLeXOlYp+4O3GOQC5cSwvJw
+         cvrVGnCjuQ5inrps8G52hF2/zO+PBZRE8fMY8qv8Yj5GgyjO5yFB3FsX3jphfmjw4+ef
+         iJ5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762766100; x=1763370900;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NXFnmmWcp+T86M4X7Xk/v6jPWKY4nv9UjyUBijcqLEQ=;
+        b=hUtXkIY95FlAZcCWbMW/RRmXb73iYWJap3ZhPFIN/X6b3btYqGNOA6ZzPp81KTcb/F
+         b3ZkofnRXIYCsFJ3F0uQ4HmdD59hIolqtEdh9SLyCEsBlLBPfBCFRaxOlMLwk2tz3iHK
+         3kAuiljHwWrh0p0TZQKTPeYrQNSfF+PpGCaXT+R615W/2tmPdiA8rw2dTV2gJHRv+uO5
+         qG2/9/oDAXqXK5hf6HCEWsvp12AJvL7r5MkxzmNTtMmJbB3MNVheqaBG4NHgDEHOCTkw
+         7g3RMjsjqh02I4/iKrQNjjbyQKOc/q3LfNdRO2gsAG34ARePPqEYNioFV3uxUTw8a+SN
+         Z+EQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXdzZSwyl5yUAgl84xMPnhb3r+FfLXOtghKpNwHBENnoXhMbIWgXJMCLoOCYpT7opcw9v0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwdaRLWTvqKRCizIaqpnSHBf0p1HVBYGfIsZbSLODdbCJV7xeIe
+	GR441cDACzPnzQsTCKOBebrKAi4Uu7x2zQImAUhvR8kc54cl/ogahsfIsDqxU8ovZDx93KmOKz0
+	8aRt9S2iLmwWu/nVXSLKPu+rur3sDw9uKoSVnF2+YfA==
+X-Gm-Gg: ASbGncsVgXQFwHSsXGcMI6lJjB4or9pIyLDMaGBR7vfyNkB8upP4KmsW19pbGuAxony
+	kKgq/LYwrnbZP1EWz+aHNUUdWYMMKgvOJI6/NokCnODcTbm/NjE62BFWI7EVCTnzLnHoBQxHRYJ
+	64g7V/JwsGb6rC6SkFuKuI9cwrw0o3jxKIHSCw3TnbiDUzqrfktrfck1ekQq5RGUqXJU8aWibeY
+	v0nsravEw8VUN4EJTDBpxNwC3GTqJlWL06bsHY7hXsGuHLGKjtP887OgxseuK+jOaUQHilhbbTI
+	FSV5eQ3vKQvjgty3RIhQs90TRZqc1rZSwvA=
+X-Google-Smtp-Source: AGHT+IG5jsntiKbL9XDoTScxbX6sK0/o8ty8iuXm+qmOqxUowPC2iS+ovEiKsBoSdXQkOeKy6r5NlaZELkfmqB0OJxc=
+X-Received: by 2002:a05:6402:26d0:b0:640:cd2a:3cc1 with SMTP id
+ 4fb4d7f45d1cf-6415db564bbmr5934589a12.0.1762766100006; Mon, 10 Nov 2025
+ 01:15:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|GV2PR04MB11957:EE_
-X-MS-Office365-Filtering-Correlation-Id: f745d9cf-6ff6-4672-ce2e-08de20396c8e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WmtUSUpJTG9EOHppdUNDUkFZMjZzbUplTXF2UWxpKzRBeVZFTklLSFM5L0VM?=
- =?utf-8?B?SWpLb1JXdlhHYXF0NGhTWWVObmxSalNtWEhUTUlScGZwdGxhcGRuMEhiTkpj?=
- =?utf-8?B?NGFVajBJa2I5S1pHdUpTMHlOZ1E5ckdUakgyd3o1SlBzLzRTSjYwTGc5Vmlk?=
- =?utf-8?B?OWZDNXBHcXBpSEZ5Q3h1Y0dyV1VRWE85V0JlQ3hOTTJybHJrblhzSWJrcnUz?=
- =?utf-8?B?VXlMcmhVTVkrbFc3Mk5KNDdvTDBDSXVSYm50dUdLQUVYa3JkdVdmZzYyaVRp?=
- =?utf-8?B?cG14QkJIcGpYVllIUDlLVVJoVGtjVDVLUUNkdW12ZER0dWJmR2xvODRZSG5S?=
- =?utf-8?B?d0FDOXVmUnZNNWdTSU5rMExDclFIV3E2WmJ1cTlxK2lrWXoxSyt1anpTTTgz?=
- =?utf-8?B?QjQ4SG04MHZOQllGRXlrRWtNZkNLQmFScmZJcU5VL3hURGMxTkZZU1BqMWh1?=
- =?utf-8?B?MUxFaGhVeHhZdWx6UC9ncHE0OWx3c0NnVGxYUDVuK3pqQ2VGNFl0QmsreFFu?=
- =?utf-8?B?Um9xbHlOTEljaEp2bmkxQmJtOFFVb2daOERyeG42OFlvOUpqOVRHQUZ6RkN5?=
- =?utf-8?B?bmFUTGFGZzhuN1B0eGJmSFVXdkcrT0ZWTXI2TzhabkNLdzgwL2tjZVZPK3ZP?=
- =?utf-8?B?R01ZVDdNQUdhbFlPdlZ2eHdRVGFmSVNuS2lkZ2x2WCtCRnlMV1ZpSC8rbEdn?=
- =?utf-8?B?K3RZM25UV2F2dTIrcEhUVlFBQlpwWUs0QjMvVFhRcG1DdFk1dFVJQWhjcjd1?=
- =?utf-8?B?ZVQwY0lIaE5aYXU5alI3KzA4RHp4eWkrSEhlZmZvQTZLR1VEN1c0bUl0U2tB?=
- =?utf-8?B?THpXOTNPTmR2M0lVMUF4aW90R284VU5QWHgwbEV1cHQ0TkFFbzZIb0ZtK1Ra?=
- =?utf-8?B?MjJUS25rWXBoS2dsbkkxeVhSN01uSEl6WExIbStXbFRod2pxVkhFVVl5YXV5?=
- =?utf-8?B?Q0pFYTBHYTlwbkc4VU5EV3BlZmNlV2xtTkNTRFpCSUQzNGdpUVM5MVZtV3kz?=
- =?utf-8?B?QlZ1aFJGWlpMWkgvUmFhUGhpdWUxVTdhOS9xTE8zc3dZZDdSTXFYdDg5cTQ2?=
- =?utf-8?B?aXFPOWphUGptbklMeVFCOTBkVWlLbXQydFZYaWlYbHJIdmdLakFac3hJUHhn?=
- =?utf-8?B?ZTBuVFlqRVJwdjZCa1BuM3dqaHlHNm9oSGNhT2M3Wks4SDRpQTJ1SThxZGtu?=
- =?utf-8?B?YUJ2QU04U3lCNEhsUXJ6dFhQUWU2TXVuMjlKQjY5U2Q3bmJkN2M2NVE5VXd5?=
- =?utf-8?B?UEpHSURDcUFKRWxqVEFTVndhR1NrL2I3TnlIc3hYSnY4am1MS0JnblhFQ3VJ?=
- =?utf-8?B?ZkF6ejQ5R1h3a1dheU1Oa1U1T1hvQ2VmbjlDTnM2QnYzOFhoaFQ3MHhPeXkx?=
- =?utf-8?B?Z252SFVzVWVvem9NZ3U0OGlMTm5HejFRSWFvRTVCOFpZeXJUamgxZkdzUmRH?=
- =?utf-8?B?akJ0NCs2bEFKL1JhU2N6UEg3S0lwMHN1N3pnTk9DdUFhWEk4K1UwYmVFNDVp?=
- =?utf-8?B?OS9HajNHL0JiazNDMGx0Z1ZaUEhrWTYxZTlENmxQS1VHcnF0WVRSUlNZRDkr?=
- =?utf-8?B?WVpyaVRLQlE5NTh1Q2Z1NkV2NWtUZ1Bod3FEZWhwR2EzeS9XYklLLzIwRGdz?=
- =?utf-8?B?OXJONkNDT1E2OWoyWldZbXM1dldDMDlLVTRyeTc3U0V5Z2JwZ2d3WGpCUVM3?=
- =?utf-8?B?THVieVdiSE9mMnlLcCtvaTFtbHFnOWtwNmE0ellyTEZOby8yUXR2cFRUUHU3?=
- =?utf-8?B?ZkVRMFUyNmN5L1YwdmtaWlNTL05lZUFFNWIzRlBSMnp5WUtDdlVKd3dHZVRZ?=
- =?utf-8?B?cEVZNVhRN1I3NUNmVmxSZjRsMzVqSlhCam9QNHpMWjlFc3M1dXBSWVliZC9Y?=
- =?utf-8?B?SDdiaGZMaEZYN0dMa3IwcEQwY0hMOVdRR283eHd4eTNPVWc9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c2dJTGUrY1UyMzFhMWNCNVhDa2h4VVg4UmFlVU9laU52RG5oQjBqRjZ5Ulh2?=
- =?utf-8?B?UTVyWlN0ZjltYkxqRDEvKzBSZjFlUE8wWmd5UHBUei85VGtXaHRubktoWkNM?=
- =?utf-8?B?Q2tadGxvdEZ2dlZYWEUrcGR1ZThpaFR0ZXFCZVpUcjVqa1BsekFjUm5nNkFj?=
- =?utf-8?B?QklXNkpEQzQ0T0lXUkRkOEJqTmJqeGdIK3o3Q1lPZW1JZUtsZFp1eU44Q1Yr?=
- =?utf-8?B?ZXV6dnlJRk8yVWZuVUUyNUVscDJmNW42UDM0UUpadUhIMUdaT1N2N2xOejR1?=
- =?utf-8?B?OE0rUG5ISjFHRXY2ZG0xeXBweWc3WGxOcXd2S0lrZkUyNDNJM3hzZzBua202?=
- =?utf-8?B?VWRxM1hQL3ZsYmhFaXdWMCtocEU4cjBiZ1VOR1FOK2RIblZpNGtiRjhQY1VY?=
- =?utf-8?B?TGw2ZUhWQnpsL2h1dnZCV0pTUFprbEJ0ejZOSnlTcnJlR3V3UnZzcEtDem5w?=
- =?utf-8?B?ZHVHWjNMNThwdmRycUdFNUxrVXFIUTNWRGhPUWxOM1RWQUdSbkYzMldiZWVY?=
- =?utf-8?B?MGp4UzRnMlVOYi9HdjROQ1ZOTW84UXp4NzZQVjYvU0krMmU4SFNrQnZwYXJ4?=
- =?utf-8?B?YjhhQWp6Uk0zOWE4MkhqQzlndGFpV1BoM1NXL2VicGJ6ZUNhdThuclR5Z1JK?=
- =?utf-8?B?VCtCVnN0b1BKUlVnRGV4T2VWb3BrQzI3MDlYdGRoWFRCYlVrTHRzYTdQMjYv?=
- =?utf-8?B?ZXpNMDZYSWluNXVPR1BUMGdMWHdIWWUvdU9TRjBIVG93alg0SWJxdFpzcS9U?=
- =?utf-8?B?U3p1RHBneEt3UGVQVHRQZDBDNWNsNlhNWE9ROUpGckE0Q045KzZrTk5IMWtv?=
- =?utf-8?B?amRjSVNDRmZJYlZFbmlQV1RWVUE4TG1uMDdmR0ltSEMyTWF5aFdTb05MU0Vm?=
- =?utf-8?B?Qm8wbEFwZDZvRmNSeWo2cmtEUUhqeW00YU5PSkpEMG8wTU5DSjRZaGZNRlBY?=
- =?utf-8?B?V1VpbExVUW4yQ25FQnFoaEdhT25Dc3dBaDVCRnROaGZFTHdtOVNkY3g2QUc0?=
- =?utf-8?B?YTMzbCtOVXE1aXQyTFZTRGkvQ1A2RTM0ZkZSRDErK2lZR0J5bytJTGpkLzhu?=
- =?utf-8?B?a0VkOXhDelFlZjFrRURhRC9GOEVaZXV6VEZJN2x5RE04QXhtM0QrenVCRW9s?=
- =?utf-8?B?SWtWeXBnTjF4NVJTaFpBNGRKUnd5M21NbEkzRUM0dXNqRTYrL1BOMW1wdjVN?=
- =?utf-8?B?Yk1MWkRFM0J5S2JoajRHQXh5ZnVDRytEWHg2MjZUdHZSaTJ4SlAreXFiRmU4?=
- =?utf-8?B?Zk4xS01CZ252Yk5waEhtcENod2phZzR2NEtVWnpLN0liK3BsYTFGWmRiakZG?=
- =?utf-8?B?OFVGNDRKMTN4Y21tSXUrV0k1RjFnNkRxNmlVbGdhSEhCRWlKeTliTFNodzVz?=
- =?utf-8?B?dkRiOHUxWHVkd2E0YlYxK3BsTE9JL21jdUJNcXpsc1pqeVdUd3BHcjZ2K1BK?=
- =?utf-8?B?STNSdzg0d3VKYzVScG54SENTM2plS3o0TDZyblRpVXBSTGl1UUhDRFgxc2la?=
- =?utf-8?B?SWZwZFpOblZ0SktpRFlvQ3k2cVVCUm13MTA5eUwvbGh3VjlTeVlLazNPTFRD?=
- =?utf-8?B?KzEwY2JKY1pvQUxOMmNBNXA4ck4ya2VleW53ZWN3dTVYdDNTTXY5SDJmdk1V?=
- =?utf-8?B?QU8wei9LY1B1alV1QkxDTTZ5alR3VmpUZ0J2cjU4WnNuUy9tb2VJd1BneC95?=
- =?utf-8?B?dEQ5aG51RCtuQXFPY2FpWEZMcWJWeDlPMExjYWRjcXZPQmhyaEdad2VyNGtW?=
- =?utf-8?B?azVLQjUvVDBOVEFKTmxtdEFGaUgvK0hBY0RSd3Frako2eHpLa01YVEwvbTJ4?=
- =?utf-8?B?WnZLWDdjY1d4WnJBSk5sU2xkWjNDSlNJdzljSWRPY3NsWWxOTmJnZDNTZUVU?=
- =?utf-8?B?RzBTRU1kVE1tdGFiZ0thSVA4bnlveTlMUDVDRS96SW1ySFNOOG5PMVVKL1NW?=
- =?utf-8?B?b2NEOGoxbDJtQzd2UkdRZ0RYVm54eFZBZ1RZdDNoc005OE1jZnhsUU9IOFh1?=
- =?utf-8?B?Qlp4WmdwOENwYjR1aUVqSzRzZnMrNXRDT0ZaZGdQd0dBT2JxWWFDYWI0Y2x3?=
- =?utf-8?B?UTZZNVBiaDYwWDNIZWNGdXIyY24vYXJxMm8rVzJyMUVmUlgzbFNxVWRZVDgy?=
- =?utf-8?Q?F7n9wgkoSSOJBrNXzShuexjRL?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f745d9cf-6ff6-4672-ce2e-08de20396c8e
-X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2025 09:13:34.3100
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CaQt+l6OUNd1ejzKm2Rm7GJ2sQsVT/zzWqP2qnC34av0eyeX8sj/6NR9mam7aOldXH3p/GNkAeTL+AnQqwRtmA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11957
+References: <CAKfTPtC87w7RVSDAXWXRX1sjgo4s=_Z_k62+mfTXrMZwmkEpFg@mail.gmail.com>
+ <20251106173853.GA1959661@bhelgaas>
+In-Reply-To: <20251106173853.GA1959661@bhelgaas>
+From: Vincent Guittot <vincent.guittot@linaro.org>
+Date: Mon, 10 Nov 2025 10:14:48 +0100
+X-Gm-Features: AWmQ_bmdJnu871GRec3avwkB2KMRGJUSatF4zpeqoF6tG3-YU67MrrGvp-or-eI
+Message-ID: <CAKfTPtD3UUXq=PwBJKx2q5VEBbAie-M1XgTbx3hmxZV1yQGBww@mail.gmail.com>
+Subject: Re: [PATCH 1/4 v3] dt-bindings: PCI: s32g: Add NXP PCIe controller
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Manivannan Sadhasivam <mani@kernel.org>, chester62515@gmail.com, mbrugger@suse.com, 
+	ghennadi.procopciuc@oss.nxp.com, s32@nxp.com, bhelgaas@google.com, 
+	jingoohan1@gmail.com, lpieralisi@kernel.org, kwilczynski@kernel.org, 
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com, Ghennadi.Procopciuc@nxp.com, 
+	ciprianmarian.costea@nxp.com, bogdan.hamciuc@nxp.com, Frank.li@nxp.com, 
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	cassel@kernel.org, Senchuan Zhang <zhangsenchuan@eswincomputing.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 11/07/2025, Ahmad Fatoum wrote:
-> Hi,
+On Thu, 6 Nov 2025 at 18:38, Bjorn Helgaas <helgaas@kernel.org> wrote:
+>
+> [+cc Senchuan]
+>
+> On Thu, Nov 06, 2025 at 09:09:01AM +0100, Vincent Guittot wrote:
+> > On Thu, 6 Nov 2025 at 08:12, Manivannan Sadhasivam <mani@kernel.org> wrote:
+> > > On Wed, Oct 22, 2025 at 07:43:06PM +0200, Vincent Guittot wrote:
+> > > > Describe the PCIe host controller available on the S32G platforms.
+>
+> > > > +            phys = <&serdes0 PHY_TYPE_PCIE 0 0>;
+> > >
+> > > PHY is a Root Port specific resource, not Root Complex. So it
+> > > should be moved to the Root Port node and the controller driver
+> > > should parse the Root Port node and control PHY. Most of the
+> > > existing platforms still specify PHY and other Root Port
+> > > properties in controller node, but they are wrong.
+> >
+> > Yeah, we had similar discussion on v1 and as designware core code
+> > doesn't support it, the goal was to follow other implementations
+> > until designware core is able to parse root port nodes.  I can add a
+> > root port node for the phy and parse it in s32 probe function but
+> > then If I need to restrict the number of lane to 1 instead of the
+> > default 2 with num-lanes then I have to put it the controller node
+> > otherwise designware core node will not get it.
+>
+> I think it's better to put the PHY info, including num-lanes, in Root
+> Port DT nodes now even thought the DWC core doesn't explicitly support
+> that yet because it's much easier to change the DWC core and the
+> driver code than it is to change the DT structure.
+>
+> That will mean a little extra code in the s32g driver now, but we will
+> be able to remove that eventually.  If we leave the PHY in the DT
+> controller node, we may eventually end up having to support two s32g
+> DT structures: the single RP style with PHY in the controller, and a
+> multiple RP style with PHY in the RP.
+>
+> We'll likely have both structures for many existing drivers, but I
+> think it will be simpler if new drivers can avoid the old one.
 
-Hi,
+Okay, i will add a RP node
 
-> 
-> On 04.11.25 21:44, Fabio Estevam wrote:
->> On Mon, Oct 20, 2025 at 11:53 PM Liu Ying <victor.liu@nxp.com> wrote:
->>> On 10/20/2025, Fabio Estevam wrote:
->>>> On Tue, Oct 14, 2025 at 1:12 AM Liu Ying <victor.liu@nxp.com> wrote:
->>>>
->>>>> Strictly speaking, I don't think i.MX6SX LCDIF is compatible with i.MX28 LCDIF
->>>>> because at least i.MX28 LCDIF has the version and debug{0,1,2} registers(at
->>>>> 0x1c0, 0x1d0, 0x1e0 and 0x1f0) while i.MX6SX LCDIF hasn't.
-> 
-> Thanks for pointing this out. In my opinion, these registers are auxiliary
-> and don't really change the compatibility situation as a functional driver
-> can be written without their use, evidenced by the Linux driver doing just
-> fine without using these registers.
-
-DT bindings should after all describe hardwares and in theory they should not
-consider software implementation, that's why I said 'strictly speaking'.
-
-People may argue that potential software would access those "auxiliary"
-registers and hence i.MX28 LCDIF is not a fallback for i.MX6SX LCDIF.
-
-And, to me, register at 0x1e0, i.e., HW_LCDIF_DEBUG1 is not that "auxiliary"
-at least for Linux, because Linux DRM supports getting current display scanout
-position to generate accurate vblank timestamp.  HW_LCDIF_DEBUG1 actually
-provides the interface to read scanout position.
-
-https://elixir.bootlin.com/linux/v6.18-rc1/source/include/drm/drm_modeset_helper_vtables.h#L448
-
-> 
->>>> There are some DT users, such as Barebox that matches against
->>>> fsl,imx28-lcdif, so we cannot remove it.
->>>
->>> Hmmm, it looks like software projects like Barebox don't really follow this DT
->>> binding.  Is it possible to fix Barebox to avoid changing this DT binding by
->>> this patch?  I'm assuming that Uboot has already been fixed.
->>> What do you think?
-> 
-> I am sorry my prior feedback ended up stalling this series.
-> 
-> There is a lot of regressions happening due to upstream DT changes and I am
-> just trying to raise awareness. Another example I stumbled over today:
-> https://lore.kernel.org/all/91f764ab-bec1-4791-b01b-3ba0803ce8f8@pengutronix.de/
-> 
-> 
-> I have submitted a patch[1] to barebox adding explicit i.MX6 SoloX support,
-> so, having expressed my opinion above, please proceed as you see fit.
-
-Fabio, it seems after Barebox is fixed, you can fix the LCDIF compatible
-strings in imx6sx.dtsi?  I don't know if there is any other software project
-which is taking fsl,imx28-lcdif as a fallback for i.MX6SX LCDIF...
-
-> 
-> [1]: https://lore.barebox.org/barebox/20251107210033.2229781-3-a.fatoum@barebox.org/
-> 
-> Cheers,
-> Ahmad
-> 
->>
->> Thanks
->>
-> 
-> 
-
-
--- 
-Regards,
-Liu Ying
+>
+> The eic7700 driver is an example of num-lanes support in the driver:
+> https://lore.kernel.org/linux-pci/20251030083143.1341-1-zhangsenchuan@eswincomputing.com/
+>
+> Bjorn
