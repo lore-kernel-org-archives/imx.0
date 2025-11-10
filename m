@@ -1,147 +1,174 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8596B2FA0F3
-	for <imx@lists.linux.dev>; Mon, 10 Nov 2025 08:28:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252D02EBBAA
+	for <imx@lists.linux.dev>; Mon, 10 Nov 2025 08:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762763319; cv=none; b=YjwkR/a8W5kQ++97llqtMm/Agc97EmDYSMO58RASkaYGMcy0cQi6Ee9mcPKot3zE54xq/dv3nByu8AzBJfLwn1qPPmh9qz/FrUMMJsm8nTT39Uh3G7fiFwiu/oeq3icNTms/GRLVUfx/5wSXtwvT+ZFY7qcS5Ycu8S6NOLrmwjg=
+	t=1762763708; cv=none; b=jpJ7lxBNfwR4dCa5lGDoMlHLZuiOiDJ9TqAY7mMrX7/LQofRYeUoQsmp1jz/EqMUDfMh35ehrKz1Ug7KSnqhU/Y4qgfOb7oywdzs3fd2dBK1v20+pOqrXkn+gENb6WD2NbA79XsAScXewdCUZmCkE/TKYf1FqYAPuUZEn5EKK/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762763319; c=relaxed/simple;
-	bh=EvtWBQFRZV7DO1p3ObWpe4+6Z7KE718cU+MX/WiuSB4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=W8Ow8Eh3N7M7fEelGWdFkiXVPVBrEgCVS3VrNnX4EDoQ6GHM6dGLLqvJiwZdn7AALFKo3HT0neHUtqGEncFlAv0DwY6OfbP2HXNAQDIr1G813AbErBfW0w9VTBK6pgrqvBilInnSPvQh+HeJusyj5w0+nNpo4SrZNAjWC0BVDTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vINGJ-0006Rp-SA; Mon, 10 Nov 2025 09:28:31 +0100
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vINGJ-007zQw-2A;
-	Mon, 10 Nov 2025 09:28:31 +0100
-Received: from pza by lupine with local (Exim 4.98.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vINGJ-0000000049R-2T7U;
-	Mon, 10 Nov 2025 09:28:31 +0100
-Message-ID: <b198e853113e39397803d9651f7126566d269601.camel@pengutronix.de>
-Subject: Re: [PATCH 1/6] media: staging: media: imx6-mipi-csi2: replace
- space with tab for alignment
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Frank Li <Frank.Li@nxp.com>, Steve Longerbeam <slongerbeam@gmail.com>, 
- Mauro Carvalho Chehab	 <mchehab@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team	 <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: imx@lists.linux.dev, linux-media@vger.kernel.org, 
-	linux-staging@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Date: Mon, 10 Nov 2025 09:28:31 +0100
-In-Reply-To: <20251107-stage-csi2-cleanup-v1-1-5d42535243ac@nxp.com>
-References: <20251107-stage-csi2-cleanup-v1-0-5d42535243ac@nxp.com>
-	 <20251107-stage-csi2-cleanup-v1-1-5d42535243ac@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1-1+deb13u1 
+	s=arc-20240116; t=1762763708; c=relaxed/simple;
+	bh=+ijNI65W+ZEFvK4Ew06TjA+hc0H10nDb/fRorO6fxqo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hvD7KfQSu6RJh8P4sa6ckCxnYmVJMKPqpcdEkil2eTnzA8m47+jTFFNwe9iLXZXsfhszNXaRxvooYU232hFgozEibiOSiGo1jhjecEeYS6ZTJ0HB3oUP10I5Th65xBJDnTgM1yHYnQDFIYuYaVNs4YQmi5XeNWk+lwlThlTCSs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoseli.org; spf=pass smtp.mailfrom=yoseli.org; dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b=A121KGlo; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoseli.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoseli.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b="A121KGlo"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B2E6843A97;
+	Mon, 10 Nov 2025 08:34:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yoseli.org; s=gm1;
+	t=1762763697;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z6wRniPCN18DmCkPRn+D/brzx7dyupMuJ1WbzWmkjT4=;
+	b=A121KGloifIUhJ77Bap/KOBzqy308FGX0YX9ci0cAfs5CYooKQhgPPLMF1FQtVjbVTJ6lv
+	2lkQ0FW1JGeCS0eKxh0frvsNIaLNqpPNws2awkS2/MJyc4KARgpqDsE4jl12Q2Qt1rrX+W
+	jbp/RnR1Ocsz1u0G0OWIrPDKObMSirSACifE1/RV3AEJIe38uDeYmvSc3qfOXS/kKzmvd4
+	Ffv/q8r/dhI+l0dkUO4pftTJslWKs5/tWVbNxZx9hquw9PWMEuhWxtXtbiEXBXJFHZb8W0
+	OR30Ia18TDhJPUsRXlm/wFCKiJGuqAt4xrkO+eynqfGwvm0qYuBr0i4a0y2ZkA==
+From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Greg Ungerer <gerg@linux-m68k.org>, Olivia Mackall <olivia@selenic.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-m68k@lists.linux-m68k.org,
+ linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 2/2] m68k: coldfire: Add RNG support for MCF54418
+Date: Mon, 10 Nov 2025 09:34:42 +0100
+Message-ID: <12779401.O9o76ZdvQC@jeanmichel-ms7b89>
+In-Reply-To:
+ <CAMuHMdWL76hY-Pv30ooSM1J6XkVWbRXSLTDCjfpPOvhFN4tKyA@mail.gmail.com>
+References:
+ <20251107-b4-m5441x-add-rng-support-v2-0-f91d685832b9@yoseli.org>
+ <20251107-b4-m5441x-add-rng-support-v2-2-f91d685832b9@yoseli.org>
+ <CAMuHMdWL76hY-Pv30ooSM1J6XkVWbRXSLTDCjfpPOvhFN4tKyA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduleejkeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkfgjfhgggfgtsehtqhertddttdejnecuhfhrohhmpeflvggrnhdqofhitghhvghlucfjrghuthgsohhishcuoehjvggrnhhmihgthhgvlhdrhhgruhhtsghoihhsseihohhsvghlihdrohhrgheqnecuggftrfgrthhtvghrnhepffevhfduvdeludeugfdtleduuedvhfeuvdevgfeiieefieevteektdettdeifeetnecukfhppedvrgdtudemvgdtrgemudeileemjedugedtmedvrgegtdemfhefrggrmeejudejvgemudefsgdvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmeduieelmeejudegtdemvdgrgedtmehffegrrgemjedujegvmedufegsvddphhgvlhhopehjvggrnhhmihgthhgvlhdqmhhsjegskeelrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpehjvggrnhhmihgthhgvlhdrhhgruhhtsghoihhsseihohhsvghlihdrohhrghdpnhgspghrtghpthhtohepudefpdhrtghpthhtohepghgvvghrtheslhhinhhugidqmheikehkrdhorhhgpdhrtghpthhtohepghgvrhhgsehlihhnuhigqdhmieekkhdrohhrghdprhgtphhtthhopeholhhivhhir
+ gesshgvlhgvnhhitgdrtghomhdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprghnrgdrohhrghdrrghupdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhm
+X-GND-Sasl: jeanmichel.hautbois@yoseli.org
 
-On Fr, 2025-11-07 at 15:44 -0500, Frank Li wrote:
-> Replace space with tab to follow coding convention. No functional change.
+Hi Geert,
 
-Which convention? To be honest, this feels a bit like unnecessary churn
-to me.
-
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->
-> ---
->  drivers/staging/media/imx/imx6-mipi-csi2.c | 92 +++++++++++++++---------=
-------
->  1 file changed, 46 insertions(+), 46 deletions(-)
+Le lundi 10 novembre 2025, 09:15:11 heure normale d=E2=80=99Europe centrale=
+ Geert=20
+Uytterhoeven a =C3=A9crit :
+> Hi Jean-Michel,
 >=20
-> diff --git a/drivers/staging/media/imx/imx6-mipi-csi2.c b/drivers/staging=
-/media/imx/imx6-mipi-csi2.c
-> index dd8c7b3233bccfc34b59e0f0ff813b36752e1526..42256441b881d9f132ad7ff89=
-9d6f1e35643b4ac 100644
-> --- a/drivers/staging/media/imx/imx6-mipi-csi2.c
-> +++ b/drivers/staging/media/imx/imx6-mipi-csi2.c
-> @@ -23,65 +23,65 @@
->   * there must be 5 pads: 1 input pad from sensor, and
->   * the 4 virtual channel output pads
->   */
-> -#define CSI2_SINK_PAD       0
-> -#define CSI2_NUM_SINK_PADS  1
-> -#define CSI2_NUM_SRC_PADS   4
-> -#define CSI2_NUM_PADS       5
-> +#define CSI2_SINK_PAD		0
-> +#define CSI2_NUM_SINK_PADS	1
-> +#define CSI2_NUM_SRC_PADS	4
-> +#define CSI2_NUM_PADS		5
-> =20
->  /*
->   * The default maximum bit-rate per lane in Mbps, if the
->   * source subdev does not provide V4L2_CID_LINK_FREQ.
->   */
-> -#define CSI2_DEFAULT_MAX_MBPS 849
-> +#define CSI2_DEFAULT_MAX_MBPS	849
+> On Fri, 7 Nov 2025 at 11:29, Jean-Michel Hautbois
+>=20
+> <jeanmichel.hautbois@yoseli.org> wrote:
+> > Add platform device support for the MCF54418 RNGB hardware with clock
+> > enabled at platform initialization.
+> >=20
+> > The imx-rngc driver now uses devm_clk_get_optional() to support both
+> > Coldfire (always-on clock) and i.MX platforms (managed clock).
+> >=20
+> > Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+>=20
+> Thanks for your patch!
+>=20
+> > --- a/drivers/char/hw_random/Kconfig
+> > +++ b/drivers/char/hw_random/Kconfig
+> > @@ -270,12 +270,13 @@ config HW_RANDOM_MXC_RNGA
+> >=20
+> >  config HW_RANDOM_IMX_RNGC
+> > =20
+> >         tristate "Freescale i.MX RNGC Random Number Generator"
+> >         depends on HAS_IOMEM
+> >=20
+> > -       depends on SOC_IMX25 || SOC_IMX6SL || SOC_IMX6SLL || SOC_IMX6UL=
+ ||
+> > COMPILE_TEST +       depends on SOC_IMX25 || SOC_IMX6SL || SOC_IMX6SLL =
+||
+> > SOC_IMX6UL || M5441x || COMPILE_TEST
+> Is the same RNG present in other Coldfire SoCs?
 
-Personally, I like these changes.
+According to the RM, it is only present in MCF54416 and MCF54418.
 
->  struct csi2_dev {
-> -	struct device          *dev;
-> -	struct v4l2_subdev      sd;
-> -	struct v4l2_async_notifier notifier;
-> -	struct media_pad       pad[CSI2_NUM_PADS];
-> -	struct clk             *dphy_clk;
-> -	struct clk             *pllref_clk;
-> -	struct clk             *pix_clk; /* what is this? */
-> -	void __iomem           *base;
-> -
-> -	struct v4l2_subdev	*remote;
-> -	unsigned int		remote_pad;
-> -	unsigned short		data_lanes;
-> +	struct device			*dev;
-> +	struct v4l2_subdev		sd;
-> +	struct v4l2_async_notifier	notifier;
-> +	struct media_pad		pad[CSI2_NUM_PADS];
-> +	struct clk			*dphy_clk;
-> +	struct clk			*pllref_clk;
-> +	struct clk			*pix_clk; /* what is this? */
-> +	void __iomem			*base;
-> +
-> +	struct v4l2_subdev		*remote;
-> +	unsigned int			remote_pad;
-> +	unsigned short			data_lanes;
-> =20
->  	/* lock to protect all members below */
-> -	struct mutex lock;
-> +	struct mutex			lock;
-> =20
-> -	struct v4l2_mbus_framefmt format_mbus;
-> +	struct v4l2_mbus_framefmt	format_mbus;
-> =20
-> -	int                     stream_count;
-> -	struct v4l2_subdev      *src_sd;
-> -	bool                    sink_linked[CSI2_NUM_SRC_PADS];
-> +	int				stream_count;
-> +	struct v4l2_subdev		*src_sd;
-> +	bool				sink_linked[CSI2_NUM_SRC_PADS];
->  };
+>=20
+> >         default HW_RANDOM
+> >         help
+> >        =20
+> >           This driver provides kernel-side support for the Random Number
+> >           Generator Version C hardware found on some Freescale i.MX
+> >           processors. Version B is also supported by this driver.
+> >=20
+> > +         Also supports RNGB on Freescale MCF54418 (Coldfire V4e).
+> >=20
+> >           To compile this driver as a module, choose M here: the
+> >           module will be called imx-rngc.
+> >=20
+> > diff --git a/drivers/char/hw_random/imx-rngc.c
+> > b/drivers/char/hw_random/imx-rngc.c index
+> > 241664a9b5d9ac7244f15cbe5d5302ca3787ebea..44f20a05de0a425cb6ff7b2a347b1=
+11
+> > 750ac3702 100644 --- a/drivers/char/hw_random/imx-rngc.c
+> > +++ b/drivers/char/hw_random/imx-rngc.c
+> > @@ -353,12 +353,19 @@ static const struct of_device_id imx_rngc_dt_ids[=
+] =3D
+> > {>=20
+> >  };
+> >  MODULE_DEVICE_TABLE(of, imx_rngc_dt_ids);
+> >=20
+> > +static const struct platform_device_id imx_rngc_devtype[] =3D {
+> > +       { .name =3D "imx-rngc" },
+>=20
+> I believe this is identical to KBUILD_MODNAME, so the .name below
+> should be sufficient for binding?
+>=20
+> > +       { /* sentinel */ }
+> > +};
+> > +MODULE_DEVICE_TABLE(platform, imx_rngc_devtype);
+>=20
+> Or do you need this mainly for the addition of MODULE_DEVICE_TABLE(),
+> i.e. the module is not auto-loaded based on just KBUILD_MODNAME?
 
-Here I'd prefer just a single space between type and identifier.
+Yes, exactly. If you have a better way, I will happily apply it :-).
 
-regards
-Philipp
+Thanks !
+JM
+
+>=20
+> > +
+> >=20
+> >  static struct platform_driver imx_rngc_driver =3D {
+> > =20
+> >         .driver =3D {
+> >        =20
+> >                 .name =3D KBUILD_MODNAME,
+>=20
+>                   ^^^^^^^^^^^^^^^^^^^^^^^
+>=20
+> >                 .pm =3D pm_ptr(&imx_rngc_pm_ops),
+> >                 .of_match_table =3D imx_rngc_dt_ids,
+> >        =20
+> >         },
+> >=20
+> > +       .id_table =3D imx_rngc_devtype,
+> >=20
+> >  };
+> > =20
+> >  module_platform_driver_probe(imx_rngc_driver, imx_rngc_probe);
+>=20
+> Gr{oetje,eeting}s,
+>=20
+>                         Geert
+
+
+
+
