@@ -1,231 +1,124 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013023.outbound.protection.outlook.com [52.101.72.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAC136C5B1
-	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 16:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.23
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762876996; cv=fail; b=q4djidcrAsKX/CYetIw0Ysj7Rbrldt6UU59kwyabI8y8ddkep43HQMyilGeqnQ/E+bvJfu0tGA/UoE6axT+xgFLrkZr8vYVuO4Dx10FPCFYM6iGRrs2jl8I6wnQdGR4mD9eUOijjs2XssyFwl3oNtSrQLIg4K5J5GCIrgmPHzDY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762876996; c=relaxed/simple;
-	bh=ndNIyg8uuaI0Q3uesCSCwm7BJ4er2u9EqvwZiD1ahoo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SKPmqtU0rxz0V8zQSFwsKT2mW7/Vc0lobISQcdLneD9jx5Bx7FXVfO1qO612i80olUwp4WYeCniHZccqR21Z5hcoNdMp/7wJHZ4Vw8WZENC2xO1L6TRUfFZAyoczafTVUcjNH2XbpZLVTxDSKOjkSDzC+XHaMrZN9YvzhFJ0LSM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=H9Uy1iMA reason="signature verification failed"; arc=fail smtp.client-ip=52.101.72.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015843659F3
+	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 16:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762877145; cv=none; b=UC/6yw4xSw+Zs4RL0srzBi1UXKxy1iLnVmK7LirZvzkwKhyNPG3YUoil7vy9Fwb5TeP7W7PXk7uhe5WQ03tu0IkVrEs5PuxEpu0sGaByQBGNeUCv2lbMcUsdKkCFYPYsQEnGeXJLYoPRYsAJPB7x35+Y9tCzOFCx9lsIUeE4JnY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762877145; c=relaxed/simple;
+	bh=bh/aGYh2TxqNDfolJ2dzfp2J9SHIt4utWVkJr4yXJW8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=acP928ipK55Cg0PgjpPOoPMtSvhKOrbt22Wc3QeTn21riGW+zgYVGgrbY7AU4/6j6i83k54vA+foQCzu50/hNkKqQSCK5fX6CgWGOtfe5oHSsUufzHwq29gm0WYgfa8LbqTIPFOSWaCeKSU6gQC2E/KN/9F9IFeCGAoJtAjcfhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OHNUbGJp; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="H9Uy1iMA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cdtGyinnsjszl3XFahuJNp0E4AH/XPUQkCnwQr6r+65ehVlHZvrwyXn1OioEm/ikdocIcOvFa/WgDzqn2UJAI+H8Dipiy5rNq/a+1+Yj4OfFmX0gVkc1Pdbb7oXGtnzHy3z6G9y/I6JDldJ0epU+xbKUhTuU3V8VWEQ5lnf/90qZaPWVMXvNeXGbkDZqpdQp591Uwe1HNn9nCdWcu6TL3SqmgKHjiu4AawHpS5OWTfUF17R0BVWeRiNiDXauLXY9+9fmwTxN4HDNZdvk6C1V92MBRRmPLKjV+GX+9qTecIAYq6KTegzeIciTJpBM3J3iC7XoKxqx4RRmLAsTbP+O+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ogNWxD0w56Ya0Nkd4N669Yd6tyh0rkni3bAQUMP97MQ=;
- b=ppa8Od7VB7eQQx9BwcQKjgMCYVYqOUhEeV9QCvcrKQxy6Rj9NFiSDqw04YlmD52+lTV5jEgqVe9OSLzG7VwZv1ko/mbxlcQUX807YZr/knt957kGG6z/iassf1VohZS5GKETTmueyehjv/5pyhMgZzyHqMlrOhx+EHlfvbhL2zEsxHdIMVUihNbdxJr4korAYMCjDarqt0wkrJmXbjtIGczJo8TzsPgakdGcb1k0msnhOlO0f8mDuUNr9SVWjWdq9lft1BhYv+jRgjkSzwHbpGHr3/ADPhGTrDHOMTAlHU3sNAJaeD843EcIaPbKVFC6lbFGvLvkQA/k5uRmcTeDIA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ogNWxD0w56Ya0Nkd4N669Yd6tyh0rkni3bAQUMP97MQ=;
- b=H9Uy1iMAfnKJBnF0AijLWCRZKNPhpVeh4Nh8g5i/g9dplVSIIofQ1Ruy6f2/Gc8Fb2lOiYz5vW0Rp8RX36klFMyTUk5gM9odPmurWz0rzJcQh2CIL9Da1WAW9HuUVoYOPrI9wC+89wRCnkQ7y7yPyPXa3/JsBoa7tejqhx7Vyn5UCVSvWgM7MxPLfNXk7nIVKrPw0CPuKQjKDvIFad0DLtTURRjM7BUW069IPREwSO7pCST9w1F29oDLowC7hxhdYq9IELIaC+bq4TAYkMaZ/5WPPKoznhzKxjQ2+hVrJh6gRYXdP3dW7Y8hyzphf9++WqDKYqNw/MGDwCYYbtJ7ug==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by AM8PR04MB7953.eurprd04.prod.outlook.com (2603:10a6:20b:246::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Tue, 11 Nov
- 2025 16:03:09 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd%4]) with mapi id 15.20.9298.015; Tue, 11 Nov 2025
- 16:03:09 +0000
-Date: Tue, 11 Nov 2025 11:02:56 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"Kirill A. Shutemov" <kas@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Max Krummenacher <max.krummenacher@toradex.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	Vitor Soares <vitor.soares@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH v2 2/2] arm64: dts: freescale: add Toradex SMARC iMX95
-Message-ID: <aRNeMJWsCTRO3j6X@lizhi-Precision-Tower-5810>
-References: <20251111151618.70132-1-francesco@dolcini.it>
- <20251111151618.70132-3-francesco@dolcini.it>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251111151618.70132-3-francesco@dolcini.it>
-X-ClientProxiedBy: SJ0PR13CA0207.namprd13.prod.outlook.com
- (2603:10b6:a03:2c3::32) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OHNUbGJp"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-47117f92e32so38412665e9.1
+        for <imx@lists.linux.dev>; Tue, 11 Nov 2025 08:05:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1762877142; x=1763481942; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+RZXbES+suQSnoFPsMGN23SzPRLTGjJvuz6wdaZN3k8=;
+        b=OHNUbGJpkYYn3RAlZlwlZkEfd8IzpQo4o9nQiUroTnTSoeh3BtieYLLz//bjfPnWC7
+         YYTih8IQ78CfQxHD4GV9me64BfH0Zs0LupaFlBvJAI3WpPu8SUBWplBF0opoJjuDPxFs
+         dEaEjgcLRawVpt4zf+rWZexl1cqxhX5rybK7F+GIxi2DWs22IFqHnoEsP4b5qoZePUId
+         QOZIWqkVZ7gtzVTjkNVuAJWFTxj9x/TJZ7RBagsAfgHCXI8gH3ZbOx+yz6BfhM38dvSH
+         bMUGVa4QRp1CHS2y9mvFIr/4TrddNt95YM8aFOGbf2tbtAjXxaa/4pBMI2jFLticRYBO
+         3Gxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762877142; x=1763481942;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+RZXbES+suQSnoFPsMGN23SzPRLTGjJvuz6wdaZN3k8=;
+        b=BCr5SN6kkchEXu2jVJsaiBixp7bOev7krvB+GyjKf1nfELk5zBgv8OUXFu7rNF8wmw
+         S4FuW34iuSI3uPx88svUfDa51b48LCeioalMcYH53pbqftGkQE8cVL7+WF5LoMp61JQK
+         o1wys3V4/qW2hAPB/u4g04BB/B6/jWTfC0HiB8RhAEBeRx6jtIzV/Kae/1loab4haoCQ
+         51/lbc2b2XXNChJ1HU6EtosYj7kZKYouWpSf8Qtf1vUusfSvE0jQlcMDJyc/6MVxmBjW
+         Bb+y7UtpmVJKxD1oyxnRAjreZkxf/bDogTHdLe7wgH/3BfR1pITnhyxAcMq0gLDYiUOH
+         i5sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVe9TllxDAocOOKAAIB1IswTsyhb4NKMAiDmTS3QVW8N/uH5jPkOk+8WpKmMst02E+Q2aQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy6X5Qzcqglwh/XvCypAI9ezQDjWO/yVxLoWSXW85OH09Oizmsq
+	EQzrmEwuRuWhRTH/seWyvLA3YRDlnc6WEIaFHMptvdqrKMA+IbQSyaLMWFHou7965DE=
+X-Gm-Gg: ASbGncv1Y1Gl/32M1ehidM/59pmZ2EDmXJMGltiIBmaqeio4QzBAb9eUe/qAsL2nLmX
+	dAz7V5BF16pQ5sfUEZ57/riwF0p8TZyuV38z/4Z+3C+91say4nM6/v68HkaCKZrUhirRSr11T9A
+	SnJh9dOk3MgL9Uxaci3qCijg9+aZqxWYqnrYPdYFz9n5G0aG0KYFQpwbzYn16c4GwX42k8BJXzI
+	L+/Mjr/eemwHzz64giEnicw0p0xsl+r99+eqPsclZX0cz4mw7y7DVPClSR4AVJ5ExBSMO7dRoiN
+	Nw25LoHHHIes/lWqSHLZ5WEb83P+D4vcYt1++88EpSs6VICUh/pxzgymh6xGcMmFL0z1kVy8p+f
+	ONcFmmHz9qalMC+JgsHSuFLM0eMGmfNSQ6JgFVTKXlzLlMWinbjsMLps5ZqGyBJGdXqOkkYz2j6
+	6EiQr0/qvZAMJLjXK69sI=
+X-Google-Smtp-Source: AGHT+IH+MYmpINWnsFKQUpl4/+4Jobxe4uN5z+gwXyp65Xhhafeom17agVpTYxk/6AzKP9Q1JVntow==
+X-Received: by 2002:a05:600c:4ecc:b0:475:de05:661f with SMTP id 5b1f17b1804b1-4777329400bmr113603115e9.41.1762877142176;
+        Tue, 11 Nov 2025 08:05:42 -0800 (PST)
+Received: from hackbox.lan ([86.121.7.169])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4775ce2cde0sm384957555e9.15.2025.11.11.08.05.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Nov 2025 08:05:40 -0800 (PST)
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Abel Vesa <abelvesa@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+ Daniel Baluta <daniel.baluta@nxp.com>, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+ Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>
+In-Reply-To: <20251104120301.913-1-laurentiumihalcea111@gmail.com>
+References: <20251104120301.913-1-laurentiumihalcea111@gmail.com>
+Subject: Re: [PATCH v4 0/8] Add support for i.MX8ULP's SIM LPAV
+Message-Id: <176287713958.95002.12532568280694164920.b4-ty@linaro.org>
+Date: Tue, 11 Nov 2025 18:05:39 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|AM8PR04MB7953:EE_
-X-MS-Office365-Filtering-Correlation-Id: 18164ec7-535e-4268-e5db-08de213bce9c
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|19092799006|366016|376014|7416014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
- =?iso-8859-1?Q?5MCb75bREi7mAljoAkj/1ssz6hQ3XAvwxGiGQ2R/y5UyZCNbpIr8/BiU7T?=
- =?iso-8859-1?Q?nMLqRzybfilTghTY0bJ3X5BypLIdgAmEY2mGk49q11JjAMO7fWgZ6Ceyxb?=
- =?iso-8859-1?Q?O8guWegSjzi1Jx0Iy72zpF42Y3upbZdycKClCDJtk3FMcl7Q/8D6syTRYu?=
- =?iso-8859-1?Q?33SufeklHnqXacjPcVqRq+5CfTL2JPQgrsylI+BwSgk9HzFl5R7HCgZ5xl?=
- =?iso-8859-1?Q?2eW70Oz5ZPF/AekkbaGXVw8meAJcTw1DpFF8vWQOH9K219XDfU6aQVY4ZS?=
- =?iso-8859-1?Q?1JCEOC0S3VOTiKMNCNIJiBH3miiXwkKRnwIq6SWpLf07eC53nsfX9f+8yh?=
- =?iso-8859-1?Q?SfotFQ+48Aq8GxLPHRZzcRmsi9UYBJN5IONEKScHhk18OLV+UMjfwkBmG7?=
- =?iso-8859-1?Q?Mg6PfbVUS1KOgtkyXW95p6Om/lekrNRQBptI7/6LfTc7DxlOLBdgUeITCU?=
- =?iso-8859-1?Q?2VxZNmjDtkMK1gc5i/9/jI9t6lcGMqosOk/FM6gkAS70vt8fNI9QAZ4uIm?=
- =?iso-8859-1?Q?GwE3Wp/c02vJpnPMQq8HP++Iy3iAWAoWesmXwI/wW0kQimziIVMpCPGx4R?=
- =?iso-8859-1?Q?ltmwuEO13FYXqLOXOmjA90ZlO0/NlWmPmV+elc4sjfW/FF80OZvbghK1XL?=
- =?iso-8859-1?Q?ul3kxQx8aYurVvvVNvh6ftQQsOLbS+x0KZv3LdIxzqXteurL4NBzl61Dja?=
- =?iso-8859-1?Q?JSh6gu/FypciTIZ7gCe3tqvqeizKLtcPxs42w1LlkaRs2cWn8rxejabzI8?=
- =?iso-8859-1?Q?dIV54UZ91M8t0cLUqhs49Tl3hFuYPs+pi8cizhvAfZ0QkV1vgaR5xNZr4k?=
- =?iso-8859-1?Q?5kmCe478N5CyVbxq2jS7w6hi1XcoQkuS5W9yM8jrSVV9u7T3L7BBILeZfU?=
- =?iso-8859-1?Q?oD66BLQQj7FBlImbiupDKkDPeIhW2SE3eIgzkpVOPts00ldMD9tSONZzny?=
- =?iso-8859-1?Q?DdOMZDodL0rsAPC0M2VoLKQKN5fteYnTme7BkkMaDUDj754DBx7kbqSbN7?=
- =?iso-8859-1?Q?KZ+BVY3W1HephkHwqU7W8eJCOeK2PdxPQQmpUl5nIQwGufAv6MRL94nbAD?=
- =?iso-8859-1?Q?uzKpgYnAwxr2IEfi6l6Cq8go1fOiIb5wnmgjrz6ZhU7cE7BuYMVKh2H4mk?=
- =?iso-8859-1?Q?C6As8FX0LAuzL5QclEc7LrzpZw7HLyjGsB1Vty/Y1OkOuYEDIRlvXxVxRW?=
- =?iso-8859-1?Q?b7kwi2fVIawBNbokSt3KmQtGVQXeMrKYXVkgjDSVdCzG2lv6iY33+/ut0E?=
- =?iso-8859-1?Q?2dD1pr6x/ZE7VTINV4upg0h7w7NeO/MDR1Rc5DW3g28dmhVGpATRUx/BoY?=
- =?iso-8859-1?Q?/ZnYHOuOfiyHXCOrvn34P/9LL5TUWA9bRfgsV/QR/bGQaPlasfmvBP0KM2?=
- =?iso-8859-1?Q?SXfqLlnlxUtpqIT14ehmyEyfNM5siNIpIjPYELDH4nMbChVMY4kHFjqL8a?=
- =?iso-8859-1?Q?nxLXt9S0Z5x3ZGKCR43335WyCHV7zfCyAL2qi7PCrjCqZAwH/Jgrz8unzy?=
- =?iso-8859-1?Q?fc8J5MtLkTdMFXrNZguc0ZDHr9Icp1rf3fHNBQ7qO9XNiAtpF5kTh9UqEn?=
- =?iso-8859-1?Q?KRmoTDuoeUXtvxXkGF4dPuwCo+4Y?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?iso-8859-1?Q?fB4xX2Q4/n8QfBw9c0uE924AC968jYwJXiP7Bde5UXOesMeWWOWrlHkYRs?=
- =?iso-8859-1?Q?Z03tQItlXHNzmlfc2ecwD7cW4dPQbqZGHn52M27En6fgQE+5TgqJHwSrIR?=
- =?iso-8859-1?Q?wjhbD1Z83qZ6GTxRAuafKlYzRKFnDDQX7pFl2mit1vav5LpDq32agWhcMs?=
- =?iso-8859-1?Q?GpAiCVSTPT6XmPXNGBBftC647MptuKPbvIleK/Qpn0btYUlfVJ5xgXDv40?=
- =?iso-8859-1?Q?tVlc9Vu1Gg5Jrb3PIfZt7sijFrSGZ26MtHX7lCg2uEQH37y4gbpYgVjfbA?=
- =?iso-8859-1?Q?jdweBppa0uO9/YqZaZzd7F4TYq/9Yi3j80LAYCFmoRus5ERO61RI/oHWA/?=
- =?iso-8859-1?Q?UC+mExj9Ij2QZSE/lbWJ6eEgN4H0Zt36Bl5IIu5XpOQJaBygyF2yg3y9oq?=
- =?iso-8859-1?Q?GERp7nFlrunpX9Xipv4o14PRTWs9vea4twDaIKMPF0NGeqRCMGMD9jkK/+?=
- =?iso-8859-1?Q?fSkmlYPcqjmRC43u5xtQVb2oCz7Duq4JmNUQLz1LLIJHKp8SLIgnqYuWZL?=
- =?iso-8859-1?Q?foEqVyqKwDlHtQhHQX6MnFm1cpzuR27HQ03caD9o0Df/N1eaorayKnesM2?=
- =?iso-8859-1?Q?wvVLefeG9wsdVtu4gpkxAkpVR631h43GrZ6GnbZgIBBqgAIEeLFHkcSRyQ?=
- =?iso-8859-1?Q?IWUHQp2wHwpXVAXRlA8uDk6Jw010qFfd8F7jleetVav0PKA4DKyColwacw?=
- =?iso-8859-1?Q?dOwATnHc5J8XSaOfb1s4ad7DGrVnRN8WQJUk56xlypk7OeXzZqg8FrtaTL?=
- =?iso-8859-1?Q?Xv5nqZ+9zUypS8RRIcFRJ+1GW3N2R/tlTtCGIZj/9CPogKmCwgPWtVYdfq?=
- =?iso-8859-1?Q?qBzhGaU861tVccRH5wNMxBuw2BoS7t1ycWlLJ2MBEQgnmv051XeuO36E0Q?=
- =?iso-8859-1?Q?7KK+R2DFWkJcaWT0rwklD8oRdUHCncgiWeWETYag+o80jLia+1q0Do8+uS?=
- =?iso-8859-1?Q?0RM21utQIEJ+Y/WNSJAdIUUla6dcktliSh89k7HtqKLoKJTcuv+U+6YU2L?=
- =?iso-8859-1?Q?En4LRKYeCFOU3RLTx3G8kVPTTHz45ubaCoNTQ7oPdtkH0ZcszrhYbYq0xz?=
- =?iso-8859-1?Q?3yLtX61Y+KfM9HawXQsadJovhLWmrtOwLYQykbyOe4oTP2/4g47nFaLufp?=
- =?iso-8859-1?Q?NPShu0/9fORLRYjiO2w8EMSRL9QbTAzGTEHOC+woFDAQCMYuxwe1f7o7x7?=
- =?iso-8859-1?Q?b/dUCla01iPD8APMaWK/VBPOyVZ1nwSuvlLHTxhH8h0+UztqBz8kZhmeCZ?=
- =?iso-8859-1?Q?MSROfS9h4DeQ9zr6A+6KrR7vvTrXvPvcbGko+qv4XUxxmg0RBuHobej7kE?=
- =?iso-8859-1?Q?GeO/ed/6MJVnh8+le6TOMmAkwhszHVXHium03Ovvtxm2OR2jPlmkiacCbJ?=
- =?iso-8859-1?Q?GptsT3vvEehhk+voIXbUNGX14PFhGTC1qdDJ+cd9KnMeBQx00HR22dIej8?=
- =?iso-8859-1?Q?0jBmzon63dms3osChD+vZNV0G6BdZFEM3hzdMzlqDPJXvsuc3yxJu39vZX?=
- =?iso-8859-1?Q?peydpx5bZ9lGv013kQTmJyXuNgbQl4Cxq9jbrc23J0A4cwWAAK+02uBxaz?=
- =?iso-8859-1?Q?my14bfzVe+MEJJXPA+TVAp/Ht+os1sBSBs3EV9FwoIGBF3pGroaoscmt5H?=
- =?iso-8859-1?Q?2i/ETqEg5Lpv3M46tk2ZOyDWCbfedOftMS?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 18164ec7-535e-4268-e5db-08de213bce9c
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2025 16:03:08.9097
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TY4QImF3EGPGtbnON1Qb9prcfu7BZ9qky4XF+wjrWn/IeKVo/QhT4IC2KBFN+7GhWeItgOX0NbHqUwTK8z0fdw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7953
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-dedf8
 
-On Tue, Nov 11, 2025 at 04:16:14PM +0100, Francesco Dolcini wrote:
-> From: Max Krummenacher <max.krummenacher@toradex.com>
->
-> Add DT support for Toradex SMARC iMX95 SoM and Development carrier
-> board.
->
-> The module consists of an NXP i.MX95 family SoC, up to 16GB of LPDDR5
-> RAM and up to 128GB of storage, a USB 3.0 Host Hub and 2.0 OTG, two
-> Gigabit Ethernet PHYs, a 10 Gigabit Ethernet interface, an I2C EEPROM
-> and Temperature Sensor, an RX8130 RTC, a Quad/Dual lane CSI interface,
-> and some optional addons: TPM 2.0, DSI, LVDS, DisplayPort (through a
-> DSI-DP bridge), and Wi-Fi/BT module.
->
-> Link: https://www.toradex.com/computer-on-modules/smarc-arm-family/nxp-imx95
-> Link: https://www.toradex.com/products/carrier-board/smarc-development-board-kit
-> Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
-> Co-developed-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-> Co-developed-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-> Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-> Co-developed-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
-> Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
-> Co-developed-by: Vitor Soares <vitor.soares@toradex.com>
-> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
-> Co-developed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> ---
-> v2:
->  - move enable-active-high after gpio
->  - add newline between properties and child node in som_dsi2dp_bridge
-> ---
->  arch/arm64/boot/dts/freescale/Makefile        |    1 +
->  .../dts/freescale/imx95-toradex-smarc-dev.dts |  277 ++++
->  .../dts/freescale/imx95-toradex-smarc.dtsi    | 1155 +++++++++++++++++
->  3 files changed, 1433 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/freescale/imx95-toradex-smarc-dev.dts
->  create mode 100644 arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
->
-> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-> index 75676b908299..28f8eaf18471 100644
-> --- a/arch/arm64/boot/dts/freescale/Makefile
-> +++ b/arch/arm64/boot/dts/freescale/Makefile
-> @@ -390,6 +390,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx943-evk.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-evk.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk-sof.dtb
-> +dtb-$(CONFIG_ARCH_MXC) += imx95-toradex-smarc-dev.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-tqma9596sa-mb-smarc-2.dtb
->
-...
-> +
-> +/* SMARC PCIE_A / M2 Key B */
-> +&pcie0 {
-> +	status = "okay";
 
-Nit: if there are next version, please consider add supports-clkreq.
+On Tue, 04 Nov 2025 04:02:53 -0800, Laurentiu Mihalcea wrote:
+> The LPAV System Integration Module (SIM) is an IP found inside i.MX8ULP's
+> LPAV subsystem, which offers clock gating, reset line
+> assertion/de-assertion, and various other misc. options.
+> 
+> This series adds support for the IP by introducing a new clock HW provider
+> driver and by modifying i.MX8MP's AUDIOMIX block control reset driver to
+> allow it to be used for i.MX8ULP's SIM LPAV as well.
+> 
+> [...]
 
-I suppose Key B and E connect clkreq signal.
+Applied, thanks!
 
-Frank
-> +};
-> +
-> +/* SMARC PCIE_B /  M2 Key E */
-> +&pcie1 {
-> +	status = "okay";
-> +};
-> +
-> +/* SMARC I2S0 */
-...
-> --
-> 2.47.3
->
+[1/8] reset: imx8mp-audiomix: Fix bad mask values
+      (no commit info)
+[2/8] dt-bindings: clock: document 8ULP's SIM LPAV
+      commit: 3b521bf8c51246466e2c337f1f2b60acfdfe82d6
+[3/8] clk: imx: add driver for imx8ulp's sim lpav
+      commit: fdc1dc7dd53b95805d3943ed36785c1ec812915e
+[4/8] reset: imx8mp-audiomix: Drop unneeded macros
+      (no commit info)
+[5/8] reset: imx8mp-audiomix: Switch to using regmap API
+      (no commit info)
+[6/8] reset: imx8mp-audiomix: Extend the driver usage
+      (no commit info)
+[7/8] reset: imx8mp-audiomix: Support i.MX8ULP SIM LPAV
+      (no commit info)
+[8/8] arm64: dts: imx8ulp: add sim lpav node
+      (no commit info)
+
+Best regards,
+-- 
+Abel Vesa <abel.vesa@linaro.org>
+
