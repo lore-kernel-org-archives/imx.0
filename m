@@ -1,127 +1,119 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B8D34EF04
-	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 10:35:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC233587C3
+	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 11:42:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762857353; cv=none; b=tkopdSvZqd+cg+9xdjh7jAu/nd0aBk69vbTHDdlVBmdzzS5AmFqNTbSTA89Ed6dEI0PbhKlP6qb6BDyiVYw1nSw2FaUNsKRu6MpO3LPtaHY6pqkB2TFTUGaqB2mEuiQh32TrDqjNZTXUwlyuukiV5UYud5vALDzcAjaC9OuJv5I=
+	t=1762861361; cv=none; b=oBg9awS+Mi8UZDkd7rBho64bTLeqAKiyMqhIYfyEf6bU2Tkv4AQhPyx6mF2JX7lKXXh1BWdEy8NitKM/4icHKF+ZAP/59a+nM/8vwFsJEOo3WjsQijHZkQCq/3e+CTxoZkVWIKkE1PWV0qBSXl4rH2vIR3YrPQgd1EzbZfihT+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762857353; c=relaxed/simple;
-	bh=b5cTARWnCH0O+wzlNreNZEZCG3YtR/z+aB364cLgDRc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nXpSN1BccXnNugPZxQutCevDQwv5lgW9ZTnCtz0IaL7bmUxVjvKkM9mS3oR3QiiDVjmU/yIS3FJHdvEYd4D+aOdHgBR5NMf0la9ZjSeJn/McuQD1Q7yFxkwqd8Z/NlI4tELSpMCWqbknnEujCD/yZJ9fJsWgSaLpf4WRofP6aDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UL7VzKkU; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UL7VzKkU"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-37a33b06028so35208951fa.2
-        for <imx@lists.linux.dev>; Tue, 11 Nov 2025 02:35:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762857349; x=1763462149; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b5cTARWnCH0O+wzlNreNZEZCG3YtR/z+aB364cLgDRc=;
-        b=UL7VzKkUgIwRhJEQgk0bcuIVelo/yK98zG05eUoJoB/JVx5tdi3y76dW9i9qY+9E8K
-         zyNw+hoWjBl0c8VJJaSRuBCa47WZ8xeddy3pFpvdB94kENy3LXboytoXY3OcQ6uBnkAA
-         HlcMrYTPYwte3WwHE4PjfC2H1At++psFiab9fh1sUB4hdNmBMGDsMMpm/Vz7Gwkep7zz
-         vv4ndV5HHlbAaxnfD5K53aRxutLJjohhOp29wDOiWsaEpeCLGjm05dCFEneRTeVYyhza
-         rUZoxkVNWSvFxYeQsI5ybG1/9NCQUCvhGcewgjKijNU4lLJxwsHGDDYMHfzdW1nGUfHp
-         hxew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762857349; x=1763462149;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=b5cTARWnCH0O+wzlNreNZEZCG3YtR/z+aB364cLgDRc=;
-        b=M2UzCI2O3ZaBwQriFihn1dvd2BohE/lkgrnZFIkvHQBR6nnWy5lzdn5HNpo/yM8rtI
-         /2XMDZvWgm54N8ZMo10oRCDXa9Kfdw3Ywu10oFxYECo+5rImHWR1W8+At5svzq9iPLlH
-         2UwtQJmRsiuKU2H89kdPHRrWWGfG3nHwapemGBrUuBrjYKNR4gD9EXWHmR9jlNfUAAis
-         YgaRh9kR5Uzv23SvUESGMjcZx/45LBUIEfDFpQgQwZQh/p5miHiWKfbVLLVsNUsH4A6x
-         KwbEz/eItpl/9DScUhIU4ZF8X9WnnwDak6XIYf4KqsoWBALbhSWoRMcg7IyvIoy9uhVr
-         qSyA==
-X-Forwarded-Encrypted: i=1; AJvYcCUkdmL9NYNeniAdTHam76/6HhOT3BND5nBTwCD2CYCE9iqem/onBHGo3+9I/bD0tph6jqI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxWY2rQaB0gROdz46AZms3SQy/FIvMjoMRKqiigW/g085ELId1d
-	wXO3I73ZOEeAsdY4emFx/PSiQvVeypp/Wpvok63Mm8SiUhFgH6HoBH8Ng26ZbqhrogqdiKsDbT0
-	r0Kv2rXxlbLeMVT8NPDSYU1wa0TAqVVwCcBc/LX1Sbg==
-X-Gm-Gg: ASbGnctdPuwlp/sG1Nq3YeGAGykM0dw+OeqV6uRFvbpyz+CDLTYCEb+wGRga/7YF0gr
-	RKe+aplGcj009CzVDq24DYBZwQORFgt2tZpfyKF+6mMOWsJmP3NvC9cCCSIFTmst4FGuc6eaIF5
-	4j9qlVWrQvxoeuIYwpnDbVvElc7dH0TcJddA1nuDtCJKcwadlSrGDe/QzCBmyxcavWOYytVuJNB
-	VORpgUuXT/mkY54Y5ZfRMFAXDEvKB8ZDOtxgfea4hQZmPHyBqQGimtBxwHWlNr3PJRKcw8=
-X-Google-Smtp-Source: AGHT+IHiG+EjsNieo0IH9vKGvPYVnnnJhmFUXHoDPqz54BHP96ylxBdjlT/JInKjKxLz/khK4ncylVpRxXU4D16MeYo=
-X-Received: by 2002:a2e:95d2:0:b0:37a:2f0b:ef24 with SMTP id
- 38308e7fff4ca-37a7b1995e0mr22288641fa.16.1762857349004; Tue, 11 Nov 2025
- 02:35:49 -0800 (PST)
+	s=arc-20240116; t=1762861361; c=relaxed/simple;
+	bh=mFaVVam+QsIKOh8Y6I3dylyPM9lrSlVkAj+8EE1Oo8k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DlJvwtWYYnT0M0cE0nL+y1XyPiw1JiOHoM9/qCjFM7dnU3+HOMc6gu+iggqK0hlC9isf6C1a5S0WEJr3cya9uAlWMUe4JOZjtmoylRKtO0OXb7weKa7djszjjz2CMPt/70ZNSMTvmkyAzfR3mWsAFD3gT6HxzcKCqzd7JfBsMOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from DESKTOP-L0HPE2S (unknown [124.16.141.245])
+	by APP-05 (Coremail) with SMTP id zQCowAAnLG0nIRNpxCBaAA--.18506S2;
+	Tue, 11 Nov 2025 19:42:32 +0800 (CST)
+From: Haotian Zhang <vulab@iscas.ac.cn>
+To: abelvesa@kernel.org,
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	peng.fan@nxp.com,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-clk@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Haotian Zhang <vulab@iscas.ac.cn>
+Subject: [PATCH] clk: imx: imx95-blk-ctl: Fix clock leak in error paths
+Date: Tue, 11 Nov 2025 19:41:23 +0800
+Message-ID: <20251111114123.2075-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1.windows.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251104203315.85706-1-shenwei.wang@nxp.com> <20251104203315.85706-4-shenwei.wang@nxp.com>
-In-Reply-To: <20251104203315.85706-4-shenwei.wang@nxp.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 11 Nov 2025 11:35:37 +0100
-X-Gm-Features: AWmQ_bnM-SUasW3cn2Gm4EW3aePYZpGnjIZZVnW89VcDCfJSgNXVTHUcuXdKqUo
-Message-ID: <CACRpkdZR2C=+ssYOKnF=hyOqTakGjVxzp5_qz=3-uYRpzaZgNQ@mail.gmail.com>
-Subject: Re: [PATCH v5 3/5] docs: staging: gpio-rpmsg: gpio over rpmsg bus
-To: Shenwei Wang <shenwei.wang@nxp.com>, Bjorn Andersson <andersson@kernel.org>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Jonathan Corbet <corbet@lwn.net>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-imx@nxp.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAAnLG0nIRNpxCBaAA--.18506S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZFWUKFWUtrykZF4fJrykGrg_yoW8AFW8pF
+	WxXFySkrW0gryIgw47Aw48XFyYgay7ta48try7C3Wru393GF10qF4rtFy0q3WvyFZ5C343
+	JryvqFs8ua909r7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9K14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_Gw4l42xK82IYc2Ij64vIr4
+	1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK
+	67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI
+	8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAv
+	wI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14
+	v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU5UDGDUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYDA2kTAhVZtQAAsL
 
-Hi Shenwei,
+The probe function enables bc->clk_apb early but fails to disable it
+when bc_data is NULL or clk_hw_data allocation fails. The cleanup
+path also misses pm_runtime_put_sync() when rpm is enabled.
 
-thanks for your patch!
+Add err_disable_clk label to ensure clk_disable_unprepare() is called
+on all error paths. Add pm_runtime_put_sync() in cleanup path when rpm
+is enabled.
 
-Also, a big thanks for working on improving the standardization of rpmsg
-so we can get some order here. This is very important work.
+Fixes: 5224b189462f ("clk: imx: add i.MX95 BLK CTL clk driver")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+---
+ drivers/clk/imx/clk-imx95-blk-ctl.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-On Tue, Nov 4, 2025 at 9:34=E2=80=AFPM Shenwei Wang <shenwei.wang@nxp.com> =
-wrote:
+diff --git a/drivers/clk/imx/clk-imx95-blk-ctl.c b/drivers/clk/imx/clk-imx95-blk-ctl.c
+index 7e88877a6245..b12aded2b304 100644
+--- a/drivers/clk/imx/clk-imx95-blk-ctl.c
++++ b/drivers/clk/imx/clk-imx95-blk-ctl.c
+@@ -380,13 +380,19 @@ static int imx95_bc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	bc_data = of_device_get_match_data(dev);
+-	if (!bc_data)
+-		return devm_of_platform_populate(dev);
++	if (!bc_data) {
++		ret = devm_of_platform_populate(dev);
++		if (ret)
++			clk_disable_unprepare(bc->clk_apb);
++		return ret;
++	}
+ 
+ 	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws, bc_data->num_clks),
+ 				   GFP_KERNEL);
+-	if (!clk_hw_data)
+-		return -ENOMEM;
++	if (!clk_hw_data) {
++		ret = -ENOMEM;
++		goto err_disable_clk;
++	}
+ 
+ 	if (bc_data->rpm_enabled) {
+ 		devm_pm_runtime_enable(&pdev->dev);
+@@ -444,7 +450,11 @@ static int imx95_bc_probe(struct platform_device *pdev)
+ 			continue;
+ 		clk_hw_unregister(hws[i]);
+ 	}
++	if (bc_data->rpm_enabled && pm_runtime_enabled(bc->dev))
++		pm_runtime_put_sync(&pdev->dev);
+ 
++err_disable_clk:
++	clk_disable_unprepare(bc->clk_apb);
+ 	return ret;
+ }
+ 
+-- 
+2.50.1.windows.1
 
-> +- **Major**: Major version number.
-> +
-> +- **Minor**: Minor version number.
-
-I'm not contesting these if they come from similar fields in other rpmsg
-devices.
-
-What I'm thinking is that the driver will eventually have to quirk around
-bugs in the responding rpmsg CPU, and there will be bugs. This can end
-up with this situation:
-
-major,minor =3D (1,2) NXP implementation, no bug
-major,minor =3D (1,2) Sharp implementation, no bug
-major,minor =3D (1,2) Sony implementation, ooops this has a bug
-
-What is the driver going to do here to work around that bug?
-
-The scheme kind of suppose that all vendors use the same codebase
-and they don't.
-
-I would rather have:
-
-**Vendor**: Vendor ID number (such as the PCI or USB ID)
-
-**Version**: Vendor-specific version number (such as SW release)
-
-This will make it possible to identify buggy firmware and apply
-quirks.
-
-My apologies if the rpmsg community has already thought about
-this.
-
-Bjorns input would be appreciated!
-
-Yours,
-Linus Walleij
