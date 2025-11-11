@@ -1,143 +1,113 @@
-Received: from mx-relay106-hz1.antispameurope.com (mx-relay106-hz1.antispameurope.com [94.100.133.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12903396E4
-	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 10:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.98
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762856047; cv=pass; b=E6GgD6YknPGoTudeVOq4oqi963hYg3oXb+FBvaPyXf7f7IqRkEgeStaDjq8vac5vIVFwe5YKUVnXWUFInk9bnc2CBv4stwLzQktqkhayEW1jypII/qir8T1uGfyqJjcRU5rI1rYl9jztzMIvzPTedJKBsR/baik7+pFYXR3uQA0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762856047; c=relaxed/simple;
-	bh=qffjGVKHGKbLT2g/i1slYDW6JONYYo+k1+ICy3WTD/I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cvnewCzJKvuSVnwjhcgfNXfF7omEDSslwQSSz9PFiCwWPJ3uE4YeOw+uIZpN/mIzTuBfhtkvXlMZ1gfRGnHguj5gdi0XX1dlqrjHXsg2h1LjDHljPnzBdJt8h/3+CYdsGIUYo1r7/Mti/fwJozE8zuqUxYXNTRD84JDbBtxf0b4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=dJH4VTxY; arc=pass smtp.client-ip=94.100.133.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FAB0347FED
+	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 10:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762856427; cv=none; b=HNproYWnDJhPjh/tN1XUFu1RWizN0kBo5VlrAOK4zsmRq2de0WdEPF2xovZBdeU6szjl2cgnHWeUc3qAgJT0i24rqVKQ+7lKRvtwSiR7/0ZV1l4r3xRKybIMzahPl/YeFrrw7P4ySPj3XJCxe+rv7W9p275G9tSPr8++L20B8JU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762856427; c=relaxed/simple;
+	bh=vFQCQTjKO8TNTzEmtlk+LvI6FcO3v/ubcdimd89KqZk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KQFOF8D5g+ntDBEiT4x7MAL+LMUoTPyDTCVReFEPDGxoYRlvxI5quhio1FlnvKlXs6WdOvsKsKnm3MxnlxI1rOTQ8my3vCf3ytXFcRQ3aYLxuYnBvwMBnY6F61943y1Xz80foCOCJ7gFBLupHzJRZkCRKqap5JrUDrK7NydnxPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=diGLdE52; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="dJH4VTxY"
-ARC-Authentication-Results: i=1; mx-gate106-hz1.hornetsecurity.com 1;
- spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com
- smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
- header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=5cd8tiR4oA2bomVQnghj6XdfSPPBJKKlunliO1VnFlM=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1762856016;
- b=J5uOrn/2y+ORo332OvrqjXaAzE9FvomM6/ZGsm6fhJTGVskVgCspFsnePvKuFo1/mfhnf91z
- gL8HK+nl1HC+FB1ZHWGHXclBctxF9Fi5Yrs+KZWcGhtIbYTHvtadaLm/8WPV4kK8jfGMqIKIpJx
- fKak98rVr6RDjk6WMjyzvEmxaHtgcQumIbklLGkoA2uWPnJxI8JIKeGfA2KnGxoakMzVSSjRi+g
- DNk2U2sq7lP647rHbDN6aaNI3yFVV6qgav2TSgc094c22/Cp5ETf4C9LOgH9xu/Ez4CWQfsC7Za
- 9qMrkppVCzO5wkgp/57BaFLWAtzD9/SH6WkIX85dVJ/bA==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1762856016;
- b=n0nIdcEJlkTBkcxkSaGBT51hYehP5aiM6v1Xk57HP38FnEEUnFHLRcfkmGnloNhBbuHeiF9G
- K2xL364LDgghVr6D1uPMDnaTJNeAoOodtj5QxdTOZJH+oP8T85bv/XPbIpnF20Ifk2H6J2l91ta
- AUdzcQ6Ill2Ag/mdmI4a9WMH+0eKQJyUsO1Qw5Tyt05BuuSvJhWatO/KK9dAZHQRQhjO6QD58Jt
- Dq/9dKvKV+6h4OSwxMvcloX+RA2VFG9dsH6vyXs5yaXmqPdP8TWFoYgYYhQ+2rlaVLheF1/qOy4
- zGO3N72BamW0TO9mTH3q3SxdlkGnH207XknsqhF3qslMw==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay106-hz1.antispameurope.com;
- Tue, 11 Nov 2025 11:13:36 +0100
-Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 3B9AC220C9E;
-	Tue, 11 Nov 2025 11:13:26 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nsc@kernel.org>, linux-arm-kernel@lists.infradead.org
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-kbuild@vger.kernel.org, Frank Li <Frank.Li@nxp.com>,
- Li Jun <jun.li@nxp.com>, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 4/9] arm64: dts: imx8mm-evk: add wakeup-source for usb phy
-Date: Tue, 11 Nov 2025 11:13:25 +0100
-Message-ID: <2809731.mvXUDI8C0e@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20251110-misc_dts-v1-4-7564b9f69a18@nxp.com>
-References:
- <20251110-misc_dts-v1-0-7564b9f69a18@nxp.com>
- <20251110-misc_dts-v1-4-7564b9f69a18@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="diGLdE52"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b98a619f020so3519691a12.2
+        for <imx@lists.linux.dev>; Tue, 11 Nov 2025 02:20:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762856425; x=1763461225; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g2BNnZMONHx8/CvKkJxYxrwMB72hoWbxX7RGGc1E2Ds=;
+        b=diGLdE52Nz5exV9tUYyYuPxD13Rmgc9iK7qT8yY5cx2ZKKEFElRIDtXjFgCqLdMTaZ
+         BgEzrsjSgT7wXgksa/XQe3Tdjlv914qOCeYr0/zbh4vej/gclQpT5gFsY7cSHpTuO9qI
+         uClSkcMLpNEZ2uz6BUYfNHzLB6DdJs2lZidadZcIcMNiYXPRxMU/LyeWeTNf58YxesTS
+         VdR8Q9FzqMY20YxPfg6VhlwfVD+Wcanwk9iOkL8Nu/N/6wtvP2a2AV6IFBjrE91uJ5W0
+         MdZ4lGVlTzsNOzg5tcvwbcmBVjLFqqpJ2Gj6PJavRy7JW3VAdWV0caUP2+r8isJ1fWkA
+         vAgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762856425; x=1763461225;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=g2BNnZMONHx8/CvKkJxYxrwMB72hoWbxX7RGGc1E2Ds=;
+        b=mP7s2fp9CijMFPsi2VLhhQEJcppaJ+H7aa8vhtw8nxUKmUYhPJ1Ba04v1FkekFbU6g
+         prJGPNCVrwG5mqAPOi8dyOu97XVnYESvEDAN+HgEnnxYXu/wpOJaq8NU/aluYxCF2hgD
+         HSamWAGW3OO34F8fGzxp9zqlAt3NYLTGYCiuLrSVlBT+jS3C4FdRi6w5l1xEewaiDaP0
+         wywBncD+TQYKZR+mSL1DxRDa1p8py7q2OOzSKNS/0DfslKK8+KTn4vsJe1tyTymHyEgS
+         xQpdB9HtuXPUJWqberJ6rUHgasFCw9zpFDo6Xpm99ATulnI37UDfUp7HtEZcwwdhRuY3
+         RE5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVUtlbjFezOHtMQlqGa/EoegRWq+zqxruepfvEp2IOlXRpP7+0jeEAAl0nwj1gbGMqfYhQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx4AxcHfUyP2Y9SIviaAQ42nX82cy+ijhaHMjxGwKZoh6ER5dhv
+	LX0IvdHfrXpu04oosKoDFD/oiTEPzdFU07boee/+UAK7ULa/LXpyQkxaHYG2FpA/tz1n7NZUw+W
+	Fw4+uVXRfQ+QQ9eSNqdOHsP/EHZRDqBI=
+X-Gm-Gg: ASbGncuOLrBns6+65ypMU9N5gMvAFLENxXYVmuSu3ZwAPUNxWFZXKQXJq59tNxCqQmY
+	K3Xu4xpgABxUtMtQQzVYZtuWdHbz8m8PzRxRITw7+HPkfyDAcJjWE4XmgRAt9tiF2hJFIHv1ve6
+	n++2+2wQIdgYju125xjtKzkxYZCRoKd5rR5za8XAVKvGEUrVv7GwvWxR70ggZXuJtcRw9QmuPmm
+	Jibhz24CQJTfqn0wkjd44lWXEf1X8CTqyHEn3qeK4O/+XSOXdkm876NoQ==
+X-Google-Smtp-Source: AGHT+IGHeEc0tdcwN2CitYeC9X138lPaLhDv7imL1UBIrrtgzyaJrxx+3S5nCZWKtBm7wpPk+C2oztDUFMFw3MuqU3k=
+X-Received: by 2002:a17:903:a8b:b0:298:68e:405e with SMTP id
+ d9443c01a7336-298068e42acmr127289735ad.59.1762856425272; Tue, 11 Nov 2025
+ 02:20:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20251109214515.121742-1-rpimentel.silva@gmail.com>
+ <20251109214515.121742-2-rpimentel.silva@gmail.com> <aRF0++cUigbETuPs@lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com>
+ <CAOMZO5AdcR_fT_RV5-NWu7j51_TA_=Mzzi-Y3Y=HpH+pu=mrvQ@mail.gmail.com>
+In-Reply-To: <CAOMZO5AdcR_fT_RV5-NWu7j51_TA_=Mzzi-Y3Y=HpH+pu=mrvQ@mail.gmail.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Tue, 11 Nov 2025 12:22:49 +0200
+X-Gm-Features: AWmQ_blb19ig8nToRgjFSZoxZIb7WUT84e0ePG6rGqwjB44zvP8kQIVu2iX87yU
+Message-ID: <CAEnQRZBdqUQUahHcFO2W6yezonXdpFVT-G52rnda941+M=T93g@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] arm64: dts: add support for NXP i.MX8MP FRDM board
+To: Fabio Estevam <festevam@gmail.com>
+Cc: Joseph Guo <qijian.guo@nxp.com>, Rogerio Pimentel <rpimentel.silva@gmail.com>, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	alexander.stein@ew.tq-group.com, dario.binacchi@amarulasolutions.com, 
+	marex@denx.de, Markus.Niebel@tq-group.com, y.moog@phytec.de, 
+	joao.goncalves@toradex.com, frieder.schrempf@kontron.de, josua@solid-run.com, 
+	francesco.dolcini@toradex.com, primoz.fiser@norik.com, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Xiaofeng Wei <xiaofeng.wei@nxp.com>, 
+	Justin Jiang <justin.jiang@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay106-hz1.antispameurope.com with 108FA11C9E97
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:98cd9670ad177dc9a441365add1c322b
-X-cloud-security:scantime:1.834
-DKIM-Signature: a=rsa-sha256;
- bh=5cd8tiR4oA2bomVQnghj6XdfSPPBJKKlunliO1VnFlM=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1762856015; v=1;
- b=dJH4VTxY80wkBmZfEW53/+B0nYGF19k9hIuLKTIwYVyxYw+AqNEVdwE7weinHfVumxm4F1sF
- Q37K/x7thEuDus5z2SrdKxBSDPyaG5ZaNIA08oa2uqIvkw7dyDPRt7IuueBpj9xHAEvCD+d8C+1
- cgRmR+RuKWkQLiXiacQrQidIuXvXPtt4FNjNW4nz2Hz/NIqcgU6yAVkigM6P3bxoizX2dZ8XFrD
- YXBi07YauxZadXPc1BLcb17LM+Zoqs9a9pOgJMVvhHjY0OElOziofeg8B3FIPSHj5vGideAm3/w
- MX1mWR9drXy0u91k5p4yKk3RB+YLlxxpSoU0bEvGKSLnw==
 
-Am Montag, 10. November 2025, 21:54:44 CET schrieb Frank Li:
-> From: Li Jun <jun.li@nxp.com>
->=20
-> USB phy can be wakeup source to support wakeup system from USB.
->=20
-> Signed-off-by: Li Jun <jun.li@nxp.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Hello Fabio, Rogerio,
 
-Typo in subject: Just imx8mm. Remove the '-evk'
+> On Mon, Nov 10, 2025 at 2:15=E2=80=AFAM Joseph Guo <qijian.guo@nxp.com> w=
+rote:
+>
+> > > +/ {
+> > > +     model =3D "NXP i.MX8MPlus FRDM board";
+> > > +     compatible =3D "fsl,imx8mp-frdm", "fsl,imx8mp";
+> >         model =3D "NXP FRDM-IMX8MPLUS";
+> >         compatible =3D "fsl,frdm-imx8mp", "fsl,imx8mp";
+>
+> Why do you suggest changing the compatible string?
+>
+> "fsl,imx8mp-frdm", "fsl,imx8mp"; is correct.
+>
 
-Best regards,
-Alexander
+All NXP documentation refers to this as FRDM-IMX8MPLUS.
 
-> ---
->  arch/arm64/boot/dts/freescale/imx8mm.dtsi | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/=
-dts/freescale/imx8mm.dtsi
-> index ed8b4843acb4804379ba025e83a63fe962c2937e..dfff164db827e80ef8822ae33=
-0fa604d1642f6f9 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-> @@ -274,6 +274,7 @@ usbphynop1: usbphynop1 {
->  		assigned-clock-parents =3D <&clk IMX8MM_SYS_PLL1_100M>;
->  		clock-names =3D "main_clk";
->  		power-domains =3D <&pgc_otg1>;
-> +		wakeup-source;
->  	};
-> =20
->  	usbphynop2: usbphynop2 {
-> @@ -284,6 +285,7 @@ usbphynop2: usbphynop2 {
->  		assigned-clock-parents =3D <&clk IMX8MM_SYS_PLL1_100M>;
->  		clock-names =3D "main_clk";
->  		power-domains =3D <&pgc_otg2>;
-> +		wakeup-source;
->  	};
-> =20
->  	soc: soc@0 {
->=20
->=20
+But compatible strings have a certain pattern to be followed so
+we should really go with: "fsl,imx8mp-frdm",
 
+But for model and all references in text and commit message
+we should follow the documentation and use  FRDM-IMX8MPLUS.
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+So, model should be  model =3D "NXP FRDM-IMX8MPLUS";
 
-
+Thanks,
+Daniel.
