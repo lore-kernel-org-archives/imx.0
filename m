@@ -1,227 +1,128 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011036.outbound.protection.outlook.com [40.107.130.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199A5281341
-	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 05:29:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.36
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762838957; cv=fail; b=chrZ56BwzuqsC3wZtRkHYLE7PRZjMMgG6NDPhYHhFbOT9dyu5WJSA+fSU8N6vPiSVRdLvm6Ux3pfFS4CvuHFWeDqoaQ5NZNX85u+6utvE4U11oBgf4DNzsQ3AEVizwChgmx9si//KZFlu5wr20AgUlrXEiRV/dEkRB6vrQcAJtc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762838957; c=relaxed/simple;
-	bh=P12yW8ZWr5ZqXJOgInu0Qke7Un33B82AFc5v2jha0mE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=KR7dSAINDgd7wV2Ybo6l72Iv+KNg6rikfR84MJPBnHo2Bf5C4Z0WkC9OPQ0EtFSCAjOZ5KfQwc6S9USL6oiFWtT2YwTE0CZQW69B87kDomRpy3g8ZEamt8mUdNeNlq8RH/+Yuz0qFVvVFcyKkXIaUW/4wvq2/O1EbRrSSPFLnLU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=cZ6lR0GZ; arc=fail smtp.client-ip=40.107.130.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A412C34D38B
+	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 07:22:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762845729; cv=none; b=aUNzde9defnd59Yf5v4fETIEzauqtuKvAaCRhsDR1U6ts0X99J+PFOvurLKMJAYSNvZYiIF3eG6oE/np31hv6bKW3mLFRk0Nsp2vhqkcIAqLEi8wk/h2wsWxoy43bQ/1wXwChVSHzgupL8bd3BdxnUqx9VHwNnyv61kt/BzNB/w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762845729; c=relaxed/simple;
+	bh=XghJ1V4sTqmYevrjDI2OVSAWGMd6oZg2CyQdXuighvw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sax6PbWLF4KAhYbEnzNACFMaFTfTACvDnqPR+Geyg86wOZlKZwnBqk2/rv9U7J0tvrG0APT4dzlMvKzvtX4RNxNgWyObJan8CFT68dyap5Ap7Tu0mgF1j8cEcbUQ+51IoMkTog+pdpGvzcRI/TljabEA0EAZI5BeqF8xi8kk5r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=TG9lRsm8; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="cZ6lR0GZ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CBSUfiZ/0ZrfGwN4gHrMS+D9aiTOna6JJJuEDQiV/lpNRiBw15h8t/nRYhbBzRVLkZ7t1dEWMYjTE2J3l0P5oDw32dBAWs0ot4w0aedmAIPvScahAoM4K0aqfpRkJiUUNm8pHyOyOgtqjNJXn+m0nOYKPMKBfp6YwysnIrwEQZlBok6hEdkkDfWdkJo4Lwhd5e+7eFwHI7vEOnIwrExtWd2+1jc+cS0Y4KblhAKPL/MYcvkb5wCVpDD1yQABe0ZpVqo0telAc4trtrpFeFVkVbkgNfi45Q8QgqXNQjYdhhANmCOB/hiZjMaCyJ5KbMdu2Qy0U9uryWJ2+PkYCNoBVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dmTOKdY6iRpHFjUBQpZZ8kGwnKkBbWpp+Fn5tL6kQyQ=;
- b=ig0QEAlSAFjGkxPq0ThWXTARnEzJ4uRmmh9EtdQaikHg2YQij3NQDeZZ0B3d0Nwr1XLc3EnapIHMoLaF6P3EvzUQjn2sglzQ7pdbZjICfzbJFariKfQMcqvp4x98HCvRgSW8Hjmqiw3Ng4UtonbR2LKjghRmf4vFt2burcABiGMfiiFJnCbuZkOPGEK2jfr5NZhfxbBYUR8m+hDK5RfbjqAyNq56KXk9H6hKYlG/HxLIb/+O4Ax7mMH1DHXDWznS0heG61GWsN1lmey4slXKJ/DKx8uGuJYPaIbZHVPlkyTic6oPd8lMVqmrhHFNo9G1KaHN8kDV2IusaJq84NKdlw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dmTOKdY6iRpHFjUBQpZZ8kGwnKkBbWpp+Fn5tL6kQyQ=;
- b=cZ6lR0GZWXvhs3YLNAZ7Np+4t3aHMZ5fPTsjhe5r1wZEL+qKDMTzTUfRYpQjgpLvTazafp/dlEM+5VszKHHCkX9HjLSHObuajUXqjWMAm/k1pyVLq/c7nqPDEbHBaxfNxGLxM6n1jN3xEkGi4LR29zTxb6klvtZP8dnJvTKNHAkwFGQGXPUq+CzL4NqWgDemRbPdFjYV8hw8cpyR8k/qnlkVPAsvhL5ho2XiXRSrb7HitlEdkvZY5HfRB3yQeVGN5J/FFzpV5kfjez6F2tnmr98ThiYFFIWCSDcPjp83a+CZmaS3axlP/I19tTl2wN7qwi6LmwL1ZbbMIkLkXIra6Q==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by MRWPR04MB12069.eurprd04.prod.outlook.com (2603:10a6:501:99::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Tue, 11 Nov
- 2025 05:29:11 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9320.013; Tue, 11 Nov 2025
- 05:29:10 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	Aziz Sellami <aziz.sellami@nxp.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v2 net-next 0/3] net: enetc: add port MDIO support for
- both i.MX94 and i.MX95
-Thread-Topic: [PATCH v2 net-next 0/3] net: enetc: add port MDIO support for
- both i.MX94 and i.MX95
-Thread-Index: AQHcThB8B/EmTKsCu0Wd8Fe2HUqMMrTs2uCAgAAVb+A=
-Date: Tue, 11 Nov 2025 05:29:10 +0000
-Message-ID:
- <PAXPR04MB85106ADEC082E1E8C36DA65188CFA@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20251105043344.677592-1-wei.fang@nxp.com>
- <4ef9d041-2572-4a8d-9eb8-ddc2c05be102@lunn.ch>
-In-Reply-To: <4ef9d041-2572-4a8d-9eb8-ddc2c05be102@lunn.ch>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|MRWPR04MB12069:EE_
-x-ms-office365-filtering-correlation-id: e5c74cd6-121d-4309-9ad6-08de20e33e2e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|366016|19092799006|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?GMgwH0RRpaX8EpaFvSG+Q3vGsn53BVEnr8pNXlapglsRktWNU7qKYugIh3/4?=
- =?us-ascii?Q?IzsKcBkrVpYthS6C3RNTniacd7mrCxtJ62uEIVKPehaImqm3/i14bRbDu/kc?=
- =?us-ascii?Q?dTDKpmrQHwvHPKS5FqJFfTRlu0LqFfmewrCWZm7MrzdfIDoYbjjfAMfuOgrI?=
- =?us-ascii?Q?jJppllB75HBwa/dgzFaaXc2u0HOX4x/r71CEf0L3B20UEh8OakFOVa9HkhmX?=
- =?us-ascii?Q?umUo+z1EYxGYxJ7JX8+7rZb/z7tRZTaP3FW+5liRVMJxRcb55nVvvWMGIJaA?=
- =?us-ascii?Q?1HGEhDaFQ1JzHoCmi6JztqSIoomXRkDm3XkmRELJFI8+XMIVupcH8z7eojkW?=
- =?us-ascii?Q?B0/GEhFnn04NYaV5JcHYx85bokPlfVB3hptGEIDh0pVn+SadobBi9W/hoa9b?=
- =?us-ascii?Q?qrp3F3bL9aGwNUP1SVRNFNfmqaG0eV7S+wAtV3YXOLnaQsqACfnbRCNP7aIc?=
- =?us-ascii?Q?XFDxFWCD5825CaiymPuRBzi4p3iWT2Y3BbOjQRliC5M1To+H0PCzrZHG8fD7?=
- =?us-ascii?Q?BHA7j3plWIGsAZk8oiC6eC/8l0Vh3p87QR04rlp8y5+TP1THM6vmlAZh/qZY?=
- =?us-ascii?Q?ZsYzAPTawQGFlG+kT9tgklGYdKR40/PTa2qBzjVk9EiQuYrnOPkfQGvf7HwH?=
- =?us-ascii?Q?ENN3Xtp+X/4jX7GquSmJ6lMsjpOTe735AMAAKD0g+utblbGQ/KslBc24V7D5?=
- =?us-ascii?Q?zN7UUEs/8saunFn4G0S9yD2d4mEedu2VrCj+/Qe73juFlGLOVDH+nBUD5OHJ?=
- =?us-ascii?Q?qYFvPknrg5cPQ4fO4lCw8dpkAVmsFBVNcGYWtNQbsoYYtes22at9473KRLu6?=
- =?us-ascii?Q?gZ6XKt6bV0WcBNMKHydwYvvSOC81y8VRb8xejGU/yiNxmx8O6X3NL0SRCpbs?=
- =?us-ascii?Q?ZO6pUGNxFAKKFM+l/ugf9MN0vm6R5O+caSHP3ilzfLMuhiNfhPXdPtSi/kDh?=
- =?us-ascii?Q?NlTrOx9VZxuTGkpYMVbnlHjH6hVQM9YzMsECQmXmwiU8EogK2h0dPwSdm+nM?=
- =?us-ascii?Q?LZFtcu8vjDnZX0w2c6ALExQ3Jl4jmvKBxIpdBwcdIziS9WcN4hEQBA415a3y?=
- =?us-ascii?Q?9xM/pjJlQmK4Bh1jN16XOo5l6AUp6QG4Jyj0C7xA0EInu+bPKO33Mafblf+H?=
- =?us-ascii?Q?jV4I41PFYFCsF6Pa8/oCRjNVahmUX/DgSUJMfVlFLJ5nFBvDOQQbU2QCIE+V?=
- =?us-ascii?Q?ngfQWYQdIR9X2HvDnPR82ZPXScNqUFiYjvL6JU+GkUIpTNEzlRdwdD/q5wZm?=
- =?us-ascii?Q?FYM1wF7RcSV1v2dCmEKVTaAvTfSlaBm6cqLJgMBedyVwRrw/flD0G6X8okZR?=
- =?us-ascii?Q?ZZfqQyNYumZpwEK6PwS1zgaWMhqpwdtAs7Eih0B/2oCf5GjPJEv8LhAhLTeH?=
- =?us-ascii?Q?y/b3yUYGNBnsXVvEqSXy3CVBI6tH/MLeqLjTn3XlUA4jBlXx+nPQcNY4guuV?=
- =?us-ascii?Q?0J1BBevgQqupt7SuyCsybXLqPWNsMBTAxa3YmVW5rrsSn9dsG8CpUQrY1j4f?=
- =?us-ascii?Q?kn5dtcOTzEx7MAEEyH3qsal5Dr/OED++jk0y?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(19092799006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?omjVWsUWZ4VQTCCldLRo+v6F7iEPOKhbuI8E4CCaU99eAigR6kTKLiUok1Af?=
- =?us-ascii?Q?kL+8o3yZ3n0Krnid0evT+sVuDQOA5L4DwKkSo+30o7uWS5P9jvghTixYVERB?=
- =?us-ascii?Q?asmxIQ94jHcSKfTZds2Lc/mtzjbmV1+b4Rm/yaOiUmFEyZJE1O4Cj5jTx19x?=
- =?us-ascii?Q?I1motEBWnOG8hbXOh0DQcllnjQ/+aGivld5kUSuEImj5FSBye/A5tlHbzRDd?=
- =?us-ascii?Q?qv40ash0W+MtIyD5ZKt/Lq7SNGqod54HhpuSzBBhapkdVJ3viNnKUXZfWYl7?=
- =?us-ascii?Q?PNgkYC+nMD6CYrZLHQC/0mSfBLuHgbq9Gv5LOK2Uj2NYwAQYOQZWgl3BGQQJ?=
- =?us-ascii?Q?eIVmLs5ELmA/jzY1gjdBRikLbKT8UednSJ3d5CLhLq7nJaMhef369hRqAj0G?=
- =?us-ascii?Q?SSZd8dSVsJjtKM+31QWvfMJr3hPTzTAQldj8kWwCXjiAH6n2TpAwTwAT0noF?=
- =?us-ascii?Q?w7JGIrZyDZ+CR1d5BvvvPqmZ+GDRl1r4ltMEM8BMe2vjUDp/M8JOJxqzYcl0?=
- =?us-ascii?Q?4VEK36FAAoXzCqGx2iADQkDrU8OO2eUZ6VyH2aNMcc3+/ppxowvaz59uJMFQ?=
- =?us-ascii?Q?/sZ+LMBDi4as+ZuwSVVC43U9SVY+P/NdzAxru4XlQcwpLp0aHUY6pEcOZcNh?=
- =?us-ascii?Q?5U6NYKRbswqN9s0bMawfCA8dHCEp4+Zteeto7eDlrYF2OHpnnqdddxUmame/?=
- =?us-ascii?Q?BOFiF05mEPRqWbd8m4h9+tNOuf5Sn9WUo+GhU9TDBaJoQN8GWcvvnHvpr+Ay?=
- =?us-ascii?Q?TyYjVsa7vnxcm9B2ziekP7Nk2bvjTv57wQqllG3JZ6d6HSfPTrAizq3rCdnv?=
- =?us-ascii?Q?0LCFePL5SMwRyz+ImFoGu5/S4Tf7zwq1T9AtUnn0Wfw7MwkNGW/lF9ONGPks?=
- =?us-ascii?Q?JMlrmW3G8H5wZcRi+Ebw4ZLrTNizTCCIGofKr6MUeL7j/esFWLlvsCc8bGc3?=
- =?us-ascii?Q?3r14shNilJwSSQ9sP+D9riqvBga06Y3U7zLGrctKXR0eZH9PYngu0hnSE1ro?=
- =?us-ascii?Q?xNkonYl5dmPQIVcPsgk13CPuNlahbC2Xy8gr7x2hK8tqOM6S4fn7TxS+abEj?=
- =?us-ascii?Q?PHEwfzmH/M3Xp16dLXxFYVSIgsk+Ncf6U+8q+76P9VpV/kPTrzpo2I05DlF9?=
- =?us-ascii?Q?UBuTifi0Sj/vtJu0uPizhIkSNx8UW4zI2Wms2c5ic0tVwQ5BzA4rISYrruqx?=
- =?us-ascii?Q?dbk243Lk7NWLBXPBR8GhZbO7NwKS+IUBRzIiyHQRv6KfYEpAeP07G/2kx1vd?=
- =?us-ascii?Q?wWFpETTh4KKjKdqqvZxx73sZ2+bPmkoZKPh/pvw4M9lAx6H6YASuzbMlf+gE?=
- =?us-ascii?Q?lKiQqyddG0lErjlOmDNPXWMTWcRx7fXwdiUBZxY2QnFwAtALEpbqtvIKgCr3?=
- =?us-ascii?Q?t4K7EX8Eqx5+sAelohP9OYF8NwJ6JBoXRIO70g9L00pipC19FcBTOn55EgOF?=
- =?us-ascii?Q?K+/Gj93HBehbjjs4K7YJrzEm7lLZQTdFDUXuEuVwnXq4P6xFRl2ceGtonT5q?=
- =?us-ascii?Q?SULtBna1qVP4IELxlzm2aKUOyhlwlTIIWou8+nAgHvMOXzc8hpuiAvo9IN7t?=
- =?us-ascii?Q?0Ed7jUi2Pw+/XOFOrbQ=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="TG9lRsm8"
+Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
+	by mail11.truemail.it (Postfix) with ESMTPA id D4EB91F8F8;
+	Tue, 11 Nov 2025 08:22:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1762845722;
+	bh=1wobJU44FbdXVx/EG8UhsBKErOOVsOY4d7OoppyD2Ck=; h=From:To:Subject;
+	b=TG9lRsm8pjrZqpoqUUVuiGyTRhqidSf//xB2/+myPNdtsedGGCFUQnOf6MkUJ5Ld1
+	 QoV+sZT//uxynxEgVpBQcRqc7HTwR06BZ+uXuUtfiBgbjn+h7/EPIQ7GCujyKqv0S8
+	 7RL8r3FPG9y1xllJre/Z010UGeKL4fzptRm8avlFDsGx7wVbkif4TP5EJhlMpTZ5Co
+	 5It5ydVvmtjpjALWUgE2RZ2+gIrcZ/UfOXz3lMn3fYaStjk4ms8s6QIPLMZDGjS488
+	 mIK7DCq+Bmqs0J7321dm8/a72EjkrUv04gXMmqjmrBOXl7WolvYJhmXCI6c6zDLSxI
+	 AcNqW3bW8QREg==
+Date: Tue, 11 Nov 2025 08:21:58 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] ARM: dts: imx: move nand related property under
+ nand@0
+Message-ID: <20251111072158.GA8423@francesco-nb>
+References: <20251104-gpmi_dts-v1-0-886865393d0f@nxp.com>
+ <20251104-gpmi_dts-v1-3-886865393d0f@nxp.com>
+ <20251105115538.GA17091@francesco-nb>
+ <aQttQb5GesjUtBw6@lizhi-Precision-Tower-5810>
+ <20251107155201.GA119737@francesco-nb>
+ <aRIPAagk2tzqnoSB@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e5c74cd6-121d-4309-9ad6-08de20e33e2e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Nov 2025 05:29:10.5462
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Dm18Eshjo/Afn4wyW6dvCIa14sUcmgLgR25HAKD2bFtmR4yvZdRYA8R2xz2uwFhwBcAp9P3GJkpkVOpYWrhRmw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB12069
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aRIPAagk2tzqnoSB@lizhi-Precision-Tower-5810>
 
-> On Wed, Nov 05, 2025 at 12:33:41PM +0800, Wei Fang wrote:
-> > >From the hardware perspective, NETC IP has only one external master MD=
-IO
-> > interface (eMDIO) for managing external PHYs. The EMDIO function and th=
-e
-> > ENETC port MDIO are all virtual ports of the eMDIO.
+On Mon, Nov 10, 2025 at 11:12:49AM -0500, Frank Li wrote:
+> On Fri, Nov 07, 2025 at 04:52:01PM +0100, Francesco Dolcini wrote:
+> > Hello Frank,
 > >
-> > The difference is that EMDIO function is a 'global port', it can access
-> > all the PHYs on the eMDIO, so it provides a means for different softwar=
-e
-> > modules to share a single set of MDIO signals to access their PHYs.
+> > On Wed, Nov 05, 2025 at 10:29:05AM -0500, Frank Li wrote:
+> > > On Wed, Nov 05, 2025 at 12:55:38PM +0100, Francesco Dolcini wrote:
+> > > > On Tue, Nov 04, 2025 at 05:27:14PM -0500, Frank Li wrote:
+> > > > > Add child node nand@0 and move NAND related property under it to align
+> > > > > modern nand-controller.yaml.
+> > > > >
+> > > > > Fix below CHECK_DTBS warnings:
+> > > > >   arch/arm/boot/dts/nxp/imx/imx6ull-colibri-aster.dtb: nand-controller@1806000 (fsl,imx6q-gpmi-nand): Unevaluated properties are not allowed ('nand-ecc-mode', 'nand-ecc-step-size', 'nand-ecc-strength', 'nand-on-flash-bbt' were unexpected)
+> > > > >         from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
+> > > > >
+> > > > > Since 2019 year, commit
+> > > > > (212e496935929 dt-bindings: mtd: Add YAML schemas for the generic NAND options)
+> > > > > NAND related property is preferred located under nand@<n> even though only
+> > > > > one NAND chip supported.
+> > > > >
+> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > > ---
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6-logicpd-som.dtsi           |  6 +++++-
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6qdl-icore.dtsi              |  6 +++++-
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-pfla02.dtsi      |  6 +++++-
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi |  6 +++++-
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi           |  6 +++++-
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi                |  6 +++++-
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts                 |  6 +++++-
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6ul-isiot.dtsi               |  6 +++++-
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6ul-phytec-phycore-som.dtsi  |  6 +++++-
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi               |  6 +++++-
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi            | 12 ++++++++----
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi   | 12 ++++++++----
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6ull-myir-mys-6ulx.dtsi      |  6 +++++-
+> > > > >  arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts          |  6 +++++-
+> > > > >  arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi               |  8 ++++++--
+> > > > >  15 files changed, 82 insertions(+), 22 deletions(-)
+> > > > >
+> > > >
+> > > > Was any of these changes tested? Is the driver able to cope with the
+> > > > binding change?
+> > >
+> > > I have not board to do direct test. This format is used at imx8 platform,
+> > > which use the same gpmi driver.
+> > >
+> > > This properties are parsed at mtd common part
+> > > drivers/mtd/nand/raw/nand_base.c
+> > >
+> > > If you have one of above board to test it, it will be appericated.
 > >
-> > But for ENETC port MDIO, each ENETC can access its set of registers to
-> > initiate accesses on the MDIO and the eMDIO arbitrates between them,
-> > completing one access before proceeding with the next. It is required
-> > that each ENETC port MDIO has exclusive access and control of its PHY.
-> > Therefore, we need to set the external PHY address for ENETCs, so that
-> > its port MDIO can only access its own PHY. If the PHY address accessed
-> > by the port MDIO is different from the preset PHY address, the MDIO
-> > access will be invalid.
+> > I did a minimal boot test, on colibri-imx6ull, and the board was booting
+> > fine, with Linux 6.18.0-rc4 and this patch applied.
 > >
-> > Normally, all ENETCs use the interfaces provided by the EMDIO function
-> > to access their PHYs, provided that the ENETC and EMDIO are on the same
-> > OS. If an ENETC is assigned to a guest OS, it will not be able to use
-> > the interfaces provided by the EMDIO function, so it must uses its port
-> > MDIO to access and manage its PHY.
->=20
-> I think i'm slowly starting to understand this. But i'm still missing
-> some parts.
->=20
-> What prevents a guest OS from setting the wrong value in its ENETC
-> port MDIO and then accessing any PHY on the physical bus?
->=20
+> > I am wondering if there is any impact with the bootloader, this DT is
+> > used as it is also in U-Boot, and there the NAND driver is for sure
+> > different. Any comment on this? I was not able to test this combination.
+> 
+> Uboot should have theirself tree, which copy dts and not direct use it.
+> I worry uboot parser kernel's dtb to do some hot fix for specific boards.
+> But most likely not related these proptetry, maybe just add partitions.
 
-There is an Integrated Endpoint Register Block (IERB) module inside the
-NETC, it is used to set some pre-initialization for ENETC, switch and other
-functions. And this module is controlled by the host OS. In IERB, each
-ENETC has a corresponding LaBCR register, where
-LaBCR[MDIO_PHYAD_PRTAD] represents the address of the external PHY
-of that ENETC. If the PHY address accessed by the ENETC using port MDIO
-does not match LaBCR[MDIO_PHYAD_PRTAD], the MDIO access is invalid.
-Therefore, the Guest OS cannot access the PHY of other ENETCs using
-port MDIO.
+U-Boot just sync the device tree from Linux, copying those, for some
+boards (depending on the usage of the so called OF_UPSTREAM).
 
-What patch 1 and patch 2 do is configure LaBCR[MDIO_PHYAD_PRTAD] for
-each ENETC.
+You cannot think at this change affecting only Linux.
 
-> I assume there is a hypervisor doing this enforcement? But if there is
-> a hypervisor doing this enforcement, why does the ENETC port MDIO need
-> programming? The hypervisor will block it from accessing anything it
-> should not be able to access. A normal MDIO bus scan will find just
-> the devices it is allowed to access.
->=20
-> I also think the architecture is wrong. Why is the MAC driver messing
-> around with the ENETC Port MDIO hardware? I assume the ENETC port MDIO
+Francesco
 
-The MAC driver (enetc) only simply changes the base address of its port
-MDIO registers, see patch 3:
-
-mdio_priv->mdio_base =3D ENETC4_EMDIO_BASE;
-
-Patch 1 and patch 2 are not changes to the MAC driver, but rather to
-the netc-blk-ctrl driver, which manages the IERB module. We need to
-program the address of each ENETC's external PHY into this
-hypervisor-like module.
-
-> bus driver knows it is a ENETC port MDIO device it is driving? It
-> should be the one looking at the device tree description of its bus,
-> checking it has one and only one device described on the bus, and
-> programming itself with the device the hypervisor will let through.
-> Not that i think this is actually necessary, let the hypervisor
-> enforce it...
->=20
-> 	Andrew
