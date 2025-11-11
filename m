@@ -1,58 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1282819CCFD;
-	Tue, 11 Nov 2025 02:13:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F72D2F5466;
+	Tue, 11 Nov 2025 03:06:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762827188; cv=none; b=Lxe1OAeuWiMcCNYc2f9hAJVvOVbnaMCWXgJFtDSQlhrdWw+nhioa1ix6msop0XFZz7TShEzdUm16Q2eILyjWiyiMANq4RNURwy2+0Fp9MQrFWasNkiHMJyju/Yzzacg9P/g14THjsQEXvrPc+hWBNj9siHnGH+Chx/PwG15sIOg=
+	t=1762830416; cv=none; b=BIyV5e8aIQEyMnTGcdV3yxcA53ehALrN1+BrMXOQB9JQ+Xyr8II3Rx+wLoHfaCYhQOPO926G9XONvICA8djdb+HV8x9RX46/nK6Cdc4ByKVHZc3B+X+K8Ig6yFRmK6jyLuKOf7QaF3JBUwfmHh9iNrXcXJOE29P+wZlyJ/cZ0Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762827188; c=relaxed/simple;
-	bh=1Ri0DfcRggwPTmFPolyws/NpIVbil0D6j3dsoakvaOo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WM9Sr78GdTEMSk+atISCeCCvqg8tDprvoCW+84Ss0nEBIxvhNwEKPeshnFHeUGFNuzjiiTdd7SDOR5u6OESt3Fje5XTLRSg3/07Y/jhzXks/vOmxEatB6mdUQBDMxKcuyLFkUP0/q2otLAnUZZQxWfNCOds/WSV6yW5yznBn5XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rabwyA/Y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762830416; c=relaxed/simple;
+	bh=h+vNCdFsfQH4wcyyT/Dj9tkYvsJ4RNMjVKyiTETnqwA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U+qrPMPWJ4GtRQls20ZUNIwQhfKTV6swmckuVen5diNdUczthXe9DmsDQR9W+vqDyOFaPmXSUGudULGoiFy9YtmFQygcoYaMNkNKSWA7/vK+ZdNizDfBD3ZYZDfaprNhpsCNnMfvtj+N6KUZwgXGqF43qVfZ7Qz/nwEJG22iVco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=EkJXkqjo; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rabwyA/Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0271AC116D0;
-	Tue, 11 Nov 2025 02:13:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762827187;
-	bh=1Ri0DfcRggwPTmFPolyws/NpIVbil0D6j3dsoakvaOo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rabwyA/YOj9GBdzd/l5+5I0nsonxaTedvc1+h+OFRTS2e/9iuhgRkrDIl/iFoGs73
-	 fKlEsCCjtXJaLtY4oInzY1p/71NFEz6eXmHEkvk2lzmLWjDSSDc/Cfpug+F4tMi1CU
-	 n///74+11iemO04SbLa6Yu45L3yk57S9HkFvAV306QNDlyUC843QAGFUX7PIwgC+iH
-	 tSsQRed2Vw7rN/7FoTQPW26vLVXEeW1Wbkc4/qONNtHibmXpTtcAE6QZVbS7KZLRaH
-	 n7G3FPTyy4ZVX2iC04MDKpWMEgvjKSD3h44zdzluf/hfF9MAm1LVNM4ojU9WVhgse4
-	 IIVnHjKxHcWzw==
-Date: Mon, 10 Nov 2025 18:13:06 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: andrew+netdev@lunn.ch
-Cc: Wei Fang <wei.fang@nxp.com>, claudiu.manoil@nxp.com,
- vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, aziz.sellami@nxp.com,
- imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="EkJXkqjo"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=MO98nzA9KXDx6Wn49Jli5f1q2tXQ5XfjlvW2UYF1Gys=; b=EkJXkqjoO2RAjCZ7DLrj6Acncr
+	uNV8cT5oDbtnZ4Vl3kGJ8Gh6bDzbSRVgSjQoOyty9jEUyeLDzxHNtOxqwMo4QOYVCGdF650eA+6Vj
+	kGmOtFy4E5tPNywPRC5XN36QexNua1q48OGMsOQDU/VVky0DQy6J0BUC05qRQ8NGHHqU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vIeiV-00DaId-K6; Tue, 11 Nov 2025 04:06:47 +0100
+Date: Tue, 11 Nov 2025 04:06:47 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: andrew+netdev@lunn.ch, Wei Fang <wei.fang@nxp.com>,
+	claudiu.manoil@nxp.com, vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com, davem@davemloft.net, edumazet@google.com,
+	pabeni@redhat.com, aziz.sellami@nxp.com, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2 net-next 0/3] net: enetc: add port MDIO support for
  both i.MX94 and i.MX95
-Message-ID: <20251110181306.5b5a553f@kernel.org>
-In-Reply-To: <20251105043344.677592-1-wei.fang@nxp.com>
+Message-ID: <1f42240a-2322-4b4d-b0ae-6c08b927ea18@lunn.ch>
 References: <20251105043344.677592-1-wei.fang@nxp.com>
+ <20251110181306.5b5a553f@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251110181306.5b5a553f@kernel.org>
 
-On Wed,  5 Nov 2025 12:33:41 +0800 Wei Fang wrote:
-> v2 changes:
-> Improve the commit message.
-> v1 link: https://lore.kernel.org/imx/20251030091538.581541-1-wei.fang@nxp.com/
+On Mon, Nov 10, 2025 at 06:13:06PM -0800, Jakub Kicinski wrote:
+> On Wed,  5 Nov 2025 12:33:41 +0800 Wei Fang wrote:
+> > v2 changes:
+> > Improve the commit message.
+> > v1 link: https://lore.kernel.org/imx/20251030091538.581541-1-wei.fang@nxp.com/
+> 
+> Andrew, is the explanation good enough? 
 
-Andrew, is the explanation good enough? 
+Not really. I'm still confused.
 
-If the feature is inherently not safe to use with existing Linux
-locking scheme we can't support it upstream..
+Let me ask more questions.
+
+	Andrew
