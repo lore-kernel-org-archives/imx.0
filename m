@@ -1,88 +1,90 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2997A281341
-	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 07:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D262234D38B
+	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 07:42:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762846648; cv=none; b=O9qSH+CAO51PuDthnBKo/bJWi7ZpkN1JAzKcl8EhXUEaxkKFF/KtjOUmmzrMK7D+EWlYdOJY+p2bNBVWrjC7H05ndKPeKf79p3UPExSe13CwStbHDzKo6PxEzNWt1TApHgWMwjuy7qXJipxKbQhUzm+pgzQkxAj3oPzkFbEzLQ4=
+	t=1762846964; cv=none; b=vBAxIJouhBWin9g92odsApK02+Uo89S5iJ5yi/+i9BQ8tlvm9cYFLF6pXULdUA/gk5tCNWaqtwuZFe4/rpB7palGbKHzEKqczuYi4EG7WfvRvZD38x9nDWBbx2DXqH/jUpFFYrDjyfWLiPqn5r2wJP4xX/DrszcBQqJG3/76BtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762846648; c=relaxed/simple;
-	bh=TMfjCCp9Vl1C+w/PH2HESmcjrVpVqcg2gmYMGqanOuo=;
+	s=arc-20240116; t=1762846964; c=relaxed/simple;
+	bh=8Ma8E6DFc1TdTBvoMfms9xPqoBsMOchLDJ+KmE8BDe8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J9vLJqRwyW4BdDioSkl1oth9qRVMjran+ASarKwzrh0jbcMyxY7wQFxpfLmE3Qe5MDo7pNCYl6vAiecSk055+/XYqqqhFK8BIphMX24BL7SI/XUqefvrFlQK5CxD0LjkQsqkdxYZWIzoekEOz4rH5dVhUAEii3wEFiMg+5wtP6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=PWqLNck9; arc=none smtp.client-ip=220.197.32.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=XQWDseJCJ2NIp1iqu9Q9y3vH0pO+9OlM/29H7uqwoCZEB/jyyTl8Fn7hKSyh5Qs4d/EBUTtfZvT6F1iGSwO6K5BjOE4KcNOwU1hdQ74qp/LCwmGgLNAom7UmClSiNQDdtRmJ0IsuIdasNgBd4MES8GxCNVGX3yXPcfiI2mYMvMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=ODO/kGMq; arc=none smtp.client-ip=220.197.32.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="PWqLNck9"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="ODO/kGMq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=jSCFmAGYJ/6nn3X8y2BV2I473qQwTQBsOPiyb3X/GTY=;
-	b=PWqLNck9KGbRwkR/sES7ueZrnA5LZNT3OVPkUI2EVxEc86cKHKBRnIx0UPASlk
-	9MW/rnmblg29iXEi5+dXOGvlkhWhYNW2H1SiGaWvEKBcWbQGD2zCHdJXOhInI5r8
-	3LGLOWVtKwJIxovzNMFo6iSjfjrenzjP8NeQPbQYeJ9z8=
+	Content-Type; bh=nhDPWcHQwhbMDsBD0V/t6hKlH/MXgCs801GiP87Z/q0=;
+	b=ODO/kGMqFbRqTC0v8r+qERLvSla7r6KNWJ77O80rPbP6codeYkA5nzwEg4h+O4
+	gh5LhHWzo8deItXNDdhj4Nqr62RI+0yVSQEb/y1Hm34fRiLb0kURqkYZZC+BKkYR
+	FcWKgs7vfgrFpVkC2XwQHSgRdbNtUezUJ3sSaFHwsJHxg=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgAn_s2h5xJpBSnNAQ--.5214S3;
-	Tue, 11 Nov 2025 15:37:07 +0800 (CST)
-Date: Tue, 11 Nov 2025 15:37:05 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgBXvWOT4RJpfZLkAA--.5262S3;
+	Tue, 11 Nov 2025 15:11:17 +0800 (CST)
+Date: Tue, 11 Nov 2025 15:11:14 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
 To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, frank.li@nxp.com, s.hauer@pengutronix.de,
-	festevam@gmail.com, kernel@pengutronix.de,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/7] arm64: dts: imx8dxl-evk: Add vpcie3v3aux
- regulator for PCIe M.2 connector
-Message-ID: <aRLnoXX54oG6erhW@dragon>
-References: <20251024073152.902735-1-hongxing.zhu@nxp.com>
- <20251024073152.902735-2-hongxing.zhu@nxp.com>
+Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
+	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, bhelgaas@google.com,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 01/11] arm64: dts: imx95-15x15-evk: Add
+ supports-clkreq property to PCIe M.2 port
+Message-ID: <aRLhko0h1OZgvo2o@dragon>
+References: <20251015030428.2980427-1-hongxing.zhu@nxp.com>
+ <20251015030428.2980427-2-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251024073152.902735-2-hongxing.zhu@nxp.com>
-X-CM-TRANSID:Ms8vCgAn_s2h5xJpBSnNAQ--.5214S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZw1DXw47Cr1ftrWUJF47Arb_yoWkKrgEya
-	s7Ka45tFZ5Ar92qas8Ga1kX342939rKrWfXr18Xr4kGF9rZayvkrykGa4rWr13CrWIkrZx
-	CrsrJ3ZxXr9xCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUU2jg7UUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiOAMBZmkS56Mm3gAA3b
+In-Reply-To: <20251015030428.2980427-2-hongxing.zhu@nxp.com>
+X-CM-TRANSID:Mc8vCgBXvWOT4RJpfZLkAA--.5262S3
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Wr1kCFy3ur1DXFy8Cr4kWFg_yoW8Jr4rpa
+	y8CFZ7Jr1xGF4fGanFqFyrKr98ta93JF4Uur1jgryUKrW5CF97tr48Crs3Wr4Y9w4fCw4f
+	ZF10vwnaqrWYvaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U3EfrUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiOBV84WkS4ZUOIwAA3S
 
-On Fri, Oct 24, 2025 at 03:31:46PM +0800, Richard Zhu wrote:
-> Refer to PCI Express M.2 Specification r5.1 sec3.1.1 Power Sources and
-> Grounds.
+On Wed, Oct 15, 2025 at 11:04:18AM +0800, Richard Zhu wrote:
+> According to PCIe r6.1, sec 5.5.1.
 > 
-> PCI Express M.2 Socket 1 utilizes a 3.3 V power source. The voltage
-> source, 3.3 V, is expected to be available during the system’s
-> stand-by/suspend state to support wake event processing on the
-> communications card.
+> The following rules define how the L1.1 and L1.2 substates are entered:
+> Both the Upstream and Downstream Ports must monitor the logical state of
+> the CLKREQ# signal.
 > 
-> Add vpcie3v3aux regulator to let this 3.3 V power source always on for
-> PCIe M.2 Key E connector on i.MX8DXL EVK board.
+> Typical implement is using open drain, which connect RC's clkreq# to
+> EP's clkreq# together and pull up clkreq#.
+> 
+> imx95-15x15-evk matches this requirement, so add supports-clkreq to
+> allow PCIe device enter ASPM L1 Sub-State.
 > 
 > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 > ---
->  arch/arm64/boot/dts/freescale/imx8dxl-evk.dts | 1 +
+>  arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts | 1 +
 >  1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> index 25a77cac6f0b5..7704dba9e37c0 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx8dxl-evk.dts
-> @@ -649,6 +649,7 @@ &pcie0 {
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts b/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
+> index 148243470dd4a..3ee032c154fa3 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
+> @@ -556,6 +556,7 @@ &pcie0 {
 >  	pinctrl-names = "default";
->  	reset-gpio = <&lsio_gpio4 0 GPIO_ACTIVE_LOW>;
->  	vpcie-supply = <&reg_pcieb>;
-> +	vpcie3v3aux-supply = <&reg_pcieb>;
+>  	reset-gpio = <&gpio5 13 GPIO_ACTIVE_LOW>;
+>  	vpcie-supply = <&reg_m2_pwr>;
+> +	supports-clkreq;
 
-Is it a documented binding?
+Is binding updated for this property?
 
 Shawn
 
