@@ -1,169 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx-relay106-hz1.antispameurope.com (mx-relay106-hz1.antispameurope.com [94.100.133.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FC81EB193;
-	Tue, 11 Nov 2025 10:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762855774; cv=none; b=ulChkpLmKlrQYYlN4DeWD+XdpNfN9fsZ92ZmIqr2u9snWtC323urjAsSXoQ4TBAIzOWGvvBTymgwTcr61pHnlwaxFAS2+ueJD95U0hZQxOW9kXTcw3khAQWx3iXk+usJJWGHHWr9RfB/nh/jFXsuST/5j33SCIF6z2EPcos+t/A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762855774; c=relaxed/simple;
-	bh=CFXh4Xm8/rRJnmZTeq6l2iyIhLTVvDEHDL2vkwX6aOM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uvURSOGSfO+9TYdleKugGJ8J/CG7H/XSSN9QCNxcKqoVdzDpELwTddK/iUXiB8thVxB61pMeP0EwgYWTQZBfehX5jRR7I+lUx9BRDAJEsLHkqfLs6J8w8LZ8S9oanRANElAjBx5XJtg/8pnhRl2ELQB0ubrtzd9GfmLWqymH9NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hsHXTiPI; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12903396E4
+	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 10:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.98
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762856047; cv=pass; b=E6GgD6YknPGoTudeVOq4oqi963hYg3oXb+FBvaPyXf7f7IqRkEgeStaDjq8vac5vIVFwe5YKUVnXWUFInk9bnc2CBv4stwLzQktqkhayEW1jypII/qir8T1uGfyqJjcRU5rI1rYl9jztzMIvzPTedJKBsR/baik7+pFYXR3uQA0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762856047; c=relaxed/simple;
+	bh=qffjGVKHGKbLT2g/i1slYDW6JONYYo+k1+ICy3WTD/I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cvnewCzJKvuSVnwjhcgfNXfF7omEDSslwQSSz9PFiCwWPJ3uE4YeOw+uIZpN/mIzTuBfhtkvXlMZ1gfRGnHguj5gdi0XX1dlqrjHXsg2h1LjDHljPnzBdJt8h/3+CYdsGIUYo1r7/Mti/fwJozE8zuqUxYXNTRD84JDbBtxf0b4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=dJH4VTxY; arc=pass smtp.client-ip=94.100.133.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hsHXTiPI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD5ACC16AAE;
-	Tue, 11 Nov 2025 10:09:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762855774;
-	bh=CFXh4Xm8/rRJnmZTeq6l2iyIhLTVvDEHDL2vkwX6aOM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hsHXTiPIuxl3XEZab9DppifhvX9IhmmCHPnamXurp6kxrMphi3tcLQJ1NUtS58OZz
-	 f+JSJF7smo3VtgE543Pie9v4YYGPWuG2NvhT3H0W08uhmvl3lr1h/xt8eVorJNbm5y
-	 b0mnKp98+vXxKIzOXTXVZ4d3QgLONfPzeCEPIHrgAsC9XUNKklJCFx7zOeDoWHAS8x
-	 qjBoJ6CzeX5FQ5T5ksXV4Yf3p2ZWxINy6SqNqYVVRTmJuy8iPYJ1iKfbp9cHW94o67
-	 9iGz386btTCWoWF5/8aO9CipEAy3auir12Jf/UOhCwfDq/n6jec9gqmyZqyWdAIvCZ
-	 b11Cy1I6MqbUA==
-Message-ID: <f7eb9c16-b93f-401d-aa69-d45baa5c9432@kernel.org>
-Date: Tue, 11 Nov 2025 11:09:29 +0100
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="dJH4VTxY"
+ARC-Authentication-Results: i=1; mx-gate106-hz1.hornetsecurity.com 1;
+ spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=5cd8tiR4oA2bomVQnghj6XdfSPPBJKKlunliO1VnFlM=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1762856016;
+ b=J5uOrn/2y+ORo332OvrqjXaAzE9FvomM6/ZGsm6fhJTGVskVgCspFsnePvKuFo1/mfhnf91z
+ gL8HK+nl1HC+FB1ZHWGHXclBctxF9Fi5Yrs+KZWcGhtIbYTHvtadaLm/8WPV4kK8jfGMqIKIpJx
+ fKak98rVr6RDjk6WMjyzvEmxaHtgcQumIbklLGkoA2uWPnJxI8JIKeGfA2KnGxoakMzVSSjRi+g
+ DNk2U2sq7lP647rHbDN6aaNI3yFVV6qgav2TSgc094c22/Cp5ETf4C9LOgH9xu/Ez4CWQfsC7Za
+ 9qMrkppVCzO5wkgp/57BaFLWAtzD9/SH6WkIX85dVJ/bA==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1762856016;
+ b=n0nIdcEJlkTBkcxkSaGBT51hYehP5aiM6v1Xk57HP38FnEEUnFHLRcfkmGnloNhBbuHeiF9G
+ K2xL364LDgghVr6D1uPMDnaTJNeAoOodtj5QxdTOZJH+oP8T85bv/XPbIpnF20Ifk2H6J2l91ta
+ AUdzcQ6Ill2Ag/mdmI4a9WMH+0eKQJyUsO1Qw5Tyt05BuuSvJhWatO/KK9dAZHQRQhjO6QD58Jt
+ Dq/9dKvKV+6h4OSwxMvcloX+RA2VFG9dsH6vyXs5yaXmqPdP8TWFoYgYYhQ+2rlaVLheF1/qOy4
+ zGO3N72BamW0TO9mTH3q3SxdlkGnH207XknsqhF3qslMw==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay106-hz1.antispameurope.com;
+ Tue, 11 Nov 2025 11:13:36 +0100
+Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 3B9AC220C9E;
+	Tue, 11 Nov 2025 11:13:26 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Nathan Chancellor <nathan@kernel.org>,
+ Nicolas Schier <nsc@kernel.org>, linux-arm-kernel@lists.infradead.org
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Frank Li <Frank.Li@nxp.com>,
+ Li Jun <jun.li@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH 4/9] arm64: dts: imx8mm-evk: add wakeup-source for usb phy
+Date: Tue, 11 Nov 2025 11:13:25 +0100
+Message-ID: <2809731.mvXUDI8C0e@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20251110-misc_dts-v1-4-7564b9f69a18@nxp.com>
+References:
+ <20251110-misc_dts-v1-0-7564b9f69a18@nxp.com>
+ <20251110-misc_dts-v1-4-7564b9f69a18@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] ARM: dts: imx: move nand related property under
- nand@0
-To: Frank Li <Frank.li@nxp.com>, Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20251104-gpmi_dts-v1-0-886865393d0f@nxp.com>
- <20251104-gpmi_dts-v1-3-886865393d0f@nxp.com>
- <20251105115538.GA17091@francesco-nb>
- <aQttQb5GesjUtBw6@lizhi-Precision-Tower-5810>
- <20251107155201.GA119737@francesco-nb>
- <aRIPAagk2tzqnoSB@lizhi-Precision-Tower-5810>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <aRIPAagk2tzqnoSB@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay106-hz1.antispameurope.com with 108FA11C9E97
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:98cd9670ad177dc9a441365add1c322b
+X-cloud-security:scantime:1.834
+DKIM-Signature: a=rsa-sha256;
+ bh=5cd8tiR4oA2bomVQnghj6XdfSPPBJKKlunliO1VnFlM=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1762856015; v=1;
+ b=dJH4VTxY80wkBmZfEW53/+B0nYGF19k9hIuLKTIwYVyxYw+AqNEVdwE7weinHfVumxm4F1sF
+ Q37K/x7thEuDus5z2SrdKxBSDPyaG5ZaNIA08oa2uqIvkw7dyDPRt7IuueBpj9xHAEvCD+d8C+1
+ cgRmR+RuKWkQLiXiacQrQidIuXvXPtt4FNjNW4nz2Hz/NIqcgU6yAVkigM6P3bxoizX2dZ8XFrD
+ YXBi07YauxZadXPc1BLcb17LM+Zoqs9a9pOgJMVvhHjY0OElOziofeg8B3FIPSHj5vGideAm3/w
+ MX1mWR9drXy0u91k5p4yKk3RB+YLlxxpSoU0bEvGKSLnw==
 
-On 10/11/2025 17:12, Frank Li wrote:
-> On Fri, Nov 07, 2025 at 04:52:01PM +0100, Francesco Dolcini wrote:
->> Hello Frank,
->>
->> On Wed, Nov 05, 2025 at 10:29:05AM -0500, Frank Li wrote:
->>> On Wed, Nov 05, 2025 at 12:55:38PM +0100, Francesco Dolcini wrote:
->>>> On Tue, Nov 04, 2025 at 05:27:14PM -0500, Frank Li wrote:
->>>>> Add child node nand@0 and move NAND related property under it to align
->>>>> modern nand-controller.yaml.
->>>>>
->>>>> Fix below CHECK_DTBS warnings:
->>>>>   arch/arm/boot/dts/nxp/imx/imx6ull-colibri-aster.dtb: nand-controller@1806000 (fsl,imx6q-gpmi-nand): Unevaluated properties are not allowed ('nand-ecc-mode', 'nand-ecc-step-size', 'nand-ecc-strength', 'nand-on-flash-bbt' were unexpected)
->>>>>         from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
->>>>>
->>>>> Since 2019 year, commit
->>>>> (212e496935929 dt-bindings: mtd: Add YAML schemas for the generic NAND options)
->>>>> NAND related property is preferred located under nand@<n> even though only
->>>>> one NAND chip supported.
->>>>>
->>>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>>>> ---
->>>>>  arch/arm/boot/dts/nxp/imx/imx6-logicpd-som.dtsi           |  6 +++++-
->>>>>  arch/arm/boot/dts/nxp/imx/imx6qdl-icore.dtsi              |  6 +++++-
->>>>>  arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-pfla02.dtsi      |  6 +++++-
->>>>>  arch/arm/boot/dts/nxp/imx/imx6qdl-phytec-phycore-som.dtsi |  6 +++++-
->>>>>  arch/arm/boot/dts/nxp/imx/imx6qdl-skov-cpu.dtsi           |  6 +++++-
->>>>>  arch/arm/boot/dts/nxp/imx/imx6qdl-tx6.dtsi                |  6 +++++-
->>>>>  arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts                 |  6 +++++-
->>>>>  arch/arm/boot/dts/nxp/imx/imx6ul-isiot.dtsi               |  6 +++++-
->>>>>  arch/arm/boot/dts/nxp/imx/imx6ul-phytec-phycore-som.dtsi  |  6 +++++-
->>>>>  arch/arm/boot/dts/nxp/imx/imx6ul-tx6ul.dtsi               |  6 +++++-
->>>>>  arch/arm/boot/dts/nxp/imx/imx6ull-colibri.dtsi            | 12 ++++++++----
->>>>>  arch/arm/boot/dts/nxp/imx/imx6ull-engicam-microgea.dtsi   | 12 ++++++++----
->>>>>  arch/arm/boot/dts/nxp/imx/imx6ull-myir-mys-6ulx.dtsi      |  6 +++++-
->>>>>  arch/arm/boot/dts/nxp/imx/imx6ulz-bsh-smm-m2.dts          |  6 +++++-
->>>>>  arch/arm/boot/dts/nxp/imx/imx7-colibri.dtsi               |  8 ++++++--
->>>>>  15 files changed, 82 insertions(+), 22 deletions(-)
->>>>>
->>>>
->>>> Was any of these changes tested? Is the driver able to cope with the
->>>> binding change?
->>>
->>> I have not board to do direct test. This format is used at imx8 platform,
->>> which use the same gpmi driver.
->>>
->>> This properties are parsed at mtd common part
->>> drivers/mtd/nand/raw/nand_base.c
->>>
->>> If you have one of above board to test it, it will be appericated.
->>
->> I did a minimal boot test, on colibri-imx6ull, and the board was booting
->> fine, with Linux 6.18.0-rc4 and this patch applied.
->>
->> I am wondering if there is any impact with the bootloader, this DT is
->> used as it is also in U-Boot, and there the NAND driver is for sure
->> different. Any comment on this? I was not able to test this combination.
-> 
-> Uboot should have theirself tree, which copy dts and not direct use it.
+Am Montag, 10. November 2025, 21:54:44 CET schrieb Frank Li:
+> From: Li Jun <jun.li@nxp.com>
+>=20
+> USB phy can be wakeup source to support wakeup system from USB.
+>=20
+> Signed-off-by: Li Jun <jun.li@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Sorry, but what? No they shall not.
-
-There is only one DTS. For all upstream users following kernel style,
-which includes BSD and U-boot and probably many more.
-
+Typo in subject: Just imx8mm. Remove the '-evk'
 
 Best regards,
-Krzysztof
+Alexander
+
+> ---
+>  arch/arm64/boot/dts/freescale/imx8mm.dtsi | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/=
+dts/freescale/imx8mm.dtsi
+> index ed8b4843acb4804379ba025e83a63fe962c2937e..dfff164db827e80ef8822ae33=
+0fa604d1642f6f9 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+> @@ -274,6 +274,7 @@ usbphynop1: usbphynop1 {
+>  		assigned-clock-parents =3D <&clk IMX8MM_SYS_PLL1_100M>;
+>  		clock-names =3D "main_clk";
+>  		power-domains =3D <&pgc_otg1>;
+> +		wakeup-source;
+>  	};
+> =20
+>  	usbphynop2: usbphynop2 {
+> @@ -284,6 +285,7 @@ usbphynop2: usbphynop2 {
+>  		assigned-clock-parents =3D <&clk IMX8MM_SYS_PLL1_100M>;
+>  		clock-names =3D "main_clk";
+>  		power-domains =3D <&pgc_otg2>;
+> +		wakeup-source;
+>  	};
+> =20
+>  	soc: soc@0 {
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
+
