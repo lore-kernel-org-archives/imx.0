@@ -1,113 +1,127 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FAB0347FED
-	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 10:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B8D34EF04
+	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 10:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762856427; cv=none; b=HNproYWnDJhPjh/tN1XUFu1RWizN0kBo5VlrAOK4zsmRq2de0WdEPF2xovZBdeU6szjl2cgnHWeUc3qAgJT0i24rqVKQ+7lKRvtwSiR7/0ZV1l4r3xRKybIMzahPl/YeFrrw7P4ySPj3XJCxe+rv7W9p275G9tSPr8++L20B8JU=
+	t=1762857353; cv=none; b=tkopdSvZqd+cg+9xdjh7jAu/nd0aBk69vbTHDdlVBmdzzS5AmFqNTbSTA89Ed6dEI0PbhKlP6qb6BDyiVYw1nSw2FaUNsKRu6MpO3LPtaHY6pqkB2TFTUGaqB2mEuiQh32TrDqjNZTXUwlyuukiV5UYud5vALDzcAjaC9OuJv5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762856427; c=relaxed/simple;
-	bh=vFQCQTjKO8TNTzEmtlk+LvI6FcO3v/ubcdimd89KqZk=;
+	s=arc-20240116; t=1762857353; c=relaxed/simple;
+	bh=b5cTARWnCH0O+wzlNreNZEZCG3YtR/z+aB364cLgDRc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KQFOF8D5g+ntDBEiT4x7MAL+LMUoTPyDTCVReFEPDGxoYRlvxI5quhio1FlnvKlXs6WdOvsKsKnm3MxnlxI1rOTQ8my3vCf3ytXFcRQ3aYLxuYnBvwMBnY6F61943y1Xz80foCOCJ7gFBLupHzJRZkCRKqap5JrUDrK7NydnxPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=diGLdE52; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=nXpSN1BccXnNugPZxQutCevDQwv5lgW9ZTnCtz0IaL7bmUxVjvKkM9mS3oR3QiiDVjmU/yIS3FJHdvEYd4D+aOdHgBR5NMf0la9ZjSeJn/McuQD1Q7yFxkwqd8Z/NlI4tELSpMCWqbknnEujCD/yZJ9fJsWgSaLpf4WRofP6aDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UL7VzKkU; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="diGLdE52"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b98a619f020so3519691a12.2
-        for <imx@lists.linux.dev>; Tue, 11 Nov 2025 02:20:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UL7VzKkU"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-37a33b06028so35208951fa.2
+        for <imx@lists.linux.dev>; Tue, 11 Nov 2025 02:35:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762856425; x=1763461225; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1762857349; x=1763462149; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=g2BNnZMONHx8/CvKkJxYxrwMB72hoWbxX7RGGc1E2Ds=;
-        b=diGLdE52Nz5exV9tUYyYuPxD13Rmgc9iK7qT8yY5cx2ZKKEFElRIDtXjFgCqLdMTaZ
-         BgEzrsjSgT7wXgksa/XQe3Tdjlv914qOCeYr0/zbh4vej/gclQpT5gFsY7cSHpTuO9qI
-         uClSkcMLpNEZ2uz6BUYfNHzLB6DdJs2lZidadZcIcMNiYXPRxMU/LyeWeTNf58YxesTS
-         VdR8Q9FzqMY20YxPfg6VhlwfVD+Wcanwk9iOkL8Nu/N/6wtvP2a2AV6IFBjrE91uJ5W0
-         MdZ4lGVlTzsNOzg5tcvwbcmBVjLFqqpJ2Gj6PJavRy7JW3VAdWV0caUP2+r8isJ1fWkA
-         vAgA==
+        bh=b5cTARWnCH0O+wzlNreNZEZCG3YtR/z+aB364cLgDRc=;
+        b=UL7VzKkUgIwRhJEQgk0bcuIVelo/yK98zG05eUoJoB/JVx5tdi3y76dW9i9qY+9E8K
+         zyNw+hoWjBl0c8VJJaSRuBCa47WZ8xeddy3pFpvdB94kENy3LXboytoXY3OcQ6uBnkAA
+         HlcMrYTPYwte3WwHE4PjfC2H1At++psFiab9fh1sUB4hdNmBMGDsMMpm/Vz7Gwkep7zz
+         vv4ndV5HHlbAaxnfD5K53aRxutLJjohhOp29wDOiWsaEpeCLGjm05dCFEneRTeVYyhza
+         rUZoxkVNWSvFxYeQsI5ybG1/9NCQUCvhGcewgjKijNU4lLJxwsHGDDYMHfzdW1nGUfHp
+         hxew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762856425; x=1763461225;
+        d=1e100.net; s=20230601; t=1762857349; x=1763462149;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=g2BNnZMONHx8/CvKkJxYxrwMB72hoWbxX7RGGc1E2Ds=;
-        b=mP7s2fp9CijMFPsi2VLhhQEJcppaJ+H7aa8vhtw8nxUKmUYhPJ1Ba04v1FkekFbU6g
-         prJGPNCVrwG5mqAPOi8dyOu97XVnYESvEDAN+HgEnnxYXu/wpOJaq8NU/aluYxCF2hgD
-         HSamWAGW3OO34F8fGzxp9zqlAt3NYLTGYCiuLrSVlBT+jS3C4FdRi6w5l1xEewaiDaP0
-         wywBncD+TQYKZR+mSL1DxRDa1p8py7q2OOzSKNS/0DfslKK8+KTn4vsJe1tyTymHyEgS
-         xQpdB9HtuXPUJWqberJ6rUHgasFCw9zpFDo6Xpm99ATulnI37UDfUp7HtEZcwwdhRuY3
-         RE5w==
-X-Forwarded-Encrypted: i=1; AJvYcCVUtlbjFezOHtMQlqGa/EoegRWq+zqxruepfvEp2IOlXRpP7+0jeEAAl0nwj1gbGMqfYhQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx4AxcHfUyP2Y9SIviaAQ42nX82cy+ijhaHMjxGwKZoh6ER5dhv
-	LX0IvdHfrXpu04oosKoDFD/oiTEPzdFU07boee/+UAK7ULa/LXpyQkxaHYG2FpA/tz1n7NZUw+W
-	Fw4+uVXRfQ+QQ9eSNqdOHsP/EHZRDqBI=
-X-Gm-Gg: ASbGncuOLrBns6+65ypMU9N5gMvAFLENxXYVmuSu3ZwAPUNxWFZXKQXJq59tNxCqQmY
-	K3Xu4xpgABxUtMtQQzVYZtuWdHbz8m8PzRxRITw7+HPkfyDAcJjWE4XmgRAt9tiF2hJFIHv1ve6
-	n++2+2wQIdgYju125xjtKzkxYZCRoKd5rR5za8XAVKvGEUrVv7GwvWxR70ggZXuJtcRw9QmuPmm
-	Jibhz24CQJTfqn0wkjd44lWXEf1X8CTqyHEn3qeK4O/+XSOXdkm876NoQ==
-X-Google-Smtp-Source: AGHT+IGHeEc0tdcwN2CitYeC9X138lPaLhDv7imL1UBIrrtgzyaJrxx+3S5nCZWKtBm7wpPk+C2oztDUFMFw3MuqU3k=
-X-Received: by 2002:a17:903:a8b:b0:298:68e:405e with SMTP id
- d9443c01a7336-298068e42acmr127289735ad.59.1762856425272; Tue, 11 Nov 2025
- 02:20:25 -0800 (PST)
+        bh=b5cTARWnCH0O+wzlNreNZEZCG3YtR/z+aB364cLgDRc=;
+        b=M2UzCI2O3ZaBwQriFihn1dvd2BohE/lkgrnZFIkvHQBR6nnWy5lzdn5HNpo/yM8rtI
+         /2XMDZvWgm54N8ZMo10oRCDXa9Kfdw3Ywu10oFxYECo+5rImHWR1W8+At5svzq9iPLlH
+         2UwtQJmRsiuKU2H89kdPHRrWWGfG3nHwapemGBrUuBrjYKNR4gD9EXWHmR9jlNfUAAis
+         YgaRh9kR5Uzv23SvUESGMjcZx/45LBUIEfDFpQgQwZQh/p5miHiWKfbVLLVsNUsH4A6x
+         KwbEz/eItpl/9DScUhIU4ZF8X9WnnwDak6XIYf4KqsoWBALbhSWoRMcg7IyvIoy9uhVr
+         qSyA==
+X-Forwarded-Encrypted: i=1; AJvYcCUkdmL9NYNeniAdTHam76/6HhOT3BND5nBTwCD2CYCE9iqem/onBHGo3+9I/bD0tph6jqI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxWY2rQaB0gROdz46AZms3SQy/FIvMjoMRKqiigW/g085ELId1d
+	wXO3I73ZOEeAsdY4emFx/PSiQvVeypp/Wpvok63Mm8SiUhFgH6HoBH8Ng26ZbqhrogqdiKsDbT0
+	r0Kv2rXxlbLeMVT8NPDSYU1wa0TAqVVwCcBc/LX1Sbg==
+X-Gm-Gg: ASbGnctdPuwlp/sG1Nq3YeGAGykM0dw+OeqV6uRFvbpyz+CDLTYCEb+wGRga/7YF0gr
+	RKe+aplGcj009CzVDq24DYBZwQORFgt2tZpfyKF+6mMOWsJmP3NvC9cCCSIFTmst4FGuc6eaIF5
+	4j9qlVWrQvxoeuIYwpnDbVvElc7dH0TcJddA1nuDtCJKcwadlSrGDe/QzCBmyxcavWOYytVuJNB
+	VORpgUuXT/mkY54Y5ZfRMFAXDEvKB8ZDOtxgfea4hQZmPHyBqQGimtBxwHWlNr3PJRKcw8=
+X-Google-Smtp-Source: AGHT+IHiG+EjsNieo0IH9vKGvPYVnnnJhmFUXHoDPqz54BHP96ylxBdjlT/JInKjKxLz/khK4ncylVpRxXU4D16MeYo=
+X-Received: by 2002:a2e:95d2:0:b0:37a:2f0b:ef24 with SMTP id
+ 38308e7fff4ca-37a7b1995e0mr22288641fa.16.1762857349004; Tue, 11 Nov 2025
+ 02:35:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251109214515.121742-1-rpimentel.silva@gmail.com>
- <20251109214515.121742-2-rpimentel.silva@gmail.com> <aRF0++cUigbETuPs@lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com>
- <CAOMZO5AdcR_fT_RV5-NWu7j51_TA_=Mzzi-Y3Y=HpH+pu=mrvQ@mail.gmail.com>
-In-Reply-To: <CAOMZO5AdcR_fT_RV5-NWu7j51_TA_=Mzzi-Y3Y=HpH+pu=mrvQ@mail.gmail.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 11 Nov 2025 12:22:49 +0200
-X-Gm-Features: AWmQ_blb19ig8nToRgjFSZoxZIb7WUT84e0ePG6rGqwjB44zvP8kQIVu2iX87yU
-Message-ID: <CAEnQRZBdqUQUahHcFO2W6yezonXdpFVT-G52rnda941+M=T93g@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] arm64: dts: add support for NXP i.MX8MP FRDM board
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Joseph Guo <qijian.guo@nxp.com>, Rogerio Pimentel <rpimentel.silva@gmail.com>, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	alexander.stein@ew.tq-group.com, dario.binacchi@amarulasolutions.com, 
-	marex@denx.de, Markus.Niebel@tq-group.com, y.moog@phytec.de, 
-	joao.goncalves@toradex.com, frieder.schrempf@kontron.de, josua@solid-run.com, 
-	francesco.dolcini@toradex.com, primoz.fiser@norik.com, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Xiaofeng Wei <xiaofeng.wei@nxp.com>, 
-	Justin Jiang <justin.jiang@nxp.com>
+References: <20251104203315.85706-1-shenwei.wang@nxp.com> <20251104203315.85706-4-shenwei.wang@nxp.com>
+In-Reply-To: <20251104203315.85706-4-shenwei.wang@nxp.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 11 Nov 2025 11:35:37 +0100
+X-Gm-Features: AWmQ_bnM-SUasW3cn2Gm4EW3aePYZpGnjIZZVnW89VcDCfJSgNXVTHUcuXdKqUo
+Message-ID: <CACRpkdZR2C=+ssYOKnF=hyOqTakGjVxzp5_qz=3-uYRpzaZgNQ@mail.gmail.com>
+Subject: Re: [PATCH v5 3/5] docs: staging: gpio-rpmsg: gpio over rpmsg bus
+To: Shenwei Wang <shenwei.wang@nxp.com>, Bjorn Andersson <andersson@kernel.org>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Jonathan Corbet <corbet@lwn.net>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-imx@nxp.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hello Fabio, Rogerio,
+Hi Shenwei,
 
-> On Mon, Nov 10, 2025 at 2:15=E2=80=AFAM Joseph Guo <qijian.guo@nxp.com> w=
-rote:
->
-> > > +/ {
-> > > +     model =3D "NXP i.MX8MPlus FRDM board";
-> > > +     compatible =3D "fsl,imx8mp-frdm", "fsl,imx8mp";
-> >         model =3D "NXP FRDM-IMX8MPLUS";
-> >         compatible =3D "fsl,frdm-imx8mp", "fsl,imx8mp";
->
-> Why do you suggest changing the compatible string?
->
-> "fsl,imx8mp-frdm", "fsl,imx8mp"; is correct.
->
+thanks for your patch!
 
-All NXP documentation refers to this as FRDM-IMX8MPLUS.
+Also, a big thanks for working on improving the standardization of rpmsg
+so we can get some order here. This is very important work.
 
-But compatible strings have a certain pattern to be followed so
-we should really go with: "fsl,imx8mp-frdm",
+On Tue, Nov 4, 2025 at 9:34=E2=80=AFPM Shenwei Wang <shenwei.wang@nxp.com> =
+wrote:
 
-But for model and all references in text and commit message
-we should follow the documentation and use  FRDM-IMX8MPLUS.
+> +- **Major**: Major version number.
+> +
+> +- **Minor**: Minor version number.
 
-So, model should be  model =3D "NXP FRDM-IMX8MPLUS";
+I'm not contesting these if they come from similar fields in other rpmsg
+devices.
 
-Thanks,
-Daniel.
+What I'm thinking is that the driver will eventually have to quirk around
+bugs in the responding rpmsg CPU, and there will be bugs. This can end
+up with this situation:
+
+major,minor =3D (1,2) NXP implementation, no bug
+major,minor =3D (1,2) Sharp implementation, no bug
+major,minor =3D (1,2) Sony implementation, ooops this has a bug
+
+What is the driver going to do here to work around that bug?
+
+The scheme kind of suppose that all vendors use the same codebase
+and they don't.
+
+I would rather have:
+
+**Vendor**: Vendor ID number (such as the PCI or USB ID)
+
+**Version**: Vendor-specific version number (such as SW release)
+
+This will make it possible to identify buggy firmware and apply
+quirks.
+
+My apologies if the rpmsg community has already thought about
+this.
+
+Bjorns input would be appreciated!
+
+Yours,
+Linus Walleij
