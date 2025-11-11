@@ -1,60 +1,59 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549E73148CD
-	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 11:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672303246F1
+	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 12:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762861855; cv=none; b=EmFe0JidHo/bdYc2dJfasFtvuounoKMXoCCJ4dkjMOjGgKmnShcQ86nV1mr1amiTZQ7O79WQei1d4eNah0pJaH3sU2H4mnpUjY7F3Cz09j+e0fxroq80NY5MXP8VO2uNzurH7DzbG8vH60Cg5WrwKWdiE3+0p36EE+K8F2FGIq8=
+	t=1762865250; cv=none; b=XEwDbqupYFKmYDnZpUKIE2Bwy+IB/ishznue17U2WZ8FRSVVzicAREpwUBUiQPMA3lAl/PgGT4Ufq1flyBCJC7TxWuO1FpyNCgEOb+URY2pzrIlVp/lEdcScSixhTE1ZDzLii+1X0nPtZckemWt3ut9fa15rctHBOcuiTbOSlsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762861855; c=relaxed/simple;
-	bh=+XIJiU4GwN4u7iXICtBpRcSFrGSAAupuGFVPE5WJPKc=;
+	s=arc-20240116; t=1762865250; c=relaxed/simple;
+	bh=DiyCVpW74AzfmSw2woljowbltxeP4f6oP4DP84zte4E=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=paKPp0vU8t/Cjqhqv+x/RVn+iBD6Ew9EQgoo4IuOzh5IrntPL0O55K7t5WeB1465Fmlp95sd9qij1pdNDtDi7KWj9PVf/p33Ui6FNxrM5D5+NPT6HCfREYu7BPSPtijpk99HzfZIBnehPhwJ72DiThl8NtsEukqDq4a1gVyqXBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E+SO2SdK; arc=none smtp.client-ip=209.85.167.54
+	 To:Cc:Content-Type; b=tJ+KhPrsQATnhVFAcxzEEGRnJ19mSX1gj+cfhWdEHXYjIgZmQxR2LwITP+vbfZyGIF+j905lLo5Em8NF7HtFiUsG4+YL3wMCKm9LvzS94XTOfAO8A7ruhdJZIVPedq91VGsPaVSaWv3CPdYvxS0n+eU/fhPmQj967iR34bVHnno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=npUXjIPC; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E+SO2SdK"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5943b62c47dso3685145e87.1
-        for <imx@lists.linux.dev>; Tue, 11 Nov 2025 03:50:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="npUXjIPC"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-298039e00c2so28745355ad.3
+        for <imx@lists.linux.dev>; Tue, 11 Nov 2025 04:47:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762861851; x=1763466651; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1762865249; x=1763470049; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mv5b/xw8gYFcuSk4kaCj42BkeJNohwR9re6S4f8Ipq0=;
-        b=E+SO2SdKkCp/J1akiLDqbXVSOaGXAHdLCDMJNpgcoi3yTFUHsMg6+6AnC9zQRiTGwV
-         fRl7iaPR8cJVlQ9+c1ZbElZvR1TmXiIEqJpmLmnLAMCg+xLjEm5tPivn7yUP1m2DxygU
-         Ab/AE6dDgUe1kmDppZ0KtTGaAuz2/4Y/obMC6DBfu2s4mImvVQAx3rv6boc4hFRT94aY
-         2i2GGmsQRMwnUoBXxWubjsT5uoGEYwAfOBYh7OQyxqEqsZvQQ6iOFWflM6scCpw2kVXD
-         lMW8AX5dFT8dHNoFjTo8KmBkROyATZ93vtrGMu2+3FyJJkOkWsCHC1WfKA3Z2HdCBhoE
-         e5ig==
+        bh=DiyCVpW74AzfmSw2woljowbltxeP4f6oP4DP84zte4E=;
+        b=npUXjIPCURW5ZmOeQsKMdlJkxfkSkTMp1WKcpEY8acIG/IAbu/pyf9MaNXik3YuntZ
+         UlCqv7w+w/h8iVJCBZLYno8Zpkfkn8nXXNK2NEcOO0h1wpzhzgGs8LuSgDBYFBc95PEO
+         S/UwFsRgiM/fb6G6FIdJVFg6l181ama+9fcuKX4PLH+ZYCV7CbrjaLW1g5mvpotAoa/b
+         VyE9G+0qXyn1NxyEnOJ0xLW5Nnu7V5KQqMNNB4aMy/URG5SpvHDGdiNZoYgd6HLsuryP
+         poWLuetTQ1Sd4U+Dar+EcmpNaP/qXecdvCJtv38GFg2yTwEvdKeqFE2xuP0y+U7fp39Y
+         xZJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762861851; x=1763466651;
+        d=1e100.net; s=20230601; t=1762865249; x=1763470049;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=mv5b/xw8gYFcuSk4kaCj42BkeJNohwR9re6S4f8Ipq0=;
-        b=hz5Y7pAMWdaKwhQ21nMGsRNIUcOPOqFGMqSPG/OHQOMmK1ndmmVvJfiCt4KwwR0oQi
-         XI/oTxw9bLllOgHCQ2RBSGXUzNlg6Wozhk9hgJ4Bk+cqxU7nG3hVDMiI0vsiNO1l4QuM
-         hyByqXgik0j0hVgpWKz8s374EKOewQL33JQkztDcXK6DJBT6hi/fqZMkL/t4iE6YIrKq
-         36iA3wBV2qrhoonYMK/J31G2pETMwwTc+svFSsz3g21PuuBHrdJYKyB+gLOwqvOpm6iK
-         hTP+HMgtgZjZ1o98bDQvI1efUw0mhoiBgCVtRW+e7+SjCEuV4yNUoAwfKE8X+etZjRcw
-         SQRA==
-X-Forwarded-Encrypted: i=1; AJvYcCXwnb/dGDGb9ikh+4wysW7cB00t2NaAurDvjQcymyvg5geEDxkKY729Nze3TmVKQtbAnCA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyx9TaJ3nhT78BgaE5KXotdjeBAlYwUC3Ph9dK3QpbCBQU3GfFY
-	B8HQHIhrqjVKrxdmDrchY/E7gR7iXyngl/yAP3DtDlkCpxNCbBxUHM0sZo1NRbDeLHyhYGN8+5K
-	RSmoDdzjlhjZkWh6zgSoMPZOF2JYxkxk=
-X-Gm-Gg: ASbGncuO6Jf/80bD/4+0apY8m66lPDtJo0v1ZNSuyn85AK/Vwa4dS4X765CNudpfHgw
-	434xGcZBy08dGdXhg+7K/bY7rFRHU3HLhvQ7cdwftaxqnjoDhhhYv4dxyXoSl5N7VPLhQGlVGNz
-	MviTlkGSfDiShdYnp4xfsHcqIpwxIgdj3mRN0fTEVaQ4rvGfw/UWTTwl7r5bNmbBUkogKnCxvW4
-	LOcMFkxEoQW+Zn1Zu4CB4ggAR5d5HbqoyAfR6rXmVF/TYmXVCbbxdqoLW/qKJybRn3X6VbxSCIs
-	0sI/crN7kW/79Yvd
-X-Google-Smtp-Source: AGHT+IF88z5at8UsnN1rJmg2IhGaaNFuSng3Rlf9evtFG8rtfKiEGAp8AmRAUYBfUbuGiUayIKhWFzPcbtLj8c4U6/A=
-X-Received: by 2002:a05:6512:3b06:b0:594:4e03:2be2 with SMTP id
- 2adb3069b0e04-5945f19c023mr3782490e87.14.1762861851172; Tue, 11 Nov 2025
- 03:50:51 -0800 (PST)
+        bh=DiyCVpW74AzfmSw2woljowbltxeP4f6oP4DP84zte4E=;
+        b=g3kazki5go4+V8US0twXEQOpcI9Buizc6cMFRUGH2cDlNGns7zf3fh8n1j8EnY75bR
+         PNtjX1cgsEaQGErFEYXMNQUBnsk1OmI1Pi+d6wNjJf7I9lURghTnK4UDJEHyHT/srx11
+         uRD6utaBEf/kXODsZMASYkG4K2VKTkpeGUDUJ7sG3jFcst7Uxm1Exnmm7kvhD3OmdBGa
+         0I45D02jpvPaJoeqKcyeG55hFbhGTDXi9GbyiN3TS1vM4hC6KQRJDqrRfyOrA4p+hZtO
+         XhODaBHgocOpyqp9gq4ayl+pvka4XD6pdt8Hl2K9JPUrnxVZCq5/r+LF1+CqWH+RcE8j
+         N0Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCXu6/wRycASGfZ8cn0mq78ZIS+7amsSTbCBT69/OmoA1/LhT+goSlJb6VUz9wrHteT4uy8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxkWke7h6UJmIraTfXetO+pdLevZFleand8i6BhAOox0iZ5jbSt
+	z4MLWErV3f2sUJ3XGg5yqNWjolBtQzydnHC1vUtq935CJde91YNqwEV9t3nmCAZK9b2H1DeVZZk
+	WRlLst0N33d+0ULbksNcT6IypdIJTSyU=
+X-Gm-Gg: ASbGncsTK4c0gaQSN5Hz/aMLf82EkU1RG2Lfybsr3joIknLJB3Cs+v60LOh970zq6vi
+	gNDlR1xQbgjx4+B0GaPHMBZcRxlD3fG3QI0RcI2Wrpu3cSKSvHJXaOOXXh9dqbRUsR06ZlgWbSc
+	jj1+0+z1JE77Mb+QoQtwzG4thzkAk70FXv8StBEPSex1NkcZDYKysO4BI57SYMQI0ek6Du0/hnf
+	DWcPcx/T1aW64Y0TTvd67/Z3qtJnri9K6tH3WKLclfbzy/oJXXWfWdbuQ==
+X-Google-Smtp-Source: AGHT+IFJOONKkMfXdqPbe11hbjBNE3dvsWFF9H5OLiJ4S3DIHKfijXdDtwbm5zbR413VDlyjBE1eFW45EeSLVlnkRWU=
+X-Received: by 2002:a17:903:2b04:b0:298:43f4:cc51 with SMTP id
+ d9443c01a7336-29843f4d1afmr23812835ad.60.1762865248764; Tue, 11 Nov 2025
+ 04:47:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,14 +62,14 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20251109214515.121742-1-rpimentel.silva@gmail.com>
  <20251109214515.121742-2-rpimentel.silva@gmail.com> <9d48a54c-0585-4524-b9d5-30696f5ecc8b@kernel.org>
- <CAEnQRZCvpXzGt=7NGv7-s+y0gvOg7Jx4OqbfbW3uv8jDp-jroQ@mail.gmail.com>
-In-Reply-To: <CAEnQRZCvpXzGt=7NGv7-s+y0gvOg7Jx4OqbfbW3uv8jDp-jroQ@mail.gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 11 Nov 2025 08:50:39 -0300
-X-Gm-Features: AWmQ_blgZMv3waf3DojzBGgJUKYe7alAx5RXa_SxBDQp7LxHHOXCa8N82h9a1G8
-Message-ID: <CAOMZO5CU09fcBB8oUOO=qC=Du3Q9gnJOQacK=6v+pnSQViex3g@mail.gmail.com>
+ <CAEnQRZCvpXzGt=7NGv7-s+y0gvOg7Jx4OqbfbW3uv8jDp-jroQ@mail.gmail.com> <CAOMZO5CU09fcBB8oUOO=qC=Du3Q9gnJOQacK=6v+pnSQViex3g@mail.gmail.com>
+In-Reply-To: <CAOMZO5CU09fcBB8oUOO=qC=Du3Q9gnJOQacK=6v+pnSQViex3g@mail.gmail.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Tue, 11 Nov 2025 14:49:49 +0200
+X-Gm-Features: AWmQ_bkTj9C0dCRYaaW6vS8S4HAZCMkKvqfHh7nxztfpxPDtGEV8r1QKd9FonHg
+Message-ID: <CAEnQRZCHKemw2YVT=WVJvUMr9CCWoZ3MORt_mU1V-62C53n-3w@mail.gmail.com>
 Subject: Re: [PATCH v4 2/2] arm64: dts: add support for NXP i.MX8MP FRDM board
-To: Daniel Baluta <daniel.baluta@gmail.com>
+To: Fabio Estevam <festevam@gmail.com>
 Cc: Krzysztof Kozlowski <krzk@kernel.org>, Rogerio Pimentel <rpimentel.silva@gmail.com>, robh@kernel.org, 
 	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
 	s.hauer@pengutronix.de, kernel@pengutronix.de, 
@@ -79,67 +78,42 @@ Cc: Krzysztof Kozlowski <krzk@kernel.org>, Rogerio Pimentel <rpimentel.silva@gma
 	joao.goncalves@toradex.com, frieder.schrempf@kontron.de, josua@solid-run.com, 
 	francesco.dolcini@toradex.com, primoz.fiser@norik.com, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Xiaofeng Wei <xiaofeng.wei@nxp.com>
+	linux-kernel@vger.kernel.org, Xiaofeng Wei <xiaofeng.wei@nxp.com>, 
+	Daniel Baluta <daniel.baluta@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Daniel,
-
-On Tue, Nov 11, 2025 at 5:45=E2=80=AFAM Daniel Baluta <daniel.baluta@gmail.=
-com> wrote:
-
-> In addition to that, Rogerio please read:
+On Tue, Nov 11, 2025 at 1:50=E2=80=AFPM Fabio Estevam <festevam@gmail.com> =
+wrote:
 >
-> https://docs.kernel.org/process/submitting-patches.html
+> Hi Daniel,
 >
-> At this moment I think you should keep the original author of the
-> patch.
-
-Right, but NXP makes a total mess with authorship.
-
-Please see this version from February that states the original author
-as Xiaofeng Wei <xiaofeng.wei@nxp.com>:
-
-https://github.com/nxp-imx-support/meta-imx-frdm/blob/lf-6.6.36-2.1.0/meta-=
-imx-bsp/recipes-kernel/linux/linux-imx/0023-arm64-dts-Add-i.MX8MP-FRDM-boar=
-d-support.patch
-
-Then this one from July states the original author as Joseph Guo
-<qijian.guo@nxp.com> and it also has:
-
-Signed-off-by: Steven Yang <steven.yang@nxp.com>
-Signed-off-by: Lei Xu <lei.xu@nxp.com>
-
-https://github.com/nxp-imx/linux-imx/commit/fd8010b46bb00344fa519c73b643fad=
-71da5887b
-
-How are we supposed to know the correct authorship tags from the NXP
-commit, then?
-
-> Then mark your contribution as follows. If you just picked the patches
-> tested them and made minor modifictions only add your S-o-b
+> On Tue, Nov 11, 2025 at 5:45=E2=80=AFAM Daniel Baluta <daniel.baluta@gmai=
+l.com> wrote:
 >
-> e.g
+> > In addition to that, Rogerio please read:
+> >
+> > https://docs.kernel.org/process/submitting-patches.html
+> >
+> > At this moment I think you should keep the original author of the
+> > patch.
 >
-> Signed-off-by: Xiaofeng Wei <xiaofeng.wei@nxp.com>
-> Signed-off-by: Rogerio Pimentel <rpimentel.silva@gmail.com>
->
-> If you made significant changes add your C-d-b like this:
->
-> Signed-off-by: Xiaofeng Wei <xiaofeng.wei@nxp.com>
-> Co-developed-by: Rogerio Pimentel <rpimentel.silva@gmail.com>
-> Signed-off-by: Rogerio Pimentel <rpimentel.silva@gmail.com>
+> Right, but NXP makes a total mess with authorship.
 
-Rogerio's changes are significant as the dt-schema passes now.
+I cannot disagree with you on this, let me clarify it internally with
+NXP colleagues
+and sort everything out.
 
-The NXP commit has all the dt-schema warnings found in downstream BSPs.
+My guess is that when the code was released via the meta-imx-frdm Yocto lay=
+er
+the original authorship was lost.
 
-For example, it makes the old mistake of describing:
+Anyhow, what is important for me personally is to have upstream quality cod=
+e.
+Also, in all fairness we should grant authorship to NXP people and follow
 
- spidev1: spi@0 {
-   reg =3D <0>;
-    compatible =3D "lwn,bk4";
-    spi-max-frequency =3D <1000000>;
- };
+https://docs.kernel.org/process/submitting-patches.html
 
-Which is totally wrong.
+Thanks a lot for all your help and effort!
+
+Daniel.
