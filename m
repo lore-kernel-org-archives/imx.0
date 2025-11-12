@@ -1,212 +1,245 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011020.outbound.protection.outlook.com [40.107.130.20])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42375340D9A
-	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 14:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762958795; cv=fail; b=J129FdrEFbo6Yd9M4/El5TP59M7ecZR3lTkqIlLDAE3SkQh+ke3crAA2iQC+sbEJMmYj0CTNG9BxzT49TcYKo6rPw86IIqRDTsYN+raDqEZzL0c2nqN2u1NCh5pDSEucAjRj6liMzjU1DEDAUzU+fL4HIgAlPTZyl7T5rv/KpnI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762958795; c=relaxed/simple;
-	bh=UrdGvvRI86ODIqkmTKiKA8jrpEP89FJ0SJR61grKv9U=;
-	h=To:Cc:Subject:Date:Message-ID:Content-Type:From:MIME-Version; b=AECuHBoe20Vm/v13zHFFD20wT93k+L6Q9HQo4BQG0ZZzg6HGboWBC3zKzVQUD2MJK12IpVBqZZWueED4OzaisKdPTvkE2J+GtlAOVERWEjxDwVLpDXzHWWjbEzxnp0CPnG+1z7hJ11uzacODSlPyP3ZhxRVVglQ+SWG3BdwZCio=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prevas.dk; spf=pass smtp.mailfrom=prevas.dk; dkim=pass (1024-bit key) header.d=prevas.dk header.i=@prevas.dk header.b=HM9TdXxr; arc=fail smtp.client-ip=40.107.130.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=prevas.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prevas.dk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=prevas.dk header.i=@prevas.dk header.b="HM9TdXxr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jGjT9aMMnEfQhRU1dB2zY8MBMo/+n2OdKiHa0m7L+XzsyVjIRkDMDB3U1RfwPQHWK5xI0QaM4OOyaHDPzFppaH0sQn3NIJYCwUzl2oOsMTMBrgXWGRAH85r/KhrOvCSfP6MIvEv2blxldjmVm5sj2FZuXnd70qX+perWKsw7r3DvA+9sSu9cVLxAO6H0HXIEwzwZZjNDPbA8LhZl2fJOqdLmPB5u+uJV7jU+rRoXxb3Iz/C/UYa0rZyiUEjfEmBL9AWpyvTPWX++OSEpaRoz5lhJo+rBcIjkket/e2FTbnA/lO6dCQXpNioiOzyIaQy/4nDz/KTOshq92rSIOSY1SQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cqMw1g4IHmJj9+geRGjPiNfadru45wEe5ApC5UBImAY=;
- b=xm84UaMeJLa2kP+FPgqgt0z+TuTvgMvLtcRXkqBnMyJLv/SfUf2GdXuXSNO4DMfJl1kxtv7mItD4XqbcWc8c0b9Hd4Gj200LinCjw9K2YVmqOyQlaT9LnFPniTCEwDhTxqkaLLrqtS+eJ2taDi3aJxGaxrQM7nUl0qZ9wuufeF6R0uhA5uAboh4sB8YZtaYFiI0KUTrTYGYFp+G/2gEplSwBYEH/Fe6h20j7KpW+uuav3BjytVogATO+gRwE0VHyjLOs+C8WHeo67uTjREdi6w3qLC6w+GAPtNX2Jc3bc8jJwcScaUldGnDJIRCfW/bacfL3uojm57ajk271galgcw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=prevas.dk; dmarc=pass action=none header.from=prevas.dk;
- dkim=pass header.d=prevas.dk; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prevas.dk;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cqMw1g4IHmJj9+geRGjPiNfadru45wEe5ApC5UBImAY=;
- b=HM9TdXxrpTTOvPO+oJKicAVK6gTIs2QgJn7Rf2QhbKweB+wdCzmGd2bBCDHyGT1rrLVMZ1ra3ttfAnnLwtKLEo2EtMuUfmc+jDb4265Op+e5vyWhM+DkC62uAbtdkBRusm+RiDKPfcWzfkhRN6SXci16z2CrtiIL8V8O82Wl4/w=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=prevas.dk;
-Received: from AM0PR10MB2561.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:12c::15)
- by DU0PR10MB5218.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:346::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Wed, 12 Nov
- 2025 14:46:24 +0000
-Received: from AM0PR10MB2561.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::cce1:f0a3:698a:f450]) by AM0PR10MB2561.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::cce1:f0a3:698a:f450%5]) with mapi id 15.20.9298.015; Wed, 12 Nov 2025
- 14:46:24 +0000
-To: Frank.li@nxp.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: Stefan Prisacariu <stefan.prisacariu@prevas.dk>
-Subject: [PATCH v2] ARM: dts: imx6qdl: make VAR-SOM SoM SoC-agnostic
-Date: Wed, 12 Nov 2025 15:44:16 +0100
-Message-ID: <20251112144441.1827336-1-stefan.prisacariu@prevas.dk>
-X-Mailer: git-send-email 2.51.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-From: <stefan.prisacariu@prevas.dk>
-X-ClientProxiedBy: MM0P280CA0035.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:b::23) To AM0PR10MB2561.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:208:12c::15)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5A1343D86
+	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 15:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762959916; cv=none; b=L2EdH/MkWyj7g2j63k17ZYEnnbtGMFdFyvbzSdq8yqWPylP8hImX0utw7uFZBAl3D/ZsFBNgmjL6NRmdeWMmm8yj+F6jqeE1qU0is/rH8fmDMPN8qcDotHdLmxYyCLuaDjW1cxlpBqBZvUCdHrLIisnwxd3a4bXWerwzGNbyft4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762959916; c=relaxed/simple;
+	bh=Oiw3CxTvM1cncQ+TriE+d0MVdoOZK0B04yT6liE6dN4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BafRMbYToi1y1q9+KZ5wyXaeu9l53FhF4jIAHEMxTIFbXbb+fh3p52L3lHJ1acqCI7aKp1mT1lB+6rDwjUZhaTCeuRyIm4dpKT8c2pWp8mYw/tNCa8475wardGgGN+kdfrjD/HSOWbiYw8On2SZyKd3EXIkWk/C/zGQkQ/6vnS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vJCP7-0005AM-QV; Wed, 12 Nov 2025 16:05:01 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vJCP7-0006PJ-14;
+	Wed, 12 Nov 2025 16:05:01 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vJCP7-00GVCq-0g;
+	Wed, 12 Nov 2025 16:05:01 +0100
+Date: Wed, 12 Nov 2025 16:05:01 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	Frank Li <frank.li@nxp.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [EXT] Re: [PATCH v19 0/7] firmware: imx: driver for NXP
+ secure-enclave
+Message-ID: <20251112150501.qkjclsoq2bg75ed5@pengutronix.de>
+References: <20250927-imx-se-if-v19-0-d1e7e960c118@nxp.com>
+ <20251016114151.jzmapaecsmmnkpt3@pengutronix.de>
+ <AM9PR04MB8604C2AAA70406883320C5C995FCA@AM9PR04MB8604.eurprd04.prod.outlook.com>
+ <20251103190811.wp4o7hlnus6ynn32@pengutronix.de>
+ <AM9PR04MB8604AA80EC97E06AADBF334695C3A@AM9PR04MB8604.eurprd04.prod.outlook.com>
+ <20251111131442.nddhk3475oapf2zh@pengutronix.de>
+ <AM9PR04MB86047231B5320C01759BFCAE95CCA@AM9PR04MB8604.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR10MB2561:EE_|DU0PR10MB5218:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ba30486-50e8-4638-8242-08de21fa40b4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|7416014|13003099007|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?3KELcon2lTlBUh+DuCninsJL0gOlJWxa143lDHhKlUEpQwPkagtvkB4z90M6?=
- =?us-ascii?Q?qAlsDBjNTK5Clx4KPtuOh4FinvAsOxIwyNO+l9mtrpQ1Pvf714lyyzLiH7mF?=
- =?us-ascii?Q?KEZNzDPAEpI+ebHI29MSzGwb7+ToI7UEYqIN2qtx0c9za/dYZtR8rWCR4r1I?=
- =?us-ascii?Q?NnIbn4ioGP/C1QquIQFXjuU/WOAjoj2toNd65aDi8XJd6APa5TMCX1Oej5NQ?=
- =?us-ascii?Q?ltafzxFTPxO0cZ51K7XbJzXZHySEiQ1hlKakJGYe/haL0JRrOz2A3kHlxbRF?=
- =?us-ascii?Q?iJmF8VvyUEWWiJ7yOLKC1OHLmJjNZ97Y7VQgJLJygahdkppLZzha+IXOTj0F?=
- =?us-ascii?Q?3gGE85Qxw4LMOfNpApRjEFIZBvd07RPw2+Tnin/qS0fO7WU9mu0tGsAMqkB0?=
- =?us-ascii?Q?mWWtPMZraiSMamgIVfHkaehgXrAee9al6Sp57BeQoDXGXcIJBAcm+ObOUmq8?=
- =?us-ascii?Q?mbJeVlX9sCULLSHLONOQZAE6TIh/+5aiuKmpU0aZqhwty3WE2dh46YLYMIkQ?=
- =?us-ascii?Q?Jt0DbRGqVsreWBCnZjEAGCWklVl/BM8f02eTgCnzmj6nps9HE7zslQBVArnx?=
- =?us-ascii?Q?/d9Cfy8Wb/6vEXTFgk9huuXxi4e/Yq1qAdtIDf079ZoYwR8mcMVz8aX1iYdg?=
- =?us-ascii?Q?sKN9/ssVC7uA3DfPV4OlxXd3jqJPEYHxomCTe0AVtzG//HX8U3SX39fBH/vu?=
- =?us-ascii?Q?XOC+hgeJHj+nIZGqec80pdox6TnLswhDa1664HbNHShlIpzVWvCmbmVoE6jp?=
- =?us-ascii?Q?iR5nrkFNugLWp3c2EpKgcwE1V1ILHQslBBRz16Symf0ttmgaRB6BXKs87/7s?=
- =?us-ascii?Q?qBXXhWMzhDYEvEumJt7M1b7L/mINbJ+xZsDgw11HHfbWIstBMKgtf10DBL+4?=
- =?us-ascii?Q?xLRxJMMgEP0UrsF3bBwAJ/0m8Z2R5UbB6IHHtJzdVPvX3kN2QB8XIAHaHpbn?=
- =?us-ascii?Q?LHp1Z7Dk31pv/nkgiKpacFtTsjZ7IRuZe66fiqLrnj9+E78BEX3jEs7zMt1R?=
- =?us-ascii?Q?XCCfWwUhSWOgwx4/h2z8jhJgYhk4ka5GW5eYkv/Kw2IKqW+BZvsNyUWQTb3E?=
- =?us-ascii?Q?sMuTbhZV948pLWm6l6PbsIAv4Zr+RWBRoJTnp5Aix9l3xpsHC44ZrOunL9Ov?=
- =?us-ascii?Q?79zpBtgWTpwTXE8IyyTnSMq3WhxdIKwEilqki0DSQiB2tqviUsiVwlz4Vdi6?=
- =?us-ascii?Q?K3LaQJ62a0b1I1v2BCk1gpq1I18BTQlFEd0LIWnGNceR//73XhA6usguAaul?=
- =?us-ascii?Q?asE9rLKMBqzS1d1wq1hP8m2R80y418y29XdNd9lZ7YcPCrFQrXSLguIzY9b7?=
- =?us-ascii?Q?AJthWwWWs1609GvQzAoCni5nARjcrDH63BlVKwnkyoKuXw4Po8gMNaHFQ4Ke?=
- =?us-ascii?Q?lZezajl9b+xqH0py62388N8r1FHIHe9iVRF/JNMeNgzL3QOYIJaQ6LnolfoT?=
- =?us-ascii?Q?DRj9hsTq0euX1zE9Yf5QPO9Jj7BoKjhOlHfdqjmZRQPN9Xon3KyvmvE2GbZb?=
- =?us-ascii?Q?BR/AuDo1zeeA9uzolcNbKmVIVa9klslHCtaQtLQYD4fGwz9WFJqgYxWxSA?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR10MB2561.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(7416014)(13003099007)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fULk7b6UVhYaMzy2UvMUZIqg3okW/FpNNovpHsyk8khXAmRv5fD8YrqRwKxQ?=
- =?us-ascii?Q?KWLGB2jA6YwNZgRv3nUamCs6XFleTWxaDeFXcNax74VJWZn4/CD4YP1AjLuV?=
- =?us-ascii?Q?8Byg4vYpYbQthQtM/5AfNhUQ3hl3ahMEtrTKjFL76uJMwmFj9a84pKDdXZV/?=
- =?us-ascii?Q?1yYf80V54Sz8tSz3K0mGF3cgpWyRZoGar0pwVlu74E3pfTCdyQLKdDyQs2SX?=
- =?us-ascii?Q?sSWKJHvwKQqL3ejWOD96NdxIdhj2PuBpywyyAhbmmxVF02spxOzdXUV9oVzG?=
- =?us-ascii?Q?mt+fnr+9D7Mke7O++02ZGIeSBn98iJMgPBIdHtou3qpY42LXKMgZT7+tIiWz?=
- =?us-ascii?Q?TPOFh3D72FJr7MLVYKGwlzm4pvDaJL1PtzdceKDv0zvvc4v2ofzncSw1O/F5?=
- =?us-ascii?Q?udwF3rQQHA0uOHxbPwoznNzRDZK/t5IawrWuNRkPRa2Gb4YCf0aBOM5vUT6f?=
- =?us-ascii?Q?hmtJj5wr9l0lbiyTgKFEbnt8HdABDkaCikWfiL11uvVXCiZQdvHt3mkyk///?=
- =?us-ascii?Q?53Qf3KqvY9tdTeGnY4JRIn2CsCtWapGnkQVczTGlBqegJDFR6BkIRHdSAwwL?=
- =?us-ascii?Q?RbwguDhXUfXt/qIFgJY2Uns9yEcCLmfj6yp3wvOUvgz2pWYqR53/jAAS914I?=
- =?us-ascii?Q?OaIp1nONyyYWN754v5gLOXIoJymRLQS2RKQdYtuO92zEYRRHpwCH67oqtu7o?=
- =?us-ascii?Q?v7CrhFsTKj4WRJpK8HJuYd8lBdbbeUd0VSfb4y57W9ks1zMacSPF9m6Lwzgc?=
- =?us-ascii?Q?+w6ZyibGeI5OANykkPqNmwQfqRJXLD75BucJCgzkuteLTVAYMYc4YfbA7/9a?=
- =?us-ascii?Q?HXdWKITBFuT+mFgaRAAI4FqsQvai/I0e2S8Q7xDSuVLPtTaUaiQrkKGHSAu0?=
- =?us-ascii?Q?vbbmB+2msOEM3h1NgLrqdDVUsyRdGcNIOpnMIiU7HuF1UWeHTcBTNSIPoGKH?=
- =?us-ascii?Q?DVp0+4BhTF4kJUA6bdsHL81UdZU/KJr8ZrDOU55ZeX15yjs2zyuHhB2jtW7B?=
- =?us-ascii?Q?of8Zs5OdW9vyPw8e0SGyPAXF8N6LTymKjAe9I18E3T3c5Ds8hMSoG4/Lvqcq?=
- =?us-ascii?Q?R/2UuwYtjDqthfLwwLuF8ZqHkrFq+qMaednQvt9xcx1T2+1iH31jt3W7d+qv?=
- =?us-ascii?Q?4W5R1sVseXWLQNQ5tK4vCAoweKHXtzjQKntLv3pvlnKGUTfcZAzZw0kvRZTp?=
- =?us-ascii?Q?glmGRro13KttjABM9g4rI4Z6E91pgk6+BBXImFSvZiMWeRhgadlh4iIA6GXw?=
- =?us-ascii?Q?FBP9h5SXBLcRPNGrxHKTFHtwE/Aa1je90MZcRSctVpC1Judz4zC2rLS2taZ8?=
- =?us-ascii?Q?KyZrWf2dqKO4CuV6CY0b02/BVqS+hKT86XvNKpvyTrTI8U6PDI+Eszu8zuXB?=
- =?us-ascii?Q?M19pzmnYcb7FKatCJk5XLHKlFp+m4AmhF3T7yuZe7LWHp8NNU9sxG1o4aXf2?=
- =?us-ascii?Q?hycyu+ycC83iHoH5ZbTwjyykzzUWWKDmk6/ITXouiI8EjiH6u3SWb3qtKbqt?=
- =?us-ascii?Q?lB5YGv1PiwdAH5TKvLW44YcR78P3tVQEgHadrHUd2CHNOPGy3EPK52OPObp/?=
- =?us-ascii?Q?FzldZzbNEorxfd5alHJe2e/j2akRALqxDXvl9BAsittiSJGFOk5e06oU6fsQ?=
- =?us-ascii?Q?Pg=3D=3D?=
-X-OriginatorOrg: prevas.dk
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ba30486-50e8-4638-8242-08de21fa40b4
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR10MB2561.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Nov 2025 14:46:24.5540
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: d350cf71-778d-4780-88f5-071a4cb1ed61
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KNTMSjX2sdGSSYvKu/y2Cvc6FAurrP2rGTu5/qVo5h8aorxSDU/bidHL1mth5QtrbwSkswRASdIe0rLwBgB6Fq50vJUZ15AsUimmiMj36QA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB5218
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AM9PR04MB86047231B5320C01759BFCAE95CCA@AM9PR04MB8604.eurprd04.prod.outlook.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-From: Stefan Prisacariu <stefan.prisacariu@prevas.dk>
+On 25-11-12, Pankaj Gupta wrote:
 
-Make SoM .dtsi SoC-agnostic by moving SoC include to board level
+...
 
-imx6qdl-var-som.dtsi currently includes imx6q.dtsi, which makes this SoM
-description Quad/Dual specific and prevents reuse from i.MX6DL boards.
+> > > Voltage regulation for i.MX93 in Linux kernel, is done by ELE.
+> > >
+> > > During Linux suspend-resume, Secure-enclave (V2X on i.MX95) part of
+> > > wake-up domain, will be managed by secure-enclaves(ELE) part of
+> > > always-on domain.
+> > 
+> > So to sum-up, please correct me if I got it wrong:
+> > 
+> >  - NXP puts the ELE into the non-secure world, in case only one MU
+> >    exists. The reason for this is that the ELE is also used to handle
+> >    power-management.
+>
+> For NXP SoCs with multi-MU(s) too, NXP proposes to put ELE driver into
+> non-secure world.
 
-Changes:
- - Move imx6q.dtsi include from imx6qdl-var-som.dtsi to
-imx6q-var-mx6customboard.dts.
- - Remove /dts-v1/; from imx6qdl-var-som.dtsi (dtsi files should not declare
-version)
+With the ELE-FW and OP-TEE OS fix applied both worlds can communicate.
+Therefore it doesn't matter and I didn't mentioned it explicit above.
 
-This keeps the SoM .dtsi SoC-agnostic (it already relies on imx6qdl.dtsi for
-family-common parts) and allows boards using the DualLite or Solo to include
-imx6dl.dtsi instead.
+That beeing said, with both worlds capable to talk to ELE and the ELE
+beeing very system critical, both worlds have to agree to the
+responsibilities, e.g. OP-TEE OS is not allow to manipulate the
+power-state behind the back of Linux.
 
-Why this is needed:
-To reuse imx6qdl-var-som.dtsi on i.MX6DL board.
+> >  - NXP exposes an uAPI which can be used to send arbitrary commands from
+> >    userspace to the ELE. (no filtering done yet)
+>
+> It is not correct to say that no filtering is done.
+> Before sending as well as after receiving the message, the message header of the buffers
+> are parsed to check:
+> - TX-buffer with Command-tag is allowed to be sent, RX-buffer with response-tag is allowed to be received, without logging errors.
 
-No functional changes for imx6q-var-mx6customboard are intended.
+I really don't want to step to deep into this, but that beeing said. If
+you refer to cmd_tag, than this tag is used by your below mentioned
+library also for NVM access. NVM is clearly something we do have a
+linux-framework and uAPI for.
 
-Signed-off-by: Stefan Prisacariu <stefan.prisacariu@prevas.dk>
-Link: https://lore.kernel.org/all/20250925104942.4148376-1-stefan.prisacariu@prevas.dk/
----
-v2: Updated git commit message to better explain the changes
-v1: https://lore.kernel.org/all/20250925104942.4148376-1-stefan.prisacariu@prevas.dk/
----
- arch/arm/boot/dts/nxp/imx/imx6q-var-mx6customboard.dts | 1 +
- arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi         | 3 ---
- 2 files changed, 1 insertion(+), 3 deletions(-)
+> - TX buffer size & Rx-Buffer size should match the size mentioned in the buffer.
+> - FW version from the header is checked, if required secondary or runtime FW Is loaded, before forwarding the request to ELE.
+> - In certain cases especially for exceptions, the message IDs are also compared.
+> 
+> > 
+> >  --> Sounds to me that the userpace can influence the system behavior
+> >      very badly.
+> > 
+>
+> Messages created and sent by User-space
+> library(https://github.com/nxp-imx/imx-secure-enclave), are
+> scrutinized as stated above in the kernel driver.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-var-mx6customboard.dts b/arch/arm/boot/dts/nxp/imx/imx6q-var-mx6customboard.dts
-index 18a620832a2a..a55644529c67 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-var-mx6customboard.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-var-mx6customboard.dts
-@@ -8,6 +8,7 @@
- 
- /dts-v1/;
- 
-+#include "imx6q.dtsi"
- #include "imx6qdl-var-som.dtsi"
- #include <dt-bindings/pwm/pwm.h>
- 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi
-index 59833e8d11d8..51bcaf04546b 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-var-som.dtsi
-@@ -9,9 +9,6 @@
-  * Copyright 2022 Bootlin
-  */
- 
--/dts-v1/;
--
--#include "imx6q.dtsi"
- #include <dt-bindings/clock/imx6qdl-clock.h>
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/sound/fsl-imx-audmux.h>
+This is uAPI which can be used by everyone and because your library may
+not implement access to power-managment calls doesn't mean that other
+libs do. I'm not sure if your proposed driver will block such attempts
+from userspace.
+
+> Moreover,
+> As part of this library, message creation, send-receive, IOCTLS etc.
+> kernel interface implementation logic, is not exposed to users of this
+> library.
+
+Your library is not the interface, the interface is the uAPI exposed by
+the kernel. This interface/your driver needs to handle valid and invalid
+access, e.g. hsm -> valid, nvm -> not valid since it is abstracted via
+NVMEM.
+
+> With the help of secure-boot and IMA-EVM, rootfs can be restricted to
+> not allow any new application or modified userspace library, to
+> execute.
+>
+> This way bad impact to the system behavior can be prevented.
+
+Sorry but I really have to say that I have to NACK. Your interface is
+the kernel uAPI and not some NXP userspace library.
+
+An attacker could gain runtime system access and poke the ELE with
+arbitrary commands till he finds a fw-bug using the kernel uAPI (not
+your library of course).
+
+> > > > > * Linux HWRNG.
+> > > > > * Loading the secondary runtime fw.
+> > > >
+> > > > What is a secondary runtime-fw?
+> > > ELE FW size is larger than the size of ELE internal secure memory.
+> > > Hence FW is split into two.
+> > >
+> > > Primary FW, is the FW, that enables features that helps for SoC boot-up.
+> > > Secondary runtime FW, is the FW, that enables features like HSM.
+> > 
+> > Ah okay, thanks for the input.
+> > 
+> > > > To conclude this longly discussion:
+> > 
+> > ...
+> > 
+> > > > I still have mixed feeling about the fusing (including the 1-MU
+> > > > case), since it requires a secure-world OS in place once the LOCK_DOWN
+> > fuse was burned.
+> > > > It's fine by me if NXP wants to have and wants to maintain a multi-path
+> > here.
+> > >
+> > > Write fuse API will be added, to allow writing fuses from secure world
+> > > too.
+> > 
+> > This is a device life-cycle problem and if NXP decides to maintain multiple write
+> > paths, depending on the runtime-SoC state, this is fine by me.
+> > 
+> > What needs to be ensured is, that the fuse-issue doesn't exist for the 1-MU
+> > case (i.MX8ULP) as you said.
+>
+> As said above "Write fuse API will be added, to allow writing fuses
+> from secure world too."
+> This will be true for 1 MU or multi-MU.
+
+In your previous mail you just said that there is no such issue with the
+write path. Now you say that the single-MU case needs the same
+workaround.. At least I have read it that way.
+
+> > > > Last but least, the uAPI which can be used to send arbitrary ELE
+> > > > commands seems unusual. But I don't know how secure-enclaves are
+> > > > abstracted within the kernel, so these are just my two cents.
+> > >
+> > > it's not unusual at all. The pattern of userspace sending commands
+> > > directly to the kernel via a queue is quite common like:
+> > >
+> > > GPUs: As you mentioned, userspace drivers (like those in Vulkan or
+> > > CUDA) often build command buffers and submit them directly to the
+> > > kernel or hardware.
+> > 
+> > That's right, but these drivers do at least some filtering on the OPs and check if
+> > they are allowed. According your patchset, you just write
+> > (se_if_fops_write()) the provided userspace buffer.
+> 
+> We are validating the buffer size against the size mentioned in the
+> buffer header.
+> Refer above comments for more details.
+> 
+> > > Secure Enclaves: In systems like Intel SGX or AMD SEV, userspace
+> > > applications interact with enclaves via ioctl or mmap interfaces,
+> > > often sending structured commands or messages.
+> > 
+> > What I'm aware of is, that most secure-enclaves are switching to the standard
+> > TPM API.
+>
+> In case of NXP SoC with ELE HW IP, ELE is considered as on-SoC TPM. No
+> additional or external TPM is needed, if ELE is present on SoC.
+
+I said "TPM API" not "TPM device", may it be fTPM or dTPM. I think AMD
+switched to fTPM, so no special userspace-requirements must be
+fulfilled. However, this is also off-topic.
+
+Regards,
+  Marco
+
+
+> 
+> > 
+> > Regards,
+> >   Marco
+> > 
+> 
+> Regards
+> Pankaj
+> 
+
 -- 
-2.47.2
+#gernperDu 
+#CallMeByMyFirstName
 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
