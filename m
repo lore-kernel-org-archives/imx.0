@@ -1,227 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898652DC76C;
-	Wed, 12 Nov 2025 09:41:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6380E2F7ACD
+	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 09:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762940465; cv=none; b=F+EWgFwXnPmZqYUuPxq9Y4hIkRdd7wxKFpy1AhcIJRc4LrDy+Z8wLqp63hSF+a3SMmTCiXnAphSDs//FsqD3dsLDxK8w+DK3LTKHt8jUTxLCRp8OO8gf4f/jRDR9vnsYnu2wDroZSo2TBT3Ofc8yjpS5FoUOBuHf7Nk44EmVkqg=
+	t=1762940869; cv=none; b=bZlRg17mhdOYI0IYZvTHiWVBefT3F1DWLMtA/6CIsS3DsNjUGlQCrU/zZT5qaq4hOX+bi7vhBW9z8h06+5Gog1wajRfwX81zx0Bxxzb0Dn3judMVnpyN3GLxlGrPvSakdiE2ipUOTMiwZ2Eh9EI0SEVDn0UMfWwhWG1Bi+mPX10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762940465; c=relaxed/simple;
-	bh=aohnBiD8zjwta6/vj3ml+5jrDbZpsyfgY3SwEm9hV1Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZeKm1hCfzaJeuNoLPVYFiN8Fo0v3aPEfdtnWI9SZG8Xl/FJ1VrcuE9PC98YG6E71tVC8u0J7b7H0fl1OFNEsFj8NaElYEcb0j1ohuFUDmA1b9l8d1pT9Vuwa8fE1isVyV9ps0P9p3wA0ReuAtanR/Mr/B9BgEXI83uFJ+XaKOkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ltg5lIfw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762940869; c=relaxed/simple;
+	bh=uQlw9n9vkNkHMlNxgHtHye18JiC1YKtz5ZIUPvK5eWU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rxW/VlPI443cWBlGOeznwdGK5K1VVn6T2Qyj1Ubsuy2D5GGOi/AB+Q2xYpHDMjNPtJXpMmfPpkmmv+fLzogv8n8/r7whPiplaAekLWIrghI2Jzg0m5hjsRZQPdVdlez7ZzrV5uKllML8ML3FVJbo6LIxmD1cILbrB+jJkpy1z0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=GQr9aP7O; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ltg5lIfw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1BEC16AAE;
-	Wed, 12 Nov 2025 09:40:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762940465;
-	bh=aohnBiD8zjwta6/vj3ml+5jrDbZpsyfgY3SwEm9hV1Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ltg5lIfwiD3IiigrhFwiUF+6cj1rjzWbQeQ05SAKpgSXIBOCA+skvpx4VMQ9x9g1r
-	 8vUpX0AOhOEH60QfWSVCmWW99sIrbXHhLOPuthKr1OhQDrn8IuOe6BMU6+UKJH4qPT
-	 UP0WwXuL7QFh6gOeY7Qc4mtN4OA+XXwTksHYQ56/n2el0WeuR+EFcTzUNcT+iwoykW
-	 zlPncb0DgTiwUinaGa51JTl2SWOMsV/PCEYiJMahMRcVGHiUc/5HjOp32YYLyOJKi7
-	 jMQ3EFetI8D3WTqz2yLaQBU54IGSrMaqpaVajsmDX/+23sPSZR1wTtys8bOxCzTX6Z
-	 GoEacIpgYx92Q==
-Message-ID: <56530f64-6ddf-4d2a-a079-0578db260449@kernel.org>
-Date: Wed, 12 Nov 2025 10:40:57 +0100
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="GQr9aP7O"
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 64C831F928;
+	Wed, 12 Nov 2025 10:47:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1762940862;
+	bh=3SYq7/Ls6CuDLQxN3kb3YD34nt8HriJZ18tYljiOVG0=; h=From:To:Subject;
+	b=GQr9aP7OU/Icb3c2EW7UG5FUGaeEeJDpVyVK/yTK8xPtVNzsm8ZfrO4M1hRFKIzAT
+	 hd+6FSD0JKBfSJsSZykP2Q6MTlsGvunfDDio/ZKsoZf5B7cZfGZy3ttOtKxOsboYHM
+	 sMqAmEMz2KOzP8/lwP3r3nopCCBi+CqWKj2b54TlFiawFCboQd/AgDWiY6RYRsvx9d
+	 ILlNnLI75q2gv8Rbg6IsjYaLftjw+cagpSLmyTJl7mPz1LXinEwTW+8P5DjZf62RFm
+	 JNXxLl1xrzRXEF0FMm2hP0yStcly3emOSlHhA95pyjIHBC+U8PJ/5UGW3o6q1MN8sM
+	 4qdbEHAQJe4rA==
+Date: Wed, 12 Nov 2025 10:47:37 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"Kirill A. Shutemov" <kas@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Max Krummenacher <max.krummenacher@toradex.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
+	Vitor Soares <vitor.soares@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [PATCH v2 2/2] arm64: dts: freescale: add Toradex SMARC iMX95
+Message-ID: <20251112094737.GA5126@francesco-nb>
+References: <20251111151618.70132-1-francesco@dolcini.it>
+ <20251111151618.70132-3-francesco@dolcini.it>
+ <aRNeMJWsCTRO3j6X@lizhi-Precision-Tower-5810>
+ <aRN562k3NXCMghEl@gaggiata.pivistrello.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] arm64: dts: add support for NXP i.MX8MP FRDM board
-To: Daniel Baluta <daniel.baluta@gmail.com>
-Cc: Fabio Estevam <festevam@gmail.com>,
- Rogerio Pimentel <rpimentel.silva@gmail.com>, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de,
- alexander.stein@ew.tq-group.com, dario.binacchi@amarulasolutions.com,
- marex@denx.de, Markus.Niebel@tq-group.com, y.moog@phytec.de,
- joao.goncalves@toradex.com, frieder.schrempf@kontron.de,
- josua@solid-run.com, francesco.dolcini@toradex.com, primoz.fiser@norik.com,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Xiaofeng Wei <xiaofeng.wei@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>,
- Joseph Guo <qijian.guo@nxp.com>
-References: <20251109214515.121742-1-rpimentel.silva@gmail.com>
- <20251109214515.121742-2-rpimentel.silva@gmail.com>
- <9d48a54c-0585-4524-b9d5-30696f5ecc8b@kernel.org>
- <CAEnQRZCvpXzGt=7NGv7-s+y0gvOg7Jx4OqbfbW3uv8jDp-jroQ@mail.gmail.com>
- <CAOMZO5CU09fcBB8oUOO=qC=Du3Q9gnJOQacK=6v+pnSQViex3g@mail.gmail.com>
- <CAEnQRZCHKemw2YVT=WVJvUMr9CCWoZ3MORt_mU1V-62C53n-3w@mail.gmail.com>
- <CAEnQRZBBJ4PGDOk7hBP_qsk7bBiec8pHb0DYKs2mhOAahNyKww@mail.gmail.com>
- <baafb460-fb65-4cd2-9911-89d828199d9b@kernel.org>
- <2e160fe1-bcb2-41cf-817e-ac2a36959b16@kernel.org>
- <CAEnQRZDg0yAjR-a-4J2ZKAjh3mm8NeQCA=o2kyNJtXMAFCMLAA@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <CAEnQRZDg0yAjR-a-4J2ZKAjh3mm8NeQCA=o2kyNJtXMAFCMLAA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aRN562k3NXCMghEl@gaggiata.pivistrello.it>
 
-On 12/11/2025 10:32, Daniel Baluta wrote:
-> On Wed, Nov 12, 2025 at 11:14â€¯AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>
->> On 12/11/2025 10:08, Krzysztof Kozlowski wrote:
->>> On 12/11/2025 09:15, Daniel Baluta wrote:
->>>> On Tue, Nov 11, 2025 at 2:49â€¯PM Daniel Baluta <daniel.baluta@gmail.com> wrote:
->>>>>
->>>>> On Tue, Nov 11, 2025 at 1:50â€¯PM Fabio Estevam <festevam@gmail.com> wrote:
->>>>>>
->>>>>> Hi Daniel,
->>>>>>
->>>>>> On Tue, Nov 11, 2025 at 5:45â€¯AM Daniel Baluta <daniel.baluta@gmail.com> wrote:
->>>>>>
->>>>>>> In addition to that, Rogerio please read:
->>>>>>>
->>>>>>> https://docs.kernel.org/process/submitting-patches.html
->>>>>>>
->>>>>>> At this moment I think you should keep the original author of the
->>>>>>> patch.
->>>>>>
->>>>>> Right, but NXP makes a total mess with authorship.
->>>>>
->>>>> I cannot disagree with you on this, let me clarify it internally with
->>>>> NXP colleagues
->>>>> and sort everything out.
->>>>
->>>> Hi Fabio & Rogerio,
->>>>
->>>> Checked internally and to track the correct authorship and development work
->>>> here is how NXP would prefer to get credit.
->>>
->>> Sorry, but individual contributors do not need to give any credits to
->>> NXP. If NXP wanted to sent the patches to have credit, they would do it.
->>>
->>> Did sending happened?
->>>
->>> If not, then any contributor is rightful to take the patches from
->>> downstream and send them only, ONLY with their authorship. That's what
->>> DCO allows and that's what established practice as well.
->>>
->>> NXP had a chance to upstream. When they decided not to, they forfeit any
->>> rights to claim they want any authorship.
->>>
->>>
->>>>
->>>> #Use git commit --amend --author="Xiaofeng Wei <xiaofeng.wei@nxp.com>"
->>>
->>> NAK, there is no single patch like that from above author:
->>>
->>> https://lore.kernel.org/all/?q=f%3Axiaofeng.wei%40nxp.com
->>>
->>> Remember, downstream code does not matter. Does not exist.
->>>
->>>
->>
->>
->> ... and because last two months there were two or three cases where
->> vendor companies bullied individual contributors, I will be quite strict
->> about that. Vendor company does not receive any authorship on patches
->> sent by independent contributors which the vendor NEVER submitted,
->> unless author really wants that. But I will treat any such insisting on
->> authorship by vendor like NXP as bullying and working AGAINST the community.
+On Tue, Nov 11, 2025 at 07:01:15PM +0100, Francesco Dolcini wrote:
+> Hello Frank,
 > 
-> I'm sorry that people use "bully" in this context. We are just trying
-> to help with
-> the limited time we have and create a friendly environment around NXP
-> upstream support.
+> On Tue, Nov 11, 2025 at 11:02:56AM -0500, Frank Li wrote:
+> > On Tue, Nov 11, 2025 at 04:16:14PM +0100, Francesco Dolcini wrote:
+> > > From: Max Krummenacher <max.krummenacher@toradex.com>
+> > >
+> > > Add DT support for Toradex SMARC iMX95 SoM and Development carrier
+> > > board.
+> > >
+> > > The module consists of an NXP i.MX95 family SoC, up to 16GB of LPDDR5
+> > > RAM and up to 128GB of storage, a USB 3.0 Host Hub and 2.0 OTG, two
+> > > Gigabit Ethernet PHYs, a 10 Gigabit Ethernet interface, an I2C EEPROM
+> > > and Temperature Sensor, an RX8130 RTC, a Quad/Dual lane CSI interface,
+> > > and some optional addons: TPM 2.0, DSI, LVDS, DisplayPort (through a
+> > > DSI-DP bridge), and Wi-Fi/BT module.
+> > >
+> > > Link: https://www.toradex.com/computer-on-modules/smarc-arm-family/nxp-imx95
+> > > Link: https://www.toradex.com/products/carrier-board/smarc-development-board-kit
+> > > Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+> > > Co-developed-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+> > > Co-developed-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+> > > Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+> > > Co-developed-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+> > > Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+> > > Co-developed-by: Vitor Soares <vitor.soares@toradex.com>
+> > > Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+> > > Co-developed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > > ---
+> > > v2:
+> > >  - move enable-active-high after gpio
+> > >  - add newline between properties and child node in som_dsi2dp_bridge
+> > > ---
+> > >  arch/arm64/boot/dts/freescale/Makefile        |    1 +
+> > >  .../dts/freescale/imx95-toradex-smarc-dev.dts |  277 ++++
+> > >  .../dts/freescale/imx95-toradex-smarc.dtsi    | 1155 +++++++++++++++++
+> > >  3 files changed, 1433 insertions(+)
+> > >  create mode 100644 arch/arm64/boot/dts/freescale/imx95-toradex-smarc-dev.dts
+> > >  create mode 100644 arch/arm64/boot/dts/freescale/imx95-toradex-smarc.dtsi
+> > >
+> > > diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> > > index 75676b908299..28f8eaf18471 100644
+> > > --- a/arch/arm64/boot/dts/freescale/Makefile
+> > > +++ b/arch/arm64/boot/dts/freescale/Makefile
+> > > @@ -390,6 +390,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx943-evk.dtb
+> > >  dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-evk.dtb
+> > >  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk.dtb
+> > >  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk-sof.dtb
+> > > +dtb-$(CONFIG_ARCH_MXC) += imx95-toradex-smarc-dev.dtb
+> > >  dtb-$(CONFIG_ARCH_MXC) += imx95-tqma9596sa-mb-smarc-2.dtb
+> > >
+> > ...
+> > > +
+> > > +/* SMARC PCIE_A / M2 Key B */
+> > > +&pcie0 {
+> > > +	status = "okay";
+> > 
+> > Nit: if there are next version, please consider add supports-clkreq.
 > 
-> We (NXP) immensely  appreciate individual contributions from everyone.
-> 
-> We need to be fair, the v1 of this patchset was taken from NXP
-> downstream without
-> respecting the Developer Certificate of Origin.
+> What do you expect exactly?
+> Maybe what you are looking for is in imx95-toradex-smarc.dtsi?
 
-No, it wasn't. Please read carefully DCO. The chain here was not
-correct, but that's the only thing.
+Found it, you are referring to https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/pci/pci-bus-common.yaml#L155
 
-> 
-> E.g there were commits pulled in from our internal tree without
-> keeping the S-o-B tags.
+We would not be able to test it, the required changes in the PCIe driver
+are not merged yet, so I would prefer to skip it for this series for the
+moment.
 
-Read DCO, please. It is not mandatory to keep 3rd party SoB. It is
-perfectly fine to skip it, if needed according to (b) of DCO certifying.
+Francesco
 
-Otherwise please point me which aspect of certification was not kept or
-was broken.
-
-> As I said keeping the original author is a sign of respecting the
-> initial work of NXP developers
-> and a recommendation from NXP.
-
-Which is purely up to the author. The NXP made their choice by not ever
-sending it to upstream.
-
-> 
-> What is your suggestion on moving on with this? Would keeping the
-> authorship from Rogerio
-> and adding S-o-B and C-d-b tags as above work for everyone?
-To me it is pretty simple and that's what I commented on - I expect
-conforming to submitting patches and DCO, thus the sender's SoB MUST BE
-ALWAYS the last.
-
-This is the only issue with this patch.
-
-Now, whom Rogerio wants to make the author I really do not care.
-Although I care a lot about NXP coming to upstream and claiming they
-have any authorship of their downstream code.
-
-Assuming this was even taken from downstream, which was not proven yet,
-although does not matter.
-
-Again, whatever you have downstream absolutely does not matter, EXCEPT
-THE LICENSE, for us.
-
-
-Best regards,
-Krzysztof
