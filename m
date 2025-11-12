@@ -1,167 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BA134EF0A
-	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 19:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B508419F137;
+	Wed, 12 Nov 2025 20:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762975764; cv=none; b=e3XRdSqbr/TorSlOwQYo/NV0t4Ar+9ningLmcYnwzU6d3syZ5CKyusnTIc5LOeCYDEoRTYHtK9Eg6VUZytrZVZlBQuIO7argsRaVzfmBcme7jWZsFJwg2VbauwZCZHJRuJNUSv8bgzW5kjxftFjLPtv9g7mIF/1QRnTXoOqzZtg=
+	t=1762978409; cv=none; b=cNUyFrl0nT7eCP5aXIV0C0BxvYMuuFmpFCQGuyUYtSZLTNgBoOZG9TqK1YjJerPOIJIkX2SJzf7V7J3Oe8RsifbWSAlj2L5EwX4st+f8KPmuLCjuvOpQiD1Yxhch4VcX/o4fRLfHIlETBHlzM9Vtc5MgDtGRt+62aTryYDmUdvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762975764; c=relaxed/simple;
-	bh=cBs5VsCM5bkQCwAVcWEWV1HKeCFrZdeAh6gx6vjF0Ps=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ru6qZc81xyYbl7+8QU94jnbivuxnuUGkQsf7ZIItin/YziWaA+5eTkNtBtMF/iSbVyVIs21NrPB+iGRHiFdvM6nSo4SwKSfZV9aeozCszmKbBHDqq8lyGQvPcr7Gy1LOQmwmjp3SzHklBTd6Iv6cmIJ13OIHAA7GLvOUj5WdNIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=szv3xAGH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762978409; c=relaxed/simple;
+	bh=jKookoDhnVybNYrtm2DQ1GPIqnubMpj/CdSHLOtCdHM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rowhEvnOpQxZtZd0mKiB16SIOWGeW/juyytVFwFBsZEAb4CMt+SIVbNiOqvkTtSee7AVEjzh4QrDwHKq5/JTQ4hPLtZ3O/z2+WnDHzbX0HtGgI4SLXRoe1a7J+6p1DaAcSDYzuUWuCGi1Yau/OC6Knt2SKVksDPOVQsQ/8c7hWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GqehtCo0; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="szv3xAGH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68886C2BCAF
-	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 19:29:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762975764;
-	bh=cBs5VsCM5bkQCwAVcWEWV1HKeCFrZdeAh6gx6vjF0Ps=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=szv3xAGH5agPEKMl9f7UkYYhRkgqB9AKS9v5496ledDdhmin+wBReWGI/iRlnpyNh
-	 HbYV6ylofcN/goxA5r50ITFCx+VPTD/XMpI2F+HTqWiVmXb4Ba/WsGQCub3AicyInu
-	 Ow8oG5q2NYNmka0aHseXh9DODZAbXJhxzKQn2f73gxSmsRUPvvLd8anRteQ9sj444E
-	 /Mlx1OFvwWRhC3fmxGHHwnyMo6Hor+kqovSGQ/g/qG38H4WqSasIzCVRFPRQ6h+h2M
-	 RQDZlilfFhJd8BVjaxhYZ0q9NyXQ9nvv3D3ovq7RmI7DOt7/d/Xw+wRa1dkg9PJaol
-	 ZbIunWXzgsM/A==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-640a503fbe8so21405a12.1
-        for <imx@lists.linux.dev>; Wed, 12 Nov 2025 11:29:24 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWY66H+I51IFbs2IRaSRqekolAeeuiVHhNT+eTprSJ4cMVQlVCIB7t77p4Xrg4d9h7LFSU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxVjyj3X0IHhwv8Rh4G1n8UHnQXji1ImQM8w3phMudxi7f7YRo4
-	ywnIgwb3II560NSGoxkmr8nmxk4UH+dmqKS2F2ItSqbxshtpKhvcunzKiuhRh9ASA7ks1sdkIz4
-	1Z+UTMekNrnQxqJmce78hIyOfLXmhTg==
-X-Google-Smtp-Source: AGHT+IHHsq6g1iGPfNpj/BGp5eL9w+14A+MEbPOCADp6BJOBMQBWxT0j5cv1w9FevsaSK63J53W6goPTLfg5SnHB+/k=
-X-Received: by 2002:a05:6402:34ce:b0:63b:ef0e:dfa7 with SMTP id
- 4fb4d7f45d1cf-6431a4bfc9cmr3902960a12.6.1762975760981; Wed, 12 Nov 2025
- 11:29:20 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GqehtCo0"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=4vxYXcF2Pj0hRrrKxi4gDBrIQdytgM6fvDVm0un7Y3E=; b=GqehtCo02TKWsD53JUWrfBT+hp
+	m7qITRl/Kxu7S8YdH0uELYUt5I+7EcXhf77vFlLdffkBB7UKcoy3bZXGsWqbGWSW9Slk/gmFdHvMX
+	QwG6xSVqaKfABi9lUhkJHKmw/bGzpIhx0yui/OfMXBWl4M+JF28sFBGssfWph9y5cu6I=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vJHDO-00DmiF-38; Wed, 12 Nov 2025 21:13:14 +0100
+Date: Wed, 12 Nov 2025 21:13:14 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: shenwei.wang@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, eric@nelint.com, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 1/5] net: fec: remove useless conditional
+ preprocessor directives
+Message-ID: <28badd8f-8c76-4e88-bcb2-49ed5026c1af@lunn.ch>
+References: <20251111100057.2660101-1-wei.fang@nxp.com>
+ <20251111100057.2660101-2-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251015071420.1173068-1-herve.codina@bootlin.com>
- <20251015071420.1173068-6-herve.codina@bootlin.com> <20251030141448.GA3853761-robh@kernel.org>
- <20251031162004.180d5e3f@bootlin.com> <20251112142632.GA1610836-robh@kernel.org>
-In-Reply-To: <20251112142632.GA1610836-robh@kernel.org>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 12 Nov 2025 13:29:09 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJ89EcUvQnS0xYXOrw6wJ30TT5oFA85eCqHYdu43056cw@mail.gmail.com>
-X-Gm-Features: AWmQ_bnvVqS34104BGAfHcYDtcOO0joqpBN-zpybKauFgaXAFRsInCQMBTqH6M4
-Message-ID: <CAL_JsqJ89EcUvQnS0xYXOrw6wJ30TT5oFA85eCqHYdu43056cw@mail.gmail.com>
-Subject: Re: [PATCH v4 05/29] dt-bindings: bus: Add simple-platform-bus
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
-	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
-	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Mark Brown <broonie@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
-	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
-	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251111100057.2660101-2-wei.fang@nxp.com>
 
-On Wed, Nov 12, 2025 at 8:26=E2=80=AFAM Rob Herring <robh@kernel.org> wrote=
-:
->
-> On Fri, Oct 31, 2025 at 04:20:04PM +0100, Herve Codina wrote:
-> > Hi Rob,
-> >
-> > On Thu, 30 Oct 2025 09:14:48 -0500
-> > Rob Herring <robh@kernel.org> wrote:
-> >
-> > > On Wed, Oct 15, 2025 at 09:13:52AM +0200, Herve Codina wrote:
-> > > > A Simple Platform Bus is a transparent bus that doesn't need a spec=
-ific
-> > > > driver to perform operations at bus level.
-> > > >
-> > > > Similar to simple-bus, a Simple Platform Bus allows to automaticall=
-y
-> > > > instantiate devices connected to this bus.
-> > > >
-> > > > Those devices are instantiated only by the Simple Platform Bus prob=
-e
-> > > > function itself.
-> > >
-> > > Don't let Greg see this... :)
-> > >
-> > > I can't say I'm a fan either. "Platform bus" is a kernel thing, and t=
-he
-> > > distinction here between the 2 compatibles is certainly a kernel thin=
-g.
-> > >
-> > > I think this needs to be solved within the kernel.
-> >
-> > I fully agree with that.
-> >
-> > >
-> > > What I previously said is define a list of compatibles to not
-> > > instantiate the child devices. This would essentially be any case hav=
-ing
-> > > a specific compatible and having its own driver. So if someone has
-> > > 'compatible =3D "vendor,not-so-simple-bus", "simple-bus"', when and i=
-f
-> > > they add a driver for "vendor,not-so-simple-bus", then they have to a=
-dd
-> > > the compatible to the list in the simple-pm-bus driver. I wouldn't
-> > > expect this to be a large list. There's only a handful of cases where
-> > > "simple-bus" has a more specific compatible. And only a few of those
-> > > have a driver. A more general and complicated solution would be makin=
-g
-> > > linux handle 2 (or more) drivers matching a node and picking the driv=
-er
-> > > with most specific match. That gets complicated with built-in vs.
-> > > modules. I'm not sure we really need to solve that problem.
-> >
-> > Right. Let discard the "more general and complicated solution" and focu=
-s
-> > on the list of compatible to avoid child devices instantiation.
-> >
-> > Do you mean that, for "simple-bus" compatible we should:
-> >  - Remove the recursive device instantiation from of_platform_populate(=
-).
->
-> That may be a problem I hadn't considered. While we've solved most probe
-> ordering issues, I think some may remain. Even when of_platform_populate(=
-)
-> is called affects this. For example, I tried removing various arm32
-> of_platform_.*populate() calls which run earlier than the default call,
-> but that broke some platforms. (Looking at the list of remaining ones, I
-> fixed the at91 pinctrl/gpio drivers, but never tried to remove the
-> calls again.)
->
-> Maybe this can be restricted to cases which are not recursively created
-> from the root node. Not sure how we detect that. Perhaps no OF_POPULATED
-> flag on the parent node? Or we could just enable this for OF_DYNAMIC
-> nodes? That should be sufficient for your usecase.
+On Tue, Nov 11, 2025 at 06:00:53PM +0800, Wei Fang wrote:
+> The conditional preprocessor directive "#if !defined(CONFIG_M5272)" was
+> added due to build errors on MCF5272 platform, see commit d13919301d9a
+> ("net: fec: Fix build for MCF5272"). The compilation error was caused by
+> some register macros not being defined on the MCF5272 platform. However,
+> this preprocessor directive is not needed in some parts of the driver.
+> First, removing it will not cause compilation errors. Second, these parts
+> will check quirks, which do not exist on the MCF7527 platform. Therefore,
+> we can safely delete these useless preprocessor directives.
 
-Thinking a bit more about this, I think you don't have to do anything.
-If child nodes already got populated, calling of_platform_populate() a
-second time is essentially a nop. And for cases you care about, that
-wouldn't have happened. Of course, I'd still rather there only be 1
-path that devices could have been instantiated.
+> @@ -2515,9 +2513,7 @@ static int fec_enet_mii_probe(struct net_device *ndev)
+>  		phy_set_max_speed(phy_dev, 1000);
+>  		phy_remove_link_mode(phy_dev,
+>  				     ETHTOOL_LINK_MODE_1000baseT_Half_BIT);
+> -#if !defined(CONFIG_M5272)
+>  		phy_support_sym_pause(phy_dev);
+> -#endif
+>  	}
 
-Rob
+I think the explanation could be better.
+
+I assume the M5272 only supported Fast Ethernet, so fep->quirks &
+FEC_QUIRK_HAS_GBIT was never true?
+
+>  	else
+>  		phy_set_max_speed(phy_dev, 100);
+> @@ -4400,11 +4396,9 @@ fec_probe(struct platform_device *pdev)
+>  	fep->num_rx_queues = num_rx_qs;
+>  	fep->num_tx_queues = num_tx_qs;
+>  
+> -#if !defined(CONFIG_M5272)
+>  	/* default enable pause frame auto negotiation */
+>  	if (fep->quirks & FEC_QUIRK_HAS_GBIT)
+>  		fep->pause_flag |= FEC_PAUSE_FLAG_AUTONEG;
+> -#endif
+
+Same here?
+
+Maybe the commit message should actually say that M5272 only supported
+Fast Ethernet, so these conditions cannot be true, and so the #ifdef
+guard can be removed.
+
+    Andrew
+
+---
+pw-bot: cr
