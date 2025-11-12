@@ -1,63 +1,98 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A952D5946;
-	Wed, 12 Nov 2025 20:25:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3402874ED;
+	Wed, 12 Nov 2025 21:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762979112; cv=none; b=gxnUPH4A6IPb8s1zsuiN+28U/SaQonX9RhyN4c3g1sao5bKgSrn390T5klgkzXJcpKD7JYm7g9QNegUETVhFlZCFSKcmv4wlQemEruJ06Q/Ifs7bYtsZHoFVDy15GJHtcliAL89AnZlyZ9QvSxOcDkicGmQpP2FVzny+zRBLybU=
+	t=1762982296; cv=none; b=m9g66A1OJjgnMqmvCDYXqDck0RUJGG1qg442pkhHDNS0tc4ugNfWnyoEC2/elubCobxG2gA9HDArf/GWPNli7WRA7pJWCssQcY/3cYRmXPVBdX0F31TfMvhjYFJ91tcwPq+cNG+lz2ep6NrscCBZBFLdtL0KKIP0wl7GiGCsgso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762979112; c=relaxed/simple;
-	bh=6KfXkUqVjY+RCtK09kzENlQ2r8qM4kOq6ZPOrS3cBkg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WEguuCqcKwqDoLMyb2iK7xQspXJVpizjSuhum5aJpkcL06P13/Saw8OfPm8g/oyWh9LO73QcaF73XfPf7jIi/O5MSf7hejkS7ssl5ARF2zOPRmgJKCmhDdHQm63WWhR2XCNmO90Jv5aqCdtlE53X9RQWkEGKAC9FWVrLhqXFc3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=27gLFXFC; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1762982296; c=relaxed/simple;
+	bh=cw8aLLstIpkNY61VL2Zf1icBfgfy27WtaHcCKq84PYs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iJ67RAnxvmIxgn6Aib4R+L09MQx6znFDAdny/ambkxnM4xYqM86wVuCoQ5g+ISan/EZ+nqokfbojMw5JLEQCXy82lhtcJO7+2GtmHgJ9nYYPp60/m2bRKv4KW+n9C4oPNZaU6POhC+wb8I9uqJUwfYG1RpCAztiyIkBQyZ+8q50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=G1lxgetf; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="27gLFXFC"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=eG1+Z2nINsuHIGlm0g60wcqdI+VY4P5X3ca5A1mTeYE=; b=27gLFXFCSebaEeA2qySyyWyJ/7
-	u8s4mJAHk9vINJ/l1f2otICgKOsRu0OwD0UmZf76VRGer0K4ILgSnaIn1QpDgIJJEpaMNUt41U1r+
-	8hY+oUPXsVXI91FD5e7AC0PGLy3XkCCm3bUfFhQ9C/vlOcUCZc8r+bmq7Ow/8vvgVptU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vJHOn-00DmlJ-O7; Wed, 12 Nov 2025 21:25:01 +0100
-Date: Wed, 12 Nov 2025 21:25:01 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: shenwei.wang@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, eric@nelint.com, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 4/5] net: fec: remove rx_align from
- fec_enet_private
-Message-ID: <116fd5af-048d-48e1-b2b8-3a42a061e02f@lunn.ch>
-References: <20251111100057.2660101-1-wei.fang@nxp.com>
- <20251111100057.2660101-5-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="G1lxgetf"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=gdSVwVNFWa3UDXoRV1/YfYWA8WTDmQgTkzVuCwG7akc=; b=G1lxgetfC7Zd7s86zg/08QZrTc
+	Whr63hWvH1OMA9Foe7hxbzxeXVZSGhbueF4cV72JQ9GqPqt1rBcPr0gS7ZxMaM28pYZKoTeLgJcoC
+	WWiRgCfgri/C042sU1nOHCQMFC/knOU+VZcNYYN5KFNbFTCO3FABOTnrxAJpFgsA2kgz3jvE1CUZL
+	/WTVNDygkdnn3dsUdKeslaluUKlvWoGYfUeoYnVP7QBkl6QQuDIg36L/uu1yVsXz2ykCe0pNSmDCT
+	ptfdh+XcpjW02zTXN/Wx8a2+fNSh8OUjHgwYxmgJhQ3jrDSZT/yRlbsWBopkYKcU/SW5CiHMHkGzq
+	pMwA29iw==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vJIEB-00000009Wvw-0PB3;
+	Wed, 12 Nov 2025 21:18:07 +0000
+Message-ID: <1dd236fc-26f7-4c02-b183-c3fc13d24767@infradead.org>
+Date: Wed, 12 Nov 2025 13:18:06 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251111100057.2660101-5-wei.fang@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 3/5] docs: staging: gpio-rpmsg: gpio over rpmsg bus
+To: Daniel Baluta <daniel.baluta@gmail.com>, Rob Herring <robh@kernel.org>
+Cc: Shenwei Wang <shenwei.wang@nxp.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Jonathan Corbet <corbet@lwn.net>,
+ Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
+ <brgl@bgdev.pl>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+ linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-imx@nxp.com
+References: <20251104203315.85706-1-shenwei.wang@nxp.com>
+ <20251104203315.85706-4-shenwei.wang@nxp.com>
+ <20251112125741.GB1319094-robh@kernel.org>
+ <CAEnQRZB4ymvSERKhJW=PAk5xA2JYD=i4wzkbumj_g5S8BjONjg@mail.gmail.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <CAEnQRZB4ymvSERKhJW=PAk5xA2JYD=i4wzkbumj_g5S8BjONjg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 11, 2025 at 06:00:56PM +0800, Wei Fang wrote:
-> The rx_align was introduced by the commit 41ef84ce4c72 ("net: fec: change
-> FEC alignment according to i.mx6 sx requirement"). Because the i.MX6 SX
-> requires RX buffer must be 64 bytes alignment.
+
+
+On 11/12/25 5:35 AM, Daniel Baluta wrote:
+> On Wed, Nov 12, 2025 at 2:59 PM Rob Herring <robh@kernel.org> wrote:
+>>
+>> On Tue, Nov 04, 2025 at 02:33:13PM -0600, Shenwei Wang wrote:
+>>> Describes the gpio rpmsg transport protocol over the rpmsg bus between
+>>> the cores.
+>>>
+>>> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+>>> ---
+>>>  Documentation/staging/gpio-rpmsg.rst | 202 +++++++++++++++++++++++++++
+>>>  Documentation/staging/index.rst      |   1 +
+>>
+>> Why is this in staging when none of the drivers are?
 > 
-> Since the commit 95698ff6177b ("net: fec: using page pool to manage RX
-> buffers"), the address of the RX buffer is always the page address plus
-> 128 bytes, so RX buffer is always 64-byte aligned.
+> I guess that's because remoteproc.rst and rpmsg.rst are in Documentation/staging
+> and that's because when converting them from .txt to .rst the author
+> didn't know a
+> good place where to move them.
+> 
+> Would Documentation/driver-api be a good place for these doc files? I
+> can move them
+> and then Shenwei place the gpio-rpmsg.rst in the Documentation/driver-api also
 
-It is not obvious to me where this 128 bytes is added.
+Documentation/driver-api/gpio/ if its driver documentation.
+Documentation/userspace-api/gpio/ if it user API docs
+There is also gpio documentation in Documentation/admin-guide/gpio/ which could
+also be appropriate depending on the nature of the document.
 
-	Andrew
+-- 
+~Randy
+
