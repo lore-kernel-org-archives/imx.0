@@ -1,94 +1,167 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999042D662F;
-	Wed, 12 Nov 2025 18:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BA134EF0A
+	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 19:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762973797; cv=none; b=iS7bNv0peCHS/hk/0Kn6naCB8KMK4F7VXU2NmOVUu6Pt1x7WLLnBHYmiW1XVSvL7nnCC5GXVp00mSjliG4gjirq+dVjYGnjupTstmorgYhIsUUXvfiM9zmOdfdAaDkRpTYvGDLDkuFiU39LLoPlL/srY9lhYwoVtYaQgk9CclGU=
+	t=1762975764; cv=none; b=e3XRdSqbr/TorSlOwQYo/NV0t4Ar+9ningLmcYnwzU6d3syZ5CKyusnTIc5LOeCYDEoRTYHtK9Eg6VUZytrZVZlBQuIO7argsRaVzfmBcme7jWZsFJwg2VbauwZCZHJRuJNUSv8bgzW5kjxftFjLPtv9g7mIF/1QRnTXoOqzZtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762973797; c=relaxed/simple;
-	bh=wnhEjBehMvH+VcTKME6K3P5TFtwHDoZ1sl5SUn95RW0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FxAAPPRQoh+8On4olaZpNJra4GX5WeYfFMs9NpSBWINtkmv5Fb0K9UyM81soGyv+zaf6LS7PEUA8jVDt79qb7TW+yvpP4fTYO3LDJ1YFU7aow3ZQKId4Xh9e1c6Gpo2JoyexifC3FQ646/JgLniibQ8umfVhDomzH2/f3598idc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=srnaOMbM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762975764; c=relaxed/simple;
+	bh=cBs5VsCM5bkQCwAVcWEWV1HKeCFrZdeAh6gx6vjF0Ps=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ru6qZc81xyYbl7+8QU94jnbivuxnuUGkQsf7ZIItin/YziWaA+5eTkNtBtMF/iSbVyVIs21NrPB+iGRHiFdvM6nSo4SwKSfZV9aeozCszmKbBHDqq8lyGQvPcr7Gy1LOQmwmjp3SzHklBTd6Iv6cmIJ13OIHAA7GLvOUj5WdNIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=szv3xAGH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="srnaOMbM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458CAC16AAE;
-	Wed, 12 Nov 2025 18:56:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="szv3xAGH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68886C2BCAF
+	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 19:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762973797;
-	bh=wnhEjBehMvH+VcTKME6K3P5TFtwHDoZ1sl5SUn95RW0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=srnaOMbMhtXpMh0YneM2DfkFDH+Lx13tpS+EcJAmlFp2fwuGJGV9FS5Avhee2oZVG
-	 0H2MW4ubKyxNwMZizzrkoecvpHnFVhcd1dvIVqkkaO5AFBG4Iu0eKCdA8rPrgmisln
-	 br6RKTVOKvo2yCfUBK4a9mTUKimw7R0RrBPUZl++Na3MPo/LWSOevAWtAlQ1ws60IC
-	 0ZeoyoGmZbDGpgQderwSS9ILifWnuQMhFRy6hlmT1GdasuSYWtGu+d1jkr5BQOJ98a
-	 nwj6RcQleIQ0vVazB4LcROCnt47uek29cKIhfdiscP6X5FqNvAJuh45/KT9QKzagMC
-	 l+dRBGK6Kaqqg==
-From: Conor Dooley <conor@kernel.org>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	han.xu@nxp.com,
-	broonie@kernel.org,
-	dlan@gentoo.org,
-	pjw@kernel.org,
-	Alex Elder <elder@riscstar.com>
-Cc: conor@kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Frank.li@nxp.com,
-	p.zabel@pengutronix.de,
-	guodong@riscstar.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	apatel@ventanamicro.com,
-	joel@jms.id.au,
-	geert+renesas@glider.be,
-	cyy@cyyself.name,
-	heylenay@4d2.org,
-	fustini@kernel.org,
-	linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	spacemit@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH v4 0/9] spi: enable the SpacemiT K1 SoC QSPI
-Date: Wed, 12 Nov 2025 18:56:13 +0000
-Message-ID: <20251112-approve-cartload-5a3f3d017c2d@spud>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251027133008.360237-1-elder@riscstar.com>
-References: <20251027133008.360237-1-elder@riscstar.com>
+	s=k20201202; t=1762975764;
+	bh=cBs5VsCM5bkQCwAVcWEWV1HKeCFrZdeAh6gx6vjF0Ps=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=szv3xAGH5agPEKMl9f7UkYYhRkgqB9AKS9v5496ledDdhmin+wBReWGI/iRlnpyNh
+	 HbYV6ylofcN/goxA5r50ITFCx+VPTD/XMpI2F+HTqWiVmXb4Ba/WsGQCub3AicyInu
+	 Ow8oG5q2NYNmka0aHseXh9DODZAbXJhxzKQn2f73gxSmsRUPvvLd8anRteQ9sj444E
+	 /Mlx1OFvwWRhC3fmxGHHwnyMo6Hor+kqovSGQ/g/qG38H4WqSasIzCVRFPRQ6h+h2M
+	 RQDZlilfFhJd8BVjaxhYZ0q9NyXQ9nvv3D3ovq7RmI7DOt7/d/Xw+wRa1dkg9PJaol
+	 ZbIunWXzgsM/A==
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-640a503fbe8so21405a12.1
+        for <imx@lists.linux.dev>; Wed, 12 Nov 2025 11:29:24 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWY66H+I51IFbs2IRaSRqekolAeeuiVHhNT+eTprSJ4cMVQlVCIB7t77p4Xrg4d9h7LFSU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxVjyj3X0IHhwv8Rh4G1n8UHnQXji1ImQM8w3phMudxi7f7YRo4
+	ywnIgwb3II560NSGoxkmr8nmxk4UH+dmqKS2F2ItSqbxshtpKhvcunzKiuhRh9ASA7ks1sdkIz4
+	1Z+UTMekNrnQxqJmce78hIyOfLXmhTg==
+X-Google-Smtp-Source: AGHT+IHHsq6g1iGPfNpj/BGp5eL9w+14A+MEbPOCADp6BJOBMQBWxT0j5cv1w9FevsaSK63J53W6goPTLfg5SnHB+/k=
+X-Received: by 2002:a05:6402:34ce:b0:63b:ef0e:dfa7 with SMTP id
+ 4fb4d7f45d1cf-6431a4bfc9cmr3902960a12.6.1762975760981; Wed, 12 Nov 2025
+ 11:29:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=667; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=QYu7vucndkkkm6zIRBflLJq+QN7l+LYv149tZnZO9JA=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDJkiN3zNru+5vrOwp/Rz57QPF0siN74LWmjWFmwkmrJlT WXT0jO7O0pZGMS4GGTFFFkSb/e1SK3/47LDuectzBxWJpAhDFycAjCRxncM/504dq80vna35Mah qosqqxYf60yNrpxfZs84sf6GrdT7BccYGa6wCbqpJJyfnZ0nOVHhGMfynQ7/ZfOmzTxl+GeiyLY ZiWwA
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
-Content-Transfer-Encoding: 8bit
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+ <20251015071420.1173068-6-herve.codina@bootlin.com> <20251030141448.GA3853761-robh@kernel.org>
+ <20251031162004.180d5e3f@bootlin.com> <20251112142632.GA1610836-robh@kernel.org>
+In-Reply-To: <20251112142632.GA1610836-robh@kernel.org>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 12 Nov 2025 13:29:09 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJ89EcUvQnS0xYXOrw6wJ30TT5oFA85eCqHYdu43056cw@mail.gmail.com>
+X-Gm-Features: AWmQ_bnvVqS34104BGAfHcYDtcOO0joqpBN-zpybKauFgaXAFRsInCQMBTqH6M4
+Message-ID: <CAL_JsqJ89EcUvQnS0xYXOrw6wJ30TT5oFA85eCqHYdu43056cw@mail.gmail.com>
+Subject: Re: [PATCH v4 05/29] dt-bindings: bus: Add simple-platform-bus
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
+	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Mark Brown <broonie@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Dan Williams <dan.j.williams@intel.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Conor Dooley <conor.dooley@microchip.com>
+On Wed, Nov 12, 2025 at 8:26=E2=80=AFAM Rob Herring <robh@kernel.org> wrote=
+:
+>
+> On Fri, Oct 31, 2025 at 04:20:04PM +0100, Herve Codina wrote:
+> > Hi Rob,
+> >
+> > On Thu, 30 Oct 2025 09:14:48 -0500
+> > Rob Herring <robh@kernel.org> wrote:
+> >
+> > > On Wed, Oct 15, 2025 at 09:13:52AM +0200, Herve Codina wrote:
+> > > > A Simple Platform Bus is a transparent bus that doesn't need a spec=
+ific
+> > > > driver to perform operations at bus level.
+> > > >
+> > > > Similar to simple-bus, a Simple Platform Bus allows to automaticall=
+y
+> > > > instantiate devices connected to this bus.
+> > > >
+> > > > Those devices are instantiated only by the Simple Platform Bus prob=
+e
+> > > > function itself.
+> > >
+> > > Don't let Greg see this... :)
+> > >
+> > > I can't say I'm a fan either. "Platform bus" is a kernel thing, and t=
+he
+> > > distinction here between the 2 compatibles is certainly a kernel thin=
+g.
+> > >
+> > > I think this needs to be solved within the kernel.
+> >
+> > I fully agree with that.
+> >
+> > >
+> > > What I previously said is define a list of compatibles to not
+> > > instantiate the child devices. This would essentially be any case hav=
+ing
+> > > a specific compatible and having its own driver. So if someone has
+> > > 'compatible =3D "vendor,not-so-simple-bus", "simple-bus"', when and i=
+f
+> > > they add a driver for "vendor,not-so-simple-bus", then they have to a=
+dd
+> > > the compatible to the list in the simple-pm-bus driver. I wouldn't
+> > > expect this to be a large list. There's only a handful of cases where
+> > > "simple-bus" has a more specific compatible. And only a few of those
+> > > have a driver. A more general and complicated solution would be makin=
+g
+> > > linux handle 2 (or more) drivers matching a node and picking the driv=
+er
+> > > with most specific match. That gets complicated with built-in vs.
+> > > modules. I'm not sure we really need to solve that problem.
+> >
+> > Right. Let discard the "more general and complicated solution" and focu=
+s
+> > on the list of compatible to avoid child devices instantiation.
+> >
+> > Do you mean that, for "simple-bus" compatible we should:
+> >  - Remove the recursive device instantiation from of_platform_populate(=
+).
+>
+> That may be a problem I hadn't considered. While we've solved most probe
+> ordering issues, I think some may remain. Even when of_platform_populate(=
+)
+> is called affects this. For example, I tried removing various arm32
+> of_platform_.*populate() calls which run earlier than the default call,
+> but that broke some platforms. (Looking at the list of remaining ones, I
+> fixed the at91 pinctrl/gpio drivers, but never tried to remove the
+> calls again.)
+>
+> Maybe this can be restricted to cases which are not recursively created
+> from the root node. Not sure how we detect that. Perhaps no OF_POPULATED
+> flag on the parent node? Or we could just enable this for OF_DYNAMIC
+> nodes? That should be sufficient for your usecase.
 
-On Mon, 27 Oct 2025 08:29:58 -0500, Alex Elder wrote:
-> This series adds support for the SpacemiT K1 SoC QSPI.  This IP is
-> generally compatible with the Freescale QSPI driver, requiring three
-> minor changes to enable it to be supported.  The changes are:
->   - Adding support for optional resets
->   - Having the clock *not* be disabled when changing its rate
->   - Allowing the size of storage blocks written to flash chips
->     to be set to something different from the AHB buffer size
-> 
-> [...]
+Thinking a bit more about this, I think you don't have to do anything.
+If child nodes already got populated, calling of_platform_populate() a
+second time is essentially a nop. And for cases you care about, that
+wouldn't have happened. Of course, I'd still rather there only be 1
+path that devices could have been instantiated.
 
-Applied to riscv-config-for-next, thanks!
-
-[9/9] riscv: defconfig: enable SPI_FSL_QUADSPI as a module
-      (no commit info)
-
-Thanks,
-Conor.
+Rob
