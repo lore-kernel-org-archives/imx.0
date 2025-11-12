@@ -1,98 +1,103 @@
 Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699122F90D3
-	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 08:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8A52F9980
+	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 09:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762937936; cv=none; b=OcAeu0Re511k8zYAjnx1Qess/F8VkvHT33bHJS1DDeHvmMhWTtuBbhU94AT+Na9NzuO0Y4XaPkMRicw2kZETV3sUmrV+4w9V6tGO7kHrV6nfDT0g17wKXYDzLcOMAvJGFA/iTUFLzk5QeTTR8wb5iHUcjjyCjN2YUh+saPmmQ4k=
+	t=1762938119; cv=none; b=ZxWq17BCIVWl0pItVDnntjg6QTOeMY3TbAQJgcaW0s2ZVjiPGItf0NK+YVNxJrn24lv82FxmBZjPw5/RjggMQfFpviULZz4p3QBbqfjhhuF2mD9OONj1j1G57+GNVT3v5nr6zknTIFg4M5oT53h8+P++Xrd1T8eZM4+SVSnroRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762937936; c=relaxed/simple;
-	bh=BvJ9QOK1WudzEqe/mVP9Qch6KeES8Cz5wJTG2FvjEcQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mXkOaYlRmlWA1r6V/7hJ7wczpeSk7X93j4j02PnpkIi+CWxKCsYC+vJTBZMFrMcb3uMZ4Xf0sfNAIEsbP1A5WlTfWj4S5KgWObzF4VqfVkWqxs6oGd2tyGBrgYPpAIa0yzyGDSK/Ek7680kG2/1W8QSSEsffOtF5rCq1V4ejnTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=W2x+NhiS; arc=none smtp.client-ip=209.85.128.46
+	s=arc-20240116; t=1762938119; c=relaxed/simple;
+	bh=5zFi3prT/tb4/ZOKQXyzm6NJkVjt+9gP5ezapBHafdI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mRkLQR5RLuxryXWoPzSPGzV2RyvBDh7udNJAfzWBqVO3ZCfUUv/+IO/Nmlz0D/GY558DJrAPy2hm9teFR75h/Q/4EIv+el5PI8/yfj2NWqxn1QrAQE5NnXeMEWVjALBXRk8y8TMm28uWLN4ftXLOFddmmmwE+KhIRWK1oir/mow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EkyQ9wTC; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="W2x+NhiS"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-47777000dadso3648645e9.1
-        for <imx@lists.linux.dev>; Wed, 12 Nov 2025 00:58:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EkyQ9wTC"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-477632d9326so3617035e9.1
+        for <imx@lists.linux.dev>; Wed, 12 Nov 2025 01:01:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762937932; x=1763542732; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2PM3V5SUOmIRwUEw+SelsziXLyJorncDb0vBfck6mjc=;
-        b=W2x+NhiSgw5Q+aJ4d5MTfqkN6bhQh28GKRxOw5TSf3sbQX/JjgaCYf75rVgd9rK7jD
-         lm3vMuh5WnpNqTmtmgnFoc6ThNJO364jEIlKKkaB2awABlAE8VK14g5N7OCtQ8ZzP7lK
-         e96WBFxp8AeZ+N7S33mR0OMXtGpoCnM7Uy59cjI+M/LF5oNy8YDv59s8PuZrz2umWXAH
-         bo3YYSKPgWC+Z7mZSOBtT+HP109xzRUGhQOzyAOTR6/W8UvDAwtX+tp5D0iokNpFFcjw
-         bskuo2HvGefTf/ivajhMtK3pxlmUWsi0IHS4b3PqIo0jYdPO1VLbJBTau6ZPBcI1EN1c
-         nalw==
+        d=linaro.org; s=google; t=1762938115; x=1763542915; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=66JkoVBXRt3KXq4mIKfXgWIsRIseUDoE8lmCrVzLyy4=;
+        b=EkyQ9wTCGWdGANr3jf4KvAY2YpTKyM9MN+EPWr3vCV7Po+QfzqXpg6EfNGS6fSO40O
+         9MEobkv8wfGN8GN4NXOtt9UHpK+2AD2f1+v/A59rB5uTiSlFSWLdVqywFCMvgC4/60Wf
+         6vJY5d61oFLQyHz6YtN/exaAPyHVFVyTnLgILt+6tZh8C4ItHgyE1zYQJZ5aWHVoeOwC
+         AwFCvnXjsUCFyrLp6JkXqrGMriDNcwJLrWnZ7Ts/a3Pqp7Fd0a30mCsjcq/k70HsCu1X
+         npP9KWRVdG0/n6WyKua87ob1LYNJlUl1J6ecOXhcny9KsXnET4lFU0vw+TAbiOy0ZalO
+         wC8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762937932; x=1763542732;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2PM3V5SUOmIRwUEw+SelsziXLyJorncDb0vBfck6mjc=;
-        b=ap61hMzLDuzh5gsCl4sZLtUl41ArF+nyMz3YJ25KJ2kyTB9uy99oRYgn1BMY/32i2x
-         dstExJdUswFbh7GfHtiA7+Mp+JXLe//xAOKitSb2DUyJg/ix0Ek2YRVg5OyrIRmM668F
-         okuK+4mvKGcnSD7ZIXU23vVYS7OoTRvkMlW0Qc/VfK8Nm5Bwa/3moMoyQzEAJPJxTAbZ
-         clTnonkMzgw5fX7OgWZ6DN5p1HsaX/1REIz87OwS31R25dqiGT/r4QkBpjP8IGlQPUNs
-         Mf/FgEwOlNw4PKrDP2NUEwkIWz9pFGhczwhaTvQbklcjoWfFEq2Y7DJZ2YUp6p/GThpm
-         thrw==
-X-Forwarded-Encrypted: i=1; AJvYcCVXO9s9epyLjKEuuIo9ijMdRIS2W8YFLz/M4XM7EBxXEeWVRR8z+maqFx/sJE++1zP7+Fw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzXJ5Fg9xd1TGzVaUyNTF4MevJ8VO3XJQqT7qOAkQ9iRSESBC1J
-	qWegK8dXpUL2f6M4APzt5n5/kfeqtjsqJRLet5dHwq2dugYEyghKuncNSLytFP3pntE=
-X-Gm-Gg: ASbGncvDj25eP68rjQ6xw5ZL7zG921/eE+aYpvU9kN19fNNTDQAvx4AI+8JQHisbYGj
-	fzR6G8IkDOhHICOeIuTEtskv5mHXieWRmQ22G3hERApIY+eWhm0p8T4xzl0QUZqu8+iJK2VjqDX
-	cznlTnde/idrWHPXkgLTw/hIUQILmBtXIvAnqF7+aJoQf9CR8RQjb0X2Zti8Lbvn2svv76YhqkJ
-	riIImdPE8jqEkJhKw2HarWsJYOwacklZGtlwZEX0PHHi/6ZuKEKZSwyYDensBnw4Oqgc/IDoV2Y
-	57KX9RlBGQoO52hz3tfvI2T8RZSLO7gv2NBIA5iDS78cZOC/o/B/9xjSmnyHnJuYwiaZ/SHqrz9
-	Lthb5yz56aQXpuiNVtotCP93c/lrYhm49ppzX5PkNO070zsTosZSt4ZV6837SljvlKoAmlD2t
-X-Google-Smtp-Source: AGHT+IGGVYvDUcqcUiPZLSUtoqDWfq0dWOAgjoDY5T7sj0q34JOuNXmckY/tBFbuwEb7ShY09sMSJg==
-X-Received: by 2002:a05:600c:4703:b0:46e:506b:20c5 with SMTP id 5b1f17b1804b1-47787086800mr14036335e9.26.1762937932076;
-        Wed, 12 Nov 2025 00:58:52 -0800 (PST)
-Received: from linaro.org ([86.121.7.169])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47787e48853sm23640245e9.6.2025.11.12.00.58.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Nov 2025 00:58:51 -0800 (PST)
-Date: Wed, 12 Nov 2025 10:58:49 +0200
-From: Abel Vesa <abel.vesa@linaro.org>
-To: Haotian Zhang <vulab@iscas.ac.cn>
-Cc: abelvesa@kernel.org, mturquette@baylibre.com, sboyd@kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, peng.fan@nxp.com, kernel@pengutronix.de, 
-	festevam@gmail.com, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] clk: imx: imx95-blk-ctl: Fix clock leak in error paths
-Message-ID: <y6ospgarjnretdsankhgtudttqqjfhltjyt2u6hnejgeufbkcb@yhk7ejuexvr5>
-References: <20251111114123.2075-1-vulab@iscas.ac.cn>
- <20251112023025.793-1-vulab@iscas.ac.cn>
+        d=1e100.net; s=20230601; t=1762938115; x=1763542915;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=66JkoVBXRt3KXq4mIKfXgWIsRIseUDoE8lmCrVzLyy4=;
+        b=ko2ruRMpOjVgDoUHnchyim21feFBQMIN9X4INCU/VE5bQABXnh+bPsgOkgpB9YHLod
+         CMCdExrOQA6arijRVJNVWR+cgetyMyGiDevrTHikxHb178SwkIPWlp84///q7yDPIoHG
+         eUsZIna/zgA2hXUkNb/BU/CnRWTUGW13iw6fL1lZNfbz8VmkECFto/StXzwQGlbg9Cnh
+         2/FVLkRfeSH/RfXPjwuEzhZc0ZXs2hu1+ySKR/i3MoBQS/j1Dj//+62XYBnIjeHseUa+
+         fmPkksoH20j9/cF4A2g/ZQmTw7LfSneiK1UjACNuBg2UqkiU9LbDk5+buvYJ8bYco437
+         Yn6w==
+X-Forwarded-Encrypted: i=1; AJvYcCX2+Fs2uvE40uHnchpjD3TUc3X6aeavqeNqdyan3BsokDZ8JhiLHOzDONfKniP3cVXQOzI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzlpDrr8VMabjH7ecNCaPl2veRoq2jsLL4Bb90ewEEcVXtojCu+
+	MH0VvSkTKaER9RwxgXxVIO0kicYofHvrQbIEDzq5zXrgBA6/8XXxuLHg+19zcSuboAs=
+X-Gm-Gg: ASbGncujqfRBKrEdB1iHxTf3Zs6SI77kBMWfuhznpdAvQLS16a+uQ15gUQ6bBQmcPZl
+	RqnvrUDlbNKKifR4riQL5N42veHg6FjjBshv6rYBvKMLlur29Cdr25HrQgdoZKdMpwxGRZ3ufkR
+	Hp84Rbxck0MHfBP5c8PiOewZeiphomCvElmQbiuR7dIac0mbzkiuSs6vddtN+G7L2SwtbEGp6To
+	MVB4OadTfO3uQ48tGJyExkxC3ZfQxOhdBpshKcNdNjoLi4OmZhIFWmZv1+tEQP7TxZaKgjdqGUI
+	zlYhq4wn8eTQzoGkhSgs0xunExJXtkU8Hv1Rqee5UD6EHE30jmMwnGJP6A5xbK663GVIUDXn//Y
+	7xMDMouuLoY45/TTYhiFClgBRVY2u36k1U4SZa7oyzn5GSR4tRylFm4Gu0gmjPtASn7UlMHXuAy
+	tvW97n+g==
+X-Google-Smtp-Source: AGHT+IEl9hg1Kv37coDTdY5hfywj5TzhKzDMoQuXuH/tP7xQz/4t5TIbX/bOlblMbh1MgqEKT4WInw==
+X-Received: by 2002:a05:600c:35ca:b0:477:7d94:9d05 with SMTP id 5b1f17b1804b1-477870b4610mr22199385e9.35.1762938115446;
+        Wed, 12 Nov 2025 01:01:55 -0800 (PST)
+Received: from [10.11.12.107] ([5.12.85.52])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47787e442c2sm25971505e9.7.2025.11.12.01.01.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Nov 2025 01:01:55 -0800 (PST)
+Message-ID: <60625b83-aef6-442b-8b38-558c3751c4a6@linaro.org>
+Date: Wed, 12 Nov 2025 11:01:53 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251112023025.793-1-vulab@iscas.ac.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/5] mtd: spi-nor: micron-st: move set_octal_dtr to
+ late_init()
+To: Haibo Chen <haibo.chen@nxp.com>, Pratyush Yadav <pratyush@kernel.org>,
+ Michael Walle <mwalle@kernel.org>, Miquel Raynal
+ <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>,
+ Vignesh Raghavendra <vigneshr@ti.com>
+Cc: linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev
+References: <20251112-nor-v3-0-20aaff727c7d@nxp.com>
+ <20251112-nor-v3-2-20aaff727c7d@nxp.com>
+Content-Language: en-US
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+In-Reply-To: <20251112-nor-v3-2-20aaff727c7d@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 25-11-12 10:30:25, Haotian Zhang wrote:
-> The probe function enables bc->clk_apb early but fails to disable it
-> when bc_data is NULL or clk_hw_data allocation fails. The cleanup
-> path also misses pm_runtime_put_sync() when rpm is enabled.
+
+
+On 11/12/25 8:48 AM, Haibo Chen wrote:
+> Move params->set_octal_dtr from flash_info->fixups->default_init()
+> to spi_nor_manufacturer-> fixups-> late_init(), this can cover
+> all Micorn and ST chips without repeat in each chip's flash_info.
 > 
-> Switch to devm_clk_get_enabled() to automatically manage the clock
-> resource. Add pm_runtime_put_sync() in cleanup path when rpm
-> is enabled.
-> 
-> Fixes: 5224b189462f ("clk: imx: add i.MX95 BLK CTL clk driver")
-> Suggested-by: Peng Fan <peng.fan@nxp.com>
-> Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+> With this, we can also remove flash_info->size if chip has SFDP.
 
-Next time, please do not send the new version as a reply to the old one.
+you could remove flash_info->size when chip has SFDP even before
+your patch, as params->size is first initialized with
+flash_info->size and then overwritten with the flash size read
+from SFDP.
 
-Everything else LGTM:
-
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+So this comment is misleading and has to be dropped. With that:
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
