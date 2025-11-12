@@ -1,231 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFDE306482;
-	Wed, 12 Nov 2025 12:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C4D274FF5
+	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 12:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762951995; cv=none; b=I5QbYiCgJHiJBdoqjanxKRrDRZkgjukdHtZA9NzvN5akXiYWBxp+RkDYu9qu1uPRS8XzVPce8rQ7dUW2NEVqasHWV8oNtglYVAB1LErIsu/zEpm3vQUHIlFxdQYNAsJpnw9YMLJ0FoHom4Uja8Gebi96QgaHX44TIlAsGWRxRek=
+	t=1762952022; cv=none; b=bTwqqdblbNU3rBthJdhxsO0pnh6Vrhg8Btg71zFF6Lrd62j2vUdYWrovrMUSYQfyDzqxnc7hxYQEbymlJ5DQLr1xtn2BTp07e8V4FaZ9Y99EjRmr2oxEUqYAzVPL3VisbhycpcXl7sTqtB7BeRpUYOnAag9zfl2kDJEqeF2pdb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762951995; c=relaxed/simple;
-	bh=Xq4laesBhXBU8cnsibjlgRX7+Xd6QHEEQNRsfNd8xHw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NQ4pbjzO97X0KZ1jQhrRH2YoHE8RXksZuKS0auAVNSyLmN7e+36GSwjhztrfCqtQYEzU/VhnWLA86ClRqizzxIZKmSG+Lu3anEXA5Ui4nMQ7bEi6JIwMlgkDn9MHo31suM0+CwpQkvL+9HabNSDsCZHaW6hZvspbf/o/xX8k00c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MgbNA+aN; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MgbNA+aN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD60C4AF0B;
-	Wed, 12 Nov 2025 12:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762951994;
-	bh=Xq4laesBhXBU8cnsibjlgRX7+Xd6QHEEQNRsfNd8xHw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MgbNA+aNi66iHWuzy6LKut7QTLt+D+/WXgdFltYAbxJCNbzgA1InxXNZhXB1n5p0c
-	 vnaW4LMGTXWq3iqK+mCrPfR/wgZ3CmaTYYbgSRIL+gsVedu2ksUj6iZV9eWJ1VDx8L
-	 2t0dYDDlC7uKsojwf3BaUVsp/1kxfrK/qs3b/tQL4PlVsjE6+lxoNCV4z50uPZEu0c
-	 IZ7IeyRYTrjvIwKCeVpl50DpVm5RZpwxhGxt3aVEGIxSEwIzBVQiTRda3iQYX8yVoG
-	 FLcPcsS+iUYDO9jpoGvblj2BtEDt27fgN3g5T5VkFwZycgbBRxR4Axqu2EhuuHABrh
-	 i4BX+X/MEfm9A==
-Date: Wed, 12 Nov 2025 06:53:12 -0600
-From: Rob Herring <robh@kernel.org>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-imx@nxp.com
-Subject: Re: [PATCH v5 1/5] dt-bindings: remoteproc: imx_rproc: Add "rpmsg"
- subnode support
-Message-ID: <20251112125312.GA1319094-robh@kernel.org>
-References: <20251104203315.85706-1-shenwei.wang@nxp.com>
- <20251104203315.85706-2-shenwei.wang@nxp.com>
+	s=arc-20240116; t=1762952022; c=relaxed/simple;
+	bh=J7U5vr71PjnmpF0GEDJIKhM5IAVtjRlOUbsok/ewjhk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=meeUC3fiodxVjb3Kky9qRvTZzHCzr8yIIZzPybW1S/uoRve9ltzyvwW4PT8TFYESoEEXJlHqxaOJ5VGgBaw+PAiTkG78OhQojG01gkHH+zGSwXGkECZ5O7guXeUgJfgWtux1G1AfEKuvtyczUQDNobOWIgr4zTYxG5O1m49DLHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vJALm-0008Fb-P4; Wed, 12 Nov 2025 13:53:26 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vJALl-0005O1-10;
+	Wed, 12 Nov 2025 13:53:25 +0100
+Received: from pza by lupine with local (Exim 4.98.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vJALl-000000006wU-0wU3;
+	Wed, 12 Nov 2025 13:53:25 +0100
+Message-ID: <782dd8af786ff402fa8b334264f189be2919d7a7.camel@pengutronix.de>
+Subject: Re: [PATCH v2] drm/imx/ipuv3: Fix dumb-buffer allocation for
+ non-RGB formats
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Thomas Zimmermann <tzimmermann@suse.de>, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, festevam@gmail.com,
+ dmitry.baryshkov@oss.qualcomm.com, 	maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, airlied@gmail.com, 	simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Pengutronix Kernel Team
+	 <kernel@pengutronix.de>
+Date: Wed, 12 Nov 2025 13:53:25 +0100
+In-Reply-To: <20251104153832.189666-1-tzimmermann@suse.de>
+References: <20251104153832.189666-1-tzimmermann@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1-1+deb13u1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251104203315.85706-2-shenwei.wang@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Tue, Nov 04, 2025 at 02:33:11PM -0600, Shenwei Wang wrote:
-> Remote processors may announce multiple devices (e.g., I2C, GPIO) over
-> an RPMSG channel. These devices may require corresponding device tree
-> nodes, especially when acting as providers, to supply phandles for their
-> consumers.
-> 
-> Define an RPMSG node to work as a container for a group of RPMSG channels
-> under the imx_rproc node.
-> 
-> Each subnode within "rpmsg" represents an individual RPMSG channel. The
-> name of each subnode corresponds to the channel name as defined by the
-> remote processor.
-> 
-> All remote devices associated with a given channel are defined as child
-> nodes under the corresponding channel node.
-> 
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+On Di, 2025-11-04 at 16:38 +0100, Thomas Zimmermann wrote:
+> Align pitch to multiples of 8 pixels for bpp values that do not map
+> to RGB formats. The call to drm_driver_color_mode_format() fails with
+> DRM_INVALID_FORMAT in these cases. Fall back to manually computing
+> the pitch alignment from which drm_mode_size_dumb() can compute the
+> correct pitch.
+>=20
+> Fixes userspace that allocates dumb buffers for YUV formats, where
+> bpp equals 12. A common example is the IGT kms_getfb test.
+>
+> v2:
+> - ignore width in calculation
+>=20
+> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: b1d0e470f881 ("drm/imx/ipuv3: Compute dumb-buffer sizes with drm_m=
+ode_size_dumb()")
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: imx@lists.linux.dev
+> Cc: linux-arm-kernel@lists.infradead.org
 > ---
->  .../bindings/remoteproc/fsl,imx-rproc.yaml    | 123 ++++++++++++++++++
->  1 file changed, 123 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> index 57d75acb0b5e..897a16c4f7db 100644
-> --- a/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> +++ b/Documentation/devicetree/bindings/remoteproc/fsl,imx-rproc.yaml
-> @@ -84,6 +84,92 @@ properties:
->        This property is to specify the resource id of the remote processor in SoC
->        which supports SCFW
->  
-> +  rpmsg:
-> +    type: object
-> +    additionalProperties: false
-> +    description:
-> +      Present a group of RPMSG channel devices.
-> +
-> +    properties:
-> +      rpmsg-io-channel:
-> +        type: object
-> +        additionalProperties: false
-> +        properties:
-> +          '#address-cells':
-> +            const: 1
-> +
-> +          '#size-cells':
-> +            const: 0
-> +
-> +        patternProperties:
-> +          "gpio@[0-9a-f]+$":
-> +            type: object
-> +            unevaluatedProperties: false
-> +            properties:
-> +              compatible:
-> +                enum:
-> +                  - fsl,imx-rpmsg-gpio
-> +
-> +              reg:
-> +                maxItems: 1
+> This patch is based on Dmitry's fix for msm. [1] Please test.
 
-I still don't understand what the numbers for 'reg' mean here. You 
-explained it and I still don't understand. In any case, it needs to be 
-explained in the schema.
+Thank you,
 
-For example, why do GPIO and I2C each have their own number space?
+[IGT] kms_getfb: finished subtest getfb2-accept-nv12, CRASH -> SUCCESS
 
+Tested-by: Philipp Zabel <p.zabel@pengutronix.de>
+
+> There could later be a helper to contain these aligmentment calculations
+> in a single place.
+>=20
+> [1] https://lore.kernel.org/dri-devel/20251103-drm-msm-fix-nv12-v2-1-7510=
+3b64576e@oss.qualcomm.com/
+> ---
+>  drivers/gpu/drm/imx/ipuv3/imx-drm-core.c | 16 +++++++++-------
+>  1 file changed, 9 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c b/drivers/gpu/drm/i=
+mx/ipuv3/imx-drm-core.c
+> index 465b5a6ad5bb..eddb471119c6 100644
+> --- a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
+> +++ b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
+> @@ -144,7 +144,6 @@ static int imx_drm_dumb_create(struct drm_file *file_=
+priv,
+>  			       struct drm_mode_create_dumb *args)
+>  {
+>  	u32 fourcc;
+> -	const struct drm_format_info *info;
+>  	u64 pitch_align;
+>  	int ret;
+> =20
+> @@ -156,12 +155,15 @@ static int imx_drm_dumb_create(struct drm_file *fil=
+e_priv,
+>  	 * the allocated buffer.
+>  	 */
+>  	fourcc =3D drm_driver_color_mode_format(drm, args->bpp);
+> -	if (fourcc =3D=3D DRM_FORMAT_INVALID)
+> -		return -EINVAL;
+> -	info =3D drm_format_info(fourcc);
+> -	if (!info)
+> -		return -EINVAL;
+> -	pitch_align =3D drm_format_info_min_pitch(info, 0, SZ_8);
+> +	if (fourcc !=3D DRM_FORMAT_INVALID) {
+> +		const struct drm_format_info *info =3D drm_format_info(fourcc);
 > +
-> +              "#gpio-cells":
-> +                const: 2
-> +
-> +              gpio-controller: true
-> +
-> +              interrupt-controller: true
-> +
-> +              "#interrupt-cells":
-> +                const: 2
-> +
-> +            required:
-> +              - compatible
-> +              - reg
-> +              - "#gpio-cells"
-> +              - "#interrupt-cells"
-> +
-> +            allOf:
-> +              - $ref: /schemas/gpio/gpio.yaml#
-> +              - $ref: /schemas/interrupt-controller.yaml#
-> +
-> +        required:
-> +          - '#address-cells'
-> +          - '#size-cells'
-> +
-> +      rpmsg-i2c-channel:
-> +        type: object
-> +        unevaluatedProperties: false
-> +        properties:
-> +          '#address-cells':
-> +            const: 1
-> +
-> +          '#size-cells':
-> +            const: 0
-> +
-> +        patternProperties:
-> +          "i2c@[0-9a-f]+$":
-> +            type: object
-> +            unevaluatedProperties: false
-> +            properties:
-> +              compatible:
-> +                enum:
-> +                  - fsl,imx-rpmsg-i2c
-> +
-> +              reg:
-> +                maxItems: 1
-> +
-> +            required:
-> +              - compatible
-> +              - reg
-> +
-> +            allOf:
-> +              - $ref: /schemas/i2c/i2c-controller.yaml#
-> +
-> +        required:
-> +          - '#address-cells'
-> +          - '#size-cells'
-> +
->  required:
->    - compatible
->  
-> @@ -146,5 +232,42 @@ examples:
->                  &mu 3 1>;
->        memory-region = <&vdev0buffer>, <&vdev0vring0>, <&vdev0vring1>, <&rsc_table>;
->        syscon = <&src>;
-> +
-> +      rpmsg {
-> +        rpmsg-io-channel {
-> +          #address-cells = <1>;
-> +          #size-cells = <0>;
-> +
-> +          gpio@0 {
-> +            compatible = "fsl,imx-rpmsg-gpio";
-> +            reg = <0>;
-> +            gpio-controller;
-> +            #gpio-cells = <2>;
-> +            #interrupt-cells = <2>;
-> +            interrupt-controller;
-> +            interrupt-parent = <&rpmsg_gpioa>;
-> +          };
-> +
-> +          gpio@1 {
-> +            compatible = "fsl,imx-rpmsg-gpio";
-> +            reg = <1>;
-> +            gpio-controller;
-> +            #gpio-cells = <2>;
-> +            #interrupt-cells = <2>;
-> +            interrupt-controller;
-> +            interrupt-parent = <&rpmsg_gpiob>;
-> +          };
-> +        };
-> +
-> +        rpmsg-i2c-channel {
-> +          #address-cells = <1>;
-> +          #size-cells = <0>;
-> +
-> +          i2c@0 {
-> +            compatible = "fsl,imx-rpmsg-i2c";
-> +            reg = <0>;
-> +          };
-> +        };
-> +      };
->      };
->  ...
-> -- 
-> 2.43.0
-> 
+> +		if (!info)
+> +			return -EINVAL;
+> +		pitch_align =3D drm_format_info_min_pitch(info, 0, 8);
+> +	} else {
+> +		pitch_align =3D DIV_ROUND_UP(args->bpp, SZ_8) * 8;
+> +	}
+>  	if (!pitch_align || pitch_align > U32_MAX)
+>  		return -EINVAL;
+>  	ret =3D drm_mode_size_dumb(drm, args, pitch_align, 0);
+
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+
+regards
+Philipp
