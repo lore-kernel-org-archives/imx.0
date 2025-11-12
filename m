@@ -1,161 +1,175 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24ED28A701;
-	Wed, 12 Nov 2025 14:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607F92C0273
+	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 14:42:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762957595; cv=none; b=YyeFQAhQmhtzqfxbtxW7R4RobDeZ3/Lt3aVVoasmI0hxj7pZE1aNpuldL73QA73bUU8RvBw5fm1hHtQyc0OTzYr9xwIngyjqNMAThd29G2grah7kUkSDYQR2PSUXTxuEw7NFeRHma4a6M8vYkpvkFSkS8aUgAeGiIq6YHhJXkn8=
+	t=1762958528; cv=none; b=Me0+2+nI18wM6e8bc6C8kC5+o1owuzzH86+8RwUBEb81gU/FLcu+JuZBAjHKMKMMVQz0ti0X2U+JgUBrxvF374iI2jDPoCyq4thA6K6vEL7zGeAO8DR0K69FG0/nW2q9K6IyTX9NL08q87m4P3CfVtXpnqX1Z81gEBhDsXpvQGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762957595; c=relaxed/simple;
-	bh=bNLqGrg/bxt16UHYQqXWyzLbnJanuTnn/DSzlHMqam8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qtqkH8KDJQJjkvIg1VxhtdsslmxVSp+JzGZ1eDETk9gLV+3LtC3LZ3UfqxclgnpUPBMBb8ad4aCUNoASSQGa2qV+3aNDjYGnnGss44naSBPz6mMissH6LIF12GL1+ggN/qHjUppwErkbg/iMjZ2pObPxB6Uq57GyoG6Vy5fG0Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m4iXCp4z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762958528; c=relaxed/simple;
+	bh=82XTjjSHShPDBuv5ewTva+T1nGonEhZqWcuzr/UnA34=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XyyFRMHIz5EH9F1horrUvhIW1ShnM4DiFUaBranVWtU47rZCT3uQHk6GZfC/EWp74ZrdsPuyRdku4ZM0+CdMluF8XevJMtEK1uM/Eq4GeQOz5ht/d8WWw5jCNPFD5Klk3dKoAMYlIPnZvr8Q3gAtdex6nJWnkv2Incofe8ZB+so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FZNM5BD3; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m4iXCp4z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02366C19422;
-	Wed, 12 Nov 2025 14:26:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762957594;
-	bh=bNLqGrg/bxt16UHYQqXWyzLbnJanuTnn/DSzlHMqam8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m4iXCp4znKZvCzYkjhXZu1JL4COAdGb7yAm9UmEyz0xmhqXKj2K9504lPVGuTy2Jw
-	 oIs3gFjFC88Pg6vs33x0Y9J4Rt1LUAOWf+RlfjFyxs91gx9kSFDB51FMvZyE5chPXE
-	 aGtArRih0bDKoqGUZ1CFOq9Z1gR5u0u7H+Ia54U4ZgBoOw6F7RHwsyZbtTo73P+YtI
-	 MlFexT96E5ZxLwczc2sajdvyTdAl2dfa5pilRItuDN9x8WGEYbXAh10Kg5gBAGhHeA
-	 FzJ4mZv2YeFA2oWEIhZbh7ljpXAZyuUSAV7u6Cyu3iLC+0hy5axy54UvXp2gQgfYvb
-	 AydcA8t3H0Huw==
-Date: Wed, 12 Nov 2025 08:26:32 -0600
-From: Rob Herring <robh@kernel.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>,
-	Saravana Kannan <saravanak@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	David Rhodes <david.rhodes@cirrus.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Len Brown <lenb@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
-	linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v4 05/29] dt-bindings: bus: Add simple-platform-bus
-Message-ID: <20251112142632.GA1610836-robh@kernel.org>
-References: <20251015071420.1173068-1-herve.codina@bootlin.com>
- <20251015071420.1173068-6-herve.codina@bootlin.com>
- <20251030141448.GA3853761-robh@kernel.org>
- <20251031162004.180d5e3f@bootlin.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FZNM5BD3"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6419b7b4b80so1288555a12.2
+        for <imx@lists.linux.dev>; Wed, 12 Nov 2025 06:42:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762958525; x=1763563325; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=E6N2LkhR7aeG78fCFoaE5f7J6Vqh6iLlOX4wNPsAzjs=;
+        b=FZNM5BD3RnPLM7aMvBs6kI+6Kw2PUsENoG07vPJq5MkKp9LHKywECvmiXO0HSpo+lh
+         JxoJo0OrPe3FIKd6M1wuHd8I9SsRilMZWYf2tJGsD+Ez5ckOW54t3NknrLnXA8c2i11a
+         t3BQlHs49aKGEEO6UY+gNm2kkXj32E+p/p3pfhTaLpnV1ukEqItkF8Hi/y87GEOViwMz
+         fAPMciabQe7L4HPgrAqNtwBP9gWplGfnvFrBTCZPTqxnddsgRIBirHne8QvkZq8H3wTH
+         Z8mxT7KuRCxmFyiHa/jwKcR6HZpRi8DkLLUH/pVK9dif9CXg2EPUCdc6VYln/YRpgjng
+         fVlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762958525; x=1763563325;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E6N2LkhR7aeG78fCFoaE5f7J6Vqh6iLlOX4wNPsAzjs=;
+        b=kEvlAJWQxH4Zo8vMWofWt9OIvqHkjPo1y9uFEEtG3/RC0KntoyiIMU/Fibc2l+AFHw
+         azEaKY7njkl4yXYJaWdjrzfu8b6yo/YeUUr+LzNH14C5yfOG0EHnkwZvH6ZlGd6/GgNc
+         VChYw6zEervjKm4+hePw/ZLSs6M8qL7KWyA59zAfZcUlC/oTJZ/FUarHBuPKBvY/cYBe
+         fVY5hhvG+kZbr1NrEhV03HCvbkyMRR01ZHAmgsSWhBmkvphJYMiYP/QrSvbTZRIRP8D1
+         gMvIqNMFXZf64QDo0YMnXecVdL/BId2nMs5hRz6zR44UWY+iepQ8GlO+Yvo7CtVYY23H
+         oDDg==
+X-Forwarded-Encrypted: i=1; AJvYcCXuHr6nsxQIFJDPO9AuwbzL0GS8luZafYY6DEmlxMUDmVGO55t72kaLPNH3NVWjllTRLuw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyimsnYsKljH2h336JQdMSEb/5hh5TEfrC+cyd2H+gpsuwWtUzp
+	z2pF6pZcDbLkjDsbUQ9ez2XVbuHmVwHMzebpwiptdvafPFlP7Zfe/cEY2CWOSjSf
+X-Gm-Gg: ASbGncu1oaPG8xMqzILDBEyjkyrzUrGDmVBKhkhaKelFhS6N5DmqODCQaRBUx8s+rZs
+	AuL0+zzOy8XmBjlKkwCPV48Ll7uPhqMyc54/HK6d14VnkCAFUa/w84Jg8W3a3es2KDUq+VROvds
+	H9y/EOr+HghtANaKhEO3NIz5e8L2uYdVNoUzvo2S1lalSUIsl7RnnaSrXQbtThRlRexXxzv1CCt
+	uXO7VaDkI4ENjo3GC2pbvjAqD5dWQuD6vcdMcy3YbwCLQvteqTzJpoodSKTEDdGQevvr00Zc6Iy
+	VfNL4+zz9Lfh1yvrqA2RDnnJfNuAnqWoirzsZMpM+Dm3dwqJD/hW66NclGSzIam7VBUYzmzhgPj
+	bt83hjmHgM8dgRAfJaRI056TblKuvaYiAHmFlWi5VrYbXHcm4gmW88hYrmFFtvfW/P2n7p0426f
+	ozpdebDWH60KngKMbcuHl36dFfG6g=
+X-Google-Smtp-Source: AGHT+IFTNGoT4aTk5EceAUoALwAHvKb+bdrKgtaYUbE8eWmnwtKSrKlBlBHMiZPM5J2J25G44v5DFQ==
+X-Received: by 2002:a05:6402:13c1:b0:640:528c:7d49 with SMTP id 4fb4d7f45d1cf-6431a57e4d4mr3033556a12.38.1762958524375;
+        Wed, 12 Nov 2025 06:42:04 -0800 (PST)
+Received: from SMW024614.wbi.nxp.com ([128.77.115.158])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64183bc4533sm8411180a12.4.2025.11.12.06.42.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Nov 2025 06:42:04 -0800 (PST)
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: linux-sound@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: SOF: imx9: use SCMI API for LM management
+Date: Wed, 12 Nov 2025 06:41:24 -0800
+Message-ID: <20251112144124.680-1-laurentiumihalcea111@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251031162004.180d5e3f@bootlin.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 31, 2025 at 04:20:04PM +0100, Herve Codina wrote:
-> Hi Rob,
-> 
-> On Thu, 30 Oct 2025 09:14:48 -0500
-> Rob Herring <robh@kernel.org> wrote:
-> 
-> > On Wed, Oct 15, 2025 at 09:13:52AM +0200, Herve Codina wrote:
-> > > A Simple Platform Bus is a transparent bus that doesn't need a specific
-> > > driver to perform operations at bus level.
-> > > 
-> > > Similar to simple-bus, a Simple Platform Bus allows to automatically
-> > > instantiate devices connected to this bus.
-> > > 
-> > > Those devices are instantiated only by the Simple Platform Bus probe
-> > > function itself.  
-> > 
-> > Don't let Greg see this... :)
-> > 
-> > I can't say I'm a fan either. "Platform bus" is a kernel thing, and the 
-> > distinction here between the 2 compatibles is certainly a kernel thing.
-> > 
-> > I think this needs to be solved within the kernel.
-> 
-> I fully agree with that.
-> 
-> > 
-> > What I previously said is define a list of compatibles to not 
-> > instantiate the child devices. This would essentially be any case having 
-> > a specific compatible and having its own driver. So if someone has 
-> > 'compatible = "vendor,not-so-simple-bus", "simple-bus"', when and if 
-> > they add a driver for "vendor,not-so-simple-bus", then they have to add 
-> > the compatible to the list in the simple-pm-bus driver. I wouldn't 
-> > expect this to be a large list. There's only a handful of cases where 
-> > "simple-bus" has a more specific compatible. And only a few of those 
-> > have a driver. A more general and complicated solution would be making 
-> > linux handle 2 (or more) drivers matching a node and picking the driver 
-> > with most specific match. That gets complicated with built-in vs. 
-> > modules. I'm not sure we really need to solve that problem.
-> 
-> Right. Let discard the "more general and complicated solution" and focus
-> on the list of compatible to avoid child devices instantiation.
-> 
-> Do you mean that, for "simple-bus" compatible we should:
->  - Remove the recursive device instantiation from of_platform_populate().
+From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-That may be a problem I hadn't considered. While we've solved most probe 
-ordering issues, I think some may remain. Even when of_platform_populate() 
-is called affects this. For example, I tried removing various arm32 
-of_platform_.*populate() calls which run earlier than the default call, 
-but that broke some platforms. (Looking at the list of remaining ones, I 
-fixed the at91 pinctrl/gpio drivers, but never tried to remove the 
-calls again.)
+Linux supports NXP's LMM SCMI protocol so switch to using the appropriate
+API. The SIPs were intended to act as placeholders until the support for
+said protocol was upstreamed.
 
-Maybe this can be restricted to cases which are not recursively created 
-from the root node. Not sure how we detect that. Perhaps no OF_POPULATED 
-flag on the parent node? Or we could just enable this for OF_DYNAMIC 
-nodes? That should be sufficient for your usecase.
+The underlying CPU protocol command from IMX_SIP_SRC_M_RESET_ADDR_SET is
+replaced by a LMM protocol command with the same effect (i.e. setting the
+boot address) since using the CPU protocol would require additional
+permissions (which TF-A already had). Apart from this, the SIPs are
+replaced by their equivalent Linux LMM commands.
 
-I would like to solve this more generally though. So we could try it in 
-kernelci and/or linux-next and see what happens.
+Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+---
+ sound/soc/sof/imx/imx9.c | 36 ++++++++----------------------------
+ 1 file changed, 8 insertions(+), 28 deletions(-)
 
->  - In simple-bus probe(), check the device we probe against the
->    'no_instantiate_children' list
->       - If it matches, do not instantiate chidren
->       - If it doesn't match instantiate children
+diff --git a/sound/soc/sof/imx/imx9.c b/sound/soc/sof/imx/imx9.c
+index 853155d5990a..e56e8a1c8022 100644
+--- a/sound/soc/sof/imx/imx9.c
++++ b/sound/soc/sof/imx/imx9.c
+@@ -3,19 +3,11 @@
+  * Copyright 2025 NXP
+  */
+ 
+-#include <linux/arm-smccc.h>
++#include <linux/firmware/imx/sm.h>
+ 
+ #include "imx-common.h"
+ 
+-#define IMX_SIP_SRC 0xC2000005
+-#define IMX_SIP_SRC_M_RESET_ADDR_SET 0x03
+-
+-#define IMX95_CPU_VEC_FLAGS_BOOT BIT(29)
+-
+-#define IMX_SIP_LMM 0xC200000F
+-#define IMX_SIP_LMM_BOOT 0x0
+-#define IMX_SIP_LMM_SHUTDOWN 0x1
+-
++#define IMX95_M7_CPU_ID 0x1
+ #define IMX95_M7_LM_ID 0x1
+ 
+ static struct snd_soc_dai_driver imx95_dai[] = {
+@@ -38,7 +30,6 @@ static int imx95_ops_init(struct snd_sof_dev *sdev)
+ 
+ static int imx95_chip_probe(struct snd_sof_dev *sdev)
+ {
+-	struct arm_smccc_res smc_res;
+ 	struct platform_device *pdev;
+ 	struct resource *res;
+ 
+@@ -49,31 +40,20 @@ static int imx95_chip_probe(struct snd_sof_dev *sdev)
+ 		return dev_err_probe(sdev->dev, -ENODEV,
+ 				     "failed to fetch SRAM region\n");
+ 
+-	/* set core boot reset address */
+-	arm_smccc_smc(IMX_SIP_SRC, IMX_SIP_SRC_M_RESET_ADDR_SET, res->start,
+-		      IMX95_CPU_VEC_FLAGS_BOOT, 0, 0, 0, 0, &smc_res);
+-
+-	return smc_res.a0;
++	return scmi_imx_lmm_reset_vector_set(IMX95_M7_LM_ID, IMX95_M7_CPU_ID,
++					     0, res->start);
+ }
+ 
+ static int imx95_core_kick(struct snd_sof_dev *sdev)
+ {
+-	struct arm_smccc_res smc_res;
+-
+-	arm_smccc_smc(IMX_SIP_LMM, IMX_SIP_LMM_BOOT,
+-		      IMX95_M7_LM_ID, 0, 0, 0, 0, 0, &smc_res);
+-
+-	return smc_res.a0;
++	return scmi_imx_lmm_operation(IMX95_M7_LM_ID, SCMI_IMX_LMM_BOOT, 0);
+ }
+ 
+ static int imx95_core_shutdown(struct snd_sof_dev *sdev)
+ {
+-	struct arm_smccc_res smc_res;
+-
+-	arm_smccc_smc(IMX_SIP_LMM, IMX_SIP_LMM_SHUTDOWN,
+-		      IMX95_M7_LM_ID, 0, 0, 0, 0, 0, &smc_res);
+-
+-	return smc_res.a0;
++	return scmi_imx_lmm_operation(IMX95_M7_LM_ID,
++				      SCMI_IMX_LMM_SHUTDOWN,
++				      SCMI_IMX_LMM_OP_FORCEFUL);
+ }
+ 
+ static const struct imx_chip_ops imx95_chip_ops = {
+-- 
+2.43.0
 
-Right.
-
-Rob
