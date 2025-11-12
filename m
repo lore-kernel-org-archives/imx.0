@@ -1,118 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540BE358D2D;
-	Wed, 12 Nov 2025 18:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999042D662F;
+	Wed, 12 Nov 2025 18:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762971991; cv=none; b=OQbaQj5UfX9d1YcXf+84UiEuFpaP9a0lihADqe/7y2pKNuBE9FomOJrTfwiIgePpuBgS2l5mEABs4E/mcnIZyVuzeqf9Z97728ZY1G+IMvpSKa7RTjUg2wVsccqYcJwem98HKZUGEbs3GuM2ip4dzaB9Q3qc316QwE7EKb0bVS0=
+	t=1762973797; cv=none; b=iS7bNv0peCHS/hk/0Kn6naCB8KMK4F7VXU2NmOVUu6Pt1x7WLLnBHYmiW1XVSvL7nnCC5GXVp00mSjliG4gjirq+dVjYGnjupTstmorgYhIsUUXvfiM9zmOdfdAaDkRpTYvGDLDkuFiU39LLoPlL/srY9lhYwoVtYaQgk9CclGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762971991; c=relaxed/simple;
-	bh=KqIE5WmfyHmP8ll3rOCY+FYSMtK6zHgkQ3ZM4GG1AjQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kYL0sJ3sNqMhnmiKUlncHQlcpGYA364TjqXYkuNFoleMVOvHzQcZG6j41DbW5h3hYoduHqZcqZkRRm76Yo/3vHgeT2fzEWDIkerUB6yDYZMPLQxD8/yqBYKHA+DXoNAhVcmWUpSzK6+i+puGwIrPpWkbJE+sL0bzSyIBl0X6vlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W+BLgP/K; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762973797; c=relaxed/simple;
+	bh=wnhEjBehMvH+VcTKME6K3P5TFtwHDoZ1sl5SUn95RW0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FxAAPPRQoh+8On4olaZpNJra4GX5WeYfFMs9NpSBWINtkmv5Fb0K9UyM81soGyv+zaf6LS7PEUA8jVDt79qb7TW+yvpP4fTYO3LDJ1YFU7aow3ZQKId4Xh9e1c6Gpo2JoyexifC3FQ646/JgLniibQ8umfVhDomzH2/f3598idc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=srnaOMbM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W+BLgP/K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38A8C19424;
-	Wed, 12 Nov 2025 18:26:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="srnaOMbM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458CAC16AAE;
+	Wed, 12 Nov 2025 18:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762971990;
-	bh=KqIE5WmfyHmP8ll3rOCY+FYSMtK6zHgkQ3ZM4GG1AjQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W+BLgP/Kvh42AwbBcDdL6xFNxRAMUoqlImaEJWOsJ6Mj/IvTdWE86pZzvDLLh4T3A
-	 6IPzZvuwMcSmW6zZB01E6oJzEliKrGozmzVTKBtm0tBRU3+RmLbrD1PVlnm23xratU
-	 tlzd0dq24GiZdgiTrW640DefdGUlEU1go/6/WTXUSQt0+yxeMbD06/X/z7bmqyesoB
-	 h8yI3Mo3dt08CaaUnAE/BL3UlWlol0ZlymcP9lHsaD52mjiX5RaQdo6zhTrQtgNkff
-	 CBZJD+uqT+FtHqK2Kz9l0wzQDQivhj3y86kLjUk0logNlnGhCTFXs38J27PnJaXB/S
-	 a5rRcfY/BJ5QA==
-Date: Wed, 12 Nov 2025 18:26:23 +0000
+	s=k20201202; t=1762973797;
+	bh=wnhEjBehMvH+VcTKME6K3P5TFtwHDoZ1sl5SUn95RW0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=srnaOMbMhtXpMh0YneM2DfkFDH+Lx13tpS+EcJAmlFp2fwuGJGV9FS5Avhee2oZVG
+	 0H2MW4ubKyxNwMZizzrkoecvpHnFVhcd1dvIVqkkaO5AFBG4Iu0eKCdA8rPrgmisln
+	 br6RKTVOKvo2yCfUBK4a9mTUKimw7R0RrBPUZl++Na3MPo/LWSOevAWtAlQ1ws60IC
+	 0ZeoyoGmZbDGpgQderwSS9ILifWnuQMhFRy6hlmT1GdasuSYWtGu+d1jkr5BQOJ98a
+	 nwj6RcQleIQ0vVazB4LcROCnt47uek29cKIhfdiscP6X5FqNvAJuh45/KT9QKzagMC
+	 l+dRBGK6Kaqqg==
 From: Conor Dooley <conor@kernel.org>
-To: Josua Mayer <josua@solid-run.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jessica.zhang@oss.qualcomm.com>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jon Nettleton <jon@solid-run.com>,
-	Mikhail Anikin <mikhail.anikin@solid-run.com>,
-	Yazan Shhady <yazan.shhady@solid-run.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v2 02/11] dt-bindings: display: panel: ronbo,rb070d30:
- panel-common ref
-Message-ID: <20251112-efficient-dental-219b34a728ab@spud>
-References: <20251107-imx8mp-hb-iiot-v2-0-d8233ded999e@solid-run.com>
- <20251107-imx8mp-hb-iiot-v2-2-d8233ded999e@solid-run.com>
- <20251107-cornbread-juggling-2e7e69bcac10@spud>
- <14492bcb-aa74-4fce-b9e6-3d33b08c682f@solid-run.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	han.xu@nxp.com,
+	broonie@kernel.org,
+	dlan@gentoo.org,
+	pjw@kernel.org,
+	Alex Elder <elder@riscstar.com>
+Cc: conor@kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Frank.li@nxp.com,
+	p.zabel@pengutronix.de,
+	guodong@riscstar.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	apatel@ventanamicro.com,
+	joel@jms.id.au,
+	geert+renesas@glider.be,
+	cyy@cyyself.name,
+	heylenay@4d2.org,
+	fustini@kernel.org,
+	linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	spacemit@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: (subset) [PATCH v4 0/9] spi: enable the SpacemiT K1 SoC QSPI
+Date: Wed, 12 Nov 2025 18:56:13 +0000
+Message-ID: <20251112-approve-cartload-5a3f3d017c2d@spud>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251027133008.360237-1-elder@riscstar.com>
+References: <20251027133008.360237-1-elder@riscstar.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+EOiDhVMpxn0wrR/"
-Content-Disposition: inline
-In-Reply-To: <14492bcb-aa74-4fce-b9e6-3d33b08c682f@solid-run.com>
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=667; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=QYu7vucndkkkm6zIRBflLJq+QN7l+LYv149tZnZO9JA=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDJkiN3zNru+5vrOwp/Rz57QPF0siN74LWmjWFmwkmrJlT WXT0jO7O0pZGMS4GGTFFFkSb/e1SK3/47LDuectzBxWJpAhDFycAjCRxncM/504dq80vna35Mah qosqqxYf60yNrpxfZs84sf6GrdT7BccYGa6wCbqpJJyfnZ0nOVHhGMfynQ7/ZfOmzTxl+GeiyLY ZiWwA
+X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Transfer-Encoding: 8bit
 
+From: Conor Dooley <conor.dooley@microchip.com>
 
---+EOiDhVMpxn0wrR/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Mon, 27 Oct 2025 08:29:58 -0500, Alex Elder wrote:
+> This series adds support for the SpacemiT K1 SoC QSPI.  This IP is
+> generally compatible with the Freescale QSPI driver, requiring three
+> minor changes to enable it to be supported.  The changes are:
+>   - Adding support for optional resets
+>   - Having the clock *not* be disabled when changing its rate
+>   - Allowing the size of storage blocks written to flash chips
+>     to be set to something different from the AHB buffer size
+> 
+> [...]
 
-On Wed, Nov 12, 2025 at 11:51:55AM +0000, Josua Mayer wrote:
-> Hi Conor,
->=20
-> Am 07.11.25 um 18:48 schrieb Conor Dooley:
-> > On Fri, Nov 07, 2025 at 12:46:09PM +0100, Josua Mayer wrote:
-> >> Add missing ref on panel-common.yaml for this dsi panel so that common
-> >> properties can be shared.
-> >>
-> >> Drop reset-gpios and backlight as they are already in panel-common.
-> >>
-> >> Switch from additionalProperties to unevaluatedProperties so that comm=
-on
-> >> panel properties are available without repeating them in this binding.
-> >>
-> >> Notably panel-common defines the "port" property for linking panels to=
- a
-> >> source - which was missing from this panel. Mark it as required.
-> >>
-> >> Signed-off-by: Josua Mayer <josua@solid-run.com>
-> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> Is your ack compatible with Frank Li requesting to move the
-> ref on panel-common further towards the end of the file?
+Applied to riscv-config-for-next, thanks!
 
-I don't care what you do with that. I will say that it is pretty normal
-to have it at the top of the file and move it if there ends up being a
-need, and it's not worth resubmitting for that alone.
+[9/9] riscv: defconfig: enable SPI_FSL_QUADSPI as a module
+      (no commit info)
 
---+EOiDhVMpxn0wrR/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaRTRTwAKCRB4tDGHoIJi
-0oSSAP9SN63sA1M/10C28Rdxq70LHgjhnvuOt7uLqa7qxb9H8wD/TuHCoPY5bn/4
-4deqcUE/0q2mjHZ/dBSzUxDDPOOgIg4=
-=Dix4
------END PGP SIGNATURE-----
-
---+EOiDhVMpxn0wrR/--
+Thanks,
+Conor.
