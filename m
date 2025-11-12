@@ -1,121 +1,120 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A734334C06
-	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 12:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E203332EBA
+	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 12:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762950787; cv=none; b=IoPY5x6iQ+RMj0g84p4xuq567O4oJq5j9W+taalWpngNBHbgN/JZNsZpy2CvbwRFqUA1jw3neVvQEVPrIm7z13bDUz/Y1YYQSfeJ3XfOdWn3vSkorOSO/rAHt4fz93b8nkRzVEAJtc32CPA6jnHq0b3l4s/Ir9r1Unzyxjlr6ZI=
+	t=1762950894; cv=none; b=ZtIPw688nQ5hXwV91SqrpBE4TNsCrV2CDDyWcqIQldFG/hbbhUZluTqI6Saia890pKMPuz/bpAFsUTlK8fuF9vKDZ5vIczxZlB8Ppv7JsRqf1p/3d/q1dFcZGCYntRu45HyZ3vRPwhM0OX/WdaaPeL6hM6z9YpPSaDvAa8C/drw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762950787; c=relaxed/simple;
-	bh=GoygDqYWw5QnBxpPn+aUvq/6hrUvKX40S6nIeuv1rgs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kvvE/eV2NuDP3osm2Clq9EgnI2/Nig6JMvAOcwA9lLYOiI/DUUKx8NJZ9QvdNz7kMbPXLMgUuA28qKmPgitK/OSWOTnj88vf1Go8FlAsAufRhRRK8etXHUeFTiq6JuWSoHlvCvb7iFjfTH+XpbqT05YZvq/ghBp5eibVeFiuOBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VO8JKBsH; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1762950894; c=relaxed/simple;
+	bh=BhzOm9cbY+gcSwwlrOjCY7xiSouWtpklcMkHzwISypk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hNxqRJu0RO9p0rHj5Kaerhojy0c+9plY9/3cj1qZQpD0iMNI30x3U8R/8BVOcuYZoUruT/kFRGZ16Vfxjs/Csx8IP3mzyQByKX4XzVpyrnyCEEd+c2pLD6sTYJap5xSXxl7aY7KG6c7c9/aajcgiA7Dt0QuzipNQAZC8WFg+mD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=JuSd8Dtr; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VO8JKBsH"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-298456bb53aso8454255ad.0
-        for <imx@lists.linux.dev>; Wed, 12 Nov 2025 04:33:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762950783; x=1763555583; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=IuUTav2xUOTbkma3ItG1F52J0EZPCIhhyycd80cfuj8=;
-        b=VO8JKBsHhadQjb1Ok91TA/qoG41dMx8YBj+TbdAU1SVc8qupZpfg2f0TX2f3QHzRDz
-         HW5ujzAsh/xX1WW9nCcDvAwSBXt2q0dwPVUwGCp/DCCkPMo8QdSVMRpfIVUsdHEPBW2B
-         x+D0BmctM3Vz8g7Dy6g03nTRnrnRd6L81ov3Xuw/xy72kAntX50pfUwdwzjfsGrrLZPY
-         aV2DVj5gBWTIKplPzY2yDPRw8Ge9ybyzN625dNL/L/BhRoxCtThaumqqmjZ+R4P9FlK4
-         VAuWTdM+FnWfdw6t55vkp0jZ3Gb+t/q0E6DLNigC1hwkRBt0QDGALs4GJQyxBscrkZNz
-         4ARQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762950783; x=1763555583;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IuUTav2xUOTbkma3ItG1F52J0EZPCIhhyycd80cfuj8=;
-        b=tipyX+pSGuNFXvUO/L2unlkqkcRKEcTSrCbFPpr+UmeQ3LSQ2Yom67Jm6tAr/jv+iG
-         8eV83VbeT6mZHcLgCb3+B7uHZgZI0Vf9AMgdmIWssKi/5ANpV85JhYn3QvZRPhG15SSS
-         VK79k4mWAKwz1inBFMTP9qDZaWl407n50q75VOY8CVyHA8gfr5AQFeFlFmU2qQ5N7zhM
-         QobRlNzX0mylYmoqvFm7p768XXZC3qC8VrPfv+ISvC3i2twAGGaQ7pDVP49R1vSYZLl+
-         ZokTfBFujGIVylBkY/H8/r6SlX2N0twASAJ2lRN0e1APXby8ncLMUGkyB5j8xny8JXrX
-         JZBw==
-X-Forwarded-Encrypted: i=1; AJvYcCUjnfRHWvfDqTPAVOkTIDbZJ2I0j3Lqd1Z6ZVciu9y/UVlotFnMQ6dM1zlRXk6nSryXOxM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwrS92B3mzaXX7yiSTuojOvrVsse9vbzV4dwdXAWB1uILnADOeF
-	ckRtn1172D17G6lZtt/4t30vhqPB7Fm1K9AIk6wCgyam0lAMl9XkJwJbkQL6HzoLeexZKmwvFMo
-	yTl0LASQJej3dRUWsCnLDF8FvwAzKPF4=
-X-Gm-Gg: ASbGnctcBq+UtqHzwU6aKqcktzXNQBWq1z1FR+Ix6PMDYn3nKpQdL1q/4rQBRkR7sUi
-	Tn1ZVXaYYeJlkuoBW4OnLdEnADVAkkHMWdKQsHN+OCOB7ZCe18sa96xucg2m95Js/QxFN2z5AWw
-	k3hp2L2HQIsp5XGtfuJg/XGqm0bcG1VARS6oS061BIPCReRZWHimCfigglX5EMZVvcV+4nm/bj+
-	gpHafgu6VJjMFHBWWpQGYG5o5idrzthtjFv17Lbvh6qZ8jiA1ema1hLlQ==
-X-Google-Smtp-Source: AGHT+IFabhPWRSsuZsSo5sbgc0lLZtsJguRmqpiSDLmiPKtI899emQH3LjICEzz3+Agz/sH6qEDUHd1ILnm2Zjkbos0=
-X-Received: by 2002:a17:902:ccd1:b0:258:9d26:1860 with SMTP id
- d9443c01a7336-2984eddd8e8mr38233045ad.40.1762950783418; Wed, 12 Nov 2025
- 04:33:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="JuSd8Dtr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=lU6jZkeZpiccZijv3aker05TIimOBqJ5loP8s0voplg=; b=JuSd8DtrtxZHo+q7x6jNuqyhbo
+	Eo9hGjnc+ZerLKyTFmDMb1hhueSDKbxjz7l8sUMngWorzKWh5b0ywy22T2UlWRO7KNNKHwNqGCSyX
+	2qKfp96th4vtX+Os7B5Sbl2d0LTwy3YkweYyLvoQr/9SR+VwBZWiEfOf7n4WSxt8y3pFML7u9G/jV
+	oYFIPpHltz+Bt/THIZytvxIYGwJ3r716lchKojdF/G+IVxGc8ldr5V7Rqjm2LaCJ0gbvdksypXYVF
+	q7Ey1X1TEmEwJnVt6ca+4M5kE6PbzF+7Z9M8lLXjEyaXYMjwix7GbvkfNkvG0XjCmxisjALerzWdR
+	iXlJV5mQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43608)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vJA3l-000000003t5-3LII;
+	Wed, 12 Nov 2025 12:34:49 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vJA3k-000000003sa-1FY7;
+	Wed, 12 Nov 2025 12:34:48 +0000
+Date: Wed, 12 Nov 2025 12:34:48 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
+Message-ID: <aRR-6Nl3ELB2v8gV@shell.armlinux.org.uk>
+References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
+ <e87ff7f2-d16f-41f2-b781-b175cfb84b21@lunn.ch>
+ <aP83bMDWCre7-Sjw@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251109214515.121742-1-rpimentel.silva@gmail.com>
- <20251109214515.121742-2-rpimentel.silva@gmail.com> <9d48a54c-0585-4524-b9d5-30696f5ecc8b@kernel.org>
- <CAEnQRZCvpXzGt=7NGv7-s+y0gvOg7Jx4OqbfbW3uv8jDp-jroQ@mail.gmail.com>
- <CAOMZO5CU09fcBB8oUOO=qC=Du3Q9gnJOQacK=6v+pnSQViex3g@mail.gmail.com>
- <CAEnQRZCHKemw2YVT=WVJvUMr9CCWoZ3MORt_mU1V-62C53n-3w@mail.gmail.com>
- <CAEnQRZBBJ4PGDOk7hBP_qsk7bBiec8pHb0DYKs2mhOAahNyKww@mail.gmail.com>
- <baafb460-fb65-4cd2-9911-89d828199d9b@kernel.org> <2e160fe1-bcb2-41cf-817e-ac2a36959b16@kernel.org>
- <CAEnQRZDg0yAjR-a-4J2ZKAjh3mm8NeQCA=o2kyNJtXMAFCMLAA@mail.gmail.com> <56530f64-6ddf-4d2a-a079-0578db260449@kernel.org>
-In-Reply-To: <56530f64-6ddf-4d2a-a079-0578db260449@kernel.org>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Wed, 12 Nov 2025 14:35:26 +0200
-X-Gm-Features: AWmQ_bl_E_pJAreACwvdhcI2KJRqNKpXEYmnMwMcnpAuTrSvxvSsy1R2nTa94KY
-Message-ID: <CAEnQRZD=h5qOC445U3_+HPh7aCE8TohSpZmg9hgkRE7mg5HUpA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] arm64: dts: add support for NXP i.MX8MP FRDM board
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>, Rogerio Pimentel <rpimentel.silva@gmail.com>, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	alexander.stein@ew.tq-group.com, dario.binacchi@amarulasolutions.com, 
-	marex@denx.de, Markus.Niebel@tq-group.com, y.moog@phytec.de, 
-	joao.goncalves@toradex.com, frieder.schrempf@kontron.de, josua@solid-run.com, 
-	francesco.dolcini@toradex.com, primoz.fiser@norik.com, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Xiaofeng Wei <xiaofeng.wei@nxp.com>, 
-	Daniel Baluta <daniel.baluta@nxp.com>, Joseph Guo <qijian.guo@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aP83bMDWCre7-Sjw@pengutronix.de>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-<snip>
+On Mon, Oct 27, 2025 at 10:12:12AM +0100, Oleksij Rempel wrote:
+> Please note, RTL8211E PHY do use undocumented SmartEEE mode by default.
 
-> > We (NXP) immensely  appreciate individual contributions from everyone.
-> >
-> > We need to be fair, the v1 of this patchset was taken from NXP
-> > downstream without
-> > respecting the Developer Certificate of Origin.
->
-> No, it wasn't. Please read carefully DCO. The chain here was not
-> correct, but that's the only thing.
->
+Same as RTL8211F I believe (as used on the Jetson Xavier NX platform I
+have.) I submitted commit bfc17c165835 ("net: phy: realtek: disable
+PHY-mode EEE") to get EEE working on this platform.
 
-Indeed carefully reading the DCO Clause b) you are right.
+> It ignores RGMII LPI opcodes and doing own thing. It can be confirmed by
+> monitoring RGMII TX and MDI lines with oscilloscope and changing
+> tx-timer configurations. I also confirmed this information from other
+> source. To disable SmartEEE and use plain MAC based mode, NDA documentation
+> is needed.
 
-> >
-> > E.g there were commits pulled in from our internal tree without
-> > keeping the S-o-B tags.
->
-> Read DCO, please. It is not mandatory to keep 3rd party SoB. It is
-> perfectly fine to skip it, if needed according to (b) of DCO certifying.
->
+What I saw there was similar to what you describe (although I have no
+way to monitor these signals.) No interrupt storms, but while the
+stmmac TX path would enter LPI mode (whether that provoked anything
+in the PHY, I do not know), the RX path never entered LPI mode because
+the PHY never forwarded that status.
 
-True. In my understanding though if one bases their work on others work
-they should at least keep the S-o-b tag as a common courtesy.
+So, I don't think having SmartEEE enabled on the RTL8211E would cause
+this interrupt storm that Laurent is reporting.
 
-Commit messages explicitly says that the work is based on NXP internal
-tree patches.
+In Emanuele's case, things are different. The TI PHY reports that EEE
+is supported, implements the autoneg registers for EEE, but *doesn't*
+implement the necessary hardware for detecting/entering/exiting LPI
+mode. So, if EEE is negotiated, the remote end thinks it can enter
+LPI mode... which likely causes the link to drop as the TI PHY can't
+cope with that, and I suspect that's the cause of Emanuele's problem.
 
-At this point I leave to Rogerio's appreciation on which S-o-B flags
-to pull and how much
-of his work is based on NXP tree.
+I'm wondering why "arm64: dts: imx8mp: add cpuidle state "cpu-pd-wait""
+impacts this - could it be that entering the idle state does more than
+just affecting the CPU domain, but interferes with the EQOS domain in
+some way. Given that the entry/exit to this state is all buried in
+PSCI stuff, without digging through the ATF implementation for this
+platform and then cross-referencing the iMX8M documentation, I don't
+know what effect this has on the system. Is it possible that PSCI is
+messing with the EQOS?
 
-Thanks a lot Rogerio and Krzysztof for helping move this forward.
+What about the clock tree? Is it possible that the stmmac and/or RGMII
+clocks could be lost when cpu-pd-wait state is entered on all CPUs?
+
+Has anyone checked whether there's anything in the errata
+documentation?
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
