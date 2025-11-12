@@ -1,66 +1,52 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D3133555E
-	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 12:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59042306482;
+	Wed, 12 Nov 2025 12:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762952190; cv=none; b=P52oLTks1cA0z4Iyc/y7IlZlDw+cmn/jsn0WvyIRszzN9ZUtFs2ZAGR3Pm4zsnoS9Tq1bfnmnTyPQw0uJzE5ddT/MklQQILimSAobUTy8NEjMHgTxKBZiHmRJsuRjhrL7H6W/VUIFasxUUZUjfVP/eqivr6W3R1msCP9tl84kZU=
+	t=1762952263; cv=none; b=rOQjSRvBPeULoI8khI9uvyDithQwTDvbACYWuehD3HhbpjlfDiAuyavI69FfsoGrPsf/tZtoUJJNmhOAPOt7SpL1E3HZScV3fN6zOHdIT/an8Qy4WAzLihrWSrx3UkGmAOO1qPu6kaDC5Rx3wfTX5qv0yzIgUDyv2Lx80V1Zy8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762952190; c=relaxed/simple;
-	bh=rfZ47164vUAnuxaU/M/p7rQIXKJ9sbj0HOxvYJGXYEQ=;
+	s=arc-20240116; t=1762952263; c=relaxed/simple;
+	bh=Y/Te0HzAS1xw4J1YENHr8HkxRQWKOBx9e2X1tTKC/14=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FJt76dXIi5HpkFwpMNXVxj5M+0Gc2AL8KA44lSEjLapL1OSVny1Xp36F/xZOE9oFCPP/7tcozee2FzoEQCDoY1v4tPp1botArLM9012eGshO3/mYltdVLlQQyzxr2C/0SZYYMViKu8QwHxzFfupqEcjo/i9DF5BAcQQA8/CI7GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=TIiOslFf; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=LrLWrGVAIjHV6yYhACgWw5hFGLYHdux4hV8y8PuzGXRpuNZOdFf4nBKTGWBJ7Q+WKjKfgovn6fOlsqMbJzrR2U8b+zIUuoXR+Dvhpw+r3tmz6TKjqlyu18IlICkbGsRVa9PNRyKNGs8suEeOEKDUo1iTfJJXDEQIOhH249eEiDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tt7BT9fq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="TIiOslFf"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ovOaO7o5EVy31SCddS4vIZxUwqi/JxafOZ5Xize7kHY=; b=TIiOslFfi3mXLkrInndtcQ3PTG
-	e7R9cAW4DEmjWFydFzK+Z5XsyNBvuoAF7Ifu16xV8MgUwZerp7Zvpr3iQE5Ikm4Jpigrh8PcP2/8R
-	YaNVfbJDPyPCu/J6pAqK4O9qJk/+4oNyIWri3FIXrcGzYbf1flhbyfxChW4POjc03dX0jJSlkGiKp
-	yEbuScVgfoVReSWjTtoMa88gutdmKCoEvOjHB8NLc3Xd0gWqPz+WexiKxziYtX8zpRaR5hf6tH9nq
-	jzUVzlcnLlAknBhe70ApwVbBJ9lCdM5C5xL+RZqqOVVJG8J/wGNytjd6ejm2csW2OSG/8fl5VrqiH
-	zvCTS/8g==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35520)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vJAOe-000000003vM-1L2V;
-	Wed, 12 Nov 2025 12:56:24 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vJAOc-000000003th-1Abs;
-	Wed, 12 Nov 2025 12:56:22 +0000
-Date: Wed, 12 Nov 2025 12:56:22 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Andrew Lunn <andrew@lunn.ch>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tt7BT9fq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73B7C4CEF5;
+	Wed, 12 Nov 2025 12:57:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762952262;
+	bh=Y/Te0HzAS1xw4J1YENHr8HkxRQWKOBx9e2X1tTKC/14=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Tt7BT9fqYmX2s6rGY/Y5Pn+fl3hnelplJ/8G0XdVownkJMcqeUveEY+c+6sqke1CN
+	 TIaaRP3aqhelwpqNdbgb5keCkIHsI7reg9X4Vfa67Q17ngwXdm54TKsaD+rMJ5IGSG
+	 CgUWWJDMwPlWnsNuanNbkA13zr0DimaRrwd3hZcFirPMrznvZmKK4ActGNGP+6ZIVl
+	 jtc0m9iRz+ebyDSEj2Snmz04lyNxP1yv0R8iiCM4YkObOP7FBFWy3iPwltL4OtBisp
+	 WZ2VcEC7SlBQhTcV7rw4Uv8eYCdnMtBs7sSn75QwBdVMi0ExoeDEoiW1NpGvZ2rI9p
+	 zBApvYzKSz4Mw==
+Date: Wed, 12 Nov 2025 06:57:41 -0600
+From: Rob Herring <robh@kernel.org>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
-Message-ID: <aRSD9n_F4aRXAdf3@shell.armlinux.org.uk>
-References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
- <e87ff7f2-d16f-41f2-b781-b175cfb84b21@lunn.ch>
- <aP83bMDWCre7-Sjw@pengutronix.de>
- <aRR-6Nl3ELB2v8gV@shell.armlinux.org.uk>
- <176295131007.567526.3395425614344577792@ping.linuxembedded.co.uk>
+	Jonathan Corbet <corbet@lwn.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-imx@nxp.com
+Subject: Re: [PATCH v5 3/5] docs: staging: gpio-rpmsg: gpio over rpmsg bus
+Message-ID: <20251112125741.GB1319094-robh@kernel.org>
+References: <20251104203315.85706-1-shenwei.wang@nxp.com>
+ <20251104203315.85706-4-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,36 +55,17 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <176295131007.567526.3395425614344577792@ping.linuxembedded.co.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20251104203315.85706-4-shenwei.wang@nxp.com>
 
-On Wed, Nov 12, 2025 at 12:41:50PM +0000, Kieran Bingham wrote:
-> Perhaps further complicating matters.
+On Tue, Nov 04, 2025 at 02:33:13PM -0600, Shenwei Wang wrote:
+> Describes the gpio rpmsg transport protocol over the rpmsg bus between
+> the cores.
 > 
-> I have a Debix Model A as well ... I'm in a different office to Laurent
-> - and I believe EEE is enabled on my board/network switch.
-> 
-> I do not get an interrupt storm.
-> 
-> I'm not sure how this helps yet, - I don't know what to debug as I can't
-> reproduce the issue!
-> 
-> I can provide remote access to the board with ssh if that helps anyone
-> who wants to look at something specific about my setup or run anything
-> if anyone has ideas of what to check my side.
-> 
-> Perhaps we can find some subtle difference between a working case and a
-> non-working case...
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> ---
+>  Documentation/staging/gpio-rpmsg.rst | 202 +++++++++++++++++++++++++++
+>  Documentation/staging/index.rst      |   1 +
 
-Thanks, that's interesting. I guess the next steps would be to try and
-work out what's different between your two setups.
+Why is this in staging when none of the drivers are?
 
-- same board revision?
-- same firmware/ATF?
-- same kernel/modules?
-- same type of link partner? (I suspect, given the cpu-pd-wait
-   interaction, isn't the problem.)
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Rob
