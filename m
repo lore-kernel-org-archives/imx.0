@@ -1,67 +1,33 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31A82BE02C
-	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 09:07:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C766E29AB1D;
+	Wed, 12 Nov 2025 09:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762938472; cv=none; b=uQRVrZWQlS/VnYz9LvuF7tMgu3ShzA7Y06sfPXXs/FL+nNRKF7giM11YKYfnYA8EmpjG+DuyfWLNd3GTXlRbjmGpFlLWVJRX+2C/0qAU9boUciOrH1yqEVDHC4xGaN9t5Uvq419S/3Ijw29gxrWes55CDmyRgeI4NmsuumbaRCo=
+	t=1762938516; cv=none; b=eQ2u9WPgr69MZUDu7eJKyfcDl4ofsEpiasM0G34aiO0Gidxxj4a4x6abgCC/viM/Y/i3V1YX0s++KsJiURxcgTHyImXRkqa39hP5nJZe4nMR2+F7i5CWLIKye3/WtGE1YrI9fM5pGUJnhJFdzauC1MDnoJ9xtqHIwXEPrOo/QU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762938472; c=relaxed/simple;
-	bh=iLZmltUDQPrrhKihjCC4ei9e3XDEeX7Dysw2ockOiqQ=;
+	s=arc-20240116; t=1762938516; c=relaxed/simple;
+	bh=fPlfJInIkVVGN9ej8lr8KJJv7if0Cdwdc3VVXzlPNA0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TLWU/AHWWJK1f6IE6FL9aSY2f884Q7HQ6jITzLiYMvD3kSEh0Rd6OMDGTHoUnpBzHdD2SDa+QKgygcOsW0SqAGYJXsAbh1sVe8OW8DFg0r+0r1950mLgJdM/ykdeRoqqa+dq9FPTUmJHvBugFK6kqLG5+MP/wyTJLb4qBIpZzdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=n/Igqzvg; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type; b=G3AX7YXQhbyKgh8+Fz63F4xCMZZxkjLOthWkInMh9gzYZQtkKuzvCEJG26MJJ/W7bhP9ZuM83UI7YzTuCCEod+OoJYjb+hoXJJ9lk7al/61n55uqOIhfvH1KawJNuDmvP00BeBWeg4BRJTlPP0tPvcErknyhjzQNEZvytOT9foY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Map12MD8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="n/Igqzvg"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-42b2a0c18caso457551f8f.1
-        for <imx@lists.linux.dev>; Wed, 12 Nov 2025 01:07:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1762938469; x=1763543269; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rZGbcTOXFvtZxg3sMQLwS6prNPL/GN53EHQzV1EWATA=;
-        b=n/IgqzvgnB4IJzO3RLtrS+YeBc+gv2MCpPIc8MJas+cb/z8Fi+MZX/JqzQdMmQOcoz
-         OJBCO0GkiPHxhc8NcC6q/2UzLDRym6hTuBJh5CSoaHMiyiifgAfu7fI9uX1OF6CABnF5
-         miInZmZUSFu1NZ3J6ilnqLKMnAG5Kjj1EaD1KJRI/h5BKDO5lejhiBhzy8nxJP+ydz/s
-         CmuOUvcIED2gjiFFTPPdDfYq35666GZYikhCXTd+WkFhq6Ufe+f+GAefLZ6VbkuH+OLy
-         nQBW0L9YTiKlGsKHRyGXmKcv03v0LlirEoCO+kUVilaVaZg2mOmyTWfcudkoUAosvxfB
-         5R3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762938469; x=1763543269;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rZGbcTOXFvtZxg3sMQLwS6prNPL/GN53EHQzV1EWATA=;
-        b=REFou+2x0km42oqOaoCS2Xk870qfJ4UUMQrW9g8JGs3tvhk86p4M2U3eTxZt1MDub9
-         6RI++30BdVCo5TmoLdrNva8RQumi1ATJrTl1PFR47DDD1n/mbeZ8jkeicKX0nCP3k8dM
-         MHR4g9leJbtRhQ1Q7/KHESYSE8X7pivT0U2iEOnHy4+ZHhGCeTzph2+4WOmKbzHN4EEq
-         /Q4qnFEAhWbUbSJOlQ+SBZlmQi02YuYbLviu65rh2W2C2UE8ycihNINbv40I8jkD8WqU
-         27tz/dn04JVXU5tfuekjvENKB4c0TRQvp0gGxokmbZZ4C//oHKFunUEOGFDsKfGCwsgL
-         FlLg==
-X-Forwarded-Encrypted: i=1; AJvYcCWvME3RY9cweLyirG3VMfIeTeREn6upLr1bY8Sh8rjfUGfoupUBOFzDy3DBfCti2BRqHRY=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzdjq5HVOHq2CgI/14Su8XUk6fHSXK9HB7QVngd3qy72lmrDj1U
-	fm26+W2kNM3GWt7cx8NGBb9DJ0QPwi7fteefAO63rK/ofps4meBhg+Vh+EZQpuKWBaU=
-X-Gm-Gg: ASbGncuT877WpGrzgll46zUQM3v6xNhvePFsN+8k+FPJbpY8dCJlY6RflyBt8hPqXE5
-	/VV+lmQccr6u+i6goKA/ynq+K2D2KJMdATXpCGl/D+vpuL/LUMP/RLHqXP0mq1C0OWDA9PbSqoM
-	DaJcXDG0/V+/AUH35RSNbpNpnBcyMBNLHHaHwPAhFwvCaN3SQElMaLRrUgFp4wVvtcSgY8jr0gL
-	8fpO66OL7f1yrlXeq14zIB4qCaiyezrNmfSSHmq5hOtUeiZWSrgpOAf9v5g2LJ84iYUW8Vj6Vpc
-	S9ZbV21Df1AK1hmYk9oO30/RTDesFOeWLA/TM8nlbhuo2AmSIbrOtnhuFT9jLMaalKoVg+JJPxm
-	vF7UL5RGubdrHJiE0x7kW8D7nDD4n13Eez8WSASrkurrKHuQfrHBLQDQDmOb4cKoGT8m1QUGsXY
-	B/Qw9kHQ==
-X-Google-Smtp-Source: AGHT+IHJgyfCXCMoxcj7q8e/XHfaH+bqMlUfgAoObC86lK/8KAn1X6MgJ15lw0a/KRXGwmsb0fiiFg==
-X-Received: by 2002:a05:6000:228a:b0:42b:2e39:6d45 with SMTP id ffacd0b85a97d-42b4bb98862mr2197431f8f.15.1762938469076;
-        Wed, 12 Nov 2025 01:07:49 -0800 (PST)
-Received: from [10.11.12.107] ([5.12.85.52])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42abe63e131sm33109625f8f.20.2025.11.12.01.07.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Nov 2025 01:07:48 -0800 (PST)
-Message-ID: <76970e66-7191-4e33-9def-4f28c414a125@linaro.org>
-Date: Wed, 12 Nov 2025 11:07:47 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Map12MD8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2F1C19423;
+	Wed, 12 Nov 2025 09:08:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762938516;
+	bh=fPlfJInIkVVGN9ej8lr8KJJv7if0Cdwdc3VVXzlPNA0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Map12MD8WPoa9Dz+/7u2ptaxxzhd1cu95gd3hN+9JtTBl0RBiIUeDDeczX6WXvzL7
+	 AZ4dkcyaQn2Z+teNrTklPEL9FS63PDMDSb+5PO9v1gWi8NsTYQBCkuKlVtOoTa3Il/
+	 W86nxkqMEVsAA7dMvXPRIVpa6TJdipwuOwT7DY+ToQgiKIAaAtKpHXxiSkNbeP+NXA
+	 th8j6OtxalqY6timU/HGVwIII5yG+aIxp/8A79BAw2PbziJa0+m6om6wq+1sGZLXo1
+	 uLgKGb4xfA83gq7fp1mE9i8I+y80BAmsRTTN7sWELib6GQZ0dtCzrf3o6MyHMLoNjh
+	 Q0P1ySTznnypQ==
+Message-ID: <baafb460-fb65-4cd2-9911-89d828199d9b@kernel.org>
+Date: Wed, 12 Nov 2025 10:08:29 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,75 +35,144 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/5] mtd: spi-nor: micron-st: add mt35xu01gbba support
-To: Haibo Chen <haibo.chen@nxp.com>, Pratyush Yadav <pratyush@kernel.org>,
- Michael Walle <mwalle@kernel.org>, Miquel Raynal
- <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>,
- Vignesh Raghavendra <vigneshr@ti.com>
-Cc: linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev
-References: <20251112-nor-v3-0-20aaff727c7d@nxp.com>
- <20251112-nor-v3-4-20aaff727c7d@nxp.com>
+Subject: Re: [PATCH v4 2/2] arm64: dts: add support for NXP i.MX8MP FRDM board
+To: Daniel Baluta <daniel.baluta@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Rogerio Pimentel <rpimentel.silva@gmail.com>, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de,
+ alexander.stein@ew.tq-group.com, dario.binacchi@amarulasolutions.com,
+ marex@denx.de, Markus.Niebel@tq-group.com, y.moog@phytec.de,
+ joao.goncalves@toradex.com, frieder.schrempf@kontron.de,
+ josua@solid-run.com, francesco.dolcini@toradex.com, primoz.fiser@norik.com,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Xiaofeng Wei <xiaofeng.wei@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>,
+ Joseph Guo <qijian.guo@nxp.com>
+References: <20251109214515.121742-1-rpimentel.silva@gmail.com>
+ <20251109214515.121742-2-rpimentel.silva@gmail.com>
+ <9d48a54c-0585-4524-b9d5-30696f5ecc8b@kernel.org>
+ <CAEnQRZCvpXzGt=7NGv7-s+y0gvOg7Jx4OqbfbW3uv8jDp-jroQ@mail.gmail.com>
+ <CAOMZO5CU09fcBB8oUOO=qC=Du3Q9gnJOQacK=6v+pnSQViex3g@mail.gmail.com>
+ <CAEnQRZCHKemw2YVT=WVJvUMr9CCWoZ3MORt_mU1V-62C53n-3w@mail.gmail.com>
+ <CAEnQRZBBJ4PGDOk7hBP_qsk7bBiec8pHb0DYKs2mhOAahNyKww@mail.gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
-In-Reply-To: <20251112-nor-v3-4-20aaff727c7d@nxp.com>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <CAEnQRZBBJ4PGDOk7hBP_qsk7bBiec8pHb0DYKs2mhOAahNyKww@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-
-
-On 11/12/25 8:48 AM, Haibo Chen wrote:
-> mt35xu01gbba is similar with mt35xu512aba, but with two dies.
-> mt35xu01gbba has SFDP and support 8D-8D-8D mode, but SFDP
-> lack SNOR_F_IO_MODE_EN_VOLATILE, so add this fixup flags here.
-> Besides, mt35xu01gbba do not support chip erase, but support
-> die erase, so add that in late_init().
+On 12/11/2025 09:15, Daniel Baluta wrote:
+> On Tue, Nov 11, 2025 at 2:49 PM Daniel Baluta <daniel.baluta@gmail.com> wrote:
+>>
+>> On Tue, Nov 11, 2025 at 1:50 PM Fabio Estevam <festevam@gmail.com> wrote:
+>>>
+>>> Hi Daniel,
+>>>
+>>> On Tue, Nov 11, 2025 at 5:45 AM Daniel Baluta <daniel.baluta@gmail.com> wrote:
+>>>
+>>>> In addition to that, Rogerio please read:
+>>>>
+>>>> https://docs.kernel.org/process/submitting-patches.html
+>>>>
+>>>> At this moment I think you should keep the original author of the
+>>>> patch.
+>>>
+>>> Right, but NXP makes a total mess with authorship.
+>>
+>> I cannot disagree with you on this, let me clarify it internally with
+>> NXP colleagues
+>> and sort everything out.
 > 
-> Link: https://datasheet.octopart.com/MT35XU02GCBA1G12-0AAT-Micron-datasheet-138896808.pdf
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> Hi Fabio & Rogerio,
 > 
-> ---
-> 1) This mt35xu01gbba is populated on the imx95-19x19-evk board, was
->    tested at 200MHz using nxp,imx95-fspi SPI controller.
-> 2) root@imx95evk:~# cat /sys/bus/spi/devices/spi1.0/spi-nor/jedec_id
->    2c5b1b
->    root@imx95evk:~# cat /sys/bus/spi/devices/spi1.0/spi-nor/manufacturer
->    micron
->    root@imx95evk:~# hexdump -Cv /sys/bus/spi/devices/spi1.0/spi-nor/sfdp
->    00000000  53 46 44 50 0a 01 03 ff  00 08 01 17 30 00 00 ff  |SFDP........0...|
->    00000010  84 00 01 02 90 00 00 ff  05 01 01 06 a0 00 00 ff  |................|
->    00000020  0a 00 01 08 b0 00 00 ff  ff ff ff ff ff ff ff ff  |................|
->    00000030  e5 20 8a ff ff ff ff 3f  00 00 00 00 00 00 00 00  |. .....?........|
->    00000040  ee ff ff ff ff ff 00 00  ff ff 00 00 0c 20 11 d8  |............. ..|
->    00000050  0f 52 00 00 39 61 99 00  87 8e 03 d3 ac a1 27 3d  |.R..9a........'=|
->    00000060  7a 75 7a 75 fb bd d5 5c  00 00 70 ff 81 50 f8 a1  |zuzu...\..p..P..|
->    00000070  2f cb 27 8b 00 00 04 01  00 06 01 00 ff ff ff 8e  |/.'.............|
->    00000080  00 00 00 00 00 00 00 00  00 00 00 00 ff ff ff ff  |................|
->    00000090  43 0e ff ff 21 dc 5c ff  ff ff ff ff ff ff ff ff  |C...!.\.........|
->    000000a0  00 0b 80 9e b1 81 b5 85  00 f0 ff 9f 00 0a 00 00  |................|
->    000000b0  00 0a 1a 88 10 00 00 00  ff ff ff ff ff ff ff ff  |................|
->    000000c0  00 00 06 01 00 00 00 00  14 01 81 03 00 00 00 00  |................|
->    000000d0
+> Checked internally and to track the correct authorship and development work
+> here is how NXP would prefer to get credit.
 
-SFDP above
+Sorry, but individual contributors do not need to give any credits to
+NXP. If NXP wanted to sent the patches to have credit, they would do it.
 
->  		/* MT35XU512ABA */
-> @@ -193,6 +198,13 @@ static const struct flash_info micron_nor_parts[] = {
->  		.mfr_flags = USE_FSR,
->  		.fixup_flags = SPI_NOR_IO_MODE_EN_VOLATILE,
->  		.fixups = &mt35xu512aba_fixups,
-> +	}, {
-> +		/* MT35XU01GBBA */
-> +		.id = SNOR_ID(0x2c, 0x5b, 0x1b),
-> +		.sector_size = SZ_128K,
+Did sending happened?
 
-you can drop sector_size, can't you?
+If not, then any contributor is rightful to take the patches from
+downstream and send them only, ONLY with their authorship. That's what
+DCO allows and that's what established practice as well.
 
-> +		.mfr_flags = USE_FSR,
-> +		.fixup_flags = SPI_NOR_IO_MODE_EN_VOLATILE,
-> +		.fixups = &mt35xu01gbba_fixups,
->  	}, {
->  		.id = SNOR_ID(0x2c, 0x5b, 0x1c),
->  		.name = "mt35xu02g",
+NXP had a chance to upstream. When they decided not to, they forfeit any
+rights to claim they want any authorship.
+
+
 > 
+> #Use git commit --amend --author="Xiaofeng Wei <xiaofeng.wei@nxp.com>"
 
+NAK, there is no single patch like that from above author:
+
+https://lore.kernel.org/all/?q=f%3Axiaofeng.wei%40nxp.com
+
+Remember, downstream code does not matter. Does not exist.
+
+
+> Author: Xiaofeng Wei <xiaofeng.wei@nxp.com>
+> 
+> Signed-off-by: Xiaofeng Wei <xiaofeng.wei@nxp.com>
+> 
+> Co-developed-by: Joseph Guo <qijian.guo@nxp.com>
+> Signed-off-by: Joseph Guo <qijian.guo@nxp.com>
+> 
+> Co-developed-by: Steven Yang <steven.yang@nxp.com>
+> Signed-off-by: Steven Yang <steven.yang@nxp.com>
+> 
+> Co-developed-by: Lei Xu <lei.xu@nxp.com>
+> Signed-off-by: Lei Xu <lei.xu@nxp.com>
+> 
+> Then you can add your own C-d-b and S-o-b.
+> 
+> Thanks,
+> Daniel.
+
+
+Best regards,
+Krzysztof
