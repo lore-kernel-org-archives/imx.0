@@ -1,56 +1,58 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94ADD2417FB
-	for <imx@lists.linux.dev>; Tue, 11 Nov 2025 23:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738B9280025
+	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 01:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762905286; cv=none; b=JY0gntslEb2DGSRZ1OimfyZlg9CODWC4sqsPnvOlvVutPq07TKp/6eTM7AKwmxdTRzDpJ+lfaucfo7LJ18tRFYh0K5Km/xJyDg5yqUTqCQ6Bi57MP9oJjADMpugVCdV9e8cnfK1wahMrPL+BvU02eRgbQSgnd6rQdAIw594ZYKE=
+	t=1762912282; cv=none; b=IRTx/luQume7ajynOmKCR0OBDOlg2y91yKklnwq+gOwIcbniY+2MsmULqLbSOPVibWUFOjpU82iir3ztr+VfpZH/IY8x2eXPQZmF5CVr1QQ9Eax7Zb/k8iNvj54CP91EanOdZMabBNkhxSOHyZR5uRxc1a3KxSGxFL7hJeO+Wtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762905286; c=relaxed/simple;
-	bh=K+GlrNLwbthHk2+M7wdXI3Vz5I8fexlgTGx+hnLNPhk=;
+	s=arc-20240116; t=1762912282; c=relaxed/simple;
+	bh=i3Nk53O/boHBuFajvOJf0+NAQQ8HEj8mlkMRb6nOWXk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pKVIn6I3cz7GObP+8q+yzKFOyWHrTFo30JEIVv0x/NwZVJW+UnSBDXb5IHsIm8qxuhXIlzPAUnrbotVr+XTqHWpUVsBcTXPbCsn0ZEa3U1X2dS0jatJMn9svp9JnfaLLpJm9/ATOgGFxEE85Tsvm977Ew+i1bX9Jb95Y0ciWqs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=HZSDmkPI; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=nSj4MVYI35VQ60eTPeHs9fgOT3L3kEYAc3pynDjQ9r5lpfzl72KP0UCaSzw7Qp18QqpUtmWV2ICRY76hfN1kF0+MkuSFBGgCo/fFhVMA3DxNgpetzW3CjxaSbillzdXZ6/9Ah0q2L8gJeYlwXHYLWj904gkJuAL0/ew1OmHsq+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=g2OnEPAA; arc=none smtp.client-ip=220.197.32.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="HZSDmkPI"
-Received: from pendragon.ideasonboard.com (82-203-161-95.bb.dnainternet.fi [82.203.161.95])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 3D5BC16A7;
-	Wed, 12 Nov 2025 00:52:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1762905162;
-	bh=K+GlrNLwbthHk2+M7wdXI3Vz5I8fexlgTGx+hnLNPhk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HZSDmkPI5wPAxOkKGz7gHhkhK6omEHTUoLvFfE5E5ju+wKwvF57B1DqG7Ux6FhXKN
-	 4yLlo7VmvPFSNzsulSQYjpPApuEdYlj8AiAHMVYBragYabbwEUa3ZtKhk6uoLwB09r
-	 ytxBPNbklgzlGl9tqb4+xKOhAemJI97lLsiub9OE=
-Date: Wed, 12 Nov 2025 01:54:34 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Catalin Popescu <catalin.popescu@leica-geosystems.com>
-Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
-Message-ID: <20251111235434.GA25874@pendragon.ideasonboard.com>
-References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
- <aP-ML-A_h13pXY2d@shell.armlinux.org.uk>
- <20251027234648.GC24987@pendragon.ideasonboard.com>
- <aQAVE96NAD4Z4lgt@shell.armlinux.org.uk>
- <20251028071817.GX13023@pendragon.ideasonboard.com>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="g2OnEPAA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=hYfwcXlk1yVhq5DVinFiJbUOXo8e/FkjNZ+187JUQvQ=;
+	b=g2OnEPAAzyP8npm4AZ+DsbfBUsKE+VOkkIsHbR8DM5R8ndnfTRN9gZOsm006g7
+	1gy1K3u7D2+fX5wx+0jMYPvwLLbgT2EQLiigh52k0OxTyufcz35V4g8MERCGW4EV
+	IwkqXZzqMk5ENaydSxSc6uknGetzcgC+qBNYW8fSqpGek=
+Received: from dragon (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id M88vCgD3XBjz5xNpPSHPAQ--.5419S3;
+	Wed, 12 Nov 2025 09:50:45 +0800 (CST)
+Date: Wed, 12 Nov 2025 09:50:43 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Frank Li <Frank.li@nxp.com>, "robh@kernel.org" <robh@kernel.org>
+Cc: Hongxing Zhu <hongxing.zhu@nxp.com>,
+	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+	"mani@kernel.org" <mani@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v6 01/11] arm64: dts: imx95-15x15-evk: Add
+ supports-clkreq property to PCIe M.2 port
+Message-ID: <aRPn89vIkmije-Ks@dragon>
+References: <20251015030428.2980427-1-hongxing.zhu@nxp.com>
+ <20251015030428.2980427-2-hongxing.zhu@nxp.com>
+ <aRLhko0h1OZgvo2o@dragon>
+ <AS8PR04MB8833D099959C62A97AC8CB868CCFA@AS8PR04MB8833.eurprd04.prod.outlook.com>
+ <aRNf3TUTawixqGR1@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -59,95 +61,87 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251028071817.GX13023@pendragon.ideasonboard.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aRNf3TUTawixqGR1@lizhi-Precision-Tower-5810>
+X-CM-TRANSID:M88vCgD3XBjz5xNpPSHPAQ--.5419S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZr4kWrWrZw1DtFy5JFW5Wrg_yoW5Zr4DpF
+	WUGF4DGF18WFyrJwsFqFyFkFyDtwn3AFsI9r1DWryUtrZ0kF1FqF429rs3ur1Dtr48K3y0
+	vF1qq3sag345Zr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbVysUUUUU=
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiORZWu2kT5-bznwAA3F
 
-On Tue, Oct 28, 2025 at 09:18:17AM +0200, Laurent Pinchart wrote:
-> (CC'ing Catalin)
+On Tue, Nov 11, 2025 at 11:10:05AM -0500, Frank Li wrote:
+> On Tue, Nov 11, 2025 at 08:02:35AM +0000, Hongxing Zhu wrote:
+> > > -----Original Message-----
+> > > From: Shawn Guo <shawnguo2@yeah.net>
+> > > Sent: 2025年11月11日 15:11
+> > > To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> > > Cc: Frank Li <frank.li@nxp.com>; l.stach@pengutronix.de;
+> > > lpieralisi@kernel.org; kwilczynski@kernel.org; mani@kernel.org;
+> > > robh@kernel.org; krzk+dt@kernel.org; conor+dt@kernel.org;
+> > > bhelgaas@google.com; shawnguo@kernel.org; s.hauer@pengutronix.de;
+> > > kernel@pengutronix.de; festevam@gmail.com; linux-pci@vger.kernel.org;
+> > > linux-arm-kernel@lists.infradead.org; devicetree@vger.kernel.org;
+> > > imx@lists.linux.dev; linux-kernel@vger.kernel.org
+> > > Subject: Re: [PATCH v6 01/11] arm64: dts: imx95-15x15-evk: Add
+> > > supports-clkreq property to PCIe M.2 port
+> > >
+> > > On Wed, Oct 15, 2025 at 11:04:18AM +0800, Richard Zhu wrote:
+> > > > According to PCIe r6.1, sec 5.5.1.
+> > > >
+> > > > The following rules define how the L1.1 and L1.2 substates are entered:
+> > > > Both the Upstream and Downstream Ports must monitor the logical state
+> > > > of the CLKREQ# signal.
+> > > >
+> > > > Typical implement is using open drain, which connect RC's clkreq# to
+> > > > EP's clkreq# together and pull up clkreq#.
+> > > >
+> > > > imx95-15x15-evk matches this requirement, so add supports-clkreq to
+> > > > allow PCIe device enter ASPM L1 Sub-State.
+> > > >
+> > > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> > > > ---
+> > > >  arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts | 1 +
+> > > >  1 file changed, 1 insertion(+)
+> > > >
+> > > > diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
+> > > > b/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
+> > > > index 148243470dd4a..3ee032c154fa3 100644
+> > > > --- a/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
+> > > > +++ b/arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts
+> > > > @@ -556,6 +556,7 @@ &pcie0 {
+> > > >  	pinctrl-names = "default";
+> > > >  	reset-gpio = <&gpio5 13 GPIO_ACTIVE_LOW>;
+> > > >  	vpcie-supply = <&reg_m2_pwr>;
+> > > > +	supports-clkreq;
+> > >
+> > > Is binding updated for this property?
+> > >
+> > > Shawn
+> > >
+> > Hi Shawn:
+> > As I know that It's a documented binding property as below.
+> > - supports-clkreq:
+> >    If present this property specifies that CLKREQ signal routing exists from
+> >    root port to downstream device and host bridge drivers can do programming
+> >    which depends on CLKREQ signal existence. For example, programming root port
+> >    not to advertise ASPM L1 Sub-States support if there is no CLKREQ signal.
+> > ./Documentation/devicetree/bindings/pci/pci.txt
 > 
-> On Tue, Oct 28, 2025 at 12:57:55AM +0000, Russell King (Oracle) wrote:
-> > On Tue, Oct 28, 2025 at 01:46:48AM +0200, Laurent Pinchart wrote:
-> > > On Mon, Oct 27, 2025 at 03:13:51PM +0000, Russell King (Oracle) wrote:
-> > > > On Sun, Oct 26, 2025 at 02:29:04PM +0200, Laurent Pinchart wrote:
-> > > > > Energy Efficient Ethernet (EEE) is broken at least for 1000T on the EQOS
-> > > > > (DWMAC) interface. When connected to an EEE-enabled peer, the ethernet
-> > > > > devices produces an interrupts storm. Disable EEE support to fix it.
-> > > > 
-> > > > We've finally got to the bottom of what's going on here. Please try
-> > > > this patch (it's building locally, but will take some time because
-> > > > I'd wound the tree back to 6.13 and 6.14, so it's going to be a full
-> > > > rebuild.) Thus, there may be compile bugs remaining.
-> > > 
-> > > I've applied it on top of 
-> > > 
-> > > I've started with a branch based on v6.18-rc3 plus "[PATCH net-next 0/5]
-> > > net: stmmac: more cleanups" ([1]) and "[PATCH net-next v2 0/6] net: add
-> > > phylink managed WoL and convert stmmac" ([2]) to make the patch apply
-> > > cleanly.
-> > > 
-> > > [1] https://lore.kernel.org/all/aO_HIwT_YvxkDS8D@shell.armlinux.org.uk/
-> > > [2] https://lore.kernel.org/all/aPnyW54J80h9DmhB@shell.armlinux.org.uk/
-> > > 
-> > > The base branch exhibits the interrupt storm issue. The patch
-> > > unfortunately doesn't fix it.
-> > 
-> > So it's highly unlikely that your problem is the same as Emanuele's.
-> > 
-> > Do you know when the interrupt storm behaviour started? If not, I'd
-> > suggest testing 6.13 and 6.14 as a starting point to see whether
-> > the phylink-managed EEE conversion is involved.
+> Shawn:
 > 
-> I can't test it right now (no access to hardware during daytime for this
-> week), but if I recall correctly my colleague Stefan Klug bisected the
-> issue to
+> 	This file should be removed. It is already merge to Rob's dt-scheme
+> as PCIe standard properties.
 > 
-> commit dda1bc1d8ad13672c2728eedee0dd02d27a5314a
-> Author: Catalin Popescu <catalin.popescu@leica-geosystems.com>
-> Date:   Mon Oct 7 15:44:24 2024 +0200
-> 
->     arm64: dts: imx8mp: add cpuidle state "cpu-pd-wait"
-> 
->     So far, only WFI is supported on i.MX8mp platform. Add support for
->     deeper cpuidle state "cpu-pd-wait" that would allow for better power
->     usage during runtime. This is a port from NXP downstream kernel.
-> 
->     Signed-off-by: Catalin Popescu <catalin.popescu@leica-geosystems.com>
->     Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-> 
-> I didn't notice it at the time because my board was connected to a
-> switch that didn't support EEE.
+> See: https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/pci/pci-bus-common.yaml
 
-I can confirm that reverting that commit makes the issue disappear. So
-we're dealing with an interrupt storm that occurs when all three of the
-following conditions are true:
+Ah, thanks!
 
-- cpu-pd-wait is enabled
-- EEE is enabled
-- the peer also supports EEE
+Rob,
 
-Furthermore, I tried counting bits from all the interrupt status
-registers I could find. The count of MTL_INTERRUPT_STATUS Q0IS to Q4IS
-bits is very high, and so are the DMA_CH0_STATUS TBU and ETI bits.
+So it's no longer the case that kernel Documentation/devicetree/bindings
+has all bindings documentation?  Or it's never been the case?  I used to
+grep a property in the folder to see if it's documented or not.
 
-The debix board's DT doesn't specify a multi-queue setup, so only
-channel 0 gets processed in stmmac_dma_interrupt(). I thought that could
-explain why Q1IS to Q4IS stay set (but not why Q0IS also has a high
-count, or why Q1IS to Q4IS are set in the first place), and enabled
-multi-queue support in DT by copying the imx8mp-evk configuration. I
-then see lots of non-zero DMA_CH1_STATUS, DMA_CH2_STATUS and
-DMA_CH4_STATUS values (but DMA_CH3_STATUS stays 0 all the time), but
-sadly this doesn't fix the interrupt storm.
+Shawn
 
-I don't know how much sense all this makes, and I'm sorry if the above
-information is unclear, incomplete or completely wrong, my experience
-with the DWMAC is very limited.
-
-I don't think I can debug this further and figure out the root cause
-unassisted in a reasonable amount of time, so I'd like to merge
-disabling EEE as a workaround for the time being, unless someone has any
-idea of what I could test next. I'll submit a v2 of this patch with an
-updated commit message.
-
--- 
-Regards,
-
-Laurent Pinchart
