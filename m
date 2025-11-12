@@ -1,247 +1,109 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88920337BA6
-	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 13:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FCC32D44F
+	for <imx@lists.linux.dev>; Wed, 12 Nov 2025 13:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762953218; cv=none; b=RlU81VrcUvyeks6fVG6STx1pMhzfLqnIemqyvrqEth9scaqXkF4SIpvpZJLQoIvo01FVGhcI2PFqA2OpnRRjp/r4m9OtThS/LSrGJu3vOSMVS3re4SCGWv29vMP9h2yg8KzjeAp17aO6MPSUe8AfBZNNOTydz2IDU3btVuyZl+Q=
+	t=1762954375; cv=none; b=otHdkOpHt5D4m9uT9e3+70mNqFrl7LObv9286vnYxgMBkhcC+BxK4wMps7IkECBFh56gMdzTqioPep5PYaFsAnrux64ELkalEpO2HufGfirhWRkP/UQ9X1pmJDf8ztkHLXKelopACYIA0S8gUevsgwBSvthjimQjHIPzwtoqrQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762953218; c=relaxed/simple;
-	bh=MeC6RTKuwxHALq2g0pOU7IrsxzxTm9+brGtWcXmYkLg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f3GlW2FH8ygVA785TuJ1pqwFY6c1onfSUMEbAiO8QIUozw5ptNLYOod2sW4aZDNwOSoPZNFC/bG7VVHZMR+5GHBK28QDMlSE6sda5tTif7uQqinXqyInIzIUQc8DNG6lbU1+Ig3Lg/QJUZsm7hj5Q39vVuY5FWA2ZJc84gu9p5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=k4XWVtcp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Uym1b+Xn; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fB9vl8BM; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hYHNjOxf; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1762954375; c=relaxed/simple;
+	bh=VBeqKMSy6YDlSMoYmNN3CreFZlAikXtDai7sNBXQofA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NqUu4EJJ9YXVN+OX02LM24w2Z6QyvbQFTBSYrQe78Ww+3haXHCU7gjFJPPJCpeMkPNGuXH5VJziGbJ04Jqc9ExVzXxP9x5fG+sKraX9ZMzXC4aYWo7vx93eoBkAg0mpu7s/Mo2kyAq7baSOmD/imHOKS8wjw4Os6hpdNY4nsW10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WcPd7ijo; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="k4XWVtcp";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Uym1b+Xn";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fB9vl8BM";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hYHNjOxf"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6DABA21241;
-	Wed, 12 Nov 2025 13:13:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1762953214; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zWtOzO4TJX0uTNe9MuvcTLV/aHSmL/v0DaZqTvOvdXE=;
-	b=k4XWVtcpwkIqO/gQbs0wAthaYioPR+APtI0onfVf1j4PKeewSeAGbiWMYM6ytIU+/7sQC9
-	/cAL5Vg1kfh1ts5pZ79CtEhr2XhUxdSczAZaVJBgw/X3dlOjdyp2pvcJlhxduVXMgxcVYV
-	vjU5ilYFWVCLzE+tdqA0nXKU3NAgCTQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1762953214;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zWtOzO4TJX0uTNe9MuvcTLV/aHSmL/v0DaZqTvOvdXE=;
-	b=Uym1b+Xn4lC7WBw6oV4NZgmO4ipL4sqdo7fnbzsoqgWy3u/IOQykV3/oxdekcZdfxozsM4
-	cptEkT7Pv+CZ2OCA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1762953213; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zWtOzO4TJX0uTNe9MuvcTLV/aHSmL/v0DaZqTvOvdXE=;
-	b=fB9vl8BMjGwluycP6e9jKL6hNb3B+DQvfcqRQPKod5tVyewR+kCtuQHMKk+/qTdnRlkCwV
-	n+7we4HoxEX/8nCYq1lTrUFsxLo+h+ES3xz/Rm3Egs3dV10bidv+cS5YscYnie9pVZHeld
-	DMAcl9Aowjnw7FUIBNElyogCAhoj3h0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1762953213;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zWtOzO4TJX0uTNe9MuvcTLV/aHSmL/v0DaZqTvOvdXE=;
-	b=hYHNjOxfjqU6a6ka6A+wIQOHbQjbqCRsh4x1eJeiaNpQNTQSqst35zxpC30I2ANW0OP7eq
-	CvibwzBgrJ96mbDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 191AC3EA61;
-	Wed, 12 Nov 2025 13:13:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 3zSOBP2HFGkLYwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 12 Nov 2025 13:13:33 +0000
-Message-ID: <47c066fd-fbaa-4f63-a7e5-2da06eb72532@suse.de>
-Date: Wed, 12 Nov 2025 14:13:32 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WcPd7ijo"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7af603c06easo823697b3a.0
+        for <imx@lists.linux.dev>; Wed, 12 Nov 2025 05:32:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762954373; x=1763559173; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9YGhgYj3na3lBzf4w1UXosrLsby9qm0K/6mBJebDsWI=;
+        b=WcPd7ijoetMmBBT5NGY93wVzYVCXlRqWOHcmBZHHTZCSSbOMsGY6TvCnpQhTnG49B0
+         2sCTY7R3OgO5Z+8QU4VhKZA8uz3cW611Pf8URj0pJ/F1mixtK0/k2vIVxkE4u1WWvb6/
+         yaZzcAkqFpPv1D/f08V6Z29vdEUOqXH2Tm9L/FC5/O8J4Ehw5n5z5fjVh4QQ3A7aHwp3
+         Nwi9bJDAA7QKhr5sWwew486B7/5Gl9q3rAtn0c/dgR6v9Q9/ow34OXd+A65scoUal8WO
+         6qeZSUWopTYNF/K1v61fUHW/cdIPP8wvHmHD3Qa9A88eY6kfKYucjf2QNmAJaKonAwZC
+         H2Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762954373; x=1763559173;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9YGhgYj3na3lBzf4w1UXosrLsby9qm0K/6mBJebDsWI=;
+        b=oStC9jNDCxpuTfzlXUd0v+eItY70dFz+6JAlyanDdJGflGnDqc+0yYocGyw0Qh6891
+         tkeQ5m1QVBZR1qhU7iQX+tKhbBvujh+Ob1IM+zmd9jcP0JcNwg8di5NLR8gFQ5o4+pKJ
+         X/9ob0JmckSKs62ZQPOv+inmWGgOvqFZs8sAx3arJCSAecP5gKAx/s3fEapWNhlgX/5m
+         WwabGLSo0KRMSq/3ierjsoi0rJHXCX1BC5bx1vln/bYtBzocxQYK2Z6W7lcjY4AocAaY
+         MCWM+O+4QJ0dLDhsdJq3fk5/hsCHdy8u5oUDMUaPpDroIcGCuWf7MPO6ockzCsWIPrr0
+         fbDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWoV1UowV97dwHsIkf60nJn0Pp+pcvzNvs05yq8JYbrRqns1gZ0P+SeEnp52r22z29Mn+c=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxUshQxScYrc0WI58y1xHXK9uMY257mNNgwQbx0TR94HndccZO6
+	6VD0gDspsWnjyv85JW02OaufJ6gsRE9+WBnH6mHX+iElhqAxzDw94bJUN2Q7v70NON5WZypgwgf
+	vDpQo8nkZbWfNGAjITEU491JZ2gIU0b8=
+X-Gm-Gg: ASbGncuvXpDobkSw6UMcHoa5Z3h1TVTpZzTqUppaDRaPzLBQbTOJtJXlLfiKGBiz0dW
+	MbSlPhQxZFbPQTvNaav1Zk4+gF2qm+IHl8cjQxYIn5zLiox1jqtrVut59Gl8u0fqvyyQ/eZ07zV
+	YwGd0+YP+AcVr1ex8DfhASb9JsbZ3tA988/9nS+C/lBb0YfSHcYTYlMZVQFB3jl0o34pYJPv5bQ
+	46SIbXIz7YLFKjCMwJsLNgm+Rwo1HGbMtMPeZQAFirOoG7BaYWTtGD3+jhiXAr9hLyu
+X-Google-Smtp-Source: AGHT+IH0s1R5FFxg23gO4NcrxeoCruOm0w1P1EMsauVWBqLInIEKMlkyeUh1Nk79roAPnbvPjJADnE2pjL0vjVVJ+WU=
+X-Received: by 2002:a05:6a20:430d:b0:2e4:3c9:2ca4 with SMTP id
+ adf61e73a8af0-3579b7a2f1dmr9348903637.16.1762954372919; Wed, 12 Nov 2025
+ 05:32:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm/imx/ipuv3: Fix dumb-buffer allocation for non-RGB
- formats
-To: Philipp Zabel <p.zabel@pengutronix.de>, shawnguo@kernel.org,
- s.hauer@pengutronix.de, festevam@gmail.com,
- dmitry.baryshkov@oss.qualcomm.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, airlied@gmail.com, simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org,
- Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20251104153832.189666-1-tzimmermann@suse.de>
- <782dd8af786ff402fa8b334264f189be2919d7a7.camel@pengutronix.de>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <782dd8af786ff402fa8b334264f189be2919d7a7.camel@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_TO(0.00)[pengutronix.de,kernel.org,gmail.com,oss.qualcomm.com,linux.intel.com,ffwll.ch];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:url,infradead.org:email,suse.de:email,suse.de:mid]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
+References: <20251104203315.85706-1-shenwei.wang@nxp.com> <20251104203315.85706-4-shenwei.wang@nxp.com>
+ <20251112125741.GB1319094-robh@kernel.org>
+In-Reply-To: <20251112125741.GB1319094-robh@kernel.org>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Wed, 12 Nov 2025 15:35:16 +0200
+X-Gm-Features: AWmQ_bksp5_b2fKuYqlFUSD5X1hhR6adsSbKyYke1gTN6bbO51U9xJrjNuoDAyM
+Message-ID: <CAEnQRZB4ymvSERKhJW=PAk5xA2JYD=i4wzkbumj_g5S8BjONjg@mail.gmail.com>
+Subject: Re: [PATCH v5 3/5] docs: staging: gpio-rpmsg: gpio over rpmsg bus
+To: Rob Herring <robh@kernel.org>
+Cc: Shenwei Wang <shenwei.wang@nxp.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Mathieu Poirier <mathieu.poirier@linaro.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Jonathan Corbet <corbet@lwn.net>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-imx@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi
-
-Am 12.11.25 um 13:53 schrieb Philipp Zabel:
-> On Di, 2025-11-04 at 16:38 +0100, Thomas Zimmermann wrote:
->> Align pitch to multiples of 8 pixels for bpp values that do not map
->> to RGB formats. The call to drm_driver_color_mode_format() fails with
->> DRM_INVALID_FORMAT in these cases. Fall back to manually computing
->> the pitch alignment from which drm_mode_size_dumb() can compute the
->> correct pitch.
->>
->> Fixes userspace that allocates dumb buffers for YUV formats, where
->> bpp equals 12. A common example is the IGT kms_getfb test.
->>
->> v2:
->> - ignore width in calculation
->>
->> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> Fixes: b1d0e470f881 ("drm/imx/ipuv3: Compute dumb-buffer sizes with drm_mode_size_dumb()")
->> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: Philipp Zabel <p.zabel@pengutronix.de>
->> Cc: Shawn Guo <shawnguo@kernel.org>
->> Cc: Sascha Hauer <s.hauer@pengutronix.de>
->> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
->> Cc: Fabio Estevam <festevam@gmail.com>
->> Cc: dri-devel@lists.freedesktop.org
->> Cc: imx@lists.linux.dev
->> Cc: linux-arm-kernel@lists.infradead.org
->> ---
->> This patch is based on Dmitry's fix for msm. [1] Please test.
-> Thank you,
+On Wed, Nov 12, 2025 at 2:59=E2=80=AFPM Rob Herring <robh@kernel.org> wrote=
+:
 >
-> [IGT] kms_getfb: finished subtest getfb2-accept-nv12, CRASH -> SUCCESS
+> On Tue, Nov 04, 2025 at 02:33:13PM -0600, Shenwei Wang wrote:
+> > Describes the gpio rpmsg transport protocol over the rpmsg bus between
+> > the cores.
+> >
+> > Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> > ---
+> >  Documentation/staging/gpio-rpmsg.rst | 202 +++++++++++++++++++++++++++
+> >  Documentation/staging/index.rst      |   1 +
 >
-> Tested-by: Philipp Zabel <p.zabel@pengutronix.de>
->
->> There could later be a helper to contain these aligmentment calculations
->> in a single place.
->>
->> [1] https://lore.kernel.org/dri-devel/20251103-drm-msm-fix-nv12-v2-1-75103b64576e@oss.qualcomm.com/
->> ---
->>   drivers/gpu/drm/imx/ipuv3/imx-drm-core.c | 16 +++++++++-------
->>   1 file changed, 9 insertions(+), 7 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
->> index 465b5a6ad5bb..eddb471119c6 100644
->> --- a/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
->> +++ b/drivers/gpu/drm/imx/ipuv3/imx-drm-core.c
->> @@ -144,7 +144,6 @@ static int imx_drm_dumb_create(struct drm_file *file_priv,
->>   			       struct drm_mode_create_dumb *args)
->>   {
->>   	u32 fourcc;
->> -	const struct drm_format_info *info;
->>   	u64 pitch_align;
->>   	int ret;
->>   
->> @@ -156,12 +155,15 @@ static int imx_drm_dumb_create(struct drm_file *file_priv,
->>   	 * the allocated buffer.
->>   	 */
->>   	fourcc = drm_driver_color_mode_format(drm, args->bpp);
->> -	if (fourcc == DRM_FORMAT_INVALID)
->> -		return -EINVAL;
->> -	info = drm_format_info(fourcc);
->> -	if (!info)
->> -		return -EINVAL;
->> -	pitch_align = drm_format_info_min_pitch(info, 0, SZ_8);
->> +	if (fourcc != DRM_FORMAT_INVALID) {
->> +		const struct drm_format_info *info = drm_format_info(fourcc);
->> +
->> +		if (!info)
->> +			return -EINVAL;
->> +		pitch_align = drm_format_info_min_pitch(info, 0, 8);
->> +	} else {
->> +		pitch_align = DIV_ROUND_UP(args->bpp, SZ_8) * 8;
->> +	}
->>   	if (!pitch_align || pitch_align > U32_MAX)
->>   		return -EINVAL;
->>   	ret = drm_mode_size_dumb(drm, args, pitch_align, 0);
-> Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+> Why is this in staging when none of the drivers are?
 
-Thanks a lot. I'll land this fix ASAP.
+I guess that's because remoteproc.rst and rpmsg.rst are in Documentation/st=
+aging
+and that's because when converting them from .txt to .rst the author
+didn't know a
+good place where to move them.
 
-Best regards
-Thomas
+Would Documentation/driver-api be a good place for these doc files? I
+can move them
+and then Shenwei place the gpio-rpmsg.rst in the Documentation/driver-api a=
+lso
 
->
-> regards
-> Philipp
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
-
+Daniel.
