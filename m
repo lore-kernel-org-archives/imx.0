@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C766E29AB1D;
-	Wed, 12 Nov 2025 09:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D1A2FD7A8;
+	Wed, 12 Nov 2025 09:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762938516; cv=none; b=eQ2u9WPgr69MZUDu7eJKyfcDl4ofsEpiasM0G34aiO0Gidxxj4a4x6abgCC/viM/Y/i3V1YX0s++KsJiURxcgTHyImXRkqa39hP5nJZe4nMR2+F7i5CWLIKye3/WtGE1YrI9fM5pGUJnhJFdzauC1MDnoJ9xtqHIwXEPrOo/QU8=
+	t=1762938876; cv=none; b=N1jY1L7PuUpm7yXcLD4sEZRflhB259DErVlCQ+zxTy226nxvXOng9fKGM6cH7tz/6ZDqQt1xoLuJ5GP2y2p0UhOPFhISSv6pWC/rw++48SXGH62wjjVb9RbZPYvwZ+2yHCS+Hm32pzoVkJ9p16nOYqksCRfYcEhGB8J+hD5dj8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762938516; c=relaxed/simple;
-	bh=fPlfJInIkVVGN9ej8lr8KJJv7if0Cdwdc3VVXzlPNA0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G3AX7YXQhbyKgh8+Fz63F4xCMZZxkjLOthWkInMh9gzYZQtkKuzvCEJG26MJJ/W7bhP9ZuM83UI7YzTuCCEod+OoJYjb+hoXJJ9lk7al/61n55uqOIhfvH1KawJNuDmvP00BeBWeg4BRJTlPP0tPvcErknyhjzQNEZvytOT9foY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Map12MD8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1762938876; c=relaxed/simple;
+	bh=2i1LfyT640thS7F7ew7xBnFfNcy2pvnpIiWcAPcGZho=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=B3poShBkTc3tVvhiV1Jl75NVmAcPEMBGwm7mXxiBKMiV5nm1NuahpKRcJwn/ho3xyOWBoH4suTTj0crKs6vWRzcMK7aI0pL39LsdP0MvRCk4XshBTUytqlsNYqFf0T7Qiq3eNmpeuLF/3xK+ftDuM45NkOKO4tzCWdxN8FO3Bvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rhy68KDR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Map12MD8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2F1C19423;
-	Wed, 12 Nov 2025 09:08:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rhy68KDR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5C6C116B1;
+	Wed, 12 Nov 2025 09:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762938516;
-	bh=fPlfJInIkVVGN9ej8lr8KJJv7if0Cdwdc3VVXzlPNA0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Map12MD8WPoa9Dz+/7u2ptaxxzhd1cu95gd3hN+9JtTBl0RBiIUeDDeczX6WXvzL7
-	 AZ4dkcyaQn2Z+teNrTklPEL9FS63PDMDSb+5PO9v1gWi8NsTYQBCkuKlVtOoTa3Il/
-	 W86nxkqMEVsAA7dMvXPRIVpa6TJdipwuOwT7DY+ToQgiKIAaAtKpHXxiSkNbeP+NXA
-	 th8j6OtxalqY6timU/HGVwIII5yG+aIxp/8A79BAw2PbziJa0+m6om6wq+1sGZLXo1
-	 uLgKGb4xfA83gq7fp1mE9i8I+y80BAmsRTTN7sWELib6GQZ0dtCzrf3o6MyHMLoNjh
-	 Q0P1ySTznnypQ==
-Message-ID: <baafb460-fb65-4cd2-9911-89d828199d9b@kernel.org>
-Date: Wed, 12 Nov 2025 10:08:29 +0100
+	s=k20201202; t=1762938875;
+	bh=2i1LfyT640thS7F7ew7xBnFfNcy2pvnpIiWcAPcGZho=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=Rhy68KDR6MRc5rlFYC286NVKAeXskr76Rz+7hyFwdulAlSNgs8dyT2AclJSNU9z1b
+	 32sLHUqpuhxXR0/tmKxi7GD64IZMOM18NBb6jt/IEC00E1YhfX1M520T0ooOdqYSn/
+	 U4/rIZN3HMARWlGSIhG6iVurPl8BPHGnqBCXzy6kwkyh+g6sijHK+UNz127wDvO8ad
+	 fU/gImHWZhulyhrM6jE2oCV1yOJne55VW/UXV6TpeQ1NEPG/UzfUq+HyGohsdYLwCU
+	 GTvaDVX0uWLoSiquet+zXCC1VXpy/0UkjJVijWCNa5+emxqdTtXdNdptAKO1+4clQL
+	 kaa1Alf2StpXg==
+Message-ID: <2e160fe1-bcb2-41cf-817e-ac2a36959b16@kernel.org>
+Date: Wed, 12 Nov 2025 10:14:28 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -36,6 +36,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4 2/2] arm64: dts: add support for NXP i.MX8MP FRDM board
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Daniel Baluta <daniel.baluta@gmail.com>,
  Fabio Estevam <festevam@gmail.com>
 Cc: Rogerio Pimentel <rpimentel.silva@gmail.com>, robh@kernel.org,
@@ -56,7 +57,7 @@ References: <20251109214515.121742-1-rpimentel.silva@gmail.com>
  <CAOMZO5CU09fcBB8oUOO=qC=Du3Q9gnJOQacK=6v+pnSQViex3g@mail.gmail.com>
  <CAEnQRZCHKemw2YVT=WVJvUMr9CCWoZ3MORt_mU1V-62C53n-3w@mail.gmail.com>
  <CAEnQRZBBJ4PGDOk7hBP_qsk7bBiec8pHb0DYKs2mhOAahNyKww@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <baafb460-fb65-4cd2-9911-89d828199d9b@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -101,78 +102,69 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <CAEnQRZBBJ4PGDOk7hBP_qsk7bBiec8pHb0DYKs2mhOAahNyKww@mail.gmail.com>
+In-Reply-To: <baafb460-fb65-4cd2-9911-89d828199d9b@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 12/11/2025 09:15, Daniel Baluta wrote:
-> On Tue, Nov 11, 2025 at 2:49 PM Daniel Baluta <daniel.baluta@gmail.com> wrote:
->>
->> On Tue, Nov 11, 2025 at 1:50 PM Fabio Estevam <festevam@gmail.com> wrote:
+On 12/11/2025 10:08, Krzysztof Kozlowski wrote:
+> On 12/11/2025 09:15, Daniel Baluta wrote:
+>> On Tue, Nov 11, 2025 at 2:49 PM Daniel Baluta <daniel.baluta@gmail.com> wrote:
 >>>
->>> Hi Daniel,
->>>
->>> On Tue, Nov 11, 2025 at 5:45 AM Daniel Baluta <daniel.baluta@gmail.com> wrote:
->>>
->>>> In addition to that, Rogerio please read:
+>>> On Tue, Nov 11, 2025 at 1:50 PM Fabio Estevam <festevam@gmail.com> wrote:
 >>>>
->>>> https://docs.kernel.org/process/submitting-patches.html
+>>>> Hi Daniel,
 >>>>
->>>> At this moment I think you should keep the original author of the
->>>> patch.
+>>>> On Tue, Nov 11, 2025 at 5:45 AM Daniel Baluta <daniel.baluta@gmail.com> wrote:
+>>>>
+>>>>> In addition to that, Rogerio please read:
+>>>>>
+>>>>> https://docs.kernel.org/process/submitting-patches.html
+>>>>>
+>>>>> At this moment I think you should keep the original author of the
+>>>>> patch.
+>>>>
+>>>> Right, but NXP makes a total mess with authorship.
 >>>
->>> Right, but NXP makes a total mess with authorship.
+>>> I cannot disagree with you on this, let me clarify it internally with
+>>> NXP colleagues
+>>> and sort everything out.
 >>
->> I cannot disagree with you on this, let me clarify it internally with
->> NXP colleagues
->> and sort everything out.
+>> Hi Fabio & Rogerio,
+>>
+>> Checked internally and to track the correct authorship and development work
+>> here is how NXP would prefer to get credit.
 > 
-> Hi Fabio & Rogerio,
+> Sorry, but individual contributors do not need to give any credits to
+> NXP. If NXP wanted to sent the patches to have credit, they would do it.
 > 
-> Checked internally and to track the correct authorship and development work
-> here is how NXP would prefer to get credit.
-
-Sorry, but individual contributors do not need to give any credits to
-NXP. If NXP wanted to sent the patches to have credit, they would do it.
-
-Did sending happened?
-
-If not, then any contributor is rightful to take the patches from
-downstream and send them only, ONLY with their authorship. That's what
-DCO allows and that's what established practice as well.
-
-NXP had a chance to upstream. When they decided not to, they forfeit any
-rights to claim they want any authorship.
-
-
+> Did sending happened?
 > 
-> #Use git commit --amend --author="Xiaofeng Wei <xiaofeng.wei@nxp.com>"
-
-NAK, there is no single patch like that from above author:
-
-https://lore.kernel.org/all/?q=f%3Axiaofeng.wei%40nxp.com
-
-Remember, downstream code does not matter. Does not exist.
-
-
-> Author: Xiaofeng Wei <xiaofeng.wei@nxp.com>
+> If not, then any contributor is rightful to take the patches from
+> downstream and send them only, ONLY with their authorship. That's what
+> DCO allows and that's what established practice as well.
 > 
-> Signed-off-by: Xiaofeng Wei <xiaofeng.wei@nxp.com>
+> NXP had a chance to upstream. When they decided not to, they forfeit any
+> rights to claim they want any authorship.
 > 
-> Co-developed-by: Joseph Guo <qijian.guo@nxp.com>
-> Signed-off-by: Joseph Guo <qijian.guo@nxp.com>
 > 
-> Co-developed-by: Steven Yang <steven.yang@nxp.com>
-> Signed-off-by: Steven Yang <steven.yang@nxp.com>
+>>
+>> #Use git commit --amend --author="Xiaofeng Wei <xiaofeng.wei@nxp.com>"
 > 
-> Co-developed-by: Lei Xu <lei.xu@nxp.com>
-> Signed-off-by: Lei Xu <lei.xu@nxp.com>
+> NAK, there is no single patch like that from above author:
 > 
-> Then you can add your own C-d-b and S-o-b.
+> https://lore.kernel.org/all/?q=f%3Axiaofeng.wei%40nxp.com
 > 
-> Thanks,
-> Daniel.
+> Remember, downstream code does not matter. Does not exist.
+> 
+> 
 
+
+... and because last two months there were two or three cases where
+vendor companies bullied individual contributors, I will be quite strict
+about that. Vendor company does not receive any authorship on patches
+sent by independent contributors which the vendor NEVER submitted,
+unless author really wants that. But I will treat any such insisting on
+authorship by vendor like NXP as bullying and working AGAINST the community.
 
 Best regards,
 Krzysztof
