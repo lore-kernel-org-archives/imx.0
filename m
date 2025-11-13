@@ -1,370 +1,180 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013025.outbound.protection.outlook.com [52.101.72.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54B6334681
-	for <imx@lists.linux.dev>; Thu, 13 Nov 2025 10:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763031571; cv=none; b=vDNnvP9KjwBWduGGaOlzryqvdRDp0lmM4jfsNQaMkOUDgZ0Sjeek0YRDPJLin0BtU8SRH1BNKsuVR9LqZAhfGbjDllFZ43+sC9EepRnl6egM+ax1MP1+d8kVzEmL4fCPiyt43RETeWpKPVSPq1UXc0QOsRTrREVsxMVREP2HDFw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763031571; c=relaxed/simple;
-	bh=Ludw0lVw+NCqkO+gYIR/P40wGOIX716edDfNBOXG488=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e6/6BvMJ7AhK6WN3h0F9AfoiPYwmtUN/K6EriQ9MQ6xSdzBF22XLeqafR5RV0izCnzNfqS0jSSlXkdbQ3A0k16tbtNPALnPIUFMRxSmjRlZIXRx872yIz02NNa0/l3aS8CyS0C+H+CxYx/Xe0otOZqvDiEWndfNQNaLXICFaAHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=yKV4hulO; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A467E2D5C6C
+	for <imx@lists.linux.dev>; Thu, 13 Nov 2025 11:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763032450; cv=fail; b=Tm0Mv17FMthLVBz7FPCMgp1bBXSkYDoHHsW25cH3QPyl5Lxi2valUDwPOzGfTHspbhTmBYsnukMAWEPFmNF4BGFSfKA9YmYmlRQOf+og2Q5FnFetiVWoQc1Qdim/SRMIkW/2Nt/SyN5gAaU/MHBzahsemp2qy96tC5Q+00+S2QU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763032450; c=relaxed/simple;
+	bh=fG66ZqAWHzbqlMBm47PCxt4z3DwT9a7u3xNy/R0cAiQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=S6LYb5KFtHvjoC2gub8ofXTkWJzgM5BD/2drvDs51hU8xm548mhVyOv46F5YMESQN3Obyy9ePkbyLAZqhTgJwQaBCpTwfUVqQKimhY1sjcKK5E6slUL45MPgLIwB+brLdH8u0U1qG4Ym5EOjyHN0iFV5ZSN0A8ux/0cGYga89mU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MSnQK54w; arc=fail smtp.client-ip=52.101.72.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="yKV4hulO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=/5WNpQnXexzvUnL0SZ99IdSXhXmMgcUViaTDBYNlqpc=; b=yKV4hulOarStJW8vTLYXGFp8YA
-	rPoIOcXqdG4NMjw9GmU20MW0ESE5LKgb8jupmnv7SWYVMlRoVAiBEIpZdJOXz5E2BRHUqJl0I4szj
-	20xFQK4HyPgyDNaxzZevSwX6Z041S+7a+AjiK1AAPYzVkayuivmVCKvYkCaEmvCiM0mZNH7IMxBsP
-	/LgrL1DDv3AzBh3uR14PjP/9in40tvpo6RXZsU5mBUNy7nrfy8aj4+3X/GeocEKxEDTBj+s6VK8Lx
-	NtSKPfzY1MDJEs12eqjvdu5VeRoWD26mZdyFIENjHQ2h2F+G1iulhoU0gErD1FEA4TkIT1wGjnC7Q
-	WIOgBTpw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58100)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vJV2z-000000005JA-1Pjw;
-	Thu, 13 Nov 2025 10:59:25 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vJV2x-000000004n0-0xU7;
-	Thu, 13 Nov 2025 10:59:23 +0000
-Date: Thu, 13 Nov 2025 10:59:23 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MSnQK54w"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=va36n8R5MGj+f0y49gfAoGwtmf9eNyepS6SnthYRlbaUGF15O0PcF2P01A1clXaIIHbJymcw7sJqfIxZGdmwmkac3AfFRp97fRM0wqxUx/ZG74meff2J3iRmf+asjyYdrSTcImPECaA3Hy2VTxXBSy7YHYFu8jeziiy5o/DWYS50/SOxa1hMSZ/kSEwdnFYuZUXXZIOFn0A5uZ2Z0wwd8ndNyL0JXadQGJ/n2AcJrtrhbLamoDn4PXge6Yy0BueCmQ2rBTRKg9WdBHZLjoWu/+t262PCKMSSMgUMtIVM+CRMsUehUxzGRs7OzVa3q977cKz3qN8UcxL3gs0NHklw/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NOGtHeV/XIznJClnBPJyTKkum40plAFpbiIX/+fF19c=;
+ b=Yp9CacuZNpvhKdfXyPJRuf5S6DcJPygJj9SnVnG3b8R4dvf9/U6oAmu5bDI/DiUh54lQBjtNdvUdTs+yIn9DU3qVKVhAYbWp0upTayeDGwLULURW0QpjqE1oiTYkMVZ8atrccLuf7TzRCgavopKMjz0F4AgTaGA5jyMzDAvR7cNv87KsB7PUvZek7BSPIn4IKMrFC0zYQCoJSXqvkqWxnttPlBLpfl6sc1FRQsaCkEDVza1WEAug+3lb2UhnxkMJlM5Fvnqn1dxbGi1+jL+S/skqRzS508FUCorwtGV8kgN2EHqIBYYgQeNoorS9OHOoRpncF+BPsj9I0zndCjxkCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NOGtHeV/XIznJClnBPJyTKkum40plAFpbiIX/+fF19c=;
+ b=MSnQK54wRGv/yflSLjQ4/lEVAus8mUbVjvs2BUrdpPL7Qkyph0r6SFwQ+E+APoES+9hnPo+7P1NeEoLUyqSe3rOpngQ7UftJtRx0VN5jyo/SR6zx3tND19YFzQNJloV85UAcd8bDYkx9fysoJ4pbz8ZDMU52RHbFaCA+0I2HTvc85Evs05RGlFDiTT0v5c46DG1R6LUGTwaBECCEThM32aQW+pQgZuaRFuKIFkUJn18aZM0Z8jLTps7faojx+EYp70JyOUQlNVzVQQ5Cy+63A/35XUDUge3mEZqNnZWtU3BRLJ8YyYu017Bi1wXz1VA0mnYxFZkjFt3FL8x1IGyixA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM9PR04MB8825.eurprd04.prod.outlook.com (2603:10a6:20b:408::7)
+ by AS4PR04MB9364.eurprd04.prod.outlook.com (2603:10a6:20b:4e9::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Thu, 13 Nov
+ 2025 11:14:03 +0000
+Received: from AM9PR04MB8825.eurprd04.prod.outlook.com
+ ([fe80::67fa:3e46:acd8:78d0]) by AM9PR04MB8825.eurprd04.prod.outlook.com
+ ([fe80::67fa:3e46:acd8:78d0%3]) with mapi id 15.20.9320.013; Thu, 13 Nov 2025
+ 11:14:03 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	Frank.Li@nxp.com,
+	jun.li@nxp.com
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Catalin Popescu <catalin.popescu@leica-geosystems.com>
-Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
-Message-ID: <aRW6CxvmIEqkMrfA@shell.armlinux.org.uk>
-References: <20251026122905.29028-1-laurent.pinchart@ideasonboard.com>
- <aP-ML-A_h13pXY2d@shell.armlinux.org.uk>
- <20251027234648.GC24987@pendragon.ideasonboard.com>
- <aQAVE96NAD4Z4lgt@shell.armlinux.org.uk>
- <20251028071817.GX13023@pendragon.ideasonboard.com>
- <20251111235434.GA25874@pendragon.ideasonboard.com>
- <aRR3gVsZcr01zwzN@shell.armlinux.org.uk>
- <20251112222551.GB9135@pendragon.ideasonboard.com>
- <20251113010627.GC9135@pendragon.ideasonboard.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] arm64: dts: imx8qm-mek: fix mux-controller select/enable-gpios polarity
+Date: Thu, 13 Nov 2025 19:14:44 +0800
+Message-Id: <20251113111444.888985-1-xu.yang_2@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR02CA0018.apcprd02.prod.outlook.com
+ (2603:1096:4:194::18) To AM9PR04MB8825.eurprd04.prod.outlook.com
+ (2603:10a6:20b:408::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251113010627.GC9135@pendragon.ideasonboard.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8825:EE_|AS4PR04MB9364:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2e83ec15-dfe3-4743-9c32-08de22a5c088
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|52116014|19092799006|376014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?HLKaMJhvDmzNIswCXg7Abcm1URPFBKf2pZO6xu9ibDN6+x6VnCNzu2WGeEoO?=
+ =?us-ascii?Q?Bs2wxsigI0ECVmusfg5ebeeC9oQZIjpMKZaisE+6sCiawYE4zajZqZ1Xm3+D?=
+ =?us-ascii?Q?d2gYedrAxVsfv0t2EaQift8WHShxSsAe0F6vc0av/NPeOF3GOUeLd1R/pd7N?=
+ =?us-ascii?Q?VGNMJEgcwvdO8oAGqHGKLmo+RbtfWCED2uo5JFqQvqqpH8zdE/mUtbZ9aBLL?=
+ =?us-ascii?Q?VJd5dQehjV33rQ/ppfMpcR0HQOibgPnJXibxPoBT4pO8lvXigcAztsDfh3ut?=
+ =?us-ascii?Q?RuO+E9qvhrGOWa1k3RgIrr4mRuGlRwkwN0HaQkpdQgJsVVMatqkFyHs6rlyf?=
+ =?us-ascii?Q?iZTZ3yrLb3fbMF1FPB3AyOZikEOdjfjRT5g9r64l0dJT+Zvo3/pn5ffvyXZu?=
+ =?us-ascii?Q?1BabnhQAWodM1gKlROhKpFwbkX4PeMvdV41SnO++d9Vx3gARjMhF6jyKiTg3?=
+ =?us-ascii?Q?EA+uFkGZ5dcFIrWRBmaCd2UuUP8sAcF7QWZW1UZJFz1ecD6nzVaqAh84FCsf?=
+ =?us-ascii?Q?mMKvRJLmtPfhCTKNo77UYPy7eEiIRP9zvoIa7Zsyimu/nPzm3L6gSCo+b/rR?=
+ =?us-ascii?Q?T/YF8W8+OTzjSz79xvbJzvF27lp/SsJhkETxQEpycjbQRhORbFe8dhfWdPuu?=
+ =?us-ascii?Q?96WqHrfvOUDK77s8kTTJ18nG7A4U/vyGRZjP4oG2CQDzSLfFd33UO+8Bq63e?=
+ =?us-ascii?Q?C/JfIQe6SvvsPPPo5guE8kn0n+H99r3K0lIIn3M8VwyAKOnMO8oi43ADhwe+?=
+ =?us-ascii?Q?vaKzfI4kHvQvyxSxtzPAGmtGr1fqT304kQoXbcbztUE/2FtjSDIgrsz+QgMe?=
+ =?us-ascii?Q?RNcL91j1CsWFf9GpZM05uRrlU9AY9AZQETk+Q2ARje4eofqXqWQZTa62ARH8?=
+ =?us-ascii?Q?3Y4IkqmfjTRP2AUW57PosJfPPhhwXzgywdTtCuDfhU+9KoKBWPd7x5t8J80L?=
+ =?us-ascii?Q?RrUmr4dxrU51c/ra+aMQ26Jb7Bs5vMd2Bq8MXyiKE+MkA8rqY0OCnDh8Ijqq?=
+ =?us-ascii?Q?uu0A45W7dZ0QxituN4ZEZ3OR1nxqfXYiJ/2xco/jaVbWNX6SdGi3gPTO/JSh?=
+ =?us-ascii?Q?3ucPRlErQbVW6WhCqUU1LuA0zYopJ0GNDDbwRefWzi1cq3lQpMaKw5/SXidj?=
+ =?us-ascii?Q?BbJfM00Z7f59j5DylrLjZY0bRC60v0VJBoGihRSUIJrMDvbmge1/RSEUYG1g?=
+ =?us-ascii?Q?XOqPWO7xri+HlrnJs+Pan7qufRgwNc4tr6Q6+3hwRKY9ARnvLscKzn3wDwo3?=
+ =?us-ascii?Q?IgZo2VDPc3JLkAHVMZ4fMo3XPzpIaLU1SaHqsYMStHPWLArB1vjfCTqvMbZy?=
+ =?us-ascii?Q?BZoaGfPEDb0i71Gh1suv4fkDsvXBTznB4hbu3B09l3ivGXY8ce9W0Wg0IwGz?=
+ =?us-ascii?Q?25oU3ulCZliLcC/4/ZoW1zM6fgcO+8Hotz3hoBDpzC6hMjxnkDzAC3CHyyUk?=
+ =?us-ascii?Q?Eu+/3nyrGwWHv5UyN2vZM3hBQfbf7FupkRkO9/p//iNSSOFbIbTuOalVgmct?=
+ =?us-ascii?Q?xQcU79lKL9LyjMBOC48fa22RpQ591VToGt7j?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8825.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(19092799006)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Z/n2c0zOQIbSANVhFh0n9fyhq6EdxBKnXBlOPL8DsL/UF5I9WNzv7X5efYBR?=
+ =?us-ascii?Q?ue0/ezaC1A4PJY2zr6nZXW9yDq5uajj5RBmMW9FXQWUOunTEGKHZHchZ6k2r?=
+ =?us-ascii?Q?nSvROnSXVkasnpLZc30GOIJc1Uqtb8ukQz2K5LDvQZcgkU5n/l3R/qhX+4Qj?=
+ =?us-ascii?Q?d2Gas5RP1o9wcpcGTEG3ZDNG2Sh77MLJL99EJ502M4RQ1QZLQLqQ6W7fC2IH?=
+ =?us-ascii?Q?Wdgm0yTKNCbuSrhui/88j1bD/9ZRPMP7dJ5X5VmkA15nhEZTFuNyI7HCSpkP?=
+ =?us-ascii?Q?sAeh+H+rHrKP53Wvi2przMpmcCtqILZaWBSS+sQI4hjmIahHvYMf65lVROMk?=
+ =?us-ascii?Q?0BGla7CD6dj8z8RfQPhbA3IbiNW3zzpmgRU9x0CKWkH8i/zC25znMfVjImBp?=
+ =?us-ascii?Q?X83R/1Uu3+FtUBvHIqgGSeK4Ycm3ilemFEFy1j4N0pBlLK16nVhVz9H9/44E?=
+ =?us-ascii?Q?/TLuWa1r2cEXSz1KvlnJj3+8gbZ05/KG/b3q51KYOxVO0EdihpXuClUz+9g7?=
+ =?us-ascii?Q?JqrZIK7UuSEc2vkDZpg5zwqs2JRkqoyxc6YBvg8V6HpedHUIal1ageZcTRYr?=
+ =?us-ascii?Q?iHbaMG6Xx//xDTCKtQ4FvKzeByhf4tdgcVPFpLScsybzf5ceGh8XO4y9AETR?=
+ =?us-ascii?Q?6JCc8BjPPMZr8iY3Y/p7PMtCoyvOXMrVxoi9PTJYAlZgIzc15I0K+YfYIqgu?=
+ =?us-ascii?Q?3g+NI5QmgTCamh8zZbJMC0EIsWDHyxTnzc2YLx7ZNrRv0zDxqeulN/iTJ7q4?=
+ =?us-ascii?Q?hh0KnZjiT7AONOiN2UPOHMfkKxk0HUR/45KMJDjpPweznn2k6auL31b5q/Br?=
+ =?us-ascii?Q?LVpoJ7BAnS9//5S9YoiLo4+J29mmOnKPhE8fcFrtAirBj/f2wv4bImD+PhdH?=
+ =?us-ascii?Q?TyPCBqaAjcWZ77ffiz7GMMHnR+3cDA30eVg8K1QKrgIRecXo/MhY1vCgMs6/?=
+ =?us-ascii?Q?MJzJjhXeXyHsWRyNWnuTVxzXZVz6poPAPoNWxYdO6RitlldEYq7VQ47EnBeL?=
+ =?us-ascii?Q?TFoG8NUX4d2lnjsdMYmVMPepwQ3Mf/EndLGbnbPa0iyNGd+rBb6YqWv3tkCo?=
+ =?us-ascii?Q?QYknb1mH7X7X0++1diUmYA9osrLvIebdySVutTouyRfnCYYsB8a4bfdPExq3?=
+ =?us-ascii?Q?Tn0sHKvVnw+pAKKmCADIWpXSr3lpFm+aP6onawToOj2Z7229JtZZEjeMm2ob?=
+ =?us-ascii?Q?ThzB6zzCrTTPeBfRybMe3DxacCJtYJhtiYfVz1CX9NjPanCEMta8QoghwFO9?=
+ =?us-ascii?Q?X4FLkDB5616K0dHEus2JYOvGIB1A65CqbRpacFPNl8dxE/A6/smtyiVzrI0G?=
+ =?us-ascii?Q?rfWELytXoDxPbcSdxq/7bhxP4hC9nx9k+3pzOfSvQQcjGPE4nSlbIBBBGhak?=
+ =?us-ascii?Q?wkHckO8eEk/bOZ8ij6ApKdyHx6kIcooZhqH9wploLW64VG53GIJzFuX37mVi?=
+ =?us-ascii?Q?DTj0V73odldA70G2dYTRYROS5ZS1dVTAOR+/D5E+oBGbhl8p2U6tDUuouAmR?=
+ =?us-ascii?Q?xTcvgFAJhkiNumtljVW4ldpXd3vjhYTSgC366z8p8BuPFYnysb8kuVUy34hA?=
+ =?us-ascii?Q?1RrXMWeHeqe05qxtFOq8dqNtE8R+UjQ8PKzgY3bx?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2e83ec15-dfe3-4743-9c32-08de22a5c088
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8825.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2025 11:14:03.2071
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jl+LU7ZwytuqUw+IucmgnA1Seky1Wpd/261ztpHgPP/cof8bzE0KZreVNEBHIsiwsn2zSTf7aeg5HO+hiV74cQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9364
 
-On Thu, Nov 13, 2025 at 03:06:27AM +0200, Laurent Pinchart wrote:
-> On Thu, Nov 13, 2025 at 12:25:52AM +0200, Laurent Pinchart wrote:
-> > On Wed, Nov 12, 2025 at 12:03:13PM +0000, Russell King (Oracle) wrote:
-> > > On Wed, Nov 12, 2025 at 01:54:34AM +0200, Laurent Pinchart wrote:
-> > > > On Tue, Oct 28, 2025 at 09:18:17AM +0200, Laurent Pinchart wrote:
-> > > > > I didn't notice it at the time because my board was connected to a
-> > > > > switch that didn't support EEE.
-> > > > 
-> > > > I can confirm that reverting that commit makes the issue disappear. So
-> > > > we're dealing with an interrupt storm that occurs when all three of the
-> > > > following conditions are true:
-> > > > 
-> > > > - cpu-pd-wait is enabled
-> > > > - EEE is enabled
-> > > > - the peer also supports EEE
-> > > 
-> > > Thanks - overall, please take the statistics and interrupt status bits
-> > > with a pinch of salt - I suspect there are cases where the interrupt
-> > > is not actually enabled, and the code doesn't take action to clear
-> > > down a set status bit, but _does_ count it - so every interrupt that
-> > > happens increments the counter.
-> > 
-> > True. To (partly) avoid that, I've dropped the line that discards
-> > disabled bits in dwmac4_irq_status():
-> > 
-> >  	/* Discard disabled bits */
-> > -	intr_status &= intr_enable;
-> > 
-> > to ensure that all bits are processed and cleared. I then didn't see any
-> > high count of any of the GMAC_INT_STATUS interrupts. For
-> > MTL_INTERRUPT_STATUS it's a bit different, as by default only one queue
-> > is processed.
-> > 
-> > > > Furthermore, I tried counting bits from all the interrupt status
-> > > > registers I could find. The count of MTL_INTERRUPT_STATUS Q0IS to Q4IS
-> > > > bits is very high, and so are the DMA_CH0_STATUS TBU and ETI bits.
-> > > 
-> > > TBU means that the transmitter found that the next buffer was owned by
-> > > the "application" rather than the hardware, which would be normal after
-> > > getting to the end of the queued packets.
-> > > 
-> > > ETI means that a packet has been transferred into MTL memory, and thus
-> > > would occur for every transmitted packet.
-> > > 
-> > > Having dug into the imx8m documentation and the driver this morning,
-> > > I don't think TBU and ETI are the source of the interrupt storm. Their
-> > > corresponding interrupt enable bits are DMA_CHAN_INTR_ENA_TBUE and
-> > > DMA_CHAN_INTR_ENA_ETE (driver names). Both of these only appear in a
-> > > header file - the code never enables these interrupts. So, TBU and ETI
-> > > should not be causing an interrupt storm.
-> > > 
-> > > As for QxIS, stmmac_common_interrupt() will iterate over the queues
-> > > in use, calling stmmac_host_mtl_irq_status() aka dwmac4_irq_mtl_status()
-> > > for each. Only if this happens will MTL_CHAN_INT_CTRL() be read which
-> > > clears the status bit. In other words, if e.g. Q1IS is set, but only
-> > > one queue is being used. dwmac4_irq_mtl_status() won't be called for
-> > > queue 1, and thus MTL_CHAN_INT_CTRL() won't be read to clear Q1IS.
-> > 
-> > That's why I tried to enable all 5 queues in DT, but alas, it didn't
-> > help. I'll try again and count all possible interrupts.
-> 
-> Here's my debug patch (not very pretty, sorry about that):
+According to the board design, set SEL to high means flipped
+connection (TX2/RX2). And the TCPM will output logical 1 if it needs
+flipped connection. So switch to active high for select-gpios.
+The EN pin on mux chip is low active, so switch to active low for
+enable-gpios too.
 
-That's fine. Thanks for providing this and the raw data.
+Fixes: b237975b2cd5 ("arm64: dts: imx8qm-mek: add usb 3.0 and related type C nodes")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+---
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> Here are the corresponding stats captured right after booting to
-> userspace, with the 0 counts stripped off to keep the output readable:
-> 
->      irq_gmac_0_n: 1
-
-RSGMIIS, disabled, cleared by read of MAC_PHYIF_CONTROL_STATUS.
-
->      irq_gmac_5_n: 4047
-
-LPIIS, enabled, cleared by read of LPI_CONTROL_STATUS which is done.
-
->      irq_gmac_18_n: 46
-
-MDIOIS, disabled, clear on read of _this_ status register
-
->      irq_mtl0_n: 2244307
-
-This will increment each time dwmac4_irq_mtl_status() is called for
-channel 0, which will be called each time stmmac_common_interrupt() is
-called. Thus, this indicates the total number of times the stmmac
-interrupt handler has been called.
-
->      irq_mtl_0_n: 2244307
->      irq_mtl_1_n: 2244307
->      irq_mtl_2_n: 2244307
->      irq_mtl_3_n: 2244307
->      irq_mtl_4_n: 2244307
-
-These should be cleared by reading the corresponding queue interrupt
-control/status register, iow MTL_CHAN_INT_CTRL(). However, we do not
-write to MTL_CHAN_INT_CTRL() to enable any of the interrupts there, so
-this looks weird to me, so it would be an idea to look at what value
-this MTL_CHAN_INT_CTRL() register contains, it may provide something
-useful, but I actually suspect it's another red herring.
-
->      irq_chan0_n: 2244307
-
-Similarly to irq_mtl0_n, this will increment each time
-dwmac4_dma_interrupt() is called for channel 0, which will be via
-stmmac_napi_check(), stmmac_dma_interrupt() and
-stmmac_common_interrupt(). Therefore, it is expected to have the same
-value as irq_mtl0_n.
-
->      irq_chan0_0_n: 333
->      irq_chan0_2_n: 2244307
->      irq_chan0_6_n: 2769
->      irq_chan0_10_n: 2244307
->      irq_chan0_11_n: 2799
->      irq_chan0_15_n: 2701
-
-Only interrupts 0, 6, 12, 14 and 15 are enabled. Status bits in this
-register require '1' to be written to clear them. As the value written
-back is the status that was read masked by the interrupt enable, if
-bits 2 or 10 are set, they will never be cleared, so will increment
-each and every time stmmac_common_interrupt() is called. Therefore,
-these values are not significant.
-
-> 
-> Here are the stats after enabling five queues in DT, also captured right
-> after booting to userspace:
-> 
->      irq_gmac_0_n: 1
->      irq_gmac_5_n: 4020
->      irq_gmac_18_n: 41
->      irq_mtl0_n: 1286469
->      irq_mtl1_n: 1286469
->      irq_mtl2_n: 1286469
->      irq_mtl3_n: 1286469
->      irq_mtl4_n: 1286469
->      irq_mtl_0_n: 6432345
->      irq_mtl_1_n: 6432345
->      irq_mtl_2_n: 6432345
->      irq_mtl_3_n: 6432345
->      irq_mtl_4_n: 6432345
-
-These values are the sum of irq_mtl[0-4]_n, so would be expected given
-the other numbers.
-
->      irq_chan0_n: 1286469
->      irq_chan1_n: 1286469
->      irq_chan2_n: 1286469
->      irq_chan3_n: 1286469
->      irq_chan4_n: 1286469
->      irq_chan0_0_n: 416
->      irq_chan0_2_n: 1286466
->      irq_chan0_6_n: 3470
->      irq_chan0_10_n: 1286466
->      irq_chan0_11_n: 2740
->      irq_chan0_15_n: 2686
->      irq_chan1_2_n: 1286469
->      irq_chan1_10_n: 1286469
->      irq_chan2_2_n: 1286467
->      irq_chan2_10_n: 1286467
->      irq_chan4_2_n: 1286469
->      irq_chan4_10_n: 1286469
-
-It's slightly interesting that irq_chanX_2_n and irq_chanX_10_n don't
-match their corresponding irq_chanX_n values, which implies that they
-have been clear. It's likely given that we're talking about 0, 2 or 3
-times that's due to the first few packets and these bits hadn't been
-set. So again, I don't think TBU and ETI are significant.
-
-> Setting eee-broken-1000t, with a single queue:
-> 
->      irq_gmac_0_n: 1
->      irq_gmac_18_n: 6
->      irq_mtl0_n: 2548
->      irq_mtl_0_n: 2548
->      irq_mtl_1_n: 2548
->      irq_mtl_2_n: 2548
->      irq_mtl_3_n: 2548
->      irq_mtl_4_n: 2548
->      irq_chan0_n: 2548
->      irq_chan0_0_n: 282
->      irq_chan0_2_n: 2548
->      irq_chan0_6_n: 2324
->      irq_chan0_10_n: 2548
->      irq_chan0_11_n: 29
->      irq_chan0_15_n: 2548
-
-These counts suggest that the interrupt handler was entered 2548 times
-at the point they were captured, which corresponds to "normal"
-interrupts for channel 0.
-
-> 
-> And eee-broken-1000t with 5 queues:
-> 
->      irq_gmac_0_n: 1
->      irq_gmac_18_n: 8
->      irq_mtl0_n: 2672
->      irq_mtl1_n: 2672
->      irq_mtl2_n: 2672
->      irq_mtl3_n: 2672
->      irq_mtl4_n: 2672
->      irq_mtl_0_n: 13360
->      irq_mtl_1_n: 13360
->      irq_mtl_2_n: 13360
->      irq_mtl_3_n: 13360
->      irq_mtl_4_n: 13360
->      irq_chan0_n: 2672
->      irq_chan1_n: 2672
->      irq_chan2_n: 2672
->      irq_chan3_n: 2672
->      irq_chan4_n: 2672
->      irq_chan0_0_n: 283
->      irq_chan0_2_n: 2672
->      irq_chan0_6_n: 2439
->      irq_chan0_10_n: 2672
->      irq_chan0_11_n: 46
->      irq_chan0_15_n: 2672
->      irq_chan2_2_n: 2670
->      irq_chan2_10_n: 2670
->      irq_chan3_2_n: 2672
->      irq_chan3_10_n: 2672
-
-So channel 0 responsible for 2672 normal interrupts. Again, this
-reinforces that the other values with 2672 are likely not significant.
-
-> Given the enabled interrupts, I agree that the counters are misleading,
-> as none of the interrupt bits with high counts are enabled. I'm however
-> not entirely sure about the MTL interrupt status register, it's not
-> clear to me if it is wired to the EQOS IRQ line as I don't see a
-> corresponding interrupt enable register.
-> 
-> If we rule out the main EQOS IRQ line and the per-channel RX and TX IRQ
-> lines as the source of the interrupt storm, the last possible culprit
-> according to section 7.1.2 (A53 Interrupts) of the i.MX8MP reference
-> manual would be the "ENET QOS TSN LPI RX exit Interrupt" that is OR'ed
-> into IRQ 135. As that's related to EEE, it's a probable culprit, but I
-> don't know how what controls that IRQ line.
-
-As you have several interrupt signals which presumably show up in
-/proc/interrupts, do the values in your IRQ counters correspond with
-those interrupt sources? Are any of these interrupts shared with
-anything else?
-
-Hmm, looking at 7.1.2, and the mention of "ENET QOS TSN LPI RX exit
-Interrupt" I'm wondering whether Freescale have wired the lpi_intr_o
-signal of the GMAC to their OR4 gate. This is the LPI RX exit
-interrupt output, and it is cleared when reading the LPI control/
-status register. However, its deassertion is synchronous to the RX
-clock domain, so it will take time to clear.
-
-The purpose of this signal is to trigger to external hardware (to the
-GMAC) to restore the application clock to the MAC. I'm not sure that
-this was meant to be wired to an actual CPU interrupt. The only clue
-is the name which suggests it is, but there's nothing that states
-there's a way to disable it being asserted which makes me more
-suspicious that it's not meant to be a CPU interrupt.
-
-So, maybe this is the cause of the interrupt storm. Maybe Kieran isn't
-seeing the storm because his receive path is not entering LPI.
-
-I think a useful check for this would be if you could either disable
-LPI entry at the link partner, or hook it up to another system which
-can have tx_lpi disabled, and see how the iMX8 system behaves.
-
-If preventing the iMX8 receive path entering LPI fixes the problem,
-then I think this is likely the culpret.
-
-However, I'd be worred about this - if we "disable LPI" by way of
-the advertisement at the local end, there is the possibility that a
-remote system could override the negotiation and force its transmit
-link into LPI mode, which would cause the iMX8MP receive side to see
-LPI entry and exit, triggering this interrupt. If this is correct,
-that gives an attacker a way to manipulate the iMX8MP system,
-potentially causing all sorts of problems.
-
-Hmm. Not sure I like this look of that.
-
-If this hypothesis is correct, then yes, disabling EEE is the only
-way forward for this, but I would suggest going further - ensuring
-that SmartEEE is enabled on the PHY but with the advertisement
-cleared (so EEE negotiation indicates not supported) to block the
-receive side LPI getting to the EQOS.
-
-This also means that 100M EEE would also be affected, so just
-disabling 1G EEE in DT is insufficient.
-
-Andrew - if we need to go down this path, I think we need a flag in
-the PHY flags to indicate that we want SmartEEE enabled.
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+index 202d5c67ac40..9c0b6b8d6459 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
++++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+@@ -217,8 +217,8 @@ mux-controller {
+ 		compatible = "nxp,cbdtu02043", "gpio-sbu-mux";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_typec_mux>;
+-		select-gpios = <&lsio_gpio4 6 GPIO_ACTIVE_LOW>;
+-		enable-gpios = <&lsio_gpio4 19 GPIO_ACTIVE_HIGH>;
++		select-gpios = <&lsio_gpio4 6 GPIO_ACTIVE_HIGH>;
++		enable-gpios = <&lsio_gpio4 19 GPIO_ACTIVE_LOW>;
+ 		orientation-switch;
+ 
+ 		port {
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.34.1
+
