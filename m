@@ -1,237 +1,270 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F26E2C3774
-	for <imx@lists.linux.dev>; Thu, 13 Nov 2025 14:40:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E88213E7A
+	for <imx@lists.linux.dev>; Thu, 13 Nov 2025 14:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763044805; cv=none; b=InYwHOAqINtf3RGNJjuBt/9hp829fbgHofXtsSJmJwzsp04HMmab+xi38rI/Zs1NrhOH/oBTcss5VXylA8GpTINmotybejHmfxKtUaoOtD/FHcUE8lk96JxyCOiAYjJCnV3dlqdwJQ/aNvQdvsZRSdS1Q//3u+fy1can7+tGNlo=
+	t=1763045116; cv=none; b=fvgsrEE6Iglo6WRwfDPbsEhmdqfnPEmZ+1+qFOb8hBz2/pAVdfqQ9ho4BSjuA2D1B7/yevcI/DqocHEolU3mylMYmy4goj8GlDwCShZ6UxvG7280hWhU1q2sS1Gva+wK3RljkCNyxAROa3FqRDiOgK9UOom07DP5SjvWHvslQUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763044805; c=relaxed/simple;
-	bh=LghFzzgYBjyF4DUix/4QjpTX8Cu2IkIHbWjtdoIpPok=;
+	s=arc-20240116; t=1763045116; c=relaxed/simple;
+	bh=8WiMhuBKU7uISQx1WePYrV/nI54SOz4u0gi10cE+jSw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SKw+smVU0/Xoiga5Couj4/N8VZECqM+A7I0BjcN/JgYdTRuQpeuF4x72Sg7QuwUynobIzdVtvr7eqCFGvdAv7FmUBNyMVVjQx+vCEFBbgR7vOHBAbC6H3FLqcfiQX4itYCDXuilqQRazVdc+MqAUmmpn6yYz0AG0jUoP8rC45Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=IY2osrzl; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+	 To:Cc:Content-Type; b=cqaKgMcEX6lryHM3+fmvfQL0f2uZzQrTdOIy/KgkAAOw5+iY2QVDqvGO0KWtMjOH62IBU9PWdCupmIVNEe5OJeelALTFOpMbfian29+PcEaQkc3nkhNFtXQP3E0Qv3bSpzKS3XwYQWDh429gza3HrERHeRX9HvOD3msybTjHjYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=On3OCjGZ; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="IY2osrzl"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-59583505988so313349e87.1
-        for <imx@lists.linux.dev>; Thu, 13 Nov 2025 06:40:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="On3OCjGZ"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-640ca678745so1769719a12.2
+        for <imx@lists.linux.dev>; Thu, 13 Nov 2025 06:45:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1763044800; x=1763649600; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wl4571SxJAzignqkvu+iEEF0Pe+/jqH/UWVoWMdIiw4=;
-        b=IY2osrzlM8INk8Az1YIkMhq6HtSOiHNI1eeCFnBcodARTgoYHQqqAyxBShVVF4rAIX
-         Ausr+19LX76JTjjtX1489TVFnXVFGyE7tD+pzUooDYDxMmqGZRBciP9ZeL1El+GD/D9H
-         xUGmgaeldg4AKBy6lyehY3WqMcmoN5PDQplRiga33lNkdUNlcl5cTGWMwgT8rduf14x+
-         Ziq6M67I5B+6g5QIWbl1H0CAoPjsJzh7REYbvUS0RzhqsGuyc6V6f4iHhZwOYdbKhz6V
-         uNPLwO5YSZaGKUwoiShdn+cWcJ8i5QPBclbAj1u9LmrATQfDwNZRF/WsMZxtSK3XwUJd
-         SNrA==
+        d=linaro.org; s=google; t=1763045112; x=1763649912; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=m53OXX0FSEdVsD/HzcBlcWiZnahYMqqYD9/Rw82fxP8=;
+        b=On3OCjGZkQ6xupKpOa6pPt4/3cDWdeDf+FdAywnAs/EKyStQumT90xCOiJXRXNsa1C
+         GbpSFtNItmJXD8L6ZMDFMuPjf5/lg43HY680GGKoCaJUFOo+vwDjmxMqHSE7KTJeREm/
+         nzoRnzZ+3X2+x5O6UxQKsKryciMDUvmUw2PZeIQbp/2Mtd24Rna5kfhLsUhLAbkYXkFJ
+         kP7VMFCGif1IFlwApi7YQm80hnRkFyWN97/Yp6RvHt5O7u8SHqabBcCXJxHOnsZC6sEM
+         xvAR9enQyPKruHg5VklzTlvGhm8X5ii+2kV7kpPqBJNRg+yvP7axLtjU2s7ZM473iI8d
+         bcwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763044800; x=1763649600;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wl4571SxJAzignqkvu+iEEF0Pe+/jqH/UWVoWMdIiw4=;
-        b=RNhbCaGnkNC956vEpklqKgD0THphWtBHkc4277HGtIUVs3XLEw2Gt4DGPZ2wPHkIfy
-         RK4rirDNZu2uSf+J/1Bl+URrPTgJyt5tYHsH4mPIhxNnhgJp+Zy6qLQejsI2/24WU/6f
-         YziRTWh22w0C/++5zlJ/CB3fjmCoG2BF0215SZ2iM7zfU8zM26rzXaGYmky+4KNFXGn+
-         RMUL3LMCE22tOVaAm4XznsvSaQxNgczPA6XYnyWzfRETtbSC71udgOTL+NCiweb2ajy+
-         MeHGAf7+aAbehD+eZNsn2z07XZEPCEdiuy2WqPneuMInzHJUZYRHA3wJMJ6UrYGmqmXc
-         U+5w==
-X-Forwarded-Encrypted: i=1; AJvYcCVGAMFJ6XYOw5P7gcQ0KC8WANSnzMZGhyHoLa4JYnyoxGXzDtXHRfhTpJvuG5w7K4mct2g=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx7CUbrhza5xkbLUF+wxhCD0M5GPmYqmNcGBM/ZG9PFVvbYZCwC
-	ZfOBWp0MzxldEbrk2CfJRYy3RKA5siJPUhaGxfPSGY6/c7OQ/+0yiLCOGwz/hVraaPL64GShKZm
-	DRTxmn+1q9C322TujkwrnZQAat04ORe805mHP8UO9/w==
-X-Gm-Gg: ASbGnctNKYBBlHXxWV34A8spk5GSHLjKDZWCK78fCkxV085DwTHzgfB8X/5maLyHqMT
-	67+GOpeR15y7RayTV+Tf9gcE+Vls5+cb+etnfZ4CzgZGrq0sX1Mp6UGvfw6bbfjdoxQ9/OEyA2D
-	RxJrOI+/mRfMkdBUcCxckSf1Yq80oqMI01T8Lbn+mmXvKmruhBYiqA5cFJyP8mIvMSV1/cCTLiZ
-	vf/qS731W0CELpwAaP4RFBLoLH6BfL6YOWgCyYlA2MEso/00kn+2rkXrO66fZRlmlF5BjmsWNwz
-	bH5to38g6Ynas38S
-X-Google-Smtp-Source: AGHT+IHcp5RL49BzQ/EwQ2Jax7wwd/a8PEM1WoZpid3JGwwdtlpJzBmzwt/P9jvyh9TplD5Nus8fFpsIw/K4cuDWoP0=
-X-Received: by 2002:a05:6512:104f:b0:594:2876:c901 with SMTP id
- 2adb3069b0e04-5957ececcc7mr1012811e87.25.1763044799557; Thu, 13 Nov 2025
- 06:39:59 -0800 (PST)
+        d=1e100.net; s=20230601; t=1763045112; x=1763649912;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m53OXX0FSEdVsD/HzcBlcWiZnahYMqqYD9/Rw82fxP8=;
+        b=XjAJcl4qE2KBudUu7ZbtWtXf8iYrvbLed4n8SLLVUKmIluubIzss3S4dzDmfBDfeir
+         18mnF3L26HvmwIYon5FWsO8c5mGyS8q5YoSv3obsgNrVZ7Dro9yOfQ18nR2vPC/oecfR
+         v3ZCfjBFSczrDa0xFcqh9HDtEnfOWrlYQq0RGcHrgg3NbOkrebtWx7XS/RnTGzkZU2d3
+         TtCaAW5xC5NjSNU106fJ5JnTWQ3jAsQ4zeHwZUrjwgJuDE6SCEYCsPt2doLlo67SkjKY
+         pMWEZSW0yeL1aNNBgOmwYxkk6AdGbFbwXG//mfpUxpHv85mYsjC+/l9omHhkg4crPTP5
+         vw1g==
+X-Forwarded-Encrypted: i=1; AJvYcCVljC0E23Oni+dLo97mfjTsbswPDMlK2nLtGujzOh9Louptpftb4gY/s1YJ1ulc6/h68oY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxZsdhwLPAAmzllV7hY0pKZ2AXIv1r+rlulzhyyHxWHhlgIV+rJ
+	pAa/krt7Z37UV3VX+Nd8my3FquDrSvL+oyMAPsh6vu+qZg9bUQ5gokhPqid31qMCNfpOevEpcVB
+	ipwCxp7BCFrqwacZ7OWORKK22XJZ2QIwcvIujQ0tCFQ==
+X-Gm-Gg: ASbGnct+hFWbrImZz6clKE+eu1X/nvBhm4oK4qjgHRhudQFDIfSV9Y9V89wp1qNx2YA
+	boxdyk0Mt0EB8Q9Rpusb4arTPN5uFBLC6p6rLfpdEyqunax/AutmxOIPGqRamOyfQ+3Fifaupe6
+	YPsL7oUdtCGXyOrra+Z1eimJBlCghORf0bcLmEYzcxGccH0jPwOoWim2+w+/AjG7e3MEu+KkjU/
+	MYL0fvKDcxHekPPhPczajUSRdPgs4JXe+J6PRBbuMSq70GTXBgmOLoPv5JoGrd4bXDgQAf2iBaj
+	Q6ddGgYPmnnTYw==
+X-Google-Smtp-Source: AGHT+IH4jj6eVtxRt3wKbnn+UazVGdwbCJoI149sIZw96/aCkUMses1jDosEW0DIlhxtvuCWHuc2IKSjJmxjA9t2HMA=
+X-Received: by 2002:a05:6402:42c8:b0:640:fb13:6b8 with SMTP id
+ 4fb4d7f45d1cf-6431a548655mr6370272a12.22.1763045111775; Thu, 13 Nov 2025
+ 06:45:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251107-qcom-sa8255p-emac-v5-0-01d3e3aaf388@linaro.org>
- <20251107-qcom-sa8255p-emac-v5-8-01d3e3aaf388@linaro.org> <aRMiafCQNPVDOljU@horms.kernel.org>
-In-Reply-To: <aRMiafCQNPVDOljU@horms.kernel.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 13 Nov 2025 15:39:45 +0100
-X-Gm-Features: AWmQ_bmyO0__RPwdcHgOIMRaFCfnIoYFER6JzR_p2Qqf8fR68sQPWn6kw1o5zWY
-Message-ID: <CAMRc=MfEuAhichw-tPJkj_BKxy7AzvfmVJJyXzHsqa2wf=2EKw@mail.gmail.com>
-Subject: Re: [PATCH v5 8/8] net: stmmac: qcom-ethqos: add support for sa8255p
-To: Simon Horman <horms@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Matthew Gerlach <matthew.gerlach@altera.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Keguang Zhang <keguang.zhang@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
-	Romain Gantois <romain.gantois@bootlin.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>, 
-	Emil Renner Berthing <kernel@esmil.dk>, Minda Chen <minda.chen@starfivetech.com>, 
-	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Maxime Ripard <mripard@kernel.org>, Shuang Liang <liangshuang@eswincomputing.com>, 
-	Zhi Li <lizhi2@eswincomputing.com>, Shangjuan Wei <weishangjuan@eswincomputing.com>, 
-	"G. Jaya Kumaran" <vineetha.g.jaya.kumaran@intel.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Linux Team <linux-imx@nxp.com>, Frank Li <Frank.Li@nxp.com>, David Wu <david.wu@rock-chips.com>, 
-	Samin Guo <samin.guo@starfivetech.com>, 
-	Christophe Roullier <christophe.roullier@foss.st.com>, Swathi K S <swathi.ks@samsung.com>, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
-	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
-	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+References: <20251110173334.234303-1-vincent.guittot@linaro.org>
+ <20251110173334.234303-4-vincent.guittot@linaro.org> <aRI9T260bl9bok4W@lizhi-Precision-Tower-5810>
+In-Reply-To: <aRI9T260bl9bok4W@lizhi-Precision-Tower-5810>
+From: Vincent Guittot <vincent.guittot@linaro.org>
+Date: Thu, 13 Nov 2025 15:44:58 +0100
+X-Gm-Features: AWmQ_bkvZNjQ1Qh_dA2hcZ-2KrSCoqn4Hw9CqqUeyqhk9LfBW4EldGpwJgFMJrs
+Message-ID: <CAKfTPtDCysLA6TLxUnP8-vsD4DwvPz2Ri6R5k6YE4ZtQY0uk8Q@mail.gmail.com>
+Subject: Re: [PATCH 3/4 v4] PCI: s32g: Add initial PCIe support (RC)
+To: Frank Li <Frank.li@nxp.com>
+Cc: chester62515@gmail.com, mbrugger@suse.com, ghennadi.procopciuc@oss.nxp.com, 
+	s32@nxp.com, bhelgaas@google.com, jingoohan1@gmail.com, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com, 
+	ciprianmarian.costea@nxp.com, bogdan.hamciuc@nxp.com, 
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	cassel@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 11, 2025 at 12:48=E2=80=AFPM Simon Horman <horms@kernel.org> wr=
-ote:
+On Mon, 10 Nov 2025 at 20:30, Frank Li <Frank.li@nxp.com> wrote:
 >
-> On Fri, Nov 07, 2025 at 11:29:58AM +0100, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> On Mon, Nov 10, 2025 at 06:33:33PM +0100, Vincent Guittot wrote:
+> > Add initial support of the PCIe controller for S32G Soc family. Only
+> > host mode is supported.
+> >
+> > Co-developed-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
+> > Signed-off-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
+> > Co-developed-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
+> > Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
+> > Co-developed-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+> > Signed-off-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+> > Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
+> > Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+> > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+> > ---
+> >  drivers/pci/controller/dwc/Kconfig            |  10 +
+> >  drivers/pci/controller/dwc/Makefile           |   1 +
+> >  .../pci/controller/dwc/pcie-nxp-s32g-regs.h   |  27 ++
+> >  drivers/pci/controller/dwc/pcie-nxp-s32g.c    | 435 ++++++++++++++++++
+> >  4 files changed, 473 insertions(+)
+> >  create mode 100644 drivers/pci/controller/dwc/pcie-nxp-s32g-regs.h
+> >  create mode 100644 drivers/pci/controller/dwc/pcie-nxp-s32g.c
+> >
+> > diff --git a/drivers/pci/controller/dwc/Kconfig b/drivers/pci/controller/dwc/Kconfig
+> > index 349d4657393c..e276956c3fca 100644
+> > --- a/drivers/pci/controller/dwc/Kconfig
+> > +++ b/drivers/pci/controller/dwc/Kconfig
+> > @@ -256,6 +256,16 @@ config PCIE_TEGRA194_EP
+> >         in order to enable device-specific features PCIE_TEGRA194_EP must be
+> >         selected. This uses the DesignWare core.
+> >
+> > +config PCIE_NXP_S32G
+> > +     tristate "NXP S32G PCIe controller (host mode)"
+> > +     depends on ARCH_S32 || COMPILE_TEST
+> > +     select PCIE_DW_HOST
+> > +     help
+> > +       Enable support for the PCIe controller in NXP S32G based boards to
+> > +       work in Host mode. The controller is based on DesignWare IP and
+> > +       can work either as RC or EP. In order to enable host-specific
+> > +       features PCIE_NXP_S32G must be selected.
+> > +
+> >  config PCIE_DW_PLAT
+> >       bool
+> >
+> > diff --git a/drivers/pci/controller/dwc/Makefile b/drivers/pci/controller/dwc/Makefile
+> > index 7ae28f3b0fb3..3301bbbad78c 100644
+> > --- a/drivers/pci/controller/dwc/Makefile
+> > +++ b/drivers/pci/controller/dwc/Makefile
+> > @@ -10,6 +10,7 @@ obj-$(CONFIG_PCI_DRA7XX) += pci-dra7xx.o
+> >  obj-$(CONFIG_PCI_EXYNOS) += pci-exynos.o
+> >  obj-$(CONFIG_PCIE_FU740) += pcie-fu740.o
+> >  obj-$(CONFIG_PCI_IMX6) += pci-imx6.o
+> > +obj-$(CONFIG_PCIE_NXP_S32G) += pcie-nxp-s32g.o
+> >  obj-$(CONFIG_PCIE_SPEAR13XX) += pcie-spear13xx.o
+> >  obj-$(CONFIG_PCI_KEYSTONE) += pci-keystone.o
+> >  obj-$(CONFIG_PCI_LAYERSCAPE) += pci-layerscape.o
+> > diff --git a/drivers/pci/controller/dwc/pcie-nxp-s32g-regs.h b/drivers/pci/controller/dwc/pcie-nxp-s32g-regs.h
+> > new file mode 100644
+> > index 000000000000..c264446a8f21
+> > --- /dev/null
+> > +++ b/drivers/pci/controller/dwc/pcie-nxp-s32g-regs.h
+> > @@ -0,0 +1,27 @@
+> > +/* SPDX-License-Identifier: GPL-2.0+ */
+> > +/*
+> > + * Copyright 2015-2016 Freescale Semiconductor, Inc.
+> > + * Copyright 2016-2023, 2025 NXP
+> > + */
+> > +
+> > +#ifndef PCIE_S32G_REGS_H
+> > +#define PCIE_S32G_REGS_H
+> > +
+> > +/* PCIe controller Sub-System */
+> > +
+> > +/* PCIe controller 0 General Control 1 */
+> > +#define PCIE_S32G_PE0_GEN_CTRL_1             0x50
+> > +#define DEVICE_TYPE_MASK                     GENMASK(3, 0)
+> > +#define SRIS_MODE                            BIT(8)
+> > +
+> > +/* PCIe controller 0 General Control 3 */
+> > +#define PCIE_S32G_PE0_GEN_CTRL_3             0x58
+> > +#define LTSSM_EN                             BIT(0)
+> > +
+> > +/* PCIe Controller 0 Link Debug 2 */
+> > +#define PCIE_S32G_PE0_LINK_DBG_2             0xB4
+> > +#define SMLH_LTSSM_STATE_MASK                        GENMASK(5, 0)
+> > +#define SMLH_LINK_UP                         BIT(6)
+> > +#define RDLH_LINK_UP                         BIT(7)
+> > +
+> > +#endif  /* PCI_S32G_REGS_H */
+> > diff --git a/drivers/pci/controller/dwc/pcie-nxp-s32g.c b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
+> > new file mode 100644
+> > index 000000000000..18bf0fe6f416
+> > --- /dev/null
+> > +++ b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
+> > @@ -0,0 +1,435 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * PCIe host controller driver for NXP S32G SoCs
+> > + *
+> > + * Copyright 2019-2025 NXP
+> > + */
+> > +
+> ...
+> > +
+> > +#define PCIE_LINKUP  (SMLH_LINK_UP | RDLH_LINK_UP)
+> > +
+> > +static bool s32g_has_data_phy_link(struct s32g_pcie *s32g_pp)
+> > +{
+> > +     u32 reg = s32g_pcie_readl_ctrl(s32g_pp, PCIE_S32G_PE0_LINK_DBG_2);
+> > +
+> > +     if ((reg & PCIE_LINKUP) == PCIE_LINKUP) {
+> > +             switch (FIELD_GET(SMLH_LTSSM_STATE_MASK, reg)) {
+> > +             case DW_PCIE_LTSSM_L0:
+> > +             case DW_PCIE_LTSSM_L0S:
+> > +             case DW_PCIE_LTSSM_L1_IDLE:
+> > +                     return true;
+> > +             default:
+> > +                     return false;
+>
+> Are you sure code can go here? I think IP set flag PCIE_LINKUP of
+> PCIE_S32G_PE0_LINK_DBG_2 only after LTSSM in above states. Do you know
+> which case PCIE_LINKUP is true, but LTSSM is not other state?
+
+I don't have access to such details but can't we have
+DW_PCIE_LTSSM_L123_SEND_EIDLE or other transient state but PCIE_LINKUP
+?
+
+>
+> I remember I asked if DEBUG0 register work? any conclusion?
+
+I mentioned in the cover letter that I was still waiting feedback from
+internal team before switching to DEBUG0 and DEBUG1 and remove
+.get_ltssm() and .link_up()
+
+I received the feedback earlier today that I can use DEBUG0 and
+DEBUG1, so I don't need to implement .get_ltssm() and .link_up(). I
+will remove them in the next version
+
+>
+> > +             }
+> > +     }
+> > +
+> > +     return false;
+> > +}
+> > +
 >
 > ...
 >
-> > +static int qcom_ethqos_pd_init(struct platform_device *pdev, void *pri=
-v)
+> > +
+> > +static int s32g_pcie_parse_port(struct s32g_pcie *s32g_pp, struct device_node *node)
 > > +{
-> > +     struct qcom_ethqos *ethqos =3D priv;
-> > +     int ret;
+> > +     struct device *dev = s32g_pp->pci.dev;
+> > +     struct s32g_pcie_port *port;
+> > +     int num_lanes;
+> > +
+> > +     port = devm_kzalloc(dev, sizeof(*port), GFP_KERNEL);
+> > +     if (!port)
+> > +             return -ENOMEM;
+> > +
+> > +     port->phy = devm_of_phy_get(dev, node, NULL);
+> > +     if (IS_ERR(port->phy))
+> > +             return dev_err_probe(dev, PTR_ERR(port->phy),
+> > +                             "Failed to get serdes PHY\n");
+> > +
+> > +     INIT_LIST_HEAD(&port->list);
+> > +     list_add_tail(&port->list, &s32g_pp->ports);
 > > +
 > > +     /*
-> > +      * Enable functional clock to prevent DMA reset after timeout due
-> > +      * to no PHY clock being enabled after the hardware block has bee=
-n
-> > +      * power cycled. The actual configuration will be adjusted once
-> > +      * ethqos_fix_mac_speed() is called.
+> > +      * The DWC core initialization code cannot parse yet the num-lanes
+> > +      * attribute in the Root Port node. The S32G only supports one Root
+> > +      * Port for now so its driver can parse the node and set the num_lanes
+> > +      * field of struct dwc_pcie before calling dw_pcie_host_init().
 > > +      */
-> > +     ethqos_set_func_clk_en(ethqos);
-> > +
-> > +     ret =3D qcom_ethqos_domain_on(ethqos, ETHQOS_PD_CORE);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     ret =3D qcom_ethqos_domain_on(ethqos, ETHQOS_PD_MDIO);
-> > +     if (ret) {
-> > +             qcom_ethqos_domain_off(ethqos, ETHQOS_PD_CORE);
-> > +             return ret;
-> > +     }
+> > +     if (!of_property_read_u32(node, "num-lanes", &num_lanes))
+> > +             s32g_pp->pci.num_lanes = num_lanes;
+>
+> Can you add this to dwc core driver?
+>
+> Frank
+>
 > > +
 > > +     return 0;
 > > +}
 > > +
-> > +static void qcom_ethqos_pd_exit(struct platform_device *pdev, void *da=
-ta)
-> > +{
-> > +     struct qcom_ethqos *ethqos =3D data;
-> > +
-> > +     qcom_ethqos_domain_off(ethqos, ETHQOS_PD_MDIO);
-> > +     qcom_ethqos_domain_off(ethqos, ETHQOS_PD_CORE);
-> > +}
-> > +
-> >  static void ethqos_ptp_clk_freq_config(struct stmmac_priv *priv)
-> >  {
-> >       struct plat_stmmacenet_data *plat_dat =3D priv->plat;
->
 > ...
->
-> > @@ -852,28 +993,63 @@ static int qcom_ethqos_probe(struct platform_devi=
-ce *pdev)
-> >       ethqos->rgmii_config_loopback_en =3D drv_data->rgmii_config_loopb=
-ack_en;
-> >       ethqos->has_emac_ge_3 =3D drv_data->has_emac_ge_3;
-> >       ethqos->needs_sgmii_loopback =3D drv_data->needs_sgmii_loopback;
-> > -
-> > -     ethqos->pm.link_clk =3D devm_clk_get(dev, clk_name);
-> > -     if (IS_ERR(ethqos->pm.link_clk))
-> > -             return dev_err_probe(dev, PTR_ERR(ethqos->pm.link_clk),
-> > -                                  "Failed to get link_clk\n");
-> > -
-> > -     ret =3D ethqos_clks_config(ethqos, true);
-> > -     if (ret)
-> > -             return ret;
-> > -
-> > -     ret =3D devm_add_action_or_reset(dev, ethqos_clks_disable, ethqos=
-);
-> > -     if (ret)
-> > -             return ret;
-> > -
-> > -     ethqos->pm.serdes_phy =3D devm_phy_optional_get(dev, "serdes");
-> > -     if (IS_ERR(ethqos->pm.serdes_phy))
-> > -             return dev_err_probe(dev, PTR_ERR(ethqos->pm.serdes_phy),
-> > -                                  "Failed to get serdes phy\n");
-> > -
-> > -     ethqos->set_serdes_speed =3D ethqos_set_serdes_speed_phy;
-> >       ethqos->serdes_speed =3D SPEED_1000;
-> > -     ethqos_update_link_clk(ethqos, SPEED_1000);
-> > +
-> > +     if (pm_data && pm_data->use_domains) {
-> > +             ethqos->set_serdes_speed =3D ethqos_set_serdes_speed_pd;
-> > +
-> > +             ret =3D devm_pm_domain_attach_list(dev, &pm_data->pd,
-> > +                                              &ethqos->pd.pd_list);
-> > +             if (ret < 0)
-> > +                     return dev_err_probe(dev, ret, "Failed to attach =
-power domains\n");
-> > +
-> > +             plat_dat->clks_config =3D ethqos_pd_clks_config;
-> > +             plat_dat->serdes_powerup =3D qcom_ethqos_pd_serdes_poweru=
-p;
-> > +             plat_dat->serdes_powerdown =3D qcom_ethqos_pd_serdes_powe=
-rdown;
-> > +             plat_dat->exit =3D qcom_ethqos_pd_exit;
->
-> Hi Bartosz,
->
-> It seems that the intention of this is to ensure
-> that domains turned on by qcom_ethqos_pd_init()
-> are turned off again on exit or clean-up in error paths.
->
-> > +             plat_dat->init =3D qcom_ethqos_pd_init;
-> > +             plat_dat->clk_ptp_rate =3D pm_data->clk_ptp_rate;
-> > +
-> > +             ret =3D qcom_ethqos_pd_init(pdev, ethqos);
-> > +             if (ret)
-> > +                     return ret;
->
-> And here those domains are turned on.
->
-> > +
-> > +             ret =3D qcom_ethqos_domain_on(ethqos, ETHQOS_PD_SERDES);
-> > +             if (ret)
->
-> But it seems that if we reach this error path then the cleanup is not
-> performed. This is because plat_dat and thus it's exit callback are
-> registered until the call to devm_stmmac_pltfr_probe() towards the end of
-> this function.
-
-We can only reach this if devm_stmmac_pltfr_probe() fails. Yeah it
-probably warrants a devres action.
-
-Bartosz
+> > --
+> > 2.43.0
+> >
