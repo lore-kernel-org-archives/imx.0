@@ -1,155 +1,199 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B6220B81B
-	for <imx@lists.linux.dev>; Thu, 13 Nov 2025 13:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99912874E1
+	for <imx@lists.linux.dev>; Thu, 13 Nov 2025 14:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763041467; cv=none; b=c6LywyKPVSvyFKJABNmwdEm9W61uLracF9J/aU25ugYUsRATa2ptwgWPYeJRVE9LbacN1/elVFfECLKB2oI1fqg9+SBOANHPT+nRR/M6xVcyO4d/Q4ss/3F0QmqpNfLFEhXh3ubgZ9tCWwVZ3se9HDe4NO5hRu5sco0v+G2OyCI=
+	t=1763043564; cv=none; b=ObQ4VpvtJVkQNgHS4M2sKp4EJFexjqwj9duSWY2LBuNV6GPKQnuTa1FNM9eFjLIxvmMlH85LXY7f6ShHJzEtcSSvyt66JdvPTm8URojNdV/ytqIhFgh/7E+5RdPb0B8qlIslBS7ao5FXsVhpIR3RUXP7m7e+mHgjV8cLWEsmEUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763041467; c=relaxed/simple;
-	bh=n3yn/Qzs/10SowO+cV6IyFirX5NhFXBaRiN32HGuPq0=;
+	s=arc-20240116; t=1763043564; c=relaxed/simple;
+	bh=+60GxZqo7W68nBsBK+4RC1waiWGLnIxNTQPjNx2YCXQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wj/j5lqlopUWgNEavFSCCvVLGl03ExwidZwwz/bqurrmIbAFWGyhPRUDFa9W+C1t6+gaaU2dmQlNbnXmm1jpenlBS9/gprJP37P4OC920ixPCZzR2sOvxu6/NsZqzvwQswOTiHTe3Q/6ataxyw0/rZ8OkxofXRawBTMQDb1ZilQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=IWgWSFHL; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+	 To:Cc:Content-Type; b=HUIkIUJ7LBr96QFtlvggplIemC5jD0+1OKFZKyqrN2vOj9t1P9haus1OEjBWO5TaGb4UmMm6tE5fRDa4rEjK2tY4PNRVcg6C7dAgZNLbbkMmZ6Wy8ZU2kKaoafel/opXqQjEtMjmdopjud3U42yCrp0u88ur4DFIdZTujl+CF/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ueVxwfPB; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="IWgWSFHL"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5957e017378so934882e87.3
-        for <imx@lists.linux.dev>; Thu, 13 Nov 2025 05:44:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ueVxwfPB"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-64149f78c0dso1427747a12.3
+        for <imx@lists.linux.dev>; Thu, 13 Nov 2025 06:19:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1763041464; x=1763646264; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gHk2bNA1OTHNC9vr3z2H2JeUdyy+rk3RBEHgiTzG238=;
-        b=IWgWSFHLiKpnggWGQgVk6uffPxj4G2UaFGgUi5Hx/OvAlgVB5OzKPmHMzDoiAvLjzg
-         WO8xRk2E/AHtcNEVjatGbF2jLYsjCIzpvjCmE474QDoWh43ZzeQSyMvL4++8kRwwqzz/
-         AHkOuWNzXV8218DImG9h1Y7i5WQmBNQI7O9F25m6ri+VdbDJPMDZtdwOyhTSF/grYUih
-         Vi5gy61oWo7JjW3ZWelb9MyDqbQJR5KPcKZk2vNRJey8dtitGOhvV88SIJLflA0Ijzf2
-         wp+OyyUCX6n0ygCO1QdtfS+lbrcL1Bo2JlZE/VeRJ42Ewne7O/Ow+uZooLgSTIp+HBdi
-         qOaQ==
+        d=linaro.org; s=google; t=1763043558; x=1763648358; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8gGk2esZ3TPP+U/Xv/QDaG4ohk1EPYMCao+ua5Ut7t0=;
+        b=ueVxwfPBdynCgxWUZkf+1XvK9TuLjmqH/MgMpq+RnhuM3Iri3IXjdZgcgoKTj30Ovs
+         4QyY2320obQZwcMre1Mz1H6VQEpwlkQIx2AQ21sH09w5pXd8BsVBKC8gJYg/0NO8R4YU
+         73wcdl67Va41ddZDKXiCkqek74JeBIP+5zpkklHM1M+V9zLx6SUQL3dJbPqOzSShrJ5a
+         IWA9pX/RjU19PRc/OMap/1vhBCENEv7N7zORTSRxuFqp9z9iEtpnI+vQrURZAiePudo+
+         HsmjHcPKUU5aWUTlpBqqNxtPw6yj3y2NwV+dNs5wDY+FCSCfFw0QH13hne3rIER4wFiy
+         2XaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763041464; x=1763646264;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gHk2bNA1OTHNC9vr3z2H2JeUdyy+rk3RBEHgiTzG238=;
-        b=hYFtwFFKGbagLAlxtHts/jnxwmJw3H95mVQ5ODvfsk5N1QOOq9K+C3aqSgPL+0Lpgx
-         7KNu5A4yfgTgZ9/EiTccNropXA0VP3Z+spZAEbAx+2OADmDLGHgi8DHOnzF7N41XQ9Gc
-         bMPYs5drt3s+q2LYNdTG2Dn2FosXBGtrOYQBavZRUWq0w6fHcMkc39AML+G4TD6QUSBH
-         QmhRDcrQGC/pE9qNNvxhrY/ZoearrM0lszuD2BAVEvGEqAoS4vWJMXYW4TdFqHyshIMR
-         9EX5DeEFpWnC4q6wWxlnS7EPT8SEP9XvfXAoj9LNNaauEs5BuywsHYLke+heoXDSv0gu
-         GV7g==
-X-Forwarded-Encrypted: i=1; AJvYcCXsU+xDutXg/cy8aTKfRBkseyaAPg4lGjMycCFrkzewp5RpEiUxrL3WXNVo3qREzWIoCl0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yym+TDY3buom5yROUde8GwWA7Lv4pC7s0By4DYlbLGVw5OLXcEJ
-	PUSll/3DiVYqMRmykQW1nEwXzL1ayepEr6ibCqZavosYgeh0IPpgkFP0uFFCv7vtcGF1eLaCBAY
-	HXPoF4oGppIESE5exkIeVcsI2OiwxYoQTW+KEW5a1bg==
-X-Gm-Gg: ASbGncsq71644180FT9RSNyHDpwbj+ypRVffP3U29NLOSbvPONRzO0QF9pSLFDL0XXY
-	aqyxhz5BooI1b+pzKVP6yhNrT2ZF+BZwKvvdQHqtfADD/2+tFg+LscVG3dOUkdlt58RJywSPBFz
-	QdFOhpcLGOvYjBcmaNasCgfwF11CGPy1ZZwXg39Vn/OyzBw+8ZFydbOkPktcmu+3qaieI573O49
-	GLZO00BAg5Pvu+aDf/2Y99XTkwwTW8FqmIzRkBR+OtiLTQE5yddwLbaczkUJUpZSBJPHRKNF2Xz
-	WDBCACqmnkwd5Bxq
-X-Google-Smtp-Source: AGHT+IF9+pE/QXln9/ghLnXjpwA3j+ZQdhSMaqAds1VqCnmNiZvVcKXj+XjAJW9rczSh1FwGivl5ToawEe+J2/Cq7qU=
-X-Received: by 2002:a05:6512:6d4:b0:592:f7cf:9f6f with SMTP id
- 2adb3069b0e04-59576df5dfemr2184445e87.14.1763041463584; Thu, 13 Nov 2025
- 05:44:23 -0800 (PST)
+        d=1e100.net; s=20230601; t=1763043558; x=1763648358;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8gGk2esZ3TPP+U/Xv/QDaG4ohk1EPYMCao+ua5Ut7t0=;
+        b=byvShg31reianJDIjeW4buErPD2hWK9VtERSdFvoE3sL8cXGPP8aYU5Xm+KrkPg+Kg
+         fHULlSTxaFMXUTV/5HpUs5wFJXFOJU1mzIzD8yxA0Zx5EXY+22hrPwuUYhgDnIh8o4J/
+         trgPCmcRjkZBoJDIaGksipWda4Hojp9MfHGo97RSUFbRuruSDFSab+7VZO8vXQogAviw
+         Xl+Iesp++irpVf2YnuQyaEYganT2AuD6jpzvwAdb1UibW9R6zPtomA18QVbRuu7iPsnV
+         q0/VY0SsPhBXeuqA9Wn7YcyHv9vLswFsiYE3+voZROq6exFZ9lMCRrxnpwvkZJVaPgff
+         wXSg==
+X-Forwarded-Encrypted: i=1; AJvYcCVSaqdakrQ+53eMo40J9ATJlT0Zcg/cwVmgphTrQFcZV8507B3UaCypZHJ0jX0rRb9r5SY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwYzO+padPi7mcLvC/DwEPfzEmmf1Oi8s8jno4ge2uvzT8DpTxF
+	pJzz1J5klZzsNpG8qkSqawiuaoYdPNZmQne3A/21XQycs+QFe00h9K1Gw0jBrMDbf1YbP/gB7pf
+	3rSpYoUmaPTcC6drdOqo2Sy4wKjIhPqNQ92ArbhiB4Q==
+X-Gm-Gg: ASbGncu3XYwGwvip77ZrAVbtzDoJMmhe5VIbuaXUIE8xFU0gGKpjIwUIDzsWXfzLhGg
+	KjN27ON1K6bqdaGR7mOflXdEZ3boIJLzGP+fKQtL8hDCFw1m7tLnCFKWZlZW7L+PBt958eEpkIC
+	wWTNLAwbcpE7wQe+saqxKDmaJhv45uqPWDqi4Zg6l998tad/Snm/9LCPrNUnC/nHLK0/8lMHcIe
+	dr7RsSnFHeH+1amBED1f7gcRkiVCqfDu27xzNQI3sJqDnEtehpZZAlm+0oGYn7zUzvhEIcI8APg
+	wg5kiCMZhgXVZA==
+X-Google-Smtp-Source: AGHT+IEk4ZuVDBz3u+9Uv4/zJfB1Emeu9cNMcz6aWafXiAHCM1K8SOZabMAhPk/X3XNWJIyPPXn256y5U9W+nbjKzzM=
+X-Received: by 2002:a05:6402:27c6:b0:640:95e2:cd17 with SMTP id
+ 4fb4d7f45d1cf-6431a57e355mr5833525a12.36.1763043558031; Thu, 13 Nov 2025
+ 06:19:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251107-qcom-sa8255p-emac-v5-0-01d3e3aaf388@linaro.org>
- <20251107-qcom-sa8255p-emac-v5-6-01d3e3aaf388@linaro.org> <14f95efb-0eb0-48ee-9132-df35abddfcc7@oss.qualcomm.com>
-In-Reply-To: <14f95efb-0eb0-48ee-9132-df35abddfcc7@oss.qualcomm.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 13 Nov 2025 14:44:12 +0100
-X-Gm-Features: AWmQ_blnqOG7JKELYBN2x3sW4StFzPpU8xniVnWCV7D_4z_I3CQNMw3VuWKeQ6A
-Message-ID: <CAMRc=Mf03rYoi-C+kMic9RYZdk2vtAW5LDMYNMqg-H5vJccUhA@mail.gmail.com>
-Subject: Re: [PATCH v5 6/8] net: stmmac: qcom-ethqos: split power management
- context into a separate struct
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Matthew Gerlach <matthew.gerlach@altera.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Keguang Zhang <keguang.zhang@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
-	Romain Gantois <romain.gantois@bootlin.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>, 
-	Emil Renner Berthing <kernel@esmil.dk>, Minda Chen <minda.chen@starfivetech.com>, 
-	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Maxime Ripard <mripard@kernel.org>, Shuang Liang <liangshuang@eswincomputing.com>, 
-	Zhi Li <lizhi2@eswincomputing.com>, Shangjuan Wei <weishangjuan@eswincomputing.com>, 
-	"G. Jaya Kumaran" <vineetha.g.jaya.kumaran@intel.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Linux Team <linux-imx@nxp.com>, Frank Li <Frank.Li@nxp.com>, David Wu <david.wu@rock-chips.com>, 
-	Samin Guo <samin.guo@starfivetech.com>, 
-	Christophe Roullier <christophe.roullier@foss.st.com>, Swathi K S <swathi.ks@samsung.com>, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
-	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
-	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+References: <20251110173334.234303-1-vincent.guittot@linaro.org>
+ <20251110173334.234303-2-vincent.guittot@linaro.org> <aRIn1COnQG6Mz27j@lizhi-Precision-Tower-5810>
+In-Reply-To: <aRIn1COnQG6Mz27j@lizhi-Precision-Tower-5810>
+From: Vincent Guittot <vincent.guittot@linaro.org>
+Date: Thu, 13 Nov 2025 15:19:06 +0100
+X-Gm-Features: AWmQ_bn4_FBV_0kJ1ugPYoCrbCQQh9T4qf5dxZ1Dk01YEW7NuCgTcJxJ5cXExLg
+Message-ID: <CAKfTPtBT6qT2zC8toUOEFD_ZkJPBMJgZrZc2NCAFSUXANYJ==Q@mail.gmail.com>
+Subject: Re: [PATCH 1/4 v4] dt-bindings: PCI: s32g: Add NXP PCIe controller
+To: Frank Li <Frank.li@nxp.com>
+Cc: chester62515@gmail.com, mbrugger@suse.com, ghennadi.procopciuc@oss.nxp.com, 
+	s32@nxp.com, bhelgaas@google.com, jingoohan1@gmail.com, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com, 
+	ciprianmarian.costea@nxp.com, bogdan.hamciuc@nxp.com, 
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	cassel@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 7, 2025 at 12:00=E2=80=AFPM Konrad Dybcio
-<konrad.dybcio@oss.qualcomm.com> wrote:
+On Mon, 10 Nov 2025 at 18:59, Frank Li <Frank.li@nxp.com> wrote:
 >
-> On 11/7/25 11:29 AM, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> On Mon, Nov 10, 2025 at 06:33:31PM +0100, Vincent Guittot wrote:
+> > Describe the PCIe host controller available on the S32G platforms.
 > >
-> > With match data split into general and power-management sections, let's
-> > now do the same with runtime device data.
-> >
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > Co-developed-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
+> > Signed-off-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
+> > Co-developed-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+> > Signed-off-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+> > Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
+> > Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+> > Co-developed-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+> > Signed-off-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+> > Co-developed-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
+> > Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
+> > Co-developed-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+> > Signed-off-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+> > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 > > ---
-> >  .../ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    | 46 ++++++++++++--=
---------
-> >  1 file changed, 25 insertions(+), 21 deletions(-)
+> >  .../bindings/pci/nxp,s32g-pcie.yaml           | 130 ++++++++++++++++++
+> >  1 file changed, 130 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
 > >
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/=
-drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> > index 1f00556bbad997e2ec76b521cffe2eb14fabb79e..09f122062dec87aa11804af=
-2769ddff4964e6596 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> > @@ -105,17 +105,21 @@ struct ethqos_emac_match_data {
-> >       const struct ethqos_emac_pm_data *pm_data;
-> >  };
+> > diff --git a/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+> > new file mode 100644
+> > index 000000000000..6077c251c2cd
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+> > @@ -0,0 +1,130 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/pci/nxp,s32g-pcie.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: NXP S32G2xxx/S32G3xxx PCIe Root Complex controller
+> > +
+> > +maintainers:
+> > +  - Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+> > +  - Ionut Vicovan <ionut.vicovan@nxp.com>
+> > +
+> > +description:
+> > +  This PCIe controller is based on the Synopsys DesignWare PCIe IP.
+> > +  The S32G SoC family has two PCIe controllers, which can be configured as
+> > +  either Root Complex or Endpoint.
+> > +
+> > +allOf:
+> > +  - $ref: /schemas/pci/snps,dw-pcie.yaml#
+>
+> Suggest move allOf after required, in case add if-else branch later.
+
+okay
+>
+> > +
+> > +properties:
+> > +  compatible:
+> > +    oneOf:
+> > +      - enum:
+> > +          - nxp,s32g2-pcie
+> > +      - items:
+> > +          - const: nxp,s32g3-pcie
+> > +          - const: nxp,s32g2-pcie
+> > +
+> > +  reg:
+> > +    maxItems: 6
+> > +
+> > +  reg-names:
+> > +    items:
+> > +      - const: dbi
+> > +      - const: dbi2
+> > +      - const: atu
+> > +      - const: dma
+> > +      - const: ctrl
+> > +      - const: config
+> > +
+> > +  interrupts:
+> > +    maxItems: 2
+>
+> Need match interrupt-names's restriction
+>
+>       minItems: 1
+>       maxItems: 2
+
+Yes
+
+>
+> > +
+> > +  interrupt-names:
+> > +    items:
+> > +      - const: msi
+> > +      - const: dma
+> > +    minItems: 1
+> > +
+> ...
+> > +
+> > +        pcie@40400000 {
+> > +            compatible = "nxp,s32g3-pcie",
+> > +                         "nxp,s32g2-pcie";
+>
+> put to one line to save LOC.
+
+Okay
+
+>
+> Frank
+> > +            reg = <0x00 0x40400000 0x0 0x00001000>,   /* dbi registers */
+> > +                  <0x00 0x40420000 0x0 0x00001000>,   /* dbi2 registers */
+> > +                  <0x00 0x40460000 0x0 0x00001000>,   /* atu registers */
+> > +                  <0x00 0x40470000 0x0 0x00001000>,   /* dma registers */
+> > +                  <0x00 0x40481000 0x0 0x000000f8>,   /* ctrl registers */
+> > +                  <0x5f 0xffffe000 0x0 0x00002000>;   /* config space */
+> ...
+> > +            };
+> > +        };
+> > +    };
+> > --
+> > 2.43.0
 > >
-> > +struct ethqos_emac_pm_ctx {
-> > +     struct clk *link_clk;
-> > +     unsigned int link_clk_rate;
-> > +     struct phy *serdes_phy;
->
-> What is the benefit of doing this? PHY APIs happily consume a nullptr
-> and NOP out, and the PHY is already retrieved with _optional(),
-> similarly with clk
->
-> Konrad
-
-Because it clearly divides the driver's logic into the manual and
-firmware-driven variants. Just because we could, doesn't necessarily
-mean we should just call PHY APIs with a nullptr if readability is
-better when we don't.
-
-Bartosz
