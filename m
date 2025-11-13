@@ -1,149 +1,120 @@
-Received: from mx-relay50-hz3.antispameurope.com (mx-relay50-hz3.antispameurope.com [94.100.134.239])
+Received: from mx-relay48-hz3.antispameurope.com (mx-relay48-hz3.antispameurope.com [94.100.134.237])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50AE2D837C
-	for <imx@lists.linux.dev>; Thu, 13 Nov 2025 10:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4002DFA2F
+	for <imx@lists.linux.dev>; Thu, 13 Nov 2025 10:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.237
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763030887; cv=pass; b=uNDfC9AXVuNRztyyMBBdPuldfyWSvITtmR6OQopQpJk9hPSCW4Of/qukWf9lSETHv73/U8KBy4vOa/ZnCRPGFtPfbFZKqPhkjepSwiP7xpubPmGfXIX/ExV+zzsdjHQxRwHzAPOyCHtUOjKlGyGWcsH+rEYxhtPUXGedhmDCQfI=
+	t=1763030979; cv=pass; b=C7Bm9NwzklIvRv5ikw2UANntu+JeI7pKW0ED/MlRG2whDSZZKvHawvVvpfchTuYKFrwUDO+Q9acVG0vgibLs5hH4fW79QRPoA6VbgJgdaunPyK3Wrf0FWeKxs7eFkDEFzoX98nBjwrrVt+R7+kNg66tMvnLIzmGbZIg+0GR3m2A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763030887; c=relaxed/simple;
-	bh=+7g+UtPmV34BNSCav0a+cKt01S3ncAII8xDayvopAW0=;
+	s=arc-20240116; t=1763030979; c=relaxed/simple;
+	bh=J6BsqTCmOrFFiAQAx5pEd4B6YJ3Nlg5q4umEShFXHAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JI9qfaSqMuysVYyPkKEgot77gjXKyCsAGkYkaGAlfiPFu9vcmhDJRspePw9FG/WlKAgF72oR9fBfmHmt78P05xK26SMklO0TZWvIBZmjvSUDJu7bZ/UB7IFEHqKmcssc8EkcnhnusAfVgYOTvMx+/yG6KbD0E0RmOICHVte4V0U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=FfxWturS; arc=pass smtp.client-ip=94.100.134.239
+	 MIME-Version; b=B08JDtF7OhSn9owVJoJMM/yQtfRjQRz+qts2RGKp9IwHuscSJGW25qofQWe+zpAWFY5rPMjrPIVHfF4Nu8MIi+R90aSH5A4EFgEsfKeNiS8e1UxKKdNZZSjavaUcYc0aGoxZdmmClamWC7H3Am6ai04IieNoLfFfr4agft0qSf4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=oqqtYQOs; arc=pass smtp.client-ip=94.100.134.237
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="FfxWturS"
-ARC-Authentication-Results: i=1; mx-gate50-hz3.hornetsecurity.com 1; spf=pass
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="oqqtYQOs"
+ARC-Authentication-Results: i=1; mx-gate48-hz3.hornetsecurity.com 1; spf=pass
  reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com
- smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
- header.from=ew.tq-group.com orig.disposition=pass
+ smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out02-hz1.hornetsecurity.com;
+ dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
 ARC-Message-Signature: a=rsa-sha256;
- bh=cPfvqiPK0XBbGB7jgxZcnmtoFkef5Esy2Ux2OKDfXoY=; c=relaxed/relaxed;
+ bh=HwZpnlL5PSUjD1ekyFYHL+mEFm8pXGu4Iwrph47h1b8=; c=relaxed/relaxed;
  d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1763030844;
- b=gZ0XCeLRlcj4p1GmIRfNroTvECoQjuOsH8fp1UFimU9PY3fmm35nV6cSzP7R+SHnA+f40OOJ
- w8hgOI0hhmSyv3A+I45ehHXrs7bpBF+ZOlreGXK2XNqZIvW3T6K7XTq0DS3S9tb5Opp1gCsO71E
- vnbcm7g/jxPkfGYoAPMsiaBW8kfNhK+ZhmR2DHanMBHzfbT7NbW3kS8PM3eXPgpvCf6VJUX4nZB
- O+gEQYpbtNpRnynNpi6Jrha4W1NfWPum2cyGc1nxSllbWdZnRiMOWkLq95mZkhlXXJNhjSQUmIM
- hVszOdjnjlML7Z5MF8k4kN2NZ12OxsQa7QS0MYM138SbQ==
+ t=1763030957;
+ b=s1bXrKfFHUYP1qf3sKtfjjxdy+ZzRnA0MtnvyBjNiRQjZLLm84J1OQEzIPvCulMjrn3ReTDf
+ /bSHJ8CriA5tTsS24eUTTQ5tSQDrquzRnfO8wwNmW+/8f66VVcokesDZvqAqTddIsg/Fhr9oB+6
+ qiTj2aNdytEkGolxQLMWsyNgySclOE0ju0EC3wZtfv9V/bXT1UXTnWp/XSBXUN9eW8WLkJPmUZ0
+ ZQ7i63R1jIwgiFFGrBZlj7gIT/59W627qNwQTfMds+FKKBkyAikOMHAH04E1KaHTTUvBrH3CTY/
+ qfiPrXe13MSX6Ii5y1QCTKABBL5fTQ+iISULuh1SpynrQ==
 ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1763030844;
- b=rCXK12XhzHLsNPoAQfz/1aiKLonhHq/s3DCDdiJ2ZudeWTpC1yFJvnQUqCrBL9sZNMsoZRVi
- EGRC+eNQSBusY5rUXK0ozR//PQXpjCioEvPOQKyC32FZ4uk9xL0ggKLjQMHwUocW1V+BAyf5Dkk
- WPaJ1BJDknOMOM9qSd8d3UPYNKBfW4+UEhvHS/VZIQbcMNQzE52oSNhExyRLXlyUTiSY5KU7Tal
- GZY56YPCwMKkVRrcp1OndOXJX1Kf7McWKXaEBtcQ9ba/W6ucR6Zqazz2KjdChH7E2OJJmqMQR+O
- ZoONqgdh/B3FP7q/SUbxCKasYlPVP8fZGdscVs6PzTH2Q==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay50-hz3.antispameurope.com;
- Thu, 13 Nov 2025 11:47:24 +0100
-Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+ t=1763030957;
+ b=D2xae/EYtexEFgjPBm0hOOfvlXpcTf6cwLyZSlIjoH5b0sHnOGl2SfU0d2zILKLk3ahcqwy6
+ 0i280PKbXh3bqO84hbBs5NDgqBCg1VBgacVRflEzFXZ39VnO+Dtn08CnXGrGr49V1oVvSp2OM7K
+ HJt3Dk+dUSwKsHEzyXco7uktlszJbi+XV7CUJaTPSPR9JDsj4v5grXUQNNrsNJhjAs4dbtywDCc
+ ehzFVWKif/OAiq4es98yvMT4fHEIsaQqP0kMvMV628zbH9Fr+3FpmLIHeiunrKS6lJROUwRFPXE
+ AxfFrIDd+pR9NEMr3vZIGPAMN1rETf68wqqSQLVWRa4Bg==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay48-hz3.antispameurope.com;
+ Thu, 13 Nov 2025 11:49:17 +0100
+Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
 	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 7250ECC0A1D;
-	Thu, 13 Nov 2025 11:47:14 +0100 (CET)
+	by smtp-out02-hz1.hornetsecurity.com (Postfix) with ESMTPSA id C3B245A063D;
+	Thu, 13 Nov 2025 11:49:06 +0100 (CET)
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Marek Vasut <marex@denx.de>, Stefan Agner <stefan@agner.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Liu Ying <victor.liu@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>
-Subject: Re: [PATCH v2 1/1] drm: lcdif: Use dev_err_probe()
-Date: Thu, 13 Nov 2025 11:47:13 +0100
-Message-ID: <3410946.mvXUDI8C0e@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20251020095846.116202-1-alexander.stein@ew.tq-group.com>
-References: <20251020095846.116202-1-alexander.stein@ew.tq-group.com>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 3/3] arm64: dts: mb-smarc-2: Add MicIn routing
+Date: Thu, 13 Nov 2025 11:48:56 +0100
+Message-ID: <20251113104859.1354420-3-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251113104859.1354420-1-alexander.stein@ew.tq-group.com>
+References: <20251113104859.1354420-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 X-cloud-security-sender:alexander.stein@ew.tq-group.com
 X-cloud-security-recipient:imx@lists.linux.dev
 X-cloud-security-crypt: load encryption module
 X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
 X-cloud-security-Mailarchivtype:outbound
 X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay50-hz3.antispameurope.com with 4d6cR73sMNz2nGtR
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay48-hz3.antispameurope.com with 4d6cTH3cvgz1kPGJ0
 X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:8e80b3bb434ae492471754dc7e2ef656
-X-cloud-security:scantime:2.077
+X-cloud-security-Digest:ed014fac5779153bf3b07ca053158c71
+X-cloud-security:scantime:1.897
 DKIM-Signature: a=rsa-sha256;
- bh=cPfvqiPK0XBbGB7jgxZcnmtoFkef5Esy2Ux2OKDfXoY=; c=relaxed/relaxed;
+ bh=HwZpnlL5PSUjD1ekyFYHL+mEFm8pXGu4Iwrph47h1b8=; c=relaxed/relaxed;
  d=ew.tq-group.com;
  h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1763030843; v=1;
- b=FfxWturSdHmHR361roxLvyU6XHjzQa76KEIX7JuxeVSBkahGyMfx6/KF19j1hhPUTiAnOtcs
- 7MROlPYGrImB9R+hzdtY6XbmTLoE5Q+f3Zek7c6PlK7JdFTCilWiFk6jKoa+ZKx3eDH7UqLVyGL
- rGgRCa3NOTZUTTD7qBP8634J2NiJMSc6uRKHVwX3lcIa77RdF54Sj+PnUbzpM6VHUkaAiZkBVLv
- bBjXMMAnADzST9UbguNdyTq0fQtH1UPR/Xj+wrjwRJy8oPXMtWhvn2IG1mzMB7GkfWwv0tv3V4X
- IQdT9moCuBXS8DclgzZIUPdD8QHzoU00KU+Y/mcGjwxjg==
+ t=1763030957; v=1;
+ b=oqqtYQOsYTuLqPteHH7W6IW0qrNs05dIAyatZVg5GRZqCpHitxTpD4rUDxcLCrfOHaJ7575h
+ 3gm7cm/DEcLRldErRKwkeekufl18D9bKRQIhhq5GPc0b4cjwEGXD4QZd9tQQpvAS56K7IuYOd3y
+ vsYbLFz9hQFBylCaBYxNppstQ3RdlTIAPm/wopQR2+cU+Y7gqbg7uFMS3Xb/mZ0sliZi5nMa7qG
+ rPIjwswIZ/+XgQBdhWidDqOmCKJB9QNCiHRvav+zlR7PrIiKUOndiD9Abaa3krEE7flCQbW4Eib
+ hWbVtDfj94ccjTx47CWXnCDaKhkUbqCO8nuzYclZaYhcQ==
 
-Hi,
+MicIn is connected to IN3_L. Add routing including the Mic Bias.
 
-Am Montag, 20. Oktober 2025, 11:58:45 CET schrieb Alexander Stein:
-> Use dev_err_probe() to add a reason for deferred probe. This can
-> especially happen on lcdif3 which uses hdmi_tx_phy for 'pix' clock
->=20
-> Reviewed-by: Liu Ying <victor.liu@nxp.com>
-> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm64/boot/dts/freescale/tqma8xxs-mb-smarc-2.dtsi | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Any other feedback?
-
-Thanks and best regards
-Alexander
-> ---
-> Changes in v2:
-> * Collected Liu's and Marcos' R-b
->=20
->  drivers/gpu/drm/mxsfb/lcdif_drv.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/mxsfb/lcdif_drv.c b/drivers/gpu/drm/mxsfb/lc=
-dif_drv.c
-> index fcb2a7517377e..47da1d9336b90 100644
-> --- a/drivers/gpu/drm/mxsfb/lcdif_drv.c
-> +++ b/drivers/gpu/drm/mxsfb/lcdif_drv.c
-> @@ -149,15 +149,17 @@ static int lcdif_load(struct drm_device *drm)
-> =20
->  	lcdif->clk =3D devm_clk_get(drm->dev, "pix");
->  	if (IS_ERR(lcdif->clk))
-> -		return PTR_ERR(lcdif->clk);
-> +		return dev_err_probe(drm->dev, PTR_ERR(lcdif->clk), "Failed to get pix=
- clock\n");
-> =20
->  	lcdif->clk_axi =3D devm_clk_get(drm->dev, "axi");
->  	if (IS_ERR(lcdif->clk_axi))
-> -		return PTR_ERR(lcdif->clk_axi);
-> +		return dev_err_probe(drm->dev, PTR_ERR(lcdif->clk_axi),
-> +				     "Failed to get axi clock\n");
-> =20
->  	lcdif->clk_disp_axi =3D devm_clk_get(drm->dev, "disp_axi");
->  	if (IS_ERR(lcdif->clk_disp_axi))
-> -		return PTR_ERR(lcdif->clk_disp_axi);
-> +		return dev_err_probe(drm->dev, PTR_ERR(lcdif->clk_disp_axi),
-> +				     "Failed to get disp_axi clock\n");
-> =20
->  	platform_set_drvdata(pdev, drm);
-> =20
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+diff --git a/arch/arm64/boot/dts/freescale/tqma8xxs-mb-smarc-2.dtsi b/arch/arm64/boot/dts/freescale/tqma8xxs-mb-smarc-2.dtsi
+index 478cc8ede05ef..3d20e3bf32ce7 100644
+--- a/arch/arm64/boot/dts/freescale/tqma8xxs-mb-smarc-2.dtsi
++++ b/arch/arm64/boot/dts/freescale/tqma8xxs-mb-smarc-2.dtsi
+@@ -98,6 +98,13 @@ sound {
+ 		model = "tqm-tlv320aic32";
+ 		ssi-controller = <&sai1>;
+ 		audio-codec = <&tlv320aic3x04>;
++		audio-routing =
++			"IN3_L", "Mic Jack",
++			"Mic Jack", "Mic Bias",
++			"IN1_L", "Line In Jack",
++			"IN1_R", "Line In Jack",
++			"Line Out Jack", "LOL",
++			"Line Out Jack", "LOR";
+ 	};
+ };
+ 
+-- 
+2.43.0
 
