@@ -1,231 +1,173 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010002.outbound.protection.outlook.com [52.101.84.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C34232395
-	for <imx@lists.linux.dev>; Fri, 14 Nov 2025 03:25:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763090716; cv=none; b=hLbY4nEtLGPCF01dM4U9M9h54CdmZtspwMOnWhqm6wUIHtdFupdQfZaEfc7Qn3QYviM8SXJqRUA5FChjwpkK+6bcb0nxybtpLb/eaOMSUdPnp9HI+bZfgLdW9WmD1tCmSnTWjbSpUlRacfrfIPVQfyNnztHWrCYH7PZgCXIdgFc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763090716; c=relaxed/simple;
-	bh=6loHyEaeMv3gumdYQyO6TUKabvYbZ86nco/F9hoRSvQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qfSvAg2sIKc4ccCScp00dIBnLD5ObOLKdQxvm+4DNxyNY+F+k52DfdeWzdes46J5ENOr8kMDbuhK3+qIuWTYYxLo0XfMNech6+BHwmz3vjSIkzjG1tz/ptu21thSl4p0iLzICAB6bEaCv/A499pjjCTCOLwsSik9DSk1BTpSz3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=Z9GFXIEi; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD06F24679C
+	for <imx@lists.linux.dev>; Fri, 14 Nov 2025 05:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.2
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763098090; cv=fail; b=FgSUycEJHpL95OEvdz9CWGaVPwGH5RHD5KmDQl5bFChWzNRslaXnVyPrPNyxDVa+TtHi3bKF/qVga4cWswBoJ+e2Iu8coxqAsDcvzRn9v5N37OeUQxTbBGRhc1tKh3qTMoxEhTDYEfJQTlFdvIUaJsjittU0jTsGYBETj6w6x5Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763098090; c=relaxed/simple;
+	bh=riRxEt+oTqNfK/V4AOnA5js9Qe40ybs/wQswrqiFKh0=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=fK0I1y/tcUoZaOVY1DvT3Bi8QIG6sj9LNfz71DzFUoj0P9IYWx0tWolOggd6S4q+H6SLOmfi1Qpm4Qn8hskH+s9PV/K7vsOq3aagGddBs3IiPeTwzA9gmWF5YFCSmCf/+fI71FsYITp90c9kY/iJ60p9IigJh19NmE4uwK5Y/0c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aNMmJjnx; arc=fail smtp.client-ip=52.101.84.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="Z9GFXIEi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1763090652; x=1763695452; i=w_armin@gmx.de;
-	bh=eaVKqe10jzGoKFaLYje3vU37/s2NKQBvZXfmlKCsGAc=;
-	h=X-UI-Sender-Class:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=Z9GFXIEiHD6GIQIfXsMI4ndi0xeystmd+2fQGVLSOpHDISyy/7h/qiqsCv7i25Wy
-	 z4j0p14XnJEGt5Z8dUqTKoXqG1SdzA8Kyals3GRZIoH7QlJyw/tKCL/4qNtNwp97l
-	 iDnhEc4Olz0I2ltP1lwYM6V2+GQ2bG+hB51FV5d7QGh+5ExIYYrucEg1fBen8XAtw
-	 1giP6F8l7QpCD9KJJHOMHpBRXQ3+/20tNBp7NHnOftsI+6hh8j14AHHv3Xv22Uyv1
-	 RyncRUfh7xaezaE3tCuVB/ymca+9jJOZDtKEc3H+TeOVKO2yz5M0xQ3Q2XnwWAfA8
-	 /6JESqnKWIq2BWjL+g==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [127.0.0.1] ([93.202.247.91]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MKKYx-1vcFwC23YN-00MX1X; Fri, 14
- Nov 2025 04:24:11 +0100
-From: Armin Wolf <W_Armin@gmx.de>
-Date: Fri, 14 Nov 2025 04:23:04 +0100
-Subject: [PATCH RFC 3/8] ACPI: processor: Stop creating "device" sysfs link
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aNMmJjnx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lMFc0hcqGFs2UTqXXL0hL7pGeHrT9v+qNn1qBed01tvbfoR1RczX/2bUXEgrzz5F5gATrgeS2Rw5Nd60YQsTFQ3gaevQrcf6i8IxQgyFWB3FgbmpEEDuUPeCNOsua6dqKj7iOkBaKrZdCalwP3e3BNJJBdPV59l8ZJpFriSsZevVLWe1TiveLSae5A1HM0oR1w4UoEYSloB8hmYL7gZQR1ZU8uEtye6O3DWicnkNECYCNrRaMnrhFp2HuniM8T1WZR98zGCi9GORVwswLX9BUQHINTtkUru/tWongDp36UvTlnQG+xef8v983RRr+VNk89rsZg8Gcr4hk4j+jjLpuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8Z5YwaIfVMEnJcdIzVhp3JUMotCHKybsedXk1qpL3H8=;
+ b=vAGIhOp60H4DO9iS9kCWigBnUgmf5cS+m5pT6Qkj3LjqNCyTB1Vbi+MHUfv6CvC37KUnT+Evzf+dALzhqNnVyK/+TNugZP6FjP7Bnac5tIwwakjFXp1bfMph8YiePInOZOZ/S3HAl9afL4BPgrs0oalrRUSi25YOcA70OCz0hDkjSvLyPIZIHsMe4aFVyPkrkfE+fpnGyM99BPBXxfLrt2B0bTWrGXzoISBLnOQMWl/mBRxU5RyxD+YMjRCriqrNaD5gm/05AjTz472Q9ur83iO4UA0lLeKZWY2ahf/Ix79lcfFCaZWNy2qf9kPhZ5Lc7EHM4TU8duxYCkxGBBMHMQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8Z5YwaIfVMEnJcdIzVhp3JUMotCHKybsedXk1qpL3H8=;
+ b=aNMmJjnx3MQ/nXHosGV/cfu/TdQxa0WFBrN3OBihVRq3ysboTEXE4GIfDpVLpppmLbxFHF9Ud1CEa41qKLyN666+ihJisP2XEWwV3vqbQCWm7RJ2w2AFa4cS8c6msnnBp6V5Dg9vKq9DySTprKKIE9ex/bbHiLQq/NAaDCNhF6kOsX1p6AQvdwMM8r8sh2YJpfe/UU2B7jrFCuJqrxK+jM/J7fXenGSf6aNTPxEB5uiYu+uvmKKaRxjL7T3Ud3T1AGUtp8DhCqyPnk2IZB53TFZhm9aE8eOb+pCueaNjf3Qp6gmy/pMjlhuSekexLdi1ylmhwcVXSIasYBhURfQk1A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM9PR04MB8505.eurprd04.prod.outlook.com (2603:10a6:20b:40a::14)
+ by PAXPR04MB8640.eurprd04.prod.outlook.com (2603:10a6:102:21f::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Fri, 14 Nov
+ 2025 05:27:59 +0000
+Received: from AM9PR04MB8505.eurprd04.prod.outlook.com
+ ([fe80::bb21:d7c8:f7f7:7868]) by AM9PR04MB8505.eurprd04.prod.outlook.com
+ ([fe80::bb21:d7c8:f7f7:7868%7]) with mapi id 15.20.9320.013; Fri, 14 Nov 2025
+ 05:27:59 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	eric@nelint.com,
+	maxime.chevallier@bootlin.com
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: phylink: add missing supported link modes for the fixed-link
+Date: Fri, 14 Nov 2025 13:28:08 +0800
+Message-Id: <20251114052808.1129942-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI1PR02CA0037.apcprd02.prod.outlook.com
+ (2603:1096:4:1f6::13) To AM9PR04MB8505.eurprd04.prod.outlook.com
+ (2603:10a6:20b:40a::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <20251114-thermal-device-v1-3-d8b442aae38b@gmx.de>
-References: <20251114-thermal-device-v1-0-d8b442aae38b@gmx.de>
-In-Reply-To: <20251114-thermal-device-v1-0-d8b442aae38b@gmx.de>
-To: "Rafael J. Wysocki" <rafael@kernel.org>, 
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
- Lukasz Luba <lukasz.luba@arm.com>, Lucas Stach <l.stach@pengutronix.de>, 
- Russell King <linux+etnaviv@armlinux.org.uk>, 
- Christian Gmeiner <christian.gmeiner@gmail.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Amit Daniel Kachhap <amit.kachhap@gmail.com>, 
- Viresh Kumar <viresh.kumar@linaro.org>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, Len Brown <lenb@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Ido Schimmel <idosch@nvidia.com>, 
- Petr Machata <petrm@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Jeff Johnson <jjohnson@kernel.org>, 
- Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
- Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, 
- Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, 
- Sean Wang <sean.wang@mediatek.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Peter Kaestle <peter@piie.net>, Hans de Goede <hansg@kernel.org>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Potnuri Bharat Teja <bharat@chelsio.com>, 
- Sebastian Reichel <sre@kernel.org>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- Support Opensource <support.opensource@diasemi.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- =?utf-8?q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>
-Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org, 
- linux-doc@vger.kernel.org, netdev@vger.kernel.org, 
- linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
- ath11k@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
- linux-pci@vger.kernel.org, imx@lists.linux.dev, 
- linux-renesas-soc@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Provags-ID: V03:K1:nPhVaIWI4Qq4tuVB45WFPPKBJ/CGwZWVPg6Gt8tmT9A+FbWxAtE
- Ga2PcMjf7l6TmkQjRQ3DFYFE90GnC+dErsnnwPmuKj78/C4sD9b5HrIRgH196Q1c0m0ofUi
- EBPGWPUk4nGDUtf4BPr+Xv0RNEWUzTg2mVcokune5EpyI2qHlLVTUkezu/BzR1w7FmlPmmH
- fMjnazZjMw5aYR76qC7wg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ptx3nKX2J4Y=;2pTj6jvcQKwkyuEufzs5HT6bowS
- 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
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8505:EE_|PAXPR04MB8640:EE_
+X-MS-Office365-Filtering-Correlation-Id: 381e8677-4ca3-4673-c2ba-08de233e9264
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|7416014|1800799024|376014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?L2xyafKEXnAy4/aYQxLE7ozrN8nmZ19YjJ78cy4T9mGddqQY4Fqrf0hpnp/p?=
+ =?us-ascii?Q?7tZwt29KnvBb9If9xGegBr4UdSx+i8x+zhXrSYrvRiN/S8HBtCQ3KDRzhQMw?=
+ =?us-ascii?Q?s7hlnA2upxQiFeGKbOECn6F71Sho+837fzx3BbfE5Ywf+Tv8wAf7IO7HTicJ?=
+ =?us-ascii?Q?FwJxAtEaBgOFx+DZQPIYCsCZayg7LoKTpgaoBtq8ALgtBytShDi9F6roUk9L?=
+ =?us-ascii?Q?7V5mjm9DvPJWBTgh3gxXxSIwmBerXUFKK4R0sqzPp8lxj2GcsJFQPUgj196B?=
+ =?us-ascii?Q?HFoWcxnvhYaVLBdpL4fu3sv6VLXofUWQzYN68FVled6iigWk41zIyUCazhp4?=
+ =?us-ascii?Q?2iCQykM3DW9FEWJshQMcYimn/OKOAOS7XQKohQendKZ477rho2zpljyKAjdQ?=
+ =?us-ascii?Q?imSmq2/YfqUt7G6RCwkVKXMHw700MyKc/ceosmAFV/dVHvy6rEmrj8z25lgj?=
+ =?us-ascii?Q?CH/aXKBlfu45OBmR8xzaOlJYkkwbItObRW2dMPax/mSdnGof7gEUVuwaAkGk?=
+ =?us-ascii?Q?0G8oEZ8UWc49IKd4Q3J9/BT8RIueAuSUOoAB0Eg5WH4+/vrZ44goHhicX3pw?=
+ =?us-ascii?Q?h7qPJYaAekdHuF3hwCWsedUuJWDOvv6mmoszq2zeDfRIAOMEDNgURVW9WeiK?=
+ =?us-ascii?Q?rfSVqOrgiVZT/ggTEuVg6wID1D8b4Yp3IfN4di9ZSDGHZqexXikeixbj9Tao?=
+ =?us-ascii?Q?kSECnM0LwEtWSpalcKAAaIt5VVxFRmzu6VjMzQnZWd0jzqQWVhkTPVp+evna?=
+ =?us-ascii?Q?cFFzWPKsAbdwm/L5NDCUF43kUeeagBYmTiiQDvXNichESQH+u/mlQY8qerU6?=
+ =?us-ascii?Q?tmfOSQLJloA9OVtxyckZ8mNpDGnn73maVjg03Sp76kHHs0FC1GLgsMbjOV2C?=
+ =?us-ascii?Q?GScbSVkGA+rfI2KgmMl4I1Bu3T8d6lLvUK/yKqjW5FtsZE+uLY7x262mjZpX?=
+ =?us-ascii?Q?v3wbvbucBPl1w6hmk4PoWZ8IvWbAOTjaYUBC0rrUqNz/ERQQzueAE6iYXzkz?=
+ =?us-ascii?Q?jQPoc9vQ8UeCU74jg/7/6tIfMC/fSIV5jtkqO4FftKv+7kauZd0YFLfuUTPf?=
+ =?us-ascii?Q?KL7OI8gZVw0gNWzSct0JHlrq22PiZOiHs9JrNTYeSob8rxiPdkAdgcOAhIey?=
+ =?us-ascii?Q?PKWWeIi1xDdEUxKereeaXF515XWUHgwhlD2amh49O1Nb5F5u3Zy1pvIZr+Ff?=
+ =?us-ascii?Q?zToZ3672/01OiesqNw8KXBbOlah54DAXNS4u+2TCwjkq3WV3obIv5J2b2Dqu?=
+ =?us-ascii?Q?a4bwAp6bHj6/ugPHEGOGPtOLvtoXK5hgy/9kI2ueUuCTcYe+KZy7df+G0JVG?=
+ =?us-ascii?Q?7OZQ1LHYjM/tUR5HsRxvYZ4mZWtdtdBy9wyUfgM38Jt/FSOxtZiyW/q4iY4x?=
+ =?us-ascii?Q?4xIaoftU7BSccfTiDjqLskjJely2GVXOKqGOsiGs1Ig8S1gmRTgyVQA4BNvV?=
+ =?us-ascii?Q?/yMBVjo6qaAdC0QsWjGb3Tj3OzTbH78Sw3k5c8x3bUD83nDwZ5Ye+5ZN8Ygk?=
+ =?us-ascii?Q?qPx/80XDnnmxjQ0WZtI3Joc8TexWaXk6oFT5?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8505.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(7416014)(1800799024)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JZpdL07RCdUsTVXV4+IE2jUEPHwLQi3XwEIYpWP4bVHC4ZE3PNvmi6NNrBQ6?=
+ =?us-ascii?Q?bvhn1qAIBTFLyCjEL033XlMqUvQat4rdS1pyMQIMAaA+TSPjquksyG0iPTk7?=
+ =?us-ascii?Q?x7X2iE3l1MSviOB827SyW355KeAhf/kTiYEa7tm3A3H5b3lOrqxPmA9yoI7q?=
+ =?us-ascii?Q?nak0fv8ZJ+OgtK+R3U18GoxggnWfeVW7yH1sMUWPYf91+Gfib1/5NSO1eQCb?=
+ =?us-ascii?Q?RMKeSwBnu8mVWM11wQaF5UTXzGudb406XZ3VTNHMW3CvpMo6JgDyt275DAg6?=
+ =?us-ascii?Q?2SF2uyG5Ni53bTmSWdXLnqaiVeO685jHQqwPACvRc9sDbrHg+3OlyMqjLYbu?=
+ =?us-ascii?Q?Ei7+0QK4xJ91t2zvWfX+X3Ma3Lalmf//MxDYLdagr7FBa4cdlg3JURVlMl9M?=
+ =?us-ascii?Q?Zq4mQqCo52M2DsCkeKtdBv7sY6wWMaP00GgPrfCY3mcqUwsFjzmGJFRHoZHf?=
+ =?us-ascii?Q?UVj0Gz9J6t0F2HguSpTe+Hc2tr90mXH/JK4H8HW/WZ4vATQwtP0mYj9XDysQ?=
+ =?us-ascii?Q?6Vajj9/BTfrWwp/zgPAY/tTuOEbZsQ/asWNFhoLumoUlNUkDt44B/H2Tnwpx?=
+ =?us-ascii?Q?be5lrFFRVDjaiKyK3iu49Z7E8XDqUdVQye1az7UltemuyX15Y1uyKTCUweww?=
+ =?us-ascii?Q?xLSnr2yxB/iHS0StfckKm+miZKkcX1J3BSNALwiVlJvWcQShcfYEysIc5uTO?=
+ =?us-ascii?Q?0U6nK4Tqoxgo/mcQNNiW+yu1uW51QHHZQsLOB8IchRqTsd4Ca1pPOXESU8UX?=
+ =?us-ascii?Q?VSprPDWjy4+dFsVtnXnrmYzYnRbBenfQKE1QbX/bK7ZgOAdc5PYgnA3TRnkO?=
+ =?us-ascii?Q?7S2oR9l1gHWd2dyIgdFXWOfQXcEd9wvrZ8tt0LibTMKLtMZaHsSpBdBkCphR?=
+ =?us-ascii?Q?6eZtTFUSrAJgefpDCOkfqj66eizsPpAuLuJRHyZtDJxXg4WrT0eKcYsvVCqH?=
+ =?us-ascii?Q?QHPNvMjoLMTP22mzgJeFPKeqap15xeyxfWf6FlQonHgBdETjlD27bbNMWEo0?=
+ =?us-ascii?Q?sUyqgC7CDN0pis5Xlo7kmOH41Uefq51bS0CQ2y83qvOOhvccj11R+wotWzZN?=
+ =?us-ascii?Q?c3uZzeyV3QCoc338FLq6DizlYqSXpX9CQgy66Y5yUUzRMVt0h9cfxqLfLQaO?=
+ =?us-ascii?Q?hWve1uzMF5m8Xoc/SFM0aTYqDtZc52gNq2VUY4wb0ZtPWm1c1WJpvxCmnPu4?=
+ =?us-ascii?Q?sd+70DSAD20dBVuy6fi2BKTf+1Ou8lBGQha+wv9ga/dUyeEB55BP7mbv67kc?=
+ =?us-ascii?Q?wXd+LvHgKyEmFzpf2Rx7f0bFdQs0i3m51lVqO4d7ymTE49QOdwSlG7XpWx3E?=
+ =?us-ascii?Q?h7pS5RftJ85G/xsjXIUIewex4qLBpg4fpLYIwJN7oAgMTE6VCllP+W7qLsru?=
+ =?us-ascii?Q?KPjhIySIjxBcgpTY77Yy1DmOfENBOO57P1kinm3KS+ON0FAvhpMWn9IobStn?=
+ =?us-ascii?Q?EqtfHrfTvR27ErefJpKaMP8/v7QFgs7g+76hV3yOulR8gTfEQzVYzr2KsIWt?=
+ =?us-ascii?Q?i1hrbcrSop0ojz2nzcZnJdptV1YFGAAcpP72nmk1pV1SqE1KVPmr+ynuVYIx?=
+ =?us-ascii?Q?4jyWy2GgKn8Q7qDr7/lxf01lGJrXz3vI6a09AumR?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 381e8677-4ca3-4673-c2ba-08de233e9264
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8505.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Nov 2025 05:27:58.9220
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6bLuT6AWuKgmn7b5OPSxMtMpQUMWP8lirrrIgIXUJsLUOuZ+gbbDJ+Kv9w5KP+Qa6kD9sDgosOEp+Z8eKTllWw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8640
 
-The thermal core will soon automatically create sysfs links between
-the cooling device and its parent device. Stop manually creating
-the "device" sysfs link between the cooling device and the parent
-device to avoid a name collision. The "thermal_cooling" sysfs link
-however stays for backwards compatibility, as it does not suffer
-from a name collision.
+Pause, Asym_Pause and Autoneg bits are not set when pl->supported is
+initialized, so these link modes will not work for the fixed-link.
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-=2D--
- drivers/acpi/processor_thermal.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
+Fixes: de7d3f87be3c ("net: phylink: Use phy_caps_lookup for fixed-link configuration")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+---
+ drivers/net/phy/phylink.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_the=
-rmal.c
-index c7b1dc5687ec..1ff10321eac5 100644
-=2D-- a/drivers/acpi/processor_thermal.c
-+++ b/drivers/acpi/processor_thermal.c
-@@ -323,6 +323,7 @@ int acpi_processor_thermal_init(struct acpi_processor =
-*pr,
- 	dev_dbg(&device->dev, "registered as cooling_device%d\n",
- 		pr->cdev->id);
-=20
-+	/* For backwards compatibility */
- 	result =3D sysfs_create_link(&device->dev.kobj,
- 				   &pr->cdev->device.kobj,
- 				   "thermal_cooling");
-@@ -332,19 +333,8 @@ int acpi_processor_thermal_init(struct acpi_processor=
- *pr,
- 		goto err_thermal_unregister;
- 	}
-=20
--	result =3D sysfs_create_link(&pr->cdev->device.kobj,
--				   &device->dev.kobj,
--				   "device");
--	if (result) {
--		dev_err(&pr->cdev->device,
--			"Failed to create sysfs link 'device'\n");
--		goto err_remove_sysfs_thermal;
--	}
--
- 	return 0;
-=20
--err_remove_sysfs_thermal:
--	sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
- err_thermal_unregister:
- 	thermal_cooling_device_unregister(pr->cdev);
-=20
-@@ -356,7 +346,6 @@ void acpi_processor_thermal_exit(struct acpi_processor=
- *pr,
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 9d7799ea1c17..918244308215 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -637,6 +637,9 @@ static int phylink_validate(struct phylink *pl, unsigned long *supported,
+ 
+ static void phylink_fill_fixedlink_supported(unsigned long *supported)
  {
- 	if (pr->cdev) {
- 		sysfs_remove_link(&device->dev.kobj, "thermal_cooling");
--		sysfs_remove_link(&pr->cdev->device.kobj, "device");
- 		thermal_cooling_device_unregister(pr->cdev);
- 		pr->cdev =3D NULL;
- 	}
-
-=2D-=20
-2.39.5
++	linkmode_set_bit(ETHTOOL_LINK_MODE_Pause_BIT, supported);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT, supported);
++	linkmode_set_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, supported);
+ 	linkmode_set_bit(ETHTOOL_LINK_MODE_10baseT_Half_BIT, supported);
+ 	linkmode_set_bit(ETHTOOL_LINK_MODE_10baseT_Full_BIT, supported);
+ 	linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT, supported);
+-- 
+2.34.1
 
