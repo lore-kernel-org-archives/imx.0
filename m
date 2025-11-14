@@ -1,118 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC39D2ED151;
-	Fri, 14 Nov 2025 11:03:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70E030E0CC
+	for <imx@lists.linux.dev>; Fri, 14 Nov 2025 11:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763118217; cv=none; b=cg4Qzax+Tnnayv/5b0iMc0gZXIrI/iez0ZfCyLaRI12QG91g01QkopTspcBO52u+nWHxuSwfu++VoLa1zuxBZOi0RdLd5PNRWxpjQ7Lj47rSnhFYsxgUrwyxjUI6BlLIAvSJ2WaPkkZQEiywWAWopPAtBBpYurX42CVFyoMKTeI=
+	t=1763119898; cv=none; b=PDv6H2lCFB6TI93oP5X6Dl2WkeXvMgApHxwvHycz+NXZCMaYApN2t6WYiztgXgl33+1STJxVZXZgucQhwYaU7uKj/vV9rf0uj4u30Ub0vmIM1PFLlFcUjT9BnMmVnd26+u9pk+Vpl9oNT5WM5SNlsf8oaJFHRhs7UHKW1wSQQQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763118217; c=relaxed/simple;
-	bh=z9rDUhMLuGiHedTdGsxliOHj3wd3fApDZWqUFbOCWC4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZuPaMqwV/0PjaaCfz+wJLT5xQYmlJoPLtzR4scazi4gN7dCtSfR0SFyUGM4xhikCalxLocAIXnvxlFUMyui55hyFfRCPu0/5w9R59PsjyXI7/9eIjIQEevSY4GgmDu719SQIGB/Qv5oW5sBNdE8ByhgvwJ4MDg7o3Yzp0t7uT14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F0En2mcr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763119898; c=relaxed/simple;
+	bh=yY8dDK+9+GGlj8GO1n33Q25F++VD0RMhjBiJ+NuW4YM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h82cYS+PvRA4olytazcqMVkLTov1BYZH9y9nH/gaGPmYLk6/br3+EUruEgM6VrDG4PRgpx8BY83qrxuku+JeYdKd0u/7I0QKL07sPN0hta2XwTsisjorAanU35kpUgJOHTxC58mWM3G+mDClhXFVaSpWsEa7wpdN0ezknxR4HwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ArVCJVkz; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F0En2mcr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8CEC4CEFB;
-	Fri, 14 Nov 2025 11:03:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763118216;
-	bh=z9rDUhMLuGiHedTdGsxliOHj3wd3fApDZWqUFbOCWC4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F0En2mcrY3DNujOm05aP0V7JlNdBc3XYcJw8Wn12qZ9LZC3yGIaw0bAv6PG/ihgIg
-	 y0N0AwK9FHQq4zhpE8C6hw11JEX2QEpoVDo18X522R8sxK1A+Oeb36FeoUToCqLTjm
-	 8riTsncr4rreSf7FYGrRjwIn/Zt9AqlaNGQ/UH5xgskJ6SsAyEM5mnbY1Ydy6uoRGE
-	 N2JTG+5QTz1BbZn0LKRMFY7671SKuUH/I0wGj/+vZavN1JLo+h6ljBtqxHByqkV3Aa
-	 5VHqFA0tZZ6BGYEWxmGuEqyypqVbDubyn24spJUDVGb3RUy3ft+OP2RAxmkEjm3mCl
-	 BrNm3nmmFJ/kQ==
-Date: Fri, 14 Nov 2025 12:03:34 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: ziniu.wang_1@nxp.com, laurent.pinchart@ideasonboard.com, 
-	nuno.sa@analog.com, lee@kernel.org, linux-gpio@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH] pwm: adp5585: correct mismatched pwm chip info
-Message-ID: <umvpvqkbv2w7cqg533xpvira66qdxqa2bjpnzymeic72st42qb@6f7bgychfrzw>
-References: <20251114065308.2074893-1-ziniu.wang_1@nxp.com>
- <jqsmjigr65kqhlk3buybrcurllqxlad6zkkuwo3tea5uqopqzl@ldwbjsndltpk>
- <34af5576a5e779a279975dd9fb8be7c2b233f661.camel@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ArVCJVkz"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-bc274b8b15bso1325615a12.1
+        for <imx@lists.linux.dev>; Fri, 14 Nov 2025 03:31:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763119896; x=1763724696; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NgRqYgxXqFuMSxMg1tYiXZRbYQe+v5MKT7uY+2QWQrA=;
+        b=ArVCJVkzT+zOi2A+sN01e0LXjs0JvkmsTdow6Sh9xx4pQZ3U/nfGuBrmRhf7kmhQpw
+         JGlOTAGihBHYuGB1/UvGwDUdWc+9FPOn/8OjKU/GmmbOwkZGz6yk437gmuYH9TlnZv8V
+         EvzlajDq2kIFwcjij1dPWitLlWccByO/AqPvo11zItSz3pa3YBSRjpoM2nnHlRKrbPri
+         kbdkgYxnQjbx6uJFDy8R17etWroDUNybcOO4EafEtfIr8JBhD1fig4+9R9WOM6cZtNmB
+         iNX+miSt3/ZSERQzA6+C7OQWrkl9ydton+W/kKLZ6w/hdy+HWSq6TeYXp8flaafh1WK9
+         fiwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763119896; x=1763724696;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NgRqYgxXqFuMSxMg1tYiXZRbYQe+v5MKT7uY+2QWQrA=;
+        b=KrBKF4UkRFG4wAPxON5qdnYcBdTYeM704IL1P1WkNjbM79RUQ0MV7HLJux7eBiq03w
+         OC96cMY/6GOAsfrKpxGc6cKzlmOOjz+Lo2pkjjVNRB2dQYOArnpyqmS5P+88XdRvX64a
+         Bx2Uudoq9YFVGnt0H1m5VdIM1rvdn8NQa4EbcDVweXx3rsl9C3B0V25c5ZLDpNZw7CWS
+         fIboz7hWkW2rCte91RDQGlEyr4p89ztawHRFueRCXLdKpBvqsesfde2SxPhoS/G1TN2/
+         iaxDsmfk7no4+7TUdvfGKJi450rUWBSFDR8wCkQJcZeQoJoKm9mp92CUVB9jh6YGCKZ0
+         daFw==
+X-Forwarded-Encrypted: i=1; AJvYcCX/HSZ6WKrz4LxG6n9TVMHwB6KkpxgHMPgpe3dWKL81HpxljE1zm+3yFyNfAmrpjWFz2bA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Ywltx6CtlXLUdvFo8NVYP4YwTqMJZvlgBNjNyEB9OxNqZkPA3NR
+	BjZ/f1JabD3lf5lz7NoJhYBaFx//TVLcDwuNiXnXvwXezhzJnkHfentu+kAjlQWJhaA1C48ooR4
+	y/pWhGY7UX/8RpxQ7jPaL+xyyLe4LAeeH41QM
+X-Gm-Gg: ASbGncuT0O36eA3tD5mbkVBBbtAyFAm/X+PS4dGLrnTfM/GBwYPUbq0Lafr7hXXvYTs
+	cLZXNN8gDIkvnnfSkM4nY1cHYPWW7HJ7ZMg5FW8qILvL7/i0Bdke1OizkigaAxSV67A2etNkCJl
+	2Y9uX27mx7RhPvMPMQmrz9wFjXOAztAXyhkSxsQ6AUTxyQuTiCdjIyXXYaU1OhHY5NObI8H2Pyb
+	qjXHkA/TmHItmuaBrt5D3q/XWphAfz2SDza+wp39nqyHS7ew0ro51TPNw==
+X-Google-Smtp-Source: AGHT+IGlHNw0l3S5Otdz7LKFqu/i+iNivU2AQpyqv0B9Dy5yPo9Tbu6Sp7ewlzeZ12h/NNrQj/U0UFD2ENmJE8ha/RQ=
+X-Received: by 2002:a05:7022:388e:b0:11b:12ef:967d with SMTP id
+ a92af1059eb24-11b40e84a98mr866351c88.7.1763119895959; Fri, 14 Nov 2025
+ 03:31:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="sczwbepgumef37do"
-Content-Disposition: inline
-In-Reply-To: <34af5576a5e779a279975dd9fb8be7c2b233f661.camel@gmail.com>
-
-
---sczwbepgumef37do
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
+References: <20251114065746.901649-1-daniel.baluta@nxp.com>
+ <20251114065746.901649-3-daniel.baluta@nxp.com> <aRcEoX9saonpQuvf@archie.me>
+In-Reply-To: <aRcEoX9saonpQuvf@archie.me>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Fri, 14 Nov 2025 13:33:57 +0200
+X-Gm-Features: AWmQ_bl4gsbwK8mWSKfcnaxcwKhINRTdBoErAsPoV-I3AjKYKB0qzVD9cEdpDyk
+Message-ID: <CAEnQRZC7n127nMaCo+UFnfvKHsRZJTMrmNq4FadfzDJa=1UUnA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] Documentation: Fix filenames for remoteproc/rpmsg
+To: Bagas Sanjaya <bagasdotme@gmail.com>
+Cc: Daniel Baluta <daniel.baluta@nxp.com>, corbet@lwn.net, andersson@kernel.org, 
+	mathieu.poirier@linaro.org, dan.j.williams@intel.com, cedric.xing@intel.com, 
+	pasha.tatashin@soleen.com, kevin.tian@intel.com, skhawaja@google.com, 
+	yesanishhere@gmail.com, taimoorzaeem@gmail.com, linux@treblig.org, 
+	arnaud.pouliquen@foss.st.com, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+	rdunlap@infradead.org, imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] pwm: adp5585: correct mismatched pwm chip info
-MIME-Version: 1.0
 
-Hello Nuno,
+On Fri, Nov 14, 2025 at 12:29=E2=80=AFPM Bagas Sanjaya <bagasdotme@gmail.co=
+m> wrote:
+>
+> On Fri, Nov 14, 2025 at 08:57:45AM +0200, Daniel Baluta wrote:
+> >    This document describes the rpmsg bus and how to write rpmsg drivers=
+.
+> > -  To learn how to add rpmsg support for new platforms, check out remot=
+eproc.txt
+> > -  (also a resident of Documentation/).
+> > +  To learn how to add rpmsg support for new platforms, check out remot=
+eproc.rst
+> > +  (also a resident of Documentation/driver-api).
+>
+> I think "also a resident of ..." can be dropped, since it's redundant (it=
+'s
+> already covered in remoteproc.rst cross-reference which transforms into
+> the link when you build the docs).
 
-On Fri, Nov 14, 2025 at 09:46:43AM +0000, Nuno S=E1 wrote:
-> On Fri, 2025-11-14 at 10:30 +0100, Uwe Kleine-K=F6nig wrote:
-> > On Fri, Nov 14, 2025 at 02:53:08PM +0800, ziniu.wang_1@nxp.com=A0wrote:
-> > > From: Luke Wang <ziniu.wang_1@nxp.com>
-> > >=20
-> > > The register addresses of ADP5585 and ADP5589 are reversed.
-> >=20
-> > My German feeling for the English language suggests:
-> > s/reversed/swapped/.
-
-I applied this substitution and dropped the empty line between Fixes:
-and the first Signed-off-by: line.
-
-> > I wonder how that didn't pop up during development of 75024f97e82e. I
-> > would expect that the driver doesn't work correctly in a very obvious
-> > way without this change?! I tend to want to send this to Linus before
-> > 6.18, but the question makes me wonder if I'm correct with that
-> > urgency. Any insights?
->=20
-> Yeah, this one I kind of asked for Liu to test it (as I was not testing t=
-he PWM bits)
-> and he did tested it [2]. But it was v2 and that series had some more ite=
-rations. So
-> I suspect that I messed up along the way and the last version of the seri=
-es was not
-> tested (for the PWM bits).
->=20
-> [2]: https://lore.kernel.org/linux-gpio/3efb68e2-7091-47e1-81a2-39930da5a=
-427@nxp.com/
-
-OK, so I guess it is sensible to get it into 6.18. I applied it for
-next (i.e.
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git pwm/for=
--next
-
-) and will send it to Linus mid next week in the assumption that no
-issues pop up.
-
-Best regards
-Uwe
-
---sczwbepgumef37do
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmkXDIMACgkQj4D7WH0S
-/k4ZNQf/dfJFVv2RNUcTNcsIm9E3seeBAAPaOC+P0lX6m+x24pS3vq0mTrYMh8gl
-99hpNMcpbGQerLN+QnJ6Jh0D5ITbs11HsiThG2cS10WKzImFtf9OY6S11AM1VYqy
-WJ/rtrLvLVB1Oi6glWxzFQFDMka6DzzC4knrNiQM/xF4bkmpy48pOTr4S5T+0C5I
-9VNheXKxUsT1RcZfXQeXYgDokI05AC9UkmKRvg4BnSAtGPJqrQ8qfGYncXMgfUdY
-sMc8Fza+xrejy13uneSeq0eTKB9qa0nKdD1mBHbqtXmxsIeSH2p/CN7XdieHPHPS
-sDPumvDt3/qRzYBkjSO+tglEwXRIkQ==
-=lQTy
------END PGP SIGNATURE-----
-
---sczwbepgumef37do--
+My point here is just to move the patches to a better location without
+any crucial modification.
+I can send a follow up patch if this is fine with everyone.
