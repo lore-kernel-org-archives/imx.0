@@ -1,186 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B59723184F;
-	Fri, 14 Nov 2025 07:09:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF86273D9A
+	for <imx@lists.linux.dev>; Fri, 14 Nov 2025 07:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763104163; cv=none; b=iEH/E47R0Mgg5voMnmxYA0n86x+Fj8n9tF+wGFmHf9XLitLKCoC1d/WhgZzmphgJd7KzZM8NpuSY/JyNYGIyHGzYJKM0rD6l05wmaeW37pnSX18ztsMjwy7sEe0bJvdBouvwqzn7KLF1bGjG/i3LUcmftHgQOF9+2GYAYYC10Xs=
+	t=1763105480; cv=none; b=klnkoQzjsK1bB+xGfaO6TXFqJ+xXuEKYZSvZ36Rcphx2yEKa6QF3BQ4VvYA74ORl9iLVJjuK5XOvUFdkz6SIFvmwPAfUzMTA85UHMtEdyVwSU373z21zLu9gyXuP6IacmD+dg2JwtrNNUOiUViUlIEb3g+Omap/QEWIgdGgZvPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763104163; c=relaxed/simple;
-	bh=uMczW6xm3tzYXJie6UXCYYndNg50YuEV29JoCE/q1ik=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M+KKK6auuYW8xkHjG1bR1FgsxlHmQA/rdXbs2V7DtWWCZDgtncpSCmKO7TSC9KIpFA+mMd7oSSf9EKjB48CJefI+clZj77Hmeh7I6oO4s74oAMJFjXYlQOpCZl7F6BPS0i7nfCVzjBI0PfppibzgiEv/HVJ8FLTbDsV+RHkSSPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OXB/SH+e; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763105480; c=relaxed/simple;
+	bh=IxF8X1vfgVSVMfT8B2eub1WyPsdDbytWvtHeqhTmLhA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bHcQIEK6/4AM+zIqvhoF1bnKY240npXMQZDDvhWLUTwEi7327xIZL4e09xOsbeVs024VgXKlFQ8CrhjYirP4oaVbGcW2ORim9u7vvYtMyMPTGCXDUSt+IzZhuwuTEWVQPhjKZK2BLzXkzVacnN43/HHMDaFR1NKcRgYg3JKKFgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ihh3mPg2; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OXB/SH+e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B48C4AF09;
-	Fri, 14 Nov 2025 07:09:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763104161;
-	bh=uMczW6xm3tzYXJie6UXCYYndNg50YuEV29JoCE/q1ik=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OXB/SH+eZFegjNwezMreXdWJVEB1Uw8X41gZ8U+mRfgeMPGcwoVsxSXizMcK192pJ
-	 J238StqrQcqXv35Q4ssEC1oHeThV3GPZmfsHNkzmV+DhTvlV+IId4opjTz+qAllAiH
-	 qCOq8WyydbO2MSknFThAQVQffscFRq83G0F5UPjYOOjh7hckuaRiXJER15dtzjA3wq
-	 Mkx0W12hqqC1An0g12pxy+yDVr+1Rrybr2sVY1UpkwLtZB2mH8plHHZYzZ2ZNEC+pd
-	 vRF1/goXKkSDpC2dMVBusVB0Gp5jQ3+0LFSzAiejIXxGbsns+1+dW+MZgWB2ddls8p
-	 N1u0fooSE49iQ==
-Message-ID: <77918d70-49a0-4922-8f41-60b236a0ae3d@kernel.org>
-Date: Fri, 14 Nov 2025 08:09:16 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ihh3mPg2"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id A21934E416AD;
+	Fri, 14 Nov 2025 07:31:16 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6DB946060E;
+	Fri, 14 Nov 2025 07:31:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 91780102F24BE;
+	Fri, 14 Nov 2025 08:30:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1763105473; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=I/md1yzfYHmg4zf6NhSCwlxOr7WiJ5xSExfYcNRcf0c=;
+	b=Ihh3mPg240Inv5tK6a0y2bc6iUFXi846hUKdidOylUDZuvveWMMENdHQaSkRED6RzFOXBq
+	s3tYQSOkev+hYVQeHR4xdj9gsjCBZE4xoVzfSAK/1g2MipCnnjRB9Bkk5GjuXG3Cx7DOFw
+	kYgFKBggTQm+b9pCxa+CSSQ/ZTWCwURcGhX3PYd9ux7EBGyx/9AHjyRmK+4KGnJIGUEThM
+	qzUZSLvpXFlxbq5qUbppYDVR3bLAksRf/LYtY1SMB9VNJh0223ScvrKjeOG9M97dF0T3LW
+	uvqxAXMSPLBRG2VoFl3r/PtCN/OynUaIXjcWuLff+sSzDc+2UloAc/8A3W9eSw==
+Date: Fri, 14 Nov 2025 08:30:56 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
+ Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Arnd
+ Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, Bjorn
+ Helgaas <bhelgaas@google.com>, Charles Keepax
+ <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
+ <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
+ Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Mark Brown <broonie@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, Davidlohr
+ Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>, Alison Schofield
+ <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
+ Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>, Geert
+ Uytterhoeven <geert+renesas@glider.be>, Wolfram Sang <wsa@kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 05/29] dt-bindings: bus: Add simple-platform-bus
+Message-ID: <20251114083056.31553866@bootlin.com>
+In-Reply-To: <CAL_JsqJ89EcUvQnS0xYXOrw6wJ30TT5oFA85eCqHYdu43056cw@mail.gmail.com>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+	<20251015071420.1173068-6-herve.codina@bootlin.com>
+	<20251030141448.GA3853761-robh@kernel.org>
+	<20251031162004.180d5e3f@bootlin.com>
+	<20251112142632.GA1610836-robh@kernel.org>
+	<CAL_JsqJ89EcUvQnS0xYXOrw6wJ30TT5oFA85eCqHYdu43056cw@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] arm64: dts: freescale: Add FRDM-IMX91 basic support
-To: Joseph Guo <qijian.guo@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Justin Jiang <justin.jiang@nxp.com>, Tom Zheng <haidong.zheng@nxp.com>,
- Steven Yang <steven.yang@nxp.com>
-References: <20251114-imx91_frdm-v1-0-e5763bdf9336@nxp.com>
- <20251114-imx91_frdm-v1-1-e5763bdf9336@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251114-imx91_frdm-v1-1-e5763bdf9336@nxp.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 14/11/2025 07:55, Joseph Guo wrote:
-> +
-> +	reserved-memory {
-> +		ranges;
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +
-> +		linux,cma {
-> +			compatible = "shared-dma-pool";
-> +			alloc-ranges = <0 0x80000000 0 0x30000000>;
-> +			reusable;
-> +			size = <0 0x10000000>;
-> +			linux,cma-default;
-> +		};
-> +	};
-> +
-> +	sound-mqs {
-> +		compatible = "fsl,imx6sx-sdb-mqs",
-> +			     "fsl,imx-audio-mqs";
-> +		audio-codec = <&mqs1>;
-> +		audio-cpu = <&sai1>;
-> +		model = "mqs-audio";
-> +	};
-> +
-> +	sw-keys {
+Hi Rob,
 
-That's not how the node is called. Either use existing name or follow DT
-spec in node naming.
+On Wed, 12 Nov 2025 13:29:09 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-> +		compatible = "gpio-keys";
-> +
-> +		K2: user_btn1 {
+> On Wed, Nov 12, 2025 at 8:26 AM Rob Herring <robh@kernel.org> wrote:
+> >
+> > On Fri, Oct 31, 2025 at 04:20:04PM +0100, Herve Codina wrote:  
+> > > Hi Rob,
+> > >
+> > > On Thu, 30 Oct 2025 09:14:48 -0500
+> > > Rob Herring <robh@kernel.org> wrote:
+> > >  
+> > > > On Wed, Oct 15, 2025 at 09:13:52AM +0200, Herve Codina wrote:  
+> > > > > A Simple Platform Bus is a transparent bus that doesn't need a specific
+> > > > > driver to perform operations at bus level.
+> > > > >
+> > > > > Similar to simple-bus, a Simple Platform Bus allows to automatically
+> > > > > instantiate devices connected to this bus.
+> > > > >
+> > > > > Those devices are instantiated only by the Simple Platform Bus probe
+> > > > > function itself.  
+> > > >
+> > > > Don't let Greg see this... :)
+> > > >
+> > > > I can't say I'm a fan either. "Platform bus" is a kernel thing, and the
+> > > > distinction here between the 2 compatibles is certainly a kernel thing.
+> > > >
+> > > > I think this needs to be solved within the kernel.  
+> > >
+> > > I fully agree with that.
+> > >  
+> > > >
+> > > > What I previously said is define a list of compatibles to not
+> > > > instantiate the child devices. This would essentially be any case having
+> > > > a specific compatible and having its own driver. So if someone has
+> > > > 'compatible = "vendor,not-so-simple-bus", "simple-bus"', when and if
+> > > > they add a driver for "vendor,not-so-simple-bus", then they have to add
+> > > > the compatible to the list in the simple-pm-bus driver. I wouldn't
+> > > > expect this to be a large list. There's only a handful of cases where
+> > > > "simple-bus" has a more specific compatible. And only a few of those
+> > > > have a driver. A more general and complicated solution would be making
+> > > > linux handle 2 (or more) drivers matching a node and picking the driver
+> > > > with most specific match. That gets complicated with built-in vs.
+> > > > modules. I'm not sure we really need to solve that problem.  
+> > >
+> > > Right. Let discard the "more general and complicated solution" and focus
+> > > on the list of compatible to avoid child devices instantiation.
+> > >
+> > > Do you mean that, for "simple-bus" compatible we should:
+> > >  - Remove the recursive device instantiation from of_platform_populate().  
+> >
+> > That may be a problem I hadn't considered. While we've solved most probe
+> > ordering issues, I think some may remain. Even when of_platform_populate()
+> > is called affects this. For example, I tried removing various arm32
+> > of_platform_.*populate() calls which run earlier than the default call,
+> > but that broke some platforms. (Looking at the list of remaining ones, I
+> > fixed the at91 pinctrl/gpio drivers, but never tried to remove the
+> > calls again.)
+> >
+> > Maybe this can be restricted to cases which are not recursively created
+> > from the root node. Not sure how we detect that. Perhaps no OF_POPULATED
+> > flag on the parent node? Or we could just enable this for OF_DYNAMIC
+> > nodes? That should be sufficient for your usecase.  
+> 
+> Thinking a bit more about this, I think you don't have to do anything.
+> If child nodes already got populated, calling of_platform_populate() a
+> second time is essentially a nop. And for cases you care about, that
+> wouldn't have happened. Of course, I'd still rather there only be 1
+> path that devices could have been instantiated.
+> 
 
+Hum, if my understanding is correct, this looks like what I did in the v3
+iteration [1].
 
-It does not look like you tested the DTS against bindings. Please run
-`make dtbs_check W=1` (see
-Documentation/devicetree/bindings/writing-schema.rst or
-https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
-for instructions).
-Maybe you need to update your dtschema and yamllint. Don't rely on
-distro packages for dtschema and be sure you are using the latest
-released dtschema.
+The idea was:
+  1) Do not change anything in of_platform_.*populate()
+  2) Update the simple-bus driver to populate children if there is only one
+     compatible string and this string matches the compatible string handled
+     by the driver.
 
-And underscore used... Please do not send us downstream code.
+We can be more restrictive for 2) and only populate children if the only one
+compatible string is "simple-bus". This will keep current behavior for
+"simple-mfd", "isa" and "arm,amba-bus".
 
-You need to write it from scratch from usptream code, not send us what
-you have in downstream.
+If you think this could be the right direction, I will bring those modification
+in the next iteration.
 
-...
+Also, do you think we should be more restrictive and populate children in the
+simple-bus driver only for "simple-bus" compatible?
 
-> +	};
-> +
-> +	pcf2131: rtc@53 {
-> +		compatible = "nxp,pcf2131";
-> +		reg = <0x53>;
-> +		interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
-> +		interrupt-parent = <&pcal6524>;
-> +		status = "okay";
-
-Why?
-
-> +	};
-> +};
-> +
-> +&lpspi3 {
-> +	cs-gpios = <&gpio2 8 GPIO_ACTIVE_LOW>;
-> +	pinctrl-0 = <&pinctrl_lpspi3>;
-> +	pinctrl-1 = <&pinctrl_lpspi3>;
-> +	pinctrl-names = "default", "sleep";
-> +	gpio = <&pcal6408 0 GPIO_ACTIVE_HIGH>;
-> +	status = "okay";
-> +
-> +	spidev0: spi@0 {
-> +		compatible = "lwn,bk4";
-
-NAK, don't fake nodes. Just because downstream uses this, is not correct
-argument. This does not exist here.
-
-...
-
-> +
-> +	pinctrl_usdhc2_gpio_sleep: usdhc2gpiogrpsleep {
-
-You still not bother to test your own code... Again, why are you sending
-downstream code?
+[1] https://lore.kernel.org/lkml/20250613134817.681832-6-herve.codina@bootlin.com/
 
 Best regards,
-Krzysztof
+Hervé
