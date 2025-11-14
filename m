@@ -1,117 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEADD31AF0E;
-	Fri, 14 Nov 2025 14:11:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEAE30E854
+	for <imx@lists.linux.dev>; Fri, 14 Nov 2025 14:35:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763129512; cv=none; b=QS4DQY0mYykz7YCfQps/2u5D4xgekPJlysaZqwjxocbRfshNRGDOSSDQAZHx7jWOoY8/xix0RKDddCe3wvzXOZze0C4ErP6o1IinY4c7ns7ibdBOyulpjSc5IpvjJF46l+bQyrMUSwg3i/Gr/9jLMrjOau360VJjbmAR23DxSwY=
+	t=1763130959; cv=none; b=Olqd5HV9KIwngEQQzoSTvGpEBJ8+kjemS6Gy13UIPO6Fsec7FK86LiizIijuu2oZgI53CYvbv952mmPKTACuRhSN6WhqhctWbjgCJPwG8b4aUPKjOtWZC2h5vBn5TZ6eAwkAMtXbmuVOr14NMGUuqUpq4iZN5jJ/gkmkyNUwGow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763129512; c=relaxed/simple;
-	bh=fqAalezj7DXsLl2tdBUW30sL68H+wctQBaRnLrnT83c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fclZUqDcKBOydj5ZSaDffiNzM/ldYrVYIsmmCsLyQZnh7oyCVrtizDhaA9QGOapF/LHsWum76RtwwCKk168O03YTG3kQ4M5sXwKHq0/sLm9f//ZkWErD3oxWu1Yl7Wgx4rWHfxtuTt/WIhNgVWF1txG0rF+fH+qS62UFfL9nBjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N4zuvFX2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763130959; c=relaxed/simple;
+	bh=CjD4q1ZMbBJWQvc4Bgiana/20OE4djcpHnIJ+VkNDyA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EQsuBcT83U5bJUuBPIQ18VsGVePy8aI6uCIRO8wP1SGqvZyHmUTCrs0fqfHDlMoZqwJ9mltLFXRTMql8IB2JeKMaC3z239E/Xv7oz+ckLn6t/J/kLfsrdeBPn7t1DqFbKH5rWUPXDqP501mEA721vINp4SSyDnoU6GUoHYK0Z5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W4aeqRN0; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N4zuvFX2"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2F506C2BCAF;
-	Fri, 14 Nov 2025 14:11:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763129511;
-	bh=fqAalezj7DXsLl2tdBUW30sL68H+wctQBaRnLrnT83c=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=N4zuvFX2jPINsximv4LQ1hMLjChRMQ0H8MdxIMyQuzEQE8HgJS83fX0UvBYWkikXS
-	 97r1vpuWgbHDuPYDtOet4EYKVZJh5bSrwaKr5w3WeC43br0oE4ENVsyFFoPB5QXAko
-	 FemppkWmMiMmDb8KjaKPXSC40SbwFYAh8GaVY8aj2Xoh4x9q/Sa/hZ+lMxL1M2DphA
-	 dW/0leZzcs2vZcPXQ2+PfY8Pk1fw8GN0kK8ub0RXNl2C/PWDGa1G5KGPwODSln+kWB
-	 PAOgb70leAs4/KYWrz7/yf49yXo7yqVOceBIcNFe2aGexbYHH5udwgSBUBP1iBy6qE
-	 YFnquv8/M/2uQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20736CE7B12;
-	Fri, 14 Nov 2025 14:11:51 +0000 (UTC)
-From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Fri, 14 Nov 2025 15:11:51 +0100
-Subject: [PATCH 3/3] arm64: dts: freescale: tx8p-ml81: fix eqos nvmem-cells
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W4aeqRN0"
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6431b0a1948so3594137a12.3
+        for <imx@lists.linux.dev>; Fri, 14 Nov 2025 06:35:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763130955; x=1763735755; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=usqzkbXAktOV+QTZEhZmGU1PKdliPqoVmQQvPTmUm64=;
+        b=W4aeqRN0CevAr0n/b3u7+zkz8y7zvL4FWb/PUt0RhNxg8I2BoxKusLfR8S7ctfnVu0
+         B5pydsmAlshqqCdNUbUSmtChlbl1EePsO6FfxBnHb704RU6vIalq/WzVSdy8cqam4sS2
+         RH69TBa2HSo3YO0zy89zlxOTXXbP07Ey8WP/Q/3BnMniSLRtNrGSYccAFlPfA3GA4ReS
+         igV9fSti4cU0eSV1foaQXmPPCS60VBVOhMfKUJi6SEAG8daeJWtOPcVOy+e0FEAd7oEG
+         mC6ysCRsokT0dNjESDzHrZNiOQCHRRmiBLGMuqnmzyQJPON2Pqj0+m4beAPjH0tP4Cji
+         dtkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763130955; x=1763735755;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=usqzkbXAktOV+QTZEhZmGU1PKdliPqoVmQQvPTmUm64=;
+        b=b0qw+BFH4mOM3FZeNFvYv0Iq7zRN1fSVReeIefXF6a/qUqti8m/7OBXYJSURuo8XjI
+         FHSXp+1Nnid9CBbLu272sQiakAN/Q0eEipk/xszMjkWaW6vf/S7w8LdF51BH5zMDFujc
+         wgTf7CdQdYYT09x0gXr+6/MeQlHchfQlaYsim5B3TM6MNy8ew3E78WOP4BDk7IfGb9w5
+         nxsMwc1g+XSH0Ui7KovrVOJhL5A7SyzXlUSqG/cJLYIsbsDP/FuZr0kVWeIajsPUmpxU
+         hc8/YtE7F0vswae51BC4ka+cheYsK7RRUGAHsbzZMyAZKrx7DDo5SnBhT+KB/d4i/0Xy
+         SpUA==
+X-Forwarded-Encrypted: i=1; AJvYcCUByQxYWTXN9M28hozHGa/2++vnVBOOoyX65ddhd//sGR0k1A7yfk8lEaok12IBCDEVUlw=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy90vp+kTg3yuscgLurhyk67RFcaFpNztCnihzclrzc+EK6LU+S
+	AagT4CiXkGDrNuq969PudEhxb7uX7SfV9L1kf8M8hx3sGRLfRaVZ5XQB
+X-Gm-Gg: ASbGncuyYS9jfv/5fRrMY9Hrjh924WYDaYwvCRgAjgbMehcpcpl1jPUpUUzczBLvnYc
+	dTac8wf5rTUYQhTKmkgmOXnFkQQfb5nq6r3IZUQQK4FQgv7gVXdirP61l4xqYw1Jcp8fECGBECB
+	HmBlweG8jRIoU9u0eEf3/Eg5r1+og2pjogX6Hn8EBFmYRKWBh/7mmpcgC4noisEXhdVSb2sntbc
+	SnawJh+3tcdLgb2z3dqVe+p9tqE791JKe77jYOfWtGSTDoZ2LooaAJQZFmFwQWtCFAAUIyHaRV7
+	pArLLuabK3Re/3ypNQey0gE1DuEIrd7wpAq2QnmvMe40JYcBUaiQomOPuHPZwRTiN+gJEV8Mz43
+	9fEZOjs5nSDxnSC8va+kSxnk5TKAd6zEirBkHfOfxFeEMhGrpgLdLbcciAp09rBWC/rkb5J1Uoq
+	b5vf+u+kru9i62NE+CUJMUZp9OGQH9pdiA4Y+5BQ==
+X-Google-Smtp-Source: AGHT+IEkXh8aOaEa9VYbV+mSh0EevYMCtp8lTPm/U4emLvWPOqyGjxIaHiTsSpt8P+ehxwrwdlpbfQ==
+X-Received: by 2002:a17:907:6d1b:b0:b72:ad95:c1c2 with SMTP id a640c23a62f3a-b7367828c43mr340632166b.11.1763130954832;
+        Fri, 14 Nov 2025 06:35:54 -0800 (PST)
+Received: from SMW024614.wbi.nxp.com ([128.77.115.158])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b734fa80afbsm391264766b.11.2025.11.14.06.35.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Nov 2025 06:35:54 -0800 (PST)
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+To: Liam Girdwood <lgirdwood@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>
+Cc: linux-sound@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] ASoC: SOF: imx9: use SCMI API for LM management
+Date: Fri, 14 Nov 2025 06:35:03 -0800
+Message-ID: <20251114143503.2139-1-laurentiumihalcea111@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251114-disp_fix-v1-3-49cbe826afc2@gocontroll.com>
-References: <20251114-disp_fix-v1-0-49cbe826afc2@gocontroll.com>
-In-Reply-To: <20251114-disp_fix-v1-0-49cbe826afc2@gocontroll.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Maud Spierings <maudspierings@gocontroll.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1763129510; l=1812;
- i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=AP85dujUDPLr0xfJMQvOUhdr0wRHQGnqWqUmnerLMaM=;
- b=uZDz+8SuWZ99IoSCwkdW8s1bBJhE5najT2t/1qht6sMDSBxp4Gfgt+5O5SF6WfAjfcMoCJvBt
- o/e3r7ghfbxBzZSWzN47ZvA/We6g0DBnp6uuBnGsVWEzXr5XrHZCeip
-X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
- pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
-X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
- with auth_id=341
-X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
-Reply-To: maudspierings@gocontroll.com
+Content-Transfer-Encoding: 8bit
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-On this SoM eqos is the primary ethernet interface, Ka-Ro fuses the
-address for it in eth_mac1, eth_mac2 seems to be left unfused. In their
-downstream u-boot they fetch it from eth_mac1 [1][2], by setting alias
-of eqos to ethernet0, the driver then fetches the mac address based on
-the alias number.
+Linux supports NXP's LMM SCMI protocol so switch to using the appropriate
+API. The SIPs were intended to act as placeholders until the support for
+said protocol was upstreamed.
 
-Set eqos to read from eth_mac1 instead of eth_mac2. Also set fec to
-point at eth_mac2 as it may be fused later even though it is disabled
-by default.
+The underlying CPU protocol command from IMX_SIP_SRC_M_RESET_ADDR_SET is
+replaced by a LMM protocol command with the same effect (i.e. setting the
+boot address) since using the CPU protocol would require additional
+permissions (which TF-A already had). Apart from this, the SIPs are
+replaced by their equivalent Linux LMM commands.
 
-With this changed barebox is now capable of loading the correct address.
-
-Link: https://github.com/karo-electronics/karo-tx-uboot/blob/380543278410bbf04264d80a3bfbe340b8e62439/drivers/net/dwc_eth_qos.c#L1167 [1]
-Link: https://github.com/karo-electronics/karo-tx-uboot/blob/380543278410bbf04264d80a3bfbe340b8e62439/arch/arm/dts/imx8mp-karo.dtsi#L12 [2]
-
-Fixes: bac63d7c5f46 ("arm64: dts: freescale: add Ka-Ro Electronics tx8p-ml81 COM")
-Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+Changes in v2:
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi
-index fe8ba16eb40e..761ee046eb72 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tx8p-ml81.dtsi
-@@ -47,6 +47,7 @@ &eqos {
- 				 <&clk IMX8MP_SYS_PLL2_100M>,
- 				 <&clk IMX8MP_SYS_PLL2_50M>;
- 	assigned-clock-rates = <266000000>, <100000000>, <50000000>;
-+	nvmem-cells = <&eth_mac1>;
- 	phy-handle = <&ethphy0>;
- 	phy-mode = "rmii";
- 	pinctrl-0 = <&pinctrl_eqos>;
-@@ -75,6 +76,10 @@ ethphy0: ethernet-phy@0 {
- 	};
- };
+* add dependency on CONFIG_IMX_SCMI_LMM_DRV.
+* link to v1: https://lore.kernel.org/lkml/20251112144124.680-1-laurentiumihalcea111@gmail.com/
+
+ sound/soc/sof/imx/Kconfig |  1 +
+ sound/soc/sof/imx/imx9.c  | 36 ++++++++----------------------------
+ 2 files changed, 9 insertions(+), 28 deletions(-)
+
+diff --git a/sound/soc/sof/imx/Kconfig b/sound/soc/sof/imx/Kconfig
+index 327e2df94a58..09d88ce5b9e6 100644
+--- a/sound/soc/sof/imx/Kconfig
++++ b/sound/soc/sof/imx/Kconfig
+@@ -35,6 +35,7 @@ config SND_SOC_SOF_IMX8
+ config SND_SOC_SOF_IMX9
+ 	tristate "SOF support for i.MX9"
+ 	depends on IMX_DSP
++	depends on IMX_SCMI_LMM_DRV
+ 	select SND_SOC_SOF_IMX_COMMON
+ 	help
+ 	  This adds support for Sound Open Firmware for NXP i.MX9 platforms.
+diff --git a/sound/soc/sof/imx/imx9.c b/sound/soc/sof/imx/imx9.c
+index 853155d5990a..e56e8a1c8022 100644
+--- a/sound/soc/sof/imx/imx9.c
++++ b/sound/soc/sof/imx/imx9.c
+@@ -3,19 +3,11 @@
+  * Copyright 2025 NXP
+  */
  
-+&fec {
-+	nvmem-cells = <&eth_mac2>;
-+};
-+
- &gpio1 {
- 	gpio-line-names = "SODIMM_152",
- 			  "SODIMM_42",
-
+-#include <linux/arm-smccc.h>
++#include <linux/firmware/imx/sm.h>
+ 
+ #include "imx-common.h"
+ 
+-#define IMX_SIP_SRC 0xC2000005
+-#define IMX_SIP_SRC_M_RESET_ADDR_SET 0x03
+-
+-#define IMX95_CPU_VEC_FLAGS_BOOT BIT(29)
+-
+-#define IMX_SIP_LMM 0xC200000F
+-#define IMX_SIP_LMM_BOOT 0x0
+-#define IMX_SIP_LMM_SHUTDOWN 0x1
+-
++#define IMX95_M7_CPU_ID 0x1
+ #define IMX95_M7_LM_ID 0x1
+ 
+ static struct snd_soc_dai_driver imx95_dai[] = {
+@@ -38,7 +30,6 @@ static int imx95_ops_init(struct snd_sof_dev *sdev)
+ 
+ static int imx95_chip_probe(struct snd_sof_dev *sdev)
+ {
+-	struct arm_smccc_res smc_res;
+ 	struct platform_device *pdev;
+ 	struct resource *res;
+ 
+@@ -49,31 +40,20 @@ static int imx95_chip_probe(struct snd_sof_dev *sdev)
+ 		return dev_err_probe(sdev->dev, -ENODEV,
+ 				     "failed to fetch SRAM region\n");
+ 
+-	/* set core boot reset address */
+-	arm_smccc_smc(IMX_SIP_SRC, IMX_SIP_SRC_M_RESET_ADDR_SET, res->start,
+-		      IMX95_CPU_VEC_FLAGS_BOOT, 0, 0, 0, 0, &smc_res);
+-
+-	return smc_res.a0;
++	return scmi_imx_lmm_reset_vector_set(IMX95_M7_LM_ID, IMX95_M7_CPU_ID,
++					     0, res->start);
+ }
+ 
+ static int imx95_core_kick(struct snd_sof_dev *sdev)
+ {
+-	struct arm_smccc_res smc_res;
+-
+-	arm_smccc_smc(IMX_SIP_LMM, IMX_SIP_LMM_BOOT,
+-		      IMX95_M7_LM_ID, 0, 0, 0, 0, 0, &smc_res);
+-
+-	return smc_res.a0;
++	return scmi_imx_lmm_operation(IMX95_M7_LM_ID, SCMI_IMX_LMM_BOOT, 0);
+ }
+ 
+ static int imx95_core_shutdown(struct snd_sof_dev *sdev)
+ {
+-	struct arm_smccc_res smc_res;
+-
+-	arm_smccc_smc(IMX_SIP_LMM, IMX_SIP_LMM_SHUTDOWN,
+-		      IMX95_M7_LM_ID, 0, 0, 0, 0, 0, &smc_res);
+-
+-	return smc_res.a0;
++	return scmi_imx_lmm_operation(IMX95_M7_LM_ID,
++				      SCMI_IMX_LMM_SHUTDOWN,
++				      SCMI_IMX_LMM_OP_FORCEFUL);
+ }
+ 
+ static const struct imx_chip_ops imx95_chip_ops = {
 -- 
-2.51.2
-
+2.43.0
 
