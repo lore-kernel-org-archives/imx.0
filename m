@@ -1,88 +1,147 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EADBE3115AF
-	for <imx@lists.linux.dev>; Fri, 14 Nov 2025 11:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D118314D03
+	for <imx@lists.linux.dev>; Fri, 14 Nov 2025 12:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763121258; cv=none; b=ctoc15eymUHFIebp46vKj42Vz1bviZqdxqc5BMwHSxNjTu3PfpyVCordC565LGP452/dDj/5QI4kyE4shYE7ypv57f6rcE5nuegQibYO+GQeVxThM1czVFK1mR2Nch9FgMIvxVNb8dtfMu72NWD8xXg+MxNQhzP7dJekf7oTO+s=
+	t=1763122406; cv=none; b=GFtZS9/fAC3NDGM0Stm/KJXB4AkHJdgPwNpJGtZ/8ubkTU7Pn89uBC8f/bU2SgGGdd2RJJSKOAz57hEQmdYgET9T70K39Czd75puKFcyBB7Dla7MzDVDsEQV19PqhEIYji/BNJ3QKKmsLnf8uMHkTjmky791YOUtp/TIvJCJfEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763121258; c=relaxed/simple;
-	bh=kZcnPvSJ8D8LhOFwTpNlgBYy4vevqbhzxHjkgH+mOQs=;
+	s=arc-20240116; t=1763122406; c=relaxed/simple;
+	bh=5I0F7Lk270HlfQS3v6Sw31jwqLfCir/VQOrCBc5zdi4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ecJFR+3rb4xCdbZbKyjsyJWwXlxi9XGB2+/Sd1bEga4QY/dAOiTntopDl2BjStZkkPCQ491WeKuQbvoVK7+NCH9bVchgGeQg4WFPhZpPr++rWjBdU4F2kIQP65EH7TtBCDk0WOxIjhImN9sx3Ck+fE/Vzrtzrv4uDDvE368ba5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S0KW6Ny2; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=PAdp2YJMiOpb8Ml8JQem7MPSvjSnRzaICSBSRoOX/HnzdRZ4YsXzzR/m+3h1te8oMOoMbFHO8OWNJ7ZmYtaxek/ohIFl116tTxse7J1ghmWSQSdvxUVipKo+fekQefOwq4df/5Q1D8+zEYb1HHYkzquLefWYKI06wG9mQ/zFPW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BsWlX86i; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S0KW6Ny2"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-37a3340391cso16194951fa.3
-        for <imx@lists.linux.dev>; Fri, 14 Nov 2025 03:54:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763121255; x=1763726055; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kZcnPvSJ8D8LhOFwTpNlgBYy4vevqbhzxHjkgH+mOQs=;
-        b=S0KW6Ny2lML8/IJKgFi8XqOz4PMKDn7U+4Vm+8NRsnDEtwGMUxASOaFPwTXSDGx+C/
-         qac8IxuUCLK3ncHoDgzc/oWunIO+FNg61XehWs+1Whcht0cOuVVQ1ug9QtQwHwfYcIEo
-         RQSvTkjZF4vKQk7MyTqelPas3TlIAIl5LFDeI1aPT0I6hEUBqUqema4TotryIKNRGO1z
-         bvD9D6Ny2yHwiO7b7ta0OLpbY3gsew3tHQBzNj937FzVm2igidwlC2G6TOldadvcm8rW
-         NbVPLIAYal42lQBkClPnk6ApFPbslEPbxl493DmogLIlpc46yqG5YBm7Um4iiTeY9VXb
-         DJLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763121255; x=1763726055;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kZcnPvSJ8D8LhOFwTpNlgBYy4vevqbhzxHjkgH+mOQs=;
-        b=B3BcaPQcbEJtW+ws9PZPU8mH6y9yOeW54/inc3jSNQDCvJyY4eoZMQ/gmqWhgAL0Wj
-         7UyTmzvNK21b9Y4RswgT5RP7EbrT6CXG2XR3XG11bLllqCgfkQFNLhSRNYXUIi+As8Sv
-         jr9YKfLzDQAe8Gy9Ix0NyAokB8uIzZ/Niz5AAmknWIIdUPbj2Wko86nuSFvGtbGyyqd3
-         MYoo2X2Z5GKqOzk8Ay8ydd7cFnCCACA1qA4xte9O51lgFlgJCoMwx2Im6FEZIIbWrQsl
-         1h1UjuPc9BpsThEHhvl31Wt9mrpSkgJe4/jmJ7YmGKpelcndA6wsrAScu0rpl8at43x7
-         SpTA==
-X-Forwarded-Encrypted: i=1; AJvYcCW3+iUSQHhiPqUJ4uoMizOsEIv/X2dgxx0sjkrUlV/BPjZgUZvFm8kpmYEwiOm21Q/U6rg=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyhc56RIWM8Lx/Ra8HcohNNajHTO0hHchfRa3aYqjpUG5etKOJg
-	TcH8p4ZklxhpifxXayKkodFQ2qPFzewSKMvz/m/A7NaNCQOw999AhkwOP0fQAz4a+Bs0HEZ5qnh
-	cbuZEnMFGdXbRXrDYUWdtlBi+BIFAhRo=
-X-Gm-Gg: ASbGncspyy7RvYjYxxq/4WJrhytKpPkNo9ZvBuMZUt2C8IjuCHOa00OPpSyhDWpkAag
-	+7/+2cCpHXMef2Tr9wG0wSQ1V8g3RZUr9vydo/qj1yoHhQqDZwHSkUYvjTZrLd8ZVOX+ssnHI8Q
-	W/MuWSvspcTr9b2loPgvjshTWhFoHbfx5UzgRwlUNjMIAv/JuRpmkXPYHmG1VHx6Fj+GAMpV6Wj
-	5V2eFyHXTfP+xqQ9LL7IMTpmkbO9AET7RCkOyGDFzIWAx0NhZfILjd5rkAbDmWA+hNC+kcQJ/Zy
-	nqS/bhR7hWeKTSMk1BlJS0jF/A==
-X-Google-Smtp-Source: AGHT+IHz37vwf8Y7MiFxPOSUJKNInb9OQZLvqDOPsPXKEQSd7we5CPK4KA/Tw7N94FIS3c9idUG4JNwjnxLiGCjTMxk=
-X-Received: by 2002:a05:6512:10c2:b0:594:34b9:a817 with SMTP id
- 2adb3069b0e04-59584252391mr873143e87.33.1763121254798; Fri, 14 Nov 2025
- 03:54:14 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BsWlX86i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AEACC2BCB7
+	for <imx@lists.linux.dev>; Fri, 14 Nov 2025 12:13:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763122406;
+	bh=5I0F7Lk270HlfQS3v6Sw31jwqLfCir/VQOrCBc5zdi4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=BsWlX86ilnv+s4j4wTsSqTeDNAnnYOHyVINcw+Wvj3HVT6JuHuIMXwapCyNfmUql6
+	 US9CQzkUfqLAE4BbtJm5v3YZQr2wkup+OY5id52TMlj0plHw/jXmlJmvLrVEOioqwz
+	 hNgv8M980glqCzQD1KBPZB6yUw+FZeR6fb5ODDW/8FqmrZBPNvks30TTHR4PBa1hZ1
+	 Y2MCpPZmVqD7A09k1SMUmE/QJDoP1ykx7WHAmqOmkW2hmR6dRiWVwbE44vnjCtb4DL
+	 eUyRqN+tMHzw3mSGyz2bjhTVrntWx2rcDUwpY8X8XJBDv5k9pZ/rOvxS8FcuXgcpFE
+	 bivBIZyjejpnQ==
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-3d3ed0c9f49so462748fac.3
+        for <imx@lists.linux.dev>; Fri, 14 Nov 2025 04:13:26 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVGZYvi6CGOIuNKqtyym+yqbj/xpbYARg764cFNARf37B8FXfgnDCHhMING9VRG4DPaKBA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzsO9TAluccvLe30guUNlCvedol80Ln7vih0PKWVVgoe9DLOsNL
+	nsDtLOwpW0JLQmc9PCL7BX2PGwO8h7vziN3CBkdNVwG6h4RKOTjf4x/yxE/zZbqAb+OHT0hLyEX
+	G03d44g/0lj0y276B0mSjIpVE2yQxT5w=
+X-Google-Smtp-Source: AGHT+IGrNkWHSVx3CmYADKr0S6TGq/XxOF6zay1uOoUOn8a60tpM1BgphUydUyCNyc9Vh0GmlV+21RabCzXA2tdcTXs=
+X-Received: by 2002:a05:6870:30f:b0:375:db59:20e4 with SMTP id
+ 586e51a60fabf-3e868ef8743mr1267901fac.13.1763122404195; Fri, 14 Nov 2025
+ 04:13:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251114074212.1214255-1-xu.yang_2@nxp.com>
-In-Reply-To: <20251114074212.1214255-1-xu.yang_2@nxp.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Fri, 14 Nov 2025 08:54:03 -0300
-X-Gm-Features: AWmQ_bmlkmnY16HqyTCMS24moG3Hbq6h_aRVwrkkwnBpleByWJVRZ2j-qWye2uI
-Message-ID: <CAOMZO5DNGKjRLUVKgyziG9nEzPtyRVcPWc21x0wc20ZjuS6E-A@mail.gmail.com>
-Subject: Re: [PATCH] extcon: ptn5150: handle pending IRQ events during system resume
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: krzk@kernel.org, myungjoo.ham@samsung.com, cw00.choi@samsung.com, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+References: <20251114-thermal-device-v1-0-d8b442aae38b@gmx.de>
+In-Reply-To: <20251114-thermal-device-v1-0-d8b442aae38b@gmx.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 14 Nov 2025 13:13:12 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gZ7+i+irhaq2jQpTt++HuVRjqz8==Ov9VmQ9Q1J1TM0w@mail.gmail.com>
+X-Gm-Features: AWmQ_bm6idj_L4n1xVkRGWkVqmFdJz-PXS5UU4gyN5tQNhsjMISGTiEJyqtTR8w
+Message-ID: <CAJZ5v0gZ7+i+irhaq2jQpTt++HuVRjqz8==Ov9VmQ9Q1J1TM0w@mail.gmail.com>
+Subject: Re: [PATCH RFC 0/8] thermal: core: Allow setting the parent device of
+ thermal zone/cooling devices
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Lucas Stach <l.stach@pengutronix.de>, Russell King <linux+etnaviv@armlinux.org.uk>, 
+	Christian Gmeiner <christian.gmeiner@gmail.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Amit Daniel Kachhap <amit.kachhap@gmail.com>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Thierry Reding <thierry.reding@gmail.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Len Brown <lenb@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Jeff Johnson <jjohnson@kernel.org>, Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
+	Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Peter Kaestle <peter@piie.net>, 
+	Hans de Goede <hansg@kernel.org>, =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Potnuri Bharat Teja <bharat@chelsio.com>, Sebastian Reichel <sre@kernel.org>, 
+	Miquel Raynal <miquel.raynal@bootlin.com>, 
+	Support Opensource <support.opensource@diasemi.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-doc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
+	ath11k@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
+	linux-pci@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 14, 2025 at 4:42=E2=80=AFAM Xu Yang <xu.yang_2@nxp.com> wrote:
+On Fri, Nov 14, 2025 at 4:24=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wrote:
 >
-> When the system is suspended and ptn5150 wakeup interrupt is disabled,
-> any changes on ptn5150 will only be record in interrupt status
-> registers and won't fire an IRQ since its trigger type is falling
-> edge. So the HW interrupt line will keep at low state and any further
-> changes won't trigger IRQ anymore. To fix it, this will schedule a
-> work to check whether any IRQ are pending and handle it accordingly.
->
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> Drivers registering thermal zone/cooling devices are currently unable
+> to tell the thermal core what parent device the new thermal zone/
+> cooling device should have, potentially causing issues with suspend
+> ordering
 
-Fixes tag?
+Do you have any examples of this?
+
+> and making it impossible for user space appications to
+> associate a given thermal zone device with its parent device.
+>
+> This patch series aims to fix this issue by extending the functions
+> used to register thermal zone/cooling devices to also accept a parent
+> device pointer. The first six patches convert all functions used for
+> registering cooling devices, while the functions used for registering
+> thermal zone devices are converted by the remaining two patches.
+>
+> I tested this series on various devices containing (among others):
+> - ACPI thermal zones
+> - ACPI processor devices
+> - PCIe cooling devices
+> - Intel Wifi card
+> - Intel powerclamp
+> - Intel TCC cooling
+>
+> I also compile-tested the remaining affected drivers, however i would
+> still be happy if the relevant maintainers (especially those of the
+> mellanox ethernet switch driver) could take a quick glance at the
+> code and verify that i am using the correct device as the parent
+> device.
+>
+> This work is also necessary for extending the ACPI thermal zone driver
+> to support the _TZD ACPI object in the future.
+
+Can you please elaborate a bit here?
+
+_TZD is a list of devices that belong to the given thermal zone, so
+how is it connected to the thermal zone parent?
+
+> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+> ---
+> Armin Wolf (8):
+>       thermal: core: Allow setting the parent device of cooling devices
+>       thermal: core: Set parent device in thermal_of_cooling_device_regis=
+ter()
+>       ACPI: processor: Stop creating "device" sysfs link
+>       ACPI: fan: Stop creating "device" sysfs link
+>       ACPI: video: Stop creating "device" sysfs link
+>       thermal: core: Set parent device in thermal_cooling_device_register=
+()
+>       ACPI: thermal: Stop creating "device" sysfs link
+>       thermal: core: Allow setting the parent device of thermal zone devi=
+ces
+
+I can only see the first three patches in the series ATM as per
+
+https://lore.kernel.org/linux-pm/20251114-thermal-device-v1-0-d8b442aae38b@=
+gmx.de/T/#r605b23f2e27e751d8406e7949dad6f5b5b112067
