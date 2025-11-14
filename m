@@ -1,51 +1,51 @@
 Received: from mail.mleia.com (mleia.com [178.79.152.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5088E283FEE
-	for <imx@lists.linux.dev>; Thu, 13 Nov 2025 23:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C24928DC4
+	for <imx@lists.linux.dev>; Fri, 14 Nov 2025 00:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763078154; cv=none; b=jRPYRTE0wMP9i/QoOuJDEDTkp6ArTo0KrCK0wVc+IVD1ybpqivVHg20XFdudkNq5xVCAfoOOWGA7CMOwlFAruvF5TNdDqWPSmOyWB9LPRZldeDoDpx5GPkzB1EG7VUuw6VEZNVpphVNT5R7nWiPC8DkevtFKNthpKhGWgzSx49I=
+	t=1763078565; cv=none; b=gR/1dethdFBtYll9GoitY3OiMQYR2kEy2IYi/h2eIZnQJgQ9ADuB5W46c+7WwWqRIrr/lQGW4BBzsEq1oRxBeb2kiHP+w/vWlUumSHgeXs6VKfr4wuN9FXZIxBmOKwaRMG2S+hxhEKhPqamY9qfZvByKtfsZDPa0nIcMhmz2ttQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763078154; c=relaxed/simple;
-	bh=ZRVq35L6TkrpSlFnqbXH25zsbqFI5rryoyNnRXqRoZQ=;
+	s=arc-20240116; t=1763078565; c=relaxed/simple;
+	bh=G9nAx/Rk8pmPIrDjulmm2k9R3JaqyIyaAjsqrCV33DQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PxGOSUX64834t2cl7ju/wusut+RW9YPFdASoP1FICKvrXv1FotOkwasB5vgVS4TDboe8QHIHiZVoKgD8IqRrjX1Itrd96EdqU5obELfp6cPKfPoaORHdV+wkf3kMuSr68l1smIFoIOBtARoTm37MY2GS4rVoX1G9Lbnn01AE9Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=jpX9Nghw; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=Vvu7kgOm; arc=none smtp.client-ip=178.79.152.223
+	 In-Reply-To:Content-Type; b=qO872kBTTHnXGpeFn+Wt83Itlylwq69BieTl2nT1UI9x8GXOGzrBmgyCZer90sPF0rI8YtZCfzvex1ktyGzqke/JfETTb0fwi+mGKJQ1CAy/ymn6K19P5uhHg9B+VtLIYIXdOMIcSXvlFOeSChKpxFXFHv0vpwA15T+4ta8JMwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=QWfSqg4o; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=QWfSqg4o; arc=none smtp.client-ip=178.79.152.223
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="jpX9Nghw";
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="Vvu7kgOm"
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="QWfSqg4o";
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="QWfSqg4o"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1763078152; bh=ZRVq35L6TkrpSlFnqbXH25zsbqFI5rryoyNnRXqRoZQ=;
+	t=1763078562; bh=G9nAx/Rk8pmPIrDjulmm2k9R3JaqyIyaAjsqrCV33DQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jpX9Nghwryf8uxSu4AB5hnX+xmz2yENYr9YicLYFq25z0toePQTIZ11EMoj/6NBzI
-	 3kb4dCVaVQrJUfaL5IP2BPZ5/rnxOJf0j2aBppjWzTHzzJYuQorjpu/kao+bIPxUtl
-	 epJCoPKLrmFqi0W5EiVO3dp916n2EaeLJSGgfmYFjFYYru3yWgnMzBcL9nBxCEZTDo
-	 bxob+zX/arIl+YKlJmYy5fP0JkvzZWrhkkE4Tkl0+8G+eH8JSdssIkHQmkB45/nmos
-	 EXPrYR0qZfuLDblqIyg2VapQuQvt4yNmivSo+2ri5lZNK7a0cF1EFdAFC299HYWthg
-	 nNxYVGeXwV1Bw==
+	b=QWfSqg4ohJGX3QJqM8i9cxILXT4uUcIlZZoLkAZ2NTZnDQfsYRl8euFxDksbVAGh3
+	 zbVvZNlRE9LCxuCmGNjDPRYrwxtAHBzbCHUsADWd1+C5hjgHR/MuMIciyITXIukFrz
+	 2dKDE9y3C9o5LHl5r/nkCTD7MaaznxQrMYsEA3VpA7L4r0sEuxlWqbZ/GyCqTjIk+j
+	 X7vguylJTgB0HkEJDQ7LQq2UL0ZXzu+GQYWAcaxMJl74q9oy9hY2PiYR3iaS05p9tn
+	 JB9I2//PFN1MI4y/AqAuB2TE4cjDpMq+Lo8ry1TxLmpn65uuEx8BIJiesZ35L+AKHN
+	 9EagZmiyYgJUw==
 Received: from mail.mleia.com (localhost [127.0.0.1])
-	by mail.mleia.com (Postfix) with ESMTP id EB8793E101C;
-	Thu, 13 Nov 2025 23:55:51 +0000 (UTC)
+	by mail.mleia.com (Postfix) with ESMTP id 3C94A3E1239;
+	Fri, 14 Nov 2025 00:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1763078151; bh=ZRVq35L6TkrpSlFnqbXH25zsbqFI5rryoyNnRXqRoZQ=;
+	t=1763078562; bh=G9nAx/Rk8pmPIrDjulmm2k9R3JaqyIyaAjsqrCV33DQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Vvu7kgOmglxU/7GZV4bsMZsuyEbf5c1ubIWr7hGRZyOsvk32piaTwQUXHVy8zASBC
-	 AFB+Q6Jkb5dYi8RgHbL4x4va2KkxMcU+/AmO3zK8H93wQphIgMNKA983m7J6OSRN7H
-	 Au3CNfatXMfGRoviloOdx5biqQRLh/wISVansZ6kVL9UZakxWuBZeMnYvn5PPdinpi
-	 Tcj6wrVHdCPskHdzNE2zM9H1+Yr2hV2p7k678DOF01IVHRWlrhf8I+SXGmXvC32bmx
-	 9DRhnUgUTmwhj6cyEwyUJ1FkTlqbuLqioOlGDdHUaC3inVMtvwPvv/ZBl4khSEujGU
-	 KdgyiNX/dCvMQ==
+	b=QWfSqg4ohJGX3QJqM8i9cxILXT4uUcIlZZoLkAZ2NTZnDQfsYRl8euFxDksbVAGh3
+	 zbVvZNlRE9LCxuCmGNjDPRYrwxtAHBzbCHUsADWd1+C5hjgHR/MuMIciyITXIukFrz
+	 2dKDE9y3C9o5LHl5r/nkCTD7MaaznxQrMYsEA3VpA7L4r0sEuxlWqbZ/GyCqTjIk+j
+	 X7vguylJTgB0HkEJDQ7LQq2UL0ZXzu+GQYWAcaxMJl74q9oy9hY2PiYR3iaS05p9tn
+	 JB9I2//PFN1MI4y/AqAuB2TE4cjDpMq+Lo8ry1TxLmpn65uuEx8BIJiesZ35L+AKHN
+	 9EagZmiyYgJUw==
 Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi [91.159.24.186])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.mleia.com (Postfix) with ESMTPSA id 688DA3E0FFD;
-	Thu, 13 Nov 2025 23:55:51 +0000 (UTC)
-Message-ID: <af66cc8a-051a-4512-9a02-468b17550775@mleia.com>
-Date: Fri, 14 Nov 2025 01:55:50 +0200
+	by mail.mleia.com (Postfix) with ESMTPSA id AB7ED3E0CE9;
+	Fri, 14 Nov 2025 00:02:41 +0000 (UTC)
+Message-ID: <b4d8a2e9-46ab-460a-ba56-ff8def8e36d4@mleia.com>
+Date: Fri, 14 Nov 2025 02:02:41 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,79 +53,115 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] ARM: dts: lpc32xx: add bus surfix for simple-bus
-To: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
+Subject: Re: [PATCH 3/5] ARM: dts: lpc3250-ea3250: add key- prefix for
+ gpio-keys
+To: Frank Li <Frank.Li@nxp.com>,
+ Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
  "moderated list:ARM/LPC32XX SOC SUPPORT"
  <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
 Cc: imx@lists.linux.dev
 References: <20251029202801.3963952-1-Frank.Li@nxp.com>
+ <20251029202801.3963952-3-Frank.Li@nxp.com>
 From: Vladimir Zapolskiy <vz@mleia.com>
-In-Reply-To: <20251029202801.3963952-1-Frank.Li@nxp.com>
+In-Reply-To: <20251029202801.3963952-3-Frank.Li@nxp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20251113_235551_981863_740BD6B8 
-X-CRM114-Status: GOOD (  15.55  )
+X-CRM114-CacheID: sfid-20251114_000242_264499_762AF9D8 
+X-CRM114-Status: GOOD (  12.37  )
 
 Hi Frank.
 
 On 10/29/25 22:27, Frank Li wrote:
-> add bus surfix for simple-bus to fix below CHECK_DTBS warnings:
-
-typo in the subject and in the commit message above, s/surfix/suffix/
-
-> arm/boot/dts/nxp/lpc/lpc3250-ea3250.dtb: usb (simple-bus): $nodename:0: 'usb' does not match '^([a-z][a-z0-9\\-]+-bus|bus|localbus|soc|axi|ahb|apb)(@.+)?$'
->          from schema $id: http://devicetree.org/schemas/simple-bus.yaml#
+> Add key- prefix to fix below CHECK_DTB warning:
+>    arch/arm/boot/dts/nxp/lpc/lpc3250-ea3250.dtb: gpio-keys (gpio-keys): 'joy0', ... do not match any of the regexes: '^(button|...)$', 'pinctrl-[0-9]+
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->   arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>   arch/arm/boot/dts/nxp/lpc/lpc3250-ea3250.dts | 18 +++++++++---------
+>   1 file changed, 9 insertions(+), 9 deletions(-)
 > 
-> diff --git a/arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi b/arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi
-> index 2236901a00313..9790b0a1d6537 100644
-> --- a/arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi
-> +++ b/arch/arm/boot/dts/nxp/lpc/lpc32xx.dtsi
-> @@ -86,7 +86,7 @@ dma: dma-controller@31000000 {
->   			#dma-cells = <2>;
+> diff --git a/arch/arm/boot/dts/nxp/lpc/lpc3250-ea3250.dts b/arch/arm/boot/dts/nxp/lpc/lpc3250-ea3250.dts
+> index 63c6f17bb7c9f..837a3cfa8e7c8 100644
+> --- a/arch/arm/boot/dts/nxp/lpc/lpc3250-ea3250.dts
+> +++ b/arch/arm/boot/dts/nxp/lpc/lpc3250-ea3250.dts
+> @@ -27,55 +27,55 @@ button {
+>   			gpios = <&gpio 4 1 0>; /* GPI_P3 1 */
 >   		};
 >   
-> -		usb {
-> +		usb-bus {
-
-Device nodes under "usb" should be just elevated, the "simple-bus" here
-was used only to group some controllers together.
-
->   			#address-cells = <1>;
->   			#size-cells = <1>;
->   			compatible = "simple-bus";
-> @@ -307,14 +307,14 @@ mpwm: pwm@400e8000 {
->   			};
+> -		key1 {
+> +		key-1 {
+>   			label = "KEY1";
+>   			linux,code = <1>;
+>   			gpios = <&pca9532 0 0>;
 >   		};
 >   
-> -		fab {
-> +		fab-bus {
-
-FAB shall find its place in the AXI/AHB/APB/... list, isn't it?
-
->   			#address-cells = <1>;
->   			#size-cells = <1>;
->   			compatible = "simple-bus";
->   			ranges = <0x20000000 0x20000000 0x30000000>;
+> -		key2 {
+> +		key-2 {
+>   			label = "KEY2";
+>   			linux,code = <2>;
+>   			gpios = <&pca9532 1 0>;
+>   		};
 >   
->   			/* System Control Block */
-> -			scb {
-> +			scb-bus {
->   				compatible = "simple-bus";
->   				ranges = <0x0 0x40004000 0x00001000>;
->   				#address-cells = <1>;
+> -		key3 {
+> +		key-3 {
+>   			label = "KEY3";
+>   			linux,code = <3>;
+>   			gpios = <&pca9532 2 0>;
+>   		};
+>   
+> -		key4 {
+> +		key-4 {
+>   			label = "KEY4";
+>   			linux,code = <4>;
+>   			gpios = <&pca9532 3 0>;
+>   		};
+>   
+> -		joy0 {
+> +		key-joy0 {
+>   			label = "Joystick Key 0";
+>   			linux,code = <10>;
+>   			gpios = <&gpio 2 0 0>; /* P2.0 */
+>   		};
+>   
+> -		joy1 {
+> +		key-joy1 {
+>   			label = "Joystick Key 1";
+>   			linux,code = <11>;
+>   			gpios = <&gpio 2 1 0>; /* P2.1 */
+>   		};
+>   
+> -		joy2 {
+> +		key-joy2 {
+>   			label = "Joystick Key 2";
+>   			linux,code = <12>;
+>   			gpios = <&gpio 2 2 0>; /* P2.2 */
+>   		};
+>   
+> -		joy3 {
+> +		key-joy3 {
+>   			label = "Joystick Key 3";
+>   			linux,code = <13>;
+>   			gpios = <&gpio 2 3 0>; /* P2.3 */
+>   		};
+>   
+> -		joy4 {
+> +		key-joy4 {
+>   			label = "Joystick Key 4";
+>   			linux,code = <14>;
+>   			gpios = <&gpio 2 4 0>; /* P2.4 */
 
-Here "simple-bus" is also unjustified...
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+
+Thank you for the contributions, I hope I'll find time tomorrow
+to send a tiny pull request:
+* lpc43xx board compatible strings,
+* this change,
+* any other your changes with my review comments satisfied, if I get them.
 
 -- 
 Best wishes,
