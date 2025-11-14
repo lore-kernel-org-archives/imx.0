@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB96329C63
-	for <imx@lists.linux.dev>; Fri, 14 Nov 2025 16:02:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A57284689
+	for <imx@lists.linux.dev>; Fri, 14 Nov 2025 16:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763136142; cv=none; b=VTu6V/XHlTKPPEEiSw1XqszHfWatfiHvlqso7fdx1j8j+vt19dkldeWIxh+hWnFhAgQgOgMB/tRNOTTv5/9GGpo1uFRkQSfDt+NaRFGx7+7haK92Uky6HIAX8gIpAtj4ph9vcF6jyZk70MtUlyrf0ZIV0fXf0q0+c9HAvsCFC6A=
+	t=1763136578; cv=none; b=b4md/bJeqIIFOsRgPUM1//I/8CDwHyDiu7fmeceGbnYX2wLKgR2kPhiPl7nmMgFQKh46u91SCcE9VkccpL+2fqZGICIlPGGvoeDzkuf723DYxzFzOMvuJKVG9inCqx4Xi+NPtytINlggMU5f+8g2hQBgyrvmchM0zxabk9JhtAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763136142; c=relaxed/simple;
-	bh=GlJM4v8Q4C8qanB/6f3se2hzgWUzzVrsHajuU/sBlwE=;
+	s=arc-20240116; t=1763136578; c=relaxed/simple;
+	bh=1SO3Dy7hx4nN2IQu+3GA7xLbMuH69DLF1SBIkM22row=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FJjT+va9I2w2YQV3lrXuaaCU0AeLapkV5Gn3B3aM1tObv3JJ5i5OZsrktgIqOW9Sf/ocIKkUdHausLHSf2qBMHhxAFmOnosbA6z+CLg543X9xjdo/qlhU5AjBPMg9zYgYkCYcC7t703UTuCyPJEISVid2z6Mnn1ssuck8sTtqQo=
+	 Content-Type:MIME-Version; b=aTkCueVfzfT+onNu7l2LtRn0I9T7pNhEdTCb8Ue0FVj5TvZqVCEv+TYbFx2lq9Eg6As4egy6FBae+m30+3PjQLfkR6S2ZwUV1Lbd0xTuyqMPLCyuDlGNwOPkad6bA4wdAxr4DDbPGvIgKZn6w36yKovyOi9mmhJx4/x2I1uEhvQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vJwFX-0001tc-Ks; Fri, 14 Nov 2025 17:02:11 +0100
+	id 1vJwMb-0003CT-Dp; Fri, 14 Nov 2025 17:09:29 +0100
 Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vJwFX-000RjJ-0w;
-	Fri, 14 Nov 2025 17:02:11 +0100
+	id 1vJwMb-000Ron-0N;
+	Fri, 14 Nov 2025 17:09:29 +0100
 Received: from pza by lupine with local (Exim 4.98.2)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vJwFX-00000000Ags-0qAH;
-	Fri, 14 Nov 2025 17:02:11 +0100
-Message-ID: <8b225c56612ff01845a90388be0945c7d0b3f0d2.camel@pengutronix.de>
-Subject: Re: [PATCH v5 4/6] reset: imx8mp-audiomix: Extend the driver usage
+	id 1vJwMb-00000000BWa-08pa;
+	Fri, 14 Nov 2025 17:09:29 +0100
+Message-ID: <e9b580b65add30dfd0be30c73610542dcea1f8cc.camel@pengutronix.de>
+Subject: Re: [PATCH v5 5/6] reset: imx8mp-audiomix: Support i.MX8ULP SIM LPAV
 From: Philipp Zabel <p.zabel@pengutronix.de>
 To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>, Krzysztof Kozlowski
 	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
@@ -41,10 +41,10 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Pengutronix Kernel Team
 	 <kernel@pengutronix.de>
-Date: Fri, 14 Nov 2025 17:02:11 +0100
-In-Reply-To: <20251114133738.1762-5-laurentiumihalcea111@gmail.com>
+Date: Fri, 14 Nov 2025 17:09:28 +0100
+In-Reply-To: <20251114133738.1762-6-laurentiumihalcea111@gmail.com>
 References: <20251114133738.1762-1-laurentiumihalcea111@gmail.com>
-	 <20251114133738.1762-5-laurentiumihalcea111@gmail.com>
+	 <20251114133738.1762-6-laurentiumihalcea111@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.1-1+deb13u1 
@@ -62,54 +62,31 @@ X-PTX-Original-Recipient: imx@lists.linux.dev
 On Fr, 2025-11-14 at 05:37 -0800, Laurentiu Mihalcea wrote:
 > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 >=20
-> Switch to per-device reset map to allow reusing the driver for other NXP
-> block control IPs.
+> Support i.MX8ULP's SIM LPAV by adding its reset map definition.
 >=20
 > Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 > Reviewed-by: Frank Li <Frank.Li@nxp.com>
 > Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+
 > ---
->  drivers/reset/reset-imx8mp-audiomix.c | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
+>  drivers/reset/reset-imx8mp-audiomix.c | 45 +++++++++++++++++++++++++++
+>  1 file changed, 45 insertions(+)
 >=20
 > diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-=
 imx8mp-audiomix.c
-> index 35df9bd5f71a..d3396f37d1ff 100644
+> index d3396f37d1ff..83fc8bcf80ab 100644
 > --- a/drivers/reset/reset-imx8mp-audiomix.c
 > +++ b/drivers/reset/reset-imx8mp-audiomix.c
-> @@ -24,7 +24,12 @@ struct imx8mp_reset_map {
->  	bool active_low;
->  };
+> @@ -3,6 +3,7 @@
+>   * Copyright 2024 NXP
+>   */
 > =20
-> -static const struct imx8mp_reset_map reset_map[] =3D {
-> +struct imx8mp_reset_info {
-> +	const struct imx8mp_reset_map *map;
-> +	int num_lines;
-> +};
-> +
-> +static const struct imx8mp_reset_map imx8mp_reset_map[] =3D {
->  	[IMX8MP_AUDIOMIX_EARC_RESET] =3D {
->  		.offset	=3D IMX8MP_AUDIOMIX_EARC_RESET_OFFSET,
->  		.bit =3D 0,
-> @@ -42,9 +47,15 @@ static const struct imx8mp_reset_map reset_map[] =3D {
->  	},
->  };
-> =20
-> +static const struct imx8mp_reset_info imx8mp_reset_info =3D {
-> +	.map =3D imx8mp_reset_map,
-> +	.num_lines =3D ARRAY_SIZE(imx8mp_reset_map),
-> +};
-> +
->  struct imx8mp_audiomix_reset {
->  	struct reset_controller_dev rcdev;
->  	struct regmap *regmap;
-> +	const struct imx8mp_reset_info *rinfo;
+> +#include <dt-bindings/reset/fsl,imx8ulp-sim-lpav.h>
 
-Since only rinfo->map is used in imx8mp_audiomix_update(), you could
-directly store a
-
-	const struct imx8mp_reset_map *map;
-
+This now depends on 3b521bf8c512 ("dt-bindings: clock: document 8ULP's
+SIM LPAV").
 
 regards
 Philipp
