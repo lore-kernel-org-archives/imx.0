@@ -1,55 +1,45 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47377258CE5
-	for <imx@lists.linux.dev>; Sat, 15 Nov 2025 21:01:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4313594F;
+	Sat, 15 Nov 2025 21:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763240509; cv=none; b=Z70bWn0Y9j9I/KZzfLS833GqkcdJexhCHJlQfeLZCJITaOnXbtyx6Mx/KhtykIwisfT58MqadGcXyKPk+20/LPQnN9uZxLQaSW2XBWUB8z8W56pXkPavxJE1NODGuG0oiXzsRa1x8qvM1HoicX1kK9MyLXsOOtCYbdU3DWFgep4=
+	t=1763241363; cv=none; b=DDwIw1HsvI2TGUGZAsauz2RntBjBsRsYg3KGCKcwKuzqM1q20kWXBDbbhoXyeTc86ouWW1Wd2N19+2hJrclEJsC6/Q5FjQgHE9b1KBe2WT37VyDgTwhbY1J3RnjwqFJDhNzU7TnA6MjSFtQt5KxluwXwOry5xkERUxtZrTk2O1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763240509; c=relaxed/simple;
-	bh=KAaOFr9VMNCdfZiXbOB2v11q96MZ7OkvnzWZrGHZOmc=;
+	s=arc-20240116; t=1763241363; c=relaxed/simple;
+	bh=9Z733u5Ow5KX/0wGU+juH/ehU3LkKn/YGRAFyBH4t3E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IErReMkcvBvgMxohX97IklRCH7OCZdc7ECfRjNDUO6Lg7iEqWyVL8Wkew6BuIL1YRF1+UnLl7pAXKTzzpAZVCsZdNHaCMsVg/2n8k7W336c4VRvEXXXwFZWyeCNlyncuX71MXLvXhKmswFBDM0gsnExaRvWtTBNafiCREdtHLyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=wJ6Vtn25; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=P3Sgro7aaOIWdoau7AY4cAqG0UmEuSt54Muyo4nG+EeUAyem4sR1vVDpjGZKWIQ58fUjDe4tzAt7U+oOoPhgLGUtNawiioX+VHX2cnUi4TNgKttrai363QNB7BkFQaOTPS5S5NfknFWIs/RBpdK1UGSrNAnvMtA8sIhgm+MoTWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=OCM3iKo6; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="wJ6Vtn25"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=5svlvKH8KW5n0ke7qMCkQqdtMc7ntU+Iap0Fwxi0NiU=; b=wJ6Vtn257KknkrNwpYIgruGiyp
-	c6pSVlISmcwRmM7OBKq8PVpcngqp8RxPjp5X2bM4VwNXUZT4Pfsa6KWKZcGeH18Tw0Yl9ICWXTjlm
-	2OSVIQ3iyHRSlOeNqRNIDuKt7cALcR4CJOWf2iM1T+8nW3gb/lj3jrHoRg1ZkzpCdioLq3MeZvx8B
-	Zoizq1Uo0UntpjvGYw4rPSVpChBPuWB7G0VDqASp+k5s2CvLpb+ROatb/Xh5/TiXI5d12TsfZCd8w
-	RhwJYHzoSvhmPJp9v1itPemqGFYxKWNZkEyFKsaqBjzOSTYwtlg0J0mL5t4dr3xckSm7ednPzIFYh
-	fi5QksKA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:52092)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vKNOp-000000000Km-3tB9;
-	Sat, 15 Nov 2025 21:01:35 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vKNOm-0000000076k-3af1;
-	Sat, 15 Nov 2025 21:01:32 +0000
-Date: Sat, 15 Nov 2025 21:01:32 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="OCM3iKo6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=khPgDsVJrdOTw5XRZdidZ350ZJ9XgdNzhpLeT83/DIo=; b=OCM3iKo6z5eLZeUF3b5Se3eu4P
+	24OzwFf8tBoieqvXawQWCnUvnlCLLaRt+B/Xl6VgVyrIZ2XQGkfOQ2Uy+HoFw8vGXRThD6t3HO3Rt
+	IorisFz7KnK+q0cUGfL3yh45+u7v4gSZLySpaGFJpRjpJG0xZOffYM42fvUCLAa0lqUg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vKNca-00E78A-Nh; Sat, 15 Nov 2025 22:15:48 +0100
+Date: Sat, 15 Nov 2025 22:15:48 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
 Cc: Wei Fang <wei.fang@nxp.com>, hkallweit1@gmail.com, davem@davemloft.net,
 	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
 	eric@nelint.com, maxime.chevallier@bootlin.com, imx@lists.linux.dev,
 	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH net] net: phylink: add missing supported link modes for
  the fixed-link
-Message-ID: <aRjqLN8eQDIQfBjS@shell.armlinux.org.uk>
+Message-ID: <a3886abf-5ed5-436a-8f92-7c010beced13@lunn.ch>
 References: <20251114052808.1129942-1-wei.fang@nxp.com>
  <fc57fba2-26c2-4b8a-b0f5-1b3c4d1b9bef@lunn.ch>
+ <aRjqLN8eQDIQfBjS@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -58,83 +48,26 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fc57fba2-26c2-4b8a-b0f5-1b3c4d1b9bef@lunn.ch>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <aRjqLN8eQDIQfBjS@shell.armlinux.org.uk>
 
-On Sat, Nov 15, 2025 at 09:36:44PM +0100, Andrew Lunn wrote:
-> On Fri, Nov 14, 2025 at 01:28:08PM +0800, Wei Fang wrote:
-> > Pause, Asym_Pause and Autoneg bits are not set when pl->supported is
-> > initialized, so these link modes will not work for the fixed-link.
-> > 
-> > Fixes: de7d3f87be3c ("net: phylink: Use phy_caps_lookup for fixed-link configuration")
-> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > ---
-> >  drivers/net/phy/phylink.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> > 
-> > diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> > index 9d7799ea1c17..918244308215 100644
-> > --- a/drivers/net/phy/phylink.c
-> > +++ b/drivers/net/phy/phylink.c
-> > @@ -637,6 +637,9 @@ static int phylink_validate(struct phylink *pl, unsigned long *supported,
-> >  
-> >  static void phylink_fill_fixedlink_supported(unsigned long *supported)
-> >  {
-> > +	linkmode_set_bit(ETHTOOL_LINK_MODE_Pause_BIT, supported);
-> > +	linkmode_set_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT, supported);
-> > +	linkmode_set_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, supported);
-> 
-> Do these make sense? There is no PHY, so there is no autoneg? So why
-> is autoneg in supported?
-> 
-> You can force pause at the MAC with ethtool:
-> 
-> ethtool -A|--pause devname [autoneg on|off] [rx on|off] [tx on|off]
+> No, not for fixed links. (I have a patch which enables this, but we
+> mutually agreed not to push it into mainline - I think you've forgotten
+> that discussion.)
 
-No, not for fixed links. (I have a patch which enables this, but we
-mutually agreed not to push it into mainline - I think you've forgotten
-that discussion.)
+Not too surprising, given the number of discussions...
 
-> Maybe you should explain what problem you are seeing?
+> So, the patch is the correct approach. The only thing that is missing
+> is the detailed explanation about the problem the regression is
+> causing. We have too many patches that fix regressions without
+> explaining what the effect of the regression was... which is bad when
+> we look back at the history.
 
-As explained in this thread, it's the lack of pause. Not having the
-pause bits in the supported mask means that phylink can't evaluate
-the pause modes to use, because even if they are present in DT,
-they get cleared because they're cleared in the supported mask.
+Agreed.
 
-At least Pause and Asym_Pause need to be set.
+I often like Vladimirs patches. Two pages of commit message for a one
+line change.
 
-This is because the fixed-link pause specification is in terms of
-Pause and Asym_Pause. Having one set of these bits is meaningless in
-terms of "should we transmit pause frames" and "should we receive
-pause frames" which is what hardware wants to know. It would've
-been better had the DT binding defined pause in terms of tx/rx not
-the Pause/Asym_Pause bits.
+    Andrew
 
-However, with that definition, the only way to give these bits any
-sane meaning is to treat them as the capabilities of a virtual link
-partner, use the Pause and Asym_Pause capabilities of the local MAC,
-and evaluate them according to the 802.3 rules.
-
-However, as we end up masking off the local MAC's Pause and Asym_Pause
-bits, this results in that evaluation deciding that pause is
-unsupported. This is a *regression* that needs fixing, caused by the
-blamed commit.
-
-There is no question that this needs fixing.
-
-The question is whether Autoneg should be set or not. As the
-advertising and lp_advertising bitmasks have to be non-empty, and the
-swphy reports aneg capable, aneg complete, and AN enabled, then for
-consistency with that state, Autoneg should be set. This is how it was
-prior to the blamed commit.
-
-So, the patch is the correct approach. The only thing that is missing
-is the detailed explanation about the problem the regression is
-causing. We have too many patches that fix regressions without
-explaining what the effect of the regression was... which is bad when
-we look back at the history.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+---
+pw-bot: cr
