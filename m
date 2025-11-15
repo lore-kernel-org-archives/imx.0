@@ -1,99 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396C6257830;
-	Sat, 15 Nov 2025 09:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9BF18CC13;
+	Sat, 15 Nov 2025 11:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763197212; cv=none; b=NQy4GpBQbl212YLgyd/rs2I5n92Pmn/CNQCjSy0w2Z4JM8ItDFmK6WxQNaX3+gBWk8mYGZ3y0sCy/uMT067acF/0kvFpDMmz5/liiX7sxpDYFTJkcKbABa5LyEhP2qf+6kruho9Y+CudpOVVikxEqfdY4P74VqIi//TstIzce1M=
+	t=1763207607; cv=none; b=PVh4WVNjbsKxwRiXuStN0V8ndxX+nqrgPGbFyg7chLH3AY2hgv40h4VNiOuLLZChUKPbq22pRJzVkbWgq1vJ5kLVKQz+e1QYjM7SX9gMQxTmKEnRR7Gg4TzD1usbLU5OteXlHjN4GaoAVmjjwkJvnyJxXpk4FfnJ/EkGhDGoahs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763197212; c=relaxed/simple;
-	bh=WJ7Ofhc9Ah65PBaTH26V2SciLv3qEIw1kYSsGi0ZQww=;
+	s=arc-20240116; t=1763207607; c=relaxed/simple;
+	bh=D3IZQ41ljbOFBJR+0W2Ew4JgT55JZ3FTpbKG4ou+aYI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h+J6dXXgk8MZ1TsjmVtOPuwXJ/ETgXz2ctKxDzgHKMQYnWawx8RjOBPxnZzxMfnhaK9z2bhRuj4tagktxViMwxd+cTMYuWFrHTygIzgO+U3msrOL9ew8+DkMSgkdtiBNpM6dboEsyHezCxho9SsOYxbS9oQkDfHFwwfknvfEGag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sI5eKwhu; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mi/wo11hci7WW5NpUob5FrDXn4V6Uj4FZcqzC5SkGRhHqy5dqr4EKkvtSBsMupdrQXNZxcPBYu+3ilsuPGUrDq8FGV+2gCleiZMwwpWf6q6r3J4rLVU93t/+FI+c9IDa0SYzTUOw+C4F8HSC2jz1StoGnUBmC5PYsuSwsp/9Tns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pvrNxn6Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sI5eKwhu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3B9C19421;
-	Sat, 15 Nov 2025 09:00:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pvrNxn6Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F69C113D0;
+	Sat, 15 Nov 2025 11:53:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763197211;
-	bh=WJ7Ofhc9Ah65PBaTH26V2SciLv3qEIw1kYSsGi0ZQww=;
+	s=k20201202; t=1763207606;
+	bh=D3IZQ41ljbOFBJR+0W2Ew4JgT55JZ3FTpbKG4ou+aYI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sI5eKwhuML0yiWynjqtEalPUtmt9MVKwhTm7LplUV2emYkCWJXYcwEpJtEAs3bms8
-	 HQp0pjllgB73g6NnqBQ+5FdZaryerKpUEAEGJzrT9GtRPYuO3QC6OMsIp9NPUw39/Q
-	 0hMTUj5mFzEeC87N1aGcS7OvuI+g+V7AUzTlMXOYf7Q9z8s6Kc7YFU4nYTvOonbB3g
-	 8UA8kMsnZ/W1zUH/4sSSBSwryKyrpP2OwroNr84KXXNktHUo1G9zJuzAmprlnKMXbt
-	 Fh/524ZZAUhjbMjkny84CX9WFU8yHxUHac3WBLrpoGqxX6BTYm+s9i2Ft9VKsoxBQr
-	 OylOm7j2CF/JA==
-Date: Sat, 15 Nov 2025 10:00:07 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: ziniu.wang_1@nxp.com
-Cc: laurent.pinchart@ideasonboard.com, nuno.sa@analog.com, lee@kernel.org, 
-	linux-gpio@vger.kernel.org, linux-pwm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev
-Subject: Re: [PATCH v2] pwm: adp5585: correct mismatched pwm chip info
-Message-ID: <7nsxp5s344xcxq2n2cqq6wrkef7vjyzwtkb3uhfgs4cyrah2ot@cntzr3wughku>
-References: <20251114104250.2080030-1-ziniu.wang_1@nxp.com>
+	b=pvrNxn6Qpy0xKwoi/njFVhX6Stcy5YSXfgVxKasMFqqTquUDSBb01L6MVWBgV5idE
+	 2UME7pZsFhH8loRYLEgySoF512XrFF6o9PUzYMiDiATwXIQ/RsGoWWwtsvww+Tqczp
+	 bjyOL0Ol5gTlZiyKqx6uZ+9AtFXFhajfpTTpPGOKsBhs184Wihi3isW/c+ciyssJ2p
+	 S5qf9OdoRiXGrjyxwD8Pt5PiRVZUvqFsT6DuM3tVleeOMjRZ0gBHe6Oh3KdRxSMHuf
+	 q68e2Ckb1vF/jkUTzFNYy9TshLiTAzTEvRMhkHcoRt244oyxkC+d0VzgM+XpQuLQPR
+	 dJOm64VufQraA==
+Date: Sat, 15 Nov 2025 12:53:23 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Maud Spierings <maudspierings@gocontroll.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/3] dt-bindings: arm: fsl: moduline-display: fix
+ compatible
+Message-ID: <20251115-liberal-lori-of-youth-a9c3fd@kuoka>
+References: <20251114-disp_fix-v1-0-49cbe826afc2@gocontroll.com>
+ <20251114-disp_fix-v1-1-49cbe826afc2@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="5h2yymshnr3ns4js"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251114104250.2080030-1-ziniu.wang_1@nxp.com>
+In-Reply-To: <20251114-disp_fix-v1-1-49cbe826afc2@gocontroll.com>
 
-
---5h2yymshnr3ns4js
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2] pwm: adp5585: correct mismatched pwm chip info
-MIME-Version: 1.0
-
-Hello,=20
-
-On Fri, Nov 14, 2025 at 06:42:50PM +0800, ziniu.wang_1@nxp.com wrote:
-> From: Luke Wang <ziniu.wang_1@nxp.com>
->=20
-> The register addresses of ADP5585 and ADP5589 are swapped.
->=20
-> Fixes: 75024f97e82e ("pwm: adp5585: add support for adp5589")
->=20
-> Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
-> Tested-by: Liu Ying <victor.liu@nxp.com>
-> Acked-by: Nuno S=E1 <nuno.sa@analog.com>
+On Fri, Nov 14, 2025 at 03:11:49PM +0100, Maud Spierings wrote:
+> The compatibles should include the SoM compatible, this board is based
+> on the Ka-Ro TX8P-ML81 SoM, so add it. Also add the hardware revision to
+> the board compatible.
+> 
+> This is a breaking change, but it is early enough that it can be
+> corrected without causing any issues.
+> 
+> Fixes: 24e67d28ef95 ("dt-bindings: arm: fsl: Add GOcontroll Moduline Display")
+> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 > ---
-> v2: amend commit message
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+> index 21b7168d61f5..8949a98acd87 100644
+> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> @@ -1105,7 +1105,6 @@ properties:
+>                - gateworks,imx8mp-gw74xx   # i.MX8MP Gateworks Board
+>                - gateworks,imx8mp-gw75xx-2x # i.MX8MP Gateworks Board
+>                - gateworks,imx8mp-gw82xx-2x # i.MX8MP Gateworks Board
+> -              - gocontroll,moduline-display # GOcontroll Moduline Display controller
+>                - prt,prt8ml             # Protonic PRT8ML
+>                - skov,imx8mp-skov-basic # SKOV i.MX8MP baseboard without frontplate
+>                - skov,imx8mp-skov-revb-hdmi # SKOV i.MX8MP climate control without panel
+> @@ -1163,6 +1162,12 @@ properties:
+>            - const: engicam,icore-mx8mp             # i.MX8MP Engicam i.Core MX8M Plus SoM
+>            - const: fsl,imx8mp
+>  
+> +      - description: Ka-Ro TX8P-ML81 SoM based boards
+> +        items:
+> +          - const: gocontroll,moduline-display-106
 
-Note that I already applied (implicit) v1 and replaced the wording as I
-suggested.
+You need old compatible here as well, you cannot drop it.
 
-Also typically there is no empty line between Fixes: and the S-o-b area
-(also fixed).
+I don't understand why you need board revision - commit msg should
+explain that.
 
-See https://git.kernel.org/pub/scm/linux/kernel/git/ukleinek/linux.git/comm=
-it/?h=3Dpwm/for-next&id=3Df84fd5bec502447df145f31734793714690ce27f
+> +          - const: karo,tx8p-ml81
+> +          - const: fsl,imx8mp
 
-Best regards
-Uwe
+Best regards,
+Krzysztof
 
---5h2yymshnr3ns4js
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmkYQRQACgkQj4D7WH0S
-/k7GcQf/bqFNkMjKTipiBMy7Gjqu+htlOy0puh6P9OZkaBtxDepJa0I0zSAyi/At
-abRXtOi7usPki3yYzdn6Sk/V2FQn8fqjQAP4Xyfb79ULbHYNiUfu/KADfa4TCySw
-Tomb0hbMdAjdSIbsok+cspo1q9+1xO1VkeTXFfUcfLOpxpDcvG1/qdCkorv8HBWF
-MpSob4qCs4jUbCoW3Kkw09Smasll1IaIgvrMMSQHKXiNdoAOyWhyK2pGVtVKeUUq
-qtHrtWuY3uK5FIv1vv9yFysy3C2TR7mrO4YJeWm5xWqn/pvsKK2aT/TtjFbQqc6/
-nGQX1Jn4HoGwqkL0fY5VvNJqKq+8Bw==
-=lh60
------END PGP SIGNATURE-----
-
---5h2yymshnr3ns4js--
