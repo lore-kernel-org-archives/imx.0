@@ -1,64 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502091DF748;
-	Sat, 15 Nov 2025 11:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2619D219A8A;
+	Sat, 15 Nov 2025 20:36:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763207642; cv=none; b=mPRQOIKuATYELRqtDWJUOkVyr3EtSJ3s0tVsYhVUn6YYbxmd/jwlEaxkz+JcoIUPOgtD6NvCHheNjTP/5qUQ++6k/kDhWnmzXO9v6aivVj9l+xJcz9WG+kLdTGfpGpoyi87JdXB6LCOm4KRXd8VfOwM4uUkdExa+02xcIW+9wGo=
+	t=1763239017; cv=none; b=eAJSvOjEJ5ioXcafgQLfulIpoz1yTYc2u9P89C3st1JlnTfIlf8uv1pIb+DTdB73mAuf8LKhqrNEMjHcictLWBO01+IMw7GBspGliXn9GerlH5vZF275E2TDuLu4nmS+H8scO5OJlX4eUR83YhRO6YuyyjD9DdQNSTt/7w1o2sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763207642; c=relaxed/simple;
-	bh=SFB7UaLZKoJrkoVjVZhNqv3hZFUKGA+4m7Bp1LsdL2w=;
+	s=arc-20240116; t=1763239017; c=relaxed/simple;
+	bh=v18CVjKC5d773x8flfaLcDgBqoAJielhcHyW7LiqnIk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qMZZdqqbjqqCZUJK9h/qdXEChPFplhjTFAIRxFVn5yoTX26bWBZ3UQ9qG/zbSkCdJX5ELtxwBFe+jjYeZHN/fXumDxe1OS5Z2Yp+Kd9jqHRCKVEq/1k14MBaG9g7aY+/728qKwA6snVskC6oK4rnmXY6NLsDi9iMKF/cHz4c5rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZOMX0Fj3; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=HxB8idalAwiDzkGI4XQU4iDFL60PzFfKZSIlz7+XZoVorI35unXoRsCUV6e9jmHetuhflypMIWep8bSDB0ALDFDCb4rTNKTEOsDPX9+wdWgoCc58zIO3LMfpPRinUMc6SlBjeGCD2njLiVN/g3cNgzQ5B5I4Bfn9xwzFw8z70yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=SwEcspr1; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZOMX0Fj3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B10C4CEF8;
-	Sat, 15 Nov 2025 11:54:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763207641;
-	bh=SFB7UaLZKoJrkoVjVZhNqv3hZFUKGA+4m7Bp1LsdL2w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZOMX0Fj3iIPiDVFtVpxagbIGgwOwiXzYHeNfDxdzn3Y+Drgoad1nvs/ZVmSQjT8Z1
-	 1ILqDkPZgBPFl5NIhf6jgWLbKGTp5ifd9Aa0BwwubeY8Sn+v8OnkBJovhA5ba1kQOu
-	 EhGYVfZQE1G9gebiPQI8/JwqLQ/bZS5Z7GqDVxu/BOnEgF4/lCH+XpC0V7wNxrdV1S
-	 tPgJQViGcYmbfV7ddftluG2Bt6mSFnzcg1CAxf45RBfSfukQvPBhASjJeY79G8YxMD
-	 Nf3+0+dbw8/tiB1P0kyhnmvTM+GCNU7MHmKhznPNGoi3edo6dDmVeVvAfIO8jxxRmG
-	 kqOvyxMxqvcbw==
-Date: Sat, 15 Nov 2025 12:53:59 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Maud Spierings <maudspierings@gocontroll.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/3] arm64: dts: freescale: moduline-display: fix
- compatible
-Message-ID: <20251115-spicy-gifted-newt-3644ec@kuoka>
-References: <20251114-disp_fix-v1-0-49cbe826afc2@gocontroll.com>
- <20251114-disp_fix-v1-2-49cbe826afc2@gocontroll.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="SwEcspr1"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ciSbI/w/Itpo1/nIDh+lpEP4Lis78IruFuj26WpJ1DM=; b=SwEcspr1qNcJZFWRIV6/lRppBH
+	M2ThBSbVg4iUake5HFIfJkQqeW2FCAyqOmlljFRtkBRn6ahv5QuEeAUWZdRysAYamHKDF1hPCt0Hx
+	lCH7D5qZpAoI4CILQ6AIc1X13xu8i2uqL6+Wa1Mde6JwPKvOkBUHQ/oFETEcDgUwA4nk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vKN0m-00E6u6-Df; Sat, 15 Nov 2025 21:36:44 +0100
+Date: Sat, 15 Nov 2025 21:36:44 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: linux@armlinux.org.uk, hkallweit1@gmail.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	eric@nelint.com, maxime.chevallier@bootlin.com, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: phylink: add missing supported link modes for
+ the fixed-link
+Message-ID: <fc57fba2-26c2-4b8a-b0f5-1b3c4d1b9bef@lunn.ch>
+References: <20251114052808.1129942-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251114-disp_fix-v1-2-49cbe826afc2@gocontroll.com>
+In-Reply-To: <20251114052808.1129942-1-wei.fang@nxp.com>
 
-On Fri, Nov 14, 2025 at 03:11:50PM +0100, Maud Spierings wrote:
-> The compatibles should include the SoM compatible, this board is based
-> on the Ka-Ro TX8P-ML81 SoM, so add it. Also add the hardware revision to
-> the board compatible.
+On Fri, Nov 14, 2025 at 01:28:08PM +0800, Wei Fang wrote:
+> Pause, Asym_Pause and Autoneg bits are not set when pl->supported is
+> initialized, so these link modes will not work for the fixed-link.
 > 
-> This is a breaking change, but it is early enough that it can be
-> corrected without causing any issues.
+> Fixes: de7d3f87be3c ("net: phylink: Use phy_caps_lookup for fixed-link configuration")
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>  drivers/net/phy/phylink.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+> index 9d7799ea1c17..918244308215 100644
+> --- a/drivers/net/phy/phylink.c
+> +++ b/drivers/net/phy/phylink.c
+> @@ -637,6 +637,9 @@ static int phylink_validate(struct phylink *pl, unsigned long *supported,
+>  
+>  static void phylink_fill_fixedlink_supported(unsigned long *supported)
+>  {
+> +	linkmode_set_bit(ETHTOOL_LINK_MODE_Pause_BIT, supported);
+> +	linkmode_set_bit(ETHTOOL_LINK_MODE_Asym_Pause_BIT, supported);
+> +	linkmode_set_bit(ETHTOOL_LINK_MODE_Autoneg_BIT, supported);
 
-You did not describe what is here wrong that it needs a correction.
+Do these make sense? There is no PHY, so there is no autoneg? So why
+is autoneg in supported?
 
-Best regards,
-Krzysztof
+You can force pause at the MAC with ethtool:
 
+ethtool -A|--pause devname [autoneg on|off] [rx on|off] [tx on|off]
+
+with autoneg off, rx and tx are directly applied to the MAC. But to do
+that, are these bits needed in supported?
+
+Maybe you should explain what problem you are seeing?
+
+	Andrew
