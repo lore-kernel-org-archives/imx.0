@@ -1,113 +1,88 @@
-Received: from mail.mleia.com (mleia.com [178.79.152.223])
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45F039FD9
-	for <imx@lists.linux.dev>; Sat, 15 Nov 2025 00:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A39A72618
+	for <imx@lists.linux.dev>; Sat, 15 Nov 2025 01:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763166234; cv=none; b=JE4k0HO7GzTle3lZ8r8B3xt6E86rV3LSHql5LPNMDRU6dFiyEMiurcuEsq5bD3Fsj8OgJwnGBXOrxBu6tGForZbgNtrYq/4RaOxKJCAWSjhMvjOewPqDmzA//i/ExAOfKshpCO7qNZONEbkg/fB4uhSb0j3qti1/lavVGwjP4b4=
+	t=1763168513; cv=none; b=TIEV1LGdE6OL+5IJqBnhxqEZxzKw2biK4m/lEaAiAnCY9FDhVk7lcve1tFLOWTQxiEzgJsspe3Mx3Cux6fq3IFZmEz6cB5+4WTISQm78epAD4dwyZ6crLPrScRJvVmyVwa5uTaIptJ35UnKtm+adS2Y7CshKo3VILxiVGl5Y6is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763166234; c=relaxed/simple;
-	bh=2Pvm9rdf8esZYMdqtfF58dUSn/ME0IgpmVd/eZocWs8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N7ipcQY8zFsBT6xYlXslly6Yi4mNb2Zat3+7gkxEZ7YHOJ1SYcynohc/RSbv9OH+yAaklPkK9uhO3AT/jdb+pO+NcWUFXDtOUl9lJPHCOUz0k8z6xTW1hezb9c7j3gOTpx9cZyhkIqEYEQUTjHWmJjcD/y4LCKe2yVwGwBwh53k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=eFbslJBO; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=eFbslJBO; arc=none smtp.client-ip=178.79.152.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
+	s=arc-20240116; t=1763168513; c=relaxed/simple;
+	bh=gsUGANyWWISf75HzA/A2RdSWS3eRalFSSqlVvn9iHVY=;
+	h=Mime-Version:Subject:From:To:CC:In-Reply-To:Message-ID:Date:
+	 Content-Type:References; b=LQrd65ZPPdCEBvi4b2obqVo7XSNaDDi33i/IY6gWv6h1A2uh0AT6BHLuvtERjVAiqiBsnmfN2CrTqtjWezjXVRfdi29Rs5c3GXoJK6vxeqW9FEZgotZmayFuO/McjtGfkUj++bszywVMxu86Qdb2TVUgARvz17xdzGyhpA0T7Gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=SD/TZQba; arc=none smtp.client-ip=203.254.224.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="eFbslJBO";
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="eFbslJBO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1763166231; bh=2Pvm9rdf8esZYMdqtfF58dUSn/ME0IgpmVd/eZocWs8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eFbslJBOSnXGlGy+SnugmqJLAKSR4Dv/qMxzJqdn9C9N9oaRDcC1IAMCehogjOwYH
-	 2mvbwJclJaNNGk0/sfTb/2PveP+nV5odW+UEDhVAviEue3dvk3PWo6aauYonWxjRVk
-	 1IIDK1Py55lGP77GMxxNd6ivve0566vrwi1QauMRpVXkVZGS4htzgJ+kxisaZTXCIc
-	 BtxE9Uzhri3H6Ypk3ZpebriGJOu/VEaURldQrUUqBPuSI6EUQhBVgqVw0zyXT44aIF
-	 57J0LZghtUhwr9nXRrg1e/67gXV+OBf5kOhr6JlpYA/yFfgDHw856R9QCfi3V3Z5R1
-	 eL0dKAtcJulLQ==
-Received: from mail.mleia.com (localhost [127.0.0.1])
-	by mail.mleia.com (Postfix) with ESMTP id 2C71E3E16D7;
-	Sat, 15 Nov 2025 00:23:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1763166231; bh=2Pvm9rdf8esZYMdqtfF58dUSn/ME0IgpmVd/eZocWs8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eFbslJBOSnXGlGy+SnugmqJLAKSR4Dv/qMxzJqdn9C9N9oaRDcC1IAMCehogjOwYH
-	 2mvbwJclJaNNGk0/sfTb/2PveP+nV5odW+UEDhVAviEue3dvk3PWo6aauYonWxjRVk
-	 1IIDK1Py55lGP77GMxxNd6ivve0566vrwi1QauMRpVXkVZGS4htzgJ+kxisaZTXCIc
-	 BtxE9Uzhri3H6Ypk3ZpebriGJOu/VEaURldQrUUqBPuSI6EUQhBVgqVw0zyXT44aIF
-	 57J0LZghtUhwr9nXRrg1e/67gXV+OBf5kOhr6JlpYA/yFfgDHw856R9QCfi3V3Z5R1
-	 eL0dKAtcJulLQ==
-Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi [91.159.24.186])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.mleia.com (Postfix) with ESMTPSA id 9AB153E101C;
-	Sat, 15 Nov 2025 00:23:50 +0000 (UTC)
-Message-ID: <face044b-01ed-4077-b497-3caaccf57c98@mleia.com>
-Date: Sat, 15 Nov 2025 02:23:50 +0200
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="SD/TZQba"
+Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20251115010148epoutp02b754445df5ddc2a42baafb9e063ea0eb~4CGqjocQi0735907359epoutp02h
+	for <imx@lists.linux.dev>; Sat, 15 Nov 2025 01:01:48 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20251115010148epoutp02b754445df5ddc2a42baafb9e063ea0eb~4CGqjocQi0735907359epoutp02h
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1763168508;
+	bh=gsUGANyWWISf75HzA/A2RdSWS3eRalFSSqlVvn9iHVY=;
+	h=Subject:Reply-To:From:To:CC:In-Reply-To:Date:References:From;
+	b=SD/TZQbaJxUEQezb9y7/bsvi1l+nkVupvOYBDbdJZZcu7ziRVGPyzt57einkgYtAG
+	 aRiRfl4A0ujLQcBqimGUTM+qie2PYDkZ2vtRJKgPUYYYMe5UsOxudXcWhGWAToOHX5
+	 jzPD+oPBh4y1L5xi47KK5GRrhMm+ebL2iMT5UAkk=
+Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
+	epcas1p3.samsung.com (KnoxPortal) with ESMTPS id
+	20251115010147epcas1p31ffa568e5bfe0cd60591117ac123351e~4CGpdmzic2749327493epcas1p3Q;
+	Sat, 15 Nov 2025 01:01:47 +0000 (GMT)
+Received: from epcas1p2.samsung.com (unknown [182.195.38.107]) by
+	epsnrtp03.localdomain (Postfix) with ESMTP id 4d7bLf3grHz3hhT4; Sat, 15 Nov
+	2025 01:01:46 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] ARM: dts: lpc3250-phy3250: remove deprecated at25*
- property
-To: Frank Li <Frank.Li@nxp.com>,
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "moderated list:ARM/LPC32XX SOC SUPPORT"
- <linux-arm-kernel@lists.infradead.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Cc: imx@lists.linux.dev
-References: <20251114174712.1206027-1-Frank.Li@nxp.com>
- <20251114174712.1206027-5-Frank.Li@nxp.com>
-From: Vladimir Zapolskiy <vz@mleia.com>
-In-Reply-To: <20251114174712.1206027-5-Frank.Li@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0
+Subject: RE: [PATCH] extcon: ptn5150: handle pending IRQ events during
+ system resume
+Reply-To: myungjoo.ham@samsung.com
+Sender: MyungJoo Ham <myungjoo.ham@samsung.com>
+From: MyungJoo Ham <myungjoo.ham@samsung.com>
+To: Xu Yang <xu.yang_2@nxp.com>, "krzk@kernel.org" <krzk@kernel.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+X-Priority: 3
+X-Content-Kind-Code: NORMAL
+In-Reply-To: <20251114074212.1214255-1-xu.yang_2@nxp.com>
+X-Drm-Type: N,general
+X-Msg-Generator: Mail
+X-Msg-Type: PERSONAL
+X-Reply-Demand: N
+Message-ID: <20251115010145epcms1p5b7fccdadb889d9b88f447a73c9a8a7b0@epcms1p5>
+Date: Sat, 15 Nov 2025 10:01:45 +0900
+X-CMS-MailID: 20251115010145epcms1p5b7fccdadb889d9b88f447a73c9a8a7b0
 Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20251115_002351_196234_3663AD21 
-X-CRM114-Status: GOOD (  13.68  )
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 101P
+cpgsPolicy: CPGSC10-361,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20251114074150epcas1p31037ab8f07810cbb5cc677bfc0cce01d
+References: <20251114074212.1214255-1-xu.yang_2@nxp.com>
+	<CGME20251114074150epcas1p31037ab8f07810cbb5cc677bfc0cce01d@epcms1p5>
 
-On 11/14/25 19:47, Frank Li wrote:
-> Remove duplicated deprecated at25* property because the same common
-> property already were added.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> changes in v2
-> - new patch
-> ---
->   arch/arm/boot/dts/nxp/lpc/lpc3250-phy3250.dts | 4 ----
->   1 file changed, 4 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/nxp/lpc/lpc3250-phy3250.dts b/arch/arm/boot/dts/nxp/lpc/lpc3250-phy3250.dts
-> index 15463a96938cc..0f96ea0337a1f 100644
-> --- a/arch/arm/boot/dts/nxp/lpc/lpc3250-phy3250.dts
-> +++ b/arch/arm/boot/dts/nxp/lpc/lpc3250-phy3250.dts
-> @@ -213,10 +213,6 @@ eeprom: eeprom@0 {
->   		pl022,wait-state = <0>;
->   		pl022,duplex = <0>;
->   
-> -		at25,byte-len = <0x8000>;
-> -		at25,addr-mode = <2>;
-> -		at25,page-size = <64>;
-> -
->   		size = <0x8000>;
->   		address-width = <16>;
->   		pagesize = <64>;
+>When the system is suspended and ptn5150 wakeup interrupt is disabled,
+>any changes on ptn5150 will only be record in interrupt status
+>registers and won't fire an IRQ since its trigger type is falling
+>edge. So the HW interrupt line will keep at low state and any further
+>changes won't trigger IRQ anymore. To fix it, this will schedule a
+>work to check whether any IRQ are pending and handle it accordingly.
 
-Just squash this change with the 3/5 from the series, or I can do it on
-patch application.
+It is ok call ptn5150_irq_work() anytime during resume even if
+irq-handler is invoked right before ptn5150_resume(), right?
 
-My ask about splitting the changes was about a separation of the 4/5 change,
-and it was done as expected, thank you.
+Acked-by: MyungJoo Ham <myungjoo.ham@samsung.com>
 
---
-Best wishes,
-Vladimir
+>
+>Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+>---
+> drivers/extcon/extcon-ptn5150.c | 14 ++++++++++++++
+> 1 file changed, 14 insertions(+)
+>
