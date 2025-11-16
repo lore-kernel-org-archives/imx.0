@@ -1,129 +1,67 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6437A248F62;
-	Sun, 16 Nov 2025 11:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367C52D29C3
+	for <imx@lists.linux.dev>; Sun, 16 Nov 2025 12:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763293045; cv=none; b=WeEqsluAYn97fQcVbRDLb94RoVwWbLRjApD/cJvNIPIljq+DRUU5sE9qcRBu05k8SHyD6o9ZB0b8qaSmSJt6tDrHLFSg2beNdiW1izuxJxYNzJw3AEzT3Tr9oGKvGgmdZykqYFP4bAco6rtcqPMbxnkL3bfkHxOMT/UAe063cD0=
+	t=1763295245; cv=none; b=JZjSgsz2fGVnRt3Y21U/CpnLgXb16rT2jAwoaBBNB6zGMr6BgaFpp2Kn+zeV8r1iDWhLEgus1NUuL1zrEV9RoKR3bY+k3YvilnGmmUJ24J6uHBbLk1+9LIgcftPfF+UqCZYw+jL5qQGWrFRf5C523Ba2xGZImHJUDidpg4RGgNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763293045; c=relaxed/simple;
-	bh=im6DmuF4iGlVO4Ak2kfup34KlXMP9GQla5lGTKsOf/U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=ojsFc0NGvfynEquROjnqvQvcayLD2KKPYTPLQ5Ba1dCPE5wduxgmUJmGyja2SH1O6hGufsXiVxKdIgfAODUVJb0ZJbr1d2qgltU6N3xpEab+uISR3tSxoXjYHGR5t4pNh+Cb0pe65UCZwv7leORd0l18MFhm/pTB2ibT2013JQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KFwzBUUp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763295245; c=relaxed/simple;
+	bh=iJ01YwiG2W6Icq7YmLu4Ty5cSzM3LN8706VHTmyAh1w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hVVVYwL9yXYWUekrnu9xpu6PPea8IeolddTFacwn+EOthmRUHiRkSvLLarHAo2W5vQ3YYZtfI4KlZQ7bWf8gc2z+YLD4gk//P40KTcCjsMhORwP27v7jE3zDC5uxU90oknBLPjaiuuveJgubwNcn0GcShgoxHeBeOC6PUhxypCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=iTFGbxP+; arc=none smtp.client-ip=1.95.21.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KFwzBUUp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8C7C4CEFB;
-	Sun, 16 Nov 2025 11:37:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763293044;
-	bh=im6DmuF4iGlVO4Ak2kfup34KlXMP9GQla5lGTKsOf/U=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=KFwzBUUpqwGmxhPYxOmQG9+UYQ+otttsEDSuEEbNyyxcLLHSeA22hxPvyakf+qjPC
-	 dQHSKbgxg5kYHk8NMKuakRUY+1/+gtvMu9ebTP5c6u9ZBCvp7gMvBv4EVJEezdH4g8
-	 wLY6r5l+FBjShVq0uNmASlRf0fBDivePjljaEUywDVgRABpPhNJ300RRTEX/kvUbG9
-	 sd5qIF2pegLLZbODiijzD35tCxpU2tBV33z4E2/82cBfKemrP44E/g++5epvlsFDGh
-	 +cj6GtRqBY2G9AcbBcPHxtvRcR7iofx6qYc0RBsg50qkoi5nwf1S1SodX/q3QvpdZC
-	 kYV1qF2cQWOQQ==
-Message-ID: <ba5db26e-b59d-4074-9436-3e71257fa70f@kernel.org>
-Date: Sun, 16 Nov 2025 12:37:15 +0100
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="iTFGbxP+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=/OPyiJznobP/BHgzUxfvT09XKk0Ntk9H61WV3izV1lk=;
+	b=iTFGbxP+M1RUepI0KtUkpEd3L+aOtVf8Tn2bX/apDpjKL6YjvlFNTTlRTDoVwU
+	g6nC2Ee1uOhQtuDA3zN6A6SPJJR9JgWsCGLEBAKYsQW3VwJZoWrx5jVlOSB/7Onr
+	bMALZvZCmHLWwo5IPClwNV0LGRx8TtPRM0QjKMvSPR9HQ=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgCnMQj4vxlpXUglAg--.8013S3;
+	Sun, 16 Nov 2025 20:13:46 +0800 (CST)
+Date: Sun, 16 Nov 2025 20:13:44 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: max.oss.09@gmail.com
+Cc: Max Krummenacher <max.krummenacher@toradex.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: imx8qm-apalis: add pwm used by the backlight
+Message-ID: <aRm_-PWcJCW3SPsE@dragon>
+References: <20251031125510.433175-1-max.oss.09@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/7] dt-bindings: display: imx: add HDMI PAI for
- i.MX8MP
-To: Shengjiu Wang <shengjiu.wang@nxp.com>, andrzej.hajda@intel.com,
- neil.armstrong@linaro.org, rfoss@kernel.org,
- Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
- lumag@kernel.org, dianders@chromium.org, cristian.ciocaltea@collabora.com,
- luca.ceresoli@bootlin.com, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, victor.liu@nxp.com, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, p.zabel@pengutronix.de,
- devicetree@vger.kernel.org, l.stach@pengutronix.de, shengjiu.wang@gmail.com,
- perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org
-References: <20250923053001.2678596-1-shengjiu.wang@nxp.com>
- <20250923053001.2678596-2-shengjiu.wang@nxp.com>
- <aPc9-wYxGB1KYPyQ@phenom.ffwll.local>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <aPc9-wYxGB1KYPyQ@phenom.ffwll.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251031125510.433175-1-max.oss.09@gmail.com>
+X-CM-TRANSID:Ms8vCgCnMQj4vxlpXUglAg--.8013S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU2eHqDUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNxrONGkZv-pOBAAA3o
 
-On 21/10/2025 10:02, Simona Vetter wrote:
-> On Tue, Sep 23, 2025 at 01:29:55PM +0800, Shengjiu Wang wrote:
->> Add binding for the i.MX8MP HDMI parallel Audio interface block.
->>
->> The HDMI TX Parallel Audio Interface (HTX_PAI) is a digital module that
->> acts as the bridge between the Audio Subsystem to the HDMI TX Controller.
->> This IP block is found in the HDMI subsystem of the i.MX8MP SoC.
->>
->> Aud2htx module in Audio Subsystem, HDMI PAI module and HDMI TX
->> Controller compose the HDMI audio pipeline.
->>
->> In fsl,imx8mp-hdmi-tx.yaml, add port@2 that is linked to pai_to_hdmi_tx.
->>
->> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
->> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->> Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+On Fri, Oct 31, 2025 at 01:55:07PM +0100, max.oss.09@gmail.com wrote:
+> From: Max Krummenacher <max.krummenacher@toradex.com>
 > 
-> dt patches need an ack from dt maintainers before you push them, please
-> make sure you follow that for the next changes.
+> Add pwm node used by the backlight output pin BKL1_PWM and
+> reference it from the pwm-backlight node.
+> 
+> Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
 
-Huh? Review is an Ack as well. We NEVER give both Rb and Ack. Either Ack
-or Review, because Review carries much stronger acceptance.
+Applied, thanks!
 
-Best regards,
-Krzysztof
