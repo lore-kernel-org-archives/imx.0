@@ -1,46 +1,44 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB2B23D291
-	for <imx@lists.linux.dev>; Sun, 16 Nov 2025 09:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8757156661
+	for <imx@lists.linux.dev>; Sun, 16 Nov 2025 09:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763285864; cv=none; b=NdLwLtGPIsDDY6yE2mwnxPL96il2MNL6FzKMcr471wHhSWV0uq35fc4w9Q939ODbmhTiC+WPsI57GhC++WWoLao/qsnhCueYce7nBwN8ee10e3xPph0jnx9Sf2flX6Ft8FN2jkC7ZK052vt5b+KCPC2es2QsRETLZwR4PY4Rjbo=
+	t=1763286142; cv=none; b=SnQin84fZW5pbRluW9NUh41AeflRT8Ln2HYSBKfADomezIy9HCfIX81VHaGRV+h1CCYU1bjWg0nWlSUiTHC3mYfGXT5BwNRl3S7KVCSUdjAN9jase81A/+KhXHYijF9WHSWu7dqz/FGcew2pjHvtdebHCi6JmR7ZxlK3hASErGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763285864; c=relaxed/simple;
-	bh=6jQBLz+8gb7lohjfGJXcIhWQLNbcyYxSDwEoh6zYg8A=;
+	s=arc-20240116; t=1763286142; c=relaxed/simple;
+	bh=0ibplLhd3v7Iw2zYmlxRjCn8CTztadGu2ZrRMrRE1/g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N7jCEhlmqAhWcaaQAwTSuOI5OYubJTRSofXWqLIC5uygNHmF806btkVVlAY1P942N1oB3jGzNv2/lyStP24mKEOgzL/1cO8PwOJoW9i2IW2vpkWPVBhwyKrfwZozCrHccNMbYT/FUzNcg6NNZmSupXO87Wo/WgPdc0Hw4FbzMyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=FR+8b2mI; arc=none smtp.client-ip=220.197.32.16
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uf8eV0HZHMAiM08GxtdmrDU9shK0b6FqC5OpP4B3vouoes9qijN0p6iQ5C8rHEtwETwTtNGNI55zMipjS/28n0kJGpgiJxBWoqD+4OGn54ri5F5q4AdqhsdJSIBlgPfbKXCh2Csad7FTmGkBsc5yKc+eUgS/6iT/z3jI5SkNLHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=hZF0SMoU; arc=none smtp.client-ip=1.95.21.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="FR+8b2mI"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="hZF0SMoU"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=9Bq0wIVfG4dtC44QwaB5g6CpsX37U6dOcN4JGpRHlZQ=;
-	b=FR+8b2mI6sKu5ZUSur7jnZiM6TGW25UojjlPY5a/KbIJc2R4jiIqo3glt1CprN
-	G9xsz/9IUnMxA726YhCupNwINfP5cu8kUl05JcIUWBfstrJLF9qsgmRnTOwk3L59
-	SpJn2LmTjVwkHJ9fniy+SVMxJil53S2CQbMwAWL92bY7s=
+	Content-Type; bh=x/0v29LNdkN3c0TsJQzVdp5QigjeZCzTwl5nAgC3p+Y=;
+	b=hZF0SMoUF9Nc5zFp+OVBVeCULFLpJkLEXZ4BuBG+Tpv6a3dLAMzAX+YGYWscuS
+	nvJ00yMJDdqOS5rmVgzVYuX+AhvO7Vbi2i+klBrByWIjU5AeyNsUl/3IzSyZuaUv
+	Qu38lzPn77Cd6G5yekOhEN+IeYviWuAloMJoG3E5AiiC8=
 Received: from dragon (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3+c1Rmxlpbbg5AQ--.7938S3;
-	Sun, 16 Nov 2025 17:37:23 +0800 (CST)
-Date: Sun, 16 Nov 2025 17:37:21 +0800
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgCniOponBlpAo0jAg--.8173S3;
+	Sun, 16 Nov 2025 17:42:02 +0800 (CST)
+Date: Sun, 16 Nov 2025 17:42:00 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: Jan Remmet <j.remmet@phytec.de>
-Cc: Teresa Remmet <t.remmet@phytec.de>,
-	Janine Hagemann <j.hagemann@phytec.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+To: Primoz Fiser <primoz.fiser@norik.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 0/6] arm64: dts: imx8mm-phyboard-polis: cleanup and
- additional display
-Message-ID: <aRmbUZhFfZjH_4SS@dragon>
-References: <20251028-wip-j-remmet-phytec-de-bspimx8m-3801_peb-av-10_with_ac209-v3-0-9b98f29a6bb9@phytec.de>
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, upstream@lists.phytec.de
+Subject: Re: [PATCH v2 1/2] arm64: dts: freescale: imx93-phyboard-nash: Add
+ jtag overlay
+Message-ID: <aRmcaMwxOUotXx7a@dragon>
+References: <20251028115820.3165399-1-primoz.fiser@norik.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,22 +47,16 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251028-wip-j-remmet-phytec-de-bspimx8m-3801_peb-av-10_with_ac209-v3-0-9b98f29a6bb9@phytec.de>
-X-CM-TRANSID:Mc8vCgD3+c1Rmxlpbbg5AQ--.7938S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUwQ6JUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiOBScAmkZm1QI9gAA3z
+In-Reply-To: <20251028115820.3165399-1-primoz.fiser@norik.com>
+X-CM-TRANSID:Ms8vCgCniOponBlpAo0jAg--.8173S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUra9aUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiIAvhR2kZnGt6DwAA3-
 
-On Tue, Oct 28, 2025 at 09:58:07AM +0100, Jan Remmet wrote:
-> Jan Remmet (5):
->       arm64: dts: imx8mm-phyboard-polis: Use GPL-2.0-or-later OR MIT
->       arm64: dts: imx8mm-phyboard-polis: move mipi bridge to som
->       arm64: dts: imx8mm-phyboard-polis-peb-av-10: reorder properties to match dts coding style
->       arm64: dts: imx8mm-phyboard-polis-peb-av-10: split display configuration
->       arm64: dts: imx8mm-phyboard-polis-peb-av-10-ph128800t006
+On Tue, Oct 28, 2025 at 12:58:19PM +0100, Primoz Fiser wrote:
+> Add overlay to enable JTAG pins on the board's JTAG (X41) connector.
 > 
-> Teresa Remmet (1):
->       arm64: dts: imx8mm-phyboard-polis-peb-av-10: Fix audio codec reset pin ctl
+> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
 
-Applied all, thanks!
+Applied both, thanks!
 
