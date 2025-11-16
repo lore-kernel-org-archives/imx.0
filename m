@@ -1,51 +1,48 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.18])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8671B22256F
-	for <imx@lists.linux.dev>; Sun, 16 Nov 2025 12:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169AE24EAB1
+	for <imx@lists.linux.dev>; Sun, 16 Nov 2025 12:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763295928; cv=none; b=QEnvFCTzdm6Odl0BTLB3kunfpE6cSrodTUrLVSOv4pgsu1R8QQcDo6gqsu3A/uyi9tscD/egkRYc++EvKEPvM2Yyb8/2jWpZ2gJvOHXp58D+0uhBkgSs1eWAH2lRw/kZ66tk6z8zbmk+3Hh8eZOMVyM11XN32kzDX/jYZtQ0+Io=
+	t=1763296154; cv=none; b=JmJ/OhrM5MEQIbRxcWE661EsjY+Z/EBDpfWasusKQmNPjf7EwRJqYx1LOrwyKwOpfaXTN15+lUaTgjmL+pv7FJP8LJraUnshVgTFYOjiwm9jhsxjc0ONBdxvDPNP3dUU8mEwSM1Vb6aq429b5cG3mTvk4OcDS7sjjdHTZG1ZbWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763295928; c=relaxed/simple;
-	bh=kClM97ZV0xHAhFhYdVnIuaBrHpIXn69pRXLepiwbH+M=;
+	s=arc-20240116; t=1763296154; c=relaxed/simple;
+	bh=YClbmRld7zolI5vdnZjYnN75K4IVEbCiZoL8NqI2LLY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tcVaOst3Rw22RKbApFYomhRwdlCIoyVJ4bAVuR3CnZ90QQtxa5HMhsX4UKX7zGTf2+KYlSwce1ICDJ0HFMzuE+Csp5MkbABxi1+AOSZg114Ou5MpcDMUazUAyPg6UBuj3uDSfVJPD2koJsmUZ81rLbJBBtfjTYG3szOzvd3NtW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=gbE7CM0N; arc=none smtp.client-ip=220.197.32.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=OAsilY4ipkud//cKMg8y91FnketSY4Rrzxp6Z4Km3+RzIYS2bkgEE+pComn4bGnDJ1G/zgnpO6yda5iGHLOhc39z1E/3aBzFueCbRj0a3ZxbgJevXSI/nvYvx6Gnl86l9b8yTPHPhSSD7pm5sOFz/2TM0hdzRkMVg53zu3XbPTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=fTEGyHXs; arc=none smtp.client-ip=1.95.21.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="gbE7CM0N"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="fTEGyHXs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=b2Tzy4wpEnBc0N39re5MYS8e6Cpyy1OT/u1kY6JsWT4=;
-	b=gbE7CM0NAwSA09/hPaYqd21DLNQ39SGc+N7sEA4KoeUHRwGOlm6GF/W5hlEwlJ
-	Wd0LVyxzpZ8znLc/wDxdoiLXIGn/f28f5RVE3nkUOLL74fmgmMaK8/ZtqqypcUF6
-	gqp6HZcYfY3/FohbeCd3OfoGZZuW2sLTndSv8lHHUuPBI=
+	Content-Type; bh=53I/2kcZjlKfPTnbOipCisLCf2u/EtrbHyC2OuS8iX8=;
+	b=fTEGyHXso6w6OD78EhmpLqWOPHEMlaPYXyHdPMGO+bFPT6gGMX+WohQxl8Asng
+	zR98VI700Twk7KiVyoN/+wyzTw32ab8dzNMrKBk1xs5Q6ZX/9Ukf2PzfnQVajvs5
+	oz4I87vo9VTAf/tvBamJDmIyqYQa2IxkevUvyf1+dtdG0=
 Received: from dragon (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id Ms8vCgCHw0agwhlp52glAg--.8033S3;
-	Sun, 16 Nov 2025 20:25:06 +0800 (CST)
-Date: Sun, 16 Nov 2025 20:25:04 +0800
+	by gzsmtp1 (Coremail) with SMTP id Mc8vCgC3d2N0wxlpKqM7AQ--.7952S3;
+	Sun, 16 Nov 2025 20:28:38 +0800 (CST)
+Date: Sun, 16 Nov 2025 20:28:36 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
-To: jan.petrous@oss.nxp.com
-Cc: Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To: Marek Vasut <marek.vasut@mailbox.org>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Enric Balletbo i Serra <eballetb@redhat.com>
-Subject: Re: [PATCH v3] arm64: dts: freescale: Add GMAC Ethernet for S32G2
- EVB and RDB2 and S32G3 RDB3
-Message-ID: <aRnCoAjkfti12We1@dragon>
-References: <20251103-nxp-s32g-boards-v3-1-b51db0b8b3ff@oss.nxp.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, kernel@dh-electronics.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: imx8mp: Add missing LED enumerators for DH
+ electronics i.MX8M Plus DHCOM on PDK2
+Message-ID: <aRnDdLxl-2gKYcVl@dragon>
+References: <20251104015031.219863-1-marek.vasut@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,30 +51,18 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251103-nxp-s32g-boards-v3-1-b51db0b8b3ff@oss.nxp.com>
-X-CM-TRANSID:Ms8vCgCHw0agwhlp52glAg--.8033S3
-X-Coremail-Antispam: 1Uf129KBjvdXoWrAryrCr17tF1DZr48JF48Crg_yoWxWwc_Cr
-	y7GF4kAasrAFZ7Xa4rKw45XFnYga15J348Jws8Xr12qas5G34DZFn8t34Yv3yfZFZ5A342
-	9wnYvr10ya4ayjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUjHmh5UUUUU==
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiOAJ53mkZwqJzCwAA31
+In-Reply-To: <20251104015031.219863-1-marek.vasut@mailbox.org>
+X-CM-TRANSID:Mc8vCgC3d2N0wxlpKqM7AQ--.7952S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUOzuWUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiOBauFGkZw3Z1JwAA3D
 
-On Mon, Nov 03, 2025 at 10:24:01AM +0100, Jan Petrous via B4 Relay wrote:
-> From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+On Tue, Nov 04, 2025 at 02:50:13AM +0100, Marek Vasut wrote:
+> The LED enumerators are missing, which prevents the LEDs from being
+> accurately told apart by label. Fill in the enumerators the same way
+> they are already present on PDK3.
 > 
-> Add support for the Ethernet connection over GMAC controller connected to
-> the Micrel KSZ9031 Ethernet RGMII PHY located on the boards.
-> 
-> The mentioned GMAC controller is one of two network controllers
-> embedded on the NXP Automotive SoCs S32G2 and S32G3.
-> 
-> The supported boards:
->  * EVB:  S32G-VNP-EVB with S32G2 SoC
->  * RDB2: S32G-VNP-RDB2
->  * RDB3: S32G-VNP-RDB3
-> 
-> Tested-by: Enric Balletbo i Serra <eballetb@redhat.com>
-> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
 
 Applied, thanks!
 
