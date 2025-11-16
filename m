@@ -1,38 +1,43 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6E02DF3EA
-	for <imx@lists.linux.dev>; Sun, 16 Nov 2025 13:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC36930DD20;
+	Sun, 16 Nov 2025 16:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763299398; cv=none; b=b8yvDm6wgXq0+3F28HwX6rdGFneLiUDzG9p9y5X1cviHH0Z/uwLZbKXP9D+vdx5HbX/oY30TPThQV6HCvgmRnBXtyRHqkgjn2x5luXBysQBCpneOq/tjoQfF2hupNSO+/8OgmL1HMLKEoIwd7k0dJQcswiSeks6VYQyLKaw1b8A=
+	t=1763309436; cv=none; b=s/IUajZri4IFKw5Euw6KmcMSPV02hSn+m2ErYbUUOlDEJZ15+14xReZyPtmQt8XYoADbt205s8cxX0q3kY423O/Twvt7cH0cAmEbP+HAHAnufzk4ja606YHUMVxayEZf5CgaI2ERnLNRXUbUspW9ZNQLo7+1egwHcHl2VgwYbLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763299398; c=relaxed/simple;
-	bh=6I4cyNV0HSAE8orbsJnRXfFMajy8pAd/U7/NvJWKNGQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=G0Z5V6bfU5W0yI+M8t59aa/TriTkDMOwaKZTFmx8vrX3J3k0j7lFwxfIuE4AUt4b7A6BreuoqI/evdpXwaJ8KnoWDvSof59Pj7i8BkzCtzldjikiOF3pM09HjEbn5vHqX2WEXpkQXbv8Dd+pdBjN4i05w6X95yZkQWO7bqUR+7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=peEO2RQM; arc=none smtp.client-ip=1.95.21.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1763309436; c=relaxed/simple;
+	bh=xOC55t+6MpWmNxcTWpUjh4uut/tZW3PssJP4moey2K4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PLFk2yLSP0YBzv2cl/Hmg07E/+LtPdgXbPRXQTtQZtSWZUN5pZsC4igCjh1P7oKPDrz9yGWuiYnQYPar+TLDS4aoLkrHO94Wn2+xNdwgc7HNZ0WSrhJSbWXUZxh5/D391qom1WN/pCJlWOGdg4R5IaA8/9EKNl9s2YnohkAZxBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=MA+jZG5M; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="peEO2RQM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=UyWmX8lyk6Q6Z7q+BldQ+cSN+KVoYs+SIyHi5V2ZslY=;
-	b=peEO2RQMFXaIluYeeud6gLbCDaDrueelwCG5Jbhm2uYPmZTns9jGPk1sD1Oi2J
-	9nwb2+KfyRhfvwoE3/GpC3bFsVJhKS8QvJ32BrmWc7ZY9udfsm1hJf80PL5kX9Kw
-	Kj4BVCned518h/+k/kn1Wx/Ve3AYzWt8xB8V80YwOIlHM=
-Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgCXPz0r0BlpBasYAg--.7967S3;
-	Sun, 16 Nov 2025 21:22:53 +0800 (CST)
-Date: Sun, 16 Nov 2025 21:22:51 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: soc@kernel.org, arm@kernel.org
-Cc: Fabio Estevam <festevam@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
-	kernel@pengutronix.de, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [GIT PULL] i.MX fixes for 6.18, 2nd round
-Message-ID: <aRnQK0kiLvQZ9X-f@dragon>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="MA+jZG5M"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=GJaJD6LBIQS9BQHe5CefSfuluclnDpRXBkqZ7gD+/vc=; b=MA+jZG5MQ1qgHBxW2ReGPcB+de
+	eT9ujswckbFM2Z0LqVV/aBb4CSYgfUbKcIyI1hyoMdkIM8QoXI6Pv5+FTRjmesAxMnco/li/u+Cfk
+	PtAJWoxf0AwkDe5nbnKKwdy/3hd0LKfQQ4rnExw30mrffxq88ZyhBCCt6KronWaeXJMA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vKfKV-00E9p6-Rj; Sun, 16 Nov 2025 17:10:19 +0100
+Date: Sun, 16 Nov 2025 17:10:19 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: linux@armlinux.org.uk, hkallweit1@gmail.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	eric@nelint.com, maxime.chevallier@bootlin.com, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] net: phylink: add missing supported link modes for
+ the fixed-link
+Message-ID: <30e0b7ba-ac60-49e0-8a6d-a830f00f8bbc@lunn.ch>
+References: <20251116023823.1445099-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,48 +46,47 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-CM-TRANSID:M88vCgCXPz0r0BlpBasYAg--.7967S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WFykCw47Xw15KF43XFW5ZFb_yoW8Xw47pF
-	WSkw17Gr1fGF1rAF1DJa1v9a90yrn5JF15Gw4DG3y8trn8ZryUXrnxGrn5Wry5Kry7X3y5
-	tF18Jr1DGw1kZF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jBrWrUUUUU=
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiOA7fRWkZ0C6S-AAA3M
+In-Reply-To: <20251116023823.1445099-1-wei.fang@nxp.com>
 
-The following changes since commit 6504297872c7a5d0d06247970d32940eba26b8b3:
+On Sun, Nov 16, 2025 at 10:38:23AM +0800, Wei Fang wrote:
+> Pause, Asym_Pause and Autoneg bits are not set when pl->supported is
+> initialized, so these link modes will not work for the fixed-link. This
+> leads to a TCP performance degradation issue observed on the i.MX943
+> platform.
+> 
+> The switch CPU port of i.MX943 is connected to an ENETC MAC, this link
+> is a fixed link and the link speed is 2.5Gbps. And one of the switch
+> user ports is the RGMII interface, and its link speed is 1Gbps. If the
+> flow-control of the fixed link is not enabled, we can easily observe
+> the iperf performance of TCP packets is very low. Because the inbound
+> rate on the CPU port is greater than the outbound rate on the user port,
+> the switch is prone to congestion, leading to the loss of some TCP
+> packets and requiring multiple retransmissions.
+> 
+> Solving this problem should be as simple as setting the Asym_Pause and
+> Pause bits. The reason why the Autoneg bit needs to be set is because
+> it was already set before the blame commit. Moreover, Russell provides
+> a very good explanation of why it needs to be set in the thread [1].
+> 
+> [1] https://lore.kernel.org/all/aRjqLN8eQDIQfBjS@shell.armlinux.org.uk/
 
-  arm64: dts: imx8mp-kontron: Fix USB OTG role switching (2025-10-28 17:01:42 +0800)
+There is no limit on commit message length, but URLs sometimes
+die. Please just make use of Russells explanation. You can say: As
+explained by Russell King, and just quote it, etc.
 
-are available in the Git repository at:
+This also seems like two fixes: a regression for the AUTONEG bit, and
+allowing pause to be set. So maybe this should be two patches?
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git tags/imx-fixes-6.18-2
+I'm also surprised TCP is collapsing. This is not an unusual setup,
+e.g. a home wireless network feeding a cable modem. A high speed link
+feeding a lower speed link. What RTT is there when TCP gets into
+trouble? TCP should be backing off as soon as it sees packet loss, so
+reducing the bandwidth it tries to consume, and so emptying out the
+buffers. But if you have big buffers in the ENETC causing high
+latency, that might be an issue?  Does ENETC have BQL? It is worth
+implementing, just to avoid bufferbloat problems.
 
-for you to fetch changes up to e89ee35567d3d465ef0715953170be72f5ef1d4c:
+	Andrew
 
-  arm64: dts: imx8qm-mek: fix mux-controller select/enable-gpios polarity (2025-11-16 21:10:06 +0800)
-
-----------------------------------------------------------------
-i.MX fixes for 6.18, 2nd round:
-
-- Correct i.MX8DXL's pcie-ep interrupt number (Frank Li)
-- Swap interrupt numbers of eqos for imx8dxl-ss-conn (Frank Li)
-- Correct SAI3 interrupt line for i.MX6UL (Maarten Zanders)
-- Correct mux-controller select/enable-gpios polarity for imx8qm-mek
-  board (Xu Yang)
-
-----------------------------------------------------------------
-Frank Li (2):
-      arm64: dts: imx8dxl: Correct pcie-ep interrupt number
-      arm64: dts: imx8dxl-ss-conn: swap interrupts number of eqos
-
-Maarten Zanders (1):
-      ARM: dts: nxp: imx6ul: correct SAI3 interrupt line
-
-Xu Yang (1):
-      arm64: dts: imx8qm-mek: fix mux-controller select/enable-gpios polarity
-
- arch/arm/boot/dts/nxp/imx/imx6ul.dtsi              | 2 +-
- arch/arm64/boot/dts/freescale/imx8dxl-ss-conn.dtsi | 4 ++--
- arch/arm64/boot/dts/freescale/imx8dxl-ss-hsio.dtsi | 5 +++++
- arch/arm64/boot/dts/freescale/imx8qm-mek.dts       | 4 ++--
- 4 files changed, 10 insertions(+), 5 deletions(-)
-
+---
+pw-bot: cr
