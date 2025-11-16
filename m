@@ -1,31 +1,31 @@
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D011CD15
-	for <imx@lists.linux.dev>; Sun, 16 Nov 2025 03:51:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17311CD15
+	for <imx@lists.linux.dev>; Sun, 16 Nov 2025 03:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763265095; cv=none; b=MfS/uyQGtjkE97T2c+MdJf7Y4itlBNR/rLJQ56mWJqFP1xQxdejo5WDubLCjH6smXth0fz5AFhwpY79NvCjJjb0VTpcWfIlXDYrLI6JvHBTlChkitfF69lkD/7s429tmsyOCbUm0SWRLKbjhGVaysDTKWez9ay1vzCKm07eq7YM=
+	t=1763265117; cv=none; b=gwQ0zLSHyVhVq6HOU7LfW/WID/s4OEKVFK3Wper0puOpLmTnT5EmvWGo1afCtJ5ZhkXZ37ab0tnWCbJeDRtWc6IyviNFtMhS29mZGWSZwqnhrFOwK5C46y0T+LXmC7AeERFPrI0TDn/wUdozIOZ+kh9egmT55E8koF1C3Hk3cyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763265095; c=relaxed/simple;
-	bh=1+e/wIax49sBSPML2fl2yRdu21pXMvVd6ONyljLK7jk=;
+	s=arc-20240116; t=1763265117; c=relaxed/simple;
+	bh=elDQNfVxbieXT1jJ7mnTPTdGSw8jTRG/tSs3yo5cCRc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k4NuHgDi1r63vx6khgQpePpREzMKCTux+2KKK0UPks2Ww0gQlW3KrgzTkTVS9Y4RIkLCB9lZMkwCk3Ult+rocApSTebqAd1KmDPFCjVU5fb+cImnOv1vOPmxQYi4deEdb9xqAfPxpJtitbMOGA0yi0giBYxoqqtq6dxAANpFpow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=fSwfVd6n; arc=none smtp.client-ip=1.95.21.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=blszgQj7udIRggXzuUKwEkA42IXIutuitt8nxUBeC/QU6oTy742y2Adi82Z1Lf3gkX2NBidHjZguvj9APX2u4ic3Xc+7RU8OkKlnU3LMHeM0IkKtuAeaf4Ti55lSsHe+CfnUthCOsmN7LP6K5IszcLFXiqXyvJvy595R4PAI3ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=HRXqVbri; arc=none smtp.client-ip=1.95.21.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="fSwfVd6n"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="HRXqVbri"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
 	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=95kFSsLKyE4ALNC5FIjf+7ESIXBQpMSorE7EunEryYI=;
-	b=fSwfVd6notXp0m5r0Dq8cVrJOOuYLd6b2UJZuvYz5mnJGxTELZm0MvmdjRAhv+
-	tSxORf1Qcx/0zNLFrlLusMJMG3sChZJsnf9hlvtOE9dNhdwm+cQ+MPykuBC/JcYe
-	cqGfqv/oL5Ox3jc7XmZG65g8VjnvHDbp26btXRsV7I3DI=
+	Content-Type; bh=9T2DbJXTL02gDuKqRKAHj63zBLmVwp0FHpFWKELvs6o=;
+	b=HRXqVbriK/FgeE7H6K/G1lLF9PBP9XAYmclO+P7pLfBBklJ5poTiXzOEeBqjNd
+	ilKXnYYDrlkbsjK+RHk4hJB0GyEAB6bJwJgWFc4xYNIim4N+h7WGasO+sWWeAUFK
+	NXEBdqxWqzvb02vkr9eUrlZzaKYUDdauZIVU+Z43mJCbw=
 Received: from dragon (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id M88vCgDndQ2kSRlp1YYSAg--.50067S3;
-	Sun, 16 Nov 2025 11:48:55 +0800 (CST)
-Date: Sun, 16 Nov 2025 11:48:52 +0800
+	by gzsmtp3 (Coremail) with SMTP id M88vCgCnKou+SRlpHYgSAg--.7957S3;
+	Sun, 16 Nov 2025 11:49:21 +0800 (CST)
+Date: Sun, 16 Nov 2025 11:49:18 +0800
 From: Shawn Guo <shawnguo2@yeah.net>
 To: Shengjiu Wang <shengjiu.wang@nxp.com>
 Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
@@ -42,11 +42,10 @@ Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
 	devicetree@vger.kernel.org, l.stach@pengutronix.de,
 	shengjiu.wang@gmail.com, perex@perex.cz, tiwai@suse.com,
 	linux-sound@vger.kernel.org
-Subject: Re: [PATCH v7 6/7] arm64: dts: imx8mp: Add hdmi parallel audio
- interface node
-Message-ID: <aRlJpAUV9nfl2Afv@dragon>
+Subject: Re: [PATCH v7 7/7] arm64: dts: imx8mp-evk: enable hdmi_pai device
+Message-ID: <aRlJvijH-F8pz10O@dragon>
 References: <20250923053001.2678596-1-shengjiu.wang@nxp.com>
- <20250923053001.2678596-7-shengjiu.wang@nxp.com>
+ <20250923053001.2678596-8-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,17 +54,17 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250923053001.2678596-7-shengjiu.wang@nxp.com>
-X-CM-TRANSID:M88vCgDndQ2kSRlp1YYSAg--.50067S3
+In-Reply-To: <20250923053001.2678596-8-shengjiu.wang@nxp.com>
+X-CM-TRANSID:M88vCgCnKou+SRlpHYgSAg--.7957S3
 X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUeXo7DUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiOAccgWkZSafRNQAA3Y
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUbWlkUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNgEjiGkZScFifQAA37
 
-On Tue, Sep 23, 2025 at 01:30:00PM +0800, Shengjiu Wang wrote:
-> The HDMI TX Parallel Audio Interface (HTX_PAI) is a bridge between the
-> Audio Subsystem to the HDMI TX Controller.
+On Tue, Sep 23, 2025 at 01:30:01PM +0800, Shengjiu Wang wrote:
+> Enable hdmi_pai device.
 > 
-> Shrink register map size of hdmi_pvi to avoid overlapped hdmi_pai device.
+> Aud2htx module, hdmi_pai and hdmi controller compose the hdmi audio
+> pipeline.
 > 
 > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 > Reviewed-by: Frank Li <Frank.Li@nxp.com>
