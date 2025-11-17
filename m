@@ -1,36 +1,33 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA00C26ED51
-	for <imx@lists.linux.dev>; Mon, 17 Nov 2025 07:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530EA30EF80
+	for <imx@lists.linux.dev>; Mon, 17 Nov 2025 08:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763366380; cv=none; b=XZffqxX8wl7/D1Zu3f4GgmU7ADrFEvsy4jb0YMCZSJ2NaWmY28Z9T7gsDgaiHN29GccTKN3fMZ1Spi13s9pBO+UbyhsJ+GeZHnkYXhYfq/A31deV8Rqiyb3L6e9QT05kbKCOtGQgRVLkRt20SZQ1IzyxEStfai+3tOMI4fqhnWQ=
+	t=1763368913; cv=none; b=IEap3RBpYVQMW2SGC5rJOlYXyW20/2xUE4Jc/WT3N2roqMd6NeRWjSRZblO4o3GkH4zDYgKvmsKH0m6q7bD//KKN8YbNRq1DDTGiibb3aizPIhqkfayGrGtz/pK3Bt2eoGeh2+uAg6s1YjP8NZpz2hQZDaAQNHvluyydQi75gA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763366380; c=relaxed/simple;
-	bh=F0On2AxnwukTMdo3GHAKcHzdYrNlJ2C6iF5rLLl3ktU=;
+	s=arc-20240116; t=1763368913; c=relaxed/simple;
+	bh=BH79hJ5cVAbZfqE8pZ62Caz1u91g/ItxQYH+c23Hh2o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HQu61QKuYBZ6ybtu/rb34SsoyPoFVr/YgTYFT02gGScmCY8nz+Y2TEN8z7evflSr+SaomACBTsbuAwsi89TpzT4HFzcmAh5eYtymCGfpUZNiJ4eKw4j3cTojiooJYlMNAiniX06G7cQmpIFLs3Yw73Z6qO3Kp2d/tS2dv/18lvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Dz4vBZcH; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=DNDr+8s9vB3HFBYl95b65qeMnBdLy1pQFI2Sff7qjs9+j2GUOxg6NEkcSDX6w9JyCjVDVwDJMtljisLxJN7Ee4ig+i/akIm/n/agxhGw9ZjNNj7/TIno5sB7tZO/hDJeEGnzSVRhjIaOz4WFusCkQgk/EMeKYnLWPllOQWjA/nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=R5gUl/NY; arc=none smtp.client-ip=1.95.21.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Dz4vBZcH"
-Received: from francesco-nb (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch [83.173.201.248])
-	by mail11.truemail.it (Postfix) with ESMTPA id 5E1961F916;
-	Mon, 17 Nov 2025 08:59:29 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1763366369;
-	bh=JOKJQ8JatjeRW06h90E4OMHQznLX3AwvG8sU+u8Odmo=; h=From:To:Subject;
-	b=Dz4vBZcHiEHd9qMtWxfe1G8UEIUDIq4UEnTiHIx4DCzC5pEn9YGLaFymFI2BTPqHD
-	 +GljSZ5JiDvk1meIcOJjajYVbpKOhEjTtN/omwQJIogNzlGgbmFAqvDf9afXx/QeIO
-	 DCpxf1OPtdA24FwaM10h+NjDSSAatb5icHCBQpZAHkHlWHEOvyTCDQc6gXB0td2q/U
-	 3xvGR0BeGEa9gxRy5+vPkuH32HybuPG6mfx9zTqvOsBUBpEizcTzuwrIppLSBUAtDm
-	 ty7oI9mC7doDJrC6AmV35cnzhH8akbU7Qx/0LEHYC8Us04kORpyYQ/8hpPoM6Xj8kT
-	 OwMdhXTwJPjGA==
-Date: Mon, 17 Nov 2025 08:59:25 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Shawn Guo <shawnguo@kernel.org>
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="R5gUl/NY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=PS1qTdUOygVVm7VvPDfOm7LaoDEY6wBLJnRzN6N5OJ0=;
+	b=R5gUl/NYK+xZ/RZB1DcK/YVAlx5YpvKrfPCg3/Wc4J71uBLJwBd37Ou6zTq2y1
+	pdnp1z7DYWM6iFvsTk2blseLmZIkBD55eGDrRhg+CJMAMcJ6bjSEUqvsuTnRp2Yn
+	PQx5nZehdsm2j6sSjwkw42vqhSXjsvr9DYwAp71wp8qU0=
+Received: from dragon (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id M88vCgAnXIiW3xpp2wsmAg--.8275S3;
+	Mon, 17 Nov 2025 16:40:56 +0800 (CST)
+Date: Mon, 17 Nov 2025 16:40:54 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Francesco Dolcini <francesco@dolcini.it>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
@@ -43,7 +40,7 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
 Subject: Re: [PATCH v2 0/2] arm64: dts: freescale: add Toradex SMARC iMX95
-Message-ID: <20251117075925.GA13021@francesco-nb>
+Message-ID: <aRrflpeTAF3VtuPT@dragon>
 References: <20251111151618.70132-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -51,21 +48,38 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <20251111151618.70132-1-francesco@dolcini.it>
-
-Hello Shawn,
+X-CM-TRANSID:M88vCgAnXIiW3xpp2wsmAg--.8275S3
+X-Coremail-Antispam: 1Uf129KBjvdXoW7XF13JF4UtrW7Gw4kZw1UJrb_yoWDXrX_CF
+	WrW348uFs7JFWaka17K3WfZrWxGrWjyw1ft3yxXryfJa4I93s3tFWDKF1rA3Z7G3WaqF1r
+	Aas3tr4Fvw4UCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU1pnQUUUUUU==
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNhr+ZGka35p0vwAA3L
 
 On Tue, Nov 11, 2025 at 04:16:12PM +0100, Francesco Dolcini wrote:
 > From: Francesco Dolcini <francesco.dolcini@toradex.com>
 > 
 > This series adds support for the Toradex SMARC iMX95 SoM and the
 > Toradex SMARC Development Board.
+> 
+> The module consists of an NXP i.MX95 family SoC, up to 16GB of LPDDR5
+> RAM and up to 128GB of storage, a USB 3.0 Host Hub and 2.0 OTG, two
+> Gigabit Ethernet PHYs, a 10 Gigabit Ethernet interface, an I2C EEPROM
+> and Temperature Sensor, an RX8130 RTC, a Quad/Dual lane CSI interface,
+> and some optional addons: TPM 2.0, DSI, LVDS, DisplayPort (through a
+> DSI-DP bridge), and Wi-Fi/BT module.
+> 
+> Link: https://www.toradex.com/computer-on-modules/smarc-arm-family/nxp-imx95
+> Link: https://www.toradex.com/products/carrier-board/smarc-development-board-kit
+> 
+> João Paulo Gonçalves (1):
+>   dt-bindings: arm: fsl: add Toradex SMARC iMX95
+> 
+> Max Krummenacher (1):
+>   arm64: dts: freescale: add Toradex SMARC iMX95
 
-I noticed you have not picked up this series, please let me know if you
-expect any change on this.
-
-Thanks,
-Francesco
+Applied both, thanks!
 
