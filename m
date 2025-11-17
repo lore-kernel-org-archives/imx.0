@@ -1,48 +1,48 @@
-Received: from mx-relay50-hz3.antispameurope.com (mx-relay50-hz3.antispameurope.com [94.100.134.239])
+Received: from mx-relay49-hz3.antispameurope.com (mx-relay49-hz3.antispameurope.com [94.100.134.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D983127A444
-	for <imx@lists.linux.dev>; Mon, 17 Nov 2025 12:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28572D0C60
+	for <imx@lists.linux.dev>; Mon, 17 Nov 2025 12:37:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.238
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763383050; cv=pass; b=UvvlmVfUr0LI+3Vc4iSxe692aKhLpfVOPXnkn/ecG6h1rgJGAn/lII/ZHrHPpUif+T889RDMoiJpPV4LKgt+H+JiTmU/jbF+l4gCAStaGauOG/4klgD4nOBrDqcoLttuuUT3xGg3WQzedUMWBYfMrk27WWJvm/l0W/4zNddC8o4=
+	t=1763383052; cv=pass; b=FC5O0/lFy+hrUe+V1eYLvWxl9Td/vT3C2tssV1aR459r9f77mFN7wREdoT2VVSia2kPB2R/T9HkSEI7RYZNHl+dt6HXc/rNqZeRTljoicVSjiZNhhtDY/mcHb3ueTNFH3Cnnbb6nFRECP39FYly8JgQVj++G1vaFMmhx/FN6OAg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763383050; c=relaxed/simple;
-	bh=nmPAFYlLwYdLHsbfcU9mSYegvCAZChpys2/gU1VqB00=;
+	s=arc-20240116; t=1763383052; c=relaxed/simple;
+	bh=6eQxmAaacP/aBW8Y3d+Wuo10K5fyUcZaZ5CsJYaQI1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iLoj/9FR8JyBDywSmdOp5AFlZi7pfCzzOWEfVYA1j4EtH+UaE2drMNUv5OGmSOQ5EpdHmCoXxEsrEf03t+Kc+5VWb3WDPoirKRTTp/1uk03vf/HntuZyuP4Ipduc3N1nTOduhPCklh9DHeTIoo5qKecxmjj7C5v+45yLMMzQZQU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ANDDrW3j; arc=pass smtp.client-ip=94.100.134.239
+	 MIME-Version; b=sXNYnu26QFVSzHhNO1bfL+KpO+JYd1TtYlXhzJ4Ojz7z9dQ2F58P4f9uLuTwux55r+R1qwzG8LB6eV6HZVZPwU0UZl0ntzHkoIQqAxU0JgEyf+dc6ScqNriQHm4DF1hfeJtzkMF9u0rozMGPlW0h2VH8NZ5V3j+xQdM2R6Ny3Kk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Bl8gNclz; arc=pass smtp.client-ip=94.100.134.238
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ANDDrW3j"
-ARC-Authentication-Results: i=1; mx-gate50-hz3.hornetsecurity.com 1; spf=pass
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Bl8gNclz"
+ARC-Authentication-Results: i=1; mx-gate49-hz3.hornetsecurity.com 1; spf=pass
  reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
  smtp.mailfrom=ew.tq-group.com
  smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
  header.from=ew.tq-group.com orig.disposition=pass
 ARC-Message-Signature: a=rsa-sha256;
- bh=A8W5mptCdk0S8QGbadr+z6jPfJ8L5En4UezduXTQKbg=; c=relaxed/relaxed;
+ bh=Nsa/tANqoPEYu2tcmKDNOq4Q7cxzL4+lOwJznVO+Sak=; c=relaxed/relaxed;
  d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1763383024;
- b=h5TZpsH8QilNhki23BNogGPJExIXPDGCdZlmhTErRobXN10P0Czb8Q4kx/KwFAjvs1G6b/B+
- NKaHz+JJXdcxfqwil/Ask2T19EYsj1ndUUfr0neMN0C9WIAzb64ilw5/TTy6MML1uOpamdBJL57
- JfHV3n9br2jwbWnbIb+C2j2Y70ALRKtxZ0uZG99isveLXQnn2HwF2xpL7CwKwvLuwK/j987+5du
- IsXcgg/N/+GJ07z4jJ5gLNsCAFfn1cKjuXsY08iXPa0WU2i90nGbn/bCX171e0PYrIQJiyy7OwW
- OdR3oWma8kiJcUGMnl8WTVCEDZ7SoKwUne3hmExFHgWpQ==
+ t=1763383028;
+ b=hZ5Yytc6scmJx15w+UmNNNJzbIq4+8UuafO9/0+MhK9Zyc+g6cBAEG2gKZB097eqdBFOmMo4
+ kS2ZDdvDWejU7kp5c+iKzbbIQaapTC8hrFsWsnF5SgOGXDTxcDjNiONNdJMk2itL2lHJGxN6GMz
+ /dAFA9FUB6Z95Z2gtC2Hx5UEQU+UQn4aXGcI0OdCkdvCiwDliZd37wL+OTp8wCqdV6rCGmWvUjv
+ q8G/yYGPM4a3wjma+T2QlN+tclBgIR2/X4wU7qYJbE+mzzhah4gxKmH/ZcKSgIECxMxtUDw5Oe9
+ eJZlMFjGyri3oCrJ8gwU+6IscR6Mr32kFyWrvcYiSya5A==
 ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1763383024;
- b=D1GO0v1D60D0RzrUvB8+gBIYC+abKLNIoTk68XKGKdZR5dFJK1/gSOP+vg9tR/Jydn4Ub4XX
- 6WdDosHolkyfoghw+qi9Bk3Nkw7/HolYawzH76ajAMrMntD92RICFm7FdVyUVW4ubDFnf3H7xt9
- r3h69+5dIVBex3Xa5UZ98rLLpgeHVGWeVEKJW1An/yrB/isRmxMANtPJskdH6CgUNztEInCqPN0
- rATCG9od/vgBk7Gs/ti1XoHrM+45MgnPIDhpgppTYQVGgYUVsE2DaSZGolKJ1SOJn8yXm4jTJBD
- 7G/ALE2PW5i9o0M+8KZR25SJjd1BFQmAhuB4ZeRTx0Bqg==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay50-hz3.antispameurope.com;
- Mon, 17 Nov 2025 13:37:04 +0100
+ t=1763383028;
+ b=Xg2Y0oCTa2OAX1/Rk3TEe+8qz9gFppZGlrobOs/X3OhJz7HfPqRhzEQvJwxa5jju1Kz+HCPa
+ +u91R+U4tXa9KsbiqNjma+XndD2rspD1vGvEIwT4GF1LW7BWK0aLiUBZWOBXswtvVA0hbMFZFPS
+ hzwl01+PUol+/T8qAUFzQmLCfKQwrPKU9EifcCZPKtMU5EgIzfR4Jhvjq2lVXALd7/fDfvMqKXI
+ HUPMxE1j3GQWn7vetsDIu0RQ5fj7563PWNA/oXFa9L4w4dcQyaljLxZ6X5O0B6AegL4BXb1WMqV
+ 5dJKevNPTzI4tRwzv63F1dthC7Uin+45VASlUpQwJaSqw==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay49-hz3.antispameurope.com;
+ Mon, 17 Nov 2025 13:37:08 +0100
 Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
 	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 82C15CC0E8A;
-	Mon, 17 Nov 2025 13:36:54 +0100 (CET)
+	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id BC3B4CC0E8D;
+	Mon, 17 Nov 2025 13:36:57 +0100 (CET)
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -58,9 +58,9 @@ Cc: linux@ew.tq-group.com,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 4/8] arm64: dts: tqma8mpql-mba8mpxl: Add HDMI audio output support
-Date: Mon, 17 Nov 2025 13:36:31 +0100
-Message-ID: <20251117123643.711968-5-alexander.stein@ew.tq-group.com>
+Subject: [PATCH 6/8] arm64: dts: tqma8mpql-mba8mp-ras314: Fix Ethernet PHY IRQ support
+Date: Mon, 17 Nov 2025 13:36:33 +0100
+Message-ID: <20251117123643.711968-7-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251117123643.711968-1-alexander.stein@ew.tq-group.com>
 References: <20251117123643.711968-1-alexander.stein@ew.tq-group.com>
@@ -77,68 +77,51 @@ X-cloud-security-crypt: load encryption module
 X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
 X-cloud-security-Mailarchivtype:outbound
 X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay50-hz3.antispameurope.com with 4d96gq1pMmz2nHWF
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay49-hz3.antispameurope.com with 4d96gt3Qwzz3ybvM
 X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:963b827203f1c42a2a4c49ed014a0b11
-X-cloud-security:scantime:1.906
+X-cloud-security-Digest:67e9f8e008322bf58113478606af1b75
+X-cloud-security:scantime:1.840
 DKIM-Signature: a=rsa-sha256;
- bh=A8W5mptCdk0S8QGbadr+z6jPfJ8L5En4UezduXTQKbg=; c=relaxed/relaxed;
+ bh=Nsa/tANqoPEYu2tcmKDNOq4Q7cxzL4+lOwJznVO+Sak=; c=relaxed/relaxed;
  d=ew.tq-group.com;
  h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1763383024; v=1;
- b=ANDDrW3jhMDj6lpryZ1CxayxyoMLOZgdldhZCZxDfXA/8e32EE54Fde4qS6hRR6slGm8zUCi
- urnJmt+Xl2cN8jrOakmHdVh8GdseoWofRLol/JV55SrYEdlq8deiXRZ8k+xd/X4F0bLAn2HpG+X
- Ll+o/2LUW+XbEWsF1Q+0dIFRVfN6/buPUHgv3af2Jgu95xzSRLfDSHSabLjhqNlYpAQpf9InwvT
- TVKmWbivDPPuPPLIbTGwuTKZOAwE+jko7k1SmvS/75o1UbOEw9oStm5AKipncUlGHdG+j0DJiom
- 775unXzUFtDjc9Y0qgYFUaA0lIbDqbCQivrIxY3EYyiKA==
+ t=1763383027; v=1;
+ b=Bl8gNclzSF2ffrSCnO4HM2NVFjp+XpnGay5w6hxUAhMdtNllMXde6wM8jBfo6Ji3Rv3lyOOh
+ X61e6CQXIgXCa0FK93h3dKrnGpJTkARUz6xgoA9l1gXspshuQFasUKkjXAS8qo3jgONUTP9mjhx
+ 0g9AgqzS2e84HyZOWOgcmoDTqZMP5dePidVM5V+uOTwSWnjmiu6/zAnJlAnO3XJkvXtVm7QyXlb
+ Zy34UzkQJjD2TPuIS64OktQqOQ6LmDSPieKNiTuXJclPkC5ocYuzNw6xKZZ58F21tVHxvCZQpmJ
+ UPp2ERbkBaDjHtLmpWNYv4KiFdb95+0GyZlBuTRczx8Vg==
 
-Add the HDMI audio soundcard and enable necessary nodes.
+Ethernet PHY interrupt mode is level triggered. Adjust the mode
+accordingly.
 
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- .../dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts   | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ .../boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts     | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-index 03b75d4cf699a..ac889a69da69a 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-@@ -248,6 +248,13 @@ sound {
- 			"Line Out Jack", "LOR";
- 	};
- 
-+	sound-hdmi {
-+		compatible = "fsl,imx-audio-hdmi";
-+		model = "audio-hdmi";
-+		audio-cpu = <&aud2htx>;
-+		hdmi-out;
-+	};
-+
- 	thermal-zones {
- 		soc-thermal {
- 			trips {
-@@ -290,6 +297,10 @@ map3 {
- 	};
- };
- 
-+&aud2htx {
-+	status = "okay";
-+};
-+
- &ecspi1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_ecspi1>;
-@@ -486,6 +497,10 @@ &gpio5 {
- 			  "", "", "", "";
- };
- 
-+&hdmi_pai {
-+	status = "okay";
-+};
-+
- &hdmi_pvi {
- 	status = "okay";
- };
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
+index f7346b3d35fe5..67fe1f63fd93c 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
+@@ -190,7 +190,7 @@ ethphy3: ethernet-phy@3 {
+ 			reset-deassert-us = <50000>;
+ 			enet-phy-lane-no-swap;
+ 			interrupt-parent = <&gpio4>;
+-			interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
++			interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
+ 			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
+ 			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
+ 			ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
+@@ -222,7 +222,7 @@ ethphy0: ethernet-phy@0 {
+ 			reset-deassert-us = <50000>;
+ 			enet-phy-lane-no-swap;
+ 			interrupt-parent = <&gpio4>;
+-			interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
++			interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
+ 			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
+ 			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
+ 			ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
 -- 
 2.43.0
 
