@@ -1,123 +1,72 @@
-Received: from mail.mleia.com (mleia.com [178.79.152.223])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D53230AAAF
-	for <imx@lists.linux.dev>; Mon, 17 Nov 2025 19:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B683732860A
+	for <imx@lists.linux.dev>; Mon, 17 Nov 2025 19:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763406361; cv=none; b=hjYHSEarp7aT4znnFyu0ETxtjQkGlQKVfRUAUGSPjawv+3VVCi8u24ySRmCie8htEqiL92AriMhaxT0TpXbO1SykTvPtXM6vnssLuuN6j3KSect/8bBulPOliGbpGzS65l40y/MK85SVnNAnFB/UuBfqqzEePMrN/Rni+RHoTC8=
+	t=1763406850; cv=none; b=LokdcjXDypGk4ry4EKw6foLK3nhDoUOhfM8hvWvJmX3Fl0zQh2JJmM6moXrTJgudoMYlPTVzOnE6tyg9w2FWxO1Xq/CrjcUE8J8ZTUwd9USQxstmPpmjg7XKN0GjjyoZtNv0Kxq0kyGsK5v381d32UL+qZTuABqhGKysGE20440=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763406361; c=relaxed/simple;
-	bh=O2M42ARMh8MZeBLFMF0MGMXM/A+hOHGoaVAvWRDPJRc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hl5u0Q1/LlRzYP2bQohLN1l5zVCaKAAp63vzAelsZcRNfhyDkN2Oy4I7Ruj2Egnu8hUqUZkbDI87SDINQzovsG7AnkAI3WrubXB26LIhHWiltxgUaiXaZzWeHYh1exisCNS0/3itmLD14lj35jLKkSD76m/rYEiJD21rQC21rhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=kcfQx2pw; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=kcfQx2pw; arc=none smtp.client-ip=178.79.152.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
+	s=arc-20240116; t=1763406850; c=relaxed/simple;
+	bh=v6CiNgpE/O4tk5eg+/RonfEOR5bk+YpyM2UNwLyIZHk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L76P3nz2ZoBYDk3hkCYF+CNzmKtqZAkaF2UdX/VsLpEH/qVlCyucBSpbBpK4fz6ba9xLbokDFS25e7ILOlYdJI75FriDY0jnlmX09SzN1FMbG22III+DzG7ZPxWEAyKjMucFgOKcy4rW1AW1fTwKE87fM3tGOO95xxY3UWsV34Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=pkN3z+qk; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="kcfQx2pw";
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="kcfQx2pw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1763406351; bh=O2M42ARMh8MZeBLFMF0MGMXM/A+hOHGoaVAvWRDPJRc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kcfQx2pwlfwx3m/Jgbsny+J+qYam4ZMA+1WtQFJoKp+baKmWNnfbOZ3rVu+6+HpD6
-	 bqEsiqKdFXXrbMK4mjehYSVMM97OaxlSTI3y4dW2LwPFfIQj5rOle+SyETRNeqLNs/
-	 701hf+3J+Mhn5rQJXFx/7xY0kl84yr5+wXWtWZTBuYEdRAzpK7brwcbJh+0v0h6SX2
-	 GlSsJhdjlOnGUZ6AqbfwnTEMgmsmN0o7ynCLQ/sGLbq3LVACw01qAdY2jLj6PYQFuP
-	 ku6zHjyQutnoylgMPwHmCMNdncfolurAb0fDh7+dt41srLNY+JnhA6QecEG2lcyc7r
-	 pVjr1Va7xQLcA==
-Received: from mail.mleia.com (localhost [127.0.0.1])
-	by mail.mleia.com (Postfix) with ESMTP id D00803E1D1D;
-	Mon, 17 Nov 2025 19:05:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1763406351; bh=O2M42ARMh8MZeBLFMF0MGMXM/A+hOHGoaVAvWRDPJRc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kcfQx2pwlfwx3m/Jgbsny+J+qYam4ZMA+1WtQFJoKp+baKmWNnfbOZ3rVu+6+HpD6
-	 bqEsiqKdFXXrbMK4mjehYSVMM97OaxlSTI3y4dW2LwPFfIQj5rOle+SyETRNeqLNs/
-	 701hf+3J+Mhn5rQJXFx/7xY0kl84yr5+wXWtWZTBuYEdRAzpK7brwcbJh+0v0h6SX2
-	 GlSsJhdjlOnGUZ6AqbfwnTEMgmsmN0o7ynCLQ/sGLbq3LVACw01qAdY2jLj6PYQFuP
-	 ku6zHjyQutnoylgMPwHmCMNdncfolurAb0fDh7+dt41srLNY+JnhA6QecEG2lcyc7r
-	 pVjr1Va7xQLcA==
-Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi [91.159.24.186])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.mleia.com (Postfix) with ESMTPSA id 4A4423E1D02;
-	Mon, 17 Nov 2025 19:05:51 +0000 (UTC)
-Message-ID: <e0c3885d-6db6-404e-b31e-a7674d96e10a@mleia.com>
-Date: Mon, 17 Nov 2025 21:05:50 +0200
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="pkN3z+qk"
+Received: from trampoline.thunk.org (pool-173-48-114-69.bstnma.fios.verizon.net [173.48.114.69])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 5AHJDoIe020576
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Nov 2025 14:13:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1763406833; bh=0otr4AGhCLLWxZmU72cq6997fEtNY7jejFHPKEe8TD4=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=pkN3z+qkb9Lzcr9lhfPYGuqlEALoES9P99cO9Avd3UZBHFRdGe2eSQ2j7JxlEm7Sj
+	 qhSDbiXWa1oGMVOjpyBG3sXpEBE+f9hq52Uqn8eEQJQcaSyIi1kk2h5UIzR4+eRxLM
+	 x1qYN0V7VEWbkbEkZ1LtcnN5AfKYHWhW8mU2HzXbW1h9lZ79gF8jOUU9pu/I1eKPWV
+	 rM2COGH/ZMauhV8Q6Ks9+sbBWwOpki5bUzhAYEpBFc1doZqW9AQQlXM1WhNPpJPMQo
+	 BiS22+BQ55NEgFCTgPJuCchNmTZl9O8zky2ftjGTLImpyRSWA9CRW6dRt4qGL77HGX
+	 kAMW2U9kT8t5w==
+Received: by trampoline.thunk.org (Postfix, from userid 15806)
+	id 3A8352E00D7; Mon, 17 Nov 2025 14:13:50 -0500 (EST)
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Andreas Dilger <adilger.kernel@dilger.ca>, Zhang Yi <yi.zhang@huawei.com>,
+        Jan Kara <jack@suse.cz>, Haibo Chen <haibo.chen@nxp.com>
+Cc: "Theodore Ts'o" <tytso@mit.edu>, linux-ext4@vger.kernel.org,
+        linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH] ext4: clear i_state_flags when alloc inode
+Date: Mon, 17 Nov 2025 14:13:31 -0500
+Message-ID: <176340680645.138575.13420977001024080703.b4-ty@mit.edu>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251104-ext4-v1-1-73691a0800f9@nxp.com>
+References: <20251104-ext4-v1-1-73691a0800f9@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] ARM: dts: lpc3250-phy3250: remove deprecated at25*
- property
-To: Frank Li <Frank.li@nxp.com>
-Cc: Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "moderated list:ARM/LPC32XX SOC SUPPORT"
- <linux-arm-kernel@lists.infradead.org>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- imx@lists.linux.dev
-References: <20251114174712.1206027-1-Frank.Li@nxp.com>
- <20251114174712.1206027-5-Frank.Li@nxp.com>
- <face044b-01ed-4077-b497-3caaccf57c98@mleia.com>
- <aRtJdTMxFaXdVnvs@lizhi-Precision-Tower-5810>
-From: Vladimir Zapolskiy <vz@mleia.com>
-In-Reply-To: <aRtJdTMxFaXdVnvs@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20251117_190551_877347_712C5581 
-X-CRM114-Status: GOOD (  14.37  )
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 11/17/25 18:12, Frank Li wrote:
-> On Sat, Nov 15, 2025 at 02:23:50AM +0200, Vladimir Zapolskiy wrote:
->> On 11/14/25 19:47, Frank Li wrote:
->>> Remove duplicated deprecated at25* property because the same common
->>> property already were added.
->>>
->>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>> ---
->>> changes in v2
->>> - new patch
->>> ---
->>>    arch/arm/boot/dts/nxp/lpc/lpc3250-phy3250.dts | 4 ----
->>>    1 file changed, 4 deletions(-)
->>>
->>> diff --git a/arch/arm/boot/dts/nxp/lpc/lpc3250-phy3250.dts b/arch/arm/boot/dts/nxp/lpc/lpc3250-phy3250.dts
->>> index 15463a96938cc..0f96ea0337a1f 100644
->>> --- a/arch/arm/boot/dts/nxp/lpc/lpc3250-phy3250.dts
->>> +++ b/arch/arm/boot/dts/nxp/lpc/lpc3250-phy3250.dts
->>> @@ -213,10 +213,6 @@ eeprom: eeprom@0 {
->>>    		pl022,wait-state = <0>;
->>>    		pl022,duplex = <0>;
->>> -		at25,byte-len = <0x8000>;
->>> -		at25,addr-mode = <2>;
->>> -		at25,page-size = <64>;
->>> -
->>>    		size = <0x8000>;
->>>    		address-width = <16>;
->>>    		pagesize = <64>;
->>
->> Just squash this change with the 3/5 from the series, or I can do it on
->> patch application.
+
+On Tue, 04 Nov 2025 16:12:24 +0800, Haibo Chen wrote:
+> i_state_flags used on 32-bit archs, need to clear this flag when
+> alloc inode.
+> Find this issue when umount ext4, sometimes track the inode as orphan
+> accidently, cause ext4 mesg dump.
 > 
-> Yes, you can squash when apply.
 > 
 
-Good, no need to resend these changes for you, but I would skip sending
-a PR for v6.19, the patches will be targeted for v6.20.
+Applied, thanks!
 
->>
->> My ask about splitting the changes was about a separation of the 4/5 change,
->> and it was done as expected, thank you.
+[1/1] ext4: clear i_state_flags when alloc inode
+      commit: 322a9e3c77253842617257af246cb5a0ac77851c
 
+Best regards,
 -- 
-Best wishes,
-Vladimir
+Theodore Ts'o <tytso@mit.edu>
