@@ -1,178 +1,269 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012067.outbound.protection.outlook.com [52.101.66.67])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE7B25F98A
-	for <imx@lists.linux.dev>; Mon, 17 Nov 2025 13:54:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763387667; cv=fail; b=WRh7+Y1V5FTTqGi4xW7c0Rj9Nl39WmFdgRYWJIfy2BJ0RMgqwfBizVTeZJAFQyLneJ+gMwaq2DCh4TK3RrUGdJqsLLrrSuqrgZQCTGtt2EJhot1Z5Cnilztf92SAcSfMQY8KVaGw2P5yAAsnV9wS0w3nH5K7KPyzEmFH508mA8g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763387667; c=relaxed/simple;
-	bh=pxfXtcaMpoJHqAbvNGV8gLNaq7kb40LMo2XbMn3BJ9M=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=U9BUuYWIFpYgKrNmcJfFXtay2CLcDbn9GnLviQTHKd49UzaEUuaBo0KvZS5ulD61L0pfXAc8T6TVwIZyg93JKv5iwzWoDnhzQ8uMTkObzW3BfaDIN49V26mCjN5AgdCfnkr0fp4T4MZC/uoe0cHhnwpcMhzg277A2PKpRH714Tk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=UDklcyYN; arc=fail smtp.client-ip=52.101.66.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="UDklcyYN"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=l1w/VuuISOlHKavsvaZblFsEfQdJEY7NPnuSHg4Lvc5el/wWeEBrnUECrX8Az3r4nNM42hMdUo5yhgwB68HwsSljvTzQfGHBOA8sMTzloIXYH1dwk3b5cTs4cOWNmnCMAb/sZN9tdJ7R9hv/O6Pn6aSLU8ZupNNBJpn6RmMJJaM7tJj6jWRlFnvrnpHZuChLKWKTSITQjI4utydiNvdd3UgSjQTEHQsmXAW2GDitXqLyeXS3kJN2pjc+Dh7ilH4inKTOZ2trnLKeDjlLJ8j4gkxzokJefT1G+RmQ1boTigShIqY6MZWHEYw9GL4GABraCzAixJn0SH6bWUCMn9uXbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pxfXtcaMpoJHqAbvNGV8gLNaq7kb40LMo2XbMn3BJ9M=;
- b=ecoM1Dl3gA7fDCVY8NA+orxkeyVsKLYsoy6WthbTsdL9a0zxEcSp83vx5aWemBs2iJPCZpEHM8szoeeF1TSYnYvYaAbxY16yjIYvyQ+ShVRXCdM4IkLOzp/tcPIiegr0rKUty6CwgTBenYPde4B27LG1ezZYLy0FAv2GkGdEos2OX5isIUPTCc8HxyM9EnqZ/U9h6B0dWld75Vrpuqa8K9HF2pPE2vTRBVsyoMASWcyMa0sHkQP3mtGjHptWxm762tAZazkbKDPtGQ7LYO9yORogF5Wj7MnvsaswYHGnQAzmzIag3aVP4OrJMKlPz+FFFpSoG9Gz99w3RLMHEmrmRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pxfXtcaMpoJHqAbvNGV8gLNaq7kb40LMo2XbMn3BJ9M=;
- b=UDklcyYNJaSqIDIPi3Ef107haze4aHoFUcoUm00Q1F1yRaf2DqD8chozzTP2frR0Ak41fOjdn06FU5K4OiD9n8uBeEyu5127/G6D9TS8MnZJ4MQ9v9hAkPZGlHMwJ5EVaeRPSeOj4Trl6lwROg1MoCYmMdgTkCH6dUiRU7/o/JTiXKSBabYuSkxKpWvxMBuMHIrQNgoL33dEcxt6+jBLtSxtVKrbprH4S1XxCOlPfL8Eudyjr1ULBpaZa6Q/gALjxu1ADJl9s3HwWwtONgZSvqkItkPRP54rUtJNK6u+eakZbVW65KaO06PRisciVLbjxhR+HbYi2kh2feSkuDpVAQ==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by AS4PR04MB9363.eurprd04.prod.outlook.com (2603:10a6:20b:4e8::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Mon, 17 Nov
- 2025 13:54:21 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9320.021; Mon, 17 Nov 2025
- 13:54:20 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "hkallweit1@gmail.com"
-	<hkallweit1@gmail.com>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, "eric@nelint.com"
-	<eric@nelint.com>, "maxime.chevallier@bootlin.com"
-	<maxime.chevallier@bootlin.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v2] net: phylink: add missing supported link modes for the
- fixed-link
-Thread-Topic: [PATCH v2] net: phylink: add missing supported link modes for
- the fixed-link
-Thread-Index: AQHcVqH8wRDKQtD4n0GYxJSxykL38LT1eb2AgACkdeCAAL8dgIAAA1Kw
-Date: Mon, 17 Nov 2025 13:54:20 +0000
-Message-ID:
- <PAXPR04MB851071D8B6E7F1FBCBA656CA88C9A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20251116023823.1445099-1-wei.fang@nxp.com>
- <30e0b7ba-ac60-49e0-8a6d-a830f00f8bbc@lunn.ch>
- <PAXPR04MB8510785AF26E765088D1631788C9A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <9f9df3b3-ea08-43d7-8075-68b4fe19e6a0@lunn.ch>
-In-Reply-To: <9f9df3b3-ea08-43d7-8075-68b4fe19e6a0@lunn.ch>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AS4PR04MB9363:EE_
-x-ms-office365-filtering-correlation-id: deebc798-dc5b-4b46-e0b7-08de25e0cf04
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|366016|1800799024|19092799006|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?Bci4X60BaCSfrSRh+shnxFOvQTzKEiVAyUUbe7OhhjUlbksX/DROx/1iFM8g?=
- =?us-ascii?Q?5ETi7gaVVmRePth78wg9GtfVT7so1KtphplbV4eizR/Hy3NLnBm6RBYGwM28?=
- =?us-ascii?Q?5aOpW1xshzPg86ZitdCBWpeor+YSRbn01G2EeGDYohlbFvNam4VHxp6wpWMy?=
- =?us-ascii?Q?a8Cser10rhKUx1v15rfmEJ5KZ+r6+gOUO6eXcDPO1iuu4NbeDlmRywhoanf6?=
- =?us-ascii?Q?4AaO8dmVCBRzaTsdcCnA3PH81pQN5C9Ujt2xkQI1GAQW0/B1biV5jf8QuMcj?=
- =?us-ascii?Q?MEfiLle4boTs3g0B3RuiAC7nvzanQrwcWX4CHxAw4kxigMbEV82YsF5x0kn6?=
- =?us-ascii?Q?/O+Zi81fod0T2kYsAu8ZluCADdxwJyRUt468Pm2eCMzbvkh4YhWLi8sfcSYZ?=
- =?us-ascii?Q?s/wWvG5lHd4ogivnRTvQ2hHzddwhBnU9aUJoQqdiZVBmbM0i0vJcYCkKEW4S?=
- =?us-ascii?Q?6Ho/HVgzRZCbe+J9JO1Zy7taUH8mn9Bnnttdwii/+eQbPU/hXLfDru1CfwKB?=
- =?us-ascii?Q?TTFsNEB+NcUAhMhNf7tt8ZiifOfS+oNZsyQ1xiF7BtpaOebRIHlMT0FQhaOv?=
- =?us-ascii?Q?yhFHrrXdu45TzNHPIa2VitgpTwJfZ0z+qtuStVLtssSwGX4hP8d5Hfub6Kum?=
- =?us-ascii?Q?pQBf9p3wMND1OyQC3TkKM1Oi2CIkMpSgfYtl8YIdWLCqePlYU1MIgnefKzpS?=
- =?us-ascii?Q?IK2FEcCL4/isLkn3y3octB3xxdCSPNyDDG6A9g5phf6Bol6ah04Rn4RXVJNx?=
- =?us-ascii?Q?IwktcijemG+c7ZLsrfU7VaKxs/k+CSCFGv5MuxWGSoGHgYbzOE5/SfUfZyHs?=
- =?us-ascii?Q?rk+aZNf6rvnuk8v8KpvLakWaeNszSAaZJMrDYVntABJy1pXZ6o6OgColTTnM?=
- =?us-ascii?Q?RDBq5kBjPemMgFH/hA4LrUmb6kdBnZjnvEMemEKtJEwHdE0yKdPLThAPbD0g?=
- =?us-ascii?Q?lQ/ycwugsTfIh9AJVEU0L7+2jSpY+HrGerwMwWO9KoBJ97yZ06DRWgFyapP6?=
- =?us-ascii?Q?dVNbV2y99AixMnC58kK3HVirfJ8IkGINwI65GZmSmZOQBBFmfwdW/SmxuwHX?=
- =?us-ascii?Q?gm+c0i88Y96/qBQ1ZTwnxmt/UWMfECHUUbvdDaA9lrpaAQH0io9xrohJMaOa?=
- =?us-ascii?Q?Q3d6tK7BpliyWwKVs7GcHQDZklVRNy13rqiRtoh54nU+gsy4uz53zbN0LUrX?=
- =?us-ascii?Q?j3jN2YEcom84RNwcjtG89f1+SGDTKF0ilzPoqSqRR87E/bYs7LAllESo0j+H?=
- =?us-ascii?Q?cX2ghYLfJ8b6tYUTovs10soz48Gn8UBZcKB5jfHwgK8REii25nuTOxV/TXrC?=
- =?us-ascii?Q?xIrKQ+FYR1QV+39cHWhitsCWR8Man6URv+9OT2pTDXjx6NyWrdh0Gp8LEnUV?=
- =?us-ascii?Q?S6RDOf75fO/mHtR5s2xbSUWFGoWvAoqIbCfTqTN56SfcelcKY9CmoR2oO7cW?=
- =?us-ascii?Q?LmOxQN+MzQVyUuCsZ1tIb071NEXtx5TdMOYJUidOUeUs0RurfDb+MpsnrXMk?=
- =?us-ascii?Q?rArQvYIEC5Te/8gNKXXXb4T6RKaSxN/sHtCH?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(19092799006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?uxKcL4/8YOkb+UGjflbyuCUwi7wLyLMTaqDaL6xQ6IQD6rDEYC4wcg7AeJaS?=
- =?us-ascii?Q?POTbVzE8RB3BBDvaIc8HritJtep1YkGNORM3I97xOTM7vSEqcH+csn8XOg3P?=
- =?us-ascii?Q?OHdc4NDN8MEaeB31JvxNCRf9+n09WvTZBKIzi0ldrXjTRnGM5zKaga/DQP6z?=
- =?us-ascii?Q?XG+tO5xL+refw3Cr1libIMfkLv+l6EKddmxohZsl84fWgWpK4f5/78Xy+GY3?=
- =?us-ascii?Q?wUpqyN0lpnVV1mvwljr9kCB7AIEoDsA4Nxrn0cIHco2DX3oxjtvQiWpbI+pC?=
- =?us-ascii?Q?knYne1nYpPpKmWrAgzm5wnr2Y3rxxL7rA0DeuSYJzMsJ6sdVwVdO6cql2tzO?=
- =?us-ascii?Q?UqM+NSv0YrVtj0cPBUqocSrbXGDhkjSYBdkak50AWVAHlv3zgOhFhB35PEea?=
- =?us-ascii?Q?cm2ZIfNQPPHiZJyvPR0OtIKKCyNMCfeLGaXp/mOLRnWjrplrT7XwtXHk0AlH?=
- =?us-ascii?Q?nFaRwowWVbvQhwt0I57C3Fd2oMtohL26yd/Bew1iqDToz1mvV3NwSawoWnjZ?=
- =?us-ascii?Q?wnBWLt2+3ZjSBXvuZ2eik2sofZ15J7vuwcqIQr/67mhk0P/9cR+1QlHgH579?=
- =?us-ascii?Q?sgPVW2tCN3l7+nMNJzjGUD2gp5QsAOhZrsJz4lc2Xym/vt3hze8IafCJKQVy?=
- =?us-ascii?Q?sJREU9aaO8SrWdZdVflrZDbA70SscNfBaad2p5VckilZva6YgbjJXIUjMrUm?=
- =?us-ascii?Q?ByJ1pO+6gzt+r9qsVWMnxd9+3GnOfZStwBx6jOXzzDjMMCYcQ3cQFpgEdnWT?=
- =?us-ascii?Q?adM4Q5oAoBSG87+TYgLC+9p5TJNvCosXw2TNVH12LtVGRGShrQort9iE+UuN?=
- =?us-ascii?Q?KKH3Djvxn56dxC5YbMpQYTbNI5Fs+nMI8/p6CwVd1YRCEw3x6Fet4SxGHX3L?=
- =?us-ascii?Q?vKuht8vnRCIesDQigdySTgOnoZSDAvbHVD3IT5jik8BKzyxPDHnYxMaSpMO4?=
- =?us-ascii?Q?kPNdpWpO1oAldwDQb6kfbQh4EU0uMYJQXetFx9Ea3rjVazdfd9OzBxXKcvkz?=
- =?us-ascii?Q?LmrLNq90LmMuksqDNk9XCUdl1/FBCMxnNNPiBPq98ULv0djuw4KF/n48+zqI?=
- =?us-ascii?Q?jBM1BWFqZ3Qv6lxB9IE59vqpQx2SIo3OcaoagEUsSv1dYA/thG7ZRhgjM53B?=
- =?us-ascii?Q?0rGfYUmbzeO/4KBsBX9GFICcDKucjJCpPEEVP1b1j8DldpiEFA1WmC71EH8V?=
- =?us-ascii?Q?pQ5/LgHZxhfUwtblB4f7xkQfBKw1eAawVK8VnFH+/Oi0OjoZEI49K7uW0kj9?=
- =?us-ascii?Q?Zv87AwtJ4G7mr/He4WwGnnK2FY9jkuuUr46ivLadaURAgWBh6XhQZkd8WX1j?=
- =?us-ascii?Q?1tTbZzuByUA1O4EqLrp56NmEq/X8zFx7fTULFtDnaaM+DUcrOtMCxcmJ/LQx?=
- =?us-ascii?Q?cqQE1qn4412IHFJ+BSstlRCHffLqSMBjN2fJQ0WfBM6C3bmS/NZFBCMZivGb?=
- =?us-ascii?Q?pJt6UHmCVbyyX+BfnUqNYi4ZdbUkxY6lOOCC8rm5M48Slzyr2W6cfByC6LgD?=
- =?us-ascii?Q?E2vAMVTjFY9di9drfDgbRcLTzsX1aaumVi9obhlWWw61P6+TVC6sJ3vux/AM?=
- =?us-ascii?Q?eSWL1vLXQAOTwZ6gY6g=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D553ABA3D
+	for <imx@lists.linux.dev>; Mon, 17 Nov 2025 14:47:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763390847; cv=none; b=TabOUe4FFoEJ+vnoz3TZeSnQ+0p09xvAOtx5lNnDN3HdrXH2NClZZDDGC2LPK4XjdxFMgoowmWsvHwVsBWJ75Fmthk4QDZmM7dimJ7IlWcrVq7q6E/QuDYAE0y4ZVOrv5s+6bUULDikPM3OXhQLoOPplTDpRqnLlmKFEOyJODVQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763390847; c=relaxed/simple;
+	bh=VteQ0CNGSmS9oLebBawgVVtNiU+d9ySAjJvAV4UaTUM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QQ8sugJOpc1Kx1zgWNFIimpzj2xAChn8ekAhef+AxarH6ZstmnQ5bJDZ9zMNykoZXnfvwvXoW2/5FgqrhD9Xc2rQXUfdFTkAGyKFNk1PZGpbYrwN6bpZSUX+wZaoEvW2kKtrrB3mak2CW4/CTnn4NzRbLo0QBVQheNVUxo/DLsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vL0Vb-0007Me-CO; Mon, 17 Nov 2025 15:47:11 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vL0Va-000vdp-2P;
+	Mon, 17 Nov 2025 15:47:10 +0100
+Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 6C0A74A1634;
+	Mon, 17 Nov 2025 14:47:10 +0000 (UTC)
+Date: Mon, 17 Nov 2025 15:47:10 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Haibo Chen <haibo.chen@nxp.com>
+Cc: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 2/2] spi: add driver for NXP XSPI controller
+Message-ID: <20251117-curvy-sincere-muskox-8960cf-mkl@pengutronix.de>
+References: <20251117-xspi-v2-0-e651323993fe@nxp.com>
+ <20251117-xspi-v2-2-e651323993fe@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: deebc798-dc5b-4b46-e0b7-08de25e0cf04
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Nov 2025 13:54:20.9154
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: zpTTVFK4VVCUqcLQqBptm9Xf+87ePtGQxOJ0bPC6BaPwTSSGqSP1haYK6ai24k+NFZYF+wbXVklJd9YWkvZ1iA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9363
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pfxpr3flx5wcz4sf"
+Content-Disposition: inline
+In-Reply-To: <20251117-xspi-v2-2-e651323993fe@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-> With 1ms ping times, you don't have buffer bloat problems, so that is
-> not the issue.
->=20
-> I still think you need to look at this some more. Both Russells
-> comments about it potentially blocking traffic for other ports, and
-> why TCP is doing so bad, maybe gets some traffic dumps and ask the TCP
-> experts.
->=20
 
-The default TCP block size sent by iperf is 128KB. ENETC then fragments
-the packet via TSO and sends the fragments to the switch. Because the
-link speed between ENETC and the switch CPU port is 2.5Gbps, it takes
-approximately 420 us for the TCP block to be sent to the switch. However,
-the link speed of the switch's user port is only 1Gbps, and the switch take=
-s
-approximately 1050 us to send the packets out. Therefore, packets
-accumulate within the switch. Without flow control enabled, this can
-exhaust the switch's buffer, eventually leading to congestion.
+--pfxpr3flx5wcz4sf
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 2/2] spi: add driver for NXP XSPI controller
+MIME-Version: 1.0
 
-Debugging results from the switch show that many packets are being
-dropped on the CPU port, and the reason of packet loss is precisely
-due to congestion.
+On 17.11.2025 19:04:25, Haibo Chen wrote:
+> Add driver support for NXP XSPI controller.
+>
+> XSPI is a flexsible SPI host controller which supports up to
+                ^
+typo: flexible
 
+> 2 external devices (2 CS). It support Single/Dual/Quad/Octal
+> mode data transfer.
+>
+> The difference between XSPI and Flexspi:
+> 1.the register layout is total different.
+> 2.XSPI support multiple independent execution environments
+> (EENVs) for HW virtualization with some limitations. Each EENV
+> has its own interrupt and its own set of programming registers
+> that exists in a specific offset range in the XSPI memory map.
+> The main environment (EENV0) address space contains all of the
+> registers for controlling EENV0 plus all of the general XSPI
+> control and programming registers. The register mnemonics for
+> the user environments (EENV1 to EENV4) have "_SUB_n" appended
+> to the mnemonic for the corresponding main-environment register.
+>
+> Current driver based on EENV0, which means system already give
+> EENV0 right to linux.
+>
+> This driver use SPI memory interface of the SPI framework to issue
+> flash memory operations. Tested this driver with mtd_debug and
+> UBIFS on NXP i.MX943 EVK board which has one MT35XU512ABA spi nor
+> flash. NOw this driver has the following key features:
+> - Support up to OCT DDR mode
+> - Support AHB read
+> - Support IP read and IP write
+> - Support two CS
+>
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+> ---
+>  MAINTAINERS                |    1 +
+>  drivers/spi/Kconfig        |   10 +
+>  drivers/spi/Makefile       |    1 +
+>  drivers/spi/spi-nxp-xspi.c | 1365 ++++++++++++++++++++++++++++++++++++++=
+++++++
+>  4 files changed, 1377 insertions(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 8a6ce2fdd6e46e94f8a1631cd0bf8b12980a64ed..bd54eb903a71db2fb4c6f7980=
+79cb04bbd9eb7bc 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -18708,6 +18708,7 @@ L:	linux-spi@vger.kernel.org
+>  L:	imx@lists.linux.dev
+>  S:	Maintained
+>  F:	Documentation/devicetree/bindings/spi/nxp,imx94-xspi.yaml
+> +F:	drivers/spi/spi-nxp-xspi.c
+>
+>  NXP FXAS21002C DRIVER
+>  M:	Rui Miguel Silva <rmfrfs@gmail.com>
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+> index 592d46c9998bbb8bef2b25d828b7f25c5c0ce180..db3dd4f0fb60142477799a169=
+8387ae7dced638c 100644
+> --- a/drivers/spi/Kconfig
+> +++ b/drivers/spi/Kconfig
+> @@ -481,6 +481,16 @@ config SPI_NXP_FLEXSPI
+>  	  This controller does not support generic SPI messages and only
+>  	  supports the high-level SPI memory interface.
+>
+> +config SPI_NXP_XSPI
+> +        tristate "NXP xSPI controller"
+> +	depends on ARCH_MXC || COMPILE_TEST
+> +	depends on HAS_IOMEM
+> +	help
+> +	  This enables support for the xSPI controller. Up to two devices
+> +	  can be connected to one host.
+> +	  This controller does not support generic SPI messages and only
+> +	  supports the high-level SPI memory interface.
+> +
+>  config SPI_GPIO
+>  	tristate "GPIO-based bitbanging SPI Master"
+>  	depends on GPIOLIB || COMPILE_TEST
+> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+> index 8ff74a13faaa88399723f9e944f9198076c3e543..9323ba633780daadcce2b04f5=
+492ae0647259211 100644
+> --- a/drivers/spi/Makefile
+> +++ b/drivers/spi/Makefile
+> @@ -101,6 +101,7 @@ obj-$(CONFIG_SPI_WPCM_FIU)		+=3D spi-wpcm-fiu.o
+>  obj-$(CONFIG_SPI_NPCM_FIU)		+=3D spi-npcm-fiu.o
+>  obj-$(CONFIG_SPI_NPCM_PSPI)		+=3D spi-npcm-pspi.o
+>  obj-$(CONFIG_SPI_NXP_FLEXSPI)		+=3D spi-nxp-fspi.o
+> +obj-$(CONFIG_SPI_NXP_XSPI)		+=3D spi-nxp-xspi.o
+>  obj-$(CONFIG_SPI_OC_TINY)		+=3D spi-oc-tiny.o
+>  spi-octeon-objs				:=3D spi-cavium.o spi-cavium-octeon.o
+>  obj-$(CONFIG_SPI_OCTEON)		+=3D spi-octeon.o
+> diff --git a/drivers/spi/spi-nxp-xspi.c b/drivers/spi/spi-nxp-xspi.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..a7352e5e27b76d23c24ea766b=
+9a616d8293bceac
+> --- /dev/null
+> +++ b/drivers/spi/spi-nxp-xspi.c
+> @@ -0,0 +1,1365 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +
+> +/*
+> + * NXP xSPI controller driver.
+> + *
+> + * Copyright 2025 NXP
+> + *
+> + * xSPI is a flexsible SPI host controller which supports single
+                    ^
+
+typo: flexible
+
+> + * external devices. This device can have up to eight bidirectional
+> + * data lines, this means xSPI support Single/Dual/Quad/Octal mode
+> + * data transfer (1/2/4/8 bidirectional data lines).
+> + *
+> + * xSPI controller is driven by the LUT(Look-up Table) registers
+> + * LUT registers are a look-up-table for sequences of instructions.
+> + * A valid sequence consists of five LUT registers.
+> + * Maximum 16 LUT sequences can be programmed simultaneously.
+> + *
+> + * LUTs are being created at run-time based on the commands passed
+> + * from the spi-mem framework, thus using single LUT index.
+> + *
+> + * Software triggered Flash read/write access by IP Bus.
+> + *
+> + * Memory mapped read access by AHB Bus.
+> + *
+> + * Based on SPI MEM interface and spi-nxp-fspi.c driver.
+> + *
+> + * Author:
+> + *     Haibo Chen <haibo.chen@nxp.com>
+> + * Co-author:
+> + *     Han Xu <han.xu@nxp.com>
+> + */
+> +
+
+[...]
+
+> +static int nxp_xspi_exec_op(struct spi_mem *mem, const struct spi_mem_op=
+ *op)
+> +{
+> +	struct nxp_xspi *xspi =3D spi_controller_get_devdata(mem->spi->controll=
+er);
+> +	void __iomem *base =3D xspi->iobase;
+> +	u32 reg;
+> +	int err;
+> +
+> +	guard(mutex)(&xspi->lock);
+> +
+> +	err =3D pm_runtime_get_sync(xspi->dev);
+> +	if (err < 0) {
+> +		dev_err(xspi->dev, "Failed to enable clock %d\n", __LINE__);
+> +		return err;
+> +	}
+> +
+> +	/* Wait for controller being ready. */
+> +	err =3D readl_poll_timeout(base + XSPI_SR, reg,
+> +			      !(reg & XSPI_SR_BUSY), 1, POLL_TOUT);
+> +	if (err) {
+> +		dev_err(xspi->dev, "SR keeps in BUSY!");
+> +		return err;
+> +	}
+> +
+> +	nxp_xspi_select_mem(xspi, mem->spi, op);
+> +
+> +	nxp_xspi_prepare_lut(xspi, op);
+> +
+> +	/*
+> +	 * For read:
+> +	 *     the address in AHB mapped range will use AHB read.
+> +	 *     the address out of AHB maped range will use IP read.
+                                      ^^^^^
+
+typo: mapped
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--pfxpr3flx5wcz4sf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmkbNWoACgkQDHRl3/mQ
+kZysCwf/brA1yOA1hG8+FFScnwrH/OCitXTM/muL9nM2LYHDL+VMD4JZxbpUPAms
+Y+nR49TM1KEfRyGFmLDZBja6Mlu+UeT4UuyFrPS4UKptsDQqycAVAdpDU/qQhGhK
+5Wfg3uBX+lCzAUkqM5g1P6+PX7QQ3w4C+XhFagj5Y9ELvJaws/px+EX1Cg5OKSuq
+oTI9jnb1IE4J/RpZom3a9LiFCWDvqkmnLJetnm7EUYe1gDbWbmaQDy/XWiqenL2a
+m1JvgXW4S4S9JmYEg/5BNiIbcuFUDc9FLqOJHbW4LP8V8QIvw1FijHL6HANVCHqE
+nmYdlASORqt4c4IJXVebhmifgD3AFA==
+=eyBW
+-----END PGP SIGNATURE-----
+
+--pfxpr3flx5wcz4sf--
