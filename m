@@ -1,48 +1,48 @@
-Received: from mx-relay47-hz3.antispameurope.com (mx-relay47-hz3.antispameurope.com [94.100.134.236])
+Received: from mx-relay54-hz1.antispameurope.com (mx-relay54-hz1.antispameurope.com [94.100.133.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DD632C321
-	for <imx@lists.linux.dev>; Mon, 17 Nov 2025 12:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.236
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E77232D0D4
+	for <imx@lists.linux.dev>; Mon, 17 Nov 2025 12:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.227
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763383053; cv=pass; b=cRiIO3sc67xc1JN+NgC/ptEngDzKCTODXVepsgv700ejch+HFP10zzoSWuMTF1dFFSg03xZDEfNEqoVxXApjmf3dLM0LBhBVM2S6CPOv+JvuoSx9UC8Q10gqx4FtQ5TU58n89QHh79xE96J1S9/wsTamcM5wisVGd1qFox8tYxM=
+	t=1763383085; cv=pass; b=Fjj3Yqz5Q/zy6bTpE7Yy0SuLQ9jg4WBYMTkTp2KLjYtNz3A1dnRlGo4s9OK/SJ4D/VHJmkpA09x5Pz2r6llX1ypue1qwOep4uPwtoybIaOsqoHrP9Sb2VT79Lrr7o9baBfQT0XXg09hamK9TcflPTBvV5C6R6ApspulR/lKrNWA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763383053; c=relaxed/simple;
-	bh=dXDi0s+km02ebBe7AWt7DzqybHNlwTYq4q7yTrzOyeA=;
+	s=arc-20240116; t=1763383085; c=relaxed/simple;
+	bh=1xuEALpj68pXNIymWLxa7LLNzXjOVAd6uISM8nvgMAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=POdIZ1r4/+U2vq6QOQwxneq+LbT0ju798Z9kAtJ9p0DycmqTXXzMfn/dIz4rvyZa+TuS4ReX+6igvD4Wodpf02xhuWDpPa2aIt3n8kB1gKDujj7kB1v41FtLevh7dolDmQvxJYo3QG/TsTtRvFNwidzjgu4ZakcL/t1+SSyYSZY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=EQX++rd8; arc=pass smtp.client-ip=94.100.134.236
+	 MIME-Version; b=some3fyUDleEUxmoKEUsmKCb1C7atHCPi0b0bLeS6MBCxAkMqm0OFF+Ch5aP4Ia2mfy3Un3nbYQpd1NGyL1+M/Mv8kv7N5JxQmdD69YrTXP8xoV/PW2UcwLiw/5UTAHb6rDkwWwogERYjpHqPQphzgZMYpioU7KyBajxEvSk4qw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=bAffkV7J; arc=pass smtp.client-ip=94.100.133.227
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="EQX++rd8"
-ARC-Authentication-Results: i=1; mx-gate47-hz3.hornetsecurity.com 1; spf=pass
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="bAffkV7J"
+ARC-Authentication-Results: i=1; mx-gate54-hz1.hornetsecurity.com 1; spf=pass
  reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
  smtp.mailfrom=ew.tq-group.com
  smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
  header.from=ew.tq-group.com orig.disposition=pass
 ARC-Message-Signature: a=rsa-sha256;
- bh=nmy9fyQ6PEbPx0XQ71lGiSv7DepEPOFim0DYw8pJHy4=; c=relaxed/relaxed;
+ bh=DetMJ+MPA+Wq5fNrwEPDOsXLnfF8QeGVFeKlIfLk49s=; c=relaxed/relaxed;
  d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1763383028;
- b=arjVptiSpDiHf7bF5+PUaVhHST/+2rsLeb5oXVWdZphiijyLRpg+wmIbiuScLHqGTuFNb2f1
- ue8Kp3c7FdXKgdQtMZOVMiNbMiSGuPo8nAD7+d1X9fTyH8kZ88wf1aQ4UYgIqci1IxrzUIbCwe8
- dKkl733UVe8QiGZoR9TXTj8hwbmr+IqB0byjYkYpdiCIHmNN+lQUGgFAM2B0aj7wAXYmZDkp7Gs
- BUYWT6ouv3jZbkdvl5euKJXp0gHmXO5+MZbvRIsfNgQYCfuoHeJ9D+Fkf6pkpJ4JCdhpaZ4XtTe
- oo0Ps36B606gRT+/uPZpsoi+eZZ8Ykwl5/USxIIASUzdw==
+ t=1763383031;
+ b=fLpCk35JpJ8aBFm/nQYgyAe1UmmDzgHKm006aqIVUxxjpCFdsJkNjVk0lV0Cuo9CxOJ27wvO
+ MrhYOhATsuI4ltpzHL7NyVBbPTi7iQ1U1zPCeN9D2pf1FHrCsnXLzpKjR5T2NEhctA8JFyOLGKH
+ 3LrpPXHm47KZouQnpqNm+/RvAPcrEErZoGqhwgNIqbe6qERH1p27D1WhbeH74xYmH/9RAVTDwb4
+ 6oNPQNYB7LMxfNEB+M2yTyn38cFw335Ks4msFeRwkcWDfPR2Yt0Efmu92nC0jD+Fh9YvODJx5Iq
+ 7Ovy2ZN2odJO0yn/NEPjCEbY92z6Jo8X7FEe69kfahsbQ==
 ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1763383028;
- b=FGVD8siySSBj3AlKD/flmYPRk/fpQ9JglTKfVls5FcwO1suBFSBoZU6mS+UYGIeZFbcHTMpZ
- LpIxbJDXyjNT8DJKNhVqME+P5bCljQZXIyrNQV5VdncpE6UydQHFaMOhzdQFiISC3QtTQPNQG8V
- b5IpO1LeY9Uz3MDD+I5jf4hLNUMNbBoMW2/Mfs0Lba6VsIyf+Q515qaBsveKyU403482iJ5OYp/
- QU1m5jPWxX/f7Pr1xSiRFiWp4hpRQ8b0GtR/tTptT+GJsv4U7BNTnsAaV+Sx7RnmIQFkNtLmlPo
- n3knrSPbrYE9cbgpj3vZwjlYtZTRDSdOyTGFOKgQegw6g==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay47-hz3.antispameurope.com;
- Mon, 17 Nov 2025 13:37:08 +0100
+ t=1763383031;
+ b=ZxHoXskhm5ScXMJ2s6xUnofXRSv9Yhhd7H6e4Sf0HU9w4LlRiB82a1lbGQiJtl7ZhyX05gxn
+ aT4rE7NBEI4w8AZr5fg1VNyEPO6mtpAfkVkyjFm4O7iAG5Gx7BH+ghvAMgyf0hZ31TURkc+dx1M
+ D527Q7uqltJ/UrvLw8rdehfPTJsQmLKmMBopBsIhB+VHgDvalHstQOhCnLu7LRMB8hGtI7m6sAQ
+ bN3NKwnjz46VeYDfwyrP7VHMIjxwKcGAOpYizeEI6TfxVeY71RFQ0p78rU4fQWRpa5ZLZ5fZ0bY
+ iEf79TPvoPHedFwBgqIXEGovMy0m09PiLQ8Z2C9b3Mw/Q==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay54-hz1.antispameurope.com;
+ Mon, 17 Nov 2025 13:37:10 +0100
 Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
 	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 185C9CC0DF3;
-	Mon, 17 Nov 2025 13:36:56 +0100 (CET)
+	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 6AC7ECC0E92;
+	Mon, 17 Nov 2025 13:36:59 +0100 (CET)
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -58,9 +58,9 @@ Cc: linux@ew.tq-group.com,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 5/8] arm64: dts: tqma8mpql-mba8mpxl: Configure IEEE 1588 event out signal
-Date: Mon, 17 Nov 2025 13:36:32 +0100
-Message-ID: <20251117123643.711968-6-alexander.stein@ew.tq-group.com>
+Subject: [PATCH 7/8] arm64: dts: tqma8mpql-mba8mp-ras314: Fix HDMI CEC pad control settings
+Date: Mon, 17 Nov 2025 13:36:34 +0100
+Message-ID: <20251117123643.711968-8-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251117123643.711968-1-alexander.stein@ew.tq-group.com>
 References: <20251117123643.711968-1-alexander.stein@ew.tq-group.com>
@@ -77,43 +77,43 @@ X-cloud-security-crypt: load encryption module
 X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
 X-cloud-security-Mailarchivtype:outbound
 X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay47-hz3.antispameurope.com with 4d96gr5rnvz4Mb39
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay54-hz1.antispameurope.com with 4d96gw0g4Cz1l5kV
 X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:99c01bc02baa59d35c741e13cb81e250
-X-cloud-security:scantime:2.386
+X-cloud-security-Digest:8bc22d3d12689751e329df603757331c
+X-cloud-security:scantime:2.731
 DKIM-Signature: a=rsa-sha256;
- bh=nmy9fyQ6PEbPx0XQ71lGiSv7DepEPOFim0DYw8pJHy4=; c=relaxed/relaxed;
+ bh=DetMJ+MPA+Wq5fNrwEPDOsXLnfF8QeGVFeKlIfLk49s=; c=relaxed/relaxed;
  d=ew.tq-group.com;
  h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1763383028; v=1;
- b=EQX++rd8oVyvOrSaQhxmBEa3dQMOLzcGVksSWFNBAmjVmNaf9AUIg+/GYbj7EoU3PZFMgkYV
- mTXGjD69x+40CMYn9Xx/gxvZ6fHvB3BILXIUNUnt8aCzrwEY+DvjfxfvnjecBki6NKBbEqaFtv9
- RSJkq/lYX17gQlvOMB7lRsHu5+p88sMVGCgJZ0jl5ykCWq05Vjn3Bdkb9rMVDfe4zRvpqxF6Ooz
- h62w5+ejwd3KHQJI66k7jCqsypFJCl/yi81cqNKZBmdBs6Ul67C33HAoJykOvnCQtKM7IpbpB04
- Lsr6LBrdDI52SmBmszdSl2bOh8RD73hQv6sgvTXcOYFsA==
+ t=1763383030; v=1;
+ b=bAffkV7JfbFfDZDX+JbiZ6lq7cahDmFquiRgLQue/AdnJZ8EW43/X4kzl+cNlC7y0nxAa95J
+ ei/GCKRPuBst9sY2crZLroKnFndUo9YcANc55pLXy/6XGJ6iime+5bxmM8x9Cw/Jq6QrgHxptEL
+ giiYoBfLQDhJhsppabVdGuftE/QQYuMc9beELrbSS8ipPrPH7V4qYqFNmCtKqZKx8tafINysnSE
+ zQzRZ+VvIQyEonM8rYrqYd1DDHDExWdL9tuBiltNJTuQsdtlVhyPRa/xnD+lvHKXPLQa/ejqyMk
+ r9cUHG90QnYuw4i1hQtWGi59UNrUw23+0koB8eU8nHpOA==
 
-The event out signal on channel 2 is available on pad SAI2_RXD0 which is
-connected to X63 pin 13.
+As per datasheet of the HDMI protection IC the CEC_IC pin has be
+configured as open-drain.
 
+Fixes: ddabb3ce3f90 ("arm64: dts: freescale: add TQMa8MPQL on MBa8MP-RAS314")
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-index ac889a69da69a..fdfe246c56407 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-@@ -807,7 +807,8 @@ pinctrl_eqos: eqosgrp {
- 			   <MX8MP_IOMUXC_ENET_TD2__ENET_QOS_RGMII_TD2			0x12>,
- 			   <MX8MP_IOMUXC_ENET_TD3__ENET_QOS_RGMII_TD3			0x12>,
- 			   <MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL		0x12>,
--			   <MX8MP_IOMUXC_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x14>;
-+			   <MX8MP_IOMUXC_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x14>,
-+			   <MX8MP_IOMUXC_SAI2_RXD0__ENET_QOS_1588_EVENT2_OUT		0x16>;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
+index 67fe1f63fd93c..30f0e81c4be00 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
+@@ -704,7 +704,7 @@ pinctrl_hdmi: hdmigrp {
+ 		fsl,pins = <MX8MP_IOMUXC_HDMI_DDC_SCL__HDMIMIX_HDMI_SCL	0x400001c2>,
+ 			   <MX8MP_IOMUXC_HDMI_DDC_SDA__HDMIMIX_HDMI_SDA	0x400001c2>,
+ 			   <MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD	0x40000010>,
+-			   <MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC	0x40000154>;
++			   <MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC	0x40000030>;
  	};
  
- 	pinctrl_eqos_event: eqosevtgrp {
+ 	pinctrl_gpt1: gpt1grp {
 -- 
 2.43.0
 
