@@ -1,85 +1,106 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8029D1FA272;
-	Mon, 17 Nov 2025 15:01:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354E03346AA;
+	Mon, 17 Nov 2025 15:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763391680; cv=none; b=iLgin7VcuSAARrGwE1U2toiWBs3hSrZ1CiD3xrDyN7pSqUR0qIs6pALqBV34I3U8LDhWb+D1J+r3GgmVrpFVynf5aVqVhLnWHZg8PPhleXUa6PsZ34Z3wUZIaKpxS8Fq48jR234z4kXv4zhp8paXKJag8z7U9/I28jG8YYIsXUE=
+	t=1763391720; cv=none; b=FgkuUVSuNqajiIYT99/gvea/D07QcypY9nOfXjEJD8ELrlBmrZX6IUVLUWFc6VElcfyousUQuXVfbQRP1wP8usRlznBWY+RGV1/TrvR/x4z9udG6OkxoamI3F1jiPRpu2ooASgZe5q9fLWeB9PPbzkF6a6yp6c9wMySSW3wEDto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763391680; c=relaxed/simple;
-	bh=oFOJO1GyFZlMuqC0ktZY+DppGZ5JUYf1B9IWZppeLa0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MFufVHqXw8U7gXyJzpkSp4GdgxS1q8au3bpuXQvhJ6all7GPxYah36gS6NjnLCr3RdbHmLvUqDqU51vb2s9jtz53jD0gLEx2YcWaaBsNn1y3qS4VKOMdjAWktjGyq5QhdC56r+MXKDxrFg9e0QbSercPKnZj8fXsHIT4T5bZf5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2PdKD+Jp; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1763391720; c=relaxed/simple;
+	bh=WVhkVI43mZR4TTe2ywSYk1PNVt0cTNKe3qu+BSXpGsY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=j1wICHPyqFScXjy+224VkEmqVsIJgP9xW0i6WefUwXq9z9B25zgvxlJY+1a/boGQx9rXviRefcH4+IHVaci3nTtpcgE+wpQSWFEgojjmhWi0Of42ybeoDZ6lQVbvAHEOFUGpqwdoo514XGo9r9Hag1eEODtm7HAIpOGh9gmzkno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WUZ245Gs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2PdKD+Jp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=I8Qibn9z0+hnfsoUujz9XHvfnzb7ts/AzJXWKnTf/J4=; b=2PdKD+JprUcfEfy0JkVepWwooA
-	2zRbObiQzWJbPzfRjcrxJidDhEdxMQp+Np4CscDffUr7+x3myaK3Gd+miOTQQyioC9R80thmocEsr
-	6wvA57mu1zb9hGASFu6pGCtpLTsmjYa+AzF/2ClSe2axcU3IBuspQySuY+iDqqkILeLA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vL0j1-00EFj8-8i; Mon, 17 Nov 2025 16:01:03 +0100
-Date: Mon, 17 Nov 2025 16:01:03 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"eric@nelint.com" <eric@nelint.com>,
-	"maxime.chevallier@bootlin.com" <maxime.chevallier@bootlin.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] net: phylink: add missing supported link modes for
- the fixed-link
-Message-ID: <f6324260-f019-4e1b-87c0-b57e862e28b4@lunn.ch>
-References: <20251116023823.1445099-1-wei.fang@nxp.com>
- <30e0b7ba-ac60-49e0-8a6d-a830f00f8bbc@lunn.ch>
- <PAXPR04MB8510785AF26E765088D1631788C9A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <9f9df3b3-ea08-43d7-8075-68b4fe19e6a0@lunn.ch>
- <PAXPR04MB851071D8B6E7F1FBCBA656CA88C9A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WUZ245Gs"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BCE8DC4AF09;
+	Mon, 17 Nov 2025 15:01:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763391719;
+	bh=WVhkVI43mZR4TTe2ywSYk1PNVt0cTNKe3qu+BSXpGsY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=WUZ245GsG3Ki9vnzh6xAdNwg6SUQ6KEXcpEAlRPTujC8G+rWRreXpQTPL06BBvzl5
+	 0DJFTqnbjkQdgVeQxU6gzJbnvVMyip7V2FJxRu3jxp68p8CicGHS9V9JvwWf1fWm9U
+	 hWQJcjsYTQ59RL8/L3B09TBdvKzPXzNlgMK/kHAoXdUd6Qk3be6QEmAHNDrIe9+O+p
+	 Gp7qHZQmP7URsrOqBuJgDjErxL55ogzu4C9eo1rUO/nLCbe9aIUiniEffVpbAh9Fs9
+	 uJjncCc1JO/k3EYcJxaS6uQvj3b8wPtm6z1vbnM/6pIpMFwWkUHU1ug68Sca1B0ubZ
+	 qR+Ui/Z1ko9pA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA54BCEACEF;
+	Mon, 17 Nov 2025 15:01:59 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
+Date: Mon, 17 Nov 2025 16:01:26 +0100
+Subject: [PATCH v4 1/5] dt-bindings: arm: fsl: Add GOcontroll Moduline
+ IV/Mini
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB851071D8B6E7F1FBCBA656CA88C9A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251117-mini_iv-v4-1-5aa63832f51a@gocontroll.com>
+References: <20251117-mini_iv-v4-0-5aa63832f51a@gocontroll.com>
+In-Reply-To: <20251117-mini_iv-v4-0-5aa63832f51a@gocontroll.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Matti Vaittinen <mazziesaccount@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Maud Spierings <maudspierings@gocontroll.com>, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1763391718; l=1193;
+ i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
+ bh=e39i4zu3s9/c6HgQhcCyPlzrP1IUgsBuKYZ7/TJjIeU=;
+ b=2Freo+oXoswOXdTh2C0zCcMYrVRuXqF95ft/AbUwOelknt8ty9oDI4sYqEKvoRdJWOtQzthxA
+ 8dYP+DrzkxyA6lKFiFCfGiI68qHoZ6yxKqxRtThEmjz9RGsJ0lLeNz0
+X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
+ pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
+X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
+ with auth_id=341
+X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+Reply-To: maudspierings@gocontroll.com
 
-> The default TCP block size sent by iperf is 128KB. ENETC then fragments
-> the packet via TSO and sends the fragments to the switch. Because the
-> link speed between ENETC and the switch CPU port is 2.5Gbps, it takes
-> approximately 420 us for the TCP block to be sent to the switch. However,
-> the link speed of the switch's user port is only 1Gbps, and the switch takes
-> approximately 1050 us to send the packets out. Therefore, packets
-> accumulate within the switch. Without flow control enabled, this can
-> exhaust the switch's buffer, eventually leading to congestion.
-> 
-> Debugging results from the switch show that many packets are being
-> dropped on the CPU port, and the reason of packet loss is precisely
-> due to congestion.
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-BQL might help you. It could break the 128KB burst up into a number of
-smaller bursts, helping avoid the congestion.
+Document the compatible strings for the Moduline IV and Mini.
+Also add a compatible for the Ka-Ro Electronics TX8M-1610 SoM that they
+are based on.
 
-Are there any parameters you can change with TSO? This is one
-stream. Sending it out at 2.5G line rate makes no sense when you know
-it is going to hit a 1G egress. You might as well limit TSO to
-1G. That will help single stream traffic. If you have multiple streams
-it will not help, you will still hit congestion, assuming you can do
-multiple TSOs in parallel.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-	Andrew
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 00cdf490b062..15000923b648 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -996,6 +996,14 @@ properties:
+           - const: engicam,icore-mx8mm             # i.MX8MM Engicam i.Core MX8M Mini SoM
+           - const: fsl,imx8mm
+ 
++      - description: Ka-Ro Electronics TX8M-1610 based boards
++        items:
++          - enum:
++              - gocontroll,moduline-iv-306-d
++              - gocontroll,moduline-mini-111
++          - const: karo,imx8mm-tx8m-1610
++          - const: fsl,imx8mm
++
+       - description: Kontron BL i.MX8MM (N801X S) Board
+         items:
+           - const: kontron,imx8mm-bl
+
+-- 
+2.51.2
+
+
