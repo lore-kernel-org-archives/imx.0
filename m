@@ -1,146 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664B52DA756;
-	Tue, 18 Nov 2025 21:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A8C2F9DB1;
+	Tue, 18 Nov 2025 23:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763501765; cv=none; b=HU+KYMf7HfedsxWi0fdQrWhlLKFXAz1PxIqmLUmkKdJwVKps0scdff6nZXWAfxCQnnbu29q7Gu7NFrldN8WLjBB0V8iBbjy/5TKWotQ8tZI2t1XE1hf5J9DX+QDDKKdcc5IwPlFCQW3uUt98WtQbeOi8+Z02XfU774htB9mp2UA=
+	t=1763507708; cv=none; b=KrwqJppFeaCqRFabp8XfU/hqRLOtLWZ5w0jZ37RAhz+K0Dgl/BZ08j/oc03/taUZjIHptJhiDCr7RRR8OX8mkf359so965OUf3ZJm4hCJF9k2s0abRSAW+wCuLF425pFQMxiuJVbqmH4t1bmdEePZnkwGYU2WiQAv/2axXASomU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763501765; c=relaxed/simple;
-	bh=b1uwEjQ88F7sIXoukh2YUwPZjQK4En6hofzj3LhP+ow=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nLY6Qp8xn5PPNlvna6exk1LF5LO3qi3dyC/7MX7hU1NiLGfVADrNbT9DT/DSMLkRvzrUhIKBkmzjYlYlIgQfG2gPkSwUCHNDIyQWboF+kS8eas3uzo80uKe7KaEQkMtezs8W6rFF2E1TUB3CRpZPT0rHR44T79tOUWxVZ9szWCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2drhGzL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763507708; c=relaxed/simple;
+	bh=wjOnpeSH0cShWbz8Nnic7ZJoqey1D4fTZlYzuXxqIYo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=SoNMFr19wm56q8y2IgTa1KPEQ5PxGOfXEQ/uO/K6yP3eXWuavVh++EGoTWurRxIlt4ZSo/V+ML3TOCUbFHWrecl2Sri3od2MGpSQa786oPiEkZNQyOLpW7Jisbg2kKatz6vSWvzmg/zAW57GTJk8F/7E9pWm0fBXmBFlkg6eQBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVXJGIiU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2drhGzL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E351EC116D0;
-	Tue, 18 Nov 2025 21:36:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVXJGIiU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE5CC2BC86;
+	Tue, 18 Nov 2025 23:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763501765;
-	bh=b1uwEjQ88F7sIXoukh2YUwPZjQK4En6hofzj3LhP+ow=;
-	h=From:To:Cc:Subject:Date:From;
-	b=c2drhGzLUR+9NsY2j7pn0GQGI77lVDcgKBxtWrumeqahNIORPuLPKnbS4Oty5Hl2O
-	 s5QwLPsZclcWfvEbcKJy3C7mEArxiUg6cVxxj1B8z9RNchZ5M6rYdqtu66Grs0XYye
-	 hduYwBGA6li2Q9+W0brAsN6RceLoH3ETv58ihqePvf/rVNNcs/d8u4jQhHuuGWzgZi
-	 ew/3sjC/M+XxNuqPCR7jLoc3EFI2qyCCmeC7VrCVBRos12bxZH0+EXm9OAVA/vtJNP
-	 C+mHiN3KGpjg1lcNUdLTUFAe0nioWDoOvrbArKmnhUrV4CpmrnsQd/x3uo68clr5Bp
-	 eCc9cBY8CD0Ew==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: dts: nxp: imx: Fix mc13xxx LED node names
-Date: Tue, 18 Nov 2025 15:35:50 -0600
-Message-ID: <20251118213551.44116-1-robh@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	s=k20201202; t=1763507706;
+	bh=wjOnpeSH0cShWbz8Nnic7ZJoqey1D4fTZlYzuXxqIYo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=YVXJGIiUstn9db05v8svunLc10N5L2z5f6bUyFCZ3TydbqiOHavDr2NAVBlAJUFZ6
+	 5mLv9YkW8Vrc0goXkUN80NS0TUigWpCs6jqJLVdbSOjx9HBOjZiQOEeL5P0+anfch8
+	 Yan3SgbHnq3K/WiqOX/jNX1pbefyVjDz4ds6c43yc0Pgnqd/y5XvCtG4+/m9R7wqL3
+	 1gh/uYt7J7kvBy54B9QCSUONULewk65ymJ9tcrleY//76eboOi6kZ7iAKwlCygIrXw
+	 XmiLOmAghprMkblCqQ6cGQn2XztI7QsR0GReUDuuu0SwQyPaONGam8mH5Udsw3P24D
+	 bWXvPJn/UFaSQ==
+From: Mark Brown <broonie@kernel.org>
+To: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+ festevam@gmail.com, frank.li@nxp.com, Carlos Song <carlos.song@nxp.com>
+Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Clark Wang <xiaoning.wang@nxp.com>
+In-Reply-To: <20251118065012.1418279-1-carlos.song@nxp.com>
+References: <20251118065012.1418279-1-carlos.song@nxp.com>
+Subject: Re: [PATCH v3] spi: imx: add 16/32 bits per word support for
+ target PIO mode
+Message-Id: <176350770375.1411024.1671130391576223645.b4-ty@kernel.org>
+Date: Tue, 18 Nov 2025 23:15:03 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-88d78
 
-Node names are supposed to be generic and use hexadecimal unit-addresses.
+On Tue, 18 Nov 2025 14:50:12 +0800, Carlos Song wrote:
+> Enable 16/32 bits per word support for spi-imx target PIO mode.
+> 
+> 
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
- arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts | 8 ++++----
- arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts           | 4 ++--
- arch/arm/boot/dts/nxp/imx/imx51-zii-scu2-mezz.dts      | 4 ++--
- arch/arm/boot/dts/nxp/imx/imx51-zii-scu3-esb.dts       | 4 ++--
- 4 files changed, 10 insertions(+), 10 deletions(-)
+Applied to
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts b/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts
-index b8048e12e3d9..5398e9067e60 100644
---- a/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts
-@@ -248,14 +248,14 @@ ledr3: led@9 {
- 		linux,default-trigger = "nand-disk";
- 	};
- 
--	ledg3: led@10 {
--		reg = <10>;
-+	ledg3: led@a {
-+		reg = <0xa>;
- 		label = "system:green3:live";
- 		linux,default-trigger = "heartbeat";
- 	};
- 
--	ledb3: led@11 {
--		reg = <11>;
-+	ledb3: led@b {
-+		reg = <0xb>;
- 		label = "system:blue3:cpu";
- 		linux,default-trigger = "cpu0";
- 	};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts b/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts
-index 06545a6052f7..238138c4ee72 100644
---- a/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx51-zii-rdu1.dts
-@@ -398,13 +398,13 @@ leds {
- 			#size-cells = <0>;
- 			led-control = <0x0 0x0 0x3f83f8 0x0>;
- 
--			sysled0@3 {
-+			led@3 {
- 				reg = <3>;
- 				label = "system:green:status";
- 				linux,default-trigger = "default-on";
- 			};
- 
--			sysled1@4 {
-+			led@4 {
- 				reg = <4>;
- 				label = "system:green:act";
- 				linux,default-trigger = "heartbeat";
-diff --git a/arch/arm/boot/dts/nxp/imx/imx51-zii-scu2-mezz.dts b/arch/arm/boot/dts/nxp/imx/imx51-zii-scu2-mezz.dts
-index 26eb7a9506e4..1598bf4f4991 100644
---- a/arch/arm/boot/dts/nxp/imx/imx51-zii-scu2-mezz.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx51-zii-scu2-mezz.dts
-@@ -225,13 +225,13 @@ leds {
- 			#size-cells = <0>;
- 			led-control = <0x0 0x0 0x3f83f8 0x0>;
- 
--			sysled3: led3@3 {
-+			sysled3: led@3 {
- 				reg = <3>;
- 				label = "system:red:power";
- 				linux,default-trigger = "default-on";
- 			};
- 
--			sysled4: led4@4 {
-+			sysled4: led@4 {
- 				reg = <4>;
- 				label = "system:green:act";
- 				linux,default-trigger = "heartbeat";
-diff --git a/arch/arm/boot/dts/nxp/imx/imx51-zii-scu3-esb.dts b/arch/arm/boot/dts/nxp/imx/imx51-zii-scu3-esb.dts
-index 19a3b142c964..c2dcfd44c445 100644
---- a/arch/arm/boot/dts/nxp/imx/imx51-zii-scu3-esb.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx51-zii-scu3-esb.dts
-@@ -153,13 +153,13 @@ leds {
- 			#size-cells = <0>;
- 			led-control = <0x0 0x0 0x3f83f8 0x0>;
- 
--			sysled3: led3@3 {
-+			sysled3: led@3 {
- 				reg = <3>;
- 				label = "system:red:power";
- 				linux,default-trigger = "default-on";
- 			};
- 
--			sysled4: led4@4 {
-+			sysled4: led@4 {
- 				reg = <4>;
- 				label = "system:green:act";
- 				linux,default-trigger = "heartbeat";
--- 
-2.51.0
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[1/1] spi: imx: add 16/32 bits per word support for target PIO mode
+      commit: 4dbb5f6e1b4eed64037d4462977c196acab2af16
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
