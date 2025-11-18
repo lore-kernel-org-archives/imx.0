@@ -1,235 +1,186 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012031.outbound.protection.outlook.com [52.101.66.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AE036B073
-	for <imx@lists.linux.dev>; Tue, 18 Nov 2025 16:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763481676; cv=fail; b=anDkIsjykjLt6xCKvCKsJjWaE4L9xuyTJXAOQiY11eXTebWuTCtqNMd0SMtugEUB63VNQ3eSsqxv2s4apyfV5oPaODgWk+80AkVqKYvhGJRKUAr3UJ3+msG19mlPwhjYRhEUP8tVManYpSwJ8IwrsOnIQ0+rla+Z2JIp8fnReMQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763481676; c=relaxed/simple;
-	bh=hpwpo1E6BgRjYdk3ObY7l+Loimf6ppIg908Q/zqB0K4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=g/AZkmsTBKvPyvJE1WgZPLzzOzy25SUaptoU3nXxsHtq+O+CnP48odeW/WYPRO6Vv05s0NHeqLF3+LvVws6nVmdpaFTOq57DVp5fJF5jRWN/Ty//VrTRzJDLymL+qzIra/NcY4wS2IH1971EDJIENwPyhUVxvC8js5eCR/87Pug=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=adHTo3NG; arc=fail smtp.client-ip=52.101.66.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C459636405F
+	for <imx@lists.linux.dev>; Tue, 18 Nov 2025 16:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763481771; cv=none; b=t9di2bdy/IbLO6w1C6k1gEOoy4oy1ruPH5uv4kT5dh+cenKW3akGg2B8WpZNLw3i8IfZUY5/XK8pnnTE4LNzX/Ml43HRzOgp9E/oas5bUaEaf+JCZpIHRZX7S6U6XaueNEOSuVmfx8cGD40++r7w291HBy/aWl2227/1QkbZPnc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763481771; c=relaxed/simple;
+	bh=gdhjhWdICuQVp55O/pWQj35TDTisalZ3FdFeGppf0jQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g1YvVixDDIRBgxvcR/5deDbJaoNCj1cfHVYzuDsHvstUkI0qtxalxixXGTjnI+K+N1/kGPX5M9wJQphq63+/lvQwEBByuQkDknSQWHw94Q8rl5QEvuTRuCbRDUsZ0S12Aacny1eDZp7zqVzSeizjEJ+4jU3OUjUuKtQlOlQVUEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PmH1jph7; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="adHTo3NG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Wcx3M5iMKmIIVyKd0EvUYXFAeBK4zVc1lXQacLRQtkCqQbAbjclZHRsSNJ+U+GVpd+3ZVkZ4orI1Z5292m4IwUEDGI9jsVRc57PZ7FySS2x/9s9dRtZrdi6UQk7M3GZevXHxIrXeAbdaxA17mL1Q2n6eQgdn4dmsCwQdbuGv6TLKouMHYyjq2zpdottIjyWxGbJkTqqPEy3aBhmA8vKHzOAsr9skZ/Xa3XBFw+GGrZMJTkaF/vVfurpGxlQIYtnCtwkZQB5jFByfxWuWdsp3sSwFFMEbIWTpaOIctwS3238xsKDDPJtbG8gqen0Cnkj5c9dIwI3E84m4NwD2nUfVVQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WK4s4a9oI44Po+t0VcUOtFDRIv/rRTKMQ09dNSun6s8=;
- b=yidbYO+vqLYC2v/rlBw/q0w4ebTLTidOsrPQFdEjJJP+0mRtbkAEaOOvxOJCph45PTgbKSZWZzXs5bPzGbRw1uCLdZgKEyIqgsdleuxtAVp/shNeNMIrq9re1DN51Wo78byG5fTfY4zBg3ka+tbLNYZ72njXijtrvw7v0ECcGaGRW4Ju9fmmy3HtRKnhq4TgmeVBtgPwCRq0zY3/aKQYouVLTOx9znLbYWeGXM3i51tf05G+ieb/6Tb7UhyI7ns/APdyBg3SaBA9zW3MCU5dZJnMtQUf3GTwqY+1N8EztBm7Cj3Hljpb1TOatHYnJCQsPqnSL4zpTNTqYYlQ/hXIeg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WK4s4a9oI44Po+t0VcUOtFDRIv/rRTKMQ09dNSun6s8=;
- b=adHTo3NGrA5bafzjnCuGpH9CrQqhOknDSXfMFLMvo31gTdGqtiDZzTZpX9EGcGIIJPg9QsU61/fNqIDAvlihoRiS59jgqxGiSlB3qGAzopDYgU0d/Qkr+VN5aRMHsKHe8XtJwROgeyFMZwaH0PItzhv0UaWpcw2KsaVcLHDql4Zq0uFHtitVbaYDLkIre8vUHXeB0bbaoFpamKCzmMD/m7xowGNXNjWiK9qyzH/LeTUXC5QPaSgjuZ1SSOHH22uC/g3KG3PpCBlKGP4bFbCOuFGZrZO8Ki6Z9lPBZZrni67ni83D6/0QeM4drrSrzd7qZwMdwmbDsbH60AfOFcTizQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by AM9PR04MB8601.eurprd04.prod.outlook.com (2603:10a6:20b:438::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Tue, 18 Nov
- 2025 16:01:11 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd%4]) with mapi id 15.20.9320.021; Tue, 18 Nov 2025
- 16:01:10 +0000
-Date: Tue, 18 Nov 2025 11:01:02 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Haibo Chen <haibo.chen@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: imx943-evk: add flexcan support
-Message-ID: <aRyYPnn7H/+y+OEA@lizhi-Precision-Tower-5810>
-References: <20251118-dts-v1-1-81b6249f455f@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251118-dts-v1-1-81b6249f455f@nxp.com>
-X-ClientProxiedBy: SJ0PR05CA0203.namprd05.prod.outlook.com
- (2603:10b6:a03:330::28) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PmH1jph7"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4779cb0a33fso36924375e9.0
+        for <imx@lists.linux.dev>; Tue, 18 Nov 2025 08:02:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1763481768; x=1764086568; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZolYxKyR2TKNDHC7G73SjkM6m/AelgK287SOoaUodeI=;
+        b=PmH1jph71Cl6Hi1i7ixcpgOBPkIDLCKmfU85lWMvxO0VHl0x9/rJFt7UzCuFmyQWzs
+         ZRYchi1vtt9ZS7anOH6LHriMgX4/JiJDKMzAoqsRHP4LVL+jRHpoRHV/5IVM++i4eihQ
+         wP27unv6YCt6q2P1qTFo6MrZv72MSBTKrSOIoEl8zRhM/66RCBqc0HtZOI0TiU9OffhE
+         pwvnvdyjXuencDPrXB1Bu/gaaRENe3fM8NAb5w1XeN+1G7xg9j01BNY8ETR/CVzqClB1
+         8DjLj9O+PxdZvIzXBCaAtcp5ozxUT4KC/ilzroFqRGimOlPlm3/dLvLvMxmq8Tqq2pQf
+         D7dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763481768; x=1764086568;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZolYxKyR2TKNDHC7G73SjkM6m/AelgK287SOoaUodeI=;
+        b=mn52K3IliufR22B8R/bpt1qI+B4yo+j2r2qHespibSHY/r0bLsoGIEFzKrYQy744wv
+         Rjg1TJ/mKnxBN8S5xTVajr9PEHcmdGYdAK7UogRfqROD4+HaATZqXr1pcy7NV5aitszf
+         /Oi3W5EDLVTvj49aajEvwlZwj1Lma1GB94RDlUbQeHeIgunS3jO4BQQzDfylaQHienxy
+         dhbaCWwnaljiIP0yi7mELtr+5G036EWdTgJojpaPSgQz2nMoG34QH95bz98M9znjhRk8
+         VlxoEL9GiSySH1P2bS8qRm/UTVEkiX5ooSsjuvMH3Z3LVsjZ/HHFilZZj1S5ZFcOGT/2
+         yuLw==
+X-Forwarded-Encrypted: i=1; AJvYcCWL5svxNOwa0IKs/sFVrQ7KO4pZWa9jhnyAisSpK3UNxfr2h6C7WmHtoAP/lUq7L82LHYc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxwuW1wwDrg8hlz5GTD8h8yYHlMP4t7U/5yEmAHWCax2r5NIyKk
+	JNNphVuAs+mq63WEg46zT9vJiwPw3E311d9jH7Tiqs6l5+sa3f95Y0tLBzDMWlNWpFs=
+X-Gm-Gg: ASbGncs78D7CnWwdB1ci0KocwkVDn+HTYje7c3ZsD8asP0Zd4vkdbpx4g2XLBzmAupU
+	boriTItQU+RhZyLn9XrZlJDiU7+dygYZP8vN++SLKuBajuOyyJdWIGcpB3Bbkdu3kgELVbA/CvU
+	9nwCYALM0kvxP1yPMjjcrHzxclS1+GF5hipo12pTp8vK42D8JUPPf7BsgfLCw5gaTQRh7sYwtDD
+	1Ov8CnGVXW/EjjagXGVoQ3Pp8Abmvi5JC7Vi3OoEGPVNSzEN2ond05Pgly9P4v5P8mx1b0xV+t1
+	le1ouuDlUexDPj4/ZIj8rMciaOw4T28Kw+Jn+pXLK4A4ivN4QwDlr8Vg/5G1PWSTscd3FO9e4kq
+	WR/wzqupw6a7+jR+i08QII2npDumRdm71vrIBVoSfz8STw4o1VKk2SNLAmKa7xxDANfU5QaBusx
+	aT6mTfIvzE5waRUuf7vic=
+X-Google-Smtp-Source: AGHT+IHU3f+2VnZb17HyfN3q7vH0maabvSkwzyf6Chngf7ZnCh4C8B1MIKZ3LBGCUAyWOLacnrXL3g==
+X-Received: by 2002:a05:600c:4505:b0:477:7a87:48d1 with SMTP id 5b1f17b1804b1-4778fea8810mr178621825e9.30.1763481768019;
+        Tue, 18 Nov 2025 08:02:48 -0800 (PST)
+Received: from vingu-cube.. ([2a01:e0a:f:6020:76db:cf5c:2806:ec0b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4779fc42f25sm171954575e9.6.2025.11.18.08.02.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Nov 2025 08:02:45 -0800 (PST)
+From: Vincent Guittot <vincent.guittot@linaro.org>
+To: chester62515@gmail.com,
+	mbrugger@suse.com,
+	ghennadi.procopciuc@oss.nxp.com,
+	s32@nxp.com,
+	bhelgaas@google.com,
+	jingoohan1@gmail.com,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Ionut.Vicovan@nxp.com,
+	larisa.grigore@nxp.com,
+	Ghennadi.Procopciuc@nxp.com,
+	ciprianmarian.costea@nxp.com,
+	bogdan.hamciuc@nxp.com,
+	Frank.li@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Cc: cassel@kernel.org
+Subject: [PATCH 0/4 v5] PCI: s32g: Add support for PCIe controller
+Date: Tue, 18 Nov 2025 17:02:34 +0100
+Message-ID: <20251118160238.26265-1-vincent.guittot@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|AM9PR04MB8601:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3dd7d712-54c7-4dd0-e593-08de26bbb139
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|19092799006|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BBlZ/igPybJ4yFsEmoYZiJ0L2HXA0HRKxYQZ9V6bsU3OBO9zj+Z8H1GPuXxq?=
- =?us-ascii?Q?7ErKCliu8vmuFZmC4OWX/fV19Di/1rG1wA1kq5KLRjmDH3c5Yj+W19e53yVD?=
- =?us-ascii?Q?JgAhSfGX5a9vTaLUE5yKOnO9wmGqcNa29VHi4MADRYNvzXDKbYImADD/xYKn?=
- =?us-ascii?Q?zB3MxCNGweDay47BjPWRzchXI4bBOoEdY1+05iGi7hi+U7hQ+wFga9PVqThd?=
- =?us-ascii?Q?tZK8oE3ssLxGcLaf/ocUDdidmYBIqGm870sXSyoeGzt9yyUf/N9MGNwVAJ0C?=
- =?us-ascii?Q?iV43Dm5ROCXSx55bsEucglN7+30wU0X8m2aJ6albFlP4rmNARGtvFYgsVGfV?=
- =?us-ascii?Q?gGE7FvrWXr52aRVPFUUrLlrlsVwmO2jJX0SbkjmZLi3kgG3xvw8nyCpRRG6m?=
- =?us-ascii?Q?LhvEbFQmsgDcbkF1L2OEou73zDyqIWHoefThI7IqLttL9lcoImw0ixJ+WhCE?=
- =?us-ascii?Q?ft9vjYTjOb+/PrxL3FP9UdHxW1J26driS+T3TJiuGpJCjemhwaXD7SedrJ26?=
- =?us-ascii?Q?fN/xADwP96Vq4Mkc2g3x0OVl+af6rdKZ5j+a0GN9gyFOXgyGoDndhFJiEwG/?=
- =?us-ascii?Q?oV6WXkHXzliefRFTrPJvKxQ5ocOmjnj6/DWXimRVKqVr0U3ZQYrr/YCdhlI/?=
- =?us-ascii?Q?yJL0GtQlodbVPYrR3A0+hdYpgNcrLgzs2e+CZ2fSyOXUoSEc8q1VpwNk0Ywi?=
- =?us-ascii?Q?fB5q1KFT1XU/3AdbzO+hVr4NqIENdpgDrtOfq3wgeV9sbdJje/77ZUdetdCE?=
- =?us-ascii?Q?vb+wAOEyTMdYvTYhnpNsJAIpV7vDDX2w0hNgQx17LJEepH36nEFAJoVTFXT+?=
- =?us-ascii?Q?yMAriVm2yTWtoY2qSzN/HCIRSJqwnMHqXEnNa4clzZYhWJ00whaHd/ltWoQx?=
- =?us-ascii?Q?es8jTRHgYtCQmxTQOAbbOG8Ak0hPo7DM59ttzHL4Ujlo9JVIrKrOfCi1jGT6?=
- =?us-ascii?Q?V218AeFtHKs8HoW+4OC6dw0IqwSW041NJ3nEsqH4j218qLEyIFJ8N+FeAeY0?=
- =?us-ascii?Q?hB4en5n2lq6MtwvdIkASU5fHGukAYAZ7N/c97aQAaeO1noiFPCsD/f77jqld?=
- =?us-ascii?Q?vnc2nAGIc+Qe6v53ZxSTh1kYoNiVk0MPWdN5lcqpetsdXU6QDEYs4Ulxs37Z?=
- =?us-ascii?Q?QKzbbulRYH+KPGrjZDcNArHfpxVMjYEGWoytvTq+QN4i2TO+vXEw0XOtUaeb?=
- =?us-ascii?Q?bEsHnP3GqUG5mJVEx/DA/sa429WDaiMU06dZ9GJMJA4sbAEARHhFHxDmy8Fb?=
- =?us-ascii?Q?PiqYWwN7TKjm3S2SQkVwRRgzbIk7H3XAAEoT6eTlp3Drw+caFeExST3qsafo?=
- =?us-ascii?Q?2MIad8lkiDHHrvbfCs+tDL7cwBZFdCv3dZNY/EvZnp3VV+acBNH7/thNNkpB?=
- =?us-ascii?Q?4WgbkfKkQ9JjOYt/P/Ls9mjhgqOpex3IJ3qxwYOR4SSkYagWOdcP5A6uL2zV?=
- =?us-ascii?Q?mPfyM7b5ERMsCR04GSc3Drt7p4I8Wdz8HQVK9IaVseR1f+vi1btg+hUQ2S6V?=
- =?us-ascii?Q?F4KRftA3q5sK63YvubgBTmrQt15LeKdXJEln?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(19092799006)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?T0vgr5V3IfVwz9LE1kClWDaTv+uI57Qj3FS7zPDj5geMpzz13xMsfi+A4a0B?=
- =?us-ascii?Q?KLYbscmLxxZWpfV3v+upakRjWLy4vsIhHawlVM42HyeIJbr5V7ASlhEB8E2l?=
- =?us-ascii?Q?z/Kw9X1D4neLeIFjx2YDMy1vBLZXXsUTOwZxTN2ZSWLnYE34Kpk8zCgrlETj?=
- =?us-ascii?Q?h5uPIehDk2IJKnQJaVvoFXlAU2NDd3+Axo0xottjHIlJEhu9bYrz5CCFjlca?=
- =?us-ascii?Q?XHxC09V1PSe/m6riYv/Yy7mqVPzq87FJgCThxoAXtwF9PPl4BtHNDoHejGO7?=
- =?us-ascii?Q?oZI52H03ABUfWU5+tWnxYiphVwxAZ3QzXMIH+esI62cMgwRCTXEf9XW9tYoF?=
- =?us-ascii?Q?Xu4Pg634Uq+TTFf4eZj+AsZ6X+kWEBQSo8K1bVN6JTZObBaA3hhXvW7LCWq2?=
- =?us-ascii?Q?91gWzOt9xVe7nxsaZVxCLMdArRwQtngAl2xjuBF7fI2tz5HFMGLy44b63rjR?=
- =?us-ascii?Q?ycx0sey5la7wwy0EZVj7BafsSIfQKw59tMykXTbSAr4Ij6x0JZdjJ59253fe?=
- =?us-ascii?Q?QY6tmTvNWRos0Ey/NQoNycFfH+10OPr46nLSqfm6ajPcUvsaHQE487SI1wqt?=
- =?us-ascii?Q?DtnI0OoVV6luZJwz9vUov+DuDe7QxUsbDtHHYEYr5ZTPFiRnSMf2pi5L4hJY?=
- =?us-ascii?Q?hPRzB+Ie0YgrOCeRFRgMg1wE0BIoS8TI2C4WziEytdMiOb+wjgawtiHqaEJs?=
- =?us-ascii?Q?f6uOGsbrUvqEbC2rIERx2K/ZRbZKsOmC1ySLnCmTV0ElvZUNoPPpbOIZozil?=
- =?us-ascii?Q?7P+pxgtLjK6/5MVDZh1FLgpFeY127ZdZ/Gl984bBX6ZWT9AMkTo2VFozXbWF?=
- =?us-ascii?Q?wNiFJig3WVnFmEW5T/FwqonzDsJo35H+53vL5DNyjfp/8Ao1VwYqeT2jnURb?=
- =?us-ascii?Q?muV/95LaGdp3fviC6gAzMfqI0BIuSdf/3BMHk91Br1f9adidqamaqFdceurO?=
- =?us-ascii?Q?r4/ldOaZWQvjRv8JrikzGaJHvie0EivoS0NqL2qrbpl5Qe1+ui+OnfwNAiVL?=
- =?us-ascii?Q?/u8pUBL+eRa7FmMdyyV8GQlZyAZnA2VWOJSorF2ArZ5PqXTSt/hfO1ewkFzo?=
- =?us-ascii?Q?QzVA0GWqWviMiNvsJauNkZlTD9ToChz/AVJJaCnzPDmhroRiRCTfJzCljFA7?=
- =?us-ascii?Q?hjgRP13rWlRQZKbthb+QuvR8FNK2HaNJoFsCUO3LCwtjrkbEwhCpRTanTE4h?=
- =?us-ascii?Q?wzSc46ym6WgQTJCbNsURT2XgTQFGO9a4R5vabXpVvDBInTo9LqGFg8M2y87x?=
- =?us-ascii?Q?+/AsZ9vxoT9i8O3b2sqwd69+UEuFmEMUHO/5l8rEoTk+2TYd81hDW4elW+v+?=
- =?us-ascii?Q?ZYdMQb7fpczJxHu4kzSxTCCbsZkbYI85awz921gzn+8rUirIm/GO92j+YppC?=
- =?us-ascii?Q?QyNQAVQ5g/EdqVTFj5iYxWSCRk4KgqRYG5SfMw4OXwsU1bc2yrpoywlea4e9?=
- =?us-ascii?Q?uwqO4VryNRjVWkqB+6/EYhGb+5Wo3QLPxdHFcjAaAfmCN58RgkNZDsXvs7WU?=
- =?us-ascii?Q?NThnG8ndPI+eLkNGFLE+0srSSiE8ByNPRUGuiH0H+othnpie09tmSglg8xC2?=
- =?us-ascii?Q?FqSKqtMx1yt1uXoTCVXKZiRaCzJNSUOZFnYYrsdl?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3dd7d712-54c7-4dd0-e593-08de26bbb139
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2025 16:01:10.8952
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rU9cT2l65g2fzjRsln2AXZKhtZz5kgiCYVCmBKb/5T2AQve66XxkKIo19aghLkCjOGxtBla36P4KBxirjv+DOQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8601
+Content-Transfer-Encoding: 8bit
 
-On Tue, Nov 18, 2025 at 03:09:24PM +0800, Haibo Chen wrote:
-> Add flexcan2 and flexcan4, and related phys support.
->
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx943-evk.dts | 43 ++++++++++++++++++++++++++++
->  1 file changed, 43 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/freescale/imx943-evk.dts b/arch/arm64/boot/dts/freescale/imx943-evk.dts
-> index c8c3eff9df1a23c52e74bf2bc5d4ba543bb5a65b..9b2fce25532fa0dbca3a14041399adec0f753e68 100644
-> --- a/arch/arm64/boot/dts/freescale/imx943-evk.dts
-> +++ b/arch/arm64/boot/dts/freescale/imx943-evk.dts
-> @@ -34,6 +34,22 @@ dmic: dmic {
->  		#sound-dai-cells = <0>;
->  	};
->
-> +	flexcan2_phy: can-phy0 {
-> +		compatible = "nxp,tjr1443";
-> +		#phy-cells = <0>;
-> +		max-bitrate = <8000000>;
-> +		enable-gpios = <&pcal6416_i2c6_u50 3 GPIO_ACTIVE_HIGH>;
-> +		standby-gpios = <&pcal6416_i2c6_u50 4 GPIO_ACTIVE_LOW>;
-> +	};
-> +
-> +	flexcan4_phy: can-phy1 {
-> +		compatible = "nxp,tjr1443";
-> +		#phy-cells = <0>;
-> +		max-bitrate = <8000000>;
-> +		enable-gpios = <&pcal6416_i2c3_u171 0 GPIO_ACTIVE_HIGH>;
-> +		standby-gpios = <&pcal6416_i2c3_u171 1 GPIO_ACTIVE_LOW>;
-> +	};
-> +
+The S32G SoC family has 2 PCIe controllers based on Designware IP.
 
-Is it orderred? can-phy0 should be before dmic: dmic. (use nodename order).
+Add the support for Host mode.
 
-Frank
+Change since v4:
 
->  	reg_usdhc2_vmmc: regulator-usdhc2 {
->  		compatible = "regulator-fixed";
->  		off-on-delay-us = <12000>;
-> @@ -127,6 +143,20 @@ memory@80000000 {
->  	};
->  };
->
-> +&flexcan2 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_flexcan2>;
-> +	phys = <&flexcan2_phy>;
-> +	status = "okay";
-> +};
-> +
-> +&flexcan4 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_flexcan4>;
-> +	phys = <&flexcan4_phy>;
-> +	status = "okay";
-> +};
-> +
->  &lpi2c3 {
->  	clock-frequency = <400000>;
->  	pinctrl-0 = <&pinctrl_lpi2c3>;
-> @@ -431,6 +461,19 @@ &sai3 {
->  };
->
->  &scmi_iomuxc {
-> +	pinctrl_flexcan2: flexcan2grp {
-> +		fsl,pins = <
-> +			IMX94_PAD_GPIO_IO34__CAN2_TX		0x39e
-> +			IMX94_PAD_GPIO_IO35__CAN2_RX		0x39e
-> +		>;
-> +	};
-> +
-> +	pinctrl_flexcan4: flexcan4grp {
-> +		fsl,pins = <
-> +			IMX94_PAD_GPIO_IO36__CAN4_TX		0x39e
-> +			IMX94_PAD_GPIO_IO37__CAN4_RX		0x39e
-> +		>;
-> +	};
->
->  	pinctrl_ioexpander_int2: ioexpanderint2grp {
->  		fsl,pins = <
->
-> ---
-> base-commit: 187dac290bfd0741b9d7d5490af825c33fd9baa4
-> change-id: 20251118-dts-ad4bd4fdacd6
->
-> Best regards,
-> --
-> Haibo Chen <haibo.chen@nxp.com>
->
+- Moved allof position and added interrupt-names' restriction in yaml file
+- Removed PCIE_S32G_PE0_LINK_DBG_2 and instead use PCIE_PORT_DEBUG0|1
+  after receiving confirmation that they are the same.
+
+Change since v3:
+
+- Added Root Port node and reorder irq in binding
+- Added Root Port management in driver 
+- Fix Kconfig PCIE_NXP_S32G position
+- Use default pme_turn_off method
+- Use ops->init() to simplify init and suspend/resume sequence
+- Fix some typos.
+- Removed MPS and ERROR config. Let core code configs them.
+- Removed s32g_pcie_disable_equalization() from internal team request
+- Removed dw_pcie_link_up() from suspend/resume functions with [1]
+
+- I'm still waiting feedback from internal team before removing
+.get_ltssm() and .link_up() functions.
+
+[1] https://lore.kernel.org/all/20251107044319.8356-1-manivannan.sadhasivam@oss.qualcomm.com/
+
+Change since v2:
+
+- More cleanup on DT binding to comply with schemas/pci/snps,dw-pcie.yaml
+- Added new reg and bit fields in pcie-designware.h 
+- Rename Kconfig PCIE_NXP_S32G and files to use pcie-nxp-s32g prefix
+- Prefixed s32G registers with PCIE_S32G_ and use generic regs otherwise
+- Use memblock_start_of_DRAM to set coherency boundary and add comments
+- Fixed suspend/resume sequence by adding missing pme_turn_off function
+- Added .probe_type = PROBE_PREFER_ASYNCHRONOUS to speedup probe
+- Added pm_runtime_no_callbacks() as device doesn't have runtime ops
+- Use writel/readl in ctrl function instead of dw_pcie_write/read
+- Move Maintainer section in a dedicated entry
+
+Change since v1:
+
+- Cleanup DT binding
+  - Removed useless description and fixed typo, naming and indentation.
+  - Removed nxp,phy-mode binding until we agreed on a generic binding.
+    Default (crnss) mode is used for now. Generic binding wil be discussed
+    in a separate patch.
+  - Removed max-link-speed and num-lanes which are coming from
+    snps,dw-pcie-common.yaml. They are needed only if to restrict from the
+    the default hw config.
+  - Added unevaluatedProperties: false
+  - Keep Phys in host node until dw support Root Port node.
+
+- Removed nxp-s32g-pcie-phy-submode.h until there is a generic clock and
+  spectrum binding.
+
+- Rename files to start with pcie-s32g instead of pci-s32g
+
+- Cleanup pcie-s32-reg.h and use dw_pcie_find_capability()
+
+- cleanup and rename in s32g-pcie.c in addtion to remove useless check or
+  duplicate code.
+
+- dw_pcie_suspend/resume_noirq() doesn't woork, need to set child device
+  to reach lowest state.
+
+- Added L: imx@lists.linux.dev in MAINTAINERS
+
+
+Vincent Guittot (4):
+  dt-bindings: PCI: s32g: Add NXP PCIe controller
+  PCI: dw: Add more registers and bitfield definition
+  PCI: s32g: Add initial PCIe support (RC)
+  MAINTAINERS: Add MAINTAINER for NXP S32G PCIe driver
+
+ .../bindings/pci/nxp,s32g-pcie.yaml           | 130 ++++++
+ MAINTAINERS                                   |   9 +
+ drivers/pci/controller/dwc/Kconfig            |  10 +
+ drivers/pci/controller/dwc/Makefile           |   1 +
+ drivers/pci/controller/dwc/pcie-designware.h  |   8 +
+ .../pci/controller/dwc/pcie-nxp-s32g-regs.h   |  21 +
+ drivers/pci/controller/dwc/pcie-nxp-s32g.c    | 391 ++++++++++++++++++
+ 7 files changed, 570 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+ create mode 100644 drivers/pci/controller/dwc/pcie-nxp-s32g-regs.h
+ create mode 100644 drivers/pci/controller/dwc/pcie-nxp-s32g.c
+
+-- 
+2.43.0
+
