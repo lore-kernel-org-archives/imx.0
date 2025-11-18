@@ -1,192 +1,298 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013018.outbound.protection.outlook.com [52.101.83.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38832F1FD2
-	for <imx@lists.linux.dev>; Tue, 18 Nov 2025 02:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763433022; cv=fail; b=B4E1Mbg64hsCqaT0FH4UbJ7/zT9+N1A/nmrtrMDR877zkWcTUWVKn5lL+AZs5MJT8ZdOfMk6WHavWv7AsX8fySEk+/LLKA2wisT8CI0CoJ3RFZGx2YfvFWQCxXpwL8JMuDspDNE1sOGPV+OIAGvz0eCC2LAgzRMTgCokz94zEi4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763433022; c=relaxed/simple;
-	bh=1aeqG9D/q+DK+IIQcCceRkjKEcP1nPwrPLuAbBEJAgI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nB3/UtzL4YCnwhWJ5pjzJvkR4/zZyDvwDNMOmoVjWY8oVPfCqut3dTdE3BrSBw/Lpaavsp+l67rRG9QwN+Zcm6Q6uNAZkcNV6y9ubTtAxwTiVnUAdt61Tc1wYmmN1AUlMnZXPxlDWM2XDOmPiYF5W47RnqWOPkUGeXTJutGI5QI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aeattlJG; arc=fail smtp.client-ip=52.101.83.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D92E328271;
+	Tue, 18 Nov 2025 02:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763434407; cv=none; b=Gl+o3eN1XrtpV4/dfeaf/IvO9kTiqg7y6xA3CD4Y1x/lgMPX+5dm1mp7/Nc8Xn4J4t0CTwYBtFmrU4Z8S4TwJeZjHq8J/qJoB/TQ118pFJ0JsYGwkn2ez0chSfMp2FXtxKZBWenWiVsK77c6GKhufTRaAFJkU4w39Qs3B7kxJoA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763434407; c=relaxed/simple;
+	bh=TGMIpi0NVbJVycoHtc3vfTgyms+LXC6G6OwyhZqhteA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RG7+rFNv5t1hRFPddChueADsK3+bVvyEMBJ/F6B4sWV5dV15tiAUMswGTXFCpBwQXINY4ZKyHm4wxtPcWQl8MUHQZA+wk23JYBLC+14NgZ0+gfThYVvI9CB81HpPAFaQLhJO0ZFxhM0lWrjyhyFt/ZUX2TIj7CuDU5bcCUXZd/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BDW51Me2; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aeattlJG"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WDx9i24BldnnvFQkr3gffllGkVoLgYUmZBMFsarFZiXu2eOdpkdcD/nIGgeuR2q9wCwC0/NZzB4phfs7zmxHe8jNqFGfTnbl8bReFBNkHZudVNLEyf1UicNusTKWIa/9q0oQiXar7QPp/wcfd/7R8MKsQI+TwqWXOrNvT6nkipFHksUYyCgF34K9tyrpmAZmdLg+RaNF7RqpAC/TFPH5oZrp/utwcdU3ifcZ3VLgzP4JjMVr3JNXBJzklYaMkfgsPXZqXaywZvufBbyIekqBjcbG1BiUup5liz1SjnNg+qdlW9V7MT34Dvf2HUj80FpnE1ML1pHKvR78aCrXbVs0Vg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1aeqG9D/q+DK+IIQcCceRkjKEcP1nPwrPLuAbBEJAgI=;
- b=p/zW9DEG9WSYE3BVlBBcCMLe1tCb79kRB05+E2cxeEtuNzbI6opkElBf/7t+YQ+Smh9zA0rFiqBeF7wtPRPIvTe2e7GlwTykIMwi/KwwOw+GLk/+yGRefd+X644uiJNRKvv8FAUOLG21sesQ41by4y/x5HfUBX9AlHMcNRuRtWv6WhISw5crL+CcxAqAVUkv4dviA+W+bZ+wWUSKfm/P5krDmM33UtTwM/8WmQJNAoG9quyQ/PTHUd67kjPY1+cj0ynu52ijy3Jfx2qgXdCoQU/cHd3M79G5pPoKBNDFFj9okZoBKyI+rrIT7BQCNSQ9wMk193k56xT15IHOtBgh+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1aeqG9D/q+DK+IIQcCceRkjKEcP1nPwrPLuAbBEJAgI=;
- b=aeattlJGJbod9B9y9g/t55+PfgiJnyp9trkqPOSYDS2qOn3ngRoqQiUggypf6ECrDkmkCzRM3OjKG1kegJ6eolqwxGlGeUWasWtWQN1JS3pxQaG/BM/+sBq+Zsu3ilwORhsWaMnxMu0dPxgHr81dXEgbSh6HsXOttSA5bU9qkofPPMbihBnPwdjvpjt2jpxBs+kbtwpKLo8RmT/F450KARRAC39Y7y3Pz708MksG+dh29C94HTycjrumi8AxKysnIp/89X9COaxkXAN8Extl5byibUGLTGgty9eMQDiP89nUzIipluZpTsV3AZvRHPDDd3LBFH2B7HwbJhRjlxVxlg==
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
- by DU4PR04MB11756.eurprd04.prod.outlook.com (2603:10a6:10:627::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Tue, 18 Nov
- 2025 02:30:17 +0000
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::868b:3935:5e0f:6a33]) by DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::868b:3935:5e0f:6a33%6]) with mapi id 15.20.9320.021; Tue, 18 Nov 2025
- 02:30:17 +0000
-From: Bough Chen <haibo.chen@nxp.com>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-CC: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-spi@vger.kernel.org"
-	<linux-spi@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v2 0/2] Add support for NXP XSPI
-Thread-Topic: [PATCH v2 0/2] Add support for NXP XSPI
-Thread-Index: AQHcV7Hhc8OvQmOtHUKcu0etVVYrvbT28u4AgADEFeA=
-Date: Tue, 18 Nov 2025 02:30:17 +0000
-Message-ID:
- <DU0PR04MB9496785C9D77B3271A92602090D6A@DU0PR04MB9496.eurprd04.prod.outlook.com>
-References: <20251117-xspi-v2-0-e651323993fe@nxp.com>
- <20251117-logical-benevolent-penguin-29b355-mkl@pengutronix.de>
-In-Reply-To: <20251117-logical-benevolent-penguin-29b355-mkl@pengutronix.de>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9496:EE_|DU4PR04MB11756:EE_
-x-ms-office365-filtering-correlation-id: 7db083c6-8f71-45ee-d319-08de264a69dc
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|19092799006|366016|1800799024|38070700021;
-x-microsoft-antispam-message-info:
- =?utf-8?B?ejNYTU9ZeEVBMTNSVzI2MUtYeWFPdnJLTlQ3S3pwd1UzN2hheExpTmJ3SVdV?=
- =?utf-8?B?bjdJeEF3SlNmaGlPYkt1aWpJK2ppcCtXaDBJZmMzVTFxbGc5NExvZW5abUdZ?=
- =?utf-8?B?bEYvakxhdDdETE5WZFQ0RytaOUZJYS9VK1hQdFNwcU5IcjA1OFBwVHFsb0sy?=
- =?utf-8?B?blRZcHFOdWNrTDMySVQ1ZzhzRnZxS1lhcUptbEtxZXpiSHlIU0lSUmp6Q29l?=
- =?utf-8?B?akdPVmdFVXBQb2hIUkNTOHJPSktWbzZ3YUhNRFJHK1REWDBibmNPT0h4WXVS?=
- =?utf-8?B?bTlGWWQ3ekc3UGFCZ0FCQkkvNTdaUmFwMFBZbmlvV3ViTWVWak1CU1JJc0l1?=
- =?utf-8?B?VUg5MThZNzFpak5INlR3OFBWRGxQNkJYODZLbTQxRGZnV0Q2TmhNRFQ1Nmhv?=
- =?utf-8?B?OXRBc0JqZzVYeDNXb2hHRzlIQkh0ZzRZdnlzUWNDNmJnNWQxeVZuVFZWbWdL?=
- =?utf-8?B?Nk5pN0tjeWh4TkphYzBPSE9wNVB1UjRNSUJiM2pLaERjb0FPQUlsNHBabHY0?=
- =?utf-8?B?S3Myd1RHeUVwRkk0cE1WejRlWkcyV05JMUhDVjU4TTMzZHI0YUNqTjVkTU9B?=
- =?utf-8?B?WWxGUDNvcmtQalR2OU94ckZ0VWNGRFY3MzNyaUVsZnhaaDZobTR3VXlRaFpT?=
- =?utf-8?B?d2EweVVQQnF6bEVseUlUVmIvK0lJbzJJQlB5czBtdVJodzZoRlVIb0o0RUFr?=
- =?utf-8?B?UUt2TEhBQ2xSSWZha1dWM3hiSGppalZrTkhqakFuWWkycmpPN0Yxd1FYTUlG?=
- =?utf-8?B?N093SjlaM2xKTG03MGlWWnZEcDJxNzZQaEcvQms0cnBOK1BtNHRsOGhrRU5i?=
- =?utf-8?B?L1UyVUVnVDVGRjRWK3VEc3FMVUtseTZZaDlTRStJeW5sYnlUVXJDNmF1Vnkv?=
- =?utf-8?B?SDNodS8rVms3QkpDem9zUXQ1bDR6WTVaTExwUU5JNGlCMllJRzc5ck5XSjJK?=
- =?utf-8?B?SUNSR1VEdFR5YzYxay9JVkRORDJ1cGx6cWllTWsySkRka1pSMmVzT0gwc254?=
- =?utf-8?B?bkJockZiSFFTUXBtMXN4TFB0V0xxdFMyS2RuTkl1eXUxaVdQY0g2UTc4ellO?=
- =?utf-8?B?N25DTGw4ZHFvdzZpOHhJMXQ1Y0Jubm1KMDdQUjY3dDBoUnNvWklvTVpJM0Mx?=
- =?utf-8?B?c1llU2lmcGhPQTZ1TzMrY1E3clQxUWdZbldIM0hldDlNOVlhT05VQllSWXdu?=
- =?utf-8?B?eVlFMCtGRDJiWGNybmNpUlY3alZlK0R0MEgyN0ZTSU1YL25nMnZCbGQ2bUpm?=
- =?utf-8?B?elRQT2Y3a0hZNDZzcjJiTXhkL0lyWXpjazZzbDFRRkMydWE0VnZONi9pejFL?=
- =?utf-8?B?enZJSnRadG5vWS9keEJlNmZJU1p1a2EvWmxjaWtNc3Bkc2RNbW9mejNIenpN?=
- =?utf-8?B?YXcrMVVtaGZWNExZS0M0UHhQakZwSTFwUHU5SWF4RVZvVlRkUkZUbVBQVURR?=
- =?utf-8?B?NWxteG9XS2Irejh2OXNKcXMwWHhXUkRSanVxV1VSbi9ycDk0dXQ3TDJtenlq?=
- =?utf-8?B?MzlrU2I4TFcrV1VjaXc3SmhPWkhTNTFtbHVVNTRialFMZ2NZQWhhZW1rTGpN?=
- =?utf-8?B?MmZaVVpaTUpXcUU1TlRkbFJIc2xoUlQrMGVtcW05VUc2cjQ5Z0oxbGUvZnlO?=
- =?utf-8?B?U1FpMGRRRjJjRW13Qml3Q0VlUFdLVzNEelVEQUZydm4yTWdVdi8wSG1HV2FL?=
- =?utf-8?B?RnM1S0pCRmxFNXFqc1pyeTJXNk80a3Z1ejVSUC9sRnNBcGhwTlpKalFIL3E4?=
- =?utf-8?B?VnJsTVB3MkUxVTdQMm1LdjdmbTBKcGdyS0dKbEZJcjFsRFlSOGFweGRORWpw?=
- =?utf-8?B?MGJQODV5SnNFdTFBaUN1TVlKeXB1ZDZmcU5qYjVCWmlnbThWbWNPUzlCSHkv?=
- =?utf-8?B?dGNLWTlRbDhjaVBJNVhvaFhjS1c1STdVbjNKZEFuQ2dJbHVCbHc2blphV01H?=
- =?utf-8?B?eVVvcFJYbVJWL0pudmhqdy9ta1lVbFFLRXM5R3J2NWEyb1IvWkdqZ1BhQzJj?=
- =?utf-8?B?cm4zd3dnUXBBPT0=?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9496.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(19092799006)(366016)(1800799024)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?SjJCV2p2NEZYMnExSzNOekgyM1l4ZjFlL3NFeG1ubHlXTjZPaHhTR1ZraEZj?=
- =?utf-8?B?cVNVcmxyME5laG1tWFF6c2l4L0tBemJGUG1XR0VNUEZxQnFJRUVUaE1nN2pz?=
- =?utf-8?B?L3pFVllSK2c5N0pMZGl1Skh4bXFwdUxxdVExMWRYNjZOa2hoc3BBNDlvMkdK?=
- =?utf-8?B?NDdRQzFpSjBZT3VNK3NGUFBjODVjT1B4d1RTZEpxTzN3Y213Q1FKdHR4dkM1?=
- =?utf-8?B?c2hoZW05WnVPcHdjOWxsQitWS2s1aHFKc21aWGZ1TDlwcVNQdFUzTFVxM1BM?=
- =?utf-8?B?TDFoN0FNZHhoZUQwUTJrSWhFK2VqSThOeVZETEVNY2RJa0dGbFRwQ0FVTVNL?=
- =?utf-8?B?MGlWRXV3QjBhT2xGaWNXdnM1VUd4cW9SUDNabUVYMDZ1VFlnNVFtWUNqRkpo?=
- =?utf-8?B?S3NOVTBlYm1zNDZ3S3ZNNkcvYVAyRlRrTUpqQk5YcWFkSXVYQ3VzdE05bjRi?=
- =?utf-8?B?TFlRcVFScXROdlQyOFZDamc4VUlHeVF3NGp3WEloMXVlSDlOTWNudDlXbUFr?=
- =?utf-8?B?TzJzMXo0TWVyUDNRY3VNdjFQS0l1TXdQSFFXakJkQXhGMjFoVDBvc294M2FV?=
- =?utf-8?B?dW5BTXBTNERnc3FHUVlLdmtLdkh1SGw0WUNHZGpCRXlRb2VEZXZsSWY4WGpF?=
- =?utf-8?B?a2JUaHh1KzV6bCt1a01BRHozZ25KREVXL3JVMWdIcnQyRmZsQVVYQUlrOU1a?=
- =?utf-8?B?SHVXRUptMzFYU09WTkQ4YkN6NVJ6Sm82TE9mSGZaVEhVWVpnT0dSQTVWZnN5?=
- =?utf-8?B?MU8rZlNxOW5Yc3FneXZtOWdXcHRlK0lTYnRpVXNlbnNkYVo1SWEveU9TSjlM?=
- =?utf-8?B?RWdtWmxuaisrbE00aVdKM0RrZTNZVEx3c2laaXkzaTRJWVU5aVpRb3pzREFW?=
- =?utf-8?B?dlcrb0dnNTZ0L1gzZnptcUxKdktNOHdXUHNNeTkzdlphbkQvVnNNR0JISE1r?=
- =?utf-8?B?U25QRWFSam9BcUpZWE1FZEJGY3gvMmROZDY3Szc4WjRjalVHSU8xS2RLVExp?=
- =?utf-8?B?T1N5Ly9VaFdFK3RqV2dqdDdTbFluTkNDQ1ZpOWhYMGt5Z005U3A1SmV1TTZx?=
- =?utf-8?B?VEJ2KzJkMEdaMUIyVFc5blBsUXdjaDNRZG5FaStsazJITnlZR3h1Qk0rNjRM?=
- =?utf-8?B?c28zc3RKenJkYUNDSXRIQXltYktkNVZaZ01MOE9BQU5lZ1pmZUlKSnhwSmVE?=
- =?utf-8?B?S2w2UG5sYnJBSXE4OHF1a2JrUStWQ1J4RmFiS3lsakhPQnNKRGhsNFJSRndo?=
- =?utf-8?B?RkZLUXBFT0hrblkyc1AvTGk2ck9tSEFMS1lRNWpTQW5JanVPRmt2VWQva0hr?=
- =?utf-8?B?VTByRlNrbHV6TFBEQ0MvRlhEK3M0SFZ1RVVZb096aUs2K053dFlNTTlzTE03?=
- =?utf-8?B?c3hQTVoxSUhwQmNPRGFRMXoyeUJ5RCtOcEppNjVhMVp6UHNPRW9SVExRc0xi?=
- =?utf-8?B?YjA2V2h6TmxqT3ppVVlOSlZaYWhYdENsaHhQRjVvaGNidDU3VEVhOG9kbFk3?=
- =?utf-8?B?ZnlZeGNEd0NaNkhKZmRoWHYvcTFCdlM3eUlveDNBVmxidmxGVWR6bDRuMDFj?=
- =?utf-8?B?cGVIZDNnd3pIV1BXL0p5MW9URGFnb09ncTB4eThlUkk5MkRpbjMrQjNYUWxW?=
- =?utf-8?B?YmdGeHpNa082UkYvTzl1aEJ0M1hNdHdocC9hQzJrV0JDcG8xakVMelI1dmkx?=
- =?utf-8?B?NzRWZmF2Y0lCTjNRVTlDMCt6VDliZlM2dXJDMkdsR2J2VEpUR2pFNm9UaDVs?=
- =?utf-8?B?VUw5SmZOTkV4Y0NhU0pFV3paSlViY0hyd2wzb3plZmtCd005bHdCYnhmc1lm?=
- =?utf-8?B?YklGOHlnTmlGd3N4TmhUWjBOVmlkdUpkaENIa1dXNG14WXdPOXA5TlpOYlNn?=
- =?utf-8?B?SWJRRnNjaE4zSjhHemNCcURpMmwxVlZWQ2ZJaW01bG1VOVV5aVFJMTFyZ2Jt?=
- =?utf-8?B?SlR2YWJmVUIwUHBmOGZNUVN4dUMzYUFuNVZjK2dOS1dZdjd6QTFiWVp0dEZ6?=
- =?utf-8?B?Yk9rUDZYWUdFWkhXTVNpWE1BdFd5MUc5aGxDUkNtTTl4bGNySnVoMXFaclQ4?=
- =?utf-8?B?dGdmam5UUytyM2ZyWWswTDJkN2JlWXZSaXM5T2Y1NkM1dEN1Qms4MlROcThZ?=
- =?utf-8?Q?6tYQ=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BDW51Me2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1763434406; x=1794970406;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TGMIpi0NVbJVycoHtc3vfTgyms+LXC6G6OwyhZqhteA=;
+  b=BDW51Me2/7dyrfMsx+hvZsLmtAftII4E6ww1shAQ/iB91rWTvQuI0FnN
+   gIVMJTKqJuU9G4AGOVjObFnuwR+/pEoSstO7Fqj4N+7SObkMs4CvV1v4A
+   X2BRoqLCRerjbyWqnti9KiO7y1fAv7fGxDSV5hmIYeckmYlui/ButECSU
+   u2GMzXaQ3O5cR9ZWXgwtb9X5SgA7nLoex2ZS2iCiOe4TEYjrPG0GDqyD1
+   wFzAzahPmLzga16ftG8cFr/7KBYj0UMuQD0hQyb9GQqLK48JmSC0VolP0
+   7nC8D/rNu9y3xHukg20VrPkOkQOSfDOPPgznvXOJT5BUpGh8644+eoka/
+   A==;
+X-CSE-ConnectionGUID: ZbNl4XYxSsy08GqD4xdNkQ==
+X-CSE-MsgGUID: RfmTV2iiSj+wWFdqz7qssQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="75768686"
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; 
+   d="scan'208";a="75768686"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 18:53:25 -0800
+X-CSE-ConnectionGUID: LOGPaqt5TXCoMMaduCc7dw==
+X-CSE-MsgGUID: P7KNbUpzT8aDrUm0gYTNgw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,313,1754982000"; 
+   d="scan'208";a="191069423"
+Received: from lkp-server01.sh.intel.com (HELO adf6d29aa8d9) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 17 Nov 2025 18:53:21 -0800
+Received: from kbuild by adf6d29aa8d9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vLBqJ-0001Gh-04;
+	Tue, 18 Nov 2025 02:53:19 +0000
+Date: Tue, 18 Nov 2025 10:52:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Wei Fang <wei.fang@nxp.com>, shenwei.wang@nxp.com,
+	xiaoning.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	eric@nelint.com, Frank.Li@nxp.com
+Cc: oe-kbuild-all@lists.linux.dev, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 net-next 2/5] net: fec: simplify the conditional
+ preprocessor directives
+Message-ID: <202511181031.CnphZ4bh-lkp@intel.com>
+References: <20251117101921.1862427-3-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9496.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7db083c6-8f71-45ee-d319-08de264a69dc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2025 02:30:17.8650
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: VHuGch3Hxc732QvydzCvjIuEWJ9S3jlrMV5qi15cNjhrJJZ6R407vbVZPxlo+4hd/8C+YcWOQEVeEnz1JdiXaA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11756
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251117101921.1862427-3-wei.fang@nxp.com>
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBNYXJjIEtsZWluZS1CdWRkZSA8
-bWtsQHBlbmd1dHJvbml4LmRlPg0KPiBTZW50OiAyMDI15bm0MTHmnIgxN+aXpSAyMjo0OA0KPiBU
-bzogQm91Z2ggQ2hlbiA8aGFpYm8uY2hlbkBueHAuY29tPg0KPiBDYzogSGFuIFh1IDxoYW4ueHVA
-bnhwLmNvbT47IE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9yZz47IFJvYg0KPiBIZXJyaW5n
-IDxyb2JoQGtlcm5lbC5vcmc+OyBLcnp5c3p0b2YgS296bG93c2tpIDxrcnprK2R0QGtlcm5lbC5v
-cmc+OyBDb25vcg0KPiBEb29sZXkgPGNvbm9yK2R0QGtlcm5lbC5vcmc+OyBTaGF3biBHdW8gPHNo
-YXduZ3VvQGtlcm5lbC5vcmc+OyBTYXNjaGENCj4gSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXgu
-ZGU+OyBQZW5ndXRyb25peCBLZXJuZWwgVGVhbQ0KPiA8a2VybmVsQHBlbmd1dHJvbml4LmRlPjsg
-RmFiaW8gRXN0ZXZhbSA8ZmVzdGV2YW1AZ21haWwuY29tPjsNCj4gaW14QGxpc3RzLmxpbnV4LmRl
-djsgZGV2aWNldHJlZUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5v
-cmc7DQo+IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMu
-aW5mcmFkZWFkLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYyIDAvMl0gQWRkIHN1cHBvcnQg
-Zm9yIE5YUCBYU1BJDQo+IA0KPiBPbiAxNy4xMS4yMDI1IDE5OjA0OjIzLCBIYWlibyBDaGVuIHdy
-b3RlOg0KPiA+IFhTUEkgaXMgYSBmbGV4c2libGUgU1BJIGhvc3QgY29udHJvbGxlciB3aGljaCBz
-dXBwb3J0cyB1cCB0bw0KPiAgICAgICAgICAgICAgICAgXg0KPiB0eXBvOiBmbGV4aWJsZQ0KDQpU
-aGFua3MsIHdpbGwgZml4IGluIG5leHQgdmVyc2lvbi4NCg0KUmVnYXJkcw0KSGFpYm8gQ2hlbg0K
-PiANCj4gcmVnYXJkcywNCj4gTWFyYw0KPiANCj4gLS0NCj4gUGVuZ3V0cm9uaXggZS5LLiAgICAg
-ICAgICAgICAgICAgfCBNYXJjIEtsZWluZS1CdWRkZSAgICAgICAgICB8DQo+IEVtYmVkZGVkIExp
-bnV4ICAgICAgICAgICAgICAgICAgIHwgaHR0cHM6Ly93d3cucGVuZ3V0cm9uaXguZGUgfA0KPiBW
-ZXJ0cmV0dW5nIE7DvHJuYmVyZyAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3
-LTEyOSB8DQo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2IHwgRmF4OiAgICs0OS01
-MTIxLTIwNjkxNy05ICAgfA0K
+Hi Wei,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on v6.18-rc5]
+[also build test ERROR on next-20251117]
+[cannot apply to net-next/main net/main linus/master v6.18-rc6]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Wei-Fang/net-fec-remove-useless-conditional-preprocessor-directives/20251117-183058
+base:   v6.18-rc5
+patch link:    https://lore.kernel.org/r/20251117101921.1862427-3-wei.fang%40nxp.com
+patch subject: [PATCH v2 net-next 2/5] net: fec: simplify the conditional preprocessor directives
+config: m68k-m5272c3_defconfig (https://download.01.org/0day-ci/archive/20251118/202511181031.CnphZ4bh-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251118/202511181031.CnphZ4bh-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511181031.CnphZ4bh-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/net/ethernet/freescale/fec_main.c:2766:50: error: 'FEC_MIB_CTRLSTAT' undeclared here (not in a function)
+    2766 |         FEC_ECNTRL, FEC_MII_DATA, FEC_MII_SPEED, FEC_MIB_CTRLSTAT, FEC_R_CNTRL,
+         |                                                  ^~~~~~~~~~~~~~~~
+>> drivers/net/ethernet/freescale/fec_main.c:2767:51: error: 'FEC_OPD' undeclared here (not in a function); did you mean 'FEC_H'?
+    2767 |         FEC_X_CNTRL, FEC_ADDR_LOW, FEC_ADDR_HIGH, FEC_OPD, FEC_TXIC0, FEC_RXIC0,
+         |                                                   ^~~~~~~
+         |                                                   FEC_H
+>> drivers/net/ethernet/freescale/fec_main.c:2768:9: error: 'FEC_HASH_TABLE_HIGH' undeclared here (not in a function); did you mean 'FEC_GRP_HASH_TABLE_HIGH'?
+    2768 |         FEC_HASH_TABLE_HIGH, FEC_HASH_TABLE_LOW, FEC_GRP_HASH_TABLE_HIGH,
+         |         ^~~~~~~~~~~~~~~~~~~
+         |         FEC_GRP_HASH_TABLE_HIGH
+>> drivers/net/ethernet/freescale/fec_main.c:2768:30: error: 'FEC_HASH_TABLE_LOW' undeclared here (not in a function); did you mean 'FEC_GRP_HASH_TABLE_LOW'?
+    2768 |         FEC_HASH_TABLE_HIGH, FEC_HASH_TABLE_LOW, FEC_GRP_HASH_TABLE_HIGH,
+         |                              ^~~~~~~~~~~~~~~~~~
+         |                              FEC_GRP_HASH_TABLE_LOW
+>> drivers/net/ethernet/freescale/fec_main.c:2770:47: error: 'FEC_R_FIFO_RSFL' undeclared here (not in a function); did you mean 'FEC_FIFO_RAM'?
+    2770 |         FEC_X_DES_START_0, FEC_R_BUFF_SIZE_0, FEC_R_FIFO_RSFL, FEC_R_FIFO_RSEM,
+         |                                               ^~~~~~~~~~~~~~~
+         |                                               FEC_FIFO_RAM
+>> drivers/net/ethernet/freescale/fec_main.c:2770:64: error: 'FEC_R_FIFO_RSEM' undeclared here (not in a function); did you mean 'FEC_FIFO_RAM'?
+    2770 |         FEC_X_DES_START_0, FEC_R_BUFF_SIZE_0, FEC_R_FIFO_RSFL, FEC_R_FIFO_RSEM,
+         |                                                                ^~~~~~~~~~~~~~~
+         |                                                                FEC_FIFO_RAM
+>> drivers/net/ethernet/freescale/fec_main.c:2771:9: error: 'FEC_R_FIFO_RAEM' undeclared here (not in a function); did you mean 'FEC_FIFO_RAM'?
+    2771 |         FEC_R_FIFO_RAEM, FEC_R_FIFO_RAFL, FEC_RACC,
+         |         ^~~~~~~~~~~~~~~
+         |         FEC_FIFO_RAM
+>> drivers/net/ethernet/freescale/fec_main.c:2771:26: error: 'FEC_R_FIFO_RAFL' undeclared here (not in a function); did you mean 'FEC_FIFO_RAM'?
+    2771 |         FEC_R_FIFO_RAEM, FEC_R_FIFO_RAFL, FEC_RACC,
+         |                          ^~~~~~~~~~~~~~~
+         |                          FEC_FIFO_RAM
+>> drivers/net/ethernet/freescale/fec_main.c:2771:43: error: 'FEC_RACC' undeclared here (not in a function); did you mean 'FEC_RXIC1'?
+    2771 |         FEC_R_FIFO_RAEM, FEC_R_FIFO_RAFL, FEC_RACC,
+         |                                           ^~~~~~~~
+         |                                           FEC_RXIC1
+>> drivers/net/ethernet/freescale/fec_main.c:2772:9: error: 'RMON_T_DROP' undeclared here (not in a function)
+    2772 |         RMON_T_DROP, RMON_T_PACKETS, RMON_T_BC_PKT, RMON_T_MC_PKT,
+         |         ^~~~~~~~~~~
+>> drivers/net/ethernet/freescale/fec_main.c:2772:22: error: 'RMON_T_PACKETS' undeclared here (not in a function)
+    2772 |         RMON_T_DROP, RMON_T_PACKETS, RMON_T_BC_PKT, RMON_T_MC_PKT,
+         |                      ^~~~~~~~~~~~~~
+>> drivers/net/ethernet/freescale/fec_main.c:2772:38: error: 'RMON_T_BC_PKT' undeclared here (not in a function)
+    2772 |         RMON_T_DROP, RMON_T_PACKETS, RMON_T_BC_PKT, RMON_T_MC_PKT,
+         |                                      ^~~~~~~~~~~~~
+>> drivers/net/ethernet/freescale/fec_main.c:2772:53: error: 'RMON_T_MC_PKT' undeclared here (not in a function)
+    2772 |         RMON_T_DROP, RMON_T_PACKETS, RMON_T_BC_PKT, RMON_T_MC_PKT,
+         |                                                     ^~~~~~~~~~~~~
+>> drivers/net/ethernet/freescale/fec_main.c:2773:9: error: 'RMON_T_CRC_ALIGN' undeclared here (not in a function)
+    2773 |         RMON_T_CRC_ALIGN, RMON_T_UNDERSIZE, RMON_T_OVERSIZE, RMON_T_FRAG,
+         |         ^~~~~~~~~~~~~~~~
+>> drivers/net/ethernet/freescale/fec_main.c:2773:27: error: 'RMON_T_UNDERSIZE' undeclared here (not in a function)
+    2773 |         RMON_T_CRC_ALIGN, RMON_T_UNDERSIZE, RMON_T_OVERSIZE, RMON_T_FRAG,
+         |                           ^~~~~~~~~~~~~~~~
+>> drivers/net/ethernet/freescale/fec_main.c:2773:45: error: 'RMON_T_OVERSIZE' undeclared here (not in a function)
+    2773 |         RMON_T_CRC_ALIGN, RMON_T_UNDERSIZE, RMON_T_OVERSIZE, RMON_T_FRAG,
+         |                                             ^~~~~~~~~~~~~~~
+>> drivers/net/ethernet/freescale/fec_main.c:2773:62: error: 'RMON_T_FRAG' undeclared here (not in a function)
+    2773 |         RMON_T_CRC_ALIGN, RMON_T_UNDERSIZE, RMON_T_OVERSIZE, RMON_T_FRAG,
+         |                                                              ^~~~~~~~~~~
+>> drivers/net/ethernet/freescale/fec_main.c:2774:9: error: 'RMON_T_JAB' undeclared here (not in a function)
+    2774 |         RMON_T_JAB, RMON_T_COL, RMON_T_P64, RMON_T_P65TO127, RMON_T_P128TO255,
+         |         ^~~~~~~~~~
+>> drivers/net/ethernet/freescale/fec_main.c:2774:21: error: 'RMON_T_COL' undeclared here (not in a function)
+    2774 |         RMON_T_JAB, RMON_T_COL, RMON_T_P64, RMON_T_P65TO127, RMON_T_P128TO255,
+         |                     ^~~~~~~~~~
+>> drivers/net/ethernet/freescale/fec_main.c:2774:33: error: 'RMON_T_P64' undeclared here (not in a function)
+    2774 |         RMON_T_JAB, RMON_T_COL, RMON_T_P64, RMON_T_P65TO127, RMON_T_P128TO255,
+         |                                 ^~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2774:45: error: 'RMON_T_P65TO127' undeclared here (not in a function)
+    2774 |         RMON_T_JAB, RMON_T_COL, RMON_T_P64, RMON_T_P65TO127, RMON_T_P128TO255,
+         |                                             ^~~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2774:62: error: 'RMON_T_P128TO255' undeclared here (not in a function)
+    2774 |         RMON_T_JAB, RMON_T_COL, RMON_T_P64, RMON_T_P65TO127, RMON_T_P128TO255,
+         |                                                              ^~~~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2775:9: error: 'RMON_T_P256TO511' undeclared here (not in a function)
+    2775 |         RMON_T_P256TO511, RMON_T_P512TO1023, RMON_T_P1024TO2047,
+         |         ^~~~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2775:27: error: 'RMON_T_P512TO1023' undeclared here (not in a function)
+    2775 |         RMON_T_P256TO511, RMON_T_P512TO1023, RMON_T_P1024TO2047,
+         |                           ^~~~~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2775:46: error: 'RMON_T_P1024TO2047' undeclared here (not in a function)
+    2775 |         RMON_T_P256TO511, RMON_T_P512TO1023, RMON_T_P1024TO2047,
+         |                                              ^~~~~~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2776:9: error: 'RMON_T_P_GTE2048' undeclared here (not in a function)
+    2776 |         RMON_T_P_GTE2048, RMON_T_OCTETS,
+         |         ^~~~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2776:27: error: 'RMON_T_OCTETS' undeclared here (not in a function)
+    2776 |         RMON_T_P_GTE2048, RMON_T_OCTETS,
+         |                           ^~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2777:9: error: 'IEEE_T_DROP' undeclared here (not in a function)
+    2777 |         IEEE_T_DROP, IEEE_T_FRAME_OK, IEEE_T_1COL, IEEE_T_MCOL, IEEE_T_DEF,
+         |         ^~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2777:22: error: 'IEEE_T_FRAME_OK' undeclared here (not in a function)
+    2777 |         IEEE_T_DROP, IEEE_T_FRAME_OK, IEEE_T_1COL, IEEE_T_MCOL, IEEE_T_DEF,
+         |                      ^~~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2777:39: error: 'IEEE_T_1COL' undeclared here (not in a function)
+    2777 |         IEEE_T_DROP, IEEE_T_FRAME_OK, IEEE_T_1COL, IEEE_T_MCOL, IEEE_T_DEF,
+         |                                       ^~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2777:52: error: 'IEEE_T_MCOL' undeclared here (not in a function)
+    2777 |         IEEE_T_DROP, IEEE_T_FRAME_OK, IEEE_T_1COL, IEEE_T_MCOL, IEEE_T_DEF,
+         |                                                    ^~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2777:65: error: 'IEEE_T_DEF' undeclared here (not in a function)
+    2777 |         IEEE_T_DROP, IEEE_T_FRAME_OK, IEEE_T_1COL, IEEE_T_MCOL, IEEE_T_DEF,
+         |                                                                 ^~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2778:9: error: 'IEEE_T_LCOL' undeclared here (not in a function)
+    2778 |         IEEE_T_LCOL, IEEE_T_EXCOL, IEEE_T_MACERR, IEEE_T_CSERR, IEEE_T_SQE,
+         |         ^~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2778:22: error: 'IEEE_T_EXCOL' undeclared here (not in a function)
+    2778 |         IEEE_T_LCOL, IEEE_T_EXCOL, IEEE_T_MACERR, IEEE_T_CSERR, IEEE_T_SQE,
+         |                      ^~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2778:36: error: 'IEEE_T_MACERR' undeclared here (not in a function)
+    2778 |         IEEE_T_LCOL, IEEE_T_EXCOL, IEEE_T_MACERR, IEEE_T_CSERR, IEEE_T_SQE,
+         |                                    ^~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2778:51: error: 'IEEE_T_CSERR' undeclared here (not in a function)
+    2778 |         IEEE_T_LCOL, IEEE_T_EXCOL, IEEE_T_MACERR, IEEE_T_CSERR, IEEE_T_SQE,
+         |                                                   ^~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2778:65: error: 'IEEE_T_SQE' undeclared here (not in a function)
+    2778 |         IEEE_T_LCOL, IEEE_T_EXCOL, IEEE_T_MACERR, IEEE_T_CSERR, IEEE_T_SQE,
+         |                                                                 ^~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2779:9: error: 'IEEE_T_FDXFC' undeclared here (not in a function)
+    2779 |         IEEE_T_FDXFC, IEEE_T_OCTETS_OK,
+         |         ^~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2779:23: error: 'IEEE_T_OCTETS_OK' undeclared here (not in a function)
+    2779 |         IEEE_T_FDXFC, IEEE_T_OCTETS_OK,
+         |                       ^~~~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2780:9: error: 'RMON_R_PACKETS' undeclared here (not in a function)
+    2780 |         RMON_R_PACKETS, RMON_R_BC_PKT, RMON_R_MC_PKT, RMON_R_CRC_ALIGN,
+         |         ^~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2780:25: error: 'RMON_R_BC_PKT' undeclared here (not in a function)
+    2780 |         RMON_R_PACKETS, RMON_R_BC_PKT, RMON_R_MC_PKT, RMON_R_CRC_ALIGN,
+         |                         ^~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2780:40: error: 'RMON_R_MC_PKT' undeclared here (not in a function)
+    2780 |         RMON_R_PACKETS, RMON_R_BC_PKT, RMON_R_MC_PKT, RMON_R_CRC_ALIGN,
+         |                                        ^~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2780:55: error: 'RMON_R_CRC_ALIGN' undeclared here (not in a function)
+    2780 |         RMON_R_PACKETS, RMON_R_BC_PKT, RMON_R_MC_PKT, RMON_R_CRC_ALIGN,
+         |                                                       ^~~~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2781:9: error: 'RMON_R_UNDERSIZE' undeclared here (not in a function)
+    2781 |         RMON_R_UNDERSIZE, RMON_R_OVERSIZE, RMON_R_FRAG, RMON_R_JAB,
+         |         ^~~~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2781:27: error: 'RMON_R_OVERSIZE' undeclared here (not in a function)
+    2781 |         RMON_R_UNDERSIZE, RMON_R_OVERSIZE, RMON_R_FRAG, RMON_R_JAB,
+         |                           ^~~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2781:44: error: 'RMON_R_FRAG' undeclared here (not in a function)
+    2781 |         RMON_R_UNDERSIZE, RMON_R_OVERSIZE, RMON_R_FRAG, RMON_R_JAB,
+         |                                            ^~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2781:57: error: 'RMON_R_JAB' undeclared here (not in a function)
+    2781 |         RMON_R_UNDERSIZE, RMON_R_OVERSIZE, RMON_R_FRAG, RMON_R_JAB,
+         |                                                         ^~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2782:9: error: 'RMON_R_RESVD_O' undeclared here (not in a function)
+    2782 |         RMON_R_RESVD_O, RMON_R_P64, RMON_R_P65TO127, RMON_R_P128TO255,
+         |         ^~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2782:25: error: 'RMON_R_P64' undeclared here (not in a function)
+    2782 |         RMON_R_RESVD_O, RMON_R_P64, RMON_R_P65TO127, RMON_R_P128TO255,
+         |                         ^~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2782:37: error: 'RMON_R_P65TO127' undeclared here (not in a function)
+    2782 |         RMON_R_RESVD_O, RMON_R_P64, RMON_R_P65TO127, RMON_R_P128TO255,
+         |                                     ^~~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2782:54: error: 'RMON_R_P128TO255' undeclared here (not in a function)
+    2782 |         RMON_R_RESVD_O, RMON_R_P64, RMON_R_P65TO127, RMON_R_P128TO255,
+         |                                                      ^~~~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2783:9: error: 'RMON_R_P256TO511' undeclared here (not in a function)
+    2783 |         RMON_R_P256TO511, RMON_R_P512TO1023, RMON_R_P1024TO2047,
+         |         ^~~~~~~~~~~~~~~~
+   drivers/net/ethernet/freescale/fec_main.c:2783:27: error: 'RMON_R_P512TO1023' undeclared here (not in a function)
+    2783 |         RMON_R_P256TO511, RMON_R_P512TO1023, RMON_R_P1024TO2047,
+
+
+vim +/FEC_MIB_CTRLSTAT +2766 drivers/net/ethernet/freescale/fec_main.c
+
+53607ca2565548 Wei Fang        2025-11-17  2762  
+0a8b43b12dd78d Juergen Borleis 2022-10-24  2763  /* for i.MX6ul */
+0a8b43b12dd78d Juergen Borleis 2022-10-24  2764  static u32 fec_enet_register_offset_6ul[] = {
+0a8b43b12dd78d Juergen Borleis 2022-10-24  2765  	FEC_IEVENT, FEC_IMASK, FEC_R_DES_ACTIVE_0, FEC_X_DES_ACTIVE_0,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2766  	FEC_ECNTRL, FEC_MII_DATA, FEC_MII_SPEED, FEC_MIB_CTRLSTAT, FEC_R_CNTRL,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2767  	FEC_X_CNTRL, FEC_ADDR_LOW, FEC_ADDR_HIGH, FEC_OPD, FEC_TXIC0, FEC_RXIC0,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2768  	FEC_HASH_TABLE_HIGH, FEC_HASH_TABLE_LOW, FEC_GRP_HASH_TABLE_HIGH,
+0a8b43b12dd78d Juergen Borleis 2022-10-24  2769  	FEC_GRP_HASH_TABLE_LOW, FEC_X_WMRK, FEC_R_DES_START_0,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2770  	FEC_X_DES_START_0, FEC_R_BUFF_SIZE_0, FEC_R_FIFO_RSFL, FEC_R_FIFO_RSEM,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2771  	FEC_R_FIFO_RAEM, FEC_R_FIFO_RAFL, FEC_RACC,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2772  	RMON_T_DROP, RMON_T_PACKETS, RMON_T_BC_PKT, RMON_T_MC_PKT,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2773  	RMON_T_CRC_ALIGN, RMON_T_UNDERSIZE, RMON_T_OVERSIZE, RMON_T_FRAG,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2774  	RMON_T_JAB, RMON_T_COL, RMON_T_P64, RMON_T_P65TO127, RMON_T_P128TO255,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2775  	RMON_T_P256TO511, RMON_T_P512TO1023, RMON_T_P1024TO2047,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2776  	RMON_T_P_GTE2048, RMON_T_OCTETS,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2777  	IEEE_T_DROP, IEEE_T_FRAME_OK, IEEE_T_1COL, IEEE_T_MCOL, IEEE_T_DEF,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2778  	IEEE_T_LCOL, IEEE_T_EXCOL, IEEE_T_MACERR, IEEE_T_CSERR, IEEE_T_SQE,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2779  	IEEE_T_FDXFC, IEEE_T_OCTETS_OK,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2780  	RMON_R_PACKETS, RMON_R_BC_PKT, RMON_R_MC_PKT, RMON_R_CRC_ALIGN,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2781  	RMON_R_UNDERSIZE, RMON_R_OVERSIZE, RMON_R_FRAG, RMON_R_JAB,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2782  	RMON_R_RESVD_O, RMON_R_P64, RMON_R_P65TO127, RMON_R_P128TO255,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2783  	RMON_R_P256TO511, RMON_R_P512TO1023, RMON_R_P1024TO2047,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2784  	RMON_R_P_GTE2048, RMON_R_OCTETS,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2785  	IEEE_R_DROP, IEEE_R_FRAME_OK, IEEE_R_CRC, IEEE_R_ALIGN, IEEE_R_MACERR,
+0a8b43b12dd78d Juergen Borleis 2022-10-24 @2786  	IEEE_R_FDXFC, IEEE_R_OCTETS_OK
+0a8b43b12dd78d Juergen Borleis 2022-10-24  2787  };
+db65f35f50e031 Philippe Reynes 2015-05-11  2788  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
