@@ -1,74 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A75E347BC5;
-	Tue, 18 Nov 2025 12:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B2433D6D5
+	for <imx@lists.linux.dev>; Tue, 18 Nov 2025 12:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763467935; cv=none; b=DrPYoQaj5MZ50w1woRVy7v7d9af0see6YygvVDO0cp4UY4QAIcnUBuMvfgy1RHazAAYSZ5BuMZmJWeHwksujzbl6Cga3G79uJbmgcExwSeTc0WMokdlAVV8roeqs7gfoK3w10H21GxC4KiT7hZsCjdtWZ9YkbE56wPpBlK2sKnY=
+	t=1763468139; cv=none; b=SNXeHwPGAgdQ6C5++hDb8b4H2VUSatiNwReaeFCcEwEDmfmO0IInQ9NN+46O1Ga78MTo4zVO4kqqUUdt9MLMJfH24NaGcDyPFz14XoLyM8Eq5zBQjn1ltqaUcxWSZsgP0o502W6odhEHq6tvtBcXRMCHnE27hB4Dq+tGZzsuBgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763467935; c=relaxed/simple;
-	bh=PVNOdyEBoBQTC+IxG12BmkncjarDW/d2EWLYLFyGGGM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=leOtraC/NZtlcQsPJ5ALjjph7TjgsJdiylbaXydpMAnbI4fTYqQzDrU/4nVTxdvLi7W38QXi7qHedI7OIRp/yDsYISk5PQ5EQJrsfkIQPLu0NEXauDFMR69bOwd1nZgkubwuk3PltL/UztmIvccIsJzuWL7kh4xfH2d5fAoZfzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R4jd2y0X; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763468139; c=relaxed/simple;
+	bh=KmfCJ4nG6BTW7ees9zJOTpmLw8Y9fFNPqxadb4oaQ3s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cyawQT1MYOxC4O9/hqOzyePTK5HOvGgP0lyp1y2PJSJMlMBbyegl7A4d+v0fCNsJwz3eTMTB7i99+j2qNrUko7uuwucLQC8q4FZlF0eGPGo/k5HJStMOAcw8PvTcU5J8PVpgiG2rm060cAMHiIeBniI622a0B+1Xtlw5OZt/d+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=cM+IEsiF; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R4jd2y0X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97131C4AF0E;
-	Tue, 18 Nov 2025 12:12:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763467934;
-	bh=PVNOdyEBoBQTC+IxG12BmkncjarDW/d2EWLYLFyGGGM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=R4jd2y0X9Tf/r2CsubOz0PyKaFiwdynlTWSM4EwcASVqxSLHy/IFx0sYzkG5uLGat
-	 NaWRlJ1Ii00hdl1eEHHCJrewqMJfD/odXVU+3oDc/WlQRzI5tm3YGhhyLV25kxVclB
-	 ZWGLSHIcZUIsMP6lU8edW7YWeRukMjkcTVDNTPprA6eozH5odZqJ+CfGAQZ+POQJln
-	 58qpTSOc6bXXgWT7evHoml4WC1guwskoNXJIrvh6b4beKbdNWSN+4uB3tsasoWjigc
-	 lOWbVspZOcYc2VIkgxrYd7k9Zu80qXe2OY/GM5kp3wGZBuTwl9upUtgSiw2n/X3V7B
-	 u8k2eTljDql0Q==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Haibo Chen <haibo.chen@nxp.com>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,  Pratyush Yadav
- <pratyush@kernel.org>,  Michael Walle <mwalle@kernel.org>,  Miquel Raynal
- <miquel.raynal@bootlin.com>,  Richard Weinberger <richard@nod.at>,
-  Vignesh Raghavendra <vigneshr@ti.com>,  linux-mtd@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  imx@lists.linux.dev
-Subject: Re: [PATCH v4 0/5] mtd: spi-nor: micron-st: few clean up for micron
- spi nor chip
-In-Reply-To: <20251112-nor-v4-0-e4637be82a0a@nxp.com> (Haibo Chen's message of
-	"Wed, 12 Nov 2025 19:05:08 +0800")
-References: <20251112-nor-v4-0-e4637be82a0a@nxp.com>
-Date: Tue, 18 Nov 2025 13:12:10 +0100
-Message-ID: <mafs0zf8j4k11.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="cM+IEsiF"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 49A8B108C89;
+	Tue, 18 Nov 2025 13:15:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1763468133; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=3QJ1mTk7kGA2Mq/qr+t1f9JBo1ERwQoZHJ3mtEtKdkE=;
+	b=cM+IEsiFFxyPJrmXrbZfStiEXUKUwtHgZZ/o2gXEuujrADPdFBU3USY8tz0rzUQfn/ESCS
+	+f6JpVmalPLjCTBEo7b93zLKIp0a3XVRokmJpvgyffxbSFslRSQ9GEAA2cuNa3XDI52kfk
+	nZm9CCZWxdSonPRz4aFNaaJIaE9nssn4CKupE4ginl0QpzuKPx+WH76xoBwSc6qiisHdtX
+	RyE8ToD5SVVsYrGzmVVticwiFgvkC4Hfyf6zhjMCMtnmvTkWfqHA0bJxmLEjj7VbY928F9
+	HMxC03mF+vbrkvrXeUhKHNbK+iEGbIKgMWykPpGlMnCtjeMBDvfCRMdlxilXlw==
+From: Marek Vasut <marex@nabladev.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	Christian Eggers <ceggers@arri.de>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Markus Heidelberg <m.heidelberg@cab.de>,
+	Rob Herring <robh@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/4] dt-bindings: eeprom: at25: Add Anvo ANV32C81W
+Date: Tue, 18 Nov 2025 13:13:10 +0100
+Message-ID: <20251118121513.88352-1-marex@nabladev.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Nov 12 2025, Haibo Chen wrote:
+Document the compatible for ANV32C81W 256kb Serial SPI non-volatile SRAM.
+Although it is a SRAM device, it can be accessed through EEPROM interface.
+At least until there is no proper SRAM driver support for it.
 
-> mt35xu02gcba, mt35xu01gbba and mt35xu512aba are similar, but with
-> different number of dies. According to the datasheet:
-> https://datasheet.octopart.com/MT35XU02GCBA1G12-0AAT-Micron-datasheet-138896808.pdf
-> these chips all support die erase command, but do not support chip
-> erase. But accroding to test, mt35xu512aba support chip erase, do not
-> support die erase. mt35xu01gbba do not support chip erase, but support
-> die erase. 
-> This patch set clean up the mt35xu512aba, and add mt35xu01gbba.
-> since do not have mt35xu02gcba to do the test, just add some comment
-> under mt35xu02gcba for further work.
->
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: Christian Eggers <ceggers@arri.de>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Markus Heidelberg <m.heidelberg@cab.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+ Documentation/devicetree/bindings/eeprom/at25.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Applied to spi-nor/next with the patch 5 touched up. See
-https://git.kernel.org/mtd/c/7f77c561e2278. Thanks!
-
-[...]
-
+diff --git a/Documentation/devicetree/bindings/eeprom/at25.yaml b/Documentation/devicetree/bindings/eeprom/at25.yaml
+index 00e0f07b44f84..e1599ce109165 100644
+--- a/Documentation/devicetree/bindings/eeprom/at25.yaml
++++ b/Documentation/devicetree/bindings/eeprom/at25.yaml
+@@ -25,6 +25,7 @@ properties:
+     oneOf:
+       - items:
+           - enum:
++              - anvo,anv32c81w
+               - anvo,anv32e61w
+               - atmel,at25256B
+               - fujitsu,mb85rs1mt
 -- 
-Regards,
-Pratyush Yadav
+2.51.0
+
