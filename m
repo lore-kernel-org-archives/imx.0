@@ -1,63 +1,68 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011018.outbound.protection.outlook.com [52.101.70.18])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013067.outbound.protection.outlook.com [52.101.83.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7E436999C
-	for <imx@lists.linux.dev>; Tue, 18 Nov 2025 16:44:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D58D368289
+	for <imx@lists.linux.dev>; Tue, 18 Nov 2025 16:53:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763484296; cv=fail; b=E2IFQLbYW7D907pwWFmeKMMSgp691rTmpScAI47gyaVRSzuUQfM/ATvCfwm1K55mR6sNiaajIUR09f9IKd/zKlzbfK7fgMMNhflwNYwY+Ajnm3o011aKEYLNDHj+4sjuwObg4l0UKFYzEwoOUkdvzf3rV45NuTjTTd18Psy2fro=
+	t=1763484792; cv=fail; b=h1ga3bv7AbuacRdu141Jb5Ci2pZX5dc+Ns31SnRnSLxMqKvTua1eBJ14hmce+WPcGoVad0irp/UZj+7ghtddc04UWXObLMrC/BSDKvTKMAGmRR7XOm5e9Q98m2Hsn1icjHWosm0QAOKJbtha2YhYLIrkm8vVMvQVMeqDWcgIsPc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763484296; c=relaxed/simple;
-	bh=YDyfiQsu0l6aLWnCX1QTjOD7kgC3T2+tTLGgJ77QJNM=;
+	s=arc-20240116; t=1763484792; c=relaxed/simple;
+	bh=NKkfCovyI2aDwNySfyr93pZRvpJT3HIoGkrbPQr22xs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Fmx78we2uXrXsXjbz02CDYXRTp+KPrX72A/U5E4t1Gak+ltsEbMLONGZUVZmIp14BydiJJ4PdzlK5uVdkYy+nCC+avdL4mkUZUnYK0foRhB6mOVBzOG5/4HQ0X0ME1tDv9wEKMzvVvkuw5P5u4maggaKl8RbwxC1bNWVPn5+bKA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=C82cM+6b; arc=fail smtp.client-ip=52.101.70.18
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tNUOhBGwK0XEzwm1re8jviNY68LffO2wpDBnpKEAAxUKKhqkY+bd0b74ZmIrfPaCnkwF8/qzihPc6N3hC3MtJdkBF8C3OI8kOZjsNYwIi8C8kzb5mEgW5O0T/lZ79VMuCcQabyCA9j4PaEzTq5gqTc26HDZzyu/gdNdSJo1tCa8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=K3OnPfro; arc=fail smtp.client-ip=52.101.83.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="C82cM+6b"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="K3OnPfro"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BrFRqNEuUwzCw0KoQN9t5WAArfc8yD/O7fO+5bS7PhMPk4FpWf8nx4rLE48ouTAguWrwWSZHGF9NxpiNgalXMe9e201/pSsmj85OVED5aOWEn0u2HcNamEEB2h4n2BX+yfsE7W2UQz4/fbTZbdcGYS3zZer05oW6zJxRt2HL7WbvV6GcbZQIj4aviDni7g8vmfgMEjskeiuGGw0hF/OkSOvNQ4wUii0fI0Sf6if9CagPWkf9u2rao6UTrQOHUcCgQDDovL6Ke8CJ957q/8tIF0oYmL+vmen/KHtyHhWMv8flZlzWVyFSrPlyMdQInXWWhWKDudmZQZ+L9tFYJh9s9g==
+ b=MxlUCGz7gNJSprcOPUo2w3Mv+vuCiiB8fOfADEHWR9VLHhNLrOvK+HrJHSCTQVuSQNmeKML5LBIWx+17ygM3liFSkrNHXINmiLu4F5av9OQz/31LVwJdE3x+jN+RGS9I1SPezIgIUCxjYCdwNFNyQPtIHJr9od8IZXl85tOzU6W1vUsCZ82cwaGnImsoUTt8PqloLS6vPzNwLEAlsvuP7JDOaDOUkv33QikD0UQkueHLNZPFkf4te6urPb0Tdrmjz00GX0LgIDCaXG15vcOrZ8ZqtzdaQgjz1SerRgrDLQeUa1EDj2NxFp4m8ewgTL4N+JWzLXbKg8uyZalTx2yarA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3F7vcB/GVSDHYw31fTYkjgtDygus9EuicIHw+YPT8Jw=;
- b=mcnjQvt0hU1rHiE5xxMC+WIbKLrEjJ9qMkCkUCXhKLSOZXzomr4gnUm+09Ii31pghU66Qnlmu15QVbYWcXBSspugnMVnNlKR8J59i6Iqg1imPwisunvVXawO5v718BqyrEUMVVo7rOGveO5KrV+zJnGJi99MWPqps9OPLAf8GLjYrIojQM0k5wUu+JbQiHw2JnSG14xWTXiBuNt35nqE6cgXSJDGg3edrG/Z3PLDbj8xq2tcj8LeWlnzjqZ3NMnC6G6B4El4JDxmCuUMI7eHejPc5EHRnrux2lDw7gHp0DOLyfLjt5MK51zS5oT08/lDTLgxdfWMkv+oZ2GmoWRrJA==
+ bh=LPscyGwehav659F0fdr1MMnl9mc1+28Xyb95Sk2161E=;
+ b=JasMwMC5Ke46tC6hQsNkB/g5vGiIWuQPHOz9HELrofCqZc3Sx1ix8dXBh6llqFOpf+b3aEnr42VP3s36DqoB/AgNvZa/bfs6kRkLo1x4m6Ph8jggTOlM9eHvXxad/NmwxrUQpC39b/YFiH4ZaBTg+d4c8xAA5wu98nJTMVBOKo9dIH7R9A2Wqt8LpuFxCfGrPjg1cPbBg5gPO4nE8jcwg4QWD3KC72HBmBoztF4QQA2TW80M2x8bEXPja0NcviF8VCJWMN0k+/jZxPfjQqw/lEDiiozh//gMgVfiI6X5HCfQ53dJ1VqRaKbzpDCzD3Xgv8PGD3XFaIl31QgOiLjugA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3F7vcB/GVSDHYw31fTYkjgtDygus9EuicIHw+YPT8Jw=;
- b=C82cM+6bunFNBF6emH4jWg8O9YhvBrPCOZiOMpuiQ3JBzc/FY1NgxEKF1syNQDzvl+NhWHwVtjxpYfjgmCb44LeXcivxudqtkgCYFnP46Rl1pjaUr0Hqr3Ke6HOWhG5E+mctOvxn5eDqNijndrt3q7l6kygWCdfvzVti53Ew7UiXq6hgGhO3uQ2yN9Ko5UN4Tf8o1z1zOUPnfo/A+RCyxI3FkGUzS9RuUUDPb0h/+ATWFBsgrAXW1RoUqNhxs15xZiN/VDXuXKoDvP9727JqjZNoq/S/itteYZFkwMtm4hS4tPI3Mxfgqx0KQbMlLkHenUVVlh4sqhliyRl7Dr7ajw==
+ bh=LPscyGwehav659F0fdr1MMnl9mc1+28Xyb95Sk2161E=;
+ b=K3OnPfroY6QIORcdFEqsH4gWbtcIGBy1adIBnmzbxIW6zKwFU0ga8nJRJz9b5u9K4SA13ZAVMrKmuqr5PUmEKmtdqPXa0UsNRezg7/PD+R8YKrgaHGWrgb5JFMJmEhVlVHgcPiowvU3JAsuW+cQOtvWjztm70EvU6BNphAn5ms3caLEovP2UkFB+aw9iMzUN5nv9BEilAhuZNDfhC2VoS9x+R4XZcheXjD35WkrpUDdnNcLVGLG/X4KtXUTf0tg5W1xPEzAp0qcNlYju3PSKoLaM3RY4mJv/BKnEp223N0U2hMcKFcezBPgG0zkadrABBiC/ov6gPHH2YdsQDRWuaA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by AMBPR04MB11811.eurprd04.prod.outlook.com (2603:10a6:20b:6f4::8) with
+ by AM0PR04MB7121.eurprd04.prod.outlook.com (2603:10a6:208:19a::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.17; Tue, 18 Nov
- 2025 16:44:49 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.19; Tue, 18 Nov
+ 2025 16:53:01 +0000
 Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
  ([fe80::55ef:fa41:b021:b5dd]) by DB9PR04MB9626.eurprd04.prod.outlook.com
  ([fe80::55ef:fa41:b021:b5dd%4]) with mapi id 15.20.9320.021; Tue, 18 Nov 2025
- 16:44:49 +0000
-Date: Tue, 18 Nov 2025 11:44:41 -0500
+ 16:53:01 +0000
+Date: Tue, 18 Nov 2025 11:52:51 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: aisheng.dong@nxp.com, andi.shyti@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	pandy.gao@nxp.com, wsa@kernel.org, vz@mleia.com,
-	B38611@freescale.com, linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] i2c: imx-lpi2c: support smbus block read feature
-Message-ID: <aRyieUbSqofjEm3a@lizhi-Precision-Tower-5810>
-References: <20251118111323.1452329-1-carlos.song@nxp.com>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: chester62515@gmail.com, mbrugger@suse.com,
+	ghennadi.procopciuc@oss.nxp.com, s32@nxp.com, bhelgaas@google.com,
+	jingoohan1@gmail.com, lpieralisi@kernel.org, kwilczynski@kernel.org,
+	mani@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com,
+	Ghennadi.Procopciuc@nxp.com, ciprianmarian.costea@nxp.com,
+	bogdan.hamciuc@nxp.com, linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	cassel@kernel.org
+Subject: Re: [PATCH 1/4 v5] dt-bindings: PCI: s32g: Add NXP PCIe controller
+Message-ID: <aRykY0F9IVmU8f3r@lizhi-Precision-Tower-5810>
+References: <20251118160238.26265-1-vincent.guittot@linaro.org>
+ <20251118160238.26265-2-vincent.guittot@linaro.org>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251118111323.1452329-1-carlos.song@nxp.com>
-X-ClientProxiedBy: PH7P221CA0011.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:510:32a::25) To DB9PR04MB9626.eurprd04.prod.outlook.com
+In-Reply-To: <20251118160238.26265-2-vincent.guittot@linaro.org>
+X-ClientProxiedBy: SJ0PR05CA0191.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::16) To DB9PR04MB9626.eurprd04.prod.outlook.com
  (2603:10a6:10:309::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -66,305 +71,241 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|AMBPR04MB11811:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7843c00b-a9cc-4921-a456-08de26c1c9c4
+X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|AM0PR04MB7121:EE_
+X-MS-Office365-Filtering-Correlation-Id: 750a88cd-67bb-4997-6219-08de26c2ef5c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|19092799006|366016|1800799024|38350700014;
+	BCL:0;ARA:13230040|52116014|376014|7416014|1800799024|366016|19092799006|38350700014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?SF1LI5OgvXkwAofdiHCCprBCOApf6W/1u5g87lVYianiCD2joAKbMczzjdgs?=
- =?us-ascii?Q?ty4z9S5gqjaXlxgCw8KMm3BSvwqYetMYVw5oiRLJZouJFVFDV8H2cqhCPmQs?=
- =?us-ascii?Q?Sdp9DvjXAUmrOPcWr6yLmJ8PDHrW3Q0gGCEwzx1jVuMBxzkFrK5cS63AhAte?=
- =?us-ascii?Q?Q+M6o3xviTYibmC4d08bxDVQjfw9JNP/omvy2gCgHLgTf0PndB1rmHdZKu5G?=
- =?us-ascii?Q?pdn+h93zDgaz//1i+OKTwE8qNoH25SM6riQsPQELnCYwjjgcBDX0c/A2y3AY?=
- =?us-ascii?Q?AQvJ94g90+S2JFMg1RBBXVEkYTjWsBC9YsE5aDm3TNFFW5rDC0YTztMOkiO5?=
- =?us-ascii?Q?ChofbW90NY5QjWlG+w9DQHZNyKSWMw8GdBRPtXeD/E4ZFpbwc5z5UJ3GxFcr?=
- =?us-ascii?Q?R61QA+PpGncOcs8a79ktTAv/73JXNe9J0HsWdBoLDmGhfI6EexI5ymCVN/+F?=
- =?us-ascii?Q?BVbT7quS7zjcaqn+kspkSxTScxC5J1aizZ3//bZ4zlkIe3WHro/K4oBozCZU?=
- =?us-ascii?Q?QtcWmP7wI243nOpUppM2oxjzlZXld0BGw3crIhefiZSZr02z4u/bHr8G+IVx?=
- =?us-ascii?Q?iABT+gLex6BEcwtFaWRY3q45MaSg3zppHRe73t3szSkMT7iIxPUVdesuawJT?=
- =?us-ascii?Q?gRUCnzgTFizBIhayEKLpPhGDeoUzT68cPFd7aOxOAO0M3/bSCzelMR7RRmY6?=
- =?us-ascii?Q?RdjCDkmtc3LgNhSbCPzhu6SMBn3jaDHdav/QrHNCglwBrm6DOkUk6Dm5Q0R6?=
- =?us-ascii?Q?BChffSN/33Y2VWFbXgHh2ZBTivN0UZmZ8E2cRvS2sIlqDrrvWXHiLw9qCrbH?=
- =?us-ascii?Q?tpaxou/PEmiYsMNvzoGuSRxpytI8m5kNa9EIw27HeCWC6oYVl/R4lOsYXdo2?=
- =?us-ascii?Q?zlc/mnk2kaBqpJnoqgfdOb1M7FSa04/yBXpl4XB1zQdwI31HEU+VlLB0cnKP?=
- =?us-ascii?Q?kM2nfNCl4Pb5CBMZfz9STpmWqGEysMrsYWH85TkhnBS4Cxxwn3w1nKMv02KH?=
- =?us-ascii?Q?DoZWDhzgbM0s1wL82/1B2eQ/8tH7vJ44lLbJTA+8KsL3TNoOt9gM5ZkEFsen?=
- =?us-ascii?Q?66axU19yN5y1OgwtbpnHGUfrSqqLIIrCqN9VTZRUjbXtTcLCnaQ6+cFZ3qJv?=
- =?us-ascii?Q?DNhNoG/rHRYbghjTdVtofg9HQsRNqP9pf/JIq2M9jWgsQ+xY5K6XqaI+kQZP?=
- =?us-ascii?Q?AlWRud5KlzgVJQ6jqdrfVT4ErtbLcfuxZMCMHjoKwajsRgBGTEjJziGRtLPj?=
- =?us-ascii?Q?8xrb7O09xTRex0IV7luiw6G1IkKv/cm8BFC081gk1A6v0AnNvURcsoltQfHq?=
- =?us-ascii?Q?Vp3+Q2pcN/6FbgirObQ8qypAgrtJmY5sSA39ncHnY21kX8V10nQUSNCvP+VM?=
- =?us-ascii?Q?Vwg1XTyfDxWteJAcWdSL9a5bsZp5P0cV+SdRywCmxnbcvTGMARczoo/4bPSs?=
- =?us-ascii?Q?0bYrZlwPyvXU3nhHvCy3fUYOimFUyUGzKA/PoCd4iQm6TfidbXFkUb7homkh?=
- =?us-ascii?Q?bLpfaHd5Dw+hKkEGgq7gj0ot2laWLJziMImC?=
+	=?us-ascii?Q?ZuzdAHMKj8VE0eOrh0xLOrXlZRRNxQQ+XvPKj1tqNa22PF4ogSXN6DjVZknK?=
+ =?us-ascii?Q?+mhDhxqCru9krmH2v+vJhkjl/EmuLWkYU8zxDAGXXomONdvbIxNuHAqvX5Gh?=
+ =?us-ascii?Q?drQxJ3gmeAkVddIWwVr6UZxksIVnA26hnOU0srqVHTSAr1ft4JyjgeU7G8n7?=
+ =?us-ascii?Q?m9DuA0/ZpOqvJvTHSZ2o7UtnxDh912+4dcGt8EznkUGqoDI4TuijFiVdWFvL?=
+ =?us-ascii?Q?VYSRIOImuRLdK9hhIwXyBBbAfDFSHS9LwvqwcRPiUpDgI/tyeJeEp9W0bywf?=
+ =?us-ascii?Q?ETHOnGzbBPHsCtDnlsJcyXcO5mq4t6HA3YJsX5QyS9QsRZOqVGrwgBfLzDZB?=
+ =?us-ascii?Q?Le38RD53Z8iTRuOlF+QH90wSamU4MH4gLRZNRoyr51m5Iip8UBvxMIO2R3A5?=
+ =?us-ascii?Q?c4E55uR2+QAc0l9tiVXC/PRMPFGXQF+vmNi08ep8zpc34QvLhKuKQR/C3n36?=
+ =?us-ascii?Q?t5pRbDTeEXY9fXOJn6rMD5dG8xdqhf2h828GmIwae1WVj63uMjWgBkfwophd?=
+ =?us-ascii?Q?6Ib8EO9FK7+MD8jD2nEo+foFZ/Jt1rPYnZbmzbkgb0013bZChKe4MQHfFBGk?=
+ =?us-ascii?Q?zXdeg00zMziQY493b0SEd3kOTDdKPEGAJENabtyGd93y/4WpfuS2nJC4I5ex?=
+ =?us-ascii?Q?+UQSlyQarXa7RHvMGqDhsnpWSzPecbVvMaZZBZNAkpcB8IkDDrVSA51eHA0c?=
+ =?us-ascii?Q?xjpLBHNgNTdLE3MCGp+kHa2ArQP1jqQpPGt2Yyob+EQJDjRgz25B3019gzRA?=
+ =?us-ascii?Q?zEpTqLuZc5+KjuW0284ZAgxYabU+ncsSI9kYRJXYbNNVEF9MPjuoUjOQQC/x?=
+ =?us-ascii?Q?80heLX/EZ/Fn9PWXP5CwLRlZwESBkbLqTVujpzwzm9ICsQ0F7sFCxt45dBNX?=
+ =?us-ascii?Q?X2nEA4Fs1xD3d5JknfKo/TjfyLXuosFzRijqsBojtkf1AHL04NSKQz9rg096?=
+ =?us-ascii?Q?ehrlHNkfVU8RR+n/RG0SGfnyI+jOq65VIHqRvloyfcLENR+nR4kOrvEitnce?=
+ =?us-ascii?Q?vjSbpszqWwW4MMUneKGSEOmD3EP/fy/rkkfjTtjMa78nwqhs2jPVO9bAH2DT?=
+ =?us-ascii?Q?edI7jnCOoC+Htr8LlSIel5HkNNfUt8OF7fDWEcM+jPXZVVZXMCFP92PQ5Y7d?=
+ =?us-ascii?Q?O1L9Sk1GC/p89EyQScbv+e+DUz8bbIK/70GlhzROE4wsrajdnHduQ/xKyMMa?=
+ =?us-ascii?Q?gqyjWRmwG/peCn30q9NaBUthPIHoQgTee4rOZtlArfrq9oXzrY+Dj2PGvBTz?=
+ =?us-ascii?Q?ZQY4F9CUPQuAxhDimaEgNG1skuNOt6vUQNJwQB9jBfKGYMbDuDQjdHTefuX0?=
+ =?us-ascii?Q?bO8QtpX0DStAQYKzQOIU7VHphgpkpIwbKJVxtAKoNXc4j6bkDUK2njBQHeCj?=
+ =?us-ascii?Q?KhhqYRkFcm4pAJref+/54iVn1/LSclY3dXmKlXWTE8wM1f2lxzEtnZSjDvUa?=
+ =?us-ascii?Q?hUe5aGEvZkmbit9pAx7DMWJBFh7MhFQ9kluJI2GKQ7NyBizgTuM/Rg=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(19092799006)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(1800799024)(366016)(19092799006)(38350700014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6FRRQ5B7vZLjmHTNR+ZeK6YflVMQSo5ELVgNEEQtqY3MCaZE56Ng5MiYYS6M?=
- =?us-ascii?Q?5NgDruZy2nZ9HlB4KKtwaHp1yANezMEDmzY3sBfU2CtIhYlW1K58ehY3fwc0?=
- =?us-ascii?Q?vFh5/9LhRxmMyS1Kzu34RX4zW2QpGTajcn/EYxCX6jNv7m9YqZ/D7dE6SMh1?=
- =?us-ascii?Q?ylrVPJjYcfeLIJyY4cDpp2gDgFEo5cpyNrQJjfkQ2/KnoNxBbQNIYvRdtx/w?=
- =?us-ascii?Q?eCCn55ISYJyLb7Q4KeR8bLssO7ynYyPBXbASJJVGeQ6Cc+SRITJPkFpxJuA1?=
- =?us-ascii?Q?oB2UwK7uCvdmlSqA4nCWZ77xzmKcasn+N3GooD2cN9+l8OjtNTprekMXWj0+?=
- =?us-ascii?Q?u5oAkXBDGim+vqI8wLGuK+lNb0ojGCX1r4T5DJFAc4hG6ZoF7Hy1zWTSH75S?=
- =?us-ascii?Q?q7tyRgblCQueBN7504ikaDb4x4bEnOrY3hKcfDtGdLDKPh50IAm97KIlqXxo?=
- =?us-ascii?Q?QkW9tCUqzAseFQl8Et3b1qhaKAzJ4r3XWHduH+UtUZ63YKF66S57uDI5cjps?=
- =?us-ascii?Q?Fe2zQ1yRsoL7Ux2PN/Z3Pdz6FZ9P2hlaNzMP5I5V1whK7TwPCRC/Hku5ic1z?=
- =?us-ascii?Q?08UbMJ1Y0IKWar/G9ymaCpKEv7xpZTwBNYJ24QwEhc8AynvSTo2v2V7c+wVf?=
- =?us-ascii?Q?G1L6a2Nh9Z/c6eKizK7CpMuTq0Q/mw7sbOLsfRu0AasjiOVfjLxQgFQjb8op?=
- =?us-ascii?Q?P3glpxQRFiz9KJLyAzeJuLHJyjI1Z5s0NHAmHhQ+vQoHW/b5yD52qiAWBJlg?=
- =?us-ascii?Q?eEzw5LaInt2uD7zjTWno1Ttqk8Ay/tSAnPxCQ1N8hvJJMVsLegDeFAMyYtsO?=
- =?us-ascii?Q?hHt3sPbJdQjW5jLJsjlw+C4x5bX4otYIkpA5UQKjYgrbW+rmMF3u/YhEFZdk?=
- =?us-ascii?Q?fM+dpigslFTz8JIIplTMjxedO3nfF8Dc8G4h6qMj5WwdAmLkdDmI2oesTHFX?=
- =?us-ascii?Q?DprCtUvQ+atmAhcw7N20e1RYb8neLZL2rbqng+06rEJtvfSB6jYJvdC5a7ju?=
- =?us-ascii?Q?eKln44JwO4tIW+RyZ+z7XRRYtydAKt3OOk4xNSKNo+QjDb8h6WR9kdCuNw2j?=
- =?us-ascii?Q?hFNPw677Ie47sgy0Krp8IsachTGXogl+slkOgxyGXhG3g9nLNScjhvxe0Mh9?=
- =?us-ascii?Q?7dyCUdQIXDhKPKpuNU7Ks0R3mf7djSK9sbuAf7MYddR3mTzA1NHcuSLxpKy9?=
- =?us-ascii?Q?jSpA0f4yuYLDKvXlQ5h7vivGVdSDSsQbItpuOR+Wyawg86yNX/11lU8zSyt9?=
- =?us-ascii?Q?wh9F1mTEsqg5jpUPb9DrfDEZVlnzEDSYPbylgSG+wxQSECkgQDy+IN2i89qy?=
- =?us-ascii?Q?bjdLNcwvxt5+mRhK2ZjeztSZ6PqgLi4cDXXtBEX2s7Ejl1b+y8OK982wu0x7?=
- =?us-ascii?Q?4h4t3EF5Hofv63J+Uf5dj+E2N/M034SmEEDKrS3vB4S2kuzOTesxBVbLEszo?=
- =?us-ascii?Q?13qb5gTvRKUfAnV/mGkphb2/3DL+06MIOQ2MlcPWExjoDzX8LK9LDNih5azc?=
- =?us-ascii?Q?Rprwk3rYp3SdEImHqhDFuyWU8tUzOIWP2/34prM77xRgJ1hjjmUzgVyKJbVK?=
- =?us-ascii?Q?WOd0smIQ4nVYf+OYsmWdB02wU6a7z222084OdgFr?=
+	=?us-ascii?Q?g3ZAT3A7QS77zOzKFyRDVALAABDhB/Fv+EhVhLE3DFqNxJMj8i7LCeF8Us+8?=
+ =?us-ascii?Q?IhqHytA28UdmhtD9yOEY3voeasihxpSHzFmIQkA8fgYdSrtFmLKg5eTktk0+?=
+ =?us-ascii?Q?+XE3+bTOGSABVeV8lRpMu2TlCBSt1kYh6mx6gEJJhE+aMK1eLWqwGMWwIQXR?=
+ =?us-ascii?Q?Xj/FWGDkmqw81jQR8ED720yWAHENPJg0OV7BAiLwKdxjVDQUj3AERbnNfuCc?=
+ =?us-ascii?Q?f+B0RaKhZge8kzni5UpGwKCu/17q3M7/TL3wvCERE2qgb/Cv5ERqtfH9FHxx?=
+ =?us-ascii?Q?2EtPlajQhKkBlFEN+ACfAhX/mX4S17pCQCLewSoLBoLPIZDvUiBvIJH6lTJ9?=
+ =?us-ascii?Q?Vkd0OBFyQzeqYCjD+A12s3RqO4Ut5RBTKKkXAjvYeFYSDQoeJwfzFqc5DZAf?=
+ =?us-ascii?Q?u0MsySCRqiKmNOutinpGGpV43qdgVfLHNPlK4cBk/Ut8meTBTwInBQ/EHOhL?=
+ =?us-ascii?Q?3AjHZyaj2rIz5VYkmMARuhr8lw7M5TsdlY4GDUckqfkyVbQ7QsaVCziHFutH?=
+ =?us-ascii?Q?EOU3mgOmlpS+bKypkjl2HLv6Qs4Bg2kFFnLLQNwuM4PVfaZYbXMkrqUhFaqc?=
+ =?us-ascii?Q?idewHVUgDV2d0WTmE7za+XjfUROC6/z9JMVaZzn96V1ULDt3G64rOUGXL5wE?=
+ =?us-ascii?Q?/mTnzG6eszHdigXNglbMz4TDgTUrB1Gem3ZJos0PUorc+ekdYCy+W0UeTOJp?=
+ =?us-ascii?Q?cR+Ta2nCcTTTlHcOZZJZlAUX03zKFb5LFvJD1lbl7u3labWFKw65xw0S8KsJ?=
+ =?us-ascii?Q?4WXeLfiZJfGCEClBtuEOKLQ23bOa/cop2TMOR1b4laFmijp8Sa8L0bT9rHnb?=
+ =?us-ascii?Q?Mz+yw06LJb2LeRBIwbH7nm5N2JV+5LfqI9YzYaWYCuDJCWPX/38cs8dUay4T?=
+ =?us-ascii?Q?PGcBxF79bZ/+1xSZPq2S7yJn/sykr3v8ZHl2aJEwHc6+XBqaBJ5xs3fTMpiY?=
+ =?us-ascii?Q?UH97s0ljDcx6PsVJSUvabs4jPXz4PizplukIiGIw+N87fuAuKqA55anHO7WU?=
+ =?us-ascii?Q?ypDSSuY2WYFFnN0/g1z8Aqc2uDpCIlOzTureO98PphbspkGUiiHliWuFXxnl?=
+ =?us-ascii?Q?EgVvVyKifg7RpK/XwowkecLso9ZuCdhFS3APwoDjcUHGKRpE7Gmooo8hRuUK?=
+ =?us-ascii?Q?sH1KwZUs/O91DcDZS6GZPEnr9Bet2ZfB+Ks8A8iDEY2mAypl8xF+Dqw45shs?=
+ =?us-ascii?Q?byEswR4K3qZScngrFoOLKL7eesuKPxIwdV1LfpkHgQueTG5wTqBIQaFmgbEY?=
+ =?us-ascii?Q?KDJVIR31Xbpom7V2cbdqiVKthTVFUDLhl4EoxRaZPLUlZ6qEReGMzMY5gB2Y?=
+ =?us-ascii?Q?0XOOrmyXAKdYZtsbuznQR/OSa1i4A3HXN2QOMkpe3mL0f56lrHyNHKkihFyo?=
+ =?us-ascii?Q?Sppcpab/akzaQB8DeiWlRMY7Fz16EdXSItR6f+Yjsun6dw7dkYX8wXnLdLaA?=
+ =?us-ascii?Q?c6/djVua47oMvzUf2wl2Y/HK/oke4LuF6DdwS+XW2Fm5ZXmtzm9faxQy7eki?=
+ =?us-ascii?Q?SZKRC6UCIw/5BsfUk5ApTs72+/iOEIXTGhrZymWjDRNxpzG6GluhLbAKiWvS?=
+ =?us-ascii?Q?cbWaXujX+x8plgAU1Fhcsxsc4Kcff2r/hkw3JWNr?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7843c00b-a9cc-4921-a456-08de26c1c9c4
+X-MS-Exchange-CrossTenant-Network-Message-Id: 750a88cd-67bb-4997-6219-08de26c2ef5c
 X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2025 16:44:49.0591
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2025 16:53:01.5983
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BvmkRSUy09AethKn0f3slTPeyjQj+WCNFeo4IbyqVMrQoZwuAavDnFWOtc6VU8uJwUfTYqLZSHYH7m1pixYSBg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB11811
+X-MS-Exchange-CrossTenant-UserPrincipalName: AkPXUsB0xObSQqXUGU9sLRCIXQkEgHgOCwoWJSrmFEpWGKS7t4M2pUZ4qIZW2oKiCbDoAbDB0KZLK8cW1jypFQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7121
 
-On Tue, Nov 18, 2025 at 07:13:23PM +0800, Carlos Song wrote:
-> The LPI2C controller automatically transmits a NACK on the last byte
-> of a receive data command. It transmits the NACK unless the next
-> command in the TXFIFO is also a receive data command. If the transmit
-> FIFO is empty when a receive data command completes, a NACK is also
-> automatically transmitted.
+On Tue, Nov 18, 2025 at 05:02:35PM +0100, Vincent Guittot wrote:
+> Describe the PCIe host controller available on the S32G platforms.
 >
-> Specially set read 2 bytes command initially. When the RXFIFO receives
-> count data, controller should immediately read out this value and update
-> MTDR register to keep the TXFIFO not empty. Set new receive data command
-> to read other data before the 2nd byte is returned.
->
-> Fixes: a55fa9d0e42e ("i2c: imx-lpi2c: add low power i2c bus driver")
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
->
+> Co-developed-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
+> Signed-off-by: Ionut Vicovan <Ionut.Vicovan@nxp.com>
+> Co-developed-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+> Signed-off-by: Bogdan-Gabriel Roman <bogdan-gabriel.roman@nxp.com>
+> Co-developed-by: Larisa Grigore <larisa.grigore@nxp.com>
+> Signed-off-by: Larisa Grigore <larisa.grigore@nxp.com>
+> Co-developed-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+> Signed-off-by: Ghennadi Procopciuc <Ghennadi.Procopciuc@nxp.com>
+> Co-developed-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
+> Signed-off-by: Ciprian Marian Costea <ciprianmarian.costea@nxp.com>
+> Co-developed-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+> Signed-off-by: Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+> Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 > ---
-> I setup an env to test this feature change:
->
-> On I.MX93-EVK:
-> LPI2C5 as slave device and use i2ctool to redesign the slave-eeprom mem:
->
-> hexdump -C /sys/bus/i2c/devices/5-1064/slave-eeprom
->
-> root@imx93evk:~# hexdump -C /sys/bus/i2c/devices/5-1064/slave-eeprom
-> 00000000  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff  |................|
-> 00000010  20 00 01 02 03 04 05 06  07 08 09 0a 0b 0c 0d 0e  | ...............|
-> 00000020  0f 10 11 12 13 14 15 16  17 18 19 1a 1b 1c 1d 1e  |................|
-> 00000030  1f ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff  |................|
-> 00000040  08 00 01 02 03 04 05 06  07 ff ff ff ff ff ff ff  |................|
-> 00000050  00 ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff  |................|
-> 00000060  40 ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff  |@...............|
-> 00000070  ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff  |................|
->
-> case1: SMBus block read 0x10 register. SMBus len = 32 bytes.
-> case2: SMBus block read 0x40 register. SMBus len = 8 bytes.
-> case3: SMBus block read 0x50 register. SMBus len = 0 bytes. It break the
-> SMBus spec(len = 0).
-> case4: SMBus block read 0x60 register. SMBus len = 64 bytes. It break
-> the SMBus spec(len >= 32bytes).
->
-> LPI2C3 as master controller to smbus block tead the slave device at 0x64.
-> Not apply this fix:
-> root@imx93evk:~# i2cget -f -y 3 0x64 0x10 s
-> Error: Read failed
-> root@imx93evk:~# i2cget -f -y 3 0x64 0x40 s
-> Error: Read failed
-> root@imx93evk:~# i2cget -f -y 3 0x64 0x50 s
-> Error: Read failed
-> root@imx93evk:~# i2cget -f -y 3 0x64 0x60 s
-> 0x00
->
-> After apply this fix:
-> root@imx93evk:~# i2cget -f -y 3 0x64 0x10 s
 
-where show your read 32 byte, do you means "i2cget -f -y 3 0x64 0x10 s 0x20"?
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-> 0x00 0x01 0x02 0x03 0x04 0x05 0x06 0x07 0x08 0x09 0x0a 0x0b 0x0c 0x0d 0x0e 0x0f
-> 0x10 0x11 0x12 0x13 0x14 0x15 0x16 0x17 0x18 0x19 0x1a 0x1b 0x1c 0x1d 0x1e 0x1f
-
-according to above dump, the data from 0x11, not 0x10.
-
-Frank
-
-> root@imx93evk:~# i2cget -f -y 3 0x64 0x40 s
-> 0x00 0x01 0x02 0x03 0x04 0x05 0x06 0x07
-> root@imx93evk:~# i2cget -f -y 3 0x64 0x50 s
-> [  184.098094] i2c i2c-3: Invalid SMBus block read length
-> Error: Read failed
-> root@imx93evk:~# i2cget -f -y 3 0x64 0x60 s
-> [  179.722105] i2c i2c-3: Invalid SMBus block read length
-> Error: Read failed
+>  .../bindings/pci/nxp,s32g-pcie.yaml           | 130 ++++++++++++++++++
+>  1 file changed, 130 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
 >
-> ---
->  drivers/i2c/busses/i2c-imx-lpi2c.c | 93 +++++++++++++++++++++++-------
->  1 file changed, 73 insertions(+), 20 deletions(-)
->
-> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
-> index d882126c1778..39088567db59 100644
-> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-> @@ -90,6 +90,7 @@
->  #define MRDR_RXEMPTY	BIT(14)
->  #define MDER_TDDE	BIT(0)
->  #define MDER_RDDE	BIT(1)
-> +#define MSR_RDF_ASSERT(x) FIELD_GET(MSR_RDF, (x))
->
->  #define SCR_SEN		BIT(0)
->  #define SCR_RST		BIT(1)
-> @@ -461,7 +462,7 @@ static bool lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atom
->
->  static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
->  {
-> -	unsigned int blocklen, remaining;
-> +	unsigned int remaining;
->  	unsigned int temp, data;
->
->  	do {
-> @@ -472,15 +473,6 @@ static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomi
->  		lpi2c_imx->rx_buf[lpi2c_imx->delivered++] = data & 0xff;
->  	} while (1);
->
-> -	/*
-> -	 * First byte is the length of remaining packet in the SMBus block
-> -	 * data read. Add it to msgs->len.
-> -	 */
-> -	if (lpi2c_imx->block_data) {
-> -		blocklen = lpi2c_imx->rx_buf[0];
-> -		lpi2c_imx->msglen += blocklen;
-> -	}
-> -
->  	remaining = lpi2c_imx->msglen - lpi2c_imx->delivered;
->
->  	if (!remaining) {
-> @@ -493,12 +485,7 @@ static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomi
->  	lpi2c_imx_set_rx_watermark(lpi2c_imx);
->
->  	/* multiple receive commands */
-> -	if (lpi2c_imx->block_data) {
-> -		lpi2c_imx->block_data = 0;
-> -		temp = remaining;
-> -		temp |= (RECV_DATA << 8);
-> -		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
-> -	} else if (!(lpi2c_imx->delivered & 0xff)) {
-> +	if (!(lpi2c_imx->delivered & 0xff)) {
->  		temp = (remaining > CHUNK_DATA ? CHUNK_DATA : remaining) - 1;
->  		temp |= (RECV_DATA << 8);
->  		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
-> @@ -536,18 +523,80 @@ static int lpi2c_imx_write_atomic(struct lpi2c_imx_struct *lpi2c_imx,
->  	return err;
->  }
->
-> +static unsigned int lpi2c_SMBus_block_read_single_byte(struct lpi2c_imx_struct *lpi2c_imx)
-> +{
-> +	unsigned int val, data;
-> +	int ret;
+> diff --git a/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+> new file mode 100644
+> index 000000000000..da3106dfcf58
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+> @@ -0,0 +1,130 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/pci/nxp,s32g-pcie.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +	ret = readl_poll_timeout(lpi2c_imx->base + LPI2C_MSR, val,
-> +				 MSR_RDF_ASSERT(val), 1, 1000);
-> +	if (ret) {
-> +		dev_err(&lpi2c_imx->adapter.dev, "SMBus read count timeout %d\n", ret);
-> +		return ret;
-> +	}
+> +title: NXP S32G2xxx/S32G3xxx PCIe Root Complex controller
 > +
-> +	data = readl(lpi2c_imx->base + LPI2C_MRDR);
-> +	lpi2c_imx->rx_buf[lpi2c_imx->delivered++] = data & 0xff;
+> +maintainers:
+> +  - Bogdan Hamciuc <bogdan.hamciuc@nxp.com>
+> +  - Ionut Vicovan <ionut.vicovan@nxp.com>
 > +
-> +	return data;
-> +}
+> +description:
+> +  This PCIe controller is based on the Synopsys DesignWare PCIe IP.
+> +  The S32G SoC family has two PCIe controllers, which can be configured as
+> +  either Root Complex or Endpoint.
 > +
->  static void lpi2c_imx_read_init(struct lpi2c_imx_struct *lpi2c_imx,
->  				struct i2c_msg *msgs)
->  {
-> -	unsigned int temp;
-> +	unsigned int temp, ret, block_len;
->
->  	lpi2c_imx->rx_buf = msgs->buf;
->  	lpi2c_imx->block_data = msgs->flags & I2C_M_RECV_LEN;
->
->  	lpi2c_imx_set_rx_watermark(lpi2c_imx);
-> -	temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
-> -	temp |= (RECV_DATA << 8);
-> -	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - enum:
+> +          - nxp,s32g2-pcie
+> +      - items:
+> +          - const: nxp,s32g3-pcie
+> +          - const: nxp,s32g2-pcie
 > +
-> +	if (!lpi2c_imx->block_data) {
-> +		temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
-> +		temp |= (RECV_DATA << 8);
-> +		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
-> +	} else {
-> +		/*
-> +		 * The LPI2C controller automatically transmits a NACK on the last byte
-> +		 * of a receive data command. It transmits the NACK unless the next
-> +		 * command in the TXFIFO is also a receive data command. If the transmit
-> +		 * FIFO is empty when a receive data command completes, a NACK is also
-> +		 * automatically transmitted.
-> +		 * So specially set read 2 bytes read command initially. First byte in
-> +		 * RXFIFO is SMBus block data length, when the data enter the RXFIFO,
-> +		 * controller should immediately read out and update MTDR register to keep
-> +		 * the TXFIFO not empty. Second byte is the first byte of block data.
-> +		 * So the data length of the subsequent block data read command should be
-> +		 * block_len - 1, because in the first read command, the first byte of block
-> +		 * data has already been stored in RXFIFO.
-> +		 */
-> +		writel((RECV_DATA << 8) | 0x01, lpi2c_imx->base + LPI2C_MTDR);
+> +  reg:
+> +    maxItems: 6
 > +
-> +		/* Read the first byte as block len */
-> +		block_len = lpi2c_SMBus_block_read_single_byte(lpi2c_imx);
-> +		if (block_len < 0) {
-> +			dev_err(&lpi2c_imx->adapter.dev, "SMBus read data length timeout\n");
-> +			return;
-> +		}
+> +  reg-names:
+> +    items:
+> +      - const: dbi
+> +      - const: dbi2
+> +      - const: atu
+> +      - const: dma
+> +      - const: ctrl
+> +      - const: config
 > +
-> +		/* Confirm SMBus transfer meets protocol */
-> +		if (block_len == 0 || block_len > I2C_SMBUS_BLOCK_MAX) {
-> +			dev_err(&lpi2c_imx->adapter.dev, "Invalid SMBus block read length\n");
-> +			return;
-> +		}
+> +  interrupts:
+> +    minItems: 1
+> +    maxItems: 2
 > +
-> +		/* If just read 1 byte then read out from fifo. No need new command update */
-> +		if (block_len == 1) {
-> +			ret = lpi2c_SMBus_block_read_single_byte(lpi2c_imx);
-> +			if (ret < 0)
-> +				dev_err(&lpi2c_imx->adapter.dev, "SMBus read data timeout\n");
-> +			return;
-> +		}
+> +  interrupt-names:
+> +    items:
+> +      - const: msi
+> +      - const: dma
+> +    minItems: 1
 > +
-> +		/* Block read other length data need to update command again*/
-> +		writel((RECV_DATA << 8) | (block_len - 2), lpi2c_imx->base + LPI2C_MTDR);
-> +		lpi2c_imx->msglen += block_len;
-> +	}
->  }
->
->  static bool lpi2c_imx_read_chunk_atomic(struct lpi2c_imx_struct *lpi2c_imx)
-> @@ -599,6 +648,10 @@ static bool is_use_dma(struct lpi2c_imx_struct *lpi2c_imx, struct i2c_msg *msg)
->  	if (pm_suspend_in_progress())
->  		return false;
->
-> +	/* DMA is not suitable for SMBus block read */
-> +	if (msg->flags & I2C_M_RECV_LEN)
-> +		return false;
+> +  pcie@0:
+> +    description:
+> +      Describe the S32G Root Port.
+> +    type: object
+> +    $ref: /schemas/pci/pci-pci-bridge.yaml#
 > +
->  	/*
->  	 * When the length of data is less than I2C_DMA_THRESHOLD,
->  	 * cpu mode is used directly to avoid low performance.
+> +    properties:
+> +      reg:
+> +        maxItems: 1
+> +
+> +      phys:
+> +        maxItems: 1
+> +
+> +    required:
+> +      - reg
+> +      - phys
+> +
+> +    unevaluatedProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - interrupts
+> +  - interrupt-names
+> +  - ranges
+> +  - pcie@0
+> +
+> +allOf:
+> +  - $ref: /schemas/pci/snps,dw-pcie.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    #include <dt-bindings/phy/phy.h>
+> +
+> +    bus {
+> +        #address-cells = <2>;
+> +        #size-cells = <2>;
+> +
+> +        pcie@40400000 {
+> +            compatible = "nxp,s32g3-pcie", "nxp,s32g2-pcie";
+> +            reg = <0x00 0x40400000 0x0 0x00001000>,   /* dbi registers */
+> +                  <0x00 0x40420000 0x0 0x00001000>,   /* dbi2 registers */
+> +                  <0x00 0x40460000 0x0 0x00001000>,   /* atu registers */
+> +                  <0x00 0x40470000 0x0 0x00001000>,   /* dma registers */
+> +                  <0x00 0x40481000 0x0 0x000000f8>,   /* ctrl registers */
+> +                  <0x5f 0xffffe000 0x0 0x00002000>;   /* config space */
+> +            reg-names = "dbi", "dbi2", "atu", "dma", "ctrl", "config";
+> +            dma-coherent;
+> +            #address-cells = <3>;
+> +            #size-cells = <2>;
+> +            device_type = "pci";
+> +            ranges =
+> +                     <0x81000000 0x0 0x00000000 0x5f 0xfffe0000 0x0 0x00010000>,
+> +                     <0x82000000 0x0 0x00000000 0x58 0x00000000 0x0 0x80000000>,
+> +                     <0x82000000 0x1 0x00000000 0x59 0x00000000 0x6 0xfffe0000>;
+> +
+> +            bus-range = <0x0 0xff>;
+> +            interrupts = <GIC_SPI 125 IRQ_TYPE_LEVEL_HIGH>,
+> +                         <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>;
+> +            interrupt-names = "msi", "dma";
+> +            #interrupt-cells = <1>;
+> +            interrupt-map-mask = <0 0 0 0x7>;
+> +            interrupt-map = <0 0 0 1 &gic 0 0 GIC_SPI 128 IRQ_TYPE_LEVEL_HIGH>,
+> +                            <0 0 0 2 &gic 0 0 GIC_SPI 129 IRQ_TYPE_LEVEL_HIGH>,
+> +                            <0 0 0 3 &gic 0 0 GIC_SPI 130 IRQ_TYPE_LEVEL_HIGH>,
+> +                            <0 0 0 4 &gic 0 0 GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
+> +
+> +            pcie@0 {
+> +                reg = <0x0 0x0 0x0 0x0 0x0>;
+> +                #address-cells = <3>;
+> +                #size-cells = <2>;
+> +                ranges;
+> +
+> +                device_type = "pci";
+> +                phys = <&serdes0 PHY_TYPE_PCIE 0 0>;
+> +            };
+> +        };
+> +    };
 > --
-> 2.34.1
+> 2.43.0
 >
