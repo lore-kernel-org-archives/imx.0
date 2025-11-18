@@ -1,206 +1,97 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013068.outbound.protection.outlook.com [40.107.162.68])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2017F304BD6
-	for <imx@lists.linux.dev>; Tue, 18 Nov 2025 07:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763451639; cv=fail; b=Yqt+LYZhUnLfUZ1gPmtcGdwwL/ikn36A23itH3qpYEI5zuNC24BCox6COgAZxobD+cJAGKCDvPnzI1QHRVfKitZMYOpnzaQS+eXcD9QwSSh5ZZR+k3cCj2WMG3kSKO8CECUx3d4GmAgQc1uaqCtUOKrkhBlZBf6jB9pD20j2iOs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763451639; c=relaxed/simple;
-	bh=qGF2zOq2DRLV60G7X3ZdQmwZAoUeKmsLZi507kIJBF0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=alEAvsM5LJie1c4y61Mtw+84Rt7q1qrYzVNHTv95bm67r8udfM7Tp8J7pPRMSsTCpIATkOOFxoIz9i7mKf1HG5q0d0ScMfoRAyDow39Tt9WJyAuz+D1l77mk65g0ghfTNgDXjVNNSxeAz+LgEUP5YuLUctbgA88oWA0GaBNg2MQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nKS1WJJQ; arc=fail smtp.client-ip=40.107.162.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28825246BA8
+	for <imx@lists.linux.dev>; Tue, 18 Nov 2025 08:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763454243; cv=none; b=Syxge9CtxXePcRavPvl6igp0lNXfR2rhAetwEVGaVc77BDlmGHDM0RLemzxg9gj8QtILpq5ebVm3tTnVLKrHrMI/llUHJZrpeHxZskNlwhTNoLg6GpStADlb5zr1hsUmEvRVP1/WFKmJB5QPJ2FL74VuJBxBpIfm5dzQT9WyGeM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763454243; c=relaxed/simple;
+	bh=GWBWi6n/09s4UFkCZrc4hn3vheoXtmdjxbEXTYUz66I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RYpPhvLz/v93JBgF6HmB8Ym3gFxdNZs+jEi+hLySlIvNQeMxRg4ItJ/3znYUGaQCrlopjKcRe8W5CaB/QO98gqSW+dz6CsrManp21zxPHNHrFJ6uyQ8/Rx76IiEGP5hP0stHQfQhEfZ8x9NoJd3v3nt3hJvLDi9hf7YlPaEJRj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=XzsDB1G9; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nKS1WJJQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kS2yBxtU0MOw5h5CKfJCkwvIg/gFvZtNNMUFatI723I8iCQQYNZS5nh+JiBJoxTWZlAgbPXSTUHifqn+jNnrm7KsWT7ED+Jpp58/GJ9hzh5S/hOmctCIzpg6mGH5U7M1NGCxttMWZeCggcAWyNVFo2g0CJqscPAVVpR+rhaxelJHm6VWk1ePNDLkotzd6tmhkuZeWgIXb6jgRPND57R/NZG5JvDlUbJKd+DYXIt75yK/VedRALdDcUB3U6OY00aP17fQcTc5P7WqVgJEUA1EMJpm8ERe1pOW47ZEz4jhgdCgAwJwUeDqMwlXJZSusuR+EQZ33FT5l5ss9pRXMxOaiA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=f+jcw3Tyc9gePe7gvo331XmjG2XrQfENB6QdK2dI7V0=;
- b=dXgucw62VItgkeUol2VLURTy25jv/ci17/cEYSuZW1ThaRryPBYHS5R+noCmhvtSgEi7f8gH5o2HvcaPrIv3xOmAnEdZXJXaXEKmx4YBPAIkcu1urzjZKDZ0ExXdRJBWlFtZpQAheu+RrJxNL9xEiACK9V6Htkd+IC+WWxNeYBkKnf2FcrJUreKIWAMALlJCF+OjdfwTKC/IPCP6uCimxquA4kCoj7ZBYWIZzVtakSdTO5jSxRmHUzFfldKQlRDIaLosNKgvfdQOXrldbHRrjITfRPcfLzoiprZtW0TOu3iw8UdPt0C3mGaLL4P58cVKtDj5aSQIFKKr+jn067mWUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=f+jcw3Tyc9gePe7gvo331XmjG2XrQfENB6QdK2dI7V0=;
- b=nKS1WJJQg6ZhqzyyQaU50FDfnh2WZptK2hGVBtkOmizJkuTNi8Ot7CfNOIUDKXVl2oDl9ZFaCjt2O+l5Urg20hoGLNb6LKFhrKa9RNj3AKhByrVbljh5wxY/cmtG1OOqnEicBoft5u/As5iJMFMb0kI6xy2szxWu5zNWDbYZfSiKD/NkW4y+Dwz1vEGIb0QKgf9Xi3ywhu4PdbjCGKTDsNfJ482AGE7Mr/rOlVjXQK4oqLY1we+8uhdehF7WPU7OQsgvjl/fr3MyUyljbUxT7N+EAwa36kJxHv3g+UZpfaMRRaO+zJRCSB6rpyvh7/TKZslbgoKdRnKIHe127BJOQg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8829.eurprd04.prod.outlook.com (2603:10a6:102:20c::17)
- by AS8PR04MB7976.eurprd04.prod.outlook.com (2603:10a6:20b:2af::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.21; Tue, 18 Nov
- 2025 07:40:34 +0000
-Received: from PAXPR04MB8829.eurprd04.prod.outlook.com
- ([fe80::cdc5:713a:9592:f7ad]) by PAXPR04MB8829.eurprd04.prod.outlook.com
- ([fe80::cdc5:713a:9592:f7ad%7]) with mapi id 15.20.9320.021; Tue, 18 Nov 2025
- 07:40:34 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-To: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	abelvesa@kernel.org,
-	peng.fan@nxp.com,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	Frank.Li@nxp.com,
-	hongxing.zhu@nxp.com
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	jun.li@nxp.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Subject: [PATCH 4/4] arm64: dts: imx95: fix hsio_blk_ctl reg map
-Date: Tue, 18 Nov 2025 15:40:55 +0800
-Message-Id: <20251118074055.2523766-4-xu.yang_2@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251118074055.2523766-1-xu.yang_2@nxp.com>
-References: <20251118074055.2523766-1-xu.yang_2@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MA5PR01CA0086.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1ad::12) To PAXPR04MB8829.eurprd04.prod.outlook.com
- (2603:10a6:102:20c::17)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="XzsDB1G9"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=8SLu1N6OkiZOCKYpKcgBHYGaJlgn3HankT7fWKAAW+g=; b=XzsDB1G9tH6y6Am4sthjbvOngF
+	F84JB9kQMPJ/3gUMA8ErN74tm83ExxYGIC5MQhG0I9pMt9u4VIfAO+tO5vInKyPiu4CbNeIUVg1i/
+	NsWjhcBW2hhaz7Cf5fbeufgQFsaM8OlplZ1hjTnTRlwEaKUVhw3shh6OOslzqx7XUcmW/wxMKmswL
+	BczBrSBZRRs2j3ghXL+RHYXJ/V/sNbaCD59TVansTjdcoGrPrY/SFK9ZdJqmtbSepTP4kshJjI4Ij
+	MX17udDSBe9XcHZpmj3Vvd5KQ9viTYzHryqBBOxk5rLdZ1J2NeurXaHwsFihy5aO8byOTL03V/0uU
+	WiF4jyTw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57590)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vLH0A-000000002uO-1cZE;
+	Tue, 18 Nov 2025 08:23:50 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vLH05-000000002Jb-2EVx;
+	Tue, 18 Nov 2025 08:23:45 +0000
+Date: Tue, 18 Nov 2025 08:23:45 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	eric@nelint.com, maxime.chevallier@bootlin.com, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 net] net: phylink: add missing supported link modes
+ for the fixed-link
+Message-ID: <aRwtEVvzuchzBHAu@shell.armlinux.org.uk>
+References: <20251117102943.1862680-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8829:EE_|AS8PR04MB7976:EE_
-X-MS-Office365-Filtering-Correlation-Id: 14f04a42-2353-4297-37da-08de2675c230
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|19092799006|52116014|7416014|376014|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?CpfGc31EQGrJqLjtN3x3e4L5tqr/WSojqdChEu6TeeSnvKG7sDHFd2yHY1Js?=
- =?us-ascii?Q?m2foqZ+UjuD9AEZICWaY0Zz70+JflVBdd1m1TLf87HDEVcQlYCj8U3PhfG53?=
- =?us-ascii?Q?oe7JjSe8XGFKj/dkmnj7KKKUBeczfa7xJkZpTYF4Fto2DtCCIzeJNRcQtO+u?=
- =?us-ascii?Q?3VxH5qXEZPPupcYtWVALrRQuP7uW8zOjraNhGJAP8WPQR02bz4KL9chOAbLa?=
- =?us-ascii?Q?a12mgJJ29PjYbWGQuBN48E5OM6eIgy8NDHi7S1Vz+9iEBFulDmDzW6LPKtIP?=
- =?us-ascii?Q?kr/kkOjraK+BXkgHbI5YGnVRiw8sDosOA0L9uHytC3ORLcLUyTkF41VNBOmn?=
- =?us-ascii?Q?LTSzkLujO9DIjwUuvRbQFYUNxRRgSI+QiogIagMZK8mnnrzRqypkuFSQXpJN?=
- =?us-ascii?Q?1pb11yfSQwuOnZOr/qbg9OnTR3IQDCspqQLix3xEMZRZfrZpKejdz9isV/6c?=
- =?us-ascii?Q?c7EPfLNaKclKwfrx3pYnJMA0SuW8s4Q9n84Y1v/HZqaXzhGEOYjTH/KOkxrs?=
- =?us-ascii?Q?aiLo+/lP+UD0X9JsLF4GdIzX3OYj7xbDBUHSJKMDfomEmNENH9mZglOErdW+?=
- =?us-ascii?Q?+8Eer1RpuYdoRWd+yt2PYrkI7VLq9PrEjfuUl+71af4GghpEGzX7auFzVXX1?=
- =?us-ascii?Q?2vzhn4NJuiFVr0/lUJtpVrjP96wZwSIqOsIOV9FCEbhejAN7v9AV/wv+Mcvw?=
- =?us-ascii?Q?fMXYLZH1ZQPxHNOYBmaATqvMhjVm3rnXwgdjBeuQ6BHzu0up8ibaLHmZ8zBB?=
- =?us-ascii?Q?fJmapCe4oLpr23t/K4+Kffude7UzD65Y6VV7YV/uDpYj2HR4By6DIRIpb6Tm?=
- =?us-ascii?Q?b1h2iWjnFgI4IZWP+Vb22cAChUCZprPDCdlbBs8e8Lrz9K+zo3ztfbA/7B8p?=
- =?us-ascii?Q?JFQBHfGQ5jVNkVxUsAsCUwFs88qAmpu/5gqotju2UCz/vDWW1xADOYz0jbj/?=
- =?us-ascii?Q?oRxXsrcpBs+947jafZvzCpOfTVIE81Jb6jVO1zQqMep+OqrpbWuRSnBypzqh?=
- =?us-ascii?Q?Q7Qsim7lNZJ/mHUXe6F2NopemSaTrZYG2UKt6Ae1wgCINeR2b+NpoOhGbENi?=
- =?us-ascii?Q?2RsDoVmIQlauwnXE9SEeR1MYj7IQJ9q5Pz9kBu3sJ78y99DCSariwFD1x+xq?=
- =?us-ascii?Q?zKAp33HtEn1NTkIY+br06riB8Mh6bQ4xaF00LxCiESFx5guEGlsuQAqlHeNV?=
- =?us-ascii?Q?zo0YdQ55s1/NmffF1ccfw1QG62lQWHFjuF/geJQepvn1eZSr5o8FiexAKRUq?=
- =?us-ascii?Q?yzvYd+o4ewWlkIF38NciDPcfWXmQ0KuZVwwx0VkbXR86Bvdl+utAXAt5WnqL?=
- =?us-ascii?Q?AIOHgikFzS1Pv3Dkn0OseqlJ3YKBB+0WohDJXCCQd4f+F7zLP0sEgIkWr4Ak?=
- =?us-ascii?Q?yQW0/iX/BvXZlflCqCFXIotKQOdR2SW6qPayApthE+kEQ0OaqQMT8Ak4lDY8?=
- =?us-ascii?Q?osvw4eNhC2PgJApsNBL8+cYcTHl8BsVHRScAWDgyomgmb+eZR/XZBimmbGhQ?=
- =?us-ascii?Q?WszT5LOWkwRqnALsMliFaKZaH5y10j8n9WB0ph33RyiQhUJ5iohPYa3l9w?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8829.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(52116014)(7416014)(376014)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?pTMVH0mlWYtThhmfJicpTSNcXib1xLHZxGZmKQLMOpBCqaOqEGrSvKlmgq3o?=
- =?us-ascii?Q?Gwfz1RruMR4nGde/+BO3Nc+qQg2BCiDAtEvRTj1bV6kd4cLxGJG9yYYuEMBM?=
- =?us-ascii?Q?KSV5R5OBm2DN1f13FuqRWdE15vLa0mFwA9yrVZd0fRaQ1W4RjFsjnZok3cYD?=
- =?us-ascii?Q?0g930/SsRRdEqjB2CrJrI3os8WdIg1HJm4yvoRck2QW+7+/kBH5noybp3Z0n?=
- =?us-ascii?Q?f892V78AVzHL5WRHslbmqNV5ThMuGy9E+VXsgu1ItB75Jc17wn39RuAuPuSr?=
- =?us-ascii?Q?47CX5FiRsqZLelKDZIDPKcEh0dJIAJXK0DMJ+0Jz0LonFMwLunfQfUH1j8kU?=
- =?us-ascii?Q?WRPlDDMS9s8K1ugPII/KtAMOdlWhm1B+SgP6N+UEUIbLdIIZ5V2QFscOzZUb?=
- =?us-ascii?Q?D694G5h/lLXyNKrnxP5xl8lYTwHFv61bPk8P5IwxR5wlLfvkYSiQ7cFOD4o/?=
- =?us-ascii?Q?0xcGXRi3l1yggqlf80IaSBYUacyoKZq5Txp9+5UtA6NXt2hM3FEDf6el/RdH?=
- =?us-ascii?Q?vRwFnW/1b1dDUY868OXtboUoOWD+CCa5EmN5IrfN0Y8uaRYqm9BB2DR0Hk0X?=
- =?us-ascii?Q?tosk0t6Jj5KxN97PatUdRtiPkCwMfGnmOhe4NCaNo5+7pGNOwzGajwtqv4v5?=
- =?us-ascii?Q?K2iNFny/fHf6f03UZlLmw96s1TSBCM8UW6NpVGM2dc1GLfU5wKEtzL8Qs73J?=
- =?us-ascii?Q?e0OXt5iVcK7ZtB0y8QyTWD+0VsQZRJD7HiNXZWZlrD958/Tv5Vb2mTGISN9D?=
- =?us-ascii?Q?O7OHFXc60NIZM5RBGgvu/pgFOrCyFfqxSGQhK02LGc2ouLD7yEk/Clj+CJTK?=
- =?us-ascii?Q?GaJklE66R9IfRdoSzCoENYtiMkfteVooWRtKgY0g6QSrXDSmPuXUvZQw/Qz8?=
- =?us-ascii?Q?WAlzaxTIzsb9yLo8K0mYUoljC/TWij5DtcJIGylzyXYcCDo4NozlvOlcCLP1?=
- =?us-ascii?Q?rSlEZnhjmwPhKsOXIiEvGTg74xcdlByVW57Dy5k23x6sz4koFN/O5A8sITLB?=
- =?us-ascii?Q?e57H4lG7ff6PU5pm1kLmsdxgqW31+Fk5oOCDgtBQUC0e92GeRuw4WNeTO0TU?=
- =?us-ascii?Q?djjPZUObZnj8VGZHoFqzMJ0KJ9quOuXXtrNxOqNOyfjNRBpyKR7gU2638ZyG?=
- =?us-ascii?Q?6DihHI+vV8reokp3EHeHcf5/KV7deVcS4KvqzL5KVBMfffBQd1UommXlyTCN?=
- =?us-ascii?Q?sGl2eGtXuBm+xZBlfhWsJ+7gVsMjzvxKcF1drZvrm8oofJZs58+WIGkAMkdZ?=
- =?us-ascii?Q?yT5I1IzScgM0pUu51eHtrLEpHFKQ5IvmcEnxa3lHgWWWbkdQCqCXa/q3Qtym?=
- =?us-ascii?Q?MOaVhR8jczcpDl2tM8xR9bdDfQ1nvY1cqD5xKWiGJqfmm5G3y+CEYXjMTrhH?=
- =?us-ascii?Q?wHFsAlYymAog0+Z4yWXPXD0DOuEPioEga505sC5tQKaJaiDecZY4kW7Ci3hk?=
- =?us-ascii?Q?SCDEq4QOIWRUWnVZz9Q5QywN54zSPGGvfZ7Z4MSMJUMgYXgZeEZnt81lCP7n?=
- =?us-ascii?Q?SRtJL0ncDHUQ7ubqjLjxhTQRkjTSEKjsAAIcMKOCbQKB4vmHnb/rYcfba+mg?=
- =?us-ascii?Q?Uh//WuL0oK1zx44sgOf5D5uGNJ8h0fJ/mb6Z6ALh?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 14f04a42-2353-4297-37da-08de2675c230
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8829.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2025 07:40:34.6932
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9MfcnXtORz9kmGwz8koDGXHpWyxCvnbG4n/bzrfY+H9Foc1bjpkIRGUiRVW/mveJ/6VzwnwQax0rn9B1jXwsrQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7976
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251117102943.1862680-1-wei.fang@nxp.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-The HSIO block control register map should be 0x4c010000~0x4c01FFFF.
-Correct the start address and set length to 0x100 for available
-registers.
+On Mon, Nov 17, 2025 at 06:29:43PM +0800, Wei Fang wrote:
+> Pause, Asym_Pause and Autoneg bits are not set when pl->supported is
+> initialized, so these link modes will not work for the fixed-link. This
+> leads to a TCP performance degradation issue observed on the i.MX943
+> platform.
+> 
+> The switch CPU port of i.MX943 is connected to an ENETC MAC, this link
+> is a fixed link and the link speed is 2.5Gbps. And one of the switch
+> user ports is the RGMII interface, and its link speed is 1Gbps. If the
+> flow-control of the fixed link is not enabled, we can easily observe
+> the iperf performance of TCP packets is very low. Because the inbound
+> rate on the CPU port is greater than the outbound rate on the user port,
+> the switch is prone to congestion, leading to the loss of some TCP
+> packets and requiring multiple retransmissions.
+> 
+> Solving this problem should be as simple as setting the Asym_Pause and
+> Pause bits. The reason why the Autoneg bit needs to be set, Russell
+> has gave a very good explanation in the thread [1], see below.
+> 
+> "As the advertising and lp_advertising bitmasks have to be non-empty,
+> and the swphy reports aneg capable, aneg complete, and AN enabled, then
+> for consistency with that state, Autoneg should be set. This is how it
+> was prior to the blamed commit."
+> 
+> [1] https://lore.kernel.org/all/aRjqLN8eQDIQfBjS@shell.armlinux.org.uk/
+> 
+> Fixes: de7d3f87be3c ("net: phylink: Use phy_caps_lookup for fixed-link configuration")
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-Fixes: 3c8d7b5d2bed ("arm64: dts: imx95: add ref clock for pcie nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx95.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+NAK. I give up.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-index 1292677cbe4e..21c9df445be0 100644
---- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-@@ -1774,9 +1774,9 @@ usb3_dwc3: usb@4c100000 {
- 			};
- 		};
- 
--		hsio_blk_ctl: syscon@4c0100c0 {
-+		hsio_blk_ctl: syscon@4c010000 {
- 			compatible = "nxp,imx95-hsio-blk-ctl", "syscon";
--			reg = <0x0 0x4c0100c0 0x0 0x1>;
-+			reg = <0x0 0x4c010000 0x0 0x100>;
- 			#clock-cells = <1>;
- 			clocks = <&clk_sys100m>;
- 			power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
-@@ -1844,7 +1844,7 @@ pcie0: pcie@4c300000 {
- 				 <&scmi_clk IMX95_CLK_HSIOPLL>,
- 				 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
- 				 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>,
--				 <&hsio_blk_ctl 0>;
-+				 <&hsio_blk_ctl IMX95_CLK_HSIOMIX_PCIE_CLK_GATE>;
- 			clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux", "ref";
- 			assigned-clocks = <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
- 					  <&scmi_clk IMX95_CLK_HSIOPLL>,
-@@ -1919,7 +1919,7 @@ pcie1: pcie@4c380000 {
- 				 <&scmi_clk IMX95_CLK_HSIOPLL>,
- 				 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
- 				 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>,
--				 <&hsio_blk_ctl 0>;
-+				 <&hsio_blk_ctl IMX95_CLK_HSIOMIX_PCIE_CLK_GATE>;
- 			clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux", "ref";
- 			assigned-clocks = <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
- 					  <&scmi_clk IMX95_CLK_HSIOPLL>,
 -- 
-2.34.1
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
