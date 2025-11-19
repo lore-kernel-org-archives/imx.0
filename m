@@ -1,229 +1,225 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013063.outbound.protection.outlook.com [40.107.159.63])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF6634E754
-	for <imx@lists.linux.dev>; Wed, 19 Nov 2025 10:49:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.63
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763549347; cv=fail; b=VroYKAX+Ul3fRxYnLZ8LRYo8eTYEFVm+Azo+JjW15P5FoN37gs2f3txLG91h13kknM3jsZp+t12Cqu2Dh1IXHnb4iVrz1ZWYNrVj4lxZhs6JArva1T9AHfndNqClC7lx7vx6tZkY69uC7i/mOq61SJhFYD8/9Js6ySYFOi0lJeg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763549347; c=relaxed/simple;
-	bh=PMs/xmtapr29yv31vvLAIgTlIQytmQEWyHpOXFfCLNg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ty9YkodFhHiLRDzjCyJAhIMwbcz7jeXaH5Cr1PKGhkK97LjC3e3YbuM+EtyvbCUzaAYq7+8EXue+GX0ILjrRMbFO9ZXKRPzUhX91PW6G9hGqMIj+k+0GS+genqJx83Lf73vGGkTUYFyWSgTkhK0RuO7aWeYUi/7o9eYKqlaN32g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jozRnVoP; arc=fail smtp.client-ip=40.107.159.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E1E1DE8BB
+	for <imx@lists.linux.dev>; Wed, 19 Nov 2025 13:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763557566; cv=none; b=hfud7TIrPYt5LvW7AJAkiH8A1ysVIvqw96dhbEhZabpaqOZh54+rBDTM16bAl4S6DSjU8w1s1VUCr0k1X6wzjNjwO6FZXhffK9yvo275W5L/ncm3O52Pfw4ORVeQgehOdsFs9zrFzSToE7+WIpnhePnzizjQrLqU+ewaeHRXeBk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763557566; c=relaxed/simple;
+	bh=b8EKp14H49Ot9XSVMf8ZxQJmimucdZ2FiI1BESzLv54=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dEARetSvVbToz1cG/ieAyiXGZC5pDflRTgovt4EsWVjj4xYmjrsd+ismBiL2IgomaHqwLqKId6qtpGo6CuNouxNSePZvciBArzV+eyvBlk0TnXPjYcT4ICDGMBkXmqvsM9Z1pCvZ6ajvJMNPsg0bQVuNp1tNqv7OEuVCOgHLG2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wONIZlzx; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jozRnVoP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nb/H7enPX3gs5zObj2VFDPyKWOOKSMSY6AGbfT2kvWZiaWYEIdsDFNGx/gjoOKp/Fs98ghJCYIyUHBjL/15MnipZDoNuNqYwdRFVwBlwnJHEmSMSwR123oSlllua2r8OkpMiJGN7huDf3ZKIqpagcc927TI5PCYerO96dQ9xjjv4Zk9CX4phqj0eS639QSZ4l43zaOVXzHOk0iLCG5xFtSwljaGWmr0LakZjZR2SXRf9bd61HYD0i/fxJQFj6CwuRnWI2wIpJTSdNOfHkjtT8ovv/BmUAchwe4zcVNqUK3vDMywi3jOXYD5vK7Knvx6rtrHIeg8cNptBssyU5KiVnQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Wh1ugBt8Nkt4TSeliMD6m/ioEoY2ZTis6gDExb45f7k=;
- b=xobf1uQC7WaSbNZcnpJ9zVLsEEbsnb80fDX5B80St3Ubp/jY5nDxjgTdS98a25lQf1DwSKfJVUfs8P/7A/ytxiIBwVMdDXb8vILtfpPnWZqReP7iiGlkyF3YWwelw3Ff8VOyVIFRgJjNQ10k1+RZQw4BSXQNEfSR/iAeEhols0G9x0aVLx2EAiwHoGg0fx/qWCypgEeP5AKNMg1d4Yxz8Op88YD/bmlWHEHitCwNd+Q2uvauYHMKuG2TEJQjBetRG1rmdxB9arG7+B01G/qNeYQ/KwCf+FjLdWpXnAUJFvlbvwJfT6RP3fcr+BUFWz6EnpbdGtScLUS16v2DThokcw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Wh1ugBt8Nkt4TSeliMD6m/ioEoY2ZTis6gDExb45f7k=;
- b=jozRnVoPYu9CWbBAi04QbsGhX89GuzPw8vSe4HWuFK+l3FrJYuqrV6BIy9uhl5V4IE2r0nat2O7LBowyTAG8vtKkZ3JTnfz1zQ+JUdg2w/jWL6hFadoenfPm6gMJKjuH5kdWXXn5bFkColHL9b6eu8tLxVpnX1uMDiO2GLv2Xzdrw7/9HB8gLd6CElPnsl+J3am0rYxOrcSbMIBb40gnVbisBA/eGXOBTq/ybeO2JMyV/VI8OWS80eeshIfCV2Shk+R+TCUu3SlcT5hv7+1iTJhTQW9dCSezXcGvvo5K8Txu0r/Xu81Z/AcE/25CcZdIfIwwiH8zYA3+kvdqfN2WUA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PA1PR04MB10628.eurprd04.prod.outlook.com (2603:10a6:102:490::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Wed, 19 Nov
- 2025 10:49:02 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9343.009; Wed, 19 Nov 2025
- 10:49:02 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: aziz.sellami@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 net-next 3/3] net: enetc: update the base address of port MDIO registers for ENETC v4
-Date: Wed, 19 Nov 2025 18:25:57 +0800
-Message-Id: <20251119102557.1041881-4-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251119102557.1041881-1-wei.fang@nxp.com>
-References: <20251119102557.1041881-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR06CA0210.apcprd06.prod.outlook.com
- (2603:1096:4:68::18) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wONIZlzx"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 5F516C11188;
+	Wed, 19 Nov 2025 13:05:39 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 586B260720;
+	Wed, 19 Nov 2025 13:06:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F349A10371A4D;
+	Wed, 19 Nov 2025 14:05:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1763557559; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=qjKCnJ8MWt1XzGq8HDqxEVxZ5da/4Lf/GYebHfI6vFs=;
+	b=wONIZlzx6P2Z4sicT6r6z6gD+PYJghZTD15EHcfmR1Q6FWaW29w4/JWDMohCBRR0cKcQYk
+	0M0XYcvRMY6mb3QqxiozdtPamzSECPaMwIsKaK6QiVPtzJhMrFOvv0a2HBPioi9XIPzWMe
+	zz8kk4kcEaZ5zJIomhf7RpHxHVs9ATPCKH3J6P34x6Lpmv81RYDVCWPhQAKVyOgUNPvQP8
+	lWXGJ/owLp9038/CpGurPlotLSAmv7+FBq8gzitIgeS6yvNKEdp8e9/zLMPevXMyHSXh0P
+	f52+E19RPI3jxUMuU4EAS1nK44qc6g6SnRuuXhEGqyadTbwKodoeQ4BIc8O9jQ==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 00/26] drm/bridge: add drm_of_find_bridge(), deprecate
+ of_drm_find_bridge()
+Date: Wed, 19 Nov 2025 14:05:31 +0100
+Message-Id: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PA1PR04MB10628:EE_
-X-MS-Office365-Filtering-Correlation-Id: 899f69b9-9934-4a0d-9cd2-08de275940b4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|52116014|366016|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?h4v/j2t6zrG4roYNnW7mV54kVNcPqIjBN7oSkWJuNFxzW7/x1+jWuHeKowCs?=
- =?us-ascii?Q?WKMzrl4Bu7O+SiBbRbww25RFiSA2p/ejvsFtsuyKbNO1NEwyY4EhD3HN9LrQ?=
- =?us-ascii?Q?YTsgptgq8veMY4mtX29I99WV61QYufl3VL/2q6VECEoQA3dWx9E+HC6PPl7B?=
- =?us-ascii?Q?h0pDbrD95KdmzOrB5/LbPb8wXD7Vw8bEa3JxAsf3o9UEM29EadC446CkM3yA?=
- =?us-ascii?Q?kDmStcf65rUIC2fOfHacTjmX6Eg+YLeIj6Qnw8oyGVsALDQ/7qtXy77Y1prM?=
- =?us-ascii?Q?r1KKq0gzeq39M1hoTUFpN67xzg3iXotO+x4bSl2iuAUYONnnO+GTiEiNoNv2?=
- =?us-ascii?Q?IRiNPY0jKwoVpXQJsclFSzLk4/dV/cG2xmxwvEeMnfi0uMAJGAAbNLlmcSo4?=
- =?us-ascii?Q?TZQwbMQqlE1GaVVcBswJR7WvcnJ2h5FGO7c++BinA4WbL52+pjWWt65He1i0?=
- =?us-ascii?Q?wYTpn2N2+IEm33Kbz+330lvjxSWvXNRALpA61mEBnwfyxR22Ooo/htjLtfFE?=
- =?us-ascii?Q?WB8IGdtWHZiw8W5TjToe2RIH7Jz+Q3LfXZ5TUb+o/71Pzq0z+fKR1+brPw4P?=
- =?us-ascii?Q?r6t3EhsmkhpGEsHKhS3lwZ327JNgmP709qCLRb/6r4+9DXzBvCNXVdNSGC3A?=
- =?us-ascii?Q?MdcXWgvzI5uQslTVInkBPMAV+nISoukKpShll25HZVlhdzTm5EuaxNOlRJcm?=
- =?us-ascii?Q?bBbbTNPVNAkmB/nZA6jbP9XflpcYLjdfzXAyxpIZp3RDFFFHo1NP/XlZppxJ?=
- =?us-ascii?Q?LeEpW0vCaTJgpZBEiGvk6SQP+rJg5MtDsI5rBVURb9SFlE4Jt2TJQCtl0U/x?=
- =?us-ascii?Q?nk8LLDd8g/FjEQQA6YIbCSyMxuHO/q90mih+u89Rtg8ID+bff4GYWNhF4/Wy?=
- =?us-ascii?Q?/Ay5l1kl2EZY+NbNGoAZKGAjo/L+cd8pEaGcJNQOoWgwDPVquyMwV6Fbz4Mn?=
- =?us-ascii?Q?kVsgEyY4kM7hwIrsy4J2okO0F4StGCeD3/7CUg+E0pZPwQx3Bw+E0s8XxKpM?=
- =?us-ascii?Q?73EUp8HkX6wvViOc+pqgbidRGVeyQUDzzJzsKbw5599VE+mrKqaujJYoRY6v?=
- =?us-ascii?Q?ZkDcW70qTSGq7CKdiyg7qoV8LRgZ58dyDR0CpCVAX3hqOoPGVVYjOnVgdtD2?=
- =?us-ascii?Q?0MzAb68bg5pb7YvH51tbGivUld1zkTTI3/hTByqI++bAkY4xMBkqCfPDduWm?=
- =?us-ascii?Q?YWORQxnpKPKrWxDNcFY7IRr6V7nmusz5initKXn1lOELZXN0a9ZJvjn5j4Ax?=
- =?us-ascii?Q?4CTACtVDXsAl00IEbuQaRrJSkUcmcn1w3cQW83yEb+HLEJHcnGCF2RUi7cce?=
- =?us-ascii?Q?V7033ERWsberoS/CC8PITg1f2QPbLlCmE8TNwkapfuwUoO42fbvEgJfrhOaK?=
- =?us-ascii?Q?Sjk8wAjd1ajtmJzqUyvTU+vpsaxBwnB4YWLPjMONQh9Q1UpaKb2ix1DmcBBG?=
- =?us-ascii?Q?xbO8s39DZ0P4QJQuwEAEUE2EZ3BhkKkOQUqBjLztHY39pDbiEe7xHng2HZVY?=
- =?us-ascii?Q?08yJ7tP78/opNAs4wpmoyWsL00RL5px9gk1H?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(52116014)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?euV1HwdykL9pNQwqueKLLA73edKM1xNdhl2I0k4d95aXC02bLmzzQS/Ve5Wd?=
- =?us-ascii?Q?hH13Xif/Q7GoICdgzzIk+8Kzy0d48OSJtF/2xuG+ErCPwX/pMN8UAbvhpm2f?=
- =?us-ascii?Q?O2E8l0/5q1vCOZ4MnMlo2zOECXL+qIHxPSA53l0JFzOqpiACTt3L+eJn9jLN?=
- =?us-ascii?Q?QXPoEDiqGiWnrvLOzrlnksfspzT1wPRYL1PzK49i/hIu7QML9hAuiw526KuY?=
- =?us-ascii?Q?snMJpZawGP6lLb+LbM43SwXyOQYRd1cGEQuAJAfkBroBhk8U/W2s+YkBfbCQ?=
- =?us-ascii?Q?7OuO9c79tbkXKhC4am0tCab9LNmpjSARui8yq1/aT59mKm72KZJoofDhUVc6?=
- =?us-ascii?Q?Yeh2uTvlg7T124mR/RUIg1dQ/QwHdodIMty60Zn2sQi2yV6vdKJEVZQfjwt7?=
- =?us-ascii?Q?YFgR3QohCvjAmOHgzA4UNT7516euI+pVGQbcQNOM2xlqSnPrD+csPUzla3k5?=
- =?us-ascii?Q?Wmw4zwpZXrYOr9ifdkV6iN3/rrJ81p+u11z0Qg642Pm8ZvEa20q13YCGkJc8?=
- =?us-ascii?Q?HqqtjhVU9Ioxa9hGGWr08jk38kPk4gfUl6h80GlZEdbIGSX4f8Z/jdTPP/zL?=
- =?us-ascii?Q?69IeydUBZE7+WakWkTui7GoTXH6r4ZBhhlb9Jh4dTkd5EfUwESHes8Q388VX?=
- =?us-ascii?Q?mAnpiJyqWttae048XMljbynakDri3vuMchFJf2IjTOucgxwy7YuB8tdKJ56M?=
- =?us-ascii?Q?n1RmJ1NzCOtuCgfjhcew11P+Xsaym/eeJO2z66u52OoCJ0WVsYY4N61fvdbS?=
- =?us-ascii?Q?c351CDHM7i4TYjreu20NwQF/Wi9ACvqmthwi4UmcGdSCaplWEtBGg/vrvWPd?=
- =?us-ascii?Q?3Of4ztJ4nQL/1W3IT7R44l1+4Ic4aI69v5g1WhHMfg0PWqsd8N/XKvX8wqnf?=
- =?us-ascii?Q?FaKMbh+yClZIYwWX3d0cAWaveT6t8+bbl7jFQOGrkaUCKtrzsghCKrw8ogxD?=
- =?us-ascii?Q?jJeF7ZFBJJtkM5utx36n8hLyGcWWG6bDyAn1d2qOUnTAN/V3by1MHWv/f0hc?=
- =?us-ascii?Q?GxWQAm7VzmqfCUNqch2NGAQ20rGL7ygSlBbnY73xgf2EdD3202JADAOieQiG?=
- =?us-ascii?Q?tUDSwJcVBYO+E9BSiozn8RsomSl6oisrhgB8zmb3v2TEsVqxzAcf1mV/4Q/1?=
- =?us-ascii?Q?0wDlFiYLMgrfxLuh92po2FTNjPbVmm+4fq0GxMpSXQJ/YKVodVkLK9lwk/SX?=
- =?us-ascii?Q?24tFvoU6U9aIHKxu3cDRruOembkYb0ArLK4ZLmYJugL0Z69zVkqKoVKgdK+I?=
- =?us-ascii?Q?0IavH8AYVIoOadpNIzOqCLF+CE2JJFxQzT3qYd0V9NZ0pnEO/X7FJXrCWV8A?=
- =?us-ascii?Q?lrJXyItvN3YKiP73hnjRdoTI8Ibldoi+j3d6yAoAr0Zr0szJuDKuTWxz6+NI?=
- =?us-ascii?Q?aOlW9xB1TFlfAGov0Ux11q4pfryI5jpSm53WNUZYvByHW4RdrCd0r3cCvNZL?=
- =?us-ascii?Q?W+NoJRhaSp8Wffijz5IPlU+Z+/cM29zevDfaz4L3O4HV19ouER9L9lv5nX04?=
- =?us-ascii?Q?gDUgaHqj4RcCcIfmlan2ks/roU8kLUDbh9j5XWhVPT1UyZEbgJq3XwynYLMD?=
- =?us-ascii?Q?pg/7GN+DDScU9X36J3o8iKjqniCElZ7pRqyA9dAZ?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 899f69b9-9934-4a0d-9cd2-08de275940b4
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2025 10:49:02.7080
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Mf62QpKNeNXvzl4R+Ux+7ak0IJLZ47e3tGLn8LnOLPfChjARlUSpRQy91vDe/5+V5uERtXtP+f663lP3SduTVg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10628
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAJvAHWkC/y2NUQqDMBAFryL73YDR2NhepZRg3Y0u2EQ2tgji3
+ U2ln/MG5m2QSJgS3IsNhL6cOIYM+lJAP3ZhIMWYGaqyarTWVqG81UsYs+mmKfZqoGX+LL/dRe8
+ 8B3R/b82trOurNaZFyMFZyPN6nj2e+34Aj3ziYHwAAAA=
+X-Change-ID: 20251117-drm-bridge-alloc-getput-drm_of_find_bridge-74903367448d
+To: Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Jonathan Corbet <corbet@lwn.net>, Alexey Brodkin <abrodkin@synopsys.com>, 
+ Phong LE <ple@baylibre.com>, Liu Ying <victor.liu@nxp.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Adrien Grassein <adrien.grassein@gmail.com>, 
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+ Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Magnus Damm <magnus.damm@gmail.com>, Kevin Hilman <khilman@baylibre.com>, 
+ Jerome Brunet <jbrunet@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Anitha Chrisanthus <anitha.chrisanthus@intel.com>, 
+ Edmund Dea <edmund.j.dea@intel.com>, Inki Dae <inki.dae@samsung.com>, 
+ Seung-Woo Kim <sw0312.kim@samsung.com>, 
+ Kyungmin Park <kyungmin.park@samsung.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+ linux-amlogic@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ linux-samsung-soc@vger.kernel.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-Each ENETC has a set of external MDIO registers to access its external
-PHY based on its port EMDIO bus, these registers are used for MDIO bus
-access, such as setting the PHY address, PHY register address and value,
-read or write operations, C22 or C45 format, etc. The base address of
-this set of registers has been modified in ENETC v4 and is different
-from that in ENETC v1. So the base address needs to be updated so that
-ENETC v4 can use port MDIO to manage its own external PHY.
+This series deprecated of_drm_find_bridge(), adds a replacement which
+handles bridge refcounting, and converts most of the direct users.
 
-Additionally, if ENETC has the PCS layer, it also has a set of internal
-MDIO registers for managing its on-die PHY (PCS/Serdes). The base address
-of this set of registers is also different from that of ENETC v1, so the
-base address also needs to be updated so that ENETC v4 can support the
-management of on-die PHY through the internal MDIO bus.
+This is part of the work to support hotplug of DRM bridges. The grand plan
+was discussed in [0].
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Here's the work breakdown (➜ marks the current series):
+
+ 1. ➜ add refcounting to DRM bridges struct drm_bridge,
+      based on devm_drm_bridge_alloc()
+    A. ✔ add new alloc API and refcounting (v6.16)
+    B. ✔ convert all bridge drivers to new API (v6.17)
+    C. ✔ kunit tests (v6.17)
+    D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
+         and warn on old allocation pattern (v6.17)
+    E. ➜ add get/put on drm_bridge accessors
+       1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
+       2. ✔ drm_bridge_get_prev_bridge() (v6.18)
+       3. ✔ drm_bridge_get_next_bridge() (v6.19)
+       4. ✔ drm_for_each_bridge_in_chain() (v6.19)
+       5. ✔ drm_bridge_connector_init (v6.19)
+       6. … protect encoder bridge chain with a mutex
+       7. ➜ of_drm_find_bridge()
+          a. ➜ add drm_of_fund_bridge(), convert most direct users
+	  b. convert other direct users
+	  c. convert bridge-only drm_of_find_panel_or_bridge() users
+       8. drm_of_find_panel_or_bridge, *_of_get_bridge
+       9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
+    F. ✔ debugfs improvements
+       1. ✔ add top-level 'bridges' file (v6.16)
+       2. ✔ show refcount and list lingering bridges (v6.19)
+ 2. … handle gracefully atomic updates during bridge removal
+    A. … Add drm_dev_enter/exit() to protect device resources
+    B. … protect private_obj removal from list
+ 3. … DSI host-device driver interaction
+ 4. ✔ removing the need for the "always-disconnected" connector
+ 5. finish the hotplug bridge work, moving code to the core and potentially
+    removing the hotplug-bridge itself (this needs to be clarified as
+    points 1-3 are developed)
+
+[0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/#t
+
+Almost all the functions returning a struct drm_bridge pointer have been
+modified to drm_bridge_get() the returned bridge, and their users updated
+to drm_bridge_put() it.
+
+of_drm_find_bridge() could be modified easily in the same way, but it has a
+lot of (direct + indirect) callers, and most notably
+drm_of_find_panel_or_bridge() which is very hard to adapt without reowrking
+the panel_bridge lifetime.
+
+Moreover of_drm_find_bridge() shold be called drm_of_find_bridge() by the
+DRM subsystem conventions.
+
+This has been discussed in [1] and Maxime proposed an incremental approach:
+
+> One way to solve it would be that, for example, of_drm_find_bridge is
+> oddly named according to our convention and it would make more sense to
+> be called drm_of_find_bridge().
+>
+> So maybe we can just create drm_of_find_bridge() that takes a reference,
+> make of_drm_find_bridge() deprecated in favour of drm_of_find_bridge(),
+> add a TODO, and call it a day. People will gradually switch to the new
+> API over time.
+
+That proposal is implemented by this series. Most of the direct callers are
+also converted: they are all trivial conversions except for one, which is
+handled by the last 3 patches.
+
+[1] https://lore.kernel.org/dri-devel/20250319-stylish-lime-mongoose-0a18ad@houat/
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/net/ethernet/freescale/enetc/enetc4_hw.h   |  6 ++++++
- .../net/ethernet/freescale/enetc/enetc_pf_common.c | 14 ++++++++++++--
- 2 files changed, 18 insertions(+), 2 deletions(-)
+Luca Ceresoli (26):
+      drm/bridge: add drm_of_find_bridge()
+      drm/bridge: deprecate of_drm_find_bridge()
+      drm/todo: add entry about converting to drm_of_find_bridge()
+      drm/bridge: make of_drm_find_bridge() a wrapper of drm_of_find_bridge()
+      drm/arcpgu: convert to drm_of_find_bridge()
+      drm/bridge: add devm_drm_of_find_bridge
+      drm/bridge: ite-it66121: use devm_drm_of_find_bridge() to put the next bridge
+      drm/bridge: imx8qxp-pixel-combiner: use devm_drm_of_find_bridge() to put the next bridge
+      drm/bridge: simple-bridge: use devm_drm_of_find_bridge() to put the next bridge
+      drm/bridge: tpd12s015: use devm_drm_of_find_bridge() to put the next bridge
+      drm/bridge: thc63lvd1024: use devm_drm_of_find_bridge() to put the next bridge
+      drm/bridge: imx8qxp-pxl2dpi: use devm_drm_of_find_bridge() to put the next and companion bridges
+      drm/bridge: lt8912b: use devm_drm_of_find_bridge() to put the hdmi bridge
+      drm/bridge: tfp410: use devm_drm_of_find_bridge() to put the next bridge
+      drm/bridge: imx8qxp-ldb: use devm_drm_of_find_bridge() to put the companion bridge
+      drm/rcar-du: lvds: use devm_drm_of_find_bridge() to put the next bridge
+      drm/meson: encoder_*: use devm_drm_of_find_bridge() to put the next bridge
+      drm/bridge: sii902x: use devm_drm_of_find_bridge() to put the next bridge
+      drm/mediatek: use devm_drm_of_find_bridge() to put the next bridge
+      drm/kmb: dsi: use devm_drm_of_find_bridge() to put the next bridge
+      drm/imx/ipuv3: use devm_drm_of_find_bridge() to put the next bridge
+      drm/exynos: hdmi: use devm_drm_of_find_bridge() to put the next bridge
+      drm/bridge: dw-hdmi: use devm_drm_of_find_bridge() to put the next bridge
+      drm/bridge: imx8qxp-pixel-link: simplify logic to find next bridge
+      drm/bridge: imx8qxp-pixel-link: simplify freeing of the remote device_node
+      drm/bridge: imx8qxp-pixel-link: convert to drm_of_find_bridge()
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-index ebea4298791c..3ed0f7a02767 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
-@@ -170,6 +170,9 @@
- /* Port MAC 0/1 Maximum Frame Length Register */
- #define ENETC4_PM_MAXFRM(mac)		(0x5014 + (mac) * 0x400)
- 
-+/* Port internal MDIO base address, use to access PCS */
-+#define ENETC4_PM_IMDIO_BASE		0x5030
-+
- /* Port MAC 0/1 Pause Quanta Register */
- #define ENETC4_PM_PAUSE_QUANTA(mac)	(0x5054 + (mac) * 0x400)
- 
-@@ -198,6 +201,9 @@
- #define   SSP_1G			2
- #define  PM_IF_MODE_ENA			BIT(15)
- 
-+/* Port external MDIO Base address, use to access off-chip PHY */
-+#define ENETC4_EMDIO_BASE		0x5c00
-+
- /**********************ENETC Pseudo MAC port registers************************/
- /* Port pseudo MAC receive octets counter (64-bit) */
- #define ENETC4_PPMROCR			0x5080
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-index 9c634205e2a7..76263b8566bb 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf_common.c
-@@ -176,7 +176,12 @@ static int enetc_mdio_probe(struct enetc_pf *pf, struct device_node *np)
- 	bus->parent = dev;
- 	mdio_priv = bus->priv;
- 	mdio_priv->hw = &pf->si->hw;
--	mdio_priv->mdio_base = ENETC_EMDIO_BASE;
-+
-+	if (is_enetc_rev1(pf->si))
-+		mdio_priv->mdio_base = ENETC_EMDIO_BASE;
-+	else
-+		mdio_priv->mdio_base = ENETC4_EMDIO_BASE;
-+
- 	snprintf(bus->id, MII_BUS_ID_SIZE, "%s", dev_name(dev));
- 
- 	err = of_mdiobus_register(bus, np);
-@@ -221,7 +226,12 @@ static int enetc_imdio_create(struct enetc_pf *pf)
- 	bus->phy_mask = ~0;
- 	mdio_priv = bus->priv;
- 	mdio_priv->hw = &pf->si->hw;
--	mdio_priv->mdio_base = ENETC_PM_IMDIO_BASE;
-+
-+	if (is_enetc_rev1(pf->si))
-+		mdio_priv->mdio_base = ENETC_PM_IMDIO_BASE;
-+	else
-+		mdio_priv->mdio_base = ENETC4_PM_IMDIO_BASE;
-+
- 	snprintf(bus->id, MII_BUS_ID_SIZE, "%s-imdio", dev_name(dev));
- 
- 	err = mdiobus_register(bus);
+ Documentation/gpu/todo.rst                         | 16 ++++++
+ drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c           |  2 +-
+ .../gpu/drm/bridge/imx/imx8qxp-pixel-combiner.c    |  2 +-
+ drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c    | 37 ++++++------
+ drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c       |  4 +-
+ drivers/gpu/drm/bridge/ite-it66121.c               |  2 +-
+ drivers/gpu/drm/bridge/lontium-lt8912b.c           |  2 +-
+ drivers/gpu/drm/bridge/sii902x.c                   |  2 +-
+ drivers/gpu/drm/bridge/simple-bridge.c             |  2 +-
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c          |  2 +-
+ drivers/gpu/drm/bridge/thc63lvd1024.c              |  2 +-
+ drivers/gpu/drm/bridge/ti-tfp410.c                 |  2 +-
+ drivers/gpu/drm/bridge/ti-tpd12s015.c              |  2 +-
+ drivers/gpu/drm/drm_bridge.c                       | 66 ++++++++++++++++++++--
+ drivers/gpu/drm/exynos/exynos_hdmi.c               |  2 +-
+ drivers/gpu/drm/imx/ipuv3/dw_hdmi-imx.c            |  2 +-
+ drivers/gpu/drm/kmb/kmb_dsi.c                      |  2 +-
+ drivers/gpu/drm/mediatek/mtk_hdmi.c                |  2 +-
+ drivers/gpu/drm/meson/meson_encoder_cvbs.c         |  2 +-
+ drivers/gpu/drm/meson/meson_encoder_dsi.c          |  2 +-
+ drivers/gpu/drm/meson/meson_encoder_hdmi.c         |  2 +-
+ drivers/gpu/drm/renesas/rcar-du/rcar_lvds.c        |  2 +-
+ drivers/gpu/drm/tiny/arcpgu.c                      |  4 +-
+ include/drm/drm_bridge.h                           | 10 ++++
+ 24 files changed, 125 insertions(+), 48 deletions(-)
+---
+base-commit: 92c49b3f4df8f9acfa95551ef38fc00c675319fd
+change-id: 20251117-drm-bridge-alloc-getput-drm_of_find_bridge-74903367448d
+
+Best regards,
 -- 
-2.34.1
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
