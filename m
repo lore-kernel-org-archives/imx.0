@@ -1,173 +1,98 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C9635E548
-	for <imx@lists.linux.dev>; Wed, 19 Nov 2025 13:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D093546EF
+	for <imx@lists.linux.dev>; Wed, 19 Nov 2025 13:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763557795; cv=none; b=Yu5FFInlgwLiyvDRAKqU8an2xvn2lZWd3sVMYGb8fKMTKDGhbzPFdECYb6vUPPiKcFREz3I6Cxkd2OQx2HZl1R5fXmBQEKwBVwD8Yf0xaiDtK4dqWVfk1q83wYqz8SZt+68pusBG1Ui9J9bhGQ9uMwycb+VeHYXP5MS28MziwHY=
+	t=1763560205; cv=none; b=IQhj+popqMZp2RyP/EnH8rEV0ldkqMbFqgjHcqypBC6rguFHhcbiA7BhCbQvJXjMqb0Eq9RHBslSVPc+MzhUJK8u9GnQUGYWlNhyHwfSyGsl0MYb1GKIczcUwzrbZfcsmucjSyl0JESj5LPfUiP0lYGukn7MSL1x+nsSTv+cs2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763557795; c=relaxed/simple;
-	bh=5cuWxFruSbmINQkfu8xBEDBSefUx4G9GS7gD5IXtbMQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GNfY0b2QyILeavvfmzGFm2T0Mod+X3QUuzvwyZxyOeAPYR0Ap44dj/aYrYDwYhqkSRam1GfibKfHWK4C7c0Sx8W495V3q45YKp6/dXRJvBPfFaqHbDAVNmSF7OVM5BG9T0+5f2kOr6RBgeOv6Xs20OIHkGJE0d8/P/GiIlXziwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OlX/PF+d; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1763560205; c=relaxed/simple;
+	bh=PA3aR//XqqSLd6aBP1s9HW3fQNaQLmdD9BHhitJisII=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RdNTnBTPgZYFxkF0LHEJgTiRzW6sjsB7+rjpJglEgnN32V0AbfznZaiMRn6ggvTwdYTSjfHUeWf5JJOEcW7ElBk18Iyb58du7kmUekkmz6IzIH6h+sdL9AyjUZC3nQbKTZmGjFC1iDuQRTXu48rSavHBqOgPVlhi2XvcNP3JwXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TF/CtObd; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OlX/PF+d"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 603EA1A1BDA;
-	Wed, 19 Nov 2025 13:09:52 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2F04860699;
-	Wed, 19 Nov 2025 13:09:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D2F8810371A53;
-	Wed, 19 Nov 2025 14:09:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763557790; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=axXT5p39UcLgfeXlnv3r+PQb3eCsVz2C9lrKQC2f4Uk=;
-	b=OlX/PF+dhNGJG27mrsK1i4MNguYEVaaiKq83NP0yOr041d9TgIxWfbA2GyldpQEAfPLd3J
-	wNbvXQz9oBqELh/fqHBdK3mPbEJ3JKZLLabdZdqhqGE7GiQMZKWviSVNIdzuN1DuSJ9D6O
-	ji63oyId+HMuMeLvrrbb9/FhGf8/Vn2JH5T3bED5Ab473KCMMc1GmDK6PMlKKy03bJn35W
-	CR9esGIgCRwjBUdDQ8G/Q3ByDThJhNj95m+NHds8C3IrJVQlptjCCcIy0X+k2qNcCYxnYs
-	7W0XT05zHAApmNT3EVv8sRDwLVGvyuBhAK9DAMINTmHuHkuNsVeo/QElxQso7A==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 19 Nov 2025 14:05:57 +0100
-Subject: [PATCH 26/26] drm/bridge: imx8qxp-pixel-link: convert to
- drm_of_find_bridge()
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TF/CtObd"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7b852bb31d9so7567351b3a.0
+        for <imx@lists.linux.dev>; Wed, 19 Nov 2025 05:50:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763560202; x=1764165002; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PA3aR//XqqSLd6aBP1s9HW3fQNaQLmdD9BHhitJisII=;
+        b=TF/CtObdLEmqzz1CTOgdbe6XnK/5C66RjhJoIiDxFxhOmj3UC+O+d7zia6Ys1vNW7U
+         ZqDhVyPL1hqD3kIWOCqK8x2HbgWio3Yik/68bFW++okq3Lbz9kFvfQn8zwzIwdBb30x9
+         YyYH+jRZ1YnCYAALByvtb7BnSm6bblMPLF3AUTRgcYCPNvobMAabSID9DYPRo69OJrAw
+         TpgEAN7HG91x8VyKZYmXfWb9CVrkGqEyEXzCdkwmtohKTbChCmpV2BGIzop7bGbXCUJX
+         PHqum+fEGQ+0hNJtYuWS2lxDOiFcIhgN7oAfgudH5RhzvhgxooxqOWmYZeZVsYQVGmmn
+         8S5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763560202; x=1764165002;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=PA3aR//XqqSLd6aBP1s9HW3fQNaQLmdD9BHhitJisII=;
+        b=RRoszok+mko1RcX9hdZnfe5AjkTjcah+4kZvPzngnLE+6PEDYRpZV5D9tjCQLlnAcN
+         7KkRkrXf7C9cf81/Nmqk3F8gtbyr8UgM38KVxvSIK6otdhcrr0ZnYCiHyVt8SnKVx1uC
+         AUK0BXC5f7SvitK6omlafOVYhXuKAvx5NDA/cpu7IXgQGQLDIoBF3fru87G3QgeN0zPn
+         qS3ddxfG1yIIB/kqz7K5HQ1HRQBBirozWazaGv+uzw4ZnMhWwDhV5Kq+6lIMbJIuw71j
+         E0RcaL49z/EabifzfFH/sQsEu1/XgOGjUa/bD1s2UiuFI/F92b9I9ij4zxwXupT32p7h
+         OOEg==
+X-Forwarded-Encrypted: i=1; AJvYcCWyd4nVtTARn6CAkgnh74sgrEX6MysAcpsSr21q9Q3XH7v5s/PigT8F10c1ybOgTBISBx4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzx8ahWU2jOh0Wij/I0UCZXQblDXwEiUMGBktaNxi4i8uLEb1WU
+	a4HwRLlOKslKGw7i6K7ZTNkFNS7APiyeUBPW0n5HPODtI8mLpz076b19jal6wclRbH2P/BttBwN
+	/vmtuDOwTFEFCrvvJJ3qO0Z4e/gHyGcw=
+X-Gm-Gg: ASbGnct2qaNmqcoMPMjEcmT14zLt/Me43diR+LFWV0GSQP0fvDUqUeuuPWHK/GVYKWC
+	0zkry6yvvUhEO7rS7SMwYbZfacyRkwe7nlIG5ggE/BPtpI+NsM3vPyB11ybC7P9fY7JmPnx3qzO
+	MCmhP5hkBdZiZsn21ovlsu0mDilFfbjDHNRe/78RTSg6XpWkDU6DcYFvSgVrwDdafL2CEHuK8pl
+	5FP6vqYIH84cYu1DdG/EYQP8syulpgTr00bj0vS2y7nU7E28kkxbTT8mVPymzFYKm6X3KdRmOd6
+	mSh9759RW4aDnrl5J5Auc4OUqcPp+40/aWCE5h1OkjtVE9uRearRHwuucFrFfzysNxMLqld0N7z
+	30FGXtoMtYMidx2fnPBXo
+X-Google-Smtp-Source: AGHT+IGGVmLiseawcnvZbvhRX7fOL6QAlnymjGCnNl5Y6MJZz/aS1YjF5zsYCLKnAh6kSr2Lo387+JLD61i9on7r+MI=
+X-Received: by 2002:a05:7022:6091:b0:119:e569:f611 with SMTP id
+ a92af1059eb24-11b40faf26emr9338366c88.10.1763560202365; Wed, 19 Nov 2025
+ 05:50:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-26-0db98a7fe474@bootlin.com>
-References: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com>
-In-Reply-To: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Jonathan Corbet <corbet@lwn.net>, Alexey Brodkin <abrodkin@synopsys.com>, 
- Phong LE <ple@baylibre.com>, Liu Ying <victor.liu@nxp.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- Adrien Grassein <adrien.grassein@gmail.com>, 
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
- Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, 
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Magnus Damm <magnus.damm@gmail.com>, Kevin Hilman <khilman@baylibre.com>, 
- Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Anitha Chrisanthus <anitha.chrisanthus@intel.com>, 
- Edmund Dea <edmund.j.dea@intel.com>, Inki Dae <inki.dae@samsung.com>, 
- Seung-Woo Kim <sw0312.kim@samsung.com>, 
- Kyungmin Park <kyungmin.park@samsung.com>, 
- Krzysztof Kozlowski <krzk@kernel.org>, 
- Alim Akhtar <alim.akhtar@samsung.com>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
- linux-amlogic@lists.infradead.org, linux-mediatek@lists.infradead.org, 
- linux-samsung-soc@vger.kernel.org, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20251119-imx-dsp-2025-11-19-v4-0-adafd342d07b@nxp.com> <20251119-imx-dsp-2025-11-19-v4-12-adafd342d07b@nxp.com>
+In-Reply-To: <20251119-imx-dsp-2025-11-19-v4-12-adafd342d07b@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Wed, 19 Nov 2025 15:52:30 +0200
+X-Gm-Features: AWmQ_bkuVDMyYfENLfIkZrmHLS5NB7j6e-0_rwXCFGVWssgFpyz5qyPLJLqiH7U
+Message-ID: <CAEnQRZBMiZhEx0ziNbxpLLC1OK4CqNQQkYUncHcdGXe=mnJC0A@mail.gmail.com>
+Subject: Re: [PATCH v4 12/12] remoteproc: imx_dsp_rproc: simplify start/stop
+ error handling
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
+	Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
+	Iuliana Prodan <iuliana.prodan@nxp.com>, linux-remoteproc@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-of_drm_find_bridge() is deprecated. Move to its replacement
-drm_of_find_bridge() which gets a bridge reference, and put it when done.
+On Wed, Nov 19, 2025 at 6:27=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nxp.co=
+m> wrote:
+>
+> From: Peng Fan <peng.fan@nxp.com>
+>
+> Replace goto-based error handling with early return pattern in
+> imx_dsp_rproc_{start,stop}() functions, and simplify if-else logic.
+>
+> No functional changes, only code structure improvements for better
+> maintainability.
+>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
-This needs to be handled in various steps:
-
- * the bridge returned drm_of_find_bridge() is stored in next_bridge whose
-   scope is the for loop, so a cleanup action is enough
- * the value of next_bridge is copied into selected_bridge, potentially
-   more than once, so a cleanup action at function scope is useful here too
- * however on successful return selected_bridge must be returned and
-   ultimately stored, so it should not be put in that case: use
-   return_ptr() to defuse the cleanup action on successful return
- * finally, put the bridge reference on device remove
-
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-
----
-
-Cc: Liu Ying <victor.liu@nxp.com>
----
- drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
-index 2ecc3c1051e5..9818239cf6e7 100644
---- a/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
-+++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
-@@ -256,12 +256,13 @@ static int imx8qxp_pixel_link_disable_all_controls(struct imx8qxp_pixel_link *pl
- 	return imx8qxp_pixel_link_disable_sync(pl);
- }
- 
-+/* The returned bridge has its refcount incremented */
- static struct drm_bridge *
- imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
- {
- 	struct device_node *np = pl->dev->of_node;
- 	struct device_node *port;
--	struct drm_bridge *selected_bridge = NULL;
-+	struct drm_bridge *selected_bridge __free(drm_bridge_put) = NULL;
- 	u32 port_id;
- 	bool found_port = false;
- 	int reg;
-@@ -298,7 +299,7 @@ imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
- 			continue;
- 		}
- 
--		struct drm_bridge *next_bridge = of_drm_find_bridge(remote);
-+		struct drm_bridge *next_bridge __free(drm_bridge_put) = drm_of_find_bridge(remote);
- 		if (!next_bridge)
- 			return ERR_PTR(-EPROBE_DEFER);
- 
-@@ -306,13 +307,15 @@ imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
- 		 * Select the next bridge with companion PXL2DPI if
- 		 * present, otherwise default to the first bridge
- 		 */
--		if (!selected_bridge || of_property_present(remote, "fsl,companion-pxl2dpi"))
--			selected_bridge = next_bridge;
-+		if (!selected_bridge || of_property_present(remote, "fsl,companion-pxl2dpi")) {
-+			drm_bridge_put(selected_bridge);
-+			selected_bridge = drm_bridge_get(next_bridge);
-+		}
- 	}
- 
- 	pl->mst_addr = port_id - 1;
- 
--	return selected_bridge;
-+	return_ptr(selected_bridge);
- }
- 
- static int imx8qxp_pixel_link_bridge_probe(struct platform_device *pdev)
-@@ -392,6 +395,7 @@ static void imx8qxp_pixel_link_bridge_remove(struct platform_device *pdev)
- 	struct imx8qxp_pixel_link *pl = platform_get_drvdata(pdev);
- 
- 	drm_bridge_remove(&pl->bridge);
-+	drm_bridge_put(pl->next_bridge);
- }
- 
- static const struct of_device_id imx8qxp_pixel_link_dt_ids[] = {
-
--- 
-2.51.1
-
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
