@@ -1,42 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633B32EC56F;
-	Wed, 19 Nov 2025 07:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E182F066D;
+	Wed, 19 Nov 2025 07:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763537641; cv=none; b=KymTCL0AzoUl/sRGsPYYPd3hkvQpOqWAlLxH4Cj2xS4f0hoZXvRc3WYDnFGDltgQoJO1zJpwagTV8kYk2wSLgBczFzH5FNVuibi/TKVE75wsTKvSiOVovJyMUpEliyjiKgD1Mb1NJIpSlxHcITGoO6t693Gsh5DzdK0Gd5XTN2I=
+	t=1763538248; cv=none; b=d94yOuwAhhVMxINQe3ASxebbBv5t8UpHwcDPqQPtV5IPEUqTQ6GIxxA0aS1tUGAsIccxbgrMMjrn9Stixg6vr5LsLSQbzUjcxspYvsHYXihNq8mSYEGhDSWTeNRqTXbPqcVC+4v5LFwyT4swzd8SJM8n2MmrL4ealwFkrXuSReY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763537641; c=relaxed/simple;
-	bh=+VT0vHKyeNB2uauVAiq1vH/zwODt8yBbpa/doxp/yT8=;
+	s=arc-20240116; t=1763538248; c=relaxed/simple;
+	bh=SXE3nXw7XOrEOQ/b+5rPODGnW8nNIRQBjWRoQoB8Khc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lNAiS/UoDHpWPSznh3/0rAh4DNfwC9N1ctDWZUmtGuPLZHlAK0eA83C/Ob9LsEXQ8VXo1wHGsuz0J92SGYEsvi5MUiLSKCQsV/9SbgzI2q+IezHpRX5HovJwsLlAGINcktrX4syEgQfJp6sH7G0pFMvzA0kd1+I+12xEifv8IQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSXbdbLC; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=B/nr61uLA8OSpoNoXD80R3tNpWLlWidLgVl6dEf1y1HcpdMV5PReVwmnKFI9TZ8SUo6am5L0C4+gTDm3vnFRpjf3yiWQtRspu4KcAMxo6FN238PZzWBnletTPpAXLmrAiU0LWN+oQjjncHVg5cjDNDqnZ89rog1M0oUmpKn3dBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uCSA4//x; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSXbdbLC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F574C16AAE;
-	Wed, 19 Nov 2025 07:33:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uCSA4//x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 636B3C19423;
+	Wed, 19 Nov 2025 07:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763537640;
-	bh=+VT0vHKyeNB2uauVAiq1vH/zwODt8yBbpa/doxp/yT8=;
+	s=k20201202; t=1763538248;
+	bh=SXE3nXw7XOrEOQ/b+5rPODGnW8nNIRQBjWRoQoB8Khc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MSXbdbLCrN8/wIdwz8onSD74ZzzjmhPk4AyN3HRUosYUhLg5YbIiOpn61SBcJn+/0
-	 rwtzpMNtnetEvCGV7JG5s1WDMOzO4gdouXwO5kqFk/X/J483ow62bLJDE37PEcVJ07
-	 PDfkD31ivbbZj+4OL9WQj946PPd0iEXd9rhg2H4nxO22ddP09BFGT6orW6V7Ljxicz
-	 Vff09qbKG+WXlosjWguLIDrLQES4i26ZYc9ZV8MvYD6plfmHzC+gU3gcdtLSW8v59c
-	 +OH2iE4x7XyquUhv3j//ZbeujrI74BvPMlRdhLIdgxMshqSvtluB6uq3QZkP9fHBEs
-	 6Fz+vqXK10cgA==
-Date: Wed, 19 Nov 2025 08:33:57 +0100
+	b=uCSA4//xIK7UVtJpvWGoPLClWBxjWjuWZOCmnragDxeurIuDXTnLOBmQ6OnK4i+Kk
+	 QwmoEs1y4CJ0hzYArjE4EF7r3zskOasHAcqh12O9uaIBAeGoR4gTJA/mbjCBq647QH
+	 lajHRYs9YoBQcGeBUuS5FCmc3jNux/FTYZdcErsgLkyIOU0vxMe1k5+lPG5z3hcngB
+	 4PTuVE92g4Tdu4N4qbvcETNlbfngQdGmx8AuhahuIzS9BpqVgPWBVdeqeN4epXTfvt
+	 Ww03LwVLn77urpcEPcHifbk+MwEKz6GCo6HjfRPlhr4WQyeLsuoLSP5oxtfCt7fthg
+	 0ylOPs1752GhA==
+Date: Wed, 19 Nov 2025 08:44:04 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: neil.armstrong@linaro.org, Laurent.pinchart@ideasonboard.com, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	Frank.li@nxp.com
-Subject: Re: [PATCH v2 1/2] dt-bindings: display: bridge: ldb: Document
- nxp,enable-termination-resistor
-Message-ID: <20251119-rainbow-wren-of-acceptance-c0e7f3@kuoka>
-References: <20251119022946.268748-1-festevam@gmail.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, abelvesa@kernel.org, peng.fan@nxp.com, mturquette@baylibre.com, 
+	sboyd@kernel.org, Frank.Li@nxp.com, hongxing.zhu@nxp.com, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, jun.li@nxp.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH 4/4] arm64: dts: imx95: fix hsio_blk_ctl reg map
+Message-ID: <20251119-speedy-delectable-hawk-93fade@kuoka>
+References: <20251118074055.2523766-1-xu.yang_2@nxp.com>
+ <20251118074055.2523766-4-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,24 +47,46 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251119022946.268748-1-festevam@gmail.com>
+In-Reply-To: <20251118074055.2523766-4-xu.yang_2@nxp.com>
 
-On Tue, Nov 18, 2025 at 11:29:45PM -0300, Fabio Estevam wrote:
-> Document the optional nxp,enable-termination-resistor property for the
-> i.MX LVDS display bridge.
+On Tue, Nov 18, 2025 at 03:40:55PM +0800, Xu Yang wrote:
+> The HSIO block control register map should be 0x4c010000~0x4c01FFFF.
+> Correct the start address and set length to 0x100 for available
+> registers.
 > 
-> This boolean property indicates that the built-in 100 Ohm termination
-> resistor on the LVDS output is enabled. It is controlled via the HS_EN
-> bit in the LVDS_CTRL register. Enabling the resistor can improve LVDS
-> signal quality and may prevent visual artifacts on some boards, but
-> increases the power consumption.
-> 
-> Signed-off-by: Fabio Estevam <festevam@gmail.com>
+> Fixes: 3c8d7b5d2bed ("arm64: dts: imx95: add ref clock for pcie nodes")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 > ---
-> Changes since v1:
-> - Change the property name to nxp,enable-termination-resistor (Frank).
+>  arch/arm64/boot/dts/freescale/imx95.dtsi | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> index 1292677cbe4e..21c9df445be0 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+> @@ -1774,9 +1774,9 @@ usb3_dwc3: usb@4c100000 {
+>  			};
+>  		};
+>  
+> -		hsio_blk_ctl: syscon@4c0100c0 {
+> +		hsio_blk_ctl: syscon@4c010000 {
+>  			compatible = "nxp,imx95-hsio-blk-ctl", "syscon";
+> -			reg = <0x0 0x4c0100c0 0x0 0x1>;
+> +			reg = <0x0 0x4c010000 0x0 0x100>;
+>  			#clock-cells = <1>;
+>  			clocks = <&clk_sys100m>;
+>  			power-domains = <&scmi_devpd IMX95_PD_HSIO_TOP>;
+> @@ -1844,7 +1844,7 @@ pcie0: pcie@4c300000 {
+>  				 <&scmi_clk IMX95_CLK_HSIOPLL>,
+>  				 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+>  				 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>,
+> -				 <&hsio_blk_ctl 0>;
+> +				 <&hsio_blk_ctl IMX95_CLK_HSIOMIX_PCIE_CLK_GATE>;
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+This is unrelated change, nothing explained in commit msg. Please do not
+combine independent changes into one commit. Non-fixes with
+fixes either
 
 Best regards,
 Krzysztof
