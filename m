@@ -1,131 +1,198 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B2332FA27
-	for <imx@lists.linux.dev>; Wed, 19 Nov 2025 14:36:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E07527B32D
+	for <imx@lists.linux.dev>; Wed, 19 Nov 2025 15:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763562981; cv=none; b=S28948QI4PFTZovr/wF1f+iaCCSxAlaMOU2qQ53xLJ6smwFVy1VQZaI/9pJDxZAd4q9yuLShE+teO3ZDiJVudQwqirlD52MW9UmXw4SlPIomXogm258HFnKaAj0jhHFphDE7Iq6EVfE4Q/sC8rXwINdcGfL4MhfRZ8wtt7S3FmA=
+	t=1763564726; cv=none; b=KT1uSVIF3Lt9MSC+uQapmOHbrcJZvvkkxkUUNLGSmuISDzm3Rm4JEk8eQxMdjuG9ef9DjhMa0lS7r2Xd4TxUN13sZ/5rd1ejKn/WP5w87uNrCVSywK81c5q54k+ZWaOurbf6Epbj1fbMbDj/9vRtMolRkB0vNqjnSOG2BasE9Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763562981; c=relaxed/simple;
-	bh=yh9RkoKzaTwXiWB5pU0EiX/rGZGz+eyrQZcZ7K/aRTw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qdQ4IYwqX0uC9+FRggBEQ8Tuiqkl6HX26yi/ojG/BYS9ezqsOxb3BKXiWyyIbvgEeY5Qm0lGzLQvK0OBH0rGtckPPvmTVPXD1aKK61R1aQVguzoeV5VkHkR7DXu6OZja5BvpEtcr4vgCd4ygS9duqiXj7ilsivJ43ZesPitar9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cyOEp89n; arc=none smtp.client-ip=185.171.202.116
+	s=arc-20240116; t=1763564726; c=relaxed/simple;
+	bh=Qqus3GcZo9UeS54mCFvjyr0P2gu9agHXL/0LSp5j8e8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=nEajF2iCgEfUe99RpLe82LA5xeZAIVnVRmrsSlEpZXKnWslkIYayxj8bSI7E1xMrTj5BXbIjWV7WEBVbKU52LtaIFVTMMwzgwfvxfKjfKf1o+Clu2L/ciOEZiJw0chRLyrB5Q433BJDXkq3n1gt7rLDo+zyz4wEQexutHjKFG9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=sOEuzAxE; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cyOEp89n"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="sOEuzAxE"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 4F194C11189;
-	Wed, 19 Nov 2025 14:35:55 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 92D171A1BB0;
+	Wed, 19 Nov 2025 15:05:22 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7E7AC60699;
-	Wed, 19 Nov 2025 14:36:17 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F3D1810371A0D;
-	Wed, 19 Nov 2025 15:36:03 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5ACA160699;
+	Wed, 19 Nov 2025 15:05:22 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A4C1410371A6A;
+	Wed, 19 Nov 2025 16:05:06 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763562975; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=i80dj0GflYpB1hZNEEPgVvWiw8lZXjOo2MgG9uRoiXg=;
-	b=cyOEp89nJrCZoYG3avsOq17lwj2MmFPr9JJNV8uJoRbiUf4i0FpASC7DYih3+kt22Z4JLK
-	hSfQAKmElJaMv6eTW96h32EOAkaD/+EFkR9eQ9wj6eOaNWPXmFuek8CAOxBduzaCp3MKqE
-	SRSwfh/p42u24j0seruGdGX03vsbe1FXL1+wnIiKztiT4pTasuKQA7XQ5fMZEt1qxhkfkX
-	Lkm5OLbXHB4C5ilnR5VnsNMMw4PF073vGSCHsvLUZo2v92DoVPJWTUfnDbHwDmg8DEvTRD
-	G2tqiz9kie5yiw/RfMiYlKZFRz6f0jK5xnKofaGhGeYtBD9xgQSkRsDygt5W+A==
-Message-ID: <3c257fa4-764c-486a-b4b0-74b137df59fc@bootlin.com>
-Date: Wed, 19 Nov 2025 14:36:08 +0000
+	t=1763564719; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=F7QYsJvko3OwXBuoQqrMWaiZs2Tw0yizTy6p7UD4rac=;
+	b=sOEuzAxEZWuQ3AUbFtEgUlf2cgtfZWFBSyylVKX8jZsilf0pjAXIS/1dUfJVSv11XNTJuI
+	C0XUe2nv5ky9Mn/3MfiFXv1n/0JLHDWaG0itUKmX2QaboBI96GBbNFKrjGYu+8SCdV0DBT
+	LKR1vwDMaGbq7Lkp1S3fONcv4bUe4hEcHgUnX1la5CRLY0y1raK/rkHodxNqKDleqAdoSi
+	l3OyZqJGWvRsUtgJI97b41UaOy9g8IytQezx8tiRjlP6MmIfs6wVpTYa4Exv8EJrrMgsKh
+	R21w3WrZaNqF/CfQUtZMsjnN4+WrwU+pd84dsLKf7gEcDQXt1HEx0nqD76YBcA==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/26] drm/bridge: ite-it66121: use
- devm_drm_of_find_bridge() to put the next bridge
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Jonathan Corbet <corbet@lwn.net>, Alexey Brodkin <abrodkin@synopsys.com>,
- Phong LE <ple@baylibre.com>, Liu Ying <victor.liu@nxp.com>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Adrien Grassein <adrien.grassein@gmail.com>,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
- Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>, Kevin Hilman <khilman@baylibre.com>,
- Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Chun-Kuang Hu <chunkuang.hu@kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
- Edmund Dea <edmund.j.dea@intel.com>, Inki Dae <inki.dae@samsung.com>,
- Seung-Woo Kim <sw0312.kim@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
- linux-amlogic@lists.infradead.org, linux-mediatek@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org
-References: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com>
- <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-7-0db98a7fe474@bootlin.com>
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-7-0db98a7fe474@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 19 Nov 2025 16:05:05 +0100
+Message-Id: <DECRIHBXOEXY.WX45FITGF5DA@bootlin.com>
+Subject: Re: [PATCH 06/26] drm/bridge: add devm_drm_of_find_bridge
+Cc: "Hui Pu" <Hui.Pu@gehealthcare.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-renesas-soc@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
+ <linux-mediatek@lists.infradead.org>, <linux-samsung-soc@vger.kernel.org>
+To: "Louis Chauvet" <louis.chauvet@bootlin.com>, "Andrzej Hajda"
+ <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
+ <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
+ "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jonathan Corbet"
+ <corbet@lwn.net>, "Alexey Brodkin" <abrodkin@synopsys.com>, "Phong LE"
+ <ple@baylibre.com>, "Liu Ying" <victor.liu@nxp.com>, "Shawn Guo"
+ <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
+ <festevam@gmail.com>, "Adrien Grassein" <adrien.grassein@gmail.com>,
+ "Laurent Pinchart" <laurent.pinchart+renesas@ideasonboard.com>, "Tomi
+ Valkeinen" <tomi.valkeinen+renesas@ideasonboard.com>, "Kieran Bingham"
+ <kieran.bingham+renesas@ideasonboard.com>, "Geert Uytterhoeven"
+ <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Kevin
+ Hilman" <khilman@baylibre.com>, "Jerome Brunet" <jbrunet@baylibre.com>,
+ "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>, "Chun-Kuang Hu"
+ <chunkuang.hu@kernel.org>, "Philipp Zabel" <p.zabel@pengutronix.de>,
+ "Matthias Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno"
+ <angelogioacchino.delregno@collabora.com>, "Anitha Chrisanthus"
+ <anitha.chrisanthus@intel.com>, "Edmund Dea" <edmund.j.dea@intel.com>,
+ "Inki Dae" <inki.dae@samsung.com>, "Seung-Woo Kim"
+ <sw0312.kim@samsung.com>, "Kyungmin Park" <kyungmin.park@samsung.com>,
+ "Krzysztof Kozlowski" <krzk@kernel.org>, "Alim Akhtar"
+ <alim.akhtar@samsung.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.20.1
+References: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com> <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-6-0db98a7fe474@bootlin.com> <0858117f-9397-4045-9b7d-490ad24926cb@bootlin.com>
+In-Reply-To: <0858117f-9397-4045-9b7d-490ad24926cb@bootlin.com>
 X-Last-TLS-Session-Version: TLSv1.3
 
+Hi Louis,
 
+On Wed Nov 19, 2025 at 3:33 PM CET, Louis Chauvet wrote:
+>
+>
+> On 11/19/25 13:05, Luca Ceresoli wrote:
+>> Several drivers (about 20) follow the same pattern:
+>>
+>>   1. get a pointer to a bridge (typically the next bridge in the chain) =
+by
+>>      calling of_drm_find_bridge()
+>>   2. store the returned pointer in the private driver data, keep it unti=
+l
+>>      driver .remove
+>>   3. dereference the pointer at attach time and possibly at other times
+>>
+>> of_drm_find_bridge() is now deprecated because it does not increment the
+>> refcount and should be replaced with drm_of_find_bridge() +
+>> drm_bridge_put().
+>>
+>> However some of those drivers have a complex code flow and adding a
+>> drm_bridge_put() call in all the appropriate locations is error-prone,
+>> leads to ugly and more complex code, and can lead to errors over time wi=
+th
+>> code flow changes.
+>>
+>> To handle all those drivers in a straightforward way, add a devm variant=
+ of
+>> drm_of_find_bridge() that adds a devm action to invoke drm_bridge_put()
+>> when the said driver is removed. This allows all those drivers to put th=
+e
+>> reference automatically and safely with a one line change:
+>>
+>>    - priv->next_bridge =3D of_drm_find_bridge(remote_np);
+>>    + priv->next_bridge =3D devm_drm_of_find_bridge(dev, remote_np);
+>>
+>> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>> ---
+>>   drivers/gpu/drm/drm_bridge.c | 30 ++++++++++++++++++++++++++++++
+>>   include/drm/drm_bridge.h     |  5 +++++
+>>   2 files changed, 35 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+>> index 09ad825f9cb8..c7baafbe5695 100644
+>> --- a/drivers/gpu/drm/drm_bridge.c
+>> +++ b/drivers/gpu/drm/drm_bridge.c
+>> @@ -1446,6 +1446,36 @@ struct drm_bridge *drm_of_find_bridge(struct devi=
+ce_node *np)
+>>   }
+>>   EXPORT_SYMBOL(drm_of_find_bridge);
+>>
+>> +/**
+>> + * devm_drm_of_find_bridge - find the bridge corresponding to the devic=
+e
+>> + *			     node in the global bridge list and add a devm
+>> + *			     action to put it
+>> + *
+>> + * @dev: device requesting the bridge
+>> + * @np: device node
+>> + *
+>> + * On success the returned bridge refcount is incremented, and a devm
+>> + * action is added to call drm_bridge_put() when @dev is removed. So th=
+e
+>> + * caller does not have to put the returned bridge explicitly.
+>> + *
+>> + * RETURNS:
+>> + * drm_bridge control struct on success, NULL on failure
+>
+> I am not sure for the "NULL on failure", you return ERR_PTR(err), which
+> is probably not NULL but an error code.
 
-On 11/19/25 13:05, Luca Ceresoli wrote:
-> This driver obtains a bridge pointer from of_drm_find_bridge() in the probe
-> function and stores it until driver removal. of_drm_find_bridge() is
-> deprecated. Move to devm_drm_of_find_bridge() which puts the bridge
-> reference on remove or on probe failure.
-> 
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> ---
->   drivers/gpu/drm/bridge/ite-it66121.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/bridge/ite-it66121.c b/drivers/gpu/drm/bridge/ite-it66121.c
-> index aa7b1dcc5d70..5bc4e5afb823 100644
-> --- a/drivers/gpu/drm/bridge/ite-it66121.c
-> +++ b/drivers/gpu/drm/bridge/ite-it66121.c
-> @@ -1542,7 +1542,7 @@ static int it66121_probe(struct i2c_client *client)
->   		return -EINVAL;
->   	}
->   
-> -	ctx->next_bridge = of_drm_find_bridge(ep);
-> +	ctx->next_bridge = devm_drm_of_find_bridge(dev, ep);
->   	of_node_put(ep);
->   	if (!ctx->next_bridge) {
+Indeed.
 
-And for all the patches converting of_drm_find_bridge to 
-devm_drm_of_find_bridge, I think the pattern:
+Apologies for the mess in this series: it was adapted from an old one using
+a different approach, so I had to adapt lots of details, and missed a few
+along the way. :(
 
-	bridge = devm_drm_of_find_bridge(dev, ep);
-	if(!bridge)
-		return -E...;
+About the value to return, maybe it's better to use the same semantics as
+drm_of_find_bridge(), i.e. NULL on error. I don't think a caller would have
+anything clever to do with an error return value other tan bailing out. And
+the only error path for devm_add_action_or_reset() is on a small
+allocation, so it basically cannot happen.
 
-is wrong, because devm_drm_of_find_bridge can return a non-null error code.
+>> +struct drm_bridge *devm_drm_of_find_bridge(struct device *dev, struct d=
+evice_node *np)
+>> +{
+>> +	struct drm_bridge *bridge =3D drm_of_find_bridge(np);
+>> +
+>> +	if (bridge) {
+>> +		int err =3D devm_add_action_or_reset(dev, drm_bridge_put_void, bridge=
+);
+>> +
+>> +		if (err)
+>> +			return ERR_PTR(err);
+>> +	}
 
+So this would become:
 
->   		dev_dbg(ctx->dev, "Next bridge not found, deferring probe\n");
-> 
+	if (bridge) {
+		if (devm_add_action_or_reset(dev, drm_bridge_put_void, bridge))
+			return NULL;
+	}
 
+>> +
+>> +	return bridge;
+>> +}
+
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
