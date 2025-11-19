@@ -1,62 +1,64 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7D727442
-	for <imx@lists.linux.dev>; Wed, 19 Nov 2025 02:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F65214A8B
+	for <imx@lists.linux.dev>; Wed, 19 Nov 2025 02:30:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763519417; cv=none; b=W6sU3urotpRZB/DJhjxpNS+R9etZirH7lGS0DQXSN36GZ6CbqvjxkZK/xd71+ZKIuJ4cSfj0FcibEQqL2Xyzvgu8+xPCmHv2dnrs4D+dJ/K6pcpL3g/kSz0ToDHkdWbW1rG/Co0m5I5fg3+WqmMkMy1kv9XcOptG+xXi5pQv0yE=
+	t=1763519421; cv=none; b=WKD2PVjaD4InTAgOnMXxJus8mYsqAY+m5dDh422ekhdUe+ZatfLroPV6HIewrKRAFarHM7W3j23HOf4c6IU2anMXHPLe3plXoiDzzxNcAkFxhAC9TQD1uf/Ba23M+2xCOTWGr+h4HDTplqIu4NOUtNCJmTdRoayRps45HPOdl/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763519417; c=relaxed/simple;
-	bh=9jslsko6Ysi4k4hZdq86FFeqtg1ZzbHLWDCJLb+kEsg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=thIAax/xCkD0lc+22EjChAOvfMVVHt+u6yeqKl+2F9H41DBEXebUHckjXZh+0cG9u/FVHjkDkeTvhdr4rSgfezGFfs3ndizQR8DKKl5cdhA6bFbSeh2HFk0IggEy477P15hRn7jSIdXPxHGPCffRI2h/iettDcUCjahSRqA2AGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bMVbbSFJ; arc=none smtp.client-ip=209.85.210.172
+	s=arc-20240116; t=1763519421; c=relaxed/simple;
+	bh=gxnoIS1YUWSbg6L9HKTQ9iY5F7GsbV7NeqoguP9aqVU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=f0qZ6JcL/YM0ymieHqvrX2OhepwoMIV+ntqYFKW9dQ9/2lSIiMkOv7LtkKmoekDZq9trjbcJxtsCirJvVLnkoUlZiGVSvBXmGZddNt6w58Y2hwvnPLru8e/4zqWW8hEFfGZxLfAJ7XR0Ve15Pex1r4dPU2zuMHLIlX8xDhnbLjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mla3SR+C; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bMVbbSFJ"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7bab7c997eeso5033201b3a.0
-        for <imx@lists.linux.dev>; Tue, 18 Nov 2025 18:30:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mla3SR+C"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7b9387df58cso2830015b3a.3
+        for <imx@lists.linux.dev>; Tue, 18 Nov 2025 18:30:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763519416; x=1764124216; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IAUl3DvNF4a96OMaEmiq14uCqbdByDkYT7FAGSKW29g=;
-        b=bMVbbSFJyoBMmSsKhq5t9vwS3mxDj+KvYy2D2ss5288+PBIREeCpARSVLe6QJpoXa2
-         wC/Bg5Hpzveku7F6dYfLvxVKf8ngeNVE1gktEy3H9ANZTXtaZ97N3NulobcPxhCQpdI5
-         dAJ29XyY834lBqADAhq4xID3+xrm5Ji3mBE8T/QXb0qb3k/jCfsnrlmcpJpNkFuBJ1mn
-         BDrQZ6U34TdPfra70RHR8ZoKYSwiL32DSJe5ho0Skm1xmTNU82BMdG5EcEMmrCd+/aMZ
-         V/+KvZpNgxhb8KLMV5Cc0PVFsdAIFItfah5N0R17tRsaKBbgEhu3aZavWCb1A0jIgPIa
-         71lQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763519416; x=1764124216;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1763519419; x=1764124219; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IAUl3DvNF4a96OMaEmiq14uCqbdByDkYT7FAGSKW29g=;
-        b=MPZnXq/VPZ9R1pSx64ltWxRxhq7LD41Xa10S82vnrqeTNjvfifMY8+yGtqHjGE3Z70
-         i8bDK+4aXnBoS8DCttiEuYuj28F/Lp/Ezt8RRpgYhIhVlhettUneRRMNS+x6EuxTkLvY
-         jj2/zvzTBSoGP6lIEfBF3+w+veYoiIABFFZ4/flOVyC8sj/8sglVJB3KKyxsF3Ma4LCQ
-         tgep0Yinums+sHDgdRltpfANeb4q2xjO+WnAGUhthTzk+SEro/UoZXY7oslRIyGdMIgg
-         Qi2dHDDECHMQSliGmNi8MYSkCzFCnArmKMTrd4dLDpp7DoL1axhkoQ1mvs4RlIICm1WR
-         JGUg==
-X-Forwarded-Encrypted: i=1; AJvYcCWFJ3KGC70DsuvuwtVGSgM/HLUabL8L2otY+EOYli3vZE+hLFsw3yav/DZ8Ugl3zAvpDRQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx5Jhkw+Gz4FoEzvs+sNyVKRYnRv2AuHr2ciyuMei1jP0aCAvFt
-	qf/fUh3LRPwETz42lf2MOFtLtv53ktRaQRyz7AiJaJILHZnRsUxsjm3+
-X-Gm-Gg: ASbGnct6vPmMNxLCfjcZ+0s5XnFW1Zk9yG1SGU/2fo8gQ7OmpiXzh3VIPrrCFRFh/+K
-	qQmnmWSZjlbE0v/ninBzAa+gldNNRWoX/brUcVPDStmSpboioUMFPZ6aZQS/MEqc/n0/wYxe/45
-	nDigd3mlSvdkoMAbcSNQCz3tGdlepRpFXYGMM+kV28xan9Bt5uZZlOdvRHC+QADtOHQrir42Bbt
-	xzGWnGpbol8PgIXpSn/nJQsOOE2Izw0xfj9n/fgqJqWiiOvmWMkw8Fmscw3XlEJDGsA1PA47SJd
-	QalkvhvLeIxPn/XZB5rK6wvl1KC3DfKAXzG4xpK+B/o5SIwEUcflIrJ1v/BpJwOYqqzZI0X6cvT
-	BHqO4+UKVcCEau/ushJPpQAzKa0qVkuB1Q9SC373oe7TT6l1HHQTe0WElgMjw2AqOr1ZMNhUDrF
-	jwmMpjEmwN+NvoDRYT4czLqVDnDMSTvmOlukI=
-X-Google-Smtp-Source: AGHT+IFh8r79lVQpAeCYF0NNbGC4p1MGfSUZomtiu+dfIgiNGPVRw/+zobtyaOULhCb1FmLl6qDzjQ==
-X-Received: by 2002:a05:7022:d8e:b0:119:e569:f258 with SMTP id a92af1059eb24-11b40e7b689mr5344109c88.1.1763519415678;
-        Tue, 18 Nov 2025 18:30:15 -0800 (PST)
+        bh=76T2SjmDIqZyZD3OqG0HjQASUCl7IRYbYAxLx4z4J70=;
+        b=mla3SR+Cu1t2cep6WtHqNsczIIUc6jSyccXA9hAkznGgfkSQzp+pDS1R/FmBo423I5
+         reebgO9ypW5gFdsDiFGmcLIQYADYag4HMIK2kr4J7BVgv0ck8FdiOYmaNgDJfILrszg9
+         PaIxEZXtJXCcvC4CahdvyOIMJYecTLUiQx99JM5HQlPcAg9P0n3nYbjohy6vj8WOX/Zt
+         frWW9NvCRNZphpE4wBJ4MMFrVvn3HSdLVJxX5NiBNMHm1YEdB40+fZ9IfhU42mi+njTd
+         +FKatv4FETYX5jr+Ho1K97F0cItEUOLAf9Ldld2zQHWrpx/RRIVSKBZ1T9LQey4sQEkw
+         VAWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763519419; x=1764124219;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=76T2SjmDIqZyZD3OqG0HjQASUCl7IRYbYAxLx4z4J70=;
+        b=Yj5bGvi115vQhDcV5ns+JAkF8pdcupeBMZiCr+zGwWuPrW8z/0DOWIcfAqO8qo5het
+         ZTK+qXn/RNdUZ+CYRZlJ3Q1wS2bESdr0Y6kk3YRcFH1veo4GcQvJnf1rtMUSrq2R8Idb
+         x8lC017/KruIoDjHAhWuyIEHyt/GsOL3Cj/48U/WeXdeCNiRKMSNi8N6ujY0tTCzxAa/
+         ZlQwTtqbf2TSlqIJKRKDieYNP4OPsqtwTk4GtR2gQG6I0i4bigxqdO8Y4KTgHe6+kte1
+         EbzEwdZVRwj8MwUmTWSJUdCFaBXguEU2xt4n4rpH3YYOfV01LALfBVZYkP9d5k8iNKAY
+         Qjhw==
+X-Forwarded-Encrypted: i=1; AJvYcCUfSsnqGQ3FPP7AQRp65DvFkdsmpBdfeP4TG2sjvirvJK7HC+R71jxxNG3jJtAfbs6MGHA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzJOUA6xGUpzyqaLLc48zJ8Q1fmeyDMlLbuV//pQ+JdC3MsSb0H
+	Ito9yCgAlcsZxzZJlixLVD/FXI8hXFSB6HefiVLIZqzaeaKPBQj8qOpM
+X-Gm-Gg: ASbGncvGz13UAdzl7gnZmeSJhOG/CqJRelFKloKdopNOKfS17oeLF+Vd28kMf47rTOl
+	3IIj69N3FXeRebY5dFhkbFjct6YgjLQlrjxnG5uzTO10v+nHFHRU2kU4mmpDBMkOKvy4JIiq+uS
+	msTM70jgcl+yd2Hg4WIoUR7CIs8aAcAyHjrWPqk52Fe3L2QC67ty0jv/JwpHsJnDIas+whYW6f8
+	4FYAl5Esa85wUVM+TerjLnnG+B/SexDEohPnwKxSCznlHAqTp/yWqRoXL/8xO2Y4sHMnDAN4Ktd
+	kjHIYtuJzoiEpMUSP/UedBEZ05uhOKgdxqbLq+jfAhbJznrTI36RVtnBZrFY9pBTBS+hElSQDzp
+	gxJ+VLf8Y+Rfw01vslsuJlTtALKLb6ZXi+pTfUgqTrsEwFd+3T5kbWC/8XROGvfVawIn0zh5qRz
+	/xyjhBu7tjFNZYPQJgANc9E5yx
+X-Google-Smtp-Source: AGHT+IFWZ5/K4rKe/g3YbwS6+fpTcdZCtTl6icmOpbHtBhpTsB7wajSZbBxQF3fAXwGOOtNoN85Uqg==
+X-Received: by 2002:a05:7022:ef04:b0:119:e56b:c749 with SMTP id a92af1059eb24-11b40f92c5emr8189781c88.14.1763519418927;
+        Tue, 18 Nov 2025 18:30:18 -0800 (PST)
 Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:8863:100d:2a2a:9a74])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11b060885e3sm65842955c88.0.2025.11.18.18.30.12
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11b060885e3sm65842955c88.0.2025.11.18.18.30.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Nov 2025 18:30:15 -0800 (PST)
+        Tue, 18 Nov 2025 18:30:18 -0800 (PST)
 From: Fabio Estevam <festevam@gmail.com>
 To: neil.armstrong@linaro.org
 Cc: Laurent.pinchart@ideasonboard.com,
@@ -68,10 +70,12 @@ Cc: Laurent.pinchart@ideasonboard.com,
 	imx@lists.linux.dev,
 	Frank.li@nxp.com,
 	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH v2 1/2] dt-bindings: display: bridge: ldb: Document nxp,enable-termination-resistor
-Date: Tue, 18 Nov 2025 23:29:45 -0300
-Message-Id: <20251119022946.268748-1-festevam@gmail.com>
+Subject: [PATCH v2 2/2] drm/bridge: fsl-ldb: Allow the termination resistor to be enabled
+Date: Tue, 18 Nov 2025 23:29:46 -0300
+Message-Id: <20251119022946.268748-2-festevam@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251119022946.268748-1-festevam@gmail.com>
+References: <20251119022946.268748-1-festevam@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -80,43 +84,66 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Document the optional nxp,enable-termination-resistor property for the
-i.MX LVDS display bridge.
+The LVDS Control Register (LVDS_CTRL) register has an HS_EN bit that allows
+the 100 Ohm termination resistor in the chip to be enabled.
 
-This boolean property indicates that the built-in 100 Ohm termination
-resistor on the LVDS output is enabled. It is controlled via the HS_EN
-bit in the LVDS_CTRL register. Enabling the resistor can improve LVDS
-signal quality and may prevent visual artifacts on some boards, but
-increases the power consumption.
+Add support to setting the HS_EN bit when the optional property
+"nxp,enable-termination-resistor" is present.
+
+The motivation for introducing this property was a custom i.MX8MP board
+that was showing visual artifacts. After enabling the 100 Ohm termination
+resistor the LVDS signal quality improved causing the artifacts to
+disappear.
 
 Signed-off-by: Fabio Estevam <festevam@gmail.com>
 ---
 Changes since v1:
 - Change the property name to nxp,enable-termination-resistor (Frank).
 
- .../devicetree/bindings/display/bridge/fsl,ldb.yaml      | 9 +++++++++
+ drivers/gpu/drm/bridge/fsl-ldb.c | 9 +++++++++
  1 file changed, 9 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml b/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml
-index 07388bf2b90d..6bc786204e65 100644
---- a/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml
-+++ b/Documentation/devicetree/bindings/display/bridge/fsl,ldb.yaml
-@@ -35,6 +35,15 @@ properties:
-       - const: ldb
-       - const: lvds
+diff --git a/drivers/gpu/drm/bridge/fsl-ldb.c b/drivers/gpu/drm/bridge/fsl-ldb.c
+index 5c3cf37200bc..b4b9130de32c 100644
+--- a/drivers/gpu/drm/bridge/fsl-ldb.c
++++ b/drivers/gpu/drm/bridge/fsl-ldb.c
+@@ -92,6 +92,7 @@ struct fsl_ldb {
+ 	const struct fsl_ldb_devdata *devdata;
+ 	bool ch0_enabled;
+ 	bool ch1_enabled;
++	bool termination_resistor;
+ };
  
-+  nxp,enable-termination-resistor:
-+    type: boolean
-+    description:
-+      Indicates that the built-in 100 Ohm termination resistor on the LVDS
-+      output is enabled. This property is optional and controlled via the
-+      HS_EN bit in the LVDS_CTRL register. Enabling it can improve signal
-+      quality and prevent visual artifacts on some boards, but increases
-+      power consumption.
+ static bool fsl_ldb_is_dual(const struct fsl_ldb *fsl_ldb)
+@@ -212,6 +213,10 @@ static void fsl_ldb_atomic_enable(struct drm_bridge *bridge,
+ 	/* Program LVDS_CTRL */
+ 	reg = LVDS_CTRL_CC_ADJ(2) | LVDS_CTRL_PRE_EMPH_EN |
+ 	      LVDS_CTRL_PRE_EMPH_ADJ(3) | LVDS_CTRL_VBG_EN;
 +
-   ports:
-     $ref: /schemas/graph.yaml#/properties/ports
++	reg &= ~LVDS_CTRL_HS_EN;
++	if (fsl_ldb->termination_resistor)
++		reg |= LVDS_CTRL_HS_EN;
+ 	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl, reg);
  
+ 	/* Wait for VBG to stabilize. */
+@@ -292,6 +297,7 @@ static const struct drm_bridge_funcs funcs = {
+ static int fsl_ldb_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
++	struct device_node *np = dev->of_node;
+ 	struct device_node *panel_node;
+ 	struct device_node *remote1, *remote2;
+ 	struct drm_panel *panel;
+@@ -340,6 +346,9 @@ static int fsl_ldb_probe(struct platform_device *pdev)
+ 	if (IS_ERR(panel))
+ 		return PTR_ERR(panel);
+ 
++	if (of_property_present(np, "nxp,enable-termination-resistor"))
++		fsl_ldb->termination_resistor = true;
++
+ 	fsl_ldb->panel_bridge = devm_drm_panel_bridge_add(dev, panel);
+ 	if (IS_ERR(fsl_ldb->panel_bridge))
+ 		return PTR_ERR(fsl_ldb->panel_bridge);
 -- 
 2.34.1
 
