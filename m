@@ -1,154 +1,107 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E832B33A6F1
-	for <imx@lists.linux.dev>; Wed, 19 Nov 2025 16:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBD73538BF;
+	Wed, 19 Nov 2025 16:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763569366; cv=none; b=nlQmBbdXACB2bcc8IoTMSoc04gtetCxCz3FwLGn5HCWMSvZVKcdzQ46GaCiBa0LoRkfkBrJWVgjHPe6s52sUiQhdkzLmmJg6wc9vJOZ0eGbd0m5pPeJommJVzx9PiynBvgnVD708agQa7PDXahjtLKjgZop3STiPbLetuiThq0w=
+	t=1763569835; cv=none; b=i/kWVxEKCvCuvTsualJ+83Nj/aA5mg14gNLwJJhakG0l6p9c+IWdTVzlUFMoHhyjsNPd0+WaLA50ToiE7ZXytU17D9Vl79BFaPQm3d2hRviRbIVFfup2hwV6f2Uh5U56rBwWjNO+/HEf8sBrpGLNgmQDE3VFcu7j8xtt8w9ilp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763569366; c=relaxed/simple;
-	bh=4tZVfB9dJ+rmxklUVisjbT+aHHa2hP/95ghmvU1+jv0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nd36MGa1Nz3E1ZE56hW9dgQ+/cHb856jQOgvEV0VQRdCBi6yHyDfBxfUjyODw8of7fqtwCKEKoA9+tptzoiseYcYmHiqgEDV9T8gDjYB7JpL57WmkuLy6Ym4fC53pc6s/xlvwlGgshotS8fbG3w0r+eZ6r6zW0y8L8gRocBjE00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LM83/0IQ; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1763569835; c=relaxed/simple;
+	bh=FpZOJeYflTW8rwLZyA92ajlUDALogMVssxvbPbQomU8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RFwtYbrN1VT0CZXwjsCe/ba+gu3HqJUL5ATs50eP37b5LvCn416OhW5AEGWoTKafE+LdlA7L+tkUwg7DX3rLIhr0yHWl0H+LnLG/2qmVQNkWuCPa6Q/T/dQeZ6+2v1lgB8nV2lxCwXmFKYRGVGeLsOfEJ0E9kDe/tYozaNl8IJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bY2sAWIN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LM83/0IQ"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7bb3092e4d7so5514544b3a.0
-        for <imx@lists.linux.dev>; Wed, 19 Nov 2025 08:22:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763569364; x=1764174164; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=SqgArqZqDLLZkxxlGxEl0Eyz/se4zZ6TXQ2QUXMksPc=;
-        b=LM83/0IQSfGn+NZ+i3DMXnN/an9TpUafw9wh7VFxFASgbPmjhKEE9VCgqZ+2vHibTv
-         e1dWKTnAaqD2TYaQtNd/mux3N9gR1STh3llDypa2lQU0u3IkZzBuw9oJL2rjcsAneXmv
-         uwktkbdvTRQLPLTnLnZ4tn4M48gfq6fFFCFr8hZhir6oX5hVURb0ZoeJBm/eKozMt4mF
-         w5D7xI1XBWHzmxbV72vk+snWW49lntJAJOcAY3bsaWndms5rHpJXItOYpmm7aCNIwViz
-         o8eElDs/rLL2u4lGoUhgclIPCMnJhEr6R4b2bkSQPsk1uCET+WQefC6HVYwuPjRmobqN
-         N8hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763569364; x=1764174164;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SqgArqZqDLLZkxxlGxEl0Eyz/se4zZ6TXQ2QUXMksPc=;
-        b=A41J6M0qMdxyHlbPUIgr6039jIl1U0V8+Bi+K3rkl0OLOtCEBRbIVyjZMDpKLfhFlG
-         R/3scGc9X497gnH8xq2kLKZxo/bkO7SJbvYxwwtluWkEFdnju9ucBepWMZwPyj4AZ0Nj
-         +PKEQiBRwtktrl7KLmWe0/tKDFTs5QnvNmzJh6eNs+XclPZKEWvvspOTewSDCF3TtxUP
-         lat3HcsQWZH/A/biBWgxmw2Rimxt4w13lsyjCTZt3KTCTl00UFzGgqsJ8FdVjfqNzFg5
-         xvwAnB9l1ehD7HxKYhHDoIFBhdhkMk6FkWq6NZfPfWWNKjDb48MBRskbW0qO8/C+1Wia
-         5roA==
-X-Forwarded-Encrypted: i=1; AJvYcCWIx8n6rTUlmZLtKEINHgstiuf2ASnlxEitZWRF1r2b/Zfjo13ws2oXkk8K30uTC810Zt0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxvpXhbgj7qBui4xS6CChbUHeAQY5bXGaabb+5H+guaiM8OAUHN
-	aZOfnf+DTz/H7iu+8NoReDcxA+vUu658oB/jY+mi+tu74ms6ZozONXRYMny8dY+QBjw=
-X-Gm-Gg: ASbGncvYynPq1kz+fF8qsCIDnNiJoYegugMElLblsbGdviKxkFC8LlmatAzHY/g+8nl
-	PPkgTZnLKzHe8Bw61cwqiuhE3P0oZKywFYQbGQe3BJ0idIn3TpR6I2h3StF//d/DNybaXbUHuEN
-	56xrx9+ODdGMUKJG/v1WSEaUpBsozkGo8hHNjgqGsPsiP4iPRqTWQFz8FywiLtpva1goOrNXgjm
-	XJk93UoyoOxdgu6mWo/0FF6SH2CcJNDdemEs0Y6U7UZpmFDsp4lmi2ZSjqKBsKFCpfiMvAu2rH5
-	0ZdbNScEOvHaa9Vn85uf5t1KupMSSdcdMEfube+Omoj3W3RaTO3OYJW8EuL+wql/rrfngRHSWLQ
-	JERzhKq8V9qpUzQUv1BK2Zv3dAQZqG1kZBQsW19Bpj+u/5QJ7GVNEKV5jQMHkT8P48cXEHdjrkx
-	dj1PZ32kQFv/EG1w==
-X-Google-Smtp-Source: AGHT+IHuSIrZBCiLgca0WU1DQj7ineP68uKwSXumgVfu9Fe9sbAmM4VWuP+tv6PTaJCg3+0A1H698w==
-X-Received: by 2002:a05:6a00:812:b0:7ad:9e8a:1f72 with SMTP id d2e1a72fcca58-7c29c492acamr4056626b3a.14.1763569364343;
-        Wed, 19 Nov 2025 08:22:44 -0800 (PST)
-Received: from p14s ([2604:3d09:148c:c800:f8d9:9ae3:90a2:d39e])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7ba611682cfsm17088879b3a.26.2025.11.19.08.22.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Nov 2025 08:22:43 -0800 (PST)
-Date: Wed, 19 Nov 2025 09:22:40 -0700
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v4 00/12] remoteproc: imx_dsp_rproc: Refactor to use new
- ops and remove switch-case logic
-Message-ID: <aR3u0F7FTZUgxCQ6@p14s>
-References: <20251119-imx-dsp-2025-11-19-v4-0-adafd342d07b@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bY2sAWIN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709DCC4CEF5;
+	Wed, 19 Nov 2025 16:30:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763569834;
+	bh=FpZOJeYflTW8rwLZyA92ajlUDALogMVssxvbPbQomU8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bY2sAWINnk8EB7ymmKSXH1OKyQuX+cYgOUUR2I2ZKIHWQ4Wi7Xb2uSH+JhnZp2LrF
+	 V8s2wW/e8ZCd3pjK0+6e+pG+cVYBuOxJkVW0ghLzW48KvI3gfMXY9MV7g80kEGh7Ui
+	 VOz1mm8itzwWul8m/LORTJhDHFjXCOS+X0kJI8efOXRUq7Ia/9H5LPzZ8dCBJT2C2i
+	 TRKdBOqUUV7a3i4Scs7A3mJjDxkAFD/5hnS0hSBJSYu0IpUec2e1d1diRxFE/jAdOU
+	 KxZz8e2jREmDYgdg26TyPeIuVFuPlD893jFQHoyig3pFwLdPdc+oMJvBwBbOH4iTMQ
+	 zSloGnsON9Mgg==
+Date: Wed, 19 Nov 2025 08:30:33 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Wei Fang <wei.fang@nxp.com>, Andrew Lunn <andrew@lunn.ch>,
+ "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "davem@davemloft.net"
+ <davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+ "pabeni@redhat.com" <pabeni@redhat.com>, "eric@nelint.com"
+ <eric@nelint.com>, "maxime.chevallier@bootlin.com"
+ <maxime.chevallier@bootlin.com>, "imx@lists.linux.dev"
+ <imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 net] net: phylink: add missing supported link modes
+ for the fixed-link
+Message-ID: <20251119083033.6a4d3ed4@kernel.org>
+In-Reply-To: <aR3q6_CS2A1VH236@shell.armlinux.org.uk>
+References: <20251117102943.1862680-1-wei.fang@nxp.com>
+	<aRwtEVvzuchzBHAu@shell.armlinux.org.uk>
+	<PAXPR04MB8510A92D5185F67DDC8CC32F88D6A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	<e7222c87-3e4c-4170-993b-dbf5ba26c462@lunn.ch>
+	<aRx8Zh-7MWeY0iJd@shell.armlinux.org.uk>
+	<PAXPR04MB8510BA569EB34E26E1A499BB88D7A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	<aR3q6_CS2A1VH236@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251119-imx-dsp-2025-11-19-v4-0-adafd342d07b@nxp.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 19, 2025 at 12:21:45PM +0800, Peng Fan (OSS) wrote:
-> This patchset aligns imx_dsp_rproc with the cleanup and modernization
-> previously applied to imx_rproc.c. The goal is to simplify the driver by
-> transitioning to the new ops-based method, eliminating the legacy
-> switch-case logic for a cleaner and more maintainable design.
+On Wed, 19 Nov 2025 16:06:03 +0000 Russell King (Oracle) wrote:
+> On Wed, Nov 19, 2025 at 01:22:17AM +0000, Wei Fang wrote:
+> > I'm sorry, I was in a rush to send out the v3 patch, and I hadn't received
+> > your Reviewed-by tag at that time, so the tag was not added. When I saw
+> > that you gave the Review-by in v2, I realized that I could no longer add it
+> > to v3, so I replied that I had sent v3, hoping that you could resend your
+> > Reviewed-by tag.
+> > 
+> > If you don't mind, I will refine the commit message as Andrew suggested
+> > and add your Revived-by tag from v2 to v4. I apologize again.  
 > 
-> Patches 1–5: General cleanup, including code simplification and adoption
->              of the devres API.
-> Patches 6–10: Transition to the new ops-based approach, removing the
->               switch-case structure.
-> Patch 11: Remove the obsolete enum imx_rproc_method.
-> Patch 12: Cleanup goto based logic.
+> I also question the need to refine the commit message this much. One
+> of the points of lore.kernel.org is that it provides a stable source
+> for mailing list archives. We use URLs to that site extensively in
+> the kernel development process - e.g. it's recommended to use it in
+> Closes: tags, and to reference discussion from commit messages. If
+> I look at the number of times lore.kernel.org has been mentioned in
+> commit messages since 6.17, it comes out at around 5700 to date.
+> Looking back to 6.16, it's about 13000.
 > 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
-> Changes in v4:
-> - Collected R-b and T-b
-> - Address the build warning in patch 1
-> - Add a new patch 12 to cleanup the goto based logic
-> - Link to V3: https://lore.kernel.org/imx/20251111-imx-dsp-2025-11-11-v3-0-d05dcba737fa@nxp.com/
+> So, lore.kernel.org is already an insanely valuable resource to the
+> kernel community, and the loss of it would result in a lot of
+> context being lost.
 > 
-> Changes in v3:
-> - Collected R-b
-> - Simplify commit log for patch 4 per Frank.
-> - Link to V2: https://lore.kernel.org/all/20251106-imx-dsp-2025-11-06-v1-0-46028bc3459a@nxp.com/
+> We have had problems with other sites - lkml.org used to be the
+> popular site, but that became unreliable and stuff broke. However,
+> the difference is that lore.kernel.org is maintained by the same
+> people who look after the rest of the kernel.org infrastructure.
 > 
-> Changes in v2:
-> - Collected R-b
-> - Patch 3: Update commit per Frank/Daniel
-> - patch 8: Use priv->dsp_dcfg->dcfg to avoid adding "const struct imx_rproc_dsp_dcfg *dsp_dcfg"
-> - Link to v1: https://lore.kernel.org/linux-remoteproc/CAEnQRZAOTFw=sBppHTYQAdfDBuNqkqk6gVO4FyP0EBsva3Oi+Q@mail.gmail.com/T/#m27c93af9fb1e7fdeb0766bdbffbaae39d79eefab
+> Moreover, using lore.kernel.org is encouraged when one wishes to
+> link to discussion. See "Linking to list discussions from commits"
+> at the bottom of https://www.kernel.org/lore.html
 > 
-> ---
-> Peng Fan (12):
->       remoteproc: imx_dsp_rproc: simplify power domain attach and error handling
->       remoteproc: imx_dsp_rproc: Use devm_rproc_add() helper
->       remoteproc: imx_dsp_rproc: Use devm_pm_runtime_enable() helper
->       remoteproc: imx_dsp_rproc: Use dev_err_probe() for firmware and mode errors
->       remoteproc: imx_dsp_rproc: Drop extra space
->       remoteproc: imx_dsp_rproc: Use start/stop/detect_mode ops from imx_rproc_dcfg
->       remoteproc: imx_dsp_rproc: Move imx_dsp_rproc_dcfg closer to imx_dsp_rproc_of_match
->       remoteproc: imx_dsp_rproc: Simplify IMX_RPROC_MMIO switch case
->       remoteproc: imx_dsp_rproc: Simplify IMX_RPROC_SCU_API switch case
->       remoteproc: imx_dsp_rproc: Simplify IMX_RPROC_RESET_CONTROLLER switch case
->       remoteproc: imx_rproc: Remove enum imx_rproc_method
->       remoteproc: imx_dsp_rproc: simplify start/stop error handling
+> So, I think there was no need to go through v3, inflating the commit
+> message, and end up in this situation.
 > 
->  drivers/remoteproc/imx_dsp_rproc.c | 353 +++++++++++++++++++------------------
->  drivers/remoteproc/imx_rproc.h     |  14 --
+> Every time a patch gets reposted, the netdev cycle (as far as the
+> netdev maintainers are concerned) restarts, and it means a multi-day
+> delay before the change gets committed. As things stand, this is
+> likely to miss tomorrow's linux-net tree submission, which is
+> highly likely to be the last one before 6.18 is released. So we're
+> not going to get this fixed before the final 6.18 now. And for
+> what value? None as far as I can see. The patch was ready at v2.
 
-I have applied this set.
+We would have also avoided a lot of wasted time here if the authors
+just mentioned in the discussion on v2 that v3 is out :|
 
-Thanks,
-Mathieu
-
->  2 files changed, 186 insertions(+), 181 deletions(-)
-> ---
-> base-commit: 187dac290bfd0741b9d7d5490af825c33fd9baa4
-> change-id: 20251119-imx-dsp-2025-11-19-fa99d7c84c91
-> 
-> Best regards,
-> -- 
-> Peng Fan <peng.fan@nxp.com>
-> 
+Let me fix up the Link tag here and apply this so we can move on.
