@@ -1,42 +1,42 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9234635CB98
-	for <imx@lists.linux.dev>; Wed, 19 Nov 2025 13:09:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5854C369996
+	for <imx@lists.linux.dev>; Wed, 19 Nov 2025 13:09:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763557760; cv=none; b=i8d36Bcgbn0mZ7tiP2v8UkRW/il6oSUUju0pwq9Wcc5cCO083/bx+SvPEygsXCdyogpkQR+KkLu+sK3dgJr0PkdZ7IKpYHqo879NTDiOizFeoP6aaIZm6seb2DWpwa+CuMrLsVgklzIIfxpmPHqOrVshNfkQwcUJ3GdKHBQJkLs=
+	t=1763557768; cv=none; b=hJwhfKJ9z2ZX2MvlT3ViDqaaJr+NAe5ReDllTIcj5o+A2kL7tIMMAuDzj4UZ7TsNDeYf2VPt9yPcFgnhaGiz9/PSoI7LIO/YYDwxAn/TtIEYt33c89Sw3fbkxk5KzGJjnkDkucq2ORhudAj3enCmTlccCm9Sb6Mcz+X/6qPtcUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763557760; c=relaxed/simple;
-	bh=g4W3nGWz7kDNWWR5wDnnR9ZFaBT4TYm6dVG0lI1Asu0=;
+	s=arc-20240116; t=1763557768; c=relaxed/simple;
+	bh=/70tjT9dzfw8yOaO5/ZxaOL3UlDHY2rodU0mXAjX9tU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lVVGTEyVHcCWkHv4cdOjFRKj39W+B/ojDPt+R7Jr9gEJsdroSA7bmc+3nKKyE1TD/zzNX8e85JqJGJ0TccdQn2Zb6cCboD+Df4im8rtz9qNP3pjgRfXz/jIHWMzCr7Jmo0FOA+Esgy5yo74AG6lejUZ6dsNfJhzajlxkkkwe8tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=zzOqOk2A; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=IQ7iKDfyNLdiuB8ds17WjQaYWS+rAoceOJe3RFl8dOgSON+OYeHi1hlNi2tLXlhWFeA/03Vc3K12ZiGcgPcKFcFxm5vrePx3lqs6Ykuija0fG1MkIg63OcMFMNHLo81kTmjr8BzoVREumPlrHwnwIl3SuYrf0dONBBfvTtRsbOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ekQEcTh9; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="zzOqOk2A"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ekQEcTh9"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 4F62F4E41795;
-	Wed, 19 Nov 2025 13:09:17 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id D656DC11189;
+	Wed, 19 Nov 2025 13:09:03 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2077E60699;
-	Wed, 19 Nov 2025 13:09:17 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 433FD10371A4D;
-	Wed, 19 Nov 2025 14:09:07 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 17B2960699;
+	Wed, 19 Nov 2025 13:09:26 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A43A610371A50;
+	Wed, 19 Nov 2025 14:09:15 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763557755; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1763557763; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=+WocwBswe0ZjU0ZUZ8gWtVZB5uIKU+1WladPosC/xAE=;
-	b=zzOqOk2AjfuhXit0a3804YcCEpHftU4Ltmd1Ng6vhXMtUEghjGbtQvRdhJ4/3p8XeGvbls
-	8s06zozH+7VB1iQNDCuTYRjZ/gxkbGfjG6GilcUCrKyNHyGIo1KEueHrenQVgmlZJCI6XZ
-	nGiNRj57cTRxBxrEepIZWM5NOp8PXAkk/J/J+s6NwhC68cMVUYWyJoAmJV7rXUL7lRYnoH
-	gkOj7pbj8jRy6Zl/D4ERmEYkAwpcKR0diRj7pXzvlmfUDbKNZOoJ4VlGp7/LwKbX038jPQ
-	ZPJRp5gD2UDBo9m49vcwG5Xg8Tej5KxKNbSysmtjjV0tNTFZU931xjPg1QdK/g==
+	bh=GH4ehmt4plFzQH5Osf+5oKS1J3TjlEEUuJu9h8Bc8BU=;
+	b=ekQEcTh94TDXpePG1ClazDNbBRyUhyFkHA/z5izueWaicKDyV8dxg5o3/ADXmRn7dmBEob
+	+t5xwHnrKbQRSS0hTl9Uxbq+MXykRX1FIXHTNfDNGjAvzGoq0g2wSQCLkU2jW8aa5r7kFG
+	gU9P7PEmLemfEQAsW+29qt6Z/UpOyYy3jNRcDXe1yVucZzb5xIVjg4/YYgXHTDi8fGfsNP
+	TYnXixbicq9dAar9oa1sr7jcstVqeqpC/eg+rZ+zSiSKDferqTLcUcRGiMsjmatg3gxtE5
+	VE2Umxa0ZR2AkklMb5Kt8IQquN1ImUhtEXPfA/QoPkhOLHWO5oXGSniJjNJzsA==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 19 Nov 2025 14:05:53 +0100
-Subject: [PATCH 22/26] drm/exynos: hdmi: use devm_drm_of_find_bridge() to
- put the next bridge
+Date: Wed, 19 Nov 2025 14:05:54 +0100
+Subject: [PATCH 23/26] drm/bridge: dw-hdmi: use devm_drm_of_find_bridge()
+ to put the next bridge
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-22-0db98a7fe474@bootlin.com>
+Message-Id: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-23-0db98a7fe474@bootlin.com>
 References: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com>
 In-Reply-To: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com>
 To: Andrzej Hajda <andrzej.hajda@intel.com>, 
@@ -96,22 +96,22 @@ reference on remove or on probe failure.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/gpu/drm/exynos/exynos_hdmi.c | 2 +-
+ drivers/gpu/drm/bridge/synopsys/dw-hdmi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
-index 01813e11e6c6..3fe32093f0c7 100644
---- a/drivers/gpu/drm/exynos/exynos_hdmi.c
-+++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
-@@ -1779,7 +1779,7 @@ static int hdmi_bridge_init(struct hdmi_context *hdata)
- 		return -EINVAL;
- 	}
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+index 3b77e73ac0ea..8cf72305dcdc 100644
+--- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+@@ -3318,7 +3318,7 @@ static int dw_hdmi_parse_dt(struct dw_hdmi *hdmi)
+ 	if (!remote)
+ 		return -ENODEV;
  
--	hdata->bridge = of_drm_find_bridge(np);
-+	hdata->bridge = devm_drm_of_find_bridge(dev, np);
- 	of_node_put(np);
- 
- 	if (!hdata->bridge)
+-	hdmi->next_bridge = of_drm_find_bridge(remote);
++	hdmi->next_bridge = devm_drm_of_find_bridge(hdmi->dev, remote);
+ 	of_node_put(remote);
+ 	if (!hdmi->next_bridge)
+ 		return -EPROBE_DEFER;
 
 -- 
 2.51.1
