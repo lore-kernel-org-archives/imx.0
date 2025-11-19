@@ -1,42 +1,42 @@
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A547635C1BB
-	for <imx@lists.linux.dev>; Wed, 19 Nov 2025 13:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394DB361DAA
+	for <imx@lists.linux.dev>; Wed, 19 Nov 2025 13:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763557725; cv=none; b=tkKaN/kwkgsH6r0JBzn6O63a/5Zjrdn5nLzWjjWJ5Attiu+PKcVXnA0aQiPf85rhmIc5qkkF7zA+71IUJOvdFyIQ+YW946KtFAmVI+PJ7lOcQklZLk4WEdaruoOkSHC09jXixKgImRmKnkAymVVs3lB7bHF6CQdO+shfd6qCzpo=
+	t=1763557734; cv=none; b=BqCCyh8YI+fZCRj8H/sOyI6STEjmGWPC7BUKNdhaxNG6LFRxxcuFhHzAw904lblAj295WUnfgdNrz+PAk5Lxg6JAePhps8pJMQpIZNC/i1sK9IhQYfq0kXcGirwzllxQ7V5nQXBsU1TM3FEaauZ1uppOKXb8HXeOJQ4ClM1Vbns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763557725; c=relaxed/simple;
-	bh=jRs3PyqGHq4G0P7dY2K5+dc284Izsx95DF4IBpYxTAM=;
+	s=arc-20240116; t=1763557734; c=relaxed/simple;
+	bh=SAp1hbmAYiyBZe/8noL8hvAY8yzxwcTdFljgL87JAck=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HzwuivAy5Cilc4EzIlIM/oWxICOFgr2bHH6oTcdVZldP6DkwHz4p/m+0nY/gkHXslG73wtU+7s9KYn8Y2L9vJZgDpB/9GbbgAfrVzP9BsnAqk4detkhqJR3YV+ztzjOzdlX+UjuIurZs0TSTTAnNYHP57pv5dbS0HyGWxFCH8jA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JCYmeXmP; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=jVKXT8a2VJARgxhGggQXCSgEXpxD0fGAqoqYKskqscmvp5Dk2Ot1I2HHxmy/Nf4it5OB65CH9WyDviSUpS5+aP8idkdNiisbt50GPQRosJMnw2ZlSen5WJtF035yVI8ld0WwAchKsKS8VE916uOTnt7evxMeo/iEhIjY1n3qzC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Mr/S+z4r; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JCYmeXmP"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Mr/S+z4r"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 3B5314E4179D;
-	Wed, 19 Nov 2025 13:08:42 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id B63CA4E41795;
+	Wed, 19 Nov 2025 13:08:50 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 051B160699;
-	Wed, 19 Nov 2025 13:08:42 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4191110371A50;
-	Wed, 19 Nov 2025 14:08:32 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8A03C60699;
+	Wed, 19 Nov 2025 13:08:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8AF7E10371A51;
+	Wed, 19 Nov 2025 14:08:40 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1763557720; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1763557728; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=igNERjzw42v425WqlzXvdTEyLpvMyT8MhX7BK4cDcdk=;
-	b=JCYmeXmP/seI6JRcUYUke20noK7upDq8K5d4C1WYodBXggU8chHWTsFhA/DCJSOK8W8p3w
-	7mKCWFCpSBu+XKWkGgbuyvXbQaOrpkGA8RlYjt+7YO2u7tT54BfQF+OjpVUg7JpVkahT7x
-	gPRNbEEgJuIICj/Rh8Mlm3KAnGC6yxZF0LSmWyfbToHu4h2tL65ARh+xyvohUM7Dl7gqOV
-	ExpNJbaUX7ssSBXMvWo5kgqDTs89FOY2DHdLxZwzIVAw7mJHRSu1f+LtDo1wpz9klOrvLJ
-	xa4IlhFU80gqMUfrf/ZA6yHvNOfNwkJjb01HqNaO6A5/18aSMESPHEqoKB5qdg==
+	bh=ug+PhDpwof8UC1as0UO8CJI8RrRNzwgCCqAFDo7o0RQ=;
+	b=Mr/S+z4rb6W/sVm8IPs7WuYmJSreXiSjDzMbksS0wSpWfu7AHKR5qbat7HA5+dytFRMgpG
+	SW6oZB5ucrzHcjiwTVDq9AqizEVGFHUwRFG1mPcltSaPb5Nuu/ZgGOStmmZ1hUSS+Xx4AX
+	QO/2AAwYsHeBDp/sRP+pnY3XINDKFM68uLt3YIIJC9Q0ZZDhnEKMGARWAZT52+AFIdZq89
+	PqkN6f+2D9GAh0JvsHNXtNl8Jb5RjP122UVzzI+HEd3rYaCZyiwkq2/GuCtcZlqCqDB636
+	gbI5wwYwE3PvH0+BHrtyhB2AkWfgf5z5Vf0BKNbpccKs+P3F4Q+8DEfCcDLd8w==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 19 Nov 2025 14:05:49 +0100
-Subject: [PATCH 18/26] drm/bridge: sii902x: use devm_drm_of_find_bridge()
- to put the next bridge
+Date: Wed, 19 Nov 2025 14:05:50 +0100
+Subject: [PATCH 19/26] drm/mediatek: use devm_drm_of_find_bridge() to put
+ the next bridge
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-18-0db98a7fe474@bootlin.com>
+Message-Id: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-19-0db98a7fe474@bootlin.com>
 References: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com>
 In-Reply-To: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com>
 To: Andrzej Hajda <andrzej.hajda@intel.com>, 
@@ -96,22 +96,22 @@ reference on remove or on probe failure.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/gpu/drm/bridge/sii902x.c | 2 +-
+ drivers/gpu/drm/mediatek/mtk_hdmi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/sii902x.c b/drivers/gpu/drm/bridge/sii902x.c
-index d537b1d036fb..ca3ef23683a3 100644
---- a/drivers/gpu/drm/bridge/sii902x.c
-+++ b/drivers/gpu/drm/bridge/sii902x.c
-@@ -1208,7 +1208,7 @@ static int sii902x_probe(struct i2c_client *client)
- 			return -ENODEV;
- 		}
+diff --git a/drivers/gpu/drm/mediatek/mtk_hdmi.c b/drivers/gpu/drm/mediatek/mtk_hdmi.c
+index b766dd5e6c8d..57a926bdf8b4 100644
+--- a/drivers/gpu/drm/mediatek/mtk_hdmi.c
++++ b/drivers/gpu/drm/mediatek/mtk_hdmi.c
+@@ -1405,7 +1405,7 @@ static int mtk_hdmi_dt_parse_pdata(struct mtk_hdmi *hdmi,
+ 		return -EINVAL;
  
--		sii902x->next_bridge = of_drm_find_bridge(remote);
-+		sii902x->next_bridge = devm_drm_of_find_bridge(dev, remote);
- 		of_node_put(remote);
- 		if (!sii902x->next_bridge)
- 			return dev_err_probe(dev, -EPROBE_DEFER,
+ 	if (!of_device_is_compatible(remote, "hdmi-connector")) {
+-		hdmi->next_bridge = of_drm_find_bridge(remote);
++		hdmi->next_bridge = devm_drm_of_find_bridge(dev, remote);
+ 		if (!hdmi->next_bridge) {
+ 			dev_err(dev, "Waiting for external bridge\n");
+ 			of_node_put(remote);
 
 -- 
 2.51.1
