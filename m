@@ -1,273 +1,569 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013068.outbound.protection.outlook.com [40.107.162.68])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FFB3587CB
-	for <imx@lists.linux.dev>; Thu, 20 Nov 2025 16:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763655446; cv=fail; b=tS2R3+NBxPlE8ulpvet7k2jBghbNmPIRsYDiNu8U5VnhCl7tZT1y2xn8UK8tC6ZorvRWaXSWySmpsgtNf8ADlYSzM8C1FdCpo7rUC/eetqV+w1pKDTEYKiO2ir/zKBUCANmGLUHZYgnVx8KHxZuS2oov6rSVC1/8OJrvmZ9umz0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763655446; c=relaxed/simple;
-	bh=JPh7rmx+j6LHMWs1CLTkL/ixtABlSUg5fNsyuC0OK2Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=cde6yivPpBCo2Nz8LznJWT+28m+Kraof7HMuSOZkK+UAwYMwWg88NHkQ4XRh0mv9bbiO2w6J0v+7IyYvI9hohHlZZwr6gUtjoH3CI3GJi0qBz1Nu9CWyolQl4KYhN0tRJoWyxq+LJ6neX1jmAL9Oik1ffa/EtI2BYLgFd1Ynr9w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=T7IPxRHI; arc=fail smtp.client-ip=40.107.162.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1002EB85E
+	for <imx@lists.linux.dev>; Thu, 20 Nov 2025 16:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763655755; cv=none; b=eicqmGf1l057nz/xnowf/JxNhrj3anSKVtO4XIEW4CcPdQ2ok1mWYU4MhC3ziS7k3hufJXsqP1L2OELMCDb4OeaOql5glYT/9c2ZZDhci2icmlha4BeID/5XCAhq1MlK4TCKYgXge45UCTeAZilvXTj0xucr4lCnr5e3ins4uhM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763655755; c=relaxed/simple;
+	bh=ldU2hM/PJFgnKn4GVNs+eocEynXgauyHnjAB9Z3J/4M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tKX5X5eHcROFNI1BSTjEnQ71+U3KzIQmbxHLpdSQM3aqxrwe5XDeHGhRNmBO/XBjN0OJjXKD6CDW7EyvuOFbLv3TZBKlgEnt8Y03/CdiJp+8hp63TuIhUMWFiYaZuMiHiAZ/1Bz7CZ726wVDDSJ5ZI+iwMO2HcR0OHs33zR5GCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=BhT/ostn; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="T7IPxRHI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NSSlW+Vrdfh/T8KzlwmTl2FEKi3INM7A+9iuJVRce5qo2wFBFdPas0hBWJloT0EyWE8H8ljLcLi11tXl7gtwiD9DXkrkJObPhj6mTW6AGQI5lMN1wIimq4a1qs3sp1oV19BpozAy2qrz4HvMcYpL6vxHTxuFNQ9+asHbdzh3MCQGNT+TcWITdHc8ODFfSwpwNFgPOnb9NRIQT/QohEzOe4YrcBK3i/93aWj36EKp4f+yU/VEQxTsP6UsYo+S6XnM5CtlGvgA9Z+0++ZL880oTDcLG+f7RZR6ShJeeV5Dc/RYiIPwlstjBAVhIxfUq8USmf4Xjjjb/tRZGMNuwsQl4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ciIWkC2R2RLYTMDPxt+EQe+XAKuSA8h8c/qWj7cyff8=;
- b=efINmSPwnGRvk0vXSeWnqBHcwthq7Zo/h3jkntPyHS6NbYfxudzLyaay+xsS2ItFaBjLrk6OqzU2W4DcJy3eyQlIuQqH/EfoqD43rNQCHhLu0aHqlf/Dl/p6hCrtKVLvZ140hJGS2yIJUKAbENXiMrjB9hlqsIlvLUAXmCeXgzXJhuyaQVmbvrz7Xt7LpGqjDuZmPtZSvu46R8QV7aPaNjJrqX3yohGqzHGgqXchQyRyV1mJKX3rewvPTgVeeZ/NnHpuljdB8KrwtvgczdrQVhlVPZmjD31fsvRtckSX03FM0YuBzxbzuZuefOSQBxZqiCRVkpqdEAer4ztEeQVlmA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ciIWkC2R2RLYTMDPxt+EQe+XAKuSA8h8c/qWj7cyff8=;
- b=T7IPxRHIKEjk2fx00x8b1QRpZVPOd5P/yClpaSShUvBm1eFdlhCsaXcfikEVHpcOaZKT8K2QSNZuY+szsB+KYShYtERpOGBrtteGdeln93Iv9AcbntDkVBw9csWRPvvz5oxbjlrtROYE3Md4QBB1tPwJSH4sPt831PBA6EoFNiO0v3yQVVWymCBPTdc+QowCAVYuLaXjv1FP1qewbXGj96/R+TwqoVdx1WJkNfZXN/NTKBJwk5o0L7hLg4WVUGKH0+ykEM/h9lHKrw+xm8WR3zfWy9jlNbPjDBIvi27ADldT0T9zjImjxwhKow0gtW3Yp1+BbE9E/luke7mc5FQLQg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com (2603:10a6:10:309::18)
- by GV2PR04MB11445.eurprd04.prod.outlook.com (2603:10a6:150:2af::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Thu, 20 Nov
- 2025 16:17:18 +0000
-Received: from DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd]) by DB9PR04MB9626.eurprd04.prod.outlook.com
- ([fe80::55ef:fa41:b021:b5dd%4]) with mapi id 15.20.9343.009; Thu, 20 Nov 2025
- 16:17:18 +0000
-Date: Thu, 20 Nov 2025 11:17:10 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: Aisheng Dong <aisheng.dong@nxp.com>,
-	"andi.shyti@kernel.org" <andi.shyti@kernel.org>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"pandy.gao@nxp.com" <pandy.gao@nxp.com>,
-	"wsa@kernel.org" <wsa@kernel.org>, "vz@mleia.com" <vz@mleia.com>,
-	"B38611@freescale.com" <B38611@freescale.com>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="BhT/ostn"
+Received: from pendragon.ideasonboard.com (fs276ed015.tkyc509.ap.nuro.jp [39.110.208.21])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id E6A7EB5;
+	Thu, 20 Nov 2025 17:20:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1763655624;
+	bh=ldU2hM/PJFgnKn4GVNs+eocEynXgauyHnjAB9Z3J/4M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BhT/ostn7JIIu4uWlhLuisCjgdIO5kvjD4rs7mHRchTiw/yjc6G5+MsTFuKGR0m6a
+	 aS+gKF1roL649jCClheY9Vk2SeRyeTphOycA0w7hRIcMuwD3glLFmhrrCkHY1cSKHT
+	 JNO86jpwMFLPBeXsSalj4IN1St3cYzb+qguZJxCA=
+Date: Fri, 21 Nov 2025 01:22:04 +0900
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: "G.N. Zhou" <guoniu.zhou@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>,
+	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] i2c: imx-lpi2c: support smbus block read feature
-Message-ID: <aR8/Bt77UWb9G6oI@lizhi-Precision-Tower-5810>
-References: <20251118111323.1452329-1-carlos.song@nxp.com>
- <aR3z4PBN0+0fKqz5@lizhi-Precision-Tower-5810>
- <VI2PR04MB11147CD601B6A9EC8598E13BDE8D4A@VI2PR04MB11147.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <VI2PR04MB11147CD601B6A9EC8598E13BDE8D4A@VI2PR04MB11147.eurprd04.prod.outlook.com>
-X-ClientProxiedBy: PH8P222CA0020.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:510:2d7::32) To DB9PR04MB9626.eurprd04.prod.outlook.com
- (2603:10a6:10:309::18)
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@iki.fi>
+Subject: Re: [PATCH v1 6/6] media: imx-mipi-csis: Add multi-channel support
+Message-ID: <20251120162204.GN10711@pendragon.ideasonboard.com>
+References: <20251107015813.5834-1-laurent.pinchart@ideasonboard.com>
+ <20251107015813.5834-7-laurent.pinchart@ideasonboard.com>
+ <aQ4iwFHVoweNl/mS@lizhi-Precision-Tower-5810>
+ <AS8PR04MB90804FDFE5473E590A9570B9FAD4A@AS8PR04MB9080.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9626:EE_|GV2PR04MB11445:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2e7250e5-ea5c-4823-bef8-08de2850467c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|52116014|376014|19092799006|366016|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?J0VfaVFUrmZsXcU9GdmVGJIruRGGMXIHl3zX4KqaRkPzB1jlMxUFuwOloSVF?=
- =?us-ascii?Q?BQCMprxUVueNWraExYVNUJlQIiZTbbISK/m1gA1tGSi65FyiW3lHivbmUPxS?=
- =?us-ascii?Q?6DmTBnkYgpBwMGdPpbkYqTOLD6Q+75Rx+g4m9kCD/QwQDHZpMlYQO16ShbUd?=
- =?us-ascii?Q?Yc6CZ0lAp73c3zkdZTdLKevFeBfBzK0J0cESY2xg3rgEGH/g+i3Yj0VA+dKK?=
- =?us-ascii?Q?SiFot4HIU7hp7Ayfaf72mNaeCm3/5GDQwlR8bvzOPkI7peTsjpodO2+niKuI?=
- =?us-ascii?Q?cxTvvWySNOPE/p9WYtafxcKuRmzS46B04XhzyX9i3uMjTZv8BBW3N0B34fUh?=
- =?us-ascii?Q?HUvNs6zqZKTudNOWsHMz2xysx+n7wllK4XkzTxNkPY6U2IfiLCQpzvLXQYGE?=
- =?us-ascii?Q?dsuZXpiV6T0Ke212zPTtDKwMdu4nWF+lkKglMiLx+6DEJjHXgQU/aBfeQ4we?=
- =?us-ascii?Q?y6XxBPzCmhfxetn2EazmuJxnbky/0YeB6tl9kc3LdWY4oANHExx+aLduANfC?=
- =?us-ascii?Q?b6AP1d1TMnb4D8Vk8pLcHwXWieTigod3rR1x0J2TCnz3Z+hP+R+TVuoRwOq1?=
- =?us-ascii?Q?8ZS+GUEkvNWb2u9q7PdUXLWF6rscYCD9tWdh42VWVTqYyqRlqe9ny53+Z+3d?=
- =?us-ascii?Q?LlxobX4H1G7cGYeJLmugVAHMhxpEz4+NEJnZEl0KLF2UyESI7p+C/3P5TCbb?=
- =?us-ascii?Q?tsIpCcbiZ0RHi2ccJm80L+wDa68N7uwt00dJRB30rl1itWhzktZcVMj3BCTS?=
- =?us-ascii?Q?K6OG/h1fWKxebTPzZxaIaJ5RyujUpzjzCMwAMl1kSKEa+k3G4soVKMpL3L9W?=
- =?us-ascii?Q?O3tJKBLVu3MZl8NNYc4t0+tajzZyVWxEqRSJB31qmgw01PYsKWnisS0MLAXS?=
- =?us-ascii?Q?yzdQhd88+MvHoQW0O3+7z1SkeL4yCxArgCJAfZoLSeN32XgPIxKj+1joKSUW?=
- =?us-ascii?Q?VEP7t58RDx57GxjxrFpyKFAFXCDVefpCBT5s/8F/mJiiQxiGdqLvkHE9s/sY?=
- =?us-ascii?Q?4ewmls9XqMVu42YDSBfxC6PqjC3pdOFRApzCP5c0vOWGXc/b59waKLplPYCh?=
- =?us-ascii?Q?txH1pbQsyK8ncWE7JVIk/MSwF4vdBfOPu65E1gCWdKx3lITNljmdepMlLLNW?=
- =?us-ascii?Q?0skTLtNx9w70PER0xHp890kbUs4O0PTqg8hOHrkoYT5qYtzDnPQiLFu0PRAo?=
- =?us-ascii?Q?P0Ptxjv22c3wyb6AXGy1G+4dvmgGaXXC/GKDbGOhmR1g+xyhrLqaYwVRIIsl?=
- =?us-ascii?Q?lXKO7rG7iRqfQ5UAjt+QCJtV/jaARCQi6EXaQFvPRqP2BO/frjC69mSZQLj6?=
- =?us-ascii?Q?oCPi1Ic+4ZbDnoma1S3Wu18dt8bk+rpR4K5M7bZ1JpJyAHJ7hMiQgSsXPsjM?=
- =?us-ascii?Q?LOq1h0xB0PaThZ21vsDJd1ev6oTh6yU2XUVXCEeVTWAukwLEKDJYIU79TI3v?=
- =?us-ascii?Q?ydkGMB3pP9+UHbbbiLN7yjWiyp50+hKYK5VoffMoJcNm5dhesfh6x2ZeeXBC?=
- =?us-ascii?Q?8T2awce/3pkSNcVfaxTWmAMYc4j66AeC80z5?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9626.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(52116014)(376014)(19092799006)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?CNgpvJtwr/wvmwes88dFhk3DFGIovfajfr69FtgFao2ReXMez5FcuLNA05Za?=
- =?us-ascii?Q?zQJK2XtkkCcJrI6BKtGjvCHDP2WcQnza3cJ+4VxtvnfNjJB05rMuHK/BdExy?=
- =?us-ascii?Q?ZA4u1trMMg6XxcZoh0wNTqVmveD6doxigOnnulz1nVv65oPEMT3sDBPHW7TG?=
- =?us-ascii?Q?LGnag1+zh1plYFJkzVHkqvL9V/odWoxO45E3FJzih5n1h+y5yzIy+0dnkeAA?=
- =?us-ascii?Q?xQ2VZrILoj0PT0Vi8sbF9xtGsPZZqCGPzTBiYExqcRjt4qu8bugml1dh0xK5?=
- =?us-ascii?Q?4uOg5qTCiJgKjbbXP6S3LninFzItlAyvevFQgyLBsCTTRWaFiWuQCT/cX/cc?=
- =?us-ascii?Q?Q2BdLbg5mCwihZnvADyKyqIz/WUuocGa214/jId8v8YiGTDAzfXEhlo1QHff?=
- =?us-ascii?Q?8BKVf2zAj+VWWbFrzdbu8aVp5KNLZqi/55z5pjo/PoeHHAVN8fONGHFjNuCe?=
- =?us-ascii?Q?qxxm/p5SfF7qliaUydCdAoqT7U1tk8GxgRGLV9YevhhUDDRChtpKKdB4+jqT?=
- =?us-ascii?Q?ZQKlei0EdOGpxyWbEJ0bPAJ2UqTE99YTKjKyVco9j8rKqaddzMPRiGL+mpLv?=
- =?us-ascii?Q?nGStrPYfPiRBhY8H6VUcS80it9716kGkySHm/wJZsqMUl3i/BTFWNRobixY7?=
- =?us-ascii?Q?MZIR/CnJ+L+J6CbmH7V2KmFHqD+FKFOwC0hiUL2dYTuM+rzVmYFiO/An5MKR?=
- =?us-ascii?Q?7+fJgE85TsqTU5nAGdAIRIX04+0X0UTt2n9CsA/iDPcxYsweQLMke3n6Abdo?=
- =?us-ascii?Q?zx0dY6Ivw+1T0gJFYs/pp2RirBg0HfSbFTnjqaXq7HGOOL3JgNb/qCSLqIi4?=
- =?us-ascii?Q?vdnInBNxo8zBRTRVI7NAdzQA7NrPgquBWV54SKDK6TOc1sV0TeJe3bhI6f4b?=
- =?us-ascii?Q?FgwBW971ZdHmbu7QgIMsOhg1GUKyd28J9Nmmtk91Y55aablO4xHEKIVwQjAN?=
- =?us-ascii?Q?+9ln6jFTcTdrDQB8FkBu/B/Op5y6cV1NrxhdQr1+PcXvONby80iZCcZOB2Xh?=
- =?us-ascii?Q?inGxTewtvbcUzW99P9pYYWO97JGkkURnN7gsqwE0Zqj/RhxwwuN+9g1X34TX?=
- =?us-ascii?Q?TCwZzkoOgGV3Lznd8sIV7qAjFCgjGpLbI97HrWbKWAZ9OdJmEFmd0/a55vOg?=
- =?us-ascii?Q?7WfqDePthqZ/6LjQsiKWGfsu3rOAPOUcCupvVRNVvtweVkw0BWDw74YqV5pT?=
- =?us-ascii?Q?ELQaM26yfC5PxrTp8AvKTGyNQIjpBLq3Ujb0DRonah36mDltvXagXdn7E/94?=
- =?us-ascii?Q?cMN1WprZPetqNBrfA7WIEylQOTO279WL0N/drbDY7VgXCmNLJ/jbATBIep+S?=
- =?us-ascii?Q?p4UzRWOkHWIqlgxb8FSUCda309pdEvjMMczUcITgVyFDrWADXRkjPPpfHTOm?=
- =?us-ascii?Q?wG+LyDVydJb4xeXeqGhVAjbw+d63JAW05lH/PkyiuXmg6slYMQt77Pxx3405?=
- =?us-ascii?Q?W4HyBa15DNPWyt7ufy148xMKPeG2k3tAcXpuxoFeaU2fabU8g3sk9xtCtV/7?=
- =?us-ascii?Q?T0mg6hXpf0jLY8UGrl/de2MClrCc31j3biHQGr9v8QphKGbmf8R1q00KU5Gh?=
- =?us-ascii?Q?VGBgI439IvNrZf+U++JxZWjioFCKvQgiPX6IZokw?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e7250e5-ea5c-4823-bef8-08de2850467c
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9626.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Nov 2025 16:17:17.9470
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: y6t3vcGhvAT2HJPqc5AwdBYHduzY1eOJexEEwjdUUCfqTXzF6AVHmTMbcwWGp2MJ7/d9Zf5zfURzP5uXHdKjzQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11445
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <AS8PR04MB90804FDFE5473E590A9570B9FAD4A@AS8PR04MB9080.eurprd04.prod.outlook.com>
 
-On Thu, Nov 20, 2025 at 03:02:26AM +0000, Carlos Song wrote:
->
->
+On Thu, Nov 20, 2025 at 03:12:56AM +0000, G.N. Zhou wrote:
+> Hi Frank
+> 
 > > -----Original Message-----
 > > From: Frank Li <frank.li@nxp.com>
-> > Sent: Thursday, November 20, 2025 12:44 AM
-> > To: Carlos Song <carlos.song@nxp.com>
-> > Cc: Aisheng Dong <aisheng.dong@nxp.com>; andi.shyti@kernel.org;
-> > shawnguo@kernel.org; s.hauer@pengutronix.de; kernel@pengutronix.de;
-> > festevam@gmail.com; pandy.gao@nxp.com; wsa@kernel.org; vz@mleia.com;
-> > B38611@freescale.com; linux-i2c@vger.kernel.org; imx@lists.linux.dev;
-> > linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org
-> > Subject: Re: [PATCH] i2c: imx-lpi2c: support smbus block read feature
-> >
-> > On Tue, Nov 18, 2025 at 07:13:23PM +0800, Carlos Song wrote:
-> > > The LPI2C controller automatically transmits a NACK on the last byte
-> > > of a receive data command. It transmits the NACK unless the next
-> > > command in the TXFIFO is also a receive data command. If the transmit
-> > > FIFO is empty when a receive data command completes, a NACK is also
-> > > automatically transmitted.
+> > Sent: Saturday, November 8, 2025 12:48 AM
+> > To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>; G.N. Zhou
+> > <guoniu.zhou@nxp.com>
+> > Cc: linux-media@vger.kernel.org; Rui Miguel Silva <rmfrfs@gmail.com>; Martin
+> > Kepplinger <martink@posteo.de>; Purism Kernel Team <kernel@puri.sm>;
+> > Pengutronix Kernel Team <kernel@pengutronix.de>; imx@lists.linux.dev;
+> > Stefan Klug <stefan.klug@ideasonboard.com>; Sakari Ailus <sakari.ailus@iki.fi>
+> > Subject: Re: [PATCH v1 6/6] media: imx-mipi-csis: Add multi-channel support
+> > 
+> > On Fri, Nov 07, 2025 at 03:58:13AM +0200, Laurent Pinchart wrote:
+> > > CSIS output channels can be used to demultiplex CSI-2 virtual
+> > > channels, and likely data types. While this feature is not clearly
+> > > documented, tests seem to indicate that each output channel includes
+> > > filters to select which VC and DT to output, with the filtering mode
+> > > being configured globally. Four modes are supported:
 > > >
-> > > Specially set read 2 bytes command initially. When the RXFIFO receives
-> > > count data, controller should immediately read out this value and
-> > > update MTDR register to keep the TXFIFO not empty. Set new receive
-> > > data command to read other data before the 2nd byte is returned.
+> > > - No filtering: all VCs and DTs are output on channel 0
+> > > - VC filtering: each channel filters out all but the configured VC, the
+> > >   DT is ignored
+> > > - DT filtering: each channel filters out all but the configured DT, the
+> > >   VC is ignored
+> > > - DT and VC filtering: each channel filters out all but the configured
+> > >   VC and DT
 > > >
-> > > Fixes: a55fa9d0e42e ("i2c: imx-lpi2c: add low power i2c bus driver")
-> > > Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> > > Expose this feature to userspace through the streams API. The routing
+> > > table is expanded to support multiple routes, with the source stream
+> > > ID mapping to the output channel number. As the VC and DT values
+> > > corresponding to a stream are not known until they get queried from
+> > > the source, validation of the routes is postponed to stream enable
+> > > time in the mipi_csis_calculate_params() function that extract the
+> > > configuration of each output channel from the routing table. The
+> > > validation ensures that, when filtering is enabled, each output
+> > > channel is configured to output exactly one VC and one DT.
 > > >
+> > > When multiple streams are routed to the same output channel, the
+> > > output heights is the sum of the heights of all the streams. This is
+> > > implemented when propagating formats frim sink to source pads.
+> > >
+> > > Due to how the SoC glues together IP cores, multi-output operation in
+> > > the i.MX8MP is used only for the purpose of capturing multi-exposure
+> > > or multi-gain HDR streams from a camera sensor over different CSI-2
+> > > VCs and transmitting them to the ISP. The streams are stitched
+> > > together by the ISP and can't be captured individually. This has
+> > > allowed testing VC filtering but not DT filtering. For that reason,
+> > > multi-channel support is currently limited to VC filtering only.
+> > >
+> > > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > 
+> > Add guoniu.zhou@nxp.com, patch itself look good, but I am not famillar with
+> > internal logic, Guoniu, can you help check it?
+> 
+> I searched the "Samsung MIPI_CSI-2_V3.6.3.1_User_Guide"
+
+I wish I could access that document :-)
+
+> and checked all
+> descriptions about its interleave_mode. There is no details about the internal
+> logic but according to the info in the User_Guide, I think Laurent's understanding
+> is correct.
+
+Thank you for the confirmation. I plan to send a new version of this
+patch.
+
 > > > ---
-> > > I setup an env to test this feature change:
+> > >  drivers/media/platform/nxp/imx-mipi-csis.c | 264 ++++++++++++++++++---
+> > >  1 file changed, 234 insertions(+), 30 deletions(-)
 > > >
-> > > On I.MX93-EVK:
-> > > LPI2C5 as slave device and use i2ctool to redesign the slave-eeprom mem:
+> > > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c
+> > > b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > > index d8c11223ed0a..b5c7ab7c541c 100644
+> > > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> > > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > > @@ -12,6 +12,7 @@
+> > >   *
+> > >   */
 > > >
-> > > hexdump -C /sys/bus/i2c/devices/5-1064/slave-eeprom
+> > > +#include <linux/bitops.h>
+> > >  #include <linux/clk.h>
+> > >  #include <linux/debugfs.h>
+> > >  #include <linux/delay.h>
+> > > @@ -334,7 +335,8 @@ struct mipi_csis_info {  };
 > > >
-...
-> > > -	temp |= (RECV_DATA << 8);
-> > > -	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
-> > > +
-> > > +	if (!lpi2c_imx->block_data) {
-> > > +		temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
-> > > +		temp |= (RECV_DATA << 8);
-> > > +		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
-> > > +	} else {
-> > > +		/*
-> > > +		 * The LPI2C controller automatically transmits a NACK on the last
-> > byte
-> > > +		 * of a receive data command.
-> >
-> > looks like transfer STOP? You get data, it should be ACK when received data.
-> >
->
-> According to LPI2C RM MTDR register shows:
-> When controller need to read data, we should send command word first.
->      Bit10| bit9 | bit8 |          bit7~0
-> Receive (DATA[7:0] + 1) bytes    byte counter
->
-> DATA[7:0] is used as a byte counter. Receive that many bytes and check each for a data match (if configured) before storing the received data in the receive FIFO.
-> We can prefill the bytes count to controller, controller will auto ACK after every bytes until count is exhausted. Then controller send auto NACK.
->
-
-Thank your for your explain. This may IC design choice or bug, look like
-I2C controller should stall SCL to wait for new command?
-
-Assume byte counter is 0, (1 bytes transfer)  [0x100]
-
-SCL: 1,  2,  3,  4,  5,  6,  7,  8,  9,
-SDA: B0, B1, B2, B3, B4, B5, B6, B7, ACK.
-                                     ^ Do you means here is NACK when
-MTDR empty?
-
-> > > +		 * command in the TXFIFO is also a receive data command. If the
-> > > +		/* Confirm SMBus transfer meets protocol */
-> > > +		if (block_len == 0 || block_len > I2C_SMBUS_BLOCK_MAX) {
-> > > +			dev_err(&lpi2c_imx->adapter.dev, "Invalid SMBus block read
-> > length\n");
-> > > +			return;
-> > > +		}
-> > > +
-> > > +		/* If just read 1 byte then read out from fifo. No need new command
-> > update */
-> > > +		if (block_len == 1) {
-> > > +			ret = lpi2c_SMBus_block_read_single_byte(lpi2c_imx);
-> > > +			if (ret < 0)
-> > > +				dev_err(&lpi2c_imx->adapter.dev, "SMBus read data
-> > timeout\n");
-> > > +			return;
-> > > +		}
-
-If irq/schedule happen here, you may not fill MTDR in time, so MTDR maybe
-empty,  You just have 9 SCL time to fill new data to MTDR.
-
-Frank
-
-> > > +
-> > > +		/* Block read other length data need to update command again*/
-> > > +		writel((RECV_DATA << 8) | (block_len - 2), lpi2c_imx->base +
-> > LPI2C_MTDR);
-> > > +		lpi2c_imx->msglen += block_len;
+> > >  struct mipi_csis_channel_params {
+> > > -	unsigned int data_type;
+> > > +	u16 vc_mask;
+> > > +	u16 data_type;
+> > >  	unsigned int width;
+> > >  	unsigned int height;
+> > >  };
+> > > @@ -343,6 +345,7 @@ struct mipi_csis_params {
+> > >  	u32 hs_settle;
+> > >  	u32 clk_settle;
+> > >
+> > > +	bool interleave_vc;
+> > >  	struct mipi_csis_channel_params
+> > channels[MIPI_CSIS_MAX_CHANNELS];
+> > > };
+> > >
+> > > @@ -626,7 +629,7 @@ static void mipi_csis_set_channel_params(struct
+> > mipi_csis_device *csis,
+> > >  		val |= MIPI_CSIS_ISPCFG_PIXEL_MODE_DUAL;
+> > >
+> > >  	val |= MIPI_CSIS_ISPCFG_DATAFORMAT(params->data_type);
+> > > -	val |= MIPI_CSIS_ISPCFG_VIRTUAL_CHANNEL(0);
+> > > +	val |= MIPI_CSIS_ISPCFG_VIRTUAL_CHANNEL(ffs(params->vc_mask) -
+> > 1);
+> > >
+> > >  	mipi_csis_write(csis, MIPI_CSIS_ISP_CONFIG_CH(channel), val);
+> > >
+> > > @@ -645,20 +648,148 @@ static int mipi_csis_calculate_params(struct
+> > mipi_csis_device *csis,
+> > >  				      const struct v4l2_subdev_state *state,
+> > >  				      struct mipi_csis_params *params)  {
+> > > -	const struct v4l2_mbus_framefmt *format;
+> > > -	const struct csis_pix_format *csis_fmt;
+> > > +	const struct csis_pix_format *csis_fmt = NULL;
+> > > +	struct v4l2_subdev_route *route;
+> > > +	struct v4l2_mbus_frame_desc fd;
+> > >  	s64 link_freq;
+> > >  	u32 lane_rate;
+> > > +	int ret;
+> > >
+> > > -	format = v4l2_subdev_state_get_format(state, CSIS_PAD_SINK);
+> > > -	csis_fmt = find_csis_format(format->code);
+> > > +	memset(params, 0, sizeof(*params));
+> > >
+> > > -	params->channels[0].data_type = csis_fmt->data_type;
+> > > -	params->channels[0].width = format->width;
+> > > -	params->channels[0].height = format->height;
+> > > +	/*
+> > > +	 * Translate routing configuration to output channels parameters.
+> > > +	 *
+> > > +	 * The CSIS VC and DT handling is poorly documented. The device
+> > supports
+> > > +	 * a global "interleave mode" parameter in the CMN_CTRL register that
+> > > +	 * can be set to "VC and DT", "VC only", "DT only" or "CH0 only, no data
+> > > +	 * interleave". The ISP_CONFIG registers specify DT and VC values per
+> > > +	 * output channel.
+> > > +	 *
+> > > +	 * This can be interpreted as per-channel VC and DT filters, with the
+> > > +	 * filter type being configured globally and the VC and DT configured
+> > > +	 * per-channel. VC tests seem to corroborate this interpretation, but DT
+> > > +	 * tests are yet to be performed.
+> > > +	 */
+> > > +	ret = v4l2_subdev_call(csis->source.sd, pad, get_frame_desc,
+> > > +			       csis->source.pad->index, &fd);
+> > > +	if (ret && ret != -ENOIOCTLCMD) {
+> > > +		dev_err(csis->dev, "Failed to get source frame
+> > descriptors: %d\n", ret);
+> > > +		return ret;
 > > > +	}
+> > >
+> > > -	/* Calculate the line rate from the pixel rate. */
+> > > -	link_freq = v4l2_get_link_freq(csis->source.pad, csis_fmt->width,
+> > > +	if (ret == -ENOIOCTLCMD) {
+> > > +		const struct v4l2_mbus_framefmt *format;
+> > > +
+> > > +		/*
+> > > +		 * The source doesn't report frame descriptors. Assume a single
+> > > +		 * stream on VC0.
+> > > +		 */
+> > > +		format = v4l2_subdev_state_get_format(state, CSIS_PAD_SINK,
+> > 0);
+> > > +		if (!format)
+> > > +			return -EPIPE;
+> > > +
+> > > +		csis_fmt = find_csis_format(format->code);
+> > > +
+> > > +		fd.type = V4L2_MBUS_FRAME_DESC_TYPE_CSI2;
+> > > +		fd.num_entries = 1;
+> > > +		fd.entry[0].pixelcode = format->code;
+> > > +		fd.entry[0].bus.csi2.dt = csis_fmt->data_type;
+> > > +	}
+> > > +
+> > > +	/*
+> > > +	 * Translate sink streams to source streams and fill the channel
+> > > +	 * configuration vc_mask and data_type fields.
+> > > +	 */
+> > > +	for_each_active_route(&state->routing, route) {
+> > > +		struct mipi_csis_channel_params *channel =
+> > > +			&params->channels[route->source_stream];
+> > > +		const struct v4l2_mbus_frame_desc_entry *entry = NULL;
+> > > +
+> > > +		/*
+> > > +		 * Find the corresponding frame descriptor entry, to get the VC
+> > > +		 * and DT for the stream. Multiple entries may match the
+> > stream,
+> > > +		 * but they have to all report the same VC and DT, so we can
+> > > +		 * just use the first matching entry.
+> > > +		 */
+> > > +		for (unsigned int i = 0; i < fd.num_entries; ++i) {
+> > > +			if (fd.entry[i].stream == route->sink_stream) {
+> > > +				entry = &fd.entry[i];
+> > > +				break;
+> > > +			}
+> > > +		}
+> > > +
+> > > +		if (!entry) {
+> > > +			dev_dbg(csis->dev, "No frame descriptor for
+> > stream %u\n",
+> > > +				route->sink_stream);
+> > > +			return -EPIPE;
+> > > +		}
+> > > +
+> > > +		/*
+> > > +		 * Routing constraint: all streams routed to the same output
+> > > +		 * channel need to have the same DT.
+> > > +		 */
+> > > +		if (channel->data_type &&
+> > > +		    channel->data_type != entry->bus.csi2.dt) {
+> > > +			dev_dbg(csis->dev,
+> > > +				"DT mismatch on channel %u: stream %u DT
+> > 0x%02x != 0x%02x\n",
+> > > +				route->source_stream, route->sink_stream,
+> > > +				entry->bus.csi2.dt, channel->data_type);
+> > > +			return -EPIPE;
+> > > +		}
+> > > +
+> > > +		/* Record the VC and DT for the output channel. */
+> > > +		channel->vc_mask |= BIT(entry->bus.csi2.vc);
+> > > +		channel->data_type = entry->bus.csi2.dt;
+> > > +
+> > > +		/*
+> > > +		 * If any output channel beside channel 0 is enabled, enable VC
+> > > +		 * interleave mode.
+> > > +		 */
+> > > +		if (route->source_stream > 0)
+> > > +			params->interleave_vc = true;
+> > > +	}
+> > > +
+> > > +	/*
+> > > +	 * Iterate over the enabled output channels to record the width and
+> > > +	 * height. Verify that the VC filtering matches the hardware
+> > > +	 * constraints.
+> > > +	 */
+> > > +	for (unsigned int i = 0; i < csis->num_channels; ++i) {
+> > > +		struct mipi_csis_channel_params *channel = &params-
+> > >channels[i];
+> > > +		const struct v4l2_mbus_framefmt *format;
+> > > +
+> > > +		if (!channel->vc_mask)
+> > > +			continue;
+> > > +
+> > > +		/*
+> > > +		 * In VC interleave mode, each output channel is limited to a
+> > > +		 * single VC.
+> > > +		 */
+> > > +		if (params->interleave_vc && hweight8(channel->vc_mask) !=
+> > 1) {
+> > > +			dev_dbg(csis->dev,
+> > > +				"Channel %u must output a single VCs\n", i);
+> > > +			return -EPIPE;
+> > > +		}
+> > > +
+> > > +		format = v4l2_subdev_state_get_format(state,
+> > CSIS_PAD_SOURCE, i);
+> > > +		if (!format) {
+> > > +			dev_dbg(csis->dev, "No format for source
+> > stream %u\n", i);
+> > > +			return -EPIPE;
+> > > +		}
+> > > +
+> > > +		channel->width = format->width;
+> > > +		channel->height = format->height;
+> > > +	}
+> > > +
+> > > +	/*
+> > > +	 * Calculate the line rate from the pixel rate. If the source supports
+> > > +	 * the .get_frame_desc() operation it has to implement the LINK_FREQ
+> > > +	 * control, as the link frequency can't be calculated from the pixel
+> > > +	 * rate with multiple streams having possibly different data types.
+> > > +	 */
+> > > +	link_freq = v4l2_get_link_freq(csis->source.pad,
+> > > +				       csis_fmt ? csis_fmt->width : 0,
+> > >  				       csis->bus.num_data_lanes * 2);
+> > >  	if (link_freq < 0) {
+> > >  		dev_err(csis->dev, "Unable to obtain link frequency: %d\n",
+> > @@
+> > > -704,6 +835,8 @@ static void mipi_csis_set_params(struct mipi_csis_device
+> > *csis,
+> > >  				 const struct mipi_csis_params *params)  {
+> > >  	int lanes = csis->bus.num_data_lanes;
+> > > +	u32 cmn_ctrl = 0;
+> > > +	u32 clk_ctrl = 0;
+> > >  	u32 val;
+> > >
+> > >  	val = mipi_csis_read(csis, MIPI_CSIS_CMN_CTRL); @@ -714,19 +847,32
+> > > @@ static void mipi_csis_set_params(struct mipi_csis_device *csis,
+> > >
+> > >  	if (csis->info->version == MIPI_CSIS_V3_3)
+> > >  		val |= MIPI_CSIS_CMN_CTRL_INTERLEAVE_MODE_DT;
+> > > +	if (params->interleave_vc)
+> > > +		val |= MIPI_CSIS_CMN_CTRL_INTERLEAVE_MODE_VC;
+> > >
+> > >  	mipi_csis_write(csis, MIPI_CSIS_CMN_CTRL, val);
+> > >
+> > > -	mipi_csis_set_channel_params(csis, 0, &params->channels[0]);
+> > > +	for (unsigned int i = 0; i < csis->num_channels; ++i) {
+> > > +		const struct mipi_csis_channel_params *channel =
+> > > +			&params->channels[i];
+> > > +
+> > > +		if (!channel->vc_mask)
+> > > +			continue;
+> > > +
+> > > +		mipi_csis_set_channel_params(csis, i, channel);
+> > > +
+> > > +		cmn_ctrl |= MIPI_CSIS_CMN_CTRL_UPDATE_SHADOW(i);
+> > > +		clk_ctrl |= MIPI_CSIS_CLK_CTRL_CLKGATE_TRAIL(i, 15)
+> > > +			 |  MIPI_CSIS_CLK_CTRL_WCLK_SRC(i);
+> > > +	}
+> > >
+> > >  	mipi_csis_write(csis, MIPI_CSIS_DPHY_CMN_CTRL,
+> > >  			MIPI_CSIS_DPHY_CMN_CTRL_HSSETTLE(params-
+> > >hs_settle) |
+> > >  			MIPI_CSIS_DPHY_CMN_CTRL_CLKSETTLE(params-
+> > >clk_settle));
+> > >
+> > >  	val = mipi_csis_read(csis, MIPI_CSIS_CLK_CTRL);
+> > > -	val |= MIPI_CSIS_CLK_CTRL_WCLK_SRC(0);
+> > > -	val |= MIPI_CSIS_CLK_CTRL_CLKGATE_TRAIL(0, 15);
+> > >  	val &= ~MIPI_CSIS_CLK_CTRL_CLKGATE_EN_MASK;
+> > > +	val |= clk_ctrl;
+> > >  	mipi_csis_write(csis, MIPI_CSIS_CLK_CTRL, val);
+> > >
+> > >  	mipi_csis_write(csis, MIPI_CSIS_DPHY_BCTRL_L, @@ -741,8 +887,7
+> > @@
+> > > static void mipi_csis_set_params(struct mipi_csis_device *csis,
+> > >
+> > >  	/* Update the shadow register. */
+> > >  	val = mipi_csis_read(csis, MIPI_CSIS_CMN_CTRL);
+> > > -	mipi_csis_write(csis, MIPI_CSIS_CMN_CTRL,
+> > > -			val | MIPI_CSIS_CMN_CTRL_UPDATE_SHADOW(0) |
+> > > +	mipi_csis_write(csis, MIPI_CSIS_CMN_CTRL, val | cmn_ctrl |
+> > >  			MIPI_CSIS_CMN_CTRL_UPDATE_SHADOW_CTRL);
 > > >  }
 > > >
-> > >  static bool lpi2c_imx_read_chunk_atomic(struct lpi2c_imx_struct
-> > > *lpi2c_imx) @@ -599,6 +648,10 @@ static bool is_use_dma(struct
-> > lpi2c_imx_struct *lpi2c_imx, struct i2c_msg *msg)
-> > >  	if (pm_suspend_in_progress())
-> > >  		return false;
+> > > @@ -1053,7 +1198,7 @@ static int mipi_csis_enum_mbus_code(struct
+> > v4l2_subdev *sd,
+> > >  		if (code->index > 0)
+> > >  			return -EINVAL;
 > > >
-> > > +	/* DMA is not suitable for SMBus block read */
-> > > +	if (msg->flags & I2C_M_RECV_LEN)
-> > > +		return false;
+> > > -		fmt = v4l2_subdev_state_get_format(state, code->pad);
+> > > +		fmt = v4l2_subdev_state_get_format(state, code->pad, code-
+> > >stream);
+> > >  		code->code = fmt->code;
+> > >  		return 0;
+> > >  	}
+> > > @@ -1069,10 +1214,57 @@ static int mipi_csis_enum_mbus_code(struct
+> > v4l2_subdev *sd,
+> > >  	return 0;
+> > >  }
+> > >
+> > > +static void mipi_csis_propagate_formats(struct mipi_csis_device *csis,
+> > > +					struct v4l2_subdev_state *state) {
+> > > +	const struct v4l2_mbus_framefmt
+> > *channels[MIPI_CSIS_MAX_CHANNELS] = { };
+> > > +	struct v4l2_subdev_route *route;
 > > > +
-> > >  	/*
-> > >  	 * When the length of data is less than I2C_DMA_THRESHOLD,
-> > >  	 * cpu mode is used directly to avoid low performance.
-> > > --
-> > > 2.34.1
+> > > +	for_each_active_route(&state->routing, route) {
+> > > +		const struct csis_pix_format *csis_fmt;
+> > > +		struct v4l2_mbus_framefmt *sink_fmt;
+> > > +		struct v4l2_mbus_framefmt *src_fmt;
+> > > +
+> > > +		sink_fmt = v4l2_subdev_state_get_format(state,
+> > CSIS_PAD_SINK,
+> > > +							route->sink_stream);
+> > > +		src_fmt = v4l2_subdev_state_get_format(state,
+> > CSIS_PAD_SOURCE,
+> > > +						       route->source_stream);
+> > > +
+> > > +		csis_fmt = find_csis_format(sink_fmt->code);
+> > > +
+> > > +		/*
+> > > +		 * If the output channel corresponding to this source stream
+> > > +		 * isn't associated with a sink stream yet, simply propagate the
+> > > +		 * format from sink stream to source stream and associate the
+> > > +		 * sink stream with the channel.
+> > > +		 *
+> > > +		 * Otherwise, the sink stream format must match the primary
+> > sink
+> > > +		 * stream associated with the channel except for the height
+> > that
+> > > +		 * can be different. We propagate the format from the primary
+> > to
+> > > +		 * secondary sink stream, and accumulate the height in the
+> > > +		 * source stream format.
+> > > +		 */
+> > > +		if (!channels[route->source_stream]) {
+> > > +			*src_fmt = *sink_fmt;
+> > > +			src_fmt->code = csis_fmt->output;
+> > > +
+> > > +			channels[route->source_stream] = sink_fmt;
+> > > +		} else {
+> > > +			unsigned int height = sink_fmt->height;
+> > > +
+> > > +			*sink_fmt = *channels[route->source_stream];
+> > > +			sink_fmt->height = height;
+> > > +
+> > > +			src_fmt->height += sink_fmt->height;
+> > > +		}
+> > > +	}
+> > > +}
+> > > +
+> > >  static int mipi_csis_set_fmt(struct v4l2_subdev *sd,
+> > >  			     struct v4l2_subdev_state *state,
+> > >  			     struct v4l2_subdev_format *sdformat)  {
+> > > +	struct mipi_csis_device *csis = sd_to_mipi_csis_device(sd);
+> > >  	const struct csis_pix_format *csis_fmt;
+> > >  	struct v4l2_mbus_framefmt *fmt;
+> > >  	unsigned int align;
+> > > @@ -1120,7 +1312,8 @@ static int mipi_csis_set_fmt(struct v4l2_subdev
+> > *sd,
+> > >  			      &sdformat->format.height, 1,
+> > >  			      CSIS_MAX_PIX_HEIGHT, 0, 0);
 > > >
+> > > -	fmt = v4l2_subdev_state_get_format(state, sdformat->pad);
+> > > +	fmt = v4l2_subdev_state_get_format(state, sdformat->pad,
+> > > +					   sdformat->stream);
+> > >
+> > >  	fmt->code = csis_fmt->code;
+> > >  	fmt->width = sdformat->format.width; @@ -1133,12 +1326,8 @@
+> > static
+> > > int mipi_csis_set_fmt(struct v4l2_subdev *sd,
+> > >
+> > >  	sdformat->format = *fmt;
+> > >
+> > > -	/* Propagate the format from sink to source. */
+> > > -	fmt = v4l2_subdev_state_get_format(state, CSIS_PAD_SOURCE);
+> > > -	*fmt = sdformat->format;
+> > > -
+> > > -	/* The format on the source pad might change due to unpacking. */
+> > > -	fmt->code = csis_fmt->output;
+> > > +	/* Propagate the format. */
+> > > +	mipi_csis_propagate_formats(csis, state);
+> > >
+> > >  	return 0;
+> > >  }
+> > > @@ -1155,7 +1344,7 @@ static int mipi_csis_get_frame_desc(struct
+> > v4l2_subdev *sd, unsigned int pad,
+> > >  		return -EINVAL;
+> > >
+> > >  	state = v4l2_subdev_lock_and_get_active_state(sd);
+> > > -	fmt = v4l2_subdev_state_get_format(state, CSIS_PAD_SOURCE);
+> > > +	fmt = v4l2_subdev_state_get_format(state, CSIS_PAD_SOURCE, 0);
+> > >  	csis_fmt = find_csis_format(fmt->code);
+> > >  	v4l2_subdev_unlock_state(state);
+> > >
+> > > @@ -1187,6 +1376,8 @@ static int __mipi_csis_set_routing(struct
+> > v4l2_subdev *sd,
+> > >  		.quantization = V4L2_QUANTIZATION_LIM_RANGE,
+> > >  		.xfer_func = V4L2_XFER_FUNC_SRGB,
+> > >  	};
+> > > +	struct mipi_csis_device *csis = sd_to_mipi_csis_device(sd);
+> > > +	struct v4l2_subdev_route *route;
+> > >  	int ret;
+> > >
+> > >  	ret = v4l2_subdev_routing_validate(sd, routing, @@ -1194,15
+> > +1385,27
+> > > @@ static int __mipi_csis_set_routing(struct v4l2_subdev *sd,
+> > >  	if (ret)
+> > >  		return ret;
+> > >
+> > > -	/* Only a single route is supported for now. */
+> > > -	if (routing->num_routes != 1 ||
+> > > -	    !(routing->routes[0].flags & V4L2_SUBDEV_ROUTE_FL_ACTIVE))
+> > > -		return -EINVAL;
+> > > +	/*
+> > > +	 * The source stream identifies the output channel. Validate that it
+> > > +	 * does not exceed the number of channels available in the device. The
+> > > +	 * other routing constraints can't be validated now as they require
+> > > +	 * querying the frame descriptor on the sink side, which can only be
+> > > +	 * done when enabling streaming.
+> > > +	 */
+> > > +	for_each_active_route(routing, route) {
+> > > +		if (route->source_stream >= csis->num_channels) {
+> > > +			dev_dbg(csis->dev, "Invalid source stream %u",
+> > > +				route->source_stream);
+> > > +			return -EINVAL;
+> > > +		}
+> > > +	}
+> > >
+> > >  	ret = v4l2_subdev_set_routing_with_fmt(sd, state, routing, &format);
+> > >  	if (ret)
+> > >  		return ret;
+> > >
+> > > +	mipi_csis_propagate_formats(csis, state);
+> > > +
+> > >  	return 0;
+> > >  }
+> > >
+> > > @@ -1554,7 +1757,8 @@ static int mipi_csis_subdev_init(struct
+> > mipi_csis_device *csis)
+> > >  	snprintf(sd->name, sizeof(sd->name), "csis-%s",
+> > >  		 dev_name(csis->dev));
+> > >
+> > > -	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE |
+> > V4L2_SUBDEV_FL_HAS_EVENTS;
+> > > +	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE |
+> > V4L2_SUBDEV_FL_HAS_EVENTS
+> > > +		  |  V4L2_SUBDEV_FL_STREAMS;
+> > >  	sd->ctrl_handler = NULL;
+> > >
+> > >  	sd->entity.function = MEDIA_ENT_F_VID_IF_BRIDGE;
+
+-- 
+Regards,
+
+Laurent Pinchart
