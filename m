@@ -1,100 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F23186A;
-	Thu, 20 Nov 2025 00:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25362224220
+	for <imx@lists.linux.dev>; Thu, 20 Nov 2025 01:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763596983; cv=none; b=RY7J8tCBs5tPvcz9N3MxK9u+diszjHo3EbYA9KHMmqNGRFdau1yDt2yWL+AqQb+oD+lwY5iEwl+RjG1FcmjWvX6ol1UTecuJFRB7kdblipQ+r4YApugE0S64NC3xLmsJ4DoIHQrtY6F4llxLdgRNwKH56au16VFUww2xpDmA2p8=
+	t=1763603659; cv=none; b=P8NOKVJqRdBFJ+qPznzw6Jhb+i9wY5Dl8tN8QF+iUtA0CW8F250DjcCdLb98QU7Tui6n9jbH7NsatZSStRAdqBY/Z1KwMksipiijjfR5jrgpeYyaUT1MjFZL9Wy+KUq4RbbAoEcJQ1Bp5w3zBDzlkXxBqsfqLVX4EMTFwR94P8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763596983; c=relaxed/simple;
-	bh=cVyPOnT/UBn71uhx+refF3VSlWZ4EZjVCMqRawXSxAM=;
+	s=arc-20240116; t=1763603659; c=relaxed/simple;
+	bh=sAdiuolNXE/24WrsaGL6jXBYWZ6ex3v68gkeEXIOatA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WgLuSD5Q0owfSK5tDtRNwEzskgttdfCq8QXz+VkUhTMhd/mDY6aHKPpzSdqNOCjf5jxlVxriPzYNgLgUkYzL8xE0PvoxLC8PWzmsuxTr48ATQHiOsuXnBYlv7Fz1+KZWL5oNjekWUdOPq+yiyVhH0vLSETzgy+ohiIQXlel1P2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nIbP0GBu; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=IJhdCdbEmfHu1oMoNmlllC3i5t74K8Z9OoHTHMHEt9cuaUV8wMRTQ9fMkVbZPGNDCajCoUeAmUvb6Zjh+Fh5Fw5kNyh9GwHgoKlZiHSyBF701F03sTEzhntBS461ien4uxbKie071/8zwAdWU8/xIkA9F2eWP1rhNFQF17hWsfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=FsX4dyzI; arc=none smtp.client-ip=220.197.32.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nIbP0GBu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FAD4C4CEF5;
-	Thu, 20 Nov 2025 00:03:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763596981;
-	bh=cVyPOnT/UBn71uhx+refF3VSlWZ4EZjVCMqRawXSxAM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nIbP0GBuOYzLLwjKfTQNUFmNriOakF0h4AhRoWeQv5l4W5ZGWjVpM7SDMAHhwwsfq
-	 4+WNYNhf6tU3/qCISfEDI+fSPba7oAD5LoUYFq14bKtNXxHecDt5T2AF9OvKBypTyA
-	 pFulrewuumd8hz74L53uXjuKnbE8NMmH8stFyShBLz/9TSnD0kf3F5RCGtPCE8JBkX
-	 lLcDqFH11piEulLk9zz9O2CHPpflAJTpov3ZTGd/kYLoIusFTnyEQXgttuXg96JyZd
-	 cSzPL55WxGvtYNNZjviujxHPlyRnc/WNrrJlFojiNLRM6UPXXB/1o6SzL4tFF4X9iN
-	 8mixZr6N/wmZw==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 6C2CB1ACCCAB; Thu, 20 Nov 2025 00:02:56 +0000 (GMT)
-Date: Thu, 20 Nov 2025 00:02:56 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Bough Chen <haibo.chen@nxp.com>, Han Xu <han.xu@nxp.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="FsX4dyzI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:To:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=B13YSSVdzv+A9HSJEV6haxN1uEpuGwZCWegPWDkjWo0=;
+	b=FsX4dyzILs5Mz6P4OxTN0CZ6a8W+QrZGfT4i9E3mD9Dv8c2Wr9s1GER+09vuSz
+	Dpxgn8PQ5E00Q20Pwiw2acWxvlUkmrX6TRLNIYoPBDhFIob5/fYH1Bbh6yxBhp5B
+	1fnjOh6XPpG1UEzIw76l7HjPslGkMFtm4wD6UPJer8H7w=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgCnHTeLdB5pzrRhAg--.10170S3;
+	Thu, 20 Nov 2025 09:53:18 +0800 (CST)
+Date: Thu, 20 Nov 2025 09:53:15 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Marek Vasut <marek.vasut@mailbox.org>,
+	Liviu Dudau <liviu.dudau@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	David Airlie <airlied@gmail.com>,
 	Fabio Estevam <festevam@gmail.com>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v3 2/2] spi: add driver for NXP XSPI controller
-Message-ID: <aR5asBZpmtM_JiNt@sirena.co.uk>
-References: <20251118-xspi-v3-0-6d3a91b68c7e@nxp.com>
- <20251118-xspi-v3-2-6d3a91b68c7e@nxp.com>
- <aRyfoXaTdL1gvPOY@lizhi-Precision-Tower-5810>
- <DU0PR04MB94965531DB74151BFE651BD690D7A@DU0PR04MB9496.eurprd04.prod.outlook.com>
- <aR3qK18c4/XJY8JW@lizhi-Precision-Tower-5810>
+	"Jiyu Yang (OSS)" <jiyu.yang@oss.nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Sebastian Reichel <sre@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>,
+	Steven Price <steven.price@arm.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Xianzhong Li <xianzhong.li@nxp.com>, devicetree@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev
+Subject: Re: [PATCH v4 2/2] arm64: dts: imx95: Describe Mali G310 GPU
+Message-ID: <aR50iy_FWk6PqAUg@dragon>
+References: <20251102160927.45157-1-marek.vasut@mailbox.org>
+ <20251102160927.45157-2-marek.vasut@mailbox.org>
+ <aRnBqgzeotfrdNmy@dragon>
+ <c85e39b6-4e5b-4bbc-b1b6-7f910c8f06d8@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="AoC14FpgipN46l3S"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aR3qK18c4/XJY8JW@lizhi-Precision-Tower-5810>
-X-Cookie: It's clever, but is it art?
+In-Reply-To: <c85e39b6-4e5b-4bbc-b1b6-7f910c8f06d8@mailbox.org>
+X-CM-TRANSID:Ms8vCgCnHTeLdB5pzrRhAg--.10170S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUnzV1UUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiNg4ih2kedI5lUAAA3l
 
+On Wed, Nov 19, 2025 at 06:00:55PM +0100, Marek Vasut wrote:
+> On 11/16/25 1:20 PM, Shawn Guo wrote:
+> > On Sun, Nov 02, 2025 at 05:09:07PM +0100, Marek Vasut wrote:
+> > > The instance of the GPU populated in i.MX95 is the G310, describe this
+> > > GPU in the DT. Include dummy GPU voltage regulator and OPP tables.
+> > 
+> > The commit log seems need an update for the regulator part?
+> The patch seems to be already in next, but if it can be somehow respun, I
+> can do that ?
 
---AoC14FpgipN46l3S
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hmm, okay, just take it as a protest that DTS shouldn't have been
+applied by GPU subsystem, @Liviu ;)
 
-On Wed, Nov 19, 2025 at 11:02:51AM -0500, Frank Li wrote:
-> On Wed, Nov 19, 2025 at 07:02:21AM +0000, Bough Chen wrote:
-> >
-> >
-> > > -----Original Message-----
-> > > From: Frank Li <frank.li@nxp.com>
-> > > Sent: 2025=E5=B9=B411=E6=9C=8819=E6=97=A5 0:33
-> > > To: Bough Chen <haibo.chen@nxp.com>
+Shawn
 
-Please delete unneeded context from mails when replying.  Doing this
-makes it much easier to find your reply in the message, helping ensure
-it won't be missed by people scrolling through the irrelevant quoted
-material.
-
---AoC14FpgipN46l3S
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkeWq8ACgkQJNaLcl1U
-h9BQFgf+LoQSLm97OTEsjh3Y/QsqlCXXQ/uQKZ2jgf57X7sAtmHP+Az+6nK5yjjC
-TlOdyDX3MDVs3hU7qC4tG74VhsBrIwXWQPMLpt4z/xuu7LvMi3X8UcS2LqFehTam
-p385IAOJOCVqP1g9ZWBjPlIRGqQUz2Yh1iAD1/cIpEpbv9sFKWUHv+pRS2L5q6Km
-esnCXXfmjwcthF0cCP2Ysi4BSndTB0xE1KubkK1ZlotxJv5BBMZC0gTuFSGWGzK/
-+aqGv++vD0iE68KFsrfX3KQ92XvCNPTR5jFhDB3XiTWj7an96+5Iuo2cEYEfs6vd
-rLyNDRRdYZbyoNeSVvfq0e/GSJ3pOQ==
-=frvl
------END PGP SIGNATURE-----
-
---AoC14FpgipN46l3S--
