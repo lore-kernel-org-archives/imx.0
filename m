@@ -1,46 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB97136922D;
-	Thu, 20 Nov 2025 17:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EDB1DDA18;
+	Thu, 20 Nov 2025 17:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763658912; cv=none; b=dcXf8j3oKhgm1J1w0CQg6a3F8jw/yuzZ0BhTASPgWv3t8aJWdhKeH6xdtnzUgc+gfz0Wq1ohFU42P6uU00wYSWWU//bxjkuU8VM2gBtyfLqyyjBHQIvlOXv+M9bowQukoo3mesAm4DAOk3oCuaAPel3/I6iq2qEWbWc8vo04BZM=
+	t=1763658940; cv=none; b=bZg/aHpBK7pzXQeU0Bi7WmsPlD9gx1SgHAw31o9ROWoHEq+N3oupPMmf3eG3VKP8X1/4AHzO5t8NDU09vo8MFA2JFh8ruwj6PDATSw9d64XKvOE5BKl9AsReAZmzCr0NlWrGYpHIr/HJ1X+xTpBINSkaq3Y/caDbpon6wQDSHLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763658912; c=relaxed/simple;
-	bh=tUJeMypbWx64/Z6otC6Zk4ZaZQUUS8H+FmWqI2gi1+w=;
+	s=arc-20240116; t=1763658940; c=relaxed/simple;
+	bh=kVEUku+jmD7IM9oXhsKRMaGSp3Jgrbk1cacSxT7VSrY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RfrX0DZLOuRjmc2mBM5Ad0Xg4/xFG3pN7GJnviPQGdWrOBDfGWtKnnxhFjb68y+yL8mgbK7J13Us7w9K6+BQS+qNM4LgTMQnkuSJbWHOG7St0EzBTUW0wiaRvgBhQqPadYSOPctBPKc29mKAmtuqVlgeS25F7RRf+Wo9LIlWplc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fvihmd45; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=AwdYnRo6Tns3QegDhs26+GG7KIhrA+ww6VZ9upT3bQR44eIUXoCAmY3a0dkXI/dr2oK+lJxP48lxqwzZd1xAMRaxY29PEMKiJfjhUCU+Cu8ZD49Pvl2CZ6v36krik7ASG1AlCXR/5j+3v0ExiICzkwLaJQ32syg8dj/0rMXWqKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LkQvZtHK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fvihmd45"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9A3C116D0;
-	Thu, 20 Nov 2025 17:15:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LkQvZtHK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A19BC4CEF1;
+	Thu, 20 Nov 2025 17:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763658912;
-	bh=tUJeMypbWx64/Z6otC6Zk4ZaZQUUS8H+FmWqI2gi1+w=;
+	s=k20201202; t=1763658939;
+	bh=kVEUku+jmD7IM9oXhsKRMaGSp3Jgrbk1cacSxT7VSrY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Fvihmd45/mBHgMjyHRpRIgcbXtJm3kydpQz6CiDR3/QE1c9N9zXA4ooHDUYYwDcQ5
-	 MhmsUfDUBnGZU3vHANf6U3dQpZl4uMYFagQxAZZbFeEzcm7vtoiiR/SV6cdDXER6Sj
-	 Q8qKm0Lxo8Xm3BGaukHDsmUoFaHlP1JhT2zHvD2pyRm6pgMqLdgpiZ19Ira+7dIthY
-	 uVr5Mwj4E/DvjSkWL25HduORAAP4MFR2h3fY+40fId4dGL+q4o0SlfX5043f+oMfBK
-	 j6fmPIbHizjIcP/d8oWgqF06QhBr9wdJR8J31ziPXZLuuWS4dW48t5wSVJERtvt720
-	 v8sZqCeoZS8NQ==
-Date: Thu, 20 Nov 2025 11:15:10 -0600
+	b=LkQvZtHKcc7JsvaHTAdolGvLLHJRVpvSN2ohS8/bx54z2lf0hO/KqE9ebfnOUEqb8
+	 MAyAKqDYWamfY2m5KJ5qpjzOKVNqdtXkl7KgjxAN01b/EvHFANtO0y8nj4xgw/4HbB
+	 A3kyj9PS597tYkpLzDznRZN6ZqRRkkZ3AwZlmjK/KrKDgBHRlrWiPHWWYnSuEbmTVg
+	 RrouGOs+LYPRDGqtTFYmkvMxVpSThqYq+AAWpwDaYwaQNx3wZu9jDBmNZpiMp+xapN
+	 4foh92JIcaNu2Y8Cqq3equ+z07aAKUYiqIuU290cM1Fiib17tEg+6C3pyhlkakH+bN
+	 CAXa0Qme8MxSA==
+Date: Thu, 20 Nov 2025 11:15:37 -0600
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Marek Vasut <marex@nabladev.com>
-Cc: Shawn Guo <shawnguo@kernel.org>,
+Cc: imx@lists.linux.dev, Christian Eggers <ceggers@arri.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Shawn Guo <shawnguo@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Markus Heidelberg <m.heidelberg@cab.de>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Christian Eggers <ceggers@arri.de>, imx@lists.linux.dev,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] dt-bindings: eeprom: at25: Add Anvo ANV32C81W
-Message-ID: <176365890864.1562501.17836862471978863678.robh@kernel.org>
+	Fabio Estevam <festevam@gmail.com>
+Subject: Re: [PATCH 2/4] dt-bindings: vendor-prefixes: Document ifm
+ electronic gmbh
+Message-ID: <176365893738.1563102.3354522525163832099.robh@kernel.org>
 References: <20251118121513.88352-1-marex@nabladev.com>
+ <20251118121513.88352-2-marex@nabladev.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,13 +51,13 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251118121513.88352-1-marex@nabladev.com>
+In-Reply-To: <20251118121513.88352-2-marex@nabladev.com>
 
 
-On Tue, 18 Nov 2025 13:13:10 +0100, Marek Vasut wrote:
-> Document the compatible for ANV32C81W 256kb Serial SPI non-volatile SRAM.
-> Although it is a SRAM device, it can be accessed through EEPROM interface.
-> At least until there is no proper SRAM driver support for it.
+On Tue, 18 Nov 2025 13:13:11 +0100, Marek Vasut wrote:
+> ifm is a manufacturer of industrial sensors, control technology and
+> automation solutions. Document their vendor prefix, which is already
+> used for ifm,ac14xx and other powerpc devices.
 > 
 > Signed-off-by: Marek Vasut <marex@nabladev.com>
 > ---
@@ -72,9 +74,9 @@ On Tue, 18 Nov 2025 13:13:10 +0100, Marek Vasut wrote:
 > Cc: linux-arm-kernel@lists.infradead.org
 > Cc: linux-kernel@vger.kernel.org
 > ---
->  Documentation/devicetree/bindings/eeprom/at25.yaml | 1 +
->  1 file changed, 1 insertion(+)
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
 
-Applied, thanks!
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
