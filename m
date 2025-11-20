@@ -1,69 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE842DD60F;
-	Thu, 20 Nov 2025 12:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D09337115;
+	Thu, 20 Nov 2025 13:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763643424; cv=none; b=o+2FMHXklADI6FVI0MhkeYAN91ttgE9hdDehiWwWQo/VHqyrMfPdY6kltGnraVjlejY7lU7LHR46cMR28b3X/rXPlDlY+vADGk5xteko+tCW9/Ad8urta1r+nLRFE763DrYmiJKEgqWUSqqM97uaVUU0pf8WIQ/j76Ka44JF020=
+	t=1763644249; cv=none; b=HzuQfMWI02/579+AQYrrXYDSyicYo1kzLpJSYsvmQyVQDSfnk1G+Y1TVDt0JORsnY2adE+baLTJ7pruw+Y3i5gt3XkHD2xPJQ85EgZynnnptS3pH4MEtRncjN0MBr/isjtS1w10eyOH/BRyDFq4yGDi2jAAeFXXln0NYZJEC+qU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763643424; c=relaxed/simple;
-	bh=hd6sMa+SJ0IeZhB8q+41mcbcn0mY0yRYIRmyqvPmaik=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=GYRBukpAnEkcOJ3eR5246wZm33GXdlxeVKhZ8ZM0C/mQoPTAtrFulU8TRC1SSLYWeWZToql5kV++4Y2009OreZFvqPD6O0L/D3yde+acMQTX6Z9zO9gk7c0dW2vfVVOOYTanPuDtH2AKHuN9fQIkCX5m7uZJKtS4AzVQMuXG2Ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IIk84AwC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763644249; c=relaxed/simple;
+	bh=tInkj9k/KoTfRE/DCb2/fIYjK50Qkfn/zzltlCIrwn8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EQpnkf7gK8jcr1HA1/tlqB2+f631hCu6vWtesD1eLvkap8atU/YCu1WJkgNr+GUgeKCph5F2GJOTiTtx8r8l9LBNUNZ+XHrj9/hH0IBpNBPRiIfJAAHUtYirxMwDsX9oc869bGI58HrDdOoQJ/Iu1r7U36bkEVb42HLYTTvAqgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WLIf89DD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IIk84AwC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8180C4CEF1;
-	Thu, 20 Nov 2025 12:57:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WLIf89DD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2865C4CEF1;
+	Thu, 20 Nov 2025 13:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763643423;
-	bh=hd6sMa+SJ0IeZhB8q+41mcbcn0mY0yRYIRmyqvPmaik=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=IIk84AwCpW70QPcyH44iGemY/PEWQqx1UuYyyWMez1ZnwJ/4b/F3kUhDIrynAn0hl
-	 E+NBDmgXCxluUyUhml2IQ0mgKEwUPPvqtxnWCmMy+WmQB3da7RtxRH/YYZrB4K4sLm
-	 2763X5T502up7yFiAJHRSpvIm6FC4M36saBHszG3tRB+DLOZKpk2vImv52nuSBtLYl
-	 LD866bZN1zO0if13q3NIhGvFht6RMX9oE5A0r9klZM5cSpwxPT8nIrhz7Mxq8r8m+s
-	 VYp5azP2RSID6Bb1dKNH0+EVcBEdaFQ0m+WhKuwk7J7hLOQ5Mqz02tPKzB8c0xmYiR
-	 oZAUc1LUEy/bg==
-From: Lee Jones <lee@kernel.org>
-To: Support Opensource <support.opensource@diasemi.com>, 
- Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
-Cc: imx@lists.linux.dev
-In-Reply-To: <20251114213037.1211907-1-Frank.Li@nxp.com>
-References: <20251114213037.1211907-1-Frank.Li@nxp.com>
-Subject: Re: (subset) [PATCH v2 1/1] dt-bindings: mfd: Convert
- dlg,da9052-i2c.txt to yaml format
-Message-Id: <176364342167.681756.13300303810982487090.b4-ty@kernel.org>
-Date: Thu, 20 Nov 2025 12:57:01 +0000
+	s=k20201202; t=1763644248;
+	bh=tInkj9k/KoTfRE/DCb2/fIYjK50Qkfn/zzltlCIrwn8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WLIf89DD66733v36XtULgPqICwqz2b4vsfxkfIANlg8yqOIFKayEZe/IS4gN91nQi
+	 OXUt9d3hp/w+2cMByRe3OnKwvUWiNU9tnh9Y6RuDnWwj/7474eROt/WyT9ZgItFdka
+	 5qLInIwFsbUQtZx3c3in6mV2AoBqEaQANwx1i2zl6asIYhFWrxS0CaqMexYkgAzFhY
+	 1Gx4lg17VPqWEX7B2rnf1NtL8iBgVpZrYiFStHKt/J9jx8BRdILJ0JqmmEAKFJ9lk2
+	 fLwpli0JV3s3BBkf8P146ECYnE6aQYuICXVf1pNSi4Pea3XeUOoWjFLVl44TIqzNsS
+	 c/6FPDUQ5+Eiw==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vM4Qy-000000003jl-3z4E;
+	Thu, 20 Nov 2025 14:10:49 +0100
+Date: Thu, 20 Nov 2025 14:10:48 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2] drm/imx/tve: fix probe device leak
+Message-ID: <aR8TWJurF1a0LLGJ@hovoldconsulting.com>
+References: <20251030163456.15807-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev-52d38
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251030163456.15807-1-johan@kernel.org>
 
-On Fri, 14 Nov 2025 16:30:36 -0500, Frank Li wrote:
-> Convert dlg,da9052-i2c.txt to yaml format.
-> Additional changes:
-> - compatible string fallback to dlg,da9052 to align existing dts files.
-> - Add interrupts property.
-> - Add ref to /schemas/spi/spi-peripheral-props.yaml#
-> - Add dlg,da9053bc.
+On Thu, Oct 30, 2025 at 05:34:56PM +0100, Johan Hovold wrote:
+> Make sure to drop the reference taken to the DDC device during probe on
+> probe failure (e.g. probe deferral) and on driver unbind.
 > 
-> [...]
+> Fixes: fcbc51e54d2a ("staging: drm/imx: Add support for Television Encoder (TVEv2)")
+> Cc: stable@vger.kernel.org	# 3.10
+> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
+> 
+> Changes in v2:
+>  - add missing NULL ddc check
 
-Applied, thanks!
+Can this one be picked up for 6.19?
 
-[1/1] dt-bindings: mfd: Convert dlg,da9052-i2c.txt to yaml format
-      commit: d2b240f9a180ebd63477d0534633f22e16fe41ad
-
---
-Lee Jones [李琼斯]
-
+Johan
