@@ -1,159 +1,136 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011067.outbound.protection.outlook.com [52.101.70.67])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011029.outbound.protection.outlook.com [52.101.65.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F772E7F03
-	for <imx@lists.linux.dev>; Thu, 20 Nov 2025 03:02:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3ABE247DE1
+	for <imx@lists.linux.dev>; Thu, 20 Nov 2025 03:13:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.29
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763607777; cv=fail; b=PDHZVUFovB1wJsMcPEjXAPyW6JDPxH7tY+XvZkWehL68PlqqdSpWWc8Zrb+nXACJoZEKWzlYNZzGYUDcyCOQOoiJ1bmlT/qFclnE3lPGzcj7KAOav5C6RKgszm68eVbJ5ujfCVrvXezmR0BLkM268rxz7klk9GkNJKFXQ5NMLyo=
+	t=1763608393; cv=fail; b=YbQ/Snv4FN48h3Z2WpRuZ3NKo57U2Ym+NniGXbdaW5EkgmkhCKG8WctcRoIZziHQnRb5xiWUyJeHOCGB+1zWMKqvEyubsqB9eGHQTE+4LfaVE4FNHD5nn+E2HG4egpq5s7/f/tS6UjECEiHU5e7wsTnqb1oV/+1XVkYCe8GC/N8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763607777; c=relaxed/simple;
-	bh=VLcDLNR8+oDdfk18Ke08Wu0AF80WV2RonQrWFRpugRg=;
+	s=arc-20240116; t=1763608393; c=relaxed/simple;
+	bh=+urfbD7CnId2N1mbIO/TAgcANyF1oK282jlzC+lHqLc=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=CNfKuJy8N0Zv4KF/zPXm51cCG7+QJ1J/x2MmKWPx60A7uYZTvNc7szyewCTEhmVOD0bhoOTIj07qwKz5eks439SJ4KmXd2PtUaUUygN+TySwMVv6AX/4VqNn6A5SgXClNGY7w2w8YS6llfRa3I/BpOr/2FYYzsvT6WE/iEkOvQQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=AAS0j1bU; arc=fail smtp.client-ip=52.101.70.67
+	 Content-Type:MIME-Version; b=g6Cix6nsv7G+YYp1ASn8a8xz5d+xIbaOy6UCSTenR8yNRzDJvppXNtPTpRuiu1nye6CFj6s1zcsx1aBRZfK71OSn3QrfEBZ/J5VVhaHsrOqawlsAXqW4P6pWyyi/jcslaXJcoCOTGdABU4tsT4Ow+LYb8ZtCBgzqWG5uE5tTUlc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dZYYE17r; arc=fail smtp.client-ip=52.101.65.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="AAS0j1bU"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dZYYE17r"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OlCJlkC0ZC6NYM7t69zzwMsAXM0pg9ladS/N5qs+Av4bOkmsnOvdHSzIdrlRdgZR52gWXoEfFSmq1plchUhIaFnAPj9pwTUFlGxAmURGy8ljZ7rZkQIhSNrbRFs3gS33RFR/NDpV905b6Xby0medImAVVFQ6hM2Dp1QssYa0hAKV5hmAZ3c/mHeXm1HLp+fDLpkQ00DcQy07P5dl45qQiR86BF8XAQFpLevq6Pw9dPDgfx2jwqJilkYN8iMJQR7oVswt8027kglitX1S5bBaf0PRlwWOJWeccKuR44wkboalT05m98ifEvvsdwMNmgSdspnf8ZfvAyBSrgiKNGGMNw==
+ b=jLv4iWi6jtW4/6q4r7wWLaiDAgyUDqKDCWJTvIcpEO/fROWBfZDQ/ZIoTOab1FAkFuo6gcOSyUt3hZWm3InjgDo6FzJ9/+7aBLCaH3sf5yoHib0zceU0RRtUQv6oKNzdDI8Is4lEJjuTwLMexSy7iIBqMhuCLS06kWU0LEUuy5L4z4/MreFovHxt8wQNk7bLPCFycpcw7QSOr8y6PhBg+37PpbMeyoBhqqJbYEx9esleg8nSmR3Cwz2w1IH8RSA8GXmG+XqFyVzC1+LOpxEeY3XO7CPf0424ePHEdgUm58MVW1+zOPJpULPq18/QRCtfoEH55n9ajdhMt0Ohm4EqRQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VLcDLNR8+oDdfk18Ke08Wu0AF80WV2RonQrWFRpugRg=;
- b=e6VMnbT5vtNAw9zcb7+/ibF0GutF1P5K0vqB3kY/uWk9r3DqrUDUBLGrcFFrHUTj6X+du3rNB1lzP3HJTdMAkfpjmn50G9fDuVSITBpj97FVnDjXuu078lLaKMSt7xSsCnH5CnRnUKW/+lPpf+hNTJGzo/PolA1doUHfFlAt6I0L17+q84SKtauh30tnasYQp/+7e8TLmw7Pjo+wQM7FpDFhHSzEAAsD3T7ee7cb7SFqXCHEAtEggKBA3GE4fu+HDmOG0I+55Z3/7abkQ+zs3RDA4xwiEmpi4wEpWWh76SgWQt5jZchov6qztLSIUQZqQXpTftsawjQbbCvTVUQOmQ==
+ bh=aqjy6Ya1ehEgFRM7rnc64xGW4usu0O9nHhchAtsoS0I=;
+ b=gCX6FTaWXvNAaXo+CzlFn09K1x1tsDE2gENMrcUqzx6nox2k4wJlpvB936GaS6smQ7kafNt5/ISkJ9cd/EQs9z+Z7yxPBqCP2zRHJzxjcCru/yrBqz4c6K1SlC3HUdFqUJhdYQd6wL7OHUyr6EoFrerPhbLcSJPPk4dAi1zgRlyqJXvTafwnrZkQFPP2VWPNj9r/7Wh8LCoSFFfOhs71WLCUACztK94YlS0eVstlEQBOU3/SJIO5lWVS2Cp54gLOlwUWJtzebZUuHVFl3XQv6zn0aOhqyft/MKZDoAg5mL/cXKAhlCEuXZW155r6VLimYvTk2FFRP3+41lavg1a4Fw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VLcDLNR8+oDdfk18Ke08Wu0AF80WV2RonQrWFRpugRg=;
- b=AAS0j1bUtAgeFcHXSQNIsjsqYnjBWUIEVh+rMhsnsOMPWvxyiCXtn3h7P/lo9M4Jx2X9cW7/Loq7hECw9owYFq7Zqh42gE5029ZWhaOgrXu03kEr48rxzRhnCAVlfM9O1OC/06oNPxu47M3mf35Z5h3lCHvVplpwXlxD/pDcRk/uvFXAWFtx/kb4HNW5NwJIMjLlSfY1yR30FtgKQD6R343lp8rqDyOr0drqySd06oJ1Q7N5RiZWEJDFd5s0pDRQ7XZuohtHNAX8LRwOEzwp48WFVtEVRGPETiTttqrlntSVWPL8UE8GeXIKz+qeAUWq5nyCArH1VpCVqFHjHXV7XA==
-Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
- (2603:10a6:800:293::14) by PA4PR04MB9318.eurprd04.prod.outlook.com
- (2603:10a6:102:2a5::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Thu, 20 Nov
- 2025 03:02:51 +0000
-Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
- ([fe80::75ad:fac7:cfe7:b687]) by VI2PR04MB11147.eurprd04.prod.outlook.com
- ([fe80::75ad:fac7:cfe7:b687%6]) with mapi id 15.20.9343.009; Thu, 20 Nov 2025
- 03:02:51 +0000
-From: Carlos Song <carlos.song@nxp.com>
-To: Frank Li <frank.li@nxp.com>
-CC: Aisheng Dong <aisheng.dong@nxp.com>, "andi.shyti@kernel.org"
-	<andi.shyti@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de"
-	<kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] i2c: imx-lpi2c: change to PIO mode in system-wide
- suspend/resume progress
-Thread-Topic: [PATCH] i2c: imx-lpi2c: change to PIO mode in system-wide
- suspend/resume progress
-Thread-Index: AQHcWFujTDvepCQDEkyt7wSo+0A7HrT4l4iAgAC7qCCAANjVAIAAt3kQ
-Date: Thu, 20 Nov 2025 03:02:51 +0000
+ bh=aqjy6Ya1ehEgFRM7rnc64xGW4usu0O9nHhchAtsoS0I=;
+ b=dZYYE17r6ciDyuMAeaX6Tr3fAb+dH3nRQ3naSzz8bapz2TZEiJgEIQMYnZU8nG2+2grg/XGkEvi4+7NvCNNQZesM+YNb/MLkOc0lMZqIBqN1UK7mH5r2OIYVda3FJxdPqrQGvFlozfFe+9Ku/9da2TSdGUdmAy0yHiQIpP74sOjlKpNsER81VYR8Ok9uRGEd0GbVZ4Z40n9DE3tV5bAusXwMBOQEVPLeX2JDZAWzBrJarP6tJMyPox5SloN1CyVH/lYdfeoLPmd6Sa0gF/mFzszWzWhCTYsjbIMZqbqW8s8slOQG1YDaK7hq9ocwZ8FsRBWf7qzOAbs7oMCWhsw27w==
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com (2603:10a6:20b:447::16)
+ by PAXPR04MB8735.eurprd04.prod.outlook.com (2603:10a6:102:21f::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.22; Thu, 20 Nov
+ 2025 03:13:03 +0000
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::92c2:2e03:bf99:68eb]) by AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::92c2:2e03:bf99:68eb%6]) with mapi id 15.20.9343.009; Thu, 20 Nov 2025
+ 03:12:57 +0000
+From: "G.N. Zhou" <guoniu.zhou@nxp.com>
+To: Frank Li <frank.li@nxp.com>, Laurent Pinchart
+	<laurent.pinchart@ideasonboard.com>
+CC: "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>, Rui Miguel
+ Silva <rmfrfs@gmail.com>, Martin Kepplinger <martink@posteo.de>, Purism
+ Kernel Team <kernel@puri.sm>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, "imx@lists.linux.dev" <imx@lists.linux.dev>, Stefan
+ Klug <stefan.klug@ideasonboard.com>, Sakari Ailus <sakari.ailus@iki.fi>
+Subject: RE: [PATCH v1 6/6] media: imx-mipi-csis: Add multi-channel support
+Thread-Topic: [PATCH v1 6/6] media: imx-mipi-csis: Add multi-channel support
+Thread-Index: AQHcUAZMC609j0oUu0S4ldtJEQpvR7T69D4A
+Date: Thu, 20 Nov 2025 03:12:56 +0000
 Message-ID:
- <VI2PR04MB1114708FCF7C75A48CC7054FAE8D4A@VI2PR04MB11147.eurprd04.prod.outlook.com>
-References: <20251118071837.1419558-1-carlos.song@nxp.com>
- <aRyXjUF+x5BdK+uS@lizhi-Precision-Tower-5810>
- <VI2PR04MB11147CEB59F804078F2136107E8D7A@VI2PR04MB11147.eurprd04.prod.outlook.com>
- <aR3q3KA0j2Qn+bCU@lizhi-Precision-Tower-5810>
-In-Reply-To: <aR3q3KA0j2Qn+bCU@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
+ <AS8PR04MB90804FDFE5473E590A9570B9FAD4A@AS8PR04MB9080.eurprd04.prod.outlook.com>
+References: <20251107015813.5834-1-laurent.pinchart@ideasonboard.com>
+ <20251107015813.5834-7-laurent.pinchart@ideasonboard.com>
+ <aQ4iwFHVoweNl/mS@lizhi-Precision-Tower-5810>
+In-Reply-To: <aQ4iwFHVoweNl/mS@lizhi-Precision-Tower-5810>
+Accept-Language: zh-CN, en-US
 Content-Language: en-US
 X-MS-Has-Attach:
 X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI2PR04MB11147:EE_|PA4PR04MB9318:EE_
-x-ms-office365-filtering-correlation-id: a32fec06-a2a0-458a-dae9-08de27e14af0
+x-ms-traffictypediagnostic: AS8PR04MB9080:EE_|PAXPR04MB8735:EE_
+x-ms-office365-filtering-correlation-id: e016f6db-20c6-4445-1fb8-08de27e2b407
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|1800799024|376014|366016|38070700021|7053199007;
+ BCL:0;ARA:13230040|1800799024|366016|376014|19092799006|38070700021;
 x-microsoft-antispam-message-info:
- =?utf-8?B?K2xXOEdmeW1QL0hjejhFUzhZMFMzMVlvUGtTSTdOaGtMNnBrMnBlMnFKR2p6?=
- =?utf-8?B?V2hDZ0NyKzhZVDRIdlZMKzk2YnNJQjY0YVg0NXdDQ05nS0E3WUJrTXJ6QTRK?=
- =?utf-8?B?NkpMYmVKcmRkS25PQXJuNlo4YlEzamNJWkpDQ3cwSDlYWC9kaHo2U3RNS21L?=
- =?utf-8?B?dmxEb2dWUzBjS1NiellZUDF0Yy9LR1FRbHpJMCtDaWdXRVZHaEFKQUFsOVhz?=
- =?utf-8?B?RUlhZ29PMG5yejRjUWJXOVpOcDlrMkw5R2tZL0ZYVUZhWDV0Z1dSK3oyTGZP?=
- =?utf-8?B?NXZoeDd2dlZFWmZVNEdYbTY5YXpxaUN2ZXdpbzkxdm92RWZ1OHIvTXQzRGZs?=
- =?utf-8?B?bFZvTms3bmxLUGs2WnpGazcvQ1l1QmVTbC9NN1crZ1Z1SVU4N2JSQ2FkMW5W?=
- =?utf-8?B?eG1keXpEOEI1Z2hrVWNLQVB6SC9kTUNnazFuTFVUWk0rYzRIWXMzbXBrMTlq?=
- =?utf-8?B?YjZ6eGZJdVBaLzRscVA0bWdiaWpubTZ3V0hRVSs5V2YvVS8yUHk2a3Bld3J1?=
- =?utf-8?B?SVJQR2huc0hYWjRXZFY0SCtqRjVzcnY4UTJDN2hzejVVYUlEMXoyTldxSjRW?=
- =?utf-8?B?ZVhQVExOWnZuQ251ZTRIZStSMmlSQ1dGdkN6MnFLcHY3TWhlTmlPSUQxRHU4?=
- =?utf-8?B?VVJwM0hQcEZmdEs4MGg0cER1ZjZUQjgyY2l4QXlzMjVwd1h3cjZJTmcyWnl6?=
- =?utf-8?B?VE9DNVFCSkF1K25zUVVUblNFVGU1bk9yblFVblFrWEkzSU9ZK3NKc3dqZDh6?=
- =?utf-8?B?Q3M3NnoreHlGMEthZnM1N2M1K2hZUnZxTm1rTHBuQTlydjMvWGdzUTdlNGc4?=
- =?utf-8?B?V0daT2E4a1UyRFBLcUViRytCVWduTCtiSjFjRE9Tdld6ZVpNRm1KY0lxRG5l?=
- =?utf-8?B?eVpYVWF0SW5qZzRHNnZRK1NZMVFSdEFieXhUVjdCYSt5ZkxRQmkrWDhJNUpz?=
- =?utf-8?B?enRpWE1jWVBPZ3N6ZzdRc0lzMTVaS2hmdnIyUTY0WWtEVUUzbHVvLzQ4ZGEz?=
- =?utf-8?B?SCtMZkV5OFJQVmh4d2locFh3REtuZW5XNk5lSmg4TXEvQ3ZtYzFFWTVQS24x?=
- =?utf-8?B?VE1GS1JXS1JjZ1p3QzliNFQ5alhGUmQreEFUNURITStBd3Qxb2M3b2V1cGdH?=
- =?utf-8?B?VUh6bGQwYnphRFppMktXLytuVHZ4VHZad1p3K21yS05xWThGNmNsVlZETXBO?=
- =?utf-8?B?bVFMeG9ib2VBSm0wVDdWcTNsNVlvRTFqalBJRUYxWFZoU0hjbWRpWkc1V050?=
- =?utf-8?B?eXZTTVlPQmZzNG9oMHFOc3pDUWd3ZEdhb0tnb2JISGlWdmtpSG5hNFNGZGUy?=
- =?utf-8?B?bkM1UGhVR1h4NDY3bXNBUmVaOUlNOGlqKzBqZE1YU25UOEoyb3NEU3IyNlpL?=
- =?utf-8?B?Vk5EMzNSd3BWWUpsQzRuakR3cEhDZVQ2VHRHTjFCNW9xNG9rZzJRR001eWp3?=
- =?utf-8?B?UnU3UU4vLzNuSy90OVRuNnpndXpSU1l3SjJGWGowRGdJcVRZbVhTYWcvS0dv?=
- =?utf-8?B?UXpBdkYwRjFhdFkrZURHamIrN09Yb2Q4c3hFdzNSakN6TUt1dTY0TkhXUVo0?=
- =?utf-8?B?SlhGVm8vRjFlbmd5ekFIbXNlM0k1aFlzZDVzdmFtbFVPSEUxSWJ3K0k5dVk0?=
- =?utf-8?B?NGYzTXpIM01IYW5Fc1ExQTJSNlh6VlFuMm96YmZSSkRubHRZMzJZSng3WE84?=
- =?utf-8?B?WmhyQTRRMDB6Y09yVDdSMkxKaU9GM3NTb0JrMk1OZ0Y0NHNxY3NNQnoxaCtL?=
- =?utf-8?B?K0pqTXRiSmVqbWZNZkl4U0c0Z2tyeWZ3YkJydkg5elZQMlRVOEFpSTRCdWo5?=
- =?utf-8?B?bG91a1l3RGVvYjBYZlZWU1BmbDM1a0d0STU4RFgwdmsveXNxeWcrSmhkVUJ3?=
- =?utf-8?B?bmp2YkIyMzk2TWRGTnpmMTJ5elUvTktCQXJWbEZIMGw3dGN0RUZDZGFFQ2d0?=
- =?utf-8?B?Mlc0QzNBOGNrYzhLWkxvSlA2VE9IOU5ZMHFPSEN0R204MlpycDVUNUhqVWdj?=
- =?utf-8?B?QmszK3dpKzlIUm0rYWFUT0VLc1ZiNlNjQndQekYzTEVMZGdhWnMwVGoxVFkx?=
- =?utf-8?Q?+SGKU3?=
+ =?us-ascii?Q?CnGrMIka9gFk/qnjGH0s8VTdCpB92b0JaVcWGyXzY2zOw1fzGx81k8j5/ZLI?=
+ =?us-ascii?Q?P3CFf6xfwGntweh7uuNwa8F1GNJAXVouWpRS+KJA3yLxGBrSJMsCh0MXVjU1?=
+ =?us-ascii?Q?GWmaDwl4p8YGZJfbjGupeDFCORhEIyWEtEs3N2ZICjubLVelSb7mX2Z9bJHM?=
+ =?us-ascii?Q?l1CpVqpaEaRyIjucpZKr+RqHlo5DpBzA6ISDLTlAwIgaPCc+DUbvCW1mk2hq?=
+ =?us-ascii?Q?F0ah6vbqYagAyJtgGEfcdawxdIs3t+i30Y1u6TZ+/2xEfXhGc5kmyqtKE9dG?=
+ =?us-ascii?Q?6wM+regfDUP2X5QMJI6x9dR+kzp7hk0OdzPk917kLBFb1zD+y6nuCkrueNo5?=
+ =?us-ascii?Q?xJ11j2u3baal24Lcm3JOSqNVEnHRO2xxlqlrvPK+v30b+bqzgMg5d5ageg0Q?=
+ =?us-ascii?Q?BKKBGJ0/y90G9DDhMYB402ImTI/+luLrU4k8qMsITqm32ghEzMQ9FWqX6X1N?=
+ =?us-ascii?Q?Q+ePJAXbrrpcGmPrk7s/aT2RYn4dCzdw5+euvTo11cno05Va41/jGqImcORl?=
+ =?us-ascii?Q?27F7kNR6Kk3K6IzAXTbsJPhQ33DEZC/q0O6ZAgg84kzK1Sa/LZOG0NKiYpIO?=
+ =?us-ascii?Q?qXgjSdFjD5+MNs3NgjRgfN5a8nJ82kD4duX1iyyeosNSDKsgu1jBDYPYEwBC?=
+ =?us-ascii?Q?lT5M5kyeSQNI45AYBqshuKbopTePpk3SJU4IjCs6URnjUHWQ4ww3Hz91fxgG?=
+ =?us-ascii?Q?g50HsCEMv98atrMerqseBDnjPpfns08aZTRePwmIiYSRs4ywii4pOns6hhjM?=
+ =?us-ascii?Q?LAsdwIqnrQqc8uD/uH0dod22Zlvud/O3BdTkrPk5RWDPC6kOIggtcEIgp+YH?=
+ =?us-ascii?Q?kh291u11gDcp1rI2Ghm2TpdPQsbnid1rABHplmdOVoyIEfuyq0g4VxKVagt9?=
+ =?us-ascii?Q?siShpOeyGMxfQFACPnLnrXX5HUMVN8Xv0HCgJC38TRnfbuEZ1+Oi/GgMqbYb?=
+ =?us-ascii?Q?8TNHZTrN/xHqMd33U88aZhnG4fLMJmtDTzbUdEbF+JkRwxSre/GpwN+VAUlU?=
+ =?us-ascii?Q?TEPLRWlgV0CPYeK9kJA8k9Sv50WcXh9RmKmAOuM0zvhDQmf+aqK15h3VCXaj?=
+ =?us-ascii?Q?LIQ/JApy68CWSX4u1plcf9O/uThqqBqdG8RH16SWUzksvMzGGCUs9N4mOci9?=
+ =?us-ascii?Q?LRAX6oFzGse8Gta62/H6AGNHKEGtQWRy9zKvS3w6Qz7PzDZHWA3RrFv+x8Io?=
+ =?us-ascii?Q?5ApEodbIRNUJSHr8elIIh4SmEGTyYFOc5AO0eXD+Y8giSWsVij4fvSCJHfmq?=
+ =?us-ascii?Q?MVEFwwl6GdaLmUMgVbZm48EiQge9sCSPUJE1V+TOntE0GWe1jcKiwZ60sNzl?=
+ =?us-ascii?Q?7x1bZk1omQXqPUsf/HCzhQoaP+/w1POdlak27f/12ekviDtm3koz9qN/TJ6c?=
+ =?us-ascii?Q?7SCpwpEFRL2L4BUYS9rur/huPtBGW5L/vTTKfhk4Fag4oYQkJl0LewuUdkzo?=
+ =?us-ascii?Q?9YFMMQxjfgWFMYBstqIGQnyntxIjQFB36fNTX0p90xca3xm5hXCmalMkNs/7?=
+ =?us-ascii?Q?f7bEOTeJmO+hEDs6RQ10iOsfws9KbgHhoWAb?=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11147.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(366016)(38070700021)(7053199007);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9080.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(19092799006)(38070700021);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?dE1UbXdYeGl2NHRkTU1JdVdjK1lkOVBWVGxPRmd2MDFCZkVKT2RQTzdtM2U0?=
- =?utf-8?B?VkVjRmlxdU44OGlacDMvSjljNE1LQk8wc2k5L01vd2QyN1lVbTlGWDVoVVI5?=
- =?utf-8?B?K2R2aHNXci9Dei9TeW13emIxZEFlS0F6SWVKNTB4UkZoTFBXSkZHaWppV3RO?=
- =?utf-8?B?NzJwR29wU2RuQXVLc2RvZnAvZmMxSVphRDVNMUlUVUZpcllvdUV0M3NabGxT?=
- =?utf-8?B?Q0JOOHZlK1p6VjgzcXpmUGpHKzR3M1M2TUo3UzJqYzR3UmFuYmw0UHJSR3pL?=
- =?utf-8?B?a1N5OEo3LzhIdFh5YWdQb3NHM0M4UGNKblZmNUtCUGtGUUszSkRQQkRGMnd6?=
- =?utf-8?B?ejljMlJndGYycmRydS9YS1pRcXFiaWNoS2VGZFd0d2o2VGJCLzE5TUdIMHh2?=
- =?utf-8?B?UnBiVTF0cnpoVU1iZ1FjZzZabFlKUXJVdzBHU1ZOMTZTRmJHNjZLaTdyaGg3?=
- =?utf-8?B?WlNaM08wTEJYcEdRRzIxWHlBM0hNMENPMWxZaU5aTkZ4WGFoZ0w1WkRSNUor?=
- =?utf-8?B?VzFROVdmOXJWd3p0R201dVBKblp3V2srSmpLUUlwYXVnSHVKWk5HbHVJY29v?=
- =?utf-8?B?Y1RJNVJqcWREWGFpTFB4TUxkUS9reksvam1haGc3dUlZTmVaaGJKWithYXE5?=
- =?utf-8?B?dVFyR3VoMXhOb01tMjdxdVVBaEZMSmxtUHg5b2I5VGJOZ1hJZVJlZytSU1hw?=
- =?utf-8?B?TXdGNmZ1cEw2QVNCVGxzYWR5eU5BUWhvMTJjaTJlRW5MdnlGQWFUTVMxR2FY?=
- =?utf-8?B?SFh6aU4wVkNvS0ZwN2g3bmtNdEd2Z1RKTVFRd2Vwek8vQUllUXR5RjdVUzQz?=
- =?utf-8?B?bE9qbFJjZmI4Vlc0MmRPNzA4Ri9rbE1JYWRQdnFDVDJKQXVpWURUV3RNMFdh?=
- =?utf-8?B?bU5Vb01FdXNvSEFLYXQzbnI1Nkx6eTFQclpqeTkxVXEwbEpjZEVnclNjcXdm?=
- =?utf-8?B?RDNZWk9WbkpmNjRJMEpVZFFtUFZjaGtnY3lMdnZES0Z0a2RRaS8wbEVDeHE3?=
- =?utf-8?B?Zm9kVDlNUmt5Y0RTalgyMm5WckM5dTB5NXhsL1FqNnRIR1R3cWlxeW8xbi9r?=
- =?utf-8?B?VUpDSjVxK1hpdnNIQk1BcFRoc1MvQWRYSnNCTS8vRWtLWm5acyt4V2FFVTB3?=
- =?utf-8?B?RUZJcGRNZzZqbGVlR1F0cEJTamQvZGlwKzRNa2FPOGlvSkU0eFN5ZHh5amhB?=
- =?utf-8?B?Skx6aVVWS0VURUNtUHhycTg1RUx3ZHlzYVhZQ1kvMndpdy9JNW9EZ2NyYXlN?=
- =?utf-8?B?TjVxSVR4Z0t4Y004V1lpOFV5ZEZVeVpoOFRZbVVqSXNXa0dMS21uNFllTDcy?=
- =?utf-8?B?MGd4TVIrR1V2MCswaElrVEgyNUlwNGR2cG9GOHhmbWd1Q0xuUDlPZmV3Ykw2?=
- =?utf-8?B?UlY5M1FGMnhXMElOaVEvVXBiQTRIamI2bVRZM2h0U1g2bmFaSUJ3OHlUQVI0?=
- =?utf-8?B?a1k3UjdUTURNa204Sk9yUC9XYUhXWjRjWXZWaWhoeEtYNGkzWWFHWTh6dDJl?=
- =?utf-8?B?TitWNGlTS0pNNnJtKzdOWnVLc2NUWmxYNnovOHhUVjBWcTVqTmQwS2hRd2l6?=
- =?utf-8?B?cWVENzRLbyttdWxETFY0Z2JOQzhQY1c1ZEFEZWFYaWVreW82VGZrbEd1ZzhF?=
- =?utf-8?B?S2lqZ1ZzY2FNVVRUNzZhRVQ1MDBHTDV3T3VYN2RxWGdGZERyQnZpYUwyRm42?=
- =?utf-8?B?MWtENlFicVU2WTRYSmhDQWtmTDd3aDVmbm5NZHJNRzdyam5NUXc3MHpOTmVK?=
- =?utf-8?B?OTM3ZmpQZEJQRGpwZCs3VlI1U3dsbk1FVGJHT3BEd1dEUDNZTGpsSXFlM3Iz?=
- =?utf-8?B?ZTNoblNUbUFyNmc2dXdxRERHL3NFM09FbkxvNlNvZVVLbSs2bWlrS2RFQ1Q0?=
- =?utf-8?B?QytNdXRMeEI1SnVzQ0ljcVhUNGllVjVQMVVSZXdxMm52OUF3V0lzYTFLUjBZ?=
- =?utf-8?B?c1JxRU9Ta1BqTjc4OHYvTHJQTko0RGJ0cm9jSUZsMy9UelRYZHhMSGNkbFh6?=
- =?utf-8?B?L3o0YXJNZDlURkVubkp4TVpBeGFubUJvN2N1YUpoRmVLajJrZ09ydzZHMk8w?=
- =?utf-8?B?WkJuaUpIZFRDU09XcEpsNnZQTWwyNVZuditTbDB6R1o4YzB4NjJTZ29mUEls?=
- =?utf-8?Q?WN9xda3Qkfs1V0wLwNHjy8sB+?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ =?us-ascii?Q?e3MeoMNVWbKom28fVm7sIOyES0VTSumVzXYRel8GGftRetGRhGFHvLnhK5r0?=
+ =?us-ascii?Q?E+YT1SALBFo9oc2kC0yCJZJsqmRHbUNGZnJC+B84hgvubRnzosmMVCPo3bPw?=
+ =?us-ascii?Q?40mqWh8BAaRs8Yr3TBrsZEkZdeoqDdMHbR6XwS51lPB3kagbh7Po2D4d9Jol?=
+ =?us-ascii?Q?lHtnWJ4qTO0VHxqHbODVvuXs/AxxlNT/+nELlqrMKcLeE1JgTAiMkQQVRoX6?=
+ =?us-ascii?Q?zARSvpk7B4fod3fb7awDjo6Ok8pecHP/3K7OFunqwyrLxql5GWNgISXgWuBf?=
+ =?us-ascii?Q?56AhCx+R61wgD8PQNzTkTozoRm1glAjUJr0XRRuay6nSuxWIhCK/MGQztwTG?=
+ =?us-ascii?Q?adObUMSx0f1SHwtrbXxt7Fmnu75RBPK1ZAPI0efoCPZ155X1mL5ax+Wzz2JE?=
+ =?us-ascii?Q?ZasriqqPncrBP+igDhKoOkUILpfD+3lVwwWXAQZogy2su8rIvfOZR8ZTii7A?=
+ =?us-ascii?Q?s08y1LaITUcxmmlb3R4Zg8LX/AH/eBHpExiAh1CTOImXYIjyxnBQ5blyjJt2?=
+ =?us-ascii?Q?aKEOfdTTgJi6QVCFipiAN8Yg8RO2+VE4VEX7Vhl5zjDZedm3Xj+BOJA8bNiw?=
+ =?us-ascii?Q?rJmyVepsu2sOD8SKa3YbVphdCjQSX1LqPWRBYN9pN59LCD5AHodjDrQl4X7+?=
+ =?us-ascii?Q?QNl738Tj/VmH5FsDCccwIP0uDt5vao7H7VOIAN7kGDf2BrmGav6teX+gpS2+?=
+ =?us-ascii?Q?bTVIt+3qd2ZMVMRE8grxXiHoUT0OY4YTkCWLSvhhMzypWgDNk/zFXFePyGbn?=
+ =?us-ascii?Q?teFgwMOlj+/ob3raZ1Lbv4cxNyy9BhsB+dWC0u2ZZbZnQWVESkGhufarG0b0?=
+ =?us-ascii?Q?Na2Mcebblc2NiGoL7f1F6PYnN+RqyeT7eKAbXwLBYQG0FJHxjVHcNp2bcoWW?=
+ =?us-ascii?Q?/ZmSYlhXHvyJjz5/PItcbuouxYOZJu3oOGv0ax9VoeHOHGPD0knd3gUb4jNF?=
+ =?us-ascii?Q?kh+FiWB/UGrY8wGXTt6EhKR9eg6pBgBm1/wB9OlV9VyfbKlxkMFR+THNbyhW?=
+ =?us-ascii?Q?griCXiQ/2nlDDkbn2IGl80h7/jftfUn8MDPNB+W4o2MJIIUFyOohGR94SI/K?=
+ =?us-ascii?Q?B7YehcLrO3ZTjyyt0hE1Jgvscs6p2yx0ntlqaS+xAmrX3gx9lsHRuWpN1vk/?=
+ =?us-ascii?Q?XlHmUd2nviPW0f5yATnXBjif9dnO82iz78/1O+VmawWyFnGGnCLg3r/U3n/J?=
+ =?us-ascii?Q?cq/3ahs1mVhg8kk+4vtqfX6/JGRsSpNwCuvytmz9JfTDAAND38td1YMj6hn0?=
+ =?us-ascii?Q?h6+QterjGBc046PQVxTh72e76NIjBYnArgQCg4Fg4WlxADr+g50G58K9h8z6?=
+ =?us-ascii?Q?PkWwic3ap66a7sOWMdPJHXEkPI/DVpczjE9ZGLcp2WfoYdzdxqQnD2/jvRWd?=
+ =?us-ascii?Q?/FXF6YbDsuMabwNadRNu2TcP8OKVJJJiT7+zz3jnDjMt7EW2HwHbdXhTMYga?=
+ =?us-ascii?Q?f55pWvvNq/vFv39yxw8rOT6e6axr8GDV22oVFFqK63XxI1naDHUlNnZkMFUo?=
+ =?us-ascii?Q?/UePxVM5+HR87STrC6999g/Ck4StJkGsprIiy32HA882pY+0nOkzMGdzbrfg?=
+ =?us-ascii?Q?/VBD3QppmqSTaxRd254=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -162,93 +139,534 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11147.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a32fec06-a2a0-458a-dae9-08de27e14af0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Nov 2025 03:02:51.1299
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9080.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e016f6db-20c6-4445-1fb8-08de27e2b407
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Nov 2025 03:12:56.9494
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: eSPNRhvAtgFZzKsV9UqsGIHcqgmFWBc0qc01np11I+gstOthRzpQqX/LioOUEJXDwHDxC68fnjnh+AIYHZm29g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9318
+X-MS-Exchange-CrossTenant-userprincipalname: A40vBmOLVXUNAOxDlJ/xrszpJJqu07KzFBfJN5gw+kbV3GQ3xDuXhj/Lrcnf8ZlpNkmt9wHVF6cQb7MDwhvSRA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8735
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogRnJhbmsgTGkgPGZyYW5r
-LmxpQG54cC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBOb3ZlbWJlciAyMCwgMjAyNSAxMjowNiBB
-TQ0KPiBUbzogQ2FybG9zIFNvbmcgPGNhcmxvcy5zb25nQG54cC5jb20+DQo+IENjOiBBaXNoZW5n
-IERvbmcgPGFpc2hlbmcuZG9uZ0BueHAuY29tPjsgYW5kaS5zaHl0aUBrZXJuZWwub3JnOw0KPiBz
-aGF3bmd1b0BrZXJuZWwub3JnOyBzLmhhdWVyQHBlbmd1dHJvbml4LmRlOyBrZXJuZWxAcGVuZ3V0
-cm9uaXguZGU7DQo+IGZlc3RldmFtQGdtYWlsLmNvbTsgbGludXgtaTJjQHZnZXIua2VybmVsLm9y
-ZzsgaW14QGxpc3RzLmxpbnV4LmRldjsNCj4gbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRl
-YWQub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUEFU
-Q0hdIGkyYzogaW14LWxwaTJjOiBjaGFuZ2UgdG8gUElPIG1vZGUgaW4gc3lzdGVtLXdpZGUNCj4g
-c3VzcGVuZC9yZXN1bWUgcHJvZ3Jlc3MNCj4gDQo+IE9uIFdlZCwgTm92IDE5LCAyMDI1IGF0IDA2
-OjAyOjQ1QU0gKzAwMDAsIENhcmxvcyBTb25nIHdyb3RlOg0KPiA+DQo+ID4NCj4gPiA+IC0tLS0t
-T3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBGcmFuayBMaSA8ZnJhbmsubGlAbnhw
-LmNvbT4NCj4gPiA+IFNlbnQ6IFR1ZXNkYXksIE5vdmVtYmVyIDE4LCAyMDI1IDExOjU4IFBNDQo+
-ID4gPiBUbzogQ2FybG9zIFNvbmcgPGNhcmxvcy5zb25nQG54cC5jb20+DQo+ID4gPiBDYzogQWlz
-aGVuZyBEb25nIDxhaXNoZW5nLmRvbmdAbnhwLmNvbT47IGFuZGkuc2h5dGlAa2VybmVsLm9yZzsN
-Cj4gPiA+IHNoYXduZ3VvQGtlcm5lbC5vcmc7IHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU7IGtlcm5l
-bEBwZW5ndXRyb25peC5kZTsNCj4gPiA+IGZlc3RldmFtQGdtYWlsLmNvbTsgbGludXgtaTJjQHZn
-ZXIua2VybmVsLm9yZzsgaW14QGxpc3RzLmxpbnV4LmRldjsNCj4gPiA+IGxpbnV4LWFybS1rZXJu
-ZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiA+
-ID4gU3ViamVjdDogUmU6IFtQQVRDSF0gaTJjOiBpbXgtbHBpMmM6IGNoYW5nZSB0byBQSU8gbW9k
-ZSBpbg0KPiA+ID4gc3lzdGVtLXdpZGUgc3VzcGVuZC9yZXN1bWUgcHJvZ3Jlc3MNCj4gPiA+DQo+
-ID4gPiBPbiBUdWUsIE5vdiAxOCwgMjAyNSBhdCAwMzoxODozN1BNICswODAwLCBDYXJsb3MgU29u
-ZyB3cm90ZToNCj4gPiA+ID4gSWYgYSBzeXN0ZW0td2lkZSBzdXNwZW5kIG9yIHJlc3VtZSB0cmFu
-c2l0aW9uIGlzIGluIHByb2dyZXNzLg0KPiA+ID4gPiBMUEkyQyBzaG91bGQgdXNlIFBJTyB0byB0
-cmFuc2ZlciBkYXRhIG5vdCBETUEgdG8gYXZvaWQgaXNzdWUNCj4gPiA+ID4gY2F1c2VkIGJ5IG5v
-dCByZWFkeSBETUEgSFcgcmVzb3VyY2UuDQo+ID4gPg0KPiA+ID4gQ3VycmVudGx5IHRoZXJlIGlz
-IG5vIGRldmljZSBsaW5rIGJldHdlZW4gdGhlIERNQSBlbmdpbmUgYW5kIGl0cyBETUENCj4gPiA+
-IGNvbnN1bWVyLCB3aGljaCBhbGxvd3MgdGhlIERNQSBlbmdpbmUgdG8gc3VzcGVuZCBiZWZvcmUg
-dGhlIGNvbnN1bWVyLg0KPiA+ID4NCj4gPiA+IFRvIGF2b2lkIHRoaXMsIHN3aXRjaCB0byBQSU8g
-bW9kZSBpbnN0ZWFkIG9mIERNQSBkdXJpbmcNCj4gPiA+IHN1c3BlbmQvcmVzdW1lIHNvIHRoZSB0
-cmFuc2ZlciBkb2VzIG5vdCByZWx5IG9uIHRoZSBETUEgZW5naW5l4oCZcyBzdGF0ZS4NCj4gPiA+
-DQo+ID4gPiBOb3RlczogSSBzdXBwb3NlIERNQSBlbmdpbmUgc3VzcGVuZCBiZWZvcmUgTFBJMkMu
-IERvIHlvdSBtZWV0IHRoaXMNCj4gPiA+IG9yIG90aGVyIHJlYXNvbiBjYXVzZSBETUEgSFcgcmVz
-b3VyY2UgcmVhZHkuDQo+ID4gPg0KPiA+ID4gTm90IHN1cmUgaWYgYmVsb3cNCj4gPiA+IGh0dHBz
-Oi8vbG9yZS5rZXJuZWwub3JnL2RtYWVuZ2luZS8yMDI1MDkxMi12Ni0xNi10b3BpYy1kbWEtZGV2
-bGluay12DQo+ID4gPiAxLTAtNGRlDQo+ID4gPiBiYzJmYmY5MDFAcGVuZ3V0cm9uaXguZGUvDQo+
-ID4gPiBjYW4gZml4IHlvdXIgcHJvYmxlbS4NCj4gPiA+DQo+ID4gPiBBbnl3YXksIEkgdGhpbmsg
-aXQgaXMgZmluZSB0byB1c2UgUElPIGF0IHN1c3BlbmQgdG8gcmVkdWNlDQo+ID4gPiBkZXBlbmRl
-bmNlLiBCdXQgd2UgbmVlZCBrbm93IHdoeSBETUEgSFcgaXMgbm90IHJlYWR5Lg0KPiA+ID4NCj4g
-PiA+IEZyYW5rDQo+ID4gPg0KPiA+IEhpLCBGcmFuaw0KPiA+DQo+ID4gRURNQSByZXN1bWUgaXMg
-aW4gZWFybHkgc3RhZ2UgYW5kIHN1c3BlbmQgaXMgaW4gbGF0ZSBzdGFnZSwgYnV0IExQSTJDIHJl
-c3VtZQ0KPiBhbmQgc3VzcGVuZCBhcmUgaW4gTk9JUlEgc3RhZ2UuDQo+ID4gU28gTFBJMkMgcmVz
-b3VyY2UgYmVjb21lIHJlYWR5IGVhcmxpZXIgdGhhbiBFRE1BLiBXaGVuIElSUSBlbmFibGVkLA0K
-PiA+IGltbWVkaWF0ZWx5IHNsYXZlIHdpbGwgdHJpZ2dlciBJMkMgdG8gcmVhZCBkYXRhIGFuZCB0
-aGUgbGVuZ3RoIG1lZXRzDQo+ID4gdGhlIHJlcXVpcmVtZW50cyBmb3IgRE1BIHVzYWdlLCB0aGUg
-RE1BIHdpbGwgYmUgbmVlZGVkIGF0IHRoaXMgdGltZS4gV2l0aGluDQo+IGEgdmVyeSBzbWFsbCB0
-aW1lIHdpbmRvdywgRURNQSBpcyBzdGlsbCBub3QgcmVzdW1lZC4gVGhlIHJvb3QgY2F1c2UgaXMg
-ZnJvbQ0KPiBoZXJlLg0KPiANCj4gUHV0IHRoZXNlIGluZm9ybWF0aW9uIHRvIGNvbW1pdCBtZXNz
-YWdlLg0KPiANCj4gRnJhbmsNCj4gDQpXaWxsIGRvLiBUaGFuayB5b3UuDQoNCkNhcmxvcw0KPiA+
-DQo+ID4gZGV2IGxpbmsgbWF5YmUgdXNlZnVsIGluIHRoZSBzYW1lIFBNIHN0YWdlLiBCdXQgaW4g
-ZGlmZmVyZW50IHN0YWdlLCBJIGRvbuKAmXQNCj4ga25vdyBpZiBpdCBjYW4gaGVscCBzb21lLg0K
-PiA+IE1heWJlIGl0IGlzIGJldHRlciB0aGF0IERNQSBtb3ZlIFBNIHN0YWdlIHRvIE5PSVJRLCBi
-dXQgbm93IHRoZXJlIGlzDQo+ID4gbm8gZGV2IGxpbmsgZm9yIEVETUEsIHRoZSByZXN1bWUvc3Vz
-cGVuZCBzZXF1ZW5jZSBiZXR3ZWVuIExQSTJDIGFuZA0KPiBFRE1BIGluIE5PSVJRIHN0aWxsIGNh
-bm5vdCBiZSBjb21wbGV0ZWx5IGd1YXJhbnRlZWQuDQo+ID4NCj4gPiBJIHRvdGFsbHkgYWdyZWUg
-eW91ciBwb2ludDogdXNlIFBJTyB0byByZWR1Y2UgZGVwZW5kZW5jZS4NCj4gPg0KPiA+IElmIHNv
-bWVkYXkgRURNQSBzdXBwb3J0IGRldiBsaW5rIGFuZCBtb3ZlIFBNIGNhbGxiYWNrIHRvIE5PSVJR
-IHN0YWdlIGJvdGgsDQo+IHRoaXMgcGF0Y2ggY2FuIGJlIHJldmVydGVkIEkgdGhpbmsuDQo+ID4N
-Cj4gPiBDYXJsb3MNCj4gPiA+ID4NCj4gPiA+ID4gRml4ZXM6IGEwOWM4YjNmOTA0NyAoImkyYzog
-aW14LWxwaTJjOiBhZGQgZURNQSBtb2RlIHN1cHBvcnQgZm9yDQo+ID4gPiA+IExQSTJDIikNCj4g
-PiA+ID4gU2lnbmVkLW9mZi1ieTogQ2FybG9zIFNvbmcgPGNhcmxvcy5zb25nQG54cC5jb20+DQo+
-ID4gPiA+IC0tLQ0KPiA+ID4gPiAgZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1pbXgtbHBpMmMuYyB8
-IDcgKysrKysrKw0KPiA+ID4gPiAgMSBmaWxlIGNoYW5nZWQsIDcgaW5zZXJ0aW9ucygrKQ0KPiA+
-ID4gPg0KPiA+ID4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9pMmMvYnVzc2VzL2kyYy1pbXgtbHBp
-MmMuYw0KPiA+ID4gPiBiL2RyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtaW14LWxwaTJjLmMNCj4gPiA+
-ID4gaW5kZXggMmEwOTYyYTBiNDQxLi41MDUwZTE0YTk5MTkgMTAwNjQ0DQo+ID4gPiA+IC0tLSBh
-L2RyaXZlcnMvaTJjL2J1c3Nlcy9pMmMtaW14LWxwaTJjLmMNCj4gPiA+ID4gKysrIGIvZHJpdmVy
-cy9pMmMvYnVzc2VzL2kyYy1pbXgtbHBpMmMuYw0KPiA+ID4gPiBAQCAtNTkyLDYgKzU5MiwxMyBA
-QCBzdGF0aWMgYm9vbCBpc191c2VfZG1hKHN0cnVjdA0KPiA+ID4gPiBscGkyY19pbXhfc3RydWN0
-DQo+ID4gPiAqbHBpMmNfaW14LCBzdHJ1Y3QgaTJjX21zZyAqbXNnKQ0KPiA+ID4gPiAgCWlmICgh
-bHBpMmNfaW14LT5jYW5fdXNlX2RtYSkNCj4gPiA+ID4gIAkJcmV0dXJuIGZhbHNlOw0KPiA+ID4g
-Pg0KPiA+ID4gPiArCS8qDQo+ID4gPiA+ICsJICogV2hlbiBzeXN0ZW0gaXMgaW4gc3VzcGVuZCBw
-cm9jZXNzLiBMUEkyQyBzaG91bGQgdXNlIFBJTyB0bw0KPiA+ID4gPiArdHJhbnNmZXINCj4gPiA+
-IGRhdGEgdG8NCj4gPiA+ID4gKwkgKiBhdm9pZCBpc3N1ZSBjYXVzZWQgYnkgbm90IHJlYWR5IERN
-QSBIVyByZXNvdXJjZS4NCj4gPiA+ID4gKwkgKi8NCj4gPiA+ID4gKwlpZiAocG1fc3VzcGVuZF9p
-bl9wcm9ncmVzcygpKQ0KPiA+ID4gPiArCQlyZXR1cm4gZmFsc2U7DQo+ID4gPiA+ICsNCj4gPiA+
-ID4gIAkvKg0KPiA+ID4gPiAgCSAqIFdoZW4gdGhlIGxlbmd0aCBvZiBkYXRhIGlzIGxlc3MgdGhh
-biBJMkNfRE1BX1RIUkVTSE9MRCwNCj4gPiA+ID4gIAkgKiBjcHUgbW9kZSBpcyB1c2VkIGRpcmVj
-dGx5IHRvIGF2b2lkIGxvdyBwZXJmb3JtYW5jZS4NCj4gPiA+ID4gLS0NCj4gPiA+ID4gMi4zNC4x
-DQo+ID4gPiA+DQo=
+Hi Frank
+
+> -----Original Message-----
+> From: Frank Li <frank.li@nxp.com>
+> Sent: Saturday, November 8, 2025 12:48 AM
+> To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>; G.N. Zhou
+> <guoniu.zhou@nxp.com>
+> Cc: linux-media@vger.kernel.org; Rui Miguel Silva <rmfrfs@gmail.com>; Mar=
+tin
+> Kepplinger <martink@posteo.de>; Purism Kernel Team <kernel@puri.sm>;
+> Pengutronix Kernel Team <kernel@pengutronix.de>; imx@lists.linux.dev;
+> Stefan Klug <stefan.klug@ideasonboard.com>; Sakari Ailus <sakari.ailus@ik=
+i.fi>
+> Subject: Re: [PATCH v1 6/6] media: imx-mipi-csis: Add multi-channel suppo=
+rt
+>=20
+> On Fri, Nov 07, 2025 at 03:58:13AM +0200, Laurent Pinchart wrote:
+> > CSIS output channels can be used to demultiplex CSI-2 virtual
+> > channels, and likely data types. While this feature is not clearly
+> > documented, tests seem to indicate that each output channel includes
+> > filters to select which VC and DT to output, with the filtering mode
+> > being configured globally. Four modes are supported:
+> >
+> > - No filtering: all VCs and DTs are output on channel 0
+> > - VC filtering: each channel filters out all but the configured VC, the
+> >   DT is ignored
+> > - DT filtering: each channel filters out all but the configured DT, the
+> >   VC is ignored
+> > - DT and VC filtering: each channel filters out all but the configured
+> >   VC and DT
+> >
+> > Expose this feature to userspace through the streams API. The routing
+> > table is expanded to support multiple routes, with the source stream
+> > ID mapping to the output channel number. As the VC and DT values
+> > corresponding to a stream are not known until they get queried from
+> > the source, validation of the routes is postponed to stream enable
+> > time in the mipi_csis_calculate_params() function that extract the
+> > configuration of each output channel from the routing table. The
+> > validation ensures that, when filtering is enabled, each output
+> > channel is configured to output exactly one VC and one DT.
+> >
+> > When multiple streams are routed to the same output channel, the
+> > output heights is the sum of the heights of all the streams. This is
+> > implemented when propagating formats frim sink to source pads.
+> >
+> > Due to how the SoC glues together IP cores, multi-output operation in
+> > the i.MX8MP is used only for the purpose of capturing multi-exposure
+> > or multi-gain HDR streams from a camera sensor over different CSI-2
+> > VCs and transmitting them to the ISP. The streams are stitched
+> > together by the ISP and can't be captured individually. This has
+> > allowed testing VC filtering but not DT filtering. For that reason,
+> > multi-channel support is currently limited to VC filtering only.
+> >
+> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+>=20
+> Add guoniu.zhou@nxp.com, patch itself look good, but I am not famillar wi=
+th
+> internal logic, Guoniu, can you help check it?
+
+I searched the "Samsung MIPI_CSI-2_V3.6.3.1_User_Guide" and checked all
+descriptions about its interleave_mode. There is no details about the inter=
+nal
+logic but according to the info in the User_Guide, I think Laurent's unders=
+tanding
+is correct.
+
+>=20
+> Frank
+>=20
+> > ---
+> >  drivers/media/platform/nxp/imx-mipi-csis.c | 264
+> > ++++++++++++++++++---
+> >  1 file changed, 234 insertions(+), 30 deletions(-)
+> >
+> > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c
+> > b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > index d8c11223ed0a..b5c7ab7c541c 100644
+> > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > @@ -12,6 +12,7 @@
+> >   *
+> >   */
+> >
+> > +#include <linux/bitops.h>
+> >  #include <linux/clk.h>
+> >  #include <linux/debugfs.h>
+> >  #include <linux/delay.h>
+> > @@ -334,7 +335,8 @@ struct mipi_csis_info {  };
+> >
+> >  struct mipi_csis_channel_params {
+> > -	unsigned int data_type;
+> > +	u16 vc_mask;
+> > +	u16 data_type;
+> >  	unsigned int width;
+> >  	unsigned int height;
+> >  };
+> > @@ -343,6 +345,7 @@ struct mipi_csis_params {
+> >  	u32 hs_settle;
+> >  	u32 clk_settle;
+> >
+> > +	bool interleave_vc;
+> >  	struct mipi_csis_channel_params
+> channels[MIPI_CSIS_MAX_CHANNELS];
+> > };
+> >
+> > @@ -626,7 +629,7 @@ static void mipi_csis_set_channel_params(struct
+> mipi_csis_device *csis,
+> >  		val |=3D MIPI_CSIS_ISPCFG_PIXEL_MODE_DUAL;
+> >
+> >  	val |=3D MIPI_CSIS_ISPCFG_DATAFORMAT(params->data_type);
+> > -	val |=3D MIPI_CSIS_ISPCFG_VIRTUAL_CHANNEL(0);
+> > +	val |=3D MIPI_CSIS_ISPCFG_VIRTUAL_CHANNEL(ffs(params->vc_mask) -
+> 1);
+> >
+> >  	mipi_csis_write(csis, MIPI_CSIS_ISP_CONFIG_CH(channel), val);
+> >
+> > @@ -645,20 +648,148 @@ static int mipi_csis_calculate_params(struct
+> mipi_csis_device *csis,
+> >  				      const struct v4l2_subdev_state *state,
+> >  				      struct mipi_csis_params *params)  {
+> > -	const struct v4l2_mbus_framefmt *format;
+> > -	const struct csis_pix_format *csis_fmt;
+> > +	const struct csis_pix_format *csis_fmt =3D NULL;
+> > +	struct v4l2_subdev_route *route;
+> > +	struct v4l2_mbus_frame_desc fd;
+> >  	s64 link_freq;
+> >  	u32 lane_rate;
+> > +	int ret;
+> >
+> > -	format =3D v4l2_subdev_state_get_format(state, CSIS_PAD_SINK);
+> > -	csis_fmt =3D find_csis_format(format->code);
+> > +	memset(params, 0, sizeof(*params));
+> >
+> > -	params->channels[0].data_type =3D csis_fmt->data_type;
+> > -	params->channels[0].width =3D format->width;
+> > -	params->channels[0].height =3D format->height;
+> > +	/*
+> > +	 * Translate routing configuration to output channels parameters.
+> > +	 *
+> > +	 * The CSIS VC and DT handling is poorly documented. The device
+> supports
+> > +	 * a global "interleave mode" parameter in the CMN_CTRL register that
+> > +	 * can be set to "VC and DT", "VC only", "DT only" or "CH0 only, no d=
+ata
+> > +	 * interleave". The ISP_CONFIG registers specify DT and VC values per
+> > +	 * output channel.
+> > +	 *
+> > +	 * This can be interpreted as per-channel VC and DT filters, with the
+> > +	 * filter type being configured globally and the VC and DT configured
+> > +	 * per-channel. VC tests seem to corroborate this interpretation, but=
+ DT
+> > +	 * tests are yet to be performed.
+> > +	 */
+> > +	ret =3D v4l2_subdev_call(csis->source.sd, pad, get_frame_desc,
+> > +			       csis->source.pad->index, &fd);
+> > +	if (ret && ret !=3D -ENOIOCTLCMD) {
+> > +		dev_err(csis->dev, "Failed to get source frame
+> descriptors: %d\n", ret);
+> > +		return ret;
+> > +	}
+> >
+> > -	/* Calculate the line rate from the pixel rate. */
+> > -	link_freq =3D v4l2_get_link_freq(csis->source.pad, csis_fmt->width,
+> > +	if (ret =3D=3D -ENOIOCTLCMD) {
+> > +		const struct v4l2_mbus_framefmt *format;
+> > +
+> > +		/*
+> > +		 * The source doesn't report frame descriptors. Assume a single
+> > +		 * stream on VC0.
+> > +		 */
+> > +		format =3D v4l2_subdev_state_get_format(state, CSIS_PAD_SINK,
+> 0);
+> > +		if (!format)
+> > +			return -EPIPE;
+> > +
+> > +		csis_fmt =3D find_csis_format(format->code);
+> > +
+> > +		fd.type =3D V4L2_MBUS_FRAME_DESC_TYPE_CSI2;
+> > +		fd.num_entries =3D 1;
+> > +		fd.entry[0].pixelcode =3D format->code;
+> > +		fd.entry[0].bus.csi2.dt =3D csis_fmt->data_type;
+> > +	}
+> > +
+> > +	/*
+> > +	 * Translate sink streams to source streams and fill the channel
+> > +	 * configuration vc_mask and data_type fields.
+> > +	 */
+> > +	for_each_active_route(&state->routing, route) {
+> > +		struct mipi_csis_channel_params *channel =3D
+> > +			&params->channels[route->source_stream];
+> > +		const struct v4l2_mbus_frame_desc_entry *entry =3D NULL;
+> > +
+> > +		/*
+> > +		 * Find the corresponding frame descriptor entry, to get the VC
+> > +		 * and DT for the stream. Multiple entries may match the
+> stream,
+> > +		 * but they have to all report the same VC and DT, so we can
+> > +		 * just use the first matching entry.
+> > +		 */
+> > +		for (unsigned int i =3D 0; i < fd.num_entries; ++i) {
+> > +			if (fd.entry[i].stream =3D=3D route->sink_stream) {
+> > +				entry =3D &fd.entry[i];
+> > +				break;
+> > +			}
+> > +		}
+> > +
+> > +		if (!entry) {
+> > +			dev_dbg(csis->dev, "No frame descriptor for
+> stream %u\n",
+> > +				route->sink_stream);
+> > +			return -EPIPE;
+> > +		}
+> > +
+> > +		/*
+> > +		 * Routing constraint: all streams routed to the same output
+> > +		 * channel need to have the same DT.
+> > +		 */
+> > +		if (channel->data_type &&
+> > +		    channel->data_type !=3D entry->bus.csi2.dt) {
+> > +			dev_dbg(csis->dev,
+> > +				"DT mismatch on channel %u: stream %u DT
+> 0x%02x !=3D 0x%02x\n",
+> > +				route->source_stream, route->sink_stream,
+> > +				entry->bus.csi2.dt, channel->data_type);
+> > +			return -EPIPE;
+> > +		}
+> > +
+> > +		/* Record the VC and DT for the output channel. */
+> > +		channel->vc_mask |=3D BIT(entry->bus.csi2.vc);
+> > +		channel->data_type =3D entry->bus.csi2.dt;
+> > +
+> > +		/*
+> > +		 * If any output channel beside channel 0 is enabled, enable VC
+> > +		 * interleave mode.
+> > +		 */
+> > +		if (route->source_stream > 0)
+> > +			params->interleave_vc =3D true;
+> > +	}
+> > +
+> > +	/*
+> > +	 * Iterate over the enabled output channels to record the width and
+> > +	 * height. Verify that the VC filtering matches the hardware
+> > +	 * constraints.
+> > +	 */
+> > +	for (unsigned int i =3D 0; i < csis->num_channels; ++i) {
+> > +		struct mipi_csis_channel_params *channel =3D &params-
+> >channels[i];
+> > +		const struct v4l2_mbus_framefmt *format;
+> > +
+> > +		if (!channel->vc_mask)
+> > +			continue;
+> > +
+> > +		/*
+> > +		 * In VC interleave mode, each output channel is limited to a
+> > +		 * single VC.
+> > +		 */
+> > +		if (params->interleave_vc && hweight8(channel->vc_mask) !=3D
+> 1) {
+> > +			dev_dbg(csis->dev,
+> > +				"Channel %u must output a single VCs\n", i);
+> > +			return -EPIPE;
+> > +		}
+> > +
+> > +		format =3D v4l2_subdev_state_get_format(state,
+> CSIS_PAD_SOURCE, i);
+> > +		if (!format) {
+> > +			dev_dbg(csis->dev, "No format for source
+> stream %u\n", i);
+> > +			return -EPIPE;
+> > +		}
+> > +
+> > +		channel->width =3D format->width;
+> > +		channel->height =3D format->height;
+> > +	}
+> > +
+> > +	/*
+> > +	 * Calculate the line rate from the pixel rate. If the source support=
+s
+> > +	 * the .get_frame_desc() operation it has to implement the LINK_FREQ
+> > +	 * control, as the link frequency can't be calculated from the pixel
+> > +	 * rate with multiple streams having possibly different data types.
+> > +	 */
+> > +	link_freq =3D v4l2_get_link_freq(csis->source.pad,
+> > +				       csis_fmt ? csis_fmt->width : 0,
+> >  				       csis->bus.num_data_lanes * 2);
+> >  	if (link_freq < 0) {
+> >  		dev_err(csis->dev, "Unable to obtain link frequency: %d\n",
+> @@
+> > -704,6 +835,8 @@ static void mipi_csis_set_params(struct mipi_csis_devi=
+ce
+> *csis,
+> >  				 const struct mipi_csis_params *params)  {
+> >  	int lanes =3D csis->bus.num_data_lanes;
+> > +	u32 cmn_ctrl =3D 0;
+> > +	u32 clk_ctrl =3D 0;
+> >  	u32 val;
+> >
+> >  	val =3D mipi_csis_read(csis, MIPI_CSIS_CMN_CTRL); @@ -714,19 +847,32
+> > @@ static void mipi_csis_set_params(struct mipi_csis_device *csis,
+> >
+> >  	if (csis->info->version =3D=3D MIPI_CSIS_V3_3)
+> >  		val |=3D MIPI_CSIS_CMN_CTRL_INTERLEAVE_MODE_DT;
+> > +	if (params->interleave_vc)
+> > +		val |=3D MIPI_CSIS_CMN_CTRL_INTERLEAVE_MODE_VC;
+> >
+> >  	mipi_csis_write(csis, MIPI_CSIS_CMN_CTRL, val);
+> >
+> > -	mipi_csis_set_channel_params(csis, 0, &params->channels[0]);
+> > +	for (unsigned int i =3D 0; i < csis->num_channels; ++i) {
+> > +		const struct mipi_csis_channel_params *channel =3D
+> > +			&params->channels[i];
+> > +
+> > +		if (!channel->vc_mask)
+> > +			continue;
+> > +
+> > +		mipi_csis_set_channel_params(csis, i, channel);
+> > +
+> > +		cmn_ctrl |=3D MIPI_CSIS_CMN_CTRL_UPDATE_SHADOW(i);
+> > +		clk_ctrl |=3D MIPI_CSIS_CLK_CTRL_CLKGATE_TRAIL(i, 15)
+> > +			 |  MIPI_CSIS_CLK_CTRL_WCLK_SRC(i);
+> > +	}
+> >
+> >  	mipi_csis_write(csis, MIPI_CSIS_DPHY_CMN_CTRL,
+> >  			MIPI_CSIS_DPHY_CMN_CTRL_HSSETTLE(params-
+> >hs_settle) |
+> >  			MIPI_CSIS_DPHY_CMN_CTRL_CLKSETTLE(params-
+> >clk_settle));
+> >
+> >  	val =3D mipi_csis_read(csis, MIPI_CSIS_CLK_CTRL);
+> > -	val |=3D MIPI_CSIS_CLK_CTRL_WCLK_SRC(0);
+> > -	val |=3D MIPI_CSIS_CLK_CTRL_CLKGATE_TRAIL(0, 15);
+> >  	val &=3D ~MIPI_CSIS_CLK_CTRL_CLKGATE_EN_MASK;
+> > +	val |=3D clk_ctrl;
+> >  	mipi_csis_write(csis, MIPI_CSIS_CLK_CTRL, val);
+> >
+> >  	mipi_csis_write(csis, MIPI_CSIS_DPHY_BCTRL_L, @@ -741,8 +887,7
+> @@
+> > static void mipi_csis_set_params(struct mipi_csis_device *csis,
+> >
+> >  	/* Update the shadow register. */
+> >  	val =3D mipi_csis_read(csis, MIPI_CSIS_CMN_CTRL);
+> > -	mipi_csis_write(csis, MIPI_CSIS_CMN_CTRL,
+> > -			val | MIPI_CSIS_CMN_CTRL_UPDATE_SHADOW(0) |
+> > +	mipi_csis_write(csis, MIPI_CSIS_CMN_CTRL, val | cmn_ctrl |
+> >  			MIPI_CSIS_CMN_CTRL_UPDATE_SHADOW_CTRL);
+> >  }
+> >
+> > @@ -1053,7 +1198,7 @@ static int mipi_csis_enum_mbus_code(struct
+> v4l2_subdev *sd,
+> >  		if (code->index > 0)
+> >  			return -EINVAL;
+> >
+> > -		fmt =3D v4l2_subdev_state_get_format(state, code->pad);
+> > +		fmt =3D v4l2_subdev_state_get_format(state, code->pad, code-
+> >stream);
+> >  		code->code =3D fmt->code;
+> >  		return 0;
+> >  	}
+> > @@ -1069,10 +1214,57 @@ static int mipi_csis_enum_mbus_code(struct
+> v4l2_subdev *sd,
+> >  	return 0;
+> >  }
+> >
+> > +static void mipi_csis_propagate_formats(struct mipi_csis_device *csis,
+> > +					struct v4l2_subdev_state *state) {
+> > +	const struct v4l2_mbus_framefmt
+> *channels[MIPI_CSIS_MAX_CHANNELS] =3D { };
+> > +	struct v4l2_subdev_route *route;
+> > +
+> > +	for_each_active_route(&state->routing, route) {
+> > +		const struct csis_pix_format *csis_fmt;
+> > +		struct v4l2_mbus_framefmt *sink_fmt;
+> > +		struct v4l2_mbus_framefmt *src_fmt;
+> > +
+> > +		sink_fmt =3D v4l2_subdev_state_get_format(state,
+> CSIS_PAD_SINK,
+> > +							route->sink_stream);
+> > +		src_fmt =3D v4l2_subdev_state_get_format(state,
+> CSIS_PAD_SOURCE,
+> > +						       route->source_stream);
+> > +
+> > +		csis_fmt =3D find_csis_format(sink_fmt->code);
+> > +
+> > +		/*
+> > +		 * If the output channel corresponding to this source stream
+> > +		 * isn't associated with a sink stream yet, simply propagate the
+> > +		 * format from sink stream to source stream and associate the
+> > +		 * sink stream with the channel.
+> > +		 *
+> > +		 * Otherwise, the sink stream format must match the primary
+> sink
+> > +		 * stream associated with the channel except for the height
+> that
+> > +		 * can be different. We propagate the format from the primary
+> to
+> > +		 * secondary sink stream, and accumulate the height in the
+> > +		 * source stream format.
+> > +		 */
+> > +		if (!channels[route->source_stream]) {
+> > +			*src_fmt =3D *sink_fmt;
+> > +			src_fmt->code =3D csis_fmt->output;
+> > +
+> > +			channels[route->source_stream] =3D sink_fmt;
+> > +		} else {
+> > +			unsigned int height =3D sink_fmt->height;
+> > +
+> > +			*sink_fmt =3D *channels[route->source_stream];
+> > +			sink_fmt->height =3D height;
+> > +
+> > +			src_fmt->height +=3D sink_fmt->height;
+> > +		}
+> > +	}
+> > +}
+> > +
+> >  static int mipi_csis_set_fmt(struct v4l2_subdev *sd,
+> >  			     struct v4l2_subdev_state *state,
+> >  			     struct v4l2_subdev_format *sdformat)  {
+> > +	struct mipi_csis_device *csis =3D sd_to_mipi_csis_device(sd);
+> >  	const struct csis_pix_format *csis_fmt;
+> >  	struct v4l2_mbus_framefmt *fmt;
+> >  	unsigned int align;
+> > @@ -1120,7 +1312,8 @@ static int mipi_csis_set_fmt(struct v4l2_subdev
+> *sd,
+> >  			      &sdformat->format.height, 1,
+> >  			      CSIS_MAX_PIX_HEIGHT, 0, 0);
+> >
+> > -	fmt =3D v4l2_subdev_state_get_format(state, sdformat->pad);
+> > +	fmt =3D v4l2_subdev_state_get_format(state, sdformat->pad,
+> > +					   sdformat->stream);
+> >
+> >  	fmt->code =3D csis_fmt->code;
+> >  	fmt->width =3D sdformat->format.width; @@ -1133,12 +1326,8 @@
+> static
+> > int mipi_csis_set_fmt(struct v4l2_subdev *sd,
+> >
+> >  	sdformat->format =3D *fmt;
+> >
+> > -	/* Propagate the format from sink to source. */
+> > -	fmt =3D v4l2_subdev_state_get_format(state, CSIS_PAD_SOURCE);
+> > -	*fmt =3D sdformat->format;
+> > -
+> > -	/* The format on the source pad might change due to unpacking. */
+> > -	fmt->code =3D csis_fmt->output;
+> > +	/* Propagate the format. */
+> > +	mipi_csis_propagate_formats(csis, state);
+> >
+> >  	return 0;
+> >  }
+> > @@ -1155,7 +1344,7 @@ static int mipi_csis_get_frame_desc(struct
+> v4l2_subdev *sd, unsigned int pad,
+> >  		return -EINVAL;
+> >
+> >  	state =3D v4l2_subdev_lock_and_get_active_state(sd);
+> > -	fmt =3D v4l2_subdev_state_get_format(state, CSIS_PAD_SOURCE);
+> > +	fmt =3D v4l2_subdev_state_get_format(state, CSIS_PAD_SOURCE, 0);
+> >  	csis_fmt =3D find_csis_format(fmt->code);
+> >  	v4l2_subdev_unlock_state(state);
+> >
+> > @@ -1187,6 +1376,8 @@ static int __mipi_csis_set_routing(struct
+> v4l2_subdev *sd,
+> >  		.quantization =3D V4L2_QUANTIZATION_LIM_RANGE,
+> >  		.xfer_func =3D V4L2_XFER_FUNC_SRGB,
+> >  	};
+> > +	struct mipi_csis_device *csis =3D sd_to_mipi_csis_device(sd);
+> > +	struct v4l2_subdev_route *route;
+> >  	int ret;
+> >
+> >  	ret =3D v4l2_subdev_routing_validate(sd, routing, @@ -1194,15
+> +1385,27
+> > @@ static int __mipi_csis_set_routing(struct v4l2_subdev *sd,
+> >  	if (ret)
+> >  		return ret;
+> >
+> > -	/* Only a single route is supported for now. */
+> > -	if (routing->num_routes !=3D 1 ||
+> > -	    !(routing->routes[0].flags & V4L2_SUBDEV_ROUTE_FL_ACTIVE))
+> > -		return -EINVAL;
+> > +	/*
+> > +	 * The source stream identifies the output channel. Validate that it
+> > +	 * does not exceed the number of channels available in the device. Th=
+e
+> > +	 * other routing constraints can't be validated now as they require
+> > +	 * querying the frame descriptor on the sink side, which can only be
+> > +	 * done when enabling streaming.
+> > +	 */
+> > +	for_each_active_route(routing, route) {
+> > +		if (route->source_stream >=3D csis->num_channels) {
+> > +			dev_dbg(csis->dev, "Invalid source stream %u",
+> > +				route->source_stream);
+> > +			return -EINVAL;
+> > +		}
+> > +	}
+> >
+> >  	ret =3D v4l2_subdev_set_routing_with_fmt(sd, state, routing, &format)=
+;
+> >  	if (ret)
+> >  		return ret;
+> >
+> > +	mipi_csis_propagate_formats(csis, state);
+> > +
+> >  	return 0;
+> >  }
+> >
+> > @@ -1554,7 +1757,8 @@ static int mipi_csis_subdev_init(struct
+> mipi_csis_device *csis)
+> >  	snprintf(sd->name, sizeof(sd->name), "csis-%s",
+> >  		 dev_name(csis->dev));
+> >
+> > -	sd->flags |=3D V4L2_SUBDEV_FL_HAS_DEVNODE |
+> V4L2_SUBDEV_FL_HAS_EVENTS;
+> > +	sd->flags |=3D V4L2_SUBDEV_FL_HAS_DEVNODE |
+> V4L2_SUBDEV_FL_HAS_EVENTS
+> > +		  |  V4L2_SUBDEV_FL_STREAMS;
+> >  	sd->ctrl_handler =3D NULL;
+> >
+> >  	sd->entity.function =3D MEDIA_ENT_F_VID_IF_BRIDGE;
+> > --
+> > Regards,
+> >
+> > Laurent Pinchart
+> >
