@@ -1,67 +1,43 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender3-pp-f112.zoho.com (sender3-pp-f112.zoho.com [136.143.184.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA6A2E719B
-	for <imx@lists.linux.dev>; Fri, 21 Nov 2025 09:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763717394; cv=none; b=TDa05TdkckktZ8Q7GoLZmMdd/KCH/WCM/7j+3AyFCQkqmOnDl5kxAVc/Rr3R6n4KQDCw4DF8Q5fOT971r5ijV8OCTSF7tR3TYMJgbqflvmgEOAEeX6LI0hSJhN3NxdahW7jSF3ALIoMNv6pzK3PHwuawTO03+aJpKsHSkf5AvU8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763717394; c=relaxed/simple;
-	bh=uSbYcEm1WCPNJwx8UqPV/i1enY5q8gnMalq46Q7qZW8=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF73343D71
+	for <imx@lists.linux.dev>; Fri, 21 Nov 2025 10:30:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763721023; cv=pass; b=MNcInwLqYo4EYlcmllDaubCOtSwA3yxoOd2BLIe9VXHmdxhsUuUbO85PUnbMbDRYD/YMEXGhOaPFIWLMA0qROW6/EZNkM4HGOuCg6wS96lmk2Gpe5mPK7sR5YK/b8AMIaVfdIqVwWTvHIbIHFrAGo98f0OYMsDK+x5PCp1n+UWc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763721023; c=relaxed/simple;
+	bh=cJNg9CMO2XzFOYNsXRbWPJs+C/51bgw0S6GQMq+gZ9I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SnMlHN37MQEjyrGfEBjljog4iAAVkbdT/oMd+Sq2Hikozxr7rtLwRyph3Ln7uCeM1iGcO3GJT9mX/TALMFJ4kwM4jh62C/0T31vs4DCEhRaqlSOB7E/s8NhuW+BX1jTC7UcMlfvF1jiD3MbqAMulm6h7CPxb4YLmgOdAuftPqxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HpyJQ0h7; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=lL0/EBynbjgASTLw41iXDXDbw7cgHftoAXK1DuPKyjXoeQacvHLS+cgEFJ1h1JdbwJH4NO23+SGXC1PnimgBVrQ04BcSavJ7CywNN89dBxxRhZvnZogjq6jDBUV07Fo8vZ2zp8bL3Up6//fwpIcTgCvQWtWsuaBYEl5yXYT9M8U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b=c13HocQP; arc=pass smtp.client-ip=136.143.184.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HpyJQ0h7"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6408f9cb1dcso2738678a12.3
-        for <imx@lists.linux.dev>; Fri, 21 Nov 2025 01:29:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1763717391; x=1764322191; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Wl2xu8XKN1gPMV9ACQzl23UL67KsRhgGQiSjpamCaq0=;
-        b=HpyJQ0h7Gnmyg5m7GG5ulDJZSVn0ez7epOaYRUYNxqIJykOw2Z+nQ9y7CNGt0QnM6S
-         riyEn6h8/1g4t9FWk1R/oTqYb70m+zU62JHU2qFgDwuDW9pCkU5OSfxyd06HS4HhvxLx
-         bRSopKAamWmzKLM4WGXqwYnDz6o1PUuIUZlgNLab2oRH89b3npsJABK4Sf7hXNgabCEs
-         rLMAYqSReBcM27rzPpnvplEMPc2cRbIH0uXnxwHWMjI4L9vsRFyKNBtziJKLFYm7GOc4
-         PoIcCtS+GQyf/TaHMKP99kIZulaSxvsvt76xwR7VS91OEuNAkylJKyXn+mE/2YcAQUWZ
-         AXnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763717391; x=1764322191;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Wl2xu8XKN1gPMV9ACQzl23UL67KsRhgGQiSjpamCaq0=;
-        b=kIxFK99atUMS7R6GgSY84n/zY/JyPprR0fK70bPhDO3EPymgcQxNn+8+hBpPRFM0aP
-         qVs9b6XJ2y/1hFgYSNZZshYC0r8GilDqB9rttqhoEBmfl9DQ5QPSUOID/wlBesivPI7Y
-         F6YYBcrI2NW0mQ4y7Guln8sFRcHwMuKyIngPX+0/Pb+CQymc5LtlkFzAhLnYmskNKoGa
-         mJs1zwZqmbO+qj0q6F+IKu/cik7zCmIpJSqpW5CyHalAmtvy49x7sSQhYuTgNpSEhx4G
-         zCIxTlIrtPqPjzy+3plJm2stEJcFcl1EIof/z9cs4NTLVeov/2F4luiCTAU3F9YfwHRH
-         b2/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXugi2CLH/hWY8TjeakFulQbS9Oi42T6cVIwinUD6B6bpcv/oscmMxJ+Z4fXYRUhSC7dfQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw+YGsfS/06jVT29Dnv0ZZzdycToXOfGvwdGHeD6z/Eo5tfB/Xu
-	gJYozaNHBIQVJ0VjcOeTad8o1DHyQi+abJqbc4J8fNQKRVcGI5Q+8YoN
-X-Gm-Gg: ASbGncuLRiv+NZP7Vq2UAjUx8iAYTrT0dzq24TXV1o2hAZISuTCQwzyQ5kCgnEMDoUX
-	G3WfQTkvAr2XEHne873AWSBoet4StFkUJYdD74qFNjJYMXjz3eM/dKQGHGN1MO5tcTDLAX/6RXi
-	DuHISRjeu8tvZ8f05gg1EoKz791gHC+jf0wd6VxzYH1FGHTWOzjqFqOEjB6Klja0eDWxh5HgQvR
-	Pd2hNg0ccwwSUgm64Gp7BpNZW2Gt9K2jAvgAl9aDpfTCkD9x3AIg7QWjqjzL8OzJ1Jk3g2wN8Na
-	5RslAcxte9Fcz+VI/HCozk2Yc+pmhm/JobmBGEwct7Ztb5ppQaIDR7xisiOIHggzGqQlfFPnZkL
-	xuwSQDhXkLsTF58UyYb4shcKTOeHonqoKbkRNsogLXc7lWfbqYhPDbiMtxWZofqFvCHgrPw9o5U
-	DMmJW07f7riNywDdN1FAwEOR4CJBsAy0/biDCSrfqp8F0=
-X-Google-Smtp-Source: AGHT+IHq8hk9zncY5NjxJIA+5dLJtbgJgeFMs63IXI+ZjuoPAQXsuFcRPpdcxS7UMwvUHeWvXnedJA==
-X-Received: by 2002:a17:906:fe4a:b0:b76:277b:9a3d with SMTP id a640c23a62f3a-b767170a37emr166265266b.29.1763717390579;
-        Fri, 21 Nov 2025 01:29:50 -0800 (PST)
-Received: from [10.25.210.163] ([128.77.115.157])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654fd4275sm402635166b.37.2025.11.21.01.29.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 01:29:50 -0800 (PST)
-Message-ID: <3959e908-ae61-4424-a8ef-89f655a4de8c@gmail.com>
-Date: Fri, 21 Nov 2025 01:29:48 -0800
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=benjamin.gaignard@collabora.com header.b="c13HocQP"
+ARC-Seal: i=1; a=rsa-sha256; t=1763721012; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Seii7yGgiAK8YqQd3A1uljT0JIy/Rn1UVCro8gYHBzeklgaoSJaCMu7uOlMHUgPEAhdXAhmjmlNsPRCTMhn7cpq97vpdfkT1BHJRmpTjNbm0oUj8FwmIEvqt+ZmA5Ytgxpc8/bAGyoq0/A2YJyOkPqWJYhTZqiEu4yux09mM/kg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1763721012; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=gn3wOGMh35VRAyLK1z47rfPXxroKNFJ6qRR7lUA5vuc=; 
+	b=HFwMQKJpirHsE9HjQ/VIVGncO0FhTLIjc0JjMJfsDtKZ0TqCEbW480JVdpP0uL846XjpYMKjE2OzilpF/3oE4JGaQZujwLrpowTBeBhOrWubk0hUjSL04XlYAzvLcL5XSZ4RSqdPsZsq7Bq6mWOmX61Hxti+4M/zuqNzWInjOrw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=benjamin.gaignard@collabora.com;
+	dmarc=pass header.from=<benjamin.gaignard@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1763721012;
+	s=zohomail; d=collabora.com; i=benjamin.gaignard@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=gn3wOGMh35VRAyLK1z47rfPXxroKNFJ6qRR7lUA5vuc=;
+	b=c13HocQPgKuWgTuCJ2uA0XulrvwGkyEwubh0Q4UmVk0K7Z1djTilCdbbxC3s+llP
+	PkzpvWfpHABOipyA778yBgcZv5fYSpzmFaFhoovo+i9b7hgKTOZx19rbnti5xDa6KAN
+	QrNsdOGJBtc9CRESwezDzB+MPvrIDI9/1aMDs8Ic=
+Received: by mx.zohomail.com with SMTPS id 1763721011318865.399722972453;
+	Fri, 21 Nov 2025 02:30:11 -0800 (PST)
+Message-ID: <ec5adaa8-078f-4c6b-94af-c75b1fe3ec84@collabora.com>
+Date: Fri, 21 Nov 2025 11:30:06 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,92 +45,62 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/6] reset: imx8mp-audiomix: Extend the driver usage
-To: Philipp Zabel <p.zabel@pengutronix.de>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Frank Li <Frank.Li@nxp.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20251114133738.1762-1-laurentiumihalcea111@gmail.com>
- <20251114133738.1762-5-laurentiumihalcea111@gmail.com>
- <8b225c56612ff01845a90388be0945c7d0b3f0d2.camel@pengutronix.de>
+Subject: Re: [PATCH 1/2] pmdomain: imx8m-blk-ctrl: Remove separate rst and clk
+ mask for 8mq vpu
+To: ming.qian@oss.nxp.com, linux-media@vger.kernel.org
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca,
+ p.zabel@pengutronix.de, sebastian.fricke@collabora.com, shawnguo@kernel.org,
+ ulf.hansson@linaro.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, linux-imx@nxp.com, l.stach@pengutronix.de,
+ peng.fan@nxp.com, eagle.zhou@nxp.com, imx@lists.linux.dev,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20251121081911.1682-1-ming.qian@oss.nxp.com>
 Content-Language: en-US
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <8b225c56612ff01845a90388be0945c7d0b3f0d2.camel@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+In-Reply-To: <20251121081911.1682-1-ming.qian@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
-On 11/14/2025 8:02 AM, Philipp Zabel wrote:
-> On Fr, 2025-11-14 at 05:37 -0800, Laurentiu Mihalcea wrote:
->> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->>
->> Switch to per-device reset map to allow reusing the driver for other NXP
->> block control IPs.
->>
->> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
->> Reviewed-by: Frank Li <Frank.Li@nxp.com>
->> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->> ---
->>  drivers/reset/reset-imx8mp-audiomix.c | 18 ++++++++++++++++--
->>  1 file changed, 16 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/reset-imx8mp-audiomix.c
->> index 35df9bd5f71a..d3396f37d1ff 100644
->> --- a/drivers/reset/reset-imx8mp-audiomix.c
->> +++ b/drivers/reset/reset-imx8mp-audiomix.c
->> @@ -24,7 +24,12 @@ struct imx8mp_reset_map {
->>  	bool active_low;
->>  };
->>  
->> -static const struct imx8mp_reset_map reset_map[] = {
->> +struct imx8mp_reset_info {
->> +	const struct imx8mp_reset_map *map;
->> +	int num_lines;
->> +};
->> +
->> +static const struct imx8mp_reset_map imx8mp_reset_map[] = {
->>  	[IMX8MP_AUDIOMIX_EARC_RESET] = {
->>  		.offset	= IMX8MP_AUDIOMIX_EARC_RESET_OFFSET,
->>  		.bit = 0,
->> @@ -42,9 +47,15 @@ static const struct imx8mp_reset_map reset_map[] = {
->>  	},
->>  };
->>  
->> +static const struct imx8mp_reset_info imx8mp_reset_info = {
->> +	.map = imx8mp_reset_map,
->> +	.num_lines = ARRAY_SIZE(imx8mp_reset_map),
->> +};
->> +
->>  struct imx8mp_audiomix_reset {
->>  	struct reset_controller_dev rcdev;
->>  	struct regmap *regmap;
->> +	const struct imx8mp_reset_info *rinfo;
-> Since only rinfo->map is used in imx8mp_audiomix_update(), you could
-> directly store a
+Le 21/11/2025 à 09:19, ming.qian@oss.nxp.com a écrit :
+> From: Ming Qian <ming.qian@oss.nxp.com>
 >
-> 	const struct imx8mp_reset_map *map;
-
-
-hm, that is true, but I wonder if instead of replacing "rinfo" with "map", it would be better to
-
-keep "rinfo" and add an out-of-bounds check for the reset ID in imx8mp_audiomix_update().
-
-Something like:
-
-
-                if (id >= priv->rinfo->num_lines)
-
-                    return -EINVAL;
-
-
-we are stuck with "struct imx8mp_reset_info" so might as well fully make use of it?
-
-
+> The ADB in the VPUMIX domain has no separate reset and clock
+> enable bits, but is ungated and reset together with the VPUs.
+> So we can't reset G1 or G2 separately, it may led to the system hang.
+> Remove rst_mask and clk_mask of imx8mq_vpu_blk_ctl_domain_data.
+> Let imx8mq_vpu_power_notifier() do really vpu reset.
 >
+> Fixes: 608d7c325e85 ("soc: imx: imx8m-blk-ctrl: add i.MX8MQ VPU blk-ctrl")
+> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+
+Thanks for the patch.
+
+Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+
+> ---
+>   drivers/pmdomain/imx/imx8m-blk-ctrl.c | 4 ----
+>   1 file changed, 4 deletions(-)
 >
-> regards
-> Philipp
+> diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> index 5c83e5599f1e..1f07ff041295 100644
+> --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> @@ -852,16 +852,12 @@ static const struct imx8m_blk_ctrl_domain_data imx8mq_vpu_blk_ctl_domain_data[]
+>   		.clk_names = (const char *[]){ "g1", },
+>   		.num_clks = 1,
+>   		.gpc_name = "g1",
+> -		.rst_mask = BIT(1),
+> -		.clk_mask = BIT(1),
+>   	},
+>   	[IMX8MQ_VPUBLK_PD_G2] = {
+>   		.name = "vpublk-g2",
+>   		.clk_names = (const char *[]){ "g2", },
+>   		.num_clks = 1,
+>   		.gpc_name = "g2",
+> -		.rst_mask = BIT(0),
+> -		.clk_mask = BIT(0),
+>   	},
+>   };
+>   
