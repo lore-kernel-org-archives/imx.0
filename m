@@ -1,225 +1,96 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDC92D24BD
-	for <imx@lists.linux.dev>; Fri, 21 Nov 2025 02:47:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BED2DC322;
+	Fri, 21 Nov 2025 02:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763693265; cv=none; b=HZhzojzavpukkZgWoLEAkaQRK6OL2Vt+UNlCn+FbTNZbclfew9dnzVo2dhDzBWpTIoGE0l7tsdfE4LrbDppm6h60AkWKUJRVRW5elxXQXEwvUS0r6VxtSq3VmInmKvzbVZlSavu1kdhsew4Qu0qo4HVhuqeZyHLpn1J14QLz8Qg=
+	t=1763693455; cv=none; b=WK4T8eTkJk6F5oFOsW5vg/RJc7b9unGO5Y/WQs96xbi6mCSu30L45Mj0DqAjc6BoxyK37qGayWqiKiimHGjm9tNnUYRzgB+fkM7eOg5PuAuUkNapKuPj7GJ2oq8vW1zYl/Fu50M080Uqgbx7TNbv1BeEPR0GNNGkcCPMdhafoSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763693265; c=relaxed/simple;
-	bh=w1odhknuO7vz9zYjbFhCb0Vw+S/VW4i0IMMUc3AehnY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MJwKcgfXwDANe+SX4D2su9htd3n2HOKxwEphwuJexXDwLsPoHZcDFf6QetXXuqc29MxWFTo6h6uDcP7fEEtN6hgdeouetT6QmTSNdcZLYvws5cmn/FgtYvrKjuWMXHjCYrZyKYGiP4gk8tS4O4Yy6jqzvqZNnbMUQypstG2WG5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=AF8fXvp9; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1763693455; c=relaxed/simple;
+	bh=tSa30zLKOXEBzsBQsVHHF/No4SIK2WbE9wnFY3vZY0E=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=QR7pvT5YgKgC769EzG80JLWvNOVe/IX4SJIa4PKIeX+tYpoQMEv5/K2VYynXrVVObaTAe01BrRN2vzCXiHDGqegd7VHE/yvBin4FEEEOcs8rqfsbT8GsIh8GjN7vXJrEX/hqIGQWQNjYB/H27wkIubkRPtV0WAICq/309cw2hAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lT4bOfga; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="AF8fXvp9"
-Received: from pendragon.ideasonboard.com (fs276ed015.tkyc509.ap.nuro.jp [39.110.208.21])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id EE00EEAE;
-	Fri, 21 Nov 2025 03:45:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1763693135;
-	bh=w1odhknuO7vz9zYjbFhCb0Vw+S/VW4i0IMMUc3AehnY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AF8fXvp9Qa2F9S871Eg2tKGXruHTicUbKFuklpbRTrCwhepRs9WRnog+6jXeh9gKK
-	 LQYBVaFm85cLybuOE+g4ja6WT13+OTDZX1fGWvFd0cQftezyNoJuJM/TSucjOZHHdB
-	 jCvTujg2xOd9uHIUUqHs47SXs8N0ngQFAwbpSc98=
-Date: Fri, 21 Nov 2025 11:47:14 +0900
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>
-Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>, Frank Li <frank.li@nxp.com>,
-	"linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"G.N. Zhou" <guoniu.zhou@nxp.com>
-Subject: Re: [PATCH v7 2/5] media: imx8mq-mipi-csi2: Use
- devm_clk_bulk_get_all() to fetch clocks
-Message-ID: <20251121024714.GD11519@pendragon.ideasonboard.com>
-References: <20251023-csi2_imx8ulp-v7-0-5ecb081ce79b@nxp.com>
- <20251023-csi2_imx8ulp-v7-2-5ecb081ce79b@nxp.com>
- <20251027001151.GN13023@pendragon.ideasonboard.com>
- <PAXPR04MB9089072A62500D6C01881A38FAD5A@PAXPR04MB9089.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lT4bOfga"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309D0C4CEF1;
+	Fri, 21 Nov 2025 02:50:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763693455;
+	bh=tSa30zLKOXEBzsBQsVHHF/No4SIK2WbE9wnFY3vZY0E=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=lT4bOfgaSFlI9rv3K8nWf0UmPb8/NshjF3F8VBCMYi5ll7PajDk7el5QKHth8HARk
+	 OVGIJWegnlHwxZT1j39ebHaqKkI0+32ZFg8lcqb4DEnh3ew1KYnq0pgUviedutYJL2
+	 mA/U1S/WLhc03i026GPNhgGu01kGY8jrHoPi28EVg2jIgs0UXP6xD7kV3r6EbaUZCf
+	 jiY/qNBkGmQHQ+CbcLnb0YVQJuj+NPeV5c8IdNNF/DZJQtKVvLq7xceKiOwSrTJaeE
+	 2W4ozazVoHpTaxYSmljMHJ39KTqoCsHiF+SonNbD6wwWYK0dTCQtrjpXiHV3HfsGse
+	 aDwOILtsrJ6yQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7111C3A41003;
+	Fri, 21 Nov 2025 02:50:21 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB9089072A62500D6C01881A38FAD5A@PAXPR04MB9089.eurprd04.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 net-next 0/5] net: fec: do some cleanup for the driver
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176369342000.1872917.9969026361331291521.git-patchwork-notify@kernel.org>
+Date: Fri, 21 Nov 2025 02:50:20 +0000
+References: <20251119025148.2817602-1-wei.fang@nxp.com>
+In-Reply-To: <20251119025148.2817602-1-wei.fang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: shenwei.wang@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ eric@nelint.com, Frank.Li@nxp.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-On Fri, Nov 21, 2025 at 02:21:23AM +0000, G.N. Zhou (OSS) wrote:
-> On Monday, October 27, 2025 8:12 AM, Laurent Pinchart wrote:
-> > On Thu, Oct 23, 2025 at 05:19:43PM +0800, Guoniu Zhou wrote:
-> > > From: Guoniu Zhou <guoniu.zhou@nxp.com>
-> > >
-> > > Use devm_clk_bulk_get_all() helper to simplify clock handle code.
-> > >
-> > > No functional changes intended.
-> > >
-> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > > Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
-> > > ---
-> > >  drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 52 ++++++++-------------------
-> > >  1 file changed, 15 insertions(+), 37 deletions(-)
-> > >
-> > > diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> > > index d333ff43539f061b8b9cf88af2cda8c44b3ec2a9..fd202601d401145da8be23df4451f6af660642c5 100644
-> > > --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> > > +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> > > @@ -71,21 +71,6 @@ enum {
-> > >  	ST_SUSPENDED	= 4,
-> > >  };
-> > >
-> > > -enum imx8mq_mipi_csi_clk {
-> > > -	CSI2_CLK_CORE,
-> > > -	CSI2_CLK_ESC,
-> > > -	CSI2_CLK_UI,
-> > > -	CSI2_NUM_CLKS,
-> > > -};
-> > > -
-> > > -static const char * const imx8mq_mipi_csi_clk_id[CSI2_NUM_CLKS] = {
-> > > -	[CSI2_CLK_CORE] = "core",
-> > > -	[CSI2_CLK_ESC] = "esc",
-> > > -	[CSI2_CLK_UI] = "ui",
-> > > -};
-> > > -
-> > > -#define CSI2_NUM_CLKS	ARRAY_SIZE(imx8mq_mipi_csi_clk_id)
-> > > -
-> > >  struct imx8mq_plat_data {
-> > >  	int (*enable)(struct csi_state *state, u32 hs_settle);
-> > >  	void (*disable)(struct csi_state *state);
-> > > @@ -111,7 +96,8 @@ struct csi_state {
-> > >  	struct device *dev;
-> > >  	const struct imx8mq_plat_data *pdata;
-> > >  	void __iomem *regs;
-> > > -	struct clk_bulk_data clks[CSI2_NUM_CLKS];
-> > > +	struct clk_bulk_data *clks;
-> > > +	int num_clks;
-> > >  	struct reset_control *rst;
-> > >  	struct regulator *mipi_phy_regulator;
-> > >
-> > > @@ -384,24 +370,16 @@ static void imx8mq_mipi_csi_set_params(struct csi_state *state)
-> > >  			      CSI2RX_SEND_LEVEL);
-> > >  }
-> > >
-> > > -static int imx8mq_mipi_csi_clk_enable(struct csi_state *state) -{
-> > > -	return clk_bulk_prepare_enable(CSI2_NUM_CLKS, state->clks);
-> > > -}
-> > > -
-> > > -static void imx8mq_mipi_csi_clk_disable(struct csi_state *state)
-> > > +static struct clk *find_esc_clk(struct csi_state *state)
-> > 
-> > This is one of the reasons why I don't like devm_clk_bulk_get_all(). I won't
-> > object to this patch, but I don't like it. At the very lest, you should look up the
-> > clock at probe time and cache it in the imx8mq_plat_data structure, to avoid
-> > looking it up multiple times at runtime.
-> > 
-> > >  {
-> > > -	clk_bulk_disable_unprepare(CSI2_NUM_CLKS, state->clks);
-> > > -}
-> > > -
-> > > -static int imx8mq_mipi_csi_clk_get(struct csi_state *state) -{
-> > > -	unsigned int i;
-> > > +	int i;
-> > >
-> > > -	for (i = 0; i < CSI2_NUM_CLKS; i++)
-> > > -		state->clks[i].id = imx8mq_mipi_csi_clk_id[i];
-> > > +	for (i = 0; i < state->num_clks; i++) {
-> > 
-> > Make state->num_clks unsigned instead of making i signed.
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 19 Nov 2025 10:51:43 +0800 you wrote:
+> This patch set removes some unnecessary or invalid code from the FEC
+> driver. See each patch for details.
 > 
-> I address the comment in v8(https://lore.kernel.org/all/20251113-csi2_imx8ulp-v8-0-2ebe378f7111@nxp.com/),
-> but Media CI robot detected some issues as bellow.
+> ---
+> v3 changes:
+> 1. Revert patch 2 to v1, fec_enet_register_offset_6ul still needs the
+> "#ifdef" guard, otherwise, there are some build errors
+> 2. Fix a typo in the commit message of patch 3
+> 3. Collect Reviewed-by tag
+> v2: https://lore.kernel.org/imx/20251117101921.1862427-1-wei.fang@nxp.com/
+> v2 changes:
+> 1. Improve the commit message
+> 2. Remove the "#ifdef" guard for fec_enet_register_offset_6ul
+> 3. Add a BUILD_BUG_ON() test to ensure that FEC_ENET_XDP_HEADROOM
+> provides the required alignment.
+> 4. Collect Reviewed-by tag
+> v1: https://lore.kernel.org/imx/20251111100057.2660101-1-wei.fang@nxp.com/
 > 
-> # Test static:test-smatch
-> drivers/media/platform/nxp/imx8mq-mipi-csi2.c:1006 imx8mq_mipi_csi_probe() warn: unsigned 'state->num_clks' is never less than zero.
-> 
-> # Test static:test-coccinelle
-> ./platform/nxp/imx8mq-mipi-csi2.c:1006:5-20: WARNING: Unsigned expression compared with zero: state -> num_clks < 0
-> 
-> I checked the parameters type of all functions which will refer to
-> num_clks, their type is int, so I plan to drop the changes in v8 and
-> will send v9.
+> [...]
 
-You can address the issue in the probe function as follows:
+Here is the summary with links:
+  - [v3,net-next,1/5] net: fec: remove useless conditional preprocessor directives
+    https://git.kernel.org/netdev/net-next/c/3eea593b5597
+  - [v3,net-next,2/5] net: fec: simplify the conditional preprocessor directives
+    https://git.kernel.org/netdev/net-next/c/eef7b786bdab
+  - [v3,net-next,3/5] net: fec: remove struct fec_enet_priv_txrx_info
+    https://git.kernel.org/netdev/net-next/c/63083d597ada
+  - [v3,net-next,4/5] net: fec: remove rx_align from fec_enet_private
+    https://git.kernel.org/netdev/net-next/c/3bb06c8a461b
+  - [v3,net-next,5/5] net: fec: remove duplicate macros of the BD status
+    https://git.kernel.org/netdev/net-next/c/bd31490718b4
 
-	ret = devm_clk_bulk_get_all(dev, &state->clks);
-	if (ret < 0)
-		return dev_err_probe(dev, ret, "Failed to get clocks\n");
-
-	state->num_clks = ret;
-
-> > > +		if (!strcmp(state->clks[i].id, "esc"))
-> > > +			return state->clks[i].clk;
-> > > +	}
-> > >
-> > > -	return devm_clk_bulk_get(state->dev, CSI2_NUM_CLKS, state->clks);
-> > > +	return NULL;
-> > 
-> > This needs to become a probe error.
-> > 
-> > >  }
-> > >
-> > >  static int imx8mq_mipi_csi_calc_hs_settle(struct csi_state *state,
-> > > @@ -456,7 +434,7 @@ static int imx8mq_mipi_csi_calc_hs_settle(struct csi_state *state,
-> > >  	 * documentation recommends picking a value away from the boundaries.
-> > >  	 * Let's pick the average.
-> > >  	 */
-> > > -	esc_clk_rate = clk_get_rate(state->clks[CSI2_CLK_ESC].clk);
-> > > +	esc_clk_rate = clk_get_rate(find_esc_clk(state));
-> > >  	if (!esc_clk_rate) {
-> > >  		dev_err(state->dev, "Could not get esc clock rate.\n");
-> > >  		return -EINVAL;
-> > > @@ -783,7 +761,7 @@ static void imx8mq_mipi_csi_pm_suspend(struct device *dev)
-> > >
-> > >  	if (state->state & ST_POWERED) {
-> > >  		imx8mq_mipi_csi_stop_stream(state);
-> > > -		imx8mq_mipi_csi_clk_disable(state);
-> > > +		clk_bulk_disable_unprepare(state->num_clks, state->clks);
-> > >  		state->state &= ~ST_POWERED;
-> > >  	}
-> > >
-> > > @@ -801,7 +779,7 @@ static int imx8mq_mipi_csi_pm_resume(struct device
-> > > *dev)
-> > >
-> > >  	if (!(state->state & ST_POWERED)) {
-> > >  		state->state |= ST_POWERED;
-> > > -		ret = imx8mq_mipi_csi_clk_enable(state);
-> > > +		ret = clk_bulk_prepare_enable(state->num_clks, state->clks);
-> > >  	}
-> > >  	if (state->state & ST_STREAMING) {
-> > >  		sd_state = v4l2_subdev_lock_and_get_active_state(sd);
-> > > @@ -1027,9 +1005,9 @@ static int imx8mq_mipi_csi_probe(struct platform_device *pdev)
-> > >  	if (IS_ERR(state->regs))
-> > >  		return PTR_ERR(state->regs);
-> > >
-> > > -	ret = imx8mq_mipi_csi_clk_get(state);
-> > > -	if (ret < 0)
-> > > -		return ret;
-> > > +	state->num_clks = devm_clk_bulk_get_all(dev, &state->clks);
-> > > +	if (state->num_clks < 0)
-> > > +		return dev_err_probe(dev, state->num_clks, "Failed to get clocks\n");
-> > >
-> > >  	platform_set_drvdata(pdev, &state->sd);
-> > >
-
+You are awesome, thank you!
 -- 
-Regards,
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Laurent Pinchart
+
