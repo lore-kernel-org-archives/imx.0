@@ -1,87 +1,191 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4C21ACEDF;
-	Fri, 21 Nov 2025 16:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE2F2E9EAD
+	for <imx@lists.linux.dev>; Fri, 21 Nov 2025 16:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763742301; cv=none; b=cKvgFh2TMZ5F0yE8eIZxZN9JBTEiB6rm6am0wHD8DwXCDSw/b9aEq8k6lDpDU83tg7Nh6lVP/eXR6mr4GCCy4dWcAMJhGqiLmcpyzMbLBLbhZ6/cyyv1LXigssyqNz/MOAICMYDQ0vt1CCAZmLMHjd1ZNbk37pDZTBzkwE1Sjp0=
+	t=1763743765; cv=none; b=T1XHQyXXGTQO6eJwi5CN+Da9TjoOdovD8cFc6Hu+D+dn7F/rxvq0pecDGuFrkyWRylX20vCNo5Af24BwXWAV8TkdXkmh2ZOC2Iz2lAB45AnxZxk4JQPDlH7c1XjfBFW4D5npEF9M37XcilsYg4+begZtuWylGFnjlEHswP1NTOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763742301; c=relaxed/simple;
-	bh=M2lWvD94t+QENSK1sKY6MCUn+R1BeyqsTINMW1UGDI8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=VTpUeGISdwkdD4okS4zJOktTujlMOtMnUveHcaueWpr3qpZYBCMWrPV/UG4UQtwS/MyvxWimRBKUCvu0a7iKy1Vap/xbmq87ybx7zIncEO9Pw31CJsIww+71Th55SuElL5+0xoHyL+8QLeAuDw492ntPLHRP2LjyFLUlB3/L0KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qzhtlxro; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763743765; c=relaxed/simple;
+	bh=kN3VB2GpK8nQnnG7eMVnBZsbzlKoAxQzYV6oW93njqs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yc6YVraGrScs+pPWeD1reZ4bkXH7YLSX78dMhZgDYhYT9n+AcfDj477uVMZiW/iQhhcG5AfT4MDUxtX/bYoMq+MtTOTQqM4vM7oWF5pYYXm/1tYYyMNlTzsE7mCjqwwyWBFBHPwlfOwIQfhLgN/dIayH++jzvWX9kwTrA68Q25o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=t2D8qBP+; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qzhtlxro"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE6CC4CEF1;
-	Fri, 21 Nov 2025 16:24:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763742300;
-	bh=M2lWvD94t+QENSK1sKY6MCUn+R1BeyqsTINMW1UGDI8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Qzhtlxroqvoqq4/zpP5kJST+Hf3d3OGunyEPIgGzOxBKh9KkYMt3m54xI9GObf/RF
-	 Lp5+5ivt8Nr5ud0GFEduzfwS/vAXWJc0duTZFwZuwNLrJAw89F9mtgsfNbZxqovoMJ
-	 JIOKLXGi5uq1LwSNDX6U9VR/qhYHIpXYflCIunTaVwti7wmhbZKoYX6Mo+XHmg6wam
-	 zhEh0akEVgvANjwJcJNWGJeGP7sNj6e5HSPiFJPCsqLCnRiHyXU/k26wTWDKXDxG50
-	 pCjeRAbndcxUWKOf8pqOmlxLoWURe4vlvgVfaT5kbgaC0mCMeOKs4YMDRmszFZfeDc
-	 aMMNUBCoumGDw==
-From: Mark Brown <broonie@kernel.org>
-To: Frank.Li@nxp.com, rongqianfeng@vivo.com, carlos.song@nxp.com
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20251117030355.1359081-1-carlos.song@nxp.com>
-References: <20251117030355.1359081-1-carlos.song@nxp.com>
-Subject: Re: [PATCH] spi: spi-fsl-lpspi: fix watermark truncation caused by
- type cast
-Message-Id: <176374229925.52495.4055621963901778213.b4-ty@kernel.org>
-Date: Fri, 21 Nov 2025 16:24:59 +0000
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="t2D8qBP+"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42b32ff5d10so2137554f8f.1
+        for <imx@lists.linux.dev>; Fri, 21 Nov 2025 08:49:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1763743762; x=1764348562; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zGlnkOToO1jf+8pr/raDuQYhOEXUPTfBya9U9ZeDpYs=;
+        b=t2D8qBP+bj3YKm3bur9C2T54Z8ivjOCr8Huu9BcNx2lqxU4VnZgmvwVqiZy3WgVqTj
+         ysa5PJZokACHYiojJz4wTI6mFMh/VHxU3xYx7LtCEndaa9tZJYYRGalH8Ke/Nz0aUeQS
+         2ehIH49Yjc73BVtaxzNmCrjWvn0n6gmhelKHMf/LN+mJs6NeqbIt7+Xv03DcOQYyU6Ch
+         YSOaQxJjePaO9uIRXB8Qd6c/opYFCL9tt8iraziSo20NZCv+P39DVyIFk2Xr5XVBzzUb
+         80n3S2gwzRI+jiaQWWAYtAGJ38V6lDsF5P5ItrA0K2CRDfBjXiOpgUnXBJTOWroOkEKS
+         Lhfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763743762; x=1764348562;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zGlnkOToO1jf+8pr/raDuQYhOEXUPTfBya9U9ZeDpYs=;
+        b=HTD4HdBX36IxuMedYuJYP8fI1aHt5BwRJT6FpTrrxky4EqJtA9Ehi/8itygq3Q0yoC
+         P1PE/KRWJEd8hTkZtuCHQrGYIrYcmXpIVvycQGu03uxQvM+gX+my5lYdarSf92LhSR5q
+         Z+ZJTnsPd8z98xqbwCUdhVwPVuFxAbLiCXjnkYvmoeKxXgLwjFljN+ThjNNQWQdpGzZg
+         Y29VxpB3dvYwFl1fss+rdOCm+RxYNo91L8/Q50RR6cIZ8JsXeseMf9BHEsgTd8K37eiW
+         9ZVA0r1qynJeNk210mOS8tD4bGuaf0wJUXzwF1Nlsz2bycMvEFtA2EPROsl+F02qXC0a
+         kqfA==
+X-Forwarded-Encrypted: i=1; AJvYcCVMcq41hP22O/cU/xnkXVEwSgVjQlEf8PS5jVibWEwtnwO965X4ktUccNzaw2eSmPGqfhQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy3skGvUyKcHDCQ+njmGqZlNHgQfkramZ0nrSLjFW0HKVdetK4s
+	lIHA/pc9anTbWsWA+PHzbJT6zaRQhfsRd8Mr7F4rotpbykf4UhlYbP7lE5zoxHDeanw=
+X-Gm-Gg: ASbGnctEf6AB38Pnk8pjYvrsQxg6Hfc2XwNGcP0RsVwCEtTVRWrlaREu+u1rPS1aZGQ
+	rVP1yWhCy9Nrk7k+qtYEFHErWZ+xxPWwFPCP8FxghlwSiEN8smmYf7PLI+OblqhYyNW4dBLsJwd
+	iox5tpZSF8RwcY5S0t9pg549nbeywAg7tEbBcCYZeIeCiiMHgP+JH+e4YQLWDxzMLS/jcuEhP+G
+	i5YHJbF9E3FHhC45m0UHQBUK8yBgc6ZBM/mGW2y02vxUW2lue5aMThYaoHaEPej2fT8GNYVKyDs
+	hnIBs93KjjirSLmKDe4IunsPa8pziv9IuS+gl1MCsZLKHAHMuzEWtBDsY1KgvZpsxOutOTAyZMy
+	Qd8TF/Cu+nleZtweOJaxyBnDkfIIrIbAlLRzpFtlKpiIF4hG2uUozIwgp8gdwMzk/FVG4ANJNml
+	gXV7dUJxG2npZuaGdqO5s=
+X-Google-Smtp-Source: AGHT+IH9fgh+0AmyQ3I7+I9o5tgoOvXp7ga4hErs7KJ7tdVH3mP2gYsIWXJJszHZqn2a9PoLYchupw==
+X-Received: by 2002:a5d:5d0e:0:b0:42b:48bc:498f with SMTP id ffacd0b85a97d-42cc135db65mr3645210f8f.14.1763743761548;
+        Fri, 21 Nov 2025 08:49:21 -0800 (PST)
+Received: from vingu-cube.. ([2a01:e0a:f:6020:803a:ae25:6381:a6fc])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fb8ff3sm12938478f8f.29.2025.11.21.08.49.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Nov 2025 08:49:21 -0800 (PST)
+From: Vincent Guittot <vincent.guittot@linaro.org>
+To: chester62515@gmail.com,
+	mbrugger@suse.com,
+	ghennadi.procopciuc@oss.nxp.com,
+	s32@nxp.com,
+	bhelgaas@google.com,
+	jingoohan1@gmail.com,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Ionut.Vicovan@nxp.com,
+	larisa.grigore@nxp.com,
+	Ghennadi.Procopciuc@nxp.com,
+	ciprianmarian.costea@nxp.com,
+	bogdan.hamciuc@nxp.com,
+	Frank.li@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Cc: cassel@kernel.org
+Subject: [PATCH 0/4 v6] PCI: s32g: Add support for PCIe controller
+Date: Fri, 21 Nov 2025 17:49:16 +0100
+Message-ID: <20251121164920.2008569-1-vincent.guittot@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-88d78
+Content-Transfer-Encoding: 8bit
 
-On Mon, 17 Nov 2025 11:03:55 +0800, carlos.song@nxp.com wrote:
-> 't->len' is an unsigned integer, while 'watermark' and 'txfifosize' are
-> u8. Using min_t with typeof(watermark) forces both values to be cast to
-> u8, which truncates len when it exceeds 255. For example, len = 4096
-> becomes 0 after casting, resulting in an incorrect watermark value.
-> 
-> Use a wider type in min_t to avoid truncation and ensure the correct
-> minimum value is applied.
-> 
-> [...]
+The S32G SoC family has 2 PCIe controllers based on Designware IP.
 
-Applied to
+Add the support for Host mode.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+Change since v5:
 
-Thanks!
+- Removed relocatable bit in yaml
+- Dropped pcie-nxp-s32g-regs.h and moved reg definition in pcie-nxp-s32g.c
+- Removed a useless ret
+- Change kconfig from tri to bool because of memblock_start_of_DRAM()
 
-[1/1] spi: spi-fsl-lpspi: fix watermark truncation caused by type cast
-      commit: 9f0c21bac5a8089e74b21d007e26fb4594b10d73
+Change since v4:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+- Moved allof position and added interrupt-names' restriction in yaml file
+- Removed PCIE_S32G_PE0_LINK_DBG_2 and instead use PCIE_PORT_DEBUG0|1
+  after receiving confirmation that they are the same.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Change since v3:
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+- Added Root Port node and reorder irq in binding
+- Added Root Port management in driver 
+- Fix Kconfig PCIE_NXP_S32G position
+- Use default pme_turn_off method
+- Use ops->init() to simplify init and suspend/resume sequence
+- Fix some typos.
+- Removed MPS and ERROR config. Let core code configs them.
+- Removed s32g_pcie_disable_equalization() from internal team request
+- Removed dw_pcie_link_up() from suspend/resume functions with [1]
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+- I'm still waiting feedback from internal team before removing
+.get_ltssm() and .link_up() functions.
 
-Thanks,
-Mark
+[1] https://lore.kernel.org/all/20251107044319.8356-1-manivannan.sadhasivam@oss.qualcomm.com/
+
+Change since v2:
+
+- More cleanup on DT binding to comply with schemas/pci/snps,dw-pcie.yaml
+- Added new reg and bit fields in pcie-designware.h 
+- Rename Kconfig PCIE_NXP_S32G and files to use pcie-nxp-s32g prefix
+- Prefixed s32G registers with PCIE_S32G_ and use generic regs otherwise
+- Use memblock_start_of_DRAM to set coherency boundary and add comments
+- Fixed suspend/resume sequence by adding missing pme_turn_off function
+- Added .probe_type = PROBE_PREFER_ASYNCHRONOUS to speedup probe
+- Added pm_runtime_no_callbacks() as device doesn't have runtime ops
+- Use writel/readl in ctrl function instead of dw_pcie_write/read
+- Move Maintainer section in a dedicated entry
+
+Change since v1:
+
+- Cleanup DT binding
+  - Removed useless description and fixed typo, naming and indentation.
+  - Removed nxp,phy-mode binding until we agreed on a generic binding.
+    Default (crnss) mode is used for now. Generic binding wil be discussed
+    in a separate patch.
+  - Removed max-link-speed and num-lanes which are coming from
+    snps,dw-pcie-common.yaml. They are needed only if to restrict from the
+    the default hw config.
+  - Added unevaluatedProperties: false
+  - Keep Phys in host node until dw support Root Port node.
+
+- Removed nxp-s32g-pcie-phy-submode.h until there is a generic clock and
+  spectrum binding.
+
+- Rename files to start with pcie-s32g instead of pci-s32g
+
+- Cleanup pcie-s32-reg.h and use dw_pcie_find_capability()
+
+- cleanup and rename in s32g-pcie.c in addtion to remove useless check or
+  duplicate code.
+
+- dw_pcie_suspend/resume_noirq() doesn't woork, need to set child device
+  to reach lowest state.
+
+- Added L: imx@lists.linux.dev in MAINTAINERS
+
+
+Vincent Guittot (4):
+  dt-bindings: PCI: s32g: Add NXP PCIe controller
+  PCI: dw: Add more registers and bitfield definition
+  PCI: s32g: Add initial PCIe support (RC)
+  MAINTAINERS: Add MAINTAINER for NXP S32G PCIe driver
+
+ .../bindings/pci/nxp,s32g-pcie.yaml           | 130 ++++++
+ MAINTAINERS                                   |   9 +
+ drivers/pci/controller/dwc/Kconfig            |  10 +
+ drivers/pci/controller/dwc/Makefile           |   1 +
+ drivers/pci/controller/dwc/pcie-designware.h  |   8 +
+ drivers/pci/controller/dwc/pcie-nxp-s32g.c    | 404 ++++++++++++++++++
+ 6 files changed, 562 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+ create mode 100644 drivers/pci/controller/dwc/pcie-nxp-s32g.c
+
+-- 
+2.43.0
 
