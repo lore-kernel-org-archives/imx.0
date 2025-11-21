@@ -1,60 +1,62 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012020.outbound.protection.outlook.com [52.101.66.20])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012047.outbound.protection.outlook.com [52.101.66.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724BA346E6D
-	for <imx@lists.linux.dev>; Fri, 21 Nov 2025 15:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8C021771C
+	for <imx@lists.linux.dev>; Fri, 21 Nov 2025 15:59:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763740471; cv=fail; b=jXDkJCDCTy0IYN8SM8prDOWQ9VFiYSPKDVz3nQ5OLlFuDBf6vRcKg0Xh2Im2RstpnhqyvPB58BCvsYw+k0sw5YZKdlSwi17W/tqbHmcidcdyJ+AOs+f2AeA4wnqxNzt8QmViGKEJ9rU6/A0+dSXXQaXHE7seu057EaaCoSdGINw=
+	t=1763740757; cv=fail; b=Q1o+SeMXSmzIAd/DK2KMCb0BoGPSymU1wfFOZzxWD2FhwjKEjOdfs2viIV5f2MuJWTxJGH5OPmr1QEei3yqbh8qw74xZHEoA8lRaocekFlWD19F+RKX0WmOQwl0OXkAlj2LcSDOMBEtcBtcjtUZtl56woS/E7oUYLmpgW6VHf0o=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763740471; c=relaxed/simple;
-	bh=jOh1bLjP9oqYbQzeXO4e8a0FayHcsN0hH8fxzJSmWBg=;
+	s=arc-20240116; t=1763740757; c=relaxed/simple;
+	bh=iH4ly9eDCz1zvSz3jfImqX7Ai88IN+RGvZD6FPgtSQU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=LtZ/NcbWcooZShzEaFvm0a72NB/J/PLPYl24VCw2aZaxk24/I0itoqcFM8+wOV/5mGATo0Gl/d4RsjeHs/VD8HksyxpRLaNQdBacKD4ymmWUbRZ64jDAC3GnVn6lcfVSOIRv970RzytBI/ebR4KlIaHz8C/mrBs/RxEIxjEMjsM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=E+tegDxp; arc=fail smtp.client-ip=52.101.66.20
+	 Content-Disposition:In-Reply-To:MIME-Version; b=J7z7fsd4YXTikjNP3Isy5msYF1v+Saql76JDpyoCpWC2dcCSuvgXhlyBPAv/zwn97RLRGmsxy+kHHKyjY6S9m6xWSghdXOjA9msukLvW7SW9jGefErGdbd4oOloY5wzgwViw2IKvR+pP2gSfVIeOTsbeLUr3S23441Ty41LIPd8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SAWtz44+; arc=fail smtp.client-ip=52.101.66.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="E+tegDxp"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SAWtz44+"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bcte20m53btgc8ch4cpGNeA04+8Fd06oqCT3xwmjpwBJIdq6G+lap30+2RXcs0+9vF80Tphh09Tk+N8bfbf96nosQSsbHnqu/EI7QO6SjXiAa0QPUWvhnhHJgqo1LL+rYjAyqCfvHtW5JNDqNVlwCbxOm28m1n48om2H2RxPuZDxMzJiwUN9SS/58QAvt9b3GBT88rml2EJYtZvYujjfwS9fsBOi4o+UwhdZnEqVdbRr+ZZfG5d38sGWGWfBqqxGG1UWMEeDYRVLG0WdxILeZSxHEsVQs5Q2QdBHAjGl2su4x0mJJcSNeCwESYUCqxgqB3AslPaR/+50sH7tCUyFHg==
+ b=mb5o6uTGxcFHo4n2kn8uKCxy2yJyOX8hHy9DVDxjxdP+odyMU/v/B6CSE6C1X4oQ/W5ZZgmVQrFcrLdzLwuGDC6cMnDdN0hTgjGvYVvUgaVPxiFNIBtqy/FVTmzH7XAVVsAHJiVHjGW8V7KZlt83opPknJshAOWC/rKuffqBTpDw+FRaUYFfpgfWUnpX2r1/dU1oIScHQkrvK6dDksR8E3KLJtEKNtXrLBFwbJl5k/SofDp3SwMi19aimE6Plt3TeV0GJ/6ftu4iPXnYTLoN6Y1RkDaW3ExWCerByNIgwtNZ6E25rVMu+zrvoBiOEPb+u2D2iZ9MmkL+qyTEE7c7Mg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+sNro+nYIUBb/6yVrlXxhvH9VAIxBUjEwXCUpLJShN4=;
- b=QIYQorvoXyGgzGTSLrJIy/H7qhkhII19KtCOHEspc0kVtCXNobtPMiQd+MniXqn+Hz2sbnnrD/z4xKv/8XT0eXqHr4X1BCgYxHF4PMv3gXHjwtXyRn0h/P2Y0tKa1n4yqkG1Tw7gLq5U8JpDEkCqzlKndIAvynp2D6ulWxokbllLUZygcK2jaUd0r1qQVsQOIB6UySm1EWruW9+pR/lWtglqXRuywUGoDhiiwEX1YV/SpeNZBk9vwJduzkfV986Fw4vroDd3w1YESROXWXeKHFZZjYiBLAamMHzpHDlZPXa14mVkWXG9cKLnwFXDrxq2A83F6T2lr/Cpm/bcl23dUQ==
+ bh=2dv9JQgYryb07Ad4xUuM13zVMGd2RgB1lKWwID5CBEc=;
+ b=DxqLgpJC400/Rjg/hwXMKP1kZvxxjspWeOLA7NZx/YGDzW5ASHMm0xYBdZLq9UMfuSsP27SXb2oj1jL9nAoKGFy2SvNDPxCRE6+3Uuk6B8QVDEvuyX6Twqx1gRGH3rpbUmnOVmTcxRn+vg5XJ5rjS9JBjdZLXm6rpMZqJktGOVGPIa/ZGFHn4sXcqNPbh/Uapn0Se5ieiUiRUyrwdHbV3rPokK2cu5X4LdyJOFKSbgyJUkJ+q4PiM8uN9/0yLmGUhNT21GzVPRLVoE8vFo4dTKDKA7NA2juB+ZNSUVaCCx9Dvt8pv8609ibFpzYrpCO2BxMdw+CuwxgBgv8efuYmbA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+sNro+nYIUBb/6yVrlXxhvH9VAIxBUjEwXCUpLJShN4=;
- b=E+tegDxpUKtj3zQsSHJBND51KEJyHGL/3hrYyCRSpG4Q2DhrF1yGA/v6XXcTmDzXHkqrjs4g4BUsaOHUFVllYH6X4rYRaxEMg/nKqwZAUx9wMUPWaq1xjALQylNHN6uf4G5ZPBenPVfOVoggfhAKHtQBciA7m+q+cuoFEcl4SAa1wWLcZ6JEyoSScLbdpkPbsdTkIXc2CEPeKH16sP/hQC1hmdpvBcuLIWQ2HcckzR+SAqQEQAPhC+6K5kMnN0mt1vQiEgFE6hSTaJhaz1/L/D8TyrDITnM5LBMGiQPslo85F813Ez794SbYX10QD/i1510K1jYIW/dO/+wLaIE8pQ==
+ bh=2dv9JQgYryb07Ad4xUuM13zVMGd2RgB1lKWwID5CBEc=;
+ b=SAWtz44+w8JpZVHVO139C73c4yjHpTNGcGJkH4RbfKPxNb85gaZpoDupobI1WHujfqQQaLAElnhdSqPvcnjyDylExhrq/cKVXTyH2AmT7xkgJhwlmJBk2P17lgdQppOJV/+REW8C5vpr3A3a+Y37fmJlfBIUnM+4I+1eVd2BlvWMCAjxWXhKXNvEpjX4GnCBjMfBldevqOD7BYFBBKw5JBuEqfRpc0VLh2sudM5UG0hUDIBMbu3v9D36cAqphtL3T4ueRXCbV/x0EGHFd7N/yOVlsCupOoVZv3Gjm7/l3KljiytMapnHzofpkUpK76uYBbcMS2DlJG3Ybuy4bpBRTA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
- by DU4PR04MB11845.eurprd04.prod.outlook.com (2603:10a6:10:621::6) with
+ by DU2PR04MB8920.eurprd04.prod.outlook.com (2603:10a6:10:2e3::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.10; Fri, 21 Nov
- 2025 15:54:26 +0000
+ 2025 15:59:12 +0000
 Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
  ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
  ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9343.011; Fri, 21 Nov 2025
- 15:54:26 +0000
-Date: Fri, 21 Nov 2025 10:54:19 -0500
+ 15:59:12 +0000
+Date: Fri, 21 Nov 2025 10:59:05 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: carlos.song@nxp.com
-Cc: broonie@kernel.org, rongqianfeng@vivo.com, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] spi: spi-fsl-lpspi: fix watermark truncation caused by
- type cast
-Message-ID: <aSCLK6wEaIbeJp3h@lizhi-Precision-Tower-5810>
-References: <20251117030355.1359081-1-carlos.song@nxp.com>
+To: Carlos Song <carlos.song@nxp.com>
+Cc: aisheng.dong@nxp.com, andi.shyti@kernel.org, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	vz@mleia.com, wsa@kernel.org, linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] i2c: imx-lpi2c: support smbus block read feature
+Message-ID: <aSCMSRdQjUJpr5gz@lizhi-Precision-Tower-5810>
+References: <20251121110100.1909603-1-carlos.song@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251117030355.1359081-1-carlos.song@nxp.com>
-X-ClientProxiedBy: SJ0PR05CA0172.namprd05.prod.outlook.com
- (2603:10b6:a03:339::27) To DU2PR04MB8951.eurprd04.prod.outlook.com
+In-Reply-To: <20251121110100.1909603-1-carlos.song@nxp.com>
+X-ClientProxiedBy: PH0P220CA0009.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:d3::13) To DU2PR04MB8951.eurprd04.prod.outlook.com
  (2603:10a6:10:2e2::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -63,121 +65,256 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|DU4PR04MB11845:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3b3ed3aa-41ea-4780-a23b-08de29163fa2
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|DU2PR04MB8920:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11538e4f-43d4-44d0-1152-08de2916e9dd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|52116014|366016|376014|1800799024|38350700014;
+	BCL:0;ARA:13230040|19092799006|366016|7416014|376014|52116014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?J5uo2IbDQb+sxH639E3qn6PUqS+rJlmMb9vmO8cht83DjzkvqbU0GP/gEno6?=
- =?us-ascii?Q?wH6H70eHS1F9dQjIy2sT0WuZdCV8pN95TGu/1FQfkrU3FHrrrBmzvnkGIG8R?=
- =?us-ascii?Q?EPwtSRRdtmg+LlH8kvPUfAjxPZ93dxCzrrJlfpk0fMfVsltxdZoeR06WQAwA?=
- =?us-ascii?Q?l193566ripLY+lNYk7nI6lkhtbLrzPMrALL9FBqhlZZXZbmZ8dMdhg+4oaBI?=
- =?us-ascii?Q?5D8lSgbLvBIG9brrq4UYC0NWWaIVDgNBthwEFa96W6U26GcjM6eosCHc/unb?=
- =?us-ascii?Q?YTRkbbG9TS9nBMaQQEHTM3ahApyuUFwyIab0wk04cBmrnlXqmf0WeQocVnI7?=
- =?us-ascii?Q?ePERGMIMw16xsH+ZXknvBgNnHQxnrX1KZx7/WGh4kR118y2OF+ABFTFl+m+G?=
- =?us-ascii?Q?ZEO13ZSYAK1mispfaFzBVMunfHP7ZJ8rk3MhTawq01uve3EDqOqSf+kniVU+?=
- =?us-ascii?Q?pMTIaQUQjJSdYY07hQngC1+d+IVgxXz0b6BVv9/Ct4p2umdwydeMluVHkwm2?=
- =?us-ascii?Q?rNq5dveRo0D5P6a15S3OnWYBc2BNyIsgZNXwQHjkVtGLRi5+0P/PwYE0hC9J?=
- =?us-ascii?Q?+VVJ7qrvvASyV3nEv5pKi0a74jYhdLOsblKVcR1zckRDv1XpghzMuKyy+0TH?=
- =?us-ascii?Q?Cn6EAtAQsRhBK/3NucUNKXLOnTOxxy7SuDPNIpVfswBO1jTXmk+9nhN0sQay?=
- =?us-ascii?Q?iIX205Ug0EVR+eNzEDJwcZU/wUi9NC5CFMunEuASVqOicTU4RScODZ//4HY8?=
- =?us-ascii?Q?NE9BV1AAVReb0UVh+MndSAJCJsPXZAulA9MGMExe5kktpJ05Vl7PYwLBxVcj?=
- =?us-ascii?Q?YcM7uFDERAJ0prWBMTG9WjBeRtJvRWmfEMYqMWF4P+wfvhAFavzQEdlyrbYP?=
- =?us-ascii?Q?Vu3g9UbsJQPhv47+hlnDAuFpLVp06BjXSD6gK5ONnohuLKzYVEWiv1ChVFtl?=
- =?us-ascii?Q?aCKsrd8vugyn7eUPtGb9PConT9TNAe7eLATDHmIYSTo3+WjID09yCwk1lhew?=
- =?us-ascii?Q?R8xPMHhxKeBIuqjEL/9PHnsD/KbFYRaMkZ1p5CSyjQ0h16ZPHBloLWul1Z5A?=
- =?us-ascii?Q?CXFBZAI0DuXS0ZMl4OX92MAL730QnpGPE0l31zHyWoRzzcZtG7NrJ4dyG4qx?=
- =?us-ascii?Q?vIjOi7y9FLBGpkG+xsgRxewIrQGajzrU7k3b1gEfB/+ieTAD7YPQTrA738vL?=
- =?us-ascii?Q?hJlIq8EMHp1/3YEYrc78EaXCeJLgIUJUaail9WwAvpk8/pB6x3YheT48yglq?=
- =?us-ascii?Q?5enuySbOqGxEBXROzR4Now03FyeeL8lL8jRFceFt0sEk2Rg/4ympLh1NpFMl?=
- =?us-ascii?Q?zeohTlXTq9lj/koUOy9/6aEbbUeu77ygrZ5HRUui1W30Ce8EPOuLJU3l7Yxu?=
- =?us-ascii?Q?BKag8I/U+ENO6rDfS4asOFgAFmDHFobkGn8QXAXO11Xn1kn6lTH70ZiqBi+0?=
- =?us-ascii?Q?TIIQBgIKvXloUrvoWagMdjsECKjjfv2poMOmvAvsI4TQMAL1CYBFTRgwXa7+?=
- =?us-ascii?Q?6lqItBxEpCgVgAYPPf4mzH8qi7GbkMJkGPYW?=
+	=?us-ascii?Q?4sSun2YkL4W5SfMy5+0O8wUU8pbgM9KpOsUp5VooMjb1GbK808t59qEjHQMl?=
+ =?us-ascii?Q?JMOP1T+4hzbol9kbpJx6CFqy/WwZg8O+ry8mFYBx9L7mlU7u7MJNcvLFmitu?=
+ =?us-ascii?Q?EiSa8MJiLqA1BZ0p6UXGjobb2i5H7OwtKWM3hA3Pi/X58qkZCtsKig9Vo96x?=
+ =?us-ascii?Q?tPgy6dcLpBT2n2hQ1Qo1O6skajRSEg5GD7H3Ym1LJpaqUCMNhrHJxk3BtXHk?=
+ =?us-ascii?Q?sIPWP+WUDWc9tCUa5o27cmNNnaVRT0qx2Gut97cnOmPikEPYFp6oYd/5/etw?=
+ =?us-ascii?Q?B2ghPg0zbRseWHbfGvrbUJv8rUUjzVFfCcQ4ee8fvoPwtL8fUBvvsMhu753t?=
+ =?us-ascii?Q?6TtVlAAaWBSUfK6WVaBMY/lSmRGD8JKvpbHNThgqPVsR4GFQbTR4UdSfm8E6?=
+ =?us-ascii?Q?nZq7UBF24TasqW025mrvaZuvgJWC3CTHVgqeg2yoSvegjENiw3KmOjzUiONj?=
+ =?us-ascii?Q?Y8k5o4DMjWCl0hcOAhmyqZNT/KYzpLFBBQBlf4jaf1p95ViOhYWltGinvdzG?=
+ =?us-ascii?Q?Bnr2yrJm3TTtQJXuRus4ldM8wNPifennaZo97pA6EcRGdy6vYzparzKxOKTI?=
+ =?us-ascii?Q?h4/594z4gOgzVCFdbFSj6FwLfgWdSIdx7uw8dJvcwMd9IS4nKVCuuFvU66A0?=
+ =?us-ascii?Q?HePDDvObsHXD4Y3zHgMlNGnvrtXv0WVuqggZbxT9Cm+jgsRoiV0owMxMitIQ?=
+ =?us-ascii?Q?i1ap2NccmgB5sVudid170uAsEw0AsTYh74vc+Dq0BZL2A/BNNLRRKuLQDz39?=
+ =?us-ascii?Q?SxDke5nfOUveUPnuCxi81jTzG7m/jHZi6p8mw8IwNQnK8V4HQVqN4WVUuyDv?=
+ =?us-ascii?Q?GxBgCDCIehpcx4jD3+l6fHYj/lhfykwH+5pw+CJB1exDLeRkaRzgGdIDhfOp?=
+ =?us-ascii?Q?6oaRacymiPqefcyOe4p9MzlrB5qnC1pPaokrfKZg3rGdfv56yUazWgkKSJ7N?=
+ =?us-ascii?Q?pVSLQOcEZnd8e9vJWiStvIslfqrEjp54Rwb9yU2ODGB2D9/o6brJcz10jLRY?=
+ =?us-ascii?Q?DUIri8ntn+9IzFt1gaZwfuK2ZN7xn7F1JLovmkYR6w1+18fGm7lsyyo5HcRX?=
+ =?us-ascii?Q?6FoOZtRUeubeCc5rEuGtB3ZCb0xlB+EsuzUSXsapDQTID1DniBPnE6Ei06fP?=
+ =?us-ascii?Q?bLrdwabwOBz5i2lcDiU6HBmtNVpArXdPzyu3cWfpOKONK41DDyPur6Gaadjv?=
+ =?us-ascii?Q?pRjRpuB8hkCIbKbfXpit5I+Op8TdIaIsKDjQ9xcW5+rtA5SG6VqmIxLRHqBM?=
+ =?us-ascii?Q?ZrUkOFeBlCJnWJPX9GlEBCb0bO6Ola2OBYQbcBY15sxmoS869S81FrMHATae?=
+ =?us-ascii?Q?qyt/ePwoCpCqArUmaqZsiV25K+tqgt4uUPUQnryt5Hpoll45O4N0lMYP+fYa?=
+ =?us-ascii?Q?hQJkrZ3nAi+N1rtrRZSjxvX39/NTnqzFNdTwzzOyYQdbaDyvC+vQmpnkBalY?=
+ =?us-ascii?Q?EcitfpWtVtYi6PPvHJYe/ebzYoo8iJOwb52qtRnaTOaZ+y6PA93H0u/+mKvS?=
+ =?us-ascii?Q?fP2xEZ3booKXjny6dwacFxlNGKV0UMmknWm7?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(366016)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(7416014)(376014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GrvRc3SsEExCMEjv/w3QwmwG9QvmMZ+GdbL0h8yALsWcDdDg4Y5My2zKnm3l?=
- =?us-ascii?Q?Lb12APhc3tot7HojLOR068OhxaeMKg17lTYLYEeDMT+DIkOAVnaT4Nd3Hn3M?=
- =?us-ascii?Q?k9Hsv5f9n4LK9l9eZpZ9x00+EfpLDY1Gs/adO70CpDU5XNFbSQ23JS18Wo8Q?=
- =?us-ascii?Q?CZROcUro4W/dE8PDvEbIeeN7hbOF2Q9EnzBbqLrDUE1+oOniL3Btsd5f8iw9?=
- =?us-ascii?Q?REHmEsn/ATTHPrtRsv9CuNYlXqjEax1ExxnUc679S1y5gsY1wHIbluUCo5rI?=
- =?us-ascii?Q?tjsXMQ76HyRQzLWOI+X33p+JWWjZDGWGBBpM/QwXr7UnSHLORUDFpo3+9SLP?=
- =?us-ascii?Q?XBjMDa522lfvusav+RbKVvt3v+5VVwWvoQm5oLGNO6h0qQBTBU4znwBI6DJw?=
- =?us-ascii?Q?ksdu3h9oF9UbbEXvdrJwFD3EbRgbsgU9r0A4KfcU2NMPo6ttzB5nA36Hy2TN?=
- =?us-ascii?Q?tL50vbY4wYhEvW8s784GJghyo6v01V5fQ5GywTQmheAoH1hQSyBo9NEDY+dJ?=
- =?us-ascii?Q?rKnZ3rn0Kh1F4NrBBq16C0c2dck8fT13yEL18sJee9qoOGfJwlE4bsQHFe1R?=
- =?us-ascii?Q?SaXshzY74aMxMIoWtywxdP2OYFu+SgTFy3MR6MsAgV/9OJLsFpVTZathYbdA?=
- =?us-ascii?Q?AtLGHv6WvOY0PKwNRO5O2kNtmMGeDgSfTzKgl9lKXbpwmJl0NDimz8Q4VEnB?=
- =?us-ascii?Q?B4EFX/GrA/UGvsl2YonbA54kCdzoNPwupQT6P8dUtZIjsy0emSAcklXmHMvd?=
- =?us-ascii?Q?+Us+zMXoGd2ZUsx5Tz9ja/w6n6skL2ClV0+7wqhh5FNsZHNDMfbaUQPbrPXG?=
- =?us-ascii?Q?fBNVAplsK7w/IBSznE5eq0mtd8stee08t8aw0fyDukaPgbQxyHD0+czwTbqe?=
- =?us-ascii?Q?ltReBUqtc8c3afkLqKkvQatAseVgxSE9N1enCcFKB2csfgXHoW7fcHJC3vuI?=
- =?us-ascii?Q?xGFTXlDzYWseXyg6BdsykbN4hElm+dhWKk7bcLRpeL7IBMJwfK/TV3Zeb2WY?=
- =?us-ascii?Q?zJ+Kqb5HN1GJRxAzxl5mVF291FOrcsUSP7DvwxFGJ1aSWTWZIZPtVE+XH4Dt?=
- =?us-ascii?Q?fPJTpe3mQrwZx3YmGHuIYLk2pJZzYOZcv13DoA6Y2gqsEFEfCAAI9qHKRUqB?=
- =?us-ascii?Q?oODU+ySszdQrDISNweh4ooyRocRWCDe+rmGA1cBS8lvrNWaePpbf/cJ+AvZY?=
- =?us-ascii?Q?p7oW2q5z8v/01IDrzr240+Ie4qZlefmcIa4yX+ed2NqCWbCi+J+R3ArUWuOC?=
- =?us-ascii?Q?hlkwvpuVZzT4xi8MVwytUA8J/Zv5Tc7Y8QTY8JCdkoPNvXKSXDfa6fi7b5yd?=
- =?us-ascii?Q?VNDWJm87VeHLPuszMPLv9i1/yW3osytYGBBK4GL4uXFEIHNGyLZcxBwBndAz?=
- =?us-ascii?Q?6oOTGbHB1ogedS0Z+NDGgG34PEW9Ea2GKnOgXFVO/R+o9gdtWN7jVkif1wpU?=
- =?us-ascii?Q?MXVvye8YQe2iLXvOHx6co9foeVCXrxwnKoUZg2AeC0E1sEuWRO5L1rM3DWhx?=
- =?us-ascii?Q?m7MEPzuy76MB7sa2/Hr3RaPJQ8YfRAA8cDspRdLyChAp3MThmKmX89OtYW7Q?=
- =?us-ascii?Q?qVkP9PJi3ypXxiuR0SM=3D?=
+	=?us-ascii?Q?IyQzHLO6zvBc34SEDZlk2qU3HcsGrArPUlngopi567vIiglIKyzr87edgTht?=
+ =?us-ascii?Q?at/F/tVhORwSCYqwTb9PPR5n5J9QmqocA+uGyjtO0s1FBJu2rKMYqaoPRU06?=
+ =?us-ascii?Q?xtX0iSQ5eDaLVgBw2rWpvbFhUq0itbG/RI1hgxd+LjA9ydSaBM9yNVeMoH3A?=
+ =?us-ascii?Q?Zlvscfi79UXJRqPdCteLk7aivBI0RWnNlDQ7ipEYc9FkheWUSqmb0Udf0diO?=
+ =?us-ascii?Q?/jloIRS3aBDKlve45NKQyrRhpQyprUi36w83veOXphN8iuXMc6LUrFEv7Vnl?=
+ =?us-ascii?Q?to7ICxSSWJzipEO5wj3eBdJTSN4FYNRG54J7X6z8p1I1oCQAf3YSoavQtLpt?=
+ =?us-ascii?Q?yJDHeoNFVdN8UN/zKjTJPx5H8N0WaaKGfS5G0WKFv8IHucQ/gPhN9oiKegXz?=
+ =?us-ascii?Q?kZU2sevrl89y2CP9+fAx3kLAJtjRdZxWMCC6XxLEU4fmdvLEZE0KKXBkI6+T?=
+ =?us-ascii?Q?JxNj/rzXrp7v0M/ZWGUm0NAoKkqNZHv+3Xd30BqlcuLdcxm8omNfYnvFAffI?=
+ =?us-ascii?Q?yjZ7H/8TMzHaGQaTpMXfp1M//6o3a6tv3a+CfY+zVuix/EVeI5/Lw07paHgP?=
+ =?us-ascii?Q?3+WfD4Dc79OXf5IyMqwxM6CfZr8PN/JuUZLLU2CsKmclPUOR88K5LQcGD8Hd?=
+ =?us-ascii?Q?IRJYl97fNZe8hOy1p7ztZXnTVRMfT0fewfnhP5eId3s9BSMsUdDwuNt071II?=
+ =?us-ascii?Q?ICIjFPqp7eFOGeZVpsxFAs7ajqnnz0gPvVxHGO8mJE8HqiwDrowjS4uWlTKL?=
+ =?us-ascii?Q?GBLjPe3pZ7gnDokTknhoaMkdUlOj9J1yFu0a3SMXNjXNQKX663PhtEWVM/48?=
+ =?us-ascii?Q?tYzqv1DgK+/CjQKRbz1MWpxrbtCUnC19R8Y2ED1z4VthY+GkvnoZlh0ViIJX?=
+ =?us-ascii?Q?LNYIgqRrlI4r1u7BJBpA/T9+TyYF9vBnmBB9Rnp0t06BkagNuO9fkvggM4ju?=
+ =?us-ascii?Q?c83CXDe1Vw43N17HyxV+6Aoj2EIbp5K+fepWaHmV+6E7D04M6opCIFolZmP4?=
+ =?us-ascii?Q?aF38PBGu0IeEuIQiFcL3+pY08npYZ7Aupv/NELpBs6qz+oN4aYezSfVodPR3?=
+ =?us-ascii?Q?dRv/77hMd55VmfcK/D7Ok6mRSD3gX++zVVrLFRebcqJrD+RWk58m7AJAyLXw?=
+ =?us-ascii?Q?DsA3Ihxhgg/eaLZuwr1pjqfBNuRkCm9zUDzgrSPcf8FloeNJzHYkP3U0WIOK?=
+ =?us-ascii?Q?rIn5txobcj+ZoVGFlyopciy5GcKkhEB7g2H6LS1S/A8ppkBw8WV9hwcWb17P?=
+ =?us-ascii?Q?YS0B8N849nOMzfGL8U3wURGO425SWeJzOWs1AT/ZGeGysm4EgOj8zo3rm+j7?=
+ =?us-ascii?Q?9WZiovIbydJI3a7oAvQOrVulQ67vZ0ZNBTAsUjI6Q199UI7/0bszNzhlgLke?=
+ =?us-ascii?Q?HUc9UhmF5r25/7LyE3Mfrycp6dXY6uHSeHepr2BwrxTvFAFqvxUfuMFP28Yv?=
+ =?us-ascii?Q?7wj3MgAhxeE2FZsJwso65Q5jKIZaWI/YhxWSK9ee2ZaZBNedRL1YeNwVIkee?=
+ =?us-ascii?Q?ywSfdVfwgwrugmP/yMc/8MVpKwYwtdeNeJ15uj1yxCEnomWoYKAgsGp0MaPf?=
+ =?us-ascii?Q?yKceGFLPouph4BivwIbfkoOwGZ8o1f6rDkAWXBpC?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b3ed3aa-41ea-4780-a23b-08de29163fa2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11538e4f-43d4-44d0-1152-08de2916e9dd
 X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 15:54:26.8232
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2025 15:59:12.4758
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: shwZeuYrFjqkK3Kvy6ai1kKQuSIbbiGp/SpinFs1dxptXVdwKWz9oDZZX8sAL5egSA8BvJ41nuFPYwP0viYs7Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11845
+X-MS-Exchange-CrossTenant-UserPrincipalName: PtV8iW8SlBl2bvJfgx+IpeZHySKK/9WEnBGOjoz/xElWEidkGiABd7kY8b80glOM0WeFihjF2vHjBwDOilhyPw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8920
 
-On Mon, Nov 17, 2025 at 11:03:55AM +0800, carlos.song@nxp.com wrote:
-> From: Carlos Song <carlos.song@nxp.com>
+On Fri, Nov 21, 2025 at 07:01:00PM +0800, Carlos Song wrote:
+> The LPI2C controller automatically sends a NACK after the last byte of a
+> receive command unless the next command in MTDR is also a receive command.
+> If MTDR is empty when a receive completes, NACK is transmitted by default.
 >
-> 't->len' is an unsigned integer, while 'watermark' and 'txfifosize' are
-> u8. Using min_t with typeof(watermark) forces both values to be cast to
-> u8, which truncates len when it exceeds 255. For example, len = 4096
-> becomes 0 after casting, resulting in an incorrect watermark value.
+> To comply with SMBus block read, start with a 2-byte read:
+> - The first byte is the block length. Once received, update MTDR
+>   immediately to keep MTDR non-empty.
+> - Issue a new receive command for the remaining data before the second
+>   byte arrives ensuring continuous ACK instead of NACK.
 >
-> Use a wider type in min_t to avoid truncation and ensure the correct
-> minimum value is applied.
->
-> Fixes: a750050349ea ("spi: spi-fsl-lpspi: use min_t() to improve code")
+> Fixes: a55fa9d0e42e ("i2c: imx-lpi2c: add low power i2c bus driver")
 > Signed-off-by: Carlos Song <carlos.song@nxp.com>
 > ---
+> Changes since v1:
+> * According to discussion with Frank, improve comment and commit log by AI.
+>   This comment and commit log looks more clear.
+
+Needn't mention "by AI" every time.
 
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
->  drivers/spi/spi-fsl-lpspi.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+> ---
+>  drivers/i2c/busses/i2c-imx-lpi2c.c | 94 +++++++++++++++++++++++-------
+>  1 file changed, 74 insertions(+), 20 deletions(-)
 >
-> diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-> index 8da66e101386..065456aba2ae 100644
-> --- a/drivers/spi/spi-fsl-lpspi.c
-> +++ b/drivers/spi/spi-fsl-lpspi.c
-> @@ -486,7 +486,13 @@ static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
->  		fsl_lpspi->tx = fsl_lpspi_buf_tx_u32;
->  	}
+> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+> index d882126c1778..dfacb0aec3c0 100644
+> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
+> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+> @@ -90,6 +90,7 @@
+>  #define MRDR_RXEMPTY	BIT(14)
+>  #define MDER_TDDE	BIT(0)
+>  #define MDER_RDDE	BIT(1)
+> +#define MSR_RDF_ASSERT(x) FIELD_GET(MSR_RDF, (x))
 >
-> -	fsl_lpspi->watermark = min_t(typeof(fsl_lpspi->watermark),
-> +	/*
-> +	 * t->len is 'unsigned' and txfifosize and watermrk is 'u8', force
-> +	 * type cast is inevitable. When len > 255, len will be truncated in min_t(),
-> +	 * it caused wrong watermark set. 'unsigned int' is as the designated type
-> +	 * for min_t() to avoid truncation.
-> +	 */
-> +	fsl_lpspi->watermark = min_t(unsigned int,
->  				     fsl_lpspi->txfifosize,
->  				     t->len);
+>  #define SCR_SEN		BIT(0)
+>  #define SCR_RST		BIT(1)
+> @@ -461,7 +462,7 @@ static bool lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atom
 >
+>  static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomic)
+>  {
+> -	unsigned int blocklen, remaining;
+> +	unsigned int remaining;
+>  	unsigned int temp, data;
+>
+>  	do {
+> @@ -472,15 +473,6 @@ static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomi
+>  		lpi2c_imx->rx_buf[lpi2c_imx->delivered++] = data & 0xff;
+>  	} while (1);
+>
+> -	/*
+> -	 * First byte is the length of remaining packet in the SMBus block
+> -	 * data read. Add it to msgs->len.
+> -	 */
+> -	if (lpi2c_imx->block_data) {
+> -		blocklen = lpi2c_imx->rx_buf[0];
+> -		lpi2c_imx->msglen += blocklen;
+> -	}
+> -
+>  	remaining = lpi2c_imx->msglen - lpi2c_imx->delivered;
+>
+>  	if (!remaining) {
+> @@ -493,12 +485,7 @@ static bool lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx, bool atomi
+>  	lpi2c_imx_set_rx_watermark(lpi2c_imx);
+>
+>  	/* multiple receive commands */
+> -	if (lpi2c_imx->block_data) {
+> -		lpi2c_imx->block_data = 0;
+> -		temp = remaining;
+> -		temp |= (RECV_DATA << 8);
+> -		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
+> -	} else if (!(lpi2c_imx->delivered & 0xff)) {
+> +	if (!(lpi2c_imx->delivered & 0xff)) {
+>  		temp = (remaining > CHUNK_DATA ? CHUNK_DATA : remaining) - 1;
+>  		temp |= (RECV_DATA << 8);
+>  		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
+> @@ -536,18 +523,81 @@ static int lpi2c_imx_write_atomic(struct lpi2c_imx_struct *lpi2c_imx,
+>  	return err;
+>  }
+>
+> +static unsigned int lpi2c_SMBus_block_read_single_byte(struct lpi2c_imx_struct *lpi2c_imx)
+> +{
+> +	unsigned int val, data;
+> +	int ret;
+> +
+> +	ret = readl_poll_timeout(lpi2c_imx->base + LPI2C_MSR, val,
+> +				 MSR_RDF_ASSERT(val), 1, 1000);
+> +	if (ret) {
+> +		dev_err(&lpi2c_imx->adapter.dev, "SMBus read count timeout %d\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	data = readl(lpi2c_imx->base + LPI2C_MRDR);
+> +	lpi2c_imx->rx_buf[lpi2c_imx->delivered++] = data & 0xff;
+> +
+> +	return data;
+> +}
+> +
+>  static void lpi2c_imx_read_init(struct lpi2c_imx_struct *lpi2c_imx,
+>  				struct i2c_msg *msgs)
+>  {
+> -	unsigned int temp;
+> +	unsigned int temp, ret, block_len;
+>
+>  	lpi2c_imx->rx_buf = msgs->buf;
+>  	lpi2c_imx->block_data = msgs->flags & I2C_M_RECV_LEN;
+>
+>  	lpi2c_imx_set_rx_watermark(lpi2c_imx);
+> -	temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
+> -	temp |= (RECV_DATA << 8);
+> -	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
+> +
+> +	if (!lpi2c_imx->block_data) {
+> +		temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
+> +		temp |= (RECV_DATA << 8);
+> +		writel(temp, lpi2c_imx->base + LPI2C_MTDR);
+> +	} else {
+> +		/*
+> +		 * The LPI2C controller automatically sends a NACK after the last byte of a
+> +		 * receive command, unless the next command in MTDR is also a receive command.
+> +		 * If MTDR is empty when a receive completes, a NACK is sent by default.
+> +		 *
+> +		 * To comply with the SMBus block read spec, we start with a 2-byte read:
+> +		 * The first byte in RXFIFO is the block length. Once this byte arrives, the
+> +		 * controller immediately updates MTDR with the next read command, ensuring
+> +		 * continuous ACK instead of NACK.
+> +		 *
+> +		 * The second byte is the first block data byte. Therefore, the subsequent
+> +		 * read command should request (block_len - 1) bytes, since one data byte
+> +		 * has already been read.
+> +		 */
+> +
+> +		writel((RECV_DATA << 8) | 0x01, lpi2c_imx->base + LPI2C_MTDR);
+> +
+> +		/* Read the first byte as block len */
+> +		block_len = lpi2c_SMBus_block_read_single_byte(lpi2c_imx);
+> +		if (block_len < 0) {
+> +			dev_err(&lpi2c_imx->adapter.dev, "SMBus read data length timeout\n");
+> +			return;
+> +		}
+> +
+> +		/* Confirm SMBus transfer meets protocol */
+> +		if (block_len == 0 || block_len > I2C_SMBUS_BLOCK_MAX) {
+> +			dev_err(&lpi2c_imx->adapter.dev, "Invalid SMBus block read length\n");
+> +			return;
+> +		}
+> +
+> +		/* If just read 1 byte then read out from fifo. No need new command update */
+> +		if (block_len == 1) {
+> +			ret = lpi2c_SMBus_block_read_single_byte(lpi2c_imx);
+> +			if (ret < 0)
+> +				dev_err(&lpi2c_imx->adapter.dev, "SMBus read data timeout\n");
+> +			return;
+> +		}
+> +
+> +		/* Block read other length data need to update command again*/
+> +		writel((RECV_DATA << 8) | (block_len - 2), lpi2c_imx->base + LPI2C_MTDR);
+> +		lpi2c_imx->msglen += block_len;
+> +	}
+>  }
+>
+>  static bool lpi2c_imx_read_chunk_atomic(struct lpi2c_imx_struct *lpi2c_imx)
+> @@ -599,6 +649,10 @@ static bool is_use_dma(struct lpi2c_imx_struct *lpi2c_imx, struct i2c_msg *msg)
+>  	if (pm_suspend_in_progress())
+>  		return false;
+>
+> +	/* DMA is not suitable for SMBus block read */
+> +	if (msg->flags & I2C_M_RECV_LEN)
+> +		return false;
+> +
+>  	/*
+>  	 * When the length of data is less than I2C_DMA_THRESHOLD,
+>  	 * cpu mode is used directly to avoid low performance.
 > --
 > 2.34.1
 >
