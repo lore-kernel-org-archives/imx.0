@@ -1,92 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74588344024;
-	Fri, 21 Nov 2025 14:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411F01B4156
+	for <imx@lists.linux.dev>; Fri, 21 Nov 2025 15:19:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763735001; cv=none; b=bMKBfoud8wna8kSl7iXtQuUwBVh1KFlkgXp0cQxAlgNOfHaxkaMyyz/6ZHtUWbsCB7J2wF3vkaAyrjmwy4NsKIxzAszjTu9FZmoilv+LF3SV3ZHCA9u05dQpgnMM7xrIpANxdoxOSmQNiecuV5E3YlrRGrdhYb28TLFu+YTJyIE=
+	t=1763738345; cv=none; b=XUsqQ049F4UeE8IR+H1FMriV42JgcbrdjyYJq3GbJ0uWGaxVZH/8eFKonWE8/RxE9RUmILzzFSVDZDcEop/heG4iEbK42VKHjkRTeTTMexIpCu4i1BBsYRC7Aq7OSRtEYLek/9LYjvGid1WdQ/1aKDPK/ftbG8jKtf7MsHIqfWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763735001; c=relaxed/simple;
-	bh=E3o8i+V0u5YHeHV7K5vFmZBQMV9gJn5G/yAV47cvbJs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RUZ6OFl8SsheWqMUtnqElf/lKVmRYLIBNKZ5+/yAQOAR/VSV+DL9AUk7BAZYRk3rXAogtVmUESuzthNKyvq5O1VDS3JvWWXCSpMCOH5IBkizWPMUIO72tfH0GVKV1T1kV5QbQQ91DfL9ngLsCcTyiREzkGrPCVxWKr1oRwDmw0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bY/+SCHN; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bY/+SCHN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A90C4CEF1;
-	Fri, 21 Nov 2025 14:23:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763735001;
-	bh=E3o8i+V0u5YHeHV7K5vFmZBQMV9gJn5G/yAV47cvbJs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bY/+SCHNsl1FX3WdcuLRnX2HfmuRtVqjYf7fXGoaP1ozRUFWsM7eMTTdx3DkCb36E
-	 CSv5Q/96R9Dzp1IhlsTxVdSdezCOAKGCpPDlgUFq94AO9MUGigFyjTAtKovwZw6Sb4
-	 Su62MbXqoySnwGntadiMNLlEJh4lkTWCMGJMWsMgAh9oxPw4yi5QKZtPLtlzB/Ea9B
-	 nE5bUh5pmOP8dvrXrtRM6FKn0dnjwLwT3kSUS9bsusyAiQvbJ7NE4TTi/P3f27ho3A
-	 xY3NGP9a3xtaX6OY3ny4jFjh4otiAaj4DMZZll/ha5kqbPNdupFKE59EtuCfbRowbv
-	 RkE6E0hptO1QQ==
-Date: Fri, 21 Nov 2025 14:23:17 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>,
-	"rongqianfeng@vivo.com" <rongqianfeng@vivo.com>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] spi: spi-fsl-lpspi: fix watermark truncation caused by
- type cast
-Message-ID: <7af6aa81-de6f-4ac7-b6dc-e4a79ae80afb@sirena.org.uk>
-References: <20251117030355.1359081-1-carlos.song@nxp.com>
- <VI2PR04MB11147DF123E2313B91CD8FBC7E8D5A@VI2PR04MB11147.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1763738345; c=relaxed/simple;
+	bh=8I1kaW4tw6ShabGBn192g00Jq5dnD0vAxiZk8PSuTMo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=aKbnTvtDiIVLPUv8r408iDUYVJVumyBfruZFMG9r8/EjWzFpRgYTcxRMtrtjtziYHq82IOZMT/RWccYXWsJdpLXKmPIrsmixxuc5YrxlRxcr1SFPGuTslybJB9BkwhvQi/ZiUeVdxLC8rfBwptyldYwlUuBB/SOvbGZYXWqnPJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vMSuQ-0001mM-AS; Fri, 21 Nov 2025 16:18:50 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vMSuP-001bmX-2X;
+	Fri, 21 Nov 2025 16:18:49 +0100
+Received: from pza by lupine with local (Exim 4.98.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1vMSuP-0000000096L-2pSt;
+	Fri, 21 Nov 2025 16:18:49 +0100
+Message-ID: <24e594539714c5997545414d084a60128673a50b.camel@pengutronix.de>
+Subject: Re: [PATCH v5 4/6] reset: imx8mp-audiomix: Extend the driver usage
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>, Krzysztof Kozlowski
+	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
+	 <shawnguo@kernel.org>, Fabio Estevam <festevam@gmail.com>, Daniel Baluta
+	 <daniel.baluta@nxp.com>, Shengjiu Wang <shengjiu.wang@nxp.com>, Frank Li
+	 <Frank.Li@nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Pengutronix Kernel Team
+	 <kernel@pengutronix.de>
+Date: Fri, 21 Nov 2025 16:18:49 +0100
+In-Reply-To: <3959e908-ae61-4424-a8ef-89f655a4de8c@gmail.com>
+References: <20251114133738.1762-1-laurentiumihalcea111@gmail.com>
+	 <20251114133738.1762-5-laurentiumihalcea111@gmail.com>
+	 <8b225c56612ff01845a90388be0945c7d0b3f0d2.camel@pengutronix.de>
+	 <3959e908-ae61-4424-a8ef-89f655a4de8c@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="UTLYNt/SZpo6Xudb"
-Content-Disposition: inline
-In-Reply-To: <VI2PR04MB11147DF123E2313B91CD8FBC7E8D5A@VI2PR04MB11147.eurprd04.prod.outlook.com>
-X-Cookie: revolutionary, adj.:
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-
---UTLYNt/SZpo6Xudb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Nov 21, 2025 at 08:18:17AM +0000, Carlos Song wrote:
+On Fr, 2025-11-21 at 01:29 -0800, Laurentiu Mihalcea wrote:
+> On 11/14/2025 8:02 AM, Philipp Zabel wrote:
+> > On Fr, 2025-11-14 at 05:37 -0800, Laurentiu Mihalcea wrote:
+> > > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> > >=20
+> > > Switch to per-device reset map to allow reusing the driver for other =
+NXP
+> > > block control IPs.
+> > >=20
+> > > Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+> > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > > Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> > > ---
+> > >  drivers/reset/reset-imx8mp-audiomix.c | 18 ++++++++++++++++--
+> > >  1 file changed, 16 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/drivers/reset/reset-imx8mp-audiomix.c b/drivers/reset/re=
+set-imx8mp-audiomix.c
+> > > index 35df9bd5f71a..d3396f37d1ff 100644
+> > > --- a/drivers/reset/reset-imx8mp-audiomix.c
+> > > +++ b/drivers/reset/reset-imx8mp-audiomix.c
+> > > @@ -24,7 +24,12 @@ struct imx8mp_reset_map {
+> > >  	bool active_low;
+> > >  };
+> > > =20
+> > > -static const struct imx8mp_reset_map reset_map[] =3D {
+> > > +struct imx8mp_reset_info {
+> > > +	const struct imx8mp_reset_map *map;
+> > > +	int num_lines;
+> > > +};
+> > > +
+> > > +static const struct imx8mp_reset_map imx8mp_reset_map[] =3D {
+> > >  	[IMX8MP_AUDIOMIX_EARC_RESET] =3D {
+> > >  		.offset	=3D IMX8MP_AUDIOMIX_EARC_RESET_OFFSET,
+> > >  		.bit =3D 0,
+> > > @@ -42,9 +47,15 @@ static const struct imx8mp_reset_map reset_map[] =
+=3D {
+> > >  	},
+> > >  };
+> > > =20
+> > > +static const struct imx8mp_reset_info imx8mp_reset_info =3D {
+> > > +	.map =3D imx8mp_reset_map,
+> > > +	.num_lines =3D ARRAY_SIZE(imx8mp_reset_map),
+> > > +};
+> > > +
+> > >  struct imx8mp_audiomix_reset {
+> > >  	struct reset_controller_dev rcdev;
+> > >  	struct regmap *regmap;
+> > > +	const struct imx8mp_reset_info *rinfo;
+> > Since only rinfo->map is used in imx8mp_audiomix_update(), you could
+> > directly store a
+> >=20
+> > 	const struct imx8mp_reset_map *map;
 >=20
-> Gently ping to avoid missing...
+>=20
+> hm, that is true, but I wonder if instead of replacing "rinfo" with "map"=
+, it would be better to
+>=20
+> keep "rinfo" and add an out-of-bounds check for the reset ID in imx8mp_au=
+diomix_update().
+>=20
+> Something like:
+>=20
+>=20
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (id >=3D priv-=
+>rinfo->num_lines)
+>=20
+> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ret=
+urn -EINVAL;
+>=20
+>=20
+> we are stuck with "struct imx8mp_reset_info" so might as well fully make =
+use of it?
 
-Please don't send content free pings and please allow a reasonable time
-for review.  People get busy, go on holiday, attend conferences and so=20
-on so unless there is some reason for urgency (like critical bug fixes)
-please allow at least a couple of weeks for review.  If there have been
-review comments then people may be waiting for those to be addressed.
+There is no need to check this again. You copy rinfo->num_lines into
+rcdev.nr_resets, which is checked in of_reset_simple_xlate() before the
+reset_control is even handed to the consumer.
 
-Sending content free pings adds to the mail volume (if they are seen at
-all) which is often the problem and since they can't be reviewed
-directly if something has gone wrong you'll have to resend the patches
-anyway, so sending again is generally a better approach though there are
-some other maintainers who like them - if in doubt look at how patches
-for the subsystem are normally handled.
-
---UTLYNt/SZpo6Xudb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkgddQACgkQJNaLcl1U
-h9DnnAf+Mzd/D3tDgwGnqiKK+ihy/oCQg/umjiEl9Rx4D6C1vlg2iyc6Ae4hvCaw
-yO4rhu1vkQFidueMpRlOuW/GXWSVrce16Knjb8L4qqr8a/ALm4925PFUgUabt8pl
-L9L4nn6NQTlgQKY3hXOj2HSlo55R03gH1zKvNoKK8sPJiHBeFyLpzvCfoVfkwXvA
-WaaAtwgHm9A3rYUE7VM9vfzUQW4+nM16XrF0xLPeQgUaHRXDH64h8YZBqVDn0IKA
-zhDk1ixsXKsU9dXeKwxHdTTqKrOr57V7y5rAqqNRPeY+xb/q3MooQMdU2uf+ycbQ
-YWQ414/FdvmQsOWnMhHcFNuT7NfUrg==
-=d+XM
------END PGP SIGNATURE-----
-
---UTLYNt/SZpo6Xudb--
+regards
+Philipp
