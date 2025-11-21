@@ -1,131 +1,156 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E3C34A76F
-	for <imx@lists.linux.dev>; Fri, 21 Nov 2025 16:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF581BCA1C
+	for <imx@lists.linux.dev>; Fri, 21 Nov 2025 18:07:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763743771; cv=none; b=jA8H5CmSwrD2UBF6ECoETp7R04NnTF9QOMv+eAu+6oDYIVuHFVijsGYlKCC172zV46Dk6+F1mLw9j1qlqMVD7Ba21/gxXSDCnJlxwnZrI480FrlDTWt4dc7tYHZL5xuSj2P82FGzKdKCgZW0oRWkaTBSZR3h8abpI4zvX7k72Hw=
+	t=1763748461; cv=none; b=tfJ+FtZDVp5ic/j0G9vnEgrvP8t5PMVluRhNsBVVVY+ifUXn4p8Aat6agTGO+REx/HCE0eHvM/szSdAgDU/8YKKyoP5hPBz1D7bQ5eLFk9onJ15ZWNaq+eWypwB7mnk9hRG09rkd/w2Mpb4rvsM/T9fi0b+PGPNSfueuNJIAgbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763743771; c=relaxed/simple;
-	bh=8CNzFpWGHJiJ/kMik9XkodfqnXW6wo433Z1B1kwxkag=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L6VexTGelNejzcDP1yF71ak7vGDC2vRxJRYzEOEylJ+0V+OYHd2Fj94aYocjjYFuugavRk+u6I4xVx1ohuV8rV8u+NTZrEGnpB1bWdyMpu6op2QDnm6Ovz740aJ7NJolwjSUeq3BoUPr1kfOcklBgJIZOUr0hADUE/UHMAvGyU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bg4+lxYi; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1763748461; c=relaxed/simple;
+	bh=Q1ZwELVabso4EkyDG2xMjJ4EyeFlxuL65Prpg3ujMaw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Okbg93Wzm2JpYGecc/hU+YJFAnq2nrVGJ0k/G5dxdwFXd3t46zON3gWYEFeVDvQW5c18GkmTQevHEKe3cPWq1SzyKx4KI8y5QXWgkyMBSgOprMLKvdDBsA9bRepXhWV4o/I+lIzvLGXYYmRikslE9JZY1tXfcTDtgK4e1yxyWFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=UjVVqPmL; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bg4+lxYi"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4775ae5684fso10816905e9.1
-        for <imx@lists.linux.dev>; Fri, 21 Nov 2025 08:49:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="UjVVqPmL"
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8824ce9812cso25428816d6.0
+        for <imx@lists.linux.dev>; Fri, 21 Nov 2025 10:07:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763743768; x=1764348568; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tA1YZwkpqBYNCNgFaNMq2uv3rKscqjzMZ5GFDmRce68=;
-        b=bg4+lxYi2rMneg5mA9mRcDJwD7fgqfG/zJbO4RAs4Up+V5WqD+inXePxXCq6SkS1ly
-         uHy57bi13En3y7IrUpcVwdZfCv3cOE0n/pybpztp9Y6Q//ZMAPRfPCnSchidA9+9HJaS
-         jE48LRdly/ijKAeHOZI4pFJdyPInZsHfScBoQduo4eJ7AKmuCgmMp6EyOGYzrV2N7lol
-         yIQPYBbdvBbtsIteFS3xejmgQi1ivGQHlZet5EhbrX2z74TD9yF5UbZoWiZMHfxAbVPd
-         yd49+8Ru0mnHfJ9LS9bsxY0/b82M8UFF4PMXWf3VBO5qpQfRXMYtanayY8lFOQwBPKNp
-         6dkQ==
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1763748458; x=1764353258; darn=lists.linux.dev;
+        h=mime-version:user-agent:references:in-reply-to:date:cc:to:from
+         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=3reEjUab7HQIYE8MwmDCD1KFRlukjdmGK/LzC0B9YJA=;
+        b=UjVVqPmL/3HdRoSClZak+9qAe8UwP36JmZzJz2oCYjjrF1PkrK9MZ0rFvknyLyo6Ln
+         gpBr8/VE6rns2kBBMyB5LL9Prkl8Q9QjdbosrWLGF4mH8+lVZLPk/x7XN/fcYoTs3P+X
+         qYEreVTou9O6SzGYtkRZTl370b3n4bf8t8DhV4r4VgwiCU2qaXlAsEJf9F6B2daAU0xM
+         ItilLBPR0HLG5yp60NsD88QMXgaGHAExuChJ4wNns082OKXLFAW7TCnXx1yGIhNqAQGA
+         Ff6Rc+xMZ+ENdYV/iErLdGkPD/zJ/1ZPDNi1jYv59q295e3WAsfZXPykhdW62EF2g+A6
+         vc1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763743768; x=1764348568;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tA1YZwkpqBYNCNgFaNMq2uv3rKscqjzMZ5GFDmRce68=;
-        b=R4F7B/chOwk7imPYozfXyUQ5mboELUW4m7qql1s+suEIR2YG+e864IEomD2yzPkI5f
-         m5Lmt0QW7PUbDhC3WnthRhZlbKEOSIWJomu1M9G6FFhh72G+MEmXOw24oAF+FktFVfAu
-         oH6qh5LTtFrhYDtBBad/KUkH/ndrzxDt3kscCIW4eEI3m/9s2I0y1C3rN/B8Q12iABFI
-         sZdnl7VgmI6tPjNVnJ9DQsPAAsmtZCeS6Jgpow13abOc/7gSUYQndcxtXf75WT1qqZ46
-         x7rGacFEwDjPHtYn4cFNR6wUK4ba/Q52eRSLy7/IENZuY15hFonMhXi1YIW53CCRMZog
-         TLoA==
-X-Forwarded-Encrypted: i=1; AJvYcCWO9f91c4EhPhucAojTr3iweMNjtVneFaJW1DAvRqqDkIshQsfDEOGKiYafFNZGGY6gDFE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzkXjwdlcT9b2gzfTkn/fjdY7MttaFhQUUknFQq7/OhP/3UN/3d
-	zV0iezayTTyol3jMQuwlfTDoDYkpEkzBrr98isxFLOdul8JjRo19fAdEDsSEUP4Pnt0=
-X-Gm-Gg: ASbGnctPI7jkripyasosJ5sjZYdr80mHsHAKAJBiwHEU7bG7x2PZXebTP/IbsGrqdW0
-	pcUKCDijH2TOxA38QqzLdZGiezLod98ChsV11JcuPsEX2HgVRX4klxoQgL17O/9JYOWfmhfKGf6
-	xNknbi1B6/dsgnkTHrvo55SWrISFK6WE67iP0C7vjJzEr/HLcrsqvSwAZejCYNBoidBz53f8JrY
-	fAAtyjjH5hmLKrd4SUEEO14EtGNqPWqkL1LM4TkFIDMIZ8e4tX+Dc8zV19WD2J+fdogMkaraPM5
-	KJrdOF1astplCaisTeNvVnCMHfdR3UDPsrNXZs+v7ehTYOsGJ/33jBNum/iLcj4QHF8zIX9cqqG
-	WYK5E6WAUAKytsx3Gutyy3lOkMXzJrZG3ZZi6lVGt3j83NL2ZpulQo/YPb/Q+gUzwkf+oZPCe17
-	auA0mHsAMpj7bi4xT9KUw=
-X-Google-Smtp-Source: AGHT+IECYLnmyytfY8LzC6PdkZB/9Qv9aOOwBQ8USRlzz0beo5YI3DVNF2FJyRPzQ4ThwhycZbswbg==
-X-Received: by 2002:a05:600c:4f06:b0:471:9da:5248 with SMTP id 5b1f17b1804b1-477c114ef3dmr30830045e9.26.1763743768105;
-        Fri, 21 Nov 2025 08:49:28 -0800 (PST)
-Received: from vingu-cube.. ([2a01:e0a:f:6020:803a:ae25:6381:a6fc])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fb8ff3sm12938478f8f.29.2025.11.21.08.49.26
+        d=1e100.net; s=20230601; t=1763748458; x=1764353258;
+        h=mime-version:user-agent:references:in-reply-to:date:cc:to:from
+         :subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3reEjUab7HQIYE8MwmDCD1KFRlukjdmGK/LzC0B9YJA=;
+        b=TWaE65GlT2+enAwMfZV/M/o71y1H3PGkn8ZqxCbZfMjrp7n39+uaftUEIyYC9uSmgP
+         0pf8M61hPvMr07uq2zf238MMdBOSwGnGX4XW4+w90GHEDpON9zI2cXaFnjHsPNTrdJQp
+         PwUT2IpZUPqDhAprgUMjqWSBuWDKFA5IoKJ0xM4mc9tbT8VGpY3AikaGCVCoI/kqeg2J
+         Q0EI4iq3Emiod5hgsjV2OIeevoUoczl5vRsuo9ih4jxbyDaDtNIlz0Vul4h3yvs3E+tP
+         JmR0jiTjDvvtNHJJslf70/8UuxRzZruccWdrSKr+UWwQeMMH0fOucsFYeUMHlNjNkW6z
+         i6zA==
+X-Forwarded-Encrypted: i=1; AJvYcCU+2/3Jsf3JCnLddCCkUp6Wrl9VzKFnrVWppicXJ1tEWjPrtroURpLuM6r3IPcs9+khO8o=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyE/yIcG1EyLNkFVyW8Xy7xZ+83q+3VbXv1/+8QCzogdS4I3Bod
+	IGYnlH29WQ3oNqgek7cGQjWLUXE7W5ZI+8oWZ+NBMeO0azySg7nluR5DigkC3OAOIbQ=
+X-Gm-Gg: ASbGncvWvbRuP2abBJOl2BdpqK+2X9o3EfVcD6LtC/RmjwJQj68DNA49SyV+PdK+rBl
+	+CYECBNE+AjdnexrlMwOCTNEH99BP4DuDb008Hg35yaxb7Upaz/15cBk5tpFvL8EeNkzGvvF9xc
+	eEtmzznwVGa/GjoUccfLew0KIuq3Rf7CSKy4Ba6GirYkxu0QlYJC6ix6X8kXXloe7T+j0WASh27
+	8PF86Y4rZQhuAxJSxiAqxkW9MaF1vFLzcKVt0dTzneSk+oAlZUUB2Hl522jnpxljzzRTXvvrb9i
+	+S4Odoe4IOIis/ts2ArHgoKQYjRlvUMW1J+KVnKWq25Sptic2MXSpX3tu6DwLdi5CcoUyLfMea5
+	4u1MyR0UYhmZEmhzqdGP3oCO9T8H8cIITRppNUdbAPlPXHWI/nRw/NTbLwYrI+1+jYOwCF1bmHI
+	5hrzlNtMcabOfwgyk6
+X-Google-Smtp-Source: AGHT+IGSn6lWVFdXMF2O7+16BxyboE+vLKmTO8u+vsDg8rBpHj7vHOjDlUdUHZhhn3mvBIHkM4SR0A==
+X-Received: by 2002:a05:6214:f01:b0:882:4987:367 with SMTP id 6a1803df08f44-8847c546402mr35659826d6.65.1763748458256;
+        Fri, 21 Nov 2025 10:07:38 -0800 (PST)
+Received: from ?IPv6:2606:6d00:17:7b4b::5ac? ([2606:6d00:17:7b4b::5ac])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8846e599ac9sm44053446d6.49.2025.11.21.10.07.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Nov 2025 08:49:26 -0800 (PST)
-From: Vincent Guittot <vincent.guittot@linaro.org>
-To: chester62515@gmail.com,
-	mbrugger@suse.com,
-	ghennadi.procopciuc@oss.nxp.com,
-	s32@nxp.com,
-	bhelgaas@google.com,
-	jingoohan1@gmail.com,
-	lpieralisi@kernel.org,
-	kwilczynski@kernel.org,
-	mani@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	Ionut.Vicovan@nxp.com,
-	larisa.grigore@nxp.com,
-	Ghennadi.Procopciuc@nxp.com,
-	ciprianmarian.costea@nxp.com,
-	bogdan.hamciuc@nxp.com,
-	Frank.li@nxp.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Cc: cassel@kernel.org
-Subject: [PATCH 4/4 v6] MAINTAINERS: Add MAINTAINER for NXP S32G PCIe driver
-Date: Fri, 21 Nov 2025 17:49:20 +0100
-Message-ID: <20251121164920.2008569-5-vincent.guittot@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251121164920.2008569-1-vincent.guittot@linaro.org>
-References: <20251121164920.2008569-1-vincent.guittot@linaro.org>
+        Fri, 21 Nov 2025 10:07:37 -0800 (PST)
+Message-ID: <11354064b251d01f8a0f8974c451c91d515be1a4.camel@ndufresne.ca>
+Subject: Re: [PATCH 1/2] pmdomain: imx8m-blk-ctrl: Remove separate rst and
+ clk mask for 8mq vpu
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: ming.qian@oss.nxp.com, linux-media@vger.kernel.org
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, 
+	benjamin.gaignard@collabora.com, p.zabel@pengutronix.de, 
+	sebastian.fricke@collabora.com, shawnguo@kernel.org,
+ ulf.hansson@linaro.org, 	s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, 	linux-imx@nxp.com, l.stach@pengutronix.de,
+ peng.fan@nxp.com, eagle.zhou@nxp.com, 	imx@lists.linux.dev,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org
+Date: Fri, 21 Nov 2025 13:07:35 -0500
+In-Reply-To: <20251121081911.1682-1-ming.qian@oss.nxp.com>
+References: <20251121081911.1682-1-ming.qian@oss.nxp.com>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-CGluF/KiYEHV7bilRPFN"
+User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Add a new entry for S32G PCIe driver.
 
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+--=-CGluF/KiYEHV7bilRPFN
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e64b94e6b5a9..bec5d5792a5f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3137,6 +3137,15 @@ F:	arch/arm64/boot/dts/freescale/s32g*.dts*
- F:	drivers/pinctrl/nxp/
- F:	drivers/rtc/rtc-s32g.c
- 
-+ARM/NXP S32G PCIE CONTROLLER DRIVER
-+M:	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
-+R:	NXP S32 Linux Team <s32@nxp.com>
-+L:	imx@lists.linux.dev
-+L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
-+F:	drivers/pci/controller/dwc/pcie-nxp-s32g*
-+
- ARM/NXP S32G/S32R DWMAC ETHERNET DRIVER
- M:	Jan Petrous <jan.petrous@oss.nxp.com>
- R:	s32@nxp.com
--- 
-2.43.0
+Hi Ming,
 
+thanks a lot for working on this.
+
+Le vendredi 21 novembre 2025 =C3=A0 16:19 +0800, ming.qian@oss.nxp.com a =
+=C3=A9crit=C2=A0:
+> From: Ming Qian <ming.qian@oss.nxp.com>
+>=20
+> The ADB in the VPUMIX domain has no separate reset and clock
+> enable bits, but is ungated and reset together with the VPUs.
+> So we can't reset G1 or G2 separately, it may led to the system hang.
+> Remove rst_mask and clk_mask of imx8mq_vpu_blk_ctl_domain_data.
+> Let imx8mq_vpu_power_notifier() do really vpu reset.
+>=20
+> Fixes: 608d7c325e85 ("soc: imx: imx8m-blk-ctrl: add i.MX8MQ VPU blk-ctrl"=
+)
+> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> ---
+> =C2=A0drivers/pmdomain/imx/imx8m-blk-ctrl.c | 4 ----
+> =C2=A01 file changed, 4 deletions(-)
+>=20
+> diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx=
+/imx8m-blk-ctrl.c
+> index 5c83e5599f1e..1f07ff041295 100644
+> --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> @@ -852,16 +852,12 @@ static const struct imx8m_blk_ctrl_domain_data imx8=
+mq_vpu_blk_ctl_domain_data[]
+> =C2=A0		.clk_names =3D (const char *[]){ "g1", },
+> =C2=A0		.num_clks =3D 1,
+> =C2=A0		.gpc_name =3D "g1",
+> -		.rst_mask =3D BIT(1),
+> -		.clk_mask =3D BIT(1),
+> =C2=A0	},
+> =C2=A0	[IMX8MQ_VPUBLK_PD_G2] =3D {
+> =C2=A0		.name =3D "vpublk-g2",
+> =C2=A0		.clk_names =3D (const char *[]){ "g2", },
+> =C2=A0		.num_clks =3D 1,
+> =C2=A0		.gpc_name =3D "g2",
+> -		.rst_mask =3D BIT(0),
+> -		.clk_mask =3D BIT(0),
+> =C2=A0	},
+
+That was also our impression, but we could not get information about this H=
+W.
+One question here, how do we ensure that we don't reset twice on power on ?
+
+Nicolas
+
+> =C2=A0};
+> =C2=A0
+
+--=-CGluF/KiYEHV7bilRPFN
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaSCqZwAKCRDZQZRRKWBy
+9A6ZAP90EgdxFgS1MNEpip8ViNpAOQ1t5ODnf13yvBhSJ87yTwD/W2WHO1JhMsym
+rs/FdLqAmGCaIVG4rntDh6YMtk3p6gc=
+=VrGj
+-----END PGP SIGNATURE-----
+
+--=-CGluF/KiYEHV7bilRPFN--
