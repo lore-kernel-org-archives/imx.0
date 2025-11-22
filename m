@@ -1,118 +1,125 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7DA26ED5C
-	for <imx@lists.linux.dev>; Sat, 22 Nov 2025 09:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5397217E4;
+	Sat, 22 Nov 2025 10:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763805480; cv=none; b=u1g6e851+LCgR6lf4F7qMt/BxTpDz0BY+8XAh7rITQhJg995WGPR5ZTQdkAtUmTpSgFNpOk7dazrd1M3qMpC9ptE8+Yfqp8ZZdQpJaxxxUMQbArJIjcyruPVGhF5mwAphMaYiWjGRSNUUfYynK+r+OypTuNxH+NQWPCYEong8ZI=
+	t=1763808552; cv=none; b=NZYq7sRJF26mKoUtpVP00tWI96hwLuJtQzwprMmssWectW6AbYsB65QSeUQZyzH/qMDZwwdC/64jcqhdQ4QHzBKL3R21vXWmnYBLKIPZ/nWojPV3nmx4MoIAq858cuNOLFg9dvTEpEXV04fSsdboVQCDT8twR9nLhsqBnTzoZo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763805480; c=relaxed/simple;
-	bh=tf1IU3EXfs02C8fkuQl+eOo+rB6khsrhsCEHB6ubD90=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H1/vaazr95GfuEWvTa4ZT+EpIeWzBtIYxNP340eQY/m9HUplweo0lr0JAwmvUaQNwB/SdRPhWcaUg+9CLI8J9PofecFJIGV4fEtCP52yISUBl/0pSWQPTAshC48sOAY3rJza3EpEnTg3/Jcdzn8PHW/a6+l2BB0Bd28rhuVCZWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=KrbzvBi2; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1763808552; c=relaxed/simple;
+	bh=76YeoSJUJd0mRHIM3u2plyzKspu9qL9dq2Bi7t5DGWU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LVLk2WY+O+0WDiHnEW//z3BlbhoKkfe+7S8XE+LdrqdH9OHCXopax6XXY5jIYHHna/7amiZxKf/HcJBmHimjRQDPGzsE50z0wsLvJ1XzBNpwU5TIn+JtiQFI0Jve8iU9XULvZU4ncCLFOUdrws2O9ehGCTaUCd8rMV/H7Zc1iwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=runbox.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=rNiz03ff; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=runbox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="KrbzvBi2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Zvehfl65MP5JLPqg2Zeleos6p4Xa/AzMzTqiQPPMq/g=; b=KrbzvBi2JbmmW81oFDDegm1Qro
-	/SHhZ7VyrTxtzbx6hq9qqaOOiRbC9HTyNp0za8yoqnTnunVWUW/2Hh1gB1sAhrBjrgJRWuHMCrzjQ
-	bVoqA1Wzec0SC8GGyNeUou7NxNsTFzrLs4W3p1OfCgUvHdco0WKiNguGK+stk++ANbEORqUUlZXcK
-	WvJfX6YdtfjQ1oatvSnTC8TJFbN4g/RWvELBrjk4HAnYAiMqNjsfeEywQUuYreimMKikXkQa1pWNt
-	KtekbFMAfIing2ZR3lIM5PA7nI6kjPzJ4zGbIl+nn1mxFqViCdlsASagGjETEXTe6o8su532ZtaTu
-	ytghGrjA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50242)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vMkNL-000000008VD-3hPV;
-	Sat, 22 Nov 2025 09:57:51 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vMkNJ-000000006EY-2EJT;
-	Sat, 22 Nov 2025 09:57:49 +0000
-Date: Sat, 22 Nov 2025 09:57:49 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
-Message-ID: <aSGJHV9Sga2kBIBX@shell.armlinux.org.uk>
-References: <aQAVE96NAD4Z4lgt@shell.armlinux.org.uk>
- <20251028071817.GX13023@pendragon.ideasonboard.com>
- <20251111235434.GA25874@pendragon.ideasonboard.com>
- <aRR3gVsZcr01zwzN@shell.armlinux.org.uk>
- <20251112222551.GB9135@pendragon.ideasonboard.com>
- <20251113010627.GC9135@pendragon.ideasonboard.com>
- <aRW6CxvmIEqkMrfA@shell.armlinux.org.uk>
- <20251114222654.GI30434@pendragon.ideasonboard.com>
- <PAXPR04MB8510E17B2B8C612DD02175CE88D6A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20251122072246.GA16239@pendragon.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="rNiz03ff"
+Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <david.laight@runbox.com>)
+	id 1vMlAm-00Em1b-5x; Sat, 22 Nov 2025 11:48:56 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
+	 s=selector1; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date;
+	bh=9YMGs+hF/ur3ghxcNlRi5n7uCXeUp235n6PE5uHGv3g=; b=rNiz03ffjuApfVsAl+M3cAm0UC
+	bmgcdvqZ6npV8Gk1eJdqpAYyysau2Qknq2Clb+DEumvFY7HNjUBPDouwbtY12jqnV/MKmdX6pZ5Ys
+	gqS4lOfMJOAEtSwNkaosr0QeH5C3RLZK6hxYvWavkQ+9R7nYuA9Mag2h23mkN6yAJ5KSzvSSQOns6
+	Z3ZEAeVDsiywdlnu4LNLXsjEmhP6aCQIsmK4Xp8c1pJZuN+HEhUu+mGe5IjM+LSFOfKQi1wokLnCc
+	RnCvmS98xBm9t8FvP0poRP3+CYRyb9GlNhJkLG1lz3jM5I+xvDSDXgRPicGXg2PS37qoz/NgrjBPA
+	z9pi6kAw==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <david.laight@runbox.com>)
+	id 1vMlAl-00009E-7O; Sat, 22 Nov 2025 11:48:55 +0100
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1vMlAd-003lX2-Jx; Sat, 22 Nov 2025 11:48:47 +0100
+Date: Sat, 22 Nov 2025 10:48:42 +0000
+From: david laight <david.laight@runbox.com>
+To: carlos.song@nxp.com
+Cc: Frank.Li@nxp.com, broonie@kernel.org, rongqianfeng@vivo.com,
+ linux-spi@vger.kernel.org, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] spi: spi-fsl-lpspi: fix watermark truncation caused by
+ type cast
+Message-ID: <20251122104842.6a9cdbd1@pumpkin>
+In-Reply-To: <20251117030355.1359081-1-carlos.song@nxp.com>
+References: <20251117030355.1359081-1-carlos.song@nxp.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251122072246.GA16239@pendragon.ideasonboard.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Nov 22, 2025 at 04:22:46PM +0900, Laurent Pinchart wrote:
-> Hello Wei,
-> 
-> On Tue, Nov 18, 2025 at 01:50:55AM +0000, Wei Fang wrote:
-> > Sorry, I only have a little experience with DWMac, add Clark to help look
-> > at this issue.
-> 
-> Thank you.
-> 
-> I think we're getting close to having a good understanding of the
-> problem. I've debugged it as far as I could based on the information
-> available publicly. Let's try to get to the bottom of this issue, it
-> impacts quite a lot of people and it would be very nice to fix it
-> properly in mainline.
-> 
-> The short summary is that I'm experiencing an interrupt storm on IRQ 135
-> when EEE is enabled with the EQOS interface.
-> 
-> My current theory is that
-> 
-> - The lpi_intr_o signal of the EQOS is OR'ed into IRQ 135.
-> - The issue is triggerted by the PHY exiting LPI mode
-> - When it exits LPI mode, the PHY restarts generating the RX clock
->   (clk_rx_i).
-> - The MAC detects exit from LPI, and asserts lpi_intr_o.
-> - Before the CPU has time to process the interrupt, the PHY enters LPI
->   mode again, and stops generating the RX clock.
-> - The CPU processes the interrupt and reads the GMAC4_LPI_CTRL_STATUS
->   registers. This does not clear lpi_intr_o as there's no clk_rx_i.
+On Mon, 17 Nov 2025 11:03:55 +0800
+carlos.song@nxp.com wrote:
 
-Please try setting STMMAC_FLAG_RX_CLK_RUNS_IN_LPI in dwmac-imx.c and
-see whether that changes the behaviour.
+> From: Carlos Song <carlos.song@nxp.com>
+> 
+> 't->len' is an unsigned integer, while 'watermark' and 'txfifosize' are
+> u8. Using min_t with typeof(watermark) forces both values to be cast to
+> u8, which truncates len when it exceeds 255. For example, len = 4096
+> becomes 0 after casting, resulting in an incorrect watermark value.
+> 
+> Use a wider type in min_t to avoid truncation and ensure the correct
+> minimum value is applied.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Also see my big patch that will detect this...
+
+It usual that a simple min() will work fine.
+(After the relaxation of the type comparison in min().)
+If one of the values is a signed type (but positive) use umin(a,b).
+
+This is a typical example of the type of the destination being used in min_t().
+The real fix is to remove min_t() completely.
+
+After all if the code had been:
+	sl_lpspi->watermark = min(sl_lpspi->txfifosize,
+		(typeof(fsl_lpspi->watermark))t->len);
+a reviewer would have been likely to pick up the truncation.
+
+Hiding the cast inside min_t() is a 'really bad idea' (tm).
+
+I've found a pile of cases of:
+	min_t(u8, value_32 / 2, 255)
+in one driver (and the variable is pretty much called 'value_32'.
+
+Looks like I've tried to compile this file yet.
+'git diff' is currently outputting 8395 files for 358 files.
+
+	David
+
+> 
+> Fixes: a750050349ea ("spi: spi-fsl-lpspi: use min_t() to improve code")
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> ---
+>  drivers/spi/spi-fsl-lpspi.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+> index 8da66e101386..065456aba2ae 100644
+> --- a/drivers/spi/spi-fsl-lpspi.c
+> +++ b/drivers/spi/spi-fsl-lpspi.c
+> @@ -486,7 +486,13 @@ static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
+>  		fsl_lpspi->tx = fsl_lpspi_buf_tx_u32;
+>  	}
+>  
+> -	fsl_lpspi->watermark = min_t(typeof(fsl_lpspi->watermark),
+> +	/*
+> +	 * t->len is 'unsigned' and txfifosize and watermrk is 'u8', force
+> +	 * type cast is inevitable. When len > 255, len will be truncated in min_t(),
+> +	 * it caused wrong watermark set. 'unsigned int' is as the designated type
+> +	 * for min_t() to avoid truncation.
+> +	 */
+> +	fsl_lpspi->watermark = min_t(unsigned int,
+>  				     fsl_lpspi->txfifosize,
+>  				     t->len);
+>  
+
