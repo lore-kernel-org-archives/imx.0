@@ -1,122 +1,181 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35BB200C2
-	for <imx@lists.linux.dev>; Sun, 23 Nov 2025 05:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F711A285
+	for <imx@lists.linux.dev>; Sun, 23 Nov 2025 08:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763876311; cv=none; b=YebXp33wQ0ervQ9yWFKXpmLeDbR+0jgue59St7DmuQWpYpJ0xhG2cQRRn+cqGHqwkmS5pSL1caB9slhTh1GcsxY5z0NWj6fx5lQKuuM2TA1BdrYDBydq8Qv764E+ZpNMTnAi5umquLrSoD3kfiKzZTwD0pbGsijMcWX1y28czs8=
+	t=1763887684; cv=none; b=E1IbWBSaxknXXbuRddEfh+Xv4ZtB7hPyFS1CIdjklq0kblZKmsNPNqnIpK792j0skmWeLEff8L0fxlcBUxEDyiH5qCMquF7X353wK2rQ2pIdUgKLmFaPGfo6Ib46ijfHx9/5wdLOYIJTtVFG05MNK0ODlNLz79pSqDXpEgtIACY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763876311; c=relaxed/simple;
-	bh=He+lt4QQh/rQAbv/9qG6zLXqw96LteC0N/tPxNFTT9Q=;
+	s=arc-20240116; t=1763887684; c=relaxed/simple;
+	bh=h4SQyosY1eGTJ/rRlYmy3ASX2LGqAIsKmFB9HLfnu+o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KOCMDE7fJTVEZyvNu5CSqL8FXgag5spE5bTlHuhnVRwDltg+d3Hy3QBQ1Hv698L7vVCeoZnHsu1FfOX9kWMSflauPAPYpjphASQl80QZBXx2XpMaG+uFzVPOvKbTrKwmOUZkLwJx4eWeKMfWKUi9tR3tcfsMP50hPKYCxXn83xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=l+vRVvw/; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=esNC1ks/f4Bw5jfc1Xic/v+wchfS6lHPthFkwC9BaUfjHX/1KFWrEGUyXutaioy8JRVvsvS6SSZD1804IwfBLEg7uDoN0Wb25i7WBnXXZazY1URyrWf0txqWyeEJijRZPEc1gU6cGkka0ZndIblIZa9aVpVASTh6zVDOW0AaH/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=l5u7xl+Y; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="l+vRVvw/"
-Received: from pendragon.ideasonboard.com (fs276ed015.tkyc509.ap.nuro.jp [39.110.208.21])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 1ACF39CE;
-	Sun, 23 Nov 2025 06:36:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1763876180;
-	bh=He+lt4QQh/rQAbv/9qG6zLXqw96LteC0N/tPxNFTT9Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=l+vRVvw/93ZcT4UkaXR21OlThwf3YkZfWidDUFelwrcI4c9O/cHW2aeEbmsNYiNXP
-	 wtipELrgx72t+eaWhoYJn6EhgZIvMjpMkwmjLY4BUdXbTZmVr6Alog0Tq1EHDu8NVb
-	 ai1oUz3t9lPbyycsjkmH2jMkA8MbH7fmRdLYyVu4=
-Date: Sun, 23 Nov 2025 14:38:02 +0900
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="l5u7xl+Y"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=5w9TBs6f6PMZqeUvDfvd2Z0K+crtpRu8aQyOxCYaiZg=; b=l5u7xl+Yu9iPwjJFyG0AppFlU4
+	6j18KQ4AwQbDMUxqx84liBAXmoa0/rR6HkMtEHcwJuudnDIvsqlzWtX44F7tAi33rbWaGKs6YBwT5
+	qWYuPmwZDoKSAIwbOs9HtOYUy0tQNEn+N7GjJE26bPRDR3drhvvASoQ6NI00WACObGKyne8ttAxer
+	vsMlujQasbu2PlG7uAoxpE8M+kCWyw0zO5Wy7036XiaqlPa9zGMxo12Qb2anYU88wDd8JmptbUcpr
+	xFJyN3pNn/pMFtLUlh4Y17jt1e6wGu4OoLD2rFTjW+4Niem1D2Ctea1X3Y7JMHJWN+j++nAiM+2XZ
+	w2pdvC2A==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58278)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vN5l5-000000000kk-0c8N;
+	Sun, 23 Nov 2025 08:47:47 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vN5l0-0000000079D-0EuB;
+	Sun, 23 Nov 2025 08:47:42 +0000
+Date: Sun, 23 Nov 2025 08:47:41 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: netdev@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
 	Kieran Bingham <kieran.bingham@ideasonboard.com>,
 	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@denx.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>, Heiko Schocher <hs@denx.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Joakim Zhang <qiangqing.zhang@nxp.com>, Joy Zou <joy.zou@nxp.com>,
+	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Martyn Welch <martyn.welch@collabora.com>,
+	Mathieu Othacehe <othacehe@gnu.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
+	Richard Hu <richard.hu@technexion.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
-Message-ID: <20251123053802.GA25329@pendragon.ideasonboard.com>
-References: <20251028071817.GX13023@pendragon.ideasonboard.com>
- <20251111235434.GA25874@pendragon.ideasonboard.com>
- <aRR3gVsZcr01zwzN@shell.armlinux.org.uk>
- <20251112222551.GB9135@pendragon.ideasonboard.com>
- <20251113010627.GC9135@pendragon.ideasonboard.com>
- <aRW6CxvmIEqkMrfA@shell.armlinux.org.uk>
- <20251114222654.GI30434@pendragon.ideasonboard.com>
- <PAXPR04MB8510E17B2B8C612DD02175CE88D6A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20251122072246.GA16239@pendragon.ideasonboard.com>
- <aSGJHV9Sga2kBIBX@shell.armlinux.org.uk>
+	Shawn Guo <shawnguo@kernel.org>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Stefano Radaelli <stefano.radaelli21@gmail.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
+Subject: Re: [PATCH] net: stmmac: imx: Do not stop RX_CLK in Rx LPI state for
+ i.MX8MP
+Message-ID: <aSLKLYuz0WA2LpFF@shell.armlinux.org.uk>
+References: <20251123053518.8478-1-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aSGJHV9Sga2kBIBX@shell.armlinux.org.uk>
+In-Reply-To: <20251123053518.8478-1-laurent.pinchart@ideasonboard.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hi Russell,
-
-On Sat, Nov 22, 2025 at 09:57:49AM +0000, Russell King (Oracle) wrote:
-> On Sat, Nov 22, 2025 at 04:22:46PM +0900, Laurent Pinchart wrote:
-> > Hello Wei,
-> > 
-> > On Tue, Nov 18, 2025 at 01:50:55AM +0000, Wei Fang wrote:
-> > > Sorry, I only have a little experience with DWMac, add Clark to help look
-> > > at this issue.
-> > 
-> > Thank you.
-> > 
-> > I think we're getting close to having a good understanding of the
-> > problem. I've debugged it as far as I could based on the information
-> > available publicly. Let's try to get to the bottom of this issue, it
-> > impacts quite a lot of people and it would be very nice to fix it
-> > properly in mainline.
-> > 
-> > The short summary is that I'm experiencing an interrupt storm on IRQ 135
-> > when EEE is enabled with the EQOS interface.
-> > 
-> > My current theory is that
-> > 
-> > - The lpi_intr_o signal of the EQOS is OR'ed into IRQ 135.
-> > - The issue is triggerted by the PHY exiting LPI mode
-> > - When it exits LPI mode, the PHY restarts generating the RX clock
-> >   (clk_rx_i).
-> > - The MAC detects exit from LPI, and asserts lpi_intr_o.
-> > - Before the CPU has time to process the interrupt, the PHY enters LPI
-> >   mode again, and stops generating the RX clock.
-> > - The CPU processes the interrupt and reads the GMAC4_LPI_CTRL_STATUS
-> >   registers. This does not clear lpi_intr_o as there's no clk_rx_i.
+On Sun, Nov 23, 2025 at 02:35:18PM +0900, Laurent Pinchart wrote:
+> The i.MX8MP-based Debix Model A board experiences an interrupt storm
+> on the ENET_EQOS IRQ (135) when connected to an EEE-enabled peer.
 > 
-> Please try setting STMMAC_FLAG_RX_CLK_RUNS_IN_LPI in dwmac-imx.c and
-> see whether that changes the behaviour.
+> Setting the eee-broken-1000t DT property in the PHY node solves the
+> problem, which confirms that the issue is related to EEE. Device trees
+> for 8 boards in the mainline kernel, including the i.MX8MP EVK, set the
+> property, which indicates the issue is likely not limited to the Debix
+> board, although some of those device trees may have blindly copied the
+> property from the EVK.
+> 
+> The IRQ is documented in the reference manual as the logical OR of 4
+> signals:
+> 
+> - ENET QOS TSN LPI RX Exit Interrupt
+> - ENET QOS TSN Host System Interrupt
+> - ENET QOS TSN Host System RX Channel Interrupts, Logical OR of
+>   channels[4:0]
+> - ENET QOS TSN Host System TX Channel Interrupts, Logical OR of
+>   channels[4:0]
+> 
+> Debugging the issue showed no unmasked interrupt sources from the Host
+> System Interrupt (GMAC_INT_STATUS), Host System RX Channel Interrupts or
+> Host System TX Channel Interrupts (MTL_INT_STATUS, MTL_CHAN_INT_CTRL and
+> DMA_CHAN_STATUS) that was flagged at an unexpected high rate. This
+> leaves the LPI RX Exit Interrupt as the most likely culprit.
+> 
+> The reference manual doesn't clearly indicate what the interrupt signal
+> is, but from its name we can reasonably infer that it would be connected
+> to the EQOS lpi_intr_o output. That interrupt is cleared when reading
+> the LPI control/status register. However, its deassertion is synchronous
+> to the RX clock domain, so it will take time to clear. It appears that
+> it could even fail to clear at all, as in the following sequence of
+> events:
+> 
+> - When the PHY exits LPI mode, it restarts generating the RX clock
+>   (clk_rx_i input signal to the GMAC).
+> - The MAC detects exit from LPI, and asserts lpi_intr_o. This triggers
+>   the ENET_EQOS interrupt.
+> - Before the CPU has time to process the interrupt, the PHY enters LPI
+>   mode again, and stops generating the RX clock.
+> - The CPU processes the interrupt and reads the GMAC4_LPI_CTRL_STATUS
+>   registers. This does not clear lpi_intr_o as there's no clk_rx_i.
+> 
+> The ENET_EQOS interrupt will keep firing until the PHY resumes
+> generating the RX clock when it eventually exits LPI mode again.
+> 
+> As LPI exit is reported by the LPIIS bit in GMAC_INT_STATUS, the
+> lpi_intr_o signal may not have been meant to be wired to a CPU
+> interrupt. It can't be masked in GMAC registers, and OR'ing it to the
+> other GMAC interrupt signals seems to be a design mistake as it makes it
+> impossible to selectively mask the interrupt in the GIC either.
+> 
+> Setting the STMMAC_FLAG_RX_CLK_RUNS_IN_LPI platform data flag gets rid
+> of the interrupt storm, which confirms the above theory.
+> 
+> The i.MX8DXL and i.MX93, which also integrate an EQOS, may also be
+> affected, as hinted by the eee-broken-1000t property being set in the
+> i.MX8DXL EVK and the i.MX93 Variscite SoM device trees. The reference
+> manual of the i.MX93 indicates that the ENET_EQOS interrupt also OR's
+> the "ENET QOS TSN LPI RX exit Interrupt", while the i.MX8DXL reference
+> manual doesn't provide details about the ENET_EQOS interrupt.
+> 
+> Additional testing is needed with the i.MX8DXL and i.MX93, so for now
+> set the flag for the i.MX8MP only. The eee-broken-1000t property could
+> possibly be removed from some of the i.MX8MP device trees, but that also
+> require per-board testing.
+> 
+> Suggested-by: Russell King <linux@armlinux.org.uk>
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> ---
+> I have CC'ed authors and maintainers of the i.MX8DXL, i.MX8MP and i.MX93
+> device trees that set the eee-broken-1000t property for awareness. To
+> test if the property can be dropped, you will need to
+> 
+> - Connect the EQOS interface to an EEE-enabled peer with a 1000T link.
+> - Drop the eee-broken-1000t property from the device tree.
+> - Boot the board and check with `ethtool --show-eee` that EEE is active.
+> - Check the number of interrupts received from the EQOS in
+>   /proc/interrupts. After boot on my system (with an NFS root) I have
+>   ~6000 interrupts when no interrupt storm occurs, and hundreds of
+>   thousands otherwise.
+> - Apply this patch and check that EEE works as expected without any
+>   interrupt storm. For i.MX8DXL and i.MX93, you will need to set the
+>   STMMAC_FLAG_RX_CLK_RUNS_IN_LPI in the corresponding imx_dwmac_ops
+>   instances in drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c.
 
-I have tested that and it worked like a charm ! I have submitted
-https://lore.kernel.org/r/20251123053518.8478-1-laurent.pinchart@ideasonboard.com
+Hang on... also check 100M connections, as I indicated, the lpi_intr_o
+is slow to clear even when the receive clock is running (it takes for
+receive clock cycles - 160ns for 100M, 32ns for 1G.)
 
-That was quite an adventure. Thank you so much for all your support, I'm
-not sure I would have managed without you (or at least I would have
-needed way more time). I really really appreciate it.
-
-If the above patch gets accepted, we will probably be able to remove the
-eee-broken-* properties from the i.MX8MP device tree files (and possibly
-from i.MX8DXL and i.MX93 as well). I have mentioned that below the
-commit message of the patch, with a test procedure as it should be
-tested on each board.
+So, I suspect you still get a storm, but it's not as severe.
 
 -- 
-Regards,
-
-Laurent Pinchart
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
