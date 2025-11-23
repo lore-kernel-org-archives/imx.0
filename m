@@ -1,144 +1,161 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0694A23E229
-	for <imx@lists.linux.dev>; Sun, 23 Nov 2025 08:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57324315A;
+	Sun, 23 Nov 2025 09:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763887928; cv=none; b=aTHK1MoV3RwxSvs+YoPE2dg1XZe6q0Op0BthTJd/DVl+31nBs64S3ThO62c+7XGA8Q3W+e9+fCpMjqgcuG5KXzs9qiYvj+71f4xmemNopvBRfjw0RiM+PtbwgUhjrvC4x7oqbmrIyZwhtf1ZEzBjPss/639exXgeFrz0WNznc7Q=
+	t=1763890957; cv=none; b=gE9Ou+g3Uw9jpsyRaCk2iZOAU+J+tA6B9kBzO31ZhgRsJrPflzmTauRICHYJon/Thh4xU4boJXJZp+ZGd6DKRrYDwiTKR0Zxg/EJ8oUTj+eWLa5NqIQhKySATviVM0Jpg9Wl4gyhSGVEE+edRL7UA2hNVg7cE+w+zQ4Sr8GGs4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763887928; c=relaxed/simple;
-	bh=02Bz10I4K+HR8jFtuKmfG+Qa2AqlnQ5w82L+cQeF5+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R8s2ULGgrDwSKkvHzdDMDT+xzvyyC81v+/ZF36eCpJYQ1lqO7XsFHFisx+/wU9PxwbB7alJ3APBP0VqKngLHaP3EjeEnfdhELFiJqccOrKZ5YHMSK6zNzk8Z+XPIq0FRiqFiI/jAT4pEXnuS89ASDneiUhf950eQHk1Ao1xhCGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=pnoeNTFY; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1763890957; c=relaxed/simple;
+	bh=kkM+mQVbzz5/S52nBwvpTsvT8OLm2D5Q0QHcj7SfeT4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=clRCNd0+aMtRoCKo07nu+fBEUpIQbkDqMXFCeGyZDPtH3FsjDCr/d8Dids7TjB/LxQ1UXeNkR1m6W6qVXXXdBKo4PjqsVTAeZSjVQkL5R9a+pvj5C3LITvPTAgmXNgsZqEomR5CJ7C82KH1OoGaz1etdT+ogX/k7PQM5RKRhDsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nzjtzajG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="pnoeNTFY"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=08g22nr12SGt1AMC1UScMdDYRZ8GFxl1IyYsNJMcbEk=; b=pnoeNTFYDtS4uizYE1TPiZFfYv
-	f/u0SWkdsnAHZna7A23UyrlfRXJRjv6Q2IK2g5/GARBjf4u1HCd0eiAXa7oe+snQ1Y6Q/mahtaWAe
-	/StrZ1wKMjb14xjrDzbpE39PDymsGs16AfmM8iZa29roKUYUBvO069lcj/pYBlrSEHHqC90dbjOs3
-	/FuULFhUVnRYTfSOAVDKkZgcScHJOhtsAsYEKcJeGByNUCUCeGfr0m8YmqR20WiXsGLD0E2Zsoajd
-	MJIol+qkPpJsTFgFaABOQvVW65sSYowJHUUhayEBORwiIclZqu2SjT4yECkONn2Sp5FBsdalkGmbp
-	M/tIOwhg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51102)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vN5pC-000000000la-0TJi;
-	Sun, 23 Nov 2025 08:52:02 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vN5pA-0000000079L-2FWx;
-	Sun, 23 Nov 2025 08:52:00 +0000
-Date: Sun, 23 Nov 2025 08:52:00 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
-Message-ID: <aSLLMMNkHnfwyO0y@shell.armlinux.org.uk>
-References: <20251111235434.GA25874@pendragon.ideasonboard.com>
- <aRR3gVsZcr01zwzN@shell.armlinux.org.uk>
- <20251112222551.GB9135@pendragon.ideasonboard.com>
- <20251113010627.GC9135@pendragon.ideasonboard.com>
- <aRW6CxvmIEqkMrfA@shell.armlinux.org.uk>
- <20251114222654.GI30434@pendragon.ideasonboard.com>
- <PAXPR04MB8510E17B2B8C612DD02175CE88D6A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20251122072246.GA16239@pendragon.ideasonboard.com>
- <aSGJHV9Sga2kBIBX@shell.armlinux.org.uk>
- <20251123053802.GA25329@pendragon.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nzjtzajG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3070AC113D0;
+	Sun, 23 Nov 2025 09:42:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763890956;
+	bh=kkM+mQVbzz5/S52nBwvpTsvT8OLm2D5Q0QHcj7SfeT4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nzjtzajGDAvOL3sjwsn5tDTmrN4oQldYX2ptU8r9Zi47yRQ7jwsPCW/WM4Wi/Xmnc
+	 iy+DDEIymLLXQkwnTFkI9a1UxQ6Qme/4qHq+KJoJdAT1p/AeYDacex+aUzNYld30gT
+	 M0KY6EMboDNvdG/4kdYpEL2h+23EvCq3ws6c7SP073oFA5jhUS+92Db0HdK9VxHLxM
+	 9+ku0YEsGPRFLdAqjCuR+mGSFkRrpBgpVydsXB5FOb96FOr2sgu0yqAqg+y+zVbMqu
+	 O1uwDaEIvleXkerm/DVwsyY4MGR0i1msEzXS2Badpt1JtJ9Dmt+n9SvK7SAqto4mmo
+	 w9ySpPf7vDMQg==
+Message-ID: <7e50c694-af6b-40cc-b1dc-4dd4ecf85a8d@kernel.org>
+Date: Sun, 23 Nov 2025 10:42:29 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251123053802.GA25329@pendragon.ideasonboard.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/2] arm64: dts: add support for NXP i.MX8MP FRDM board
+To: Rogerio Pimentel <rpimentel.silva@gmail.com>, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de
+Cc: kernel@pengutronix.de, festevam@gmail.com,
+ alexander.stein@ew.tq-group.com, dario.binacchi@amarulasolutions.com,
+ marex@denx.de, Markus.Niebel@tq-group.com, y.moog@phytec.de,
+ joao.goncalves@toradex.com, frieder.schrempf@kontron.de,
+ josua@solid-run.com, francesco.dolcini@toradex.com, primoz.fiser@norik.com,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Xiaofeng Wei <xiaofeng.wei@nxp.com>, Joseph Guo <qijian.guo@nxp.com>,
+ Steven Yang <steven.yang@nxp.com>, Lei Xu <lei.xu@nxp.com>
+References: <20251123003603.246399-1-rpimentel.silva@gmail.com>
+ <20251123003603.246399-2-rpimentel.silva@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251123003603.246399-2-rpimentel.silva@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Nov 23, 2025 at 02:38:02PM +0900, Laurent Pinchart wrote:
-> Hi Russell,
+On 23/11/2025 01:36, Rogerio Pimentel wrote:
+> The FRDM-i.MX8MP is an NXP development platform based on the i.MX8M Plus
+> SoC, featuring a quad Cortex-A53, Cortex-M7 co-processor, 4GB LPDDR4,
+> 32GB eMMC, Wi-Fi 6/Bluetooth 5.4/802.15.4 tri-radio, Ethernet, HDMI/MIPI
+> display interfaces, camera connectors, and standard expansion headers.
 > 
-> On Sat, Nov 22, 2025 at 09:57:49AM +0000, Russell King (Oracle) wrote:
-> > On Sat, Nov 22, 2025 at 04:22:46PM +0900, Laurent Pinchart wrote:
-> > > Hello Wei,
-> > > 
-> > > On Tue, Nov 18, 2025 at 01:50:55AM +0000, Wei Fang wrote:
-> > > > Sorry, I only have a little experience with DWMac, add Clark to help look
-> > > > at this issue.
-> > > 
-> > > Thank you.
-> > > 
-> > > I think we're getting close to having a good understanding of the
-> > > problem. I've debugged it as far as I could based on the information
-> > > available publicly. Let's try to get to the bottom of this issue, it
-> > > impacts quite a lot of people and it would be very nice to fix it
-> > > properly in mainline.
-> > > 
-> > > The short summary is that I'm experiencing an interrupt storm on IRQ 135
-> > > when EEE is enabled with the EQOS interface.
-> > > 
-> > > My current theory is that
-> > > 
-> > > - The lpi_intr_o signal of the EQOS is OR'ed into IRQ 135.
-> > > - The issue is triggerted by the PHY exiting LPI mode
-> > > - When it exits LPI mode, the PHY restarts generating the RX clock
-> > >   (clk_rx_i).
-> > > - The MAC detects exit from LPI, and asserts lpi_intr_o.
-> > > - Before the CPU has time to process the interrupt, the PHY enters LPI
-> > >   mode again, and stops generating the RX clock.
-> > > - The CPU processes the interrupt and reads the GMAC4_LPI_CTRL_STATUS
-> > >   registers. This does not clear lpi_intr_o as there's no clk_rx_i.
-> > 
-> > Please try setting STMMAC_FLAG_RX_CLK_RUNS_IN_LPI in dwmac-imx.c and
-> > see whether that changes the behaviour.
+> Based on the device tree found in the NXP repository at github
+> https://github.com/nxp-imx-support/meta-imx-frdm and on imx8mp-evk
+> board kernel mainline device tree.
 > 
-> I have tested that and it worked like a charm ! I have submitted
-> https://lore.kernel.org/r/20251123053518.8478-1-laurent.pinchart@ideasonboard.com
+> This is a basic device tree supporting:
 > 
-> That was quite an adventure. Thank you so much for all your support, I'm
-> not sure I would have managed without you (or at least I would have
-> needed way more time). I really really appreciate it.
+>  - Quad Cortex-A53
+>  - 4GB LPDDR4 DRAM
+>  - PCA9450C PMIC with regulators
+>  - Two NXP PCAL6416 GPIO expanders
+>  - RGB LEDs via GPIO expander
+>  - I2C1, I2C2, I2C3 controllers
+>  - UART2 (console) and UART3 (with RTS/CTS)
+>  - USDHC3 (8-bit eMMC)
+>  - SNVS power key (onboard power button)
 > 
-> If the above patch gets accepted, we will probably be able to remove the
-> eee-broken-* properties from the i.MX8MP device tree files (and possibly
-> from i.MX8DXL and i.MX93 as well). I have mentioned that below the
-> commit message of the patch, with a test procedure as it should be
-> tested on each board.
+> Author: Xiaofeng Wei <xiaofeng.wei@nxp.com>
 
-As stated in reply to that patch, while this may reduce the severity of
-the storm, I don't think it'll completely eliminate it.
+There is no such tag. Use git commit --amend --reset-author to set the
+author.
 
-I made the suggestion to set the flag as a test to confirm whether the
-lpi_intr_o is indeed the problem by ensuring that the receive domain is
-always clocked, and thus ensuring that the signal clears within four
-clock cycles, rather than an indefinite period should the remote end
-re-enter LPI mode quicky.
+> Signed-off-by: Xiaofeng Wei <xiaofeng.wei@nxp.com>
+> 
+> Co-developed-by: Joseph Guo <qijian.guo@nxp.com>
+> Signed-off-by: Joseph Guo <qijian.guo@nxp.com>
+> 
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+There is never blank line between tags.
+
+> Co-developed-by: Steven Yang <steven.yang@nxp.com>
+> Signed-off-by: Steven Yang <steven.yang@nxp.com>
+> 
+> Co-developed-by: Lei Xu <lei.xu@nxp.com>
+> Signed-off-by: Lei Xu <lei.xu@nxp.com>
+> 
+> Co-developed-by: Rogerio Pimentel <rpimentel.silva@gmail.com>
+> Signed-off-by: Rogerio Pimentel <rpimentel.silva@gmail.com>
+> ---
+> 
+> Changes in v5:
+> 
+>  - Replace underscores (_) in node names with dashes (-)
+>  - Added missing Co-developed-by and Signed-off-by tags from all contributors
+
+I assume you actually saw these SoBs in the code you took as your base?
+Remember, do not add SoBs which were never present in the original work
+(if company asks you, you can politely reply that they need to read what
+SoB means)
+
+That's anyway weirdly a lot of co-developed tags, are you sure they
+wrote the code you took as the base here?
+
+Best regards,
+Krzysztof
