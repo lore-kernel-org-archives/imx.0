@@ -1,168 +1,185 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFD915E5BB;
-	Sun, 23 Nov 2025 10:23:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45E71DE3DC
+	for <imx@lists.linux.dev>; Sun, 23 Nov 2025 15:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763893399; cv=none; b=qn50MelMx+9QbXKUI7SjA1pAZh77VLDRGJbfu0w15ROTGN0VTZHChl6DJaDvgs8qg7AQZs3yuYfQXa9HYE3gC+rhjwI4Ni3JmlE87NNF4rqAT3jGjAGLOvz9If50fEEufluORcZ107kDDeFSJfaLz0LDRhGz8zsodlRey8p0gTQ=
+	t=1763911369; cv=none; b=XRghoEEBZoR/B4MBLl1zrwMGtLlA+gw1YRu0FSF46VKknH7VzjSONOND+fCdyrgM+BsPjBXMKSqVY0H79G1/CWBFQ56MyVbHkzMR9+ioNsnv0Wa367/Hu6mpF8+/6N1gHDSsDaeB/PNWkKCcAbtvMVISxPWvm0jT0PjaX6D3S4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763893399; c=relaxed/simple;
-	bh=UiX7HVf3vaYnrjH0z8zCjrfqBr/dzzXW1fZ0kqi45VM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=FWtgH2j2Yd7ZD5jV4eWn7NAagD3qKLhB2iaUZHmvIVQKAF81t254gOMz+s5efba+0pYzbchIVeAE6fLLONHvb4X2im6Qfrko8RX0PJmhhuJtXUjCKow+x/sDBJZ+H2Cw8cJEAwZ2jgV52xnLcPCxEqiZnZGq3Vkh5iriDDOaL1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tarun4EM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763911369; c=relaxed/simple;
+	bh=q89lS8EidiOlwgzxNGKjSVvReDwqkctFKR97mMOtEuQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hy0T3FNC2dNjyaR4e/zKfCd3ECCO3RpLmpPYXoucADJVzPzPEHjM/MvpBGl1/sdlUqF/7qtxd+YwOl2VkSb9ik+B5fhRFFWuPbFSpISlUU+eETqvYPYy8LKn6k7wE9YjrHqYatbHjaapl1AR/AOy/Gi9fRXbYo6cplqHTgpZJzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=n7ZEnNMi; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tarun4EM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D90C113D0;
-	Sun, 23 Nov 2025 10:23:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763893399;
-	bh=UiX7HVf3vaYnrjH0z8zCjrfqBr/dzzXW1fZ0kqi45VM=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=Tarun4EMLm/3AZKunWxcyKCAkMOWd8a/zIZbPLFSEioDD/m45BkNjFJ3Fd1r75o/y
-	 p5kS+YGd29OaLc6tXGR/yb0twr4ByhhFFWg0KX7mqUZpJ9Lu+LjPz6sPCbKZ+L36Xh
-	 zR0CjOMNi3i8wIwq+p+1kV+q0UDGw3ask4WsCugsoJQ4XlncTQ+zuPvXyD+NH3B6D0
-	 XzeeW1CILUZ+BZmbjxLtLPJhH01rvfsSsUcpryW0/arA81mSdItlbcA7hgnBXFwkaz
-	 WqYPdfEkDda1OsYR3YVIktGbjG4XeRqsDaCKN/ogUGc5no/qM6jpJWXzFqN5X8yr4I
-	 NzY8qbUoIwkdg==
-Message-ID: <b8d5e008-d004-4e4f-8229-1d8d23087718@kernel.org>
-Date: Sun, 23 Nov 2025 11:23:12 +0100
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="n7ZEnNMi"
+Received: from pendragon.ideasonboard.com (fs276ed015.tkyc509.ap.nuro.jp [39.110.208.21])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id DB0FE606;
+	Sun, 23 Nov 2025 16:20:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1763911228;
+	bh=q89lS8EidiOlwgzxNGKjSVvReDwqkctFKR97mMOtEuQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=n7ZEnNMiw2YT8c7Qi/u4Zrxuu7qj+HqIXy2bArYHbW0z6anjqi/mLIwWZoMFKnwfL
+	 g6i2ixRV+FgP3CDB3tjapxwnJfcU+jzW2Z9qLcfrgmK8Ra6fV/8nRp58NIh+VF+NeZ
+	 /LFr/W02WTI5v0pKpYVs73QfzEUFGiBeMwP1IJyA=
+Date: Mon, 24 Nov 2025 00:22:08 +0900
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>, Heiko Schocher <hs@denx.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Joakim Zhang <qiangqing.zhang@nxp.com>, Joy Zou <joy.zou@nxp.com>,
+	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Martyn Welch <martyn.welch@collabora.com>,
+	Mathieu Othacehe <othacehe@gnu.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Richard Hu <richard.hu@technexion.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Stefano Radaelli <stefano.radaelli21@gmail.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
+Subject: Re: [PATCH] net: stmmac: imx: Do not stop RX_CLK in Rx LPI state for
+ i.MX8MP
+Message-ID: <20251123152208.GE15447@pendragon.ideasonboard.com>
+References: <20251123053518.8478-1-laurent.pinchart@ideasonboard.com>
+ <aSLKLYuz0WA2LpFF@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/2] arm64: dts: add support for NXP i.MX8MP FRDM board
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Rogerio Pimentel <rpimentel.silva@gmail.com>, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de
-Cc: kernel@pengutronix.de, festevam@gmail.com,
- alexander.stein@ew.tq-group.com, dario.binacchi@amarulasolutions.com,
- marex@denx.de, Markus.Niebel@tq-group.com, y.moog@phytec.de,
- joao.goncalves@toradex.com, frieder.schrempf@kontron.de,
- josua@solid-run.com, francesco.dolcini@toradex.com, primoz.fiser@norik.com,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Xiaofeng Wei <xiaofeng.wei@nxp.com>, Joseph Guo <qijian.guo@nxp.com>,
- Steven Yang <steven.yang@nxp.com>, Lei Xu <lei.xu@nxp.com>
-References: <20251123003603.246399-1-rpimentel.silva@gmail.com>
- <20251123003603.246399-2-rpimentel.silva@gmail.com>
- <7e50c694-af6b-40cc-b1dc-4dd4ecf85a8d@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <7e50c694-af6b-40cc-b1dc-4dd4ecf85a8d@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aSLKLYuz0WA2LpFF@shell.armlinux.org.uk>
 
-On 23/11/2025 10:42, Krzysztof Kozlowski wrote:
-> On 23/11/2025 01:36, Rogerio Pimentel wrote:
->> The FRDM-i.MX8MP is an NXP development platform based on the i.MX8M Plus
->> SoC, featuring a quad Cortex-A53, Cortex-M7 co-processor, 4GB LPDDR4,
->> 32GB eMMC, Wi-Fi 6/Bluetooth 5.4/802.15.4 tri-radio, Ethernet, HDMI/MIPI
->> display interfaces, camera connectors, and standard expansion headers.
->>
->> Based on the device tree found in the NXP repository at github
->> https://github.com/nxp-imx-support/meta-imx-frdm and on imx8mp-evk
->> board kernel mainline device tree.
->>
->> This is a basic device tree supporting:
->>
->>  - Quad Cortex-A53
->>  - 4GB LPDDR4 DRAM
->>  - PCA9450C PMIC with regulators
->>  - Two NXP PCAL6416 GPIO expanders
->>  - RGB LEDs via GPIO expander
->>  - I2C1, I2C2, I2C3 controllers
->>  - UART2 (console) and UART3 (with RTS/CTS)
->>  - USDHC3 (8-bit eMMC)
->>  - SNVS power key (onboard power button)
->>
->> Author: Xiaofeng Wei <xiaofeng.wei@nxp.com>
-> 
-> There is no such tag. Use git commit --amend --reset-author to set the
-> author.
-> 
->> Signed-off-by: Xiaofeng Wei <xiaofeng.wei@nxp.com>
->>
->> Co-developed-by: Joseph Guo <qijian.guo@nxp.com>
->> Signed-off-by: Joseph Guo <qijian.guo@nxp.com>
->>
-> 
-> There is never blank line between tags.
-> 
->> Co-developed-by: Steven Yang <steven.yang@nxp.com>
->> Signed-off-by: Steven Yang <steven.yang@nxp.com>
->>
->> Co-developed-by: Lei Xu <lei.xu@nxp.com>
->> Signed-off-by: Lei Xu <lei.xu@nxp.com>
->>
->> Co-developed-by: Rogerio Pimentel <rpimentel.silva@gmail.com>
->> Signed-off-by: Rogerio Pimentel <rpimentel.silva@gmail.com>
->> ---
->>
->> Changes in v5:
->>
->>  - Replace underscores (_) in node names with dashes (-)
->>  - Added missing Co-developed-by and Signed-off-by tags from all contributors
-> 
-> I assume you actually saw these SoBs in the code you took as your base?
-> Remember, do not add SoBs which were never present in the original work
-> (if company asks you, you can politely reply that they need to read what
-> SoB means)
-> 
-> That's anyway weirdly a lot of co-developed tags, are you sure they
-> wrote the code you took as the base here?
+Hi Russell,
 
-Although I think you mentioned you wanted all these last time, so it's
-fine. Although I did not think you will literally use that syntax and
-literally all the tags from Daniel's responses, because the syntax was
-not correct.
+On Sun, Nov 23, 2025 at 08:47:41AM +0000, Russell King (Oracle) wrote:
+> On Sun, Nov 23, 2025 at 02:35:18PM +0900, Laurent Pinchart wrote:
+> > The i.MX8MP-based Debix Model A board experiences an interrupt storm
+> > on the ENET_EQOS IRQ (135) when connected to an EEE-enabled peer.
+> > 
+> > Setting the eee-broken-1000t DT property in the PHY node solves the
+> > problem, which confirms that the issue is related to EEE. Device trees
+> > for 8 boards in the mainline kernel, including the i.MX8MP EVK, set the
+> > property, which indicates the issue is likely not limited to the Debix
+> > board, although some of those device trees may have blindly copied the
+> > property from the EVK.
+> > 
+> > The IRQ is documented in the reference manual as the logical OR of 4
+> > signals:
+> > 
+> > - ENET QOS TSN LPI RX Exit Interrupt
+> > - ENET QOS TSN Host System Interrupt
+> > - ENET QOS TSN Host System RX Channel Interrupts, Logical OR of
+> >   channels[4:0]
+> > - ENET QOS TSN Host System TX Channel Interrupts, Logical OR of
+> >   channels[4:0]
+> > 
+> > Debugging the issue showed no unmasked interrupt sources from the Host
+> > System Interrupt (GMAC_INT_STATUS), Host System RX Channel Interrupts or
+> > Host System TX Channel Interrupts (MTL_INT_STATUS, MTL_CHAN_INT_CTRL and
+> > DMA_CHAN_STATUS) that was flagged at an unexpected high rate. This
+> > leaves the LPI RX Exit Interrupt as the most likely culprit.
+> > 
+> > The reference manual doesn't clearly indicate what the interrupt signal
+> > is, but from its name we can reasonably infer that it would be connected
+> > to the EQOS lpi_intr_o output. That interrupt is cleared when reading
+> > the LPI control/status register. However, its deassertion is synchronous
+> > to the RX clock domain, so it will take time to clear. It appears that
+> > it could even fail to clear at all, as in the following sequence of
+> > events:
+> > 
+> > - When the PHY exits LPI mode, it restarts generating the RX clock
+> >   (clk_rx_i input signal to the GMAC).
+> > - The MAC detects exit from LPI, and asserts lpi_intr_o. This triggers
+> >   the ENET_EQOS interrupt.
+> > - Before the CPU has time to process the interrupt, the PHY enters LPI
+> >   mode again, and stops generating the RX clock.
+> > - The CPU processes the interrupt and reads the GMAC4_LPI_CTRL_STATUS
+> >   registers. This does not clear lpi_intr_o as there's no clk_rx_i.
+> > 
+> > The ENET_EQOS interrupt will keep firing until the PHY resumes
+> > generating the RX clock when it eventually exits LPI mode again.
+> > 
+> > As LPI exit is reported by the LPIIS bit in GMAC_INT_STATUS, the
+> > lpi_intr_o signal may not have been meant to be wired to a CPU
+> > interrupt. It can't be masked in GMAC registers, and OR'ing it to the
+> > other GMAC interrupt signals seems to be a design mistake as it makes it
+> > impossible to selectively mask the interrupt in the GIC either.
+> > 
+> > Setting the STMMAC_FLAG_RX_CLK_RUNS_IN_LPI platform data flag gets rid
+> > of the interrupt storm, which confirms the above theory.
+> > 
+> > The i.MX8DXL and i.MX93, which also integrate an EQOS, may also be
+> > affected, as hinted by the eee-broken-1000t property being set in the
+> > i.MX8DXL EVK and the i.MX93 Variscite SoM device trees. The reference
+> > manual of the i.MX93 indicates that the ENET_EQOS interrupt also OR's
+> > the "ENET QOS TSN LPI RX exit Interrupt", while the i.MX8DXL reference
+> > manual doesn't provide details about the ENET_EQOS interrupt.
+> > 
+> > Additional testing is needed with the i.MX8DXL and i.MX93, so for now
+> > set the flag for the i.MX8MP only. The eee-broken-1000t property could
+> > possibly be removed from some of the i.MX8MP device trees, but that also
+> > require per-board testing.
+> > 
+> > Suggested-by: Russell King <linux@armlinux.org.uk>
+> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > ---
+> > I have CC'ed authors and maintainers of the i.MX8DXL, i.MX8MP and i.MX93
+> > device trees that set the eee-broken-1000t property for awareness. To
+> > test if the property can be dropped, you will need to
+> > 
+> > - Connect the EQOS interface to an EEE-enabled peer with a 1000T link.
+> > - Drop the eee-broken-1000t property from the device tree.
+> > - Boot the board and check with `ethtool --show-eee` that EEE is active.
+> > - Check the number of interrupts received from the EQOS in
+> >   /proc/interrupts. After boot on my system (with an NFS root) I have
+> >   ~6000 interrupts when no interrupt storm occurs, and hundreds of
+> >   thousands otherwise.
+> > - Apply this patch and check that EEE works as expected without any
+> >   interrupt storm. For i.MX8DXL and i.MX93, you will need to set the
+> >   STMMAC_FLAG_RX_CLK_RUNS_IN_LPI in the corresponding imx_dwmac_ops
+> >   instances in drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c.
+> 
+> Hang on... also check 100M connections, as I indicated, the lpi_intr_o
+> is slow to clear even when the receive clock is running (it takes for
+> receive clock cycles - 160ns for 100M, 32ns for 1G.)
+> 
+> So, I suspect you still get a storm, but it's not as severe.
 
-Best regards,
-Krzysztof
+Of course you're right, I rejoiced too fast :-/
+
+The numbers are getting low enough to not be suspicious, so the
+measurements are less precise. I've compared the number of interrupts
+right after reaching the login prompt with and without the
+eee-broken-100tx and eee-broken-1000t DT properties:
+
+100TX link, eee-broken-* set: 7000 interrupts
+1000T link, eee-broken-* set: 2711 interrupts
+100TX link, eee-broken-* unset: 9450 interrupts
+1000T link, eee-broken-* unset: 6066 interrupts
+
+-- 
+Regards,
+
+Laurent Pinchart
