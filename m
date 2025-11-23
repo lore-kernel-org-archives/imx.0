@@ -1,210 +1,131 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E911C1FFC6D
-	for <imx@lists.linux.dev>; Sun, 23 Nov 2025 17:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9317921CC49
+	for <imx@lists.linux.dev>; Sun, 23 Nov 2025 18:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763917899; cv=none; b=UkRoiMomDhRpu1DoP+oNSdqDts6JMV0ta1QpadoYxkW3HldLtew8tuH7S/B3qsarg+l4o6tXfbSsSTpvKLHF+btUH08vmsT64DHxABOESrTbtv4KyLrud2x4+7sO9K5hIumog2xfU6gwYZevBK3B29zi+3Zja6SYcPN+kAZZeFk=
+	t=1763921694; cv=none; b=Q2bu9Wtqo0NZ5Am3t6SdNK1S/K0+h5lKnPTeQCeC/v6pga4wAainWA1WkUTU0xkPmTBCL2Maedn+mPPefaLJts4srxm2amc462h7YSzn8pIn+rg1Svl1PFweLRxeyJCzTngR6kSnO0aKRYY4AlB4zQMzY7oqxWviN6D0yFkaBBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763917899; c=relaxed/simple;
-	bh=wlfXQnexkWoSg0Mrd1IwGd6WYFoQW+D9wvQHLE9mPSw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=szh6X5A93iPh1/Vps3JgGYxtzjecsVW87VfASFEjqleX5AKKQvAekD133zdC+XADZmW5OfKI9tqyX9L+Hys/eRf8SJOisP6rRlbS+hKEA2VCemFgo/xXvpoh5CUV9NCNvNBrcvD63oJvYFCGISenE1C0vgGLk/6d7McJBX604kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Kx9Ze6XA; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1763921694; c=relaxed/simple;
+	bh=0PULvETt9z816gDcDVvusNHQVkAxlavjk0u7No+qGbo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L18cTu/MUhj6BJaulbmRsZVN9BM6huLBQrdL/uIXOzQyFYxSgoL69J5oBWTYwzDTGSd+qi+eAbWwaXE3xUdhx6UntzhlS6oNGmM6naRLVy21JKzuvYCgIitz5QNI4wreY2nlXrdsBVaWtIdDzAvCVXIk+pFBTjI1+KsNFqbnL2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GAl0JKEw; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Kx9Ze6XA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=q/yVcbueqTHeAEtEqlq/9UVTAmFW9jVRWkCvEl9tyNE=; b=Kx9Ze6XAmXb3n4ZB+5fXHwkjhn
-	ViHpyCpb75Sry8xMT62qWnhQYwGxyqQ3e98zKM8eUmG57drtxYX6Bz41ZEDOoag5m/44vxvN0of1w
-	l5I+zXpLgaWNoPbsVydcgHnWpNd+Lmez21lnGyhPqbY05weHpAaOUVWngz7zohl6n6KO/CA0SQAUd
-	UrLk2dngxJLy5HkQXcncMYCg+HVxdDfyQqAQLHIN2KDJLarrSKMvYp/7dwILRQ5TzUwT45GNlD3OJ
-	ZRQP5wcw4VQs7VMj57cgJFeXZbfQ6avYYueUiT5VSQ40m/0uZ+WcpKRTp0G0lJIty2BFYybd0qE8O
-	8hvkvZbA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:34632)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vNDcX-000000000z8-2wh9;
-	Sun, 23 Nov 2025 17:11:29 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vNDcV-000000007RW-1wR1;
-	Sun, 23 Nov 2025 17:11:27 +0000
-Date: Sun, 23 Nov 2025 17:11:27 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
-Message-ID: <aSNAP9G4cwRKvxng@shell.armlinux.org.uk>
-References: <20251112222551.GB9135@pendragon.ideasonboard.com>
- <20251113010627.GC9135@pendragon.ideasonboard.com>
- <aRW6CxvmIEqkMrfA@shell.armlinux.org.uk>
- <20251114222654.GI30434@pendragon.ideasonboard.com>
- <PAXPR04MB8510E17B2B8C612DD02175CE88D6A@PAXPR04MB8510.eurprd04.prod.outlook.com>
- <20251122072246.GA16239@pendragon.ideasonboard.com>
- <aSGJHV9Sga2kBIBX@shell.armlinux.org.uk>
- <20251123053802.GA25329@pendragon.ideasonboard.com>
- <aSLLMMNkHnfwyO0y@shell.armlinux.org.uk>
- <20251123152356.GF15447@pendragon.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GAl0JKEw"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8b31a665ba5so333889885a.2
+        for <imx@lists.linux.dev>; Sun, 23 Nov 2025 10:14:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763921691; x=1764526491; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dCX6WT7m7rVOFFnbXXZfQ29NTD0s+0MEDDI8eQG4yUM=;
+        b=GAl0JKEw4w+pBNcyFfUIGHbuu1loYA+WKXJTEHpT9OWa14yNRFIE68kKLwOc0u8Ymm
+         fHuIhf8x1fawPW02xtCRRFl6OIjrfFQBrNZoQSY7WaxpOX+ZGM4jGBRCO1hSchCysdQk
+         WfZM7jNIfx8+T09SegAGkPtxLrddUcra97Nub5PeOTaKGcyWz2ePxBd4NVi1LCWXzheO
+         tzvvCBCA7XIM58O1qydSGf9h1+L2hknTrZahADjpT+ip48V+zekBoQuzQLSFlvU5fdFf
+         aTlFTopZk97pzvULD1rtUs2DIHlQHtgwXtNqc7EcgfA8t8qVi/Aj5jibNRAgW6EitUi6
+         41kQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763921691; x=1764526491;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dCX6WT7m7rVOFFnbXXZfQ29NTD0s+0MEDDI8eQG4yUM=;
+        b=DYzmPd9RhFnlAga9PAdE3HUaKYs1ruWrcGujaeth0XwBFFaeDH8QH+7hk2xZHiSKqs
+         /0st5k/uAcY2W/uatl9n/oVsMwNtOnJx2gaszUN3V5OiJ9Z4Gu7VGy5Vhs4uXv0w/dvM
+         25a6r2SyYiXDFcIPX6HpM+mPiO5mZgA0CQVfduiBHze/ZGVuT+ZjqVnWh/BAWTkb6tjr
+         oTs84CyoVNARDmxUEam8ZTY+tH7blyZ+ZRLrf+PMIG6dN5aTeXwR0o/PlI+ETfOZj6Pn
+         SBixmwlD9V47IPG7N1UXCYRmlOpBOGu8cNa+JgIbT68NwXfI3nNpLzEk+0EB0PlxBugp
+         OX3w==
+X-Forwarded-Encrypted: i=1; AJvYcCVc8BwPaIPvkODKqSDRm8+OE9+ftUylm537m46Z0Mp5dhBPpM/Wqt5Dwhx71DemtWhggqE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxO9LfTWzX3PG+K7lLPjrknIhcy/WLkwE0rg753kvbw0WmGQZWI
+	RdgxmuFlNZ9nox/5MF6ITy+NWP7t8+cb0dwOHA9pb1DVzCPbJcpx9sX4
+X-Gm-Gg: ASbGncsrVzUb0TWXIOa5U0zQfYRS6ywdjubJgCzdTHGy770zuf8luYAbOfJyKMLTaIt
+	pJ1HrdjBwKWubFIj0hkdzJoH3hFy+T/wSpzpZM9ogZ/oLlggVEk9zs1ujImJlOsrIlAl5O7R6Ob
+	OZf8ybWVGlRdGBwOiNsHk+NdRBsF3lh8VIsSgll5fxwoqae9Rgm755C8xvmCLHFcNJyM4gKQdNj
+	UmwoAjo+SZySSa+C5qIZSyN1jBbRlOnM5qEjpWiSNeREy45YY2LxrcHWT13sgUbif3G2u2RhHHU
+	d0tZXn9MiwqVf2BZVXWMcVTIrjaZyGdCWLF9I20GKaZHP2XOKbMxqP70YZfMlRwgIFvhDwC1Z/C
+	hLEuLesJRN7WOAECDWsKRUxY3Ci/GdxqYp2MgDIA5SoPMv/PGrpTdhuy3aC17v2eU3sw9BewGss
+	KGWMJoEGBkIGpLMcmhGXC0rqCrjCtK
+X-Google-Smtp-Source: AGHT+IFCca9D0Nqlxq/e//g/tvSDD1qUyYElNo9V329H3YLMPI6JAiHun0zZOL76EY5TDf4OeItFbQ==
+X-Received: by 2002:a05:620a:1a03:b0:8b0:f2bd:4764 with SMTP id af79cd13be357-8b33d4d84aemr1213451985a.63.1763921691498;
+        Sun, 23 Nov 2025 10:14:51 -0800 (PST)
+Received: from rogerio-laptop.home ([142.188.15.215])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b3295f17dcsm782010085a.55.2025.11.23.10.14.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Nov 2025 10:14:50 -0800 (PST)
+From: Rogerio Pimentel <rpimentel.silva@gmail.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	krzk@kernel.org
+Cc: kernel@pengutronix.de,
+	festevam@gmail.com,
+	alexander.stein@ew.tq-group.com,
+	dario.binacchi@amarulasolutions.com,
+	marex@denx.de,
+	Markus.Niebel@tq-group.com,
+	y.moog@phytec.de,
+	joao.goncalves@toradex.com,
+	frieder.schrempf@kontron.de,
+	josua@solid-run.com,
+	francesco.dolcini@toradex.com,
+	primoz.fiser@norik.com,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Rogerio Pimentel <rpimentel.silva@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v6 1/2] dt-bindings: arm: fsl: Add i.MX8MP FRDM board
+Date: Sun, 23 Nov 2025 13:14:43 -0500
+Message-Id: <20251123181444.266030-1-rpimentel.silva@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251123152356.GF15447@pendragon.ideasonboard.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Nov 24, 2025 at 12:23:56AM +0900, Laurent Pinchart wrote:
-> On Sun, Nov 23, 2025 at 08:52:00AM +0000, Russell King (Oracle) wrote:
-> > On Sun, Nov 23, 2025 at 02:38:02PM +0900, Laurent Pinchart wrote:
-> > > On Sat, Nov 22, 2025 at 09:57:49AM +0000, Russell King (Oracle) wrote:
-> > > > On Sat, Nov 22, 2025 at 04:22:46PM +0900, Laurent Pinchart wrote:
-> > > > > Hello Wei,
-> > > > > 
-> > > > > On Tue, Nov 18, 2025 at 01:50:55AM +0000, Wei Fang wrote:
-> > > > > > Sorry, I only have a little experience with DWMac, add Clark to help look
-> > > > > > at this issue.
-> > > > > 
-> > > > > Thank you.
-> > > > > 
-> > > > > I think we're getting close to having a good understanding of the
-> > > > > problem. I've debugged it as far as I could based on the information
-> > > > > available publicly. Let's try to get to the bottom of this issue, it
-> > > > > impacts quite a lot of people and it would be very nice to fix it
-> > > > > properly in mainline.
-> > > > > 
-> > > > > The short summary is that I'm experiencing an interrupt storm on IRQ 135
-> > > > > when EEE is enabled with the EQOS interface.
-> > > > > 
-> > > > > My current theory is that
-> > > > > 
-> > > > > - The lpi_intr_o signal of the EQOS is OR'ed into IRQ 135.
-> > > > > - The issue is triggerted by the PHY exiting LPI mode
-> > > > > - When it exits LPI mode, the PHY restarts generating the RX clock
-> > > > >   (clk_rx_i).
-> > > > > - The MAC detects exit from LPI, and asserts lpi_intr_o.
-> > > > > - Before the CPU has time to process the interrupt, the PHY enters LPI
-> > > > >   mode again, and stops generating the RX clock.
-> > > > > - The CPU processes the interrupt and reads the GMAC4_LPI_CTRL_STATUS
-> > > > >   registers. This does not clear lpi_intr_o as there's no clk_rx_i.
-> > > > 
-> > > > Please try setting STMMAC_FLAG_RX_CLK_RUNS_IN_LPI in dwmac-imx.c and
-> > > > see whether that changes the behaviour.
-> > > 
-> > > I have tested that and it worked like a charm ! I have submitted
-> > > https://lore.kernel.org/r/20251123053518.8478-1-laurent.pinchart@ideasonboard.com
-> > > 
-> > > That was quite an adventure. Thank you so much for all your support, I'm
-> > > not sure I would have managed without you (or at least I would have
-> > > needed way more time). I really really appreciate it.
-> > > 
-> > > If the above patch gets accepted, we will probably be able to remove the
-> > > eee-broken-* properties from the i.MX8MP device tree files (and possibly
-> > > from i.MX8DXL and i.MX93 as well). I have mentioned that below the
-> > > commit message of the patch, with a test procedure as it should be
-> > > tested on each board.
-> > 
-> > As stated in reply to that patch, while this may reduce the severity of
-> > the storm, I don't think it'll completely eliminate it.
-> > 
-> > I made the suggestion to set the flag as a test to confirm whether the
-> > lpi_intr_o is indeed the problem by ensuring that the receive domain is
-> > always clocked, and thus ensuring that the signal clears within four
-> > clock cycles, rather than an indefinite period should the remote end
-> > re-enter LPI mode quicky.
-> 
-> You're right. I've checked replied to the patch with the following
-> numbers.
-> 
-> 100TX link, eee-broken-* set: 7000 interrupts
-> 1000T link, eee-broken-* set: 2711 interrupts
-> 100TX link, eee-broken-* unset: 9450 interrupts
-> 1000T link, eee-broken-* unset: 6066 interrupts
+Add device tree compatible string for the i.MX8MP FRDM board.
 
-Sadly, I think this means for iMX8MP, the correct answer is to disable
-EEE completely. What I was thinking when I brought this up is as follows
-and dwmac-imx.c can set STMMAC_FLAG_EEE_DISABLE for iMX8MP to prevent
-the use of EEE.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Rogerio Pimentel <rpimentel.silva@gmail.com>
+---
+No changes in v6
 
-This works because, in phylink, pl->mac_supports_eee_ops will be set
-since stmmac implements the two LPI operations. pl->mac_supports_eee
-will be clear because pl->config->lpi_capabilities will be zero, and
-pl->config->lpi_interfaces will be empty. This causes phylink to call
-phy_disable_eee() on all PHYs that end up being attached to this
-phylink instance, which should result in the PHY EEE advertisement
-being cleared.
+Changes in v5:
 
-I'll package this up into a proper patch tomorrow.
+ - Include Acked-by tag from Conor Dooley
 
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++++++-
- include/linux/stmmac.h                            | 9 +++++----
- 2 files changed, 11 insertions(+), 5 deletions(-)
+No changes in v4
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 1d37c2b5ad46..113cae2bc593 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1376,7 +1376,12 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
- 				 config->supported_interfaces,
- 				 pcs->supported_interfaces);
- 
--	if (priv->dma_cap.eee) {
-+	/* Some platforms, e.g. iMX8MP, wire lpi_intr_o to the same interrupt
-+	 * used for stmmac's main interrupts, which leads to interrupt storms.
-+	 * STMMAC_FLAG_EEE_DISABLE allows EEE to be disabled on such platforms.
-+	 */
-+	if (priv->dma_cap.eee &&
-+	    !(priv->plat->flags & STMMAC_FLAG_EEE_DISABLE)) {
- 		/* Assume all supported interfaces also support LPI */
- 		memcpy(config->lpi_interfaces, config->supported_interfaces,
- 		       sizeof(config->lpi_interfaces));
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 8ae068706b63..4c770262a2f8 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -187,10 +187,11 @@ enum dwmac_core_type {
- #define STMMAC_FLAG_MULTI_MSI_EN		BIT(7)
- #define STMMAC_FLAG_EXT_SNAPSHOT_EN		BIT(8)
- #define STMMAC_FLAG_INT_SNAPSHOT_EN		BIT(9)
--#define STMMAC_FLAG_RX_CLK_RUNS_IN_LPI		BIT(10)
--#define STMMAC_FLAG_EN_TX_LPI_CLOCKGATING	BIT(11)
--#define STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP	BIT(12)
--#define STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY	BIT(13)
-+#define STMMAC_FLAG_EEE_DISABLE			BIT(10)
-+#define STMMAC_FLAG_RX_CLK_RUNS_IN_LPI		BIT(11)
-+#define STMMAC_FLAG_EN_TX_LPI_CLOCKGATING	BIT(12)
-+#define STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP	BIT(13)
-+#define STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY	BIT(14)
- 
- struct mac_device_info;
- 
+No changes in v3
 
+No changes in v2
+
+ Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 68a2d5fecc43..960c0ce8d128 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -1099,6 +1099,7 @@ properties:
+               - emcraft,imx8mp-navqp      # i.MX8MP Emcraft Systems NavQ+ Kit
+               - fsl,imx8mp-evk            # i.MX8MP EVK Board
+               - fsl,imx8mp-evk-revb4      # i.MX8MP EVK Rev B4 Board
++              - fsl,imx8mp-frdm           # i.MX8MP Freedom Board
+               - gateworks,imx8mp-gw71xx-2x # i.MX8MP Gateworks Board
+               - gateworks,imx8mp-gw72xx-2x # i.MX8MP Gateworks Board
+               - gateworks,imx8mp-gw73xx-2x # i.MX8MP Gateworks Board
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.25.1
+
