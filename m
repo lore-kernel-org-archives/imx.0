@@ -1,208 +1,191 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA7B219A79
-	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 17:34:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DA82BEFEF
+	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 17:43:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764005656; cv=none; b=hVaTqq5qFaaTW7GCUQZmzt3o1+qXwP0tMw0ihPf5kMhfVGpi15DzWuW4vwxhPvM8O00kc2BhqucnnFRAeK8lPriKzSp/EbEFvHB7IBNSipsSqnpbpF3NtRs3DpIqH5DDf3YtpwRJS/2WpDtXAA/VN8x53Wh8FmoXN4x/XjsxL9Y=
+	t=1764006199; cv=none; b=jLmvPME0Lv0qcScsxCUKt1Q8NsLpvEXYtoNbtccqCEKfXs2Txfb3P5pwq6v15oIAijktukDpN+58317PV8TyxpZ42O9wB9+8CaWL6X8aE9B4MbTZhqMmi1zVScvDJMd1897C38isR27iWEb5SSX23DidZuUIQ47S2QJnSqUgrFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764005656; c=relaxed/simple;
-	bh=QrwrudDXcmBwv5MpjExmSZyNDnG2x6mJE3eaNfxGUrk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s30i8ae+c3vfhhGMIGpu/oeUoUwE7j3A+exO54btcq1zOz65sQ63WJl2JQp15cmHiKQL9WpQcTdwR58sOyeYYAw09jo0+1cDXPOfXdGSSy2WcH1SKh/YQunOdSdsj1qDSzTruRXCfQYqBTtsPVXOhULkOPm9j0d6ng1zqoCbtOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cSMluTDn; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cSMluTDn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC411C16AAE
-	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 17:34:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764005656;
-	bh=QrwrudDXcmBwv5MpjExmSZyNDnG2x6mJE3eaNfxGUrk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=cSMluTDn9fYYcsY96+RxCVmBU1UT6UeyACkllJmWSzU7gZrvo4gGKXo7uyft1pw/J
-	 X0UATKXVk+76/kBFRGVF3WN6uZgdNS3IO4AInkWQW27lHULnedM31JIF4SYAhBxdt1
-	 htoENAzwePRLjk5wCvlNeLCA2EhSsiJdEzldD7GbpiOoH+JZ0hIPxhLZNrJGTVLqyY
-	 2rgtF3juLEX+iTIqseecGdaakgW0CW4dYuyzvYUgbL2kageR3wIVXZrIeJIMhRFjpw
-	 s8V/JiAZGEYvkqjz/CuBiFxqZYv8hiBAk1mJsvk15Xna/VKLCOvT4hJYMMNMBq/vD8
-	 cuwKoO9s+/KJg==
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6419aaced59so6306889a12.0
-        for <imx@lists.linux.dev>; Mon, 24 Nov 2025 09:34:15 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUUxqtAPFFsSn+PsU1GhKsKl4rec5WI402/zZA6vLHYOld0orsIvr4rElmH7OzRlWCFB2w=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzHlGRDeL6G70ENLEcK/lrUmH8AyB165TnuiRp/rtIgNht1Al1W
-	qU+Tmntu/yO1orDKZjqNFi1Ey+RODlMCPSMWYHq89/alw6nlX0To7uo/FuMwA6hD9MLMKwOfvg5
-	d3kQfzMVJx0ecUrHzCwzPkfoPNa0H1g==
-X-Google-Smtp-Source: AGHT+IH4zThrBiVwTM/gMTFGPCf7Ko+9nQcpXA9JRi2zbFqO9WDmcAZTQclKPHj9NMzyHEHvrVsg+wN6QcpewpApah8=
-X-Received: by 2002:a17:907:1b0f:b0:b6d:573d:bbc5 with SMTP id
- a640c23a62f3a-b767170cca7mr1240223266b.37.1764005654444; Mon, 24 Nov 2025
- 09:34:14 -0800 (PST)
+	s=arc-20240116; t=1764006199; c=relaxed/simple;
+	bh=oMrNiLh2hyNkEhXgmtxJs8MAnZVW7GCY+ljs0X5+OX0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dHvQpNVIURG5cBwmmAiRUQOstb+D8Dow6tS3V5rk9cDKgmR/5IX0ysEFjQHVdAYa86q2shx8l9vGq0FmVRS1NXUJve2MFyVid1LbGYlHlfBPLg/IvorPi6XdxBubwVsOevE1s13pRe09oDZiN457K2b1Fhl8JjQogg9ifjVAgT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1vNaaZ-0000Ib-4x; Mon, 24 Nov 2025 18:42:59 +0100
+Message-ID: <53cb1a8e87f80d8bb1a9b6463077a99b2268e46c.camel@pengutronix.de>
+Subject: Re: [PATCH 2/2] media: verisilicon: Avoid G2 bus error while
+ decoding H.264 and HEVC
+From: Lucas Stach <l.stach@pengutronix.de>
+To: ming.qian@oss.nxp.com, linux-media@vger.kernel.org
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca, 
+ benjamin.gaignard@collabora.com, p.zabel@pengutronix.de, 
+ sebastian.fricke@collabora.com, shawnguo@kernel.org,
+ ulf.hansson@linaro.org,  s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com,  linux-imx@nxp.com, peng.fan@nxp.com,
+ eagle.zhou@nxp.com, imx@lists.linux.dev,  linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  linux-arm-kernel@lists.infradead.org
+Date: Mon, 24 Nov 2025 18:42:57 +0100
+In-Reply-To: <20251121081911.1682-2-ming.qian@oss.nxp.com>
+References: <20251121081911.1682-1-ming.qian@oss.nxp.com>
+	 <20251121081911.1682-2-ming.qian@oss.nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251031175926.1465360-1-robh@kernel.org> <aRN0fdOAV0B728qo@p14s>
- <20251111195923.GA3629535-robh@kernel.org> <CANLsYkwcbrTaKASdr5fj0m9ARS4xUgzVH8iWQKwTCvEsoZDDsQ@mail.gmail.com>
- <CAL_JsqL7HcDkPgJjcqJSagdN=gH2rv6noVS57QMGNRp0YCxUBw@mail.gmail.com> <aRX6DJoaP4MXG3fN@p14s>
-In-Reply-To: <aRX6DJoaP4MXG3fN@p14s>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 24 Nov 2025 11:34:02 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJGtQTVdaJ99DKiqbo3GfxmU7V6QjroTxHi7gR53Dfe-Q@mail.gmail.com>
-X-Gm-Features: AWmQ_bmPMfxmmKwhG7Mzx1bAQRdZoKMheTTGVeWZ-CEQx6BfmTyQnFsumwKZ_Xg
-Message-ID: <CAL_JsqJGtQTVdaJ99DKiqbo3GfxmU7V6QjroTxHi7gR53Dfe-Q@mail.gmail.com>
-Subject: Re: [PATCH v6] remoteproc: Use of_reserved_mem_region_* functions for "memory-region"
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Peng Fan <peng.fan@nxp.com>, 
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Thu, Nov 13, 2025 at 9:32=E2=80=AFAM Mathieu Poirier
-<mathieu.poirier@linaro.org> wrote:
->
-> On Wed, Nov 12, 2025 at 10:59:42AM -0600, Rob Herring wrote:
-> > On Wed, Nov 12, 2025 at 9:43=E2=80=AFAM Mathieu Poirier
-> > <mathieu.poirier@linaro.org> wrote:
-> > >
-> > > On Tue, 11 Nov 2025 at 12:59, Rob Herring <robh@kernel.org> wrote:
-> > > >
-> > > > On Tue, Nov 11, 2025 at 10:38:05AM -0700, Mathieu Poirier wrote:
-> > > > > Hi Rob,
-> > > > >
-> > > > > Please see may comment for st_remoteproc.c
-> > > > >
-> > > > > On Fri, Oct 31, 2025 at 12:59:22PM -0500, Rob Herring (Arm) wrote=
-:
-> > > > > > Use the newly added of_reserved_mem_region_to_resource() and
-> > > > > > of_reserved_mem_region_count() functions to handle "memory-regi=
-on"
-> > > > > > properties.
-> >
-> > [...]
-> >
-> > > > > > diff --git a/drivers/remoteproc/st_remoteproc.c b/drivers/remot=
-eproc/st_remoteproc.c
-> > > > > > index e6566a9839dc..043348366926 100644
-> > > > > > --- a/drivers/remoteproc/st_remoteproc.c
-> > > > > > +++ b/drivers/remoteproc/st_remoteproc.c
-> > > > > > @@ -120,40 +120,37 @@ static int st_rproc_parse_fw(struct rproc=
- *rproc, const struct firmware *fw)
-> > > > > >     struct device *dev =3D rproc->dev.parent;
-> > > > > >     struct device_node *np =3D dev->of_node;
-> > > > > >     struct rproc_mem_entry *mem;
-> > > > > > -   struct reserved_mem *rmem;
-> > > > > > -   struct of_phandle_iterator it;
-> > > > > > -   int index =3D 0;
-> > > > > > -
-> > > > > > -   of_phandle_iterator_init(&it, np, "memory-region", NULL, 0)=
-;
-> > > > > > -   while (of_phandle_iterator_next(&it) =3D=3D 0) {
-> > > > > > -           rmem =3D of_reserved_mem_lookup(it.node);
-> > > > > > -           if (!rmem) {
-> > > > > > -                   of_node_put(it.node);
-> > > > > > -                   dev_err(dev, "unable to acquire memory-regi=
-on\n");
-> > > > > > -                   return -EINVAL;
-> > > > > > -           }
-> > > > > > +   int index =3D 0, mr =3D 0;
-> > > > > > +
-> > > > > > +   while (1) {
-> > > > > > +           struct resource res;
-> > > > > > +           int ret;
-> > > > > > +
-> > > > > > +           ret =3D of_reserved_mem_region_to_resource(np, mr++=
-, &res);
-> > > > > > +           if (ret)
-> > > > > > +                   return 0;
-> > > > >
-> > > > > The original code calls rproc_elf_load_rsc_table() [1] after iter=
-ating through
-> > > > > the memory region, something that won't happen with the above.
-> > > >
-> > > > Indeed. it needs the following incremental change. It is slightly
-> > > > different in that rproc_elf_load_rsc_table() is not called if
-> > > > 'memory-region' is missing, but the binding says that's required.
-> > > >
-> > > > 8<--------------------------------------------------
-> > > >
-> > > > diff --git a/drivers/remoteproc/st_remoteproc.c b/drivers/remotepro=
-c/st_remoteproc.c
-> > > > index 043348366926..cb09c244fdb5 100644
-> > > > --- a/drivers/remoteproc/st_remoteproc.c
-> > > > +++ b/drivers/remoteproc/st_remoteproc.c
-> > > > @@ -120,15 +120,19 @@ static int st_rproc_parse_fw(struct rproc *rp=
-roc, const struct firmware *fw)
-> > > >         struct device *dev =3D rproc->dev.parent;
-> > > >         struct device_node *np =3D dev->of_node;
-> > > >         struct rproc_mem_entry *mem;
-> > > > -       int index =3D 0, mr =3D 0;
-> > > > +       int index =3D 0;
-> > > >
-> > > >         while (1) {
-> > > >                 struct resource res;
-> > > >                 int ret;
-> > > >
-> > > > -               ret =3D of_reserved_mem_region_to_resource(np, mr++=
-, &res);
-> > > > -               if (ret)
-> > > > -                       return 0;
-> > > > +               ret =3D of_reserved_mem_region_to_resource(np, inde=
-x, &res);
-> > > > +               if (ret) {
-> > > > +                       if (index)
-> > > > +                               break;
-> > > > +                       else
-> > > > +                               return ret;
-> > > > +               }
-> > >
-> > > This looks brittle and I'm not sure it would work.
-> > >
-> > > Going back to the original implementation, the only time we want to
-> > > "break" is when @index is equal to the amount of memory regions _and_
-> > > ret is -EINVAL.  Any other condition should return.
-> >
-> > @index equal to number of entries returns -ENODEV, so that condition
-> > is impossible. We can simply it to this:
-> >
-> > if (ret =3D=3D -ENODEV && index)
-> >     break;
-> > else
-> >     return ret;
->
-> To me this needs to be:
->
-> entries =3D of_reserved_mem_region_count(np);
+Hi Ming,
 
-Ideally, we try to avoid parsing the same property twice. The places
-we count and then read the property again are when we need to allocate
-an array of the right size in between. But if that puts this patch to
-bed finally, then fine.
+Am Freitag, dem 21.11.2025 um 16:19 +0800 schrieb
+ming.qian@oss.nxp.com:
+> From: Ming Qian <ming.qian@oss.nxp.com>
+>=20
+> For the i.MX8MQ platform, there is a hardware limitation: the g1 VPU and
+> g2 VPU cannot decode simultaneously; otherwise, it will cause below bus
+> error and produce corrupted pictures, even led to system hang.
+>=20
+> [  110.527986] hantro-vpu 38310000.video-codec: frame decode timed out.
+> [  110.583517] hantro-vpu 38310000.video-codec: bus error detected.
+>=20
+> Therefore, it is necessary to ensure that g1 and g2 operate alternately.
+> Then this allows for successful multi-instance decoding of H.264 and HEVC=
+.
+>=20
+Is there any more info available on what's actually causing the hang?
+Is there some kind of overflow of the interconnect request capacity?
 
->
-> ...
-> ...
->
-> if (ret =3D=3D -ENODEV && index =3D=3D entries)
->         break;
-> else
->         return ret;
->
-> But taking a step back, it might even be easier to go from a while() to a=
- for(),
-> the same way you did in imx_rproc_addr_init().
->
-> >
-> > If you want to keep the prior behavior when 'memory-region' is
-> > missing, then '&& index' can be removed, but I think that was wrong
-> > behavior.
-> >
-> > Rob
+I'm asking to understand the issue a bit better, as locking both
+decoder instances against each other seems like a pretty big hammer.
+
+Regards,
+Lucas
+
+> Fixes: cb5dd5a0fa518 ("media: hantro: Introduce G2/HEVC decoder")
+> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> ---
+>  drivers/media/platform/verisilicon/hantro.h   |  1 +
+>  .../media/platform/verisilicon/hantro_drv.c   | 26 +++++++++++++++++++
+>  .../media/platform/verisilicon/imx8m_vpu_hw.c |  4 +++
+>  3 files changed, 31 insertions(+)
+>=20
+> diff --git a/drivers/media/platform/verisilicon/hantro.h b/drivers/media/=
+platform/verisilicon/hantro.h
+> index e0fdc4535b2d..8baebf767d26 100644
+> --- a/drivers/media/platform/verisilicon/hantro.h
+> +++ b/drivers/media/platform/verisilicon/hantro.h
+> @@ -101,6 +101,7 @@ struct hantro_variant {
+>  	unsigned int double_buffer : 1;
+>  	unsigned int legacy_regs : 1;
+>  	unsigned int late_postproc : 1;
+> +	atomic_t *shared_resource;
+>  };
+> =20
+>  /**
+> diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/me=
+dia/platform/verisilicon/hantro_drv.c
+> index 60b95b5d8565..036ce43c9359 100644
+> --- a/drivers/media/platform/verisilicon/hantro_drv.c
+> +++ b/drivers/media/platform/verisilicon/hantro_drv.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/slab.h>
+>  #include <linux/videodev2.h>
+>  #include <linux/workqueue.h>
+> +#include <linux/iopoll.h>
+>  #include <media/v4l2-event.h>
+>  #include <media/v4l2-mem2mem.h>
+>  #include <media/videobuf2-core.h>
+> @@ -93,6 +94,9 @@ static void hantro_job_finish(struct hantro_dev *vpu,
+> =20
+>  	clk_bulk_disable(vpu->variant->num_clocks, vpu->clocks);
+> =20
+> +	if (vpu->variant->shared_resource)
+> +		atomic_cmpxchg(vpu->variant->shared_resource, 0, 1);
+> +
+>  	hantro_job_finish_no_pm(vpu, ctx, result);
+>  }
+> =20
+> @@ -166,12 +170,34 @@ void hantro_end_prepare_run(struct hantro_ctx *ctx)
+>  			      msecs_to_jiffies(2000));
+>  }
+> =20
+> +static int hantro_wait_shared_resource(struct hantro_dev *vpu)
+> +{
+> +	u32 data;
+> +	int ret;
+> +
+> +	if (!vpu->variant->shared_resource)
+> +		return 0;
+> +
+> +	ret =3D read_poll_timeout(atomic_cmpxchg, data, data, 10, 300 * NSEC_PE=
+R_MSEC, false,
+> +				vpu->variant->shared_resource, 1, 0);
+> +	if (ret) {
+> +		dev_err(vpu->dev, "Failed to wait shared resource\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static void device_run(void *priv)
+>  {
+>  	struct hantro_ctx *ctx =3D priv;
+>  	struct vb2_v4l2_buffer *src, *dst;
+>  	int ret;
+> =20
+> +	ret =3D hantro_wait_shared_resource(ctx->dev);
+> +	if (ret < 0)
+> +		goto err_cancel_job;
+> +
+>  	src =3D hantro_get_src_buf(ctx);
+>  	dst =3D hantro_get_dst_buf(ctx);
+> =20
+> diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/=
+media/platform/verisilicon/imx8m_vpu_hw.c
+> index 5be0e2e76882..1b3a0bfbf890 100644
+> --- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
+> +++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
+> @@ -324,6 +324,8 @@ static const char * const imx8mq_reg_names[] =3D { "g=
+1", "g2", "ctrl" };
+>  static const char * const imx8mq_g1_clk_names[] =3D { "g1" };
+>  static const char * const imx8mq_g2_clk_names[] =3D { "g2" };
+> =20
+> +static atomic_t imx8mq_shared_resource =3D ATOMIC_INIT(1);
+> +
+>  const struct hantro_variant imx8mq_vpu_variant =3D {
+>  	.dec_fmts =3D imx8m_vpu_dec_fmts,
+>  	.num_dec_fmts =3D ARRAY_SIZE(imx8m_vpu_dec_fmts),
+> @@ -356,6 +358,7 @@ const struct hantro_variant imx8mq_vpu_g1_variant =3D=
+ {
+>  	.num_irqs =3D ARRAY_SIZE(imx8mq_irqs),
+>  	.clk_names =3D imx8mq_g1_clk_names,
+>  	.num_clocks =3D ARRAY_SIZE(imx8mq_g1_clk_names),
+> +	.shared_resource =3D &imx8mq_shared_resource,
+>  };
+> =20
+>  const struct hantro_variant imx8mq_vpu_g2_variant =3D {
+> @@ -371,6 +374,7 @@ const struct hantro_variant imx8mq_vpu_g2_variant =3D=
+ {
+>  	.num_irqs =3D ARRAY_SIZE(imx8mq_g2_irqs),
+>  	.clk_names =3D imx8mq_g2_clk_names,
+>  	.num_clocks =3D ARRAY_SIZE(imx8mq_g2_clk_names),
+> +	.shared_resource =3D &imx8mq_shared_resource,
+>  };
+> =20
+>  const struct hantro_variant imx8mm_vpu_g1_variant =3D {
+
