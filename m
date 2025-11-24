@@ -1,151 +1,193 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD69F258CD7
-	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 10:35:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED444274B32;
+	Mon, 24 Nov 2025 10:39:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763980545; cv=none; b=Ji1NPVXv5rL5LgbHAkIuoFEQxXgylq1X0wHVxMqhs6SalhXozMovRVmLgpiTsN5hZigX2xXL7ZV5fMTam8Lz5ZGcL2y9U+9hIKXmrH7wqYyTdCItSHFUIj6c+AM7vdRGuMTtn4B65MbnE+gIWPArDTeY4rGIV94TwT1BJTNm/4c=
+	t=1763980781; cv=none; b=JTOqH7n2y/+RYfmeNJbz7wkDwcizwhpCGqe3+wYmHdeXrLDHtc9IQZHwuNdEjcygV27YCOe1D4W9ARtrfbhZxSCvqPL1iYroNoj/xomBLqaqe0k3EIDMv/OX5PPadrOapRDJ/z+35CvQrlxflyZCm9stmHZBap7e2blSjXJKsYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763980545; c=relaxed/simple;
-	bh=6OTESRwNLxScQU78nE0ggduh/VNF1NB1gn02JAFvRw8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Cl7ktHJz6PaxoWjNLZJBzwdSFtoXG95uA/omLOE88cITK+dFnu6+XTjBEzE8ttn8AK9pUm5qnwOhcBfsPQhyuvf2NVM1MCwp1FkSc44yJZr9rTQxSrknJlW/3oc3Rw6+LfzKXr6NAjH8BkWSqUJenDJHk1K2RdesLwFGPCBLPUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ohZtcqtq; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1763980781; c=relaxed/simple;
+	bh=wG0LtNXrjp+tZ6+DjiOmVw4tWhV/2DPiV64zQMWzD6E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LbTrkqcqF3JRxH4yuaGMiDgXGWQ/7plYPfcK0yZKJLK1asI2XPK0z+VcLNlYEJwiCnzoAB/gsL1moSAa4xUbAFk/ZRnWHUKYlhaNGnh/u8ALcwRM2cN7mFiS4vbvLk6rhvTTEl2/lrFlEk7h64kWzPp9hMf5yrE6TuVmgu1tTw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=firEdU2g; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ohZtcqtq"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4779aa4f928so34781785e9.1
-        for <imx@lists.linux.dev>; Mon, 24 Nov 2025 02:35:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1763980542; x=1764585342; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HAIKS+tQIq5G6QZu607XSH9VxwKXNkvRuOzR0ldY0uA=;
-        b=ohZtcqtqE7c0rGhlqpcMKyeKCNPt46tMxfVUkZKGlXSYzHtHzeD9La6YC7H+UbwTpl
-         xTYe3fA74+K630mbmH2dT2L277OmuBqvB8FOb8pBscIgssQd5GH+CtP/igpJI4Aw7pJn
-         3VzDleyXP0FS0S04q3To0KHL832BcYMArzPpoLsyo1vQUP2SzcjzeEVxVJ4rpmZzCR5P
-         4l+xZKzKhWogeUu1Pwkl64P/8bNoFcvcp3zzY13Tx5n3vKwFDxl/WMfwh1BYs/qhml+h
-         SZkonI8odrkr04ZEpoqqeipsTkgjxD8oou/MV0cCHnO5aSvFTPo2eyOYaEQhKD4xnRlP
-         lFrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1763980542; x=1764585342;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HAIKS+tQIq5G6QZu607XSH9VxwKXNkvRuOzR0ldY0uA=;
-        b=QA02MFSvzZiuuZ0Ml2TBzhOXXGeUkFZsN1Bq+/fkvZznjUiqw9dw44uwlTAqXT6cGl
-         EdtYPuQLv7Eg/WJFxybJZ+x/AWa3JKgsmdimRJl1OG2uUdVD1MFQ3mlBeVbCFjQISsHf
-         HD65DP+4ASCebdt+ovSS8S6zckHLVVi1ILe3WuA7p2lY5BxcTFWKYf2IqHXvpj5CuJfw
-         CLZ70XHI/+VUCos/8QN8Q+GbpIth/qNTsvETjtBpwws54qhjyNrae4xPIkeAVa+nWPBt
-         kgJYSewbjlRMtph6eDayC28vvIbfOV2Z6rM/vIvQ7kufH/8zO6X2s2Dz4n33rGCVBq4s
-         ZCmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXudXnMEsYyHh2kg/UstboAU/gfzXVQXWBcPCw6pOXI3U9DVTKn8Wygx05Qmca2cyUGW1Y=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzW3e1Y9jAqNbvYKdDyz174ZTfKLeRYu8J9HOA9PWoQwWmTdTi2
-	kK7InJd45VN36wT3ks6nMktNOGA72QPZnvNpG//hUjv4vyl5jJmAsAw5x5nR3aZldFXQvXyGgUl
-	Ll0rM
-X-Gm-Gg: ASbGncs9a3x8y1ywCqwV8Bl7FchXvAAiZww6//AFQW9kzaVl5yMTB1fBBhQjwxJWpuH
-	ncUbm+8eZzYQ9GnVf+P1GNeQksGnAbfB4r8T07Uby+vJ9XC5s5Kony/XBYamYoPFjhrm8yOGicL
-	RjViRUb61NeGLaSNILkDbpekOz0pA1QJlpC//oIEJNvmH/c7GwTd0dCoNTWmNCe10daoK3r0Mfc
-	IHLpbnGbISR/yMPmxFVoYR7057Tf+w281l6Jlx8q+uC432MDYybUIddYv0x+85CRt8at35EUZ0p
-	u20Hd27f43vOp6BgCluiHYt6PcT8SPuFqY+KfYSm08MCRYMYN8gpHxRoEhL/IIWkgUV3XxSN36s
-	fNARHqDK7gKQ09ozDyPYvO1SGSbsq1UYK92nkKCkFmTSnuP3rzBEaO11Gnc9P4zgPzcEr/HKxaI
-	xv7NizrezUNGDbypBPYkxaaZls8IQggVU7Rwdc4WlumRAPs41aP1y0tFEG4P0lXqXQLU2vePKHR
-	w==
-X-Google-Smtp-Source: AGHT+IHGv4bbS+3bVyw0pYcsA3BeS6dNhxGlltqoLwAE51qnNbKpUpuxJhUkaEhMz5T/wEJo8trcPQ==
-X-Received: by 2002:a05:600c:a01:b0:477:7f4a:44b0 with SMTP id 5b1f17b1804b1-477c01f5980mr97488605e9.33.1763980542060;
-        Mon, 24 Nov 2025 02:35:42 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:3d9:2080:ab13:96f5:1459:8396? ([2a01:e0a:3d9:2080:ab13:96f5:1459:8396])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477a9dbec2bsm150012445e9.5.2025.11.24.02.35.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Nov 2025 02:35:41 -0800 (PST)
-Message-ID: <1d0ccc76-bc19-4446-926f-a12a16a3f88e@linaro.org>
-Date: Mon, 24 Nov 2025 11:35:40 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="firEdU2g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0016EC4CEF1;
+	Mon, 24 Nov 2025 10:39:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1763980780;
+	bh=wG0LtNXrjp+tZ6+DjiOmVw4tWhV/2DPiV64zQMWzD6E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=firEdU2gCtMh4N6YI19W5r3iOxB5sPvAIKExbAF0UKd6W/4+e4/WHnpUVVGhgtWBA
+	 a5pHIpAfdiYTEv1sen/+Y5y19BThHuf5QV7YsTbMjr03yNiePn6xxPFM9rBmFBGO/F
+	 TiEtraXUzP3fH1UnA4jBQAQTFMtojoqtoTg6/MraXPZFWcHy/puTwsedmw3WE0jHV2
+	 mylk4e1h00mN8rZh9xIGkDDB+u8aHBXDegba3zOnzn4UzfAVX9HfqEA2VqqP1N7+9d
+	 IFknDENgch1ihKzPP3CXf7xAiwSA7GPydZqDuHvGrkcGVvyUSstDSkj3J6juuaQQUN
+	 40rHR4ovEobtg==
+Date: Mon, 24 Nov 2025 11:39:37 +0100
+From: Maxime Ripard <mripard@kernel.org>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Jonathan Corbet <corbet@lwn.net>, 
+	Alexey Brodkin <abrodkin@synopsys.com>, Phong LE <ple@baylibre.com>, Liu Ying <victor.liu@nxp.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Adrien Grassein <adrien.grassein@gmail.com>, Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Anitha Chrisanthus <anitha.chrisanthus@intel.com>, 
+	Edmund Dea <edmund.j.dea@intel.com>, Inki Dae <inki.dae@samsung.com>, 
+	Seung-Woo Kim <sw0312.kim@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Hui Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-renesas-soc@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, linux-samsung-soc@vger.kernel.org
+Subject: Re: [PATCH 06/26] drm/bridge: add devm_drm_of_find_bridge
+Message-ID: <hs44z4b2dgisemuewgtvl4epjcqqilg6cy36po25pubaog4hmq@33qgl4o3hwoa>
+References: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com>
+ <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-6-0db98a7fe474@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH v1] phy: fsl-imx8mq-usb: fix typec orientation switch when
- built as module
-To: Franz Schnyder <fra.schnyder@gmail.com>, Vinod Koul <vkoul@kernel.org>,
- Kishon Vijay Abraham I <kishon@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: Franz Schnyder <franz.schnyder@toradex.com>,
- linux-phy@lists.infradead.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Francesco Dolcini <francesco.dolcini@toradex.com>, stable@vger.kernel.org
-References: <20251124095006.588735-1-fra.schnyder@gmail.com>
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20251124095006.588735-1-fra.schnyder@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha384;
+	protocol="application/pgp-signature"; boundary="wbm42ghgit2cp5t3"
+Content-Disposition: inline
+In-Reply-To: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-6-0db98a7fe474@bootlin.com>
 
-On 11/24/25 10:50, Franz Schnyder wrote:
-> From: Franz Schnyder <franz.schnyder@toradex.com>
-> 
-> Currently, the PHY only registers the typec orientation switch when it
-> is built in. If the typec driver is built as a module, the switch
-> registration is skipped due to the preprocessor condition, causing
-> orientation detection to fail.
-> 
-> This patch replaces the preprocessor condition so that the orientation
-> switch is correctly registered for both built-in and module builds.
-> 
-> Fixes: b58f0f86fd61 ("phy: fsl-imx8mq-usb: add tca function driver for imx95")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Franz Schnyder <franz.schnyder@toradex.com>
+
+--wbm42ghgit2cp5t3
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 06/26] drm/bridge: add devm_drm_of_find_bridge
+MIME-Version: 1.0
+
+On Wed, Nov 19, 2025 at 02:05:37PM +0100, Luca Ceresoli wrote:
+> Several drivers (about 20) follow the same pattern:
+>=20
+>  1. get a pointer to a bridge (typically the next bridge in the chain) by
+>     calling of_drm_find_bridge()
+>  2. store the returned pointer in the private driver data, keep it until
+>     driver .remove
+>  3. dereference the pointer at attach time and possibly at other times
+>=20
+> of_drm_find_bridge() is now deprecated because it does not increment the
+> refcount and should be replaced with drm_of_find_bridge() +
+> drm_bridge_put().
+>=20
+> However some of those drivers have a complex code flow and adding a
+> drm_bridge_put() call in all the appropriate locations is error-prone,
+> leads to ugly and more complex code, and can lead to errors over time with
+> code flow changes.
+>=20
+> To handle all those drivers in a straightforward way, add a devm variant =
+of
+> drm_of_find_bridge() that adds a devm action to invoke drm_bridge_put()
+> when the said driver is removed. This allows all those drivers to put the
+> reference automatically and safely with a one line change:
+>=20
+>   - priv->next_bridge =3D of_drm_find_bridge(remote_np);
+>   + priv->next_bridge =3D devm_drm_of_find_bridge(dev, remote_np);
+>=20
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>
 > ---
->   drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> index b94f242420fc..d498a6b7234b 100644
-> --- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> +++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> @@ -124,7 +124,7 @@ struct imx8mq_usb_phy {
->   static void tca_blk_orientation_set(struct tca_blk *tca,
->   				enum typec_orientation orientation);
->   
-> -#ifdef CONFIG_TYPEC
-> +#if IS_ENABLED(CONFIG_TYPEC)
->   
->   static int tca_blk_typec_switch_set(struct typec_switch_dev *sw,
->   				enum typec_orientation orientation)
+>  drivers/gpu/drm/drm_bridge.c | 30 ++++++++++++++++++++++++++++++
+>  include/drm/drm_bridge.h     |  5 +++++
+>  2 files changed, 35 insertions(+)
+>=20
+> diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+> index 09ad825f9cb8..c7baafbe5695 100644
+> --- a/drivers/gpu/drm/drm_bridge.c
+> +++ b/drivers/gpu/drm/drm_bridge.c
+> @@ -1446,6 +1446,36 @@ struct drm_bridge *drm_of_find_bridge(struct devic=
+e_node *np)
+>  }
+>  EXPORT_SYMBOL(drm_of_find_bridge);
+> =20
+> +/**
+> + * devm_drm_of_find_bridge - find the bridge corresponding to the device
+> + *			     node in the global bridge list and add a devm
+> + *			     action to put it
+> + *
+> + * @dev: device requesting the bridge
+> + * @np: device node
+> + *
+> + * On success the returned bridge refcount is incremented, and a devm
+> + * action is added to call drm_bridge_put() when @dev is removed. So the
+> + * caller does not have to put the returned bridge explicitly.
+> + *
+> + * RETURNS:
+> + * drm_bridge control struct on success, NULL on failure
+> + */
+> +struct drm_bridge *devm_drm_of_find_bridge(struct device *dev, struct de=
+vice_node *np)
+> +{
+> +	struct drm_bridge *bridge =3D drm_of_find_bridge(np);
+> +
+> +	if (bridge) {
+> +		int err =3D devm_add_action_or_reset(dev, drm_bridge_put_void, bridge);
+> +
+> +		if (err)
+> +			return ERR_PTR(err);
+> +	}
+> +
+> +	return bridge;
+> +}
+> +EXPORT_SYMBOL(devm_drm_of_find_bridge);
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+That's inherently unsafe though, because even if the bridge is removed
+other parts of DRM might still have a reference to it and could call
+into it.
+
+We'd then have dropped our reference to the next bridge, which could
+have been freed, and it's a use-after-free.
+
+It's more complicated than it sounds, because we only have access to the
+drm_device when the bridge is attached, so later than probe.
+
+I wonder if we shouldn't tie the lifetime of that reference to the
+lifetime of the bridge itself, and we would give up the next_bridge
+reference only when we're destroyed ourselves.
+
+Storing a list of all the references we need to drop is going to be
+intrusive though, so maybe the easiest way to do it would be to create a
+next_bridge field in drm_bridge, and only drop the reference stored
+there?
+
+And possibly tie the whole thing together using a helper?
+
+Anyway, I'm not sure it should be a prerequisite to this series. I we do
+want to go the devm_drm_of_find_bridge route however, we should at least
+document that it's unsafe, and add a TODO entry to clean up the mess
+later on.
+
+Maxime
+
+--wbm42ghgit2cp5t3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaSQ16QAKCRAnX84Zoj2+
+drTLAX0QBwwX78SPwaYEqj6Om+7ADsxYhVrgX1HoD1xpc0ILj+Ur57K6wtKDIc5l
+JWSP6zkBgJA2DSWw4vHzHhFRbZQ+eGEUkynilMkrpEr/EsrHbAzT3gfgz8IOyhGR
+Vs8tk3i2Uw==
+=/E1G
+-----END PGP SIGNATURE-----
+
+--wbm42ghgit2cp5t3--
