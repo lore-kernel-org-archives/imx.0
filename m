@@ -1,621 +1,291 @@
-Received: from mx-relay186-hz1.antispameurope.com (mx-relay186-hz1.antispameurope.com [94.100.133.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0930030BF67
-	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 13:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763992688; cv=pass; b=mOUu6iMlpsNDpRGyL2s7wI+F31MDhfQXYmgufhwMKA/K4hmsGiTN26eyeXp6wUfZXevFsIPVsf/FrhDyRbHkzPcW1gSm8iFAvGDYIkH/xHKris19kthjhgpyuSycDzHyVOCR+e08vG2EUbEBTQDcPVDJeTkz4JTt+96Wzdxruxs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763992688; c=relaxed/simple;
-	bh=TCxgbrbLAOti5pmSQmjvW/L/rEDwhMZ/D2S0z/hoa0Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JbkliYTkgt8aI2abaGdrACQvPFZxjY0ZqIovRJR+3ZcDIbxByZ+PbqVcvR6CV3sF+Ybe5gHPRZnuuycfJJsSMpcjkENuJBSER/IqItO+/OnMxgFlVKB/vnnvUCx1PFIubnMPdFXS6aqrrcO3HiuRRCg+Rqofq369EERMlZLWxJU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Y4J+y2sS; arc=pass smtp.client-ip=94.100.133.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5894614B96E
+	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 14:33:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763994801; cv=none; b=ZKGzaOG01bGUSRNJaub0W9H4SlnucztlTQUnAECelxtnITq8F04T3u6g3aBkQ33R2YJ05lt9ejvErqolcHxVvM0yBW4LKGEqTacGoXwOiC/FvuDZMhQhbxiz5+zBNGM2ErgDVd/0ftu+IMUbM9UIAf7aIEQUCtxkclBSrkrYunc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763994801; c=relaxed/simple;
+	bh=wSQ341CU5vsOctNXexpEakv7qkoHtZ0v3orCbR3i2WA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sKHKRRPe7GjPAxh2fFXPl1ySdAO2/rHD8OQbnF5dVLgROh0tRqCD3HCdIVhtf1Y+8Jbf8oQs3lLuPxBksC2dIERcEqSZ+KL8goW1rzkFvn2yU55CuU/TxCFXeSgFDiNOMRV2VzamBHoZSj94BGeE8wdRfpmIAAK47/ZwfqZhVBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TDpafyuB; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Y4J+y2sS"
-ARC-Authentication-Results: i=1; mx-gate186-hz1.hornetsecurity.com 1;
- spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out01-hz1.hornetsecurity.com;
- dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=pYHTU8GxUy8As0pS0qbdZPY+PWc+6KU3SDmGq3Fa97M=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1763992620;
- b=Q9htuHdXHZC0YPNT9fXjrGL2xUFQ+IS93pPFh/KycWUp9yzaRoZdQmpYe5emGE7VCbRGUVr4
- QCDgGlpimACfPhI1VKdJC6TEW5Cs4qFeQYtaCwQo4cdJUrqKXcfZvZ5vp9W6YSz5xKyFGb+xpX6
- BqK+6YQ8SdLhaRVfaKBV4U4OcnebJJYXFr5cTm+E+3+Bpzy0e5ISIib832EBxF3WWyKc/P8Ozfq
- ysZlmR7ZOubIEmmGtp/IP3K7yVxd7G+shQ6m7fB0zB91JqWbbpZWNDK0T0POlN9qEw05ydEEFDl
- +7oiUpRKC7sl4P5RS98Bf4JLVW1veIiBWF5OVAxxzwtPw==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1763992620;
- b=HpU4XEwpSOzKinhreirbLMlp6JsDUrlRqh2Ykw0neiHBAzIER/9OFJqmK/L+D9c0VBVqB0um
- RrTP3e3TMjdpWtWMJH6Ib/ll8qSMFBHCUxlM2n6vE8ILOrT19AcOv8UiIsfReuYtNBDMMAcW/C0
- oYBDVchfcfkudW+nB6ZsN/RwH55yqvuC6LGa/8CQbUmxlnNjVeJjbyHjwf+6TJDpeuUKAPTiyoY
- +2FTSdROCs6P00h1z8dy1gJcMf/heB8lHv0731Js/ekGyJE4G9e37DUJw24+hTZEw+la0TIvgvG
- eE05RuovwuQ6zHJhwDxRbOSv+Iahq87+0JdrHc7/bLFDw==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay186-hz1.antispameurope.com;
- Mon, 24 Nov 2025 14:56:59 +0100
-Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by smtp-out01-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 97A75A40134;
-	Mon, 24 Nov 2025 14:56:46 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, Aisheng Dong <aisheng.dong@nxp.com>
-Cc:
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "dongas86@gmail.com" <dongas86@gmail.com>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "robh@kernel.org" <robh@kernel.org>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>, Frank Li <frank.li@nxp.com>,
- "kernel@dh-electronics.com" <kernel@dh-electronics.com>,
- "linux@ew.tq-group.com" <linux@ew.tq-group.com>,
- Francesco Dolcini <francesco.dolcini@toradex.com>,
- Anson Huang <Anson.Huang@nxp.com>
-Subject:
- Re: [PATCH 1/1] arm64: dts: imx8mp: Update pin function file according to
- Rev.D RM
-Date: Mon, 24 Nov 2025 14:56:46 +0100
-Message-ID: <5032333.GXAFRqVoOG@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To:
- <DU0PR04MB929902EFA27FAC76B61349E480D0A@DU0PR04MB9299.eurprd04.prod.outlook.com>
-References:
- <20251124095449.4027676-1-aisheng.dong@nxp.com> <5946049.DvuYhMxLoT@steina-w>
- <DU0PR04MB929902EFA27FAC76B61349E480D0A@DU0PR04MB9299.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TDpafyuB"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-64162c04f90so7185255a12.0
+        for <imx@lists.linux.dev>; Mon, 24 Nov 2025 06:33:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763994798; x=1764599598; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DMHuhLQ2+QePhLbxyyov6Mwfn5dk2KsNTjCwuBZ/B2U=;
+        b=TDpafyuB9wfddvbfBLiA6F4noQRm0u3lMJ9N79SPlF7QFeTeihGQFMDHXXc8qsaHlC
+         HW4OiSAVy1vYOSLaMVSVbBrwzZhu3x71MtGpeR3wKVCZFARx3oOq+OdfX2Cvc09iD8rp
+         Qb5VBD7/q2voACciT3xZ+LMAbccQxda297JYBcTSQhbBt3EymWV8+zLE5CL9zn9+eVl3
+         +MqGicrNVt3UXk9RENk6tw0KANzljpRS9fVsEZiRlOaTyyOB9piExSgcSkasjIfeSvr+
+         Wxof9l2qVgHNhMIECrngqvAnAcpJ4JUgnEF92ltj0zJE3rhsUiRWjjg+3ME1PwOUr/1a
+         c8Fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763994798; x=1764599598;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DMHuhLQ2+QePhLbxyyov6Mwfn5dk2KsNTjCwuBZ/B2U=;
+        b=LwZZxzJ7ZvKMvjTWAZX6zojyag0rA4XZWBi4VSoE3GUMKGtutpBuzSouH+kjCdt5Wi
+         vfrEWAPJ1JfR8cgyVaOmNnTjrYPWtPgAYcNYBdZQxrkyNZBc5RvCVNe2JWrZX/K1kvrt
+         DZWbdHdWgm5EnUL191rQ5odYGicuHfp10Vnc9qKr0UzGVgs1zqOwkoTONoIEw2lcFqMr
+         krwThTkw/nmIpB62W48skL1JDpyvXoale1tEEqqtEGw2z1b4aH0QiMCtgurkK+PvuOL7
+         Ll0MB9tigH7PQy+kJjgbDQb2fyQL1bNvF2F0cLWy26zzc3gsjw5m5XgWGgs4p8KdxY10
+         XesA==
+X-Forwarded-Encrypted: i=1; AJvYcCW5/2ApZMghPKOBOpbLWhfIXSrOXou9Gfa+TOxfvgkYamQRKHbKw/Of296qp2hyWz5bPrM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw4Vsr3n93ZWvv8TX9xC3te9G0OnDHNsyg9gX0U1a3RFeC34ITi
+	hMSUxQIVsDnd1I3xNKUzCP2oOtEkM0mFX09yQFV07AIBYDt8ld8amvzgNr4J7Y88
+X-Gm-Gg: ASbGncuLRtQ362bqTUqXlrRMaTzYg3Wj5EUTdimHIw8f32n37kWHrwN4MMYksud/zsq
+	e/GVhyDyG5Bby/dFxOt7+VtOadZfCUjEwLQkVur1+8D8EWUsyxaA0CKpGAlPoIWHqI9CwV+a+eF
+	DW956yNRTSsH5JFnAGjOY+BbkkOJDmCRbk62NIQVqulIPNI/848kMW1VpuYXzn81YiHOuHd+l59
+	0EGypsqAi9B4dCRKeazTVKz7xl7X+vY1xqoRve2WiZqt8Jrw2UmRjw4D347sf9zDw/RouduxOde
+	hiz4gPFns/vioj/BvfsKo29HZxub11c+i7DBE77HUGuoDAmARmQG8pwVFpvH7P62mcduSJYdXtI
+	gD/odeHt2uSmTAbz6S2+eJZfk3XINsZQkl3Gb+B/keF/Usqei0081d0yyMVG9mrGYTLWUnmPj7J
+	rV8Y3FnVJnykl8BQ==
+X-Google-Smtp-Source: AGHT+IGs/95/cJ+tL3SsaiiXXgcuCaeuAg21ZTVttRpATbc8iAWB4Al2D0iS745iUZOaE4uems77rg==
+X-Received: by 2002:a2e:95d9:0:b0:37a:5bc6:ab9f with SMTP id 38308e7fff4ca-37cd92392c8mr23746331fa.26.1763989401463;
+        Mon, 24 Nov 2025 05:03:21 -0800 (PST)
+Received: from [10.38.18.76] ([213.255.186.37])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37cc6b48e26sm27317291fa.1.2025.11.24.05.03.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Nov 2025 05:03:21 -0800 (PST)
+Message-ID: <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
+Date: Mon, 24 Nov 2025 15:03:19 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay186-hz1.antispameurope.com with 4dFS6l3nTHz43ffH
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:249dd298a963cd4c070e81c75906a167
-X-cloud-security:scantime:1.926
-DKIM-Signature: a=rsa-sha256;
- bh=pYHTU8GxUy8As0pS0qbdZPY+PWc+6KU3SDmGq3Fa97M=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1763992619; v=1;
- b=Y4J+y2sSiPKpOULQEL0bP96P+COsDQlknurIFtE3rAOFHaISlcqGj2l7oRhDp8cY21tJVP/1
- 8tYC53GLxhAXUwyoR0v5oTCQsP79wYwzSZNgTDy90hy+UhhIQbp3MykdfOvBAUtV4937PVdJdY5
- 0UBm02y8cn/N3blRRiOztsvHBTMPAmm01HlwJzX5cBqcfJi6fiiW/4rWoEZtqt5AteFRMIJM8Nd
- t6UcWKJTRUICWCM3SjOvShgbEk9kfVJ8l5rG4cbAoCI0zY6za1dsk82Q3ULyKOra4BNCAyof9Vv
- aXFnATPAUViPKnjQHEkIQKzhGzy3L3jWfBG4hy5gzxnYA==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT
+ overlays"
+To: Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>,
+ Saravana Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Charles Keepax <ckeepax@opensource.cirrus.com>,
+ Richard Fitzgerald <rf@opensource.cirrus.com>,
+ David Rhodes <david.rhodes@cirrus.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Mark Brown <broonie@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+ linux-i2c@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-sound@vger.kernel.org, patches@opensource.cirrus.com,
+ linux-gpio@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-cxl@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>,
+ Horatiu Vultur <horatiu.vultur@microchip.com>,
+ Steen Hegelund <steen.hegelund@microchip.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+ <20251015071420.1173068-2-herve.codina@bootlin.com>
+Content-Language: en-US
+From: Kalle Niemi <kaleposti@gmail.com>
+In-Reply-To: <20251015071420.1173068-2-herve.codina@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Aisheng,
+On 10/15/25 10:13, Herve Codina wrote:
+> From: Saravana Kannan <saravanak@google.com>
+> 
+> This reverts commit 1a50d9403fb90cbe4dea0ec9fd0351d2ecbd8924.
+> 
+> While the commit fixed fw_devlink overlay handling for one case, it
+> broke it for another case. So revert it and redo the fix in a separate
+> patch.
+> 
+> Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
+> Reported-by: Herve Codina <herve.codina@bootlin.com>
+> Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com/
+> Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
+> Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> Link: https://lore.kernel.org/lkml/20240411235623.1260061-2-saravanak@google.com/
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Acked-by: Mark Brown <broonie@kernel.org>
+> ---
+>   drivers/bus/imx-weim.c    | 6 ------
+>   drivers/i2c/i2c-core-of.c | 5 -----
+>   drivers/of/dynamic.c      | 1 -
+>   drivers/of/platform.c     | 5 -----
+>   drivers/spi/spi.c         | 5 -----
+>   5 files changed, 22 deletions(-)
+> 
+> diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
+> index 83d623d97f5f..87070155b057 100644
+> --- a/drivers/bus/imx-weim.c
+> +++ b/drivers/bus/imx-weim.c
+> @@ -327,12 +327,6 @@ static int of_weim_notify(struct notifier_block *nb, unsigned long action,
+>   				 "Failed to setup timing for '%pOF'\n", rd->dn);
+>   
+>   		if (!of_node_check_flag(rd->dn, OF_POPULATED)) {
+> -			/*
+> -			 * Clear the flag before adding the device so that
+> -			 * fw_devlink doesn't skip adding consumers to this
+> -			 * device.
+> -			 */
+> -			rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+>   			if (!of_platform_device_create(rd->dn, NULL, &pdev->dev)) {
+>   				dev_err(&pdev->dev,
+>   					"Failed to create child device '%pOF'\n",
+> diff --git a/drivers/i2c/i2c-core-of.c b/drivers/i2c/i2c-core-of.c
+> index eb7fb202355f..30b48a428c0b 100644
+> --- a/drivers/i2c/i2c-core-of.c
+> +++ b/drivers/i2c/i2c-core-of.c
+> @@ -176,11 +176,6 @@ static int of_i2c_notify(struct notifier_block *nb, unsigned long action,
+>   			return NOTIFY_OK;
+>   		}
+>   
+> -		/*
+> -		 * Clear the flag before adding the device so that fw_devlink
+> -		 * doesn't skip adding consumers to this device.
+> -		 */
+> -		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+>   		client = of_i2c_register_device(adap, rd->dn);
+>   		if (IS_ERR(client)) {
+>   			dev_err(&adap->dev, "failed to create client for '%pOF'\n",
+> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> index 2eaaddcb0ec4..b5be7484fb36 100644
+> --- a/drivers/of/dynamic.c
+> +++ b/drivers/of/dynamic.c
+> @@ -225,7 +225,6 @@ static void __of_attach_node(struct device_node *np)
+>   	np->sibling = np->parent->child;
+>   	np->parent->child = np;
+>   	of_node_clear_flag(np, OF_DETACHED);
+> -	np->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
+>   
+>   	raw_spin_unlock_irqrestore(&devtree_lock, flags);
+>   
+> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> index f77cb19973a5..ef9445ba168b 100644
+> --- a/drivers/of/platform.c
+> +++ b/drivers/of/platform.c
+> @@ -739,11 +739,6 @@ static int of_platform_notify(struct notifier_block *nb,
+>   		if (of_node_check_flag(rd->dn, OF_POPULATED))
+>   			return NOTIFY_OK;
+>   
+> -		/*
+> -		 * Clear the flag before adding the device so that fw_devlink
+> -		 * doesn't skip adding consumers to this device.
+> -		 */
+> -		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+>   		/* pdev_parent may be NULL when no bus platform device */
+>   		pdev_parent = of_find_device_by_node(parent);
+>   		pdev = of_platform_device_create(rd->dn, NULL,
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 2e0647a06890..b22944a207c9 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -4791,11 +4791,6 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
+>   			return NOTIFY_OK;
+>   		}
+>   
+> -		/*
+> -		 * Clear the flag before adding the device so that fw_devlink
+> -		 * doesn't skip adding consumers to this device.
+> -		 */
+> -		rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+>   		spi = of_register_spi_device(ctlr, rd->dn);
+>   		put_device(&ctlr->dev);
+>   
+Sorry, some of you will receive this message now for second time. First 
+message was sent to older series of patches.
+-
 
-Am Montag, 24. November 2025, 14:46:36 CET schrieb Aisheng Dong:
-> > From: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > Sent: Monday, November 24, 2025 7:12 PM
-> >=20
-> > Am Montag, 24. November 2025, 10:54:49 CET schrieb Dong Aisheng:
-> > > From: Anson Huang <Anson.Huang@nxp.com>
-> > >
-> > > Update i.MX8MP imx8mp-pinfunc.h file according to reference manual
-> > Rev.D.
-> >=20
-> > Latest officially available is reference manual 3. 11/2020.
-> > I can't find Rev D.
->=20
-> Rev.D is the previous version. The latest one I saw here is Rev 3. 08/202=
-4.
-> https://www.nxp.com/products/i.MX8MPLUS
-> We only got the pinfunc.h update for Rev.D. No updates for newer version =
-so far.
-> Anyway, I can double check with the related team member.
+Hello,
 
-You are right, I picked the wrong RM (imx8mm). Sorry for the noise.
-Ahmad's points are still valid.
+Test system testing drivers for ROHM ICs bisected this commit to cause 
+BD71847 drivers probe to not be called.
 
-Best regards,
-Alexander
+The devicetree blob overlay describing bd71847 enables I2C1 bus on 
+BeagleBone Black aswell.
 
->=20
-> Regards
-> Aisheng
->=20
-> >=20
-> > Best regards,
-> > Alexander
-> >=20
-> > >
-> > > Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
-> > > Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
-> > > ---
-> > > NOTE: I met the following checkpatch error, could you advise how to
-> > > handle it?
-> > > ERROR: Macros with complex values should be enclosed in parentheses
-> > > +#define MX8MP_IOMUXC_GPIO1_IO00__ANAMIX_REF_CLK_32K
-> > 0x014 0x274 0x000 0x5 0x0
-> > > ---
-> > >  .../dts/freescale/imx8mp-data-modul-edm-sbc.dts  |  4 ++--
-> > > .../boot/dts/freescale/imx8mp-debix-model-a.dts  |  2 +-
-> > >  .../boot/dts/freescale/imx8mp-dhcom-som.dtsi     |  4 ++--
-> > >  arch/arm64/boot/dts/freescale/imx8mp-evk.dts     |  2 +-
-> > >  .../boot/dts/freescale/imx8mp-iota2-lumpy.dts    |  2 +-
-> > >  .../boot/dts/freescale/imx8mp-kontron-osm-s.dtsi |  6 +++---
-> > >  .../imx8mp-nitrogen-enc-carrier-board.dts        |  2 +-
-> > >  .../boot/dts/freescale/imx8mp-phycore-fpsc.dtsi  | 12 ++++++------
-> > >  arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h   | 16 ++++++++------=
-=2D-
-> > >  .../dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts  |  4 ++--
-> > > .../boot/dts/freescale/imx8mp-venice-gw71xx.dtsi |  2 +-
-> > > .../boot/dts/freescale/imx8mp-venice-gw72xx.dtsi |  2 +-
-> > > .../boot/dts/freescale/imx8mp-venice-gw73xx.dtsi |  2 +-
-> > > .../boot/dts/freescale/imx8mp-venice-gw74xx.dts  |  2 +-
-> > > arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi |  2 +-
-> > >  15 files changed, 32 insertions(+), 32 deletions(-)
-> > >
-> > > diff --git
-> > > a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-> > > index 16078ff60ef08..7a05e0692d78d 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-> > > @@ -1085,8 +1085,8 @@ MX8MP_IOMUXC_GPIO1_IO01__GPIO1_IO01
-> > 		0x4
-> > >
-> > >  	pinctrl_usb1: usb1-grp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO12__USB1_OTG_PWR
-> > 		0x6
-> > > -			MX8MP_IOMUXC_GPIO1_IO13__USB1_OTG_OC
-> > 		0x80
-> > > +			MX8MP_IOMUXC_GPIO1_IO12__USB1_PWR
-> > 	0x6
-> > > +			MX8MP_IOMUXC_GPIO1_IO13__USB1_OC
-> > 	0x80
-> > >  		>;
-> > >  	};
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-> > > index 9422beee30b29..2df6434bde652 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-> > > @@ -485,7 +485,7 @@ MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX
-> > 				0x49
-> > >
-> > >  	pinctrl_usb1: usb1grp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO14__USB2_OTG_PWR
-> > 				0x10
-> > > +			MX8MP_IOMUXC_GPIO1_IO14__USB2_PWR
-> > 			0x10
-> > >  		>;
-> > >  	};
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-> > > index 68c2e0156a5c8..755ea967bb9cb 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-> > > @@ -1061,8 +1061,8 @@ MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX
-> > 		0x49
-> > >
-> > >  	pinctrl_usb1_vbus: dhcom-usb1-grp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO14__USB2_OTG_PWR
-> > 		0x6
-> > > -			MX8MP_IOMUXC_GPIO1_IO15__USB2_OTG_OC
-> > 		0x80
-> > > +			MX8MP_IOMUXC_GPIO1_IO14__USB2_PWR
-> > 	0x6
-> > > +			MX8MP_IOMUXC_GPIO1_IO15__USB2_OC
-> > 	0x80
-> > >  		>;
-> > >  	};
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-> > > index c6facb2ad9aaa..57accd33ec62c 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-evk.dts
-> > > @@ -1088,7 +1088,7 @@ MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX
-> > 	0x140
-> > >
-> > >  	pinctrl_usb1_vbus: usb1grp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO14__USB2_OTG_PWR
-> > 	0x10
-> > > +			MX8MP_IOMUXC_GPIO1_IO14__USB2_PWR
-> > 	0x19
-> > >  		>;
-> > >  	};
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts
-> > > index f48cf22b423db..f66c6b9236fbe 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-iota2-lumpy.dts
-> > > @@ -363,7 +363,7 @@ MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX
-> > 	0x0
-> > >
-> > >  	pinctrl_usb_host_vbus: usb1grp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO14__USB2_OTG_PWR
-> > 	0x0
-> > > +			MX8MP_IOMUXC_GPIO1_IO14__USB2_PWR	0x0
-> > >  		>;
-> > >  	};
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
-> > > index b97bfeb1c30f8..6de4d4ace8a73 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
-> > > @@ -734,19 +734,19 @@ MX8MP_IOMUXC_GPIO1_IO10__GPIO1_IO10
-> > 		0x1c4 /* USB_A_ID */
-> > >
-> > >  	pinctrl_usb1_oc: usb1ocgrp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO13__USB1_OTG_OC
-> > 		0x1c0 /* USB_A_OC# */
-> > > +			MX8MP_IOMUXC_GPIO1_IO13__USB1_OC
-> > 	0x1c0 /* USB_A_OC# */
-> > >  		>;
-> > >  	};
-> > >
-> > >  	pinctrl_usb2_id: usb2idgrp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO11__USB2_OTG_ID
-> > 	0x1c4 /* USB_B_ID */
-> > > +			MX8MP_IOMUXC_GPIO1_IO11__USB2_ID
-> > 	0x1c4 /* USB_B_ID */
-> > >  		>;
-> > >  	};
-> > >
-> > >  	pinctrl_usb2_oc: usb2ocgrp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO15__USB2_OTG_OC
-> > 		0x1c0 /* USB_B_OC# */
-> > > +			MX8MP_IOMUXC_GPIO1_IO15__USB2_OC
-> > 	0x1c0 /* USB_B_OC# */
-> > >  		>;
-> > >  	};
-> > >
-> > > diff --git
-> > > a/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-enc-carrier-board.dts
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-enc-carrier-board.dts
-> > > index 1df9488aaeb22..9ffeeb382bad4 100644
-> > > ---
-> > > a/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-enc-carrier-board.dts
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-nitrogen-enc-carrier-board.
-> > > +++ dts
-> > > @@ -406,7 +406,7 @@ MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX
-> > 		0x140
-> > >
-> > >  	pinctrl_usb3_0: usb3-0grp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO13__USB1_OTG_OC
-> > 		0x1c0
-> > > +			MX8MP_IOMUXC_GPIO1_IO13__USB1_OC
-> > 	0x1c0
-> > >  		>;
-> > >  	};
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-phycore-fpsc.dtsi
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-phycore-fpsc.dtsi
-> > > index 8b0e8cf86cadb..7b5c402ff9f27 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-phycore-fpsc.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-phycore-fpsc.dtsi
-> > > @@ -579,17 +579,17 @@ MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX
-> > 	0x140	/* UART3_TXD */
-> > >
-> > >  	pinctrl_usb0: usb0grp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO12__USB1_OTG_PWR
-> > 	0x106	/* USB1_PWR_EN */
-> > > -			MX8MP_IOMUXC_GPIO1_IO13__USB1_OTG_OC
-> > 	0x106	/* USB1_OC */
-> > > -			MX8MP_IOMUXC_GPIO1_IO10__USB1_OTG_ID	0x106
-> > 	/* USB1_ID */
-> > > +			MX8MP_IOMUXC_GPIO1_IO12__USB1_PWR	0x106
-> > 	/* USB1_PWR_EN */
-> > > +			MX8MP_IOMUXC_GPIO1_IO13__USB1_OC	0x106
-> > 	/* USB1_OC */
-> > > +			MX8MP_IOMUXC_GPIO1_IO10__USB1_ID	0x106
-> > 	/* USB1_ID */
-> > >  		>;
-> > >  	};
-> > >
-> > >  	pinctrl_usb1: usb1grp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO14__USB2_OTG_PWR
-> > 	0x106	/* USB2_PWR_EN */
-> > > -			MX8MP_IOMUXC_GPIO1_IO15__USB2_OTG_OC
-> > 	0x106	/* USB2_OC */
-> > > -			MX8MP_IOMUXC_GPIO1_IO11__USB2_OTG_ID	0x106
-> > 	/* USB2_ID */
-> > > +			MX8MP_IOMUXC_GPIO1_IO14__USB2_PWR	0x106
-> > 	/* USB2_PWR_EN */
-> > > +			MX8MP_IOMUXC_GPIO1_IO15__USB2_OC	0x106
-> > 	/* USB2_OC */
-> > > +			MX8MP_IOMUXC_GPIO1_IO11__USB2_ID	0x106
-> > 	/* USB2_ID */
-> > >  		>;
-> > >  	};
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h
-> > > index 16f5899de4152..50f5e674a6b71 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-pinfunc.h
-> > > @@ -46,10 +46,12 @@
-> > >  #define MX8MP_IOMUXC_GPIO1_IO00__GPIO1_IO00                         =
- 0x014
-> > 0x274 0x000 0x0 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO00__CCM_ENET_PHY_REF_CLK_ROOT
-> > 0x014 0x274 0x000 0x1 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO00__ISP_FL_TRIG_0                      =
- 0x014
-> > 0x274 0x5D4 0x3 0x0
-> > > +#define MX8MP_IOMUXC_GPIO1_IO00__ANAMIX_REF_CLK_32K
-> > 0x014 0x274 0x000 0x5 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO00__CCM_EXT_CLK1
-> > 0x014 0x274 0x000 0x6 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO01__GPIO1_IO01                         =
- 0x018
-> > 0x278 0x000 0x0 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO01__PWM1_OUT                           =
- 0x018
-> > 0x278 0x000 0x1 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO01__ISP_SHUTTER_TRIG_0
-> > 0x018 0x278 0x5DC 0x3 0x0
-> > > +#define MX8MP_IOMUXC_GPIO1_IO01__ANAMIX_REF_CLK_24M
-> > 0x018 0x278 0x000 0x5 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO01__CCM_EXT_CLK2
-> > 0x018 0x278 0x000 0x6 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO02__GPIO1_IO02                         =
- 0x01C
-> > 0x27C 0x000 0x0 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO02__WDOG1_WDOG_B
-> > 0x01C 0x27C 0x000 0x1 0x0
-> > > @@ -91,26 +93,26 @@
-> > >  #define MX8MP_IOMUXC_GPIO1_IO09__USDHC3_RESET_B
-> > 0x038 0x298 0x000 0x4 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO09__SDMA2_EXT_EVENT00
-> > 0x038 0x298 0x000 0x5 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO10__GPIO1_IO10                         =
- 0x03C
-> > 0x29C 0x000 0x0 0x0
-> > > -#define MX8MP_IOMUXC_GPIO1_IO10__USB1_OTG_ID
-> > 0x03C 0x29C 0x000 0x1 0x0
-> > > +#define MX8MP_IOMUXC_GPIO1_IO10__USB1_ID                            =
- 0x03C
-> > 0x29C 0x000 0x1 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO10__PWM3_OUT                           =
- 0x03C
-> > 0x29C 0x000 0x2 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO11__GPIO1_IO11                         =
- 0x040
-> > 0x2A0 0x000 0x0 0x0
-> > > -#define MX8MP_IOMUXC_GPIO1_IO11__USB2_OTG_ID
-> > 0x040 0x2A0 0x000 0x1 0x0
-> > > +#define MX8MP_IOMUXC_GPIO1_IO11__USB2_ID                            =
- 0x040
-> > 0x2A0 0x000 0x1 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO11__PWM2_OUT                           =
- 0x040
-> > 0x2A0 0x000 0x2 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO11__USDHC3_VSELECT
-> > 0x040 0x2A0 0x000 0x4 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO11__CCM_PMIC_READY
-> > 0x040 0x2A0 0x554 0x5 0x1
-> > >  #define MX8MP_IOMUXC_GPIO1_IO12__GPIO1_IO12                         =
- 0x044
-> > 0x2A4 0x000 0x0 0x0
-> > > -#define MX8MP_IOMUXC_GPIO1_IO12__USB1_OTG_PWR
-> > 0x044 0x2A4 0x000 0x1 0x0
-> > > +#define MX8MP_IOMUXC_GPIO1_IO12__USB1_PWR                           =
- 0x044
-> > 0x2A4 0x000 0x1 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO12__SDMA2_EXT_EVENT01
-> > 0x044 0x2A4 0x000 0x5 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO13__GPIO1_IO13                         =
- 0x048
-> > 0x2A8 0x000 0x0 0x0
-> > > -#define MX8MP_IOMUXC_GPIO1_IO13__USB1_OTG_OC
-> > 0x048 0x2A8 0x000 0x1 0x0
-> > > +#define MX8MP_IOMUXC_GPIO1_IO13__USB1_OC                            =
- 0x048
-> > 0x2A8 0x000 0x1 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO13__PWM2_OUT                           =
- 0x048
-> > 0x2A8 0x000 0x5 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO14__GPIO1_IO14                         =
- 0x04C
-> > 0x2AC 0x000 0x0 0x0
-> > > -#define MX8MP_IOMUXC_GPIO1_IO14__USB2_OTG_PWR
-> > 0x04C 0x2AC 0x000 0x1 0x0
-> > > +#define MX8MP_IOMUXC_GPIO1_IO14__USB2_PWR                           =
- 0x04C
-> > 0x2AC 0x000 0x1 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO14__USDHC3_CD_B
-> > 0x04C 0x2AC 0x608 0x4 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO14__PWM3_OUT                           =
- 0x04C
-> > 0x2AC 0x000 0x5 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO14__CCM_CLKO1                          =
- 0x04C
-> > 0x2AC 0x000 0x6 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO15__GPIO1_IO15                         =
- 0x050
-> > 0x2B0 0x000 0x0 0x0
-> > > -#define MX8MP_IOMUXC_GPIO1_IO15__USB2_OTG_OC
-> > 0x050 0x2B0 0x000 0x1 0x0
-> > > +#define MX8MP_IOMUXC_GPIO1_IO15__USB2_OC                            =
- 0x050
-> > 0x2B0 0x000 0x1 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO15__USDHC3_WP                          =
- 0x050
-> > 0x2B0 0x634 0x4 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO15__PWM4_OUT                           =
- 0x050
-> > 0x2B0 0x000 0x5 0x0
-> > >  #define MX8MP_IOMUXC_GPIO1_IO15__CCM_CLKO2                          =
- 0x050
-> > 0x2B0 0x000 0x6 0x0
-> > > @@ -291,10 +293,8 @@
-> > >  #define MX8MP_IOMUXC_SD2_DATA3__AUDIOMIX_SPDIF1_IN
-> > 0x0D4 0x334 0x544 0x3 0x1
-> > >  #define MX8MP_IOMUXC_SD2_DATA3__AUDIOMIX_PDM_BIT_STREAM03
-> > 0x0D4 0x334 0x4CC 0x4 0x2
-> > >  #define MX8MP_IOMUXC_SD2_DATA3__GPIO2_IO18                          =
- 0x0D4
-> > 0x334 0x000 0x5 0x0
-> > > -#define MX8MP_IOMUXC_SD2_DATA3__SRC_EARLY_RESET
-> > 0x0D4 0x334 0x000 0x6 0x0
-> > >  #define MX8MP_IOMUXC_SD2_RESET_B__USDHC2_RESET_B
-> > 0x0D8 0x338 0x000 0x0 0x0
-> > >  #define MX8MP_IOMUXC_SD2_RESET_B__GPIO2_IO19                        =
- 0x0D8
-> > 0x338 0x000 0x5 0x0
-> > > -#define MX8MP_IOMUXC_SD2_RESET_B__SRC_SYSTEM_RESET
-> > 0x0D8 0x338 0x000 0x6 0x0
-> > >  #define MX8MP_IOMUXC_SD2_WP__USDHC2_WP                              =
- 0x0DC
-> > 0x33C 0x000 0x0 0x0
-> > >  #define MX8MP_IOMUXC_SD2_WP__GPIO2_IO20                             =
- 0x0DC
-> > 0x33C 0x000 0x5 0x0
-> > >  #define MX8MP_IOMUXC_SD2_WP__CORESIGHT_EVENTI
-> > 0x0DC 0x33C 0x000 0x6 0x0
-> > > diff --git
-> > > a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-> > > index 59642a8a2c445..50c8a7c2a7bd3 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-> > > @@ -976,8 +976,8 @@ pinctrl_uart4: uart4grp {
-> > >  	};
-> > >
-> > >  	pinctrl_usb0: usb0grp {
-> > > -		fsl,pins =3D <MX8MP_IOMUXC_GPIO1_IO13__USB1_OTG_OC
-> > 	0x1c0>,
-> > > -			   <MX8MP_IOMUXC_GPIO1_IO12__USB1_OTG_PWR
-> > 	0x1c0>;
-> > > +		fsl,pins =3D <MX8MP_IOMUXC_GPIO1_IO13__USB1_OC
-> > 	0x1c0>,
-> > > +			   <MX8MP_IOMUXC_GPIO1_IO12__USB1_PWR
-> > 	0x1c0>;
-> > >  	};
-> > >
-> > >  	pinctrl_usbcon0: usb0congrp {
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi
-> > > index 4bf818873fe3c..162329b403d30 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi
-> > > @@ -219,7 +219,7 @@ MX8MP_IOMUXC_SAI1_RXD1__GPIO4_IO03	0x146
-> > >
-> > >  	pinctrl_usb1: usb1grp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO13__USB1_OTG_OC
-> > 	0x140 /* USB1_FLT# */
-> > > +			MX8MP_IOMUXC_GPIO1_IO13__USB1_OC	0x140
-> > /* USB1_FLT# */
-> > >  		>;
-> > >  	};
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi
-> > > index 76020ef89bf3e..02ea0e8bcc6ff 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw72xx.dtsi
-> > > @@ -318,7 +318,7 @@ MX8MP_IOMUXC_GPIO1_IO12__GPIO1_IO12	0x146
-> > /* USB1_EN */
-> > >
-> > >  	pinctrl_usb1: usb1grp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO13__USB1_OTG_OC
-> > 	0x140 /* USB1_FLT# */
-> > > +			MX8MP_IOMUXC_GPIO1_IO13__USB1_OC	0x140
-> > /* USB1_FLT# */
-> > >  		>;
-> > >  	};
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
-> > > index 5eb114d2360a3..2b6bb9fcbc7a9 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
-> > > @@ -359,7 +359,7 @@ MX8MP_IOMUXC_GPIO1_IO12__GPIO1_IO12	0x146
-> > /* USB1_EN */
-> > >
-> > >  	pinctrl_usb1: usb1grp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO13__USB1_OTG_OC
-> > 	0x140 /* USB1_FLT# */
-> > > +			MX8MP_IOMUXC_GPIO1_IO13__USB1_OC	0x140
-> > /* USB1_FLT# */
-> > >  		>;
-> > >  	};
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
-> > > index 7662663ff5dad..6d752fe0d1bf5 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw74xx.dts
-> > > @@ -1060,7 +1060,7 @@ MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX
-> > 	0x140
-> > >
-> > >  	pinctrl_usb1: usb1grp {
-> > >  		fsl,pins =3D <
-> > > -			MX8MP_IOMUXC_GPIO1_IO13__USB1_OTG_OC
-> > 	0x140
-> > > +			MX8MP_IOMUXC_GPIO1_IO13__USB1_OC	0x140
-> > >  		>;
-> > >  	};
-> > >
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-> > > b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-> > > index d43ba00871269..28f5983a78469 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-> > > @@ -1316,7 +1316,7 @@ pinctrl_usb_1_id: usb1idgrp {
-> > >  	/* USB_1_OC# */
-> > >  	pinctrl_usb_1_oc_n: usb1ocngrp {
-> > >  		fsl,pins =3D
-> > > -			<MX8MP_IOMUXC_GPIO1_IO13__USB1_OTG_OC
-> > 		0x1c4>;	/* SODIMM 157 */
-> > > +			<MX8MP_IOMUXC_GPIO1_IO13__USB1_OC
-> > 	0x1c4>;	/* SODIMM 157 */
-> > >  	};
-> > >
-> > >  	pinctrl_usb2_vbus: usb2vbusgrp {
-> > >
-> >=20
-> >=20
-> > --
-> > TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-> > Amtsgericht M=FCnchen, HRB 105018
-> > Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-> > http://www.tq-group.com/
->=20
+Probe is called when the driver is used with HW connected to I2C2 bus. 
+I2C2 bus is enabled before overlaying devicetree blobs.
 
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
+---- BD71847 Devicetree overlay source ----
 
+/dts-v1/;
+/plugin/;
 
+/{ /* this is our device tree overlay root node */
+
+     compatible = "ti,beaglebone", "ti,beaglebone-black";
+     part-number = "BBB-I2C1";
+      version = "00A0";
+
+     fragment@0 {
+         target = <&am33xx_pinmux>; // this is a link to an already 
+defined node in the device tree, so that node is overlayed with our 
+modification
+
+         __overlay__ {
+             i2c1_pins: pinmux_i2c1_pins {
+                 pinctrl-single,pins = <
+                       0x158 0x72 /* spi0_d1.i2c1_sda */
+                       0x15C 0x72 /* spi0_cs0.i2c1_sdl */
+                     >;
+             };
+         };
+     };
+....
+....
+
+     fragment@2 {
+         target = <&i2c1>;
+
+         __overlay__ {
+             pinctrl-0 = <&i2c1_pins>;
+             clock-frequency = <100000>;
+             status = "okay";
+
+             pmic: pmic@4b { /* the "test" defined as child of the i2c1 
+bus */
+                 compatible = "rohm,bd71847";
+                 reg = <0x4b>;
+                 ....
+                 ....
+}; /* root node end */
+
+---- END OF BD71847 Devicetree overlay source ----
+
+Reverting this patch from linux-next from last friday fixes the issue.
+
+BR
+Kalle Niemi
