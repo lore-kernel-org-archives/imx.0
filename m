@@ -1,152 +1,264 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11021129.outbound.protection.outlook.com [52.101.70.129])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011002.outbound.protection.outlook.com [52.101.70.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA622E975F
-	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 09:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4182EB87D
+	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 09:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.2
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763976185; cv=fail; b=BUHn6feTtVS8cPPeD3LWvGBbMv6DxxovbX0CPaJApT+Ln5bfLKEDv4cda/CsTwx+4aD+n4Q2dLn+apU4X4ApeCWUVAyTKDk1Y/jtmqmL622JmJGOKXYy6+7TScYSe6yhBcUmLLI1rGKtAhkzgPDsJQ43rHKeq8uKXqvKlR91iGI=
+	t=1763976287; cv=fail; b=uiyoXirfMNpZFTsUiZQ1xnb8nHt8H9gaFifDWkIsLQIRBECDXYB2Y2Cs1RLL5R8rSnrTDCtnjeGfWjDxN/q5BglFfgxuc6ga5smcmQlyjlVZlQf/HebmzcHjXgQv/vUfiMYzA8MYAIsTkMderX5BfXfu8gwpsqqkCMVlE/FniYk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763976185; c=relaxed/simple;
-	bh=R2EU55vzqasLI4B2up/IGkR87IGuw+aZw3p/wnCtPNs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LGy902MxWLRHEs6YgNDjEIj34wfchzMm++fPPD9018j0msQY8XyEUNjyBjKzBwJ6AKDUsmgMKv6b0wjlfpRuB6mZz2Kj/McWl7IYxYz+DkCq3PNT/TY0F/12G8+ei6/eHew7ZsEpHeZVjNgUSYIKyksl70ajjOtL2UPlnzvrWD0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b=abmtBNy2; arc=fail smtp.client-ip=52.101.70.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
+	s=arc-20240116; t=1763976287; c=relaxed/simple;
+	bh=TFB4O8/nHoN68t7d/w8vHSqUlDAdeu2Ezn4N7PUr3mE=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=cxyqUwfc+AKJVdgn+8rAIxtfA7r5yzTrRNQhVrIRxW/tnZJdP1JqgtXuYyhK7CfTFYAttW0o4f2/PkvYjmmlBXFIhZbnFz1ymR7FCC4NL/LFsIVV98B4bCiVPoDenAYvx1INldHVvimIhU9aksE86ivAyLxP8N8i6ggeqs9k9+g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QXZ7CYp1; arc=fail smtp.client-ip=52.101.70.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b="abmtBNy2"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QXZ7CYp1"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=k8D7+1MvVkW240zngVdzBkvf6vjSb4eJ9ZEd9U/4WZKfWGllOR6l5NcU8sEb+mQsYzvYSS5odTIjlEpmsD2pENu37l7rS6qHWwgXCo+2CDf5I1MoKNaHd8YW4oH86SPI+CzaddRd3IM5X9KSd67ma9H/TMJJKYUACxnB125kDiTJ+9xHxl1o/ROD6SQgmxXGuKy9Q7vdJQjJCza5hc6D5CUDoWchxzSA67o96+5lStGa7aebtcn02n/2p0ZLTKe+yWSs9Nw0NFYl1QHT+FvqY/jQxAHrTs96iFBB94grJxsHsvfyTN0OHGVVThUSspapaaDaLUHZ4hjGvH+XWxXB8A==
+ b=f2jQ7VtQbNj6zbHvzAQ1NSk5i+X59eMb1dS1GWKj41DaC0kifzlt5GI5neckS4tjadDzz8Gnn5ECtsdXH+iAS5u6lrt7M5GI3Tc6xOwoCYnaBxgTwh99uxcsL9jFKqC6rP7BWATo+Bh0npmdySrhz1xzPEvDYkisgYrBDznQMy8WPZDQ7gr3pxkryK3r1ZG/8dTN5F2AVSGkwGpAX4ekvzuCS1QQ6LVmR+A54G6KON9Bn8DjGXayKx1jV/fhAytltX0nzL9OPgx04GhIx1PH0ogw/aT3A6nqW8/oM5cRwdWIV5kUg7YFTtPwDl4HRCpGk7s+1V4849poKbw7OmdSMg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MdhQ3P2v0v69qaVyTFp9hHzy48+cUuFhcgOiXuk+Qzo=;
- b=srpR1+5+4HZWHUCKMDtJR9Dj1jWT5rp2ijW+5/gZ7um0LvuER/Fn/fujY5keQBvVdrDj5YSNZGGEKRm7yDRAVvo9HU7B0d3FedtQdMfSKWnPsNTSrsQd4URSPenSRhLuOCTJTUq9TafC6kny2awsNY0Sd0nlx0zRX3NE4WEUVziFZVG0ppS4/WPYZrj0jlMtW5qiG97SsrUXyWZVFW4OQjQpafLnqtpzgyS/gLMsjdb7llVRRUxrPifv13x7ZkeTNHRazt+xPsRfCGbLQfAC+m2WvZCJTaucFCxGmSdJQYIQ3eACk6+6ur91vuTtdRa5lA3vPNPL6Qgtcjqe9aL4Mg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
- is 91.26.50.189) smtp.rcpttodomain=kernel.org smtp.mailfrom=phytec.de;
- dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
- header.from=phytec.de; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
- s=selector2;
+ bh=0WCCtlSCj40I2V5mvfAb+0r2UHqfG8QhqxHO9aO6TI8=;
+ b=LSI3TM/lE4mLSyWsS8OlYam38HvPB8Qbn/Guhc6EJwCAaQJjmneT+TPO2BC3gnp5s4mxTJThsG4SbNy77CeKbLQXLliWt/Wg9pV+sGiypVWcRVSr1Xq146JQINre2FsJoyCZu9kiKvb/K8myN42DADBjLt3kn7VB1kKDryi3/KFk09usMNMysM1aFTnpCDeZA3E2AGbrCsDRPhf/vdCICRv5Mt0Gm65bZe8Po+LJL6Px9riznqRnxii6CbphWh2AU4K+AiRyvA/LyMReTOgiIRJmdy/07eOFFuI40ZEZDwP5k/ySJn7GMmwT00Q6u8FcTU4xHLWFqvAaHzSt/k0KHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MdhQ3P2v0v69qaVyTFp9hHzy48+cUuFhcgOiXuk+Qzo=;
- b=abmtBNy2Q8fwXjC9pFeGyRUk1R0nhCbTFRK4KlA4lZHOnqRAWS0sJJ1TqW9uqMnWbmRdqRczFYZQxnwTiaPxqfb9Svyi2J3TRv1D/THDbybT24/zJOaGET+B1GnMrL3v0iPJXPgJ09zV0Xm9RQNE945irlpYtXMFAXBRFdvtOejJ+Gcxmzxx+DE/oeynpy+uf97vYSccP7R56/xt59MdrTyJKhkGmSkHozYTkHG+AxHuW5tJ5rozu5ZBNRh1r+iaMzDuYHTbXl+lr5s8x8usxtutyNdmac6I/Gjj0jXm7LBJufD8dOfQKKvp3Al6YlG7zE2gUqWfRWz5tnwmgmb76g==
-Received: from DU2P251CA0006.EURP251.PROD.OUTLOOK.COM (2603:10a6:10:230::7) by
- PRAP195MB1457.EURP195.PROD.OUTLOOK.COM (2603:10a6:102:278::12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9343.17; Mon, 24 Nov 2025 09:22:58 +0000
-Received: from DU6PEPF0000A7DD.eurprd02.prod.outlook.com
- (2603:10a6:10:230:cafe::bf) by DU2P251CA0006.outlook.office365.com
- (2603:10a6:10:230::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9343.17 via Frontend Transport; Mon,
- 24 Nov 2025 09:22:51 +0000
-X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is 91.26.50.189)
- smtp.mailfrom=phytec.de; dkim=none (message not signed)
- header.d=none;dmarc=fail action=quarantine header.from=phytec.de;
-Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
- phytec.de discourages use of 91.26.50.189 as permitted sender)
-Received: from Postix.phytec.de (91.26.50.189) by
- DU6PEPF0000A7DD.mail.protection.outlook.com (10.167.8.37) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9366.7 via Frontend Transport; Mon, 24 Nov 2025 09:22:57 +0000
-Received: from ls-radium.phytec (172.25.39.17) by Postix.phytec.de
- (172.25.0.11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Mon, 24 Nov
- 2025 10:22:54 +0100
-From: Daniel Schultz <d.schultz@phytec.de>
-To: <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
-	<shawnguo@kernel.org>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
-	<festevam@gmail.com>, <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-CC: <upstream@lists.phytec.de>, Daniel Schultz <d.schultz@phytec.de>
-Subject: [PATCH] arm64: dts: imx8mm: Add label to thermal-zones
-Date: Mon, 24 Nov 2025 01:22:42 -0800
-Message-ID: <20251124092242.3378017-1-d.schultz@phytec.de>
-X-Mailer: git-send-email 2.25.1
+ bh=0WCCtlSCj40I2V5mvfAb+0r2UHqfG8QhqxHO9aO6TI8=;
+ b=QXZ7CYp1jLvyz2Fv9I9noChoYh/btmVoVFwUhKEaVF3j7vZJFnEE5VvLJ9Usf4mCRBLU7QQjdLqtJ8LJgjfJuDgI/UA6rkgpx4dOJaV+KJYr+P6Lh9arpzJE9EmoTGUfTaHu52Yee4y+Gwy1v652aATV0s6pPMd3Q8154bIMzEN3Da6eDKiK/qgVPddDH0vqDQKEnrw7LSuTw1d7ZiH5bJmeIjX13pw+ZkY2YqfAH5h0U3r1kfLSZDXrPEjWbPxzVsqjFoIZTbA/Nb27PoBoKfOb17FtbrO6MPBtbk5SQAEO62nb1dpHEcG/Zv7OXKG5XB9T+FPYmcca2iN0iLH1AQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
+ by PA1PR04MB10697.eurprd04.prod.outlook.com (2603:10a6:102:482::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Mon, 24 Nov
+ 2025 09:24:42 +0000
+Received: from DU0PR04MB9496.eurprd04.prod.outlook.com
+ ([fe80::868b:3935:5e0f:6a33]) by DU0PR04MB9496.eurprd04.prod.outlook.com
+ ([fe80::868b:3935:5e0f:6a33%6]) with mapi id 15.20.9343.016; Mon, 24 Nov 2025
+ 09:24:42 +0000
+From: Haibo Chen <haibo.chen@nxp.com>
+Subject: [PATCH v5 0/2] Add support for NXP XSPI
+Date: Mon, 24 Nov 2025 17:25:20 +0800
+Message-Id: <20251124-xspi-v5-0-6fd03a6cb766@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIAkJGkC/13OTQ7CIBCG4asY1mIYfkpx5T2MC0oHZWHbgCE1T
+ e8u1SZWl9+E5w0TSRgDJnLcTSRiDin0XRlqvyPuZrsr0tCWTTjjChiv6ZiGQK13zIJGo1lNytM
+ hog/jO3O+lH0L6dHH57uaYbl+AsDkJ5CBMgqqBKW2LUp26sbh4Po7WXjmGwJ6JbwQrBQILowRH
+ n+J2JL1m1kUUrXCGmiq2uk/IrfErEQWYqUC6xvnvBBfMs/zC7N4zicvAQAA
+X-Change-ID: 20251028-xspi-afc0a17e9708
+To: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, Haibo Chen <haibo.chen@nxp.com>, 
+ frank.li@nxp.com, Krzysztof Kozlowski <krzk@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1763976342; l=3947;
+ i=haibo.chen@nxp.com; s=20250421; h=from:subject:message-id;
+ bh=TFB4O8/nHoN68t7d/w8vHSqUlDAdeu2Ezn4N7PUr3mE=;
+ b=BSTybqUaP5GyftM368kpWUrPi1tUbNBWXOo8aCuOr9B+DQE3Cg6UP+PT7c59JbfaIovufykdd
+ 3FTD0Lng01sBFInCBEEYHz6YvsdVGn18/o+OpdnspiD3mit9VAADt37
+X-Developer-Key: i=haibo.chen@nxp.com; a=ed25519;
+ pk=HR9LLTuVOg3BUNeAf4/FNOIkMaZvuwVJdNrGpvKDKaI=
+X-ClientProxiedBy: MA5P287CA0252.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1ae::8) To DU0PR04MB9496.eurprd04.prod.outlook.com
+ (2603:10a6:10:32d::19)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: Postix.phytec.de (172.25.0.11) To Postix.phytec.de
- (172.25.0.11)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU6PEPF0000A7DD:EE_|PRAP195MB1457:EE_
-X-MS-Office365-Filtering-Correlation-Id: e6f11ab7-d889-40b7-66af-08de2b3b0e67
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9496:EE_|PA1PR04MB10697:EE_
+X-MS-Office365-Filtering-Correlation-Id: 24f291f4-59af-49a5-fba8-08de2b3b4c6e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014|7416014|921020;
+	BCL:0;ARA:13230040|19092799006|366016|1800799024|376014|7416014|52116014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?m231ejOjVSKmFN7T/Nj+xsend4ssIos/clpTYX8CSEez3nCQ+USo9xKZiPYU?=
- =?us-ascii?Q?0x2J89BEAQz5sUjbB0GgMK4pp24a6xHVjOJf/Itx1An3gvT0MlIe5oSygslZ?=
- =?us-ascii?Q?r8fC2ml/aavkKrZKBSx2Mhe1ohJYvAJuSNZhPdN7LoFzOPLoMzAM/yQEYoh+?=
- =?us-ascii?Q?85pCPHoyBsQ9Ip2PfZEzgulWTglVFNlNQMyQxqerhv0tySwHp0XqSbg34o+R?=
- =?us-ascii?Q?8J8H/OQwmStTstorGW4typd/5rVJ1xlICztuv/AppSh0iV02G+TB0Q9jurEO?=
- =?us-ascii?Q?qYOU0WVVV75bPcqxQMtEGCJZxkVig9emcOIZgdelPhGxqH0LR3p3zPbWsIdR?=
- =?us-ascii?Q?noPpfmC+95yYbt+t0RZMriLt+0bUEpQFPPxedZ5ukrpmherleROhE6taJz00?=
- =?us-ascii?Q?LUpuI1TqS3TAbZ7hL9M7gaqxCz5ZCe0KGg/p8AhQCz0iKSLWujKh0MPyYLdP?=
- =?us-ascii?Q?nUHUS3pG4JFSUFYaTR7K89Xk7HQO19PWEY04BMvhAzWu25tO9bparMSS0UT7?=
- =?us-ascii?Q?QTCqrtChB/jI19O0iKmLIbOyjKEEkKcgW4MCio69nOXL83dytkvJYBoWRliN?=
- =?us-ascii?Q?UzmPeC5aBl1alA7ibEwF7uIoeRwFBc9OHwirSqfS7SN8H5id0E4/Z0E+oq3C?=
- =?us-ascii?Q?aW/diHMaya3+ogS5OhxKEdRNs7hR1OU0fuUz7bMrFMAorIOYLOvsTzpWugPc?=
- =?us-ascii?Q?aiIE7RKK2wA3BehZ+6IAXquFFSU0x1yUEivxIoqzuWRvJ8iaew2b7vtjIYBE?=
- =?us-ascii?Q?AKhD9b5fHiH4GQfG3QxQ957GsogxwLqhGwWQFCB/ew8lDn8ic+pMHoKTtER6?=
- =?us-ascii?Q?VPIHG2vnRVrt/NxSyVqgfVnpHOdgxcGiP9ATfXrNWKDYOq1SvJVf/GhzWvaj?=
- =?us-ascii?Q?Q/BS026606LxiyzHv0vVKZu9wKlTi3LZh+QeBDHyTHF/7vR1S1KqetE4MVBg?=
- =?us-ascii?Q?FBsdJD/93W/sUSrmoYS8qLSlguOIM3Sq1ewEC8Kfh0rQ7i9q2lzxoZKPEUD6?=
- =?us-ascii?Q?4yQ3JLneHTDsqf7R/ttxzI/G0hQOthSpbmYW6kXw9ojQ3iLyxC9bkthuYyMZ?=
- =?us-ascii?Q?PlFDqyusdijReyxJqeD79Szef+e6TWXWGBbhEKWN75j6SO4DFM60J0Rzkt0i?=
- =?us-ascii?Q?p1eHanEJA2Hi61Pebz/CXG6Zgi0DLc8gZs6SAxGPryLyY+ZHyTMmTe7u3LsP?=
- =?us-ascii?Q?phaPM8PhyYScj30vyjjJN1C/KH/YbO8NuwKcq6XXYlHGl6BJuYObyKiYPO5a?=
- =?us-ascii?Q?tPD26+CBBVHnDnvKLyGBWpfXrncU1Ygvkg5rmksqelEWMklz8kOuwiZzaraA?=
- =?us-ascii?Q?votM2wYNkvXRe0pO7smKRcAPcDmpMrXXnWa8czSQJV6+tL+MyGjtJp7ZRK8W?=
- =?us-ascii?Q?O5pyqrTvkMf01ht7IngqvsnlHpkprnCaNk23k/NA+ANSDBX8y+ho7M87lu1c?=
- =?us-ascii?Q?3e6/sGA925wqOB4mmxWX+mS/5ASTWVlq3h8ekcxOVY0OK+4AWVi63ioQFEqv?=
- =?us-ascii?Q?G+xHGcuVW1U9PUoRxAOXIJ+kV3QQs++rbiVp6CO0bfsbxOF9eTEEAcmxama5?=
- =?us-ascii?Q?cwY9H9E/NwTeORa+pzkPdmv6SdPrIjBoCcXqo9Gw?=
+	=?utf-8?B?a082ekhrUHN3V0dERUwvUFFOeExJNGxDWGJRV3FkaWlZRVNIUTE2L2ZwZFRF?=
+ =?utf-8?B?V25ubXpLRUpDT0lXUytuUmtsNWZQWXkzL1lKUlU5aFhIQmRha3JkbEZOdE1j?=
+ =?utf-8?B?b2RnR05JNkdKTlhUcmZyS1h2dlRFdXQ1a2FLcm1veHVrdGcwWkErRlpBb0JK?=
+ =?utf-8?B?dTI4M1hQdDBMOHl1Q1M3VjJLNm5jaGlTK3NINGpIREZFczNmUWQzYUVZSkVl?=
+ =?utf-8?B?TWR6Zm9xNUZXWW96NkNIYUhzWStNZHpzRWFqTVA0ZG1rRVg1SFFjMFZUNjRs?=
+ =?utf-8?B?VEt0bEp5SGhtQyt0empXYmhDN3BrWjVDN3hyWjVaR3UrMnBaNk4xWmlGYjhX?=
+ =?utf-8?B?RkZjL3pVZXhlT1lOREx5ZkxxWlNlZ1Fjc0hkVW1VU0dPV1gyNktzYXAwNVg4?=
+ =?utf-8?B?UXRiUWRjOTU3UnRBZkhIZEkxb0tmK2IybFhKa0N2aWE3MG9xaTJlR0V6VTZ2?=
+ =?utf-8?B?NGw3WTJiSzZUay9XT21jeVdrZkRMZTk5SDF0eTZwTk9SaTR6d1BobVU3RktX?=
+ =?utf-8?B?ZklnUS9rNlNDOXIwbUJaRFJsNFhZNXFSMVhSY3BPSlhzeXBXOUJkK3RTYzRL?=
+ =?utf-8?B?dEhIRmxtcEJiaTlBdUN4ZEsyemV4a1czRGY4VWVncmFBN0w2emtiRjNRQ0RO?=
+ =?utf-8?B?ejMxSFFDTVI1VlBDSm1WYWFPMXhzYmduV1Fxc0YyRnpNa1BJT3UrbXcrUWN5?=
+ =?utf-8?B?b1N2eXFCSjlvREE1UkNJeTlYUFF4Q1JKbkJJQWpWYlZEbElwWWJjRDQvKy9y?=
+ =?utf-8?B?NENLa2FWMGlFMmN0dTk2cmFzVzdqeUpISW9tRVY2aFIxK3B6UUFHOWhhU2w5?=
+ =?utf-8?B?R2k2MHBlODRySHRRQ2pPSWI1OGNyVEJMc09TRitmT2daSEppbWJFR0hjUVgy?=
+ =?utf-8?B?aXJ3OUVRdUR1ZU9GV3FnNGJ4eU9aR3daSWVtejF2a1FFRlVGU1F2TWxXSGk1?=
+ =?utf-8?B?dzg3QW1oRnYraGN5NFBLYzBuU1dZdld3V1duQWtiVkcrWnp2c3dtdTBPRWhk?=
+ =?utf-8?B?dzNqNG5USXhVMXJra1hDWmd2SXBlTmtjTitUb0tGVWsvUURuam1PcUNqcUxx?=
+ =?utf-8?B?NkwvMlhsaytydU4vbTh1WFB0NUI0UWllRmQzamc4cXhrZ2JwZjl0V2dmV0Iv?=
+ =?utf-8?B?LzVtK0Y0aERxT1hIL3ZHTlZPZ0pnN082dENzeVhTRVExKzd6R1VQODhneUN4?=
+ =?utf-8?B?c3pWQjZ0dzdQSWhGSXJiNDM4N2tyd3NobWZhR2d4R0VoT1p0eTJCbUJuOG1P?=
+ =?utf-8?B?ZDVLVEtlNEpqeGFHTkVSd1B2Q1JaU1pFcjFDQWg2blFOLzZFcXg3a1RXOVBR?=
+ =?utf-8?B?bVZVMGVua21lV1g3a0xsL2JSUk5hL0Z3MFZBQUtzQWhCeENXR0wzQkh0SXFD?=
+ =?utf-8?B?L2JjT0YrSkRjWTQ4bTEyM3VkczZWbVlKRVRjMGtPZVZaTEtxbmRpdWFmMkph?=
+ =?utf-8?B?aVFOOGtLdEZEbW1XbDlvUHgzU0NNTkVZNGpEYlJRQUM4WVNkb3FTQWNqYS90?=
+ =?utf-8?B?Y3NQVERkak9wRERFc3haaWprMTI2aDhoRzZSMktlNmhHd05kaWVmR2xLMTlF?=
+ =?utf-8?B?VDc5YjdKNC92ejF5bTh5OXNkUUxtbCs3WDdLQkxYNDQwMXV2dGgyc0tVT1c0?=
+ =?utf-8?B?M253ZU1HNldSYnFLZUZsK09rbGZvSUdENkNhRmsvOFBJRVVqT2laMmZvMnVN?=
+ =?utf-8?B?WHFOQmlJTCtxbmN1aGphTHFyTnBYbDZLQ1IrVnJ6T1R3K0JTZ2c4ejk5R3JG?=
+ =?utf-8?B?bHMrNEphUVJPVC9MNkZjZjUzakpObEpuZnllekdxR093RVJ5T2RicmwyN1py?=
+ =?utf-8?B?bzByRjRjT2lHVlIyYWg4Uk5sTTNlRWNhMUJmRUp0blBlUGk4TEdjZ2tDVFVG?=
+ =?utf-8?B?Z2JjY0ppSzRYbWcxME13eEhZdXZFaVZEQ1FFMW9aVHF0TWpvOC85SEx1bmgx?=
+ =?utf-8?B?cXo0NVVhUUltUklheHI5WTFYYVY3VDZrWGdwbml1YmY3Z3FrbU9lV2hvcVJm?=
+ =?utf-8?B?UDRneVcvN2M2MHI5YW9UK2ZHampXZGhrUkh6Sll1alJhWWxNSW12MlVnZTV2?=
+ =?utf-8?B?RWpiOEJUTU1aY3NvbGtrbG94enpFWUoxWWU3dz09?=
 X-Forefront-Antispam-Report:
-	CIP:91.26.50.189;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:Postix.phytec.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014)(7416014)(921020);DIR:OUT;SFP:1102;
-X-OriginatorOrg: phytec.de
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2025 09:22:57.7199
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9496.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?L0JpTGozK0NEczQ3anhFdFVNZnFpTWhGWDZqSit2ZE16dUpicGN5RlplMk1v?=
+ =?utf-8?B?MmNXOWZyZ1ljUlpWQVEzVkZOOXNRaXhsMUp0OW5kdVNDTlJKdk9uQUpzMWJk?=
+ =?utf-8?B?cnNicmVmcm0zbjVDSkE1ZlVGY3JMK3ZibXFiVkNyMXhySGxaTlp6L0pKNDky?=
+ =?utf-8?B?VnFDOW9IZjMvV1FoUEE5VXJGSzRLbmZZZGhYU0Evd3RhUUtzZGpQb1hEUVRl?=
+ =?utf-8?B?RU1na3ByOUNVU0V2bldTQ0RZOEh3SCtoU0k2ZDZ5LzB3dUxqVWtrSi93NjBW?=
+ =?utf-8?B?SUhyeWVNNWRDbUxQMVMyTWRxRytEdFVGbEQvMXZVTGNGSFVKUWFTNXJUSVp1?=
+ =?utf-8?B?bWpucWlYWk9rVzlBeW5HbSt3WEo0SThpYWVhN3lIWEhsTzRscnVCYzlNRldv?=
+ =?utf-8?B?K21SNFpmdmpFL2hZVVlxaGFzalZJUkM2QVpWbHBQMkV2Zm5CeTNBbUJMMDdT?=
+ =?utf-8?B?WjJpS2RKdTR1M1daOUttMmQzVk4rSnZkSmltVHl2Z0Z1UlphSlYxT1JMQTNG?=
+ =?utf-8?B?aW9NZlozSEVJTWJpbWJUc3FKL2R3TEVIM0h5dURJNWd6OFlGNHVvVkhxckF4?=
+ =?utf-8?B?RXgreUxtdWMxZjJ0ZmZucVFIZTNpdnlQUUFkYnRlZTI4Y1NYMUxQRjZTNUg2?=
+ =?utf-8?B?QUNNanM1VTc0SXJxVWRiVW90T1lSZ0tOQk82Qk1iUktlblY2K2lRTmZMdTAz?=
+ =?utf-8?B?Z0g5Y0drQmd5dCtubk4xaUJtMjdQSWx5S29UMzE0c1NZZVpqWnJJTWJpR3Ny?=
+ =?utf-8?B?TXFjeldCYmdGeUV2UkhtUmZCUFd0dE0xaENMSUZaakl5ZGM3LzF3NjdpdlFX?=
+ =?utf-8?B?TnpTeXhhWXZiVURGWEFwVzd0TXNkdkhtanVTMHJSWGhCQ1pwdkJNUkRuN2Nv?=
+ =?utf-8?B?d1JtNWxRZ2hkaGRQc3krNk5raTV1WDdjZGtmVkxoUHpYYlNHTWdacFhGTWQ3?=
+ =?utf-8?B?QklNSE4yS0t5dlFzSVlIWDM2dkxtVExOSUVzQm1CQVp6YU5lTmtaTHppNkhh?=
+ =?utf-8?B?RDRxNElKbEl6dTE0NURJSzR1QThxbmVYZmFsWm9BMUF4SkhmTGpCUFJIeXpr?=
+ =?utf-8?B?Y1l1d1Y1dWhXUEpKekpFRHErK1JSVmF1Z3VObEltY3B1SHJEVEFVNnhYQ3VI?=
+ =?utf-8?B?ekxHRmFYOTFodHYyY2dKNklQMEZSSi9VSnFXRVg0SkhGYnNvMTY4T05Dd3Fi?=
+ =?utf-8?B?TzFkQ21ETmdWMlU5c0NEVXI2TENVaCtqQnMySVU0TFBLUDVPOWkwVjFqcldB?=
+ =?utf-8?B?dGlYM2ZoMDNFQ1JqbjRtMjU4eGcxb3E5QXZwMEx2bzN4UVZkejdPNDFBN2wy?=
+ =?utf-8?B?Zi9TNHhGeGRnVGlvUXpWTmJ3eUFEOHA0MDdOWkhhNlNISkF0TjlSYmpYUjYr?=
+ =?utf-8?B?RlRpOVdUb00ySVRqQmM2cm40VVZ1ejVoYkkxSG84VW1ROVZXa0VSV1hNdWxM?=
+ =?utf-8?B?c2xOR3dnR0tJd0pOblRJSXJYOVl0dnVEU3BSUE9ENHorTGsxd2ZQWjg3ZEJU?=
+ =?utf-8?B?b0J2dTNzYmJ2c0w1ZDQvYlFNRUxLTTBkSEkzd01SaG5QQ0wrY0N2QWJMUXB2?=
+ =?utf-8?B?WDBTckU3YXZVU2ZOTWhSMTJwS3ExZENsVEdMTU1mbFZHSC9FQzFvSDdZTHIv?=
+ =?utf-8?B?UlNqZlV2akJUbUphT282WVdLZnNGeHpOL081UEdtbWxrV2VkMXJjYWdsNGQ0?=
+ =?utf-8?B?RzhFak1KYzJtYTNoVjcyS2FkNFJ0MllyRU1KZ0Q4QjlOaTlRZ3QzdnhtTXVH?=
+ =?utf-8?B?VHZWY3pTYWpTajhKc1dTN01EVDdQdXd0OVVFTDl4dGtMRTdnN3ZZa1J3Ymt2?=
+ =?utf-8?B?QmNER2JsYm42djRzL3BEQ3Y5QUxPUzNwMTFON3hEOTlSZkIyTWhXa29YQ2tV?=
+ =?utf-8?B?MzJ2MnBmQUMyQjl0ZVRmM2JocEpST3IxN0JEamQvNHBGNEx4cEhSR1ltZmda?=
+ =?utf-8?B?c0IwL0NucGV5M3lYUGN0V2ZoQ0ZoQTQ3U2hvcStmZVhFd25qNWZyQXYzRVpv?=
+ =?utf-8?B?a0JYOXBTYjFmcFoySGFmd2lQY2pxNi9lS0tZT0Zqc3lKQUY2Y0I1R0NUQW0y?=
+ =?utf-8?B?QXNqektDOFY5cERXTnkvMFdjWkxtQm9VazlsNUVwazZ5TkViZnpiazBiOTJv?=
+ =?utf-8?Q?9fik67uAlaQ9wp1eFxhOcZ/Dz?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24f291f4-59af-49a5-fba8-08de2b3b4c6e
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9496.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2025 09:24:42.1558
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6f11ab7-d889-40b7-66af-08de2b3b0e67
-X-MS-Exchange-CrossTenant-Id: e609157c-80e2-446d-9be3-9c99c2399d29
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e609157c-80e2-446d-9be3-9c99c2399d29;Ip=[91.26.50.189];Helo=[Postix.phytec.de]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU6PEPF0000A7DD.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PRAP195MB1457
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eEbm4fxtzHiBNQNTq+cLHCFuOYi8CXZNklBXzRvYwJ0xUfQyhqsiv7ShfF7n6Cz4LMxmIXJpBMfLd2r6zO9H1Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10697
 
-Add 'thermal_zones' as a label to the thermal-zones node.
+XSPI is a flexible SPI host controller which supports up to
+2 external devices (2 CS). It support Single/Dual/Quad/Octal
+mode data transfer.
 
-Without this label, it is not possible to add additional
-trip points in board files. For example, to add an active
-trip point for controlling a fan.
+The difference between XSPI and Flexspi is XSPI support
+multiple independent execution environments (EENVs) for HW
+virtualization with some limitations. Each EENV has its own
+interrupt and its own set of programming registers that exists
+in a specific offset range in the XSPI memory map.
+The main environment (EENV0) address space contains all of the
+registers for controlling EENV0 plus all of the general XSPI
+control and programming registers. The register mnemonics for
+the user environments (EENV1 to EENV4) have "_SUB_n" appended
+to the mnemonic for the corresponding main-environment register.
 
-Signed-off-by: Daniel Schultz <d.schultz@phytec.de>
+Current driver based on EENV0, which means system already give
+EENV0 right to linux.
+
+This driver use SPI memory interface of the SPI framework to issue
+flash memory operations. Tested this driver with mtd_debug and
+UBIFS on NXP i.MX943 EVK board which has one MT35XU512ABA spi nor
+flash. NOw this driver has the following key features:
+- Support up to OCT DDR mode
+- Support AHB read
+- Support IP read and IP write
+- Support two CS
+
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mm.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v5:
+- PATCH 2: fix a typo of GENMASK to avoid build warning which reproted by kernel test robot
+	   -#define XSPI_DLLCRA_DLLRES_MASK                GENMASK(32, 20)
+	   +#define XSPI_DLLCRA_DLLRES_MASK                GENMASK(23, 20)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-index fc3cd639310e..9f49c0b386d3 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-@@ -234,7 +234,7 @@ timer {
- 		arm,no-tick-in-suspend;
- 	};
- 
--	thermal-zones {
-+	thermal_zones: thermal-zones {
- 		cpu-thermal {
- 			polling-delay-passive = <250>;
- 			polling-delay = <2000>;
+	   do not write XSPI_MCR_MDIS to MCR directlly in nxp_xspi_cleanup(), instead
+	   read MCR, only set this XSPI_MCR_MDIS and write MCR. Find this issue when
+	   do the bind/unbind test, find some reserved bits are accidently cleared and
+	   finally impact the data transfer, because the reserved bits[3,2] need to keep in
+	   the default value.
+- Link to v4: https://lore.kernel.org/r/20251119-xspi-v4-0-a451afbccf33@nxp.com
+
+Changes in v4:
+- PATCH 2: add changes according to Frank's comments:
+           - rename XSPI_RPM_TIMEOUT to XSPI_RPM_TIMEOUT_MS
+	   - rename POLL_TOUT to POLL_TOUT_US
+	   - return IRQ_NONE directlly
+	   - use min_t() to replace min()
+	   - use the new macros PM_RUNTIME_ACQUIRE_AUTOSUSPEND and
+	     PM_RUNTIME_ACQUIRE_ERR in nxp_xspi_exec_op() and nxp_xspi_probe()
+	   - refine nxp_xspi_cleanup()
+	   - use devm_pm_runtime_enable()
+- Link to v3: https://lore.kernel.org/r/20251118-xspi-v3-0-6d3a91b68c7e@nxp.com
+
+Changes in v3:
+- PATCH 1: fix the messed ordering in MAINTAINERS, add Krzysztof's ack
+- PATCH 2: fix some typo, and add IRQ_NONE in nxp_xspi_irq_handler()
+	   also add {} for else when the if has {}
+- Link to v2: https://lore.kernel.org/r/20251117-xspi-v2-0-e651323993fe@nxp.com
+
+Changes in v2:
+- PATCH 1: re-name the yaml file, and correct the compatible string and reg in the example to pass binding check.
+- PATCH 2: involve changes according to Frank's comments 
+           - use GENMASK and FIELD_PREP
+           - remove little endian, use readl/writel/read_poll_timeout directly
+	   - use fsleep instead of udelay
+	   - remove pm_runtime_mark_last_busy()
+	   - keep one style to use up case
+	   - use SYSTEM_SLEEP_PM_OPS/RUNTIME_PM_OPS
+- Link to v1: https://lore.kernel.org/r/20251104-xspi-v1-0-1502847ade40@nxp.com
+
+---
+Haibo Chen (2):
+      dt-bindings: spi: Document imx94 xspi
+      spi: add driver for NXP XSPI controller
+
+ .../devicetree/bindings/spi/nxp,imx94-xspi.yaml    |   88 ++
+ MAINTAINERS                                        |    9 +
+ drivers/spi/Kconfig                                |   10 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/spi-nxp-xspi.c                         | 1357 ++++++++++++++++++++
+ 5 files changed, 1465 insertions(+)
+---
+base-commit: d724c6f85e80a23ed46b7ebc6e38b527c09d64f5
+change-id: 20251028-xspi-afc0a17e9708
+
+Best regards,
 -- 
-2.25.1
+Haibo Chen <haibo.chen@nxp.com>
 
