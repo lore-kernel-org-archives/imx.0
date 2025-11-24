@@ -1,63 +1,65 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013035.outbound.protection.outlook.com [52.101.83.35])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010040.outbound.protection.outlook.com [52.101.69.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2202BE641
-	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 17:07:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5632C11F6
+	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 17:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.40
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764004065; cv=fail; b=aHCCbsRJ7hdqnxZbhgaSvtbrRsAxFsPeTWH62SM9ce5yNUSz5LfeLdyfja8CLoYTho/UgQ+bhEHnnNOp/xZmNny/tcgoJRTgPp8NNZ77hvIKEDLxehNf8yjYqM8yO0QF5X+ZDlT7kCSepb1XTpeHVYiE53F3eqEO/AjV4Sduj3E=
+	t=1764004378; cv=fail; b=JxCi6xzt85npQNNr5UXw0UgzLGINv5OypIKNoI40KamepFvDexP6xbHdPfSDHRCbUzz11VdXsVDh0bD/d+CfQrUVlrf83veDCUHctGVoFcN74DRlDtv1iQiaM7HQ2Z3jx+WNA1vC2/Wc7kfD7OfgpdOIPof0i1zLq8F6jc4ukHA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764004065; c=relaxed/simple;
-	bh=Z+BJW9yRIWcsjKFgENqMDP7igWKyXu9yWV7KtyzZQvM=;
+	s=arc-20240116; t=1764004378; c=relaxed/simple;
+	bh=PFSvuM4qFaiS5ky4fPQHA8U+XHaGulFRTgnDZ7RphvA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=FRd+L11V0enWtC1FbfJQOxf4pjJ8yX3TXXpg23ccmvUPDW0Fkk4HEM4SPhsb0oU10MHGak+kS8BfvRudLMeMPbk3l4qwDvSmwNRo01xUIkLCsEeEdg32pzQoOfa1rbOgOaOWn1CjDZaYn7YiKDh6ptE4PRjH5jYKQY7uPNT269o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NUSmMNNn; arc=fail smtp.client-ip=52.101.83.35
+	 Content-Disposition:In-Reply-To:MIME-Version; b=tjDxUNaBfh6R/VxBtZJLXzV+szKuxFJJML7n1FaMVXiN52zAbUul1rv9++MGgjif695Ye9jenRy20ERebIblUh27gadDxJeDNZ32gcrDKfWE/IBjLZruI0UqCWqH4Mn0NUL15ihT7Qo/ygKGM+CnbFiBb57PvBblQSDcXt8yDRE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=R8kBVaJS; arc=fail smtp.client-ip=52.101.69.40
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NUSmMNNn"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="R8kBVaJS"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nb44PUl16DLI5/TbufYjOc8YOJO20fRoCrsyJCMSlZ4KzDdia+cwqAeO/eeUjWGV7oRoSdVflzyBWI+QUQ/AVCJ0IQVdiTdS5L365jIe92vjkBeJCiiyNQBO1NTPe00KD1HDDOeV1YqJr14Jhwdox5FSulwbl94+KYE4Jx+eWnT0nQ7XraoBYA1cM5cEmMe/uHWNZaAbtSzMQIqJcPXw/odxpoZ1n8jXYJIN5lOoHcEEBnCSlKfvIMcRcvPrKFO1vZVJFGugT2tBbSpifYWOB1Y/Lb1+HvgYdQ+7MmNJf75nMLx5pKU+qlSJFtOHgAGbIJHXoCVFzLbvVstgfW0N5A==
+ b=W3cNAeMl6d1UMBj+omnI3OZZYlhozUu0G1Hboba4xe2AsRKEz4rXTGJ+zZtjRpcJbWPCLaIV9HkstQNO5Mv81KYhX1d4Tf1VYxt6cwAT94TEOthPtaZof3/jIhKM/kI4ZBF7DsVSQP8gTu1vIc+1BS/SyJQ171ulXXZjkRVSlayd6QnN0zSCkc38LP4iTRKRoGcreTPdM1DyoQFtYkynMKcI41KeOAQLr0OcyyaMQpkDQYrLyoXjG5II3uoGSym9AHH1jszL4+qRDIriF9uykBeQJh0VjS/gs26rqObrDn/tgdevWAQrBcmYGdGOhq2kLpeCo+DiN+kyeZTbt/foSw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fveucv3YLcZIR99K90Z5C/tVAVkHENqwEJf8S539mbw=;
- b=plBZ0f0KuT1YAFtXNKQKrSfhJJWRNheHPxsEs4mlkA2Drb2Z9GuQsrQjNTMXuioLWNk7uUDM7VTK5b9ekmcUIqt4xbReOiyjpU7ezvjB5WiWgCKsIAbamSzcc9nfd0TaOprG3vg5oauZXbf6GyiFMEEffIAQA5CsLLESHrB7MLiS5919G4mb4fkhsOy+zIok2JzZWfJH4E7y6szxMto1LHli5E8MW82qlEgYb519yUQ99RWAr9GpvmB/kwI90wZv/fSr4bxliXSJ7Aa2sK71iBeNeCg6XtzHi0rE8ETiVMXSwNAbWrKQYrJxqzXuIQJiiX/DMnEtjJMlKmOXHwJ95A==
+ bh=3DQGnQVCU5MzCGy/EMVSQp63NmPezi19zgM1YKQ/aOE=;
+ b=i2Tm7wFa6Mft6OcGpvYbIsmbunbTLpj2f2cOPcXJhgHpCWldyF3O71ZY/ebBvC/EmxPd4kRpr6HsFS5wKod5bWNLxviEsIVkhZWKdq16nWF7yg5RTCqOmcWRFn5EB7KaO9FwujJUgY83qaaTJULwRUJxsTCMqnd6ozDpFuUmkgLOw9JODPpU7EVc3hys+xj7+NibXI4QWjgAwPpSPEyypWTn9cGitTS2QJsbqd6n97NUavnQtBdjE9xYfOZLHFoESXMGo1iMIkrcbagxRbUHE/pR/GMIe2KVz6W5s3Un46sLCZPryAR36unLDbRNPFuN+TdNTAw+4Q98sub1Kk05zw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fveucv3YLcZIR99K90Z5C/tVAVkHENqwEJf8S539mbw=;
- b=NUSmMNNnCMFf8ilk6eFqZlqZ2BcFtoEQOe28w5KpqO3h1Xh9ird9pBqT/IxnhQ/RajJHJhsnAdwDoxGHtOxigCg1vEa7yUXBafLRu0y/UbfuM1DKENW2kTPzJP7RJ74Q0pgZMoCwH0+6AgaCD80wVSowzjSsRb0BFSZY3dJZjY/zChZxS+9YINZtx0L3MJ7MA9j+5iaUxl+oZvCC9ADAj8JAEPp9/HEQZVQu1Gr607mJdKpyKF5e0MEk/1HrurxAadeHskABj6nXcdng5Dzlup7j1NPdZX+xfedxkiNR6SrC7aI8l1O+60k8sSYuwnEnlc+WEaWtq/8flrwoTcb4rw==
+ bh=3DQGnQVCU5MzCGy/EMVSQp63NmPezi19zgM1YKQ/aOE=;
+ b=R8kBVaJSBpam38T+9gsnYRdVV5vopLYjpiwBAm0KpXwcbWjUNnqblD9u6lPp2FIbMMfsW7aWIQpy7e3XmMPzgPtHP9xaZmrymVAS8GwbiOFPzZXx1X+kQoqo8rDgFglgM+lp+6NBk92pdrw2W+3N6KNoFmVkcqLqduqE66dqS0xIwI5+Nqjae+KiN4OMXuEKMIBF4R7lPF6mwMWNeJr+0IURiMpV46BY51iqa3rHwoO3ccyv+u+WHcuHlHWxT1/3QIFpPZELvqpQamXR7bK+RXEQpwOjpjomzp1N99EMNvBFMZh7r7ivzTUkrJ5+tXAXQmp4jJxg6A7LLTzBOAhgBA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
  by PA2PR04MB10087.eurprd04.prod.outlook.com (2603:10a6:102:40b::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Mon, 24 Nov
- 2025 17:07:38 +0000
+ 2025 17:12:53 +0000
 Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
  ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
  ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9343.016; Mon, 24 Nov 2025
- 17:07:38 +0000
-Date: Mon, 24 Nov 2025 12:07:31 -0500
+ 17:12:53 +0000
+Date: Mon, 24 Nov 2025 12:12:44 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: aisheng.dong@nxp.com, andi.shyti@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] i2c: imx-lpi2c: Add runtime PM support for IRQ and clock
- management on i.MX8QXP/8QM
-Message-ID: <aSSQ0wPU5I3Fss9s@lizhi-Precision-Tower-5810>
-References: <20251124061743.1988773-1-carlos.song@nxp.com>
-Content-Type: text/plain; charset=utf-8
+To: Oleksandr Suvorov <cryosay@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH] watchdog: imx7ulp_wdt: handle the nowayout option
+Message-ID: <aSSSDBKl2vvQCRSw@lizhi-Precision-Tower-5810>
+References: <20251123202437.2340955-1-cryosay@gmail.com>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251124061743.1988773-1-carlos.song@nxp.com>
-X-ClientProxiedBy: PH0PR07CA0032.namprd07.prod.outlook.com
- (2603:10b6:510:e::7) To DU2PR04MB8951.eurprd04.prod.outlook.com
+In-Reply-To: <20251123202437.2340955-1-cryosay@gmail.com>
+X-ClientProxiedBy: SJ0PR05CA0193.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::18) To DU2PR04MB8951.eurprd04.prod.outlook.com
  (2603:10a6:10:2e2::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -67,346 +69,110 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|PA2PR04MB10087:EE_
-X-MS-Office365-Filtering-Correlation-Id: a59e5735-e4f5-4ccd-ca90-08de2b7bf8a4
+X-MS-Office365-Filtering-Correlation-Id: ef42d089-1c92-41c6-864f-08de2b7cb418
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|52116014|376014|38350700014;
+	BCL:0;ARA:13230040|19092799006|52116014|7416014|376014|366016|1800799024|38350700014|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Zm1hd2orNm5Yc2NWb0lqbmNoNFhneE9KTmZmZTdmK0FCZXpqRDJnL1lnRVl5?=
- =?utf-8?B?NWw4N3ZZNUQzWFZMN0tHSTVhaXpySi9LZTZNSWhVWHgrMlNoZm9GVXBJL0ZL?=
- =?utf-8?B?azZkWU1jTnNIbnJoN0NySW5xcjIvWEsvc3ZSaXZ2REZWOFlCZ05IcUpZdGpC?=
- =?utf-8?B?TGJvOSt1WHpNTnJtVW10TjV1aUYxeGliN0lVZ0JlNk4zcWRIc3Y3allKc09F?=
- =?utf-8?B?b3dDVWs3dzRoZlI1Z1BoOE14NTdpenpJbUJaUFJ6ZWM4THNDL2xDOThITTVN?=
- =?utf-8?B?NHkwYzduRnFqcEFFK1JPNTFHV1BuU2RZU0Z2U2ErcEp3a3hqeEZHNmNCeDZC?=
- =?utf-8?B?OFR0TVErUzUrTmFIMWRNbmxVSVJBcmtQbHRhc0JhUmJwaFJBM2hyZ3hXUXgw?=
- =?utf-8?B?WUp0c2dSN1NFdWZlQmd2d2Zpa1c0SXgvSHlKTnFRQ2kzQm91WWhORUN0WG9p?=
- =?utf-8?B?OHpZU2FyVldsY0RkSmJCR2xUTmdQUDkvdlZXVHpSWmczUk52NXp4eGNhbU4v?=
- =?utf-8?B?eXJoTWRTdEhHcmVLbFEwZGp4Q3lpTkV4eWFUQkZWWTIyMklvTlRzZ0NwNTNv?=
- =?utf-8?B?K1luOWxjL3RpUXc1MnVBMEM4dmFFajdzdEJ1WmN0QSs4ZWZmWVhWdTkybWV0?=
- =?utf-8?B?MGFHRllnTVhCMmJobkpndnBEakNLc3ZOZWNKUGhRc0hQMkUycVNmL0tsY1N0?=
- =?utf-8?B?TWsrbWdhWFJmV3lEUmZUYTZ1dmRndncvME9nWW10NVduRHpuT2VDam9kMi9B?=
- =?utf-8?B?S2lrbG5zL3BoU05ZMUUrZ0tRY1kwWE5ydXZlUUpsRmFNcnRUODNudWpObUZH?=
- =?utf-8?B?VmhzZnRIV3VvYi9GZnlNTEV6TUpXVXVTYjdrRDRhRDZkWUZBZkJ3azEwN3Ur?=
- =?utf-8?B?U2lFa3F6ZnMwVHo1aS9ZNmZBaW1CWXRBWUJLLzlEazFxNEVjcmpMVUlmNngv?=
- =?utf-8?B?RTlDV1NabHlBdDZzL2VvNHJJeUNGemFuY1FncnFodDhWTlhxUEFORkVnNUxN?=
- =?utf-8?B?QUhJSDdjbjl3T1VPZjJrUlk3Tnc1Q3lWZ1NleGVkZnQxamdFR1ZEd04veWQ2?=
- =?utf-8?B?ai9GSVJzZmZ3WDNJSkk1czNqbk10SWtVaDVpeGEvWG9UWnZiN0Ntc2toWG1q?=
- =?utf-8?B?Q1l0WlRqazByMHB6ejg2NTc0UjVJazBPaVFCZWR4azh5VTNaQkNGSjNVWmtK?=
- =?utf-8?B?SHVYVjNjSkN1RU5zNFJIK0x2R3FsNE1ESnRpTXFOR29Jb2hPMUpzSFhWdkht?=
- =?utf-8?B?QmZzVU5hVEpzY0w0emkvRFFjZ2NGSHFRbUVTQk9QWE9zd2p5aXBhSXhCOFlv?=
- =?utf-8?B?cWNSZVphNzRFQkNWQWdnZ3BhaDc3Y2IxTG9NWXhmSHhHNCtRY3BBNmxLQzYr?=
- =?utf-8?B?Y2dkZmlyK1ZkU0dPbGF2czl3MnRMalFVNG91SE5SNzE2clYwclhSV0ZVY0JR?=
- =?utf-8?B?Vk5GdGJwS2lmbzRObXE1MjFSRkJXNlZFcWpjd0MwTzZ6UzVkaitXQllyY3pD?=
- =?utf-8?B?Z1NGVmZPRTBsUWoxOE1DZjRMSkg0LzJPQjlGNXVxVDMyb1B1UmhlL3ZYNGVv?=
- =?utf-8?B?TU9xSmhIVU53SUpYbElKUVhYaG9NTlY4eGpVMitKNHJpUDA4bXNzUXgyWkRs?=
- =?utf-8?B?YW9FQ3AxQzEyODcvT2tQVEUzMG4vcHMvL2dnLytQV1hrdjBBWW9jNzFZempj?=
- =?utf-8?B?a1Zha0NGQnhDYzkxQkJYV0dheFhTQTNheEwycEI2QTdwT3E2NE5KVEhCVlFL?=
- =?utf-8?B?K2lIVGlORndCZ29JSFpKZW90UWFJZkNBSzRjSWFWYW9INmJQVGZJT0RyNkMw?=
- =?utf-8?B?QlB2aVgrQi84UXNFVDlmeHQrQ1VtUVg0UXFNcFo2Z0I2ME9iNStBYXVhWmtR?=
- =?utf-8?B?TWhhRC9HNzRFelJlYXc4MzJJcjB0YXhkd0ZCdXJRWU03TjVpWTBNMm1BNzl1?=
- =?utf-8?B?RDhIaWtjdVpoYnRyaURYWlZGSTlmUzRITmJlaUpxVHRNUGRQRFZuQzhKRDlC?=
- =?utf-8?B?K0F3NVhWak5VZ09meGl5R0FQUHltQllYZHhmbG4xYytjN2tWSE10Tlk4cWZn?=
- =?utf-8?Q?lEtir4?=
+	=?us-ascii?Q?z8NzOSFiA4NyDn2cmdnb7OgpwzKHFMu6BlciY3gaSyfYoN/T4WSb/a9YUeQr?=
+ =?us-ascii?Q?EqWy30HmAFlfFLkafUCUz8SwePPnhKH5LjEraV77wJvTAPJHO5O5VtCsADUt?=
+ =?us-ascii?Q?5i0uBQa32vOZMfOHDrz15COrMGvs+d5tM/gi+b600j7LO3ve4osUMkRwfkY6?=
+ =?us-ascii?Q?9eNBYwi7enkaB5wv1gUqnS6MsOYw5KZTi5jAVikvMhi2YHAyxGSmQrJTCQEe?=
+ =?us-ascii?Q?VbVODigPxa1PmEAJ7blaStfWtGvxjAp5t0TZsOgRO0tqswZ+E0aPVb+KtbRE?=
+ =?us-ascii?Q?o0kR8isAdk5vkHbkDMQmEEuI3qbzjgEplgVLQSO8rqm6YEs0x5IIOlIEWol+?=
+ =?us-ascii?Q?ZqPJHOsPxxlFQLH+JhZuNDXhqtZI1mJPDVcfDUArnK8Nodz429A5NV79r7Zs?=
+ =?us-ascii?Q?P5/GPGqFYbBEZOTzzObvDzTelk4G3pboDL03DRs1X9e1W/Zx0m+qT5Dy/aga?=
+ =?us-ascii?Q?14CtiB9ADvwgkiSACdh/tx9wi4WAEvsKb1TP7wQNnFmkHheUWfW1QWBQ1ZlR?=
+ =?us-ascii?Q?grZhqoBRuc76G8LDGO2YDpSxA64JlIMKQZgBJxWJJSPADcOoBjqhwmGAfltg?=
+ =?us-ascii?Q?52kjI6fnVDyJKV1wOpvxQTeisMR6ryWszGCTfBkwRHo4e71KlVG3AAatk+lp?=
+ =?us-ascii?Q?q0s/KeyJyDYxXMr5Xgel5zUCnFZBkHwH8DBay7N4S1/ZQz4arbmsXhGYYcUd?=
+ =?us-ascii?Q?inAuovxPZ2d5kxw79/bss5TodM4tQyn3mIYIui//ZoY0fg7O+5uz0YX3sMeg?=
+ =?us-ascii?Q?MB23GJAuIuKYsyYKFD2NENCULYx5VFM4/JXoZAAGezeKNFBmU83ZTfr3gy6l?=
+ =?us-ascii?Q?W5SsJFEbiFwnb5soPZpcUsgDvDTVq1b5T5f5Qfgwq2Nou2ej4zuqgS1Cff9R?=
+ =?us-ascii?Q?itE8eVi/dd7vCspEWbBP0zcZyXxYD3VR5cHF+DjikvmkTzsTaDgkQ7gTYoj+?=
+ =?us-ascii?Q?dgqQwP5WJzbH4ZoMnZNepwevdFqN00taKCB1/fmcLtEo4E7B/g6AGSybZxEX?=
+ =?us-ascii?Q?EmOKrLRagj5WB4NkcuUpZJJa16j2tP89HOhASGtK7CpvuscgkJizZYaX2TYS?=
+ =?us-ascii?Q?l63zD8YFuBBNY5WAVLRuVmEn4uKKg4Q5xTNTK9OxhisPf5tsG2ss2YO9leD4?=
+ =?us-ascii?Q?FXqQL1s4LunTpWF2NQNiAdC4JxubcfAjANKMWLBe7DeiFsDUhg3A3JzHxep5?=
+ =?us-ascii?Q?mvojpLUr/XOPGuEhnJbaGyeevGCdey96kzkRl3GpCbnGmMr3uqqcVgtE/06x?=
+ =?us-ascii?Q?xFr8YuTHxv74k/Y2hOMG0gtbtT70veABrkCrlGEy+CexCn5sxg9ZHdGVJdmH?=
+ =?us-ascii?Q?Yg0BXmFLLHCnMNkNl5dTzpHqXm+mzQXk1bRoYyIeNFUpOKXZL6Ck+TKEnnjh?=
+ =?us-ascii?Q?zzwPUyqdRSZ6fxb3y/B9tyiQRvtKmnFWyyenAtWHXgTU+0j8C4vj9H1ttFum?=
+ =?us-ascii?Q?fTjSl7vqznlTtI/p5H/VYuBxREB7sUMp/VrbU1RD/g8bUpb8RLiti4GR86kz?=
+ =?us-ascii?Q?pLTen75ylKJZHstorRGVASmBNcytwnikgQpB?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(7416014)(376014)(366016)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M2daTFJjTHEySnpsUDVzZ3o1U25oV2hDcGdPNklRRzJYME9BajcwWGh2ZGNM?=
- =?utf-8?B?bU9TaC9FVXhBeFluQ0VTUnhuMlJVUHQvVzYvRkZMTTh1aDJKZWZzaE15RGNt?=
- =?utf-8?B?bTZyeS92akd5VmZTZmV2ajZ4YUhWR2NyZ2U1TTNhc2xLbWpMWE1aU3BCdzVw?=
- =?utf-8?B?bnhBUS9UWFRnOUo5UUNwQzFrUWhXd3V5Nmsrd1doQzN0MXZiNXZ2RmpqdDlu?=
- =?utf-8?B?cGg2L0E0SWM2WlRLaUxKK21CZm8rNmpYTDBESzRsT2U4MG1oWDZOT2JucEhS?=
- =?utf-8?B?MEVveTNsZWNidFpTaUlrem9TbUxQR010Um1RYmhCZ0JvVmhzWW1neXJOK3VQ?=
- =?utf-8?B?U2VVNHJvV2lNaUh0RmtOZ1UxTHVvOTZlT2NWYTZLQ2F6ZlFJaytkblZkTDln?=
- =?utf-8?B?MDIzR1JZWklRTTM1bUxCb09hT3JCN1k2Yzc1U0UyN3NNMVVJN1pqRlVjWFk3?=
- =?utf-8?B?N2g3ZjZIMzdsT2E1VkF0VFpxK0dkaE4xNVYvNXd3RTdyZlo4MkFLNjU2YWdq?=
- =?utf-8?B?dmwrR093c1B0WEJKK25nU1VrdWE4UjQ2ZE5hZnpwb3YrbEJMK0F5MmR3MGV5?=
- =?utf-8?B?akV6bGNseDV1dHM4Sm1ncCtXbU9kUms0NlZmUldRU1JGMEU3RVUzQU8zK3Vi?=
- =?utf-8?B?azdWRElKOEoyT0cwVktHUmM2YytmOUZZa2c3ZysrcDJoWnQyRUNnM0tHbUxU?=
- =?utf-8?B?ZUhkZy81bitmUURQaktpZGV4YzlLSHJKS0p3UHhXSGFJMnN2QzZ0a1JCSDZC?=
- =?utf-8?B?aW96U2UzSW5MclNPeExKdDR3eU9sSGpsWE9XbXhnQ2xtakgrRjh3YVRNc1l4?=
- =?utf-8?B?anVGWVF6U0pCYkF2TXQwRnlCVnRQb2d1b0ZNZHVyZ0NMVXg3VGd3bmprQk55?=
- =?utf-8?B?YzlLbWRHZUlMK1lMckxHaGN2emcwMnhvS1BwVHlUZE5FMWJwUko3d2JVWFJw?=
- =?utf-8?B?WWlwSGxKcUdNbU5hanZ1QmJmOWFaRGlzNTJDNHgyY0orU2wxZldxbVEwQ0E3?=
- =?utf-8?B?Y3ZhK1I3aDVjQWs2MmozdVdrYmdkdDZZVDJqSmRUZmNyZWRLMmVSemJDbWtK?=
- =?utf-8?B?T0RSMyt2dWh2VUdEeXZSNlNUTzNjZTc1Q3JhbSs3L1ZxZzNmc2lEOWZBUkh4?=
- =?utf-8?B?amhMaldGbG1HVFhhVTRYaFFyaUhNT2EyVFVDTWlsMUx2bkNwTnJFMHlYOVYw?=
- =?utf-8?B?SGgrMFFBZlE4MUNJWUI5eEQzbldXMzNXeUtUc1FFK3JuQzJBVWZqdXhSUEZw?=
- =?utf-8?B?aHZpY0hRaStRRVR2cElDb1NmeHd0b2dERWhxcHlpUWZ6dGtReDFLVkpmQTZr?=
- =?utf-8?B?VDZtQTVOdFpiNVhieDIrZzBOYXg1Uzl4TVRTWjcydjMwSE9kRThMRWk3aUti?=
- =?utf-8?B?YWYyM0JINU9WM0ZiR3Z5VTlaRENtQmFDYjFHd3I1bnQzRGlodHZPQm1STFcx?=
- =?utf-8?B?T2FHb01MSUVpUVNEZXpCRFlWMFRKTGNCVEUyUVA5QnBDVnBoRzhUQ0VNMllk?=
- =?utf-8?B?MFpVN1JHL2ErZFAxSHphUm1hWkxaQmlRaGdqT09vSVoyQ1N1Sk5yMU5objhm?=
- =?utf-8?B?c1BHWE55RUJDNUtQZUdwa3Nvd1NFNkNQcWJkZ09RRDhObHlNWnhvUndIcWp1?=
- =?utf-8?B?aEpRZzhjamgzeTB6UWdZTU5OVG05eTUzWDczd0puQ2dFQW1wV0h2bGw1RDFl?=
- =?utf-8?B?L2hxV3lPMmhKbDdoSGVVL0pySjRkVkRsOEc5VEh5alBXb2I5WGxqRGlLbmRp?=
- =?utf-8?B?VXNnMUtjREhWLzRHSTZRMnhEazBYa0prVTV5NXBKMkU4RzVuT0I5ZGZxODYw?=
- =?utf-8?B?TVFPVTFOT2kwT3BxTEUrd3JYeDBxcFBxT1ZVWDc4Sk0ydUMxRkdoTEZESTVW?=
- =?utf-8?B?M0d0dmZkTk9oS2syd0Rnek5QYmNBK2JNQVNsNDU0elZ1elA1YmxnTndoTEVR?=
- =?utf-8?B?dkFLZ0pocnJWaGp6Y055ZU95L25VeHZJd3RrWmpNU2xVbjE0VmUra2UyRmov?=
- =?utf-8?B?dU9Wand0Q29lcXlnZ2U5ZkQrWUVad2xuOUQ2N0svUEFuQzVmOWYvSEdmMG8w?=
- =?utf-8?B?Sy9na2RBbVNITlJOR0t6TXFjRFBKdmRhYmZ2TElIR3ZCcyswWWE5bjZpM0lO?=
- =?utf-8?Q?F9Cs=3D?=
+	=?us-ascii?Q?FnolFxNJzzVER28y/y8ttZQiCnCyNtT+WQyeUppo/vCTJ5CAh5lrgGVvrAB2?=
+ =?us-ascii?Q?27wuszeXrQ3eXsgJEfdr73Jr2gfBnZrLONCV67zZWVRWmxYGs5/rl0liIvPh?=
+ =?us-ascii?Q?p9k5dhPH2zuZbd/bl5naioWqBJMzjJhagmQo8lyR8OJAljj6ETIKrSAha3tK?=
+ =?us-ascii?Q?pq9sVY71dtpaw4xbwtPYIZvC3u5ZAYdXT8p494uI7CCbpbDL6pwUr4ql0PAR?=
+ =?us-ascii?Q?UgGQH6jFOfJr1zhcpiJbXulssPNyD4wB/rsL6hNk99Nssjhr3/vj1SLALXvH?=
+ =?us-ascii?Q?Y839INfC41KE8BoQ/p9Khmmt8UYvLamksiuLxtCxUhR1rnaipXHbYgNsgQQj?=
+ =?us-ascii?Q?ieXIRhVuLNteTsDM2+WTuIrwUkd+UwcS2uEHOFope3uoMO+kAIiZPt3eIPeD?=
+ =?us-ascii?Q?/8JobaRM2xP5E1zSIi0WGcHIVz4pNXwg8Z8jS/wS6VEEQPpp0Hlw9rTnH5Qh?=
+ =?us-ascii?Q?qUAF+KH3EsuRzq8ysCgnuhGFqCBAsns9+PdUiX+jbitsrfBS0dNhWm+4Viol?=
+ =?us-ascii?Q?4RR5x+rLsjP3f4fua55u0DXhPVI8hWNYNalueBxqG9pypsls/jRXY+xpooXn?=
+ =?us-ascii?Q?w1vuoYJl5dsRsEp5zb3v0nNPFAm2I0Iu80KycKt8nIl3lKsWV0Uhi4HShPyl?=
+ =?us-ascii?Q?IsbS2svBi+Uu0kCJrE6ESDV+nwAMJmNV3q7E1xI2tBsLuqrhu9Y1t9mdyhqm?=
+ =?us-ascii?Q?hcf8uhgXKbeE7CVTZfrKD764gKKX12VKOSJCynr7R87Mt3nujAU/zfmSbMf3?=
+ =?us-ascii?Q?/xqSXIcXUduFWpe7dtF1prRmJhukO2CnyEnzfnMjUFlIw9kjNB5VDqmU8EJr?=
+ =?us-ascii?Q?VtQozWO6zpiGTjd3DFgU9mFVh4sJMsAitLEn2mqiBMCcQRFcE0RFxcAa/xLL?=
+ =?us-ascii?Q?muMopCwvmZRdUgnd61Qo2k5OuP5ueOcZjoYJeaM9Alr0RwPGZNCc5lWBb1xy?=
+ =?us-ascii?Q?fmqb84wlfRvF9Ezgf6BntWvETLNYeRhfASMIABZUNfeF6nzRyWB91TDU0XkM?=
+ =?us-ascii?Q?VIkk/UMTWDfWn5ssJy1BNvg3KWWzQw+v1Mud9jUaWY3DXRI7ZbhHeCAMaiTS?=
+ =?us-ascii?Q?G2BAivblPfo9Vwplw0H0RLNmT6xEhX6+wbiSgHBOciRRp6sXcagPB5cuHZmt?=
+ =?us-ascii?Q?sly88v+Mnam3z4M6PM0A0JBMh1mBp+aEiqoDh81gTj0mJn7vRrUr5m/OKDPV?=
+ =?us-ascii?Q?VPc1f/yScPSNDVWdEVhIpDjNSwGszJzWAwJqSmfrCHcML2spjaZNpvEF+CXY?=
+ =?us-ascii?Q?FaQ3+qAq/J1F/oIdEjqEI3G1UwslAQwRt3WGf4Jw3JcVtw1lOA2P4S6ZV1sK?=
+ =?us-ascii?Q?a2REOw1mLRw9WZbN4vqvY7kGq4BliHNqOt8aMc64w6vR2sMm1Fsrk2974Et5?=
+ =?us-ascii?Q?lSd8lNaLO0NQZZe6GKlTy12H8/eWtZ/Bu9CuSRDqW0hh9yGRNC2mJMquK5rI?=
+ =?us-ascii?Q?8T6rOvQZE5qceM2JbaB/6YfqFn0B4VTEeV1nhQhvEgsKmE0IBMTVcbEDWHn6?=
+ =?us-ascii?Q?HltyHks3SvaRDiLACrmuLgwuWXbJvFZX4V0H1Hy6KmAWnxw6FIyyQS48Du6D?=
+ =?us-ascii?Q?VqcKdhO5cRf4b32W2NnMYHnGD/N6M3j9wgV+dun2?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a59e5735-e4f5-4ccd-ca90-08de2b7bf8a4
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef42d089-1c92-41c6-864f-08de2b7cb418
 X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2025 17:07:38.7535
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2025 17:12:53.5310
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IG0e1sQmKkfLieiNK3Bwz3QJdAQ7BUOfMgmj+JFxm4DgRQx/nXGFh2EYFZsO0Jbx+TFn2snu0vVaPTkIse/VFg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: Zw6B2jnRDgt+qXmUA+R4+sqUlZt4eG5dUo3PoR/rBiGV71t1h9vckgtUvDm3T+EZGPr9psEvU/07/HeHa80e+Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10087
 
-On Mon, Nov 24, 2025 at 02:17:43PM +0800, Carlos Song wrote:
-> On i.MX8QXP/8QM SoCs, both the lvds/mipi and lvds/mipi-lpi2c power domains
-> must enter low-power mode during runtime suspend to achieve deep power
-> savings.
+On Sun, Nov 23, 2025 at 10:24:33PM +0200, Oleksandr Suvorov wrote:
+> The module parameter `nowayout` indicates whether the watchdog should ever
+> be allowed to stop, but the driver currently ignores this option.
 >
-> LPI2C resides in the lvds-lpi2c/mipi-lpi2c power domain, while its IRQ is
-> routed through an irqsteer located in the lvds/mipi power domain. The LPI2C
-> clock source comes from an LPCG within the lvds-lpi2c domain.
+> Pass the `nowayout` parameter to the watchdog core by setting the
+> WDOG_NO_WAY_OUT flag accordingly.
 >
-> For example, the hierarchy for lvds0 and lvds0-lpi2c0 domains is:
-> ┌───────────────────────┐
-> │ pm-domain : lvds0     │
-> │                       │
-> │    ┌──────────────┐   │
-> │    │   irqsteer   │   │
-> │    └───────▲──────┘   │
-> │            │irq       │
-> │            │          │
-> └────────────┼──────────┘
-> ┌────────────┼──────────┐
-> │        ┌───┼───┐      │
-> │        │lpi2c0 │      │
-> │        └───┬───┘clk   │
-> │   ┌────────┼───────┐  │
-> │   │       LPCG     │  │
-> │   └────────────────┘  │
-> │pm-domain:lvds0-lpi2c0 │
-> └───────────────────────┘
+> Signed-off-by: Oleksandr Suvorov <cryosay@gmail.com>
 >
-> To allow these domains to power down in system runtime suspend:
->
-> - All irqsteer clients must release IRQs.
-> - All LPCG clients must disable and unprepare clocks.
->
-> Thus, LPI2C must:
->
-> - Free its IRQ during runtime suspend and re-request it on resume.
-> - Disable and unprepare all clocks during runtime suspend and prepare
->   and rne ble them on resume.
->
-> This enables the lvds/mipi domains to enter deep low-power mode,
-> significantly reducing power consumption compared to active mode.
->
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
 > ---
-...
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 >
-> diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
-> index 39088567db59..87e34746fad3 100644
-> --- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-> +++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-> @@ -132,6 +132,7 @@
->  #define CHUNK_DATA	256
+>  drivers/watchdog/imx7ulp_wdt.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
->  #define I2C_PM_TIMEOUT		10 /* ms */
-> +#define I2C_PM_LONG_TIMEOUT	1000 /* Avoid dead lock caused by big clock prepare lock */
-
-Add unit, I2C_PM_LONG_TIMEOUT_MS,
-
-You'd better add more detail about why need longer PM TIMEOUT in comments.
-
->  #define I2C_DMA_THRESHOLD	8 /* bytes */
+> diff --git a/drivers/watchdog/imx7ulp_wdt.c b/drivers/watchdog/imx7ulp_wdt.c
+> index 0f13a30533574..03479110453ce 100644
+> --- a/drivers/watchdog/imx7ulp_wdt.c
+> +++ b/drivers/watchdog/imx7ulp_wdt.c
+> @@ -346,6 +346,7 @@ static int imx7ulp_wdt_probe(struct platform_device *pdev)
+>  	watchdog_stop_on_reboot(wdog);
+>  	watchdog_stop_on_unregister(wdog);
+>  	watchdog_set_drvdata(wdog, imx7ulp_wdt);
+> +	watchdog_set_nowayout(wdog, nowayout);
 >
->  enum lpi2c_imx_mode {
-> @@ -149,6 +150,11 @@ enum lpi2c_imx_pincfg {
->  	FOUR_PIN_PP,
->  };
->
-> +struct imx_lpi2c_hwdata {
-> +	bool	need_request_free_irq;		/* Needed by irqsteer */
-> +	bool	need_prepare_unprepare_clk;	/* Needed by LPCG */
-> +};
-> +
->  struct lpi2c_imx_dma {
->  	bool		using_pio_mode;
->  	u8		rx_cmd_buf_len;
-> @@ -187,6 +193,21 @@ struct lpi2c_imx_struct {
->  	bool			can_use_dma;
->  	struct lpi2c_imx_dma	*dma;
->  	struct i2c_client	*target;
-> +	int			irqsteer_irq;
-
-irq should be enough
-
-> +	const struct imx_lpi2c_hwdata *hwdata;
-> +};
-> +
-> +static const struct imx_lpi2c_hwdata imx7ulp_lpi2c_hwdata = {
-> +};
-> +
-> +static const struct imx_lpi2c_hwdata imx8qxp_lpi2c_hwdata = {
-> +	.need_request_free_irq		= true,
-> +	.need_prepare_unprepare_clk	= true,
-> +};
-> +
-> +static const struct imx_lpi2c_hwdata imx8qm_lpi2c_hwdata = {
-> +	.need_request_free_irq		= true,
-> +	.need_prepare_unprepare_clk	= true,
->  };
->
->  #define lpi2c_imx_read_msr_poll_timeout(atomic, val, cond)                    \
-> @@ -1423,7 +1444,9 @@ static const struct i2c_algorithm lpi2c_imx_algo = {
->  };
->
->  static const struct of_device_id lpi2c_imx_of_match[] = {
-> -	{ .compatible = "fsl,imx7ulp-lpi2c" },
-> +	{ .compatible = "fsl,imx7ulp-lpi2c", .data = &imx7ulp_lpi2c_hwdata,},
-> +	{ .compatible = "fsl,imx8qxp-lpi2c", .data = &imx8qxp_lpi2c_hwdata,},
-> +	{ .compatible = "fsl,imx8qm-lpi2c", .data = &imx8qm_lpi2c_hwdata,},
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, lpi2c_imx_of_match);
-> @@ -1440,6 +1463,10 @@ static int lpi2c_imx_probe(struct platform_device *pdev)
->  	if (!lpi2c_imx)
->  		return -ENOMEM;
->
-> +	lpi2c_imx->hwdata = of_device_get_match_data(&pdev->dev);
-> +	if (!lpi2c_imx->hwdata)
-> +		return -ENODEV;
-> +
->  	lpi2c_imx->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
->  	if (IS_ERR(lpi2c_imx->base))
->  		return PTR_ERR(lpi2c_imx->base);
-> @@ -1448,6 +1475,9 @@ static int lpi2c_imx_probe(struct platform_device *pdev)
->  	if (irq < 0)
->  		return irq;
->
-> +	if (lpi2c_imx->hwdata->need_request_free_irq)
-> +		lpi2c_imx->irqsteer_irq = irq;
-> +
-
-Needn't check this flags here, just uncondtional save irq number/
-
-	lpi2c_imx->irq = irq;
-
-
->  	lpi2c_imx->adapter.owner	= THIS_MODULE;
->  	lpi2c_imx->adapter.algo		= &lpi2c_imx_algo;
->  	lpi2c_imx->adapter.dev.parent	= &pdev->dev;
-> @@ -1492,7 +1522,11 @@ static int lpi2c_imx_probe(struct platform_device *pdev)
->  		return dev_err_probe(&pdev->dev, -EINVAL,
->  				     "can't get I2C peripheral clock rate\n");
->
-> -	pm_runtime_set_autosuspend_delay(&pdev->dev, I2C_PM_TIMEOUT);
-> +	if (lpi2c_imx->hwdata->need_prepare_unprepare_clk)
-> +		pm_runtime_set_autosuspend_delay(&pdev->dev, I2C_PM_LONG_TIMEOUT);
-> +	else
-> +		pm_runtime_set_autosuspend_delay(&pdev->dev, I2C_PM_TIMEOUT);
-> +
->  	pm_runtime_use_autosuspend(&pdev->dev);
->  	pm_runtime_get_noresume(&pdev->dev);
->  	pm_runtime_set_active(&pdev->dev);
-> @@ -1544,31 +1578,78 @@ static void lpi2c_imx_remove(struct platform_device *pdev)
->  	pm_runtime_dont_use_autosuspend(&pdev->dev);
->  }
->
-> -static int __maybe_unused lpi2c_runtime_suspend(struct device *dev)
-> +static int __maybe_unused _lpi2c_runtime_suspend(struct lpi2c_imx_struct *lpi2c_imx,
-> +						 bool need_request_free_irq,
-> +						 bool need_prepare_unprepare_clk)
->  {
-> -	struct lpi2c_imx_struct *lpi2c_imx = dev_get_drvdata(dev);
-> +	if (need_request_free_irq)
-> +		devm_free_irq(lpi2c_imx->adapter.dev.parent, lpi2c_imx->irqsteer_irq, lpi2c_imx);
->
-> -	clk_bulk_disable(lpi2c_imx->num_clks, lpi2c_imx->clks);
-> -	pinctrl_pm_select_sleep_state(dev);
-> +	if (need_prepare_unprepare_clk)
-> +		clk_bulk_disable_unprepare(lpi2c_imx->num_clks, lpi2c_imx->clks);
-> +	else
-> +		clk_bulk_disable(lpi2c_imx->num_clks, lpi2c_imx->clks);
-> +	pinctrl_pm_select_sleep_state(lpi2c_imx->adapter.dev.parent);
->
->  	return 0;
->  }
->
-> -static int __maybe_unused lpi2c_runtime_resume(struct device *dev)
-> +static int __maybe_unused _lpi2c_runtime_resume(struct lpi2c_imx_struct *lpi2c_imx,
-> +						bool need_request_free_irq,
-> +						bool need_prepare_unprepare_clk)
->  {
-
-look like both helper() have not big beneafit. you can direct put code
-in original lpi2c_runtime_suspend() and lpi2c_runtime_resume().
-
-Frank
-> -	struct lpi2c_imx_struct *lpi2c_imx = dev_get_drvdata(dev);
->  	int ret;
->
-> -	pinctrl_pm_select_default_state(dev);
-> -	ret = clk_bulk_enable(lpi2c_imx->num_clks, lpi2c_imx->clks);
-> -	if (ret) {
-> -		dev_err(dev, "failed to enable I2C clock, ret=%d\n", ret);
-> -		return ret;
-> +	pinctrl_pm_select_default_state(lpi2c_imx->adapter.dev.parent);
-> +	if (need_prepare_unprepare_clk) {
-> +		ret = clk_bulk_prepare_enable(lpi2c_imx->num_clks, lpi2c_imx->clks);
-> +		if (ret) {
-> +			dev_err(lpi2c_imx->adapter.dev.parent, "failed to enable clock %d\n", ret);
-> +			return ret;
-> +		}
-> +	} else {
-> +		ret = clk_bulk_enable(lpi2c_imx->num_clks, lpi2c_imx->clks);
-> +		if (ret) {
-> +			dev_err(lpi2c_imx->adapter.dev.parent, "failed to enable clock %d\n", ret);
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	if (need_request_free_irq) {
-> +		ret = devm_request_irq(lpi2c_imx->adapter.dev.parent, lpi2c_imx->irqsteer_irq,
-> +				       lpi2c_imx_isr, IRQF_NO_SUSPEND,
-> +				       dev_name(lpi2c_imx->adapter.dev.parent),
-> +				       lpi2c_imx);
-> +		if (ret) {
-> +			dev_err(lpi2c_imx->adapter.dev.parent, "can't claim irq %d\n",
-> +				lpi2c_imx->irqsteer_irq);
-> +			return ret;
-> +		}
->  	}
->
->  	return 0;
->  }
->
-> +static int __maybe_unused lpi2c_runtime_resume(struct device *dev)
-> +{
-> +	struct lpi2c_imx_struct *lpi2c_imx = dev_get_drvdata(dev);
-> +	bool need_request_free_irq = lpi2c_imx->hwdata->need_request_free_irq;
-> +	bool need_prepare_unprepare_clk = lpi2c_imx->hwdata->need_prepare_unprepare_clk;
-> +
-> +	return _lpi2c_runtime_resume(lpi2c_imx, need_request_free_irq,
-> +				     need_prepare_unprepare_clk);
-> +}
-> +
-> +static int __maybe_unused lpi2c_runtime_suspend(struct device *dev)
-> +{
-> +	struct lpi2c_imx_struct *lpi2c_imx = dev_get_drvdata(dev);
-> +	bool need_request_free_irq = lpi2c_imx->hwdata->need_request_free_irq;
-> +	bool need_prepare_unprepare_clk = lpi2c_imx->hwdata->need_prepare_unprepare_clk;
-> +
-> +	return _lpi2c_runtime_suspend(lpi2c_imx, need_request_free_irq,
-> +				      need_prepare_unprepare_clk);
-> +}
-> +
->  static int __maybe_unused lpi2c_suspend_noirq(struct device *dev)
->  {
->  	return pm_runtime_force_suspend(dev);
+>  	imx7ulp_wdt->hw = of_device_get_match_data(dev);
+>  	ret = imx7ulp_wdt_init(imx7ulp_wdt, wdog->timeout * imx7ulp_wdt->hw->wdog_clock_rate);
 > --
-> 2.34.1
+> 2.43.0
 >
+> base-commit: 1af5c1d3a90246a15225fc7de0ed7e5f9b2f3f98
+> branch: master-imc7ulp_wdt-nowayout
