@@ -1,281 +1,247 @@
-Received: from mail-qv1-f65.google.com (mail-qv1-f65.google.com [209.85.219.65])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717C53164AA
-	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 16:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC5A3164D8
+	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 16:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764003344; cv=none; b=YeLyM+J3w1mxd/d/FBIwKeqrio8m942M5PuqSUeVm6mtmnAQt/AqP6NGyZsSrlXGSOVOyLgyhdKrL/sAGuTxXxyBha/AEuabALnMfYJ7EcRtkWiIf1z0R8jQIWwhTYQ0VMa53sM9t7pyh7U0M/6NHO+wDTqMBxMkSw1WgSRuX+Y=
+	t=1764003586; cv=none; b=H0p3PV0twpYk4/RrwpdpcMTSg28xJcKySRiVXE7qajJ6rNTi148DvWwkBmr+6uZ2gkcjJwFkG27MWAy/d8Ks4XNjEuyaK+gel+9/+EyROcYVLPE4HQZd9zxmuA9yFK3inzR6ON1oUCm81SU79C7/xEsAu2UFG9SD6n0xTzUrKLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764003344; c=relaxed/simple;
-	bh=bxmKGsJTJisCtns+15qvoCzCCx6vK1+GxtJxYfeFUCQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EqCYCj0A3F0f3U2Mob+SjO5pWZ28EeaaL2Z+SnK7H/j8z0XP2pYMvnzHWMvA83wBIoV6RVCPgMsoDJnvca4aDyovQ/lJlD+J4yMe4gDhaog8ukJwwk9GWpaT8wdvl2oyYqJRiN7iWnpypIbJ7RW+u3LJC9/NpzNK23sjCfPnV5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=s2MCLutn; arc=none smtp.client-ip=209.85.219.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
+	s=arc-20240116; t=1764003586; c=relaxed/simple;
+	bh=U6A+dJ20pXp86qjZBRsjEm03OXYUbqKULhGIn2BanqU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CluV9fCRWensQxLOI05l1plYlRz3T8y6Jy9KZn61Oy+KZW0Q0bYk+mOXS7/ssvAKnY4WEL0wQuhW2czjvN4opJZqow0GHU2PiSE0tTbYZgBYqF7J1D2RuON7XkjWEgQSS/wRGTrm513M9NtC7CfV7DuM5tbWb5kA4PFJ4T6DN3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jKonPuw5; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="s2MCLutn"
-Received: by mail-qv1-f65.google.com with SMTP id 6a1803df08f44-8823dfa84c5so52137606d6.3
-        for <imx@lists.linux.dev>; Mon, 24 Nov 2025 08:55:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jKonPuw5"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b739ef3f739so279956266b.1
+        for <imx@lists.linux.dev>; Mon, 24 Nov 2025 08:59:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1764003340; x=1764608140; darn=lists.linux.dev;
-        h=mime-version:user-agent:references:in-reply-to:date:cc:to:from
-         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=nKIC2CnjvpsH+988+n0uBSnBhbCVNIs2cJxnFtBcQ5k=;
-        b=s2MCLutnsB87t5KtkrNyNvENSyLG4/UbEtrUog8yQdd4C1S0ucZIlnGiM51qzf/7TR
-         TNBI9ZXPRDPskGXTO61339g3EhKF0s7DAeuCyrfzF3iLeX2wH4PXJ2w2/SKcg5uZxKdx
-         xqoYvi5xE5YciHggEkkozx4wC/dW1fIDrwmjP/7YrNkAYGrjVu4kh+HbDMp+KliOece/
-         O+trr/Q/qZOTo9eSW3tC0psB3UFzcnVoIDPdsubLxlr1dLesSGRooobzdrQZOaJP2Rny
-         Uvbe9EI6lFQ6FLSlvVYWHRZFGys5xMI3q5tCBoRLDo2IfZD/RvxRmq4wKinGgIK21qEo
-         C29g==
+        d=gmail.com; s=20230601; t=1764003583; x=1764608383; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gMEOFKOu3v4GJbo9FdKNZBfHGx8q7d1+trMyWhqy/A8=;
+        b=jKonPuw5TgDCNDkJhgmrqlhyeCj17eZVH6zD6xuFFzz+D65ZzgxIo2iGRaX76v4Fgb
+         naWVX8/a6nspw4wKRtCd0NLPCHaYiQ1Odt0hvyacxOIhfFmqw4aoLvn6eC+ZFeiy8qt4
+         cugNLky1xjq/8DEi1Qt/nzHX5o28OLFOEeCziHG5DroMwWree/qbZ+KVY0eHLlQfm8RI
+         GD6+w8EQSMaq/tIhJLYKXzWWJLJGDLkplnkUwZm4yL0vfmLiWA2uLHm0jCQW9ZQ2T8Yt
+         MiNTSD/coed38O+OmUGM5/f3dxv+6LlDaOQPRBM2fi6ATxKiiX0F/pGQ/HqR21c5Tfk3
+         vf8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764003340; x=1764608140;
-        h=mime-version:user-agent:references:in-reply-to:date:cc:to:from
-         :subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=nKIC2CnjvpsH+988+n0uBSnBhbCVNIs2cJxnFtBcQ5k=;
-        b=fZ2ErlfcpWpe/eV4/G1083KcRdu6ODwqkcQfxEr23TFac1LpNEuVJIKzlkLK8u+2x9
-         4/OFl0vbJ4XDF6B0ZhJTByLE841wfEDmLka1CVXG7edW8QzhoEsJU4wht4/I4KVZiOoF
-         ehk2rxfDR6bQF0R0jCA6spScP+LqcCO/5FB9s+aqFFYKuwExeFLuYBKpRGU4KDc/0eEF
-         ejhbieFXJqtk+yGDylv6T1eenIpIMR6fHEERo92Iha4xvKt3cOpbSYJkSdpvSDDkJdm7
-         EZChiRheAhUz2wud2hfAonywM4ljd9oIdoSaP+5mSDj5s1yoJnwQ72mcbDB8dpWxMjny
-         wLWg==
-X-Forwarded-Encrypted: i=1; AJvYcCVWa57tmd/IjaGTOvftE/e8GLB/DHuiCoMZq9YNhZvsKMxln75oknJIDYoRF5F5ahx1hcU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yza/QICmEFZ3nO/5r+0ek/NonScGfX0zM3vYPrUiELL6gSXQQ/Q
-	sX+05vViX/t0K9um1oW9DkbF52a40yD4+wk1BPyz8aPnFifp0tfd662zzb6khHJjMmM=
-X-Gm-Gg: ASbGncs/GzaCgIMjWvc538ofzW/ZpCxkwwrzPWROFVG+GgBoOVYnCRRISISPEkXcvVy
-	AUNGjYR7rayY6+yeDue3lPCIJ7noVdtA/EKos+YCRGeRjw5MaaTnYmeyCiY+PMFhjKRL4BBVzdW
-	W88ri+IeCvYRvQUZWmk9oh56tYZmEFsuh62kAJhcnTWPDXu9vCsPWDI5kZE3rRuSvn8gmqt6bw1
-	leI3tUcOWnP7WDtLwuFlQL0BdzGxGYT3oTof+U5TYGYTRsvil0FE0RGUEqGkPzZbVNng2RSvhyM
-	AJRcTR1UQwDBIneH5ZpZsuwAHgn7w7DBs8AQL+WZ9iTYpMtEmSx+CiUVBV62fvzvBTpnacpb5VC
-	YpbL+T4xneRt1FYXHRKQOz5YZJXlY0m7fk4oHKScsjaWPnVNW8jRwtgF58B/ej5eYBFJtbfeTOu
-	Bkvn65KwS8kR5owXmQ
-X-Google-Smtp-Source: AGHT+IGvb6OSfhjD96Tta1mqwKgxzHProLkPjajJethJLmJaGb1/+UkSU3wc6V+DVMtcPYYdbjPJmQ==
-X-Received: by 2002:ad4:5b8f:0:b0:882:4be6:9ad2 with SMTP id 6a1803df08f44-8847c511566mr194501866d6.33.1764003339847;
-        Mon, 24 Nov 2025 08:55:39 -0800 (PST)
-Received: from ?IPv6:2606:6d00:17:7b4b::5ac? ([2606:6d00:17:7b4b::5ac])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8846e54c84esm100992886d6.30.2025.11.24.08.55.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Nov 2025 08:55:39 -0800 (PST)
-Message-ID: <020d1263315b8a5ff3fdfb46d61d0108cdfa5bb3.camel@ndufresne.ca>
-Subject: Re: [PATCH 2/2] media: verisilicon: Avoid G2 bus error while
- decoding H.264 and HEVC
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Frank Li <Frank.li@nxp.com>, "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
-Cc: linux-media@vger.kernel.org, mchehab@kernel.org,
- hverkuil-cisco@xs4all.nl, 	benjamin.gaignard@collabora.com,
- p.zabel@pengutronix.de, 	sebastian.fricke@collabora.com,
- shawnguo@kernel.org, ulf.hansson@linaro.org, 	s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, 	linux-imx@nxp.com,
- l.stach@pengutronix.de, peng.fan@nxp.com, eagle.zhou@nxp.com, 
-	imx@lists.linux.dev, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org
-Date: Mon, 24 Nov 2025 11:55:37 -0500
-In-Reply-To: <baec095da2b7b84be19b205b18e765f9a2305574.camel@ndufresne.ca>
-References: <20251121081911.1682-1-ming.qian@oss.nxp.com>
-		 <20251121081911.1682-2-ming.qian@oss.nxp.com>
-		 <aSCOZCJ2rSw7LAvE@lizhi-Precision-Tower-5810>
-		 <d282811a-866d-4ca8-b9f6-fc1da3a7565e@oss.nxp.com>
-		 <aSR+eaVxBhnahOl7@lizhi-Precision-Tower-5810>
-	 <baec095da2b7b84be19b205b18e765f9a2305574.camel@ndufresne.ca>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-ljeP6A7MDSCCnSfU19m1"
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+        d=1e100.net; s=20230601; t=1764003583; x=1764608383;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gMEOFKOu3v4GJbo9FdKNZBfHGx8q7d1+trMyWhqy/A8=;
+        b=w53vrgYSoDY04k7iRy5El6WMgqps+q0wsQgUQIDdvalOqbyIv68DYFWiCNmFQiYI49
+         gUuamM5uZJ4D59xfQ0yG/JFCEn3io4ShMMyRpZnjHzSrqf017DZ2hWRVUFHzeNkP2wDv
+         Gp1obaeZKqOhJqcvgO5GwvkKP4b6yF9Rk3tPejuQ0twdcP92Vm4AE0cIldqBxw84VojN
+         ZNQBpbY5wF0I323hiJEeKknDxYocS5qvkqxMWNa3nACyxQrYd+Omd0nvBvIDst7ImO5l
+         +zhdJ1DueHPltJXV0z/evisCn/cAUuomoGCZelfDvkrUIYF97OGRGSooAJ45npRNaiCx
+         wFRw==
+X-Forwarded-Encrypted: i=1; AJvYcCWbUTiUxpEmVBmJwOqWENZixjUW70BJFsSQbQZsF50+0ywouDEtVClzsaEDiuwcK6+LG0U=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxHAAu4TayRu/eskVLo4hazVVFt8wEq0P/qDiyLZGfoCQuaTGtT
+	qUXp0j8wPRNyUBtsGlu8vO6m49kbAgCWQCEC2LRFZ0ZNCH1VhyY/uguR
+X-Gm-Gg: ASbGncvyMqPDe8J+Q/b2f4ketZ604NKcCu5pY7BoCjX65sPhJBdbX59ojH2tGWXgXHw
+	KFDw4K7go280eMlmSVWDwH5do2Y4wozvIeaq5jVNxyCWK/kyQxOxEiUVjeAzzrIzrqusSycZ6tS
+	NQOZCyFsvuXbTW4kew2QdFShHsdCfewjirpoKnyUbcLsFetJq6FwA8G7kk5n336yJvw0wQ3BNxJ
+	hDkPPVdGcpyurcCeM9M7lp/nBVpmGwBwFpZTIsJMCywRpvClLTdWVBL8l7FHWjYDWji5lVew3zt
+	gyWr1IBdS06n9oy0Lg9r/2LVFR3Tj9Fwq/YbNhBL9vj9UUVMQDxzbfFu111sv1ZJbtH2Tfq8+dS
+	HU58eM2pTVNat+9XJo8FkWfOavvg8RggITiW5hl/WcMfF/FpAirNLsEPuRcoGMCgWgGoYbmy9SB
+	eWM1xnHudCv2MPTA5ilDoWQy2Vg6I1M4dxaOaUAY5WjvI+jp6qZHaBDRhdZtxHyso3+oHbLvWmm
+	A==
+X-Google-Smtp-Source: AGHT+IG13tPufOeCe62IkziqEjMKy77jRIw/n2p1+sO/PACFs+P5/tLtartbx+qzXMxnMkmQoCTh7g==
+X-Received: by 2002:a05:6512:39d5:b0:595:9152:b921 with SMTP id 2adb3069b0e04-596a3ea79camr4199632e87.7.1763996851410;
+        Mon, 24 Nov 2025 07:07:31 -0800 (PST)
+Received: from ?IPV6:2001:14ba:437:c00::190? (2001-14ba-437-c00--190.rev.dnainternet.fi. [2001:14ba:437:c00::190])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-596a0d1493bsm3863273e87.73.2025.11.24.07.07.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Nov 2025 07:07:30 -0800 (PST)
+Message-ID: <5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com>
+Date: Mon, 24 Nov 2025 17:07:28 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT
+ overlays"
+To: Rob Herring <robh@kernel.org>
+Cc: Herve Codina <herve.codina@bootlin.com>, Andrew Lunn <andrew@lunn.ch>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+ Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>,
+ Saravana Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Charles Keepax <ckeepax@opensource.cirrus.com>,
+ Richard Fitzgerald <rf@opensource.cirrus.com>,
+ David Rhodes <david.rhodes@cirrus.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Ulf Hansson <ulf.hansson@linaro.org>, Mark Brown <broonie@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, Wolfram Sang <wsa@kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
+ Allan Nielsen <allan.nielsen@microchip.com>,
+ Horatiu Vultur <horatiu.vultur@microchip.com>,
+ Steen Hegelund <steen.hegelund@microchip.com>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, mazziesaccount@gmail.com
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+ <20251015071420.1173068-2-herve.codina@bootlin.com>
+ <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
+ <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
+Content-Language: en-US
+From: Kalle Niemi <kaleposti@gmail.com>
+In-Reply-To: <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
---=-ljeP6A7MDSCCnSfU19m1
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 11/24/25 16:53, Rob Herring wrote:
+> On Mon, Nov 24, 2025 at 8:48 AM Kalle Niemi <kaleposti@gmail.com> wrote:
+>> On 10/15/25 10:13, Herve Codina wrote:
+>>> From: Saravana Kannan <saravanak@google.com>
+>>>
+>>> This reverts commit 1a50d9403fb90cbe4dea0ec9fd0351d2ecbd8924.
+>>>
+>>> While the commit fixed fw_devlink overlay handling for one case, it
+>>> broke it for another case. So revert it and redo the fix in a separate
+>>> patch.
+>>>
+>>> Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overlays")
+>>> Reported-by: Herve Codina <herve.codina@bootlin.com>
+>>> Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com/
+>>> Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin.com/
+>>> Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootlin.com/
+>>> Signed-off-by: Saravana Kannan <saravanak@google.com>
+>>> Link: https://lore.kernel.org/lkml/20240411235623.1260061-2-saravanak@google.com/
+>>> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+>>> Acked-by: Mark Brown <broonie@kernel.org>
+>>> ---
+>>>    drivers/bus/imx-weim.c    | 6 ------
+>>>    drivers/i2c/i2c-core-of.c | 5 -----
+>>>    drivers/of/dynamic.c      | 1 -
+>>>    drivers/of/platform.c     | 5 -----
+>>>    drivers/spi/spi.c         | 5 -----
+>>>    5 files changed, 22 deletions(-)
+>>>
+>>> diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
+>>> index 83d623d97f5f..87070155b057 100644
+>>> --- a/drivers/bus/imx-weim.c
+>>> +++ b/drivers/bus/imx-weim.c
+>>> @@ -327,12 +327,6 @@ static int of_weim_notify(struct notifier_block *nb, unsigned long action,
+>>>                                 "Failed to setup timing for '%pOF'\n", rd->dn);
+>>>
+>>>                if (!of_node_check_flag(rd->dn, OF_POPULATED)) {
+>>> -                     /*
+>>> -                      * Clear the flag before adding the device so that
+>>> -                      * fw_devlink doesn't skip adding consumers to this
+>>> -                      * device.
+>>> -                      */
+>>> -                     rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+>>>                        if (!of_platform_device_create(rd->dn, NULL, &pdev->dev)) {
+>>>                                dev_err(&pdev->dev,
+>>>                                        "Failed to create child device '%pOF'\n",
+>>> diff --git a/drivers/i2c/i2c-core-of.c b/drivers/i2c/i2c-core-of.c
+>>> index eb7fb202355f..30b48a428c0b 100644
+>>> --- a/drivers/i2c/i2c-core-of.c
+>>> +++ b/drivers/i2c/i2c-core-of.c
+>>> @@ -176,11 +176,6 @@ static int of_i2c_notify(struct notifier_block *nb, unsigned long action,
+>>>                        return NOTIFY_OK;
+>>>                }
+>>>
+>>> -             /*
+>>> -              * Clear the flag before adding the device so that fw_devlink
+>>> -              * doesn't skip adding consumers to this device.
+>>> -              */
+>>> -             rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+>>>                client = of_i2c_register_device(adap, rd->dn);
+>>>                if (IS_ERR(client)) {
+>>>                        dev_err(&adap->dev, "failed to create client for '%pOF'\n",
+>>> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+>>> index 2eaaddcb0ec4..b5be7484fb36 100644
+>>> --- a/drivers/of/dynamic.c
+>>> +++ b/drivers/of/dynamic.c
+>>> @@ -225,7 +225,6 @@ static void __of_attach_node(struct device_node *np)
+>>>        np->sibling = np->parent->child;
+>>>        np->parent->child = np;
+>>>        of_node_clear_flag(np, OF_DETACHED);
+>>> -     np->fwnode.flags |= FWNODE_FLAG_NOT_DEVICE;
+>>>
+>>>        raw_spin_unlock_irqrestore(&devtree_lock, flags);
+>>>
+>>> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+>>> index f77cb19973a5..ef9445ba168b 100644
+>>> --- a/drivers/of/platform.c
+>>> +++ b/drivers/of/platform.c
+>>> @@ -739,11 +739,6 @@ static int of_platform_notify(struct notifier_block *nb,
+>>>                if (of_node_check_flag(rd->dn, OF_POPULATED))
+>>>                        return NOTIFY_OK;
+>>>
+>>> -             /*
+>>> -              * Clear the flag before adding the device so that fw_devlink
+>>> -              * doesn't skip adding consumers to this device.
+>>> -              */
+>>> -             rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+>>>                /* pdev_parent may be NULL when no bus platform device */
+>>>                pdev_parent = of_find_device_by_node(parent);
+>>>                pdev = of_platform_device_create(rd->dn, NULL,
+>>> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+>>> index 2e0647a06890..b22944a207c9 100644
+>>> --- a/drivers/spi/spi.c
+>>> +++ b/drivers/spi/spi.c
+>>> @@ -4791,11 +4791,6 @@ static int of_spi_notify(struct notifier_block *nb, unsigned long action,
+>>>                        return NOTIFY_OK;
+>>>                }
+>>>
+>>> -             /*
+>>> -              * Clear the flag before adding the device so that fw_devlink
+>>> -              * doesn't skip adding consumers to this device.
+>>> -              */
+>>> -             rd->dn->fwnode.flags &= ~FWNODE_FLAG_NOT_DEVICE;
+>>>                spi = of_register_spi_device(ctlr, rd->dn);
+>>>                put_device(&ctlr->dev);
+>>>
+>> Sorry, some of you will receive this message now for second time. First
+>> message was sent to older series of patches.
+>> -
+>>
+>> Hello,
+>>
+>> Test system testing drivers for ROHM ICs bisected this commit to cause
+>> BD71847 drivers probe to not be called.
+> This driver (and overlay support) is in linux-next or something out of
+> tree on top of linux-next?
+>
+> Rob
 
-Le lundi 24 novembre 2025 =C3=A0 11:39 -0500, Nicolas Dufresne a =C3=A9crit=
-=C2=A0:
-> Hi,
->=20
-> Le lundi 24 novembre 2025 =C3=A0 10:49 -0500, Frank Li a =C3=A9crit=C2=A0=
-:
-> > On Mon, Nov 24, 2025 at 09:38:15AM +0800, Ming Qian(OSS) wrote:
-> > > Hi Frank,
-> > >=20
-> > > On 11/22/2025 12:08 AM, Frank Li wrote:
-> > > > On Fri, Nov 21, 2025 at 04:19:09PM +0800, ming.qian@oss.nxp.com=C2=
-=A0wrote:
-> > > > > From: Ming Qian <ming.qian@oss.nxp.com>
-> > > > >=20
-> > > > > For the i.MX8MQ platform, there is a hardware limitation: the g1 =
-VPU and
-> > > > > g2 VPU cannot decode simultaneously; otherwise, it will cause bel=
-ow bus
-> > > > > error and produce corrupted pictures, even led to system hang.
-> > > > >=20
-> > > > > [=C2=A0 110.527986] hantro-vpu 38310000.video-codec: frame decode=
- timed out.
-> > > > > [=C2=A0 110.583517] hantro-vpu 38310000.video-codec: bus error de=
-tected.
-> > > > >=20
-> > > > > Therefore, it is necessary to ensure that g1 and g2 operate alter=
-nately.
-> > > > > Then this allows for successful multi-instance decoding of H.264 =
-and
-> > > > > HEVC.
-> > > > >=20
-> > > > > Fixes: cb5dd5a0fa518 ("media: hantro: Introduce G2/HEVC decoder")
-> > > > > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> > > > > ---
-> > > > > =C2=A0 drivers/media/platform/verisilicon/hantro.h=C2=A0=C2=A0 |=
-=C2=A0 1 +
-> > > > > =C2=A0 .../media/platform/verisilicon/hantro_drv.c=C2=A0=C2=A0 | =
-26 +++++++++++++++++++
-> > > > > =C2=A0 .../media/platform/verisilicon/imx8m_vpu_hw.c |=C2=A0 4 ++=
-+
-> > > > > =C2=A0 3 files changed, 31 insertions(+)
-> > > > >=20
-> > > > ...
-> > > > > =C2=A0 #include <linux/workqueue.h>
-> > > > > +#include <linux/iopoll.h>
-> > > > > =C2=A0 #include <media/v4l2-event.h>
-> > > > > =C2=A0 #include <media/v4l2-mem2mem.h>
-> > > > > =C2=A0 #include <media/videobuf2-core.h>
-> > > > > @@ -93,6 +94,9 @@ static void hantro_job_finish(struct hantro_dev=
- *vpu,
-> > > > >=20
-> > > > > =C2=A0=C2=A0	clk_bulk_disable(vpu->variant->num_clocks, vpu->cloc=
-ks);
-> > > > >=20
-> > > > > +	if (vpu->variant->shared_resource)
-> > > > > +		atomic_cmpxchg(vpu->variant->shared_resource, 0, 1);
-> > > > > +
-> > > > > =C2=A0=C2=A0	hantro_job_finish_no_pm(vpu, ctx, result);
-> > > > > =C2=A0 }
-> > > > >=20
-> > > > > @@ -166,12 +170,34 @@ void hantro_end_prepare_run(struct hantro_c=
-tx
-> > > > > *ctx)
-> > > > > =C2=A0=C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 msecs_to_jiffies(20=
-00));
-> > > > > =C2=A0 }
-> > > > >=20
-> > > > > +static int hantro_wait_shared_resource(struct hantro_dev *vpu)
-> > > > > +{
-> > > > > +	u32 data;
-> > > > > +	int ret;
-> > > > > +
-> > > > > +	if (!vpu->variant->shared_resource)
-> > > > > +		return 0;
-> > > > > +
-> > > > > +	ret =3D read_poll_timeout(atomic_cmpxchg, data, data, 10, 300 *
-> > > > > NSEC_PER_MSEC, false,
-> > > > > +				vpu->variant->shared_resource, 1, 0);
-> > > > > +	if (ret) {
-> > > > > +		dev_err(vpu->dev, "Failed to wait shared resource\n");
-> > > > > +		return -EINVAL;
-> > > > > +	}
-> > > >=20
-> > > > why not use a mutex?
-> > > >=20
-> > > > mutex() lock here, unlock at hantro_job_finish(), if second instanc=
-e
-> > > > run to here, mutex() will block thread, until previous hantro_job_f=
-inish()
-> > > > finish.
-> > > >=20
-> > > > Frank
-> > >=20
-> > > G1 and G2 are two different devices. If I were to use a mutex, I woul=
-d
-> > > need to define a global mutex. Therefore, to avoid using a global mut=
-ex,
-> > > I only define a static atomic variable.
-> >=20
-> > static atomic varible also is global.=C2=A0 Global mutex is allowed if =
-it is
-> > really needed.
-> >=20
-> > >=20
-> > > If a static mutex is acceptable, I think I can change it to a mutex.
-> >=20
-> > ref to
-> > https://elixir.bootlin.com/linux/v6.18-rc6/source/drivers/base/core.c#L=
-43
->=20
-> My main concern with either of these approaches is that it kills the abil=
-ity to
-> rmmod the driver forever. The only working approach would be that both dr=
-ivers
-> depends on a third driver that provide the synchronization services.
+Yes the driver is in mainline linux: /drivers/mfd/rohm-bd718x7.c
 
-I do realize after the fact that my answer is a little off considering its =
-a
-drivers against itself (not cross-driver, that would be a huge pain if it w=
-as
-the case).
-
-Checking further, the ref to the counter (or mutex) should cleanly be gone =
-by
-the time the driver is removed, so perhaps its fine, though best to test it=
-.
-Though, in both cases, I'm not happy to see code that will wait for multipl=
-e
-milliseconds on either home made mutex or a real mutex. Adding another arbi=
-trary
-timeout is also not very nice either. The current software watchdog already=
- get
-in the way when testing simulated IP.
-
-I know its work, but what about a recounted singleton, with a notifier so w=
-e can
-schedule work when the resource is free ?
-
-Nicolas
-
->=20
-> Nicolas
->=20
-> >=20
-> > Frank
-> > >=20
-> > > Regards,
-> > > Ming
-> > >=20
-> > > > > +
-> > > > > +	return 0;
-> > > > > +}
-> > > > > +
-> > > > > =C2=A0 static void device_run(void *priv)
-> > > > > =C2=A0 {
-> > > > > =C2=A0=C2=A0	struct hantro_ctx *ctx =3D priv;
-> > > > > =C2=A0=C2=A0	struct vb2_v4l2_buffer *src, *dst;
-> > > > > =C2=A0=C2=A0	int ret;
-> > > > >=20
-> > > > > +	ret =3D hantro_wait_shared_resource(ctx->dev);
-> > > > > +	if (ret < 0)
-> > > > > +		goto err_cancel_job;
-> > > > > +
-> > > > > =C2=A0=C2=A0	src =3D hantro_get_src_buf(ctx);
-> > > > > =C2=A0=C2=A0	dst =3D hantro_get_dst_buf(ctx);
-> > > > ...
-> > > >=20
-> > > > >=20
-> > > > > --
-> > > > > 2.34.1
-> > > > >=20
-
---=-ljeP6A7MDSCCnSfU19m1
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaSSOCQAKCRDZQZRRKWBy
-9HqhAQCHP5ZntFVjhc+JmmT18XRzd/2qvwhx74x5R7o/qW0ZEAEAvh2YL6yFIWqk
-/QfAZZ+Z2oYT9qGwQPIYvYmogZK8tQ8=
-=gS+Q
------END PGP SIGNATURE-----
-
---=-ljeP6A7MDSCCnSfU19m1--
+Kalle
