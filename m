@@ -1,234 +1,177 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011011.outbound.protection.outlook.com [40.107.130.11])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4ECC3148BB
-	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 16:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764000991; cv=fail; b=TId6YpDI+i0F7wiDymDGtBOwduKZVkAnke2/27k9xEHAO4gqgZ8pjtyEMghsJfnhQqXyJDpfV8JXV91ud5ru42+JCjtAj/ZmaA/DZCGBoKfGCh4SWerp7fwxBKg/8lhyGyS7cCQtjS3c4OcANLrkF7to8h/hF5PNm1Q+3/ME9xg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764000991; c=relaxed/simple;
-	bh=PJoPRa6aJAVtYiq0pSJFf3MSdu2UliUySsJ9Pi1+nzE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=T+zKPSXKmEdQVxp8a57XTGUJYb4OFXE6urMqEp3lunF0P5CeUS0wStazfCAbKayTJ16R7DmsQwMDk9kjoqjOHQm0w9vhtXzmenDHrIlqQ95oZZwfw/LYgUS/ZyMOXgkS9NNAqOty0mmGohSmVtMm26Ij6jmMrBQroM2w2cVpdLk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aJmjDIHo; arc=fail smtp.client-ip=40.107.130.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B16314B84
+	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 16:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764001434; cv=none; b=PUCXapmhjFOwz2Olai8EpGqeHloevelhhLJSWVavewx/fw9LZlP3wLf2pfSUYxYJfze6zbk/ZJR0bMYx9tO8AmAR7ShtQRlKu+aGGKwp01ECpSHrUnI1en5bp4HUBkDXKoYeK3AAnyHP1qk4SC7WLD+zlRTm+VE4+5sVEjabmZY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764001434; c=relaxed/simple;
+	bh=5iAbDOgOR8ZMbTQTdCUF7iLVrRq1qzVBnjvSfBkCQjY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=mG/y5paPAVuzD5Ntt1/6FCQvjyQnKwSAm6aDW03L0cC4VA+bfWJzsJEiV3+uEwY5RpMTXQQBODZkhdcjYx4BfkGHbiFrfCvLvgASo4uwU2SaFsjdNv5/2/6lbhMTEpBZJpCJ6FKSIdfNmmfpjW9Y2fXqgVKvHsz+jYwOmU1Ah/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BmmKrDVR; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aJmjDIHo"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fpogUf9SbYU1S3Kc0HxbDTF+p+8Yw50VB7UBqcMF6Ri89/KjJSnpZ0xatnnbD90UwYQAPq25PmYsux/Qd8p7FKY2IdkZJnsvz4sURu/YTVw0vByjcEDqEo7Z6tPtzUyLfkLr8K/My7iGRp+6wInXcssvAuR0O0ZGCHnVIEasmxGb18YbrFc6AHh1ueoXblDU7GcagIcD83L8CH24ojzaj84BWStq3YMVTMM+11WpOs/9YAcCDzhmg8gnWHe0q0lk/m6gCS6EhYx4QwlMNnkqJ6DWs2JGKKiIb30EC4ewlaOJ3LAtVdhftWkMnVqOModuORAbKbOvn/tu5XYy8aSuNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xaAnO7GhkXinSi3YHH+jBGkxEPnFDbSy6xOv7m3kxro=;
- b=dzgq/ALo/nAelOgPQ0ObxuVPQJrrNxHg643iyzWr4Na1r57ZSgQ57x1eobtqxSJzrhIWFrFwmTX86jR7KpvaVApLOGNhrPBEeZlkvJwaxx2F1mBNbps3nZ0eozau0jhVQA08jmrQdW2LOJlNhdLSvrqHopJJ8NfnGmmrUXl+tOVRDCWCXL7qwokqqUA8AvCKruL1Fke4KHOoK9jkYjnlt19unFPR5ujW9RIlMYfhXMXrBlRgX0BuFop/Fpo9QbiWy1xwnZIFTgt1b7H4nCQy6lKqLXT9fryOVo0DXPGlHoKOELgPZa5rf2KxQAgILFf+IZrjMUTJjsztVJ5ct/1ygw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xaAnO7GhkXinSi3YHH+jBGkxEPnFDbSy6xOv7m3kxro=;
- b=aJmjDIHo+7mvgHEDeTRn1X5sKL82ChRlM86SA7OZhhThYjTJxhgvdX9hSp0XAzLddvVJsnD727uRkTsiAEFC6lbHl1gr0LEtuNB1NQFbMuOrxzhqMoYukgPp3bx/CPX8F1tbpt9rRxkeMqV6LsreV7f6PcqQtIIAPePTbdgpQo+NPnoqx2wQY9qLCdyzd3U40bJJ1YRkj6PxRRzsQlrAtMT4mhBX/ZjGi0sZ6CSN3jaciy2Jl3yZ/IgCDGv97fQsZF/4nfLaVpYQ9id8VuAGPXEnokzjsj0z6frxU3EDDApdDzsBE7Or29voVNiS6JmBn2TF6wW+PhjTPpKZGT+v3Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
- by DU7PR04MB11140.eurprd04.prod.outlook.com (2603:10a6:10:5b3::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Mon, 24 Nov
- 2025 16:16:24 +0000
-Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
- ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
- ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9343.016; Mon, 24 Nov 2025
- 16:16:24 +0000
-Date: Mon, 24 Nov 2025 11:16:18 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-Cc: Vinod Koul <vkoul@kernel.org>, Greg Ungerer <gerg@linux-m68k.org>,
-	imx@lists.linux.dev, dmaengine@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/7] dma: mcf-edma: Fix error handler for all 64 DMA
- channels
-Message-ID: <aSSE0qdea51qPyP4@lizhi-Precision-Tower-5810>
-References: <20251124-dma-coldfire-v1-0-dc8f93185464@yoseli.org>
- <20251124-dma-coldfire-v1-6-dc8f93185464@yoseli.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251124-dma-coldfire-v1-6-dc8f93185464@yoseli.org>
-X-ClientProxiedBy: PH8PR22CA0005.namprd22.prod.outlook.com
- (2603:10b6:510:2d1::18) To DU2PR04MB8951.eurprd04.prod.outlook.com
- (2603:10a6:10:2e2::22)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BmmKrDVR"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 35C964E418A0;
+	Mon, 24 Nov 2025 16:23:50 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 02ACB606FC;
+	Mon, 24 Nov 2025 16:23:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2AF0A10371D9A;
+	Mon, 24 Nov 2025 17:23:35 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1764001428; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=4dwXgW7awt8oQD3TrOxHo6im6bS23ABW/5Js6C/RUYk=;
+	b=BmmKrDVRXr5Ui32ulufganjLHxAsQu1h7GaA9GD/T26zZxsOmgBvpSlEsWb4eI9jBIrq8K
+	HJRZgRJik54F0xx2TU/v0tHCfxRpZNOWhhVFU0fh/tctuiBkGe6xW5AKIFV56AzOFeR0D+
+	KkRUZ/Hf/eBL0NxbHwdjqgI5BzLofOXiNiZX41H7n5Pc/c2ktwFubkq0zA6WKyHxr/g7w0
+	Fj3SFW1KfFRHkOtqPrRz8zKkw4Y3NTKrSm8YCJtPSGvkDc4QPbzddQG3GvEd0nqVdi7Tba
+	eeHfeMNGKEukwL0NNBiTyeDeUH5H5ptJ2JmJJI7XgEcDg4bqaXb0zUbE3FpsZg==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|DU7PR04MB11140:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3d676759-f566-4ccf-ee9b-08de2b74d06d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|52116014|376014|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?tctrPzZmt515TxvZ7//xQtGCDiyvyfJg9HNFFczYtBSpN2Wzg52ZWbcw07rX?=
- =?us-ascii?Q?lw91rFfk3Hqa4vi2QhHG/lzg8ao2zIJYePMkgU3FmZP3L19sjyEgMTCYhFIB?=
- =?us-ascii?Q?uXQyTYnt2EqTLCZWJk8dL0OtkA+N+v453qAQuDgEwhoctRq4jHu/7nVRhsKZ?=
- =?us-ascii?Q?twMntrNFWucfX8/gJcG3CJBV0OXOmN4OXXFX+ipTaeqimi5yCN619rkooj+t?=
- =?us-ascii?Q?XwV7FPoaTvjw2Kcyf5/RVfyFNqiOO/hfrlB0xJBLqKs1HTcYoZQuq8gV2wnQ?=
- =?us-ascii?Q?E2H2qMG/ngVrZekhgoVgFnetuZjkbBBMuIB+rcX7sc0zvc5r2bzXAnC/7cQP?=
- =?us-ascii?Q?/N2Inexo79QkUmitzXb/DtII6cgNYpJBr4AhRXrIfATiontdRlD3o+3khZwS?=
- =?us-ascii?Q?1L9xw8xb744N5LecDuwbx94rXZPO/inrKngERSuTEVxyDszhpSTl5XMVGH+j?=
- =?us-ascii?Q?dBpJbAAUDNWNwYzA/RIi4CxZHqj5rUZaXBNuTPHLgQTpxOZ1R6Lw2qaB5xCl?=
- =?us-ascii?Q?gBnSOIg5Fdd1TpyODNP6k4uklRWPfyVaUn0lDKQPdbruPrZD48VF58aJ1TEf?=
- =?us-ascii?Q?jfDaMqcWstnocC6ezoPjphBxrkyuCT9tt72SPPwMLvm0mq85A5ApqATlvSed?=
- =?us-ascii?Q?L+OvCiRZzfa/jVhQKzd/aBon4uAJ+T7+bu9kwfPFOEbHgGiKhXBHspflue4V?=
- =?us-ascii?Q?ne/6x4zx69ptj0+WIlEPfbAJ55NLAU3dNc9gHu6O/BKpnjwywAOynAv3E27h?=
- =?us-ascii?Q?PQCkRcKjlh5MyXZKb6SGK1FrISFvKc6Rp48SWIMX9ZkwCkcPgvk/YsKKja/H?=
- =?us-ascii?Q?fVBgo3Y2q6HtJNZ9r3mlpKoeIvcPuZaxqXie2oSFXdd8KGlSnzZTqwHRvIs1?=
- =?us-ascii?Q?LmgY4L1w4xcKODNI65+pqO4xf0nH+2fN8IB830gPl0fnTxPClXNaZnNJ9A1H?=
- =?us-ascii?Q?eHPJ5HqkRj+siwcPx7mI7HrJjTmYdfKyEUsMN+1XvNvGrzGyuvtIuIsG5jgH?=
- =?us-ascii?Q?tmrDJV4eOpnGe5og7LKZibG2bV3LNDGcWJ5Cj7Qv3EEu9PvXP/P2HNkCyV0Q?=
- =?us-ascii?Q?OwrEMogOGxiStTCWwDmKDwuenYTgQBzTnRvqIQh5ip6lzDaLLFj6acbFwm9g?=
- =?us-ascii?Q?uAXzKjZv1aGn8DcbecMZmsjG3b3wiKqrog+DVfWcghXYUUglcTO0Gqg153y9?=
- =?us-ascii?Q?88U4tncF16S9nakfvMIllZVVFHBvS8CEr5oq4x09r2gs5pmHT0H11sZ/XxF2?=
- =?us-ascii?Q?p0NFZBz/1J0DQgHrMMwHidxxaLvexpDb3ZaTSfAreVok7Pq0DNYRL0/QxKIT?=
- =?us-ascii?Q?LwaWpYxNb18G5sP4jwwtna2JzlrFAjZZFjHSVf04zvoXAcNjmEILZ3Vszwqv?=
- =?us-ascii?Q?U94veLoB85cDHcMQy1Je2waSJkt4Z76XKaaAgSyfVGHvSeBHrN5jMdUnZgeq?=
- =?us-ascii?Q?B5SxhaDDbEf6pCD5lMbWNyNlbTytuSr4BqdhDpX7Rp/RYk1v7VCnbCEfciOC?=
- =?us-ascii?Q?O/FeshlVs9uP7kjS+TRjMDI9u6KuKKfCO4Ii?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(52116014)(376014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?VtdccCc34h7Rh/8NElUYc4BjGHEcHU8Fqu4RUU6fEgSFa98Tu0rWBFK8Gkv5?=
- =?us-ascii?Q?uASzIQV+0qOmO7gdiJf1jSjceHxwsv42ITd9x/0lRWLKJd5T+zF650I7MPTl?=
- =?us-ascii?Q?3RcKg+FCbH0QlFbK3x/UGyCuBfhvoqgKwLqf1gVXyk2aLFr3tD43qXiUWNh3?=
- =?us-ascii?Q?BGgSKKmflNVRZwYs0QaHUMBgeQ0hYYjXJsmmpzFGARpofCl/Ou/qIMGxtUp2?=
- =?us-ascii?Q?7CJzDISGiFPqkw2L0IYlneZKWxwneo2fj1bYNyW05mD5CZCWxHxk6xhFWryD?=
- =?us-ascii?Q?Tm7MNvQmfQpTHYC2yWlZfP/ltjsCMyFZ+3qGWO6BLqgaTGL7WMKbT1RVl07G?=
- =?us-ascii?Q?qkwEHtbMranyJSE5/pdfVyMFLmGTcH42AC6AS7kuWp24V4/i+wvuw05jmWBX?=
- =?us-ascii?Q?lRaNeb7dxUT6Y5BHO9neFc+kJsBgeEpDzBhsfYTH1FPLR8ow0wS8xiR/QBDQ?=
- =?us-ascii?Q?OHjL/O7ucsHXKaiftpNmGaBEiEYPFuprTxd5MDkfUqOXZELY2huMK1LI6R9z?=
- =?us-ascii?Q?NbasUjj/OgjH6u9rB2MsnqBZVcoANBVz3eTyKj0MGYmYWsS7MarI/d5Hvt/J?=
- =?us-ascii?Q?N6gUGbNdpj6ZYJhdXUCBBWYqtL0NcqRvV/mqggfNg8+gkBsRF0/1twq68JnG?=
- =?us-ascii?Q?bb33KsdR0DfyDEonyFFwyBVjh0iMTdvn96ll/gwBIOwM7x+ziQSwpaJehxWU?=
- =?us-ascii?Q?/UQcW+Foq1Weg0EySO95dAIWASkCuEChC+3scplWIPJThezInDWrziTPOSw+?=
- =?us-ascii?Q?BVheZH5kfjXkTjbnjuwV+Csz6QiyZKuK9bHjzGNuzeu9rxlk+bEt4I9APkaq?=
- =?us-ascii?Q?sh+qxqttiqm5KOBhfqJTWbtYsLMdbSx38DIIZ30wwxfNaRZGUP22voVq5ALN?=
- =?us-ascii?Q?sCNnDZY+gZYiHg74bwB5MJ9KOOe2NakJwZUi2TgzDYj0KV+CX5z8/uvUl9cA?=
- =?us-ascii?Q?cKGpQ8NCYImzM0L22fbXuLdZCGqEVFJtpB5hwBhGil1yWahMe6r2OpvtKP4Q?=
- =?us-ascii?Q?v350canIK0c8lx5e7xGkw4cFA7BBKjLZ1iwJglEv7nr+7QmYaSjXyErhbht5?=
- =?us-ascii?Q?/wBhX3dWrprrY7xQth7qAWjrD5bumjx5ZkosSK44Qqwo2NDsDaFwsY/W9q3x?=
- =?us-ascii?Q?SXGpUxR2AV2mq4nsuvxgfnu0XHQT1EjU3IoEYrse6gsi0YzRwgobhXaSH1E9?=
- =?us-ascii?Q?mupWOYxQDT9mj3DtQmP2N+FNwDg/KMX2X9+dR1+sk55nW7Nf/RKOljrxcdlB?=
- =?us-ascii?Q?qQR/iyLMzsmHQ9KkS8Af4LDKZDOpVBUFO61grJYMgWFRf5Nx5bz4ZvzLnhnq?=
- =?us-ascii?Q?ekibC5NANEIxT0mEl6jzSYaDgrXMj+LBRldTfurDvcOkHbZV6o24HNnkgO/I?=
- =?us-ascii?Q?hw9aw8/i8JGFjY8LmCRo+yNYDNR4gDDJU9MBBARJmda6oyMetinSIlS3j6MS?=
- =?us-ascii?Q?mmqLiPc1Qo40iTIKrLioDZHTsPhSurDhrrfjCtWvqG+vRim2QakjSskG7Czh?=
- =?us-ascii?Q?kYYJ8onnGEs5GibfL2aRTxg4iJATR+eEmgD6EmtqQbghD+hQGnI2EUnkiWJc?=
- =?us-ascii?Q?ALsxOg2DslG2ynKByrY=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d676759-f566-4ccf-ee9b-08de2b74d06d
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Nov 2025 16:16:24.7681
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jInun5p0WVDkSxAL32Gg1ijD0OkECQN/rWNWv27SxoR3A+2+eU6dDrCtA8MXATgN2EgNp0KASBn7ogDT2UPqdA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU7PR04MB11140
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 24 Nov 2025 17:23:34 +0100
+Message-Id: <DEH2BAF6NRPG.3S6GKB2PR1465@bootlin.com>
+Cc: "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
+ <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Jonathan Corbet" <corbet@lwn.net>, "Alexey Brodkin"
+ <abrodkin@synopsys.com>, "Phong LE" <ple@baylibre.com>, "Liu Ying"
+ <victor.liu@nxp.com>, "Shawn Guo" <shawnguo@kernel.org>, "Sascha Hauer"
+ <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Adrien
+ Grassein" <adrien.grassein@gmail.com>, "Laurent Pinchart"
+ <laurent.pinchart+renesas@ideasonboard.com>, "Tomi Valkeinen"
+ <tomi.valkeinen+renesas@ideasonboard.com>, "Kieran Bingham"
+ <kieran.bingham+renesas@ideasonboard.com>, "Geert Uytterhoeven"
+ <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Kevin
+ Hilman" <khilman@baylibre.com>, "Jerome Brunet" <jbrunet@baylibre.com>,
+ "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>, "Chun-Kuang Hu"
+ <chunkuang.hu@kernel.org>, "Philipp Zabel" <p.zabel@pengutronix.de>,
+ "Matthias Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno"
+ <angelogioacchino.delregno@collabora.com>, "Anitha Chrisanthus"
+ <anitha.chrisanthus@intel.com>, "Edmund Dea" <edmund.j.dea@intel.com>,
+ "Inki Dae" <inki.dae@samsung.com>, "Seung-Woo Kim"
+ <sw0312.kim@samsung.com>, "Kyungmin Park" <kyungmin.park@samsung.com>,
+ "Krzysztof Kozlowski" <krzk@kernel.org>, "Alim Akhtar"
+ <alim.akhtar@samsung.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>,
+ <linux-renesas-soc@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
+ <linux-mediatek@lists.infradead.org>, <linux-samsung-soc@vger.kernel.org>
+To: "Maxime Ripard" <mripard@kernel.org>, "Louis Chauvet"
+ <louis.chauvet@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH 02/26] drm/bridge: deprecate of_drm_find_bridge()
+X-Mailer: aerc 0.20.1
+References: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com> <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-2-0db98a7fe474@bootlin.com> <66cdbe39-d065-4aa4-86e4-84a38b49c09c@bootlin.com> <x6uch6cyjgbwnmac7fyjxdbi56gnhmilezfjdhqpakbz5hogt3@q72fex3ssh6u>
+In-Reply-To: <x6uch6cyjgbwnmac7fyjxdbi56gnhmilezfjdhqpakbz5hogt3@q72fex3ssh6u>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Nov 24, 2025 at 01:50:27PM +0100, Jean-Michel Hautbois wrote:
-> Fix the DMA error interrupt handler to properly handle errors on all
-> 64 channels. The previous implementation had several issues:
->
-> 1. Returned IRQ_NONE if low channels had no errors, even if high
->    channels did
-> 2. Used direct status assignment instead of fsl_edma_err_chan_handler()
->    for high channels
->
-> Split the error handling into two separate loops for the low (0-31)
-> and high (32-63) channel groups, using for_each_set_bit() for cleaner
-> iteration. Both groups now consistently use fsl_edma_err_chan_handler()
-> for proper error status reporting.
->
-> Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+Hi Maxime,
 
-It is bug fix for high 32 channel. Need fix tags.
+On Mon Nov 24, 2025 at 11:18 AM CET, Maxime Ripard wrote:
+> On Wed, Nov 19, 2025 at 02:28:41PM +0000, Louis Chauvet wrote:
+>> On 11/19/25 13:05, Luca Ceresoli wrote:
+>> > of_drm_find_bridge() does not increment the returned bridge
+>> > refcount. drm_of_find_bridge() is to be used as a replacement.
+>> >
+>> > Suggested-by: Maxime Ripard <mripard@kernel.org>
+>> > Link: https://lore.kernel.org/dri-devel/20250319-stylish-lime-mongoose=
+-0a18ad@houat/
+>> > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>> > ---
+>> >   drivers/gpu/drm/drm_bridge.c | 7 +++++--
+>> >   1 file changed, 5 insertions(+), 2 deletions(-)
+>> >
+>> > diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge=
+.c
+>> > index d98a7b4a83c0..6debbf20aaa8 100644
+>> > --- a/drivers/gpu/drm/drm_bridge.c
+>> > +++ b/drivers/gpu/drm/drm_bridge.c
+>> > @@ -299,7 +299,7 @@ EXPORT_SYMBOL(__devm_drm_bridge_alloc);
+>> >    * @bridge: bridge control structure
+>> >    *
+>> >    * Add the given bridge to the global list of bridges, where they ca=
+n be
+>> > - * found by users via of_drm_find_bridge().
+>> > + * found by users via drm_of_find_bridge().
+>> >    *
+>> >    * The bridge to be added must have been allocated by
+>> >    * devm_drm_bridge_alloc().
+>> > @@ -360,7 +360,7 @@ EXPORT_SYMBOL(devm_drm_bridge_add);
+>> >    * @bridge: bridge control structure
+>> >    *
+>> >    * Remove the given bridge from the global list of registered bridge=
+s, so
+>> > - * it won't be found by users via of_drm_find_bridge(), and add it to=
+ the
+>> > + * it won't be found by users via drm_of_find_bridge(), and add it to=
+ the
+>> >    * lingering bridge list, to keep track of it until its allocated me=
+mory is
+>> >    * eventually freed.
+>> >    */
+>> > @@ -1452,6 +1452,9 @@ EXPORT_SYMBOL(drm_of_find_bridge);
+>> >    *
+>> >    * @np: device node
+>> >    *
+>> > + * This function is deprecated. Use drm_of_find_bridge() instead for =
+proper
+>> > + * refcounting.
+>> > + *
+>>
+>> I think it should be more explicit that the refcounting is not done by t=
+his
+>> function, like:
+>>
+>> 	This function is deprecated. The returned bridge is not refcounted, you
+>> should not use drm_bridge_put(). Use drm_of_find_bridge() instead for pr=
+oper
+>> refcounting.
+>
+> I'd rather say that the callers must take care of the refcounting by
+> themselves but that it's racy, or at least that it *must* not use
+> drm_bridge_put().
 
-> ---
->  drivers/dma/mcf-edma-main.c | 31 ++++++++++++++++---------------
->  1 file changed, 16 insertions(+), 15 deletions(-)
->
-> diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
-> index dd64f50f2b0a70a4664b03c7d6a23e74c9bcd7ae..adae2914c23db3ce9244c0cb8d4208fd71874f76 100644
-> --- a/drivers/dma/mcf-edma-main.c
-> +++ b/drivers/dma/mcf-edma-main.c
-> @@ -12,6 +12,7 @@
->  #include "fsl-edma-common.h"
->
->  #define EDMA_CHANNELS		64
-> +#define EDMA_CHANS_PER_REG	(EDMA_CHANNELS / 2)
-                                ^ align to previous line
+I was rather leaning towards "Deprecated. Convert to drm_of_get_bridge().".
 
-Frank
+But if we want to still support existing (lazy) users, with yours and
+Louis' comments taken into account, what about:
 
->  #define EDMA_MASK_CH(x)		((x) & GENMASK(5, 0))
->
->  static irqreturn_t mcf_edma_tx_handler(int irq, void *dev_id)
-> @@ -42,33 +43,33 @@ static irqreturn_t mcf_edma_err_handler(int irq, void *dev_id)
->  {
->  	struct fsl_edma_engine *mcf_edma = dev_id;
->  	struct edma_regs *regs = &mcf_edma->regs;
-> -	unsigned int err, ch;
-> +	unsigned int ch;
-> +	unsigned long err;
-> +	bool handled = false;
->
-> +	/* Check low 32 channels (0-31) */
->  	err = ioread32(regs->errl);
-> -	if (!err)
-> -		return IRQ_NONE;
-> -
-> -	for (ch = 0; ch < (EDMA_CHANNELS / 2); ch++) {
-> -		if (err & BIT(ch)) {
-> +	if (err) {
-> +		handled = true;
-> +		for_each_set_bit(ch, &err, EDMA_CHANS_PER_REG) {
->  			fsl_edma_disable_request(&mcf_edma->chans[ch]);
->  			iowrite8(EDMA_CERR_CERR(ch), regs->cerr);
->  			fsl_edma_err_chan_handler(&mcf_edma->chans[ch]);
->  		}
->  	}
->
-> +	/* Check high 32 channels (32-63) */
->  	err = ioread32(regs->errh);
-> -	if (!err)
-> -		return IRQ_NONE;
-> -
-> -	for (ch = (EDMA_CHANNELS / 2); ch < EDMA_CHANNELS; ch++) {
-> -		if (err & (BIT(ch - (EDMA_CHANNELS / 2)))) {
-> -			fsl_edma_disable_request(&mcf_edma->chans[ch]);
-> -			iowrite8(EDMA_CERR_CERR(ch), regs->cerr);
-> -			mcf_edma->chans[ch].status = DMA_ERROR;
-> +	if (err) {
-> +		handled = true;
-> +		for_each_set_bit(ch, &err, EDMA_CHANS_PER_REG) {
-> +			fsl_edma_disable_request(&mcf_edma->chans[ch + EDMA_CHANS_PER_REG]);
-> +			iowrite8(EDMA_CERR_CERR(ch + EDMA_CHANS_PER_REG), regs->cerr);
-> +			fsl_edma_err_chan_handler(&mcf_edma->chans[ch + EDMA_CHANS_PER_REG]);
->  		}
->  	}
->
-> -	return IRQ_HANDLED;
-> +	return handled ? IRQ_HANDLED : IRQ_NONE;
->  }
->
->  static int mcf_edma_irq_init(struct platform_device *pdev,
->
-> --
-> 2.39.5
->
+ * This function is deprecated. Convert to of_drm_get_bridge() instead for
+ * proper refcounting.
+ *
+ * The bridge returned by this function is not refcounted. This is
+ * dangerous because the bridge might be deallocated even before the caller
+ * has a chance to use it. To use this function you have to do one of:
+ * - get a reference with drm_bridge_get() as soon as possible to
+ *   minimize the race window, and then drm_bridge_put() when no longer
+ *   using the pointer
+ * - not call drm_bridge_get() or drm_bridge_put() at all, which used to
+ *   be the correct practice before dynamic bridge lifetime was introduced
+ * - again, convert to of_drm_get_bridge(), which is the only safe thing
+ *   to do
+
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
