@@ -1,191 +1,125 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DA82BEFEF
-	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 17:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A922C1581;
+	Mon, 24 Nov 2025 17:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764006199; cv=none; b=jLmvPME0Lv0qcScsxCUKt1Q8NsLpvEXYtoNbtccqCEKfXs2Txfb3P5pwq6v15oIAijktukDpN+58317PV8TyxpZ42O9wB9+8CaWL6X8aE9B4MbTZhqMmi1zVScvDJMd1897C38isR27iWEb5SSX23DidZuUIQ47S2QJnSqUgrFI=
+	t=1764006516; cv=none; b=YbSzFuR5Nb96FeRUSy3YHwiJ6cyyaW/+jL+mf64BwUTn/xSfRG79kmpn9W6PTuAZijAq/frnJI6HtIGBSCsv88k0HJkT+HHQ8+LJeBYsSY3w9MEq/BjOwdtq/lLzW+g/iNnHnrqjx5c2qAjYBrveoBP+J66VqMBPx1OIlC1OQfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764006199; c=relaxed/simple;
-	bh=oMrNiLh2hyNkEhXgmtxJs8MAnZVW7GCY+ljs0X5+OX0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dHvQpNVIURG5cBwmmAiRUQOstb+D8Dow6tS3V5rk9cDKgmR/5IX0ysEFjQHVdAYa86q2shx8l9vGq0FmVRS1NXUJve2MFyVid1LbGYlHlfBPLg/IvorPi6XdxBubwVsOevE1s13pRe09oDZiN457K2b1Fhl8JjQogg9ifjVAgT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1vNaaZ-0000Ib-4x; Mon, 24 Nov 2025 18:42:59 +0100
-Message-ID: <53cb1a8e87f80d8bb1a9b6463077a99b2268e46c.camel@pengutronix.de>
-Subject: Re: [PATCH 2/2] media: verisilicon: Avoid G2 bus error while
- decoding H.264 and HEVC
-From: Lucas Stach <l.stach@pengutronix.de>
-To: ming.qian@oss.nxp.com, linux-media@vger.kernel.org
-Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca, 
- benjamin.gaignard@collabora.com, p.zabel@pengutronix.de, 
- sebastian.fricke@collabora.com, shawnguo@kernel.org,
- ulf.hansson@linaro.org,  s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com,  linux-imx@nxp.com, peng.fan@nxp.com,
- eagle.zhou@nxp.com, imx@lists.linux.dev,  linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org,  linux-arm-kernel@lists.infradead.org
-Date: Mon, 24 Nov 2025 18:42:57 +0100
-In-Reply-To: <20251121081911.1682-2-ming.qian@oss.nxp.com>
-References: <20251121081911.1682-1-ming.qian@oss.nxp.com>
-	 <20251121081911.1682-2-ming.qian@oss.nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1764006516; c=relaxed/simple;
+	bh=ZMfp9MU43gbbsHJVljv1nrWxCaYgeHGHk75SKAtcBEI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n6w7PsYvx0BB4zER2x1vZx3Sd20hoSm8hhoRcacfgMfzsUbuvVgjLZwbmCI1VYDdBAKL4I9hnYQ9/zlnvf3qgQ1qjH3Ci8sgnOvIzNHcgMo0bm1kkBK2hqjpPMGbUP1ZSc7BzeDsLsIcDIh/9wCj+ZzNjBjoBScJfW8NTH+a3Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FOHae+qG; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FOHae+qG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1764006514; x=1795542514;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZMfp9MU43gbbsHJVljv1nrWxCaYgeHGHk75SKAtcBEI=;
+  b=FOHae+qGyjZak79NvA3WQNSE8rB/ipzKJ9QNVk+AIhHnf0XJzMDJRcZ6
+   yrkz90ZKbAW/n3ds9AUjhVuAwo8GNs+5Llx4SebV2YADi/A1fSTfPZk6F
+   t5tZTU2Hwzooa9ySvQPNIuL4D1F3WWnQHDyA9L9w1D3sBkvl3cJrrNhdJ
+   xr9ogkji1TJBYo/e2exFyztnLR7r3RVFoUmB3xdGTsdwszA+9RVEZU5rQ
+   8K7NxFbHpBHd36TJld6DbwwasMguX9BwnlE9eYRe3Txho62XGV+fTcaeq
+   bS2aB2MBZj3KQZzQhAlPpVvU/YYtAFgnd0IfWOy2NVGs/99W8rRYuGWiu
+   Q==;
+X-CSE-ConnectionGUID: BDQ97sL5SOC2G1+4eAnCRw==
+X-CSE-MsgGUID: enuF3zDTRcCCpqfLFFZqSA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11623"; a="66050724"
+X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; 
+   d="scan'208";a="66050724"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2025 09:48:33 -0800
+X-CSE-ConnectionGUID: 7wgYsk0wQyGLB6sMISS2RA==
+X-CSE-MsgGUID: Ce6J77WjRE2IkJQjB3NoxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.20,223,1758610800"; 
+   d="scan'208";a="215736574"
+Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 24 Nov 2025 09:48:30 -0800
+Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vNafr-000000000z7-2axH;
+	Mon, 24 Nov 2025 17:48:27 +0000
+Date: Tue, 25 Nov 2025 01:48:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>,
+	Greg Ungerer <gerg@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 1/3] m68k: coldfire: Mark platform device resource
+ arrays as const
+Message-ID: <202511250103.RMNoU3xH-lkp@intel.com>
+References: <20251124-b4-m5441x-add-rng-support-v3-1-f447251dad27@yoseli.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251124-b4-m5441x-add-rng-support-v3-1-f447251dad27@yoseli.org>
 
-Hi Ming,
+Hi Jean-Michel,
 
-Am Freitag, dem 21.11.2025 um 16:19 +0800 schrieb
-ming.qian@oss.nxp.com:
-> From: Ming Qian <ming.qian@oss.nxp.com>
->=20
-> For the i.MX8MQ platform, there is a hardware limitation: the g1 VPU and
-> g2 VPU cannot decode simultaneously; otherwise, it will cause below bus
-> error and produce corrupted pictures, even led to system hang.
->=20
-> [  110.527986] hantro-vpu 38310000.video-codec: frame decode timed out.
-> [  110.583517] hantro-vpu 38310000.video-codec: bus error detected.
->=20
-> Therefore, it is necessary to ensure that g1 and g2 operate alternately.
-> Then this allows for successful multi-instance decoding of H.264 and HEVC=
-.
->=20
-Is there any more info available on what's actually causing the hang?
-Is there some kind of overflow of the interconnect request capacity?
+kernel test robot noticed the following build warnings:
 
-I'm asking to understand the issue a bit better, as locking both
-decoder instances against each other seems like a pretty big hammer.
+[auto build test WARNING on ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d]
 
-Regards,
-Lucas
+url:    https://github.com/intel-lab-lkp/linux/commits/Jean-Michel-Hautbois/m68k-coldfire-Mark-platform-device-resource-arrays-as-const/20251124-210737
+base:   ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d
+patch link:    https://lore.kernel.org/r/20251124-b4-m5441x-add-rng-support-v3-1-f447251dad27%40yoseli.org
+patch subject: [PATCH v3 1/3] m68k: coldfire: Mark platform device resource arrays as const
+config: m68k-allnoconfig (https://download.01.org/0day-ci/archive/20251125/202511250103.RMNoU3xH-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251125/202511250103.RMNoU3xH-lkp@intel.com/reproduce)
 
-> Fixes: cb5dd5a0fa518 ("media: hantro: Introduce G2/HEVC decoder")
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> ---
->  drivers/media/platform/verisilicon/hantro.h   |  1 +
->  .../media/platform/verisilicon/hantro_drv.c   | 26 +++++++++++++++++++
->  .../media/platform/verisilicon/imx8m_vpu_hw.c |  4 +++
->  3 files changed, 31 insertions(+)
->=20
-> diff --git a/drivers/media/platform/verisilicon/hantro.h b/drivers/media/=
-platform/verisilicon/hantro.h
-> index e0fdc4535b2d..8baebf767d26 100644
-> --- a/drivers/media/platform/verisilicon/hantro.h
-> +++ b/drivers/media/platform/verisilicon/hantro.h
-> @@ -101,6 +101,7 @@ struct hantro_variant {
->  	unsigned int double_buffer : 1;
->  	unsigned int legacy_regs : 1;
->  	unsigned int late_postproc : 1;
-> +	atomic_t *shared_resource;
->  };
-> =20
->  /**
-> diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/me=
-dia/platform/verisilicon/hantro_drv.c
-> index 60b95b5d8565..036ce43c9359 100644
-> --- a/drivers/media/platform/verisilicon/hantro_drv.c
-> +++ b/drivers/media/platform/verisilicon/hantro_drv.c
-> @@ -19,6 +19,7 @@
->  #include <linux/slab.h>
->  #include <linux/videodev2.h>
->  #include <linux/workqueue.h>
-> +#include <linux/iopoll.h>
->  #include <media/v4l2-event.h>
->  #include <media/v4l2-mem2mem.h>
->  #include <media/videobuf2-core.h>
-> @@ -93,6 +94,9 @@ static void hantro_job_finish(struct hantro_dev *vpu,
-> =20
->  	clk_bulk_disable(vpu->variant->num_clocks, vpu->clocks);
-> =20
-> +	if (vpu->variant->shared_resource)
-> +		atomic_cmpxchg(vpu->variant->shared_resource, 0, 1);
-> +
->  	hantro_job_finish_no_pm(vpu, ctx, result);
->  }
-> =20
-> @@ -166,12 +170,34 @@ void hantro_end_prepare_run(struct hantro_ctx *ctx)
->  			      msecs_to_jiffies(2000));
->  }
-> =20
-> +static int hantro_wait_shared_resource(struct hantro_dev *vpu)
-> +{
-> +	u32 data;
-> +	int ret;
-> +
-> +	if (!vpu->variant->shared_resource)
-> +		return 0;
-> +
-> +	ret =3D read_poll_timeout(atomic_cmpxchg, data, data, 10, 300 * NSEC_PE=
-R_MSEC, false,
-> +				vpu->variant->shared_resource, 1, 0);
-> +	if (ret) {
-> +		dev_err(vpu->dev, "Failed to wait shared resource\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  static void device_run(void *priv)
->  {
->  	struct hantro_ctx *ctx =3D priv;
->  	struct vb2_v4l2_buffer *src, *dst;
->  	int ret;
-> =20
-> +	ret =3D hantro_wait_shared_resource(ctx->dev);
-> +	if (ret < 0)
-> +		goto err_cancel_job;
-> +
->  	src =3D hantro_get_src_buf(ctx);
->  	dst =3D hantro_get_dst_buf(ctx);
-> =20
-> diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/=
-media/platform/verisilicon/imx8m_vpu_hw.c
-> index 5be0e2e76882..1b3a0bfbf890 100644
-> --- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-> +++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-> @@ -324,6 +324,8 @@ static const char * const imx8mq_reg_names[] =3D { "g=
-1", "g2", "ctrl" };
->  static const char * const imx8mq_g1_clk_names[] =3D { "g1" };
->  static const char * const imx8mq_g2_clk_names[] =3D { "g2" };
-> =20
-> +static atomic_t imx8mq_shared_resource =3D ATOMIC_INIT(1);
-> +
->  const struct hantro_variant imx8mq_vpu_variant =3D {
->  	.dec_fmts =3D imx8m_vpu_dec_fmts,
->  	.num_dec_fmts =3D ARRAY_SIZE(imx8m_vpu_dec_fmts),
-> @@ -356,6 +358,7 @@ const struct hantro_variant imx8mq_vpu_g1_variant =3D=
- {
->  	.num_irqs =3D ARRAY_SIZE(imx8mq_irqs),
->  	.clk_names =3D imx8mq_g1_clk_names,
->  	.num_clocks =3D ARRAY_SIZE(imx8mq_g1_clk_names),
-> +	.shared_resource =3D &imx8mq_shared_resource,
->  };
-> =20
->  const struct hantro_variant imx8mq_vpu_g2_variant =3D {
-> @@ -371,6 +374,7 @@ const struct hantro_variant imx8mq_vpu_g2_variant =3D=
- {
->  	.num_irqs =3D ARRAY_SIZE(imx8mq_g2_irqs),
->  	.clk_names =3D imx8mq_g2_clk_names,
->  	.num_clocks =3D ARRAY_SIZE(imx8mq_g2_clk_names),
-> +	.shared_resource =3D &imx8mq_shared_resource,
->  };
-> =20
->  const struct hantro_variant imx8mm_vpu_g1_variant =3D {
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511250103.RMNoU3xH-lkp@intel.com/
 
+All warnings (new ones prefixed by >>):
+
+>> arch/m68k/coldfire/device.c:141:35: warning: initialization discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+     141 |         .resource               = mcf_fec0_resources,
+         |                                   ^~~~~~~~~~~~~~~~~~
+
+
+vim +/const +141 arch/m68k/coldfire/device.c
+
+b7ce7f0d0efc1a arch/m68k/platform/coldfire/device.c Greg Ungerer      2011-12-24  136  
+b7ce7f0d0efc1a arch/m68k/platform/coldfire/device.c Greg Ungerer      2011-12-24  137  static struct platform_device mcf_fec0 = {
+bea8bcb12da09b arch/m68k/platform/coldfire/device.c Steven King       2012-06-06  138  	.name			= FEC_NAME,
+b7ce7f0d0efc1a arch/m68k/platform/coldfire/device.c Greg Ungerer      2011-12-24  139  	.id			= 0,
+b7ce7f0d0efc1a arch/m68k/platform/coldfire/device.c Greg Ungerer      2011-12-24  140  	.num_resources		= ARRAY_SIZE(mcf_fec0_resources),
+b7ce7f0d0efc1a arch/m68k/platform/coldfire/device.c Greg Ungerer      2011-12-24 @141  	.resource		= mcf_fec0_resources,
+f61e64310b7573 arch/m68k/coldfire/device.c          Greg Ungerer      2018-03-28  142  	.dev = {
+f61e64310b7573 arch/m68k/coldfire/device.c          Greg Ungerer      2018-03-28  143  		.dma_mask		= &mcf_fec0.dev.coherent_dma_mask,
+f61e64310b7573 arch/m68k/coldfire/device.c          Greg Ungerer      2018-03-28  144  		.coherent_dma_mask	= DMA_BIT_MASK(32),
+f61e64310b7573 arch/m68k/coldfire/device.c          Greg Ungerer      2018-03-28  145  		.platform_data		= FEC_PDATA,
+f61e64310b7573 arch/m68k/coldfire/device.c          Greg Ungerer      2018-03-28  146  	}
+b7ce7f0d0efc1a arch/m68k/platform/coldfire/device.c Greg Ungerer      2011-12-24  147  };
+63a24cf8cc330e arch/m68k/coldfire/device.c          Antonio Quartulli 2024-10-29  148  #endif /* MCFFEC_BASE0 */
+b7ce7f0d0efc1a arch/m68k/platform/coldfire/device.c Greg Ungerer      2011-12-24  149  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
