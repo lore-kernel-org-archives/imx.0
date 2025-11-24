@@ -1,132 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4E526F478;
-	Mon, 24 Nov 2025 07:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725C229B228
+	for <imx@lists.linux.dev>; Mon, 24 Nov 2025 08:43:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763968018; cv=none; b=UhnFEzR7X43cwZSX9Qip00rX0DTwYS9o3oYdIYr2XRS58Caxkzb7WTNie4szHvzIzJDRhuRnlCLVUHIiNtlU6BkkiBTmelaUM7N5Cstyjp6JW80ugu8OIgAf8VbKoiUb4CQIDxdruXCpu6gtBOo8Pe2U4KSrqu9m78tc0nEbRSU=
+	t=1763973834; cv=none; b=fY6IoF6coNnimHgmldM/SjHMBdqnFC6FU5MNuL1ijsQli6feT6gKiFRVj/18KOx9c+CY2sWWNcrMzB7QW7s3i6PZ0EV4HM5GqScqW5Fm9NDiUbjjLLizY19PcmHW+wT4JK/tsF0/Xb4B6U9cQzC6upvYT6kp2ZGRlw9oGY4Hm8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763968018; c=relaxed/simple;
-	bh=mAJ0S82zHi/qM+0C5nC7pb5pywLSPi62c7cno0ajWso=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ARbMifcrXqvolqhtb8IpZOTnjCtdrH2hwiyUg8RIOxm/Cjvj3igsVJ05jeoUVsgXFJK4MzlqJR8QeLsd3d0Of0ozxtdEqpFjEavWIiuxQYiWKANbV89Y8J2oqi6bJMK/a52xLq2UXZEi34zrD9sAOL1DPLxOMeo/LHWnjT9/V/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e1yY+Da0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1763973834; c=relaxed/simple;
+	bh=Kws+6hHqLaE358GJ8oQhHsOD8lXagFw7+j3g/9Ifp28=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E75sBnB462I6sVFFzEHypjM9D3G874zsmbm/j620e2PqJoNli57WJtsTT1qgS6DGvFTyBYu+V/sMTviZ99xNAf0OTjl2lesVeYYV7nrJefIjmmhAKQtVzPOzdnnjVc8+DH0vp0/VPXLpN2zsrSSMIuLXUgNm1HQYDVgrfRCPRLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=WoPfX9Uk; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e1yY+Da0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01625C4CEF1;
-	Mon, 24 Nov 2025 07:06:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763968018;
-	bh=mAJ0S82zHi/qM+0C5nC7pb5pywLSPi62c7cno0ajWso=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=e1yY+Da0C3VUWDBOuPm6QFkeq2hnPG2yJh4Vlb9LwfM5q/qVfcvRz0e5ObKG2of4o
-	 j5T6IByhENSMTFV8zyGFIn5F/cAwc75WhUNT5r2TW0QRYwWzLS9i80s1yQJgHdIOQO
-	 BN7I8oWaI6sGqwrXJ+JPHiP7GD6QI8xWoniDway+Z0VJ5+O9zGcqn13TMhB4u7Sp/E
-	 akWRbOE5KmW60H6WSbKgSQ+Thfg/KynIAhkHD50jw4zgSRdQD01GrYo07XPPZ+Yo0O
-	 EXWPg3Rtwdeypaz2I+KhKF9ACNHrjponvVLng6pDvCuCpdd6pmUa+xdIlb66l07zlP
-	 FYWVcyJur7WmQ==
-Message-ID: <7eeed20c-5bad-40bd-95c0-89d140d92ae1@kernel.org>
-Date: Mon, 24 Nov 2025 08:06:51 +0100
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="WoPfX9Uk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=lsszvakFMADLxt1ailSrb4YFGJxrr+DQEL8j+TCc3fo=; b=WoPfX9Uk8qnphiu8EMJ3Wlfh16
+	fPLyXjYCpwt/dCPT6kNlprnhYXeKIRcWI5lhGA5SPVpmDY4zIb+SQNvHNwTY7q1amDotdwNRZhwxN
+	XRWp2OiV7dOsu6nawrJm5uDsuE/Qg+77SskyUXygzsRmKeFn1MIdaJ3clWI9SMhZovhqHL7kUzk9p
+	WfNK2S01Df+Xmvd4kwQQSpM6azjYTOP6sFMdetNhUpmSTj7HUF2mnA+LyLSNsvIUdWY1bxfsjEcRB
+	ZFdOIpcz85N32G0iv8F/sSNWBrTGJI99SHb2i9oKctm/ypWRfLEP5uKWETLRfla8Tr1hJn6MGpEQh
+	IgHOebmA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:40182)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vNSAl-000000001TY-3flY;
+	Mon, 24 Nov 2025 08:43:47 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vNSAj-0000000088I-3hgz;
+	Mon, 24 Nov 2025 08:43:45 +0000
+Date: Mon, 24 Nov 2025 08:43:45 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: Re: [PATCH] arm64: dts: imx8mp-debix-model-a: Disable EEE for 1000T
+Message-ID: <aSQawUazSYykHeT4@shell.armlinux.org.uk>
+References: <aRW6CxvmIEqkMrfA@shell.armlinux.org.uk>
+ <20251114222654.GI30434@pendragon.ideasonboard.com>
+ <PAXPR04MB8510E17B2B8C612DD02175CE88D6A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+ <20251122072246.GA16239@pendragon.ideasonboard.com>
+ <aSGJHV9Sga2kBIBX@shell.armlinux.org.uk>
+ <20251123053802.GA25329@pendragon.ideasonboard.com>
+ <aSLLMMNkHnfwyO0y@shell.armlinux.org.uk>
+ <20251123152356.GF15447@pendragon.ideasonboard.com>
+ <aSNAP9G4cwRKvxng@shell.armlinux.org.uk>
+ <20251124001214.GI15447@pendragon.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/2] arm64: dts: add support for NXP i.MX8MP FRDM board
-To: Rogerio Pimentel <rpimentel.silva@gmail.com>, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de
-Cc: kernel@pengutronix.de, festevam@gmail.com,
- alexander.stein@ew.tq-group.com, dario.binacchi@amarulasolutions.com,
- marex@denx.de, Markus.Niebel@tq-group.com, y.moog@phytec.de,
- joao.goncalves@toradex.com, frieder.schrempf@kontron.de,
- josua@solid-run.com, francesco.dolcini@toradex.com, primoz.fiser@norik.com,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Xiaofeng Wei <xiaofeng.wei@nxp.com>
-References: <20251123181444.266030-1-rpimentel.silva@gmail.com>
- <20251123181444.266030-2-rpimentel.silva@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251123181444.266030-2-rpimentel.silva@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251124001214.GI15447@pendragon.ideasonboard.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 23/11/2025 19:14, Rogerio Pimentel wrote:
-> The FRDM-i.MX8MP is an NXP development platform based on the i.MX8M Plus
-> SoC, featuring a quad Cortex-A53, Cortex-M7 co-processor, 4GB LPDDR4,
-> 32GB eMMC, Wi-Fi 6/Bluetooth 5.4/802.15.4 tri-radio, Ethernet, HDMI/MIPI
-> display interfaces, camera connectors, and standard expansion headers.
+On Mon, Nov 24, 2025 at 09:12:14AM +0900, Laurent Pinchart wrote:
+> On Sun, Nov 23, 2025 at 05:11:27PM +0000, Russell King (Oracle) wrote:
+> > On Mon, Nov 24, 2025 at 12:23:56AM +0900, Laurent Pinchart wrote:
+> > > You're right. I've checked replied to the patch with the following
+> > > numbers.
+> > > 
+> > > 100TX link, eee-broken-* set: 7000 interrupts
+> > > 1000T link, eee-broken-* set: 2711 interrupts
+> > > 100TX link, eee-broken-* unset: 9450 interrupts
+> > > 1000T link, eee-broken-* unset: 6066 interrupts
+> > 
+> > Sadly, I think this means for iMX8MP, the correct answer is to disable
+> > EEE completely. What I was thinking when I brought this up is as follows
+> > and dwmac-imx.c can set STMMAC_FLAG_EEE_DISABLE for iMX8MP to prevent
+> > the use of EEE.
 > 
-> Based on the device tree found in the NXP repository at github
-> https://github.com/nxp-imx-support/meta-imx-frdm and on imx8mp-evk
-> board kernel mainline device tree.
-> 
-> This is a basic device tree supporting:
-> 
->  - Quad Cortex-A53
->  - 4GB LPDDR4 DRAM
->  - PCA9450C PMIC with regulators
->  - Two NXP PCAL6416 GPIO expanders
->  - RGB LEDs via GPIO expander
->  - I2C1, I2C2, I2C3 controllers
->  - UART2 (console) and UART3 (with RTS/CTS)
->  - USDHC3 (8-bit eMMC)
->  - SNVS power key (onboard power button)
-> 
-> Co-developed-by: Xiaofeng Wei <xiaofeng.wei@nxp.com>
-> Signed-off-by: Xiaofeng Wei <xiaofeng.wei@nxp.com>
-> Signed-off-by: Rogerio Pimentel <rpimentel.silva@gmail.com>
-> ---
+> I suppose there's no way to disable EEE in the RX path while keeping it
+> enabled in the TX path ?
 
+Sadly not, sorry.
 
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
-
-Best regards,
-Krzysztof
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
