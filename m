@@ -1,385 +1,320 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011068.outbound.protection.outlook.com [52.101.65.68])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011024.outbound.protection.outlook.com [52.101.70.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC6C1A00F0
-	for <imx@lists.linux.dev>; Tue, 25 Nov 2025 02:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8E519D8A8
+	for <imx@lists.linux.dev>; Tue, 25 Nov 2025 02:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.24
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764037470; cv=fail; b=U6cHoMMw+BwgH1u4ju6Ykt4giFi53onDo9hxmbuWYTptjWUCp3XqWYLEZor7DEXx8VT7LOYHML5qED2T/fuF2hz5x4ewbqK/UNSBAOY38xdT/DdU/qL8rl4+cY6s5xGPPtLFoQ7IMokynucBL1MJBf8s6kr3GwYlm3tARgE8dEU=
+	t=1764038401; cv=fail; b=ccqc4wNC3ApD30uuhflH42/oitFEFJ3YLciDn1gVx4d3gFDhPapuJOwQTbh1y+rarBN76T8QGQENOx3XsCGAXBduSy1J+fu7UeTUqrx3gf5zfmiIYSdmdQR0o1AvvBzSwwuKLfvrm0ujiCNlEhcfavE/cdIG8EIwxfqKxuCYw8Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764037470; c=relaxed/simple;
-	bh=mcRIYlcRzlYfSJObyK5zMWOi73xg+EzC8Vd7+6zubXY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=sANxV3FanTS3ClAHM7FjSB7EA+qPgWKDQI4/c5FDFDbcDp+glXI2TZ7Vmo6KDS5kDGLAdLrOZbEIOUzKdX//J3jrj+1z2Z15jdRmKOKUg/xUkACdcTHGfnwOjVtKNfh+6j0A1l3J+Nfs+0PO2Ik5LKtbXKzpJvf/Z97fYQj2mCU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hQn2cZHZ; arc=fail smtp.client-ip=52.101.65.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1764038401; c=relaxed/simple;
+	bh=JtQL5B8QKmLr2pQGTJM2hXpXk1xJIQKUMPPJ0csWoM0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=E70vC9Bkc0G/vSUPRo8lger9BgscN5YhspE+32LISpg7CwCtDaMimhixja6VTiBqubqgXCALcDwpjIXbB7gpVoyCTSjC7OApRuGMlMrgbKSoEYbYudGcs7X7tICHh3dI8oXGwjINWojej61PQALk96UELNNK+3T41DQmwa1CNDw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=O7Y6Q6ZT; arc=fail smtp.client-ip=52.101.70.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hQn2cZHZ"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="O7Y6Q6ZT"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uEMXrHFBCx4zHK55EPlHM6AuYogoUBPviOEdzc2r+hJsVlqhbIS6hYrEh/kGZNLtZ2NrDZOqBJwCzRNUONdVbCrjafkXzyWrDmHBP2iowR+L5QydcK9IYFGuwfN4pn2lkav/o0XTLGKn9/NtCSgZ1x/smk4cbw9Bza670KTZLpI1n/WAkv23F5zVqkKnOdYmbaEfK7iFs9o6rF7b0MgjViaeq2FjQboF1OodaMqXwFBY79x4mt4BvzYpT2J1OuXycatSNue22GYQ9T3K9xh17i7G4cylH94I3eRbspbRGOVroRIrz6DzEAXndI6cjWMAmSt50Tj4YSxm018G1Gfkog==
+ b=BLD/pGli7Y9BJ7SzJh+VCu0Y+7+F8mC96CprTMy10DQLAPnIgHTxRlrPY2YCnngJLH97I/NDDo+SAaakra+UyPj8rEWrZ6ljpztpQvyybw4jkQXHjzdBOeY5v3t/kjc9Y42/+22y2fg2gbTCbP77eIEmOEmOY25zJwHz+Hnl+LWnDANqRm+ZJKeBQTGw9//EoL1Fl9gz/aOl/pIptqB3GSk6Af2XWhQC7hzpLhHXvc5qRIyy+ozr7t8iKBf2pDbYd1r1V0Dg6eONguT/jy+BDAIgHoBH02WKqtbNbLoRhMHZGuwHUPOkW1LCTfmVyhqzpW45x9yJe9WWNf98m5VJyQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v3f3nXLDIzcdvwKeTYCSstBZ4dqo0GsnKlXaGQsrrR8=;
- b=xhm0Mwem2Aclm9fUVlPfc0sQ7TL+nKKekwdyi05Nii1s1QH5yqlEpS4/f2HmWpD8UVZ0mkfclbXcdH1OXzB/ICuM9lrm3q2GMQIjGncZnZQXqhDi7oerT7DWuVRS/lEh6b4TQ1hRGVxHYO7KMtwSVds+OWJDWyerqhMMNQzWLRleEygnz0jIZjkecmMjtwSd3sgqVd1pypv3YPrcMbweVFTK16XiBQ4AVhYFukvi70QyEvuVAdD47lnIqM5prORpVNezV2DkWidmVeMLcoO+yOfGKWgA31uB/XCODtueV7bUamAwOk4ATnNE4DdNZbQVWkXNHjzsxc6eqgMJpPAWug==
+ bh=CGR7iRSvfk3qMO7SlipsNFOL5+ltXot+A9qlTVivCaA=;
+ b=U33aNk3td6d+fHKPjeJwQX1rwfQSTY+XvyZwSw3oAlh1DzfB0iq8c1Gj6YHkKgn0atXpMOSEkIQiaRDNucEHLEyyekpsbE0GFxDKSKj74bVZVh+mdOfr4pjzAilAyOuIlvPVy86fTf/XamwGzDrUWlhEfLFGqnHea2JvNWzuDnpjqkvgxHVpLhwNrd3Ko22Zi2HQhOOyDNehhwB8gYkCfuUtsoy3+jO50nwPA2zJemYK+fNLKa+B5qxwKeacFNrS9v8TKRF8tBjXNnGw1gJdK1hlT0mBcmHIrg/DCMTigH8lAQ5DkBW6c2YJ2iN7EkBOlVI0LeJreekjAlgH4Q9xtg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=v3f3nXLDIzcdvwKeTYCSstBZ4dqo0GsnKlXaGQsrrR8=;
- b=hQn2cZHZp97527jmgII0OSIeRaKz59YPDE7DFozos9s9NaCuP4GQIIcLMRrGLJnMB3VM375a3QOYRhbChosTV1XEh+atOkEj3PnRVlDn49RAO9Ikl5KEl4rMg5UmIZSLUbMWIrfrXK1PaAiiV9EgJGWiU1d6BZwUyioPUER0wwrwVsAEVPgqJEQNXFypX6O7SMf+qzMXdrY0yyfhjB7y/H35xnYfp6jPT0VUPeoeiY3hz5lHyF2g+iFKEQ/ronarTwQ6G7qnfxBJ7n78xPLH8MvMOt3UAdVFw+ubrtLMSXQJ9wBeiPoZd3+S4CQDmAw1kPNSL8DP9D2csPak1PyBdA==
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
- by AS8PR04MB8449.eurprd04.prod.outlook.com (2603:10a6:20b:407::10) with
+ bh=CGR7iRSvfk3qMO7SlipsNFOL5+ltXot+A9qlTVivCaA=;
+ b=O7Y6Q6ZT9Cm+O9YnPr5OHFjfi1fCdAHNB5FX1VIwWluSW42u9f5lqa+atLCOgzugwQ5EfBr0XAVYXuH1c8m/iLfUXtArTEbJfe9C5YolQwp2oeaubOu/Jk5x2zxaAqZu+TBmMAobkZ8mOIaGfGDBWs0cA1nQ0+DUFofgv4OiG8MaiOHcUr4o9iF6W+6S+yYY9z92GEEezfOBTBLVqUq/eGWTi/S/sD9EA5Ro8E5f6VoTj5aNRN7Vy4ThOWthgniMI92CxeUY4YjL39OnEH946ktZbJscbiQ3rvnarTrm98KVKzClAJpEpQgyHav3b9H6cN33l8fmC9rNTaVxO51HxQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
+ by PA4PR04MB7664.eurprd04.prod.outlook.com (2603:10a6:102:f1::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.11; Tue, 25 Nov
- 2025 02:24:23 +0000
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::868b:3935:5e0f:6a33]) by DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::868b:3935:5e0f:6a33%6]) with mapi id 15.20.9343.016; Tue, 25 Nov 2025
- 02:24:23 +0000
-From: Bough Chen <haibo.chen@nxp.com>
-To: Frank Li <frank.li@nxp.com>
-CC: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, "linux-spi@vger.kernel.org"
-	<linux-spi@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v5 2/2] spi: add driver for NXP XSPI controller
-Thread-Topic: [PATCH v5 2/2] spi: add driver for NXP XSPI controller
-Thread-Index: AQHcXSQyemrLaYsQdkihJDyose79m7UCCoWAgACf4VA=
-Date: Tue, 25 Nov 2025 02:24:23 +0000
-Message-ID:
- <DU0PR04MB9496647CDAB3D15A5245693390D1A@DU0PR04MB9496.eurprd04.prod.outlook.com>
-References: <20251124-xspi-v5-0-6fd03a6cb766@nxp.com>
- <20251124-xspi-v5-2-6fd03a6cb766@nxp.com>
- <aSSMxU6iNdAGheSc@lizhi-Precision-Tower-5810>
-In-Reply-To: <aSSMxU6iNdAGheSc@lizhi-Precision-Tower-5810>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9496:EE_|AS8PR04MB8449:EE_
-x-ms-office365-filtering-correlation-id: b17be3b5-86c6-4646-553c-08de2bc9bf85
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|7416014|19092799006|366016|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?iY1VCHSt6k7nl8VU8yucSSxYh34gmwWyzgGK0Sj4b+UTcUD73B05fRYVuLsA?=
- =?us-ascii?Q?4o6R1S0cBYyvVzYr/T+7EtUmW0vUUT0mf9DCONxHWzvgST4MO6TafeBPUEhc?=
- =?us-ascii?Q?uY4M+s0ijvSmxASfaGbir0p7RzpDQXU82eg2+Rt4IHqUW1KLhsqINDzgNnZb?=
- =?us-ascii?Q?GKkdE57gbkwYP1IG70CZlefgp8CB58GqLp1ovyjU66ogoh+CXls/BUOrHHU9?=
- =?us-ascii?Q?+R7x8g37Frzs90HD7K7rSMNg7OIOcZICh2GkO27xD04RKWO+STQQrXDdM5eU?=
- =?us-ascii?Q?zwKs13+2pjJZ9DUso42ybspQfF6ZCgsEUorPUqntZGCX/rRV1b4Jv7Wm8eZ5?=
- =?us-ascii?Q?LzT/Nf4Od9xWngFWlE7nMO4hVv+nHcyOELxMTPoQUDZiXGMcupCOQu/anCiY?=
- =?us-ascii?Q?NqLnEHNgkkDKUNOVEnYxWtpg23LonuO+NMKnmUuddGXJJdqXM3CLv+3h4UMp?=
- =?us-ascii?Q?6g1D6Kykq5Di/YMXTtP7DvsFbmjRNW2PivP7j5gAU7WhkeBThDCsKczGqPDJ?=
- =?us-ascii?Q?3jncR9KI6BeCrELocsUgSF6k6MmRRI6vZ4YMCTly6fiHjuGx/IZkunZhjKVX?=
- =?us-ascii?Q?+uMqQwelMz7P+DrYF6k5Un7LBPZg6Wo/5hGm9xV9Xl1SqeyBxoCebqUmz3+s?=
- =?us-ascii?Q?6K2Y5uAJ91YrP0zq9FfsbxLdgHe4gLRHNqp4aHv/p7t97rHKuOhB3P/SKcSB?=
- =?us-ascii?Q?3N8hWB9CUp063YQQ/6MihMUgdJy0/dvxQ61FR150vtwGKYm/Z3QiMYsB7jX7?=
- =?us-ascii?Q?/+I7AOybfve/hvsTpZ5K6skmIaFM7/sYLnr9X6NVHAGWyJi5QRch3pDFZr7+?=
- =?us-ascii?Q?+ZI7AOtLorm387EWPrpjKFvbs0qJybwOpHpKyxLoO8ekXKf1PD0nC9ykFWLY?=
- =?us-ascii?Q?r6ALvm4O9NLCkFMKdvOYekZHnGRjiOdndb06rH6Ip2PrQZ5QcRKjIvWyFcJY?=
- =?us-ascii?Q?NuNaPnUmQCOt0cvKBA5Qowwv/m37ToVzBS/WBdfJGMO0g7nY2g7BODKoW6x7?=
- =?us-ascii?Q?z2vwhWU1FN70rQbUtf+0z6nQ4I1j9RtEIGmTlR7q6hYMYIr/IA4NTAJDLe0F?=
- =?us-ascii?Q?8NRGziw0lK2WSvUzK/4oAGt0MP/2a8SjpzcWVVwNArI3jfENQykVp94tqd7/?=
- =?us-ascii?Q?PFo4h/1BM1Ty91/1G2OD3EOeCeMrswT7vI5fW0HiGyuf7bjE+AETT7F479Aj?=
- =?us-ascii?Q?OIyvw229Uo4Ff99fnSZ+xQRUJaA/92tc5LGGsFEacvkSHuXxK8fsOHheN0Cp?=
- =?us-ascii?Q?LrAMJ3puoCziwCHZr1njUAj0tf0JjdRIDGSy7D45iUGsY0e+fAB9LyX9KFQu?=
- =?us-ascii?Q?iP3RVV+HtMoMexibR2i8N45aKHSFOUesc8+BhIWQBxkOMSKgumNyhLaY/RK8?=
- =?us-ascii?Q?+TneygooDjMlL+ELI/iS25q2k+qjQzFUAAqzOwEVj6yRET31jplLAv3+KGEo?=
- =?us-ascii?Q?20FCjdtDhvUq6OiOSDdIwyQuIL3Lp860/rC6j2jxvCZBabemvfCrmV1zU7Or?=
- =?us-ascii?Q?QB7f12gOsagkfLpP5kKUYN+wXnyyWiUHBNsb?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9496.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(19092799006)(366016)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?wUtT5b5KbNeqaffHVojLBc7EFg2z4K+0CDXfzgsjWjb8aAK6PMJPFx+u1zOo?=
- =?us-ascii?Q?zswRlacyt/QxH/54cevef2O/KLRHH1NSMe4FrbYAmdcmzaJC3Q8oFUnyKcWn?=
- =?us-ascii?Q?N5VTC9fb/Q5P7CafZRmiSKhhzIJDnMAqSaeXkHmnYI++RoR8aI5T2ywEW9QL?=
- =?us-ascii?Q?9eXdkpFT9ni8v/Q6GPBOFzQTcrLTB/EIfoS6vWQlNQ8lNqDhiZnCIuy3HsWs?=
- =?us-ascii?Q?VbRQZ8vrI5ZSZ4SpJd9czI63ISZ1bSopaJT0Xw+dW8AWIEjmh1AJBH6t9fOF?=
- =?us-ascii?Q?Iv0beuWZIMLldrC/w3gOCG57JrjVvRyFaRZAFI7EcJXngTuIwnndutgwme0x?=
- =?us-ascii?Q?kfySs9zS7Z2Lwvm0WGWAJpDZ5KepfWrf2Gl0NGm1iqWr2vw5ZcS7KDEDYqNb?=
- =?us-ascii?Q?XuyOwb4aI0cxAO7G4DMIIxdX6L2zNBhdCVKQETE5kfFx5kWHrs9bLJreX/e9?=
- =?us-ascii?Q?wA52Z5dLcsLkpOXdwfz+6+ED5kl/uIdeY6m4qz97rOUWcK3VFXxdJW+fgekE?=
- =?us-ascii?Q?99mw+YbumG6WVkgVBcQyyur6N0adOb4b5IZk5oFoVwpJ/dtO4ixRJI79/X83?=
- =?us-ascii?Q?nbIhsf0abEeZ81N2HL2N20z8s4ZQ0DXWa+SBpoqOxb/l/e86TKGmHJ+SOz9M?=
- =?us-ascii?Q?r9y9XgRtDw2av0OtOf3rfYIQahYK46ce8fDcDl3yh26lzI3aVOIwDptnPS/v?=
- =?us-ascii?Q?nnullPpqBMGe3eu8PglKjvV5mSc/psRS5o2yJBf+sPJye25gENRipeE8bZGN?=
- =?us-ascii?Q?P8hD+u34l7Rfiymduj8Ub2ERO4QflWi0aYe8kkkKf3n8WLQHUtYNdLt6/tBM?=
- =?us-ascii?Q?SV9O/mV30EA8VEPLkIlFIH04pS8qXWlla+cBJb1/g1yvGb3nNi1JinGagrSa?=
- =?us-ascii?Q?ahiCplOANcNC3VaYANqwZoty/imZRQsnN6xLzfBpA1jU2r1FoZjK5jN3+1cq?=
- =?us-ascii?Q?WFSpgt18teemsLSpzeS4jsjiJANo3MxFftud697GXGCYYpd0IVrb+IjVxNDK?=
- =?us-ascii?Q?DlmvW7ovBaTECDPAgW6WPfev0968MG2gD5lEURSykYk/EWrzh3Pq7QoYUKJL?=
- =?us-ascii?Q?iIun8NTy9Lwb6D5/L2U5nGC7PAZ/sb6z/HtuMEXUMbFNrH7beYa5tY3nrfvd?=
- =?us-ascii?Q?akQM0iT1nTdJ+t5FN7e1x2UNANMb/mZpAXtTkOE8h8UGPi63aPcEHgGm3257?=
- =?us-ascii?Q?a0BbU2n2brb4aaDeDtnDqjAgJpybfIBtfTHA9itzC1gfWqq4v0aYUlwVKF1f?=
- =?us-ascii?Q?rRnVlQYsOI6+4rUVrDuktEPs3PKECo6dpcylpOf5O3NFvNXMa80qbL4lZMRx?=
- =?us-ascii?Q?BZDTFIkcrQkgZvWc4GYxwsbcpsViAXnJVtUA08yqPPKJ4o8X+wr90T4dyUdR?=
- =?us-ascii?Q?iNFsW7gPe0LI0fS2pbaJj3AgUtR0uXkfLAaaAL+qgS5q+0we9ZKMsmoRiF0s?=
- =?us-ascii?Q?N8tU2exwA4k9ByVAsuWHo/oSiqcnL1U9DiAruFvnxYApA4FPg0x5cFFNC2Cl?=
- =?us-ascii?Q?qwtuPAV/R2MxhIGqJtM2E/nYwJX2hnIjQ3UIBSAjJHD6X56wDU5Oy79Gwho5?=
- =?us-ascii?Q?R+kJZipLQDHNfMeILcM=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.18; Tue, 25 Nov
+ 2025 02:39:53 +0000
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87%4]) with mapi id 15.20.9343.016; Tue, 25 Nov 2025
+ 02:39:51 +0000
+Message-ID: <7ceb9424-22d0-467f-b42c-33f0a903f5d9@oss.nxp.com>
+Date: Tue, 25 Nov 2025 10:39:41 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] media: verisilicon: Avoid G2 bus error while decoding
+ H.264 and HEVC
+To: Nicolas Dufresne <nicolas@ndufresne.ca>, Frank Li <Frank.li@nxp.com>
+Cc: linux-media@vger.kernel.org, mchehab@kernel.org,
+ hverkuil-cisco@xs4all.nl, benjamin.gaignard@collabora.com,
+ p.zabel@pengutronix.de, sebastian.fricke@collabora.com, shawnguo@kernel.org,
+ ulf.hansson@linaro.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, linux-imx@nxp.com, l.stach@pengutronix.de,
+ peng.fan@nxp.com, eagle.zhou@nxp.com, imx@lists.linux.dev,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20251121081911.1682-1-ming.qian@oss.nxp.com>
+ <20251121081911.1682-2-ming.qian@oss.nxp.com>
+ <aSCOZCJ2rSw7LAvE@lizhi-Precision-Tower-5810>
+ <d282811a-866d-4ca8-b9f6-fc1da3a7565e@oss.nxp.com>
+ <aSR+eaVxBhnahOl7@lizhi-Precision-Tower-5810>
+ <baec095da2b7b84be19b205b18e765f9a2305574.camel@ndufresne.ca>
+ <020d1263315b8a5ff3fdfb46d61d0108cdfa5bb3.camel@ndufresne.ca>
+From: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
+In-Reply-To: <020d1263315b8a5ff3fdfb46d61d0108cdfa5bb3.camel@ndufresne.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SI2PR02CA0001.apcprd02.prod.outlook.com
+ (2603:1096:4:194::10) To PAXPR04MB8254.eurprd04.prod.outlook.com
+ (2603:10a6:102:1cd::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|PA4PR04MB7664:EE_
+X-MS-Office365-Filtering-Correlation-Id: e20b8abb-f97a-49cf-d6c8-08de2bcbe821
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Yko5UE43ZGNZczVLdU1NZzJzeEdJUTdDRGJzbHZLTC9KRTFDMVBwZEJTZU94?=
+ =?utf-8?B?TmlBV0hlZzN1MUFXc213ZU8reWgzczhVaE0zUlRoNy83WTcwU1NXV0tpUk13?=
+ =?utf-8?B?M2g0Z09uL0RMMm55bE1CdHF0OWlpVTczN2pJWTNKUXNiN0hqWE15TDBXdHlj?=
+ =?utf-8?B?S2FIZStrTXRZMnBCd0V5Vmw0aHBPR25zaDQwUUY1VmVLbTljNnRLMlBJQ1Vo?=
+ =?utf-8?B?OERMNTk1Mk9Uc21qcnhGRWhMRnZBdlpodnZHZldsa3diOGJTOHdIWDFOakVF?=
+ =?utf-8?B?NDNlVUREWjdNT3F0YkxRamtZR21PelYzZnBSWlNMVUJaNytNaHZUZnE5V2Ro?=
+ =?utf-8?B?UFQvbExvNHI2aS8vYTgyLzlYY1p0blNnSTdpdVBuWWhvS214NXAzbHFWVXF0?=
+ =?utf-8?B?S0czYXdNTHFZS2Z1dDdTR01RdFQvdGJvUmlvMXRxK2YrZ3RBdVoyRERkdVc2?=
+ =?utf-8?B?QWp2S0pqZFRkcmZvOS91dmE2bHFsSkw3OUJQbEpFWXdMYldHcWhoOUtDYW5v?=
+ =?utf-8?B?UDBCV2VoQWFWSGdOcVBXL2RPajJMUzJUZVdFTmpXNGRSN3R1K3hDNGVBelgy?=
+ =?utf-8?B?bkdjL001M0FoTVk2b280OXRnY1grZGoxN2lEcUR5dHI0VlZOcEh2amJ5QTRJ?=
+ =?utf-8?B?TDhuMUQvd29saHczQjRtOFdiT0hkVkFOb0xRNVBKazJEdlE1RjltVFhyc29j?=
+ =?utf-8?B?OWdzUTNFVjZXNjRLL01EWVNiR0JOMGVqVFdGRE5lNGljWUprZjd0M0IvRWg0?=
+ =?utf-8?B?VEl1ajIxU3A5ZG5mWU1XRjZHaFNHdUNobUMvNCt0V0hYQUNURmtla25YcFdq?=
+ =?utf-8?B?cWJZUlNqRFBGSFJtZ1lsem5lTjVmTkt3YnhrMGdyTCtDaGdtRHVpenN2OUZq?=
+ =?utf-8?B?RXYwbnY0dUsvVHZjWmg1VmlVR2NydmRXd3o0Z1ExRVJIWS8wdGttd1FFUHM4?=
+ =?utf-8?B?ZzRZd2JpVzNZVTIvSk1NOFFRSTVhb1U0THIwRXhlbDFwajNJU1RMRDgzcmhu?=
+ =?utf-8?B?Y2g2UFIrbEE0bjZ0SmZlUlVaeXFnK3htU1pSaHd1cTB6bkJGSWxKL0xCaEtK?=
+ =?utf-8?B?c3d6a2dYVFRtdVJJcHR6WlRaalFINXNXZmRvTUR0RU1UZm9zYVhtRWxUOUJN?=
+ =?utf-8?B?YzNQUy9qYmJWY3ZJRU8yWndNRm0rc2pBWVpPaVNFUHFIU05VY09UVTRjUkVs?=
+ =?utf-8?B?dXpTeU5tWFM3d0R5N0FzWUNIb2Q0WEU5eUM5VWFlVktJd0E1Tm1rcnFXVmtG?=
+ =?utf-8?B?Y0llRmNhT09HbWc5R3QzOHdCeVpRcXgyMDhONFV5QzNZcEdsaFJzdjdVb1U4?=
+ =?utf-8?B?UnQ5TEZHbTJhSEdldnNlTlFNZVVoYlhnek1LWUJqU0FzUUhOampJTFY2SjJm?=
+ =?utf-8?B?L3dyNk9BRXVHWmRpRlRNSkM3dklvZVNmMTBHTWw3ZzNNRGF2ZTM3YnFwT3lw?=
+ =?utf-8?B?bE4zS1F1SlRJdHhRTEVmb1BZMllUQmlES3RiT25ETmhMWUhnSGdXd3pFY1c3?=
+ =?utf-8?B?YkdWeEFLSmhpdmVaRjJaaWlZL0VjUHp2cXVsUkZKT1NLWlRJSm5YOWMvbk1q?=
+ =?utf-8?B?MitKaCs3cC9ock4ydnE1RU43V3dndWw5eS92WERYKzkzVzZxNzY2djJlcU5x?=
+ =?utf-8?B?R3A1eWJLRmg4UUpXR1Fxb0tiZDk2Y1pGc3A1QXdZMHRxMVVxS0xKZlVKU3RR?=
+ =?utf-8?B?M25qUjhiUURSU0pOZjNCTXptc0hYVXpnQnZ6WW9SQUFoWjFvU0NZcjlZUFhr?=
+ =?utf-8?B?QmZlTXUzQnRkZS9mM09qNTRwQWp3bTR1U0dSMlo0VnV5QUFXSXJZN0lFL2Jp?=
+ =?utf-8?B?STg5WkVQbGx6eHBFc21ISlpVNEJWME13TzlPQkxpOE5ZVzBEMFE1ekMxN3pI?=
+ =?utf-8?B?aW1rL3BlelRLd09OVThQN1ZuQzkzY2EwZytrUlpvOUxRQ3c9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZTZvRkprOWdGbjRoYmRTSE9hdCthcVZweHFieC9JeTJvMlgyS1IxV05mMHhk?=
+ =?utf-8?B?S0MvbUFuTTJkbmlxbWFRcUowZHB3alo2T0liMjlXbXVxRU5hcjFwb1lBRjk0?=
+ =?utf-8?B?bVRRVXBYeDF1UFhpcG9vZmxiUjFib0NlcEluY3lIWHFEY2txd0diWHJJMHpS?=
+ =?utf-8?B?V1BjakJUYmNkZG9Edjd2YlI5SUFoczBsUTNDTkoxNC8waWMzb20yVXUvVXFL?=
+ =?utf-8?B?YjhpSzlyczdXdlNMdmZFcStXSUwwby82UE9wcEpuN3lJRkNQYWJIRzZYd0Zw?=
+ =?utf-8?B?R2xHeFVYR3RtdGZ0My9kYjJUOUcyK1UyUEk3YW1lRXM1eUd1MXdzS1JVdUZq?=
+ =?utf-8?B?alJiZC9kZ25iSGIwUllZRnFlSVd5N3Y4bjlTNGZYd2NTdTduZkp0WUVOdGR1?=
+ =?utf-8?B?VUVXQml4N2xRS0F1eEhuZEVoSVphTTAyRGFCb2M2dnNzYzFCZEs1T0VyNnlq?=
+ =?utf-8?B?MmsxVmsvdWpBYjJrVUhzNk9wS3NNdDdiR3grbThKQmIyaC84VVh6ZW92c2Nv?=
+ =?utf-8?B?RmVidlhRZGFDY0k5SjVtK0U5ZUFOM1djT2Q1ZW9ORVYvQm5YTG9RNE9DODRS?=
+ =?utf-8?B?TTE2MEI0cFNSRXYwRStjS21BYk1kVVZXcWU4d3lXVjdia2REWG1MdXhHQy93?=
+ =?utf-8?B?U3prMDQvQXdKbjBEcFlxZ2gvQjBFekhCM0MwY0hvYnhXVWRZeTlxb0NrRDIz?=
+ =?utf-8?B?ampLT3Z2L1YyTjNWUDQ5a08rQk5pZFlVaE0xTHpLMXMzRFFta3ZXSXVQbjRV?=
+ =?utf-8?B?Sjg4blBVaVVaU1RoTVFBbG5RN01WWUVKcVM4dGNKUzNnajZPSzVCcGw1MDZq?=
+ =?utf-8?B?YlBqRHlHbWw1QWp0M1gvK1B4cWhkMlc2TVVtWGx5MXgxUWlycS8rZnczNE5x?=
+ =?utf-8?B?RlFjeUE3c0w5dGt6SUdHaW5XMGVMa1VVZ1NkNTJnYWlFQlpzZ0p3eWFWVGRL?=
+ =?utf-8?B?cW1UQVgxNDF1bHMrTHNBWEdwRW1ERFdPM2xWdDlyLzZXUE1uVXhZTVdwMjFi?=
+ =?utf-8?B?RDBzd2lxcUgvWDI2YWtWOThKUkN3MHFRdlF1WFB4aVNPMkdXalVkYktKV2Yv?=
+ =?utf-8?B?WFY5NXRRc0R0K01HT25CbExmRHM0OFJXTVFjR3ZEWjJ6TUg3WFZQSVA1QXY4?=
+ =?utf-8?B?NUFlcFc3Vmh5ak9FMmpNNmlHSlRWVmZBdEppckZMNkRNNkZQKzNGemF4ZGRV?=
+ =?utf-8?B?MEhkSG5CN3d3N2VlQXZTU0M2OHQzbjIyTnNJdGRVcmhqN0JFd1g5YkEzS0hs?=
+ =?utf-8?B?cjFwaXFBNmxqSzI5VWJ5bXBHS2hsdXREWHpKQk93UDAvc0QycFFLNko3OEU2?=
+ =?utf-8?B?VUZQYWNCQWk1V0RsM3BySDVudDhjaGFhNzI3UW5rb0YxZnVxN3QycUNtZ1hI?=
+ =?utf-8?B?Ymh2NHRycUpSbXlkM1NTTGE1M3dQMC95NWQvRlIxZzZiNGRFMzRmcWZDT1cw?=
+ =?utf-8?B?Y1hvVTcxbG9kTTk1K0grQ0tRbDZ1OXZEekd0V3JsZytwQmxOZFpUbURTcEx5?=
+ =?utf-8?B?d1p1ditpd0hSc0Vya1BlYnZUMjJLYTkrb0ZURUp0ZE1US1NVKzlOZXo5bXZC?=
+ =?utf-8?B?NlBKUzFBT1NsYjBYd1ZUR3A4WXJuQnVLZjMwbE1rN3JRdkxTTVEvaVJJcldC?=
+ =?utf-8?B?MlZZZWFBZWt6MTdma3AwbGZwb20rWG1DNGFLTGZoUDNMRnNicU5ORjRjTnF5?=
+ =?utf-8?B?YisrelhvZlNCdWVzWC91cHBRK0ZjVDdMdURVYU0reWd5WlhGRkFraHdvZ3ZD?=
+ =?utf-8?B?QmlhcXpQKzZtTXduVlNXdTB5cDI0dUExUU84ZC9sSFdTUmJDNWR5WmJHR2ov?=
+ =?utf-8?B?WlR1VUNmbEtmcW1WTUYybWhuNHNSMVpKQVR0L0s5S29WTzJvaUY5dWdNTDNm?=
+ =?utf-8?B?NUhScVYxS25scUxkbUNiUTlYUVNvZzh3bkhqOE9hU2crS2swNUh6ZkxjOGhH?=
+ =?utf-8?B?N3lXUC9ZOHNaVHFPVTg3RnByVmp2RlN1aWJtWDlmbXA4U0dRdWsySFY1L292?=
+ =?utf-8?B?T3RUSlo3S0JxcFVYc09ucHpXOWk1YVQ3ZDRYSVZJV096UkJKRnN1Rmg1SDVD?=
+ =?utf-8?B?NU9xZ2FuRU56dGlUV0RFSXArbzZCcnhvSmdRWnVBRVhZSFl0ME9VYWhlaXpv?=
+ =?utf-8?Q?9P1ZZML+HJIF/vwDAkCsSre7A?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e20b8abb-f97a-49cf-d6c8-08de2bcbe821
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9496.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b17be3b5-86c6-4646-553c-08de2bc9bf85
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Nov 2025 02:24:23.4474
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 02:39:51.1739
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: dQca7nkOW3L1iLH46pbGuVvsEz+oEDoPdvgpQnkGZRS1QdFq5l4nDTUVoeB4ugPhYRl8F+kg8GXpFD2rO8J+ng==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8449
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pRulYb/YCcWn6zjOUFsWo3C8UiU5WXtVlrEU9PpkjdhrS299XBYW9nIShkhkCgGQWQd3lsMKIat9TaAKDQRojw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7664
 
-> On Mon, Nov 24, 2025 at 05:25:22PM +0800, Haibo Chen wrote:
-> > Add driver support for NXP XSPI controller.
-> >
-> > XSPI is a flexible SPI host controller which supports up to
-> > 2 external devices (2 CS). It support Single/Dual/Quad/Octal mode data
-> > transfer.
-> >
-> > The difference between XSPI and Flexspi:
-> > 1.the register layout is total different.
-> > 2.XSPI support multiple independent execution environments
-> > (EENVs) for HW virtualization with some limitations. Each EENV has its
-> > own interrupt and its own set of programming registers that exists in
-> > a specific offset range in the XSPI memory map.
-> > The main environment (EENV0) address space contains all of the
-> > registers for controlling EENV0 plus all of the general XSPI control
-> > and programming registers. The register mnemonics for the user
-> > environments (EENV1 to EENV4) have "_SUB_n" appended to the mnemonic
-> > for the corresponding main-environment register.
->=20
-> Nit: please wrap at 75 char if need respin patch.
+Hi Nicolas and Frank,
 
-Okay.
+On 11/25/2025 12:55 AM, Nicolas Dufresne wrote:
+> Le lundi 24 novembre 2025 à 11:39 -0500, Nicolas Dufresne a écrit :
+>> Hi,
+>>
+>> Le lundi 24 novembre 2025 à 10:49 -0500, Frank Li a écrit :
+>>> On Mon, Nov 24, 2025 at 09:38:15AM +0800, Ming Qian(OSS) wrote:
+>>>> Hi Frank,
+>>>>
+>>>> On 11/22/2025 12:08 AM, Frank Li wrote:
+>>>>> On Fri, Nov 21, 2025 at 04:19:09PM +0800, ming.qian@oss.nxp.com wrote:
+>>>>>> From: Ming Qian <ming.qian@oss.nxp.com>
+>>>>>>
+>>>>>> For the i.MX8MQ platform, there is a hardware limitation: the g1 VPU and
+>>>>>> g2 VPU cannot decode simultaneously; otherwise, it will cause below bus
+>>>>>> error and produce corrupted pictures, even led to system hang.
+>>>>>>
+>>>>>> [  110.527986] hantro-vpu 38310000.video-codec: frame decode timed out.
+>>>>>> [  110.583517] hantro-vpu 38310000.video-codec: bus error detected.
+>>>>>>
+>>>>>> Therefore, it is necessary to ensure that g1 and g2 operate alternately.
+>>>>>> Then this allows for successful multi-instance decoding of H.264 and
+>>>>>> HEVC.
+>>>>>>
+>>>>>> Fixes: cb5dd5a0fa518 ("media: hantro: Introduce G2/HEVC decoder")
+>>>>>> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+>>>>>> ---
+>>>>>>    drivers/media/platform/verisilicon/hantro.h   |  1 +
+>>>>>>    .../media/platform/verisilicon/hantro_drv.c   | 26 +++++++++++++++++++
+>>>>>>    .../media/platform/verisilicon/imx8m_vpu_hw.c |  4 +++
+>>>>>>    3 files changed, 31 insertions(+)
+>>>>>>
+>>>>> ...
+>>>>>>    #include <linux/workqueue.h>
+>>>>>> +#include <linux/iopoll.h>
+>>>>>>    #include <media/v4l2-event.h>
+>>>>>>    #include <media/v4l2-mem2mem.h>
+>>>>>>    #include <media/videobuf2-core.h>
+>>>>>> @@ -93,6 +94,9 @@ static void hantro_job_finish(struct hantro_dev *vpu,
+>>>>>>
+>>>>>>    	clk_bulk_disable(vpu->variant->num_clocks, vpu->clocks);
+>>>>>>
+>>>>>> +	if (vpu->variant->shared_resource)
+>>>>>> +		atomic_cmpxchg(vpu->variant->shared_resource, 0, 1);
+>>>>>> +
+>>>>>>    	hantro_job_finish_no_pm(vpu, ctx, result);
+>>>>>>    }
+>>>>>>
+>>>>>> @@ -166,12 +170,34 @@ void hantro_end_prepare_run(struct hantro_ctx
+>>>>>> *ctx)
+>>>>>>    			      msecs_to_jiffies(2000));
+>>>>>>    }
+>>>>>>
+>>>>>> +static int hantro_wait_shared_resource(struct hantro_dev *vpu)
+>>>>>> +{
+>>>>>> +	u32 data;
+>>>>>> +	int ret;
+>>>>>> +
+>>>>>> +	if (!vpu->variant->shared_resource)
+>>>>>> +		return 0;
+>>>>>> +
+>>>>>> +	ret = read_poll_timeout(atomic_cmpxchg, data, data, 10, 300 *
+>>>>>> NSEC_PER_MSEC, false,
+>>>>>> +				vpu->variant->shared_resource, 1, 0);
+>>>>>> +	if (ret) {
+>>>>>> +		dev_err(vpu->dev, "Failed to wait shared resource\n");
+>>>>>> +		return -EINVAL;
+>>>>>> +	}
+>>>>>
+>>>>> why not use a mutex?
+>>>>>
+>>>>> mutex() lock here, unlock at hantro_job_finish(), if second instance
+>>>>> run to here, mutex() will block thread, until previous hantro_job_finish()
+>>>>> finish.
+>>>>>
+>>>>> Frank
+>>>>
+>>>> G1 and G2 are two different devices. If I were to use a mutex, I would
+>>>> need to define a global mutex. Therefore, to avoid using a global mutex,
+>>>> I only define a static atomic variable.
+>>>
+>>> static atomic varible also is global.  Global mutex is allowed if it is
+>>> really needed.
+>>>
+>>>>
+>>>> If a static mutex is acceptable, I think I can change it to a mutex.
+>>>
+>>> ref to
+>>> https://elixir.bootlin.com/linux/v6.18-rc6/source/drivers/base/core.c#L43
+>>
+>> My main concern with either of these approaches is that it kills the ability to
+>> rmmod the driver forever. The only working approach would be that both drivers
+>> depends on a third driver that provide the synchronization services.
+> 
+> I do realize after the fact that my answer is a little off considering its a
+> drivers against itself (not cross-driver, that would be a huge pain if it was
+> the case).
+> 
+> Checking further, the ref to the counter (or mutex) should cleanly be gone by
+> the time the driver is removed, so perhaps its fine, though best to test it.
+> Though, in both cases, I'm not happy to see code that will wait for multiple
+> milliseconds on either home made mutex or a real mutex. Adding another arbitrary
+> timeout is also not very nice either. The current software watchdog already get
+> in the way when testing simulated IP.
+> 
+> I know its work, but what about a recounted singleton, with a notifier so we can
+> schedule work when the resource is free ?
+> 
+> Nicolas
+> 
 
->=20
-> >
-> > Current driver based on EENV0, which means system already give
-> > EENV0 right to linux.
-> >
-> ...
-> > +	/* Wait for the CLR_RXF clear */
-> > +	ret =3D readl_poll_timeout(base + XSPI_MCR, reg,
-> > +			      !(reg & XSPI_MCR_CLR_RXF), 1, POLL_TOUT_US);
-> > +	WARN_ON(ret);
-> > +}
-> > +
-> > +static int nxp_xspi_do_op(struct nxp_xspi *xspi, const struct
-> > +spi_mem_op *op) {
-> > +	void __iomem *base =3D xspi->iobase;
-> > +	int watermark, err =3D 0;
-> > +	u32 reg, len;
-> > +
-> > +	len =3D op->data.nbytes;
-> > +	if (op->data.nbytes && op->data.dir =3D=3D SPI_MEM_DATA_OUT) {
-> > +		/* Clear the TX FIFO. */
-> > +		reg =3D readl(base + XSPI_MCR);
-> > +		reg |=3D XSPI_MCR_CLR_TXF;
-> > +		writel(reg, base + XSPI_MCR);
-> > +		/* Wait for the CLR_TXF clear */
-> > +		err =3D readl_poll_timeout(base + XSPI_MCR, reg,
-> > +				      !(reg & XSPI_MCR_CLR_TXF), 1, POLL_TOUT_US);
-> > +		WARN_ON(err);
->=20
-> Is it enough by just print a warning? If timeout happen, is it to continu=
-e below
-> operation? and other void helper function (such as above WARN_ON(ret);)
->=20
-> If clean FIFO fail, suppose garbage data still is in FIFO. It think it sh=
-ould return err
-> to user space to indicate op failure.
+Thank you for your comments. I will consider a better solution.
 
-Return err seems safer, let me check whether other places also.
+Regards,
+Ming
 
->=20
-> Or are you sure our hardware can tolerant this error.
->=20
-> > +		/* Cover the no 4bytes alignment data length */
-> > +		watermark =3D (xspi->devtype_data->txfifo - ALIGN(op->data.nbytes, 4=
-))
-> / 4 + 1;
-> > +		reg =3D FIELD_PREP(XSPI_TBCT_WMRK_MASK, watermark);
-> > +		writel(reg, base + XSPI_TBCT);
-> > +		/*
-> > +		 * According to the RM, for TBDR register, a write transaction on th=
-e
-> > +		 * flash memory with data size of less than 32 bits leads to the
-> removal
-> > +		 * of one data entry from the TX buffer. The valid bits are used and
-> the
-> > +		 * rest of the bits are discarded.
-> > +		 * But for data size large than 32 bits, according to test, for no 4=
-bytes
-> > +		 * alignment data, the last 1~3 bytes will lost, because TX buffer u=
-se
-> > +		 * 4 bytes entries.
-> > +		 * So here adjust the transfer data length to make it 4bytes
-> alignment.
-> > +		 * then will meet the upper watermark setting, trigger the 4bytes
-> entries
-> > +		 * pop out.
-> > +		 * Will use extra 0xff to append, refer to nxp_xspi_fill_txfifo().
-> > +		 */
-> > +		if (len > 4)
-> > +			len =3D ALIGN(op->data.nbytes, 4);
-> > +
-> > +	} else if (op->data.nbytes && op->data.dir =3D=3D SPI_MEM_DATA_IN) {
-> > +		/* Invalid RXFIFO first */
-> > +		reg =3D readl(base + XSPI_MCR);
-> > +		reg |=3D XSPI_MCR_CLR_RXF;
-> > +		writel(reg, base + XSPI_MCR);
-> > +		/* Wait for the CLR_RXF clear */
-> > +		err =3D readl_poll_timeout(base + XSPI_MCR, reg,
-> > +				      !(reg & XSPI_MCR_CLR_RXF), 1, POLL_TOUT_US);
-> > +		WARN_ON(err);
-> > +		reg =3D FIELD_PREP(XSPI_RBCT_WMRK_MASK, 31);
-> > +		writel(reg, base + XSPI_RBCT);
-> > +	}
-> > +
-> > +	init_completion(&xspi->c);
-> > +
-> > +	/* Config the data address */
-> > +	writel(op->addr.val + xspi->memmap_phy, base + XSPI_SFP_TG_SFAR);
-> > +
-> > +	/* Config the data size and lut id, trigger the transfer */
-> > +	reg =3D FIELD_PREP(XSPI_SFP_TG_IPCR_SEQID_MASK, XSPI_SEQID_LUT) |
-> > +	      FIELD_PREP(XSPI_SFP_TG_IPCR_IDATSZ_MASK, len);
-> > +	writel(reg, base + XSPI_SFP_TG_IPCR);
-> > +
-> > +	if (op->data.nbytes && op->data.dir =3D=3D SPI_MEM_DATA_OUT)
-> > +		nxp_xspi_fill_txfifo(xspi, op);
-> > +
-> > +	/* Wait for the interrupt. */
-> > +	if (!wait_for_completion_timeout(&xspi->c, msecs_to_jiffies(1000)))
-> > +		err =3D -ETIMEDOUT;
-> > +
-> > +	/* Invoke IP data read, if request is of data read. */
-> > +	if (!err && op->data.nbytes && op->data.dir =3D=3D SPI_MEM_DATA_IN)
-> > +		nxp_xspi_read_rxfifo(xspi, op);
-> > +
-> > +	return err;
-> > +}
-> ...
-> > +static int nxp_xspi_probe(struct platform_device *pdev) {
-> > +	struct device *dev =3D &pdev->dev;
-> > +	struct spi_controller *ctlr;
-> > +	struct nxp_xspi *xspi;
-> > +	struct resource *res;
-> > +	int ret, irq;
-> > +
-> > +	ctlr =3D devm_spi_alloc_host(dev, sizeof(*xspi));
-> > +	if (!ctlr)
-> > +		return -ENOMEM;
-> > +
-> > +	ctlr->mode_bits =3D SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL |
-> > +			  SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL;
-> > +
-> > +	xspi =3D spi_controller_get_devdata(ctlr);
-> > +	xspi->dev =3D dev;
-> > +	xspi->devtype_data =3D device_get_match_data(dev);
-> > +	if (!xspi->devtype_data)
-> > +		return -ENODEV;
-> > +
-> > +	platform_set_drvdata(pdev, xspi);
-> > +
-> > +	/* Find the resources - configuration register address space */
-> > +	xspi->iobase =3D devm_platform_ioremap_resource_byname(pdev, "base");
-> > +	if (IS_ERR(xspi->iobase))
-> > +		return PTR_ERR(xspi->iobase);
-> > +
-> > +	/* Find the resources - controller memory mapped space */
-> > +	res =3D platform_get_resource_byname(pdev, IORESOURCE_MEM, "mmap");
-> > +	if (!res)
-> > +		return -ENODEV;
-> > +
-> > +	/* Assign memory mapped starting address and mapped size. */
-> > +	xspi->memmap_phy =3D res->start;
-> > +	xspi->memmap_phy_size =3D resource_size(res);
-> > +
-> > +	/* Find the clocks */
-> > +	xspi->clk =3D devm_clk_get(dev, "per");
-> > +	if (IS_ERR(xspi->clk))
-> > +		return PTR_ERR(xspi->clk);
-> > +
-> > +	/* Find the irq */
-> > +	irq =3D platform_get_irq(pdev, 0);
-> > +	if (irq < 0)
-> > +		return dev_err_probe(dev, irq,  "Failed to get irq source");
-> > +
-> > +	pm_runtime_set_autosuspend_delay(dev, XSPI_RPM_TIMEOUT_MS);
-> > +	pm_runtime_use_autosuspend(dev);
-> > +	devm_pm_runtime_enable(dev);
->=20
-> need check return value here.
-
-Okay.
-
-Regards
-Haibo Chen
->=20
-> Frank
-> > +
-> > +	PM_RUNTIME_ACQUIRE_AUTOSUSPEND(dev, pm);
-> > +	ret =3D PM_RUNTIME_ACQUIRE_ERR(&pm);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret, "Failed to enable clock");
-> > +
-> > +	/* Clear potential interrupt by write xspi errstat */
-> > +	writel(0xFFFFFFFF, xspi->iobase + XSPI_ERRSTAT);
-> > +	writel(0xFFFFFFFF, xspi->iobase + XSPI_FR);
-> > +
-> > +	nxp_xspi_default_setup(xspi);
-> > +
-> > +	ret =3D devm_request_irq(dev, irq,
-> > +			nxp_xspi_irq_handler, 0, pdev->name, xspi);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret, "failed to request irq");
-> > +
-> > +	ret =3D devm_mutex_init(dev, &xspi->lock);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret =3D devm_add_action_or_reset(dev, nxp_xspi_cleanup, xspi);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ctlr->bus_num =3D -1;
-> > +	ctlr->num_chipselect =3D NXP_XSPI_MAX_CHIPSELECT;
-> > +	ctlr->mem_ops =3D &nxp_xspi_mem_ops;
-> > +	ctlr->mem_caps =3D &nxp_xspi_mem_caps;
-> > +	ctlr->dev.of_node =3D dev->of_node;
-> > +
-> > +	return devm_spi_register_controller(dev, ctlr); }
-> > +
-> ...
-> > +MODULE_DESCRIPTION("NXP xSPI Controller Driver");
-> MODULE_AUTHOR("NXP
-> > +Semiconductor"); MODULE_AUTHOR("Haibo Chen
-> <haibo.chen@nxp.com>");
-> > +MODULE_LICENSE("GPL");
-> >
-> > --
-> > 2.34.1
-> >
+>>
+>> Nicolas
+>>
+>>>
+>>> Frank
+>>>>
+>>>> Regards,
+>>>> Ming
+>>>>
+>>>>>> +
+>>>>>> +	return 0;
+>>>>>> +}
+>>>>>> +
+>>>>>>    static void device_run(void *priv)
+>>>>>>    {
+>>>>>>    	struct hantro_ctx *ctx = priv;
+>>>>>>    	struct vb2_v4l2_buffer *src, *dst;
+>>>>>>    	int ret;
+>>>>>>
+>>>>>> +	ret = hantro_wait_shared_resource(ctx->dev);
+>>>>>> +	if (ret < 0)
+>>>>>> +		goto err_cancel_job;
+>>>>>> +
+>>>>>>    	src = hantro_get_src_buf(ctx);
+>>>>>>    	dst = hantro_get_dst_buf(ctx);
+>>>>> ...
+>>>>>
+>>>>>>
+>>>>>> --
+>>>>>> 2.34.1
+>>>>>>
