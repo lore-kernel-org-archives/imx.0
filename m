@@ -1,87 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA2F32AADC;
-	Tue, 25 Nov 2025 17:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FD12D29C3;
+	Tue, 25 Nov 2025 19:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764093100; cv=none; b=danJbuNuPBZDSABn2OtPLmF5+WERcClUQRGtOOOQH99BeppA3II51lqNXlW6DbPRn+eTk7YBMhyw6l7fWvTP7Y3NAzTgwJI+m87C6tZENAsaXlranPu+Gf2XYb9PS6/vdwWgyixiyhRGCn0NT9sAM+UCF36Rc1WYdCWtGzR3WxI=
+	t=1764098481; cv=none; b=j1ccMC15TVNjFDISumisWI3Jh73eSL2vaxfYJOBa4m+ChCjp6cxv83PmhQcmODKMnhaNnL3RaJyO9UgmVVwf91Q90tGFizYfteIYwG4GlgvWh57qOXW0A5gF/Is6EHDDX2sREgznF7ZHQ1LB9wptH1WAILf/MScbeZpuTrU5eMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764093100; c=relaxed/simple;
-	bh=EXijMCYNnJdE7UQPk8RxSZXhsEest8tLZXPwXBE3hnU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D4dLAaaR/oXzGZCuFqFbpjhPyGlFhvCj8kBCBZTpCiUFYgoOWXDwSXW4j87yK7Nt7hIKN77kkXqbzPI3TjHseJTuv1JuWYI/mRw++GFQCF0taDeUiuIxLAiSSlfOZZhtOOQz7Mg8MqJHykhn+g1bwrssD0XVpMpjlVIX0GyeGVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A6croIvp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764098481; c=relaxed/simple;
+	bh=PXaLfSUsuiuasxe8ptDZqo4sRgBk2ZXuALsf7QVCuE8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=rY22WP5F3lwer0kcSi953OSsNoU00NzIb4Td2CKu1Oe/lBdWX7iYoNhmoE9DEMdHCbM47VVUlizZvVAIXf236RtqF0uxe/oV1XE3QYA891FNeuJU1FzcI4zUAKY6xZT9DZQRK2yDk/YL7uEhOEY8aP2pTxecTQjqHK8W45hGW8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kG2/IxkA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A6croIvp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33BD8C4CEF1;
-	Tue, 25 Nov 2025 17:51:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kG2/IxkA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6871BC4CEF1;
+	Tue, 25 Nov 2025 19:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764093100;
-	bh=EXijMCYNnJdE7UQPk8RxSZXhsEest8tLZXPwXBE3hnU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A6croIvphLl4gz0XbFJY54LXqq0XY8YQnGOW/3gdhkbNJrInNGzkVsMn/781hYjPL
-	 tIIO3mbTV9JdfZzJ2zS9lZRW6QDnWbZTtkkWaHTPsdRnMiDw01jVABM9q/lMmis013
-	 klu+MH/QI13gsHLdbHSWrmKy1/RU0kzCUwMUnpcJbDf7Wd2B7FgPJ0fnN+ic9oOxsw
-	 6HDqL523hn85QspY7WFq41nuBuedq9KMJjiJokgWObDqfe7DRjI5OgNhbFFJPP29jO
-	 mv/DAGskmVQHwXBc1iKrsWd6czN+ram1OOTS8dqgtqN0bvA8WWJByAXbqfyU7AGQ8R
-	 KHmYScGnorgmg==
-Date: Tue, 25 Nov 2025 17:51:34 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Haibo Chen <haibo.chen@nxp.com>
-Cc: Han Xu <han.xu@nxp.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-spi@vger.kernel.org,
-	imx@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	frank.li@nxp.com, Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH v6 1/2] dt-bindings: spi: Document imx94 xspi
-Message-ID: <03542bc2-b124-4c18-ab3d-f18905814591@sirena.org.uk>
-References: <20251125-xspi-v6-0-22b22de50cda@nxp.com>
- <20251125-xspi-v6-1-22b22de50cda@nxp.com>
+	s=k20201202; t=1764098480;
+	bh=PXaLfSUsuiuasxe8ptDZqo4sRgBk2ZXuALsf7QVCuE8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=kG2/IxkADqb5FQMH0ZNvEne5eExlYkB9BxCdsLPKZ0R1x6U5p8Q+e/G99iz8R7gNb
+	 rIjRCk5pklp168zSMPOh56TVmcGFDeoH+GTj8bnmY/awFj04R1/KK7C2aFxMd6vt+6
+	 ALnCNr3KbtbzNp0iId/Bia4e8F2Izpgk53UsI6zHZP7ZYYAByceMDPDmQ+WnkuoKck
+	 w4WLcMnmUJSWsDetaV/F6X3w5ISKZTIzGbAKmYkeKnXgDtpNICtEmemA0LtWSWUbe+
+	 2reFteRwqJRoBVqILlw+MzmJSJM7wHn0Jb1iRJRughegNo7iqLDFOFEKS4KvrRd4zb
+	 jx03grabuD6UQ==
+Date: Tue, 25 Nov 2025 13:21:19 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: chester62515@gmail.com, mbrugger@suse.com,
+	ghennadi.procopciuc@oss.nxp.com, s32@nxp.com, bhelgaas@google.com,
+	jingoohan1@gmail.com, lpieralisi@kernel.org, kwilczynski@kernel.org,
+	mani@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com,
+	Ghennadi.Procopciuc@nxp.com, ciprianmarian.costea@nxp.com,
+	bogdan.hamciuc@nxp.com, Frank.li@nxp.com,
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, cassel@kernel.org
+Subject: Re: [PATCH 4/4 v6] MAINTAINERS: Add MAINTAINER for NXP S32G PCIe
+ driver
+Message-ID: <20251125192119.GA2760316@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Ec2hrEYWTjbUPiDe"
-Content-Disposition: inline
-In-Reply-To: <20251125-xspi-v6-1-22b22de50cda@nxp.com>
-X-Cookie: Too ripped.  Gotta go.
-
-
---Ec2hrEYWTjbUPiDe
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20251121164920.2008569-5-vincent.guittot@linaro.org>
 
-On Tue, Nov 25, 2025 at 03:42:18PM +0800, Haibo Chen wrote:
-> Document imx94 xspi that supports interface to serial flash
-> supporting following features:
+On Fri, Nov 21, 2025 at 05:49:20PM +0100, Vincent Guittot wrote:
+> Add a new entry for S32G PCIe driver.
+> 
+> Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  MAINTAINERS | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e64b94e6b5a9..bec5d5792a5f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3137,6 +3137,15 @@ F:	arch/arm64/boot/dts/freescale/s32g*.dts*
+>  F:	drivers/pinctrl/nxp/
+>  F:	drivers/rtc/rtc-s32g.c
+>  
+> +ARM/NXP S32G PCIE CONTROLLER DRIVER
+> +M:	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
+Would be good to have Ghennadi's ack here.  Don't want to sign people
+up for work they're not expecting.
 
---Ec2hrEYWTjbUPiDe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkl7KUACgkQJNaLcl1U
-h9BcQAf/esEN6KIUbIfcZ4CNvRd6y+jdOFjQMquv3oexP3VS3Gmu17eBz/Ld8kmw
-b+2E1ycOtyleZkpbynrc4ozmb09WJ2M6BW/pQ8RDsaDuDvBVVI9WfM7AeocRmcNK
-7ftB1tU9MjVkyJCJ9lDXVqQLJw3KfxbEa+xfdvP7Fg0LI6gQjTpAcTPd148z5Uql
-aliiQJiI/T/gnYERisrOzNd0AMkODKy1L5X5Te4S6K2chWaNJHGlM8j3xBOvl7vR
-71Try90Vi9hJqAdAUvfEGs8mAixJIJgUhujASO8QX0e5M+SZpY8PwneSM2LYJm/o
-2in9Dupq1yTlsZ7M2QMz7lhwUcezTg==
-=YLuU
------END PGP SIGNATURE-----
-
---Ec2hrEYWTjbUPiDe--
+> +R:	NXP S32 Linux Team <s32@nxp.com>
+> +L:	imx@lists.linux.dev
+> +L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+> +F:	drivers/pci/controller/dwc/pcie-nxp-s32g*
+> +
+>  ARM/NXP S32G/S32R DWMAC ETHERNET DRIVER
+>  M:	Jan Petrous <jan.petrous@oss.nxp.com>
+>  R:	s32@nxp.com
+> -- 
+> 2.43.0
+> 
