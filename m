@@ -1,149 +1,121 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [217.70.178.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCB22C15A5
-	for <imx@lists.linux.dev>; Wed, 26 Nov 2025 08:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269C824166C;
+	Wed, 26 Nov 2025 09:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.178.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764146703; cv=none; b=X4x5qcpsCqxfH8C65AY4Y2QUIqfNtosoLRka4EQTqePZa9XI3Y+jc8+Lu+Ijp/6XZhAzFjM0AogjH1q8hhKiSsycVsWb4R7ge7Lx7pvxWgCY6I8j/zIrFMra1R/U8b/uK972PJNVSHuGNQKqRb0P/5Trxsa2sOQF6OjSZhin84Q=
+	t=1764147935; cv=none; b=byTpZvqe/piJ8xaRwai44EjtsS0qru0x6By9AEJt7TW9CHzBoEkSTe2TZHHGYwawyrRQe9cODQBYOx8SakmNHsbZVMcwUMjOoLDJ+mw1+Wu8youbtxdNk5NFgBLDKhjtL1L8yh7tBPE0C9RhEiZV6ZJERCQRRMHcYx6HRkNsbtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764146703; c=relaxed/simple;
-	bh=tNRxnsT+m1q/Cckn8HtKlA00mImLVMgBEcq4KgpwUB4=;
+	s=arc-20240116; t=1764147935; c=relaxed/simple;
+	bh=4BWYIXM7gMUADX+WYXcQ/AiGeBV9gP9uOMI0BEVzLZA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WLWyqZryoqt/SANkfHAOhw+ONNhOjcxnXYHTv92WRU+UsX3BWvasUshtrQnWa1UEvCbmvY3OQTMqxIKoqJ0D5CNY26FUSpLuL9eDusmLDjeLkQj1BB90za9LZiw5wnOL8OtPGyMHDn7RoZ3mOqbExhexc1sW577zQf3nF23aKm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vOB8w-0006Ex-UC; Wed, 26 Nov 2025 09:44:54 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vOB8w-002ZUP-24;
-	Wed, 26 Nov 2025 09:44:54 +0100
-Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 4BBEA4A87B2;
-	Wed, 26 Nov 2025 08:44:54 +0000 (UTC)
-Date: Wed, 26 Nov 2025 09:44:53 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: "broonie@kernel.org" <broonie@kernel.org>, Frank Li <frank.li@nxp.com>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
-	"festevam@gmail.com" <festevam@gmail.com>, "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: RE: [EXT] Re: [PATCH 5/6] spi: imx: support dynamic burst length
- for ECSPI DMA mode
-Message-ID: <20251126-aloof-stalwart-worm-343112-mkl@pengutronix.de>
-References: <20251125100618.2159770-1-carlos.song@nxp.com>
- <20251125100618.2159770-6-carlos.song@nxp.com>
- <20251126-invisible-almond-bee-86a27d-mkl@pengutronix.de>
- <VI2PR04MB1114788C5ADCB9D42399D12C1E8DEA@VI2PR04MB11147.eurprd04.prod.outlook.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=SYUaigpb5dTJgEffmA759IGRuiugm46JvO1Y6mjbTwJh8m6Gy4pGya9Z+HY3N39mj/GI/rQXx4X3Vm/MeLClco3qDso/IHZHuth43BPuKBuJgtgj/iOuhLGXrukxJl3VGHDCXIhqvqUKmdVLQCEOUJ3vSX+F6qVa/eAN543+YuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoseli.org; spf=pass smtp.mailfrom=yoseli.org; dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b=KneGVY3P; arc=none smtp.client-ip=217.70.178.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoseli.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoseli.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b="KneGVY3P"
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+	by mslow3.mail.gandi.net (Postfix) with ESMTP id 92AD358A8D1;
+	Tue, 25 Nov 2025 07:53:35 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1B4CF43AA6;
+	Tue, 25 Nov 2025 07:53:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yoseli.org; s=gm1;
+	t=1764057207;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iqRqCK4rs9Q1IMwj7iTmtoWcpWNcNdp7HNUySR+q5Z4=;
+	b=KneGVY3Puoqf0Rvj9nDxDabG/UNWWRnzfAtjo+uVfGfzImpELfAFw6tFC8p6BOOCnnz8mO
+	ULbM7eE6kCknKDnWQEOKEHIGHns7L6sxMxmGipNHcg/nmDUNOkhHeHUoHbyt+Grp3iLNbx
+	Z0GOE7lpy9D3qoyCeCOG+Pyt1KAScshhNRCZwGEj/ExC3rE29R88WPMAGRpwta74c2loFz
+	pUnC8XMIr1B4grD3uZZ1+ROXUOSvIuBKy++EatIFv78PLtO+bLc7JfPTDBSD6qykRNo+YV
+	XrWDoCiXEW4V5kMge+qCqlnxMiToyIJH3iANoNUtpcCJM3wd93arEF+nXH8AtQ==
+Date: Tue, 25 Nov 2025 08:53:22 +0100
+From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Greg Ungerer <gerg@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, oe-kbuild-all@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 1/3] m68k: coldfire: Mark platform device resource
+ arrays as const
+Message-ID: <aSVgcoNNeLJshwvU@yoseli-yocto.yoseli.org>
+References: <20251124-b4-m5441x-add-rng-support-v3-1-f447251dad27@yoseli.org>
+ <202511250103.RMNoU3xH-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lpjpsnbozts7gelo"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <VI2PR04MB1114788C5ADCB9D42399D12C1E8DEA@VI2PR04MB11147.eurprd04.prod.outlook.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <202511250103.RMNoU3xH-lkp@intel.com>
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvgedtledvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdortddttddvnecuhfhrohhmpeflvggrnhdqofhitghhvghlucfjrghuthgsohhishcuoehjvggrnhhmihgthhgvlhdrhhgruhhtsghoihhsseihohhsvghlihdrohhrgheqnecuggftrfgrthhtvghrnhepudfhuedvtdetgfefveekvddvjeehfeeffffhleeludejleefudefkefhudfhuddunecuffhomhgrihhnpehgihhthhhusgdrtghomhdpkhgvrhhnvghlrdhorhhgpddtuddrohhrghenucfkphepvdgrtddumegvtdgrmeduieelmeejudegtdemkegvtdgumeekrgguudemvggvvgelmeelhegsnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmeduieelmeejudegtdemkegvtdgumeekrgguudemvggvvgelmeelhegspdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehjvggrnhhmihgthhgvlhdrhhgruhhtsghoihhsseihohhsvghlihdrohhrghdpnhgspghrtghpthhtohepudehpdhrtghpthhtohephfhrrghnkhdrnfhisehngihprdgtohhmpdhrtghpthhtohepghgvrhhgsehlihhnuhigqdhmieekkhdrohhrg
+ hdprhgtphhtthhopehgvggvrhhtsehlihhnuhigqdhmieekkhdrohhrghdprhgtphhtthhopeholhhivhhirgesshgvlhgvnhhitgdrtghomhdprhgtphhtthhopehhvghrsggvrhhtsehgohhnughorhdrrghprghnrgdrohhrghdrrghupdhrtghpthhtohepshhhrgifnhhguhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrdhhrghuvghrsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehkvghrnhgvlhesphgvnhhguhhtrhhonhhigidruggv
+X-GND-Sasl: jeanmichel.hautbois@yoseli.org
 
+On Tue, Nov 25, 2025 at 01:48:24AM +0800, kernel test robot wrote:
+> Hi Jean-Michel,
+> 
+> kernel test robot noticed the following build warnings:
+> 
+> [auto build test WARNING on ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Jean-Michel-Hautbois/m68k-coldfire-Mark-platform-device-resource-arrays-as-const/20251124-210737
+> base:   ac3fd01e4c1efce8f2c054cdeb2ddd2fc0fb150d
+> patch link:    https://lore.kernel.org/r/20251124-b4-m5441x-add-rng-support-v3-1-f447251dad27%40yoseli.org
+> patch subject: [PATCH v3 1/3] m68k: coldfire: Mark platform device resource arrays as const
+> config: m68k-allnoconfig (https://download.01.org/0day-ci/archive/20251125/202511250103.RMNoU3xH-lkp@intel.com/config)
+> compiler: m68k-linux-gcc (GCC) 15.1.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251125/202511250103.RMNoU3xH-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202511250103.RMNoU3xH-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+> >> arch/m68k/coldfire/device.c:141:35: warning: initialization discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+>      141 |         .resource               = mcf_fec0_resources,
+>          |                                   ^~~~~~~~~~~~~~~~~~
+> 
+> 
+> vim +/const +141 arch/m68k/coldfire/device.c
 
---lpjpsnbozts7gelo
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: RE: [EXT] Re: [PATCH 5/6] spi: imx: support dynamic burst length
- for ECSPI DMA mode
-MIME-Version: 1.0
+Frank, I mentionned this warning in v2, do you have a suggestion ?
 
-On 26.11.2025 08:34:18, Carlos Song wrote:
-> > On 25.11.2025 18:06:17, Carlos Song wrote:
-> > > +static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
-> > > +				struct spi_transfer *transfer)
-> > > +{
-> > > +	bool word_delay =3D transfer->word_delay.value !=3D 0;
-> > > +	int ret;
-> > > +	int i;
-> > > +
-> > > +	ret =3D spi_imx_dma_data_prepare(spi_imx, transfer, word_delay);
-> > > +	if (ret < 0) {
-> > > +		transfer->error |=3D SPI_TRANS_FAIL_NO_START;
-> > > +		dev_err(spi_imx->dev, "DMA data prepare fail\n");
-> > > +		goto fallback_pio;
-> > > +	}
-> > > +
-> > > +	spi_imx->rx_offset =3D 0;
-> > > +
-> > > +	/* Each dma_package performs a separate DMA transfer once */
-> > > +	for (i =3D 0; i < spi_imx->dma_package_num; i++) {
-> > > +		ret =3D spi_imx_dma_map(spi_imx, &spi_imx->dma_data[i]);
-> > > +		if (ret < 0) {
-> > > +			transfer->error |=3D SPI_TRANS_FAIL_NO_START;
-> >
-> > What about:
-> >
-> > if (i =3D=3D 0)
-> >         transfer->error |=3D SPI_TRANS_FAIL_NO_START;
-> >
-> > instead of removing the later?
->
-> 	for (i =3D 0; i < spi_imx->dma_package_num; i++) {
-> 		ret =3D spi_imx_dma_map(spi_imx, &spi_imx->dma_data[i]);
-> 		if (ret < 0) {
-> 			if (I =3D=3D 0)
-                            ^ i
-> 				transfer->error |=3D SPI_TRANS_FAIL_NO_START;
-> 			dev_err(spi_imx->dev, "DMA map fail\n");
-> 			break;
-> 		}
-> ...
-> -	/* If no any dma package data is transferred, fallback to PIO mode tran=
-sfer */
-> -	if ((transfer->error & SPI_TRANS_FAIL_NO_START) && i !=3D 0)
-> -		transfer->error &=3D !SPI_TRANS_FAIL_NO_START;
->
-> 	return ret;
->
-> Just like this? I accept this. I can fix this in V2
+Thanks !
+JM
 
-Yes, with the fixed typo.
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---lpjpsnbozts7gelo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmkmvgIACgkQDHRl3/mQ
-kZzAvAgArvXzrutjT/izZ7sdLJgRn2brxxdTsRIw5MxG8cSN6QHYKhE4ADZ8ZU0I
-UHPcxx5UbhoxLC/nEnzjYS4l48XGBq66gxtkTBSff01akyulQeAHT9FeS97f2hIE
-lNH+SUqzeMtm94s1FysvscYnaYJgR7X/Gl7zT9/Nx6abM2gLL9NdqWEmFg1jfKdp
-nGqJlcW13MIjrQHwG4Cf8oa4Yc6K6iPfv5HaryQ/V43mnlpUtmZ2WkbDxlak5zTe
-X0ORcy/w2DeRjzXkvdlBV31kUZCpZbjJn6ZhPTXR+VpRDzUzurD5JJfmOmt3kBXp
-Aig2qZuQQ5x71CbySJajSzNmYJvqQw==
-=eUsF
------END PGP SIGNATURE-----
-
---lpjpsnbozts7gelo--
+> 
+> b7ce7f0d0efc1a arch/m68k/platform/coldfire/device.c Greg Ungerer      2011-12-24  136  
+> b7ce7f0d0efc1a arch/m68k/platform/coldfire/device.c Greg Ungerer      2011-12-24  137  static struct platform_device mcf_fec0 = {
+> bea8bcb12da09b arch/m68k/platform/coldfire/device.c Steven King       2012-06-06  138  	.name			= FEC_NAME,
+> b7ce7f0d0efc1a arch/m68k/platform/coldfire/device.c Greg Ungerer      2011-12-24  139  	.id			= 0,
+> b7ce7f0d0efc1a arch/m68k/platform/coldfire/device.c Greg Ungerer      2011-12-24  140  	.num_resources		= ARRAY_SIZE(mcf_fec0_resources),
+> b7ce7f0d0efc1a arch/m68k/platform/coldfire/device.c Greg Ungerer      2011-12-24 @141  	.resource		= mcf_fec0_resources,
+> f61e64310b7573 arch/m68k/coldfire/device.c          Greg Ungerer      2018-03-28  142  	.dev = {
+> f61e64310b7573 arch/m68k/coldfire/device.c          Greg Ungerer      2018-03-28  143  		.dma_mask		= &mcf_fec0.dev.coherent_dma_mask,
+> f61e64310b7573 arch/m68k/coldfire/device.c          Greg Ungerer      2018-03-28  144  		.coherent_dma_mask	= DMA_BIT_MASK(32),
+> f61e64310b7573 arch/m68k/coldfire/device.c          Greg Ungerer      2018-03-28  145  		.platform_data		= FEC_PDATA,
+> f61e64310b7573 arch/m68k/coldfire/device.c          Greg Ungerer      2018-03-28  146  	}
+> b7ce7f0d0efc1a arch/m68k/platform/coldfire/device.c Greg Ungerer      2011-12-24  147  };
+> 63a24cf8cc330e arch/m68k/coldfire/device.c          Antonio Quartulli 2024-10-29  148  #endif /* MCFFEC_BASE0 */
+> b7ce7f0d0efc1a arch/m68k/platform/coldfire/device.c Greg Ungerer      2011-12-24  149  
+> 
+> -- 
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
