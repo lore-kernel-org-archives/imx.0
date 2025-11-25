@@ -1,120 +1,177 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010048.outbound.protection.outlook.com [52.101.69.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071FC2BF001
-	for <imx@lists.linux.dev>; Tue, 25 Nov 2025 10:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764065114; cv=none; b=B6RizUDLo64FfUj82XQDQ1w+k9FPkKUjkOSrT9gcQizfSeZlN5ezYUFxEriLLnTxr9vabm6jiIOY8q+HbTVwZaBEEtFFS75S8YzZHdtFtnauStt7YdKmwzEHP1//W6Xo+EQ91CGXnBz91id8AEdhAEuz9GzlOP6L5o8hPEoTMEY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764065114; c=relaxed/simple;
-	bh=Tvut4rKFuaZuRy+MpiRjhCbO3OPGk1QYOL3k9etbC0I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=riRbOMZ7+MJ2PPOs1OQisYXWwFFls6toWS1j/4/xdnmo4aZN+VJGsRT1ntecbOgEIlQTsLBH5CCOgy5RN/7n7woen7UrhtyVR16NqnqP2FS/sBUUqt5q8SzceBY6mcxYBG5ZFcBJ2OhOor5A2aglQDaqBLpAKzE5v7ac3h8KRGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JUXZMmIG; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8122DC76C
+	for <imx@lists.linux.dev>; Tue, 25 Nov 2025 10:06:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764065220; cv=fail; b=LlfWS0iGqnxomMon65eX97lCvf+3FtX0k5jD6PROU9Augvig2FwZV7tWknVRceDlFL7PzCre3Lz55KpmMqDebctyI7xRjnuJDpBbJ5KLPUPuumPR/YV88LMB8dQrS1PXc0y6sZjO5NNwXgyjwVblOIDNYP1OrAR4F7RLuJQE97I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764065220; c=relaxed/simple;
+	bh=/DSYn7si1X+REN8R9XL2YDmrnfH5JX1CynzNH8kKXX4=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=eWWZh/Huoht76t97A+xLyrjjkOQxiDpf+GSRHeAnD3wAEyt0PYEIOS+KpHyWJkpb+2sAvtJFpSOP38r8ai4B+IsNUeBgF2EeGloZ3G2IKhC61ADF9Zqah2p6cocO7FM63EudtAEo/J0dt2opn6o+Zr4xRSCMNQ1Nbkz4QfGnSz0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FnLvGXa2; arc=fail smtp.client-ip=52.101.69.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JUXZMmIG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1764065111;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8Du2XvNcpBpgsVAjcJWW200tMdW4BN0igIjQyXWLtpA=;
-	b=JUXZMmIGKosGqxzh0TcLMzfQ/5ypZT4yWSsJl0dxbh67EaxKWBnpouT70l+lJUBAc2369D
-	tAUq/Tt5TSaWPQVbZFt9LyFWOFdOrHpQC7NNRfFgkgFx55B0yiKklmc9tsC5eFnNyQ5jVL
-	QLvJ4pkRSDwcjcrWX79wNp8Ie9+W5Mo=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-590-BcE3ZPG2OUiHtamRJInydw-1; Tue, 25 Nov 2025 05:05:10 -0500
-X-MC-Unique: BcE3ZPG2OUiHtamRJInydw-1
-X-Mimecast-MFC-AGG-ID: BcE3ZPG2OUiHtamRJInydw_1764065109
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4779edba8f3so41529925e9.3
-        for <imx@lists.linux.dev>; Tue, 25 Nov 2025 02:05:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764065109; x=1764669909;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8Du2XvNcpBpgsVAjcJWW200tMdW4BN0igIjQyXWLtpA=;
-        b=DWxgBZZdfPmBXmZeOhA3R/wrfVUGVuF4Exjfxv+VwfxKyxZGmaMXxjwebC8xDvcrXI
-         120jNTSiZg+UOOsaRqFhkCrZNH5T7KEV18VWoOi+nd1fyGVXnofmrsW5Kl2W0Aul1xIB
-         pUp6LFss9r7o9D0tQCOLBvMPYSYyyPwgTpos9EZiwzeTAbRfyh0fJ3PRB0TPpS/IesIY
-         /lbDoOvvE+/KBHTIbJ40vDUeZgNjDvZb/TDpHl00pSlTr+4ohCZRL9ScNUxSSND1JGAt
-         /17jg4dAbArxr/nrbr0X08aUyRNEB7yV9qeAXShbWqJeOEp6kRDjaYsv1ptJRq3FSlHe
-         fW5g==
-X-Forwarded-Encrypted: i=1; AJvYcCWXjIdcRaqn9ZBdbVmlcXh23gxQ1BOC7CWHT+5JplfTPmfuNofN0lPcv8rtuJCR06YszOA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyZAui6nBpdFborq3YyJSEE+FTqTEYikLpRZaF+Ilum0btffIU+
-	Twbmz9s4O28l6OCXNo3oFl6CW67wOqOOJp9XivMNtfw0IHusEY5u6NjgseMRdxP6Sp8wnMVPBrJ
-	xIUlR5riNhVCdyFH5+grd1sXibYV3mAd2PSlvSmiPELanFMPs2YZ4dw==
-X-Gm-Gg: ASbGnctQsz1otYbPfKGoq1hWiD8sujJzKQbplDTfspaZ6wUKQx/llSM1t+XsmHZcI8q
-	iwMTPzcsR5AKGJrTrcQLFEEMl/GML6o201S16HqPkv9dH/Ba+2PKuHh5W0yNg/mmBnsD0EYP5HF
-	yXoxrcTbzIdakMvXyYsrRHF9fpkAJtNDRqEe/AMwQgKUoaWrJOljy1dAOCOwdZO8T2oYiZFQUMT
-	1wGeGDX5Do+EXsABHECEGF7qV7zM0p7KimJlGaGujqLwHMMdpdwAOL2wn8oC+zNWCaYzKzRyNQj
-	YK2aOfriu/XD7YCgmOUKdbETZk4IBIKZaVpwd6udtjsAVS8UhClQRlIsclXpnWrQdBERlwnFLTR
-	+7cRzvxxE1mn2TQ==
-X-Received: by 2002:a05:600c:3541:b0:477:9650:3184 with SMTP id 5b1f17b1804b1-477c0165bc3mr141142485e9.2.1764065109396;
-        Tue, 25 Nov 2025 02:05:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHdw5BhuyWaRQOc8C580uVcASiaAfZ16Z89gL80wDsCpr6kPhgTQUxoRiGKflA0cavmZi684g==
-X-Received: by 2002:a05:600c:3541:b0:477:9650:3184 with SMTP id 5b1f17b1804b1-477c0165bc3mr141142165e9.2.1764065109027;
-        Tue, 25 Nov 2025 02:05:09 -0800 (PST)
-Received: from [192.168.88.32] ([212.105.153.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477bf22dfcesm246385055e9.13.2025.11.25.02.05.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Nov 2025 02:05:07 -0800 (PST)
-Message-ID: <46765613-9a04-454b-8555-21f6fd965008@redhat.com>
-Date: Tue, 25 Nov 2025 11:05:06 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FnLvGXa2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ySvqnKTkd2w86wVThPa8jhYXq57rEPjJWn3+4Ok+yAp+9ggrkfFgHte3hIUWOcjWgMjZJsxYrMKCDYgKvZ+eSiMpn/6xyr2ueQHkEmRT2l7e0HgDBFM3S6a9LJ397zXULUiuf4h0VtMhLn6LseJDPIK5HEV5lqW328mpsTBX7e1qej5EkxMzBXZ49yUf6baHnITnq9eQOcOVvD7gHYYjMWjwEvY/HZufXU+n4MpEyGrzrLtZrXokOouGVeHkWU6UPtK+5qwb3dpgjaIQhMBzXXJ/bUMEGW6XMqWaHSWZgp9gRdPdMeGgNlFfX7XthEKaUMT8sHSKj1ITdAVLc29uJQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DyNfWaDXBNg2JzSiIwjDRCNRFWKZLpTdnIGSPYl16y8=;
+ b=kMzOznMUZx9+wsG1yoL3aCIOanBmmBVwlUT2CZIX6EWYGa3egZsEqJpY0pYnxP19m3/5rct5rGPEYGyHc934KuCzkvffZ7ul9K4FbLdjshcdBIuHJhz0XaJKqib9WB9w3/ITo0IJmX4E++8qUNAKE12ZEgwMkzwZv0TVxxdMDi5Z1O2V3uv+fcWLliO8Ve1nD8CbLIVsaEWFwfWb1uwcJL+KC7BiL9k6xyyAjvAVG5qU6a/2QAjFbWsmW8ldir4T+T9h395J2qnDlgU357ZQA2z7LoLvhLWUMmRETds/B6hxf330Z+/baOIEJ+5bVIIUmey9MGAGdByYvuJSPpMYjw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DyNfWaDXBNg2JzSiIwjDRCNRFWKZLpTdnIGSPYl16y8=;
+ b=FnLvGXa2Km8wZbq+QOssNVrz87IlTJeoKfm0MGEL7ngklk7VK549UdqbfVrr2eoLkjMX6oWKcA+3EEo24d6w6/aTASSzZi11sbfA/LDdQFfB8whI/1R9rMBD2HfiaM4PuKvwKgoJJCTFb3CWBd9wULmVvoaZm8BUezA89I2gykwMg/gai4rsUpUOfX1iaGsND9Up0DG6ttpu4k7oQteFJKEmOCdr6VOzHeIqbO1rJf2xVsEMfV6Ii/4g9Xp2O3KMaFqWLzakfvCTClnK3zTi4j+RpSnSBprMXIh/guLsBSJlH2U6A18KF+iY9MXuV1WjaUdrcJl/hjvihs3leLlbeA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
+ (2603:10a6:800:293::14) by DBBPR04MB7657.eurprd04.prod.outlook.com
+ (2603:10a6:10:1f5::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.18; Tue, 25 Nov
+ 2025 10:06:55 +0000
+Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
+ ([fe80::75ad:fac7:cfe7:b687]) by VI2PR04MB11147.eurprd04.prod.outlook.com
+ ([fe80::75ad:fac7:cfe7:b687%6]) with mapi id 15.20.9343.016; Tue, 25 Nov 2025
+ 10:06:54 +0000
+From: Carlos Song <carlos.song@nxp.com>
+To: broonie@kernel.org,
+	frank.li@nxp.com,
+	hawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Carlos Song <carlos.song@nxp.com>
+Subject: [PATCH 0/6] Support ECSPI dynamic burst feature for DMA mode
+Date: Tue, 25 Nov 2025 18:06:12 +0800
+Message-Id: <20251125100618.2159770-1-carlos.song@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4P190CA0063.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:656::14) To VI2PR04MB11147.eurprd04.prod.outlook.com
+ (2603:10a6:800:293::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 net-next 3/3] net: enetc: update the base address of
- port MDIO registers for ENETC v4
-To: Wei Fang <wei.fang@nxp.com>, claudiu.manoil@nxp.com,
- vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org
-Cc: aziz.sellami@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20251119102557.1041881-1-wei.fang@nxp.com>
- <20251119102557.1041881-4-wei.fang@nxp.com>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20251119102557.1041881-4-wei.fang@nxp.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: zTD6sw_0lYHffBBJzMfl5OuG66de9zzFR7ZCek-JQXk_1764065109
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI2PR04MB11147:EE_|DBBPR04MB7657:EE_
+X-MS-Office365-Filtering-Correlation-Id: cbf5f44b-4fec-48f7-e6c1-08de2c0a5c50
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|366016|52116014|376014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?dSQWb/4BoFl6TwK5dWup6PHIyzm274vHz+NNutPqHc6+oJn1RCl68fPnClxd?=
+ =?us-ascii?Q?vNTqkCcLCwANwZFoxaF2JnoCw9e6P6YDDvaVYuuF63t3ji6GXpojm3aRf0I3?=
+ =?us-ascii?Q?4FoQnFPw9gTyUlPVZMFea826F1akNwHFA18ejDNclwsVNscGUKJfIVRa1gGR?=
+ =?us-ascii?Q?pnd1vd8c4+g+HucMwYnt22HEVTDUTEef4bspE9XkidaTjGqJxwG8IeJxNYpw?=
+ =?us-ascii?Q?qdRHvP3ASbuwwsgo8g3biw9jp9669Hiz2k0NMt4btM6aXRj5VIvXLg5BDRIg?=
+ =?us-ascii?Q?S1yOEjDkUEuRQzSONt8VhO0bl87KQ/1TPCirty4J+WDmxFln1575h8KFd7l7?=
+ =?us-ascii?Q?4QK1F9rz/7ELg80Liv3rkVexqUDt7YnYnbU3tydyLjOmGxgF7vJDqAW2r+7P?=
+ =?us-ascii?Q?LL7zFAnaoCozJ4Ci1mEbQLGbASYy+1X4K86/sDQ6JQ6rxM+VJW5E14rfNUE1?=
+ =?us-ascii?Q?agt0ZPuqXxjGoG/gf0196vKorr+zFyUQuOdAXxyVXudKy+Codf/T5ZgbqtRp?=
+ =?us-ascii?Q?FI6TEfIrnaa/8sbYL6ZzDRryV9MsXidRaaT+YPDJHEwHhcxQiOsN22wnw643?=
+ =?us-ascii?Q?gfR5Ercb02rXTSVeybFpq57g+oq1tPiLmfk5HKFeIAgsiN+eQOQFyJMTjLVG?=
+ =?us-ascii?Q?AWPnJi84fB56WivIbt5bPYMAuAFtI7CAToblPeJOtpF3fY2gBGVM+xD32VXF?=
+ =?us-ascii?Q?xkJ1R5IQoEAQUnMX99I6TKw3n5ZIsVIpEdyk7M1GUmJqI7+rH3arRxucHLNZ?=
+ =?us-ascii?Q?3yC3X7sWgUybJ1i7AYpyFgmmcOUFTxCTHLcCfyq3Zs6QHDoLHXQH4OiWmBUb?=
+ =?us-ascii?Q?V8kK487aEJVggCfYwBjS0goEvzp98TDDWf3l7qiT9vIHFc+GYGzw3hAIwteT?=
+ =?us-ascii?Q?FkoURDzYeiAPQztmXXwDFHnbbPmQOCErgaYh9HR9u4eE6UYoJx70yINBrG+U?=
+ =?us-ascii?Q?x+cjX9l+LY2oV8IyUqg1ZtKZqJ3iXavAybmKZQS+JcoVFnR4Wm5rxmCVNTsU?=
+ =?us-ascii?Q?XGY/aD1SCi8OlzS4g5sNXeryzxPkQtglJ+5BSdF0XAsOm2AxX2wR4xSBqIFo?=
+ =?us-ascii?Q?eCKfihE3FVNDMBI08IEaJW2/cdR503rAyIHSsq9iZauI6DZ6EVjl5OGm68rH?=
+ =?us-ascii?Q?fQbjBP+zaA9f3H8T9/LxDxsxZu6obWeuRHc3V7VAHgzrZQaAo2zyHY5rLvpU?=
+ =?us-ascii?Q?vaCA9lstNGrKVzAGdYdFBXwwa60Cma8raDVdKHW6cqnbRidTHpoXfwkXxJ+Q?=
+ =?us-ascii?Q?/xMD/Bm4SwR6oSS5gyLqXLNQ1UmuPiiGFnttmFdseeKJLJBg/97JB7ezPExV?=
+ =?us-ascii?Q?LEFMxhikaWffd+le54SCg7poH/8GXrS+2cn53hDIEip+j8RD8MdhbKQ/Yp7x?=
+ =?us-ascii?Q?hLBB9pzW+sMDzN3jSw1M6v0AzJZ/01XuPJh/ReyEfDnNYbGmxy98Mn9lPabg?=
+ =?us-ascii?Q?4sw/tqg+oduCumG5OAx85ZdSpfYab74i0z4PQZmHdzJjQ6YHEcv5cLTWQI3Y?=
+ =?us-ascii?Q?2uxNLrrYELruoHpacLOlv7wk1/tk614Fc+Nh?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11147.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?eKxED6SHRKy+jUfZHKBOOSALYhoWToQrqpvuTAP9yWW6D9979zaS+I2dtr+9?=
+ =?us-ascii?Q?LUxdwHBWgZool3rKxkPhPKhbO07YXlYpKEaFHCPbf+gFcgbGCaSI/J9kij8C?=
+ =?us-ascii?Q?GCS01wfd0XZD3oeCgZWxEy7EKtnSp9IQkR8J6HrKSr6Cge91GA7BoqzQSlo+?=
+ =?us-ascii?Q?GiO4RtqOBV7h47sotHPzenkbyipBGgLX7gwa+NpaeJ9axt5I3yxOwngSK0Gb?=
+ =?us-ascii?Q?JILLhCearOLf/aW45sB2GgL7PKWv38xOdtnW/sDi+V6SO1RfdAUs5Vl8d1Rj?=
+ =?us-ascii?Q?77q4hUsDzHOOSfkExKyX4hQYpCF6sJwHb4b/s9JMMpJ3zgEvdtOZF/q+TMRT?=
+ =?us-ascii?Q?dWSO39TEz+1lPbAMoHZ/f3e2+hwWDDNerVc8jm1jmRPk85zsmJt5Jtgr5Fb0?=
+ =?us-ascii?Q?tQuLvqfnWE0TddgbJrVP3Jn/+WKVQVGe5lElWVVku2WMy4hSrVqFI3nCzSIa?=
+ =?us-ascii?Q?aZQ1dhkaAsJ/Z2T58OY8mAwRFv01th2W/4U6c2amIrvfshRBqhXM8PUlBzSR?=
+ =?us-ascii?Q?x8it46ABHg1eximQHhJuMkItNkMHD+hmIFT5nT/PdIF0ugWr7b10Hi8REIV6?=
+ =?us-ascii?Q?BMJFWp0UFi/UWSMnm95tNc0t3g0PIjJOYg2V/3YRs6NsCT9U6EkHnHpD5MP+?=
+ =?us-ascii?Q?CFWka6GVh5bZgHSy9e4o6d1ww8vgJ7FW6aq3g82KRy6gW+1eEKi9bXoM2p5j?=
+ =?us-ascii?Q?t5A+g3himLjojnA/3eAKu659y9pl9MfDPj7m0dSpa4cvQ8D5DuSs96bPXchc?=
+ =?us-ascii?Q?fh2DiFzoqv+69tt0JYNElO3pR3XUpDPt4BfVMs4r/YrBzC/0KI8L2m5t4nHw?=
+ =?us-ascii?Q?Pgj5sYTICd+ak10EEY8CuuL6vx/3aDHwAqToB9j1biZxaXaWImu+isAYGNQ8?=
+ =?us-ascii?Q?CeVC1MnkTRrsI8K5Y0X5ewd+xeZktQ+yOUEGMHuJfCjn0u8d7dWeCdOKkRU3?=
+ =?us-ascii?Q?hPwon9Hc0CJHQm2TS7WCN7qdVT3jXuHAq/S9sMlffJvIEIsSMh7fubc8wBBB?=
+ =?us-ascii?Q?eXboJH9S7HJUMvxQgwTMa/ecSI3WKh4gUIBk5Q9AvKwa1zVEWhjD/Cu4hr6Q?=
+ =?us-ascii?Q?+wm82qOwlTmSqeOxo8WRwwEbUvXZffZdjuCXcXCEbw7l0kpmCZEPk6q7X2G+?=
+ =?us-ascii?Q?N6r0GL3YBuHTzfgRtrDcNnEEqigLqaPIHQ2AqacIsJuAWdFLUSjRLBlYA8Nc?=
+ =?us-ascii?Q?ghfaalIc6cfAPpgAS1SmqSD5kjRjIevakW+2RhjT7VRTQGfQD5RGETZlvfhW?=
+ =?us-ascii?Q?Lv/gLQWKIqJyRlMSE9iPANUNId3hTOplXKKkwY/XwfiSs0BVORoydSOkjJYY?=
+ =?us-ascii?Q?DkxJYUJYXIeLU9zNM/NBRk0bBhkzM1OnXTxjH5ocr3cCt9qMPTIHvABAevdd?=
+ =?us-ascii?Q?I6TvdAaYH78+gJ83mPdvmevIQBSQ6/5v5TLmfVCgI7EudiAfWfOfIw7qDXqV?=
+ =?us-ascii?Q?GQkpYJYr1v0F5TobADWJR5Oh1UcjWdxdVrpoQRaKyOEWIwwlfqa7Wf6CwjC2?=
+ =?us-ascii?Q?iWf5DzmSC/KMw5rSe1Hko3sZyK4QlEnK9YhM01I6Xr9fWdhsD2mfZvTo5z7J?=
+ =?us-ascii?Q?Fh8/PxFjXiwh8A/SkgAsPo/mxBTs5X2Gk4qhDKSq?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cbf5f44b-4fec-48f7-e6c1-08de2c0a5c50
+X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11147.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 10:06:54.7345
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JQ1ykD4n7IhTVADyIqKRiGwPbksz9zvjy+WLvsfvNPjmwCBoAjPLchQiQv3W3Hi42IWlxA/bIMCX9S0+r7Ycxg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7657
 
-On 11/19/25 11:25 AM, Wei Fang wrote:
-> Each ENETC has a set of external MDIO registers to access its external
-> PHY based on its port EMDIO bus, these registers are used for MDIO bus
-> access, such as setting the PHY address, PHY register address and value,
-> read or write operations, C22 or C45 format, etc. The base address of
-> this set of registers has been modified in ENETC v4 and is different
-> from that in ENETC v1. So the base address needs to be updated so that
-> ENETC v4 can use port MDIO to manage its own external PHY.
-> 
-> Additionally, if ENETC has the PCS layer, it also has a set of internal
-> MDIO registers for managing its on-die PHY (PCS/Serdes). The base address
-> of this set of registers is also different from that of ENETC v1, so the
-> base address also needs to be updated so that ENETC v4 can support the
-> management of on-die PHY through the internal MDIO bus.
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+ECSPI has a low throughput because of no dynamic burst support, it
+transfers only one word per frame in DMA mode, causing SCLK stalls
+between words due to BURST_LENGTH updates.
 
-Andrew, it's not clear to me if you are with the current patch version,
-could you please chime-in?
+This patch set is to support ECSPI dynamic burst feature to help improve
+the ECSPI DMA mode performance.
 
-Thanks,
+Performance test (spidev_test @10MHz, 4KB):
+  Before: tx/rx ~6651.9 kbps
+  After:  tx/rx ~9922.2 kbps (~50% improvement)
 
-Paolo
+For compatibility with slow SPI devices, add configurable word delay in
+DMA mode. When word delay is set, dynamic burst is disabled and
+BURST_LENGTH equals word length.
 
+Also support target DMA mode with enabled dynamic burst.
+
+Carlos Song (6):
+  spi: imx: group spi_imx_dma_configure() with spi_imx_dma_transfer()
+  spi: imx: introduce helper to clear DMA mode logic
+  spi: imx: avoid dmaengine_terminate_all() on TX prep failure
+  spi: imx: handle DMA submission errors with dma_submit_error()
+  spi: imx: support dynamic burst length for ECSPI DMA mode
+  spi: imx: enable DMA mode for target operation
+
+ drivers/spi/spi-imx.c | 620 ++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 513 insertions(+), 107 deletions(-)
+
+-- 
+2.34.1
 
