@@ -1,172 +1,735 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011059.outbound.protection.outlook.com [52.101.70.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35FF3271E7
-	for <imx@lists.linux.dev>; Tue, 25 Nov 2025 15:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764085346; cv=fail; b=GZ5LWJ0zVmERLjoLEQ/+xY6M0MSOGiRWvwhoQH9ytZkBnSUs+tbMwQlDg6tImls7PRkfWFUgyc0CbbtRLm90jqu0Mg2veI3zCmLvYiPBQnJBwVK6qroA3cEqHXcoLrE0jBH1O0+hP1nGNyYk8rRP9Oi/hUuCJyjlRmvUgyd9Z48=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764085346; c=relaxed/simple;
-	bh=+nxGHppquNroAQJHNLzG5WnxUSVzBXvY5ss0CJYsAZc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=iq5Z0esxdRA5p2ufdW46sY5aPW9T1OnMiaUFt7LLMcvERtI8y+/KN3oHBlnKoW+cyTZ1rfRhysgBu0VaI3JFI8gGTapjWAJvJTlReekajOZlYBavN/BuqZvmI9lw8+8Rxokue1eUFqQWa+ZQpXXAy1jLsPy7k94buEa/RkygmxA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eknTLH5z; arc=fail smtp.client-ip=52.101.70.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572B319F137
+	for <imx@lists.linux.dev>; Tue, 25 Nov 2025 15:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764085522; cv=none; b=J+S/4rzOYkypW61UU8t9dsXc5F2k2HI3rqZXc/2dgwiy2phXxazCjQl+IUkhQ5AH0YRqS9Ni+Q2gC4Lf+JWErWPqZGrUNRkr9G51Dg85mjRmLUC7lQ9nsf4Smj9gtfmTnzIVsQX3hWK14AISHV0iYBbSstZz8uW6K/+sBdPWBl8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764085522; c=relaxed/simple;
+	bh=km/mz9qhpVD26vff6W0uirYPKuEm7lGI8++2YbpRwLQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ldOiSBPQlaYqbNLzeR2fQ1Yw+E3uBNo/NVPH2dPERzak+cBPOxROCWVtHNdA+3FezBj/bzL3J5GZi4AQw/uuWpT4wCJAGidyovDzQ/87iYm7OacaZFFnEvxwZPj0+zHN8YYjFZu6WrqThKOtpqAnZbJKCShCaNM5ZWjOLbUlzvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zSeh//2N; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eknTLH5z"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mIaB5dQcHywHVO9XakYhW7Zll8gXuoH3DzzizFj5Uh7hXYkuwCU8JzHUcu/5AZ9OSXYaQZFoep2PvL/cIRA83uvSZzX0mjGxDOw6DHQ+p1idayl9Mh+foP1JMikh6w57XubvDIPIiXaynaJGTbtj6/OJ9Bvai3f+wyiERDRUxaK2B+bNeeZJfno1aMw2sOECzbGXXJ/0olb7z2TxmZoCPT7RtMzLC6zJZ0Ratw7OywMtAUDvSwJWq/2++ALnA4uAud031yst4OLMoVM3A4gGbIfn2k8UulZWwBfwHynN2+nZDWB8IWJ7NQGDdKtNTvaDzx0wv/cTt7wl/tCWyhdErw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cglGfHES1AyLV3WjpTbXMZr/1UCC8ZwMFRGQsP++r4M=;
- b=PO6WX4orGjGE8VwDH7hXjcjMJNbh+2ZOn/C+fmOvYcgE7/UC6i/hUSBJdt1OIdTjdLma396AIRwQ/K9rUV4e6tdFJPJ8/77mbw5Q3Pd3lzRd/4/2pUpznvt0SS0n3O8SnPrdxfcrzwcWMULZCnBiRARdSOCT1Yy4j/XTQFWiswjT2GMRlJM9kqtziFKhp53zttMO76/sfmgPtwREnesZc4X8quNXzainP80I2ylBLnjGqnuWJKX5Xhy2sN3lMO9r0ldGJhmK6zq9hfZupSPeKHktCUqxvjD+oU2+wUmyewulGXCPMlTgiqq1/kUNKdM1bcvyXqA4i5suaFUbQ67Iiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cglGfHES1AyLV3WjpTbXMZr/1UCC8ZwMFRGQsP++r4M=;
- b=eknTLH5zN5Q5BgV+1h+u4RqXBdvQzxy2MfVE4w5/VmDqy2WzUGZWTrpeqmgIs7bG4zEv14dajvAQi2kQC+zs+WVe7N2QGadfnmI6vneuxMNng9MgkwuVUVNUF+Brg6A/aq3X3JmIhUHT46hyoTlU/uGrqF0uiYPSu38p586X/hPjvrLvzgfegtcpuA+K7MKJ20OPjTZDnbiGLzIRYfhYb0sT3c2+VlNaXRneO4dhOiGyp2orVOMXCs/1yhS4R5LiLZ/nbVKWqgPJBv/SoGx51q/Jog5wREGRqHmTL6OxB/A9HBPtEt5743m78wO/2qerhOboK4uVslPEYvkJeTMCag==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
- by GVXPR04MB10946.eurprd04.prod.outlook.com (2603:10a6:150:21d::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9343.17; Tue, 25 Nov
- 2025 15:42:21 +0000
-Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
- ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
- ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9366.009; Tue, 25 Nov 2025
- 15:42:21 +0000
-Date: Tue, 25 Nov 2025 10:42:13 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: broonie@kernel.org, hawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-spi@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/6] spi: imx: avoid dmaengine_terminate_all() on TX prep
- failure
-Message-ID: <aSXOVabiKux8T1QU@lizhi-Precision-Tower-5810>
-References: <20251125100618.2159770-1-carlos.song@nxp.com>
- <20251125100618.2159770-4-carlos.song@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251125100618.2159770-4-carlos.song@nxp.com>
-X-ClientProxiedBy: SJ0PR13CA0120.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::35) To DU2PR04MB8951.eurprd04.prod.outlook.com
- (2603:10a6:10:2e2::22)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zSeh//2N"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-29806bd47b5so34592035ad.3
+        for <imx@lists.linux.dev>; Tue, 25 Nov 2025 07:45:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1764085519; x=1764690319; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=o4ywU1WpmLZUzY6/ONaNewtf+72w32eJPzNc0pydRf4=;
+        b=zSeh//2NGKKSCOUj9I+bqkXuAx2HZSQevecuPRS8vFm4OAKSCOliTG/WYLgIOH3dOo
+         pcCzmP+ARTk/1/j0WEqJkublzUTJ6UfMXZPMG5svfGZPV9kuv9JC3pFZLbLKyVEHnW++
+         qdYy1yWXy/6PguAQ8ec5gXX4PF4qOnpZxGOapaUfHw/zynJJEFzmyRk50lCvjnRdu5A6
+         G7lJacjIOlpiyPglFsZspK7K9wx3uk/CqwkwGZrZmlQsT2Q04ysqtRxb8fbt7Xxrq+c7
+         R8gPyPMGjPLh5uEt02Q3atfu/kLZNPIbYYm9fnY8N/Jd+BCxWskWlO4bv5AN4GVpa8V0
+         rMGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764085519; x=1764690319;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=o4ywU1WpmLZUzY6/ONaNewtf+72w32eJPzNc0pydRf4=;
+        b=bb1JRDPdylSEElEhC04uqhMW6thXmufXRia/uSPYeYwmBOW9wMc0/paFwM6RNHl27s
+         x6Noe19fPaDlRdD0JQW1ocseZi9YN0zC18XaQi8SNWXOJav40oSylC0dNOQa5qkJSbyO
+         mcVz1XiiJGm7VR1Oo474Kzjsz5JtvKt75scIddrIN7UeJqNx9yU1pfkDRkY6L2bVKOu+
+         O5EkiQjkEMMyjEx6FsB2xdwZk46olZFOCo2X/9lwXJX3Pi9Gso0+tdjiyH9kk7czCoBv
+         PLSNQmvGbyIkP06FZV37R/4VBXIzFu6LEJ8oGOhllv72/KTXs/YnQsSfOteVpR8XJR4r
+         elqg==
+X-Forwarded-Encrypted: i=1; AJvYcCVMdesIP8iQ6Hw+sjaLHLUcp9QKg40jIkjaZbho4whhiJfIaCF4CQimU2FbTwfvqygwCXw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzLeudXzaGFLz2V2KINhqOACrzdmpmble94NgGkNTz2ZjMbq54Y
+	ZBr2UcIMDBN3tM+N4Saty7F+HCVz9rJanwIP5I6hZ1XYtwHse9VHAJUta0Pog8f7pww=
+X-Gm-Gg: ASbGnctLmq1V5aWqn1dc2R7ulC0DH14x0FSwq+3LUQpH+BGqH2MHhxP5ZcIMTWwBLWk
+	clMJdiUFTbGlv6FeqvQmslZVdqOrZgCozlkzIZ4xKB8Vvi9HHjwRwxsO/B7clZs48tCny+kHrqw
+	h8acfp8qtrqFp1u2GGCPoRzSqUugncp5EFa0jbFc1dvTT4kwNQYvMAYysl70npNVl3EPw01QvK9
+	YQ7fPp1ydxvbfjyS+I2+L32BcTngxN0MCdUG4C0jM4AJQ834MxEgkjzFWfw4KDXzR5IYaEuJP2c
+	0SOqOaGtsN1XIpvCNF1G2cmjIEqvbK1FUbOZzWbPPH1QAlj0Xllfp1XkaN7SMUZAFeCr/3Lp0vQ
+	IWNlnQGQNBuwlH/fMAi0lNv+AHLGlhEvKXu/0PP31ew4+A/tl8BIVzXXrClVz663CWILy3eDY1a
+	RvqyyJaJtevVpoPg==
+X-Google-Smtp-Source: AGHT+IFgEW6WceddZIHGZ94X0sQHww9NEf+WBU8+5GhU28dgZEyAjGt1Asj1eEN0oG0UWIF6ZhWrdA==
+X-Received: by 2002:a17:903:2f10:b0:297:f793:fc7e with SMTP id d9443c01a7336-29b6c3e4c3amr154770345ad.19.1764085519248;
+        Tue, 25 Nov 2025 07:45:19 -0800 (PST)
+Received: from p14s ([2604:3d09:148c:c800:c0c0:5a6c:d170:84a1])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29b5b273c16sm171412895ad.72.2025.11.25.07.45.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Nov 2025 07:45:18 -0800 (PST)
+Date: Tue, 25 Nov 2025 08:45:15 -0700
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+	Peng Fan <peng.fan@nxp.com>, Beleswar Padhi <b-padhi@ti.com>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [PATCH v7 1/2] remoteproc: Use of_reserved_mem_region_*
+ functions for "memory-region"
+Message-ID: <aSXPC-LskWzn_fPa@p14s>
+References: <20251124182751.507624-1-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|GVXPR04MB10946:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2ac71806-ed7d-414f-0f98-08de2c3938b9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|19092799006|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Rn76xDtipd0IX/EJlRjaw2Hxn0X4rVM9y7aC6G/qQHmbOBtB2X2NKUYMzn5C?=
- =?us-ascii?Q?OcOsShiXWeDxeDCs6F0lA6GwNr7u8Xx8sCdxNec+CbHIhkfltBDIqNJRkNLM?=
- =?us-ascii?Q?BNuD3Lg7Ejslq6lvkN1HTkblCyGQwdvHsu8TuyNPRhxer+4glPsdGEylGJqH?=
- =?us-ascii?Q?Mz3KSj0IRIB9s1KUStK+Bo086SyXoMIb9AuYXARWOjcPgDdmySWRnNHEYw3G?=
- =?us-ascii?Q?nIFh76VEzfuMu/1gAUpdQbpQX0/JATv6RpsR48z9L739XKwg6sIBMSpi5Niz?=
- =?us-ascii?Q?MznDYa2znXLojwqNgXj629l82Ct/wKmJOWosWTKw9sanlOMHLfUrFXoFy3Et?=
- =?us-ascii?Q?mJm6+J21zvA0midFgNdesdJNikPMENC47+SuZQEMyWZASKB03wtkvnWqFJa7?=
- =?us-ascii?Q?Gio5mSYIgpK13MBKcIocvk84PA/Fq8XNLodTul/mNxTi2n3cLHD8GrllA+JP?=
- =?us-ascii?Q?wTB0NZCSuTnKeST95JqD4Vc+RGFa1jsIiuoOTwTsRPyKkW5odjIhUvZYvYYU?=
- =?us-ascii?Q?0J+8HlNZpa/XUhnRPwBxfGk0X4tXOlkbDC8MktOsdPml7n0lklrn5y5WAF11?=
- =?us-ascii?Q?EeV03SeKEf9leVaoryi3b+zivrpUvtXZ9IYS5QpbiYzDE7iwygzRKRTQJ7Fy?=
- =?us-ascii?Q?ior2o2Dk026GuNuPgbjmnum/YlFqV/x3ioIU9Rj0dUTrrECDunXh/po5KR7Y?=
- =?us-ascii?Q?LOYM0EJTEgqvraWB1YTqqAt0Iju0Zwf4tU0tUf8R9hgjnV0fT8A0gQKEHQ91?=
- =?us-ascii?Q?RtJnRC1CvZtufemRh44+ypTcw5bmOP/vIsQv8T1wDAZTNRfnTUabdp7SuytP?=
- =?us-ascii?Q?AE4sDL1W2xITdCvpGqkTf/KWUOzKzcUaJoUH/vQJmkdgrAbPoNdw69aO5mbS?=
- =?us-ascii?Q?Yq73pwBrNn5T5jsErY04HFyYMxXI8Z7VutcW1r6oUitYWNGoXz9A872xjZiG?=
- =?us-ascii?Q?AO8MIYwuQUWVZlppf8MaiH9Lhfx2DkhWMoV1mAUdxVZC5VUFTElkgidEc9Zf?=
- =?us-ascii?Q?J829DwADFPyhIPOvXz1zgpYJ45EHjEnI2lMoS/1/0QW9+by6C/SeSm6uX6Xr?=
- =?us-ascii?Q?v5EeF33I7mTVv1UoYe+jPrsLvNkKlhIqIPF5eGoFe29cTQVCMLEe0avWBpta?=
- =?us-ascii?Q?jUo9pmxA/8VOimebEZ6V+7eQfOtOg54qFk7WBFTowEgAbtP8M7cFHGZ+r5IA?=
- =?us-ascii?Q?id930SDalpr3/D8/yCUVp0b6nYfMRH3LhTdskumj2wQYY4dxsqcWxLHgdmWx?=
- =?us-ascii?Q?M3sPYxm4WilZ9UQGXua9SIwhiHMqh72g0JYTm/8qTi7Fk41WhV5pkcg8AFUh?=
- =?us-ascii?Q?J7GXgIbekmJaejUJu/TM1bC6eTIxK7Q97I7RzLdLXd+MtTTuAijjuo3qzQlX?=
- =?us-ascii?Q?huI1FTE3Kl5hPVftr4JK98tVQ09fOCdNRE7Nczft1Ujp83ZuBcxp7uliCN7p?=
- =?us-ascii?Q?pCEWc2ot/+OKNO9snqvu0QCrc+cmVEBHg0yBqZQ/ratscQs9ZAQlF0GDMF2q?=
- =?us-ascii?Q?pB+m5XiFZgZmGzJRz+QV70KbIilS+Oq8xZr1?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(19092799006)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7yXaerZZQBT0V8iooW8zVA8nqC1MQGNeRkjX7gxSV/TRyse+Z2aqUnV9PPOC?=
- =?us-ascii?Q?lCeIAS6tMy1dVM090X1cEj70pavfYnMYcfNKzKnKeLHF198PffEGLF0VbKKY?=
- =?us-ascii?Q?qfuzf879zSLpAEvzgdxqhtpaLkP5acnGQMrXf+IzA38+xLoUCMGNcH8x9WjI?=
- =?us-ascii?Q?O4pdAiM6wYs7giOx5VB/TQKk1P5ZSaZ5uRZHdJLXKyNIXP/9tDI50el0PLMT?=
- =?us-ascii?Q?tCVBMP3abecNECXMCuvS2HCI+KbYmbsNQMme3+kNiTZzrLP9s0ADYy4bjkku?=
- =?us-ascii?Q?8/xxqAIcV41x3jhqXhZAFPaN35mUWJCfSVUa6/1ha/tTiKKk1FmlUihCnGkX?=
- =?us-ascii?Q?FwTn4dSbCEwGykRt4pMclQ5PBo2hu9CKIf2msbwXNCgCoze29JF0Dxso6qHr?=
- =?us-ascii?Q?qm+4HwB3kHhtr+se57H+Ulfs6PiuBB3mbwvffTEZCfQZsUN8EpX35PAzqVP8?=
- =?us-ascii?Q?KM/7CiCIcDpNh6kbPECaRZf9Bqn7XriwoziIK0xwNZzn/kv5sxz0x4OrII+y?=
- =?us-ascii?Q?ksi7dfmd27+RA4WWCg8tGk2/ID8dtLJkYFMbBSJkefgdsh9INyigdB2cLhj2?=
- =?us-ascii?Q?wi6lc+I5X1XeYFUomMg47zYTWlpiICbQzTbpkTviDJTIf9k7MZDnh+an9g+h?=
- =?us-ascii?Q?cY4LUC8s1NhyvfFRm1QH/fxS9Irnv8qaolyjHoVvEBfn2hM6vAF4KLz9rDeX?=
- =?us-ascii?Q?nt73tx7yxBhjrReD6aJLfMl3NJngp9lyKjNBt4K2dyNBnNI2/zKqdJsUnPf9?=
- =?us-ascii?Q?xJFlR8mwJG7D8KxQorfhxlMsOXEW25XPcG7bL9upzaQjT7aiu2Ar1kb7rP8+?=
- =?us-ascii?Q?BdOSsVmRxg769tvBbW9R9RgYXM1PF0aj87OzfaRs5yJhyxIZuF/fEsmx5wpO?=
- =?us-ascii?Q?KMpZzH2CpRQVTFRWLp7TbA4jRAti6HgqAgH4aRLUC22zc/FmMudMWVccrCIy?=
- =?us-ascii?Q?5Z0lofVw6h1ej6r0SWCwAUv5mZfArZ3B1ta2QSxa/b7F+Y1NFAGP11l5tDTK?=
- =?us-ascii?Q?CG9NSQWDBgvhmqLJhrZC1gAks6j8DnPzcnE1wZQ3wwadps9CKUQUornBwnbB?=
- =?us-ascii?Q?+7shN0TjtBVG5s9+rzSCx/LWoQZyX2U2e/exjG8ZIz6DC7x8aaZN1+jppbTB?=
- =?us-ascii?Q?9QfkLPGuLugwzTHmTZuphyAcKUUG1P0WYQABxf2npWxmDE2yYOuJ115OQxT3?=
- =?us-ascii?Q?GcgUPCCf26omXvM8p6y3Y/mKYT5H2kzWuAWPLQq92GF94Ebpt/QG+6284Ovh?=
- =?us-ascii?Q?aOm+NA+GCVLv7bbTG9LQC5kVMxFdcnULo7x1ZOlMe++Fcj1kf0+64Bp63/db?=
- =?us-ascii?Q?L7XhWSA2CyNg5Qz9YOm/2kJCbRekC4GG6KJqz9XL5Qv1hRlNszJdz7q6Um++?=
- =?us-ascii?Q?41HH7u4CjLlndNfpuWwEv0jRrIz6mbayMmnB+Wjs+gSR3P0WwfvqlkCesvK5?=
- =?us-ascii?Q?0G+GHrqheraplAoZXTH960PCQESX+vMzdSWxod/BN41FgLMKxdVxbzrFQ6j3?=
- =?us-ascii?Q?tiJvzrqIoVHY8PVRnG9pudvu4/GpgoRfV/zqyDuM/uqrS/Ci4bv2a7YuihFs?=
- =?us-ascii?Q?KN7nBqdiuSUsZqhNPDwSA3XoKwQbU3DULCckJd8q?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2ac71806-ed7d-414f-0f98-08de2c3938b9
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2025 15:42:21.0956
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fFomQEIlWePv0YhJW13InZDUK8OI7X/6+T9wRlDFTMegtQJf/pt64VQKOv28od0QlwFkYeCJ9OdrI5npc2bNzw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10946
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251124182751.507624-1-robh@kernel.org>
 
-On Tue, Nov 25, 2025 at 06:06:15PM +0800, Carlos Song wrote:
-> If dmaengine_prep_slave_sg() fails, no descriptor is submitted to the TX
-> channel and DMA is never started. Therefore, calling
-> dmaengine_terminate_all() for the TX DMA channel is unnecessary.
->
-> Signed-off-by: Carlos Song <carlos.song@nxp.com>
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-
+On Mon, Nov 24, 2025 at 12:27:47PM -0600, Rob Herring (Arm) wrote:
+> Use the newly added of_reserved_mem_region_to_resource() and
+> of_reserved_mem_region_count() functions to handle "memory-region"
+> properties.
+> 
+> The error handling is a bit different in some cases. Often
+> "memory-region" is optional, so failed lookup is not an error. But then
+> an error in of_reserved_mem_lookup() is treated as an error. However,
+> that distinction is not really important. Either the region is available
+> and usable or it is not. So now, it is just
+> of_reserved_mem_region_to_resource() which is checked for an error.
+> 
+> Acked-by: Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>
+> Tested-by: Peng Fan <peng.fan@nxp.com> # i.MX93-11x11-EVK for imx_rproc.c
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be> # rcar
+> Tested-by: Beleswar Padhi <b-padhi@ti.com> # TI
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 > ---
->  drivers/spi/spi-imx.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index 012f5bcbf73f..186963d3d2e0 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -1468,7 +1468,6 @@ static int spi_imx_dma_submit(struct spi_imx_data *spi_imx,
->  					  tx->sgl, tx->nents, DMA_MEM_TO_DEV,
->  					  DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
->  	if (!desc_tx) {
-> -		dmaengine_terminate_all(controller->dma_tx);
->  		dmaengine_terminate_all(controller->dma_rx);
->  		return -EINVAL;
+> v7:
+>  - Rework st_rproc_parse_fw() loop and maintain existing behavior in
+>    case of no entries and error paths
+>  - Split QCom to separate patch
+> 
+> v6:
+>  - Rebase on v6.18-rc1
+>  - The error in v5 was fixed in v6.17 commit aea70964b5a7
+>    ("of: reserved_mem: Add missing IORESOURCE_MEM flag on resources")
+> 
+> v5:
+>  - Drop some inadvertent whitespace changes in qcom_q6v5_pas.c and ti_k3.
+>  - Fix error handling in adsp_alloc_memory_region()
+>  - Drop unreachable returns after 'while (1)' loops
+> 
+> v4:
+>  - Rebase on v6.17-rc1. qcom_q6v5_pas.c conflicted needing s/adsp/pas/
+> 
+> v3:
+>  - Rebase on v6.16-rc1. Move TI K3 changes to new common file.
+>  - Fix double increment of "i" in xlnx_r5
+> 
+> v2:
+>  - Use strstarts instead of strcmp for resource names as they include
+>    the unit-address.
+>  - Drop the unit-address from resource name for imx and st drivers
+> ---
+>  drivers/remoteproc/imx_dsp_rproc.c      | 47 +++++++----------
+>  drivers/remoteproc/imx_rproc.c          | 70 ++++++++++---------------
+>  drivers/remoteproc/rcar_rproc.c         | 38 +++++---------
+>  drivers/remoteproc/st_remoteproc.c      | 43 ++++++++-------
+>  drivers/remoteproc/stm32_rproc.c        | 46 +++++++---------
+>  drivers/remoteproc/ti_k3_common.c       | 28 ++++------
+>  drivers/remoteproc/xlnx_r5_remoteproc.c | 53 +++++++------------
+
+Applied - thanks,
+Mathieu
+
+>  7 files changed, 129 insertions(+), 196 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+> index 6e78a01755c7..477e4245a426 100644
+> --- a/drivers/remoteproc/imx_dsp_rproc.c
+> +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> @@ -689,11 +689,9 @@ static int imx_dsp_rproc_add_carveout(struct imx_dsp_rproc *priv)
+>  	struct rproc *rproc = priv->rproc;
+>  	struct device *dev = rproc->dev.parent;
+>  	struct device_node *np = dev->of_node;
+> -	struct of_phandle_iterator it;
+>  	struct rproc_mem_entry *mem;
+> -	struct reserved_mem *rmem;
+>  	void __iomem *cpu_addr;
+> -	int a;
+> +	int a, i = 0;
+>  	u64 da;
+>  
+>  	/* Remap required addresses */
+> @@ -724,49 +722,40 @@ static int imx_dsp_rproc_add_carveout(struct imx_dsp_rproc *priv)
+>  		rproc_add_carveout(rproc, mem);
 >  	}
-> --
-> 2.34.1
->
+>  
+> -	of_phandle_iterator_init(&it, np, "memory-region", NULL, 0);
+> -	while (of_phandle_iterator_next(&it) == 0) {
+> +	while (1) {
+> +		int err;
+> +		struct resource res;
+> +
+> +		err = of_reserved_mem_region_to_resource(np, i++, &res);
+> +		if (err)
+> +			return 0;
+> +
+>  		/*
+>  		 * Ignore the first memory region which will be used vdev buffer.
+>  		 * No need to do extra handlings, rproc_add_virtio_dev will handle it.
+>  		 */
+> -		if (!strcmp(it.node->name, "vdev0buffer"))
+> +		if (strstarts(res.name, "vdev0buffer"))
+>  			continue;
+>  
+> -		rmem = of_reserved_mem_lookup(it.node);
+> -		if (!rmem) {
+> -			of_node_put(it.node);
+> -			dev_err(dev, "unable to acquire memory-region\n");
+> +		if (imx_dsp_rproc_sys_to_da(priv, res.start, resource_size(&res), &da))
+>  			return -EINVAL;
+> -		}
+>  
+> -		if (imx_dsp_rproc_sys_to_da(priv, rmem->base, rmem->size, &da)) {
+> -			of_node_put(it.node);
+> -			return -EINVAL;
+> -		}
+> -
+> -		cpu_addr = devm_ioremap_wc(dev, rmem->base, rmem->size);
+> +		cpu_addr = devm_ioremap_resource_wc(dev, &res);
+>  		if (!cpu_addr) {
+> -			of_node_put(it.node);
+> -			dev_err(dev, "failed to map memory %p\n", &rmem->base);
+> +			dev_err(dev, "failed to map memory %pR\n", &res);
+>  			return -ENOMEM;
+>  		}
+>  
+>  		/* Register memory region */
+> -		mem = rproc_mem_entry_init(dev, (void __force *)cpu_addr, (dma_addr_t)rmem->base,
+> -					   rmem->size, da, NULL, NULL, it.node->name);
+> -
+> -		if (mem) {
+> -			rproc_coredump_add_segment(rproc, da, rmem->size);
+> -		} else {
+> -			of_node_put(it.node);
+> +		mem = rproc_mem_entry_init(dev, (void __force *)cpu_addr, (dma_addr_t)res.start,
+> +					   resource_size(&res), da, NULL, NULL,
+> +					   "%.*s", strchrnul(res.name, '@') - res.name, res.name);
+> +		if (!mem)
+>  			return -ENOMEM;
+> -		}
+>  
+> +		rproc_coredump_add_segment(rproc, da, resource_size(&res));
+>  		rproc_add_carveout(rproc, mem);
+>  	}
+> -
+> -	return 0;
+>  }
+>  
+>  /* Prepare function for rproc_ops */
+> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> index bb25221a4a89..eb133a6622bc 100644
+> --- a/drivers/remoteproc/imx_rproc.c
+> +++ b/drivers/remoteproc/imx_rproc.c
+> @@ -490,50 +490,44 @@ static int imx_rproc_prepare(struct rproc *rproc)
+>  {
+>  	struct imx_rproc *priv = rproc->priv;
+>  	struct device_node *np = priv->dev->of_node;
+> -	struct of_phandle_iterator it;
+>  	struct rproc_mem_entry *mem;
+> -	struct reserved_mem *rmem;
+> +	int i = 0;
+>  	u32 da;
+>  
+>  	/* Register associated reserved memory regions */
+> -	of_phandle_iterator_init(&it, np, "memory-region", NULL, 0);
+> -	while (of_phandle_iterator_next(&it) == 0) {
+> +	while (1) {
+> +		int err;
+> +		struct resource res;
+> +
+> +		err = of_reserved_mem_region_to_resource(np, i++, &res);
+> +		if (err)
+> +			return 0;
+> +
+>  		/*
+>  		 * Ignore the first memory region which will be used vdev buffer.
+>  		 * No need to do extra handlings, rproc_add_virtio_dev will handle it.
+>  		 */
+> -		if (!strcmp(it.node->name, "vdev0buffer"))
+> +		if (strstarts(res.name, "vdev0buffer"))
+>  			continue;
+>  
+> -		if (!strcmp(it.node->name, "rsc-table"))
+> +		if (strstarts(res.name, "rsc-table"))
+>  			continue;
+>  
+> -		rmem = of_reserved_mem_lookup(it.node);
+> -		if (!rmem) {
+> -			of_node_put(it.node);
+> -			dev_err(priv->dev, "unable to acquire memory-region\n");
+> -			return -EINVAL;
+> -		}
+> -
+>  		/* No need to translate pa to da, i.MX use same map */
+> -		da = rmem->base;
+> +		da = res.start;
+>  
+>  		/* Register memory region */
+> -		mem = rproc_mem_entry_init(priv->dev, NULL, (dma_addr_t)rmem->base, rmem->size, da,
+> +		mem = rproc_mem_entry_init(priv->dev, NULL, (dma_addr_t)res.start,
+> +					   resource_size(&res), da,
+>  					   imx_rproc_mem_alloc, imx_rproc_mem_release,
+> -					   it.node->name);
+> -
+> -		if (mem) {
+> -			rproc_coredump_add_segment(rproc, da, rmem->size);
+> -		} else {
+> -			of_node_put(it.node);
+> +					   "%.*s", strchrnul(res.name, '@') - res.name,
+> +					   res.name);
+> +		if (!mem)
+>  			return -ENOMEM;
+> -		}
+>  
+> +		rproc_coredump_add_segment(rproc, da, resource_size(&res));
+>  		rproc_add_carveout(rproc, mem);
+>  	}
+> -
+> -	return  0;
+>  }
+>  
+>  static int imx_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
+> @@ -664,47 +658,37 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
+>  	}
+>  
+>  	/* memory-region is optional property */
+> -	nph = of_count_phandle_with_args(np, "memory-region", NULL);
+> +	nph = of_reserved_mem_region_count(np);
+>  	if (nph <= 0)
+>  		return 0;
+>  
+>  	/* remap optional addresses */
+>  	for (a = 0; a < nph; a++) {
+> -		struct device_node *node;
+>  		struct resource res;
+>  
+> -		node = of_parse_phandle(np, "memory-region", a);
+> -		if (!node)
+> -			continue;
+> -		/* Not map vdevbuffer, vdevring region */
+> -		if (!strncmp(node->name, "vdev", strlen("vdev"))) {
+> -			of_node_put(node);
+> -			continue;
+> -		}
+> -		err = of_address_to_resource(node, 0, &res);
+> +		err = of_reserved_mem_region_to_resource(np, a, &res);
+>  		if (err) {
+>  			dev_err(dev, "unable to resolve memory region\n");
+> -			of_node_put(node);
+>  			return err;
+>  		}
+>  
+> -		if (b >= IMX_RPROC_MEM_MAX) {
+> -			of_node_put(node);
+> +		/* Not map vdevbuffer, vdevring region */
+> +		if (strstarts(res.name, "vdev"))
+> +			continue;
+> +
+> +		if (b >= IMX_RPROC_MEM_MAX)
+>  			break;
+> -		}
+>  
+>  		/* Not use resource version, because we might share region */
+> -		priv->mem[b].cpu_addr = devm_ioremap_wc(&pdev->dev, res.start, resource_size(&res));
+> +		priv->mem[b].cpu_addr = devm_ioremap_resource_wc(&pdev->dev, &res);
+>  		if (!priv->mem[b].cpu_addr) {
+>  			dev_err(dev, "failed to remap %pr\n", &res);
+> -			of_node_put(node);
+>  			return -ENOMEM;
+>  		}
+>  		priv->mem[b].sys_addr = res.start;
+>  		priv->mem[b].size = resource_size(&res);
+> -		if (!strcmp(node->name, "rsc-table"))
+> +		if (!strcmp(res.name, "rsc-table"))
+>  			priv->rsc_table = priv->mem[b].cpu_addr;
+> -		of_node_put(node);
+>  		b++;
+>  	}
+>  
+> diff --git a/drivers/remoteproc/rcar_rproc.c b/drivers/remoteproc/rcar_rproc.c
+> index 921d853594f4..3c25625f966d 100644
+> --- a/drivers/remoteproc/rcar_rproc.c
+> +++ b/drivers/remoteproc/rcar_rproc.c
+> @@ -52,46 +52,36 @@ static int rcar_rproc_prepare(struct rproc *rproc)
+>  {
+>  	struct device *dev = rproc->dev.parent;
+>  	struct device_node *np = dev->of_node;
+> -	struct of_phandle_iterator it;
+>  	struct rproc_mem_entry *mem;
+> -	struct reserved_mem *rmem;
+> +	int i = 0;
+>  	u32 da;
+>  
+>  	/* Register associated reserved memory regions */
+> -	of_phandle_iterator_init(&it, np, "memory-region", NULL, 0);
+> -	while (of_phandle_iterator_next(&it) == 0) {
+> -
+> -		rmem = of_reserved_mem_lookup(it.node);
+> -		if (!rmem) {
+> -			of_node_put(it.node);
+> -			dev_err(&rproc->dev,
+> -				"unable to acquire memory-region\n");
+> -			return -EINVAL;
+> -		}
+> +	while (1) {
+> +		struct resource res;
+> +		int ret;
+> +
+> +		ret = of_reserved_mem_region_to_resource(np, i++, &res);
+> +		if (ret)
+> +			return 0;
+>  
+> -		if (rmem->base > U32_MAX) {
+> -			of_node_put(it.node);
+> +		if (res.start > U32_MAX)
+>  			return -EINVAL;
+> -		}
+>  
+>  		/* No need to translate pa to da, R-Car use same map */
+> -		da = rmem->base;
+> +		da = res.start;
+>  		mem = rproc_mem_entry_init(dev, NULL,
+> -					   rmem->base,
+> -					   rmem->size, da,
+> +					   res.start,
+> +					   resource_size(&res), da,
+>  					   rcar_rproc_mem_alloc,
+>  					   rcar_rproc_mem_release,
+> -					   it.node->name);
+> +					   res.name);
+>  
+> -		if (!mem) {
+> -			of_node_put(it.node);
+> +		if (!mem)
+>  			return -ENOMEM;
+> -		}
+>  
+>  		rproc_add_carveout(rproc, mem);
+>  	}
+> -
+> -	return 0;
+>  }
+>  
+>  static int rcar_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
+> diff --git a/drivers/remoteproc/st_remoteproc.c b/drivers/remoteproc/st_remoteproc.c
+> index e6566a9839dc..747bbe7f6f7c 100644
+> --- a/drivers/remoteproc/st_remoteproc.c
+> +++ b/drivers/remoteproc/st_remoteproc.c
+> @@ -120,40 +120,39 @@ static int st_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
+>  	struct device *dev = rproc->dev.parent;
+>  	struct device_node *np = dev->of_node;
+>  	struct rproc_mem_entry *mem;
+> -	struct reserved_mem *rmem;
+> -	struct of_phandle_iterator it;
+> -	int index = 0;
+> -
+> -	of_phandle_iterator_init(&it, np, "memory-region", NULL, 0);
+> -	while (of_phandle_iterator_next(&it) == 0) {
+> -		rmem = of_reserved_mem_lookup(it.node);
+> -		if (!rmem) {
+> -			of_node_put(it.node);
+> -			dev_err(dev, "unable to acquire memory-region\n");
+> -			return -EINVAL;
+> -		}
+> +	int entries;
+> +
+> +	entries = of_reserved_mem_region_count(np);
+> +
+> +	for (int index = 0; index < entries; index++) {
+> +		struct resource res;
+> +		int ret;
+> +
+> +		ret = of_reserved_mem_region_to_resource(np, index, &res);
+> +		if (ret)
+> +			return ret;
+>  
+>  		/*  No need to map vdev buffer */
+> -		if (strcmp(it.node->name, "vdev0buffer")) {
+> +		if (!strstarts(res.name, "vdev0buffer")) {
+>  			/* Register memory region */
+>  			mem = rproc_mem_entry_init(dev, NULL,
+> -						   (dma_addr_t)rmem->base,
+> -						   rmem->size, rmem->base,
+> +						   (dma_addr_t)res.start,
+> +						   resource_size(&res), res.start,
+>  						   st_rproc_mem_alloc,
+>  						   st_rproc_mem_release,
+> -						   it.node->name);
+> +						   "%.*s",
+> +						   strchrnul(res.name, '@') - res.name,
+> +						   res.name);
+>  		} else {
+>  			/* Register reserved memory for vdev buffer allocation */
+>  			mem = rproc_of_resm_mem_entry_init(dev, index,
+> -							   rmem->size,
+> -							   rmem->base,
+> -							   it.node->name);
+> +							   resource_size(&res),
+> +							   res.start,
+> +							   "vdev0buffer");
+>  		}
+>  
+> -		if (!mem) {
+> -			of_node_put(it.node);
+> +		if (!mem)
+>  			return -ENOMEM;
+> -		}
+>  
+>  		rproc_add_carveout(rproc, mem);
+>  		index++;
+> diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm32_rproc.c
+> index 431648607d53..c28679d3b43c 100644
+> --- a/drivers/remoteproc/stm32_rproc.c
+> +++ b/drivers/remoteproc/stm32_rproc.c
+> @@ -213,60 +213,52 @@ static int stm32_rproc_prepare(struct rproc *rproc)
+>  {
+>  	struct device *dev = rproc->dev.parent;
+>  	struct device_node *np = dev->of_node;
+> -	struct of_phandle_iterator it;
+>  	struct rproc_mem_entry *mem;
+> -	struct reserved_mem *rmem;
+>  	u64 da;
+> -	int index = 0;
+> +	int index = 0, mr = 0;
+>  
+>  	/* Register associated reserved memory regions */
+> -	of_phandle_iterator_init(&it, np, "memory-region", NULL, 0);
+> -	while (of_phandle_iterator_next(&it) == 0) {
+> -		rmem = of_reserved_mem_lookup(it.node);
+> -		if (!rmem) {
+> -			of_node_put(it.node);
+> -			dev_err(dev, "unable to acquire memory-region\n");
+> -			return -EINVAL;
+> -		}
+> +	while (1) {
+> +		struct resource res;
+> +		int ret;
+> +
+> +		ret = of_reserved_mem_region_to_resource(np, mr++, &res);
+> +		if (ret)
+> +			return 0;
+>  
+> -		if (stm32_rproc_pa_to_da(rproc, rmem->base, &da) < 0) {
+> -			of_node_put(it.node);
+> -			dev_err(dev, "memory region not valid %pa\n",
+> -				&rmem->base);
+> +		if (stm32_rproc_pa_to_da(rproc, res.start, &da) < 0) {
+> +			dev_err(dev, "memory region not valid %pR\n", &res);
+>  			return -EINVAL;
+>  		}
+>  
+>  		/*  No need to map vdev buffer */
+> -		if (strcmp(it.node->name, "vdev0buffer")) {
+> +		if (!strstarts(res.name, "vdev0buffer")) {
+>  			/* Register memory region */
+>  			mem = rproc_mem_entry_init(dev, NULL,
+> -						   (dma_addr_t)rmem->base,
+> -						   rmem->size, da,
+> +						   (dma_addr_t)res.start,
+> +						   resource_size(&res), da,
+>  						   stm32_rproc_mem_alloc,
+>  						   stm32_rproc_mem_release,
+> -						   it.node->name);
+> -
+> +						   "%.*s", strchrnul(res.name, '@') - res.name,
+> +						   res.name);
+>  			if (mem)
+>  				rproc_coredump_add_segment(rproc, da,
+> -							   rmem->size);
+> +							   resource_size(&res));
+>  		} else {
+>  			/* Register reserved memory for vdev buffer alloc */
+>  			mem = rproc_of_resm_mem_entry_init(dev, index,
+> -							   rmem->size,
+> -							   rmem->base,
+> -							   it.node->name);
+> +							   resource_size(&res),
+> +							   res.start,
+> +							   "vdev0buffer");
+>  		}
+>  
+>  		if (!mem) {
+> -			of_node_put(it.node);
+>  			return -ENOMEM;
+>  		}
+>  
+>  		rproc_add_carveout(rproc, mem);
+>  		index++;
+>  	}
+> -
+> -	return 0;
+>  }
+>  
+>  static int stm32_rproc_parse_fw(struct rproc *rproc, const struct firmware *fw)
+> diff --git a/drivers/remoteproc/ti_k3_common.c b/drivers/remoteproc/ti_k3_common.c
+> index 56b71652e449..32aa954dc5be 100644
+> --- a/drivers/remoteproc/ti_k3_common.c
+> +++ b/drivers/remoteproc/ti_k3_common.c
+> @@ -470,13 +470,10 @@ int k3_reserved_mem_init(struct k3_rproc *kproc)
+>  {
+>  	struct device *dev = kproc->dev;
+>  	struct device_node *np = dev->of_node;
+> -	struct device_node *rmem_np;
+> -	struct reserved_mem *rmem;
+>  	int num_rmems;
+>  	int ret, i;
+>  
+> -	num_rmems = of_property_count_elems_of_size(np, "memory-region",
+> -						    sizeof(phandle));
+> +	num_rmems = of_reserved_mem_region_count(np);
+>  	if (num_rmems < 0) {
+>  		dev_err(dev, "device does not reserved memory regions (%d)\n",
+>  			num_rmems);
+> @@ -505,23 +502,20 @@ int k3_reserved_mem_init(struct k3_rproc *kproc)
+>  
+>  	/* use remaining reserved memory regions for static carveouts */
+>  	for (i = 0; i < num_rmems; i++) {
+> -		rmem_np = of_parse_phandle(np, "memory-region", i + 1);
+> -		if (!rmem_np)
+> -			return -EINVAL;
+> +		struct resource res;
+>  
+> -		rmem = of_reserved_mem_lookup(rmem_np);
+> -		of_node_put(rmem_np);
+> -		if (!rmem)
+> -			return -EINVAL;
+> +		ret = of_reserved_mem_region_to_resource(np, i + 1, &res);
+> +		if (ret)
+> +			return ret;
+>  
+> -		kproc->rmem[i].bus_addr = rmem->base;
+> +		kproc->rmem[i].bus_addr = res.start;
+>  		/* 64-bit address regions currently not supported */
+> -		kproc->rmem[i].dev_addr = (u32)rmem->base;
+> -		kproc->rmem[i].size = rmem->size;
+> -		kproc->rmem[i].cpu_addr = devm_ioremap_wc(dev, rmem->base, rmem->size);
+> +		kproc->rmem[i].dev_addr = (u32)res.start;
+> +		kproc->rmem[i].size = resource_size(&res);
+> +		kproc->rmem[i].cpu_addr = devm_ioremap_resource_wc(dev, &res);
+>  		if (!kproc->rmem[i].cpu_addr) {
+> -			dev_err(dev, "failed to map reserved memory#%d at %pa of size %pa\n",
+> -				i + 1, &rmem->base, &rmem->size);
+> +			dev_err(dev, "failed to map reserved memory#%d at %pR\n",
+> +				i + 1, &res);
+>  			return -ENOMEM;
+>  		}
+>  
+> diff --git a/drivers/remoteproc/xlnx_r5_remoteproc.c b/drivers/remoteproc/xlnx_r5_remoteproc.c
+> index 0b7b173d0d26..a7b75235f53e 100644
+> --- a/drivers/remoteproc/xlnx_r5_remoteproc.c
+> +++ b/drivers/remoteproc/xlnx_r5_remoteproc.c
+> @@ -492,53 +492,46 @@ static int add_mem_regions_carveout(struct rproc *rproc)
+>  {
+>  	struct rproc_mem_entry *rproc_mem;
+>  	struct zynqmp_r5_core *r5_core;
+> -	struct of_phandle_iterator it;
+> -	struct reserved_mem *rmem;
+>  	int i = 0;
+>  
+>  	r5_core = rproc->priv;
+>  
+>  	/* Register associated reserved memory regions */
+> -	of_phandle_iterator_init(&it, r5_core->np, "memory-region", NULL, 0);
+> +	while (1) {
+> +		int err;
+> +		struct resource res;
+>  
+> -	while (of_phandle_iterator_next(&it) == 0) {
+> -		rmem = of_reserved_mem_lookup(it.node);
+> -		if (!rmem) {
+> -			of_node_put(it.node);
+> -			dev_err(&rproc->dev, "unable to acquire memory-region\n");
+> -			return -EINVAL;
+> -		}
+> +		err = of_reserved_mem_region_to_resource(r5_core->np, i, &res);
+> +		if (err)
+> +			return 0;
+>  
+> -		if (!strcmp(it.node->name, "vdev0buffer")) {
+> +		if (strstarts(res.name, "vdev0buffer")) {
+>  			/* Init reserved memory for vdev buffer */
+>  			rproc_mem = rproc_of_resm_mem_entry_init(&rproc->dev, i,
+> -								 rmem->size,
+> -								 rmem->base,
+> -								 it.node->name);
+> +								 resource_size(&res),
+> +								 res.start,
+> +								 "vdev0buffer");
+>  		} else {
+>  			/* Register associated reserved memory regions */
+>  			rproc_mem = rproc_mem_entry_init(&rproc->dev, NULL,
+> -							 (dma_addr_t)rmem->base,
+> -							 rmem->size, rmem->base,
+> +							 (dma_addr_t)res.start,
+> +							 resource_size(&res), res.start,
+>  							 zynqmp_r5_mem_region_map,
+>  							 zynqmp_r5_mem_region_unmap,
+> -							 it.node->name);
+> +							 "%.*s",
+> +							 strchrnul(res.name, '@') - res.name,
+> +							 res.name);
+>  		}
+>  
+> -		if (!rproc_mem) {
+> -			of_node_put(it.node);
+> +		if (!rproc_mem)
+>  			return -ENOMEM;
+> -		}
+>  
+>  		rproc_add_carveout(rproc, rproc_mem);
+> -		rproc_coredump_add_segment(rproc, rmem->base, rmem->size);
+> +		rproc_coredump_add_segment(rproc, res.start, resource_size(&res));
+>  
+> -		dev_dbg(&rproc->dev, "reserved mem carveout %s addr=%llx, size=0x%llx",
+> -			it.node->name, rmem->base, rmem->size);
+> +		dev_dbg(&rproc->dev, "reserved mem carveout %pR\n", &res);
+>  		i++;
+>  	}
+> -
+> -	return 0;
+>  }
+>  
+>  static int add_sram_carveouts(struct rproc *rproc)
+> @@ -808,7 +801,6 @@ static int zynqmp_r5_get_rsc_table_va(struct zynqmp_r5_core *r5_core)
+>  	struct device *dev = r5_core->dev;
+>  	struct rsc_tbl_data *rsc_data_va;
+>  	struct resource res_mem;
+> -	struct device_node *np;
+>  	int ret;
+>  
+>  	/*
+> @@ -818,14 +810,7 @@ static int zynqmp_r5_get_rsc_table_va(struct zynqmp_r5_core *r5_core)
+>  	 * contains that data structure which holds resource table address, size
+>  	 * and some magic number to validate correct resource table entry.
+>  	 */
+> -	np = of_parse_phandle(r5_core->np, "memory-region", 0);
+> -	if (!np) {
+> -		dev_err(dev, "failed to get memory region dev node\n");
+> -		return -EINVAL;
+> -	}
+> -
+> -	ret = of_address_to_resource(np, 0, &res_mem);
+> -	of_node_put(np);
+> +	ret = of_reserved_mem_region_to_resource(r5_core->np, 0, &res_mem);
+>  	if (ret) {
+>  		dev_err(dev, "failed to get memory-region resource addr\n");
+>  		return -EINVAL;
+> -- 
+> 2.51.0
+> 
