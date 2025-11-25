@@ -1,67 +1,73 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6A82ED15D
-	for <imx@lists.linux.dev>; Tue, 25 Nov 2025 09:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071FC2BF001
+	for <imx@lists.linux.dev>; Tue, 25 Nov 2025 10:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764064778; cv=none; b=LA+GZN5pRWAZ+PFHjjae2/g4ACGle2ZzlnDu8QL0d+DszccuOIqzGInUBAiylTVL0f9u0qeLuclhb3c9k4nkqOXb8wdL4ZoT+p9Zqu0kbGihGNgeEDoG8eO7PLp2ivqFlRvWkIpZ/0RnObpQiSjaxB0bBVT7WLN6ZaCaZdXz42M=
+	t=1764065114; cv=none; b=B6RizUDLo64FfUj82XQDQ1w+k9FPkKUjkOSrT9gcQizfSeZlN5ezYUFxEriLLnTxr9vabm6jiIOY8q+HbTVwZaBEEtFFS75S8YzZHdtFtnauStt7YdKmwzEHP1//W6Xo+EQ91CGXnBz91id8AEdhAEuz9GzlOP6L5o8hPEoTMEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764064778; c=relaxed/simple;
-	bh=R6QMB1wFC2BATzYNPhRuQ8QidzB6qeV3IovdUk/YQTI=;
+	s=arc-20240116; t=1764065114; c=relaxed/simple;
+	bh=Tvut4rKFuaZuRy+MpiRjhCbO3OPGk1QYOL3k9etbC0I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=prbbWbjgEtas4Lq7+WClxdZ8m2HXh73WZLDFbxWkVP1hVgqT62gv4KRbivrvZKPiw18U+u4mSbthRknq1mhHjCKbl/KULWBXh62J2mxQHajIczWbdUdquk7qLdEtlJovkt3DBBzQmCdF9B1v7pTS8qkxwBXorMi7+J+gY3NmnoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NJegff/K; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=riRbOMZ7+MJ2PPOs1OQisYXWwFFls6toWS1j/4/xdnmo4aZN+VJGsRT1ntecbOgEIlQTsLBH5CCOgy5RN/7n7woen7UrhtyVR16NqnqP2FS/sBUUqt5q8SzceBY6mcxYBG5ZFcBJ2OhOor5A2aglQDaqBLpAKzE5v7ac3h8KRGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JUXZMmIG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NJegff/K"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b736cd741c1so927849566b.0
-        for <imx@lists.linux.dev>; Tue, 25 Nov 2025 01:59:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764064775; x=1764669575; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Fgh4ODFDnXgu6g2WTTqzK1hFnk5Jr1ZOv10EVLwZMBY=;
-        b=NJegff/KIDe+a9zAAyuGpH+OdgqlcnUupqRna6leVN3BKXB4aq7/+NVrPbPY/2ivwX
-         F4RdyyZzPRSLZsyH5mORn4YvOP25utnqqgSyrf+vNG3bt8GsrAd2upeybpZvqjT3mfgF
-         r3ou/kJkQcsq1eGeHwUKckWrJRWTao//mpeIJCpCub+zioKHJ/JooX8u2HqpbhzEMRLN
-         SLIGafZqkd1P1ab/gEn/8x8Bz8lXSULVwc3wKMjoPgCD1/HXDw6vDypXEMPUnQsKZsi4
-         gCVrTU9g/BU5UCW8Swdmvt2LqexHsEFA3iOndvSzeULwTJmIipftPqUeZ9X300+ajMFj
-         tOkg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JUXZMmIG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1764065111;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8Du2XvNcpBpgsVAjcJWW200tMdW4BN0igIjQyXWLtpA=;
+	b=JUXZMmIGKosGqxzh0TcLMzfQ/5ypZT4yWSsJl0dxbh67EaxKWBnpouT70l+lJUBAc2369D
+	tAUq/Tt5TSaWPQVbZFt9LyFWOFdOrHpQC7NNRfFgkgFx55B0yiKklmc9tsC5eFnNyQ5jVL
+	QLvJ4pkRSDwcjcrWX79wNp8Ie9+W5Mo=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-590-BcE3ZPG2OUiHtamRJInydw-1; Tue, 25 Nov 2025 05:05:10 -0500
+X-MC-Unique: BcE3ZPG2OUiHtamRJInydw-1
+X-Mimecast-MFC-AGG-ID: BcE3ZPG2OUiHtamRJInydw_1764065109
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4779edba8f3so41529925e9.3
+        for <imx@lists.linux.dev>; Tue, 25 Nov 2025 02:05:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764064775; x=1764669575;
+        d=1e100.net; s=20230601; t=1764065109; x=1764669909;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Fgh4ODFDnXgu6g2WTTqzK1hFnk5Jr1ZOv10EVLwZMBY=;
-        b=lmdvZCBTB98LU2BwzzgdVtLqzxQq/mbRvW5z4cOLEpZt2oCAsPwaWINOZFJJwkpgEs
-         f0Cu423wEAV4EXfx6/FGFbSoF8UAsMe+LDjs3v19jgC/QC5pzbDeeV6IwSIifOPgbNKi
-         cmj70H34ndP0A6WZIJBk6KCT5qrfv8SbsQgXjjLuIJVIzHLHfNhecEKOaZpSHSPnseam
-         hPVNORG7oIo/sSIJV4/x53Saz2Wz5vnXkixBHqz64ayy/VEQKy0XC0GZbIAnec3Mt8+4
-         n0kz9HeWhSL1JEUd6wcOJec/fvideMgkPAyqZwMFRqEH9mEpLCtCSETjwqIUM4SVJU7R
-         v7VA==
-X-Forwarded-Encrypted: i=1; AJvYcCV4KBs5Gog2l3BelllOc9Geob1sa50T7d6xfCY8S1vqt5rlsxHznNc7tCHaTFHL4x4YJA0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzP7SH97qmjauUF7T3Cc9n8/LEZMK/cyBgpS3ickOlNg+TvZSeP
-	aT3KQitct5iu65mDTVXpAr1uze9vGd707yO+fcu/bco71DPBQbPhAb+Y
-X-Gm-Gg: ASbGncuGfkefD3iZ8Sw4WB6K2GLHwEeBgl2ekbNg5D4ow9mytJwvaOgW8wCZyMz8aGN
-	PbNCrXqxYx2Jk1Axe9H+FRKl8qVlW39be3VWVdlt9QcQ8yjfdiImz/NE11YgsanFOib2WywGUcx
-	HCfkifoKNZFj5LyVV1qlSHfAY/7PXTXUsatYWnxF0AjNGMF69y3cmyOEoR65HGTBsFHoSVZg/LN
-	gcYe/zK7ZYa/1Kik0Bmc93ui0KsO0EtBMct7slF0ktwGOPpZ8AsGbtuQm8o+g9EWiVTNxPmssUY
-	o1RR+w0Yi8zi4GPV+U3Fn2esAl4utqiMYLo2efjjBnwHsl0Gr2OaY1zlYLplwkhJfAMdEy+ilax
-	1byGbXxGEZp0xK5GN1/Kw9IaiOhYxjH3Qr4TYZihhKWh/ag2RLl+OTXzooBa6JjDw/yS/H8x6T7
-	FQtl0FnW32nIR2Mri+k85pDpiiK+wLSxgXr1NPOROC9ZM=
-X-Google-Smtp-Source: AGHT+IESxJDwS/BJ1YU+rQ3vBeFJBP5tEOROc8lHgEyTp+47bod8zHWxWQ5jr9upDauFLWFNyK0Ddg==
-X-Received: by 2002:a17:907:3daa:b0:b73:57eb:688 with SMTP id a640c23a62f3a-b767183c4b1mr1636055866b.53.1764064774524;
-        Tue, 25 Nov 2025 01:59:34 -0800 (PST)
-Received: from [10.25.216.228] ([128.77.115.157])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7654fd51fbsm1498870766b.33.2025.11.25.01.59.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Nov 2025 01:59:34 -0800 (PST)
-Message-ID: <4a022153-009c-44fd-8c4b-39819ae69390@gmail.com>
-Date: Tue, 25 Nov 2025 01:59:31 -0800
+        bh=8Du2XvNcpBpgsVAjcJWW200tMdW4BN0igIjQyXWLtpA=;
+        b=DWxgBZZdfPmBXmZeOhA3R/wrfVUGVuF4Exjfxv+VwfxKyxZGmaMXxjwebC8xDvcrXI
+         120jNTSiZg+UOOsaRqFhkCrZNH5T7KEV18VWoOi+nd1fyGVXnofmrsW5Kl2W0Aul1xIB
+         pUp6LFss9r7o9D0tQCOLBvMPYSYyyPwgTpos9EZiwzeTAbRfyh0fJ3PRB0TPpS/IesIY
+         /lbDoOvvE+/KBHTIbJ40vDUeZgNjDvZb/TDpHl00pSlTr+4ohCZRL9ScNUxSSND1JGAt
+         /17jg4dAbArxr/nrbr0X08aUyRNEB7yV9qeAXShbWqJeOEp6kRDjaYsv1ptJRq3FSlHe
+         fW5g==
+X-Forwarded-Encrypted: i=1; AJvYcCWXjIdcRaqn9ZBdbVmlcXh23gxQ1BOC7CWHT+5JplfTPmfuNofN0lPcv8rtuJCR06YszOA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyZAui6nBpdFborq3YyJSEE+FTqTEYikLpRZaF+Ilum0btffIU+
+	Twbmz9s4O28l6OCXNo3oFl6CW67wOqOOJp9XivMNtfw0IHusEY5u6NjgseMRdxP6Sp8wnMVPBrJ
+	xIUlR5riNhVCdyFH5+grd1sXibYV3mAd2PSlvSmiPELanFMPs2YZ4dw==
+X-Gm-Gg: ASbGnctQsz1otYbPfKGoq1hWiD8sujJzKQbplDTfspaZ6wUKQx/llSM1t+XsmHZcI8q
+	iwMTPzcsR5AKGJrTrcQLFEEMl/GML6o201S16HqPkv9dH/Ba+2PKuHh5W0yNg/mmBnsD0EYP5HF
+	yXoxrcTbzIdakMvXyYsrRHF9fpkAJtNDRqEe/AMwQgKUoaWrJOljy1dAOCOwdZO8T2oYiZFQUMT
+	1wGeGDX5Do+EXsABHECEGF7qV7zM0p7KimJlGaGujqLwHMMdpdwAOL2wn8oC+zNWCaYzKzRyNQj
+	YK2aOfriu/XD7YCgmOUKdbETZk4IBIKZaVpwd6udtjsAVS8UhClQRlIsclXpnWrQdBERlwnFLTR
+	+7cRzvxxE1mn2TQ==
+X-Received: by 2002:a05:600c:3541:b0:477:9650:3184 with SMTP id 5b1f17b1804b1-477c0165bc3mr141142485e9.2.1764065109396;
+        Tue, 25 Nov 2025 02:05:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHdw5BhuyWaRQOc8C580uVcASiaAfZ16Z89gL80wDsCpr6kPhgTQUxoRiGKflA0cavmZi684g==
+X-Received: by 2002:a05:600c:3541:b0:477:9650:3184 with SMTP id 5b1f17b1804b1-477c0165bc3mr141142165e9.2.1764065109027;
+        Tue, 25 Nov 2025 02:05:09 -0800 (PST)
+Received: from [192.168.88.32] ([212.105.153.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-477bf22dfcesm246385055e9.13.2025.11.25.02.05.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 25 Nov 2025 02:05:07 -0800 (PST)
+Message-ID: <46765613-9a04-454b-8555-21f6fd965008@redhat.com>
+Date: Tue, 25 Nov 2025 11:05:06 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,66 +75,46 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/6] reset: imx8mp-audiomix: Replace mask with bit
- index
-To: Frank Li <Frank.li@nxp.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>,
- Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang
- <shengjiu.wang@nxp.com>, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20251114133738.1762-1-laurentiumihalcea111@gmail.com>
- <20251114133738.1762-3-laurentiumihalcea111@gmail.com>
- <aSCHjNqj3CV3ahX0@lizhi-Precision-Tower-5810>
- <6be8a682-6c72-45c8-be0e-880ab66045ff@gmail.com>
- <aSR8q5cE/XXbZuF0@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v3 net-next 3/3] net: enetc: update the base address of
+ port MDIO registers for ENETC v4
+To: Wei Fang <wei.fang@nxp.com>, claudiu.manoil@nxp.com,
+ vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org
+Cc: aziz.sellami@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20251119102557.1041881-1-wei.fang@nxp.com>
+ <20251119102557.1041881-4-wei.fang@nxp.com>
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20251119102557.1041881-4-wei.fang@nxp.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: zTD6sw_0lYHffBBJzMfl5OuG66de9zzFR7ZCek-JQXk_1764065109
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <aSR8q5cE/XXbZuF0@lizhi-Precision-Tower-5810>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
+On 11/19/25 11:25 AM, Wei Fang wrote:
+> Each ENETC has a set of external MDIO registers to access its external
+> PHY based on its port EMDIO bus, these registers are used for MDIO bus
+> access, such as setting the PHY address, PHY register address and value,
+> read or write operations, C22 or C45 format, etc. The base address of
+> this set of registers has been modified in ENETC v4 and is different
+> from that in ENETC v1. So the base address needs to be updated so that
+> ENETC v4 can use port MDIO to manage its own external PHY.
+> 
+> Additionally, if ENETC has the PCS layer, it also has a set of internal
+> MDIO registers for managing its on-die PHY (PCS/Serdes). The base address
+> of this set of registers is also different from that of ENETC v1, so the
+> base address also needs to be updated so that ENETC v4 can support the
+> management of on-die PHY through the internal MDIO bus.
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
 
-On 11/24/2025 7:41 AM, Frank Li wrote:
-> On Mon, Nov 24, 2025 at 01:28:32AM -0800, Laurentiu Mihalcea wrote:
->> On 11/21/2025 7:38 AM, Frank Li wrote:
->>> On Fri, Nov 14, 2025 at 05:37:34AM -0800, Laurentiu Mihalcea wrote:
->>>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->>>>
->>>> Replace the reset map mask with the bit index to make it clear that all
->>>> reset lines are managed by exactly 1 bit.
->>> I don't think there are benefit because I met some periphal need a magic
->>> number to reset.
->>
->> Please provide more information. What SoC? Which peripherals? What block control?
->>
-> I can't reminder exact one. I grep some code
->
-> [IMX8MP_MEDIABLK_PD_LCDIF_1] = {
->                 .name = "mediablk-lcdif-1",
->                 .clk_names = (const char *[]){ "disp1", "apb", "axi", },
->                 .num_clks = 3,
->                 .gpc_name = "lcdif1",
->                 .rst_mask = BIT(4) | BIT(5) | BIT(23),
->                 .clk_mask = BIT(4) | BIT(5) | BIT(23),
->                 .path_names = (const char *[]){"lcdif-rd", "lcdif-wr"},
->                 .num_paths = 2,
->         },
->
-> mask is more extenable and easily support more hardware in future. Change
-> to bit number have not big benefit.
+Andrew, it's not clear to me if you are with the current patch version,
+could you please chime-in?
 
+Thanks,
 
-sure, I'm fine with the mask-based approach. The big idea here is to make this driver
+Paolo
 
-usable in as many scenarios as possible.
-
-
-Philipp, please let me know if you're okay with the proposal. Will also have to tweak
-
-one of the subsequent patches since, so far, we've been operating under the assumption
-
-that reset lines are 1 bit.
 
