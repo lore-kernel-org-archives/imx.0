@@ -1,132 +1,85 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from akranes.kaiser.cx (akranes.kaiser.cx [152.53.16.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D2C32936B
-	for <imx@lists.linux.dev>; Wed, 26 Nov 2025 20:25:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E195F232395;
+	Wed, 26 Nov 2025 20:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.53.16.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764188709; cv=none; b=S+A9FxF+dPJXloOrDt5Br++1bHvkS5ZBe61sPk85pDGIry5gKu4YBKtowIQyDYaLcmpODlHs1KfrULd9Jl+DNzvKuMbaz37k0EZiLQgQjYL0xZQ90I1iBTXqL4znyVaDmBZs93Fl/okxsRV1M6t4UqByQ01n7J9pUSmgUX8uYZY=
+	t=1764189063; cv=none; b=rcVvhrfXay6LMgSnkGUDWvnrlLL8tKtv7rWDGghc+drak0CclAYSKUbZUCnWMwoW3GVXmotikBEG9vjpBk0SGt4FknU95aSqBbjk4oZBUlKDLdBZEGEHRE1TmVGkIViPbopKNVPv1rkfWhcE1IlZFHTk8qfglyef+BybjXALib8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764188709; c=relaxed/simple;
-	bh=9d7Oz1hbQEzdVTDKOgIac/ceVdRR1oz2iFLX9Q1uZzA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nfoo2NicwwCUleH5Sf/AVQs7xYKj8nhgNjXsBGX5+75TA+Rv9b/4Zmwo+05K56eny0Ftij66Sah0PpvvCji2MyXtnEPubKDymoPMG0IVUnZ3IBEvVv52Izi+jC/02RhROershI92wZku1uA+DrRFArMTrzzAT1UbduyqW0F5upA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MvjfJq78; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MvjfJq78"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764188707; x=1795724707;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=9d7Oz1hbQEzdVTDKOgIac/ceVdRR1oz2iFLX9Q1uZzA=;
-  b=MvjfJq78SV1q0FGL1MiQM7xS2IpeN5zKBxpG8soUR7g297XgF3SShl0s
-   HeMqbJjrYu2WkL5gw2Iew0QIjQ21Kq3myWRVlSseAG4hFiRRP0RpAA1hs
-   Em4HtAHL3DWIGc6Gt+rppvabEyzDCa/Qi3YD1NHIGd1IpvG+FnqIKrqU0
-   /yZ4cyN/wJxV/KxHcyyliqPBSHB9imHqFLIUhf6f+aPI38YoByHwxAQiX
-   6B7WIbcJiiRbV2pS6G1XIsGrgTNTZNrCIX0Hqg16omYPf5ExpeTWXGr2A
-   5LpG2wgjJrrBttkE/LM2MqInS7KGlW94pvxLWB/XtgZ/NCgo/dGVpJ50e
-   w==;
-X-CSE-ConnectionGUID: xZCYSxflRYGGsBgJsucPkA==
-X-CSE-MsgGUID: uM1D6FB1QRCBEL175nY49w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11625"; a="70096998"
-X-IronPort-AV: E=Sophos;i="6.20,229,1758610800"; 
-   d="scan'208";a="70096998"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Nov 2025 12:25:06 -0800
-X-CSE-ConnectionGUID: 6pKi7k5pRaClI3ou6FA7ww==
-X-CSE-MsgGUID: hLhB7k7ESsGPRVip5CIWsg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,229,1758610800"; 
-   d="scan'208";a="224001183"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa001.fm.intel.com with ESMTP; 26 Nov 2025 12:25:05 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id E998E9F; Wed, 26 Nov 2025 21:25:03 +0100 (CET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Mark Brown <broonie@kernel.org>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: Han Xu <han.xu@nxp.com>,
-	Yogesh Gaur <yogeshgaur.83@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] spi: nxp-fspi: Propagate fwnode in ACPI case as well
-Date: Wed, 26 Nov 2025 21:25:01 +0100
-Message-ID: <20251126202501.2319679-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1764189063; c=relaxed/simple;
+	bh=pKETpT/qtE1W7EPF8Otd2b1X2DpkV2LH1hN1uUbdTHk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gM+8xf3UbHiyfUJ6LIdBq+/9XzbdLm0qVeqgN4p+0Zv04uTLTRbXoU4ZRZXi+6I/aKHWXgWgNSRrxUFhUiSlteKPaHADr656AtOyoKjW1pQAzcQc1zag0yVU3212l3LDC1wiKlS7SZeEi/0jzZ4cm3H2vsKizTKAjBri6qU3Uy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx; spf=pass smtp.mailfrom=kaiser.cx; arc=none smtp.client-ip=152.53.16.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaiser.cx
+Received: from martin by akranes.kaiser.cx with local (Exim 4.96)
+	(envelope-from <martin@akranes.kaiser.cx>)
+	id 1vOM9P-009WC2-1t;
+	Wed, 26 Nov 2025 21:30:07 +0100
+Date: Wed, 26 Nov 2025 21:30:07 +0100
+From: Martin Kaiser <martin@kaiser.cx>
+To: Jean-Michel Hautbois via B4 Relay <devnull+jeanmichel.hautbois.yoseli.org@kernel.org>
+Cc: Greg Ungerer <gerg@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Olivia Mackall <olivia@selenic.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-m68k@lists.linux-m68k.org,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v4 1/2] hwrng: imx-rngc: Use optional clock
+Message-ID: <aSdjT9BLzGF3_5PB@akranes.kaiser.cx>
+References: <20251126-b4-m5441x-add-rng-support-v4-0-5309548c9555@yoseli.org>
+ <20251126-b4-m5441x-add-rng-support-v4-1-5309548c9555@yoseli.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251126-b4-m5441x-add-rng-support-v4-1-5309548c9555@yoseli.org>
+Sender: "Martin Kaiser,,," <martin@akranes.kaiser.cx>
 
-Propagate fwnode of the ACPI device to the SPI controller Linux device.
-Currently only OF case propagates fwnode to the controller.
+Thus wrote Jean-Michel Hautbois via B4 Relay (devnull+jeanmichel.hautbois.yoseli.org@kernel.org):
 
-While at it, replace several calls to dev_fwnode() with a single one
-cached in a local variable, and unify checks for fwnode type by using
-is_*_node() APIs.
+> From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
 
-Fixes: 55ab8487e01d ("spi: spi-nxp-fspi: Add ACPI support")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/spi/spi-nxp-fspi.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+> Change devm_clk_get() to devm_clk_get_optional() to support platforms
+> where the RNG clock is always enabled and not exposed via the clock
+> framework (such as ColdFire MCF54418).
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index b6c79e50d842..50a7e4916a60 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -1287,7 +1287,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- {
- 	struct spi_controller *ctlr;
- 	struct device *dev = &pdev->dev;
--	struct device_node *np = dev->of_node;
-+	struct fwnode_handle *fwnode = dev_fwnode(dev);
- 	struct resource *res;
- 	struct nxp_fspi *f;
- 	int ret, irq;
-@@ -1309,7 +1309,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, f);
- 
- 	/* find the resources - configuration register address space */
--	if (is_acpi_node(dev_fwnode(f->dev)))
-+	if (is_acpi_node(fwnode))
- 		f->iobase = devm_platform_ioremap_resource(pdev, 0);
- 	else
- 		f->iobase = devm_platform_ioremap_resource_byname(pdev, "fspi_base");
-@@ -1317,7 +1317,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 		return PTR_ERR(f->iobase);
- 
- 	/* find the resources - controller memory mapped space */
--	if (is_acpi_node(dev_fwnode(f->dev)))
-+	if (is_acpi_node(fwnode))
- 		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
- 	else
- 		res = platform_get_resource_byname(pdev,
-@@ -1330,7 +1330,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	f->memmap_phy_size = resource_size(res);
- 
- 	/* find the clocks */
--	if (dev_of_node(&pdev->dev)) {
-+	if (is_of_node(fwnode)) {
- 		f->clk_en = devm_clk_get(dev, "fspi_en");
- 		if (IS_ERR(f->clk_en))
- 			return PTR_ERR(f->clk_en);
-@@ -1383,7 +1383,7 @@ static int nxp_fspi_probe(struct platform_device *pdev)
- 	else
- 		ctlr->mem_caps = &nxp_fspi_mem_caps;
- 
--	ctlr->dev.of_node = np;
-+	device_set_node(&ctlr->dev, fwnode);
- 
- 	ret = devm_add_action_or_reset(dev, nxp_fspi_cleanup, f);
- 	if (ret)
--- 
-2.50.1
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+> ---
+>  drivers/char/hw_random/imx-rngc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
+> diff --git a/drivers/char/hw_random/imx-rngc.c b/drivers/char/hw_random/imx-rngc.c
+> index 241664a9b5d9..d6a847e48339 100644
+> --- a/drivers/char/hw_random/imx-rngc.c
+> +++ b/drivers/char/hw_random/imx-rngc.c
+> @@ -259,7 +259,7 @@ static int __init imx_rngc_probe(struct platform_device *pdev)
+>  	if (IS_ERR(rngc->base))
+>  		return PTR_ERR(rngc->base);
+
+> -	rngc->clk = devm_clk_get(&pdev->dev, NULL);
+> +	rngc->clk = devm_clk_get_optional(&pdev->dev, NULL);
+>  	if (IS_ERR(rngc->clk))
+>  		return dev_err_probe(&pdev->dev, PTR_ERR(rngc->clk), "Cannot get rng_clk\n");
+
+The clock is not optional on a standard imx25 system. If it's missing in the
+device tree, the rngb will not work and we should not load the driver.
+
+Should we call devm_clk_get or devm_clk_get_optional, depending on the
+detected device?
+
+Best regards,
+Martin
