@@ -1,322 +1,272 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013067.outbound.protection.outlook.com [40.107.159.67])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011025.outbound.protection.outlook.com [40.107.130.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39C31F3FED
-	for <imx@lists.linux.dev>; Wed, 26 Nov 2025 02:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B992F3635
+	for <imx@lists.linux.dev>; Wed, 26 Nov 2025 02:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.25
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764123080; cv=fail; b=qc6GRdRbeP1kaAfTwwA3xsnAQBhgR2iY4+HI7uo+nAKoHJE3QFGW1nVSqugBAVSOEY4mYNSIaureQu+cACP23egJF/L9XB3r72vjqZ8qEH9vpqd0h9nXgAgK/brSqagAx2ITELaMnQX6DqvJYk70YG9sW2+oVO7jPTzU9VRqawM=
+	t=1764125790; cv=fail; b=jVPr6uO8edIPJzDRC6P2o2jKapO6NtWSTllTPkjkpJ2yaoG+qoyl5t22oXZW2HqDaCXQjmQKITugiK5/MFkvhi7oRIF01WMyyVZhWfImdP5smf2Go3x+30j9x2NxRHl1SDgZnTLSMjVpjpXd6WYgL16FoIXn2R2wTVXwAe4Orgc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764123080; c=relaxed/simple;
-	bh=kKBAQdFNZXoHshbmmFtMcNXfI1ltQSBYmzhV9Frq/5A=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PYKNLugPQoxML9mNUFKbXBRJt30RX9i6nQt0JTJhZmk8O1ZKwVuxp8Lss1rRaVR2bcnRmnYkwmrZhWf28YIjdqm9/MUKTdwPfQ2e1OwiJKPytnEvzlOzmcx/l5mYSV7Sbi16IHlbV9LM5XmFdZcwM4VPLzwiJ0/TtVS5Yg/JTcE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jRcdMAIm; arc=fail smtp.client-ip=40.107.159.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1764125790; c=relaxed/simple;
+	bh=8cLF1/EfDy79S7wxPX+ki4ybnFUVzx5GnCTnOJnEr7A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=dLEpNr5K7MFJ3/8tXt69X9m22U1k4EwvIfzy5oc7K8O3jx7ssBmp8rqgLZYjWcGXSQj5GUMAfavpEdNV0cxTmNODPtoRXc5cKME8NT3iQFYsac8AzrzYCHJXt4zZ9LF5C38+hYe2QoNnnZWUxSKrHU2V3jqKrh7ArLSAC1CsBeI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=LlVFJJ7+; arc=fail smtp.client-ip=40.107.130.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jRcdMAIm"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="LlVFJJ7+"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=goJfUauYl4AyJl9M0DETMT0nNAGU77LJETX9iPp3kijB1uvDLiZHFB4/F07N6OJs/nD0N2/QRq85OzlxVDgjmzBWFYgM4ZOQrJBGK+Z2LebYHAkh0IIiruODIJMv8OUvHOK0H0BibCSK2aBBTM5Z4QpVeiNeZGEnJG9/PDjN47JPK0jYJu9Da9jD4hIwxVJH8eof9Llppqlv2H25xUKsfMup3jqHvSIcvSZ0B3DS3qJytp9Vp/Ox/S+CW61Mv7F1+1pX3pXLqlyKkNZ7LgNYr3oFp6Api35Boa/rZgGdAEkk0afLfdxNGR2XGWwFyY/KYCzDcml69wP5nnh+X9uIVg==
+ b=CMYHNNBVo9OHjnp2j40mZ2p6TO2fNRRVgXqpMq30V3YCDSYtArf+9npLN0t/NVK7XIOV1+X1/DkNTp5TrpsdoMQ+fPRlP+4yBeBsAgKVpdXPjqZg/vLozIM2BffWBhf6m4CJw2VpVqGNtaZ4RecZj7EdMHYCVvOjgjHf+9wSJ5kXAaUDeMMEsid/TgVmphOII1hu7Jhqkmr/i4gKTl/YzW23359c8XqYVk0zma7+XYGOfE72NH4UcuFVyNZR++U+FbiRB4R9eDIjcsjFpntYK5CZYIFJS1vritoElRoWtg8MWcSjsrIaQ2dRJ5RCI2en6ry2jSrJk/+Q/zFWYHU/8A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yJka8YDPUVdVAIHHHIAtRD/XCcr4rJkdWdO1ylU53bk=;
- b=beVo6IZFqLysoodE87B/6C/WOPwxP32fMJ2n5MUPzvsfkSVSGeaXyet81QGDvu+NjlY8GJd/N4VAl3FKsLUTKqc83u8b24jwmvfZjsShKNgarT3sJI6QP5VuaJZOWX5YVFF+rftukcNX18QaMnpENkvW46JpSJSR7V9i/ntD5Tb4FMNhfuz0eeDpG7pcNPNMUzRxqVhimtE29xIBdk5YZMpVnN++v6cxxOkwRaSWij48Eb4lUfD4XZBGOhgazxLPF8ifFXM0IfHmM4lNCfqi+ZkgBecFdee6OdU67JQsmGT01RFdN5EnkafQnsFoTy18FhPOYdJ121exyaiipIqHzA==
+ bh=+q5WaB0+6MDy/08YGtt7+wgsYiTS56YB+WpuE95ELm0=;
+ b=SUfckBlMjBJVXo7SOecfVN/E4lMGG3S2bm9L+LZlLBLFerRu38xUcrUWwC7bXzgJj9+c+4fpW0vsu5wxwhDL/0BoDRYXPsVEcwO+nqVXZVbfqGvf4BG8xmzhIMszwQozsu3QBLW8vB70C4mkUX41DHNDNmBr51tjQ3tyhAUm2G2ei5Iel4qmRbLmp1i7LTFV9vc0iBg9CWZBN1q+JgoFcPnMVKesoXcgG9jNnmgtVlIgoQteGeCR3CQXpZXEWiKlC+G8QFh5Vp6gLMzyuiV9wQ5CVlY1Y21mEmqxycdo0WRLxS0T38wO1DKMR+2K1Ham3jN2mbIETpxmSzG78caKcw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yJka8YDPUVdVAIHHHIAtRD/XCcr4rJkdWdO1ylU53bk=;
- b=jRcdMAImuxaqAQcK55OG7or5Q3+9FyleEyGl2nTYWHyh1w9RMt+DiNHhPouA2Or+T6ElhYdpY8VwsWPzU0Jr9TKwMvlxxUKv/RTCKuv6j2Li4DVNuVDyc1zor6Z0DFcfhb1nSkH5+/8hbniefjc52fbEjWBlVjHxY+JstbTDXDyAjtZWIzQPMuyghm4l2Qz91lmvgtnbjugDYZ2uE21MZ4+xBneXLPSKRpq9H/t0Sx46qdOQr3mHgdHSNUeJ0F3G2JbqUlms20U9AzbQkGbhR3YJqlWViIGpt+zuxdpouCWLUE3ssMVjnT/aaMsUZwbBnv53nOdH9qynexwNckBqRw==
-Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
- (2603:10a6:800:293::14) by VI2PR04MB10620.eurprd04.prod.outlook.com
- (2603:10a6:800:26f::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.12; Wed, 26 Nov
- 2025 02:11:14 +0000
-Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
- ([fe80::75ad:fac7:cfe7:b687]) by VI2PR04MB11147.eurprd04.prod.outlook.com
- ([fe80::75ad:fac7:cfe7:b687%6]) with mapi id 15.20.9343.016; Wed, 26 Nov 2025
- 02:11:14 +0000
-From: Carlos Song <carlos.song@nxp.com>
-To: Frank Li <frank.li@nxp.com>
-CC: "broonie@kernel.org" <broonie@kernel.org>, "hawnguo@kernel.org"
-	<hawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, "linux-spi@vger.kernel.org"
-	<linux-spi@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH 6/6] spi: imx: enable DMA mode for target operation
-Thread-Topic: [PATCH 6/6] spi: imx: enable DMA mode for target operation
-Thread-Index: AQHcXfNYgnkhVybOTEWLiW6Jy5/IP7UDjt8AgACo8nA=
-Date: Wed, 26 Nov 2025 02:11:14 +0000
-Message-ID:
- <VI2PR04MB111475132F3380BF3B5ED635AE8DEA@VI2PR04MB11147.eurprd04.prod.outlook.com>
-References: <20251125100618.2159770-1-carlos.song@nxp.com>
- <20251125100618.2159770-7-carlos.song@nxp.com>
- <aSXT5tzhfHYVUrGy@lizhi-Precision-Tower-5810>
-In-Reply-To: <aSXT5tzhfHYVUrGy@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: VI2PR04MB11147:EE_|VI2PR04MB10620:EE_
-x-ms-office365-filtering-correlation-id: 45e91cae-254e-4bc7-416d-08de2c9113ca
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|1800799024|376014|366016|38070700021|7053199007;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?EjtabvfLreSxlIV3JA1UphvuE4dkfAEP7c4mXTd6AIJ3bDV653o2z3OuChKU?=
- =?us-ascii?Q?RVUHQaGO9gTmLoiq8fRtYoA5LmMJWUDAuEaG1QuKagRbDsps9JSkA5cLUEt/?=
- =?us-ascii?Q?6NpChX1e0IpL6fSZA+wkB9G6+MGiD2OBZVeZNl77dFw+NL6rWo9fAtO3AwLx?=
- =?us-ascii?Q?/RTPQa/G4Dm1TNZpsD+vJc8hWSA1o6R4BmoRn0armwJR41TYw9gVlvwxPpF2?=
- =?us-ascii?Q?Rao8HQvEFTnIEteI2MR+WhQ0fLreGTdN8Y8FmGTYJKA73BPrXaH/eZi/1mc3?=
- =?us-ascii?Q?gW5HE4mZt3texzC2m4WajDvR7RGvGO1sUCAVoyjybo/1GqTiWqob1e0clmw1?=
- =?us-ascii?Q?rx8v2tQ4h9/NSaqSDipPyKQH/4cJw6uQnBNe/Uk7IrDZd4+10r9DMqozdNUJ?=
- =?us-ascii?Q?iLvKpeq5o5UnUselujEgT48VA19fCa3q8sW9qFs9248VO1BGHyKT0G67cEnG?=
- =?us-ascii?Q?i9CAldCavp/NS5anTUUrqqQ73qf0sgQByr6a1Nv8b51D8/+PoIvq2E7coA0o?=
- =?us-ascii?Q?c5WCfIKSXVA/D8kcru1mJnY634BQcukmuoie087IcMkMH9jBuyVRIbSmOTAF?=
- =?us-ascii?Q?obPqKS6f+JNb10LI/5iumExJA8bjAy0L1CMbkq5mtoZ7YNUoK6LtIfgtJ6gm?=
- =?us-ascii?Q?QbGZuQ8hpHwRR/f7WDvB5dnJqW9tVl0VYsPI7cvWCqWtSdr5eYkavOaHZD3l?=
- =?us-ascii?Q?K5TuqVjpWfU1MaR4f48TXUvFg4X2fPQAMPiWv4S0lHwn2BSJXH0ETd956tT9?=
- =?us-ascii?Q?7dKofUjrZkVivReXtdEbKvWKhJv9C6KVJZ3N0XY2d3DvDCAmLvnQfmLqPZG5?=
- =?us-ascii?Q?eoMFcXgx+wzW+QjbRUy99eaVa+cjBSwim1pReIYRi4Zc6DelpPqIRyXVh5tS?=
- =?us-ascii?Q?dUom2IaylXe9VCUOVWA6DVSW45Jvt1UtahQZ+KO0n7xKRb3Qdy26iY7LkmP5?=
- =?us-ascii?Q?cnlH1QmiW8UWiu9N4DvAH1OlaZXS2wIbq1iS/0GZ2TAwt5oFJHFc4LnCQuA4?=
- =?us-ascii?Q?xhfOcWfrEkptopmqymxkFoSxszSLAfpJ+ftu33is2+2f+Lq1FdHsdUIdkd+v?=
- =?us-ascii?Q?b0fpivUFAmC+7zoxLYMLKgwdxBwSurtuVafaPhG129Y1LxIaslbHUXuF8CkE?=
- =?us-ascii?Q?C65p81yNc6OTKzpkUZIAy5NBSKsbkX0pvx8iMscM7ak7kVhEHnCbu7HgcBZn?=
- =?us-ascii?Q?4IyArne1eWSRWCE2dBX3m4JQ9sSqYVU7GHFkzcT+U3l+9gDSytvLdSQv9ASK?=
- =?us-ascii?Q?pqQ7mhnPB0qyffU2ZrQlLXj5EjL/LECqcO0/4MIpPF9F8YjcyrsxXC21OPH6?=
- =?us-ascii?Q?5qFW5L8ETsbchNav0IvE3PD+NWFmg+AhNCE78K/jhkTiIMt/PG4glW1GGxRw?=
- =?us-ascii?Q?An+egnq8KEcSavrUYWmq11zuseDiXPrhZc5hgwSo1icCdE7eLdxpQ54u5gju?=
- =?us-ascii?Q?OQ5gVeKXFDtTQjRegvnWhyq+4hX3nMuB0yI9OjBSZtY5EPa0aLaZnW823Sx/?=
- =?us-ascii?Q?c9SIWVaLueZx1ulJr9sfab/EciuttDDQTsun?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11147.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(366016)(38070700021)(7053199007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?5hxX8tBzPbpfmxu+wwSMoGY8ekPLFjepTJNI9Ah07Av6rmIpeFFMnlbqLHbp?=
- =?us-ascii?Q?w0JVOtxPmBHyiNrnWEiCJFsY8JAwMM765lB4+23QFh1ZvFz5QUYQB3TOzd2F?=
- =?us-ascii?Q?U3k8fQFltPfT+gFRzSBt8VmL/wuC8QB9z3YJaEtikCGVEwMiZib8Q9Lox+f+?=
- =?us-ascii?Q?vGaKlhJCxFEleTDtsfU9mxgqVFdV7hlDswy2WkPDV3R5MM2pA2UHzljWEtYa?=
- =?us-ascii?Q?I7Z3hMF6W5gWpRE3kV3gwyht+HIoR5mZCoRoSetv5uYA7be5UhoNFnFcNA/u?=
- =?us-ascii?Q?n9MBb0ndXr+n+Oo8nEyQVDnAcMyAY6YciEg+WSHQ1hBQ8FxwRnR473zTo7mR?=
- =?us-ascii?Q?9VZiItE3hD0HLrCxMhxc974/X3DZbvUcsl9vsGbrHZzsr1cbXIqlYDxZlBIb?=
- =?us-ascii?Q?kFVM2epDZabA91EJhoAUJpmKzhRwtTazKSXPsB/SYxz1PkFfGVJKyz06x8vr?=
- =?us-ascii?Q?rKd3PlBknMtyraEALo6R0A/F3MFqs1gC/ldiVpqOukZTSZWjgjaUlvx2lXaI?=
- =?us-ascii?Q?SChNgM8St4WcAPav3QjBvBlXUECpE0d+v8lBmZLbWGVazCxx6ynwDoBCLSKP?=
- =?us-ascii?Q?HPHEM0piRUBHzHYzL8NYBirWw2TQPmxIBy0/ms1BT6OY0H3De8vd97ceGias?=
- =?us-ascii?Q?wdUWfFBNsyIuSIcdQM6jH+T/sRmQqbg9H7+BZZ8njFppZBi0eUwKiaacNkll?=
- =?us-ascii?Q?SA/mF30EMYT7/O7YQi8uZ1Qty/dsRRCkGqoxFd49FPPsVafjlitdQOhZ48w9?=
- =?us-ascii?Q?1AaJ2T6Yvc/t1s3mIfVAybLPNeOIVL3u47YdJifJiAMqbg+f8IB5SB6vRF8t?=
- =?us-ascii?Q?QHJ+aN01iyIO82WiAXllIhKWmZRRe+4oDXJMHDAJfOrpASADhoaW9NeWY9QG?=
- =?us-ascii?Q?bkXLOefRh662fQv7eAk8Ea/27mufXa/X52HrOIAsmphpxpyf1ct/r3VMs/ne?=
- =?us-ascii?Q?TWdr4rsGYx9xcX+znwJqiC8yZHC/2L45PZy9I4YvrWeD1AfuwvBzOZhcYBDZ?=
- =?us-ascii?Q?o0EkZSU+aeqUvtzYlQveKLYKd5glrlupJoGx5alwU3M/Xvw/Kja6mHbqTGHP?=
- =?us-ascii?Q?jGNipXQFxNI8YBMB8zHZNNLwXHckP8SuN8EoEU4gkMvgAa6VsAYImtraEL2L?=
- =?us-ascii?Q?BV2EeJJj6DFztNuB+uk2oQJnU1h6VqT98ARz0ZpEcBZ0zTw5Ny0DN8iPOK5f?=
- =?us-ascii?Q?HUywREfDWZBfTSpAzGOXD4mgb6sgBvp3dqroEvusdLGPPntSqbi0NLyhx1Ce?=
- =?us-ascii?Q?Sg/vmBlj8xKHc3Bzr9hJXnlawBVOGz284Krh6qty7OJtdCShrfq4hBlaVGAy?=
- =?us-ascii?Q?gENDPkZ1kV+QFkzPzdJTHeU8+NfijMf4h0I6FE4GtjWHPSK0t89hClau2pS2?=
- =?us-ascii?Q?A7AzDOpp1AtQ9tbPbNKNd8SPFzEQQufR+iI3r+WVWrHsKN4TaryJ+HgH6VCg?=
- =?us-ascii?Q?5yzTLk7OLnccX1yn2q9Ohs46ncAhdO+ohRiSK6ItHmoMXCa6AJtKZqZB/J2G?=
- =?us-ascii?Q?wvjAksrZaZwFcEnPfIArxQrsME/8+VNF7lyS4O2xWS3zFG90C4nJKPDyH0g+?=
- =?us-ascii?Q?s7lsvaU/B6DdIj+DnIABtRlhRwMs86eotNy6+sAZ?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ bh=+q5WaB0+6MDy/08YGtt7+wgsYiTS56YB+WpuE95ELm0=;
+ b=LlVFJJ7+cVxs717Da603QVx4u4uz9Pp/jnH60Wex9shndQs6wjVKr/YkOOzfT1m7mmyhWU3+CyWFUFPxkS0Q2PViHatbMZ1DQ8P9D1qY3TbH3xhmKkAZMt2/48neglLjcyvctH1mFcCkWSSnV0Sljnc7eOK50VOR31K/wdQvlqfUr5OV+RqjYvxvh13RERD3az+qowL6qxdeeygMgrmryLWhrVmpgywrbQjudAPpLCQK2EP7+5GU940TpttFOHRYEu5V09bKVatdNrjUdRjAEwsOSEmCJAxVWZ3Dec/GdgTBBFCDvLaFu7iK1k3a8ceEoj+tQ9UjMMq2ntzipY8LdQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by GVXPR04MB10405.eurprd04.prod.outlook.com (2603:10a6:150:1d8::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Wed, 26 Nov
+ 2025 02:56:23 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9366.009; Wed, 26 Nov 2025
+ 02:56:23 +0000
+Date: Wed, 26 Nov 2025 10:57:15 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH v3 4/5] remoteproc: imx_rproc: Add support for System
+ Manager API
+Message-ID: <aSZsixcVpSeVfwQp@shlinux89>
+References: <20251122-imx95-rproc-2025-11-20-v3-0-9ae6ee619a78@nxp.com>
+ <20251122-imx95-rproc-2025-11-20-v3-4-9ae6ee619a78@nxp.com>
+ <aSSVoOi3VIn7LefK@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aSSVoOi3VIn7LefK@lizhi-Precision-Tower-5810>
+X-ClientProxiedBy: SI2P153CA0035.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:190::14) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|GVXPR04MB10405:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0cd2fd37-46f9-422e-48b7-08de2c97618c
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|7416014|1800799024|19092799006|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?sFv5C+YYwuJNTQpG6UQcNq7JZMO1/Tkd95TFUCVPAMMWDMGc3/raXdqhxWVp?=
+ =?us-ascii?Q?zO/iNyEhN5OwpR3Twl9heutuEDgaTt3QQwjMaFBwTf41997IwjUAj4RO+LAS?=
+ =?us-ascii?Q?Nqig4HHNNDLDA/PKG/RHCCoRMX5ekpX5wM5nrgGPEhtM81kdhiviR5x3v9Je?=
+ =?us-ascii?Q?ozVqcdyQJvkdBXPxsgAKzJ16UzS4T7lrZdopNyY4drTWI6bB2wIVIjy083er?=
+ =?us-ascii?Q?CP+n6bTjUkqGYc3RXqQRxdGnZdeZL239Dom8YyL+GPuGx3eq6n2BNGHJMAwM?=
+ =?us-ascii?Q?fNJpuf3g3cgGXjeQjtt3W9eT8ra5CQFTMb92WcvKxLn/wd8+wVugxiS830fn?=
+ =?us-ascii?Q?1AyhRTRJeGec9tkDUwFfP/gYA/dHKqBsFEaKQQNylwlXZYXWjbnsazonNcHF?=
+ =?us-ascii?Q?veidprHde/0QguG8jMdc5bU6ApxyMFN5gNO7/4etKCK25L50VDaHIgQy6UUP?=
+ =?us-ascii?Q?+hY+lKA0Yzkl9+ObtGH6G1bKqoDOqlXjw/zWJUcYL0JF6P85CCmj10OJp4XW?=
+ =?us-ascii?Q?zqXhZrzj1Fs0FtDmyJGg6F4DFAqAPPfbzqEemivd27E5gkdgEiMokXUBjzni?=
+ =?us-ascii?Q?OAHkBoYLeNqTfndzSO1t98xYDTeR0ak0LyJ4EKzpmlOny+EwL3KICJCZqKqe?=
+ =?us-ascii?Q?PZwF0eX6VyHPqKNCT1pf5NrGXN0JMCScQtJ2q8dthSi4c0YqjI14DgdNDPuR?=
+ =?us-ascii?Q?Za3TxCqDTSulV5/eqN4Lu1PCw8SvGL6yATrNZLhi4eTDWcOxo+tufWsXIRho?=
+ =?us-ascii?Q?jknTMZ648QL65dtbf3W+9HMMFHah0b2MQTkpMXlHqO2c4yvp0bKs9u0kk/qr?=
+ =?us-ascii?Q?InOcSaoajN/PltLhR36hC+rMfJ0q1EkfIDrvAWFg+uM46/LO2SoQNj2M2VQU?=
+ =?us-ascii?Q?nhB5gQBpwUZw5gRldf6iIudY+3+3gUYr/MFwAr9uEGBaimx646nyCj7cg/Zi?=
+ =?us-ascii?Q?bWYdlePZcf3sffTPQ/ZaTStg/WVJFiSeS4vARofPzjoQf4zTEcAUB/2SzNOH?=
+ =?us-ascii?Q?AWZ3nsJw0AnoVaP8ncjuUvnKS5EoYhGN2zE7Lvgj2DXtUeox/btvIEcKK7fm?=
+ =?us-ascii?Q?vBCY9UFbie1XX5VoWnF8g2eS8xp7YtcGTEsY2zW9mua70HzOX7TyLZhZswhz?=
+ =?us-ascii?Q?GxTZCNP+PlGjq7DYG0q7L2yqVXETis8oF4tj9ByBv/U7T8XzE9zNdry2adwP?=
+ =?us-ascii?Q?brdDkhyAGMGWKS55qHywrc8QV7DYYPnsB67niBFbadb1/mw1BL4flOU3sTxJ?=
+ =?us-ascii?Q?q3IrAycPFuLvaweUxhcocVrNymDBAA56U6uPwWFMGZ173EixateCkGBrjy4A?=
+ =?us-ascii?Q?zUQF9NGrXPPZFXY/TvCtTg1kOsITVw39cdwmYLC5NkKss4swongGjAYjFwS7?=
+ =?us-ascii?Q?sYPFoUrWSdz6OVV2p0xdg7Bkzx/J90AjfEGwk0CoozxMKblanRglM/3xLD2P?=
+ =?us-ascii?Q?n5aVD7zXPtXZ48aACvZ3pRxC+GpTsWtAKl0xgChZEA4ggKKSkgv7tpzCejTk?=
+ =?us-ascii?Q?u/VPOzGmtAsMOJby/GlHv5SXnBslvC8POZ+/?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(1800799024)(19092799006)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?jPfJJ6kJfcTHWShsnnYNO64rMj8KitRcJs2IIzrGCmC4HEJZoU5kznt3aq53?=
+ =?us-ascii?Q?Jn/HjLiXbSEtmnH2ibg7rcYW5vAbsvZ8aVVwM+njg3JqDh9VzNfsqmq/qYDQ?=
+ =?us-ascii?Q?JUBHkohhchWDKmTjbfLpuOwjDZGrJUJrU2UNQkKlqnG5zQNN+sKxGrpIP+Rt?=
+ =?us-ascii?Q?yZkm3Uv8AN3v3GDfWATFtJ7I/oYKjgmL1atq2PMPParshpnC5JIiq55NOtqZ?=
+ =?us-ascii?Q?Uhy3mguDSO/UokAdspQtBQQogE9pe3iVqWG/ma1LHUimke+6knefFKngEpQz?=
+ =?us-ascii?Q?gYqyNK5SvIiMHv1BNBKdfEqccrF/TRpPcj17TCjrZkAOT0HT0GJvgq5Lpys/?=
+ =?us-ascii?Q?k1XdF+3IKn223J02muSZLswTjdX5eZbniKJejes6wBW8eMDSnWjXimt7omeE?=
+ =?us-ascii?Q?6H+E3Su4hKkIdWsfoEcgkKR9r/AXRyZ6mARhWx1lqkpL9WnxM280X7xrwoag?=
+ =?us-ascii?Q?OGgT9Uma1aKnN1AQP7iFwb3dcICL8FWG0m2GXgujGCwEO17cyggFgHNpzeCw?=
+ =?us-ascii?Q?OlC10tvI5ePYS9TUDxNayK8UsoxoRlxRLR87NBbEggMBR2Cl5F7ZiSFSPm0U?=
+ =?us-ascii?Q?MaQ5e85dZ8xHzTNVxqmBU27BIyWyyWLsn8KhQEqXRYlOx2F2ZBxW6ioaJDsF?=
+ =?us-ascii?Q?5VOxH6B/gL3JIShOFcmL4f3VLR9hSd1corhk9plxieHQwFSCrd46+KxLY4c2?=
+ =?us-ascii?Q?4QpAuXJ+qwPH38k3oYJ14uxGD5vxnNe55Gp43qrgyqT2A8Y6AN5QON7ytOpt?=
+ =?us-ascii?Q?dRBk29bNBmTa9dIhx15th0YfO2QTqU3JYKWD3zyCdAUIN0+AyrVW528+4Dxp?=
+ =?us-ascii?Q?HaYe5Eq+XsfRkUJ2JzfyGo2reERJctMxKXwi26ev6Rau0ltxxaJEYL1PJW8x?=
+ =?us-ascii?Q?PGKVaVZuRz4wospUVIS2Tf0Sr5fYmRhlh1kIFyZkdY/fADTlcUmW5Rn7ilT0?=
+ =?us-ascii?Q?je0HmpESm+zHjV14u1E6saeoWgq8aS312/ri9CxUPoi8QovA9IpNmPK521kp?=
+ =?us-ascii?Q?lpU0CxBtaTCweMzGBdlY3hUDuexM3FEDFy710Ep2T/0VELuiz5rptdJ7fX6n?=
+ =?us-ascii?Q?T8QTId8wYFe4yUbNa5ceK5BvIDSVNDcrdW0NaT/QJdIgePo5bsTUV+oSeern?=
+ =?us-ascii?Q?FqtqzdsvtGONLwBmdZn7S6zKhdi5FTOZLXnM+jPxNo4JlXZO+bgJ6smgEqts?=
+ =?us-ascii?Q?NRqR0b5tDg0CdGWlL3jKuZDlhUrJb+a3JU5KR0blGW015bXt5B3ILxO1ngaU?=
+ =?us-ascii?Q?vu9I8ljyhutXy/g4+/FppOhLHBuTzLO7v2HtIhIrMVJe6Sp9DyHZ208gXeLb?=
+ =?us-ascii?Q?6OwhWOIR5HDJMXFOMZpOvMYtLkeiRyBRCXRoxgHQ53i0Ve8bkodXNFJvgmfz?=
+ =?us-ascii?Q?bFLtyYCpz82YuERCsdTlNEUCWsa26Q1V+3jN+3ON2Ofu1lJF/vZsluA6WUI7?=
+ =?us-ascii?Q?FybzyfcOiFUF+xV6lF1Gi86QZ75VVmWcOpficC12sdl77idUIZ9np/aWgc4J?=
+ =?us-ascii?Q?4TEX+Il9oNuCFUuyAAvxZ7xfGwApsMPewU/9izYE24DyEU6GhR9L4KL4wmQs?=
+ =?us-ascii?Q?OzcR6xI+uSHt4yPs9RgYocOWyNMTS2CCbnRODciD?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0cd2fd37-46f9-422e-48b7-08de2c97618c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11147.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 45e91cae-254e-4bc7-416d-08de2c9113ca
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Nov 2025 02:11:14.7072
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2025 02:56:22.9713
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 160L3Hn4MagZqwR28Y+8HQTZqXhNkps6S3jl2KAQ6et6U3AwDo/3PIMPpGtnu2y/DcmtbBjH4GU7McPVvMWIgg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10620
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 36VTsKJ+ObWxgPolnAxZtywc+1sdUOb3FbuqYovdXSo46KqubxjEblxLhZFhT6frgDgb3l8WJ01o3QMKLBtheg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10405
 
+On Mon, Nov 24, 2025 at 12:28:00PM -0500, Frank Li wrote:
+>On Sat, Nov 22, 2025 at 08:58:19AM +0800, Peng Fan (OSS) wrote:
+>> From: Peng Fan <peng.fan@nxp.com>
+>>
+>> i.MX95 features a Cortex-M33 core, six Cortex-A55 cores, and
+>> one Cortex-M7 core. The System Control Management Interface(SCMI)
+>> firmware runs on the M33 core. The i.MX95 SCMI firmware named System
+>> Manager(SM) includes vendor extension protocols, Logical Machine
+>> Management(LMM) protocol and CPU protocol and etc.
+>>
+>> Depending on SM configuration, M7 can be used as follows:
+>>  (1) M7 in a separate Logical Machine (LM) from A55 cores, that Linux
+>>      can't control
+>>  (2) M7 in a separate LM from A55 cores that Linux can control using LMM
+>>      protocol.
+>>  (3) M7 runs in same Logical Machine as A55 cores, so Linux can control it
+>>      using CPU protocol
+>>
+>> So extend the driver to using LMM and CPU protocol to manage the M7 core.
+>>  - Compare linux LM ID(got using scmi_imx_lmm_info) and M7 LM ID(the ID
+>>    is fixed as 1 in SM firmware if M7 is in a separate LM),
+>>    if Linux LM ID equals M7 LM ID(linux and M7 in same LM), use CPU
+>>    protocol to start/stop. Otherwise, use LMM protocol to start/stop.
+>>    Whether using CPU or LMM protocol to start/stop, the M7 status
+>>    detection could use CPU protocol to detect started or not. So
+>>    in imx_rproc_detect_mode, use scmi_imx_cpu_started to check the
+>>    status of M7.
+>>  - For above case (1) and (2), Use SCMI_IMX_LMM_POWER_ON to detect whether
+>>    the M7 LM is under control of A55 LM.
+>>  - For above case , after using SCMI_IMX_LMM_POWER_ON to check
+>>    permission, SCMI_IMX_LMM_SHUTDOWN API should be called to shutdown
+>>    the M7 LM to save power only when M7 LM is going to be started by
+>>    remoteproc framework. Otherwise bypass SCMI_IMX_LMM_SHUTDOWN API if
+>>    M7 LM is started before booting Linux.
+>>
+>> Current setup relies on pre-Linux software(U-Boot) to do M7 TCM ECC
+>> initialization. In future, we could add the support in Linux to decouple
+>> U-Boot and Linux.
+>>
+>> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+>> ---
+>>  drivers/remoteproc/Kconfig     |   2 +
+>>  drivers/remoteproc/imx_rproc.c | 193 +++++++++++++++++++++++++++++++++++++++++
+>>  drivers/remoteproc/imx_rproc.h |   3 +
+>>  3 files changed, 198 insertions(+)
+>>
+>...
+>> +
+>> +static int imx_rproc_sm_lmm_check(struct rproc *rproc, bool started)
+>> +{
+>> +	struct imx_rproc *priv = rproc->priv;
+>> +	const struct imx_rproc_dcfg *dcfg = priv->dcfg;
+>> +	struct device *dev = priv->dev;
+>> +	int ret;
+>> +
+>> +	/*
+>> +	 * Use power on to do permission check. If rproc is in different LM,
+>> +	 * and linux has permission to handle the LM, set IMX_RPROC_FLAGS_SM_LMM_AVAIL.
+>> +	 */
+>> +	ret = scmi_imx_lmm_operation(dcfg->lmid, SCMI_IMX_LMM_POWER_ON, 0);
+>> +	if (ret != 0) {
+>
+>if (ret)
 
+Fix in next version.
 
-> -----Original Message-----
-> From: Frank Li <frank.li@nxp.com>
-> Sent: Wednesday, November 26, 2025 12:06 AM
-> To: Carlos Song <carlos.song@nxp.com>
-> Cc: broonie@kernel.org; hawnguo@kernel.org; s.hauer@pengutronix.de;
-> kernel@pengutronix.de; festevam@gmail.com; linux-spi@vger.kernel.org;
-> imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org;
-> linux-kernel@vger.kernel.org
-> Subject: Re: [PATCH 6/6] spi: imx: enable DMA mode for target operation
->=20
-> On Tue, Nov 25, 2025 at 06:06:18PM +0800, Carlos Song wrote:
-> > Enable DMA mode for SPI IMX in target mode.
-> > Disable the word delay feature for target mode, because target mode
-> > should always keep high performance to make sure it can follow the
-> > master. Target mode continues to operate in dynamic burst mode.
->=20
-> If two paragraph, need extra empty line. If one parapraph, move to previo=
-us
-> line.
->=20
-Will do this in V2.
-> >
-> > Signed-off-by: Carlos Song <carlos.song@nxp.com>
-> > ---
-> >  drivers/spi/spi-imx.c | 78
-> > +++++++++++++++++++++++++++++++------------
-> >  1 file changed, 56 insertions(+), 22 deletions(-)
-> >
-> ...
-> >
-> > @@ -1756,23 +1753,51 @@ static int spi_imx_dma_submit(struct
-> > spi_imx_data *spi_imx,
-> >
-> >  	transfer_timeout =3D spi_imx_calculate_timeout(spi_imx,
-> > transfer->len);
-> >
-> > -	/* Wait SDMA to finish the data transfer.*/
-> > -	time_left =3D wait_for_completion_timeout(&spi_imx->dma_tx_completion=
-,
-> > -						transfer_timeout);
-> > -	if (!time_left) {
-> > -		dev_err(spi_imx->dev, "I/O Error in DMA TX\n");
-> > -		dmaengine_terminate_all(controller->dma_tx);
-> > -		dmaengine_terminate_all(controller->dma_rx);
-> > -		return -ETIMEDOUT;
-> > -	}
-> > +	if (!spi_imx->target_mode) {
-> > +		/* Wait SDMA to finish the data transfer.*/
-> > +		time_left =3D
-> wait_for_completion_timeout(&spi_imx->dma_tx_completion,
-> > +							transfer_timeout);
-> > +		if (!time_left) {
-> > +			dev_err(spi_imx->dev, "I/O Error in DMA TX\n");
-> > +			dmaengine_terminate_all(controller->dma_tx);
-> > +			dmaengine_terminate_all(controller->dma_rx);
-> > +			return -ETIMEDOUT;
-> > +		}
-> >
-> > -	time_left =3D wait_for_completion_timeout(&spi_imx->dma_rx_completion=
-,
-> > -						transfer_timeout);
-> > -	if (!time_left) {
-> > -		dev_err(&controller->dev, "I/O Error in DMA RX\n");
-> > -		spi_imx->devtype_data->reset(spi_imx);
-> > -		dmaengine_terminate_all(controller->dma_rx);
-> > -		return -ETIMEDOUT;
-> > +		time_left =3D
-> wait_for_completion_timeout(&spi_imx->dma_rx_completion,
-> > +							transfer_timeout);
-> > +		if (!time_left) {
-> > +			dev_err(&controller->dev, "I/O Error in DMA RX\n");
-> > +			spi_imx->devtype_data->reset(spi_imx);
-> > +			dmaengine_terminate_all(controller->dma_rx);
-> > +			return -ETIMEDOUT;
-> > +		}
-> > +	} else {
-> > +		spi_imx->target_aborted =3D false;
-> > +
-> > +		if (wait_for_completion_interruptible(&spi_imx->dma_tx_completion)
-> ||
-> > +		    spi_imx->target_aborted) {
->=20
-> Suppose somewhere set target_aborted to true. I think here should use
-> READ_ONCE() to make sure read from memory.
->=20
-> Not sure why here use wait_for_completion_interruptible() but at master m=
-ode
-> use wait_for_completion_timeout().
->=20
-> > +			dev_dbg(spi_imx->dev, "I/O Error in DMA TX interrupted\n");
-> > +			dmaengine_terminate_all(controller->dma_tx);
-> > +			dmaengine_terminate_all(controller->dma_rx);
-> > +			return -EINTR;
-> > +		}
-> > +
-> > +		if (wait_for_completion_interruptible(&spi_imx->dma_rx_completion)
-> ||
-> > +		    spi_imx->target_aborted) {
-> > +			dev_dbg(spi_imx->dev, "I/O Error in DMA RX interrupted\n");
-> > +			dmaengine_terminate_all(controller->dma_rx);
-> > +			return -EINTR;
-> > +		}
-> > +
-> > +		/*
-> > +		 * ECSPI has a HW issue when works in Target mode, after 64 words
-> > +		 * writtern to TXFIFO, even TXFIFO becomes empty, ECSPI_TXDATA
-> keeps
-> > +		 * shift out the last word data, so we have to disable ECSPI when in
-> > +		 * target mode after the transfer completes.
-> > +		 */
-> > +		if (spi_imx->devtype_data->disable)
-> > +			spi_imx->devtype_data->disable(spi_imx);
-> >  	}
-> >
-> >  	return 0;
-> > @@ -1895,10 +1920,16 @@ static int spi_imx_dma_package_transfer(struct
-> > spi_imx_data *spi_imx,  static int spi_imx_dma_transfer(struct spi_imx_=
-data
-> *spi_imx,
-> >  				struct spi_transfer *transfer)
-> >  {
-> > -	bool word_delay =3D transfer->word_delay.value !=3D 0;
-> > +	bool word_delay =3D transfer->word_delay.value !=3D 0 &&
-> > +!spi_imx->target_mode;
-> >  	int ret;
-> >  	int i;
-> >
-> > +	if (transfer->len > MX53_MAX_TRANSFER_BYTES &&
-> spi_imx->target_mode)
-> > +{
->=20
-> why only target have len limiation?
->=20
-> Frank
-> > +		dev_err(spi_imx->dev, "Transaction too big, max size is %d bytes\n",
-> > +			MX53_MAX_TRANSFER_BYTES);
-> > +		return -EMSGSIZE;
-> > +	}
-> > +
-> >  	ret =3D spi_imx_dma_data_prepare(spi_imx, transfer, word_delay);
-> >  	if (ret < 0) {
-> >  		transfer->error |=3D SPI_TRANS_FAIL_NO_START; @@ -2104,7 +2135,7
-> @@
-> > static int spi_imx_transfer_one(struct spi_controller *controller,
-> >  	while (spi_imx->devtype_data->rx_available(spi_imx))
-> >  		readl(spi_imx->base + MXC_CSPIRXDATA);
-> >
-> > -	if (spi_imx->target_mode)
-> > +	if (spi_imx->target_mode && !spi_imx->usedma)
-> >  		return spi_imx_pio_transfer_target(spi, transfer);
-> >
-> >  	/*
-> > @@ -2116,7 +2147,10 @@ static int spi_imx_transfer_one(struct
-> spi_controller *controller,
-> >  		ret =3D spi_imx_dma_transfer(spi_imx, transfer);
-> >  		if (transfer->error & SPI_TRANS_FAIL_NO_START) {
-> >  			spi_imx->usedma =3D false;
-> > -			return spi_imx_pio_transfer(spi, transfer);
-> > +			if (spi_imx->target_mode)
-> > +				return spi_imx_pio_transfer_target(spi, transfer);
-> > +			else
-> > +				return spi_imx_pio_transfer(spi, transfer);
-> >  		}
-> >  		return ret;
-> >  	}
-> > --
-> > 2.34.1
-> >
+>
+>> +		if (ret == -EACCES) {
+>> +			/*
+>> +			 * rproc LM is booted before Linux and not under Linux Control, so only
+>> +			 * do IPC between RPROC and Linux, not return failure
+>> +			 */
+>> +			dev_info(dev, "lmm(%d) not under Linux Control\n", dcfg->lmid);
+>> +			return 0;
+>> +		}
+>> +
+>> +		dev_err(dev, "power on lmm(%d) failed: %d\n", dcfg->lmid, ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	priv->flags |= IMX_RPROC_FLAGS_SM_LMM_AVAIL;
+>> +
+>> +	/* rproc was started before boot Linux and under control of Linux, directly return */
+>> +	if (started)
+>> +		return 0;
+>
+>should it be before scmi_imx_lmm_operation()? If started, supposed need
+>check scmi_imx_lmm_operation()?
+
+No. We need to detect whether M7 is under control of Linux before return.
+
+Thanks,
+Peng
+
+>
+>Frank
+>> +
+>> +	/* else shutdown the LM to save power */
+>> +	ret = scmi_imx_lmm_operation(dcfg->lmid, SCMI_IMX_LMM_SHUTDOWN, 0);
+>> +	if (ret) {
+>> +		priv->flags &= ~IMX_RPROC_FLAGS_SM_LMM_AVAIL;
+>> +		dev_err(dev, "shutdown lmm(%d) failed: %d\n", dcfg->lmid, ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+>> +
+>...
+>>  };
+>>
+>>  #endif /* _IMX_RPROC_H */
+>>
+>> --
+>> 2.37.1
+>>
