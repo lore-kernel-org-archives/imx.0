@@ -1,175 +1,223 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0646B341069
-	for <imx@lists.linux.dev>; Wed, 26 Nov 2025 17:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE3C286400
+	for <imx@lists.linux.dev>; Wed, 26 Nov 2025 18:36:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764178835; cv=none; b=IBqn/LHgOOqjfsoN8AfymUH0TBwIYW9ktoxIixEz911LM96j4NJFZdNmZF6Pzr3n76CZjtoRntlD5CdSbHAl3BUAJaRzxe2Wf0BQhsxwmax6x/yBMgKIGC0V9PImi0+A0RvS4qt3ffOOGdUvgQw5KCa86YTaK42dKlIEKYyCp0w=
+	t=1764182162; cv=none; b=RZEwDntR7lOucPma2sBf+srsnObJHYKR4NGL8KbO14tOD1PB5VfH67Cd+PL3yBHWUlrJ8rh2aq6IWnYuXkfJgVD5hE28v1Z8nAePZ2xRVj4PD9GSTkLN1gcQsgOZBr2U3EVz2tk4JcJicUQFNuPRR2FkIqxd7I8T6S/xAEmgfEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764178835; c=relaxed/simple;
-	bh=hmZwf+gqSZxGRRmKDKGj7wIJ5dnf5CYeGgO2dqTIhtc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BV3eYd2sI19+apno4sZOZYWTEEKmaKjhsYWJ22q5jabcPxar3r6pzpCUjg4xmcX+4rtBLNxq5E7wlWs80HS/ymIN3iGYf2AF5b2uDmwvB9uNeykJrtoIVaaqeIUHrNJh/8LgAVvIX/vQqrwDE+fEq45LM3hYjWBXONa2X+kqhh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=E+BqSqmb; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YqLAsyLW; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1764182162; c=relaxed/simple;
+	bh=l+UpyQQXX4ETUL7fz0/4jQ9/53R6ELtNZ9Z4xa9EpMc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QuWK1AAhyG2vdcK1dz2UnHwpN82kmAXzHQ6hAkyzulQDNwB2H4Fcnh00fWLIea3V/nas0kS/jezD417zm3MwvOh+g7ZkHe6cq2Mcs051C41gqRKOkbET3VKanySmsqjTmn/154bS27vVeNK18RdqjC9LFlLOYO+DdZnaPrlzarY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q+/hC1QH; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="E+BqSqmb";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YqLAsyLW"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5AQAsjJA1700277
-	for <imx@lists.linux.dev>; Wed, 26 Nov 2025 17:40:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	+CNzxCmRqCkzPCZPo7wdwLbBBFP1ERFX65HRTQOL9Xw=; b=E+BqSqmbiaNAb7vw
-	8UW6PwH67Z2RGFducWxuBNS8YDwBtvrqrchDotx7GR06oGLdfLhpM/c6AvzBBTsc
-	XcA75/GmWOL6oR8/Bng/iHomcrsNI8ZCyrj4HciJ2MxKFIpxS/2Kn96oKZ6WtgRV
-	cyUl1tgNA4c00CuhzIm+hR9Zv50ayRnihL1A1PfNZiTSyTNG8CXjk0koI2kYfWG/
-	6dqbgFbjg7APbtTU6PyONswxE6pd7stYlDfKhAQ1DYNn398VdubOPedw7eosAZ4H
-	4X1M4JUC0q08CjCsmlgYDzbjQT4edkW3/mItFU3q8Fg3hV4sJ3EMOefxsucNbim5
-	M+odng==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ap07a13u0-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Wed, 26 Nov 2025 17:40:33 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8b2e19c8558so1535726285a.2
-        for <imx@lists.linux.dev>; Wed, 26 Nov 2025 09:40:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q+/hC1QH"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-42b2e9ac45aso89766f8f.0
+        for <imx@lists.linux.dev>; Wed, 26 Nov 2025 10:36:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1764178832; x=1764783632; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+CNzxCmRqCkzPCZPo7wdwLbBBFP1ERFX65HRTQOL9Xw=;
-        b=YqLAsyLWZbsxi5J22BRixjfrDFv/dLNPxaVrx/6vhFd3hafzSIl4qrdnF/SUOXSf7I
-         Nj+9i4aM0kLdaqYNkbn4uQ3HNYT/89ds/pY232TIdA5Iu0H17oKoFcKvalDKAt3dRrtr
-         4C1uY5iO0uDnDPpfuVdP4zfXBqdj9ksSOqBDvTkFbwOY/1XccYi1CeYwqS43E84setS7
-         7pnsk111/NhR8M75+8ati26Qvx+9+df6pnPfWGVp749t+/7c1/n/aTtEPHzD0Xbcznsl
-         WJNyo5/GQI9oAVGjeG7+Uw0Sm9kapJXpMNfQpxaRQO5fQkGurLUFE8zbTRGmYmcvx4mo
-         VZnQ==
+        d=gmail.com; s=20230601; t=1764182160; x=1764786960; darn=lists.linux.dev;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=l+UpyQQXX4ETUL7fz0/4jQ9/53R6ELtNZ9Z4xa9EpMc=;
+        b=Q+/hC1QH/CqHQnAC81CJWuF+a2xo9vF7Eg6kZqpwQd3+7HFt7pvQPKVdHXpfJ1kOQW
+         Lfgz4pxSFzD0coQVCtIDqESIyVjJSCNMhV5dLNRsjlbTEVuiJ2sNYnjIqSOPS7YZjBMc
+         36VK63lOnBsZKftosCIL4f6GeDDqck3OLVRT+u7tl6YQUYSd8rWJ+/tnpNFfG0qPiHX0
+         80M9qMGjufhlwduIbNwhTcmzSu3wpScLjdf6XaV/1y3UC9AfWCzWw4MYgMsNDqw+xXFS
+         ZeySHBbTzXXQnVodzKn6PUCj7igq7OJCyNBLgE7jgaJNEASJ7DJX6XKzIc2KJdLCNbRu
+         lagw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764178832; x=1764783632;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+CNzxCmRqCkzPCZPo7wdwLbBBFP1ERFX65HRTQOL9Xw=;
-        b=vsj5F+4/hTxvzvMvmR0ZgsvR6AYrOHcDK/p2IBG7j3hyIQOPD31E/XiK2WBzoqIEwn
-         HmCvCrM0Ivbwhniy4MwROIdN3b1DK+0bKnWPjOuxKqqArpRY1FfFrnPcKl7kl6CKVq/g
-         FTthLeLzc4bMntEtu3Y3ZNbKNI8TNpbuIcV28EmRfsceH7jzt3aazNmi6ZCxBTnMJjE1
-         r98H74t98rP+8hTxnsA7sBbEtKRBtnD2yhLISy+mv4DWHmG9s4Yl9uZ7UO2tMof3jiCH
-         8ZFrDG3HA5OoWb2sMAaBXbz2IECBfkteh3/OKwztZQZuKMBDQVeaWQxw+7bT0Xn6ZmjL
-         oxVA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMQ1AYMqRTXowl+WdaIXdnSMBVOzibRmOGs/9MS8cCzNfcEGG9ZHb7Mzupc/ZYTqHPiBA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxnNjFL5OiN4BlIRN8tkQrecvWK2mUQ2RRjLsqVOz2G6dsu+2d6
-	0Rgcb2PUxu2Sil52ZrtlnNXhaC3nK5FxyLb0pH04RZQAE3BIk12hZx5czz0eiIcJ+RWlI9Nmpff
-	iT5156KU901cZJbXStResuZrbNieml0xUcAuzqAQ0EJPmKrlzLF+T74Fw8LiaYas=
-X-Gm-Gg: ASbGncvxgjfuGZu97ubDrOv0U0hcrIV7xEZg5CFbgE/UQuYciWsNl1/K8djn2vRJmHc
-	XY3S7HdNCNW7VlcWd8gv4Ij4sNkhK07g9iWbYEWpINvXZJD0nd/WvQCQ4l0joMan0+4eEyHGl4q
-	4uwjUjsAHDsAQMiwuO4/nzOD7dBHhkkoPSZwr4jCdGsmREVVgOrESw5XLTQHrNnXdrekiiO4t8j
-	gUzFgcVVlEBvzgPO54QQG40ZzlZQ9zSkNxqLtY+/6GC3M3TdhRzYwaXL1u9AdYfFpMrYfjQ+oGL
-	G6QYFkTblZtXT6sjBePFK83McCJVpsAHEosE/Y4bdJ0olwvOj+AfW/ztGYuuKLlW1Jb/yjE/bEg
-	BnSyNLMBlnHASUTYRiyGrIUxsbieokpISWw==
-X-Received: by 2002:a05:620a:2909:b0:8b2:ec00:7846 with SMTP id af79cd13be357-8b33d1d100bmr2726795885a.28.1764178832020;
-        Wed, 26 Nov 2025 09:40:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHbqjKB2O5sFoZAhlM0Xp12Fq79ZAX/1usQXGn4gK+ya5/tETRvn2zPSCy7xw2177LVeVx2DQ==
-X-Received: by 2002:a05:620a:2909:b0:8b2:ec00:7846 with SMTP id af79cd13be357-8b33d1d100bmr2726791185a.28.1764178831610;
-        Wed, 26 Nov 2025 09:40:31 -0800 (PST)
-Received: from [127.0.1.1] ([178.197.219.123])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fd8e54sm43226430f8f.40.2025.11.26.09.40.30
+        d=1e100.net; s=20230601; t=1764182160; x=1764786960;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=l+UpyQQXX4ETUL7fz0/4jQ9/53R6ELtNZ9Z4xa9EpMc=;
+        b=spD6X/rwBhk4L7D8VMXjiClRx7WgQ5Rc790WGuOPyWftiMdEjmbaovNlVy9ijQc9Pk
+         A3ZRKpkJ/OhATt2kNa1/yWyaPJkrxP3AqY/mRIswqm7GVIF/W5MtopjP+9dQWd71Eu61
+         R5AKe4JcahStf/CljMLaGEozmvMJbzFUqdBIuG0SMOCYhyawTJeAF1hMstvGnfLtNkQq
+         p+cGdyryo/9oIzuBxuWl6ohLHFzrKUdoymBAeHCSwEdR+GwN3gfbf1tKK0ba+CWV8EcD
+         rUhLOVl2eS7kBbMH9CbabFx+Xj5zY7K3ZBkEqBFRC55JP4xNqPESB24/cpvUe0I3EYVS
+         aBbw==
+X-Forwarded-Encrypted: i=1; AJvYcCVcI8zIRg6BcDZgpktBa3irZj5WYnclK6qKMpueBO3zQYU2Szm0jr6gg8pd/KTbhDzHd90=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyJ+J5gJqfq+iAIlUffmt0u8YMBqtug6afekgMZ7Q/wWNyiifDS
+	1+/VUpJNp/eMHB+XOqpLY+C2ifXeCA57ATPZcEilZiIwZvHu6yYPvGA7
+X-Gm-Gg: ASbGncu5TefFlzZ3q+0pUoOLzJE4ARR7MZxCttgkjd1o09ur9XVLE+EqWUKTf3+78w5
+	JI9O++gsoge2if9BkYeX9sb6e9wZRDhjS75ZixcEqSLIbkrMa7c5CPA+aUON4flqbmHgD7mE8TX
+	ItSjpVVpMjnyvB6js58oiq5fPyyBI5geUZb+8ksVgKyToew7v0z5JIyy8SH1n1phV2aDV3NgxpK
+	1mp7w6qVxopGaYDWuclzucRA6+iMEjiS2hYkriTQ3ejQjjokidPNiWWFvPYI0O0YuIcO2y9/jVi
+	JdK7YD74SpoySlQoHMjXsBuqyFgg/IDHm1JRUglyzf1kp9gu11vE0P3XHkwzTGGyktzBZp1Yh2o
+	yDEU5JuZdU4eGBdbEihVuhTZQ4FQQ0M/QmZNmLd83/RBGtdyFO4i7XZDWo5O2i0nNtv3Tojjjgg
+	mf+YjzxJeHSKN4840k2RTnPSnUW9AyMHCGyg==
+X-Google-Smtp-Source: AGHT+IEDaKLHkuJUlFxjTNYKXYKXILgs49wv90DIhz+B7Erbl6ou89i0ju5Aozc3Dud2Eq5F+/QLtQ==
+X-Received: by 2002:a05:6000:401f:b0:42b:2ac7:7942 with SMTP id ffacd0b85a97d-42e0f1e3433mr8676095f8f.5.1764182159355;
+        Wed, 26 Nov 2025 10:35:59 -0800 (PST)
+Received: from vitor-nb.Home (bl19-170-125.dsl.telepac.pt. [2.80.170.125])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42cb7fa3a6bsm41766947f8f.28.2025.11.26.10.35.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Nov 2025 09:40:31 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Date: Wed, 26 Nov 2025 18:40:12 +0100
-Subject: [PATCH v2 8/8] regulator: pf9453: Constify pointers to
- 'regulator_desc' wrap struct
+        Wed, 26 Nov 2025 10:35:58 -0800 (PST)
+Message-ID: <82e78d56c7df6e1f93de29f9b3a70f7c132603c4.camel@gmail.com>
+Subject: Re: CAAM RSA breaks cfg80211 certificate verification on iMX8QXP
+From: Vitor Soares <ivitro@gmail.com>
+To: Ahmad Fatoum <ahmad@kernel.org>, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Cc: horia.geanta@nxp.com, pankaj.gupta@nxp.com, gaurav.jain@nxp.com, 
+ herbert@gondor.apana.org.au, john.ernberg@actia.se,
+ meenakshi.aggarwal@nxp.com
+Date: Wed, 26 Nov 2025 18:35:57 +0000
+In-Reply-To: <3d44957f-8c09-47f3-93e0-78a1d34adfd0@kernel.org>
+References: <b017b6260075f7ba11c52e71bcc5cebe427e020f.camel@gmail.com>
+	 <ac727d79bdd7e20bf390408e4fa4dfeadb4b8732.camel@gmail.com>
+	 <3d44957f-8c09-47f3-93e0-78a1d34adfd0@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251126-container-of-const-regulator-v2-8-7ad3408d6f29@oss.qualcomm.com>
-References: <20251126-container-of-const-regulator-v2-0-7ad3408d6f29@oss.qualcomm.com>
-In-Reply-To: <20251126-container-of-const-regulator-v2-0-7ad3408d6f29@oss.qualcomm.com>
-To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Bartosz Golaszewski <brgl@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-        Samuel Kayode <samkay014@gmail.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, imx@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1202;
- i=krzysztof.kozlowski@oss.qualcomm.com; h=from:subject:message-id;
- bh=hmZwf+gqSZxGRRmKDKGj7wIJ5dnf5CYeGgO2dqTIhtc=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBpJzuAy4+4pJL42G4NnFpgzf5sY9W3LscY+MVSN
- MQ99It4xk+JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaSc7gAAKCRDBN2bmhouD
- 1+EED/0SBwYzE7RXfH6kNNQOVHrlmegqHI8oD3Wp8oWC/rAteI3V6KVnUlW+pNM9N+/eF3v1WOw
- 3EWld96KEMWs6ha/2f8+6XHKUvA/y1NChDfhXooLoxhwu1OJSWOcmeV72joeqc9m7JdpF07zH++
- x0SxMUUvB0vIqq+d+EfZUPhvxxyYJvntH6NIAnl28Ahtq9Lcwar4OcgDzcOi3LscL7/p3STeT6Z
- FdXMQuUaSc8gQUmed8XJ6APlO0OEP6ZmcvNBaSr3tqYgurmKrzIjzOuqS5MubAZVOBRZ2BlNEUl
- dVGG7W/BB4SjLtFiy06wBW/aiu8nD5yoyNEWCXWDo0iSuyll0f94EuRbu2kTsQ8Jm65woX+h11G
- QMbbFTFA7ZbgrBhMFl/6KsNCISAYRk8l1kxIhLct9zx7f3f2Bv2ilaxH943wU01Y3dTQU0O54wY
- 0mqqzHGwM/yJp2z7WqEBUFSJOIdJnEZnU0PQlpI89/LO1WTOzfbHfVpBbFBtB5AwjKQbEXKSEF5
- DjyVJ5SL2O/STz4sPT7fJ2IECzJpiBrj7vS8gUi7zHzxsavZHHYXTqMG/VLMGbommIyvwE+07Bn
- rhXhx2v4M2fNmRO0oEtu2b+3tEqB+RcyDqXVIp9Ax7tdzcZDH985n6PgnMcf2/fKQMYiWyrxGKK
- vSGcM6CkTkD7XaQ==
-X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
-X-Authority-Analysis: v=2.4 cv=ZZEQ98VA c=1 sm=1 tr=0 ts=69273b91 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=Iax6wTeSMpqzYiZSKl48GQ==:17
- a=IkcTkHD0fZMA:10 a=6UeiqGixMTsA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=9MRJ1adic_HRPEocbcUA:9
- a=QEXdDO2ut3YA:10 a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-ORIG-GUID: rUD3NiC3dsH2D7SdP4ohGkdFfGzSeHhQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTI2MDE0NCBTYWx0ZWRfX2qjzOxizKtjd
- z7cbHN4ZZieyee+9YRzx/boJapPpNDpdk/9Fqe2rVYMT6FwzIfchLNN+L92fVNziKaYH5uB2ry0
- xL8bnHXJjZEoDI/GJGuuXEqVPhMfV1Y4DbTzCFzpGSXVglAmAINypkt9irWIV9+HQZ0GVbzHS9B
- oBD3h+tQoJ59Gl7BrRnJJvAAO94m+WdCs27RMkKZ7K6BvgNTiW8iXvsBEIhWrrKkKy8lHgSPqhA
- YN/MDMq2GDpMDxfjLbxjU1j2VqScZWn9nQAT94I4jcZU5WPumxMXcG+yrNZuaBFCXNQpKRnzwhP
- ogPszPULkCcORKhKWOZHHxyaciVqOkSLIVJwSSGJffIOd3jPYqXdeWZ9Ex1opnyAdTbSp7/tBOj
- 1iti4wGrEyy4RkCg/1KMFfpsU4k7xQ==
-X-Proofpoint-GUID: rUD3NiC3dsH2D7SdP4ohGkdFfGzSeHhQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-25_02,2025-11-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 impostorscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 adultscore=0 priorityscore=1501 lowpriorityscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2511260144
 
-Pointer to 'struct regulator_desc' is a pointer to const and the
-wrapping structure (container) is not being modified, thus entire syntax
-can be replaced to preferred and safer container_of_const().
+On Wed, 2025-11-26 at 13:59 +0100, Ahmad Fatoum wrote:
+> Hello Vitor,
+>=20
+> On 26.11.25 11:55, Vitor Soares wrote:
+> > ++imx@lists.linux.dev
+> >=20
+> > On Mon, 2025-11-24 at 19:03 +0000, Vitor Soares wrote:
+> > > I=E2=80=99m currently investigating an issue on our Colibri iMX8QXP S=
+oM running
+> > > kernel
+> > > 6.18-rc6 (also reproducible on v6.17), where cfg80211 fails to load t=
+he
+> > > compiled-in X.509 certificates used to verify the regulatory database
+> > > signature.
+> > >=20
+> > > During boot, I consistently see the following messages:
+> > > =C2=A0cfg80211: Loading compiled-in X.509 certificates for regulatory=
+ database
+> > > =C2=A0Problem loading in-kernel X.509 certificate (-22)
+> > > =C2=A0Problem loading in-kernel X.509 certificate (-22)
+> > > =C2=A0cfg80211: loaded regulatory.db is malformed or signature is
+> > > missing/invalid
+> > >=20
+> > > As part of the debugging process, I removed the CAAM crypto drivers a=
+nd
+> > > manually
+> > > reloaded cfg80211. In this configuration, the certificates load corre=
+ctly
+> > > and
+> > > the regulatory database is validated with no errors.
+> > >=20
+> > > With additional debugging enabled, I traced the failure to
+> > > crypto_sig_verify(),
+> > > which returns -22 (EINVAL).
+> > > At this stage, I=E2=80=99m trying to determine whether:
+> > > =C2=A0- This is a known issue involving cfg80211 certificate validati=
+on when
+> > > the
+> > > CAAM
+> > > hardware crypto engine is enabled on i.MX SoCs, or
+> > > =C2=A0- CAAM may be returning unexpected values to the X.509 verifica=
+tion
+> > > logic.
+> > >=20
+> > > If anyone has encountered similar behavior or can suggest areas to
+> > > investigate=E2=80=94particularly around CAAM=E2=80=94I would greatly =
+appreciate your
+> > > guidance.
+> > >=20
+> > > Thanks in advance for any insights,
+> > > V=C3=ADtor Soares
+> >=20
+> > Following up with additional debugging findings.
+> >=20
+> > I traced the -EINVAL to rsassa_pkcs1_verify() in the PKCS#1 v1.5
+> > verification
+> > path. The check that fails expects a leading 0x00 byte in the RSA outpu=
+t
+> > buffer.
+> > To investigate further, I poisoned the output buffer with 0xAA before t=
+he
+> > RSA
+> > operation. CAAM RSA operation returns success, but the output buffer is
+> > never
+> > written to.
+> >=20
+> > During debugging, I loaded cfg80211 multiple times and observed that
+> > sporadically one of the certificates gets verified correctly, but never
+> > both.
+> >=20
+> > I confirmed that other CAAM operations work correctly by testing hwrng =
+via
+> > /dev/hwrng, which produces valid random data.
+> >=20
+> > Given that CAAM reports success but does not populate the RSA output bu=
+ffer,
+> > the
+> > problem appears to be somewhere in the RSA execution flow (possibly in =
+how
+> > the
+> > result buffer is handled or returned), but I don=E2=80=99t have enough =
+insight into
+> > CAAM's RSA implementation or firmware interaction to pinpoint the exact
+> > cause.
+> >=20
+> > As noted previously, blacklisting caam_pkc to force rsa-generic resolve=
+s the
+> > issue.
+>=20
+> Just a shot in the dark, because I have no experience with i.MX8 beyond
+> i.MX8M:
+>=20
+> Is the CAAM cache-coherent on your SoC? If so does the DT specify dma-coh=
+erent
+> as it should? On i.MX8M, it's not cache-coherent, but on Layerscape it wa=
+s and
+> the mismatch with the DT leads to symptoms matching what you are observin=
+g.
+>=20
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
----
- drivers/regulator/pf9453-regulator.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Thanks for the suggestion. I tested with dma-coherent added to the CAAM and=
+ job
+ring nodes but the issue persists.
+I traced through the DMA path in caampkc.c and confirmed:
 
-diff --git a/drivers/regulator/pf9453-regulator.c b/drivers/regulator/pf9453-regulator.c
-index cdb80f9d1bd7..779a6fdb0574 100644
---- a/drivers/regulator/pf9453-regulator.c
-+++ b/drivers/regulator/pf9453-regulator.c
-@@ -538,7 +538,9 @@ static int buck_set_dvs(const struct regulator_desc *desc,
- static int pf9453_set_dvs_levels(struct device_node *np, const struct regulator_desc *desc,
- 				 struct regulator_config *cfg)
- {
--	struct pf9453_regulator_desc *data = container_of(desc, struct pf9453_regulator_desc, desc);
-+	const struct pf9453_regulator_desc *data = container_of_const(desc,
-+								      struct pf9453_regulator_desc,
-+								      desc);
- 	struct pf9453 *pf9453 = dev_get_drvdata(cfg->dev);
- 	const struct pf9453_dvs_config *dvs = &data->dvs;
- 	unsigned int reg, mask;
+- dma_map_sg() is called in rsa_edesc_alloc() with DMA_FROM_DEVICE
+- dma_unmap_sg() is called in rsa_io_unmap() from rsa_pub_done() before
+completion
+- CAAM returns status err=3D0x00000000 (success)
+- dst_nents=3D1=20
 
--- 
-2.48.1
+Yet the output buffer remains untouched (still contains my 0xAA poison patt=
+ern).
+The kernel DMA handling appears correct. CAAM accepts the job and reports
+success, but never writes the RSA result. Given that CAAM reports success b=
+ut
+does not populate the RSA output buffer, the problem appears to be somewher=
+e in
+the RSA execution flow (possibly in how the result buffer is handled or
+returned), but I don't have enough insight into CAAM's RSA implementation.
+
+> Off-topic remark: If you have performance comparison between running with=
+ and
+> without CAAM RSA acceleration, I'd be interested to hear about them.
+> At least for the hashing algorithms, using the Cortex-A53 (+ CE) CPU was =
+a lot
+> faster than bothering with the CAAM "acceleration".
+>=20
+
+I haven't done a kernel-level CAAM vs software RSA comparison, but OpenSSL =
+with
+ARM Crypto Extensions shows ~3100 verify ops/sec and ~80 sign ops/sec for R=
+SA
+2048 on the Cortex-A35.
+
+Regards,
+V=C3=ADtor
+
 
