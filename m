@@ -1,42 +1,48 @@
-Received: from akranes.kaiser.cx (akranes.kaiser.cx [152.53.16.207])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E195F232395;
-	Wed, 26 Nov 2025 20:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.53.16.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09162E9729;
+	Wed, 26 Nov 2025 21:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764189063; cv=none; b=rcVvhrfXay6LMgSnkGUDWvnrlLL8tKtv7rWDGghc+drak0CclAYSKUbZUCnWMwoW3GVXmotikBEG9vjpBk0SGt4FknU95aSqBbjk4oZBUlKDLdBZEGEHRE1TmVGkIViPbopKNVPv1rkfWhcE1IlZFHTk8qfglyef+BybjXALib8=
+	t=1764193293; cv=none; b=I/vIQ1k3RaqZpJnBRQpqtaA7bvEJP77yrp6SIKA4wVpjd/WYT2mC+39fjfirWpkkWVv9BEa8fsKpE50NWpLqtZXzFUhXUfh+0kwa0/fIJj1mmEZIeD+Fl5PUTFAeqMkvckMgkdVoGGahaPw5txqXPjLb/9+Sxmk5DMO8wtd3ft0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764189063; c=relaxed/simple;
-	bh=pKETpT/qtE1W7EPF8Otd2b1X2DpkV2LH1hN1uUbdTHk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gM+8xf3UbHiyfUJ6LIdBq+/9XzbdLm0qVeqgN4p+0Zv04uTLTRbXoU4ZRZXi+6I/aKHWXgWgNSRrxUFhUiSlteKPaHADr656AtOyoKjW1pQAzcQc1zag0yVU3212l3LDC1wiKlS7SZeEi/0jzZ4cm3H2vsKizTKAjBri6qU3Uy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx; spf=pass smtp.mailfrom=kaiser.cx; arc=none smtp.client-ip=152.53.16.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kaiser.cx
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaiser.cx
-Received: from martin by akranes.kaiser.cx with local (Exim 4.96)
-	(envelope-from <martin@akranes.kaiser.cx>)
-	id 1vOM9P-009WC2-1t;
-	Wed, 26 Nov 2025 21:30:07 +0100
-Date: Wed, 26 Nov 2025 21:30:07 +0100
-From: Martin Kaiser <martin@kaiser.cx>
-To: Jean-Michel Hautbois via B4 Relay <devnull+jeanmichel.hautbois.yoseli.org@kernel.org>
-Cc: Greg Ungerer <gerg@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Olivia Mackall <olivia@selenic.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-m68k@lists.linux-m68k.org,
-	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v4 1/2] hwrng: imx-rngc: Use optional clock
-Message-ID: <aSdjT9BLzGF3_5PB@akranes.kaiser.cx>
-References: <20251126-b4-m5441x-add-rng-support-v4-0-5309548c9555@yoseli.org>
- <20251126-b4-m5441x-add-rng-support-v4-1-5309548c9555@yoseli.org>
+	s=arc-20240116; t=1764193293; c=relaxed/simple;
+	bh=VKmA/6mAURUWzEVcZzYO7/+r+cvqBLcFui3VsZzeq5E=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=BX6xKQJvwxmB63hrlgQHeAsYSMn4rrjBi1BCb1n5W84+hqM17++dm3hKbHR/fRR8yhm5VyUwr6M550KC+G7GD98quoRE4dqFv9p5trNlNqcrItcefYC3HnyYGm+hXeIqmaKFaEMj4Dj2yWDolm0mEFwmPD3Qh3Xx6v5tqcuBROc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uns+OFKR; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uns+OFKR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057E7C4CEF7;
+	Wed, 26 Nov 2025 21:41:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764193293;
+	bh=VKmA/6mAURUWzEVcZzYO7/+r+cvqBLcFui3VsZzeq5E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=uns+OFKRel+FuTsKfHkbDzNE1hZXYrMcqFMDExplp/C29jVUpES+Osyp92ZmcK8d9
+	 fPE87c5VtNVjjqPvM6B9/5uZeU/YtuZEh8MW2NATGIt5F2omL8gSk5wwFJJ3Nex4UB
+	 5lbGQr6gCY2S5XfjnG0dZSPpeJMga/fOTN6csWcs+K2FZlGDBxWOcvqAHs/iQkX7SB
+	 CKjx507RNExmTvkVFMjxFFEsQ6MtzOiw/J7ZLBkAC4oJu2JDBScX/9eX0AcwtPRCu0
+	 wYazpiGdXgBpgp0v2Ed8Vm87xhgDo2kyIwzD+UCVOJhPeY9xSsm8/3aRQiQa7VCmvX
+	 g1wNrWabfRBwg==
+Date: Wed, 26 Nov 2025 15:41:31 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: chester62515@gmail.com, mbrugger@suse.com,
+	ghennadi.procopciuc@oss.nxp.com, s32@nxp.com, bhelgaas@google.com,
+	jingoohan1@gmail.com, lpieralisi@kernel.org, kwilczynski@kernel.org,
+	mani@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com,
+	Ghennadi.Procopciuc@nxp.com, ciprianmarian.costea@nxp.com,
+	bogdan.hamciuc@nxp.com, Frank.li@nxp.com,
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, cassel@kernel.org,
+	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+Subject: Re: [PATCH 4/4 v6] MAINTAINERS: Add MAINTAINER for NXP S32G PCIe
+ driver
+Message-ID: <20251126214131.GA2852425@bhelgaas>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,41 +51,37 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251126-b4-m5441x-add-rng-support-v4-1-5309548c9555@yoseli.org>
-Sender: "Martin Kaiser,,," <martin@akranes.kaiser.cx>
+In-Reply-To: <20251121164920.2008569-5-vincent.guittot@linaro.org>
 
-Thus wrote Jean-Michel Hautbois via B4 Relay (devnull+jeanmichel.hautbois.yoseli.org@kernel.org):
+[+cc Ciprian @oss.nxp.com, see email addr question below]
 
-> From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-
-> Change devm_clk_get() to devm_clk_get_optional() to support platforms
-> where the RNG clock is always enabled and not exposed via the clock
-> framework (such as ColdFire MCF54418).
-
+On Fri, Nov 21, 2025 at 05:49:20PM +0100, Vincent Guittot wrote:
+> Add a new entry for S32G PCIe driver.
+> 
+> Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
 > ---
->  drivers/char/hw_random/imx-rngc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  MAINTAINERS | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index e64b94e6b5a9..bec5d5792a5f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3137,6 +3137,15 @@ F:	arch/arm64/boot/dts/freescale/s32g*.dts*
+>  F:	drivers/pinctrl/nxp/
+>  F:	drivers/rtc/rtc-s32g.c
+>  
+> +ARM/NXP S32G PCIE CONTROLLER DRIVER
+> +M:	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
 
-> diff --git a/drivers/char/hw_random/imx-rngc.c b/drivers/char/hw_random/imx-rngc.c
-> index 241664a9b5d9..d6a847e48339 100644
-> --- a/drivers/char/hw_random/imx-rngc.c
-> +++ b/drivers/char/hw_random/imx-rngc.c
-> @@ -259,7 +259,7 @@ static int __init imx_rngc_probe(struct platform_device *pdev)
->  	if (IS_ERR(rngc->base))
->  		return PTR_ERR(rngc->base);
+I'd be happy to change to
+Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
+per https://lore.kernel.org/r/f38396c7-0605-4876-9ea6-0a179d6577c7@oss.nxp.com
 
-> -	rngc->clk = devm_clk_get(&pdev->dev, NULL);
-> +	rngc->clk = devm_clk_get_optional(&pdev->dev, NULL);
->  	if (IS_ERR(rngc->clk))
->  		return dev_err_probe(&pdev->dev, PTR_ERR(rngc->clk), "Cannot get rng_clk\n");
+I notice that most nxp.com addresses in MAINTAINERS use "@nxp.com"
+addresses, not "@oss.nxp.com".
 
-The clock is not optional on a standard imx25 system. If it's missing in the
-device tree, the rngb will not work and we should not load the driver.
+Let me know your preference.
 
-Should we call devm_clk_get or devm_clk_get_optional, depending on the
-detected device?
-
-Best regards,
-Martin
+Bjorn
