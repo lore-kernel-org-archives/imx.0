@@ -1,142 +1,191 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DAD2E7F0A
-	for <imx@lists.linux.dev>; Wed, 26 Nov 2025 12:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A1730DD01
+	for <imx@lists.linux.dev>; Wed, 26 Nov 2025 12:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764160586; cv=none; b=IS6c+oNEL5JsJvpMPIFtnxCNFf/+JRvVC07NPFx8FEF9z6u8RT69aHR1GKZEmafgN2QFAxC1544QPUZM9e/YMQ4cOjxrY6CjgR+IH0i48P4V7SlMzhGWr1QG8iwXnRsD4pOdpLYFdQsNgss3nyCi9BRoPM5DzmWDBL1uH+YZCD8=
+	t=1764160982; cv=none; b=G/D4EAt+QsHWHbNv0YhRYNivzlQz3LOiCnj1YA15mJ9ddC3hqS+sEo3Sem9TGqaZH0qYUjAyjFuF4Dy374Jrl06VrRSmfd0JhLjlNez84BAdP/w5cCj6u+bksyHNm2eRx7CRR/KF5G++lGioWzjNX9J44XAChZRZScWtDAUzVVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764160586; c=relaxed/simple;
-	bh=1Ur2l71s3ls7saL1UNBWDtUt9h0IJsTmcc0LubYPVvk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fiNdDi0xFBhPAsRUx8LmLjDlw7dihmjJs1TTZX9p91nAqOb5NQsJ+LxHwN51CURUUqrEqXTQaPau2sJBCIYKi1qxuUVykEXIGxGx7nc4JNj3Qqfh2CPqwSC/VHKHEifXbyTa6tVNsZAyEmJ8CDtPHTURZON5a1sKd4CJSNBp7Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vOEkq-0001Oz-VR; Wed, 26 Nov 2025 13:36:16 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vOEkq-002bom-1f;
-	Wed, 26 Nov 2025 13:36:16 +0100
-Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 2C7BB4A8C0F;
-	Wed, 26 Nov 2025 12:36:16 +0000 (UTC)
-Date: Wed, 26 Nov 2025 13:36:14 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: "broonie@kernel.org" <broonie@kernel.org>, Frank Li <frank.li@nxp.com>, 
-	"hawnguo@kernel.org" <hawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com" <festevam@gmail.com>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-Subject: Re: [PATCH 5/6] spi: imx: support dynamic burst length for ECSPI DMA
- mode
-Message-ID: <20251126-refined-fluorescent-kestrel-7d3f9e-mkl@pengutronix.de>
-References: <20251125100618.2159770-1-carlos.song@nxp.com>
- <20251125100618.2159770-6-carlos.song@nxp.com>
- <20251125-impartial-porcupine-of-courtesy-841990-mkl@pengutronix.de>
- <VI2PR04MB11147F814915ECCB6AE36F0F9E8DEA@VI2PR04MB11147.eurprd04.prod.outlook.com>
- <20251126-colorful-finch-of-joviality-aee641-mkl@pengutronix.de>
- <VI2PR04MB111471DB8E08CC180DA90589FE8DEA@VI2PR04MB11147.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1764160982; c=relaxed/simple;
+	bh=QMVHQHi0Zrm4GrHMGPBW2tQL6A/vxzVLomF+KFQ+vyI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W73BLxQiE2EbWd18UQC2a4Hj9NU49Rawk+JKPfwBLNYHzt2k5lWMwBLpBxUKRAcQOUmXdcDrngkxcRvSDAeb7RD8Z2By+TfiOEvIChPOUtWWvmcULKk3tlnInKWOZApcEaGwk1HQme1VRfOAtDO9jysXeDX4B7a/JD3Xf1oyQoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RMsF1RbL; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RMsF1RbL"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-64162c04f90so11183304a12.0
+        for <imx@lists.linux.dev>; Wed, 26 Nov 2025 04:42:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764160978; x=1764765778; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wyKInZW9vOOeMqe71nBxJ7HXJ/bNznUlqhwyoDm1B3s=;
+        b=RMsF1RbLHWf+GX+Kxt4vN1KIN5LkPEWWb1N0rr70ePkFkmGgWwcgXAOVn+IwDD2QbG
+         U8WvbuUqWCC8vbE/8wT+uhvX7gRlc6AZacSLhRqxalhwxmJjnY1+fKsNwGiDfEOINDFp
+         q2H0J/8M+Jo0xQnb5qeCOaRbN+pklQ9x8dUNlI9jtJxJ642pzvdKCE8YxEiIVcRxMmlz
+         d8dibHsMjti4CFxuX5b+8+/spQH6bLuXDQT+ixwEGPpc07RKHf97xrB+ipacVrm9lQJ9
+         03ldda7K5NeY6Fl+TtPKy+qiNp00aNiOPhmna0Hx9+tq6uwB7O9m751gwS7PWouEaNxN
+         xJbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764160978; x=1764765778;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wyKInZW9vOOeMqe71nBxJ7HXJ/bNznUlqhwyoDm1B3s=;
+        b=v7BJvOCFn1KzT1EgnJYOqaMJufdC8SqqFsxIqJmFxjwYRpSqtUh2mrlmYZmjXkQdt3
+         s+7bjgXnyCTVg8wvsEr/OgFmltI719HPNWFVDNsrt8HSsw1rJ/LEOaCE7RFtjvgQ2YH0
+         YaK57AWMlt9O373lCPHIpaIlXuEeCadKkNYPr/0aoxdTiFuz1vJVkUj+8Bk7gs5TuvT2
+         pIHPrCp4no8udPy8eHpczqSJ2EOI3od7/wgUhHgNxFT0+mh9gwAsE8CxbHEAl8q7Vcxl
+         P02IqOG6J4Np/2VbdUA9Z/ee5elGzt6k5EyMnbQ+yluj18PUrKAWqPFW8hnjCO49o/E+
+         V3KQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUzXSVbwAoAeg1HOdH+fSllPJdl+MmXyDDxY6smBNIvHPW3H897+2yF8gMYcZTLEz2EB+g=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyqhqH7QaBEBoGr6SIKUpCB/Qb83jGV9abZRlpgwEnEpoEqSSfl
+	DBmbSrI+BqDEacykE3u8SZLcOXt9w3R4N8fFlD9C8xN54bBVcVIZeTnA
+X-Gm-Gg: ASbGncsx5xhAO3kr0gjaCfeaFZ7WDw9lAqwTVLvTvxFv1Pyoi3qS87CWX2Bf3g8vhja
+	9CvqHU4skeOAWemwnrPpWCD4iyJ2h8nQ8hKUJDq9MeGeV2revhH34Zi3wn4kKRN4D8K+PBvt+cJ
+	uDzKNFnbMq5nlanp3sqmbsu2TK6evoxtVW2o9wyP5tz0cWyJ/pcs3sk3RBqrflo1+Uy+baiSaTn
+	f/mluaZknGBg+x86J9RT+4s9E/AeEssB4NcIzjNfKlGkvbcvc6G7I3FDWshgCDJ+LVetOBQjQN+
+	6cmA9CRiLIvhwNSe78ryXqpp1OhKHhNfr2yxlItBpltE8M0/DNJ1RGaIiTwyQL1CWmCO/SXalff
+	zpweLPywHIlkznV4eXNuZEXG77ZOxjbagsCEsuuY+Ter+E+CwYy33kzZrLzhXgqKhF2uyMcWFzw
+	l5fuz1N3g3zpMWidk90in9e64634OT8VKYIW07
+X-Google-Smtp-Source: AGHT+IElqG7jPteIbIhzrUyHVFQTvghK+ylGI6dlqjj76G/QOs8gr0LlFJkvAARUAUVCGYrcNiuMVQ==
+X-Received: by 2002:a05:6402:2787:b0:641:2a61:7da2 with SMTP id 4fb4d7f45d1cf-64555be1db0mr17215942a12.17.1764160978101;
+        Wed, 26 Nov 2025 04:42:58 -0800 (PST)
+Received: from SMW024614.wbi.nxp.com ([128.77.115.157])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64536459d92sm17654824a12.31.2025.11.26.04.42.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Nov 2025 04:42:57 -0800 (PST)
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>
+Cc: devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: [PATCH v6 0/5] Add support for i.MX8ULP's SIM LPAV
+Date: Wed, 26 Nov 2025 04:42:13 -0800
+Message-ID: <20251126124218.803-1-laurentiumihalcea111@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="v3dhlxhj7lfehoeh"
-Content-Disposition: inline
-In-Reply-To: <VI2PR04MB111471DB8E08CC180DA90589FE8DEA@VI2PR04MB11147.eurprd04.prod.outlook.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
 
+From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
---v3dhlxhj7lfehoeh
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 5/6] spi: imx: support dynamic burst length for ECSPI DMA
- mode
-MIME-Version: 1.0
+The LPAV System Integration Module (SIM) is an IP found inside i.MX8ULP's
+LPAV subsystem, which offers clock gating, reset line
+assertion/de-assertion, and various other misc. options.
 
-On 26.11.2025 11:17:41, Carlos Song wrote:
->
->
-> > -----Original Message-----
-> > From: Marc Kleine-Budde <mkl@pengutronix.de>
-> > Sent: Wednesday, November 26, 2025 4:31 PM
-> > To: Carlos Song <carlos.song@nxp.com>
-> > Cc: broonie@kernel.org; Frank Li <frank.li@nxp.com>; hawnguo@kernel.org;
-> > s.hauer@pengutronix.de; kernel@pengutronix.de; festevam@gmail.com;
-> > imx@lists.linux.dev; linux-kernel@vger.kernel.org;
-> > linux-arm-kernel@lists.infradead.org; linux-spi@vger.kernel.org
-> > Subject: [EXT] Re: [PATCH 5/6] spi: imx: support dynamic burst length f=
-or ECSPI
-> > DMA mode
-> >
-> > On 26.11.2025 07:42:36, Carlos Song wrote:
-> >
-> > [...]
-> > > For example len is 512 *3 + 511. So first transfer using BURST_LENGTH
-> > > =3D 512 bytes(auto update 3 times), DMA transfer len =3D 512 *3, seco=
-nd
-> > > package BURST_LENGTH =3D 511 bytes, DMA transfer len =3D 511.(If here=
- we
-> > > use 512 bytes as BURST_LENGTH, SPI will shift out/in extra bits, it
-> > > previous isn't acceptable!)
-> >
-> > What happens if you keep the Burst Length at 512 and only transfer 511 =
-bytes
-> > with the DMA engine?
-> >
->
-> Sorry for missing one question:
-> BURST_LENGTH =3D 511, ECSPI will shift out 511 bytes in bus.
-> BURST_LENGTH =3D 512, ECSPI will shift out the last one word all bit in 3=
-2 bits FIFO.
-> So ECSPI will shift out 512 bytes include 8-bits zero bytes in bus.
+This series adds support for the IP by introducing a new clock HW provider
+driver and by modifying i.MX8MP's AUDIOMIX block control reset driver to
+allow it to be used for i.MX8ULP's SIM LPAV as well.
 
-Why was the tail transfer not needed before your patch?
+This series is a spin-off from [1].
 
-Is because you configure buswidth to DMA_SLAVE_BUSWIDTH_4_BYTES
-unconditionally on !word_delay mode. What happens if you always use
-DMA_SLAVE_BUSWIDTH_1_BYTES?
+[1]: https://lore.kernel.org/lkml/20240922174225.75948-1-laurentiumihalcea111@gmail.com/
 
-Marc
+---
+Changes in v6:
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+* store a "const struct imx8mp_reset_map" pointer instead of
+  a "const struct imx8mp_reset_info" pointer in
+  "struct imx8mp_audiomix_reset"
+* switch back to the mask-based approach
+* link to v5: https://lore.kernel.org/lkml/20251114133738.1762-1-laurentiumihalcea111@gmail.com/
 
---v3dhlxhj7lfehoeh
-Content-Type: application/pgp-signature; name="signature.asc"
+Changes in v5:
 
------BEGIN PGP SIGNATURE-----
+* drop patches that were already picked up by Philipp/Abel.
+* include the "bits.h" header.
+* replace mask with bit index.
+* link to v4: https://lore.kernel.org/lkml/20251104120301.913-1-laurentiumihalcea111@gmail.com/
 
-iQEyBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmkm9DsACgkQDHRl3/mQ
-kZzLeAf4x9KacHJB4mEXTgSoVSrEvq9dfS/QCpmR/IjYApnCNJr8vGzuOAWzUx7B
-Ai4MPATpacgHBcz5yrfmRDHHF55ygBQinKGRVakPkr+PO/eCWEDEtDY/307Yxhq1
-109CMD3F1KIkRsf1hxhXFudso+ih3tx/e9340vLDmqwBNncgP4b0mxFWSa4wTP9i
-9lTPWuXgL0iqhjGCtJ0vWqlAFTinlkyFsFoR+ioRlHuQkHdA9fk9ZSiBIfUitvj6
-Ohj8xEJWOpsw7V2IBnadgEuRNMinv5Oc/96uNGypO0dcGe6U75qvNMVSNFvUpV+s
-wu1/rmFwRntH6LSQMyI/h3Bmv8P0
-=oY1/
------END PGP SIGNATURE-----
+Changes in v4:
 
---v3dhlxhj7lfehoeh--
+* shorten commit message for patch 5
+* drop base from "struct imx8mp_audiomix_reset" and use local variable
+* imx8mp_audiomix_reset_get_regmap() now takes "struct imx8mp_audiomix_reset *"
+  as its argument instead of a "struct device *"
+* use base pointer as the data argument for devm_add_action_or_reset()
+* shorten commit message for patch 6
+* drop regmap field from "struct clk_imx8ulp_sim_lpav_data", use local
+  variable and let devres manage it
+* drop base field from "struct clk_imx8ulp_sim_lpav_data", use local
+  variable and let devres manage it.
+* CONFIG_CLK_IMX8ULP now selects CONFIG_AUXILIARY_BUS, which is needed
+  for devm_auxiliary_device_create().
+* drop static definition of "struct regmap_config" and change to using
+  local one in the clock driver.
+* link to v3: https://lore.kernel.org/lkml/20251029135229.890-1-laurentiumihalcea111@gmail.com/
+
+Changes in v3:
+
+* rename "lpav_bus", "hifi_core", and "hifi_plat" to "bus", "core", "plat"
+* don't assign the "name" field of "struct clk_parent_data". Previously, we
+  were assigning the local parent name to this field, which wouldn't have
+  worked anyways if, for whatever reason, the fallback mechanism would kick in.
+* replace the whole auxiliary reset driver creation chunk by
+  a single devm_auxiliary_device_create() call.
+* replace the "shift" field from "struct imx8mp_reset_map" with the usage of
+  ffs()
+* shorten commit description for patch 6
+* cast "id->driver_data" to "void *" instead of the previous
+  "const struct imx8mp_reset_info *", which makes the line shorter.
+* open question resulting from Peng Fan's comment on V2: how to access
+  interconnect QoS registers? do we need to model the sim_lpav as an
+  interconnect provider as well or is it fine to have another interconnect
+  provider that references the sim_lpav node and accesses its registers
+  via regmap (dev_get_regmap(), specifically, NOT syscon).
+* link to v2: https://lore.kernel.org/lkml/20251017112025.11997-1-laurentiumihalcea111@gmail.com/
+
+Changes in v2:
+
+* drop redundant description for "#clock-cells"/"#reset-cells" properties
+  from binding
+* make "mux-controller" and "#reset-cells" properties mandatory
+* add "mux-controller" child to binding example node
+* drop the compatiblity with syscon - this was never actually needed and
+  it was done to allow using "mmio-mux", which requires a syscon parent
+* modify the auxiliary reset driver to use regmap - this will allow the
+  mux controller, clock control and reset control APIs to use the same
+  spinlock.
+* rename "imx8ulp-reset-sim-lpav.h" to "fsl,imx8ulp-sim-lpav.h"
+* drop the "IMX8ULP_CLK_SIM_LPAV_END" macro, which doesn't belong to the
+  binding headers
+* fix the values of "IMX8MP_AUDIOMIX_EARC_RESET_MASK" and
+  "IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK", which were previously incorrect
+* drop redundant macros from auxiliary reset driver - replace their
+  occurrences with their values
+* squash the binding-related macro additions into the binding patch
+* add mux-controller child node to the sim_lpav node
+* make the "gates" array static
+* link to v1: https://lore.kernel.org/lkml/20250804155407.285353-1-laurentiumihalcea111@gmail.com/
+---
+
+Laurentiu Mihalcea (5):
+  reset: imx8mp-audiomix: Drop unneeded macros
+  reset: imx8mp-audiomix: Switch to using regmap API
+  reset: imx8mp-audiomix: Extend the driver usage
+  reset: imx8mp-audiomix: Support i.MX8ULP SIM LPAV
+  arm64: dts: imx8ulp: add sim lpav node
+
+ arch/arm64/boot/dts/freescale/imx8ulp.dtsi |  17 +++
+ drivers/reset/reset-imx8mp-audiomix.c      | 169 +++++++++++++++------
+ 2 files changed, 142 insertions(+), 44 deletions(-)
+
+-- 
+2.43.0
+
