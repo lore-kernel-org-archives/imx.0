@@ -1,177 +1,244 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010060.outbound.protection.outlook.com [52.101.84.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF622586C2
-	for <imx@lists.linux.dev>; Tue, 25 Nov 2025 23:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764113656; cv=none; b=uFwXxNXIAndyY+r9ocFTqMef6s0oyCIWXATtzxm4cAs25glCUtemI5hxYNzT/SKNYGomKWc04i1ZfIohRMpgOaV5GQ2hHk6QhCRis4kBlryoN3QEeI0VAdcqhTnq4cFfs8urKsmPUdbF2EKq+SThH5Zj0NSiH9nQUzwSJfubvj8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764113656; c=relaxed/simple;
-	bh=7OIcc9KkXH6wW5HnKG3kaGMWstSD64sRgn5IR3BBUQE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KEKiKyHBmfxv2aIFIY//1rH/uRpNFJMzGFStNsDm0L7UYKOfKJ2AVds75odF23ei4aR7UUc0xy5kLmJUdgiUqOSCoZMouWDFgUhPOc28ikZlVtcDB61C4O3t0betocrNlHP0O//auMSF12yrwJ9zSFZwTdQDkeV4YEA+Ym7ubf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bl1u0+Pk; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78853081A2
+	for <imx@lists.linux.dev>; Wed, 26 Nov 2025 02:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764123032; cv=fail; b=OFeBZvrX2Z+9JEIyMobeigPViH3T/KXI/BGJjOmRraivZ1eoLSKVSqZFqGcI1wp9Kpkx7Zy6uXewhAGmOmsYfcCDF+wc94DdmW48Wu8kKhnt7eBiASshNGebuOdZVD2VE9Tj8uQUaPg3ZPidN3O2EhgRmOth9gwFCnuN5k9DxiA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764123032; c=relaxed/simple;
+	bh=P9gygu6UUuFuNq6MgG2zyM4q8QfURqLEt25PqBBf5Lg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=SL+6MTqMABcQatdZSeiA5b2j9k156HYjp0lkgZ6yOWwUmYDEWzQhB4oOciG/e96tOazTBqW7r7OaqWLZ/5FGXo1NYpQ2LYuQxbVJ8E2dTmlH7MWpGMa8JuVtdwrfNPl7HGGtLGPA844ly0VLaTdT0VI5tsvFh71ShKrFwzD4+bU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ivSxHxDy; arc=fail smtp.client-ip=52.101.84.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bl1u0+Pk"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4779cc419b2so58212235e9.3
-        for <imx@lists.linux.dev>; Tue, 25 Nov 2025 15:34:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764113653; x=1764718453; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YSgFECtP1z+NfavQTbIkfavnGHKDphcmbRff6uSNyR4=;
-        b=Bl1u0+Pkn0KN+nFDXBzhuPCO9jDYCyy/mwqyEaVOn/RetkNV2n+7KR1jqVPb9SBIii
-         X5dyyWkm7qOHiEeWuSJvdG4RLdYAR4SOeLOnfNqknbKw+DA6gKHrxxahozT37+D6K2Iy
-         L1/0lxdPSrCzKRGkcOgG8hnES806gg5jNHxsOg8xXmvWmRzoYafdN22iRb7V+kFKXxV6
-         +XBZGY1QeNAZ8kmS6SJst3tEAIFkIwRjc8iU/VwjHe16KCdmaZhsARu16TBVwBzGLex4
-         X0zReRhJGXrEKQjRWcoagXPm90m9nO63naUh7QXA6kUP1UIFjJyqInY02+MwbxWX+5Vq
-         /jXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764113653; x=1764718453;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YSgFECtP1z+NfavQTbIkfavnGHKDphcmbRff6uSNyR4=;
-        b=sneKJD/LNAVkXe4dNDupgaNQBJK8E62CopFdl2mFGCUVx7STHyIv29BjULxKAvkT24
-         Q4ja2H5IjhXSx4gxF+rNcLjs2zvIClkEfX8fOW8ioziQhGlnl64BQVF8bqahT1HYNF0v
-         AwtLEIRQmkQUaZXdZbUqwsBnlGu7GNmusLsegiUoxobZMDKjDP2EXpOTfAPVUnqWgScS
-         giZmyIySY8hTW1fOcfPxq47+kxwIJHjc3dSJVVIWbMdfHqAa8BVG0R8OAtuPg7HTuCb9
-         pTc018UAxc7iUTZLFSGsmAr6nv+uK/OtDAP2ejLM0srGVAIMQgN95Nmv+5yw4VZGHcTp
-         z23A==
-X-Forwarded-Encrypted: i=1; AJvYcCUQ8DWd/58b8H5r6vsiORrTuTuzdIeukJCVgje8AvKVsWAbSs/sK4ZPFsaBcec9DUaqfbk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzm5xKzuzseVMFp29dK7NYzMm3FSYp+cVzMho/TixDg4Ffq2CKq
-	6XHOFHbZpzqZicN3dbhCLqzP426NVyke2nsuNypuVwKXvfKH/0FJbMYH
-X-Gm-Gg: ASbGnctPV+ZT3tYN/ZP8Ft0AnHo8xROpLQd/qG7aIIVg8gidq8cQdEzrBbwhLTnf11T
-	vslajJRlxvny6tK9Psp6nTnbalwXyFP96LOS3CG0zxS0UMtuQHxr0XdS3I3zvGbjz3lKIz1fc+5
-	p4yOTP21+ZE05/qj02qJ6fOg7Pq5UVJE7f+NIwhbkp/QgcB1wj7+a2Zoqp1ki8LABHqZkwat+6n
-	deg/m8/L+G1VpzUMpSPT4v+U+XmZSaford+69+WlxqwVEX9ciJv+EGxUawsnA0CEmwsmrB+gMQN
-	dp3GXNtKF/biS3AG7MMPxWTkyfO7lWRjCdRJQZ2Sq7MZrl6mCcUJD4slvs0A4hEaNrzbi9/HqFs
-	/5hrUqaCRj0sQbaL//MwI/a3/OmqeL4WQklYHI/6W28DBeiOlpy7n2d7u7uZyhABzU9Gw0weyTy
-	XRwseyXIdytx1N4inapMHiGqoWOaP0xMfkJFNrdeeIzg==
-X-Google-Smtp-Source: AGHT+IFalyeW7faMHDifKV64koi9lzILMgomHzb1dC1jupNeqdx4t6uHO6adv/AIDeDahL7H73btnA==
-X-Received: by 2002:a05:600c:4443:b0:477:af74:ed64 with SMTP id 5b1f17b1804b1-477c114f00amr174145245e9.27.1764113652924;
-        Tue, 25 Nov 2025 15:34:12 -0800 (PST)
-Received: from [192.168.1.129] ([82.79.237.20])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4790addeeaasm12850205e9.7.2025.11.25.15.34.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Nov 2025 15:34:12 -0800 (PST)
-Message-ID: <9ce8bcf1-7a62-44ce-81e3-f1c51f8be9b0@gmail.com>
-Date: Wed, 26 Nov 2025 01:34:10 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ivSxHxDy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=htRp7zZ3qxHaI8tejq0og8qxuLxKn000bEkgzyNF4ClqsqnwJxClJP+CfP4MdHpdI0wpiYxre5q5mdnnqd25+1r5nyfyBxtxO5yoHzGvffc8w/Qggjbi9EZEVvYXYE7+Q76STrfWrQZATs679Mr3OC3mD7lhshqA18q1suLXmSX2fomkTLqHcpkr1c6CKftEipkMPwySsul7bxvBYx5nTbb5H0gr1cqO0jY/QgRRO28sR7BMP6nLfZKSdhZy76YE6v/NgFHUo+vgrq6RxziFKSfFUPSTjBgsPPU/bt/9NvnudR74+kTPdIDWP26w71QDRZAgKzZHBWMsVvKF3qXwIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i2luBa9G4pYxMNK0If21uNwTbmAa0cHlujUaYW0MLKE=;
+ b=JZfTYRWeXayf8pOHw9BHxplUE1bDXN95ndio1HkoyZF+b3++3t7XVMFKZSmPoJ0C8Z8pIsKanGtdaMUgxu5xDBaNQn7ixb3O+XCuji0js4NZidTbFPSrvWL6EBJD7TqS75Zv8y0bdwLxx9H/wGAs4wFfwjOyLOECoWVjTEaC++OaJ+3n/9/wxMaP3FQ5ek66o6YHJpjFnUsbw1W3xuce3eF8BHvz22eWou7gSOTAzi8/SZYRmxgaIzIFLCuOZFz9AgD9OR/yS4DFS3EVbivVnVGMcDKMmE8CdwBxbmbzq7KJGRaWzqqqFgXG4of4ElpKXnKbtzCHF+xClQyR+648cA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i2luBa9G4pYxMNK0If21uNwTbmAa0cHlujUaYW0MLKE=;
+ b=ivSxHxDyus0Sg020TTvTS+Ydv/h2RUsgif+AqjYxheRfU2hav9YgxeRPpjKNxP3RnyLsuhrQVLqJIa8jHKC0kSYVJvexkvXWJ1SUIvwp8Nr6i2+Tua33PnPDyBDPEJtGitk1LUY7gn4J2o27erw1YrKtAr8kE0YmNv51lWjhTuac4s4DvVwbDayocGRSP6cdrvQh+pFDii1H/U4s8SAJqKEyQ01g10V/2dawoh8pdMvNjK0cMQJ+ps1GmkSu7c9uqH8mwwDN9xzEXrwb+oXOu4T550nSrQk1gb/DMszI3/V2iR5DiB5uPgXsARfVpKdzyw9yGuANy/8xfhX9GhkRiw==
+Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
+ (2603:10a6:800:293::14) by VI2PR04MB10620.eurprd04.prod.outlook.com
+ (2603:10a6:800:26f::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.12; Wed, 26 Nov
+ 2025 02:10:26 +0000
+Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
+ ([fe80::75ad:fac7:cfe7:b687]) by VI2PR04MB11147.eurprd04.prod.outlook.com
+ ([fe80::75ad:fac7:cfe7:b687%6]) with mapi id 15.20.9343.016; Wed, 26 Nov 2025
+ 02:10:26 +0000
+From: Carlos Song <carlos.song@nxp.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>, david laight
+	<david.laight@runbox.com>, Frank Li <frank.li@nxp.com>
+CC: "broonie@kernel.org" <broonie@kernel.org>, "rongqianfeng@vivo.com"
+	<rongqianfeng@vivo.com>, "linux-spi@vger.kernel.org"
+	<linux-spi@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] spi: spi-fsl-lpspi: fix watermark truncation caused by
+ type cast
+Thread-Topic: [PATCH] spi: spi-fsl-lpspi: fix watermark truncation caused by
+ type cast
+Thread-Index: AQHcXnnUFTDSylRETkOQZpVQi7N1Rg==
+Date: Wed, 26 Nov 2025 02:10:25 +0000
+Message-ID:
+ <VI2PR04MB111477CFB4C4253842C234FF9E8DEA@VI2PR04MB11147.eurprd04.prod.outlook.com>
+References: <20251117030355.1359081-1-carlos.song@nxp.com>
+ <aSCRFu2koh/w7ELs@lizhi-Precision-Tower-5810>
+ <20251122105716.24769251@pumpkin> <aSXHB_CWYZYnQ6ui@black.igk.intel.com>
+In-Reply-To: <aSXHB_CWYZYnQ6ui@black.igk.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: VI2PR04MB11147:EE_|VI2PR04MB10620:EE_
+x-ms-office365-filtering-correlation-id: 6c287291-131e-44b7-ad6c-08de2c90f6bd
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|19092799006|1800799024|376014|366016|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?j2UwQAK9VRWF61j9DUFgN+6W7WAzm2+YjlwsI5UotX4E89sZQBWEllGYd91N?=
+ =?us-ascii?Q?X1r24nsY/9vkAjzoZa48S62FTJ5bB4VyIZMrTPtUnrOSHBx3M/ABZubkfPpx?=
+ =?us-ascii?Q?ye6Fs+j5RySjuFJWliwT6pNALJzTbhok03TsbqbIQEmYDQdDgM3S+0RspiYQ?=
+ =?us-ascii?Q?iw9fGK3aSqQUyg4Zhn9SeG1C5lXSHpdrCaThRWWKiAcgIcpFqChb9HzKyAvq?=
+ =?us-ascii?Q?Qht/t7Rxv9JyovSA9kc8jcnGoejAdLUDaF+ztGt9bHZoGCr/ujBZwwCM0L48?=
+ =?us-ascii?Q?ZU8bzQrIQQrbJhluyCyOJ6x+rWQCytbcdFHlBxWslm8VsgHrYYhpv8XE0qKY?=
+ =?us-ascii?Q?BfNjdhwzmQuE2q1BMdl9POnoG9qz+kgH05VNY63i9WxC4Q21KsF5Tn1qTAqG?=
+ =?us-ascii?Q?QkWfX0Wqg0qKCh2ZXvsRTFc1Ikximtxfv0YUNLN60BpuIicSXDxk6QIXEQxy?=
+ =?us-ascii?Q?WWUGwdxlfAoHOaooqnCpWosYoOOZVptkTxWyqmarQZwn9rbJmnPrqAoEaKJI?=
+ =?us-ascii?Q?M6cZrFv65007vkF4CUUuliy7w/yeJJRBkFK2uZL4age63HN+Oz7ugcc5bvPk?=
+ =?us-ascii?Q?KzC2VYfyGHEuAWUe5sOp9ONBImLo2kb9/qkP0ZfYwg6228LdKSx78lEt+dS5?=
+ =?us-ascii?Q?wqEtcdaVcMol3ikk4soFtiNjSXqodvdEqk4p03Ljk1NFzEFCO6bCtOKdibjb?=
+ =?us-ascii?Q?CrIJVPqksLilczxOAR1alIyHeMifVfoHS5czgi3oetIfnj0dZoeA+QF4/VUP?=
+ =?us-ascii?Q?AZjqApVTSmpdhk5uOWWG/5RPtMBEckE1aH9klSd1uYpRDTiY46OEzzR8DhGf?=
+ =?us-ascii?Q?aHUjj2FRAYS5GIjILUp4uosLtBgSDJlQ/rp4FBi7azCzCgVfprCSG5yJjJ6r?=
+ =?us-ascii?Q?hbkgJTnpGDlFNec3BseR9Mu/DdUKmx3p93KBq7o9lKYO1N9thkzlPOEEEwI6?=
+ =?us-ascii?Q?I2SSloHMpW9Zh6+rTEqSTu+EXNs3JckqgfeEcVWiG21zYNfIgdLSf+Ifei2i?=
+ =?us-ascii?Q?ZpeBV7PAVBF8zNeaNOfupuivQi8F3Uy3PzU+m0Ho/b4tImB+HMshY9w5Jf3I?=
+ =?us-ascii?Q?j/BgC8elt4dDb5TDjzATnhcrn6yiqi1gKxeL5MwoHJl5cQinq5sOBvyiOWko?=
+ =?us-ascii?Q?EHR/SrqGaxgDAnTn+ExKdREFFjMCdnUpPVe5py+GlEHQyMrvOZpwa6TFpzPY?=
+ =?us-ascii?Q?DJ26nSnBWEOdjstadQ0VJ9tCv07cDsAqTcD6eYD9atTyimqALxIaNdXzT5bG?=
+ =?us-ascii?Q?4x1HoTzuMp2AVobTouooBCdmYcY+nJpbfvP/eN+ieA0rKks49d4Ps/OsafRH?=
+ =?us-ascii?Q?3u513B+rN+aA4KauhPKP1n1dFFCIta4qiQib+34KkjzhZhw+s6hPaUBlgLNf?=
+ =?us-ascii?Q?jNi2TtUPCGkV8N1HMHL/of1PD0hNnTIxqM4WgEjW49NyF9ck0/MBvCPtcVKP?=
+ =?us-ascii?Q?WD29eIoSUFBsC0uhJl3EfFj2R/GFyhafIOAbs6PIlo7+hBhkkAWeqXcrwQVR?=
+ =?us-ascii?Q?14jPuAd7+y4EJ6Fpzi5LdG9E67+1suGvO5yl?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11147.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?oMvk3c+iToxHmH+i77ZcrtDhy9Hd+kEDscjOxhowKfIOv6sTg7ORY0aOz69K?=
+ =?us-ascii?Q?h/wvEJhhaYVvAW9DUh7XMrho2UVzZKSX7ds/TdwnCh49g1lHwyKrPmeO065M?=
+ =?us-ascii?Q?yRkYTDiMm5rhGlnPj6gKiSE53fgDdW6ZHEOSNuQqDWBxyizIT0cVYNMu3IuX?=
+ =?us-ascii?Q?EyJ7wOpzN6nqMYxH38BePBxqHppSO18PtpQzJCqCsUEvl4tTOI714wXUzVwB?=
+ =?us-ascii?Q?4xlqPxzODsPpbvx1j/Sb5wK8DEE+0u/jQ3Nk2fKc6htR93xXckcC+bzwit1K?=
+ =?us-ascii?Q?FnSN4+j3Bwgm4bJ/4n7tY63Euzv/sxcxlTdQEDALS+Ye5sapD6JivhBSL5Qw?=
+ =?us-ascii?Q?+WAYvjm3ozaHSFxhFUrTtNneL7lv8g6nmGU0xcCKovh7AesNRVXPNdQ3rbFK?=
+ =?us-ascii?Q?SYxJMrsyfKXnhrvVIs4k82C4gTbD8QMzSt/gqM99Y39ZndwwoaXQMJ0MS4vv?=
+ =?us-ascii?Q?VD1kQbVW4m07Bs7Tqsfk7zmR5CUZQpJVkIX0vPYqKd/dZsL+2KDQBM27/vcL?=
+ =?us-ascii?Q?E3+YQNq4ACRDCfysHM0D9tXyRI2C1gJ2XfEyhEO++bT4a+IRmgxmzdFGFtbu?=
+ =?us-ascii?Q?0uw4AsaSl3ieJ12CZOK5lbq7LkA/9+F+ZSKyPse0jgrSOcCtxXzXwU/8Gny0?=
+ =?us-ascii?Q?i5J59/vtsNWwCnU+ABhdg+e8w0KAL5QkHMpXxwxbWijSh7vNU5nuoKyqDlu9?=
+ =?us-ascii?Q?TnwFrZW5w3+ExoHJ06NHSlqnDcDr3aYNgq1ECk27TIha1JZfFtAJXwEuXwt7?=
+ =?us-ascii?Q?p9CzJU1m+q9LBH34Jh5QwafBt6nMlbdNR3sYtU7oPQVt0iFlqgieSfp8qKEi?=
+ =?us-ascii?Q?ZltrdLhdO9ZGR7iLrwf9omy8O+PbOcBTBTJ8cJTeGjFmuT/hwIYiRcMyQvJe?=
+ =?us-ascii?Q?+xrxttFQWowFM8T4XaQSqhsB3SDQgJkS4gZJjy5MAZorx+GvxFA/Qg2HKt1U?=
+ =?us-ascii?Q?Gn2xPr2VLPYy9xDZh3yv8H86ybQXYhDArLHMXtMd2ezaOJTVp1RNbed/xbst?=
+ =?us-ascii?Q?+6oPz0rFRcqm9/jVJqGTtektKfyPog5N9lSCmT4aD0apycSdzzl/AthucBtc?=
+ =?us-ascii?Q?2ccfcWJnVflxq0G+k+QxV2mgPWoNXpRlJ4YJWjMZZAtBJilbzGc4+JbuWLLh?=
+ =?us-ascii?Q?nNVwecbHcVVsbI8nvk4nWWHV72aarEpmExNjjiPB3gL3y/i4HjA29/8OkovH?=
+ =?us-ascii?Q?KkHmNmbUE4C8cgP82+RNoafnRpCPLuFJcj9F301iIqINVawTYtO2cMRpJAwl?=
+ =?us-ascii?Q?NPIKqXXrrnA4m3zPFdB+gHGypxUNW8Pe9W5yHpvQCtZOi03XqWchC2SkHaMh?=
+ =?us-ascii?Q?vgpORv+CYLlCKXwjJuGSxZVCA1f3Iy7MXquUaM2l2qEodmrlHX+M/FDB5LKb?=
+ =?us-ascii?Q?id6QOuNP09ECIQrKhLRo5KLLnMAQFNex2ovK43C6aUI6rT5faQ9mlVclZlnt?=
+ =?us-ascii?Q?3sLJ4DGWOcgAbqXOQPyO0+9iKn5yoKY6zKDkNqbEOd6oRluyRct7R37Tx7G+?=
+ =?us-ascii?Q?q3pKwltV33VVXAu2R9fUsiDwtD/y/Jb8e+rdiVIXGVB8Jaj56VrYbF56smeQ?=
+ =?us-ascii?Q?hWYojT5cCtXvp0xN8x4Pw6rxaTef16UcdIWn0xR8?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/6] reset: imx8mp-audiomix: Replace mask with bit
- index
-To: Philipp Zabel <p.zabel@pengutronix.de>, Frank Li <Frank.li@nxp.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20251114133738.1762-1-laurentiumihalcea111@gmail.com>
- <20251114133738.1762-3-laurentiumihalcea111@gmail.com>
- <aSCHjNqj3CV3ahX0@lizhi-Precision-Tower-5810>
- <6be8a682-6c72-45c8-be0e-880ab66045ff@gmail.com>
- <aSR8q5cE/XXbZuF0@lizhi-Precision-Tower-5810>
- <4a022153-009c-44fd-8c4b-39819ae69390@gmail.com>
- <9f07e541fc000d9065c1ff1716f1edc4c2278c8d.camel@pengutronix.de>
-Content-Language: en-US
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <9f07e541fc000d9065c1ff1716f1edc4c2278c8d.camel@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11147.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c287291-131e-44b7-ad6c-08de2c90f6bd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Nov 2025 02:10:25.9369
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ODINvGDhrPRPr40OFKvwiIfZ6S5A52oKIZ/rfahCP81Wx4mDJRNAHZJY1D5JbX3tYRmTSxJP5JL5YtaMewsOaA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10620
 
 
-On 11/25/2025 12:40 PM, Philipp Zabel wrote:
-> On Di, 2025-11-25 at 01:59 -0800, Laurentiu Mihalcea wrote:
->> On 11/24/2025 7:41 AM, Frank Li wrote:
->>> On Mon, Nov 24, 2025 at 01:28:32AM -0800, Laurentiu Mihalcea wrote:
->>>> On 11/21/2025 7:38 AM, Frank Li wrote:
->>>>> On Fri, Nov 14, 2025 at 05:37:34AM -0800, Laurentiu Mihalcea wrote:
->>>>>> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->>>>>>
->>>>>> Replace the reset map mask with the bit index to make it clear that all
->>>>>> reset lines are managed by exactly 1 bit.
->>>>> I don't think there are benefit because I met some periphal need a magic
->>>>> number to reset.
-> Toggling multiple bits in unison is different from having to write a
-> magic number to a register field. The driver currently supports
-> neither. That is why I suggested to change from mask to bit.
->
->>>> Please provide more information. What SoC? Which peripherals? What block control?
->>>>
->>> I can't reminder exact one. I grep some code
->>>
->>> [IMX8MP_MEDIABLK_PD_LCDIF_1] = {
->>>                 .name = "mediablk-lcdif-1",
->>>                 .clk_names = (const char *[]){ "disp1", "apb", "axi", },
->>>                 .num_clks = 3,
->>>                 .gpc_name = "lcdif1",
->>>                 .rst_mask = BIT(4) | BIT(5) | BIT(23),
->>>                 .clk_mask = BIT(4) | BIT(5) | BIT(23),
-> According to the reference manual, these are three separate software
-> resets for three separate clocks: lcdif_pixel_clk, lcdif_apb_clk, and
-> lcdif_axi_clk.
->
->>>                 .path_names = (const char *[]){"lcdif-rd", "lcdif-wr"},
->>>                 .num_paths = 2,
->>>         },
->>>
->>> mask is more extenable and easily support more hardware in future.
-> If such hardware appears in the future, it will be easy to adapt the
-> driver. Usually we don't prematurely add complexity for possible future
-> hardware.
->
->>> Change to bit number have not big benefit.
-> It improves readability as it makes immediately clear from the code
-> that all resets correspond to a single bit.
->
->> sure, I'm fine with the mask-based approach. The big idea here is to make this driver
->> usable in as many scenarios as possible.
->>
->> Philipp, please let me know if you're okay with the proposal. Will also have to tweak
->> one of the subsequent patches since, so far, we've been operating under the assumption
->> that reset lines are 1 bit.
-> Given that the current code is already using mask, and if you think it
-> is likely that there will be need for reset controls that require
-> toggling multiple bits with a single write, I'm fine with keeping the
-> mask.
 
+> -----Original Message-----
+> From: Andy Shevchenko <andriy.shevchenko@intel.com>
+> Sent: Tuesday, November 25, 2025 11:11 PM
+> To: david laight <david.laight@runbox.com>
+> Cc: Frank Li <frank.li@nxp.com>; Carlos Song <carlos.song@nxp.com>;
+> broonie@kernel.org; rongqianfeng@vivo.com; linux-spi@vger.kernel.org;
+> imx@lists.linux.dev; linux-kernel@vger.kernel.org
+> Subject: [EXT] Re: [PATCH] spi: spi-fsl-lpspi: fix watermark truncation c=
+aused by
+> type cast
+>=20
+> Caution: This is an external email. Please take care when clicking links =
+or
+> opening attachments. When in doubt, report the message using the 'Report =
+this
+> email' button
+>=20
+>=20
+> On Sat, Nov 22, 2025 at 10:57:16AM +0000, david laight wrote:
+> > On Fri, 21 Nov 2025 11:19:34 -0500
+> > Frank Li <Frank.li@nxp.com> wrote:
+> > > On Mon, Nov 17, 2025 at 11:03:55AM +0800, carlos.song@nxp.com wrote:
+>=20
+> ...
+>=20
+> > > > + /*
+> > > > +  * t->len is 'unsigned' and txfifosize and watermrk is 'u8',
+> > > > + force
+> > > > +  * type cast is inevitable. When len > 255, len will be
+> > > > + truncated in min_t(),
+> > > > +  * it caused wrong watermark set. 'unsigned int' is as the
+> > > > + designated type
+> > > > +  * for min_t() to avoid truncation.
+> > > > +  */
+> > > > + fsl_lpspi->watermark =3D min_t(unsigned int,
+> > > >                                fsl_lpspi->txfifosize,
+> > > >                                t->len);
+> > >
+> > > There are thread discussion about min() and min_t()
+> > >
+> > > https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fl=
+o
+> > > re.kernel.org%2Fall%2F20251119224140.8616-1-david.laight.linux%40gma
+> > >
+> il.com%2F&data=3D05%7C02%7Ccarlos.song%40nxp.com%7C24c955c5ab414a26
+> 730
+> > >
+> a08de2c34dda3%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C6389
+> 96802
+> > >
+> 735067934%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiO
+> iIwLj
+> > >
+> AuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%
+> 7C
+> > > %7C&sdata=3DNEBirtRBR5RXz9cUXuqWVtHT6b3memVhsRe5mA7AIAQ%3D&
+> reserved=3D0
+> >
+> > The big comment even carefully explains that the two types are unsigned
+> ones.
+> > So a simple min() is absolutely fine (and the comment can go away).
+> >
+> > The old typecheck in min was just so stupid.
+> > In this case the 'u8' variable is promoted to 'int' (they always are)
+> > and then converted to 'unsigned int' to match the other type.
+> > Even though there is an implicit 'int' =3D> 'unsigned int' cast it is
+> > impossible for a negative value to become a large positive on (which
+> > is the only justification for the type check).
+> >
+> > I'd check the file for other uses on min_t() as well.
+>=20
+> Just came to this thread to echoing what David said. +1 to the above, ple=
+ase
+> convert to simple min(). The use cases for min_t() and max_t() should be =
+rare
+> really.
+>=20
 
-ACK. Unfortunately, I don't have an use-case for this driver in which we'd want to
+Hi,
 
-manage multiple underlying reset lines as a single one like in Frank's example. I'm
+Thank you for all ack about this patch.
+From my points, min() ot min_t(unsigned, x, x) both are ok.
+This patch has been picked, do I need to do a new patch to use min() instea=
+d this patch?
 
-also assuming Frank doesn't have one either based on his previous comment.
+Carlos
+> --
+> With Best Regards,
+> Andy Shevchenko
+>=20
 
-
-Despite this, however, the previous version of the driver was already able to handle
-
-this use-case. The single-bit reset restriction was introduced by this series. Therefore, I
-
-suggest we reduce the number of changes and revert to the old behavior.
-
-
-This way, we'll avoid reverting the patches if someone does ever come up with
-
-such an use-case. I'd say the driver is simple enough that the code readability will
-
-not be severely impacted.
-
-
-Either way, I think we'd be fine with any of the two approaches in the end.
-
-
->
-> regards
-> Philipp
