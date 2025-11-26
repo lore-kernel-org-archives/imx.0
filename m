@@ -1,146 +1,132 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47CA2DCBF2
-	for <imx@lists.linux.dev>; Wed, 26 Nov 2025 12:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1151328B70;
+	Wed, 26 Nov 2025 13:00:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764161547; cv=none; b=cJdw6t1EHfyBOn0f67K2Kjp1Z2CAYu1fbfNM0qmjgy46vXgfidnqzpn2NCiZQVjB0z+5nPzkVUSD+f8WKZlu/aRizQKkRwsY7mkoWFw8pdCFZHWhb5yIiD2C/meiyqe5/yAL572IGeiOKnHInKJP0BozbB0jM7UkMhUUpaytPI0=
+	t=1764162006; cv=none; b=J77mZH7JGGgfcIrbhk+FkrMHYFX2msQBNXz+ph8gz5hx/KA9E3Ke/bM3MAps8qaHTz9w9EvpBRsBH4eLoYi4C2993whAiXOxvUGlK5jNOe8mD8ERwSH/3sicNJFNg3B0XH6J3CkcJbps0dIL+fpKTZssj9MfPUmOs5xSWgsq5h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764161547; c=relaxed/simple;
-	bh=R9k/WD2lTWB6v2rz39aMkMg3rNDHipdAX0wWoWUMT0U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mWylFnz9To7YeITdrkWW/V2hZliunDcbv5jj4k5C7JQezNEgd+Ok7GJ9zSYUOjMUfomuxybi1s2tm4g3mAjlzNHw3u7JabXK4siFF323gh/a3gdTcx5i3Zw+vffJu/AvJgX64jsp9olL7eP6FRFQLHypqr1X5ERQvyS14zk4cKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vOF0P-0003KP-5V; Wed, 26 Nov 2025 13:52:21 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vOF0O-002bsV-2Q;
-	Wed, 26 Nov 2025 13:52:20 +0100
-Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 6B7F14A8C49;
-	Wed, 26 Nov 2025 12:52:20 +0000 (UTC)
-Date: Wed, 26 Nov 2025 13:52:20 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Carlos Song <carlos.song@nxp.com>
-Cc: "broonie@kernel.org" <broonie@kernel.org>, Frank Li <frank.li@nxp.com>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
-	"festevam@gmail.com" <festevam@gmail.com>, "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: RE: [EXT] Re: [PATCH 5/6] spi: imx: support dynamic burst length
- for ECSPI DMA mode
-Message-ID: <20251126-glistening-rampant-dragon-4ec9d3-mkl@pengutronix.de>
-References: <20251125100618.2159770-1-carlos.song@nxp.com>
- <20251125100618.2159770-6-carlos.song@nxp.com>
- <20251126-loyal-lobster-of-virtuosity-0aa824-mkl@pengutronix.de>
- <VI2PR04MB111470B46C3B7B6AF66B69D07E8DEA@VI2PR04MB11147.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1764162006; c=relaxed/simple;
+	bh=jUqpCDIZwPVSRPtJdQpy0TPLmnfdKzNPkcBe0a7YjD8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F5dIQX4ngMphOW3Y91LJ3vyUA/nsApZY76165M1RczW8lXAVJlbjyt0nEAMM+gXm3A476mTUyNqTZdPyBvdiIxQPeqsG7bmvwfPJrNgLEDUnPPTQXoAjD8GVETB3F9BbT+AC5gIla7sHKMMpqYzhrgqECcb/x2ERj6g9Fq12HpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UaRkS7kJ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UaRkS7kJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E99C113D0;
+	Wed, 26 Nov 2025 13:00:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764162003;
+	bh=jUqpCDIZwPVSRPtJdQpy0TPLmnfdKzNPkcBe0a7YjD8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UaRkS7kJTFqy04jxn66rIXLVHe3E2T+WBadeFQZqU+QEeRTOTSQAeOpherpGuTZk6
+	 7vOl3RI25L3rxKsHhvPaUyqG5w7JxyWM+rUGJ8oWJ/Eblnri6zdhm0z2KBtKFZRhBW
+	 IlZ1WahRv3ueWBdlBQrLSQZohow/kazHl2KxyaeCIOvbmjMPw1jZVw4bPAVRt9TXkT
+	 ckFNMPmgSkUkUZMsG6kei7MQjbR7jwGrw13TymLUzISw1CAQ2STW/EIc1vXJnDTssK
+	 wE4VICScH5teXR8zQXWeCkhKppKFOtRYzla99oMe5kGi7r1evCuHUL125SgwNd+TZB
+	 P0e3FG+L1tz6A==
+Message-ID: <3d44957f-8c09-47f3-93e0-78a1d34adfd0@kernel.org>
+Date: Wed, 26 Nov 2025 13:59:59 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="o5sidt4qwxpc2qbb"
-Content-Disposition: inline
-In-Reply-To: <VI2PR04MB111470B46C3B7B6AF66B69D07E8DEA@VI2PR04MB11147.eurprd04.prod.outlook.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+User-Agent: Mozilla Thunderbird
+Subject: Re: CAAM RSA breaks cfg80211 certificate verification on iMX8QXP
+To: Vitor Soares <ivitro@gmail.com>, linux-crypto@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Cc: horia.geanta@nxp.com, pankaj.gupta@nxp.com, gaurav.jain@nxp.com,
+ herbert@gondor.apana.org.au, john.ernberg@actia.se,
+ meenakshi.aggarwal@nxp.com
+References: <b017b6260075f7ba11c52e71bcc5cebe427e020f.camel@gmail.com>
+ <ac727d79bdd7e20bf390408e4fa4dfeadb4b8732.camel@gmail.com>
+Content-Language: en-US
+From: Ahmad Fatoum <ahmad@kernel.org>
+In-Reply-To: <ac727d79bdd7e20bf390408e4fa4dfeadb4b8732.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Hello Vitor,
+
+On 26.11.25 11:55, Vitor Soares wrote:
+> ++imx@lists.linux.dev
+> 
+> On Mon, 2025-11-24 at 19:03 +0000, Vitor Soares wrote:
+>> I’m currently investigating an issue on our Colibri iMX8QXP SoM running kernel
+>> 6.18-rc6 (also reproducible on v6.17), where cfg80211 fails to load the
+>> compiled-in X.509 certificates used to verify the regulatory database
+>> signature.
+>>
+>> During boot, I consistently see the following messages:
+>>  cfg80211: Loading compiled-in X.509 certificates for regulatory database
+>>  Problem loading in-kernel X.509 certificate (-22)
+>>  Problem loading in-kernel X.509 certificate (-22)
+>>  cfg80211: loaded regulatory.db is malformed or signature is missing/invalid
+>>
+>> As part of the debugging process, I removed the CAAM crypto drivers and
+>> manually
+>> reloaded cfg80211. In this configuration, the certificates load correctly and
+>> the regulatory database is validated with no errors.
+>>
+>> With additional debugging enabled, I traced the failure to
+>> crypto_sig_verify(),
+>> which returns -22 (EINVAL).
+>> At this stage, I’m trying to determine whether:
+>>  - This is a known issue involving cfg80211 certificate validation when the
+>> CAAM
+>> hardware crypto engine is enabled on i.MX SoCs, or
+>>  - CAAM may be returning unexpected values to the X.509 verification logic.
+>>
+>> If anyone has encountered similar behavior or can suggest areas to
+>> investigate—particularly around CAAM—I would greatly appreciate your guidance.
+>>
+>> Thanks in advance for any insights,
+>> Vítor Soares
+> 
+> Following up with additional debugging findings.
+> 
+> I traced the -EINVAL to rsassa_pkcs1_verify() in the PKCS#1 v1.5 verification
+> path. The check that fails expects a leading 0x00 byte in the RSA output buffer.
+> To investigate further, I poisoned the output buffer with 0xAA before the RSA
+> operation. CAAM RSA operation returns success, but the output buffer is never
+> written to.
+> 
+> During debugging, I loaded cfg80211 multiple times and observed that
+> sporadically one of the certificates gets verified correctly, but never both.
+> 
+> I confirmed that other CAAM operations work correctly by testing hwrng via
+> /dev/hwrng, which produces valid random data.
+> 
+> Given that CAAM reports success but does not populate the RSA output buffer, the
+> problem appears to be somewhere in the RSA execution flow (possibly in how the
+> result buffer is handled or returned), but I don’t have enough insight into
+> CAAM's RSA implementation or firmware interaction to pinpoint the exact cause.
+> 
+> As noted previously, blacklisting caam_pkc to force rsa-generic resolves the
+> issue.
+
+Just a shot in the dark, because I have no experience with i.MX8 beyond i.MX8M:
+
+Is the CAAM cache-coherent on your SoC? If so does the DT specify dma-coherent
+as it should? On i.MX8M, it's not cache-coherent, but on Layerscape it was and
+the mismatch with the DT leads to symptoms matching what you are observing.
+
+Off-topic remark: If you have performance comparison between running with and
+without CAAM RSA acceleration, I'd be interested to hear about them.
+At least for the hashing algorithms, using the Cortex-A53 (+ CE) CPU was a lot
+faster than bothering with the CAAM "acceleration".
+
+Cheers,
+Ahmad
 
 
---o5sidt4qwxpc2qbb
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: RE: [EXT] Re: [PATCH 5/6] spi: imx: support dynamic burst length
- for ECSPI DMA mode
-MIME-Version: 1.0
 
-On 26.11.2025 12:29:35, Carlos Song wrote:
-> > On 25.11.2025 18:06:17, Carlos Song wrote:
-> > >  static int spi_imx_pio_transfer(struct spi_device *spi,
-> > >  				struct spi_transfer *transfer)
-> > >  {
-> > > @@ -1780,9 +2112,14 @@ static int spi_imx_transfer_one(struct
-> > spi_controller *controller,
-> > >  	 * transfer, the SPI transfer has already been mapped, so we
-> > >  	 * have to do the DMA transfer here.
-> > >  	 */
-> > > -	if (spi_imx->usedma)
-> > > -		return spi_imx_dma_transfer(spi_imx, transfer);
-> > > -
-> > > +	if (spi_imx->usedma) {
-> > > +		ret =3D spi_imx_dma_transfer(spi_imx, transfer);
-> > > +		if (transfer->error & SPI_TRANS_FAIL_NO_START) {
-> > > +			spi_imx->usedma =3D false;
-> > > +			return spi_imx_pio_transfer(spi, transfer);
-> > > +		}
-> > > +		return ret;
-> > > +	}
-> >
-> > Why do you do this? AFAICS the framework already does this for you see:
-> > spi_transfer_one_message().
-> >
-> Hi,
->
-> In frame work:
-> 				if ((xfer->tx_sg_mapped || xfer->rx_sg_mapped) &&
-> 				    (xfer->error & SPI_TRANS_FAIL_NO_START)) {
-> 					__spi_unmap_msg(ctlr, msg);
-> 					ctlr->fallback =3D true;
-> 					xfer->error &=3D ~SPI_TRANS_FAIL_NO_START;
-> 					goto fallback_pio;
-> 				}
->
-> It only will help do this for "framework finished DMA map case". But DMA =
-dynamic burst feature is mapped in driver.
-> So this condition never meet: (xfer->tx_sg_mapped || xfer->rx_sg_mapped) =
-I think..
+> 
+> Regards,
+> Vítor
+> 
+> 
 
-=2E..and you remove "controller->can_dma" this deserves some comments in
-the commit message. That you fool the framework, that you cannot do DMA,
-and do all the mapping on your own.
-
-If you can make it work with DMA_SLAVE_BUSWIDTH_1_BYTES then you can use
-controller->prepare_message and controller->unprepare_message to do the
-byte swapping. These functions are called before and after the DMA sync.
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---o5sidt4qwxpc2qbb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmkm+AEACgkQDHRl3/mQ
-kZz2aAf+NfQMom5cSlCV1sp4geNMQsYmqG4QERaSHYNr/okdJJwdai4uuxAdpfA6
-R1bnr+JPDx2fFHsixxpkJkWtiLo0RE4uNAARa63gWSVKHLFRjN2hXYmHR1uoDyy5
-cYVMTcIdNn2DvheQ6eVfzN3LZI67RyiYL3sfwnjuHwsORJhghMpj14hqoR2dJeCB
-kdDMm71JUrfDfEa4VHMCRFokKLi3A1KBKlImfvTq60UREvHsG+Z2aGxCxyjEldhj
-zEC1Lw6eCED/bZf+VroSpoDGjvpbMQbRMviVPfqxOy8obbxiwjxezBwqCzswi0X/
-2cuNSWCvVtynRv4wdL6WdK7JDO+csg==
-=w9CB
------END PGP SIGNATURE-----
-
---o5sidt4qwxpc2qbb--
