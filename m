@@ -1,132 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1151328B70;
-	Wed, 26 Nov 2025 13:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BF256B81
+	for <imx@lists.linux.dev>; Wed, 26 Nov 2025 14:01:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764162006; cv=none; b=J77mZH7JGGgfcIrbhk+FkrMHYFX2msQBNXz+ph8gz5hx/KA9E3Ke/bM3MAps8qaHTz9w9EvpBRsBH4eLoYi4C2993whAiXOxvUGlK5jNOe8mD8ERwSH/3sicNJFNg3B0XH6J3CkcJbps0dIL+fpKTZssj9MfPUmOs5xSWgsq5h8=
+	t=1764165715; cv=none; b=HW9b/LLR9ZO6PZAq0vR3bXEvCIYE1ZY6VwKInOX3AMJfUpShrnWfyDt6mvZfgfKabYZh8zwP0AevTyTX2G5UmdCcK5Og9xGj+jiiDBth0h2wryQPOY+xyHZAex4gEyuXR+kouht3YneUiYlCWksI6GPoiTm+rrp3E30NlmCyl5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764162006; c=relaxed/simple;
-	bh=jUqpCDIZwPVSRPtJdQpy0TPLmnfdKzNPkcBe0a7YjD8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F5dIQX4ngMphOW3Y91LJ3vyUA/nsApZY76165M1RczW8lXAVJlbjyt0nEAMM+gXm3A476mTUyNqTZdPyBvdiIxQPeqsG7bmvwfPJrNgLEDUnPPTQXoAjD8GVETB3F9BbT+AC5gIla7sHKMMpqYzhrgqECcb/x2ERj6g9Fq12HpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UaRkS7kJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764165715; c=relaxed/simple;
+	bh=/N1yQaP0StdUG0iTdpvPhiNr39u+E8m0LrixdASsDiY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kEMCDqxa5B4Qql8sJDiPNCFboOmPBA6Q1kfz6K0p4OToIt3XVBlp7sKHTOdhnCe0uxgDvc1g6P8Hn31vgcTrOg+Cq5NJLxaMwGhiQCo8plKk9qj9215EkqySVkzK37Sb3XryVZlKWQdKjgl4lMX02UyQLGs85ABqXJY4FZJcLaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HfnHW176; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UaRkS7kJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E99C113D0;
-	Wed, 26 Nov 2025 13:00:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764162003;
-	bh=jUqpCDIZwPVSRPtJdQpy0TPLmnfdKzNPkcBe0a7YjD8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UaRkS7kJTFqy04jxn66rIXLVHe3E2T+WBadeFQZqU+QEeRTOTSQAeOpherpGuTZk6
-	 7vOl3RI25L3rxKsHhvPaUyqG5w7JxyWM+rUGJ8oWJ/Eblnri6zdhm0z2KBtKFZRhBW
-	 IlZ1WahRv3ueWBdlBQrLSQZohow/kazHl2KxyaeCIOvbmjMPw1jZVw4bPAVRt9TXkT
-	 ckFNMPmgSkUkUZMsG6kei7MQjbR7jwGrw13TymLUzISw1CAQ2STW/EIc1vXJnDTssK
-	 wE4VICScH5teXR8zQXWeCkhKppKFOtRYzla99oMe5kGi7r1evCuHUL125SgwNd+TZB
-	 P0e3FG+L1tz6A==
-Message-ID: <3d44957f-8c09-47f3-93e0-78a1d34adfd0@kernel.org>
-Date: Wed, 26 Nov 2025 13:59:59 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HfnHW176"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4775ae5684fso32688545e9.1
+        for <imx@lists.linux.dev>; Wed, 26 Nov 2025 06:01:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1764165713; x=1764770513; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BWI068vPYLSXZ5RCwTG2CH0PZ4pNstxIHxCa8vD/TIk=;
+        b=HfnHW1760y6S2l2w60HlgqNTGdf66f54wrEM6NFmaJtDt3U/fDxipZGVCwpGar15ZC
+         wOaC4LHMulTuXyjTbLFJVaJsVS4AzsaJe6tJj317v0XSEaWRFJCUhr9GGxW/ymM3u55v
+         IjTMSpUze1FJ1zz7Vemx93MyY+/9Y9PtPZ6rmLuzfdJb8puMvoVTW2SbZcnue+D+ycDo
+         EvSTPao4OJxskg/AyWTqVz4/uXQe5rmMzC/U+6LRmelzHoUQI/HwjDhQmr5341N+/KUl
+         oF0dtp3BaENqsubnrhTWJDLBQPvPYpmU/eBwfL2b0clxoXxtLvEmTZShAr9Vm8957suC
+         VLfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764165713; x=1764770513;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BWI068vPYLSXZ5RCwTG2CH0PZ4pNstxIHxCa8vD/TIk=;
+        b=dEzUkSUOBfUCnSNPReEs4LcHEZ1Ud2S8f629Uz/KY+ulEFBLGtoKmWrxtzdZ8PLmnV
+         LCCrmdrA37+N9+msCbsnq05b/88nejxiucGGuKuWi+Ic/KjHkOUSY8BBL/aCqMrLfKWJ
+         dWzMZ9mBKRO5yMtu9Oobz49+6B9i45Lvl3cg3cg+LeNTRzju3tvQjQGI6Vhijbu8zN2u
+         D2rqkLtBBoAOVNwfxRQn2x0mHaGhwrjrMM8N+N0JpbrMGR5GwSdPnBhb63KuNMccL4FW
+         i7O57h9dcQp0fMsLSMnBeGxnBlcnCmlD5cEE2nM57tLxjTbBxIzZD3WbsQV+YUaRg6DP
+         BjkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU9eE3IZvtDAo+QlwUuN4PE5Od8+uOw9hXT6WekQ8Bh6RjzKy4xqwnzgsUSLdLp0B5sdok=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz71KHj+3ifK66TpyaF8/+12lPY0sJK/7f675xE6F/76/1gyPPm
+	hrxRmLqN5gdylsSaHbCkMVApBFp2CUxM3ISp9NTvzTI3IhYLGKsNZmhU
+X-Gm-Gg: ASbGncso1wTE/stVHJgpdpk0zHj02k+XtC7zGK5adfhSOjLFY1D43mUTr/DthqLWx4Y
+	GWD3cxOus/AWGs4jrzdWIAD9XMh+nTYe8zuvg8pdO1Tl1dTpMm8Ki/C8QhcM7tZnxlAG5ayg1Pc
+	x6RvUR8Po4CD90oKdHBpwTTYOmzNNggHRapvo3L6YSXlwPe35brwd9SoTxAwjrws2j/y7oWhzQN
+	DNViVB1LT/el7A1ijsqHk/tRxOurrsVqjNm9XUxJvewrW2+KnOrbQz5054LnW8UiEa/1jaLBVd5
+	QtkWF5AWIlXgzXeDp2qLNKNGdQh/z+wenhrdPH2O3BvCowL+C3QUP4Rzoh8Eo8lWpQjv2+xH5aU
+	/VCoH4965LXdSFa4PK7TJ67MlpQycGxzF8A0M8TP6fDEKdMA3CAnFpfBxnkUfA7rABMUllhp5K0
+	zvT9uid0GfbTYH+k6dAadPsUDFq6r9hTiUakitgvGKwUiqcJJX/ynhk4vmbjtRnpMB59Nb4+z9t
+	ZqvI+XPYXU+eJv6spGZnpk=
+X-Google-Smtp-Source: AGHT+IFzSn+vJCoVouAYGcpvzgFcmoMn1o28RCuRXQI35098v7LfOQ48EpWiC41admPbMKt9BZI5yQ==
+X-Received: by 2002:a05:600c:8b16:b0:475:dd8d:2f52 with SMTP id 5b1f17b1804b1-477c115dc85mr167384395e9.32.1764165712461;
+        Wed, 26 Nov 2025 06:01:52 -0800 (PST)
+Received: from franzs-nb.corp.toradex.com (248.201.173.83.static.wline.lns.sme.cust.swisscom.ch. [83.173.201.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4790add608bsm46720265e9.5.2025.11.26.06.01.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Nov 2025 06:01:51 -0800 (PST)
+From: Franz Schnyder <fra.schnyder@gmail.com>
+To: Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Franz Schnyder <franz.schnyder@toradex.com>,
+	linux-phy@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	stable@vger.kernel.org,
+	Xu Yang <xu.yang_2@nxp.com>
+Subject: [PATCH v2] phy: fsl-imx8mq-usb: fix typec orientation switch when built as module
+Date: Wed, 26 Nov 2025 15:01:33 +0100
+Message-ID: <20251126140136.1202241-1-fra.schnyder@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: CAAM RSA breaks cfg80211 certificate verification on iMX8QXP
-To: Vitor Soares <ivitro@gmail.com>, linux-crypto@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Cc: horia.geanta@nxp.com, pankaj.gupta@nxp.com, gaurav.jain@nxp.com,
- herbert@gondor.apana.org.au, john.ernberg@actia.se,
- meenakshi.aggarwal@nxp.com
-References: <b017b6260075f7ba11c52e71bcc5cebe427e020f.camel@gmail.com>
- <ac727d79bdd7e20bf390408e4fa4dfeadb4b8732.camel@gmail.com>
-Content-Language: en-US
-From: Ahmad Fatoum <ahmad@kernel.org>
-In-Reply-To: <ac727d79bdd7e20bf390408e4fa4dfeadb4b8732.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hello Vitor,
+From: Franz Schnyder <franz.schnyder@toradex.com>
 
-On 26.11.25 11:55, Vitor Soares wrote:
-> ++imx@lists.linux.dev
-> 
-> On Mon, 2025-11-24 at 19:03 +0000, Vitor Soares wrote:
->> I’m currently investigating an issue on our Colibri iMX8QXP SoM running kernel
->> 6.18-rc6 (also reproducible on v6.17), where cfg80211 fails to load the
->> compiled-in X.509 certificates used to verify the regulatory database
->> signature.
->>
->> During boot, I consistently see the following messages:
->>  cfg80211: Loading compiled-in X.509 certificates for regulatory database
->>  Problem loading in-kernel X.509 certificate (-22)
->>  Problem loading in-kernel X.509 certificate (-22)
->>  cfg80211: loaded regulatory.db is malformed or signature is missing/invalid
->>
->> As part of the debugging process, I removed the CAAM crypto drivers and
->> manually
->> reloaded cfg80211. In this configuration, the certificates load correctly and
->> the regulatory database is validated with no errors.
->>
->> With additional debugging enabled, I traced the failure to
->> crypto_sig_verify(),
->> which returns -22 (EINVAL).
->> At this stage, I’m trying to determine whether:
->>  - This is a known issue involving cfg80211 certificate validation when the
->> CAAM
->> hardware crypto engine is enabled on i.MX SoCs, or
->>  - CAAM may be returning unexpected values to the X.509 verification logic.
->>
->> If anyone has encountered similar behavior or can suggest areas to
->> investigate—particularly around CAAM—I would greatly appreciate your guidance.
->>
->> Thanks in advance for any insights,
->> Vítor Soares
-> 
-> Following up with additional debugging findings.
-> 
-> I traced the -EINVAL to rsassa_pkcs1_verify() in the PKCS#1 v1.5 verification
-> path. The check that fails expects a leading 0x00 byte in the RSA output buffer.
-> To investigate further, I poisoned the output buffer with 0xAA before the RSA
-> operation. CAAM RSA operation returns success, but the output buffer is never
-> written to.
-> 
-> During debugging, I loaded cfg80211 multiple times and observed that
-> sporadically one of the certificates gets verified correctly, but never both.
-> 
-> I confirmed that other CAAM operations work correctly by testing hwrng via
-> /dev/hwrng, which produces valid random data.
-> 
-> Given that CAAM reports success but does not populate the RSA output buffer, the
-> problem appears to be somewhere in the RSA execution flow (possibly in how the
-> result buffer is handled or returned), but I don’t have enough insight into
-> CAAM's RSA implementation or firmware interaction to pinpoint the exact cause.
-> 
-> As noted previously, blacklisting caam_pkc to force rsa-generic resolves the
-> issue.
+Currently, the PHY only registers the typec orientation switch when it
+is built in. If the typec driver is built as a module, the switch
+registration is skipped due to the preprocessor condition, causing
+orientation detection to fail.
 
-Just a shot in the dark, because I have no experience with i.MX8 beyond i.MX8M:
+With commit
+45fe729be9a6 ("usb: typec: Stub out typec_switch APIs when CONFIG_TYPEC=n")
+the preprocessor condition is not needed anymore and the orientation
+switch is correctly registered for both built-in and module builds.
 
-Is the CAAM cache-coherent on your SoC? If so does the DT specify dma-coherent
-as it should? On i.MX8M, it's not cache-coherent, but on Layerscape it was and
-the mismatch with the DT leads to symptoms matching what you are observing.
+Fixes: b58f0f86fd61 ("phy: fsl-imx8mq-usb: add tca function driver for imx95")
+Cc: stable@vger.kernel.org
+Suggested-by: Xu Yang <xu.yang_2@nxp.com>
+Signed-off-by: Franz Schnyder <franz.schnyder@toradex.com>
+---
+v2: Drop the preprocessor condition after a better suggestion.
+    Reviewed-by Neil tag not added as patch is different
+---
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-Off-topic remark: If you have performance comparison between running with and
-without CAAM RSA acceleration, I'd be interested to hear about them.
-At least for the hashing algorithms, using the Cortex-A53 (+ CE) CPU was a lot
-faster than bothering with the CAAM "acceleration".
-
-Cheers,
-Ahmad
-
-
-
-> 
-> Regards,
-> Vítor
-> 
-> 
+diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+index b94f242420fc..72e8aff38b92 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
++++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+@@ -124,8 +124,6 @@ struct imx8mq_usb_phy {
+ static void tca_blk_orientation_set(struct tca_blk *tca,
+ 				enum typec_orientation orientation);
+ 
+-#ifdef CONFIG_TYPEC
+-
+ static int tca_blk_typec_switch_set(struct typec_switch_dev *sw,
+ 				enum typec_orientation orientation)
+ {
+@@ -173,18 +171,6 @@ static void tca_blk_put_typec_switch(struct typec_switch_dev *sw)
+ 	typec_switch_unregister(sw);
+ }
+ 
+-#else
+-
+-static struct typec_switch_dev *tca_blk_get_typec_switch(struct platform_device *pdev,
+-			struct imx8mq_usb_phy *imx_phy)
+-{
+-	return NULL;
+-}
+-
+-static void tca_blk_put_typec_switch(struct typec_switch_dev *sw) {}
+-
+-#endif /* CONFIG_TYPEC */
+-
+ static void tca_blk_orientation_set(struct tca_blk *tca,
+ 				enum typec_orientation orientation)
+ {
+-- 
+2.43.0
 
