@@ -1,556 +1,274 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013006.outbound.protection.outlook.com [40.107.159.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94012F0C46
-	for <imx@lists.linux.dev>; Wed, 26 Nov 2025 22:43:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764197025; cv=fail; b=Ja1XMRKzEbwnuZed/Jxdz/qmM89748FpESwxODTXVbtFfTfngBFSg6ji+F+neHS8cKDBFmJdn/RMOebzpZvCYJbT60je6aqtzHpMWW04BOoEjqeVQTSZMvkJb3loIjsiker1tHi963ZndzWa6BRcAdbtHS/2s2B+AXWoShNqxAA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764197025; c=relaxed/simple;
-	bh=89ecspcomj/EOv/VAKdS4EDNUEV0GzWMWLHJ6F0UvGs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=FN8qUEuWv8fPJLwti0y1kQ/hjjpMRdDs2UMqTuEt7iA8WI9Vsu1rHWPGEhJPo/pe3aDmhNfaiYWpXrKj+GhavVS6ML8PSgenzhwE39LSHjw7Um18Xkuhs6R1mJ28wuPzHj2B71JABmjUPuvQJgt0eTlO3xYUrqy0osVCbk0YClQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Vht99z5L; arc=fail smtp.client-ip=40.107.159.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F711E25F9
+	for <imx@lists.linux.dev>; Thu, 27 Nov 2025 01:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764208487; cv=none; b=h4vgLlbBEnuzd2Dhm933zAAFZWS390Bs/CrrlT8LfvnD9kgdMJ4Cb/9a4UoU/rrUOq4EVRYYzUTptw9tQF3wgjqEdKdLwEa6cwwPgUH+doJTTzwILa5hYdFL4+q1B95MWDSEMG0eXvyhk1sPZB2qkneB7UKBWj54UL+kFcp+MpY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764208487; c=relaxed/simple;
+	bh=f0EdgUznNZO54LZecInfA4y5+ELOv8o96l9SDsv2F0k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uocZ5L3VRbbeiYTgxpgL4nP3FfArnDnMT7+EvYGbCh6sJROul3ns2OEmAoSjw+TSyVXAkq1gzQEiosfn/Ruhdp0d8DadGWD0Lq/aGwsEej57Wh0LUuHxJeVf2SYRcy3jqjzkotPvVK+5aWKeHTR2AaSuwBJH2qSosP6GiIvr18g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e3Oy2PuI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Vht99z5L"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wfzfu4/7IW8OmDO84idER01W48LcLuv1vaRH9ZrBoFQWoWXN8HirZ6Iaq5WiFTXO53vPFeZytNG99uOY+tKuQJBqZfC+SKdkCK4O6hDAkfgfNnXM2b3SJNTh2yERx+FPkjvAi7IfIcCMaZUoWgCXmt/bUa81FfpSeTXJ5tyGHLYpFJ3MgubbF6/wcUs+ykGSsuKYIpBgUgR+FJ8vaU2EqbNVsiMBjcuxD2xxFqsVyAjS3PpDum0PRhi3bvWiYcMT/caWZ6oJyLtFjJKUfV//rSUKkd5usI1M/zJIZDaEDSPVTKAyubaI7WZkKK5O2JD5Dsxlh7Re+/G5FNmz4lg1Vw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pMjQjg+RJKf+BeZBmvF+z0E0+aA4D2XbRrY6ne7fYCg=;
- b=QfvlHxwspL55XVLmCWQiPpdP/igMVtxlfumg8EaBmJJ+047rBluCQ3UzoodLAcJ2HHNdWCsj1gW7K+crwzqVWnyArY5y+atQc9kQVgC8ItDWnrmjV4x3Y3AkkKkOzsb578pbad0naAkc/qz7dO97fPGxAZ6aoBGCM9K6rwgPKsXywjx1YHx6aQvY91jODcC7Vfjp0zm2mZ3/r7UhwucQ3RlCYuxVvBUOTIQsOCEKxfHmUu4JMvjd198gn4bFTyhVuWKjfSyITe7VdBIMZvQfPeh15QUnOh0q4q6y0WsAZjiUOThAF7ZxEPMPEMVkHZCLgdkKuBMoICvaU/8ZOtR4uw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pMjQjg+RJKf+BeZBmvF+z0E0+aA4D2XbRrY6ne7fYCg=;
- b=Vht99z5LoJEb6IuwsEal+W5rBBJeMUnF5sqiIp3G4NzE2qPLkazktuUIeGaMHfdv8hA/fEf4x6Q406QzwTaBmeSSCpYsvpXzmfqhrShF1uLZEF6LanvzKWcg6KFmCMWk9xKKhoWL7qFzjdHH/MZsdolJBm3ucrXAVBL1kbu6QxRgDtplA7ruGAFEiz2lG4Ll1r4yOVZD7zG2N956/jGVx+vym1egfDM6l5KEsKSCibia5Z4IfrPv1ZR20hJ/yohArBllfFTiwSEKkmpuJQRdAyzGboSjISIH0QzKk3SRNVX66VX18tCA5NY/oFZmPYsgb4rS0SS1kKYR0MtfgzOZfQ==
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by AS8PR04MB8578.eurprd04.prod.outlook.com (2603:10a6:20b:425::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.13; Wed, 26 Nov
- 2025 22:43:39 +0000
-Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
- ([fe80::21bf:975e:f24d:1612%5]) with mapi id 15.20.9366.012; Wed, 26 Nov 2025
- 22:43:38 +0000
-From: Shenwei Wang <shenwei.wang@nxp.com>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>
-CC: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Jonathan Corbet <corbet@lwn.net>, Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan
-	<peng.fan@nxp.com>, "linux-remoteproc@vger.kernel.org"
-	<linux-remoteproc@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>
-Subject: Re: [PATCH v5 2/5] remoteproc: imx_rproc: Populate devices under
- "rpmsg" subnode
-Thread-Topic: [PATCH v5 2/5] remoteproc: imx_rproc: Populate devices under
- "rpmsg" subnode
-Thread-Index: AQHcXyYbYEZBcUEOnkejT1wasvqIlQ==
-Date: Wed, 26 Nov 2025 22:43:38 +0000
-Message-ID:
- <PAXPR04MB91855348A84594B68F05ECA689DEA@PAXPR04MB9185.eurprd04.prod.outlook.com>
-References: <20251104203315.85706-1-shenwei.wang@nxp.com>
- <20251104203315.85706-3-shenwei.wang@nxp.com> <aSXhtAcFBOgJoCWd@p14s>
-In-Reply-To: <aSXhtAcFBOgJoCWd@p14s>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|AS8PR04MB8578:EE_
-x-ms-office365-filtering-correlation-id: e9a982ed-ded4-43aa-ba8a-08de2d3d3df7
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|366016|1800799024|19092799006|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?zKHykcuLXWVsRK6wFPMTx+NzRmaMAngeNAWiUll1Jqg4LyZP2C8bQZeDPGu9?=
- =?us-ascii?Q?SE6+1xjqqiVceOiW11vhddfahxmfSn7m8bP6cbMPG6d16RGZC5xZjtoJl6zY?=
- =?us-ascii?Q?QE83u3B2KJWrIt/oAvBjxIfVQMwa25Fm6rQAO1sBt+xlUtin6+lfr9iIMyCu?=
- =?us-ascii?Q?MPfe8+rTkKUXYG6v69VebdctJ19pGJRh8jmfhvsCjOHGs1Pp03oyJDnZXnoB?=
- =?us-ascii?Q?gCaWTNo9Tz6SZrOLaP3/ZrszRitLNCN+98wAIZRdboK+jyaNsykOWaVbJfFY?=
- =?us-ascii?Q?5/4q+KeAU01quk9BUnES0zhLyTlqIvZ1MtkRB8dnH3q4RIe12Wgr4kbOkyRQ?=
- =?us-ascii?Q?en/1yqv+zEui7QWONtwSf7bhtQKIafZbjoNKsjv8KL8FwHFxlgNZ/gadh2au?=
- =?us-ascii?Q?E4oVE1O3YWH5i2pbCa6LUd5TBkW34v3H/DXGipGVG18pBAOj4/N3sdbToT3s?=
- =?us-ascii?Q?bm2v2Oyd0eSK8D/NwgxXodrJiFEOSocVxXoaWw7bdIhjWUyMKmwxFiLnXDRp?=
- =?us-ascii?Q?v83idi+uLjqjkIvBKjJl0aTnHa294C4lHkQBrCqtiMthekyErZnuu2pzp3p9?=
- =?us-ascii?Q?yQMZnFLR86y7s6TFawagPZ5ATaSlPWhXW0V7YYMNwMBBqdb4WXJFyhJuSzZZ?=
- =?us-ascii?Q?IYTU7f4yPol3yIlGlMUPj/i6UPvo2Faqbr/a4RosneD6F+JRyVcnDxVY8of2?=
- =?us-ascii?Q?XS8PPqdF1B5t89X09Zs+j6nKSZtPY/A2/HFIOlw4SJwOQJLacFZHR3pBFH3v?=
- =?us-ascii?Q?MLEvq6Y4vhsJ4HjzaNar4bNCqmnPi7VEyZUoeUuPirY8BetUYBhV3TclSN8k?=
- =?us-ascii?Q?IqcEoKhkpmRpgE+JRxMHe1EWVcuJIWBb3jPHASNYnWBjJdyIikzzLtwXpQg5?=
- =?us-ascii?Q?r6k2wHYqCQI/APt6Xq7OKN3b8UCbJB+60xEOX/23ll6v0WDXRLPllFOJZeww?=
- =?us-ascii?Q?FDPM7vZw6Dw23tlFTzq902M9o1HeggDEaI5Kil46CuYROOWwfP4DLwdj3LFY?=
- =?us-ascii?Q?bZ6jC6qfNpC07tYE0VblY/3I17HFQVv9Ce64PK1BOkIfWFZT9y7P2XruU90G?=
- =?us-ascii?Q?59aK1QN03qly23gO1NTxo/mv4gy1W5zGxTOO/bKkdfUni141hCWoI7WQml3z?=
- =?us-ascii?Q?t57ty5rZnHOmWbvLeFtcr4bUUekDhCrem2Tl/kDuUOEGFLHzKIi3973n6rHO?=
- =?us-ascii?Q?xQoh1qf1QCf+jcsRj20+ADIIAUwHa3d9hh0X+lANQs22e6qATYnoDVaTy+Fl?=
- =?us-ascii?Q?9izNpY4NZq3liECnecZaJE8rpWWCrtrsjJ6oqQbOkzMAamDdLqHsWpUXarNO?=
- =?us-ascii?Q?Ou//0bFApTRxe6Kn6HWM9xf83nZEgSKJ44BPKVxZ5dn9fg3LeoiDp2IZkAv+?=
- =?us-ascii?Q?1tMoicsbroW9hxawRwLU80Sk3PUxViYX9fj9ZsjHTOzmDWAIsUmff3cEu60v?=
- =?us-ascii?Q?bYExfTiniiazEWy2OHSro//bhs5DtPOZX5jSS6/JmcBUYUJmCh7U90w/itgN?=
- =?us-ascii?Q?AS00OOu7/eWeMKtXvRunx9qYJJ8lPxGNduXg?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(19092799006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?xS26TfW+P+VczqyTE+FU40bViHxvo0oS/g7WmEfuAbYoWINuEeWR3Da3muGS?=
- =?us-ascii?Q?svASQ/61NudiWliIu/gLD3QV8/JizZOZED2f7wkxBOAyWrGTqmud6BEUFtTv?=
- =?us-ascii?Q?sudoG2ty+UKttlAr2aNLnLc4gZTDvfaqwlMPW9fqboW7IsQIyQA+BXFN5tbl?=
- =?us-ascii?Q?51NXKR4cLwLrMIxQ3AT7G1gzdA1FNCuYlDQiQcU38hwVzxq/fAdP+urKvtkB?=
- =?us-ascii?Q?Z1FRkbpF+SX3EnZeJ1y5vexsZVQmpaSR8QuNOEGVw1SGjp7i37fqfIawuRBk?=
- =?us-ascii?Q?ClYoUUp8JQ2L3ugc8JlwVVvtYNOw0XU+UUtlh9ADyTM+S/9Knp2HzPZkGM22?=
- =?us-ascii?Q?FlILX3MxlOU5eOE4umOXOgeAYQ+wTipvsiAmK7rgEPTyfGTAsciAi83b/H0E?=
- =?us-ascii?Q?HBpc6NAKUi2hEvYmTldQkrNzYr/DPVPZgpsY2ahku5qebRXTabrNh5wBImID?=
- =?us-ascii?Q?L4xp0SUjZHJkTS69wSBkb2T9wIAE42mNIEKCkDqW6b9ZOkkmN6RrUxWAyokg?=
- =?us-ascii?Q?USRA3agtfJDVqp8bmJ335YPquyvuHw1LCaNtJnFY7sRJ8aXpoTRXYpcIfLXo?=
- =?us-ascii?Q?YvSsKRvVXFMM/W/FKSLjadxVPKr5HGdIiLSha9wZkNm3qMnmJDDop1LkU12q?=
- =?us-ascii?Q?WhGbGPuAZL2Unn7FwjY0BkrziEcN6cCJDrajA61+A6Ma4i4mBf9IpmA8bXJR?=
- =?us-ascii?Q?+2uskkwTc1mSPRO47DKPm1RgOobNacsRIfCLlGodDzXsndtiVQLsInZlUHva?=
- =?us-ascii?Q?UoTJSMakZVYKP7sUSqQTZ3ThYv9Vnj24NSE+OW1XVAlaPiEjrwVhaQxrGpm1?=
- =?us-ascii?Q?y9nG8Vg6r+qG/4bqrZMBVWa+8OHtwBBL78Qk69iY0ARfwCUrAVDYKEaqoh7i?=
- =?us-ascii?Q?l3qPxfqspJ0NZMKQy2HdDEWMcmBnto9jYWqs+8yGtiWZvrsLywjK418GmnKd?=
- =?us-ascii?Q?L/Uc1Jx9Ym8V87FquHDuDl9jMCn30momRuTzRkR5jhbp1xMyQ7XxDqItnbuB?=
- =?us-ascii?Q?T5gni0CgP5eqvitYbbIyZVYfsfZaQjcmR9rt5ivrL1gue4wVIClCPWmGa179?=
- =?us-ascii?Q?kJtmxn1zUeUtYkuRy1/+NUamnDVfUhlnyhnavIDtCA3009o/bTn46tMSQHbe?=
- =?us-ascii?Q?Qgm2Da+EeI91iliC7/CxpICU0QAaUkzyBY3DljhexaMUdLs03j+AGJhgLOQa?=
- =?us-ascii?Q?PMJNKXTYRLNxny9+8Ml2bTNHs/5yaAaGcFrHu2mXwvkF3TumBRaH8cKNxplH?=
- =?us-ascii?Q?7U0/Xcvs7Xy7A8K6ajMITXYvBBnY3mlHiana5Rc0KmUzMGDr5mdvnrEzT7oH?=
- =?us-ascii?Q?2EyTybB1GjrGzmKOvLeSI6ukjyCGhdzimrq+eFFs3jNMki2hcwXrzblJ8tSY?=
- =?us-ascii?Q?cTNF/g26dcHskgyignln4+XkVPWinlqqjbZNLKcgAvIUXrmtFPFGw9SQ2Gmd?=
- =?us-ascii?Q?in3Mh8LHatJ5xGPza5EaoBRLClBCMa3k+FcNPVRZ2jwTSzvMudwf3BHuccJ6?=
- =?us-ascii?Q?AKie2t231HsLqnPDqjM7HRwFZcxRRzNpa035psBlG/zJo2mE+w01jP3uji0n?=
- =?us-ascii?Q?nG1iw1oOgvdDcEbhSyU7GlfXEw9zHX6yCBpLW43r?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e3Oy2PuI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D79C2BCB4
+	for <imx@lists.linux.dev>; Thu, 27 Nov 2025 01:54:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764208486;
+	bh=f0EdgUznNZO54LZecInfA4y5+ELOv8o96l9SDsv2F0k=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=e3Oy2PuIRVyYpX9jNitvWPFzXas2PMbyATpc2928NtxLJraxbQwSUdIwnW6wG2wao
+	 muCzWNAzr3gs7gh9NhR3L5m30waMtP6zV+5ml4QlYDe1LvsJVGugH3q3MPepKnOBhN
+	 sqBEX9h2jiicZUil2xgm/E43ZekOqTPu6Ksi+0Kbl8xIvG8siN1gZLyAu0DZgRMhpq
+	 xJ0qFDhXSiGr8LcYluXXH2sNbDB7xofFj34H8BnvxKE6T93lBlwukgVHVpdQxtiYrC
+	 0o5ReshKqWaf+Ch5mkV059dZn1R+0ls7+OlqVxg+oM50dIpXci6fcrdTLwLXog8+XN
+	 rwrVAU8azfpmg==
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-640a3317b89so632079a12.0
+        for <imx@lists.linux.dev>; Wed, 26 Nov 2025 17:54:46 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWbhJ/oAiYcqmJ42rf4pHajMmDurOP5/CkRJieG9Z1YrpTW5vdXa01hTSPf7cqDQ+ZoW30=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyL1yMT/eZ0mmhJu6enOGV8N+JjsH+yW0VxANu2GjSI06t7gXJi
+	5mtJWs7jHBiAMH8COJ8fIXBwcCiZ/AXBCLnKIIRqT2tYmWBrcg0AGEaqPyFtPKlwI2MKBhDywAG
+	cKa4JEjZWyde2Ljdk26/X8CLurFHqoA==
+X-Google-Smtp-Source: AGHT+IEKWFjQTeH/gw4l8j+96xvyDrFErJSXFFFwjwYJm2zw06q8mwVDlJH1+0djMgauaqAXyS9qMnoqGjEF33qExow=
+X-Received: by 2002:a05:6402:2803:b0:634:ce70:7c5 with SMTP id
+ 4fb4d7f45d1cf-645eb2b8003mr8895933a12.17.1764208485058; Wed, 26 Nov 2025
+ 17:54:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9a982ed-ded4-43aa-ba8a-08de2d3d3df7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Nov 2025 22:43:38.8676
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vjPPeMNs7zGiDVPoE7YV+iKvwb/D09TWXbAbe5hpLH8E25fB9WMhXz4c7LcUBduckvliJPow1gT0eOAoZqFpPA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8578
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+ <20251015071420.1173068-2-herve.codina@bootlin.com> <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
+ <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
+ <5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com> <CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
+ <072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
+In-Reply-To: <072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 26 Nov 2025 19:54:33 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
+X-Gm-Features: AWmQ_bmOuLhKUl5W5zrcj5AQOjs5kC_X5Om5_otgYtq0JTdMygrEymDVT57WU48
+Message-ID: <CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
+Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT overlays"
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Kalle Niemi <kaleposti@gmail.com>, Herve Codina <herve.codina@bootlin.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
+	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+	Mark Brown <broonie@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
+	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Dan Williams <dan.j.williams@intel.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-
-> -----Original Message-----
-> From: Mathieu Poirier <mathieu.poirier@linaro.org>
-> Sent: Tuesday, November 25, 2025 11:05 AM
-> To: Shenwei Wang <shenwei.wang@nxp.com>
-> Cc: Bjorn Andersson <andersson@kernel.org>; Rob Herring <robh@kernel.org>=
-;
-> Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dooley
-> <conor+dt@kernel.org>; Shawn Guo <shawnguo@kernel.org>; Sascha Hauer
-> <s.hauer@pengutronix.de>; Jonathan Corbet <corbet@lwn.net>; Linus Walleij
-> <linus.walleij@linaro.org>; Bartosz Golaszewski <brgl@bgdev.pl>; Pengutro=
-nix
-> Kernel Team <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>;
-> Peng Fan <peng.fan@nxp.com>; linux-remoteproc@vger.kernel.org;
-> devicetree@vger.kernel.org; imx@lists.linux.dev; linux-arm-
-> kernel@lists.infradead.org; linux-kernel@vger.kernel.org; linux-
-> doc@vger.kernel.org; dl-linux-imx <linux-imx@nxp.com>
-> Subject: [EXT] Re: [PATCH v5 2/5] remoteproc: imx_rproc: Populate devices
-> under "rpmsg" subnode
-> > The following illustrates the expected DTS layout structure:
+On Tue, Nov 25, 2025 at 12:43=E2=80=AFAM Matti Vaittinen
+<mazziesaccount@gmail.com> wrote:
+>
+> On 24/11/2025 19:01, Rob Herring wrote:
+> > On Mon, Nov 24, 2025 at 10:44=E2=80=AFAM Kalle Niemi <kaleposti@gmail.c=
+om> wrote:
+> >>
+> >>
+> >> On 11/24/25 16:53, Rob Herring wrote:
+> >>> On Mon, Nov 24, 2025 at 8:48=E2=80=AFAM Kalle Niemi <kaleposti@gmail.=
+com> wrote:
+> >>>> On 10/15/25 10:13, Herve Codina wrote:
+> >>>>> From: Saravana Kannan <saravanak@google.com>
+> >>>>>
+> >>>>> This reverts commit 1a50d9403fb90cbe4dea0ec9fd0351d2ecbd8924.
+> >>>>>
+> >>>>> While the commit fixed fw_devlink overlay handling for one case, it
+> >>>>> broke it for another case. So revert it and redo the fix in a separ=
+ate
+> >>>>> patch.
+> >>>>>
+> >>>>> Fixes: 1a50d9403fb9 ("treewide: Fix probing of devices in DT overla=
+ys")
+> >>>>> Reported-by: Herve Codina <herve.codina@bootlin.com>
+> >>>>> Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_=
+rJgyo8x6=3D9F9rZ+-KzjOg@mail.gmail.com/
+> >>>>> Closes: https://lore.kernel.org/all/20240221095137.616d2aaa@bootlin=
+.com/
+> >>>>> Closes: https://lore.kernel.org/lkml/20240312151835.29ef62a0@bootli=
+n.com/
+> >>>>> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> >>>>> Link: https://lore.kernel.org/lkml/20240411235623.1260061-2-saravan=
+ak@google.com/
+> >>>>> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> >>>>> Acked-by: Mark Brown <broonie@kernel.org>
+> >>>>> ---
+> >>>>>     drivers/bus/imx-weim.c    | 6 ------
+> >>>>>     drivers/i2c/i2c-core-of.c | 5 -----
+> >>>>>     drivers/of/dynamic.c      | 1 -
+> >>>>>     drivers/of/platform.c     | 5 -----
+> >>>>>     drivers/spi/spi.c         | 5 -----
+> >>>>>     5 files changed, 22 deletions(-)
+> >>>>>
+> >>>>> diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
+> >>>>> index 83d623d97f5f..87070155b057 100644
+> >>>>> --- a/drivers/bus/imx-weim.c
+> >>>>> +++ b/drivers/bus/imx-weim.c
+> >>>>> @@ -327,12 +327,6 @@ static int of_weim_notify(struct notifier_bloc=
+k *nb, unsigned long action,
+> >>>>>                                  "Failed to setup timing for '%pOF'=
+\n", rd->dn);
+> >>>>>
+> >>>>>                 if (!of_node_check_flag(rd->dn, OF_POPULATED)) {
+> >>>>> -                     /*
+> >>>>> -                      * Clear the flag before adding the device so=
+ that
+> >>>>> -                      * fw_devlink doesn't skip adding consumers t=
+o this
+> >>>>> -                      * device.
+> >>>>> -                      */
+> >>>>> -                     rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DE=
+VICE;
+> >>>>>                         if (!of_platform_device_create(rd->dn, NULL=
+, &pdev->dev)) {
+> >>>>>                                 dev_err(&pdev->dev,
+> >>>>>                                         "Failed to create child dev=
+ice '%pOF'\n",
+> >>>>> diff --git a/drivers/i2c/i2c-core-of.c b/drivers/i2c/i2c-core-of.c
+> >>>>> index eb7fb202355f..30b48a428c0b 100644
+> >>>>> --- a/drivers/i2c/i2c-core-of.c
+> >>>>> +++ b/drivers/i2c/i2c-core-of.c
+> >>>>> @@ -176,11 +176,6 @@ static int of_i2c_notify(struct notifier_block=
+ *nb, unsigned long action,
+> >>>>>                         return NOTIFY_OK;
+> >>>>>                 }
+> >>>>>
+> >>>>> -             /*
+> >>>>> -              * Clear the flag before adding the device so that fw=
+_devlink
+> >>>>> -              * doesn't skip adding consumers to this device.
+> >>>>> -              */
+> >>>>> -             rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
+> >>>>>                 client =3D of_i2c_register_device(adap, rd->dn);
+> >>>>>                 if (IS_ERR(client)) {
+> >>>>>                         dev_err(&adap->dev, "failed to create clien=
+t for '%pOF'\n",
+> >>>>> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+> >>>>> index 2eaaddcb0ec4..b5be7484fb36 100644
+> >>>>> --- a/drivers/of/dynamic.c
+> >>>>> +++ b/drivers/of/dynamic.c
+> >>>>> @@ -225,7 +225,6 @@ static void __of_attach_node(struct device_node=
+ *np)
+> >>>>>         np->sibling =3D np->parent->child;
+> >>>>>         np->parent->child =3D np;
+> >>>>>         of_node_clear_flag(np, OF_DETACHED);
+> >>>>> -     np->fwnode.flags |=3D FWNODE_FLAG_NOT_DEVICE;
+> >>>>>
+> >>>>>         raw_spin_unlock_irqrestore(&devtree_lock, flags);
+> >>>>>
+> >>>>> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> >>>>> index f77cb19973a5..ef9445ba168b 100644
+> >>>>> --- a/drivers/of/platform.c
+> >>>>> +++ b/drivers/of/platform.c
+> >>>>> @@ -739,11 +739,6 @@ static int of_platform_notify(struct notifier_=
+block *nb,
+> >>>>>                 if (of_node_check_flag(rd->dn, OF_POPULATED))
+> >>>>>                         return NOTIFY_OK;
+> >>>>>
+> >>>>> -             /*
+> >>>>> -              * Clear the flag before adding the device so that fw=
+_devlink
+> >>>>> -              * doesn't skip adding consumers to this device.
+> >>>>> -              */
+> >>>>> -             rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
+> >>>>>                 /* pdev_parent may be NULL when no bus platform dev=
+ice */
+> >>>>>                 pdev_parent =3D of_find_device_by_node(parent);
+> >>>>>                 pdev =3D of_platform_device_create(rd->dn, NULL,
+> >>>>> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> >>>>> index 2e0647a06890..b22944a207c9 100644
+> >>>>> --- a/drivers/spi/spi.c
+> >>>>> +++ b/drivers/spi/spi.c
+> >>>>> @@ -4791,11 +4791,6 @@ static int of_spi_notify(struct notifier_blo=
+ck *nb, unsigned long action,
+> >>>>>                         return NOTIFY_OK;
+> >>>>>                 }
+> >>>>>
+> >>>>> -             /*
+> >>>>> -              * Clear the flag before adding the device so that fw=
+_devlink
+> >>>>> -              * doesn't skip adding consumers to this device.
+> >>>>> -              */
+> >>>>> -             rd->dn->fwnode.flags &=3D ~FWNODE_FLAG_NOT_DEVICE;
+> >>>>>                 spi =3D of_register_spi_device(ctlr, rd->dn);
+> >>>>>                 put_device(&ctlr->dev);
+> >>>>>
+> >>>> Sorry, some of you will receive this message now for second time. Fi=
+rst
+> >>>> message was sent to older series of patches.
+> >>>> -
+> >>>>
+> >>>> Hello,
+> >>>>
+> >>>> Test system testing drivers for ROHM ICs bisected this commit to cau=
+se
+> >>>> BD71847 drivers probe to not be called.
+> >>> This driver (and overlay support) is in linux-next or something out o=
+f
+> >>> tree on top of linux-next?
+> >>>
+> >>> Rob
+> >>
+> >> Yes the driver is in mainline linux: /drivers/mfd/rohm-bd718x7.c
 > >
-> >       cm33: remoteproc-cm33 {
-> >               compatible =3D "fsl,imx8ulp-cm33";
-> >
-> >               rpmsg {
-> >                       rpmsg-io-channel {
-> >                               gpio@0 {
-> >                                       compatible =3D "fsl,imx-rpmsg-gpi=
-o";
-> >                                       reg =3D <0>;
-> >                               };
-> >
-> >                               gpio@1 {
-> >                                       compatible =3D "fsl,imx-rpmsg-gpi=
-o";
-> >                                       reg =3D <1>;
-> >                               };
-> >
-> >                               ...
-> >                       };
-> >
-> >                       rpmsg-i2c-channel {
-> >                               i2c@0 {
-> >                                       compatible =3D "fsl,imx-rpmsg-i2c=
-";
-> >                                       reg =3D <0>;
-> >                               };
-> >                       };
-> >
-> >                       ...
-> >               };
-> >       };
->=20
-> 2 observations here:
->=20
-> (1) Why are you trying to introduce both i2c and GPIO in the same patchse=
-t?
+> > I don't see any support to apply overlays in that driver.
+>
+> Ah. Sorry for the confusion peeps. I asked Kalle to report this without
+> proper consideration. 100% my bad.
+>
+> While the bd718x7 drive indeed is mainline (and tested), the actual
+> 'glue-code' doing the overlay is part of the downstream test
+> infrastructure. So yes, this is not a bug in upstream kernel - this
+> falls in the category of an upstream change causing downstream things to
+> break. So, feel free to say: "Go fix your code" :)
+>
+> Now that this is sorted, if someone is still interested in helping us to
+> get our upstream drivers tested - the downstream piece is just taking
+> the compiled device-tree overlay at runtime (via bin-attribute file),
+> and applying it using the of_overlay_fdt_apply(). The approach is
+> working for our testing purposes when the device is added to I2C/SPI
+> node which is already enabled. However, in case where we have the I2C
+> disabled, and enable it in the same overlay where we add the new device
+> - then the new device does not get probed.
+>
+> I would be really grateful if someone had a pointer for us.
 
-The patch is to populate the "rpmsg" node under the remoteproc. This is a c=
-ommon function for the remoteproc.
-Listing two examples (GPIO and I2C) here could give us an overview of the d=
-ts structure.
+Seems to be fw_devlink related. I suppose if you turn it off it works?
+There's info about the dependencies in sysfs or maybe debugfs. I don't
+remember the details, but that should help to tell you why things
+aren't probing.
 
-> (2) My first impression is that i2c, GPIO and others should be bundled wi=
-th the
-> platform definitions for i2c and GPIO, with a phandle to the remote proce=
-ssor
-> they hang off from.  My opinion may change once I have reviewed the other
-> patches in this set.
->=20
+I've dropped the changes for 6.18 for now. No one really seems to be
+in need of them yet AFAICT.
 
-The design is to let the remoteproc to populate the "rpmsg" node, and separ=
-ate the rpmsg endpoint driver and its above function driver like GPIO.
-Bunding the GPIO and rpdev driver together would make the driver become a m=
-ulti-function driver. I am not sure if it is still suitable to put it in th=
-e directory of "drivers/gpio".
-
-> >
-> > Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> > ---
-> >  drivers/remoteproc/imx_rproc.c  | 146
-> > ++++++++++++++++++++++++++++++++  include/linux/rpmsg/imx_rpmsg.h |
-> > 48 +++++++++++
-> >  2 files changed, 194 insertions(+)
-> >  create mode 100644 include/linux/rpmsg/imx_rpmsg.h
-> >
-> > diff --git a/drivers/remoteproc/imx_rproc.c
-> > b/drivers/remoteproc/imx_rproc.c index a6eef0080ca9..e21a7980c490
-> > 100644
-> > --- a/drivers/remoteproc/imx_rproc.c
-> > +++ b/drivers/remoteproc/imx_rproc.c
-> > @@ -8,6 +8,7 @@
-> >  #include <linux/clk.h>
-> >  #include <linux/err.h>
-> >  #include <linux/firmware/imx/sci.h>
-> > +#include <linux/rpmsg/imx_rpmsg.h>
-> >  #include <linux/interrupt.h>
-> >  #include <linux/kernel.h>
-> >  #include <linux/mailbox_client.h>
-> > @@ -15,6 +16,8 @@
-> >  #include <linux/module.h>
-> >  #include <linux/of.h>
-> >  #include <linux/of_address.h>
-> > +#include <linux/of_irq.h>
-> > +#include <linux/of_platform.h>
-> >  #include <linux/of_reserved_mem.h>
-> >  #include <linux/platform_device.h>
-> >  #include <linux/pm_domain.h>
-> > @@ -22,6 +25,7 @@
-> >  #include <linux/reboot.h>
-> >  #include <linux/regmap.h>
-> >  #include <linux/remoteproc.h>
-> > +#include <linux/rpmsg.h>
-> >  #include <linux/workqueue.h>
-> >
-> >  #include "imx_rproc.h"
-> > @@ -1084,6 +1088,144 @@ static int imx_rproc_sys_off_handler(struct
-> sys_off_data *data)
-> >       return NOTIFY_DONE;
-> >  }
-> >
-> > +struct imx_rpmsg_driver {
-> > +     struct rpmsg_driver rpdrv;
-> > +     void *driver_data;
-> > +};
-> > +
-> > +static char *channel_device_map[][2] =3D {
-> > +     {"rpmsg-io-channel", "fsl,imx-rpmsg-gpio"},
-> > +     {"rpmsg-i2c-channel", "fsl,imx-rpmsg-i2c"}, };
-> > +
-> > +static int imx_rpmsg_endpoint_cb(struct rpmsg_device *rpdev, void *dat=
-a,
-> > +                              int len, void *priv, u32 src) {
-> > +     struct imx_rpmsg_driver_data *drvdata;
-> > +
-> > +     drvdata =3D dev_get_drvdata(&rpdev->dev);
-> > +     if (drvdata && drvdata->rx_callback)
-> > +             return drvdata->rx_callback(rpdev, data, len, priv,
-> > + src);
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static void imx_rpmsg_endpoint_remove(struct rpmsg_device *rpdev) {
-> > +     of_platform_depopulate(&rpdev->dev);
-> > +}
-> > +
-> > +static int imx_rpmsg_endpoint_probe(struct rpmsg_device *rpdev) {
-> > +     struct imx_rpmsg_driver_data *drvdata;
-> > +     struct imx_rpmsg_driver *imx_rpdrv;
-> > +     struct device *dev =3D &rpdev->dev;
-> > +     struct of_dev_auxdata *auxdata;
-> > +     struct rpmsg_driver *rpdrv;
-> > +     int i;
-> > +
-> > +     rpdrv =3D container_of(dev->driver, struct rpmsg_driver, drv);
-> > +     imx_rpdrv =3D container_of(rpdrv, struct imx_rpmsg_driver, rpdrv)=
-;
-> > +
-> > +     if (!imx_rpdrv->driver_data)
-> > +             return -EINVAL;
-> > +
-> > +     drvdata =3D devm_kmemdup(dev, imx_rpdrv->driver_data,
-> > + sizeof(*drvdata), GFP_KERNEL);
->=20
-> Something with the overall design of this feature doesn't work if you nee=
-d to do
-> this.
->=20
-
-Could you elaborate further?
-
-> > +     if (!drvdata)
-> > +             return -ENOMEM;
-> > +
-> > +     i =3D drvdata->map_idx;
-> > +     if (i >=3D ARRAY_SIZE(channel_device_map))
-> > +             return -ENODEV;
-> > +
-> > +     auxdata =3D devm_kzalloc(dev, sizeof(*auxdata) * 2, GFP_KERNEL);
-> > +     if (!auxdata)
-> > +             return -ENOMEM;
-> > +
-> > +     drvdata->rpdev =3D rpdev;
-> > +     auxdata[0].compatible =3D channel_device_map[i][1];
-> > +     auxdata[0].platform_data =3D drvdata;
-> > +     dev_set_drvdata(dev, drvdata);
-> > +
-> > +     of_platform_populate(drvdata->channel_node, NULL, auxdata, dev);
-> > +     of_node_put(drvdata->channel_node);
->=20
-> Why is there a need for of_node_put() when imx_of_rprmsg_node_init() is u=
-sing
-> for_each_child_of_node_scoped()?
->=20
-
-You are right. This "put" should be deleted.
-
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static int imx_of_rpmsg_is_in_map(const char *name) {
-> > +     int i;
-> > +
-> > +     for (i =3D 0; i < ARRAY_SIZE(channel_device_map); i++) {
-> > +             if (strcmp(name, channel_device_map[i][0]) =3D=3D 0)
-> > +                     return i;
-> > +     }
-> > +
-> > +     return -1;
->=20
-> Please return a real error code.
->=20
-> > +}
-> > +
-> > +static int imx_of_rpmsg_register_rpdriver(struct device_node *channel,
-> > +                                       struct device *dev, int idx) {
-> > +     struct imx_rpmsg_driver_data *driver_data;
-> > +     struct imx_rpmsg_driver *rp_driver;
-> > +     struct rpmsg_device_id *rpdev_id;
-> > +
-> > +     rpdev_id =3D devm_kzalloc(dev, sizeof(*rpdev_id) * 2, GFP_KERNEL)=
-;
->=20
-> I had a really good time figuring out why 2 instances were needed.  Revie=
-wing
-> this work without a single line of comment isn't motivating.
->=20
-> > +     if (!rpdev_id)
-> > +             return -ENOMEM;
-> > +
-> > +     strscpy(rpdev_id[0].name, channel_device_map[idx][0],
-> > + RPMSG_NAME_SIZE);
-> > +
-> > +     rp_driver =3D devm_kzalloc(dev, sizeof(*rp_driver), GFP_KERNEL);
-> > +     if (!rp_driver)
-> > +             return -ENOMEM;
-> > +
-> > +     driver_data =3D devm_kzalloc(dev, sizeof(*driver_data), GFP_KERNE=
-L);
-> > +     if (!driver_data)
-> > +             return -ENOMEM;
-> > +
-> > +     driver_data->rproc_name =3D dev->of_node->name;
-> > +     driver_data->channel_node =3D channel;
-> > +     driver_data->map_idx =3D idx;
->=20
-> struct rpmsg_device_id already contains a @driver_data.  As with my other
-> comment above, something in the design of this feature is not working if =
-you need
-> to do something like this.
->=20
-
-The purpose is to use the existing driver_data pointer inside the rpmsg dri=
-ver to pass the instance relating data.
-If you think there is another standard method, please let me know.
-
-> > +
-> > +     rp_driver->rpdrv.drv.name =3D channel_device_map[idx][0];
-> > +     rp_driver->rpdrv.id_table =3D rpdev_id;
-> > +     rp_driver->rpdrv.probe =3D imx_rpmsg_endpoint_probe;
-> > +     rp_driver->rpdrv.remove =3D imx_rpmsg_endpoint_remove;
-> > +     rp_driver->rpdrv.callback =3D imx_rpmsg_endpoint_cb;
-> > +     rp_driver->driver_data =3D driver_data;
-> > +
-> > +     register_rpmsg_driver(&rp_driver->rpdrv);
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static int imx_of_rpmsg_node_init(struct platform_device *pdev) {
-> > +     struct device_node *np __free(device_node);
-> > +     struct device *dev =3D &pdev->dev;
-> > +     int idx, ret;
-> > +
-> > +     np =3D of_get_child_by_name(dev->of_node, "rpmsg");
-> > +     if (!np)
-> > +             return 0;
-> > +
-> > +     for_each_child_of_node_scoped(np, child) {
-> > +             idx =3D imx_of_rpmsg_is_in_map(child->name);
-> > +             if (idx < 0)
-> > +                     ret =3D of_platform_default_populate(child, NULL,
-> > + dev);
->=20
-> Why is this called?
->=20
-
-This is to populate the rpmsg channels not in the defined map under the "rp=
-msg" node in a default method.
-
-> > +             else
-> > +                     ret =3D imx_of_rpmsg_register_rpdriver(child, dev=
-,
-> > + idx);
-> > +
-> > +             if (ret < 0)
-> > +                     return ret;
->=20
-> In case of an error, the reference to @np is not released.
-
-It will be released when the function returns, because it is defined as=20
-	struct device_node *np __free(device_node);
-
-Thanks,
-Shenwei
-
->=20
-> > +     }
-> > +
-> > +     return 0;
-> > +}
-> > +
->=20
-> If we were to keep the current design, all of the above should be in
-> drivers/rpmsg/imx_rpmsg.c.
->=20
-> >  static int imx_rproc_probe(struct platform_device *pdev)  {
-> >       struct device *dev =3D &pdev->dev; @@ -1177,6 +1319,10 @@ static
-> > int imx_rproc_probe(struct platform_device *pdev)
-> >               goto err_put_clk;
-> >       }
-> >
-> > +     ret =3D imx_of_rpmsg_node_init(pdev);
-> > +     if (ret < 0)
-> > +             dev_info(dev, "populating 'rpmsg' node failed\n");
-> > +
-> >       return 0;
-> >
-> >  err_put_clk:
-> > diff --git a/include/linux/rpmsg/imx_rpmsg.h
-> > b/include/linux/rpmsg/imx_rpmsg.h new file mode 100644 index
-> > 000000000000..04a5ad2d4a1d
-> > --- /dev/null
-> > +++ b/include/linux/rpmsg/imx_rpmsg.h
-> > @@ -0,0 +1,48 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +/* Copyright 2025 NXP */
-> > +
-> > +/*
-> > + * @file linux/imx_rpmsg.h
-> > + *
-> > + * @brief Global header file for iMX RPMSG
-> > + *
-> > + * @ingroup RPMSG
-> > + */
-> > +#ifndef __LINUX_IMX_RPMSG_H__
-> > +#define __LINUX_IMX_RPMSG_H__
-> > +
-> > +/* Category define */
-> > +#define IMX_RMPSG_LIFECYCLE  1
-> > +#define IMX_RPMSG_PMIC               2
-> > +#define IMX_RPMSG_AUDIO              3
-> > +#define IMX_RPMSG_KEY                4
-> > +#define IMX_RPMSG_GPIO               5
-> > +#define IMX_RPMSG_RTC                6
-> > +#define IMX_RPMSG_SENSOR     7
-> > +
-> > +/* rpmsg version */
-> > +#define IMX_RMPSG_MAJOR              1
-> > +#define IMX_RMPSG_MINOR              0
-> > +
-> > +#define MAX_DEV_PER_CHANNEL  10
-> > +
-> > +struct imx_rpmsg_head {
-> > +     u8 cate;        /* Category */
-> > +     u8 major;       /* Major version */
-> > +     u8 minor;       /* Minor version */
-> > +     u8 type;        /* Message type */
-> > +     u8 cmd;         /* Command code */
-> > +     u8 reserved[5];
-> > +} __packed;
->=20
-> This structure is not used in this file, please remove.
->=20
-> > +
-> > +struct imx_rpmsg_driver_data {
-> > +     int map_idx;
-> > +     const char *rproc_name;
-> > +     struct rpmsg_device *rpdev;
-> > +     struct device_node *channel_node;
-> > +     int (*rx_callback)(struct rpmsg_device *rpdev, void *data,
-> > +                        int len, void *priv, u32 src);
-> > +     void *channel_devices[MAX_DEV_PER_CHANNEL];
-> > +};
->=20
-> For the above 2 struct, proper documentation is needed.
->=20
-> Thanks,
-> Mathieu
->=20
-> > +
-> > +#endif /* __LINUX_IMX_RPMSG_H__ */
-> > --
-> > 2.43.0
-> >
+Rob
