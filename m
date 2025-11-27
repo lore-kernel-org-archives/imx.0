@@ -1,182 +1,297 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9632D3EC1
-	for <imx@lists.linux.dev>; Thu, 27 Nov 2025 16:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52FB2DF3F2
+	for <imx@lists.linux.dev>; Thu, 27 Nov 2025 17:41:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764260597; cv=none; b=WVdTm3xW11L9wKBpVI5yQWoyG81LAQYhbhb47Pt7LwloAL0/vyrx0NetjsxFHvPr0zv6UcojTEQHQxKSIdSJsgZkmkmYd1o4G5b6e8OxpAlqYMWfcj2I/8DtYqhe1QodcbFXvYfeUz1WJ8wLMbVE/2dSS1E2H2qjuJjL0+eMsgs=
+	t=1764265282; cv=none; b=uq4qLjSKXCzAz8Zf6GqVbKkU5Xro/m/drbrah0kekc5vDg7NzOhh3X1gYeNjZ4vP0hR91znu3ZdRMS1TPXOhnLIVAv5hyV+S7RaMnsKDVDBQEzf2nWucQKwllKfeQhX0KtwYbzc7kHrVKBwmThKZvTu5vh/T2OYi7HL0ibV0f50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764260597; c=relaxed/simple;
-	bh=5w4AUQuz0dGdw5CdD1rC201z9FXIhHuXRPxTOAxvqIo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MguofWnkhvoT7jyxVV2qNEpwgLuHhSGxpif0QFOf+kV3hVzfcVnYzBAJJn7HAwaQbUPiPPi/maPw+XSpJRBI4WxAE+p2lopTJ3XoY6cBYqRd63ZQmAFrtMp8G05+RoQFYNqcxlESR9vUuWxhHapkEisS4qu+sE1Yu9AI40yRK/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WuDedMaz; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1764265282; c=relaxed/simple;
+	bh=YRwpnmivmIGfSil+ZD1aGlxCYo+UU/QzrOBg9t1fcoE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZbrhdvRyWbU7KNmTHqI+uYGgLhrTTYPFnYuek03+mrfl1MkemCJ3iQKK1JPO6CC0yLbid2QG9B1QI6LA3mQIYvYBNqJe/l1n1PS1v9EbM/7tAPPkpVn5A945rbGghihbkCFQ7AveTiCvp+Zo+44BfGKxWYES1XFAQlP8c5efDA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQo4zWhW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WuDedMaz"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-297d4a56f97so14531455ad.1
-        for <imx@lists.linux.dev>; Thu, 27 Nov 2025 08:23:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1764260594; x=1764865394; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bYD9XqhUHtt4KPRx0lwsto4qlMl73VNVsS41vyaBbjs=;
-        b=WuDedMazMkxLqGG9eQJqv8FsbmmuYmSmi8nuJ0K7/2BIQU9OHRQ0ij9kSdPkDWzMwS
-         5kQL1Wyoxk4mqDBKatSXU4Nh/67Wb4wSMlKgYvuI7hjTEfi7iW8IgR4y5EkUy6PefCC8
-         NjzL7JM3neemMeuVMtFdWVfSKiiZSbzzMfyio/qWr0UsftNlo4Bs8/+f5b8rDVqNm4MB
-         A2I+E247VaL11owXSigM+c3Xey5fO1cH0WYMChbU/8BpFFbOSF7catIB28jR4gZJ0L9w
-         CMnl0jyZ5J/+lj/cMvn/kOF6EC+UFaQpTWlN9Zj047iI4gHcFVTdLt8/Bd2ci3gNMp4E
-         611w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764260594; x=1764865394;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bYD9XqhUHtt4KPRx0lwsto4qlMl73VNVsS41vyaBbjs=;
-        b=JALTmlzb7cWus17FVh8u/r8rEepUFVBqIPvoiVwFWzRyckRJu0O5ffVivPx+uTpzUL
-         qX2ErcCE6xc/Ept29FpYP5Ib2KySplnQ0k3iqP3sk38c8IZX247/sWeoahdKgK3XcdKU
-         QwrDgXWKzqgsFA6Gvf/+oUvATbhsPwhPXOCOFIazCPwTGkHAfYcHaQ/e4j3DSJ5k8c/h
-         YtiKfQszjbyhaD4jRRmGGHZrXd3FvN/XhfD7vM5qzyyI+48OYmSWhFvbb6qyZADOMx1W
-         pDghQpyJgrPxUAM6wHm+kJwT7fz9pQW99SXjVTbuxmZbPFqTGaHWNU5K0J2/655iAjZy
-         Dh2A==
-X-Forwarded-Encrypted: i=1; AJvYcCUC802H7+EEAaLcZxhb+gN/fpbTYR0N+4k0ahXU8LqozAS6ZSlFEyRZdUhoxTPtW8rfsFQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxts27I4yOoZECUMdZfSGf7zjUrbWUrHNjqJbyoFa+Trx0jkpTQ
-	kFpmHS37cmDAY0I4DVp57+0m/ApCicI+Ld2odBLYOVnRRn9hbv6je3TcWSduAajWcIU=
-X-Gm-Gg: ASbGncvBXzUI0XxPBZFdk3jkEAPS6KdbjImlEPw0ZI0kigNxiRqmbdWD3Hslny9U5R1
-	UIBOqrRSmhqtbmqqfno7gsxBQsdhB5XmTAW51x92kdKeFfk5Lop17MBhLJX8yc6dhCwPdO3jLYf
-	JgaA62PRTrrEkuOPzb1u0bBb3/PIQ+lwfaGu5jBW+z5Hqpgv0NclLPV6rTybDZzPyYzgu/uQgBd
-	fmLSJdbfpMpG5MUwWGh4PkRlU1tw6QsVA1xIRpReUrf31Y4rhgdPo1NKPdI6vCYbQ/L/3tC5ZOa
-	IDR+zxo6XxZ9r++x52WMGjLcDbkt2rue7g1WuxnwWP3LbjsEpPoMqqjuBzOiNAGPpnT9V6exvtE
-	TMkG815iUx2nATCPWpFsdVcQ/lFiDpRIONxXiY5czR/XO9Lhf6XuKCO1JGXr0YSEuGH4d+zYr6W
-	cf041JtG2K+FKUUg==
-X-Google-Smtp-Source: AGHT+IHqx1uI/5nrF6nAELgHS8dwwRi8UkkNhUGcSd+x/B6tc1auqIiR26mDQUo8dP8rVSg7iApWFA==
-X-Received: by 2002:a17:902:ef08:b0:248:ff5a:b768 with SMTP id d9443c01a7336-29b6c3c7340mr247945805ad.10.1764260593683;
-        Thu, 27 Nov 2025 08:23:13 -0800 (PST)
-Received: from p14s ([2604:3d09:148c:c800:9ef4:efaa:23ae:f181])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29bce2e676esm22111985ad.0.2025.11.27.08.23.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Nov 2025 08:23:13 -0800 (PST)
-Date: Thu, 27 Nov 2025 09:23:10 -0700
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	dl-linux-imx <linux-imx@nxp.com>
-Subject: Re: [PATCH v5 2/5] remoteproc: imx_rproc: Populate devices under
- "rpmsg" subnode
-Message-ID: <aSh67mvFB_00PywW@p14s>
-References: <20251104203315.85706-1-shenwei.wang@nxp.com>
- <20251104203315.85706-3-shenwei.wang@nxp.com>
- <aSdMufLCeqvVyKsp@p14s>
- <PAXPR04MB91857863B163B3F38A26647389DEA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQo4zWhW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9061FC2BC9E
+	for <imx@lists.linux.dev>; Thu, 27 Nov 2025 17:41:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764265282;
+	bh=YRwpnmivmIGfSil+ZD1aGlxCYo+UU/QzrOBg9t1fcoE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GQo4zWhWFwuM7yaQm/G6MoYrO1sGCe63LiivwvpbJXTuD4bpwtx7vVrjJq/jO3yNT
+	 /glPNOmTyEyuQgFnjW09IwIDuzYIhIp82Bq5tDcMxZ2FYvQimg6WzJuHjpMmBtLdRC
+	 7UHkgkhDXiAZGbYaljkVGuyQaHao2d5pJkHVYaTTRtcd/n5x9+u6+lZm+cbLEo/yUI
+	 r91c8vZQfOXME3t0aQ3s8j0vLUmV7g0L5ZqU6BMJPCG7P1VcW7pspVtnA3oNfQZt9a
+	 wFzr4/a6G8flzMAgfLEhY9Cq1WfAqIZxQ26MOBUnGa6tT8wSG9PPUc+wOdGDq10Lp1
+	 5jvmWmWflox3A==
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-656b4881f55so365420eaf.2
+        for <imx@lists.linux.dev>; Thu, 27 Nov 2025 09:41:22 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXlzVrzUgfp8FIrXSy9tmcZGd0PreK5XPMNaYAlgGOKX67he30dJqQ8QeudnugLX0sWovw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzDJPVzkCAyRxiu3QTeMmNfeG814Z5sWNhg8atyk40S3/OFDqyx
+	DG5+Al0a+/rDeH1/gr1toDGF5LTyU4HVIQDFtZEIvl9s34NI5xftIazy0wG6yRxwFqadtFq/tqP
+	Okegv9v0yqiflktYTA/qldccl1FW0Xzo=
+X-Google-Smtp-Source: AGHT+IHbfQ5CxJ+BeKUIRbyKYrpAVhmzQHngDVOs0E2Nv7PPmdkB/EPrjv3dEJtB2ATSYwuHhVrLlp/6B/DbEuYhyUY=
+X-Received: by 2002:a05:6808:14d3:b0:450:d7fb:85c2 with SMTP id
+ 5614622812f47-4514e6e1593mr4705868b6e.19.1764265281611; Thu, 27 Nov 2025
+ 09:41:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB91857863B163B3F38A26647389DEA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20251120-thermal-device-v1-0-bbdad594d57a@gmx.de>
+ <CAJZ5v0jOPrBcozzJMsB1eE12MuZRWDAV-+=jfrhJbi=S0p5J9Q@mail.gmail.com> <5f3ef610-4024-4ca0-a934-2649f5d25f40@gmx.de>
+In-Reply-To: <5f3ef610-4024-4ca0-a934-2649f5d25f40@gmx.de>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 27 Nov 2025 18:41:10 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0iJVV=kf-aJBx8F8dtGfaZpGVyhfi6DBWEg4j3c_nH8_A@mail.gmail.com>
+X-Gm-Features: AWmQ_bnNFzjNLr4ZD-k1rd8sHstOmmRzRHvS_v-U6yiSpHx7MBaeEIqIodGMGBQ
+Message-ID: <CAJZ5v0iJVV=kf-aJBx8F8dtGfaZpGVyhfi6DBWEg4j3c_nH8_A@mail.gmail.com>
+Subject: Re: [PATCH RFC RESEND 0/8] thermal: core: Allow setting the parent
+ device of thermal zone/cooling devices
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Len Brown <lenb@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-tegra@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-doc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
+	ath11k@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
+	linux-pci@vger.kernel.org, imx@lists.linux.dev, 
+	linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 26, 2025 at 09:46:38PM +0000, Shenwei Wang wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Mathieu Poirier <mathieu.poirier@linaro.org>
-> > Sent: Wednesday, November 26, 2025 12:54 PM
-> > To: Shenwei Wang <shenwei.wang@nxp.com>
-> > Cc: Bjorn Andersson <andersson@kernel.org>; Rob Herring <robh@kernel.org>;
-> > Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dooley
-> > <conor+dt@kernel.org>; Shawn Guo <shawnguo@kernel.org>; Sascha Hauer
-> > <s.hauer@pengutronix.de>; Jonathan Corbet <corbet@lwn.net>; Linus Walleij
-> > <linus.walleij@linaro.org>; Bartosz Golaszewski <brgl@bgdev.pl>; Pengutronix
-> > Kernel Team <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>;
-> > Peng Fan <peng.fan@nxp.com>; linux-remoteproc@vger.kernel.org;
-> > devicetree@vger.kernel.org; imx@lists.linux.dev; linux-arm-
-> > kernel@lists.infradead.org; linux-kernel@vger.kernel.org; linux-
-> > doc@vger.kernel.org; dl-linux-imx <linux-imx@nxp.com>
-> > Subject: [EXT] Re: [PATCH v5 2/5] remoteproc: imx_rproc: Populate devices
-> > under "rpmsg" subnode
-> > > +
-> > > +     drvdata = dev_get_drvdata(&rpdev->dev);
-> > > +     if (drvdata && drvdata->rx_callback)
-> > > +             return drvdata->rx_callback(rpdev, data, len, priv,
-> > > + src);
-> > > +
-> > > +     return 0;
-> > > +}
-> > > +
-> > > +static void imx_rpmsg_endpoint_remove(struct rpmsg_device *rpdev) {
-> > > +     of_platform_depopulate(&rpdev->dev);
-> > > +}
-> > > +
-> > > +static int imx_rpmsg_endpoint_probe(struct rpmsg_device *rpdev) {
-> > 
-> > Where does the rpmsg_device come from?  Usually there is a call to
-> > rpmsg_register_device() and I don't see it anywhere in this patchset.  I also don't
-> > see a link to the remote processor.  I can't continue with this set for as long as I
-> > don't have this information.
-> > 
-> 
-> It is in the function below named imx_of_rpmsg_register_rpdriver.
-> 
+On Sat, Nov 22, 2025 at 3:18=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> wrote:
+>
+> Am 21.11.25 um 21:35 schrieb Rafael J. Wysocki:
+>
+> > On Thu, Nov 20, 2025 at 4:41=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> wro=
+te:
+> >> Drivers registering thermal zone/cooling devices are currently unable
+> >> to tell the thermal core what parent device the new thermal zone/
+> >> cooling device should have, potentially causing issues with suspend
+> >> ordering
+> > This is one potential class of problems that may arise, but I would
+> > like to see a real example of this.
+> >
+> > As it stands today, thermal_class has no PM callbacks, so there are no
+> > callback execution ordering issues with devices in that class and what
+> > other suspend/resume ordering issues are there?
+>
+> Correct, that is why i said "potentially".
+>
+> >
+> > Also, the suspend and resume of thermal zones is handled via PM
+> > notifiers.  Is there a problem with this?
+>
+> The problem with PM notifiers is that thermal zones stop working even bef=
+ore
+> user space is frozen. Freezing user space might take a lot of time, so ha=
+ving
+> no thermal management during this period is less than ideal.
 
-The function below calls register_rpmsg_driver(), not rpmsg_register_device().
-I still don't know where @rpdev comes from.
+This can be addressed by doing thermal zone suspend after freezing
+tasks and before starting to suspend devices.  Accordingly, thermal
+zones could be resumed after resuming devices and before thawing
+tasks.  That should not be an overly complex change to make.
 
-> Thanks,
-> Shenwei
-> 
-> > > +
-> > > +static int imx_of_rpmsg_register_rpdriver(struct device_node *channel,
-> > > +                                       struct device *dev, int idx) {
-> > > +     struct imx_rpmsg_driver_data *driver_data;
-> > > +     struct imx_rpmsg_driver *rp_driver;
-> > > +     struct rpmsg_device_id *rpdev_id;
-> > > +
-> > > +     rpdev_id = devm_kzalloc(dev, sizeof(*rpdev_id) * 2, GFP_KERNEL);
-> > > +     if (!rpdev_id)
-> > > +             return -ENOMEM;
-> > > +
-> > > +     strscpy(rpdev_id[0].name, channel_device_map[idx][0],
-> > > + RPMSG_NAME_SIZE);
-> > > +
-> > > +     rp_driver = devm_kzalloc(dev, sizeof(*rp_driver), GFP_KERNEL);
-> > > +     if (!rp_driver)
-> > > +             return -ENOMEM;
-> > > +
-> > > +     driver_data = devm_kzalloc(dev, sizeof(*driver_data), GFP_KERNEL);
-> > > +     if (!driver_data)
-> > > +             return -ENOMEM;
-> > > +
-> > > +     driver_data->rproc_name = dev->of_node->name;
-> > > +     driver_data->channel_node = channel;
-> > > +     driver_data->map_idx = idx;
-> > > +
-> > > +     rp_driver->rpdrv.drv.name = channel_device_map[idx][0];
-> > > +     rp_driver->rpdrv.id_table = rpdev_id;
-> > > +     rp_driver->rpdrv.probe = imx_rpmsg_endpoint_probe;
-> > > +     rp_driver->rpdrv.remove = imx_rpmsg_endpoint_remove;
-> > > +     rp_driver->rpdrv.callback = imx_rpmsg_endpoint_cb;
-> > > +     rp_driver->driver_data = driver_data;
-> > > +
-> > > +     register_rpmsg_driver(&rp_driver->rpdrv);
-> > > +
-> > > +     return 0;
-> > > +}
+> This problem would not occur when using dev_pm_ops, as thermal zones woul=
+d be
+> suspended after user space has been frozen successfully. Additionally, wh=
+en using
+> dev_pm_ops we can get rid of thermal_pm_suspended, as the device core alr=
+eady mandates
+> that no new devices (including thermal zones and cooling devices) be regi=
+stered during
+> a suspend/resume cycle.
+>
+> Replacing the PM notifiers with dev_pm_ops would of course be a optimizat=
+ion with
+> its own patch series.
+
+Honestly, I don't see much benefit from using dev_pm_ops for thermal
+zone devices and cooling devices.  Moreover, I actually think that
+they could be "no PM" devices that are not even put on the
+suspend-resume device list.  Technically, they are just interfaces on
+top of some other devices allowing the user space to interact with the
+latter and combining different pieces described by the platform
+firmware.  They by themselves have no PM capabilities.
+
+> >> and making it impossible for user space applications to
+> >> associate a given thermal zone device with its parent device.
+> > Why does user space need to know the parent of a given cooling device
+> > or thermal zone?
+>
+> Lets say that we have two thermal zones registered by two instances of th=
+e
+> Intel Wifi driver. User space is currently unable to find out which therm=
+al zone
+> belongs to which Wifi adapter, as both thermal zones have the (nearly) sa=
+me type string ("iwlwifi[0-X]").
+
+But the "belong" part is not quite well defined here.  I think that
+what user space needs to know is what devices are located in a given
+thermal zone, isn't it?  Knowing the parent doesn't necessarily
+address this.
+
+> This problem would be solved once we populate the parent device pointer i=
+nside the thermal zone
+> device, as user space can simply look at the "device" symlink to determin=
+e the parent device behind
+> a given thermal zone device.
+
+I'm not convinced about this.
+
+> Additionally, being able to access the acpi_handle of the parent device w=
+ill be necessary for the
+> ACPI thermal zone driver to support cooling devices other than ACPI fans =
+and ACPI processors.
+
+I guess by the "parent" you mean the device represented in the ACPI
+namespace by a ThermalZone object, right?  But this is not the same as
+the "parent" in the Wifi driver context, is it?
+
+> >> This patch series aims to fix this issue by extending the functions
+> >> used to register thermal zone/cooling devices to also accept a parent
+> >> device pointer. The first six patches convert all functions used for
+> >> registering cooling devices, while the functions used for registering
+> >> thermal zone devices are converted by the remaining two patches.
+> >>
+> >> I tested this series on various devices containing (among others):
+> >> - ACPI thermal zones
+> >> - ACPI processor devices
+> >> - PCIe cooling devices
+> >> - Intel Wifi card
+> >> - Intel powerclamp
+> >> - Intel TCC cooling
+> > What exactly did you do to test it?
+>
+> I tested:
+> - the thermal zone temperature readout
+> - correctness of the new sysfs links
+> - suspend/resume
+>
+> I also verified that ACPI thermal zones still bind with the ACPI fans.
+
+I see, thanks.
+
+> >> I also compile-tested the remaining affected drivers, however i would
+> >> still be happy if the relevant maintainers (especially those of the
+> >> mellanox ethernet switch driver) could take a quick glance at the
+> >> code and verify that i am using the correct device as the parent
+> >> device.
+> > I think that the above paragraph is not relevant any more?
+>
+> You are right, however i originally meant to CC the mellanox maintainers =
+as
+> i was a bit unsure about the changes i made to their driver. I will rewor=
+k
+> this section in the next revision and CC the mellanox maintainers.
+>
+> >
+> >> This work is also necessary for extending the ACPI thermal zone driver
+> >> to support the _TZD ACPI object in the future.
+> > I'm still unsure why _TZD support requires the ability to set a
+> > thermal zone parent device.
+>
+> _TZD allows the ACPI thermal zone to bind to cooling devices other than A=
+CPI fans
+> and ACPI processors, like ACPI batteries.
+
+No, it is not for cooling devices if my reading of the specification
+is correct.  It says:
+
+"_TZD (Thermal Zone Devices)
+
+This optional object evaluates to a package of device names. Each name
+corresponds to a device in the ACPI namespace that is associated with
+the thermal zone. The temperature reported by the thermal zone is
+roughly correspondent to that of each of the devices."
+
+And then
+
+"The list of devices returned by the control method need not be a
+complete and absolute list of devices affected by the thermal zone.
+However, the package should at least contain the devices that would
+uniquely identify where this thermal zone is located in the machine.
+For example, a thermal zone in a docking station should include a
+device in the docking station, a thermal zone for the CD-ROM bay,
+should include the CD-ROM."
+
+So IIUC this is a list of devices allowing the location of the thermal
+zone to be figured out.  There's nothing about cooling in this
+definition.
+
+> This however will currently not work as
+> the ACPI thermal zone driver uses the private drvdata of the cooling devi=
+ce to
+> determine if said cooling device should bind. This only works for ACPI fa=
+ns and
+> processors due to the fact that those drivers store a ACPI device pointer=
+ inside
+> drvdata, something the ACPI thermal zone expects.
+
+I'm not sure I understand the above.
+
+There is a list of ACPI device handles per trip point, as returned by
+either _PSL or _ALx.  Devices whose handles are in that list will be
+bound to the thermal zone, so long as there are struct acpi_device
+objects representing them which is verified with the help of the
+devdata field in struct thermal_cooling_device.
+
+IOW, cooling device drivers that create struct thermal_cooling_device
+objects representing them are expected to set devdata in those objects
+to point to struct acpi_device objects corresponding to their ACPI
+handles, but in principle acpi_thermal_should_bind_cdev() might as
+well just use the handles themselves.  It just needs to know that
+there is a cooling driver on the other side of the ACPI handle.
+
+The point is that a cooling device to be bound to an ACPI thermal zone
+needs an ACPI handle in the first place to be listed in _PSL or _ALx.
+
+> As we cannot require all cooling devices to store an ACPI device pointer =
+inside
+> their drvdata field in order to support ACPI,
+
+Cooling devices don't store ACPI device pointers in struct
+thermal_cooling_device objects, ACPI cooling drivers do, and there are
+two reasons to do that: (1) to associate a given struct
+thermal_cooling_device with an ACPI handle and (2) to let
+acpi_thermal_should_bind_cdev() know that the cooling device is
+present and functional.
+
+This can be changed to store an ACPI handle in struct
+thermal_cooling_device and acpi_thermal_should_bind_cdev() may just
+verify that the device is there by itself.
+
+> we must use a more generic approach.
+
+I'm not sure what use case you are talking about.
+
+Surely, devices with no representation in the ACPI namespace cannot be
+bound to ACPI thermal zones.  For devices that have a representation
+in the ACPI namespace, storing an ACPI handle in devdata should not be
+a problem.
+
+> I was thinking about using the acpi_handle of the parent device instead o=
+f messing
+> with the drvdata field, but this only works if the parent device pointer =
+of the
+> cooling device is populated.
+>
+> (Cooling devices without a parent device would then be ignored by the ACP=
+I thermal
+> zone driver, as such cooling devices cannot be linked to ACPI).
+
+It can be arranged this way, but what's the practical difference?
+Anyone who creates a struct thermal_cooling_device and can set its
+parent pointer to a device with an ACPI companion, may as well set its
+devdata to point to that companion directly - or to its ACPI handle if
+that's preferred.
