@@ -1,130 +1,115 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8254430504A
-	for <imx@lists.linux.dev>; Thu, 27 Nov 2025 06:53:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AD6314D03
+	for <imx@lists.linux.dev>; Thu, 27 Nov 2025 07:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764226403; cv=none; b=kaiqSyLeNctRSrHG30x5rs1JCodsepjuFDND5gBkoJzGClr/x3B3MBXoKMMiX+KcLrQnnTBJ0v8V9SfTIE6BmO4In+tPwJ8sMqKr6J8/chSmwoEbrhArG4oxje4IHMSesNG6U34CFRT2rgIMXsyBB6fXvMKsMYDM4C1Rb+lxWE8=
+	t=1764227649; cv=none; b=F9GuWhtgeR/Vs3kBHa3smC5mHiabd+2JU/WWzuP9gPY7UGA5WkluRBC4lcgK3N/mbq5O8/bZ3cVeUCacD1ksfhxQ0EFPbt+dEkB/KNCsG08EXYOx7lm3r9VDYaJ3SSL4J1smofPG3QiIBRyzvulJu333zrontOhGB6QnMssCIV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764226403; c=relaxed/simple;
-	bh=d7//LDXSumbJJihDYb9lQKXayXscyZUEfuYyatlPbBM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tqZEH/CObOrp4y0xKfKw9n6r/PXqQ5MqHg3ivVRtkuNpIkSuhMp4AH45vDtXCkWH4PMShVCGvAbex2wZ/Xa6cuskzI/I54M+Ru5Vy0Bfad4judrV/2w8dSQwTufsyu6YF+WrUmi0JX9gkqULl65NPk7gUNYs3MnSksj+xqpgf9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=G2WXkj1H; arc=none smtp.client-ip=209.85.208.51
+	s=arc-20240116; t=1764227649; c=relaxed/simple;
+	bh=LegWMLbCeHe5PZm0Ub4p2iXUO58hksEwiYKg1a+m090=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Ns3yTgh88zjhSGVsTCbEEJP6gFvyeb9dHN77DnU7WKPozD+Jf1JiGRRndmFr8JNXXnvIXKQ4i/mey1JGiEDUQCPxK5C1RdtON46cI1oxxeM2GpenixNX6n4in6RpYP0Ard+vSZ75GrZD+qToQB0hStRmwFRPrFi2bypYx4UrQlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zE9vnPps; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="G2WXkj1H"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6419b7b4b80so848300a12.2
-        for <imx@lists.linux.dev>; Wed, 26 Nov 2025 22:53:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zE9vnPps"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47775fb6cb4so2747345e9.0
+        for <imx@lists.linux.dev>; Wed, 26 Nov 2025 23:14:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1764226400; x=1764831200; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=amIVj6Ks/T19JV0gGyF2jbDkQIb/QLUq7CyFhU9t8+g=;
-        b=G2WXkj1HZjCqtHTx4LwmM8Wto66k8NMQKlZ9jwCEKylvKm2iubGbm2+lEuYO1rg2SQ
-         r7/zKR7U4JMldx2Gtk29ClXlAHL5FtOogFmXsqwM2pLhjIzJGq+X2kYh84M9x56IIJjw
-         NfiHKfjGFFdD6HJk7HIhRbe5x7SCG9mS0b6S0WEMvYr9ItMTQ2Qp/Qgxu/uAp7/60w2f
-         MFtJaj1+jbS4CiYxa7l1tt3DSGP9oxQFKdRRpxshCPs+DMP3AEm8iukV1CRZo9EXH+W5
-         b5xvoqh3vPhquR/BEi+mIVwhEFhXORHLU9hNK5h+eHAjMCtxRScWcL8mOzrwlZMAONfh
-         0F+Q==
+        d=linaro.org; s=google; t=1764227645; x=1764832445; darn=lists.linux.dev;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2dVF2KlYm35Amf2a5Gnk993yXcXd/prgPbjpDZiGmKM=;
+        b=zE9vnPpsmiF+Je8ns4RtzZ2n1rM9Cs+e1rI5YAZRF7EPuBYXqEgGquhSkCruNnLCWc
+         15y/neVLSN4UKkUUgCMQZnzp9n8P3h61BQ7GBFtVDp8EqkK6pIy3LPVA2rC1/svtVw9y
+         npzqK+sh67tOszIN/q+PO42aKgO1C1FkL5hRE+j7rFkzkakt7h6JE6kD+GUTySHkVpTj
+         cYqDsvm2YfNeAOM/X6qVeqUU1/30AKok276IApVNjmmOBcoMvJqDXo4YE8KZ43f9wB9V
+         BrQ00XTwjBdbcy+cYuAqAdHm7BPxk6HJ3iXGsrDnOs+Q2vMtzMAOYn6Q6QWck72AH7U7
+         Ob5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764226400; x=1764831200;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=amIVj6Ks/T19JV0gGyF2jbDkQIb/QLUq7CyFhU9t8+g=;
-        b=sfqNxDH8vRenD1ouYw48BCf+HLAO/iOir7I1XeGt+FDUGPMukgYdtVsoT3aDyVqqGt
-         ioX2wWIGLJvf1tC5Ldgdxd49X/47kTw7E0uAQ+S2lHUTcAE9jErORh7Kgd37EFJVdTW8
-         MNAYmflaZHMJdG0fZ3klpdRDcIzSir2V5/wxy10VQ9mJRBqBwy5GYzn99eZ+BOVE6QsL
-         ki/q61826770IP70GXB+GVfJqKnIoNPUtvxiWfPdbvvP0aWzlKQc6s6HS/lQT0mtKq7r
-         ABKm7qBaFxQ65Xk0eEFZsQJbvDMfLN74/YnSFDoubfMUp2rz1VkcDfsFqX9aFVpWIEAg
-         tFIw==
-X-Forwarded-Encrypted: i=1; AJvYcCU15ib52710Kgu2/n+w2WBmlK+l+ndodKgHnji2a4y9bmOYodv/mXRN4DJzf0cruz4HTkk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwFXG49Z5WHrEFoQ13I0T7XQvtvGU0V2FD1ItIUoK6AUBjjbISZ
-	7DhIMKRUJEUBMSEPIyMbd8HqrO9Q+Y2dmvlJ+xvIqiAgRvgfjI9AzPAhHYfXeYSRHtn0RWWjuDO
-	5ExfPsT9t3O0V/Ec3VAMLuQyJ9s5xdBTtoAVwBXO2Iw==
-X-Gm-Gg: ASbGncsvHH9GTkSfx/CFnCLGUNf0sQRJdRnXmRTSLCtpvKZljf0F4px7WM1jZPNo36G
-	G+gucrV3GjJf7uNLPO92l5+RCA9mTTBu8nKl8/F3umBbF+rl5jekMLy8S0rlwG0Ex4ORHzyslsQ
-	jGmYRZML+sMwSsZIz3AbG2kFc5AM+yIMnhUUZjutK9qtxXDqkxYk4Dps7KEUxTES9WreRgyigsI
-	j5eUz+2VUUIGmrNOLw3txr6ohnh0RF8brCBTe12FC1xWYb23sxKz9qGNQn46QsTFFXuS4EB3Qvx
-	ETZ8BtLjx/gQGn2asn5W2IFyHjNTD3MunU4=
-X-Google-Smtp-Source: AGHT+IFLIn/EUIu7OxWHRGKTwIMu44EVUbsDDWFBWHXN/a3JCflama3pukcsqP1OVrFxH+zuhs1CaG1bDZ8ufGMAHn4=
-X-Received: by 2002:a05:6402:51c7:b0:643:c8b:8d30 with SMTP id
- 4fb4d7f45d1cf-645546a3a94mr21339934a12.30.1764226398995; Wed, 26 Nov 2025
- 22:53:18 -0800 (PST)
+        d=1e100.net; s=20230601; t=1764227645; x=1764832445;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2dVF2KlYm35Amf2a5Gnk993yXcXd/prgPbjpDZiGmKM=;
+        b=eud6u0K+kmje8NQ9Dq/vuaCjcYJGApbJSMMCCjxn8q7mu2GfFJDGhgFCdGuNUpxJuL
+         /TU9RyBbqzScrqX6+sPQie0L8bC9P34KjMmKy10ZLJsiXnLflCobyShOIpbki0gzZi8O
+         ZfI8XL0SsI9Di7hXwyJ80WYOO25ftvYS5m8Cy7vyXnuA7k4bhkBHEO3S4VagYRwKOB4w
+         Njzxh7+Gf6N8qZdXlhO+YNG2W9KqGgoRS0cMOEy6/VFhXhIefi7pWY+z3d/TBFWapXMJ
+         /KYHMgMbDp0UAvwJLenwPeshnxy805mVYK/teBrpQqllZ+XeazNrLpkLHL8igVDKBSZf
+         +tfA==
+X-Forwarded-Encrypted: i=1; AJvYcCW7hBWjPUlToQXWMUTAWyicBEcndpwTrIsBKfX/ZzW7wr/NiST260LEvojF50c6StZp0Yo=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzv5+eLq2bStZVTxAwvMywt7QsJW9ZcDWBYmZTr7+kS4ZjvWSiQ
+	lCZahBajS4j57+i+huWQ/AOpU2RP935srFMex9SI+qevAX5mKzcvPczCQYY23IyOWkE=
+X-Gm-Gg: ASbGncutsE5fC3afkmnuxhvvRaIL//CW2pZ/rBJpnFydaej9KNPmeswyD79UGkQwetX
+	dqGXhouP93G7LZkNl+VW2QSczz1J1Ty6nBiMwzVsGob1oSfp6FXxTkiGJGEUz/ez6z1HeS9NG8s
+	7qpgT3qaQ/PJsfxnZ9TyorFKa/5bJeqDlM8anpn88tznU/XPxmWAc8rv6/BwUGeNMwp8AEUgjNa
+	QLvDE97uRuwIm98W/645JtL3eTEfHAasenQt5hHw4pmitLvBgnnRwFZastTi0wR4bL1ozf/0Cxn
+	R2YL3tj0xX0ox9qZaZbgomk76FZI+pKIuXcDZtxLdrglrYu7IGD//KDa1BUWj5hdrXPpGIYi9wc
+	4Qm3OWRQTveUcarT9DIgV9ftGVnaeztX+u/IhslRNZWoPCy8/1dZicAgfZmhQj1jUGPUV9vpNkP
+	BgrxZLm3S/6CcmhLN8
+X-Google-Smtp-Source: AGHT+IHh2yafLn0h6WCQ3rAqHrBsqui/zuUk1dGdvyyNWo27ENOUkyCq/IzM8raGe5NR4RM82hlgnQ==
+X-Received: by 2002:a05:600c:1f94:b0:471:1765:839c with SMTP id 5b1f17b1804b1-477c1117949mr172473655e9.20.1764227645302;
+        Wed, 26 Nov 2025 23:14:05 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-479110b6da9sm17043815e9.0.2025.11.26.23.14.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Nov 2025 23:14:04 -0800 (PST)
+Date: Thu, 27 Nov 2025 10:14:01 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Rob Herring <robh@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH next] remoteproc: imx_dsp_rproc: Fix NULL vs IS_ERR() bug in
+ imx_dsp_rproc_add_carveout()
+Message-ID: <aSf6OerBbPcxBUVt@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <f8170513-e08a-46ff-9fb2-310f3e9c1ba4@oss.nxp.com> <20251126220441.GA2853437@bhelgaas>
-In-Reply-To: <20251126220441.GA2853437@bhelgaas>
-From: Vincent Guittot <vincent.guittot@linaro.org>
-Date: Thu, 27 Nov 2025 07:53:07 +0100
-X-Gm-Features: AWmQ_bn9e_5hK3VL0q5IanUqFHYeiwridGkV71hmaSPq62Kxvcuwrn80xW_IyF0
-Message-ID: <CAKfTPtD3EsD6yPfnE2nbnyuSfFeOEGyLm5jTQaEZP6Ro85e4JQ@mail.gmail.com>
-Subject: Re: [PATCH 4/4 v6] MAINTAINERS: Add MAINTAINER for NXP S32G PCIe driver
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>, chester62515@gmail.com, 
-	mbrugger@suse.com, ghennadi.procopciuc@oss.nxp.com, s32@nxp.com, 
-	bhelgaas@google.com, jingoohan1@gmail.com, lpieralisi@kernel.org, 
-	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, Ionut.Vicovan@nxp.com, larisa.grigore@nxp.com, 
-	Ghennadi.Procopciuc@nxp.com, ciprianmarian.costea@nxp.com, 
-	bogdan.hamciuc@nxp.com, Frank.li@nxp.com, 
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	cassel@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-Hi Bjorn,
+The devm_ioremap_resource_wc() function never returns NULL, it returns
+error pointers.  Update the error checking to match.
 
-On Wed, 26 Nov 2025 at 23:04, Bjorn Helgaas <helgaas@kernel.org> wrote:
->
-> On Wed, Nov 26, 2025 at 03:47:46PM -0600, Ciprian Marian Costea wrote:
-> > On 11/26/2025 3:41 PM, Bjorn Helgaas wrote:
-> > > [+cc Ciprian @oss.nxp.com, see email addr question below]
-> > >
-> > > On Fri, Nov 21, 2025 at 05:49:20PM +0100, Vincent Guittot wrote:
-> > > > Add a new entry for S32G PCIe driver.
-> > > >
-> > > > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-> > > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > > > ---
-> > > >   MAINTAINERS | 9 +++++++++
-> > > >   1 file changed, 9 insertions(+)
-> > > >
-> > > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > > index e64b94e6b5a9..bec5d5792a5f 100644
-> > > > --- a/MAINTAINERS
-> > > > +++ b/MAINTAINERS
-> > > > @@ -3137,6 +3137,15 @@ F: arch/arm64/boot/dts/freescale/s32g*.dts*
-> > > >   F:      drivers/pinctrl/nxp/
-> > > >   F:      drivers/rtc/rtc-s32g.c
-> > > > +ARM/NXP S32G PCIE CONTROLLER DRIVER
-> > > > +M:       Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>
-> > >
-> > > I'd be happy to change to
-> > > Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>
-> > > per https://lore.kernel.org/r/f38396c7-0605-4876-9ea6-0a179d6577c7@oss.nxp.com
-> > >
-> > > I notice that most nxp.com addresses in MAINTAINERS use "@nxp.com"
-> > > addresses, not "@oss.nxp.com".
-> > >
-> > > Let me know your preference.
-> > >
-> > > Bjorn
-> >
-> > Hello Bjorn,
-> >
-> > I prefer "@oss.nxp.com".
->
-> Done, thanks!
+Fixes: 67a7bc7f0358 ("remoteproc: Use of_reserved_mem_region_* functions for "memory-region"")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ drivers/remoteproc/imx_dsp_rproc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks
+diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+index be83b5f20f15..5130a35214c9 100644
+--- a/drivers/remoteproc/imx_dsp_rproc.c
++++ b/drivers/remoteproc/imx_dsp_rproc.c
+@@ -710,9 +710,9 @@ static int imx_dsp_rproc_add_carveout(struct imx_dsp_rproc *priv)
+ 			return -EINVAL;
+ 
+ 		cpu_addr = devm_ioremap_resource_wc(dev, &res);
+-		if (!cpu_addr) {
++		if (IS_ERR(cpu_addr)) {
+ 			dev_err(dev, "failed to map memory %pR\n", &res);
+-			return -ENOMEM;
++			return PTR_ERR(cpu_addr);
+ 		}
+ 
+ 		/* Register memory region */
+-- 
+2.51.0
 
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?id=c7533471578e
