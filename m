@@ -1,41 +1,41 @@
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0FC727814C
-	for <imx@lists.linux.dev>; Fri, 28 Nov 2025 16:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C447331209
+	for <imx@lists.linux.dev>; Fri, 28 Nov 2025 16:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764348896; cv=none; b=InyCPtiuy+u7ZmM/SbUEXIfMHhdnE0ByQAm+EK4AzBlBTK7ckrI1SykYTCUqilb+PyO4XmmZ5cuWpZ8pL7iO7gg0NSbMjEtfBAHcMbU/y4RvfLBjkipNscWZVSkOX9M0luRsSDTi8DMhiWYEgNfnBtt1g36NJCyvXRxHq+b0Le4=
+	t=1764348904; cv=none; b=svXdtDkAmZsVD6qRqz4MZEmfV4fY2dW1WnUxkLBOXoN20izfFMSzxOd100Nw5OLUKu9a0SDuh/EhDtLzPlr2w5EesSHM0p4h4Yqd5QO711fYMFssR3xRPgi81ZS/lH+EagRAOAvgVk6P1mjKFUCxLup8idKtBu+Va3Exvn/CoD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764348896; c=relaxed/simple;
-	bh=T5Y1ykc9T6Psz075QDOSbHMLYllzvjHkButlyWNsND8=;
+	s=arc-20240116; t=1764348904; c=relaxed/simple;
+	bh=aHVnoZc90852OLHVaccKLa4XL4eK0WlHEK6Nafn/QBg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Y6gqkL267tIW3B/OjKWufYZrLyR/oa8DZvJefs49WW7/WyYoBPBEdvVCNBkS+nhmPgpQ864HiLrOiSGu9AYqWZ8Pn+NJ1rz86XNWb5IbTO/9dKFcRB1yZvwK4qX3fyzAosjHOXqQAMHSUvktnlrCs0LNj8gPO3dCGXhVVF1fsTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kCaY6lw2; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=KRgqGoJTngnFsVdEdhGRG/9W4KZYOGkTrup0dxIEaR8Nwd7bMdhyIglfl5/vuBpviS3GA5l7j81IFi6ffMGt0mH+/g2+S2+hAfENOzbsfiNAJhdpa2HoUHFYd+gat/GQefUWz27CEFKNi0ynlTrOhV+cXCmj9jm1L+L6i5jq4s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=goAR7nqB; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kCaY6lw2"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="goAR7nqB"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 29447C16A3C;
-	Fri, 28 Nov 2025 16:54:29 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 7DC13C16A3C;
+	Fri, 28 Nov 2025 16:54:37 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 159D260706;
-	Fri, 28 Nov 2025 16:54:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AEB0910B02189;
-	Fri, 28 Nov 2025 17:54:42 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5FE5660706;
+	Fri, 28 Nov 2025 16:55:00 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AECC710B02187;
+	Fri, 28 Nov 2025 17:54:50 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764348890; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1764348898; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=DfHUWtPWvbu3eARUdwnswYnDDC4l4suslzNcl7SiWqE=;
-	b=kCaY6lw2TkOz8NsEsE/O3s3txQGE7b0kmIQUcnEYDZRPxllyDCOem+VsokmC5GC0MkcOQ1
-	/ABpWXr2URocnohRhfdSV4JXwyRc4iCD8Y0T68GFLMLkQrRDkQUWFpQ8G6avSlKnnt4qUG
-	uy9LX8dVx2TgrL/isxmjHsDEyjmgSpI7fALUKrUGHsWwywLlHdLk0pcqXqMBjDG1LTmaZM
-	iOyA4K7AlUUISKfhlx4wZVrB1gbSFcUBmRAxy1Wc9sKnbxlm+ZYU98t8ZzYCoNvyuoKAnG
-	g/URZBOPXlHVv9s9ZmhwpTDEanJAW9uGfHad5RKH6O+w6OFlf5r5xDF3Xd7GPA==
+	bh=Jcg6drnffjcjiUU54y4kICAByc19rBpV4WAFRG3l+Os=;
+	b=goAR7nqBlD7Nq4xDEHGgFHw+iMMbXnzy3Vp8bweaNTnEGKycoN39q2YhwqonHpRQpk7at4
+	NlxhP2xTJo1NS8U8ZYAwSG68ZunpyeAJYNmD0tTZvxl581fm0sH/Q+krsjRBOWsUbMmFFT
+	tkN6SkpPsGT0KVJzAX+k4eXJ9mcqB5pggxQ0uWzPn5TAHEuDZON5moUq7SQUokJDoZViKo
+	+HHnpVgBR6nHmVeBw5M8hUDbQTVf/RbTQdfAROAdp90z+f01Wn+Ku+a9raQkNDNMEWBQsW
+	xayG7RMZSz7NBTD0Voxq7JEhQS+hZgGg92XeLS4q10ZxqtZyoiYotyfWDJ5JhQ==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Fri, 28 Nov 2025 17:50:31 +0100
-Subject: [PATCH v2 21/26] drm/imx/ipuv3: use devm_of_drm_get_bridge() to
+Date: Fri, 28 Nov 2025 17:50:32 +0100
+Subject: [PATCH v2 22/26] drm/exynos: hdmi: use devm_of_drm_get_bridge() to
  put the next bridge
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-21-88f8a107eca2@bootlin.com>
+Message-Id: <20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-22-88f8a107eca2@bootlin.com>
 References: <20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-0-88f8a107eca2@bootlin.com>
 In-Reply-To: <20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-0-88f8a107eca2@bootlin.com>
 To: Andrzej Hajda <andrzej.hajda@intel.com>, 
@@ -95,22 +95,22 @@ reference on remove or on probe failure.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/gpu/drm/imx/ipuv3/dw_hdmi-imx.c | 2 +-
+ drivers/gpu/drm/exynos/exynos_hdmi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/dw_hdmi-imx.c b/drivers/gpu/drm/imx/ipuv3/dw_hdmi-imx.c
-index 07e5f96202d4..4479f74f0491 100644
---- a/drivers/gpu/drm/imx/ipuv3/dw_hdmi-imx.c
-+++ b/drivers/gpu/drm/imx/ipuv3/dw_hdmi-imx.c
-@@ -241,7 +241,7 @@ static int dw_hdmi_imx_probe(struct platform_device *pdev)
- 	if (IS_ERR(hdmi->hdmi))
- 		return PTR_ERR(hdmi->hdmi);
+diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
+index 01813e11e6c6..46c2263b3207 100644
+--- a/drivers/gpu/drm/exynos/exynos_hdmi.c
++++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
+@@ -1779,7 +1779,7 @@ static int hdmi_bridge_init(struct hdmi_context *hdata)
+ 		return -EINVAL;
+ 	}
  
--	hdmi->bridge = of_drm_find_bridge(np);
-+	hdmi->bridge = devm_of_drm_get_bridge(&pdev->dev, np);
- 	if (!hdmi->bridge) {
- 		dev_err(hdmi->dev, "Unable to find bridge\n");
- 		dw_hdmi_remove(hdmi->hdmi);
+-	hdata->bridge = of_drm_find_bridge(np);
++	hdata->bridge = devm_of_drm_get_bridge(dev, np);
+ 	of_node_put(np);
+ 
+ 	if (!hdata->bridge)
 
 -- 
 2.51.1
