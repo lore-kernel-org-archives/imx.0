@@ -1,54 +1,54 @@
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3101A32D0F9
-	for <imx@lists.linux.dev>; Fri, 28 Nov 2025 13:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA5032ABF3
+	for <imx@lists.linux.dev>; Fri, 28 Nov 2025 13:11:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764335515; cv=none; b=DRhaKqQ5cZ07L0sI0D7BqfVhf5gCszoZF6lWe7HnwzVy5Iy6/V5ZuTQbWYZ3c2qjl99lu8FXzyrT4XSsp53XCB5hF4ylZt2kJFkvQMFyIlSAZBu8NL4uAJjyE/r8QdhqkbkSG9CMFYLFsbIe7exxkCFlzNVF/+xWm2CDbqCghGU=
+	t=1764335517; cv=none; b=i5bvtzT8RXsY81O7dZWGDWG+a02J82nBCEnObuqEGTg6GxlymDykuGcDBjlwjUm4keS3YiD7PySNxR8mkUFJK07DAN+7zReAjPingIoBscndYrhLDzercSrzLc5gWtXUCUfxep3uUGKeVFX4JAUVLlPiGC0hnfhhgI/E7KLn5EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764335515; c=relaxed/simple;
-	bh=wPfBuuRbOQzpvr+HQJeCzp5MBHbQLw3bJS89RfFBpEY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IT+sKQPKxi64KCfWRXUOZEi2DHWFfcF9Hvzh8WJuScsXPjzxpEA36mO83Go0CEyinMCe2gkFMGwM97r15CqbzrehwFRgyOw7fbnZmcmBBJAreqVQXUwZ67vE8GK1by/RH13aL5qVHD8pChpOtvDELwi9Jd/tDAwunuuQUVyGD9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.48
+	s=arc-20240116; t=1764335517; c=relaxed/simple;
+	bh=CZtYG+v51umTKq+EUEZdPSfD+cLS70zLo9KxgodZhEk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=nY1278IFMHsqgSC1MFvk/O4KCE6WQlEzg5lSC9m/HuxkZwh6xjSnDpdoKvNaq7j8NiEUobyyfJzoSB+jxtTwf9eFbkdP+CckfsEGkpp6JyFLHvTsbcFXl0i09tTZG3JiR03a9+YiFYcdIzzQA3Qeik8AggVTdzxTsSD2mx7oVKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-3ec5df386acso1103325fac.1
-        for <imx@lists.linux.dev>; Fri, 28 Nov 2025 05:11:54 -0800 (PST)
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7c75dd36b1bso1125513a34.2
+        for <imx@lists.linux.dev>; Fri, 28 Nov 2025 05:11:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764335513; x=1764940313;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Uo9vcRLG0sffdJ2tNernWLmxwmEkT/AvLbfE2YPHtNo=;
-        b=HD/svWxoINDNX0jGiqGtyeiNiNfIkmlV/nVGVv68Ek15+XPVGcHe9oyIyF+kF1H6pN
-         +yySJJuc1E3l6p9p/IBJKDuwlJS2PeIOd6jXtYaiHI2si4sry9Zqe3o5iyxxQE0A2HEN
-         jSN3QADJyujqG9iUUY6L+3zf3lXhG7OQG9LBxzvydltYXHCjdSseC31pGduA5kk27C7x
-         DffcWS2QsOOM7Wsfr91Ij3H4YMhPzTWe2iCvf7CvaNmDO8rxr5SO5uXmO/WGT2XDdcFD
-         EAYkbNqm9fIDzKOmIoqVX07Oc9mqQZWiewrsbeKRJNn2hWJ+DWwb272UW1VSbvAKRA7V
-         g9oQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXtP7VjPBjwwik405NQj3M64dw7xjpSNjk51QqvSvrRRKvfwf90v0+zy+38/LbDfa7Q6Qc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxhC9tDW/KR4YSWRRsk/jh5D3E+eoGwt4+9rdFhy0ukUHbUJnnd
-	LUui83E7tEmQyqOwK/LLEVr7g8UGTEc16IeZ1yO2iLofDmqrG1ydtgq/
-X-Gm-Gg: ASbGncvYDGu82S20V3n82wekoVbEspjqWFLf4Z4m8+4kMPzc6/vgZK3T8YkkA3v4bpD
-	TN32EPzhJbtqu/XCGdGMOELEgTJ1/DHxhcZJBpeOTGrhGUQYQ/ByIBE2oTfqZ4Xaq2vUmScy39s
-	F6tuTBXIkc8LkMb2G/lWdBKzr2MAVnZCicmRI8//VQfk5csLeJYPSacVtXakJl+CCAFXv+W6HpG
-	FFwOx6Kz0XzwSC6g8LXWSjqeXbCPIBSridfoFB/GT4QpW5+ZGYIzP+vbZ9t81j/iV7VLQzhmIGd
-	TQYisEordYKCV1+qPmJHpIoYBO6eipYsS/Tw6KbdLyKfzywMxf+UtTiaoM2fkyi6OOXrYqul7OY
-	2Y1sluB5ay2KUkNToDc4sVfzU979dbHl3y3N4YIOJhBQz+2JwEEdSQvGxAIp3no88tUD2fcb/Ne
-	VAb93ihWBY7uT+nA==
-X-Google-Smtp-Source: AGHT+IHMtWs+H6VoFeAZ4KF7o8BPplF77Zskrbnrap/+zhewizkk9Ay0s01zNG3UCeFYf843DlHFeA==
-X-Received: by 2002:a05:6808:398d:b0:43f:b94a:14f2 with SMTP id 5614622812f47-4514e635561mr6797100b6e.16.1764335512874;
-        Fri, 28 Nov 2025 05:11:52 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:4e::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-45317113578sm1207649b6e.22.2025.11.28.05.11.52
+        d=1e100.net; s=20230601; t=1764335514; x=1764940314;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1Ws+64tDZ1NawiccgOINKTEQFjVR5AX3Ovp0pOwcfDA=;
+        b=Qo15VPyxavsPQMv8odzWESJn0JsePBRjP3fvbI8/2G8tN79QwFCxoXcim/4qz2fdDL
+         tAvh/RP3aT6kVk5LK4BCd/4XR50l1w1kS23I8AWKvk6QnZRzD5SW5AMSzNzuIWMvZppG
+         BPb7/QOHSj4+ch3cJ8LcdqPG4jbwt8j/YnrNw6xClhcNYXdxmyFVrS7pBixE7mKfLWb1
+         C8s8Bh8KqXlGgpOLM7UxI0fcDjm+do640wmIQVQJQIenPAyk4yEs2x6C/G2tACMRzKrO
+         lT24pwhn5XwPlBK3JToMeObikM17BsKpqphQoniJB22VdIFCMRWyqMfVZ2B4f/QRIqBv
+         CP+g==
+X-Forwarded-Encrypted: i=1; AJvYcCVjvitPVzxfHcwcE+geLQ8rIL1IUtyaR/4wyqPw/SMjB8fhgb53PuVMQsl602jFLej7EV4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyUK2X5oc/xc4fVYXqZOf9RWr0jGNh2talFmro5CqG+AATWooFU
+	AMj4smglrK5ais3XnYKPTlYsHw+Z58iP92dskve69g2bD02e9VKlODdu
+X-Gm-Gg: ASbGncsZn2VRGVEsRuz73zZOa18PzEG0Fl+kFAQDwwDIyersgeisclzEPsFTTZm/GWK
+	SH98NlRhVua3iNm2TDnCPjNtB4THjQkCMJg0KJWdVOuIWmi8iyd5c/wr7sLN6sn862E5d0h9tYM
+	bPjDLBN1EWYiCaWTr/+zqrRUI9JD1nWJXtnzLgAb+FHr6FWA72877oGHzg7EcVi5lrSrRgkejNU
+	ZDN3V6nvhFQ0DUJiAgzr80jcstfE5RawzdTWXkRZWRamMJ4YG2lJa+XM9o7ldJq3rQAJt1zPHBm
+	xfEk9nDq6/v9TzqifJgpfZ6iR9NUXRD1KuLI7+oGbAPEbuuWTpb/um4BbgILsbKOo4SXc5YcgGD
+	5OIfIuyX2oicEwqZvLdoHdVdWZeZ2Tsvc6PsLAmanZRpMh1pcLbrSFslICu3i4LnF20U9+Gq9O5
+	1SZXXYq/lpwSGF
+X-Google-Smtp-Source: AGHT+IEgl8gjrsk4JsjIK4DYaxFmEftv3fqxBhJyfVyr6YWaXxtVod4kuEHssBMt6l++8++WJT6VhA==
+X-Received: by 2002:a05:6830:4386:b0:790:710f:60e3 with SMTP id 46e09a7af769-7c7c43809ffmr7586357a34.23.1764335514394;
+        Fri, 28 Nov 2025 05:11:54 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:9::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c90fe15847sm1504747a34.25.2025.11.28.05.11.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Nov 2025 05:11:52 -0800 (PST)
+        Fri, 28 Nov 2025 05:11:53 -0800 (PST)
 From: Breno Leitao <leitao@debian.org>
-Subject: [PATCH net-next 0/3] net: freescale: migrate to
- .get_rx_ring_count() ethtool callback
-Date: Fri, 28 Nov 2025 05:11:44 -0800
-Message-Id: <20251128-gxring_freescale-v1-0-22a978abf29e@debian.org>
+Date: Fri, 28 Nov 2025 05:11:45 -0800
+Subject: [PATCH net-next 1/3] net: gianfar: convert to use
+ .get_rx_ring_count
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,10 +57,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJCfKWkC/x3MUQqDMBAFwKss79uACSiaq5RSgj7TBdmWREpAv
- LvQOcCcqCzKiignCn9a9WOI4jvB8k6W6XRFFIQ+DN6HyeVW1PJrK2Rd0k43zkNKM6cwrgGd4Fu
- 4afuXDxgPZ2wHntd1Azx/DWJsAAAA
-X-Change-ID: 20251128-gxring_freescale-695aa9e826d2
+Message-Id: <20251128-gxring_freescale-v1-1-22a978abf29e@debian.org>
+References: <20251128-gxring_freescale-v1-0-22a978abf29e@debian.org>
+In-Reply-To: <20251128-gxring_freescale-v1-0-22a978abf29e@debian.org>
 To: Claudiu Manoil <claudiu.manoil@nxp.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -71,53 +70,74 @@ To: Claudiu Manoil <claudiu.manoil@nxp.com>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  imx@lists.linux.dev, Breno Leitao <leitao@debian.org>
 X-Mailer: b4 0.15-dev-a6db3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1209; i=leitao@debian.org;
- h=from:subject:message-id; bh=wPfBuuRbOQzpvr+HQJeCzp5MBHbQLw3bJS89RfFBpEY=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpKZ+X39YtaH8lgeg4bEAgtcx04w9xGnjGKvxUh
- l/za36DZqeJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaSmflwAKCRA1o5Of/Hh3
- babRD/9fycIXztKGa0k9ztryGFwc1vsXl3dSU+02G0tUOaMMbW1mke+MOc4/vmxiT/UqdWJ7JxG
- diXh4y8s3JT7C9F2TMRlYYZp7wNr8mhXoOdOcNCt2fc/Hk6wXySiuPx+tbuCDCq6Q5qZi9EHJoi
- cMfW2ustDCQVVC5eOva1waqqBT34UoxmFI/oYtGiDHGCw0ZreWknfZbSHSdBNxQU0OvfWxIS19E
- CVF/AarITWCLgEaEE/j/ppVqu1n6wxGojoh1C86wcbSbfyau6t4oSG5CpQGUTqKpho64uDxZIJd
- MrGCepCpMbgbGRwTdQBzl/W7Y6MChPB/T7dUMzFC6cj26YS/0o20FApIt8UDURzJ6aoZTMyirPC
- 0nr+5krzvk6G02L2nwHB2Gp7tktbdNGD9ZxTicxAdfv8OvRWvg7v0SzCQyzjnaK8e5LV3IfiDLW
- E/Xy2mSKiihTu3RjlGBvHRekMrFqtE5BInUjDYNp22Y2KMN8h6kJxGWO8EvGwPCxF5dq6RGye4Y
- xPIVnb0xmSjC6oO14o7XMgVGhPxaR737aAqBdEJZEReNxFj6rMktLGa1+dErtZjkqNbzvQrFSJ2
- ce9/9lqDSkPDY01KDZf5/oYwO8Opu2DcgwlXrBJBtwIRZAMeo05pQA8guWg1LV0o76Urynixr0l
- 0VX3ZhiB3jEweSw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1895; i=leitao@debian.org;
+ h=from:subject:message-id; bh=CZtYG+v51umTKq+EUEZdPSfD+cLS70zLo9KxgodZhEk=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpKZ+XYiy9nO1IgJzH22i4LrieODa4xNDr9G2Dr
+ ODhcJJgzPGJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaSmflwAKCRA1o5Of/Hh3
+ beHqD/9K4lb8U6+g1KmKvt5ihwvxD5pTy5FHJyIErxaMfkKOjZS+KZEzjJmLBaB+dTJ1pHksj0G
+ rqxDhTYiqOcRDFiLOZxIYPBp0AcvabxGyiNcAdsh13/R7AKTakG12VQeqgJpCuUuJwnrvs1zb6X
+ JiHq0QTslGjmivzO3U3V8qH9h+9thNQe7vf2cXicnJKiDlbDLIZcvs0duUgAFTrLieTIw7N9MOx
+ JGUbz444LduaHs33BTcJ5KC5NPV9ng4vbLm2Z7ef/5GSANs/WGQS/undOwVs7iSPuJ2Y31iiYiV
+ 4b44Bw2lZdEZA+MvV1dNoMiNs5Rd9rNIiFJt1YStIrd8fVSCiiTOYxLg37dO4vu5mo3cCj8Hq9c
+ 90DOZTdDn+D6CF5X09ZZS3v/CDbL6b52edpYrsq5S0Pi76h3neQL5w7t3p8Uu7tlEsa8Kp16VF5
+ L5hv+nZwoL2WVt95oO7EOBW7peiXXEw+2f2xqIgmFRhuZHITyC4DzQfw8NBp7WtGlsVF8NdrO6d
+ LMb311hR3FsXbngDgalMnQg2OJ8KWbT/lvbEt6jbpqTVx8DKB2sV8Zi8qh/DxrjICXddG2WtHf8
+ O3lyNztAXgfxRE7ZihWgUV4bgEaDK7HxQvpHrLpoA1H8BTB/SruCFc1RuFlvx/WM+rTEMFQxCD0
+ L+CKSWXTWeUQ0NQ==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 
-This series migrates Freescale network drivers to use the new .get_rx_ring_count()
-ethtool callback introduced in commit 84eaf4359c36 ("net: ethtool: add
-get_rx_ring_count callback to optimize RX ring queries").
+Convert the gianfar driver to use the new .get_rx_ring_count
+ethtool operation instead of implementing .get_rxnfc for handling
+ETHTOOL_GRXRINGS command. This simplifies the code by removing the
+ETHTOOL_GRXRINGS case from the switch statement and replacing it with
+a direct return of the queue count.
 
-The new callback simplifies the .get_rxnfc() implementation by removing
-ETHTOOL_GRXRINGS handling and moving it to a dedicated callback. This provides
-a cleaner separation of concerns and aligns these drivers with the modern
-ethtool API.
+The driver still maintains .get_rxnfc for other commands including
+ETHTOOL_GRXCLSRLCNT, ETHTOOL_GRXCLSRULE, and ETHTOOL_GRXCLSRLALL.
 
-The series updates the following Freescale drivers:
-  - enetc
-  - dppa2
-  - gianfar
-
-PS: These were compile-tested only.
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
-Breno Leitao (3):
-      net: gianfar: convert to use .get_rx_ring_count
-      net: dpaa2: convert to use .get_rx_ring_count
-      net: enetc: convert to use .get_rx_ring_count
+ drivers/net/ethernet/freescale/gianfar_ethtool.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
- .../net/ethernet/freescale/dpaa2/dpaa2-ethtool.c   | 11 +++++--
- .../net/ethernet/freescale/enetc/enetc_ethtool.c   | 37 +++++++---------------
- drivers/net/ethernet/freescale/gianfar_ethtool.c   | 11 +++++--
- 3 files changed, 27 insertions(+), 32 deletions(-)
----
-base-commit: ed01d2069e8b40eb283050b7119c25a67542a585
-change-id: 20251128-gxring_freescale-695aa9e826d2
+diff --git a/drivers/net/ethernet/freescale/gianfar_ethtool.c b/drivers/net/ethernet/freescale/gianfar_ethtool.c
+index 5fd1f7327680..6fa752d3b60d 100644
+--- a/drivers/net/ethernet/freescale/gianfar_ethtool.c
++++ b/drivers/net/ethernet/freescale/gianfar_ethtool.c
+@@ -1431,6 +1431,13 @@ static int gfar_set_nfc(struct net_device *dev, struct ethtool_rxnfc *cmd)
+ 	return ret;
+ }
+ 
++static u32 gfar_get_rx_ring_count(struct net_device *dev)
++{
++	struct gfar_private *priv = netdev_priv(dev);
++
++	return priv->num_rx_queues;
++}
++
+ static int gfar_get_nfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
+ 			u32 *rule_locs)
+ {
+@@ -1438,9 +1445,6 @@ static int gfar_get_nfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
+ 	int ret = 0;
+ 
+ 	switch (cmd->cmd) {
+-	case ETHTOOL_GRXRINGS:
+-		cmd->data = priv->num_rx_queues;
+-		break;
+ 	case ETHTOOL_GRXCLSRLCNT:
+ 		cmd->rule_cnt = priv->rx_list.count;
+ 		break;
+@@ -1519,6 +1523,7 @@ const struct ethtool_ops gfar_ethtool_ops = {
+ #endif
+ 	.set_rxnfc = gfar_set_nfc,
+ 	.get_rxnfc = gfar_get_nfc,
++	.get_rx_ring_count = gfar_get_rx_ring_count,
+ 	.set_rxfh_fields = gfar_set_rxfh_fields,
+ 	.get_ts_info = gfar_get_ts_info,
+ 	.get_link_ksettings = phy_ethtool_get_link_ksettings,
 
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+-- 
+2.47.3
 
