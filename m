@@ -1,111 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523913054F8;
-	Fri, 28 Nov 2025 10:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838C5304BDA
+	for <imx@lists.linux.dev>; Fri, 28 Nov 2025 10:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764326216; cv=none; b=Ub/dRhSiTko+QVtuH6b3cIUfIPT+ZK7OyQAPFSq0letiI22xCkQvlJC7ZVpTRKXGxiLRB9F0SlFmphJcyNUaOkiFPakmC+3XUQj9O5frQ4hzM/ip50SuwR3G5fURCaIuhriUUSZW7gGvKfSREw5xEZHiZt1L4lUYIch/fvTWA3U=
+	t=1764326365; cv=none; b=UJ0DdKwmbd+5ui+ZRM8NE9EZXYCKJ8g6AjQ31AbIRVWQe4LdDM2XC4g4O1++QGA9o/VQM94krYXTwdzqbMkYgg+5RyiIi42z3+7NIZVTuIqC/rqsyY1Dpcz1v2zwe8YST5g71oW+JBpS1dqaDh0JcxWHUCJ5KWgZy9Vdjl41YIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764326216; c=relaxed/simple;
-	bh=gS1OFzixQRxxWZtiC2pcNhNU6BQ9IEUj0ZxgJCQzowM=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=cHFvtMnT/ZD3LT/9w8DTGwAKUWodAuZ6HxmUslJjG8ogCidSe61vSw3DS7A7kZx871abxs7WzwurUD4Q8N+J90QDZsP57bHKMgDlmJwIamHn8ObT0EVNLdVy8NYgaUogvApGFQCyKT6+N1HXumRFFST8mjKOdKzxxY409Bg1FZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rwqadcyn; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rwqadcyn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEEDC4CEF1;
-	Fri, 28 Nov 2025 10:36:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764326215;
-	bh=gS1OFzixQRxxWZtiC2pcNhNU6BQ9IEUj0ZxgJCQzowM=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
-	b=Rwqadcyn62wfoPCoW86RInP99ZLSG6nJcfnIOKIMS8GFOb1965LtZo5Oi7PM8HKiR
-	 f7RI2hVvhUjQqGxSoaotblbciHlile6YWO+2kHJaMK7BFeqDT3lWR22rVgSLBmgwPo
-	 xRJTRU33jedFtFsyZOyC3nDDUgWEV/D9M6hUxLiryh0qtrvIUMFquqPU5GKWTGkVG2
-	 vWuMz4fXychHZlAH/SMDolbsup77yLfbtZmbMQXer/f9CF6CP8/bVIxS3Fems7r5Hf
-	 2qRjy56sK0M10A/Fe0ye6nLzEkrXPyLhzuZ5KtPKLYq6ucAQaW+e1t2wSTz9jtJgNV
-	 HI9OnXq3tLMeA==
-Message-ID: <51e2de7a-5913-4c53-9637-6d60f875e3d8@kernel.org>
-Date: Fri, 28 Nov 2025 11:36:24 +0100
+	s=arc-20240116; t=1764326365; c=relaxed/simple;
+	bh=iWj8WWGLS0E0LMdbrAzqDikWo91/mlcN7knxFbRn0vw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rOCeXt3V1YBmIsm5sUjsdreWPWeff6OBxXLF4EziStORw3cCvHQZERHbco+aNyI9QgadzSrb0qFYSHJvuwLB+TqsQcYkMj30Fu8W6UMaMoa7wjoYdMZN1/8Kgdqbe1XflTt3ZfnMgIez0NaZawv4M9zVo9E4ejzcj73B5nLptCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1vOvsS-0007ne-EQ; Fri, 28 Nov 2025 11:39:00 +0100
+Message-ID: <f68f4836b1ee1d1d1ca0c9754db1080e4e56425a.camel@pengutronix.de>
+Subject: Re: [PATCH v2 1/2] pmdomain: imx8m-blk-ctrl: Remove separate rst
+ and clk mask for 8mq vpu
+From: Lucas Stach <l.stach@pengutronix.de>
+To: ming.qian@oss.nxp.com, linux-media@vger.kernel.org
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca, 
+ benjamin.gaignard@collabora.com, p.zabel@pengutronix.de, 
+ sebastian.fricke@collabora.com, shawnguo@kernel.org,
+ ulf.hansson@linaro.org,  s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com,  linux-imx@nxp.com, Frank.li@nxp.com, peng.fan@nxp.com,
+ eagle.zhou@nxp.com,  imx@lists.linux.dev, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  linux-arm-kernel@lists.infradead.org
+Date: Fri, 28 Nov 2025 11:38:57 +0100
+In-Reply-To: <20251128025117.535-1-ming.qian@oss.nxp.com>
+References: <20251128025117.535-1-ming.qian@oss.nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ahmad Fatoum <ahmad@kernel.org>
-Subject: Re: CAAM RSA breaks cfg80211 certificate verification on iMX8QXP
-To: Vitor Soares <ivitro@gmail.com>, Ahmad Fatoum <ahmad@kernel.org>,
- linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev
-Cc: horia.geanta@nxp.com, pankaj.gupta@nxp.com, gaurav.jain@nxp.com,
- herbert@gondor.apana.org.au, john.ernberg@actia.se,
- meenakshi.aggarwal@nxp.com
-References: <b017b6260075f7ba11c52e71bcc5cebe427e020f.camel@gmail.com>
- <ac727d79bdd7e20bf390408e4fa4dfeadb4b8732.camel@gmail.com>
- <3d44957f-8c09-47f3-93e0-78a1d34adfd0@kernel.org>
- <82e78d56c7df6e1f93de29f9b3a70f7c132603c4.camel@gmail.com>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <82e78d56c7df6e1f93de29f9b3a70f7c132603c4.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: l.stach@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi Vitor,
+Am Freitag, dem 28.11.2025 um 10:51 +0800 schrieb
+ming.qian@oss.nxp.com:
+> From: Ming Qian <ming.qian@oss.nxp.com>
+>=20
+> For i.MX8MQ platform, the ADB in the VPUMIX domain has no separate reset
+> and clock enable bits, but is ungated and reset together with the VPUs.
+> So we can't reset G1 or G2 separately, it may led to the system hang.
+> Remove rst_mask and clk_mask of imx8mq_vpu_blk_ctl_domain_data.
+> Let imx8mq_vpu_power_notifier() do really vpu reset.
+>=20
+> Fixes: 608d7c325e85 ("soc: imx: imx8m-blk-ctrl: add i.MX8MQ VPU blk-ctrl"=
+)
+> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+> ---
+> v2
+> - Update commit message
+>=20
+>  drivers/pmdomain/imx/imx8m-blk-ctrl.c | 4 ----
+>  1 file changed, 4 deletions(-)
+>=20
+> diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx=
+/imx8m-blk-ctrl.c
+> index 5c83e5599f1e..1f07ff041295 100644
+> --- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> +++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+> @@ -852,16 +852,12 @@ static const struct imx8m_blk_ctrl_domain_data imx8=
+mq_vpu_blk_ctl_domain_data[]
+>  		.clk_names =3D (const char *[]){ "g1", },
+>  		.num_clks =3D 1,
+>  		.gpc_name =3D "g1",
+> -		.rst_mask =3D BIT(1),
+> -		.clk_mask =3D BIT(1),
 
-On 11/26/25 7:35 PM, Vitor Soares wrote:
-> On Wed, 2025-11-26 at 13:59 +0100, Ahmad Fatoum wrote:
->> Is the CAAM cache-coherent on your SoC? If so does the DT specify dma-coherent
->> as it should? On i.MX8M, it's not cache-coherent, but on Layerscape it was and
->> the mismatch with the DT leads to symptoms matching what you are observing.
->>
-> 
-> Thanks for the suggestion. I tested with dma-coherent added to the CAAM and job
-> ring nodes but the issue persists.
-> I traced through the DMA path in caampkc.c and confirmed:
-> 
-> - dma_map_sg() is called in rsa_edesc_alloc() with DMA_FROM_DEVICE
-> - dma_unmap_sg() is called in rsa_io_unmap() from rsa_pub_done() before
-> completion
-> - CAAM returns status err=0x00000000 (success)
-> - dst_nents=1 
-> 
-> Yet the output buffer remains untouched (still contains my 0xAA poison pattern).
-> The kernel DMA handling appears correct. CAAM accepts the job and reports
-> success, but never writes the RSA result. Given that CAAM reports success but
-> does not populate the RSA output buffer, the problem appears to be somewhere in
-> the RSA execution flow (possibly in how the result buffer is handled or
-> returned), but I don't have enough insight into CAAM's RSA implementation.
+Change itself looks okay to me. Can you please leave a small comment
+here and for the G2 domain to document why the clk and reset bits are
+removed, so one doesn't need to dig into the git history when reading
+the driver code?
 
-Ok.. That was the only thing off the top of my head right now.
+Regards,
+Lucas
 
->> Off-topic remark: If you have performance comparison between running with and
->> without CAAM RSA acceleration, I'd be interested to hear about them.
->> At least for the hashing algorithms, using the Cortex-A53 (+ CE) CPU was a lot
->> faster than bothering with the CAAM "acceleration".
->>
-> 
-> I haven't done a kernel-level CAAM vs software RSA comparison, but OpenSSL with
-> ARM Crypto Extensions shows ~3100 verify ops/sec and ~80 sign ops/sec for RSA
-> 2048 on the Cortex-A35.
-
-I see, thanks.
-
-Cheers,
-Ahmad
-
-> 
-> Regards,
-> Vítor
-> 
-> 
-> 
-> 
-
--- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+>  	},
+>  	[IMX8MQ_VPUBLK_PD_G2] =3D {
+>  		.name =3D "vpublk-g2",
+>  		.clk_names =3D (const char *[]){ "g2", },
+>  		.num_clks =3D 1,
+>  		.gpc_name =3D "g2",
+> -		.rst_mask =3D BIT(0),
+> -		.clk_mask =3D BIT(0),
+>  	},
+>  };
+> =20
 
