@@ -1,177 +1,111 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013040.outbound.protection.outlook.com [40.107.162.40])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6ED3054FE
-	for <imx@lists.linux.dev>; Fri, 28 Nov 2025 10:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764325750; cv=fail; b=QSprlLkC6eI0+FH38yz1sOYAxXLn794vcLXn4izrLWPPuiJEBRqnMx5AwlEwsV6lgmcApKC2s/NHGd7Vfg7KvCkcSeVmzd/dg4nA6rxwW+c8Sg4gc8fD+5uI3oC8UQtuKLCDk0Ow6oXp77Q2RId4RiR5nEmTRCw8cyTpxSGQMzQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764325750; c=relaxed/simple;
-	bh=b1fCYeGJ2IkfcXBY2pJptYr0gJRc1MwYpcPjHa7yt1k=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Rv6fQyjq/nrKhOQkcM1NE0uxFwQBbBOK3AX0Cma+wwarDNstXC3InB4lgDDCPErinFhRIEuLyXEcWBm36qPU7h5Lo8lwNbvFYc7e3+sSZAjbQW3JqK/PtQx7hvjhm+KMz3VkDuBGGWVa2Qo9YXurUWeQ9oxf8D4z+ZxakmxiB5k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JvvN7nEo; arc=fail smtp.client-ip=40.107.162.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523913054F8;
+	Fri, 28 Nov 2025 10:36:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764326216; cv=none; b=Ub/dRhSiTko+QVtuH6b3cIUfIPT+ZK7OyQAPFSq0letiI22xCkQvlJC7ZVpTRKXGxiLRB9F0SlFmphJcyNUaOkiFPakmC+3XUQj9O5frQ4hzM/ip50SuwR3G5fURCaIuhriUUSZW7gGvKfSREw5xEZHiZt1L4lUYIch/fvTWA3U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764326216; c=relaxed/simple;
+	bh=gS1OFzixQRxxWZtiC2pcNhNU6BQ9IEUj0ZxgJCQzowM=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=cHFvtMnT/ZD3LT/9w8DTGwAKUWodAuZ6HxmUslJjG8ogCidSe61vSw3DS7A7kZx871abxs7WzwurUD4Q8N+J90QDZsP57bHKMgDlmJwIamHn8ObT0EVNLdVy8NYgaUogvApGFQCyKT6+N1HXumRFFST8mjKOdKzxxY409Bg1FZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rwqadcyn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JvvN7nEo"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MhcsUbnY3ePT8Nu9RaqyE0nPRI7NG2+8+qoiVq/AzRQ8llxiVIjpzNg5vCFyh0rn3Mo4tDi6wYvG6h/fvsTfi/iHyoZEHJUZJiQdQ6tPterG6lQp0K0LAWnmVFbeC2+ALb71zypF8teVPE3kMkOMaROeHsgCnc5xMfqBhR1Vf2WXQOu2FxY3wpsN6Y/2VB3oWJwPPBddumALqCu7cSxnGv+0BVz/nAWTcNswSOoRSehvM+LB6c6m/CDbhRjO2JhJg9wu3FUj4Ul5IDnPeClWwAGrvDJa4DePevHqJ3U6ZKHarTXK9nUmfP282CYV2yC9P3xboW/X4gVdEwnr2HGqBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b1fCYeGJ2IkfcXBY2pJptYr0gJRc1MwYpcPjHa7yt1k=;
- b=cshNTi3pGxIfbfVAPCg2UcxJvwpQtMVc2/4syESq8CkLf8N2V6S86BWe3XlOHOq5DGSEeJFmgJoN6Ux7QyfgENe95//PsEtQLX7MLiuPVo94SQmE3wy4QX67wNy+GeJV/QppCaVKC93TTjkSpRtYd0aUQd6T1iC2qQMwP+5pqGzFbTu4Ta//J3FpnT97ABVwLtER1CRhljWsBHmlux4Rh0jR7OdfCKHXijatlCZQIFMyKyAG96kgcNMIpCohHTS9arP4XQIJikK9753YC64lKeux5VvUsB3l/n3meOCIDbLaEAWnTdTw/CnrA+oFwJ+FvY7yA0cYSoD/1zv/uxiUXA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b1fCYeGJ2IkfcXBY2pJptYr0gJRc1MwYpcPjHa7yt1k=;
- b=JvvN7nEoqqiCSeVPeo58U5pZXGbnVzxKINtCDEy6PrzM0AyrrMZUu8HN9pWPvEJDOUdzUM5O9GTBmRJnVxvyEJ7BlHW3AoJfWrn5u36fZoLl3hOSNYfzgF8ijXWIh1hYZzBlwwnbTwbOxHF+ffdGkRStccAJqAlQZBFu2kdM4qcoV+2PmVzuBBUeIGO9IQbP8RQvoFL6Ukq1NWh+4W7Q9Wy/9ehKwLPaNrfr/b1Z5ssTRcaqs4MpakO7AWEmMjrJLISclTfL4RlC063y1LrYN/lLh2OXnQxIXZdR1F2nMAvs2KfUyf7HHYiRoZirdGu32iRlNAOCclOrWPQJcT5wQQ==
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PA4PR04MB9414.eurprd04.prod.outlook.com (2603:10a6:102:2a9::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.14; Fri, 28 Nov
- 2025 10:29:03 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9366.012; Fri, 28 Nov 2025
- 10:29:03 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: "Ming Qian (OSS)" <ming.qian@oss.nxp.com>, "linux-media@vger.kernel.org"
-	<linux-media@vger.kernel.org>
-CC: "mchehab@kernel.org" <mchehab@kernel.org>, "hverkuil-cisco@xs4all.nl"
-	<hverkuil-cisco@xs4all.nl>, "nicolas@ndufresne.ca" <nicolas@ndufresne.ca>,
-	"benjamin.gaignard@collabora.com" <benjamin.gaignard@collabora.com>,
-	"p.zabel@pengutronix.de" <p.zabel@pengutronix.de>,
-	"sebastian.fricke@collabora.com" <sebastian.fricke@collabora.com>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>, "ulf.hansson@linaro.org"
-	<ulf.hansson@linaro.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, dl-linux-imx <linux-imx@nxp.com>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, Frank Li
-	<frank.li@nxp.com>, Eagle Zhou <eagle.zhou@nxp.com>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v2 1/2] pmdomain: imx8m-blk-ctrl: Remove separate rst and
- clk mask for 8mq vpu
-Thread-Topic: [PATCH v2 1/2] pmdomain: imx8m-blk-ctrl: Remove separate rst and
- clk mask for 8mq vpu
-Thread-Index: AQHcYBJFeBYdmCLHSUCJD7gga6uyA7UH414Q
-Date: Fri, 28 Nov 2025 10:29:02 +0000
-Message-ID:
- <PAXPR04MB84591638C65B3C45EE6CB47F88DCA@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20251128025117.535-1-ming.qian@oss.nxp.com>
-In-Reply-To: <20251128025117.535-1-ming.qian@oss.nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|PA4PR04MB9414:EE_
-x-ms-office365-filtering-correlation-id: 73111650-7c33-4800-dd84-08de2e68f383
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|7416014|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?dyCO2lWZndVKKKaH1cD18uxG4pZu+w1ut7JnqXFjoflbxCpipQ/qlijWfiVt?=
- =?us-ascii?Q?aSuGsc0BVkbtNHmEgwkcbr6Bo2fx/Zw21Ji3g5rLPFp1IBqlGFhW/5IpduKv?=
- =?us-ascii?Q?c62MCbklxJdTxRPgtkd2DRiny9cKXZKMzMog7OmfBDxJ+EOgbeQbqb8NGhgM?=
- =?us-ascii?Q?zT0DE8a+kR0qjm57BdhOFN+ZiWdS33QL7m0caYuDXT3MqN07uzH7CtlNjfjo?=
- =?us-ascii?Q?oNMflQ/YF4h8bVzdB7sHFMIttghWAUXN60cKEUW6wLYdtngD+fb8VErDcxwX?=
- =?us-ascii?Q?AKaqSFoDgoKLE3vM/FE0J2HERT27Sc3Y5ktkXzZd9dsPe0apPrHP8ib380zF?=
- =?us-ascii?Q?E9TLnUv9C1o5YiVU05kVpiind9QQQ/nKd2MJv31EeFAAshkcdUG5wDLHzkPM?=
- =?us-ascii?Q?z3lqXHj/VOctIN8+NDHOLzj0QCRxHr/s6EBCyUVmsffnrld6D5Eyn5HgCTyz?=
- =?us-ascii?Q?qATwj91+d4YWYOrllYPqiFfRdZsjjeRhTRRzPGGrivtwOriHbOj1SJvkJIw5?=
- =?us-ascii?Q?mKw83crL2fAY5f8hwZw+M3/qrIDU0nS8FzKTXLRdNg0yXO7kvaygpairQTZ7?=
- =?us-ascii?Q?gKP7VkpaJ5yQS3cYbPKRB4EcU0iVE+nYrMnuPTwwu+ULC7inBZ1LYdYc9xHs?=
- =?us-ascii?Q?XbxcTwd3PgN0h+uc1iGSK5IYXqAOMhrsCuZVrroFoTpmQ6b9y1TRuun29VHt?=
- =?us-ascii?Q?O3lMzhVQyrAc1otVKI6bwHsXWu3zL252/LWRPKZVXiqU+i+TiDid1PBprw/m?=
- =?us-ascii?Q?+Vpy7alAumULryNHLCzAKagVlV+GKh/FU9lrsxeop9YBQaTXnUAZJ5kWPQaC?=
- =?us-ascii?Q?ZlU7gBe2coXRJi+2R2x7G/m6kDbyks0os4yJtu6EiPjF/Sqp46iicisfAng6?=
- =?us-ascii?Q?vT2NJVCRN72k7mFcnPqc5edRbphvw28WNbfJVe+HJvu21Hw8sQGQkMrLUGhS?=
- =?us-ascii?Q?yC48KJbuVZ1ea/smvvbjO4El//UT/2GqVcWc8ty+OysB0YAUfolPxnik1rDz?=
- =?us-ascii?Q?U1818hAUivZK0/v1cZMSgHbNuMKCG5xVMjeePpQJjePySEK7HfTC3Nj+LvMu?=
- =?us-ascii?Q?7zQPc7mw9EsmhTSHTJg3muBiiDOWkNxy5WKBLnZQdMs6KE4U3sHgKu6lERLT?=
- =?us-ascii?Q?6s7VXagXN9UDKo0483ErDbRVUfJI/yISDw724yy621AGK5QPu7s6b2yhFoaS?=
- =?us-ascii?Q?pxy2lMkGYZX2bwuxB3s4MVcb4uJQjx2/kqoon3ae0TP5FVBhCB49iFTmDyRT?=
- =?us-ascii?Q?qMEM87BlZfPXIe5qgvM2iA00LL1WYQh1FERPWiIKlgbcHhgj09dWTOR212br?=
- =?us-ascii?Q?47CPaqIt1q3HlCqjTa+n3bBEh6LaGd1G7fSbD/b0NSkosDaF/gUZiUDZMXb3?=
- =?us-ascii?Q?RX5QI7cUG5Wsk14L41W6Qf3x1ZmEVAmOTWAQ1LQuRjtuxxzXSV6efHmenCkl?=
- =?us-ascii?Q?u48NVMdGveZrVU3BblqcaTgdm75vVPdMSpcdNbf6h+x3/LVgRTwUJT4T6z7k?=
- =?us-ascii?Q?J7Ab9EmVDP+EXl0RRVsBVWNUsxNHVaOBX7B0?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(7416014)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?m8Wd78unVDoTXUCXYui9JvigUTY0ejYwEbLpb4wBf7QgvK0ENIl80ypfOeZ8?=
- =?us-ascii?Q?At4cEzlx8A563lxtm3T6tFoCegir5VzT9EdwcEKWs8n1NIgb3faJnB0UX+pX?=
- =?us-ascii?Q?WZnBVEvwGoM9GC3NFseZrkc/LWysB9XIolUpuSo+fiVd39UsMEXWpwqC4V8v?=
- =?us-ascii?Q?pBMiv2VLoPoWH0I6463tdXJNPEInYpaUCcWIVqV1hL6zOlfn4lFxFqyLCDYW?=
- =?us-ascii?Q?63g1OjbtoW5nODczMGo5WN8tHVvPXRQQexDObYitXQ+3sPyPAxOUB84riQIn?=
- =?us-ascii?Q?tRIzgqck72tp5kulaGL9hEs5l+1YqcUzHHkRnmQQi700nq2/4x0kWh3Vfovc?=
- =?us-ascii?Q?Np+Yy24VSJ4d5H+csUEtUzI/SpkYKAHJen/DZ4FsTkJDPrDqRco4oXMpQa/z?=
- =?us-ascii?Q?D8L/egYOTgVKLL909hXvXoF2XlE4rIGxL5hCadQIBilk3qEOCvCjvRSHb+O+?=
- =?us-ascii?Q?S0NrmMDnAx9bRxGXoRrCI+grcXnfztwwqifYHxLOtGCtp/4lVDNThWLNl+uc?=
- =?us-ascii?Q?KuJUa+CTIpLw/llvoAuVoPOrHUXuBwdD9PGQ0CGqRNSPK1UxKbFgReNu13Z2?=
- =?us-ascii?Q?2+ICKmJv+LH894IGVIiQaus3B17I8XDms1xZOi9QINvXrOfFhlG07IE9JBD3?=
- =?us-ascii?Q?XYTDhe0qWrDd+tlPbTjElbXdqujcwVzpxGBC2Yq1NCGNPUk1hzUIOI45VJU9?=
- =?us-ascii?Q?0goEFgHB0h6lrG6Z9of9efzNDzBkJccgXbhbfd83vPCObGgZ529vhpXRZCUE?=
- =?us-ascii?Q?ThhYheygRvWfN68dAEZ1BNlxZl6QOIInX1EXDgOSOHrwhY0Y1sFlEPE+h4KW?=
- =?us-ascii?Q?GRSBnjy4+2xgooGwhvczlsseA5gDervyVbdzAbaaMqB6najeAl2lRHoUP84d?=
- =?us-ascii?Q?4mGPYH4a3k6vdZGcDa6tn+g2/ew0quc3N1Z0PXI+Vya/gI62nXEEMiOHG6cW?=
- =?us-ascii?Q?ZBOYyOmAa+lPJAPrE8MXzAgNzeVBLFasrgclozQAYX6a29OES83fCazQEAOu?=
- =?us-ascii?Q?Jp4pZgxlwwSXh2sUYU590ZJoC1qrnlNS5ED+p8qypv9+Vd4OMaGeqyFqE+vt?=
- =?us-ascii?Q?oUYXbc7FG0FAQW4bdlovAMmChkfw+jF94Jl83j6SyEpy7vDYRARLXuHj2yKU?=
- =?us-ascii?Q?D6X4/RHNIc1qn4r5S38JG5wz6GsjzfKJAywqvOPdb0cYZcQGc4YLKUZzufh+?=
- =?us-ascii?Q?T2NxqkOAaCZQDaoTT3E6C+0/4rAIR+C/XwJ8vL4y56/4XzrLSpETu2EndlAy?=
- =?us-ascii?Q?sSU/HP2gbMdXt2d+tkiSAujvWkyYdDQgnQ7FHdQgmeHQh3FDGUbquIQ4etN5?=
- =?us-ascii?Q?W3MjQtM7pjkaTxCyhO6EaJv6kk58fT+iZTCsjbTpKH2KEQu9qwI1m6FMZgye?=
- =?us-ascii?Q?t5NxzmzpAaHo0gddZvv8CT2eLbKZhWQFKNBHoJuMm7HhPpKeIXwjMf9MSo3p?=
- =?us-ascii?Q?fhpwpLqzLlxpEtnAIVke6nCznGEss9I0IziLFIyj2hDPr8YUA4c5BCXM+739?=
- =?us-ascii?Q?1bfn/qcuuiqTYo+1xBBrfWsI7dtKFCW6Fd4Kvi6OYPTNilnvPc3Evqgk38aF?=
- =?us-ascii?Q?qfnfwCKjSs+BWz2x11Y=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rwqadcyn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEEDC4CEF1;
+	Fri, 28 Nov 2025 10:36:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764326215;
+	bh=gS1OFzixQRxxWZtiC2pcNhNU6BQ9IEUj0ZxgJCQzowM=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=Rwqadcyn62wfoPCoW86RInP99ZLSG6nJcfnIOKIMS8GFOb1965LtZo5Oi7PM8HKiR
+	 f7RI2hVvhUjQqGxSoaotblbciHlile6YWO+2kHJaMK7BFeqDT3lWR22rVgSLBmgwPo
+	 xRJTRU33jedFtFsyZOyC3nDDUgWEV/D9M6hUxLiryh0qtrvIUMFquqPU5GKWTGkVG2
+	 vWuMz4fXychHZlAH/SMDolbsup77yLfbtZmbMQXer/f9CF6CP8/bVIxS3Fems7r5Hf
+	 2qRjy56sK0M10A/Fe0ye6nLzEkrXPyLhzuZ5KtPKLYq6ucAQaW+e1t2wSTz9jtJgNV
+	 HI9OnXq3tLMeA==
+Message-ID: <51e2de7a-5913-4c53-9637-6d60f875e3d8@kernel.org>
+Date: Fri, 28 Nov 2025 11:36:24 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73111650-7c33-4800-dd84-08de2e68f383
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Nov 2025 10:29:02.9657
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hSogYLasmiJicYH1GM5FMXV9Ynqpf9Y6d6buLbfCI6I8jPhUlYlGzhsTSQpMxA0GZmJslsw7mgrZnKZ+7wHkmw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9414
+User-Agent: Mozilla Thunderbird
+From: Ahmad Fatoum <ahmad@kernel.org>
+Subject: Re: CAAM RSA breaks cfg80211 certificate verification on iMX8QXP
+To: Vitor Soares <ivitro@gmail.com>, Ahmad Fatoum <ahmad@kernel.org>,
+ linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev
+Cc: horia.geanta@nxp.com, pankaj.gupta@nxp.com, gaurav.jain@nxp.com,
+ herbert@gondor.apana.org.au, john.ernberg@actia.se,
+ meenakshi.aggarwal@nxp.com
+References: <b017b6260075f7ba11c52e71bcc5cebe427e020f.camel@gmail.com>
+ <ac727d79bdd7e20bf390408e4fa4dfeadb4b8732.camel@gmail.com>
+ <3d44957f-8c09-47f3-93e0-78a1d34adfd0@kernel.org>
+ <82e78d56c7df6e1f93de29f9b3a70f7c132603c4.camel@gmail.com>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <82e78d56c7df6e1f93de29f9b3a70f7c132603c4.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-> Subject: [PATCH v2 1/2] pmdomain: imx8m-blk-ctrl: Remove separate
-> rst and clk mask for 8mq vpu
->=20
-> From: Ming Qian <ming.qian@oss.nxp.com>
->=20
-> For i.MX8MQ platform, the ADB in the VPUMIX domain has no
-> separate reset and clock enable bits, but is ungated and reset together
-> with the VPUs.
-> So we can't reset G1 or G2 separately, it may led to the system hang.
-> Remove rst_mask and clk_mask of imx8mq_vpu_blk_ctl_domain_data.
-> Let imx8mq_vpu_power_notifier() do really vpu reset.
->=20
-> Fixes: 608d7c325e85 ("soc: imx: imx8m-blk-ctrl: add i.MX8MQ VPU
-> blk-ctrl")
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Hi Vitor,
 
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+On 11/26/25 7:35 PM, Vitor Soares wrote:
+> On Wed, 2025-11-26 at 13:59 +0100, Ahmad Fatoum wrote:
+>> Is the CAAM cache-coherent on your SoC? If so does the DT specify dma-coherent
+>> as it should? On i.MX8M, it's not cache-coherent, but on Layerscape it was and
+>> the mismatch with the DT leads to symptoms matching what you are observing.
+>>
+> 
+> Thanks for the suggestion. I tested with dma-coherent added to the CAAM and job
+> ring nodes but the issue persists.
+> I traced through the DMA path in caampkc.c and confirmed:
+> 
+> - dma_map_sg() is called in rsa_edesc_alloc() with DMA_FROM_DEVICE
+> - dma_unmap_sg() is called in rsa_io_unmap() from rsa_pub_done() before
+> completion
+> - CAAM returns status err=0x00000000 (success)
+> - dst_nents=1 
+> 
+> Yet the output buffer remains untouched (still contains my 0xAA poison pattern).
+> The kernel DMA handling appears correct. CAAM accepts the job and reports
+> success, but never writes the RSA result. Given that CAAM reports success but
+> does not populate the RSA output buffer, the problem appears to be somewhere in
+> the RSA execution flow (possibly in how the result buffer is handled or
+> returned), but I don't have enough insight into CAAM's RSA implementation.
+
+Ok.. That was the only thing off the top of my head right now.
+
+>> Off-topic remark: If you have performance comparison between running with and
+>> without CAAM RSA acceleration, I'd be interested to hear about them.
+>> At least for the hashing algorithms, using the Cortex-A53 (+ CE) CPU was a lot
+>> faster than bothering with the CAAM "acceleration".
+>>
+> 
+> I haven't done a kernel-level CAAM vs software RSA comparison, but OpenSSL with
+> ARM Crypto Extensions shows ~3100 verify ops/sec and ~80 sign ops/sec for RSA
+> 2048 on the Cortex-A35.
+
+I see, thanks.
+
+Cheers,
+Ahmad
+
+> 
+> Regards,
+> Vítor
+> 
+> 
+> 
+> 
+
+-- 
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
