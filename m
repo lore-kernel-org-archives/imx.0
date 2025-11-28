@@ -1,296 +1,146 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4632D0C94
-	for <imx@lists.linux.dev>; Fri, 28 Nov 2025 21:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D70E274650;
+	Fri, 28 Nov 2025 21:50:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764365326; cv=none; b=ZpijrFDBupxwVx9WGCifi7nc0ufhoB/ono2pAda9U9xFirBzArsUmSWsq7RZcCGdZKjnhvfy/7CyAId69XtiaJwGXDbdYzJLazYwf8OugMtFtZqd+reuAl736e6MmxNlxG3ZQ6srKfnP5aaZWOgkL8rK5ntl2h/HgtVVuuKHhGE=
+	t=1764366635; cv=none; b=R3z/nLfGuPXZ1JUxriSQ+ki8m3qSUT010AqR3xCpMSD1inxqC/ECD1I+9Tf0yyG9nzDnx4lFTSIwgMTIAlqhF33qZQ5mQ9d68wILjI445sJgRYJ5LCuqduPjfD4ujIqvIiNeDvoI8Ig5q3BNdLBw6yyneshXouSC5Zy3KyZdgLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764365326; c=relaxed/simple;
-	bh=tmVTnuvxR0wK6ZuW9OPVuqO+nqK/SMC9A1+2qGeSvSQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EHI0+uiAv9XA3jjXqnlGRdZbm0yMAJOVdLJ91jR5KZj6R6afoKQE6b9+pv0k3rviyphJYSRJbqhYcoAtQRi+Bt1FAr9JodpBP9u2Tqg2jB1PVijbv4HWMB1RYuPGAWj1QNICJXOZgsSWFMvdVrurl8aQqA2qNSxZqerom35Shwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=kKei/EGZ; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
+	s=arc-20240116; t=1764366635; c=relaxed/simple;
+	bh=JdN7JG2SF0HKhMVjcjMWIQ2dFH3XWGOs4WCZ0Ti+RpQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KA5DM/TT7Ay/JEeLOTw4Hdz4IWIPkzmml7Df4o9aMBu+D/zJi6/EHK1HVu6c8rls8+Oz+b/JE3heTZUOCm644nwRyCucnWIIKqlVKxhxeGGh0IxW+6kbZxGB1YxY5OGOY85za21uS8Wm89hhV/6pyKHAHQ2AZB2ZNU06PNXuPyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Ra20jyFB; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="kKei/EGZ"
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-880439c5704so22143336d6.1
-        for <imx@lists.linux.dev>; Fri, 28 Nov 2025 13:28:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1764365323; x=1764970123; darn=lists.linux.dev;
-        h=mime-version:user-agent:references:in-reply-to:date:cc:to:from
-         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=g6w8QrfrOXi6sp9Fe0hRWKIBPis0Rvyzh9m6dBqHPME=;
-        b=kKei/EGZO51FGYb6oHd49QXMHLWgUyv4ysST6D9nReTlaMBeADGF50pGbu8wGtZyAS
-         PYJe41+PzVJaxnUK+8XsYywVjhqas5S1Fxo+k2D7J4QfV/nX/OYDvC9CQ3So5LpUi6Ns
-         jrSEz2rUHV5jlSxIyUK9jr/nAc3EZeaSXxztGIJoEy5hmA5kEtvOnxfk/E8uC/nSEriq
-         kgdiiTTCmYswDLRgTiwMfQluJPtMUkSLTenD6e+csr2Fdg5A77Qa8MGxESUgcvvn/Uz5
-         Sztrs5XM6AICAGbSME/DOnNp6fCHvclUSiFdxfD5wXS8mTqpOrM0n6Cf/RwJjHqdrLkI
-         OaUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764365323; x=1764970123;
-        h=mime-version:user-agent:references:in-reply-to:date:cc:to:from
-         :subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=g6w8QrfrOXi6sp9Fe0hRWKIBPis0Rvyzh9m6dBqHPME=;
-        b=wFVuuWA8kS7ET/mbTxaFJNFBAejOfxWt9AjNZTGJF6fcbVCsnGkUWvc7EowtRISpnI
-         SBb/v4wfAr7RUjGVcBr8C82SBjSspsvq5iQwivy02y6Q+HVzysZlKc5A43UxeqdTt621
-         H2z9tK4iDBiiS02ujnB6VCsI7prTtpzpKjGiKrD2l/YvXDJoaBEbxQ+kw8F0C+l17Qf6
-         n3ps1JPb1XBQdqYyH7x3Z3wLJ97Df2DWf/SMBhjp/EL4npeEPeS2JdWInCeub4WCSILC
-         zkb5wCVDkpvAT9YJTM5p/NN8GylWwTfs3BHT6gd9G7pqfh0bQBOlaCqdBqzYh27k9SS0
-         mU6g==
-X-Forwarded-Encrypted: i=1; AJvYcCXhQuFUJib6RNMB1jjUIQsyvp2XH+ffeS7cSVYcFa9fZtnu6auWNILB/lA1FMlZ0VNGax8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxzv3ltJL1M70s8A17ktFR8Zou7sJPHVtEZvFz1UJsA3CxnHDZ+
-	/5LXb/wwJb9zNZvpJ/B14kEPki+82jhx8CEumOu6eOcSrvVJFfOlOACQXvBtFB+5COs=
-X-Gm-Gg: ASbGncsXpbkIyylGk0eBm8O1agBK7LFrNTV51hHCkGzUEKVRLJpsduNOkQKfON0HbXg
-	/D/RD7Ctbj6KtQKxWYEPJEK68IjUp+pItWgdGiotllCJ4lUpCT+SAYIydHpezS90WtB+/Wvbu/8
-	nqLkCuCrEHJYG7NgJ1IE6gaphrwg6HfJkcUy8fZ81/W3XU0Jqr+PrQaKlmicMLs7JkA1eF2tgis
-	WIjpwMy0666kH2ju2nol1yFERQdA0/b+ZzF086rrPhfb8uspeW6VoGtLYoQhJXN11kcl/zDEREf
-	G5115i9KWDOH7uddzhx6gfu02u8KDLTUJ5ghkYweQiIJ16W5npvwfeEJhNRthfhpN/duJl9M9lI
-	Zuf9C399AAaluxwb6OyOOoaLpLLnM9GznmxMeA3YjfH8vKxN0cFiX57p3TGTQbCl7NbGLFyvQwt
-	IkPgPIdN/338krwm6a
-X-Google-Smtp-Source: AGHT+IF5rpKVWKhhH5X99ZzJRg/cYQ5xHYiK2flb6+MOxSeRJ2HbYvrgV+3FUbcl1ZVy3O+iyDvm2Q==
-X-Received: by 2002:a05:6214:2a89:b0:798:acd7:2bb with SMTP id 6a1803df08f44-8863af9edcfmr276981516d6.51.1764365322897;
-        Fri, 28 Nov 2025 13:28:42 -0800 (PST)
-Received: from ?IPv6:2606:6d00:17:7b4b::c41? ([2606:6d00:17:7b4b::c41])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88652b4afe8sm35038726d6.29.2025.11.28.13.28.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Nov 2025 13:28:42 -0800 (PST)
-Message-ID: <46e9a5a881946d879d1b2af3421d574b26256ae3.camel@ndufresne.ca>
-Subject: Re: [PATCH v2 2/2] media: verisilicon: Avoid G2 bus error while
- decoding H.264 and HEVC
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: ming.qian@oss.nxp.com, linux-media@vger.kernel.org
-Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, 
-	benjamin.gaignard@collabora.com, p.zabel@pengutronix.de, 
-	sebastian.fricke@collabora.com, shawnguo@kernel.org,
- ulf.hansson@linaro.org, 	s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, 	linux-imx@nxp.com, l.stach@pengutronix.de,
- Frank.li@nxp.com, peng.fan@nxp.com, 	eagle.zhou@nxp.com,
- imx@lists.linux.dev, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Date: Fri, 28 Nov 2025 16:28:39 -0500
-In-Reply-To: <20251128025117.535-2-ming.qian@oss.nxp.com>
-References: <20251128025117.535-1-ming.qian@oss.nxp.com>
-	 <20251128025117.535-2-ming.qian@oss.nxp.com>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-Wt1eyF/4iRLYXSmGIIpE"
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Ra20jyFB"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=dUAdZeQP94vW72b4SJ//V/MtjinN884gsD5QWNElCrg=; b=Ra20jyFBxDuV53uOnzXP2ROo3n
+	6iH7U5q6VshUt0SSIyUMvEuHD6uf5oxKo3fYtlZsKW9PZOyCgqKZuTuGyG0SF41EQnhUjP/FR2Lgt
+	Le7+1g8J4SrLQqbzCd2YOOlfvE4Aq3hq47Tv4UokTE1flXvyD70Tlf6WpNHWM1RgHU8b8PHPQxGFd
+	igXveDHNK3GIL1mGgtsHtlVngm9BQzvPM59Php3lUG1SYQyJuyOziBCvQUou2vZsXL1jB7J9UfhSL
+	yy9SSp4qbhGiZearV+80CKbt42wCEVmv9nTO7jhosBJ1n6iEjy/8GUHzjSGqZe3Yh4QfAU7ukLp3d
+	mJ72/xqg==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vP6M8-00000000zPG-37J4;
+	Fri, 28 Nov 2025 21:50:20 +0000
+Message-ID: <a23be1b4-89ce-4db9-bb68-9a5aa248f4a0@infradead.org>
+Date: Fri, 28 Nov 2025 13:50:19 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 04/26] drm/bridge: make of_drm_find_bridge() a wrapper
+ of of_drm_get_bridge()
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jonathan Corbet <corbet@lwn.net>, Alexey Brodkin <abrodkin@synopsys.com>,
+ Phong LE <ple@baylibre.com>, Liu Ying <victor.liu@nxp.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Adrien Grassein <adrien.grassein@gmail.com>,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>, Kevin Hilman <khilman@baylibre.com>,
+ Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Anitha Chrisanthus <anitha.chrisanthus@intel.com>,
+ Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-renesas-soc@vger.kernel.org, linux-amlogic@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, linux-samsung-soc@vger.kernel.org
+References: <20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-0-88f8a107eca2@bootlin.com>
+ <20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-4-88f8a107eca2@bootlin.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-4-88f8a107eca2@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
---=-Wt1eyF/4iRLYXSmGIIpE
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
-
-Le vendredi 28 novembre 2025 =C3=A0 10:51 +0800, ming.qian@oss.nxp.com a =
-=C3=A9crit=C2=A0:
-> From: Ming Qian <ming.qian@oss.nxp.com>
->=20
-> For the i.MX8MQ platform, there is a hardware limitation: the g1 VPU and
-> g2 VPU cannot decode simultaneously; otherwise, it will cause below bus
-> error and produce corrupted pictures, even led to system hang.
->=20
-> [=C2=A0 110.527986] hantro-vpu 38310000.video-codec: frame decode timed o=
-ut.
-> [=C2=A0 110.583517] hantro-vpu 38310000.video-codec: bus error detected.
->=20
-> Therefore, it is necessary to ensure that g1 and g2 operate alternately.
-> Then this allows for successful multi-instance decoding of H.264 and HEVC=
-.
->=20
-> To achieve this, we can have g1 and g2 share the same v4l2_m2m_dev, and
-> then the v4l2_m2m_dev can handle the scheduling.
->=20
-> Fixes: cb5dd5a0fa518 ("media: hantro: Introduce G2/HEVC decoder")
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-
-I like where this is going.
+On 11/28/25 8:50 AM, Luca Ceresoli wrote:
+> of_drm_find_bridge() is identical to of_drm_get_bridge() except it does
+> not increment the refcount. Rewrite it as a wrapper and put the bridge
+> being returned so the behaviour is still the same.
+> 
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> 
 > ---
-> v2
-> - Abandon the waiting approach.
-> - Switch to a shared v4l2_m2m_dev solution.
->=20
-> =C2=A0drivers/media/platform/verisilicon/hantro.h=C2=A0=C2=A0 |=C2=A0 2 +
-> =C2=A0.../media/platform/verisilicon/hantro_drv.c=C2=A0=C2=A0 | 41 ++++++=
-+++++++++++--
-> =C2=A0.../media/platform/verisilicon/imx8m_vpu_hw.c |=C2=A0 2 +
-> =C2=A03 files changed, 42 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/media/platform/verisilicon/hantro.h b/drivers/media/=
-platform/verisilicon/hantro.h
-> index e0fdc4535b2d..8a0583f95417 100644
-> --- a/drivers/media/platform/verisilicon/hantro.h
-> +++ b/drivers/media/platform/verisilicon/hantro.h
-> @@ -77,6 +77,7 @@ struct hantro_irq {
-> =C2=A0 * @double_buffer:		core needs double buffering
-> =C2=A0 * @legacy_regs:		core uses legacy register set
-> =C2=A0 * @late_postproc:		postproc must be set up at the end of the job
-> + * @shared_resource:		flag of shared resource
-> =C2=A0 */
-> =C2=A0struct hantro_variant {
-> =C2=A0	unsigned int enc_offset;
-> @@ -101,6 +102,7 @@ struct hantro_variant {
-> =C2=A0	unsigned int double_buffer : 1;
-> =C2=A0	unsigned int legacy_regs : 1;
-> =C2=A0	unsigned int late_postproc : 1;
-> +	unsigned int shared_resource : 1;
+> 
+> Changed in v2:
+> - Added comment to document why we put the reference
+> ---
+>  drivers/gpu/drm/drm_bridge.c | 20 +++++++++-----------
+>  1 file changed, 9 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
+> index 21a84715d221..9b7e3f859973 100644
+> --- a/drivers/gpu/drm/drm_bridge.c
+> +++ b/drivers/gpu/drm/drm_bridge.c
+> @@ -1467,19 +1467,17 @@ EXPORT_SYMBOL(of_drm_get_bridge);
+>   */
+>  struct drm_bridge *of_drm_find_bridge(struct device_node *np)
+>  {
+> -	struct drm_bridge *bridge;
+> -
+> -	mutex_lock(&bridge_lock);
+> +	struct drm_bridge *bridge = of_drm_get_bridge(np);
+>  
+> -	list_for_each_entry(bridge, &bridge_list, list) {
+> -		if (bridge->of_node == np) {
+> -			mutex_unlock(&bridge_lock);
+> -			return bridge;
+> -		}
+> -	}
+> +	/**
 
-Instead of that, I'd make an array of compatible node we are going to share=
- the
-with.
+This isn't a kernel-doc comment, so please don't use "/**" here.
+Just use "/*".
 
-> =C2=A0};
-> =C2=A0
-> =C2=A0/**
-> diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/me=
-dia/platform/verisilicon/hantro_drv.c
-> index 60b95b5d8565..f42b2df86806 100644
-> --- a/drivers/media/platform/verisilicon/hantro_drv.c
-> +++ b/drivers/media/platform/verisilicon/hantro_drv.c
-> @@ -35,6 +35,10 @@ module_param_named(debug, hantro_debug, int, 0644);
-> =C2=A0MODULE_PARM_DESC(debug,
-> =C2=A0		 "Debug level - higher value produces more verbose messages");
-> =C2=A0
-> +static DEFINE_MUTEX(shared_dev_lock);
-> +static atomic_t shared_dev_ref_cnt =3D ATOMIC_INIT(0);
-> +static struct v4l2_m2m_dev *shared_m2m_dev;
-> +
-> =C2=A0void *hantro_get_ctrl(struct hantro_ctx *ctx, u32 id)
-> =C2=A0{
-> =C2=A0	struct v4l2_ctrl *ctrl;
-> @@ -1035,6 +1039,37 @@ static int hantro_disable_multicore(struct hantro_=
-dev *vpu)
-> =C2=A0	return 0;
-> =C2=A0}
-> =C2=A0
-> +static struct v4l2_m2m_dev *hantro_get_v4l2_m2m_dev(struct hantro_dev *v=
-pu)
-> +{
-> +	if (!vpu->variant || !vpu->variant->shared_resource)
-> +		return v4l2_m2m_init(&vpu_m2m_ops);
-> +
-> +	scoped_guard(mutex, &shared_dev_lock) {
-> +		if (atomic_inc_return(&shared_dev_ref_cnt) =3D=3D 1) {
-> +			shared_m2m_dev =3D v4l2_m2m_init(&vpu_m2m_ops);
-> +			if (IS_ERR(shared_m2m_dev))
-> +				atomic_dec(&shared_dev_ref_cnt);
-> +		}
-> +	}
-> +
-> +	return shared_m2m_dev;
-> +}
-> +
-> +static void hantro_put_v4l2_m2m_dev(struct hantro_dev *vpu)
-> +{
-> +	if (!vpu->variant || !vpu->variant->shared_resource)
-> +		v4l2_m2m_release(vpu->m2m_dev);
-> +
-> +	scoped_guard(mutex, &shared_dev_lock) {
-> +		if (!atomic_dec_return(&shared_dev_ref_cnt)) {
-> +			if (!IS_ERR(shared_m2m_dev)) {
-> +				v4l2_m2m_release(shared_m2m_dev);
-> +				shared_m2m_dev =3D NULL;
-> +			}
-> +		}
-> +	}
-> +}
+> +	 * We need to emulate the original semantics of
+> +	 * of_drm_find_bridge(), which was not getting any bridge
+> +	 * reference. Being now based on of_drm_get_bridge() which gets a
+> +	 * reference, put it before returning.
+> +	 */
+> +	drm_bridge_put(bridge);
+>  
+> -	mutex_unlock(&bridge_lock);
+> -	return NULL;
+> +	return bridge;
+>  }
+>  EXPORT_SYMBOL(of_drm_find_bridge);
+>  #endif
+> 
 
-Then instead of this, I would like to add a kref to v4l2_m2m_dec, I checked
-already and this is both safe and backward compatible.
+-- 
+~Randy
 
-Then in the get function, you will walk over the compatible that are differ=
-ent
-from the currently probe node. If you find one that is initialized, you wil=
-l
-call v4l2_m2m_get() to obtained a shared reference. In _remove() you will s=
-imply
-do v4l2_m2m_put() instead of v4l2_m2m_release().
-
-Hope the others are happy with this. For Hantro drivers, this will make it =
-a
-much more powerfull mechanism.
-
-Nicolas
-
-> +
-> =C2=A0static int hantro_probe(struct platform_device *pdev)
-> =C2=A0{
-> =C2=A0	const struct of_device_id *match;
-> @@ -1186,7 +1221,7 @@ static int hantro_probe(struct platform_device *pde=
-v)
-> =C2=A0	}
-> =C2=A0	platform_set_drvdata(pdev, vpu);
-> =C2=A0
-> -	vpu->m2m_dev =3D v4l2_m2m_init(&vpu_m2m_ops);
-> +	vpu->m2m_dev =3D hantro_get_v4l2_m2m_dev(vpu);
-> =C2=A0	if (IS_ERR(vpu->m2m_dev)) {
-> =C2=A0		v4l2_err(&vpu->v4l2_dev, "Failed to init mem2mem device\n");
-> =C2=A0		ret =3D PTR_ERR(vpu->m2m_dev);
-> @@ -1225,7 +1260,7 @@ static int hantro_probe(struct platform_device *pde=
-v)
-> =C2=A0	hantro_remove_enc_func(vpu);
-> =C2=A0err_m2m_rel:
-> =C2=A0	media_device_cleanup(&vpu->mdev);
-> -	v4l2_m2m_release(vpu->m2m_dev);
-> +	hantro_put_v4l2_m2m_dev(vpu)
-
-> =C2=A0err_v4l2_unreg:
-> =C2=A0	v4l2_device_unregister(&vpu->v4l2_dev);
-> =C2=A0err_clk_unprepare:
-> @@ -1248,7 +1283,7 @@ static void hantro_remove(struct platform_device *p=
-dev)
-> =C2=A0	hantro_remove_dec_func(vpu);
-> =C2=A0	hantro_remove_enc_func(vpu);
-> =C2=A0	media_device_cleanup(&vpu->mdev);
-> -	v4l2_m2m_release(vpu->m2m_dev);
-> +	hantro_put_v4l2_m2m_dev(vpu);
-> =C2=A0	v4l2_device_unregister(&vpu->v4l2_dev);
-> =C2=A0	clk_bulk_unprepare(vpu->variant->num_clocks, vpu->clocks);
-> =C2=A0	reset_control_assert(vpu->resets);
-> diff --git a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c b/drivers/=
-media/platform/verisilicon/imx8m_vpu_hw.c
-> index 5be0e2e76882..5111ce5c36f3 100644
-> --- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-> +++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-> @@ -356,6 +356,7 @@ const struct hantro_variant imx8mq_vpu_g1_variant =3D=
- {
-> =C2=A0	.num_irqs =3D ARRAY_SIZE(imx8mq_irqs),
-> =C2=A0	.clk_names =3D imx8mq_g1_clk_names,
-> =C2=A0	.num_clocks =3D ARRAY_SIZE(imx8mq_g1_clk_names),
-> +	.shared_resource =3D 1,
-> =C2=A0};
-> =C2=A0
-> =C2=A0const struct hantro_variant imx8mq_vpu_g2_variant =3D {
-> @@ -371,6 +372,7 @@ const struct hantro_variant imx8mq_vpu_g2_variant =3D=
- {
-> =C2=A0	.num_irqs =3D ARRAY_SIZE(imx8mq_g2_irqs),
-> =C2=A0	.clk_names =3D imx8mq_g2_clk_names,
-> =C2=A0	.num_clocks =3D ARRAY_SIZE(imx8mq_g2_clk_names),
-> +	.shared_resource =3D 1,
-> =C2=A0};
-> =C2=A0
-> =C2=A0const struct hantro_variant imx8mm_vpu_g1_variant =3D {
-
---=-Wt1eyF/4iRLYXSmGIIpE
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaSoUCAAKCRDZQZRRKWBy
-9H6pAP9Yhdngbwt8OH8RGhvCSHfsb/fie3vizZPWTzJzx3viGAEAsoVoim+8k68z
-i06SAHMjZlxmNSWFIYqN873wNoWfWAs=
-=xBWz
------END PGP SIGNATURE-----
-
---=-Wt1eyF/4iRLYXSmGIIpE--
