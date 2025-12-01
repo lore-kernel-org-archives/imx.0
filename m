@@ -1,72 +1,63 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013033.outbound.protection.outlook.com [52.101.72.33])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013023.outbound.protection.outlook.com [52.101.72.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D882E9EC6
-	for <imx@lists.linux.dev>; Mon,  1 Dec 2025 16:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211C5334C04
+	for <imx@lists.linux.dev>; Mon,  1 Dec 2025 16:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.23
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764607976; cv=fail; b=Vcv7n8bsTcN5kMpeipZ+AFp+JPSspdXO+0U+qKfJVwHHSYO0B6bOseWG+LR/qRzVSAfH8Lk5OmFw0xkwQojkqycx0Tt47Bq5q2amVBWPZyMBYzeHtKOjRpMmkoaMSYKM0WcjVscdwKPlQubipREU2dBadFFb+STF9h+ooEjcNq8=
+	t=1764608090; cv=fail; b=SYWSnRkQRZcGy1AVY+LBYshWc/vl6j4V4i0npfqzqOTUghwvof2WXbgYbAbVaOJUQNHYOgFflrcn9eNj9Bz8bqtKXl4uEypBfZIOgipFtAHhZ7HT7yZUBLyoKuXfX3V8H9WQ9aUPxAUFSvC3iqJlyBUT6e3m4diDvjOG/VgR7JM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764607976; c=relaxed/simple;
-	bh=1I4rZd/Enhc7yFBuz5wiHn8wsU6msY7LSHTio/q959w=;
+	s=arc-20240116; t=1764608090; c=relaxed/simple;
+	bh=HmNbPdHfg32qPjQYg000txtVCqQmaZpnDtySj5nLJ2k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=hfxOCnT0HDlGJo8Sx6iT0LSZPBllBLA1uFANfdhbPpCzo7U0Ckq88ADcuqv1A7pSxX9mVuOVuCwciNBPIp39qUO92wT8WuJjMh+IP0blqMwVwY7T5U6nc7mPgnSd+yoFuK/6XXzucueJ4DtSwP+MAfVqXPl/GTJAoWGeiIL5h4E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=R3aL+RUr; arc=fail smtp.client-ip=52.101.72.33
+	 Content-Disposition:In-Reply-To:MIME-Version; b=SENMefHjkqr5KmUrRGWxWzUgGX1WQlrrftH9Q5r1z7yr6aJ48VQiUXk1Dijo3GL79pwkJxISs99+arKA1tNfaspNGe5NLq2chiy2B0B6DiiMnf4v8iTEgEud32JM7aMKIKsI5X+j5ZMkroOhtbeU3E5dgbfg6BOYQtkQjIXxON8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=INOxACip; arc=fail smtp.client-ip=52.101.72.23
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="R3aL+RUr"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="INOxACip"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KPdpOeqCsrO8c86HNHj607ceMqo8XPQAcISF7Ci7o6gD6oowJD2hFeY9ZPfK9wbOgXIXxbn3hpy8mEpYB+jnTuuPJ5UzBstQfM7EDRqSM8bQXC2as/iAcaYeZVynSQV3HWOEnoeuP8rROv4m3b6xH3sV/IWlAYLwEsDkXIsmBQipFH6BVvb9R4Y2fjGK6NlCd9bMkFEGogyQZbtHCyhZmKTLMKAuG6FwiNapc9nMlBSJ2mlDA4Vc9RnhP8Zes9XYRmkhzB/mpZZeGh6mvkSagCq6k8pBbUe7oYCAWoG5ME8JKF7UtaYXZyCyA6qNFesvCDHq0nBLyxNJ/xLw1AZXpQ==
+ b=ZgUCrLSYRlFt7J+xNhny2vKZzzeHBNsFLTkfyoLRS3Q32bv0ed7ezFegEQm8RoZqKE9zp40tSPyRcczq7gwGbx6IApBILxPsbVeCXcnsrR32KaclGQw00ZtoUbfy7NRd7Y7ltYO6ouGku66yX+V3RdhtE7s6LN9eA+F4KYoS4O1ovmfyj0UwFHzRdOdqMAL6xNRnRe7Fo3Mrqw04akCaeAHtfnkR6HrBxrlGmaj9Cv5Zc5TRTH6qkzgkUC7KqrQ6lAVzpnykYkLuErmzpHZnbyD9+VyqEhxUSohjMvrelUzCrzmYvCoDK2W/dQ2JpzbuherNr+4XJxg6ouLefxqHoA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=l58dffqnoPz3cOiK1sf14CjfiSUwOcau9Xv/PpLgrXg=;
- b=X0MlfzKCjyD79OHCwLN9Ab/BImQnMlSbtmLgKV2MJ9Xt0CVs5lzxGoq4JyKZXOGwZ3veTZiu/vHYaeeGRaNDBFWf0hkNe+3Tdktg1KI8Rbvv1hL69tDpfWhwktCB1dfZxgQo7viRqXUvjWsF0tA+NU3+/qVZRHeckJr4r+6wU0uOapPmrVmZpBAy3h+CLZ00OS8DA38OKpgOAaPWyN6CpGPZbJqGld4gi1SfOFmnhE6FltBDSJ0TrqLBXqUuZGULDx3NT0sylJ5obJts8p632f1Cei2mL4KAHx+YJRtAwotdu9Si4XzOqPdvxIVJgEwIE/NgGSZaT2nV6oXSHq12tw==
+ bh=0JeBECU8nswMipqWqN6UcFTyGbkU37Lwfu5LhzgslvY=;
+ b=llNnbfOFNVUYj+7XpYnTT4bhzdTHXU+wkPwW4bLtFAB/keIIX6epUVQxlAl34FmTHVyuas8MHwTLzansS+yVnzjM0sRmOO9EwkWTb4PWU6neVEwb3B0iSfux56V+P+GTMDGIaNalnjh3w2SFW2HF5U7szwh0iJ6B7sx7Y0Sfu7uxnt/YB/+0DDl2WTfekPqJrAYDuGlIFwIYiV+thsrlc+KTf7KwlpPs6oo95LjzQ7by5NLSF3FAqH0xDNIzgYOKzY9TRCLhbWw4fcWwTnb7IK9kH3/aw4yHrbGZ7p0WEVBYWK1IPyQV8QFmGUKq3kaVsOKZmsr7LTKjoEnBxkxn8Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=l58dffqnoPz3cOiK1sf14CjfiSUwOcau9Xv/PpLgrXg=;
- b=R3aL+RUrpCwsvSr4ysrPPKxtf3h/Vz8Q2NpYZdINz/5iY5Q758qn4iszjSoc0nukaT7C/qYW3tHYGMTuSQYsMsa0kmaPZn4O38FeN9zI+NeZSbltgtX1GDu/jwIGVrL1N7TWakh5xTm4RiiFZsUFP/GGSbU/ZkVsNiORC32KEIzHuI3tsJjVWrqUl9NVBstEG+fc9ZRKfToNt7THMCBXckAXgK3OikAzDhbLmBn/Q1qq1fFlzGU3FDvjvEPT57PYgrBZiKtVrcm6TgyfIyz1u9s5m0IjAybiRdWVmVGZFb2Wxs6mBXBWgMj2mhnv6CMSt7esQQCcqzfzk2ahXuCkNQ==
+ bh=0JeBECU8nswMipqWqN6UcFTyGbkU37Lwfu5LhzgslvY=;
+ b=INOxACipYxelVgOgwc8GPsnfxCCLfTPMisJ4peXNGyaCBq4rpGHmMNZIBl8Lbs/vt5h3da38eNCMkqWRE/zdHr4Q43CcYSnoW+3s+50sEbuWw1kVAD0gzWKTPkfo/u/mkbus6t59RbF+rZfXQykpZ3JqmOxkcDxJVwlrfzLsH7dIO8klPyOUTh+vkpvNwMnHaMd5CHbYep0PZpGMkKJsFaF6sG7FjtA3R/QtnxOwKkFiLsrcuRVlOUvHBR6/1aEblTxIXtASwKdiUrtq2AlQ9gIhB+pElaUw8W9ty8eBuPhcSUInkcxlg62ApG0NjBO4lbYcCr1M8P9Xkbqmf08Aow==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
- by AS8PR04MB8279.eurprd04.prod.outlook.com (2603:10a6:20b:3f8::18) with
+ by VI0PR04MB11747.eurprd04.prod.outlook.com (2603:10a6:800:2ee::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Mon, 1 Dec
- 2025 16:52:49 +0000
+ 2025 16:54:45 +0000
 Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
  ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
  ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9366.012; Mon, 1 Dec 2025
- 16:52:48 +0000
-Date: Mon, 1 Dec 2025 11:52:38 -0500
+ 16:54:44 +0000
+Date: Mon, 1 Dec 2025 11:54:36 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: maudspierings@gocontroll.com
-Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, dri-devel@lists.freedesktop.org,
-	linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v6 1/4] dt-bindings: backlight: Add max25014 support
-Message-ID: <aS3H1qzSMKHamqpP@lizhi-Precision-Tower-5810>
-References: <20251201-max25014-v6-0-88e3ac8112ff@gocontroll.com>
- <20251201-max25014-v6-1-88e3ac8112ff@gocontroll.com>
+To: Chancel Liu <chancel.liu@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] arm64: dts: imx93-14x14-evk: Add bt-sco sound card
+ support
+Message-ID: <aS3ITHKoLF0ecw2o@lizhi-Precision-Tower-5810>
+References: <20251201065844.3823323-1-chancel.liu@nxp.com>
+ <20251201065844.3823323-2-chancel.liu@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251201-max25014-v6-1-88e3ac8112ff@gocontroll.com>
-X-ClientProxiedBy: PH8PR02CA0015.namprd02.prod.outlook.com
- (2603:10b6:510:2d0::7) To DU2PR04MB8951.eurprd04.prod.outlook.com
+In-Reply-To: <20251201065844.3823323-2-chancel.liu@nxp.com>
+X-ClientProxiedBy: SJ2PR07CA0009.namprd07.prod.outlook.com
+ (2603:10b6:a03:505::6) To DU2PR04MB8951.eurprd04.prod.outlook.com
  (2603:10a6:10:2e2::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -75,243 +66,169 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|AS8PR04MB8279:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2d19c844-45d3-4f5a-fd1b-08de30fa0f23
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|VI0PR04MB11747:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0f9e2276-52e4-493d-1f4c-08de30fa541a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|7416014|52116014|376014|1800799024|38350700014|7053199007;
+	BCL:0;ARA:13230040|7416014|52116014|1800799024|376014|19092799006|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?x6suohBV+EXou57H3PUnLwyDDUbOVQ9pBOq+mTasHdq7hlY9C5Ue2cKEpPkE?=
- =?us-ascii?Q?t6qswluzbmBiAZ2v/D2qJpGWo0hhAIlM+7sgmjiKavYKXUO27UBLYVWlNaAI?=
- =?us-ascii?Q?VJEtdM13CqOdC+4vXMNlGmq1II0C/bn2YDcxL3gNTGPdAofK2G4Hw7LXPgy8?=
- =?us-ascii?Q?uQVd4db/xB0NAymP2gebPxu0EWf1kE4nLtjGmQUD6oM66I1m+sEug9IXUTo9?=
- =?us-ascii?Q?pmVrjO/kXhoyyAXA/oRdOelWrsNxAPu8sr2qUdPI7jbHdtO9UER6VXcY2wlX?=
- =?us-ascii?Q?/YKxDpZJ4AoEQetf9yvozwJpcgViTW1Gf4bGCay4xyPHc8irb4BWaQhpkJhE?=
- =?us-ascii?Q?8De1Qgi+Xye8soQb+8+0vg/IYe8LgjiR1XWujtLdSKpLGPjEBZQ1tIl4v4FA?=
- =?us-ascii?Q?AYa1hpe5B2+R6gsmOZur21RyO4iniaa3i29gsUH3bVychqqEBdmnf3sDVfNM?=
- =?us-ascii?Q?wkGQ+jr8i45pQZLcHvLHrHOPC4toW1uspb/UA6b9+nhaRMLhg2s0s1RsC+j7?=
- =?us-ascii?Q?CHZ4Wj6rrpFnaVpDldoU4tZ5p4bQ/3BWXzGpmLI7gFhdq9NMIXk9NnLgxirz?=
- =?us-ascii?Q?izEpxG0w5MKy3/s2A/W7b5kCguV4pwvdaGoVSRAZTjzRT/2c8w3hl8JZYf45?=
- =?us-ascii?Q?+kQTXZD/z2oQWI3yH/+2W7LiMmHMs2HCJI75WuCEguE3KM1E8bB7gAotXiOU?=
- =?us-ascii?Q?hP52GcHxCnYv7DCOW25OIpqwTBOy2mIUuc0smdbt8W9L7clb9sy+LWwS+xmk?=
- =?us-ascii?Q?LIEidtFiDJW5CS6VG9BVXdgPVfcOob+HO0R+3KIZBXp23M52sdNAtFVc3XMW?=
- =?us-ascii?Q?gOovD36fJAt6bC2x4UPjzq1uinPQuxEJd0Ymjy/OvNGImkdGy4SxyVlpmuui?=
- =?us-ascii?Q?Z9AFnQBoAUOwN6CUPsRCHTWGOrGxVOD2+uFJVuX04OFpTp1+Wl49ESypf+iy?=
- =?us-ascii?Q?1d6NCk/53WxQWUGgUxu71jlULZiTcyK/PT1VmeJL8RQ4XD7ygEM8/r8YaMHY?=
- =?us-ascii?Q?pRCKphQlboCavDolngLUwqVZ1agjDpFjI4pTkqLA/wOqiQ5kc38Z9wFqlZOR?=
- =?us-ascii?Q?A1ju9aIran5Uro7tpmN5RfytitiqjbrdPAX35wsn2fIViy419Ufs/aleS5Gg?=
- =?us-ascii?Q?rCaNsL5DCMp79IMjz7GwrM83mDhc0JMGR+KqIcItatT/sJVC35rSFnkqkGGW?=
- =?us-ascii?Q?TuGW5vZVaz83v7OEhVtRERqDn8TQ/MF3S/KLzR4jQt9t4R4BMA2rawviRld6?=
- =?us-ascii?Q?9EYhPaPRZp5Wwofm4AwEjxr8YWJkFv2eIvHd7BXdLrfxrhCyIwaarhsKElJ/?=
- =?us-ascii?Q?oDJxDIDheaIZ17VjGIbvolrE2pi2E0PaanxiEVBA6+w7Y8djwzks2T2a3b5B?=
- =?us-ascii?Q?AH6CyxFUGJoyTHIUUs6+tnz90EAlqEYK7n8kaWXARdqQJFsIdTDLeLhgDCuN?=
- =?us-ascii?Q?gfiA6ROf9WMLu7TwBKYQHEtshjiaJwFnP8S2MbvZYsHSizH/b7e4sg=3D=3D?=
+	=?us-ascii?Q?FePCNsdbn+AbChJFWmZz0he4mxxxUqIY6hNlV90NzR4gGcpQVwkNo8jmJjXu?=
+ =?us-ascii?Q?tK4vGciVIJSBuFUxA/juRfwnEiHNA8JECuMUm4G2+7NxxvEd13vQuGhJbE90?=
+ =?us-ascii?Q?+JMXEOEKUkSbL660LGgb7KvbFkEensuNeYlq0RI7ox0bNm5QBsvSr0pktUni?=
+ =?us-ascii?Q?BrGWryX9FEVHrZ2ej6I6bfaQYM58bhhrsNX6d4I/ifX1uOyc3c+y7oVLSbCF?=
+ =?us-ascii?Q?I5kSIcTjhDKRGhH+Z8dR1M9FbMLQxQ8gIeVizXPPW5WzC1dBid2QgraWlrH8?=
+ =?us-ascii?Q?a+J4hafRp82SNgzeFAAnw6Vs/inCuSpz5UlgRV2hfnJ4XdVwKL0ACibCHFBw?=
+ =?us-ascii?Q?ZJvTf/mf4hyjJMoGAfxRg3Imnc+m18m+5FYCSJBZ+z1WpBX7K5KumB27yQNp?=
+ =?us-ascii?Q?WjwXxCpF5T/kL6Vd9XPgrteadHi06WkeYGDm7bN4hs5ToJFrqB6uaXzWBP2/?=
+ =?us-ascii?Q?De+KPdRfmZYKqRvumMs7PtWgKnshpH+LlaANij8P5yDD63W0QGLewDOEhLTR?=
+ =?us-ascii?Q?tOVvgxutXAJjsoWXxpJrjZYP4zi+fMsr92B2y/DqALEoEJCvCn/Y02AUu3LS?=
+ =?us-ascii?Q?IcEYlsDj+N6NQFbfOwLiIfz5mJyRqyXZXDwphTVEoe1PoQNr27lY6cUsee17?=
+ =?us-ascii?Q?E5hyVlyboIUsmFPepXhm1DVkiuO0K5r6iMWmAtIfZXsUHpgV7jvkcAtTPZno?=
+ =?us-ascii?Q?mSYgEuf/PRvXfoy93CypazfrB+F7/Uhf7rSTC7xtAS6ZeUlsG8wNvQ792ttU?=
+ =?us-ascii?Q?AL2QukfTGQCeU2YXS/fmetQrkWUmXlPovHwkxDm4SuTwl508qDl1Fm4LSlJq?=
+ =?us-ascii?Q?DeSlbVF+HeY1r10FS0VIhtdliUTw1m7M/EIYQxAC+UMXQwuwSBw6uwNbxerk?=
+ =?us-ascii?Q?VPMVoYo4rHxXO6fqVxLKIRYNjplxPCFmixP4X4TzKcrQU2Q1N5TyHaXj/xnR?=
+ =?us-ascii?Q?Afv1sOh7Tudyz1crPYLsHFA1s6SYoVWO5IWHTVgDKnGcnKFRSm9LqbEpb3i0?=
+ =?us-ascii?Q?HGJKK5B8lHzkSzcH/IlNKiVGt5jp1iex4amjkBmjv2PEa0kcuXVoyqLHcKTs?=
+ =?us-ascii?Q?RdUkdYyiFSJ0yrglBp3qwmeOOOQqAMK1qqc8qJJvktvGw9KwH0Npftu4IW6y?=
+ =?us-ascii?Q?2XvkLxDyjDVeVYxsiAFW0Tajs0i2Wu8qBLFITTC8gOCFcHsd6RwFuPCeK9yE?=
+ =?us-ascii?Q?L/eVdhp6Nh88XHFY+RGl/gTFM31yeUyGo4N+vXi5hp4lUq+BkxzR8XWQPriS?=
+ =?us-ascii?Q?5xqnSLxPtlR4/uZuTW+dpJQ6aVzLnFHMphCIQk/hjCpnDm71Q/l2uLGU+7Ug?=
+ =?us-ascii?Q?WV4lQEhhEScg9wwb4l9t7elqIppEj1lYgY3if6uVqGqh5DNSi3VJhF26me0w?=
+ =?us-ascii?Q?hLwzvKiKDQlQoB+QrnAj8OlqypWWXMo3BhZ9e1tZIedRN9Bm88TfcP6sLsRM?=
+ =?us-ascii?Q?zhrAuyP7e/G61fPkY8n3C84zvZ/LzE5haWBFu2pvbiDh3ZmPAPYSPgupIHoI?=
+ =?us-ascii?Q?3f1EdfsC5X+K0904eRw3uGfF5H+x2rdypZoo?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(7416014)(52116014)(376014)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(1800799024)(376014)(19092799006)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?P9AqLSRMFR48W2TKbZgd2TZmXTBsJP0/ypP9pHJLicknagJ7BV9D6vEuLqoV?=
- =?us-ascii?Q?H4yv1kN0Nyg98LNfEtLQdZ8rT7afWxRybOHYlkrMIrvN7PCIBsgj8CAKNDyC?=
- =?us-ascii?Q?v/FtWNft/jym0+qWRwJcOusYJQePTwUWwYizWGH44iAHw8Xmh90wW6PlkWhg?=
- =?us-ascii?Q?iRjqkY/benNt1CT5owkn87bTk42D3FpVjgzj3GQmLoNmwJZhfu34VfzPm+KC?=
- =?us-ascii?Q?1CCHvfk+8J/IaY7n8wRDaFwLj9OxNo2uBYlw0aCn2Aijxzyy/mEvefoU61Iq?=
- =?us-ascii?Q?uGBO+3RdS1alDhcTGBG9XwGYG+YeR131rRXJLOAljFwAMFTDrG8nCGICkYRj?=
- =?us-ascii?Q?0ulHaeVpfvw7y95xfZMK7Y5vGXIRNC9CGy1qskYpba8qIGdHF1cJo1zBGFV1?=
- =?us-ascii?Q?Bwgbix5s8Gui3aN70A5N552DtSnYFUlmOQzDbaPcuiYz0l44iE3OB/WuUixp?=
- =?us-ascii?Q?yp1B2rD9Cv160HsWV+t5BUnx8fNV6pv/6tS9M2X0Ozd8pKc8j4SwqgZIrw1R?=
- =?us-ascii?Q?+SAZKIFKjHeUplMQ5eeqO1XhxVEfYkLg2ZFvthPNKUs4xMiXMKm14WGYvxgx?=
- =?us-ascii?Q?mBp354Y2BaijkTNvhHzWHFwoZcIhvq1sVAuAIXYmUi/HYk1vM9rKr3WD81j5?=
- =?us-ascii?Q?QPDoUVmg+yxgxf+0FUBA2pmNmeVHbXQGnwZsOXJbnQd4Kje31jX/sE6nEf7/?=
- =?us-ascii?Q?ZjjhxeumIO+L5psc4Pih5Y4MCvYDC8H4rtMCWzJKk32Y9WQATmm9B5Hkilj0?=
- =?us-ascii?Q?4nL4RRrGxjGMjnGJAZzsL5tjD0PqETmTluy5nqMvzzzE93agWXe1j5D4tJek?=
- =?us-ascii?Q?56OJUZDwmC7E/kJBom9Kn2rFerH0lOeNOKvKQnv9yQsYGxrosWbjaFryRN3f?=
- =?us-ascii?Q?RXqg1imHe657iu/NWLjHiUhmMhvOo/mPrMzGRT/W4qAaVEfEnMMHYiugljup?=
- =?us-ascii?Q?8h+88+WxxGU0gpVXhRsFXm3Pi4yvsyg1oMW4MW2gmlbZh5Ov3FKUY19hUEiv?=
- =?us-ascii?Q?M6XqXMk6PT6u1XHyF42DSG3ZtkatsLZ7KdHGE1IsVHjzMqRqbiP/MRCh1jCH?=
- =?us-ascii?Q?urOplsYObtLQqxH0YgYxNFNbUQv6RvfQ8y+RkpByn+sJwlkAYzAs87f+jhrV?=
- =?us-ascii?Q?tn0FCadf/3cbvSENgnGzv1r6e40F3LKNwsLA+iYbNiIRPlVsStOxb7YWEXQS?=
- =?us-ascii?Q?bX952t5AWmP3/4aVyoMHkJYnNJff0Efh7M9k8/wn44BQ/xkA/EtN2kMlEr0n?=
- =?us-ascii?Q?r+JYdi5IABTvN1sN5AFwheIbdI1xM9SZUPWfK0NPzerLcNwkLToZJqX7HGAZ?=
- =?us-ascii?Q?NKpxIqJNWTbx8thLK/hubJVEgkWJD1EL4g5dLFi0HDEvQom7QVPUGixGMFZd?=
- =?us-ascii?Q?8eT5eYbsOAfqthK47y5P+VSNn/W4RdT0tBc87Tfovva9uQYmGwgTRLVzRhXC?=
- =?us-ascii?Q?NhGkU18R325ziA7fOnNjzlNrQsoUfaHprTXG4noLevipx5n0XpUOBt8vzOcO?=
- =?us-ascii?Q?qvIvWJCmxPQspbuROUBCuURfA/TY8h6JRTvCOBeMvCRH6XjaRNNLqNTBxXJR?=
- =?us-ascii?Q?UfIdu1jXu53GVSn0SlQ=3D?=
+	=?us-ascii?Q?YHREqL+vhdCR8KleBCqaqhfkCDUuZiTP4cVkN9F0mVhngxMwhPme9fiARvrw?=
+ =?us-ascii?Q?e/chHj1P2n4TkTX3aA+OnbE0NGPGc0/nEy+sBDeX6hK+qe2vpE+MzSGWyZnS?=
+ =?us-ascii?Q?PyagE8BONBknCLL13rq1o3tdcV5vcl+/0ah0SJQH7LYrzZHMMWODlHn8MW6M?=
+ =?us-ascii?Q?5VNty03LLN6E94OkRjZd85zK4cNi2h4tzGxRkBA5yXOfIa2CXJ3pvBqHM73v?=
+ =?us-ascii?Q?ra+/jd/L5haq3ccKKi9df6krZza9e46SfVqi3GlmySI9zh0HJiWLpOe8FKuC?=
+ =?us-ascii?Q?p0Y2ftYHeLQ0+nC91C1cl5u/05tRaFq61j6DRDeoJUPBDNnwkXJiBWOA7wsD?=
+ =?us-ascii?Q?gL8ZFYAJHXRec533kA13giXiYoXe2WlahqF97wjTJlh8SfjuHYMnmYp6AiQG?=
+ =?us-ascii?Q?3/IRn8kwdd6hp6igCB9+5ZXxQ7tFSQR8A2xvUYlgQd/mTqpedhRfL36kwY2F?=
+ =?us-ascii?Q?jtUAYSMt5CNoPudXXR/phvmNhiIGRH2CKVdhb7x9o6YvC1tm7FIzxGrQq9Rl?=
+ =?us-ascii?Q?G8po5EJ0Cih9afI66MK1k/RKi6LXqV0xAC1z3Ywh7m6dlf4XOWB8jN3+/tzY?=
+ =?us-ascii?Q?hW0b+1toFwC661IEq9qLOB8g7QBhybNIJqYJA+z1i5ROP80RsCaD4enBj/w0?=
+ =?us-ascii?Q?LdZU0lnGVFzObO7cWOKySIRJeEUOaq3xYY9/zMlXBTnVbatgeHO7qNnWNnex?=
+ =?us-ascii?Q?BIDBOg+6XX19uF+ixo/wlHr25mAYcKNVJGZz2Y0+8F0yXR5wh8LGehxN32wq?=
+ =?us-ascii?Q?T1E0lsQuXeUJY3BvngvhwLYzKE7YrP6jPeVyi/CF2djIvqNUAZcVQbo8D9Vy?=
+ =?us-ascii?Q?62V+i51H8nQ4du60ooEqlwc0W6jztgtK4L72K+FCxTJzqfLyTpLsRAqIpl9c?=
+ =?us-ascii?Q?2mXCoweFI08rReft5N828DML5bseVYUJ/yV32QR3pXk7IVf+Y3CkUVVW1WTC?=
+ =?us-ascii?Q?JtVlOvIJS39YRQYk40wf5AIYxi2bPds6Bry/vLZemVXa8805xRgZU/zPD8V9?=
+ =?us-ascii?Q?DIXco+gjhXowpuZkMupbjAcouFHz2bmYFEhjNOv068i0Z3MqZhTfC6ReYIKD?=
+ =?us-ascii?Q?86VBA7xqk2DBeRivClIZeA4uJRQs8tb6jZkiVKRijvxgzQbnH0JFKfNt76Ga?=
+ =?us-ascii?Q?2C02y/V6QM4adkRYOxHNH92SysP7Y5xaM8JA0EAW64ZBLoH74kLiJvQVmMWl?=
+ =?us-ascii?Q?lWdR4RsTmAgHnS4hkdWlXnxf+mN99rDCobdtOjYoV0HjYu/4jz8r+/Hyv5B+?=
+ =?us-ascii?Q?JV9ORPBmYPQVjQd7xYgtpRl923N13I13QDYDJ1EFGvx+nmcYO2+5jWYkBRmw?=
+ =?us-ascii?Q?S9H7U5h52ySF+T2AirWUpOB4me+ohEKhzq/Rlu1oQXincMHzwpfFckj0QqJ9?=
+ =?us-ascii?Q?/Ze8H3fM1f09zTr7Dmg9yuQ7B5BLplXDntNeIMa9qps931wJuZrXNFhuODVT?=
+ =?us-ascii?Q?sBrG1SjNf0impT/R7R9BTJBQYtcjTeUdwM3RbftLl2D4aKXtbi70Njg9ESxI?=
+ =?us-ascii?Q?s//mYuiIRZ57yuHTDixFL7vq1pFQuGwiRBTjfVSat5fRRN1KsyzmgYdFyPxg?=
+ =?us-ascii?Q?2U7uFGr0vw+pdAj0cwA=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d19c844-45d3-4f5a-fd1b-08de30fa0f23
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0f9e2276-52e4-493d-1f4c-08de30fa541a
 X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2025 16:52:48.8395
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2025 16:54:44.6804
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zkvPhN+ZO4DM3ufm79Im18GRam+/hXLyThBb2JIjYSuO9d3WtK7JTaOfite01DlyKpzi+/z+F9SBEnbj5cxSkQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8279
+X-MS-Exchange-CrossTenant-UserPrincipalName: rmDcdDvjPe4r6EYmLKib3F/dhQXx8jW+qjMzfiWG9ahaGheyq+VO0qnQFBktpoUIrkaNWJ7Yo4XxnKytOwGEIg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11747
 
-On Mon, Dec 01, 2025 at 12:53:20PM +0100, Maud Spierings via B4 Relay wrote:
-> From: Maud Spierings <maudspierings@gocontroll.com>
+On Mon, Dec 01, 2025 at 03:58:43PM +0900, Chancel Liu wrote:
+> Add bt-sco sound card, which is used by BT HFP case.
+> It supports wb profile as default.
 >
-> The Maxim MAX25014 is a 4-channel automotive grade backlight driver IC
-> with integrated boost controller.
->
-> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
->
+> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
 > ---
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+>  .../boot/dts/freescale/imx93-14x14-evk.dts    | 43 +++++++++++++++++++
+>  1 file changed, 43 insertions(+)
 >
-> In the current implementation the control registers for channel 1,
-> control all channels. So only one led subnode with led-sources is
-> supported right now. If at some point the driver functionality is
-> expanded the bindings can be easily extended with it.
-> ---
->  .../bindings/leds/backlight/maxim,max25014.yaml    | 107 +++++++++++++++++++++
->  MAINTAINERS                                        |   5 +
->  2 files changed, 112 insertions(+)
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts b/arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts
+> index f9eebd27d640..e47fee24471a 100644
+> --- a/arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts
+> @@ -27,6 +27,11 @@ aliases {
+>  		serial0 = &lpuart1;
+>  	};
 >
-> diff --git a/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml b/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
-> new file mode 100644
-> index 000000000000..e83723224b07
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
-> @@ -0,0 +1,107 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/leds/backlight/maxim,max25014.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +	bt_sco_codec: bt-sco-codec {
+> +		compatible = "linux,bt-sco";
+> +		#sound-dai-cells = <1>;
+> +	};
 > +
-> +title: Maxim max25014 backlight controller
-> +
-> +maintainers:
-> +  - Maud Spierings <maudspierings@gocontroll.com>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - maxim,max25014
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  "#address-cells":
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    const: 0
-> +
-> +  enable-gpios:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  power-supply:
-> +    description: Regulator which controls the boost converter input rail.
-> +
-> +  pwms:
-> +    maxItems: 1
-> +
-> +  maxim,iset:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    maximum: 15
-> +    default: 11
-> +    description:
-> +      Value of the ISET field in the ISET register. This controls the current
-> +      scale of the outputs, a higher number means more current.
-> +
-> +  led@0:
-
-define whole binding, allow 0-3. binding is not related with driver's
-implement.
-
-it'd better put unders leds.
-
-
-> +    type: object
-> +    description: Properties for a string of connected LEDs.
-> +    $ref: common.yaml#
-> +
-> +    properties:
-> +      reg:
-> +        const: 0
-> +
-> +      led-sources:
-> +        allOf:
-> +          - minItems: 1
-> +            maxItems: 4
-> +            items:
-> +              minimum: 0
-> +              maximum: 3
-> +            default: [0, 1, 2, 3]
-> +
-> +      default-brightness:
-> +        minimum: 0
-> +        maximum: 100
-> +        default: 50
-> +
-> +    required:
-> +      - reg
-> +
-> +    additionalProperties: false
-
-unevaluatedProperties: false because ref to common.yaml
-
-Frank
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        backlight@6f {
-> +            compatible = "maxim,max25014";
-> +            reg = <0x6f>;
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +            enable-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
-> +            interrupt-parent = <&gpio1>;
-> +            interrupts = <2 IRQ_TYPE_EDGE_FALLING>;
-> +            power-supply = <&reg_backlight>;
-> +            pwms = <&pwm1>;
-> +            maxim,iset = <7>;
-> +
-> +            led@0 {
-> +                reg = <0>;
-> +                led-sources = <0 1 2 3>;
-> +                default-brightness = <50>;
-> +            };
-> +        };
-> +    };
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 58c7e3f678d8..606ce086f758 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -15261,6 +15261,11 @@ F:	Documentation/userspace-api/media/drivers/max2175.rst
->  F:	drivers/media/i2c/max2175*
->  F:	include/uapi/linux/max2175.h
+>  	chosen {
+>  		stdout-path = &lpuart1;
+>  	};
+> @@ -168,6 +173,25 @@ reg_vref_1v8: regulator-adc-vref {
+>  		regulator-max-microvolt = <1800000>;
+>  	};
 >
-> +MAX25014 BACKLIGHT DRIVER
-> +M:	Maud Spierings <maudspierings@gocontroll.com>
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/leds/backlight/maxim,max25014.yaml
+> +	sound-bt-sco {
+> +		compatible = "simple-audio-card";
+> +		simple-audio-card,name = "bt-sco-audio";
+> +		simple-audio-card,format = "dsp_a";
+> +		simple-audio-card,bitclock-inversion;
+> +		simple-audio-card,frame-master = <&btcpu>;
+> +		simple-audio-card,bitclock-master = <&btcpu>;
 > +
->  MAX31335 RTC DRIVER
->  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
->  L:	linux-rtc@vger.kernel.org
+> +		simple-audio-card,codec {
+> +			sound-dai = <&bt_sco_codec 1>;
+> +		};
+> +
+> +		btcpu: simple-audio-card,cpu {
+> +			sound-dai = <&sai1>;
+> +			dai-tdm-slot-num = <2>;
+> +			dai-tdm-slot-width = <16>;
+> +		};
+> +	};
+> +
+>  	usdhc3_pwrseq: usdhc3_pwrseq {
+>  		compatible = "mmc-pwrseq-simple";
+>  		reset-gpios = <&pcal6524 12 GPIO_ACTIVE_LOW>;
+> @@ -371,6 +395,16 @@ &mu2 {
+>  	status = "okay";
+>  };
 >
+> +&sai1 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_sai1>;
+> +	assigned-clocks = <&clk IMX93_CLK_SAI1>;
+> +	assigned-clock-parents = <&clk IMX93_CLK_AUDIO_PLL>;
+> +	assigned-clock-rates = <12288000>;
+> +	fsl,sai-mclk-direction-output;
+> +	status = "okay";
+> +};
+> +
+>  &usbotg1 {
+>  	dr_mode = "otg";
+>  	hnp-disable;
+> @@ -568,6 +602,15 @@ MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x31e
+>  		>;
+>  	};
+>
+> +	pinctrl_sai1: sai1grp {
+> +		fsl,pins = <
+> +			MX93_PAD_SAI1_TXC__SAI1_TX_BCLK		0x31e
+> +			MX93_PAD_SAI1_TXFS__SAI1_TX_SYNC	0x31e
+> +			MX93_PAD_SAI1_TXD0__SAI1_TX_DATA00	0x31e
+> +			MX93_PAD_SAI1_RXD0__SAI1_RX_DATA00	0x31e
+> +		>;
+> +	};
+> +
+>  	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
+>  		fsl,pins = <
+>  			MX93_PAD_SD2_CD_B__GPIO3_IO00		0x31e
 > --
-> 2.52.0
->
+> 2.50.1
 >
