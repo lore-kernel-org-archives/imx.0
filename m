@@ -1,26 +1,26 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5B2337699
-	for <imx@lists.linux.dev>; Mon,  1 Dec 2025 17:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75921337BB0
+	for <imx@lists.linux.dev>; Mon,  1 Dec 2025 17:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764609139; cv=none; b=R38byx5B3i4HuyIKtTQOgPnMWKfq3LU2S89VMkC0dPUrdQSH3KfzgDF/kRhxY4s9hkvg1x4Wor2GL5R89IMmiuI/FZO3otgIqzHgjmcBYj4A2k/4GLdmOaZyPexSHSGbXckvGJKVX05xakvwi+MpcdGKluoZmRMtaf9eSHKVQz0=
+	t=1764609370; cv=none; b=vGK6+o9GIv7GYZY5nXga2sM6604Q+Spy5S8iBwgWyZtGbvhxUE0//f6wwCfacHgh37M6PMinjchfgdYjguJoOaVno1iEMN5C3EFpR07wIR74siBjTGOozqRshnZ0ELnzclNLyayUkZiTIUU2qwXK4DN3F3A+y4imHQe5YejIVx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764609139; c=relaxed/simple;
-	bh=e8qpdiCrIoL30n3IAsDaOKDW8BKByqih+SzRyU9v5kw=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=faKglG5xAeqlYAZNX4NNmib+apTod5ling+R3gpYayh6gujtSM/GvT4VfNjyy13dKK21gr0h62HYXrY7VMhnoizZ3f5N+njUu7g72K8x8wDdcyif/UkT0+Pc1QDoAHYXbd6+AUWIQmazwU2qhJ8nHFWYdipbiDn9fylLUwZbvK0=
+	s=arc-20240116; t=1764609370; c=relaxed/simple;
+	bh=dPHueffEzGPPZcyl+tNZegios5NSbcB5CGGZ2wb9slw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=A7kqrdoWWbO6J3Doqmoeu5MIN8lu2d4x6KTAMHao4AtK5CS9X8hyOY2O9lo7WURXgnxbrWjS6oMp42rj5jg4PqMsMgMkpYKtnqySjpDInYv7+IblneLhfxioabT7EtFi7m7qNjKg1xLh1j1NyKN+5GRxXrha9T3qMj2liMQ0WDs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vQ7RX-0002dz-AR; Mon, 01 Dec 2025 18:12:07 +0100
+	id 1vQ7Uw-0003DM-Ii; Mon, 01 Dec 2025 18:15:38 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Subject: [PATCH 0/3] i.MX91/93 BLK-CTRL improvements
-Date: Mon, 01 Dec 2025 18:12:04 +0100
-Message-Id: <20251201-v6-18-topic-imx93-blkctrl-v1-0-b57a72e60105@pengutronix.de>
+Subject: [PATCH v6 0/3] Add i.MX91/93 parallel display support
+Date: Mon, 01 Dec 2025 18:15:19 +0100
+Message-Id: <20251201-v6-18-topic-imx93-parallel-display-v6-0-7b056e1e5b1e@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -29,17 +29,25 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGTMLWkC/x3MQQqDMBBA0avIrB3IjLa1XkVcaDK2Q62GREQI3
- t3g8i3+TxAlqERoiwRBdo26LhlUFmC/w/IRVJcNbPhBbAj3J1KD2+rVov6Pd4Xj/LNbmLGqidl
- ML9PUDnLvg0x63O+uP88LNDKcwWsAAAA=
-X-Change-ID: 20251201-v6-18-topic-imx93-blkctrl-341220f7084d
-To: Ulf Hansson <ulf.hansson@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
+X-B4-Tracking: v=1; b=H4sIACfNLWkC/x3NwQqEIBCA4VeJOTeQWpK9SnRwbdwGrEQjWqJ3T
+ /b4Xf7/hkyJKcNQ3ZDo5Mz7VqDrCtxity8hz8UgG9kJ2Qg8NYoejz2yQ14vozDaZEOggDPnGOw
+ PTeeNVO3Ha+eghGIiz9d/Mk7P8wIj4FDDdAAAAA==
+X-Change-ID: 20251201-v6-18-topic-imx93-parallel-display-95f9234bf6cc
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+ Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Marco Felsch <m.felsch@pengutronix.de>
+ dri-devel@lists.freedesktop.org, Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
 X-SA-Exim-Mail-From: m.felsch@pengutronix.de
@@ -48,34 +56,51 @@ X-PTX-Original-Recipient: imx@lists.linux.dev
 
 Hi,
 
-there were several approaches to bring the sub-devices population
-mainline [1,2] but non of them made it upstream. Both approaches were
-part of either the i.MX93 LVDS or MIPI-CSI enablement.
+this patchset adds the driver, dt-bindings and dt integration required
+to drive a parallel display on the i.MX93.
 
-This small patchset decouples the blk-ctrl changes which allows the
-MIPI-CSI and LVDS patchstack to be rebased ontop of this patchset.
+Since the i.MX91 register layout equals the one from the i.MX93, I added
+the support for both but tested only the i.MX93 use-case.
 
-Before adding the sub-device supprt, I converted the driver to devm_*
-only API.
+This patchset depends on:
+ - https://lore.kernel.org/all/20251201-v6-18-topic-imx93-blkctrl-v1-0-b57a72e60105@pengutronix.de/
+
+@Conor Dooley
+I dropped your r-b tag since I added the 'bus-width' property.
 
 Regards,
   Marco
 
-[1] https://lore.kernel.org/all/20250701-95_cam-v1-3-c5172bab387b@nxp.com/
-[2] https://lore.kernel.org/all/20250304154929.1785200-4-alexander.stein@ew.tq-group.com/
+Changelog:
+v5:
+- https://lore.kernel.org/all/20250304082434.834031-1-victor.liu@nxp.com/
+- Add bus-width support
+- rebase onto v6.18-rc1
+- add review feedback (Alexander)
+- driver license "GPL v2" -> "GPL" (checkpatch)
+- make use of reg of-property
+- fix to short Kconfig description (checkpath)
+- add OF integration
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
-Marco Felsch (3):
-      pmdomain: imx93-blk-ctrl: cleanup error path
-      pmdomain: imx93-blk-ctrl: convert to devm_* only
-      pmdomain: imx93-blk-ctrl: add support for optional subnodes
+Liu Ying (2):
+      dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC subnode to schema and example
+      drm/bridge: imx: Add i.MX93 parallel display format configuration support
 
- drivers/pmdomain/imx/imx93-blk-ctrl.c | 75 ++++++++++++++++-------------------
- 1 file changed, 34 insertions(+), 41 deletions(-)
+Marco Felsch (1):
+      arm64: dts: imx93: Add parallel display output nodes
+
+ .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml |  92 +++++++++
+ arch/arm64/boot/dts/freescale/imx91_93_common.dtsi |  57 ++++++
+ arch/arm64/boot/dts/freescale/imx93.dtsi           |  12 ++
+ drivers/gpu/drm/bridge/imx/Kconfig                 |  11 +
+ drivers/gpu/drm/bridge/imx/Makefile                |   1 +
+ drivers/gpu/drm/bridge/imx/imx93-pdfc.c            | 225 +++++++++++++++++++++
+ 6 files changed, 398 insertions(+)
 ---
 base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-change-id: 20251201-v6-18-topic-imx93-blkctrl-341220f7084d
+change-id: 20251201-v6-18-topic-imx93-parallel-display-95f9234bf6cc
 
 Best regards,
 -- 
