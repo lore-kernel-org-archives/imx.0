@@ -1,119 +1,256 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013035.outbound.protection.outlook.com [40.107.159.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26292199949
-	for <imx@lists.linux.dev>; Mon,  1 Dec 2025 14:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764599507; cv=none; b=hqa6n5nfjOwdHCYgfG1OB1bvsFC5uVOoKH3G1B51EENJpAcdIuq8xZ++FXKaZm3YoBMe+UFuQmfo4quy4X9BaFlr8cD+iRoYKrfiZPjJv14eZREah8eprWpQE6mLgQQHyuu3ayq01HvfLEdH7qeqfmKGrsFC4CPeu8u13zBl6ak=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764599507; c=relaxed/simple;
-	bh=iSzXnkL6CZ7clNjmcPJzJQEgcd8lgXcvAiTHRowiIsA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CVBvNVALjAOU1oYMegYOGQl0LQ9Lq6/twZ5r680OBcUQKgqYEwo29vEn0wzJoYuQ5F536A81q2UIT0KO2g1YRT10X/0Gtkyyel3Z2e9ToSAy0evsPeILl4y0M57Lc0SiCpKNvGiR0gpswRqc2OjQh4CK2F9QhoOe14hm+4bB6lI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gK54c92h; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A1D332ED0
+	for <imx@lists.linux.dev>; Mon,  1 Dec 2025 15:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764604248; cv=fail; b=dMnBlMdxGPw96Kc3GJrML2Al7ijHO8KRvPp659jEyd8quS1zWCU9Cc3s7N5HBZF08lUCSeFE6j2tMq8Bg5ngb+Fbr4iIpVyuMDyD6Ca+Hwk5rGu0vK2DfHL+jed9HLMLy/9gESDghefoXFvNZywQZ0+8Y9XgTVocsd3PbqQz6+Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764604248; c=relaxed/simple;
+	bh=J5s9S7ltePs7+drKMq3bJj363XNLZT+JbiH9nBSVgQY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=CK2k1DOSuw2XdgFYdAzOJ9ibsem0PaknqUnyD7NS3i96vYQT/7juORyIeJgVeh1jeJrCgmPQ+HIVYq+1PfW7fX2/Zj54QmhZ+Hfph24fTtRafbvv8l+MrzU0Xtl8HGRZt69M0DpthEx0IqCUhBZha0PykmJc9Wb6SLgj3SAcbVA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=RAL7dmVF; arc=fail smtp.client-ip=40.107.159.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gK54c92h"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4779cb0a33fso44183925e9.0
-        for <imx@lists.linux.dev>; Mon, 01 Dec 2025 06:31:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1764599504; x=1765204304; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=P3Udye7A+1mJEIOEFZOxhVuAe/sJ9GEaxJR6U/sqIe4=;
-        b=gK54c92hQXqRbN/3uPrh3yiBcAgQyIdsnpml5pqp6mLYxGjph2j3luQorU5QQYVxW9
-         adqDJIdySSDK9tk93WHy7NaXtU4EW/L+lIaLEFBegwW5wsdzb7pfNt9HFUll3JHShOKn
-         qQnNp/MQ9XZsgvib+oDtBU7V1eWZmx1ojI9lvblMJxv5VMSYOcs9QBLJYosyWMmGZ9/o
-         5TYKb9MrUpG3ETYFqsIOx6zfbUgbuOb6/Y/Qmp/sG94CNt/bi3Ii/jt+co+T3mS2WI5g
-         cy0SvgUaeS1e8DT0k/jdH11fC25bQT33iW/1lg66hDaQDWd2Eo3scvOuH62aHOjHdS38
-         5Svg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764599504; x=1765204304;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P3Udye7A+1mJEIOEFZOxhVuAe/sJ9GEaxJR6U/sqIe4=;
-        b=qZjBqR65uEFW1eUFHP51HJOG27ThkjZTjZEvXI3njxerFAufhGI6Mug8KlEN0IqABQ
-         hOdekh2lbzWOaYFOopvNhQG65ADkbfv3ogZCAAOWpqKJqMTZWrpItEmTWgyHQPZ3b/Dy
-         odgmPD3kjwEiJMlpuIDGOrisUGG91gCJeHUs0tM65q1NSEQKwuELW+JjcFvi+8eYiif2
-         nTz2TEkPYQf7DDUeGsnnnExfMN2UTWBn6Zwni8yYD1sJ/0OhpPnzYODo3zJi0/HnkhSk
-         f9GUbmAXRwvP7kuWZ2Og8wtZygF3usDbQhmiNiHNUXuIeXg+Y576uX4Q3Udg20/BudvJ
-         RN2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVMZrFHKxX4h0LpqH/N4+ZAHhxRC0r1mh8e4tdmM1bstb9AaLm08tmRKQfd7oSKmUeXpdo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxdbJNqMDC5UWQw7vccLYv/bPsw+WxDhhOTXMD8mXRZm+ZcSSBw
-	yW+AU2+Wb5Vfu2arWnPgLVlClR7b+u8n7dez46wYGXE7eJoi0xZGHM4ziTPR0+0SQV4=
-X-Gm-Gg: ASbGncsy5LvP8kDX1f8So9mbxnZ3eeH5y2O51orhtgcuJkKbez7HBBROURWGRhG9pr3
-	C4V4YmgddmICvOnTv41PGbrB35P/af77tLajlnjZcWgDLGibQbfL3ZrdmR3VCGdXE07pUSCKB1V
-	PYwvCIbyBSxhK0D3dXJilCu4mpS2qb0jwit/7xj5Cp20ROsxRUbZOa3l9FjDfNdxUH1EbR38bSL
-	c+H+d1sf20PQ64z/nFhV7kYiV2buCV3TYkonALoXVFspniovIM+otzwY1nTYXVqDgQen47rXvf3
-	zoO+8PLXJOi02UQRECboGUw7qCkbp9Au0qpfjbOoCn8Cu1V0IzLOuYnzwJZbe7fkoN5w2LeTmg5
-	eXXw5s+TG+ZCMJ/K6FQp4mNuznAYNWDaM8OAd8AgAxmMgTa5s96xniexHMwWsy3zTlljnkLktS9
-	Y2nxjKeTnmAw+kuxWU
-X-Google-Smtp-Source: AGHT+IH6A6FJXGfT8Zsjwa2/f7hPiOGak401pIC2WoSIqlHjuQJJxsh60eESxFQX7d8Tr6L3Wxf8Ig==
-X-Received: by 2002:a05:600c:1f8f:b0:46e:1fb7:a1b3 with SMTP id 5b1f17b1804b1-477c01ee3camr380965655e9.23.1764599504416;
-        Mon, 01 Dec 2025 06:31:44 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-479052cf8d9sm154964375e9.9.2025.12.01.06.31.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Dec 2025 06:31:43 -0800 (PST)
-Date: Mon, 1 Dec 2025 17:31:38 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Chester Lin <chester62515@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	imx@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-	Jan Petrous <jan.petrous@oss.nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Matthias Brugger <mbrugger@suse.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, linaro-s32@linaro.org
-Subject: Re: [PATCH 0/4] s32g: Use a syscon for GPR
-Message-ID: <aS2myhp8asABFyLt@stanley.mountain>
-References: <cover.1764592300.git.dan.carpenter@linaro.org>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="RAL7dmVF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gkz7Bo8T+Y+qZhd+/548OnkUdxJi3KcYmO4Vef7Ledwg5Ieu2xkyg+SfncC8ZjzTLm7qN6EjfiF4XEap9S5OaAdjZ28MC8EhVS8GbkPfEdcqCig4//XvDUXxxy5zGg0Wdy1ocfdgCiXl+p9eo/w9Em/bcXYUQncW63Sl5snRdXAm0RvotLGvbvzXEbXxcvt23cN+KqAL03riN+p/MnspcfMyG+0+s/0U5g8JEXbQqaIFhmoewenqJjRy58VrEwomdCGW2SXPfFLlkDe9DrDLnLUf93YdCd7v4JEzc97uVdn5nhynl2L2AcOzTEMAj0FvMjpyK9rxvSdtL1dwxBQSUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i+hPAXaXA5EWWuXS76KEIpzPXgtINiRDDqUrE720ivk=;
+ b=JbBPSNxd2jpektzVGA8deuMrv3yWdmOzqM41CdskR2tsxbS8T+frDVm3qvnu7xTVrB/CKNWuKODgFeimowE4jR96S7uVPFwQ2NYrn6I2x5ii2HCP6X5HcXAi6F75pnZVq2+zP5gEnCOXnSK/Vzb8Zm+Q25cCD/l1byHeVcUXdpR2k5XW5BktY/uZM4hmnXHSrJL2Gc0GE996gOjCLSsh3LwID4MXeubnHrM9hR8Gtzc5TXLtyXhvsuRrsMzJ35fUkjMtUPPnLwgH72Enw7kHAFjDC7uJztqryIx8HHxdMws7HgYx/1nUrPuC5S7Lmc2GInhKOPPpitLW4ue8TQt8Zg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i+hPAXaXA5EWWuXS76KEIpzPXgtINiRDDqUrE720ivk=;
+ b=RAL7dmVFmuFRuqN7+vFMVqKhFuS55aEn4auQ9f/+HYYKpRxgzYuNbWwxisLw+4pIQNvuUd0/aWsVOsnGLtGLLR0HhxxqviIAO09DKgUKkuL8BszV7tsL7/EGPiXJVGDUlySe1QBpdK9Bzb+QBzchQCYxLGtM6keZ6lfIznnst9wwoPsVpJAX3+Y8HKdMWupXhQWXwLR06m5w8BIYd1siCEcL6UKGyT20sTM8lIsIKOpNlkW7/GUqojxfI6MnbFteVFUnf6f5SEomkvo1sRUZZeHlbobdcE/WdJCQbPLIg599ifEnM/dAT8/pE440BEjgahMdY/DdYs7g3JymvyttNA==
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by VI1PR04MB9786.eurprd04.prod.outlook.com (2603:10a6:800:1e1::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Mon, 1 Dec
+ 2025 15:50:41 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::21bf:975e:f24d:1612%5]) with mapi id 15.20.9366.012; Mon, 1 Dec 2025
+ 15:50:41 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+CC: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Jonathan Corbet <corbet@lwn.net>, Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan
+	<peng.fan@nxp.com>, "linux-remoteproc@vger.kernel.org"
+	<linux-remoteproc@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>
+Subject: Re: [PATCH v5 2/5] remoteproc: imx_rproc: Populate devices under
+ "rpmsg" subnode
+Thread-Topic: [PATCH v5 2/5] remoteproc: imx_rproc: Populate devices under
+ "rpmsg" subnode
+Thread-Index: AQHcYto+jpS1cJwWJ0CSzeusJbSMPQ==
+Date: Mon, 1 Dec 2025 15:50:40 +0000
+Message-ID:
+ <PAXPR04MB91853C6A0BA9BC556A09EB2789DBA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20251104203315.85706-1-shenwei.wang@nxp.com>
+ <20251104203315.85706-3-shenwei.wang@nxp.com> <aSdMufLCeqvVyKsp@p14s>
+ <PAXPR04MB91857863B163B3F38A26647389DEA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <aSh67mvFB_00PywW@p14s>
+In-Reply-To: <aSh67mvFB_00PywW@p14s>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|VI1PR04MB9786:EE_
+x-ms-office365-filtering-correlation-id: b035d3dd-c45c-47dd-0514-08de30f16147
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|19092799006|366016|1800799024|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?kotfLQ7jJRnPGTIoGH8ogt/95PtkT7UObPjVQhNmifRfvTzpmAGcGzZOWkA/?=
+ =?us-ascii?Q?NZZg/lBHovFwmLylwQ4g4NBTXAfmHRS5jqcqJEkFZkeiPx2Ok7FJk9etwUNG?=
+ =?us-ascii?Q?pouyUESwdyGfKE6d6uJM5VWhm6QTbfczCIIF3qELFO6UAaOL467CCUXf6Nh9?=
+ =?us-ascii?Q?K3yM48k7LMH9Y+gEGZifoYl2Ty+bS41oquXsslwEqq0gp0pyg3eWkKDP1sAB?=
+ =?us-ascii?Q?Qz7B4FhddsYTgzETKpeu5Ht4weQ4jNgda1p3sDCx6s3FVDKMklmClA4+KZBk?=
+ =?us-ascii?Q?TPGPz1oYdkkbVE5csfMvBdCmiC0N/uzIs5v61Z/PksBNUXuwsZoRthyf4bHL?=
+ =?us-ascii?Q?6bFgY4uK6EmlgZGaSiNOeFBSfNSppWMX0t/LEhb8MAoS4x+9ttmkvdDoPCOX?=
+ =?us-ascii?Q?UGThzP8dfOq3lIK15rBMdVrZVOVdZg3xeVsPQTUdxGQexvDYtrSMGpM/4qbj?=
+ =?us-ascii?Q?BTmm+EDhghhY5BNm2NQhgZoyY/3mpzt14vuaMzaSSa+Ah5Sxe8STPvqNVnSK?=
+ =?us-ascii?Q?jccP0+AelvWqRablCF1glmYxobjZLxj4OKYZGxhE5/kcL/TOs8yMw1pO3B/y?=
+ =?us-ascii?Q?ChuLYF9mMlH+GbcSi/1xuXeYxJfYIG37BlNoXMx9LVHEvZ+5krNRFGNkZhbH?=
+ =?us-ascii?Q?EECFYg8CnnUhxKCrWPZQ1smldJ2mgb614BERAksBHSqe8dQhOz6jlIgt0wYQ?=
+ =?us-ascii?Q?y6UiR92SSsGXUdhtu27GAUov2ncN3CQJTT6yKwj2Jno4VRjtU08/1HpvANk6?=
+ =?us-ascii?Q?dmrFCf2AS+G5jdWgNmOwfugLlRL6ooubAi4i5Dwcm9Jh4d7c9wafAgz7eMBx?=
+ =?us-ascii?Q?SZRGJuqL+c28wosJFBz8KwAQ8etEpOQmsy/V2NsaeusuQYduU4tMUGhs251n?=
+ =?us-ascii?Q?hDuQ+zqdBRserv6Hq+2WX6LOTic+6Ju7SlwXIla7rKKDd00oiUfeWSk2o3iF?=
+ =?us-ascii?Q?pmFX7/ENKgNI4k5GkS5IeG4kDgyWRhLKax22S9Tr57Qs0hCDE1iMHku+cLC+?=
+ =?us-ascii?Q?G3L1tRiw1r4GW094Pc5u5xl3RPDxCuFp1EY9nP2zEZXUUZNzRtNDcu+gy3EL?=
+ =?us-ascii?Q?5i2R91qfOmkpXsAZYdgX4/8gFbo3mcDK1pQyVanHnXpx7NL8Gz/BzEfwIF3J?=
+ =?us-ascii?Q?20L0pyaFPNdHavV6/ZeOAnb3uL2RpFvIzbTc2fqtGhcVHmbzgYBdffv17Q31?=
+ =?us-ascii?Q?ggTfk5ZOkZ/GzIJALlhKHOVoiMEPSwbjcjm5H3uQoAysc9XtG2MrmpWjIUhy?=
+ =?us-ascii?Q?unGx4CFZWHD4kh3IDifIWdezNeFrQh+nVMhZdOGkGaNsOw8KXfpgquHwYVYY?=
+ =?us-ascii?Q?2YSOiNZvfc5uT1KFmCq13URkCPt0nnlNrpmIPnzI9UY4TjQiRvF1bzfW2LK0?=
+ =?us-ascii?Q?0P0Ye3nIKlNZMrrXqRQNVID2FDjoojenuNwYxtZYKmpWwQKBkh+MDqvDF0pn?=
+ =?us-ascii?Q?bFMBvnwtLYMiNIfmax2G2uONadcTtJ3MXFJG4ApyZKFO38n9QtEbPrxXlGco?=
+ =?us-ascii?Q?dJQ1Vyc+AzNGOL/N2hkLxZOij4YCPGzIq6cs?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(19092799006)(366016)(1800799024)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?pJxftt97BmCxr8C6pAqGEGrFO2yd1u/e7Z2TQFvt/DkKxGQAe5sG3SDPFfir?=
+ =?us-ascii?Q?2M+NGWiBMdDNG2nlTfTIjDexAM+tUGDkCCkaGe7F3AmHDRWkO6V14Wy+kaFA?=
+ =?us-ascii?Q?bDxbz2nCmrVVF91BLF8MSzdxiLtK1+qU09ZKUpXeUpLg/49zhtZqFC1EpS0X?=
+ =?us-ascii?Q?8F3Y8AImmenBpxYqjjQ7aWXq9KqoL6H0ZHlWq/tbo+3rP0PgKRyMwTzo6WC7?=
+ =?us-ascii?Q?Y2M+b59kvotbQLY8FDjagSbPEBhY4KBSFZ7+r3f4ivkhS4LTKtKurEmagYHm?=
+ =?us-ascii?Q?L8Y0xMngupDAGebqW3ptXhq+aBLF55N1b3HmLVWFqgsCdZXN9NFFdGccx4tC?=
+ =?us-ascii?Q?hQJ2qeV2O3ULuvMMROPrzPd8l9phEQTTZqEfdjzjp4xYy6Rtqe51g+xOUJyd?=
+ =?us-ascii?Q?MnHIZESHV+Ff944Fuytj0zYl8Ko4cjy8Aj77walTMXx2dd51HdjmHLPb9uSn?=
+ =?us-ascii?Q?V0pvhXM1aOUuuv26VZkhJsymiq8EdP72JQJNl6LfqPf2HQwVWBsvnC6MOIfO?=
+ =?us-ascii?Q?Jp/SB7QXQgrwwsFxMxqz6yBGQGz0j5DYNUCy+SdCSRYtTKIsyF8DGuL08Y6i?=
+ =?us-ascii?Q?XqpLtGUAGVHNDO4sM53PLrhzxIG0LM1dgdQw5gm8Q/PCY+AtAluLpfX/c+tC?=
+ =?us-ascii?Q?Cgsa0u2fnJtQse9Dt3cdIZ0aIViGCBVQ5Zf8THaS53olfQCkKuHXAjs0h05U?=
+ =?us-ascii?Q?ge2vOL9jxLtGaPxKwJk9hhBPOBsbVqPWKSioZldNt7QFVr+VYIzOXm/08+w+?=
+ =?us-ascii?Q?eU83zAp/MpI6hpX+1x0Rfa6E28wE+7QbuDUDBi7qMHv+dqCFXCrFuYAQM+uK?=
+ =?us-ascii?Q?3uojexOmmn4c2XFJs0X3ZkmkFJYB9wUhRvOcizBIMSP+fvZkPwVVJa6Z6lfa?=
+ =?us-ascii?Q?VeVPWVMccJGJGx1zLgmJXchiAX3y4GoEMiHIDxCmVirmPYz1KHoMn+O1gt9Y?=
+ =?us-ascii?Q?y7uFqW3kXBKB0qm1WsMP/kqQVcqlhduIqh/i5yS6qJTjSo2vfxyPUf674eZv?=
+ =?us-ascii?Q?HbonXGatSUFcd53o5xbrsntZlBSYqUCnOJRQqzSCsgVApWQztcr30eOM97Av?=
+ =?us-ascii?Q?ula+Kv8n69xl4Ymvi3I/cw8xGjmM0WEFNvK/qpxQDhEhpi0ivL8kp1hIcIAQ?=
+ =?us-ascii?Q?I7oOx+frFr3xHakdMnkdZ/8yZvibWJdOgOWUb/texvHoFdljQZ1+fTdc+MV3?=
+ =?us-ascii?Q?Coe285ytDfTVYPxcPWWGfdHkZt/PmyTKYqWzhMRaGJbG6O3ZDSJvgcZzJe5J?=
+ =?us-ascii?Q?ruRI36uRtL3XgN+2g+LQkhKWVejRxrsG92blWl4hlj8ZjJnXM6MFbHcsJYK8?=
+ =?us-ascii?Q?tv34w7oWeyRAb+zHgPTwUMNA4/HQ4eBJsFcg9B1q5xkfOievwU1ff42A7nUO?=
+ =?us-ascii?Q?vGp9eShoojDPZSKFTI/cOedidcGBtpUvcHaSp6iRzofS0xzqq7tj+1EcK+au?=
+ =?us-ascii?Q?0KtMzu70s70WBtapltZz2wE+/IlmyJExN5OCaHPwQBtZe4sGD9AKRaFg/2Gq?=
+ =?us-ascii?Q?dxDjYMxwYpgeZkQcdT1z1IN72rVbuqcqRN4v3OoJeK9oSFnZkJeGb22pdLfl?=
+ =?us-ascii?Q?LmJvZAnjUDTzu7G3LBqxyjgTnFJvj6jQyggv+ByJ?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1764592300.git.dan.carpenter@linaro.org>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b035d3dd-c45c-47dd-0514-08de30f16147
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Dec 2025 15:50:41.0352
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: HfTr7iI5mpgL6Rr7lmcqY5Omob0gEgVePjDXE3krqDp9wBhvzPpZhGPfexHPTvRSeqJbufgqIXSUzFAdM3d0TA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9786
 
-On Mon, Dec 01, 2025 at 04:08:14PM +0300, Dan Carpenter wrote:
-> *** BLURB HERE ***
-> 
 
-Sorry, I obviously meant to write a message here.
 
-The s32g devices have a GPR register region which could be accessed
-via a syscon.  Currently only the stmmac/dwmac-s32.c uses anything
-from there and we just add a line to the device tree to access
-that GMAC_0_CTRL_STS register:
+> -----Original Message-----
+> From: Mathieu Poirier <mathieu.poirier@linaro.org>
+> Sent: Thursday, November 27, 2025 10:23 AM
+> To: Shenwei Wang <shenwei.wang@nxp.com>
+> Cc: Bjorn Andersson <andersson@kernel.org>; Rob Herring <robh@kernel.org>=
+;
+> Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dooley
+> <conor+dt@kernel.org>; Shawn Guo <shawnguo@kernel.org>; Sascha Hauer
+> <s.hauer@pengutronix.de>; Jonathan Corbet <corbet@lwn.net>; Linus Walleij
+> <linus.walleij@linaro.org>; Bartosz Golaszewski <brgl@bgdev.pl>; Pengutro=
+nix
+> Kernel Team <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>;
+> Peng Fan <peng.fan@nxp.com>; linux-remoteproc@vger.kernel.org;
+> devicetree@vger.kernel.org; imx@lists.linux.dev; linux-arm-
+> kernel@lists.infradead.org; linux-kernel@vger.kernel.org; linux-
+> doc@vger.kernel.org; dl-linux-imx <linux-imx@nxp.com>
+> Subject: [EXT] Re: [PATCH v5 2/5] remoteproc: imx_rproc: Populate devices
+> under "rpmsg" subnode
+> > > > +static void imx_rpmsg_endpoint_remove(struct rpmsg_device *rpdev) =
+{
+> > > > +     of_platform_depopulate(&rpdev->dev);
+> > > > +}
+> > > > +
+> > > > +static int imx_rpmsg_endpoint_probe(struct rpmsg_device *rpdev) {
+> > >
+> > > Where does the rpmsg_device come from?  Usually there is a call to
+> > > rpmsg_register_device() and I don't see it anywhere in this
+> > > patchset.  I also don't see a link to the remote processor.  I can't
+> > > continue with this set for as long as I don't have this information.
+> > >
+> >
+> > It is in the function below named imx_of_rpmsg_register_rpdriver.
+> >
+>=20
+> The function below calls register_rpmsg_driver(), not rpmsg_register_devi=
+ce().
+> I still don't know where @rpdev comes from.
+>=20
 
-			reg = <0x4033c000 0x2000>, /* gmac IP */
-			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
+The rpdev device is created by the rpmsg bus driver. On i.MX platforms, thi=
+s is handled by the virtio_rpmsg_bus driver.=20
+When the remote firmware sends a channel announcement, the bus driver creat=
+es the corresponding rpdev device.
 
-But it would be better to have a syscon instead of adding each
-register to the device tree like this.
+This patch implements the driver for the interested rpdev device.
 
-We still have to maintain backwards compatibility to this format,
-of course.
+Thanks,
+Shenwei
 
-regards,
-dan carpenter
-
+> > Thanks,
+> > Shenwei
+> >
+> > > > +
+> > > > +static int imx_of_rpmsg_register_rpdriver(struct device_node *chan=
+nel,
+> > > > +                                       struct device *dev, int idx=
+) {
+> > > > +     struct imx_rpmsg_driver_data *driver_data;
+> > > > +     struct imx_rpmsg_driver *rp_driver;
+> > > > +     struct rpmsg_device_id *rpdev_id;
+> > > > +
+> > > > +     rpdev_id =3D devm_kzalloc(dev, sizeof(*rpdev_id) * 2, GFP_KER=
+NEL);
+> > > > +     if (!rpdev_id)
+> > > > +             return -ENOMEM;
+> > > > +
+> > > > +     strscpy(rpdev_id[0].name, channel_device_map[idx][0],
+> > > > + RPMSG_NAME_SIZE);
+> > > > +
+> > > > +     rp_driver =3D devm_kzalloc(dev, sizeof(*rp_driver), GFP_KERNE=
+L);
+> > > > +     if (!rp_driver)
+> > > > +             return -ENOMEM;
+> > > > +
+> > > > +     driver_data =3D devm_kzalloc(dev, sizeof(*driver_data), GFP_K=
+ERNEL);
+> > > > +     if (!driver_data)
+> > > > +             return -ENOMEM;
+> > > > +
+> > > > +     driver_data->rproc_name =3D dev->of_node->name;
+> > > > +     driver_data->channel_node =3D channel;
+> > > > +     driver_data->map_idx =3D idx;
+> > > > +
+> > > > +     rp_driver->rpdrv.drv.name =3D channel_device_map[idx][0];
+> > > > +     rp_driver->rpdrv.id_table =3D rpdev_id;
+> > > > +     rp_driver->rpdrv.probe =3D imx_rpmsg_endpoint_probe;
+> > > > +     rp_driver->rpdrv.remove =3D imx_rpmsg_endpoint_remove;
+> > > > +     rp_driver->rpdrv.callback =3D imx_rpmsg_endpoint_cb;
+> > > > +     rp_driver->driver_data =3D driver_data;
+> > > > +
+> > > > +     register_rpmsg_driver(&rp_driver->rpdrv);
+> > > > +
+> > > > +     return 0;
+> > > > +}
