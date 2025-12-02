@@ -1,237 +1,215 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61537280327
-	for <imx@lists.linux.dev>; Tue,  2 Dec 2025 13:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395A7201004
+	for <imx@lists.linux.dev>; Tue,  2 Dec 2025 14:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764683149; cv=none; b=lfHt/J9GkNHQUSHVmfNffJjmTl/xpzsoyEsYMkVUqHEQtFRcqYvS0vDS4gBTadnVrpvBu9NHe6ikaxSB1BvDLhsCpKfBaDwWpN0akJFUjT8Vb18hCbtT4ZwBiWvtUzOLr3sKDH0HnzN5lpmwpQE1FOiHHn+GPsBMrbhDLk1TIpk=
+	t=1764684937; cv=none; b=IR3q6mA+pmBMbRda7iwIjOQvXXdHFHYeqaMz7tqvYO2TGwXjg1SMH9/BKaRB2SKCyRM0Zy12JJ2w2/LrAjj6V2AexmrFMc8PKJrSHTnqv/5sSW9N+umnQxjTinFXcHA2zEHruccXscEpq3DNXUnB8sqeq5BGxEQDY2yt3Y/gKXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764683149; c=relaxed/simple;
-	bh=5Fjm548BcB9+qacmfIY7TjQvqhpEmQ+b3YCCsZH3NPM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gTHq2Jt1/wlDzTjSo6/5c7RWBe4EmrrEJEnegdVIPOMi7yNKMaOksz1HnK8u5zrQP17dJqHeoB0XMRmwtAdhx//o5JKXC+IZQ1GlNabznOkkgnQfshdzuw8C5oUrq5ERt8HjhWN4zRVMoG7A31h4LNpo/lYxiQvL3mYgw3xGl/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vQQgZ-0006jO-Lo; Tue, 02 Dec 2025 14:44:55 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Tue, 02 Dec 2025 14:44:54 +0100
-Subject: [PATCH 2/2] arm64: dts: imx93-phyboard-segin: Add peb-av-02
- overlay
+	s=arc-20240116; t=1764684937; c=relaxed/simple;
+	bh=4Wc48KRaIcqiX0vglMdyQboI7iIQ2x8CgSCV7WOL/hs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F9cYUUGQTwN2QYfSTnJfeb1BUJwC1g4HX+qGA7FFI9ICjw1EsSphE4o4R/D+dc/nf/vOYVICu4OcuU5JBu+vOQYmUGu6VW80CXLV7agPZjY9erB2EFQ3Otwg6DCtxTaZxQEWqCO00iSLCoD2YkcLIXguwOZqm/0pBRa386WpqHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oS2mkVPH; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oS2mkVPH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FD2C2BCB1
+	for <imx@lists.linux.dev>; Tue,  2 Dec 2025 14:15:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764684936;
+	bh=4Wc48KRaIcqiX0vglMdyQboI7iIQ2x8CgSCV7WOL/hs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=oS2mkVPHrpV8sWUwH+Q0AJ0ClWDtVr/T+8Z9ZI+6iedRlqKw4FAuwSCb5BfkSlgJN
+	 SqCVRql5CR+IxwmmKB87Usk2+iZkbCoEdljR0q4TOSCRcY2HH3VxAZIWWfiDvv2973
+	 6HaDODJFFN5V0Ovs3P3G2ZNgu8QnR+YYgP5S6MEfDUyRaMV+vOrpfegKEG5h1sIQ4U
+	 2A9C9rNoxXy4cF1lPEO/thcP/a17WAEeWOUsE+irpkdDfF1e3WqjeJ3k/TDT2U5AfO
+	 yp8DS3LMrMuWjX5BddfjIf3dgMScZVeOJA7+yJE8gMGqEXpMADVWUNxOdiboptIWBw
+	 6n3oljKWqG0VA==
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6408f9cb1dcso8646202a12.3
+        for <imx@lists.linux.dev>; Tue, 02 Dec 2025 06:15:36 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUZqZXDBaRhVySRJlG1sAfdUrFmdCO+7IjnJ1zb/YMBRKKYDY3b0QcndcggYjjKglmCUDU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzQQFx7k/awmskCKPeioOiKAqBu30QcEXHrrRP63uOMvKj4/+ZK
+	GMQP77Os0Kbh46X3152Uiei0NX0ZxH0wte0VCrZe+Ny5JHimT0MjnLp9P4hDeYH75byMaYEjOmB
+	LGBM2BklzDieaeJSIIbkfp9tKco/bYA==
+X-Google-Smtp-Source: AGHT+IHOK37x0Kt35joRUOghP+Y+b/h+dUlhViPYEEU5vZFEgzun82hvWA1eFjAbdPJqCcazIpiBmOYOIRh+oi7lQBk=
+X-Received: by 2002:a05:6402:51c9:b0:647:6589:516f with SMTP id
+ 4fb4d7f45d1cf-647658951c8mr11422163a12.23.1764684935180; Tue, 02 Dec 2025
+ 06:15:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251202-v6-18-topic-imx93-phyboard-segin-av-02-display-v1-2-9c14be6c7478@pengutronix.de>
-References: <20251202-v6-18-topic-imx93-phyboard-segin-av-02-display-v1-0-9c14be6c7478@pengutronix.de>
-In-Reply-To: <20251202-v6-18-topic-imx93-phyboard-segin-av-02-display-v1-0-9c14be6c7478@pengutronix.de>
-To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, andrej.picej@norik.com, 
- primoz.fiser@norik.com, c.hemp@phytec.de, s.mueller-klieser@phytec.de, 
- n.wesp@phytec.de, c.stoidner@phytec.de
-Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, kernel@pengutronix.de, 
- Marco Felsch <m.felsch@pengutronix.de>
-X-Mailer: b4 0.14.2
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
-X-SA-Exim-Mail-From: m.felsch@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+References: <20251124182751.507624-1-robh@kernel.org> <CGME20251127142839eucas1p186846c6c1ea1d9e43369fbba9bb5d17c@eucas1p1.samsung.com>
+ <20251124182751.507624-2-robh@kernel.org> <674efe8d-c299-4ce9-bf6b-c1920a5393eb@samsung.com>
+In-Reply-To: <674efe8d-c299-4ce9-bf6b-c1920a5393eb@samsung.com>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 2 Dec 2025 08:15:23 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJTrGAJx-fv8OQGDhsLVKavQzzQotssEq_E5f_aJe8bOg@mail.gmail.com>
+X-Gm-Features: AWmQ_blpHLPsU5za5Q3_8cThmj1tfuI1sEcIZQQrDepEj9pfYTWSHFtibfJZbEw
+Message-ID: <CAL_JsqJTrGAJx-fv8OQGDhsLVKavQzzQotssEq_E5f_aJe8bOg@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] remoteproc: qcom: Use of_reserved_mem_region_*
+ functions for "memory-region"
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Patrice Chotard <patrice.chotard@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Peng Fan <peng.fan@nxp.com>, 
+	Beleswar Padhi <b-padhi@ti.com>, linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-msm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Andrej Picej <andrej.picej@norik.com>
+On Thu, Nov 27, 2025 at 8:28=E2=80=AFAM Marek Szyprowski
+<m.szyprowski@samsung.com> wrote:
+>
+> Hi Rob,
+>
+> On 24.11.2025 19:27, Rob Herring (Arm) wrote:
+> > Use the newly added of_reserved_mem_region_to_resource() and
+> > of_reserved_mem_region_count() functions to handle "memory-region"
+> > properties.
+> >
+> > The error handling is a bit different in some cases. Often
+> > "memory-region" is optional, so failed lookup is not an error. But then
+> > an error in of_reserved_mem_lookup() is treated as an error. However,
+> > that distinction is not really important. Either the region is availabl=
+e
+> > and usable or it is not. So now, it is just
+> > of_reserved_mem_region_to_resource() which is checked for an error.
+> >
+> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+>
+> This patch landed in today's linux-next as commit c70b9d5fdcd7
+> ("remoteproc: qcom: Use of_reserved_mem_region_* functions for
+> "memory-region""). In my tests I found that it breaks booting of
+> DragonBoard410c (arch/arm64/boot/dts/qcom/apq8016-sbc.dts) by causing
+> the NULL pointer dereference. The issue is caused by replacing
+> devm_ioremap_wc() with devm_ioremap_resource_wc(), which fails on
+> devm_request_mem_region(), see comment in the code below. It looks that
+> the error handling is somewhere broken. Here is the the kernel log:
+>
+> remoteproc remoteproc0: 4080000.remoteproc is available
+> qcom-wcnss-pil a204000.remoteproc: error -EBUSY: can't request region
+> for resource [mem 0x8e200000-0x8e7fffff]
+> remoteproc remoteproc1: a204000.remoteproc is available
+> remoteproc remoteproc1: powering up a204000.remoteproc
+> remoteproc remoteproc1: Booting fw image qcom/apq8016/wcnss.mbn, size
+> 4111376
+> Unable to handle kernel paging request at virtual address fffffffffffffff=
+0
+> Mem abort info:
+> ...
+> Internal error: Oops: 0000000096000046 [#1]  SMP
+> Modules linked in: cpufreq_powersave qcom_wcnss_pil cpufreq_conservative
+> coresight_stm coresight_replicator coresight_tmc coresight_tpiu stm_core
+> coresight_funnel coresight_cpu_debug coresight_cti(+) adv7511 coresight
+> nfc rfkill msm snd_soc_lpass_apq8016 snd_soc_apq8016_sbc
+> snd_soc_lpass_cpu snd_soc_msm8916_analog snd_soc_msm8916_digital
+> snd_soc_qcom_common snd_soc_lpass_platform snd_soc_core qrtr ubwc_config
+> snd_compress llcc_qcom snd_pcm_dmaengine qcom_q6v5_mss snd_pcm ocmem
+> qcom_pil_info qcom_spmi_vadc qcom_camss drm_gpuvm qcom_pon rtc_pm8xxx
+> qcom_q6v5 qcom_spmi_temp_alarm venus_core qcom_vadc_common snd_timer
+> drm_exec qcom_sysmon snd qcom_common gpu_sched videobuf2_dma_sg
+> v4l2_mem2mem qcom_glink_smem v4l2_fwnode soundcore drm_dp_aux_bus
+> qmi_helpers mdt_loader v4l2_async videobuf2_memops videobuf2_v4l2
+> videodev qnoc_msm8916 videobuf2_common qcom_rng drm_display_helper mc
+> qcom_stats rpmsg_ctrl rpmsg_char display_connector ramoops socinfo
+> rmtfs_mem reed_solomon ax88796b asix usbnet phy_qcom_usb_hs ipv6 libsha1
+> CPU: 2 UID: 0 PID: 28 Comm: kworker/2:0 Tainted: G W
+> 6.18.0-rc1+ #16209 PREEMPT
+> Tainted: [W]=3DWARN
+> lr : __qcom_mdt_load+0x210/0x304 [mdt_loader]
+> Call trace:
+>   __pi_memcpy_generic+0x128/0x22c (P)
+>   qcom_mdt_load+0x68/0x60c [mdt_loader]
+>   wcnss_load+0x2c/0x5c [qcom_wcnss_pil]
+>   rproc_start+0x30/0x1b4
+>   rproc_boot+0x19c/0x560
+>   rproc_auto_boot_callback+0x1c/0x34
+>   request_firmware_work_func+0x4c/0x98
+>   process_one_work+0x208/0x60c
+>   worker_thread+0x244/0x388
+>   kthread+0x150/0x228
+>   ret_from_fork+0x10/0x20
+> Code: 927cec03 cb0e0021 8b0e0042 a9411c26 (a900340c)
+> ---[ end trace 0000000000000000 ]---
+>
+>
+> > ---
+> > v7:
+> >   - Split QCom to separate patch
+> > ---
+> >   drivers/remoteproc/qcom_q6v5_adsp.c | 24 ++++------
+> >   drivers/remoteproc/qcom_q6v5_mss.c  | 60 ++++++++-----------------
+> >   drivers/remoteproc/qcom_q6v5_pas.c  | 69 +++++++++++-----------------=
+-
+> >   drivers/remoteproc/qcom_q6v5_wcss.c | 25 +++++------
+> >   drivers/remoteproc/qcom_wcnss.c     | 23 ++++------
+> >   5 files changed, 72 insertions(+), 129 deletions(-)
+> >
+>
+> > ...
+>
+> > diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_=
+wcnss.c
+> > index 2c7e519a2254..14005fb049a2 100644
+> > --- a/drivers/remoteproc/qcom_wcnss.c
+> > +++ b/drivers/remoteproc/qcom_wcnss.c
+> > @@ -526,25 +526,20 @@ static int wcnss_request_irq(struct qcom_wcnss *w=
+cnss,
+> >
+> >   static int wcnss_alloc_memory_region(struct qcom_wcnss *wcnss)
+> >   {
+> > -     struct reserved_mem *rmem =3D NULL;
+> > -     struct device_node *node;
+> > -
+> > -     node =3D of_parse_phandle(wcnss->dev->of_node, "memory-region", 0=
+);
+> > -     if (node)
+> > -             rmem =3D of_reserved_mem_lookup(node);
+> > -     of_node_put(node);
+> > +     struct resource res;
+> > +     int ret;
+> >
+> > -     if (!rmem) {
+> > +     ret =3D of_reserved_mem_region_to_resource(wcnss->dev->of_node, 0=
+, &res);
+> > +     if (ret) {
+> >               dev_err(wcnss->dev, "unable to resolve memory-region\n");
+> > -             return -EINVAL;
+> > +             return ret;
+> >       }
+> >
+> > -     wcnss->mem_phys =3D wcnss->mem_reloc =3D rmem->base;
+> > -     wcnss->mem_size =3D rmem->size;
+> > -     wcnss->mem_region =3D devm_ioremap_wc(wcnss->dev, wcnss->mem_phys=
+, wcnss->mem_size);
+> > +     wcnss->mem_phys =3D wcnss->mem_reloc =3D res.start;
+> > +     wcnss->mem_size =3D resource_size(&res);
+> > +     wcnss->mem_region =3D devm_ioremap_resource_wc(wcnss->dev, &res);
+>
+> The above line causes the failure. After restoring it to:
+>
+> wcnss->mem_region =3D devm_ioremap_wc(wcnss->dev, wcnss->mem_phys, wcnss-=
+>mem_size);
+>
+> the mentioned board boots fine again. I'm not sure about other drivers,
+> if they also fail the same way as they might not be used on the tested
+> board.
 
-Add overlay for Audio-Video module PEB-AV-02. Add support for panel
-display, capacitive touchscreen and backlight.
+Other platforms (non-QCom) were tested also use
+devm_ioremap_resource_wc(). So something else is claiming the same
+region? Can you dump out /proc/iomem?
 
-For now the backlight is configured as a GPIO, brightness of the display
-can not be set. When the FLEXIO PWM driver is available this should be
-switched to PWM backlight driver.
+The region is dynamically allocated, so maybe that has something to do with=
+ it.
 
-Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-[rework commit message, use local regulator, remove compatible]
-Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
-Signed-off-by: Christian Hemp <c.hemp@phytec.de>
-[m.felsch@pengutronix.de: cleanup downstream commit]
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- arch/arm64/boot/dts/freescale/Makefile             |   2 +
- .../freescale/imx93-phyboard-segin-peb-av-02.dtso  | 135 +++++++++++++++++++++
- 2 files changed, 137 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 525ef180481d331e9c4decd092b7b831c497b67e..27e27ac29e82bc0692e86c2ba15c240dc9fbe1c6 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -357,10 +357,12 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb
- 
- imx93-phyboard-nash-peb-wlbt-07-dtbs += imx93-phyboard-nash.dtb imx93-phyboard-nash-peb-wlbt-07.dtbo
-+imx93-phyboard-segin-peb-av-02-dtbs += imx93-phyboard-segin.dtb imx93-phyboard-segin-peb-av-02.dtbo
- imx93-phyboard-segin-peb-eval-01-dtbs += imx93-phyboard-segin.dtb imx93-phyboard-segin-peb-eval-01.dtbo
- imx93-phyboard-segin-peb-wlbt-05-dtbs += imx93-phyboard-segin.dtb imx93-phyboard-segin-peb-wlbt-05.dtbo
- imx93-phycore-rpmsg-dtbs += imx93-phyboard-nash.dtb imx93-phyboard-segin.dtb imx93-phycore-rpmsg.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash-peb-wlbt-07.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin-peb-av-02.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin-peb-eval-01.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin-peb-wlbt-05.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx93-phycore-rpmsg.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin-peb-av-02.dtso b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin-peb-av-02.dtso
-new file mode 100644
-index 0000000000000000000000000000000000000000..2e7074e402dc8fdeb1568d4f2d4960431e972501
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin-peb-av-02.dtso
-@@ -0,0 +1,135 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2025 PHYTEC Messtechnik GmbH
-+ * Copyright (C) 2025 Pengutronix
-+ *
-+ * Author: Andrej Picej <andrej.picej@norik.com>
-+ * Author: Marco Felsch <kernel@pengutronix.de>
-+ */
-+
-+#include <dt-bindings/clock/imx93-clock.h>
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/arm-gic.h>
-+#include "imx93-pinfunc.h"
-+
-+/dts-v1/;
-+/plugin/;
-+
-+&{/} {
-+	/* TODO: Convert to PWM backlight once the FlexIO PWM is supported */
-+	backlight: backlight {
-+		compatible = "gpio-backlight";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_backlight>;
-+		gpios = <&gpio4 28 GPIO_ACTIVE_HIGH>;
-+	};
-+
-+	panel {
-+		compatible = "edt,etm0700g0edh6";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_panel>;
-+
-+		backlight = <&backlight>;
-+		enable-gpios = <&gpio4 29 GPIO_ACTIVE_HIGH>;
-+		power-supply = <&reg_x71_vcc_3v3>;
-+
-+		port {
-+			panel_in: endpoint {
-+				remote-endpoint = <&dpi_to_panel>;
-+			};
-+		};
-+	};
-+
-+	reg_x71_vcc_3v3: regulator-x71-vcc-3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "X71-VCC3V3";
-+		regulator-max-microvolt = <3300000>;
-+		regulator-min-microvolt = <3300000>;
-+	};
-+};
-+
-+&dpi_bridge {
-+	status = "okay";
-+};
-+
-+&dpi_to_panel {
-+	remote-endpoint = <&panel_in>;
-+	bus-width = <18>;
-+};
-+
-+&lcdif {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_lcdif>;
-+	assigned-clocks = <&clk IMX93_CLK_VIDEO_PLL>;
-+	assigned-clock-rates = <332600000>;
-+	status = "okay";
-+};
-+
-+&lpi2c2 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	touchscreen@38 {
-+		compatible = "edt,edt-ft5406";
-+		reg = <0x38>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_touchscreen>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <12 IRQ_TYPE_EDGE_FALLING>;
-+		reset-gpios = <&gpio4 1 GPIO_ACTIVE_LOW>;
-+		touchscreen-size-x = <1792>;
-+		touchscreen-size-y = <1024>;
-+	};
-+};
-+
-+&media_blk_ctrl {
-+	status = "okay";
-+};
-+
-+&iomuxc {
-+	pinctrl_backlight: backlightgrp {
-+		fsl,pins = <
-+			MX93_PAD_CCM_CLKO3__GPIO4_IO28			0x1133e
-+		>;
-+	};
-+
-+	pinctrl_lcdif: lcdifgrp {
-+		fsl,pins = <
-+			MX93_PAD_GPIO_IO00__MEDIAMIX_DISP_CLK		0x50e
-+			MX93_PAD_GPIO_IO01__MEDIAMIX_DISP_DE		0x50e
-+			MX93_PAD_GPIO_IO02__MEDIAMIX_DISP_VSYNC		0x50e
-+			MX93_PAD_GPIO_IO03__MEDIAMIX_DISP_HSYNC		0x50e
-+			MX93_PAD_GPIO_IO04__MEDIAMIX_DISP_DATA00	0x50e
-+			MX93_PAD_GPIO_IO05__MEDIAMIX_DISP_DATA01	0x50e
-+			MX93_PAD_GPIO_IO06__MEDIAMIX_DISP_DATA02	0x50e
-+			MX93_PAD_GPIO_IO07__MEDIAMIX_DISP_DATA03	0x50e
-+			MX93_PAD_GPIO_IO08__MEDIAMIX_DISP_DATA04	0x50e
-+			MX93_PAD_GPIO_IO09__MEDIAMIX_DISP_DATA05	0x51e
-+			MX93_PAD_GPIO_IO10__MEDIAMIX_DISP_DATA06	0x50e
-+			MX93_PAD_GPIO_IO11__MEDIAMIX_DISP_DATA07	0x50e
-+			MX93_PAD_GPIO_IO12__MEDIAMIX_DISP_DATA08	0x50e
-+			MX93_PAD_GPIO_IO13__MEDIAMIX_DISP_DATA09	0x50e
-+			MX93_PAD_GPIO_IO14__MEDIAMIX_DISP_DATA10	0x50e
-+			MX93_PAD_GPIO_IO15__MEDIAMIX_DISP_DATA11	0x50e
-+			MX93_PAD_GPIO_IO16__MEDIAMIX_DISP_DATA12	0x506
-+			MX93_PAD_GPIO_IO17__MEDIAMIX_DISP_DATA13	0x506
-+			MX93_PAD_GPIO_IO18__MEDIAMIX_DISP_DATA14	0x506
-+			MX93_PAD_GPIO_IO19__MEDIAMIX_DISP_DATA15	0x506
-+			MX93_PAD_GPIO_IO20__MEDIAMIX_DISP_DATA16	0x506
-+			MX93_PAD_GPIO_IO21__MEDIAMIX_DISP_DATA17	0x506
-+		>;
-+	};
-+
-+	pinctrl_panel: panelgrp {
-+		fsl,pins = <
-+			MX93_PAD_CCM_CLKO4__GPIO4_IO29			0x1133e
-+		>;
-+	};
-+
-+	pinctrl_touchscreen: touchscreengrp {
-+		fsl,pins = <
-+			MX93_PAD_ENET1_MDIO__GPIO4_IO01			0x11e
-+			MX93_PAD_ENET1_RD2__GPIO4_IO12			0x1133e
-+		>;
-+	};
-+};
-
--- 
-2.47.3
-
+Rob
