@@ -1,157 +1,157 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649A925785E;
-	Tue,  2 Dec 2025 10:06:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C45D30C36B;
+	Tue,  2 Dec 2025 10:12:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764669985; cv=none; b=WxqP47tsStnz9qpDjcZdmx9WEIIFq1/FiSe5N0fIaQOuoTFyyAqeQvmuvnYN6x0MsBxiKllSkwrXtauwpiXCVa2SwlukPjS/9V8IYqARX96qd2N9gfEdCeWzavoRLBjzlur4V2ZnIwOoAt/SVthHU0fLuY7zKekZ7NwisXAyRz4=
+	t=1764670352; cv=none; b=FVsICdY/W3glQULMJJLSLGcWe/ZPvd5eTBFwsd+OKpeC2zdFPg5dpEeqABEkTB/6Cwt1/Fs1DRP8ZG2rd5dEt7jqFof8xjn1DdcKUwu3wDW4VzPaCKXjunnm+PR2MPDu6HWKT6lD9FngOuSF2GrSSzhRUYfa9FljOxWNMROMKQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764669985; c=relaxed/simple;
-	bh=oQlaqUeREC8Pc2NqxB4xgOj6FQuw9eUxeGBxZjH6Sgc=;
+	s=arc-20240116; t=1764670352; c=relaxed/simple;
+	bh=sqiX0jb1v0UmMdokJRTSMz9MKkDH/LfxCka2MIljKkg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nZzdbWLv309oE5wIGiSyYi/N21PrdLtM9hNjUClUCfIxfvwg4fR8WAxrPwGnGnXAQkXsZUJqKLN1JLAXAQzSt9ECQ2WJC0igAUW+5+N+OmxdB343iF/+ygKtpblv3DAK2adgXqTXeT5edt/CGEmDSZG6yM0xQ9QsMNCY8ZUWwmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JzwXiHP6; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=HA1OIUouTtGXOnZ9VHCKfHfPW7d4dxXzSGRkR4KzHjMPk8SJsnJn8xz7Qt3X27XMiB3vKH86BOvcSowihlVfmfkpNLxVYgg92+hjfQ0oaqTvk1cU2pnfZBj5ZPlD5UqqsqUwdDinx32Ww/boksHgeNaza/kHN0t8dkbSLhq45J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jG1IlhZZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JzwXiHP6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764669983; x=1796205983;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oQlaqUeREC8Pc2NqxB4xgOj6FQuw9eUxeGBxZjH6Sgc=;
-  b=JzwXiHP6zTkWrmWvrI6DDuSsD197Il5BaRTHLokTrp6woMvrLVj30Sgo
-   NZMp1OWx9/3zIDFtYndkWMQyJeMQOKM18X58mHb3J39Xt8NL1/51S9EMC
-   yXQ2ZWddGtENCPjpAecLhWuzHB/WvJFuDLl2WBBtE7BcOZikgnfVcaEtl
-   tSRYEzrDgs74e95j5bBHYsLv/TSm3n6JPiZeFoceDLVWZH91rteKnqjLl
-   EE7MZHpDCJPmlGEZ4kpu2BnyQvkbScH8Tdl02zO5CkFsqVvPrq3PIeugM
-   S0GEciSTgDuy3qzMmMS11z+51rzaBVWsUuH28x5/po19ZyVC/g+HpZ04e
-   A==;
-X-CSE-ConnectionGUID: cQGaicewTGacMxVnydajtg==
-X-CSE-MsgGUID: gqAKoyE/Rha8s5ZftEGDCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11630"; a="69223299"
-X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; 
-   d="scan'208";a="69223299"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2025 02:06:21 -0800
-X-CSE-ConnectionGUID: PITpErWwRNmDgKnxiyeQcw==
-X-CSE-MsgGUID: 4OdsEXdETKmHXxBiAj8Kiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,242,1758610800"; 
-   d="scan'208";a="217680052"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 02 Dec 2025 02:06:15 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vQNGv-000000009fR-1YFs;
-	Tue, 02 Dec 2025 10:06:13 +0000
-Date: Tue, 2 Dec 2025 18:06:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marco Felsch <m.felsch@pengutronix.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	Liu Ying <victor.liu@nxp.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	Marco Felsch <m.felsch@pengutronix.de>
-Subject: Re: [PATCH v6 2/3] drm/bridge: imx: Add i.MX93 parallel display
- format configuration support
-Message-ID: <202512021733.cIbkorvY-lkp@intel.com>
-References: <20251201-v6-18-topic-imx93-parallel-display-v6-2-7b056e1e5b1e@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jG1IlhZZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D571FC4CEF1;
+	Tue,  2 Dec 2025 10:12:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764670352;
+	bh=sqiX0jb1v0UmMdokJRTSMz9MKkDH/LfxCka2MIljKkg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jG1IlhZZ8dxGIeplIChggbvAm6CB+XG5ghS+Z5ft06za/moeDXhEhbtqR2Y5LKOiK
+	 3sdL3KSs/gX9hnn7Fzh27/S9J6rXmfpf5fU+D6/kqPzykqS08yzTme1ML+7XY7t2if
+	 H246ARoydoc1WQQE1IbRnppQHzZW0ECCJzQ+6VeKwEAbc0ji517FSlHE83/el9UsIu
+	 QHh7O40B1GlgiMrYQbKeXPXvrL3ZH6iO5oQyZ7qkQS1wtOecypo+VUDNd/5K2K2Aey
+	 9AgFvpAVHlzI0PwrordRV5G5YWk2onFQ7tLwnYpZyIEbQzU5qdHAEEMdvImtxd23Qo
+	 1jg3tefoudENw==
+Date: Tue, 2 Dec 2025 15:42:19 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>, 
+	Stephen Rothwell <sfr@canb.auug.org.au>, Linux Next Mailing List <linux-next@vger.kernel.org>, 
+	linux-pci@vger.kernel.org, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, NXP S32 Linux Team <s32@nxp.com>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, linux-arm-kernel@lists.infradead.org, 
+	Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: linux-next: Tree for Nov 28
+ (drivers/pci/controller/dwc/pcie-nxp-s32g.o)
+Message-ID: <6ulzkdgd6j35ptu5mesgtgh2xa6fwalcmkgcxr2fdjwwfvzhrf@4dtcadsl2mvm>
+References: <20251128162928.36eec2d6@canb.auug.org.au>
+ <63e1daf7-f9a3-463e-8a1b-e9b72581c7af@infradead.org>
+ <ykmo5qv46mo7f3srblxoi2fvghz722fj7kpm77ozpflaqup6rk@ttvhbw445pgu>
+ <CAKfTPtA-wir5GzU7aTywe7SZG18Aj8Z9g1wjV-Y8vKoyKF1Mkg@mail.gmail.com>
+ <vb6pcyaue6pqpx626ytfr2aif4luypopywqoazjsvy4crh6zic@gfv75ar7musy>
+ <CAKfTPtCKmj_dHGU-2WPsEevf7CR-isRiyM0+oftCrMy5MswE4A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251201-v6-18-topic-imx93-parallel-display-v6-2-7b056e1e5b1e@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKfTPtCKmj_dHGU-2WPsEevf7CR-isRiyM0+oftCrMy5MswE4A@mail.gmail.com>
 
-Hi Marco,
+On Tue, Dec 02, 2025 at 11:03:07AM +0100, Vincent Guittot wrote:
+> On Tue, 2 Dec 2025 at 10:53, Manivannan Sadhasivam <mani@kernel.org> wrote:
+> >
+> > On Tue, Dec 02, 2025 at 09:54:24AM +0100, Vincent Guittot wrote:
+> > > On Tue, 2 Dec 2025 at 05:24, Manivannan Sadhasivam <mani@kernel.org> wrote:
+> > > >
+> > > > + Vincent
+> > >
+> > > Thanks for looping me in.
+> > > >
+> > > > On Sat, Nov 29, 2025 at 07:00:04PM -0800, Randy Dunlap wrote:
+> > > > >
+> > > > >
+> > > > > On 11/27/25 9:29 PM, Stephen Rothwell wrote:
+> > > > > > Hi all,
+> > > > > >
+> > > > > > Changes since 20251127:
+> > > > > >
+> > > > >
+> > > > > on i386 (allmodconfig):
+> > > > >
+> > > > > WARNING: modpost: vmlinux: section mismatch in reference: s32g_init_pcie_controller+0x2b (section: .text) -> memblock_start_of_DRAM (section: .init.text)
+> > >
+> > > Are there details to reproduce the warning ? I don't have such warning
+> > > when compiling allmodconfig locally
+> > >
+> > > s32 pcie can only be built in but I may have to use
+> > > builtin_platform_driver_probe() instead of builtin_platform_driver()
+> > >
+> >
+> > The is due to calling a function belonging to the __init section from non-init
+> > function. Ideally, functions prefixed with __init like memblock_start_of_DRAM()
+> > should be called from the module init functions.
+> >
+> > One way to fix would be to call memblock_start_of_DRAM() in probe(), and
+> > annotate probe() with __init. Since there is no remove, you could use
+> > builtin_platform_driver_probe().
+> >
+> > This also makes me wonder if we really should be using memblock_start_of_DRAM()
+> > in the driver. I know that this was suggested to you during reviews, but I would
+> > prefer to avoid it, especially due to this being the __init function.
+> 
+> yeah, I suppose I can directly define the value in the driver has
+> there is only one memory config for now anyway
+> 
+> /* Boundary between peripheral space and physical memory space */
+> #define S32G_MEMORY_BOUNDARY_ADDR 0x80000000
+> 
 
-kernel test robot noticed the following build errors:
+Ok. I fixed it up myself with below diff:
 
-[auto build test ERROR on 3a8660878839faadb4f1a6dd72c3179c1df56787]
+diff --git a/drivers/pci/controller/dwc/pcie-nxp-s32g.c b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
+index eacf0229762c..70b1dc404bbe 100644
+--- a/drivers/pci/controller/dwc/pcie-nxp-s32g.c
++++ b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
+@@ -7,7 +7,6 @@
+ 
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+-#include <linux/memblock.h>
+ #include <linux/module.h>
+ #include <linux/of_device.h>
+ #include <linux/of_address.h>
+@@ -35,6 +34,9 @@
+ #define PCIE_S32G_PE0_INT_STS                  0xE8
+ #define HP_INT_STS                             BIT(6)
+ 
++/* Boundary between peripheral space and physical memory space */
++#define S32G_MEMORY_BOUNDARY_ADDR              0x80000000
++
+ struct s32g_pcie_port {
+        struct list_head list;
+        struct phy *phy;
+@@ -99,10 +101,10 @@ static struct dw_pcie_ops s32g_pcie_ops = {
+ };
+ 
+ /* Configure the AMBA AXI Coherency Extensions (ACE) interface */
+-static void s32g_pcie_reset_mstr_ace(struct dw_pcie *pci, u64 ddr_base_addr)
++static void s32g_pcie_reset_mstr_ace(struct dw_pcie *pci)
+ {
+-       u32 ddr_base_low = lower_32_bits(ddr_base_addr);
+-       u32 ddr_base_high = upper_32_bits(ddr_base_addr);
++       u32 ddr_base_low = lower_32_bits(S32G_MEMORY_BOUNDARY_ADDR);
++       u32 ddr_base_high = upper_32_bits(S32G_MEMORY_BOUNDARY_ADDR);
+ 
+        dw_pcie_dbi_ro_wr_en(pci);
+        dw_pcie_writel_dbi(pci, COHERENCY_CONTROL_3_OFF, 0x0);
+@@ -149,7 +151,7 @@ static int s32g_init_pcie_controller(struct dw_pcie_rp *pp)
+         * Make sure we use the coherency defaults (just in case the settings
+         * have been changed from their reset values)
+         */
+-       s32g_pcie_reset_mstr_ace(pci, memblock_start_of_DRAM());
++       s32g_pcie_reset_mstr_ace(pci);
+ 
+        dw_pcie_dbi_ro_wr_en(pci);
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Marco-Felsch/dt-bindings-soc-imx93-media-blk-ctrl-Add-PDFC-subnode-to-schema-and-example/20251202-011707
-base:   3a8660878839faadb4f1a6dd72c3179c1df56787
-patch link:    https://lore.kernel.org/r/20251201-v6-18-topic-imx93-parallel-display-v6-2-7b056e1e5b1e%40pengutronix.de
-patch subject: [PATCH v6 2/3] drm/bridge: imx: Add i.MX93 parallel display format configuration support
-config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20251202/202512021733.cIbkorvY-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251202/202512021733.cIbkorvY-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512021733.cIbkorvY-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/gpu/drm/bridge/imx/imx93-pdfc.c:55:9: error: call to undeclared function 'FIELD_PREP'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-      55 |                 val = FORMAT_RGB888_TO_RGB888;
-         |                       ^
-   drivers/gpu/drm/bridge/imx/imx93-pdfc.c:21:34: note: expanded from macro 'FORMAT_RGB888_TO_RGB888'
-      21 | #define FORMAT_RGB888_TO_RGB888         FIELD_PREP(PARALLEL_DISP_FORMAT, 0)
-         |                                         ^
-   1 error generated.
-
-
-vim +/FIELD_PREP +55 drivers/gpu/drm/bridge/imx/imx93-pdfc.c
-
-    42	
-    43	static void imx93_pdfc_bridge_atomic_enable(struct drm_bridge *bridge,
-    44						    struct drm_atomic_state *state)
-    45	{
-    46		struct imx93_pdfc *pdfc = bridge->driver_private;
-    47		const struct drm_bridge_state *bridge_state;
-    48		unsigned int mask = PARALLEL_DISP_FORMAT;
-    49		unsigned int val;
-    50	
-    51		bridge_state = drm_atomic_get_new_bridge_state(state, bridge);
-    52	
-    53		switch (bridge_state->output_bus_cfg.format) {
-    54		case MEDIA_BUS_FMT_RGB888_1X24:
-  > 55			val = FORMAT_RGB888_TO_RGB888;
-    56			if (pdfc->phy_bus_width == 18) {
-    57				/*
-    58				 * Can be valid if physical bus limitation exist,
-    59				 * therefore use dev_dbg().
-    60				 */
-    61				dev_dbg(pdfc->dev, "Truncate two LSBs from each color\n");
-    62				val = FORMAT_RGB888_TO_RGB666;
-    63			}
-    64			break;
-    65		case MEDIA_BUS_FMT_RGB666_1X18:
-    66			val = FORMAT_RGB888_TO_RGB666;
-    67			break;
-    68		case MEDIA_BUS_FMT_RGB565_1X16:
-    69			val = FORMAT_RGB565_TO_RGB565;
-    70			break;
-    71		}
-    72	
-    73		regmap_update_bits(pdfc->regmap, pdfc->disp_mux_reg_off, mask, val);
-    74	}
-    75	
+- Mani
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+மணிவண்ணன் சதாசிவம்
