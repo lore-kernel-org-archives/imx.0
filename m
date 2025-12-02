@@ -1,26 +1,27 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5F9311C32
-	for <imx@lists.linux.dev>; Tue,  2 Dec 2025 13:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56BC3043C7
+	for <imx@lists.linux.dev>; Tue,  2 Dec 2025 13:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764681711; cv=none; b=hhZpt620fjFgwOEKae2Dn8FEo/JZfhRo31nR5FloN5jOYv6n/alqZeT2C8Ro3SBZNe1eefezQoS8HoH6300nsyNHhHMpLyMAf8b/9twJmLs+bgZO77dwH9KKrgHTLP2G6FQcrkQ3fhTiIzEhDXryWSjQ0wac/l7FNDSw3FSP7gI=
+	t=1764682398; cv=none; b=BiXu4OGGsjHfYYUUjHLS2CFq6CQVC4WvnFBtPJPK5y0Isz+DAdQQRC5wmRys2wzySt7AZoy++ZuK3+mDQ5sHNPA5fyB9d3kS8IN+ABRXZLhvjkPyxpwP5hmtfu+/JB7z85otNn+o/8s+P7wadObllhSQEKDtvHliS1B2UV9xlOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764681711; c=relaxed/simple;
-	bh=X6h8rILKRfbKIuZ/42DX20qfhAjCc8dGdCsBmMS7EuI=;
+	s=arc-20240116; t=1764682398; c=relaxed/simple;
+	bh=Hik9+zarGbIcSz4OSRFTsaTLuDpIYho2xAqwW24Pluk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SwDIGxogbwuWqXY3/ilapaST7WvBkPkkUXbs5bK5z7Xn1j7VybWHfjj3BZJdMHwm7WqJ5+lIPg++d/PAzlaPmdP6kNr6t8Ewti7Mf/h4BFefTV9snvO49WlyC82ikHuKZ+Tbw3Iot4G49tU/ey4dKFF9yvCdF8uoIhkE3jA96RQ=
+	 In-Reply-To:To:Cc; b=PfNkuMiYGBGJrMLZ6LbFQ+TS1r+PG9Rx67amKjWQKOumMvQuLIxeEC3LF7Q8AgoSTcCqLUq9k6mgg0LzOMd1D3A9+ImT1y+jkeGKOoKDqco+6wxeYLOipOYqOqnzX1grzA2ccdZfMVXCSwbFMoaMcBDtJBDbxXz+REATR9t3s30=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vQQJu-0003pJ-No; Tue, 02 Dec 2025 14:21:30 +0100
+	id 1vQQVD-0005Gc-Lb; Tue, 02 Dec 2025 14:33:11 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Tue, 02 Dec 2025 14:21:02 +0100
-Subject: [PATCH v2 1/3] pmdomain: imx93-blk-ctrl: cleanup error path
+Date: Tue, 02 Dec 2025 14:33:00 +0100
+Subject: [PATCH v7 3/3] arm64: dts: imx93: Add parallel display output
+ nodes
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -29,50 +30,143 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251202-v6-18-topic-imx93-blkctrl-v2-1-e73501034adc@pengutronix.de>
-References: <20251202-v6-18-topic-imx93-blkctrl-v2-0-e73501034adc@pengutronix.de>
-In-Reply-To: <20251202-v6-18-topic-imx93-blkctrl-v2-0-e73501034adc@pengutronix.de>
-To: Ulf Hansson <ulf.hansson@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
+Message-Id: <20251202-v6-18-topic-imx93-parallel-display-v7-3-2cce31d64608@pengutronix.de>
+References: <20251202-v6-18-topic-imx93-parallel-display-v7-0-2cce31d64608@pengutronix.de>
+In-Reply-To: <20251202-v6-18-topic-imx93-parallel-display-v7-0-2cce31d64608@pengutronix.de>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+ Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Alexander Stein <alexander.stein@ew.tq-group.com>, 
- Frank Li <Frank.Li@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>
+ dri-devel@lists.freedesktop.org, kernel@pengutronix.de, 
+ Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
 X-SA-Exim-Mail-From: m.felsch@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Call dev_err_probe() directly during return to make the code more
-compact.
+Add required OF nodes to support the i.MX93 parallel output (DPI) path.
 
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+On the i.MX93 a single LCDIF is connected to three bridges: DPI, LVDS
+LDB and the MIPI-DSI whereas the i.MX91 support only the DPI bridge.
+
+Map endpoint@0 as DPI bridge output since the i.MX93 TRM (Figure 485.
+MEDIAMIX block diagram) doesn't mention any port-number <-> bridge
+combination.
+
+Set the MEDIA-AXI and MEDIA-APB clocks to the overdrive (OD) values
+since the i.MX93 and i.MX91 use the overdrive (OD) clk settings per
+default.
+
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/pmdomain/imx/imx93-blk-ctrl.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/freescale/imx91_93_common.dtsi | 57 ++++++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx93.dtsi           | 12 +++++
+ 2 files changed, 69 insertions(+)
 
-diff --git a/drivers/pmdomain/imx/imx93-blk-ctrl.c b/drivers/pmdomain/imx/imx93-blk-ctrl.c
-index e094fe5a42bf646c712f3eca4e66a313fa5a914c..2aa163aef8de4ee901b9cde76ce2aad246c8c08a 100644
---- a/drivers/pmdomain/imx/imx93-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx93-blk-ctrl.c
-@@ -240,10 +240,8 @@ static int imx93_blk_ctrl_probe(struct platform_device *pdev)
- 	bc->num_clks = bc_data->num_clks;
+diff --git a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+index 52da571f26c4e8a2703e4476b5541fa7aca52f10..6dc01a76c68425bb65576712bfd98950d662bd38 100644
+--- a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+@@ -1122,8 +1122,65 @@ media_blk_ctrl: system-controller@4ac10000 {
+ 				 <&clk IMX93_CLK_MIPI_DSI_GATE>;
+ 			clock-names = "apb", "axi", "nic", "disp", "cam",
+ 				      "pxp", "lcdif", "isi", "csi", "dsi";
++			assigned-clocks = <&clk IMX93_CLK_MEDIA_AXI>,
++					  <&clk IMX93_CLK_MEDIA_APB>,
++					  <&clk IMX93_CLK_MEDIA_DISP_PIX>;
++			assigned-clock-parents = <&clk IMX93_CLK_SYS_PLL_PFD1>,
++						 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
++						 <&clk IMX93_CLK_VIDEO_PLL>;
++			assigned-clock-rates = <400000000>, <133333333>;
+ 			#power-domain-cells = <1>;
++			#address-cells = <1>;
++			#size-cells = <1>;
+ 			status = "disabled";
++
++			dpi_bridge: bridge@60 {
++				compatible = "nxp,imx93-pdfc";
++				reg = <0x60 0x4>;
++				status = "disabled";
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++
++						dpi_from_lcdif: endpoint {
++							remote-endpoint = <&lcdif_to_dpi>;
++						};
++					};
++
++					port@1 {
++						reg = <1>;
++
++						dpi_to_panel: endpoint {
++						};
++					};
++				};
++			};
++		};
++
++		lcdif: display-controller@4ae30000 {
++			compatible = "fsl,imx93-lcdif";
++			reg = <0x4ae30000 0x23c>;
++			interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&clk IMX93_CLK_MEDIA_DISP_PIX>,
++				 <&clk IMX93_CLK_LCDIF_GATE>,
++				 <&clk IMX93_CLK_MEDIA_AXI>;
++			clock-names = "pix", "axi", "disp_axi";
++			power-domains = <&media_blk_ctrl IMX93_MEDIABLK_PD_LCDIF>;
++			status = "disabled";
++
++			port {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				lcdif_to_dpi: endpoint@0 {
++					reg = <0>;
++					remote-endpoint = <&dpi_from_lcdif>;
++				};
++			};
+ 		};
  
- 	ret = devm_clk_bulk_get(dev, bc->num_clks, bc->clks);
--	if (ret) {
--		dev_err_probe(dev, ret, "failed to get bus clock\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to get bus clock\n");
+ 		usbotg1: usb@4c100000 {
+diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
+index 7b27012dfcb564650882dc8c40e836e797b2fda1..5436b48b30e89eb1f939b398ce1bf105abe7e34b 100644
+--- a/arch/arm64/boot/dts/freescale/imx93.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
+@@ -150,6 +150,18 @@ l3_cache: l3-cache {
+ 	};
+ };
  
- 	for (i = 0; i < bc_data->num_domains; i++) {
- 		const struct imx93_blk_ctrl_domain_data *data = &bc_data->domains[i];
++&lcdif {
++	port {
++		lcdif_to_ldb: endpoint@1 {
++			reg = <1>;
++		};
++
++		lcdif_to_dsi: endpoint@2 {
++			reg = <2>;
++		};
++	};
++};
++
+ &src {
+ 	mlmix: power-domain@44461800 {
+ 		compatible = "fsl,imx93-src-slice";
 
 -- 
 2.47.3
