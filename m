@@ -1,159 +1,175 @@
-Received: from mx-relay90-hz2.antispameurope.com (mx-relay90-hz2.antispameurope.com [94.100.136.190])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B2B201033
-	for <imx@lists.linux.dev>; Tue,  2 Dec 2025 11:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.190
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764676147; cv=pass; b=XHdwA2EcINRkm7Q4pmIiagBqvx7a3cEnGunfifMtSi/Y6th1u9i8Q5NSNIS6VGJHppPdNSS4++WzkYirisHmUuHVv0fUfwpW55Ru3x/vh7rAaVVEhTmNtodekElywgEmltlbwEx05VNDqgAq29j/aqWZAxmRHrowWmqqRR3ehco=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764676147; c=relaxed/simple;
-	bh=rOAoEjyVa1jEQA2BYDgvgv+WUqVYhkDMhJXVPZnWjU8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K//MKLjETjzfieOs3XeRjt/qGwvk/+pGrbn+5aeBJBFaRpgSTtyhXDdXPTz8j3wwkODMSF5ToHAVZfiZnrlw7L9xgC35cPesfdxoEuOl8xfpcBDJbAHtHZGtpuHmY9UxG/HJB612/i2oHyTC9jnbvaQEwbRIRN7kPSEXb/N8xhk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=rWqjzDQ3; arc=pass smtp.client-ip=94.100.136.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="rWqjzDQ3"
-ARC-Authentication-Results: i=1; mx-gate90-hz2.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out01-hz1.hornetsecurity.com;
- dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=cPzBCQ/cVroc4yKwXafobMdff4xUZ/bh1Bgq00vprqk=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1764676105;
- b=Ybe1Ix3n0E9WnXDJJXFTcNiubbzuP1bbp9OriKXycZLCe7E/Ts4tdOZe+5wA6TiI4fLJXR5t
- zOd+SIEm73pxOFCkmRxTT1kaOQ2SOiLCmvqvM5A4JveuIAVFl8Pkap7lbl5cQrwAJkijW6GlPpA
- SVJSIv1HUTXdH4u34iNLlklseo9V5dGxHN0eYHOrN36MjSsybxkQJxcVRNiJIqIF9quZPbXS6wH
- 1ymO6MToMHXmfy8V69tA7LEEuLIKGOdXoATdfWJOuTC1Meto4CA3DoBqYq4pyw/xG4e9c6aG0u3
- YyUiYixZEzR2RrLVaDbwaDaOVOGwbhUaEwNyKTuD8p4Jw==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1764676105;
- b=GWlfl+32EZS3bvlT1wMin0Z4bznOGwPOmUs6c5xMwPzVNCkxBGsy8a1xMFcnmQfyC5H677qa
- ng0Gv23IDe1JwuAXhME8M0y8mlKxMDsbjXx1WLETPVjUgNDwBwjmdx/IM/4kkKTd2PmaYmKEK+n
- 3JpKDIj+XJYZm4k0Xsp7wusyu/+J4M1ydIljNBpjHR9g/m2tLPBHku/KogO7uQyTjDBNcTkiOE2
- 7DpqRuE8JGZGdFG6SJKUeGKr99Skq9ehuqkyhyAoUvN7x7GUCd2ZJJz1fF2/Jy0fNIy5Ts00Hxr
- N6plB7t3w+witYvXB2uXEeRhvhD7dzmnsVuWcbjyA3l6A==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay90-hz2.antispameurope.com;
- Tue, 02 Dec 2025 12:48:25 +0100
-Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by smtp-out01-hz1.hornetsecurity.com (Postfix) with ESMTPSA id BAAF7A4128F;
-	Tue,  2 Dec 2025 12:48:15 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
- frank.li@nxp.com, Sherry Sun <sherry.sun@nxp.com>
-Cc: devicetree@vger.kernel.org, kernel@pengutronix.de,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-Subject:
- Re: [PATCH] arm64: dts: imx8qm-ss-dma: correct the dma channels of lpuart
-Date: Tue, 02 Dec 2025 12:48:15 +0100
-Message-ID: <2395053.ElGaqSPkdT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20251202111638.3553-1-sherry.sun@nxp.com>
-References: <20251202111638.3553-1-sherry.sun@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3E43126D3
+	for <imx@lists.linux.dev>; Tue,  2 Dec 2025 13:21:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764681708; cv=none; b=kQAZjbXmtqbCCarwzdaV8fsyTy+CuQ8ABtoeGpk4qovZOKfMBN6Q2h0nu5lPeyUzW3PDNGhjMP6FkSPXWetiWPmPwUbv2ormiHLV/5e0hmaay3Ejqt3LZtf/yABibf2+LKEVnMNfee+KpFDFfNLDLN4/sZUFNH80IfGeDyAy9T0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764681708; c=relaxed/simple;
+	bh=dcfHatMpMTm4tDIi7xxC79fBMuzf0pzfdh2LonpFAHQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=tjxlA4yf300+9FEHntw2iSSeeoNOBmR4aDOddSlzsvx8Vn6t3tljG3HqvWTCP9exoXCbHe8zACyb+UqEFL6J49sHkN+HZyOFDhMnPszVKdOehoz7BqNz6nVEWcYXJkmaooGqkOWIFTrv5vPwcf3yVFKUm5qr7EHOmtuOqc4M59I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1vQQJu-0003pJ-PG; Tue, 02 Dec 2025 14:21:30 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+Date: Tue, 02 Dec 2025 14:21:03 +0100
+Subject: [PATCH v2 2/3] pmdomain: imx93-blk-ctrl: convert to devm_* only
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay90-hz2.antispameurope.com with 4dLJtm3MJzzWycw
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:199991314bca0e7504113f70cfa02bc4
-X-cloud-security:scantime:1.766
-DKIM-Signature: a=rsa-sha256;
- bh=cPzBCQ/cVroc4yKwXafobMdff4xUZ/bh1Bgq00vprqk=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1764676105; v=1;
- b=rWqjzDQ3CP5juZNzgJjXaKlKjrXLNCLMfNHieY90fsqHuuUpq4HYSVpYN5MhnhFMhzsV21fo
- LpvqEL390o5yx5LDmlCGJYpXY5LStOobSlOqQxIF4UIEVzseWxtPE9gONwAgN2++sRNjQO2SN3f
- OHe92YyZnZzjXVyHqqAol1QhSrkS1qbJ47QkGYMnIaytCo/lxzqfBBUmOBm2pk5aFNxPZiZgNYo
- 7JwxIvn7qTEJebESsmZuRYYz1qjNQGTShSkeeh4+GPV2oXAbjHeHx4Fx41d/x+B2BeUHCELNegh
- qR+U6jF9H6Cjvg8K9TBmXUUg1RrkNZg57CVXAlR3ji+kQ==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251202-v6-18-topic-imx93-blkctrl-v2-2-e73501034adc@pengutronix.de>
+References: <20251202-v6-18-topic-imx93-blkctrl-v2-0-e73501034adc@pengutronix.de>
+In-Reply-To: <20251202-v6-18-topic-imx93-blkctrl-v2-0-e73501034adc@pengutronix.de>
+To: Ulf Hansson <ulf.hansson@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Marco Felsch <m.felsch@pengutronix.de>
+X-Mailer: b4 0.14.2
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
+X-SA-Exim-Mail-From: m.felsch@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi,
+Convert the driver to devm_ APIs only by making use of
+devm_add_action_or_reset() and devm_pm_runtime_enable() to simplify the
+probe error path and to drop the .remove() callback. This also ensures
+that the device release order equals the device probe error path order.
 
-Am Dienstag, 2. Dezember 2025, 12:16:38 CET schrieb Sherry Sun:
-> The commit 616effc0272b5 ("arm64: dts: imx8: Fix lpuart DMA channel
-> order") swap uart rx and tx channel at common imx8-ss-dma.dtsi. But miss
-> update imx8qm-ss-dma.dtsi.
->=20
-> The commit 5a8e9b022e569 ("arm64: dts: imx8qm-ss-dma: Pass lpuart
-> dma-names") just simple add dma-names as binding doc requirement.
->=20
-> Correct lpuart0 - lpuart3 dma rx and tx channels, and use defines for
-> the FSL_EDMA_RX flag.
->=20
-> Fixes: 616effc0272b5 ("arm64: dts: imx8: Fix lpuart DMA channel order")
+Furthermore drop the dev_set_drvdata() usage since the only user was the
+.remove() callback which is removed by this commit.
 
-I'm wondering if this is actually a fix for 5a8e9b022e569 ("arm64: dts:
-imx8qm-ss-dma: Pass lpuart dma-names") instead. 616effc0272b5 just
-focuses on the common parts. But I don't have a strong opinion here.
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ drivers/pmdomain/imx/imx93-blk-ctrl.c | 66 +++++++++++++++--------------------
+ 1 file changed, 29 insertions(+), 37 deletions(-)
 
-Thanks and best regards,
-Alexander
+diff --git a/drivers/pmdomain/imx/imx93-blk-ctrl.c b/drivers/pmdomain/imx/imx93-blk-ctrl.c
+index 2aa163aef8de4ee901b9cde76ce2aad246c8c08a..49610f2389c3bbaf4de4133918fbcacb7924f672 100644
+--- a/drivers/pmdomain/imx/imx93-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx93-blk-ctrl.c
+@@ -188,6 +188,20 @@ static int imx93_blk_ctrl_power_off(struct generic_pm_domain *genpd)
+ 	return 0;
+ }
+ 
++static void imx93_release_genpd_provider(void *data)
++{
++	struct device_node *of_node = data;
++
++	of_genpd_del_provider(of_node);
++}
++
++static void imx93_release_pm_genpd(void *data)
++{
++	struct generic_pm_domain *genpd = data;
++
++	pm_genpd_remove(genpd);
++}
++
+ static struct lock_class_key blk_ctrl_genpd_lock_class;
+ 
+ static int imx93_blk_ctrl_probe(struct platform_device *pdev)
+@@ -256,10 +270,8 @@ static int imx93_blk_ctrl_probe(struct platform_device *pdev)
+ 			domain->clks[j].id = data->clk_names[j];
+ 
+ 		ret = devm_clk_bulk_get(dev, data->num_clks, domain->clks);
+-		if (ret) {
+-			dev_err_probe(dev, ret, "failed to get clock\n");
+-			goto cleanup_pds;
+-		}
++		if (ret)
++			return dev_err_probe(dev, ret, "failed to get clock\n");
+ 
+ 		domain->genpd.name = data->name;
+ 		domain->genpd.power_on = imx93_blk_ctrl_power_on;
+@@ -267,11 +279,12 @@ static int imx93_blk_ctrl_probe(struct platform_device *pdev)
+ 		domain->bc = bc;
+ 
+ 		ret = pm_genpd_init(&domain->genpd, NULL, true);
+-		if (ret) {
+-			dev_err_probe(dev, ret, "failed to init power domain\n");
+-			goto cleanup_pds;
+-		}
++		if (ret)
++			return dev_err_probe(dev, ret, "failed to init power domain\n");
+ 
++		ret = devm_add_action_or_reset(dev, imx93_release_pm_genpd, &domain->genpd);
++		if (ret)
++			return dev_err_probe(dev, ret, "failed to add pm_genpd release callback\n");
+ 		/*
+ 		 * We use runtime PM to trigger power on/off of the upstream GPC
+ 		 * domain, as a strict hierarchical parent/child power domain
+@@ -288,39 +301,19 @@ static int imx93_blk_ctrl_probe(struct platform_device *pdev)
+ 		bc->onecell_data.domains[i] = &domain->genpd;
+ 	}
+ 
+-	pm_runtime_enable(dev);
++	ret = devm_pm_runtime_enable(dev);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to enable pm-runtime\n");
+ 
+ 	ret = of_genpd_add_provider_onecell(dev->of_node, &bc->onecell_data);
+-	if (ret) {
+-		dev_err_probe(dev, ret, "failed to add power domain provider\n");
+-		goto cleanup_pds;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to add power domain provider\n");
+ 
+-	dev_set_drvdata(dev, bc);
++	ret = devm_add_action_or_reset(dev, imx93_release_genpd_provider, dev->of_node);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to add genpd_provider release callback\n");
+ 
+ 	return 0;
+-
+-cleanup_pds:
+-	for (i--; i >= 0; i--)
+-		pm_genpd_remove(&bc->domains[i].genpd);
+-
+-	return ret;
+-}
+-
+-static void imx93_blk_ctrl_remove(struct platform_device *pdev)
+-{
+-	struct imx93_blk_ctrl *bc = dev_get_drvdata(&pdev->dev);
+-	int i;
+-
+-	of_genpd_del_provider(pdev->dev.of_node);
+-
+-	pm_runtime_disable(&pdev->dev);
+-
+-	for (i = 0; i < bc->onecell_data.num_domains; i++) {
+-		struct imx93_blk_ctrl_domain *domain = &bc->domains[i];
+-
+-		pm_genpd_remove(&domain->genpd);
+-	}
+ }
+ 
+ static const struct imx93_blk_ctrl_domain_data imx93_media_blk_ctl_domain_data[] = {
+@@ -455,7 +448,6 @@ MODULE_DEVICE_TABLE(of, imx93_blk_ctrl_of_match);
+ 
+ static struct platform_driver imx93_blk_ctrl_driver = {
+ 	.probe = imx93_blk_ctrl_probe,
+-	.remove = imx93_blk_ctrl_remove,
+ 	.driver = {
+ 		.name = "imx93-blk-ctrl",
+ 		.of_match_table = imx93_blk_ctrl_of_match,
 
-> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->=20
-> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi b/arch/arm6=
-4/boot/dts/freescale/imx8qm-ss-dma.dtsi
-> index 5f24850bf322..974e193f8dcb 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
-> @@ -172,25 +172,25 @@ &flexcan3 {
-> =20
->  &lpuart0 {
->  	compatible =3D "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
-> -	dmas =3D <&edma2 13 0 0>, <&edma2 12 0 1>;
-> +	dmas =3D <&edma2 12 0 FSL_EDMA_RX>, <&edma2 13 0 0>;
->  	dma-names =3D "rx","tx";
->  };
-> =20
->  &lpuart1 {
->  	compatible =3D "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
-> -	dmas =3D <&edma2 15 0 0>, <&edma2 14 0 1>;
-> +	dmas =3D <&edma2 14 0 FSL_EDMA_RX>, <&edma2 15 0 0>;
->  	dma-names =3D "rx","tx";
->  };
-> =20
->  &lpuart2 {
->  	compatible =3D "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
-> -	dmas =3D <&edma2 17 0 0>, <&edma2 16 0 1>;
-> +	dmas =3D <&edma2 16 0 FSL_EDMA_RX>, <&edma2 17 0 0>;
->  	dma-names =3D "rx","tx";
->  };
-> =20
->  &lpuart3 {
->  	compatible =3D "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
-> -	dmas =3D <&edma2 19 0 0>, <&edma2 18 0 1>;
-> +	dmas =3D <&edma2 18 0 FSL_EDMA_RX>, <&edma2 19 0 0>;
->  	dma-names =3D "rx","tx";
->  };
-> =20
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+-- 
+2.47.3
 
