@@ -1,215 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx2.securetransport.de (mx2.securetransport.de [188.68.39.254])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395A7201004
-	for <imx@lists.linux.dev>; Tue,  2 Dec 2025 14:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19BE21FF5B
+	for <imx@lists.linux.dev>; Tue,  2 Dec 2025 14:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.39.254
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764684937; cv=none; b=IR3q6mA+pmBMbRda7iwIjOQvXXdHFHYeqaMz7tqvYO2TGwXjg1SMH9/BKaRB2SKCyRM0Zy12JJ2w2/LrAjj6V2AexmrFMc8PKJrSHTnqv/5sSW9N+umnQxjTinFXcHA2zEHruccXscEpq3DNXUnB8sqeq5BGxEQDY2yt3Y/gKXg=
+	t=1764686415; cv=none; b=CYJychw/FUBB9FjlpGz3fWc7f1KgHf4AkRCXj5aWBJfiY8Ow4yoks0T9uOlUkOgf+BitEqsTrwfftH16yDq5e6ghvND+Ni1bwK+izZeRIyUcTgYHktU+b8SAGCrrSI2mdGpmXVQh0AC5+1C1T7kZMSdvNDw4Gq1Un8eAL+Lzygw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764684937; c=relaxed/simple;
-	bh=4Wc48KRaIcqiX0vglMdyQboI7iIQ2x8CgSCV7WOL/hs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F9cYUUGQTwN2QYfSTnJfeb1BUJwC1g4HX+qGA7FFI9ICjw1EsSphE4o4R/D+dc/nf/vOYVICu4OcuU5JBu+vOQYmUGu6VW80CXLV7agPZjY9erB2EFQ3Otwg6DCtxTaZxQEWqCO00iSLCoD2YkcLIXguwOZqm/0pBRa386WpqHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oS2mkVPH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764686415; c=relaxed/simple;
+	bh=aswFcthnfv2rmWTg22G0hBTDeuWReucnE/3ZxaWwGJo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=O2DfmT3WNL4af0VbMWD+AMPlB9ZALDKuWDWA9fdp+LV2aItJay1IPP/ZajEdhL8rPxg+/V+A4/FZthGh74JVMF+mUf6mNUHVoFkixmUByn5NHi8sK1ZWFg9ngdSGziLSJkHJtgNaeZZoRx4PhwrJNNrpoYeuXTLAIDSmCh9OHug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com; spf=pass smtp.mailfrom=dh-electronics.com; dkim=pass (2048-bit key) header.d=dh-electronics.com header.i=@dh-electronics.com header.b=YRqP8cL3; arc=none smtp.client-ip=188.68.39.254
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=dh-electronics.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dh-electronics.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oS2mkVPH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FD2C2BCB1
-	for <imx@lists.linux.dev>; Tue,  2 Dec 2025 14:15:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764684936;
-	bh=4Wc48KRaIcqiX0vglMdyQboI7iIQ2x8CgSCV7WOL/hs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=oS2mkVPHrpV8sWUwH+Q0AJ0ClWDtVr/T+8Z9ZI+6iedRlqKw4FAuwSCb5BfkSlgJN
-	 SqCVRql5CR+IxwmmKB87Usk2+iZkbCoEdljR0q4TOSCRcY2HH3VxAZIWWfiDvv2973
-	 6HaDODJFFN5V0Ovs3P3G2ZNgu8QnR+YYgP5S6MEfDUyRaMV+vOrpfegKEG5h1sIQ4U
-	 2A9C9rNoxXy4cF1lPEO/thcP/a17WAEeWOUsE+irpkdDfF1e3WqjeJ3k/TDT2U5AfO
-	 yp8DS3LMrMuWjX5BddfjIf3dgMScZVeOJA7+yJE8gMGqEXpMADVWUNxOdiboptIWBw
-	 6n3oljKWqG0VA==
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-6408f9cb1dcso8646202a12.3
-        for <imx@lists.linux.dev>; Tue, 02 Dec 2025 06:15:36 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUZqZXDBaRhVySRJlG1sAfdUrFmdCO+7IjnJ1zb/YMBRKKYDY3b0QcndcggYjjKglmCUDU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzQQFx7k/awmskCKPeioOiKAqBu30QcEXHrrRP63uOMvKj4/+ZK
-	GMQP77Os0Kbh46X3152Uiei0NX0ZxH0wte0VCrZe+Ny5JHimT0MjnLp9P4hDeYH75byMaYEjOmB
-	LGBM2BklzDieaeJSIIbkfp9tKco/bYA==
-X-Google-Smtp-Source: AGHT+IHOK37x0Kt35joRUOghP+Y+b/h+dUlhViPYEEU5vZFEgzun82hvWA1eFjAbdPJqCcazIpiBmOYOIRh+oi7lQBk=
-X-Received: by 2002:a05:6402:51c9:b0:647:6589:516f with SMTP id
- 4fb4d7f45d1cf-647658951c8mr11422163a12.23.1764684935180; Tue, 02 Dec 2025
- 06:15:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=dh-electronics.com header.i=@dh-electronics.com header.b="YRqP8cL3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dh-electronics.com;
+	s=dhelectronicscom; t=1764685962;
+	bh=aswFcthnfv2rmWTg22G0hBTDeuWReucnE/3ZxaWwGJo=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=YRqP8cL3tTx9QHaZ8qTclZJmQ2Fv9LLk/4XIxJmCQWxN3L5gKO/TbqcuFlaIJahLZ
+	 4qOY7hHGC7HIWHPH+R6R7PRTcqUvpslXYo4g6VwnJyNJNHrqoRuodm/2MvvlhOeU4f
+	 NvrXESxKiP3tI7XfUAot4KCpGOyx0jQ9FX1Vo7lor9za73y1ghDtuU8N0ss/pCoEDx
+	 kyOflZoCuxWlyvBKdfBu/ZhuJ2JDepng02IwO+Ga9z9OHsG30Rrq5h2OoX1tMoMQoM
+	 Q6Fc622OdSUoqmcLLxC2TZHReXjQbRAWS3lmexWSvIGLbGWhOgyNoL6VVuTdtAHc7e
+	 Ka6XtUbJhl6wg==
+X-secureTransport-forwarded: yes
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Complaints-To: abuse@cubewerk.de
+To: Marek Vasut <marek.vasut@mailbox.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+CC: Conor Dooley <conor+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, kernel
+	<kernel@dh-electronics.com>
+Subject: RE: [PATCH] arm64: dts: imx8mp: Fix LAN8740Ai PHY reference clock on
+ DH electronics i.MX8M Plus DHCOM
+Thread-Topic: [PATCH] arm64: dts: imx8mp: Fix LAN8740Ai PHY reference clock on
+ DH electronics i.MX8M Plus DHCOM
+Thread-Index: AQHcY5F4pbnyemf+0kevbalLqYn3ELUOaJJQ
+Date: Tue, 2 Dec 2025 14:32:38 +0000
+Message-ID: <12d58795b3664ff08e509f0a0929d1b9@dh-electronics.com>
+References: <20251202134200.8397-1-marek.vasut@mailbox.org>
+In-Reply-To: <20251202134200.8397-1-marek.vasut@mailbox.org>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251124182751.507624-1-robh@kernel.org> <CGME20251127142839eucas1p186846c6c1ea1d9e43369fbba9bb5d17c@eucas1p1.samsung.com>
- <20251124182751.507624-2-robh@kernel.org> <674efe8d-c299-4ce9-bf6b-c1920a5393eb@samsung.com>
-In-Reply-To: <674efe8d-c299-4ce9-bf6b-c1920a5393eb@samsung.com>
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 2 Dec 2025 08:15:23 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJTrGAJx-fv8OQGDhsLVKavQzzQotssEq_E5f_aJe8bOg@mail.gmail.com>
-X-Gm-Features: AWmQ_blpHLPsU5za5Q3_8cThmj1tfuI1sEcIZQQrDepEj9pfYTWSHFtibfJZbEw
-Message-ID: <CAL_JsqJTrGAJx-fv8OQGDhsLVKavQzzQotssEq_E5f_aJe8bOg@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] remoteproc: qcom: Use of_reserved_mem_region_*
- functions for "memory-region"
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Patrice Chotard <patrice.chotard@foss.st.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Arnaud Pouliquen <arnaud.pouliquen@foss.st.com>, Peng Fan <peng.fan@nxp.com>, 
-	Beleswar Padhi <b-padhi@ti.com>, linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-msm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 27, 2025 at 8:28=E2=80=AFAM Marek Szyprowski
-<m.szyprowski@samsung.com> wrote:
->
-> Hi Rob,
->
-> On 24.11.2025 19:27, Rob Herring (Arm) wrote:
-> > Use the newly added of_reserved_mem_region_to_resource() and
-> > of_reserved_mem_region_count() functions to handle "memory-region"
-> > properties.
-> >
-> > The error handling is a bit different in some cases. Often
-> > "memory-region" is optional, so failed lookup is not an error. But then
-> > an error in of_reserved_mem_lookup() is treated as an error. However,
-> > that distinction is not really important. Either the region is availabl=
-e
-> > and usable or it is not. So now, it is just
-> > of_reserved_mem_region_to_resource() which is checked for an error.
-> >
-> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
->
-> This patch landed in today's linux-next as commit c70b9d5fdcd7
-> ("remoteproc: qcom: Use of_reserved_mem_region_* functions for
-> "memory-region""). In my tests I found that it breaks booting of
-> DragonBoard410c (arch/arm64/boot/dts/qcom/apq8016-sbc.dts) by causing
-> the NULL pointer dereference. The issue is caused by replacing
-> devm_ioremap_wc() with devm_ioremap_resource_wc(), which fails on
-> devm_request_mem_region(), see comment in the code below. It looks that
-> the error handling is somewhere broken. Here is the the kernel log:
->
-> remoteproc remoteproc0: 4080000.remoteproc is available
-> qcom-wcnss-pil a204000.remoteproc: error -EBUSY: can't request region
-> for resource [mem 0x8e200000-0x8e7fffff]
-> remoteproc remoteproc1: a204000.remoteproc is available
-> remoteproc remoteproc1: powering up a204000.remoteproc
-> remoteproc remoteproc1: Booting fw image qcom/apq8016/wcnss.mbn, size
-> 4111376
-> Unable to handle kernel paging request at virtual address fffffffffffffff=
-0
-> Mem abort info:
-> ...
-> Internal error: Oops: 0000000096000046 [#1]  SMP
-> Modules linked in: cpufreq_powersave qcom_wcnss_pil cpufreq_conservative
-> coresight_stm coresight_replicator coresight_tmc coresight_tpiu stm_core
-> coresight_funnel coresight_cpu_debug coresight_cti(+) adv7511 coresight
-> nfc rfkill msm snd_soc_lpass_apq8016 snd_soc_apq8016_sbc
-> snd_soc_lpass_cpu snd_soc_msm8916_analog snd_soc_msm8916_digital
-> snd_soc_qcom_common snd_soc_lpass_platform snd_soc_core qrtr ubwc_config
-> snd_compress llcc_qcom snd_pcm_dmaengine qcom_q6v5_mss snd_pcm ocmem
-> qcom_pil_info qcom_spmi_vadc qcom_camss drm_gpuvm qcom_pon rtc_pm8xxx
-> qcom_q6v5 qcom_spmi_temp_alarm venus_core qcom_vadc_common snd_timer
-> drm_exec qcom_sysmon snd qcom_common gpu_sched videobuf2_dma_sg
-> v4l2_mem2mem qcom_glink_smem v4l2_fwnode soundcore drm_dp_aux_bus
-> qmi_helpers mdt_loader v4l2_async videobuf2_memops videobuf2_v4l2
-> videodev qnoc_msm8916 videobuf2_common qcom_rng drm_display_helper mc
-> qcom_stats rpmsg_ctrl rpmsg_char display_connector ramoops socinfo
-> rmtfs_mem reed_solomon ax88796b asix usbnet phy_qcom_usb_hs ipv6 libsha1
-> CPU: 2 UID: 0 PID: 28 Comm: kworker/2:0 Tainted: G W
-> 6.18.0-rc1+ #16209 PREEMPT
-> Tainted: [W]=3DWARN
-> lr : __qcom_mdt_load+0x210/0x304 [mdt_loader]
-> Call trace:
->   __pi_memcpy_generic+0x128/0x22c (P)
->   qcom_mdt_load+0x68/0x60c [mdt_loader]
->   wcnss_load+0x2c/0x5c [qcom_wcnss_pil]
->   rproc_start+0x30/0x1b4
->   rproc_boot+0x19c/0x560
->   rproc_auto_boot_callback+0x1c/0x34
->   request_firmware_work_func+0x4c/0x98
->   process_one_work+0x208/0x60c
->   worker_thread+0x244/0x388
->   kthread+0x150/0x228
->   ret_from_fork+0x10/0x20
-> Code: 927cec03 cb0e0021 8b0e0042 a9411c26 (a900340c)
-> ---[ end trace 0000000000000000 ]---
->
->
-> > ---
-> > v7:
-> >   - Split QCom to separate patch
-> > ---
-> >   drivers/remoteproc/qcom_q6v5_adsp.c | 24 ++++------
-> >   drivers/remoteproc/qcom_q6v5_mss.c  | 60 ++++++++-----------------
-> >   drivers/remoteproc/qcom_q6v5_pas.c  | 69 +++++++++++-----------------=
--
-> >   drivers/remoteproc/qcom_q6v5_wcss.c | 25 +++++------
-> >   drivers/remoteproc/qcom_wcnss.c     | 23 ++++------
-> >   5 files changed, 72 insertions(+), 129 deletions(-)
-> >
->
-> > ...
->
-> > diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_=
-wcnss.c
-> > index 2c7e519a2254..14005fb049a2 100644
-> > --- a/drivers/remoteproc/qcom_wcnss.c
-> > +++ b/drivers/remoteproc/qcom_wcnss.c
-> > @@ -526,25 +526,20 @@ static int wcnss_request_irq(struct qcom_wcnss *w=
-cnss,
-> >
-> >   static int wcnss_alloc_memory_region(struct qcom_wcnss *wcnss)
-> >   {
-> > -     struct reserved_mem *rmem =3D NULL;
-> > -     struct device_node *node;
-> > -
-> > -     node =3D of_parse_phandle(wcnss->dev->of_node, "memory-region", 0=
-);
-> > -     if (node)
-> > -             rmem =3D of_reserved_mem_lookup(node);
-> > -     of_node_put(node);
-> > +     struct resource res;
-> > +     int ret;
-> >
-> > -     if (!rmem) {
-> > +     ret =3D of_reserved_mem_region_to_resource(wcnss->dev->of_node, 0=
-, &res);
-> > +     if (ret) {
-> >               dev_err(wcnss->dev, "unable to resolve memory-region\n");
-> > -             return -EINVAL;
-> > +             return ret;
-> >       }
-> >
-> > -     wcnss->mem_phys =3D wcnss->mem_reloc =3D rmem->base;
-> > -     wcnss->mem_size =3D rmem->size;
-> > -     wcnss->mem_region =3D devm_ioremap_wc(wcnss->dev, wcnss->mem_phys=
-, wcnss->mem_size);
-> > +     wcnss->mem_phys =3D wcnss->mem_reloc =3D res.start;
-> > +     wcnss->mem_size =3D resource_size(&res);
-> > +     wcnss->mem_region =3D devm_ioremap_resource_wc(wcnss->dev, &res);
->
-> The above line causes the failure. After restoring it to:
->
-> wcnss->mem_region =3D devm_ioremap_wc(wcnss->dev, wcnss->mem_phys, wcnss-=
->mem_size);
->
-> the mentioned board boots fine again. I'm not sure about other drivers,
-> if they also fail the same way as they might not be used on the tested
-> board.
-
-Other platforms (non-QCom) were tested also use
-devm_ioremap_resource_wc(). So something else is claiming the same
-region? Can you dump out /proc/iomem?
-
-The region is dynamically allocated, so maybe that has something to do with=
- it.
-
-Rob
+RnJvbTogTWFyZWsgVmFzdXQgPG1hcmVrLnZhc3V0QG1haWxib3gub3JnPg0KU2VudDogVHVlc2Rh
+eSwgRGVjZW1iZXIgMiwgMjAyNSAyOjQyIFBNDQo+IEFkZCBtaXNzaW5nICdjbG9ja3MnIHByb3Bl
+cnR5IHRvIExBTjg3NDBBaSBQSFkgbm9kZSwgdG8gYWxsb3cgdGhlIFBIWSBkcml2ZXINCj4gdG8g
+bWFuYWdlIExBTjg3NDBBaSBDTEtJTiByZWZlcmVuY2UgY2xvY2sgc3VwcGx5LiBUaGlzIGZpeGVz
+IHNwb3JhZGljIGxpbmsNCj4gYm91bmNpbmcgY2F1c2VkIGJ5IGludGVycnVwdGlvbnMgb24gdGhl
+IFBIWSByZWZlcmVuY2UgY2xvY2ssIGJ5IGxldHRpbmcgdGhlDQo+IFBIWSBkcml2ZXIgbWFuYWdl
+IHRoZSByZWZlcmVuY2UgY2xvY2sgYW5kIGFzc3VyZSB0aGVyZSBhcmUgbm8gaW50ZXJydXB0aW9u
+cy4NCj4gDQo+IFRoaXMgZm9sbG93cyB0aGUgbWF0Y2hpbmcgUEhZIGRyaXZlciByZWNvbW1lbmRh
+dGlvbiBkZXNjcmliZWQgaW4gY29tbWl0DQo+IGJlZGQ4ZDc4YWJhMyAoIm5ldDogcGh5OiBzbXNj
+OiBMQU44NzEwLzIwOiBhZGQgcGh5IHJlZmNsayBpbiBzdXBwb3J0IikNCj4gDQo+IEZpeGVzOiA4
+ZDY3MTI2OTViYzggKCJhcm02NDogZHRzOiBpbXg4bXA6IEFkZCBzdXBwb3J0IGZvciBESCBlbGVj
+dHJvbmljcyBpLk1YOE0gUGx1cyBESENPTQ0KPiBhbmQgUERLMiIpDQo+IFNpZ25lZC1vZmYtYnk6
+IE1hcmVrIFZhc3V0IDxtYXJlay52YXN1dEBtYWlsYm94Lm9yZz4NCj4gLS0tDQo+IENjOiBDaHJp
+c3RvcGggTmllZGVybWFpZXIgPGNuaWVkZXJtYWllckBkaC1lbGVjdHJvbmljcy5jb20+DQo+IENj
+OiBDb25vciBEb29sZXkgPGNvbm9yK2R0QGtlcm5lbC5vcmc+DQo+IENjOiBGYWJpbyBFc3RldmFt
+IDxmZXN0ZXZhbUBnbWFpbC5jb20+DQo+IENjOiBLcnp5c3p0b2YgS296bG93c2tpIDxrcnprK2R0
+QGtlcm5lbC5vcmc+DQo+IENjOiBQZW5ndXRyb25peCBLZXJuZWwgVGVhbSA8a2VybmVsQHBlbmd1
+dHJvbml4LmRlPg0KPiBDYzogUm9iIEhlcnJpbmcgPHJvYmhAa2VybmVsLm9yZz4NCj4gQ2M6IFNh
+c2NoYSBIYXVlciA8cy5oYXVlckBwZW5ndXRyb25peC5kZT4NCj4gQ2M6IFNoYXduIEd1byA8c2hh
+d25ndW9Aa2VybmVsLm9yZz4NCj4gQ2M6IGRldmljZXRyZWVAdmdlci5rZXJuZWwub3JnDQo+IENj
+OiBpbXhAbGlzdHMubGludXguZGV2DQo+IENjOiBrZXJuZWxAZGgtZWxlY3Ryb25pY3MuY29tDQo+
+IENjOiBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcNCj4gLS0tDQo+ICBhcmNo
+L2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXAtZGhjb20tc29tLmR0c2kgfCAxICsNCj4g
+IDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2FyY2gv
+YXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDhtcC1kaGNvbS1zb20uZHRzaQ0KPiBiL2FyY2gv
+YXJtNjQvYm9vdC9kdHMvZnJlZXNjYWxlL2lteDhtcC1kaGNvbS1zb20uZHRzaQ0KPiBpbmRleCA2
+OGMyZTAxNTZhNWM4Li5mODMwM2I3ZTJiZDIyIDEwMDY0NA0KPiAtLS0gYS9hcmNoL2FybTY0L2Jv
+b3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXAtZGhjb20tc29tLmR0c2kNCj4gKysrIGIvYXJjaC9hcm02
+NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1wLWRoY29tLXNvbS5kdHNpDQo+IEBAIC0xMTMsNiAr
+MTEzLDcgQEAgbWRpbyB7DQo+ICAgICAgICAgICAgICAgICBldGhwaHkwZjogZXRoZXJuZXQtcGh5
+QDEgeyAvKiBTTVNDIExBTjg3NDBBaSAqLw0KPiAgICAgICAgICAgICAgICAgICAgICAgICBjb21w
+YXRpYmxlID0gImV0aGVybmV0LXBoeS1pZDAwMDcuYzExMCIsDQo+ICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAiZXRoZXJuZXQtcGh5LWllZWU4MDIuMy1jMjIiOw0KPiArICAg
+ICAgICAgICAgICAgICAgICAgICBjbG9ja3MgPSA8JmNsayBJTVg4TVBfQ0xLX0VORVRfUU9TPjsN
+Cj4gICAgICAgICAgICAgICAgICAgICAgICAgaW50ZXJydXB0LXBhcmVudCA9IDwmZ3BpbzM+Ow0K
+PiAgICAgICAgICAgICAgICAgICAgICAgICBpbnRlcnJ1cHRzID0gPDE5IElSUV9UWVBFX0xFVkVM
+X0xPVz47DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIHBpbmN0cmwtMCA9IDwmcGluY3RybF9l
+dGhwaHkwPjsNCg0KVGVzdGVkLWJ5OiBDaHJpc3RvcGggTmllZGVybWFpZXIgPGNuaWVkZXJtYWll
+ckBkaC1lbGVjdHJvbmljcy5jb20+DQoNClJlZ2FyZHMNCkNocmlzdG9waA0K
