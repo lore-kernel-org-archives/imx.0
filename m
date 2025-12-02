@@ -1,26 +1,26 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3E43126D3
-	for <imx@lists.linux.dev>; Tue,  2 Dec 2025 13:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61E053115BD
+	for <imx@lists.linux.dev>; Tue,  2 Dec 2025 13:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764681708; cv=none; b=kQAZjbXmtqbCCarwzdaV8fsyTy+CuQ8ABtoeGpk4qovZOKfMBN6Q2h0nu5lPeyUzW3PDNGhjMP6FkSPXWetiWPmPwUbv2ormiHLV/5e0hmaay3Ejqt3LZtf/yABibf2+LKEVnMNfee+KpFDFfNLDLN4/sZUFNH80IfGeDyAy9T0=
+	t=1764681708; cv=none; b=ANptLFHgO1u+IhKJ5ACXzVhyq78ohbEy2PnNJR+4b5OOO6WNsrCFDfRTnV0+oI+JFioRnIVzhi4o7vA2NNCf9GtzQYRVoujYyJ76qFlYvZhJ9GtsZroxan6ESKOk4ezQM0VssY0MPfkHxQtEmtmhW+WzBV89wE6TNo+B5sBoPe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1764681708; c=relaxed/simple;
-	bh=dcfHatMpMTm4tDIi7xxC79fBMuzf0pzfdh2LonpFAHQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tjxlA4yf300+9FEHntw2iSSeeoNOBmR4aDOddSlzsvx8Vn6t3tljG3HqvWTCP9exoXCbHe8zACyb+UqEFL6J49sHkN+HZyOFDhMnPszVKdOehoz7BqNz6nVEWcYXJkmaooGqkOWIFTrv5vPwcf3yVFKUm5qr7EHOmtuOqc4M59I=
+	bh=3UOeRD4KPPaMbagLYB6H6W5V8CnjCL6uh/WLWt4IRQg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mt6Zqlbc/wUEHWg/CawKxdW1tOmbq4PfR/j8v6usjlHL4J/biuWgo3A2fLroeZp0iPaWIvCqFbpLQDcvj1m2f03RoQhL3S6larxJs/vf3kze1vrwv+zXxYfqBXzsZZl6NvOYYaRiPKJFueMG3MmXa7KExoHACmxG0Zuxp01spcs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vQQJu-0003pJ-PG; Tue, 02 Dec 2025 14:21:30 +0100
+	id 1vQQJu-0003pJ-MD; Tue, 02 Dec 2025 14:21:30 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Tue, 02 Dec 2025 14:21:03 +0100
-Subject: [PATCH v2 2/3] pmdomain: imx93-blk-ctrl: convert to devm_* only
+Subject: [PATCH v2 0/3] i.MX91/93 BLK-CTRL improvements
+Date: Tue, 02 Dec 2025 14:21:01 +0100
+Message-Id: <20251202-v6-18-topic-imx93-blkctrl-v2-0-e73501034adc@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -29,147 +29,63 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251202-v6-18-topic-imx93-blkctrl-v2-2-e73501034adc@pengutronix.de>
-References: <20251202-v6-18-topic-imx93-blkctrl-v2-0-e73501034adc@pengutronix.de>
-In-Reply-To: <20251202-v6-18-topic-imx93-blkctrl-v2-0-e73501034adc@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAL3nLmkC/42Nyw6CMBBFf4V07Zh2eMrK/zAseAwwEVvS1gZD+
+ HcrX+DynOSeuwtHlsmJOtmFpcCOjY6Al0T0c6snAh4iC5SYK5QKQgGqAm9W7oFf2y2Fbnn23i6
+ QZgpRjqWsskHE/Wpp5O1sP5rIMztv7Oe8Cupn/6kGBRK6vGxLpEIqmd9X0tPbW6N5uw4kmuM4v
+ l1lvdjHAAAA
+X-Change-ID: 20251201-v6-18-topic-imx93-blkctrl-341220f7084d
 To: Ulf Hansson <ulf.hansson@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
  Fabio Estevam <festevam@gmail.com>
 Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Marco Felsch <m.felsch@pengutronix.de>
+ Alexander Stein <alexander.stein@ew.tq-group.com>, 
+ Frank Li <Frank.Li@nxp.com>, Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
 X-SA-Exim-Mail-From: m.felsch@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Convert the driver to devm_ APIs only by making use of
-devm_add_action_or_reset() and devm_pm_runtime_enable() to simplify the
-probe error path and to drop the .remove() callback. This also ensures
-that the device release order equals the device probe error path order.
+Hi,
 
-Furthermore drop the dev_set_drvdata() usage since the only user was the
-.remove() callback which is removed by this commit.
+there were several approaches to bring the sub-devices population
+mainline [1,2] but non of them made it upstream. Both approaches were
+part of either the i.MX93 LVDS or MIPI-CSI enablement.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+This small patchset decouples the blk-ctrl changes which allows the
+MIPI-CSI and LVDS patchstack to be rebased ontop of this patchset.
+
+Before adding the sub-device supprt, I converted the driver to devm_*
+only API.
+
+Regards,
+  Marco
+
+[1] https://lore.kernel.org/all/20250701-95_cam-v1-3-c5172bab387b@nxp.com/
+[2] https://lore.kernel.org/all/20250304154929.1785200-4-alexander.stein@ew.tq-group.com/
+
 ---
- drivers/pmdomain/imx/imx93-blk-ctrl.c | 66 +++++++++++++++--------------------
- 1 file changed, 29 insertions(+), 37 deletions(-)
+Changes in v2:
+- Link to v1: https://lore.kernel.org/r/20251201-v6-18-topic-imx93-blkctrl-v1-0-b57a72e60105@pengutronix.de
+- Adapt patch2 commit message (Frank)
+- Check devm_pm_runtime_enable() return (Frank)
+- Add r-b tags (Frank, Alexander)
 
-diff --git a/drivers/pmdomain/imx/imx93-blk-ctrl.c b/drivers/pmdomain/imx/imx93-blk-ctrl.c
-index 2aa163aef8de4ee901b9cde76ce2aad246c8c08a..49610f2389c3bbaf4de4133918fbcacb7924f672 100644
---- a/drivers/pmdomain/imx/imx93-blk-ctrl.c
-+++ b/drivers/pmdomain/imx/imx93-blk-ctrl.c
-@@ -188,6 +188,20 @@ static int imx93_blk_ctrl_power_off(struct generic_pm_domain *genpd)
- 	return 0;
- }
- 
-+static void imx93_release_genpd_provider(void *data)
-+{
-+	struct device_node *of_node = data;
-+
-+	of_genpd_del_provider(of_node);
-+}
-+
-+static void imx93_release_pm_genpd(void *data)
-+{
-+	struct generic_pm_domain *genpd = data;
-+
-+	pm_genpd_remove(genpd);
-+}
-+
- static struct lock_class_key blk_ctrl_genpd_lock_class;
- 
- static int imx93_blk_ctrl_probe(struct platform_device *pdev)
-@@ -256,10 +270,8 @@ static int imx93_blk_ctrl_probe(struct platform_device *pdev)
- 			domain->clks[j].id = data->clk_names[j];
- 
- 		ret = devm_clk_bulk_get(dev, data->num_clks, domain->clks);
--		if (ret) {
--			dev_err_probe(dev, ret, "failed to get clock\n");
--			goto cleanup_pds;
--		}
-+		if (ret)
-+			return dev_err_probe(dev, ret, "failed to get clock\n");
- 
- 		domain->genpd.name = data->name;
- 		domain->genpd.power_on = imx93_blk_ctrl_power_on;
-@@ -267,11 +279,12 @@ static int imx93_blk_ctrl_probe(struct platform_device *pdev)
- 		domain->bc = bc;
- 
- 		ret = pm_genpd_init(&domain->genpd, NULL, true);
--		if (ret) {
--			dev_err_probe(dev, ret, "failed to init power domain\n");
--			goto cleanup_pds;
--		}
-+		if (ret)
-+			return dev_err_probe(dev, ret, "failed to init power domain\n");
- 
-+		ret = devm_add_action_or_reset(dev, imx93_release_pm_genpd, &domain->genpd);
-+		if (ret)
-+			return dev_err_probe(dev, ret, "failed to add pm_genpd release callback\n");
- 		/*
- 		 * We use runtime PM to trigger power on/off of the upstream GPC
- 		 * domain, as a strict hierarchical parent/child power domain
-@@ -288,39 +301,19 @@ static int imx93_blk_ctrl_probe(struct platform_device *pdev)
- 		bc->onecell_data.domains[i] = &domain->genpd;
- 	}
- 
--	pm_runtime_enable(dev);
-+	ret = devm_pm_runtime_enable(dev);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to enable pm-runtime\n");
- 
- 	ret = of_genpd_add_provider_onecell(dev->of_node, &bc->onecell_data);
--	if (ret) {
--		dev_err_probe(dev, ret, "failed to add power domain provider\n");
--		goto cleanup_pds;
--	}
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to add power domain provider\n");
- 
--	dev_set_drvdata(dev, bc);
-+	ret = devm_add_action_or_reset(dev, imx93_release_genpd_provider, dev->of_node);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "failed to add genpd_provider release callback\n");
- 
- 	return 0;
--
--cleanup_pds:
--	for (i--; i >= 0; i--)
--		pm_genpd_remove(&bc->domains[i].genpd);
--
--	return ret;
--}
--
--static void imx93_blk_ctrl_remove(struct platform_device *pdev)
--{
--	struct imx93_blk_ctrl *bc = dev_get_drvdata(&pdev->dev);
--	int i;
--
--	of_genpd_del_provider(pdev->dev.of_node);
--
--	pm_runtime_disable(&pdev->dev);
--
--	for (i = 0; i < bc->onecell_data.num_domains; i++) {
--		struct imx93_blk_ctrl_domain *domain = &bc->domains[i];
--
--		pm_genpd_remove(&domain->genpd);
--	}
- }
- 
- static const struct imx93_blk_ctrl_domain_data imx93_media_blk_ctl_domain_data[] = {
-@@ -455,7 +448,6 @@ MODULE_DEVICE_TABLE(of, imx93_blk_ctrl_of_match);
- 
- static struct platform_driver imx93_blk_ctrl_driver = {
- 	.probe = imx93_blk_ctrl_probe,
--	.remove = imx93_blk_ctrl_remove,
- 	.driver = {
- 		.name = "imx93-blk-ctrl",
- 		.of_match_table = imx93_blk_ctrl_of_match,
+---
+Marco Felsch (3):
+      pmdomain: imx93-blk-ctrl: cleanup error path
+      pmdomain: imx93-blk-ctrl: convert to devm_* only
+      pmdomain: imx93-blk-ctrl: add support for optional subnodes
 
+ drivers/pmdomain/imx/imx93-blk-ctrl.c | 77 ++++++++++++++++-------------------
+ 1 file changed, 36 insertions(+), 41 deletions(-)
+---
+base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+change-id: 20251201-v6-18-topic-imx93-blkctrl-341220f7084d
+
+Best regards,
 -- 
-2.47.3
+Marco Felsch <m.felsch@pengutronix.de>
 
