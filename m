@@ -1,294 +1,159 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx-relay90-hz2.antispameurope.com (mx-relay90-hz2.antispameurope.com [94.100.136.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC8128BAB1
-	for <imx@lists.linux.dev>; Tue,  2 Dec 2025 11:21:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764674483; cv=none; b=RIsiFF95CZVbjM+twGrRlxocgZf9b6JcNeoNJ+C1cL5cSLE5A3RJLVoJz3HUboH8edHtlv1X+w4KENVjY4h6j1MNfcUbBSFT7TZmH5lHIeiPuEMzLCsCSbUL56RiOGPjgTaSv9Z80/qTxWtw31HLhrLwS266d53gdQbnz6x+3IU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764674483; c=relaxed/simple;
-	bh=ebI41iK5gjq0L5IRa7e/P/x9OhOy/cqTUUejIoRXkM0=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=BkOtop7H9ob7JRSUaJWwTFtJEKqMkYRyVlYrXNLVxrVXbO7G5cDzZYDF+2aqyzCVgYZ1jbhnabtv/hhbEE0mXLUIAVHwlk45b+/EBwNVGKRzcjwwufL3dZD2ePza1Cz57P3Yf+Jb9PCycBsrccJBECqyyTugOg+0lWpnvmOZVJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F0wMIsA5; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B2B201033
+	for <imx@lists.linux.dev>; Tue,  2 Dec 2025 11:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.190
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764676147; cv=pass; b=XHdwA2EcINRkm7Q4pmIiagBqvx7a3cEnGunfifMtSi/Y6th1u9i8Q5NSNIS6VGJHppPdNSS4++WzkYirisHmUuHVv0fUfwpW55Ru3x/vh7rAaVVEhTmNtodekElywgEmltlbwEx05VNDqgAq29j/aqWZAxmRHrowWmqqRR3ehco=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764676147; c=relaxed/simple;
+	bh=rOAoEjyVa1jEQA2BYDgvgv+WUqVYhkDMhJXVPZnWjU8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=K//MKLjETjzfieOs3XeRjt/qGwvk/+pGrbn+5aeBJBFaRpgSTtyhXDdXPTz8j3wwkODMSF5ToHAVZfiZnrlw7L9xgC35cPesfdxoEuOl8xfpcBDJbAHtHZGtpuHmY9UxG/HJB612/i2oHyTC9jnbvaQEwbRIRN7kPSEXb/N8xhk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=rWqjzDQ3; arc=pass smtp.client-ip=94.100.136.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F0wMIsA5"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-37bbb36c990so57426471fa.0
-        for <imx@lists.linux.dev>; Tue, 02 Dec 2025 03:21:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1764674480; x=1765279280; darn=lists.linux.dev;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FHGvFJa75lB1s5FOVY85+WmT8K+iTuEMFLumjxbx42M=;
-        b=F0wMIsA59Uee5BG1Xg2rNJHZ5C5AJkeTAF4Ksn2Nakzd3H1+UiEmuXWv/I37NUSYK4
-         U7WbY8JWclTGLwIwzo+0ywZoqHIPlqdlx7cvSpxdu97jMHG9xiQ700xZ7RQB9qnFKA9V
-         Z2QNhO6sBv1S3dDYS6Ng3dsdcGAfo6lxIp1yEqheLKp5Awtfb0JGQQYByAILs/S4Tp51
-         hFWFkNv8iFgfdPtz7JqEn4rocISxc9xiBePUNluoB0QEtTvePhzTbKpSXUvLNbzmULGP
-         1SMPL9YPNPmbDD5Mo8J6ipGvAqQmKnt2foOcaSQvPxNaxnvpSio08EfNzAUGNSSNHwLA
-         y7Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764674480; x=1765279280;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FHGvFJa75lB1s5FOVY85+WmT8K+iTuEMFLumjxbx42M=;
-        b=rPKVfYF3olRVnxSq/wJHs5ILXDq+LsP2NaQtzoCa4V8ecyqXKzafdh0tX+C5UH5RQ+
-         hjXUEKJ4Qmv8xSOhdX03MVIPlMOgVpE14jilLRLTCGF+cBj6qnz7+nHFrwi6mR51lgHX
-         AIAJOjqVe6lz6ZFdE4VkdL5ZizUYJINWhELq0lVWUu9us+0lxqSR/bC3QrtcTgb/qZDZ
-         E2BxGxud9J170surAYxeKn8uY+WROgzPb6wjH8xRxyPbRRa/6anEJxgJrgZRUTtSBEV1
-         A9CzBwOqDTZHdj4weqrAK8GOxnHzzUztKoRgabTk4FiaVXE+eqg/hgzDMU2IdupK+j9J
-         jLOg==
-X-Forwarded-Encrypted: i=1; AJvYcCUZCkqF4Pi4PUdYtkZxswomecXkH+BkvIEAE++63xl4nCeEN1QCgzzeuXrPp0pwhTlZpNM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzyIQoFBavJKeX8fC4J8FHfGAZprNYX6iw7GW1F4Bm2kzdgZRJP
-	BjX/RPaxpjhpK+nUb+1lJs/ZJEWt8vzFhFG5JX10vG3eoo+8Cg4DTPX2
-X-Gm-Gg: ASbGnctH6xB6HdWjsV90FHjLw3T/fDBqeXdSgbLI1xykHnuJioynCdWyp5mEkVBfOD5
-	krUZzF2Ju/zMeGKkSFAtVsughBupOSvqGby7nHo9xOzoRG/4essgQGD1GMhOP4bJHjMLsKWu4Ri
-	FOEj083erXqZMLOOXR4kfcnkMUbpWdSJaP5yEV+dWa8YZL6ShuBI3jocLT8EawQaYSiVkOm3eFn
-	94UDhqX5EwiIC0b++8318gzOjwtjBbFeYaf8PYv2bBHsF2JZQ+ReyLfqQGSYTkCweVdCOevwJ2t
-	/Tmr+c61Bx5s2AS4OVCWRDXQY1tC7ILmYrksgDqXnIoogyfSycOFdkmQ1BmN3UTJprmopvRT0rZ
-	wrT6BjsV8GfvMyprdS8E1DRma0EaS80Be/TqwX0ewjlMEkud1hgHkYdNtHMOy/+eMMAr9EP+GD6
-	ctzqcDg0lZOSJVnw==
-X-Google-Smtp-Source: AGHT+IEAmVx71ofDJnqXMWdm5SDHhZDccJOhKRMoK+tDdSkd1NpTk5tba5l1eQx6flbKeCAUi9zshw==
-X-Received: by 2002:a2e:9546:0:b0:37e:5208:e2d7 with SMTP id 38308e7fff4ca-37e58e4f776mr5336841fa.19.1764674479321;
-        Tue, 02 Dec 2025 03:21:19 -0800 (PST)
-Received: from [10.38.18.76] ([213.255.186.37])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37d236efc92sm37487261fa.19.2025.12.02.03.21.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Dec 2025 03:21:18 -0800 (PST)
-Content-Type: multipart/mixed; boundary="------------RTMpC01dN2Tts0K0800P0dVv"
-Message-ID: <088af3ff-bd04-4bc9-b304-85f6ed555f2a@gmail.com>
-Date: Tue, 2 Dec 2025 13:21:16 +0200
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="rWqjzDQ3"
+ARC-Authentication-Results: i=1; mx-gate90-hz2.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out01-hz1.hornetsecurity.com;
+ dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=cPzBCQ/cVroc4yKwXafobMdff4xUZ/bh1Bgq00vprqk=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1764676105;
+ b=Ybe1Ix3n0E9WnXDJJXFTcNiubbzuP1bbp9OriKXycZLCe7E/Ts4tdOZe+5wA6TiI4fLJXR5t
+ zOd+SIEm73pxOFCkmRxTT1kaOQ2SOiLCmvqvM5A4JveuIAVFl8Pkap7lbl5cQrwAJkijW6GlPpA
+ SVJSIv1HUTXdH4u34iNLlklseo9V5dGxHN0eYHOrN36MjSsybxkQJxcVRNiJIqIF9quZPbXS6wH
+ 1ymO6MToMHXmfy8V69tA7LEEuLIKGOdXoATdfWJOuTC1Meto4CA3DoBqYq4pyw/xG4e9c6aG0u3
+ YyUiYixZEzR2RrLVaDbwaDaOVOGwbhUaEwNyKTuD8p4Jw==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1764676105;
+ b=GWlfl+32EZS3bvlT1wMin0Z4bznOGwPOmUs6c5xMwPzVNCkxBGsy8a1xMFcnmQfyC5H677qa
+ ng0Gv23IDe1JwuAXhME8M0y8mlKxMDsbjXx1WLETPVjUgNDwBwjmdx/IM/4kkKTd2PmaYmKEK+n
+ 3JpKDIj+XJYZm4k0Xsp7wusyu/+J4M1ydIljNBpjHR9g/m2tLPBHku/KogO7uQyTjDBNcTkiOE2
+ 7DpqRuE8JGZGdFG6SJKUeGKr99Skq9ehuqkyhyAoUvN7x7GUCd2ZJJz1fF2/Jy0fNIy5Ts00Hxr
+ N6plB7t3w+witYvXB2uXEeRhvhD7dzmnsVuWcbjyA3l6A==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay90-hz2.antispameurope.com;
+ Tue, 02 Dec 2025 12:48:25 +0100
+Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by smtp-out01-hz1.hornetsecurity.com (Postfix) with ESMTPSA id BAAF7A4128F;
+	Tue,  2 Dec 2025 12:48:15 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+ frank.li@nxp.com, Sherry Sun <sherry.sun@nxp.com>
+Cc: devicetree@vger.kernel.org, kernel@pengutronix.de,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Subject:
+ Re: [PATCH] arm64: dts: imx8qm-ss-dma: correct the dma channels of lpuart
+Date: Tue, 02 Dec 2025 12:48:15 +0100
+Message-ID: <2395053.ElGaqSPkdT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20251202111638.3553-1-sherry.sun@nxp.com>
+References: <20251202111638.3553-1-sherry.sun@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT
- overlays"
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Rob Herring <robh@kernel.org>, Matti Vaittinen
- <mazziesaccount@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>,
- Saravana Kannan <saravanak@google.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Charles Keepax <ckeepax@opensource.cirrus.com>,
- Richard Fitzgerald <rf@opensource.cirrus.com>,
- David Rhodes <david.rhodes@cirrus.com>,
- Linus Walleij <linus.walleij@linaro.org>,
- Ulf Hansson <ulf.hansson@linaro.org>, Mark Brown <broonie@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>,
- Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Dave Jiang <dave.jiang@intel.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>, Wolfram Sang <wsa@kernel.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
- patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org,
- Allan Nielsen <allan.nielsen@microchip.com>,
- Horatiu Vultur <horatiu.vultur@microchip.com>,
- Steen Hegelund <steen.hegelund@microchip.com>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20251015071420.1173068-1-herve.codina@bootlin.com>
- <20251015071420.1173068-2-herve.codina@bootlin.com>
- <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
- <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
- <5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com>
- <CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
- <072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
- <CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
- <55076f4b-d523-4f8c-8bd4-0645b790737e@gmail.com>
- <20251202102619.5cd971cc@bootlin.com>
-Content-Language: en-US
-From: Kalle Niemi <kaleposti@gmail.com>
-In-Reply-To: <20251202102619.5cd971cc@bootlin.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay90-hz2.antispameurope.com with 4dLJtm3MJzzWycw
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:199991314bca0e7504113f70cfa02bc4
+X-cloud-security:scantime:1.766
+DKIM-Signature: a=rsa-sha256;
+ bh=cPzBCQ/cVroc4yKwXafobMdff4xUZ/bh1Bgq00vprqk=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1764676105; v=1;
+ b=rWqjzDQ3CP5juZNzgJjXaKlKjrXLNCLMfNHieY90fsqHuuUpq4HYSVpYN5MhnhFMhzsV21fo
+ LpvqEL390o5yx5LDmlCGJYpXY5LStOobSlOqQxIF4UIEVzseWxtPE9gONwAgN2++sRNjQO2SN3f
+ OHe92YyZnZzjXVyHqqAol1QhSrkS1qbJ47QkGYMnIaytCo/lxzqfBBUmOBm2pk5aFNxPZiZgNYo
+ 7JwxIvn7qTEJebESsmZuRYYz1qjNQGTShSkeeh4+GPV2oXAbjHeHx4Fx41d/x+B2BeUHCELNegh
+ qR+U6jF9H6Cjvg8K9TBmXUUg1RrkNZg57CVXAlR3ji+kQ==
 
-This is a multi-part message in MIME format.
---------------RTMpC01dN2Tts0K0800P0dVv
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Hi,
 
-On 12/2/25 11:26, Herve Codina wrote:
-> Hi Kalle,
-> 
-> On Fri, 28 Nov 2025 10:34:57 +0200
-> Kalle Niemi <kaleposti@gmail.com> wrote:
-> 
-> ...
->>>>>>>>
->>>>>>>> Hello,
->>>>>>>>
->>>>>>>> Test system testing drivers for ROHM ICs bisected this commit to cause
->>>>>>>> BD71847 drivers probe to not be called.
->>>>>>> This driver (and overlay support) is in linux-next or something out of
->>>>>>> tree on top of linux-next?
->>>>>>>
->>>>>>> Rob
->>>>>> Yes the driver is in mainline linux: /drivers/mfd/rohm-bd718x7.c
->>>>> I don't see any support to apply overlays in that driver.
->>>> Ah. Sorry for the confusion peeps. I asked Kalle to report this without
->>>> proper consideration. 100% my bad.
->>>>
->>>> While the bd718x7 drive indeed is mainline (and tested), the actual
->>>> 'glue-code' doing the overlay is part of the downstream test
->>>> infrastructure. So yes, this is not a bug in upstream kernel - this
->>>> falls in the category of an upstream change causing downstream things to
->>>> break. So, feel free to say: "Go fix your code" :)
->>>>
->>>> Now that this is sorted, if someone is still interested in helping us to
->>>> get our upstream drivers tested - the downstream piece is just taking
->>>> the compiled device-tree overlay at runtime (via bin-attribute file),
->>>> and applying it using the of_overlay_fdt_apply(). The approach is
->>>> working for our testing purposes when the device is added to I2C/SPI
->>>> node which is already enabled. However, in case where we have the I2C
->>>> disabled, and enable it in the same overlay where we add the new device
->>>> - then the new device does not get probed.
->>>>
->>>> I would be really grateful if someone had a pointer for us.
->>> Seems to be fw_devlink related. I suppose if you turn it off it works?
->>> There's info about the dependencies in sysfs or maybe debugfs. I don't
->>> remember the details, but that should help to tell you why things
->>> aren't probing.
-> 
-> Rob reverted patches but I plan to continue my work on it.
-> On my side, I need the reverted patches but I fully understand that, on
-> your side, you need a working system.
-> 
-> In order to move forward and find a solution for my next iteration, can you
-> send your overlay (dtso) used in your working and non working cases?
-> 
-> Best regards,
-> Hervé
+Am Dienstag, 2. Dezember 2025, 12:16:38 CET schrieb Sherry Sun:
+> The commit 616effc0272b5 ("arm64: dts: imx8: Fix lpuart DMA channel
+> order") swap uart rx and tx channel at common imx8-ss-dma.dtsi. But miss
+> update imx8qm-ss-dma.dtsi.
+>=20
+> The commit 5a8e9b022e569 ("arm64: dts: imx8qm-ss-dma: Pass lpuart
+> dma-names") just simple add dma-names as binding doc requirement.
+>=20
+> Correct lpuart0 - lpuart3 dma rx and tx channels, and use defines for
+> the FSL_EDMA_RX flag.
+>=20
+> Fixes: 616effc0272b5 ("arm64: dts: imx8: Fix lpuart DMA channel order")
 
-Hello Hervé,
+I'm wondering if this is actually a fix for 5a8e9b022e569 ("arm64: dts:
+imx8qm-ss-dma: Pass lpuart dma-names") instead. 616effc0272b5 just
+focuses on the common parts. But I don't have a strong opinion here.
 
-I have attached the overlay source file: bd71847_overlay.dts
+Thanks and best regards,
+Alexander
 
-BR
-Kalle
+> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi b/arch/arm6=
+4/boot/dts/freescale/imx8qm-ss-dma.dtsi
+> index 5f24850bf322..974e193f8dcb 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+> @@ -172,25 +172,25 @@ &flexcan3 {
+> =20
+>  &lpuart0 {
+>  	compatible =3D "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+> -	dmas =3D <&edma2 13 0 0>, <&edma2 12 0 1>;
+> +	dmas =3D <&edma2 12 0 FSL_EDMA_RX>, <&edma2 13 0 0>;
+>  	dma-names =3D "rx","tx";
+>  };
+> =20
+>  &lpuart1 {
+>  	compatible =3D "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+> -	dmas =3D <&edma2 15 0 0>, <&edma2 14 0 1>;
+> +	dmas =3D <&edma2 14 0 FSL_EDMA_RX>, <&edma2 15 0 0>;
+>  	dma-names =3D "rx","tx";
+>  };
+> =20
+>  &lpuart2 {
+>  	compatible =3D "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+> -	dmas =3D <&edma2 17 0 0>, <&edma2 16 0 1>;
+> +	dmas =3D <&edma2 16 0 FSL_EDMA_RX>, <&edma2 17 0 0>;
+>  	dma-names =3D "rx","tx";
+>  };
+> =20
+>  &lpuart3 {
+>  	compatible =3D "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+> -	dmas =3D <&edma2 19 0 0>, <&edma2 18 0 1>;
+> +	dmas =3D <&edma2 18 0 FSL_EDMA_RX>, <&edma2 19 0 0>;
+>  	dma-names =3D "rx","tx";
+>  };
+> =20
+>=20
 
---------------RTMpC01dN2Tts0K0800P0dVv
-Content-Type: audio/vnd.dts; name="bd71847_overlay.dts"
-Content-Disposition: attachment; filename="bd71847_overlay.dts"
-Content-Transfer-Encoding: base64
 
-L2R0cy12MS87Ci9wbHVnaW4vOwoKL3sgLyogdGhpcyBpcyBvdXIgZGV2aWNlIHRyZWUgb3Zl
-cmxheSByb290IG5vZGUgKi8KCgljb21wYXRpYmxlID0gInRpLGJlYWdsZWJvbmUiLCAidGks
-YmVhZ2xlYm9uZS1ibGFjayI7CglwYXJ0LW51bWJlciA9ICJCQkItSTJDMSI7IC8vIHlvdSBj
-YW4gY2hvb3NlIGFueSBuYW1lIGhlcmUgYnV0IGl0IHNob3VsZCBiZSBtZW1vcmFibGUKIAl2
-ZXJzaW9uID0gIjAwQTAiOwoKCWZyYWdtZW50QDAgewoJCXRhcmdldCA9IDwmYW0zM3h4X3Bp
-bm11eD47IC8vIHRoaXMgaXMgYSBsaW5rIHRvIGFuIGFscmVhZHkgZGVmaW5lZCBub2RlIGlu
-IHRoZSBkZXZpY2UgdHJlZSwgc28gdGhhdCBub2RlIGlzIG92ZXJsYXllZCB3aXRoIG91ciBt
-b2RpZmljYXRpb24KCgkJX19vdmVybGF5X18gewoJCQlpMmMxX3BpbnM6IHBpbm11eF9pMmMx
-X3BpbnMgewoJCQkJcGluY3RybC1zaW5nbGUscGlucyA9IDwKICAgICAgICAgIAkJCTB4MTU4
-IDB4NzIgLyogc3BpMF9kMS5pMmMxX3NkYSAqLyAKICAgICAgICAgIAkJCTB4MTVDIDB4NzIg
-Lyogc3BpMF9jczAuaTJjMV9zZGwgKi8KICAgICAgICAJCQk+OwoJCQl9OwoJCX07Cgl9OwoJ
-ZnJhZ21lbnRAMSB7CgkJdGFyZ2V0LXBhdGggPSAiLyI7CgkJX19vdmVybGF5X18gewoJCQkv
-KiBleHRlcm5hbCBvc2NpbGxhdG9yICovCgkJCW9zYzogb3NjaWxsYXRvciB7CgkJCQljb21w
-YXRpYmxlID0gImZpeGVkLWNsb2NrIjsKCQkJCSNjbG9jay1jZWxscyA9IDwxPjsKCQkJCWNs
-b2NrLWZyZXF1ZW5jeSAgPSA8MzI3Njg+OwoJCQkJY2xvY2stb3V0cHV0LW5hbWVzID0gIm9z
-YyI7CgkJCX07CgkJfTsKCX07CgoJZnJhZ21lbnRAMiB7CgkJdGFyZ2V0ID0gPCZpMmMxPjsK
-CgkJX19vdmVybGF5X18gewoJCQlwaW5jdHJsLTAgPSA8JmkyYzFfcGlucz47CgkJCWNsb2Nr
-LWZyZXF1ZW5jeSA9IDwxMDAwMDA+OwoJCQlzdGF0dXMgPSAib2theSI7CgoKCgkJCXBtaWM6
-IHBtaWNANGIgeyAvKiB0aGUgInRlc3QiIGRlZmluZWQgYXMgY2hpbGQgb2YgdGhlIGkyYzEg
-YnVzICovCgkJCQljb21wYXRpYmxlID0gInJvaG0sYmQ3MTg0NyI7CgkJCQlyZWcgPSA8MHg0
-Yj47CgkJCQkvKiBMZXQncyB0cnkgdXNpbmcgR1BJTzFfMjkgYXMgaXJxIHBpbiAqLwoJCQkJ
-aW50ZXJydXB0LXBhcmVudCA9IDwmZ3BpbzE+OwoJCQkJaW50ZXJydXB0cyA9IDwyOSA4PjsK
-CQkJCWNsb2NrcyA9IDwmb3NjIDA+OwoJCQkJI2Nsb2NrLWNlbGxzID0gPDA+OwoJCQkJY2xv
-Y2stb3V0cHV0LW5hbWVzID0gImJkNzE4NDctMzJrLW91dCI7CgkJCQkvKiAxNTAwIG1zIGNv
-bGQgcmVzZXQgKi8KCQkJCXJvaG0scmVzZXQtZGVsYXkgPSA8MTUwMD47CgoJCQkJcmVndWxh
-dG9ycyB7CgkJCQkJYnVjazE6IEJVQ0sxIHsKCQkJCQkJcmVndWxhdG9yLW5hbWUgPSAiYnVj
-azEiOwoJCQkJCQlyZWd1bGF0b3ItbWluLW1pY3Jvdm9sdCA9IDw3MDAwMDA+OwoJCQkJCQly
-ZWd1bGF0b3ItbWF4LW1pY3Jvdm9sdCA9IDwxMzAwMDAwPjsKCQkJCQkJLy9yZWd1bGF0b3It
-Ym9vdC1vbjsKCQkJCQkJLy9yZWd1bGF0b3ItYWx3YXlzLW9uOwpyZWd1bGF0b3ItcmFtcC1k
-ZWxheSA9IDwxMDAwMD47CgkJCQkJCXJlZ3VsYXRvci1vdi1wcm90ZWN0aW9uLW1pY3Jvdm9s
-dCA9IDwxPjsKCQkJCQkJcmVndWxhdG9yLXV2LXByb3RlY3Rpb24tbWljcm92b2x0ID0gPDE+
-OwoJCQkJCX07CgkJCQkJYnVjazI6IEJVQ0syIHsKCQkJCQkJcmVndWxhdG9yLW5hbWUgPSAi
-YnVjazIiOwoJCQkJCQlyZWd1bGF0b3ItbWluLW1pY3Jvdm9sdCA9IDw3MDAwMDA+OwoJCQkJ
-CQlyZWd1bGF0b3ItbWF4LW1pY3Jvdm9sdCA9IDwxMzAwMDAwPjsKCQkJCQkJcmVndWxhdG9y
-LWJvb3Qtb247CgkJCQkJCXJlZ3VsYXRvci1hbHdheXMtb247CnJlZ3VsYXRvci1yYW1wLWRl
-bGF5ID0gPDUwMDA+OwoJCQkJCQlyZWd1bGF0b3Itb3YtcHJvdGVjdGlvbi1taWNyb3ZvbHQg
-PSA8MT47CgkJCQkJCXJlZ3VsYXRvci11di1wcm90ZWN0aW9uLW1pY3Jvdm9sdCA9IDwxPjsK
-CQkJCQl9OwoJCQkJCWJ1Y2szOiBCVUNLMyB7CgkJCQkJCXJlZ3VsYXRvci1uYW1lID0gImJ1
-Y2szIjsKCQkJCQlyZWd1bGF0b3ItbWluLW1pY3Jvdm9sdCA9IDw1NTAwMDA+OwoJCQkJCQly
-ZWd1bGF0b3ItbWF4LW1pY3Jvdm9sdCA9IDwxMzUwMDAwPjsKCQkJCQkJLy9yZWd1bGF0b3It
-Ym9vdC1vbjsKCQkJCQkJcm9obSxuby1yZWd1bGF0b3ItZW5hYmxlLWNvbnRyb2w7CgkJCQkJ
-CXJlZ3VsYXRvci1vdi1wcm90ZWN0aW9uLW1pY3Jvdm9sdCA9IDwxPjsKCQkJCQkJcmVndWxh
-dG9yLXV2LXByb3RlY3Rpb24tbWljcm92b2x0ID0gPDE+OwoJCQkJCX07CgoJCQkJCUJVQ0s0
-OiBCVUNLNCB7CgkJCQkJCXJlZ3VsYXRvci1uYW1lID0gImJ1Y2s0IjsKCQkJCQkJcmVndWxh
-dG9yLW1pbi1taWNyb3ZvbHQgPSA8MjYwMDAwMD47CgkJCQkJCXJlZ3VsYXRvci1tYXgtbWlj
-cm92b2x0ID0gPDMzMDAwMDA+OwoJCQkJCQlyZWd1bGF0b3ItYm9vdC1vbjsKCQkJCQkJcmVn
-dWxhdG9yLW92LXByb3RlY3Rpb24tbWljcm92b2x0ID0gPDE+OwoJCQkJCQlyZWd1bGF0b3It
-dXYtcHJvdGVjdGlvbi1taWNyb3ZvbHQgPSA8MT47CgkJCQkJfTsKCgkJCQkJYnVjazU6IEJV
-Q0s1IHsKCQkJCQkJcmVndWxhdG9yLW5hbWUgPSAiYnVjazUiOwoJCQkJCQlyZWd1bGF0b3It
-bWluLW1pY3Jvdm9sdCA9IDwxNjA1MDAwPjsKCQkJCQkJcmVndWxhdG9yLW1heC1taWNyb3Zv
-bHQgPSA8MTk5NTAwMD47CgkJCQkJCXJlZ3VsYXRvci1ib290LW9uOwoJCQkJCQlyZWd1bGF0
-b3Itb3YtcHJvdGVjdGlvbi1taWNyb3ZvbHQgPSA8MT47CgkJCQkJCXJlZ3VsYXRvci11di1w
-cm90ZWN0aW9uLW1pY3Jvdm9sdCA9IDwxPjsKCQkJCQl9OwoJCQoJCQkJCWJ1Y2s2OiBCVUNL
-NiB7CgkJCQkJCXJlZ3VsYXRvci1uYW1lID0gImJ1Y2s2IjsKCQkJCQkJcmVndWxhdG9yLW1p
-bi1taWNyb3ZvbHQgPSA8ODAwMDAwPjsKCQkJCQkJcmVndWxhdG9yLW1heC1taWNyb3ZvbHQg
-PSA8MTQwMDAwMD47CgkJCQkJCXJlZ3VsYXRvci1vdi1wcm90ZWN0aW9uLW1pY3Jvdm9sdCA9
-IDwxPjsKCQkJCQkJcmVndWxhdG9yLXV2LXByb3RlY3Rpb24tbWljcm92b2x0ID0gPDE+OwoJ
-CQkJCX07CgkJCQovKiBMRE8xIGFuZCBMRE8yIGFyZSBlbmFibGVkIGJ5IEhXIHdoZW4gUE1J
-QyB0dXJucyBmcm9tIFJFQURZIHRvIFNOVlMgc3RhdGUgKi8KCQkJCQlsZG8xOiBMRE8xIHsK
-CQkJCQkJcmVndWxhdG9yLW5hbWUgPSAibGRvMSI7CgkJCQkJCXJlZ3VsYXRvci1taW4tbWlj
-cm92b2x0ID0gPDE2MDAwMDA+OwoJCQkJCQlyZWd1bGF0b3ItbWF4LW1pY3Jvdm9sdCA9IDwz
-MzAwMDAwPjsKCQkJCQkJcmVndWxhdG9yLWJvb3Qtb247CgkJCQkJCS8vcmVndWxhdG9yLWFs
-d2F5cy1vbjsKCQkJCQkJcmVndWxhdG9yLXV2LXByb3RlY3Rpb24tbWljcm92b2x0ID0gPDE+
-OwoJCQkJCX07CgoJCQkJCWxkbzI6IExETzIgewoJCQkJCQlyZWd1bGF0b3ItbmFtZSA9ICJs
-ZG8yIjsKCQkJCQkJcmVndWxhdG9yLW1pbi1taWNyb3ZvbHQgPSA8ODAwMDAwPjsKCQkJCQkJ
-cmVndWxhdG9yLW1heC1taWNyb3ZvbHQgPSA8OTAwMDAwPjsKCQkJCQkJcmVndWxhdG9yLWJv
-b3Qtb247CgkJCQkJCS8vcmVndWxhdG9yLWFsd2F5cy1vbjsKCQkJCQkJcmVndWxhdG9yLXV2
-LXByb3RlY3Rpb24tbWljcm92b2x0ID0gPDE+OwoJCQkJCX07CgoJCQkJCWxkbzM6IExETzMg
-ewoJCQkJCQlyZWd1bGF0b3ItbmFtZSA9ICJsZG8zIjsKCQkJCQkJcmVndWxhdG9yLW1pbi1t
-aWNyb3ZvbHQgPSA8MTgwMDAwMD47CgkJCQkJCXJlZ3VsYXRvci1tYXgtbWljcm92b2x0ID0g
-PDMzMDAwMDA+OwoJCQkJCQlyZWd1bGF0b3ItdXYtcHJvdGVjdGlvbi1taWNyb3ZvbHQgPSA8
-MT47CgkJCQkJfTsKCgkJCQkJbGRvNDogTERPNCB7CgkJCQkJCXJlZ3VsYXRvci1uYW1lID0g
-ImxkbzQiOwoJCQkJCQlyZWd1bGF0b3ItbWluLW1pY3Jvdm9sdCA9IDw5MDAwMDA+OwoJCQkJ
-CQlyZWd1bGF0b3ItbWF4LW1pY3Jvdm9sdCA9IDwxODAwMDAwPjsKCQkJCQkJcmVndWxhdG9y
-LXV2LXByb3RlY3Rpb24tbWljcm92b2x0ID0gPDE+OwoJCQkJCQkvL3JlZ3VsYXRvci1ib290
-LW9uOwoJCQkJCX07CgoJCQkJCWxkbzU6IExETzUgewoJCQkJCQlyZWd1bGF0b3ItbmFtZSA9
-ICJsZG81IjsKCQkJCQkJcmVndWxhdG9yLW1pbi1taWNyb3ZvbHQgPSA8ODAwMDAwPjsKCQkJ
-CQkJcmVndWxhdG9yLW1heC1taWNyb3ZvbHQgPSA8MzMwMDAwMD47CgkJCQkJCXJvaG0sbm8t
-cmVndWxhdG9yLWVuYWJsZS1jb250cm9sOwoJCQkJCQlyZWd1bGF0b3ItdXYtcHJvdGVjdGlv
-bi1taWNyb3ZvbHQgPSA8MT47CgkJCQkJfTsKCgkJCQkJbGRvNjogTERPNiB7CgkJCQkJCXJl
-Z3VsYXRvci1uYW1lID0gImxkbzYiOwoJCQkJCQlyZWd1bGF0b3ItbWluLW1pY3Jvdm9sdCA9
-IDw5MDAwMDA+OwoJCQkJCQlyZWd1bGF0b3ItbWF4LW1pY3Jvdm9sdCA9IDwxODAwMDAwPjsK
-CQkJCQkJcmVndWxhdG9yLWJvb3Qtb247CgkJCQkJCS8qIFRoaXMgc2hvdWxkIGZhaWwgYXMg
-TERPcyBkbyBub3Qgc3VwcG9ydCBPVlAgKi8KCQkJCQkJcmVndWxhdG9yLW92LXByb3RlY3Rp
-b24tbWljcm92b2x0ID0gPDE+OwoJCQkJCQlyZWd1bGF0b3ItdXYtcHJvdGVjdGlvbi1taWNy
-b3ZvbHQgPSA8MT47CgkJCQkJfTsKCQkJCX07CgkJCX07CgkJfTsKCX07CgoJZnJhZ21lbnRA
-MyB7CgkJdGFyZ2V0LXBhdGggPSAiLyI7CgkJX19vdmVybGF5X18gewoJCQlpcnF0ZXN0OiBk
-dW1teSB7CgkJCQljb21wYXRpYmxlID0gInJvaG0sY2xrdGVzdC1iZDcxODQ3IjsKLyoKCQkJ
-CWNvbXBhdGlibGUgPSAicm9obSxmb28tYmQ3MTg0Ny1pcnEiOwoJCQkJaW50ZXJydXB0LXBh
-cmVudCA9IDwmcG1pYz47CgkJCQlpbnRlcnJ1cHRzID0gPDA+LCA8MT4sIDwyPiwgPDM+LCA8
-ND4sIDw1PiwgPDY+OwoJCQkJaW50ZXJydXB0LW5hbWVzID0gImlycS1idG4iLCAiaXJxLWJ0
-bi1zIiwgImlycS1idG4tbCIsICJpcnEtc3dyc3QiLCAiaXJxLXdkb2ciLCAiaXJxLW9uIiwg
-ImlycS1zdGIiOwoqLwoJCQkJY2xvY2tzID0gPCZwbWljPjsKCQkJCWNsb2NrLW5hbWVzID0g
-ImZvby1pbiI7CgkJCX07CgkJfTsKCX07Cn07IC8qIHJvb3Qgbm9kZSBlbmQgKi8K
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
---------------RTMpC01dN2Tts0K0800P0dVv--
+
