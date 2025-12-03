@@ -1,283 +1,208 @@
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291032853F1
-	for <imx@lists.linux.dev>; Wed,  3 Dec 2025 10:14:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBB138D;
+	Wed,  3 Dec 2025 12:15:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764756879; cv=none; b=H1z7I+MXnXcB7eX8lRa4F6qbM3EvszVktGIUKwec7+xlr1qdLxvlRscna56JWggmyPTONc4hoR7NSDFpWb6CTK1RUe/7qOoDlrDRimzDP2Uyoi+ULQKW3AQryuNPQjBBazOvraj+W/KDYo/vBs2l5yfFjN02rZHkbHovaH3Yk0s=
+	t=1764764159; cv=none; b=Er+rljw5ubhGXG1yhi2mndO0W+3dX1a5Yvq0vKPv6YfR4ETjeDdCUqi5i45XXh/e6dy4obb5bEqR0Dl4zuqg220viCkxOepI89d04m1mkOTqZYuTPXQfzhhCOaXnB7Z0z/Y3nV2j7wKmW4ljSf8J4Ij1Q9E4EVenIpKGiZY0iyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764756879; c=relaxed/simple;
-	bh=7ykrGGwCG5UVuu6S46Y+mkYJETdoJx86HhNwtYYoBJs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=siiWq5BmpP9VnURH9jkq71STHo/vocUjq7nwsGU5DdlyMzTCOOqGb3lW3bk2SAC13zJxWMltKIrx9BxfxU7ioYO0BrHCEiXEHNiKyk4empOCN1fIABrorVnHAY8PrC4EgvS+nUbPywutD+M1+u+9Hy3yCzK4IZPdv2F+6v0RAOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-5dbd3dbbde3so4941353137.1
-        for <imx@lists.linux.dev>; Wed, 03 Dec 2025 02:14:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764756877; x=1765361677;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=08y1I8cftAKXa2ZRDPk1QAbO3eRq2UKMz/WOuMZJTrE=;
-        b=e3Ew/aaASCiGOKK2rsGWXb6X/EQiHpbqSuRKqgOxU1iHKSwpTOBJYD3ulbtIJxgdLl
-         TYpH81OgvdcvxOVEsGRxKXUSTwxCH/zpfR19CtFkbr1eVsHP8I+B5G1KqCgOyuoPUrGr
-         lDUKQVkf7OEt/bg5e2ZUYcAckXB1rSPOhkut3QLrHIfwTQjlNfZmr+kBVngUKnnieolr
-         Gd5tIHKbwTR9vDmaxWUtnQPCaE7XhwZ7acJYigE3qudS+/n8MQXeazVobppY1lbprhJt
-         5SPMfClhe2z4wVGQ4jWEevwgnNy9RGKa+YyudVmu4AMaxZ0SCkuuOEoHolCl1Rwq91Vf
-         bC3A==
-X-Forwarded-Encrypted: i=1; AJvYcCUeFOUf7NF09enfzoig3wEKSv1jgNsHjUVtjo6xWGyKhaN5T3M1E/qIlPLkHWALr0njmTw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyRfsiP7sN0d0h0yrKsLCL7I/yOQUEXJ0nDPm3bfzwxz0dU34Fj
-	sK6oopCyyQKUG+ChvKGUO6eMGXqUbuB307K39g3I5sSZqUG+ovTwLoDyr9hs3zs6
-X-Gm-Gg: ASbGncskbM1v2HVstDoOd1tmQzawDbvMsXCM7ra2+SEOfCAaZTDy8MnLjHmlK7etqy5
-	mHkG/dSQ77VHV6uG+ySwuSLFEqUtH+ID6o0gdjRYxAmsK+KkSS1RrbG32oTdBU6NBwKAW5Ms+Ls
-	/gO33ClyBx01me65G4I615L4xyOFLBltSe9Jssj07QMV9X9DGptjfJWWiQ2Bn8AkFP5ZAWq39ga
-	ji53G7rTMSHyJdnbV5Ux12FBHRKq1OEpK8mzhK2m/I8RTiX9rH+MtPpet1Fj9ux7DjSNE03LzTN
-	SO2ATCAYPtN9Rbc/iKtoYZusLLhl3bd7PQjt2sm1vS/h+1m8beNQUhooMf0R5Mw5zBnG/lzR4z+
-	zjKaXC2lB6gPGs1wxGE0CbSkenWexERdewkx4aztPkyVVopywO82ScAUuxlDRZKUuU4ReVtU+Kf
-	b7hDijY+royLfT6LqnW8TfxMXKX/hy63PJhf9zemK7dE5Je4xd
-X-Google-Smtp-Source: AGHT+IEXBR/xqPI7+S7lZQH5MrO5RjK5+WcxRHMfOEnCkAv6uPTPuGrdp1YekCBaKSBWRd7jO7RiUA==
-X-Received: by 2002:a05:6102:3f05:b0:5df:a914:bbd8 with SMTP id ada2fe7eead31-5e48e268506mr430179137.15.1764756876775;
-        Wed, 03 Dec 2025 02:14:36 -0800 (PST)
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com. [209.85.222.43])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-93cd7662111sm7609861241.13.2025.12.03.02.14.36
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Dec 2025 02:14:36 -0800 (PST)
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-93a9f6efe7cso3545232241.0
-        for <imx@lists.linux.dev>; Wed, 03 Dec 2025 02:14:36 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW0rTy8bK4f//V8Rt0VEEOSiivwTCApMCDhhHCmoAVN9DkIa37r1HuMzSmlweJwYM4ewLw=@lists.linux.dev
-X-Received: by 2002:a05:6102:579a:b0:5df:c1ac:8ad4 with SMTP id
- ada2fe7eead31-5e48e01012fmr426535137.0.1764756375911; Wed, 03 Dec 2025
- 02:06:15 -0800 (PST)
+	s=arc-20240116; t=1764764159; c=relaxed/simple;
+	bh=uqJL9FFx4SSTFGQ6utymUEwOosWqYj0K1wfyPjvnJeU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LmU6p7FYY4iJ3MBsexAjbN7ZwB48jtG3x5wp/f3GEDeFXte9iixkTsSx1IAuRI1hw9PhgRykB2XfxtBSVrL51DIg5XGJA+OBwL2Bc7xKbLZOSpsOJ861HZmcSjGpR0E6iPNRv5ML8VgECU0xLoyFuemOSJ3IcCx9mH0IOCdjyd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D009C4CEFB;
+	Wed,  3 Dec 2025 12:15:55 +0000 (UTC)
+Message-ID: <bd25e903-30fc-4905-986c-96d1b42e9f02@linux-m68k.org>
+Date: Wed, 3 Dec 2025 22:15:52 +1000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251015071420.1173068-1-herve.codina@bootlin.com>
- <20251015071420.1173068-2-herve.codina@bootlin.com> <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
- <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
- <5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com> <CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
- <072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com> <CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
- <55076f4b-d523-4f8c-8bd4-0645b790737e@gmail.com> <20251202102619.5cd971cc@bootlin.com>
- <CAMuHMdXogrkTAm=4pC0B+Sybr=PR3XovnBgmiEyTvUMmJHvBRA@mail.gmail.com> <20251202182834.65d7f0a1@bootlin.com>
-In-Reply-To: <20251202182834.65d7f0a1@bootlin.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 3 Dec 2025 11:06:04 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdU4y3Faz1nJo5CeYdPY9dgetWrLE9bMdba_QeWwXX41CQ@mail.gmail.com>
-X-Gm-Features: AWmQ_bm_vwtlSlkiVojLd-rzxo_k4pikXV0aLj6bs5bAdLDXgMj28SXkaqQFKI0
-Message-ID: <CAMuHMdU4y3Faz1nJo5CeYdPY9dgetWrLE9bMdba_QeWwXX41CQ@mail.gmail.com>
-Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT overlays"
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Kalle Niemi <kaleposti@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Matti Vaittinen <mazziesaccount@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, 
-	Arnd Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
-	Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Mark Brown <broonie@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Daniel Scally <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
-	Dave Jiang <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Dan Williams <dan.j.williams@intel.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
-	patches@opensource.cirrus.com, linux-gpio@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	Allan Nielsen <allan.nielsen@microchip.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] m68k: coldfire: Add RNG support for MCF54418
+To: jeanmichel.hautbois@yoseli.org, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Olivia Mackall <olivia@selenic.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>
+References: <20251126-b4-m5441x-add-rng-support-v4-0-5309548c9555@yoseli.org>
+ <20251126-b4-m5441x-add-rng-support-v4-2-5309548c9555@yoseli.org>
+Content-Language: en-US
+From: Greg Ungerer <gerg@linux-m68k.org>
+In-Reply-To: <20251126-b4-m5441x-add-rng-support-v4-2-5309548c9555@yoseli.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Herv=C3=A9,
+Hi Jean-Michel,
 
-On Tue, 2 Dec 2025 at 18:29, Herve Codina <herve.codina@bootlin.com> wrote:
-> On Tue, 2 Dec 2025 17:35:35 +0100
-> Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > On Tue, 2 Dec 2025 at 10:26, Herve Codina <herve.codina@bootlin.com> wr=
-ote:
-> > > On Fri, 28 Nov 2025 10:34:57 +0200
-> > > Kalle Niemi <kaleposti@gmail.com> wrote:
-> > > > >>>>>> Test system testing drivers for ROHM ICs bisected this commi=
-t to cause
-> > > > >>>>>> BD71847 drivers probe to not be called.
-> > > > >>>>> This driver (and overlay support) is in linux-next or somethi=
-ng out of
-> > > > >>>>> tree on top of linux-next?
-> > > > >>>>>
-> > > > >>>>> Rob
-> > > > >>>> Yes the driver is in mainline linux: /drivers/mfd/rohm-bd718x7=
-.c
-> > > > >>> I don't see any support to apply overlays in that driver.
-> > > > >> Ah. Sorry for the confusion peeps. I asked Kalle to report this =
-without
-> > > > >> proper consideration. 100% my bad.
-> > > > >>
-> > > > >> While the bd718x7 drive indeed is mainline (and tested), the act=
-ual
-> > > > >> 'glue-code' doing the overlay is part of the downstream test
-> > > > >> infrastructure. So yes, this is not a bug in upstream kernel - t=
-his
-> > > > >> falls in the category of an upstream change causing downstream t=
-hings to
-> > > > >> break. So, feel free to say: "Go fix your code" :)
-> > > > >>
-> > > > >> Now that this is sorted, if someone is still interested in helpi=
-ng us to
-> > > > >> get our upstream drivers tested - the downstream piece is just t=
-aking
-> > > > >> the compiled device-tree overlay at runtime (via bin-attribute f=
-ile),
-> > > > >> and applying it using the of_overlay_fdt_apply(). The approach i=
-s
-> > > > >> working for our testing purposes when the device is added to I2C=
-/SPI
-> > > > >> node which is already enabled. However, in case where we have th=
-e I2C
-> > > > >> disabled, and enable it in the same overlay where we add the new=
- device
-> > > > >> - then the new device does not get probed.
-> > > > >>
-> > > > >> I would be really grateful if someone had a pointer for us.
-> > > > > Seems to be fw_devlink related. I suppose if you turn it off it w=
-orks?
-> > > > > There's info about the dependencies in sysfs or maybe debugfs. I =
-don't
-> > > > > remember the details, but that should help to tell you why things
-> > > > > aren't probing.
-> > >
-> > > Rob reverted patches but I plan to continue my work on it.
-> > > On my side, I need the reverted patches but I fully understand that, =
-on
-> > > your side, you need a working system.
-> > >
-> > > In order to move forward and find a solution for my next iteration, c=
-an you
-> > > send your overlay (dtso) used in your working and non working cases?
-> >
-> > Hmm, I must have missed when Rob applied (part of) this series, as I
-> > do an overlay test (using the out-of-tree configfs) on top of every
-> > (bi-weekly) renesas-drivers release, and saw no issues during the last
-> > few months.
-> >
-> > So I applied this series and tested loading my SPI EEPROM overlay.
-> > And it indeed breaks, with the culprit being this particular patch.
-> >
-> > Interestingly, quoting from this patch:
-> >
-> >    "While the commit fixed fw_devlink overlay handling for one case, it
-> >     broke it for another case. So revert it and redo the fix in a separ=
-ate
-> >     patch."
-> >
-> > Where is the separate patch that redid the fix? I assume it is "[PATCH
-> > v4 03/29] of: dynamic: Fix overlayed devices not probing because
-> > of fw_devlink"?  Unfortunately that doesn't fix the issue for me.
-> >
-> > Quoting more from this patch:
-> >
-> >    "Closes: https://lore.kernel.org/lkml/CAMuHMdXEnSD4rRJ-o90x4OprUacN_=
-rJgyo8x6=3D9F9rZ+-KzjOg@mail.gmail.com/"
-> >
-> > Strange that it claims to fix the issue reported there, as the failure
-> > mode I am seeing is exactly the same as documented in that report?
-> >
-> > Do you know what is wrong? The overlay I am using is referenced in
-> > the bug report linked above.
->
-> The first patch "Fix probing of devices in DT overlays" didn't fix all ca=
-ses
-> and so Saravana reverted this patch and proposed "of: dynamic: Fix overla=
-yed
-> devices not probing because of fw_devlink".
->
-> This second patch was needed to fix my use case even if more modification=
- were
-> needed to have my use case fully fixed (other patches in my series).
->
-> Rob applied those first patches from my series and some systems were brok=
-en.
-> The breakage has been reported my Kalle and Matti and led to a revert of =
-culprit
-> patches.
->
-> I tried to understand what was wrong. I am pretty convinced that modifica=
-tion
-> done in "of: dynamic: Fix overlayed devices not probing because of fw_dev=
-link"
-> are really better than modification available in "treewide: Fix probing o=
-f
-> devices in DT overlays".
->
-> I proposed an update [0] and I will be glad if you can also test this upd=
-ate
-> on your side and give me your feedback.
->
-> [0] https://lore.kernel.org/lkml/20251202175836.747593c0@bootlin.com/
+On 26/11/25 17:08, Jean-Michel Hautbois via B4 Relay wrote:
+> From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+> 
+> Add support for the hardware Random Number Generator (RNGB) found on
+> MCF54418 ColdFire processors with clock enabled at platform
+> initialization.
+> 
+> The RNGB block is compatible with the imx-rngc driver.
+> 
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
+> ---
+>   arch/m68k/coldfire/device.c       | 28 ++++++++++++++++++++++++++++
+>   arch/m68k/coldfire/m5441x.c       |  2 +-
+>   arch/m68k/include/asm/m5441xsim.h |  9 +++++++++
+>   drivers/char/hw_random/Kconfig    |  3 ++-
+>   drivers/char/hw_random/imx-rngc.c |  7 +++++++
+>   5 files changed, 47 insertions(+), 2 deletions(-)
 
-Thank you!
+I am happy with the ColdFire arch parts, so from me:
 
-Unfortunately this does not fix the problem: I still need to do an extra
-overlay rm/add cycle to make the SPI EEPROM work.
+     Acked-by: Greg Ungerer <gerg@linux-m68k.org>
 
-In addition, it triggers a bunch of new scary error messages:
+I don't mind taking this commit via the m68knommu git tree if the hw_rng
+maintainers are ok with that. Otherwise if you break out the arch/m68k
+parts I can apply those on their own.
 
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,src/src-0
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,src/src-1
-[...]
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,src/src-9
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,ssi/ssi-0
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,ssi/ssi-1
-[...]
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,ssi/ssi-9
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,src/src-0
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,src/src-1
-[...]
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,src/src-9
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,ssi/ssi-0
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,ssi/ssi-1
-[...]
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,ssi/ssi-9
+Regards
+Greg
 
-Gr{oetje,eeting}s,
 
-                        Geert
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+> diff --git a/arch/m68k/coldfire/device.c b/arch/m68k/coldfire/device.c
+> index b6958ec2a220..9d8f844e319a 100644
+> --- a/arch/m68k/coldfire/device.c
+> +++ b/arch/m68k/coldfire/device.c
+> @@ -622,6 +622,31 @@ static struct platform_device mcf_flexcan0 = {
+>   };
+>   #endif /* MCFFLEXCAN_SIZE */
+>   
+> +#ifdef MCF_RNG_BASE
+> +/*
+> + * Random Number Generator (RNG) - only on MCF54418
+> + */
+> +static struct resource mcf_rng_resource[] = {
+> +	{
+> +		.start = MCF_RNG_BASE,
+> +		.end   = MCF_RNG_BASE + MCF_RNG_SIZE - 1,
+> +		.flags = IORESOURCE_MEM,
+> +	},
+> +	{
+> +		.start = MCF_IRQ_RNG,
+> +		.end   = MCF_IRQ_RNG,
+> +		.flags = IORESOURCE_IRQ,
+> +	},
+> +};
+> +
+> +static struct platform_device mcf_rng = {
+> +	.name           = "imx-rngc",
+> +	.id             = -1,
+> +	.num_resources  = ARRAY_SIZE(mcf_rng_resource),
+> +	.resource       = mcf_rng_resource,
+> +};
+> +#endif /* MCF_RNG_BASE */
+> +
+>   static struct platform_device *mcf_devices[] __initdata = {
+>   	&mcf_uart,
+>   #ifdef MCFFEC_BASE0
+> @@ -660,6 +685,9 @@ static struct platform_device *mcf_devices[] __initdata = {
+>   #ifdef MCFFLEXCAN_SIZE
+>   	&mcf_flexcan0,
+>   #endif
+> +#ifdef MCF_RNG_BASE
+> +	&mcf_rng,
+> +#endif
+>   };
+>   
+>   /*
+> diff --git a/arch/m68k/coldfire/m5441x.c b/arch/m68k/coldfire/m5441x.c
+> index 7a25cfc7ac07..ab5b00637237 100644
+> --- a/arch/m68k/coldfire/m5441x.c
+> +++ b/arch/m68k/coldfire/m5441x.c
+> @@ -158,6 +158,7 @@ static struct clk * const enable_clks[] __initconst = {
+>   	&__clk_0_33, /* pit.1 */
+>   	&__clk_0_37, /* eport */
+>   	&__clk_0_48, /* pll */
+> +	&__clk_0_49, /* rng */
+>   	&__clk_0_51, /* esdhc */
+>   
+>   	&__clk_1_36, /* CCM/reset module/Power management */
+> @@ -179,7 +180,6 @@ static struct clk * const disable_clks[] __initconst = {
+>   	&__clk_0_44, /* usb otg */
+>   	&__clk_0_45, /* usb host */
+>   	&__clk_0_47, /* ssi.0 */
+> -	&__clk_0_49, /* rng */
+>   	&__clk_0_50, /* ssi.1 */
+>   	&__clk_0_53, /* enet-fec */
+>   	&__clk_0_54, /* enet-fec */
+> diff --git a/arch/m68k/include/asm/m5441xsim.h b/arch/m68k/include/asm/m5441xsim.h
+> index f48cf63bd782..dd64cdfcad3e 100644
+> --- a/arch/m68k/include/asm/m5441xsim.h
+> +++ b/arch/m68k/include/asm/m5441xsim.h
+> @@ -198,6 +198,15 @@
+>   #define MCFRTC_SIZE		(0xfc0a8840 - 0xfc0a8000)
+>   #define MCF_IRQ_RTC		(MCFINT2_VECBASE + MCFINT2_RTC)
+>   
+> +/*
+> + *  Random Number Generator (RNG) Module.
+> + *  Note: Only present in MCF54418, not in MCF54410/54415/54417
+> + */
+> +#define MCF_RNG_BASE		0xfc0c4000
+> +#define MCF_RNG_SIZE		0x1c
+> +#define MCFINT2_RNG		28
+> +#define MCF_IRQ_RNG		(MCFINT2_VECBASE + MCFINT2_RNG)
+> +
+>   /*
+>    *  GPIO Module.
+>    */
+> diff --git a/drivers/char/hw_random/Kconfig b/drivers/char/hw_random/Kconfig
+> index 492a2a61a65b..2f301e43db84 100644
+> --- a/drivers/char/hw_random/Kconfig
+> +++ b/drivers/char/hw_random/Kconfig
+> @@ -270,12 +270,13 @@ config HW_RANDOM_MXC_RNGA
+>   config HW_RANDOM_IMX_RNGC
+>   	tristate "Freescale i.MX RNGC Random Number Generator"
+>   	depends on HAS_IOMEM
+> -	depends on SOC_IMX25 || SOC_IMX6SL || SOC_IMX6SLL || SOC_IMX6UL || COMPILE_TEST
+> +	depends on SOC_IMX25 || SOC_IMX6SL || SOC_IMX6SLL || SOC_IMX6UL || COLDFIRE || COMPILE_TEST
+>   	default HW_RANDOM
+>   	help
+>   	  This driver provides kernel-side support for the Random Number
+>   	  Generator Version C hardware found on some Freescale i.MX
+>   	  processors. Version B is also supported by this driver.
+> +	  Also supports RNGB on Freescale MCF54418 (Coldfire V4e).
+>   
+>   	  To compile this driver as a module, choose M here: the
+>   	  module will be called imx-rngc.
+> diff --git a/drivers/char/hw_random/imx-rngc.c b/drivers/char/hw_random/imx-rngc.c
+> index d6a847e48339..44f20a05de0a 100644
+> --- a/drivers/char/hw_random/imx-rngc.c
+> +++ b/drivers/char/hw_random/imx-rngc.c
+> @@ -353,12 +353,19 @@ static const struct of_device_id imx_rngc_dt_ids[] = {
+>   };
+>   MODULE_DEVICE_TABLE(of, imx_rngc_dt_ids);
+>   
+> +static const struct platform_device_id imx_rngc_devtype[] = {
+> +	{ .name = "imx-rngc" },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(platform, imx_rngc_devtype);
+> +
+>   static struct platform_driver imx_rngc_driver = {
+>   	.driver = {
+>   		.name = KBUILD_MODNAME,
+>   		.pm = pm_ptr(&imx_rngc_pm_ops),
+>   		.of_match_table = imx_rngc_dt_ids,
+>   	},
+> +	.id_table = imx_rngc_devtype,
+>   };
+>   
+>   module_platform_driver_probe(imx_rngc_driver, imx_rngc_probe);
+> 
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
