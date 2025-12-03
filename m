@@ -1,33 +1,41 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C65F1E1A17;
-	Wed,  3 Dec 2025 07:20:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD8029C35A
+	for <imx@lists.linux.dev>; Wed,  3 Dec 2025 08:34:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764746456; cv=none; b=RwiuyMpRgN0wGuEcSg5RymC9x4iBuG7O27iX1Ue3/e583y+2WElQHXgDH2XeLhsFDGpuPr7t0kJ1+u6JsuHFMdgPJiYuRynzc7abZt9kuQcSCheeWiLtYV/HhaQfhPYZ90KnmAaxFNk9PLFIk5golOrzdXpz3DatyLXelYwjPso=
+	t=1764750887; cv=none; b=FycE744apO2KmYQc2LaoKdDOdpN5b2v44S8fkY9pksqSn8mrx/F7Gm1p3gVjhs2xEsv3rxmTloj2TqBI3srrvZNwmfHHH+I0+YOmM7leeQsSdBrDvRkDqR+ghqrDLKDfCX//aRKk32FUEJ+0Y2Bo1sT3FN9eydHcvTad6ryAuNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764746456; c=relaxed/simple;
-	bh=n2EyRpFeVYxE7vm8PuEZf1jmg9XZDoeUxffl4a+3DT4=;
+	s=arc-20240116; t=1764750887; c=relaxed/simple;
+	bh=hHQxqxbqtVcLWJBJZTpxJ3mvvOapur+L/MsFYqU1tnY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W6+g4g0lgEqbFy1ToOJTsBtTiPCEYkU/WUrhcSPiT6aW0VMLqlqEgOLH5aN9d++GJZ6oVAfU5Fu4y0qHJh+kmwmGEsv19kZlvSDi3x5IbSnwU8v0zav3v2Jc8fT0kbFdOURRC1iCjvcCahBapoCW7yERgM/VTf9zQhWVuTbBdSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JQbLP0/z; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=BBeX4cdEcLbJb4qKQcXDi2VcmNFkIidqKtc9It+kUXdFNiXItqgh/VZX5m8yCXQsNsFTQ6T4wLrTrtp7sEgBYVqMpFfo8HJJKWCAxplRRfEtHMrE17T3kMynXMeG7m50vv1ZspFMdqpc7COPKJjlFBr40k66mnyMyS0mKDPh+pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=l3BFhAXv; arc=none smtp.client-ip=46.19.12.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JQbLP0/z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9FF3C4CEFB;
-	Wed,  3 Dec 2025 07:20:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764746455;
-	bh=n2EyRpFeVYxE7vm8PuEZf1jmg9XZDoeUxffl4a+3DT4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JQbLP0/zsLkqeTNv/0Gv8wh4GM70+sEjyTZ2U6a1Xo8vhlb4xymxjFPTsChqWmVEY
-	 yu6AKQ2j7FRC1VtU6Jjp3wsYCblzE9dyDwBjV+gwD5/brnBtOOABIMQ2kJ9XRj5yRC
-	 4mUoGp6bnu0guhrDoHe5DfLiDji0otKK8V5B3ggiiBzisE4SJ58YrbzoR8PkFkFDzG
-	 qRQTIKXH9TSNy8jFykBM9FHFOWz/cLbFpalS/WInMIcoHIKRunSPjL/OVlyHckRoUH
-	 /6CjaTtN2xqS10+iGHYzYQdE42LbCUAqPXu9cyn4QS7UweD3u6AHWqppbvCDh8yq7T
-	 jNK7+moarRyHw==
-Message-ID: <1ee383c7-ccbc-4c90-adf3-bfbe87fb6765@kernel.org>
-Date: Wed, 3 Dec 2025 08:20:50 +0100
+	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="l3BFhAXv"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=rl2K4apG31pyKgMdWU6hr7CphVkuxZN6ocO/Se3/VAE=; b=l3BFhAXvQvf5/XQiI9KstARdhu
+	MZ9bvZBFCoT99FCXmP9q8D76JK0Ll10b5Wdv5IPYFOAqqRLA78DP8uwupWQxuaoLZJvR4PFDcjdhE
+	MlDUjBktNqJScLfKygczryhfMhWBdDtccaUTnjcXZ2eTdklzDO9hkeea4wHrfYdiYjvO5BJT/SyOq
+	5rh7N37AZXGuGPBJJ+MJK9mhUg5HaXxG6WlkkMm0e8MKfk8TFl3+O50JSB9JZWuGDrsZL8G9CqDwn
+	PBpoTruvEjtZR79J7/FuOvViFycr5UClJJCKEaXR4DApDnOF5kiDD4vTP4gP9wJKPtK1prRIi6O0j
+	FWbno83Q==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:43316 helo=[192.168.69.116])
+	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1vQiJy-00000002Wbe-1wDZ;
+	Wed, 03 Dec 2025 09:34:43 +0100
+Message-ID: <15bb2331-713a-4b6a-ae9a-4870066e84dc@norik.com>
+Date: Wed, 3 Dec 2025 09:34:43 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,161 +43,280 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v20 3/7] firmware: imx: add driver for NXP EdgeLock
- Enclave
-To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+Subject: Re: [PATCH 2/2] arm64: dts: imx93-phyboard-segin: Add peb-av-02
+ overlay
+To: Marco Felsch <m.felsch@pengutronix.de>, Abel Vesa <abelvesa@kernel.org>,
+ Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>
-References: <20251203-imx-se-if-v20-0-a04a25c4255f@nxp.com>
- <20251203-imx-se-if-v20-3-a04a25c4255f@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, andrej.picej@norik.com, c.hemp@phytec.de,
+ s.mueller-klieser@phytec.de, n.wesp@phytec.de, c.stoidner@phytec.de
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <20251202-v6-18-topic-imx93-phyboard-segin-av-02-display-v1-0-9c14be6c7478@pengutronix.de>
+ <20251202-v6-18-topic-imx93-phyboard-segin-av-02-display-v1-2-9c14be6c7478@pengutronix.de>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251203-imx-se-if-v20-3-a04a25c4255f@nxp.com>
+From: Primoz Fiser <primoz.fiser@norik.com>
+Autocrypt: addr=primoz.fiser@norik.com; keydata=
+ xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
+ JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
+ ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
+ gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
+ jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
+ 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
+ TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
+ AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
+Organization: Norik systems d.o.o.
+In-Reply-To: <20251202-v6-18-topic-imx93-phyboard-segin-av-02-display-v1-2-9c14be6c7478@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cp2.siel.si
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On 03/12/2025 07:48, Pankaj Gupta wrote:
-> Add driver for enabling MU based communication interface to secure-enclave.
+Hi Marco,
+
+On 2. 12. 25 14:44, Marco Felsch wrote:
+> From: Andrej Picej <andrej.picej@norik.com>
 > 
-> NXP hardware IP(s) for secure-enclaves like Edgelock Enclave(ELE), are
-> embedded in the SoC to support the features like HSM, SHE & V2X, using
-> message based communication interface.
+> Add overlay for Audio-Video module PEB-AV-02. Add support for panel
+> display, capacitive touchscreen and backlight.
 > 
-> The secure enclave FW communicates with Linux over single or multiple
-> dedicated messaging unit(MU) based interface(s).
-> Exists on i.MX SoC(s) like i.MX8ULP, i.MX93, i.MX95 etc.
+> For now the backlight is configured as a GPIO, brightness of the display
+> can not be set. When the FLEXIO PWM driver is available this should be
+> switched to PWM backlight driver.
 > 
-> For i.MX9x SoC(s) there is at least one dedicated ELE MU(s) for each
-> world - Linux(one or more) and OPTEE-OS (one or more).
-> 
-> Other dependent kernel drivers will be:
-> - NVMEM: that supports non-volatile devices like EFUSES,
->          managed by NXP's secure-enclave.
-> 
-> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+> [rework commit message, use local regulator, remove compatible]
+> Signed-off-by: Primoz Fiser <primoz.fiser@norik.com>
+> Signed-off-by: Christian Hemp <c.hemp@phytec.de>
+> [m.felsch@pengutronix.de: cleanup downstream commit]
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > ---
->  drivers/firmware/imx/Kconfig        |  13 ++
->  drivers/firmware/imx/Makefile       |   2 +
->  drivers/firmware/imx/ele_base_msg.c | 269 ++++++++++++++++++++++++
->  drivers/firmware/imx/ele_base_msg.h |  95 +++++++++
->  drivers/firmware/imx/ele_common.c   | 333 ++++++++++++++++++++++++++++++
->  drivers/firmware/imx/ele_common.h   |  45 ++++
->  drivers/firmware/imx/se_ctrl.c      | 401 ++++++++++++++++++++++++++++++++++++
->  drivers/firmware/imx/se_ctrl.h      |  86 ++++++++
->  include/linux/firmware/imx/se_api.h |  14 ++
->  9 files changed, 1258 insertions(+)
+>  arch/arm64/boot/dts/freescale/Makefile             |   2 +
+>  .../freescale/imx93-phyboard-segin-peb-av-02.dtso  | 135 +++++++++++++++++++++
+>  2 files changed, 137 insertions(+)
 > 
-> diff --git a/drivers/firmware/imx/Kconfig b/drivers/firmware/imx/Kconfig
-> index 127ad752acf8..5fe96299b704 100644
-> --- a/drivers/firmware/imx/Kconfig
-> +++ b/drivers/firmware/imx/Kconfig
-> @@ -55,3 +55,16 @@ config IMX_SCMI_MISC_DRV
->  	  core that could provide misc functions such as board control.
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index 525ef180481d331e9c4decd092b7b831c497b67e..27e27ac29e82bc0692e86c2ba15c240dc9fbe1c6 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -357,10 +357,12 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb
 >  
->  	  This driver can also be built as a module.
-> +
-> +config IMX_SEC_ENCLAVE
-> +	tristate "i.MX Embedded Secure Enclave - EdgeLock Enclave Firmware driver."
-> +	depends on IMX_MBOX && ARCH_MXC && ARM64
-> +	select FW_LOADER
-> +	default m if ARCH_MXC
-> +
-> +	help
-> +	  Exposes APIs supported by the iMX Secure Enclave HW IP called:
-> +	  - EdgeLock Enclave Firmware (for i.MX8ULP, i.MX93),
-> +	    like base, HSM, V2X & SHE using the SAB protocol via the shared Messaging
-> +	    Unit. This driver exposes these interfaces via a set of file descriptors
-> +	    allowing to configure shared memory, send and receive messages.
-> diff --git a/drivers/firmware/imx/Makefile b/drivers/firmware/imx/Makefile
-> index 3bbaffa6e347..4412b15846b1 100644
-> --- a/drivers/firmware/imx/Makefile
-> +++ b/drivers/firmware/imx/Makefile
-> @@ -4,3 +4,5 @@ obj-$(CONFIG_IMX_SCU)		+= imx-scu.o misc.o imx-scu-irq.o rm.o imx-scu-soc.o
->  obj-${CONFIG_IMX_SCMI_CPU_DRV}	+= sm-cpu.o
->  obj-${CONFIG_IMX_SCMI_MISC_DRV}	+= sm-misc.o
->  obj-${CONFIG_IMX_SCMI_LMM_DRV}	+= sm-lmm.o
-> +sec_enclave-objs		= se_ctrl.o ele_common.o ele_base_msg.o
-> +obj-${CONFIG_IMX_SEC_ENCLAVE}	+= sec_enclave.o
-> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/ele_base_msg.c
+>  imx93-phyboard-nash-peb-wlbt-07-dtbs += imx93-phyboard-nash.dtb imx93-phyboard-nash-peb-wlbt-07.dtbo
+> +imx93-phyboard-segin-peb-av-02-dtbs += imx93-phyboard-segin.dtb imx93-phyboard-segin-peb-av-02.dtbo
+>  imx93-phyboard-segin-peb-eval-01-dtbs += imx93-phyboard-segin.dtb imx93-phyboard-segin-peb-eval-01.dtbo
+>  imx93-phyboard-segin-peb-wlbt-05-dtbs += imx93-phyboard-segin.dtb imx93-phyboard-segin-peb-wlbt-05.dtbo
+>  imx93-phycore-rpmsg-dtbs += imx93-phyboard-nash.dtb imx93-phyboard-segin.dtb imx93-phycore-rpmsg.dtbo
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash-peb-wlbt-07.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin-peb-av-02.dtb
+
+Here you need to rebase since new commits on linux-next.
+
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin-peb-eval-01.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin-peb-wlbt-05.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx93-phycore-rpmsg.dtb
+> diff --git a/arch/arm64/boot/dts/freescale/imx93-phyboard-segin-peb-av-02.dtso b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin-peb-av-02.dtso
 > new file mode 100644
-> index 000000000000..a070acbd895c
+> index 0000000000000000000000000000000000000000..2e7074e402dc8fdeb1568d4f2d4960431e972501
 > --- /dev/null
-> +++ b/drivers/firmware/imx/ele_base_msg.c
-> @@ -0,0 +1,269 @@
-> +// SPDX-License-Identifier: GPL-2.0+
+> +++ b/arch/arm64/boot/dts/freescale/imx93-phyboard-segin-peb-av-02.dtso
+> @@ -0,0 +1,135 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 > +/*
-> + * Copyright 2025 NXP
+> + * Copyright (C) 2025 PHYTEC Messtechnik GmbH
+> + * Copyright (C) 2025 Pengutronix
+> + *
+> + * Author: Andrej Picej <andrej.picej@norik.com>
+> + * Author: Marco Felsch <kernel@pengutronix.de>
 > + */
 > +
-> +#include <linux/types.h>
+> +#include <dt-bindings/clock/imx93-clock.h>
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/interrupt-controller/arm-gic.h>
+> +#include "imx93-pinfunc.h"
 > +
-> +#include <linux/completion.h>
-> +#include <linux/dma-mapping.h>
-> +#include <linux/genalloc.h>
+> +/dts-v1/;
+> +/plugin/;
 > +
-> +#include "ele_base_msg.h"
-> +#include "ele_common.h"
+> +&{/} {
+> +	/* TODO: Convert to PWM backlight once the FlexIO PWM is supported */
+> +	backlight: backlight {
+> +		compatible = "gpio-backlight";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_backlight>;
+> +		gpios = <&gpio4 28 GPIO_ACTIVE_HIGH>;
+> +	};
 > +
-> +#define FW_DBG_DUMP_FIXED_STR		"ELE"
+> +	panel {
+> +		compatible = "edt,etm0700g0edh6";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_panel>;
 > +
-> +int ele_get_info(struct se_if_priv *priv, struct ele_dev_info *s_info)
-> +{
-> +	struct se_api_msg *tx_msg __free(kfree) = NULL;
-> +	struct se_api_msg *rx_msg __free(kfree) = NULL;
+> +		backlight = <&backlight>;
+> +		enable-gpios = <&gpio4 29 GPIO_ACTIVE_HIGH>;
+> +		power-supply = <&reg_x71_vcc_3v3>;
+> +
+> +		port {
+> +			panel_in: endpoint {
+> +				remote-endpoint = <&dpi_to_panel>;
+> +			};
+> +		};
+> +	};
+> +
+> +	reg_x71_vcc_3v3: regulator-x71-vcc-3v3 {
 
-No, don't use this syntax. This is explicitly discouraged.
+I just checked the schematics.
 
-NAK
+Can we rename this to reg_vcc_3v3_con in v2 maybe?
 
-Best regards,
-Krzysztof
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "X71-VCC3V3";
+
+And this to "VCC3V3_CON"?
+
+The reasoning behind is that "X71-VCC3V3" voltage doesn't exist on the
+schematics, while there is actually "VCC3V3_CON" voltage supplying the
+display panel.
+
+> +		regulator-max-microvolt = <3300000>;
+> +		regulator-min-microvolt = <3300000>;
+> +	};
+> +};
+> +
+> +&dpi_bridge {
+> +	status = "okay";
+> +};
+> +
+> +&dpi_to_panel {
+> +	remote-endpoint = <&panel_in>;
+> +	bus-width = <18>;
+> +};
+> +
+> +&lcdif {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_lcdif>;
+> +	assigned-clocks = <&clk IMX93_CLK_VIDEO_PLL>;
+> +	assigned-clock-rates = <332600000>;
+> +	status = "okay";
+> +};
+> +
+> +&lpi2c2 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +
+> +	touchscreen@38 {
+> +		compatible = "edt,edt-ft5406";
+> +		reg = <0x38>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_touchscreen>;
+> +		interrupt-parent = <&gpio4>;
+> +		interrupts = <12 IRQ_TYPE_EDGE_FALLING>;
+> +		reset-gpios = <&gpio4 1 GPIO_ACTIVE_LOW>;
+> +		touchscreen-size-x = <1792>;
+> +		touchscreen-size-y = <1024>;
+
+Please add "wakeup-source" property here like in the downstream commit.
+
+With this in place, panel touch can be used to wake up the board from sleep.
+
+Last but not least, can you add the vcc and iovcc supply regulators here
+like in the downstream commit:
+
+vcc-supply = <&reg_vcc_3v3_con>;
+iovcc-supply = <&reg_vcc_3v3_con>;
+
+to get rid of the following warnings:
+
+edt_ft5x06 1-0038: supply vcc not found, using dummy regulator
+edt_ft5x06 1-0038: supply iovcc not found, using dummy regulator
+
+Anyway, I tested the display on the segin board with latest linux-next
+and your patches. Can report display, touch and backlight work as expected.
+
+Thank you!
+
+Tested-by: Primoz Fiser <primoz.fiser@norik.com>
+
+BR,
+Primoz
+
+> +	};
+> +};
+> +
+> +&media_blk_ctrl {
+> +	status = "okay";
+> +};
+> +
+> +&iomuxc {
+> +	pinctrl_backlight: backlightgrp {
+> +		fsl,pins = <
+> +			MX93_PAD_CCM_CLKO3__GPIO4_IO28			0x1133e
+> +		>;
+> +	};
+> +
+> +	pinctrl_lcdif: lcdifgrp {
+> +		fsl,pins = <
+> +			MX93_PAD_GPIO_IO00__MEDIAMIX_DISP_CLK		0x50e
+> +			MX93_PAD_GPIO_IO01__MEDIAMIX_DISP_DE		0x50e
+> +			MX93_PAD_GPIO_IO02__MEDIAMIX_DISP_VSYNC		0x50e
+> +			MX93_PAD_GPIO_IO03__MEDIAMIX_DISP_HSYNC		0x50e
+> +			MX93_PAD_GPIO_IO04__MEDIAMIX_DISP_DATA00	0x50e
+> +			MX93_PAD_GPIO_IO05__MEDIAMIX_DISP_DATA01	0x50e
+> +			MX93_PAD_GPIO_IO06__MEDIAMIX_DISP_DATA02	0x50e
+> +			MX93_PAD_GPIO_IO07__MEDIAMIX_DISP_DATA03	0x50e
+> +			MX93_PAD_GPIO_IO08__MEDIAMIX_DISP_DATA04	0x50e
+> +			MX93_PAD_GPIO_IO09__MEDIAMIX_DISP_DATA05	0x51e
+> +			MX93_PAD_GPIO_IO10__MEDIAMIX_DISP_DATA06	0x50e
+> +			MX93_PAD_GPIO_IO11__MEDIAMIX_DISP_DATA07	0x50e
+> +			MX93_PAD_GPIO_IO12__MEDIAMIX_DISP_DATA08	0x50e
+> +			MX93_PAD_GPIO_IO13__MEDIAMIX_DISP_DATA09	0x50e
+> +			MX93_PAD_GPIO_IO14__MEDIAMIX_DISP_DATA10	0x50e
+> +			MX93_PAD_GPIO_IO15__MEDIAMIX_DISP_DATA11	0x50e
+> +			MX93_PAD_GPIO_IO16__MEDIAMIX_DISP_DATA12	0x506
+> +			MX93_PAD_GPIO_IO17__MEDIAMIX_DISP_DATA13	0x506
+> +			MX93_PAD_GPIO_IO18__MEDIAMIX_DISP_DATA14	0x506
+> +			MX93_PAD_GPIO_IO19__MEDIAMIX_DISP_DATA15	0x506
+> +			MX93_PAD_GPIO_IO20__MEDIAMIX_DISP_DATA16	0x506
+> +			MX93_PAD_GPIO_IO21__MEDIAMIX_DISP_DATA17	0x506
+> +		>;
+> +	};
+> +
+> +	pinctrl_panel: panelgrp {
+> +		fsl,pins = <
+> +			MX93_PAD_CCM_CLKO4__GPIO4_IO29			0x1133e
+> +		>;
+> +	};
+> +
+> +	pinctrl_touchscreen: touchscreengrp {
+> +		fsl,pins = <
+> +			MX93_PAD_ENET1_MDIO__GPIO4_IO01			0x11e
+> +			MX93_PAD_ENET1_RD2__GPIO4_IO12			0x1133e
+> +		>;
+> +	};
+> +};
+> 
+
+-- 
+Primoz Fiser
+phone: +386-41-390-545
+email: primoz.fiser@norik.com
+--
+Norik systems d.o.o.
+Your embedded software partner
+Slovenia, EU
+phone: +386-41-540-545
+email: info@norik.com
+
