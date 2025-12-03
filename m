@@ -1,124 +1,214 @@
-Received: from cp2.siel.si (cp2.siel.si [46.19.12.180])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013057.outbound.protection.outlook.com [40.107.159.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D119F2D5957
-	for <imx@lists.linux.dev>; Wed,  3 Dec 2025 08:45:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.12.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764751505; cv=none; b=eYr13wF9LkHYPZioIttrEW6a9IKttkQkBZurAq+NcapWeSY7jLUgW9vvD+h/WubxLVy61I0KlIgmTC40CZ2M8C1yOORDUA4qjXZOw0qLVdgbrgzPf3CWaUNaIIuoOdAQTtaCe5TYX9tcLfevNSDgSa6XYkfZ4856uK5+ATDGjFI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764751505; c=relaxed/simple;
-	bh=eY788H2GxaX/0dZ4ewNaRPDe3n7sY7pMPdmz+2V68uw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bf97NHaB28ydlbmAQBxgOuxQaD75v54Sg9vilVvuGBS5dSQnuGalwq506Pm4wlvSaHWhxPsVMJCqw2ZsR6IkK9jkgWzpZMXziujXlXsQ1PyQRQyeI3HoIVQj1TsIsnvuFck49ee9QSkrPVfFg+4MnU1+VG4R97Ozd+XBdls8hnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=CoIXvQcM; arc=none smtp.client-ip=46.19.12.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBA519AD8B
+	for <imx@lists.linux.dev>; Wed,  3 Dec 2025 09:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764752417; cv=fail; b=Ox+d2eOWp+KSe8fzxr+1Lm2dg/6HJ80ltNQyrXMhCLJjsxAFzWncN5lFFwRLfo6h2q5s+7od0O1xdK2ePP1nS6jSF1I1qM3wp9UXorANHyO5ZXEkFpa3V3awJdfeVpWXEbX7xLeszhN61rkraWsBs1dnVf4ce+OsSgAOm70jsUw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764752417; c=relaxed/simple;
+	bh=M0rNiCT0M0dAYk9tWIXTHTWK0uisCco56UXPS151EvM=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Rm6OSq8dnEekeuMx5TX0GIs/w2n5QjHV/4Mvm0o4lgBExbUuvesJoO6cM9RF9ioe/XaaW5+BNtuXUEeZ7bBZna6Ia8Gh1FJ+W+i6GYLNK/pSqQ3c6rAKBe9UjsG0iFdt1eS5+9fzc8IwLdZo2DU2GhuDnVDVWdVUZCnk82rcpi8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=f7X1gJWa; arc=fail smtp.client-ip=40.107.159.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b="CoIXvQcM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=jHkz3sXS4xRmbb1n3DFi1LDwAUWzmiQpx7m6JbKmtvo=; b=CoIXvQcMRkDNGCsctbpohlDp4F
-	+U6Tbx3RfNFLbpcEOydCHRRJjLnZzeLL3udR/kPvCw8rnHwoqeCNjLrv4PEsBX13+LAh7p6JtXp0g
-	uI73XgyUP5WdIKYk29gQfhVApE8wmkGyzO9puw9yUT62TXHvHmlSbxmIP9PQntj72KmU1SKWDwxkt
-	OTD2qQADd93dlMqS4zlftwCU816lId2dflBn/JM/cauX7W3ebBphDcYtDAPYkkwPj1mg6WbMbij1o
-	ayn9luvmXm8RMdzVryYpEtNv8CU2b/mYpJaMTVKRyPP+npGTZt8/PZa/TpGUCWBlQWGzgYPeBvpSL
-	IbrsFREA==;
-Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:45380 helo=[192.168.69.116])
-	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <primoz.fiser@norik.com>)
-	id 1vQiGZ-00000002WWi-1Mau;
-	Wed, 03 Dec 2025 09:31:12 +0100
-Message-ID: <304467a9-4c7a-4722-9e70-4d178113c33b@norik.com>
-Date: Wed, 3 Dec 2025 09:31:10 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="f7X1gJWa"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SDdlXrN0lWS527M7YKn0VNi2ppquZ9Kl7J5re27FIS6MviN5WDgnPOkB1FP48itWirqzRQVaeeIBkHMaPmMBBReqpJzVZw96HZTndMvnLGHmh0P83tl0AtlhGso//x9oo8JygMRHPrAd0pfBvJQpOxgA7427pWS4pcg1qEkAeNES1MIccNw2kGPO5PEX6zktA/BW5Xggz19NIVTv/6kfiCyTWEwtzw5k1vb5Jeb+S2KBvzVkuVaMLAwYg66NsFLcCiqPPu0ShVNUfKFH+jI+E+Dj0aX9mZUb7xov/xzbUYZpvWfNJBc+DUpHMg77XQkOe5wFIWfrZCxwwsyZcn4j9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=t/Fp+7scr7VBnR2M6WPA3HISzysXDjtp/nAmKgpZBFI=;
+ b=Sm9jhoeVAD32DIR17FYpTBzYW6brRASC+fihom5XFAcFDZ0141E/As66MT6vRoJf6Ua8FPHo/d7jxWeMeRHa3U03FC5wapMI4POZogfHiyO1hZsOf5ib6UvNonNPGBYUXW+ThySyGHueIUVtB5vsiIvk1s8zPTmyNldFtKFcjAixT0Rsasoi0bi5YP1wVzl5vpVJJZOYCsqm5Zyr4r5GBiYT/lkur3isdxDtlMz+p/6WZbPj814MllUPmjRFpGLSIDsXbC7vBgGVMitSR0wGaO7qUBHcvpsd1R6FauN9HGgJBav2kkRWkHTBhUWTn75/c7a+3JDHA/U4mR0BHFIm5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t/Fp+7scr7VBnR2M6WPA3HISzysXDjtp/nAmKgpZBFI=;
+ b=f7X1gJWaKRoVJipSvc3OF+2e44DZFLZCsWJa+70/EbVifJAiO6VdPxp18TWSUaGdC9N8CbCBeZT7WGHiN+TEIHMoBNQpqxWsc+660D9CgWxbEdAqnePxcW3k8LklsfxvwNgPcipRCIkYM6G7guVEWvlBK7ORldx9uYKL6PfFGrgczYK++lx9+MdsdH9ynS2zrpWfuSubKi+v8kEdYREd4eMNNXXmHpUT09EAbL0rcXdkCfKl81E63PBsJsKfv9Nxh4V28JncheeyzhQp26GN3+g21FwYYA5W7zEzh/h/TTCrG1ZTilRvzhJ5LeWspFkDaMeHsncqQ+zOq+52tRijCg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
+ (2603:10a6:800:293::14) by PA4PR04MB7981.eurprd04.prod.outlook.com
+ (2603:10a6:102:c0::24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Wed, 3 Dec
+ 2025 09:00:10 +0000
+Received: from VI2PR04MB11147.eurprd04.prod.outlook.com
+ ([fe80::75ad:fac7:cfe7:b687]) by VI2PR04MB11147.eurprd04.prod.outlook.com
+ ([fe80::75ad:fac7:cfe7:b687%6]) with mapi id 15.20.9366.012; Wed, 3 Dec 2025
+ 09:00:10 +0000
+From: Carlos Song <carlos.song@nxp.com>
+To: frank.li@nxp.com,
+	mkl@pengutronix.de,
+	broonie@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	kees@kernel.org,
+	gustavoars@kernel.org
+Cc: linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	Carlos Song <carlos.song@nxp.com>
+Subject: [PATCH v3 0/6] Support ECSPI dynamic burst feature for DMA mode
+Date: Wed,  3 Dec 2025 16:59:43 +0800
+Message-Id: <20251203085949.2922166-1-carlos.song@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AM0P190CA0017.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:208:190::27) To VI2PR04MB11147.eurprd04.prod.outlook.com
+ (2603:10a6:800:293::14)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] clk: imx: fracn-gppll: Add 332.60 MHz Support
-To: Marco Felsch <m.felsch@pengutronix.de>, Abel Vesa <abelvesa@kernel.org>,
- Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, andrej.picej@norik.com, c.hemp@phytec.de,
- s.mueller-klieser@phytec.de, n.wesp@phytec.de, c.stoidner@phytec.de
-Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20251202-v6-18-topic-imx93-phyboard-segin-av-02-display-v1-0-9c14be6c7478@pengutronix.de>
- <20251202-v6-18-topic-imx93-phyboard-segin-av-02-display-v1-1-9c14be6c7478@pengutronix.de>
-Content-Language: en-US
-From: Primoz Fiser <primoz.fiser@norik.com>
-Autocrypt: addr=primoz.fiser@norik.com; keydata=
- xjMEZrROOxYJKwYBBAHaRw8BAQdAADVOb5tiLVTUAC9nu/FUl4gj/+4fDLqbc3mk0Vz8riTN
- JVByaW1veiBGaXNlciA8cHJpbW96LmZpc2VyQG5vcmlrLmNvbT7CiQQTFggAMRYhBK2YFSAH
- ExsBZLCwJGoLbQEHbnBPBQJmtE47AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQagttAQducE+T
- gAD+K4fKlIuvH75fAFwGYG/HT3F9mN64majvqJqvp3gTB9YBAL12gu+cm11m9JMyOyN0l6Os
- jStsQFghPkzBSDWSDN0NzjgEZrROPBIKKwYBBAGXVQEFAQEHQP2xtEOhbgA+rfzvvcFkV1zK
- 6ym3/c/OUQObCp50BocdAwEIB8J4BBgWCAAgFiEErZgVIAcTGwFksLAkagttAQducE8FAma0
- TjwCGwwACgkQagttAQducE8ucAD9F1sXtQD4iA7Qu+SwNUAp/9x7Cqr37CSb2p6hbRmPJP8B
- AMYR91JYlFmOJ+ScPhQ8/MgFO+V6pa7K2ebk5xYqsCgA
-Organization: Norik systems d.o.o.
-In-Reply-To: <20251202-v6-18-topic-imx93-phyboard-segin-av-02-display-v1-1-9c14be6c7478@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cp2.siel.si
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: primoz.fiser@norik.com
-X-Authenticated-Sender: cp2.siel.si: primoz.fiser@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI2PR04MB11147:EE_|PA4PR04MB7981:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad1bde1e-cc84-4e3d-d980-08de324a5c6f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|7416014|19092799006|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?NghTkmhdEN2Vmzlv3GBo8hMy5EhLE0N4ESjiQZ27CG8XjAv6xh0/g0GUaiik?=
+ =?us-ascii?Q?57fRLI7ORluH3fBY84H4E7oLA3EnPmGbCUM2SZySNNtnx79SfmACQ0RtubcB?=
+ =?us-ascii?Q?AAq6weSHHaeA1Y6+xVmYHruoyQna/QxoKeHrMBZagBduOV8Jx2ZdfhnLMFix?=
+ =?us-ascii?Q?1OmX8Gz7Jb8JbJjCScgp0tw8mnv7pKCaWhEns3DIgVntKrac2KX1rK40cXiv?=
+ =?us-ascii?Q?ISn4Mfq1SGBfFr7+avqbFhpmICsV4ydsl5hhnJK5FLW7qQ3++O0eKJ/hzrBh?=
+ =?us-ascii?Q?suUwaHHoDbjb2BBTBGbNxTFkc5wWHUL7lFJintShBz/h+h6JXx8voIz2Bvrj?=
+ =?us-ascii?Q?HXvW111kYaAh2tUq6iPDiboQu03WUCRcZhLJfpMemzsEP0/LNL7oxDs8nQgp?=
+ =?us-ascii?Q?LnGkCHPdb+FS8v2ZBTjxBDrkypn6dvfxrgq8c/yfBpiyN7gx6EUykwYSbjUG?=
+ =?us-ascii?Q?uOFRNXkicmRxWC7h1Xwboue3mYVkxQ8OQ0Dkr+h7rzUIKPKoEnQOk2rCdA+H?=
+ =?us-ascii?Q?/pQA4w+JTmV29EJ5sd29k8VN6fhxFaQt3eOm6Y242F1Drs/dRGqzoPUQbKir?=
+ =?us-ascii?Q?81xlrSnJWtBoSgkSWT/788JeDX/vln7E2+85ny2brd7CD6G4arNp8Wqg7mGF?=
+ =?us-ascii?Q?xpmCkFP+uJqgXa/dwYz3EeHbIk/giwhB+G7O4GK7eEh3Pc6TCKsZFkduTA2c?=
+ =?us-ascii?Q?DF5RmVovd1VVC1BFIb1cuzyJPeOb2fZMxU6JMM4LxjkpEGz7G7IGk5SfOudb?=
+ =?us-ascii?Q?8cd95xIfKIYPCd8G9ArjolAPe3FtA385rTYUzXR9ILQohWlZCCxcJtqARZXL?=
+ =?us-ascii?Q?F52H+DS6ZkFUSba4t5Sbgmq2Xa2qGedJD5VIl3Jz2CACbPMI2335ylpVnzcT?=
+ =?us-ascii?Q?N3M2e04pVgRpTzWMdkhVe/ILVWLJpgPsklH5c/WDqFhl9hvYHvNokwjSdzGK?=
+ =?us-ascii?Q?KuO7TXsVB2MxnL1VFwWo44GKaQWw/E/ArO1IvihkP0RGIL4IlpGYAoqCnLks?=
+ =?us-ascii?Q?/el3Uvrfqk12cwi3hZHhWsymUCHqPNHt1jY6UCCTRdtC7Bz7MMFC/4+PlKij?=
+ =?us-ascii?Q?L6RDR9WYp16trlC0RF5LAdoARifuvUk8syH8y4BCIxOBRzmcepS0unf2NTCA?=
+ =?us-ascii?Q?Ilk98V251x5i+dDN4w0y+4wFWeXgr+nf5kei9lC0aak7kw7+iiiZEAsdU41h?=
+ =?us-ascii?Q?dOi5nqGCdPixEHZYX3ubRJ49o31vyCoW2NBcoIGEsrMO2Kxdp1JJKTsHOcX2?=
+ =?us-ascii?Q?yNpaBiYQgDTRKF4vJpPtlc46oVM1qe+VATrpz8ggXTeAxAu6W3aftaS/JAkf?=
+ =?us-ascii?Q?20R+r70gV7JAtLY53WC8KEJ+XD9Mf8VFpMenwD23I3QDpggpQYBA3E8b4HBA?=
+ =?us-ascii?Q?FY6a+9f77bl1XmnF02p1qR9Vv8TR1MO3/MQi4rKZQ7Da2ytUBrUTCnV+Tmxs?=
+ =?us-ascii?Q?W7ThvNamb/Bgoq5hbGy4GiYqrJbekWbRNkCX6K2ezJQ/VmmjqXyilh9j/rFZ?=
+ =?us-ascii?Q?BTwVA7SgkaKogl8dTDmQjrG2XyiCAB933xuF?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI2PR04MB11147.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(19092799006)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Vbh8NWuOxJ7wIPkDW5USlWUHo4sHquAQ9DZqU6PUp7eO38xQMf5vnzz0JCfP?=
+ =?us-ascii?Q?zl4Yxd5BNt9DHBkOqU9WRIIuLlWzJqpaHMAUUg5AqC4dsGOFmKXuAwWxa2Aj?=
+ =?us-ascii?Q?PHvzCRkb3Fs7/Y61MoLQX09JM0LxiVk7e+6wU5bNklZtiwBg51RtJNrs3VAi?=
+ =?us-ascii?Q?6hIQkWTnFdWGupS91zsn/J9BqjsXTQX2+icj829plZHdY3gNMCK5JAepyyRN?=
+ =?us-ascii?Q?/fbFlLw6fZYoaLxqj9Awb8D/wsJmzZkyo845MMrcyrwUExq7odX7wi0ufZf0?=
+ =?us-ascii?Q?XOseY0ShhGaKIcfXJb/6tNNgx/ZtCspTS29RyesV7g3TvuM6thDlvYCcrIwy?=
+ =?us-ascii?Q?Uu/fxAZ5NTBxjXsjsUFhvWdXbeL1fBSUBzEJiY2gSLw6uvwok1cPLkPvCv5Y?=
+ =?us-ascii?Q?UbMzTTjIShw6P+kkekzeYxPyi5gD0a/QKG2alyyACImboL3bzrm4HIVDsWpK?=
+ =?us-ascii?Q?j/bxDHPj25HAy923DUJ4n1UXdv8vx2npjNpnuIvnjSU3lSLIIdqTBADzODSx?=
+ =?us-ascii?Q?4zc2+r/WwSfhvwMwnzpF7RjwnpdqdRu7YD8CKv1bBN6ywWzD+4uVZ7hmGCNq?=
+ =?us-ascii?Q?LEUW69PLNNXSx11lOf44rX5+kQAefMRzzFqzmNbLbk3jqMpz6cdngtSdgSeD?=
+ =?us-ascii?Q?S+b+a1q+U01eZoLphMwQwk4JbQceqJsfEFVado4kGtjfl5vjBAEubS6tbjWR?=
+ =?us-ascii?Q?OAyRnd4vniRitcbC4AnMDZ8yUHO4ulmzXWFcXETkokUnhU5A/r7fBiQUYFDb?=
+ =?us-ascii?Q?kqBZNoHeJ++dAR4B6Tn188x33PCd29HCaaQLMaNUuYS/9M0JhFztfDx2Pum+?=
+ =?us-ascii?Q?aejkGCDky0uHyK8v+jA4QwkIqf8PswiQN5v+xPzF2mtyfRx2E921Gp+UV+dP?=
+ =?us-ascii?Q?+asPChYiKGIivZ1gkoH5vREjh8VZEdhEnv6yTMX2lNmlXY7fCqW0zPn3UZ3H?=
+ =?us-ascii?Q?2rCpMJkvgTiJ8LH6fEO3Nagf6rpoU9Etzx8Zso3fgk1iqgM37uhUnfuYfEhr?=
+ =?us-ascii?Q?p361YDfwZQsjj/qS1c92XepwlGPySYd2k1sZ5xlxb0DBdsfDKmFgciKZ7Dm9?=
+ =?us-ascii?Q?2ulsAksgt8PvtGAbI5RrqUNIaWRFdn9NHW8LAv6k+QhIHAeD2pXh2f68zJI+?=
+ =?us-ascii?Q?V6WF8weQeGw0byrf0T6+V325LKXNFbwOv8Xz94LVQPk5oc5fx32Mc/eKDT2d?=
+ =?us-ascii?Q?TUiNdaHNvVvj3P33cAWcF5d65IqCywpJyePiVUzb1V+j79ByhNsjixjkeKhh?=
+ =?us-ascii?Q?Gy+y9YmFwPixiEn4ovDI1nG1YOOyoML3uPRCWHgABtGg9NYQcqQrHLuN90mx?=
+ =?us-ascii?Q?lZawNMx9bt9Be5Duxq8tX/Ugk7uOHpuodOArxZkey5dgs/gcJrlVbarj07g5?=
+ =?us-ascii?Q?M5k2twq3TOJninLEIbvurqEh9r+cfs5eL6RuDk+KtY/1RpUgSrm0pACCLDS/?=
+ =?us-ascii?Q?w6Xn/nyCrhnjOONZF9016xSUeFRjcD4T5sVL38HuEZ905lcZY0A7F4JheUMu?=
+ =?us-ascii?Q?4CfzU6V+izlEWSVLRKfj19cwLVtpFFnTRfGdUbfgIo0etCEJPfIFV+CxQaJL?=
+ =?us-ascii?Q?G6/YOPMKTiOqioKmB2CdcGHQgoumxwNfqi2V14U/?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad1bde1e-cc84-4e3d-d980-08de324a5c6f
+X-MS-Exchange-CrossTenant-AuthSource: VI2PR04MB11147.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 09:00:10.2267
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1W+e8PYYAnBZ0Fn+hy2Ju3IvgXbbrCOEqqMBQTGUOnn+lq9tJpZyzQ73t69Q4O6889NbusLoQ7x+q5iB4CLeVA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7981
 
-Hi Marco,
+ECSPI has a low throughput because of no dynamic burst support, it
+transfers only one word per frame in DMA mode, causing SCLK stalls
+between words due to BURST_LENGTH updates.
 
-On 2. 12. 25 14:44, Marco Felsch wrote:
-> Some parallel panels have a pixelclk of 33.260 MHz. Add support for
-> 332.60 MHz so a by 10 divider can be used to derive the exact pixelclk.
+This patch set is to support ECSPI dynamic burst feature to help improve
+the ECSPI DMA mode performance.
 
-Reviewed-by: Primoz Fiser <primoz.fiser@norik.com>
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
->  drivers/clk/imx/clk-fracn-gppll.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/clk/imx/clk-fracn-gppll.c b/drivers/clk/imx/clk-fracn-gppll.c
-> index 090d608672508a8819dc68eedec5b8d4a2c140c8..579f76494eb041dfba58b8cd10eb2453a0ec4178 100644
-> --- a/drivers/clk/imx/clk-fracn-gppll.c
-> +++ b/drivers/clk/imx/clk-fracn-gppll.c
-> @@ -88,6 +88,7 @@ static const struct imx_fracn_gppll_rate_table fracn_tbl[] = {
->  	PLL_FRACN_GP(445333333U, 167, 0, 1, 0, 9),
->  	PLL_FRACN_GP(400000000U, 200, 0, 1, 0, 12),
->  	PLL_FRACN_GP(393216000U, 163, 84, 100, 0, 10),
-> +	PLL_FRACN_GP(332600000U, 138, 584, 1000, 0, 10),
->  	PLL_FRACN_GP(300000000U, 150, 0, 1, 0, 12)
->  };
->  
-> 
+Performance test (spidev_test @10MHz, 4KB):
+  Before: tx/rx ~6651.9 kbps
+  After:  tx/rx ~9922.2 kbps (~50% improvement)
+
+For compatibility with slow SPI devices, add configurable word delay in
+DMA mode. When word delay is set, dynamic burst is disabled and
+BURST_LENGTH equals word length.
+
+Also support target DMA mode with enabled dynamic burst.
+
+---
+Changes since v2:
+* Patch1~4: no change
+* Patch5: remove __counted_by from *dma_data, because spi_imx struct
+  is allocated with a fixed memory in probe, flexible array is not
+  suitable, so just remove it to avoid the build error. Also add
+  review-by tag
+* Patch6: add review-by tag
+Changes since v1:
+* Patch1~3:
+* Add review-by tag
+* Patch4:
+  * Add review-by tag
+  * Improve patch commit log
+* Patch5:
+  * Clean up tab instead of space for dma_tx_addr and dma_rx_addr
+  * Add  __counted_by(dma_package_num) for dma_data_package *dma_data
+  * Move temp and bytes_per_word to if()
+  * Add comment for spi_imx_dma_rx_data_handle() and
+    spi_imx_dma_tx_data_handle()
+  * Use kzalloc instead of kmalloc(x, x | __GFP_ZERO)
+  * Use sizeof(*temp) instead of BYTES_PER_32BITS_WORD in suitable place
+  * Add comments and fix comments according to discussion
+  * Propagate the error value of dma_mapping_error()
+  * Use round_down() to replace DIV_ROUND_DOWN_ULL()
+  * Improve transfer->error |= SPI_TRANS_FAIL_NO_START judgment for
+    better readability
+* Patch6:
+  * Improve patch commit log
+  * Add READ_ONCE for spi_imx->target_aborted
+  * Add comments for data length limit
+  * Move data length limit to spi_imx_can_dma()
+
+Carlos Song (6):
+  spi: imx: group spi_imx_dma_configure() with spi_imx_dma_transfer()
+  spi: imx: introduce helper to clear DMA mode logic
+  spi: imx: avoid dmaengine_terminate_all() on TX prep failure
+  spi: imx: handle DMA submission errors with dma_submit_error()
+  spi: imx: support dynamic burst length for ECSPI DMA mode
+  spi: imx: enable DMA mode for target operation
+
+ drivers/spi/spi-imx.c | 625 +++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 519 insertions(+), 106 deletions(-)
 
 -- 
-Primoz Fiser
-phone: +386-41-390-545
-email: primoz.fiser@norik.com
---
-Norik systems d.o.o.
-Your embedded software partner
-Slovenia, EU
-phone: +386-41-540-545
-email: info@norik.com
+2.34.1
 
