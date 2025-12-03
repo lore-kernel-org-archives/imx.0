@@ -1,71 +1,88 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011012.outbound.protection.outlook.com [52.101.70.12])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011025.outbound.protection.outlook.com [52.101.65.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E078030275E
-	for <imx@lists.linux.dev>; Wed,  3 Dec 2025 20:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD5F285056
+	for <imx@lists.linux.dev>; Wed,  3 Dec 2025 21:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.25
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764794777; cv=fail; b=fHBeftyThol/6I85DGi72NiwWnntL219m6ukhsdaYM2+/vJ43EX9LGze3zfmYDW6kd7dsl0AviPjTiUeERIsaXt3IEJ2qnRf2SPQnO4KLF6RFuslXPrA/a85iQKAvGEaHuPPj1ReARMHgynLl3kceDXkd2OXAEbirLoMzaGehNI=
+	t=1764795699; cv=fail; b=Nl89wb2t+ppeMg7jhcavmhlLqJfWuHb59QoWm3lbggWBqZV0pzWD8wb3us7G+InKtx3tD0LLJn3qd/38dgJZQNWz/s/zDrV88jUplgXYoW/1Rz8oCoxNcCl+wEpuCYO0Ta4KdbZ9+CdE5PVMi4D94Iaf3yCVo+ZljrELJ7/x52U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764794777; c=relaxed/simple;
-	bh=Y1gZjM0FoTH6orpUSDkHHP7JXPduhUZgjH5gQUzoR30=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=TjV2CUuYkoO/0zF93DDJ1N8IcQECxIOMUuc7N1veo3DAsSnWz9awIdAqBfOc1Gig4ZPV/hzKbXOsrxkaotQxIDyxJGBVCfHLfst7Gq0CiEprlE5xFT5m+NX0MENYIuz0NICUfsgBjkzQsngldUGiGy2NeW098/d+7ZhajyMqGk4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZwgfiW8N; arc=fail smtp.client-ip=52.101.70.12
+	s=arc-20240116; t=1764795699; c=relaxed/simple;
+	bh=XlBBaIsZx1r3ZNqa2vBjhO9Hx1QIpx4iKeGm8TgQ5qs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=X/mNcxKTzazjowHLsHIJITBu+bYpqDlkuu3mWZiHRBC1djiA+9rkrDDwFgI0Lr6LKS/GaeK6ge5HAN21FI/03jX1rheq3L9eYO1pkMViLF0YE1H1jF3TCzZhPiMhopi+GYuFP/bOLSngD7RT9E3iN9dAfNkN/2J8TSSQLOFOWGc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ItByLIDe; arc=fail smtp.client-ip=52.101.65.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZwgfiW8N"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ItByLIDe"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ohajSb15NYXtynF4ZMxqwP+/hW40MIZIoTY2Ng0ul/97xCA5nipV8GgK3rBoaoV8W8LLciIuf/K7x0iaBngT8eAThVwt0KVS6kxaRDaZ52y9gjZovwL1GUhNRm4s/ySLxToDh9yKccacTlRFzVSOhEW9c8SnKyZS7FY10WOo1p8BQ1TrIJ+5ke/WFycq25wkbFeeuQwp0aCUdQlnwNbmlAHyCd8zrkLcUI+cclpRFds+pyDt9Wbep+UDoAhGIHH28LyBwHkPwuYCHpopZ5ok3a8J7VJdKnazQFFbj5Gm88JmyWPPW5p9rGLwo2VvgHwnOxgNqqn1P9ZBSTfFCs5m9Q==
+ b=ksccDQbR9K8LR0dxJ1pxCkm9s7Z9pxMeVpnpDrO4YjZsV+Cqj3jggvxAIkPpf26F4Mbec9LihVKIZE6qS5hbMgNRSsjXoUdrcuE9PplJajqopYIx/5G215QMVqv4Ilk+i+b7aatwtzqN/ZYRNSIWTafj86e7ddyrfZfueCpDqKpOl0xw87lmJjWlJp8kUyNdw2XFcwf2nCdNVTXawN9+lGPx/iyau3QeHXlIEM9GZt43CIV5XEDTp7ERv8nc3qaIV1d2npeD2wRGc/iUCURFQL5zpJqHkz/rQ8BJKGlVsCXCkQ4UXHAtTNl2WDEHc3UjfV7J9twzgmuLwwzEqnUkmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7gAcnOmbYUiVm0niz1rFULAMluCaXALeftA5U/vsSrI=;
- b=y13KC22RjUZnR8GofnSkRVpD2TDPMIXaFcj0XTyfIu+mqfChEoI/i7oFsgzF7vGp/rJP46QVL2pKRyVtbpkA8ol/espEZ4fIZEJQJBN9o7qOxeatVye/PxwiolAba3/eUo48PL5fL7aIkpAjZQ8GbAYBZfSpUeXUYLXbI/dufsOEoRxqsgMcygKc+gVmlK0HPFxMDKSwneWloEHaL72qzsLoIBb3H/ZzAf8nNmvCMUOelh5CweQ70MjaDX+3BRFFQynkn9EVaAxCJYwnFdjOaiSUYtzWhLQYkaZSGg/9CxdW+6PoHcFdLj8yinoBe7w1re8EQW6sqzbvy2f2NFB9xA==
+ bh=6qcO17Tkhwb3oaLB9IMR8+HTFDTCz1sKPrhtIEfTPY4=;
+ b=BgUP2fO0HoagpRINmBU1khjW7+fXsktu7FM5iFoNjrEZqKUNSi3pN0gg0Ql8RF045e412L/BI+LfIUYlhnsgi4vogitfZ5TrYA7B7F4BIWfGgweobi8V3CTHQ9X4CKT5/HJEf6xhDhPodcJt8fhHSoOrDO90VVgfckR7nhP55yM88HsGK3EmQI8wiOiLkQL0RLSsAP/ofCeUdBHknc+cYxl/x5jv0ngIAhY1oFoKNhWuVDubMcS4Hi/8cyCwV2+2fYUR51IoDIq+lQOlClhcEJbIxuZ9SVmcbgxN0a30KpN/et4dWnrRSS/eyvb+7U921IHKpaeW8Mni8Euqbtk0ZA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7gAcnOmbYUiVm0niz1rFULAMluCaXALeftA5U/vsSrI=;
- b=ZwgfiW8NPWgeM0ndmrvQ6Oy5Zl3/qsHrxn7nOxFi/oRoSoNPepcFz3ZHRgp5dF3AuFri1L6CvcgznsfQKiYvFQT09zgEstXTropQqRGFVHKT3eMv9KkdRY3kYvPaIiiHGgkzPj1djfMDq1bqL3jRSxuFL4CcmPl9Uz8CsIiMm8qr7OuP/amPtT30I9+beKg0NZoaPmY4+Lqov+544aTiM1Eg2M0AFsZuVF/4cOBj7QpJy9VAUokOwOCDywSIZN0aNrg/HKt4JvsR3KFP77T7tZyqwLdD0/UL0cvICkvSE+8ZceibNEdVBxFcXyvYgm9drLJVOmz1PqijPjimqDaJbA==
+ bh=6qcO17Tkhwb3oaLB9IMR8+HTFDTCz1sKPrhtIEfTPY4=;
+ b=ItByLIDekaWp6PFEut0ElwKTUmQ71eTcaE0jcuJnuc7/jQ7z7xH28H7+wFV2b9KR2DrDE/UYaiykCMwjrrZvtwTu45QmJcroG0fGJWX8ZiCQbgRuJxBBCghXjKQdcO/d2l14lDuHXTQ++ftuO5di0A0itDnhNXJCM3sgMo/fGlEOHVU3B+DoyXreThhtR1FjgJY4TIdia1c6b0IHRt82ozqm8bTiLprFTVGfaK/Lz6gVtrUpiRqlrKeBx7U07oMrkkF+/4g5RDBsC0yFvii9gJEY096pIKOBi5JakqyHR5HWPiwbZxkRwIV6/XPniResIZxhcv0MmiOFaNSN2AiiZw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
- by DU2PR04MB8949.eurprd04.prod.outlook.com (2603:10a6:10:2e0::13) with
+ by VI1PR04MB9954.eurprd04.prod.outlook.com (2603:10a6:800:1d7::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Wed, 3 Dec
- 2025 20:46:09 +0000
+ 2025 21:01:30 +0000
 Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
  ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
  ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9366.012; Wed, 3 Dec 2025
- 20:46:09 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Wed, 03 Dec 2025 15:45:51 -0500
-Subject: [PATCH v2 2/2] i3c: master: cleanup callback .priv_xfers()
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251203-i3c_xfer_cleanup_master-v2-2-7dd94d04ee2d@nxp.com>
-References: <20251203-i3c_xfer_cleanup_master-v2-0-7dd94d04ee2d@nxp.com>
-In-Reply-To: <20251203-i3c_xfer_cleanup_master-v2-0-7dd94d04ee2d@nxp.com>
-To: Jorge Marques <jorge.marques@analog.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- =?utf-8?q?Przemys=C5=82aw_Gaj?= <pgaj@cadence.com>, 
- Wolfram Sang <wsa+renesas@sang-engineering.com>, 
- Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-Cc: linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1764794762; l=3123;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=Y1gZjM0FoTH6orpUSDkHHP7JXPduhUZgjH5gQUzoR30=;
- b=xCvCNWHwCkWm3sg+GnYkIc1QzlIHn54+mA9LD72U/wtD4RRmRbPriLHRP4iuIyOSTakDLlVJi
- VjZfZFDL/RHBAGC1xrjTibrV3CU5YRBwz/A39EstmkrWbu+Wh4mzbfa
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: BY5PR17CA0015.namprd17.prod.outlook.com
- (2603:10b6:a03:1b8::28) To DU2PR04MB8951.eurprd04.prod.outlook.com
+ 21:01:30 +0000
+Date: Wed, 3 Dec 2025 16:01:19 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Rui Miguel Silva <rui.silva@linaro.org>
+Cc: Rui Miguel Silva <rmfrfs@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Martin Kepplinger <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	Alice Yuan <alice.yuan@nxp.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Robert Chiras <robert.chiras@nxp.com>,
+	Zhipeng Wang <zhipeng.wang_1@nxp.com>,
+	Hans Verkuil <hans@jjverkuil.nl>,
+	Sakari Ailus <sakari.ailus@iki.fi>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>
+Subject: Re: [PATCH v4 0/5] media: imx8qxp: add parallel camera support
+Message-ID: <aTClH5RSpXpXfxXx@lizhi-Precision-Tower-5810>
+References: <aLbcpEZXm5G1Onq7@lizhi-Precision-Tower-5810>
+ <20250902123920.GM13448@pendragon.ideasonboard.com>
+ <aLhJDXnz9HPGrWcp@lizhi-Precision-Tower-5810>
+ <aQuDSROHLGHIhtlh@lizhi-Precision-Tower-5810>
+ <20251105171928.GB6046@pendragon.ideasonboard.com>
+ <aQul/VGG8e3MJxhx@lizhi-Precision-Tower-5810>
+ <DE1JMG95RZME.2YSV10RI9AME4@gmail.com>
+ <aQzFiEOQvtZjHIsr@lizhi-Precision-Tower-5810>
+ <aS9NvkAWTa42j7KW@lizhi-Precision-Tower-5810>
+ <DEOKQZMPDTLY.3H4NBUEC3LNHE@linaro.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DEOKQZMPDTLY.3H4NBUEC3LNHE@linaro.com>
+X-ClientProxiedBy: BYAPR05CA0060.namprd05.prod.outlook.com
+ (2603:10b6:a03:74::37) To DU2PR04MB8951.eurprd04.prod.outlook.com
  (2603:10a6:10:2e2::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -74,174 +91,211 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|DU2PR04MB8949:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4d1b25e-1dc4-4843-25bb-08de32acfcf5
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|VI1PR04MB9954:EE_
+X-MS-Office365-Filtering-Correlation-Id: ed2a4a66-0c66-425f-d541-08de32af21dd
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|52116014|376014|366016|1800799024|38350700014;
+ BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|366016|19092799006|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?c3djV3RmUFBZVERhOEVMeTVaMDZjT1VGTHpIK2pKUCtqOWxhNzNHU2xkYmZ1?=
- =?utf-8?B?cFhGWno0UFRjeFNVQzJaVVRTODE1TXpIaWsreDVvS1ZTRUxYakhGOWg0L3Vt?=
- =?utf-8?B?Z3gyeGhLV2JQaUhBM0JXaFFoRmlPcCtlQkdlTDdHTDBWRkpCN0xBdS9uQ1Vr?=
- =?utf-8?B?bjhYWXNxWFl4NGdiWmNGNksyN2FaUTdEb3ZXT0o2bzdrelZ3QXk2cjJiQzhH?=
- =?utf-8?B?WERDR01EcUptMjZieGtUeFVBT3dXSHlrU0lxS1dQdmpkb0JGKzQyM3pHUzRV?=
- =?utf-8?B?dE1maW50MVRoRkRucWVKTnkrSmcrZFg1czNGY3h6ZnFvTVdaRGRpL0dCa0NS?=
- =?utf-8?B?ZEZxN3MxNC9wOTZIRXRoekNQU3ZPWFloVW5vZisxREV1N3pSWURNVVkxaE9C?=
- =?utf-8?B?S3FST3c2d29LM3NVdFByS29Uak9vTEF1RitCdDVKTjdiNG1qamw2TEJNdTNY?=
- =?utf-8?B?c2lPU1l1K20xZW5rVS91SjBpaFU0cnc3TFdpQmZOZ0hqNDJCSVdzYzN5SGdY?=
- =?utf-8?B?YWE3U0VFWEVYdEwxcGZQYlZ3NjhNY0xOTFRZT0ZyT0JVNDNuQmFXZk1JOU9V?=
- =?utf-8?B?eDhWVld6d1QwQTgwazI4aTNlMi81R2FoQzEyT3BYTHBsWS9Ld3dxQnVLanJw?=
- =?utf-8?B?RDU0a0hFM3pzU2t6RWZlcnlEQTdCLzVEYkJyOGp5SVJYTWpESndzU1V4aGpR?=
- =?utf-8?B?b2JVS3Q2cTRKVWh6S3UvM2pJZWlHQmszYm04aTlqMGw4UjYwbWUrVFpvcVcv?=
- =?utf-8?B?Y0d6SUEzTnE4bXVmZXQxaFd2R093Ty8zWEc1ZTFsNHRpYVhLa2pMVCt5U2hs?=
- =?utf-8?B?NDNBeVVlMFB2SC90V01sdlJWY0VQSHRHblBHemtyWlkvRnpMSzQ0cWJVYWN1?=
- =?utf-8?B?R1EyYTF0ZmhxT1hWeVNvOEltL1k4VVF5U1l2R2FMcFhJdFEyNTlIdWFGanNL?=
- =?utf-8?B?MHhYOEx2ZGo0OVhNOFVOSWZySk9mRU5mS0JSR1JoZjlTeHpoVVBSTExkdGJ3?=
- =?utf-8?B?TmhHaVpYalFaS2FCc0JnZW53WXVaZ3VHQnZCR0VvTzhKSHMvenA1dlNPYWl2?=
- =?utf-8?B?TGFFQnBIYUt1bzhMeEJveW9JcXZDQTVRRElxL0lHNkY3V1dSaEtzV3FjMWlu?=
- =?utf-8?B?b0JHTmpSOCtSaGZlelhUNEI2YWVwbXZlVmc0RFpoK1plaUZyOHpMOHNmWEZ1?=
- =?utf-8?B?WnhHUFdmclU5YjNmQkZVNzVIZWpBaTViSkI2dGZObHpGU0pxU2MrVWZ4NVJr?=
- =?utf-8?B?SlFiOVRWK1BNRUpodFNiZVlZdi9VZGxRWFk4MC9GOVVxUXBxZDFXYmxwYzhL?=
- =?utf-8?B?V0tLV3RITWEwMHlOaG80bW11SHhvTEprT1pjeTZqN0pJdkRPeVBLSjVuVFNI?=
- =?utf-8?B?Z3d5dXJHUjVBVmRURkJmVVFPTFFFQzdPUmVkSmZWeVQ2UG5KcGd1YUpqTzlu?=
- =?utf-8?B?eFAyUWJQOElEY0laWHNWSXp0cUM0aEM2WCt2ektDSHlKaFlDZjBTUEF0emtZ?=
- =?utf-8?B?aW0xMldIRDV4V1dCM29XZjRaVXo5SlBvbXlNcnkyeVJINzF2NkE0Z2RjOUVl?=
- =?utf-8?B?WHQxb3JVa0RnMFg3UUJZcXIvb2RGTHNnOHFtNlRDT2FEWEt4Ui9lUkpaTjFn?=
- =?utf-8?B?bzh5Qk13TlpCMDZiNDhBTmJTcW9pdGpsQlN1Sno1UHAxNHN0cWcydWV4V0hT?=
- =?utf-8?B?ZStZM3VIY2F5MitIVUVYUTRLMzJOcnNwN3h5NFJzSG5CdEZZUm9ueGFRVCtQ?=
- =?utf-8?B?eXVwYklzUzdnS2NuZFNTTGpZZ2w3cWNybjhKQ2JDRWVqc25MVnFmU29mbUZ5?=
- =?utf-8?B?Y3kyQmd4UC9MNnovWnBrUm1ITkNrdWRsZzV0ektCb0s3SGcveGFsckgzbjFP?=
- =?utf-8?B?VS9tNi9MdWZqbC83c3FZeWp4M0FNbWtXdUFqRHBrbGdJSlg1WmZLUTc4NWli?=
- =?utf-8?B?MjNVTEQwb0ZVdXgwQ2w2a3ppYkZkWWlDVWt5OHprVmxsNlg4eWtmQ1NZVWpN?=
- =?utf-8?B?VE1ydXpxcmFFTWl3VnNoQjB2azAxcGNSK3FlQXJXRkI4K0R5M3Q5VEF1dHZE?=
- =?utf-8?Q?SgpXeM?=
+ =?us-ascii?Q?Jm0i73s1ROezt4Pf1LaLrCl8Dr2OJQ5YUfj9Q3I6ZAvUKphmzLfwydgkIOEm?=
+ =?us-ascii?Q?BJdmpvribJ3YV2d4i+iLwTRjZ8mTyF0nH7sMOgRPP9b6y5zefwwKOD/jIYWE?=
+ =?us-ascii?Q?jbcjnVlUswBt8Gkz+koWElfZTW5furKl08cpL2V6nJjsHyrIkPlzRtqASIch?=
+ =?us-ascii?Q?vrABYbDVHlkfzMaGIkHxZEtj7cQAAJeNCakTk1pwOceVFoV9J9MjlsF71QWF?=
+ =?us-ascii?Q?XhFJOCim9hSG7sDMTicTmJlU8fMZBKFmL+jpoV2FnEcjsXU4A0FO50M3zvp1?=
+ =?us-ascii?Q?kCcmFIHqVu/JAl8FFC3+uy7FVJGmd17JM7/xpfnN95tkQJFj8sZs1G6Yrkd8?=
+ =?us-ascii?Q?2JM8hGvNFPVEwm9eDNXEb9fisGJKGOCjIv6Lpml538jqMXSq6q9AK0L1+rvW?=
+ =?us-ascii?Q?j9IMiWDhbQoiKPXEqq/FGLaSBI6WFhPtyIv5FuLEHq/QXF8PdKZuWqGr1uuE?=
+ =?us-ascii?Q?0sRmCD+ZeYM7GkJvEIdjxBUzu7xxZ7Wj0iuqmQkvOXt8U98PmRsM1LmYn6w+?=
+ =?us-ascii?Q?Oqfhwau1QJrk6UV6Pi+xFhkJ8nIiJfVkkyH5kBqR15X7zqj0UHHwBd3PrfB2?=
+ =?us-ascii?Q?2xc0Sdl8myhlK4DsgR+jfED+BTW0xY3b3tsmFpE1kczVUkNI8kvQXo4qdeE6?=
+ =?us-ascii?Q?wv3iKi1kd8uQoVaI+GpL3CS4N0lEkXyOqpPZR34eIm7OrKgZ+qe55G4Of5Tg?=
+ =?us-ascii?Q?13zNsZwMjznDqw+zPdPHoPoFJmBJzyqublbn5xFOc9T+n7BesOkU2ZAiIbBf?=
+ =?us-ascii?Q?sFaxn4EelR2CdVg9J1A32kEEg6RYvhgUI1xYKsmHW57/WGFATS9NyLNxiZL4?=
+ =?us-ascii?Q?/yX06qOtbWASRGVqu7qinnjBZunQBwuY77Bic6Sw1brpYh9OgnEAGALNQZAc?=
+ =?us-ascii?Q?D0x399DZGQrA3/fmmrEtdHgLKSI9ER6N2G5Ves6v5do0OTMTzojOHrEMVGFM?=
+ =?us-ascii?Q?Z1WhLNp3MDXGHe5RHcmhm5IZSU9XMC7KaIK5oRWQlVAWZem7QHtIpk0elwr4?=
+ =?us-ascii?Q?sNxOSJRYqRWov/VZMrij9P/mVuexKG6LLxLvmnCBeghXqQWoOmEAM9Prnh38?=
+ =?us-ascii?Q?ozBxlgbawTr0N+KRcsbXEfE5nLD7cCuBCHZDHUlV6gGbii7iI7gn/WyVQatx?=
+ =?us-ascii?Q?OArXx8eBM/+U51DsqlS4SXNJroDcYzAVUIlg81C/I/HhxXdLKEqq+R/AjTEz?=
+ =?us-ascii?Q?+p1DOFU9xHgz1sWF7kbD0NovblU9b6CNrYJqyJx25k+pMuJ3B3YHEiTJmK1j?=
+ =?us-ascii?Q?s9YcFy4E1FzCRYAC0C4XjGGil5jcv+YDDBM2K59g+l7vxvwi3zbGr5WOjLuL?=
+ =?us-ascii?Q?h+hIAXCi40iFCC2UaFWAlaQdQeku/uRZ1uVmBtP5WpXlkELyAFtZszrfL3i8?=
+ =?us-ascii?Q?jOvgBoKJZF+gXVN6NdNL2UWHCQy/vDw5V1gUBKMY4xtGmeq4TrVVc7O3KvmF?=
+ =?us-ascii?Q?9Ef4ckniJe26u7gigIEVnfxMEA7Kbx5HFd05tg0LnHKPmeeEOqI/tqI2C35e?=
+ =?us-ascii?Q?pLqmWilFrs63tIDCu03oeW9lpJxnooMSELA46k14CH0gimlg2+vagSTvzw?=
+ =?us-ascii?Q?=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?djFaOE1EVG5GbDFveHdNQTZ2MDBMY0VZcDViZXpkYkdnTHh3ZTZROXZjRHV4?=
- =?utf-8?B?bWVHdVMvQlJBMTFOd3IwdjZldXFkSU1nVUkvN3QyQmw1SWV2N2c5S0FvQWxY?=
- =?utf-8?B?R1Vqa1dBcXU2MUFqWHVhTmJkYmk1cnRHcUVzOXRwbkNteUJ2YndXMDM2eXl0?=
- =?utf-8?B?UUJyREoyUExNOExoYkdRNzFIQnpMSHdQbzBJRi9HS2h1VkVWM2lIMG8vMUFR?=
- =?utf-8?B?ODdiZVk0cHBGZTBqNDkveWlJWWtsVlp5d2ZIZFJ1blh1aGtWY0h4MFN3U2lp?=
- =?utf-8?B?OXBMcm8ycHdSMWdtc0p6VUJhek42NUFwMXR2bzZTYW5ad2dEMG5jVUcreXNC?=
- =?utf-8?B?VmhyQVpycGN0UThQdFNOT1d4M1hlVk9vSU1mTnRsS2Nvc2NzOTUxNEE5YzlN?=
- =?utf-8?B?N3FqRGNLSHJvelZjeVFzZHltOTNDSS93ejBlTkhRRE0rZlY1bG9kODhDekhL?=
- =?utf-8?B?b2dLMHFtK2RKU3VjTWM2Sm81YU9tTFBZSkhldXBsTVUybXRYeFFYWEYvdWJJ?=
- =?utf-8?B?N3M0dm5DSVlCOWwycUhSeHB0MjUrbmpXeDFXbm1sT3hPUTgzK1RPU1gwY0Jz?=
- =?utf-8?B?WUFKQ3A4SEl0U0lweUxMR1RmS3JmY0ROZjhuNFFocXNwUTVBRWlmd0NRQThi?=
- =?utf-8?B?R1ZoZGxZeTRCUEFEcnJlM1JWalBCSEVjRWF3QlJTdVdkNUZmZ0gyRkZvejlX?=
- =?utf-8?B?ZHRtVHJRQmFlc1VkZDVaQVdXK3NlMFl3azFoS0Z2ZWI4U0tyb0trcitQMjdx?=
- =?utf-8?B?S1hsNDlDQzl2Ym1PcWlQS28vSEpoaXF6R0pkTUVUZmdyUWc5QlE5ODYyYXQz?=
- =?utf-8?B?K09JekxUYUZnRFhDc2hzRTc1aVIvNDVmWVQrVlAvaWlhL1JGZWFzTjV2blp6?=
- =?utf-8?B?dWNnSkNBcnpEbE5wcjlVVUF5MWpucEdSa2JpZUx2UXdkeEx2TlNVYUYxZlN5?=
- =?utf-8?B?MS9iaEdGWHBTcWxjRnZFOXkrRmUyRzl4T2hydXVNSm4yTTRpaldVR2FaS1Mw?=
- =?utf-8?B?VHdBUU5xU1EweFRTR2tFOWNMVll5N1V0TjVGUmNGVUVqTDQxZ2lEbUhBN2tN?=
- =?utf-8?B?NGNnK3UwZEx3Y3AzVFJNRHREVUp2TGw0K1ArbWNVVWVyL3R2N0oxSXI3eGhP?=
- =?utf-8?B?TEhlZUx1WUN6ckdIUGcrU3lxZFFRbWRIb1hNS1YxUFdKRForei9BRWo5Q3Zj?=
- =?utf-8?B?WjdOaklxa3VveGc4cHNqRSsxazZzOXY4bEthVVVTOXk1aDA1QnIyV3FCcWRx?=
- =?utf-8?B?NEJYdVpTb1dvZ014MEJDUTlrbEF0c0d6L2xCaGY2MTVla2VmSFlVODZtSGZ4?=
- =?utf-8?B?TXJyaFdkSmNrMS91MmFhOHJ2ZnlvUVNKY05Ma3drTkpOUmpJK05KcTdKeGNK?=
- =?utf-8?B?d3FjUGdoQUNqek9JWTVrRFBkQlpyaU9yQ0RWQVg5UHZqdmdicnNBejlOeGVr?=
- =?utf-8?B?ZnU1MGZjbWx3UmRHbzlXazhZZ2MwMTRLOHIrbDErMnlnRitKTE9icGYyVEZV?=
- =?utf-8?B?SDJCR2xveGtlSzVxVCsxeEI5bFhmWnVFNkRkM1ZDZHJjekdvSGFvek9zTk5h?=
- =?utf-8?B?OExJdmZoTk91Yjl5M3Nrc3FjNFpSREhtWXNzaVlrdEJMRnh4WEk4Rm16azlt?=
- =?utf-8?B?S1BmN20wTElvWjYyMDdjNWxNMnF0amFNZDBwNXY3ZHNzZ29idVdSSUdUOE5S?=
- =?utf-8?B?UGFaZ1RnZ0tTS2p4Zzh3U1lXWHIyK0NnZmdDeTdwcG9WUXhlUFBiTG45UDhO?=
- =?utf-8?B?dlFOWFM0QVdzRzBUMWJoN1phdVpGMk5YMk42ZUR4ZUhRY1hYa1o5RFBNd1Z5?=
- =?utf-8?B?UWNwS0tpR01yVjVOU20rbUFOcXRlbDR0cGZtMExxQlVGVlBJK1NJZ0JlTmxs?=
- =?utf-8?B?WVRYaVJ2S2tYeVdXUm1ZMnpYOVRUWkFYME9ZQ29ubGZweGhzcktYYzdrYW9v?=
- =?utf-8?B?K3V5S2JrbjRQUGgvb2lNSWxnb3ROdVpyc0dtd3BPSVBneXNuSDNVMWVzeThY?=
- =?utf-8?B?TXpsOXdCbVZKTkoxZU8rcmR0bjYyUW54QVorbENTRHlwbURlTGZYdGJmODlt?=
- =?utf-8?B?L3NtRU5BKzdwc2dZM1hnMDhNTU1HMnp4L1ZrV0xPVjFoOU02YVZRaSt0SVVR?=
- =?utf-8?Q?pS5JcNhqMYQNAZk1IS4tLrPps?=
+ =?us-ascii?Q?Bi4uLtUE0qna1uoFXDzPqcQVitgyhrr0bQLqilfeaOomdD1wk7OiUU15Fq5U?=
+ =?us-ascii?Q?sw301u7Nx3WdOe2DIgpnTjMwHDpUtZSUACjCzM+nSVp3LKQm6zOZ+Inf9tft?=
+ =?us-ascii?Q?uU8HabIw0NYRoFd1uCKBLo6/YDlddiPjo93PIJiS+fgZxnc9aBfE0XU/xFvd?=
+ =?us-ascii?Q?vA6Sd6KPPyNvcN5aa+yFG/bqhibzfuAtety2fT/uKTquR9ss1t+sRgYv3k7W?=
+ =?us-ascii?Q?S3GCU84HUI1nWCPoIT7/TsTS9hEaBSk34zMcsJN9vtDe4caJ+CZP2hZPiZb/?=
+ =?us-ascii?Q?vwsKJ2SkjAvTbPQFQ5ygDrVv9EUS/UJw2qx6JOospzijYHAxo/Lr9dg9WTDa?=
+ =?us-ascii?Q?zbm93zcOngX4VRP4TjGlxfa9Pm5ceUMNQxRRj7IEvX4PAn74krhiLEBOi1XB?=
+ =?us-ascii?Q?znpIVpRCs7elJRbJXtdM8N3O5xCjSgK7ZpQzuGvVJFNXVDgzEMuDYRdgApgR?=
+ =?us-ascii?Q?wFf8h89G/tu7gG6hOVKeQSSnsBvxQE9dD/42xwokJmQVEEvPEMDLBUq5BXUl?=
+ =?us-ascii?Q?Dinveidd8Q2OxW5+MmYfYMQEC3bXGRr8RK2+SvHLx8dmwSsoDgiyfkbTj8Qm?=
+ =?us-ascii?Q?30jk1aXZ+nu/+dcXQ2tPwk+vmcH0Lkyi6R7suaN7iv0LeZovP1vEQCtjZQzK?=
+ =?us-ascii?Q?WhlOKX//2LQG06DfUk8hhskLyeErtCKkkjFcmFxyhGa8bGZp7QPILK7ZrCBe?=
+ =?us-ascii?Q?GU20Nl0fgV/uK/fA5xzN4/xOOpEUdRLkTuRCrXDV43UJYk2FCf/XX6IGbDLc?=
+ =?us-ascii?Q?Vx+yVgH53dgS7S4IoSaqjjBYZzeVVHNUoRy3zu9Npdey2MLGevNcaLA8JDnF?=
+ =?us-ascii?Q?kt+KprkWW1znNdCPsW+ueeeSmbbwT6p2nScPlUddpGDLILy3ad4RoWbIKhqP?=
+ =?us-ascii?Q?ajFb7+YDkmrUdlT018rahSM8tA4NwzWVCw++H22bdzekY+D25mqhUUN2gOTo?=
+ =?us-ascii?Q?QCA+Al37B2AGq5fZEAbDMi7AwVjnq2z9gnHWq/F58i8oiQ8gi37QawsErVdq?=
+ =?us-ascii?Q?LZcJLx2CG8AbWu7QOIcgVOCWo4TZzDIHEoIi+JLAJJP7lM+05NjL98S8tlri?=
+ =?us-ascii?Q?SuV5hYmJRTzNhKPfEzlVK6++5Shnuice+EZatbv7LGu6TgsP2HUyXDDLu5Bd?=
+ =?us-ascii?Q?miw+5vcMAzeDFs4G8y0usBvI57vWdNgeOUJjQ3k31TQSVE4oRqBwJ6d1td8M?=
+ =?us-ascii?Q?MoIGYjNV7p3z0xph3FXN/y7o5iK3n7HibuJBx1HFSTZPhJr6P6OmxOQoAbBe?=
+ =?us-ascii?Q?tzyDlMGumD9d5tV7lFA/1NJMaZ23rfp/yoNSbuTZyVETklWrmPhKYt5j8QIR?=
+ =?us-ascii?Q?lAyCOHYrv9sfuL8+gzfcZup4TKFFxegRKCTKEznwx+Z66GqP6NYSphmiwnT4?=
+ =?us-ascii?Q?8yYIGfcO6vcKkV31ZcA5k0UEV63HlTP3tPnIEu2MHHzt8QdxsjpuKSLNrPIt?=
+ =?us-ascii?Q?4qZXGhDtLGPtPlNEdUdA5896t5S8n4xDnAhdzI3OSGCn9sfhS/FQiHMqPRda?=
+ =?us-ascii?Q?Y1KNhO55i5cae0erwOj0sLvm/yxFogINWy2bihmBpapN4lGKqKpPnOJXE8xt?=
+ =?us-ascii?Q?UkiB0Bs4EZBsyVRt8YrnLhSkPVbhBNGs6EpM08I/?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4d1b25e-1dc4-4843-25bb-08de32acfcf5
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed2a4a66-0c66-425f-d541-08de32af21dd
 X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 20:46:09.3821
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2025 21:01:30.3222
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CHbv69jpzCnOsVvLsgViaEHbVDbWw4V5xYkYbuhUbAErpjCT2+/TnWFsPDoGQWYeBMvRgnp1QeU7nz+i+YMP9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8949
+X-MS-Exchange-CrossTenant-UserPrincipalName: OPukUfKVefYh6hdS5a3UANGuUb/qPbnk1290OsVu7SK+r/conCZaHzmCQ9IFwjLxUYBCfS7ZJb4hQEvPLSwnpQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9954
 
-Remove the .priv_xfers() callback from the framework after all master
-controller drivers have switched to use the new .i3c_xfers() callback.
+On Wed, Dec 03, 2025 at 12:19:04PM +0000, Rui Miguel Silva wrote:
+> Hey Frank,
+> On Tue Dec 2, 2025 at 8:36 PM WET, Frank Li wrote:
+>
+> > On Thu, Nov 06, 2025 at 10:58:00AM -0500, Frank Li wrote:
+> >> On Thu, Nov 06, 2025 at 10:34:48AM +0000, Rui Miguel Silva wrote:
+> >> > On Wed Nov 5, 2025 at 7:31 PM WET, Frank Li wrote:
+> >> >
+> >> > > On Wed, Nov 05, 2025 at 07:19:28PM +0200, Laurent Pinchart wrote:
+> >> > >> Hi Frank,
+> >> > >>
+> >> > >> On Wed, Nov 05, 2025 at 12:03:05PM -0500, Frank Li wrote:
+> >> > >> > On Wed, Sep 03, 2025 at 09:56:29AM -0400, Frank Li wrote:
+> >> > >> > > On Tue, Sep 02, 2025 at 02:39:20PM +0200, Laurent Pinchart wrote:
+> >> > >> > > > On Tue, Sep 02, 2025 at 08:01:40AM -0400, Frank Li wrote:
+> >> > >> > > > > On Tue, Aug 05, 2025 at 04:08:22AM +0300, Laurent Pinchart wrote:
+> >> > >> > > > > > Hi Frank,
+> >> > >> > > > > >
+> >> > >> > > > > > Thank you for the patches.
+> >> > >> > > > > >
+> >> > >> > > > > > I've quite busy these days, and I don't believe I will have time to
+> >> > >> > > > > > review this series before coming back from OSS Europe at the beginning
+> >> > >> > > > > > of September. Let's see if anyone on CC could volunteer.
+> >> > >> > > > >
+> >> > >> > > > > Laurent Pincha
+> >> > >> > > > > 	I hope you have good time at OSS.
+> >> > >> > > > >
+> >> > >> > > > > 	Do you have chance to review this patch?
+> >> > >> > > >
+> >> > >> > > > I'm going through my mail backlog, which is really big at the moment.
+> >> > >> > >
+> >> > >> > > Understand.
+> >> > >> > >
+> >> > >> > > > I'd like someone else to volunteer to review this series. It won't scale
+> >> > >> > > > if I have to review all NXP media patches in my spare time :-/
+> >> > >> > >
+> >> > >> > > Yes, but none volunteer review this in passed months. Expecially key
+> >> > >> > > reviewer. I am reviewing i3c patches. but Not familiar v4l system yet. It
+> >> > >> > > need scalable solution. I can help filter some common and simple problem
+> >> > >> > > from beginning.
+> >> > >> >
+> >> > >> > Laurent Pinchart:
+> >> > >> >
+> >> > >> > 	Do you have chance to check this serise? this one should be related simple.
+> >> > >> > 	This one sent at 7/29. Still not any volunteer to review it.
+> >> > >>
+> >> > >> I'm afraid I won't have time to review this for the time being. My spare
+> >> > >> time is already exhausted by all the other drivers I maintain upstream.
+> >> > >>
+> >> > >> > 	How do we move forward?
+> >> > >>
+> >> > >> I think this is a question for the subsystem maintainers. Hans, Mauro ?
+> >> > >
+> >> > > Mauro Carvalho Chehab and Hans Verkuil:
+> >> > >
+> >> > > 	Laurent provided great help about review and land i.MX related
+> >> > > patches in past, who are quite famillar with i.MX chips. But he is quite
+> >> > > busy. So the whole reviews cycles takes quite long time and offten cross
+> >> > > some merge windows.
+> >> > >
+> >> > > 	In pull requests for 6.19:
+> >> > > https://lore.kernel.org/all/4989c563-47f4-478c-80c4-41f7e98597e4@kernel.org/
+> >> > > only 10 patches, and 4 patches is trivial clean up.
+> >> > >
+> >> > > 	In reviewing patch queue, there are
+> >> > > 	1: media: nxp: imx8-isi: Add ISI support for i.MX95
+> >> > > 	   https://lore.kernel.org/imx/20251105-isi_imx95-v3-0-3987533cca1c@nxp.com/T/#t
+> >> > > 	   This one already review, but I am not sure if it capture 6.19 cycle because
+> >> > > PULL-request already sent.
+> >> > >
+> >> > > 	2: Add MIPI CSI-2 support for i.MX8ULP
+> >> > > 	   https://lore.kernel.org/imx/20251023-csi2_imx8ulp-v7-0-5ecb081ce79b@nxp.com/
+> >> > >
+> >> > > 	3: media: add imx93 mipi/controller csi support
+> >> > > 	   https://lore.kernel.org/imx/20250821-95_cam-v3-0-c9286fbb34b9@nxp.com/
+> >> > > 	   This one is quite big, but first 10 patches is simple trivial cleanup patches.
+> >> > > 	   I post at 8/27, but get first feedback around 10/27, I am not
+> >> > > 	   sure if missing somethings.
+> >> > >
+> >> > > 	4: This series, laurent already said no time review it.
+> >> > >
+> >> > > 	5: ap1302 sensor patches
+> >> > >            https://lore.kernel.org/imx/20250811-ap1302-v4-0-80cc41b91662@nxp.com/
+> >> > >            binding already ACK, most maintainer want to pick binding with
+> >> > > 	   driver together, but not an feedback since 8/11.
+> >> > >
+> >> > > 	I jump into and help do some review.
+> >> > >
+> >> > > 	The questions is how to move forward pending patches, like [3], [4],
+> >> > > [5]. How to keep good community channel to avoid long time pending?
+> >> >
+> >> > Sorry, but like Laurent I am really without spare cycles to go over the
+> >> > patch series that have arrived in media (also I do not have any hw anymore).
+> >> > So, Frank or maybe Laurent knows someone that would like to be add also as
+> >> > maintainer of this drivers for me would be great, that would also help to
+> >> > avoid such bottlenecks.
+> >>
+> >> If there are not other candidate, I can help maintain it although I am more
+> >> familar with dt binding, i3c and dmaengine. I can start from simple patches
+> >> and we have test team to help cover testing on the real hardware.
+> >
+> > Rui:
+> > 	Any update? How to move forward? It was already passed more than 3
+> > month!
+>
+> Sorry, I did not realise something was blocked because of me, specially imx8
+> related. I thought you have sent the update to MAINTAINERS.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/i3c/master.c       | 14 ++------------
- include/linux/i3c/master.h | 11 +----------
- 2 files changed, 3 insertions(+), 22 deletions(-)
+I just marked me as reviewer in prevous's patch.
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index f88f7e19203ae5a90267b2491f3b13b6205863e8..ea45a519dd68a514fd7fe8314b3fcf2c5604aa64 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -2819,14 +2819,10 @@ EXPORT_SYMBOL_GPL(i3c_generic_ibi_recycle_slot);
- 
- static int i3c_master_check_ops(const struct i3c_master_controller_ops *ops)
- {
--	if (!ops || !ops->bus_init ||
-+	if (!ops || !ops->bus_init || !ops->i3c_xfers ||
- 	    !ops->send_ccc_cmd || !ops->do_daa || !ops->i2c_xfers)
- 		return -EINVAL;
- 
--	/* Must provide one of priv_xfers (SDR only) or i3c_xfers (all modes) */
--	if (!ops->priv_xfers && !ops->i3c_xfers)
--		return -EINVAL;
--
- 	if (ops->request_ibi &&
- 	    (!ops->enable_ibi || !ops->disable_ibi || !ops->free_ibi ||
- 	     !ops->recycle_ibi_slot))
-@@ -3031,13 +3027,7 @@ int i3c_dev_do_xfers_locked(struct i3c_dev_desc *dev, struct i3c_xfer *xfers,
- 	if (mode != I3C_SDR && !(master->this->info.hdr_cap & BIT(mode)))
- 		return -EOPNOTSUPP;
- 
--	if (master->ops->i3c_xfers)
--		return master->ops->i3c_xfers(dev, xfers, nxfers, mode);
--
--	if (mode != I3C_SDR)
--		return -EINVAL;
--
--	return master->ops->priv_xfers(dev, xfers, nxfers);
-+	return master->ops->i3c_xfers(dev, xfers, nxfers, mode);
- }
- 
- int i3c_dev_disable_ibi_locked(struct i3c_dev_desc *dev)
-diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
-index 2fd850f4678b22f352507f8f55910a196536a1e5..6225ad28f210fa15a8f2d521a565ef06995e2470 100644
---- a/include/linux/i3c/master.h
-+++ b/include/linux/i3c/master.h
-@@ -417,12 +417,7 @@ struct i3c_bus {
-  *		      all CCC commands are supported.
-  * @send_ccc_cmd: send a CCC command
-  *		  This method is mandatory.
-- * @priv_xfers: do one or several private I3C SDR transfers
-- *		This method is mandatory when i3c_xfers is not implemented. It
-- *		is deprecated.
-- * @i3c_xfers: do one or several I3C SDR or HDR transfers
-- *	       This method is mandatory when priv_xfers is not implemented but
-- *	       should be implemented instead of priv_xfers.
-+ * @i3c_xfers: do one or several I3C SDR or HDR transfers.
-  * @attach_i2c_dev: called every time an I2C device is attached to the bus.
-  *		    This is a good place to attach master controller specific
-  *		    data to I2C devices.
-@@ -478,10 +473,6 @@ struct i3c_master_controller_ops {
- 				 const struct i3c_ccc_cmd *cmd);
- 	int (*send_ccc_cmd)(struct i3c_master_controller *master,
- 			    struct i3c_ccc_cmd *cmd);
--	/* Deprecated, please use i3c_xfers() */
--	int (*priv_xfers)(struct i3c_dev_desc *dev,
--			  struct i3c_priv_xfer *xfers,
--			  int nxfers);
- 	int (*i3c_xfers)(struct i3c_dev_desc *dev,
- 			 struct i3c_xfer *xfers,
- 			 int nxfers, enum i3c_xfer_mode mode);
+>
+> For me it is fine, it makes perfect sense since you have access to hardware
+> and documentation, for you to be the maintainer and steer the features and
+> improvements in the imx media. you can move me to Reviewer, since there are
+> already other 2 persons (and Laurent already handle the pulls, thanks for that)
+> much more active in the IMX media subsystem.
 
--- 
-2.34.1
+Laruent Pinchart:
 
+	If I will remove common file change in patch
+"media: v4l2-common: Add helper function v4l_get_required_align_by_bpp()"
+
+	Are you okay to pick up this patches? Or what's way to get it
+merged? Or anyone else can pickup and send pull if you have not time.
+
+Frank
+
+>
+> Thanks again and Cheers,
+>     Rui
