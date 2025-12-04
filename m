@@ -1,158 +1,157 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mx-relay112-hz1.antispameurope.com (mx-relay112-hz1.antispameurope.com [94.100.132.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B590926B756
-	for <imx@lists.linux.dev>; Thu,  4 Dec 2025 07:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764833948; cv=none; b=jTATOHate32OklvLIhQwI3zWPNiM9Kjs1Qa56aDY/LSEMhCsJmT/10rqcgqBj5wlloyvSbv260qPEZC8JSDWKqsyMg4sFE1vhP/m9R3p3WSfTgnLsw+uWU5UZui4RF4m71I4yT8x2JEmq+x5HNMLNIGKzcj8HiE57BxZ4STT63I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764833948; c=relaxed/simple;
-	bh=ZBbFP2u19PYaompzZPpRS3munLLvOSa0dafo71gqR4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jz6b72SMf5E7xXR7cu3EIUkv/kYYMspkKplYndV8yG2/YzmSE6JLh6Hr97T4byf/J1PE3BH67uv1SEEcRCon/tkDGGWvs8vD6WAYZ0LomcBZq5VWYcErfaxMxWgwYJQ1mQsrfA8Hl4toADXHOLwfX0h1SZe36WLjubU7MLstiAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PtQg8yrU; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93512231A30
+	for <imx@lists.linux.dev>; Thu,  4 Dec 2025 07:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.132.104
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764834307; cv=pass; b=dcfGIHsLteE+oNCYQojYQVlFU6bwrqreSpy65hD8TeK5KLTKGBK1eL79ZVqr92VQGCcQ4NYc5PO7lA+NnMRJhD0BOTEDj1OxFc2sNK8fxKQ7CVdhiIujPQIl//TC+5wNzJX8miirBAHqCuw/yOMVjxnYesNR9YEe/oqTqSMwJ78=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764834307; c=relaxed/simple;
+	bh=eej6b0TfxmlBYfjPDhc+XoRDZI1GX55SmDZpmTtfsF0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NQNJrOT6kkan5bCwHTeubqsIVewBnc6bcbChQ04rlwL2apUPGsvAXGApi2F/hfkHh5NAhL7rg/RsZExwRw6jtuZA65F5sNq7fY9EiQIaikqnU4FjrSEEU9PLRsNj3XiMNnL4RhjNwYKzjgUP0uxmC2ynGyFUo+PYfijgBxcctIA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=CILRlt2z; arc=pass smtp.client-ip=94.100.132.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PtQg8yrU"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9D4731A1F38;
-	Thu,  4 Dec 2025 07:39:03 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6351B6068C;
-	Thu,  4 Dec 2025 07:39:03 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B9D2611921EB0;
-	Thu,  4 Dec 2025 08:38:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1764833941; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=k7CE06tyTx4yxeiWtpPuf1dnd1n3hRXeTtqv9aVcNzw=;
-	b=PtQg8yrUoGAKG/Uii8S7XQtskQAWYlZadXyZzx8jkUIfm66LC9Z6ad4cKNE4THRD7VoZSf
-	VpOBLrkjXDpI5hwZCvijtYB2Vy5ZG58J80S2F53J9dwWk7dpTNG30pcf/51U93DGiwEgRT
-	fQpgrXdq5ncqdGM17SDz8p09cF/kH78uKk1HPXF2geoo/Iq2hdicWw0z1OcT8qIlGWX4io
-	9e/70u+5e6wZE/l9cV4otQ1JJW0py/fWZuwlCOsKVDmZydp44Fq5GitqLtJS5kFRhZ2OUd
-	f1Zx5ECtIQ4aGzbOVCxCdOdmcvN4wJ599iZIa+qSHKGSWZgKnUBDj/ecIp/4rQ==
-Date: Thu, 4 Dec 2025 08:38:39 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Kalle Niemi <kaleposti@gmail.com>, Rob Herring <robh@kernel.org>, Matti
- Vaittinen <mazziesaccount@gmail.com>, Geert Uytterhoeven
- <geert+renesas@glider.be>, linux-arm-kernel@lists.infradead.org
-Cc: Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
- Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
- Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Arnd
- Bergmann <arnd@arndb.de>, Saravana Kannan <saravanak@google.com>, Bjorn
- Helgaas <bhelgaas@google.com>, Charles Keepax
- <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
- <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
- Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Mark Brown <broonie@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, Davidlohr
- Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Dave Jiang <dave.jiang@intel.com>, Alison Schofield
- <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
- Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
- Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="CILRlt2z"
+ARC-Authentication-Results: i=1; mx-gate112-hz1.hornetsecurity.com 1;
+ spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out01-hz1.hornetsecurity.com;
+ dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=nRKpe5m4uI+URjqo+MF4NUpskf9/M3efMzxetxiqdyo=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1764834264;
+ b=B+BYu85Z+zKsae/3+8jhJguMpqfji4zQEk91XyGcm9k3/hsFZi5grQg/MtnMcnoZ6kJPF0sD
+ MeJ/m9RlVBiMc3N+IQQBR3DMBYR2ypCz/OUffjMfMxGv3TMCf8x3I/Gh/e1Ddw0lFU83Ln3VP9U
+ e4+jvQlYfesShHmmAo5VjKjIJc0wUxeSqIEP4JvLgg959j7EnzZo7CMnqqxVIfN5TaB5Nj98sBv
+ 5XyOMLPvxBaShCAPYmnjXato6gCChOzVDk1+bKtIB0J9jB7QcZogTSF6EAleQ5WUYttX/HG65Q3
+ Uhfna3YOMWUvaNjBlzU8qFqBQkHV60CyPAScgCV2Oah9g==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1764834264;
+ b=hb5y+5HtDlkZ63wDhhQsOADXod5N4dqpFTzCi08iiHfsdDY1h0wZwUn1N7AjimWxppg/jPL8
+ QgZ7/MZ6w00fmxZEzDU2EC+Qgp0pIaXDzxIPM7mLh7kQY2Jge5tBFQo1KH2IiSdBj7JuxGXU1As
+ 5pjWJwoXBXresunVLvsW3Fx+Hxhg7aUIlQ43O/YZza9oeU4u+dZR4cfPdjg5lglcWGWYTnCjRKL
+ a867FaAkCtFw6Oh4tm7U1wFPkXemJ0g1HGEOmksUbGTBDh9hdIcKTcFDg1e0NpTimFeVQ7Mhh2Y
+ 7Gn1OfDfNLIMojW7YMFN3RJdmn4FDCymTiY0iBDo/dGbA==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay112-hz1.antispameurope.com;
+ Thu, 04 Dec 2025 08:44:24 +0100
+Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by smtp-out01-hz1.hornetsecurity.com (Postfix) with ESMTPSA id ABE6CA4134F;
+	Thu,  4 Dec 2025 08:44:13 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+ frank.li@nxp.com, Sherry Sun <sherry.sun@nxp.com>
+Cc: devicetree@vger.kernel.org, kernel@pengutronix.de,
  linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
- patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT
- overlays"
-Message-ID: <20251204083839.4fb8a4b1@bootlin.com>
-In-Reply-To: <dc813fc2-28d2-4f2c-a2a3-08e33eec8ec7@gmail.com>
-References: <20251015071420.1173068-1-herve.codina@bootlin.com>
-	<20251015071420.1173068-2-herve.codina@bootlin.com>
-	<f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
-	<CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
-	<5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com>
-	<CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
-	<072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
-	<CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
-	<55076f4b-d523-4f8c-8bd4-0645b790737e@gmail.com>
-	<20251202102619.5cd971cc@bootlin.com>
-	<088af3ff-bd04-4bc9-b304-85f6ed555f2a@gmail.com>
-	<20251202175836.747593c0@bootlin.com>
-	<dc813fc2-28d2-4f2c-a2a3-08e33eec8ec7@gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+ linux-arm-kernel@lists.infradead.org
+Subject:
+ Re: [PATCH V2] arm64: dts: imx8qm-ss-dma: correct the dma channels of lpuart
+Date: Thu, 04 Dec 2025 08:44:12 +0100
+Message-ID: <3023939.e9J7NaK4W3@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20251203015956.116364-1-sherry.sun@nxp.com>
+References: <20251203015956.116364-1-sherry.sun@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay112-hz1.antispameurope.com with 4dMRNG3FgKzwTWn
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:073b527d389ddc73e181e67b15c075cb
+X-cloud-security:scantime:2.175
+DKIM-Signature: a=rsa-sha256;
+ bh=nRKpe5m4uI+URjqo+MF4NUpskf9/M3efMzxetxiqdyo=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1764834264; v=1;
+ b=CILRlt2zIFnvpJzBEIp4zrCzSQUvNlBM4zYJfSXCKv5nvmFfQEFJRXQHtwfvMXf+jTJWkKsU
+ eQtG3qZ/8FWPfJom/F2ThXPwkyHTiDtVZMhCxNqVxfN9iQAJ5wz+2CorWRvg3wCRMK6bhKzAXwn
+ D8bSZQ0wMwAS4ZfSkJya64WJcycAK+s6p04gJIclpUXbJoj7vupVw6+dYAt4pX3Ms8sJqdMZDOC
+ Nbu/7NIc9i1J9aTmR3gsx2jtuvRM6UrHSb4qGVzO6PycDX3wl4jFDoiPArhN4xLRfQN91327oEu
+ CMn21HcfiDF1tqKJxWVpwCZiwLa2NS2c060VaHEgY3b1w==
 
-Hi Kalle,
+Hi,
 
-On Wed, 3 Dec 2025 12:11:45 +0200
-Kalle Niemi <kaleposti@gmail.com> wrote:
+Am Mittwoch, 3. Dezember 2025, 02:59:56 CET schrieb Sherry Sun:
+> The commit 616effc0272b5 ("arm64: dts: imx8: Fix lpuart DMA channel
+> order") swap uart rx and tx channel at common imx8-ss-dma.dtsi. But miss
+> update imx8qm-ss-dma.dtsi.
+>=20
+> The commit 5a8e9b022e569 ("arm64: dts: imx8qm-ss-dma: Pass lpuart
+> dma-names") just simple add dma-names as binding doc requirement.
+>=20
+> Correct lpuart0 - lpuart3 dma rx and tx channels, and use defines for
+> the FSL_EDMA_RX flag.
+>=20
+> Fixes: 5a8e9b022e56 ("arm64: dts: imx8qm-ss-dma: Pass lpuart dma-names")
+> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
 
-...
-> 
-> I tried this patch on next-20251127 by manually adding the added lines 
-> to /drivers/of/overlay.c, and it did not solve the issue. I will 
-> continue to test this.
-> 
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-Did you observe same traces reported by Geert?
+> ---
+> Changes in V2:
+> 1. Correct the fixes commit as Frank and Alexander suggested.
+> ---
+>  arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi b/arch/arm6=
+4/boot/dts/freescale/imx8qm-ss-dma.dtsi
+> index 5f24850bf322..974e193f8dcb 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+> @@ -172,25 +172,25 @@ &flexcan3 {
+> =20
+>  &lpuart0 {
+>  	compatible =3D "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+> -	dmas =3D <&edma2 13 0 0>, <&edma2 12 0 1>;
+> +	dmas =3D <&edma2 12 0 FSL_EDMA_RX>, <&edma2 13 0 0>;
+>  	dma-names =3D "rx","tx";
+>  };
+> =20
+>  &lpuart1 {
+>  	compatible =3D "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+> -	dmas =3D <&edma2 15 0 0>, <&edma2 14 0 1>;
+> +	dmas =3D <&edma2 14 0 FSL_EDMA_RX>, <&edma2 15 0 0>;
+>  	dma-names =3D "rx","tx";
+>  };
+> =20
+>  &lpuart2 {
+>  	compatible =3D "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+> -	dmas =3D <&edma2 17 0 0>, <&edma2 16 0 1>;
+> +	dmas =3D <&edma2 16 0 FSL_EDMA_RX>, <&edma2 17 0 0>;
+>  	dma-names =3D "rx","tx";
+>  };
+> =20
+>  &lpuart3 {
+>  	compatible =3D "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+> -	dmas =3D <&edma2 19 0 0>, <&edma2 18 0 1>;
+> +	dmas =3D <&edma2 18 0 FSL_EDMA_RX>, <&edma2 19 0 0>;
+>  	dma-names =3D "rx","tx";
+>  };
+> =20
+>=20
 
-To move forward, I think I will need help.
 
-Indeed, Kalle, Geert, I don't have your hardware, your related overlay or
-a similar one that could be used for test and also I don't have your out of
-tree code used to handle this overlay.
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-I know overlays and fw_devlink have issues. Links created by fw_devlink
-when an overlay is applied were not correct on my side.
 
-Can you check your <supplier>--<consumer> links with 'ls /sys/class/devlinks'
-
-On my side, without my patches some links were not correct.
-They linked to the parent of the supplier instead of the supplier itself.
-The consequence is a kernel crash, use after free, refcounting failure, ...
-when the supplier device is removed.
-
-Indeed, with wrong links consumers were not removed before suppliers they
-used.
-
-Looking at Geert traces:
---- 8< ---
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,src/src-0
-rcar_sound ec500000.sound: Failed to create device link (0x180) with
-supplier soc for /soc/sound@ec500000/rcar_sound,src/src-1
-[...]
---- 8< ---
-
-Even if it is not correct, why the soc device cannot be a provider?
-I don't have the answer to this question yet.
-
-Without having the exact tree structure of the base device-tree, the overlay
-and the way it is applied, and so without been able to reproduce the issue
-on my side, investigating the issue is going to be difficult.
-
-I hope to find some help to move forward and fix the issue.
-
-Saravana's email (Saravana Kannan <saravanak@google.com>) seems incorrect.
-Got emails delivery failure with this email address.
-
-Best regards,
-Hervé
