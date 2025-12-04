@@ -1,35 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0998B3358CE;
-	Thu,  4 Dec 2025 09:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FA62652AF;
+	Thu,  4 Dec 2025 09:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764840188; cv=none; b=LjVNV6sREZvUHSxWf+dwNtvhXg7Sbr3lCRv8G2tmd4n1v4KYIsX5y9V0Suo8GJPIjdm5TMmVcXqvagp+M/2A4493SKebeXgRF9uj/4fO/s/a1ZMg8sAN+6VJuLJfKKJG9V2/UTofUws027X3PSPqcbDB90y6aIlAFemTF9AuxgI=
+	t=1764841601; cv=none; b=UT8ye6EMgJhKcP2odzFKdgNzBjazmW1bpJrcPAz6c6b465xyhQCysbxxr35sFukREalPlVB0XN6jvHWhHq7379I5TWaoRrgkUZFNdgiVMgVg91VXaow+sXk2yfgpsQV4qBz5V659a5tqM9VftIoIqG+ojfnts4lDcZLIY5YLUjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764840188; c=relaxed/simple;
-	bh=zrassZRzu3WEQ+CdPKrKcm54ODNgoyYq6Vay4FDoMlQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Bhu1EkoPLND7sgisYqnzrh8xI6vd1X0X6yjF3k1yVhdRUfkr1NxBtajl5b2GCPvZCx/Wqs1726fUjW056RonhM++beNVvrBFhI1KnV6XIvcDLP0B9QZmhjKCEwkOzKS2CLsw+dInoDawu1uDq/RJ4k19qKD6p0jNem5jgZnt2mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VFV+2Xw5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1764841601; c=relaxed/simple;
+	bh=3Xo6KEFNNleLs7NQbRdlOybDeYxGnm96HhQ7ttb1sa4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PIHte1el5VMEKwBQ6tu7ytV9oBMTOEaTFtzPGQafsQQbHnVifNUraOKiSon2dLufTftIsw5WJTbupX3SDHPl9WHqJBkCqMDjDSpm4kpaoxVUbDpH/C4yk2i7cN5vjsoKNcaWLgztVKf45rjrNP2Qi2j08d/xTbl5/KkB54U4ASE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qumC81uX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VFV+2Xw5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5B0C113D0;
-	Thu,  4 Dec 2025 09:23:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qumC81uX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51CFC4CEFB;
+	Thu,  4 Dec 2025 09:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1764840187;
-	bh=zrassZRzu3WEQ+CdPKrKcm54ODNgoyYq6Vay4FDoMlQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=VFV+2Xw5lnqZONkoTx+89z9mdkgvRq6zsb6eJ7Gi9OUcwi5r6LDlklsX6LVWqHydR
-	 Cc/ZIemkolXHcoYEEuDZ7f/iZGVvu6EP4tBgIogGUom+OOGkEClAm7EfGpt8kIBSd7
-	 7UhfoRF3wMoD101tvbKPWtNgwtLbFl9EZXZSDkZiTmkbdHj1ysatlBANHHuPu7FkXh
-	 Oh4NDBMXTTDiAUm1xALJqnCZguTWMwI3Y/4T33t3XJyL/wxRUToThgopjdaB//F6aw
-	 sAfcInKhlPtADjBPIt0DsdQtB8huj9PfgbDvb7V7YBWooSpd4o5VkN50nZDL9WFRTo
-	 UcfMVpdq46A5w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F2AA13AA9A97;
-	Thu,  4 Dec 2025 09:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1764841601;
+	bh=3Xo6KEFNNleLs7NQbRdlOybDeYxGnm96HhQ7ttb1sa4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qumC81uXbcWCwG/Jll8DFkNziiV0b8/vPnQBlJ04lGwHHzGWUFixsy1daHL5jZjcX
+	 fwdaSlJ/2UV+bUwlSJ89XbTwiordBco22NN1g7Lu/FLMOLeACPJF4lIAM7SEfAe+PJ
+	 vW532CoWcoOjz1dPWVHPSK+qLw5lnVYG7kURBf7/SJBthZqAYSfQPKySL4ohENGJLd
+	 JdN+lRwBfBfxLjYYZXijwlyrLORrrmT1SDQYyS/9Q6urK5sySCmtUHx1I+cSSM7/PE
+	 M9KiK7UAvHFmt6SS0wuCdeOCAJVch8U0PQOpRU8YhC8y7HDNdA1NvozuCVQp/24y4g
+	 41l/SwBo0Zcfg==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Philipp Zabel <p.zabel@pengutronix.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Dmitry Baryshkov <lumag@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/imx: select DRM_DISPLAY_HELPER as needed
+Date: Thu,  4 Dec 2025 10:46:26 +0100
+Message-Id: <20251204094635.1030724-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,43 +53,49 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: fec: ERR007885 Workaround for XDP TX path
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176484000579.696826.16588311505988091159.git-patchwork-notify@kernel.org>
-Date: Thu, 04 Dec 2025 09:20:05 +0000
-References: <20251128025915.2486943-1-wei.fang@nxp.com>
-In-Reply-To: <20251128025915.2486943-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: shenwei.wang@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-Hello:
+From: Arnd Bergmann <arnd@arndb.de>
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+CONFIG_DRM_BRIDGE_CONNECTOR is a bool option that turns on features of
+the display helpers, which are in a module controlled by the (tristate)
+CONFIG_DRM_DISPLAY_HELPER. If the display helpers are in a loadable
+module, a built-in driver trying to use the bridge connectors fails
+to link:
 
-On Fri, 28 Nov 2025 10:59:15 +0800 you wrote:
-> The ERR007885 will lead to a TDAR race condition for mutliQ when the
-> driver sets TDAR and the UDMA clears TDAR simultaneously or in a small
-> window (2-4 cycles). And it will cause the udma_tx and udma_tx_arbiter
-> state machines to hang. Therefore, the commit 53bb20d1faba ("net: fec:
-> add variable reg_desc_active to speed things up") and the commit
-> a179aad12bad ("net: fec: ERR007885 Workaround for conventional TX") have
-> added the workaround to fix the potential issue for the conventional TX
-> path. Similarly, the XDP TX path should also have the potential hang
-> issue, so add the workaround for XDP TX path.
-> 
-> [...]
+x86_64-linux-ld: drivers/gpu/drm/imx/ipuv3/parallel-display.o: in function `imx_pd_bind':
+parallel-display.c:(.text+0xcd): undefined reference to `drm_bridge_connector_init'
+x86_64-linux-ld: drivers/gpu/drm/imx/ipuv3/imx-ldb.o: in function `imx_ldb_bind':
+imx-ldb.c:(.text+0x224): undefined reference to `drm_bridge_connector_init'
 
-Here is the summary with links:
-  - [net] net: fec: ERR007885 Workaround for XDP TX path
-    https://git.kernel.org/netdev/net/c/e8e032cd24dd
+Select the DRM_BRIDGE_CONNECTOR symbol as well, to ensure it's built-in
+if anything needs it.
 
-You are awesome, thank you!
+Fixes: f94b9707a1c9 ("drm/imx: parallel-display: switch to imx_legacy_bridge / drm_bridge_connector")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/gpu/drm/imx/ipuv3/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/gpu/drm/imx/ipuv3/Kconfig b/drivers/gpu/drm/imx/ipuv3/Kconfig
+index acaf25089001..1c3825a86380 100644
+--- a/drivers/gpu/drm/imx/ipuv3/Kconfig
++++ b/drivers/gpu/drm/imx/ipuv3/Kconfig
+@@ -13,6 +13,7 @@ config DRM_IMX
+ config DRM_IMX_PARALLEL_DISPLAY
+ 	tristate "Support for parallel displays"
+ 	depends on DRM_IMX
++	select DRM_DISPLAY_HELPER
+ 	select DRM_BRIDGE
+ 	select DRM_BRIDGE_CONNECTOR
+ 	select DRM_IMX_LEGACY_BRIDGE
+@@ -33,6 +34,7 @@ config DRM_IMX_LDB
+ 	depends on DRM_IMX
+ 	depends on COMMON_CLK
+ 	select MFD_SYSCON
++	select DRM_DISPLAY_HELPER
+ 	select DRM_BRIDGE
+ 	select DRM_BRIDGE_CONNECTOR
+ 	select DRM_PANEL_BRIDGE
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.39.5
 
