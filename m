@@ -1,203 +1,241 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011021.outbound.protection.outlook.com [52.101.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF042586E8;
-	Thu,  4 Dec 2025 04:28:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764822535; cv=none; b=BIunnWQQ+Eq13+RE7E0Y2JrdLErOLdmH+xZ7axZnDOEoVSqFSCavyhmwk1LZaQJdUe4UuxRkLogUmHVK+sfeuGYpwoxQU/z1aZHNDfdYZyiAqkwsW497L22iGYPenN3vNEnbRYx9wnpJO3naaAzs811ZAGl9HFLBtGJ/l75exLY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764822535; c=relaxed/simple;
-	bh=fu4Otl1HGi7uqxldCp6FC+mJwbMpk4YSIaDzkvRP9rU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CL+lcHawyl7lXpP2iO2U15fDEFVNgp4yn7ZGe2Cs/Sgz17EYmvSRPMUtcFsh4fEcmidbEe52hTw5s5BeGvmbwedhJ4wxwNC0qfAxESg7yqb3Ra04vnfyyGov10qTKZ0c+/cCm8ckFYlKp5SUhRl198zW/jq450Itb3v6WJApnu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aNF5vYvL; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B792741B6
+	for <imx@lists.linux.dev>; Thu,  4 Dec 2025 07:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764832381; cv=fail; b=S1xZ4kQT82g7emXfa4tl1ltocRsPRzaimEUfYSXvzjWYxf+JdjDoUTJjV3KMWZQyl+XhIcun7wT63/+cQW22JsEB8Fnidv5eOhjhgGTZu8sUzPowRc7PAxohtozsHoDTGmmDHMaws+GpBjGsTyjO9ZPOr0FCHrOaf1yNLJPb+zY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764832381; c=relaxed/simple;
+	bh=xw9D35DUnM8VEI23TH1/p7l0tvHgf+n8PG/copK/7nE=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=PiA7nWNE3cmXsWOxsqcdGXE2n9Y8S9RUBYaL7Xsunhc/P+WYG0BgpFLMnBZ3C4W3v6NV+JHaswfuoXywi6zBf8hdXhxAbseLCFPUGqpnGidQzuvaEu7JpGF9I1BoFEzVC47lgaZ6HS6VaxcolI19r7BzA2+WBDErM++zCBQh4ao=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=cEN0mtXr; arc=fail smtp.client-ip=52.101.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aNF5vYvL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1764822534; x=1796358534;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fu4Otl1HGi7uqxldCp6FC+mJwbMpk4YSIaDzkvRP9rU=;
-  b=aNF5vYvLDM4bQBNe9ff+Hr4F540rlGWo87OQXvyOuyPuR4N8fBsYCs95
-   +Kaa+o2Rr7dH/tkIPV4weABtw1IHgriW1+SxhCN4J+dMGCulRm1F0ES3E
-   HK8K+U2XU9KhCQDuwSDR9DjUiJNzzwSMyaT4dGgOQCeHq/UQAC5qQ2Bfm
-   GGoNX8Q/HQWameLMN72rdIR2+xeKkOXwLLXIWCpsDChTWhL3DCOHVE5zn
-   7t6anu96CK8KLl5X7U6jp+AKJ6hH/tAhCCgWJTzLFeovhXonQbmigOW+L
-   5pL2ANXRKeZQSUrW+A/YlOO/HxKkU+wxmekPqYQ2WM22w76+g4fqeD8EN
-   w==;
-X-CSE-ConnectionGUID: soLMmHfbRKSoGxV3AUY4Wg==
-X-CSE-MsgGUID: b2v/Dtn1TvOxdbJqz1G5Ig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11631"; a="77939820"
-X-IronPort-AV: E=Sophos;i="6.20,247,1758610800"; 
-   d="scan'208";a="77939820"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2025 20:28:53 -0800
-X-CSE-ConnectionGUID: emaq0chZQvCufN9+C+JBvA==
-X-CSE-MsgGUID: 5T152UeURjmuiR2QhfUVmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,247,1758610800"; 
-   d="scan'208";a="199360138"
-Received: from lkp-server01.sh.intel.com (HELO 4664bbef4914) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 03 Dec 2025 20:28:48 -0800
-Received: from kbuild by 4664bbef4914 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vR0xR-00000000DRN-1pJI;
-	Thu, 04 Dec 2025 04:28:45 +0000
-Date: Thu, 4 Dec 2025 12:28:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v20 5/7] firmware: drivers: imx: adds miscdev
-Message-ID: <202512041241.yDXC2vpg-lkp@intel.com>
-References: <20251203-imx-se-if-v20-5-a04a25c4255f@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="cEN0mtXr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Y1Teo5GNe4e7exitoiOgX5n37HBNVuVsKo/9WBKtyVAd5CVkKGlD2I8CcO8jvpsSwqIoSGua4D1HyAJH+y3RyDwdvLnagdFt0wU0cRFwvB7//nmeEgXzvpU3VEgwI9MtmaKXMho44mYkhiFS+r0k14DjmByaEhORd7VTgS/Jl0gWRIYsPNnVOowWYVJuewFprR7NsS9hSKyPoGRxLvXPJnGMWw4Jx32AiXYNcd6GpCbKn7AjkVwUtBlZ9vxAN1tXGBIUOPX3aZNLGWg5qSDKvKDczWigHWX66T53gO6bNgwfWzw1m3P2Qvzcr3AnshpftzSZUkAoYazFfWB44BNIAQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qIP/R1Am2jtLn2tNTHREzJcdQj6E6Ch3IniE5mg2gic=;
+ b=ubUyuSfxsP5EVOJksaSxdeSoe1kzjmHXkU5TucHSQ4OmC1vV3jmOzNAE/CIRfcrtuFwRdS0dyK26t8Q5zK6wL+d7GoBI9w2d8cADWo+b3HmZnwMhQoPstFIaYYjCZmk42BLe6mBkZM/g1On+rDZtLG+hhR4O4p9EiPBlU+Cf5VLTSfPtFRrQCPAdUbqW/IrJ+A6PknYl+JBeTOKK/4iWh0WWzCMTpClkh52Xk60DaGhAahtKlsYklBZceAuPNOC9PbW3/i354bfVFIgDEDSZhNenvEU+lt+dWqxg0PaUtODXuDnXtQYHp2LX8Vz6q893HsUU3JqRKhHIy0qhNX2WNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qIP/R1Am2jtLn2tNTHREzJcdQj6E6Ch3IniE5mg2gic=;
+ b=cEN0mtXro7qbnLGrWM1KaCgLDsa5m9IBST6gFUyBHJNApAwkRqeNq+WdqZzrgFRSBaS3uPIM78qgxLok7lh7vBOR8Od1v0+lhluc3QOv+aZX3MtFXfUqrQpMVcc/w3va/OfiaETH4Ew9uKU0cOU+oUT653UHrQ/7BtedotR6mN3u7ow9M8E5jDLD2M5ajiithrkIc/dXPiByMJy32LDn2DPHs+5ZkpHWnEiHkrAdeyswiVMvrLJsqlmi0cengQIhg5AkOP/Df/tVRv1+OajVuq0PiRmnYGk/Fe65nc+Ar3Cigi/pXobnGBohn9ExEvtd6OP8Rnv9Ix1lS7p4nHBEnQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DU6PR04MB11184.eurprd04.prod.outlook.com (2603:10a6:10:5c1::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9366.17; Thu, 4 Dec
+ 2025 07:12:55 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9388.009; Thu, 4 Dec 2025
+ 07:12:55 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	rmk+kernel@armlinux.org.uk,
+	0x1207@gmail.com,
+	hayashi.kunihiko@socionext.com,
+	vladimir.oltean@nxp.com,
+	boon.leong.ong@intel.com
+Cc: imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	bpf@vger.kernel.org
+Subject: [PATCH net] net: stmmac: fix the crash issue for zero copy XDP_TX action
+Date: Thu,  4 Dec 2025 15:13:32 +0800
+Message-Id: <20251204071332.1907111-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2P153CA0039.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c6::8)
+ To PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251203-imx-se-if-v20-5-a04a25c4255f@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DU6PR04MB11184:EE_
+X-MS-Office365-Filtering-Correlation-Id: c219e869-efa3-4d5f-5d36-08de33048bc5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|7416014|1800799024|366016|19092799006|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?zcDDwxt+KD+0QNhn2qWvhyfnjCQRM91J+yoMcWPIT/mobinI6YqT5iwBHQm4?=
+ =?us-ascii?Q?rS6v8T4CLTiF98cCJiX7mMfGHMTUSDVt+GqemOvqLCOkmXVVng/jrvgbwcmN?=
+ =?us-ascii?Q?R6BLmdq3/GkndTFJ6itbD7TJTuhFLViOXX/RCqHn5o8OVWcux1gIWhF8DD1A?=
+ =?us-ascii?Q?9QThSZVxJRRYlefyXRXe6ExDxpsSuzhofliB52s3reW6qPwwX2XbG6VzvsKO?=
+ =?us-ascii?Q?Tnk9seBdZ7W+lqlu+e9eBk0toF9fFUmI2EorUMHAJldKTZ26i72ZuZt2O3EG?=
+ =?us-ascii?Q?LELDIyqRynz0zAAFFCAZYMbvdvC/9LDhbdBAKZzG1M7c4VrjpVsnk87elyhR?=
+ =?us-ascii?Q?RT3TPwirbyJEvugMWiEat2hZq5ZLh/2KAt2v8IqNjNgc0DidjI+ZJ9TTXE4j?=
+ =?us-ascii?Q?Uvi9lZetGSKo8n5n42YegI+i77+sPUJNgcjkJnyolIlhmzdJH2s2cJWpx9LW?=
+ =?us-ascii?Q?idlc3ndoX8RFbmII4eHtM+234a5C8IIK/oUm5FVIv2bSgOrkPk73YEwnSo5a?=
+ =?us-ascii?Q?6kMrsN9fRBU/Z7c2Xfo2ZkMyrdLZc5Oh7wbrNXAAE63AFExC8DC9PlWc0jrj?=
+ =?us-ascii?Q?LO97fe0o9KgrQJx+hhAg2ZeBarhbic1iBRjjeWShRrDHq7sfSV15jMLXg5zn?=
+ =?us-ascii?Q?yOW0FKNjNGMfW2Q7Odztdu8kZhfbydl1kkRYIMteJOkyOS+Znw41V1JoJa1c?=
+ =?us-ascii?Q?dX3qTqNCXXLKHODb2ltRvGrMCPqfDN2bhKaztKvKoI6kSq/QQpQ0PGKXowTb?=
+ =?us-ascii?Q?lFUpyRaKEP7SNbiREUF61IfAQJLwtzurKIkMhcUOWS6mcJSVv186XSOEC4FT?=
+ =?us-ascii?Q?WbUsC/R6bBBqaG8RPUnNx48sP+Sr9AKZp8dHzhIrNesMCWPxlMwDp3Ngl+HH?=
+ =?us-ascii?Q?b2dY/qTGw0nZLrbGPWQcEUcjrvwLGvV3vKzfpFwbdZljCLDySqU4X+uwwHNF?=
+ =?us-ascii?Q?PrtOdBQHSWnRtjbOqECQJAz8rzq9xUHLVPCSbFtw5JXp9MJ7nXK3chkbMGuQ?=
+ =?us-ascii?Q?O4tLJMGdizUD0vtesS8sN0UJ1l9fFubtOd2kCTRz6qzHBOqw+0MhF8yz5waI?=
+ =?us-ascii?Q?uIR4bsnVz9o7QOU7As2VVuXe45IL+8MMzUHRe9mfNUilOHRWVzhY/I9uqB6S?=
+ =?us-ascii?Q?Rl4tyBZhFodnRBqhlSlZwGfmupdSYQhfnm5PvNMRzy67SdNz9VebMlytf7qS?=
+ =?us-ascii?Q?YiopF1gmVrrwNwmGukNRGxHq6EvnDuJ0W4UU3Sgr6pHdFUzW7uzesV56GrEu?=
+ =?us-ascii?Q?6K/e0iyOTomx1Yd7M5kbsTHEzd2gDxEeibr3KHaO1VIwM0IglDBRfynW7zmZ?=
+ =?us-ascii?Q?jFfOfryHDUvBdVaJ606fSNU/EhaR7U1mF/4BxpBDW/JMpHk/YAGlbzOgoe1t?=
+ =?us-ascii?Q?1Ta9K5JtBLalyEz8nfacnkUq5KPEB7wqg5HhsnL0NQjeiyr3nol4qbGYduDJ?=
+ =?us-ascii?Q?q4Z609+F1pNasiNcGVIOcm6hD00BWJ+vOWKJB4zQZAzI8fqVjh18U+WVDhJ8?=
+ =?us-ascii?Q?8VoQ0am4C40HYFcvo+GCVBSiNzFpKDiJNS2r693Jehn1oajDhIKnIibu/g?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(1800799024)(366016)(19092799006)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?3OcbNs0OusLY+pwDq1AnjB5cViSU1aQuh4k0Tyjg224piU+eVRlo53nKTFK6?=
+ =?us-ascii?Q?UM61uV7dFd7sUcOzFE9kQYzvYemU3Iatw5sPLnDIU4+T/8+tAumNmqiypcxi?=
+ =?us-ascii?Q?+J1zlDyEqYRTYj3nsaBq21Oz/x1p7pf5AdW5I0T9UXlp3en0QBjek/3zn6Nz?=
+ =?us-ascii?Q?Q1NQXk5i8k07mUeOV7Aw9iAiqyXIm4OTO12/JTSnzo4S/w71OtFOGAWNJr28?=
+ =?us-ascii?Q?e/yEHV+6zyuNKW0WQxebSetryl0i5LvHs42ZadzUxYE8Yns2k+qBVYOWSpra?=
+ =?us-ascii?Q?cuSX1PLPNPG/C72Z5AHzdCM7XrLQzaLie5MsuROWHiRb3UMAzK2osNt41VlB?=
+ =?us-ascii?Q?2ALGEEaivKQbnutWHyuCAITLEVHEV495DVvnOZ3DQMU4bxhgD4ouTR5hElAQ?=
+ =?us-ascii?Q?1AIRw6YB+7isMpdX8jShmkuOXmSuS9aLa2VfJCZRyGbDN49BkVMcQcG5qzs7?=
+ =?us-ascii?Q?ukNVQxH1QWVuWSYn3xJwtVH2jtL//vl1burQg65oqF5HPplNMb9xlXELFfw0?=
+ =?us-ascii?Q?qGvOEqcTzmKJP2xTXNz08D4w/yKb0DiHO4dMutHmVRi8KqhGaQooF99/FEKp?=
+ =?us-ascii?Q?TzYt6PwuVQYntcBfCpIRcfEdhBFNmbplPDdsfJQ6t2yAcC1k+ihIlGNyRC/f?=
+ =?us-ascii?Q?o/vNXQGZr4dQUS0T0BfPYdVUCkRNIwIkjaC92Lkh2WPEQueuXoGsGhFD3hsp?=
+ =?us-ascii?Q?6PeC8xOjjnS141Np0TFODM0QasgY2CDaeUZxUTyQ2OoAWWLQI6Ia2FWtaAZh?=
+ =?us-ascii?Q?VEGzLmKuvoPktdEKUd2+xj97cYCYd4jnfty9gBlnXcuPfY/nNgfLx5nItndM?=
+ =?us-ascii?Q?UY1cDyL2xTMNBak4l/pl+mb8ytASiLnnogRrZCOFji0aqo1eWFmzy86IkT4I?=
+ =?us-ascii?Q?eGHyxFQRMcAZmObQt/trT55SE/M2rf+iSvK6BmlAdgIPu6CmFtrKpaTXaF+a?=
+ =?us-ascii?Q?bsVJA2ddt9KHjbpWKcy9IlOTgeBr5G+W58ZZx9Xurc6kVBQo8AL3QcC4vVgw?=
+ =?us-ascii?Q?+DCItbwefZ2Iba/yebXjKsqyZzb+45XeucIaCJBV/B6e9vIIUHRsjqf+9DsE?=
+ =?us-ascii?Q?bZpzAUY+utL6NENFz5FBukZSj8oCwY5lKlFsTCI6yLjv5T4GsEdzQ/ZRi4yF?=
+ =?us-ascii?Q?+lOTtJpoKqP6ifW0YcPQXgAqCvKB2qFPgT340aNUtBHzXexNafwu3f+V34nR?=
+ =?us-ascii?Q?Ip2CFPHO83SmkXbQqQGbkxtGqprKCdAGEi/drb2aN3HN5adHnJaj0DzGJmuI?=
+ =?us-ascii?Q?0SWLpiSMF/sSmpBFCo6BzghJuqNYkjhj0F0CGOu6AlXMRhh3SB61y/Nybu+Z?=
+ =?us-ascii?Q?ojHnH8qZplND/V7RnQvJNT1Wl1DWzOrQOloRh9i0R4rAv9Rhv86FjNOqE23l?=
+ =?us-ascii?Q?wLMt9s+FUu21JVeSirbi1Pub+sqqkMwvBUkKxoYLrX5SnfNUipYdTR0FEk6F?=
+ =?us-ascii?Q?wKDQY9KBBMl74YvyOZ6OhPzvBYCg+cP6XBVCYKGID01o/C4NZHnEps4YWl8F?=
+ =?us-ascii?Q?r/71T8sNG8vKNH3WfkRYoj1MkQq3jiWiFzbRLua5Bc0wxckNTLX93Fa4E9zF?=
+ =?us-ascii?Q?hnra8Mzf5PWUAaAbdN7f1EutM9ldWwJmyZS2ug5I?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c219e869-efa3-4d5f-5d36-08de33048bc5
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2025 07:12:55.3881
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yKXbyn/EBiDm07D9I9e7BaGcdR4xFnnI6vr9T2xRUNl9tzrYbuh4EH6xt5ximR8hKfM/XOrI7VMNzSAFnAkZrQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU6PR04MB11184
 
-Hi Pankaj,
+There is a crash issue when running zero copy XDP_TX action, the crash
+log is shown below.
 
-kernel test robot noticed the following build warnings:
+[  216.122464] Unable to handle kernel paging request at virtual address fffeffff80000000
+[  216.187524] Internal error: Oops: 0000000096000144 [#1]  SMP
+[  216.301694] Call trace:
+[  216.304130]  dcache_clean_poc+0x20/0x38 (P)
+[  216.308308]  __dma_sync_single_for_device+0x1bc/0x1e0
+[  216.313351]  stmmac_xdp_xmit_xdpf+0x354/0x400
+[  216.317701]  __stmmac_xdp_run_prog+0x164/0x368
+[  216.322139]  stmmac_napi_poll_rxtx+0xba8/0xf00
+[  216.326576]  __napi_poll+0x40/0x218
+[  216.408054] Kernel panic - not syncing: Oops: Fatal exception in interrupt
 
-[auto build test WARNING on 4a26e7032d7d57c998598c08a034872d6f0d3945]
+For XDP_TX action, the xdp_buff is converted to xdp_frame by
+xdp_convert_buff_to_frame(). The memory type of the resulting xdp_frame
+depends on the memory type of the xdp_buff. For page pool based xdp_buff
+it produces xdp_frame with memory type MEM_TYPE_PAGE_POOL. For zero copy
+XSK pool based xdp_buff it produces xdp_frame with memory type
+MEM_TYPE_PAGE_ORDER0. However, stmmac_xdp_xmit_back() does not check the
+memory type and always uses the page pool type, this leads to invalid
+mappings and causes the crash. Therefore, check the xdp_buff memory type
+in stmmac_xdp_xmit_back() to fix this issue.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Pankaj-Gupta/Documentation-firmware-add-imx-se-to-other_interfaces/20251203-145202
-base:   4a26e7032d7d57c998598c08a034872d6f0d3945
-patch link:    https://lore.kernel.org/r/20251203-imx-se-if-v20-5-a04a25c4255f%40nxp.com
-patch subject: [PATCH v20 5/7] firmware: drivers: imx: adds miscdev
-config: arm64-randconfig-r132-20251204 (https://download.01.org/0day-ci/archive/20251204/202512041241.yDXC2vpg-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 734a912d0f025559fcf76bde9aaaeb0383c1625a)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251204/202512041241.yDXC2vpg-lkp@intel.com/reproduce)
+Fixes: bba2556efad6 ("net: stmmac: Enable RX via AF_XDP zero-copy")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+---
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c   | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512041241.yDXC2vpg-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/firmware/imx/se_ctrl.c:517:40: sparse: sparse: cast removes address space '__user' of expression
-   drivers/firmware/imx/se_ctrl.c:745:48: sparse: sparse: cast removes address space '__user' of expression
-
-vim +/__user +517 drivers/firmware/imx/se_ctrl.c
-
-   491	
-   492	static int se_ioctl_cmd_snd_rcv_rsp_handler(struct se_if_device_ctx *dev_ctx,
-   493						    u64 arg)
-   494	{
-   495		struct se_ioctl_cmd_snd_rcv_rsp_info cmd_snd_rcv_rsp_info = {0};
-   496		struct se_api_msg *tx_msg __free(kfree) = NULL;
-   497		struct se_api_msg *rx_msg __free(kfree) = NULL;
-   498		struct se_if_priv *priv = dev_ctx->priv;
-   499		int err = 0;
-   500	
-   501		if (copy_from_user(&cmd_snd_rcv_rsp_info, (u8 __user *)arg,
-   502				   sizeof(cmd_snd_rcv_rsp_info))) {
-   503			dev_err(priv->dev,
-   504				"%s: Failed to copy cmd_snd_rcv_rsp_info from user.",
-   505				dev_ctx->devname);
-   506			err = -EFAULT;
-   507			goto exit;
-   508		}
-   509	
-   510		if (cmd_snd_rcv_rsp_info.tx_buf_sz < SE_MU_HDR_SZ) {
-   511			dev_err(priv->dev, "%s: User buffer too small(%d < %d)",
-   512				dev_ctx->devname, cmd_snd_rcv_rsp_info.tx_buf_sz, SE_MU_HDR_SZ);
-   513			err = -ENOSPC;
-   514			goto exit;
-   515		}
-   516	
- > 517		err = se_chk_tx_msg_hdr(priv, (struct se_msg_hdr *)cmd_snd_rcv_rsp_info.tx_buf);
-   518		if (err)
-   519			goto exit;
-   520	
-   521		rx_msg = kzalloc(cmd_snd_rcv_rsp_info.rx_buf_sz, GFP_KERNEL);
-   522		if (!rx_msg) {
-   523			err = -ENOMEM;
-   524			goto exit;
-   525		}
-   526	
-   527		tx_msg = memdup_user(cmd_snd_rcv_rsp_info.tx_buf,
-   528				     cmd_snd_rcv_rsp_info.tx_buf_sz);
-   529		if (IS_ERR(tx_msg)) {
-   530			err = PTR_ERR(tx_msg);
-   531			goto exit;
-   532		}
-   533	
-   534		if (tx_msg->header.tag != priv->if_defs->cmd_tag) {
-   535			err = -EINVAL;
-   536			goto exit;
-   537		}
-   538	
-   539		if (tx_msg->header.ver == priv->if_defs->fw_api_ver &&
-   540		    get_load_fw_instance(priv)->is_fw_tobe_loaded) {
-   541			err = se_load_firmware(priv);
-   542			if (err) {
-   543				dev_err(priv->dev, "Could not send msg as FW is not loaded.");
-   544				err = -EPERM;
-   545				goto exit;
-   546			}
-   547		}
-   548		set_se_rcv_msg_timeout(priv, SE_RCV_MSG_LONG_TIMEOUT);
-   549	
-   550		err = ele_msg_send_rcv(dev_ctx, tx_msg, cmd_snd_rcv_rsp_info.tx_buf_sz,
-   551				       rx_msg, cmd_snd_rcv_rsp_info.rx_buf_sz);
-   552		if (err < 0)
-   553			goto exit;
-   554	
-   555		dev_dbg(priv->dev, "%s: %s %s.", dev_ctx->devname, __func__,
-   556			"message received, start transmit to user");
-   557	
-   558		/* We may need to copy the output data to user before
-   559		 * delivering the completion message.
-   560		 */
-   561		err = se_dev_ctx_cpy_out_data(dev_ctx);
-   562		if (err < 0)
-   563			goto exit;
-   564	
-   565		/* Copy data from the buffer */
-   566		print_hex_dump_debug("to user ", DUMP_PREFIX_OFFSET, 4, 4, rx_msg,
-   567				     cmd_snd_rcv_rsp_info.rx_buf_sz, false);
-   568	
-   569		if (copy_to_user(cmd_snd_rcv_rsp_info.rx_buf, rx_msg,
-   570				 cmd_snd_rcv_rsp_info.rx_buf_sz)) {
-   571			dev_err(priv->dev, "%s: Failed to copy to user.", dev_ctx->devname);
-   572			err = -EFAULT;
-   573		}
-   574	
-   575	exit:
-   576	
-   577		/* shared memory is allocated before this IOCTL */
-   578		se_dev_ctx_shared_mem_cleanup(dev_ctx);
-   579	
-   580		if (copy_to_user((void __user *)arg, &cmd_snd_rcv_rsp_info,
-   581				 sizeof(cmd_snd_rcv_rsp_info))) {
-   582			dev_err(priv->dev, "%s: Failed to copy cmd_snd_rcv_rsp_info from user.",
-   583				dev_ctx->devname);
-   584			err = -EFAULT;
-   585		}
-   586	
-   587		return err;
-   588	}
-   589	
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 7b90ecd3a55e..a6664f300e4a 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -88,6 +88,7 @@ MODULE_PARM_DESC(phyaddr, "Physical device address");
+ #define STMMAC_XDP_CONSUMED	BIT(0)
+ #define STMMAC_XDP_TX		BIT(1)
+ #define STMMAC_XDP_REDIRECT	BIT(2)
++#define STMMAC_XSK_CONSUMED	BIT(3)
+ 
+ static int flow_ctrl = 0xdead;
+ module_param(flow_ctrl, int, 0644);
+@@ -4988,6 +4989,7 @@ static int stmmac_xdp_get_tx_queue(struct stmmac_priv *priv,
+ static int stmmac_xdp_xmit_back(struct stmmac_priv *priv,
+ 				struct xdp_buff *xdp)
+ {
++	bool zc = !!(xdp->rxq->mem.type == MEM_TYPE_XSK_BUFF_POOL);
+ 	struct xdp_frame *xdpf = xdp_convert_buff_to_frame(xdp);
+ 	int cpu = smp_processor_id();
+ 	struct netdev_queue *nq;
+@@ -5004,9 +5006,18 @@ static int stmmac_xdp_xmit_back(struct stmmac_priv *priv,
+ 	/* Avoids TX time-out as we are sharing with slow path */
+ 	txq_trans_cond_update(nq);
+ 
+-	res = stmmac_xdp_xmit_xdpf(priv, queue, xdpf, false);
+-	if (res == STMMAC_XDP_TX)
++	/* For zero copy XDP_TX action, dma_map is true */
++	res = stmmac_xdp_xmit_xdpf(priv, queue, xdpf, zc);
++	if (res == STMMAC_XDP_TX) {
+ 		stmmac_flush_tx_descriptors(priv, queue);
++	} else if (res == STMMAC_XDP_CONSUMED && zc) {
++		/* xdp has been freed by xdp_convert_buff_to_frame(),
++		 * no need to call xsk_buff_free() again, so return
++		 * STMMAC_XSK_CONSUMED.
++		 */
++		res = STMMAC_XSK_CONSUMED;
++		xdp_return_frame(xdpf);
++	}
+ 
+ 	__netif_tx_unlock(nq);
+ 
+@@ -5356,6 +5367,8 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
+ 			break;
+ 		case STMMAC_XDP_CONSUMED:
+ 			xsk_buff_free(buf->xdp);
++			fallthrough;
++		case STMMAC_XSK_CONSUMED:
+ 			rx_dropped++;
+ 			break;
+ 		case STMMAC_XDP_TX:
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
