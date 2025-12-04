@@ -1,48 +1,48 @@
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010071.outbound.protection.outlook.com [52.101.228.71])
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11010052.outbound.protection.outlook.com [52.101.229.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A111F326921
-	for <imx@lists.linux.dev>; Thu,  4 Dec 2025 09:57:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DEF2FB627
+	for <imx@lists.linux.dev>; Thu,  4 Dec 2025 09:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764842272; cv=fail; b=PUA9U9BIdG7hji3W75uLp5eORzebgKz67Z97UL2dAbWa9VPfTdHM3xBHm5UQAKl7T1csyAbTKWdefXViAojZa3xwh2CYml092+Hl5myZtTrYFmtZgN5c1rt7vxIeTbuvVMySRRDVYc3v8llpOTXcbeTFmh7K80dmYLkR8KbKXKo=
+	t=1764842317; cv=fail; b=Hh/nAw4o/UMsjKY5KZxbQYQXCepkOJEfZ+aZs+Rp517iQLIsgDBXg7UIcz3zwwQMAuc7lXm0Dk3v3VQRmuiXwpX3ADQhum2l3w9Ylu7JSgKA+/LaC+JLH0kv5wHrqxU4GnW6kuSMj9p5/YVN9Tz0zC6SHZwncKslOauLxY1OPsw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764842272; c=relaxed/simple;
-	bh=XCLqFUnUdFGz5gIz++gN1Alguug6gewIz1n3Qdk3MEQ=;
+	s=arc-20240116; t=1764842317; c=relaxed/simple;
+	bh=ExKZwZicQs9x8S0vYnxfHCUN02kBNkZS91XGS4jU28M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=KUAnpFyw7CNBhCpW8EB3ctn7T43BK/sgHt1iOaiHGZPCu0fi/2mapBcP4RipTen9rnz5ZK6gruK0KHM8rDGSIlXzGAWfoWWXM681A3OwZP7w1rrK0+OeX/A0kjLTFWnU2j5yX5WbNV3nnCNqZQly4DpIBz63wJg9N73aBt01Fpk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=T8Z/W5Bi; arc=fail smtp.client-ip=52.101.228.71
+	 Content-Disposition:In-Reply-To:MIME-Version; b=LREtrJFQpg/MOBpJ8+KnTadh9ysAcpDSz5SRFlZqWdOLSJtGzH45MAWcxnw92cSWroBgz2CI3dZPT41tlggmdLZBZr3wzxvS35GuNmmABZnyTR31joH949zxSscD3kAgvSS8aNj03r8n69l/u7Bv9yHzhrDrPNfUpYO/APZGIFE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=rkbIqlOb; arc=fail smtp.client-ip=52.101.229.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="T8Z/W5Bi"
+	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="rkbIqlOb"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=E9abStmNb1qmjXZ9HOufOjsdu6AiDB0IVBtvdc3fMGIbUtWSCzMkjmi4j3vZixZRr+rtfcf6D8MkAkrxIiXS1W5md7aX/Y3xnIGFDWIuhSZV5LN25zHjm5Gk7UVOGdgGt9Cq8NYAOYeBrxsyVxxYsFhSpKBpuB5KAqi3sG84Z+YWJPn+yWmetTLQZQSFYb/oU/UDn02GaYEkZ8Zm3EG+s9ikFaviI9TerIi53M/caRx22XRZHFrA2Z6QivA8o4nTyjgrEUiIQEdRvyR/G4ktS6UQ3LvmvXgXEIiD6IEVxdaYYCSvXpumJQ42l93TF+gdgxlvCQqWqP9aKFRR8iFU7Q==
+ b=Ocf5J454hLYHvNHMb94evvBCd3UVN2Ks+vdgCjsBJFPvKONGWhLkfgF7oJA5QeEwFfBqKmmVXFOplzSlA7w+u9cb4rMGoWWTP7Nnr0d0rpN+ctTeTQjqTqbB9jeFEA+Uw9Gh72JyOth8ZR2X80UuZpGPJXs+5GMTLBVXIUdIKXNgaXVlGHYdl2UVzvzY2+hmFk84rmw1Is6YbGc3WxWbXoJcShGE65HjUxV3aWaqU5Gjd9kYAdZPsGOojgoWRtfN6Vsg9jk72XVRDXXu59NYPD9dxa8pcVJRkUgicyCW53pdCJotYtRRkHcsovXVEpDGQrY4l5EX7gUifIf/0SigvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dZFAAdu0sAiIWHHIMxb+vHp9BhfjKuv5D4g3EKzheso=;
- b=CcaWyAQzPK/7Cv3HckmWc0PJYxwODNCmGSeT82VhaOThd49x18AgZ3UQMugVKyHqzCfr/IhqmBfWWzeOdtMlmG1rSLsxEyjqYlBd7p6wjutUXj7yjNz2+5hIFifRf8thjHRGH/Oy4HA444jsd1ErrCN3pmP8b3KJ2nhPZK4W6S4/OOsh02Jz0SToLDZf61zc3Hu5tHyMGptFqeJq8pM9SmEBeb4ROy9RD8DVkgP2ED3GfrXXvLK8DP1PdlNg8sRionNcdZt5Q+VfGXfF4zaQ5rgELfOmcjfOn43/E0BRurgLhtI+EoPlQzV1MnRLo8OxQ6IZ3JtCNMn1tG4A/Mjx2A==
+ bh=jALIequZgyp9sE9wpIFz5msWrC6m3lhqsIebjqU/VHs=;
+ b=F2+f0X8pEnsKW/Q0bw+Qvp/xjkJkU+jG2qWC2NPE7ZVfaYnBo1RdoDRqIgn5wkgVeMM+I1VDYTOMHjB05f0mqwX7Rv2PJE1yNWlLyCrsooOPtShDmzdT+LTTfX/PpeC0+MKKNqHSGRqOCgK20QVGhMiBzUSPy4ikzr1SpkHVUlLxaVUbwd7gBq2KgrpTPTdr5XxVyMv+XCwdAqJL0GQD9YP22UxSyNVWkbhkEV3KdpcvRdBhy/+JIJz3trS8UdMTRg7qRiBxoafwVjZHFH5mmbQ8yjM/HU4uEuW/S6+STOjY9l0cKdD9vwnN1thopFIFKZyofnGbR2exxIxS7cdAuw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
  header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dZFAAdu0sAiIWHHIMxb+vHp9BhfjKuv5D4g3EKzheso=;
- b=T8Z/W5Bip4jxukAlcZei6GRnURWl1IxrAPKNM/Si5RXF3CBcxv9Jr9IK/5F9DuGDv/O05fBAdmyuQxSejM8s37yY9kMNBT5+wMj1BEkg9DlKiEYUH88fcbCd1x7wpzUqApLOkaDHsM2DNgMIy739x1GvO6CSusPY8TraBhBVuP8=
+ bh=jALIequZgyp9sE9wpIFz5msWrC6m3lhqsIebjqU/VHs=;
+ b=rkbIqlObDoFw0y8BqwlhH+mqmmi4mfefuUoix95eYA8VKs0Mq1EpLVoiQMIwSI0nOUsSRkgog0eDwNba66XiMoFbrx0+HHeF8T6OdgmRzES5tTBJ6BN5aPSV3/PhDdXbfxEzUN8iBHzct7OhlWqZxCL50RUlOl4ud6e1ck06HSM=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=bp.renesas.com;
 Received: from TYCPR01MB11947.jpnprd01.prod.outlook.com (2603:1096:400:3e1::6)
- by TYRPR01MB13325.jpnprd01.prod.outlook.com (2603:1096:405:113::11) with
+ by TYRPR01MB12255.jpnprd01.prod.outlook.com (2603:1096:405:102::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.10; Thu, 4 Dec
- 2025 09:57:44 +0000
+ 2025 09:58:31 +0000
 Received: from TYCPR01MB11947.jpnprd01.prod.outlook.com
  ([fe80::33f1:f7cd:46be:e4d8]) by TYCPR01MB11947.jpnprd01.prod.outlook.com
  ([fe80::33f1:f7cd:46be:e4d8%5]) with mapi id 15.20.9388.003; Thu, 4 Dec 2025
- 09:57:44 +0000
-Date: Thu, 4 Dec 2025 10:57:26 +0100
+ 09:58:31 +0000
+Date: Thu, 4 Dec 2025 10:58:20 +0100
 From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
 To: Frank Li <Frank.Li@nxp.com>
 Cc: Jorge Marques <jorge.marques@analog.com>,
@@ -51,16 +51,15 @@ Cc: Jorge Marques <jorge.marques@analog.com>,
 	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
 	imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/2] i3c: master: switch to use new callback
- .i3c_xfers() from .priv_xfers()
-Message-ID: <aTFbBtMwXQY7TK9P@tom-desktop>
+Subject: Re: [PATCH v2 2/2] i3c: master: cleanup callback .priv_xfers()
+Message-ID: <aTFbPE1KHWVeZYi2@tom-desktop>
 References: <20251203-i3c_xfer_cleanup_master-v2-0-7dd94d04ee2d@nxp.com>
- <20251203-i3c_xfer_cleanup_master-v2-1-7dd94d04ee2d@nxp.com>
+ <20251203-i3c_xfer_cleanup_master-v2-2-7dd94d04ee2d@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251203-i3c_xfer_cleanup_master-v2-1-7dd94d04ee2d@nxp.com>
-X-ClientProxiedBy: FR3P281CA0164.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a2::18) To TYCPR01MB11947.jpnprd01.prod.outlook.com
+In-Reply-To: <20251203-i3c_xfer_cleanup_master-v2-2-7dd94d04ee2d@nxp.com>
+X-ClientProxiedBy: FR0P281CA0138.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:96::7) To TYCPR01MB11947.jpnprd01.prod.outlook.com
  (2603:1096:400:3e1::6)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -69,238 +68,161 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB11947:EE_|TYRPR01MB13325:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7149df9a-3761-4ac5-03bc-08de331b9209
+X-MS-TrafficTypeDiagnostic: TYCPR01MB11947:EE_|TYRPR01MB12255:EE_
+X-MS-Office365-Filtering-Correlation-Id: c8bd62f4-7101-46b1-8fe1-08de331badec
 X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|7053199007|38350700014;
+	BCL:0;ARA:13230040|366016|376014|52116014|1800799024|7053199007|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?KtdNciBH37ajWL3SkRjkqKfoLdbQOTzW69SF73JvSBmaUOvuYvd/E3jGtJfZ?=
- =?us-ascii?Q?Hwx/6iCUVUvuLiP2zb8ZY04rXRtHo3pOr5D3IrLEJbATXWjfVH87QEZFxIQC?=
- =?us-ascii?Q?BsB31NZtktqptfT0a6vuWhdKVLjGy8BDkAPJcs+1SHBiI9O95Ortkmxj6NQ/?=
- =?us-ascii?Q?JP3WNoFyy9btxDHMZzkMRHoBh41pLs0h2BIAr1BPCRxxUa793jsipz/VkoR7?=
- =?us-ascii?Q?i1loNmHzIjSZQgWQnSVTZb1if5DyKCA/OD1fSGnaF6lOlBDM1TFeKjdCwshU?=
- =?us-ascii?Q?hPhyXDhd3llgtoV4AVndyRxyAIyvxolvEXAjrA2+6g+ae+D+Pe3nFk8taQfk?=
- =?us-ascii?Q?jzkCgDfONQvsx+G55Ga+rbItjzY6EVMIOrKqzQG6YXW2ylWr2NNSifnsW27z?=
- =?us-ascii?Q?04bZ19CCBSHb59tLSUN+f32yu1utrm1NINuCDVbkeXF8X9PKSyFPm1ucyNrQ?=
- =?us-ascii?Q?EKRKJasqzjMV6l7oGANiPufELKtTWymMQ7ylUaYn35XMVII1sWzx2ExM17az?=
- =?us-ascii?Q?+Hn+fo1dwp5JPHxvwgB9s3E0enIPjsfScXqOTsPEnTMuc5fX0+agKs3Snr7l?=
- =?us-ascii?Q?uzwsSMbUNUta69rn+wWfO9RiLNjgQKJqRFt618VxS2NB8hPxDomMZaanTwXB?=
- =?us-ascii?Q?1MM48PMcbrn+wp31Jy9RMEzbnTHjAG3KVzRhkhC9hAsX3z8ChI/3n5BsMbPT?=
- =?us-ascii?Q?v/5xb3lS5Slhml12oByPo0DXjR7bs7KFokcxsvCm4yoO3O3Z8mHTpzKs1+VM?=
- =?us-ascii?Q?VABhliVQlcrKPG3u/9zxG8MgH+Jrd8DM8t52E7Cx7hu2DWgSu/jtp6G5UGXj?=
- =?us-ascii?Q?fa/mK8NRSDkcvOUVzWllg2olCMjRksF1BsYDWIPv8zqskYvl1BkIqxv0Dhsp?=
- =?us-ascii?Q?sJpqOSNwoTXbo1CvJ/wnWj+LHfHkJk5XoeLAakyjxDBI6iO6bkVDutyWJBYH?=
- =?us-ascii?Q?h1C1a3uq55WO+WRgyvrfaKKntIvBe1ozY3E/LTY88AkLDEJ2Ly3QsTe3HJdm?=
- =?us-ascii?Q?jiT+pODFP/CAe04ILhhRQxrUhkYGd/dhc15dyboOCpswcj0yy5+h0o+ugp/N?=
- =?us-ascii?Q?YhCXjl0pvffMdJChE4d64k0IpNXCtG0GYRszI4/UJZujhOWpgQPS9uKjLyg4?=
- =?us-ascii?Q?3c8wwhP2/9wlTBqfrjYQSA/MGsk+I8qW6JbiyKaijvOI9N6Dfliy+gGt7D7D?=
- =?us-ascii?Q?0Onji/6iqZE0t7gru14vsM3eDuXz9j7F+QtgmVoBSguXCoKzZOpVRUYLcEK+?=
- =?us-ascii?Q?2Z3+ZI2jjtJjNy8r7KdXMd7MU5wGG5hyzTvnyrJaNX8ZOQgIbn8OfilBJznu?=
- =?us-ascii?Q?BljrHTx4aVYLk7EcqE+YDTCzP/zbmKT7X68srxRLrbQU2hLYmSdIZJQd/McH?=
- =?us-ascii?Q?sKry0PGI13ClBYG0ZL7CpjECSsirdlYThC0EprMSwKGF81fP+jMhUpk3katf?=
- =?us-ascii?Q?ABQfjJNy0wkS9D63njZpKOil7XYJX7ilV0xAlRidxHRuYySRiFIQ6lkApTMA?=
- =?us-ascii?Q?b+HYMDEwwc+XS/auiizMm1JsA4ka+sEsEuau?=
+	=?us-ascii?Q?wMLTy1rD49E0/amT7NytTXKopWV3wFSeCLHvU5EJxYjtooFvKh5R+oxBsrg4?=
+ =?us-ascii?Q?PgzKIFvB93kCTO43+dSZHj4nvWfwKilqEq+wK+Qmyr5IxxLUngaGt90fJ872?=
+ =?us-ascii?Q?97RZdHGdvSHZBsoFnCXDNl38TzJUdEKmbgUhiJe33ixautQ0j5fjQQVROf6T?=
+ =?us-ascii?Q?F9UocO3RdQ+EAJLxRTw+djGr/L/5YgpIuDbC/J2swh78AgTi+p2iF5xseIZk?=
+ =?us-ascii?Q?ioYKYG99mEcyU6wVwe6Ib/KwaQ5OxbV+T3vGGat57AcPNtiFwkTc8ZFCLrsA?=
+ =?us-ascii?Q?Fx9F9cGJi/eY+8Ce0qUoWIHN9kJLi6GRQLWye4P3cVBHy1xw95VqjZNckhrO?=
+ =?us-ascii?Q?A+PGwR/urv0aoFHM5hEGVlb3GT4GapLHdJx+zKUeYOcsgLDOWQk/SEbSKFXq?=
+ =?us-ascii?Q?CD0eOzqqNS5p6bKdtaET87bpSGT2CYaYIyE/E4k+pthJ+mEj7xvyzrh6ls6l?=
+ =?us-ascii?Q?fAdhmnqjkG+pSfh7inEII2jH0dfRQ4DOTmPjBDtFfTZNISB/n7U4+L1XLSYe?=
+ =?us-ascii?Q?SkNHuy0uGf0y4US4VAPwHhAIwDxTcksQbG2WWece5gNuGNW3DBov43P4SUyb?=
+ =?us-ascii?Q?w4bpd0uN2OfvAh4ISdNG4ePC8XQrIwQ//HWf1wUMJImRGgvzGJEz+dSWqCGt?=
+ =?us-ascii?Q?mahttJg5eojNTkM9TDUNU1KV0Ic0bqkNbsZbAwtq/1s+n0HV2P4oemdZjz0e?=
+ =?us-ascii?Q?TNdpxz5tYJvHEYQxeYJdyHIvNfaCzLEezvmehl1t4QLjgTm95GBGvZ8qBKsw?=
+ =?us-ascii?Q?r0S0iJ+Lu6s49WcKv2EBURqEqlovfFamKfz7pw/jPmM4qMWOrEqBZ7MqlDpF?=
+ =?us-ascii?Q?D4TTNF5MwLpJo1PZiZ6wmejhjCytg0WHEIHVSa8Y3wsCoy4zWqy63sAU20NR?=
+ =?us-ascii?Q?Ry3Gn3+EBN5HaP8VqFB84gSAjvtS+Wf+odjS2+48hzjy9ymqRaSqAT1jSYTR?=
+ =?us-ascii?Q?jNIzFKobqV2GWQ7CLS2xF9mva4lSPT6rBcWwHU6tLqkSDQXFQnJOXmnAs1jp?=
+ =?us-ascii?Q?TlJufLpg808/D5j0IOkMwjy+7v140ABg51F5RQTlL9/5jt4yL8QP7VaC2rSe?=
+ =?us-ascii?Q?hHLEk2S53UyJRysC3Lj+oISmYKBTssgKGsj6CItf3HLouUzukluyT5T7lU7C?=
+ =?us-ascii?Q?mFFXwM6phtvTx5bgQGcGt49N7lkp3GqWFGGEnnrHcFmbevzDy8CsIPfarNBf?=
+ =?us-ascii?Q?Pj6QP1nphLOO5FOarYK1Fv2nSwB2hEMpuNt1iOrQfrLJL7D3MPqhChrPyvB3?=
+ =?us-ascii?Q?OMCGJ8Bfu2l1ya0RGS7wx/xnnsY5L+vMpqQmgz/dYt9J03GrrwK3r9Wenw+D?=
+ =?us-ascii?Q?FOsdewcYZoJbqLH3ULJijc+E7SrsSZNoxjSeP77JZKZcwbT1xq0vbVo7Ln3Z?=
+ =?us-ascii?Q?j+Tb/C4uhWXBxY8/BysV1ORZzAbNbV/nsF0BRYRtAkM6ttEPVQIsDG0BQdU5?=
+ =?us-ascii?Q?EFgx36orenaQAev3Vn2U0baItJ5WBVk/oNBMwCBMPe0bgrcSIDSEbUT0GPmA?=
+ =?us-ascii?Q?Gs2DpLbaLhkFt7lVHuGumbIY+pM6hSxI0XSr?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB11947.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB11947.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+LX9Ziu6k8jpTCMsRvdW/1c5xC3UCl21klRNE6LLP7IqeGdUwdH/mQnbuHvn?=
- =?us-ascii?Q?RIIUOUOgETq0SvYbrsDpncuJ/FKtf1w/+UHYcbtPsvDkCawwgjrfF4/Hfxlw?=
- =?us-ascii?Q?1TEFL8MfyiKJ+hC5kAp1ocPt7PHdngJU0Nc8QtNNFvZOsxGrXLtw5UGce2TI?=
- =?us-ascii?Q?suvbbbkwOzRbHatW7GQo9KNd9wmy50kbJ048ymhxlDJAgI9G79HjjRBd8weL?=
- =?us-ascii?Q?guO+qANNFgXLlUgaWg1w/Qw3WbcAGw60kk0qwuzry6GC5T9CGGPoPYttpBQY?=
- =?us-ascii?Q?CBCjb1ZqkjRB+z2eQJTzVHTbCGJYDVhf0z0aCYNy5FbunOJncEnLoFtnh/ek?=
- =?us-ascii?Q?hc+zZiI8wGQwsNl5MELGYSdLkae3cUcRcXSE2r/95Fm0BPTupM7CyqsZa41z?=
- =?us-ascii?Q?+tEeFfuC8fYFn573Z8Hfo7QLgjqfvwxJXK07T+s62jwotD6mnVXoZ5JCbTRb?=
- =?us-ascii?Q?bxLxQKIqPxPom72SgnzO83EcKmzxsA0VrVaEmGCm/L4BdfKoK0IudZX8uA4K?=
- =?us-ascii?Q?0B+omSKOSAizvmNoqI9+r7usqppqjBmUcD4vDEAYBtYCyowAyMmgCiRg4VEO?=
- =?us-ascii?Q?7p5s+kGn3KHAkpDOzkaAIItkhgTHqIqtBBZcc9h2cuNlNqb/zOW3/duH2CH2?=
- =?us-ascii?Q?yyGRrYVm//y7b6bjpKA+oLa/HiJUZxQqx4CqW+Sk2hbF0v4CSFG7dg8Vvn1S?=
- =?us-ascii?Q?5lAKba2CDkP4uNsZ1WVJofq2Eb4CM+hdjCu0SP9jZMMdAm7yR013dmKf2zAP?=
- =?us-ascii?Q?h/y6pAsV78YtoQz3RG4IPKnh8HxrB1/+GAtMwHmlRRJuZI43gL302dzQzaDR?=
- =?us-ascii?Q?wzI8dlzHAot741v/RcvXvcPTBEEU/1Y4T6RTq5qPI7wZBnUJmZpEkRP5LwjM?=
- =?us-ascii?Q?f1LYAN7jWAzmr45G9qD6/0pwjJzI7VQ1fzNFnJZZeITIdyCms9YfI4ulWtM6?=
- =?us-ascii?Q?YkWgK4pQrV0ubzl3r1qzJhv7bUXpNshmZ0Aor5FyScvVWboMS4D4Qojffouv?=
- =?us-ascii?Q?+NZAiJa+ATDqSC307ik1YF3+uJt/S5hHYwp0sN2iZBMaqzPO+OlJuSTQtAvU?=
- =?us-ascii?Q?KleGPiAbvYmjt58vmJDjXt0geA+IzFjIORgKtbHh2SfTcGGqpbACBUbBVyqs?=
- =?us-ascii?Q?DfivqQgG0dTAl3tzV6oSrXlbb6dJx1GR8j7WwntTobGN5EU2ThjTM7iKJzLw?=
- =?us-ascii?Q?t1F0eAhNtrmROGpDwM5dYB9OuRo07vWKEhmEWQytH9jCI89Fc5mMU1jsrbfO?=
- =?us-ascii?Q?f9G3Ig/TtOCf2kTTkqL6pK9Avl/D2LJoYCgukwdwsWj46VDiY/EQksXnT3rI?=
- =?us-ascii?Q?qWgqIPX+ydRwPD4ekbZ5nyusboXuFuQrTi0pGAvGkAvgzuFLVblgGS1B/toi?=
- =?us-ascii?Q?Q/GJO3G8zwZP78apxD6w3FTPlR5lBCOC/h/cESL/3WsOuF+fi5W7tjcT/raW?=
- =?us-ascii?Q?EEgVzmsRAfmaTKKAbWTeimlgltxByCTeUO+oWwmTg7vGRchkp1jEa9FD5a1r?=
- =?us-ascii?Q?KO9uJKHY4FR9y5m1yvpVljD7d1FL6wlEpxz8QHb7for29AfHbetQ3gLdQ70h?=
- =?us-ascii?Q?5TsOWILRRnflIh459zGC6Tj1uBGelJY+zxvYThWq/0T2uKpyLTFQawRi8yCa?=
- =?us-ascii?Q?QBsnC0X0d0CkewnWrfb8n8g=3D?=
+	=?us-ascii?Q?KQBQ/eihA18EvHlaGptjMTgrlJiOUOseZtN2H4XwuFpeNuum8ogBttsLRux/?=
+ =?us-ascii?Q?NSMUzqH8Qq+/k+7H2cXYmNHvsX0jhEXi+4dZ7ruDL9lSWjgoN6E93uRZpHHy?=
+ =?us-ascii?Q?G5WN/fa6DapGJRhVEo7rQ+03FNMINT09sAa4eAriIUFaevRdT45zJHa/kA7l?=
+ =?us-ascii?Q?m1QeYmZX6o0zeDuMgOKYGcxjX8QTZGl6GS78zZDfRepifKVDRIM4FHIoYxhu?=
+ =?us-ascii?Q?RyJO922XK9r9ivLeUWN/W20NXsHu3GYM4nZXQdIVYHgQ9Mh+1h2gdTGM2v6r?=
+ =?us-ascii?Q?gUY2IX+KjQpApXDj0Db3Sr4OqotQy6HY0LZWyTReOdADWLFkvaQPDGv9Z3cN?=
+ =?us-ascii?Q?6ZCfKoxRs3wV92SFp2a/AeEAI4f7SVX596wPztb+o92kLbhAtieQ0mlq7PXl?=
+ =?us-ascii?Q?GfylfvTvh+Q8kYgh3LjoowpcgXQgP0g6YGgGSecNwSCNrpjLPwCnuIeMte0e?=
+ =?us-ascii?Q?AF42unBTuTsM2E+VuqOlWwfum+syMh4I5lPB6WRUWCVCgug1fG18DlGeRRcN?=
+ =?us-ascii?Q?DZBPDHUoy3JPWHEb8u92G/xGn0+bCZCPgsaCBeHbP2oAgQugGtZi+l/uCoet?=
+ =?us-ascii?Q?BPLgZHG9VWxcL/Bfy2FuvO4zKhiOu735ribfPVjAfVbRtASmLKo2+HG2hxlS?=
+ =?us-ascii?Q?GwX3wUBCqRD5MMNIYO2SZnKVkctzXD+HpBa3eHCpzbYAFUgFztqt88GSIXOk?=
+ =?us-ascii?Q?Rd09jUO+5t+Iz5kATYfOlDip+z006YGStx+vuoE26aHPuqVX5mSnPRQjYtn+?=
+ =?us-ascii?Q?/jJD0sZBz4XLn9znRGE5qx6kbjneN9y6KWtNOJnaiqlzWgoAnZSXwx+oK1AQ?=
+ =?us-ascii?Q?W2z8Gz1CFbeP7q2WkGGN6xgH8/S8P6vVYKEj8KhtoTmlfaK2Q5oF5CU55V+N?=
+ =?us-ascii?Q?C35k2hqL5M+PbDlo9nR0U3/E8WlR2v/Am3D138O0rP2Hr66giEmXl17j5dtD?=
+ =?us-ascii?Q?NPtdYcLstuZ3dZwdMNfC6R3F5eMz4H6g/9LWOTvUStLto126ibeSkeDfGyJW?=
+ =?us-ascii?Q?qyqMQmuqrU0IJFp9QgKM62YbA3Kxmc5ZPc3C+vh00ccxZBRmp388Fv0W4X7m?=
+ =?us-ascii?Q?0mnYYOfUOBiOJqcy9eQJrfLZJpU+oZgFSK2ioUGButHOYwoBIXg16SSGLwS2?=
+ =?us-ascii?Q?aDqFiSnIUkDx/xMHREi93PFGcxTbZvZhn7myfko3HoutI+P4EG4KmjH7YCra?=
+ =?us-ascii?Q?c4vGw96BlThOIe7GovvBTndgVe2dNl1SOrM/leybMiqLOFqa91k2CWrid9gS?=
+ =?us-ascii?Q?Zc0ddZVxnU8EySg8kpo7CaTO6nCWcLvqThl+alaqAPxaI02IokdlkTmnZBFs?=
+ =?us-ascii?Q?iRKMkOyEGZ+iGhpp1xKN4QIDzMc+usby7qccnVvDC0+Q1s8GjrkQjBMWZdyv?=
+ =?us-ascii?Q?EMtsboR+NcyaA36xAiFPPM1jS9O5+ABZyrj9PDtIiH6MjYz0M7BPdODdH4xL?=
+ =?us-ascii?Q?f/ceH6LRBCpscWLE2Z0BZCPRTG1XfHQwrKi5NXeQOGJDCyMr5O2sSQrx6Wsm?=
+ =?us-ascii?Q?wC7uv73hQXqegjtw16iwcsrVTW7VJARvDh2BJjsMs5sCPQHWQ2C3Y1oMaIpm?=
+ =?us-ascii?Q?rO8Cs9AhwGVHlMpMK6dRPgXT9kkXfriYxRWvtElJVB/pJTW+gP0rmdO5oARJ?=
+ =?us-ascii?Q?9PWT3hIx5ixrKg5xZcJghwg=3D?=
 X-OriginatorOrg: bp.renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7149df9a-3761-4ac5-03bc-08de331b9209
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8bd62f4-7101-46b1-8fe1-08de331badec
 X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11947.jpnprd01.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2025 09:57:44.4547
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2025 09:58:31.1768
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DV5z9VjnPN7b+sKJTdTN0KkdMJQMRYegxYB7ogyMz0c//VEUg5XbwE02fslDpifYEESOlFFta5z5tJ/9CjYlGeliMMmcKr5GoSJ92LWHg0+H0gPThoNGCHVeypGD8uw7
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYRPR01MB13325
+X-MS-Exchange-CrossTenant-UserPrincipalName: MmJ/NeLgAD+hh/dJtmn8uxxUzRU1NIZ82Q26DNiCMYyQWROlTbmjVJIDExUhuCiANbHSWQz25DIX+HPNL4wu0ICO44Z0Xy/4gT9BuElellaJzmRc+uUj9ARM4vp2E+M2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYRPR01MB12255
 
-Hi Frank,
-Thanks for your patch.
-
-On Wed, Dec 03, 2025 at 03:45:50PM -0500, Frank Li wrote:
-> Switch to use the new .i3c_xfers() callback, which supports all I3C
-> transfer modes (SDR and HDR). Also replace struct i3c_priv_xfer with the
-> new struct i3c_xfer, as i3c_priv_xfer is now an alias of i3c_xfer.
+On Wed, Dec 03, 2025 at 03:45:51PM -0500, Frank Li wrote:
+> Remove the .priv_xfers() callback from the framework after all master
+> controller drivers have switched to use the new .i3c_xfers() callback.
 > 
-> No functional changes.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/i3c/master/adi-i3c-master.c    | 8 ++++----
->  drivers/i3c/master/dw-i3c-master.c     | 8 ++++----
->  drivers/i3c/master/i3c-master-cdns.c   | 8 ++++----
->  drivers/i3c/master/mipi-i3c-hci/core.c | 8 ++++----
->  drivers/i3c/master/renesas-i3c.c       | 6 +++---
 
 Tested-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
 
-
-Kind Regards,
-Tommaso
-
->  5 files changed, 19 insertions(+), 19 deletions(-)
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/i3c/master.c       | 14 ++------------
+>  include/linux/i3c/master.h | 11 +----------
+>  2 files changed, 3 insertions(+), 22 deletions(-)
 > 
-> diff --git a/drivers/i3c/master/adi-i3c-master.c b/drivers/i3c/master/adi-i3c-master.c
-> index 82ac0b3d057abddc78671ce973db12f528984ea1..00eb80e492afc736046f04fa454be16bb718004a 100644
-> --- a/drivers/i3c/master/adi-i3c-master.c
-> +++ b/drivers/i3c/master/adi-i3c-master.c
-> @@ -365,9 +365,9 @@ static int adi_i3c_master_send_ccc_cmd(struct i3c_master_controller *m,
->  	return 0;
+> diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+> index f88f7e19203ae5a90267b2491f3b13b6205863e8..ea45a519dd68a514fd7fe8314b3fcf2c5604aa64 100644
+> --- a/drivers/i3c/master.c
+> +++ b/drivers/i3c/master.c
+> @@ -2819,14 +2819,10 @@ EXPORT_SYMBOL_GPL(i3c_generic_ibi_recycle_slot);
+>  
+>  static int i3c_master_check_ops(const struct i3c_master_controller_ops *ops)
+>  {
+> -	if (!ops || !ops->bus_init ||
+> +	if (!ops || !ops->bus_init || !ops->i3c_xfers ||
+>  	    !ops->send_ccc_cmd || !ops->do_daa || !ops->i2c_xfers)
+>  		return -EINVAL;
+>  
+> -	/* Must provide one of priv_xfers (SDR only) or i3c_xfers (all modes) */
+> -	if (!ops->priv_xfers && !ops->i3c_xfers)
+> -		return -EINVAL;
+> -
+>  	if (ops->request_ibi &&
+>  	    (!ops->enable_ibi || !ops->disable_ibi || !ops->free_ibi ||
+>  	     !ops->recycle_ibi_slot))
+> @@ -3031,13 +3027,7 @@ int i3c_dev_do_xfers_locked(struct i3c_dev_desc *dev, struct i3c_xfer *xfers,
+>  	if (mode != I3C_SDR && !(master->this->info.hdr_cap & BIT(mode)))
+>  		return -EOPNOTSUPP;
+>  
+> -	if (master->ops->i3c_xfers)
+> -		return master->ops->i3c_xfers(dev, xfers, nxfers, mode);
+> -
+> -	if (mode != I3C_SDR)
+> -		return -EINVAL;
+> -
+> -	return master->ops->priv_xfers(dev, xfers, nxfers);
+> +	return master->ops->i3c_xfers(dev, xfers, nxfers, mode);
 >  }
 >  
-> -static int adi_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
-> -				     struct i3c_priv_xfer *xfers,
-> -				     int nxfers)
-> +static int adi_i3c_master_i3c_xfers(struct i3c_dev_desc *dev,
-> +				    struct i3c_xfer *xfers,
-> +				    int nxfers, enum i3c_xfer_mode mode)
->  {
->  	struct i3c_master_controller *m = i3c_dev_get_master(dev);
->  	struct adi_i3c_master *master = to_adi_i3c_master(m);
-> @@ -919,7 +919,7 @@ static const struct i3c_master_controller_ops adi_i3c_master_ops = {
->  	.do_daa = adi_i3c_master_do_daa,
->  	.supports_ccc_cmd = adi_i3c_master_supports_ccc_cmd,
->  	.send_ccc_cmd = adi_i3c_master_send_ccc_cmd,
-> -	.priv_xfers = adi_i3c_master_priv_xfers,
-> +	.i3c_xfers = adi_i3c_master_i3c_xfers,
->  	.i2c_xfers = adi_i3c_master_i2c_xfers,
->  	.request_ibi = adi_i3c_master_request_ibi,
->  	.enable_ibi = adi_i3c_master_enable_ibi,
-> diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
-> index 276592a8222e7b098a2323e0f3f587e77fc789bd..889e2ed5bc830310c5555eeeab08674d0c579a0e 100644
-> --- a/drivers/i3c/master/dw-i3c-master.c
-> +++ b/drivers/i3c/master/dw-i3c-master.c
-> @@ -902,9 +902,9 @@ static int dw_i3c_master_daa(struct i3c_master_controller *m)
->  	return ret;
->  }
->  
-> -static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
-> -				    struct i3c_priv_xfer *i3c_xfers,
-> -				    int i3c_nxfers)
-> +static int dw_i3c_master_i3c_xfers(struct i3c_dev_desc *dev,
-> +				   struct i3c_xfer *i3c_xfers,
-> +				   int i3c_nxfers, enum i3c_xfer_mode mode)
->  {
->  	struct dw_i3c_i2c_dev_data *data = i3c_dev_get_master_data(dev);
->  	struct i3c_master_controller *m = i3c_dev_get_master(dev);
-> @@ -1498,7 +1498,7 @@ static const struct i3c_master_controller_ops dw_mipi_i3c_ops = {
->  	.do_daa = dw_i3c_master_daa,
->  	.supports_ccc_cmd = dw_i3c_master_supports_ccc_cmd,
->  	.send_ccc_cmd = dw_i3c_master_send_ccc_cmd,
-> -	.priv_xfers = dw_i3c_master_priv_xfers,
-> +	.i3c_xfers = dw_i3c_master_i3c_xfers,
->  	.attach_i2c_dev = dw_i3c_master_attach_i2c_dev,
->  	.detach_i2c_dev = dw_i3c_master_detach_i2c_dev,
->  	.i2c_xfers = dw_i3c_master_i2c_xfers,
-> diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
-> index 97b151564d3d31092975cec14958a17ddcd91d13..8eb76b8ca2b00a46a65f3a6dc7416d8af7ca288d 100644
-> --- a/drivers/i3c/master/i3c-master-cdns.c
-> +++ b/drivers/i3c/master/i3c-master-cdns.c
-> @@ -720,9 +720,9 @@ static int cdns_i3c_master_send_ccc_cmd(struct i3c_master_controller *m,
->  	return ret;
->  }
->  
-> -static int cdns_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
-> -				      struct i3c_priv_xfer *xfers,
-> -				      int nxfers)
-> +static int cdns_i3c_master_i3c_xfers(struct i3c_dev_desc *dev,
-> +				     struct i3c_xfer *xfers,
-> +				     int nxfers, enum i3c_xfer_mode mode)
->  {
->  	struct i3c_master_controller *m = i3c_dev_get_master(dev);
->  	struct cdns_i3c_master *master = to_cdns_i3c_master(m);
-> @@ -1519,7 +1519,7 @@ static const struct i3c_master_controller_ops cdns_i3c_master_ops = {
->  	.detach_i2c_dev = cdns_i3c_master_detach_i2c_dev,
->  	.supports_ccc_cmd = cdns_i3c_master_supports_ccc_cmd,
->  	.send_ccc_cmd = cdns_i3c_master_send_ccc_cmd,
-> -	.priv_xfers = cdns_i3c_master_priv_xfers,
-> +	.i3c_xfers = cdns_i3c_master_i3c_xfers,
->  	.i2c_xfers = cdns_i3c_master_i2c_xfers,
->  	.enable_ibi = cdns_i3c_master_enable_ibi,
->  	.disable_ibi = cdns_i3c_master_disable_ibi,
-> diff --git a/drivers/i3c/master/mipi-i3c-hci/core.c b/drivers/i3c/master/mipi-i3c-hci/core.c
-> index 47e42cb4dbe71edc5a022f4cb0fdf33a281eb4a7..607d77ab0e54691705845c33a79939820a83c9f0 100644
-> --- a/drivers/i3c/master/mipi-i3c-hci/core.c
-> +++ b/drivers/i3c/master/mipi-i3c-hci/core.c
-> @@ -266,9 +266,9 @@ static int i3c_hci_daa(struct i3c_master_controller *m)
->  	return hci->cmd->perform_daa(hci);
->  }
->  
-> -static int i3c_hci_priv_xfers(struct i3c_dev_desc *dev,
-> -			      struct i3c_priv_xfer *i3c_xfers,
-> -			      int nxfers)
-> +static int i3c_hci_i3c_xfers(struct i3c_dev_desc *dev,
-> +			     struct i3c_xfer *i3c_xfers, int nxfers,
-> +			     enum i3c_xfer_mode mode)
->  {
->  	struct i3c_master_controller *m = i3c_dev_get_master(dev);
->  	struct i3c_hci *hci = to_i3c_hci(m);
-> @@ -515,7 +515,7 @@ static const struct i3c_master_controller_ops i3c_hci_ops = {
->  	.bus_cleanup		= i3c_hci_bus_cleanup,
->  	.do_daa			= i3c_hci_daa,
->  	.send_ccc_cmd		= i3c_hci_send_ccc_cmd,
-> -	.priv_xfers		= i3c_hci_priv_xfers,
-> +	.i3c_xfers		= i3c_hci_i3c_xfers,
->  	.i2c_xfers		= i3c_hci_i2c_xfers,
->  	.attach_i3c_dev		= i3c_hci_attach_i3c_dev,
->  	.reattach_i3c_dev	= i3c_hci_reattach_i3c_dev,
-> diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesas-i3c.c
-> index 275f7b9242886ee77a647149a808e2f184fb0447..426a418f29b61256fbbfc50cf578bf04629ec391 100644
-> --- a/drivers/i3c/master/renesas-i3c.c
-> +++ b/drivers/i3c/master/renesas-i3c.c
-> @@ -794,8 +794,8 @@ static int renesas_i3c_send_ccc_cmd(struct i3c_master_controller *m,
->  	return ret;
->  }
->  
-> -static int renesas_i3c_priv_xfers(struct i3c_dev_desc *dev, struct i3c_priv_xfer *i3c_xfers,
-> -					 int i3c_nxfers)
-> +static int renesas_i3c_i3c_xfers(struct i3c_dev_desc *dev, struct i3c_xfer *i3c_xfers,
-> +				 int i3c_nxfers, enum i3c_xfer_mode mode)
->  {
->  	struct i3c_master_controller *m = i3c_dev_get_master(dev);
->  	struct renesas_i3c *i3c = to_renesas_i3c(m);
-> @@ -1282,7 +1282,7 @@ static const struct i3c_master_controller_ops renesas_i3c_ops = {
->  	.do_daa = renesas_i3c_daa,
->  	.supports_ccc_cmd = renesas_i3c_supports_ccc_cmd,
->  	.send_ccc_cmd = renesas_i3c_send_ccc_cmd,
-> -	.priv_xfers = renesas_i3c_priv_xfers,
-> +	.i3c_xfers = renesas_i3c_i3c_xfers,
->  	.attach_i2c_dev = renesas_i3c_attach_i2c_dev,
->  	.detach_i2c_dev = renesas_i3c_detach_i2c_dev,
->  	.i2c_xfers = renesas_i3c_i2c_xfers,
+>  int i3c_dev_disable_ibi_locked(struct i3c_dev_desc *dev)
+> diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+> index 2fd850f4678b22f352507f8f55910a196536a1e5..6225ad28f210fa15a8f2d521a565ef06995e2470 100644
+> --- a/include/linux/i3c/master.h
+> +++ b/include/linux/i3c/master.h
+> @@ -417,12 +417,7 @@ struct i3c_bus {
+>   *		      all CCC commands are supported.
+>   * @send_ccc_cmd: send a CCC command
+>   *		  This method is mandatory.
+> - * @priv_xfers: do one or several private I3C SDR transfers
+> - *		This method is mandatory when i3c_xfers is not implemented. It
+> - *		is deprecated.
+> - * @i3c_xfers: do one or several I3C SDR or HDR transfers
+> - *	       This method is mandatory when priv_xfers is not implemented but
+> - *	       should be implemented instead of priv_xfers.
+> + * @i3c_xfers: do one or several I3C SDR or HDR transfers.
+>   * @attach_i2c_dev: called every time an I2C device is attached to the bus.
+>   *		    This is a good place to attach master controller specific
+>   *		    data to I2C devices.
+> @@ -478,10 +473,6 @@ struct i3c_master_controller_ops {
+>  				 const struct i3c_ccc_cmd *cmd);
+>  	int (*send_ccc_cmd)(struct i3c_master_controller *master,
+>  			    struct i3c_ccc_cmd *cmd);
+> -	/* Deprecated, please use i3c_xfers() */
+> -	int (*priv_xfers)(struct i3c_dev_desc *dev,
+> -			  struct i3c_priv_xfer *xfers,
+> -			  int nxfers);
+>  	int (*i3c_xfers)(struct i3c_dev_desc *dev,
+>  			 struct i3c_xfer *xfers,
+>  			 int nxfers, enum i3c_xfer_mode mode);
 > 
 > -- 
 > 2.34.1
