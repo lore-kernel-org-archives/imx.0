@@ -1,162 +1,308 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010071.outbound.protection.outlook.com [52.101.228.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E551397
-	for <imx@lists.linux.dev>; Thu,  4 Dec 2025 09:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764841654; cv=none; b=meKxZjZidr10UCR7J041IxlxJ5Olw3mloMY1Uhsi3uH8h96UtwdgnBFhNfJtPF2uKpyfR59Wa5A+MVLyUwFLLy79TnrijvYvC9Ly3ze1QQeTuWnnrJjiPL1qOhzSd4w9hqkkDWMItwIah/XiPH4G593oRP4ND0EeseV4vkT+nzI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764841654; c=relaxed/simple;
-	bh=JgdK0y9s95PdSwHIdz94K6nzOEH69wp51lC2/c1r+ss=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VlhJKb3F/8EFKWnFwAQj7A3y/8UjCNvgikcU1NunvX1gfiV93egBT5sb5Xhrzc/pn0L8WulIlcVotMaEYD3esBsjfnTJyiyRU4kaIee0Ucq1jRiggHu918yNX/NrBBiC8JzEOcyeXIa98Czbu1kGX7J6BJD9VxRbxBwO7zP+cs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=p2SR/SmD; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=EeyBEO88; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A111F326921
+	for <imx@lists.linux.dev>; Thu,  4 Dec 2025 09:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764842272; cv=fail; b=PUA9U9BIdG7hji3W75uLp5eORzebgKz67Z97UL2dAbWa9VPfTdHM3xBHm5UQAKl7T1csyAbTKWdefXViAojZa3xwh2CYml092+Hl5myZtTrYFmtZgN5c1rt7vxIeTbuvVMySRRDVYc3v8llpOTXcbeTFmh7K80dmYLkR8KbKXKo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764842272; c=relaxed/simple;
+	bh=XCLqFUnUdFGz5gIz++gN1Alguug6gewIz1n3Qdk3MEQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=KUAnpFyw7CNBhCpW8EB3ctn7T43BK/sgHt1iOaiHGZPCu0fi/2mapBcP4RipTen9rnz5ZK6gruK0KHM8rDGSIlXzGAWfoWWXM681A3OwZP7w1rrK0+OeX/A0kjLTFWnU2j5yX5WbNV3nnCNqZQly4DpIBz63wJg9N73aBt01Fpk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b=T8Z/W5Bi; arc=fail smtp.client-ip=52.101.228.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="p2SR/SmD";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="EeyBEO88"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5B468cvO551462
-	for <imx@lists.linux.dev>; Thu, 4 Dec 2025 09:47:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	pUBfY5jIY1RcuIaYXy/4WSKR4pFxd1tabpa2Ll11nlI=; b=p2SR/SmD+5jskdfE
-	NhJBNg/7+rTeMIaxexwvb/pi9N/rbxkNnXPtljm7hFYwK9bzYkagQXFy7FbSq86t
-	/pNErXxwuO9vF6liQsqVRpxZBLsPMxEiwWQuOusYb4vKe+exA6RGIebkZVN5I2xL
-	Bgruh3zseW6yNvkjD2ae3++7tKRdcbXgzUMfeLHCbEPJ9gZFO7c8wWdJNNYsU8iP
-	XxpPSo6QYO1b06IdqOL1OASdmIFTs6YCnm1OggEMK/KTSSVLRUNlmUGsS9oROQTT
-	UsGZyEY351Nyv1vE0FZ2f2OWVwRW8vdurF+vsFcNQsAfvwlpnL+XI71fuJbwG/yK
-	dpuM2Q==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4atmmdbkty-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Thu, 04 Dec 2025 09:47:31 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8b17194d321so85150785a.0
-        for <imx@lists.linux.dev>; Thu, 04 Dec 2025 01:47:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1764841651; x=1765446451; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pUBfY5jIY1RcuIaYXy/4WSKR4pFxd1tabpa2Ll11nlI=;
-        b=EeyBEO88UP2Odd751OXtho5Ng6TNJliPsOkVm1PS8FFde8kKvH2eFZN9AxS5e13QS6
-         9attMnaeSeIeyk8VXNe8j3hGvy9YGfTsTwp4ERgJeRaeFAL8wckTxwSYhoiMu/BRBA8K
-         NXEZfXQK9TA7Cr4yKntYIGN4qoUqo4uCASiMkyb1Ieu6beX65qxrN6EcaN90EbP90aGY
-         RkoASa1eCirZfRXgeOy/rnNyI5C5W1zkGJSC8oO3alqG4TJ7rAT0tq/b/pE0AlhL1vqO
-         FGLLy/Bd8xFlz2d8Uho+qpOLt6xVfZ1dtu8I2Cic5I/gjtvXJqyppQVRvy7Wr+RjDhL7
-         HTnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764841651; x=1765446451;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pUBfY5jIY1RcuIaYXy/4WSKR4pFxd1tabpa2Ll11nlI=;
-        b=qnjFErbh1hyst8ZA0kWUe4SvA64J9/btV668Cq+203McpD4qDS00ScNqCpRcvLtcQd
-         hWopxT2eSrtp/1ixdzIVv2+ZpJg00h+E4ab9ft3agQjzn4yqEw8h8NTKsBA1olmWgSxh
-         NK+2fltFUhzVXeCOJelvET1QKEUxxgQkCY3Fc++8JLZTl38nBv335kOnbwSjDKhrmNcy
-         wM06HkUuTGLe1dO3YiBrSemYh3AeeACPxMoOk6Z2OXFZa94UXsLLtF5nQn7/M+upY7sp
-         WQ7D7a8O6ncpPaqFyjL/j7AsgGkQI2qSUt22MMby0f05UJaxPnx9TiP+uAjus/TGltfy
-         T9uA==
-X-Forwarded-Encrypted: i=1; AJvYcCWBM3lgbdZACVPqkMtAP/JB6VHNYTIfoPjnn4sF7/eCEi53SDEyrE8nrFGLzZkQBZdMYKQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxuSmTz++EzYeScpAdCews1fXgHRUKMWVY0Rx8kPe24WXe7mZcF
-	Al9WrHsDYozX6wbcy4gsniCqmRHyroT6oeGEHGdiIBbv2en1kHvdr9I4qS9rutTKgJKXb1citbh
-	TlkgO8Z7UfXj3ZhdOPfsBk8229FUnHEApnUv+vwRvlEGR5Ae3rdEyEDw=
-X-Gm-Gg: ASbGncvd+vRnxB9WsEhNAQ9WdSjBywhT6a0daZueUHqxtX+2T0qtVAeB/vgb3mJ9VVL
-	K7m4sjsE842l0aBkBHogCYwv2MoCPfeCHenurx/dScOHn7UJRdpPuzyJ0kHRwyDGMfX2u0kSnMa
-	sBo8zN6XvLkXs6N+fgTFpF3NFdaxVJRTOqxQJo7b9IFeEesQbPh3SpE19+Z7Ydsv3q41IVuJzR8
-	H11+KVDdTV1GSdWyKymImb6gc98RPVFAOAtK2RylsvIjaU0stKc8O9HD3xyU8XNLsYpXSzd3Jfg
-	fdDWLwXaVDdjtNXUPhnld48Y5wvvU7ERxzhK8OppPejiDlXkmZDeBlfKjAvrDFQyQDVfnTCkQMo
-	3zC81v2MFe8YdhLyFFtYF3QjfAiI79hAa0pCHzQrLHIurn6dcIS2UZGA3wLc2sjA5NX20x9+9ZQ
-	95NFSo+JexSzwV
-X-Received: by 2002:a05:620a:46a2:b0:8b2:598d:6e98 with SMTP id af79cd13be357-8b6181f1c1dmr276409585a.58.1764841650841;
-        Thu, 04 Dec 2025 01:47:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEdWBTmtoknkMH8kz6B2X6j3KiGmUlXyUbfopjsR83o2iT6J6CZDZRB/IJn43+50pjA6xjPVQ==
-X-Received: by 2002:a05:620a:46a2:b0:8b2:598d:6e98 with SMTP id af79cd13be357-8b6181f1c1dmr276406085a.58.1764841650129;
-        Thu, 04 Dec 2025 01:47:30 -0800 (PST)
-Received: from ?IPV6:2001:14ba:a0c3:3a00::4c9? (2001-14ba-a0c3-3a00--4c9.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::4c9])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37e6feba575sm4180081fa.21.2025.12.04.01.47.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Dec 2025 01:47:29 -0800 (PST)
-Message-ID: <191ee8f8-b48a-44be-9b2a-3690a362c541@oss.qualcomm.com>
-Date: Thu, 4 Dec 2025 11:47:28 +0200
+	dkim=pass (1024-bit key) header.d=bp.renesas.com header.i=@bp.renesas.com header.b="T8Z/W5Bi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=E9abStmNb1qmjXZ9HOufOjsdu6AiDB0IVBtvdc3fMGIbUtWSCzMkjmi4j3vZixZRr+rtfcf6D8MkAkrxIiXS1W5md7aX/Y3xnIGFDWIuhSZV5LN25zHjm5Gk7UVOGdgGt9Cq8NYAOYeBrxsyVxxYsFhSpKBpuB5KAqi3sG84Z+YWJPn+yWmetTLQZQSFYb/oU/UDn02GaYEkZ8Zm3EG+s9ikFaviI9TerIi53M/caRx22XRZHFrA2Z6QivA8o4nTyjgrEUiIQEdRvyR/G4ktS6UQ3LvmvXgXEIiD6IEVxdaYYCSvXpumJQ42l93TF+gdgxlvCQqWqP9aKFRR8iFU7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dZFAAdu0sAiIWHHIMxb+vHp9BhfjKuv5D4g3EKzheso=;
+ b=CcaWyAQzPK/7Cv3HckmWc0PJYxwODNCmGSeT82VhaOThd49x18AgZ3UQMugVKyHqzCfr/IhqmBfWWzeOdtMlmG1rSLsxEyjqYlBd7p6wjutUXj7yjNz2+5hIFifRf8thjHRGH/Oy4HA444jsd1ErrCN3pmP8b3KJ2nhPZK4W6S4/OOsh02Jz0SToLDZf61zc3Hu5tHyMGptFqeJq8pM9SmEBeb4ROy9RD8DVkgP2ED3GfrXXvLK8DP1PdlNg8sRionNcdZt5Q+VfGXfF4zaQ5rgELfOmcjfOn43/E0BRurgLhtI+EoPlQzV1MnRLo8OxQ6IZ3JtCNMn1tG4A/Mjx2A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bp.renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dZFAAdu0sAiIWHHIMxb+vHp9BhfjKuv5D4g3EKzheso=;
+ b=T8Z/W5Bip4jxukAlcZei6GRnURWl1IxrAPKNM/Si5RXF3CBcxv9Jr9IK/5F9DuGDv/O05fBAdmyuQxSejM8s37yY9kMNBT5+wMj1BEkg9DlKiEYUH88fcbCd1x7wpzUqApLOkaDHsM2DNgMIy739x1GvO6CSusPY8TraBhBVuP8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=bp.renesas.com;
+Received: from TYCPR01MB11947.jpnprd01.prod.outlook.com (2603:1096:400:3e1::6)
+ by TYRPR01MB13325.jpnprd01.prod.outlook.com (2603:1096:405:113::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.10; Thu, 4 Dec
+ 2025 09:57:44 +0000
+Received: from TYCPR01MB11947.jpnprd01.prod.outlook.com
+ ([fe80::33f1:f7cd:46be:e4d8]) by TYCPR01MB11947.jpnprd01.prod.outlook.com
+ ([fe80::33f1:f7cd:46be:e4d8%5]) with mapi id 15.20.9388.003; Thu, 4 Dec 2025
+ 09:57:44 +0000
+Date: Thu, 4 Dec 2025 10:57:26 +0100
+From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Jorge Marques <jorge.marques@analog.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	=?utf-8?Q?Przemys=C5=82aw?= Gaj <pgaj@cadence.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/2] i3c: master: switch to use new callback
+ .i3c_xfers() from .priv_xfers()
+Message-ID: <aTFbBtMwXQY7TK9P@tom-desktop>
+References: <20251203-i3c_xfer_cleanup_master-v2-0-7dd94d04ee2d@nxp.com>
+ <20251203-i3c_xfer_cleanup_master-v2-1-7dd94d04ee2d@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251203-i3c_xfer_cleanup_master-v2-1-7dd94d04ee2d@nxp.com>
+X-ClientProxiedBy: FR3P281CA0164.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a2::18) To TYCPR01MB11947.jpnprd01.prod.outlook.com
+ (2603:1096:400:3e1::6)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/imx: select DRM_DISPLAY_HELPER as needed
-To: Arnd Bergmann <arnd@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Dmitry Baryshkov <lumag@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, dri-devel@lists.freedesktop.org,
-        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <20251204094635.1030724-1-arnd@kernel.org>
-Content-Language: en-US
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-In-Reply-To: <20251204094635.1030724-1-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: R4yEFnNhbwBkVeQU2fabI-94Hujnl_2J
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjA0MDA3OSBTYWx0ZWRfX19xB8epdngZ6
- 1PVPJl/YBo6BpQQJmScu63M76DFSnQwJbNYLHlqHkXFXFzpAmYEoCDl9LSV+a1ctVJzdg6naVWT
- pnPHiFzF+fD4FYRB+YfUCG/AmRWOBvRd90OzPi/LRY4yN+MQhTrUc5JgYgxpe81IwPLJCJJjn60
- oOQ5lQI5CsyBaBZycrn/dP7wUZEdMnuGjWymvBa0R6MBZ/HzTfhsWs7hGQYhyWruANcNIEcE7wC
- NcOl48aw7BJBFzKtxaJABe+AGS3M1WCk86ZbKWRhLNvdaSRsJRoD2F9yDy2UtFYOe0+8QTKYXZL
- y6Mcnwkn6zhlgj3lP9d/e8yW+Cjk1o0eJY76kbNCn/wBhczJmigF1/lT0hpZM3A+pkzB5Letcd4
- UnzCTiL+1Xqmo1wRH/Jmcw0DUxs7RQ==
-X-Proofpoint-ORIG-GUID: R4yEFnNhbwBkVeQU2fabI-94Hujnl_2J
-X-Authority-Analysis: v=2.4 cv=Ctays34D c=1 sm=1 tr=0 ts=693158b3 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=t8mZWZZekR3hrNGy9_IA:9 a=QEXdDO2ut3YA:10
- a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-04_02,2025-12-03_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 impostorscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
- clxscore=1015 priorityscore=1501 adultscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512040079
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYCPR01MB11947:EE_|TYRPR01MB13325:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7149df9a-3761-4ac5-03bc-08de331b9209
+X-LD-Processed: 53d82571-da19-47e4-9cb4-625a166a4a2a,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?KtdNciBH37ajWL3SkRjkqKfoLdbQOTzW69SF73JvSBmaUOvuYvd/E3jGtJfZ?=
+ =?us-ascii?Q?Hwx/6iCUVUvuLiP2zb8ZY04rXRtHo3pOr5D3IrLEJbATXWjfVH87QEZFxIQC?=
+ =?us-ascii?Q?BsB31NZtktqptfT0a6vuWhdKVLjGy8BDkAPJcs+1SHBiI9O95Ortkmxj6NQ/?=
+ =?us-ascii?Q?JP3WNoFyy9btxDHMZzkMRHoBh41pLs0h2BIAr1BPCRxxUa793jsipz/VkoR7?=
+ =?us-ascii?Q?i1loNmHzIjSZQgWQnSVTZb1if5DyKCA/OD1fSGnaF6lOlBDM1TFeKjdCwshU?=
+ =?us-ascii?Q?hPhyXDhd3llgtoV4AVndyRxyAIyvxolvEXAjrA2+6g+ae+D+Pe3nFk8taQfk?=
+ =?us-ascii?Q?jzkCgDfONQvsx+G55Ga+rbItjzY6EVMIOrKqzQG6YXW2ylWr2NNSifnsW27z?=
+ =?us-ascii?Q?04bZ19CCBSHb59tLSUN+f32yu1utrm1NINuCDVbkeXF8X9PKSyFPm1ucyNrQ?=
+ =?us-ascii?Q?EKRKJasqzjMV6l7oGANiPufELKtTWymMQ7ylUaYn35XMVII1sWzx2ExM17az?=
+ =?us-ascii?Q?+Hn+fo1dwp5JPHxvwgB9s3E0enIPjsfScXqOTsPEnTMuc5fX0+agKs3Snr7l?=
+ =?us-ascii?Q?uzwsSMbUNUta69rn+wWfO9RiLNjgQKJqRFt618VxS2NB8hPxDomMZaanTwXB?=
+ =?us-ascii?Q?1MM48PMcbrn+wp31Jy9RMEzbnTHjAG3KVzRhkhC9hAsX3z8ChI/3n5BsMbPT?=
+ =?us-ascii?Q?v/5xb3lS5Slhml12oByPo0DXjR7bs7KFokcxsvCm4yoO3O3Z8mHTpzKs1+VM?=
+ =?us-ascii?Q?VABhliVQlcrKPG3u/9zxG8MgH+Jrd8DM8t52E7Cx7hu2DWgSu/jtp6G5UGXj?=
+ =?us-ascii?Q?fa/mK8NRSDkcvOUVzWllg2olCMjRksF1BsYDWIPv8zqskYvl1BkIqxv0Dhsp?=
+ =?us-ascii?Q?sJpqOSNwoTXbo1CvJ/wnWj+LHfHkJk5XoeLAakyjxDBI6iO6bkVDutyWJBYH?=
+ =?us-ascii?Q?h1C1a3uq55WO+WRgyvrfaKKntIvBe1ozY3E/LTY88AkLDEJ2Ly3QsTe3HJdm?=
+ =?us-ascii?Q?jiT+pODFP/CAe04ILhhRQxrUhkYGd/dhc15dyboOCpswcj0yy5+h0o+ugp/N?=
+ =?us-ascii?Q?YhCXjl0pvffMdJChE4d64k0IpNXCtG0GYRszI4/UJZujhOWpgQPS9uKjLyg4?=
+ =?us-ascii?Q?3c8wwhP2/9wlTBqfrjYQSA/MGsk+I8qW6JbiyKaijvOI9N6Dfliy+gGt7D7D?=
+ =?us-ascii?Q?0Onji/6iqZE0t7gru14vsM3eDuXz9j7F+QtgmVoBSguXCoKzZOpVRUYLcEK+?=
+ =?us-ascii?Q?2Z3+ZI2jjtJjNy8r7KdXMd7MU5wGG5hyzTvnyrJaNX8ZOQgIbn8OfilBJznu?=
+ =?us-ascii?Q?BljrHTx4aVYLk7EcqE+YDTCzP/zbmKT7X68srxRLrbQU2hLYmSdIZJQd/McH?=
+ =?us-ascii?Q?sKry0PGI13ClBYG0ZL7CpjECSsirdlYThC0EprMSwKGF81fP+jMhUpk3katf?=
+ =?us-ascii?Q?ABQfjJNy0wkS9D63njZpKOil7XYJX7ilV0xAlRidxHRuYySRiFIQ6lkApTMA?=
+ =?us-ascii?Q?b+HYMDEwwc+XS/auiizMm1JsA4ka+sEsEuau?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB11947.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+LX9Ziu6k8jpTCMsRvdW/1c5xC3UCl21klRNE6LLP7IqeGdUwdH/mQnbuHvn?=
+ =?us-ascii?Q?RIIUOUOgETq0SvYbrsDpncuJ/FKtf1w/+UHYcbtPsvDkCawwgjrfF4/Hfxlw?=
+ =?us-ascii?Q?1TEFL8MfyiKJ+hC5kAp1ocPt7PHdngJU0Nc8QtNNFvZOsxGrXLtw5UGce2TI?=
+ =?us-ascii?Q?suvbbbkwOzRbHatW7GQo9KNd9wmy50kbJ048ymhxlDJAgI9G79HjjRBd8weL?=
+ =?us-ascii?Q?guO+qANNFgXLlUgaWg1w/Qw3WbcAGw60kk0qwuzry6GC5T9CGGPoPYttpBQY?=
+ =?us-ascii?Q?CBCjb1ZqkjRB+z2eQJTzVHTbCGJYDVhf0z0aCYNy5FbunOJncEnLoFtnh/ek?=
+ =?us-ascii?Q?hc+zZiI8wGQwsNl5MELGYSdLkae3cUcRcXSE2r/95Fm0BPTupM7CyqsZa41z?=
+ =?us-ascii?Q?+tEeFfuC8fYFn573Z8Hfo7QLgjqfvwxJXK07T+s62jwotD6mnVXoZ5JCbTRb?=
+ =?us-ascii?Q?bxLxQKIqPxPom72SgnzO83EcKmzxsA0VrVaEmGCm/L4BdfKoK0IudZX8uA4K?=
+ =?us-ascii?Q?0B+omSKOSAizvmNoqI9+r7usqppqjBmUcD4vDEAYBtYCyowAyMmgCiRg4VEO?=
+ =?us-ascii?Q?7p5s+kGn3KHAkpDOzkaAIItkhgTHqIqtBBZcc9h2cuNlNqb/zOW3/duH2CH2?=
+ =?us-ascii?Q?yyGRrYVm//y7b6bjpKA+oLa/HiJUZxQqx4CqW+Sk2hbF0v4CSFG7dg8Vvn1S?=
+ =?us-ascii?Q?5lAKba2CDkP4uNsZ1WVJofq2Eb4CM+hdjCu0SP9jZMMdAm7yR013dmKf2zAP?=
+ =?us-ascii?Q?h/y6pAsV78YtoQz3RG4IPKnh8HxrB1/+GAtMwHmlRRJuZI43gL302dzQzaDR?=
+ =?us-ascii?Q?wzI8dlzHAot741v/RcvXvcPTBEEU/1Y4T6RTq5qPI7wZBnUJmZpEkRP5LwjM?=
+ =?us-ascii?Q?f1LYAN7jWAzmr45G9qD6/0pwjJzI7VQ1fzNFnJZZeITIdyCms9YfI4ulWtM6?=
+ =?us-ascii?Q?YkWgK4pQrV0ubzl3r1qzJhv7bUXpNshmZ0Aor5FyScvVWboMS4D4Qojffouv?=
+ =?us-ascii?Q?+NZAiJa+ATDqSC307ik1YF3+uJt/S5hHYwp0sN2iZBMaqzPO+OlJuSTQtAvU?=
+ =?us-ascii?Q?KleGPiAbvYmjt58vmJDjXt0geA+IzFjIORgKtbHh2SfTcGGqpbACBUbBVyqs?=
+ =?us-ascii?Q?DfivqQgG0dTAl3tzV6oSrXlbb6dJx1GR8j7WwntTobGN5EU2ThjTM7iKJzLw?=
+ =?us-ascii?Q?t1F0eAhNtrmROGpDwM5dYB9OuRo07vWKEhmEWQytH9jCI89Fc5mMU1jsrbfO?=
+ =?us-ascii?Q?f9G3Ig/TtOCf2kTTkqL6pK9Avl/D2LJoYCgukwdwsWj46VDiY/EQksXnT3rI?=
+ =?us-ascii?Q?qWgqIPX+ydRwPD4ekbZ5nyusboXuFuQrTi0pGAvGkAvgzuFLVblgGS1B/toi?=
+ =?us-ascii?Q?Q/GJO3G8zwZP78apxD6w3FTPlR5lBCOC/h/cESL/3WsOuF+fi5W7tjcT/raW?=
+ =?us-ascii?Q?EEgVzmsRAfmaTKKAbWTeimlgltxByCTeUO+oWwmTg7vGRchkp1jEa9FD5a1r?=
+ =?us-ascii?Q?KO9uJKHY4FR9y5m1yvpVljD7d1FL6wlEpxz8QHb7for29AfHbetQ3gLdQ70h?=
+ =?us-ascii?Q?5TsOWILRRnflIh459zGC6Tj1uBGelJY+zxvYThWq/0T2uKpyLTFQawRi8yCa?=
+ =?us-ascii?Q?QBsnC0X0d0CkewnWrfb8n8g=3D?=
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7149df9a-3761-4ac5-03bc-08de331b9209
+X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB11947.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2025 09:57:44.4547
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: DV5z9VjnPN7b+sKJTdTN0KkdMJQMRYegxYB7ogyMz0c//VEUg5XbwE02fslDpifYEESOlFFta5z5tJ/9CjYlGeliMMmcKr5GoSJ92LWHg0+H0gPThoNGCHVeypGD8uw7
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYRPR01MB13325
 
-On 04/12/2025 11:46, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
+Hi Frank,
+Thanks for your patch.
+
+On Wed, Dec 03, 2025 at 03:45:50PM -0500, Frank Li wrote:
+> Switch to use the new .i3c_xfers() callback, which supports all I3C
+> transfer modes (SDR and HDR). Also replace struct i3c_priv_xfer with the
+> new struct i3c_xfer, as i3c_priv_xfer is now an alias of i3c_xfer.
 > 
-> CONFIG_DRM_BRIDGE_CONNECTOR is a bool option that turns on features of
-> the display helpers, which are in a module controlled by the (tristate)
-> CONFIG_DRM_DISPLAY_HELPER. If the display helpers are in a loadable
-> module, a built-in driver trying to use the bridge connectors fails
-> to link:
+> No functional changes.
 > 
-> x86_64-linux-ld: drivers/gpu/drm/imx/ipuv3/parallel-display.o: in function `imx_pd_bind':
-> parallel-display.c:(.text+0xcd): undefined reference to `drm_bridge_connector_init'
-> x86_64-linux-ld: drivers/gpu/drm/imx/ipuv3/imx-ldb.o: in function `imx_ldb_bind':
-> imx-ldb.c:(.text+0x224): undefined reference to `drm_bridge_connector_init'
-> 
-> Select the DRM_BRIDGE_CONNECTOR symbol as well, to ensure it's built-in
-> if anything needs it.
-> 
-> Fixes: f94b9707a1c9 ("drm/imx: parallel-display: switch to imx_legacy_bridge / drm_bridge_connector")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->   drivers/gpu/drm/imx/ipuv3/Kconfig | 2 ++
->   1 file changed, 2 insertions(+)
+>  drivers/i3c/master/adi-i3c-master.c    | 8 ++++----
+>  drivers/i3c/master/dw-i3c-master.c     | 8 ++++----
+>  drivers/i3c/master/i3c-master-cdns.c   | 8 ++++----
+>  drivers/i3c/master/mipi-i3c-hci/core.c | 8 ++++----
+>  drivers/i3c/master/renesas-i3c.c       | 6 +++---
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Tested-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
 
--- 
-With best wishes
-Dmitry
+
+Kind Regards,
+Tommaso
+
+>  5 files changed, 19 insertions(+), 19 deletions(-)
+> 
+> diff --git a/drivers/i3c/master/adi-i3c-master.c b/drivers/i3c/master/adi-i3c-master.c
+> index 82ac0b3d057abddc78671ce973db12f528984ea1..00eb80e492afc736046f04fa454be16bb718004a 100644
+> --- a/drivers/i3c/master/adi-i3c-master.c
+> +++ b/drivers/i3c/master/adi-i3c-master.c
+> @@ -365,9 +365,9 @@ static int adi_i3c_master_send_ccc_cmd(struct i3c_master_controller *m,
+>  	return 0;
+>  }
+>  
+> -static int adi_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+> -				     struct i3c_priv_xfer *xfers,
+> -				     int nxfers)
+> +static int adi_i3c_master_i3c_xfers(struct i3c_dev_desc *dev,
+> +				    struct i3c_xfer *xfers,
+> +				    int nxfers, enum i3c_xfer_mode mode)
+>  {
+>  	struct i3c_master_controller *m = i3c_dev_get_master(dev);
+>  	struct adi_i3c_master *master = to_adi_i3c_master(m);
+> @@ -919,7 +919,7 @@ static const struct i3c_master_controller_ops adi_i3c_master_ops = {
+>  	.do_daa = adi_i3c_master_do_daa,
+>  	.supports_ccc_cmd = adi_i3c_master_supports_ccc_cmd,
+>  	.send_ccc_cmd = adi_i3c_master_send_ccc_cmd,
+> -	.priv_xfers = adi_i3c_master_priv_xfers,
+> +	.i3c_xfers = adi_i3c_master_i3c_xfers,
+>  	.i2c_xfers = adi_i3c_master_i2c_xfers,
+>  	.request_ibi = adi_i3c_master_request_ibi,
+>  	.enable_ibi = adi_i3c_master_enable_ibi,
+> diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
+> index 276592a8222e7b098a2323e0f3f587e77fc789bd..889e2ed5bc830310c5555eeeab08674d0c579a0e 100644
+> --- a/drivers/i3c/master/dw-i3c-master.c
+> +++ b/drivers/i3c/master/dw-i3c-master.c
+> @@ -902,9 +902,9 @@ static int dw_i3c_master_daa(struct i3c_master_controller *m)
+>  	return ret;
+>  }
+>  
+> -static int dw_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+> -				    struct i3c_priv_xfer *i3c_xfers,
+> -				    int i3c_nxfers)
+> +static int dw_i3c_master_i3c_xfers(struct i3c_dev_desc *dev,
+> +				   struct i3c_xfer *i3c_xfers,
+> +				   int i3c_nxfers, enum i3c_xfer_mode mode)
+>  {
+>  	struct dw_i3c_i2c_dev_data *data = i3c_dev_get_master_data(dev);
+>  	struct i3c_master_controller *m = i3c_dev_get_master(dev);
+> @@ -1498,7 +1498,7 @@ static const struct i3c_master_controller_ops dw_mipi_i3c_ops = {
+>  	.do_daa = dw_i3c_master_daa,
+>  	.supports_ccc_cmd = dw_i3c_master_supports_ccc_cmd,
+>  	.send_ccc_cmd = dw_i3c_master_send_ccc_cmd,
+> -	.priv_xfers = dw_i3c_master_priv_xfers,
+> +	.i3c_xfers = dw_i3c_master_i3c_xfers,
+>  	.attach_i2c_dev = dw_i3c_master_attach_i2c_dev,
+>  	.detach_i2c_dev = dw_i3c_master_detach_i2c_dev,
+>  	.i2c_xfers = dw_i3c_master_i2c_xfers,
+> diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
+> index 97b151564d3d31092975cec14958a17ddcd91d13..8eb76b8ca2b00a46a65f3a6dc7416d8af7ca288d 100644
+> --- a/drivers/i3c/master/i3c-master-cdns.c
+> +++ b/drivers/i3c/master/i3c-master-cdns.c
+> @@ -720,9 +720,9 @@ static int cdns_i3c_master_send_ccc_cmd(struct i3c_master_controller *m,
+>  	return ret;
+>  }
+>  
+> -static int cdns_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+> -				      struct i3c_priv_xfer *xfers,
+> -				      int nxfers)
+> +static int cdns_i3c_master_i3c_xfers(struct i3c_dev_desc *dev,
+> +				     struct i3c_xfer *xfers,
+> +				     int nxfers, enum i3c_xfer_mode mode)
+>  {
+>  	struct i3c_master_controller *m = i3c_dev_get_master(dev);
+>  	struct cdns_i3c_master *master = to_cdns_i3c_master(m);
+> @@ -1519,7 +1519,7 @@ static const struct i3c_master_controller_ops cdns_i3c_master_ops = {
+>  	.detach_i2c_dev = cdns_i3c_master_detach_i2c_dev,
+>  	.supports_ccc_cmd = cdns_i3c_master_supports_ccc_cmd,
+>  	.send_ccc_cmd = cdns_i3c_master_send_ccc_cmd,
+> -	.priv_xfers = cdns_i3c_master_priv_xfers,
+> +	.i3c_xfers = cdns_i3c_master_i3c_xfers,
+>  	.i2c_xfers = cdns_i3c_master_i2c_xfers,
+>  	.enable_ibi = cdns_i3c_master_enable_ibi,
+>  	.disable_ibi = cdns_i3c_master_disable_ibi,
+> diff --git a/drivers/i3c/master/mipi-i3c-hci/core.c b/drivers/i3c/master/mipi-i3c-hci/core.c
+> index 47e42cb4dbe71edc5a022f4cb0fdf33a281eb4a7..607d77ab0e54691705845c33a79939820a83c9f0 100644
+> --- a/drivers/i3c/master/mipi-i3c-hci/core.c
+> +++ b/drivers/i3c/master/mipi-i3c-hci/core.c
+> @@ -266,9 +266,9 @@ static int i3c_hci_daa(struct i3c_master_controller *m)
+>  	return hci->cmd->perform_daa(hci);
+>  }
+>  
+> -static int i3c_hci_priv_xfers(struct i3c_dev_desc *dev,
+> -			      struct i3c_priv_xfer *i3c_xfers,
+> -			      int nxfers)
+> +static int i3c_hci_i3c_xfers(struct i3c_dev_desc *dev,
+> +			     struct i3c_xfer *i3c_xfers, int nxfers,
+> +			     enum i3c_xfer_mode mode)
+>  {
+>  	struct i3c_master_controller *m = i3c_dev_get_master(dev);
+>  	struct i3c_hci *hci = to_i3c_hci(m);
+> @@ -515,7 +515,7 @@ static const struct i3c_master_controller_ops i3c_hci_ops = {
+>  	.bus_cleanup		= i3c_hci_bus_cleanup,
+>  	.do_daa			= i3c_hci_daa,
+>  	.send_ccc_cmd		= i3c_hci_send_ccc_cmd,
+> -	.priv_xfers		= i3c_hci_priv_xfers,
+> +	.i3c_xfers		= i3c_hci_i3c_xfers,
+>  	.i2c_xfers		= i3c_hci_i2c_xfers,
+>  	.attach_i3c_dev		= i3c_hci_attach_i3c_dev,
+>  	.reattach_i3c_dev	= i3c_hci_reattach_i3c_dev,
+> diff --git a/drivers/i3c/master/renesas-i3c.c b/drivers/i3c/master/renesas-i3c.c
+> index 275f7b9242886ee77a647149a808e2f184fb0447..426a418f29b61256fbbfc50cf578bf04629ec391 100644
+> --- a/drivers/i3c/master/renesas-i3c.c
+> +++ b/drivers/i3c/master/renesas-i3c.c
+> @@ -794,8 +794,8 @@ static int renesas_i3c_send_ccc_cmd(struct i3c_master_controller *m,
+>  	return ret;
+>  }
+>  
+> -static int renesas_i3c_priv_xfers(struct i3c_dev_desc *dev, struct i3c_priv_xfer *i3c_xfers,
+> -					 int i3c_nxfers)
+> +static int renesas_i3c_i3c_xfers(struct i3c_dev_desc *dev, struct i3c_xfer *i3c_xfers,
+> +				 int i3c_nxfers, enum i3c_xfer_mode mode)
+>  {
+>  	struct i3c_master_controller *m = i3c_dev_get_master(dev);
+>  	struct renesas_i3c *i3c = to_renesas_i3c(m);
+> @@ -1282,7 +1282,7 @@ static const struct i3c_master_controller_ops renesas_i3c_ops = {
+>  	.do_daa = renesas_i3c_daa,
+>  	.supports_ccc_cmd = renesas_i3c_supports_ccc_cmd,
+>  	.send_ccc_cmd = renesas_i3c_send_ccc_cmd,
+> -	.priv_xfers = renesas_i3c_priv_xfers,
+> +	.i3c_xfers = renesas_i3c_i3c_xfers,
+>  	.attach_i2c_dev = renesas_i3c_attach_i2c_dev,
+>  	.detach_i2c_dev = renesas_i3c_detach_i2c_dev,
+>  	.i2c_xfers = renesas_i3c_i2c_xfers,
+> 
+> -- 
+> 2.34.1
+> 
+> 
