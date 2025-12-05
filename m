@@ -1,523 +1,311 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11020085.outbound.protection.outlook.com [52.101.84.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A5F35C18E
-	for <imx@lists.linux.dev>; Fri,  5 Dec 2025 15:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.85
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764948075; cv=fail; b=qnfjy4zGomrLFjLUI+Ii3FHw/BQNcghdwKpaUHGHrquR+PPAAlF04UQExHM+eNRJvKPoy2k3Pg31e6otY/MthA0pLY1o9ZVjJ2aKT5N6bqjN3f9WfgYYrc3G/nHfoD95BhVawu4CV9VPBaVVbOf0jiYQ5GT7gOwvB57cAq0gM10=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764948075; c=relaxed/simple;
-	bh=sNS8n81lha/1Jb1oo+T6O/OsilzWos9ouJ/widCMZes=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kSLnyvf8+22vuzrJTamx+qzFR5BunTEPjgayFWbRvi2xjozYpDFnG9qSHKZYpVYI0hxQZJE3qxZYLt8Ax+xbn6P+6xnPr04AC8bT/VnfQD9JAaoml0DURsWSOA/GmMren+BZqpY+4lk4jCIU3B+Ky3fb48jBw31IQukroXJzxJU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com; spf=pass smtp.mailfrom=gocontroll.com; dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b=WsRG/ZiC; arc=fail smtp.client-ip=52.101.84.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gocontroll.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gocontroll.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507F52FF154
+	for <imx@lists.linux.dev>; Fri,  5 Dec 2025 16:01:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764950484; cv=none; b=unNixkTbvaJ2NrDUXnqjOI47qbhhe/0403ok8Z/J6LgW2k4NxdnFnWIVpZeP6vUyOFWdG8XYJO90Re1Rb/fhnkV7MYmxJwD7R7ftLYqlSwZL0w65g8ukuRUvrDiMhXxqpWDFPDWywoZcjDDPGl8smPV2nqw2njdEHUtrAfe5INo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764950484; c=relaxed/simple;
+	bh=4XxWye8toASO+B8H5GXRlien5eQQXQI9Y8We355sbuo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i8wnf/U34GjC5x14XBfxmHoL+oDP0HRTMOvKoLTF32W1BKx4Dbm3xGburd237KXQNngJvSdXT8o2iCc7sh1w0moIWJ14nbOL61uREGdsf/orhnlOhTMNBuoLOxVL0IhRDxalGtCZNUuH6s4BSVNtuFFRt53iLjG6VwN4k8PrO1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=RbTmYpOm; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gocontrollcom.onmicrosoft.com header.i=@gocontrollcom.onmicrosoft.com header.b="WsRG/ZiC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AeWyeV/qG5hjABfctxtbxmsKhwSLWtx1zUt746FR8FFpKeckYyTqBtbWq9Df/h0mSq1jMxI/WWoDmDc1RbPjd94VjP3YE0PsfXs7rwz++K6Kw/8hxLk/Vn9NulCTJMHRSOIu+5kCbO6TAX9DkS/T8S5QostcYCxVdInjZOHtZImloLmeG5nMsm22yvDVl0Eoani6GaSBShHVWWlmTObfM9yXpMvpwugEwxL7epzGP7n93qweI4RxC7z/LwPNZqf9F73opMGwQ3iC7M7Z1ir1VuWvlcqg2qqCImhjcErHAz2+wfbYpv9oI7gTxMxDuOjBDWetAji1agOOxBpq97yLkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eKmd1cpMnAgue3bjcfieKp4AbSot7Ju6Go9z+y4NcNQ=;
- b=gZVGRdfvwtHTX5nE9rWj22s5iqpsY/V0MWqKGhLky8y2h4sR6+wFsnZHkzZj40eT4dYOj9njCYLf3eB3UDghw8mWzRcDGBLUrJkfIpBFu9CSDG3qHJ+vDTQiub4yFnud7Nhak4BYbpB5JU315pu3reYwqFCNZEqkJU2M9mAxCs0odxN54nyrFBCNjiTn3HJxuHUaQD2rlrgJOTAyQMvg8yYWO/bKfUOljWO4h5Remy00it9ZXNgYHZbyIMv6BK9fTeEmnTBJ6BZ4eU0ZWjgSIE5WL7//WxNf8isGQDgG1gtAva95ItOMU3IPV5YLQ2Wru9GJgzomC2emPzNBDLcghA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=gocontroll.com; dmarc=pass action=none
- header.from=gocontroll.com; dkim=pass header.d=gocontroll.com; arc=none
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="RbTmYpOm"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-bd1b0e2c1eeso1825900a12.0
+        for <imx@lists.linux.dev>; Fri, 05 Dec 2025 08:01:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gocontrollcom.onmicrosoft.com; s=selector1-gocontrollcom-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eKmd1cpMnAgue3bjcfieKp4AbSot7Ju6Go9z+y4NcNQ=;
- b=WsRG/ZiCvyoKf/TJ3LJYbI42MNqMZR8ha/eHptawawAUqPPW24NKunRLUTIpeTLboZ70yarMtm2YHFXRiPyW/+kc8GLsolOKNY6GW0hxXis+ECFX93BWD/6pj1TMBRP9gScHoF/eRCCH1bXfMpLKmE6HCdPck4870ZvzCRhCiFhVRWDcOsrnFLmTjy0OUaM6GJE+6Z2sF6lsr3KmZcK+gDK66TBmRKUCMwOIoa/Z9+Fc9Jh28cYqE/gxI4G0IQ3V59fESfWkVaBEuO0ikoDqId2VgUkcay/TQ+F/0iJhWGHLDkBwhwDqpS5I+XjMguEt8Jz4TbUVz6X6VjUkd3hSfA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=gocontroll.com;
-Received: from AMBPR04MB11741.eurprd04.prod.outlook.com (2603:10a6:20b:6f3::7)
- by PAWPR04MB11572.eurprd04.prod.outlook.com (2603:10a6:102:50d::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.11; Fri, 5 Dec
- 2025 15:21:00 +0000
-Received: from AMBPR04MB11741.eurprd04.prod.outlook.com
- ([fe80::c39b:dab3:ae88:c5ba]) by AMBPR04MB11741.eurprd04.prod.outlook.com
- ([fe80::c39b:dab3:ae88:c5ba%4]) with mapi id 15.20.9388.011; Fri, 5 Dec 2025
- 15:21:00 +0000
-Message-ID: <8a9a59b8-d5c0-46b3-8f86-a4cd910b7af3@gocontroll.com>
-Date: Fri, 5 Dec 2025 16:20:55 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/4] backlight: add max25014atg backlight
-To: Daniel Thompson <daniel@riscstar.com>
-Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
- Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, dri-devel@lists.freedesktop.org,
- linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-References: <20251201-max25014-v6-0-88e3ac8112ff@gocontroll.com>
- <20251201-max25014-v6-2-88e3ac8112ff@gocontroll.com>
- <aTG0EK_zuSB-U_bb@aspen.lan>
-Content-Language: en-US
-From: Maud Spierings <maudspierings@gocontroll.com>
-In-Reply-To: <aTG0EK_zuSB-U_bb@aspen.lan>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS4P192CA0022.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:5e1::20) To AMBPR04MB11741.eurprd04.prod.outlook.com
- (2603:10a6:20b:6f3::7)
+        d=amarulasolutions.com; s=google; t=1764950473; x=1765555273; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Tgje/FKGHOer+WR0M2amreKncUyyR6LHWn375qM+dFo=;
+        b=RbTmYpOmhDEWj/pLlqQKMrnYoy12ApL4frq58snAzqmE2tcOfkZxMuV0VULGQP0vxX
+         5C6fBaNUmZiOBos71lTYzED57M76t11w+SlkOzEdUkcMmF23bGbUjhZdNJ17peQ2dUMM
+         Bju9f3nw5IacxWiqResp04O5wQXDN1jc63GMQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1764950473; x=1765555273;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Tgje/FKGHOer+WR0M2amreKncUyyR6LHWn375qM+dFo=;
+        b=qkqyVHepsoYDlFzCJLXkH0n6xMvNcOkRGJNtVOdXdjRSMa+DC6e0aVKxxSmvE+GQ4a
+         C9iY7nruqSeX49ncxBEgIE9erygLd2rVOLTUl25MhnVuWXANK5VXhCVykm5bTIWjS1+8
+         1jnGQ3TxfDBUX3qr03ORBBIhYfeL5RZVimWwVRnWE+HtfU3WDCm+pNURR2yWydTZAg/Z
+         S1SICbX8Fe0EbghFsSn3uBOy1b8wFiubSfnkbxOsOdZj+1hR+XT60J+atxDySCcUgrbg
+         xaewYh/zpiCYc4nDiXWJ7/b/uiAHOvkGlcKEOmzOL3BqYp80wIakUKhbE56OHOVKsI8p
+         zifA==
+X-Forwarded-Encrypted: i=1; AJvYcCX0/Qnt2ARvUht+Kp2AJeveLDPTusyqupAV805668vWMUJ82tqOJYGeuQR0+RGo0R4yOvI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwGnsTuXHdA/Rt/mcTHi837Hx3/UaHSR3yhks8KQb/Gk7y3Gyfl
+	GQiSGTAv18n7/Gmsrl9EpcTF/cRiDIFvC6CDRKWh7F0XwBXaxa9RKhxanRH5ID2RnD5e/KC9sMR
+	BGeBuqmyMrmK9oLbE2U+L3m6mRIM7qiERS2BeiKhRtQ==
+X-Gm-Gg: ASbGncvbcPF+a50KadXVVSKE9vJemAGEnhW3zEKo7HK3vnMb0dKWKO4P78UI5ooADk8
+	EatPc3f7JLy18myE428N2N8e0J/ejrkUhuCdgEShJga8/nVqn5mVMlXxTUx2fqMgr9bj8+w9eiJ
+	lMQMqvyxwwaQZl17i5YG8Zf1svJJY4eqE7e98q0RFWNPMGykIR4bsHTxKJi5KbO//Hgvg1PP5DY
+	M8R9iPhfxGB0z4stdg9StCaV5Iu3PZp4kI96sh2YRdYqoiIeXFVUJ8cXQ8Mt4KB7RmpBUaJW2yC
+	SKQkIhlpaYVYYz5LsBpxMvy6mfuYumlf/5UzBUtadkg9/4NKWXAMuNsuFQUj
+X-Google-Smtp-Source: AGHT+IExz1KoKGgYwQs4j4Ce+j475SP/DNvJugi2JZxLEG/IxoTYS9P7YVxBh/zTuCGTgCoexanBeVOopKrdm8p5WZY=
+X-Received: by 2002:a05:693c:2402:b0:2a4:4ec9:89aa with SMTP id
+ 5a478bee46e88-2ab92ee5b29mr6566093eec.28.1764950473000; Fri, 05 Dec 2025
+ 08:01:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMBPR04MB11741:EE_|PAWPR04MB11572:EE_
-X-MS-Office365-Filtering-Correlation-Id: 54dd9a15-a0a0-4e63-0532-08de3411e55f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|376014|366016|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RXU5VUZ6SEY2bHZhb2NUcTdSSVRzM0J3elMrKzdkSmg5eHRVcU5aLzQxb1Jh?=
- =?utf-8?B?Rmc3VGwrbjdnVm1lSUs1QWJSbG9kbmpRYW1mQ1MxSlVyeW9yVk5WYUJNeVBp?=
- =?utf-8?B?V1VnNkRYYmlDQkFDL0pHdkxaNHEwUDZLZWtodjQrTys1ajBxNVpWcGF2Vkg3?=
- =?utf-8?B?bVZJRFJXS0pvMldLdlJvZHRVL29oMFRZbTd2aFpDcmRPdXBnZ2Z6dm9waVR4?=
- =?utf-8?B?L2dZRXRDcW9PcmJjd3V0c1FXVDhRNlIzUjU5S0VTS1FaMU9YbEN6MEtwa1lD?=
- =?utf-8?B?Lzl4N3AzL3JoSFdOS2h1U3BUeGdOem5oTEtnaGJqSkExS2ZtTUZ0SjZnVE85?=
- =?utf-8?B?MHBXRFE5ZzVPeTg1aWRpcGp6eDlOTEFRb3VnVWs3eHNUK1RsN0dGMXV6OWtQ?=
- =?utf-8?B?Y3o0MWZvYm9hdFBjeW9GTHVYNlIxQzJEQ0ZydFNBVGsvUTd1RVdsWUI4dzhz?=
- =?utf-8?B?L1dMWXhtdy9XeWFxdkdRYUNDUTlubzJKaFhlSUFZbWd0SUNIMVV3RkpTK1BF?=
- =?utf-8?B?M0xRa1dwbVdZSDM2bnFsKzUrRzNJYVM1YTdpZkRQT1BUMzNramRFWlpZbFpW?=
- =?utf-8?B?NVl5NzhFUnlKOHB0QjBNa0dzMWxTa0t0V1l5MFpiclhPR0Yxb1dXWWJsRzQw?=
- =?utf-8?B?SElpeU50VlVTbm56NDFNVzJBQ1QrMm5rVTB5OUFSUUVVRy9BOFZvME1LY0pn?=
- =?utf-8?B?VkxuTjcyejVPTHR1YzAwNFA3bFJVa3E2cFV6WjJTR3haQmhjYmNJbWdaWHpZ?=
- =?utf-8?B?RkQyblY4Qzg0dDV3emNqVGJxb0xZZmU1aDJBS2hYeU9CSmlLWm0zNGgyYm1K?=
- =?utf-8?B?TTRGSnJrb2oxSm5rN0hwUXhyTndkM3duMFpDTE9Iemxhb2tGRjhMSCsxVVpP?=
- =?utf-8?B?clZDRFhZVUtwSXp3VXd3bnVNSWRhT25UNiszYnB4MWI3OFRwSHNPVGo5eU5y?=
- =?utf-8?B?azdRZWdISzU5ZGdKQ0pXYi9wYWs0S3RFVUh6ZGhJck1UVVlXZDdDenN5bDlh?=
- =?utf-8?B?ZzNzL21OUHpUSThyeFVmOXFyTEtOLzQwMEg0Z3R6TndickRVdHJQVzA0STJ4?=
- =?utf-8?B?Z0xkbUt6eEFReTk0bEVkbnNJb0wzSGViTnRSZWtEOWkxbUFGMGRER3pYS2tn?=
- =?utf-8?B?VGdqNzB3NlR1bC96M1pQbzUxc3paWWtCM1lpN3ZORGRTSGNCK3JRajgyWVFr?=
- =?utf-8?B?TkEvQTdVZTFrVTVlSWVvUk5OQkV3ZWpQY3VEbnNndEw5OUNJVnNGbXFaRDhH?=
- =?utf-8?B?VHZ0MVlmcmRqUUdhUDN5ZFJLMFpoM1lKOFVHRDZ1Kzc5RFJSb250S2lUM0RH?=
- =?utf-8?B?cjdYZWRvRS9mbGFGSWQ0UXhCc3dyenhkVThRS0k3MnRUMHJ0anRqL3drdmQ5?=
- =?utf-8?B?TURWT0dUQU5vVUNvZHYwZk42Z0dqL1NQalpqeG9Cd2p3MytEWnpmUytZeFY2?=
- =?utf-8?B?ZlcvWVo5QlhoWjE4MVA4NUdDTUtub2U4NSt3YjNmdk5TTUkzSlA5NlhvcjRZ?=
- =?utf-8?B?ejI4c3RMTUl3U1o1K25FZ21mck4xV0hVTTJsRHIxNXRtczdiNWxUaGxaa3JD?=
- =?utf-8?B?dnNFWnhLa2Erd0QyWklXQS85KzBmVlNnVjNPdGJTTWpiL29tVTZwaEFuOU9Y?=
- =?utf-8?B?ckZBVjJNZzI4amRJc2JLMFBkYWhWTFhHWTVGeUhObnFwRitMVjFzdzV0UjRZ?=
- =?utf-8?B?eHZwWFJ6ZDJFM1V2cXRjbStrMnloWDRDUkFiTUVDVGxsOE40UUt4TWVDeVVU?=
- =?utf-8?B?TUZQMjNGUE5lelRKUU1vSmxEcnI2TTVab0lSY2FmdnFTZGRDczllTUMweVZ1?=
- =?utf-8?B?amZUWmNFVjFvWk8reFhvYW8yMTBUSitBM2ovMjdKQzlFM3I0M1NuenVTTG1D?=
- =?utf-8?B?QW5DL0ZyYVJ5Y3A1M0JLVUViV3JMVys4aGxwaEhGNnd5MzhRV0RKQXVnckhN?=
- =?utf-8?Q?SKU/aobMYG9w0ptIw2agiu3yafSpiDrf?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AMBPR04MB11741.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(366016)(7416014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?U3FRQlk2b0Q1YzFXMSsrbkszaHJNU0NmazlRMUtHbmRpYWlRYVpOVmdwR0hU?=
- =?utf-8?B?QVVGN29rWlEzeGsrRVlKVGV3Zzg0SkVSdHhJcmM4VXowT0c1cThlQk94OHpm?=
- =?utf-8?B?UHZqTS91RFcxVGQyZzZqTk4yNU0zTVZxcDdmVVJLMXBJK2pQVi9ldlRNcTVY?=
- =?utf-8?B?d0tmS2R6bVcxcnhFRk1sL0FkQSsrOWJaRVZic2htMlBqeXlOUmp4VkNZOUZ4?=
- =?utf-8?B?ak05SGtmdHhZK0duOE5PYVVUcWtkVU54bVFkbExoenhNZFBQWEVpUVZyQkho?=
- =?utf-8?B?T3RCYk93b2ZOemptejRZUStPZzdtUyttMlRCbWlYYWRFZ3RORE5hcFphaWcw?=
- =?utf-8?B?enloR2JnMmhYd21PYVN5NHF6b1hqc05lYkhHSlZNbHhZR1pWaVhBdmk1czJ5?=
- =?utf-8?B?cVBWa1dmdUY0TWpRNGdKQkNpT1M1aExrTjg5ZUFZQ2hHRUpoa2hsTEtTeitR?=
- =?utf-8?B?UDFWVDZwUlNhbU1UQUhnQ0htc0VWWTNzTEo5c3lIa3hsRm1KS3pHSnJ6cjg0?=
- =?utf-8?B?ZUVQckphTU9abko1V1M0aCtNTTNjeFlXc0IxRTE4WWx1TWx3TGkyb2VsSG5E?=
- =?utf-8?B?RjgxUkZQVUF3V1NHZzUyak56YmEvR2UyNzhSUndVZlFXYUdBQldwQjBIVUwy?=
- =?utf-8?B?OEdKays2dG9CckMxL3hsVlUwbVNRSlFkS29PVjVXY2ZEQ0MvQzBTSGdpL0Yr?=
- =?utf-8?B?REM4U2llc1NCTk1iNDZjTWNyN2JwS1JNWGQvRXNwYlZRQjlLeFB4TWV0UDVK?=
- =?utf-8?B?VW9SMXpqL2Z3cHZLTG9HNE5IZHhHTnNyenBsQ3hDeGdpVkcyaGVTVjJWVUlj?=
- =?utf-8?B?YXNRRitqWlF2ZWNOUStvSXcyVEJtNHBXNUlTcmNyRVhmVmF5L1NEWDNWYURt?=
- =?utf-8?B?QWhscVJLYSs0QXhyRmo4Tmw0K25ONlhCM3FsWXFubWxTZWF1UXUvYnJJWFJm?=
- =?utf-8?B?U3c4MmRzaFgrUThkN3lDWEtNb0ZaRjdpcWFrVllLazVyN2lLSU5zSGw3R3J4?=
- =?utf-8?B?Sy84YnI4V2IrUDgzUjhQemlDakFPYldhTGZzblBpYlp0Vlk3V1Y3b09Qb3lz?=
- =?utf-8?B?UVZqM3REVzFreVMxNS9pOU5HbWltYWNyLzZkMTlmbjc2ZzVYenovWVEyY2M5?=
- =?utf-8?B?RG5OQkNaN2F4TjZRZjlDRG50b0hCb21PODhvRk9US3haQkpGQTRvL0ZrNlZI?=
- =?utf-8?B?SGwrak5BREtGZmVEd2VxU1N3bUJwcGRDdzF6Sm9ZaWo4UHk2VFRYTkk3SzNN?=
- =?utf-8?B?d0R0WStJbTU0SmVsYlVGemwvWm0rUFE2bno5cklmeTVXUWRQLzFpbksvMGlJ?=
- =?utf-8?B?VER0RXczenZJMkRzbGhlcWpDbVl5Ny9EMkdBMFdYckN3UjdhU3Y4cVg2Mk8x?=
- =?utf-8?B?ek1RTk9RZTEwclVtS3dYZWxRUzNUTVF5OXNGbS81TUNHVHRVbXVTOVljeE0y?=
- =?utf-8?B?V2R1V2JSMFZLSk54VmhZb3ZzcG81b3NRR0hEV3dNM29aOEFGd1VScmZSUHVZ?=
- =?utf-8?B?NHRrcnU5K1I3bEV6YWlWenZMWnZLeWZkT0s1cUppT3dneGZYYUZhK1FpWW9Y?=
- =?utf-8?B?RlJEaEtVTFNHTGJJWEJVcHg2cERyZ0xhWlU4a2sweXVOYTBvK0kxb2tTKzZj?=
- =?utf-8?B?SU5pSjRKeFdmaFpMVmZWRzF1QnRQNHNlVDBvOFI4YmpOSmJiMUdLcUNiY3FK?=
- =?utf-8?B?QTlmNWNFWjYzM0RyNVJGd0pRTytqRXFnT2dtRVBDUGEyZFRrYnhNRjFYbkdw?=
- =?utf-8?B?MnJXWlovWUJEMjNFS2l0djBPVlhXV2pOTXJFT25VV3FjYzBQUTd6bGdXdHpo?=
- =?utf-8?B?b0YwUWEyWVJTeHRxUG4vUDFzenpaZEJVQXh3N1doQzViYk1WK3VjOEg2Y28w?=
- =?utf-8?B?OU15Qk1KalloSVRvMzZLMy9ueGpPczdoSDRmbXlqOFdDVi9CeGliZFNIVnlp?=
- =?utf-8?B?ZjN0UmNGVmdkdE1VZjJDM1Fhc2o1cFNqTFNSbEZFOGE4WDBHaDJGNUxFY3Fr?=
- =?utf-8?B?WmU1Z1pkbWJVczErZG9USldtMlQreWhwK25GS0JmUytGMzhUWHRmYzdIcHY2?=
- =?utf-8?B?anIrUDNYUDI0M2x0aXFOWkt6VUVvVWY1WTRQdnJwTjYzS0J3ZE5TVzByOHlr?=
- =?utf-8?B?MFlGZEZESkxFVGF4WUZ5NXg5aitKSXhkdlZLZGM2UVBJUXh0NW5UVjBhTDhY?=
- =?utf-8?B?b3R3dCtaS1VURnZZdEdjZ0N3cTMzZlJCNEk5TjBRQ3NENUlSMk83MDc0NDF6?=
- =?utf-8?B?bURsNEo1b2lQTnduTzdhODdYamNBPT0=?=
-X-OriginatorOrg: gocontroll.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54dd9a15-a0a0-4e63-0532-08de3411e55f
-X-MS-Exchange-CrossTenant-AuthSource: AMBPR04MB11741.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2025 15:21:00.1298
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4c8512ff-bac0-4d26-919a-ee6a4cecfc9d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WDyBov8CLTpSRnLQ2TOYpranuSsB91tWbbiW0pehR63UNsVoYumzpeatfdf3GF4cf9wztpfIdfHR2oRakLcqrPaaLLuZ5RxC4kKOv7YFz2o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB11572
+References: <20251202084524.208045-1-xu.yang_2@nxp.com> <CAOf5uwkVJihpjseiZhpdE4A6GpCA+jEunSBoQMFbTs1j_M2WFQ@mail.gmail.com>
+ <DB9SPRMB00226E19F9426865663A83A28CA6A@DB9SPRMB0022.eurprd04.prod.outlook.com>
+In-Reply-To: <DB9SPRMB00226E19F9426865663A83A28CA6A@DB9SPRMB0022.eurprd04.prod.outlook.com>
+From: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
+Date: Fri, 5 Dec 2025 17:01:01 +0100
+X-Gm-Features: AQt7F2rOS26RzjQG8b11cdCu8vbmfuuh-M-s8Q0LgfrPsAN-Pdn1IuPCcoVy2jk
+Message-ID: <CAOf5uwkf77vA=R21tDHSqFU_ZFd_HB4mW8r-neLF_9pXqw-mNw@mail.gmail.com>
+Subject: Re: [EXT] Re: [PATCH] usb: typec: tcpm: make kthread worker freezable
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: "badhri@google.com" <badhri@google.com>, 
+	"heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>, 
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "linux@roeck-us.net" <linux@roeck-us.net>, 
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Jun Li <jun.li@nxp.com>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for the review.
+Hi
 
-On 12/4/25 17:17, Daniel Thompson wrote:
-> On Mon, Dec 01, 2025 at 12:53:21PM +0100, Maud Spierings via B4 Relay wrote:
->> From: Maud Spierings <maudspierings@gocontroll.com>
->>
->> The Maxim MAX25014 is a 4-channel automotive grade backlight driver IC
->> with integrated boost controller.
->>
->> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
-> 
->> <snip>
-> 
->> +static int max25014_check_errors(struct max25014 *maxim)
->> +{
->> +	uint32_t val;
->> +	uint8_t i;
->> +	int ret;
->> +
->> +	ret = regmap_read(maxim->regmap, MAX25014_OPEN, &val);
->> +	if (ret)
->> +		return ret;
->> +	if (val) {
->> +		dev_err(&maxim->client->dev, "Open led strings detected on:\n");
->> +		for (i = 0; i < 4; i++) {
->> +			if (val & 1 << i)
->> +				dev_err(&maxim->client->dev, "string %d\n", i + 1);
->> +		}
->> +		return -EIO;
->> +	}
->> +
->> +	ret = regmap_read(maxim->regmap, MAX25014_SHORT_GND, &val);
->> +	if (ret)
->> +		return ret;
->> +	if (val) {
->> +		dev_err(&maxim->client->dev, "Short to ground detected on:\n");
->> +		for (i = 0; i < 4; i++) {
->> +			if (val & 1 << i)
->> +				dev_err(&maxim->client->dev, "string %d\n", i + 1);
->> +		}
->> +		return -EIO;
->> +	}
->> +
->> +	ret = regmap_read(maxim->regmap, MAX25014_SHORT_GND, &val);
-> 
-> Shouldn't this be MAX25014_SHORT_LED?
+On Thu, Dec 4, 2025 at 12:21=E2=80=AFPM Xu Yang <xu.yang_2@nxp.com> wrote:
+>
+>
+> > Hi
+> >
+> > On Tue, Dec 2, 2025 at 9:44=E2=80=AFAM Xu Yang <xu.yang_2@nxp.com> wrot=
+e:
+> > >
+> > > It's observed that tcpm kthread worker may execute some works at the
+> > > very end of system suspend or the very beginning of system resume sta=
+ge.
+> >
+> > Please clarify if this works is needed to be completed before the syste=
+m suspend/resume
+>
+> In this issue, the work is sending a single source capabilities message. =
+According to Type-C PD
+> Spec, the source port will send source capabilities message every 150ms f=
+or at least 50 times
+> until it received a GoodCRC message.  In my opinion, if the worker starts=
+ the work, it needs to
+> be completed as soon as possible. I suppose it should be completed before=
+ system suspend if
+> it gets scheduled before system suspend.
 
-yep you are absolutely right
+Yes but what you are doing here is to make the thread freezable during
+suspend so it freezes before
+suspend and it means that the fault you get before can not happen
+anymore because the thread is stopped
+and can not access to driver and driver will be suspended later. Now
+this question is if the thread
+should finish its current job and go idle in the state machine before
+allowing the machine to suspend or not.
 
-> 
->> +	if (ret)
->> +		return ret;
->> +	if (val) {
->> +		dev_err(&maxim->client->dev, "Shorted led detected on:\n");
->> +		for (i = 0; i < 4; i++) {
->> +			if (val & 1 << i)
->> +				dev_err(&maxim->client->dev, "string %d\n", i + 1);
->> +		}
->> +		return -EIO;
->> +	}
->> +
->> +	ret = regmap_read(maxim->regmap, MAX25014_DIAG, &val);
->> +	if (ret)
->> +		return ret;
->> +	/*
->> +	 * The HW_RST bit always starts at 1 after power up.
->> +	 * It is reset on first read, does not indicate an error.
->> +	 */
->> +	if (val && val != MAX25014_DIAG_HW_RST) {
->> +		if (val & MAX25014_DIAG_OT)
->> +			dev_err(&maxim->client->dev,
->> +				"Overtemperature shutdown\n");
->> +		if (val & MAX25014_DIAG_OTW)
->> +			dev_err(&maxim->client->dev,
->> +				 "Chip is getting too hot (>125C)\n");
->> +		if (val & MAX25014_DIAG_BSTOV)
->> +			dev_err(&maxim->client->dev,
->> +				"Boost converter overvoltage\n");
->> +		if (val & MAX25014_DIAG_BSTUV)
->> +			dev_err(&maxim->client->dev,
->> +				"Boost converter undervoltage\n");
->> +		if (val & MAX25014_DIAG_IREFOOR)
->> +			dev_err(&maxim->client->dev, "IREF out of range\n");
->> +		return -EIO;
->> +	}
->> +	return 0;
->> +}
->> +
->> +/*
->> + * 1. disable unused strings
->> + * 2. set dim mode
->> + * 3. set setting register
->> + * 4. enable the backlight
->> + */
->> +static int max25014_configure(struct max25014 *maxim, int initial_state)
->> +{
->> +	uint32_t val;
->> +	int ret;
->> +
->> +	/*
->> +	 * Strings can only be disabled when MAX25014_ISET_ENA == 0, check if
->> +	 * it needs to be changed at all to prevent the backlight flashing when
->> +	 * it is configured correctly by the bootloader
->> +	 */
-> 
-> Attach the comment to the if statement rather than the read.
+>
+> >
+> > > The kthread work itself won't bring any issues, but if it access some
+> > > HW resource during this period, the system may hung there because alm=
+ost
+> > > all of the resources are inaccessible at this point.
+> > >
+> > > Take below kernel dump as example, if the source port hasn't finished
+> > > sending Source Capabilities message when system enters into suspend, =
+it
+> > > will continue do the thing as long as it gets scheduled. However, the=
+ i2c
+> > > resource is inaccessible before system resume. Then the system is hun=
+g.
+> > >
+> > > Fix it by making kthread worker freezable.
+> > >
+> > > $ echo mem > /sys/power/state
+> > > [   37.605215] PM: suspend entry (deep)
+> > > [   37.616067] Filesystems sync: 0.007 seconds
+> > > [   37.633106] Freezing user space processes
+> > > [   37.639444] Freezing user space processes completed (elapsed 0.001=
+ seconds)
+> > > [   37.646496] OOM killer disabled.
+> > > [   37.649745] Freezing remaining freezable tasks
+> > > [   37.655695] Freezing remaining freezable tasks completed (elapsed =
+0.001 seconds)
+> > > [   37.689794] fec 5b040000.ethernet eth0: Link is Down
+> > > [   37.713391] PM: suspend devices took 0.052 seconds
+> > > [   37.741175] Disabling non-boot CPUs ...
+> > > [   37.747120] psci: CPU5 killed (polled 0 ms)
+> > > [   37.754129] psci: CPU4 killed (polled 0 ms)
+> > > [   37.762217] psci: CPU3 killed (polled 0 ms)
+> > > [   37.770037] psci: CPU2 killed (polled 0 ms)
+> > > [   37.776936] psci: CPU1 killed (polled 4 ms)
+> > > [   37.782481] Enabling non-boot CPUs ...
+> > > [   37.787991] Detected VIPT I-cache on CPU1
+> > > [   37.788043] GICv3: CPU1: found redistributor 1 region 0:0x00000000=
+51b20000
+> > > [   37.788093] CPU1: Booted secondary processor 0x0000000001 [0x410fd=
+034]
+> > > [   37.789587] CPU1 is up
+> > > [   37.810632] Detected VIPT I-cache on CPU2
+> > > [   37.810661] GICv3: CPU2: found redistributor 2 region 0:0x00000000=
+51b40000
+> > > [   37.810689] CPU2: Booted secondary processor 0x0000000002 [0x410fd=
+034]
+> > > [   37.811714] CPU2 is up
+> > > [   37.833013] Detected VIPT I-cache on CPU3
+> > > [   37.833042] GICv3: CPU3: found redistributor 3 region 0:0x00000000=
+51b60000
+> > > [   37.833071] CPU3: Booted secondary processor 0x0000000003 [0x410fd=
+034]
+> > > [   37.834201] CPU3 is up
+> > > [   37.856437] Detected PIPT I-cache on CPU4
+> > > [   37.856469] GICv3: CPU4: found redistributor 100 region 0:0x000000=
+0051b80000
+> > > [   37.856501] CPU4: Booted secondary processor 0x0000000100 [0x410fd=
+082]
+> > > [   37.857651] CPU4 is up
+> > > [   37.872890] SError Interrupt on CPU2, code 0x00000000bf000002 -- S=
+Error
+> > > [   37.872902] CPU: 2 UID: 0 PID: 147 Comm: 2-0051 Tainted: G   M    =
+            6.18.0-rc7-06207-gee9dedcfd432-dirty #396 PREEMPT
+> > > [   37.872912] Tainted: [M]=3DMACHINE_CHECK
+> > > [   37.872915] Hardware name: Freescale i.MX8QM MEK (DT)
+> > > [   37.872919] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS =
+BTYPE=3D--)
+> > > [   37.872926] pc : lpi2c_imx_xfer_common+0x150/0xff0
+> > > [   37.872942] lr : lpi2c_imx_xfer_common+0x54/0xff0
+> > > [   37.872949] sp : ffff80008358b960
+> > > [   37.872952] x29: ffff80008358b9e0 x28: 0000000000000001 x27: ffff0=
+00810bcc080
+> > > [   37.872964] x26: 0000000000000000 x25: ffff8000820e9000 x24: 00000=
+00000000000
+> > > [   37.872973] x23: 0000000000000001 x22: ffff8000820e7000 x21: 00000=
+00000000001
+> > > [   37.872981] x20: ffff80008358bae8 x19: ffff000810b4c010 x18: 00000=
+0000000000a
+> > > [   37.872990] x17: ffff00081ab43f00 x16: 0000000000000002 x15: 00000=
+00000000000
+> > > [   37.872999] x14: 0000000000000001 x13: 00000000ffff0a10 x12: 00000=
+00000000006
+> > > [   37.873008] x11: ffff00081a38db07 x10: 0000000000000000 x9 : 00000=
+00000000004
+> > > [   37.873016] x8 : 0000000022b63cbf x7 : 00000000016e3600 x6 : 00000=
+00000000000
+> > > [   37.873025] x5 : 0000000000000002 x4 : 00000000000186a0 x3 : 00000=
+000000000c0
+> > > [   37.873033] x2 : 0000000000000002 x1 : 0000000000000018 x0 : 00000=
+00000000023
+> > > [   37.873044] Kernel panic - not syncing: Asynchronous SError Interr=
+upt
+> > > [   37.873050] CPU: 2 UID: 0 PID: 147 Comm: 2-0051 Tainted: G   M    =
+            6.18.0-rc7-06207-gee9dedcfd432-dirty #396 PREEMPT
+> > > [   37.873058] Tainted: [M]=3DMACHINE_CHECK
+> > > [   37.873061] Hardware name: Freescale i.MX8QM MEK (DT)
+> > > [   37.873064] Call trace:
+> > > [   37.873068]  show_stack+0x18/0x30 (C)
+> > > [   37.873081]  dump_stack_lvl+0x60/0x80
+> > > [   37.873091]  dump_stack+0x18/0x24
+> > > [   37.873100]  vpanic+0xf8/0x2dc
+> > > [   37.873108]  abort+0x0/0x4
+> > > [   37.873115]  nmi_panic+0x64/0x70
+> > > [   37.873125]  arm64_serror_panic+0x70/0x80
+> > > [   37.873134]  do_serror+0x34/0x74
+> > > [   37.873143]  el1h_64_error_handler+0x38/0x60
+> > > [   37.873156]  el1h_64_error+0x6c/0x70
+> > > [   37.873163]  lpi2c_imx_xfer_common+0x150/0xff0 (P)
+> > > [   37.873172]  lpi2c_imx_xfer+0x14/0x20
+> > > [   37.873179]  __i2c_transfer+0x1b8/0x3c8
+> > > [   37.873190]  i2c_transfer+0x6c/0xf8
+> > > [   37.873199]  i2c_transfer_buffer_flags+0x5c/0xa0
+> > > [   37.873208]  regmap_i2c_write+0x20/0x60
+> > > [   37.873221]  _regmap_raw_write_impl+0x5cc/0x660
+> > > [   37.873230]  _regmap_bus_raw_write+0x60/0x80
+> > > [   37.873238]  _regmap_write+0x58/0xc0
+> > > [   37.873246]  regmap_write+0x48/0x74
+> > > [   37.873254]  tcpci_pd_transmit+0x10c/0x1a8
+> > > [   37.873264]  tcpm_pd_transmit+0x60/0x164
+> > > [   37.873273]  tcpm_pd_send_source_caps+0x12c/0x1c4
+> > > [   37.873280]  tcpm_state_machine_work+0xb10/0x3574
+> > > [   37.873288]  kthread_worker_fn+0xc4/0x178
+> > > [   37.873300]  kthread+0x12c/0x204
+> > > [   37.873310]  ret_from_fork+0x10/0x20
+> > > [   37.873322] SMP: stopping secondary CPUs
+> > > [   37.875528] Kernel Offset: disabled
+> > > [   37.875531] CPU features: 0x080000,04105800,40004001,0400421b
+> > > [   37.875536] Memory Limit: none
+> > > [   38.148805] ---[ end Kernel panic - not syncing: Asynchronous SErr=
+or Interrupt ]---
+> > >
+> > > Fixes: 3ed8e1c2ac99 ("usb: typec: tcpm: Migrate workqueue to RT prior=
+ity for processing events")
+> >
+> > I think that this does not Fix this sha because most probably it moves =
+the failure window,
+>
+> How do you know that? Do you think which commit should this fix?
+>
 
-will do
+According to the commit they move the workqueue to rt priority. So it
+really depends if the problem was
+even present before this commit.
 
-> 
->> +	ret = regmap_read(maxim->regmap, MAX25014_DISABLE, &val);
->> +	if (ret)
->> +		return ret;
->> +
->> +	if (!((val & MAX25014_DISABLE_DIS_MASK) == maxim->strings_mask)) {
->> +		if (initial_state == BACKLIGHT_POWER_ON) {
->> +			ret = regmap_write(maxim->regmap, MAX25014_ISET, 0);
->> +			if (ret)
->> +				return ret;
->> +		}
->> +		ret = regmap_write(maxim->regmap, MAX25014_DISABLE, maxim->strings_mask);
->> +		if (ret)
->> +			return ret;
->> +	}
->> +
->> +	ret = regmap_write(maxim->regmap, MAX25014_IMODE, MAX25014_IMODE_HDIM);
->> +	if (ret)
->> +		return ret;
->> +
->> +	ret = regmap_read(maxim->regmap, MAX25014_SETTING, &val);
->> +	if (ret)
->> +		return ret;
->> +
->> +	ret = regmap_write(maxim->regmap, MAX25014_SETTING,
->> +			   val & ~MAX25014_SETTING_FPWM);
->> +	if (ret)
->> +		return ret;
->> +
->> +	ret = regmap_write(maxim->regmap, MAX25014_ISET,
->> +			   maxim->iset | MAX25014_ISET_ENA |
->> +			   MAX25014_ISET_PSEN);
->> +	return ret;
->> +}
->> +
->> +static int max25014_update_status(struct backlight_device *bl_dev)
->> +{
->> +	struct max25014 *maxim = bl_get_data(bl_dev);
->> +	uint32_t reg;
->> +	int ret;
->> +
->> +	if (backlight_is_blank(maxim->bl))
->> +		bl_dev->props.brightness = 0;
-> 
-> This isn't right. Why would you change the backlight level just because
-> it is currently blanked (and sorry I missed this one last time).
+> >
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > > ---
+> > >  drivers/usb/typec/tcpm/tcpm.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/t=
+cpm.c
+> > > index 4ca2746ce16b..2196de231b9b 100644
+> > > --- a/drivers/usb/typec/tcpm/tcpm.c
+> > > +++ b/drivers/usb/typec/tcpm/tcpm.c
+> > > @@ -7836,7 +7836,7 @@ struct tcpm_port *tcpm_register_port(struct dev=
+ice *dev, struct tcpc_dev *tcpc)
+> > >         mutex_init(&port->lock);
+> > >         mutex_init(&port->swap_lock);
+> > >
+> > > -       port->wq =3D kthread_run_worker(0, dev_name(dev));
+> > > +       port->wq =3D kthread_run_worker(KTW_FREEZABLE, dev_name(dev))=
+;
+> >
+> > This flags as far I can see has no user in all the linux kernel, so thi=
+s let me think that this general
+> > problem is addressed differently by other drivers
+>
+> Yes, I do see no user to user this flag. For this issue, if it's caused b=
+y other drivers it depends on, do you have
+> any better suggestions? Should all dependent drivers be fixed? I suppose =
+tcpm should stop further jobs when
+> the system is going to suspend. :)
+>
 
-so just remove this bit then jeah?
+No right now, I have no idea, but I think that before was not WQ_FREEZABLE
 
->> +
->> +	reg  = TON_STEP * bl_dev->props.brightness;
-> 
-> The correct way to honour blanking is just go call
-> backlight_get_brightness() instead of reading the property directly.
+Michael
 
-will do.
 
-> 
->> +
->> +	/*
->> +	 * 18 bit number lowest, 2 bits in first register,
->> +	 * next lowest 8 in the L register, next 8 in the H register
->> +	 * Seemingly setting the strength of only one string controls all of
->> +	 * them, individual settings don't affect the outcome.
->> +	 */
->> +
->> +	ret = regmap_write(maxim->regmap, MAX25014_TON_1_4_LSB, reg & 0b00000011);
->> +	if (ret != 0)
->> +		return ret;
->> +	ret = regmap_write(maxim->regmap, MAX25014_TON1L, (reg >> 2) & 0b11111111);
->> +	if (ret != 0)
->> +		return ret;
->> +	return regmap_write(maxim->regmap, MAX25014_TON1H, (reg >> 10) & 0b11111111);
->> +}
->> +
->> +static const struct backlight_ops max25014_bl_ops = {
->> +	.options = BL_CORE_SUSPENDRESUME,
->> +	.update_status = max25014_update_status,
->> +};
->> +
->> +static int max25014_parse_dt(struct max25014 *maxim,
->> +			     uint32_t *initial_brightness)
->> +{
->> +	struct device *dev = &maxim->client->dev;
->> +	struct device_node *node = dev->of_node;
->> +	struct fwnode_handle *child;
->> +	uint32_t strings[4];
->> +	int res, i;
->> +
->> +	if (!node)
->> +		return dev_err_probe(dev, -EINVAL, "no platform data\n");
->> +
->> +	child = device_get_next_child_node(dev, NULL);
->> +	if (child) {
->> +		res = fwnode_property_count_u32(child, "led-sources");
->> +		if (res > 0) {
->> +			fwnode_property_read_u32_array(child, "led-sources",
->> +						       strings, res);
->> +
->> +			/* set all strings as disabled, then enable those in led-sources*/
->> +			maxim->strings_mask = 0xf;
->> +			for (i = 0; i < res; i++) {
->> +				if (strings[i] <= 4)
->> +					maxim->strings_mask &= ~BIT(strings[i]);
->> +			}
->> +		}
->> +
->> +		fwnode_property_read_u32(child, "default-brightness",
->> +					 initial_brightness);
->> +
->> +		fwnode_handle_put(child);
->> +	}
->> +
->> +	maxim->iset = MAX25014_ISET_DEFAULT_100;
->> +	of_property_read_u32(node, "maxim,iset", &maxim->iset);
->> +
->> +	if (maxim->iset > 15)
->> +		return dev_err_probe(dev, -EINVAL,
->> +				     "Invalid iset, should be a value from 0-15, entered was %d\n",
->> +				     maxim->iset);
->> +
->> +	if (*initial_brightness > 100)
->> +		return dev_err_probe(dev, -EINVAL,
->> +				     "Invalid initial brightness, should be a value from 0-100, entered was %d\n",
->> +				     *initial_brightness);
->> +
->> +	return 0;
->> +}
->> +
->> +static int max25014_probe(struct i2c_client *cl)
->> +{
->> +	const struct i2c_device_id *id = i2c_client_get_device_id(cl);
->> +	struct backlight_properties props;
->> +	uint32_t initial_brightness = 50;
->> +	struct backlight_device *bl;
->> +	struct max25014 *maxim;
->> +	int ret;
->> +
->> +	maxim = devm_kzalloc(&cl->dev, sizeof(struct max25014), GFP_KERNEL);
->> +	if (!maxim)
->> +		return -ENOMEM;
->> +
->> +	maxim->client = cl;
->> +
->> +	ret = max25014_parse_dt(maxim, &initial_brightness);
->> +	if (ret)
->> +		return ret;
->> +
->> +	maxim->vin = devm_regulator_get(&maxim->client->dev, "power");
->> +	if (IS_ERR(maxim->vin)) {
->> +		return dev_err_probe(&maxim->client->dev, PTR_ERR(maxim->vin),
->> +				     "failed to get power-supply");
->> +	}
->> +
->> +	ret = regulator_enable(maxim->vin);
->> +	if (ret)
->> +		return dev_err_probe(&maxim->client->dev, ret,
->> +			"failed to enable power-supply\n");
-> 
-> Can this use devm_regulator_get_enable()?
 
-Yeah guess I'll just switch to that for now, if ever power management 
-gets implemented it can be figured out if regulator control is desired.
-
-> 
->> +
->> +	maxim->enable = devm_gpiod_get_optional(&maxim->client->dev, "enable",
->> +						GPIOD_OUT_HIGH);
->> +	if (IS_ERR(maxim->enable)) {
->> +		ret = dev_err_probe(&maxim->client->dev, PTR_ERR(maxim->enable),
->> +				    "failed to get enable gpio\n");
->> +		goto disable_vin;
->> +	}
->> +
->> +	/* Datasheet Electrical Characteristics tSTARTUP 2ms */
->> +	fsleep(2000);
->> +
->> +	maxim->regmap = devm_regmap_init_i2c(cl, &max25014_regmap_config);
->> +	if (IS_ERR(maxim->regmap)) {
->> +		ret = dev_err_probe(&maxim->client->dev, PTR_ERR(maxim->regmap),
->> +			"failed to initialize the i2c regmap\n");
->> +		goto disable_full;
->> +	}
->> +
->> +	i2c_set_clientdata(cl, maxim);
->> +
->> +	ret = max25014_check_errors(maxim);
->> +	if (ret) { /* error is already reported in the above function */
->> +		goto disable_full;
->> +	}
->> +
->> +	ret = max25014_initial_power_state(maxim);
->> +	if (ret < 0) {
->> +		dev_err_probe(&maxim->client->dev, ret, "Could not get enabled state\n");
->> +		goto disable_full;
->> +	}
->> +
->> +	memset(&props, 0, sizeof(struct backlight_properties));
->> +	props.type = BACKLIGHT_PLATFORM;
->> +	props.max_brightness = MAX_BRIGHTNESS;
->> +	props.brightness = initial_brightness;
->> +	props.scale = BACKLIGHT_SCALE_LINEAR;
->> +	props.power = ret;
->> +
->> +	ret = max25014_configure(maxim, ret);
->> +	if (ret) {
->> +		dev_err_probe(&maxim->client->dev, ret, "device config error");
->> +		goto disable_full;
->> +	}
->> +
->> +	bl = devm_backlight_device_register(&maxim->client->dev, id->name,
->> +					    &maxim->client->dev, maxim,
->> +					    &max25014_bl_ops, &props);
->> +	if (IS_ERR(bl)) {
->> +		ret = dev_err_probe(&maxim->client->dev, PTR_ERR(bl),
->> +				    "failed to register backlight\n");
->> +		goto disable_full;
->> +	}
->> +
->> +	maxim->bl = bl;
->> +
->> +	backlight_update_status(maxim->bl);
->> +
->> +	return 0;
->> +
->> +disable_full:
->> +	gpiod_set_value_cansleep(maxim->enable, 0);
-> 
-> Why is this needed? It was only ever set by devm_gpiod_get_optional().
-
-oops thats a leftover from before that change, good spot.
-
->> +disable_vin:
->> +	regulator_disable(maxim->vin);
-> 
-> This is also not needed if you use devm_regulator_get_enable().
-
-jeah I'll drop this then too
-
-kind regards,
-Maud
-
+> Thanks,
+> Xu Yang
+>
+> >
+> > Michael
+> >
+> >
+> > >         if (IS_ERR(port->wq))
+> > >                 return ERR_CAST(port->wq);
+> > >         sched_set_fifo(port->wq->task);
+> > > --
+> > > 2.34.1
+> > >
+> > >
