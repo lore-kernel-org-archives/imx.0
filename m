@@ -1,311 +1,194 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11023106.outbound.protection.outlook.com [40.107.159.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507F52FF154
-	for <imx@lists.linux.dev>; Fri,  5 Dec 2025 16:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764950484; cv=none; b=unNixkTbvaJ2NrDUXnqjOI47qbhhe/0403ok8Z/J6LgW2k4NxdnFnWIVpZeP6vUyOFWdG8XYJO90Re1Rb/fhnkV7MYmxJwD7R7ftLYqlSwZL0w65g8ukuRUvrDiMhXxqpWDFPDWywoZcjDDPGl8smPV2nqw2njdEHUtrAfe5INo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764950484; c=relaxed/simple;
-	bh=4XxWye8toASO+B8H5GXRlien5eQQXQI9Y8We355sbuo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i8wnf/U34GjC5x14XBfxmHoL+oDP0HRTMOvKoLTF32W1BKx4Dbm3xGburd237KXQNngJvSdXT8o2iCc7sh1w0moIWJ14nbOL61uREGdsf/orhnlOhTMNBuoLOxVL0IhRDxalGtCZNUuH6s4BSVNtuFFRt53iLjG6VwN4k8PrO1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=RbTmYpOm; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE332494FE
+	for <imx@lists.linux.dev>; Fri,  5 Dec 2025 18:23:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.106
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1764958984; cv=fail; b=VrYh2RF9FSnXXXcbsgND2vlVf0f290EtAlzUGwHioGFZGa76ihS3UFjkY0Wjr9XKaene2s+upjG+rcbjbcmGmfqJ+Zr45V5Yr7z0Qh5gCmCzv8bkDT21Gzrv3baepEjpwE9UCOZdwsyPHA7JCivAU/L2AIXZ/qZuiLdFbpZNkv8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1764958984; c=relaxed/simple;
+	bh=H1tFb+XLyyoC2hV8dyFq8vBzVScE0Qo6s6IX8UKyp8k=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=JDayvNwTMU1jVQXC4e8W51kSU76yiyFHZBHMb7UqD6zKbfItV+rk9n+t4Y6s1QW5ls5/b+lQXnbSDRC9XKvw/YgF8MsNSvw0bklYXoJh/5X1k03F9sYSrUXji9OJare1HROoSAVcfLxOH9gVFPSpvKqJP8g+rl3vvUMoOyQUios=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=variscite.com; spf=pass smtp.mailfrom=variscite.com; dkim=pass (2048-bit key) header.d=variscite.com header.i=@variscite.com header.b=adFGB45A; arc=fail smtp.client-ip=40.107.159.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=variscite.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=variscite.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="RbTmYpOm"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-bd1b0e2c1eeso1825900a12.0
-        for <imx@lists.linux.dev>; Fri, 05 Dec 2025 08:01:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1764950473; x=1765555273; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Tgje/FKGHOer+WR0M2amreKncUyyR6LHWn375qM+dFo=;
-        b=RbTmYpOmhDEWj/pLlqQKMrnYoy12ApL4frq58snAzqmE2tcOfkZxMuV0VULGQP0vxX
-         5C6fBaNUmZiOBos71lTYzED57M76t11w+SlkOzEdUkcMmF23bGbUjhZdNJ17peQ2dUMM
-         Bju9f3nw5IacxWiqResp04O5wQXDN1jc63GMQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764950473; x=1765555273;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Tgje/FKGHOer+WR0M2amreKncUyyR6LHWn375qM+dFo=;
-        b=qkqyVHepsoYDlFzCJLXkH0n6xMvNcOkRGJNtVOdXdjRSMa+DC6e0aVKxxSmvE+GQ4a
-         C9iY7nruqSeX49ncxBEgIE9erygLd2rVOLTUl25MhnVuWXANK5VXhCVykm5bTIWjS1+8
-         1jnGQ3TxfDBUX3qr03ORBBIhYfeL5RZVimWwVRnWE+HtfU3WDCm+pNURR2yWydTZAg/Z
-         S1SICbX8Fe0EbghFsSn3uBOy1b8wFiubSfnkbxOsOdZj+1hR+XT60J+atxDySCcUgrbg
-         xaewYh/zpiCYc4nDiXWJ7/b/uiAHOvkGlcKEOmzOL3BqYp80wIakUKhbE56OHOVKsI8p
-         zifA==
-X-Forwarded-Encrypted: i=1; AJvYcCX0/Qnt2ARvUht+Kp2AJeveLDPTusyqupAV805668vWMUJ82tqOJYGeuQR0+RGo0R4yOvI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwGnsTuXHdA/Rt/mcTHi837Hx3/UaHSR3yhks8KQb/Gk7y3Gyfl
-	GQiSGTAv18n7/Gmsrl9EpcTF/cRiDIFvC6CDRKWh7F0XwBXaxa9RKhxanRH5ID2RnD5e/KC9sMR
-	BGeBuqmyMrmK9oLbE2U+L3m6mRIM7qiERS2BeiKhRtQ==
-X-Gm-Gg: ASbGncvbcPF+a50KadXVVSKE9vJemAGEnhW3zEKo7HK3vnMb0dKWKO4P78UI5ooADk8
-	EatPc3f7JLy18myE428N2N8e0J/ejrkUhuCdgEShJga8/nVqn5mVMlXxTUx2fqMgr9bj8+w9eiJ
-	lMQMqvyxwwaQZl17i5YG8Zf1svJJY4eqE7e98q0RFWNPMGykIR4bsHTxKJi5KbO//Hgvg1PP5DY
-	M8R9iPhfxGB0z4stdg9StCaV5Iu3PZp4kI96sh2YRdYqoiIeXFVUJ8cXQ8Mt4KB7RmpBUaJW2yC
-	SKQkIhlpaYVYYz5LsBpxMvy6mfuYumlf/5UzBUtadkg9/4NKWXAMuNsuFQUj
-X-Google-Smtp-Source: AGHT+IExz1KoKGgYwQs4j4Ce+j475SP/DNvJugi2JZxLEG/IxoTYS9P7YVxBh/zTuCGTgCoexanBeVOopKrdm8p5WZY=
-X-Received: by 2002:a05:693c:2402:b0:2a4:4ec9:89aa with SMTP id
- 5a478bee46e88-2ab92ee5b29mr6566093eec.28.1764950473000; Fri, 05 Dec 2025
- 08:01:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=variscite.com header.i=@variscite.com header.b="adFGB45A"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EqgYJb29lqIZ+GiD/bqLvZP40mlqWfOWPgusTpcIkMoLsYm3blVCy9wV9Cvw/rixfDu5crQILGy6KXynHAgvha0pEAONDYZbe8oCWsHIqSxPrd9qPbYDkNdY8YLJzyDsvxs324E5DGjXzD6d8dhjqfzUvlUhVJKt0JsO3C2aVIwnORYSuVP/P9IOWD5f6hUQDNdeZg+jDqbpDjg7ailtWrNk8mW/w/22cFtX7GWp8Gwln7D3+Q/o6c4og99AhbT4NYu7305aHD5pjYOQwupsTCJ7a77Cr2XXm3+aU42XiDlMXj+2nKsV74WE5oYQuwlQofTzgGFc3BBTg/UEY1+/GQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W/MpyvcBIFAM8YToly7xmiIFLnl5UCMAay42VGRdCj0=;
+ b=we+zUmGnPBIbXYz3vUaPGD+4W7V4UF52pDp68ykIUJyrS2cwzc+HAn7IhcFDRK53h02gPnnazx1QI4cs5P7WyqFTiSQCUSTS8jL2cFH+wi1uiDbZE3o7DzKQRb7c/imx9k7vA9u/Bk/hJsWZjWchhPw5O+iM2R/vP6I9fBOZDTYpI5VquwjPiV1RIw7q5jqbyLbE2BUkZjPLEq3V2TM4sM33TJFqEqxk/uEuHgay2qeZfNxZalyq2eTLIFc0zC6NsOtzmPglOd9OPR8EQzNwsistaR/w59bzJ6yngqTJqpepn007CgxadgozvLgHPf61SFIRcKhqYdnFYhR25vIf3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=variscite.com; dmarc=pass action=none
+ header.from=variscite.com; dkim=pass header.d=variscite.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=variscite.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W/MpyvcBIFAM8YToly7xmiIFLnl5UCMAay42VGRdCj0=;
+ b=adFGB45AdddwbpHtl/i8Y2/tkxT8SX8xEEmJBpmEAH0EwH1JCU29wyKrFnpAlOumRam1hnqB09XQtR4RKeYqM2Vsc/5spiUD2rhxF0q7dXGurBWmtuKodSRsVS/xX8VwBigt2JR2fDV97/UgTb46P7sVK1uytB8yxdKDe77rsHR+gvBPOV9wDaw3nFPhmWPCDOXe32r7tJw6d0wRKV19YLq7zriAXW7dBCyoKAe3QwExollGTXbUARVLKM/KaH+0/qNozieNdZZ4TUkB5OjMR6NDLLK0bZdUwgap+rH9DNvZna2wwvD66VU82MDNF1Cnr328dJ66AoC4s+//xnlMRA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=variscite.com;
+Received: from DB4PR08MB10341.eurprd08.prod.outlook.com (2603:10a6:10:3ff::18)
+ by AS8PR08MB6712.eurprd08.prod.outlook.com (2603:10a6:20b:393::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.9; Fri, 5 Dec
+ 2025 18:23:00 +0000
+Received: from DB4PR08MB10341.eurprd08.prod.outlook.com
+ ([fe80::24bb:a230:6690:f824]) by DB4PR08MB10341.eurprd08.prod.outlook.com
+ ([fe80::24bb:a230:6690:f824%6]) with mapi id 15.20.9388.009; Fri, 5 Dec 2025
+ 18:22:59 +0000
+From: Stefano Radaelli <stefano.r@variscite.com>
+To: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v1 0/4] arm64: dts: imx93-var-som-symphony: align DTS with hw revision
+Date: Fri,  5 Dec 2025 19:22:53 +0100
+Message-ID: <20251205182258.50397-1-stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ZR2P278CA0024.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:46::13) To DB4PR08MB10341.eurprd08.prod.outlook.com
+ (2603:10a6:10:3ff::18)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251202084524.208045-1-xu.yang_2@nxp.com> <CAOf5uwkVJihpjseiZhpdE4A6GpCA+jEunSBoQMFbTs1j_M2WFQ@mail.gmail.com>
- <DB9SPRMB00226E19F9426865663A83A28CA6A@DB9SPRMB0022.eurprd04.prod.outlook.com>
-In-Reply-To: <DB9SPRMB00226E19F9426865663A83A28CA6A@DB9SPRMB0022.eurprd04.prod.outlook.com>
-From: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
-Date: Fri, 5 Dec 2025 17:01:01 +0100
-X-Gm-Features: AQt7F2rOS26RzjQG8b11cdCu8vbmfuuh-M-s8Q0LgfrPsAN-Pdn1IuPCcoVy2jk
-Message-ID: <CAOf5uwkf77vA=R21tDHSqFU_ZFd_HB4mW8r-neLF_9pXqw-mNw@mail.gmail.com>
-Subject: Re: [EXT] Re: [PATCH] usb: typec: tcpm: make kthread worker freezable
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: "badhri@google.com" <badhri@google.com>, 
-	"heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>, 
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "linux@roeck-us.net" <linux@roeck-us.net>, 
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Jun Li <jun.li@nxp.com>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB4PR08MB10341:EE_|AS8PR08MB6712:EE_
+X-MS-Office365-Filtering-Correlation-Id: ffc13720-7fed-4333-f80a-08de342b5211
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QWFucDZwU0YrTGpZdVBuQzQ1ZFB1bWNVaFR5UlNPODRnaG5XcnJoWnBhUWhk?=
+ =?utf-8?B?S2w5aFJzZWRmM2szS3VDNXNxWmRWakptUFNNRVZvUU13clcwSFppNDZ2QnlC?=
+ =?utf-8?B?QlR0ek80S0RqRnlVMGVnY2tocEJEQkpqY2ZrU2hURksxNUQ4MmVnNUtKYUVB?=
+ =?utf-8?B?ZTNhdTMvMFloSVZqZGNZVDVsb1NIa0thRTRZcmxDQjJaeGdNUFpFQVRnankv?=
+ =?utf-8?B?Mld4SndiNS8rcmQ0WFNyMzJlY3A1QndtendxdWdITE1yaTIyRDhzNitJWjZo?=
+ =?utf-8?B?OTZsTVduTnRQN29mTXl1QlpuRXpuenB0SWQzUVpGQnhyZitySFNBRy9hdTF3?=
+ =?utf-8?B?RW9pSE5iaEdjWGgxekxtM0ViZkR0dGlaRXl1WWJpUFpUby9hZ3BJcWpmT2xZ?=
+ =?utf-8?B?RG5vN3hDN291Rm1HaDVTSDVYYVU3azhncDVrZThRc1AwaG5NT3h3SGUxY0d0?=
+ =?utf-8?B?UkdyTkp5b2lIa3BzMEU5MjdvUDd6SUxPbWU2cmYrWWdRNnZRTUVFWXd4YWti?=
+ =?utf-8?B?WW5JTUlGOGxGdklzT3JzSkRQOElUMDFtdWk3S3dyMTVLQkhGTXFOdit1aERD?=
+ =?utf-8?B?MGdsSGM2QmFwall5bVNQMEJqd3Q4VDVKUG5pRDEyMVdNME40MllvMUE0VmpS?=
+ =?utf-8?B?VUM3eWVhYThGMHI5KzVIM3pUcXZ0U3ptZlNpWk5OS2t2QXBCU2ZmMDI5bDQz?=
+ =?utf-8?B?K1BZR25zb3RXMjdOVENDaWFiWis5VEZBczRZcjdVdVN1b3JjWUdTWUhzbHNI?=
+ =?utf-8?B?cG9GTHZtQ0VPK0QzaW5ZbUJPY0ViOVF5ZHpZQVp6a3lJbVphRS9sQnhaYXl2?=
+ =?utf-8?B?K05Nelp2TTVJMEhxcFBZWWtoUXNZZmt0cFFBL2gyeGdrN04rcGtFU1VicDZH?=
+ =?utf-8?B?L3JJcldpT2lkUnpJRUQvTlNsTkx5aWVCSmI1bFo2MTNoYkJTMUJDS2ZRN0gv?=
+ =?utf-8?B?ZWRXZmpTc0FmcGU3L1YwV2EySUFOdVh2bE1QVENrVlZHM1A4bWdiQWZtQmF2?=
+ =?utf-8?B?YXBtQTFWRlRtWTBzVnhSMHpCb3llenZkbVRPNHQvRmNrSkJvNlhDckxCRDVE?=
+ =?utf-8?B?b1RKU0s1L1I0b1QvZktuUi9rVlhiaE9NcVhmVDVZVy9HYmVPZkowdzFtTkp0?=
+ =?utf-8?B?aXFBcnFhSFJpSlFnZzhFd1ArVktJcVUzRzB3dUlHbk1xV002alVDZTNxalNn?=
+ =?utf-8?B?Ri9ORG8rNWtVdVZaUlJnRTVvZCtGY1FnYjhkbUk2R2owK3NOUTVYQWRwUjlv?=
+ =?utf-8?B?WlRsZlVkalZGdk1HTmlkaUNvVGk2QnNCWjQyY1VMb0orRjdaZ3RDdlpnR2w2?=
+ =?utf-8?B?a0hHS1VOeGpPRDFmMG9XNGNVSzdINUY3RkdyQzc3VlluZE0yQ1ZjN3Z3V0Ry?=
+ =?utf-8?B?Q3Vja3laYUJDNC84WE81My9kTHFlRWpycmVvcUdnaFpXTVBiS01RTjRBVGwr?=
+ =?utf-8?B?ZlJJM09uSnplZCtMeU1RWklBRjZ4dXk5cXBacFl4eWJ1NHpvZWcrYnBVbllV?=
+ =?utf-8?B?SHViSTQ3dmYxWnIzZG9QT2VML254bmVGVjNGSVlONEN0ZVJFd1VDWDJYZDJI?=
+ =?utf-8?B?YXgrY3d5Z2xCK2VadWVSbGY5VnZ5bFJDRnVLQUVPQXhpcUpOMDNUb2RWT3px?=
+ =?utf-8?B?Mk94MkJDd0luTmd1VThCRVpaMC9iTHJxTWM5VkRoV1E1NHhiQXRBNGlRWk5K?=
+ =?utf-8?B?dGdyWEVTODY3Ylc4T1pMaTRMWXdNS1JMVDFEZFlQQnlhTEo2dVRWbzRKelJL?=
+ =?utf-8?B?TWNBNWNQdG1zd2pmWUdSVEZxRTFwQWhhbWthU0gyVWJJamxDVzJ4Q2xkMXhq?=
+ =?utf-8?B?QVZoMUo5UHd5NGtqZ0dRY1pNZTR4dzl5MDVSQWJTODJ1eTUvTmdVOXJPVEI0?=
+ =?utf-8?B?MGZJTEpIQ0Z1ZlplUkhwQnkrcnA0TmVhUzdGYmJIMnl0c1hBZ0VHdGN5bTZT?=
+ =?utf-8?Q?cRRcfzUPl7GRYWs3xpvwtVjulZ22kyz7?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB4PR08MB10341.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?N0tnVWtpM2l6VmMrS1BnNGFDN0hOeld1Mkhjakt6WDZZclVXQWZTRWltUVFq?=
+ =?utf-8?B?c0g4em5adUNmaXkxMXJ0czIrL0lLdmQwV2tSMDVUd1FFUVBMYWphU0k0a2xR?=
+ =?utf-8?B?OU9EMzN3NDdIckxLU0J0U1BoSC95SVVhM0J6WGd6bkk3OURFcm96L2Rwb1FC?=
+ =?utf-8?B?bnV3dVdHNkI0ak5BYlF2dkdnOFNPNmI4WlNka2dkeWFOaW4rZDZCTnYzQ21K?=
+ =?utf-8?B?NDFFNk9zcWZYOS9MWmNOVFB3TVdlZWFjVWRBTlVpNWJUUE5kaXY5R0lSK0Nl?=
+ =?utf-8?B?NlRnSXhGVFc0VTAvUjBjQ2x0MUd1UzN5QlUrR0U4bis1enQybEhuWHZ3TE8z?=
+ =?utf-8?B?S2poZ2F1cEthT1ZXaGpSSk5qbzEzUVZYU3I0NkVwTHRhTUU2dlpFZ2RDQnZi?=
+ =?utf-8?B?b3kzdGdYOHZFS2dEWFRHTk12dUI4TnZnWEkzNWJCTExZd01CMXFCZkNsSFdh?=
+ =?utf-8?B?N01MRG4wYUgwMUV5S05nRzk2Q0k3N20wODhpdWpNY05EWitzcFg0QmF0Qnh4?=
+ =?utf-8?B?clVDVFNha1VOUnZURUhsUFpsYU1PZENYSldCaWhod0ViS1JNaXhTQ2RpVitM?=
+ =?utf-8?B?MVJCMzRTUkpxZmdESGRJbnMvTXp0NVpMTVFlbDk1K2wyNXlwVDUrVUdSTXVy?=
+ =?utf-8?B?cHFiMG8wOEZxL2FCcVp1S0NYT21NUVd6UGI5bHVxcmw2WldJMEhWOEF6UE0v?=
+ =?utf-8?B?ZFRwU0lVYUtlelNwQ1pMd29NeUhZUWpua01EelJIdnRZMEtOeEFoalh3amV2?=
+ =?utf-8?B?YmNFdGJKYnF5MXdFanYwRjRmUElFWGZVOXAweEJyK0RoR3cvSzVlelF0RGpF?=
+ =?utf-8?B?elN3YVlZU2dRSEIzVDVtdE5oUjFPU1BPMnRmSXZkZ2I4SnF6SThncWpvME1j?=
+ =?utf-8?B?L0FyUThnT1M1alZpVzZpZTI1eUk5U29LYUg1UWJvNVhuS3Jwc2tSOFFYMmpq?=
+ =?utf-8?B?Qno5MDRlUkN6K1R2SEpKWDFGY2pJbFhUYVdnbms4a1pzQjFnb0d1YndWSDJP?=
+ =?utf-8?B?ZEpIMGxCM2xWdFF4bGQzZFdEamRVSmFnem1qTktvaTZ6U09ObCtRZXl4eS9M?=
+ =?utf-8?B?UWlzRmFZR0tXRURNQWgyV0xBWisrR3laSDl0YTN6RDdveUR0U0dsaU1taExk?=
+ =?utf-8?B?TGFqYU41VHNpaDlXUGNNaUhlUDFYb21mSUJYR2l6bU9UOEtINmFFM2FTY1J5?=
+ =?utf-8?B?aTRSR0dmeU1qaWRXY3dZK2d1U052Ui9OQ09VOXo3RnVjZGQrbEJJaEo5NTBY?=
+ =?utf-8?B?Z2p5YkRqdkhFcXlRc1RLWE9CY0tJSEx5TWI0NVg3eHNwaUFXaXNpQ3RRdFRh?=
+ =?utf-8?B?aGtQQXplY1lsMlJvMFhHTXY3SWNWbDVKMnVxbUkvTHNzTlhjZzM4UHBtNWNJ?=
+ =?utf-8?B?TXBRSGE0MnRBbGRacGRYMGdmQ2pGSlpieFZCREhxZFZoNFVkdE9nRjZwTEFE?=
+ =?utf-8?B?cW1XcXVmd0dYaDBweUJzTDdaR3RzbGd6VWwzcDRURkhGaHBnVzB5Ky80U29z?=
+ =?utf-8?B?TTBQdUpGUk5XRjAwVnhkQzlpa2IxUjhWWEcrK3BJNklHRWVBTHRXZklrRDNn?=
+ =?utf-8?B?UVF5VFBBeVp0WU84dzBtRkFmRlkwc1hlQTI0cm00ejhiTElMV29KV3c2ZHF5?=
+ =?utf-8?B?NkpTWjdEbnBWRHJnR1VFQ1FjOFJCVncrUjdWNXJKRVpNNmZyT214d3pyTk55?=
+ =?utf-8?B?dnBZSXFPaUFzeEdpazUxdjVjSURHbUFhL2NKbGxPeG53WGVBRmlrUHpNUEFD?=
+ =?utf-8?B?dGRSZUFDSGVkbVl2akpvMCs4NFJWeWV4dW5pSUlzS2ZiUDhUWTcxR2FqY2tS?=
+ =?utf-8?B?dlZuOEs0eGdjNTZ4TmhFaGFUeDJkL2FkdmhLbHVyVGZCT0FjWVdJOTFHR1k4?=
+ =?utf-8?B?TFVmei92R1haTVRUdmk1bGxvT1ZtWDFSQzhXMXAzamY5YVgvNjQzSXBqU0FM?=
+ =?utf-8?B?bEdOVTBOZ0FIL2dyVktzSTNqVHFqdXJTSldtbXU3NTdOMTNUUmlkd3FEUWhn?=
+ =?utf-8?B?WHkwSHMwWVV6azg1NlQxUTlwcXhnTDgxWk0rTGZmMGErM2xrU1J0TkpYYWdS?=
+ =?utf-8?B?VExIY0RFdlZQOFhyczc5Nkswc3M5U3VXY1V5UHp1a3FPZHNUb3FGWEdTV1dw?=
+ =?utf-8?B?WDN5S3hZVnJidThHTzZOdkNjZ2FkaHgvZHJnRDdDRWorVzhHcTNNbzZzZzI4?=
+ =?utf-8?B?R0E9PQ==?=
+X-OriginatorOrg: variscite.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ffc13720-7fed-4333-f80a-08de342b5211
+X-MS-Exchange-CrossTenant-AuthSource: DB4PR08MB10341.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2025 18:22:59.8953
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 399ae6ac-38f4-4ef0-94a8-440b0ad581de
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: d32p1YLP//d5O0JKxfAhQqILOeUJwhwVASKItFdNUp3tENVvopqIF4tk7+x0Xlr7Yz2HDaW6+DpP1icEn54BxA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB6712
 
-Hi
+This series adds support for several peripherals available on the
+Variscite Symphony carrier board for the VAR-SOM-MX93 module.
 
-On Thu, Dec 4, 2025 at 12:21=E2=80=AFPM Xu Yang <xu.yang_2@nxp.com> wrote:
->
->
-> > Hi
-> >
-> > On Tue, Dec 2, 2025 at 9:44=E2=80=AFAM Xu Yang <xu.yang_2@nxp.com> wrot=
-e:
-> > >
-> > > It's observed that tcpm kthread worker may execute some works at the
-> > > very end of system suspend or the very beginning of system resume sta=
-ge.
-> >
-> > Please clarify if this works is needed to be completed before the syste=
-m suspend/resume
->
-> In this issue, the work is sending a single source capabilities message. =
-According to Type-C PD
-> Spec, the source port will send source capabilities message every 150ms f=
-or at least 50 times
-> until it received a GoodCRC message.  In my opinion, if the worker starts=
- the work, it needs to
-> be completed as soon as possible. I suppose it should be completed before=
- system suspend if
-> it gets scheduled before system suspend.
+The patches introduce:
 
-Yes but what you are doing here is to make the thread freezable during
-suspend so it freezes before
-suspend and it means that the fault you get before can not happen
-anymore because the thread is stopped
-and can not access to driver and driver will be suspended later. Now
-this question is if the thread
-should finish its current job and go idle in the state machine before
-allowing the machine to suspend or not.
+- GPIO aliases cleanup to better expose available GPIOs
+- FT5x06 capacitive touch controller
+- USB1 (OTG, via PTN5150 Type-C controller) and USB2 (host-only) support
+- LPSPI6 controller exposed on the expansion connector
 
->
-> >
-> > > The kthread work itself won't bring any issues, but if it access some
-> > > HW resource during this period, the system may hung there because alm=
-ost
-> > > all of the resources are inaccessible at this point.
-> > >
-> > > Take below kernel dump as example, if the source port hasn't finished
-> > > sending Source Capabilities message when system enters into suspend, =
-it
-> > > will continue do the thing as long as it gets scheduled. However, the=
- i2c
-> > > resource is inaccessible before system resume. Then the system is hun=
-g.
-> > >
-> > > Fix it by making kthread worker freezable.
-> > >
-> > > $ echo mem > /sys/power/state
-> > > [   37.605215] PM: suspend entry (deep)
-> > > [   37.616067] Filesystems sync: 0.007 seconds
-> > > [   37.633106] Freezing user space processes
-> > > [   37.639444] Freezing user space processes completed (elapsed 0.001=
- seconds)
-> > > [   37.646496] OOM killer disabled.
-> > > [   37.649745] Freezing remaining freezable tasks
-> > > [   37.655695] Freezing remaining freezable tasks completed (elapsed =
-0.001 seconds)
-> > > [   37.689794] fec 5b040000.ethernet eth0: Link is Down
-> > > [   37.713391] PM: suspend devices took 0.052 seconds
-> > > [   37.741175] Disabling non-boot CPUs ...
-> > > [   37.747120] psci: CPU5 killed (polled 0 ms)
-> > > [   37.754129] psci: CPU4 killed (polled 0 ms)
-> > > [   37.762217] psci: CPU3 killed (polled 0 ms)
-> > > [   37.770037] psci: CPU2 killed (polled 0 ms)
-> > > [   37.776936] psci: CPU1 killed (polled 4 ms)
-> > > [   37.782481] Enabling non-boot CPUs ...
-> > > [   37.787991] Detected VIPT I-cache on CPU1
-> > > [   37.788043] GICv3: CPU1: found redistributor 1 region 0:0x00000000=
-51b20000
-> > > [   37.788093] CPU1: Booted secondary processor 0x0000000001 [0x410fd=
-034]
-> > > [   37.789587] CPU1 is up
-> > > [   37.810632] Detected VIPT I-cache on CPU2
-> > > [   37.810661] GICv3: CPU2: found redistributor 2 region 0:0x00000000=
-51b40000
-> > > [   37.810689] CPU2: Booted secondary processor 0x0000000002 [0x410fd=
-034]
-> > > [   37.811714] CPU2 is up
-> > > [   37.833013] Detected VIPT I-cache on CPU3
-> > > [   37.833042] GICv3: CPU3: found redistributor 3 region 0:0x00000000=
-51b60000
-> > > [   37.833071] CPU3: Booted secondary processor 0x0000000003 [0x410fd=
-034]
-> > > [   37.834201] CPU3 is up
-> > > [   37.856437] Detected PIPT I-cache on CPU4
-> > > [   37.856469] GICv3: CPU4: found redistributor 100 region 0:0x000000=
-0051b80000
-> > > [   37.856501] CPU4: Booted secondary processor 0x0000000100 [0x410fd=
-082]
-> > > [   37.857651] CPU4 is up
-> > > [   37.872890] SError Interrupt on CPU2, code 0x00000000bf000002 -- S=
-Error
-> > > [   37.872902] CPU: 2 UID: 0 PID: 147 Comm: 2-0051 Tainted: G   M    =
-            6.18.0-rc7-06207-gee9dedcfd432-dirty #396 PREEMPT
-> > > [   37.872912] Tainted: [M]=3DMACHINE_CHECK
-> > > [   37.872915] Hardware name: Freescale i.MX8QM MEK (DT)
-> > > [   37.872919] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS =
-BTYPE=3D--)
-> > > [   37.872926] pc : lpi2c_imx_xfer_common+0x150/0xff0
-> > > [   37.872942] lr : lpi2c_imx_xfer_common+0x54/0xff0
-> > > [   37.872949] sp : ffff80008358b960
-> > > [   37.872952] x29: ffff80008358b9e0 x28: 0000000000000001 x27: ffff0=
-00810bcc080
-> > > [   37.872964] x26: 0000000000000000 x25: ffff8000820e9000 x24: 00000=
-00000000000
-> > > [   37.872973] x23: 0000000000000001 x22: ffff8000820e7000 x21: 00000=
-00000000001
-> > > [   37.872981] x20: ffff80008358bae8 x19: ffff000810b4c010 x18: 00000=
-0000000000a
-> > > [   37.872990] x17: ffff00081ab43f00 x16: 0000000000000002 x15: 00000=
-00000000000
-> > > [   37.872999] x14: 0000000000000001 x13: 00000000ffff0a10 x12: 00000=
-00000000006
-> > > [   37.873008] x11: ffff00081a38db07 x10: 0000000000000000 x9 : 00000=
-00000000004
-> > > [   37.873016] x8 : 0000000022b63cbf x7 : 00000000016e3600 x6 : 00000=
-00000000000
-> > > [   37.873025] x5 : 0000000000000002 x4 : 00000000000186a0 x3 : 00000=
-000000000c0
-> > > [   37.873033] x2 : 0000000000000002 x1 : 0000000000000018 x0 : 00000=
-00000000023
-> > > [   37.873044] Kernel panic - not syncing: Asynchronous SError Interr=
-upt
-> > > [   37.873050] CPU: 2 UID: 0 PID: 147 Comm: 2-0051 Tainted: G   M    =
-            6.18.0-rc7-06207-gee9dedcfd432-dirty #396 PREEMPT
-> > > [   37.873058] Tainted: [M]=3DMACHINE_CHECK
-> > > [   37.873061] Hardware name: Freescale i.MX8QM MEK (DT)
-> > > [   37.873064] Call trace:
-> > > [   37.873068]  show_stack+0x18/0x30 (C)
-> > > [   37.873081]  dump_stack_lvl+0x60/0x80
-> > > [   37.873091]  dump_stack+0x18/0x24
-> > > [   37.873100]  vpanic+0xf8/0x2dc
-> > > [   37.873108]  abort+0x0/0x4
-> > > [   37.873115]  nmi_panic+0x64/0x70
-> > > [   37.873125]  arm64_serror_panic+0x70/0x80
-> > > [   37.873134]  do_serror+0x34/0x74
-> > > [   37.873143]  el1h_64_error_handler+0x38/0x60
-> > > [   37.873156]  el1h_64_error+0x6c/0x70
-> > > [   37.873163]  lpi2c_imx_xfer_common+0x150/0xff0 (P)
-> > > [   37.873172]  lpi2c_imx_xfer+0x14/0x20
-> > > [   37.873179]  __i2c_transfer+0x1b8/0x3c8
-> > > [   37.873190]  i2c_transfer+0x6c/0xf8
-> > > [   37.873199]  i2c_transfer_buffer_flags+0x5c/0xa0
-> > > [   37.873208]  regmap_i2c_write+0x20/0x60
-> > > [   37.873221]  _regmap_raw_write_impl+0x5cc/0x660
-> > > [   37.873230]  _regmap_bus_raw_write+0x60/0x80
-> > > [   37.873238]  _regmap_write+0x58/0xc0
-> > > [   37.873246]  regmap_write+0x48/0x74
-> > > [   37.873254]  tcpci_pd_transmit+0x10c/0x1a8
-> > > [   37.873264]  tcpm_pd_transmit+0x60/0x164
-> > > [   37.873273]  tcpm_pd_send_source_caps+0x12c/0x1c4
-> > > [   37.873280]  tcpm_state_machine_work+0xb10/0x3574
-> > > [   37.873288]  kthread_worker_fn+0xc4/0x178
-> > > [   37.873300]  kthread+0x12c/0x204
-> > > [   37.873310]  ret_from_fork+0x10/0x20
-> > > [   37.873322] SMP: stopping secondary CPUs
-> > > [   37.875528] Kernel Offset: disabled
-> > > [   37.875531] CPU features: 0x080000,04105800,40004001,0400421b
-> > > [   37.875536] Memory Limit: none
-> > > [   38.148805] ---[ end Kernel panic - not syncing: Asynchronous SErr=
-or Interrupt ]---
-> > >
-> > > Fixes: 3ed8e1c2ac99 ("usb: typec: tcpm: Migrate workqueue to RT prior=
-ity for processing events")
-> >
-> > I think that this does not Fix this sha because most probably it moves =
-the failure window,
->
-> How do you know that? Do you think which commit should this fix?
->
+These changes describe real hardware connections and make the exposed
+interfaces available to user applications.
 
-According to the commit they move the workqueue to rt priority. So it
-really depends if the problem was
-even present before this commit.
+Tested on the Symphony board with a VAR-SOM-MX93.
 
-> >
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> > > ---
-> > >  drivers/usb/typec/tcpm/tcpm.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/t=
-cpm.c
-> > > index 4ca2746ce16b..2196de231b9b 100644
-> > > --- a/drivers/usb/typec/tcpm/tcpm.c
-> > > +++ b/drivers/usb/typec/tcpm/tcpm.c
-> > > @@ -7836,7 +7836,7 @@ struct tcpm_port *tcpm_register_port(struct dev=
-ice *dev, struct tcpc_dev *tcpc)
-> > >         mutex_init(&port->lock);
-> > >         mutex_init(&port->swap_lock);
-> > >
-> > > -       port->wq =3D kthread_run_worker(0, dev_name(dev));
-> > > +       port->wq =3D kthread_run_worker(KTW_FREEZABLE, dev_name(dev))=
-;
-> >
-> > This flags as far I can see has no user in all the linux kernel, so thi=
-s let me think that this general
-> > problem is addressed differently by other drivers
->
-> Yes, I do see no user to user this flag. For this issue, if it's caused b=
-y other drivers it depends on, do you have
-> any better suggestions? Should all dependent drivers be fixed? I suppose =
-tcpm should stop further jobs when
-> the system is going to suspend. :)
->
+Stefano Radaelli (4):
+  arm64: dts: imx93-var-som-symphony: Update gpio aliases
+  arm64: dts: imx93-var-som-symphony: Add support for ft5x06 touch
+    controller
+  arm64: dts: imx93-var-som-symphony: Add USB support
+  arm64: dts: imx93-var-som-symphony: Enable LPSPI6 controller
 
-No right now, I have no idea, but I think that before was not WQ_FREEZABLE
-
-Michael
+ .../dts/freescale/imx93-var-som-symphony.dts  | 84 +++++++++++++++++++
+ 1 file changed, 84 insertions(+)
 
 
+base-commit: 3f9f0252130e7dd60d41be0802bf58f6471c691d
+-- 
+2.47.3
 
-> Thanks,
-> Xu Yang
->
-> >
-> > Michael
-> >
-> >
-> > >         if (IS_ERR(port->wq))
-> > >                 return ERR_CAST(port->wq);
-> > >         sched_set_fifo(port->wq->task);
-> > > --
-> > > 2.34.1
-> > >
-> > >
