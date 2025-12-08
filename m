@@ -1,163 +1,135 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003C3320383
-	for <imx@lists.linux.dev>; Mon,  8 Dec 2025 09:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35EF43101BA
+	for <imx@lists.linux.dev>; Mon,  8 Dec 2025 10:36:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765186985; cv=none; b=gNKpV827J3zreVWE9R0uf7D0yLAKNKiEueotn77j9fiSNUYy3xylxamtLGyRWarZrcgvNsjWCGNvgurWe3RmVAeySwTleRK8TDbUalAnMK0FoIHwNpbMIvtx8sgmaVPp4dfDFwlfN7NC0t8Tc42k9SiaKi0dEje3cY8R0fnT5Tk=
+	t=1765190163; cv=none; b=QDr0AalbGgxZKoyhBc3f5luuAbuHszPAxTwlBUED0KBbnLwaSDQzgFrsRVzXJ/JYsHPBaZyhKlnQFPNr7GP5HUkIx/5RYZIV9U9CspR6F483v2xPtPR7JX69QNekX63ORap6fZdOdB6KCrwBxpQlj+YrNc3m49cODUZPlw/esgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765186985; c=relaxed/simple;
-	bh=78Dl1vQ2yaBh7z6ugJ5fq/4fwesJC059Jr3yD3ti/O4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OyqxJ2Rk4wWJ8C5BAWdpnFHl4/83jYj/NeI5d9MSdo8Kznkz91SH1iAthKtvU0JSsTlD/aC4TIoolTzB3BiupcPXZiKhsA8ACFsVylKWaMzCY9dFwtyhNZomQIOWLMlQC5G5rbZFwz0xhiHqYxEpGiKzx3dzmpP9fhOezd0C59Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
-	by APP-03 (Coremail) with SMTP id rQCowAB3muGVnTZpnbsAAA--.961S2;
-	Mon, 08 Dec 2025 17:42:45 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: ulf.hansson@linaro.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] pmdomain: imx: Fix reference count leak in imx_gpc_probe()
-Date: Mon,  8 Dec 2025 09:42:42 +0000
-Message-Id: <20251208094242.17821-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1765190163; c=relaxed/simple;
+	bh=s0L/F0IMsYB37Rxo4CHT7apF8oSazdCraUwxwRSEMFw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OtxoAGQ58Ff19YD2zqPf0sEDfjwV3njffMtFHKCiZhpCmlN1XszT5En8vJo5A+GlRrRXcj28ZPjKM/Z7oPjdqWagef9dv/lEsOLAmivFM7PR9+sY0yto0l03tQPAAm6+5v59LSniVwro/PwkO2DIzQzTsUkh4qLQGEwG+fkutIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b=n+A5Wh7O; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b="n+A5Wh7O"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-477a1c28778so55773245e9.3
+        for <imx@lists.linux.dev>; Mon, 08 Dec 2025 02:36:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=riscstar-com.20230601.gappssmtp.com; s=20230601; t=1765190159; x=1765794959; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+E3SOYkqsEc+5aDXpHHAZRqmKpJ7LXworventsdWgtI=;
+        b=n+A5Wh7OeeuSEecag3a0UGJ+Q73kd+2LQzyHD4CH4n4Coyi+liYbrQQMaq/+/uXbeo
+         1k5ETzDxDrjdaA8Mgb5t1l850qghYYsIVOtlOmbbgN4rqtq67S+6JNQEXvwVFdpFwl+w
+         YxIHQHSCrtsP7JCUIPSe7RbG7eH8KUYaoKP8yWYSKhd/oK1m1Vxfaf8+kDELLp95zZxy
+         wwp7GJMwut9gUPeJAyVWxGu1CMJLbXd9J+gFzMfShFyqVmm3ScRtRaYcUszTE0zbl4Yp
+         d0j+x4BfQIACGjiIQOX6gwOneIXHhv/grWeRvfRi+FLZ/VSbMpha5kwwmKwLQxVvOg8w
+         d3Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765190159; x=1765794959;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+E3SOYkqsEc+5aDXpHHAZRqmKpJ7LXworventsdWgtI=;
+        b=kj3fkbmujOUR0nd9OkC6rFwirQBZvT8PIFt5ZUwyUTK1M4KJtY5cDelwQSwyJM+XB2
+         THI7R+oJMiBO13bLIfNruNddYDZ3a0zRxJYWIz0kmwQ/9VIizQGaBJH3ghvpfgwrHFtM
+         a6YJpJwe0LiY5Bv3nqgQslcc4NPotvUXKqyCHg9hQ4aupG5PsaiEtloWHBRPBX9mG1um
+         1RYn8bf6rqr53Q9Iuo7N11w2LkUXKCt3MT6AKj0VQxTexvtzj7aT/a+nIWXKh7mV2zig
+         jcbYVJIgEf7w+unTNqhzDa0FAC96D3Xnlr748YziTJ1+DzRkMs7sNMxlbKcrCxRv5T1H
+         E6Ww==
+X-Forwarded-Encrypted: i=1; AJvYcCWQFNiHWCT50+++vti2BvdOTIP7pSL28mV8wScswiIMucNRF1nmfIGm5QY6bTtxfS7KsxU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YweDi6Yd/znGEMm7nPzjdmR9OK8ZtVAn9wRAwXixkLxNdVw3Fdb
+	9gVgIhH6+DaWwfjXu3MWcvZullzLCrIeEhsBX9ES37zeT2TJ2irTHUAlfCtTTEPvGmDX9cQWfb2
+	A7tYBErc=
+X-Gm-Gg: ASbGncughvgDvvXFy4GZUslLkTYyMAa6MnHnWTgaIn9IOdEK6EG+q+6sNWv7NyoK4Mz
+	oJiwFA1iZuXqln8RCC3ENPzHX+KaQUl++TUjdm09B5khP9EKhrb6jSL4Ol2w3ZY+ETZAEfbMKhO
+	Na4JsDnYFhMfKaTgh8wjrtyyS07J7RqN9hrqygDsz95iRjx0jowMj+LtqgXKbjK4GxX8kQavEaV
+	+W9TSK1Ssg2srtOov4NEmQ+NFvgm60UtHDnvAx62PxbxHEUCDuE+I8jeADRBMVAjto6TpBTzAVY
+	wG46IdGWn4I3qGhavtw2Gvr7wqPVxYVXHjBHvljBuN9ZU3NDRpVl2x8asSugQXzkBn85VMCq1NP
+	Y8T/pPG/WmPs59/A87dkVSyO4XE+eeS1JHyyXI4HxbvcO2CPggLzhczSNltYa8uRFegghP205jI
+	wPvwBvR7CSQh/NvNV0yEVibnhVZzA0D4jGDeJaS1jhT4jh3UyVawbxivU9pkOB6wwIPaJoOA==
+X-Google-Smtp-Source: AGHT+IGge21HXj48TLUzsA7ggUbHSFC0xO5HgqxGNKT4MTX7Oe0oV8kQd6FtV8OIYLtnHQGrRwLESw==
+X-Received: by 2002:a05:600c:818e:b0:477:9fcf:3fe3 with SMTP id 5b1f17b1804b1-47939c87088mr76977635e9.0.1765190159388;
+        Mon, 08 Dec 2025 02:35:59 -0800 (PST)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479311e712fsm240407865e9.9.2025.12.08.02.35.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Dec 2025 02:35:58 -0800 (PST)
+Date: Mon, 8 Dec 2025 10:35:55 +0000
+From: Daniel Thompson <daniel@riscstar.com>
+To: Maud Spierings <maudspierings@gocontroll.com>
+Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
+	Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, dri-devel@lists.freedesktop.org,
+	linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v6 2/4] backlight: add max25014atg backlight
+Message-ID: <aTaqCxsGj_waN92Y@aspen.lan>
+References: <20251201-max25014-v6-0-88e3ac8112ff@gocontroll.com>
+ <20251201-max25014-v6-2-88e3ac8112ff@gocontroll.com>
+ <aTG0EK_zuSB-U_bb@aspen.lan>
+ <8a9a59b8-d5c0-46b3-8f86-a4cd910b7af3@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAB3muGVnTZpnbsAAA--.961S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxCF4fWF4ftF47WFyftr4DXFb_yoW5Xw15pF
-	ZrGFWakrWxGF47Ga4xtr1DZas0k3y2yw4jgw47G3WxZFn8tr9rur1Sva4UKr4SkFWkW3W5
-	AF43JFy09F1UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9C14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8uwCF04k20xvY0x0EwIxGrw
-	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
-	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
-	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
-	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
-	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUhmiiUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYKA2k2dlSkkAAAsK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8a9a59b8-d5c0-46b3-8f86-a4cd910b7af3@gocontroll.com>
 
-of_get_child_by_name() returns a node pointer with refcount incremented,
-we should use of_node_put() on it when not needed anymore. Add missing
-of_node_put() calls in imx_gpc_probe() to avoid reference count leak.
+On Fri, Dec 05, 2025 at 04:20:55PM +0100, Maud Spierings wrote:
+> Thanks for the review.
+>
+> On 12/4/25 17:17, Daniel Thompson wrote:
+> > On Mon, Dec 01, 2025 at 12:53:21PM +0100, Maud Spierings via B4 Relay wrote:
+> > > The Maxim MAX25014 is a 4-channel automotive grade backlight driver IC
+> > > with integrated boost controller.
+> > >
+> > > Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+>
+> <snip>
+>
+> > > +static int max25014_update_status(struct backlight_device *bl_dev)
+> > > +{
+> > > +	struct max25014 *maxim = bl_get_data(bl_dev);
+> > > +	uint32_t reg;
+> > > +	int ret;
+> > > +
+> > > +	if (backlight_is_blank(maxim->bl))
+> > > +		bl_dev->props.brightness = 0;
+> >
+> > This isn't right. Why would you change the backlight level just because
+> > it is currently blanked (and sorry I missed this one last time).
+>
+> so just remove this bit then jeah?
 
-This commit fixes the following issues:
-1. Add of_node_put(pgc_node) before returning from imx_gpc_probe()
-2. Use goto pattern to consolidate error handling
+Yes. backlight_get_brightness() is all you should need.
 
-Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/pmdomain/imx/gpc.c | 31 +++++++++++++++++++++----------
- 1 file changed, 21 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
-index f18c7e6e75dd..754c60effc8a 100644
---- a/drivers/pmdomain/imx/gpc.c
-+++ b/drivers/pmdomain/imx/gpc.c
-@@ -416,8 +416,10 @@ static int imx_gpc_probe(struct platform_device *pdev)
- 		return 0;
- 
- 	base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(base))
--		return PTR_ERR(base);
-+	if (IS_ERR(base)) {
-+		ret = PTR_ERR(base);
-+		goto err_free;
-+	}
- 
- 	regmap = devm_regmap_init_mmio_clk(&pdev->dev, NULL, base,
- 					   &imx_gpc_regmap_config);
-@@ -425,7 +427,7 @@ static int imx_gpc_probe(struct platform_device *pdev)
- 		ret = PTR_ERR(regmap);
- 		dev_err(&pdev->dev, "failed to init regmap: %d\n",
- 			ret);
--		return ret;
-+		goto err_free;
- 	}
- 
- 	/*
-@@ -460,29 +462,33 @@ static int imx_gpc_probe(struct platform_device *pdev)
- 		int domain_index;
- 
- 		ipg_clk = devm_clk_get(&pdev->dev, "ipg");
--		if (IS_ERR(ipg_clk))
--			return PTR_ERR(ipg_clk);
-+		if (IS_ERR(ipg_clk)) {
-+			ret = PTR_ERR(ipg_clk);
-+			goto err_free;
-+		}
- 		ipg_rate_mhz = clk_get_rate(ipg_clk) / 1000000;
- 
- 		for_each_child_of_node_scoped(pgc_node, np) {
- 			ret = of_property_read_u32(np, "reg", &domain_index);
- 			if (ret)
--				return ret;
-+				goto err_free;
- 
- 			if (domain_index >= of_id_data->num_domains)
- 				continue;
- 
- 			pd_pdev = platform_device_alloc("imx-pgc-power-domain",
- 							domain_index);
--			if (!pd_pdev)
--				return -ENOMEM;
-+			if (!pd_pdev) {
-+				ret = -ENOMEM;
-+				goto err_free;
-+			}
- 
- 			ret = platform_device_add_data(pd_pdev,
- 						       &imx_gpc_domains[domain_index],
- 						       sizeof(imx_gpc_domains[domain_index]));
- 			if (ret) {
- 				platform_device_put(pd_pdev);
--				return ret;
-+				goto err_free;
- 			}
- 			domain = pd_pdev->dev.platform_data;
- 			domain->regmap = regmap;
-@@ -495,12 +501,17 @@ static int imx_gpc_probe(struct platform_device *pdev)
- 			ret = platform_device_add(pd_pdev);
- 			if (ret) {
- 				platform_device_put(pd_pdev);
--				return ret;
-+				goto err_free;
- 			}
- 		}
- 	}
- 
-+	of_node_put(pgc_node);
- 	return 0;
-+
-+err_free:
-+	of_node_put(pgc_node);
-+	return ret;
- }
- 
- static void imx_gpc_remove(struct platform_device *pdev)
--- 
-2.34.1
+> > > +
+> > > +	reg  = TON_STEP * bl_dev->props.brightness;
+> >
+> > The correct way to honour blanking is just go call
+> > backlight_get_brightness() instead of reading the property directly.
+>
+> will do.
 
+Thanks.
+
+
+Daniel.
