@@ -1,122 +1,163 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D31430F7FD
-	for <imx@lists.linux.dev>; Mon,  8 Dec 2025 09:15:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003C3320383
+	for <imx@lists.linux.dev>; Mon,  8 Dec 2025 09:43:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765185336; cv=none; b=g2De6N5dxD5KRm+2Bd5Jno16YldFAGcuMWqakb+LCOzB/GfRxf7MkEJJSLaRhHxEDVKE4AaIW6EeKvSI5LqIbos2jGa+2krDoqVnn0ygNjXrprNloAxRKo/Fh9rXrpDjI/nbSLjN9Nejr6rZvTEL2+FYq67ceeT58rm6YORTTek=
+	t=1765186985; cv=none; b=gNKpV827J3zreVWE9R0uf7D0yLAKNKiEueotn77j9fiSNUYy3xylxamtLGyRWarZrcgvNsjWCGNvgurWe3RmVAeySwTleRK8TDbUalAnMK0FoIHwNpbMIvtx8sgmaVPp4dfDFwlfN7NC0t8Tc42k9SiaKi0dEje3cY8R0fnT5Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765185336; c=relaxed/simple;
-	bh=NXsTl/i7NvMM1pojTo8dfjKXozOJBoPxBbRNXkSwB68=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gzsa/xD67gEWB5n0SqgcU9EAu+/+lPPFeG22Aul7HTn8V0YKfpRGwUjFwL1mAGUw1sr4uPAzkKpq4R+LyH9T3905J4W7FLNrB87pG31lfr6LB2sQJ369hTk2sSROweONosCRLuWIFbFkvvS/2AnyNJSP6ss8RkXO8AtR97wxnuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vSXL4-00036i-NZ; Mon, 08 Dec 2025 10:15:26 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vSXL4-004aS3-1A;
-	Mon, 08 Dec 2025 10:15:26 +0100
-Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 9C4D24B0F69;
-	Mon, 08 Dec 2025 09:15:24 +0000 (UTC)
-Date: Mon, 8 Dec 2025 10:15:20 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Lei Xu <lei.xu@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org, qijian.guo@nxp.com, 
-	justin.jiang@nxp.com, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/2] arm64: dts: freescale: imx95: Add support for i.MX95
- 15x15 FRDM board
-Message-ID: <20251208-watchful-fluorescent-piculet-4b55a8-mkl@pengutronix.de>
-References: <20251207-127-v1-0-5a2eeb69f150@nxp.com>
- <20251207-127-v1-2-5a2eeb69f150@nxp.com>
+	s=arc-20240116; t=1765186985; c=relaxed/simple;
+	bh=78Dl1vQ2yaBh7z6ugJ5fq/4fwesJC059Jr3yD3ti/O4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OyqxJ2Rk4wWJ8C5BAWdpnFHl4/83jYj/NeI5d9MSdo8Kznkz91SH1iAthKtvU0JSsTlD/aC4TIoolTzB3BiupcPXZiKhsA8ACFsVylKWaMzCY9dFwtyhNZomQIOWLMlQC5G5rbZFwz0xhiHqYxEpGiKzx3dzmpP9fhOezd0C59Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
+	by APP-03 (Coremail) with SMTP id rQCowAB3muGVnTZpnbsAAA--.961S2;
+	Mon, 08 Dec 2025 17:42:45 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: ulf.hansson@linaro.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] pmdomain: imx: Fix reference count leak in imx_gpc_probe()
+Date: Mon,  8 Dec 2025 09:42:42 +0000
+Message-Id: <20251208094242.17821-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="bmknb3mg3ri2dueq"
-Content-Disposition: inline
-In-Reply-To: <20251207-127-v1-2-5a2eeb69f150@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAB3muGVnTZpnbsAAA--.961S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxCF4fWF4ftF47WFyftr4DXFb_yoW5Xw15pF
+	ZrGFWakrWxGF47Ga4xtr1DZas0k3y2yw4jgw47G3WxZFn8tr9rur1Sva4UKr4SkFWkW3W5
+	AF43JFy09F1UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9C14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8uwCF04k20xvY0x0EwIxGrw
+	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
+	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUhmiiUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYKA2k2dlSkkAAAsK
 
+of_get_child_by_name() returns a node pointer with refcount incremented,
+we should use of_node_put() on it when not needed anymore. Add missing
+of_node_put() calls in imx_gpc_probe() to avoid reference count leak.
 
---bmknb3mg3ri2dueq
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 2/2] arm64: dts: freescale: imx95: Add support for i.MX95
- 15x15 FRDM board
-MIME-Version: 1.0
+This commit fixes the following issues:
+1. Add of_node_put(pgc_node) before returning from imx_gpc_probe()
+2. Use goto pattern to consolidate error handling
 
-On 07.12.2025 05:26:06, Lei Xu wrote:
-> The i.MX95 15x15 FRDM board is a compact and cost-effective development
-> platform based on the i.MX95 applications processor.
->
-> Add device tree support for this board, including:
-[...]
->  - FlexCAN2 and FlexCAN5
+Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/pmdomain/imx/gpc.c | 31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
-[...]
+diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
+index f18c7e6e75dd..754c60effc8a 100644
+--- a/drivers/pmdomain/imx/gpc.c
++++ b/drivers/pmdomain/imx/gpc.c
+@@ -416,8 +416,10 @@ static int imx_gpc_probe(struct platform_device *pdev)
+ 		return 0;
+ 
+ 	base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(base))
+-		return PTR_ERR(base);
++	if (IS_ERR(base)) {
++		ret = PTR_ERR(base);
++		goto err_free;
++	}
+ 
+ 	regmap = devm_regmap_init_mmio_clk(&pdev->dev, NULL, base,
+ 					   &imx_gpc_regmap_config);
+@@ -425,7 +427,7 @@ static int imx_gpc_probe(struct platform_device *pdev)
+ 		ret = PTR_ERR(regmap);
+ 		dev_err(&pdev->dev, "failed to init regmap: %d\n",
+ 			ret);
+-		return ret;
++		goto err_free;
+ 	}
+ 
+ 	/*
+@@ -460,29 +462,33 @@ static int imx_gpc_probe(struct platform_device *pdev)
+ 		int domain_index;
+ 
+ 		ipg_clk = devm_clk_get(&pdev->dev, "ipg");
+-		if (IS_ERR(ipg_clk))
+-			return PTR_ERR(ipg_clk);
++		if (IS_ERR(ipg_clk)) {
++			ret = PTR_ERR(ipg_clk);
++			goto err_free;
++		}
+ 		ipg_rate_mhz = clk_get_rate(ipg_clk) / 1000000;
+ 
+ 		for_each_child_of_node_scoped(pgc_node, np) {
+ 			ret = of_property_read_u32(np, "reg", &domain_index);
+ 			if (ret)
+-				return ret;
++				goto err_free;
+ 
+ 			if (domain_index >= of_id_data->num_domains)
+ 				continue;
+ 
+ 			pd_pdev = platform_device_alloc("imx-pgc-power-domain",
+ 							domain_index);
+-			if (!pd_pdev)
+-				return -ENOMEM;
++			if (!pd_pdev) {
++				ret = -ENOMEM;
++				goto err_free;
++			}
+ 
+ 			ret = platform_device_add_data(pd_pdev,
+ 						       &imx_gpc_domains[domain_index],
+ 						       sizeof(imx_gpc_domains[domain_index]));
+ 			if (ret) {
+ 				platform_device_put(pd_pdev);
+-				return ret;
++				goto err_free;
+ 			}
+ 			domain = pd_pdev->dev.platform_data;
+ 			domain->regmap = regmap;
+@@ -495,12 +501,17 @@ static int imx_gpc_probe(struct platform_device *pdev)
+ 			ret = platform_device_add(pd_pdev);
+ 			if (ret) {
+ 				platform_device_put(pd_pdev);
+-				return ret;
++				goto err_free;
+ 			}
+ 		}
+ 	}
+ 
++	of_node_put(pgc_node);
+ 	return 0;
++
++err_free:
++	of_node_put(pgc_node);
++	return ret;
+ }
+ 
+ static void imx_gpc_remove(struct platform_device *pdev)
+-- 
+2.34.1
 
-> +&flexcan2 {
-> +	pinctrl-0 =3D <&pinctrl_flexcan2>;
-> +	pinctrl-names =3D "default";
-> +	xceiver-supply =3D <&reg_can_stby>;
-> +	status =3D "okay";
-> +};
-> +
-> +&flexcan5 {
-> +	pinctrl-0 =3D <&pinctrl_flexcan5>;
-> +	pinctrl-names =3D "default";
-> +	xceiver-supply =3D <&reg_can_stby>;
-> +	status =3D "okay";
-> +};
-
-please use the "can-transceiver" instead of the "xceiver-supply" property.
-
-regards,
-Marc
---
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---bmknb3mg3ri2dueq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmk2lyUACgkQDHRl3/mQ
-kZxqPQf6AyTsvZQb2ibfwoTfAHibR2yJxjK5zCkTgzu80GArfYo7C58EXHsFffwJ
-DOX+Ftf0YxKCIm1UqAry6guRPFPFSJLLldS5fKtaNBcED/szvLZ8NKAbatuZ+7uy
-SgDbtwJc+5j7bBssZ7JfXLeVJrYj8tpEOqYeHRLNgYlHu6/TnOrUSCTWLGvqZN/G
-On9Xltc8IDMrdpaBNp/BzV2GPl15PjODjhEFQQipca+si3chUPyv64iDAEkQou7e
-hrOSVJ4S+1E62o1f094o5YKFUTK79cdhmqzjsxTbGpTb8Fca53jgLaBnUKNn4cnO
-GMVG5cYL0ixktrTobrNgiipgf00Wwg==
-=TGy7
------END PGP SIGNATURE-----
-
---bmknb3mg3ri2dueq--
