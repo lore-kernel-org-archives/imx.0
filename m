@@ -1,103 +1,114 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F0B19F12A
-	for <imx@lists.linux.dev>; Mon,  8 Dec 2025 06:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E32A2192F5;
+	Mon,  8 Dec 2025 07:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765177044; cv=none; b=gppEZ8lphv+5Sy2S+TFkCZr6YdB4m95WBaD2VEwDDgyLtnZG84OVgyU+Ph3wGKWffrah+J5oEyM/KmyH9NgNbKELe6j81LYaWSUkjFRf1WpSG5X52h2HhcIagH7rMv+fqlAd/KU/Mj9hm0whgrGSxdF4AeNkEfwipXGCHxsk76k=
+	t=1765178007; cv=none; b=OL4DZ/GRFOsok9t7LBlSbiasu4nMbv+84xQgSi5VioRgJUqPUg0ixuxz/fdAcJCplss9E4MeA2Z1OmMRpYdpLAFRpjh59Ennk7UfUkdNltUdAUKW07OjSXrqt21uL/3JBDR8B6mF7WKdHi7rkKpu596GNS63JslARVf9tcxF2bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765177044; c=relaxed/simple;
-	bh=GhPXslAU7nuFcLZ9A8dfLObHrQelf+e80NaGtfASJkY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T0YZKBcZvl1maCpVWF/N4poBYtz9031uRt+1U+c6ESOERr+1OzhX1RGAymfc1oUQBxAalRvoY9pzSx9ohA2VHKhoefGUEe/r7kFEfV9cmEvVRQd+NdhChcQTp8BMet1N8EdcAX60ehoNwzyXENwyPXfexlkW3ejkDw4CXGGMe1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=zgJzcTGL; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1765178007; c=relaxed/simple;
+	bh=XPnFglyw6lEb7GGfmHVyKc9kWVFqyj9ZUzaHTZKFtCk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jqU88572PHoqKDrQHcyqf2H9QC302/PRZJzcVGphTXihuk7FKfIBZJsH0P4CAhvrDIIUBNHIQUiuDbz2d5cdSULZLH9GIZRxy4q8HYSVzEXEgAf4vVEgSOYxCLi3r+J7RHaGFc4QWSKJkvMvfnIflLzZiBFjreaNOjcF5dfu2L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lM5tkkDQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="zgJzcTGL"
-Received: from francesco-nb (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
-	by mail11.truemail.it (Postfix) with ESMTPA id 84B151F8F8;
-	Mon,  8 Dec 2025 07:57:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1765177032;
-	bh=WzX89WI9Ff7+y2yfQZHdLK5k0mjF3N3JjQBBoJ3ILK4=; h=From:To:Subject;
-	b=zgJzcTGL5tlXkskmwXlB1xUVgYPCvSlP0O/3wsmiwTWz0B1RTyXxJn8qElFiAm994
-	 R0RmzoWWgBaRHXM6QYcX1KQ4GquDzhxnIF8wu6kdGJsTomo/prXF2EMMJthDrbSKfg
-	 l0fX+e8sYmOPCa78DB9vuwDpi86rxcQvUm5e+se6+MiRIoQRumvJNcgreMZcAAYn01
-	 WRRvDTH3KFXE5i4Y/fqoqBpq3KOaPiO8ID6DA+GyGvA8m0adp5ntExywaVgNhroCJT
-	 AP5k0xcfhYog2fvVFeQpl2belm9ytzMnICieNL/opEMSoglcCKnJbIRAwhnKet6P0g
-	 RPbVosspb9muA==
-Date: Mon, 8 Dec 2025 07:57:07 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Lei Xu <lei.xu@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, justin.jiang@nxp.com,
-	qijian.guo@nxp.com
-Subject: Re: [PATCH 2/2] arm64: dts: freescale: imx95: Add support for i.MX95
- 15x15 FRDM board
-Message-ID: <20251208065707.GA15128@francesco-nb>
-References: <20251207-127-v1-0-5a2eeb69f150@nxp.com>
- <20251207-127-v1-2-5a2eeb69f150@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lM5tkkDQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924D3C4CEF1;
+	Mon,  8 Dec 2025 07:13:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765178006;
+	bh=XPnFglyw6lEb7GGfmHVyKc9kWVFqyj9ZUzaHTZKFtCk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lM5tkkDQn71ETaXOgh31ti1Np517oP2HdnXxfqmwageBIV61GnpVGqvM+HtN0UfH9
+	 DyEzRHlntBFtVgaZGPKo7zQIQMhonptS8OG/6CMF/4XgfIrMA4N4IW8dpUqer5gI5E
+	 YZ/44URZ3cUoye1U6VnJJO6kcXZTNCDUNCafr2kWJbeSIHU/HSGuU+N7A4ruqr83T0
+	 tPsW53boKD6YC7dXtAMdvicoZ7WsTEI9KwAxiI4QNpdFpGR+d8ofb0qdD634Q6907t
+	 w2P46pZQiCg+8qre2FCXc2JtsGJMq74f4uJ4GMkLUHlbrwt8MgaC/I4pSgJbLMuc0r
+	 Y0W26ziYfxqvQ==
+Message-ID: <a2b4cad2-28a8-4fcf-857a-cd002f2c1211@kernel.org>
+Date: Mon, 8 Dec 2025 08:13:22 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251207-127-v1-2-5a2eeb69f150@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Add compatible for i.MX95
+ 15x15 FRDM board
+To: Lei Xu <lei.xu@nxp.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ justin.jiang@nxp.com, qijian.guo@nxp.com
+References: <20251207-127-v1-0-5a2eeb69f150@nxp.com>
+ <20251207-127-v1-1-5a2eeb69f150@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251207-127-v1-1-5a2eeb69f150@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello Lei,
+On 07/12/2025 14:26, Lei Xu wrote:
+> Introduce a new DT compatible string for the NXP i.MX95 15x15 FRDM
+> development board, a compact and cost-effective platform based on
+> the i.MX95 applications processor.
+> 
+> Signed-off-by: Lei Xu <lei.xu@nxp.com>
+> ---
+>  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 
-On Sun, Dec 07, 2025 at 05:26:06AM -0800, Lei Xu wrote:
-> The i.MX95 15x15 FRDM board is a compact and cost-effective development
-> platform based on the i.MX95 applications processor.
 
-...
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
-> new file mode 100644
-> index 000000000000..61e815c858b8
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
-
-...
-
-> +
-> +/* Default settings in i.mx95.dtsi are for i.MX95 19x19 package.
-> + * Override here for the i.MX95 15x15 package.
-> + */
-> +&netc_bus0 {
-> +	msi-map = <0x0 &its 0x60 0x1>,	//ENETC0 PF
-> +		  <0x10 &its 0x61 0x1>, //ENETC0 VF0
-> +		  <0x20 &its 0x62 0x1>, //ENETC0 VF1
-> +		  <0x40 &its 0x63 0x1>, //ENETC1 PF
-> +		  <0x50 &its 0x65 0x1>, //ENETC1 VF0
-> +		  <0x60 &its 0x66 0x1>, //ENETC1 VF1
-> +		  <0x80 &its 0x64 0x1>, //ENETC2 PF
-> +		  <0xc0 &its 0x67 0x1>; //NETC Timer
-> +	iommu-map = <0x0 &smmu 0x20 0x1>,
-> +		    <0x10 &smmu 0x21 0x1>,
-> +		    <0x20 &smmu 0x22 0x1>,
-> +		    <0x40 &smmu 0x23 0x1>,
-> +		    <0x50 &smmu 0x25 0x1>,
-> +		    <0x60 &smmu 0x26 0x1>,
-> +		    <0x80 &smmu 0x24 0x1>,
-> +		    <0xc0 &smmu 0x27 0x1>;
-> +};
-
-If the 19x19 and 15x15 i.MX95 requires something different you should
-have a different soc dtsi. Probably creating a new imx95-$something
-dtsi, that includes the existing imx95.dtsi and override this property.
-
-This solution does not scale, please fix it.
-
-Francesco
-
+Best regards,
+Krzysztof
