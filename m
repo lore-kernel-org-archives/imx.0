@@ -1,135 +1,277 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35EF43101BA
-	for <imx@lists.linux.dev>; Mon,  8 Dec 2025 10:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71CA2E7F1D
+	for <imx@lists.linux.dev>; Mon,  8 Dec 2025 12:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765190163; cv=none; b=QDr0AalbGgxZKoyhBc3f5luuAbuHszPAxTwlBUED0KBbnLwaSDQzgFrsRVzXJ/JYsHPBaZyhKlnQFPNr7GP5HUkIx/5RYZIV9U9CspR6F483v2xPtPR7JX69QNekX63ORap6fZdOdB6KCrwBxpQlj+YrNc3m49cODUZPlw/esgU=
+	t=1765197768; cv=none; b=Wq1eKtM0jb0+vvtuRPL74qvWWFn1LvgwHmxhntmYVOxHnbR8m5yOwkaLEV1S9hiovcwhM4fyVuFvdoNRguHWRhgnSwejdSG4843Jt+UeymwlceUxHr7FUYKA4VWt7ajWX/FIJAclYOnt4qjofL1MmOf6k8fn5eQHoUugHnYSE7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765190163; c=relaxed/simple;
-	bh=s0L/F0IMsYB37Rxo4CHT7apF8oSazdCraUwxwRSEMFw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OtxoAGQ58Ff19YD2zqPf0sEDfjwV3njffMtFHKCiZhpCmlN1XszT5En8vJo5A+GlRrRXcj28ZPjKM/Z7oPjdqWagef9dv/lEsOLAmivFM7PR9+sY0yto0l03tQPAAm6+5v59LSniVwro/PwkO2DIzQzTsUkh4qLQGEwG+fkutIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b=n+A5Wh7O; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	s=arc-20240116; t=1765197768; c=relaxed/simple;
+	bh=8xIVj1oPw573xZll1w+KCySOz/zJABuXMM2i0K8zmFg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=VvSk5KkYENe0hJgw1J6WwYy63KKygsGKXjC44r/V+UNTbR2J91YsFyd1Xujqi75VP85LUICON4U07+byIHr5ZEFv/zqjSWdHJaUY7OjbVyMjWrgIWXFmxcnqnmt1vnQKowuTDurpkQTnhhG5DXpxHHgiUpbbSJELI5BMGe/OyWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=NOJ7rScp; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20230601.gappssmtp.com header.i=@riscstar-com.20230601.gappssmtp.com header.b="n+A5Wh7O"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-477a1c28778so55773245e9.3
-        for <imx@lists.linux.dev>; Mon, 08 Dec 2025 02:36:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20230601.gappssmtp.com; s=20230601; t=1765190159; x=1765794959; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+E3SOYkqsEc+5aDXpHHAZRqmKpJ7LXworventsdWgtI=;
-        b=n+A5Wh7OeeuSEecag3a0UGJ+Q73kd+2LQzyHD4CH4n4Coyi+liYbrQQMaq/+/uXbeo
-         1k5ETzDxDrjdaA8Mgb5t1l850qghYYsIVOtlOmbbgN4rqtq67S+6JNQEXvwVFdpFwl+w
-         YxIHQHSCrtsP7JCUIPSe7RbG7eH8KUYaoKP8yWYSKhd/oK1m1Vxfaf8+kDELLp95zZxy
-         wwp7GJMwut9gUPeJAyVWxGu1CMJLbXd9J+gFzMfShFyqVmm3ScRtRaYcUszTE0zbl4Yp
-         d0j+x4BfQIACGjiIQOX6gwOneIXHhv/grWeRvfRi+FLZ/VSbMpha5kwwmKwLQxVvOg8w
-         d3Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765190159; x=1765794959;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+E3SOYkqsEc+5aDXpHHAZRqmKpJ7LXworventsdWgtI=;
-        b=kj3fkbmujOUR0nd9OkC6rFwirQBZvT8PIFt5ZUwyUTK1M4KJtY5cDelwQSwyJM+XB2
-         THI7R+oJMiBO13bLIfNruNddYDZ3a0zRxJYWIz0kmwQ/9VIizQGaBJH3ghvpfgwrHFtM
-         a6YJpJwe0LiY5Bv3nqgQslcc4NPotvUXKqyCHg9hQ4aupG5PsaiEtloWHBRPBX9mG1um
-         1RYn8bf6rqr53Q9Iuo7N11w2LkUXKCt3MT6AKj0VQxTexvtzj7aT/a+nIWXKh7mV2zig
-         jcbYVJIgEf7w+unTNqhzDa0FAC96D3Xnlr748YziTJ1+DzRkMs7sNMxlbKcrCxRv5T1H
-         E6Ww==
-X-Forwarded-Encrypted: i=1; AJvYcCWQFNiHWCT50+++vti2BvdOTIP7pSL28mV8wScswiIMucNRF1nmfIGm5QY6bTtxfS7KsxU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YweDi6Yd/znGEMm7nPzjdmR9OK8ZtVAn9wRAwXixkLxNdVw3Fdb
-	9gVgIhH6+DaWwfjXu3MWcvZullzLCrIeEhsBX9ES37zeT2TJ2irTHUAlfCtTTEPvGmDX9cQWfb2
-	A7tYBErc=
-X-Gm-Gg: ASbGncughvgDvvXFy4GZUslLkTYyMAa6MnHnWTgaIn9IOdEK6EG+q+6sNWv7NyoK4Mz
-	oJiwFA1iZuXqln8RCC3ENPzHX+KaQUl++TUjdm09B5khP9EKhrb6jSL4Ol2w3ZY+ETZAEfbMKhO
-	Na4JsDnYFhMfKaTgh8wjrtyyS07J7RqN9hrqygDsz95iRjx0jowMj+LtqgXKbjK4GxX8kQavEaV
-	+W9TSK1Ssg2srtOov4NEmQ+NFvgm60UtHDnvAx62PxbxHEUCDuE+I8jeADRBMVAjto6TpBTzAVY
-	wG46IdGWn4I3qGhavtw2Gvr7wqPVxYVXHjBHvljBuN9ZU3NDRpVl2x8asSugQXzkBn85VMCq1NP
-	Y8T/pPG/WmPs59/A87dkVSyO4XE+eeS1JHyyXI4HxbvcO2CPggLzhczSNltYa8uRFegghP205jI
-	wPvwBvR7CSQh/NvNV0yEVibnhVZzA0D4jGDeJaS1jhT4jh3UyVawbxivU9pkOB6wwIPaJoOA==
-X-Google-Smtp-Source: AGHT+IGge21HXj48TLUzsA7ggUbHSFC0xO5HgqxGNKT4MTX7Oe0oV8kQd6FtV8OIYLtnHQGrRwLESw==
-X-Received: by 2002:a05:600c:818e:b0:477:9fcf:3fe3 with SMTP id 5b1f17b1804b1-47939c87088mr76977635e9.0.1765190159388;
-        Mon, 08 Dec 2025 02:35:59 -0800 (PST)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-479311e712fsm240407865e9.9.2025.12.08.02.35.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Dec 2025 02:35:58 -0800 (PST)
-Date: Mon, 8 Dec 2025 10:35:55 +0000
-From: Daniel Thompson <daniel@riscstar.com>
-To: Maud Spierings <maudspierings@gocontroll.com>
-Cc: Lee Jones <lee@kernel.org>, Daniel Thompson <danielt@kernel.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, dri-devel@lists.freedesktop.org,
-	linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v6 2/4] backlight: add max25014atg backlight
-Message-ID: <aTaqCxsGj_waN92Y@aspen.lan>
-References: <20251201-max25014-v6-0-88e3ac8112ff@gocontroll.com>
- <20251201-max25014-v6-2-88e3ac8112ff@gocontroll.com>
- <aTG0EK_zuSB-U_bb@aspen.lan>
- <8a9a59b8-d5c0-46b3-8f86-a4cd910b7af3@gocontroll.com>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="NOJ7rScp"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20251208124243euoutp02436f7d27dd6ba06a8ef912d2d7ccc229~-PgNicBMM2838928389euoutp02v
+	for <imx@lists.linux.dev>; Mon,  8 Dec 2025 12:42:43 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20251208124243euoutp02436f7d27dd6ba06a8ef912d2d7ccc229~-PgNicBMM2838928389euoutp02v
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1765197763;
+	bh=TeCHUK8ly3u0CI/lUzUWsXGJUfrPlFtMtRIQkLKm/zU=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=NOJ7rScpu2XkuJCEzxkbY71v5K3qviYiAIeTlGuXEdATb4vaBoNoGO4jgEwNbakyO
+	 Vy+3TuwK3C6BCfbxjUTpwW+UKXLGijpsWNzWu62pzn93xnzyQpNdrJDuLLEDSs0zPd
+	 xD2/llIOYQP09TQ2tsV1Au/rjAdj5InkjZ38vCqQ=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20251208124242eucas1p18ad0b3dea76a4e58723a1148e90be629~-PgNJCxmx2269822698eucas1p1t;
+	Mon,  8 Dec 2025 12:42:42 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20251208124241eusmtip1faee3b50a42c148b87ef1321d70f043a~-PgL5JH1s0280602806eusmtip1H;
+	Mon,  8 Dec 2025 12:42:41 +0000 (GMT)
+Message-ID: <2c274bd2-3bcc-4b75-9a37-9a6441bd7a50@samsung.com>
+Date: Mon, 8 Dec 2025 13:42:40 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8a9a59b8-d5c0-46b3-8f86-a4cd910b7af3@gocontroll.com>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH v7 2/2] remoteproc: qcom: Use of_reserved_mem_region_*
+ functions for "memory-region"
+To: Rob Herring <robh@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier
+	<mathieu.poirier@linaro.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven
+	<geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, Patrice
+	Chotard <patrice.chotard@foss.st.com>, Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>, Alexandre Torgue
+	<alexandre.torgue@foss.st.com>, Arnaud Pouliquen
+	<arnaud.pouliquen@foss.st.com>, Peng Fan <peng.fan@nxp.com>, Beleswar Padhi
+	<b-padhi@ti.com>, linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-msm@vger.kernel.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <CAL_JsqJTrGAJx-fv8OQGDhsLVKavQzzQotssEq_E5f_aJe8bOg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20251208124242eucas1p18ad0b3dea76a4e58723a1148e90be629
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20251127142839eucas1p186846c6c1ea1d9e43369fbba9bb5d17c
+X-EPHeader: CA
+X-CMS-RootMailID: 20251127142839eucas1p186846c6c1ea1d9e43369fbba9bb5d17c
+References: <20251124182751.507624-1-robh@kernel.org>
+	<CGME20251127142839eucas1p186846c6c1ea1d9e43369fbba9bb5d17c@eucas1p1.samsung.com>
+	<20251124182751.507624-2-robh@kernel.org>
+	<674efe8d-c299-4ce9-bf6b-c1920a5393eb@samsung.com>
+	<CAL_JsqJTrGAJx-fv8OQGDhsLVKavQzzQotssEq_E5f_aJe8bOg@mail.gmail.com>
 
-On Fri, Dec 05, 2025 at 04:20:55PM +0100, Maud Spierings wrote:
-> Thanks for the review.
+On 02.12.2025 15:15, Rob Herring wrote:
+> On Thu, Nov 27, 2025 at 8:28 AM Marek Szyprowski
+> <m.szyprowski@samsung.com> wrote:
+>> On 24.11.2025 19:27, Rob Herring (Arm) wrote:
+>>> Use the newly added of_reserved_mem_region_to_resource() and
+>>> of_reserved_mem_region_count() functions to handle "memory-region"
+>>> properties.
+>>>
+>>> The error handling is a bit different in some cases. Often
+>>> "memory-region" is optional, so failed lookup is not an error. But then
+>>> an error in of_reserved_mem_lookup() is treated as an error. However,
+>>> that distinction is not really important. Either the region is available
+>>> and usable or it is not. So now, it is just
+>>> of_reserved_mem_region_to_resource() which is checked for an error.
+>>>
+>>> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+>> This patch landed in today's linux-next as commit c70b9d5fdcd7
+>> ("remoteproc: qcom: Use of_reserved_mem_region_* functions for
+>> "memory-region""). In my tests I found that it breaks booting of
+>> DragonBoard410c (arch/arm64/boot/dts/qcom/apq8016-sbc.dts) by causing
+>> the NULL pointer dereference. The issue is caused by replacing
+>> devm_ioremap_wc() with devm_ioremap_resource_wc(), which fails on
+>> devm_request_mem_region(), see comment in the code below. It looks that
+>> the error handling is somewhere broken. Here is the the kernel log:
+>>
+>> remoteproc remoteproc0: 4080000.remoteproc is available
+>> qcom-wcnss-pil a204000.remoteproc: error -EBUSY: can't request region
+>> for resource [mem 0x8e200000-0x8e7fffff]
+>> remoteproc remoteproc1: a204000.remoteproc is available
+>> remoteproc remoteproc1: powering up a204000.remoteproc
+>> remoteproc remoteproc1: Booting fw image qcom/apq8016/wcnss.mbn, size
+>> 4111376
+>> Unable to handle kernel paging request at virtual address fffffffffffffff0
+>> Mem abort info:
+>> ...
+>> Internal error: Oops: 0000000096000046 [#1]  SMP
+>> Modules linked in: cpufreq_powersave qcom_wcnss_pil cpufreq_conservative
+>> coresight_stm coresight_replicator coresight_tmc coresight_tpiu stm_core
+>> coresight_funnel coresight_cpu_debug coresight_cti(+) adv7511 coresight
+>> nfc rfkill msm snd_soc_lpass_apq8016 snd_soc_apq8016_sbc
+>> snd_soc_lpass_cpu snd_soc_msm8916_analog snd_soc_msm8916_digital
+>> snd_soc_qcom_common snd_soc_lpass_platform snd_soc_core qrtr ubwc_config
+>> snd_compress llcc_qcom snd_pcm_dmaengine qcom_q6v5_mss snd_pcm ocmem
+>> qcom_pil_info qcom_spmi_vadc qcom_camss drm_gpuvm qcom_pon rtc_pm8xxx
+>> qcom_q6v5 qcom_spmi_temp_alarm venus_core qcom_vadc_common snd_timer
+>> drm_exec qcom_sysmon snd qcom_common gpu_sched videobuf2_dma_sg
+>> v4l2_mem2mem qcom_glink_smem v4l2_fwnode soundcore drm_dp_aux_bus
+>> qmi_helpers mdt_loader v4l2_async videobuf2_memops videobuf2_v4l2
+>> videodev qnoc_msm8916 videobuf2_common qcom_rng drm_display_helper mc
+>> qcom_stats rpmsg_ctrl rpmsg_char display_connector ramoops socinfo
+>> rmtfs_mem reed_solomon ax88796b asix usbnet phy_qcom_usb_hs ipv6 libsha1
+>> CPU: 2 UID: 0 PID: 28 Comm: kworker/2:0 Tainted: G W
+>> 6.18.0-rc1+ #16209 PREEMPT
+>> Tainted: [W]=WARN
+>> lr : __qcom_mdt_load+0x210/0x304 [mdt_loader]
+>> Call trace:
+>>    __pi_memcpy_generic+0x128/0x22c (P)
+>>    qcom_mdt_load+0x68/0x60c [mdt_loader]
+>>    wcnss_load+0x2c/0x5c [qcom_wcnss_pil]
+>>    rproc_start+0x30/0x1b4
+>>    rproc_boot+0x19c/0x560
+>>    rproc_auto_boot_callback+0x1c/0x34
+>>    request_firmware_work_func+0x4c/0x98
+>>    process_one_work+0x208/0x60c
+>>    worker_thread+0x244/0x388
+>>    kthread+0x150/0x228
+>>    ret_from_fork+0x10/0x20
+>> Code: 927cec03 cb0e0021 8b0e0042 a9411c26 (a900340c)
+>> ---[ end trace 0000000000000000 ]---
+>>
+>>
+>>> ---
+>>> v7:
+>>>    - Split QCom to separate patch
+>>> ---
+>>>    drivers/remoteproc/qcom_q6v5_adsp.c | 24 ++++------
+>>>    drivers/remoteproc/qcom_q6v5_mss.c  | 60 ++++++++-----------------
+>>>    drivers/remoteproc/qcom_q6v5_pas.c  | 69 +++++++++++------------------
+>>>    drivers/remoteproc/qcom_q6v5_wcss.c | 25 +++++------
+>>>    drivers/remoteproc/qcom_wcnss.c     | 23 ++++------
+>>>    5 files changed, 72 insertions(+), 129 deletions(-)
+>>>
+>>> ...
+>>> diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
+>>> index 2c7e519a2254..14005fb049a2 100644
+>>> --- a/drivers/remoteproc/qcom_wcnss.c
+>>> +++ b/drivers/remoteproc/qcom_wcnss.c
+>>> @@ -526,25 +526,20 @@ static int wcnss_request_irq(struct qcom_wcnss *wcnss,
+>>>
+>>>    static int wcnss_alloc_memory_region(struct qcom_wcnss *wcnss)
+>>>    {
+>>> -     struct reserved_mem *rmem = NULL;
+>>> -     struct device_node *node;
+>>> -
+>>> -     node = of_parse_phandle(wcnss->dev->of_node, "memory-region", 0);
+>>> -     if (node)
+>>> -             rmem = of_reserved_mem_lookup(node);
+>>> -     of_node_put(node);
+>>> +     struct resource res;
+>>> +     int ret;
+>>>
+>>> -     if (!rmem) {
+>>> +     ret = of_reserved_mem_region_to_resource(wcnss->dev->of_node, 0, &res);
+>>> +     if (ret) {
+>>>                dev_err(wcnss->dev, "unable to resolve memory-region\n");
+>>> -             return -EINVAL;
+>>> +             return ret;
+>>>        }
+>>>
+>>> -     wcnss->mem_phys = wcnss->mem_reloc = rmem->base;
+>>> -     wcnss->mem_size = rmem->size;
+>>> -     wcnss->mem_region = devm_ioremap_wc(wcnss->dev, wcnss->mem_phys, wcnss->mem_size);
+>>> +     wcnss->mem_phys = wcnss->mem_reloc = res.start;
+>>> +     wcnss->mem_size = resource_size(&res);
+>>> +     wcnss->mem_region = devm_ioremap_resource_wc(wcnss->dev, &res);
+>> The above line causes the failure. After restoring it to:
+>>
+>> wcnss->mem_region = devm_ioremap_wc(wcnss->dev, wcnss->mem_phys, wcnss->mem_size);
+>>
+>> the mentioned board boots fine again. I'm not sure about other drivers,
+>> if they also fail the same way as they might not be used on the tested
+>> board.
+> Other platforms (non-QCom) were tested also use
+> devm_ioremap_resource_wc(). So something else is claiming the same
+> region? Can you dump out /proc/iomem?
 >
-> On 12/4/25 17:17, Daniel Thompson wrote:
-> > On Mon, Dec 01, 2025 at 12:53:21PM +0100, Maud Spierings via B4 Relay wrote:
-> > > The Maxim MAX25014 is a 4-channel automotive grade backlight driver IC
-> > > with integrated boost controller.
-> > >
-> > > Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
->
-> <snip>
->
-> > > +static int max25014_update_status(struct backlight_device *bl_dev)
-> > > +{
-> > > +	struct max25014 *maxim = bl_get_data(bl_dev);
-> > > +	uint32_t reg;
-> > > +	int ret;
-> > > +
-> > > +	if (backlight_is_blank(maxim->bl))
-> > > +		bl_dev->props.brightness = 0;
-> >
-> > This isn't right. Why would you change the backlight level just because
-> > it is currently blanked (and sorry I missed this one last time).
->
-> so just remove this bit then jeah?
+> The region is dynamically allocated, so maybe that has something to do with it.
 
-Yes. backlight_get_brightness() is all you should need.
+# dmesg | grep mem
+OF: reserved mem: 0x000000008e200000..0x000000008e7fffff (6144 KiB) 
+nomap non-reusable wcnss
+OF: reserved mem: 0x000000008dd00000..0x000000008e1fffff (5120 KiB) 
+nomap non-reusable venus
+OF: reserved mem: 0x000000008dc00000..0x000000008dcfffff (1024 KiB) 
+nomap non-reusable mba
+OF: reserved mem: 0x0000000086000000..0x00000000862fffff (3072 KiB) 
+nomap non-reusable tz-apps@86000000
+OF: reserved mem: 0x0000000086300000..0x00000000863fffff (1024 KiB) 
+nomap non-reusable smem@86300000
+OF: reserved mem: 0x0000000086400000..0x00000000864fffff (1024 KiB) 
+nomap non-reusable hypervisor@86400000
+OF: reserved mem: 0x0000000086500000..0x000000008667ffff (1536 KiB) 
+nomap non-reusable tz@86500000
+OF: reserved mem: 0x0000000086680000..0x00000000866fffff (512 KiB) nomap 
+non-reusable reserved@86680000
+OF: reserved mem: 0x0000000086700000..0x00000000867dffff (896 KiB) nomap 
+non-reusable rmtfs@86700000
+OF: reserved mem: 0x00000000867e0000..0x00000000867fffff (128 KiB) nomap 
+non-reusable rfsa@867e0000
+OF: reserved mem: 0x0000000086800000..0x00000000892fffff (44032 KiB) 
+nomap non-reusable mpss@86800000
+OF: reserved mem: 0x00000000bff00000..0x00000000bfffffff (1024 KiB) map 
+non-reusable ramoops@bff00000
+NUMA: Faking a node at [mem 0x0000000080000000-0x00000000bd9fffff]
+NODE_DATA(0) allocated [mem 0xbd7c6800-0xbd7c943f]
+   DMA      [mem 0x0000000080000000-0x00000000bd9fffff]
+Early memory node ranges
+   node   0: [mem 0x0000000080000000-0x0000000085ffffff]
+   node   0: [mem 0x0000000086000000-0x00000000892fffff]
+   node   0: [mem 0x0000000089300000-0x000000008dbfffff]
+   node   0: [mem 0x000000008dc00000-0x000000008e7fffff]
+   node   0: [mem 0x000000008e800000-0x00000000bd9fffff]
+
+...
 
 
-> > > +
-> > > +	reg  = TON_STEP * bl_dev->props.brightness;
-> >
-> > The correct way to honour blanking is just go call
-> > backlight_get_brightness() instead of reading the property directly.
->
-> will do.
+# cat /proc/iomem
 
-Thanks.
+...
+80000000-85ffffff : System RAM
+  80000000-821affff : Kernel code
+  821b0000-82e5ffff : reserved
+  82e60000-840fffff : Kernel data
+  85000000-85013fff : reserved
+86000000-892fffff : reserved
+89300000-8dbfffff : System RAM
+8dc00000-8e7fffff : reserved
+  8dc00000-8e7fffff : reserved
+8e800000-bd9fffff : System RAM
+  b1000000-b6ffffff : reserved
+  b7000000-bbe08fff : reserved
+  bc480000-bd5fffff : reserved
+  bd621000-bd623fff : reserved
+  bd624000-bd724fff : reserved
+  bd725000-bd7b0fff : reserved
+  bd7b2000-bd7b4fff : reserved
+  bd7b5000-bd7b5fff : reserved
+  bd7b6000-bd7c9fff : reserved
+  bd7ca000-bd9fffff : reserved
 
 
-Daniel.
+The devm_ioremap_resource_wc() requested region (0x8e200000-0x8e7fffff) 
+is marked as 'reserved' in /proc/iomem.
+
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
+
