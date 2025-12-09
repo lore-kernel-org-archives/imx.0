@@ -1,54 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25AE19CCF7;
-	Tue,  9 Dec 2025 07:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B872AEF5
+	for <imx@lists.linux.dev>; Tue,  9 Dec 2025 08:08:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765264809; cv=none; b=lBwFuvzjAXS1wndkqW35ixy7ifzYQiCldK/gXgY1/9QqOvihFOsjf8CdgLitRp+DXA2bk6/xab3bppEpEwo7I9jR+029fC6LjXs1L1F5iTgFGtPtVWPCOMWYjVsJGv4j0EANScjMWQOUbQaS6ANqIBlVtnWqBT8VwqsN13tn5WU=
+	t=1765267692; cv=none; b=H/mFjW4arSLMGw29dgaqazg80IEc0FNMwKHWquqg8pwO5D5q0JYJaOyu0MLqp7ZBOWv00Kfd8Z8ZFir0M2HRYEdQIc6IryaA3WMXLQSez9sx3Ss9Xvgbdc+X+2I1AnBrcAhIZyQlD0nLYBVubIdFf65djuN32JWDn7by7qKW6u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765264809; c=relaxed/simple;
-	bh=2+RBfirrXuFnkMRxDw7t0EtfDZroa6uDXyUspwpTeIU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a96dkxOQClkof4kcvL77GbAJ6Uou34WKxUZm/wGMBX3LcrOfGMJGRYC2MrN5gLLUltAtBktZ7wKQ3tnavb03VIv8MwneZS3b0EBaLRa/++QpivpTpu/uqpwU8jmENsKNC6QrAoUvCRHrUelBA29k9faL/PHvKFXiTLRwAWapM8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/jVDiia; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765267692; c=relaxed/simple;
+	bh=MJimUWyWCQryzeXq/CylmXxVGK1UyUx3ivCgZyvep+w=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=p7dkvAb7Z/fXYdy1ih1IGRcgMuLwzyzm3nwfk/zfa9fxUAin4a7dhJDEunXTY49sE3Q7HyveJaYYyZwLgwZrEaC6F0zcVUMgRCV+mooVUmz/LWK/2YBLwn4qYi2Yas+KHtrNc5xkna4RWB6Y+dheoLChtuFMwqQpGWyw/1PlE1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JK0RYzGI; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/jVDiia"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137C4C4CEFB;
-	Tue,  9 Dec 2025 07:20:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765264809;
-	bh=2+RBfirrXuFnkMRxDw7t0EtfDZroa6uDXyUspwpTeIU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n/jVDiia6Xt689ozubWpINb6zPps2GAGN4ovKR+yZJbb1pZ3FqoiGlaESeOnFGwnC
-	 oFohj1jB3EQDwexnuAimLRCSTAIkMcqqUUp/Ppk00eblJIMiI/hUSM5ZqNuoxKDqZy
-	 qgunAerivYkbJNWMeG6MbaGPRLrk4rTDm8kPpdrvVO6pUGQ3o1l5c+0pYQxttsTsb0
-	 s+gzBg72oPYzw/GIwTiMssFxRpmpM6CU76gMyTDS9l6ARdgm0Y7ac8cxoaqmsswcKH
-	 AwmLtUYjLUKVPw9RIwCOxo2ni4xc0MAgPG9bSbJcD8Qiv+TID/luQz8wBjVO8pFKff
-	 fxdkxqKFXombQ==
-Date: Tue, 9 Dec 2025 08:20:01 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Vinod Koul <vkoul@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Koichiro Den <den@valinux.co.jp>, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-nvme@lists.infradead.org, mhi@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH 0/8] dmaengine: Add new API to combine onfiguration and
- descriptor preparation
-Message-ID: <aTfNoU6fKBOcjL5j@ryzen>
-References: <20251208-dma_prep_config-v1-0-53490c5e1e2a@nxp.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JK0RYzGI"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-47774d3536dso49945925e9.0
+        for <imx@lists.linux.dev>; Tue, 09 Dec 2025 00:08:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1765267688; x=1765872488; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=i3HS3UZvHWNoRI4tSC4tCLlGjmvQB2LsBSbcqGJUth8=;
+        b=JK0RYzGIvRz7m66mQkDOKLQrt1tn3j8leCvcAfY/j9yp8GZM5BebT/mXzqwOQX5EW+
+         rj01VRVBmgqErBg5yi6j7Ic77ZYw9AnxEX7YHMr0cj44a6bee64PLjCDBWblMkj1AXCT
+         uoyUItixgljSNxPSitjLLh7wIjsWHVuJdxgBWsNmAW6oBK35BXj2i+nHMJCLXTOKJ5e9
+         +5M6hRAqZ8+/ahRZ1cpNxP21piABDFxMnjP/PwGMqyHkVtnF822rJOq/59KmXwNCY3Hb
+         FaPAjglF2f5XVTgkS82xEm9+eDO3qOUAvTkabyFP4A94fByh1mptmEdnBcdboq4g2TXX
+         neVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765267688; x=1765872488;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i3HS3UZvHWNoRI4tSC4tCLlGjmvQB2LsBSbcqGJUth8=;
+        b=ZkFf/rLhMrqvXkWwFONY+/57IxR3Z0CEPRURXr60BttGry3y+9E8d42n3vm8aJt2Cl
+         xQUBeBD+ebedMQlLa4VJe2jeTsLuarOlTOkYAlOH57NQmFPUfaJQ98HsNk35jDhNbibg
+         GfcxnZjSzBwNAX1SajQrLZInT/UleH2eueb7ojLPi0KK/xLZ9an7hMQT+FMM/pi+Zi9x
+         D/X2Kz3N14IURv2qzoS0QNqR5QI37l1QZy1ILiOuDknL/OTaEPEIxmogPt01zF2TmOUo
+         1URParzjevwGweSQVZWJ13HaLg3qyXIe99XyXFzI1X+s62EK2rSx/rn2WYmLYxO/SgnH
+         U8MA==
+X-Forwarded-Encrypted: i=1; AJvYcCXz++57KS3vfJ4cuTzRPtBjj1Cm5udMuEjME4Csp57086K9hsoh+n7w2axmLkWj9iyemxY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxcAtGwvYWnFpIU8FKletZNlpk/vYdirbK/hlzBrZNWV2DqW6CR
+	E6XtFKZlOsTe9EoJ7eWorFNokd6LQgZ+NWlbkCSzUITYhi9Egorhshvh49DklTt2ja8=
+X-Gm-Gg: ASbGnctMWM+74nc9Q0eXhPcBBR5d5Q1kERd/k4GN1Af8xeQj2YEAjELL42S7pZwJYo2
+	FkgD1z9TVpRY66Z6rv8Lnu2Fb7+Bb/+rN5VgPOOuT5citwIjwQkUiqRd1yooSNJAESr1J0MPear
+	b1r9/ryGWrGaHtcLHEARbLFI+1zbNfOJ2N8GrbKwjLnjgugF3/IWB1rnCIikeg1vXwhWY0tmr+W
+	N/1Gw9FssCy0ilnieCEqziEGVPYa6K0zXRo1ocJufjvYWR/vdd6gBlDGpwbTRajjezQopn0wSr4
+	zjv3ZXB4gzmTCegEIadjDcPz9JXX0Sn5BXN7G4JdXZDJb053RxBUfGE9L57yctjhpGdnd22obQT
+	kbFylsdIB6bf04MgOuiL1qQRqZahtUgcmLo15weztJoBfSsNBEB8Ktyc8cTefCZ3jOLMUxUNQqr
+	UvuPE8LAXZbPS25v3V
+X-Google-Smtp-Source: AGHT+IGscc+SJZEm/TRqQYoD0TdId9MDDNWX4FpzSAzC9aFu5AY3yWeeq7XQ4gq/1MUrF2INsOS4mA==
+X-Received: by 2002:a05:600d:844f:10b0:477:9d88:2da6 with SMTP id 5b1f17b1804b1-47a7f987e56mr5630745e9.0.1765267688376;
+        Tue, 09 Dec 2025 00:08:08 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47a7d397a2fsm12719515e9.5.2025.12.09.00.08.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Dec 2025 00:08:07 -0800 (PST)
+Date: Tue, 9 Dec 2025 11:08:04 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev, Pankaj Gupta <pankaj.gupta@nxp.com>,
+	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v20 3/7] firmware: imx: add driver for NXP EdgeLock
+ Enclave
+Message-ID: <202512091557.d5dOvFff-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,96 +82,95 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251208-dma_prep_config-v1-0-53490c5e1e2a@nxp.com>
+In-Reply-To: <20251203-imx-se-if-v20-3-a04a25c4255f@nxp.com>
 
-On Mon, Dec 08, 2025 at 12:09:39PM -0500, Frank Li wrote:
-> Frank Li (8):
->       dmaengine: Add API to combine configuration and preparation (sg and single)
->       PCI: endpoint: pci-epf-test: use new DMA API to simple code
->       dmaengine: dw-edma: Use new .device_prep_slave_sg_config() callback
->       dmaengine: dw-edma: Pass dma_slave_config to dw_edma_device_transfer()
->       nvmet: pci-epf: Remove unnecessary dmaengine_terminate_sync() on each DMA transfer
->       nvmet: pci-epf: Use dmaengine_prep_slave_single_config() API
->       PCI: epf-mhi:Using new API dmaengine_prep_slave_single_config() to simple code.
->       crypto: atmel: Use dmaengine_prep_slave_single_config() API
-> 
->  drivers/crypto/atmel-aes.c                    | 10 ++---
->  drivers/dma/dw-edma/dw-edma-core.c            | 38 +++++++++++-----
->  drivers/nvme/target/pci-epf.c                 | 21 +++------
->  drivers/pci/endpoint/functions/pci-epf-mhi.c  | 52 +++++++---------------
->  drivers/pci/endpoint/functions/pci-epf-test.c |  8 +---
->  include/linux/dmaengine.h                     | 64 ++++++++++++++++++++++++---
->  6 files changed, 111 insertions(+), 82 deletions(-)
-> ---
-> base-commit: bc04acf4aeca588496124a6cf54bfce3db327039
-> change-id: 20251204-dma_prep_config-654170d245a2
+Hi Pankaj,
 
-For the series (tested using drivers/nvme/target/pci-epf.c):
-Tested-by: Niklas Cassel <cassel@kernel.org>
+kernel test robot noticed the following build warnings:
 
-Mainline:
-  Rnd read,    4KB,  QD=1, 1 job :  IOPS=5721, BW=22.3MiB/s (23.4MB/s)
-  Rnd read,    4KB, QD=32, 1 job :  IOPS=51.8k, BW=202MiB/s (212MB/s)
-  Rnd read,    4KB, QD=32, 4 jobs:  IOPS=109k, BW=426MiB/s (447MB/s)
-  Rnd read,  128KB,  QD=1, 1 job :  IOPS=2678, BW=335MiB/s (351MB/s)
-  Rnd read,  128KB, QD=32, 1 job :  IOPS=19.1k, BW=2388MiB/s (2504MB/s)
-  Rnd read,  128KB, QD=32, 4 jobs:  IOPS=18.1k, BW=2258MiB/s (2368MB/s)
-  Rnd read,  512KB,  QD=1, 1 job :  IOPS=1388, BW=694MiB/s (728MB/s)
-  Rnd read,  512KB, QD=32, 1 job :  IOPS=4554, BW=2277MiB/s (2388MB/s)
-  Rnd read,  512KB, QD=32, 4 jobs:  IOPS=4516, BW=2258MiB/s (2368MB/s)
-  Rnd write,   4KB,  QD=1, 1 job :  IOPS=4679, BW=18.3MiB/s (19.2MB/s)
-  Rnd write,   4KB, QD=32, 1 job :  IOPS=35.1k, BW=137MiB/s (144MB/s)
-  Rnd write,   4KB, QD=32, 4 jobs:  IOPS=33.7k, BW=132MiB/s (138MB/s)
-  Rnd write, 128KB,  QD=1, 1 job :  IOPS=2490, BW=311MiB/s (326MB/s)
-  Rnd write, 128KB, QD=32, 1 job :  IOPS=4964, BW=621MiB/s (651MB/s)
-  Rnd write, 128KB, QD=32, 4 jobs:  IOPS=4966, BW=621MiB/s (651MB/s)
-  Seq read,  128KB,  QD=1, 1 job :  IOPS=2586, BW=323MiB/s (339MB/s)
-  Seq read,  128KB, QD=32, 1 job :  IOPS=17.5k, BW=2190MiB/s (2296MB/s)
-  Seq read,  512KB,  QD=1, 1 job :  IOPS=1614, BW=807MiB/s (847MB/s)
-  Seq read,  512KB, QD=32, 1 job :  IOPS=4540, BW=2270MiB/s (2381MB/s)
-  Seq read,    1MB, QD=32, 1 job :  IOPS=2283, BW=2284MiB/s (2395MB/s)
-  Seq write, 128KB,  QD=1, 1 job :  IOPS=2313, BW=289MiB/s (303MB/s)
-  Seq write, 128KB, QD=32, 1 job :  IOPS=4948, BW=619MiB/s (649MB/s)
-  Seq write, 512KB,  QD=1, 1 job :  IOPS=901, BW=451MiB/s (473MB/s)
-  Seq write, 512KB, QD=32, 1 job :  IOPS=1289, BW=645MiB/s (676MB/s)
-  Seq write,   1MB, QD=32, 1 job :  IOPS=632, BW=633MiB/s (663MB/s)
-  Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=1756, BW=880MiB/s (923MB/s)
- IOPS=1767, BW=886MiB/s (929MB/s)
+url:    https://github.com/intel-lab-lkp/linux/commits/Pankaj-Gupta/Documentation-firmware-add-imx-se-to-other_interfaces/20251203-145202
+base:   4a26e7032d7d57c998598c08a034872d6f0d3945
+patch link:    https://lore.kernel.org/r/20251203-imx-se-if-v20-3-a04a25c4255f%40nxp.com
+patch subject: [PATCH v20 3/7] firmware: imx: add driver for NXP EdgeLock Enclave
+config: arm64-randconfig-r072-20251207 (https://download.01.org/0day-ci/archive/20251209/202512091557.d5dOvFff-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project a805147ac1ba123916de182babb0831fbb148756)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202512091557.d5dOvFff-lkp@intel.com/
 
-Mainline + this series applied:
-  Rnd read,    4KB,  QD=1, 1 job :  IOPS=3681, BW=14.4MiB/s (15.1MB/s)
-  Rnd read,    4KB, QD=32, 1 job :  IOPS=54.8k, BW=214MiB/s (224MB/s)
-  Rnd read,    4KB, QD=32, 4 jobs:  IOPS=123k, BW=479MiB/s (502MB/s)
-  Rnd read,  128KB,  QD=1, 1 job :  IOPS=2132, BW=267MiB/s (280MB/s)
-  Rnd read,  128KB, QD=32, 1 job :  IOPS=19.0k, BW=2369MiB/s (2485MB/s)
-  Rnd read,  128KB, QD=32, 4 jobs:  IOPS=18.7k, BW=2341MiB/s (2454MB/s)
-  Rnd read,  512KB,  QD=1, 1 job :  IOPS=1135, BW=568MiB/s (595MB/s)
-  Rnd read,  512KB, QD=32, 1 job :  IOPS=4546, BW=2273MiB/s (2384MB/s)
-  Rnd read,  512KB, QD=32, 4 jobs:  IOPS=4708, BW=2354MiB/s (2469MB/s)
-  Rnd write,   4KB,  QD=1, 1 job :  IOPS=3369, BW=13.2MiB/s (13.8MB/s)
-  Rnd write,   4KB, QD=32, 1 job :  IOPS=31.7k, BW=124MiB/s (130MB/s)
-  Rnd write,   4KB, QD=32, 4 jobs:  IOPS=31.1k, BW=122MiB/s (127MB/s)
-  Rnd write, 128KB,  QD=1, 1 job :  IOPS=1820, BW=228MiB/s (239MB/s)
-  Rnd write, 128KB, QD=32, 1 job :  IOPS=5703, BW=713MiB/s (748MB/s)
-  Rnd write, 128KB, QD=32, 4 jobs:  IOPS=5813, BW=727MiB/s (762MB/s)
-  Seq read,  128KB,  QD=1, 1 job :  IOPS=1958, BW=245MiB/s (257MB/s)
-  Seq read,  128KB, QD=32, 1 job :  IOPS=18.8k, BW=2345MiB/s (2459MB/s)
-  Seq read,  512KB,  QD=1, 1 job :  IOPS=1319, BW=660MiB/s (692MB/s)
-  Seq read,  512KB, QD=32, 1 job :  IOPS=4542, BW=2271MiB/s (2382MB/s)
-  Seq read,    1MB, QD=32, 1 job :  IOPS=2325, BW=2325MiB/s (2438MB/s)
-  Seq write, 128KB,  QD=1, 1 job :  IOPS=2174, BW=272MiB/s (285MB/s)
-  Seq write, 128KB, QD=32, 1 job :  IOPS=5697, BW=712MiB/s (747MB/s)
-  Seq write, 512KB,  QD=1, 1 job :  IOPS=1035, BW=518MiB/s (543MB/s)
-  Seq write, 512KB, QD=32, 1 job :  IOPS=1462, BW=731MiB/s (767MB/s)
-  Seq write,   1MB, QD=32, 1 job :  IOPS=720, BW=721MiB/s (756MB/s)
-  Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=2029, BW=1018MiB/s (1067MB/s)
- IOPS=2037, BW=1023MiB/s (1072MB/s)
+smatch warnings:
+drivers/firmware/imx/ele_common.c:264 se_save_imem_state() warn: missing error code? 'ret'
+drivers/firmware/imx/ele_common.c:302 se_restore_imem_state() warn: missing error code? 'ret'
 
+vim +/ret +264 drivers/firmware/imx/ele_common.c
 
-Small performance boost, but I think the nicest thing with this series is
-to be able to remove the ugly mutex in pci-epf.c.
+a9e23a74789346 Pankaj Gupta 2025-12-03  251  int se_save_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem)
+a9e23a74789346 Pankaj Gupta 2025-12-03  252  {
+a9e23a74789346 Pankaj Gupta 2025-12-03  253  	struct ele_dev_info s_info = {0};
+a9e23a74789346 Pankaj Gupta 2025-12-03  254  	int ret;
+a9e23a74789346 Pankaj Gupta 2025-12-03  255  
+a9e23a74789346 Pankaj Gupta 2025-12-03  256  	ret = ele_get_info(priv, &s_info);
+a9e23a74789346 Pankaj Gupta 2025-12-03  257  	if (ret) {
+a9e23a74789346 Pankaj Gupta 2025-12-03  258  		dev_err(priv->dev, "Failed to get info from ELE.\n");
+a9e23a74789346 Pankaj Gupta 2025-12-03  259  		return ret;
+a9e23a74789346 Pankaj Gupta 2025-12-03  260  	}
+a9e23a74789346 Pankaj Gupta 2025-12-03  261  
+a9e23a74789346 Pankaj Gupta 2025-12-03  262  	/* Do not save the IMEM buffer, if the current IMEM state is BAD. */
+a9e23a74789346 Pankaj Gupta 2025-12-03  263  	if (s_info.d_addn_info.imem_state == ELE_IMEM_STATE_BAD)
+a9e23a74789346 Pankaj Gupta 2025-12-03 @264  		return ret;
+
+This returns success if the state is _BAD.
+
+a9e23a74789346 Pankaj Gupta 2025-12-03  265  
+a9e23a74789346 Pankaj Gupta 2025-12-03  266  	/*
+a9e23a74789346 Pankaj Gupta 2025-12-03  267  	 * EXPORT command will save encrypted IMEM to given address,
+a9e23a74789346 Pankaj Gupta 2025-12-03  268  	 * so later in resume, IMEM can be restored from the given
+a9e23a74789346 Pankaj Gupta 2025-12-03  269  	 * address.
+a9e23a74789346 Pankaj Gupta 2025-12-03  270  	 *
+a9e23a74789346 Pankaj Gupta 2025-12-03  271  	 * Size must be at least 64 kB.
+a9e23a74789346 Pankaj Gupta 2025-12-03  272  	 */
+a9e23a74789346 Pankaj Gupta 2025-12-03  273  	ret = ele_service_swap(priv, imem->phyaddr, ELE_IMEM_SIZE, ELE_IMEM_EXPORT);
+a9e23a74789346 Pankaj Gupta 2025-12-03  274  	if (ret < 0) {
+a9e23a74789346 Pankaj Gupta 2025-12-03  275  		dev_err(priv->dev, "Failed to export IMEM.");
+a9e23a74789346 Pankaj Gupta 2025-12-03  276  		imem->size = 0;
+a9e23a74789346 Pankaj Gupta 2025-12-03  277  	} else {
+a9e23a74789346 Pankaj Gupta 2025-12-03  278  		dev_dbg(priv->dev,
+a9e23a74789346 Pankaj Gupta 2025-12-03  279  			"Exported %d bytes of encrypted IMEM.",
+a9e23a74789346 Pankaj Gupta 2025-12-03  280  			ret);
+a9e23a74789346 Pankaj Gupta 2025-12-03  281  		imem->size = ret;
+a9e23a74789346 Pankaj Gupta 2025-12-03  282  	}
+a9e23a74789346 Pankaj Gupta 2025-12-03  283  
+a9e23a74789346 Pankaj Gupta 2025-12-03  284  	return ret > 0 ? 0 : ret;
+a9e23a74789346 Pankaj Gupta 2025-12-03  285  }
+a9e23a74789346 Pankaj Gupta 2025-12-03  286  
+a9e23a74789346 Pankaj Gupta 2025-12-03  287  int se_restore_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem)
+a9e23a74789346 Pankaj Gupta 2025-12-03  288  {
+a9e23a74789346 Pankaj Gupta 2025-12-03  289  	struct ele_dev_info s_info;
+a9e23a74789346 Pankaj Gupta 2025-12-03  290  	int ret;
+a9e23a74789346 Pankaj Gupta 2025-12-03  291  
+a9e23a74789346 Pankaj Gupta 2025-12-03  292  	/* get info from ELE */
+a9e23a74789346 Pankaj Gupta 2025-12-03  293  	ret = ele_get_info(priv, &s_info);
+a9e23a74789346 Pankaj Gupta 2025-12-03  294  	if (ret) {
+a9e23a74789346 Pankaj Gupta 2025-12-03  295  		dev_err(priv->dev, "Failed to get info from ELE.");
+a9e23a74789346 Pankaj Gupta 2025-12-03  296  		return ret;
+a9e23a74789346 Pankaj Gupta 2025-12-03  297  	}
+a9e23a74789346 Pankaj Gupta 2025-12-03  298  	imem->state = s_info.d_addn_info.imem_state;
+a9e23a74789346 Pankaj Gupta 2025-12-03  299  
+a9e23a74789346 Pankaj Gupta 2025-12-03  300  	/* Get IMEM state, if 0xFE then import IMEM if imem size is non-zero. */
+
+I really can't understand this comment at all.  :(
+
+a9e23a74789346 Pankaj Gupta 2025-12-03  301  	if (s_info.d_addn_info.imem_state != ELE_IMEM_STATE_BAD || !imem->size)
+a9e23a74789346 Pankaj Gupta 2025-12-03 @302  		return ret;
+
+This feels like returning zero is intentional, but please return a
+literal zero.  s/return ret;/return 0;/.
 
 
-Kind regards,
-Niklas
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
