@@ -1,33 +1,32 @@
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996AD2BF3F4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995752BE64F
 	for <imx@lists.linux.dev>; Tue,  9 Dec 2025 10:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765275490; cv=none; b=Yz9mjD4vgrDXi6uKcUJZL0xntnZjsN/q4d8wZvLxMMC49ep87gBDy0B5otoxae7sPq8GwfRuNQtytVmIQdYFcQ1ODe9a0JOf3wmWz6SUiGO4zSuBqlsHn1dLw/IVy8jq5qSiGDuMDJy6bRVSHxbsu37rQvROOCiZq+zFIhAi2EM=
+	t=1765275490; cv=none; b=Fl6ZHWkp+CHxiON04VSl997deUTmAM0wRgeRn4OuIM5AfaGbI7CwvdYCRc7ETzNa4HwqFhSs6r/7R4v4DvB7gM+CuUaBbRFYS+4jdyADp6+4NWUTiLPUSHhbOGLN8yxYLC0NOuExdcXr+bPREUVkVoLaHDzW8CEVXtkFR4NrIoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1765275490; c=relaxed/simple;
-	bh=Ly4ebRb0gpH42d0rQ1S1dP3dwaRnDOIOsd6a5mGyoyw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOF5jGFTizjcDcYagred09/Ovgdf3qldRQcLFF8Rx998TAHPLhEJPwffTdHmIWYWhkTxf042vFz+epsr70nw0bCBsMu3JqxMCugEQV1TduW4qOmBh6eZ7u4T9CkN/r5MbXiI25vqmeq3GIcG7Wft0AODQJGEgwmHmGrXTF00Ya4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=syUtrLsx; arc=none smtp.client-ip=217.194.8.81
+	bh=gVDFhEuBKtk+ryLzqZt9exXc1JHhsE6cex6zI+a/wSw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MA6q7EDmpjPCyVj1F3aFG8EM7rHZb5uMt6PO4jNhGUClGRTdDl6k7JTduQEaNyrCWbxLb3ddbcGdDyPtNtD0YzQvzi4dJHOfAw0ktn6gkvH3PP8OCZjOCqIncG2/Hb1f/dve0tff1tJ3Lk+8CKhp6+ZDD6UlLHcUdE5pjoI01Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=dGqAWWhn; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="syUtrLsx"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="dGqAWWhn"
 Received: from localhost.localdomain (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
-	by mail11.truemail.it (Postfix) with ESMTPA id D18A022B27;
+	by mail11.truemail.it (Postfix) with ESMTPA id 0DDD42164A;
 	Tue,  9 Dec 2025 11:18:04 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1765275485;
-	bh=yvVppEk9o0CVKtieqGiuVEXEx/i7i+V7SNIMSZ5JJcM=; h=From:To:Subject;
-	b=syUtrLsxp40MGO90w7xb4X58JcgsDYiDccbDvTHFautNN0wON3UlEmWEcCHXsZwXn
-	 ExUJhNQ73HNZB5W7tOE91JJXvSbJ7tIgFepXKDh15+k/e4K9ScUIy30hCgMFNsHEmj
-	 ljYnSQZa+toxdSNPOOKFHAPTlyR2laucFmMuxw6eoKrS3pB8yOYsWQzX4gSztr6IDl
-	 7RVx/8Ej/VCKKo9QrJGCjPzgw48KmAaNtYKN41hGBMHBW+f5p+/Oted1LNbC3elkf2
-	 L6x69oPe295WUsfIvsUH+MC/Fj8zP26xY+zQZDMhBCP25HwZdmYYGiazaVOLqdYitT
-	 bCG6DEStTmJsw==
+	s=default; t=1765275484;
+	bh=VIKUHy//UsiDQQq3gFHlqMlnJn/KY2ZQoPc1PYVRHXk=; h=From:To:Subject;
+	b=dGqAWWhn99ZYOeGKIu7AV2FNBEnZ4OjxTv7NodfwWxnswdRWT2DI76zBbSJ5v8ENh
+	 eYpzEORqKrCAnH+xVdya6YI8CPrthXaCI5go9Z0tsxg5q9Qmr9qB/8J/7DPopVr8Ru
+	 YCAJJQhrD+b/XHEDFA1YWhr7pIdlDOnacPTpPyGnSHY2hNUY8UPNNlnYxXo3AC+sX6
+	 oTAXDiGNlXRspwbKNiv08aAvV//lopsFnrwXK8v+veNQWvEW1CdWXssdig2jLA3esw
+	 SBKOJbq8lwHHOlPgMFVOJjyZ0Nu6Sfvt80QD3WMv+SworQKEK+2XwEbAQDm5fZj1gI
+	 HbmXypB0hoSag==
 From: Francesco Dolcini <francesco@dolcini.it>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -41,12 +40,10 @@ Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 1/3] arm64: dts: freescale: imx8mp-verdin: Remove obsolete TODO comments
-Date: Tue,  9 Dec 2025 11:17:49 +0100
-Message-ID: <20251209101754.54067-2-francesco@dolcini.it>
+Subject: [PATCH v1 0/3] arm64: dts: freescale: imx8mp-(verdin|toradex-smarc): Add HDMI audio support
+Date: Tue,  9 Dec 2025 11:17:48 +0100
+Message-ID: <20251209101754.54067-1-francesco@dolcini.it>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251209101754.54067-1-francesco@dolcini.it>
-References: <20251209101754.54067-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,28 +54,25 @@ Content-Transfer-Encoding: 8bit
 
 From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Remove obsolete TODO comments, I2S interface is supported since Linux v6.6.
+Add support for HDMI audio on Verdin and Toradex SMARC iMX8M Plus boards, as
+done in commit b21f87b8322f ("arm64: dts: imx8mp-evk: enable hdmi_pai device")
+on the NXP i.MX8MP EVK board.
 
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
- arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi | 4 ----
- 1 file changed, 4 deletions(-)
+In addition a small cleanup on spurious comments.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-index d43ba0087126..d31f8082394f 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi
-@@ -832,10 +832,6 @@ &pwm3 {
- 	#pwm-cells = <3>;
- };
- 
--/* TODO: Verdin I2S_1 */
--
--/* TODO: Verdin I2S_2 */
--
- &snvs_pwrkey {
- 	status = "okay";
- };
+Francesco Dolcini (3):
+  arm64: dts: freescale: imx8mp-verdin: Remove obsolete TODO comments
+  arm64: dts: freescale: imx8mp-verdin: enable hdmi_pai device
+  arm64: dts: freescale: imx8mp-toradex-smarc: enable hdmi_pai device
+
+ arch/arm64/boot/dts/freescale/imx8mp-toradex-smarc-dev.dts | 4 ++++
+ arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi    | 4 ++++
+ arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi       | 4 ++++
+ arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi    | 4 ++++
+ arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi     | 4 ++++
+ arch/arm64/boot/dts/freescale/imx8mp-verdin.dtsi           | 4 ----
+ 6 files changed, 20 insertions(+), 4 deletions(-)
+
 -- 
 2.47.3
 
