@@ -1,176 +1,93 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B872AEF5
-	for <imx@lists.linux.dev>; Tue,  9 Dec 2025 08:08:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB3D19006B
+	for <imx@lists.linux.dev>; Tue,  9 Dec 2025 08:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765267692; cv=none; b=H/mFjW4arSLMGw29dgaqazg80IEc0FNMwKHWquqg8pwO5D5q0JYJaOyu0MLqp7ZBOWv00Kfd8Z8ZFir0M2HRYEdQIc6IryaA3WMXLQSez9sx3Ss9Xvgbdc+X+2I1AnBrcAhIZyQlD0nLYBVubIdFf65djuN32JWDn7by7qKW6u0=
+	t=1765268408; cv=none; b=dLqCsZIMgAcwwdA2vYHM45KfHZiniPnpN9ageYj69S2ChaP5FK6BMknhJ4uTEJIMeEFHiOIIvo/1H0/JSCIuXyQy2lcPJMDXWzTudNwfomZfY+bokXdpakjlB6dVJrE418AH4WPWDlCT5eJdXudLSIr4b/y+YRO3kwutfgz9jIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765267692; c=relaxed/simple;
-	bh=MJimUWyWCQryzeXq/CylmXxVGK1UyUx3ivCgZyvep+w=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=p7dkvAb7Z/fXYdy1ih1IGRcgMuLwzyzm3nwfk/zfa9fxUAin4a7dhJDEunXTY49sE3Q7HyveJaYYyZwLgwZrEaC6F0zcVUMgRCV+mooVUmz/LWK/2YBLwn4qYi2Yas+KHtrNc5xkna4RWB6Y+dheoLChtuFMwqQpGWyw/1PlE1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JK0RYzGI; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JK0RYzGI"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-47774d3536dso49945925e9.0
-        for <imx@lists.linux.dev>; Tue, 09 Dec 2025 00:08:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765267688; x=1765872488; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=i3HS3UZvHWNoRI4tSC4tCLlGjmvQB2LsBSbcqGJUth8=;
-        b=JK0RYzGIvRz7m66mQkDOKLQrt1tn3j8leCvcAfY/j9yp8GZM5BebT/mXzqwOQX5EW+
-         rj01VRVBmgqErBg5yi6j7Ic77ZYw9AnxEX7YHMr0cj44a6bee64PLjCDBWblMkj1AXCT
-         uoyUItixgljSNxPSitjLLh7wIjsWHVuJdxgBWsNmAW6oBK35BXj2i+nHMJCLXTOKJ5e9
-         +5M6hRAqZ8+/ahRZ1cpNxP21piABDFxMnjP/PwGMqyHkVtnF822rJOq/59KmXwNCY3Hb
-         FaPAjglF2f5XVTgkS82xEm9+eDO3qOUAvTkabyFP4A94fByh1mptmEdnBcdboq4g2TXX
-         neVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765267688; x=1765872488;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i3HS3UZvHWNoRI4tSC4tCLlGjmvQB2LsBSbcqGJUth8=;
-        b=ZkFf/rLhMrqvXkWwFONY+/57IxR3Z0CEPRURXr60BttGry3y+9E8d42n3vm8aJt2Cl
-         xQUBeBD+ebedMQlLa4VJe2jeTsLuarOlTOkYAlOH57NQmFPUfaJQ98HsNk35jDhNbibg
-         GfcxnZjSzBwNAX1SajQrLZInT/UleH2eueb7ojLPi0KK/xLZ9an7hMQT+FMM/pi+Zi9x
-         D/X2Kz3N14IURv2qzoS0QNqR5QI37l1QZy1ILiOuDknL/OTaEPEIxmogPt01zF2TmOUo
-         1URParzjevwGweSQVZWJ13HaLg3qyXIe99XyXFzI1X+s62EK2rSx/rn2WYmLYxO/SgnH
-         U8MA==
-X-Forwarded-Encrypted: i=1; AJvYcCXz++57KS3vfJ4cuTzRPtBjj1Cm5udMuEjME4Csp57086K9hsoh+n7w2axmLkWj9iyemxY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxcAtGwvYWnFpIU8FKletZNlpk/vYdirbK/hlzBrZNWV2DqW6CR
-	E6XtFKZlOsTe9EoJ7eWorFNokd6LQgZ+NWlbkCSzUITYhi9Egorhshvh49DklTt2ja8=
-X-Gm-Gg: ASbGnctMWM+74nc9Q0eXhPcBBR5d5Q1kERd/k4GN1Af8xeQj2YEAjELL42S7pZwJYo2
-	FkgD1z9TVpRY66Z6rv8Lnu2Fb7+Bb/+rN5VgPOOuT5citwIjwQkUiqRd1yooSNJAESr1J0MPear
-	b1r9/ryGWrGaHtcLHEARbLFI+1zbNfOJ2N8GrbKwjLnjgugF3/IWB1rnCIikeg1vXwhWY0tmr+W
-	N/1Gw9FssCy0ilnieCEqziEGVPYa6K0zXRo1ocJufjvYWR/vdd6gBlDGpwbTRajjezQopn0wSr4
-	zjv3ZXB4gzmTCegEIadjDcPz9JXX0Sn5BXN7G4JdXZDJb053RxBUfGE9L57yctjhpGdnd22obQT
-	kbFylsdIB6bf04MgOuiL1qQRqZahtUgcmLo15weztJoBfSsNBEB8Ktyc8cTefCZ3jOLMUxUNQqr
-	UvuPE8LAXZbPS25v3V
-X-Google-Smtp-Source: AGHT+IGscc+SJZEm/TRqQYoD0TdId9MDDNWX4FpzSAzC9aFu5AY3yWeeq7XQ4gq/1MUrF2INsOS4mA==
-X-Received: by 2002:a05:600d:844f:10b0:477:9d88:2da6 with SMTP id 5b1f17b1804b1-47a7f987e56mr5630745e9.0.1765267688376;
-        Tue, 09 Dec 2025 00:08:08 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47a7d397a2fsm12719515e9.5.2025.12.09.00.08.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Dec 2025 00:08:07 -0800 (PST)
-Date: Tue, 9 Dec 2025 11:08:04 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, Pankaj Gupta <pankaj.gupta@nxp.com>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v20 3/7] firmware: imx: add driver for NXP EdgeLock
- Enclave
-Message-ID: <202512091557.d5dOvFff-lkp@intel.com>
+	s=arc-20240116; t=1765268408; c=relaxed/simple;
+	bh=Je31Vvn8gJ3ohzlZ2ypGKiH0qZ95j/Z4ZrUmZTsKYQY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DD08203XdlGyEEwRDy5oz20H8hOEJnVVptc4hNM1fETzFjqp9iZ/tC9bP42RAc74jfpgA1snOWleI4ix+wuTR6fncz4iRzLSxnIenkA9NXVXU15A8wRGfZEby2i0DJt264bOZ5XkaCteA2wPzTWu+p8S/z0te5yGi4aaBy2lu1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
+	by APP-03 (Coremail) with SMTP id rQCowAC309qk2zdpTRcXAA--.1979S2;
+	Tue, 09 Dec 2025 16:19:48 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: ulf.hansson@linaro.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-pm@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] pmdomain: imx: Fix reference count leak in imx_gpc_probe()
+Date: Tue,  9 Dec 2025 08:19:09 +0000
+Message-Id: <20251209081909.24982-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251203-imx-se-if-v20-3-a04a25c4255f@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAC309qk2zdpTRcXAA--.1979S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Xr45Zr4xtr47XF48XrWUurg_yoW8JrW7pF
+	W7GFWYkrWxGF47Kayktr18ZFy5K347A3yakr4UKayIvrn5tFyxXry5Z34jkwsIyFy8Ga15
+	tr17KryrC3W29FJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBj14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
+	8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8ZwCF04k20xvY0x0EwI
+	xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
+	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUyE__UUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwoLA2k3qEfCLAAAsa
 
-Hi Pankaj,
+of_get_child_by_name() returns a node pointer with refcount incremented,
+we should use the __free() attribute to manage the pgc_node reference.
+This ensures automatic of_node_put() cleanup when pgc_node goes out of
+scope, eliminating the need for explicit error handling paths and
+avoiding reference count leaks.
 
-kernel test robot noticed the following build warnings:
+Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Pankaj-Gupta/Documentation-firmware-add-imx-se-to-other_interfaces/20251203-145202
-base:   4a26e7032d7d57c998598c08a034872d6f0d3945
-patch link:    https://lore.kernel.org/r/20251203-imx-se-if-v20-3-a04a25c4255f%40nxp.com
-patch subject: [PATCH v20 3/7] firmware: imx: add driver for NXP EdgeLock Enclave
-config: arm64-randconfig-r072-20251207 (https://download.01.org/0day-ci/archive/20251209/202512091557.d5dOvFff-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project a805147ac1ba123916de182babb0831fbb148756)
+---
+Change in V2:
+- Use __free() attribute instead of explicit of_node_put() calls
+---
+ drivers/pmdomain/imx/gpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202512091557.d5dOvFff-lkp@intel.com/
-
-smatch warnings:
-drivers/firmware/imx/ele_common.c:264 se_save_imem_state() warn: missing error code? 'ret'
-drivers/firmware/imx/ele_common.c:302 se_restore_imem_state() warn: missing error code? 'ret'
-
-vim +/ret +264 drivers/firmware/imx/ele_common.c
-
-a9e23a74789346 Pankaj Gupta 2025-12-03  251  int se_save_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem)
-a9e23a74789346 Pankaj Gupta 2025-12-03  252  {
-a9e23a74789346 Pankaj Gupta 2025-12-03  253  	struct ele_dev_info s_info = {0};
-a9e23a74789346 Pankaj Gupta 2025-12-03  254  	int ret;
-a9e23a74789346 Pankaj Gupta 2025-12-03  255  
-a9e23a74789346 Pankaj Gupta 2025-12-03  256  	ret = ele_get_info(priv, &s_info);
-a9e23a74789346 Pankaj Gupta 2025-12-03  257  	if (ret) {
-a9e23a74789346 Pankaj Gupta 2025-12-03  258  		dev_err(priv->dev, "Failed to get info from ELE.\n");
-a9e23a74789346 Pankaj Gupta 2025-12-03  259  		return ret;
-a9e23a74789346 Pankaj Gupta 2025-12-03  260  	}
-a9e23a74789346 Pankaj Gupta 2025-12-03  261  
-a9e23a74789346 Pankaj Gupta 2025-12-03  262  	/* Do not save the IMEM buffer, if the current IMEM state is BAD. */
-a9e23a74789346 Pankaj Gupta 2025-12-03  263  	if (s_info.d_addn_info.imem_state == ELE_IMEM_STATE_BAD)
-a9e23a74789346 Pankaj Gupta 2025-12-03 @264  		return ret;
-
-This returns success if the state is _BAD.
-
-a9e23a74789346 Pankaj Gupta 2025-12-03  265  
-a9e23a74789346 Pankaj Gupta 2025-12-03  266  	/*
-a9e23a74789346 Pankaj Gupta 2025-12-03  267  	 * EXPORT command will save encrypted IMEM to given address,
-a9e23a74789346 Pankaj Gupta 2025-12-03  268  	 * so later in resume, IMEM can be restored from the given
-a9e23a74789346 Pankaj Gupta 2025-12-03  269  	 * address.
-a9e23a74789346 Pankaj Gupta 2025-12-03  270  	 *
-a9e23a74789346 Pankaj Gupta 2025-12-03  271  	 * Size must be at least 64 kB.
-a9e23a74789346 Pankaj Gupta 2025-12-03  272  	 */
-a9e23a74789346 Pankaj Gupta 2025-12-03  273  	ret = ele_service_swap(priv, imem->phyaddr, ELE_IMEM_SIZE, ELE_IMEM_EXPORT);
-a9e23a74789346 Pankaj Gupta 2025-12-03  274  	if (ret < 0) {
-a9e23a74789346 Pankaj Gupta 2025-12-03  275  		dev_err(priv->dev, "Failed to export IMEM.");
-a9e23a74789346 Pankaj Gupta 2025-12-03  276  		imem->size = 0;
-a9e23a74789346 Pankaj Gupta 2025-12-03  277  	} else {
-a9e23a74789346 Pankaj Gupta 2025-12-03  278  		dev_dbg(priv->dev,
-a9e23a74789346 Pankaj Gupta 2025-12-03  279  			"Exported %d bytes of encrypted IMEM.",
-a9e23a74789346 Pankaj Gupta 2025-12-03  280  			ret);
-a9e23a74789346 Pankaj Gupta 2025-12-03  281  		imem->size = ret;
-a9e23a74789346 Pankaj Gupta 2025-12-03  282  	}
-a9e23a74789346 Pankaj Gupta 2025-12-03  283  
-a9e23a74789346 Pankaj Gupta 2025-12-03  284  	return ret > 0 ? 0 : ret;
-a9e23a74789346 Pankaj Gupta 2025-12-03  285  }
-a9e23a74789346 Pankaj Gupta 2025-12-03  286  
-a9e23a74789346 Pankaj Gupta 2025-12-03  287  int se_restore_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem)
-a9e23a74789346 Pankaj Gupta 2025-12-03  288  {
-a9e23a74789346 Pankaj Gupta 2025-12-03  289  	struct ele_dev_info s_info;
-a9e23a74789346 Pankaj Gupta 2025-12-03  290  	int ret;
-a9e23a74789346 Pankaj Gupta 2025-12-03  291  
-a9e23a74789346 Pankaj Gupta 2025-12-03  292  	/* get info from ELE */
-a9e23a74789346 Pankaj Gupta 2025-12-03  293  	ret = ele_get_info(priv, &s_info);
-a9e23a74789346 Pankaj Gupta 2025-12-03  294  	if (ret) {
-a9e23a74789346 Pankaj Gupta 2025-12-03  295  		dev_err(priv->dev, "Failed to get info from ELE.");
-a9e23a74789346 Pankaj Gupta 2025-12-03  296  		return ret;
-a9e23a74789346 Pankaj Gupta 2025-12-03  297  	}
-a9e23a74789346 Pankaj Gupta 2025-12-03  298  	imem->state = s_info.d_addn_info.imem_state;
-a9e23a74789346 Pankaj Gupta 2025-12-03  299  
-a9e23a74789346 Pankaj Gupta 2025-12-03  300  	/* Get IMEM state, if 0xFE then import IMEM if imem size is non-zero. */
-
-I really can't understand this comment at all.  :(
-
-a9e23a74789346 Pankaj Gupta 2025-12-03  301  	if (s_info.d_addn_info.imem_state != ELE_IMEM_STATE_BAD || !imem->size)
-a9e23a74789346 Pankaj Gupta 2025-12-03 @302  		return ret;
-
-This feels like returning zero is intentional, but please return a
-literal zero.  s/return ret;/return 0;/.
-
-
+diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
+index f18c7e6e75dd..89d5d68c055d 100644
+--- a/drivers/pmdomain/imx/gpc.c
++++ b/drivers/pmdomain/imx/gpc.c
+@@ -403,7 +403,7 @@ static int imx_gpc_old_dt_init(struct device *dev, struct regmap *regmap,
+ static int imx_gpc_probe(struct platform_device *pdev)
+ {
+ 	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
+-	struct device_node *pgc_node;
++	struct device_node *pgc_node __free(pgc_node);
+ 	struct regmap *regmap;
+ 	void __iomem *base;
+ 	int ret;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
 
