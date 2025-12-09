@@ -1,127 +1,95 @@
-Received: from mx-relay48-hz3.antispameurope.com (mx-relay48-hz3.antispameurope.com [94.100.134.237])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B202D2384
-	for <imx@lists.linux.dev>; Tue,  9 Dec 2025 10:54:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.237
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765277648; cv=pass; b=jb6Nfd6S1ZfMr9k7iSFsU9pNqoJrMQ5AyIcKgrXm0g/huvAq9WlEJO7QCN/5sIBMJEl28ymkza0NxDHLEC04FnhYDlojEZkDKw+wV30lnLBEeaSg+FLcnBsSu/5qsxTaulBsR/ed0HPJAe5+R8oEMlVuBaYLwgzc0nWgistmQbA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765277648; c=relaxed/simple;
-	bh=6eQxmAaacP/aBW8Y3d+Wuo10K5fyUcZaZ5CsJYaQI1E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/EqCBLuykVTncmF1rDbSTDWLvBSbxt1ZyAvkEjv4zgH9SXMvWHwYT0SW1Ao/q6HH8pvpvjpH80rDXeki9lM+Cno+bGjNN2ShNSB4fPcqoBimOZC99GviRIhvZWDG5MuoVYB3toqCbgUzjud6ITKzkdQOOlMCogZxnLO/VN9teI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=Aaf+LJ0L; arc=pass smtp.client-ip=94.100.134.237
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF3D2D837E
+	for <imx@lists.linux.dev>; Tue,  9 Dec 2025 12:33:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765283628; cv=none; b=OSZ/NxdjyP60Fs8gunC2sXDxLC5TAFUMPDe+kZ0ekvqGXYkFzJFh/kUXCsHQmq4Rn+N5WTNKJidQfZPxcofkCa+TVSApnShE4DifeV7kAWL54OqyT2T1INQD1FhJomq3tHKNmOOrhD23xzWvIQPPq+dj/5ehyN+NZgb6ugy6GuE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765283628; c=relaxed/simple;
+	bh=bVfvPAVJiKDUO/oAofy3yqLD+wUWwuI5iU1iNTYY+WI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Tq2HgysD/ZXSiAVlns6t2fSDAwzKjBRq4urGxBU6/6awvxP+sivWdl1qub6nTMCYU626YtwWblNcrX/AAlLl2h2azZf9EwVhTFDRoDm7vj5B1+/vqJP/NYmt/y4JIG6PIOCwScCRwb05R7lTJh1AXEUcVvrlCH1vBH0u6laHP1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QRFZsyHp; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="Aaf+LJ0L"
-ARC-Authentication-Results: i=1; mx-gate48-hz3.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com
- smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
- header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=Nsa/tANqoPEYu2tcmKDNOq4Q7cxzL4+lOwJznVO+Sak=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1765277618;
- b=jMCBFaKA+oZWJcOPr/0wDeaqiPF/O54KWcBpTB0QcJFlP8T2ieNN1QQgjmc/pN8zMhRZBAyk
- ZtuiNg5uBrPds4BpXZfv7Ys4QyrsxLcGEpoTzihoAnm078wqbxPGKILwP/GS85MKcIVUnsLoc7h
- u6wwBv391/geK/V3m7z0N+ng0rTFgZPz0ginysmeKOxqCPbZgtpZAuWBwMsC4NZOsuTZEOVYsWx
- OFSCIfcfHpOmB2hij4eVlIrCHO3F5VEo6NgMlpDRUlSpFs2EyJ0evuc7F7yx/zvyYGPo9CNRIDa
- Ah9o793VFV2CgSqPfSquqItW+6zUSal9PfEtzIsLbwDuA==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1765277618;
- b=K91JaGxi+kOrtthoiOjdDi+nbwrD0L8p8SQFi+SjGpqoYYB3AeBMUQNNTSykRppn55g7I1JL
- pPZt+BrHhLR39EPTFljUVhVFgFiF0tSOfKCEhPvaJJrB+AOxbYZuhyIdVlLv5iJMX7dDoVTnuLu
- TKv9Nr0zOHpFJx4fapIxiwT4lDhryQDDhwGUywU4XzLOngT4srftuW8YDxkWCwKQb29OMvf+kQC
- QQqG8opLarJCdcO1bTtMur4mE3Bl9KxS+k4ocsqr3lBjkGu76+TXogfGWNk+YkkEB4VmHjl3SUe
- 65K8cMO9iYL5D7FLDH8ItSRxrFBMBpaN56rPnWUXHzC6A==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay48-hz3.antispameurope.com;
- Tue, 09 Dec 2025 11:53:38 +0100
-Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id A604ACC0E94;
-	Tue,  9 Dec 2025 11:53:27 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Martin Schmiedel <Martin.Schmiedel@tq-group.com>
-Cc: linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 6/8] arm64: dts: tqma8mpql-mba8mp-ras314: Fix Ethernet PHY IRQ support
-Date: Tue,  9 Dec 2025 11:53:12 +0100
-Message-ID: <20251209105318.977102-7-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251209105318.977102-1-alexander.stein@ew.tq-group.com>
-References: <20251209105318.977102-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QRFZsyHp"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-34372216275so5636809a91.2
+        for <imx@lists.linux.dev>; Tue, 09 Dec 2025 04:33:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765283626; x=1765888426; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bVfvPAVJiKDUO/oAofy3yqLD+wUWwuI5iU1iNTYY+WI=;
+        b=QRFZsyHp7buVutB37RXvwPR/8W0DCNS+g66J7iW320X/Lqo8xuvi+1UfRGxYq3RGI5
+         B+O2rRQys7BJ67IFox4rNIfajuLuw8AMXKr4WRk2cfWaFaMjGels0LGiVUjE72tauIFw
+         wNZVJ7Ecu1NHEM0CoUoUSCTRkdJwA+2mQG8ND+v6MNslsVeUXdWCi6N94MwZSTUPOnCR
+         zBcp5+MXx/najG9A7eLWOF4jr03PPzNwm6MhGaJw0DDWEiQr6tiYUXu/m6XOAXeBGveu
+         7a+qBO1iAEv5MAlfbDo4G7HVXzrpyW5BBkNMDliQWjlm3icaxcgeDYRccSWWhA7+ctbj
+         PheQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765283626; x=1765888426;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bVfvPAVJiKDUO/oAofy3yqLD+wUWwuI5iU1iNTYY+WI=;
+        b=OmRhNFwY43UMaUdNvzRbL/Fks9jzd0gjfgMdaBGl1dnuDGfait/v5tjRYpwApcbT6V
+         +ZXPJW/RiLC3Zi9Rb3VSfKzpBCfXW1vkw2198ic1Nj6VI1HdxRKgNOg6Sbjzl6E5jhjG
+         itqjSAfsGOwv2VO6zsn0hJfNjMqz6aBeIXr3IcYSHEaZjhmMV9L/eS4c1HmcA0nmaNij
+         Wj0qOUhFSrkizHcIxtVekfcClYvCWMg4zFTVkJCxqFPH+IkledrHQZwO/UoDgEploIeK
+         csukLJRN5hJqQ8SSrwpkbxEyws0Ls9CbiGPBPliYEW89tPJ9us6Bhekin+BvFSXzTj1A
+         IywQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVZJu4c+LKS9qF8Pi+C0VbXStIOPVwc0LHT2iIlpfuWPaa8XptHVq+HT7dqqPLFr1YqOJk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzraHMZNMrcfA+dVyO8Ll76I69DBuucwx4iCqMbUtlYLcvegfoJ
+	ib1rzizsvUb9SZ2sT05wK7m2vLAcVbFIb39w1mvOmWW/HDjbiO+gAuZWwIZ8KgHNNGyTLM6p86g
+	GcdfMwUOQQeh31CjFB06JueT0BoJDAS8=
+X-Gm-Gg: ASbGncubKfwZujW+Gfc4INCq135HpdJXsz4QK6wi52gyLVv1nwVnlpTIqemobUzfNlE
+	MSv6UeRrwoFDBsfs94MEZpT9l51zrcfvufC5sOotMscXTTF9vdEUY/GWOcZulQR2x9osjNzoejf
+	w5qybNzahYE8NA9TkigW5yBZ+7LLGSiW84Wv1zZRLNtOXQUJHk28aQ87+M1qszHlg7379njPTdx
+	S9JSixVm86t2t4LKg7IqBz4QGxhh3IRQdJacr6vntdusKNLCqYV5nyB2nnfVJ0vCOPf3GTOpKuz
+	bM3VTmapT/DCpQ3dh863JyuYv7R6gMaFszM1m6DxGY5qcIX0D09XTjxqra3N1Ary72U0HrqKXId
+	RRp4w7ZgBKpMhfS+eggdt
+X-Google-Smtp-Source: AGHT+IG7a3swFOeoavHL3eVOxyU5R1CfS1RV/ynqUg2AU4818nOaE1Wsmd3U72SU9rWnp62z0sQPFfouzT4ajqcYuug=
+X-Received: by 2002:a05:7023:b04:b0:11b:79f1:850 with SMTP id
+ a92af1059eb24-11e0326a26cmr8705323c88.14.1765283626541; Tue, 09 Dec 2025
+ 04:33:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay48-hz3.antispameurope.com with 4dQbLJ2sfpz1kNh56
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:ebb7bfe29a23ea3b3ca2efd1a9894abd
-X-cloud-security:scantime:1.801
-DKIM-Signature: a=rsa-sha256;
- bh=Nsa/tANqoPEYu2tcmKDNOq4Q7cxzL4+lOwJznVO+Sak=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1765277617; v=1;
- b=Aaf+LJ0L+VL4sGTbkB1pr1ApRKPQJUbpczeapryiqV9+WnrDT3qJtJy+HWMdPMuCOcRyrCJJ
- HmJrMJC5n0F8V4iYfGIpYp4rIErXLvsLiqX1/lZ5MJzjuoEKRi+gt55aw8HOjprYt5iYH3XUpBa
- RhOIJ8WafDUNR/NrTspqPjPthYOgQRtPfkLxv85EqTk05kPpUHJWqrZQQsay88kYvRn5ZA8xc5c
- Af0cwRsCiPf/21S0ZFeIsJ2MmCnUWiAwTmqRI9LPuXFC+kMZVHNQ7IH0iaMnqS0FQ3AX6kSWkeW
- vAwWQjjAMAc3NkpvaqDDOw49XtwBY9gNFx8VsSegV7pqg==
+References: <20251208233302.684139-1-shenwei.wang@nxp.com>
+In-Reply-To: <20251208233302.684139-1-shenwei.wang@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Tue, 9 Dec 2025 14:36:15 +0200
+X-Gm-Features: AQt7F2r__yxV-yD2aXnM4sB7qPP_1HD4VqjjT-S7yknrdE9jP-LkBjBwD7RtsF0
+Message-ID: <CAEnQRZB5_WngP+U0nVdW0dnopUD5YDtZEU91StywvNTQdNSPNA@mail.gmail.com>
+Subject: Re: [PATCH] remoteproc: imx_rproc: Use strstarts for "rsc-table" check
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-imx@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ethernet PHY interrupt mode is level triggered. Adjust the mode
-accordingly.
+On Tue, Dec 9, 2025 at 1:33=E2=80=AFAM Shenwei Wang <shenwei.wang@nxp.com> =
+wrote:
+>
+> The resource name may include an address suffix, for example:
+> rsc-table@1fff8000.
+>
+> To handle such cases, use strstarts() instead of strcmp() when checking
+> for "rsc-table".
+>
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- .../boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts     | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Good catch.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-index f7346b3d35fe5..67fe1f63fd93c 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-@@ -190,7 +190,7 @@ ethphy3: ethernet-phy@3 {
- 			reset-deassert-us = <50000>;
- 			enet-phy-lane-no-swap;
- 			interrupt-parent = <&gpio4>;
--			interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
-+			interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
- 			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
- 			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
- 			ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
-@@ -222,7 +222,7 @@ ethphy0: ethernet-phy@0 {
- 			reset-deassert-us = <50000>;
- 			enet-phy-lane-no-swap;
- 			interrupt-parent = <&gpio4>;
--			interrupts = <1 IRQ_TYPE_EDGE_FALLING>;
-+			interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
- 			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
- 			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
- 			ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
--- 
-2.43.0
-
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
