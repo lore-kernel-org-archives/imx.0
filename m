@@ -1,209 +1,178 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010037.outbound.protection.outlook.com [52.101.69.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7041329D289
-	for <imx@lists.linux.dev>; Tue,  9 Dec 2025 09:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765271296; cv=fail; b=NiGZ7zyJy/VjFb5u3lwbaxkkTD3cyKzXY+HI1/kqk8XvqIiyCEgiQ3BP5x8g5vxMIVP/Nrp4LO++9i+mBGLUN8PKTJ9WyEdtk/4rkh21STJq2XhwurRigErlaFfR8wN2S6oJQSrQ88A9r3ca1HUUDfYSAmBVVu5LpsygQUaBfSQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765271296; c=relaxed/simple;
-	bh=M4V50YvHXC8h9J8fWFode9r0shAnC42VxgxJ05DQJFM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ggkc9+uW3RBTvKqFeVyYJYn0CDy1GNpN9MJetETpy4vLw1Nz+gz3fTcVZBE9W42i/8ZzCLuIRpFrf2W5eHfl2fotNaScUpQFtNqgqmvDTnumHpSJyYosS4FgKRGqyOT0N+wzvIl4JCYHA0sFC/VrYI++Aoo1GdFkbsoTj7d/xHw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dK9M8Oei; arc=fail smtp.client-ip=52.101.69.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B0F29D27D
+	for <imx@lists.linux.dev>; Tue,  9 Dec 2025 09:31:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765272693; cv=none; b=AmJf6arKoPovj8r6iKwyIWhoCYMCaajUR7907m6CkYvfM6c2kFGwPqJJxsVkRzcze4f/ote7V9LEHv81zwwIRX9svdoeDHeYJ84tqrDEV5iaZzr23fpfFedfDwky00X/zip7u9Te9xYMv90mHK+ebsMPo5ndQcVdfbUZDadknCQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765272693; c=relaxed/simple;
+	bh=L2NXhYYRLt8OIp+LSK83T3wVNVp3FYPqt22R7zQ43L0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=E0l1fJtVupgm0OEnzSGEHB6ILc38uYFvu1tB3qG4K6hvSgnwZMqsr0xNfsqvEjsP3fUcX7fHAiTz++gco1z3S3yAn6UHDUmneBDFMefKHzMVj26wPn2GSG/ZEdlCE9ELzAq7d4WSYGuISo2Q3xfewu4CIfLScU2aP74QmGqgU0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HSy7fvdQ; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dK9M8Oei"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=peA/ImlF+GjP1q41MTXSKJUM6eLbPdlW9VUY9c8m5hC3rUqpakyI94jbOpAMzaM9t0pQ9Eyf8aLUN0B/51EGusK1cM3Jtd6YRTDBJ6+Ad+86JhWv4/vbfqCgGBPY6zBgNn2T7xxojxq0dJQY0XVNoyIwTNg83lcwUzv5jHBUb0VElGVQEDzPYDiSeVGgkSZEps81iHnZSx+SCfVLlz8zeUavRl3CwNv1OSLTLi1MGNECuiT80XuAI03JSObMwc6Ta345JqEV4zr5D7gvsIjyygUVyp00BEibW7lgA1xEq1h2K0M2xklv4B0kzfU6YLHjzQsl201Sim6jDOdfz+3AdQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7zCaMX8B7ogAvI+Q7EJh6YzroVnxE+U/x+0GEpVFPSY=;
- b=xMb7KE15tP8w87nqVUGOVfxHKsf/YOJrMiBrQhlzPNSqwwKlSzzmCokhlgRaiQ6h8/jsATlwPknB52oKY/ihqYxDIWSU9AxwpIwAwpvh8La2uvbL+JCD16lmRtfoV5piHiL1b1iTNPdnrcnJPd5uT9F1pXO56zyiFlWDxs0T99kihEV1BkyaJPPCpFyLF0hCo5g68Y/K7EUq/XcvYfoMqlYxiretpjAYSj5H1ioyAAaBAy2M5OPE9OKQvqduSaoULIbFR3AAVD+I0/ZKmjbsF1CskudAO6HrOoUWFS7ZtMiaDOtqWx8Ft/gyKwamjJbOoh0wNrXaC0ihC5vzda+I4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7zCaMX8B7ogAvI+Q7EJh6YzroVnxE+U/x+0GEpVFPSY=;
- b=dK9M8OeilFdoJeayoaQqbu0B9EyYaMoI9YbJtX9TsIxHFzkOkwbrgdYSonMKUOGX4+NhZzlVXhnEoWkX9FYTcrRjq4XWReTUjeQci81nrvPdiaw4GlmHSZOlmkx7CcZXObq4CQV8CMgm/KPX6IQQ6beU0i6XaNEvT9Sx1P/PvNGq4dIgx/iK+nLD2cu9EUbRGsy9oYli3DqTpwvIMig0sQBWEyI/US+Jrw71dB4ncHmenAZAgKcC/EVulK6vX/eo9WWfbo+1+YvJUzjx1lUhZEuuOVL6Alp3U4O+/UhUjgFF6Pm+xabsNyHxy2sT+XwEcWpsnzMRM+3GBxRo9ISEsw==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by AMBPR04MB11811.eurprd04.prod.outlook.com (2603:10a6:20b:6f4::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.14; Tue, 9 Dec
- 2025 09:08:09 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9388.013; Tue, 9 Dec 2025
- 09:08:08 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "ast@kernel.org" <ast@kernel.org>,
-	"daniel@iogearbox.net" <daniel@iogearbox.net>, "hawk@kernel.org"
-	<hawk@kernel.org>, "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-	"sdf@fomichev.me" <sdf@fomichev.me>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>
-Subject: RE: [PATCH net] net: enetc: do not transmit redirected XDP frames
- when the link is down
-Thread-Topic: [PATCH net] net: enetc: do not transmit redirected XDP frames
- when the link is down
-Thread-Index: AQHcZdVIqiLJYvST9kiEq+ceAUspCLUZAeslgAAB3OA=
-Date: Tue, 9 Dec 2025 09:08:08 +0000
-Message-ID:
- <PAXPR04MB85103577C97139DE324AAC3788A3A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20251205105307.2756994-1-wei.fang@nxp.com>
- <20251205105307.2756994-1-wei.fang@nxp.com>
- <20251209083531.2yk2lv2rahouytv2@skbuf>
-In-Reply-To: <20251209083531.2yk2lv2rahouytv2@skbuf>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AMBPR04MB11811:EE_
-x-ms-office365-filtering-correlation-id: feb43aa6-e435-4196-ca26-08de370278c4
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|366016|7416014|19092799006|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?eyqq25+4wb6H8COTbwGbKxGLmSytIvRHZ+RwSBwShAcicyePAgyMQWNEkQVR?=
- =?us-ascii?Q?FdBLe0m8vekXQNS6wL1e2B6ULMz4/8W/B0Mqn6dBsLJLlRHrtlGU33F5MzOi?=
- =?us-ascii?Q?E8zcVu2B04m1FPdw9JF2SyIyVbqWiOZJqVMScSi4RBEueYL7O1D9sEtAQgKP?=
- =?us-ascii?Q?GcUCL0ghgqs8daWW5ZFERNZagYY+hKtiYQduQdYz82i1DQAGEDkaOWpA/knw?=
- =?us-ascii?Q?pt+9HPc1gpdWwOE9N/KquQc6GQZ9pviuMJEtqHRP7EQ2GkjEmjHRMmV2H+bL?=
- =?us-ascii?Q?rqcR8TZk6NQikrDolutHfrXd4WSSjAtx6u2oHbAd7dcXOFzcv+/Ho3qbRBnb?=
- =?us-ascii?Q?rsKo1IiVxF4ZmMsMGnVAf9GMU6gJf+cSK6/CnhOQ1AQ5sfVL9zAaW6p/QCqQ?=
- =?us-ascii?Q?CnABAS24ma5QxgSkM5GZSQY2nsbLabHYgE8fmGrn1MdNCEynN+vugYz+V/ib?=
- =?us-ascii?Q?TImXvp7pk9ACKDep2I6ZjFD9EKqfM84s8sjzXk2Lujz5ifCisq6xK1G7kIhk?=
- =?us-ascii?Q?r88+q2xYtpqoPaZswgCazMO5Xhs9bYcbcZeX0+gEhu6EPnooma91zkEdq5NJ?=
- =?us-ascii?Q?O/mwMlIre2Wsbzh9NEv7CicYYpVLPuWibvy+B4dIPC6793zsN7NrlDIwtiYs?=
- =?us-ascii?Q?uLtnFPfDYm8Zlze+NmycfRAWZc7ZJe8cp3WBRJ8E9Ow5g13aKNt5SJPPz4sF?=
- =?us-ascii?Q?NehHoKnMVV3WeGh8xP2osOSbkElnDrxdEiJpxCOD+wWu4unO30lSp7SuuINq?=
- =?us-ascii?Q?NP7Cgb3IAexqfNoBhuWC0XemgZ60UrhnnwX3Ygc1+jUuz4UV6KZBUc9rzsjk?=
- =?us-ascii?Q?YA/NBN5uI4xF9MU5aBnv2k6yD8EnTp0iV9uHBbboGAhx0mK9PttdQYnBccgl?=
- =?us-ascii?Q?fYv3VvKYymvbmidRegcEDjU9bQloOPVhmRmZubN7a7DT3AL5SC1Fb99Qkt2Y?=
- =?us-ascii?Q?BGft5q+B/AamGknwtis8rqHzD5FheUvLhqlGjazsmHpGojH2tuXCuDwLcx4z?=
- =?us-ascii?Q?4/V7oyVSlqTPxsuqxIlz/ARvdtiw5BEXPkN3h6p1SUa9FiSHtWaJtLzD42nt?=
- =?us-ascii?Q?lrsshW139LhHv8+AjjbX6PgNFOMripHxOE3w/kyTEi7fjCk8XJ84+wiaRcTs?=
- =?us-ascii?Q?6wRK+tpw1alzW37X4z//Ec3i4mo6YSEUlZnFcjAkXAsKlr0syTmbxyLkUUeH?=
- =?us-ascii?Q?46TEyz9p107fwMS5Ip7cRzXD3PBCMqgJg4QGMxgAbn+DLdJBvOtBK6q4C2Cj?=
- =?us-ascii?Q?k/u5pVo4iyp+geQnpCZxE8UeZkPQJcD6uxsRdqSKVxXA10AYEVjHvi8Ytfcu?=
- =?us-ascii?Q?yE3+bDPIoaWmvXOVqLJ7MLFyOoSsyGZStZcwd4WKfnMXUijsoHGA/znB3N07?=
- =?us-ascii?Q?qPYzsnuKS/iJ/8vDkZdq9R4yH7kJcgSd//I89NScr5K6kaFIeBoQ2Cg8CCqp?=
- =?us-ascii?Q?P8PqLkWH31bxqLkczgAcE6e7BvV0yXbdC4eNJQCh0Tj3mGF6QEKEHhaYiK9s?=
- =?us-ascii?Q?tQLM+dKhWMMu2AhJtPz7ND9aA+kD7eWO1kE2?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014)(19092799006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?K9D/uki6/p7frEBBR2vrtS216wQgZyRtZGHFrOkYLxrcE4C892Vm4O0/rlGd?=
- =?us-ascii?Q?+xiymGLyft60Ww1GxzTstaBbpVHmQ3c8DdFvgO3HVVBOzt7d6XwJqIMu8ZIb?=
- =?us-ascii?Q?GYZwPNt1N1lVXU1mxEAv42ZmmIYpsRp90m3zZ7daHZiDK6lo7CCnwLLnZ/4p?=
- =?us-ascii?Q?Atl+QrFG9/AJH4CL0j/M3J0i2KTVC6fbrbrWQlhOSdRA7bId+LDso9VwR2Pw?=
- =?us-ascii?Q?+V4jdDwjfp2+sBcVO/NJSzjPbv0vKBWpAnt37T/2AzU7orYB0QjmnRrKid5w?=
- =?us-ascii?Q?uUHWIuPrrq5xYWgu/IRla5H295fVx0kPgQUiz/Bl4tDSH5EL3zULzZ0xiohG?=
- =?us-ascii?Q?dgdayCY17Ljv1ufzz+7/gA8PZIDMxGMYHr+RrEEAxys3PfgLO5sM71RBCBm/?=
- =?us-ascii?Q?646eV9yv8KeqNXcuEjoXn0vM8VcG9YHFYUSiJ5Glqzjyy8mg1HSTrbxInWV4?=
- =?us-ascii?Q?6poaVby8DvVoHYO+7Y94fkPTwGTAQrFOwcI9Iq1xETSbRKM3qvONoocZQRkh?=
- =?us-ascii?Q?JTgpyIEpC/n61gQjw8WmmulgtdmlBSxzMg716ZzkHoD0t5GtzEfN748u7q1V?=
- =?us-ascii?Q?hfYpkZXl0ZJK2ES16JstaPlZ2uqBTWFedfzwdAqvy1jaEOytCQ5blcdSDSlq?=
- =?us-ascii?Q?6yErd7CnY2lQthFxKjxl1Ld7X/at438+rI4Xrhxy7SSzkzEYAhWiNkxm8UOy?=
- =?us-ascii?Q?J7sEgNRA4ayVqHx5nZ95pBGYwPR33pu3tIVbW+hov3apInG0hNkzTiPpwWle?=
- =?us-ascii?Q?OpDF2dqCMD8OPf43vfNBHuKEqmUEbvN4NC/3F6/dACN3THKLXCIGztf11VwM?=
- =?us-ascii?Q?rCfadfU76D62qbaRtFdP0lXZKJu2uT2fHRPiWZOx/asMw9vl6iW3wiKFpvzg?=
- =?us-ascii?Q?SR8HPKGc3GBx7V5lvGmK/Q2nSRpSFNHqz9R3dXITK7LKHoSEVwdZRqSfOMSV?=
- =?us-ascii?Q?eK3XPqrOxuvF1h0pDcVS7jgXU3TvbA6P3NrLXK2Y+7dmQ4uQXsljx2sShaGX?=
- =?us-ascii?Q?EUoEfhd0hQ7VqTtCiBqMivMMSaeTFAsLcfTyHsstwUH2mtToZPq0gtbOyr2W?=
- =?us-ascii?Q?PhIamGuhmwRvvIorQJhYTBEaJrpxR9mM9OOkG95UjkT0K6Ptx0q5POikhC6r?=
- =?us-ascii?Q?0n5F9rRZPWmOkcFC7I5rjUU2iep8i4jftwtEEB+OgulM40qCcfbMFqZQrN2C?=
- =?us-ascii?Q?isYg0062UdLbCPRQWpYuaLLb8YLIOSa5zpM+zX69ErvYU4WEhyFhnJYG3mIL?=
- =?us-ascii?Q?4mPl3x486j1cuHlQ/mCTfqGIjT9K6C4Juak9Kwi/Rn5Xnxmfuv6ek2cdGvNA?=
- =?us-ascii?Q?vIh8q0lRhdqQfwSI7+OvZ36kWoNupW21hpdrcnht9qXyLxqjo2UBFU+a+Nr7?=
- =?us-ascii?Q?Q4V0hDrJcClMVNkbMvQSWORjBHVAFabNLXB6nxR0mj1s+q6XF4mIr1jLIO2p?=
- =?us-ascii?Q?DL7wNXVma3j5Pctvwh0xm9jUvSEh4O2oS1tVx1dbyihQM0eC3XoRECGnQ/cL?=
- =?us-ascii?Q?ghwr5NLHgeGbgTKZXUTbLyeZwCKsn9XYP+oKTTm+6BNxyNZeiERfXVy79pGx?=
- =?us-ascii?Q?ngfbDS2zCr/fJTLhJ0g=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HSy7fvdQ"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-bcfd82f55ebso2473451a12.1
+        for <imx@lists.linux.dev>; Tue, 09 Dec 2025 01:31:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765272691; x=1765877491; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MRxNXZW5HGKhav3cQeIpm16SYzyMsJXYbVPLK0TzqeI=;
+        b=HSy7fvdQOi/WB+OCLACOtUzXKIWHoF79Prw5+9zSJm6eL+mOgrJ0KRQ/if1edyNStR
+         mPIhQQnxGqOiAz8I+EsTjPd4IxHks/1fug+1ZUFq0FmpekCwW/aT6iCLThibOoa+H9qZ
+         EVBT2fFZoZmP3PYS20Vy8KXwac0rbLPwJK/PqL2malz+U8RZQY3bVGgHVc8ZG8yt32wQ
+         zj/2ovnbCikhmAah9JT74PolnVnoH1EfEPAQTrFmIUMrY8FZqy5wcFhHkxXZOG54inyu
+         p9bXYX0vU7DjaBHtl5m7m5cvXAeU1xNv6FhFKWrv/mm1/etoo2Pwzu8DVIAj9ClXpBi4
+         oTtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765272691; x=1765877491;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MRxNXZW5HGKhav3cQeIpm16SYzyMsJXYbVPLK0TzqeI=;
+        b=UXsQP5FOhs9Lt1TV5Jy2v2ONFxH4R5R1DxZXGZqvMw/7o8aC6e/WNL+AOk8gYA4FdJ
+         Yu+/4/5OC6dF4EbzcXt0YHE16ZVHHRzkPgI3bwzAn6r6F0O0l5vPgNJyFVOeV/ZY5ZbO
+         uCH3Pr7CBVOBDsbxzJu4TIsE9vrjTQFw2KboKMA6tpqZUrwEczr7klBZBUxHsxYXdjft
+         rwI+9rG4Ch3uOL2XpJjKiOq20/g4ajNA88Ahst3rgChk9ZtUcFhh59ZF/WGRlVkqby3Z
+         Mk82hRAGGApamgbuUMoK6iicjLXaMNorySloomlP9fqzZ6O6ft5x1QdcouIAeVwlNXNS
+         G3oQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU542XgrJj3K/8UZ6hTwHVh8ftsgMWWE12AyPd/onAdng+1yeHomfboGDRytTAdrL+W8ew=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzkUJ1FaBHdJNCP3GNtTWxUH6FW6cMwUlS5HxA8BBfwzj//79qX
+	34zJAE1fhEzBXzYEqvMAUUkrYJZ5NF0IfP4mRqa4vMJQxxGtg64g1xw6
+X-Gm-Gg: AY/fxX4bqO4Bvwfjn7SSA4sEu6EaqfxMXm8ptuK0flscsyqv02FhN9UKTG3i4vPpwow
+	bwc1llNv6yx9Wyn75KXkQjJkna77L8Utn5cYPd2Sl0t9osvH1yiX5PL/WC/wntGU9lcHqAzibzT
+	cOZkOq6CMfEjAVNgA+TuAaZMMHQNWmDAZsKR8pasxA3Qw3eDP8yJN0mKFngv73dZ+ldvxQ/hUpI
+	IKcV48UcOJ/8VM5xIPD6/gt3u9M/OnNtCCeao47h3uyl8VaGz8NcYyrh1su0RxRwFLxXvmS/8jq
+	uCCMn4iN+0gTWTPQbJljCXJ3xLn0k0RdlcrUYsHefyRjgM+wzaTjkP/bLZhJE9SikSV9DtP8DLI
+	ltfYYlmTgokuxdV5Vvk+xxlTekInPfqtVnjcmP5qJDWJfd1Rmn99TE2L8i3pqDPLaBmdE9BmyDw
+	TrRmZvSaTe9yRDU/220cn1+GX5pnkSIeDi55VsO7nkt84RE8TrzWGug37ZQJTBnstcNYMhS0T+E
+	7YHds8u1GOSO8DIdgl6TDcC/0G4qn4zpVi2RyhhVjZFQ8k+6idEuTa7zDf3MF7MHLDRAMTDdI88
+	IlYDSH4Xjq24RgqTOThwcuS8RSEvWEDfF+hrHbejR2yY5kHH7pU=
+X-Google-Smtp-Source: AGHT+IFL+1r/PaRqVVNGXNwojrxl0XaiTGaLLglD0VKcZyQgQAl1LXB5j5aWz2pOa2uC61OCwPtJew==
+X-Received: by 2002:a17:90b:3fcc:b0:343:72d5:2c18 with SMTP id 98e67ed59e1d1-34a4f89b3d4mr722746a91.12.1765272691298;
+        Tue, 09 Dec 2025 01:31:31 -0800 (PST)
+Received: from [192.168.2.3] (2403-580a-80ed-0-4835-5a07-49e7-f115.ip6.aussiebb.net. [2403:580a:80ed:0:4835:5a07:49e7:f115])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34a49658704sm1800408a91.6.2025.12.09.01.31.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Dec 2025 01:31:30 -0800 (PST)
+From: James Calligeros <jcalligeros99@gmail.com>
+Subject: [PATCH 0/7] ASoC: basic support for configuring bus keepers
+Date: Tue, 09 Dec 2025 19:31:13 +1000
+Message-Id: <20251209-tdm-idle-slots-v1-0-38dabf6bc01e@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: feb43aa6-e435-4196-ca26-08de370278c4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Dec 2025 09:08:08.8447
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jZ132lSyNUWd3v4PX+c019SCZ70ia8BRe6RnoctdaY0nWHrlIoSW4QlABXWpgzKGWm85jn/9e51LotJii5bghA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB11811
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGHsN2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDIwND3ZKUXKBQTqpucU5+SbGuoUFSoiVQyiwl0UQJqKmgKDUtswJsYHR
+ sbS0AIqk2u2AAAAA=
+X-Change-ID: 20251201-tdm-idle-slots-10ba92516da4
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Shenghao Ding <shenghao-ding@ti.com>, 
+ Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>
+Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, asahi@lists.linux.dev, 
+ James Calligeros <jcalligeros99@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3561;
+ i=jcalligeros99@gmail.com; h=from:subject:message-id;
+ bh=L2NXhYYRLt8OIp+LSK83T3wVNVp3FYPqt22R7zQ43L0=;
+ b=owGbwMvMwCV2xczoYuD3ygTG02pJDJnmb7Lqeleti/sfK8JcZtv+e7XCRM0YuTVffT1bNnhu3
+ WXgcK2gYyILgxgXg6WYIsuGJiGP2UZsN/tFKvfCzGFlAhkiLdLAAAQsDHy5iXmlRjpGeqbahnqG
+ hjrGOkYMXJwCMNUJpxkZTjp4J+y6LttmvjF4Za7M3z0nFh2bcb7x6n3jb5a5zd3vfBn+Z2utDpe
+ 3nlC34vKxrdN+SP6WfPOB9UO38/QY/t3v+3lfsAAA
+X-Developer-Key: i=jcalligeros99@gmail.com; a=openpgp;
+ fpr=B08212489B3206D98F1479BDD43632D151F77960
 
-> On Fri, Dec 05, 2025 at 06:53:07PM +0800, Wei Fang wrote:
-> > In the current implementation, the enetc_xdp_xmit() always transmits
-> > redirected XDP frames even if the link is down, but the frames cannot
-> > be transmitted from TX BD rings when the link is down, so the frames
-> > are still kept in the TX BD rings. If the XDP program is uninstalled,
-> > users will see the following warning logs.
-> >
-> > fsl_enetc 0000:00:00.0 eno0: timeout for tx ring #6 clear
-> >
-> > More worse, the TX BD ring cannot work properly anymore, because the
-> > HW PIR and CIR are not the same after the re-initialization of the TX
-> > BD ring.
->=20
-> I understand and I don't disagree that the TX BD ring doesn't work
-> anymore if we disable it while it has pending frames (the TB0MR[EN]
-> documentation says that this is unsafe too), but:
-> - I don't understand why the hardware PIR and CIR are not the same after
->   the TX ring reinitialization
-> - I don't understand how the effect and the claimed cause are connected
->=20
-> Could you please give more details what you mean here?
+Hi all,
 
-Currently, the hardware PIR and CIR are not initialized by the software
-when the TX BD is re-initialized. The driver just reads HW PIR and CIR and
-then initializes the SW PIR and CIR. See enetc_setup_txbdr():
+This series introduces some infrastructure to allow platform drivers
+to specify what a DAI should be doing when it is not active on the
+bus. The primary use case for this is configuring bus keepers which
+may be integrated into various codecs.
 
-/* clearing PI/CI registers for Tx not supported, adjust sw indexes */
-tx_ring->next_to_use =3D enetc_txbdr_rd(hw, idx, ENETC_TBPIR);
-tx_ring->next_to_clean =3D enetc_txbdr_rd(hw, idx, ENETC_TBCIR);
+Consider a device with two codecs that report voice coil voltage and
+current data back to the host via I2S. Codec A is configured to transmit
+its V/ISENSE data on TDM slots 1 and 3, while Codec B is configured to
+do so on slots 2 and 4. The receiving end sums the two together.
+If Codec A transmits anything on slots 2 or 4 (and vice versa), the
+result is a bus conflict.
 
-If there are unsent frames on the TX BD ring, the HW PIR and CIR are
-not equal when the TX BD ring is disabled. So if the TX BD ring is
-re-initialized at that time, the unsent frames will be freed and HW
-PIR and CIR are still not equal after the re-initialization. At this point,=
-=20
-the BDs between CIR and PIR are invalid, which will cause a hardware
-malfunction.
+Some codecs include configurable bus keepers to ameliorate this issue.
+Notable examples are the TI TAS2764 and TAS2770. By default, these
+codecs keep their SDOUT pin floating during unconfigured TDM slots,
+however this can result in garbage data on the bus. TAS2764 can be
+set up to fill specific TDM slots with zeroes, TAS2770 can hold its
+SDOUT pin to ground.
 
-Another reason is that there is internal context in the ring prefetch
-logic that will retain the state from the first incarnation of the ring
-and continue prefetching from the stale location when we re-initialize
-the ring. The internal context is only reset by an FLR. That is to say,
-for LS1028A ENETC, software cannot set the HW CIR and PIR when
-initializing the TX BD ring.
+This feature is necessary to properly drive the speaker systems found
+on most Apple Silicon laptops. All but three models include six codecs
+in two groups of three driving two woofers and a tweeter on both the left
+and right channels. Each codec group has a single line for SDOUT, to
+which all codecs are connected. The two groups are then summed on to
+one I2S port. Each group must ensure that it is silent on the bus while
+the other is supposed to be active.
 
-The best solution is to either not initialize the TX BD ring or use FLR
-to initialize it when this situation (the TX BD ring still has unsent
-frames) occurs. Either approach involves complex modifications,
-especially the FLR method. I don't have enough time to fix this issue
-for the LS1028A. At least for now, this patch is what I can do, and it
-doesn't conflict with subsequent solutions.
+In the downstream Asahi Linux kernel[1], we set up one codec in each
+group to zero-fill or pull down its group's side of the bus for the
+opposite group's transmit slots. This is done entirely in the codec
+driver, however this approach is perhaps over-fit for our use case.
+Following previous mailing list discussions[2], I have tried to
+expose the functionality in a more configurable and generic way.
+
+I have integrated this approach into our downstream platform driver
+and select Devicetrees as an example of how this mechanism is intended
+to be used[3].
+
+Regards,
+James
+
+[1] https://github.com/AsahiLinux/linux/tree/bits/070-audio
+[2] https://lore.kernel.org/asahi/20250227-apple-codec-changes-v3-17-cbb130030acf@gmail.com/
+[3] https://github.com/chadmed/tree/tdm-revised2
+
+---
+James Calligeros (7):
+      ASoC: dt-bindings: convert tdm-slot to YAML
+      ASoC: dt-bindings: update tdm-slot.txt references to tdm-slot.yaml
+      ASoC: dt-bindings: add TDM slot idle mode properties
+      ASoC: soc-dai: define TDM idle behaviour modes
+      ASoC: soc-dai: add common operation to set TDM idle mode
+      ASoC: tas2764: expose SDOUT bus keeper via set_tdm_idle operation
+      ASoC: tas2770: expose SDOUT bus keeper via set_tdm_idle
+
+ .../bindings/sound/imx-audio-card.yaml   |  4 +-
+ .../bindings/sound/simple-card.yaml      |  4 +-
+ .../bindings/sound/tdm-slot.txt          | 29 --------
+ .../bindings/sound/tdm-slot.yaml         | 66 +++++++++++++++++
+ include/sound/soc-dai.h                  | 20 ++++++
+ sound/soc/codecs/tas2764.c               | 95 +++++++++++++++++++++++++
+ sound/soc/codecs/tas2764.h               | 11 +++
+ sound/soc/codecs/tas2770.c               | 75 +++++++++++++++++++
+ sound/soc/codecs/tas2770.h               | 12 ++++
+ sound/soc/soc-dai.c                      | 40 +++++++++++
+ 10 files changed, 323 insertions(+), 33 deletions(-)
+---
+base-commit: e4deadb3e562aadf2825f28be3dcbbf01cf2ef17
+change-id: 20251201-tdm-idle-slots-10ba92516da4
+
+Best regards,
+-- 
+James Calligeros <jcalligeros99@gmail.com>
 
