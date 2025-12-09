@@ -1,95 +1,189 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF3D2D837E
-	for <imx@lists.linux.dev>; Tue,  9 Dec 2025 12:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AD9242D62
+	for <imx@lists.linux.dev>; Tue,  9 Dec 2025 13:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765283628; cv=none; b=OSZ/NxdjyP60Fs8gunC2sXDxLC5TAFUMPDe+kZ0ekvqGXYkFzJFh/kUXCsHQmq4Rn+N5WTNKJidQfZPxcofkCa+TVSApnShE4DifeV7kAWL54OqyT2T1INQD1FhJomq3tHKNmOOrhD23xzWvIQPPq+dj/5ehyN+NZgb6ugy6GuE=
+	t=1765288092; cv=none; b=n+GltccySmDT+Jjl/nwrqHY/4cFZWUB3F28y1cCEtkxmZfrP+beXN/T4+jcEjXk/3GG83c7pTQscr/6LCx2Tb4cf9YHirY3OVbAHACtqM0f47A6HJdHQ1135oNSrtlP8dMcWMJr1k2lgqjhsKTkkQti5zJhxiScw+30tBVFtKOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765283628; c=relaxed/simple;
-	bh=bVfvPAVJiKDUO/oAofy3yqLD+wUWwuI5iU1iNTYY+WI=;
+	s=arc-20240116; t=1765288092; c=relaxed/simple;
+	bh=J7R1jg7yHqWsHV4j0LSnzaT5xQsAlw72hWeQeos/AbU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tq2HgysD/ZXSiAVlns6t2fSDAwzKjBRq4urGxBU6/6awvxP+sivWdl1qub6nTMCYU626YtwWblNcrX/AAlLl2h2azZf9EwVhTFDRoDm7vj5B1+/vqJP/NYmt/y4JIG6PIOCwScCRwb05R7lTJh1AXEUcVvrlCH1vBH0u6laHP1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QRFZsyHp; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=Zh1sfLiOvsqdOnEvFJ/e4SdtFuA9nL32NpHEOi+oukDqjtyqXraNGhB4GBmIFQwyjsOpHJV/++CfBDtNxkot6ebyiwHoPsLDy97+zaNjDbcNV7q0Hxtq4J+B408o/HWkMzU/7Usesg4OUsXy609uZsRxsPzu0AvRazmuQ1D/T+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RGEKBv0A; arc=none smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QRFZsyHp"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-34372216275so5636809a91.2
-        for <imx@lists.linux.dev>; Tue, 09 Dec 2025 04:33:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RGEKBv0A"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-78c5adeb964so8996307b3.1
+        for <imx@lists.linux.dev>; Tue, 09 Dec 2025 05:48:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765283626; x=1765888426; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1765288087; x=1765892887; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bVfvPAVJiKDUO/oAofy3yqLD+wUWwuI5iU1iNTYY+WI=;
-        b=QRFZsyHp7buVutB37RXvwPR/8W0DCNS+g66J7iW320X/Lqo8xuvi+1UfRGxYq3RGI5
-         B+O2rRQys7BJ67IFox4rNIfajuLuw8AMXKr4WRk2cfWaFaMjGels0LGiVUjE72tauIFw
-         wNZVJ7Ecu1NHEM0CoUoUSCTRkdJwA+2mQG8ND+v6MNslsVeUXdWCi6N94MwZSTUPOnCR
-         zBcp5+MXx/najG9A7eLWOF4jr03PPzNwm6MhGaJw0DDWEiQr6tiYUXu/m6XOAXeBGveu
-         7a+qBO1iAEv5MAlfbDo4G7HVXzrpyW5BBkNMDliQWjlm3icaxcgeDYRccSWWhA7+ctbj
-         PheQ==
+        bh=PLZGxZfGPH+m9Hz1QW1ANR0vUG8mNwWWC1iVjfNrwBw=;
+        b=RGEKBv0A6eUyvTI3Fg4oYn6jProVC8OJsguNgPaEt1e0M0ILJVLXud/gInbrAHvEVA
+         X0SZ6mAA6qyOmWL7hgGH/bSaUPSDg3n2C0JEij1t8m9xlV7cvQ+m19Nt84jL8Bcs8KKe
+         c6Wyyj2EdPnJlnHc6qkew5sy5WH7ZoVKhIEgzztTf4QgepsR6BdUeYuXT84bJNvOBDbc
+         oYxUDfJqyAVBOSiR2wJOdJO4jsPai/JMgyfaa8sW4ftwIeyJbtacRM1inKSeTejXZDdf
+         WB0pX2XFT6zn8mVmTtJeuDRZ9mUkAeQT+sVw3diK/a+yYlSbQE4sAz8u6WsuB0E497xE
+         i+Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765283626; x=1765888426;
+        d=1e100.net; s=20230601; t=1765288087; x=1765892887;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=bVfvPAVJiKDUO/oAofy3yqLD+wUWwuI5iU1iNTYY+WI=;
-        b=OmRhNFwY43UMaUdNvzRbL/Fks9jzd0gjfgMdaBGl1dnuDGfait/v5tjRYpwApcbT6V
-         +ZXPJW/RiLC3Zi9Rb3VSfKzpBCfXW1vkw2198ic1Nj6VI1HdxRKgNOg6Sbjzl6E5jhjG
-         itqjSAfsGOwv2VO6zsn0hJfNjMqz6aBeIXr3IcYSHEaZjhmMV9L/eS4c1HmcA0nmaNij
-         Wj0qOUhFSrkizHcIxtVekfcClYvCWMg4zFTVkJCxqFPH+IkledrHQZwO/UoDgEploIeK
-         csukLJRN5hJqQ8SSrwpkbxEyws0Ls9CbiGPBPliYEW89tPJ9us6Bhekin+BvFSXzTj1A
-         IywQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVZJu4c+LKS9qF8Pi+C0VbXStIOPVwc0LHT2iIlpfuWPaa8XptHVq+HT7dqqPLFr1YqOJk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzraHMZNMrcfA+dVyO8Ll76I69DBuucwx4iCqMbUtlYLcvegfoJ
-	ib1rzizsvUb9SZ2sT05wK7m2vLAcVbFIb39w1mvOmWW/HDjbiO+gAuZWwIZ8KgHNNGyTLM6p86g
-	GcdfMwUOQQeh31CjFB06JueT0BoJDAS8=
-X-Gm-Gg: ASbGncubKfwZujW+Gfc4INCq135HpdJXsz4QK6wi52gyLVv1nwVnlpTIqemobUzfNlE
-	MSv6UeRrwoFDBsfs94MEZpT9l51zrcfvufC5sOotMscXTTF9vdEUY/GWOcZulQR2x9osjNzoejf
-	w5qybNzahYE8NA9TkigW5yBZ+7LLGSiW84Wv1zZRLNtOXQUJHk28aQ87+M1qszHlg7379njPTdx
-	S9JSixVm86t2t4LKg7IqBz4QGxhh3IRQdJacr6vntdusKNLCqYV5nyB2nnfVJ0vCOPf3GTOpKuz
-	bM3VTmapT/DCpQ3dh863JyuYv7R6gMaFszM1m6DxGY5qcIX0D09XTjxqra3N1Ary72U0HrqKXId
-	RRp4w7ZgBKpMhfS+eggdt
-X-Google-Smtp-Source: AGHT+IG7a3swFOeoavHL3eVOxyU5R1CfS1RV/ynqUg2AU4818nOaE1Wsmd3U72SU9rWnp62z0sQPFfouzT4ajqcYuug=
-X-Received: by 2002:a05:7023:b04:b0:11b:79f1:850 with SMTP id
- a92af1059eb24-11e0326a26cmr8705323c88.14.1765283626541; Tue, 09 Dec 2025
- 04:33:46 -0800 (PST)
+        bh=PLZGxZfGPH+m9Hz1QW1ANR0vUG8mNwWWC1iVjfNrwBw=;
+        b=OK+FAjof9txmvIVwD9dmWVMH15izypP0m3d4uFPDiin6MkRkCcY/IUVXdng4o680bX
+         FbfdHH0WxMAw622ZbpnPoehNtpckfY5do5aagdLran9D9JyUe8K+ra3p0+iFzsVsf4fL
+         qPgIzms/cLe3Fq+m0199/IRcFMCRnp08K9FXbG9A3WmnaE9ewblMG0b7vYBCfNCKNuK0
+         eR7LEpILugIIq1YpPE1b3mCzUUsj9Jp1g15u5Wrdxvt06ckCd6QlOQwFLXj6s74NanAU
+         etbXLq3bxSVNfvAj90pEgwwVEvp7UvkavwFvX687cfbwXjJT60Z6gemvzkR2UBJpdCVl
+         8tcw==
+X-Forwarded-Encrypted: i=1; AJvYcCV6o8CbZyRRMHCx23Qu9ZeGjm1iF4IDbWmijn92fLZiLmGeehiW0XNpeY8ko1nWyYFc9vU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwkJjrrX7fy19nT+A5Kn+qEJ2ExgicDwW4OQTjHQ7VLbXFR2yOu
+	dHUjGxo6nSa00rZJGbEDQlQTOlhKO0vfvhY19N5ueEqRWPjZcPbkEEzD9fsyXSV6fXhxpzvYc4y
+	IIeOlIbyjZ9yimlAZdzXvHleUXhY4wjxXVqa2YF4iSA==
+X-Gm-Gg: AY/fxX6SlrDcGlsuQWNYDQgobFnk0IREgh5v3O0YXNgTQvj6N2zk99tbt4ML70FP+FM
+	T23MQZuLJ+mRI+2z+2O79MTw+UNweojxUCbIMEGO8R17ZUKBc+PgGDgTaNSnJlysXrixb/s05ch
+	IPMsVX+aQsr8HWpUt1uC3b+/Ogxqr1ZOF2lPq9rGRLZgPOw/32i3lFis0flAJa5lOiMLSfKGn/F
+	lbKCTQxwtTI5nfrAmR0H+icHXHh8KvRpk1l0Tf4BaJoxGFXOnkdnsDPvDnRiUnbG4x8B8R7
+X-Google-Smtp-Source: AGHT+IEhUYw77OAuRxBe3uwIoYgLrjRR2ua77WK+8dBaIDSS/4dMnfDxmkWH5Vf8ObUVvDYmN/ivRcBPoD/iRYvRkdY=
+X-Received: by 2002:a05:690c:6307:b0:786:4fd5:e5cb with SMTP id
+ 00721157ae682-78c33c019bbmr104464077b3.35.1765288087582; Tue, 09 Dec 2025
+ 05:48:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251208233302.684139-1-shenwei.wang@nxp.com>
-In-Reply-To: <20251208233302.684139-1-shenwei.wang@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 9 Dec 2025 14:36:15 +0200
-X-Gm-Features: AQt7F2r__yxV-yD2aXnM4sB7qPP_1HD4VqjjT-S7yknrdE9jP-LkBjBwD7RtsF0
-Message-ID: <CAEnQRZB5_WngP+U0nVdW0dnopUD5YDtZEU91StywvNTQdNSPNA@mail.gmail.com>
-Subject: Re: [PATCH] remoteproc: imx_rproc: Use strstarts for "rsc-table" check
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-imx@nxp.com
+References: <20251205071729.83857-1-ziniu.wang_1@nxp.com> <DU0PR04MB94962D103B1A92354CDD1FE690A7A@DU0PR04MB9496.eurprd04.prod.outlook.com>
+In-Reply-To: <DU0PR04MB94962D103B1A92354CDD1FE690A7A@DU0PR04MB9496.eurprd04.prod.outlook.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 9 Dec 2025 14:47:30 +0100
+X-Gm-Features: AQt7F2oaS3uBiOmr3kjDFYVzcu04ROd5j3j8IYFRAzYsQq--q0dUbLCTRNsuSTc
+Message-ID: <CAPDyKFpYU3PZs-dSREyGyyyoptY0zCQmHP+mxMMgvYQL-xXQZA@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: sdhci-esdhc-imx: wait for data transfer
+ completion before reset
+To: Bough Chen <haibo.chen@nxp.com>, Luke Wang <ziniu.wang_1@nxp.com>
+Cc: "adrian.hunter@intel.com" <adrian.hunter@intel.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>, 
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
+	"festevam@gmail.com" <festevam@gmail.com>, 
+	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, dl-S32 <S32@nxp.com>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 9, 2025 at 1:33=E2=80=AFAM Shenwei Wang <shenwei.wang@nxp.com> =
-wrote:
+On Fri, 5 Dec 2025 at 09:12, Bough Chen <haibo.chen@nxp.com> wrote:
 >
-> The resource name may include an address suffix, for example:
-> rsc-table@1fff8000.
+> > -----Original Message-----
+> > From: Luke Wang <ziniu.wang_1@nxp.com>
+> > Sent: 2025=E5=B9=B412=E6=9C=885=E6=97=A5 15:17
+> > To: adrian.hunter@intel.com; Bough Chen <haibo.chen@nxp.com>;
+> > ulf.hansson@linaro.org
+> > Cc: shawnguo@kernel.org; s.hauer@pengutronix.de; kernel@pengutronix.de;
+> > festevam@gmail.com; linux-mmc@vger.kernel.org; imx@lists.linux.dev; dl-=
+S32
+> > <S32@nxp.com>; linux-arm-kernel@lists.infradead.org;
+> > linux-kernel@vger.kernel.org
+> > Subject: [PATCH v2] mmc: sdhci-esdhc-imx: wait for data transfer comple=
+tion
+> > before reset
+> >
+> > From: Luke Wang <ziniu.wang_1@nxp.com>
+> >
+> > On IMX7ULP platforms, certain SD cards (e.g. Kingston Canvas Go! Plus) =
+cause
+> > system hangs and reboots during manual tuning. These cards exhibit larg=
+e gaps
+> > (~16us) between tuning command response and data transmission.
+> > When cmd CRC errors occur during tuning, the code assumes data errors e=
+ven
+> > tuning data hasn't been fully received and then reset host data circuit=
+.
+> >
+> > Per IMX7ULP reference manual, reset operations (RESET_DATA/ALL) need to
+> > make sure no active data transfers. Previously, resetting while data wa=
+s in-flight
+> > would clear data circuit, including ADMA/SDMA address, causing data to =
+be
+> > transmitted to incorrect memory address. This patch adds polling for da=
+ta
+> > transfer completion before executing resets.
+> >
+> > Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+> > ---
+> > v2: amend commit message
+> > ---
+> >  drivers/mmc/host/sdhci-esdhc-imx.c | 15 +++++++++++++++
+> >  1 file changed, 15 insertions(+)
+> >
+> > diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c
+> > b/drivers/mmc/host/sdhci-esdhc-imx.c
+> > index a7a5df673b0f..affde1936510 100644
+> > --- a/drivers/mmc/host/sdhci-esdhc-imx.c
+> > +++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+> > @@ -1453,6 +1453,21 @@ static void esdhc_set_uhs_signaling(struct
+> > sdhci_host *host, unsigned timing)
+> >
+> >  static void esdhc_reset(struct sdhci_host *host, u8 mask)  {
+> > +     u32 present_state;
+> > +     int ret;
+> > +
+> > +     /*
+> > +      * For data or full reset, ensure any active data transfer comple=
+tes
+> > +      * before resetting to avoid system hang.
+> > +      */
+> > +     if (mask & (SDHCI_RESET_DATA | SDHCI_RESET_ALL)) {
+> > +             ret =3D readl_poll_timeout_atomic(host->ioaddr + ESDHC_PR=
+SSTAT,
+> > present_state,
 >
-> To handle such cases, use strstarts() instead of strcmp() when checking
-> for "rsc-table".
+> I'm okay with the patch, but I find one thing here:
 >
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> I notice you use _atomic here, I guess you want to cover the case when th=
+e reset function is called in hardware irq handler sdhci_irq().
+> I'm not sure whether it is suitable to add delay in hardware iqr handler,=
+ I find there is also udelay in sdhci_reset(), sdhci_reset can also be call=
+ed in hardware irq handler when there is cmd_crc/data_crc error.
+> Adrian/Ulf, do you notice this issue before? Any comments?
 
-Good catch.
+You are right. In general it's certainly not preferred to poll/delay
+in an atomic context. But if I understand correctly here, polling in
+atomic context should not happen that frequently, right?
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Moreover, I wonder if we really need to have a polling-timeout of
+100ms? Where did that value come from?
+
+In any case, please add a define to specify the timeout and make sure
+the define-name has the suffix corresponding to the unit (_US,
+_MS,...)
+
+>
+> Regards
+> Haibo Chen
+>
+>
+> > +                                             !(present_state & SDHCI_D=
+ATA_INHIBIT), 2,
+> > 100000);
+> > +             if (ret =3D=3D -ETIMEDOUT)
+> > +                     dev_warn(mmc_dev(host->mmc),
+> > +                              "timeout waiting for data transfer compl=
+etion\n");
+> > +     }
+> > +
+> >       sdhci_and_cqhci_reset(host, mask);
+> >
+> >       sdhci_writel(host, host->ier, SDHCI_INT_ENABLE);
+> > --
+> > 2.34.1
+>
+
+Kind regards
+Uffe
