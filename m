@@ -1,139 +1,101 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B532179DA
-	for <imx@lists.linux.dev>; Tue,  9 Dec 2025 10:18:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9AF2D6E63;
+	Tue,  9 Dec 2025 10:38:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765275491; cv=none; b=b+cfcVe5eyxPsbFGneB7L3rxNXul9ktk5dKr2OV4NYqj/S7IQTRw4ZJtQcmtqgeSfBBfFXL+nwAYyigzHM4aJ5CczMRtkxJxNH1YXxEKR+9t+sWgJp6lsATkrwoDggIptGMivbHRQvE3HIUHO9X3Col/f3+yfIjGTgNP4d4wqNc=
+	t=1765276704; cv=none; b=ax6Y2WR3lpUtR2OlLhz0/Z39mes7vU1LsWFkcf9qkiDGVd4Kv7WH8tAq7edNFVJOrBcSZPVHjljeznet3/und12iL63KTWCnVh+TSMOzf+TDYjhuZNqdMk5mhGgknSt72ELEqx354re1GfXF6/cuaa7STAaKoPwWSUrbRQ1pUPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765275491; c=relaxed/simple;
-	bh=4Zgn7GprbAuv99vOInmMtrZVoNyOJkNC5OdineAte9A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PufHKXPsTv4sVFyGe/SlJEWZfI/rf26hDTr0Ed5kzRorGPyfabPeN9cGnDcwAA5KU140uwqPdqDqL7isJ0cout15KRLRRQZYJrzBGrS5mCc4dVaYqHiUcUfxWxremPBbdiZS4fpIk9bba/ZKVdo9lrnIg/q+FMe+JuZNbgpCI4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=VkZ7kgBz; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1765276704; c=relaxed/simple;
+	bh=0AldE0zmudZtS5j9/Fi6Xn2S6A7u+R+fpHODYTSagE4=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=jSyVxoNzcAfvBUP7RDrFsqSCpO2e2v1IgdjUOO9PD1b+SppFbpSHKFWllLWkXCH2vH+Kne4B1UNG4o3AmlzCB1oudRaFxfKA0zHTs5SO0G/v2jtskk1apf9zbAv0j2Efbpmz2Edva9OXwTGLxbCJQM0vCJeV87X/aHG54PDJyN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iSI6KJZZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="VkZ7kgBz"
-Received: from localhost.localdomain (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
-	by mail11.truemail.it (Postfix) with ESMTPA id 894E122B28;
-	Tue,  9 Dec 2025 11:18:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1765275486;
-	bh=P+JFtEDU/oKUi/rr51XwyYzzIDWFw8SGvZN3B2/eueY=; h=From:To:Subject;
-	b=VkZ7kgBzwHHZfMY9gd/n7EvwJq7XU0BJ/4CRbn1RdDQwSqYPjDwrL2jHEJgu3flXH
-	 Qx9wfPEOM1YGD6sQD+JYIV7koXl5TYQ2hQDs9zqzdtLbXvoZC85wxJjbL9RXa3dx04
-	 yX5hhoATWS01NKfrfHAHFOKK77LzioiuS1vOrJ/yOvUj9hM1VvZ8kpdcxAa30jm3ux
-	 GtfjXEes4aZKjfwVAQif2dFvBITu/Qdk52+nXcjWDb1/8nTNP8KKv1YTXuSIaBY8yp
-	 SG+kdpm9PEDeX8sTXnHfLhROvPvjiXcrxxV9WfUq3Husenhx02J6w6H4oiKZ8DiJtV
-	 0d3penjE09kTQ==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/3] arm64: dts: freescale: imx8mp-verdin: enable hdmi_pai device
-Date: Tue,  9 Dec 2025 11:17:50 +0100
-Message-ID: <20251209101754.54067-3-francesco@dolcini.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251209101754.54067-1-francesco@dolcini.it>
-References: <20251209101754.54067-1-francesco@dolcini.it>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iSI6KJZZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD4BC4CEF5;
+	Tue,  9 Dec 2025 10:38:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765276703;
+	bh=0AldE0zmudZtS5j9/Fi6Xn2S6A7u+R+fpHODYTSagE4=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=iSI6KJZZAboYannqD6vuGwtPFM0oKZPDhhlkryiYdEhGklsjcQDUochxfw8+5tqbS
+	 LACATB/psLez/OLRkawr/gzZfD27H1usH9FUnNuwctQmWET/wodg+Kw5+eMxQ6NLBd
+	 N1Y2DIx1HZel+8Y75RnLYxLpIrh+UloI7NiwheYoRfjnTFyVDgN/va2Z/7yQx1Z184
+	 ZELoSCq42AuJa7YlseYxeXjYpaI0O8YB5mT2+rs2WZIek4v0GvoSeUEAiqzhFA7Q6K
+	 di0gpkOCvc82gdBO2IKarZ/rbDDQjUn41cNDSIBzse3VKN1l746pxlZkYX/1164jr1
+	 Qx3nWthR7kPQQ==
+Date: Tue, 09 Dec 2025 04:38:20 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Conor Dooley <conor+dt@kernel.org>, linux-sound@vger.kernel.org, 
+ Takashi Iwai <tiwai@suse.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Kevin Lu <kevin-lu@ti.com>, Fabio Estevam <festevam@gmail.com>, 
+ Shenghao Ding <shenghao-ding@ti.com>, asahi@lists.linux.dev, 
+ linux-kernel@vger.kernel.org
+To: James Calligeros <jcalligeros99@gmail.com>
+In-Reply-To: <20251209-tdm-idle-slots-v1-1-38dabf6bc01e@gmail.com>
+References: <20251209-tdm-idle-slots-v1-0-38dabf6bc01e@gmail.com>
+ <20251209-tdm-idle-slots-v1-1-38dabf6bc01e@gmail.com>
+Message-Id: <176527670059.4068182.12113080556311230046.robh@kernel.org>
+Subject: Re: [PATCH 1/7] ASoC: dt-bindings: convert tdm-slot to YAML
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Enable the hdmi_pai device on the various iMX8M Plus Verdin boards that
-feature the related HDMI interface.
+On Tue, 09 Dec 2025 19:31:14 +1000, James Calligeros wrote:
+> This schema was still in plaintext form. Convert to YAML format.
+> 
+> Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
+> ---
+>  .../bindings/sound/tdm-slot.txt          | 29 ---------------------
+>  .../bindings/sound/tdm-slot.yaml         | 34 +++++++++++++++++++++++++
+>  2 files changed, 34 insertions(+), 29 deletions(-)
+> 
 
-The hdmi_pai device, together with aud2htx module, hdmi_pai and hdmi
-controller compose the HDMI audio pipeline.
+My bot found errors running 'make dt_binding_check' on your patch:
 
-See commit b21f87b8322f ("arm64: dts: imx8mp-evk: enable hdmi_pai
-device") for the equivalent change on the NXP i.MX8MP EVK board.
+yamllint warnings/errors:
 
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
----
- arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi | 4 ++++
- arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi    | 4 ++++
- arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi | 4 ++++
- arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi  | 4 ++++
- 4 files changed, 16 insertions(+)
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/sound/tdm-slot.yaml: 'oneOf' conditional failed, one must be fixed:
+	'unevaluatedProperties' is a required property
+	'additionalProperties' is a required property
+	hint: Either unevaluatedProperties or additionalProperties must be present
+	from schema $id: http://devicetree.org/meta-schemas/core.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/sound/tdm-slot.yaml: 'anyOf' conditional failed, one must be fixed:
+	'properties' is a required property
+	'patternProperties' is a required property
+	hint: Metaschema for devicetree binding documentation
+	from schema $id: http://devicetree.org/meta-schemas/core.yaml
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-index 1493319aa748..0e218e6b8e29 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dahlia.dtsi
-@@ -112,6 +112,10 @@ &gpio4 {
- };
- 
- /* Verdin HDMI_1 */
-+&hdmi_pai {
-+	status = "okay";
-+};
-+
- &hdmi_pvi {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-index a38e7c947a42..72a4f846d694 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-dev.dtsi
-@@ -121,6 +121,10 @@ &gpio_expander_21 {
- };
- 
- /* Verdin HDMI_1 */
-+&hdmi_pai {
-+	status = "okay";
-+};
-+
- &hdmi_pvi {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
-index 11cf3bdc95c4..846b36706821 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-mallow.dtsi
-@@ -109,6 +109,10 @@ &flexcan2 {
- };
- 
- /* Verdin HDMI_1 */
-+&hdmi_pai {
-+	status = "okay";
-+};
-+
- &hdmi_pvi {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
-index cc389cda2af2..f3d28e23ba6c 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-verdin-yavia.dtsi
-@@ -123,6 +123,10 @@ &gpio4 {
- };
- 
- /* Verdin HDMI_1 */
-+&hdmi_pai {
-+	status = "okay";
-+};
-+
- &hdmi_pvi {
- 	status = "okay";
- };
--- 
-2.47.3
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.kernel.org/project/devicetree/patch/20251209-tdm-idle-slots-v1-1-38dabf6bc01e@gmail.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
