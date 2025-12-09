@@ -1,101 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx-relay90-hz2.antispameurope.com (mx-relay90-hz2.antispameurope.com [94.100.136.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9AF2D6E63;
-	Tue,  9 Dec 2025 10:38:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765276704; cv=none; b=ax6Y2WR3lpUtR2OlLhz0/Z39mes7vU1LsWFkcf9qkiDGVd4Kv7WH8tAq7edNFVJOrBcSZPVHjljeznet3/und12iL63KTWCnVh+TSMOzf+TDYjhuZNqdMk5mhGgknSt72ELEqx354re1GfXF6/cuaa7STAaKoPwWSUrbRQ1pUPs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765276704; c=relaxed/simple;
-	bh=0AldE0zmudZtS5j9/Fi6Xn2S6A7u+R+fpHODYTSagE4=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=jSyVxoNzcAfvBUP7RDrFsqSCpO2e2v1IgdjUOO9PD1b+SppFbpSHKFWllLWkXCH2vH+Kne4B1UNG4o3AmlzCB1oudRaFxfKA0zHTs5SO0G/v2jtskk1apf9zbAv0j2Efbpmz2Edva9OXwTGLxbCJQM0vCJeV87X/aHG54PDJyN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iSI6KJZZ; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C6728CF5D
+	for <imx@lists.linux.dev>; Tue,  9 Dec 2025 10:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.190
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765277635; cv=pass; b=P8BIfcaC47+lVcHU/NUNi/OhoWgne8yMSRSFEh6wAyZ+w6WkcaiTft+tRysTEQ/2FoEj6/BYuU0X/btTMvyyhtpBhx2yEpwaN9z7X6pkhB3o1MF+1ER8NkqTg1V/O5Puy3PbHKsU+GGLghOU8Y630WTV+/bKJu7I48T85InKL0w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765277635; c=relaxed/simple;
+	bh=jTsRwS42tI5mx4ug5QK2yMOBtfpB3rHUg4f6Us7SdHU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=a4TGoFkh8a9Klg10rC3nb7AT82WB1x18d7PH6pb46ESUk4HWNz8i1JjATggTCg5SiEktn/J+nSf4BdBz0il8tVXTOZc+hQO41LP5HcUVJFAkf1ndx+7guB0Tqkpg1Onm1E3rP2NstsTQLjoKG2dwO/DZJuhmXPeOTJbhuZwOdcE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=DEnnEgNV; arc=pass smtp.client-ip=94.100.136.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iSI6KJZZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD4BC4CEF5;
-	Tue,  9 Dec 2025 10:38:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765276703;
-	bh=0AldE0zmudZtS5j9/Fi6Xn2S6A7u+R+fpHODYTSagE4=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=iSI6KJZZAboYannqD6vuGwtPFM0oKZPDhhlkryiYdEhGklsjcQDUochxfw8+5tqbS
-	 LACATB/psLez/OLRkawr/gzZfD27H1usH9FUnNuwctQmWET/wodg+Kw5+eMxQ6NLBd
-	 N1Y2DIx1HZel+8Y75RnLYxLpIrh+UloI7NiwheYoRfjnTFyVDgN/va2Z/7yQx1Z184
-	 ZELoSCq42AuJa7YlseYxeXjYpaI0O8YB5mT2+rs2WZIek4v0GvoSeUEAiqzhFA7Q6K
-	 di0gpkOCvc82gdBO2IKarZ/rbDDQjUn41cNDSIBzse3VKN1l746pxlZkYX/1164jr1
-	 Qx3nWthR7kPQQ==
-Date: Tue, 09 Dec 2025 04:38:20 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="DEnnEgNV"
+ARC-Authentication-Results: i=1; mx-gate90-hz2.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=9Tj97bgHVDN13VarG25MeBuEY3cF2iNUf5mx4TIglo0=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1765277612;
+ b=n+Nc9k/7onMZwkfl4AuyhBPzx1NDJd6fow/O8ks2CkfJx0rXCjiUTOS7hrT9HWpWVBPYy7i5
+ dKgK9A/EgsrrqjpQ+N2EgIKEjReEaG27lQos7rOmiNM1KOkpw4G4GqHS22BQhi4zhTZvFQAxN5p
+ mj8ci7eKdysO8cuBF1/nWJBb/V1WZZCMZ6M/v/6WO0xWZX3jwe/rUw9MCpgsLIWOGF8rOBzBFYi
+ /dPmzXYh3gZsoE3SQD4LN5f/ZcA4kO4TYVBoVH9WJVcxeKtTdaVcb4+/Rum8ye90E593KpBadnm
+ jLsR4OIPyPPQrPsF3iwiqcdiMZhR34+xfVrRnfBCLPfRw==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1765277612;
+ b=LTBpL22RlU5pCSBK5H3ETbgKXiEeOmtsUvN1kcxeDOWP/E/A5j7bC6+B+IDYRYKp/51qysds
+ 7D5aycJUpANXgQaD4uaOENADqG6poLzdPSgyQ/apTUUrvFfBCjKv4hWQg5Dz40WX7ins5o/tYSo
+ hU3OvtQRT+a/vmtV77l3iorTgwgh1j+ZIWh5mz/A5V5NHplIaRuuRq4Gftb7eKVpYoCBN7ZI7Ec
+ 8PTgrhxVkMWX3QP13xMLyd1tNUyOQRrJk2eR1XgcAEODmKGVZb+u8WFcpheLB9TX7BdvHccv1Zg
+ WOt0K9JR5tzXn/eouNL4cM7vhyvpBc9L9o20UaozW/SuA==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay90-hz2.antispameurope.com;
+ Tue, 09 Dec 2025 11:53:31 +0100
+Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id E3CEBCC0E8E;
+	Tue,  9 Dec 2025 11:53:21 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Martin Schmiedel <Martin.Schmiedel@tq-group.com>
+Cc: linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/8] arm64: dts: tqma8mpql-mba8mpxl: Adjust copyright text format
+Date: Tue,  9 Dec 2025 11:53:07 +0100
+Message-ID: <20251209105318.977102-2-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20251209105318.977102-1-alexander.stein@ew.tq-group.com>
+References: <20251209105318.977102-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org, 
- Shengjiu Wang <shengjiu.wang@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
- Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
- Conor Dooley <conor+dt@kernel.org>, linux-sound@vger.kernel.org, 
- Takashi Iwai <tiwai@suse.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>, 
- Kevin Lu <kevin-lu@ti.com>, Fabio Estevam <festevam@gmail.com>, 
- Shenghao Ding <shenghao-ding@ti.com>, asahi@lists.linux.dev, 
- linux-kernel@vger.kernel.org
-To: James Calligeros <jcalligeros99@gmail.com>
-In-Reply-To: <20251209-tdm-idle-slots-v1-1-38dabf6bc01e@gmail.com>
-References: <20251209-tdm-idle-slots-v1-0-38dabf6bc01e@gmail.com>
- <20251209-tdm-idle-slots-v1-1-38dabf6bc01e@gmail.com>
-Message-Id: <176527670059.4068182.12113080556311230046.robh@kernel.org>
-Subject: Re: [PATCH 1/7] ASoC: dt-bindings: convert tdm-slot to YAML
+Content-Transfer-Encoding: 8bit
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay90-hz2.antispameurope.com with 4dQbLB4ZrZzWxV2
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:5cdad8a37ec4edf0a973856c329ef64b
+X-cloud-security:scantime:1.663
+DKIM-Signature: a=rsa-sha256;
+ bh=9Tj97bgHVDN13VarG25MeBuEY3cF2iNUf5mx4TIglo0=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1765277611; v=1;
+ b=DEnnEgNVjM29Fs7qk/vve11v1FnFZ1NDiXKkYAHzkLUJMvHTETsheldIp2gzZWCVaENXQRmJ
+ 8hD4PzMiZbFWwrt+zR41yPu+w3EVYe0ypDqkvos8nm4ry6l5ZEYHD4sfw7SNC9UszXXnyqjoWO6
+ gEHokeoegiGE93AGMybLgdenkUdrMUYbeQj7sVuzDaH1sE5wb+TrvBWBwHXXGqApH2wi7FuxIpS
+ nKYwIkf5qHbROoNMzipIZsDxvMm2MLZntxuQGok1hNNSSefNaWY4lPh0D8sdrtxyHCL6V/CsX9v
+ YSKHuS2kUiy0OitxEnRkg3Spu3oqQwm98DdryZvuNhwag==
 
+Replace personal mail address by mailing list.
 
-On Tue, 09 Dec 2025 19:31:14 +1000, James Calligeros wrote:
-> This schema was still in plaintext form. Convert to YAML format.
-> 
-> Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-> ---
->  .../bindings/sound/tdm-slot.txt          | 29 ---------------------
->  .../bindings/sound/tdm-slot.yaml         | 34 +++++++++++++++++++++++++
->  2 files changed, 34 insertions(+), 29 deletions(-)
-> 
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-My bot found errors running 'make dt_binding_check' on your patch:
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/sound/tdm-slot.yaml: 'oneOf' conditional failed, one must be fixed:
-	'unevaluatedProperties' is a required property
-	'additionalProperties' is a required property
-	hint: Either unevaluatedProperties or additionalProperties must be present
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/sound/tdm-slot.yaml: 'anyOf' conditional failed, one must be fixed:
-	'properties' is a required property
-	'patternProperties' is a required property
-	hint: Metaschema for devicetree binding documentation
-	from schema $id: http://devicetree.org/meta-schemas/core.yaml
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.kernel.org/project/devicetree/patch/20251209-tdm-idle-slots-v1-1-38dabf6bc01e@gmail.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+index 59642a8a2c445..0605cf2faf83b 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+@@ -1,7 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+ /*
+- * Copyright 2021-2022 TQ-Systems GmbH
+- * Author: Alexander Stein <alexander.stein@tq-group.com>
++ * Copyright 2021-2025 TQ-Systems GmbH <linux@ew.tq-group.com>,
++ * D-82229 Seefeld, Germany.
++ * Author: Alexander Stein
+  */
+ 
+ /dts-v1/;
+-- 
+2.43.0
 
