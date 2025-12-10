@@ -1,269 +1,243 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013031.outbound.protection.outlook.com [40.107.162.31])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDE5225779
-	for <imx@lists.linux.dev>; Wed, 10 Dec 2025 11:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765365498; cv=fail; b=FC0QIEkHSwsDIabeyVnqxsY9scPMcFgcw4/UYdKmK4aenhMBA8Mv5I0KfbTDEMyNuT0ln/xBpf5CHzqhxgawR+BSJd5vR9dnPEagI4b5no/wsEGjbPszJyD2Gdm17Nr3ARcLZjNVmEToR7nUV9V3u8Ro/UKV7B97D0yQIO+qJIs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765365498; c=relaxed/simple;
-	bh=jnY9yet94s8LwkkqaR4LrhXiTqm4W4WtDCcU63oE3tw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Jygqdrg/SbqVJkAO4iy8lLVsh4ZYkUTLDvDKSoXgeMer2ZKzfSC6U4tB2X3EyhOF8f7JFlevc5YTKnAJkiZ+J1sspbk+kzIkA7tV3uyLyWXcbbS2A4Ni8eQQoUtMa1OMssDJWEE3cSCFox22JjIkAry/cT4R0aim7dpk0uCfCdo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=G5N99nvC; arc=fail smtp.client-ip=40.107.162.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813BD322DB7
+	for <imx@lists.linux.dev>; Wed, 10 Dec 2025 12:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765369336; cv=none; b=SQs0yUKrG+yxwrNtaKv2FndK70LrvKSKJAFvTBIS5UBECsjHGvURs3PZuCbUnN6w+Ss2k+TDtbL/fUXRdESD+xCnYi/cNHAwqyLPS1sPe67QGGsuhQyNemuI8pFKdxLhEsh69YEIcT8Vmw9/LQeLA4Kr+auAqnN82yA+jUMicHU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765369336; c=relaxed/simple;
+	bh=jd9K+mF97WGriGBzAJzag5o6OTccybfMhIaxrYKCKPg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q7NP7LQ3nxGQwd4NBdj0y21lyPnxCymjT6GJYKKsdsO6m41LqEiiqXjzYOAVH1056h959tzETmHV/4pl1BxvpjrpApbrt+9JFCkA1zJkpv+OOkf8yQhZJCTRmiqoMuTaL7vFxZ63alYnkifkvEVjGEUsVwriKlSf4Wnw2oG53ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=B2lhjLv0; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="G5N99nvC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=v3h9VWRbPZsYZ9bQSGsizWJEHQxWEc9fAg9TgOEPS+o8CuqSCfHXMrL1JQUcyupXq8rXuRRC2qCtlJd/6Cs2LrBQ2DyZFxp4sAdZKhzZLOOG+kQ5nTnpvv53w6Ujz6t/6z8zoFX4EbyEsW49lQZ+PywfXXjfph8bSaOOlrMessRd8MvN7GlpZ2gG6NEVf59LjEIP/us9unRfxZI49VBX6MUXXkHyOosh45Rz06lZaZPp5OxbVVaxJcQpiZKLcACqL0D+nIkDSdYgwcBpNiho5ItcP0WedtMwOOnCWN5qchftraxaSdLm8gdT5HAbTaUVxXq+mHw1LLCO6vYVqVmCvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jnY9yet94s8LwkkqaR4LrhXiTqm4W4WtDCcU63oE3tw=;
- b=InTXTy1rO5YJEULTMpSa7EIJcME7sdiM+tQxAPV+kh6fSVJtIPHIwGBCxrh1pncjUhA37RYUQMgRsHBfC9Oq3dbch5C8gj1X3KIykDGaSD+B6LGrfaemomkk8aljYfTax2RAFG/XGH1xrJQYpFLb2YORdgDNN6QJT/veeDTU0xO/gjd1+Sd688H2dxJdPjkxRgMl4IlY7y3txVegT6qnsT7lNjt4fOHcg+Dvq27HeWH1QJencJn+i2N/NapGxgf+55X/iVsDgfMF8dG5Y9qLDj6C/jwqRX9hliLLRz+EklLpxAe3f8CN2oqG8mJ3AOiqu4TlJQGOgdnnStR2XqSpkw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jnY9yet94s8LwkkqaR4LrhXiTqm4W4WtDCcU63oE3tw=;
- b=G5N99nvCum6JjvuOHJ9eI7vYMzvULyMBwx9/XMLBWXwAbC2niqEbfCXSc7yfaZvmvlxKtSQUpF6FsBaomVVu6qSkF0dSz/jIOycKZaz37/3S2f9szvAnLHyiNbazvIO23nHrGufpVYVKeTvG9GtSVVHw3R8AIV7QR2rqSteXFScD+RKc0FmCK8+s//B1tI+IPq6bwTNm/dtNymNc/4I6AzaVKTZhRzbzVrTtIiPD/w4A5pHBcgnrdJUXDqNYuW7ccGUTfUzrfEX+IdsKscHSc6QRc29FZgtxDJHMMsA2KrfLr7LzezxwwVWvbDG9XBJIic5yyBLBnmjo3C+VHH6WJQ==
-Received: from DU2PR04MB8567.eurprd04.prod.outlook.com (2603:10a6:10:2d6::21)
- by VI0PR04MB11889.eurprd04.prod.outlook.com (2603:10a6:800:305::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9388.12; Wed, 10 Dec
- 2025 11:18:07 +0000
-Received: from DU2PR04MB8567.eurprd04.prod.outlook.com
- ([fe80::32c4:a8a7:1724:b754]) by DU2PR04MB8567.eurprd04.prod.outlook.com
- ([fe80::32c4:a8a7:1724:b754%2]) with mapi id 15.20.9388.013; Wed, 10 Dec 2025
- 11:18:07 +0000
-From: Luke Wang <ziniu.wang_1@nxp.com>
-To: Ulf Hansson <ulf.hansson@linaro.org>, Bough Chen <haibo.chen@nxp.com>
-CC: "adrian.hunter@intel.com" <adrian.hunter@intel.com>, "shawnguo@kernel.org"
-	<shawnguo@kernel.org>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>, "festevam@gmail.com"
-	<festevam@gmail.com>, "linux-mmc@vger.kernel.org"
-	<linux-mmc@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	dl-S32 <S32@nxp.com>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [EXT] Re: [PATCH v2] mmc: sdhci-esdhc-imx: wait for data transfer
- completion before reset
-Thread-Topic: [EXT] Re: [PATCH v2] mmc: sdhci-esdhc-imx: wait for data
- transfer completion before reset
-Thread-Index: AQHcZbb3dDQ/KGlRS0mE1SVoohrU5bUSskkAgAanAgCAAWNmgA==
-Date: Wed, 10 Dec 2025 11:18:06 +0000
-Message-ID:
- <DU2PR04MB8567DB3B818280EED81A36B2EDA0A@DU2PR04MB8567.eurprd04.prod.outlook.com>
-References: <20251205071729.83857-1-ziniu.wang_1@nxp.com>
- <DU0PR04MB94962D103B1A92354CDD1FE690A7A@DU0PR04MB9496.eurprd04.prod.outlook.com>
- <CAPDyKFpYU3PZs-dSREyGyyyoptY0zCQmHP+mxMMgvYQL-xXQZA@mail.gmail.com>
-In-Reply-To:
- <CAPDyKFpYU3PZs-dSREyGyyyoptY0zCQmHP+mxMMgvYQL-xXQZA@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU2PR04MB8567:EE_|VI0PR04MB11889:EE_
-x-ms-office365-filtering-correlation-id: 3264934f-9a0f-46b5-ef6a-08de37ddcba1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|1800799024|376014|19092799006|366016|7053199007|38070700021;
-x-microsoft-antispam-message-info:
- =?utf-8?B?Qm1NdGRxMmx1WiswVW0vTDhzNnBtdGNwTW1xbk9RY0Z3Y0FtWDJua21YS3Np?=
- =?utf-8?B?TlZDRFN3VkkxNlpVOWtWYThjOHQ0ZTJlR05lL1V5dEZKQXVxck5ObHNCMTV0?=
- =?utf-8?B?R240cEgzNXRabEg5a0gvZ2d4eThDcVV0ak10cklOeFM5QjBhaExtVXZvaVVO?=
- =?utf-8?B?QmhzcnREWWJVWVhCM2tMTmRqN1lyZ3NyZEwzV2dFRG9xRkEwbElET1VJQ3J1?=
- =?utf-8?B?eXMrblp5aldvb3V2ajg2M0MrNUp4WkpBbzZ1WHVwSmJIVnp2Q004b0EwczN5?=
- =?utf-8?B?L2dHQmkzdTBnYTR1QkNZaEZpMGVvLzZKZmd6b2RKNDJvRjZid1J6MlVjNzcz?=
- =?utf-8?B?ZHlTTTQwOWxNN2VGSnNwaHoxd256YmZBMDBYcm1qZWxtcWYzSHZ1NXJwb0ls?=
- =?utf-8?B?cjZWSHZDbVV5S1JraUxXTUhsSXNydFRQcmdncDFyRUxPYVp6aHNYRXZXMFdY?=
- =?utf-8?B?UTR2VVNmK29kMVFURG50cjJRV2Q1TG9OWHMwUTFBZ2cweUtDZHk0bXJZSCth?=
- =?utf-8?B?dVcvZ3hXS2lheTRndVpOTDc1M1hnTy80cE5wQmZYNExBdml5QXgxTDRnNmww?=
- =?utf-8?B?bE84cFk1NWlWUUcrNC9WNnhpaTRMK0dEb2p2MmR6ZjBsa1lGS0RLc3ZCUHJJ?=
- =?utf-8?B?VjdJUHhmRmV2b0NMSEQ1Z2ZMZnMreVo2Nk8reUw0V3I2aUlPRWIwYmlNdXEv?=
- =?utf-8?B?WmdSdC8ycGdPcUo5M0hhWm5UR2tzQ1dsVXNibWNwTWllRDlQNUoyZ3BkWWZL?=
- =?utf-8?B?eUk2YnQrZDllakFtMXlPMFZrTDd0TFNRUVlmTDI4NkV3VzJQVFVidkM2VUVP?=
- =?utf-8?B?UTlWS0Zhb0wzOUMyekN1dzdLeTRBbnBMMWZqcmpRWVdPdFhSUUNldFVKSTdQ?=
- =?utf-8?B?VlcvOW1oREc5WklLZnlyTmhybTI5R1ZIQVdzOEgyTFJIeU5KK2FZZlFNOEk3?=
- =?utf-8?B?UHYxZGwrRENMb0FpRm5WLzNmRzRvVmFtRVNZeXhxRGtvNVExblFaUUdDSWVH?=
- =?utf-8?B?MHk1Z1h2MlVVdGlTVHZicFE5WUtpRTRON09qL2F3WHRoaEFhTCtnVWExZjVw?=
- =?utf-8?B?QTIyMWFQNkEzdVdiNjZtK09kb3haVlZ3Y3JWTWQyRzY5N0hpejk4N1cybDFF?=
- =?utf-8?B?MUJVTEtCYktGSVZIRGNBL1owK3QvV1NBSHFBRDQ2c3k4MENMWEY5M3lpcFJj?=
- =?utf-8?B?bnh1RmNLVFo4WjIyQitQTHlQZGw1bXlRUFhPcVY3cktSZTMrdlNRSGtTTDEw?=
- =?utf-8?B?U2lzbmN3WjJRMTgwUU11blZEYTY0MUNsb3ZkN0JsREs4RG1aMWVqR2sxZ1Rl?=
- =?utf-8?B?UzJoMWhiWEpuOStGdUZneldOVkl1b2lHZlhrOG5XSVdmWS85UmJjVnJNRnV1?=
- =?utf-8?B?UXhZc1J6WXc4Q3E1VTlIOEdtS0w3R24yNGI0L3o4Ynk1MENpdjJ0V2RNU0xh?=
- =?utf-8?B?UVYxU3Iza3BFWWQrN0ROcldROXEvOUVibk92VFVVTDVCMlpPREdERTlVZHpF?=
- =?utf-8?B?Q2xiSDBzS2lsRU5zZDFONW13RkJJUkZSdXlsd1ZBYW9sYTVrcUV5MzdUdW4z?=
- =?utf-8?B?anZpdXlJMUlqdTM1VWdLdnlLZjk5NkdldjBwbEtQNHE1THBBQW81cUhsQWFK?=
- =?utf-8?B?YTlKSmN5TGlvNGxjMmJ5N2NYZTlySjlLaEZSaG4rckIwdUZOVTkyc1pUTGNw?=
- =?utf-8?B?QWMvSi9NQkkzbkw1QU9JT2Rhek5XVjdNUDlvb2l0dmg5am8yUEV5ai9KOUhs?=
- =?utf-8?B?K3FldzhpT1dOSmo5NEtnYTF5KzZBVzNML3huRXlES3IxYUUxRXNPSTNxUy9N?=
- =?utf-8?B?YTdvQjVaais4Z29kTHZ3Qk5MWStjNFlidzkvZTg2Vkc0NGUxSDNEYTA3Q2pR?=
- =?utf-8?B?YTdvMVpGREZieTNGZE44RVBLVnpXemZlWGlHN2NHMzd6S3ZrUThPMW1hT0xP?=
- =?utf-8?B?azlqK0djbm53UGlzTk0yaGtZNjIrbThDUXJDTldBZ1dldk5YSFZtcW5MSXQ0?=
- =?utf-8?B?QjBnR0NaZmZGSEFRTmNHUjJIQ2wxdWFIRnE1SE0yU1l3dTlYa2txMXRkdUVs?=
- =?utf-8?Q?T8beTq?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8567.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(19092799006)(366016)(7053199007)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?NkVMazlvQWd5aHdUWno3dURvNmw4T1JzR0Jta0F6MnlWS3RDUDBpL1E0eUlt?=
- =?utf-8?B?YVh3SnBpaTB1RUQxZGc5YjByS1BUa3Fka1QwSnB2UDc0cVZPQVJwcWJxcWw4?=
- =?utf-8?B?MmxyaTNBSTl5ZmtMb2UvYXh5RnE5elh3WVpDUkZIdTNLTVdleTJUelVPRE5S?=
- =?utf-8?B?cFdKV0lQcGthd3NDOVZkL1l3V0VIMjE2SXFvSUpJNmpYK3dnWEdWZHZJSm9M?=
- =?utf-8?B?aXJZcGxYUy8xbjYybHV3VS9EZS84eGtyZy9ZbjFYY2NqVTVFbXA0WGJyc3RC?=
- =?utf-8?B?WkpycGFFY2lvN0V1dEVjRyt1cUFHYVNSRnNIejRmSUh6OW5SblJONmtrMDJu?=
- =?utf-8?B?ZDFZdFVkSmhTMVVzZ2NQV3FEQmFCTy9pWHkvUUF4bDlqdWFxTHAzNnF1c1Jw?=
- =?utf-8?B?OEc0M0VsZXQxdmZNZ3FnaGpSRWc0WUxkK0NLWTQ5SU5YMXNmWWRVUWk3UHhC?=
- =?utf-8?B?aUczSjBjQ2RSQXQ2cTVKM1NRNGhySC9HRCtERTNmOWhJODZXUFZJTzB5LzV2?=
- =?utf-8?B?ejZlNHVNYzEzUVc5M2RzeGVzUXFaTlo2NzMrQlF0bld3WWwvS3ZBdkZOdFdu?=
- =?utf-8?B?MTBQUHBqR3RBbEVpK0Q2eFZmcFk4eTJVMjl2dzJzS0V4OHdxZU1ncEdHdE92?=
- =?utf-8?B?NzFTQXJSTmVKTWN1UkkyVE9nQWJTaVFiK1Z1UzdWL1F5U010VXZrQ2VRQ05P?=
- =?utf-8?B?c2FPSVU2UWpJNlE2dG1vclg5dFlIcW4zUnhua2JRS2s3U3pjK1JsR0ZBc1dx?=
- =?utf-8?B?UHBFaTR2NW5NbG1Nems2UUR5dnFhRFRTdnp0bnpTOGFnWklRVHA3WElnTDZO?=
- =?utf-8?B?aVVtTGlzZEFWRmswV3g0RENKRExBeTJuTE1WOHI4WFhSelZ6YjFQMmdKN2Uw?=
- =?utf-8?B?SnRsdmlDblUyd2l2QW1hODVKMkU0KytETktSaUFtamxLT2VlWkxNQWJpLys4?=
- =?utf-8?B?YUJQbEFSMEc0Q2EweXhwTGpuSldlQnhEcVJKYnhOb2YyL2U4L3pMWlVHL2FG?=
- =?utf-8?B?SUViaS9naG0zOU9EU3BKd1hYb0t6ZEVkY3VaVTlhVnBjdmc0YmtoMUVsYnNJ?=
- =?utf-8?B?MWdiam1LVjhZcmRzVnNiWHFhYnhzRmdCK2VWdjhjWWFKSnVtdlBJVWhPNGt2?=
- =?utf-8?B?eHN6WkpPaVJEOUR5MkxDR0doS3gzUnZvanlCeTZYbWVIVnpBSFAxQ1p2eXZL?=
- =?utf-8?B?dmlkdlg4cE1wK2RYeHhhRTRjcEU0ZUFUY0dMeDdIcDVvWmVDdFB0TzQzY3k0?=
- =?utf-8?B?K0JTazdGME9xb1E3Y2JFSlphYjE3WnBwWmJRR2Z3cmZEa21EcStsWW9yZjdO?=
- =?utf-8?B?MUNlUXdHeCtzdzZXV3hBYWkvdnNUYVFnU0d1YUxROGJuOEovMlpnQWl0MlVx?=
- =?utf-8?B?cWZqZ1FGNUpDdjMzUVMrVSthZ0pIWlZoekttaCtlQlF2UHlvWU1nL1R6VXJD?=
- =?utf-8?B?SDEwNlFLODhOTDRFZTVpdGtBUVhYd2tZQ1VtaVpHSDhWVkVNTllPQW10QVRt?=
- =?utf-8?B?cXI4bldWdHF5QUdWeVp6WkYwTXVoREVlUm8xMC9NT2tPRjFTWXdHbTRQTFp1?=
- =?utf-8?B?a2RLYjVodHcrYll2LzBUTFBBemdnUkxpMXgrVVZqcWRWdy9rVStrMUVVdjhj?=
- =?utf-8?B?YnVETWV2QU1xcGdvd3lrd1B4MHlpZElBayt3ZytIMnlTeEIvV3JFYzNWM3BP?=
- =?utf-8?B?Y0l5a1RIWXdCOFF2eFpLbnlIeUtQbVp4d0MwbFpSR1NyVFFpL2N6VTNPZGxt?=
- =?utf-8?B?YmU0MHh3OFE0L1dab2RtVWZrVHpuaitaUkxRM2t5QzJTcG02QjFtSS9vdGIz?=
- =?utf-8?B?ZEY4U1JtRDJONFlUZUdXby9vRmh4ZWZxNXk3cS9ZNTNyU0RUTFFmbVBlZnNC?=
- =?utf-8?B?WmZGVWtRcVRNY1VTaWNubUtHa3cvbFFEZExtajNqYlJKMTJ1ZU05NWNzMkc0?=
- =?utf-8?B?RGRvbmJ3V3RuOXpTMEViRm9mZFRiMEdRK3JrZEMyM1YyWFdEOFBuL3YxcVFz?=
- =?utf-8?B?RkFOWCtnVFV3ekxIanVLNCtGL040RmdUS2hyM2M3N3VuYm1VcjBuS1ZBYlFw?=
- =?utf-8?B?SXlZNVY0YWJ6L0l2eEV5TFQyZTRESjQrcUs1YnFDRkhZWnZSdkxHd2pmN05n?=
- =?utf-8?Q?mpPH6X3IaHb9EkJsMfaP/Wxr0?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="B2lhjLv0"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 4A28AC180F4;
+	Wed, 10 Dec 2025 12:21:39 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id F3EAA60714;
+	Wed, 10 Dec 2025 12:22:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 12FF8119315B3;
+	Wed, 10 Dec 2025 13:21:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1765369320; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=pOlUsVypsTSlBECjYHHoMGhNKvvFlUu0wSglyApNP7w=;
+	b=B2lhjLv08HCS4nwPMQdM5rtA1PxYKChropbNXfAwuDvzNvXOVjVCwFTmvmtb2ORCVRW7Qi
+	k66+Mas8QHLL/Sd+Ps87vPuBDRCwI7saahl3amPRs7SDyRx2/03xb8vTHThuJw2ga28vUp
+	mWJuGni+C/1JJduukHwT93M8LHqErcT1tCB506+eg0lsH1ug4WelgtBydwGEI8bQLgP21q
+	xgMbfofeVReqc6sRn9VIhYltwLdn5+wRI8qcr7mp32U/cqKfXDSUrrYJn+eHIG12gJQGaT
+	OtIuCTUfZrFJAHa0b3F7XsnAhwmX5iend8orwE0uMkCFCSYS7ZIq32q+F/8bOg==
+Date: Wed, 10 Dec 2025 13:21:40 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Kalle Niemi <kaleposti@gmail.com>, Rob Herring <robh@kernel.org>, Matti
+ Vaittinen <mazziesaccount@gmail.com>, linux-arm-kernel@lists.infradead.org,
+ Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
+ Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Arnd
+ Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>, Charles
+ Keepax <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
+ <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
+ Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Mark Brown <broonie@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, Davidlohr
+ Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>, Alison Schofield
+ <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
+ Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+ Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT
+ overlays"
+Message-ID: <20251210132140.32dbc3d7@bootlin.com>
+In-Reply-To: <CAMuHMdXdwf7La1EYBWTJadsTAJG3nKQVW6wtBn-bUqshA=XHRw@mail.gmail.com>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+ <20251015071420.1173068-2-herve.codina@bootlin.com>
+ <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
+ <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
+ <5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com>
+ <CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
+ <072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
+ <CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
+ <55076f4b-d523-4f8c-8bd4-0645b790737e@gmail.com>
+ <20251202102619.5cd971cc@bootlin.com>
+ <088af3ff-bd04-4bc9-b304-85f6ed555f2a@gmail.com>
+ <20251202175836.747593c0@bootlin.com>
+ <dc813fc2-28d2-4f2c-a2a3-08e33eec8ec7@gmail.com>
+ <20251204083839.4fb8a4b1@bootlin.com>
+ <CAMuHMdXdwf7La1EYBWTJadsTAJG3nKQVW6wtBn-bUqshA=XHRw@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8567.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3264934f-9a0f-46b5-ef6a-08de37ddcba1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Dec 2025 11:18:07.6318
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: IbqXmLzYXPfpm/9lQAfmLB377zr9H6aUgInzXnAQQw4JCldqiTWX3aaJw1zveupUeUwLdeZ6ef5Uz2sZpbPFTA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB11889
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogVWxmIEhhbnNzb24gPHVs
-Zi5oYW5zc29uQGxpbmFyby5vcmc+DQo+IFNlbnQ6IFR1ZXNkYXksIERlY2VtYmVyIDksIDIwMjUg
-OTo0OCBQTQ0KPiBUbzogQm91Z2ggQ2hlbiA8aGFpYm8uY2hlbkBueHAuY29tPjsgTHVrZSBXYW5n
-DQo+IDx6aW5pdS53YW5nXzFAbnhwLmNvbT4NCj4gQ2M6IGFkcmlhbi5odW50ZXJAaW50ZWwuY29t
-OyBzaGF3bmd1b0BrZXJuZWwub3JnOw0KPiBzLmhhdWVyQHBlbmd1dHJvbml4LmRlOyBrZXJuZWxA
-cGVuZ3V0cm9uaXguZGU7IGZlc3RldmFtQGdtYWlsLmNvbTsNCj4gbGludXgtbW1jQHZnZXIua2Vy
-bmVsLm9yZzsgaW14QGxpc3RzLmxpbnV4LmRldjsgZGwtUzMyIDxTMzJAbnhwLmNvbT47DQo+IGxp
-bnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsgbGludXgta2VybmVsQHZnZXIua2Vy
-bmVsLm9yZw0KPiBTdWJqZWN0OiBbRVhUXSBSZTogW1BBVENIIHYyXSBtbWM6IHNkaGNpLWVzZGhj
-LWlteDogd2FpdCBmb3IgZGF0YSB0cmFuc2Zlcg0KPiBjb21wbGV0aW9uIGJlZm9yZSByZXNldA0K
-PiANCj4gQ2F1dGlvbjogVGhpcyBpcyBhbiBleHRlcm5hbCBlbWFpbC4gUGxlYXNlIHRha2UgY2Fy
-ZSB3aGVuIGNsaWNraW5nIGxpbmtzIG9yDQo+IG9wZW5pbmcgYXR0YWNobWVudHMuIFdoZW4gaW4g
-ZG91YnQsIHJlcG9ydCB0aGUgbWVzc2FnZSB1c2luZyB0aGUgJ1JlcG9ydA0KPiB0aGlzIGVtYWls
-JyBidXR0b24NCj4gDQo+IA0KPiBPbiBGcmksIDUgRGVjIDIwMjUgYXQgMDk6MTIsIEJvdWdoIENo
-ZW4gPGhhaWJvLmNoZW5AbnhwLmNvbT4gd3JvdGU6DQo+ID4NCj4gPiA+IC0tLS0tT3JpZ2luYWwg
-TWVzc2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBMdWtlIFdhbmcgPHppbml1LndhbmdfMUBueHAuY29t
-Pg0KPiA+ID4gU2VudDogMjAyNeW5tDEy5pyINeaXpSAxNToxNw0KPiA+ID4gVG86IGFkcmlhbi5o
-dW50ZXJAaW50ZWwuY29tOyBCb3VnaCBDaGVuIDxoYWliby5jaGVuQG54cC5jb20+Ow0KPiA+ID4g
-dWxmLmhhbnNzb25AbGluYXJvLm9yZw0KPiA+ID4gQ2M6IHNoYXduZ3VvQGtlcm5lbC5vcmc7IHMu
-aGF1ZXJAcGVuZ3V0cm9uaXguZGU7DQo+IGtlcm5lbEBwZW5ndXRyb25peC5kZTsNCj4gPiA+IGZl
-c3RldmFtQGdtYWlsLmNvbTsgbGludXgtbW1jQHZnZXIua2VybmVsLm9yZzsgaW14QGxpc3RzLmxp
-bnV4LmRldjsNCj4gZGwtUzMyDQo+ID4gPiA8UzMyQG54cC5jb20+OyBsaW51eC1hcm0ta2VybmVs
-QGxpc3RzLmluZnJhZGVhZC5vcmc7DQo+ID4gPiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3Jn
-DQo+ID4gPiBTdWJqZWN0OiBbUEFUQ0ggdjJdIG1tYzogc2RoY2ktZXNkaGMtaW14OiB3YWl0IGZv
-ciBkYXRhIHRyYW5zZmVyDQo+IGNvbXBsZXRpb24NCj4gPiA+IGJlZm9yZSByZXNldA0KPiA+ID4N
-Cj4gPiA+IEZyb206IEx1a2UgV2FuZyA8emluaXUud2FuZ18xQG54cC5jb20+DQo+ID4gPg0KPiA+
-ID4gT24gSU1YN1VMUCBwbGF0Zm9ybXMsIGNlcnRhaW4gU0QgY2FyZHMgKGUuZy4gS2luZ3N0b24g
-Q2FudmFzIEdvISBQbHVzKQ0KPiBjYXVzZQ0KPiA+ID4gc3lzdGVtIGhhbmdzIGFuZCByZWJvb3Rz
-IGR1cmluZyBtYW51YWwgdHVuaW5nLiBUaGVzZSBjYXJkcyBleGhpYml0IGxhcmdlDQo+IGdhcHMN
-Cj4gPiA+ICh+MTZ1cykgYmV0d2VlbiB0dW5pbmcgY29tbWFuZCByZXNwb25zZSBhbmQgZGF0YSB0
-cmFuc21pc3Npb24uDQo+ID4gPiBXaGVuIGNtZCBDUkMgZXJyb3JzIG9jY3VyIGR1cmluZyB0dW5p
-bmcsIHRoZSBjb2RlIGFzc3VtZXMgZGF0YSBlcnJvcnMNCj4gZXZlbg0KPiA+ID4gdHVuaW5nIGRh
-dGEgaGFzbid0IGJlZW4gZnVsbHkgcmVjZWl2ZWQgYW5kIHRoZW4gcmVzZXQgaG9zdCBkYXRhIGNp
-cmN1aXQuDQo+ID4gPg0KPiA+ID4gUGVyIElNWDdVTFAgcmVmZXJlbmNlIG1hbnVhbCwgcmVzZXQg
-b3BlcmF0aW9ucyAoUkVTRVRfREFUQS9BTEwpIG5lZWQNCj4gdG8NCj4gPiA+IG1ha2Ugc3VyZSBu
-byBhY3RpdmUgZGF0YSB0cmFuc2ZlcnMuIFByZXZpb3VzbHksIHJlc2V0dGluZyB3aGlsZSBkYXRh
-IHdhcyBpbi0NCj4gZmxpZ2h0DQo+ID4gPiB3b3VsZCBjbGVhciBkYXRhIGNpcmN1aXQsIGluY2x1
-ZGluZyBBRE1BL1NETUEgYWRkcmVzcywgY2F1c2luZyBkYXRhIHRvDQo+IGJlDQo+ID4gPiB0cmFu
-c21pdHRlZCB0byBpbmNvcnJlY3QgbWVtb3J5IGFkZHJlc3MuIFRoaXMgcGF0Y2ggYWRkcyBwb2xs
-aW5nIGZvciBkYXRhDQo+ID4gPiB0cmFuc2ZlciBjb21wbGV0aW9uIGJlZm9yZSBleGVjdXRpbmcg
-cmVzZXRzLg0KPiA+ID4NCj4gPiA+IFNpZ25lZC1vZmYtYnk6IEx1a2UgV2FuZyA8emluaXUud2Fu
-Z18xQG54cC5jb20+DQo+ID4gPiAtLS0NCj4gPiA+IHYyOiBhbWVuZCBjb21taXQgbWVzc2FnZQ0K
-PiA+ID4gLS0tDQo+ID4gPiAgZHJpdmVycy9tbWMvaG9zdC9zZGhjaS1lc2RoYy1pbXguYyB8IDE1
-ICsrKysrKysrKysrKysrKw0KPiA+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxNSBpbnNlcnRpb25zKCsp
-DQo+ID4gPg0KPiA+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbW1jL2hvc3Qvc2RoY2ktZXNkaGMt
-aW14LmMNCj4gPiA+IGIvZHJpdmVycy9tbWMvaG9zdC9zZGhjaS1lc2RoYy1pbXguYw0KPiA+ID4g
-aW5kZXggYTdhNWRmNjczYjBmLi5hZmZkZTE5MzY1MTAgMTAwNjQ0DQo+ID4gPiAtLS0gYS9kcml2
-ZXJzL21tYy9ob3N0L3NkaGNpLWVzZGhjLWlteC5jDQo+ID4gPiArKysgYi9kcml2ZXJzL21tYy9o
-b3N0L3NkaGNpLWVzZGhjLWlteC5jDQo+ID4gPiBAQCAtMTQ1Myw2ICsxNDUzLDIxIEBAIHN0YXRp
-YyB2b2lkIGVzZGhjX3NldF91aHNfc2lnbmFsaW5nKHN0cnVjdA0KPiA+ID4gc2RoY2lfaG9zdCAq
-aG9zdCwgdW5zaWduZWQgdGltaW5nKQ0KPiA+ID4NCj4gPiA+ICBzdGF0aWMgdm9pZCBlc2RoY19y
-ZXNldChzdHJ1Y3Qgc2RoY2lfaG9zdCAqaG9zdCwgdTggbWFzaykgIHsNCj4gPiA+ICsgICAgIHUz
-MiBwcmVzZW50X3N0YXRlOw0KPiA+ID4gKyAgICAgaW50IHJldDsNCj4gPiA+ICsNCj4gPiA+ICsg
-ICAgIC8qDQo+ID4gPiArICAgICAgKiBGb3IgZGF0YSBvciBmdWxsIHJlc2V0LCBlbnN1cmUgYW55
-IGFjdGl2ZSBkYXRhIHRyYW5zZmVyIGNvbXBsZXRlcw0KPiA+ID4gKyAgICAgICogYmVmb3JlIHJl
-c2V0dGluZyB0byBhdm9pZCBzeXN0ZW0gaGFuZy4NCj4gPiA+ICsgICAgICAqLw0KPiA+ID4gKyAg
-ICAgaWYgKG1hc2sgJiAoU0RIQ0lfUkVTRVRfREFUQSB8IFNESENJX1JFU0VUX0FMTCkpIHsNCj4g
-PiA+ICsgICAgICAgICAgICAgcmV0ID0gcmVhZGxfcG9sbF90aW1lb3V0X2F0b21pYyhob3N0LT5p
-b2FkZHIgKyBFU0RIQ19QUlNTVEFULA0KPiA+ID4gcHJlc2VudF9zdGF0ZSwNCj4gPg0KPiA+IEkn
-bSBva2F5IHdpdGggdGhlIHBhdGNoLCBidXQgSSBmaW5kIG9uZSB0aGluZyBoZXJlOg0KPiA+DQo+
-ID4gSSBub3RpY2UgeW91IHVzZSBfYXRvbWljIGhlcmUsIEkgZ3Vlc3MgeW91IHdhbnQgdG8gY292
-ZXIgdGhlIGNhc2Ugd2hlbiB0aGUNCj4gcmVzZXQgZnVuY3Rpb24gaXMgY2FsbGVkIGluIGhhcmR3
-YXJlIGlycSBoYW5kbGVyIHNkaGNpX2lycSgpLg0KPiA+IEknbSBub3Qgc3VyZSB3aGV0aGVyIGl0
-IGlzIHN1aXRhYmxlIHRvIGFkZCBkZWxheSBpbiBoYXJkd2FyZSBpcXIgaGFuZGxlciwgSQ0KPiBm
-aW5kIHRoZXJlIGlzIGFsc28gdWRlbGF5IGluIHNkaGNpX3Jlc2V0KCksIHNkaGNpX3Jlc2V0IGNh
-biBhbHNvIGJlIGNhbGxlZCBpbg0KPiBoYXJkd2FyZSBpcnEgaGFuZGxlciB3aGVuIHRoZXJlIGlz
-IGNtZF9jcmMvZGF0YV9jcmMgZXJyb3IuDQo+ID4gQWRyaWFuL1VsZiwgZG8geW91IG5vdGljZSB0
-aGlzIGlzc3VlIGJlZm9yZT8gQW55IGNvbW1lbnRzPw0KPiANCj4gWW91IGFyZSByaWdodC4gSW4g
-Z2VuZXJhbCBpdCdzIGNlcnRhaW5seSBub3QgcHJlZmVycmVkIHRvIHBvbGwvZGVsYXkNCj4gaW4g
-YW4gYXRvbWljIGNvbnRleHQuIEJ1dCBpZiBJIHVuZGVyc3RhbmQgY29ycmVjdGx5IGhlcmUsIHBv
-bGxpbmcgaW4NCj4gYXRvbWljIGNvbnRleHQgc2hvdWxkIG5vdCBoYXBwZW4gdGhhdCBmcmVxdWVu
-dGx5LCByaWdodD8NCj4gDQo+IE1vcmVvdmVyLCBJIHdvbmRlciBpZiB3ZSByZWFsbHkgbmVlZCB0
-byBoYXZlIGEgcG9sbGluZy10aW1lb3V0IG9mDQo+IDEwMG1zPyBXaGVyZSBkaWQgdGhhdCB2YWx1
-ZSBjb21lIGZyb20/DQoNCkkgcmVmZXJyZWQgdG8gdGhlIDEwMG1zIHRpbWVvdXQgc2V0dGluZyBv
-ZiBzZGhjaV9yZXNldC4gDQoNCkFjdHVhbCBtZWFzdXJlbWVudHMgc2hvdyB0aGF0IGR1cmluZyB0
-dW5pbmcsIHdhaXRpbmcgZm9yIGRhdGEgdHJhbnNmZXINCmNvbXBsZXRpb24gdHlwaWNhbGx5IG9u
-bHkgcmVxdWlyZXMgdGVucyBvZiBtaWNyb3NlY29uZHMuIEhvd2V2ZXIsIGNvbnNpZGVyaW5nDQp0
-aGF0IHRoZSB0dW5pbmcgYmxvY2sgc2l6ZSBpcyB2ZXJ5IHNtYWxsLCB3aGVuIHRyYW5zZmVycmlu
-ZyBsYXJnZXIgYmxvY2tzLCBpdA0KbWF5IHJlcXVpcmUgYSBsb25nZXIgd2FpdGluZyB0aW1lLiAN
-Cg0KVGhlIHByb2JhYmlsaXR5IG9mIGVuY291bnRlcmluZyBDUkMgZXJyb3JzIHRoYXQgcmVxdWly
-ZSBhIHJlc2V0IHdoZW4gbm90IGluIHR1bmluZw0KaXMgcXVpdGUgbG93LCBzbyB3YWl0aW5nIGZv
-ciBzb21lIGFkZGl0aW9uYWwgdGltZSBtYXkgbm90IGNhdXNlIHNpZ25pZmljYW50IGltcGFjdC4N
-Cg0KPiANCj4gSW4gYW55IGNhc2UsIHBsZWFzZSBhZGQgYSBkZWZpbmUgdG8gc3BlY2lmeSB0aGUg
-dGltZW91dCBhbmQgbWFrZSBzdXJlDQo+IHRoZSBkZWZpbmUtbmFtZSBoYXMgdGhlIHN1ZmZpeCBj
-b3JyZXNwb25kaW5nIHRvIHRoZSB1bml0IChfVVMsDQo+IF9NUywuLi4pDQo+IA0KDQpTdXJlLCB3
-aWxsIGRvIGluIG5leHQgdmVyc2lvbg0KDQpUaGFua3MsDQpMdWtlIFdhbmcNCg0KPiA+DQo+ID4g
-UmVnYXJkcw0KPiA+IEhhaWJvIENoZW4NCj4gPg0KPiA+DQo+ID4gPiArICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIShwcmVzZW50X3N0YXRlICYgU0RIQ0lfREFU
-QV9JTkhJQklUKSwgMiwNCj4gPiA+IDEwMDAwMCk7DQo+ID4gPiArICAgICAgICAgICAgIGlmIChy
-ZXQgPT0gLUVUSU1FRE9VVCkNCj4gPiA+ICsgICAgICAgICAgICAgICAgICAgICBkZXZfd2Fybiht
-bWNfZGV2KGhvc3QtPm1tYyksDQo+ID4gPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-InRpbWVvdXQgd2FpdGluZyBmb3IgZGF0YSB0cmFuc2ZlciBjb21wbGV0aW9uXG4iKTsNCj4gPiA+
-ICsgICAgIH0NCj4gPiA+ICsNCj4gPiA+ICAgICAgIHNkaGNpX2FuZF9jcWhjaV9yZXNldChob3N0
-LCBtYXNrKTsNCj4gPiA+DQo+ID4gPiAgICAgICBzZGhjaV93cml0ZWwoaG9zdCwgaG9zdC0+aWVy
-LCBTREhDSV9JTlRfRU5BQkxFKTsNCj4gPiA+IC0tDQo+ID4gPiAyLjM0LjENCj4gPg0KPiANCj4g
-S2luZCByZWdhcmRzDQo+IFVmZmUNCg==
+Hi Geert, Kalle, Rob,
+
+On Thu, 4 Dec 2025 11:49:13 +0100
+Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+
+> Hi Hervé,
+> 
+> On Thu, 4 Dec 2025 at 08:39, Herve Codina <herve.codina@bootlin.com> wrote:
+> > Indeed, Kalle, Geert, I don't have your hardware, your related overlay or
+> > a similar one that could be used for test and also I don't have your out of
+> > tree code used to handle this overlay.
+> >
+> > I know overlays and fw_devlink have issues. Links created by fw_devlink
+> > when an overlay is applied were not correct on my side.
+> >
+> > Can you check your <supplier>--<consumer> links with 'ls /sys/class/devlinks'
+> >
+> > On my side, without my patches some links were not correct.
+> > They linked to the parent of the supplier instead of the supplier itself.
+> > The consequence is a kernel crash, use after free, refcounting failure, ...
+> > when the supplier device is removed.
+> >
+> > Indeed, with wrong links consumers were not removed before suppliers they
+> > used.
+> >
+> > Looking at Geert traces:
+> > --- 8< ---
+> > rcar_sound ec500000.sound: Failed to create device link (0x180) with
+> > supplier soc for /soc/sound@ec500000/rcar_sound,src/src-0
+> > rcar_sound ec500000.sound: Failed to create device link (0x180) with
+> > supplier soc for /soc/sound@ec500000/rcar_sound,src/src-1
+> > [...]
+> > --- 8< ---
+> >
+> > Even if it is not correct, why the soc device cannot be a provider?
+> > I don't have the answer to this question yet.  
+> 
+> I have no idea. These failures (sound) are also not related to the
+> device I am adding through the overlay (SPI EEPROM).
+> Note that these failures appear only with your suggested fix, and are
+> not seen with just the patch in the subject of this email thread.
+> 
+> > Without having the exact tree structure of the base device-tree, the overlay
+> > and the way it is applied, and so without been able to reproduce the issue
+> > on my side, investigating the issue is going to be difficult.
+> >
+> > I hope to find some help to move forward and fix the issue.  
+> 
+> Base DTS is [1], overlay DTS is [2].
+> Applying and removing the overlay is done using OF_CONFIGFS[3],
+> and "overlay [add|rm] 25lc040"[4].
+> 
+> I assume you can reproduce the issue on any board that has an SPI
+> EEPROM, after moving the SPI bus enablement and SPI EEPROM node to an
+> overlay. Probably even with an I2C EEPROM instead.  Or even without
+> an actual EEPROM connected, as even the SPI bus fails to appear.
+> 
+> > Saravana's email (Saravana Kannan <saravanak@google.com>) seems incorrect.
+> > Got emails delivery failure with this email address.  
+> 
+> Yeah, he moved company.
+> He is still alive, I met him in the LPC Training Session yesterday ;-)
+> 
+> Thanks!
+> 
+> [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/tree/arch/arm64/boot/dts/renesas/r8a77990-ebisu.dts
+> [2] https://web.git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/tree/arch/arm64/boot/dts/renesas/r8a77990-ebisu-cn41-msiof0-25lc040.dtso?h=topic/renesas-overlays-v6.17-rc1
+> [3] https://web.git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/log/?h=topic/overlays-v6.17-rc1
+> [4] https://elinux.org/R-Car/DT-Overlays#Helper_Script
+> [5] https://lore.kernel.org/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com/
+> 
+
+I did some tests with boards I have.
+
+First I used a Marvel board based on an Armada 3720.
+
+In my overlay, I added the pinmux related to the SPI controller, enabled
+this SPI controller and added a SPI flash.
+
+It didn't work with or without culprit patches from my series applied.
+Indeed, the pinctrl driver used is an MFD driver an mixed pinmux definition
+nodes with device description (a clock) node.
+
+When a new node is added, a new device is created. Indeed, because the
+driver is an MFD driver, it is a bus driver and handled by of_platform bus.
+
+My new node is considered by devlink as a node that will have a device ready
+to work (driver attached and device probed). A link is created between this
+node and the consumers of this node (i.e. the SPI controller). devlink is
+waiting for this provider to be ready before allowing the its consumer to probe.
+This node (simple pinmux description) will never lead to a device and devlink
+will never see this "provider" ready.
+
+Did a test with a Renesas RZ/N1D (r9a06g032) based board and built a similar
+overlay involving I2C controller pinmux, I2C controller and an EEPROM.
+
+Here, also the overlay didn't work but the issue is different.
+
+The pinmux definition for pinctrl (i.e. pinctrl subnodes) are looked when
+the pinctrl driver probes. Adding a new node later is not handled by the
+pinctrl driver.
+Applying the overlay leads to a simple:
+  [   16.934168] rzn1-pinctrl 40067000.pinctrl: unable to find group for node /soc/pinctrl@40067000/pins_i2c2
+
+Indeed, the 'pins_i2c2' has been added by the overlay and was not present
+when the pinctrl probed.
+
+Tried without adding a new pinmux node (pinctrl subnode) from the overlay
+and used nodes already existing in the base DT.
+
+On my Marvell Armada 3720 board, it works with or without my patches.
+No regression detected due to my patches.
+
+On my RZ/N1D board, it works also with or without my patches.
+Here also, no regression detected.
+
+Also, on my Marvell Armada 3720 board, I can plug my LAN966x PCI board.
+The LAN966x PCI driver used an overlay to describe the LAN966x PCI board.
+
+With the upstream patch not reverted, i.e. 1a50d9403fb9 ("treewide: Fix
+probing of devices in DT overlays")" applied, devlinks created for the
+LAN966x PCI board internal devices are incorrect and lead to crashes when
+the LAN966x PCI driver is removed due to wrong provider/consumer dependencies.
+
+When this patch is reverted and replaced by "of: dynamic: Fix overlayed
+devices not probing because of fw_devlink", devlinks created for the LAN966x
+PCI board internal devices are corrects and crashes are no more present on
+removal.
+
+Kalle, Geert, can you perform a test on your hardware with my patches
+applied and moving your pinmux definition from the overlay to the base
+device-tree?
+
+The kernel you can use is for instance the kernel at the next-20251127 tag.
+Needed patches for test are present in this kernel:
+    - 76841259ac092 ("of: dynamic: Fix overlayed devices not probing because of fw_devlink")
+    - 7d67ddc5f0148 ("Revert "treewide: Fix probing of devices in DT overlays"")
+
+Best regards,
+Hervé
