@@ -1,122 +1,228 @@
-Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013042.outbound.protection.outlook.com [40.107.162.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260A130F801;
-	Tue,  9 Dec 2025 21:19:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765315190; cv=none; b=T9CAp/jHHjZDLhSpPC/DC17HN+i2q34X+pgHOdHUqIT7gjnHs1eF1pKsygqp++Llo0Zxsh88KpDsW2JljI+LHx4zZISPMyWla2mQ/pxT0RVmsRaFe7IyselhhP6WmDIgjUd7bvtvuLQDfSSYHbGL4kTsFCqtE0VtOzwiiBAFuVA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765315190; c=relaxed/simple;
-	bh=EUY7F24NFYP0FXSzpt1PyO4sIbxgQQaAoD+qmJ/tzBo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=huGEGG1JMOFDzYdRupRxrXUw+LidDtpkN3YVaHx1O8AGHTlNiPcJttJZzjwFINaFsLED+H7O6NDY0fVVQmAT8VzwLuiHrfkxJgx8CMsl01Q67g1c+vtOIKCnN0+7Tiynqt39Wd2gTT+8BkQbiGMU+YsN7g6l8r7h6ZSuEc7K8MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
-Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
-	by finn.localdomain with esmtp (Exim 4.95)
-	(envelope-from <tharvey@gateworks.com>)
-	id 1vT4n7-00DO8D-8x;
-	Tue, 09 Dec 2025 20:58:37 +0000
-From: Tim Harvey <tharvey@gateworks.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Tim Harvey <tharvey@gateworks.com>
-Subject: [PATCH] arm64: dts: imx8m{m,p}-venice-gw71xx: Add Magetometer
-Date: Tue,  9 Dec 2025 12:58:28 -0800
-Message-Id: <20251209205828.689999-1-tharvey@gateworks.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045ED322A
+	for <imx@lists.linux.dev>; Wed, 10 Dec 2025 00:24:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765326285; cv=fail; b=cHWpQDouKaUewStRLNn4uyjWAXJXMyV2Qj3Rypz1uVKtHg3XzUeeNbAPZqotQv3rE5ChR8UKhVKFShT4J5NBnylzZEB1uzlfB+A772S2vTFZKHAMprlq84eZeLBv+5jguADMxXHBmbfgJxiAZrbfI18jFgs/wtn7oC3HED5gzH8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765326285; c=relaxed/simple;
+	bh=yUm6qPTkBfrTgdNRv4zF+gcPFisi/MwdA82+gFrlxqE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=lfwnEDdzd2v6BJ3kgqSD7yy9nPWN/Qp2NKj61cgn7b42VVmQ+g9S5hOTKr+9BEO5jlo07UoiAcGiebpokATi+uSJQvdzB6th+HEXAyJlj46e7X5/rL0qoBn14Km5NvsMtrGunm/lhVhY0SgjZRyf7nobbTbMiHJ6we3SQQjUur4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=n7Q9GV+n; arc=fail smtp.client-ip=40.107.162.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="n7Q9GV+n"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NN16ip5eYbZGm+Tha9SNJYkb1OEu9v6o+X+X21DOIY34xESCA5uIiRINOh3v/jn8Wx2q7uHp2JDd0Uy7onIru0cXyBrPuG+K7yxvNo7V5paquj1A50md45dmrtp4EY00UA4W29JFiGH11OvhAg2m52Q2htKThFVl7A1y+nhbRhRDmKBIGdXk0DFXr7G7w/r5x/GAQEbkePdNdkpSSOFCOoQQo83a9IBX7sVQNoK+loyL/oEh/A5FmFMgh+zNW8/BRZQig+AS+SeemJNCbxjAaSB12qRxxArFKwJDYzkCsd0NeJ3EgTxNuTWEllToJiWXHBSLuP2nZ0wobK6wzaYkeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gK6bOaKu1qT/CQhXKcwlCTRYhysyGD1Xb3NwvYYLtOg=;
+ b=vxSwDgX7L+9e63XgNW60vu1qIaNyjFD72Ha9E+Pizzm3Vemr+Jqnde+I3FxM+DDqmyUYsvuCNm3qzl/JzmZOiaMU1NgyJU4cAeeW6ze22rhZGhSHY8BPjmv5AH667N1qY12oLZT+QthjmhBsJbNUCg2UBARlt2IiQ4GVkePBM5NQMgOtItiBwi/PiYO3eHwRm+VHAdOaKIbwskLh25buv9Pp4SYtmEy7TGLks6CzYxjSe6fpjZ3JVbpZB8yqmawVBEGN3rg5vsRTv92W7s6/bOZObgPZMTnCKvTcaIL60vkNFQQarCxJ93Do8pqJEgYUMVxSH1ZVYpO5BsTGQieqew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gK6bOaKu1qT/CQhXKcwlCTRYhysyGD1Xb3NwvYYLtOg=;
+ b=n7Q9GV+nZwCf0do+VGnj13Js//1w5HTVminYpSUjntGF4oDKgMBrv9fOq+IjGMhnBW1g99xnEugjJ+EBtbUfceYP3eIEzVTWJajId++9FC2/NvP6EZ/1RmZ1R1XxifWCG3r0o9SJlHxcmnTJvzLKNFyhY06j4vmuXKmKIyRZjDGX/AaZ/zKoyhTL8zBvqlrBspy39Jla25FQBYbsc2pnUlalI9ltEdOJFddCkVBmgcB7UrA8PMNpMwvzG3AH8V1PmM//BxFs9GrNvi0Xb0KOQNKGMy2Eg5RzqDFcpB8EYjuuZn53ONHXJwqD3qLaGao3ZyQSUIWNscxmfQO3aJ8EDg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM9PR04MB8907.eurprd04.prod.outlook.com (2603:10a6:20b:40a::22)
+ by PA1PR04MB10891.eurprd04.prod.outlook.com (2603:10a6:102:489::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.7; Wed, 10 Dec
+ 2025 00:24:38 +0000
+Received: from AM9PR04MB8907.eurprd04.prod.outlook.com
+ ([fe80::a361:2618:7785:3bc9]) by AM9PR04MB8907.eurprd04.prod.outlook.com
+ ([fe80::a361:2618:7785:3bc9%4]) with mapi id 15.20.9412.005; Wed, 10 Dec 2025
+ 00:24:38 +0000
+Message-ID: <091a4f29-5435-428a-9a1c-ef82465211cb@nxp.com>
+Date: Wed, 10 Dec 2025 02:24:37 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] remoteproc: imx_dsp_rproc: Fix multiple start/stop
+ commands
+To: Daniel Baluta <daniel.baluta@nxp.com>, andersson@kernel.org,
+ mathieu.poirier@linaro.org
+Cc: m.szyprowski@samsung.com, shawnguo@kernel.org, kernel@pengutronix.de,
+ festevam@gmail.com, arnaud.pouliquen@foss.st.com, robh@kernel.org,
+ geert+renesas@glider.be, linux-remoteproc@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20251209140425.766742-1-daniel.baluta@nxp.com>
+Content-Language: en-US
+From: Iuliana Prodan <iuliana.prodan@nxp.com>
+In-Reply-To: <20251209140425.766742-1-daniel.baluta@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM8P190CA0029.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:219::34) To AM9PR04MB8907.eurprd04.prod.outlook.com
+ (2603:10a6:20b:40a::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8907:EE_|PA1PR04MB10891:EE_
+X-MS-Office365-Filtering-Correlation-Id: 10e66bbe-51f2-40a2-4f79-08de3782811a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|19092799006|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ei9ISk53NkdLUHppU1I1eHRxMmtDSmVmVklWRE04OVF4Zk90ODBRSlZVcXFN?=
+ =?utf-8?B?UXFJNHJmeVE2dlNpOXdDYWNtaDdweDVwWU5IeU9kWFRhc2hET0grSkRTQ0ty?=
+ =?utf-8?B?c29FWEU0Ky9LekpYeUlVM3daOThqb0lzQitUUTBBMXJuUVhORSt4WjZIYUN1?=
+ =?utf-8?B?N1BDT2JEcVZmSU92dzlOaWQ3Wkp5ejhPL1ZNNEx0Z1ljKzFTbm5iODlvTTRX?=
+ =?utf-8?B?MjYvMmUxM3RlL2llZElwcGVzVHlndEV5QnJ1ZENYQWJRZ1Z5cjRtbG1oakZ1?=
+ =?utf-8?B?cmlkQUVkU1NCWkNRQUs4UUpsR1l5N1JOZ3BVZjJ2WWEybmtFOWNHNGVEeGRl?=
+ =?utf-8?B?S3dtc2pzVVBvUSs5dWpxMG9IVS94dXJtWkt4ODBhVnhjT1BDVHNzK0I2NUlV?=
+ =?utf-8?B?MXRiR2JTRlJDQVlwb2xoNEF3TGVGTWRLM1B1VUxCZ0pYYlZEQ2tzd0RUWW1a?=
+ =?utf-8?B?dGV3WDFvdlNUcUQzc0grK3BXWDdDRlp2VDFVTGZMK0c0enR6S0lmTUNWM1ZS?=
+ =?utf-8?B?UEg5QlJpSEZ1R05UVThQRHlUcUZ5bUErNjFxeUt5NXF5QkNjRmtFSDZiTHUr?=
+ =?utf-8?B?dTBZRTh1bi9LamhWOGZKemxnRmlRR0lJTXdzdjJrSFI5eTZQYVRMQWc0ejZx?=
+ =?utf-8?B?dnhRWjZlYmc5QUNodHRSZSt4YjloV1duZTR6cjlDQ0Fkc0Q0WmM2cjZvbmtz?=
+ =?utf-8?B?UWI3Rit3RmdiaEZiM2x5S0JvOG5zajlEQnNzR1VWV1pLWnYzQkUzUmUrVy94?=
+ =?utf-8?B?aFp5VVpydmpoemNkZWFrc3hBZ0ZDSjQyWmlCajJpRTQwVHlzT2JXUnNZYzQr?=
+ =?utf-8?B?VjUrQ3paRjEzRGRQQi92ZG42NE9BN0srNFRhb1hwa2xITlorMndtb0IrNVY4?=
+ =?utf-8?B?amVORzh4THpUQzBKUTBsK1ZNaE5vZEZHWXlzbms0SWkwRHZMOHNtS3c3cWpl?=
+ =?utf-8?B?eUlCOE9iRGVkN3RscXRZL3RCdldNaHllMFowM2Q1RFBiSTYwTyt6UHJIOHJw?=
+ =?utf-8?B?cGVBZi9zZHdna25BejBlQy9WMENXelNFaVA4V0VZUEpmVlBCK2w2WUZyaXBj?=
+ =?utf-8?B?SVFCckJTcStLaTZlalFvWTVNOXNrc3N0N2syazE1S1EvMUUzaXk1UTFkNUZL?=
+ =?utf-8?B?cUkwVzY5N2xsVlQxTDhsZnI0SkZtTllQaU9EenBNeFZFUDFaL3B6alVpMHZk?=
+ =?utf-8?B?SWlhMzBScWhzc3BNTmtwZlFOQmVwaXBqNENsRzNsc0xHNStzWTBOUHRFWFNU?=
+ =?utf-8?B?aWJRYTloWk5qSXRsRHAvaTJyUHJtbUhJWXNkais5ZytUeTk5Ym13YS9MYkZG?=
+ =?utf-8?B?WkZuaDNzZDNhSFVMdEV2WS9JaWFkQm1kTGU5Z0V5TXR5SzJ3MEpDSWVEOUI2?=
+ =?utf-8?B?YUs3RmFibk5qR2JBTTdVb1pLVE10dFJBSHZUTTYrdzRqYjl2N2paZXVuODlw?=
+ =?utf-8?B?TERPb1loQjNxRXIxVkNVeldLekJ0ZGRTZitERndSN3c1bG9hVnB5RmdaTklF?=
+ =?utf-8?B?TkFqaU53TmZKUmFneHFLTXBPWCtTbnpjNHBzeE1tZjJrQnNZTFRuNDI1TzFE?=
+ =?utf-8?B?R0RWOTNGdUZYMGQvRXBIelg5bFAxeEhhTW9PUjVzbXhpcitlbm5qRHF0M28x?=
+ =?utf-8?B?aGk4K2pUMlhibmFnMzV1ZGtKM0IxZGtzSjA1cGtBWi8wRGdEVkpCdU10OVJJ?=
+ =?utf-8?B?UE1nTzRyWmVoS2ZuT1FiSW5zUi9iTW1VNVlwMU5TTlpweVdYTXZnOXF4Sksy?=
+ =?utf-8?B?NFpKaFI1M20ycFNncCtiZlRaVlYya1Q3WFdrUFJiNmprTjRXeGJQNEhVKzR4?=
+ =?utf-8?B?Vm5wcjlQNXczWDB1Q3VNamFRUnh3bVRQWGVPNGFSMEhCL3JFdkNxSW9NQjZu?=
+ =?utf-8?B?RXVTU2llNlJla0pMRmFRT3ZFZk96RTBvWDM5bkpWbGgrYUFoMU9PSnZuVENK?=
+ =?utf-8?Q?tNQHXM4Qijp9sH0C3HMi5IrjsQQA4LOx?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8907.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(19092799006)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RFVUZnBGTS9nbEVYUjBJVjVtYkJRTS9yQjNvOTAxNkZuWDZDWkFRcjBudFRF?=
+ =?utf-8?B?ODFTbXRMV0xiOEdQYzFJQVYyVHBNa2VJOGNUbGZNNXdiL0s5Y1VSVWg3YnFz?=
+ =?utf-8?B?eVJEQnRENkw0RnI1MU0zMnFnVDFqd1NzWUFQclpDTkJEUCt4VWxEVmVUeGU4?=
+ =?utf-8?B?eXF3ak5kQjFMK082cDQ2cWdNTlZpc2RlZkxvVnJQUzR3dC9abFdWemhTY0NE?=
+ =?utf-8?B?cEorQWptV0hvS1BUcmwvRzlzZEVTYmNsMUFnSk9lNG1Ib1dBMnpEYllCUkxz?=
+ =?utf-8?B?cnhNVzJXQmdWSC9MRHRabDRPMU9vZGVQcEg5TVVoL2s2Q0hCTThZTE95eUEy?=
+ =?utf-8?B?aE4yMmtyeUFXNjVtcTVGWDZNcEwrd3pHVU5UV3BzQVBNU1Bwci8zdmlvL0RM?=
+ =?utf-8?B?Q0h3N1g4ZDJudWZpY3NMdHB4NW4ybDlRR0lHSk9VT3FoY2dWYjZOSHNvRUNV?=
+ =?utf-8?B?ZEZ5cFZoUUdwUEtMT2pQV21FRE1mY0RiQkJpZ0phakVHS0poTlAvbXNrQTlC?=
+ =?utf-8?B?QVE3QUd6cFFIREJ2Q3NqaEExc25NSm9XRUl2cHFKVE5SOCthQ2t6bGUvOEdB?=
+ =?utf-8?B?a2tUT21wRU1KMncxVDdURUpyM1RlNzBHZkh5aFd6UHRSU096VmhrdTRJREx2?=
+ =?utf-8?B?MFlycWJDelpPaUFOWmYrdnZpRjFwbklDYkhOdElnL1ZHMlRVS3E2emNiY2tT?=
+ =?utf-8?B?aGRUcWdSd1N3czRlZ2dFYVFwdzNnUFpydVVnN3U4YjNtbEdmaWk5ZUFsVEpD?=
+ =?utf-8?B?NUZXUmZmdkFxTDFNaEtrZDFsMmxBSWRxajNua3hOWkFMT29makdLUGY3WGN4?=
+ =?utf-8?B?d0hHSS8vcEZFZ3NzTEI0TWl6dDkzTEhnclNVNjhacCtZZHdtNGEzQkZubTgx?=
+ =?utf-8?B?NFUxK3BkVzJENkU5dkdVc2ppaW9EUEhJeUUvOVhkUzBpWTYzQ3B3NVdHVE1E?=
+ =?utf-8?B?dUJzVjMxVlRLdmx5TEFoamRwdzYvL25zR1FRSS9LMy83NnBmdk5JQ0daSS9p?=
+ =?utf-8?B?bUUwYWNRclhveWVFb1NlRnNBcFp4ekMrYlFBVEFwT2UyT2FmNUNHcmtKeHFY?=
+ =?utf-8?B?U0t1Z3cvVHZlQnN3M1pFbEUxc2ZQeWFwZHYrSU1yWXRTV0locFpuRlQzMERt?=
+ =?utf-8?B?M3VUMUJ6REI0KzJTbmRKVnpGTWZobzlsTnhVWExZRDFXTDVIcUFWKzA5VTF3?=
+ =?utf-8?B?Nkx4akRQZndQWnY0VWFDbTNKdmZHWmgwSVJkVWd5b1p6eVVlc1RwRTI5cmxX?=
+ =?utf-8?B?NWpVbmZKelhLMGdYbzZDTFYrbWcvMFA1aUhyK2RJM2k0d3NuQ0w3M1lNVVd0?=
+ =?utf-8?B?Z1Z4TjAvTHNaeUhqS2FzWUVDTjgrSUVLdWZKQnJOdENIWEY4ZitKMTViQnB4?=
+ =?utf-8?B?SFcvVXFzckUycWRQS0p3OXQ4eTlmZGRYMjR3RlY3NHlKK3RacVBLRXBWeGY0?=
+ =?utf-8?B?dFdoNUZ3QjBhQysyTXVsTCtGZHNidmJjQkxUa05udUtGeE81OFJiVFFhTlIw?=
+ =?utf-8?B?dmV4YjltOTBEaS9HYS9SQVptZE5nTE5KdXNnMEhuQUNIYzk4cmJuUFZpSWRp?=
+ =?utf-8?B?MDJuZG0yOTR0YzhwZE9VanplaldkWWxpRjkwbUdweFdNL3V0Y1Q0d0RqL1ZY?=
+ =?utf-8?B?bU9oR0VHRDhzSjhNQjVwZVArdFVpNlFmQTZQSTdsY3R0YUJRT3o1Zjh5MC9G?=
+ =?utf-8?B?ajBiU0NlcE9OTk9VRlVZcUw3Q05EbGU4STU2YmRUc05jR2V2cTd5UU5hNkxy?=
+ =?utf-8?B?dXpydTV6M1hkOVZIZzU2MEwrVUIvNlViL3NneE5WWlpNbHdLcldUZjZBdjJF?=
+ =?utf-8?B?YllHbUFNUkNmS1FRODZ0SFR4cjY4WjRWVlJDZ0dZdVJoTEptMURmWTBhQk9p?=
+ =?utf-8?B?dHhuL0RFVkg3VHIwR0ljYVBlSU9KTHZqNVFRV2hOQjhWUnM4bzJPc3FudG1P?=
+ =?utf-8?B?NHJZUUxMSW5WcEFhamVyOTc0QXdFdUFNcVFlSkY2Q0QyT3VKSDBLdDVRR0NN?=
+ =?utf-8?B?WTBKRDNxYUF0Y3E3TG5DY0dGMkhCTThFRUtnVS9QNVJ4MnpUN21jVDRLcThj?=
+ =?utf-8?B?Rlc3WFRod1FsUFFVOGZBZ3BPSlpjMmM0cDRsWWpKcWppM3FsdWF0M01ZV0g2?=
+ =?utf-8?B?U3BvdUtydERXVExrQm5uRmlKVDkyaXNNOGd4QStwenJsU1dlZVFGZDZuRTdJ?=
+ =?utf-8?B?Vmc9PQ==?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10e66bbe-51f2-40a2-4f79-08de3782811a
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8907.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2025 00:24:38.5754
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: U2xaUefenZ9GtCeOs5nqJg3OcLyudBtV9JPsjDXCkpUQbnjjmPDhBEVlCSbetvM3/RhLXtte7eENTFEd2034Jw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10891
 
-Add support for the optional LIS2MDL magnetometer on GW71xx baseboards.
+On 12/9/2025 4:04 PM, Daniel Baluta wrote:
+> After commit 67a7bc7f0358 ("remoteproc: Use of reserved_mem_region_*
+> functions for "memory-region"") following commands with
+> imx-dsp-rproc started to fail:
+> 
+> $ echo zephyr.elf > /sys/class/remoteproc/remoteproc0/firmware
+> $ echo start > /sys/class/remoteproc/remoteproc0/state
+> $ echo stop > /sys/class/remoteproc/remoteproc0/state
+> $ echo start > /sys/class/remoteproc/remoteproc0/state #! This fails
+> -sh: echo: write error: Device or resource busy
+> 
+> This happens because aforementioned commit replaced devm_ioremap_wc with
+> devm_ioremap_resource_wc which will "reserve" the memory region with the
+> first start and then will fail at the second start if the memory
+> region is already reserved.
+> 
+> So prefer using devm_ioremap_wc as there is no easy way to undo
+> devm_iormep_resource_wc manually.
+> 
+> Fixes: 67a7bc7f0358 ("remoteproc: Use of_reserved_mem_region_* functions for "memory-region"")
+> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> ---
+>   drivers/remoteproc/imx_dsp_rproc.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+> index 5130a35214c9..79d5c15319f3 100644
+> --- a/drivers/remoteproc/imx_dsp_rproc.c
+> +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> @@ -709,10 +709,10 @@ static int imx_dsp_rproc_add_carveout(struct imx_dsp_rproc *priv)
+>   		if (imx_dsp_rproc_sys_to_da(priv, res.start, resource_size(&res), &da))
+>   			return -EINVAL;
+>   
+> -		cpu_addr = devm_ioremap_resource_wc(dev, &res);
+> -		if (IS_ERR(cpu_addr)) {
+> +		cpu_addr = devm_ioremap_wc(dev, res.start, resource_size(&res));
 
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
----
- .../boot/dts/freescale/imx8mm-venice-gw71xx.dtsi  | 15 +++++++++++++++
- .../boot/dts/freescale/imx8mp-venice-gw71xx.dtsi  | 15 +++++++++++++++
- 2 files changed, 30 insertions(+)
+While this patch technically "works", it’s more of a workaround because:
+- it removes important resource protection;
+- it doesn’t address the root cause.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw71xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw71xx.dtsi
-index 429be2bab8a2..320806d3d073 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw71xx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw71xx.dtsi
-@@ -92,6 +92,15 @@ accelerometer@19 {
- 		interrupt-parent = <&gpio4>;
- 		interrupts = <5 IRQ_TYPE_LEVEL_LOW>;
- 	};
-+
-+	magnetometer@1e {
-+		compatible = "st,lis2mdl";
-+		reg = <0x1e>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_mag>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
-+	};
- };
- 
- /* off-board header */
-@@ -174,6 +183,12 @@ MX8MM_IOMUXC_SAI1_RXD3_GPIO4_IO5	0x159
- 		>;
- 	};
- 
-+	pinctrl_mag: maggrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_SAI1_RXC_GPIO4_IO1		0x159
-+		>;
-+	};
-+
- 	pinctrl_gpio_leds: gpioledgrp {
- 		fsl,pins = <
- 			MX8MM_IOMUXC_SPDIF_EXT_CLK_GPIO5_IO5	0x19
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi
-index 4bf818873fe3..9317e62304e3 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw71xx.dtsi
-@@ -101,6 +101,15 @@ accelerometer@19 {
- 		interrupt-parent = <&gpio4>;
- 		interrupts = <21 IRQ_TYPE_LEVEL_LOW>;
- 	};
-+
-+	magnetometer@1e {
-+		compatible = "st,lis2mdl";
-+		reg = <0x1e>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_mag>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
-+	};
- };
- 
- &pcie_phy {
-@@ -198,6 +207,12 @@ MX8MP_IOMUXC_SAI2_RXFS__GPIO4_IO21	0x150	/* IRQ */
- 		>;
- 	};
- 
-+	pinctrl_mag: maggrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI2_TXC__GPIO4_IO25	0x150	/* IRQ */
-+		>;
-+	};
-+
- 	pinctrl_gpio_leds: gpioledgrp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_SAI1_RXC__GPIO4_IO01	0x6	/* LEDG */
--- 
-2.25.1
+The real issue is likely that:
+- resources should be released on stop but aren’t;
+- or the mapping should happen once during probe, not on every start.
+
+Better alterntives:
+1. move the devm_ioremap_resource_wc() to probe() and keep it mapped for 
+the device lifetime. This is the typical pattern for remoteproc drivers.
+2. use non-devm versions in start/stop callbacks:
+/* In start callback */
+cpu_addr = ioremap_wc(res.start, resource_size(&res));
+/* In stop callback */
+iounmap(cpu_addr);
+
+My vote goes for option 1.
+
+> +		if (!cpu_addr) {
+>   			dev_err(dev, "failed to map memory %pR\n", &res);
+> -			return PTR_ERR(cpu_addr);
+> +			return -ENOMEM;
+>   		}
+>   
+>   		/* Register memory region */
 
