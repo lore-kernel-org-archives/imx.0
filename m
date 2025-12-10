@@ -1,228 +1,106 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013042.outbound.protection.outlook.com [40.107.162.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045ED322A
-	for <imx@lists.linux.dev>; Wed, 10 Dec 2025 00:24:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765326285; cv=fail; b=cHWpQDouKaUewStRLNn4uyjWAXJXMyV2Qj3Rypz1uVKtHg3XzUeeNbAPZqotQv3rE5ChR8UKhVKFShT4J5NBnylzZEB1uzlfB+A772S2vTFZKHAMprlq84eZeLBv+5jguADMxXHBmbfgJxiAZrbfI18jFgs/wtn7oC3HED5gzH8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765326285; c=relaxed/simple;
-	bh=yUm6qPTkBfrTgdNRv4zF+gcPFisi/MwdA82+gFrlxqE=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=lfwnEDdzd2v6BJ3kgqSD7yy9nPWN/Qp2NKj61cgn7b42VVmQ+g9S5hOTKr+9BEO5jlo07UoiAcGiebpokATi+uSJQvdzB6th+HEXAyJlj46e7X5/rL0qoBn14Km5NvsMtrGunm/lhVhY0SgjZRyf7nobbTbMiHJ6we3SQQjUur4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=n7Q9GV+n; arc=fail smtp.client-ip=40.107.162.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780C52512FF;
+	Wed, 10 Dec 2025 02:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765333368; cv=none; b=cJKbOb1cPRZHXwImxcKvVfLN/5eeK64oO1WB7k5gJRsuzB7nYIoJQBSF0/MoMUaRAYn5Mz2a4RvZVHWM2nmhYhMad5o3QOAxV5hpJf/e01hi9oymKCg4xYsM1CfGRbl0u7jCDB+FcuYExmUNRVK5Itrl4DteVJgQCjR+0oZIBB0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765333368; c=relaxed/simple;
+	bh=BdZF2pNd4UIWn0TZnS2/oExdzTkeLzEDfnMcg2OQOR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IR26+iCdDNjqV5uVO0OPxNLPqX8C6FD4oT0HFNntRMRizpuZD2kLhNaSp1o6YneYEdh37h/qDfMgslCPpO3Dj17E81nPVcp2fUTmqN/TY5Xgb6B78XTJ17VMNzUY7ihvBfBf5GaEm8+kmrUX4/YOMc+mJbgMvG1AdiSYjWx6ajU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gs06zghp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="n7Q9GV+n"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NN16ip5eYbZGm+Tha9SNJYkb1OEu9v6o+X+X21DOIY34xESCA5uIiRINOh3v/jn8Wx2q7uHp2JDd0Uy7onIru0cXyBrPuG+K7yxvNo7V5paquj1A50md45dmrtp4EY00UA4W29JFiGH11OvhAg2m52Q2htKThFVl7A1y+nhbRhRDmKBIGdXk0DFXr7G7w/r5x/GAQEbkePdNdkpSSOFCOoQQo83a9IBX7sVQNoK+loyL/oEh/A5FmFMgh+zNW8/BRZQig+AS+SeemJNCbxjAaSB12qRxxArFKwJDYzkCsd0NeJ3EgTxNuTWEllToJiWXHBSLuP2nZ0wobK6wzaYkeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gK6bOaKu1qT/CQhXKcwlCTRYhysyGD1Xb3NwvYYLtOg=;
- b=vxSwDgX7L+9e63XgNW60vu1qIaNyjFD72Ha9E+Pizzm3Vemr+Jqnde+I3FxM+DDqmyUYsvuCNm3qzl/JzmZOiaMU1NgyJU4cAeeW6ze22rhZGhSHY8BPjmv5AH667N1qY12oLZT+QthjmhBsJbNUCg2UBARlt2IiQ4GVkePBM5NQMgOtItiBwi/PiYO3eHwRm+VHAdOaKIbwskLh25buv9Pp4SYtmEy7TGLks6CzYxjSe6fpjZ3JVbpZB8yqmawVBEGN3rg5vsRTv92W7s6/bOZObgPZMTnCKvTcaIL60vkNFQQarCxJ93Do8pqJEgYUMVxSH1ZVYpO5BsTGQieqew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gK6bOaKu1qT/CQhXKcwlCTRYhysyGD1Xb3NwvYYLtOg=;
- b=n7Q9GV+nZwCf0do+VGnj13Js//1w5HTVminYpSUjntGF4oDKgMBrv9fOq+IjGMhnBW1g99xnEugjJ+EBtbUfceYP3eIEzVTWJajId++9FC2/NvP6EZ/1RmZ1R1XxifWCG3r0o9SJlHxcmnTJvzLKNFyhY06j4vmuXKmKIyRZjDGX/AaZ/zKoyhTL8zBvqlrBspy39Jla25FQBYbsc2pnUlalI9ltEdOJFddCkVBmgcB7UrA8PMNpMwvzG3AH8V1PmM//BxFs9GrNvi0Xb0KOQNKGMy2Eg5RzqDFcpB8EYjuuZn53ONHXJwqD3qLaGao3ZyQSUIWNscxmfQO3aJ8EDg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8907.eurprd04.prod.outlook.com (2603:10a6:20b:40a::22)
- by PA1PR04MB10891.eurprd04.prod.outlook.com (2603:10a6:102:489::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.7; Wed, 10 Dec
- 2025 00:24:38 +0000
-Received: from AM9PR04MB8907.eurprd04.prod.outlook.com
- ([fe80::a361:2618:7785:3bc9]) by AM9PR04MB8907.eurprd04.prod.outlook.com
- ([fe80::a361:2618:7785:3bc9%4]) with mapi id 15.20.9412.005; Wed, 10 Dec 2025
- 00:24:38 +0000
-Message-ID: <091a4f29-5435-428a-9a1c-ef82465211cb@nxp.com>
-Date: Wed, 10 Dec 2025 02:24:37 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] remoteproc: imx_dsp_rproc: Fix multiple start/stop
- commands
-To: Daniel Baluta <daniel.baluta@nxp.com>, andersson@kernel.org,
- mathieu.poirier@linaro.org
-Cc: m.szyprowski@samsung.com, shawnguo@kernel.org, kernel@pengutronix.de,
- festevam@gmail.com, arnaud.pouliquen@foss.st.com, robh@kernel.org,
- geert+renesas@glider.be, linux-remoteproc@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20251209140425.766742-1-daniel.baluta@nxp.com>
-Content-Language: en-US
-From: Iuliana Prodan <iuliana.prodan@nxp.com>
-In-Reply-To: <20251209140425.766742-1-daniel.baluta@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AM8P190CA0029.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:20b:219::34) To AM9PR04MB8907.eurprd04.prod.outlook.com
- (2603:10a6:20b:40a::22)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gs06zghp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A46C4CEF5;
+	Wed, 10 Dec 2025 02:22:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765333366;
+	bh=BdZF2pNd4UIWn0TZnS2/oExdzTkeLzEDfnMcg2OQOR4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Gs06zghpqLzTxOlMoiGA6jMiwlvq+UADOE1DnQMhmYIAiH9dfmhXppHkd7jTOIOvM
+	 o60UV+4uvP/ZZU9H1EnCRMXukPh7rtYrlp9VxoHq9ahIcHuDm4qbQs/JZAFnSS6Li4
+	 A0rzwvJIrSnAqhpuA6mJHcxE1ffLvU4d2z9o/WtL4fuS8jIfrH0bIE/vqTrJJ4TMnM
+	 mpVEtHuOHcV8SRZ/ZIvCF5UWiOhzSdGcLrvk/AVgCzT/pupFCYa9uQOnwPvf5amC2S
+	 Tz3Biw7vN4skwOcLOr0daKLTs1n5L4cEcH1JvAtjIMzKQgBwluE1d8mj6zo5JIgPnK
+	 ZKB1oPLrt9zEw==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 4E38E1ACB974; Wed, 10 Dec 2025 02:22:43 +0000 (GMT)
+Date: Wed, 10 Dec 2025 11:22:43 +0900
+From: Mark Brown <broonie@kernel.org>
+To: James Calligeros <jcalligeros99@gmail.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
+	Baojun Xu <baojun.xu@ti.com>, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	asahi@lists.linux.dev
+Subject: Re: [PATCH 4/7] ASoC: soc-dai: define TDM idle behaviour modes
+Message-ID: <aTjZc3mgu7CQOkDU@sirena.co.uk>
+References: <20251209-tdm-idle-slots-v1-0-38dabf6bc01e@gmail.com>
+ <20251209-tdm-idle-slots-v1-4-38dabf6bc01e@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8907:EE_|PA1PR04MB10891:EE_
-X-MS-Office365-Filtering-Correlation-Id: 10e66bbe-51f2-40a2-4f79-08de3782811a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|19092799006|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ei9ISk53NkdLUHppU1I1eHRxMmtDSmVmVklWRE04OVF4Zk90ODBRSlZVcXFN?=
- =?utf-8?B?UXFJNHJmeVE2dlNpOXdDYWNtaDdweDVwWU5IeU9kWFRhc2hET0grSkRTQ0ty?=
- =?utf-8?B?c29FWEU0Ky9LekpYeUlVM3daOThqb0lzQitUUTBBMXJuUVhORSt4WjZIYUN1?=
- =?utf-8?B?N1BDT2JEcVZmSU92dzlOaWQ3Wkp5ejhPL1ZNNEx0Z1ljKzFTbm5iODlvTTRX?=
- =?utf-8?B?MjYvMmUxM3RlL2llZElwcGVzVHlndEV5QnJ1ZENYQWJRZ1Z5cjRtbG1oakZ1?=
- =?utf-8?B?cmlkQUVkU1NCWkNRQUs4UUpsR1l5N1JOZ3BVZjJ2WWEybmtFOWNHNGVEeGRl?=
- =?utf-8?B?S3dtc2pzVVBvUSs5dWpxMG9IVS94dXJtWkt4ODBhVnhjT1BDVHNzK0I2NUlV?=
- =?utf-8?B?MXRiR2JTRlJDQVlwb2xoNEF3TGVGTWRLM1B1VUxCZ0pYYlZEQ2tzd0RUWW1a?=
- =?utf-8?B?dGV3WDFvdlNUcUQzc0grK3BXWDdDRlp2VDFVTGZMK0c0enR6S0lmTUNWM1ZS?=
- =?utf-8?B?UEg5QlJpSEZ1R05UVThQRHlUcUZ5bUErNjFxeUt5NXF5QkNjRmtFSDZiTHUr?=
- =?utf-8?B?dTBZRTh1bi9LamhWOGZKemxnRmlRR0lJTXdzdjJrSFI5eTZQYVRMQWc0ejZx?=
- =?utf-8?B?dnhRWjZlYmc5QUNodHRSZSt4YjloV1duZTR6cjlDQ0Fkc0Q0WmM2cjZvbmtz?=
- =?utf-8?B?UWI3Rit3RmdiaEZiM2x5S0JvOG5zajlEQnNzR1VWV1pLWnYzQkUzUmUrVy94?=
- =?utf-8?B?aFp5VVpydmpoemNkZWFrc3hBZ0ZDSjQyWmlCajJpRTQwVHlzT2JXUnNZYzQr?=
- =?utf-8?B?VjUrQ3paRjEzRGRQQi92ZG42NE9BN0srNFRhb1hwa2xITlorMndtb0IrNVY4?=
- =?utf-8?B?amVORzh4THpUQzBKUTBsK1ZNaE5vZEZHWXlzbms0SWkwRHZMOHNtS3c3cWpl?=
- =?utf-8?B?eUlCOE9iRGVkN3RscXRZL3RCdldNaHllMFowM2Q1RFBiSTYwTyt6UHJIOHJw?=
- =?utf-8?B?cGVBZi9zZHdna25BejBlQy9WMENXelNFaVA4V0VZUEpmVlBCK2w2WUZyaXBj?=
- =?utf-8?B?SVFCckJTcStLaTZlalFvWTVNOXNrc3N0N2syazE1S1EvMUUzaXk1UTFkNUZL?=
- =?utf-8?B?cUkwVzY5N2xsVlQxTDhsZnI0SkZtTllQaU9EenBNeFZFUDFaL3B6alVpMHZk?=
- =?utf-8?B?SWlhMzBScWhzc3BNTmtwZlFOQmVwaXBqNENsRzNsc0xHNStzWTBOUHRFWFNU?=
- =?utf-8?B?aWJRYTloWk5qSXRsRHAvaTJyUHJtbUhJWXNkais5ZytUeTk5Ym13YS9MYkZG?=
- =?utf-8?B?WkZuaDNzZDNhSFVMdEV2WS9JaWFkQm1kTGU5Z0V5TXR5SzJ3MEpDSWVEOUI2?=
- =?utf-8?B?YUs3RmFibk5qR2JBTTdVb1pLVE10dFJBSHZUTTYrdzRqYjl2N2paZXVuODlw?=
- =?utf-8?B?TERPb1loQjNxRXIxVkNVeldLekJ0ZGRTZitERndSN3c1bG9hVnB5RmdaTklF?=
- =?utf-8?B?TkFqaU53TmZKUmFneHFLTXBPWCtTbnpjNHBzeE1tZjJrQnNZTFRuNDI1TzFE?=
- =?utf-8?B?R0RWOTNGdUZYMGQvRXBIelg5bFAxeEhhTW9PUjVzbXhpcitlbm5qRHF0M28x?=
- =?utf-8?B?aGk4K2pUMlhibmFnMzV1ZGtKM0IxZGtzSjA1cGtBWi8wRGdEVkpCdU10OVJJ?=
- =?utf-8?B?UE1nTzRyWmVoS2ZuT1FiSW5zUi9iTW1VNVlwMU5TTlpweVdYTXZnOXF4Sksy?=
- =?utf-8?B?NFpKaFI1M20ycFNncCtiZlRaVlYya1Q3WFdrUFJiNmprTjRXeGJQNEhVKzR4?=
- =?utf-8?B?Vm5wcjlQNXczWDB1Q3VNamFRUnh3bVRQWGVPNGFSMEhCL3JFdkNxSW9NQjZu?=
- =?utf-8?B?RXVTU2llNlJla0pMRmFRT3ZFZk96RTBvWDM5bkpWbGgrYUFoMU9PSnZuVENK?=
- =?utf-8?Q?tNQHXM4Qijp9sH0C3HMi5IrjsQQA4LOx?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8907.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(19092799006)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RFVUZnBGTS9nbEVYUjBJVjVtYkJRTS9yQjNvOTAxNkZuWDZDWkFRcjBudFRF?=
- =?utf-8?B?ODFTbXRMV0xiOEdQYzFJQVYyVHBNa2VJOGNUbGZNNXdiL0s5Y1VSVWg3YnFz?=
- =?utf-8?B?eVJEQnRENkw0RnI1MU0zMnFnVDFqd1NzWUFQclpDTkJEUCt4VWxEVmVUeGU4?=
- =?utf-8?B?eXF3ak5kQjFMK082cDQ2cWdNTlZpc2RlZkxvVnJQUzR3dC9abFdWemhTY0NE?=
- =?utf-8?B?cEorQWptV0hvS1BUcmwvRzlzZEVTYmNsMUFnSk9lNG1Ib1dBMnpEYllCUkxz?=
- =?utf-8?B?cnhNVzJXQmdWSC9MRHRabDRPMU9vZGVQcEg5TVVoL2s2Q0hCTThZTE95eUEy?=
- =?utf-8?B?aE4yMmtyeUFXNjVtcTVGWDZNcEwrd3pHVU5UV3BzQVBNU1Bwci8zdmlvL0RM?=
- =?utf-8?B?Q0h3N1g4ZDJudWZpY3NMdHB4NW4ybDlRR0lHSk9VT3FoY2dWYjZOSHNvRUNV?=
- =?utf-8?B?ZEZ5cFZoUUdwUEtMT2pQV21FRE1mY0RiQkJpZ0phakVHS0poTlAvbXNrQTlC?=
- =?utf-8?B?QVE3QUd6cFFIREJ2Q3NqaEExc25NSm9XRUl2cHFKVE5SOCthQ2t6bGUvOEdB?=
- =?utf-8?B?a2tUT21wRU1KMncxVDdURUpyM1RlNzBHZkh5aFd6UHRSU096VmhrdTRJREx2?=
- =?utf-8?B?MFlycWJDelpPaUFOWmYrdnZpRjFwbklDYkhOdElnL1ZHMlRVS3E2emNiY2tT?=
- =?utf-8?B?aGRUcWdSd1N3czRlZ2dFYVFwdzNnUFpydVVnN3U4YjNtbEdmaWk5ZUFsVEpD?=
- =?utf-8?B?NUZXUmZmdkFxTDFNaEtrZDFsMmxBSWRxajNua3hOWkFMT29makdLUGY3WGN4?=
- =?utf-8?B?d0hHSS8vcEZFZ3NzTEI0TWl6dDkzTEhnclNVNjhacCtZZHdtNGEzQkZubTgx?=
- =?utf-8?B?NFUxK3BkVzJENkU5dkdVc2ppaW9EUEhJeUUvOVhkUzBpWTYzQ3B3NVdHVE1E?=
- =?utf-8?B?dUJzVjMxVlRLdmx5TEFoamRwdzYvL25zR1FRSS9LMy83NnBmdk5JQ0daSS9p?=
- =?utf-8?B?bUUwYWNRclhveWVFb1NlRnNBcFp4ekMrYlFBVEFwT2UyT2FmNUNHcmtKeHFY?=
- =?utf-8?B?U0t1Z3cvVHZlQnN3M1pFbEUxc2ZQeWFwZHYrSU1yWXRTV0locFpuRlQzMERt?=
- =?utf-8?B?M3VUMUJ6REI0KzJTbmRKVnpGTWZobzlsTnhVWExZRDFXTDVIcUFWKzA5VTF3?=
- =?utf-8?B?Nkx4akRQZndQWnY0VWFDbTNKdmZHWmgwSVJkVWd5b1p6eVVlc1RwRTI5cmxX?=
- =?utf-8?B?NWpVbmZKelhLMGdYbzZDTFYrbWcvMFA1aUhyK2RJM2k0d3NuQ0w3M1lNVVd0?=
- =?utf-8?B?Z1Z4TjAvTHNaeUhqS2FzWUVDTjgrSUVLdWZKQnJOdENIWEY4ZitKMTViQnB4?=
- =?utf-8?B?SFcvVXFzckUycWRQS0p3OXQ4eTlmZGRYMjR3RlY3NHlKK3RacVBLRXBWeGY0?=
- =?utf-8?B?dFdoNUZ3QjBhQysyTXVsTCtGZHNidmJjQkxUa05udUtGeE81OFJiVFFhTlIw?=
- =?utf-8?B?dmV4YjltOTBEaS9HYS9SQVptZE5nTE5KdXNnMEhuQUNIYzk4cmJuUFZpSWRp?=
- =?utf-8?B?MDJuZG0yOTR0YzhwZE9VanplaldkWWxpRjkwbUdweFdNL3V0Y1Q0d0RqL1ZY?=
- =?utf-8?B?bU9oR0VHRDhzSjhNQjVwZVArdFVpNlFmQTZQSTdsY3R0YUJRT3o1Zjh5MC9G?=
- =?utf-8?B?ajBiU0NlcE9OTk9VRlVZcUw3Q05EbGU4STU2YmRUc05jR2V2cTd5UU5hNkxy?=
- =?utf-8?B?dXpydTV6M1hkOVZIZzU2MEwrVUIvNlViL3NneE5WWlpNbHdLcldUZjZBdjJF?=
- =?utf-8?B?YllHbUFNUkNmS1FRODZ0SFR4cjY4WjRWVlJDZ0dZdVJoTEptMURmWTBhQk9p?=
- =?utf-8?B?dHhuL0RFVkg3VHIwR0ljYVBlSU9KTHZqNVFRV2hOQjhWUnM4bzJPc3FudG1P?=
- =?utf-8?B?NHJZUUxMSW5WcEFhamVyOTc0QXdFdUFNcVFlSkY2Q0QyT3VKSDBLdDVRR0NN?=
- =?utf-8?B?WTBKRDNxYUF0Y3E3TG5DY0dGMkhCTThFRUtnVS9QNVJ4MnpUN21jVDRLcThj?=
- =?utf-8?B?Rlc3WFRod1FsUFFVOGZBZ3BPSlpjMmM0cDRsWWpKcWppM3FsdWF0M01ZV0g2?=
- =?utf-8?B?U3BvdUtydERXVExrQm5uRmlKVDkyaXNNOGd4QStwenJsU1dlZVFGZDZuRTdJ?=
- =?utf-8?B?Vmc9PQ==?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 10e66bbe-51f2-40a2-4f79-08de3782811a
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8907.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2025 00:24:38.5754
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: U2xaUefenZ9GtCeOs5nqJg3OcLyudBtV9JPsjDXCkpUQbnjjmPDhBEVlCSbetvM3/RhLXtte7eENTFEd2034Jw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10891
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="er/1OtNA51My+cwA"
+Content-Disposition: inline
+In-Reply-To: <20251209-tdm-idle-slots-v1-4-38dabf6bc01e@gmail.com>
+X-Cookie: It's clever, but is it art?
 
-On 12/9/2025 4:04 PM, Daniel Baluta wrote:
-> After commit 67a7bc7f0358 ("remoteproc: Use of reserved_mem_region_*
-> functions for "memory-region"") following commands with
-> imx-dsp-rproc started to fail:
-> 
-> $ echo zephyr.elf > /sys/class/remoteproc/remoteproc0/firmware
-> $ echo start > /sys/class/remoteproc/remoteproc0/state
-> $ echo stop > /sys/class/remoteproc/remoteproc0/state
-> $ echo start > /sys/class/remoteproc/remoteproc0/state #! This fails
-> -sh: echo: write error: Device or resource busy
-> 
-> This happens because aforementioned commit replaced devm_ioremap_wc with
-> devm_ioremap_resource_wc which will "reserve" the memory region with the
-> first start and then will fail at the second start if the memory
-> region is already reserved.
-> 
-> So prefer using devm_ioremap_wc as there is no easy way to undo
-> devm_iormep_resource_wc manually.
-> 
-> Fixes: 67a7bc7f0358 ("remoteproc: Use of_reserved_mem_region_* functions for "memory-region"")
-> Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
-> ---
->   drivers/remoteproc/imx_dsp_rproc.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-> index 5130a35214c9..79d5c15319f3 100644
-> --- a/drivers/remoteproc/imx_dsp_rproc.c
-> +++ b/drivers/remoteproc/imx_dsp_rproc.c
-> @@ -709,10 +709,10 @@ static int imx_dsp_rproc_add_carveout(struct imx_dsp_rproc *priv)
->   		if (imx_dsp_rproc_sys_to_da(priv, res.start, resource_size(&res), &da))
->   			return -EINVAL;
->   
-> -		cpu_addr = devm_ioremap_resource_wc(dev, &res);
-> -		if (IS_ERR(cpu_addr)) {
-> +		cpu_addr = devm_ioremap_wc(dev, res.start, resource_size(&res));
 
-While this patch technically "works", it’s more of a workaround because:
-- it removes important resource protection;
-- it doesn’t address the root cause.
+--er/1OtNA51My+cwA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The real issue is likely that:
-- resources should be released on stop but aren’t;
-- or the mapping should happen once during probe, not on every start.
+On Tue, Dec 09, 2025 at 07:31:17PM +1000, James Calligeros wrote:
 
-Better alterntives:
-1. move the devm_ioremap_resource_wc() to probe() and keep it mapped for 
-the device lifetime. This is the typical pattern for remoteproc drivers.
-2. use non-devm versions in start/stop callbacks:
-/* In start callback */
-cpu_addr = ioremap_wc(res.start, resource_size(&res));
-/* In stop callback */
-iounmap(cpu_addr);
+> Imagine for example two codecs sharing a bus. When one codec is
+> transmitting, the other must ensure that it is holding its side
+> to 0, or data from the transmitting codec will be corrupted. We
+> can trust the "idle" codec to simply do this itself, however
+> this is undefined behaviour. Some devices may leave the line
+> floating, others still may pull the line high. We need a way to
+> control this behaviour.
 
-My vote goes for option 1.
+I'm finding this explanation quite confusing - you appear to be
+describing the situation where two devices simultaneously drive the same
+signal which would be extremely unusual and I can't see how it would
+work electrically.
 
-> +		if (!cpu_addr) {
->   			dev_err(dev, "failed to map memory %pR\n", &res);
-> -			return PTR_ERR(cpu_addr);
-> +			return -ENOMEM;
->   		}
->   
->   		/* Register memory region */
+> Thus, we define five possible bus-keeping modes that a device can
+> be in: NONE (UB/as initialised), OFF (explicitly disabled), ZERO
+> (actively transmit a 0), PULLDOWN, and HIZ (floating).
 
+What is "explicitly disabled" in ths context?  Why aren't pull up or
+drive high options?
+
+--er/1OtNA51My+cwA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmk42XIACgkQJNaLcl1U
+h9Dvngf/Q8hLsUPgUG/WCbl9wKOoJ0KFzFLX0pXGLPoa5P1aal4uK1pP4erJN/7L
+qegwM8H6BSQ3wD6l2JBGYmZJKH/UKEr3b+n7pFh4ek40r8h+Y/g9QOZknIHaTtrs
+07areWAyrXXVr20+YcHlsKGmyV1xqBMNoMiA9r6cs8d3LRfNprkXzN9YQN2fcKcQ
+AUJYg01zlsOkdjcoSeJFmnIhgv9klROT7xGj1gNmUKMp+lVUkRV3mHRr56g0enE8
+Q5nWUQ4G2UqxNMBJmMVij7Oz3QHfuK8zwk/x3t+M/wXWkK5zSUo3a0ceJIH09u3/
+0IX7nNttZTCXalNXZzVMtPnxRwCIbw==
+=RadW
+-----END PGP SIGNATURE-----
+
+--er/1OtNA51My+cwA--
