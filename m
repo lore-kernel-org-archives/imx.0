@@ -1,243 +1,114 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813BD322DB7
-	for <imx@lists.linux.dev>; Wed, 10 Dec 2025 12:22:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7831EDA0E
+	for <imx@lists.linux.dev>; Wed, 10 Dec 2025 12:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765369336; cv=none; b=SQs0yUKrG+yxwrNtaKv2FndK70LrvKSKJAFvTBIS5UBECsjHGvURs3PZuCbUnN6w+Ss2k+TDtbL/fUXRdESD+xCnYi/cNHAwqyLPS1sPe67QGGsuhQyNemuI8pFKdxLhEsh69YEIcT8Vmw9/LQeLA4Kr+auAqnN82yA+jUMicHU=
+	t=1765371221; cv=none; b=LE/LgJDTUGBh+VdDbscAT7CP9LUs36XnrTA5pvzX5Q9zGzQ+Cu4JX1rwkljWYATOQJh2jA4N8TcsBczJEtqncSjPB0YCRbub/pZRUgyOlp1z6tlfXEEPN4nx3bwMCnR5lPj7TxE9eTFtbIdPeFyKi8zNGdVfCWrCFX/uS3W6wBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765369336; c=relaxed/simple;
-	bh=jd9K+mF97WGriGBzAJzag5o6OTccybfMhIaxrYKCKPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q7NP7LQ3nxGQwd4NBdj0y21lyPnxCymjT6GJYKKsdsO6m41LqEiiqXjzYOAVH1056h959tzETmHV/4pl1BxvpjrpApbrt+9JFCkA1zJkpv+OOkf8yQhZJCTRmiqoMuTaL7vFxZ63alYnkifkvEVjGEUsVwriKlSf4Wnw2oG53ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=B2lhjLv0; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1765371221; c=relaxed/simple;
+	bh=ffYwUy6DmitdjmTzpDWyPfbMV0e2+AUk8x9YqrUuwtg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jkPv3bA9BubJ2Hx/cyWOHvAtDx/pbNg+wirflwgOEvjXfQHcugycCjg4bwlHDej0YjALNctdzzLuaXFTZSInug7Y9uvlZ8T/MIHMjR4UXlCiZZUHdJz33HgRJk10gGYebIPihqyeXnp+n8USYMjGrNyNY5czoMgoN+66untcAic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PaSV2QCE; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="B2lhjLv0"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 4A28AC180F4;
-	Wed, 10 Dec 2025 12:21:39 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id F3EAA60714;
-	Wed, 10 Dec 2025 12:22:02 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 12FF8119315B3;
-	Wed, 10 Dec 2025 13:21:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1765369320; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=pOlUsVypsTSlBECjYHHoMGhNKvvFlUu0wSglyApNP7w=;
-	b=B2lhjLv08HCS4nwPMQdM5rtA1PxYKChropbNXfAwuDvzNvXOVjVCwFTmvmtb2ORCVRW7Qi
-	k66+Mas8QHLL/Sd+Ps87vPuBDRCwI7saahl3amPRs7SDyRx2/03xb8vTHThuJw2ga28vUp
-	mWJuGni+C/1JJduukHwT93M8LHqErcT1tCB506+eg0lsH1ug4WelgtBydwGEI8bQLgP21q
-	xgMbfofeVReqc6sRn9VIhYltwLdn5+wRI8qcr7mp32U/cqKfXDSUrrYJn+eHIG12gJQGaT
-	OtIuCTUfZrFJAHa0b3F7XsnAhwmX5iend8orwE0uMkCFCSYS7ZIq32q+F/8bOg==
-Date: Wed, 10 Dec 2025 13:21:40 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Kalle Niemi <kaleposti@gmail.com>, Rob Herring <robh@kernel.org>, Matti
- Vaittinen <mazziesaccount@gmail.com>, linux-arm-kernel@lists.infradead.org,
- Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
- Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
- Shyti <andi.shyti@kernel.org>, Wolfram Sang
- <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Arnd
- Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>, Charles
- Keepax <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
- <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
- Walleij <linus.walleij@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Mark Brown <broonie@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Daniel Scally <djrscally@gmail.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>, Davidlohr
- Bueso <dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- Dave Jiang <dave.jiang@intel.com>, Alison Schofield
- <alison.schofield@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, Ira
- Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
- Wolfram Sang <wsa@kernel.org>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
- patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT
- overlays"
-Message-ID: <20251210132140.32dbc3d7@bootlin.com>
-In-Reply-To: <CAMuHMdXdwf7La1EYBWTJadsTAJG3nKQVW6wtBn-bUqshA=XHRw@mail.gmail.com>
-References: <20251015071420.1173068-1-herve.codina@bootlin.com>
- <20251015071420.1173068-2-herve.codina@bootlin.com>
- <f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
- <CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
- <5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com>
- <CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
- <072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
- <CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
- <55076f4b-d523-4f8c-8bd4-0645b790737e@gmail.com>
- <20251202102619.5cd971cc@bootlin.com>
- <088af3ff-bd04-4bc9-b304-85f6ed555f2a@gmail.com>
- <20251202175836.747593c0@bootlin.com>
- <dc813fc2-28d2-4f2c-a2a3-08e33eec8ec7@gmail.com>
- <20251204083839.4fb8a4b1@bootlin.com>
- <CAMuHMdXdwf7La1EYBWTJadsTAJG3nKQVW6wtBn-bUqshA=XHRw@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PaSV2QCE"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-29853ec5b8cso87269115ad.3
+        for <imx@lists.linux.dev>; Wed, 10 Dec 2025 04:53:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765371219; x=1765976019; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=scrOpFn0/axIiesDGJZiwLE74MSB9QKs3AqoskJ9LGs=;
+        b=PaSV2QCEKLzKMi8+0DlIRl3qj96Jc65PWCNRpNodqnppGpcPidQ/1LRlNupcjYXXCW
+         9DgmySvHaUbW3LTJ5NTASiZ0uPSSYBqkms/JtEjMZE9Hufsq/ndPQh/4mFhstyc+T8QH
+         vIQjb6Jn+s2pRdNiWHDO9KKgGVBzjjqFcNRXb89h20cuQ4n+U46pmu06qjFthpcduWOd
+         Ad4AeY+zPE1rTpqfY+n7fEIRXeSeidCC3GrOzF4Lx/wjJRBZDvk9y7QR0eK/NFu0y8wr
+         8Jhy4+nbtoB22M+VG+EupLofwal7SNX5nREqCunn55ZEiNYwHGNn+JfIcOwJKaJzVMNp
+         tE0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765371219; x=1765976019;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=scrOpFn0/axIiesDGJZiwLE74MSB9QKs3AqoskJ9LGs=;
+        b=I3K89gphZCRe57Y8XRBV29HUeRtpoNAmHwfJumfLd8QRd8Bmv0jbLZTo0sNJISMcgm
+         sYNwAnDi5e2M4lLvNWnSFjIeArQ/w6+dSJJfA5tfEuD9jXZFXaB9vRASrxfw8UGNLiTH
+         6PTyi1ZX/wW2MaTAVV9b0z40i7VoM6L89XbBc81WzhXCeTftj4jR8Ce4UeQgjhtZa2Fd
+         MJSXKj+/6/rm4b7aM8VlVGz9TCUcbl2iUsLdw+w7JDFQDombfvrhZo+psj8PCxWavnFv
+         VNDCHk9CJrm4OrEJ6WF5b59xNb5f6s6US/PyNDuVtPa9avS7LBmsuV5iRk1i6tWRV7fY
+         SCsg==
+X-Forwarded-Encrypted: i=1; AJvYcCXqjWvrb7wu+DYZTx0ht9nmc4fs3SpwVGW7o5aXOVcrC8FkJLlKokhy9obT9D2skhppJss=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxLTPc6beaBpoPCBe5QHJd0c8MuJBtt0kTWILtyfPekstKv2ygN
+	Vrpu4XqAg07urkdgVCO+leCy8HE7GWoqXS3mPkRBIXPP4QDBXnJmMWikqafOevyHK3ZdCmpWia9
+	zG4GNBpoheJXTHIDpSkuIoRAlmoqrUvE=
+X-Gm-Gg: ASbGncuuV6nb3ujwadDX8nvJ6JgcA+UI4wqJW61bFNh1CTktZrwCCPxhfR7xnado+0m
+	hMancvPnkMGjXHSknl07SK7++h1PaNA8IVYZLmNeNXpuwi8bYhfQeARYt0uhqs+CQeyOQ+N7sxi
+	w1pLr4tWM4y7OYyYpYToWFZMJ3RtEQEuVPSLcAOP890jgdSzFEPPzS1bFeaEtQNcXCT7aSwccEf
+	bov1Yb9ZS50GQ8a48cAUavoGDcwsRVnrB4oJ0HR8NR1x/y9S5zRfijgawrm5kQBoKFkh3jtRsMS
+	NNkXLzN3BRJdZ5sFxhjIKG7I/7AgZ8oPi99dVTkbIU9VySileazwO5FtywgjTC2Fuvz2vGKoDJr
+	RAW/epZD7AA==
+X-Google-Smtp-Source: AGHT+IHA0/O6Wzz5bHmU/nrt457oLGG6ttX7cTEPQvhKpMwwd+6y16V/yTRgGiSk5FyZ9tp/nr1ta5W4YzVSuYnLH8Y=
+X-Received: by 2002:a05:7022:30a:b0:119:e569:f622 with SMTP id
+ a92af1059eb24-11f296898ffmr1599113c88.27.1765371218722; Wed, 10 Dec 2025
+ 04:53:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20251209140425.766742-1-daniel.baluta@nxp.com> <20251209152720.GA189083-robh@kernel.org>
+In-Reply-To: <20251209152720.GA189083-robh@kernel.org>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Wed, 10 Dec 2025 14:56:13 +0200
+X-Gm-Features: AQt7F2pjwUAPAG7KNebgVirJuHxCoxM-g3DuFH_8a1gb0qP0UWiUfxOVxedsKqI
+Message-ID: <CAEnQRZBV5ECT+P0FYPuS0Yt3C0xdpSmBpxjknhX0wa-c-LBXMg@mail.gmail.com>
+Subject: Re: [RFC PATCH] remoteproc: imx_dsp_rproc: Fix multiple start/stop commands
+To: Rob Herring <robh@kernel.org>
+Cc: Daniel Baluta <daniel.baluta@nxp.com>, andersson@kernel.org, mathieu.poirier@linaro.org, 
+	m.szyprowski@samsung.com, shawnguo@kernel.org, kernel@pengutronix.de, 
+	festevam@gmail.com, arnaud.pouliquen@foss.st.com, geert+renesas@glider.be, 
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Geert, Kalle, Rob,
-
-On Thu, 4 Dec 2025 11:49:13 +0100
-Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-
-> Hi Hervé,
-> 
-> On Thu, 4 Dec 2025 at 08:39, Herve Codina <herve.codina@bootlin.com> wrote:
-> > Indeed, Kalle, Geert, I don't have your hardware, your related overlay or
-> > a similar one that could be used for test and also I don't have your out of
-> > tree code used to handle this overlay.
+On Tue, Dec 9, 2025 at 5:27=E2=80=AFPM Rob Herring <robh@kernel.org> wrote:
+>
+> On Tue, Dec 09, 2025 at 04:04:25PM +0200, Daniel Baluta wrote:
+> > After commit 67a7bc7f0358 ("remoteproc: Use of reserved_mem_region_*
+> > functions for "memory-region"") following commands with
+> > imx-dsp-rproc started to fail:
 > >
-> > I know overlays and fw_devlink have issues. Links created by fw_devlink
-> > when an overlay is applied were not correct on my side.
-> >
-> > Can you check your <supplier>--<consumer> links with 'ls /sys/class/devlinks'
-> >
-> > On my side, without my patches some links were not correct.
-> > They linked to the parent of the supplier instead of the supplier itself.
-> > The consequence is a kernel crash, use after free, refcounting failure, ...
-> > when the supplier device is removed.
-> >
-> > Indeed, with wrong links consumers were not removed before suppliers they
-> > used.
-> >
-> > Looking at Geert traces:
-> > --- 8< ---
-> > rcar_sound ec500000.sound: Failed to create device link (0x180) with
-> > supplier soc for /soc/sound@ec500000/rcar_sound,src/src-0
-> > rcar_sound ec500000.sound: Failed to create device link (0x180) with
-> > supplier soc for /soc/sound@ec500000/rcar_sound,src/src-1
-> > [...]
-> > --- 8< ---
-> >
-> > Even if it is not correct, why the soc device cannot be a provider?
-> > I don't have the answer to this question yet.  
-> 
-> I have no idea. These failures (sound) are also not related to the
-> device I am adding through the overlay (SPI EEPROM).
-> Note that these failures appear only with your suggested fix, and are
-> not seen with just the patch in the subject of this email thread.
-> 
-> > Without having the exact tree structure of the base device-tree, the overlay
-> > and the way it is applied, and so without been able to reproduce the issue
-> > on my side, investigating the issue is going to be difficult.
-> >
-> > I hope to find some help to move forward and fix the issue.  
-> 
-> Base DTS is [1], overlay DTS is [2].
-> Applying and removing the overlay is done using OF_CONFIGFS[3],
-> and "overlay [add|rm] 25lc040"[4].
-> 
-> I assume you can reproduce the issue on any board that has an SPI
-> EEPROM, after moving the SPI bus enablement and SPI EEPROM node to an
-> overlay. Probably even with an I2C EEPROM instead.  Or even without
-> an actual EEPROM connected, as even the SPI bus fails to appear.
-> 
-> > Saravana's email (Saravana Kannan <saravanak@google.com>) seems incorrect.
-> > Got emails delivery failure with this email address.  
-> 
-> Yeah, he moved company.
-> He is still alive, I met him in the LPC Training Session yesterday ;-)
-> 
-> Thanks!
-> 
-> [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/tree/arch/arm64/boot/dts/renesas/r8a77990-ebisu.dts
-> [2] https://web.git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/tree/arch/arm64/boot/dts/renesas/r8a77990-ebisu-cn41-msiof0-25lc040.dtso?h=topic/renesas-overlays-v6.17-rc1
-> [3] https://web.git.kernel.org/pub/scm/linux/kernel/git/geert/renesas-drivers.git/log/?h=topic/overlays-v6.17-rc1
-> [4] https://elinux.org/R-Car/DT-Overlays#Helper_Script
-> [5] https://lore.kernel.org/CAMuHMdXEnSD4rRJ-o90x4OprUacN_rJgyo8x6=9F9rZ+-KzjOg@mail.gmail.com/
-> 
+> > $ echo zephyr.elf > /sys/class/remoteproc/remoteproc0/firmware
+> > $ echo start > /sys/class/remoteproc/remoteproc0/state
+> > $ echo stop > /sys/class/remoteproc/remoteproc0/state
+> > $ echo start > /sys/class/remoteproc/remoteproc0/state #! This fails
+> > -sh: echo: write error: Device or resource busy
+>
+> So unlike Marek's case, the first time works. Can you confirm your
+> region is fixed address?
 
-I did some tests with boards I have.
+Yes, all regions are fixed addresses.
 
-First I used a Marvel board based on an Armada 3720.
+> > +             cpu_addr =3D devm_ioremap_wc(dev, res.start, resource_siz=
+e(&res));
+>
+> Best case this is reusing the same mapping and we just have unnecessary
+> ioremap and iounmap calls and devm entries. Worst case, we get a new
+> virtual mapping every time. IIRC, arm32 will reuse existing mapping, but
+> arm64 does not. But that's 10+ years ago I looked into it.
+>
+> Seems like devres is not the right lifetime. This should be just
+> ioremap_wc() instead.
 
-In my overlay, I added the pinmux related to the SPI controller, enabled
-this SPI controller and added a SPI flash.
+Yes, looks like for arm64 (imx8mp-evk) will not reuse existing mapping
+but creates a new one.
 
-It didn't work with or without culprit patches from my series applied.
-Indeed, the pinctrl driver used is an MFD driver an mixed pinmux definition
-nodes with device description (a clock) node.
-
-When a new node is added, a new device is created. Indeed, because the
-driver is an MFD driver, it is a bus driver and handled by of_platform bus.
-
-My new node is considered by devlink as a node that will have a device ready
-to work (driver attached and device probed). A link is created between this
-node and the consumers of this node (i.e. the SPI controller). devlink is
-waiting for this provider to be ready before allowing the its consumer to probe.
-This node (simple pinmux description) will never lead to a device and devlink
-will never see this "provider" ready.
-
-Did a test with a Renesas RZ/N1D (r9a06g032) based board and built a similar
-overlay involving I2C controller pinmux, I2C controller and an EEPROM.
-
-Here, also the overlay didn't work but the issue is different.
-
-The pinmux definition for pinctrl (i.e. pinctrl subnodes) are looked when
-the pinctrl driver probes. Adding a new node later is not handled by the
-pinctrl driver.
-Applying the overlay leads to a simple:
-  [   16.934168] rzn1-pinctrl 40067000.pinctrl: unable to find group for node /soc/pinctrl@40067000/pins_i2c2
-
-Indeed, the 'pins_i2c2' has been added by the overlay and was not present
-when the pinctrl probed.
-
-Tried without adding a new pinmux node (pinctrl subnode) from the overlay
-and used nodes already existing in the base DT.
-
-On my Marvell Armada 3720 board, it works with or without my patches.
-No regression detected due to my patches.
-
-On my RZ/N1D board, it works also with or without my patches.
-Here also, no regression detected.
-
-Also, on my Marvell Armada 3720 board, I can plug my LAN966x PCI board.
-The LAN966x PCI driver used an overlay to describe the LAN966x PCI board.
-
-With the upstream patch not reverted, i.e. 1a50d9403fb9 ("treewide: Fix
-probing of devices in DT overlays")" applied, devlinks created for the
-LAN966x PCI board internal devices are incorrect and lead to crashes when
-the LAN966x PCI driver is removed due to wrong provider/consumer dependencies.
-
-When this patch is reverted and replaced by "of: dynamic: Fix overlayed
-devices not probing because of fw_devlink", devlinks created for the LAN966x
-PCI board internal devices are corrects and crashes are no more present on
-removal.
-
-Kalle, Geert, can you perform a test on your hardware with my patches
-applied and moving your pinmux definition from the overlay to the base
-device-tree?
-
-The kernel you can use is for instance the kernel at the next-20251127 tag.
-Needed patches for test are present in this kernel:
-    - 76841259ac092 ("of: dynamic: Fix overlayed devices not probing because of fw_devlink")
-    - 7d67ddc5f0148 ("Revert "treewide: Fix probing of devices in DT overlays"")
-
-Best regards,
-Hervé
+Best course of action would be as Iulia suggested to move the operation
+at probe instead of prepare.
