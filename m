@@ -1,183 +1,103 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA9C221540;
-	Wed, 10 Dec 2025 19:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0F83019C7
+	for <imx@lists.linux.dev>; Wed, 10 Dec 2025 21:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765393555; cv=none; b=AMBoUA9Z8OHj8iRo7BzAmH7Ond2YdTW7iq5nDH++/TJ5N3mFF7iZRt91IRe/2jX/k5pvwRU7vsZ1oNrKGe9RI+BRrTRGyd0LYcw1G1sEa4pCtJfVXVZr+RCSYwTZCyISBRAI0cLU3aTy/c/25jX6Mguyd58fwF/+uSn+VRNmbLA=
+	t=1765401124; cv=none; b=Jp1S4gQXfYxDt9swLP2bXF1RvM4x/q5t3uZeXkmbXExJuAGIBay20aheM9zrLzuRj+oJAqe2FlV2KtS2rp4l8C2HNQgrCvMM6NmxVE2JC3KbJ8F9sNU3X1CGZHRMSA8wAJ6294NBjtI876lKf/e5mTPFJHoxPtG3zjDpINcvs7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765393555; c=relaxed/simple;
-	bh=boHYArrLfilo5Sv64y0CaCmooWdnIhESwdLtZzAruxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tcxFAs0PcwvyClifw9u0BNVFWVrt24cGQ1bO93C5jFMvZv2xJY5lEg+TzeqPKXDYnboD+mYuKJqRxHT4jOz6hX73eNyYfnCO6OvvvKXsZWUFuMg6UatkvZDMFQXZsJhD3yL2zbZHnLlIItnogCiWLNiaoEl1Fmd4WNTpT28NjSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kRryjixB; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1765401124; c=relaxed/simple;
+	bh=rKyYWkvrYU9ysuyv8UfGnXxnuqYNPuL+rwsaQsrH4N4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DUlavb6bvNCiYoVHsMEWok7FyuTViAaT7N4yb5fFPOqxyHy/C6WsKN9qpW72ohni00SL4BCY6+B4EEIiDVu8zEZ2Ng8gvefuq7UMIvI873EKtD96a5IuMJYTGpwN2WCUzdPJs2kP++6XwyIo+CiiJ+0cDYr3xeYRb4I6tpE8IH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D+5Pnul7; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kRryjixB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765393554; x=1796929554;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=boHYArrLfilo5Sv64y0CaCmooWdnIhESwdLtZzAruxg=;
-  b=kRryjixBx4Lyl7USgenNJp/9MqGyhQlolc/mC8xpfkEOnPv8ll6LL+3m
-   JugCuq5xsu7ZAI0DPeWrDoMDoH4G7VoLzzSvmAcNB+J78wawa4YvGepsS
-   jJtyM51cLDjhrLYkocDP8Gqbc+PEwXbZXiRialRQf2eYVv6YuDZs/tkjs
-   W8Sc773J/X0gDEGB6tDiSqOZqQx6TTuUTp9Ba+I/4GIAutsVWbR5Ix0vf
-   CVPWBjYbBk0D8VCBkRHtuqTczvUma1el0ivsVn3BF8LfGa+fMLDSRwakQ
-   xZ06ML+QGyucrwdU6M5f/t8E0NRy6NHQTrdxQWeh+tSpQbNRxG4uMlbC+
-   g==;
-X-CSE-ConnectionGUID: vJO1DGnEQ8i8Keo+mqXTXw==
-X-CSE-MsgGUID: QiE93xq7QOyrmDEzneUn7w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="54917265"
-X-IronPort-AV: E=Sophos;i="6.20,264,1758610800"; 
-   d="scan'208";a="54917265"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 11:05:53 -0800
-X-CSE-ConnectionGUID: Etk4k57vSziwm/yZiYAtjg==
-X-CSE-MsgGUID: h4VcFQvCTOSLNUrttT2hvw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,264,1758610800"; 
-   d="scan'208";a="201029660"
-Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 10 Dec 2025 11:05:48 -0800
-Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vTPVR-000000003fJ-2YeN;
-	Wed, 10 Dec 2025 19:05:45 +0000
-Date: Thu, 11 Dec 2025 03:05:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <helgaas@kernel.org>, Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Koichiro Den <den@valinux.co.jp>, Niklas Cassel <cassel@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
-	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 6/8] nvmet: pci-epf: Use
- dmaengine_prep_slave_single_config() API
-Message-ID: <202512110249.kCiMC4sb-lkp@intel.com>
-References: <20251208-dma_prep_config-v1-6-53490c5e1e2a@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D+5Pnul7"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42b32ff5d10so848258f8f.1
+        for <imx@lists.linux.dev>; Wed, 10 Dec 2025 13:12:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765401120; x=1766005920; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sXkfjEDfxcmN2wsxcxmPY/zV+YfLOJPrMQ34dquGAqo=;
+        b=D+5Pnul7rCDWq2XGzHVV9/wCvHQCZFo2sO9zcTWfAemw8D1h0/QROZ4JZ6smRNmQC1
+         Jfl4D0J1nIn9+a0HwMac+5cMKuVMjEMnESSXkYbtB/sqN1X7FViIqKPj+g4+RAPrJjnx
+         2HrW3ZX/3A0sCl4CgAHf5o/KVO1jrNbNzFCFyWzY0xHJea2pQYI9gNpYojKO1j8HS+Jq
+         GZyhE0fWQLq0feq8Grn2Fmk4Muq23LmU/AaQl68xrNox23JyDncn5364oOZ9shSgaghQ
+         /4Oje8Or5V9DAATgDq35AY7SYzR1PtW4G8e5OEs3aqHFGCvA0y/6CXqVMJtd/Ppy8yK3
+         a37A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765401120; x=1766005920;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sXkfjEDfxcmN2wsxcxmPY/zV+YfLOJPrMQ34dquGAqo=;
+        b=Brb6w0pcJT3FmUizWLhHjJ2xdNWn69e5RKsQvdmiqIdvPU+ZPl4G7ZRZq2fko01HdM
+         ey+APswmsSh6j4wg/JWWF4V7m8R8WtEYtMeoo+Lm4egpeRV7Phszyzr4qFeOKKbrlP5z
+         O/YqaaVPYvHlsmkWIAdbM5Coi6rWBDNGJ9B0aUb+E5kJlO0X6ad/KIeSycpnryqOj9Rx
+         7Qsreb+nuh60aVAYlahRFTPiItF2giOcKYau8B9WW3mGWyVRtG3EdbO0S3B73tSTCpbQ
+         Oaqn0YT3Sz78XsLjvxoCsYpx7pODHxJRfuJyue9FDfij15nPzD3unmjVIca2MqvTzJJX
+         Dx1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUtewaMcCBUXyGWJC867esjOdwaddJa74l5G0b2Nc2pM8j9tbqaeDXMTHSh09tOOFKivV4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwhJGfWbCwF8Q5uxfxPA80adMAsB65tyB/Zt2dk1UbDxqMFJ1KW
+	JkXtgsRpFB5j1d+nWSPQs7kVvMqNMnVsg3KB6L8MF6Z8fwyGiQ3ZpdEZ
+X-Gm-Gg: AY/fxX4W2iyW6zEeWv9NvXSrg146Y9/Wc1IkwRtyEUFeN6aSsroPT7m+e9PLUeFCTml
+	QG0mCVi9suuFQ2WiLKvSQauIIBT2AyWDep1uK89OocUFx4ZY/tMtSSs2UqLRbWWrVc1ylQdYhsC
+	9IGM5E5e5PJLI9E26q6YK/+v4NOv66SzOATwmSk6NOsB77TwiPBughoJ671DVXJu/+62kQ9TGiE
+	SsT2U4P4Dc1ujNJHLZEzo0pWNpseulKwQgSYMgpWaEnxUKAKcHrVzku641oOiZyMtVOkQ+AEn82
+	Wfohjz08c/IE/KbEScGqQLWx87aOoh49R/x6chpOEO4PxFXtY0lhRGsoDDQy/DkI4U/equgSksr
+	bESbUh5KzHVsVgLLsrOGWahUoUAmiCEA35/Qvz/vH+Gd5tTZMaosqRwyCEaWrUrj5HyzyA/UlcK
+	kaFKhAhGBf5CbE2xHFdGQdU3Awalqg4KtLDw==
+X-Google-Smtp-Source: AGHT+IGU59M2IZuNdD+VbcGD2kdQ2sd7kW6LEthAF1ElUXBAqJvOvr9iCG6HcvR/D2vmIEyFYTJfaA==
+X-Received: by 2002:a05:6000:1a8e:b0:429:cc35:7032 with SMTP id ffacd0b85a97d-42fa89f20a7mr839467f8f.23.1765401120272;
+        Wed, 10 Dec 2025 13:12:00 -0800 (PST)
+Received: from dev-linux.homserver.local ([51.154.249.23])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42fa8b85feasm1115031f8f.27.2025.12.10.13.11.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Dec 2025 13:11:59 -0800 (PST)
+From: Vaibhav Gupta <vaibhavgupta40@gmail.com>
+To: Samuel Kayode <samkay014@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Vaibhav Gupta <vaibhavgupta40@gmail.com>,
+	imx@lists.linux.dev,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1] Input: pf1550 - Remove "defined but unused" warning
+Date: Wed, 10 Dec 2025 21:11:41 +0000
+Message-ID: <20251210211149.543928-1-vaibhavgupta40@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251208-dma_prep_config-v1-6-53490c5e1e2a@nxp.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Frank,
+If 'CONFIG_PM_SLEEP' is not set, compiler throws warning for *suspend() and
+*resume() function for this driver. Using new 'DEFINE_SIMPLE_DEV_PM_OPS'
+fixes it.
 
-kernel test robot noticed the following build warnings:
+Signed-off-by: Vaibhav Gupta <vaibhavgupta40@gmail.com>
+---
+ drivers/input/misc/pf1550-onkey.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[auto build test WARNING on bc04acf4aeca588496124a6cf54bfce3db327039]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dmaengine-Add-API-to-combine-configuration-and-preparation-sg-and-single/20251209-011820
-base:   bc04acf4aeca588496124a6cf54bfce3db327039
-patch link:    https://lore.kernel.org/r/20251208-dma_prep_config-v1-6-53490c5e1e2a%40nxp.com
-patch subject: [PATCH 6/8] nvmet: pci-epf: Use dmaengine_prep_slave_single_config() API
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20251211/202512110249.kCiMC4sb-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251211/202512110249.kCiMC4sb-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512110249.kCiMC4sb-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/nvme/target/pci-epf.c: In function 'nvmet_pci_epf_dma_transfer':
->> drivers/nvme/target/pci-epf.c:369:23: warning: variable 'lock' set but not used [-Wunused-but-set-variable]
-     369 |         struct mutex *lock;
-         |                       ^~~~
-
-
-vim +/lock +369 drivers/nvme/target/pci-epf.c
-
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  357  
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  358  static int nvmet_pci_epf_dma_transfer(struct nvmet_pci_epf *nvme_epf,
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  359  		struct nvmet_pci_epf_segment *seg, enum dma_data_direction dir)
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  360  {
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  361  	struct pci_epf *epf = nvme_epf->epf;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  362  	struct dma_async_tx_descriptor *desc;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  363  	struct dma_slave_config sconf = {};
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  364  	struct device *dev = &epf->dev;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  365  	struct device *dma_dev;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  366  	struct dma_chan *chan;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  367  	dma_cookie_t cookie;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  368  	dma_addr_t dma_addr;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04 @369  	struct mutex *lock;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  370  	int ret;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  371  
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  372  	switch (dir) {
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  373  	case DMA_FROM_DEVICE:
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  374  		lock = &nvme_epf->dma_rx_lock;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  375  		chan = nvme_epf->dma_rx_chan;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  376  		sconf.direction = DMA_DEV_TO_MEM;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  377  		sconf.src_addr = seg->pci_addr;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  378  		break;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  379  	case DMA_TO_DEVICE:
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  380  		lock = &nvme_epf->dma_tx_lock;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  381  		chan = nvme_epf->dma_tx_chan;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  382  		sconf.direction = DMA_MEM_TO_DEV;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  383  		sconf.dst_addr = seg->pci_addr;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  384  		break;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  385  	default:
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  386  		return -EINVAL;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  387  	}
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  388  
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  389  	dma_dev = dmaengine_get_dma_device(chan);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  390  	dma_addr = dma_map_single(dma_dev, seg->buf, seg->length, dir);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  391  	ret = dma_mapping_error(dma_dev, dma_addr);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  392  	if (ret)
-f9f42a84df49d9 Frank Li       2025-12-08  393  		return ret;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  394  
-f9f42a84df49d9 Frank Li       2025-12-08  395  	desc = dmaengine_prep_slave_single_config(chan, dma_addr, seg->length,
-f9f42a84df49d9 Frank Li       2025-12-08  396  						  sconf.direction,
-f9f42a84df49d9 Frank Li       2025-12-08  397  						  DMA_CTRL_ACK,
-f9f42a84df49d9 Frank Li       2025-12-08  398  						  &sconf);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  399  	if (!desc) {
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  400  		dev_err(dev, "Failed to prepare DMA\n");
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  401  		ret = -EIO;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  402  		goto unmap;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  403  	}
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  404  
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  405  	cookie = dmaengine_submit(desc);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  406  	ret = dma_submit_error(cookie);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  407  	if (ret) {
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  408  		dev_err(dev, "Failed to do DMA submit (err=%d)\n", ret);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  409  		goto unmap;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  410  	}
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  411  
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  412  	if (dma_sync_wait(chan, cookie) != DMA_COMPLETE) {
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  413  		dev_err(dev, "DMA transfer failed\n");
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  414  		ret = -EIO;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  415  	}
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  416  
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  417  unmap:
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  418  	dma_unmap_single(dma_dev, dma_addr, seg->length, dir);
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  419  
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  420  	return ret;
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  421  }
-0faa0fe6f90ea5 Damien Le Moal 2025-01-04  422  
-
+diff --git a/drivers/input/misc/pf1550-onkey.c b/drivers/input/misc/pf1550-onkey.c
+index 9be6377151cb..0d1b570bbe47 100644
+--- a/drivers/input/misc/pf1550-onkey.c
++++ b/drivers/input/misc/pf1550-onkey.c
+@@ -173,7 +173,7 @@ static int pf1550_onkey_resume(struct device *dev)
+ 	return 0;
+ }
+ 
+-static SIMPLE_DEV_PM_OPS(pf1550_onkey_pm_ops, pf1550_onkey_suspend,
++static DEFINE_SIMPLE_DEV_PM_OPS(pf1550_onkey_pm_ops, pf1550_onkey_suspend,
+ 			 pf1550_onkey_resume);
+ 
+ static const struct platform_device_id pf1550_onkey_id[] = {
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.51.0
+
