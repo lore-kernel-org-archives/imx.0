@@ -1,44 +1,45 @@
 Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2952459FD
-	for <imx@lists.linux.dev>; Wed, 10 Dec 2025 06:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DCD28B4FD
+	for <imx@lists.linux.dev>; Wed, 10 Dec 2025 07:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765348315; cv=none; b=P5u9dR1W3lHZDM0/pVTCgNoElc/zhLhbTLccZWYun3QkNC4O5glpXe6c0mVvrd0lHvzokMNLWHITNLNtrcXRBIaxlPuIHKVytLP4kCQt184yNiijS6o8BuPHKrUvuNitsyhp8f9/Uu6KX1241aHgN+3uBfA2CI5W7Hg9dQGIzBY=
+	t=1765350350; cv=none; b=lbVUaBLq7Rjpo39FfGjw1X+mRuludsaQN3VXp/llahGba0UjEUJh44nfSZgcmtjmqjciJ3+T+RJloD3h/0wvIEt3dQqFIspXx/4ixNlrsWABB9SSHVUnMhzRUAp788uQeGfMcSwMijo6BCd3QSncx8tUtyul4/dxmglEdPQmkN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765348315; c=relaxed/simple;
-	bh=75TBUh/jYlMS6urs8M3jEeJtKFl6k0PscVrtLz17bjQ=;
+	s=arc-20240116; t=1765350350; c=relaxed/simple;
+	bh=YZLcoFMXLBcEYHMmjWWhjoSlxo9d9gn6ZRL7IPhVDn0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iEGl2xS06YN8iGoc04gbbs1kT4zQShwwJFw5abQwtwiRlRrKiXQOIB5MYNrBgr2Bu0tCXAZa08qiHc0tWrnVKumwXIs84BA9MRhcuUXgxagADi6QK58tGYUKlH4W5jvMYLm3VUKYjATNTHPQFft2jgUQGmoAtwOewS7urGnFYvU=
+	 Content-Type:Content-Disposition:In-Reply-To; b=mbXYXHlDpsQ0+BG8fQ6VCPdWjWpRK6hScEY9nws+yFa9oMbAEWkP/0jzBkU1WvOCbhIO+nSpvldS5fKTeo7TkDMm3k7NR4ea5aV8tI9371ohOyhrP2WdBSuClJivrRcw4rChnja6pXdQKsMq1Ljf8aJVVdRuEZswoPK3GT1hQvk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id DCBCF20161F;
-	Wed, 10 Dec 2025 07:31:46 +0100 (CET)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id A57BE20129E;
-	Wed, 10 Dec 2025 07:31:46 +0100 (CET)
-Received: from lsvm11u0000554.swis.ap-northeast-2.aws.nxp.com (lsvm11u0000554.swis.ap-northeast-2.aws.nxp.com [10.52.9.11])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 6D69E18000A4;
-	Wed, 10 Dec 2025 14:31:44 +0800 (+08)
-Date: Wed, 10 Dec 2025 15:31:43 +0900
-From: Yanan Yang <yanan.yang@nxp.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 92077201642;
+	Wed, 10 Dec 2025 08:05:46 +0100 (CET)
+Received: from usswic1srsp001v.us-swic1.nxp.com (unknown [10.114.8.222])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 60BCC201631;
+	Wed, 10 Dec 2025 08:05:46 +0100 (CET)
+Received: from lsvm07u0000156.swis.us-west-2.aws.nxp.com (lsvm07u0000156.swis.us-west-2.aws.nxp.com [10.45.140.59])
+	by usswic1srsp001v.us-swic1.nxp.com (Postfix) with ESMTP id 4AE51180030F;
+	Tue,  9 Dec 2025 23:05:45 -0800 (PST)
+Date: Tue, 9 Dec 2025 23:05:44 -0800
+From: Lei Xu <lei.xu@nxp.com>
+To: Francesco Dolcini <francesco@dolcini.it>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, qijian.guo@nxp.com,
-	justin.jiang@nxp.com, yanan.yang@nxp.com
-Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Add FRDM-IMX91S board
-Message-ID: <aTkTz-5QoB8BuLs7@lsvm11u0000554.swis.ap-northeast-2.aws.nxp.com>
-References: <20251205-imx91s-frdm-v1-0-afd6cd01c299@nxp.com>
- <20251205-imx91s-frdm-v1-1-afd6cd01c299@nxp.com>
- <4b29cc46-28a1-45f1-b24e-548513178884@kernel.org>
+	linux-arm-kernel@lists.infradead.org, justin.jiang@nxp.com,
+	qijian.guo@nxp.com
+Subject: Re: [PATCH 2/2] arm64: dts: freescale: imx95: Add support for i.MX95
+ 15x15 FRDM board
+Message-ID: <aTkbyAHjrwzTsfO8@lsvm07u0000156.swis.us-west-2.aws.nxp.com>
+References: <20251207-127-v1-0-5a2eeb69f150@nxp.com>
+ <20251207-127-v1-2-5a2eeb69f150@nxp.com>
+ <20251208065707.GA15128@francesco-nb>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,60 +48,67 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4b29cc46-28a1-45f1-b24e-548513178884@kernel.org>
+In-Reply-To: <20251208065707.GA15128@francesco-nb>
 X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Fri, Dec 05, 2025 at 09:21:55AM +0100, Krzysztof Kozlowski wrote:
-> On 05/12/2025 09:03, Yanan.Yang wrote:
-> > Add DT compatible string for NXP FRDM-IMX91S board
-> > 
-> > The FRDM i.MX 91S development board is an low-cost and compact
-> > development board featuring the i.MX 91 applications processor.
-> > 
-> > Signed-off-by: Yanan.Yang <yanan.yang@nxp.com>
+On Mon, Dec 08, 2025 at 07:57:07AM +0100, Francesco Dolcini wrote:
+> Hello Lei,
 > 
-> Are you sure your Latin name contains '.' character? Or you just copied
-> login?
+> On Sun, Dec 07, 2025 at 05:26:06AM -0800, Lei Xu wrote:
+> > The i.MX95 15x15 FRDM board is a compact and cost-effective development
+> > platform based on the i.MX95 applications processor.
 > 
-> > ---
-> >  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-> > index 68a2d5fecc43..82f28be401b8 100644
-> > --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> > +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> > @@ -1412,6 +1412,7 @@ properties:
-> >          items:
-> >            - enum:
-> >                - fsl,imx91-11x11-evk       # i.MX91 11x11 EVK Board
-> > +              - fsl,imx91-11x11-frdm-s    # FRDM-IMX91S Board
+> ...
 > 
-> Anyway, this was sent, or something almost the same.
+> > diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
+> > new file mode 100644
+> > index 000000000000..61e815c858b8
+> > --- /dev/null
+> > +++ b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
 > 
-> Align internally before posting duplicates or at least explain why this
-> is not a duplicate It is not the job of the community to coordinate how
-> NXP employees should work. Srsly, it's NXP's job.
+> ...
+> 
+> > +
+> > +/* Default settings in i.mx95.dtsi are for i.MX95 19x19 package.
+> > + * Override here for the i.MX95 15x15 package.
+> > + */
+> > +&netc_bus0 {
+> > +	msi-map = <0x0 &its 0x60 0x1>,	//ENETC0 PF
+> > +		  <0x10 &its 0x61 0x1>, //ENETC0 VF0
+> > +		  <0x20 &its 0x62 0x1>, //ENETC0 VF1
+> > +		  <0x40 &its 0x63 0x1>, //ENETC1 PF
+> > +		  <0x50 &its 0x65 0x1>, //ENETC1 VF0
+> > +		  <0x60 &its 0x66 0x1>, //ENETC1 VF1
+> > +		  <0x80 &its 0x64 0x1>, //ENETC2 PF
+> > +		  <0xc0 &its 0x67 0x1>; //NETC Timer
+> > +	iommu-map = <0x0 &smmu 0x20 0x1>,
+> > +		    <0x10 &smmu 0x21 0x1>,
+> > +		    <0x20 &smmu 0x22 0x1>,
+> > +		    <0x40 &smmu 0x23 0x1>,
+> > +		    <0x50 &smmu 0x25 0x1>,
+> > +		    <0x60 &smmu 0x26 0x1>,
+> > +		    <0x80 &smmu 0x24 0x1>,
+> > +		    <0xc0 &smmu 0x27 0x1>;
+> > +};
+> 
+> If the 19x19 and 15x15 i.MX95 requires something different you should
+> have a different soc dtsi. Probably creating a new imx95-$something
+> dtsi, that includes the existing imx95.dtsi and override this property.
+> 
+> This solution does not scale, please fix it.
+> 
+> Francesco
 >
-Hi Krzysztof,
-Thank you for your review and for pointing this out.
 
-This patch set is not a duplicate of the FRDM-IMX91 series. It introduces
-support for a new board: FRDM-IMX91S. While FRDM-IMX91S is similar to
-FRDM-IMX91, there are hardware differences that require a separate DTS:
+Hello, Francesco
 
-- 512MB LPDDR4 (FRDM-IMX91 uses 1GB)
-- 256MB FlexSPI-NAND (FRDM-IMX91 uses 8GB eMMC)
-- Single GbE port (FRDM-IMX91 has dual GbE)
-- PMIC PF9453 (FRDM-IMX91 uses PCA9451A)
+The original comment is misleading because this configuration applies to the board rather than the SoC.
+Therefore, update the comment as follows:
+/*
+ * Configure PCIe MSI and IOMMU mappings specific
+ * to the i.MX95 15x15 FRDM board.
+ */
 
-These differences were described in the cover letter and commit message,
-but I can make them more explicit if needed.
+Does this look acceptable to you? Thank you.
 
-Regards,
-Yanan
-
-> 
-> 
-> Best regards,
-> Krzysztof
+Lei
