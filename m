@@ -1,125 +1,101 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D0B27FD71
-	for <imx@lists.linux.dev>; Wed, 10 Dec 2025 09:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D702C0277;
+	Wed, 10 Dec 2025 09:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765357650; cv=none; b=aHB9w+JsCI/070vSvup++YUzGiKg+uQu9zhSOE3oCBvrG7FB5GQjh4v8fHMGHQyvdAcoNOHg0UtfVbsELYMOcFCBlfnFiYFQnGK/uHiaR1Z19u90ccHOBepaTA/2+nK6PGlGr5+mSHLNgTqq30enaXEuVio7/znZQfod4DdpMjE=
+	t=1765360209; cv=none; b=d0SqVlZBSiamtxopVr1xermCS9VNzubbJdBYuy+0I4GSjmOIm9aWSRCnP3FODlAG7huS1QMBZI6jKB01ZKym9Ws3yPxYOmxYCHuSFzx+WfL4OxeztpIpyGh8squi1Ggo8/+f9mpsoJssaALfHEYlULsCKT6nF7+HUKF3waeuOvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765357650; c=relaxed/simple;
-	bh=6WOZSg97xzdcdaNDHYmz4n2YVYyDA2ZHtV6PV8xkkX4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UwpUHSWsktCTexPVtGiznok9o4NqOhtabRELidZedhgyodaaTEq4xnt5WnS2tLJB8UxUZnYe+QJHDhMnlJH+G5loBsK+EqmEcgdBPqaLQVgb8EmDNSQ1ZlpjNm9bWT5vpvZ/Q+ES4+ghj6xoJK0dZYE4lhxqAkfFbK7RePVAnuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 1999F203110;
-	Wed, 10 Dec 2025 10:07:27 +0100 (CET)
-Received: from usswic1srsp001v.us-swic1.nxp.com (unknown [10.114.8.222])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id DC5F2201389;
-	Wed, 10 Dec 2025 10:07:26 +0100 (CET)
-Received: from lsvm07u0000156.swis.us-west-2.aws.nxp.com (lsvm07u0000156.swis.us-west-2.aws.nxp.com [10.45.140.59])
-	by usswic1srsp001v.us-swic1.nxp.com (Postfix) with ESMTP id C6046180030F;
-	Wed, 10 Dec 2025 01:07:25 -0800 (PST)
-Date: Wed, 10 Dec 2025 01:07:25 -0800
-From: Lei Xu <lei.xu@nxp.com>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, justin.jiang@nxp.com,
-	qijian.guo@nxp.com
-Subject: Re: [PATCH 2/2] arm64: dts: freescale: imx95: Add support for i.MX95
- 15x15 FRDM board
-Message-ID: <aTk4TY8WYSILvFjY@lsvm07u0000156.swis.us-west-2.aws.nxp.com>
-References: <20251207-127-v1-0-5a2eeb69f150@nxp.com>
- <20251207-127-v1-2-5a2eeb69f150@nxp.com>
- <20251208065707.GA15128@francesco-nb>
- <aTkbyAHjrwzTsfO8@lsvm07u0000156.swis.us-west-2.aws.nxp.com>
- <20251210075927.GA13526@francesco-nb>
+	s=arc-20240116; t=1765360209; c=relaxed/simple;
+	bh=DAhy7+18z0hRT14nNWvE+nXvzMFcCHOonmxVfSqSvM4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Xe4F+nC68UeZkBzX+QDUfS6VIN4aJKwtdgztb6gHsCuoSG7l2ipSKUwJ0KOcXZfe+qYmzyxU+z51RtGTTUHbSEer4wi/7DB/6SS/+i+cEvqkN67i0cdG2PKzzRpcYQ1rQNQ5Bwp9efs96RE+eCqEqVtClU49LVcXqW8uxsarBpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=runbox.com; spf=pass smtp.mailfrom=runbox.com; dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b=Tjo7BiKx; arc=none smtp.client-ip=185.226.149.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=runbox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=runbox.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=runbox.com header.i=@runbox.com header.b="Tjo7BiKx"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <david.laight@runbox.com>)
+	id 1vTGpX-007tLk-Ur; Wed, 10 Dec 2025 10:49:55 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=runbox.com;
+	 s=selector2; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date;
+	bh=+1orBKHm47l/ZHuPL7ncTrPFFa1u/p2z7XukvtGBhl0=; b=Tjo7BiKxGZCEiUjnqWxox5kbrg
+	SPwaJqZabNxajZI7n4UTHazIaVKRL8qy10tw0/YB0gcioB2JGh96U7hQmjU1USmNREORuqlbdNGKV
+	5Qav3PB+z3oLv/ni8SfCTsJV0y2qfIhQH1qSi2RAUVcDlM6cserr8Itk6oXh1DlaRJCOOp6bCNnzY
+	PHrttR7/ht/UUfABIvQf4z4M7lDbRPpAyJ8YZfPmLC+2aBOmT7FjDOPy2+bj3zDIA6pQIRLC2aOb3
+	QPYOVsEiC4iIEGU07nYhziwZ2M20ykmlqbwn/zW2zrddUxQt3NzlN5LQOPuLtA6vY7jdrH6UgG8M2
+	Ec+bz2IQ==;
+Received: from [10.9.9.73] (helo=submission02.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <david.laight@runbox.com>)
+	id 1vTGpX-00074w-3y; Wed, 10 Dec 2025 10:49:55 +0100
+Received: by submission02.runbox with esmtpsa  [Authenticated ID (1493616)]  (TLS1.2:ECDHE_SECP256R1__RSA_SHA256__AES_256_GCM:256)
+	(Exim 4.93)
+	id 1vTGpQ-00Eiw5-OT; Wed, 10 Dec 2025 10:49:48 +0100
+Date: Wed, 10 Dec 2025 09:49:46 +0000
+From: david laight <david.laight@runbox.com>
+To: Carlos Song <carlos.song@nxp.com>
+Cc: Frank.Li@nxp.com, broonie@kernel.org, daniel.baluta@nxp.com,
+ andriy.shevchenko@intel.com, linux-spi@vger.kernel.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] spi: spi-fsl-lpspi: convert min_t() to simple min()
+Message-ID: <20251210094946.6823aef2@pumpkin>
+In-Reply-To: <20251210074115.3883180-1-carlos.song@nxp.com>
+References: <20251210074115.3883180-1-carlos.song@nxp.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251210075927.GA13526@francesco-nb>
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Dec 10, 2025 at 08:59:27AM +0100, Francesco Dolcini wrote:
-> On Tue, Dec 09, 2025 at 11:05:44PM -0800, Lei Xu wrote:
-> > On Mon, Dec 08, 2025 at 07:57:07AM +0100, Francesco Dolcini wrote:
-> > > On Sun, Dec 07, 2025 at 05:26:06AM -0800, Lei Xu wrote:
-> > > > The i.MX95 15x15 FRDM board is a compact and cost-effective development
-> > > > platform based on the i.MX95 applications processor.
-> > > 
-> > > ...
-> > > 
-> > > > diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
-> > > > new file mode 100644
-> > > > index 000000000000..61e815c858b8
-> > > > --- /dev/null
-> > > > +++ b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
-> > > 
-> > > ...
-> > > 
-> > > > +
-> > > > +/* Default settings in i.mx95.dtsi are for i.MX95 19x19 package.
-> > > > + * Override here for the i.MX95 15x15 package.
-> > > > + */
-> > > > +&netc_bus0 {
-> > > > +	msi-map = <0x0 &its 0x60 0x1>,	//ENETC0 PF
-> > > > +		  <0x10 &its 0x61 0x1>, //ENETC0 VF0
-> > > > +		  <0x20 &its 0x62 0x1>, //ENETC0 VF1
-> > > > +		  <0x40 &its 0x63 0x1>, //ENETC1 PF
-> > > > +		  <0x50 &its 0x65 0x1>, //ENETC1 VF0
-> > > > +		  <0x60 &its 0x66 0x1>, //ENETC1 VF1
-> > > > +		  <0x80 &its 0x64 0x1>, //ENETC2 PF
-> > > > +		  <0xc0 &its 0x67 0x1>; //NETC Timer
-> > > > +	iommu-map = <0x0 &smmu 0x20 0x1>,
-> > > > +		    <0x10 &smmu 0x21 0x1>,
-> > > > +		    <0x20 &smmu 0x22 0x1>,
-> > > > +		    <0x40 &smmu 0x23 0x1>,
-> > > > +		    <0x50 &smmu 0x25 0x1>,
-> > > > +		    <0x60 &smmu 0x26 0x1>,
-> > > > +		    <0x80 &smmu 0x24 0x1>,
-> > > > +		    <0xc0 &smmu 0x27 0x1>;
-> > > > +};
-> > > 
-> > > If the 19x19 and 15x15 i.MX95 requires something different you should
-> > > have a different soc dtsi. Probably creating a new imx95-$something
-> > > dtsi, that includes the existing imx95.dtsi and override this property.
-> > > 
-> > > This solution does not scale, please fix it.
-> > > 
-> > > Francesco
-> > >
-> > 
-> > Hello, Francesco
-> > 
-> > The original comment is misleading because this configuration applies
-> > to the board rather than the SoC.
-> 
-> If this is a board configuration, why it is in imx95.dtsi in the first
-> place?
-> 
-> In addition, I am interested in the topic, can you explain in more
-> detail why this is needed and what is this achieving?
-> 
-> Francesco
->
+On Wed, 10 Dec 2025 15:41:15 +0800
+Carlos Song <carlos.song@nxp.com> wrote:
 
-These entries define MSI and IOMMU mappings for ENETC interfaces.
-The i.MX95 SoC integrates three ENETC instances.
-On the i.MX95 15x15 FRDM board, instances 0 and 1 are used,
-while on the i.MX95 19x19 EVK board, instances 0 and 2 are utilized by
-default. Therefore, the mapping configuration must be customized for each board.
+> Current min() has supported comparison by normal integer promotion rules,
+> so explicit type casts or min_t() are not needed.
+> 
+> Fixes: 9f0c21bac5a8 ("spi: spi-fsl-lpspi: fix watermark truncation caused by type cast")
 
-Lei
+I don't think it needs a 'Fixes' tag since it is just a cleanup, but apart from that:
+Reviewed-by: David Laight <david.laight.linux@gmail.com>
+
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> ---
+> Change since v1:
+> * remove unused comment according to David's comment
+> * improve commit log according to Frank's comment
+> ---
+>  drivers/spi/spi-fsl-lpspi.c | 10 +---------
+>  1 file changed, 1 insertion(+), 9 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+> index 065456aba2ae..8f45ead23836 100644
+> --- a/drivers/spi/spi-fsl-lpspi.c
+> +++ b/drivers/spi/spi-fsl-lpspi.c
+> @@ -486,15 +486,7 @@ static int fsl_lpspi_setup_transfer(struct spi_controller *controller,
+>  		fsl_lpspi->tx = fsl_lpspi_buf_tx_u32;
+>  	}
+>  
+> -	/*
+> -	 * t->len is 'unsigned' and txfifosize and watermrk is 'u8', force
+> -	 * type cast is inevitable. When len > 255, len will be truncated in min_t(),
+> -	 * it caused wrong watermark set. 'unsigned int' is as the designated type
+> -	 * for min_t() to avoid truncation.
+> -	 */
+> -	fsl_lpspi->watermark = min_t(unsigned int,
+> -				     fsl_lpspi->txfifosize,
+> -				     t->len);
+> +	fsl_lpspi->watermark = min(fsl_lpspi->txfifosize, t->len);
+>  
+>  	if (fsl_lpspi_can_dma(controller, spi, t))
+>  		fsl_lpspi->usedma = true;
+
