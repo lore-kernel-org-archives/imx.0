@@ -1,194 +1,423 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010044.outbound.protection.outlook.com [52.101.69.44])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4415D309DC4
-	for <imx@lists.linux.dev>; Thu, 11 Dec 2025 16:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765472237; cv=fail; b=kQs6N7kPixHIeaeDC/R171NVe3h5oM1A3qIMUrGYF5McL27TnGXAASMCzL+ZSTLayPUQiV4idGHPh2bUZKpvTsuiFT5oIc9E/Vi1kqo4XDAlzWaQQZTpAQbZhF+vRmmKf8dfWgSU2rgogWfzajv5J5EldJjxghBDc2tJfI1IWdE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765472237; c=relaxed/simple;
-	bh=OJCdnQ++hIdrpzz+ZI1yKMeiAdsNdK2TrGvPAUV8gAY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ejww2GkztKIXlE6unQ860ICF+JocEW5xl6oVLbUFe/vOTFPRKWSR+7OZOYB/oumLt1z7qKiyxtccnO1Sj29cObuNXL7SLVV+sTk7P7YfgaN40+3VQkwcx9/4LG4yiQnSIEhxuMnL6LDD4/0gMz/XtDKMrX/rVqhV6WSwA6evCOQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=J/p/4xMp; arc=fail smtp.client-ip=52.101.69.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1263164A8
+	for <imx@lists.linux.dev>; Thu, 11 Dec 2025 17:47:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765475280; cv=none; b=oX5XzuzRxy4HRHQPcn6oQhwuJdjH8pqLSMjeDVXD4zpE3NQdPcXvkEpcP7XwOyPKdjJUvSqaGFljGN7Sb4izFhYIVZ5A325ubzu6LgVByHyOSdgoKubzJjCP4vQoJYwJEGZeT4ni9Q24s0JTFGpz7ODcmn7NRYZseZy19expT8o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765475280; c=relaxed/simple;
+	bh=dsF8RGp5glf/VfVjFvrLaSzUdBFfSt20bHRviutgPQ4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=NbEkTkqeswBqVxkyOPKd0iHWv4dKPN/pxsE4+L3G1qII7Z5PmHVQ3dWdKr7HML25AtACZNB6gX1EosDgzmjy9kxmfcvlTZFgDtxCvdSZwId26HOlPcMSizUZ8MtkoVQqnpSZ9HQ/knERY0xLNqwqotqfMWdXNI9CQqHajfEITL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=m8MCNjzP; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="J/p/4xMp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YUO/xISKEWzBJdH527PkMAnBHvKxPYsZHYfA/DlLRTLj78RTeCTXSRur+rSHz1/4xLS89xtreWw5/M3lpUgT8d2I36BCAhrQacIJr10CTrF9zv5mcnvm9s66TDbejCObvI1dbR5Z8ykv4+GH229p2Toa/CVwpU747E8RNE/pIi9+/TRiWK19iprT/UuyRezpt3J4s58oVEVK9tdM4MmCPy8t3oFZGwTSy8LPCKD5uC23eyUYvOxRsUcuB8FkJTo7wZHd+VNMextn3ytDKmmiMh39CArUZ882Rp598ADXYzE3exuSBLwOvqu/IA6cTmPWqrw0N7PlMdqFVBtx94s1/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QXobp9gUHWhx1MooJME5Rq99PUBdjI3IYkYdYt8qg+Y=;
- b=uYrf8wCTMznrO0owhxyZRaWVqcI3GeDvk0WG/ahqt2IYTPQZWSIEo+vKOahcMxFyEkC/nlNACT+1PEV8e0SRASPAF2KaRF+YCgPVOxJIPk1nYgoXtZC+sFEZixKvHUY4QW7W4EUBcEaufcayCuycyIeZFZSlBkg/jnlSseI4GXZTkiLjex5hxnuCrsNwXREYOxJ9U4n4xJvOeF3frU45kwO45NkcTjNyf9Y/TLkP7AJxFAMZ+QeTjkmr/dhYwfycqM1HIiw04IsclLAz+oI8sm494ukjWa7gvoIn0QUEYZZqlOd6CtrzEBfjW5Ha8Kbc0ruFC0Ox3EgemtyXrHLu3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QXobp9gUHWhx1MooJME5Rq99PUBdjI3IYkYdYt8qg+Y=;
- b=J/p/4xMp2/HY2KxqAKN6zDq59JnJ3Ae4tBPorxjx57MlLUeohTX5C+/n7m0fISHTI1OaF1o3TUN3KaToULq8JwTFU1qKI0yWO3iLPHDX6OECq6op3wpfHkG8BzHyOBZ5PRRCMvTKOJegpGS7WU3qfK8OxOXNQNcp0vHflVTzjh3Q6d0X+eAPToIEVvps1kcLiem+E2HNh5J/YATyKpUNnjnyxwMGyNVvo4e0PNGMh9BloT9SbLAz4skeBpQHGFVk3V8UOEOTp4WQNqNdzLMp3/8n+XfLbt+KSLBETFyN3ZkeL/9rhzsxLCu0rUOuxABmKlM4J+4/bqy9vkdKNrIEpA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
- by PR3PR04MB7449.eurprd04.prod.outlook.com (2603:10a6:102:86::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.10; Thu, 11 Dec
- 2025 16:57:12 +0000
-Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
- ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
- ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9412.005; Thu, 11 Dec 2025
- 16:57:12 +0000
-Date: Thu, 11 Dec 2025 11:57:04 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: ulf.hansson@linaro.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, linux-pm@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4] pmdomain: imx: Fix reference count leak in
- imx_gpc_probe()
-Message-ID: <aTr34BiVU+xPvuq9@lizhi-Precision-Tower-5810>
-References: <20251211040252.497759-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251211040252.497759-1-vulab@iscas.ac.cn>
-X-ClientProxiedBy: BY1P220CA0009.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59d::7) To DU2PR04MB8951.eurprd04.prod.outlook.com
- (2603:10a6:10:2e2::22)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="m8MCNjzP"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 6E214C1934E;
+	Thu, 11 Dec 2025 17:47:30 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3D1D8606AD;
+	Thu, 11 Dec 2025 17:47:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4B6EF103C8DE1;
+	Thu, 11 Dec 2025 18:47:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1765475271; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Wqw40H+Vm9Y5oI9K9Rp0HKQlWck9rHZPfvPPZg1VHac=;
+	b=m8MCNjzPFbMAmZm0eMVxUIOoNElHUFrH8nyMvKc5xtRd2ijg7CRH5rMIeZLqar6ncVe7n5
+	APtVS8ac7DJ/H7J+55K/L4Wr+HBbPuxbx7nMO1nf1H7mNWJ4THsvBKZpK7Vlwv3WeyNS8d
+	x7Hx/KCZV9jWzI/xpclQ2y0iVPrHusoXY7RdZZMV8DbeJyANl15uVv7axpW6eEG1W1ov8g
+	nMNlV8SU4poCekV3+QcFRA0Skf+plqDwI5x2l8fAmp8ClMHZnlEl4FTsawTILq93OS7U2+
+	KQRb7aff2DVem9qRl449QJO7UNAKIB89H8/OP7ZxLj0UqLhOVeVFnsKDDelbyQ==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|PR3PR04MB7449:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1d6b365f-5434-4aac-a0f5-08de38d65421
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|52116014|7416014|376014|366016|1800799024|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?a/r5yqq9vNqgwglLzRNOIu9ZmtDxl+V5UoWfaDbXOEaEYpy/XYfceMMrnYwm?=
- =?us-ascii?Q?D7iiL/6HJM0W/Nx9jJb0V7K3Q4uQ0rZkbh8gKuvRQBXoXuS4muEGe0OeVC58?=
- =?us-ascii?Q?Zd4LBp2spIsLhOn4IUU61htG6143JK7bPlTEP8TA2xGNgod2YMVVyjMj4pHY?=
- =?us-ascii?Q?WMXrsmMfdxRvlJnmrpbQ2mNOgRLxvDUJTQA1Dkt2Is2MH5CSlKhBiR9YOia3?=
- =?us-ascii?Q?wC+BoGY723j/Elpm+VBGm6asgTzBzB24L5z3URrtYWBig55D9rC+6hXEW+CW?=
- =?us-ascii?Q?BiryBuudvCjYdfIbY5oX4OqDQUh0HNJypNdDckQEs1QaJcZ2xHD0dy4br1v+?=
- =?us-ascii?Q?CJw1VvGkeH/q/MHMI1boxET+eGS5SRf3E4JT+/BbdmMKW+PBWu+ObE4sXw9b?=
- =?us-ascii?Q?0ppq427zCDVSuSrEqGhSYfGHEypeuLXXKQ4nMjM9qFA8/Mcw0cAY5u8rkX4k?=
- =?us-ascii?Q?vRrNKsmjJgZUSoJCzEbsx5yxfaEfKp80g2Vfm+6nJQJF39wjmjpbt3Ghscwz?=
- =?us-ascii?Q?DUwhB9GDzSQWSdO70kWDGPB3HuHd99u3cElAEDymJIL7waSNCe+NA/zy5o/5?=
- =?us-ascii?Q?b8NqIq00xowJUEniTOFZHeGTFvdQ7+DxeVugLkFES/wtTBbHCEtDxlmpgP1s?=
- =?us-ascii?Q?U4YjrX1TBOYyyTwtkB9ZOFTDt9osd1CeZHP1AUlJIHrorUlOUh+QeuJ7P5hW?=
- =?us-ascii?Q?DOaFAZUjTnSOL18CGUDRlpQsxTiPHwFeMnUU3Z6i2ePsbCVazmIKdxuU5CZZ?=
- =?us-ascii?Q?VLPEYdLeHjhLRByD/28+6rDsISg4Z7ybKFDNESQJeM9+jG5vfdc2kkSwtVv2?=
- =?us-ascii?Q?Y8TC1EeXxB73sgWhX62Vw8Dzk0qCpaEMFYfiLX8Nk8M8/n9AzrF/+YzS7MWh?=
- =?us-ascii?Q?rBHxRZpN6vZZttVZwbC2AabXXGzfy+489CJ0xBIbRegojY7YAp0cupykyDk7?=
- =?us-ascii?Q?5zKZ5+1LBaKT2BWtt7TsIGElK5GYHWkSBcsVnuRfZ6CQZJ56+0HhnTenOKHy?=
- =?us-ascii?Q?JP7q9b2Z8BMOFslkDvINwl+MEUT9MKQ3EIGkjlDrIH1Z1PffTqCArvQGBzLq?=
- =?us-ascii?Q?VLILj+9BYmyeQqlvr7ogFdlRgbtNtRjIvmT/vQAVr7/goAOw4YvjFKu8DqIZ?=
- =?us-ascii?Q?UQvE+9lxr/qPrLP+9jXItSisSjijvo6yc71nKi3k5vVwe5Y8x6UoHwXyE1gE?=
- =?us-ascii?Q?eiQb2lVhMFZ6RHoZLfR7LZ8gvpU6+ZMGSUt4MAmS9jV2IZODPlESxpEwAH52?=
- =?us-ascii?Q?x+T3mYkHtQxCV/NDiEDvWp16DSSOXbouim4GqULol1gzBkUU1qDtDRLfgl/m?=
- =?us-ascii?Q?W3GK8NU8xXfF74IKk6A0GZ4fUS7tAhIUTy3pMjiYKwNY6eURLboFM+GBoT/F?=
- =?us-ascii?Q?9YFkjt8ok9Q4B5Zgwk3pqIKEQnWD5TT1hoTyhbNOQGtniNzCifuhMbUutRhJ?=
- =?us-ascii?Q?PMP5Th/1kLLniKx6Dux2+c8w9oer4J9U5HiPft8GLgwEKUaEP9BA2UnWRCTZ?=
- =?us-ascii?Q?nILqICKay2SHfPITyFPWcmlXe39uuQedIOXo?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(7416014)(376014)(366016)(1800799024)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hVyrHZvaKQWaKTymp+zokItvSjPWCSUzEjwwUiA+mPibcaxQVGi3IHPY6JSU?=
- =?us-ascii?Q?4VCVYkvK2MuA/oQH3EVu6YHCyJbMXfNAq7U0IwCVEY0+hX4OXa6mL6ta2VEA?=
- =?us-ascii?Q?aVjQErpX5GaE9HGXzq/X8sfBex1giWweQI1w7T+AABwfCIDyd8jmBEjUcj/P?=
- =?us-ascii?Q?v1+nQcf147zfz3l0f94Ym4cEoTTw6blHfiJRHW21HWFAoj28fFqbEpCkMVG7?=
- =?us-ascii?Q?yEOsGb7tHNmc5Ec9YAUYMcz4j7WK4QI43TQpVGkEi5pVepvypcaJFnwwx3t/?=
- =?us-ascii?Q?eR3VDlNeUUHUFDrHzPr522pIUtRwC68c358D4ceaZ9TWtQqlY8AJoEF0dfSL?=
- =?us-ascii?Q?hQR5gTFgU8bDcsFLKtY+KF2MJIEvJUZwLlEVFZ0SNoILR+mDoZEaglE/zpVa?=
- =?us-ascii?Q?eHtbKcznYsHWo9wN5IbJ0Pf/r5D8Yb3naGJcqW9BJKbY45/6j+V9P1OjzQBX?=
- =?us-ascii?Q?94pw1wWq6qV8w7W60q9fhXXU8g9s5F6QcMyV25AtarhgfO8WgllHusQz8L6D?=
- =?us-ascii?Q?3efY7DNXzpZlqBOdqE9UxJV7PYQnr3cSw9EzRtlPQv4bUfeJ1wQZBh/qX6xD?=
- =?us-ascii?Q?M1xJ4Ed5UDzxJv87HL/e/3phus2/fjMh5eHH30uVmeu6Z9+s5tpAdeNmnSDn?=
- =?us-ascii?Q?bcF7OukOe6nwWICk37DDN8PhU0C1bUzKinWASiwI7ya3UdLoc2cJB4Yg4GFF?=
- =?us-ascii?Q?wWLljdbcyMYkJgRe/NNcIyel2WgBOIDQ4wXYq6lC5Fvv+RdRTelGG6kxQIpP?=
- =?us-ascii?Q?cTETYhKqhUEkElHKixIJuepDwOdYWOvBek6w2kIWrgIxwYv1igl/CZBhujSS?=
- =?us-ascii?Q?9UGzDbvnhMqwan9/j7fn1eKZyhnFYUm2zzIJZOMf6hIDdimgNQa+8xc044Jf?=
- =?us-ascii?Q?+PlQa+OBk/yc3apqrzzh2yo3r9m/nfxoLtdwdTthA3QYFlpN9F/vFBBNQEFH?=
- =?us-ascii?Q?uvoQlnKXJtxjF2VTt2l2ufFcdsqz3rUM3bpj1u+WtA8YBsZBucuYYKUIXU15?=
- =?us-ascii?Q?T8X5Eu8tzMs9+5QIKCrGa0iqrLsq4vYMH7clT7yYAHhnyHGALNo3TOCKNdFh?=
- =?us-ascii?Q?5549s4BMq/zA6dxk5gWoTmN6QJRhuCL9Gm9P5Mac4KGUJJtXfdV6eCMmBjBz?=
- =?us-ascii?Q?BIb2rPd65XdAGwdm+dcZSHWbhVr0VlVXRqVydNEfgprKz6Qu7tfjsrTHPSoV?=
- =?us-ascii?Q?PmqLn/NFcpYOKkqucVDyED19gw3uQFCZ0ap3AYFMaIqQgTksVhdLqF6V1Svv?=
- =?us-ascii?Q?XVa8ruE3GXqQuh5146Crvz1fXz+UYCYx0SlRS0IQ81fKC+0XujL2qUPNB67w?=
- =?us-ascii?Q?pji12YyIdpUi8/kccTOD+kPu5t9HpD9WcbECbP2r5rLhjp5FPGZDx9nr0ZKa?=
- =?us-ascii?Q?teD+WT62cZerAcmUuDqv57qfzRqchuFYwxCeiV6NK2C/T7PFHT1kAJSnMvNg?=
- =?us-ascii?Q?VBtJLxfr0mwn+T43T79TA+XHZ401G/cvBhcWhi4ydHoykrcj+3NEVb0By0B9?=
- =?us-ascii?Q?WFNQpU1GxYiskL6ptLEeLYK24Has+DbBMW+yvL1wmwebVc0ZWGvRVnDzGl5l?=
- =?us-ascii?Q?NpUvPBMX42XOWioJOUHW6jPMtDR8MZ/sPcTKQ9uT?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d6b365f-5434-4aac-a0f5-08de38d65421
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2025 16:57:12.1856
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PY9VTjXTFU3ncyNb9hxovKqqc592JOjfsplYt2439wSLVtO3BjiJA1tvHNvA2DEN/xO468AnL40WmpKLbCpR5A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7449
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 11 Dec 2025 18:47:37 +0100
+Message-Id: <DEVKQWH8GU0D.2NWQ1U7IOIEHI@bootlin.com>
+Subject: Re: [PATCH 06/26] drm/bridge: add devm_drm_of_find_bridge
+Cc: "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
+ <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Jonathan Corbet" <corbet@lwn.net>, "Alexey Brodkin"
+ <abrodkin@synopsys.com>, "Phong LE" <ple@baylibre.com>, "Liu Ying"
+ <victor.liu@nxp.com>, "Shawn Guo" <shawnguo@kernel.org>, "Sascha Hauer"
+ <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Adrien
+ Grassein" <adrien.grassein@gmail.com>, "Laurent Pinchart"
+ <laurent.pinchart+renesas@ideasonboard.com>, "Tomi Valkeinen"
+ <tomi.valkeinen+renesas@ideasonboard.com>, "Kieran Bingham"
+ <kieran.bingham+renesas@ideasonboard.com>, "Geert Uytterhoeven"
+ <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Kevin
+ Hilman" <khilman@baylibre.com>, "Jerome Brunet" <jbrunet@baylibre.com>,
+ "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>, "Chun-Kuang Hu"
+ <chunkuang.hu@kernel.org>, "Philipp Zabel" <p.zabel@pengutronix.de>,
+ "Matthias Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno"
+ <angelogioacchino.delregno@collabora.com>, "Anitha Chrisanthus"
+ <anitha.chrisanthus@intel.com>, "Edmund Dea" <edmund.j.dea@intel.com>,
+ "Inki Dae" <inki.dae@samsung.com>, "Seung-Woo Kim"
+ <sw0312.kim@samsung.com>, "Kyungmin Park" <kyungmin.park@samsung.com>,
+ "Krzysztof Kozlowski" <krzk@kernel.org>, "Alim Akhtar"
+ <alim.akhtar@samsung.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>,
+ <linux-renesas-soc@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
+ <linux-mediatek@lists.infradead.org>, <linux-samsung-soc@vger.kernel.org>
+To: "Maxime Ripard" <mripard@kernel.org>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.20.1
+References: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com> <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-6-0db98a7fe474@bootlin.com> <hs44z4b2dgisemuewgtvl4epjcqqilg6cy36po25pubaog4hmq@33qgl4o3hwoa> <DEH2CVQV21Z2.25PJBAQAKFJSG@bootlin.com> <20251201-thick-jasmine-oarfish-1eceb0@houat>
+In-Reply-To: <20251201-thick-jasmine-oarfish-1eceb0@houat>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Dec 11, 2025 at 04:02:52AM +0000, Wentao Liang wrote:
-> of_get_child_by_name() returns a node pointer with refcount incremented.
-> Use the __free() attribute to manage the pgc_node reference, ensuring
-> automatic of_node_put() cleanup when pgc_node goes out of scope.
->
-> This eliminates the need for explicit error handling paths and avoids
-> reference count leaks.
->
-> Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Hi Maxime,
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+On Mon Dec 1, 2025 at 5:51 PM CET, Maxime Ripard wrote:
+> On Mon, Nov 24, 2025 at 05:25:39PM +0100, Luca Ceresoli wrote:
+>> Hi Maxime,
+>>
+>> On Mon Nov 24, 2025 at 11:39 AM CET, Maxime Ripard wrote:
+>> > On Wed, Nov 19, 2025 at 02:05:37PM +0100, Luca Ceresoli wrote:
+>> >> Several drivers (about 20) follow the same pattern:
+>> >>
+>> >>  1. get a pointer to a bridge (typically the next bridge in the chain=
+) by
+>> >>     calling of_drm_find_bridge()
+>> >>  2. store the returned pointer in the private driver data, keep it un=
+til
+>> >>     driver .remove
+>> >>  3. dereference the pointer at attach time and possibly at other time=
+s
+>> >>
+>> >> of_drm_find_bridge() is now deprecated because it does not increment =
+the
+>> >> refcount and should be replaced with drm_of_find_bridge() +
+>> >> drm_bridge_put().
+>> >>
+>> >> However some of those drivers have a complex code flow and adding a
+>> >> drm_bridge_put() call in all the appropriate locations is error-prone=
+,
+>> >> leads to ugly and more complex code, and can lead to errors over time=
+ with
+>> >> code flow changes.
+>> >>
+>> >> To handle all those drivers in a straightforward way, add a devm vari=
+ant of
+>> >> drm_of_find_bridge() that adds a devm action to invoke drm_bridge_put=
+()
+>> >> when the said driver is removed. This allows all those drivers to put=
+ the
+>> >> reference automatically and safely with a one line change:
+>> >>
+>> >>   - priv->next_bridge =3D of_drm_find_bridge(remote_np);
+>> >>   + priv->next_bridge =3D devm_drm_of_find_bridge(dev, remote_np);
+>> >>
+>> >> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>> >>
+>> >> ---
+>> >>  drivers/gpu/drm/drm_bridge.c | 30 ++++++++++++++++++++++++++++++
+>> >>  include/drm/drm_bridge.h     |  5 +++++
+>> >>  2 files changed, 35 insertions(+)
+>> >>
+>> >> diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridg=
+e.c
+>> >> index 09ad825f9cb8..c7baafbe5695 100644
+>> >> --- a/drivers/gpu/drm/drm_bridge.c
+>> >> +++ b/drivers/gpu/drm/drm_bridge.c
+>> >> @@ -1446,6 +1446,36 @@ struct drm_bridge *drm_of_find_bridge(struct d=
+evice_node *np)
+>> >>  }
+>> >>  EXPORT_SYMBOL(drm_of_find_bridge);
+>> >>
+>> >> +/**
+>> >> + * devm_drm_of_find_bridge - find the bridge corresponding to the de=
+vice
+>> >> + *			     node in the global bridge list and add a devm
+>> >> + *			     action to put it
+>> >> + *
+>> >> + * @dev: device requesting the bridge
+>> >> + * @np: device node
+>> >> + *
+>> >> + * On success the returned bridge refcount is incremented, and a dev=
+m
+>> >> + * action is added to call drm_bridge_put() when @dev is removed. So=
+ the
+>> >> + * caller does not have to put the returned bridge explicitly.
+>> >> + *
+>> >> + * RETURNS:
+>> >> + * drm_bridge control struct on success, NULL on failure
+>> >> + */
+>> >> +struct drm_bridge *devm_drm_of_find_bridge(struct device *dev, struc=
+t device_node *np)
+>> >> +{
+>> >> +	struct drm_bridge *bridge =3D drm_of_find_bridge(np);
+>> >> +
+>> >> +	if (bridge) {
+>> >> +		int err =3D devm_add_action_or_reset(dev, drm_bridge_put_void, bri=
+dge);
+>> >> +
+>> >> +		if (err)
+>> >> +			return ERR_PTR(err);
+>> >> +	}
+>> >> +
+>> >> +	return bridge;
+>> >> +}
+>> >> +EXPORT_SYMBOL(devm_drm_of_find_bridge);
+>> >
+>> > That's inherently unsafe though, because even if the bridge is removed
+>> > other parts of DRM might still have a reference to it and could call
+>> > into it.
+>> >
+>> > We'd then have dropped our reference to the next bridge, which could
+>> > have been freed, and it's a use-after-free.
+>>
+>> I think you refer to this scenario:
+>>
+>>   1. pipeline: encoder --> bridge A --> bridge B --> bridge C
+>>   2. encoder takes a reference to bridge B
+>>      using devm_drm_of_find_bridge() or other means
+>>   3. bridge B takes a next_bridge reference to bridge C
+>>      using devm_drm_of_find_bridge()
+>>   4. encoder calls (bridge B)->foo(), which in turns references
+>>      next_bridge, e.g.:
+>>
+>>        b_foo() {
+>>            bar(b->next_bridge);
+>>        }
+>>
+>> If bridges B and C are removed, bridge C can be freed but B is still
+>> allocated because the encoder holds a ref. So when step 4 happens, 'b->c=
+'
+>> would be a use-after-free (or NULL deref if b.remove cleared it, which i=
+s
+>> just as bad).
+>
+> Yep.
+>
+>> If I got you correctly, then I'm a bit surprised by your comment. This
+>> series is part of the first chapter of the hotplug work, which does not =
+aim
+>> at fixing everything but rather at fixing one part: handle dynamic
+>> _allocation_ lifetime of drm_bridges by adding a refcount and
+>> drm_bridge_get/put().
+>>
+>> Chapter 2 of the work is adding drm_bridge_enter/exit/unplug() [1] and
+>> other changes in order to avoid code of drivers of removed bridges to
+>> access fields they shouldn't. So the above example at point 4 would beco=
+me:
+>>
+>>        b_foo() {
+>>            if (!drm_bridge_enter())
+>>                return;
+>>            bar(b->c);
+>>            drm_bridge_exit();
+>>        }
+>>
+>> And that avoids 'b->c' after bridge B is removed.
+>>
+>> Does that answer your remark?
+>
+> Not really. I wasn't really questionning your current focus, or the way
+> you laid out the current agenda or whatever.
+>
+> What I am questionning though is whether or not we want to introduce
+> something we will have to untangle soon, and even more so when we're not
+> mentioning it anywhere.
+>
+>> > It's more complicated than it sounds, because we only have access to t=
+he
+>> > drm_device when the bridge is attached, so later than probe.
+>> >
+>> > I wonder if we shouldn't tie the lifetime of that reference to the
+>> > lifetime of the bridge itself, and we would give up the next_bridge
+>> > reference only when we're destroyed ourselves.
+>>
+>> I'm afraid I'm not following you, sorry. Do you refer to the time betwee=
+n
+>> the bridge removal (driver .remove) and the last bridge put (when
+>> deallocation happens)?
+>>
+>> In that time frame the struct drm_bridge is still allocated along with a=
+ny
+>> next_bridge pointer it may contain, but the following bridge could have
+>> been deallocated.
+>>
+>> What do you mean by "give up the next_bridge"?
+>
+> What I was trying to say was that if we want to fix the problem you
+> illustrated about, we need to give up the reference at __drm_bridge_free
+> time. So each bridge having a reference to a bridge would need to do so
+> in its destroy hook.
+>
+> Since it's quite a common pattern, it would make sense to add a
+> next_bridge field to drm_bridge itself, so the core can do it
+> automatically in __drm_bridge_free if that pointer is !NULL.
+>
+> But...
+>
+>> > Storing a list of all the references we need to drop is going to be
+>> > intrusive though, so maybe the easiest way to do it would be to create=
+ a
+>> > next_bridge field in drm_bridge, and only drop the reference stored
+>> > there?
+>> >
+>> > And possibly tie the whole thing together using a helper?
+>> >
+>> > Anyway, I'm not sure it should be a prerequisite to this series. I we =
+do
+>> > want to go the devm_drm_of_find_bridge route however, we should at lea=
+st
+>> > document that it's unsafe, and add a TODO entry to clean up the mess
+>> > later on.
+>
+> ... I *really* don't consider it something you need to work on right now.
+>
+>> Do you mean the drm variant is unsafe while the original
+>> (drm_of_find_bridge() in this series, might be renamed) is not? I
+>> don't see how that can happen. If the driver for bridge B were to use
+>> drm_of_find_bridge(), that driver would be responsible to
+>> drm_bridge_put(b->next_bridge) in its .remove() function or earlier.
+>> So the next_bridge pointing to bridge C would equally become subject
+>> to use-after-free.
+>
+> No, I was saying that both are equally unsafe. But we're adding a new,
+> broken, helper, and we don't mention anywhere that it is. So what I was
+> saying is mostly do we really want to introduce some more broken code
+> when we know it is. And if we do, we should be really clear about it.
+>
+>> devm does not make it worse, on the opposite it postpones the
+>> drm_bridge_put(next_bridge) as late as possible: just after
+>> b.remove().
+>
+> Which doesn't really change anything, does it? I'd expect the window
+> between the remove and final drm_bridge_put to be much wider than the
+> execution time of remove itself.
+>
+>> One final, high-level thought about the various 'next_bridge' pointers t=
+hat
+>> many bridge drivers have. Most of them do:
+>>
+>>  0. have a 'struct drm_bridge next_bridge *' in their private struct
+>>  1. take the next_bridge reference during probe or another startup phase
+>>  2. store it in their private driver struct
+>>  3. use it to call drm_bridge_attach
+>>  4. (pending) put the reference to it in their .remove or earlier
+>>
+>> I'm wondering whether we could let the DRM bridge core do it all, by
+>> removing items 0, 1, 2 and 4, and change 3 as:
+>>
+>> -     drm_bridge_attach(encoder, me->next_bridge, &me->bridge, flags);
+>> +  drm_of_bridge_attach(encoder, &me->bridge, dev->of_node, 1, -1, flags=
+);
+>>
+>> where dev->of_node and the following integers are the same flags passed =
+to
+>> devm_drm_of_get_bridge() and the like, i.e. the endpoint info needed to
+>> walk the DT graph and reach the next bridge.
+>>
+>> This would allow the core to take care of all locking and lifetime of th=
+e
+>> next bridge, and most (all?) bridges would never access any pointers to =
+the
+>> next bridge. The idea is to let the core do the right thing in a single
+>> place instead of trying to make all drivers do the right thing (and
+>> touching dozen files when needing to touch the logic).
+>>
+>> That is more a long-term ideal than something I'd do right now, but havi=
+ng
+>> opinions would be very interesting.
+>
+> That was pretty much my point, yeah.
+>
+> Maxime
 
->
-> ---
-> Change in V4:
-> - Fix typo error in code
->
-> Change in V3:
-> - Ensure variable is assigned when using cleanup attribute
->
-> Change in V2:
-> - Use __free() attribute instead of explicit of_node_put() calls
-> ---
->  drivers/pmdomain/imx/gpc.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
-> index f18c7e6e75dd..56a78cc86584 100644
-> --- a/drivers/pmdomain/imx/gpc.c
-> +++ b/drivers/pmdomain/imx/gpc.c
-> @@ -403,13 +403,12 @@ static int imx_gpc_old_dt_init(struct device *dev, struct regmap *regmap,
->  static int imx_gpc_probe(struct platform_device *pdev)
->  {
->  	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
-> -	struct device_node *pgc_node;
-> +	struct device_node *pgc_node __free(device_node)
-> +		= of_get_child_by_name(pdev->dev.of_node, "pgc");
->  	struct regmap *regmap;
->  	void __iomem *base;
->  	int ret;
->
-> -	pgc_node = of_get_child_by_name(pdev->dev.of_node, "pgc");
-> -
->  	/* bail out if DT too old and doesn't provide the necessary info */
->  	if (!of_property_present(pdev->dev.of_node, "#power-domain-cells") &&
->  	    !pgc_node)
-> --
-> 2.34.1
->
+Let me recap this discussion, because there are various aspects and I need
+to clarify by view on it.
+
+First: the problem you discuss is about drm_of_find_bridge() introduced in
+patch 1. The devm variant is just equally affected.
+
+You proposed adding a next_bridge field in struct drm_bridge so there is an
+automated, common call to drm_bridge_put() (and setting it to NULL). It
+would remove some burden on individual drivers of course, but I don't think
+it would solve the problem. In the same scenario we are discussing
+(i.e. encoder --> bridge A --> bridge B --> bridge C, then B+C get removed)
+B's next_bridge would be automatically put, but the encoder could still
+call B->foo(), which could still do B->next_bridge.
+
+Additionally, as a matter of fact there are currently drivers storing
+bridge pointers. The next_bridge is the most common case. Code using
+drm_bridge_connector_init() for example can store up to eight of them, but
+individual drivers are the hardest to hunt for.
+
+I can see these (potential) tools to handle this (not mutually exclusive):
+
+ 1. remove drm_bridge pointers pointing to other bridges
+ 2. check whether a bridge (say B) still exists before any dereference
+    to B->another_bridge: that's drm_bridge_enter/exit()
+ 3. let owners of bridge pointers be notified when a bridge is unplugged,
+    so they can actively put their reference and clear their pointer
+
+For item 1, I think the drm_of_bridge_attach() idea quoted above would
+work, at least for the simple cases where bridge drivers use the
+next_bridge only for attach. A next_bridge pointer in struct drm_bridge is
+not even needed in that case, the pointer would be computed from OF when
+needed and not stored. I can do an experiment and send a first series, do
+you think it would be useful?
+
+For item 2, I still think it would just work for cases not (or not yet)
+covered by item 1. Given the same example as above:
+
+        b_foo() {
+            if (!drm_bridge_enter())
+                return;
+            bar(b->c);
+            drm_bridge_exit();
+        }
+
+drm_bridge_enter() will prevent doing anything on b->whatever, including
+any stale pointers. The idea is "I, bridge B, have been unplugged, my
+resources are not reliably usable, keep out!". No?
+
+However item 2 won't prevent the caller from keeping the pointer for a long
+time, especially if b_foo() is a void function so it cannot return anything
+saying "I was unplugged, I'm no longer theree". And that's where item 3
+(notifiers) might come in useful: upon receiving a bridge removal
+notification any driver or other code is in a position to actively put its
+reference to the bridge and clear its pointer. I had proposed something in
+[0], which can likely be improved, but it is useful in my current draft
+solution.
+
+I'd like to know your opinions about the above points, so we can
+progressively clarify the path forward.
+
+PS: I just realized about a fourth option: a revocable [1] (thanks Laurent
+who pointed me to it). That's basically a wrapper around a pointer that
+allows to guard from accessing it when the pointed object is gone. To me it
+looks somewhat equivalent to drm_bridge_enter/exit() but with very
+different APIs. I still haven't looked at the details.
+
+[0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-12-9d6f2c9c=
+3058@bootlin.com/
+[1] https://lore.kernel.org/lkml/20251016054204.1523139-2-tzungbi@kernel.or=
+g/#t
+
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
