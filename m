@@ -1,167 +1,97 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AC319F115;
-	Wed, 10 Dec 2025 23:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3621684B0
+	for <imx@lists.linux.dev>; Thu, 11 Dec 2025 00:46:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765409957; cv=none; b=M73JV56L7WzlswVTvl33jResAMGRP7I0Fo0w47xvkSABs84xA/Yah7zj43XMy7t/br8Yb1iyUdFLbru+YnLTyeRticpkxEb+z/6ES6Tuxa8+I3d0GgKJFwtx+szNpqkJKTcEx1VuaW5xCrl5Z0dIvsd8WdgVJl11CN9HC7yV5es=
+	t=1765413991; cv=none; b=GkbEv5B6UscxHWRLZxUzhY1HZy3UYnEns8Zl2qQAuGmjNU/sBE/yokw1SL/MYYq0xuV485uKRzpinAE+PM9NT6WRbo7rYwVCCa1xyq23Ujj0nlkcaxr2c9Y19jMlDyg+MPDt4P2AgK8lU+idePyga7Yntp8cJ0L025A3Pdg1x9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765409957; c=relaxed/simple;
-	bh=CqZoGTVWzCk+WErLN8DYaHT4p5f2ean/CXKGL2NXVM4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NpjKLNLCgmM/+zUpVEXXAJNw8FIC4Ko4f93miIvmo+9t7AiDlUDmKaBEP7aC89pry1Y/DScR6Q/IgfGlEgdSJyErLUtpGc3K7RN1kBzdSvStTK5q19ijQaeXOh/undveQ3BW1bFCDrJ/sOe1TTqxw1I95hqwCq/eGjUYd6Jb1tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eucdafFN; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1765413991; c=relaxed/simple;
+	bh=7JYkoyZtX+AYaSCjaxLjeTfpVBahhj7hlnNxgfUao1E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PDc3N7Bo8+2ocrLvqvS2MOkEtYuRNNQCw0rSvQHM8/205P6ZNczk8Ap3h+lQIWXpVDR/HK46ylpaxGanxR1wRcyjhb57di0tv5hKciaFyRJTUzIaEHfKVyR7uanZqlcEhOytILERb4ciwhGQvHRfMV7f2q2w3SvD3LOod0QqYUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cEP6/9e1; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eucdafFN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765409955; x=1796945955;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=CqZoGTVWzCk+WErLN8DYaHT4p5f2ean/CXKGL2NXVM4=;
-  b=eucdafFNBmPnyTse1rd5S8DqUIn9Eg/cEWKmAv4DsVDn1pRORkYSDP71
-   +sW8l2SMcM8+FfDZCcF+DoQWIO5YpImnOK77ioOWKel4amv2jqoEaxa6q
-   nnHqCfrBSvrPHWdPp0RYcrsfcQcvFibbeAGVD4VsFpfzWzAETW4vbkF4N
-   Pq2vUlKAX8NvdgKU/zBIQZYG0QLVzikLLoLeNvrSBCZrsAGH1+/Z8KHTu
-   tuLeJTgsrSwYSx2/KNJvfgAqtIK0YSBY0gQZNPMm1CEZuCfjOERMeIF9D
-   XmwLCeJc9DHWkP/FsX2qIacIr6X6xyCK7B3q3o+ApEni/QEy7KUtOgtnM
-   g==;
-X-CSE-ConnectionGUID: QnvWssNXSRKVvx8svWwUpw==
-X-CSE-MsgGUID: wKZe0YhQRuSX/IxaOf0IHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11638"; a="78501421"
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; 
-   d="scan'208";a="78501421"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2025 15:39:12 -0800
-X-CSE-ConnectionGUID: KpQ53LaCR92a/lE3dY93+A==
-X-CSE-MsgGUID: yM9OGlZbRkmqVgjyMNGu0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.20,265,1758610800"; 
-   d="scan'208";a="227300278"
-Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 10 Dec 2025 15:39:04 -0800
-Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vTTlu-000000003sH-0itl;
-	Wed, 10 Dec 2025 23:39:02 +0000
-Date: Thu, 11 Dec 2025 07:38:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <helgaas@kernel.org>, Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Koichiro Den <den@valinux.co.jp>, Niklas Cassel <cassel@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
-	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH 8/8] crypto: atmel: Use
- dmaengine_prep_slave_single_config() API
-Message-ID: <202512110702.EhO0gmFG-lkp@intel.com>
-References: <20251208-dma_prep_config-v1-8-53490c5e1e2a@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cEP6/9e1"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5959b2f3fc9so370667e87.2
+        for <imx@lists.linux.dev>; Wed, 10 Dec 2025 16:46:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765413988; x=1766018788; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7JYkoyZtX+AYaSCjaxLjeTfpVBahhj7hlnNxgfUao1E=;
+        b=cEP6/9e1zYLvZBTtRUMlAU5I5EDM7wp77FDsFZS/MsVdzwSZZTVhCocLcRSF67L6iL
+         WAWhgTxq0sMcpSgwGkoLsXPFwkh1qz31pAAtkULwE+6gpx3FtRq/+H69N8WipJ2mJpTV
+         o8PHmzaWwINqYQ2v4ruYmL1uJQU6X+ElIKqlxroCJw9DkdxUPgL4Bz3LJHE4iMhunSb6
+         ApXVZnex9CsxBjouIcnij0RO92+0OEi7z3rTivRv4tWsccDJ8U0zHIRG9jic8wnFmLQG
+         z/UpWjpUHNGoWVAqAlnfgbz88P+h7LSGmNlZyaiaHxHiykWsHVZaCTjStMdLW2TkVhAV
+         bqNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765413988; x=1766018788;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7JYkoyZtX+AYaSCjaxLjeTfpVBahhj7hlnNxgfUao1E=;
+        b=hV+mDTc1xVcRO7awfbTgeOJ4LGkp8ldk+N/7CuTsJ8Cm8MCXtjnG3lcWSSdhGw5h+K
+         5gV23jOMqwGHJ91wuzHDn2+9NmmiTMe8xQhq2ty3Pl6ciQHFFcHQHmoTeaPkYjL290PB
+         e8Kmj/i7BnvzDAjfMVy188jL5hT8MqjfNMHC8fY6UDP03iwYPRCh14+Mea1MR6m0tp/k
+         +1+rIRKs1UxLw7uPoIaZuNMaZzJRc56ohA63lET575Pag4gB+iW0th+GzaxRnZhowSIw
+         6xkczpyLmh2z+sSbcxaR7TFD8Rwu5CJVrdsKQTBbxbxK8DR/RVg8V3c43WI0BAmk+j8f
+         bXNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCT/tPqbxC1k7IDkXZqjqxlk4D3dw//tXENNKx1y/qhlmZY0VhYet1nfjaA/Aghu7hwws=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx4EEvtmf2mp91C6pDR4cuBGdY1qHuCby5l9MAJKSTlRYYRg2Ue
+	dAs3rYIHUOlZ8me0+P0kFxNZXpIr6Pj0mVCm+OciDNn4WlO75IQDBzK5xQCKTuFpnNfW/MdDS3u
+	WDf+EO40l0nqVVXVMnivsNH+MjNyzI3s=
+X-Gm-Gg: AY/fxX4TzKNDmeRkMs5HHmgXC4ZZerDZR6iD8AOblWUyXYJ+onZKw8Nq2MSHIg9fsz5
+	ojSXmBlVQ3NJglUh2G2swtaHUNev3uW8XfkOQm/ZvcBdnPdwDggc2/QdFsV5B245k/vFMtnfqXZ
+	z5hiBX47Dl4DzFm4QqRf9+W10Bnb/6AWc5VPHwMVLfHv6Gpi+2nClgsHHIDOZByeg4jbTA9bdG4
+	XCkfOVup/ya/6SFLPh5rVfzPdM5yiz3SqiDsD5LOc+sF+qrVf/Qv9FuLs5OeWcj5f+36iLe6I/l
+	AKnMaswOgLZqvcHgh2N+kcQFLsR2+8jC+Y+TYA==
+X-Google-Smtp-Source: AGHT+IH6NbxkTUZSljGL5UXTIkr6tHBMYOHOGf6OgfMEP2fzi2rZqXy88k3bhBA+yI5GG+va9k8Djc20ctoHh43XOXI=
+X-Received: by 2002:a05:6512:3c91:b0:594:546c:431f with SMTP id
+ 2adb3069b0e04-598ee4bfcc2mr1798313e87.49.1765413988056; Wed, 10 Dec 2025
+ 16:46:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251208-dma_prep_config-v1-8-53490c5e1e2a@nxp.com>
+References: <20251210152000.42265-1-stefano.r@variscite.com> <20251210152000.42265-4-stefano.r@variscite.com>
+In-Reply-To: <20251210152000.42265-4-stefano.r@variscite.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Wed, 10 Dec 2025 21:46:16 -0300
+X-Gm-Features: AQt7F2oJTNhQYHQm4Mp3X_RNji2ahbbkHznpjmov3J1DROZAGzAUDzZ2iEMc9-U
+Message-ID: <CAOMZO5B2__4qgJRni=DPxd1QoPQLwO+r9ZbdbsOWXZemVU86aw@mail.gmail.com>
+Subject: Re: [PATCH v1 3/6] arm64: dts: imx8mp-var-som: Remove UART2 console
+To: Stefano Radaelli <stefano.r@variscite.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Frank,
+Hi Stefano,
 
-kernel test robot noticed the following build warnings:
+On Wed, Dec 10, 2025 at 12:20=E2=80=AFPM Stefano Radaelli
+<stefano.r@variscite.com> wrote:
+>
+> The VAR-SOM-MX8MP does not include an onboard console connector. The
+> debug UART is provided on the Symphony carrier board, and customers may
+> choose to expose any UART controller on their own carrier designs.
+>
+> Since UART2 is not populated on the SOM, drop the UART2 node from the
+> SOM device tree.
 
-[auto build test WARNING on bc04acf4aeca588496124a6cf54bfce3db327039]
+This change is OK, but you need a patch for
+imx8mp-var-som-symphony.dts to describe UART2, right?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dmaengine-Add-API-to-combine-configuration-and-preparation-sg-and-single/20251209-011820
-base:   bc04acf4aeca588496124a6cf54bfce3db327039
-patch link:    https://lore.kernel.org/r/20251208-dma_prep_config-v1-8-53490c5e1e2a%40nxp.com
-patch subject: [PATCH 8/8] crypto: atmel: Use dmaengine_prep_slave_single_config() API
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20251211/202512110702.EhO0gmFG-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251211/202512110702.EhO0gmFG-lkp@intel.com/reproduce)
+Otherwise, people using imx8mp-var-som-symphony.dts will lose the console.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512110702.EhO0gmFG-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/crypto/atmel-aes.c: In function 'atmel_aes_dma_transfer_start':
->> drivers/crypto/atmel-aes.c:798:13: warning: unused variable 'err' [-Wunused-variable]
-     798 |         int err;
-         |             ^~~
-
-
-vim +/err +798 drivers/crypto/atmel-aes.c
-
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  788  
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  789  static int atmel_aes_dma_transfer_start(struct atmel_aes_dev *dd,
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  790  					enum dma_slave_buswidth addr_width,
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  791  					enum dma_transfer_direction dir,
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  792  					u32 maxburst)
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  793  {
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  794  	struct dma_async_tx_descriptor *desc;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  795  	struct dma_slave_config config;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  796  	dma_async_tx_callback callback;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  797  	struct atmel_aes_dma *dma;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17 @798  	int err;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  799  
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  800  	memset(&config, 0, sizeof(config));
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  801  	config.src_addr_width = addr_width;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  802  	config.dst_addr_width = addr_width;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  803  	config.src_maxburst = maxburst;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  804  	config.dst_maxburst = maxburst;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  805  
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  806  	switch (dir) {
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  807  	case DMA_MEM_TO_DEV:
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  808  		dma = &dd->src;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  809  		callback = NULL;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  810  		config.dst_addr = dd->phys_base + AES_IDATAR(0);
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  811  		break;
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  812  
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  813  	case DMA_DEV_TO_MEM:
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  814  		dma = &dd->dst;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  815  		callback = atmel_aes_dma_callback;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  816  		config.src_addr = dd->phys_base + AES_ODATAR(0);
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  817  		break;
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  818  
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  819  	default:
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  820  		return -EINVAL;
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  821  	}
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  822  
-c8695132080931 Frank Li        2025-12-08  823  	desc = dmaengine_prep_slave_sg_config(dma->chan, dma->sg, dma->sg_len,
-c8695132080931 Frank Li        2025-12-08  824  					      dir,
-c8695132080931 Frank Li        2025-12-08  825  					      DMA_PREP_INTERRUPT | DMA_CTRL_ACK,
-c8695132080931 Frank Li        2025-12-08  826  					      &config);
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  827  	if (!desc)
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  828  		return -ENOMEM;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  829  
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  830  	desc->callback = callback;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  831  	desc->callback_param = dd;
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  832  	dmaengine_submit(desc);
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  833  	dma_async_issue_pending(dma->chan);
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  834  
-bbe628ed897d72 Cyrille Pitchen 2015-12-17  835  	return 0;
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  836  }
-cadc4ab8f6f737 Nicolas Royer   2013-02-20  837  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+The same applies to other patches of this series.
