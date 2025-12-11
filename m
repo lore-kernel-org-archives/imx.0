@@ -1,185 +1,257 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011031.outbound.protection.outlook.com [52.101.65.31])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80F42E2665
-	for <imx@lists.linux.dev>; Thu, 11 Dec 2025 11:40:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765453234; cv=fail; b=Q57zn75D7UO0IQ4bZbCudE3vsrCyudbGALw6rDconwYbD3rpe7yIkoZi0gt064lTtT/HVIlNH7NyHI6Ao9Oo+CUwDUr8HA6JjrFrZyznd63xhIcY20JzKatWxiyEqBboMqFTFW5CLdsG2DZ3n7yDbYC0edLHICzmAXWx2SzRq1E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765453234; c=relaxed/simple;
-	bh=lT+1O07jfAPnU3cZmNRgQzOdTxIQHgcClTXUqCXfFkc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=VTvO2bb0vf+M0tMwvpl+oJOSxMLE0x/heQ0yhlVEvnT4dRqZabsVaIiHMZtKdfne/JTZ/NBLDj1IjvdzJ3b930kstj2A8WwdDPg+o8qLozuBxvAl1I6INuB8gAWPoXsFZFJPqhAPokMdzUuMMuL3Qht0HInRYIXIVzL9DGV/Xz0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=igpSJU5U; arc=fail smtp.client-ip=52.101.65.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9F5313279
+	for <imx@lists.linux.dev>; Thu, 11 Dec 2025 12:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765455670; cv=none; b=qGl6p8QZn3CdBtZBswlNBwWFksJ/DHQZd3TgfxID6We/QBDcmM9Iv+iRnEOVygKfX171uGGHiVzZBixTMP06rMfPG5XLMI+LDMrQPIROCLabPpqS+Y+GTJbbAW61hL4Y+VMxMA5INtfjAS1VT7lAcqAJSMQ9ScVfsNbltAhKzQo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765455670; c=relaxed/simple;
+	bh=/vgpPVra5oX60x9VjkwZBWSoe+NZGWdku0olx5e7T7w=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mZmqaxaHTF5STog+yxIDEiQ+8rzfd9nMW9aa+qTFVyeaGJXhhtCfyX39kWFbIxP2/ikcahdwNQ82kdTnCwzf5sIpPPWRB/qdpjQPAP56NOTX0bXmAyX0mgR1FnmT+nZqOC5A51w/n/YoasMP5YyTv0v2WUVO/wshGATg0iPye28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IjInWeKl; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="igpSJU5U"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yzkHM89YW2FU+SVa3pIkbiORo9kE6Hz2EaatxWAmPgw4ZE13rl17xK2j9/SmjEUI+sdg3jwXgr0Wxk1c2m0PIMVv4XA5Z1sRUaHE5L4xiMc9RuroOYBtHCK+EhW4WO7GzCWvHyJ6sMgs4v4KuWXsQnarwCAcIArOV63RDR1cd9X2er03iuqywq/7v/+cL5ua3sEhRc7zGA8MVZ+WOaDqJA0XjSLzm/rkQd/5q1JCUx/5miIn+8T0a18691KC9PzCoM3Q5xDDVgSJObDqku7I4l992cKDlnvz61yX2AqCGDLc2Zgn3yR1LfqZ6g2AVGU+0a9gLhgjO5afBN8nmc1YAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cJ4LlO0duDYbQlRwAoGcfdMcvhi92MjA4uBjhzBHsvA=;
- b=wm/CrNH4wTMGDE8ufb4B483cU2l2O5RAj7kR9JP2NTvB080Xyb/c8PmO06P5eVbGL+2yiVDP0u0O1ZeQH83Kiz2cya4NVR8udY2hlMhT7U2HTdCdJUE5wlQaL/WiDMGxI7+PLlnd7sd6O5JGfFMv5ol6Fg0f4/7p3kGDfE5kP1g3lMzTB6dGgU15pGD8dYHJNO0RwAK73AXdv8bRK1Krd6QrvKgPkapgGIKBChKwy0zSe3p+WSAFwRyRKLWI/7X/vaPjZl2j1st8LUsXtESK15RLxnkYvst4F7FTkWKMo0MyKrSitnnB5d+DNHs1gOWO4Nxo0SARTLehvdVfoSExyg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cJ4LlO0duDYbQlRwAoGcfdMcvhi92MjA4uBjhzBHsvA=;
- b=igpSJU5UTluTeDZfU7kCXe4lbLsqEiINPTkZ/C+C2QEUU0ZnWpjJXJxB49OulnXiDa3Az9yYfXNelg2SDRoNiEHpCU9wB+xspc+zUDvECoTOYQ+bcuBHrZhddBODFh0RprwT5oFdmI6XVfmGbFSW3MtCYpFOy7x4HFZtBVeTsq/WFHZbmVCaLczW8LuepI8kfWhD8n71GvzkGUF+KCj9CFizVuE/0xsxnSpDSGNrQzYQwZ7p97qzNBwvLsHEM2gzTkixzSVNzrkAi9fu1XQH3CJsIuP9IznLr7+hp66yg/MQm2nRHC+YLLKqdbB0aR9LnqhVg1P8MWICJxuGuwOoRQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
- by PA2PR04MB10258.eurprd04.prod.outlook.com (2603:10a6:102:404::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.9; Thu, 11 Dec
- 2025 11:40:29 +0000
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::8063:666f:9a2e:1dab]) by AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::8063:666f:9a2e:1dab%5]) with mapi id 15.20.9412.005; Thu, 11 Dec 2025
- 11:40:28 +0000
-Date: Thu, 11 Dec 2025 13:40:25 +0200
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
-	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
-	frank.li@nxp.com, imx@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH v3 net] net: enetc: do not transmit redirected XDP frames
- when the link is down
-Message-ID: <20251211114025.3gqkeh4drdcp2tv5@skbuf>
-References: <20251211020919.121113-1-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251211020919.121113-1-wei.fang@nxp.com>
-X-ClientProxiedBy: BE1P281CA0441.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:b10:81::8) To AM9PR04MB8585.eurprd04.prod.outlook.com
- (2603:10a6:20b:438::13)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IjInWeKl"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 1A00D4E41B71;
+	Thu, 11 Dec 2025 12:21:06 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C891D6068C;
+	Thu, 11 Dec 2025 12:21:05 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0008B103C8C7B;
+	Thu, 11 Dec 2025 13:20:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1765455663; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=y60RLBstvqr0/tZgH22eIXq0hipLzZ65ZyEuPfHKBSU=;
+	b=IjInWeKlYOFPOumcxa8beepe8z3enCkm9QJK7R7eqYYjwSwLdRD40bWQDLG8p48lOccH44
+	9YU/TzCVlvVpLBH+VisZeK+QOHu4XWz8XDCzY9/UldUTvpBnpLQrY6MsRgZTW0DUcUTBe4
+	hibWIU0HY6qCZJdJqbZJP4zCLvsjmBPv4RMN/0DSBbBZnIkJWur8sOjI5FpOp2WjXFssDo
+	n6FNS6Cg4jv8sDVHEVqN/NeB1i/T29a9TQ+V4fVEVUsILjTkiBTIkC0m/ee7SA5YBVSF2y
+	zhhNHhmGfVvaoZgGD3mkjX0rl8yUEpSeXJno276hVApN2fvcwOEqe/6Na5xCoQ==
+Date: Thu, 11 Dec 2025 13:20:44 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Kalle Niemi
+ <kaleposti@gmail.com>, Rob Herring <robh@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, Andrew Lunn <andrew@lunn.ch>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich
+ <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Michael Turquette
+ <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi Shyti
+ <andi.shyti@kernel.org>, Wolfram Sang <wsa+renesas@sang-engineering.com>,
+ Peter Rosin <peda@axentia.se>, Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas
+ <bhelgaas@google.com>, Charles Keepax <ckeepax@opensource.cirrus.com>,
+ Richard Fitzgerald <rf@opensource.cirrus.com>, David Rhodes
+ <david.rhodes@cirrus.com>, Linus Walleij <linus.walleij@linaro.org>, Ulf
+ Hansson <ulf.hansson@linaro.org>, Mark Brown <broonie@kernel.org>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally
+ <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, Dave Jiang <dave.jiang@intel.com>, Alison
+ Schofield <alison.schofield@intel.com>, Vishal Verma
+ <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan Williams
+ <dan.j.williams@intel.com>, Wolfram Sang <wsa@kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT
+ overlays"
+Message-ID: <20251211132044.10f5b1ea@bootlin.com>
+In-Reply-To: <c50c40cc-69f6-436c-a94e-94a3a10f6727@gmail.com>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+	<20251015071420.1173068-2-herve.codina@bootlin.com>
+	<f74ab0a2-b74b-4b96-8469-a716c850e230@gmail.com>
+	<CAL_JsqJDOYuzutMHMeFAogd5a_OX6Hwi8Gwz1Vy7HpXgNeYKsg@mail.gmail.com>
+	<5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com>
+	<CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
+	<072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
+	<CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
+	<55076f4b-d523-4f8c-8bd4-0645b790737e@gmail.com>
+	<20251202102619.5cd971cc@bootlin.com>
+	<088af3ff-bd04-4bc9-b304-85f6ed555f2a@gmail.com>
+	<20251202175836.747593c0@bootlin.com>
+	<dc813fc2-28d2-4f2c-a2a3-08e33eec8ec7@gmail.com>
+	<20251204083839.4fb8a4b1@bootlin.com>
+	<CAMuHMdXdwf7La1EYBWTJadsTAJG3nKQVW6wtBn-bUqshA=XHRw@mail.gmail.com>
+	<20251210132140.32dbc3d7@bootlin.com>
+	<c50c40cc-69f6-436c-a94e-94a3a10f6727@gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|PA2PR04MB10258:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3358f5e8-d927-4a96-f520-08de38aa154c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|366016|19092799006|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?6NG8ilYpi/pAomiwL2D/yDGTHOhy6R2Dq9o+mmw4An6ynQ33WuARO4chsvZI?=
- =?us-ascii?Q?Fy2tTeT5JBnj3wr7iqZ8nZTrQHsKfOacYGm2xBGf3gFyJqsXCRLieWspSCUp?=
- =?us-ascii?Q?NfgDzINvzguiS25mYBtbxgp0mXY20EdiQ+7LxmxnbylfXndebVs3u0rqbTAj?=
- =?us-ascii?Q?rwYOEhV1fYYNYoT2bU18OtxruU/mzEZCHFS+T/fPQqwmfdK32uM8NPjkuJUb?=
- =?us-ascii?Q?ntDm3JC2AsoerQTHPjTJurqusmN/ogVBdS+JCWe/mxe03pSAq97SbBS6Gd2N?=
- =?us-ascii?Q?ePlUoUG/fSV0fem9bU/ADGe0yyvvH9XodwlnCxcvjLnNCZTJ2M+iGyc/n6ce?=
- =?us-ascii?Q?R10TDMdKxyLLMTsiGIxYqe0ACrfWFAWGAigLgK8Z+HtNCyaEVyV5L/AO1JYX?=
- =?us-ascii?Q?Y+dA7RSxO2sVja47JSnlwCl4/ZZ00sVbXjThgfJlzN8anXPCicVYlDXpMSNZ?=
- =?us-ascii?Q?Ffpl5Gc5KfdysJdDx2sSsQaqRP19zXt/uVH2VH6/C0LKi3WiFYeCa8nD6LOF?=
- =?us-ascii?Q?ZcMo1MH4j22a+YzfVAsJJUkP6GmzexiH1GVVtMQeQjx9InZA/AZw7LAAhMhH?=
- =?us-ascii?Q?zS6ecUkhM+OXcO2xhK2esGln/J0TecvBcU52GeHxyk6nKZ7C7nNgll/DmoTq?=
- =?us-ascii?Q?blISQGIWIU98OqC7GW+HniaBldpR0Js2hXSxCbiJRlMp9gZh+2SgSp6dAX8q?=
- =?us-ascii?Q?2GAdJENlHRl+5Er/FDPDV3QqeZice3T9y1b5GdP/+4+F9ebxeo3OxyUhcN24?=
- =?us-ascii?Q?8tb/ynF2VRN1/79sKInX/VTWmVlBqW+ddflHfyue82DKPjcrT9mnHjnQzTG+?=
- =?us-ascii?Q?cRbt3V+V029mVVB9E/sihD8Rz9XCYPsN/G8d31ZDwFiqnZJo5yBuDiHLsUq+?=
- =?us-ascii?Q?P1nD2VE/ngk/dxaCLyDlYNoimlUKAI+Xz9qs3phbCgGlfGZQSPfErGu4ICsc?=
- =?us-ascii?Q?d0MCTjvKTwBMg8A74qqTM7mGlWJJlanpnZTfC4hYnDQ005jqE1UMh8es2e9B?=
- =?us-ascii?Q?43rJXBId765LAMbOqDeciu50S1zN0aSpd4W9t17sTC5F8sIN6E52nOEACRKp?=
- =?us-ascii?Q?tgRpP6mRotJ/Ec+jsEP1mnRC+bh7oT+KwRzWGaOySs8BWBK0LMrMnTYxjtnc?=
- =?us-ascii?Q?R3GIJ9I3WM3VkpjbiJkh98vWugPUWy/JkbFqRRh8pwjZTaHFd1y+Ng/8gbWQ?=
- =?us-ascii?Q?MpBdshbwX8qWRyXmMqndixRK8oEXgfPKSiOPc8uW6SRNkCUkt72TIy0TUGdf?=
- =?us-ascii?Q?FFqyV8DfQM6Zd6nlKWRLJ9OIJTtzC9OCFyzFK4YdV7Svv/h19IjkR+T8hEts?=
- =?us-ascii?Q?y/25K4duFoIjOlIlZvFiqb9ubMkfgmAveH7OX13Ea20ZkZ+6eQ1nQo1EoevJ?=
- =?us-ascii?Q?9y5BlfARysX7SPQHnMz3MMIm2Z1eBxj2NgGf5XMqPbB9U23BKk/IuJV0Zr/4?=
- =?us-ascii?Q?8ofhiNBy6IHrsg/O6Ec0sRswWoJce/AR?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(19092799006)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?IwD6HhqcHhr/fzQlqSb7b8eV1JYVbmkPCcwM3EpdLVYpRpjdGLTwQsazR1HR?=
- =?us-ascii?Q?aMWolfk4e0/KcQJ0IheFXTyC9/HjXDHa65nHK28fyWO+7I8b7atOGywKsusE?=
- =?us-ascii?Q?8uspziX3Sw+f0nWXr0mZJtQpaTaRYbu/xEV1K8+d9AsVQ0phosIdOlPjTUCl?=
- =?us-ascii?Q?5I7IdUm2Bxw3dIOXbr3U/GNDl8NU123FubewnO58+tM2FU5VG8bvp1sjlRP0?=
- =?us-ascii?Q?96VzXoH5SGQtC5ntTsOu4ih1dho5kF3fZckPbXNGXs0mIq/CBoQQ8XBSx8AW?=
- =?us-ascii?Q?SOLKV871Uxo4GObcbnLLbRIZU8hqCPRdsPijWWtVpxtoY6E9Dl+B5wR9jgRB?=
- =?us-ascii?Q?GgwhbIqOqGJZcSeZR36rgroTonuoWrM+2pbVG2b70diE8i4SIvm7RzYXYOpR?=
- =?us-ascii?Q?o7GWa8JQI31cPv1c3yDlGfUO9u692pDoN/sMSN79HwMt5ZwVvGdIMPHjBJvF?=
- =?us-ascii?Q?q8gQoNCW1ZCLhfGTP6q5NbRGjmVmGCOzNpYv/JPwfalfIbZPRdW6O4iwGTzP?=
- =?us-ascii?Q?Q6c9XM8L3K1L48g6KgUXLrPrP7Y9hvYUdrNW9e10pedw79oJB0fuZxO7ux6y?=
- =?us-ascii?Q?PdpEWUxU6ulz3OAoHo62MBYgPpF5Xwb+ZQ+yHRiuB8XbBJKDE/jcioh3WdQo?=
- =?us-ascii?Q?EgY2rHldr18i+6Jw1Hg9hydYi+WogRJLuflNWYUHlc/653b4PZJpinrfKXl4?=
- =?us-ascii?Q?05m8NoP8Zhsz1wQEIL55VeCNVgS1VTc1LUvqNpSzKJb7aPPVW4OWuNs5tsT7?=
- =?us-ascii?Q?cePqvAa58fxFny/JLHFawnZ031o9SdRCR2m4DxK4W66XbjvE7rAa2v3zKIfF?=
- =?us-ascii?Q?Ie0afFKc2185gdcCy4HfwFSW6Nb2Ii6yqiJeUwkfn9ihdkOTrJ9TgRDTJ3aJ?=
- =?us-ascii?Q?9Q/qmiqtA51oYzOc04KBjwZULGns1il30xJgu+6SOioBatepi9iUIk2+EZz7?=
- =?us-ascii?Q?TJruDz6fJMITyW8tw3LYNm9ygdllhOdRkOVE5mWEAs3xTa95PLoeWvApYv4i?=
- =?us-ascii?Q?fFKam4l9mmNK0zVD+90jd1AT9rjWU66g8EaOOKZc/IKdmw5uu7X5ayU42APF?=
- =?us-ascii?Q?MDp40Cm/su6qV90EVxNDDYyMXm9aXjpbHNKticZJVab9qklMOzwq0qJ2e6vx?=
- =?us-ascii?Q?XvEvHuwqL1KjEvDeTjawr3A254CJ+/rhjQHdmHt9O2VjOmYU8VFpOfcjsCfg?=
- =?us-ascii?Q?sm3egmW/Hb9kzFak7nialRx+h12eTKcMyi5663Dwyn7WFQ6hz/mGuZ9ir8OI?=
- =?us-ascii?Q?8l29NG4Vr3q92F3CJ9AxhpoTEzO225qQtAnTCQCcpX5i6qVnBsdYxWf6iCgj?=
- =?us-ascii?Q?QaSHCY1Y1rTs6GwqhJFGNn8V22fDgOgkods2phrtipuCrbDyoPCMggqH+mzu?=
- =?us-ascii?Q?3w70NgEatnTcuRAzfzFR16T5Z1s8tUw8RKvyDGTpXIR0iTn9ZDmQRaxL83+4?=
- =?us-ascii?Q?WeY4h4wkCOANV649kOIsaoba8cqb6tq9VACM2VzOBEqt5vYBuFL2FpOkbd0I?=
- =?us-ascii?Q?c+mBeHVylK9TEML/LCyFwREE1jT1CJDKMfSqYKOIP+7gfNrA9oa3mIlQNlC3?=
- =?us-ascii?Q?SObc3v0S/JE1HYI+YILFEdF538/ChRzFPceKzhniRSYxiI1UE00AzcS1A9Ws?=
- =?us-ascii?Q?FIk0fDNJAYpDIN+T30hvBhgw4MzHbPK0TTk46DKRl3GLvSsNFcZQo0GFgBtA?=
- =?us-ascii?Q?4EMPUQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3358f5e8-d927-4a96-f520-08de38aa154c
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2025 11:40:28.8231
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5wMWieGP1m8+dwoTIW4jaJCwJ/g7qnbEv17XgS2Pok09cTNyPeyyGJI09OwH5HLUPTrrCqISOIx9J8DPrbAHlg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10258
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Dec 11, 2025 at 10:09:19AM +0800, Wei Fang wrote:
-> In the current implementation, the enetc_xdp_xmit() always transmits
-> redirected XDP frames even if the link is down, but the frames cannot
-> be transmitted from TX BD rings when the link is down, so the frames
-> are still kept in the TX BD rings. If the XDP program is uninstalled,
-> users will see the following warning logs.
-> 
-> fsl_enetc 0000:00:00.0 eno0: timeout for tx ring #6 clear
-> 
-> More worse, the TX BD ring cannot work properly anymore, because the
-> HW PIR and CIR are not equal after the re-initialization of the TX
-> BD ring. At this point, the BDs between CIR and PIR are invalid,
-> which will cause a hardware malfunction.
-> 
-> Another reason is that there is internal context in the ring prefetch
-> logic that will retain the state from the first incarnation of the ring
-> and continue prefetching from the stale location when we re-initialize
-> the ring. The internal context is only reset by an FLR. That is to say,
-> for LS1028A ENETC, software cannot set the HW CIR and PIR when
-> initializing the TX BD ring.
-> 
-> It does not make sense to transmit redirected XDP frames when the link is
-> down. Add a link status check to prevent transmission in this condition.
-> This fixes part of the issue, but more complex cases remain. For example,
-> the TX BD ring may still contain unsent frames when the link goes down.
-> Those situations require additional patches, which will build on this
-> one.
-> 
-> Fixes: 9d2b68cc108d ("net: enetc: add support for XDP_REDIRECT")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> 
-> ---
+Hi Matti,
 
-More patches to fix the other conditions are coming. I can confirm that
-they do not render this one useless. xdp_ok_fwd_dev() only tests that
-the device is administratively up.
+On Thu, 11 Dec 2025 10:34:46 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Hi Dee Ho peeps,
+> 
+> I tried to create a minimal piece of code/dts to demonstrate the issue 
+> seem in the ROHM automated testing.
+> 
+> On 10/12/2025 14:21, Herve Codina wrote:
+> > Hi Geert, Kalle, Rob,
+> > 
+> > On Thu, 4 Dec 2025 11:49:13 +0100
+> > Geert Uytterhoeven <geert@linux-m68k.org> wrote:  
+> 
+> //snip
+> 
+> > When a new node is added, a new device is created. Indeed, because the
+> > driver is an MFD driver, it is a bus driver and handled by of_platform bus.  
+> 
+> We do also have an MFD device - but it is not a platform device but an 
+> I2C device - thus it should be probed by the I2C bus (if I'm not 
+> mistaken). So, I guess this is not bus-specific problem.
+> https://elixir.bootlin.com/linux/v6.18/source/drivers/mfd/rohm-bd718x7.c#L206
+> 
+> 
+> > My new node is considered by devlink as a node that will have a device ready
+> > to work (driver attached and device probed). A link is created between this
+> > node and the consumers of this node (i.e. the SPI controller). devlink is
+> > waiting for this provider to be ready before allowing the its consumer to probe.
+> > This node (simple pinmux description) will never lead to a device and devlink
+> > will never see this "provider" ready.  
+> 
+> I believe Kalle did see the same "probe-not-called" -problem, even when 
+> disabling the fw_devlink from the kernel commandline. (It's worth 
+> mentioning that I am not sure if Kalle tried if probe was called with 
+> "previously working" kernels when fw_devlink is disabled).
+> 
+> > Did a test with a Renesas RZ/N1D (r9a06g032) based board and built a similar
+> > overlay involving I2C controller pinmux, I2C controller and an EEPROM.
+> > 
+> > Here, also the overlay didn't work but the issue is different.
+> > 
+> > The pinmux definition for pinctrl (i.e. pinctrl subnodes) are looked when
+> > the pinctrl driver probes. Adding a new node later is not handled by the
+> > pinctrl driver.
+> > Applying the overlay leads to a simple:
+> >    [   16.934168] rzn1-pinctrl 40067000.pinctrl: unable to find group for node /soc/pinctrl@40067000/pins_i2c2
+> > 
+> > Indeed, the 'pins_i2c2' has been added by the overlay and was not present
+> > when the pinctrl probed.
+> > 
+> > Tried without adding a new pinmux node (pinctrl subnode) from the overlay
+> > and used nodes already existing in the base DT.
+> > 
+> > On my Marvell Armada 3720 board, it works with or without my patches.
+> > No regression detected due to my patches.
+> > 
+> > On my RZ/N1D board, it works also with or without my patches.
+> > Here also, no regression detected.
+> > 
+> > Also, on my Marvell Armada 3720 board, I can plug my LAN966x PCI board.
+> > The LAN966x PCI driver used an overlay to describe the LAN966x PCI board.
+> > 
+> > With the upstream patch not reverted, i.e. 1a50d9403fb9 ("treewide: Fix
+> > probing of devices in DT overlays")" applied, devlinks created for the
+> > LAN966x PCI board internal devices are incorrect and lead to crashes when
+> > the LAN966x PCI driver is removed due to wrong provider/consumer dependencies.
+> > 
+> > When this patch is reverted and replaced by "of: dynamic: Fix overlayed
+> > devices not probing because of fw_devlink", devlinks created for the LAN966x
+> > PCI board internal devices are corrects and crashes are no more present on
+> > removal.
+> > 
+> > Kalle, Geert, can you perform a test on your hardware with my patches
+> > applied and moving your pinmux definition from the overlay to the base
+> > device-tree?  
+> 
+> I got a bit lost regarding which patches to test :)
+
+The next-20251127 tag has every patches needed for the test.
+Tests you did with this kernel are perfectly valid. Many Thanks for that!
+
+> 
+> > The kernel you can use is for instance the kernel at the next-20251127 tag.
+> > Needed patches for test are present in this kernel:
+> >      - 76841259ac092 ("of: dynamic: Fix overlayed devices not probing because of fw_devlink")
+> >      - 7d67ddc5f0148 ("Revert "treewide: Fix probing of devices in DT overlays"")
+> >   
+> 
+> I did a minimal overlay test which can be ran on beaglebone black. I 
+> assume the same can be done on any board where you have 
+> (i2c/spi/xxx)-controller node with status="disabled". Doing this on BBB 
+> requires recompiling the beaglebone black (base)device-tree with -@ 
+> though, so that the overlay target nodes are found. I'll attach the 
+> files for interested.
+> 
+> overlay-test.c:
+> Is a 'device-driver' for device added in overlay. (simply a probe() with 
+> print, extracted from the bd71847 driver).
+> 
+> overlay-test.dts:
+> Is a minimal device-tree overlay describing the 'test device' matching 
+> above overlay-test driver. When this is overlaid using next-20251121 
+> (contains the 7d67ddc5f0148b3a03594a45bba5547e92640c89), probe in 
+> overlay-test.c is not called. When 
+> 7d67ddc5f0148b3a03594a45bba5547e92640c89 is reverted, the probe is called.
+> 
+> mva_overlay.c:
+> Is simplified 'glue-code' for adding an overlay to running kernel by 
+> feeding the compiled overlay to the bin_attribute - for example using:
+> 
+> dd if=/overlay-test.dtbo of=/sys/kernel/mva_overlay/overlay_add bs=4M
+> 
+> am335x-boneblack.dtb.dts.tmp and tps65217.dtsi:
+> are (intermediate) beaglebone-black device-trees which can be recompiled 
+> to a 'base device-tree' using:
+> 
+> dtc -O dtb -o am335x-boneblack.dtb -b 0 -@ am335x-boneblack.dtb.dts.tmp
+>   - but I suggest you to use the dts from your kernel build. I provided 
+> this just for the sake of the completeness.
+> 
+> Makefile:
+> Off-tree build targets to build the above DTSes and modules. Requires 
+> KERNEL_DIR and CC to be correctly set.
+> 
+> 
+> My findings:
+> The pinctrl node indeed plays a role. When the "pinctrl-0 = 
+> <&i2c1_pins>;" (and fragment0) was removed from the dts, the 
+> 'overlay-test' was probed with the "next-20251121".
+> 
+> With the pinctrl node, I see:
+> [  104.098958] probe of 4802a000.i2c returned -517 (EPROBE_DEFER I 
+> suppose) after 50 usecs
+> - and the 'overlay-test' probe is not called.
+
+Do you see the same trace with:
+- "pinctrl-0 = <&i2c1_pins>;" in your overlay
+- fragment0 removed from the overlay (i2c1_pins definition removed from
+  the overlay.
+- i2c1_pins node defined in your base DT.
+
+In other word, is the issues related to adding a pinctrl sub-node (pinctrl
+pins definition) in the overlay or is it something else?
+
+Best regards,
+Hervé
+
+
+
