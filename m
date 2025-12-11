@@ -1,160 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D319226CEB;
-	Thu, 11 Dec 2025 01:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF69322259F;
+	Thu, 11 Dec 2025 01:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765415820; cv=none; b=hkhD81UviJj+tr/OSdEZ6ar9FGavajG7TJ0U3xA/A2IWqyYQJ2pFYHSG2cYDfCrN6P3Gj/JqmHOQ9bCDfTQdkDyno6GOb+wdLgmzx+h0J6GS0v9Shs1utnu+k4Xtc1a6kd8g1NVncvjhUGaGjTvuqnYO1ICrUmckzb/rfLl/q2o=
+	t=1765417707; cv=none; b=jCyHBikjKOuuiQotulBHtvAQAqrj6C3kivyvXCFauaeE7sQwbk5hTfPh7HLnxrhk6keg+DpP5lGIR4klB1Oy+iP4UHv291WIuDJHdo3F87++2LBCRQan0/1xWJXuthsrTLvrPOHXttT67c5JJ6Sof7rUEN/dkCV3LxRT2C9waeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765415820; c=relaxed/simple;
-	bh=IXErxpec2/rYIHa+WHFVA4kiKDgjEUjWx3xpLhR8yXE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gbTjl500eJ49ZgcOMbRaM+gJE1Vjqf46dsvi2ZMqYoF1MkIkvt4UpPFOBcGFQDhOU2QMuvvw9DKmRK73eyLU2XDKFDBymIf6jEdKRxYeRHgnAhr/s853GTcnPjqgcNMRPboYxnsJPAYTtHQKxh9OcMEIRr+Mnv7depXqWfmsyD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kwehB/QE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765417707; c=relaxed/simple;
+	bh=bsNHK4wRv0LhzVOGuJzCuJXVaLyhXJunj4croYtEeWA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GHdlToDKTJiI0Xnb/lEbEinP0nHX4GMHahRyPZW3f4XVD0lYf3b7pjaL1qQyt6s+CI/GfTwNKQOTpWdo7so1KWxFsjww/Lk4a4HfYhSaXgGeWbwrIt5q4zmBLr0fvb9oRzA3SJu1iNW48o7UGRQ7kQhyXp9U8y37zMOGw7gjBiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lm7a7I7m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kwehB/QE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB15C4CEF1;
-	Thu, 11 Dec 2025 01:16:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lm7a7I7m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A6EC4CEF1;
+	Thu, 11 Dec 2025 01:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765415819;
-	bh=IXErxpec2/rYIHa+WHFVA4kiKDgjEUjWx3xpLhR8yXE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kwehB/QENBmQeDcAnODFLPBAAeJ1J56jMt7gIDFkm6cMzTupcMLBGvEE7vAgzhQAn
-	 XJyTCc4dlgioyK8m2yEq/uLLqR0HvZtEW2C4UgWgVVQaxjtMfcFjcTFHX0FyPURUtm
-	 gxiJrFj0n6j27uX527wohW0ryxA4RXBR0/rzvxB3c2NkzVJ4zTzQsOvOg5Typ5yOBo
-	 ScJdA/vvD7QruisH7HWd3a2UaGVNxwDo1mFA74022ABsUEiWnjYzWRi4iDR7qAFNRM
-	 +keXNPzr1ElGPafu5uzW7JlOEk0cmqBgL0bofp3NgfeL86r4BGD/3ynP2C+q244MB4
-	 ZEabEPJqXNJDg==
-Message-ID: <a252e741-aab3-4fec-ae8f-38634d071d77@kernel.org>
-Date: Thu, 11 Dec 2025 02:16:55 +0100
+	s=k20201202; t=1765417707;
+	bh=bsNHK4wRv0LhzVOGuJzCuJXVaLyhXJunj4croYtEeWA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lm7a7I7mE9qT7WGiGUx8UdxDcVZSa9UN0nSaP4kBdo+g4JvLCTiRlTJ5N6u2XpsaI
+	 3H/0he3VN4xfMWgfLDlRSC/2ZPWMELjtV4Sb7JUvQTeZPJ83sfDsCKUJdU0/s8ugnU
+	 FuJJLcqRqY7PjJSOvqVH9+Tn3skjW5GMcqX0jGbLIqtTEUTLBR+HnFLJenNTJF/elA
+	 RqNAVSBRTtql7F3quGz3ZEWZCy9kkTvjGzJk/eCcGWdjcY1uuXH3evh9/l+gq2HBsa
+	 inrR6e+d4Oolyqn7mBvKmiLACb/xVnlrG3mSlQQzCc423uLgjGHDQJ7eqscGN/9Xz6
+	 xs82Ied/wIB1A==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 0045E1ACB974; Thu, 11 Dec 2025 01:48:24 +0000 (GMT)
+Date: Thu, 11 Dec 2025 10:48:24 +0900
+From: Mark Brown <broonie@kernel.org>
+To: James Calligeros <jcalligeros99@gmail.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
+	Baojun Xu <baojun.xu@ti.com>, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	asahi@lists.linux.dev
+Subject: Re: [PATCH 4/7] ASoC: soc-dai: define TDM idle behaviour modes
+Message-ID: <aToi6OMxiAcdBrnV@sirena.co.uk>
+References: <20251209-tdm-idle-slots-v1-0-38dabf6bc01e@gmail.com>
+ <20251209-tdm-idle-slots-v1-4-38dabf6bc01e@gmail.com>
+ <aTjZc3mgu7CQOkDU@sirena.co.uk>
+ <CAHgNfTxmYxNaYOdGK4Eb4ouCqmUCjVuhzGdgTAL=+ybObqrCmw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Add FRDM-IMX91S board
-To: Yanan Yang <yanan.yang@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, qijian.guo@nxp.com,
- justin.jiang@nxp.com
-References: <20251205-imx91s-frdm-v1-0-afd6cd01c299@nxp.com>
- <20251205-imx91s-frdm-v1-1-afd6cd01c299@nxp.com>
- <4b29cc46-28a1-45f1-b24e-548513178884@kernel.org>
- <aTkTz-5QoB8BuLs7@lsvm11u0000554.swis.ap-northeast-2.aws.nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <aTkTz-5QoB8BuLs7@lsvm11u0000554.swis.ap-northeast-2.aws.nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Pb1joisuHwCHeqND"
+Content-Disposition: inline
+In-Reply-To: <CAHgNfTxmYxNaYOdGK4Eb4ouCqmUCjVuhzGdgTAL=+ybObqrCmw@mail.gmail.com>
+X-Cookie: It's clever, but is it art?
 
-On 10/12/2025 07:31, Yanan Yang wrote:
-> On Fri, Dec 05, 2025 at 09:21:55AM +0100, Krzysztof Kozlowski wrote:
->> On 05/12/2025 09:03, Yanan.Yang wrote:
->>> Add DT compatible string for NXP FRDM-IMX91S board
->>>
->>> The FRDM i.MX 91S development board is an low-cost and compact
->>> development board featuring the i.MX 91 applications processor.
->>>
->>> Signed-off-by: Yanan.Yang <yanan.yang@nxp.com>
->>
->> Are you sure your Latin name contains '.' character? Or you just copied
->> login?
->>
->>> ---
->>>  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
->>>  1 file changed, 1 insertion(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
->>> index 68a2d5fecc43..82f28be401b8 100644
->>> --- a/Documentation/devicetree/bindings/arm/fsl.yaml
->>> +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
->>> @@ -1412,6 +1412,7 @@ properties:
->>>          items:
->>>            - enum:
->>>                - fsl,imx91-11x11-evk       # i.MX91 11x11 EVK Board
->>> +              - fsl,imx91-11x11-frdm-s    # FRDM-IMX91S Board
->>
->> Anyway, this was sent, or something almost the same.
->>
->> Align internally before posting duplicates or at least explain why this
->> is not a duplicate It is not the job of the community to coordinate how
->> NXP employees should work. Srsly, it's NXP's job.
->>
-> Hi Krzysztof,
-> Thank you for your review and for pointing this out.
-> 
-> This patch set is not a duplicate of the FRDM-IMX91 series. It introduces
-> support for a new board: FRDM-IMX91S. While FRDM-IMX91S is similar to
-> FRDM-IMX91, there are hardware differences that require a separate DTS:
-> 
-> - 512MB LPDDR4 (FRDM-IMX91 uses 1GB)
-> - 256MB FlexSPI-NAND (FRDM-IMX91 uses 8GB eMMC)
-> - Single GbE port (FRDM-IMX91 has dual GbE)
-> - PMIC PF9453 (FRDM-IMX91 uses PCA9451A)
-> 
-> These differences were described in the cover letter and commit message,
-> but I can make them more explicit if needed.
 
-I cannot find anything about it in commit msg. Look, you wrote:
+--Pb1joisuHwCHeqND
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-"Add DT compatible string for NXP FRDM-IMX91S board
+On Wed, Dec 10, 2025 at 01:57:50PM +1000, James Calligeros wrote:
 
-The FRDM i.MX 91S development board is an low-cost and compact
-development board featuring the i.MX 91 applications processor."
+> We have the use case where a codec enjoys exclusive use of a bus. For
+> these, the codec can transmit 0 on any unused slots to hold the bus.
 
-so where is it? About cover letter, I usually do not read them, some
-maintainers skip entirely.
+> We also have the case where multiple codecs share a single bus. One
+> codec can weakly pull the bus low when it's not being actively driven by
+> any of the attached codecs.
 
-Best regards,
-Krzysztof
+Or configure so you don't have any idle slots.
+
+> However, a number of machines split six codecs into groups of three
+> across two electrical lines and then OR them at the receiving
+> port such that they appear on a single bus at the SoC. Because the two
+> data lines are ORed at the receiver, we have to guarantee that line B is
+> zero while line A is active, and vice versa. To do this, we set a single codec
+> from each group to zero-fill during the active slots of the other group.
+
+So this is an actual logical OR gate somewhere rather than a direct
+electrical connection?
+
+It'd be good to have an explanation more like this in the commit
+messages to make it clearer to users what this is intended to do.
+
+--Pb1joisuHwCHeqND
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmk6IuUACgkQJNaLcl1U
+h9D25wf/UsJQP72iHm3Bx4cCkiOBX1vxvax9DWGQFjRnVyUlib3e81+nEUN9hPUP
+F1z7hEOJl9VBT8DTHkCF+u69lJqj3VcaLyv4y9p5JRmnn8a752strfvFCbb6u8ut
+zDAP+3DZ0s7/xaM55dr+dXoUfmde97HiZkk23mwW6Mk1GaVR0eW1Q141j2lMBCzM
+oy2m9mRNnF0FqYMUhtXJE1X2ZqZJ4M3ATessCDZqG3HLk50nNdZxpYKl3T6J6KpG
+fYksvE1mvk+Kub9c4I7iZ7rpJk09wOy9JMgL1kDKwKmsjsR5SkxnBBMoy6+r/7nP
+uvdJYoHVO71HRc47ISk6XHQGduPIIA==
+=WXvU
+-----END PGP SIGNATURE-----
+
+--Pb1joisuHwCHeqND--
