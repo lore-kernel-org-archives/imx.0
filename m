@@ -1,452 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4F21D5CE0;
-	Fri, 12 Dec 2025 14:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402E727979A
+	for <imx@lists.linux.dev>; Fri, 12 Dec 2025 15:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765550380; cv=none; b=vGupI9S+uXRVi2XDboX5XmVK5DhwEz9qPVJxfmAuIDuTA+kbdXOqVcJ1LW6J6mMZYpJKGdJYPqFgpQxLeVBrc8ToioX/+d6dH6qD24hMblbfvbkGDNMUbh2nZNqYxUBBsz7T6nbRVxMt6fsPd3SUkFzpWqgFpPZ91pJ/Bs7xBMY=
+	t=1765551847; cv=none; b=vCc9y2URjwmXAmST1Tb77mnPwWlqLvNoLUwqqN5cxxQJloug6SpC/glvOCSdaxjhqC1MAVXkfePz5NHqcdh9WpruoZqpvLVTR4eXqYyA2MGqH2beozN9C5Fmq/LlQiBk/Zk3nyI1Pwy1GncPUTb5lVvcpgxXT3g39tqw7IzvriA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765550380; c=relaxed/simple;
-	bh=3EmwO7Bq0UqpSDbd6eBgd6cz4gcTCrfg7hJidyqNd0Y=;
-	h=From:Date:Content-Type:MIME-Version:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=mN0638OjIzkhxGccS7p9ExOR3ZnG3Du+KWv5aEvWzsczTP6mXh6/b6soQWb3w7aO6dmdor/nzo5ZJwPG3VHV8UJjd4R7rSjndvztD91AeEPkPBveXktX9yZfqzalKtKVMYUzZO1I/oVcZkA/uRyjEeheAkWaD4e7aVIWQ6YIjXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XW2up1rk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765551847; c=relaxed/simple;
+	bh=fZAcqRD50Wi9zC/Droas8GpHjMnmrcAYigk011caHOo=;
+	h=From:Date:Subject:MIME-Version:Message-Id:To:Cc:Content-Type; b=QbGEYq8Wn2ophPmBS0ujAvFAJ7QMeeh+HOhXN/nsuxVBmQIHKLZp3fQm4z3mn2c5vn+YUodLCwsIQ7uBEqpMytO5xX5nHAhNbpJ1Nl9NsQ89MMRI6IQ8C1FIdgNRnoboGEUW+gxdL+2M0PlqQFpgTpySXjoOIKQC3ugrFSlzt6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JyT7KsnV; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XW2up1rk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA1EC4CEF1;
-	Fri, 12 Dec 2025 14:39:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765550380;
-	bh=3EmwO7Bq0UqpSDbd6eBgd6cz4gcTCrfg7hJidyqNd0Y=;
-	h=From:Date:Cc:To:In-Reply-To:References:Subject:From;
-	b=XW2up1rkD3d5pXFY2oGfvCh6DRlQ+VsUMwayTygrIsC6QmTKgGBwsNLM7oq4PGou8
-	 VIXlmvHQcuHFfQHS36e0p04gC7hOVxli+kyNbwdFgzIQOzy4Zasi2aPK/u5tMjBiii
-	 7k5nwqet4wLa2Fzn0u34YmTf4K72g7k8YUvYznldK90RwS8jRxovKJ9U045t4+TivT
-	 VK5woIL3ClboBJrmkm3enQfP+CnasRUC0peP3JD4u2KHm7JNZL1q/2naWkuhSKqAwH
-	 nQdTqNVv4CVSP+TceAJN5IVvcDFICltUcLhcBOqbhCB5TvFAzUdJeSZASK4FuQfx4Z
-	 GRK/hMMR8TLow==
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 12 Dec 2025 08:39:36 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JyT7KsnV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1765551845;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rgxpVSt066TUyJCGi3OmDYi9BAgnnOl/eGNX0JHnjDw=;
+	b=JyT7KsnVgIWWE8aP2OWeZ1h/C4awlSp9CBnBeP0lm2OuMKSf1XXG2MUPfUtEVukwCMylmO
+	443QFCL/Ry2ivhot3UONrT+II6+5u2X8C+PKVY8LMaYwzp2P/2Inqce8SCyVfgMvBj8UCf
+	bDek1/vgkKEpTQKHw8wGQd3t4VKXbQk=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-392-q5RSUg-uOcWWsaWqhHD4ZQ-1; Fri, 12 Dec 2025 10:04:03 -0500
+X-MC-Unique: q5RSUg-uOcWWsaWqhHD4ZQ-1
+X-Mimecast-MFC-AGG-ID: q5RSUg-uOcWWsaWqhHD4ZQ_1765551843
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7b9090d9f2eso2120953b3a.0
+        for <imx@lists.linux.dev>; Fri, 12 Dec 2025 07:04:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765551843; x=1766156643;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rgxpVSt066TUyJCGi3OmDYi9BAgnnOl/eGNX0JHnjDw=;
+        b=QdPuvNC8RCuIcIBMcEwQ2uoBPGgKICyqSUNFiuohySK7NXNSMI+iQ9mRKu6uUcz7F+
+         CCfTc317CVyXfXLC8fmEYo+gNYHmjT1Xsom4CzUsbqzsnfmlzWKc6Xsy/TNXRSNB1j8y
+         8atOlQC8HoXCTG4uIy7CaWhH/rHC4zxfKt5kIxDncQXrQXlUpnQdP8mcKTfiySHv56qL
+         tMQKw8PGeOMNzGs30ug6t2Pun3R6k1Kk8ZlOwnRl/gpuzbKlNpAFAdjxs5GKHg0zQl2k
+         gDQXuvfBUng+xsbEIOO2IhWQNfJkHG7bdrhesrY8qvgeEv9qI+v4dHCKDjmnvkfi1HxJ
+         4YxA==
+X-Forwarded-Encrypted: i=1; AJvYcCXi+TO20G/ogB9Rc3xORRYEg8HKSbBmC89bj6TyzJvubtmFFeV+pgclpDbuTUW30dPunek=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzXN++oDfqX6cauHz2SwLQYAVZsD2YHkHIkYCWqHMiXa5i21OhC
+	uie/ZEnxJ8hq+clmrWCkmb17M9D8NnF95lUvIYNbuT4rxN8rKQZP48SaXWQEEhWczYXWQKSfhpY
+	MPj3nyA/+03Tjw5NoE1B+lHveX5dDdgBFe3nQY7Wh1F4b7zdlgnqCaQ==
+X-Gm-Gg: AY/fxX4hw5LWET4j1bdOokvYoWbZWKfFvfqSLMFJMhVuyuxETBwTuqjc1JMP1QroYxK
+	FrYGGD21BSfwou7sQ7b4B6HpIbADzoQ+4iA/XeYCut2TpI2ywkl7KPLiVD6dCWxu99Cj4xd3QGI
+	nkyJ3qXSRSljSLZvUbDKp1X2YCNXO1TaH15fCkJwT5CvW5DDZQ4ND061SJZMRRR4iA3lIM6tBhe
+	Twz2Q7+ZayIs0542/dpZAGhbv4RQWWf3jUtTLWuqZD4O71LRVTtA1BYOezJj5/Rq/bmdiEeLkK0
+	PUGHpzMdvdTHKqocKAOaKYNeJNsY4wJnHOhkx23/vGWcX3O4OzqWiQ87U0nmYpAUnP7Qkug0Rgg
+	5j/nbFDfErzh3LfWrpnYVAF4B50ejLMypatv0eJBbAg==
+X-Received: by 2002:a05:7022:ed02:b0:11a:f5e0:dc8 with SMTP id a92af1059eb24-11f34c4ce6dmr1085516c88.28.1765551842649;
+        Fri, 12 Dec 2025 07:04:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEb1zyrPRFVrIwsGWsg/+MOeas9yeMDNDfquzoK4AyHa02WZnuzqW3kokEIkkaJiXX2KbIydA==
+X-Received: by 2002:a05:7022:ed02:b0:11a:f5e0:dc8 with SMTP id a92af1059eb24-11f34c4ce6dmr1085495c88.28.1765551841915;
+        Fri, 12 Dec 2025 07:04:01 -0800 (PST)
+Received: from jkangas-thinkpadp1gen3.rmtuswa.csb ([2601:1c2:4403:8750:d964:d6a9:f204:ed2b])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11f392500cdsm1113616c88.7.2025.12.12.07.03.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Dec 2025 07:04:01 -0800 (PST)
+From: Jared Kangas <jkangas@redhat.com>
+Date: Fri, 12 Dec 2025 07:03:17 -0800
+Subject: [PATCH] mmc: sdhci-esdhc-imx: add alternate ARCH_S32 dependency to
+ Kconfig
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Peng Fan <peng.fan@nxp.com>, Frank Li <frank.li@nxp.com>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org, 
- Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-In-Reply-To: <20251212-imx91-dts-v1-0-2bb3c13762dd@nxp.com>
-References: <20251212-imx91-dts-v1-0-2bb3c13762dd@nxp.com>
-Message-Id: <176555030606.3954208.10492221378451090067.robh@kernel.org>
-Subject: Re: [PATCH 0/4] arm64: dts: imx91: misc updates
+Message-Id: <20251212-s32g-sdhci-kconfig-v1-1-8e278c8d7f78@redhat.com>
+X-B4-Tracking: v=1; b=H4sIALQuPGkC/x3MTQqAIBBA4avErBtIy/6uEi3KRhsCCwcikO6et
+ PwW7yUQikwCY5Eg0s3CZ8hQZQF2X4In5C0bdKWN0kqh1NqjbLtlPOwZHHs0vVnboRpctzaQwyu
+ S4+efTvP7fgsuFhhkAAAA
+X-Change-ID: 20251211-s32g-sdhci-kconfig-585b6909f7b4
+To: Ulf Hansson <ulf.hansson@linaro.org>, Haibo Chen <haibo.chen@nxp.com>, 
+ Adrian Hunter <adrian.hunter@intel.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Chester Lin <chester62515@gmail.com>
+Cc: linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, s32@nxp.com, linux-arm-kernel@lists.infradead.org, 
+ Jared Kangas <jkangas@redhat.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765551836; l=1453;
+ i=jkangas@redhat.com; s=20251111; h=from:subject:message-id;
+ bh=fZAcqRD50Wi9zC/Droas8GpHjMnmrcAYigk011caHOo=;
+ b=gwmpJ5jaWiW+bNeO8y1ltBZKRvbuoEtgP5r39xeccaPH9fbkH2Wq76atnFsPgELe37jtmkqLJ
+ 7aWyvSXJ9R0C3SBL3godhPcGZcJ3watT7QPUteYodMwfmQvQaOLRTIQ
+X-Developer-Key: i=jkangas@redhat.com; a=ed25519;
+ pk=eFM2Mqcfarb4qox390655bUATO0fG9gwgaw7kGmOEZQ=
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: kooGsRoQy-oJ58ced2zhAiBoKG2heo-CW_Bw44HgjZk_1765551843
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+MMC_SDHCI_ESDHC_IMX requires ARCH_MXC despite also being used on
+ARCH_S32, which results in unmet dependencies when compiling strictly
+for ARCH_S32. Resolve this by adding ARCH_S32 as an alternative to
+ARCH_MXC in the driver's dependencies.
 
-On Fri, 12 Dec 2025 17:16:06 +0800, Peng Fan (OSS) wrote:
-> Patch 1,2: add temp sensor and thermal zone
-> Patch 3: Update file name
-> Patch 4: Add gpio4 alias
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
-> Peng Fan (4):
->       arm64: dts: imx91: Add tempsensor node
->       arm64: dts: imx91: Add thermal zone node
->       arm64: dts: imx91: Update file name with dash
->       arm64: dts: imx91-11x11-evk: Add gpio4 alias
-> 
->  arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts  |    1 +
->  arch/arm64/boot/dts/freescale/imx91.dtsi           |   58 +-
->  arch/arm64/boot/dts/freescale/imx91_93_common.dtsi | 1187 --------------------
->  arch/arm64/boot/dts/freescale/imx93.dtsi           |    2 +-
->  4 files changed, 59 insertions(+), 1189 deletions(-)
-> ---
-> base-commit: 008d3547aae5bc86fac3eda317489169c3fda112
-> change-id: 20251212-imx91-dts-8d2e483191f7
-> 
-> Best regards,
-> --
-> Peng Fan <peng.fan@nxp.com>
-> 
-> 
-> 
+Fixes: 5c4f00627c9a ("mmc: sdhci-esdhc-imx: add NXP S32G2 support")
+Signed-off-by: Jared Kangas <jkangas@redhat.com>
+---
+ drivers/mmc/host/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+index 10d0ef58ef493102d3586d7a31d755543297999a..c94ae4794545de1c818ad50be7f91331862b6acf 100644
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -315,14 +315,14 @@ config MMC_SDHCI_ESDHC_MCF
+ 
+ config MMC_SDHCI_ESDHC_IMX
+ 	tristate "SDHCI support for the Freescale eSDHC/uSDHC i.MX controller"
+-	depends on ARCH_MXC || COMPILE_TEST
++	depends on ARCH_MXC || ARCH_S32 || COMPILE_TEST
+ 	depends on MMC_SDHCI_PLTFM
+ 	depends on OF
+ 	select MMC_SDHCI_IO_ACCESSORS
+ 	select MMC_CQHCI
+ 	help
+ 	  This selects the Freescale eSDHC/uSDHC controller support
+-	  found on i.MX25, i.MX35 i.MX5x and i.MX6x.
++	  found on i.MX25, i.MX35, i.MX5x, i.MX6x, and S32G.
+ 
+ 	  If you have a controller with this interface, say Y or M here.
+ 
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+---
+base-commit: 7d0a66e4bb9081d75c82ec4957c50034cb0ea449
+change-id: 20251211-s32g-sdhci-kconfig-585b6909f7b4
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-This patch series was applied (using b4) to base:
- Base: 008d3547aae5bc86fac3eda317489169c3fda112 (use --merge-base to override)
-
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20251212-imx91-dts-v1-0-2bb3c13762dd@nxp.com:
-
-In file included from arch/arm64/boot/dts/freescale/imx93-14x14-evk.dts:9:
-arch/arm64/boot/dts/freescale/imx93.dtsi:6:10: fatal error: imx91-93-common.dtsi: No such file or directory
-    6 | #include "imx91-93-common.dtsi"
-      |          ^~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[3]: *** [scripts/Makefile.dtbs:141: arch/arm64/boot/dts/freescale/imx93-14x14-evk.dtb] Error 1
-make[2]: *** [scripts/Makefile.build:556: arch/arm64/boot/dts/freescale] Error 2
-make[2]: Target 'arch/arm64/boot/dts/freescale/imx93-14x14-evk.dtb' not remade because of errors.
-make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1512: freescale/imx93-14x14-evk.dtb] Error 2
-In file included from arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi:8,
-                 from arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dts:15:
-arch/arm64/boot/dts/freescale/imx93.dtsi:6:10: fatal error: imx91-93-common.dtsi: No such file or directory
-    6 | #include "imx91-93-common.dtsi"
-      |          ^~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-In file included from arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts:9:
-arch/arm64/boot/dts/freescale/imx93.dtsi:6:10: fatal error: imx91-93-common.dtsi: No such file or directory
-    6 | #include "imx91-93-common.dtsi"
-      |          ^~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[3]: *** [scripts/Makefile.dtbs:141: arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dtb] Error 1
-make[3]: *** [scripts/Makefile.dtbs:141: arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dtb] Error 1
-make[2]: *** [scripts/Makefile.build:556: arch/arm64/boot/dts/freescale] Error 2
-make[2]: Target 'arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxca.dtb' not remade because of errors.
-make[2]: *** [scripts/Makefile.build:556: arch/arm64/boot/dts/freescale] Error 2
-make[2]: Target 'arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dtb' not remade because of errors.
-make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1512: freescale/imx93-tqma9352-mba93xxca.dtb] Error 2
-make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1512: freescale/imx93-9x9-qsb.dtb] Error 2
-In file included from arch/arm64/boot/dts/freescale/imx93-var-som.dtsi:9,
-                 from arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dts:10:
-arch/arm64/boot/dts/freescale/imx93.dtsi:6:10: fatal error: imx91-93-common.dtsi: No such file or directory
-    6 | #include "imx91-93-common.dtsi"
-      |          ^~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[3]: *** [scripts/Makefile.dtbs:141: arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dtb] Error 1
-make[2]: *** [scripts/Makefile.build:556: arch/arm64/boot/dts/freescale] Error 2
-make[2]: Target 'arch/arm64/boot/dts/freescale/imx93-var-som-symphony.dtb' not remade because of errors.
-make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1512: freescale/imx93-var-som-symphony.dtb] Error 2
-In file included from arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi:8,
-                 from arch/arm64/boot/dts/freescale/imx93-tqma9352-mba91xxca.dts:15:
-arch/arm64/boot/dts/freescale/imx93.dtsi:6:10: fatal error: imx91-93-common.dtsi: No such file or directory
-    6 | #include "imx91-93-common.dtsi"
-      |          ^~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[3]: *** [scripts/Makefile.dtbs:141: arch/arm64/boot/dts/freescale/imx93-tqma9352-mba91xxca.dtb] Error 1
-make[2]: *** [scripts/Makefile.build:556: arch/arm64/boot/dts/freescale] Error 2
-make[2]: Target 'arch/arm64/boot/dts/freescale/imx93-tqma9352-mba91xxca.dtb' not remade because of errors.
-make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1512: freescale/imx93-tqma9352-mba91xxca.dtb] Error 2
-In file included from arch/arm64/boot/dts/freescale/imx91-tqma9131.dtsi:9,
-                 from arch/arm64/boot/dts/freescale/imx91-tqma9131-mba91xxca.dts:15:
-arch/arm64/boot/dts/freescale/imx91.dtsi:7:10: fatal error: imx91-93-common.dtsi: No such file or directory
-    7 | #include "imx91-93-common.dtsi"
-      |          ^~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[3]: *** [scripts/Makefile.dtbs:141: arch/arm64/boot/dts/freescale/imx91-tqma9131-mba91xxca.dtb] Error 1
-make[2]: *** [scripts/Makefile.build:556: arch/arm64/boot/dts/freescale] Error 2
-make[2]: Target 'arch/arm64/boot/dts/freescale/imx91-tqma9131-mba91xxca.dtb' not remade because of errors.
-make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1512: freescale/imx91-tqma9131-mba91xxca.dtb] Error 2
-In file included from arch/arm64/boot/dts/freescale/imx91-phycore-som.dtsi:12,
-                 from arch/arm64/boot/dts/freescale/imx91-phyboard-segin.dts:12:
-arch/arm64/boot/dts/freescale/imx91.dtsi:7:10: fatal error: imx91-93-common.dtsi: No such file or directory
-    7 | #include "imx91-93-common.dtsi"
-      |          ^~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[3]: *** [scripts/Makefile.dtbs:141: arch/arm64/boot/dts/freescale/imx91-phyboard-segin.dtb] Error 1
-make[2]: *** [scripts/Makefile.build:556: arch/arm64/boot/dts/freescale] Error 2
-make[2]: Target 'arch/arm64/boot/dts/freescale/imx91-phyboard-segin.dtb' not remade because of errors.
-make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1512: freescale/imx91-phyboard-segin.dtb] Error 2
-In file included from arch/arm64/boot/dts/freescale/imx91-11x11-evk.dts:9:
-arch/arm64/boot/dts/freescale/imx91.dtsi:7:10: fatal error: imx91-93-common.dtsi: No such file or directory
-    7 | #include "imx91-93-common.dtsi"
-      |          ^~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[3]: *** [scripts/Makefile.dtbs:141: arch/arm64/boot/dts/freescale/imx91-11x11-evk.dtb] Error 1
-make[2]: *** [scripts/Makefile.build:556: arch/arm64/boot/dts/freescale] Error 2
-make[2]: Target 'arch/arm64/boot/dts/freescale/imx91-11x11-evk.dtb' not remade because of errors.
-make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1512: freescale/imx91-11x11-evk.dtb] Error 2
-In file included from arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi:8,
-                 from arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dts:15:
-arch/arm64/boot/dts/freescale/imx93.dtsi:6:10: fatal error: imx91-93-common.dtsi: No such file or directory
-    6 | #include "imx91-93-common.dtsi"
-      |          ^~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[3]: *** [scripts/Makefile.dtbs:141: arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dtb] Error 1
-make[2]: *** [scripts/Makefile.build:556: arch/arm64/boot/dts/freescale] Error 2
-make[2]: Target 'arch/arm64/boot/dts/freescale/imx93-tqma9352-mba93xxla.dtb' not remade because of errors.
-make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1512: freescale/imx93-tqma9352-mba93xxla.dtb] Error 2
-In file included from arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts:9:
-arch/arm64/boot/dts/freescale/imx93.dtsi:6:10: fatal error: imx91-93-common.dtsi: No such file or directory
-    6 | #include "imx91-93-common.dtsi"
-      |          ^~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[3]: *** [scripts/Makefile.dtbs:141: arch/arm64/boot/dts/freescale/imx93-11x11-evk.dtb] Error 1
-make[2]: *** [scripts/Makefile.build:556: arch/arm64/boot/dts/freescale] Error 2
-make[2]: Target 'arch/arm64/boot/dts/freescale/imx93-11x11-evk.dtb' not remade because of errors.
-make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1512: freescale/imx93-11x11-evk.dtb] Error 2
-In file included from arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi:13,
-                 from arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dts:13:
-arch/arm64/boot/dts/freescale/imx93.dtsi:6:10: fatal error: imx91-93-common.dtsi: No such file or directory
-    6 | #include "imx91-93-common.dtsi"
-      |          ^~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[3]: *** [scripts/Makefile.dtbs:141: arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dtb] Error 1
-make[2]: *** [scripts/Makefile.build:556: arch/arm64/boot/dts/freescale] Error 2
-make[2]: Target 'arch/arm64/boot/dts/freescale/imx93-phyboard-nash.dtb' not remade because of errors.
-make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1512: freescale/imx93-phyboard-nash.dtb] Error 2
-In file included from arch/arm64/boot/dts/freescale/imx93-phycore-som.dtsi:13,
-                 from arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dts:13:
-arch/arm64/boot/dts/freescale/imx93.dtsi:6:10: fatal error: imx91-93-common.dtsi: No such file or directory
-    6 | #include "imx91-93-common.dtsi"
-      |          ^~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[3]: *** [scripts/Makefile.dtbs:141: arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dtb] Error 1
-make[2]: *** [scripts/Makefile.build:556: arch/arm64/boot/dts/freescale] Error 2
-make[2]: Target 'arch/arm64/boot/dts/freescale/imx93-phyboard-segin.dtb' not remade because of errors.
-make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1512: freescale/imx93-phyboard-segin.dtb] Error 2
-In file included from arch/arm64/boot/dts/freescale/imx93-kontron-osm-s.dtsi:7,
-                 from arch/arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dts:8:
-arch/arm64/boot/dts/freescale/imx93.dtsi:6:10: fatal error: imx91-93-common.dtsi: No such file or directory
-    6 | #include "imx91-93-common.dtsi"
-      |          ^~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make[3]: *** [scripts/Makefile.dtbs:141: arch/arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dtb] Error 1
-make[2]: *** [scripts/Makefile.build:556: arch/arm64/boot/dts/freescale] Error 2
-make[2]: Target 'arch/arm64/boot/dts/freescale/imx93-kontron-bl-osm-s.dtb' not remade because of errors.
-make[1]: *** [/home/rob/proj/linux-dt-testing/Makefile:1512: freescale/imx93-kontron-bl-osm-s.dtb] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
-make: Target 'freescale/imx8dx-colibri-eval-v3.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-var-som-symphony.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-nitrogen-enc-carrier-board.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1046a-qds.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-prt8mm.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1028a-kontron-sl28.dtb' not remade because of errors.
-make: Target 'freescale/imx8qxp-tqma8xqp-mba8xx.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-beacon-kit.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-venice-gw73xx-2x.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-var-som-symphony.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-icore-mx8mp-edimm2.2.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-innocomm-wb15-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8qm-apalis-v1.1-eval.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-aristainetos3-proton2s.dtb' not remade because of errors.
-make: Target 'freescale/imx8dx-colibri-iris-v2.dtb' not remade because of errors.
-make: Target 'freescale/imx8mn-ddr3l-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-icore-mx8mm-edimm2.2.dtb' not remade because of errors.
-make: Target 'freescale/imx8mn-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-dhcom-pdk3.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1028a-kontron-kbox-a-230-ls.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-phyboard-polis-rdk.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-venice-gw72xx-2x.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-venice-gw7901.dtb' not remade because of errors.
-make: Target 'freescale/imx8mn-beacon-kit.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1028a-kontron-sl28-var1.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1028a-kontron-sl28-var3.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-debix-som-a-bmb-08.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-verdin-nonwifi-dahlia.dtb' not remade because of errors.
-make: Target 'freescale/imx8qxp-ai_ml.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-verdin-wifi-dev.dtb' not remade because of errors.
-make: Target 'freescale/s32v234-evb.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-skov-revb-lt6.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-phg.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-nitrogen-smarc-universal-board.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-venice-gw71xx-0x.dtb' not remade because of errors.
-make: Target 'freescale/imx8ulp-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8qxp-colibri-iris.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-emtop-baseboard.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-hummingboard-pro.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1028a-kontron-sl28-var4.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-librem5-r4.dtb' not remade because of errors.
-make: Target 'freescale/imx8dx-colibri-aster.dtb' not remade because of errors.
-make: Target 'freescale/imx8mn-rve-gateway.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-venice-gw71xx-2x.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls2080a-rdb.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-pico-pi.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-verdin-wifi-mallow.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-msc-sm2s-ep1.dtb' not remade because of errors.
-make: Target 'freescale/imx8dxl-evk.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1043a-qds.dtb' not remade because of errors.
-make: Target 'freescale/s32g399a-rdb3.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-venice-gw72xx-0x.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-verdin-wifi-ivy.dtb' not remade because of errors.
-make: Target 'freescale/imx8mn-bsh-smm-s2.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-aristainetos3-adpismarc.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-tx8p-ml81-moduline-display-106.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-verdin-nonwifi-mallow.dtb' not remade because of errors.
-make: Target 'freescale/imx8qxp-tqma8xqps-mb-smarc-2.dtb' not remade because of errors.
-make: Target 'freescale/imx8mn-dimonoff-gateway-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx93-tqma9352-mba93xxca.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-tqma8mq-mba8mx.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1012a-oxalis.dtb' not remade because of errors.
-make: Target 'freescale/imx93-14x14-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8dx-colibri-iris.dtb' not remade because of errors.
-make: Target 'freescale/imx8mn-var-som-symphony.dtb' not remade because of errors.
-make: Target 'freescale/imx95-toradex-smarc-dev.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-kontron-smarc-eval-carrier.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls2080a-simu.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1046a-frwy.dtb' not remade because of errors.
-make: Target 'freescale/imx93-9x9-qsb.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-verdin-wifi-yavia.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-verdin-nonwifi-yavia.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-verdin-wifi-mallow.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-debix-model-a.dtb' not remade because of errors.
-make: Target 'freescale/imx8qm-apalis-v1.1-ixora-v1.2.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-icore-mx8mm-ctouch2.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-zii-ultra-rmb3.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-phygate-tauri-l.dtb' not remade because of errors.
-make: Target 'freescale/imx8qm-apalis-v1.1-eval-v1.2.dtb' not remade because of errors.
-make: Target 'freescale/fsl-lx2162a-clearfog.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-data-modul-edm-sbc.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-librem5-devkit.dtb' not remade because of errors.
-make: Target 'freescale/fsl-lx2160a-tqmlx2160a-mblx2160a.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1012a-tqmls1012al-mbls1012al-emmc.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-cubox-m.dtb' not remade because of errors.
-make: Target 'freescale/fsl-lx2160a-honeycomb.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-skov-revb-hdmi.dtb' not remade because of errors.
-make: Target 'freescale/imx8qm-apalis-eval.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-venice-gw7904.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-skov-revb-mi1010ait-1cp1.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-navqp.dtb' not remade because of errors.
-make: Target 'freescale/fsl-lx2160a-qds.dtb' not remade because of errors.
-make: Target 'freescale/fsl-lx2160a-bluebox3.dtb' not remade because of errors.
-make: Target 'freescale/imx93-var-som-symphony.dtb' not remade because of errors.
-make: Target 'freescale/imx8dxp-tqma8xdps-mb-smarc-2.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-nitrogen-r2.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1028a-kontron-sl28-var3-ads2.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1046a-rdb.dtb' not remade because of errors.
-make: Target 'freescale/imx93-tqma9352-mba91xxca.dtb' not remade because of errors.
-make: Target 'freescale/imx95-tqma9596sa-mb-smarc-2.dtb' not remade because of errors.
-make: Target 'freescale/imx8mn-ddr4-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8mn-bsh-smm-s2pro.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-phanbell.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-venice-gw7903.dtb' not remade because of errors.
-make: Target 'freescale/s32g274a-evb.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-ddr4-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-dhcom-pdk2.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1012a-frdm.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1012a-qds.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1043a-rdb.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-phyboard-pollux-rdk.dtb' not remade because of errors.
-make: Target 'freescale/imx8qm-mek.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1088a-qds.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1088a-rdb.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-verdin-wifi-dev.dtb' not remade because of errors.
-make: Target 'freescale/imx8qm-apalis-v1.1-ixora-v1.1.dtb' not remade because of errors.
-make: Target 'freescale/imx91-tqma9131-mba91xxca.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-hummingboard-mate.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-venice-gw75xx-0x.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-venice-gw74xx.dtb' not remade because of errors.
-make: Target 'freescale/imx8qm-apalis-ixora-v1.1.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-aristainetos3-helios.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-skov-revc-bd500.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-prt8ml.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-verdin-nonwifi-dahlia.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-iot-gateway.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-librem5-r2.dtb' not remade because of errors.
-make: Target 'freescale/imx95-libra-rdk-fpsc.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1088a-ten64.dtb' not remade because of errors.
-make: Target 'freescale/imx8ulp-9x9-evk.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1028a-qds.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-verdin-wifi-dahlia.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-beacon-kit.dtb' not remade because of errors.
-make: Target 'freescale/imx91-phyboard-segin.dtb' not remade because of errors.
-make: Target 'freescale/fsl-lx2162a-qds.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1046a-tqmls1046a-mbls10xxa.dtb' not remade because of errors.
-make: Target 'freescale/imx91-11x11-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-verdin-wifi-dahlia.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-evkb.dtb' not remade because of errors.
-make: Target 'freescale/imx93-tqma9352-mba93xxla.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-emcon-avari.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-edm-g-wb.dtb' not remade because of errors.
-make: Target 'freescale/imx93-11x11-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx95-19x19-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-hummingboard-ripple.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1012a-tqmls1012al-mbls1012al.dtb' not remade because of errors.
-make: Target 'freescale/fsl-lx2160a-clearfog-cx.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-tqma8mqml-mba8mx.dtb' not remade because of errors.
-make: Target 'freescale/imx95-19x19-verdin-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-verdin-nonwifi-ivy.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-dhcom-drc02.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-toradex-smarc-dev.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-verdin-wifi-ivy.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-skov-revc-hdmi.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-tqma8mpql-mba8mp-ras314.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-verdin-nonwifi-yavia.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1012a-rdb.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1012a-frwy.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1028a-kontron-sl28-var2.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-verdin-nonwifi-mallow.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-venice-gw73xx-0x.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1043a-tqmls1043a-mbls10xxa.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-kontron-bl-osm-s.dtb' not remade because of errors.
-make: Target 'freescale/fsl-lx2160a-bluebox3-rev-a.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1088a-tqmls1088a-mbls10xxa.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-verdin-wifi-yavia.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-mx8menlo.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls2081a-rdb.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-mnt-reform2.dtb' not remade because of errors.
-make: Target 'freescale/imx8qxp-colibri-iris-v2.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls2088a-rdb.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-zii-ultra-zest.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-tqma8mpql-mba8mpxl.dtb' not remade because of errors.
-make: Target 'freescale/imx8qm-apalis-eval-v1.2.dtb' not remade because of errors.
-make: Target 'freescale/s32g274a-rdb2.dtb' not remade because of errors.
-make: Target 'freescale/imx93-phyboard-nash.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-verdin-nonwifi-dev.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-ultra-mach-sbc.dtb' not remade because of errors.
-make: Target 'freescale/imx8mn-tqma8mqnl-mba8mx.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-kontron-bl-osm-s.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls2080a-qds.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-verdin-nonwifi-ivy.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-data-modul-edm-sbc.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-librem5-r3.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls2088a-qds.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-kontron-pitx-imx8m.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-venice-gw7902.dtb' not remade because of errors.
-make: Target 'freescale/fsl-lx2160a-rdb.dtb' not remade because of errors.
-make: Target 'freescale/imx95-19x19-evk-sof.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-venice-gw82xx-2x.dtb' not remade because of errors.
-make: Target 'freescale/imx93-phyboard-segin.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-verdin-nonwifi-dev.dtb' not remade because of errors.
-make: Target 'freescale/imx8mm-kontron-bl.dtb' not remade because of errors.
-make: Target 'freescale/imx8dxp-tqma8xdp-mba8xx.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-hummingboard-pulse.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-skov-revc-jutouch-jt101tm023.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-libra-rdk-fpsc.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-venice-gw75xx-2x.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8qxp-colibri-eval-v3.dtb' not remade because of errors.
-make: Target 'freescale/imx943-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8qxp-colibri-aster.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-nitrogen.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-skov-basic.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-thor96.dtb' not remade because of errors.
-make: Target 'freescale/fsl-ls1028a-rdb.dtb' not remade because of errors.
-make: Target 'freescale/imx8mq-hummingboard-pulse.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-iota2-lumpy.dtb' not remade because of errors.
-make: Target 'freescale/imx8mn-venice-gw7902.dtb' not remade because of errors.
-make: Target 'freescale/imx8qxp-mek.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-skov-revc-tian-g07017.dtb' not remade because of errors.
-make: Target 'freescale/imx93-kontron-bl-osm-s.dtb' not remade because of errors.
-make: Target 'freescale/imx95-15x15-evk.dtb' not remade because of errors.
-make: Target 'freescale/imx8mp-dhcom-picoitx.dtb' not remade because of errors.
-
-
-
-
+Best regards,
+-- 
+Jared Kangas <jkangas@redhat.com>
 
