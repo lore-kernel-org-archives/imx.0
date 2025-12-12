@@ -1,232 +1,116 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013005.outbound.protection.outlook.com [52.101.83.5])
+Received: from mx-relay175-hz1.antispameurope.com (mx-relay175-hz1.antispameurope.com [94.100.132.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C44F30FC01
-	for <imx@lists.linux.dev>; Fri, 12 Dec 2025 08:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D4830FF26
+	for <imx@lists.linux.dev>; Fri, 12 Dec 2025 09:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.132.179
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765528324; cv=fail; b=HVeaGECnSt4eOAVjs8DbmOL1KJsVWqitbjr98ZRhp4/JoPPTBjT2BihG9FmHqwZt4zojuTgL3qeYc48QtDLoT2dqSr+2B547BTV0oLAVqral5dwzh67mQjqDJ+qmLnkwJNy6kPn+aHqjGn1NcFdFrG5PMrQZZU5SoXjVLfjXMas=
+	t=1765530009; cv=pass; b=HVx6+sNf8kSaHEI8oHBkIFyHCgGPSzfm7IaY0CYvDlBTTeB6D8CMWx//zmOMogkkd/e8NaKGPV1z/2Mjl439MM31E0DvmWHFJTda2usxPKrD05g7hJS41WqkKWWWel3t27ngzCiFhhYPQ3JLED0fdo88096o4qrqQPOT0HS9/us=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765528324; c=relaxed/simple;
-	bh=/fwENXuOoRl23fxoZ5Fy8l7qWg/uoTf5yCuyrjNg9mg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QCvmhzg7fTdjVQZhWNG9zz0V8OKwMvl/E9hnZkDXmAbi0syAC5FbVkiMA1TQhEpFW7g3so5N7Ko5/r96+lTtZUJtGxSGcLGV5uL9EKDtQyoDCUHUpIAFg4JHl+eJUbtdqofDbt/1GTKepdBMGk5IAQ2VuIGVmDkIMtdvvkM8ahM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=YmtXi4la; arc=fail smtp.client-ip=52.101.83.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1765530009; c=relaxed/simple;
+	bh=TTPuwWyrhwIbAh7bSDP8tr6fzMuC7IEfYtFGTQnG3t8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C7M59WYjlkCu7qbysaI/Z4BwvQSl2W9d368nNo3k8CLeXqrDU0jlUJKw7wHABFdrKiSE1YpSvwk5YPbfc05CfDFE/JOqId1ZNuROUL6gI3wgpYlSrtcJLjpII2TZMDw2k7NhwJJEsgUOVqRG4/okO4/xAEuZJLilvqhIS25gFVA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=secJU5rR; arc=pass smtp.client-ip=94.100.132.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="YmtXi4la"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ULc76ClozAVxWZIud1llCPWd4LrE4RAzLo2X9GU1jxzecuilxZ/ah/PF9XNt1w7tTRW3MVd2nJxVWn1RCe3xamXCP/8NZEebHAL1W9yIEYCG+m70fI9Ziv0I6d/JHgC3HHgMA1Cw73xCC8sPubKhEf5pEg1fRDJIPL7hl9Eew7bN1fqwXcNRfgZ69paESqae27sEs3+o8fOQXM2SHic2pr59GHzLcAUWSahmJc3ry8CC62CBtVgrdykw88T5uvZ9MCE6iLDRtR7UZL0Xbyo2G6sXcMb5FySRbIsq7+S4RciRb6XAQlJFfHsZqBXrjtx6HuqZnkNFdOF0vkbNXzP7Zw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lmteFQ6S27cGTR9PUEI3bX3XZ12cN3CbyeN5jFXRl5k=;
- b=NJj+Cuxnvrh0T0ZqU2zfRUMwT4lzMX8QhdOOEyrShX3FeCGlPAtmnPljHk43myhjKAyA18gO9aj5vWCTtyLqeitVIgBeXPZZQFl6XkempUnWjpzlzpKNfqvtX229g2S/zElI1+LlRYFlzocGbTwyTOXYLce2UWdCf+nCW/fJvt2I9QZsX/ydy54qbV517l7lVifK0ZcmHbaisRO06rT4KDHyMXJrfL48PRLFhysdYTvZME2jH24pxuJS9iBhSYFR79+4LeFqjoHes3pHYIjuGWbO6KQVlTrUnA21NDibJpbMm0mETHx5iojWMdo15ITfINzPN6i6eCc9H0jdgU458w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lmteFQ6S27cGTR9PUEI3bX3XZ12cN3CbyeN5jFXRl5k=;
- b=YmtXi4lafMtMbYK1PlqjfyfBbVvr8XIjjbk554h7x5G9ij3alVLQsea7qpaQyA/E7+MqwyuUXz4nk35wLT8uMOjCg4Q4fmx1G+2vDC7k1KD4SZXer/qQIoEq+2eML6245E6IOS0RemBR16OK6dFS2xPE1y+I4ewpdykhtneK6bH9HWvHLnHHUpZUpdAQZXiAp0aLCc2YU8H4+qNk3xZClS50fyJXSZh8DYwgwCKEQtleuFoCHkuckbkxxWI0clUGg5LZlhr+qqONx8TsmNsLOLNkoKKD4AkiO8UiLtxoDkcz1j5aMpj4Q8hNwVDJAKw1vMxLAIcWG9k2QpvNjJbtIg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8567.eurprd04.prod.outlook.com (2603:10a6:10:2d6::21)
- by AMDPR04MB11556.eurprd04.prod.outlook.com (2603:10a6:20b:71f::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.10; Fri, 12 Dec
- 2025 08:31:59 +0000
-Received: from DU2PR04MB8567.eurprd04.prod.outlook.com
- ([fe80::32c4:a8a7:1724:b754]) by DU2PR04MB8567.eurprd04.prod.outlook.com
- ([fe80::32c4:a8a7:1724:b754%2]) with mapi id 15.20.9412.005; Fri, 12 Dec 2025
- 08:31:59 +0000
-From: ziniu.wang_1@nxp.com
-To: axboe@kernel.dk,
-	ulf.hansson@linaro.org
-Cc: linux-block@vger.kernel.org,
-	linux-mmc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH 2/2] mmc: add quirk to optimize certain Kingston eMMC secure erase/trim performance
-Date: Fri, 12 Dec 2025 16:32:46 +0800
-Message-Id: <20251212083246.582806-3-ziniu.wang_1@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251212083246.582806-1-ziniu.wang_1@nxp.com>
-References: <20251212083246.582806-1-ziniu.wang_1@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2P153CA0014.APCP153.PROD.OUTLOOK.COM (2603:1096:4:140::6)
- To DU2PR04MB8567.eurprd04.prod.outlook.com (2603:10a6:10:2d6::21)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="secJU5rR"
+ARC-Authentication-Results: i=1; mx-gate175-hz1.hornetsecurity.com 1;
+ spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=EPA4cw3Gvq6SBCJV/vWcX38SZi8PRTPj9bVk8hJPiao=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1765529961;
+ b=MKOcZBpkYD7PeFWXY1xnK1ZoGChpjjjiVnq+Fe3/mhI0Td7dMpP+227rjlTPWFC7V+CqN1+V
+ 4jqJitQwgLFBSxqrCgeCKpZNIwYt50MAHm2X2Cxe9TjlEMCZM+iag6Je46fHglZ6W4GHK98Y7y1
+ vdVdm7/iwnk8PcEV8FA+8z0DUTcgVFquC6b9qEsolzHWpoIA1GE14LU5VATs1FGuDOO0PpZnu9H
+ xYwsls3MHf0KCP9HQWr2L2+w5YpE3UUyBa0X049M81gVmmfawL0lLxiSiZyzDSHbCt1Xl/6YNYd
+ odX43j8ciInGgkagwnFHVlTthhTtG49fjfv4mxTRI7yzA==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1765529961;
+ b=Hb9UYofuSTFaGKbDkOBIBBSKG8R0HdpbAif0h+Khfp19N0di+Bc22843gI1IbB8q3hmY0hvg
+ fZLztpx5T3Z+T1snRXrDaPhAOKv1Z9IF4iU7AGBP5fp9Pytc4l4IqsoAsilMdGxJEGemspcSr9S
+ 50YhpPFus/Uyk31+BgHXERkCfSWPNEndGEujx7RVsmyqMbdcdrKBqPnYAw1XYKzNxaFI8qNzhlD
+ HViWa9kYdUFqJLT7/Thtz0GNEyRZ1jzAijKVCVvC2m5YMPPT0vAHiMlM065FbsmIFwFsrnlKxhy
+ u8e9kfDj9XSOxepjZZclIYevkGeWWyfzlFV5/iMcd0Wtw==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay175-hz1.antispameurope.com;
+ Fri, 12 Dec 2025 09:59:20 +0100
+Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 434D5CC0CCA;
+	Fri, 12 Dec 2025 09:59:10 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings: power: fsl,imx-gpc: Document address-cells
+Date: Fri, 12 Dec 2025 09:58:59 +0100
+Message-ID: <20251212085902.103507-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8567:EE_|AMDPR04MB11556:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8c6e944c-1905-40d4-742d-08de3958ea7b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|52116014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/SjhlhMyR1aDY8M7u2Jm6D0qkP0NU0QZnRlnJhFrbNLpKBUjJ5cILsiB2Zid?=
- =?us-ascii?Q?y4fsg+4ZRIkczVOg3i71ChZQI+ym0x0TBc0kvfFyVady8NbUAKIcRhwIVehS?=
- =?us-ascii?Q?NGatiWjaJY0zdNvLMk7ht7DpYj7NboBHVvenQA/sdEoW/rXXW3wd8TQ+1uB1?=
- =?us-ascii?Q?yQpiB50TYLt3cqdylkDfqwj/tYtzmFhuU4ysY7VglNtmmptRwNMNiraluW/r?=
- =?us-ascii?Q?tgP39tUsoNY04s4tQ8RP4jNORltAkLbtdbQcn9XEhaiNwkajdTPwMtmDCY9p?=
- =?us-ascii?Q?I12YQ1YPdl8fNTdwlrzJzTGnWdhQaxFoebN4I/FYPj5x8rww1l2Uv6FijXVx?=
- =?us-ascii?Q?DoRm3Aixcy6GooOT2B7Use7uNbL2Sy0Nv6x4IBWta6IsJXaF0tVdgGCcFiK7?=
- =?us-ascii?Q?2SWGTk42PdnZ4joUOmCiYcz8TnbijUMJw66H2wAwCyJgIidhN0ZbmfEmRF7T?=
- =?us-ascii?Q?vXBAz6QI0DfdJ/5Z+tMfTHykzW3jQ80Y2YMD/6mAAWYWClE5AFxjZOlJXzgS?=
- =?us-ascii?Q?MEAUrlS+CV+Bsa2IMYvycaAC44zw0ZJB5i6H9x7SxU4Z80yDMllhAY+M1foN?=
- =?us-ascii?Q?xxpoVaBRfl8kXK+uoKSXhiUSjk6i5iRaV+TYHtO2SXOfJw+z4lmH6sMBSEwR?=
- =?us-ascii?Q?m/GbEyaTk4190/w4rTowJ9gLEVQvRsoTsPPkKJHjli3qX8WyxBBzkTGbloz/?=
- =?us-ascii?Q?c5b1aZrBgIgK77W+tWbUPiNzbGVwTVRV55HfAW4CaoMmSbmZLXW40TDqMD32?=
- =?us-ascii?Q?Lse9brBlhHGbQjxFqdQIx1UddsG5WYqkfQ8C1TLZqBKlfjiZOd412qPztUV1?=
- =?us-ascii?Q?i7hCiicdxuaMBv7kKakuRj9/dzw3WwarlnYJo99n+Q4Its+MZ0KGSYNU9ynO?=
- =?us-ascii?Q?q2drT8FY0hHvdaVQ//hskTnCU8OBhGmdqJEC3gnWSIRn+39mD1lZ4ngr9qg7?=
- =?us-ascii?Q?DqY2//QIsn6Ew4EST5jva9pWvmc4IndxQ+WwB9b+8jyUQJHVus8tRQgFUWfX?=
- =?us-ascii?Q?TloWDrIn1aEoDDI69oJM9e5cvpt5dPEn3LBmMdpz/tq2Khk+RFMPSwOeh1FX?=
- =?us-ascii?Q?+xF0Kj5RSTxocscjNFhCD9HkeDJkYfIy+OWn8m87PvbOgKz6gcx6u9y76rLA?=
- =?us-ascii?Q?CsDeF3/xcYeUSMNbTU8PdeGp5w4s/4sOHDJc+IOSTl1ZxPIZ2stGTTu+psS6?=
- =?us-ascii?Q?pYMvfO/b60ZHoFLulkYXGpRHrHFtpJ5KLdTHshB5y2PFsHJfZ2G26Slo5mAU?=
- =?us-ascii?Q?rv8FX9D3uWU8WLs0O294EcY9U8oBWutC6A0A1/LIGPgWPfjeq6YtZ40iiVOs?=
- =?us-ascii?Q?J701Xiwr66pEj+jnULNdu3/7bLTUGeGYmg/MNRQvgvOzZsDQsHnnKds9VOEn?=
- =?us-ascii?Q?H0Plna5VqJoNPpcYawY7aUJYKIWGg1qCNbfesmTGtX5syG0zaxDkhhsZ1v30?=
- =?us-ascii?Q?YR0Syoo1N5Os8S2JI15pmhYdjnNxi/H33HzH3FxrlUZA3T6SPoUjHOmJQ9T9?=
- =?us-ascii?Q?trOpZPuv1rEAZlXQqWptqTIBZgsD2E9jzkP9?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8567.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KrSNISqm/C7282uAKmdPKOUoRa3H9tXrTYu0tVqZoi6FnNimlIMcsFX7lXl6?=
- =?us-ascii?Q?TK5M5+3Ru/6uRqINKjB4bW1QSt3GZWOotcjp3DU4AuaBsZZEtETu563WFfuL?=
- =?us-ascii?Q?IWO7G0SWlgnIqBnND7285TO0S7tu0+LBkZIFPKlLcSGqB7P2je74cYJZoICN?=
- =?us-ascii?Q?pjESt/fc5UNRpFfWuQRIlijcYrIy4A+aI6zFoZL0cJwB0nN/5qLFnPn+Ecyt?=
- =?us-ascii?Q?2SGWR/kJYoe6z3qdHHDqu7t/oQDdNSw1cVCQTOFlZNQtExqLDUorgPg/jSS1?=
- =?us-ascii?Q?ClL0aKSvLvNlz1XXCl1alfLYjT9g8OJHdzd2rxtIIu92GwS1hh7y01lkA0Kv?=
- =?us-ascii?Q?tqtSRBI4GRzyqdH9GW06j0BMxx5oTAYw9rbs+76/R2Fd3/z4NqFjf34G+8Oz?=
- =?us-ascii?Q?f+XHGN7nLIVCmZvETJzD1VwKfdaaie8wGJhCxKUaRfS/RbtIYPEcsZoSmrM3?=
- =?us-ascii?Q?fEXuDQ8QtkkiuIbrKnx4rkElnYvpX0tLmthvjqFIy05RKRVEhYJlbY23N5Rs?=
- =?us-ascii?Q?oxNvFxqQo2N2GFtNv6BZ/esKiONMBSYEEO+XPw//RDM2bhKt+400sI/P6TjE?=
- =?us-ascii?Q?sxeMMuDVyWmh4P+3pXrtvl8+RKup92WZJcVqa658NiziHHWPBnHfXwZAdELD?=
- =?us-ascii?Q?JbRRp7cdmRn06i6E+Iy8xEhrUgmV6gkUTkbzcXBH/0ZjUYEYx0Cy53i/WE8B?=
- =?us-ascii?Q?yMS6SeAfEN80BBXjTed/WcmilWsqpzrqmBTCZaiZWve+hQxVe0pUSxrEcuaW?=
- =?us-ascii?Q?lcqD7DwKN2WsTW4RpqrgfJqkU8fHzofXgxT+ipjoSrL5f3KKk7QjS4oUHOeU?=
- =?us-ascii?Q?HzyPak0VBTv72MsbAuac5JmAlEuusl6e4CW8FTAS/x2FwHpQ/UKL4pB9n5ke?=
- =?us-ascii?Q?JlfgEUlknabLfgm65lurzBZVdamPq76diHwvSxm7sPYolJMnU31FJSB8DmJu?=
- =?us-ascii?Q?FrfzNDqdf3DlVk1bPY/hGaUuKH0mY+T4JuuATKJHMJMrmenJeRcGUjdOvnMz?=
- =?us-ascii?Q?tu7RxNlmFknLN71xIXFVpO2ve0ZXJK/D6ZA69WVU/wA4ttM1tDO3Lt1ZgOVZ?=
- =?us-ascii?Q?xFzQ0Ch/I0xrJKE1EhKb/N70QVpYGeFW4l/naM5WZn2t+lyXkecVKD2se+RI?=
- =?us-ascii?Q?CDx+8gqk1Vzjj/6g02BtOZcgPdiXWq3RMmkGxPaRLuGofPgWzbHjDtH/NMhl?=
- =?us-ascii?Q?wioWJYEs5L2TIbjGtVysDmmiHXag9CEx5AaMT3nGaQENZv5pgGLvBTOcBT9n?=
- =?us-ascii?Q?kcJHB3dueajUphLzLDa5rzuiwdFmBL/Hz4LlUTQ0rteh6SucrYhWtlIkteVP?=
- =?us-ascii?Q?rQzsuhDzKbYT2iMkBKTZCtM+u0ql+dG2GvOi5g2a0SUmuZzZS94MpzVUPynA?=
- =?us-ascii?Q?5I4M9XZt0I8MeYQUK/CFoBLOcgcqeYFh0dfkHjyzaa1lY/nKrayq05qla6qE?=
- =?us-ascii?Q?EgkRnZuUq7H2WJAQT9SQSdnLnA3DZgHlb3PGFcyor7z5Fonem7yEoSE/mJN8?=
- =?us-ascii?Q?gI1Qy7462zaikBENC57U3W9H084nh13h16d0LMCKm7Q0LRkGVGw/FESyZFWs?=
- =?us-ascii?Q?EL2UTgqfJIlj+vMYu2BlIA+ivE1VRX0RpuOpNhKo?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8c6e944c-1905-40d4-742d-08de3958ea7b
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8567.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2025 08:31:59.5229
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 12fP0LLfl15YOTadk3NRjpa5ZK9lSRAhTY5BZuJTp/OzgIcOvm4dQuoETu92peIFIXO4yxESVoV9JrEv8PMHAw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMDPR04MB11556
+Content-Transfer-Encoding: 8bit
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay175-hz1.antispameurope.com with 4dSNg273DBz2SSMs
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:fa6caea5f90cd85704070cb335c8b449
+X-cloud-security:scantime:2.182
+DKIM-Signature: a=rsa-sha256;
+ bh=EPA4cw3Gvq6SBCJV/vWcX38SZi8PRTPj9bVk8hJPiao=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1765529960; v=1;
+ b=secJU5rRhgGa0FDg2cjOdtThIpg5q/4O6kJblZnk+vzoYIHTZQU+MMevUzXRSkMjY6dsBuzO
+ nta/oL+b4wqufhhyfil4a59ol1L14kGThZyjh/PI5Pq1tKDQU7NWkawKLbU54cWrkcygLj8ASyV
+ AmkiajbGZ9c1BTCcYz8D4d17j7uHq7lSvshnhc5yfDdfGiGwq+bYChtNUVESz7vQm9zsIrB35Dj
+ vtWGP3faUPzQfMk2kUw3cJRbKgIDTKrSqNTCFFrXe5HPSTywRrPGg/vuFl1I/4clygRTdWNyT+c
+ ALuwST8v9s2zYn5H/4pPzp2yOgvi0ekkEr8G4gVPB8vRQ==
 
-From: Luke Wang <ziniu.wang_1@nxp.com>
+The GPC power controller is an interrupt controllers and can be referenced
+in interrupt-map properties, e.g. PCIe controller, thus the node should
+have address-cells property.
 
-Kingston eMMC IY2964 and IB2932 takes a fixed ~2 seconds for each secure
-erase/trim operation regardless of size - that is, a single secure
-erase/trim operation of 1MB takes the same time as 1GB. With default
-calculated 3.5MB max discard size, secure erase 1GB requires ~300 separate
-operations taking ~10 minutes total.
-
-Add MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME quirk to set maximum secure
-erase size for those devices. This allows 1GB secure erase to complete
-in a single operation, reducing time from 10 minutes to just 2 seconds.
-
-Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- drivers/mmc/core/card.h   | 5 +++++
- drivers/mmc/core/queue.c  | 9 +++++++--
- drivers/mmc/core/quirks.h | 9 +++++++++
- include/linux/mmc/card.h  | 1 +
- 4 files changed, 22 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/power/fsl,imx-gpc.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
-index 1200951bab08..0a198a2c2616 100644
---- a/drivers/mmc/core/card.h
-+++ b/drivers/mmc/core/card.h
-@@ -305,4 +305,9 @@ static inline int mmc_card_no_uhs_ddr50_tuning(const struct mmc_card *c)
- 	return c->quirks & MMC_QUIRK_NO_UHS_DDR50_TUNING;
- }
+diff --git a/Documentation/devicetree/bindings/power/fsl,imx-gpc.yaml b/Documentation/devicetree/bindings/power/fsl,imx-gpc.yaml
+index 9de3fe73c1eb6..d49a5130b87c7 100644
+--- a/Documentation/devicetree/bindings/power/fsl,imx-gpc.yaml
++++ b/Documentation/devicetree/bindings/power/fsl,imx-gpc.yaml
+@@ -38,6 +38,9 @@ properties:
+   reg:
+     maxItems: 1
  
-+static inline int mmc_card_fixed_secure_erase_trim_time(const struct mmc_card *c)
-+{
-+	return c->quirks & MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME;
-+}
++  "#address-cells":
++    const: 0
 +
- #endif
-diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
-index 284856c8f655..eb1053d8cae7 100644
---- a/drivers/mmc/core/queue.c
-+++ b/drivers/mmc/core/queue.c
-@@ -184,8 +184,13 @@ static void mmc_queue_setup_discard(struct mmc_card *card,
- 		return;
+   interrupts:
+     maxItems: 1
  
- 	lim->max_hw_discard_sectors = max_discard;
--	if (mmc_card_can_secure_erase_trim(card))
--		lim->max_secure_erase_sectors = max_discard;
-+	if (mmc_card_can_secure_erase_trim(card)) {
-+		if (mmc_card_fixed_secure_erase_trim_time(card))
-+			lim->max_secure_erase_sectors = UINT_MAX >> card->erase_shift;
-+		else
-+			lim->max_secure_erase_sectors = max_discard;
-+	}
-+
- 	if (mmc_card_can_trim(card) && card->erased_byte == 0)
- 		lim->max_write_zeroes_sectors = max_discard;
- 
-diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-index c417ed34c057..1f7406c0ab03 100644
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -153,6 +153,15 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
- 	MMC_FIXUP("M62704", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
- 		  MMC_QUIRK_TRIM_BROKEN),
- 
-+	/*
-+	 * On Some Kingston eMMCs, secure erase/trim time is independent
-+	 * of erase size, fixed at approximately 2 seconds.
-+	 */
-+	MMC_FIXUP("IY2964", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
-+		  MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME),
-+	MMC_FIXUP("IB2932", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
-+		  MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME),
-+
- 	END_FIXUP
- };
- 
-diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-index e9e964c20e53..1882267ef201 100644
---- a/include/linux/mmc/card.h
-+++ b/include/linux/mmc/card.h
-@@ -329,6 +329,7 @@ struct mmc_card {
- #define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
- #define MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY	(1<<17) /* Disable broken SD poweroff notify support */
- #define MMC_QUIRK_NO_UHS_DDR50_TUNING	(1<<18) /* Disable DDR50 tuning */
-+#define MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME	(1<<19) /* Secure erase/trim time is fixed regardless of size */
- 
- 	bool			written_flag;	/* Indicates eMMC has been written since power on */
- 	bool			reenable_cmdq;	/* Re-enable Command Queue */
 -- 
-2.34.1
+2.43.0
 
