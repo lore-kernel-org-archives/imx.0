@@ -1,118 +1,100 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147EC314D26
-	for <imx@lists.linux.dev>; Thu, 11 Dec 2025 17:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298092BB13
+	for <imx@lists.linux.dev>; Fri, 12 Dec 2025 02:31:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765475317; cv=none; b=hiVxgaSLDQhc4jK8z1+j7dtlyqoHUh5mq58AgLCtoNf2USQ3tonaJNOFh1YuaA4FQlZSKVnIUh7bYjlP1AY+vBAgu+5qctFrViSYXDa3tepyXgaT1AGeLT1mHrsMFiWPoRCMkFiCfuoRvMkFmaFfY5HHNE96gBXSBfLut8E5AlY=
+	t=1765506705; cv=none; b=AbQczWCA6GhQScSC4/11ZhH0yWNqweVozmTKR46BeD6DxEQ6tcNHRhoX77dZWacNPsuqjFCCo3TVXV0024Ajg8nOJRHBRQfjbATas0gbS1CyHUZ5pEWA21+ekRCgJPQ4MfRJZ4o7b6qCIW/3a61TokQy9luTyLFuMJfkz6w06SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765475317; c=relaxed/simple;
-	bh=JdMujCpfMDsauoGRdezM3N4cIRdRlpVSTZ0VL4qIJ0k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=K2WQih2yeYEMZ7YdK9umSY1OUZ+cNa5g08oxAw3/o1rmu8LOs4b/B3SgN6UBUjiLd4iAlGDwWemWl0b1TNHgPPDiTuYircT2ksooBfe4s2fww5/W/CcTye4GjtQYRw6vRawOtXPUXYm3jKa+PN/l8RL+nlCx8EFn8rxijsaxWfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=N/APjRAu; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="N/APjRAu"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 563984E41B82;
-	Thu, 11 Dec 2025 17:48:34 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 2267B606AD;
-	Thu, 11 Dec 2025 17:48:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 617BE103C8DF5;
-	Thu, 11 Dec 2025 18:48:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1765475312; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=JdMujCpfMDsauoGRdezM3N4cIRdRlpVSTZ0VL4qIJ0k=;
-	b=N/APjRAuZRjcepImCR5G2n0aklAPp0QVq+Xp2siA7jweLGkdyHaQZ9ed1h7Z2KQ/B/s8oo
-	w1bnUgTXF+F0xx+rLlvjNK5R4AMYiX8jWbhZnk+qbWviSBpOs/KxyPy49grVjAncDSKHwm
-	dq7t9bGV0iZ8j+h3cSc+jFPQBuuErDwOLHcR952kApoPm0210VuZZdJxTU+NME4GeWm2xI
-	Fhr6WO8MojPTEn8vlpd0uHAACCjJ6ztebwi/aqRS9ARnbac4d69hfu0UMvYqriANXqYIy4
-	Vk27ZayUl0h+sdJhHl0P77wzQaAnrHZlfbmA53ZDRZ20m/NXWNQpBEacxNq76A==
+	s=arc-20240116; t=1765506705; c=relaxed/simple;
+	bh=qZxoOpZklmk0uLrecCQ0PIkOwJOw6TGfs6nzQjEN3Jc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=uyhqvkg2CLoT/zkMcbfC+7v3BXFFKVoa4HPhDAGc03Sae7z3qL9zAJvpp7Lwqo7fm9Xy9+354uv9jdI1mpalNJ/nAF1zsOPnivjjdQMZkg928KZP6BfsOmAhwkAr3ykel79JJv+TxJS+3MMVwtHUAvv6gAkVPpehX1JgHYBQr1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id F0327201E63;
+	Fri, 12 Dec 2025 03:31:36 +0100 (CET)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B95E0201E61;
+	Fri, 12 Dec 2025 03:31:36 +0100 (CET)
+Received: from lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com (lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com [10.52.9.99])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id E7A2B1800241;
+	Fri, 12 Dec 2025 10:31:34 +0800 (+08)
+From: Joseph Guo <qijian.guo@nxp.com>
+Subject: [PATCH v2 0/2] Add FRDM i.MX 91 Development board support
+Date: Fri, 12 Dec 2025 11:31:32 +0900
+Message-Id: <20251212-imx91_frdm-v2-0-4dd6d289e81d@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 11 Dec 2025 18:48:22 +0100
-Message-Id: <DEVKRHI0WLHG.1J4ULCK2DYF2Q@bootlin.com>
-Subject: Re: [PATCH 04/26] drm/bridge: make of_drm_find_bridge() a wrapper
- of drm_of_find_bridge()
-Cc: "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
- <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
- <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
- <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Jonathan Corbet" <corbet@lwn.net>, "Alexey Brodkin"
- <abrodkin@synopsys.com>, "Phong LE" <ple@baylibre.com>, "Liu Ying"
- <victor.liu@nxp.com>, "Shawn Guo" <shawnguo@kernel.org>, "Sascha Hauer"
- <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Adrien
- Grassein" <adrien.grassein@gmail.com>, "Laurent Pinchart"
- <laurent.pinchart+renesas@ideasonboard.com>, "Tomi Valkeinen"
- <tomi.valkeinen+renesas@ideasonboard.com>, "Kieran Bingham"
- <kieran.bingham+renesas@ideasonboard.com>, "Geert Uytterhoeven"
- <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Kevin
- Hilman" <khilman@baylibre.com>, "Jerome Brunet" <jbrunet@baylibre.com>,
- "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>, "Chun-Kuang Hu"
- <chunkuang.hu@kernel.org>, "Philipp Zabel" <p.zabel@pengutronix.de>,
- "Matthias Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno"
- <angelogioacchino.delregno@collabora.com>, "Anitha Chrisanthus"
- <anitha.chrisanthus@intel.com>, "Edmund Dea" <edmund.j.dea@intel.com>,
- "Inki Dae" <inki.dae@samsung.com>, "Seung-Woo Kim"
- <sw0312.kim@samsung.com>, "Kyungmin Park" <kyungmin.park@samsung.com>,
- "Krzysztof Kozlowski" <krzk@kernel.org>, "Alim Akhtar"
- <alim.akhtar@samsung.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <imx@lists.linux.dev>,
- <linux-arm-kernel@lists.infradead.org>,
- <linux-renesas-soc@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
- <linux-mediatek@lists.infradead.org>, <linux-samsung-soc@vger.kernel.org>,
- "Anusha Srivatsa" <asrivats@redhat.com>
-To: "Maxime Ripard" <mripard@kernel.org>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.20.1
-References: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com> <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-4-0db98a7fe474@bootlin.com> <wxxjp7fmsnh2k4huvg2thmfi6kcszdphrag3zosrnykn7abeua@cdlywqj32jd7> <DEH2R1Q0XJJG.1NMESYMX9GMFL@bootlin.com> <20251201-fragrant-kingfisher-of-expertise-e43bff@houat>
-In-Reply-To: <20251201-fragrant-kingfisher-of-expertise-e43bff@houat>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIR+O2kC/23MQQ6CMBCF4auQWVvTaYWKK+9hiAE6yCxaSGtID
+ endraxd/i953w6RAlOEW7VDoI0jL76EOlUwzr1/kWBbGpRUNSJeBLvU4nMK1oneWjWoURoyVyi
+ HNdDE6cAeXemZ43sJn8Pe8Lf+ZTYUUlBtGj3YqdW6ufu0nsfFQZdz/gInVthCogAAAA==
+X-Change-ID: 20251114-imx91_frdm-add2b2c07e78
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Justin Jiang <justin.jiang@nxp.com>, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, qijian.guo@oss.nxp.com, 
+ Joseph Guo <qijian.guo@nxp.com>, Tom Zheng <haidong.zheng@nxp.com>, 
+ Steven Yang <steven.yang@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765506694; l=1410;
+ i=qijian.guo@nxp.com; s=20250519; h=from:subject:message-id;
+ bh=qZxoOpZklmk0uLrecCQ0PIkOwJOw6TGfs6nzQjEN3Jc=;
+ b=k9WzHtAHy892HO1YZlrnaTyEyjFDdhH19IAAa3kvAPqGDaa5BbyQTFUSbLQ7ED2OWM5os8hgH
+ sD6AwNqmtu2DwQ338HGaGwbr73Jfk7YqWMv3m9Z9QLBvG4iwqAGeCOy
+X-Developer-Key: i=qijian.guo@nxp.com; a=ed25519;
+ pk=VRjOOFhVecTRwBzK4mt/k3JBnHoYfuXKCm9FM+hHQhs=
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-Hi Maxime,
+FRDM-IMX91 board is a low cost development platform based on i.MX91 SoC:
+https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX91
 
-On Mon Dec 1, 2025 at 5:34 PM CET, Maxime Ripard wrote:
-...
->> The main user to be converted is drm_of_find_panel_or_bridge(), which is
->> very tricky, and in turn it is used by devm_drm_of_get_bridge(). We
->> discussed this in the past and the conclusion was a rework of the drm_pa=
-nel
->> lifetime was needed to be able to properly replace
->> drm_of_find_panel_or_bridge().
->
-> Yeah. I wonder, now that we have a proper allocation scheme for panels
-> too, if we shouldn't just create a panel_bridge for every panel we
-> allocate.
+Add device tree and dt-binding for FRDM-IMX91.
 
-I would definitely second this idea.
+Signed-off-by: Joseph Guo <qijian.guo@nxp.com>
+---
+Changes in v2:
+- rename compatible 'frdm-imx91' to 'imx91-11x11-frdm'
+- rename 'sw-keys' to 'gpio-keys'
+- rename 'user_btn' to 'button-k'
+- drop lpspi3 node
+- rename iomuxc 'grpsleep' to 'sleepgrp'
+- move dt-binding patch before the dts patch
+- add board page link in cover letter
+- use CAN PHY to manage the stby gpio of flexcan2
+- drop realtek property
+- add pcf2131 aliase
+- add bootph- property for nodes should be kept in bootloader phase
+- add reset-gpio and assert for eqos and fec
+- delete unused alias
+- Link to v1: https://lore.kernel.org/r/20251114-imx91_frdm-v1-0-e5763bdf9336@nxp.com
 
->> Maxime, Anusha, are you aware of any steps forward about dynamic panel
->> lifetime, after devm_drm_panel_alloc()?
->
-> AFAIK, Anusha stopped working on it. I'm fairly busy at the moment, but
-> early next year I'll try to revive that effort.
+---
+Joseph Guo (2):
+      dt-bindings: arm: imx Add FRDM-IMX91 board
+      arm64: dts: freescale: Add FRDM-IMX91 basic support
 
-That would be great! Please Cc me so I can review and test your work.
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   1 +
+ arch/arm64/boot/dts/freescale/Makefile             |   1 +
+ arch/arm64/boot/dts/freescale/imx91-11x11-frdm.dts | 904 +++++++++++++++++++++
+ 3 files changed, 906 insertions(+)
+---
+base-commit: 73f1e611b076de705c2f1c26cfdfc5b8e96f4733
+change-id: 20251114-imx91_frdm-add2b2c07e78
 
-Luca
+Best regards,
+-- 
+Joseph Guo <qijian.guo@nxp.com>
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
