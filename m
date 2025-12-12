@@ -1,438 +1,469 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1E530FC30
-	for <imx@lists.linux.dev>; Fri, 12 Dec 2025 10:11:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A242113A88C
+	for <imx@lists.linux.dev>; Fri, 12 Dec 2025 11:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765534275; cv=none; b=mMaqe9t9XuZqd2N48+XeoKF0UsISzskuTZtaYqg3M64sviyDWd886EnIIgUNrlSqN25Xt9A4vqqFvr8JBAtLmzt2/pl2GkjBtCPQx7j3FNaEk3vycr1spdcF0M2GmjfxuWJ4D3253BVJtK+/nf0F+PUoFb1LRx6/5oT54cehwJM=
+	t=1765537859; cv=none; b=pt7Tn1GPxkHoHkPysyvGZAKvkV8Ri1V/EpUMFDV24VRuY6SuytrvQoOrea2lr5B4PHVGPOZl+q3bLZsn3nqlnKWyn/LzImqYpYGIGTBQDe/GETAOBDP3S1VYX7WM4nmlO22IWvecoKs3hjlAjcHbcs9hOKbnCCRav1TjdJaO2go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765534275; c=relaxed/simple;
-	bh=K9iOfHu3sHH8E2mx/0wrzT5tjpWF/oxkt/1WE6QwHvc=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=muwrDoWTc5Pr37Yj4cwZBr+PlV1MtMmlkhQB2/DQ7bYMMCp0EpZXNmgG1wJGPudGBvFjBXuVcigeaCMcf2m706Yt3B49hqWCrvxNU01/64I7oGY4TF6Rls5t1tWVHlgWhPh0GB/lPVlb1rGNM/St8c2rR1v9Yaz7NKFxVxENlSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B4Grw/XY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765537859; c=relaxed/simple;
+	bh=pzMmpfcrU0zc5/eCEr00FeluAPhlQ42zokq+tp1zcLo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=fWp58EmKZxRuB/RRGZBQ7CTCO+0gjxhTzFfThTKunyZKQ0PvOwb4eMuiKSrpmR2fv7azBZyqU9EC24JPNjJB3EY4Es09nH6r1URwKkyrRVrTJuSMZOu9VtLx+wPCOnszQM+lnxKKvQ7I75FbpN8aG79rdy0c6EDXWthz1Lq146k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yuwqXMqr; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B4Grw/XY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC2BC19422
-	for <imx@lists.linux.dev>; Fri, 12 Dec 2025 10:11:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765534274;
-	bh=K9iOfHu3sHH8E2mx/0wrzT5tjpWF/oxkt/1WE6QwHvc=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
-	b=B4Grw/XYgfImbgds3cMa893XWbZhiOjKQrw2KF9QHZLYIC3QpCHOqDsX0FPv+95ZA
-	 MtVWlIM9q5R55GZukJY5aHWz/R5bZGJj5zYusPu/v42G6olNoebuToBTIo/WyZvZh2
-	 xmagALpXV6kY1/wIHLMOfARvx/zlsQYdgEjvG7aA3A1Y2/Rz6kspBp22j86ebBkMHy
-	 V8TxVS9QzWDUCL5YCprzPoTREi8IC0r7IDSolRdY1BACD9h/pwhfT1gIsCr1KAwd+3
-	 SgfEX+KVHCl6trqKeiRsp1xqscRedCq2uTdwMzuG6bjv9Y/CPf5s4bANrxDJfkIHeO
-	 nFAdAYOy0Cs5g==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-598eaafa587so1238113e87.3
-        for <imx@lists.linux.dev>; Fri, 12 Dec 2025 02:11:14 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVCulHG5nVykHXjqe+/rFxoa55rsaZRtHXnOnoobx5cVjPKW0lIVPgYrds9//vC6PTXfa0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzCb46VbT/SeVQ6+xtchFB58Oc5P/Y4ReETOMody2P74p391J3t
-	Jlre/zh5pE9YdyZclXx1Bnj5YD9P7Q7xK6jJ2/7myc9aOO1S8/m6SkEIH8BY6Dl7k8kgK8zbe0f
-	N/9IDNtKKD5cpR9YmRVuiNy3ToDrOcbKF8ksI2kiBeQ==
-X-Google-Smtp-Source: AGHT+IGgQcDDVx5CV5iALdJF8BCtSi9/N1Hvmh5TeNsn50J9aXMOA2he1DDvPHJXZouFGJPTLM1rhMNOTARniy28pOQ=
-X-Received: by 2002:a05:6512:3e01:b0:598:f262:15ec with SMTP id
- 2adb3069b0e04-598faa8083bmr601324e87.26.1765534273448; Fri, 12 Dec 2025
- 02:11:13 -0800 (PST)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 12 Dec 2025 02:11:11 -0800
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 12 Dec 2025 02:11:11 -0800
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20251212-dev-b4-aaeon-mcu-driver-v1-6-6bd65bc8ef12@bootlin.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yuwqXMqr"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id CE7504E41BAC;
+	Fri, 12 Dec 2025 11:10:53 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 856E9606DF;
+	Fri, 12 Dec 2025 11:10:53 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 611F2103C8CCF;
+	Fri, 12 Dec 2025 12:10:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1765537851; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=/3X8EEc6tyykk9KRGnfPo/K+yhkEmQMmHDHot2+7Nas=;
+	b=yuwqXMqrgaJGhhW8bQoobyjJP9RbUmzZSOWm4cjc1NLQHYr08vytCN5Jv48v32KOvwaTes
+	Dx8EvJ9M6eDUjG7CmwC+rGCxWtAvkeX9YlOSk+LFtxq91OSEyiCJ3cbYUxZ50FEfrQDQH0
+	ct8Ld2omr3omI4GBepXe1IfwGz5ucd2i6H2y9nrSpUYdLjJTNVLVSCSLvugbPuLwwofJZm
+	27M+qiq6jiGAU5be/zCe9b3I2rvt40psINUlleRF86ehw5CPnX/bvmnm+cykxhPoyCeA7h
+	Y1Jq0Hw/La5dM26LNQRxKKS9Ffx73n/WJEqRyJEf8a70Y9KMyOBXpItndJA0EA==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20251212-dev-b4-aaeon-mcu-driver-v1-0-6bd65bc8ef12@bootlin.com> <20251212-dev-b4-aaeon-mcu-driver-v1-6-6bd65bc8ef12@bootlin.com>
-Date: Fri, 12 Dec 2025 02:11:11 -0800
-X-Gmail-Original-Message-ID: <CAMRc=McSHcYfz2L-jeJa9Dnb=fp8ACRAwNtDJmHEMQ3b+BOd+A@mail.gmail.com>
-X-Gm-Features: AQt7F2oPhStXk_-W99l7ac0r049RG0GE-tK9DybvagfZd3dPy0ulff7h6NWizGs
-Message-ID: <CAMRc=McSHcYfz2L-jeJa9Dnb=fp8ACRAwNtDJmHEMQ3b+BOd+A@mail.gmail.com>
-Subject: Re: [PATCH 6/8] gpio: aaeon: Add GPIO driver for SRG-IMX8PL MCU
-To: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, 
-	=?UTF-8?B?SsOpcsOpbWllIERhdXRoZXJpYmVz?= <jeremie.dautheribes@bootlin.com>, 
-	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 12 Dec 2025 12:10:37 +0100
+Message-Id: <DEW6XHD12EY4.1THDR9UMJOTAN@bootlin.com>
+Subject: Re: [PATCH 06/26] drm/bridge: add devm_drm_of_find_bridge
+Cc: "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
+ <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
+ <simona@ffwll.ch>, "Jonathan Corbet" <corbet@lwn.net>, "Alexey Brodkin"
+ <abrodkin@synopsys.com>, "Phong LE" <ple@baylibre.com>, "Liu Ying"
+ <victor.liu@nxp.com>, "Shawn Guo" <shawnguo@kernel.org>, "Sascha Hauer"
+ <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Adrien
+ Grassein" <adrien.grassein@gmail.com>, "Laurent Pinchart"
+ <laurent.pinchart+renesas@ideasonboard.com>, "Tomi Valkeinen"
+ <tomi.valkeinen+renesas@ideasonboard.com>, "Kieran Bingham"
+ <kieran.bingham+renesas@ideasonboard.com>, "Geert Uytterhoeven"
+ <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Kevin
+ Hilman" <khilman@baylibre.com>, "Jerome Brunet" <jbrunet@baylibre.com>,
+ "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>, "Chun-Kuang Hu"
+ <chunkuang.hu@kernel.org>, "Philipp Zabel" <p.zabel@pengutronix.de>,
+ "Matthias Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno"
+ <angelogioacchino.delregno@collabora.com>, "Anitha Chrisanthus"
+ <anitha.chrisanthus@intel.com>, "Edmund Dea" <edmund.j.dea@intel.com>,
+ "Inki Dae" <inki.dae@samsung.com>, "Seung-Woo Kim"
+ <sw0312.kim@samsung.com>, "Kyungmin Park" <kyungmin.park@samsung.com>,
+ "Krzysztof Kozlowski" <krzk@kernel.org>, "Alim Akhtar"
+ <alim.akhtar@samsung.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>,
+ <linux-renesas-soc@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
+ <linux-mediatek@lists.infradead.org>, <linux-samsung-soc@vger.kernel.org>
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>, "Maxime Ripard"
+ <mripard@kernel.org>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.20.1
+References: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com> <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-6-0db98a7fe474@bootlin.com> <hs44z4b2dgisemuewgtvl4epjcqqilg6cy36po25pubaog4hmq@33qgl4o3hwoa> <DEH2CVQV21Z2.25PJBAQAKFJSG@bootlin.com> <20251201-thick-jasmine-oarfish-1eceb0@houat> <DEVKQWH8GU0D.2NWQ1U7IOIEHI@bootlin.com>
+In-Reply-To: <DEVKQWH8GU0D.2NWQ1U7IOIEHI@bootlin.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, 12 Dec 2025 08:41:09 +0100, "Thomas Perrot (Schneider
-Electric)" <thomas.perrot@bootlin.com> said:
-> Add GPIO driver for the Aaeon SRG-IMX8PL embedded controller. This
-> driver supports 7 GPO (General Purpose Output) pins and 12 GPIO pins
-> that can be configured as inputs or outputs.
+Hi Maxime,
+
+On Thu Dec 11, 2025 at 6:47 PM CET, Luca Ceresoli wrote:
+> Hi Maxime,
 >
-> The driver implements proper state management for GPO pins (which are
-> output-only) and full direction control for GPIO pins. During probe,
-> all pins are reset to a known state (GPOs low, GPIOs as inputs) to
-> prevent undefined behavior across system reboots, as the MCU does not
-> reset GPIO states on soft reboot.
+> On Mon Dec 1, 2025 at 5:51 PM CET, Maxime Ripard wrote:
+>> On Mon, Nov 24, 2025 at 05:25:39PM +0100, Luca Ceresoli wrote:
+>>> Hi Maxime,
+>>>
+>>> On Mon Nov 24, 2025 at 11:39 AM CET, Maxime Ripard wrote:
+>>> > On Wed, Nov 19, 2025 at 02:05:37PM +0100, Luca Ceresoli wrote:
+>>> >> Several drivers (about 20) follow the same pattern:
+>>> >>
+>>> >>  1. get a pointer to a bridge (typically the next bridge in the chai=
+n) by
+>>> >>     calling of_drm_find_bridge()
+>>> >>  2. store the returned pointer in the private driver data, keep it u=
+ntil
+>>> >>     driver .remove
+>>> >>  3. dereference the pointer at attach time and possibly at other tim=
+es
+>>> >>
+>>> >> of_drm_find_bridge() is now deprecated because it does not increment=
+ the
+>>> >> refcount and should be replaced with drm_of_find_bridge() +
+>>> >> drm_bridge_put().
+>>> >>
+>>> >> However some of those drivers have a complex code flow and adding a
+>>> >> drm_bridge_put() call in all the appropriate locations is error-pron=
+e,
+>>> >> leads to ugly and more complex code, and can lead to errors over tim=
+e with
+>>> >> code flow changes.
+>>> >>
+>>> >> To handle all those drivers in a straightforward way, add a devm var=
+iant of
+>>> >> drm_of_find_bridge() that adds a devm action to invoke drm_bridge_pu=
+t()
+>>> >> when the said driver is removed. This allows all those drivers to pu=
+t the
+>>> >> reference automatically and safely with a one line change:
+>>> >>
+>>> >>   - priv->next_bridge =3D of_drm_find_bridge(remote_np);
+>>> >>   + priv->next_bridge =3D devm_drm_of_find_bridge(dev, remote_np);
+>>> >>
+>>> >> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>>> >>
+>>> >> ---
+>>> >>  drivers/gpu/drm/drm_bridge.c | 30 ++++++++++++++++++++++++++++++
+>>> >>  include/drm/drm_bridge.h     |  5 +++++
+>>> >>  2 files changed, 35 insertions(+)
+>>> >>
+>>> >> diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_brid=
+ge.c
+>>> >> index 09ad825f9cb8..c7baafbe5695 100644
+>>> >> --- a/drivers/gpu/drm/drm_bridge.c
+>>> >> +++ b/drivers/gpu/drm/drm_bridge.c
+>>> >> @@ -1446,6 +1446,36 @@ struct drm_bridge *drm_of_find_bridge(struct =
+device_node *np)
+>>> >>  }
+>>> >>  EXPORT_SYMBOL(drm_of_find_bridge);
+>>> >>
+>>> >> +/**
+>>> >> + * devm_drm_of_find_bridge - find the bridge corresponding to the d=
+evice
+>>> >> + *			     node in the global bridge list and add a devm
+>>> >> + *			     action to put it
+>>> >> + *
+>>> >> + * @dev: device requesting the bridge
+>>> >> + * @np: device node
+>>> >> + *
+>>> >> + * On success the returned bridge refcount is incremented, and a de=
+vm
+>>> >> + * action is added to call drm_bridge_put() when @dev is removed. S=
+o the
+>>> >> + * caller does not have to put the returned bridge explicitly.
+>>> >> + *
+>>> >> + * RETURNS:
+>>> >> + * drm_bridge control struct on success, NULL on failure
+>>> >> + */
+>>> >> +struct drm_bridge *devm_drm_of_find_bridge(struct device *dev, stru=
+ct device_node *np)
+>>> >> +{
+>>> >> +	struct drm_bridge *bridge =3D drm_of_find_bridge(np);
+>>> >> +
+>>> >> +	if (bridge) {
+>>> >> +		int err =3D devm_add_action_or_reset(dev, drm_bridge_put_void, br=
+idge);
+>>> >> +
+>>> >> +		if (err)
+>>> >> +			return ERR_PTR(err);
+>>> >> +	}
+>>> >> +
+>>> >> +	return bridge;
+>>> >> +}
+>>> >> +EXPORT_SYMBOL(devm_drm_of_find_bridge);
+>>> >
+>>> > That's inherently unsafe though, because even if the bridge is remove=
+d
+>>> > other parts of DRM might still have a reference to it and could call
+>>> > into it.
+>>> >
+>>> > We'd then have dropped our reference to the next bridge, which could
+>>> > have been freed, and it's a use-after-free.
+>>>
+>>> I think you refer to this scenario:
+>>>
+>>>   1. pipeline: encoder --> bridge A --> bridge B --> bridge C
+>>>   2. encoder takes a reference to bridge B
+>>>      using devm_drm_of_find_bridge() or other means
+>>>   3. bridge B takes a next_bridge reference to bridge C
+>>>      using devm_drm_of_find_bridge()
+>>>   4. encoder calls (bridge B)->foo(), which in turns references
+>>>      next_bridge, e.g.:
+>>>
+>>>        b_foo() {
+>>>            bar(b->next_bridge);
+>>>        }
+>>>
+>>> If bridges B and C are removed, bridge C can be freed but B is still
+>>> allocated because the encoder holds a ref. So when step 4 happens, 'b->=
+c'
+>>> would be a use-after-free (or NULL deref if b.remove cleared it, which =
+is
+>>> just as bad).
+>>
+>> Yep.
+>>
+>>> If I got you correctly, then I'm a bit surprised by your comment. This
+>>> series is part of the first chapter of the hotplug work, which does not=
+ aim
+>>> at fixing everything but rather at fixing one part: handle dynamic
+>>> _allocation_ lifetime of drm_bridges by adding a refcount and
+>>> drm_bridge_get/put().
+>>>
+>>> Chapter 2 of the work is adding drm_bridge_enter/exit/unplug() [1] and
+>>> other changes in order to avoid code of drivers of removed bridges to
+>>> access fields they shouldn't. So the above example at point 4 would bec=
+ome:
+>>>
+>>>        b_foo() {
+>>>            if (!drm_bridge_enter())
+>>>                return;
+>>>            bar(b->c);
+>>>            drm_bridge_exit();
+>>>        }
+>>>
+>>> And that avoids 'b->c' after bridge B is removed.
+>>>
+>>> Does that answer your remark?
+>>
+>> Not really. I wasn't really questionning your current focus, or the way
+>> you laid out the current agenda or whatever.
+>>
+>> What I am questionning though is whether or not we want to introduce
+>> something we will have to untangle soon, and even more so when we're not
+>> mentioning it anywhere.
+>>
+>>> > It's more complicated than it sounds, because we only have access to =
+the
+>>> > drm_device when the bridge is attached, so later than probe.
+>>> >
+>>> > I wonder if we shouldn't tie the lifetime of that reference to the
+>>> > lifetime of the bridge itself, and we would give up the next_bridge
+>>> > reference only when we're destroyed ourselves.
+>>>
+>>> I'm afraid I'm not following you, sorry. Do you refer to the time betwe=
+en
+>>> the bridge removal (driver .remove) and the last bridge put (when
+>>> deallocation happens)?
+>>>
+>>> In that time frame the struct drm_bridge is still allocated along with =
+any
+>>> next_bridge pointer it may contain, but the following bridge could have
+>>> been deallocated.
+>>>
+>>> What do you mean by "give up the next_bridge"?
+>>
+>> What I was trying to say was that if we want to fix the problem you
+>> illustrated about, we need to give up the reference at __drm_bridge_free
+>> time. So each bridge having a reference to a bridge would need to do so
+>> in its destroy hook.
+>>
+>> Since it's quite a common pattern, it would make sense to add a
+>> next_bridge field to drm_bridge itself, so the core can do it
+>> automatically in __drm_bridge_free if that pointer is !NULL.
+>>
+>> But...
+>>
+>>> > Storing a list of all the references we need to drop is going to be
+>>> > intrusive though, so maybe the easiest way to do it would be to creat=
+e a
+>>> > next_bridge field in drm_bridge, and only drop the reference stored
+>>> > there?
+>>> >
+>>> > And possibly tie the whole thing together using a helper?
+>>> >
+>>> > Anyway, I'm not sure it should be a prerequisite to this series. I we=
+ do
+>>> > want to go the devm_drm_of_find_bridge route however, we should at le=
+ast
+>>> > document that it's unsafe, and add a TODO entry to clean up the mess
+>>> > later on.
+>>
+>> ... I *really* don't consider it something you need to work on right now=
+.
+>>
+>>> Do you mean the drm variant is unsafe while the original
+>>> (drm_of_find_bridge() in this series, might be renamed) is not? I
+>>> don't see how that can happen. If the driver for bridge B were to use
+>>> drm_of_find_bridge(), that driver would be responsible to
+>>> drm_bridge_put(b->next_bridge) in its .remove() function or earlier.
+>>> So the next_bridge pointing to bridge C would equally become subject
+>>> to use-after-free.
+>>
+>> No, I was saying that both are equally unsafe. But we're adding a new,
+>> broken, helper, and we don't mention anywhere that it is. So what I was
+>> saying is mostly do we really want to introduce some more broken code
+>> when we know it is. And if we do, we should be really clear about it.
+>>
+>>> devm does not make it worse, on the opposite it postpones the
+>>> drm_bridge_put(next_bridge) as late as possible: just after
+>>> b.remove().
+>>
+>> Which doesn't really change anything, does it? I'd expect the window
+>> between the remove and final drm_bridge_put to be much wider than the
+>> execution time of remove itself.
+>>
+>>> One final, high-level thought about the various 'next_bridge' pointers =
+that
+>>> many bridge drivers have. Most of them do:
+>>>
+>>>  0. have a 'struct drm_bridge next_bridge *' in their private struct
+>>>  1. take the next_bridge reference during probe or another startup phas=
+e
+>>>  2. store it in their private driver struct
+>>>  3. use it to call drm_bridge_attach
+>>>  4. (pending) put the reference to it in their .remove or earlier
+>>>
+>>> I'm wondering whether we could let the DRM bridge core do it all, by
+>>> removing items 0, 1, 2 and 4, and change 3 as:
+>>>
+>>> -     drm_bridge_attach(encoder, me->next_bridge, &me->bridge, flags);
+>>> +  drm_of_bridge_attach(encoder, &me->bridge, dev->of_node, 1, -1, flag=
+s);
+>>>
+>>> where dev->of_node and the following integers are the same flags passed=
+ to
+>>> devm_drm_of_get_bridge() and the like, i.e. the endpoint info needed to
+>>> walk the DT graph and reach the next bridge.
+>>>
+>>> This would allow the core to take care of all locking and lifetime of t=
+he
+>>> next bridge, and most (all?) bridges would never access any pointers to=
+ the
+>>> next bridge. The idea is to let the core do the right thing in a single
+>>> place instead of trying to make all drivers do the right thing (and
+>>> touching dozen files when needing to touch the logic).
+>>>
+>>> That is more a long-term ideal than something I'd do right now, but hav=
+ing
+>>> opinions would be very interesting.
+>>
+>> That was pretty much my point, yeah.
+>>
+>> Maxime
 >
-> Co-developed-by: J=C3=A9r=C3=A9mie Dautheribes (Schneider Electric) <jere=
-mie.dautheribes@bootlin.com>
-> Signed-off-by: J=C3=A9r=C3=A9mie Dautheribes (Schneider Electric) <jeremi=
-e.dautheribes@bootlin.com>
-> Signed-off-by: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.=
-com>
-> ---
->  drivers/gpio/Kconfig          |  10 ++
->  drivers/gpio/Makefile         |   1 +
->  drivers/gpio/gpio-aaeon-mcu.c | 248 ++++++++++++++++++++++++++++++++++++=
-++++++
->  3 files changed, 259 insertions(+)
+> Let me recap this discussion, because there are various aspects and I nee=
+d
+> to clarify by view on it.
 >
-> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-> index c74da29253e810b51540684b1186e8f274066b69..7e0f675b664fa25243fc2802e=
-dc3380572c94c41 100644
-> --- a/drivers/gpio/Kconfig
-> +++ b/drivers/gpio/Kconfig
-> @@ -157,6 +157,16 @@ config GPIO_74XX_MMIO
->  	    8 bits:	74244 (Input), 74273 (Output)
->  	    16 bits:	741624 (Input), 7416374 (Output)
+> First: the problem you discuss is about drm_of_find_bridge() introduced i=
+n
+> patch 1. The devm variant is just equally affected.
 >
-> +config GPIO_AAEON_MCU
-> +	tristate "Aaeon MCU GPIO support"
-> +	depends on MFD_AAEON_MCU && OF_GPIO
+> You proposed adding a next_bridge field in struct drm_bridge so there is =
+an
+> automated, common call to drm_bridge_put() (and setting it to NULL). It
+> would remove some burden on individual drivers of course, but I don't thi=
+nk
+> it would solve the problem. In the same scenario we are discussing
+> (i.e. encoder --> bridge A --> bridge B --> bridge C, then B+C get remove=
+d)
+> B's next_bridge would be automatically put, but the encoder could still
+> call B->foo(), which could still do B->next_bridge.
 
-You don't need OF_GPIO, please drop it.
+Ah, I realied I'm wrong here. Your proposal is to put the reference at
+__drm_bridge_free time, not a release time. So yes, it would work. At least
+for the simple cases, where there's only the next_bridge pointer stored.
 
-> +	select GPIO_GENERIC
-> +	help
-> +	  Select this option to enable GPIO support for the Aaeon SRG-IMX8PL
-> +	  onboard MCU. This driver provides access to GPIO pins and GPO
-> +	  (General Purpose Output) pins controlled by the microcontroller.
-> +	  The driver handles both input and output configuration.
-> +
->  config GPIO_ALTERA
->  	tristate "Altera GPIO"
->  	select GPIOLIB_IRQCHIP
-> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-> index 2421a8fd3733e0b06c2581262aaa9cd629f66c7d..1ba6318bc558743fbe5910966=
-c2c8fc3f792efe9 100644
-> --- a/drivers/gpio/Makefile
-> +++ b/drivers/gpio/Makefile
-> @@ -29,6 +29,7 @@ obj-$(CONFIG_GPIO_104_IDI_48)		+=3D gpio-104-idi-48.o
->  obj-$(CONFIG_GPIO_104_IDIO_16)		+=3D gpio-104-idio-16.o
->  obj-$(CONFIG_GPIO_74X164)		+=3D gpio-74x164.o
->  obj-$(CONFIG_GPIO_74XX_MMIO)		+=3D gpio-74xx-mmio.o
-> +obj-$(CONFIG_GPIO_AAEON_MCU)		+=3D gpio-aaeon-mcu.o
->  obj-$(CONFIG_GPIO_ADNP)			+=3D gpio-adnp.o
->  obj-$(CONFIG_GPIO_ADP5520)		+=3D gpio-adp5520.o
->  obj-$(CONFIG_GPIO_ADP5585)		+=3D gpio-adp5585.o
-> diff --git a/drivers/gpio/gpio-aaeon-mcu.c b/drivers/gpio/gpio-aaeon-mcu.=
-c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..cebd17d1877147b987ea673b0=
-81334c8062f5fc0
-> --- /dev/null
-> +++ b/drivers/gpio/gpio-aaeon-mcu.c
-> @@ -0,0 +1,248 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Aaeon MCU GPIO driver
-> + *
-> + * Copyright (C) 2025 Bootlin
-> + * Author: J=C3=A9r=C3=A9mie Dautheribes <jeremie.dautheribes@bootlin.co=
-m>
-> + * Author: Thomas Perrot <thomas.perrot@bootlin.com>
-> + */
-> +
-> +#include <linux/bitmap.h>
-> +#include <linux/gpio/driver.h>
-> +#include <linux/mfd/aaeon-mcu.h>
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-
-You need more headers than that. At least device.h for devm_kzalloc(),
-mod_devicetable.h, bitops.h and probably some more.
-
-> +
-> +#define AAEON_MCU_CONFIG_GPIO_INPUT 0x69
-> +#define AAEON_MCU_CONFIG_GPIO_OUTPUT 0x6F
-> +#define AAEON_MCU_READ_GPIO 0x72
-> +#define AAEON_MCU_WRITE_GPIO 0x77
-> +
-> +#define AAEON_MCU_CONTROL_GPO 0x6C
-> +
-> +#define MAX_GPIOS 12
-> +#define MAX_GPOS 7
-> +
-> +struct aaeon_mcu_gpio {
-> +	struct gpio_chip gc;
-> +	struct aaeon_mcu_dev *mfd;
-> +	DECLARE_BITMAP(dir_in, MAX_GPOS + MAX_GPIOS);
-> +	DECLARE_BITMAP(gpo_state, MAX_GPOS);
-> +};
-> +
-> +static int aaeon_mcu_gpio_config_input_cmd(struct aaeon_mcu_gpio *data,
-> +					    unsigned int offset)
-> +{
-> +	u8 cmd[3], rsp;
-> +
-> +	cmd[0] =3D AAEON_MCU_CONFIG_GPIO_INPUT;
-> +	cmd[1] =3D offset - 7;
-> +	cmd[2] =3D 0x00;
-> +
-> +	return aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
-> +}
-> +
-> +static int aaeon_mcu_gpio_direction_input(struct gpio_chip *gc, unsigned=
- int offset)
-> +{
-> +	struct aaeon_mcu_gpio *data =3D gpiochip_get_data(gc);
-> +	int ret;
-> +
-> +	if (offset < MAX_GPOS) {
-> +		dev_err(gc->parent, "GPIO offset (%d) must be an output GPO\n", offset=
-);
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	ret =3D aaeon_mcu_gpio_config_input_cmd(data, offset);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	set_bit(offset, data->dir_in);
-> +
-> +	return 0;
-> +}
-> +
-> +static int aaeon_mcu_gpio_config_output_cmd(struct aaeon_mcu_gpio *data,
-> +					     unsigned int offset,
-> +					     int value)
-> +{
-> +	u8 cmd[3], rsp;
-> +	int ret;
-> +
-> +	cmd[0] =3D AAEON_MCU_CONFIG_GPIO_OUTPUT;
-> +	cmd[1] =3D offset - 7;
-> +	cmd[2] =3D 0x00;
-> +
-> +	ret =3D aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	cmd[0] =3D AAEON_MCU_WRITE_GPIO;
-> +	/* cmd[1] =3D offset - 7; */
-> +	cmd[2] =3D !!value;
-> +
-> +	return aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
-> +}
-> +
-> +static int aaeon_mcu_gpio_direction_output(struct gpio_chip *gc, unsigne=
-d int offset, int value)
-> +{
-> +	struct aaeon_mcu_gpio *data =3D gpiochip_get_data(gc);
-> +	int ret;
-> +
-> +	if (offset < MAX_GPOS)
-> +		return 0;
-> +
-> +	ret =3D aaeon_mcu_gpio_config_output_cmd(data, offset, value);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	clear_bit(offset, data->dir_in);
-> +
-> +	return 0;
-> +}
-> +
-> +static int aaeon_mcu_gpio_get_direction(struct gpio_chip *gc, unsigned i=
-nt offset)
-> +{
-> +	struct aaeon_mcu_gpio *data =3D gpiochip_get_data(gc);
-> +
-> +	return test_bit(offset, data->dir_in) ?
-> +		GPIO_LINE_DIRECTION_IN : GPIO_LINE_DIRECTION_OUT;
-> +}
-> +
-> +static int aaeon_mcu_gpio_get(struct gpio_chip *gc, unsigned int offset)
-> +{
-> +	struct aaeon_mcu_gpio *data =3D gpiochip_get_data(gc);
-> +	u8 cmd[3], rsp;
-> +	int ret;
-> +
-> +	if (offset < MAX_GPOS)
-> +		return test_bit(offset, data->gpo_state);
-
-Are you sure the bit ops in this driver need to be atomic?
-
-> +
-> +	cmd[0] =3D AAEON_MCU_READ_GPIO;
-> +	cmd[1] =3D offset - 7;
-> +	cmd[2] =3D 0x00;
-> +
-> +	ret =3D aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return rsp;
-> +}
-> +
-> +static int aaeon_mcu_gpo_set_cmd(struct aaeon_mcu_gpio *data, unsigned i=
-nt offset, int value)
-> +{
-> +	u8 cmd[3], rsp;
-> +
-> +	cmd[0] =3D AAEON_MCU_CONTROL_GPO;
-> +	cmd[1] =3D offset + 1;
-> +	cmd[2] =3D !!value;
-> +
-> +	return aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
-> +}
-> +
-> +static int aaeon_mcu_gpio_set_cmd(struct aaeon_mcu_gpio *data, unsigned =
-int offset, int value)
-> +{
-> +	u8 cmd[3], rsp;
-> +
-> +	cmd[0] =3D AAEON_MCU_WRITE_GPIO;
-> +	cmd[1] =3D offset - 7;
-> +	cmd[2] =3D !!value;
-> +
-> +	return aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
-> +}
-> +
-> +static int aaeon_mcu_gpio_set(struct gpio_chip *gc, unsigned int offset,
-> +			      int value)
-> +{
-> +	struct aaeon_mcu_gpio *data =3D gpiochip_get_data(gc);
-> +
-> +	if (offset < MAX_GPOS) {
-> +		if (aaeon_mcu_gpo_set_cmd(data, offset, value) =3D=3D 0)
-> +			assign_bit(offset, data->gpo_state, value);
-> +	} else {
-> +		return aaeon_mcu_gpio_set_cmd(data, offset, value);
-> +	}
-> +	return 0;
-
-
-It would be much cleaner if you did it like:
-
-	if (offset >=3D MAX_GPOS)
-		return aaeon_mcu_gpio_set_cmd(data, offset, value);
-
-	if (aaeon_mcu_gpo_set_cmd(data, offset, value) =3D=3D 0)
-		assign_bit(offset, data->gpo_state, value);
-
-	return 0;
-
-> +}
-> +
-> +static const struct gpio_chip aaeon_mcu_chip =3D {
-> +	.label			=3D "gpio-aaeon-mcu",
-> +	.owner			=3D THIS_MODULE,
-> +	.get_direction		=3D aaeon_mcu_gpio_get_direction,
-> +	.direction_input	=3D aaeon_mcu_gpio_direction_input,
-> +	.direction_output	=3D aaeon_mcu_gpio_direction_output,
-> +	.get			=3D aaeon_mcu_gpio_get,
-> +	.set			=3D aaeon_mcu_gpio_set,
-> +	.base			=3D -1,
-> +	.ngpio			=3D MAX_GPOS + MAX_GPIOS,
-> +	.can_sleep		=3D true,
-> +};
-
-There's no point in keeping it in memory if you copy it into data->gc anywa=
-y.
-Use compound literals in aaeon_mcu_gpio_probe() if you want to initialize
-members explicitly.
-
-> +
-> +static void aaeon_mcu_gpio_reset(struct aaeon_mcu_gpio *data, struct dev=
-ice *dev)
-> +{
-> +	unsigned int i;
-> +	int ret;
-> +
-> +	/* Reset all GPOs */
-> +	for (i =3D 0; i < MAX_GPOS; i++) {
-> +		ret =3D aaeon_mcu_gpo_set_cmd(data, i, 0);
-> +		if (ret < 0)
-> +			dev_warn(dev, "Failed to reset GPO %u state: %d\n", i, ret);
-> +		clear_bit(i, data->dir_in);
-> +	}
-> +
-> +	/* Reset all GPIOs */
-> +	for (i =3D MAX_GPOS; i < MAX_GPOS + MAX_GPIOS; i++) {
-> +		ret =3D aaeon_mcu_gpio_config_input_cmd(data, i);
-> +		if (ret < 0)
-> +			dev_warn(dev, "Failed to reset GPIO %u state: %d\n", i, ret);
-> +		set_bit(i, data->dir_in);
-> +	}
-> +}
-> +
-> +static int aaeon_mcu_gpio_probe(struct platform_device *pdev)
-> +{
-> +	struct aaeon_mcu_dev *mfd =3D dev_get_drvdata(pdev->dev.parent);
-> +	struct aaeon_mcu_gpio *data;
-> +
-> +	data =3D devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
-> +	if (!data)
-> +		return -ENOMEM;
-> +
-> +	data->mfd =3D mfd;
-
-It looks like all you need is the i2c_client, maybe just store its address =
-and
-avoid constant dereferencing.
-
-> +	data->gc =3D aaeon_mcu_chip;
-> +	data->gc.parent =3D &pdev->dev;
-> +
-> +	/*
-> +	 * Reset all GPIO states to a known configuration. The MCU does not
-> +	 * reset GPIO state on soft reboot, only on power cycle (hard reboot).
-> +	 * Without this reset, GPIOs would retain their previous state across
-> +	 * reboots, which could lead to unexpected behavior.
-> +	 */
-> +	aaeon_mcu_gpio_reset(data, &pdev->dev);
-> +
-> +	platform_set_drvdata(pdev, data);
-
-Where is the corresponding call to platform_get_drvdata()?
-
-> +
-> +	return devm_gpiochip_add_data(&pdev->dev, &data->gc,
-> +				      data);
-> +}
-> +
-> +static const struct of_device_id aaeon_mcu_gpio_of_match[] =3D {
-> +	{ .compatible =3D "aaeon,srg-imx8pl-gpio" },
-> +	{},
-> +};
-> +
-> +MODULE_DEVICE_TABLE(of, aaeon_mcu_gpio_of_match);
-> +
-> +static struct platform_driver aaeon_mcu_gpio_driver =3D {
-> +	.driver =3D {
-> +		.name =3D "aaeon-mcu-gpio",
-> +		.of_match_table =3D aaeon_mcu_gpio_of_match,
-> +	},
-> +	.probe =3D aaeon_mcu_gpio_probe,
-> +};
-> +
-> +module_platform_driver(aaeon_mcu_gpio_driver);
-> +
-> +MODULE_DESCRIPTION("GPIO interface for Aaeon MCU");
-> +MODULE_AUTHOR("J=C3=A9r=C3=A9mie Dautherbes <jeremie.dautheribes@bootlin=
-.com>");
-> +MODULE_LICENSE("GPL");
+> Additionally, as a matter of fact there are currently drivers storing
+> bridge pointers. The next_bridge is the most common case. Code using
+> drm_bridge_connector_init() for example can store up to eight of them, bu=
+t
+> individual drivers are the hardest to hunt for.
 >
-> --
-> 2.52.0
+> I can see these (potential) tools to handle this (not mutually exclusive)=
+:
 >
+>  1. remove drm_bridge pointers pointing to other bridges
+>  2. check whether a bridge (say B) still exists before any dereference
+>     to B->another_bridge: that's drm_bridge_enter/exit()
+>  3. let owners of bridge pointers be notified when a bridge is unplugged,
+>     so they can actively put their reference and clear their pointer
 >
+> For item 1, I think the drm_of_bridge_attach() idea quoted above would
+> work, at least for the simple cases where bridge drivers use the
+> next_bridge only for attach. A next_bridge pointer in struct drm_bridge i=
+s
+> not even needed in that case, the pointer would be computed from OF when
+> needed and not stored. I can do an experiment and send a first series, do
+> you think it would be useful?
 
-Bart
+I had a look and, while the implementation should be simple, only a few
+drivers could benefit right now. The majority fall into one of these
+categories:
+
+ * drivers using drm_of_find_panel_or_bridge() or *_of_get_bridge()
+   (maybe 60-80% of all drivers, those will have to wait for the panel
+   improvements)
+ * drivers using the next_bridge pointer for more than just attach
+ * drivers doing more complicated stuff
+
+I think your "put next_bridge in __drm_bridge_free" idea would fit well the
+2nd category and perhaps also the 1st one. For the 3rd category we'd need
+something different, e.g. a per-driver .destroy callback.
+
+So, while your idea would work, it would avoid use-after-free but not
+prevent calls into a bridge code after the bridge is removed, which is, in
+the best case, useless. I still think we should aim at avoiding the
+dereferences to even happen, so my 3 ideas above still look to me important
+to evaluate.
+
+> For item 2, I still think it would just work for cases not (or not yet)
+> covered by item 1. Given the same example as above:
+>
+>         b_foo() {
+>             if (!drm_bridge_enter())
+>                 return;
+>             bar(b->c);
+>             drm_bridge_exit();
+>         }
+>
+> drm_bridge_enter() will prevent doing anything on b->whatever, including
+> any stale pointers. The idea is "I, bridge B, have been unplugged, my
+> resources are not reliably usable, keep out!". No?
+>
+> However item 2 won't prevent the caller from keeping the pointer for a lo=
+ng
+> time, especially if b_foo() is a void function so it cannot return anythi=
+ng
+> saying "I was unplugged, I'm no longer theree". And that's where item 3
+> (notifiers) might come in useful: upon receiving a bridge removal
+> notification any driver or other code is in a position to actively put it=
+s
+> reference to the bridge and clear its pointer. I had proposed something i=
+n
+> [0], which can likely be improved, but it is useful in my current draft
+> solution.
+>
+> I'd like to know your opinions about the above points, so we can
+> progressively clarify the path forward.
+>
+> PS: I just realized about a fourth option: a revocable [1] (thanks Lauren=
+t
+> who pointed me to it). That's basically a wrapper around a pointer that
+> allows to guard from accessing it when the pointed object is gone. To me =
+it
+> looks somewhat equivalent to drm_bridge_enter/exit() but with very
+> different APIs. I still haven't looked at the details.
+>
+> [0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-12-9d6f2c=
+9c3058@bootlin.com/
+> [1] https://lore.kernel.org/lkml/20251016054204.1523139-2-tzungbi@kernel.=
+org/#t
+
+Luca
+
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
