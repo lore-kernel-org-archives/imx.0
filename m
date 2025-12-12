@@ -1,68 +1,68 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A68231D381
-	for <imx@lists.linux.dev>; Fri, 12 Dec 2025 11:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630EE316904
+	for <imx@lists.linux.dev>; Fri, 12 Dec 2025 11:46:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765539881; cv=none; b=leEEid/F3KDrDvJLZpLjFuG9OxUzEzDOs0O3aT4Ll8YHiEQq7BKZvy9AVf/3oUdsAklLJPjfi6dJwO3PvzpLW2//13plErVRKSHqm6kAy4rWqOkaHUcK/k4JS3/PGxzvOgMQINcydGVIiBjwXoA04RlLwW4x7nnOQWD22hsSwz4=
+	t=1765539999; cv=none; b=qSQa9lO8e26MAYJeT22gXELKe5w8twQAUMuqktJHrVretmv0oSS/ughLK8hyY2/SErcVfzWUMP707W8cM2fofKE54OWZgRKhbc9CY1EK8kcFaD8VylpIrfU80zTMbbZRd8LgOokJgGa60vnTvAsnHlfR++1sulOJjqV4o0PbBgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765539881; c=relaxed/simple;
-	bh=71Gpb5P3HyoCYd1n9yiAOhDovdzOZKNrPZoEBnemtvY=;
+	s=arc-20240116; t=1765539999; c=relaxed/simple;
+	bh=sXo03spb+64sVluQ3HnVV/CmFwHu6V/cHKPYeIo1fuI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MMmZFh9e6PKZwWGcw5YPDf2ZDFDFJ/FnJmpEpGZH2d0ztWSSBc+xXQ8lR4LUG5m7s+FSuHrYJvFwUNvAV9WsMZHJdxDbLEq2IhoV90DXUuSb+fGj/CxaOeiEQ/IZMBNz62cGBWUSmxF+lZQkaJrvG2/8IuE7V3km7tP8sDH9qOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LY4d8aJ7; arc=none smtp.client-ip=209.85.215.175
+	 In-Reply-To:Content-Type; b=dAlE8D8GfXPxC9SJxrWI6seN+NoyZYlA8ehwYwEQgodlrXabT6SYbUDAE7jjIGpdzEi0g8CbZ6sn8ccex3pX0pC6/uiaQwaCeNsVf5j3VZYmWf/hbS+UObONJKeT3d2RBB41sgeMB5DyHOnvFxGkmXqgHCsJ4+649MlhzutcLDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UEm9EA0h; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LY4d8aJ7"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-bf5c7eb21eeso1154655a12.3
-        for <imx@lists.linux.dev>; Fri, 12 Dec 2025 03:44:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UEm9EA0h"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c075ec1a58aso702271a12.0
+        for <imx@lists.linux.dev>; Fri, 12 Dec 2025 03:46:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765539878; x=1766144678; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1765539996; x=1766144796; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=RJ2QIzWrT7rWsYjm95h3xcBoAy5TUAPtYMMg0O2dbCU=;
-        b=LY4d8aJ73/iL6N2PqlTT/IxKSvFLMFpoWpsaGPrUoANIPPgZZf9IJuqWgUTrHEvVcL
-         pq6JDrZz8yobtmdM2WqSXA/dMnlwSiy3h1tH+ycuD+G7f0oa/VZu8nVEq/1EFsCLIP+K
-         xejoEww6m39449ZkAphRuCpvGYvhr5tsER1Hx/4GOeSzqtIU7PU7My7RizNq8nVzeq6I
-         +8Vnb9RPk+491hvAFu/fgAp3Cq6I3p0V5lZDrs0QmKyVLnAn30dbiEi3SbCl54AjWfYL
-         DtgcPmavnYgSk+CTrNTvMueCx9skuOOZjp7W5fvpvgL3ZaPKzRHu5ET1Tql7SSBofi9P
-         kUUg==
+        bh=z4GMPobD7IxP3ob9nUYxNPU1e+JR9o/OtQgZwmUoU4Q=;
+        b=UEm9EA0hW10pABn9SOzPeHLzdsF1BK6eObxUnAGqETg2IyneztTIwJDs45x+Sh6HZ3
+         AdZUamXnFmxTW1dG2PPXPs6HuKD4go6tljBra7DtleNSyDkddH/gkQtyWQleOWp2uHzH
+         8jlG+IESNhInOcPKMo8AIsoEhhGi3IRn8E5UI0pbAvEprJcwmNJ5RtCDeUQrbmzVQaES
+         7sOaHOfDp2XqxYBN3Y7f5CX3o3BNrZq6szNT5+cKIcJYMx70Cap2u+uSBxDOdRLPsN0P
+         Xavzpl3a02dvsmzFUSnXXXk7/tSeKNxgFgyp6Uo2kI/cgl2tSRQ28tr7jWAdHepKmWMT
+         3tRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765539878; x=1766144678;
+        d=1e100.net; s=20230601; t=1765539996; x=1766144796;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RJ2QIzWrT7rWsYjm95h3xcBoAy5TUAPtYMMg0O2dbCU=;
-        b=KnBCShrhqd497RsFF/rSGqVAkLkZItascyv+IHai5B1g192devezr9FpkFe3Rq8CdD
-         oVOsCDkaqOYq4aPFl2Cg5c/OuY9gEsPRpM7WLTBntk2p9fL3x7nqVw048dnXBVmTTjLG
-         6lGDNOYxdWxjCjcWBvDMiHxQM1ubU/84g51oQ/h76VGc0REEMoyfs6pV8YWFojh1swkb
-         +8TP9mKKMoGLmvknrrqHIZ81A7aT/C4OHgNidTH7UZR5Ct5zLJMMt541PzKEIrDityTW
-         iHN6XA8SbJ6UtYld31YM1KbXXMlN+XH5FDIu2gn5yjaV7CHV6WvN8DekojROSIRGGMLX
-         oMKA==
-X-Forwarded-Encrypted: i=1; AJvYcCU9atxkG1Kbo5iMq4oRIxkNe1TQX3Klj+bw82S8IXjkaTDXv6IJbcZPyxS24F9PUMB1xKc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzLNR+pL3M0UrQR7di99OM+pzwYextfZw9vQ5lFZPrveOplEcsm
-	mRJjPB9+wJg9m9OO4rIccBK0MysCv9jzkT0KNNucSB9C6wzWL0KHsONJ
-X-Gm-Gg: AY/fxX4ksxG+z4DMh8zbMpfeLfQP3AyPV855N3V2AD3SkreIFUTFHUSKVY3tzqFq1fm
-	GztzzVFSewFa+vgN+JK/T8JrYuKjki7a8gosxVBVrjioYJxfQDsGvBzzd4GGgpjP9ONQP+xLUG/
-	ExPJBfRsLeS37f0sWqqVRvfv2LPGnHamE4ItrEw6bupTiRkIYkL4XE2ycZ1YS7+GbqgK9gkaZQi
-	CQEviiyn0Qr7HEXqN0fhMxdOpUecD/IQzZOB/1iLDBD6Dk4heLfTLbqoo3hFdl6dTHhSbpVhdZX
-	/CzIEvQzyqKQytWE4To4MWMZVgZuvAvnuKPQ4ii1OUMnMiA+dN4TbxBqDuSI5fWo9yQN4RcUjgW
-	gsmlA0LUMUvAVJ+4VxDH2Pfv8G2JxcPELawxdRtVkOevqzdH7ba83tk1YIM0CtEY7919SviFx1g
-	DEzFAY1bp6CVa704FHv0ziUojF3oHtGBzhUQfD5VitoaozxL38IBVYAMTT344=
-X-Google-Smtp-Source: AGHT+IE57u8YLMdN3rnVuS/YPbhpkSu7xR+UOzXyF12rFeKj224UA0w0QHmxPTykvuZ49Qsef/l4RQ==
-X-Received: by 2002:a05:7301:f0f:b0:2a9:573a:4a74 with SMTP id 5a478bee46e88-2ac3018c397mr1305680eec.9.1765539878249;
-        Fri, 12 Dec 2025 03:44:38 -0800 (PST)
+        bh=z4GMPobD7IxP3ob9nUYxNPU1e+JR9o/OtQgZwmUoU4Q=;
+        b=axbyPRD94Bko1GaLadonbM8Ink0YVJRu6dMv+Gi7wy6kcwx35CnjD7zX2dO1ix74fo
+         WvyiaafvvrVPK5K3ef3PFzXPRmrN2TfYlNJiiC+/GCqgGcNh2gKdaJhDAd74DtQsC3mm
+         LYtIZ3kDmounyh4Admq/OgctnoVwtQoatHrHRnYdt0IFLtTQOnDAVflFxEPoZXgKqKbG
+         UE9CgCIAk2lE8vGLnEzk2ionD6ZR+1klGG+iD/XwSUvxa2zWdbTZch2MX/eWwq7UrubK
+         aaDOsIB2y5qwPIjOrTTAIR40RyjxwaU2WOD5ioNdZZlcq6fTVtnuwovt/h6w7DP26eDH
+         3HiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVtbWZiizH2mZpWm2vqGKe/ekldYHy5wH4o9KgJbRJbGIf1PeHwouaicXYtR5vm34xyPiY=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy4YVWjUkDQTmA0xb8hI+pXkDVI8Y1+1mkq2peIem1xD5AkzqJ6
+	6AYeAf7i2psgBM1t7pm++2CMQiGCy5uw45VwHPYrGg3A+h/zJvxR1QoC
+X-Gm-Gg: AY/fxX5mBGG1NvhhDpdI+rQUtW3WrfXv0m8Q/I331yehGYScxU/wWkw2eYbbnAd8tln
+	w4XpVq4+/lU45CG87NyrgVWqIQ01ur9VL2py1am7v9z6UloBbO4kaGS8kPlIdJLXVz1yl9vWxkA
+	udBL8dHVOyfDWIO0PoMiAmgm1Zz9c6pP6dQdxi9v94gWTwUONuaoNzGphA294cj5bGFpk2xiGL+
+	FRLlwDg40lRe7e3+X2/rglSl8d1ZyEWYUfoWAAA6716Kql2l3RuOdC0JRk+8Rkk4BgcswG8OryT
+	8JZMz+gTNx+1F+dlqwiQvWaENNy9WK8y8qv9azAbqjAhnAQemZMZwmTi9cWzPuoMtVyYsT6YJAx
+	WBwmICfJcjH951UvQug8IIwhusCDQs86/g5S5ZmWkaTo14nTUj+p2cszzVdhVwGnLGCPBoqnpI3
+	dhWqVWiCpQvF14HPXY/RGHL+a4jMmCt4TNcipOFk7w0QTQsmZQOPXUunXwwhk=
+X-Google-Smtp-Source: AGHT+IHR46BSZtOI324yzAFj0w4+1e4VNfwgJW+ezGfESsq+Vo0qiOYkxIP4b/0EpEPMS2QFY6BySg==
+X-Received: by 2002:a05:7300:7b16:b0:2a4:3592:c60e with SMTP id 5a478bee46e88-2ac303c944bmr1236445eec.31.1765539996404;
+        Fri, 12 Dec 2025 03:46:36 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ac18f5c2dbsm16671926eec.0.2025.12.12.03.44.36
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ac190acd01sm14309187eec.1.2025.12.12.03.46.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Dec 2025 03:44:37 -0800 (PST)
+        Fri, 12 Dec 2025 03:46:35 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <4483f8fe-2bad-46f1-b37f-157515098f54@roeck-us.net>
-Date: Fri, 12 Dec 2025 03:44:35 -0800
+Message-ID: <cb8031bb-9213-49b7-a85a-5ca9091aee5c@roeck-us.net>
+Date: Fri, 12 Dec 2025 03:46:32 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -70,9 +70,10 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/8] watchdog: aaeon: Add watchdog driver for SRG-IMX8PL
- MCU
-To: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>,
+Subject: Re: [PATCH 3/8] dt-bindings: watchdog: Add AAEON embedded controller
+ watchdog binding
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+ "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>,
  Bartosz Golaszewski <brgl@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
@@ -86,7 +87,8 @@ Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 References: <20251212-dev-b4-aaeon-mcu-driver-v1-0-6bd65bc8ef12@bootlin.com>
- <20251212-dev-b4-aaeon-mcu-driver-v1-7-6bd65bc8ef12@bootlin.com>
+ <20251212-dev-b4-aaeon-mcu-driver-v1-3-6bd65bc8ef12@bootlin.com>
+ <019aa49f-fe59-488d-aff8-f07cf07ee68d@kernel.org>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -132,228 +134,27 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  F0WaMvQMNrk9UAUziVcUkLU52NS9SXqpVg8vgrO0JKx97IXFPcNh0DWsSj/0Y8HO/RDkGXYn
  FDMj7fZSPKyPQPmEHg+W/KzxSSfdgWIHF2QaQ0b2q1wOSec4Rti52ohmNSY+KNIW/zODhugJ
  np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20251212-dev-b4-aaeon-mcu-driver-v1-7-6bd65bc8ef12@bootlin.com>
+In-Reply-To: <019aa49f-fe59-488d-aff8-f07cf07ee68d@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 12/11/25 23:41, Thomas Perrot (Schneider Electric) wrote:
-> Add watchdog driver for the Aaeon SRG-IMX8PL embedded controller.
-> This driver provides system monitoring and recovery capabilities
-> through the MCU's watchdog timer.
+On 12/12/25 00:20, Krzysztof Kozlowski wrote:
+> On 12/12/2025 08:41, Thomas Perrot (Schneider Electric) wrote:
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    watchdog {
+>> +      compatible = "aaeon,srg-imx8pl-wdt";
 > 
-> The watchdog supports start, stop, and ping operations with a maximum
-> hardware heartbeat of 25 seconds and a default timeout of 240 seconds.
-> The driver assumes the watchdog is already running at probe time, as
-> the MCU typically enables it by default.
+> No, that was discussed many times on the mailing list already. Fold the
+> child into the parent. Your driver model really do not matter for DT.
 > 
-> Co-developed-by: Jérémie Dautheribes (Schneider Electric) <jeremie.dautheribes@bootlin.com>
-> Signed-off-by: Jérémie Dautheribes (Schneider Electric) <jeremie.dautheribes@bootlin.com>
-> Signed-off-by: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.com>
-> ---
->   drivers/watchdog/Kconfig         |  10 +++
->   drivers/watchdog/Makefile        |   1 +
->   drivers/watchdog/aaeon_mcu_wdt.c | 140 +++++++++++++++++++++++++++++++++++++++
->   3 files changed, 151 insertions(+)
-> 
-> diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-> index d3b9df7d466b0b7215ee87b3040811d44ee53d2a..1bd4a7bee303e5e2508f540dc2c16e9e19ed18b0 100644
-> --- a/drivers/watchdog/Kconfig
-> +++ b/drivers/watchdog/Kconfig
-> @@ -168,6 +168,16 @@ config SOFT_WATCHDOG_PRETIMEOUT
->   	  watchdog. Be aware that governors might affect the watchdog because it
->   	  is purely software, e.g. the panic governor will stall it!
->   
-> +config AAEON_MCU_WATCHDOG
-> +	tristate "Aaeon MCU Watchdog"
-> +	depends on MFD_AAEON_MCU
-> +	select WATCHDOG_CORE
-> +	help
-> +	  Select this option to enable watchdog timer support for the Aaeon
-> +	  SRG-IMX8PL onboard microcontroller (MCU). This driver provides
-> +	  watchdog functionality through the MCU, allowing system monitoring
-> +	  and automatic recovery from system hangs.
-> +
->   config BD957XMUF_WATCHDOG
->   	tristate "ROHM BD9576MUF and BD9573MUF PMIC Watchdog"
->   	depends on MFD_ROHM_BD957XMUF
-> diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-> index ba52099b125398a32f80dad23317e223cc4af028..2deec425d3eafb6b208e061fda9f216f4baa8ecc 100644
-> --- a/drivers/watchdog/Makefile
-> +++ b/drivers/watchdog/Makefile
-> @@ -37,6 +37,7 @@ obj-$(CONFIG_USBPCWATCHDOG) += pcwd_usb.o
->   # ALPHA Architecture
->   
->   # ARM Architecture
-> +obj-$(CONFIG_AAEON_MCU_WATCHDOG) += aaeon_mcu_wdt.o
->   obj-$(CONFIG_ARM_SP805_WATCHDOG) += sp805_wdt.o
->   obj-$(CONFIG_ARM_SBSA_WATCHDOG) += sbsa_gwdt.o
->   obj-$(CONFIG_ARMADA_37XX_WATCHDOG) += armada_37xx_wdt.o
-> diff --git a/drivers/watchdog/aaeon_mcu_wdt.c b/drivers/watchdog/aaeon_mcu_wdt.c
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..8413ea3bce99585d989cf13e4494e8daff2d9e4c
-> --- /dev/null
-> +++ b/drivers/watchdog/aaeon_mcu_wdt.c
-> @@ -0,0 +1,140 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Aaeon MCU Watchdog driver
-> + *
-> + * Copyright (C) 2025 Bootlin
-> + * Author: Jérémie Dautheribes <jeremie.dautheribes@bootlin.com>
-> + * Author: Thomas Perrot <thomas.perrot@bootlin.com>
-> + */
-> +
-> +#include <linux/i2c.h>
-> +#include <linux/mfd/aaeon-mcu.h>
-> +#include <linux/module.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/watchdog.h>
-> +
-> +#define AAEON_MCU_CONTROL_WDT 0x63
-> +#define AAEON_MCU_PING_WDT 0x73
 
-tab after the macro name, please.
+Theoretically there could be a 'timeout' property since this is
+a watchdog driver, but that isn't supported by the driver, so
+I agree.
 
-> +
-> +#define AAEON_MCU_WDT_TIMEOUT         240
-> +#define AAEON_MCU_WDT_HEARTBEAT_MS    25000
-> +
-> +struct aaeon_mcu_wdt {
-> +	struct watchdog_device wdt;
-> +	struct aaeon_mcu_dev *mfd;
-
-mfd is not used anywhere. Just store and use the i2c client.
-
-> +};
-> +
-> +static int aaeon_mcu_wdt_start_cmd(struct aaeon_mcu_wdt *data)
-> +{
-> +	u8 cmd[3], rsp;
-> +
-> +	cmd[0] = AAEON_MCU_CONTROL_WDT;
-> +	cmd[1] = 0x01;
-> +	cmd[2] = 0x00;
-> +
-> +	return aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
-> +}
-> +
-> +static int aaeon_mcu_wdt_start(struct watchdog_device *wdt)
-> +{
-> +	struct aaeon_mcu_wdt *data = watchdog_get_drvdata(wdt);
-> +
-> +	return aaeon_mcu_wdt_start_cmd(data);
-> +}
-> +
-> +static int aaeon_mcu_wdt_stop_cmd(struct aaeon_mcu_wdt *data)
-> +{
-> +	u8 cmd[3], rsp;
-> +
-> +	cmd[0] = AAEON_MCU_CONTROL_WDT;
-> +	cmd[1] = 0x00;
-> +	cmd[2] = 0x00;
-> +
-> +	return aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
-> +}
-> +
-> +static int aaeon_mcu_wdt_stop(struct watchdog_device *wdt)
-> +{
-> +	struct aaeon_mcu_wdt *data = watchdog_get_drvdata(wdt);
-> +
-> +	return aaeon_mcu_wdt_stop_cmd(data);
-> +}
-> +
-> +static int aaeon_mcu_wdt_ping_cmd(struct aaeon_mcu_wdt *data)
-> +{
-> +	u8 cmd[3], rsp;
-> +
-> +	cmd[0] = AAEON_MCU_PING_WDT;
-> +	cmd[1] = 0x00;
-> +	cmd[2] = 0x00;
-> +
-> +	return aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
-
-This code is pretty much always the same. It would be much simpler to just pass
-i2c_client and the opcodes (first two bytes of the 3-byte message) as parameters
-to a single function.
-
-> +}
-> +
-> +static int aaeon_mcu_wdt_ping(struct watchdog_device *wdt)
-> +{
-> +	struct aaeon_mcu_wdt *data = watchdog_get_drvdata(wdt);
-> +
-> +	return aaeon_mcu_wdt_ping_cmd(data);
-> +}
-> +
-> +static const struct watchdog_info aaeon_mcu_wdt_info = {
-> +	.identity	= "Aaeon MCU Watchdog",
-> +	.options	= WDIOF_KEEPALIVEPING
-> +};
-> +
-> +static const struct watchdog_ops aaeon_mcu_wdt_ops = {
-> +	.owner		= THIS_MODULE,
-> +	.start		= aaeon_mcu_wdt_start,
-> +	.stop		= aaeon_mcu_wdt_stop,
-> +	.ping		= aaeon_mcu_wdt_ping,
-> +};
-> +
-> +static int aaeon_mcu_wdt_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct aaeon_mcu_dev *mcu = dev_get_drvdata(dev->parent);
-> +	struct watchdog_device *wdt;
-> +	struct aaeon_mcu_wdt *data;
-> +
-> +	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
-> +	if (!data)
-> +		return -ENOMEM;
-> +
-> +	data->mfd = mcu;
-> +
-> +	wdt = &data->wdt;
-> +	wdt->parent = dev;
-> +
-> +	wdt->info = &aaeon_mcu_wdt_info;
-> +	wdt->ops = &aaeon_mcu_wdt_ops;
-> +	wdt->max_hw_heartbeat_ms = AAEON_MCU_WDT_HEARTBEAT_MS;
-> +	watchdog_init_timeout(wdt, AAEON_MCU_WDT_TIMEOUT, dev);
-
-Calling watchdog_init_timeout() only makes sense if an (optional)
-module parameter is passed to it. Passing a constant is pointless.
-Just set wdt->timeout.
-
-> +
-> +	watchdog_set_drvdata(wdt, data);
-> +	platform_set_drvdata(pdev, data);
-> +	set_bit(WDOG_HW_RUNNING, &wdt->status);
-
-The driver does not know if that is the case. Guessing is insufficient.
-Either stop the watchdog or start it explicitly if the status can not
-be retrieved from the MCU.
-
-> +
-> +	return devm_watchdog_register_device(dev, wdt);
-> +}
-> +
-> +static const struct of_device_id aaeon_mcu_wdt_of_match[] = {
-> +	{ .compatible = "aaeon,srg-imx8pl-wdt" },
-> +	{},
-> +};
-> +
-> +MODULE_DEVICE_TABLE(of, aaeon_mcu_wdt_of_match);
-> +
-> +static struct platform_driver aaeon_mcu_wdt_driver = {
-> +	.driver		= {
-> +		.name	= "aaeon-mcu-wdt",
-> +		.of_match_table = aaeon_mcu_wdt_of_match,
-> +	},
-> +	.probe		= aaeon_mcu_wdt_probe,
-> +};
-> +
-> +module_platform_driver(aaeon_mcu_wdt_driver);
-> +
-> +MODULE_DESCRIPTION("Aaeon MCU Watchdog Driver");
-> +MODULE_AUTHOR("Jérémie Dautheribes");
-> +MODULE_LICENSE("GPL");
-> 
+Guenter
 
