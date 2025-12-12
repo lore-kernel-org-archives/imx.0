@@ -1,67 +1,67 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013026.outbound.protection.outlook.com [40.107.159.26])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011012.outbound.protection.outlook.com [52.101.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448882FC005
-	for <imx@lists.linux.dev>; Fri, 12 Dec 2025 16:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29272DC79C
+	for <imx@lists.linux.dev>; Fri, 12 Dec 2025 16:54:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765558014; cv=fail; b=cYZDmn43s6EnGUBp/YsDHWwn5UbL51ENOQZoydvURGyjJmNNrtpBAfVZQvqN/vvbNIaS4TOYXn96WPVxLCTiwmdEENRbGTYtpenKFQsRFk8RcQwzGzQlztSWqOf0uWHARcaU8i2rQwEt0K1cbf+bHeU1o2O36C77hUl9WNE0KwI=
+	t=1765558465; cv=fail; b=nOcxmN9IYjGVtuFwg5c68rbOw9sb/cl3jZzVVLXqw07CixLKsDlH0JmnS2xh+0wI7KyW5kb7yZZ7yY5VOvYlQZpGuRILce/qYuYmKMqN9M/nOGUajnkIJAooxU2hlZaXqI9lIAgmO22xhbulIZniKOhTIHHYVE9I3bpEeOotDtU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765558014; c=relaxed/simple;
-	bh=a/sZ71pAsfEQCXmbrfV4nsQ3hOJNQo9tXU8eCNPfBUc=;
+	s=arc-20240116; t=1765558465; c=relaxed/simple;
+	bh=15OLzE+kFO0G9CzTPK8hMnC8M2Cs5/BM2FGwjaSN9zk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=BqnYMbA/jXqru3B3LQVT39W+KDZa1Dhllh6TfDIFkDjupsOwDXbYtl4o1wDjTxDmp9ZtvFMzvw7hMV/uyrU41ad3cKekQeT+LWzCohOD9/0J5UZ3fCZQdUmjZjKhK7RA4gBE2K0faGf4GBmgkaae7KasaIOUPpUTmT4n64ABlgI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=l+BjpKdi; arc=fail smtp.client-ip=40.107.159.26
+	 Content-Disposition:In-Reply-To:MIME-Version; b=PoXQ9joWNiN5PFsm+RWJqOevS/lsuVgVyxtAkdfWOZaYdshkLvJuoSR8yt27Vd0YSWOyNHSF1ryAArntfFUdbAKrmTRMdQwLW8o9IJrIzTrfQ9wJXJRrd7EhM4pgS1nq0aIXjP5eZbzNwT92fftW9xR8aiGKUJZZOBBKJkI8ezE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Yvrv8rH/; arc=fail smtp.client-ip=52.101.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="l+BjpKdi"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Yvrv8rH/"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Pbcu5ciqDyfg1izBBYJZ8YZ+XWk8jVNt5IUpTmMKrywQXfjM9F9INywwDpyqjINsDXHH4UGmLsShG7O4yKSvUIH8OiSjygJyqhAj/7nVqhbZphsmauNYDZO0eMDmar82FrqpI0uKRteToLHcuMNPSGqQvDU2st5VQNHAyjs2KimKVJgX34EIFG9VRqR1DHdCHw7Qt/aX6f20jZn61A8hI4wT7ryIQQkxJ81uv1AC8IKPpvxnq74289CvciHoSfC+Vu7E2oc7P3avGGZpz0mA/Rb16Q36213Qr0qrQV/UvWrJ2BOKDEbonH+K/EihC9PHGKbf7Y179gqapgM5w8Zxjw==
+ b=uMwtqaIrPuwl5a6Yfp2hl7vptAjiAplKi0/5r1Onzl6XHro4/AVhDtytC3s4E/njMAHEaFRA37+bMlebnui9tGBaCU/4ahIQkuvw5V3gBpt5rdjzZVuzkZBytUq5qnn21VJtsxsT8Hnmy5mEKfRWTdQ6nmNjKvjX7E1T56q1LUNcVyY1loFA+BY6T8cx5gDs/7IrY3+rqcLJg09Yuyjzp1JTmWfwEAroHeIfMwpjZF6+tNfEGjbJIqI3QRkS7c9bKuONPuwCwQ03SBxPohQa9dr0E46WrfOVwh8Ku4PLc177nZ8hNRlv7KDmgyZ7yJyJ1j4eYoC8BAD5GzkvaaLAdg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EtSFrsiqsInQhY8suA8ufd52mk3DH9DnLdnYcExkePc=;
- b=fwyLc1KDSMCh8VlcdK476XSEkN1jFtgNko7Aq5LA/a4FcneAOLLfrj6lBTAS7DIynGm4UBc6trFQg9jk8/9Ju+JnnqulomOws6LIFvR5IGz4ht8l21e4MpWurtBvBskr/ZR2+FLD295acT3/wwoujcraqn+mH8zVc+3ZdanCuvpvyu7bhFTIN0Cu/8jLVfsG9R/XTn66ZO5pzO0xrA1jOsJvys/5OmRmumyifGnf9XsKHf2n8v87aY/IudCR4nDUVk8Edxo09yZG2clryMS2sJ1QTezz9rDGOPQMVs3GnTMeojM4n9g0P+/IRyLQUhPIYyKWvI7j0l1H2583R5cwQQ==
+ bh=nXPafQOZXdpzV0dvaNESEru6INAvH5udvkEXaaqcMto=;
+ b=YE0bsgLqfLHpvvHMWZlQFhIP2hWMvoOJdyX33xZs/8qQYAGeb/TSb+ivqfEjXD/QrIxaglNOSxYv7k7CKcptpKQzR0jY1XB3OKgL35YiHxuMqza8b4QENtrE6uwcd99z71dkAHix3aSP9yBSpsqcHZfNaKVyangCQv23TypnrUc6Hbl7ITNnzChoNTqCXwSfIYCplE5u+v5cIQZ8cu9kqGlH1tI9KUx5Bup3nKY3eOq1q5i7+Rmk8WQsfvW6c4wvJdz0eX6wURRXVO0aIjF25L5hvZoiy+0Y0fHYdHMzK+r1jabeTZDrFvRQ0twm+2JyQtkLJdOrMNRQIdxa7C/cOw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EtSFrsiqsInQhY8suA8ufd52mk3DH9DnLdnYcExkePc=;
- b=l+BjpKdipCg2B1ocKwcpX4kCtqTxFrjTbbg5M7yjqqDcxfJlnnKnYFYGWxdfc3wAG/E7rbXf5MMNb/wkrNLgcCK4phfafyzhaDPuYTqM9VncnGVNU28d9cbMJL2PWd88sVhNQi+KGh/0pUT2WGyxjOoyBZ8meRH7E3vUz8n0yuUdPFmLt29Axt9WzgC9o8DyeSpSu9PgGJ4Zx+4uPanyRETFImXC2i2It4plzCOT///itokzjZzuhazFV0SqPQ877VSsdyZzjbtmQT8xyC/IasXddwrZX2lZJ4ELTxvOWY5ujj3vuUngFtO3lT9rEj3OOuXRmlQEI6txYdbzWywauQ==
+ bh=nXPafQOZXdpzV0dvaNESEru6INAvH5udvkEXaaqcMto=;
+ b=Yvrv8rH/trXwcTkJOi9ryVpbYE9D5hy9xXAO/2PrPzeKn8kmntLOgLBz2cFR4UMoq7eYI9MAHrc/nBu51mJKlxckKxYdXOdojYkXl3P3m//Rn21m/B5caqH/R4J0l/7e8YmXnNr/gYAofcxCu7+q3/u7dDc5N8QuAZijGwRLss1amojfSLLY8XBarbmtmVg3v2EfkRGfrwg7WYJlcRad7k5aubo8BabMrZe0wKi94bY+OrqbLcgIzXseVVa69sFFMGA7F5jGGQ4NvX4cx+1/awXFBAPTCuQb2dmJ8+2kKknblFZkbmXg36wTRjfh0T96GYg50w29mqUc6o1kHHkuug==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
- by PAXPR04MB9595.eurprd04.prod.outlook.com (2603:10a6:102:23d::10) with
+ by PA2PR04MB10186.eurprd04.prod.outlook.com (2603:10a6:102:404::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.10; Fri, 12 Dec
- 2025 16:46:48 +0000
+ 2025 16:54:17 +0000
 Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
  ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
  ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9412.005; Fri, 12 Dec 2025
- 16:46:48 +0000
-Date: Fri, 12 Dec 2025 11:46:38 -0500
+ 16:54:17 +0000
+Date: Fri, 12 Dec 2025 11:54:08 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: Re: [PATCH 0/3] arm64: dts: freescale: Use phys to replace
- xceiver-supply
-Message-ID: <aTxG7i44To0bYpdI@lizhi-Precision-Tower-5810>
-References: <20251212-imx9-can-phy-v1-0-a421d7023e13@nxp.com>
+	Fabio Estevam <festevam@gmail.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v21 5/7] firmware: drivers: imx: adds miscdev
+Message-ID: <aTxIsAQMe3sbxXQ4@lizhi-Precision-Tower-5810>
+References: <20251212-imx-se-if-v21-0-ee7d6052d848@nxp.com>
+ <20251212-imx-se-if-v21-5-ee7d6052d848@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251212-imx9-can-phy-v1-0-a421d7023e13@nxp.com>
-X-ClientProxiedBy: SJ0PR05CA0074.namprd05.prod.outlook.com
- (2603:10b6:a03:332::19) To AS8PR04MB8948.eurprd04.prod.outlook.com
- (2603:10a6:20b:42f::17)
+In-Reply-To: <20251212-imx-se-if-v21-5-ee7d6052d848@nxp.com>
+X-ClientProxiedBy: SN6PR08CA0013.namprd08.prod.outlook.com
+ (2603:10b6:805:66::26) To DU2PR04MB8951.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e2::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,113 +69,1363 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|PAXPR04MB9595:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2fb968da-8cca-42d4-0e6b-08de399e0aa0
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|PA2PR04MB10186:EE_
+X-MS-Office365-Filtering-Correlation-Id: 28f07d92-7714-416d-39e9-08de399f162e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|7416014|52116014|366016|376014|38350700014;
+	BCL:0;ARA:13230040|19092799006|7416014|52116014|376014|366016|1800799024|38350700014|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?m0I+lWcCPpmZHLT0ubU6DPZuK3fsgoX2DoGXkSZ26e0gJhI5qr8+ZKQDHGN1?=
- =?us-ascii?Q?SJ0vth7pFvJ3Q4DWzh+uE0acIPGid2D6SqySoymlehUAEY8ACSEhJBef8TIq?=
- =?us-ascii?Q?n8J96Pfjl2qFVVbAcitwJarooK+1/61XwEH83RVcn+4I44oz/QTDsCr7/ucs?=
- =?us-ascii?Q?Id11G7gb45binHsHQeRmG3KVjyqqS32U6+0XF8UaEZwnls7YZT/yVSchYqFw?=
- =?us-ascii?Q?sUNSDHp3L8mrFTxZBGSG1zUINooXlIFVP1pOjtan1s4MiZhi6xNGMUe+La/m?=
- =?us-ascii?Q?IcQqUYmB6Wqb85mDVjW72zQxTYr730tKNGuxlPlJjmY+ZmT3ykXp8r45uZ2H?=
- =?us-ascii?Q?K0XYFdLyxPsN/0srAhxvA8FKd0qRQLdc+Tp7JZa8lyS+IF+omFgdIzB31VLP?=
- =?us-ascii?Q?k2b3vIFUr8boiNhSRIenOqlx5aXXJ4idVOdBqLdDjg6rH5DO2N4XXE3juuYB?=
- =?us-ascii?Q?vZR4v2/fRf/oJqi3Asvs3bByo7AQvz3Xj63J0CNkssVW4oZQW4kSf9Q+tlBF?=
- =?us-ascii?Q?EHRpFahTdmgraNqq4/0Hg3d+a/1klCTaDy5aHNXwPwKnE9/DlpYlCSMxjw8H?=
- =?us-ascii?Q?nXwRab3wAT7d7TxOZ9d1PiD0NFWQx+2bQPCmK1h0EwOaP8DOMj0e5jxQGmcb?=
- =?us-ascii?Q?qVgZT9uI5tgm2VLXpu38PA+uGC1GCCwlbOK8O/9W3lxfnnNWK45Vf3C0lnJL?=
- =?us-ascii?Q?vGmwteOjI9Ks2jD7EBuqF5rlDKtW6yEWluTub0xCfeLBd6TyTzyHUNL36Wic?=
- =?us-ascii?Q?aUeUfADOiortbMyS4rm8Mz+cdLdW8fIEJ6Kb2l3KkX+xflCQMUak3q0Yq3DZ?=
- =?us-ascii?Q?3o5tbeVITSxN0cJnMfDT/1nuzfa/IBjl+ec6w0ZVxFTWZojs/tLb5ISdxskq?=
- =?us-ascii?Q?7FzOuzKDs2gc+PwuHdHq9UIk2d4tL0XGVJf6LA6wy2WuHLlfU4+YAb/eO4je?=
- =?us-ascii?Q?XcR/SdAdk0ImFV+0EHANKYzxmQ0k4JqZThw56bh0woIc7ckB/5nlRq7HjfVW?=
- =?us-ascii?Q?fmm0mBk8YKCbxDo96NMtOf4cxzFy8NeRqzd2GuvT2qLAHLp14GzYfSg/BVSi?=
- =?us-ascii?Q?CrhqCcsyRkxoorXCd6+nuCjoo4EwqPPfFXRjR4Oiko0VmJ+BEQYYSsfNkceC?=
- =?us-ascii?Q?wHfBwFgxLtazSy+nHlRZblvko+Owws0vmjL02F5sJQ7cVhODlFlBi18WnKar?=
- =?us-ascii?Q?E3YwoLiJebLXI1eBJbT4wSechWAq0qfi9+FLQoX3QkdRiHvkd3FVO24ccXWo?=
- =?us-ascii?Q?TOCnDax9Tie45nT8GgAEckDn6vCpd8LKM4eXCqAEAq8HwDwhMUxa1FHkbXR7?=
- =?us-ascii?Q?iMLp876Fz1APZhB3Eq28qRHrWtQ3i3bUp/Z6/dlB5aeHaNcZfTQhdM2Cotkz?=
- =?us-ascii?Q?9DWNc1DdwHab/tr3tTLl4nUqO1M61JU7nBUlRrIyLcKucD2i5G3p6fAXzLWV?=
- =?us-ascii?Q?nX09GgjoO0FV2J4TDeQWG7f8VLFQ1NhIR+1I5ViEI3qcvynBiuDAQhqIMv5a?=
- =?us-ascii?Q?Msi6i5sDzDzAKR0K/Yczkkc+/ddW4oAvaBY6?=
+	=?us-ascii?Q?U/rGOs7Nyjg81HcJ4AVKkRj9f9KPGMDTuVl+IvpDKvOtC0CoBgEbipeCBfXI?=
+ =?us-ascii?Q?f603PUp8XaJyxI13SILQN5qEcoJbUpgUzW1argXJtft7t4TiNka5SHIVqXz1?=
+ =?us-ascii?Q?A8wYzqL/iu3nxGycBBu2ICcSlu+WLqzZJJnKAi7fEBqnXjBq7S9x7HltQxPD?=
+ =?us-ascii?Q?xvBR3hWc/vHyWBqK4XBqv2iGAJ0SdkFvVC3rq2gXb61KYneIkV17Qhvokn5b?=
+ =?us-ascii?Q?cE6BjP4lxLSdvhq1tUeuRCWvjjoZjzO2Hy89IeD/fldF+d/2Vs+2cDO3AHPM?=
+ =?us-ascii?Q?KAfmerJydNq61m9Q8QZELWwvIPH68r12bKQH79/TEQ31/6fM3x3VYyKGIyRR?=
+ =?us-ascii?Q?cQjO8D9TXFikCCcaVOmHVwj/+yk3QKK3AWc3zEQSuvqhWZoofXHlyp1ESCu9?=
+ =?us-ascii?Q?M+erT1f1tDYGE6OUXmnoSHPqJn7PXELCggF08IwhKuN1Ss3Ts3X8oWcarJvl?=
+ =?us-ascii?Q?mBUXXS2mcWNEM3v0RSJZySiq93Hrnfltjdz/On7/3HX0KY6I6T3Whl48o4UX?=
+ =?us-ascii?Q?hAfIGLLfIG3KGsvE4AN+90quB61618ds+fYHiBhBm89pcLoWmi9EU27pop1n?=
+ =?us-ascii?Q?dve6/sqH3hKwqHBOB9aQDvfItAn4tjWE1JI19AF0L9NjulKqjzWNBHlJ7ASq?=
+ =?us-ascii?Q?s1vAfC9YH89/0dHzyjIlqmBg99kndM5I6TO/ePgzGJo0bHHOx7D340qfi4kC?=
+ =?us-ascii?Q?g71XE8Vjmnabhjnalx3YML5bXj09oUDE7Rms81pyQjBbEge6DucXW7DPg/OS?=
+ =?us-ascii?Q?NnFB7kR8u1sc2EVMrUB0u6/O1vH4vP7DkRwoHdruO8lwVamOgJEozz3Rw2qb?=
+ =?us-ascii?Q?Q3nkBTmUDuRdJsbE481lItQsa4N5Y0mWeSxRXM3krszDyQ1+45lqmx9NoknL?=
+ =?us-ascii?Q?X3iXuZogVIc0jtPVTf4djlyMs+T3UVZgfsaK8UOsQAfEm+XKevy40AkRDv4J?=
+ =?us-ascii?Q?RlX00NIPOvNMB7erQynK6rwW7Diu2s6TCqn61lJREP2QGLbR73Az+8DM3kTS?=
+ =?us-ascii?Q?EwdOdr9bmy94zrNsbqynss+mk1Nlqa2BCuWOQ3WhzbZK4sYhFoVTOxZgShKc?=
+ =?us-ascii?Q?pjtXy2O3gPNUnQ3KKGdUwZ00VRSJjgghYEhS7t4hBMUu8nQdVKVeWPXkiL/T?=
+ =?us-ascii?Q?WOrL2MrHdrRe8LYNaSXLoQ2MIL6OXljskDWYyXWk4CPHxhzgrz+RsOP1CuLK?=
+ =?us-ascii?Q?oZalore3IgpeBc6u3My+0ij0228KKMlPlU6o8QMvAu94b9Zmb8kdzNK+Ci9j?=
+ =?us-ascii?Q?JPUY4eZIc+KeQbyk2/icCU+BmzgBGcu0DmBZN6ySnlAXedH6hQgqIovifWWG?=
+ =?us-ascii?Q?jMY7cVg+3IYWKIX/dxley6ezUa+XFyFSNn1wRMtR6TEUiWFxIjg7+zRd5xzk?=
+ =?us-ascii?Q?Ba2eq1T7BCz9NC/+7KP9rQ6Hav2jee1h59ECFP5iNTnCBteHj5ysPVKnBSyA?=
+ =?us-ascii?Q?ANCkifJb1VwMjiKCvZU1hg8+/kYyaWncIjiUMmYemqqi4atbxFK8mvYyzDRO?=
+ =?us-ascii?Q?8zKVWY/CZNTnA0Tto7/1W7Ogtt/wA27QxMYLuqehKSHn+CUSKPtMp7OjhA?=
+ =?us-ascii?Q?=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(7416014)(52116014)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(52116014)(376014)(366016)(1800799024)(38350700014)(13003099007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Bi6DPNNI7ns9mgiZ82VTTRZqvpg7tKqCARkC5do0EMhHJcQDuDbtnAG7LJv/?=
- =?us-ascii?Q?+xK/RsAuSxYHniK4TqsC56xxCLp4s837LPSmWhcfeXh5AmQkXf4xL8mzZuAx?=
- =?us-ascii?Q?90EXP1JnKG5qIh/hl7Z4R82CrdVuEd40hH8fqiyr5s7TWd4y69E0RAwKYrtu?=
- =?us-ascii?Q?6rGcvB8bI8iNcFM3oBwV1VLcyyKPwXKnH5rCHRPUOlU+wvk+I0D2zvaBHFMb?=
- =?us-ascii?Q?+PAU9IpfDHL/EW1y0YN/BbTeNB+tYIjdblPet/MkoBgNY7AeYG/2ji0pi391?=
- =?us-ascii?Q?wn0pRT5wY0nGhvqUq5+YUbEyvmb0e8lXIy6lk7yXggy8z5EUY/JlFFQrLzg6?=
- =?us-ascii?Q?mmNlfOU7Nl/BuKdQeUBluZIN9gGoxgA3gCSJlQkQUT8KASG+Qw6e0P/PUlVe?=
- =?us-ascii?Q?P9ahxEsU6w+Ym+NEMqLatWpBAgPS0TY0AiAQ95GGulbupuuSv3TRQp252qBJ?=
- =?us-ascii?Q?jixUPWunUeQXBEp4hcx0QJT9JhO13dJo3X4yPTUTiN8ZcxI/0vtxABttYXOY?=
- =?us-ascii?Q?BeJxA3fnGub3rTx2owyBvyXRjowii6nGe31KIuLjNpQuUGnm2uPjVXj1lb7Q?=
- =?us-ascii?Q?990ModX8d6Y3oGA1fILuj6vdDapi8DBLjla+tPCOqvqylevfXPYg9UkqJWJ+?=
- =?us-ascii?Q?PFNz6EdB1Yg5AwtYoSs+im6PWvI9NR85qCaujM9e+M+NwK9laDpfQBSDI4bs?=
- =?us-ascii?Q?O3M4pN0jzDwX7LuabVNYQtqlDfIB3y5D8NVck7dHV6/MHShiJOUYA1iT+78r?=
- =?us-ascii?Q?0UKlW9rJ86TFyceZ9OXouKJkz7oAcz97F1H38lLn0DFIqkjfZpudwYKroCra?=
- =?us-ascii?Q?TC5xyDcAoSSsTF660fEcfOJz5BI9L6efgfTrrlsGGg3Et70n5inkh2j4l7xO?=
- =?us-ascii?Q?6ghNfmoaMKSw1iGv4KOcIVSYrUGaCbHD6BaRfSyYRptafFeh7FrHst9DOkzX?=
- =?us-ascii?Q?lUFgd8Yn7Uu143PzDN9sFgcpoFG6ccoqV8f3vfnMRBShdJHssQ7ymo8kCIIa?=
- =?us-ascii?Q?3w+GLmul7qLEOrQVs5gI4drN5o9dkuvf1UI1mhQLTp+NgqSXWu3YYTXGU8fr?=
- =?us-ascii?Q?j2vhCktADii/NkQxW+gevSfq56LvqAKjMXnmYcvYYA8Ub2k6TfpeqPTDQBxJ?=
- =?us-ascii?Q?YXLz+g+9gkPlFisCzdbFIaFkQX5O0HwFRQHU0ZeQPSAP16GhsXeH9hy9yQRx?=
- =?us-ascii?Q?VB+RAasf81uasSBxvIZgyIJSXTLU4JuhUoUCeFdTQj8eBQ2InE/IPvpcy5L6?=
- =?us-ascii?Q?kPcvnYG7Ji9FATpRyeQRcybh3hdry3G1VfF3InxCjYJ3pKXqlvL4hH/VAWOc?=
- =?us-ascii?Q?7Fn9ywtql9Mn2/Yba763SYgGB7ol9988C3f25k5Jz1g8cA6183cE8/K5VSqH?=
- =?us-ascii?Q?qIVWIJ4/9NoHXHtx1WDKCWwBZWEPfv+Su3SOy0Kc3ypDJkNNMdb+pN2TUa8s?=
- =?us-ascii?Q?hso571KMx/oSTDh9Iak1SKe5ZZ2QnVJ1oLP/NdgnPddBSn7l0RViTTXM7LR1?=
- =?us-ascii?Q?aNST1XN+jIa/U0gVbMUFTzUQFSke/DJ7uaQl6/o4lL8UyJpagBKEy3+7lQlr?=
- =?us-ascii?Q?P+w3dpx7drAEBRff2A8=3D?=
+	=?us-ascii?Q?OVunviSAcgL49FLPEYko3A487+R298kIlqVieT/mjdKmN9Lzntu1w6P7533h?=
+ =?us-ascii?Q?NMyIDfOMZNk1gcrQ9XRlFotkHp25g3OcG8Wzm4I+9yBNP/Jg8Ya155s7o4bu?=
+ =?us-ascii?Q?JrtpBHyY6pUlL9Ew+z6kdTkbv47el0VrYcaGf8WOBSgiRW+ZClGYZcDX0TUo?=
+ =?us-ascii?Q?yXDH7B/phlH4E+xQemwVN1GaR61qKb1MsTx+3zZyT/xBSJXQ9ppSXaws0UAG?=
+ =?us-ascii?Q?ktxHmzeJ0bkUQAp1r+OaHw1GZ6gAY+P9kNkjJvAebeIhTn/wBUxlLPLOqSx5?=
+ =?us-ascii?Q?qPzDJ4t7bghu9xPeSicGwaInPYlZ4jdxlViIjhDI+nORMF+NSiYoDVxTx2eD?=
+ =?us-ascii?Q?1p+JOB3BqEgTSivYFhCNBf1ZDo/FDUNGqhqb6oo/O29G9y7t7sA8wSB8K30N?=
+ =?us-ascii?Q?iugXbSK6McpRa/Vn/WUOim/COmiJSCdTrlOJq0mXbLjytUXotTn1qL35LuzX?=
+ =?us-ascii?Q?Vs7CfD8fKL9xYCBdH3MLeFViXGnUC3RjTJPJPgscPJTkr/tuSg0u3hSgkTZ/?=
+ =?us-ascii?Q?GfMhni07ZzrtXp3W5qyv5s8MsozNiVMgqvi6goCUQj04ASJwS02ugypUyELQ?=
+ =?us-ascii?Q?PqsTBZKKClfzDCzQAWK2I3a2VW/lpy+biyEh8yJgsU9yjCSRgEXy93GBccaZ?=
+ =?us-ascii?Q?Ui27IQqBlYH70nOQ3DT7q5NR8GQ/T4PNcAzIUoopS5s+vOtbxgj2CU6dE6Qi?=
+ =?us-ascii?Q?VsaOLg1MTJx/hT9ODXyTPaxcFrwxk2OkgS+zoOe+M+p0+j05FrPe2QklksHm?=
+ =?us-ascii?Q?gB+eQAkp9FyeQ6hJqWfM8hbuTZxd/15W716OWLSbHFoKhmaIgi/AIHB849nZ?=
+ =?us-ascii?Q?Kk8bhYef7V9umOJfdir6U8XiItuunu2NTmybG5BNjN+md6Fs7grOQjIqRp0N?=
+ =?us-ascii?Q?Ei+MvJHsQc7xYAliof7uk70eokGuX72yh8MYSa+a35qsYddLnPTB2dH7LOXT?=
+ =?us-ascii?Q?EJCi9+MFLzzwIzAoR+ltYlIWwhmPc1noMX28fMRnXScHlxFmTo28zWu3Vlp+?=
+ =?us-ascii?Q?9/S79YemdnckRrIJu9A7f9T23WIKDcvZ0spcnl1g7TZoy3EprM0bP2rEGtdU?=
+ =?us-ascii?Q?ispRWlxufsIVfPDa+INmdbNtfQS9l2LDlKcqBXzao/TL5TsoRNwYN1xaY/YG?=
+ =?us-ascii?Q?84gRdPOIUp5Wf437uvF9rBmhjie5RjqwusS1hoddhY3JLulv6cKg8XnWcV7l?=
+ =?us-ascii?Q?qG4CAYqlE3IkNu8MpnPDoNDSUyz8qBejEbWyUspyXDkG0TnhbLPFNGKLGR4h?=
+ =?us-ascii?Q?Lm69eDCj1NswQydJCOi5GHtp9Sfql+pKISFUjMmpv/KVj3rjBAGpbLhvPDzI?=
+ =?us-ascii?Q?Hz1uxv4VMMzWMWniKaFWUk5S8MyTdXqWKWCBC6yuST0c2mUL7nIEvtQ61Ajb?=
+ =?us-ascii?Q?fPiYAubJugep1VP7u/XgpN08MLfbMf9jMZv4kP7PHvDA+8Tkhjd1QxQtZ9Fd?=
+ =?us-ascii?Q?nnOVPkuc4FmXPpQaPDstHHVUvW3TkSeJ8CvA+ZIboovObxchhmhqFEOtbepu?=
+ =?us-ascii?Q?VfeRrsKaoClUnayv6yNRu910jgdKdsTy/XaKrsX5J37c5L5BMiUNAqirVCTh?=
+ =?us-ascii?Q?IfbvTOxykHRSh1fQ47AjeWJtMLsGBpkv7ODkis8y?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2fb968da-8cca-42d4-0e6b-08de399e0aa0
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8948.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 28f07d92-7714-416d-39e9-08de399f162e
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2025 16:46:48.2186
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2025 16:54:17.1831
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KzDJDPSN223jnOz25afiCNNB25PmNg7L88Ma27tV1y3JwxQcS3GlKXXKvLi6K5/VJhkL1vJuPEj56wbbc595GA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9595
+X-MS-Exchange-CrossTenant-UserPrincipalName: DPEVNj6sETjJTB1xwRNrGIlVvotLSUZoCVL+eGjpkldZWAikUnDDaZzrIFAigu8tB7AugIcTW8YkY8t3yFLHDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR04MB10186
 
-On Fri, Dec 12, 2025 at 05:57:18PM +0800, Peng Fan (OSS) wrote:
-> This is a pick up of patch 6-8 from [1].
+On Fri, Dec 12, 2025 at 02:44:16PM +0530, Pankaj Gupta wrote:
+> Adds the driver for communication interface to secure-enclave, that
+> enables exchanging messages with NXP secure enclave HW IP(s)
+> like EdgeLock Enclave, from:
+> - User-Space Applications via character driver.
 >
-> The drivers changes have been picked in 6.18, just resend the dts changes.
+> ABI documentation for the NXP secure-enclave driver.
 >
-> [1]https://lore.kernel.org/linux-phy/20251001-can-v7-0-fad29efc3884@nxp.com/
+> User-space library using this driver:
+> - i.MX Secure Enclave library:
+>   -- URL: https://github.com/nxp-imx/imx-secure-enclave.git,
+> - i.MX Secure Middle-Ware:
+>   -- URL: https://github.com/nxp-imx/imx-smw.git
+>
+> Following checks are performed on the incoming msg-header,
+> to block exchanging invalid arbitrary commands:
+> - maximum allowed words,
+> - check if command-tag & response-tag are valid
+> - version,
+> - command id validation check, to allow limited base-line API(s)
+>   and restrict following:
+>   - exchanging power management commands.
+>   - reset requests.
+>   - BBSM configuration requests.
+>   - re-initializing the FW.
+>   - RNG init
+>   - CAAM resource release management
+>   - SE's internal memory management.
+> from user-space.
+>
+> Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> changes from v20 to v21
+> - removed "__free(kfree)" & added kfree();
 
-Please add 'resend' at subject next time.
+KK's means is that correctly use __free according to cleanup.h.
+
+fun()
+{
+	...
+	some code logic
+	...
+
+	struct .... __free(kfree) rx_msg = kzalloc(cmd_snd_rcv_rsp_info.rx_buf_sz, GFP_KERNEL);
+	...
+}
 
 Frank
 
->
-> There are still some other device trees not converted to use phys,
-> those will be converted later.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
-> Peng Fan (3):
->       arm64: dts: imx95-15x15-evk: Use phys to replace xceiver-supply
->       arm64: dts: imx8mp-evk: Use phys to replace xceiver-supply
->       arm64: dts: imx93-11x11-evk: Use phys to replace xceiver-supply
+>  Documentation/ABI/testing/se-cdev   |  43 +++
+>  drivers/firmware/imx/ele_base_msg.c |  28 ++
+>  drivers/firmware/imx/ele_base_msg.h |  20 +
+>  drivers/firmware/imx/ele_common.c   |  37 +-
+>  drivers/firmware/imx/ele_common.h   |   6 +
+>  drivers/firmware/imx/se_ctrl.c      | 744 +++++++++++++++++++++++++++++++++++-
+>  drivers/firmware/imx/se_ctrl.h      |  33 ++
+>  include/uapi/linux/se_ioctl.h       |  97 +++++
+>  8 files changed, 996 insertions(+), 12 deletions(-)
 >
->  arch/arm64/boot/dts/freescale/imx8mp-evk.dts      | 43 +++++++----------------
->  arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts | 17 +++++----
->  arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts | 13 ++++---
->  3 files changed, 27 insertions(+), 46 deletions(-)
-> ---
-> base-commit: 008d3547aae5bc86fac3eda317489169c3fda112
-> change-id: 20251212-imx9-can-phy-328c2085afc7
+> diff --git a/Documentation/ABI/testing/se-cdev b/Documentation/ABI/testing/se-cdev
+> new file mode 100644
+> index 000000000000..dad39ffd245a
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/se-cdev
+> @@ -0,0 +1,43 @@
+> +What:		/dev/<se>_mu[0-9]+_ch[0-9]+
+> +Date:		Mar 2025
+> +KernelVersion:	6.8
+> +Contact:	linux-imx@nxp.com, pankaj.gupta@nxp.com
+> +Description:
+> +		NXP offers multiple hardware IP(s) for secure enclaves like EdgeLock-
+> +		Enclave(ELE), SECO. The character device file descriptors
+> +		/dev/<se>_mu*_ch* are the interface between userspace NXP's secure-
+> +		enclave shared library and the kernel driver.
+> +
+> +		The ioctl(2)-based ABI is defined and documented in
+> +		[include]<linux/firmware/imx/ele_mu_ioctl.h>.
+> +		ioctl(s) are used primarily for:
+> +			- shared memory management
+> +			- allocation of I/O buffers
+> +			- getting mu info
+> +			- setting a dev-ctx as receiver to receive all the commands from FW
+> +			- getting SoC info
+> +			- send command and receive command response
+> +
+> +		The following file operations are supported:
+> +
+> +		open(2)
+> +		  Currently the only useful flags are O_RDWR.
+> +
+> +		read(2)
+> +		  Every read() from the opened character device context is waiting on
+> +		  wait_event_interruptible, that gets set by the registered mailbox callback
+> +		  function, indicating a message received from the firmware on message-
+> +		  unit.
+> +
+> +		write(2)
+> +		  Every write() to the opened character device context needs to acquire
+> +		  mailbox_lock before sending message on to the message unit.
+> +
+> +		close(2)
+> +		  Stops and frees up the I/O contexts that were associated
+> +		  with the file descriptor.
+> +
+> +Users:		https://github.com/nxp-imx/imx-secure-enclave.git,
+> +		https://github.com/nxp-imx/imx-smw.git
+> +		crypto/skcipher,
+> +		drivers/nvmem/imx-ocotp-ele.c
+> diff --git a/drivers/firmware/imx/ele_base_msg.c b/drivers/firmware/imx/ele_base_msg.c
+> index 4d1f0d43963e..185ba890765c 100644
+> --- a/drivers/firmware/imx/ele_base_msg.c
+> +++ b/drivers/firmware/imx/ele_base_msg.c
+> @@ -14,6 +14,34 @@
 >
-> Best regards,
+>  #define FW_DBG_DUMP_FIXED_STR		"ELE"
+>
+> +int ele_uapi_allowed_base_cmd(struct se_if_priv *priv,
+> +			      struct se_msg_hdr *header)
+> +{
+> +	switch (header->command) {
+> +	case ELE_PING_REQ: return 0;
+> +	case ELE_DEBUG_DUMP_REQ: return 0;
+> +	case ELE_OEM_AUTH_CONTAINER_REQ: return 0;
+> +	case ELE_OEM_VERIFY_IMAGE_REQ: return 0;
+> +	case ELE_OEM_REL_CONTAINER_REQ: return 0;
+> +	case ELE_FW_LIFE_CYCLE_REQ: return 0;
+> +	case ELE_READ_FUSE_REQ: return 0;
+> +	case ELE_GET_FW_VERS_REQ: return 0;
+> +	case ELE_RETURN_LIFE_CYCLE_REQ: return 0;
+> +	case ELE_GET_EVENT_REQ: return 0;
+> +	case ELE_COMMIT_REQ: return 0;
+> +	case ELE_GEN_KEY_BLOB_REQ: return 0;
+> +	case ELE_GET_FW_STATUS_REQ: return 0;
+> +	case ELE_XIP_DECRYPT_REQ: return 0;
+> +	case ELE_WRITE_FUSE: return 0;
+> +	case ELE_GET_INFO_REQ: return 0;
+> +	case ELE_DEV_ATTEST_REQ: return 0;
+> +	case ELE_WRITE_SHADOW_FUSE_REQ: return 0;
+> +	case ELE_READ_SHADOW_FUSE_REQ: return 0;
+> +	default:
+> +		return -EACCES;
+> +	}
+> +}
+> +
+>  int ele_get_info(struct se_if_priv *priv, struct ele_dev_info *s_info)
+>  {
+>  	struct se_api_msg *tx_msg = NULL;
+> diff --git a/drivers/firmware/imx/ele_base_msg.h b/drivers/firmware/imx/ele_base_msg.h
+> index 8e5b015e99a2..f8fabac331fd 100644
+> --- a/drivers/firmware/imx/ele_base_msg.h
+> +++ b/drivers/firmware/imx/ele_base_msg.h
+> @@ -15,6 +15,24 @@
+>
+>  #define ELE_NONE_VAL			0x0
+>
+> +
+> +#define ELE_OEM_AUTH_CONTAINER_REQ	0x87
+> +#define ELE_OEM_VERIFY_IMAGE_REQ	0x88
+> +#define ELE_OEM_REL_CONTAINER_REQ	0x89
+> +#define ELE_FW_LIFE_CYCLE_REQ		0x95
+> +#define ELE_READ_FUSE_REQ		0x97
+> +#define ELE_GET_FW_VERS_REQ		0x9d
+> +#define ELE_RETURN_LIFE_CYCLE_REQ	0xa0
+> +#define ELE_GET_EVENT_REQ		0xa2
+> +#define ELE_COMMIT_REQ			0xa8
+> +#define ELE_GEN_KEY_BLOB_REQ		0xaf
+> +#define ELE_GET_FW_STATUS_REQ		0xc5
+> +#define ELE_XIP_DECRYPT_REQ		0xc6
+> +#define ELE_WRITE_FUSE                  0xd6
+> +#define ELE_DEV_ATTEST_REQ              0xdb
+> +#define ELE_WRITE_SHADOW_FUSE_REQ       0xf2
+> +#define ELE_READ_SHADOW_FUSE_REQ        0xf3
+> +
+>  #define ELE_GET_INFO_REQ		0xda
+>  #define ELE_GET_INFO_REQ_MSG_SZ		0x10
+>  #define ELE_GET_INFO_RSP_MSG_SZ		0x08
+> @@ -92,4 +110,6 @@ int ele_service_swap(struct se_if_priv *priv, phys_addr_t addr,
+>  int ele_fw_authenticate(struct se_if_priv *priv, phys_addr_t contnr_addr,
+>  			phys_addr_t img_addr);
+>  int ele_debug_dump(struct se_if_priv *priv);
+> +int ele_uapi_allowed_base_cmd(struct se_if_priv *priv,
+> +			      struct se_msg_hdr *header);
+>  #endif
+> diff --git a/drivers/firmware/imx/ele_common.c b/drivers/firmware/imx/ele_common.c
+> index fcd0f561d72d..78440f62bf92 100644
+> --- a/drivers/firmware/imx/ele_common.c
+> +++ b/drivers/firmware/imx/ele_common.c
+> @@ -6,6 +6,23 @@
+>  #include "ele_base_msg.h"
+>  #include "ele_common.h"
+>
+> +int se_chk_tx_msg_hdr(struct se_if_priv *priv, struct se_msg_hdr *header)
+> +{
+> +	if (!header->size || header->size > MAX_WORD_SIZE)
+> +		return -EINVAL;
+> +
+> +	if (header->tag != priv->if_defs->cmd_tag &&
+> +	    header->tag != priv->if_defs->rsp_tag)
+> +		return -EINVAL;
+> +
+> +	if (header->ver == priv->if_defs->base_api_ver)
+> +		return ele_uapi_allowed_base_cmd(priv, header);
+> +	else if (header->ver == priv->if_defs->fw_api_ver)
+> +		return 0;
+> +
+> +	return -EINVAL;
+> +}
+> +
+>  /*
+>   * se_get_msg_chksum() - to calculate checksum word by word.
+>   *
+> @@ -42,15 +59,22 @@ u32 se_get_msg_chksum(u32 *msg, u32 msg_len)
+>  	return chksum;
+>  }
+>
+> +void set_se_rcv_msg_timeout(struct se_if_priv *priv, u32 timeout_ms)
+> +{
+> +	priv->se_rcv_msg_timeout_ms = timeout_ms;
+> +}
+> +
+>  int ele_msg_rcv(struct se_if_device_ctx *dev_ctx, struct se_clbk_handle *se_clbk_hdl)
+>  {
+> -	unsigned long timeout;
+> +	unsigned long timeout_ms;
+>  	int ret;
+>
+>  	do {
+> -		timeout = MAX_SCHEDULE_TIMEOUT;
+> +		timeout_ms = MAX_SCHEDULE_TIMEOUT;
+> +		if (dev_ctx->priv->cmd_receiver_clbk_hdl.dev_ctx != dev_ctx)
+> +			timeout_ms = msecs_to_jiffies(dev_ctx->priv->se_rcv_msg_timeout_ms);
+>
+> -		ret = wait_for_completion_interruptible_timeout(&se_clbk_hdl->done, timeout);
+> +		ret = wait_for_completion_interruptible_timeout(&se_clbk_hdl->done, timeout_ms);
+>  		if (ret == -ERESTARTSYS) {
+>  			if (dev_ctx->priv->waiting_rsp_clbk_hdl.dev_ctx) {
+>  				dev_ctx->priv->waiting_rsp_clbk_hdl.signal_rcvd = true;
+> @@ -59,6 +83,13 @@ int ele_msg_rcv(struct se_if_device_ctx *dev_ctx, struct se_clbk_handle *se_clbk
+>  			ret = -EINTR;
+>  			break;
+>  		}
+> +		if (ret == 0) {
+> +			ret = -ETIMEDOUT;
+> +			dev_err(dev_ctx->priv->dev,
+> +				"Fatal Error: SE interface: %s0, hangs indefinitely.\n",
+> +				get_se_if_name(dev_ctx->priv->if_defs->se_if_type));
+> +			break;
+> +		}
+>  		ret = se_clbk_hdl->rx_msg_sz;
+>  		break;
+>  	} while (ret < 0);
+> diff --git a/drivers/firmware/imx/ele_common.h b/drivers/firmware/imx/ele_common.h
+> index 5bac14439d7d..bdc13d1b715d 100644
+> --- a/drivers/firmware/imx/ele_common.h
+> +++ b/drivers/firmware/imx/ele_common.h
+> @@ -12,6 +12,11 @@
+>
+>  #define IMX_ELE_FW_DIR                 "imx/ele/"
+>
+> +#define MAX_WORD_SIZE			0x20
+> +#define SE_RCV_MSG_DEFAULT_TIMEOUT	5000
+> +#define SE_RCV_MSG_LONG_TIMEOUT		5000000
+> +
+> +void set_se_rcv_msg_timeout(struct se_if_priv *priv, u32 val);
+>  u32 se_get_msg_chksum(u32 *msg, u32 msg_len);
+>
+>  int ele_msg_rcv(struct se_if_device_ctx *dev_ctx, struct se_clbk_handle *se_clbk_hdl);
+> @@ -42,4 +47,5 @@ int se_save_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem);
+>
+>  int se_restore_imem_state(struct se_if_priv *priv, struct se_imem_buf *imem);
+>
+> +int se_chk_tx_msg_hdr(struct se_if_priv *priv, struct se_msg_hdr *header);
+>  #endif /*__ELE_COMMON_H__ */
+> diff --git a/drivers/firmware/imx/se_ctrl.c b/drivers/firmware/imx/se_ctrl.c
+> index 63562a4d9a3e..33afbdc752da 100644
+> --- a/drivers/firmware/imx/se_ctrl.c
+> +++ b/drivers/firmware/imx/se_ctrl.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/slab.h>
+>  #include <linux/string.h>
+>  #include <linux/sys_soc.h>
+> +#include <uapi/linux/se_ioctl.h>
+>
+>  #include "ele_base_msg.h"
+>  #include "ele_common.h"
+> @@ -32,12 +33,6 @@
+>  #define MBOX_TX_NAME			"tx"
+>  #define MBOX_RX_NAME			"rx"
+>
+> -#define SE_TYPE_STR_DBG			"dbg"
+> -#define SE_TYPE_STR_HSM			"hsm"
+> -
+> -#define SE_TYPE_ID_DBG			0x1
+> -#define SE_TYPE_ID_HSM			0x2
+> -
+>  struct se_fw_img_name {
+>  	const u8 *prim_fw_nm_in_rfs;
+>  	const u8 *seco_fw_nm_in_rfs;
+> @@ -130,6 +125,13 @@ char *get_se_if_name(u8 se_if_id)
+>  	return NULL;
+>  }
+>
+> +static u32 get_se_soc_id(struct se_if_priv *priv)
+> +{
+> +	const struct se_soc_info *se_info = device_get_match_data(priv->dev);
+> +
+> +	return se_info->soc_id;
+> +}
+> +
+>  static struct se_fw_load_info *get_load_fw_instance(struct se_if_priv *priv)
+>  {
+>  	return &var_se_info.load_fw;
+> @@ -203,8 +205,213 @@ static int get_se_soc_info(struct se_if_priv *priv, const struct se_soc_info *se
+>  	return 0;
+>  }
+>
+> +static int load_firmware(struct se_if_priv *priv, const u8 *se_img_file_to_load)
+> +{
+> +	const struct firmware *fw = NULL;
+> +	phys_addr_t se_fw_phyaddr;
+> +	u8 *se_fw_buf;
+> +	int ret;
+> +
+> +	if (!se_img_file_to_load) {
+> +		dev_err(priv->dev, "FW image is not provided.");
+> +		return -EINVAL;
+> +	}
+> +	ret = request_firmware(&fw, se_img_file_to_load, priv->dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	dev_info(priv->dev, "loading firmware %s.", se_img_file_to_load);
+> +
+> +	/* allocate buffer to store the SE FW */
+> +	se_fw_buf = dma_alloc_coherent(priv->dev, fw->size, &se_fw_phyaddr, GFP_KERNEL);
+> +	if (!se_fw_buf) {
+> +		ret = -ENOMEM;
+> +		goto exit;
+> +	}
+> +
+> +	memcpy(se_fw_buf, fw->data, fw->size);
+> +	ret = ele_fw_authenticate(priv, se_fw_phyaddr, se_fw_phyaddr);
+> +	if (ret < 0) {
+> +		dev_err(priv->dev,
+> +			"Error %pe: Authenticate & load SE firmware %s.",
+> +			ERR_PTR(ret), se_img_file_to_load);
+> +		ret = -EPERM;
+> +	}
+> +	dma_free_coherent(priv->dev, fw->size, se_fw_buf, se_fw_phyaddr);
+> +exit:
+> +	release_firmware(fw);
+> +
+> +	return ret;
+> +}
+> +
+> +static int se_load_firmware(struct se_if_priv *priv)
+> +{
+> +	struct se_fw_load_info *load_fw = get_load_fw_instance(priv);
+> +	int ret = 0;
+> +
+> +	if (!load_fw->is_fw_tobe_loaded)
+> +		return 0;
+> +
+> +	if (load_fw->imem.state == ELE_IMEM_STATE_BAD) {
+> +		ret = load_firmware(priv, load_fw->se_fw_img_nm->prim_fw_nm_in_rfs);
+> +		if (ret) {
+> +			dev_err(priv->dev, "Failed to load boot firmware.");
+> +			return -EPERM;
+> +		}
+> +	}
+> +
+> +	ret = load_firmware(priv, load_fw->se_fw_img_nm->seco_fw_nm_in_rfs);
+> +	if (ret) {
+> +		dev_err(priv->dev, "Failed to load runtime firmware.");
+> +		return -EPERM;
+> +	}
+> +
+> +	load_fw->is_fw_tobe_loaded = false;
+> +
+> +	return ret;
+> +}
+> +
+> +static int init_se_shared_mem(struct se_if_device_ctx *dev_ctx)
+> +{
+> +	struct se_shared_mem_mgmt_info *se_shared_mem_mgmt = &dev_ctx->se_shared_mem_mgmt;
+> +	struct se_if_priv *priv = dev_ctx->priv;
+> +
+> +	INIT_LIST_HEAD(&se_shared_mem_mgmt->pending_out);
+> +	INIT_LIST_HEAD(&se_shared_mem_mgmt->pending_in);
+> +
+> +	/*
+> +	 * Allocate some memory for data exchanges with S40x.
+> +	 * This will be used for data not requiring secure memory.
+> +	 */
+> +	se_shared_mem_mgmt->non_secure_mem.ptr =
+> +			dma_alloc_coherent(priv->dev, MAX_DATA_SIZE_PER_USER,
+> +					   &se_shared_mem_mgmt->non_secure_mem.dma_addr,
+> +					   GFP_KERNEL);
+> +	if (!se_shared_mem_mgmt->non_secure_mem.ptr)
+> +		return -ENOMEM;
+> +
+> +	se_shared_mem_mgmt->non_secure_mem.size = MAX_DATA_SIZE_PER_USER;
+> +	se_shared_mem_mgmt->non_secure_mem.pos = 0;
+> +
+> +	return 0;
+> +}
+> +
+> +static void cleanup_se_shared_mem(struct se_if_device_ctx *dev_ctx)
+> +{
+> +	struct se_shared_mem_mgmt_info *se_shared_mem_mgmt = &dev_ctx->se_shared_mem_mgmt;
+> +	struct se_if_priv *priv = dev_ctx->priv;
+> +
+> +	/* Free non-secure shared buffer. */
+> +	dma_free_coherent(priv->dev, MAX_DATA_SIZE_PER_USER,
+> +			  se_shared_mem_mgmt->non_secure_mem.ptr,
+> +			  se_shared_mem_mgmt->non_secure_mem.dma_addr);
+> +
+> +	se_shared_mem_mgmt->non_secure_mem.ptr = NULL;
+> +	se_shared_mem_mgmt->non_secure_mem.dma_addr = 0;
+> +	se_shared_mem_mgmt->non_secure_mem.size = 0;
+> +	se_shared_mem_mgmt->non_secure_mem.pos = 0;
+> +}
+> +
+> +/* Need to copy the output data to user-device context.
+> + */
+> +static int se_dev_ctx_cpy_out_data(struct se_if_device_ctx *dev_ctx)
+> +{
+> +	struct se_shared_mem_mgmt_info *se_shared_mem_mgmt = &dev_ctx->se_shared_mem_mgmt;
+> +	struct se_if_priv *priv = dev_ctx->priv;
+> +	struct se_buf_desc *b_desc, *temp;
+> +	bool do_cpy = true;
+> +
+> +	list_for_each_entry_safe(b_desc, temp, &se_shared_mem_mgmt->pending_out, link) {
+> +		if (b_desc->usr_buf_ptr && b_desc->shared_buf_ptr && do_cpy) {
+> +			dev_dbg(priv->dev, "Copying output data to user.");
+> +			if (do_cpy && copy_to_user(b_desc->usr_buf_ptr,
+> +						   b_desc->shared_buf_ptr,
+> +						   b_desc->size)) {
+> +				dev_err(priv->dev, "Failure copying output data to user.");
+> +				do_cpy = false;
+> +			}
+> +		}
+> +
+> +		if (b_desc->shared_buf_ptr)
+> +			memset(b_desc->shared_buf_ptr, 0, b_desc->size);
+> +
+> +		list_del(&b_desc->link);
+> +		kfree(b_desc);
+> +	}
+> +
+> +	return do_cpy ? 0 : -EFAULT;
+> +}
+> +
+> +/*
+> + * Clean the used Shared Memory space,
+> + * whether its Input Data copied from user buffers, or
+> + * Data received from FW.
+> + */
+> +static void se_dev_ctx_shared_mem_cleanup(struct se_if_device_ctx *dev_ctx)
+> +{
+> +	struct se_shared_mem_mgmt_info *se_shared_mem_mgmt = &dev_ctx->se_shared_mem_mgmt;
+> +	struct list_head *pending_lists[] = {&se_shared_mem_mgmt->pending_in,
+> +						&se_shared_mem_mgmt->pending_out};
+> +	struct se_buf_desc *b_desc, *temp;
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(pending_lists); i++) {
+> +		list_for_each_entry_safe(b_desc, temp, pending_lists[i], link) {
+> +			if (b_desc->shared_buf_ptr)
+> +				memset(b_desc->shared_buf_ptr, 0, b_desc->size);
+> +
+> +			list_del(&b_desc->link);
+> +			kfree(b_desc);
+> +		}
+> +	}
+> +	se_shared_mem_mgmt->non_secure_mem.pos = 0;
+> +}
+> +
+> +static int add_b_desc_to_pending_list(void *shared_ptr_with_pos,
+> +				      struct se_ioctl_setup_iobuf *io,
+> +				      struct se_if_device_ctx *dev_ctx)
+> +{
+> +	struct se_shared_mem_mgmt_info *se_shared_mem_mgmt = &dev_ctx->se_shared_mem_mgmt;
+> +	struct se_buf_desc *b_desc;
+> +
+> +	b_desc = kzalloc(sizeof(*b_desc), GFP_KERNEL);
+> +	if (!b_desc)
+> +		return -ENOMEM;
+> +
+> +	b_desc->shared_buf_ptr = shared_ptr_with_pos;
+> +	b_desc->usr_buf_ptr = io->user_buf;
+> +	b_desc->size = io->length;
+> +
+> +	if (io->flags & SE_IO_BUF_FLAGS_IS_INPUT) {
+> +		/*
+> +		 * buffer is input:
+> +		 * add an entry in the "pending input buffers" list so
+> +		 * that copied data can be cleaned from shared memory
+> +		 * later.
+> +		 */
+> +		list_add_tail(&b_desc->link, &se_shared_mem_mgmt->pending_in);
+> +	} else {
+> +		/*
+> +		 * buffer is output:
+> +		 * add an entry in the "pending out buffers" list so data
+> +		 * can be copied to user space when receiving Secure-Enclave
+> +		 * response.
+> +		 */
+> +		list_add_tail(&b_desc->link, &se_shared_mem_mgmt->pending_out);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/* interface for managed res to unregister a character device */
+> +static void if_misc_deregister(void *miscdevice)
+> +{
+> +	misc_deregister(miscdevice);
+> +}
+> +
+>  static int init_misc_device_context(struct se_if_priv *priv, int ch_id,
+> -				    struct se_if_device_ctx **new_dev_ctx)
+> +				    struct se_if_device_ctx **new_dev_ctx,
+> +				    const struct file_operations *se_if_fops)
+>  {
+>  	struct se_if_device_ctx *dev_ctx;
+>  	int ret = 0;
+> @@ -220,12 +427,520 @@ static int init_misc_device_context(struct se_if_priv *priv, int ch_id,
+>  	if (!dev_ctx->devname)
+>  		return -ENOMEM;
+>
+> +	mutex_init(&dev_ctx->fops_lock);
+> +
+>  	dev_ctx->priv = priv;
+>  	*new_dev_ctx = dev_ctx;
+>
+> +	dev_ctx->miscdev = devm_kzalloc(priv->dev, sizeof(*dev_ctx->miscdev), GFP_KERNEL);
+> +	if (!dev_ctx->miscdev) {
+> +		*new_dev_ctx = NULL;
+> +		return -ENOMEM;
+> +	}
+> +
+> +	dev_ctx->miscdev->name = dev_ctx->devname;
+> +	dev_ctx->miscdev->minor = MISC_DYNAMIC_MINOR;
+> +	dev_ctx->miscdev->fops = se_if_fops;
+> +	dev_ctx->miscdev->parent = priv->dev;
+> +	ret = misc_register(dev_ctx->miscdev);
+> +	if (ret)
+> +		return dev_err_probe(priv->dev, ret, "Failed to register misc device.");
+> +
+> +	ret = devm_add_action_or_reset(priv->dev, if_misc_deregister, dev_ctx->miscdev);
+> +	if (ret)
+> +		return dev_err_probe(priv->dev, ret,
+> +				     "Failed to add action to the misc-dev.");
+>  	return ret;
+>  }
+>
+> +static int init_device_context(struct se_if_priv *priv, int ch_id,
+> +			       struct se_if_device_ctx **new_dev_ctx)
+> +{
+> +	struct se_if_device_ctx *dev_ctx;
+> +	int ret = 0;
+> +
+> +	dev_ctx = kzalloc(sizeof(*dev_ctx), GFP_KERNEL);
+> +
+> +	if (!dev_ctx)
+> +		return -ENOMEM;
+> +
+> +	dev_ctx->devname = kasprintf(GFP_KERNEL, "%s0_ch%d",
+> +				     get_se_if_name(priv->if_defs->se_if_type),
+> +				     ch_id);
+> +	if (!dev_ctx->devname) {
+> +		kfree(dev_ctx);
+> +		return -ENOMEM;
+> +	}
+> +
+> +	mutex_init(&dev_ctx->fops_lock);
+> +	dev_ctx->priv = priv;
+> +	*new_dev_ctx = dev_ctx;
+> +
+> +	list_add_tail(&dev_ctx->link, &priv->dev_ctx_list);
+> +	priv->active_devctx_count++;
+> +
+> +	ret = init_se_shared_mem(dev_ctx);
+> +	if (ret < 0) {
+> +		kfree(dev_ctx->devname);
+> +		kfree(dev_ctx);
+> +		*new_dev_ctx = NULL;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int se_ioctl_cmd_snd_rcv_rsp_handler(struct se_if_device_ctx *dev_ctx,
+> +					    u64 arg)
+> +{
+> +	struct se_ioctl_cmd_snd_rcv_rsp_info cmd_snd_rcv_rsp_info = {0};
+> +	struct se_api_msg *tx_msg = NULL;
+> +	struct se_api_msg *rx_msg = NULL;
+> +	struct se_if_priv *priv = dev_ctx->priv;
+> +	int err = 0;
+> +
+> +	if (copy_from_user(&cmd_snd_rcv_rsp_info, (u8 __user *)arg,
+> +			   sizeof(cmd_snd_rcv_rsp_info))) {
+> +		dev_err(priv->dev,
+> +			"%s: Failed to copy cmd_snd_rcv_rsp_info from user.",
+> +			dev_ctx->devname);
+> +		err = -EFAULT;
+> +		goto exit;
+> +	}
+> +
+> +	if (cmd_snd_rcv_rsp_info.tx_buf_sz < SE_MU_HDR_SZ) {
+> +		dev_err(priv->dev, "%s: User buffer too small(%d < %d)",
+> +			dev_ctx->devname, cmd_snd_rcv_rsp_info.tx_buf_sz, SE_MU_HDR_SZ);
+> +		err = -ENOSPC;
+> +		goto exit;
+> +	}
+> +
+> +	err = se_chk_tx_msg_hdr(priv, (struct se_msg_hdr *)cmd_snd_rcv_rsp_info.tx_buf);
+> +	if (err)
+> +		goto exit;
+> +
+> +	rx_msg = kzalloc(cmd_snd_rcv_rsp_info.rx_buf_sz, GFP_KERNEL);
+> +	if (!rx_msg) {
+> +		err = -ENOMEM;
+> +		goto exit;
+> +	}
+> +
+> +	tx_msg = memdup_user(cmd_snd_rcv_rsp_info.tx_buf,
+> +			     cmd_snd_rcv_rsp_info.tx_buf_sz);
+> +	if (IS_ERR(tx_msg)) {
+> +		err = PTR_ERR(tx_msg);
+> +		goto exit;
+> +	}
+> +
+> +	if (tx_msg->header.tag != priv->if_defs->cmd_tag) {
+> +		err = -EINVAL;
+> +		goto exit;
+> +	}
+> +
+> +	if (tx_msg->header.ver == priv->if_defs->fw_api_ver &&
+> +	    get_load_fw_instance(priv)->is_fw_tobe_loaded) {
+> +		err = se_load_firmware(priv);
+> +		if (err) {
+> +			dev_err(priv->dev, "Could not send msg as FW is not loaded.");
+> +			err = -EPERM;
+> +			goto exit;
+> +		}
+> +	}
+> +	set_se_rcv_msg_timeout(priv, SE_RCV_MSG_LONG_TIMEOUT);
+> +
+> +	err = ele_msg_send_rcv(dev_ctx, tx_msg, cmd_snd_rcv_rsp_info.tx_buf_sz,
+> +			       rx_msg, cmd_snd_rcv_rsp_info.rx_buf_sz);
+> +	if (err < 0)
+> +		goto exit;
+> +
+> +	dev_dbg(priv->dev, "%s: %s %s.", dev_ctx->devname, __func__,
+> +		"message received, start transmit to user");
+> +
+> +	/* We may need to copy the output data to user before
+> +	 * delivering the completion message.
+> +	 */
+> +	err = se_dev_ctx_cpy_out_data(dev_ctx);
+> +	if (err < 0)
+> +		goto exit;
+> +
+> +	/* Copy data from the buffer */
+> +	print_hex_dump_debug("to user ", DUMP_PREFIX_OFFSET, 4, 4, rx_msg,
+> +			     cmd_snd_rcv_rsp_info.rx_buf_sz, false);
+> +
+> +	if (copy_to_user(cmd_snd_rcv_rsp_info.rx_buf, rx_msg,
+> +			 cmd_snd_rcv_rsp_info.rx_buf_sz)) {
+> +		dev_err(priv->dev, "%s: Failed to copy to user.", dev_ctx->devname);
+> +		err = -EFAULT;
+> +	}
+> +
+> +exit:
+> +
+> +	/* shared memory is allocated before this IOCTL */
+> +	se_dev_ctx_shared_mem_cleanup(dev_ctx);
+> +
+> +	if (copy_to_user((void __user *)arg, &cmd_snd_rcv_rsp_info,
+> +			 sizeof(cmd_snd_rcv_rsp_info))) {
+> +		dev_err(priv->dev, "%s: Failed to copy cmd_snd_rcv_rsp_info from user.",
+> +			dev_ctx->devname);
+> +		err = -EFAULT;
+> +	}
+> +
+> +	kfree(tx_msg);
+> +	kfree(rx_msg);
+> +	return err;
+> +}
+> +
+> +static int se_ioctl_get_mu_info(struct se_if_device_ctx *dev_ctx,
+> +				u64 arg)
+> +{
+> +	struct se_if_priv *priv = dev_ctx->priv;
+> +	struct se_ioctl_get_if_info if_info;
+> +	struct se_if_node *if_node;
+> +	int err = 0;
+> +
+> +	if_node = container_of(priv->if_defs, typeof(*if_node), if_defs);
+> +
+> +	if_info.se_if_id = 0;
+> +	if_info.interrupt_idx = 0;
+> +	if_info.tz = 0;
+> +	if_info.did = 0;
+> +	if_info.cmd_tag = priv->if_defs->cmd_tag;
+> +	if_info.rsp_tag = priv->if_defs->rsp_tag;
+> +	if_info.success_tag = priv->if_defs->success_tag;
+> +	if_info.base_api_ver = priv->if_defs->base_api_ver;
+> +	if_info.fw_api_ver = priv->if_defs->fw_api_ver;
+> +
+> +	dev_dbg(priv->dev, "%s: info [se_if_id: %d, irq_idx: %d, tz: 0x%x, did: 0x%x].",
+> +		dev_ctx->devname, if_info.se_if_id, if_info.interrupt_idx, if_info.tz,
+> +		if_info.did);
+> +
+> +	if (copy_to_user((u8 __user *)arg, &if_info, sizeof(if_info))) {
+> +		dev_err(priv->dev, "%s: Failed to copy mu info to user.",
+> +			dev_ctx->devname);
+> +		err = -EFAULT;
+> +	}
+> +
+> +	return err;
+> +}
+> +
+> +/*
+> + * Copy a buffer of data to/from the user and return the address to use in
+> + * messages
+> + */
+> +static int se_ioctl_setup_iobuf_handler(struct se_if_device_ctx *dev_ctx,
+> +					u64 arg)
+> +{
+> +	struct se_shared_mem *shared_mem = NULL;
+> +	struct se_ioctl_setup_iobuf io = {0};
+> +	int err = 0;
+> +	u32 pos;
+> +
+> +	if (copy_from_user(&io, (u8 __user *)arg, sizeof(io))) {
+> +		dev_err(dev_ctx->priv->dev, "%s: Failed copy iobuf config from user.",
+> +			dev_ctx->devname);
+> +		return -EFAULT;
+> +	}
+> +
+> +	dev_dbg(dev_ctx->priv->dev, "%s: io [buf: %p(%d) flag: %x].", dev_ctx->devname,
+> +		io.user_buf, io.length, io.flags);
+> +
+> +	if (io.length == 0 || !io.user_buf) {
+> +		/*
+> +		 * Accept NULL pointers since some buffers are optional
+> +		 * in FW commands. In this case we should return 0 as
+> +		 * pointer to be embedded into the message.
+> +		 * Skip all data copy part of code below.
+> +		 */
+> +		io.ele_addr = 0;
+> +		goto copy;
+> +	}
+> +
+> +	/* No specific requirement for this buffer. */
+> +	shared_mem = &dev_ctx->se_shared_mem_mgmt.non_secure_mem;
+> +
+> +	/* Check there is enough space in the shared memory. */
+> +	dev_dbg(dev_ctx->priv->dev, "%s: req_size = %d, max_size= %d, curr_pos = %d",
+> +		dev_ctx->devname, round_up(io.length, 8u), shared_mem->size,
+> +		shared_mem->pos);
+> +
+> +	if (shared_mem->size < shared_mem->pos ||
+> +	    round_up(io.length, 8u) > (shared_mem->size - shared_mem->pos)) {
+> +		dev_err(dev_ctx->priv->dev, "%s: Not enough space in shared memory.",
+> +			dev_ctx->devname);
+> +		return -ENOMEM;
+> +	}
+> +
+> +	/* Allocate space in shared memory. 8 bytes aligned. */
+> +	pos = shared_mem->pos;
+> +	shared_mem->pos += round_up(io.length, 8u);
+> +	io.ele_addr = (u64)shared_mem->dma_addr + pos;
+> +
+> +	memset(shared_mem->ptr + pos, 0, io.length);
+> +	if ((io.flags & SE_IO_BUF_FLAGS_IS_INPUT) ||
+> +	    (io.flags & SE_IO_BUF_FLAGS_IS_IN_OUT)) {
+> +		/*
+> +		 * buffer is input:
+> +		 * copy data from user space to this allocated buffer.
+> +		 */
+> +		if (copy_from_user(shared_mem->ptr + pos, io.user_buf, io.length)) {
+> +			dev_err(dev_ctx->priv->dev,
+> +				"%s: Failed copy data to shared memory.",
+> +				dev_ctx->devname);
+> +			return -EFAULT;
+> +		}
+> +	}
+> +
+> +	err = add_b_desc_to_pending_list(shared_mem->ptr + pos, &io, dev_ctx);
+> +	if (err < 0)
+> +		dev_err(dev_ctx->priv->dev, "%s: Failed to allocate/link b_desc.",
+> +			dev_ctx->devname);
+> +
+> +copy:
+> +	/* Provide the EdgeLock Enclave address to user space only if success.*/
+> +	if (copy_to_user((u8 __user *)arg, &io, sizeof(io))) {
+> +		dev_err(dev_ctx->priv->dev, "%s: Failed to copy iobuff setup to user.",
+> +			dev_ctx->devname);
+> +		err = -EFAULT;
+> +	}
+> +
+> +	return err;
+> +}
+> +
+> +/* IOCTL to provide SoC information */
+> +static int se_ioctl_get_se_soc_info_handler(struct se_if_device_ctx *dev_ctx, u64 arg)
+> +{
+> +	struct se_ioctl_get_soc_info soc_info;
+> +	int err = -EINVAL;
+> +
+> +	soc_info.soc_id = get_se_soc_id(dev_ctx->priv);
+> +	soc_info.soc_rev = var_se_info.soc_rev;
+> +
+> +	err = copy_to_user((u8 __user *)arg, (u8 *)(&soc_info), sizeof(soc_info));
+> +	if (err) {
+> +		dev_err(dev_ctx->priv->dev, "%s: Failed to copy soc info to user.",
+> +			dev_ctx->devname);
+> +		err = -EFAULT;
+> +	}
+> +
+> +	return err;
+> +}
+> +
+> +/*
+> + * File operations for user-space
+> + */
+> +
+> +/* Write a message to the MU. */
+> +static ssize_t se_if_fops_write(struct file *fp, const char __user *buf,
+> +				size_t size, loff_t *ppos)
+> +{
+> +	struct se_if_device_ctx *dev_ctx = fp->private_data;
+> +	struct se_api_msg *tx_msg = NULL;
+> +	struct se_if_priv *priv = dev_ctx->priv;
+> +	int err;
+> +
+> +	dev_dbg(priv->dev, "%s: write from buf (%p)%zu, ppos=%lld.", dev_ctx->devname,
+> +		buf, size, ((ppos) ? *ppos : 0));
+> +
+> +	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
+> +		if (dev_ctx != priv->cmd_receiver_clbk_hdl.dev_ctx)
+> +			return -EINVAL;
+> +
+> +		err = se_chk_tx_msg_hdr(priv, (struct se_msg_hdr *)buf);
+> +		if (err)
+> +			return err;
+> +
+> +		if (size < SE_MU_HDR_SZ) {
+> +			dev_err(priv->dev, "%s: User buffer too small(%zu < %d).",
+> +				dev_ctx->devname, size, SE_MU_HDR_SZ);
+> +			return -ENOSPC;
+> +		}
+> +
+> +		tx_msg = memdup_user(buf, size);
+> +		if (IS_ERR(tx_msg))
+> +			return PTR_ERR(tx_msg);
+> +
+> +		print_hex_dump_debug("from user ", DUMP_PREFIX_OFFSET, 4, 4,
+> +				     tx_msg, size, false);
+> +
+> +		err = ele_msg_send(dev_ctx, tx_msg, size);
+> +
+> +		kfree(tx_msg);
+> +		return err;
+> +	}
+> +}
+> +
+> +/*
+> + * Read a message from the MU.
+> + * Blocking until a message is available.
+> + */
+> +static ssize_t se_if_fops_read(struct file *fp, char __user *buf, size_t size,
+> +			       loff_t *ppos)
+> +{
+> +	struct se_if_device_ctx *dev_ctx = fp->private_data;
+> +	struct se_if_priv *priv = dev_ctx->priv;
+> +	int err;
+> +
+> +	dev_dbg(priv->dev, "%s: read to buf %p(%zu), ppos=%lld.", dev_ctx->devname,
+> +		buf, size, ((ppos) ? *ppos : 0));
+> +
+> +	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
+> +		if (dev_ctx != priv->cmd_receiver_clbk_hdl.dev_ctx) {
+> +			err = -EINVAL;
+> +			goto exit;
+> +		}
+> +
+> +		err = ele_msg_rcv(dev_ctx, &priv->cmd_receiver_clbk_hdl);
+> +		if (err < 0) {
+> +			dev_err(priv->dev, "%s: Err[0x%x]:Interrupted by signal."
+> +				"Current active dev-ctx count = %d.",
+> +				dev_ctx->devname, err, dev_ctx->priv->active_devctx_count);
+> +			goto exit;
+> +		}
+> +
+> +		/* We may need to copy the output data to user before
+> +		 * delivering the completion message.
+> +		 */
+> +		err = se_dev_ctx_cpy_out_data(dev_ctx);
+> +		if (err < 0)
+> +			goto exit;
+> +
+> +		/* Copy data from the buffer */
+> +		print_hex_dump_debug("to user ", DUMP_PREFIX_OFFSET, 4, 4,
+> +				     priv->cmd_receiver_clbk_hdl.rx_msg,
+> +				     priv->cmd_receiver_clbk_hdl.rx_msg_sz,
+> +				     false);
+> +
+> +		if (copy_to_user(buf, priv->cmd_receiver_clbk_hdl.rx_msg,
+> +				 priv->cmd_receiver_clbk_hdl.rx_msg_sz)) {
+> +			dev_err(priv->dev, "%s: Failed to copy to user.",
+> +				dev_ctx->devname);
+> +			err = -EFAULT;
+> +		} else {
+> +			err = priv->cmd_receiver_clbk_hdl.rx_msg_sz;
+> +		}
+> +exit:
+> +		priv->cmd_receiver_clbk_hdl.rx_msg_sz = 0;
+> +
+> +		se_dev_ctx_shared_mem_cleanup(dev_ctx);
+> +
+> +		return err;
+> +	}
+> +}
+> +
+> +/* Open a character device. */
+> +static int se_if_fops_open(struct inode *nd, struct file *fp)
+> +{
+> +	struct miscdevice *miscdev = fp->private_data;
+> +	struct se_if_device_ctx *misc_dev_ctx;
+> +	struct se_if_device_ctx *dev_ctx;
+> +	struct se_if_priv *priv;
+> +	int err = 0;
+> +
+> +	priv = dev_get_drvdata(miscdev->parent);
+> +	misc_dev_ctx = priv->priv_dev_ctx;
+> +
+> +	scoped_cond_guard(mutex_intr, return -EBUSY, &misc_dev_ctx->fops_lock) {
+> +		priv->dev_ctx_mono_count++;
+> +		err = init_device_context(priv,
+> +					  priv->dev_ctx_mono_count ?
+> +					  priv->dev_ctx_mono_count
+> +					  : priv->dev_ctx_mono_count++,
+> +					  &dev_ctx);
+> +		if (err)
+> +			dev_err(priv->dev, "Failed[0x%x] to create dev-ctx.", err);
+> +		else
+> +			fp->private_data = dev_ctx;
+> +
+> +		return err;
+> +	}
+> +}
+> +
+> +/* Close a character device. */
+> +static int se_if_fops_close(struct inode *nd, struct file *fp)
+> +{
+> +	struct se_if_device_ctx *dev_ctx = fp->private_data;
+> +	struct se_if_priv *priv = dev_ctx->priv;
+> +
+> +	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
+> +		/* check if this device was registered as command receiver. */
+> +		if (priv->cmd_receiver_clbk_hdl.dev_ctx == dev_ctx) {
+> +			priv->cmd_receiver_clbk_hdl.dev_ctx = NULL;
+> +			kfree(priv->cmd_receiver_clbk_hdl.rx_msg);
+> +			priv->cmd_receiver_clbk_hdl.rx_msg = NULL;
+> +		}
+> +
+> +		se_dev_ctx_shared_mem_cleanup(dev_ctx);
+> +		cleanup_se_shared_mem(dev_ctx);
+> +
+> +		priv->active_devctx_count--;
+> +		list_del(&dev_ctx->link);
+> +
+> +		kfree(dev_ctx->devname);
+> +		kfree(dev_ctx);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/* IOCTL entry point of a character device */
+> +static long se_ioctl(struct file *fp, unsigned int cmd, unsigned long arg)
+> +{
+> +	struct se_if_device_ctx *dev_ctx = fp->private_data;
+> +	struct se_if_priv *priv = dev_ctx->priv;
+> +	long err;
+> +
+> +	/* Prevent race during change of device context */
+> +	scoped_cond_guard(mutex_intr, return -EBUSY, &dev_ctx->fops_lock) {
+> +		switch (cmd) {
+> +		case SE_IOCTL_ENABLE_CMD_RCV:
+> +			if (!priv->cmd_receiver_clbk_hdl.dev_ctx) {
+> +				if (!priv->cmd_receiver_clbk_hdl.rx_msg) {
+> +					priv->cmd_receiver_clbk_hdl.rx_msg =
+> +						kzalloc(MAX_NVM_MSG_LEN,
+> +							GFP_KERNEL);
+> +					if (!priv->cmd_receiver_clbk_hdl.rx_msg) {
+> +						err = -ENOMEM;
+> +						break;
+> +					}
+> +				}
+> +				priv->cmd_receiver_clbk_hdl.rx_msg_sz = MAX_NVM_MSG_LEN;
+> +				priv->cmd_receiver_clbk_hdl.dev_ctx = dev_ctx;
+> +				err = 0;
+> +			} else {
+> +				err = -EBUSY;
+> +			}
+> +			break;
+> +		case SE_IOCTL_GET_MU_INFO:
+> +			err = se_ioctl_get_mu_info(dev_ctx, arg);
+> +			break;
+> +		case SE_IOCTL_SETUP_IOBUF:
+> +			err = se_ioctl_setup_iobuf_handler(dev_ctx, arg);
+> +			break;
+> +		case SE_IOCTL_GET_SOC_INFO:
+> +			err = se_ioctl_get_se_soc_info_handler(dev_ctx, arg);
+> +			break;
+> +		case SE_IOCTL_CMD_SEND_RCV_RSP:
+> +			err = se_ioctl_cmd_snd_rcv_rsp_handler(dev_ctx, arg);
+> +			break;
+> +		default:
+> +			err = -EINVAL;
+> +			dev_dbg(priv->dev, "%s: IOCTL %.8x not supported.",
+> +				dev_ctx->devname, cmd);
+> +		}
+> +	}
+> +
+> +	return err;
+> +}
+> +
+> +/* Char driver setup */
+> +static const struct file_operations se_if_fops = {
+> +	.open		= se_if_fops_open,
+> +	.owner		= THIS_MODULE,
+> +	.release	= se_if_fops_close,
+> +	.unlocked_ioctl = se_ioctl,
+> +	.read		= se_if_fops_read,
+> +	.write		= se_if_fops_write,
+> +};
+> +
+>  /* interface for managed res to free a mailbox channel */
+>  static void if_mbox_free_channel(void *mbox_chan)
+>  {
+> @@ -246,7 +961,7 @@ static int se_if_request_channel(struct device *dev, struct mbox_chan **chan,
+>  	ret = devm_add_action_or_reset(dev, if_mbox_free_channel, t_chan);
+>  	if (ret)
+>  		return dev_err_probe(dev, -EPERM,
+> -				     "Failed to add-action for removal of mbox: %s\n",
+> +				     "Failed to add-action for removal of mbox: %s.",
+>  				     name);
+>  	*chan = t_chan;
+>
+> @@ -255,6 +970,7 @@ static int se_if_request_channel(struct device *dev, struct mbox_chan **chan,
+>
+>  static void se_if_probe_cleanup(void *plat_dev)
+>  {
+> +	struct se_if_device_ctx *dev_ctx, *t_dev_ctx;
+>  	struct platform_device *pdev = plat_dev;
+>  	struct se_fw_load_info *load_fw;
+>  	struct device *dev = &pdev->dev;
+> @@ -279,6 +995,13 @@ static void se_if_probe_cleanup(void *plat_dev)
+>  		load_fw->imem.buf = NULL;
+>  	}
+>
+> +	if (priv->dev_ctx_mono_count) {
+> +		list_for_each_entry_safe(dev_ctx, t_dev_ctx, &priv->dev_ctx_list, link) {
+> +			list_del(&dev_ctx->link);
+> +			priv->active_devctx_count--;
+> +		}
+> +	}
+> +
+>  	/*
+>  	 * No need to check, if reserved memory is allocated
+>  	 * before calling for its release. Or clearing the
+> @@ -319,6 +1042,7 @@ static int se_if_probe(struct platform_device *pdev)
+>  	priv->se_mb_cl.tx_block		= false;
+>  	priv->se_mb_cl.knows_txdone	= true;
+>  	priv->se_mb_cl.rx_callback	= se_if_rx_callback;
+> +	set_se_rcv_msg_timeout(priv, SE_RCV_MSG_DEFAULT_TIMEOUT);
+>
+>  	ret = se_if_request_channel(dev, &priv->tx_chan, &priv->se_mb_cl, MBOX_TX_NAME);
+>  	if (ret)
+> @@ -340,6 +1064,7 @@ static int se_if_probe(struct platform_device *pdev)
+>  					     "Unable to get sram pool = %s.",
+>  					     if_node->pool_name);
+>  	}
+> +	INIT_LIST_HEAD(&priv->dev_ctx_list);
+>
+>  	if (if_node->reserved_dma_ranges) {
+>  		ret = of_reserved_mem_device_init(dev);
+> @@ -348,7 +1073,7 @@ static int se_if_probe(struct platform_device *pdev)
+>  					    "Failed to init reserved memory region.");
+>  	}
+>
+> -	ret = init_misc_device_context(priv, 0, &priv->priv_dev_ctx);
+> +	ret = init_misc_device_context(priv, 0, &priv->priv_dev_ctx, &se_if_fops);
+>  	if (ret)
+>  		return dev_err_probe(dev, ret,
+>  				     "Failed[0x%x] to create device contexts.",
+> @@ -389,6 +1114,7 @@ static int se_suspend(struct device *dev)
+>  	struct se_fw_load_info *load_fw;
+>  	int ret = 0;
+>
+> +	set_se_rcv_msg_timeout(priv, SE_RCV_MSG_DEFAULT_TIMEOUT);
+>  	load_fw = get_load_fw_instance(priv);
+>
+>  	if (load_fw->imem_mgmt) {
+> diff --git a/drivers/firmware/imx/se_ctrl.h b/drivers/firmware/imx/se_ctrl.h
+> index b5e7705e2f26..5fcdcfe3e8e5 100644
+> --- a/drivers/firmware/imx/se_ctrl.h
+> +++ b/drivers/firmware/imx/se_ctrl.h
+> @@ -14,6 +14,7 @@
+>  #define SE_MSG_WORD_SZ			0x4
+>
+>  #define RES_STATUS(x)			FIELD_GET(0x000000ff, x)
+> +#define MAX_DATA_SIZE_PER_USER		(65 * 1024)
+>  #define MAX_NVM_MSG_LEN			(256)
+>  #define MESSAGING_VERSION_6		0x6
+>  #define MESSAGING_VERSION_7		0x7
+> @@ -37,10 +38,38 @@ struct se_imem_buf {
+>  	u32 state;
+>  };
+>
+> +struct se_buf_desc {
+> +	u8 *shared_buf_ptr;
+> +	void __user *usr_buf_ptr;
+> +	u32 size;
+> +	struct list_head link;
+> +};
+> +
+> +struct se_shared_mem {
+> +	dma_addr_t dma_addr;
+> +	u32 size;
+> +	u32 pos;
+> +	u8 *ptr;
+> +};
+> +
+> +struct se_shared_mem_mgmt_info {
+> +	struct list_head pending_in;
+> +	struct list_head pending_out;
+> +
+> +	struct se_shared_mem non_secure_mem;
+> +};
+> +
+>  /* Private struct for each char device instance. */
+>  struct se_if_device_ctx {
+>  	struct se_if_priv *priv;
+> +	struct miscdevice *miscdev;
+>  	const char *devname;
+> +
+> +	/* process one file operation at a time. */
+> +	struct mutex fops_lock;
+> +
+> +	struct se_shared_mem_mgmt_info se_shared_mem_mgmt;
+> +	struct list_head link;
+>  };
+>
+>  /* Header of the messages exchange with the EdgeLock Enclave */
+> @@ -89,6 +118,10 @@ struct se_if_priv {
+>  	const struct se_if_defines *if_defs;
+>
+>  	struct se_if_device_ctx *priv_dev_ctx;
+> +	struct list_head dev_ctx_list;
+> +	u32 active_devctx_count;
+> +	u32 dev_ctx_mono_count;
+> +	u32 se_rcv_msg_timeout_ms;
+>  };
+>
+>  char *get_se_if_name(u8 se_if_id);
+> diff --git a/include/uapi/linux/se_ioctl.h b/include/uapi/linux/se_ioctl.h
+> new file mode 100644
+> index 000000000000..0c948bdc8c26
+> --- /dev/null
+> +++ b/include/uapi/linux/se_ioctl.h
+> @@ -0,0 +1,97 @@
+> +/* SPDX-License-Identifier: (GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause*/
+> +/*
+> + * Copyright 2025 NXP
+> + */
+> +
+> +#ifndef SE_IOCTL_H
+> +#define SE_IOCTL_H
+> +
+> +#include <linux/types.h>
+> +
+> +#define SE_TYPE_STR_DBG			"dbg"
+> +#define SE_TYPE_STR_HSM			"hsm"
+> +#define SE_TYPE_ID_UNKWN		0x0
+> +#define SE_TYPE_ID_DBG			0x1
+> +#define SE_TYPE_ID_HSM			0x2
+> +/* IOCTL definitions. */
+> +
+> +struct se_ioctl_setup_iobuf {
+> +	void __user *user_buf;
+> +	__u32 length;
+> +	__u32 flags;
+> +	__u64 ele_addr;
+> +};
+> +
+> +struct se_ioctl_shared_mem_cfg {
+> +	__u32 base_offset;
+> +	__u32 size;
+> +};
+> +
+> +struct se_ioctl_get_if_info {
+> +	__u8 se_if_id;
+> +	__u8 interrupt_idx;
+> +	__u8 tz;
+> +	__u8 did;
+> +	__u8 cmd_tag;
+> +	__u8 rsp_tag;
+> +	__u8 success_tag;
+> +	__u8 base_api_ver;
+> +	__u8 fw_api_ver;
+> +};
+> +
+> +struct se_ioctl_cmd_snd_rcv_rsp_info {
+> +	__u32 __user *tx_buf;
+> +	int tx_buf_sz;
+> +	__u32 __user *rx_buf;
+> +	int rx_buf_sz;
+> +};
+> +
+> +struct se_ioctl_get_soc_info {
+> +	__u16 soc_id;
+> +	__u16 soc_rev;
+> +};
+> +
+> +/* IO Buffer Flags */
+> +#define SE_IO_BUF_FLAGS_IS_OUTPUT	(0x00u)
+> +#define SE_IO_BUF_FLAGS_IS_INPUT	(0x01u)
+> +#define SE_IO_BUF_FLAGS_USE_SEC_MEM	(0x02u)
+> +#define SE_IO_BUF_FLAGS_USE_SHORT_ADDR	(0x04u)
+> +#define SE_IO_BUF_FLAGS_IS_IN_OUT	(0x10u)
+> +
+> +/* IOCTLS */
+> +#define SE_IOCTL			0x0A /* like MISC_MAJOR. */
+> +
+> +/*
+> + * ioctl to designated the current fd as logical-reciever.
+> + * This is ioctl is send when the nvm-daemon, a slave to the
+> + * firmware is started by the user.
+> + */
+> +#define SE_IOCTL_ENABLE_CMD_RCV	_IO(SE_IOCTL, 0x01)
+> +
+> +/*
+> + * ioctl to get the buffer allocated from the memory, which is shared
+> + * between kernel and FW.
+> + * Post allocation, the kernel tagged the allocated memory with:
+> + *  Output
+> + *  Input
+> + *  Input-Output
+> + *  Short address
+> + *  Secure-memory
+> + */
+> +#define SE_IOCTL_SETUP_IOBUF	_IOWR(SE_IOCTL, 0x03, struct se_ioctl_setup_iobuf)
+> +
+> +/*
+> + * ioctl to get the mu information, that is used to exchange message
+> + * with FW, from user-spaced.
+> + */
+> +#define SE_IOCTL_GET_MU_INFO	_IOR(SE_IOCTL, 0x04, struct se_ioctl_get_if_info)
+> +/*
+> + * ioctl to get SoC Info from user-space.
+> + */
+> +#define SE_IOCTL_GET_SOC_INFO      _IOR(SE_IOCTL, 0x06, struct se_ioctl_get_soc_info)
+> +
+> +/*
+> + * ioctl to send command and receive response from user-space.
+> + */
+> +#define SE_IOCTL_CMD_SEND_RCV_RSP _IOWR(SE_IOCTL, 0x07, struct se_ioctl_cmd_snd_rcv_rsp_info)
+> +#endif
+>
 > --
-> Peng Fan <peng.fan@nxp.com>
+> 2.43.0
 >
