@@ -1,219 +1,438 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011002.outbound.protection.outlook.com [52.101.65.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A172DC772
-	for <imx@lists.linux.dev>; Fri, 12 Dec 2025 10:04:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.2
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765533880; cv=fail; b=sZhZcvtvb0Eu61aVX21pgn5BcOMqtsF/kAzPP7QNURfvNJv4ymdayBW7LBMpMgXck1Cx9vMFHF79OgxHHUmIHxLSm/4NQAA54lkFHZ7LncBG1hcjTBDpE8KjNyxZXiD2Dt0WcodkCifsS9/5BZlE6QexjiQAknqdfn4ucErmJy4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765533880; c=relaxed/simple;
-	bh=VB63zEnh5YolKxJFdI/gSWaMbc0xCQ58Zmv1/Hrjr+o=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=sV9QR0Uc8i4IQNfcvQ0FUGSF6KlKIVteIUWmS23lj2h60UD2zctyc0jl4L+LbCpIEVOnZFAJmwhhP0QZDLot+FxCr+4QEK/T/V8v89GyNPOJjuVUX4R4c2pmoyMfin06tThcSex7C+8YO+fCGqBPDFYulUSwI2s7knRD/8I0T0k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kAInuFob; arc=fail smtp.client-ip=52.101.65.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1E530FC30
+	for <imx@lists.linux.dev>; Fri, 12 Dec 2025 10:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765534275; cv=none; b=mMaqe9t9XuZqd2N48+XeoKF0UsISzskuTZtaYqg3M64sviyDWd886EnIIgUNrlSqN25Xt9A4vqqFvr8JBAtLmzt2/pl2GkjBtCPQx7j3FNaEk3vycr1spdcF0M2GmjfxuWJ4D3253BVJtK+/nf0F+PUoFb1LRx6/5oT54cehwJM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765534275; c=relaxed/simple;
+	bh=K9iOfHu3sHH8E2mx/0wrzT5tjpWF/oxkt/1WE6QwHvc=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=muwrDoWTc5Pr37Yj4cwZBr+PlV1MtMmlkhQB2/DQ7bYMMCp0EpZXNmgG1wJGPudGBvFjBXuVcigeaCMcf2m706Yt3B49hqWCrvxNU01/64I7oGY4TF6Rls5t1tWVHlgWhPh0GB/lPVlb1rGNM/St8c2rR1v9Yaz7NKFxVxENlSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B4Grw/XY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kAInuFob"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TX11WQtWo/knaDj0m6li8h04oAHZrPSCZLV2Uh5GPRzQC1n15CtlVKdm3wFhB2TzcyCZcXmxAndUKJ679OlGX6wkPz7g8MqL6gv3U403w7WQjt7G7SmC6txVwIoFTkITDkAPstRUrrvwomm0Fs7TpPfwgZbnBX7UGFhltOgCZwo78kHQ53jYelh/pVYSYUu5tA2MR9UYjFScVBbcHg3NZEKCTXKGyrlL1udIe2LDOG+QxIWifOByBLNTGHH2S6VsgCOYsoc8djgS6fz/t4FjanPqCt0ciiM2Q7+ZKx0zTB3A3bMQz/t9sWrCXAw8eEcmNHSVKtnycUvemWc6IiUXBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VB63zEnh5YolKxJFdI/gSWaMbc0xCQ58Zmv1/Hrjr+o=;
- b=KOffQ/hwDTNGZdZon7g+jbxGXFfZxD4wWsS1CHd8uljuDt89KZb74tFZnEmOxgEpr3ee7p37NuZ74A3B4kt6Uz7yPPypNGm69+zQPxL2lWAMGTi+lPON9eG+UXkhLlJRlxZ92JSPhHxqzOWJACNDlmDuHlJwS6NAfkb+t/yfpluVtrTzL8x5NALFSkDPAnXBN/nPGWa95+RdMkw8UNprGAc7VZ2pGTWoF3694VXnU6ZB5FyJd2hiDW+W1GoC8oITUgXKJsRw+aXKpUJfdtqO/rb88kZLV63POWJA6+W8eP5F5CaKkcKJ2B7UZQIPLvwaqDlRKVR0M1yUEpABzVRsxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VB63zEnh5YolKxJFdI/gSWaMbc0xCQ58Zmv1/Hrjr+o=;
- b=kAInuFobA50erKRg9W6ZbrRjRujavcWe/sePjiyCIMM7yq/fACn93vSiDOwctSNNjM+0jAtO1H0xxuj3YUVBjh/8DLy1mWGnCaC9oAqNukSrD0jrz4ipzZ7Pab/Ae5ThuLCVq9YYG3SOBPH466XmR1PhGS8GMajlu2spctAUzSu3Rd/TH4BvB8QLvpjJdgB0UDaHbChJYc52Sz3FDbLr6x8Yxt/xVxdTsG2J5TNWnJBOnrdo9mTIiXxxCdxPPDYQR7ZHOZPYyoSLYTtxHPgxqnm6aVJQlPlClM/AYiDhSs5/jQnPeU7MbTsIQvdTirVEIUwTgYYqOfNblcmTAbo/Eg==
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
- by AS8PR04MB9048.eurprd04.prod.outlook.com (2603:10a6:20b:443::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.11; Fri, 12 Dec
- 2025 10:04:34 +0000
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::868b:3935:5e0f:6a33]) by DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::868b:3935:5e0f:6a33%6]) with mapi id 15.20.9412.005; Fri, 12 Dec 2025
- 10:04:33 +0000
-From: Bough Chen <haibo.chen@nxp.com>
-To: Michael Walle <mwalle@kernel.org>, Tudor Ambarus
-	<tudor.ambarus@linaro.org>, Pratyush Yadav <pratyush@kernel.org>, Miquel
- Raynal <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-CC: "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Han Xu
-	<han.xu@nxp.com>, "open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC DRIVER"
-	<imx@lists.linux.dev>
-Subject: RE: [PATCH] Revert "mtd: spi-nor: micron-st: use SFDP of
- mt35xu512aba"
-Thread-Topic: [PATCH] Revert "mtd: spi-nor: micron-st: use SFDP of
- mt35xu512aba"
-Thread-Index: AQHca0FxCEaUmSyCeUy+98b5FduawbUdrc6AgAAAbHCAAA3TAIAACRMg
-Date: Fri, 12 Dec 2025 10:04:33 +0000
-Message-ID:
- <DU0PR04MB9496F2D42FA025CEEA1B822390AEA@DU0PR04MB9496.eurprd04.prod.outlook.com>
-References: <20251212-nor-v1-1-20a5a381979c@nxp.com>
- <DEW3M3BQEGIW.3AFGPPSCBGI16@kernel.org>
- <DU0PR04MB94960504A809674A265689D690AEA@DU0PR04MB9496.eurprd04.prod.outlook.com>
- <DEW4P4X1DBYG.1Q3T05DX2784P@kernel.org>
-In-Reply-To: <DEW4P4X1DBYG.1Q3T05DX2784P@kernel.org>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DU0PR04MB9496:EE_|AS8PR04MB9048:EE_
-x-ms-office365-filtering-correlation-id: dd967090-d087-4335-8ba3-08de3965d99c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|19092799006|376014|366016|38070700021;
-x-microsoft-antispam-message-info:
- =?utf-8?B?ZW1PM0d4VGJTUXpSK1RSdUJXL1k5UmZIME44aUJVT1VTTXRYM2NIQ3lkb3Jx?=
- =?utf-8?B?UFA5NUlDTDdKVmpPcmNJYzFuMUJGTGQ3NlJTUjRWdlZKcEFZcWFmc2tKM1ZH?=
- =?utf-8?B?MGdNUWtSYVJVMXVZOWxYSExlZ25mZm5FRE1jd3ZHR0swRzZiaWhYQXVLY3Q2?=
- =?utf-8?B?MXRBSDJVcWw0TzhDR0hCOG1rUEFQQWR4UHhPcW5UYkVEZjBlRm9iVGM2dHJ1?=
- =?utf-8?B?Rk1FRVJzWjVwKzlQd1Y5SUVybUJ1c3NPTkhoODhjbWNIbGN2RWpmRHZRaDRi?=
- =?utf-8?B?SUQrNWxES24xOGhTTkRCb25pOHpCWDk1QUdBSG5teVpZRTZ0T3drY1VEMEN6?=
- =?utf-8?B?djAxTFpNSk04eTdacU40Y253RmhYbGpQQUtMRHF0cG80WXU0UjN4Uk5qclRG?=
- =?utf-8?B?am5lbE5CdHBJQzZjK201WVNrVWl5RE93aWhqVVRnVW9MQWpHVFc4dzFRajhY?=
- =?utf-8?B?U0p6Z3ROaUxTNU4wenk4YW5vUFJERk5SZnMzWUJMQ3YrWlROVXZOWVMxdjhz?=
- =?utf-8?B?QkVHYklaU3RJbFIrWkVGbkdJRHVLYjJ5OCtoQUJML291TjZKSjhDaUY3REFI?=
- =?utf-8?B?Sks4M0x5Q3hDWXpPdW42TC9ZU2ZEM2VwVXNPNG9Zbzl1L2s2Wm5wL0xyKzk5?=
- =?utf-8?B?QlRXVjlJQlRoS0g4ZEpyZ1V5Sk5ZWko0WU9NaGZXQklBNUZqTXoveVhESTNC?=
- =?utf-8?B?V3NNY0E1NWp6YzJkWDcveDdodGRlMjFtaGJsNW9WMTl1SXRldk9ONlV2a2lz?=
- =?utf-8?B?SXNwUE04Qmh6eW0wU3I4ZGlHKzFqOUg4V3d0Y0lhbVV5eTRYbm8xYk1aSmh0?=
- =?utf-8?B?TlJvNkhDbEErc3ZLVXd2Wmc4enp4elYzQ2Z0YXJheGNHR3E5aExqV1oyR1pK?=
- =?utf-8?B?NVBsSzBuS1E2YjVLdlB4ZXoveEpaZTRXT3dhV3UwdkcxR29rSERhdFFlaGhU?=
- =?utf-8?B?S1VqRTNTeE5ubDg3V3kwMEdlQzBqQnZUbjVGRnBreWFDaXZNN2RZdkV4NFpD?=
- =?utf-8?B?cjd6SW5ZNVdmTEVLNGpxbkgwSm44dnJ0bjY2V2toNWlVOWRQbzg5cnpyZVBN?=
- =?utf-8?B?UyszZnhrMkp2b1RuM3hKY1dLaHdYOEpCdHdETnFKVHIrQzd6M1h0WlZ2Wmpj?=
- =?utf-8?B?UHRTaFR0QUNJR1dqMHo3a1hVN2VDdHFMNzNLRzZxbUFuWUJJUzQ3dyswdGxw?=
- =?utf-8?B?ZVJ4Z2hlT0xTL1JkQjI2VXBXNXF0OEJqaFBiUlE1dHRvMkVyR2tmUkFIQ200?=
- =?utf-8?B?WlpsQmpsQThqTUg1NjFEUmVYWVFGK2lVMmFLUjA1UVRPS1ZsakRneFJpbnFY?=
- =?utf-8?B?cysrL0xvczhVQ0ZLdzI1SU5EZHZ2Sjd2aG5SM3dSYVBCaURiSlVKWmhCUHlh?=
- =?utf-8?B?ZnNqUXZYVUNEQXhjdXJqMGZzajZFZHFlZUNtNjl5TlhMTW5DaGN6aCtSTitD?=
- =?utf-8?B?bEJsT3d4bEwzdFhxQlR3bTExNkRjUEFpU3F5SjFzWVl5MkE3aVZucmNyRE9M?=
- =?utf-8?B?R1o4WHRXSlRpaEZoYktidlovSjlnekl1MC9ZK2Y2OVpUMTZxV3MvYStvVkgy?=
- =?utf-8?B?ME81eDVydXZLbWlzbkU1eGR5ZitoUFA2N3hTMEhUUmI4UTZSMG56SEs1cm1V?=
- =?utf-8?B?MGlxSnFPSzlreFlrcEp1OGRSL1pLZjZGaC9mbmV2d3FWVmRKOTkvemtKcngr?=
- =?utf-8?B?WWRjVlBuNCt1M2dSZUpzVXh2SkRickNuczRzSjZsamlhNTg5TFk0aU8xWTNO?=
- =?utf-8?B?YXIzQ0pIUkFVQTFkSWlNYnRWK0tmRmluOEN5Tys1RXBwQVNReFZPQ1hQemZ5?=
- =?utf-8?B?UWdEVDQ3R0ZCRlRPcGJ0TC9aNGpPMUd2QjJoZ3RqSWQ4d3ZJTU5RNWx4S3Zm?=
- =?utf-8?B?MzJycmFvT0lWTnpFYS9jQnlKck53Rm9oWU9kWnJtOFQ1QTcrWTBxKzQ0N3ZU?=
- =?utf-8?B?K2J0SytLOVVEb0Z2bU1oVUk0MjNGYnBNekt1NklpK1U2VitlUThpdWx2V1ZX?=
- =?utf-8?B?LzUrT2dLQTJHK1YrQ3NCMjlZeDErdVlBSjdvelF2Ti9FMmEvN2VxQkZoUmV0?=
- =?utf-8?Q?56CqRv?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9496.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(366016)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?NWNGMXhFYmxiSnpxOXZhY1VzQ09samNKOFdMYndhYi9DNXNIc2JrK0NuYnho?=
- =?utf-8?B?VXhDRUIrUERreGZlWCtVSGpocXdXOVlqZFA5OXhDUFFyVGF4Z2cvd1JOTzE2?=
- =?utf-8?B?YTVQRmV5R3dtV2xFdVdwU0tRWmJwNEhBaERIa2RlNXl0M3JITE9BR0FyOFFO?=
- =?utf-8?B?QkRkQnBhR0JxM2h6VjE0cmtpK2lDd3BJYm4vMzRmbU12S200VXBhU3J0MXdH?=
- =?utf-8?B?VHphZzFIdE9uUWtuUlBGUWZDSk9OMFNXZmU2b0pHcHJXdWJHNnEzRkcxS0V2?=
- =?utf-8?B?YUU0ZFQ4cXkwOGlZdFZTL0pud0NCOWU5VkVySzgwZ3M3aWRwdlZtVnVYcUU5?=
- =?utf-8?B?d2RiWG8rM3lNbExTRXhCeE0vcFFnNHpEdW1ldXhqQjRPK2daZ2FGbldRNGFs?=
- =?utf-8?B?RFRLV2liVkJmTk8rNkp1dittY2RyOHk3RDFGZmcxR0dXMFQyVy9IOU0ydFU1?=
- =?utf-8?B?MndCZ2FmNTJnRWpibExtWFNCSGtFR1VvRDJqM3ZUWlArbEdvZWdWaEZzckg4?=
- =?utf-8?B?aWh3bkdjVVA3Mm92L0xOdGpaaUg2ZlNMODlRdjJTaWV3ZVlBRmZCQXN4SDdT?=
- =?utf-8?B?cHhaZS9QNUQxTmNQVlBiZjZ2aWE0T01sVHlIWnpxcFl2Yjh1eTEwUjJYeW0r?=
- =?utf-8?B?elpUSkpBQ08yUCs3S2R1RlBaYnY4MGlXekR6dHd3d0E5aXc3Sm9LQWpSNHNh?=
- =?utf-8?B?MFpqalgvZFVEdG90VktpR2srZ3BiNHBMR2VTSGtTaEU1WEZVTDQwc205djJ3?=
- =?utf-8?B?NW0wTWpiNjJPdGFQU0VCellGMEFwRTJRVGcveTFmck5BN0twRHhpMGRZL2h5?=
- =?utf-8?B?UGZyZzc1SDIvTlMvZkRGWFpScCthSXIralZBYklQbGtqdDV5b2ZEVHMzLzVP?=
- =?utf-8?B?T2oxNjFlalowUnZSbllMeTZTaGtzaWNxdHJ4T25XeDVvTFJ0cHdIRlZueGdW?=
- =?utf-8?B?QTFQTk1aQnYyWVVZSmpEQ0ZiY3hwbVFJaStiaFRxdXNWQVR2am8wWU9SRHM1?=
- =?utf-8?B?dzM2S254Y2RwUHVsNzBDRGdVQ3dBS2VXYWU3M2NNalUyQXliWk5ubG9KbFdh?=
- =?utf-8?B?ZU9uUWFDUG5DYVZGa1pabHl0T2V5dDlrMFlTcWxkVGpveWJ5SmkrZngvSUpQ?=
- =?utf-8?B?OFpaM1pzN0lraitURjF3TmRnbjZpekFtaXVESWxjNGxjZjdUakE5K09ySnZL?=
- =?utf-8?B?TFdIRDBLYkw2OXZEZUpvWXh1VWpSUWI2dHE5NGJCb1Jlam5HbmFLZk91c2RD?=
- =?utf-8?B?UkJWcGhHc0JqRHNyWWowV1pzNU9MYjRuL2hWOXl2akNlYTVkUkcrcHVsMWF1?=
- =?utf-8?B?VmZpQW83SE9sQ2t0bVIzUzJsQjJXblIrWTFzVW92bS9uOWlpa04ya2lITHdY?=
- =?utf-8?B?M0Z4bUtHYVZ5dktSaGpIVDM3MUhaUTZXdnZ0dTMrVE5xa1o0Y3FsdzZvTTd0?=
- =?utf-8?B?Vm1UeGdmai9TYzA3enl0VjVCcWF6bTNtK0tFR2I1K252NlMrOHhydk1OcFI5?=
- =?utf-8?B?VUFLZEw1dUN0Nm14V0h2TUFCNWx6ZmdmZm04RkNQNkQ0VlZkeHRKRzBCbmZE?=
- =?utf-8?B?Lyt5SHZ2Y3JQaU9EaS9KUFBuS1pqTTdqbEk3MnRmRXBSczRDcXN5UUcrN2VP?=
- =?utf-8?B?T1A2VnZGV3B5am15blZWMzY0NnBoM2hicitkUzlGTEdTWTJ5TkJyS1A2c2g4?=
- =?utf-8?B?dGRBblRHckxmbDM2bW4xdGRjcWYyNEhlSyt2S0ZTbkZoUktMK0dDcDdWUE9s?=
- =?utf-8?B?NUk4L2JjdkxlYWxNTkUybXh4L0pqcE11SGYvaTgvaEZqYVJCWFIrVkFRSlRE?=
- =?utf-8?B?U3krTTRvZGhQN2VEVGdpUDUzMGpCd09QNTkrRW5CWnpPT3lybjJ2ZnBhbUts?=
- =?utf-8?B?cTlWeFFoWXZWdVR5aURFZEpWN0dTRFBsaVpveFJxZ3pIeTdDSGsxTzFnWnFi?=
- =?utf-8?B?ME15WHdZcXNPbmwxUXB3cm9aK29Lb2w0ZHM3ZVpwMEVNTkFBM1dhSG4wM1My?=
- =?utf-8?B?T0F4QXZnMm4rWVNXMjVzOERNMmFpbjNMTkYrNDFvVlAzRGY2K0dvcitZdXNr?=
- =?utf-8?B?ZWhpQTFNeDNNWi9aMDgzZysyU1dLZEhaQklUaGIyd2g3YXF2ckR3SjlnUkZ2?=
- =?utf-8?Q?a2fE=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B4Grw/XY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC2BC19422
+	for <imx@lists.linux.dev>; Fri, 12 Dec 2025 10:11:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765534274;
+	bh=K9iOfHu3sHH8E2mx/0wrzT5tjpWF/oxkt/1WE6QwHvc=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
+	b=B4Grw/XYgfImbgds3cMa893XWbZhiOjKQrw2KF9QHZLYIC3QpCHOqDsX0FPv+95ZA
+	 MtVWlIM9q5R55GZukJY5aHWz/R5bZGJj5zYusPu/v42G6olNoebuToBTIo/WyZvZh2
+	 xmagALpXV6kY1/wIHLMOfARvx/zlsQYdgEjvG7aA3A1Y2/Rz6kspBp22j86ebBkMHy
+	 V8TxVS9QzWDUCL5YCprzPoTREi8IC0r7IDSolRdY1BACD9h/pwhfT1gIsCr1KAwd+3
+	 SgfEX+KVHCl6trqKeiRsp1xqscRedCq2uTdwMzuG6bjv9Y/CPf5s4bANrxDJfkIHeO
+	 nFAdAYOy0Cs5g==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-598eaafa587so1238113e87.3
+        for <imx@lists.linux.dev>; Fri, 12 Dec 2025 02:11:14 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVCulHG5nVykHXjqe+/rFxoa55rsaZRtHXnOnoobx5cVjPKW0lIVPgYrds9//vC6PTXfa0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzCb46VbT/SeVQ6+xtchFB58Oc5P/Y4ReETOMody2P74p391J3t
+	Jlre/zh5pE9YdyZclXx1Bnj5YD9P7Q7xK6jJ2/7myc9aOO1S8/m6SkEIH8BY6Dl7k8kgK8zbe0f
+	N/9IDNtKKD5cpR9YmRVuiNy3ToDrOcbKF8ksI2kiBeQ==
+X-Google-Smtp-Source: AGHT+IGgQcDDVx5CV5iALdJF8BCtSi9/N1Hvmh5TeNsn50J9aXMOA2he1DDvPHJXZouFGJPTLM1rhMNOTARniy28pOQ=
+X-Received: by 2002:a05:6512:3e01:b0:598:f262:15ec with SMTP id
+ 2adb3069b0e04-598faa8083bmr601324e87.26.1765534273448; Fri, 12 Dec 2025
+ 02:11:13 -0800 (PST)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 12 Dec 2025 02:11:11 -0800
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 12 Dec 2025 02:11:11 -0800
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20251212-dev-b4-aaeon-mcu-driver-v1-6-6bd65bc8ef12@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9496.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd967090-d087-4335-8ba3-08de3965d99c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Dec 2025 10:04:33.8380
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: FlyuRhMgYkkMspAkda44wEJBhMfrahQV2ByLmSoNPZ0sjV4Pwn4bnTejQvZwTa/U+EIKf2LWhVYxWmNFWzE3iA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9048
+References: <20251212-dev-b4-aaeon-mcu-driver-v1-0-6bd65bc8ef12@bootlin.com> <20251212-dev-b4-aaeon-mcu-driver-v1-6-6bd65bc8ef12@bootlin.com>
+Date: Fri, 12 Dec 2025 02:11:11 -0800
+X-Gmail-Original-Message-ID: <CAMRc=McSHcYfz2L-jeJa9Dnb=fp8ACRAwNtDJmHEMQ3b+BOd+A@mail.gmail.com>
+X-Gm-Features: AQt7F2oPhStXk_-W99l7ac0r049RG0GE-tK9DybvagfZd3dPy0ulff7h6NWizGs
+Message-ID: <CAMRc=McSHcYfz2L-jeJa9Dnb=fp8ACRAwNtDJmHEMQ3b+BOd+A@mail.gmail.com>
+Subject: Re: [PATCH 6/8] gpio: aaeon: Add GPIO driver for SRG-IMX8PL MCU
+To: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, 
+	=?UTF-8?B?SsOpcsOpbWllIERhdXRoZXJpYmVz?= <jeremie.dautheribes@bootlin.com>, 
+	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBNaWNoYWVsIFdhbGxlIDxtd2Fs
-bGVAa2VybmVsLm9yZz4NCj4gU2VudDogMjAyNeW5tDEy5pyIMTLml6UgMTc6MjYNCj4gVG86IEJv
-dWdoIENoZW4gPGhhaWJvLmNoZW5AbnhwLmNvbT47IFR1ZG9yIEFtYmFydXMNCj4gPHR1ZG9yLmFt
-YmFydXNAbGluYXJvLm9yZz47IFByYXR5dXNoIFlhZGF2IDxwcmF0eXVzaEBrZXJuZWwub3JnPjsg
-TWlxdWVsDQo+IFJheW5hbCA8bWlxdWVsLnJheW5hbEBib290bGluLmNvbT47IFJpY2hhcmQgV2Vp
-bmJlcmdlciA8cmljaGFyZEBub2QuYXQ+Ow0KPiBWaWduZXNoIFJhZ2hhdmVuZHJhIDx2aWduZXNo
-ckB0aS5jb20+DQo+IENjOiBsaW51eC1tdGRAbGlzdHMuaW5mcmFkZWFkLm9yZzsgbGludXgta2Vy
-bmVsQHZnZXIua2VybmVsLm9yZzsgSGFuIFh1DQo+IDxoYW4ueHVAbnhwLmNvbT47IG9wZW4gbGlz
-dDpOWFAgaS5NWCA3RC82U1gvNlVMLzkzIEFORCBWRjYxMCBBREMNCj4gRFJJVkVSIDxpbXhAbGlz
-dHMubGludXguZGV2Pg0KPiBTdWJqZWN0OiBSZTogW1BBVENIXSBSZXZlcnQgIm10ZDogc3BpLW5v
-cjogbWljcm9uLXN0OiB1c2UgU0ZEUCBvZg0KPiBtdDM1eHU1MTJhYmEiDQo+IA0KPiBIaSwNCj4g
-DQo+ID4+ID4gRmluZCB0d28gYmF0Y2hlcyBtdDM1eHU1MTJhYmEgaGFzIGRpZmZlcmVudCBTRkRQ
-IGJ1dCB3aXRoIHNhbWUNCj4gPj4gPiBqZWRlYyBJRC4gVG8gbWFrZSBhbGwgYmF0Y2hlcyBvZiBt
-dDM1eHU1MTJhYmEgd29yayB3ZWxsIGFuZCBzdXBwb3J0DQo+ID4+ID4gT0NUIERUUiBtb2RlLCBi
-YWNrIHRvIGhhcmRjb2RlIHRoZSBmbGFncy4NCj4gPj4NCj4gPj4gV2hhdCBhcmUgImJhdGNoZXMi
-IGluIHRoaXMgY2FzZT8gQSBuZXcgcmV2aXNpb24gb2YgdGhlIHNhbWUgZmxhc2gNCj4gPj4gY2hp
-cD8gV2h5IHdvdWxkIHRoZXkgdXNlIGEgZGlmZmVyZW50IElEIHRoZW4uDQo+ID4NCj4gPiBIaSBN
-aWNoYWVsLA0KPiA+DQo+ID4gWWVzLCBzZWVtcyBhIG5ldyByZXZpc2lvbiBvZiB0aGUgc2FtZSBm
-bGFzaCBjaGlwLiBBbnlvbmUgZnJvbSBNaWNyb24gY2FuDQo+IGNvbmZpcm0gdGhpcz8NCj4gPg0K
-PiA+IFdoYXQncyB0aGUgbm9ybWFsIHdheSBmb3IgdmVuZG9ycyB0byB1cGRhdGUgdGhlIFNGRFA/
-IFNlZW1zIGFsc28gbmVlZCB0bw0KPiB1cGRhdGUvY2hhbmdlIHRoZSBJRC4NCj4gDQo+IE5vIHdo
-eSB3b3VsZCB0aGV5PyBJdCdzIHRoZSBzYW1lIGZsYXNoLCBidXQgd2l0aCBuZXcvZml4ZWQgU0ZE
-UC4NCg0KT2gsIEnigJltIHN0dWNrIGluIGEgZml4ZWQgbWluZHNldC4gRm9yIHRoaXMgY2FzZSwg
-ZGVmYXVsdCB1c2UgbmV3IFNGRFAsIGFuZCBjYW4gdXNlIGZpeHVwIGZvciB0aGUgb2xkIFNGRFAu
-DQooMERBMTUgUlczMDMgaXMgb2xkIG9uZSkNCg0KPiANCj4gPj4gV2hhdCdzIHdyb25nIHdpdGgg
-dGhlIHBhcnNlZCBmbGFncz8gQm90aCBzdXBwb3J0IFNGRFAsIHNvIGlmIHlvdQ0KPiA+PiByZWFs
-bHkgbmVlZCB0byBmaXh1cCBhbnkgZmxhZ3MsIHBsZWFzZSB1c2UgYSBmaXh1cCBjYWxsYmFjayB0
-bw0KPiA+PiBhY3R1YWxseSBmaXggdGhlbS4gQnV0IGZpcnN0LCB3aGF0IHdpbGwgZ28gd3Jvbmc/
-DQo+ID4NCj4gPiBZZXMsIHNvcnJ5IHRvIGxhY2sgdGhpcyBpbmZvcm1hdGlvbi4NCj4gPg0KPiA+
-IEZvciBtdDM1eHU1MTJhYmEgY2hpcCB3aXRoIGxhYmVsIDBEQTE1IFJXMzAzLCB0aGUgU0ZEUCBk
-byBub3Qgc3VwcG9ydA0KPiA+IE9DVCBEVFIgcmVhZC93cml0ZSBvcGVyYXRpb24sIGJ1dCBzdGls
-bCBoYXMgb25lIC5maXh1cHMgPQ0KPiA+ICZtdDM1eHU1MTJhYmFfZml4dXBzLCBpbiB0aGlzIGZp
-eCB1cCwgaXQgY29uZmlnIHRoZSBPQ1QgRFRSIHJlYWQNCj4gPiBvcGVyYXRpb24sIHNvIGZpbmFs
-bHkgcmVhZF9wcm90byA9PSBTTk9SX1BST1RPXzhfOF84X0RUUiwgYnV0DQo+ID4gbm9yLT53cml0
-ZV9wcm90byA9PSBTTk9SX1BST1RPXzFfMV8xLCB0aGVuIGhhcyBubyBjaGFuY2UgdG8gY2FsbA0K
-PiBtaWNyb25fc3Rfbm9yX29jdGFsX2R0cl9lbigpLCB3aGVuIHRoZXJlIGlzIHJlYWQgb3BlcmF0
-aW9uLCB1c2UgT0NUIERUUiByZWFkDQo+IGNvbW1hbmQgbWVldCBpc3N1ZS4NCj4gPg0KPiA+IFdp
-dGggdGhpcyByZXZlcnQgcGF0Y2gsIEkgdGVzdCBtdDM1eHU1MTJhYmEgY2hpcCB3aXRoIGxhYmVs
-IDBEQTE1IFJXMzAzLA0KPiBPQ1QgRFRSIG1vZGUgY2FuIHdvcmsgd2VsbC4NCj4gPiBBbHNvIHRl
-c3QgbXQzNXh1NTEyYWJhIGNoaXAgd2l0aCBsYWJlbCA0S0ExNyBSVzMwMywgT0NUIERUUiBtb2Rl
-IHdvcmsNCj4gZmluZCB0b28uDQo+IA0KPiBTbyBib3RoIHN1cHBvcnQgYWN0dWFsIG9jdGFsIG1v
-ZGUuIFRoZW4gcGxlYXNlIGZpeCBtdDM1eHU1MTJhYmFfZml4dXBzLiBJSVVDLA0KPiB5b3UgY2Fu
-IGp1c3QgdXNlDQo+IHNwaV9ub3Jfc2V0X3BwX3NldHRpbmdzKCkgdGhlcmUsIHRvIGZpeHVwIHRo
-ZSBzdXBwb3J0ZWQgUFAgbW9kZS4gQnV0IHBsZWFzZQ0KPiBhZGQgaXQgd2l0aCBhIGNvbW1lbnQg
-ZGVzY3JpYmUgKndoeSogd2UgbmVlZCB0aGF0IGZpeHVwLg0KDQpZZXMsIHJlYWxseSBnb29kIHN1
-Z2dlc3Rpb24sIEkgd2lsbCBoYXZlIGEgdHJ5Lg0KDQpSZWdhcmRzDQpIYWlibyBDaGVuDQo+IA0K
-PiAtbWljaGFlbA0K
+On Fri, 12 Dec 2025 08:41:09 +0100, "Thomas Perrot (Schneider
+Electric)" <thomas.perrot@bootlin.com> said:
+> Add GPIO driver for the Aaeon SRG-IMX8PL embedded controller. This
+> driver supports 7 GPO (General Purpose Output) pins and 12 GPIO pins
+> that can be configured as inputs or outputs.
+>
+> The driver implements proper state management for GPO pins (which are
+> output-only) and full direction control for GPIO pins. During probe,
+> all pins are reset to a known state (GPOs low, GPIOs as inputs) to
+> prevent undefined behavior across system reboots, as the MCU does not
+> reset GPIO states on soft reboot.
+>
+> Co-developed-by: J=C3=A9r=C3=A9mie Dautheribes (Schneider Electric) <jere=
+mie.dautheribes@bootlin.com>
+> Signed-off-by: J=C3=A9r=C3=A9mie Dautheribes (Schneider Electric) <jeremi=
+e.dautheribes@bootlin.com>
+> Signed-off-by: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.=
+com>
+> ---
+>  drivers/gpio/Kconfig          |  10 ++
+>  drivers/gpio/Makefile         |   1 +
+>  drivers/gpio/gpio-aaeon-mcu.c | 248 ++++++++++++++++++++++++++++++++++++=
+++++++
+>  3 files changed, 259 insertions(+)
+>
+> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+> index c74da29253e810b51540684b1186e8f274066b69..7e0f675b664fa25243fc2802e=
+dc3380572c94c41 100644
+> --- a/drivers/gpio/Kconfig
+> +++ b/drivers/gpio/Kconfig
+> @@ -157,6 +157,16 @@ config GPIO_74XX_MMIO
+>  	    8 bits:	74244 (Input), 74273 (Output)
+>  	    16 bits:	741624 (Input), 7416374 (Output)
+>
+> +config GPIO_AAEON_MCU
+> +	tristate "Aaeon MCU GPIO support"
+> +	depends on MFD_AAEON_MCU && OF_GPIO
+
+You don't need OF_GPIO, please drop it.
+
+> +	select GPIO_GENERIC
+> +	help
+> +	  Select this option to enable GPIO support for the Aaeon SRG-IMX8PL
+> +	  onboard MCU. This driver provides access to GPIO pins and GPO
+> +	  (General Purpose Output) pins controlled by the microcontroller.
+> +	  The driver handles both input and output configuration.
+> +
+>  config GPIO_ALTERA
+>  	tristate "Altera GPIO"
+>  	select GPIOLIB_IRQCHIP
+> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+> index 2421a8fd3733e0b06c2581262aaa9cd629f66c7d..1ba6318bc558743fbe5910966=
+c2c8fc3f792efe9 100644
+> --- a/drivers/gpio/Makefile
+> +++ b/drivers/gpio/Makefile
+> @@ -29,6 +29,7 @@ obj-$(CONFIG_GPIO_104_IDI_48)		+=3D gpio-104-idi-48.o
+>  obj-$(CONFIG_GPIO_104_IDIO_16)		+=3D gpio-104-idio-16.o
+>  obj-$(CONFIG_GPIO_74X164)		+=3D gpio-74x164.o
+>  obj-$(CONFIG_GPIO_74XX_MMIO)		+=3D gpio-74xx-mmio.o
+> +obj-$(CONFIG_GPIO_AAEON_MCU)		+=3D gpio-aaeon-mcu.o
+>  obj-$(CONFIG_GPIO_ADNP)			+=3D gpio-adnp.o
+>  obj-$(CONFIG_GPIO_ADP5520)		+=3D gpio-adp5520.o
+>  obj-$(CONFIG_GPIO_ADP5585)		+=3D gpio-adp5585.o
+> diff --git a/drivers/gpio/gpio-aaeon-mcu.c b/drivers/gpio/gpio-aaeon-mcu.=
+c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..cebd17d1877147b987ea673b0=
+81334c8062f5fc0
+> --- /dev/null
+> +++ b/drivers/gpio/gpio-aaeon-mcu.c
+> @@ -0,0 +1,248 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Aaeon MCU GPIO driver
+> + *
+> + * Copyright (C) 2025 Bootlin
+> + * Author: J=C3=A9r=C3=A9mie Dautheribes <jeremie.dautheribes@bootlin.co=
+m>
+> + * Author: Thomas Perrot <thomas.perrot@bootlin.com>
+> + */
+> +
+> +#include <linux/bitmap.h>
+> +#include <linux/gpio/driver.h>
+> +#include <linux/mfd/aaeon-mcu.h>
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+
+You need more headers than that. At least device.h for devm_kzalloc(),
+mod_devicetable.h, bitops.h and probably some more.
+
+> +
+> +#define AAEON_MCU_CONFIG_GPIO_INPUT 0x69
+> +#define AAEON_MCU_CONFIG_GPIO_OUTPUT 0x6F
+> +#define AAEON_MCU_READ_GPIO 0x72
+> +#define AAEON_MCU_WRITE_GPIO 0x77
+> +
+> +#define AAEON_MCU_CONTROL_GPO 0x6C
+> +
+> +#define MAX_GPIOS 12
+> +#define MAX_GPOS 7
+> +
+> +struct aaeon_mcu_gpio {
+> +	struct gpio_chip gc;
+> +	struct aaeon_mcu_dev *mfd;
+> +	DECLARE_BITMAP(dir_in, MAX_GPOS + MAX_GPIOS);
+> +	DECLARE_BITMAP(gpo_state, MAX_GPOS);
+> +};
+> +
+> +static int aaeon_mcu_gpio_config_input_cmd(struct aaeon_mcu_gpio *data,
+> +					    unsigned int offset)
+> +{
+> +	u8 cmd[3], rsp;
+> +
+> +	cmd[0] =3D AAEON_MCU_CONFIG_GPIO_INPUT;
+> +	cmd[1] =3D offset - 7;
+> +	cmd[2] =3D 0x00;
+> +
+> +	return aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
+> +}
+> +
+> +static int aaeon_mcu_gpio_direction_input(struct gpio_chip *gc, unsigned=
+ int offset)
+> +{
+> +	struct aaeon_mcu_gpio *data =3D gpiochip_get_data(gc);
+> +	int ret;
+> +
+> +	if (offset < MAX_GPOS) {
+> +		dev_err(gc->parent, "GPIO offset (%d) must be an output GPO\n", offset=
+);
+> +		return -EOPNOTSUPP;
+> +	}
+> +
+> +	ret =3D aaeon_mcu_gpio_config_input_cmd(data, offset);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	set_bit(offset, data->dir_in);
+> +
+> +	return 0;
+> +}
+> +
+> +static int aaeon_mcu_gpio_config_output_cmd(struct aaeon_mcu_gpio *data,
+> +					     unsigned int offset,
+> +					     int value)
+> +{
+> +	u8 cmd[3], rsp;
+> +	int ret;
+> +
+> +	cmd[0] =3D AAEON_MCU_CONFIG_GPIO_OUTPUT;
+> +	cmd[1] =3D offset - 7;
+> +	cmd[2] =3D 0x00;
+> +
+> +	ret =3D aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	cmd[0] =3D AAEON_MCU_WRITE_GPIO;
+> +	/* cmd[1] =3D offset - 7; */
+> +	cmd[2] =3D !!value;
+> +
+> +	return aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
+> +}
+> +
+> +static int aaeon_mcu_gpio_direction_output(struct gpio_chip *gc, unsigne=
+d int offset, int value)
+> +{
+> +	struct aaeon_mcu_gpio *data =3D gpiochip_get_data(gc);
+> +	int ret;
+> +
+> +	if (offset < MAX_GPOS)
+> +		return 0;
+> +
+> +	ret =3D aaeon_mcu_gpio_config_output_cmd(data, offset, value);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	clear_bit(offset, data->dir_in);
+> +
+> +	return 0;
+> +}
+> +
+> +static int aaeon_mcu_gpio_get_direction(struct gpio_chip *gc, unsigned i=
+nt offset)
+> +{
+> +	struct aaeon_mcu_gpio *data =3D gpiochip_get_data(gc);
+> +
+> +	return test_bit(offset, data->dir_in) ?
+> +		GPIO_LINE_DIRECTION_IN : GPIO_LINE_DIRECTION_OUT;
+> +}
+> +
+> +static int aaeon_mcu_gpio_get(struct gpio_chip *gc, unsigned int offset)
+> +{
+> +	struct aaeon_mcu_gpio *data =3D gpiochip_get_data(gc);
+> +	u8 cmd[3], rsp;
+> +	int ret;
+> +
+> +	if (offset < MAX_GPOS)
+> +		return test_bit(offset, data->gpo_state);
+
+Are you sure the bit ops in this driver need to be atomic?
+
+> +
+> +	cmd[0] =3D AAEON_MCU_READ_GPIO;
+> +	cmd[1] =3D offset - 7;
+> +	cmd[2] =3D 0x00;
+> +
+> +	ret =3D aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return rsp;
+> +}
+> +
+> +static int aaeon_mcu_gpo_set_cmd(struct aaeon_mcu_gpio *data, unsigned i=
+nt offset, int value)
+> +{
+> +	u8 cmd[3], rsp;
+> +
+> +	cmd[0] =3D AAEON_MCU_CONTROL_GPO;
+> +	cmd[1] =3D offset + 1;
+> +	cmd[2] =3D !!value;
+> +
+> +	return aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
+> +}
+> +
+> +static int aaeon_mcu_gpio_set_cmd(struct aaeon_mcu_gpio *data, unsigned =
+int offset, int value)
+> +{
+> +	u8 cmd[3], rsp;
+> +
+> +	cmd[0] =3D AAEON_MCU_WRITE_GPIO;
+> +	cmd[1] =3D offset - 7;
+> +	cmd[2] =3D !!value;
+> +
+> +	return aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
+> +}
+> +
+> +static int aaeon_mcu_gpio_set(struct gpio_chip *gc, unsigned int offset,
+> +			      int value)
+> +{
+> +	struct aaeon_mcu_gpio *data =3D gpiochip_get_data(gc);
+> +
+> +	if (offset < MAX_GPOS) {
+> +		if (aaeon_mcu_gpo_set_cmd(data, offset, value) =3D=3D 0)
+> +			assign_bit(offset, data->gpo_state, value);
+> +	} else {
+> +		return aaeon_mcu_gpio_set_cmd(data, offset, value);
+> +	}
+> +	return 0;
+
+
+It would be much cleaner if you did it like:
+
+	if (offset >=3D MAX_GPOS)
+		return aaeon_mcu_gpio_set_cmd(data, offset, value);
+
+	if (aaeon_mcu_gpo_set_cmd(data, offset, value) =3D=3D 0)
+		assign_bit(offset, data->gpo_state, value);
+
+	return 0;
+
+> +}
+> +
+> +static const struct gpio_chip aaeon_mcu_chip =3D {
+> +	.label			=3D "gpio-aaeon-mcu",
+> +	.owner			=3D THIS_MODULE,
+> +	.get_direction		=3D aaeon_mcu_gpio_get_direction,
+> +	.direction_input	=3D aaeon_mcu_gpio_direction_input,
+> +	.direction_output	=3D aaeon_mcu_gpio_direction_output,
+> +	.get			=3D aaeon_mcu_gpio_get,
+> +	.set			=3D aaeon_mcu_gpio_set,
+> +	.base			=3D -1,
+> +	.ngpio			=3D MAX_GPOS + MAX_GPIOS,
+> +	.can_sleep		=3D true,
+> +};
+
+There's no point in keeping it in memory if you copy it into data->gc anywa=
+y.
+Use compound literals in aaeon_mcu_gpio_probe() if you want to initialize
+members explicitly.
+
+> +
+> +static void aaeon_mcu_gpio_reset(struct aaeon_mcu_gpio *data, struct dev=
+ice *dev)
+> +{
+> +	unsigned int i;
+> +	int ret;
+> +
+> +	/* Reset all GPOs */
+> +	for (i =3D 0; i < MAX_GPOS; i++) {
+> +		ret =3D aaeon_mcu_gpo_set_cmd(data, i, 0);
+> +		if (ret < 0)
+> +			dev_warn(dev, "Failed to reset GPO %u state: %d\n", i, ret);
+> +		clear_bit(i, data->dir_in);
+> +	}
+> +
+> +	/* Reset all GPIOs */
+> +	for (i =3D MAX_GPOS; i < MAX_GPOS + MAX_GPIOS; i++) {
+> +		ret =3D aaeon_mcu_gpio_config_input_cmd(data, i);
+> +		if (ret < 0)
+> +			dev_warn(dev, "Failed to reset GPIO %u state: %d\n", i, ret);
+> +		set_bit(i, data->dir_in);
+> +	}
+> +}
+> +
+> +static int aaeon_mcu_gpio_probe(struct platform_device *pdev)
+> +{
+> +	struct aaeon_mcu_dev *mfd =3D dev_get_drvdata(pdev->dev.parent);
+> +	struct aaeon_mcu_gpio *data;
+> +
+> +	data =3D devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+> +	if (!data)
+> +		return -ENOMEM;
+> +
+> +	data->mfd =3D mfd;
+
+It looks like all you need is the i2c_client, maybe just store its address =
+and
+avoid constant dereferencing.
+
+> +	data->gc =3D aaeon_mcu_chip;
+> +	data->gc.parent =3D &pdev->dev;
+> +
+> +	/*
+> +	 * Reset all GPIO states to a known configuration. The MCU does not
+> +	 * reset GPIO state on soft reboot, only on power cycle (hard reboot).
+> +	 * Without this reset, GPIOs would retain their previous state across
+> +	 * reboots, which could lead to unexpected behavior.
+> +	 */
+> +	aaeon_mcu_gpio_reset(data, &pdev->dev);
+> +
+> +	platform_set_drvdata(pdev, data);
+
+Where is the corresponding call to platform_get_drvdata()?
+
+> +
+> +	return devm_gpiochip_add_data(&pdev->dev, &data->gc,
+> +				      data);
+> +}
+> +
+> +static const struct of_device_id aaeon_mcu_gpio_of_match[] =3D {
+> +	{ .compatible =3D "aaeon,srg-imx8pl-gpio" },
+> +	{},
+> +};
+> +
+> +MODULE_DEVICE_TABLE(of, aaeon_mcu_gpio_of_match);
+> +
+> +static struct platform_driver aaeon_mcu_gpio_driver =3D {
+> +	.driver =3D {
+> +		.name =3D "aaeon-mcu-gpio",
+> +		.of_match_table =3D aaeon_mcu_gpio_of_match,
+> +	},
+> +	.probe =3D aaeon_mcu_gpio_probe,
+> +};
+> +
+> +module_platform_driver(aaeon_mcu_gpio_driver);
+> +
+> +MODULE_DESCRIPTION("GPIO interface for Aaeon MCU");
+> +MODULE_AUTHOR("J=C3=A9r=C3=A9mie Dautherbes <jeremie.dautheribes@bootlin=
+.com>");
+> +MODULE_LICENSE("GPL");
+>
+> --
+> 2.52.0
+>
+>
+
+Bart
