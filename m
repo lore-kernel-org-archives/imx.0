@@ -1,89 +1,82 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CB52DF12C
-	for <imx@lists.linux.dev>; Sat, 13 Dec 2025 09:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4861C2D6E6A;
+	Sat, 13 Dec 2025 17:00:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765618742; cv=none; b=GA1fDoxQbyarc6hfpt2MYBC9TrYVevxEZ2SSz6kEzfMbQS/uDqquOK5lljlL/czNnwZGWvgXnby7kxJcUjkQ60TfEjuIXKepW+9GQl0TmKJd5VuWi+BngcAi25ajcbB5tVj76eAiBC6L+l2RShlF6Tdr9hPsyuUYWF7I4s4W1gY=
+	t=1765645208; cv=none; b=W7b1aNuskS57WPAkf4xS5lUNUKLS6nr2x17M8UGTC6FaLtqaI5qxCwYM0UsfBqExlraPv6T0Qxwp2t0s8doi629w6jp4c+Nx1vDdrfJhX/2HE+9YrG3kNyi/d5SkgfFVfVXfGmxak6V2pICPtSJZ/cy85WpXzXY3AdlF38enUlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765618742; c=relaxed/simple;
-	bh=WXCphjCZZ7bGdKF2zta8ieDXu80tlgLfo65zMgmICU4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I2xZ3DSke0J9csslnZjuwXGC/jf32VYNqFquF/fdlbxd5JXMzA/zHvECyQyl9XQuMqCFGatNsIshGTOve0aqU/6/xe4mBavWgHi2H6io1MFoYlzRZb9vfYXvQnJcEXhXP0UwRecfOhOjThjAwgvPsNJvZi9O/NW1f3EVfNaNyYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A3hxFvVT; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1765645208; c=relaxed/simple;
+	bh=VzKBYcoy1QLzHCut6+iKlDtsmmJak9U5g55kExj/JFI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SDuFPXgszTYzVwbJMXXIUOF45dM0q52mPtJZlH0Lxjt6kKDFyYsjakf1DV6Hz+5iuwYuwNJNxQqEJE0KG0DSdLuL2TNHUMF3KKDaeewdXB6h/fehxKMZYBet36eZlgDctSWN+nzypdJNHpI1bB5I9LBxG6T1gkkstjRq3i5hobU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RwzsPYFW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A3hxFvVT"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-bc17d39ccd2so1217190a12.3
-        for <imx@lists.linux.dev>; Sat, 13 Dec 2025 01:39:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765618741; x=1766223541; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+Zg9r476TB45nezjLOKEc6mD8KJOcEm935qiWqcT++Y=;
-        b=A3hxFvVTedW2EAnJfKlaej0A2UIVbJVovZHiwiIfnZVndQFcR8HAxxqNzzgGaq84NO
-         bshdd4eR33vO4dkhudAACzLAfIJNM4pOI1WGeU2NyED8OZrda+9xVDuF77niA/masyRY
-         PMstwQ2ZuEQ2WRqj+KITleHmi8iOCaSdT+dJaMAkljRUlhcNHS0EM5eRCTsfNLXvttUU
-         89sTFO0Iwid1h9CovYze/dOKLjBSteEy1mYjIFoVGyBXQsbHJ6qkzBwb1VuGrzrW3tkM
-         OPvYm1YzIuulAxSs0PIVYWeHOPvANcv0+fj+F4p6spb9shpez1u3huX6v08HOxrSxVd8
-         JYxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765618741; x=1766223541;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+Zg9r476TB45nezjLOKEc6mD8KJOcEm935qiWqcT++Y=;
-        b=BpTJH8raqQCEcY73Qlr4fZ49UtqhjPIaG/2LYDw1HHhMxdaCn7zHIhLexjP5+Th0/y
-         7jRJYj6wyykk2YOAf/AUr/jtK2fXNK5dgfaB0T9lLKG+gu1ykwfzNFrwj34yuJQETjNr
-         I+ZTK43sY7JKET11nB92NkWDDZwriGY4qg9cgqtQxvnZp+MiFKZkW2GXHZtd6W645yJ0
-         czF5CqxvhlXS4b8wnRcvogo8Qpkkkbd2u5caFQh0A9PqMZQ7uO1XWsahmZSBcrn9XSTg
-         PHY6j3PsXS8qie2Sca5LU+R9vyzVyjChmlXPxNcB55BaivYDoJpKcYxY/uW7IA9U+vz0
-         Xheg==
-X-Forwarded-Encrypted: i=1; AJvYcCWqG06ZQxl42hZLToyexY4l4D6m6gtJgXqejewtH8qYEp8V0CCkIz1wdTSR+Kq8ruEUZBA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzODFFNryuq9Mo8ASk7/E3npMGTfHFwpeiErpqnD9LO61x9Boyk
-	Mo/U7SjZnKqnoDT7py8+WUzeWfX9WrWi5ZNlpdLCZt6IucGIjXde3tyn
-X-Gm-Gg: AY/fxX6qcHQQFJY6ZVb5318+ykYYHEUzL9E/UQYW+Na2Q8jAM9i/KwoFGSlnVZlSr3M
-	CffuMepz6Ii6FYBCsen8VSGrH/Y1KUOGX/hyZyF97oq7HTSuh3gf0sFSx2/uF3EPYXb+z9RlDof
-	FgjT4X5BZe0wnWmS0iKD3kVMb1OKniBJSHPTbmdHIAhLJzdPrZC3+o4DsRsrkKT4ODGGtSjGBUl
-	jBU+lIIWv7jnXoUNnjnEwnu/e3bsLUAIpdSvHvu1DqbvCx306NkUUerMUPAtCXczXlZjiDcejIH
-	RjVa+nKcv3w+g0lhIJqn/SdraCUxVQl7ReSqKkidHVCW66rueVRyACzkHMCuUWcu4kNkxBGdm2+
-	Ux3RvBtJJWJ1ZjDtBOdtz2uSnRXq57qwYoHPnVDOp9rwYwGvUGgPlTZAxCTZoPZt/n+2u6Ur44N
-	oYpGcIZcBGXybIaZlA75sBRcliUA2lv0F9sh6Fef44FznN0SV++3fn
-X-Google-Smtp-Source: AGHT+IFeQpCPEXO4SIqFFkwFCO2Nbnyxy/OkiOZq+4VUC4VzZoHs/ts/r+OXgZeXSSt1eSbiFqYkrg==
-X-Received: by 2002:a05:7022:e88e:b0:11b:af12:ba30 with SMTP id a92af1059eb24-11f34bde21bmr3505767c88.8.1765618740524;
-        Sat, 13 Dec 2025 01:39:00 -0800 (PST)
-Received: from google.com ([2a00:79e0:2ebe:8:3478:9150:d4be:149f])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-11f2e1bb28dsm25640060c88.2.2025.12.13.01.38.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Dec 2025 01:39:00 -0800 (PST)
-Date: Sat, 13 Dec 2025 01:38:57 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Vaibhav Gupta <vaibhavgupta40@gmail.com>
-Cc: Samuel Kayode <samkay014@gmail.com>, imx@lists.linux.dev, 
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] Input: pf1550 - Remove "defined but unused" warning
-Message-ID: <wfdhjzhkggp26mwqgvxuanuzjq6v2g4pmc44jz6kx4xwkewwhr@movikefnuvcz>
-References: <20251210211149.543928-1-vaibhavgupta40@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RwzsPYFW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96631C4CEF7;
+	Sat, 13 Dec 2025 16:59:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765645207;
+	bh=VzKBYcoy1QLzHCut6+iKlDtsmmJak9U5g55kExj/JFI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RwzsPYFWZct3fYDaSoH2MO8Pr6OmUerebApwD55CqIDmIjhoGYii118YuorwNlvqq
+	 ScAULQd/58dFFaqTTbGQluGmGyWmjP197/lR0mEIj9eB+4T931oqm6bV+zZ3Dtp3UB
+	 /3rEA58xa9OtbeLC8Sdoct2UoObIYuhaP3mRahKBMFr5MyUfu8A/UkiQKKb0hJJ052
+	 XpUK03v0ZQVQ46uHO5Tv0MUUttfEsK/oQCNHvdjrmUt7X7j38m0kpVAalfiSZ9oRUU
+	 sWgR/3U8XMRryBhIuoNjoTDFmxZ+oM6dTz94zalzS6WErXPW7Vhg3NOCfVaTboJchh
+	 qJxB4vBT3+yhg==
+Date: Sat, 13 Dec 2025 16:59:49 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Michal Simek
+ <michal.simek@amd.com>, Vinod Koul <vkoul@kernel.org>, Matthias Brugger
+ <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, David Lechner
+ <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
+ Shevchenko <andy@kernel.org>, Yong Wu <yong.wu@mediatek.com>, Peter Rosin
+ <peda@axentia.se>, Linus Walleij <linusw@kernel.org>, Chen-Yu Tsai
+ <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel
+ Holland <samuel@sholland.org>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
+ <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-iio@vger.kernel.org, iommu@lists.linux.dev,
+ linux-gpio@vger.kernel.org, linux-sunxi@lists.linux.dev,
+ imx@lists.linux.dev, linux-sound@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Remove unused includes
+Message-ID: <20251213165949.4b51f7cb@jic23-huawei>
+In-Reply-To: <20251212231203.727227-1-robh@kernel.org>
+References: <20251212231203.727227-1-robh@kernel.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251210211149.543928-1-vaibhavgupta40@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Dec 10, 2025 at 09:11:41PM +0000, Vaibhav Gupta wrote:
-> If 'CONFIG_PM_SLEEP' is not set, compiler throws warning for *suspend() and
-> *resume() function for this driver. Using new 'DEFINE_SIMPLE_DEV_PM_OPS'
-> fixes it.
+On Fri, 12 Dec 2025 17:11:52 -0600
+"Rob Herring (Arm)" <robh@kernel.org> wrote:
+
+> Remove includes which are not referenced by either DTS files or drivers.
 > 
-> Signed-off-by: Vaibhav Gupta <vaibhavgupta40@gmail.com>
+> There's a few more which are new, so they are excluded for now.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-Applied, thank you.
+Acked-by: Jonathan Cameron <jonathan.cameron@huawei.com> #for-iio
 
--- 
-Dmitry
+Ideally we'll get a QC ack on those as well.
+
+Jonathan
+>  .../dt-bindings/iio/qcom,spmi-adc7-pmr735b.h  |  30 --
+>  .../dt-bindings/iio/qcom,spmi-adc7-smb139x.h  |  19 --
