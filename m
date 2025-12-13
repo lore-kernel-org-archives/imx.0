@@ -1,82 +1,255 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4861C2D6E6A;
-	Sat, 13 Dec 2025 17:00:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DE723817F
+	for <imx@lists.linux.dev>; Sat, 13 Dec 2025 18:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765645208; cv=none; b=W7b1aNuskS57WPAkf4xS5lUNUKLS6nr2x17M8UGTC6FaLtqaI5qxCwYM0UsfBqExlraPv6T0Qxwp2t0s8doi629w6jp4c+Nx1vDdrfJhX/2HE+9YrG3kNyi/d5SkgfFVfVXfGmxak6V2pICPtSJZ/cy85WpXzXY3AdlF38enUlI=
+	t=1765649637; cv=none; b=ezJPaaK8yWPhpj9sG1/eriohCHSJ9kELO5JCFVXscjXDnCyTplj7mew7oDlHRvOyAsZnPkNJOt785PuMmykLqAaMpfav6Fz9c2ljEMwMpFz0Xp57rnj2BPXyr9HaOMV/UISxwRjM+eaHb1i4Pyh7uflCeH9OZsTkS45Gq7XUaTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765645208; c=relaxed/simple;
-	bh=VzKBYcoy1QLzHCut6+iKlDtsmmJak9U5g55kExj/JFI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SDuFPXgszTYzVwbJMXXIUOF45dM0q52mPtJZlH0Lxjt6kKDFyYsjakf1DV6Hz+5iuwYuwNJNxQqEJE0KG0DSdLuL2TNHUMF3KKDaeewdXB6h/fehxKMZYBet36eZlgDctSWN+nzypdJNHpI1bB5I9LBxG6T1gkkstjRq3i5hobU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RwzsPYFW; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RwzsPYFW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96631C4CEF7;
-	Sat, 13 Dec 2025 16:59:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765645207;
-	bh=VzKBYcoy1QLzHCut6+iKlDtsmmJak9U5g55kExj/JFI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RwzsPYFWZct3fYDaSoH2MO8Pr6OmUerebApwD55CqIDmIjhoGYii118YuorwNlvqq
-	 ScAULQd/58dFFaqTTbGQluGmGyWmjP197/lR0mEIj9eB+4T931oqm6bV+zZ3Dtp3UB
-	 /3rEA58xa9OtbeLC8Sdoct2UoObIYuhaP3mRahKBMFr5MyUfu8A/UkiQKKb0hJJ052
-	 XpUK03v0ZQVQ46uHO5Tv0MUUttfEsK/oQCNHvdjrmUt7X7j38m0kpVAalfiSZ9oRUU
-	 sWgR/3U8XMRryBhIuoNjoTDFmxZ+oM6dTz94zalzS6WErXPW7Vhg3NOCfVaTboJchh
-	 qJxB4vBT3+yhg==
-Date: Sat, 13 Dec 2025 16:59:49 +0000
-From: Jonathan Cameron <jic23@kernel.org>
+	s=arc-20240116; t=1765649637; c=relaxed/simple;
+	bh=XB4gRrHXrRXt64MEO58BhEdoY8tPJIgTZP/D/UR0GS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ifUieTCXxMjG9xLXRiLeBy+xgoxQV9+5+gv+5iDrMCyfJ599t+giKr28jKImRxaiLG5my+b9/zuqYqNUgTvKOStQysdFiXgdmVjIuJIGapZjHOUdKpZlIkIrvuSCGk3soqf1YKnEdt1X1jmp73CrNo/bhYjfGZZM/kX0Yd8mMz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vUU7S-00011q-8I; Sat, 13 Dec 2025 19:13:26 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vUU7Q-005UpD-2e;
+	Sat, 13 Dec 2025 19:13:24 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vUU7Q-005FlK-2A;
+	Sat, 13 Dec 2025 19:13:24 +0100
+Date: Sat, 13 Dec 2025 19:13:24 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
 To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Michal Simek
- <michal.simek@amd.com>, Vinod Koul <vkoul@kernel.org>, Matthias Brugger
- <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
- <angelogioacchino.delregno@collabora.com>, David Lechner
- <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy
- Shevchenko <andy@kernel.org>, Yong Wu <yong.wu@mediatek.com>, Peter Rosin
- <peda@axentia.se>, Linus Walleij <linusw@kernel.org>, Chen-Yu Tsai
- <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel
- Holland <samuel@sholland.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
- <festevam@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, linux-kernel@vger.kernel.org,
- linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-iio@vger.kernel.org, iommu@lists.linux.dev,
- linux-gpio@vger.kernel.org, linux-sunxi@lists.linux.dev,
- imx@lists.linux.dev, linux-sound@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Remove unused includes
-Message-ID: <20251213165949.4b51f7cb@jic23-huawei>
-In-Reply-To: <20251212231203.727227-1-robh@kernel.org>
-References: <20251212231203.727227-1-robh@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, barebox@lists.infradead.org
+Subject: Re: [PATCH] ARM: dts: nxp/imx6: Drop unused .dtsi
+Message-ID: <20251213181324.u32ztfblkknfpz44@pengutronix.de>
+References: <20251212203226.458694-5-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251212203226.458694-5-robh@kernel.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Fri, 12 Dec 2025 17:11:52 -0600
-"Rob Herring (Arm)" <robh@kernel.org> wrote:
+Hi Rob,
 
-> Remove includes which are not referenced by either DTS files or drivers.
-> 
-> There's a few more which are new, so they are excluded for now.
-> 
+On 25-12-12, Rob Herring (Arm) wrote:
+> These .dtsi files are not included anywhere in the tree and can't be
+> tested.
+
+not in the tree but by other projects, please see below.
+
 > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  .../dts/nxp/imx/imx6dl-kontron-samx6i.dtsi    | 12 -----
+>  .../dts/nxp/imx/imx6q-kontron-samx6i.dtsi     | 12 -----
+>  .../boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi  | 45 ----------------
+>  .../boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi  | 54 -------------------
+>  4 files changed, 123 deletions(-)
+>  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+>  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+>  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
+>  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
+> 
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+> deleted file mode 100644
+> index 5a9b819d7ee8..000000000000
+> --- a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+> +++ /dev/null
+> @@ -1,12 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0 OR X11
+> -/*
+> - * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de>
+> - */
+> -
+> -#include "imx6dl.dtsi"
+> -#include "imx6qdl-kontron-samx6i.dtsi"
+> -
+> -/ {
+> -	model = "Kontron SMARC-sAMX6i Dual-Lite/Solo";
+> -	compatible = "kontron,imx6dl-samx6i", "fsl,imx6dl";
+> -};
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+> deleted file mode 100644
+> index e76963436079..000000000000
+> --- a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+> +++ /dev/null
+> @@ -1,12 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0 OR X11
+> -/*
+> - * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de>
+> - */
+> -
+> -#include "imx6q.dtsi"
+> -#include "imx6qdl-kontron-samx6i.dtsi"
+> -
+> -/ {
+> -	model = "Kontron SMARC-sAMX6i Quad/Dual";
+> -	compatible = "kontron,imx6q-samx6i", "fsl,imx6q";
+> -};
 
-Acked-by: Jonathan Cameron <jonathan.cameron@huawei.com> #for-iio
+I can't speak for the other two .dtsi files but both kontron .dtsi files
+are used by barebox:
 
-Ideally we'll get a QC ack on those as well.
+ - https://elixir.bootlin.com/barebox/v2025.11.0/source/arch/arm/dts/imx6dl-samx6i.dts#L8
+ - https://elixir.bootlin.com/barebox/v2025.11.0/source/arch/arm/dts/imx6q-samx6i.dts#L8
 
-Jonathan
->  .../dt-bindings/iio/qcom,spmi-adc7-pmr735b.h  |  30 --
->  .../dt-bindings/iio/qcom,spmi-adc7-smb139x.h  |  19 --
+Removing them here will cause a regression for barebox.
+
+Regards,
+  Marco
+
+
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
+> deleted file mode 100644
+> index 3a968782e854..000000000000
+> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
+> +++ /dev/null
+> @@ -1,45 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0+ OR MIT
+> -//
+> -// Copyright 2017 NXP
+> -
+> -#include "imx6qdl-pico.dtsi"
+> -
+> -/ {
+> -	leds {
+> -		compatible = "gpio-leds";
+> -		pinctrl-names = "default";
+> -		pinctrl-0 = <&pinctrl_gpio_leds>;
+> -
+> -		led {
+> -			label = "gpio-led";
+> -			gpios = <&gpio5 31 GPIO_ACTIVE_HIGH>;
+> -		};
+> -	};
+> -
+> -};
+> -
+> -&i2c1 {
+> -	mpl3115@60 {
+> -		compatible = "fsl,mpl3115";
+> -		reg = <0x60>;
+> -	};
+> -};
+> -
+> -&i2c2 {
+> -	io-expander@25 {
+> -		compatible = "nxp,pca9554";
+> -		reg = <0x25>;
+> -		gpio-controller;
+> -		#gpio-cells = <2>;
+> -		#interrupt-cells = <2>;
+> -	};
+> -
+> -};
+> -
+> -&iomuxc {
+> -	pinctrl_gpio_leds: gpioledsgrp {
+> -		fsl,pins = <
+> -			MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31	0x1b0b0
+> -		>;
+> -	};
+> -};
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
+> deleted file mode 100644
+> index 3d56a4216448..000000000000
+> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
+> +++ /dev/null
+> @@ -1,54 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0+ OR MIT
+> -
+> -#include "imx6qdl-pico.dtsi"
+> -
+> -/ {
+> -	leds {
+> -		compatible = "gpio-leds";
+> -		pinctrl-names = "default";
+> -		pinctrl-0 = <&pinctrl_gpio_leds>;
+> -
+> -		led {
+> -			label = "gpio-led";
+> -			gpios = <&gpio5 31 GPIO_ACTIVE_HIGH>;
+> -		};
+> -	};
+> -
+> -};
+> -
+> -&i2c1 {
+> -	adc@52 {
+> -		compatible = "ti,adc081c";
+> -		reg = <0x52>;
+> -		vref-supply = <&reg_2p5v>;
+> -	};
+> -};
+> -
+> -&i2c2 {
+> -	io-expander@25 {
+> -		compatible = "nxp,pca9554";
+> -		reg = <0x25>;
+> -		gpio-controller;
+> -		#gpio-cells = <2>;
+> -		#interrupt-cells = <2>;
+> -	};
+> -};
+> -
+> -&i2c3 {
+> -	rtc@68 {
+> -		compatible = "dallas,ds1337";
+> -		reg = <0x68>;
+> -	};
+> -};
+> -
+> -&pcie {
+> -	status = "okay";
+> -};
+> -
+> -&iomuxc {
+> -	pinctrl_gpio_leds: gpioledsgrp {
+> -		fsl,pins = <
+> -			MX6QDL_PAD_CSI0_DAT13__GPIO5_IO31	0x1b0b0
+> -		>;
+> -	};
+> -};
+> -- 
+> 2.51.0
+> 
+> 
+> 
+
+-- 
+#gernperDu 
+#CallMeByMyFirstName
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
