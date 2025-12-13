@@ -1,105 +1,268 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F8F29A2;
-	Sat, 13 Dec 2025 03:16:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7289B2264A7;
+	Sat, 13 Dec 2025 06:23:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765595767; cv=none; b=l0FQfvbmzMb8O63Df9CFPyKbBjtwX9JIgmVnFqtDWAbWmMN+mw+PulfCZCD/uHlz92dpwVhlTdOUPRnZN4Ll+SEWne2Ff5tUqklPQjBtlpsSJn7atNCf82EsM+5mMgwFO7bu2F2GqVZfJa8nvC9sHBJ6Op2+e/cGdfasvQQ4Sa8=
+	t=1765606996; cv=none; b=rSGRX6QGViSLgNZ5yaKjiiaK960kn6iGCy8UktUjA6Da+oB210QmXYvaDkZBVV5n4BxoevL8p75XlpClZKGMkettBT/NJnr+2WflFzOdHaHrdJGxBgnc9rzkypE41+rTME8a6jkw2j8WYqhy41hRMzxpoxa00AKiEHE3EUCHk18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765595767; c=relaxed/simple;
-	bh=KOXoqXt5Xmrh921+CW5vaUGrvh86vh0stCQ6djrzqE4=;
+	s=arc-20240116; t=1765606996; c=relaxed/simple;
+	bh=/lblB9mHbneVuke30grVcxJBPtiroHf6vSxLBptFtwY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ym3rIhxIhd6fdHEn9HN4LTkbPgo+eq+lkfqTNUdm0aqeutnkHZpfW73qBKzseWX9nmvQjxso6RXUo4/irJAGld/JsZ53Vwb8EdyrXTx4GnI11Y0sY6SOcgVJEeyo2iPHDU0g9jB8R8cyo2QL8aH0hlmQlO60k8RToyVLdUl1/v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m3I+s6WU; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gzjd+jBm0pm9UPZihesFW6CkGAYh7FiOUNEoxYWpX1JKkVgWIbdA2b8keja/6n6+MLITLOS68Zri+ZYNk0hmRtMAspbZNoi8eLkJrFJNRVVfLiTP3jP8EXVrzGBUWPF6VdrB/VR77J62FvXlE1nfqt/YIG7X+W+UT2WLDMWMIOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GvgRybrl; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m3I+s6WU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F60BC4CEF7;
-	Sat, 13 Dec 2025 03:16:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765595765;
-	bh=KOXoqXt5Xmrh921+CW5vaUGrvh86vh0stCQ6djrzqE4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m3I+s6WUp1W0mDBHh3cXyXcKGUScadcndF+cR3bgdkuVT8PtPMHZEyLDDCKB6/lvo
-	 88P9PXI72Czg+bZKQlpV+eY9jQ1t7gDn5pPxgi77RX1wV1Cf43YTNwypRjgpbHjUsT
-	 /XwvzDaMAMK3vmvKqVyrQYiPLhUgwOmqFodb/rtOHkt45fyTXRPLA1mAh8+sPEL0gx
-	 cuIN66MjtHUbl3Raq6JnufW9dEwnQWqXOH3FNEKMClq9koFS9HG53PJGil0z+rP1hN
-	 sWCKhvX/uF8pFTAUXBymg6e7qcSJYcw7pDIdRzTyWUUCOWB3nHatb/Q5WiS6y79fJe
-	 L1+w9wqtxnhQw==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 9308C1AC5657; Sat, 13 Dec 2025 12:16:03 +0900 (JST)
-Date: Sat, 13 Dec 2025 12:16:03 +0900
-From: Mark Brown <broonie@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GvgRybrl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1765606994; x=1797142994;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/lblB9mHbneVuke30grVcxJBPtiroHf6vSxLBptFtwY=;
+  b=GvgRybrloCcgUH19E7xP7GYRxdiEzSTDCS6xVntZq0OAhqEmdqJDUkYT
+   A7KND52mWcjLN26UvlUWwy9WzPk1nXQ9Wea79eCIlfuW9mprK4PbUv4tN
+   gqHiZhspd76NjGVGmLlNNvH7uyeiO64Mla9+/BlL1Vb3BuVQvsB6rccCA
+   8e0ruH17XQ11gZPGP4Dg4JB6Y89dJZvhleDI6FXn5aib09Tm+RG4Y9fgI
+   2Q6IfmvrpTdLt5l/T+SmkNtUWf6pK+lFokp4EohqTb1P7SuYbsAKsStFZ
+   i7DYIXXUSRdkWj18hAI3Qfgkwh+Alz0+7i0EEIhHSgNgHVjk550tYJPyB
+   w==;
+X-CSE-ConnectionGUID: viprGcwESwSxQ0MoqpiC8w==
+X-CSE-MsgGUID: lPcl3r5wSsGAeTyjH7D2Rw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11640"; a="85195465"
+X-IronPort-AV: E=Sophos;i="6.21,145,1763452800"; 
+   d="scan'208";a="85195465"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 22:23:13 -0800
+X-CSE-ConnectionGUID: /ArYPWWMQhODYdGKXQI2Hg==
+X-CSE-MsgGUID: 5PESpJhWRDqeRxxg82lXqg==
+X-ExtLoop1: 1
+Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
+  by fmviesa003.fm.intel.com with ESMTP; 12 Dec 2025 22:23:08 -0800
+Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vUJ21-000000007A1-3Wso;
+	Sat, 13 Dec 2025 06:23:05 +0000
+Date: Sat, 13 Dec 2025 14:22:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Michal Simek <michal.simek@amd.com>, Vinod Koul <vkoul@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
-	Peter Rosin <peda@axentia.se>, Linus Walleij <linusw@kernel.org>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-iio@vger.kernel.org, iommu@lists.linux.dev,
-	linux-gpio@vger.kernel.org, linux-sunxi@lists.linux.dev,
-	imx@lists.linux.dev, linux-sound@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: Remove unused includes
-Message-ID: <aTzaczBfsrH2nY5w@sirena.co.uk>
-References: <20251212231203.727227-1-robh@kernel.org>
+	=?iso-8859-1?Q?J=E9r=E9mie?= Dautheribes <jeremie.dautheribes@bootlin.com>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-watchdog@vger.kernel.org,
+	"Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 6/8] gpio: aaeon: Add GPIO driver for SRG-IMX8PL MCU
+Message-ID: <202512131342.1nkKkryD-lkp@intel.com>
+References: <20251212-dev-b4-aaeon-mcu-driver-v1-6-6bd65bc8ef12@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8bHZTj54bYLdLiw+"
-Content-Disposition: inline
-In-Reply-To: <20251212231203.727227-1-robh@kernel.org>
-X-Cookie: DYSLEXICS OF THE WORLD, UNTIE!
-
-
---8bHZTj54bYLdLiw+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20251212-dev-b4-aaeon-mcu-driver-v1-6-6bd65bc8ef12@bootlin.com>
 
-On Fri, Dec 12, 2025 at 05:11:52PM -0600, Rob Herring (Arm) wrote:
-> Remove includes which are not referenced by either DTS files or drivers.
->=20
-> There's a few more which are new, so they are excluded for now.
+Hi Thomas,
 
-Acked-by: Mark Brown <broonie@kernel.org>
+kernel test robot noticed the following build errors:
 
---8bHZTj54bYLdLiw+
-Content-Type: application/pgp-signature; name="signature.asc"
+[auto build test ERROR on d358e5254674b70f34c847715ca509e46eb81e6f]
 
------BEGIN PGP SIGNATURE-----
+url:    https://github.com/intel-lab-lkp/linux/commits/Thomas-Perrot-Schneider-Electric/dt-bindings-vendor-prefixes-Add-AAEON-vendor-prefix/20251212-154458
+base:   d358e5254674b70f34c847715ca509e46eb81e6f
+patch link:    https://lore.kernel.org/r/20251212-dev-b4-aaeon-mcu-driver-v1-6-6bd65bc8ef12%40bootlin.com
+patch subject: [PATCH 6/8] gpio: aaeon: Add GPIO driver for SRG-IMX8PL MCU
+config: arc-randconfig-r132-20251213 (https://download.01.org/0day-ci/archive/20251213/202512131342.1nkKkryD-lkp@intel.com/config)
+compiler: arc-linux-gcc (GCC) 14.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251213/202512131342.1nkKkryD-lkp@intel.com/reproduce)
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmk82nAACgkQJNaLcl1U
-h9AF0wf/RU9WagcpUCZ1sx0lAc8LqeClGvN8UmsUry3bwmzqht7//PCIqy9YES2b
-YonKgjyQSc6jVAso760Vy8kMyVo3qmDtZh/+HhG+hKZKYjuWXTgNDZbcuHqLLC0n
-VfP2g8L5ainnzUQn4d6fuC7yTPCemUe5LXXlfAXcsxgTzYp9lCOfPAzCQ8AXP8dR
-3nfijzX8hDff/ZC7rmalUnnhx/RkrrAxxNALfZTo2xmgpP63cimXvuJt8oQEAPBU
-Sl4lfIk/svMJjz8wkCP6p7YT9E2tyyrKpLCsduZAXCRi8+OSbV/EMEwVvn0DbsAO
-zBEwV/somQyTbEe29Lzi683OStqqEg==
-=3mYQ
------END PGP SIGNATURE-----
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512131342.1nkKkryD-lkp@intel.com/
 
---8bHZTj54bYLdLiw+--
+All errors (new ones prefixed by >>):
+
+   `.exit.text' referenced in section `__jump_table' of lib/test_dynamic_debug.o: defined in discarded section `.exit.text' of lib/test_dynamic_debug.o
+   `.exit.text' referenced in section `__jump_table' of lib/test_dynamic_debug.o: defined in discarded section `.exit.text' of lib/test_dynamic_debug.o
+   arc-linux-ld: drivers/gpio/gpio-aaeon-mcu.o: in function `aaeon_mcu_gpio_get':
+>> drivers/gpio/gpio-aaeon-mcu.c:124:(.text+0x4c): undefined reference to `aaeon_mcu_i2c_xfer'
+>> arc-linux-ld: drivers/gpio/gpio-aaeon-mcu.c:124:(.text+0x4c): undefined reference to `aaeon_mcu_i2c_xfer'
+   arc-linux-ld: drivers/gpio/gpio-aaeon-mcu.o: in function `aaeon_mcu_gpio_set':
+   drivers/gpio/gpio-aaeon-mcu.c:139:(.text+0x100): undefined reference to `aaeon_mcu_i2c_xfer'
+   arc-linux-ld: drivers/gpio/gpio-aaeon-mcu.c:139:(.text+0x100): undefined reference to `aaeon_mcu_i2c_xfer'
+   arc-linux-ld: drivers/gpio/gpio-aaeon-mcu.c:150:(.text+0x172): undefined reference to `aaeon_mcu_i2c_xfer'
+   arc-linux-ld: drivers/gpio/gpio-aaeon-mcu.o:drivers/gpio/gpio-aaeon-mcu.c:150: more undefined references to `aaeon_mcu_i2c_xfer' follow
+   `.exit.text' referenced in section `__jump_table' of drivers/target/target_core_configfs.o: defined in discarded section `.exit.text' of drivers/target/target_core_configfs.o
+   `.exit.text' referenced in section `__jump_table' of drivers/target/target_core_configfs.o: defined in discarded section `.exit.text' of drivers/target/target_core_configfs.o
+
+sparse warnings: (new ones prefixed by >>)
+>> drivers/gpio/gpio-aaeon-mcu.c:246:1: sparse: sparse: bad integer constant expression
+   drivers/gpio/gpio-aaeon-mcu.c:246:1: sparse: sparse: static assertion failed: "MODULE_INFO(description, ...) contains embedded NUL byte"
+   drivers/gpio/gpio-aaeon-mcu.c:247:1: sparse: sparse: bad integer constant expression
+   drivers/gpio/gpio-aaeon-mcu.c:247:1: sparse: sparse: static assertion failed: "MODULE_INFO(author, ...) contains embedded NUL byte"
+   drivers/gpio/gpio-aaeon-mcu.c:248:1: sparse: sparse: bad integer constant expression
+   drivers/gpio/gpio-aaeon-mcu.c:248:1: sparse: sparse: static assertion failed: "MODULE_INFO(file, ...) contains embedded NUL byte"
+   drivers/gpio/gpio-aaeon-mcu.c:248:1: sparse: sparse: bad integer constant expression
+   drivers/gpio/gpio-aaeon-mcu.c:248:1: sparse: sparse: static assertion failed: "MODULE_INFO(license, ...) contains embedded NUL byte"
+
+vim +124 drivers/gpio/gpio-aaeon-mcu.c
+
+   110	
+   111	static int aaeon_mcu_gpio_get(struct gpio_chip *gc, unsigned int offset)
+   112	{
+   113		struct aaeon_mcu_gpio *data = gpiochip_get_data(gc);
+   114		u8 cmd[3], rsp;
+   115		int ret;
+   116	
+   117		if (offset < MAX_GPOS)
+   118			return test_bit(offset, data->gpo_state);
+   119	
+   120		cmd[0] = AAEON_MCU_READ_GPIO;
+   121		cmd[1] = offset - 7;
+   122		cmd[2] = 0x00;
+   123	
+ > 124		ret = aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
+   125		if (ret < 0)
+   126			return ret;
+   127	
+   128		return rsp;
+   129	}
+   130	
+   131	static int aaeon_mcu_gpo_set_cmd(struct aaeon_mcu_gpio *data, unsigned int offset, int value)
+   132	{
+   133		u8 cmd[3], rsp;
+   134	
+   135		cmd[0] = AAEON_MCU_CONTROL_GPO;
+   136		cmd[1] = offset + 1;
+   137		cmd[2] = !!value;
+   138	
+   139		return aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
+   140	}
+   141	
+   142	static int aaeon_mcu_gpio_set_cmd(struct aaeon_mcu_gpio *data, unsigned int offset, int value)
+   143	{
+   144		u8 cmd[3], rsp;
+   145	
+   146		cmd[0] = AAEON_MCU_WRITE_GPIO;
+   147		cmd[1] = offset - 7;
+   148		cmd[2] = !!value;
+   149	
+   150		return aaeon_mcu_i2c_xfer(data->mfd->i2c_client, cmd, 3, &rsp, 1);
+   151	}
+   152	
+   153	static int aaeon_mcu_gpio_set(struct gpio_chip *gc, unsigned int offset,
+   154				      int value)
+   155	{
+   156		struct aaeon_mcu_gpio *data = gpiochip_get_data(gc);
+   157	
+   158		if (offset < MAX_GPOS) {
+   159			if (aaeon_mcu_gpo_set_cmd(data, offset, value) == 0)
+   160				assign_bit(offset, data->gpo_state, value);
+   161		} else {
+   162			return aaeon_mcu_gpio_set_cmd(data, offset, value);
+   163		}
+   164		return 0;
+   165	}
+   166	
+   167	static const struct gpio_chip aaeon_mcu_chip = {
+   168		.label			= "gpio-aaeon-mcu",
+   169		.owner			= THIS_MODULE,
+   170		.get_direction		= aaeon_mcu_gpio_get_direction,
+   171		.direction_input	= aaeon_mcu_gpio_direction_input,
+   172		.direction_output	= aaeon_mcu_gpio_direction_output,
+   173		.get			= aaeon_mcu_gpio_get,
+   174		.set			= aaeon_mcu_gpio_set,
+   175		.base			= -1,
+   176		.ngpio			= MAX_GPOS + MAX_GPIOS,
+   177		.can_sleep		= true,
+   178	};
+   179	
+   180	static void aaeon_mcu_gpio_reset(struct aaeon_mcu_gpio *data, struct device *dev)
+   181	{
+   182		unsigned int i;
+   183		int ret;
+   184	
+   185		/* Reset all GPOs */
+   186		for (i = 0; i < MAX_GPOS; i++) {
+   187			ret = aaeon_mcu_gpo_set_cmd(data, i, 0);
+   188			if (ret < 0)
+   189				dev_warn(dev, "Failed to reset GPO %u state: %d\n", i, ret);
+   190			clear_bit(i, data->dir_in);
+   191		}
+   192	
+   193		/* Reset all GPIOs */
+   194		for (i = MAX_GPOS; i < MAX_GPOS + MAX_GPIOS; i++) {
+   195			ret = aaeon_mcu_gpio_config_input_cmd(data, i);
+   196			if (ret < 0)
+   197				dev_warn(dev, "Failed to reset GPIO %u state: %d\n", i, ret);
+   198			set_bit(i, data->dir_in);
+   199		}
+   200	}
+   201	
+   202	static int aaeon_mcu_gpio_probe(struct platform_device *pdev)
+   203	{
+   204		struct aaeon_mcu_dev *mfd = dev_get_drvdata(pdev->dev.parent);
+   205		struct aaeon_mcu_gpio *data;
+   206	
+   207		data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+   208		if (!data)
+   209			return -ENOMEM;
+   210	
+   211		data->mfd = mfd;
+   212		data->gc = aaeon_mcu_chip;
+   213		data->gc.parent = &pdev->dev;
+   214	
+   215		/*
+   216		 * Reset all GPIO states to a known configuration. The MCU does not
+   217		 * reset GPIO state on soft reboot, only on power cycle (hard reboot).
+   218		 * Without this reset, GPIOs would retain their previous state across
+   219		 * reboots, which could lead to unexpected behavior.
+   220		 */
+   221		aaeon_mcu_gpio_reset(data, &pdev->dev);
+   222	
+   223		platform_set_drvdata(pdev, data);
+   224	
+   225		return devm_gpiochip_add_data(&pdev->dev, &data->gc,
+   226					      data);
+   227	}
+   228	
+   229	static const struct of_device_id aaeon_mcu_gpio_of_match[] = {
+   230		{ .compatible = "aaeon,srg-imx8pl-gpio" },
+   231		{},
+   232	};
+   233	
+   234	MODULE_DEVICE_TABLE(of, aaeon_mcu_gpio_of_match);
+   235	
+   236	static struct platform_driver aaeon_mcu_gpio_driver = {
+   237		.driver = {
+   238			.name = "aaeon-mcu-gpio",
+   239			.of_match_table = aaeon_mcu_gpio_of_match,
+   240		},
+   241		.probe = aaeon_mcu_gpio_probe,
+   242	};
+   243	
+   244	module_platform_driver(aaeon_mcu_gpio_driver);
+   245	
+ > 246	MODULE_DESCRIPTION("GPIO interface for Aaeon MCU");
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
