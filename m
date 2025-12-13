@@ -1,53 +1,53 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7B32236E8;
-	Sat, 13 Dec 2025 00:45:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8D61AC44D;
+	Sat, 13 Dec 2025 00:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765586751; cv=none; b=gWwSgg7hpQc2hsFS3bxs2CLdjm4QjjZVucK/ahDgY9+mWXu8sVzEgms+GvHbJ6tvfwuZLlVshS1+C7wr7Tk5Ipo59Y3Qv4bB76+t6aJgqI9TweQOLKjk5Gb2c1zW5Rz3qRjKyjwHsfp98yyeGI1GaU/kQhVIQSkwMZ4a0kw0cQE=
+	t=1765586812; cv=none; b=Dhd8uMW8xas1VBFOhK3TR0T3nqTiuCF/rycxgTpwClzzZALSPas+hP1hz6MMUtsYyuSqvKisX11ZCY8ZlfPrMKTJWzFS/ajBapG2f0uw8mSNb6S3LyCdX2kthF8AjZMtYcp41jWlMmLy/Us440usLQoHVzVpSLUkzpN4hAhwiCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765586751; c=relaxed/simple;
-	bh=77Thi797QTL8JEfy2ZXrA6Jdr8+2Tn/Lg+2M6GKxiBU=;
+	s=arc-20240116; t=1765586812; c=relaxed/simple;
+	bh=wV3WXJc3+d6bM49wEkpG/NLZBLxgviHc0aQEcd+t/4g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rvCbnBMkrZWdcoJPQlp2UmYI5HZ2OYQU5iX17COzS8DpQmwfDhsx27v07+25JJsBElAddLmYrzEM+iJm4UDzjZ8j+We8aEOYta5HdjUzSAZQH2DiAN+lOmdmf4QkVegZuGforvXsOa4/YKNs4VfGp8yMPsXpNFQXrK7qsdquJxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TKfzZXEy; arc=none smtp.client-ip=198.175.65.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=glGdAhQJU5Y/8LDPwLjKnDMeBkvFLeysbIef2QxQKv51q/oTQ+o/GkBfB+C+r8mOqFMPGn4JCMTvwzebeJzqDFQKGf6PX9UfYI/Gh4gxOiTFlwIv88sWsBLXpyZFrnP4BsEfkgA4NZXuJxS804Z+HEqpq9bDQ8bucReuipOyAVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mKDSKc4T; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TKfzZXEy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mKDSKc4T"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1765586750; x=1797122750;
+  t=1765586811; x=1797122811;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=77Thi797QTL8JEfy2ZXrA6Jdr8+2Tn/Lg+2M6GKxiBU=;
-  b=TKfzZXEyGG8FUbRUUpDKR29iLywOkSnEkmETesnO+aZOVo/mHNuhnqkC
-   Fm37nnJss2qKHcbQdty8AYNjZQ6U8kk1qU44N8dGaoM+sXXy+WnLhw/68
-   4pZbNML6xZggmPWNj+Y2MgK3D8walOKWEVHVhcAtL0dU929VwZ5fvcrpT
-   ojF3FziorcjnRjqMxPay+XfT6JcSfjnGCBFdH2cacFJrcreOugLyfdkqn
-   Vhq0hQr7dFKbVCSS8759XuFWCt4QVLApbyLAXankTDca4KnTT77KmtJir
-   hllQKmlgFH7OIwrOKwpuh5TQf/e6+Iv4VCL4s658UlCuPXvQs6ATJShCI
+  bh=wV3WXJc3+d6bM49wEkpG/NLZBLxgviHc0aQEcd+t/4g=;
+  b=mKDSKc4TPS3uLrqGkwRCx9es19uUlk+nspRmMPqWINdksHj5Er8XgyZl
+   js4tJ0pb6Zfi13P7a50xUx8CWlUIddOvnOG8gcwzytjHxF3JZpZQwrPSZ
+   uLnw+mkw/soB8/GiDZaxqH9q/vuUIAGhaKebdTVcUeK/oogQBapJ1EY4h
+   eFdYnBwqfDh6sIMrRc986nrWmR+yVtg5fnXVEhjidighQXaaIW6OgSzKh
+   eSuZJg020BeJF3zcWdU+8UwUPhq2U7/A4xKjXNz2MvmU+YjT/j6WkXtsw
+   WLVlQzmKNK9XWh/avcZY8Dw86ssWGsV0o2c4bURGhl5rT/LMP9cribF/k
    g==;
-X-CSE-ConnectionGUID: imyOjDGcRuySDC4lW+18AA==
-X-CSE-MsgGUID: +rpOmTPHRuuffX5U7AEk6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11640"; a="71219675"
+X-CSE-ConnectionGUID: qSPmDRScS2ONAYW85qlgYQ==
+X-CSE-MsgGUID: +6pcyqqdSza7yOLHB1s4tw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11640"; a="79048680"
 X-IronPort-AV: E=Sophos;i="6.21,145,1763452800"; 
-   d="scan'208";a="71219675"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 16:45:49 -0800
-X-CSE-ConnectionGUID: dV9aRwUqR3iU0O1jdPcxnw==
-X-CSE-MsgGUID: 011tT+MFQtaKCyXggTUimQ==
+   d="scan'208";a="79048680"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2025 16:46:50 -0800
+X-CSE-ConnectionGUID: tt3I3KZqSZuuahiBnNcB8g==
+X-CSE-MsgGUID: 9yZwtd6JR9GAv8YStBIaOA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,145,1763452800"; 
-   d="scan'208";a="196290213"
+   d="scan'208";a="227880562"
 Received: from lkp-server01.sh.intel.com (HELO d335e3c6db51) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 12 Dec 2025 16:45:45 -0800
+  by orviesa002.jf.intel.com with ESMTP; 12 Dec 2025 16:46:44 -0800
 Received: from kbuild by d335e3c6db51 with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vUDlW-000000006qv-1t5p;
-	Sat, 13 Dec 2025 00:45:42 +0000
-Date: Sat, 13 Dec 2025 08:45:34 +0800
+	id 1vUDmU-000000006rB-2NaC;
+	Sat, 13 Dec 2025 00:46:42 +0000
+Date: Sat, 13 Dec 2025 08:45:52 +0800
 From: kernel test robot <lkp@intel.com>
 To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
 	Rob Herring <robh@kernel.org>,
@@ -56,13 +56,13 @@ To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, Frank Li <Frank.Li@nxp.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Frank Li <Frank.Li@nxp.com>
 Subject: Re: [PATCH v21 3/7] firmware: imx: add driver for NXP EdgeLock
  Enclave
-Message-ID: <202512130804.vObtjguS-lkp@intel.com>
+Message-ID: <202512130836.yv66kq5e-lkp@intel.com>
 References: <20251212-imx-se-if-v21-3-ee7d6052d848@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -84,29 +84,43 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Pankaj-Gupta/Documentatio
 base:   4a26e7032d7d57c998598c08a034872d6f0d3945
 patch link:    https://lore.kernel.org/r/20251212-imx-se-if-v21-3-ee7d6052d848%40nxp.com
 patch subject: [PATCH v21 3/7] firmware: imx: add driver for NXP EdgeLock Enclave
-config: sparc64-allmodconfig (https://download.01.org/0day-ci/archive/20251213/202512130804.vObtjguS-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 1335a05ab8bc8339ce24be3a9da89d8c3f4e0571)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251213/202512130804.vObtjguS-lkp@intel.com/reproduce)
+config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20251213/202512130836.yv66kq5e-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251213/202512130836.yv66kq5e-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512130804.vObtjguS-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512130836.yv66kq5e-lkp@intel.com/
 
-All errors (new ones prefixed by >>):
+All error/warnings (new ones prefixed by >>):
 
->> drivers/firmware/imx/se_ctrl.c:168:6: error: call to undeclared function 'FIELD_GET'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+   drivers/firmware/imx/se_ctrl.c: In function 'get_se_soc_info':
+>> drivers/firmware/imx/se_ctrl.c:168:13: error: implicit declaration of function 'FIELD_GET' [-Wimplicit-function-declaration]
      168 |         if (FIELD_GET(DEV_GETINFO_MIN_VER_MASK, var_se_info.soc_rev))
-         |             ^
-   1 error generated.
+         |             ^~~~~~~~~
+   drivers/firmware/imx/se_ctrl.c: At top level:
+   drivers/firmware/imx/se_ctrl.c:374:12: warning: 'se_resume' defined but not used [-Wunused-function]
+     374 | static int se_resume(struct device *dev)
+         |            ^~~~~~~~~
+>> drivers/firmware/imx/se_ctrl.c:357:12: warning: 'se_suspend' defined but not used [-Wunused-function]
+     357 | static int se_suspend(struct device *dev)
+         |            ^~~~~~~~~~
 --
->> drivers/firmware/imx/ele_common.c:241:11: error: call to undeclared function 'FIELD_GET'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     241 |         status = RES_STATUS(msg->data[0]);
-         |                  ^
-   drivers/firmware/imx/se_ctrl.h:16:25: note: expanded from macro 'RES_STATUS'
+   In file included from drivers/firmware/imx/ele_base_msg.h:14,
+                    from drivers/firmware/imx/ele_common.c:6:
+   drivers/firmware/imx/ele_common.c: In function 'se_val_rsp_hdr_n_status':
+>> drivers/firmware/imx/se_ctrl.h:16:41: error: implicit declaration of function 'FIELD_GET' [-Wimplicit-function-declaration]
       16 | #define RES_STATUS(x)                   FIELD_GET(0x000000ff, x)
-         |                                         ^
-   1 error generated.
+         |                                         ^~~~~~~~~
+   drivers/firmware/imx/ele_common.c:241:18: note: in expansion of macro 'RES_STATUS'
+     241 |         status = RES_STATUS(msg->data[0]);
+         |                  ^~~~~~~~~~
+--
+   drivers/firmware/imx/ele_base_msg.c: In function 'ele_get_info':
+>> drivers/firmware/imx/ele_base_msg.c:77:47: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+      77 |                 gen_pool_free(priv->mem_pool, (u64)get_info_data,
+         |                                               ^
 
 
 vim +/FIELD_GET +168 drivers/firmware/imx/se_ctrl.c
@@ -180,6 +194,174 @@ vim +/FIELD_GET +168 drivers/firmware/imx/se_ctrl.c
    203		return 0;
    204	}
    205	
+   206	/* interface for managed res to free a mailbox channel */
+   207	static void if_mbox_free_channel(void *mbox_chan)
+   208	{
+   209		mbox_free_channel(mbox_chan);
+   210	}
+   211	
+   212	static int se_if_request_channel(struct device *dev, struct mbox_chan **chan,
+   213					 struct mbox_client *cl, const char *name)
+   214	{
+   215		struct mbox_chan *t_chan;
+   216		int ret = 0;
+   217	
+   218		t_chan = mbox_request_channel_byname(cl, name);
+   219		if (IS_ERR(t_chan))
+   220			return dev_err_probe(dev, PTR_ERR(t_chan),
+   221					     "Failed to request %s channel.", name);
+   222	
+   223		ret = devm_add_action_or_reset(dev, if_mbox_free_channel, t_chan);
+   224		if (ret)
+   225			return dev_err_probe(dev, -EPERM,
+   226					     "Failed to add-action for removal of mbox: %s\n",
+   227					     name);
+   228		*chan = t_chan;
+   229	
+   230		return ret;
+   231	}
+   232	
+   233	static void se_if_probe_cleanup(void *plat_dev)
+   234	{
+   235		struct platform_device *pdev = plat_dev;
+   236		struct se_fw_load_info *load_fw;
+   237		struct device *dev = &pdev->dev;
+   238		struct se_if_priv *priv;
+   239	
+   240		priv = dev_get_drvdata(dev);
+   241		load_fw = get_load_fw_instance(priv);
+   242	
+   243		/*
+   244		 * In se_if_request_channel(), passed the clean-up functional
+   245		 * pointer reference as action to devm_add_action_or_reset().
+   246		 * No need to free the mbox channels here.
+   247		 */
+   248	
+   249		/*
+   250		 * free the buffer in se remove, previously allocated
+   251		 * in se probe to store encrypted IMEM
+   252		 */
+   253		if (load_fw && load_fw->imem.buf) {
+   254			dmam_free_coherent(dev, ELE_IMEM_SIZE, load_fw->imem.buf,
+   255					   load_fw->imem.phyaddr);
+   256			load_fw->imem.buf = NULL;
+   257		}
+   258	
+   259		/*
+   260		 * No need to check, if reserved memory is allocated
+   261		 * before calling for its release. Or clearing the
+   262		 * un-set bit.
+   263		 */
+   264		of_reserved_mem_device_release(dev);
+   265	}
+   266	
+   267	static int se_if_probe(struct platform_device *pdev)
+   268	{
+   269		const struct se_soc_info *se_info;
+   270		const struct se_if_node *if_node;
+   271		struct se_fw_load_info *load_fw;
+   272		struct device *dev = &pdev->dev;
+   273		struct se_if_priv *priv;
+   274		int ret;
+   275	
+   276		if_node = device_get_match_data(dev);
+   277		if (!if_node)
+   278			return -EINVAL;
+   279	
+   280		se_info = if_node->se_info;
+   281	
+   282		priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+   283		if (!priv)
+   284			return -ENOMEM;
+   285	
+   286		priv->dev = dev;
+   287		priv->if_defs = &if_node->if_defs;
+   288		dev_set_drvdata(dev, priv);
+   289	
+   290		ret = devm_add_action_or_reset(dev, se_if_probe_cleanup, pdev);
+   291		if (ret)
+   292			return ret;
+   293	
+   294		/* Mailbox client configuration */
+   295		priv->se_mb_cl.dev		= dev;
+   296		priv->se_mb_cl.tx_block		= false;
+   297		priv->se_mb_cl.knows_txdone	= true;
+   298		priv->se_mb_cl.rx_callback	= se_if_rx_callback;
+   299	
+   300		ret = se_if_request_channel(dev, &priv->tx_chan, &priv->se_mb_cl, MBOX_TX_NAME);
+   301		if (ret)
+   302			return ret;
+   303	
+   304		ret = se_if_request_channel(dev, &priv->rx_chan, &priv->se_mb_cl, MBOX_RX_NAME);
+   305		if (ret)
+   306			return ret;
+   307	
+   308		mutex_init(&priv->se_if_cmd_lock);
+   309	
+   310		init_completion(&priv->waiting_rsp_clbk_hdl.done);
+   311		init_completion(&priv->cmd_receiver_clbk_hdl.done);
+   312	
+   313		if (if_node->pool_name) {
+   314			priv->mem_pool = of_gen_pool_get(dev->of_node, if_node->pool_name, 0);
+   315			if (!priv->mem_pool)
+   316				return dev_err_probe(dev, -ENOMEM,
+   317						     "Unable to get sram pool = %s.",
+   318						     if_node->pool_name);
+   319		}
+   320	
+   321		if (if_node->reserved_dma_ranges) {
+   322			ret = of_reserved_mem_device_init(dev);
+   323			if (ret)
+   324				return dev_err_probe(dev, ret,
+   325						    "Failed to init reserved memory region.");
+   326		}
+   327	
+   328		if (if_node->if_defs.se_if_type == SE_TYPE_ID_HSM) {
+   329			ret = get_se_soc_info(priv, se_info);
+   330			if (ret)
+   331				return dev_err_probe(dev, ret, "Failed to fetch SoC Info.");
+   332		}
+   333	
+   334		/* By default, there is no pending FW to be loaded.*/
+   335		if (se_info->se_fw_img_nm.seco_fw_nm_in_rfs) {
+   336			load_fw = get_load_fw_instance(priv);
+   337			load_fw->se_fw_img_nm = &se_info->se_fw_img_nm;
+   338			load_fw->is_fw_tobe_loaded = true;
+   339	
+   340			if (load_fw->se_fw_img_nm->prim_fw_nm_in_rfs) {
+   341				/* allocate buffer where SE store encrypted IMEM */
+   342				load_fw->imem.buf = dmam_alloc_coherent(priv->dev, ELE_IMEM_SIZE,
+   343									&load_fw->imem.phyaddr,
+   344									GFP_KERNEL);
+   345				if (!load_fw->imem.buf)
+   346					return dev_err_probe(dev, -ENOMEM,
+   347							     "dmam-alloc-failed: To store encr-IMEM.");
+   348				load_fw->imem_mgmt = true;
+   349			}
+   350		}
+   351		dev_info(dev, "i.MX secure-enclave: %s0 interface to firmware, configured.",
+   352			 get_se_if_name(priv->if_defs->se_if_type));
+   353	
+   354		return ret;
+   355	}
+   356	
+ > 357	static int se_suspend(struct device *dev)
+   358	{
+   359		struct se_if_priv *priv = dev_get_drvdata(dev);
+   360		struct se_fw_load_info *load_fw;
+   361		int ret = 0;
+   362	
+   363		load_fw = get_load_fw_instance(priv);
+   364	
+   365		if (load_fw->imem_mgmt) {
+   366			ret = se_save_imem_state(priv, &load_fw->imem);
+   367			if (ret)
+   368				dev_err(dev, "Failure saving IMEM state[0x%x]", ret);
+   369		}
+   370	
+   371		return 0;
+   372	}
+   373	
 
 -- 
 0-DAY CI Kernel Test Service
