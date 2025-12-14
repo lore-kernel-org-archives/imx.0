@@ -1,175 +1,130 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.0])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D3B315D5C
-	for <imx@lists.linux.dev>; Sun, 14 Dec 2025 21:53:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765749194; cv=none; b=qv/qodg/sBWuZc0DZFiz6kiQOpC0+XD+komNuId0e1wNW6RZVsz6gMtO4bm42m2yDPgd35/AIJXFHyz9yr0Mh4agQkkN2qguw3IIbrFkBHpwh9bjyOYOPGokEukD45iZ5wvaAM5dZzoMk8H8BuY5Nrh/detvAxGMwRaw6TkdsZE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765749194; c=relaxed/simple;
-	bh=aSpybkLoe5CnA4HYcJhOwk25yxid6o9UNHL3aNFzoJY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GRakbIOmlSTzRvRUs3QYx6N7x4vbN9PcMM14hckVPVOyITF65O0UvDiYz187wSw7l3bB1b4Z1iM8hblYldRqFA4S73NguugNA/vGXJknlkPd8LVGW4o4F6/TRqFHNhOYV2Cv0KIMz7UeYBC59cgkoEfNN2TNBfv9SXuUxqePxQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=imYaBX9E; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5483C29BD94
+	for <imx@lists.linux.dev>; Sun, 14 Dec 2025 22:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.0
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765749811; cv=pass; b=tIhPuhDxoU0vGKtVzkmsYkNlmC+QjUfuTZlZ9X/HzbmeCx8y6LN1gGPEl8mj16KcWYVb3mLez2EIn+jiVymO6HY4awOWXrGuwMbPlG8Q16FUZBK1LK37uNOFTAbRc1wJj1Zz7noImUTwaDERGVgFbM9r7M+b773sQLiogySMFQw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765749811; c=relaxed/simple;
+	bh=cVXolmIhuEAIzMtZ7d7H4m9GWbghCHHoI5tvljqLXVQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JjgnR2+E9GAoVWh6JX9eq6KG1qqHzxBJ1rfZEGOIxadEFXLA4JqGnG9iIA+NxJQVkoSU7369ESc5jVoZAXWR9n8Ms5vVpgOEM6lMQMWzpf+ytU/RZ3Ih5ck1ayXpeQRO8I0ZbLZ/PUH2Sumf8//fz+lSE/jZH6rR6M7c78zQaOc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=wLpSJy10; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=nwslf0FT; arc=pass smtp.client-ip=185.56.87.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="imYaBX9E"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47774d3536dso28073125e9.0
-        for <imx@lists.linux.dev>; Sun, 14 Dec 2025 13:53:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765749191; x=1766353991; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tM/GDAHbcq8iQ+ECF/3alHpWVJkwLioPe4BjvZMs1mE=;
-        b=imYaBX9E4S7I0/zoQGmNvOOVjcMGkAOdd5krq2VsYeRjL5UOfA8Meqx1iUYQwaTdkN
-         ApFkvhejWbnLXY3AFlwze464Sd1t2f96eoMA50Q/G16qxZUZo4N87PPqwLl17uyLocln
-         aqM5GzTp7BtXX6ucO7LXV7NthTtspDoWREShgADZA4d7pj6yG1+c/pFfOKPr9qPN9ta9
-         +DWLugG2kWNZQjFRFB8t7LXM+Yo3OkCxrlwF0ck/A+frFAFUk2CorS90ztRd1IgLy6Js
-         pA7v6D9PNbr+oIcBBfa1YjgCQcvvfgjjro11uw8Xy0IU9zaJoci7ajz1MEHTEgSO4c0x
-         +oig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765749191; x=1766353991;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tM/GDAHbcq8iQ+ECF/3alHpWVJkwLioPe4BjvZMs1mE=;
-        b=X3jiG5nbcIU4qRm53mkmUe6cMFPuLuGEWmUJ/1jLXGDZ5fC6gC4S8/i6ZuH5eE63xR
-         7QOlUecjl0egR+elPowo5xwUkf6G0/S215oRZgLATgRLAYUZv3mjS2e8bKmxvlhiutpS
-         uMsEaqGBYbjP01N5cvGcvS5BKKkM5JxcHAdE0jDXzgz5mJxprZEpoWptZsnQHYSm+VN8
-         qrc2NlhtflWmgQhm4paIkFH//fQf4YeHIWL4JNkVZ7u1ZFfS9U4ODUcigvu6shPUMarS
-         ITcJ4DUYTsgJURFxJTEoXZd06+ck6zqN+pE8IYZ0sL47tu1YV9sFmap2LB3/AmjqhFXf
-         4B3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXtwYeeevR/THxYUyUGINi84HUU0ZLUwvdeRs23rvh4q2WNAHI32td+V14ZHGKOXOrmmU4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwAc9WZqPwI3Z9WnxGqTpy+0bMDnKC0ELtZv7EFiNQ9O9wtUkCp
-	bHaMOQ2772yb4tB7XEtKKCqvbKzaf8AIQypCxTUOZGR7INGw2hp+Ves2
-X-Gm-Gg: AY/fxX4HuZLpW2Fxa09Ht7URUreMEBPxdipcHKcE6SV7pIlA1g5Y/dMezHR93jP4zoL
-	/OvShj0WINYK3huc5IO3q9jS81oR5DqD06E96SP0jTEIhqL+UutNqrteEBCdV3xABaz3+DS4j5r
-	iVNYromE3T76mWay6lJeUDI4vwewsUvwWzVbbNnBITvNIFM6z0NfZi1btY9daOVPipQxrtPQ6WY
-	P0io87sdp426U3v57RvlZEXuZ84yNuct29hwGoe7beRMBQuCsOZrRCZFTC9MLnBiQ3yyaG8//yx
-	CfVw5mv9Wb2IHNCSTzJmjAYWHvj+K8YU/nzoE3tfGmCPFUSbaEFXfgL2y3sExvAO1Wz4dpN1GpO
-	MW7hZv0o/jO0q4tFdsLcqbTJ46QuEQPpYjLonpDFalTt3dHlzO5NL01lsYFDJ3TY52RauKprns6
-	1Z6BCej2KLycODNuPddh5b3S0CpiswR/oZ9VNacyksR64U9bM4pL3MZ/f0OYvzzYSLvoplhp/09
-	+bfLHQIqGiPFMk=
-X-Google-Smtp-Source: AGHT+IE0IMq/1tUZxhnQGiJzgtJjbUC5CSa+FGAkLQyEctAaGf7usWM7SccW7nJPbd0Qiddz4/h6GA==
-X-Received: by 2002:a05:6000:2908:b0:430:fcbc:dc52 with SMTP id ffacd0b85a97d-430fcbcdd84mr1760945f8f.30.1765749190606;
-        Sun, 14 Dec 2025 13:53:10 -0800 (PST)
-Received: from Lord-Beerus.station (net-5-94-28-5.cust.vodafonedsl.it. [5.94.28.5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-430f6a42c8csm7625568f8f.16.2025.12.14.13.53.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Dec 2025 13:53:09 -0800 (PST)
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
-To: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="wLpSJy10";
+	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="nwslf0FT"
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-swd7.prod.antispam.mailspamprotection.com; s=arckey; t=1765749809;
+	 b=DEIsfr+TZQA84mywg4B/rLDjYoR6VmTRjAAcSny/KKZZt4NGRMa7QvOKdutw5Ml7XS6Q4XN5Vh
+	  XFFE9/hlXGkWbHzfIZ1L/Nmz4Vsy1IB3f6BgnVrhAZF/9s+vQLOWOgBmvWiPeJFeD6NJqdBMvf
+	  ctRijNpZRz2QPJznyGILM+JZn9tGaPSoQEElgcL5EoVxlLyJftrjqsdBtufuVWzoDOuHoKvl69
+	  C2mvr26rJXgezg0jvalx4Q6DeNAQ2cprl3cEP5tmUGdFQ15rJ2bKnfQZ+kCH+XBJG/mh+y+WQ8
+	  89wp4S8sIcxVOBCffD9onZGn81kG5qUDcqMwix2RgcueDg==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-swd7.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-swd7.prod.antispam.mailspamprotection.com; s=arckey; t=1765749809;
+	bh=cVXolmIhuEAIzMtZ7d7H4m9GWbghCHHoI5tvljqLXVQ=;
+	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:
+	  From:Date:DKIM-Signature:DKIM-Signature;
+	b=UrxucBxfJhsPg7UJ/n2BrNEVgKAuH0AeaxKaF4N70BrNOgkgHI/RX+17GUOLybbOeY2k4scxfg
+	  uXFyoGkmetL1FFrDFY/x/LuTtftCMMfaBe9kTSyS3gL7+b0tVPXK5bO4eQK/+VArbtFn9R0vfh
+	  +QnQSTvLSJpHZjVz5Y5Spwuq46MEErbKAKlMNc0TfDx/KevkoajGGb0gf/STV2NIHmf0xSm3d2
+	  oIBnK/gWG0QNfkZygY9FhqZV10nwfmd5WJL9wPImC6gmXzDWx2V46Ac3BNHCCxe0CrFDeDHi+F
+	  S3jxnMU5OqEOLL8M3U+JaP5jGTglLwhkARi9h1RUXUQaPA==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
+	:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	List-Unsubscribe:Content-Transfer-Encoding;
+	bh=iyaP5lR+UMf82Qks9pPdWf5XfzExxxVhhBQJM/0Gj6c=; b=wLpSJy10cQ+ihHxow4Bw76zuA2
+	q9qb/qa+GV6GVEbgGHDIHwUBOwWKEom0Wv67hNS6x/wc9yHK2MTcvEJFzNqBzxMu/uX/Wg1mSFeGa
+	IXHkedhNqI1FRd3gYWEeuH6rHz8jaj3KAJHxvwLBu3g26Afa8LIOvMWD4G/tX/NRsrtg=;
+Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
+	by instance-europe-west4-swd7.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.1)
+	(envelope-from <francesco@valla.it>)
+	id 1vUuBS-00000008cDP-3HyC
+	for imx@lists.linux.dev;
+	Sun, 14 Dec 2025 22:03:21 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
+	s=default; h=Subject:Cc:To:From:Date:list-help:list-unsubscribe:
+	list-subscribe:list-post:list-owner:list-archive;
+	bh=iyaP5lR+UMf82Qks9pPdWf5XfzExxxVhhBQJM/0Gj6c=; b=nwslf0FTSvzy1JPX0PEPfe95JY
+	AbhGi8R2VFfgfS4b9fiJctKkzUtkq7tFdiVpJonYeEi3op/CjnhaEJlH6fJBmP3rWch5rTf5iksra
+	ndhvnv2IT2pv2rypR3vHD7dxXa85QEBXLj1tBIzhnMhpOPGAluHXT3is/9I1zbJSd6Og=;
+Received: from [79.34.194.176] (port=59972 helo=bywater)
+	by esm19.siteground.biz with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.1)
+	(envelope-from <francesco@valla.it>)
+	id 1vUuBE-00000000CVM-0NDd;
+	Sun, 14 Dec 2025 22:03:04 +0000
+Date: Sun, 14 Dec 2025 23:02:58 +0100
+From: Francesco Valla <francesco@valla.it>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4 6/6] arm64: dts: imx8mp-var-som: Add support for TSC2046 touchscreen
-Date: Sun, 14 Dec 2025 22:52:53 +0100
-Message-ID: <20251214215256.5812-7-stefano.r@variscite.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251214215256.5812-1-stefano.r@variscite.com>
-References: <20251214215256.5812-1-stefano.r@variscite.com>
+	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>
+Subject: Re: [PATCH 3/4] arm64: dts: imx91: Update file name with dash
+Message-ID: <aT80EhkC41d7BSZs@bywater>
+References: <20251212-imx91-dts-v1-0-2bb3c13762dd@nxp.com>
+ <20251212-imx91-dts-v1-3-2bb3c13762dd@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251212-imx91-dts-v1-3-2bb3c13762dd@nxp.com>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - esm19.siteground.biz
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - valla.it
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-SGantispam-id: cac76209b49bf94073650b741c463ce7
+AntiSpam-DLS: false
+AntiSpam-DLSP: 
+AntiSpam-DLSRS: 
+AntiSpam-TS: 1.0
+CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
+CFBL-Feedback-ID: 1vUuBS-00000008cDP-3HyC-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-swd7.prod.antispam.mailspamprotection.com;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
 
-The VAR-SOM-MX8MP integrates a TSC2046 resistive touchscreen controller.
-The controller is physically located on the SOM, and its signals are
-routed to the SOM pins, allowing carrier boards to make use of it.
+Hi Peng,
 
-This patch adds the TSC2046 node and the appropriate SPI controller.
+On Fri, Dec 12, 2025 at 05:16:09PM +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
+> 
+> Update "imx91_93_common.dtsi" to "imx91-93-common.dtsi" to align with
+> others.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx91.dtsi           |    2 +-
+>  arch/arm64/boot/dts/freescale/imx91_93_common.dtsi | 1187 --------------------
+>  arch/arm64/boot/dts/freescale/imx93.dtsi           |    2 +-
+>  3 files changed, 2 insertions(+), 1189 deletions(-)
+>
 
-Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
----
- .../boot/dts/freescale/imx8mp-var-som.dtsi    | 46 +++++++++++++++++++
- 1 file changed, 46 insertions(+)
+The new (i.e., renamed) file is not there, so this is not working.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-index 6da5df11c44a..49467b48d0b0 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-var-som.dtsi
-@@ -100,6 +100,37 @@ &A53_3 {
- 	cpu-supply = <&buck2>;
- };
- 
-+&ecspi1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ecspi1>;
-+	cs-gpios = <&gpio5 17 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+
-+	/* Resistive touch controller */
-+	tsc2046: touchscreen@0 {
-+		compatible = "ti,tsc2046";
-+		reg = <0>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_restouch>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <12 IRQ_TYPE_EDGE_FALLING>;
-+		spi-max-frequency = <1500000>;
-+		pendown-gpio = <&gpio1 12 GPIO_ACTIVE_LOW>;
-+		ti,x-min = /bits/ 16 <125>;
-+		ti,x-max = /bits/ 16 <4008>;
-+		ti,y-min = /bits/ 16 <282>;
-+		ti,y-max = /bits/ 16 <3864>;
-+		ti,x-plate-ohms = /bits/ 16 <180>;
-+		ti,pressure-max = /bits/ 16 <255>;
-+		ti,debounce-max = /bits/ 16 <10>;
-+		ti,debounce-tol = /bits/ 16 <3>;
-+		ti,debounce-rep = /bits/ 16 <1>;
-+		ti,settle-delay-usec = /bits/ 16 <150>;
-+		ti,keep-vref-on;
-+		wakeup-source;
-+	};
-+};
-+
- &eqos {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_eqos>;
-@@ -347,6 +378,15 @@ MX8MP_IOMUXC_SD1_RESET_B__GPIO2_IO10                            0xc0
- 		>;
- 	};
- 
-+	pinctrl_ecspi1: ecspi1grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C1_SCL__ECSPI1_SCLK                              0x12
-+			MX8MP_IOMUXC_I2C1_SDA__ECSPI1_MOSI                              0x12
-+			MX8MP_IOMUXC_I2C2_SCL__ECSPI1_MISO                              0x12
-+			MX8MP_IOMUXC_I2C2_SDA__GPIO5_IO17                               0x12
-+		>;
-+	};
-+
- 	pinctrl_eqos: eqosgrp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC				0x2
-@@ -381,6 +421,12 @@ MX8MP_IOMUXC_SPDIF_RX__GPIO5_IO04				0x1c0
- 		>;
- 	};
- 
-+	pinctrl_restouch: restouchgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO12__GPIO1_IO12                             0xc0
-+		>;
-+	};
-+
- 	pinctrl_sai3: sai3grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_SAI3_TXFS__AUDIOMIX_SAI3_TX_SYNC                   0xd6
--- 
-2.47.3
+Francesco
 
