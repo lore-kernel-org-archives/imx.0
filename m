@@ -1,130 +1,170 @@
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.0])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5483C29BD94
-	for <imx@lists.linux.dev>; Sun, 14 Dec 2025 22:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.0
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765749811; cv=pass; b=tIhPuhDxoU0vGKtVzkmsYkNlmC+QjUfuTZlZ9X/HzbmeCx8y6LN1gGPEl8mj16KcWYVb3mLez2EIn+jiVymO6HY4awOWXrGuwMbPlG8Q16FUZBK1LK37uNOFTAbRc1wJj1Zz7noImUTwaDERGVgFbM9r7M+b773sQLiogySMFQw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765749811; c=relaxed/simple;
-	bh=cVXolmIhuEAIzMtZ7d7H4m9GWbghCHHoI5tvljqLXVQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JjgnR2+E9GAoVWh6JX9eq6KG1qqHzxBJ1rfZEGOIxadEFXLA4JqGnG9iIA+NxJQVkoSU7369ESc5jVoZAXWR9n8Ms5vVpgOEM6lMQMWzpf+ytU/RZ3Ih5ck1ayXpeQRO8I0ZbLZ/PUH2Sumf8//fz+lSE/jZH6rR6M7c78zQaOc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=wLpSJy10; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=nwslf0FT; arc=pass smtp.client-ip=185.56.87.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B2316F0FE;
+	Sun, 14 Dec 2025 22:15:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765750553; cv=none; b=kE2BKEvN0/19tMcUk714e60cODM8dO+PT/Sgn1qLWKkp6Ne3o4f10SGnzuNyH1hfDmejI13aSCBlwn7iVya8b6YCZAGUaJryowWCrncJ2YUn4FWDu2GbBGJs0paFo5tfR3Bau0KqjDF1hy/A0UVhLmLVeVdNPHaxlCKTOymvUP0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765750553; c=relaxed/simple;
+	bh=xAE3SdcCNhNMaf5t5SGdZjBQMk53A0jUjKIoAMv5grM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=LCu91gRaXhXc6ROEkNvCqOebgcSoaBbu/V++CW+gh5eMU0rMkPZI04cCV0nGrOxdONvt30LqEt0ds6fgWBCEr+d7OMawk0Gae0Tf1OvKUjPvv47K3Vy2MtM6FdiJlqJQ8po5rJDP3Ria05d30GOGjHMR+AsIpzh7xgyvnwQphTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H/sHOgrT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="wLpSJy10";
-	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="nwslf0FT"
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-swd7.prod.antispam.mailspamprotection.com; s=arckey; t=1765749809;
-	 b=DEIsfr+TZQA84mywg4B/rLDjYoR6VmTRjAAcSny/KKZZt4NGRMa7QvOKdutw5Ml7XS6Q4XN5Vh
-	  XFFE9/hlXGkWbHzfIZ1L/Nmz4Vsy1IB3f6BgnVrhAZF/9s+vQLOWOgBmvWiPeJFeD6NJqdBMvf
-	  ctRijNpZRz2QPJznyGILM+JZn9tGaPSoQEElgcL5EoVxlLyJftrjqsdBtufuVWzoDOuHoKvl69
-	  C2mvr26rJXgezg0jvalx4Q6DeNAQ2cprl3cEP5tmUGdFQ15rJ2bKnfQZ+kCH+XBJG/mh+y+WQ8
-	  89wp4S8sIcxVOBCffD9onZGn81kG5qUDcqMwix2RgcueDg==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-swd7.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-swd7.prod.antispam.mailspamprotection.com; s=arckey; t=1765749809;
-	bh=cVXolmIhuEAIzMtZ7d7H4m9GWbghCHHoI5tvljqLXVQ=;
-	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:
-	  From:Date:DKIM-Signature:DKIM-Signature;
-	b=UrxucBxfJhsPg7UJ/n2BrNEVgKAuH0AeaxKaF4N70BrNOgkgHI/RX+17GUOLybbOeY2k4scxfg
-	  uXFyoGkmetL1FFrDFY/x/LuTtftCMMfaBe9kTSyS3gL7+b0tVPXK5bO4eQK/+VArbtFn9R0vfh
-	  +QnQSTvLSJpHZjVz5Y5Spwuq46MEErbKAKlMNc0TfDx/KevkoajGGb0gf/STV2NIHmf0xSm3d2
-	  oIBnK/gWG0QNfkZygY9FhqZV10nwfmd5WJL9wPImC6gmXzDWx2V46Ac3BNHCCxe0CrFDeDHi+F
-	  S3jxnMU5OqEOLL8M3U+JaP5jGTglLwhkARi9h1RUXUQaPA==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
-	:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	List-Unsubscribe:Content-Transfer-Encoding;
-	bh=iyaP5lR+UMf82Qks9pPdWf5XfzExxxVhhBQJM/0Gj6c=; b=wLpSJy10cQ+ihHxow4Bw76zuA2
-	q9qb/qa+GV6GVEbgGHDIHwUBOwWKEom0Wv67hNS6x/wc9yHK2MTcvEJFzNqBzxMu/uX/Wg1mSFeGa
-	IXHkedhNqI1FRd3gYWEeuH6rHz8jaj3KAJHxvwLBu3g26Afa8LIOvMWD4G/tX/NRsrtg=;
-Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-swd7.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.1)
-	(envelope-from <francesco@valla.it>)
-	id 1vUuBS-00000008cDP-3HyC
-	for imx@lists.linux.dev;
-	Sun, 14 Dec 2025 22:03:21 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
-	s=default; h=Subject:Cc:To:From:Date:list-help:list-unsubscribe:
-	list-subscribe:list-post:list-owner:list-archive;
-	bh=iyaP5lR+UMf82Qks9pPdWf5XfzExxxVhhBQJM/0Gj6c=; b=nwslf0FTSvzy1JPX0PEPfe95JY
-	AbhGi8R2VFfgfS4b9fiJctKkzUtkq7tFdiVpJonYeEi3op/CjnhaEJlH6fJBmP3rWch5rTf5iksra
-	ndhvnv2IT2pv2rypR3vHD7dxXa85QEBXLj1tBIzhnMhpOPGAluHXT3is/9I1zbJSd6Og=;
-Received: from [79.34.194.176] (port=59972 helo=bywater)
-	by esm19.siteground.biz with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.1)
-	(envelope-from <francesco@valla.it>)
-	id 1vUuBE-00000000CVM-0NDd;
-	Sun, 14 Dec 2025 22:03:04 +0000
-Date: Sun, 14 Dec 2025 23:02:58 +0100
-From: Francesco Valla <francesco@valla.it>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 3/4] arm64: dts: imx91: Update file name with dash
-Message-ID: <aT80EhkC41d7BSZs@bywater>
-References: <20251212-imx91-dts-v1-0-2bb3c13762dd@nxp.com>
- <20251212-imx91-dts-v1-3-2bb3c13762dd@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H/sHOgrT"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3A9EEC2BC9E;
+	Sun, 14 Dec 2025 22:15:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765750553;
+	bh=xAE3SdcCNhNMaf5t5SGdZjBQMk53A0jUjKIoAMv5grM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=H/sHOgrT0Hj6npHTQ8v61Sacj5i+QD7x+pJx//Tqvjzf5p5RWL75oWgOl+FOygQcc
+	 Bg8I3omBF3PEivHu6TDKj1ns8ipOZpZrMK/pfYDwf4QlS56xdnFmFcsDpu8JS+EQ2T
+	 Mr16DJf4ntHWSLOEcLEtiNsFlzyG/RicacXGUFvCnyQNccEM8jzvfRSVyf+tpjNtfG
+	 l+Vi04uxZFotE9H4bn7zCZpkrFqg6AXMKjx57YIhMOWNVQsG835MDE6R2W2RSTpWc/
+	 Jzn0mBZTSu2AMtcOc6sNf3Pch3AxdY6UhR9zwt6j1f5++3/Durrn8kWMlIIDCya82z
+	 giF6pRhc0cIKw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E97AD59D99;
+	Sun, 14 Dec 2025 22:15:53 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Sun, 14 Dec 2025 23:15:39 +0100
+Subject: [PATCH RFC 3/4] arm64: dts: s32: set Ethernet channel irqs
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251212-imx91-dts-v1-3-2bb3c13762dd@nxp.com>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - esm19.siteground.biz
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - valla.it
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-SGantispam-id: cac76209b49bf94073650b741c463ce7
-AntiSpam-DLS: false
-AntiSpam-DLSP: 
-AntiSpam-DLSRS: 
-AntiSpam-TS: 1.0
-CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1vUuBS-00000008cDP-3HyC-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-swd7.prod.antispam.mailspamprotection.com;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251214-dwmac_multi_irq-v1-3-36562ab0e9f7@oss.nxp.com>
+References: <20251214-dwmac_multi_irq-v1-0-36562ab0e9f7@oss.nxp.com>
+In-Reply-To: <20251214-dwmac_multi_irq-v1-0-36562ab0e9f7@oss.nxp.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765750551; l=3616;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=VqRCzvT/ie24a509gKuqO+XkXlLrEXP3sOyJ2rn9ZMs=;
+ b=fOVN8vvxbJA07QMEQLWZCQaN3CxrBEzX0oc8ExuaT+WdQiyk/WwJZNL5nUH/jMcQYvafCcrig
+ 4qiXnffq76wAx/3WcyOXuxXVZrKhxhMz8PvSdKNNfeMMYjGiHG69FsB
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-Hi Peng,
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-On Fri, Dec 12, 2025 at 05:16:09PM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> Update "imx91_93_common.dtsi" to "imx91-93-common.dtsi" to align with
-> others.
-> 
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx91.dtsi           |    2 +-
->  arch/arm64/boot/dts/freescale/imx91_93_common.dtsi | 1187 --------------------
->  arch/arm64/boot/dts/freescale/imx93.dtsi           |    2 +-
->  3 files changed, 2 insertions(+), 1189 deletions(-)
->
+The GMAC Ethernet controller found on S32G2/S32G3 and S32R45
+contains up to 5 RX and 5 TX channels.
+It can operate in two interrupt modes:
 
-The new (i.e., renamed) file is not there, so this is not working.
+  1) Sharing irq mode: only one irq line is used
+     for all channels.
 
-Francesco
+  2) Multiple irq mode: every channel uses two irq lines,
+     one for RX and second for TX.
+
+Specify all irq twins for all channels.
+
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+ arch/arm64/boot/dts/freescale/s32g2.dtsi | 24 ++++++++++++++++++++++--
+ arch/arm64/boot/dts/freescale/s32g3.dtsi | 24 ++++++++++++++++++++++--
+ 2 files changed, 44 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+index 51d00dac12de..ea615fc5ccd9 100644
+--- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
+@@ -732,8 +732,28 @@ gmac0: ethernet@4033c000 {
+ 			reg = <0x4033c000 0x2000>, /* gmac IP */
+ 			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
+ 			interrupt-parent = <&gic>;
+-			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+-			interrupt-names = "macirq";
++			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
++				     /* CHN 0: tx, rx */
++				     <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
++				     /* CHN 1: tx, rx */
++				     <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>,
++				     /* CHN 2: tx, rx */
++				     <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>,
++				     /* CHN 3: tx, rx */
++				     <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>,
++				     /* CHN 4: tx, rx */
++				     <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "macirq",
++					  "tx-queue-0", "rx-queue-0",
++					  "tx-queue-1", "rx-queue-1",
++					  "tx-queue-2", "rx-queue-2",
++					  "tx-queue-3", "rx-queue-3",
++					  "tx-queue-4", "rx-queue-4";
+ 			snps,mtl-rx-config = <&mtl_rx_setup>;
+ 			snps,mtl-tx-config = <&mtl_tx_setup>;
+ 			status = "disabled";
+diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+index eff7673e7f34..ecbec49c7344 100644
+--- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
+@@ -809,8 +809,28 @@ gmac0: ethernet@4033c000 {
+ 			reg = <0x4033c000 0x2000>, /* gmac IP */
+ 			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
+ 			interrupt-parent = <&gic>;
+-			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+-			interrupt-names = "macirq";
++			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
++				     /* CHN 0: tx, rx */
++				     <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
++				     /* CHN 1: tx, rx */
++				     <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>,
++				     /* CHN 2: tx, rx */
++				     <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>,
++				     /* CHN 3: tx, rx */
++				     <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>,
++				     /* CHN 4: tx, rx */
++				     <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "macirq",
++					  "tx-queue-0", "rx-queue-0",
++					  "tx-queue-1", "rx-queue-1",
++					  "tx-queue-2", "rx-queue-2",
++					  "tx-queue-3", "rx-queue-3",
++					  "tx-queue-4", "rx-queue-4";
+ 			snps,mtl-rx-config = <&mtl_rx_setup>;
+ 			snps,mtl-tx-config = <&mtl_tx_setup>;
+ 			status = "disabled";
+
+-- 
+2.47.0
+
 
