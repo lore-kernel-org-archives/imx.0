@@ -1,98 +1,142 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B030C49659
-	for <imx@lists.linux.dev>; Sun, 14 Dec 2025 12:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B077B2727F3
+	for <imx@lists.linux.dev>; Sun, 14 Dec 2025 14:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765713895; cv=none; b=pkRKZ769A74vtvC45uiKBJlT1gG7XdBIJauWW1GiNnuax6h1I4hk7axikFKiYvL2Coyc1w3/edCyT0ZNS3EDxT7TZ8l+o3Wum7yuCtzvvqd2yO8aZyflSzAZL0U1pjdcqs4v9xvnoswc70XxJnRnxIIpuw7ggoPErcHz9zvuNWY=
+	t=1765723329; cv=none; b=WshS3oBPEWqYWrzn8V2bYqgi7b/EWWhnSMRP6b1+1UwNKV/ix3OB6W2ULPfMX26U7HEUWMR/LWy+AjX97URFJuY9+mHBpbTFXyls3LFAuG5VP6gWOyIM8xlxrjE2K9e5jKaaCPxjSon3rT69WTikYIrWZTO7X0yh+ONv39pojFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765713895; c=relaxed/simple;
-	bh=JxC1TTUXOv8h7Je59fO0E1QysMbuRT+b24AHjrR1b3U=;
+	s=arc-20240116; t=1765723329; c=relaxed/simple;
+	bh=oD/KggYabkmpbLwMi9JfkWOU4h7CawiUNWnQZdptfFE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UDygJp7H6iQUxh5l+jF6gVKZltIJfIFBZ+NgB7panjWAvffHjvIvYRAK6s5x4dFSoskMoIBY+1sdU5i2ffGYjnSrClCfCpoEKRA8bFnVsZHA4Vgmu1XX3DZNKjqu7e1HXxqTHy6A/8yTrRsQljS0HYNqSJCXUkU5nrbTVgniPzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hjcZAe5l; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=HoT3s32L6ZXR4VpeKeJkGJVtVxL9g8Wi0VjHa5OzTgqnDcgSNu5IeeboYVnCzNOgDJP72thrvJWtKivu4SZdiNw0Zv5ARxLE3J12m1wRaTwQIBDDfUdDONFobaNkpyIK2v09vGS4b7H6tin44Y3+UOG9fdlGLgkbobBWbdR4u+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A2NEGrJ8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hjcZAe5l"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-37fdb95971eso9726901fa.1
-        for <imx@lists.linux.dev>; Sun, 14 Dec 2025 04:04:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1765713892; x=1766318692; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h6FVs1lq7FCYiXGgCHToT2WUTH1AKvFmKeDMOd7AaH8=;
-        b=hjcZAe5lItP46mYT7s1pBraZkExJc7HcCNbG/pYMow5QFKOQfuCEZ2sObCA2BwW5Iz
-         o94a09YJ7fmXF28mfNIRPRbmTzdrrnzEzbAYhKDBqHHChOAclOuY95kqZN+xSzGqKnuC
-         VXXSxFiq3Rz6+go6LQuOY1TbG9mXVs/2GpdjJm1R01+CrTbqFAfmin2wpQDYni6+dILl
-         hltOV1r/sD9TT5w0nAmVxJXUe40BUWdssjKHFmb2LZ+GIUEXdGj3kh62kLjrR430/RcE
-         PF5gJ2mId9tZ3k2wDOMYcTgccNyTVG9oEUzRIsus+pBv6SgJHmsZL4gJZyRhGp8bMLL2
-         OcWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765713892; x=1766318692;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=h6FVs1lq7FCYiXGgCHToT2WUTH1AKvFmKeDMOd7AaH8=;
-        b=I8a9vv9ZpGhLaOJ+flacAY/P26CNroGcDLugQQ9VkzoneKgrPKJhAGUISR8pNT6Tks
-         iS/VxsdnVieskHG2haAAmh6fKBhRxrb/ovlA52C0NNTFdnclYv4KjWEbDVJ9MKcXGtht
-         4wdlAacQ8vo8es0euFq5xl52i4ehp1FYJqup95gh6XrLaWPZYaYGXZKBZwXiyx2Lmx8W
-         jG/rcOMtV0qETpfSp44oNx+ljCvse4pqULw5mAMfOy4OEvqHaM0g1vamWsesJ0aEztg2
-         O4sgtQ1Pb1XaZUMl5dvDE8WPPzRhL8jIRjI8/PNZh8WD2LmCcHWCAdzMycb76DoMHrJs
-         zmng==
-X-Forwarded-Encrypted: i=1; AJvYcCWbeUnCeTbUQW3g5JsLbAmPR37Nt/IDJEzEVuvUCoMZr5Xi0ztyAklRcdJjyFbrwRg1zwo=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw3ztwY8b8NPAevAd4W+xWhadvnNOGybnJLGp5kN4urmwcWORr3
-	VF7mFsKG6N6ajB8JCHPOEgVNXTVlYsw77RLkWiRbrrUhA8XUIklS9C4yW2Sx/Vl/72Da0k5JPKH
-	UYvK20N3NHD9dFrtzXeFg8WZEorI0sZo=
-X-Gm-Gg: AY/fxX5sM80ifxI6vKeAB/KejemFYxK8wdbJsEuCdiCmZKcppSCQki/Ozx8HuZ+w0x3
-	6BD67xggZzollqyyEGLu13irJdBer+Yj9CLgW6+UWTe7eF8h4xLzQyaoOsilIoM6bA/M/ecespN
-	OXi5tPOXk90w8++/0zqYszxacWlTDX7gvqk4uil1HPZj9UPDgngxAEfyFqMnTiupF9zI+hB2k8U
-	hpvlliVSoHolAlfd8o4ZgbkXJd/5l/V6wI8g5c0T0ceYyGBZCc57y0rxl0jql+KZXcw5YixFyky
-	keaX1gHXnKYFuqAUwuLxk8KCwks=
-X-Google-Smtp-Source: AGHT+IFEHj5vW/XmkFcEYVjxG+F3Nz7WaZtq+0llUfoVvXBqTv4i3OwZA6sGVcQV5jtiS+U2ieRUXKmtZhWxjytV7T4=
-X-Received: by 2002:a05:651c:220b:b0:37f:a216:e455 with SMTP id
- 38308e7fff4ca-37fd07ad69amr22302051fa.18.1765713891487; Sun, 14 Dec 2025
- 04:04:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A2NEGrJ8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F905C4CEF5
+	for <imx@lists.linux.dev>; Sun, 14 Dec 2025 14:42:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765723329;
+	bh=oD/KggYabkmpbLwMi9JfkWOU4h7CawiUNWnQZdptfFE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=A2NEGrJ8Ca/wyaS8iRk2pzHKLF/U3QmLusVXaZzxtH9hznjnkyrH6Q/SO6I737Qxx
+	 1fnX7nPsD0UrqCV3BjIUBod3S7jfToHWUitD6rzVImFvrO0lFbm/NjP6mXRiqEI8Kg
+	 5RayiPIrLIuvSKmWEqIm/eyoTPZJzFE3Tdrcwb9QtM0xtgOQNsKcp9KV0Fv7/xm7nA
+	 hoADE0vZQgXHuxAv4KjtwdWC5e9aXv5ESFuJNjcCF23fKz1TOw51W4sNiz8JvB+kKK
+	 4m+lkZRUyp3K39p/uLOzqFgk47oFMmO68FQdxZpYgAlkCgcEpj0gVf2XDyK1bEC0dR
+	 Mp/ViGbY8qe1w==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b728a43e410so431682666b.1
+        for <imx@lists.linux.dev>; Sun, 14 Dec 2025 06:42:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV6zxqTsnxUqbKn1DWUH2Q7bw1KZ2KihpFZeOuEvQ6FZf970PkbZ1IVhgtycIkwCP50A78=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx7FPtDSva7ru7qIXfAW7JbCjLIFpwLabUkjWlJVzRx+UmLF3eX
+	4s+jJcLoPVyZxU8sAi0tgobwQlePPBvc2AgxJ4BfPVuITuAqD+9VBOJXrVP9eRIZ5bkfXb0+iOC
+	+lMpLsDNueRFgcDbVz1DrcAfBaJpl8A==
+X-Google-Smtp-Source: AGHT+IH/UNXJVVIzYMzF70T0zT2ePS4CZo3kLeaqHyUCNx7LNUsqU6Z3vZR8gWlhInbPYIFxkyNcgz3+uHF1VkK6TAw=
+X-Received: by 2002:a17:907:3f28:b0:b73:8903:f4b9 with SMTP id
+ a640c23a62f3a-b7d23a813bdmr836277766b.24.1765723327827; Sun, 14 Dec 2025
+ 06:42:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251214110531.9475-1-stefano.r@variscite.com> <20251214110531.9475-7-stefano.r@variscite.com>
-In-Reply-To: <20251214110531.9475-7-stefano.r@variscite.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Sun, 14 Dec 2025 09:04:38 -0300
-X-Gm-Features: AQt7F2p36DBHCZVA3WlHXwUgn4u6_L0tGkOCn88lhySCWth0zVlBdA_shlhyg2g
-Message-ID: <CAOMZO5AzuZVkD3rTLEDGFpCx0ovtKfzjZtNgGG0uLDXbPkiqRg@mail.gmail.com>
-Subject: Re: [PATCH v3 6/6] arm64: dts: imx8mp-var-som: Add support for
- ADS7846 touchscreen
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Stefano Radaelli <stefano.r@variscite.com>, Rob Herring <robh@kernel.org>, 
+References: <20251212203226.458694-5-robh@kernel.org> <20251213181324.u32ztfblkknfpz44@pengutronix.de>
+In-Reply-To: <20251213181324.u32ztfblkknfpz44@pengutronix.de>
+From: Rob Herring <robh@kernel.org>
+Date: Sun, 14 Dec 2025 08:41:56 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqK9OREenZjBHrDh7AqsyUXYOzTOhY4e0qHGzYkX8tacWQ@mail.gmail.com>
+X-Gm-Features: AQt7F2o1cvCAKghlM7oUFNsydZljaReVAverYw-RqgPCazmU6RqIU2uWyYXg6mg
+Message-ID: <CAL_JsqK9OREenZjBHrDh7AqsyUXYOzTOhY4e0qHGzYkX8tacWQ@mail.gmail.com>
+Subject: Re: [PATCH] ARM: dts: nxp/imx6: Drop unused .dtsi
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
 	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, barebox@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Stefano,
+On Sat, Dec 13, 2025 at 12:13=E2=80=AFPM Marco Felsch <m.felsch@pengutronix=
+.de> wrote:
+>
+> Hi Rob,
+>
+> On 25-12-12, Rob Herring (Arm) wrote:
+> > These .dtsi files are not included anywhere in the tree and can't be
+> > tested.
+>
+> not in the tree but by other projects, please see below.
+>
+> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> > ---
+> >  .../dts/nxp/imx/imx6dl-kontron-samx6i.dtsi    | 12 -----
+> >  .../dts/nxp/imx/imx6q-kontron-samx6i.dtsi     | 12 -----
+> >  .../boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi  | 45 ----------------
+> >  .../boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi  | 54 -------------------
+> >  4 files changed, 123 deletions(-)
+> >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dts=
+i
+> >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+> >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
+> >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
+> >
+> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi b/arc=
+h/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+> > deleted file mode 100644
+> > index 5a9b819d7ee8..000000000000
+> > --- a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+> > +++ /dev/null
+> > @@ -1,12 +0,0 @@
+> > -// SPDX-License-Identifier: GPL-2.0 OR X11
+> > -/*
+> > - * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de=
+>
+> > - */
+> > -
+> > -#include "imx6dl.dtsi"
+> > -#include "imx6qdl-kontron-samx6i.dtsi"
+> > -
+> > -/ {
+> > -     model =3D "Kontron SMARC-sAMX6i Dual-Lite/Solo";
+> > -     compatible =3D "kontron,imx6dl-samx6i", "fsl,imx6dl";
+> > -};
+> > diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi b/arch=
+/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+> > deleted file mode 100644
+> > index e76963436079..000000000000
+> > --- a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+> > +++ /dev/null
+> > @@ -1,12 +0,0 @@
+> > -// SPDX-License-Identifier: GPL-2.0 OR X11
+> > -/*
+> > - * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de=
+>
+> > - */
+> > -
+> > -#include "imx6q.dtsi"
+> > -#include "imx6qdl-kontron-samx6i.dtsi"
+> > -
+> > -/ {
+> > -     model =3D "Kontron SMARC-sAMX6i Quad/Dual";
+> > -     compatible =3D "kontron,imx6q-samx6i", "fsl,imx6q";
+> > -};
+>
+> I can't speak for the other two .dtsi files but both kontron .dtsi files
+> are used by barebox:
+>
+>  - https://elixir.bootlin.com/barebox/v2025.11.0/source/arch/arm/dts/imx6=
+dl-samx6i.dts#L8
+>  - https://elixir.bootlin.com/barebox/v2025.11.0/source/arch/arm/dts/imx6=
+q-samx6i.dts#L8
+>
+> Removing them here will cause a regression for barebox.
 
-On Sun, Dec 14, 2025 at 8:05=E2=80=AFAM Stefano Radaelli
-<stefano.radaelli21@gmail.com> wrote:
+Please upstream something that uses the .dtsi. Other than the
+undocumented barebox property, no reason these can't be.
 
-> +       /* Resistive touch controller */
-> +       ads7846: touchscreen@0 {
-> +               compatible =3D "ti,ads7846";
-
-The public datasheet states that the touchscreen is a TSC2046:
-
-https://variscite.com/wp-content/uploads/2024/05/VAR-SOM-MX8M-PLUS_V2_Datas=
-heet.pdf
-
-I understand they are both from the same family of touchscreen
-controllers, but shouldn't you use the ti,tsc2046 compatible string
-instead?
+Rob
