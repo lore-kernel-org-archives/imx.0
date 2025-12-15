@@ -1,26 +1,27 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B74296BAB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0457E248F66
 	for <imx@lists.linux.dev>; Mon, 15 Dec 2025 19:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765826336; cv=none; b=ge8CEdNFKcxkAtK4nVvyeomYU4ttfTTD53PAbkT2K1ymsiZI6oIIvMYcxPLohP7MRiUczZWawYC31Qi9sj8eKZvTe/w+e4ceeRzqpHx0NmVHGtzT46NBeO39wK/0qMp2SqpTdSy03meKbyvuKoDyW98KUxC6qQ+Uk7/B5iCsEi0=
+	t=1765826336; cv=none; b=kTiLCrbSjYaeL7Sdx3qtLz5op56+ntcZdsTduAAgxxNno3h+H/kchJXvBZmXdo4+fb8xVERMwMBILoEjw+p+N1oEYYeJMPEyn3Ujt++/NbkmEv48O8n5Kq1QupNxhJ2lABbS3e3y3IwwF8W5Zox6UONql0SaiAxUUAOs0vrgjS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1765826336; c=relaxed/simple;
-	bh=uE2k4I0DPxWn2uHqbHxinuP7IlcY5FXvRNJXaelh8ls=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gAfVPGw2ckS02DJLkHI/AfT/2LO5YKwH64gItq1chuZMKA/SS77VBQJJ5j7dzS9ugf+UCf1KxwzbI5W/S1lkJ9QLhEeeLvtwA5i4NJauyl0AagkT8+5q9hZKMAPFODWqI4zKXgoZfmJxlWwj65uNCFTqrkTCbcr5fZigc3Kve9k=
+	bh=PK0hMrcQU8kVrCD+4HsqTvltkXN1ig5I/hLNOTkAYRs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=oPzATBsRvlUReHE/UshN+V2dYfuXBFVZ9KdcN4InPrEfrvZIWRUER27dhcgApO3L4uO+wJbK7b0Ifp0u+qsDMUrP1lZGGGycoxP13cLdjbwM+TMlpyOFLtfcq7qRs8zZIX/9JMxSKIP+ehYaYdJvocu0zuUEJl+IuLthJ8sGyZw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vVE5a-0007x7-5s; Mon, 15 Dec 2025 20:18:34 +0100
+	id 1vVE5a-0007x7-B8; Mon, 15 Dec 2025 20:18:34 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Subject: [PATCH v3 0/3] i.MX91/93 BLK-CTRL improvements
-Date: Mon, 15 Dec 2025 20:18:24 +0100
-Message-Id: <20251215-v6-18-topic-imx93-blkctrl-v3-0-51dbd1333938@pengutronix.de>
+Date: Mon, 15 Dec 2025 20:18:27 +0100
+Subject: [PATCH v3 3/3] pmdomain: imx93-blk-ctrl: add support for optional
+ subnodes
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -29,11 +30,9 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAABfQGkC/43NQQ6CMBCF4auQrh3TTimgK+9hXAAdYCICKdhgC
- He3sDIxMS7/l8w3ixjJMY3iHC3CkeeR+y6EPkSibPKuJmAbWqBEo1Aq8AmoDKZ+4BL4MZ80FO2
- 9nFwLOlaIskplFlsR7gdHFc+7fb2FbnicevfaX3m1rf+oXoGEwqR5ipRIJc1loK5+Tq7veD5aE
- hvt8ZPDXxwGjlJtAqXj3JZf3Lqubx1pwJ8WAQAA
-X-Change-ID: 20251201-v6-18-topic-imx93-blkctrl-341220f7084d
+Message-Id: <20251215-v6-18-topic-imx93-blkctrl-v3-3-51dbd1333938@pengutronix.de>
+References: <20251215-v6-18-topic-imx93-blkctrl-v3-0-51dbd1333938@pengutronix.de>
+In-Reply-To: <20251215-v6-18-topic-imx93-blkctrl-v3-0-51dbd1333938@pengutronix.de>
 To: Ulf Hansson <ulf.hansson@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
  Pengutronix Kernel Team <kernel@pengutronix.de>, 
@@ -48,49 +47,43 @@ X-SA-Exim-Mail-From: m.felsch@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi,
+This particular block can have DT subnodes describing the LVDS LDB, MIPI
+DSI and parallel DPI bridge.
 
-there were several approaches to bring the sub-devices population
-mainline [1,2] but non of them made it upstream. Both approaches were
-part of either the i.MX93 LVDS or MIPI-CSI enablement.
+Scan for possible sub-devices within the driver, instead of misusing the
+simple-bus to perform the scan.
 
-This small patchset decouples the blk-ctrl changes which allows the
-MIPI-CSI and LVDS patchstack to be rebased ontop of this patchset.
-
-Before adding the sub-device supprt, I converted the driver to devm_*
-only API.
-
-Regards,
-  Marco
-
-[1] https://lore.kernel.org/all/20250701-95_cam-v1-3-c5172bab387b@nxp.com/
-[2] https://lore.kernel.org/all/20250304154929.1785200-4-alexander.stein@ew.tq-group.com/
-
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
-Changes in v3:
-- Link to v2: https://lore.kernel.org/r/20251202-v6-18-topic-imx93-blkctrl-v2-0-e73501034adc@pengutronix.de
-- Add r-b (Frank)
-- Rebase to v6.19-rc1
+ drivers/pmdomain/imx/imx93-blk-ctrl.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Changes in v2:
-- Link to v1: https://lore.kernel.org/r/20251201-v6-18-topic-imx93-blkctrl-v1-0-b57a72e60105@pengutronix.de
-- Adapt patch2 commit message (Frank)
-- Check devm_pm_runtime_enable() return (Frank)
-- Add r-b tags (Frank, Alexander)
+diff --git a/drivers/pmdomain/imx/imx93-blk-ctrl.c b/drivers/pmdomain/imx/imx93-blk-ctrl.c
+index 49610f2389c3bbaf4de4133918fbcacb7924f672..1afc78b034fad8fa09a3e8527586387156fc2543 100644
+--- a/drivers/pmdomain/imx/imx93-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx93-blk-ctrl.c
+@@ -7,6 +7,7 @@
+ #include <linux/device.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_domain.h>
+ #include <linux/pm_runtime.h>
+@@ -313,6 +314,10 @@ static int imx93_blk_ctrl_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "failed to add genpd_provider release callback\n");
+ 
++	ret = devm_of_platform_populate(dev);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to populate blk-ctrl sub-devices\n");
++
+ 	return 0;
+ }
+ 
 
----
-Marco Felsch (3):
-      pmdomain: imx93-blk-ctrl: cleanup error path
-      pmdomain: imx93-blk-ctrl: convert to devm_* only
-      pmdomain: imx93-blk-ctrl: add support for optional subnodes
-
- drivers/pmdomain/imx/imx93-blk-ctrl.c | 77 ++++++++++++++++-------------------
- 1 file changed, 36 insertions(+), 41 deletions(-)
----
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20251201-v6-18-topic-imx93-blkctrl-341220f7084d
-
-Best regards,
 -- 
-Marco Felsch <m.felsch@pengutronix.de>
+2.47.3
 
