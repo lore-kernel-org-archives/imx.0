@@ -1,158 +1,89 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B64C30E85D
-	for <imx@lists.linux.dev>; Mon, 15 Dec 2025 14:11:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F28346E51
+	for <imx@lists.linux.dev>; Mon, 15 Dec 2025 14:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765807907; cv=none; b=CNWaIlR57KOwmRBwaOIwAvKaFQQ+vRl0rFa9/g65Vo9zTAkbTSkd9fB6YRlrSQOWxhlc0/br4q/UxgmCHd9Kq/rH+370g291q7qEzLrqaxFWsk4LG4GBEN0I8s4cgwtyCw6WxDqY6ql7DRWciM5/wegYSWga3RZ53Vlk/+3yQh8=
+	t=1765808519; cv=none; b=f7ZNHPmkbuz8NP+34vO+oCFKRJocoZduuTCBrU37khXfx4p1JUh/fE6Bmzgaa7xIugZkX42gvBTCDSMGqm2bm4K7KL9Fi1w5gSUsuHG20j3k/pAqCZJ+chtJYqsJYK/HGNu5k+YMll9QUpgSG4KjIXSGMkpFgLhY2jqtN0CiTgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765807907; c=relaxed/simple;
-	bh=XfDxYmwnEjW3rgj/i9Csrk1WngYTaAh6I7dKqVAN3fw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=kzm6u7j/yz40gnG1vFsGt6QjJk0dPjl/Pj47nPzDIlBgtNhVI8TrvQ5wtYSxDUXhxaHUimj4UcFkSimi95UF1Uv7WG4ItuztsQ0iK6DO8e1K64tcjPB2w8+/FA/5dYSV8+4pcEQD89STSPaoC0RbolwskgOQG6T5iEbPSmonjX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OECsWx7F; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OECsWx7F"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 5750E4E41C0A;
-	Mon, 15 Dec 2025 14:11:38 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 239FE60664;
-	Mon, 15 Dec 2025 14:11:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 29A8E119422E6;
-	Mon, 15 Dec 2025 15:11:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1765807895; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=GaZqoyrRFDKWBlOXglMrXMF3qjcnoMmJDluDUgIWSsM=;
-	b=OECsWx7FHMnHsTiEWe95R0X/rhnlkHzsoat62TNpnal1UtUfmgJoK+UlcEImBZgrSUQtgX
-	Bi9L17rvGG0VuUJzYZe3q3F4eFbnSJmWkhqJI367VXOnYnd0WY8N3Ax4UR1sXRBMm9Qkps
-	dmoQYyFlkhiuBEQ/S81gcoBkIcia9w+KtvGl3ip4onRDdQzp5jTshjZfm+I+AmpNCYWSTa
-	JPygNzOrYXSqmHWUHMdEJdUk+ny/dxFJWUJkRFOEt8n48AdXIeerW9K8zEwP8oFZn/s1nU
-	aM+k80qaA7tqbrbCCFJmzHEp2J1aHWwdvkr7gPEk7XG54Ovqe2ESMRR92HxtdA==
+	s=arc-20240116; t=1765808519; c=relaxed/simple;
+	bh=1jiC7tLvfTljWwxSViOobwzo5qZqygy+PmOQVIW3PXk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sZ15i6aZqNaV4sDaB99RAAnSZKjWz6ZbTCBN6KIytjv8ox9cCC8yzYe0skkgCudnQZPvZmwVTNuM4v9nkDjrOiD9kalxmeeZoqQsXzlevt0EHQahNEPdl8JYTsgiTm2ORGoyY8btch4ACs4X0CPlgJ+2msL+rORTe4/nqASdIR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 9C6191A0190;
+	Mon, 15 Dec 2025 15:21:49 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 7EB131A0173;
+	Mon, 15 Dec 2025 15:21:49 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 36DC0202DC;
+	Mon, 15 Dec 2025 15:21:49 +0100 (CET)
+Date: Mon, 15 Dec 2025 15:21:49 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org
+Subject: Re: [PATCH RFC 4/4] stmmac: s32: enable multi irqs mode
+Message-ID: <aUAZfcMbHD+BHNSi@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20251214-dwmac_multi_irq-v1-0-36562ab0e9f7@oss.nxp.com>
+ <20251214-dwmac_multi_irq-v1-4-36562ab0e9f7@oss.nxp.com>
+ <d1eba807-c45d-434f-b272-ed0841c728bf@lunn.ch>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 15 Dec 2025 15:11:21 +0100
-Message-Id: <DEYUNHVYCKYJ.2HU878WBYCJMV@bootlin.com>
-Subject: Re: [PATCH 06/26] drm/bridge: add devm_drm_of_find_bridge
-Cc: "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
- <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
- <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas Zimmermann"
- <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Jonathan Corbet" <corbet@lwn.net>, "Alexey Brodkin"
- <abrodkin@synopsys.com>, "Phong LE" <ple@baylibre.com>, "Liu Ying"
- <victor.liu@nxp.com>, "Shawn Guo" <shawnguo@kernel.org>, "Sascha Hauer"
- <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Adrien
- Grassein" <adrien.grassein@gmail.com>, "Laurent Pinchart"
- <laurent.pinchart+renesas@ideasonboard.com>, "Tomi Valkeinen"
- <tomi.valkeinen+renesas@ideasonboard.com>, "Kieran Bingham"
- <kieran.bingham+renesas@ideasonboard.com>, "Geert Uytterhoeven"
- <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Kevin
- Hilman" <khilman@baylibre.com>, "Jerome Brunet" <jbrunet@baylibre.com>,
- "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>, "Chun-Kuang Hu"
- <chunkuang.hu@kernel.org>, "Philipp Zabel" <p.zabel@pengutronix.de>,
- "Matthias Brugger" <matthias.bgg@gmail.com>, "AngeloGioacchino Del Regno"
- <angelogioacchino.delregno@collabora.com>, "Anitha Chrisanthus"
- <anitha.chrisanthus@intel.com>, "Edmund Dea" <edmund.j.dea@intel.com>,
- "Inki Dae" <inki.dae@samsung.com>, "Seung-Woo Kim"
- <sw0312.kim@samsung.com>, "Kyungmin Park" <kyungmin.park@samsung.com>,
- "Krzysztof Kozlowski" <krzk@kernel.org>, "Alim Akhtar"
- <alim.akhtar@samsung.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <imx@lists.linux.dev>,
- <linux-arm-kernel@lists.infradead.org>,
- <linux-renesas-soc@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
- <linux-mediatek@lists.infradead.org>, <linux-samsung-soc@vger.kernel.org>
-To: "Maxime Ripard" <mripard@kernel.org>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.20.1
-References: <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com> <20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-6-0db98a7fe474@bootlin.com> <hs44z4b2dgisemuewgtvl4epjcqqilg6cy36po25pubaog4hmq@33qgl4o3hwoa> <DEH2CVQV21Z2.25PJBAQAKFJSG@bootlin.com> <20251201-thick-jasmine-oarfish-1eceb0@houat> <DEVKQWH8GU0D.2NWQ1U7IOIEHI@bootlin.com> <DEW6XHD12EY4.1THDR9UMJOTAN@bootlin.com> <20251215-mottled-dexterous-marmot-c69ad3@penduick>
-In-Reply-To: <20251215-mottled-dexterous-marmot-c69ad3@penduick>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d1eba807-c45d-434f-b272-ed0841c728bf@lunn.ch>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-Hi Maxime,
+On Sun, Dec 14, 2025 at 11:37:51PM +0100, Andrew Lunn wrote:
+> On Sun, Dec 14, 2025 at 11:15:40PM +0100, Jan Petrous via B4 Relay wrote:
+> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> > 
+> > Signalize support for multi irq mode.
+> > 
+> > >From now, if yoused old DT node, without channel IRQs set,
+> > the driver fails to init with the following error:
+> > 
+> > [4.925420] s32-dwmac 4033c000.ethernet eth0: stmmac_request_irq_multi_msi: alloc rx-0  MSI -6 (error: -22)
+> 
+> Sorry, but that is not acceptable. You cannot break old DT blobs.
+> 
+> Please reverse the logic. If you find all the needed properties in DT
+> enable STMMAC_FLAG_MULTI_MSI_EN. If none of the properties are there,
+> continue using one interrupt, and if only some of the needed
+> properties are there but some are missing, then you can error out with
+> EINVAL, because the DT blob is invalid.
+> 
 
-On Mon Dec 15, 2025 at 11:35 AM CET, Maxime Ripard wrote:
-[...]
->> > Additionally, as a matter of fact there are currently drivers storing
->> > bridge pointers. The next_bridge is the most common case. Code using
->> > drm_bridge_connector_init() for example can store up to eight of them,=
- but
->> > individual drivers are the hardest to hunt for.
->> >
->> > I can see these (potential) tools to handle this (not mutually exclusi=
-ve):
->> >
->> >  1. remove drm_bridge pointers pointing to other bridges
->> >  2. check whether a bridge (say B) still exists before any dereference
->> >     to B->another_bridge: that's drm_bridge_enter/exit()
->> >  3. let owners of bridge pointers be notified when a bridge is unplugg=
-ed,
->> >     so they can actively put their reference and clear their pointer
->> >
->> > For item 1, I think the drm_of_bridge_attach() idea quoted above would
->> > work, at least for the simple cases where bridge drivers use the
->> > next_bridge only for attach. A next_bridge pointer in struct drm_bridg=
-e is
->> > not even needed in that case, the pointer would be computed from OF wh=
-en
->> > needed and not stored. I can do an experiment and send a first series,=
- do
->> > you think it would be useful?
->>
->> I had a look and, while the implementation should be simple, only a few
->> drivers could benefit right now. The majority fall into one of these
->> categories:
->>
->>  * drivers using drm_of_find_panel_or_bridge() or *_of_get_bridge()
->>    (maybe 60-80% of all drivers, those will have to wait for the panel
->>    improvements)
->>  * drivers using the next_bridge pointer for more than just attach
->>  * drivers doing more complicated stuff
->>
->> I think your "put next_bridge in __drm_bridge_free" idea would fit well =
-the
->> 2nd category and perhaps also the 1st one. For the 3rd category we'd nee=
-d
->> something different, e.g. a per-driver .destroy callback.
->
-> Yep, that's fine. We should optimize for the common case, with an escape
-> hatch. That's exactly what we are talking about here.
+Yeh, that was the main reason of marking it as RFC, I was not sure
+if I can break old DT blobs or not.
 
-Not sure why, but it's taking a while before I grasp your ideas about this
-series and meld them with mine. I hopefully got a clear POV now, so based
-on it my plan is to rework this series to:
+Thanks for answer. I will change the procedure to stay
+backward compatible.
 
- * keep drm_of_find_bridge() but renamed to of_drm_get_bridge(), and keep
-   patches 1-5 (with the changes suggested by you and Louis, nothing big
-   and all already sent in v2)
- * not add devm_drm_of_find_bridge()
- * add next_bridge pointer to struct drm_bridge and call
-   drm_bridge_put(bridge->next_bridge) in __drm_bridge_free, document it
- * convert patches 7-26 to use bridge->next_bridge where applicable,
-   or to do something different when needed
- * maybe remove part of patches 7-26 just to reduce spam and rework effort
-   in case of further iterations, to send them separately once the approach
-   is accepted
-
-Does it look OK?
-
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+/Jan
