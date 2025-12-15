@@ -1,79 +1,77 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58B92116F6
-	for <imx@lists.linux.dev>; Mon, 15 Dec 2025 02:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4AC26ED52
+	for <imx@lists.linux.dev>; Mon, 15 Dec 2025 02:19:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765764671; cv=none; b=MKVDv8hJdwSGWQQmgYGi31fp09QCMOuDkd/xL7YqlWa9tjn7GniqiVeya6anOmnaJA8n09pbqMdUhcQQB2oaOIFvFUMpxfTzyBB0tPfBbM+VFQl88zJfP3zUAB9WwFuzqkwSZLH0Xr/F613MAtNZespEqnkw26mIFsSNGaJH+Ks=
+	t=1765765192; cv=none; b=VB+AOcROP2Lp1rP9a2ccOBzE1u+jheYNXiqVEzaSQwb9aioX/Wnbnd9Rs0zn6Lo2cVDfkhnj9/Fv76KJ1hWbeBrwZASADWRoWWF2RdXN+4Hbh0+hCd+z3ZSWM679AqcJo/IToX5yvzJDUB1KshwKU7KoC5W/Shlz7+PsTx8x84A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765764671; c=relaxed/simple;
-	bh=RQpJgAFNddWw7AyF6f5NtI7ueKumtL9CkbkvTEzcXjY=;
+	s=arc-20240116; t=1765765192; c=relaxed/simple;
+	bh=aW+yQYjoTCVBtGqvUIqWfBFdLzxBL6TthkJE1sLcV4Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KRn3qAiT1+o1Gcchg2ON4rbhucv/8AAsBYtqGU2RrVSMZAc9WGgKhHgplp5EFu2XB1zvON+Y6t7IzZGSbqxkEdFu5X3RTN9C/hyN+vU6IC9BCnL7DWwAzsS6Qj4OVIMQNtS96WhTyQhs0opRetk3eAzyOpH1XVAjCoGCN0jSvo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cQk1Cd2D; arc=none smtp.client-ip=209.85.210.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=U1ELZ4RLbY1/FCVwxyGpYeVvxumGKyYxhdzcfA56pbJw9tatiZzkcSQKX0YO5YAq0SBxY6fdnQDDcEPOcmxA6CRTjb6f9gAds/x4jQRr9NhE0gS+sneQlXPUuu9FxWn2t8ksDTmlpLOv9avQtN43Qcq+/4kqnIQKg/33p/w50Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IfV9N10K; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cQk1Cd2D"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7b6dd81e2d4so2925010b3a.0
-        for <imx@lists.linux.dev>; Sun, 14 Dec 2025 18:11:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IfV9N10K"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-29f2676bb21so28740865ad.0
+        for <imx@lists.linux.dev>; Sun, 14 Dec 2025 18:19:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765764668; x=1766369468; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1765765189; x=1766369989; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qgsg75s3qAHMgvIkSidcSt/1Y3c1SrFas1wQzevvAw8=;
-        b=cQk1Cd2D5t0J+jqgovaIvCvuPYOmBf+zR8SJsmg4K02k7hvC7Xy2WqZ9+bqCUo6hsq
-         P9XeZzjySxpcPeeZTj29jFiAWQ9ZHLk6qsDlMLweJ8SZPNNzb4gSD1CqokudE5W25Zbd
-         SI2lyS1MbL42c3pTF3X6OSo66GaRNLGPjaTSojwD/uKuPnchRsgHx3YnhK4qctyk+c1j
-         9VZ8orzemTJpd+c/hDi6Y9r+wYFjJ6ddikPXQSZYQPzYMsl2k9wOdUJlhKdGII8Zu/x2
-         +aXxSF5JQZEaWKBBlFKufwmbipTIcwgkFda63+Bj4GkOup+0gF7QSsRqr41JdL6HzZQb
-         8Khw==
+        bh=vyQpy40LuVc+jIOEZN17H+ajGzV6rjuUMt2NowJl5CE=;
+        b=IfV9N10KUEk0EiG0PGkaWwP/osDHaE/tc2F4bvYIrTbUiE9lMTaiPtHP/B6zE/Znfa
+         nygGG65zRLBGiUrP8R62UDqPo+tFiPF8pTgGL97HcFhfpxVAvgsPp2aYW3m3HvMkPZc2
+         xs0ydMHTehjloGGV+aiApnYjKVjQi/w4Z18jSgFHm+X0y0DoZAZUG4JX9eNmQvGlr40E
+         NvUYRiI80UyLY/wg0RgA1WIe48M+xwcVCuCGWL+1dnz6OEK4xuDX9F3quIG1OfOVZKYz
+         Z/MwOL4EKibYfIMUtn3YFDiEiZ1etN7A1DT7bYTgNrf3T21/ZJLhgOB+REIFlrrxzgGI
+         YJdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765764668; x=1766369468;
+        d=1e100.net; s=20230601; t=1765765189; x=1766369989;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Qgsg75s3qAHMgvIkSidcSt/1Y3c1SrFas1wQzevvAw8=;
-        b=lhlh0xpGNcRNwGhN3Ctdm9FuL1V39nPKLccBP9OLcWEjzHgWBPIB43Bi3aHEg3A4/U
-         6RH0tWs4WpLg3QUsQIl3PlOedsHAgMoVzsMDM6z335xwAG8ZraSE4HuL8wFwpuHgEIQV
-         G1VEhFE/c9WxXipkBSjq2qctKgRmMyKyFJbwqUqzSD03nOI5u3ImiKhIHKGpo8hi50Uc
-         kJwU60zoKTZmidytwOOWFyP/HZdDyYm2Gb6veB8/WHqIC3f/NTLVbAK9Icb5hDZqsaLK
-         mFPAI8fTAmhCtCwPvUZAu1MJwF2sIojoPJQPX6/bFcZrVOUcCsygxesF4yknsqKt3fJk
-         P2nA==
-X-Forwarded-Encrypted: i=1; AJvYcCW40W2V+kdd1ucTxEosthnIxaWOsRf9Xsn7ABcYpU3mMIS2qiKxCfV6Z0ykywHWrjWAPew=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yygyr3i+az6rNihVZTg1prKbGF6wL0g1ukcvJUfwNNspCNMUBHP
-	RcRUqdKQDiUg8jmYWGJymE6lPU5zlAFcZOra6Ri9nxFhaJRD0+2U/VuRwxbFwOMCTXg=
-X-Gm-Gg: AY/fxX7NyNByJwIMn/qyF7sCg0uCueGqtRCJijUpf1JOFgD3D3SycQyaRa4TlfhjI43
-	MtXQie/Vah4XBQRvexpHfmCCLD2M8BflYxqhJPsk7h1nr8Poqa28BZvD9yKYKGUCZ/kUaRtuj9w
-	/awNH1/MDKjayj6+niU9ntHrix+GOdeqpmB+aE07LivycKf8TXM5N4N4Twvv5S9ZUMFhFpg/3JC
-	MMfoYTIYeTU34nh9vj6IWve7muROFvV8yfltqJ0SIITVazx+4LANMJ6YQ6HV4qqo/vCbfUDnEmP
-	Ll/2GrygwpqCXzPUGrwOtu/x3GOTijGNQivR5uhyeKUbYdZpqvjD3OT5+zAQrL5hH5vkRPkysUR
-	9qMW27VnU4WiHrR8zDm+p/W/e/DYgMRvoJDVEqmoatioS/qjxPobP9j0ijypNngXZ9xuI8gOfUA
-	HiImI+hrF0qfTIWSIX0ylktBCcHiY5hb8vTVh8xDRMHQ==
-X-Google-Smtp-Source: AGHT+IFshcXVNij9zJ81B5WuJafD0T1VgLx62XssDHNaTIpACeotR+RQvJl07N2kvTSSjnWlXbJGOA==
-X-Received: by 2002:a05:6a20:e210:b0:366:14ac:e1fc with SMTP id adf61e73a8af0-369b0999301mr9246879637.78.1765764667976;
-        Sun, 14 Dec 2025 18:11:07 -0800 (PST)
+        bh=vyQpy40LuVc+jIOEZN17H+ajGzV6rjuUMt2NowJl5CE=;
+        b=Sw1brlu13/oiz+cCfBQd8SJZ9fEDTQ66RAw9qaPiEjtUNlmC81v6OomXOhimEieOJE
+         4/87e4igK3oc5JoQSquNe0nsJBZiLZEkvay5jiG6qwmz3d0GZ3XHgn7pRVUmKlsTtNCZ
+         CyqZBrad2h4DAhl/HtWjlZL1BlO2+FlcmxpRhAt9uLaJhoMJLt9pj02U0VHYtb56I49f
+         mgZyw/fUfB1J3powpPaeR+0qrAyE+zXaFKr9FqtA6UTazAuGaEx7MlCbqnsscCTOyYP0
+         ikR+31KSCIrRcYKkciqfbd0rADVd9tVBxpiGXmV2nepMljSIYlfFsUfAn+5ekYBmYgDZ
+         gp7g==
+X-Forwarded-Encrypted: i=1; AJvYcCUsRbnrSOMe/j/pOM1qdpan3hHO5Epvuks645Zux+tKLPSBwVI+gO5WPLDFysZCTdoYGHk=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy3WyU97CSuJQH/3FHAkI8wBsAoJru7SMBQq+A8+xtvnnHuN/iQ
+	P7zro1vjQOXNIeCPRJWQtN6Nj57AWjaVHcbkwGRbOVPDIq44hK87ZRGY4Cy7b61adL4=
+X-Gm-Gg: AY/fxX49Zq0Xg+dz/z4yhVp0DNCptN7Zn9/Y/6C7B2jPqBTBy1V1tF5Onj4ZZLYF3pV
+	cjB68/txVwscTmxkLeLvB88S+1a7zjtDPFhM7lI+t0URLruoVr2D8jK39vYR4GGKKLhItb2bAwW
+	U+I25PrYheVsarYzGQoIf6MU3MxGFJhfMqOdi1y6osdGEhjk4mm4dw98G2ViyJo7BKP/iRCBE7N
+	5TG7okOMcV043HUEJdyh8LSPV57Y93Aw3gbqZ5gfOZjQZEIpGLntKD6f+agLx1vkD65LUxU8+cg
+	yLcD8IvNMXKbvlEh64EFaWeGGTE25jKvadwADzp8epjFklgbbNR2ekKZPLY8DFwtw27bahBpAoT
+	N54bOROI0TH/7WyEBDoZoRB9zQlUEmDUuD1ukfqifp8hH7Q0uFe425lrKllxrVwY7Ei1LZmMHGC
+	We/xjg+hA0lMXC0iBuPuoojeLw5F+/caTGKw4H6a6bDA==
+X-Google-Smtp-Source: AGHT+IHIU/jYZqSE4lK3mrtbuZ7ZFUKFi0MmSupmKRFzoKfYEL8mWKvDxqp7/lHuRh29MqAgh78KvQ==
+X-Received: by 2002:a17:902:f544:b0:2a0:d6d5:b342 with SMTP id d9443c01a7336-2a0d6d5b935mr26580395ad.37.1765765188823;
+        Sun, 14 Dec 2025 18:19:48 -0800 (PST)
 Received: from p14s (p7838222-ipoefx.ipoe.ocn.ne.jp. [123.225.39.221])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1361b76c4bsm3021918a12.35.2025.12.14.18.11.03
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a0e96df1c9sm15403105ad.39.2025.12.14.18.19.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Dec 2025 18:11:07 -0800 (PST)
-Date: Sun, 14 Dec 2025 19:11:01 -0700
+        Sun, 14 Dec 2025 18:19:48 -0800 (PST)
+Date: Sun, 14 Dec 2025 19:19:43 -0700
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: "Iuliana Prodan (OSS)" <iuliana.prodan@oss.nxp.com>
+To: Shenwei Wang <shenwei.wang@nxp.com>
 Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	"S.J. Wang" <shengjiu.wang@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>, imx@lists.linux.dev,
-	linux-remoteproc@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH v2 1/3] remoteproc: imx_dsp_rproc: Skip
- RP_MBOX_SUSPEND_SYSTEM when mailbox TX channel is uninitialized
-Message-ID: <aT9uNSboYCGK1DYL@p14s>
-References: <20251204122825.756106-1-iuliana.prodan@oss.nxp.com>
+	linux-imx@nxp.com
+Subject: Re: [PATCH] remoteproc: imx_rproc: Use strstarts for "rsc-table"
+ check
+Message-ID: <aT9wP_3olsf7WbPL@p14s>
+References: <20251208233302.684139-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -82,57 +80,37 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251204122825.756106-1-iuliana.prodan@oss.nxp.com>
+In-Reply-To: <20251208233302.684139-1-shenwei.wang@nxp.com>
 
-On Thu, Dec 04, 2025 at 02:28:23PM +0200, Iuliana Prodan (OSS) wrote:
-> From: Iuliana Prodan <iuliana.prodan@nxp.com>
+On Mon, Dec 08, 2025 at 05:33:02PM -0600, Shenwei Wang wrote:
+> The resource name may include an address suffix, for example:
+> rsc-table@1fff8000.
 > 
-> Firmwares that do not use mailbox communication (e.g., the hello_world
-> sample) leave priv->tx_ch as NULL. The current suspend logic
-> unconditionally sends RP_MBOX_SUSPEND_SYSTEM, which is invalid without
-> an initialized TX channel.
+> To handle such cases, use strstarts() instead of strcmp() when checking
+> for "rsc-table".
 > 
-> Detect the no_mailboxes case early and skip sending the suspend
-> message. Instead, proceed directly to the runtime PM suspend path,
-> which is the correct behavior for firmwares that cannot respond to
-> mailbox requests.
-> 
-> Signed-off-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
 > ---
-> Changes since v1:
-> - Wrapped commit message to 75 characters
-> - Changed dev_err to dev_dbg since this case is normal behavior
-> ---
->  drivers/remoteproc/imx_dsp_rproc.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->
+>  drivers/remoteproc/imx_rproc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> index 3be8790c14a2..33f21ab24c92 100644
+> --- a/drivers/remoteproc/imx_rproc.c
+> +++ b/drivers/remoteproc/imx_rproc.c
+> @@ -694,7 +694,7 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
+>  		}
+>  		priv->mem[b].sys_addr = res.start;
+>  		priv->mem[b].size = resource_size(&res);
+> -		if (!strcmp(res.name, "rsc-table"))
+> +		if (strstarts(res.name, "rsc-table"))
+>  			priv->rsc_table = priv->mem[b].cpu_addr;
 
-I have applied all 3 patches in this set.  Next time, please consider adding a
-cover letter.
+Before applying this patch, I want to know how it ever worked before.  How
+did DT with a suffix tested?
 
-Thanks,
-Mathieu
- 
-> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-> index 5130a35214c9..f51deaacc700 100644
-> --- a/drivers/remoteproc/imx_dsp_rproc.c
-> +++ b/drivers/remoteproc/imx_dsp_rproc.c
-> @@ -1242,6 +1242,15 @@ static int imx_dsp_suspend(struct device *dev)
->  	if (rproc->state != RPROC_RUNNING)
->  		goto out;
->  
-> +	/*
-> +	 * No channel available for sending messages;
-> +	 * indicates no mailboxes present, so trigger PM runtime suspend
-> +	 */
-> +	if (!priv->tx_ch) {
-> +		dev_dbg(dev, "No initialized mbox tx channel, suspend directly.\n");
-> +		goto out;
-> +	}
-> +
->  	reinit_completion(&priv->pm_comp);
->  
->  	/* Tell DSP that suspend is happening */
+>  		b++;
+>  	}
 > -- 
-> 2.25.1
+> 2.43.0
 > 
