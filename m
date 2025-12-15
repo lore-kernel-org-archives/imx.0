@@ -1,27 +1,26 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0457E248F66
-	for <imx@lists.linux.dev>; Mon, 15 Dec 2025 19:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE20325499
+	for <imx@lists.linux.dev>; Mon, 15 Dec 2025 19:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765826336; cv=none; b=kTiLCrbSjYaeL7Sdx3qtLz5op56+ntcZdsTduAAgxxNno3h+H/kchJXvBZmXdo4+fb8xVERMwMBILoEjw+p+N1oEYYeJMPEyn3Ujt++/NbkmEv48O8n5Kq1QupNxhJ2lABbS3e3y3IwwF8W5Zox6UONql0SaiAxUUAOs0vrgjS4=
+	t=1765826337; cv=none; b=Fgy83wh55CwZMaMgnqwyjbCdsf/JT+PaqQMDfuVPGxFSATZLAGEx83CsaN7Uv+5cJm57xl35pcBczRVxQAqtI95loA60zoWfA3S/YaSxuR8XRIh9DZzq/4wzTZTZZw64qUC0kxEYYKJ91JhJXk9bfbPspGdGAXVzfXKkho1avQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765826336; c=relaxed/simple;
-	bh=PK0hMrcQU8kVrCD+4HsqTvltkXN1ig5I/hLNOTkAYRs=;
+	s=arc-20240116; t=1765826337; c=relaxed/simple;
+	bh=X6h8rILKRfbKIuZ/42DX20qfhAjCc8dGdCsBmMS7EuI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oPzATBsRvlUReHE/UshN+V2dYfuXBFVZ9KdcN4InPrEfrvZIWRUER27dhcgApO3L4uO+wJbK7b0Ifp0u+qsDMUrP1lZGGGycoxP13cLdjbwM+TMlpyOFLtfcq7qRs8zZIX/9JMxSKIP+ehYaYdJvocu0zuUEJl+IuLthJ8sGyZw=
+	 In-Reply-To:To:Cc; b=iTyVYwr/IBtu7XkAAviYqcuUNslF8KbEqxndFBe7/jnfoOhrUfqqMHStBv7UgnB0Lv+g/29j3dye8i9fZdJ2h9D9XsSp9jWAnAmMbThk/gNrbzXjHlSZgF2YOUXCk5YMvI2ZjCBVA4JQofeEPKVkgPccQlKqQZgoONKCqIxq7a0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vVE5a-0007x7-B8; Mon, 15 Dec 2025 20:18:34 +0100
+	id 1vVE5a-0007x7-7W; Mon, 15 Dec 2025 20:18:34 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 15 Dec 2025 20:18:27 +0100
-Subject: [PATCH v3 3/3] pmdomain: imx93-blk-ctrl: add support for optional
- subnodes
+Date: Mon, 15 Dec 2025 20:18:25 +0100
+Subject: [PATCH v3 1/3] pmdomain: imx93-blk-ctrl: cleanup error path
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -30,7 +29,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251215-v6-18-topic-imx93-blkctrl-v3-3-51dbd1333938@pengutronix.de>
+Message-Id: <20251215-v6-18-topic-imx93-blkctrl-v3-1-51dbd1333938@pengutronix.de>
 References: <20251215-v6-18-topic-imx93-blkctrl-v3-0-51dbd1333938@pengutronix.de>
 In-Reply-To: <20251215-v6-18-topic-imx93-blkctrl-v3-0-51dbd1333938@pengutronix.de>
 To: Ulf Hansson <ulf.hansson@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
@@ -47,42 +46,33 @@ X-SA-Exim-Mail-From: m.felsch@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-This particular block can have DT subnodes describing the LVDS LDB, MIPI
-DSI and parallel DPI bridge.
-
-Scan for possible sub-devices within the driver, instead of misusing the
-simple-bus to perform the scan.
+Call dev_err_probe() directly during return to make the code more
+compact.
 
 Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/pmdomain/imx/imx93-blk-ctrl.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pmdomain/imx/imx93-blk-ctrl.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/pmdomain/imx/imx93-blk-ctrl.c b/drivers/pmdomain/imx/imx93-blk-ctrl.c
-index 49610f2389c3bbaf4de4133918fbcacb7924f672..1afc78b034fad8fa09a3e8527586387156fc2543 100644
+index e094fe5a42bf646c712f3eca4e66a313fa5a914c..2aa163aef8de4ee901b9cde76ce2aad246c8c08a 100644
 --- a/drivers/pmdomain/imx/imx93-blk-ctrl.c
 +++ b/drivers/pmdomain/imx/imx93-blk-ctrl.c
-@@ -7,6 +7,7 @@
- #include <linux/device.h>
- #include <linux/module.h>
- #include <linux/of.h>
-+#include <linux/of_platform.h>
- #include <linux/platform_device.h>
- #include <linux/pm_domain.h>
- #include <linux/pm_runtime.h>
-@@ -313,6 +314,10 @@ static int imx93_blk_ctrl_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "failed to add genpd_provider release callback\n");
+@@ -240,10 +240,8 @@ static int imx93_blk_ctrl_probe(struct platform_device *pdev)
+ 	bc->num_clks = bc_data->num_clks;
  
-+	ret = devm_of_platform_populate(dev);
+ 	ret = devm_clk_bulk_get(dev, bc->num_clks, bc->clks);
+-	if (ret) {
+-		dev_err_probe(dev, ret, "failed to get bus clock\n");
+-		return ret;
+-	}
 +	if (ret)
-+		return dev_err_probe(dev, ret, "failed to populate blk-ctrl sub-devices\n");
-+
- 	return 0;
- }
++		return dev_err_probe(dev, ret, "failed to get bus clock\n");
  
+ 	for (i = 0; i < bc_data->num_domains; i++) {
+ 		const struct imx93_blk_ctrl_domain_data *data = &bc_data->domains[i];
 
 -- 
 2.47.3
