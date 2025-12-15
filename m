@@ -1,258 +1,149 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54054322B98
-	for <imx@lists.linux.dev>; Mon, 15 Dec 2025 17:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C4C338582;
+	Mon, 15 Dec 2025 18:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765821305; cv=none; b=ISDoeiIJie7y7SJBjq0RhjDM1764j2PV/6JhcblMIHPOQcsJa6eH3w59G6KDR7bTjAV+1kNvYtd3VnilkPvxL44yoW3B3kJEPWTlDeduxJSR5uEfwjkf7m/U2zsXxMSQiaK2XfCJcI/aHnB955Mv7vlP7X3objNWUHXkbDVA8Xc=
+	t=1765822182; cv=none; b=SkD4Ve5BLfiefMrSz8d+o9sVMmG1GcB+9gFJnO3qzvYpjGnXYRqWb4uOFQConu+RwY33T6GLkV4GiZ5eejj3EpXP0juw6e53qdpsY9TYqy2kwNVXHtDhWmOKJbsxVdlNPy+TVF0UPsad9VN/nDcH7LXbnAzNyMMe+jpSDTgsoPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765821305; c=relaxed/simple;
-	bh=GTaW+XvsdkO2Idj8GXyJdp5YyYY3L96qi+MP2B7w5rQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o/S2dvyjPNKFoLfO4DH2MMDUBxZ6T7Qra2Xu6EjRCyNLRIfBbP5MlX0kfqBJy/lLznW4N4+X2y6UGb32jzo2WHGswM3jDV/UoQdziryYOJ2fbILNcN4PLVYBGfheza9Evdi2HwyBHAQ1JUbrcbpte4GhJy8bKCexvzbT4tlAhlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vVCmL-00053K-QB; Mon, 15 Dec 2025 18:54:37 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vVCmK-005osn-1G;
-	Mon, 15 Dec 2025 18:54:36 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vVCmK-008zqO-0i;
-	Mon, 15 Dec 2025 18:54:36 +0100
-Date: Mon, 15 Dec 2025 18:54:36 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v7 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC
- subnode to schema and example
-Message-ID: <20251215175436.wwlgzxionq55zu27@pengutronix.de>
-References: <20251202-v6-18-topic-imx93-parallel-display-v7-0-2cce31d64608@pengutronix.de>
- <20251202-v6-18-topic-imx93-parallel-display-v7-1-2cce31d64608@pengutronix.de>
- <705773fc-5aba-4bff-b05e-272e1cd0262c@nxp.com>
+	s=arc-20240116; t=1765822182; c=relaxed/simple;
+	bh=sJ0PanZdlGRt6sE05Z//hl9xXWQ8gP2sHeCPp+9cNxU=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=pdRWd1G/MhKXdzpIG7oBkrMjVgQc/ifzY69ZV7AJ3iLhGER/mHksktdfA8SHpiKShcy/JUDIGASCtCMP2uhkLjvI8mdLaz1A7d4ERWbZ8CC/eVD/cZ0QvpecNf+dIelkBj8H4fG/5YNuzE1ixbXSvOC8q5o+SE5L44e5I8f4r98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mzOopvwP; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mzOopvwP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15912C4CEF5;
+	Mon, 15 Dec 2025 18:09:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765822181;
+	bh=sJ0PanZdlGRt6sE05Z//hl9xXWQ8gP2sHeCPp+9cNxU=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=mzOopvwPU06fZET1fGgc81omur+ilBqKE/gwOHBKK2/m+tqXHJ/fPogQbHHDBSDqY
+	 k2I2Gk2eZKPb1QMeM/woGiSgPimAA7KT7pBj1ODgKIAB4CO6nEvrnxaqvzkoSPHnDg
+	 WaXrXRxMt+JZgW5547zfjtIGTvFlewpbxg9Jzrael5Utudzwg7f4tDGt9mzN+9jEqC
+	 c6ehZ1pN+53tCpdcipvNKNAdAc9Kn39/ttnjctzlnw2qhj0qsEDieOk3TqAb2F0zLR
+	 f4vTiDRuzKardG6Bg3z+IoVlHpmaIFtUSeh6ZmhQe5fSgcyjeWmVI9L1MDjvJB/lEp
+	 3Ok0ToWxDdbWQ==
+Date: Mon, 15 Dec 2025 12:09:39 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <705773fc-5aba-4bff-b05e-272e1cd0262c@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Chester Lin <chester62515@gmail.com>, 
+ Matthias Brugger <mbrugger@suse.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ linux-arm-kernel@lists.infradead.org, Shawn Guo <shawnguo@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+ linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org, 
+ Eric Dumazet <edumazet@google.com>, devicetree@vger.kernel.org, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, imx@lists.linux.dev, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ Conor Dooley <conor+dt@kernel.org>
+To: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+In-Reply-To: <20251214-dwmac_multi_irq-v1-2-36562ab0e9f7@oss.nxp.com>
+References: <20251214-dwmac_multi_irq-v1-0-36562ab0e9f7@oss.nxp.com>
+ <20251214-dwmac_multi_irq-v1-2-36562ab0e9f7@oss.nxp.com>
+Message-Id: <176582217911.3066791.4926710165988218857.robh@kernel.org>
+Subject: Re: [PATCH RFC 2/4] dt-bindings: net: nxp,s32-dwmac: Declare
+ per-queue interrupts
 
-Hi Liu,
 
-sorry I didn't fully answer you please see below.
-
-On 25-12-08, Liu Ying wrote:
-> Hi Marco,
+On Sun, 14 Dec 2025 23:15:38 +0100, Jan Petrous (OSS) wrote:
+> The DWMAC IP on supported SoCs has connected queue-based IRQ lines.
 > 
-> On 12/02/2025, Marco Felsch wrote:
-> > From: Liu Ying <victor.liu@nxp.com>
-> > 
-> > i.MX93 SoC mediamix blk-ctrl contains one DISPLAY_MUX register which
-> > configures parallel display format by using the "PARALLEL_DISP_FORMAT"
-> > field. Document the Parallel Display Format Configuration(PDFC) subnode
-> > and add the subnode to example.
-> > 
-> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> > [m.felsch@pengutronix.de: port to v6.18-rc1]
-> > [m.felsch@pengutronix.de: add bus-width]
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> >  .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml | 92 ++++++++++++++++++++++
-> >  1 file changed, 92 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
-> > index 34aea58094e55365a2f9c86092f637e533f954ff..6e2d86d9341c75108b492bcbabc8a560d8e707cd 100644
-> > --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
-> > +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
-> > @@ -26,6 +26,12 @@ properties:
-> >    reg:
-> >      maxItems: 1
-
-...
-
-> > +            properties:
-> > +              endpoint:
-> > +                $ref: /schemas/graph.yaml#/$defs/endpoint-base
-> > +                unevaluatedProperties: false
-> > +
-> > +                properties:
-> > +                  bus-width:
-> 
-> In v1-v5, I thought the output bus format can be determined by the sink
-> device(a panel or a bridge) hence properties like bus-width were not needed.
-> But, if this property is really needed, then reference video-interfaces.yaml
-> since bus-width is documented there.  Should we reference bus-type defined
-> in video-interfaces.yaml too?
-
-You're right, the bus-width should be determined by the connected panel.
-But there are cases where a 24-bit panel is connected but only the lower
-18-bits are muxed. I added the bus-width property to handle this case.
-In the end most users don't have to specify this since the correct
-bus-width is coming from the panel bus-fmt.
-
-> > +                    enum: [ 16, 18, 24 ]
-> 
-> The PARALLEL_DISP_FORMAT field of DISPLAY_MUX register says this IP supports
-> below formats.  It seems that the enum here may tell RGB888, RGB666 and RGB565.
-> How can we tell RGB555, YCbCr 24 bits and YUV444 then?
-> 
-> 000b RGB888 -> RGB888
-> 001b RGB888 -> RGB666
-> 010b RGB565 -> RGB565
-> 011b RGB555 -> RGB555
-> 100b YUV -> YCbCr 24 bits
-> 101b YUV -> YUV444
-
-This enum is about the physical bus width. RGB565 == 16-bit, YUV ==
-24-bit.
-
-That said, I don't think that you need to specify the bus-fmt since this
-is coming from the panel. As said above, my itension with the bus-width
-property is to provide integrators (dts-writers) a possibility to limit
-the physical available bus width.
-
-> > +                    description:
-> > +                      Specify the physical parallel bus width.
-> > +
-> > +                      This property is optional if the display bus-width
-> > +                      matches the SoC bus-width, e.g. a 18-bit RGB666 (display)
-> > +                      is connected and all 18-bit data lanes are muxed to the
-> 
-> Per video-interfaces.yaml, s/data lanes/data lines/.  "data lanes" is a
-> value for MIPI DSI/CSI, afaik.
-
-I can go with "lines" if this is the preferred naming convention for
-DRM.
-
-> > +                      parallel-output pads.
-> 
-> How about just saying that this property is optional and by default it's 24?
-
-I wanted to make it clear what this property does.
-
-> > +                      This property must be set to 18 to cut only the LSBs
-> > +                      instead of the MSBs in case a 24-bit RGB888 display is
-> > +                      connected and only the lower 18-bit data lanes are muxed
-> > +                      to the parallel-output pads.
-> 
-> The __lower__ 18-bit?  Isn't it the __MSB__ 6bit in each color component?
-
-No, the LSB are cut, this is why it's so important to use this property
-if you connected a external 24-bit display to the lower data
-lines[17-0].
-
-If you don't specify this property, the MSBs are cut/lost which is far
-worse than using the LSB information.
-
-Regards,
-  Marco
-
-> > +
-> > +        required:
-> > +          - port@0
-> > +          - port@1
-> > +
-> > +    required:
-> > +      - compatible
-> > +      - reg
-> > +      - ports
-> > +
-> >  allOf:
-> >    - if:
-> >        properties:
-> > @@ -81,9 +141,12 @@ allOf:
-> >              - const: isi
-> >              - const: csi
-> >              - const: dsi
-> > +
-> >  required:
-> >    - compatible
-> >    - reg
-> > +  - '#address-cells'
-> > +  - '#size-cells'
-> >    - power-domains
-> >    - clocks
-> >    - clock-names
-> > @@ -112,4 +175,33 @@ examples:
-> >                 clock-names = "apb", "axi", "nic", "disp", "cam",
-> >                               "pxp", "lcdif", "isi", "csi", "dsi";
-> >        #power-domain-cells = <1>;
-> > +      #address-cells = <1>;
-> > +      #size-cells = <1>;
-> > +
-> > +      bridge@60 {
-> > +        compatible = "nxp,imx93-pdfc";
-> > +        reg = <0x60 0x4>;
-> > +
-> > +        ports {
-> > +          #address-cells = <1>;
-> > +          #size-cells = <0>;
-> > +
-> > +          port@0 {
-> > +            reg = <0>;
-> > +
-> > +            pdfc_from_lcdif: endpoint {
-> > +              remote-endpoint = <&lcdif_to_pdfc>;
-> > +            };
-> > +          };
-> > +
-> > +          port@1 {
-> > +            reg = <1>;
-> > +
-> > +            pdfc_to_panel: endpoint {
-> > +              remote-endpoint = <&panel_from_pdfc>;
-> > +              bus-width = <18>;
-> > +            };
-> > +          };
-> > +        };
-> > +      };
-> >      };
-> > 
-> 
-> 
-> -- 
-> Regards,
-> Liu Ying
+> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> ---
+>  .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 40 +++++++++++++++++++---
+>  1 file changed, 36 insertions(+), 4 deletions(-)
 > 
 
--- 
-#gernperDu 
-#CallMeByMyFirstName
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: ignoring, error in schema: properties: interrupt-names
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
+	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
+Traceback (most recent call last):
+  File "/usr/local/bin/dt-doc-validate", line 8, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/doc_validate.py", line 66, in main
+    ret |= check_doc(f)
+           ~~~~~~~~~^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/doc_validate.py", line 37, in check_doc
+    dtsch.check_schema_refs()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/schema.py", line 241, in check_schema_refs
+    self._check_schema_refs(resolver, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/schema.py", line 212, in _check_schema_refs
+    self._check_schema_refs(resolver, v, parent=k, is_common=is_common,
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                            has_constraint=has_constraint)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/schema.py", line 216, in _check_schema_refs
+    self._check_schema_refs(resolver, schema[i], parent=parent, is_common=is_common,
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                            has_constraint=has_constraint)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/dtschema/schema.py", line 203, in _check_schema_refs
+    ref_sch = resolver.lookup(schema['$ref']).contents
+              ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 682, in lookup
+    retrieved = self._registry.get_or_retrieve(uri)
+  File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 422, in get_or_retrieve
+    registry = self.crawl()
+  File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 500, in crawl
+    id = resource.id()
+  File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 231, in id
+    id = self._specification.id_of(self.contents)
+  File "/usr/local/lib/python3.13/dist-packages/referencing/jsonschema.py", line 50, in _dollar_id
+    return contents.get("$id")
+           ^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'
+Lexical error: Documentation/devicetree/bindings/net/nxp,s32-dwmac.example.dts:58.13-17 Unexpected 'snps'
+Error: Documentation/devicetree/bindings/net/nxp,s32-dwmac.example.dts:58.13-17 syntax error
+FATAL ERROR: Unable to parse input tree
+make[2]: *** [scripts/Makefile.dtbs:141: Documentation/devicetree/bindings/net/nxp,s32-dwmac.example.dtb] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1559: dt_binding_check] Error 2
+make: *** [Makefile:248: __sub-make] Error 2
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.kernel.org/project/devicetree/patch/20251214-dwmac_multi_irq-v1-2-36562ab0e9f7@oss.nxp.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
