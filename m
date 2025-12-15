@@ -1,164 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502E9246335;
-	Mon, 15 Dec 2025 15:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E5D1F181F
+	for <imx@lists.linux.dev>; Mon, 15 Dec 2025 15:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765812081; cv=none; b=eYNOElicAyqC6W3/uykNRD80rKd9uGS6KwbF3mpW/yM31Vpfq7CqhRslXWyCK71RDt4ogqJ+jeNCUrvEMPetIpJqKVgC8QGC426LyhOytBSxn98I/sVbj7flSEIZhc+27Hk+sxQ+ufVtvDK9bFbQrJ/gLnvyBVvUcQJCsc6Smls=
+	t=1765813116; cv=none; b=qANXamSzkoKBvem2npMZf1xfAb32soyfK6B+G2vcnLr/Oo34k55yLL9B1hDwPuziXDe786MSqs+K4Nwp/TCU/c7zdlkH+JAh+ue1C76013GokTvQZ6mdSFRPoI+UmkP40yhDWFAFKyHt3Jpc0Nd3Ho5oW0yP5qy/+p3StYaSLz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765812081; c=relaxed/simple;
-	bh=MDT80+HnOqYoPF13DdZpWx5G4AfuEz3zXo+tGv3k9kQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FVfRDT5J/b4BMpPMO4gd2ixQiUU3GCoGi+UUkCXEfZNhHW4PtS0d7kHgtZgJEIFo8ZQcSuwKOR9/xLrbPKxbR/hSKDlJlk/rtz3uU9o+pQK+mtdw+sp6Xm3rckqpC3I6DpOdprwKiRBlzwSoUnSUH/dwxos+Kz+Yao7sqA1EgoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mj4Td7K0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765813116; c=relaxed/simple;
+	bh=JTYMLvI4lDVZi60pNDdfZc568ZhAd5KMAoHJpV53U7M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=A6YAPWLahJAmPhepudnatporNTdfqHMpzVvnRd19qjX57Px39dW3Jkh9h4HB3/ffUz7/odeloWXIGJpszjgQetuzIsOxc4gAkufKLR92iwhN4OhguIGJ5ZYDpSoaqKQViL2NnAzdzwo3uJ00nNZXECkxYSdyShM5QXJz0872jeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nZ8Wj6Ab; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mj4Td7K0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F5FC4CEF5;
-	Mon, 15 Dec 2025 15:21:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765812080;
-	bh=MDT80+HnOqYoPF13DdZpWx5G4AfuEz3zXo+tGv3k9kQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Mj4Td7K0i4vUtxfzfd4iz6hFgePmUEer1942TVlrOA9Rbo6KvDvecd5Lli1q1L0Ki
-	 qwX1zEN+87kYjIn6DV6wYqWZRKVMwNvpQa4jEjTL9uPBHyRmUnmY2xIAjK5iuiqLqe
-	 bjzy0N3KtEFKcXpYw1Wh2EY2Embua4NWw0NJYGmDKo1LaYMjGfA5f/yu8lYIO/U2wJ
-	 f6/WXWqXXpCwoGGuurff9s6rE7Cg5YolT6INs7hv7P89urh23hiSktIY2x4SePTR3l
-	 uJ8XJJiwQNMQeZk/C0HUNeYFUsapSWw+zpS3mE17LWGU92a0gGGB4/j5bp1IZYXceo
-	 QKJPdZygpvl5w==
-Date: Mon, 15 Dec 2025 16:21:17 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Jonathan Corbet <corbet@lwn.net>, 
-	Alexey Brodkin <abrodkin@synopsys.com>, Phong LE <ple@baylibre.com>, Liu Ying <victor.liu@nxp.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Adrien Grassein <adrien.grassein@gmail.com>, Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, 
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>, Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Anitha Chrisanthus <anitha.chrisanthus@intel.com>, 
-	Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Hui Pu <Hui.Pu@gehealthcare.com>, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Louis Chauvet <louis.chauvet@bootlin.com>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-renesas-soc@vger.kernel.org, linux-amlogic@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, linux-samsung-soc@vger.kernel.org
-Subject: Re: [PATCH v2 06/26] drm/bridge: add devm_of_drm_get_bridge
-Message-ID: <20251215-amigurumi-bullmastiff-of-witchcraft-0dc22a@penduick>
-References: <20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-0-88f8a107eca2@bootlin.com>
- <20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-6-88f8a107eca2@bootlin.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nZ8Wj6Ab"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-37b983fbd45so29149971fa.3
+        for <imx@lists.linux.dev>; Mon, 15 Dec 2025 07:38:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1765813110; x=1766417910; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=eSwy3gowjltzcyphb4214OlyhjdppYeuXISkRTiuQCs=;
+        b=nZ8Wj6Abt7AX13u2fHkip8TZGTEqHna4UpAmckvqi1J51kUfz5U0FmvTz7fKH/Txfp
+         4fKl9ML6JTVxTwBc9kwPmzx9+rAA1j0f5skKioeIRKHWs88zIn5SuS+fFgQNfpY6KeLU
+         gsThQFdNnj0dMypge4RFxQju5HDl10CPFT2JMVFzDg955v104kkUI71ekFY7/UzCGtp6
+         7uyG2oRGdeXMzc8rzyDhIo1M6133mZEN+oupCFcLvNusWLqlrWo8PCD2Uz7eomUVeVi7
+         boqAcFg/yIV2Um/SSScwSDtZvXsIBSAKQR/n9zljhUELmYH7a4gL8qu0a8xKpML/j6o6
+         WTgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765813110; x=1766417910;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eSwy3gowjltzcyphb4214OlyhjdppYeuXISkRTiuQCs=;
+        b=LuUWWKMQZGu3xaWzPtUNPmczXpWdmW8j5nwETGTbdY+2BZARn6OEUHj9qlngK7BuXV
+         I9BB8VbiJ6t6yYrG5+3mPuucuZuWwGlrmb/dHtuPQUTVGP5G9CKp2tiAwpZiA5gcj3fn
+         X3ftoVA7kJDknR/+6S7jCEYFSh56R3JC9dp9LD4ziw6S1teB448VWpUnJKodiH3HtWq8
+         aY73Ee0USqw9TCfhKOeK0nRSZpz2NMQ22pkcy5B+gNJuLdBBzBcHlbHABPtaMIfNY+OE
+         h494s035goBGPdsBhe/kyZ4yvoYRzyOdone0Fvnzb8Jr7l4MQCy03ti2SHaUBN2WQ1Id
+         wzvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWaoCQiWEzhEwwxT5x4Dh+pg+mWmPace/PWCcTeKwlahRUh/JcTn3oJBZzvaMNYS4jYp6M=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzIa5aUhEtE5QPfhBA6kGESqAn5AzBf06qv80Qz9MV2igJTftNS
+	/98Z7H1lpWZrJw+wVzbvM/y0WdyyDEmCZxE4KrAVruF0TRxKckbP9YC8cqO4DiUGiOOMkPkJnae
+	A1QWKprOH0+4NFE4WTq0Lph9j6al10pD4TtStI+kEow==
+X-Gm-Gg: AY/fxX6gGoWBT8b17q0rsCzD3euEV97hOXcSg/kbOZRSRSTPYvd/D9twHMcZ6X/lgU9
+	UHb3/1fDfmg/4ccv2KWnRQDKC4BWncfzEz6ktECFw9mWOc+YXm8pxUUETqLSHPP9zgpJSG25KXL
+	oMO3pSrV2X6DHKwsYrZB6U8g9/47CPxp+mFeUXtWaFbyJA2jPLtEc/WrulyWGJrIxlk3zY/KmQL
+	eM5I8x0gQaz8I2TnamIhWgyAQH5X1Ho/Ux5prCX7j+faucK1x5uWt2NVMloasc8htE7D9RB
+X-Google-Smtp-Source: AGHT+IFKTvH2UfCK5w9sAwfCQuEQbWmLk1A+0vBn+uZZJXSHxR0e15Tqwz9KJoHJBnQOLz6m42UioL9EMQ8sboz7KhA=
+X-Received: by 2002:a05:651c:1a08:b0:37f:c5ca:749a with SMTP id
+ 38308e7fff4ca-37fd071a3c5mr37413191fa.1.1765813110403; Mon, 15 Dec 2025
+ 07:38:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="gsdrqopk6hwziqn7"
-Content-Disposition: inline
-In-Reply-To: <20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-6-88f8a107eca2@bootlin.com>
+References: <20251215102010.608421-1-ziniu.wang_1@nxp.com>
+In-Reply-To: <20251215102010.608421-1-ziniu.wang_1@nxp.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Mon, 15 Dec 2025 16:37:54 +0100
+X-Gm-Features: AQt7F2qN24rvjd1F8j2ygBPZqZUhdStl6C5Dtd7mmY8Ik9glfcE5mBkVsUP7kyE
+Message-ID: <CAPDyKFoLmo=qDru67rj63gQwMjLqVKS+wEQecukuC+3Pz_CjDA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] Optimize secure erase performance for certain
+ Kingston eMMC devices
+To: ziniu.wang_1@nxp.com
+Cc: axboe@kernel.dk, linux-block@vger.kernel.org, linux-mmc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
+On Mon, 15 Dec 2025 at 11:18, <ziniu.wang_1@nxp.com> wrote:
+>
+> From: Luke Wang <ziniu.wang_1@nxp.com>
+>
+> This patch series optimize secure erase performance for certain Kingston
+> eMMC devices (IY2964 and IB2932) that take a fixed ~2 seconds per secure
+> erase operation regardless of size.
 
---gsdrqopk6hwziqn7
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 06/26] drm/bridge: add devm_of_drm_get_bridge
-MIME-Version: 1.0
+Well, that sounds to me like the eMMC isn't really erasing the blocks.
+I wonder how "secure" this is in practice.
 
-On Fri, Nov 28, 2025 at 05:50:16PM +0100, Luca Ceresoli wrote:
-> Several drivers (about 20) follow the same pattern:
->=20
->  1. get a pointer to a bridge (typically the next bridge in the chain) by
->     calling of_drm_find_bridge()
->  2. store the returned pointer in the private driver data, keep it until
->     driver .remove
->  3. dereference the pointer at attach time and possibly at other times
->=20
-> of_drm_find_bridge() is now deprecated because it does not increment the
-> refcount and should be replaced with of_drm_get_bridge() +
-> drm_bridge_put().
->=20
-> However some of those drivers have a complex code flow and adding a
-> drm_bridge_put() call in all the appropriate locations is error-prone,
-> leads to ugly and more complex code, and can lead to errors over time with
-> code flow changes.
->=20
-> To handle all those drivers in a straightforward way, add a devm variant =
-of
-> of_drm_get_bridge() that adds a devm action to invoke drm_bridge_put()
-> when the said driver is removed. This allows all those drivers to put the
-> reference automatically and safely with a one line change:
->=20
->   - priv->next_bridge =3D of_drm_find_bridge(remote_np);
->   + priv->next_bridge =3D devm_of_drm_get_bridge(dev, remote_np);
->=20
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
->=20
+>
+> Currently, a 1GB secure erase requires ~300 operations (limited by max
+> discard size), taking ~10 minutes. With these changes, the same secure
+> erase completes in a single operation, reducing time to just 2 seconds.
+
+Hmm, is the problem really the size or is it the timeout? Why does 300
+operations to erase 1GB take ~10 minutes?
+
+Can you please elaborate what happens on the mmc host driver level for
+each operation. What mmc host driver/controller is being used? Does it
+support MMC_CAP_WAIT_WHILE_BUSY or do we end up polling for
+busy-completion in-between each command?
+
+Kind regards
+Uffe
+
+>
 > ---
->=20
 > Changes in v2:
-> - fix return value: NULL on error, as documented, not an ERR_PTR
+> - Rebased on v6.19-rc1 as requested
+> - Cover letter: terminology fix (command -> operation)
 > ---
->  drivers/gpu/drm/drm_bridge.c | 28 ++++++++++++++++++++++++++++
->  include/drm/drm_bridge.h     |  5 +++++
->  2 files changed, 33 insertions(+)
->=20
-> diff --git a/drivers/gpu/drm/drm_bridge.c b/drivers/gpu/drm/drm_bridge.c
-> index 9b7e3f859973..59575a84eff6 100644
-> --- a/drivers/gpu/drm/drm_bridge.c
-> +++ b/drivers/gpu/drm/drm_bridge.c
-> @@ -1442,6 +1442,34 @@ struct drm_bridge *of_drm_get_bridge(struct device=
-_node *np)
->  }
->  EXPORT_SYMBOL(of_drm_get_bridge);
-> =20
-> +/**
-> + * devm_of_drm_get_bridge - find the bridge corresponding to the device
-> + *			    node in the global bridge list and add a devm
-> + *			    action to put it
-> + *
-> + * @dev: device requesting the bridge
-> + * @np: device node
-> + *
-> + * On success the returned bridge refcount is incremented, and a devm
-> + * action is added to call drm_bridge_put() when @dev is removed. So the
-> + * caller does not have to put the returned bridge explicitly.
-> + *
-> + * RETURNS:
-> + * drm_bridge control struct on success, NULL on failure
-> + */
-
-I still think that, if we want to introduce it, we need to be very clear
-that it's not safe, and we need to add a TODO to remove it later on. But
-why should we introduce a helper, and convert dozens of drivers to it,
-for something that is neutral?
-
-If anything, I'd rather see them call of_drm_get_bridge(under the new
-name), and put back the reference in destroy.
-
-Maxime
-
---gsdrqopk6hwziqn7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaUAnbQAKCRAnX84Zoj2+
-dp5VAX9vgUBVKAQimc/xE5mx+OZGGMP2AAkyV8RQCAm07C/CeB4TANSmR+vX8fQm
-oJBQh0ABfiGrjZ9H25V8ZEx7mg3ywz982YYke557o8h2KLo5yCMDUxK0PVo9ZwYr
-bI9HAJ7y/g==
-=YBE0
------END PGP SIGNATURE-----
-
---gsdrqopk6hwziqn7--
+>
+> Luke Wang (2):
+>   block: decouple secure erase size limit from discard size limit
+>   mmc: add quirk to optimize certain Kingston eMMC secure erase/trim
+>     performance
+>
+>  block/blk-merge.c         | 9 +++++++--
+>  block/blk.h               | 6 +++++-
+>  drivers/mmc/core/card.h   | 5 +++++
+>  drivers/mmc/core/queue.c  | 9 +++++++--
+>  drivers/mmc/core/quirks.h | 9 +++++++++
+>  include/linux/mmc/card.h  | 1 +
+>  6 files changed, 34 insertions(+), 5 deletions(-)
+>
+> --
+> 2.34.1
+>
