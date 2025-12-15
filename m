@@ -1,44 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EB0331202;
-	Mon, 15 Dec 2025 13:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FC3332EB6;
+	Mon, 15 Dec 2025 13:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765807169; cv=none; b=pASUxFxdXLkhDp+pSUYH2KONQbBiFh+iZT/Yc0Rt9x6xmLwzhhfsbXJzddOnNXTHanJFZQHbjDehez83BDVS94js3M+dJcucmVcqjsneMM6Ywi5missIMkuES6F0CFEJ98bMB3Rmo0+iQukhDnY/C+0vcX0QNjQ2n9LAmgEyUcE=
+	t=1765807178; cv=none; b=Bl1UtyXP2PgIAJO8KWYIbqAFv22FDaG4pRqB4l6ZIRacBa937GIsdV8lCniUsKq9t2+m+IeJL3krEGnVAEkr+R8AfissInsTiHxeM2gEjQlUQlOG0POEYvYHwnoAmBc4AeGj3YXLIlR9mimsCLN/38+uIx0+xUkzPCEKcKrD4kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765807169; c=relaxed/simple;
-	bh=cfJDm4wYiGitWnngtHNxkthZHqnlQgjzwLU69mBly90=;
+	s=arc-20240116; t=1765807178; c=relaxed/simple;
+	bh=KJvZzhKrn8uZz3eEveVdsonmL/mTsWm49pT4/VAg3L4=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=HvxX6lnMYMtzQt2GSYuo8JVhhiHPsAkxGzmUruQkV/NIf17i+N3Oa6lBpNa4IaOzbwTroitBr01lmihu779vKaOcUDpAcXlpDX9jRL0s+/2TJsnerSfbuduUAl8+BdI7RQLPPl9039tDqPYBbroVzLRpzeTC219HEscKfKbAvsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OdV9YeSs; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Ghp7xpcW75cikNp4+jXrgjVy9eTMfbBGnr24YsMYq1Z06VJbXzqvQ8fozXR9YGO0vVUHs936lnaREG0NUXdyXJcjpYyXViVBAYjAhjjz5CyC1A16SbLtXuFt/LG5MclSvaRuGySfm/JTxgxiTmefIBtsMRw3lm5fTz10L8jtygU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mkZ4sisO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OdV9YeSs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE3BC4CEF5;
-	Mon, 15 Dec 2025 13:59:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mkZ4sisO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02431C4CEFB;
+	Mon, 15 Dec 2025 13:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765807167;
-	bh=cfJDm4wYiGitWnngtHNxkthZHqnlQgjzwLU69mBly90=;
+	s=k20201202; t=1765807178;
+	bh=KJvZzhKrn8uZz3eEveVdsonmL/mTsWm49pT4/VAg3L4=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=OdV9YeSsdQmu7/bQcVmD8XlVXOq3y/rwXUDJUbHHLgin2Oo8ssgtvwDFQ9n1/6Fjd
-	 AKc1xgWoASmNyybhSks9k6oDzfiiaj8iy8Y9uLuDbpmf0wWJ/nWT5PQfq7XlCfP1rG
-	 vae+9jtWehpPHxlLiX4Y46vVMfZoO/+560L0Yhof29O3RYHURNzDsl4EXv/Kcg8e0T
-	 TGTXx30ZWIfvhJPusm7xLeuV5/o3G8cthFfb7NGf+jUnd/IBHU9xCI95psT4oTqJjr
-	 ZfLJw7hivwWdRJlLyB9oUGBwmFTBl3X36/NFj7HTJr2OR8NbBt7CcHbO1rV4CUB5Rr
-	 6QuvKgv7j2haQ==
+	b=mkZ4sisOnb2X/+73p4W7RG33/m0KdAAxaWy0Vx8x9Uigmgy1Pkcr1GSLVRSWoVBqW
+	 WZXqsNtl0Y2KWB1Piz0AALA/NyKjpu3kFf+OCxZbWrXV0kXMczYgQeTS8koY4iiHFS
+	 DUEZWBJgJJYKS5F9FlEKI5B6XresijefCyC47W71P7ajzA7mIa4BHf3cVYPvPM1Ib6
+	 I598KPNr4t28bylz954NfqJqPX1HugeeTz1DzJVl0iAC0dNcSg0+SvLshdzWYPmoy2
+	 RqDBJGOP2D2/+qjKWao1eQrlCDRCMsce+IjFRKI9o9950WkP8z32D+hj1CpVPva2DC
+	 opL1x0NLliBhw==
 From: Mark Brown <broonie@kernel.org>
-To: frank.li@nxp.com, mkl@pengutronix.de, shawnguo@kernel.org, 
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
- kees@kernel.org, gustavoars@kernel.org, Carlos Song <carlos.song@nxp.com>
+To: Frank.Li@nxp.com, daniel.baluta@nxp.com, andriy.shevchenko@intel.com, 
+ david.laight@runbox.com, Carlos Song <carlos.song@nxp.com>
 Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-hardening@vger.kernel.org
-In-Reply-To: <20251203085949.2922166-1-carlos.song@nxp.com>
-References: <20251203085949.2922166-1-carlos.song@nxp.com>
-Subject: Re: [PATCH v3 0/6] Support ECSPI dynamic burst feature for DMA
- mode
-Message-Id: <176580716540.161463.10558713364568567703.b4-ty@kernel.org>
-Date: Mon, 15 Dec 2025 22:59:25 +0900
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20251209055634.3845602-1-carlos.song@nxp.com>
+References: <20251209055634.3845602-1-carlos.song@nxp.com>
+Subject: Re: [PATCH] spi: spi-fsl-lpspi: convert min_t() to simple min()
+Message-Id: <176580717644.161463.14088769832395670607.b4-ty@kernel.org>
+Date: Mon, 15 Dec 2025 22:59:36 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,15 +46,10 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-47773
 
-On Wed, 03 Dec 2025 16:59:43 +0800, Carlos Song wrote:
-> ECSPI has a low throughput because of no dynamic burst support, it
-> transfers only one word per frame in DMA mode, causing SCLK stalls
-> between words due to BURST_LENGTH updates.
+On Tue, 09 Dec 2025 13:56:34 +0800, Carlos Song wrote:
+> Convert min_t() to simple min() for better readability.
 > 
-> This patch set is to support ECSPI dynamic burst feature to help improve
-> the ECSPI DMA mode performance.
 > 
-> [...]
 
 Applied to
 
@@ -65,18 +57,8 @@ Applied to
 
 Thanks!
 
-[1/6] spi: imx: group spi_imx_dma_configure() with spi_imx_dma_transfer()
-      commit: c64f62b036aed30626cb30fa82d3ec4a13fa83df
-[2/6] spi: imx: introduce helper to clear DMA mode logic
-      commit: 5395bb7f7c361310d0f329c8169d2190809b05c1
-[3/6] spi: imx: avoid dmaengine_terminate_all() on TX prep failure
-      commit: a5f298581d454c5ea77c5fb6f4ee1bff61eb2b2c
-[4/6] spi: imx: handle DMA submission errors with dma_submit_error()
-      commit: a450c8b77f929f5f9f5236861761a8c5cab22023
-[5/6] spi: imx: support dynamic burst length for ECSPI DMA mode
-      commit: faa8e404ad8e686cb98c51dc507fdcacfb8020ce
-[6/6] spi: imx: enable DMA mode for target operation
-      commit: ba9b28652c75b07383e267328f1759195d5430f7
+[1/1] spi: spi-fsl-lpspi: convert min_t() to simple min()
+      commit: b884e34994ca41f7b7819f3c41b78ff494787b27
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
