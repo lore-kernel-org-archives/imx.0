@@ -1,413 +1,282 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011067.outbound.protection.outlook.com [52.101.65.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE5C2DFA54
-	for <imx@lists.linux.dev>; Mon, 15 Dec 2025 16:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765817306; cv=none; b=BEYASz4YVFqvOHtx3lcQ1jw1ay5hx/nlmSUgNf9wWTMK1k9jQ8+X6Yoz7c5zsnt4JSBJ8W41/UFlt+3erN4fMPe2BkZkAfzOqFHNk0+CEmesUOW0XmSAvwtDhsFe9iScs+IOK+h5Mf73EWhPJUY4ejtkzY3G8h1nQdMkXSMzn4A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765817306; c=relaxed/simple;
-	bh=iegucxP0t41opnyim+jwV3GBK1a8WA8rlpfirXQK4TI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sUjZduKsCYOl9EAlvH1MdJ+/3mod2bmAZmuJwYcaDhG38uz0NSMJBQ2hkp9Y1ytdX81V7ZljTdFXZJmDCwKaj3yNyqpOeJrEeo2hdeqYkcASc3tz4IWRzJm7Ze3a9AOw112E1gRkbRjETbBst4HvbCnMs0Cq8rlrv0fJSY8lZWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vVBjp-00040g-3n; Mon, 15 Dec 2025 17:47:57 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vVBjm-005oRd-2i;
-	Mon, 15 Dec 2025 17:47:54 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vVBjm-008zIy-2B;
-	Mon, 15 Dec 2025 17:47:54 +0100
-Date: Mon, 15 Dec 2025 17:47:54 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Liu Ying <victor.liu@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v7 2/3] drm/bridge: imx: Add i.MX93 parallel display
- format configuration support
-Message-ID: <20251215164754.5amfk7hasaol7tdt@pengutronix.de>
-References: <20251202-v6-18-topic-imx93-parallel-display-v7-0-2cce31d64608@pengutronix.de>
- <20251202-v6-18-topic-imx93-parallel-display-v7-2-2cce31d64608@pengutronix.de>
- <f53be351-e059-4a71-bbbd-7a893e954169@nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC14D33F373
+	for <imx@lists.linux.dev>; Mon, 15 Dec 2025 16:51:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765817494; cv=fail; b=sWRQZxO4hEV4ptgck/khbtcONrgkCIv0r+IOoog+U0CPL3x8MwJxEYX+HCqdSN7y9MxF27EU6nrHrRqJy5xM+zWMuhsNowg+7ehBUwSlBPPcIt114NCghdAu7T9KXsXHxdIyH3wJYMgFufwxhKU5x8KCRLr2DOIrDjKnFYRSjg8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765817494; c=relaxed/simple;
+	bh=4HRVS5+STWD2ufFspkYYAuS93c//5Mm7gbSMM3b9qqM=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=cdO9zGgVckjGPiyaX6kUc5yWFkWTK0AVlBN2d+4Un+N9nB+DGVKLJHhJd5Pa0BCLTz+v+T6+4ASW5UB4hYizxX1f5y4+4GjIt3OAxqAXU2sbHokUSBzHw0hWqQ+Ozbn60LOFAU6iG4+j1X7Vwf1+qA68deOkKN0U8UofRFcRxxc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bR91H+xt; arc=fail smtp.client-ip=52.101.65.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bR91H+xt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kXwpo0YbLmS0XPYjwMxHsg+tI4wH1st53yXLm9nWhQNMhNm+8zmmzG/fcnIrreG4YgZTeCg9Xp4hGgVkHVvkF5QsX8tnI+SH3pcrt2NLS46c6qRAP1niBKvLXDqtWi4p3zfiyTFLa/LOJc2SfmCiEILYUGaqQOXO8HFHCHPViPYwRluHmwYPjZRAItIhog7UaSbdQsJbXPNyyAYbMpcmS0RJUgcBPqoQPKeNZnJYQ8vRLGq9IAPntCB+IfCJwX3a0J8ZRcpm5hI+Xxhme6ta6wKHj7ZbkExu4V62NFqIGAewdPIM++zEYodQME654i9jZTVoYon/y+r5sDg8Onq1SQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OM+r3Od/leHPIt9S9y7YAbP7UAT1s4TjRAvuqqmG4Cg=;
+ b=Apk3xGdmjqcxUvDH1wsxr+fwRfTmzUom6hULh6h6Nn++4DcR3/kLgb/zA1YD9iWg21U1jS1sKe2UBngAftJ1Vn0dCBlG6IrKhW3tRCl8KRbwDpW8iGNtuYdNbMWH1mtSPXF6ahkxzmsTeoRkGij2RDbPC/hr4B0PnntZBSiPux1avID1HZfxinGkyWTwhcHM84OeIxWqDWTnIZzX+cWgFaKBnnW4H5Xexq5A8Hj7ak3QMd1wLDEr2/kb61fb27kryfDy6g6mvIkdurQTdVLfoC9btFo97tVefB/zhbLi+elFacYfui5ET0ORJIa8kT4tZBHUV5ryy2N6kxGgZhbrOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OM+r3Od/leHPIt9S9y7YAbP7UAT1s4TjRAvuqqmG4Cg=;
+ b=bR91H+xtxRTk8rgAF1PIlm6FPWAAPNT98ej+N3vMp3om9jUuEUrtDqk5BZ3RZB5wYqpj10cijy8CZcJl3hja2LCG4diVoHbwYtxyuTk6HkSCQZ1OZKtLAi2eMOHITSUV1Vs/XxtjOfs6A7v7RXp8LNprbTEP70SKVkxyoRZAHxOA5j4p3a6+vtb9MDjg/fKk7GSq5BCynEMQfjyMEXshRsRVJRKVjHDP2Gnpjs5a3PsFzjkBbuBRdiU/yTMejSjd1l0dBwIfSnDj2WZ+0O6mTZrTXK5MV1DsJoRwzJ94Sty9fFgQx6KQ1D/L9fYuVdUN8l04XrKZ0rtie8cT0UdZMA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
+ by DBBPR04MB7913.eurprd04.prod.outlook.com (2603:10a6:10:1ee::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Mon, 15 Dec
+ 2025 16:51:29 +0000
+Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
+ ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
+ ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9412.011; Mon, 15 Dec 2025
+ 16:51:28 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH v12 0/2] i3c: Add basic HDR mode support (sensor part).
+Date: Mon, 15 Dec 2025 11:51:09 -0500
+Message-Id: <20251215-i3c_ddr-v12-0-1ae31225b4d9@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAH08QGkC/3XSzU7DMAwA4FeZcqbIdn6ccOI9EEJp4rAeWKcWV
+ UPT3p1sQjQd4mgrny3bOatZpkFm9bQ7q0mWYR7GQw2QHnYq7ePhXboh14QiIAtIoRt0est56nq
+ 0xvsAKL1X9fVxkjKcbqVeXmu8H+bPcfq6VV7wmv1bY8EOOiAfOdpsNJnnw+n4mMYPda2w0KoCm
+ VVRVc5TBOk1Waat0o3SsCpdVe+IcyIpeK/Mr0IAXpWpSsciseYts90q+4+yVRlj0JvCTFa2yjU
+ Km7ncTy8TmDUCbxU3ippeXJV3LkIpXJJxW+Vb5Vflq+Jgs2TKvU932wiN0riqUFVBsaSlj4X9V
+ iGsDKEZDOuVO9FiUp+QQd/dGbF1rnHX/6F1dNE5yRCa7V8ul28CdoEQvQIAAA==
+X-Change-ID: 20250129-i3c_ddr-b15488901eb8
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-iio@vger.kernel.org, 
+ joshua.yeong@starfivetech.com, devicetree@vger.kernel.org, 
+ linux@roeck-us.net, Frank Li <Frank.Li@nxp.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Carlos Song <carlos.song@nxp.com>, 
+ Adrian Fluturel <fluturel.adrian@gmail.com>, 
+ Andy Shevchenko <andriy.shevchenko@intel.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1765817484; l=3469;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=4HRVS5+STWD2ufFspkYYAuS93c//5Mm7gbSMM3b9qqM=;
+ b=17oazU6wz/zzMgJsERpZyqq4z+KfiWJ+HeY72psZBy4AFTAWMf9xKPOhzQQbpdqDZS5/C9v1Y
+ ZBbTgxUNIPICtFNEUy4EvYTHbs9ix+MuZC8zOvt4HbowTiCv+zV5ewe
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: SJ0P220CA0017.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:41b::27) To DU2PR04MB8951.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e2::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f53be351-e059-4a71-bbbd-7a893e954169@nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|DBBPR04MB7913:EE_
+X-MS-Office365-Filtering-Correlation-Id: 06966abe-796d-43ab-eac7-08de3bfa3130
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|19092799006|7416014|366016|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NXQzeTdpRjIrWWhveGNvUm51aGxEL01HSmxQSi9aNldQNGJoemlxaDI2eXF4?=
+ =?utf-8?B?NUN2QTVXc0hyaUc1RmdXSGoxUVcwM0E4bW1CUzFNcUNxY053L2xRNlpaTklj?=
+ =?utf-8?B?SUdQaDUxTmVFR21Xc1diNXZCeEdCY1o1MytuanN3VDF5NHgySVgvQkh3b0ZV?=
+ =?utf-8?B?ZE1ER3U1N1M1NVBnVHl5TWlqL1FNNWdBcUFRUEl4R2pyL3ZmMTRCYnVZYTZ0?=
+ =?utf-8?B?dG1KQ2pzL1JiY3JvbnJpSFdSTGhaWnhwMlB6Rm9FdUJpQzRQcDNzaGNHSjkr?=
+ =?utf-8?B?TmtzNzF6ZWE5WG5BY2ljNy9xcEdETXQ1Z293V1d1NlZZaFpaRUdmRWVrZTk1?=
+ =?utf-8?B?cWFlM2w2U1lTQTFCRjlZTU5tOFM0Tm5ML3RDVFZTTDBQM1ZkK1cvc3FWQ254?=
+ =?utf-8?B?SXNHWlIvVjRoYmFWL3MzUjE5b2xDUGxYRFo5TGNLUU5XVXZLSFA0THFsdVF0?=
+ =?utf-8?B?bXQ0dHRaMFQ1M3djQS9CWlkyNWFPcHhqRmdvWFR0bHJKTGdxcktDdHlOWUVY?=
+ =?utf-8?B?dXIycHB1YVdraGxadmlqaUtuRmN2NTBYOE42dHJvU0tBMnIyVGFrYXNRdGxN?=
+ =?utf-8?B?WGlKWE5TZ2x4YjYwdW1wSStiWGxBYU9FU3lhTGhhK1VhamU1WWxGQWVxZjhx?=
+ =?utf-8?B?bmZGa0pla2M3cUEyOVM4NWRaWDNoajNaWFd5UGFiUEtJLzEzcmlnU0dBeFY1?=
+ =?utf-8?B?U2lvY3E3dTMrT3Q4SkdoYzdUbU5QTmJuN1BOMnI3eEFXL0xjRVMrNStQK0Ex?=
+ =?utf-8?B?MVNzUnpsR29RRGZVd094eWJrMXFrRCtiZy9Md1B4dGFGcmJreW1VWFJUcE4z?=
+ =?utf-8?B?dXk2VFp4bkdRY0xwdWVBNlhKSEtZc2ZVRE84NWJhR3p1SEZnMFltMzRzdnR5?=
+ =?utf-8?B?aHQvOFlJWXd4OGcrM0RUNDBUYzhXV0JjZ09YSmYremFST0YvRTltQmYxTDZE?=
+ =?utf-8?B?TVczRHdnQzlwc3lGOTgxRERtR0F4RmszeHlNN0JENVh5UUxwWkQzTEsrVFdX?=
+ =?utf-8?B?czBTTDdVVjhZY0dWVHdVQ3N2RGNwOSttMjJIRUxlVWludXIyM3lPd3NRNFZm?=
+ =?utf-8?B?Rk1jN3FPbWl2Ums5cGRtZXZJVVhtNWFaSXVTYm10Ynl0cDNQRm00azJ5MUxW?=
+ =?utf-8?B?Ny9HeFVXbzhpSENmZlJlTnJkTC9Tdis4UVJ6aFRiWnhtRGtFaUFTNW56NGpK?=
+ =?utf-8?B?SDRaUVhSTWxLZ216QnYzTDQ0eWswbm4zTjhlQWwyTnlzOTNCbjQxMTIzMnFY?=
+ =?utf-8?B?MmpZaG01dHdCNy9aL2tUS2oyNlliWVRVZzQ2Y2ord0g0bWQrZU9TMjkrS2cv?=
+ =?utf-8?B?bWl6eFVRZjQyelpSQUd1QWRkRzZqZXlFRHVvUU9uK2w0M0FLKzlDZWR4MEts?=
+ =?utf-8?B?MUxMTkpXRkZDV0V1Rml3TS8wU2d1VHRISXJGQmV3dFJ6cG9vVlNNSWJHSFhs?=
+ =?utf-8?B?dkthVENtMzhKMDhWN1VkbnV5UkZyY24yZUYzZi9TZDJjL1VrWnlhTDFHOVp6?=
+ =?utf-8?B?L3UzUTFGaFdRa25qVjE2bm1ROTZvQnFQQ0s4UGowZ1lWTU12bnoxMUk3R3RQ?=
+ =?utf-8?B?ZVBMZ0xoZkRVdG5qeUs0d1JMY1B6ZjZybTJhVEt1M1p3OGNDUnJSV3ZFMDNo?=
+ =?utf-8?B?S0x2eVBlZEUvVkl5NlI3RTBJNDNQeEYyWU9jZW13SVpNb1BpSUUxMnhaWWNE?=
+ =?utf-8?B?VGNKcTVZSkdNMkFXRFV0d28xWHVUN0dkM0hUdUtRK1VhdTZzU3JTUFdMWllT?=
+ =?utf-8?B?OWtzcXFaaTByTllQTStzcklQZTFJSFJDOWpVNTE5TmVFODJGMTIwZTRONG5E?=
+ =?utf-8?B?bCtCK2d1bWJEL1VpZDZrSHpZTUlxaitMYy9LRXpmdm9vVWZZTVJKTVlFUE5O?=
+ =?utf-8?B?a21iZWE0cFZxeU9qYlNaK3h5Y2tSNENubS8rdWNCNDFRTTJtWUw2ejVsVVBQ?=
+ =?utf-8?B?ZEJNYWk1NW9YRTA1V1dScGtaRG45M1EwWmxXVUdDT09OMnQwWk14UVgwQ3cv?=
+ =?utf-8?B?a0NVZ1ozdTdnUi8wNUs2ZWIvbEluOXRtWnZUNUxnMnJ0bmo5THVBZWNvb0JI?=
+ =?utf-8?Q?zk5wb2?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(19092799006)(7416014)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WlpjRU9PSnNsa2d5TzdudWhMVkdod2lkalRrTlNyVSs0WDRWaXRhRGJiMFIx?=
+ =?utf-8?B?YXJkMjhIaExJMkE5YURLYy9XU0txbkdSVVdnUzgxaGlreElybGJGL0gzckN1?=
+ =?utf-8?B?eWMvNHZyNTA3Mk9UZTNsWjhjUUVHUTEvblhQeTJ6SnJRVUZ5UFJIRVZOYVI3?=
+ =?utf-8?B?Z1BQbjVaUnJGeDhwSG9GNzY3SlhsajNRY1NIVzR3WW5vZ2NaeHE4UjRvUFdH?=
+ =?utf-8?B?K3Y2RS96UkhUenRlaThFZHQzNEFaditMdlNWRU1SZEpUbTJKL1VEdXpOU0U1?=
+ =?utf-8?B?V3lLbHlZNEJYVFpMbVNOREtrT1BxYjZJUTAycldHRjlVdUhSbyt1Zm15SDRm?=
+ =?utf-8?B?YVVIY0tZZVNtcVY1SUpBU0t1LzRUcUhkZFZFdE9sbCtxMjYwMWpBTDQ2OXBh?=
+ =?utf-8?B?NWNSNy85SEdudE5QcXBCdUtLMTNRTmkrY1VxZXZLck4xZHN1Tlo4UE41K1Nl?=
+ =?utf-8?B?YndyZ3ZvMUZtWXQvWXRWaElkQlFGZUNWaGIzV3R2OEd0ZnU0WkRER3JkMlpq?=
+ =?utf-8?B?YWt0a1ErZVBmYVlaRFUycHVOeXk5R3gzclFjS2xpTnR3RmlUVGczZmlrZmE5?=
+ =?utf-8?B?cHZPS3M0ZGltTHZvdFZHTkFJTzY2M1NwTVVDVk9sZ0U3TnczNUt2aU85Q3Nv?=
+ =?utf-8?B?OGhldDVxZkJNVFo3WEo1blc3b3BXSzdwNWdjUGdHaDZ6c2tEVnZUdDJ2UCt4?=
+ =?utf-8?B?OTI3eTZQRVlhdTd0dE52VVczazBOcDNEVjIwdWg3SlppUmtVTTB6dzROdDlq?=
+ =?utf-8?B?RXhDYnRvYm5OWEpPY0VaRHdJZWlrV3M0bTRaZFdLWkVjMTR6TGEzNFk0ZVhx?=
+ =?utf-8?B?YUx4TUlpSjZJNnRFa25rN1VBUktzTkNXZXdtWXNjaXltandyS0Q1QldJbTg2?=
+ =?utf-8?B?ajVFRXlOdHp6TVFGWnNFOFRYa1lFMlh3K21LUlYyN1hLMXFlY3F5eVpOaVNw?=
+ =?utf-8?B?NzhjSWluY2NPTFdIakhTbTIxbG92RDA3R1p2a2U4NFJWeTJGeElyc0VsNnd2?=
+ =?utf-8?B?N1pNeVljZDlqZTRLKzlxMSt5ZEZ1WTBxcTBoR3hLY0NjQzd2Q05aa29nRjA4?=
+ =?utf-8?B?N0dWaEl5Wm9qdmxVYncwdDdlRmx0MzVhbnFxOW9lVVdHdkJSRFB5WVMxY3NV?=
+ =?utf-8?B?SlkwZ0NBRkNMNEtINUEzUTJ6RWlWem5mWEhWaGpuSGIzM29NbmlNb05xV1Qx?=
+ =?utf-8?B?cGt2Snp0VWFWMjBldmRNbXZNTG51Q2xtOEtLSzB0cTFkMFA5TkVxRVZIbnhr?=
+ =?utf-8?B?cVk4cnpibnhwQUFHWWplSXhrU29vdjFHYWJCZTlNa1ZFeVIvRU42eVExYzRM?=
+ =?utf-8?B?d1YrLzRmMlliYlAvQ2xLVzEvVjFURHErVUk4Y2VQM0NHcVVZVWE5SWt3N0lG?=
+ =?utf-8?B?TTFwUTlPS1pJUXRQTlBNYTJ6OXBFc3JvdzV0VG5BcU92RmpxR1RSaUlFSTRz?=
+ =?utf-8?B?ZzlETVphNG9ZWTkyNDdhL3FsUThKdzlQYWNMTW5MKzNHaFFPV2JMRjMzcG9x?=
+ =?utf-8?B?dmtaV3VCckRKVXdiUkxnVGQ1cHdTMmE3clVGeUdsZW5zcnN6eG1PL2ptMWRI?=
+ =?utf-8?B?NDk2UGM3aC8ybk9lV1BhMERaUVhmdHgremcwM0d2OWJQWmRnb3RpRzROT0Q0?=
+ =?utf-8?B?S0VzSDlIc0ZVbXVXZEE4LzczZDNKdmFWcC9QVVZNaXQ1L092OTJpajI1UzQ4?=
+ =?utf-8?B?MVhEVnpWWi92b0VwTTVFYlMzOWVycUpOcWRPdVQ0M3RIOFJtN0ZQZDVHQmZY?=
+ =?utf-8?B?TVUyMDRydEh3dTVrOUF3bjBRNlpuZ24zeC8wZG1oSnlJUjFndDdZbTVHQjRP?=
+ =?utf-8?B?SkRGSjZHSGVjNUpYbWJtd21Ld1NjUCtvZU9Oak9CSUxRUGVwc3RFbVBGNGto?=
+ =?utf-8?B?WXc5RXdqaW8rRkJjeUJyRGdFL2FvdEJVN2ZRaEpXL2w1TkZXeDFsU2pmN2ky?=
+ =?utf-8?B?am5KMzdyUnl3WFNiaUVnNDhvYUdxR3RIL253VFJQM2ZkMU50Mm1IMzhSWlpN?=
+ =?utf-8?B?TjJZUzFQdWhnR293SWMxVEVrbFd0d2F1SHp3WFR5N0NsTUI2Zm9kbEljOUox?=
+ =?utf-8?B?d3VoNkY2SFI1MS9qQ3ZpWHkwbmtGNkFSU3lvUDNVQVp4UkxDalFnVjhmdHRW?=
+ =?utf-8?Q?nGnBjCmxt8566LQLkwFtvwLnK?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 06966abe-796d-43ab-eac7-08de3bfa3130
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2025 16:51:28.8829
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QSUmaru2dREpJQMXClmIPzQD7SwlglZQWSR/9GClE0VVNHwQlC9ta8vunATq2touzXG1bAfCOa+jvROhdeV+ZA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7913
 
-Hi,
+I3C part already merged into v6.19-rc1. Just repost sensor part.
 
-On 25-12-08, Liu Ying wrote:
-> Hi Marco,
-> 
-> On 12/02/2025, Marco Felsch wrote:
-> > From: Liu Ying <victor.liu@nxp.com>
-> > 
-> > NXP i.MX93 mediamix blk-ctrl contains one DISPLAY_MUX register which
-> > configures parallel display format by using the "PARALLEL_DISP_FORMAT"
-> > field. Add a DRM bridge driver to support the display format configuration.
-> > 
-> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> > [m.felsch@pengutronix.de: port to v6.18-rc1]
-> > [m.felsch@pengutronix.de: add review feedback (Alexander)]
-> > [m.felsch@pengutronix.de: fix to short Kconfig description (checkpath)]
-> > [m.felsch@pengutronix.de: use "GPL" instead of "GPL v2" (checkpatch)]
-> > [m.felsch@pengutronix.de: make use of reg property]
-> > [m.felsch@pengutronix.de: add bus-width support]
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> >  drivers/gpu/drm/bridge/imx/Kconfig      |  11 ++
-> >  drivers/gpu/drm/bridge/imx/Makefile     |   1 +
-> >  drivers/gpu/drm/bridge/imx/imx93-pdfc.c | 227 ++++++++++++++++++++++++++++++++
-> >  3 files changed, 239 insertions(+)
-> > 
-> > diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
-> > index 9a480c6abb856276df9b71d23b39a43b3a9c542d..28fd7a00473a0ec50bf0ffb5d50972abc209ceec 100644
-> > --- a/drivers/gpu/drm/bridge/imx/Kconfig
-> > +++ b/drivers/gpu/drm/bridge/imx/Kconfig
-> > @@ -88,4 +88,15 @@ config DRM_IMX93_MIPI_DSI
-> >  	  Choose this to enable MIPI DSI controller found in Freescale i.MX93
-> >  	  processor.
-> >  
-> > +config DRM_IMX93_PARALLEL_DISP_FMT_CONFIG
-> > +	tristate "NXP i.MX91/i.MX93 parallel display format configuration"
-> > +	depends on OF
-> > +	select DRM_KMS_HELPER
-> > +	help
-> > +	  On i.MX93 and i.MX91 SoCs the parallel display format output is
-> > +	  controlled via the MEDIAMIX BLK-CTRL DISPLAY_MUX.
-> > +
-> > +	  Say 'Y' or 'M' if you use the parallel display output path on a
-> > +	  i.MX93 or i.MX91 SoC.
-> > +
-> >  endif # ARCH_MXC || COMPILE_TEST
-> > diff --git a/drivers/gpu/drm/bridge/imx/Makefile b/drivers/gpu/drm/bridge/imx/Makefile
-> > index dd5d4858480663bade98bd58039d1cb6f8aa18da..f4ccc5cbef72a576443d5fecf666b76dfba8aa94 100644
-> > --- a/drivers/gpu/drm/bridge/imx/Makefile
-> > +++ b/drivers/gpu/drm/bridge/imx/Makefile
-> > @@ -8,3 +8,4 @@ obj-$(CONFIG_DRM_IMX8QXP_PIXEL_COMBINER) += imx8qxp-pixel-combiner.o
-> >  obj-$(CONFIG_DRM_IMX8QXP_PIXEL_LINK) += imx8qxp-pixel-link.o
-> >  obj-$(CONFIG_DRM_IMX8QXP_PIXEL_LINK_TO_DPI) += imx8qxp-pxl2dpi.o
-> >  obj-$(CONFIG_DRM_IMX93_MIPI_DSI) += imx93-mipi-dsi.o
-> > +obj-$(CONFIG_DRM_IMX93_PARALLEL_DISP_FMT_CONFIG) += imx93-pdfc.o
-> > diff --git a/drivers/gpu/drm/bridge/imx/imx93-pdfc.c b/drivers/gpu/drm/bridge/imx/imx93-pdfc.c
-> > new file mode 100644
-> > index 0000000000000000000000000000000000000000..624389def0ac3f24158edc64a8913375a4cc2f12
-> > --- /dev/null
-> > +++ b/drivers/gpu/drm/bridge/imx/imx93-pdfc.c
-> > @@ -0,0 +1,227 @@
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +
-> > +/*
-> > + * Copyright 2022-2025 NXP
-> > + */
-> > +
-> > +#include <linux/bitfield.h>
-> > +#include <linux/bits.h>
-> > +#include <linux/media-bus-format.h>
-> > +#include <linux/mfd/syscon.h>
-> > +#include <linux/module.h>
-> > +#include <linux/of.h>
-> > +#include <linux/of_address.h>
-> > +#include <linux/of_graph.h>
-> > +#include <linux/platform_device.h>
-> > +#include <linux/regmap.h>
-> > +
-> > +#include <drm/drm_atomic_state_helper.h>
-> > +#include <drm/drm_bridge.h>
-> > +#include <drm/drm_print.h>
-> 
-> Drop this header file if you won't use DRM_DEV_DEBUG_DRIVER() in v5.
+Add basic HDR mode support, only support private transfer, not support
+CCC command.
 
-Sure.
+Update i3c framework API to allow pass down mode and extend driver callback
+function.
 
-> > +#define PARALLEL_DISP_FORMAT		GENMASK(10, 8)
-> > +#define FORMAT_RGB888_TO_RGB888		FIELD_PREP(PARALLEL_DISP_FORMAT, 0)
-> > +#define FORMAT_RGB888_TO_RGB666		FIELD_PREP(PARALLEL_DISP_FORMAT, 1)
-> > +#define FORMAT_RGB565_TO_RGB565		FIELD_PREP(PARALLEL_DISP_FORMAT, 2)
-> > +
-> > +struct imx93_pdfc {
-> > +	struct drm_bridge bridge;
-> > +	struct drm_bridge *next_bridge;
-> > +	struct device *dev;
-> > +	struct regmap *regmap;
-> > +	u64 disp_mux_reg_off;
-> > +	u32 phy_bus_width;
-> > +};
-> > +
-> > +static int
-> > +imx93_pdfc_bridge_attach(struct drm_bridge *bridge, struct drm_encoder *encoder,
-> > +			 enum drm_bridge_attach_flags flags)
-> > +{
-> > +	struct imx93_pdfc *pdfc = bridge->driver_private;
-> > +
-> > +	return drm_bridge_attach(bridge->encoder, pdfc->next_bridge, bridge, flags);
-> > +}
-> > +
-> > +static void imx93_pdfc_bridge_atomic_enable(struct drm_bridge *bridge,
-> > +					    struct drm_atomic_state *state)
-> > +{
-> > +	struct imx93_pdfc *pdfc = bridge->driver_private;
-> > +	const struct drm_bridge_state *bridge_state;
-> > +	unsigned int mask = PARALLEL_DISP_FORMAT;
-> > +	unsigned int val;
-> > +
-> > +	bridge_state = drm_atomic_get_new_bridge_state(state, bridge);
-> > +
-> > +	switch (bridge_state->output_bus_cfg.format) {
-> > +	case MEDIA_BUS_FMT_RGB888_1X24:
-> > +		val = FORMAT_RGB888_TO_RGB888;
-> > +		if (pdfc->phy_bus_width == 18) {
-> > +			/*
-> > +			 * Can be valid if physical bus limitation exist,
-> 
-> s/exist/exists/
+Implement HDR transfer in svc i3c master driver.
 
-Thanks
+Simplifed HDR flow is (ref i3c spec line 5514) Figure 129
 
-> > +			 * therefore use dev_dbg().
-> > +			 */
-> > +			dev_dbg(pdfc->dev, "Truncate two LSBs from each color\n");
-> > +			val = FORMAT_RGB888_TO_RGB666;
-> > +		}
-> > +		break;
-> > +	case MEDIA_BUS_FMT_RGB666_1X18:
-> > +		val = FORMAT_RGB888_TO_RGB666;
-> > +		break;
-> > +	case MEDIA_BUS_FMT_RGB565_1X16:
-> > +		val = FORMAT_RGB565_TO_RGB565;
-> > +		break;
-> > +	}
-> > +
-> > +	regmap_update_bits(pdfc->regmap, pdfc->disp_mux_reg_off, mask, val);
-> > +}
-> > +
-> > +static const u32 imx93_pdfc_bus_output_fmts[] = {
-> > +	MEDIA_BUS_FMT_RGB888_1X24,
-> > +	MEDIA_BUS_FMT_RGB666_1X18,
-> > +	MEDIA_BUS_FMT_RGB565_1X16,
-> > +	MEDIA_BUS_FMT_FIXED
-> > +};
-> > +
-> > +static bool imx93_pdfc_bus_output_fmt_supported(u32 fmt)
-> > +{
-> > +	int i;
-> > +
-> > +	for (i = 0; i < ARRAY_SIZE(imx93_pdfc_bus_output_fmts); i++) {
-> > +		if (imx93_pdfc_bus_output_fmts[i] == fmt)
-> > +			return true;
-> > +	}
-> > +
-> > +	return false;
-> > +}
-> > +
-> > +static u32 *
-> > +imx93_pdfc_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
-> > +					    struct drm_bridge_state *bridge_state,
-> > +					    struct drm_crtc_state *crtc_state,
-> > +					    struct drm_connector_state *conn_state,
-> > +					    u32 output_fmt,
-> > +					    unsigned int *num_input_fmts)
-> > +{
-> > +	u32 *input_fmts;
-> > +
-> > +	*num_input_fmts = 0;
-> > +
-> > +	if (!imx93_pdfc_bus_output_fmt_supported(output_fmt))
-> > +		return NULL;
-> > +
-> > +	input_fmts = kmalloc(sizeof(*input_fmts), GFP_KERNEL);
-> > +	if (!input_fmts)
-> > +		return NULL;
-> > +
-> > +	switch (output_fmt) {
-> > +	case MEDIA_BUS_FMT_RGB888_1X24:
-> > +	case MEDIA_BUS_FMT_RGB565_1X16:
-> > +		input_fmts[0] = output_fmt;
-> > +		break;
-> > +	case MEDIA_BUS_FMT_RGB666_1X18:
-> > +	case MEDIA_BUS_FMT_FIXED:
-> > +		input_fmts[0] = MEDIA_BUS_FMT_RGB888_1X24;
-> > +		break;
-> > +	}
-> > +
-> > +	*num_input_fmts = 1;
-> > +
-> > +	return input_fmts;
-> > +}
-> > +
-> > +static int imx93_pdfc_bridge_atomic_check(struct drm_bridge *bridge,
-> > +					  struct drm_bridge_state *bridge_state,
-> > +					  struct drm_crtc_state *crtc_state,
-> > +					  struct drm_connector_state *conn_state)
-> > +{
-> > +	struct imx93_pdfc *pdfc = bridge->driver_private;
-> > +
-> > +	switch (bridge_state->output_bus_cfg.format) {
-> > +	case MEDIA_BUS_FMT_RGB888_1X24:
-> > +	case MEDIA_BUS_FMT_RGB666_1X18:
-> > +	case MEDIA_BUS_FMT_RGB565_1X16:
-> 
-> The case MEDIA_BUS_FMT_FIXED is also valid.
+<--              SDR            ---> | <--- HDR
+START 0x7E RnW(0) ACK CCC(ENTHDR0) T   HDR-CMD(00-7f write, 80--ff read)
 
-Good point, I think we should drop this from the
-imx93_pdfc_bus_output_fmts completely since we know that only prallel panels
-with an actual format can be attached to this bridge.
+                                    ----> |
+HDR-DATA HDR-CRC HDR-RESTART .... HDR-EXIT
 
-> > +		return 0;
-> > +	default:
-> > +		dev_warn(pdfc->dev, "Unsupported output bus format: 0x%x\n",
-> > +			 bridge_state->output_bus_cfg.format);
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> > +
-> > +static const struct drm_bridge_funcs funcs = {
-> > +	.attach			= imx93_pdfc_bridge_attach,
-> > +	.atomic_enable		= imx93_pdfc_bridge_atomic_enable,
-> > +	.atomic_duplicate_state	= drm_atomic_helper_bridge_duplicate_state,
-> > +	.atomic_destroy_state	= drm_atomic_helper_bridge_destroy_state,
-> > +	.atomic_get_input_bus_fmts	= imx93_pdfc_bridge_atomic_get_input_bus_fmts,
-> > +	.atomic_check		= imx93_pdfc_bridge_atomic_check,
-> > +	.atomic_reset		= drm_atomic_helper_bridge_reset,
-> > +};
-> > +
-> > +static int imx93_pdfc_bridge_probe(struct platform_device *pdev)
-> > +{
-> > +	struct device *dev = &pdev->dev;
-> > +	struct imx93_pdfc *pdfc;
-> > +	struct device_node *ep;
-> > +	int err;
-> > +
-> > +	pdfc = devm_drm_bridge_alloc(dev, struct imx93_pdfc, bridge, &funcs);
-> > +	if (IS_ERR(pdfc))
-> > +		return PTR_ERR(pdfc);
-> > +
-> > +	pdfc->regmap = syscon_node_to_regmap(dev->of_node->parent);
-> > +	if (IS_ERR(pdfc->regmap))
-> > +		return dev_err_probe(dev, PTR_ERR(pdfc->regmap),
-> > +				     "failed to get regmap\n");
-> > +
-> > +	err = of_property_read_reg(dev->of_node, 0, &pdfc->disp_mux_reg_off, NULL);
-> > +	if (err)
-> > +		return dev_err_probe(dev, err,
-> > +				     "failed to get display-mux reg\n");
-> > +
-> > +	/* No limits per default */
-> > +	pdfc->phy_bus_width = 24;
-> > +
-> > +	/* Get output ep (port1/endpoint0) */
-> > +	ep = of_graph_get_endpoint_by_regs(dev->of_node, 1, 0);
-> 
-> Nit: DT binding just defines endpoint not endpoint0, so set the reg parameter
-> to -1.
+Note: HDR-CMD is 16bit data, which included 7bit slave address and 8bit
+read/write command.
 
-Good point, thanks.
+svc hardware can auto issue SDR part.
 
-> > +	if (ep) {
-> > +		err = of_property_read_u32(ep, "bus-width", &pdfc->phy_bus_width);
-> > +		of_node_put(ep);
-> > +
-> > +		/* bus-width is optional but it must have valid data if present */
-> > +		if (err && err != -EINVAL)
-> > +			return dev_err_probe(dev, err,
-> > +					     "failed to query bus-width\n");
-> > +	}
-> > +
-> > +	pdfc->next_bridge = devm_drm_of_get_bridge(dev, dev->of_node, 1, 0);
-> > +	if (IS_ERR(pdfc->next_bridge))
-> > +		return dev_err_probe(dev, PTR_ERR(pdfc->next_bridge),
-> > +				     "failed to get next bridge\n");
-> > +
-> > +	pdfc->dev = dev;
-> > +	pdfc->bridge.driver_private = pdfc;
-> > +	pdfc->bridge.of_node = dev->of_node;
-> > +	pdfc->bridge.type = DRM_MODE_CONNECTOR_DPI;
-> > +
-> > +	return devm_drm_bridge_add(dev, &pdfc->bridge);
-> > +}
-> > +
-> > +static const struct of_device_id imx93_pdfc_dt_ids[] = {
-> > +	{ .compatible = "nxp,imx93-pdfc", },
-> 
-> The cover letter and Kconfig say that both i.MX91 and i.MX93 are supported,
-> so need an additional compatible string for i.MX91?
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Changes in v12:
+- rebase to v6.19-rc1
+- repost for sensor part.
+- Link to v11: https://lore.kernel.org/r/20251106-i3c_ddr-v11-0-33a6a66ed095@nxp.com
 
-I don't think so, according the imx91_93_common.dtsi, there are a lot
-IPs which are shared between the i.MX91 and the i.MX93, even the clock
-defines.
+Changes in v11:
+- Add Andy Shevchenko's reviewed-by tags
+- fix some nits at mmc5633, see patch's change log for detail.
+- Link to v10: https://lore.kernel.org/r/20251104-i3c_ddr-v10-0-e3e4cbc17034@nxp.com
 
-Thanks for the review.
+Changes in v10:
+- remove !! at svc patch
+- align datasheet register name in mmc5633
+- remove reduntant regmap_attach_dev()
+- see patch's change log for detail
+- Link to v9: https://lore.kernel.org/r/20251031-i3c_ddr-v9-0-f1e523ebaf78@nxp.com
 
-Regards,
-  Marco
+Changes in v9:
+- remove reducated check for ops->priv_xfer.
+- improve mmc5633 (see patch's change log for detail)
+- Link to v8: https://lore.kernel.org/r/20251028-i3c_ddr-v8-0-795ded2db8c2@nxp.com
 
+Changes in v8:
+- Add cleanup patch replace framework's i3c_priv_xfer with i3c_xfer
+- Link to v7: https://lore.kernel.org/r/20251027-i3c_ddr-v7-0-866a0ff7fc46@nxp.com
 
-> 
-> > +	{ /* sentinel */ }
-> > +};
-> > +MODULE_DEVICE_TABLE(of, imx93_pdfc_dt_ids);
-> > +
-> > +static struct platform_driver imx93_pdfc_bridge_driver = {
-> > +	.probe	= imx93_pdfc_bridge_probe,
-> > +	.driver	= {
-> > +		.of_match_table = imx93_pdfc_dt_ids,
-> > +		.name = "imx93_pdfc",
-> > +	},
-> > +};
-> > +module_platform_driver(imx93_pdfc_bridge_driver);
-> > +
-> > +MODULE_DESCRIPTION("NXP i.MX93 parallel display format configuration driver");
-> > +MODULE_AUTHOR("Liu Ying <victor.liu@nxp.com>");
-> > +MODULE_LICENSE("GPL");
-> > 
-> 
-> 
-> -- 
-> Regards,
-> Liu Ying
-> 
+Changes in v7:
+- add explicit define for I3C_HDR_*
+- add missed include files.
+- detail see each patches' change log
+- CONFIG_DEBUG_ATOMIC_SLEEP=y
+- Link to v6: https://lore.kernel.org/r/20251014-i3c_ddr-v6-0-3afe49773107@nxp.com
 
--- 
-#gernperDu 
-#CallMeByMyFirstName
+Changes in v6:
+- remove acpi part
+- collect Conor Dooley ack tags
+- Link to v5: https://lore.kernel.org/r/20251007-i3c_ddr-v5-0-444184f7725e@nxp.com
 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+Changes in v5:
+- Just realized missed CC mail list devicetree@vger.kernel.org and resend
+- Link to v4: https://lore.kernel.org/r/20251007-i3c_ddr-v4-0-3afea5105775@nxp.com
+
+Changes in v4:
+- use master's hdr_cap to check HDR cap.
+- add mmc5603 support.
+- Link to v3: https://lore.kernel.org/r/20250930-i3c_ddr-v3-0-b627dc2ef172@nxp.com
+
+Changes in v3:
+- Add new patch for change rnw to union for svc.
+- Detial changes see each patch's change log.
+- Link to v2: https://lore.kernel.org/r/20250924-i3c_ddr-v2-0-682a0eb32572@nxp.com
+
+Changes in v2:
+- Add sensor driver, which use HDR mode read/write data.
+- change priv_xfer to i3c_xfer.
+- Link to v1: https://lore.kernel.org/r/20250129-i3c_ddr-v1-0-028a7a5d4324@nxp.com
+
+---
+Frank Li (2):
+      dt-bindings: trivial-devices: add MEMSIC 3-axis magnetometer
+      iio: magnetometer: Add mmc5633 sensor
+
+ .../devicetree/bindings/trivial-devices.yaml       |   4 +
+ drivers/iio/magnetometer/Kconfig                   |  12 +
+ drivers/iio/magnetometer/Makefile                  |   1 +
+ drivers/iio/magnetometer/mmc5633.c                 | 585 +++++++++++++++++++++
+ 4 files changed, 602 insertions(+)
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20250129-i3c_ddr-b15488901eb8
+
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
+
