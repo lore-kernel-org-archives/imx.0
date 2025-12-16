@@ -1,42 +1,42 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED79333E36B
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 18:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8590233EAF3
+	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 18:00:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765908056; cv=none; b=BbwB7psjS/Ac1K+D7cZ1pXVLxR+tRHqB1VonPoxCUDiEHMYH25cPVdd2ZzBoKm+KQg+1wVevv7qOECSWWcjD9Q153wEqsAtIn1Y9wdqEWWliDXusz5oLVs4o+TxInFSAF9VBMCDtuMjPpNNAtWvkSvB1ElLZIXJ1klBlhh4xM4k=
+	t=1765908061; cv=none; b=giUiPwXfvWWFH4VN1J3OdzKAKKRSMssfE/75H5/ZVwyAjpAvRZ1uHxfKjNTJ2Co3H6Qlcbz81qqr/fSUlf8uajzPbqlGny+LqwARtZ1OrXpZo18viZduLf8UBZg9EuOPRdC2Sw9xnTw8vhNnKTD+cvbcF+BUTheRsXPG6cFEf4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765908056; c=relaxed/simple;
-	bh=vgzYstzkOxHRY2wg5PJejECL5hvpXu62j0hqo1D+RWI=;
+	s=arc-20240116; t=1765908061; c=relaxed/simple;
+	bh=MwUMFLJ/RkqkvWfrJIKs03Tad6Yy1fMBdkva9COkWzY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ik6OeyMB+72jRBc+dRVMqDuoDwYiGT8e99TLvMuTYny4+CRanKPlx8IcyVEuczyl5nmaH761epksFYUCikYkIIBnRp97hYBBv0Hh3+mdCF7j0BwjePCHWwqWN0GWBCaw/d+70WZHpJYazMt1Ulec8rqwE0Qsi3Gs3vCVUx7/l7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BXpy6V5i; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=cyeuLqKwSRqvzNLJkNc6uvAJbeWx2S1V4I6BWXdOV86wQQ8qfQIaQ3JbAKOdK/Ah6ay5rvYuDIW+jYcJ78HoDvuHqTzQ3rPjeVfFDlQYH1k2OMXKIeqcACDUb1teieaHHcVPChgUYHS44nPl9y0rS4K7GDApXAOV6kxj3Zfc4YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=R9hNIcnl; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BXpy6V5i"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="R9hNIcnl"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 16A7BC1A582;
-	Tue, 16 Dec 2025 18:00:29 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 376FE1A2256;
+	Tue, 16 Dec 2025 18:00:57 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 89DC26071C;
-	Tue, 16 Dec 2025 18:00:53 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3F936119A980D;
-	Tue, 16 Dec 2025 19:00:48 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0CE706071C;
+	Tue, 16 Dec 2025 18:00:57 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 95A4B119A97F1;
+	Tue, 16 Dec 2025 19:00:52 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1765908052; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1765908055; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=p42FxQU8XqxcY65o1OnImzYH+JEKXNJxWyr+WpaPWLo=;
-	b=BXpy6V5ifmnqjhEvL2Dlo+mKFPGcFwkNcjDzXWr8/+InGvoya8cb03w6VBniXNPHPw0PTz
-	Nm/6aOLeDqbCuKklh0a23yEtPU/8ucfZfgydkx1tK1IvWqMqMSeJWPWoeUt3x/cYGHYL/c
-	VdryylHllkVQCy1XVhzdpQYH+kpg2Tc1/W31YrZncrBhRCmjUxec4dvSYAqPUxdSXQpvqr
-	2jLfdb4h9h7HvUv8zK9i3Iu8IoEcqr7LNcCAe0wlP636xfdXTrx0y+JtYIV+9LePz4FO+P
-	IdO5NuL3+vSTmZhr2x/JYv37IGs+wsMlDitzXgfT+LWPCghQorbVduONPsNGpg==
+	bh=1h4T3/Lh3rCQeQ9eOfLIUP5TXiLulvJd3zq71FlR6xk=;
+	b=R9hNIcnlYCkXarhLF0X6W8am+BlVymbAKKatHVsaeqLo6QG6Twk6Svx94X4POW2l9CDr7D
+	qjFsVbU0S3k6qkXcXhRzhGcivnHKbgYulRPH3m3K4js8ywfuPZdr2Vqfes/d0IcWyVtFY9
+	re2W/DtlbKjS+UBsghvEg2XBKDsalAfyto8ArrDASui6c96myVwwmZ+ABDU79qL9n1MEn9
+	00PJ38qpHX28C62lv1IKa6YMiBxX2Wmwrl2FICXiC66GRmXQ0VvIodCx1zUKXeH5zhGinh
+	+gINwUZzEb1SxIZ0NlSfka+DAgYvNACRqJtD0sbCgq0RrBeFEFQEbKt35O/32A==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Tue, 16 Dec 2025 18:58:51 +0100
-Subject: [PATCH v3 18/22] drm/bridge: imx8qxp-pixel-link: simplify logic to
- find next bridge
+Date: Tue, 16 Dec 2025 18:58:52 +0100
+Subject: [PATCH v3 19/22] drm/bridge: imx8qxp-pixel-link: simplify freeing
+ of the remote device_node
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-18-b5165fab8058@bootlin.com>
+Message-Id: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-19-b5165fab8058@bootlin.com>
 References: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-0-b5165fab8058@bootlin.com>
 In-Reply-To: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-0-b5165fab8058@bootlin.com>
 To: Andrzej Hajda <andrzej.hajda@intel.com>, 
@@ -71,78 +71,65 @@ Cc: Hui Pu <Hui.Pu@gehealthcare.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-imx8qxp_pixel_link_find_next_bridge() uses a sophisticated logic to find
-the preferred next bridge, using an array with two supporting index
-variables. This is more sophisticated than required because we only ever
-need a pointer to the "current" bridge and to the "best so far" bridge.
-
-Additionally this logic is going to make the addition of proper refcounting
-quite complex.
-
-Rewrite the logic using two drm_bridge pointers, which is by itself
-slightly simpler and is a preparation step for introducing bridge
-refcounting in a later commit.
-
-Also reword a comment to make it clearer.
+The main loop in imx8qxp_pixel_link_find_next_bridge() requires calling
+of_node_put() in multiple places, complicating code flow. Simplify it by
+using a cleanup action and making the 'remote' variable scope local to the
+loop.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c | 23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
-index e5943506981d..53016f0d53a0 100644
+index 53016f0d53a0..2ecc3c1051e5 100644
 --- a/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
 +++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
-@@ -261,12 +261,10 @@ imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
+@@ -260,7 +260,7 @@ static struct drm_bridge *
+ imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
  {
  	struct device_node *np = pl->dev->of_node;
- 	struct device_node *port, *remote;
--	struct drm_bridge *next_bridge[PL_MAX_NEXT_BRIDGES];
-+	struct drm_bridge *selected_bridge = NULL;
+-	struct device_node *port, *remote;
++	struct device_node *port;
+ 	struct drm_bridge *selected_bridge = NULL;
  	u32 port_id;
  	bool found_port = false;
--	int reg, ep_cnt = 0;
--	/* select the first next bridge by default */
--	int bridge_sel = 0;
-+	int reg;
+@@ -286,7 +286,8 @@ imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
+ 	}
  
- 	for (port_id = 1; port_id <= PL_MAX_MST_ADDR + 1; port_id++) {
- 		port = of_graph_get_port_by_id(np, port_id);
-@@ -300,24 +298,25 @@ imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
+ 	for (reg = 0; reg < PL_MAX_NEXT_BRIDGES; reg++) {
+-		remote = of_graph_get_remote_node(np, port_id, reg);
++		struct device_node *remote __free(device_node) =
++			of_graph_get_remote_node(np, port_id, reg);
+ 		if (!remote)
+ 			continue;
+ 
+@@ -294,15 +295,12 @@ imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
+ 			DRM_DEV_DEBUG(pl->dev,
+ 				      "port%u endpoint%u remote parent is not available\n",
+ 				      port_id, reg);
+-			of_node_put(remote);
  			continue;
  		}
  
--		next_bridge[ep_cnt] = of_drm_find_bridge(remote);
--		if (!next_bridge[ep_cnt]) {
-+		struct drm_bridge *next_bridge = of_drm_find_bridge(remote);
-+		if (!next_bridge) {
- 			of_node_put(remote);
+ 		struct drm_bridge *next_bridge = of_drm_find_bridge(remote);
+-		if (!next_bridge) {
+-			of_node_put(remote);
++		if (!next_bridge)
  			return ERR_PTR(-EPROBE_DEFER);
- 		}
+-		}
  
--		/* specially select the next bridge with companion PXL2DPI */
--		if (of_property_present(remote, "fsl,companion-pxl2dpi"))
--			bridge_sel = ep_cnt;
+ 		/*
+ 		 * Select the next bridge with companion PXL2DPI if
+@@ -310,8 +308,6 @@ imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
+ 		 */
+ 		if (!selected_bridge || of_property_present(remote, "fsl,companion-pxl2dpi"))
+ 			selected_bridge = next_bridge;
 -
--		ep_cnt++;
-+		/*
-+		 * Select the next bridge with companion PXL2DPI if
-+		 * present, otherwise default to the first bridge
-+		 */
-+		if (!selected_bridge || of_property_present(remote, "fsl,companion-pxl2dpi"))
-+			selected_bridge = next_bridge;
- 
- 		of_node_put(remote);
+-		of_node_put(remote);
  	}
  
  	pl->mst_addr = port_id - 1;
- 
--	return next_bridge[bridge_sel];
-+	return selected_bridge;
- }
- 
- static int imx8qxp_pixel_link_bridge_probe(struct platform_device *pdev)
 
 -- 
 2.52.0
