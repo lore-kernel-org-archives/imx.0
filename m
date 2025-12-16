@@ -1,204 +1,108 @@
-Received: from mx-relay186-hz1.antispameurope.com (mx-relay186-hz1.antispameurope.com [94.100.133.75])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355E534A789
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 13:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765892466; cv=pass; b=hWzUqiHX+uSGqZZXZqhYy5gGhVNfOXsjZFmWsafMcfzvr+rIwcy3eD7RLCMY+eNen1W1IoAMecip+e/5rPVz9wY7pc5jZFHhFDV/c4QOPVOiQiTyieCUIlp+cSmHkeK0UTtyp8md7J16DuGVx+CcOfBKmSBTrOg1b4nExffxOWs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765892466; c=relaxed/simple;
-	bh=ZVwXYQDLhX+snpzP7zDTjm80JBthkRMPulHnycCGpdU=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFEB31E0EB;
+	Tue, 16 Dec 2025 13:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765892955; cv=none; b=JmWaKfXzvVTPFXm0K0clfHj0CKnArM/cJBz2T3vORkaMH7iTHIEfvbAAnZWd28mhQi5Egyv6qVhHDEAJy7d6dBLvsBVhK5MHbmlUEyONvFOe1dfFbO/RURef2S32hEmK/iHaasegYv0Ua8WqvOwmiqRSfpE8aPpxEvwHrE5E4XI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765892955; c=relaxed/simple;
+	bh=sFLsYOIToyI1CYsLfOe9PNPAZa7SMcZGDRLeye3TkV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EAEaxDxSzyWrZdWTPL1o1o5swe7uXJFL5LA5e1fEVJ13jtClyVeZpwK0VuDyiezRHmREScqGj8b/6zvAs7DjBLpW7rnFuax2gA8p4hsYWO5IMZRz1o//XjgRRKjD8dH7pEUE5eLs+SDmRwzOXHnkHWGydHQekU/bjdgKhw3JE+g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=ew.tq-group.com; spf=unknown smtp.mailfrom=ew.tq-group.com; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=QwiWqnsw reason="key not found in DNS"; arc=pass smtp.client-ip=94.100.133.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=tempfail smtp.mailfrom=ew.tq-group.com
+	 MIME-Version:Content-Type; b=W6ITLo9p0HnXAzwN99Ii4I/trYKulM4t+eFuRtE6CYPz/G9bY4LRYfOnJK7oGwaOkfDMsLpaaebFkJH++se0rg44h6JX16Q/q6IUI9bPQZNOttL/4VnEaRDfuXyADEqb2G8mvPSa8Kl2scTZJmx7/b4xJb6YFqmAW97usFLv/GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=1cVIG/eg; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="QwiWqnsw"
-ARC-Authentication-Results: i=1; mx-gate186-hz1.hornetsecurity.com 1;
- spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out02-hz1.hornetsecurity.com;
- dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=y/NNmCOZpOKOo1L5GaD1X3K8BzLVRcnpiik60MQSZsk=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1765892397;
- b=SrRCJsgX6alxPwM901pSzNX1aIhGPrweNFDKTJbFcajG+kyoBuWe+x8mX2SWIqvW3lD/9KgT
- YkTK8/neqJJYMZsGyQnTH9X5QgpxbcIGytsqdOMBEBj0ZBXvY1WG1+RBKf1b6DMRy6fTWw8HSos
- odqrWSN2z171337cI9R1sjAgWdG7wZKED5G+FOXBdzSLAyItb7Z+teGX2m6g/lBoej1f8BKczNs
- FMiZbcJpyZaqNNEsbAX63FSq00H8ELZKmoXLvXZPaIdUy6xeV41TDuTLMFhAgPsdDm+35uHg4QY
- fVqnSl5AzSFTpLSfckBzRVHSR6d9+SnLYbW9KbyBge50Q==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1765892397;
- b=ADe2LR1ZldH1CfTUYQU15S9magauVwH8fSCm23qsHUsHJu4yd92pDzGnThp4/rhOE9RMVrvz
- 8KFbXK8kwhaAX7cx1ZpKF4rZd371RUymg1TPBYfkNgAl+rXudx2XZFYADe4TjFDJFMDkSwJXEwG
- fh+VccCiiDfrHBeKQcVm9qzL2xmlt3rvgIxPnVtZNSuFMe4i0uuqD8H6vV093d1vNiwkXl4s3/b
- MjQiQW+EnyRXrMBXm76KeaqGXOTkMczhbwkTM3SKqNKCSeK1YMaTmxK099bcc1FHA6Xly7Zmh7D
- X6sCCCoNU31QTa7cRUlgI1Fouze6W+v2Uaw5Ks6rrkj1w==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay186-hz1.antispameurope.com;
- Tue, 16 Dec 2025 14:39:57 +0100
-Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by smtp-out02-hz1.hornetsecurity.com (Postfix) with ESMTPSA id A7BE65A167D;
-	Tue, 16 Dec 2025 14:39:46 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: [PATCH 3/3] arm64: dts: imx8mn-tqma8mqnl: fix LDO5 power off
-Date: Tue, 16 Dec 2025 14:39:25 +0100
-Message-ID: <20251216133927.913039-3-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251216133927.913039-1-alexander.stein@ew.tq-group.com>
-References: <20251216133927.913039-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="1cVIG/eg"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
+	bh=sFLsYOIToyI1CYsLfOe9PNPAZa7SMcZGDRLeye3TkV4=; b=1cVIG/eg7I6sS8hSAue2feSosa
+	fs9JYZLPNZbpWOz+5uum2rewSRjwJieZr8xzpUV4bVReoRWYTT+mHCMkrJwoHhPQSGGR4sPYkzGME
+	RDsFsScNiP6CEnjPay7NzFuwIgrFnlWdjIBcjNaVq8fDUXuIaKOW1yPFJct87k4LnqJiex01iAtJC
+	+Fz+7SV96+v9afwrM24tqAFdJ6qSg/CFjF9ANZ2MwSKnE6OQY6GWDS9sX+mM66a1RGHlrF4XCy4eq
+	tmRZp4LuDiR8emPv9NnninxunaM3+fUtsB+aMFPl4oLO0sv1kYMOkT8HpqoosgGfpuXJ0fkaxQjwv
+	m+v2sXhw==;
+Received: from [141.76.253.243] (helo=phil.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1vVVPc-0004Lk-DA; Tue, 16 Dec 2025 14:48:24 +0100
+From: Heiko Stuebner <heiko@sntech.de>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, andrzej.hajda@intel.com,
+ neil.armstrong@linaro.org, rfoss@kernel.org,
+ Damon Ding <damon.ding@rock-chips.com>
+Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
+ kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
+ jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
+ andy.yan@rock-chips.com, dmitry.baryshkov@oss.qualcomm.com,
+ dianders@chromium.org, m.szyprowski@samsung.com, jani.nikula@intel.com,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
+Subject:
+ Re: [PATCH v7 01/18] drm/display: bridge_connector: Ensure last bridge
+ determines EDID/modes detection capabilities
+Date: Tue, 16 Dec 2025 14:48:23 +0100
+Message-ID: <3351986.usQuhbGJ8B@phil>
+In-Reply-To: <ff65f453-68a9-41fc-b9e3-02733bba96e3@rock-chips.com>
+References:
+ <20251021023130.1523707-1-damon.ding@rock-chips.com>
+ <DDNXIYL494D2.2N8L1J7XTBT4S@bootlin.com>
+ <ff65f453-68a9-41fc-b9e3-02733bba96e3@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay186-hz1.antispameurope.com with 4dVyhz3009z3f2J0
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:368384c713b76e7f27c528b6b2e25988
-X-cloud-security:scantime:1.996
-DKIM-Signature: a=rsa-sha256;
- bh=y/NNmCOZpOKOo1L5GaD1X3K8BzLVRcnpiik60MQSZsk=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1765892396; v=1;
- b=QwiWqnswut4QW6mlM/AjHrSOglk0dAjOaqi3QaqW752NkmlPXxvMpV3xL54krIYTpI3UR92Q
- C1oYX2s/tquFo1B08dH8eC0dsinS6U5GnxBvxfg9o9RdgU+BBbum05COFMmSyWCl2wq05Kw3DD6
- YYlMdFcpjhNXWvtuEpXE81rk6EHeRGK/vUiiQ8J3A5isxvxNNRIv/Oduo2Jpub0Z0oxm0FJHLOu
- /jrHL/ZB7LxoHNpC2xZygZtvAC7di77JYicUsv17LZM+nwkYJo+7P/jYF2dYdnknD5pdP+MrfWe
- UDAJuRrGw4gJPxEhVG1wXOgV34g2o5x1y3uPzRoKYc2wQ==
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Am Mittwoch, 22. Oktober 2025, 03:15:52 Mitteleurop=C3=A4ische Normalzeit s=
+chrieb Damon Ding:
+> Hi Luca,
+>=20
+> On 10/21/2025 6:31 PM, Luca Ceresoli wrote:
+> > Hello Damon,
+> >=20
+> > On Tue Oct 21, 2025 at 4:31 AM CEST, Damon Ding wrote:
 
-Fix SD card removal caused by automatic LDO5 power off after boot
+> >=20
+> > This does not apply on current drm-misc-next, due to the patch I mentio=
+ned
+> > in a previous iteration, now applied as commit 2be300f9a0b6 ("drm/displ=
+ay:
+> > bridge_connector: get/put the stored bridges").
+> >=20
+> > However I'm sorry I have to mention that patch turned out being buggy, =
+so
+> > I've sent a series to apply a corrected version [0]. I suggest watching=
+ the
+> > disucssion about the fix series, and if that gets approved rebase on to=
+p of
+> > that and adapt your changes.
+> >=20
+> > Sorry about the mess. :(
+> >=20
+> > [0] https://lore.kernel.org/r/20251017-drm-bridge-alloc-getput-bridge-c=
+onnector-fix-hdmi_cec-v2-0-667abf6d47c0@bootlin.com
+> >=20
+> >=20
+>=20
+> I saw your fix patches before sending this series. I think your patches=20
+> will likely be merged relatively quickly, so I plan to wait until the=20
+> other patches in my patch series are confirmed to be fine, then submit=20
+> v8 version based on the latest bridge_connector driver. :-)
 
-To prevent this, add vqmmc regulator for USDHC, using a GPIO-controlled
-regulator that is supplied by LDO5. Since this is implemented on SoM but
-used on baseboards with SD-card interface, implement the functionality
-on SoM part and optionally enable it on baseboards if needed.
+I think with 6.19-rc1 out, now is a great time for v8? :-)
 
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
- .../dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts | 13 ++++++-----
- .../boot/dts/freescale/imx8mn-tqma8mqnl.dtsi  | 22 +++++++++++++++++++
- 2 files changed, 29 insertions(+), 6 deletions(-)
+Heiko
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
-index d7f7f9aafb7d1..0d009f4be804e 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx.dts
-@@ -69,6 +69,10 @@ &mipi_dsi {
- 	samsung,esc-clock-frequency = <20000000>;
- };
- 
-+&reg_usdhc2_vqmmc {
-+	status = "okay";
-+};
-+
- &sai3 {
- 	assigned-clocks = <&clk IMX8MN_CLK_SAI3>;
- 	assigned-clock-parents = <&clk IMX8MN_AUDIO_PLL1_OUT>;
-@@ -216,8 +220,7 @@ pinctrl_usdhc2: usdhc2grp {
- 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
- 
- 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-@@ -226,8 +229,7 @@ pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
- 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
- 
- 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-@@ -236,8 +238,7 @@ pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
- 			   <MX8MN_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MN_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MN_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MN_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
- 
- 	pinctrl_usdhc2_gpio: usdhc2-gpiogrp {
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-index ac6ce5d814c50..31a3ca137e636 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl.dtsi
-@@ -15,6 +15,20 @@ memory@40000000 {
- 		reg = <0x00000000 0x40000000 0 0x40000000>;
- 	};
- 
-+	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
-+		compatible = "regulator-gpio";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_reg_usdhc2_vqmmc>;
-+		regulator-name = "V_SD2";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
-+		states = <1800000 0x1>,
-+			 <3300000 0x0>;
-+		vin-supply = <&ldo5_reg>;
-+		status = "disabled";
-+	};
-+
- 	reserved-memory {
- 		#address-cells = <2>;
- 		#size-cells = <2>;
-@@ -218,6 +232,10 @@ &mipi_dsi {
- 	vddio-supply = <&ldo3_reg>;
- };
- 
-+&usdhc2 {
-+	vqmmc-supply = <&reg_usdhc2_vqmmc>;
-+};
-+
- &usdhc3 {
- 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
- 	pinctrl-0 = <&pinctrl_usdhc3>;
-@@ -272,6 +290,10 @@ pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
- 		fsl,pins = <MX8MN_IOMUXC_SD2_RESET_B_GPIO2_IO19		0x84>;
- 	};
- 
-+	pinctrl_reg_usdhc2_vqmmc: regusdhc2vqmmcgrp {
-+		fsl,pins = <MX8MN_IOMUXC_GPIO1_IO04_GPIO1_IO4		0xc0>;
-+	};
-+
- 	pinctrl_usdhc3: usdhc3grp {
- 		fsl,pins = <MX8MN_IOMUXC_NAND_WE_B_USDHC3_CLK		0x1d4>,
- 			   <MX8MN_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d2>,
--- 
-2.43.0
 
