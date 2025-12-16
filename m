@@ -1,134 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0C53930D7;
-	Tue, 16 Dec 2025 12:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E93E39378A
+	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 12:46:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765889123; cv=none; b=RISljcSKVNz5/AcS+bRCLk7cAcXTAxL/s9lJZvPT11tFWLz7KTNxJdDE1ILmiwusNYcxvCeyggCB+QFZd/G6zIKXjEjKS1jCFJAYQi96xp++UlS49JB6fLtPayUmzY1NXAhJ7bkHoT6h6qc5QqcywuGGDdh8knkOn4I6oinPmuE=
+	t=1765889200; cv=none; b=uCa60hunkoVM0aAXhcYFskGOHbpeiMLZ7UIt9lo+htq3JgKYUH4/j1PhCXz8+Xc2tLkApV7j4zETme1T0SLcHbwlO1vZsSQEJec3BkysmgQVh/w8hj5I8yPUTGSyWx0fANgCels8DLQtrvRCxlpj7uU2YiF36B9t67BB/xx5H34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765889123; c=relaxed/simple;
-	bh=BB7cuc1NoM/ZjbE9WkcQ3syZOkeMW0I8NGbpaVWvHrA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GfBs/CIOO0HN03GvKycn3ThHu/46AYYiTtK5hmlfnw/N9XmOQTicc5LsefRf4JGqafQ7lnwUEh0w7oLjj3bPNoA2lJzSoFmvhLY9Y3w/HiR8oxlFqWwl2D6SjF7+TOcyOoaPraDfzv/hA/RlDdi3p6XmQYabfnKc+D3CdSjdkLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZnoL6OaL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765889200; c=relaxed/simple;
+	bh=z3H+ww0YXdNEVFbQO+H71xD+Nj1JnjAKfDMnH/DFZUc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=RRpp1uMU+yX/7YzTtwaKkJvLzvGHPTKKa/0Y0Dtw6olOC14dQxWGOds920uTsJ32l74R8UDZAjIerKFe0tQzGBTvQF6MplGcmnYsq0FdA5w586XP8Gq+3gSWweCtqGRhNKM4skNCzoN9jaT4KRNBWtyMNQG5vnasH8BjNlUjUCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=m6Q9kiwX; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZnoL6OaL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8388FC4CEF1;
-	Tue, 16 Dec 2025 12:45:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765889123;
-	bh=BB7cuc1NoM/ZjbE9WkcQ3syZOkeMW0I8NGbpaVWvHrA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZnoL6OaLXuO+HTBjme5kokBg0mnjS5RwOuZ6J05mjCYsgC+8P5QwHuW5NKH2ESn6J
-	 G3W5VhnMayk+dn5VjLfT5UFuTX93YBBL9G/2FKYLk/kw3iPFRGcDCSZtUBKzRMSV/a
-	 RouZAANdXw1Db478Bn39VjR3zqFC0RYvl5Id7A9t1MT39UIG2Jd87pr3U/+5olFHoC
-	 sbo5M9OnE+as1zxfENAdombBcAwZECL0O0bltvRPFc1jAQuExxy57AQ05hCuQs4JP5
-	 JLaTsl2h5ZXDDzL+jnGJYuCiJB+YdY2g2Siou/HnXT76l2YwUQRT7WyHzz09vv+OZ4
-	 9GDNXf1AYoSfQ==
-Date: Tue, 16 Dec 2025 18:15:19 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Koichiro Den <den@valinux.co.jp>, Niklas Cassel <cassel@kernel.org>,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
-	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 0/8] dmaengine: Add new API to combine onfiguration and
- descriptor preparation
-Message-ID: <aUFUX0e_h7RGAecz@vaman>
-References: <20251208-dma_prep_config-v1-0-53490c5e1e2a@nxp.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="m6Q9kiwX"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E699A1A2232;
+	Tue, 16 Dec 2025 12:46:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A0B896071C;
+	Tue, 16 Dec 2025 12:46:29 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5F6D9119434E1;
+	Tue, 16 Dec 2025 13:46:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1765889187; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=5hHeRHBPz8FHrfA8wBRwIPdvL07IcL4vWcbkjQN6o5U=;
+	b=m6Q9kiwXvA4v1X/hP/+JyTcjUw1OsRZD6sX9zF23Uc56YUe0aF7FfA2KCuP1M2obR4PlMb
+	aPzIj3mIE/PPPTiVXNNK9IvGfQU/IcRxA1u3tSisdJ4StT4ZwIhS9r2tuvD4DcqrWN6HK7
+	r+Fv7dhPRtuhT08YnqBBjRN6nck6Vv5kD/gUckn233hlRlfhJoVzlbq0b8DUv//EcPVzWh
+	C+Xfl+is9PJ7W3ZgO6EOYgUa9QWFL4H0SQzz534bgN3xNr/BymxAexqEz6ffIeUj20qWGx
+	KQmu8ehyJNbQzZEDn46VBO1vOEXe44XkhxfLx234QUnyLF1DRhsghK7L/S8xtg==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251208-dma_prep_config-v1-0-53490c5e1e2a@nxp.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 16 Dec 2025 13:46:11 +0100
+Message-Id: <DEZNGU4VJFK8.Y1LKWVTD7O8K@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v2 17/26] drm/meson: encoder_*: use
+ devm_of_drm_get_bridge() to put the next bridge
+Cc: "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
+ <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Alexey Brodkin" <abrodkin@synopsys.com>, "Phong
+ LE" <ple@baylibre.com>, "Liu Ying" <victor.liu@nxp.com>, "Shawn Guo"
+ <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
+ <festevam@gmail.com>, "Adrien Grassein" <adrien.grassein@gmail.com>,
+ "Laurent Pinchart" <laurent.pinchart+renesas@ideasonboard.com>, "Tomi
+ Valkeinen" <tomi.valkeinen+renesas@ideasonboard.com>, "Kieran Bingham"
+ <kieran.bingham+renesas@ideasonboard.com>, "Geert Uytterhoeven"
+ <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Kevin
+ Hilman" <khilman@baylibre.com>, "Jerome Brunet" <jbrunet@baylibre.com>,
+ "Chun-Kuang Hu" <chunkuang.hu@kernel.org>, "Philipp Zabel"
+ <p.zabel@pengutronix.de>, "Matthias Brugger" <matthias.bgg@gmail.com>,
+ "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
+ "Anitha Chrisanthus" <anitha.chrisanthus@intel.com>, "Inki Dae"
+ <inki.dae@samsung.com>, "Seung-Woo Kim" <sw0312.kim@samsung.com>, "Kyungmin
+ Park" <kyungmin.park@samsung.com>, "Krzysztof Kozlowski" <krzk@kernel.org>,
+ "Alim Akhtar" <alim.akhtar@samsung.com>, "Hui Pu"
+ <Hui.Pu@gehealthcare.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, "Louis Chauvet"
+ <louis.chauvet@bootlin.com>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-renesas-soc@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
+ <linux-mediatek@lists.infradead.org>, <linux-samsung-soc@vger.kernel.org>
+To: "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>
+X-Mailer: aerc 0.20.1
+References: <20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-0-88f8a107eca2@bootlin.com> <20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-17-88f8a107eca2@bootlin.com> <CAFBinCCQjeUu7pgfwViH6b0-M6S_sKgfvz9VAP1hpqLRj=bL_g@mail.gmail.com>
+In-Reply-To: <CAFBinCCQjeUu7pgfwViH6b0-M6S_sKgfvz9VAP1hpqLRj=bL_g@mail.gmail.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 08-12-25, 12:09, Frank Li wrote:
+Hello Martin,
 
-Spell check on subject please :-)
+On Sun Nov 30, 2025 at 2:09 PM CET, Martin Blumenstingl wrote:
+> Hi Luca,
+>
+> On Fri, Nov 28, 2025 at 5:54=E2=80=AFPM Luca Ceresoli <luca.ceresoli@boot=
+lin.com> wrote:
+>>
+>> This driver obtains a bridge pointer from of_drm_find_bridge() in the pr=
+obe
+>> function and stores it until driver removal. of_drm_find_bridge() is
+>> deprecated. Move to devm_of_drm_get_bridge() which puts the bridge
+>> reference on remove or on probe failure.
+>>
+>> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>> ---
+>>  drivers/gpu/drm/meson/meson_encoder_cvbs.c | 2 +-
+>>  drivers/gpu/drm/meson/meson_encoder_dsi.c  | 2 +-
+>>  drivers/gpu/drm/meson/meson_encoder_hdmi.c | 2 +-
+>>  3 files changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/meson/meson_encoder_cvbs.c b/drivers/gpu/dr=
+m/meson/meson_encoder_cvbs.c
+>> index dc374bfc5951..bf8588a5f6dd 100644
+>> --- a/drivers/gpu/drm/meson/meson_encoder_cvbs.c
+>> +++ b/drivers/gpu/drm/meson/meson_encoder_cvbs.c
+>> @@ -241,7 +241,7 @@ int meson_encoder_cvbs_probe(struct meson_drm *priv)
+>>                 return 0;
+>>         }
+>>
+>> -       meson_encoder_cvbs->next_bridge =3D of_drm_find_bridge(remote);
+>> +       meson_encoder_cvbs->next_bridge =3D devm_of_drm_get_bridge(priv-=
+>dev, remote);
+>>         of_node_put(remote);
+>>         if (!meson_encoder_cvbs->next_bridge)
+>>                 return dev_err_probe(priv->dev, -EPROBE_DEFER,
+> Would you be happy with me sending a patch that replaces the whole
+> logic in two meson_encoder_{cvbs,dsi,hdmi}.c with
+> devm_drm_of_get_bridge()?
+> I see two benefits:
+> - simpler code
+> - a patch less in your series (less maintenance burden for you)
+>
+> What I'm not sure about is how this series interacts with
+> devm_drm_of_get_bridge() which is why I'm asking before cooking a
+> patch.
 
-> Previously, configuration and preparation required two separate calls. This
-> works well when configuration is done only once during initialization.
-> 
-> However, in cases where the burst length or source/destination address must
-> be adjusted for each transfer, calling two functions is verbose.
-> 
-> 	if (dmaengine_slave_config(chan, &sconf)) {
-> 		dev_err(dev, "DMA slave config fail\n");
-> 		return -EIO;
-> 	}
-> 
-> 	tx = dmaengine_prep_slave_single(chan, dma_local, len, dir, flags);
-> 
-> After new API added
-> 
-> 	tx = dmaengine_prep_slave_single(chan, dma_local, len, dir, flags, &sconf);
+Apologies for the long delay in getting back to you. You might have noticed
+some discussion about the overall approach, and I waited for it to settle.
 
-Nak, we cant change the API like this.
-I agree that you can add a new way to call dmaengine_slave_config() and
-dmaengine_prep_slave_single() together.
-maybe dmaengine_prep_config_perip_single() (yes we can go away with slave, but
-cant drop it, as absence means something else entire).
+About devm_drm_of_get_bridge(), it is a very different function so it does
+not affect this series. The name similarity is confusing indeed, but
+devm_of_drm_get_bridge() has been removed from my approach, so one less
+source of confusion.
 
-I would like to retain the dmaengine_prep_slave_single() as an API for
-users to call and invoke. There are users who configure channel once as
-well
+I'm soon sending v3, and I have updated my patch to
+eson_encoder_{cvbs,dsi,hdmi}.c, actually splitting it in 3. I'd be grateful
+if you could reviewd and/ot test them when I send v3. But I don't think
+there is a need for you to send any patches related to this topic.
 
-> 
-> Additional, prevous two calls requires additional locking to ensure both
-> steps complete atomically.
-> 
->     mutex_lock()
->     dmaengine_slave_config()
->     dmaengine_prep_slave_single()
->     mutex_unlock()
-> 
-> after new API added, mutex lock can be moved. See patch
->      nvmet: pci-epf: Use dmaengine_prep_slave_single_config() API
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Frank Li (8):
->       dmaengine: Add API to combine configuration and preparation (sg and single)
->       PCI: endpoint: pci-epf-test: use new DMA API to simple code
->       dmaengine: dw-edma: Use new .device_prep_slave_sg_config() callback
->       dmaengine: dw-edma: Pass dma_slave_config to dw_edma_device_transfer()
->       nvmet: pci-epf: Remove unnecessary dmaengine_terminate_sync() on each DMA transfer
->       nvmet: pci-epf: Use dmaengine_prep_slave_single_config() API
->       PCI: epf-mhi:Using new API dmaengine_prep_slave_single_config() to simple code.
->       crypto: atmel: Use dmaengine_prep_slave_single_config() API
-> 
->  drivers/crypto/atmel-aes.c                    | 10 ++---
->  drivers/dma/dw-edma/dw-edma-core.c            | 38 +++++++++++-----
->  drivers/nvme/target/pci-epf.c                 | 21 +++------
->  drivers/pci/endpoint/functions/pci-epf-mhi.c  | 52 +++++++---------------
->  drivers/pci/endpoint/functions/pci-epf-test.c |  8 +---
->  include/linux/dmaengine.h                     | 64 ++++++++++++++++++++++++---
->  6 files changed, 111 insertions(+), 82 deletions(-)
-> ---
-> base-commit: bc04acf4aeca588496124a6cf54bfce3db327039
-> change-id: 20251204-dma_prep_config-654170d245a2
-> 
-> Best regards,
-> --
-> Frank Li <Frank.Li@nxp.com>
+Best regards,
+Luca
 
--- 
-~Vinod
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
