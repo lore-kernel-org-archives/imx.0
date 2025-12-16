@@ -1,44 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910DD31AF1F;
-	Tue, 16 Dec 2025 06:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FC6341060;
+	Tue, 16 Dec 2025 06:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765864978; cv=none; b=Epic1zIqU1QRMO+S5/hG2Pri5Xol5iIQMUns+AMos+b/b2XoqEvuTfJ9P80+hvH43nVAMIp7UK0WXqoIP78vgsP+ZtJhhxfFMEi0hXHk7+mbJSWzzVQTYEci2ZRb4YI6K6jPgFfkMg269UbBoop+olEfGcNniMxdd/eCe5XrY9s=
+	t=1765866323; cv=none; b=n5SSw4jGy/j/bEhNhMJaIDm2CXN3YJsl7joNaCI52mVZE+o1uCYIMZ5Xfnj5G6kkYqhurFesnKOQ/ejZfCnW7DcAeVuzBCZaChGTfXrU++OFU2xmDDedvOMnj3Edbt3peOdHQKOLTLu4d2ii/etbinIq5/IMAFdh9Lw5SKGBjbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765864978; c=relaxed/simple;
-	bh=Em6+p8Pu/6Vb7snDG9aA3wExt/uZfpztPqqJRPy+fdY=;
+	s=arc-20240116; t=1765866323; c=relaxed/simple;
+	bh=jURSggc8h5Auoce5njAyzjWeWLT5P7bncC7/J9uqAIk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xp1C+2KjWX7xyvWSH71OkQn+mX44Lx+ew4qtqORFtzMrNCgGPd0Jq4C3PV3Z61P90+rtrcpGma/VVZh2gHNa+LYUT5gEDB47oAYfGo9bvbxDU68rNjUH7QpzgJanA7UjvEI0F8A3qDNf/89qaiSkmlsDJbwB8zzSP1Xe9DSwC2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IMS4yQlo; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=icQa6lA0XBEfJvXFrzqDiN9MqviwlC1v2ZCeJktYhMapncQZnFqVLI2504U78h5S/v/vV55Eq0BUIDttzaNN66Q9cLKg99IwbextWo4vr4lO/nezH+RiGw9H0LgFq/KnMz5GnC78Ir2K6mFGaIopMLt5KEnCFflb1a7TMfTvJh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X6eKLQbs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IMS4yQlo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB7EFC113D0;
-	Tue, 16 Dec 2025 06:02:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X6eKLQbs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DEA4C4CEF1;
+	Tue, 16 Dec 2025 06:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765864977;
-	bh=Em6+p8Pu/6Vb7snDG9aA3wExt/uZfpztPqqJRPy+fdY=;
+	s=k20201202; t=1765866320;
+	bh=jURSggc8h5Auoce5njAyzjWeWLT5P7bncC7/J9uqAIk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IMS4yQloi5hK9U3mbjIstm+y8nVJ4PngK72sD1tqlkt+A2n9H/tUVaCNir9v43FEY
-	 pQtGBfjXcW/f+g/m67tx56ViSTQkBCDdnDbDN+vFK605fdYsI7+93TmcsYJbBroeE0
-	 FDxsClrc6D/s6OAmMeNTcwfKUOOIK3fgw8qistpGP711amqxtvkPR28rmpLNCty5Ac
-	 8PmnE7jx/7mkr++aoob9s5yOwuZ26liengFZdCcmmKclEkCT8MEfHok2ub8usJImu1
-	 tuyDK8xMRU+MmJSAvG7iXlxqlQkOHsmBt8TXzC+ULYCsEcwvZAdukBARJLeA1yuzkS
-	 8Cm6HQ4FsVRPQ==
-Date: Tue, 16 Dec 2025 07:02:55 +0100
+	b=X6eKLQbs299j6gqCWs0N6kliERfyOLEJYBLj9OjmQWO8xApvcW1nMZW7qSPX9qF2t
+	 Gpl8+hGXqMt3pkh0mxh/9/e+v5GKe7qILvY7jujhVhdrTJDI8QDBp0e/zterdp/Au8
+	 XZ7GtBVJr8c33wkRJEmNk/pxUSM36yPE5/+e39YE+pIdIRqyd21KJxjfieF+Y++vHu
+	 KLfdXaj1r+PVuSxADZZpJczinr4nWQOZ+dlCe4/iSsOeGsEGzNAhDqs8PQKwxUNDQl
+	 N6x9LzTfvBVbI4qDrV+33hthxDs4imD+uGJ+ksRIC7z2GVq/u54ScozuMvWeVf9khP
+	 3sP/tTAuG7i4A==
+Date: Tue, 16 Dec 2025 07:25:18 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Joseph Guo <qijian.guo@nxp.com>
+To: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
 	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
 	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Justin Jiang <justin.jiang@nxp.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, qijian.guo@oss.nxp.com
-Subject: Re: [PATCH v2 1/2] dt-bindings: arm: imx Add FRDM-IMX91 board
-Message-ID: <20251216-energetic-bittern-of-diversity-b2e851@quoll>
-References: <20251212-imx91_frdm-v2-0-4dd6d289e81d@nxp.com>
- <20251212-imx91_frdm-v2-1-4dd6d289e81d@nxp.com>
+	=?utf-8?B?SsOpcsOpbWll?= Dautheribes <jeremie.dautheribes@bootlin.com>, Wim Van Sebroeck <wim@linux-watchdog.org>, 
+	Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 1/8] dt-bindings: vendor-prefixes: Add AAEON vendor prefix
+Message-ID: <20251216-tricky-masterful-wildcat-1efbd5@quoll>
+References: <20251212-dev-b4-aaeon-mcu-driver-v1-0-6bd65bc8ef12@bootlin.com>
+ <20251212-dev-b4-aaeon-mcu-driver-v1-1-6bd65bc8ef12@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,18 +51,16 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251212-imx91_frdm-v2-1-4dd6d289e81d@nxp.com>
+In-Reply-To: <20251212-dev-b4-aaeon-mcu-driver-v1-1-6bd65bc8ef12@bootlin.com>
 
-On Fri, Dec 12, 2025 at 11:31:33AM +0900, Joseph Guo wrote:
-> Add the board FRDM-IMX91 in the binding document.
+On Fri, Dec 12, 2025 at 08:41:04AM +0100, Thomas Perrot (Schneider Electric) wrote:
+> Add the AAEON vendor prefix to support the AAEON SRG-IMX8PL MCU driver
+> devicetree bindings.
 > 
-> Signed-off-by: Joseph Guo <qijian.guo@nxp.com>
+> Signed-off-by: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.com>
 > ---
-> Change in v2:
-> - rename 'frdm-imx91' to 'imx91-11x11-frdm'
-> ---
->  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
->  1 file changed, 1 insertion(+)
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 
 Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
