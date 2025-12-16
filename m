@@ -1,97 +1,77 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF30337BA6
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 18:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE3A2701DA
+	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 20:53:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765909819; cv=none; b=uA4Clt0ja5GETi/hugSv/p+uCCRC1SfqI1cOdDYre5brmkOVP/Pd6taBzyuMHzn6IxkoQtOa15PSr7M94krWDssSvjYcIUJfHGQzQhnw5z6Cw53Hfs5OUlEdMp7wNisex7YZKHnKZnivHYrs/xRnzjdwAkXQqyquzYQVlLA+6jw=
+	t=1765918427; cv=none; b=bDzSQPXzLPVecpLXzcHHUWmv0nDAhM+ZWiQzhuyU1TzhPBQ6EUN/wZUkZC5Hzs3X03PD5LQqVt2HDcfZRx7YWxzvtxumuR3D2zux5K4nV6Q/7bDIdonCpdrCtnDULbQlKMzHKibebicmZa+et1DZGvEcZIGxJBxQCBph6OXJiQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765909819; c=relaxed/simple;
-	bh=/QX1+siljLhXuETEqMly+imYqZN+VvoqR7nTfdr+yXo=;
+	s=arc-20240116; t=1765918427; c=relaxed/simple;
+	bh=SsDoW1F9IimdUbums/aXlP3kPueowrzS3rjSQAcbVNg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lwMuI0kFqcfoBhlPXZs/rhP2RXAej/O9u2BOszz1+0iAekgGiElrzPqculkN631ci9OQI7fCGTNO3XfQkQkRcKx1afqOcONyc9lq6LKNRGZczHu910pEhmigYMwqBLLEzebeyYaJChEtN7VmFv/tndwgYMe8W2z5Cot7Bws+A/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fA4Hxxdu; arc=none smtp.client-ip=209.85.128.54
+	 Content-Type:Content-Disposition:In-Reply-To; b=YrwnYoZuhVDV9XA3lYtLNWil96MnhyEaTpKbYqj55lZL0DMz68Xmj/sFXAXm7EiXgL4rpbOV0BAa+HCoJ8jseAqcf1ArKMMIy90tRLakMH4zsv3SKlfQR7Txd8pW9aP7yM9lGZSUJ8a03o2pDhcGisZiDACeEyfDnP+7Nen07h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jbahtCRJ; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fA4Hxxdu"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4779cb0a33fso59300805e9.0
-        for <imx@lists.linux.dev>; Tue, 16 Dec 2025 10:30:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jbahtCRJ"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7b9215e55e6so3684601b3a.2
+        for <imx@lists.linux.dev>; Tue, 16 Dec 2025 12:53:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765909815; x=1766514615; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1765918425; x=1766523225; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=O2qwyKoiSE4y0S7R/sYbAU8Ep9J/DNr0jxtlpXQRjF8=;
-        b=fA4HxxdujrS7G4NmhfIAOHjjXkRRaMdeT2d+43AN4IcwJS0RNORuSmUEAbv2KBlLgS
-         zuJZosHzzS48X3zJq1raVP/0wrNICOnYgTwuIYKxlSsH7WC/kMxKvNG1yVrq7z9Mumah
-         cseNUWG+RQtYYDLKC/SJ1MbaKQjbaeYsMxrk5JVpVyAsdKr9GEOW7IsrzUBHjHopjj7W
-         0E2Cbb9VnCNAkLnbKtoKd7rPyGyBUGilpP10265LIdecw9e9/6H0d149rcvfgqnH7/fe
-         YHI6Up7Ka7J8MML3Br23s4sEfQ+hn/6MsbmIebrHuPzu2f1pYLfTms1kr8cxGO9N0cvp
-         4AWg==
+        bh=Ypk7mUNq+7q06ZauQ3L/JgorQOHAAj+3MQphJ7ASbOU=;
+        b=jbahtCRJj4TXtUxPF09Otn4BsjywBUlrujspxAlHrazSg4ONzUL70p1tM3vKz1aWvg
+         /2nrPHqshN3/V3rJ7R/cXhdbnQFdH6u6/vrKeVaI9bwPHCLWK6qUZQgu+u5hWVijjbRX
+         efxW4ExdIt8ZXutEyHdPhE4Nn/4mIQFEDPbZZngmSfF10lZuk9RPiDq2ga9fOkEnzkpV
+         1dhgqafI6ci3H/zpKLBUce39KZM0gATIEb6jKaxzPu3ICJr5YyCfDHYqY7EFvL8wq1CS
+         iosd/8T1FY5wHBXGJakN3j+GwmXudU6u3ZTu3Yx4aXZvXRBCvBiCNRcGppXnoZc3N48E
+         T34w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765909815; x=1766514615;
+        d=1e100.net; s=20230601; t=1765918425; x=1766523225;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=O2qwyKoiSE4y0S7R/sYbAU8Ep9J/DNr0jxtlpXQRjF8=;
-        b=vvNMdQF0iEi0ga+xmBtSUWshGPPzNOxRSriq42iW4Gi2Vz74ZVW9aQIsjDTMXQpmFk
-         5F+aKOVG5ZQgtV3FVDqM+Yiz7RbYp3r6d6wrCWULiYoqSnsHz20ythcWSLh0NZD3O0lo
-         qlXrVydMYnuYLv5jPKkepRQlpLYGM8oFkXECoVW0g0PdC+5vWR+M/jaiyACPJkGVWxde
-         9YOLD3wdC64pOYdH9Y4aFA2K8KoEEfyoZo/Xu4VdJhXWJ3D0hqMOI2WnbFWA+ISydnSf
-         W3+TB40AoBgPzc8mkvv4PkXAr3jp1+3jYxObC2xlT8ZbxXmtUYVY2Gnj2h07bpLWoslu
-         Txtw==
-X-Forwarded-Encrypted: i=1; AJvYcCXcG1YTkVAfVXvfcpi0ycYafyG+R52hSIZfE3ZMdpMrwT86P0jycLdmq/3OFC85ICiqUT0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzp7+MpwD57YDJOLfENXSenTECE2+Hquc7BGb8J7W1HQeofi7iT
-	uDYo1n3hhCyAonjp0dkNS8zA9NKxvhmhYWatUqXOMJmu5piwJMJdArJfKsJXTOQDRZk=
-X-Gm-Gg: AY/fxX7I+gBYOVuHeCVWH30ErEuyir7Qehhg6/5YdXMUWtmvaf7tAlzN5+ZDbawafNc
-	ygvHsawtRJHPtzRTuYWRGsabip/4bhPiagU0Vt1/L37xn0EtzKlg4pD6td52cTteIr9Vonbm9mg
-	L6aR02RJFf1Suomtc/0hIprGYw/Qe+b8X9d/Nx/i79ROqw1jW7EUGVo4j+CA+YAgRfAi/cVsARe
-	IAnQ4IRCsWCDcETBOG508pDY4yGwzckEPVxVBXZuXa+iARTu36xL+8Y3+AlxUpHm1DJK9b8jtnj
-	sD+oIgz3DBSBJuvC5FAEdOyHuQ5N24+CBl+QMF7QkQQbJ74ylJ2rAheY/gqx3uHCOQyvp6W2fQd
-	aMpFL8cVy4HKU1/PGBh2HbQmCfSwRihNLJ3Vb9hM/9DrU+SlQl4sbBc0J/X/lUcV33FbI813+Os
-	GpW0XGhp37+/yllDq/
-X-Google-Smtp-Source: AGHT+IF+nY/k4C/6P18u9JysznJj/Z5B3Y6A+1aqCm2cbh7pc65+FeNcv1ODeP4J/8ke38+irCHPGg==
-X-Received: by 2002:a05:600c:45c9:b0:479:3a87:2eeb with SMTP id 5b1f17b1804b1-47a8f91515amr130008935e9.37.1765909812657;
-        Tue, 16 Dec 2025 10:30:12 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47bdc23c2b0sm2187435e9.15.2025.12.16.10.30.11
+        bh=Ypk7mUNq+7q06ZauQ3L/JgorQOHAAj+3MQphJ7ASbOU=;
+        b=FgNnbXnLvrnOkZdL2qSx9vIDrBHlBbX4wACkniYF1lNc20LgKQ3JMR1rHBmbcpracJ
+         3LGkh+mgoHT9MYJNOUpStZGxfggrvt1M/nxI6mXpa/OHh6Jyzio4sdy12qDh0n1iPkNW
+         wO1Kk9dlVXHPeUrdzaSD28fEC+656IpBFdYFwu6vQe7hQ/62SgqSks1AcJFxynQ85Xzh
+         PofrAM5UmoHZERsZJ6gRCcWXSavfWag1PVg+5ADSvC8Ya3MlEYuhrWrakojqkTZgEFYq
+         L8QMv497IE5IbjlyzSeAryAaLr8m3FefJemmC3B9C+7RXAEOXuxdv3nI0vliNaR8HWPJ
+         Jlpg==
+X-Forwarded-Encrypted: i=1; AJvYcCWGw8RneUF7LluhSy1QSBfUfXaE6sbs4KP19WIOgC3bMHwDQ/UcXwRhZygKOIa9MKTstoo=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzq8fV9ODJzLD4vv+d6obrBtgS9BDBPgw9+qFl+ick4aYMT7fZB
+	9j8txfEkN50zFbUN2+KJutAFyd9sE4OctMzV+RtMcrhCpQNz5iuwFfjz7whbyDZF7gs=
+X-Gm-Gg: AY/fxX6SOpKWtaVwlOBPS1+NkqyY7giySf1JfkLu8WvGK4SQ/A9nKupLwzukfRN6FFC
+	ifOmD9hwIjxmPGykiyxCL0Yj4u9vKX8coXQRS07bH4av7Bx8CZruliUAeUL8GHyCFhJ/QqOb6Sz
+	XxqcQEEYl17P7ocgSxMU9YuM48INPUco4GjxnRWaqHAddEn91+999mafLD53F+EOzRNKrQ6TkAw
+	MKg5Oa/tsJZdiDDyYxAVr7kh1LrR4Qycab/wa0SBQ7Q1QznVgg41+IhpUqNcf8wcLDl15IA5ZuN
+	EVK35wqDImRFtbKHGMoUAbCkx05LADo2Ixj4hC9BvfCHppwcOZq5ZRKH5IMrOZVKP6+FJTkQwrR
+	yJnP55jP9JGgWEgFW37mUwVz3MPaEC6ccbbLmnBIsxcXR4U2bEE7d6FzqE8Ei2QrAaJ1ydnzg7f
+	i8UOKOO+GdcFJyhQ==
+X-Google-Smtp-Source: AGHT+IGF2rbTSI4Q4t7Hy49LQZnu0ZesdmocTDZQXJHCS+mdCGABBHatiVGmZZZWsxcTaHxupGoA3w==
+X-Received: by 2002:a05:6a00:a118:b0:7e8:4587:e8c2 with SMTP id d2e1a72fcca58-7f669898f41mr16662303b3a.53.1765918425228;
+        Tue, 16 Dec 2025 12:53:45 -0800 (PST)
+Received: from p14s ([2604:3d09:148c:c800:ba5d:91e2:900a:fb01])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7fcb5c6d9acsm482316b3a.0.2025.12.16.12.53.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Dec 2025 10:30:12 -0800 (PST)
-Date: Tue, 16 Dec 2025 21:30:08 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Chester Lin <chester62515@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	imx@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-	Jan Petrous <jan.petrous@oss.nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Matthias Brugger <mbrugger@suse.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
+        Tue, 16 Dec 2025 12:53:44 -0800 (PST)
+Date: Tue, 16 Dec 2025 13:53:42 -0700
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, linaro-s32@linaro.org
-Subject: Re: [PATCH v2 0/4] s32g: Use a syscon for GPR
-Message-ID: <aUGlMP7J19L_AHF2@stanley.mountain>
-References: <cover.1765806521.git.dan.carpenter@linaro.org>
- <aUAvwRmIZBC0W6ql@lizhi-Precision-Tower-5810>
- <aUBUkuLf7NHtLSl1@stanley.mountain>
- <aUBha2/xiZsIF/o5@lizhi-Precision-Tower-5810>
- <aUBrV2_Iv4oTPkC4@stanley.mountain>
- <aUB4pFEwmMBzW52T@lizhi-Precision-Tower-5810>
- <aUEQkuzSZXFs5nqr@stanley.mountain>
- <aUFvvmDUai9QrhZ2@lizhi-Precision-Tower-5810>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-imx@nxp.com
+Subject: Re: [PATCH] remoteproc: imx_rproc: Use strstarts for "rsc-table"
+ check
+Message-ID: <aUHG1svhft249rn8@p14s>
+References: <20251208233302.684139-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -100,36 +80,39 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aUFvvmDUai9QrhZ2@lizhi-Precision-Tower-5810>
+In-Reply-To: <20251208233302.684139-1-shenwei.wang@nxp.com>
 
-On Tue, Dec 16, 2025 at 09:42:06AM -0500, Frank Li wrote:
-> > >
-> > > Why not implement standard phy interface,
-> > > phy_set_mode_ext(PHY_MODE_ETHERNET, RGMII);
-> > >
-> > > For example:  drivers/pci/controller/dwc/pci-imx6.c
-> > >
-> > > In legency platform, it use syscon to set some registers. It becomes mess
-> > > when more platform added.  And it becomes hard to convert because avoid
-> > > break compatibltiy now.
-> > >
-> > > It doesn't become worse since new platforms switched to use standard
-> > > inteface, (phy, reset ...).
-> > >
-> >
-> > This happens below that layer, this is just saying where the registers
-> > are found.  The GMAC_0_CTRL_STS is just one register in the GPR region,
-> > most of the others are unrelated to PHY.
+On Mon, Dec 08, 2025 at 05:33:02PM -0600, Shenwei Wang wrote:
+> The resource name may include an address suffix, for example:
+> rsc-table@1fff8000.
 > 
-> The other register should work as other function's providor with mfd.
+> To handle such cases, use strstarts() instead of strcmp() when checking
+> for "rsc-table".
 > 
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> ---
+>  drivers/remoteproc/imx_rproc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
 
-Syscons are a really standard way to do register accesses.  The
-pci-imx6.c driver you mentioned earlier does it that way...  The only
-thing which my code does differently is I put the offset into the
-phandle, but that's not so unusual and it's arguably a cleaner way
-because now both the base address and offset are in the same file.
+Applied.
 
-regards,
-dan carpenter
-
+Thanks,
+Mathieu
+ 
+> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+> index 3be8790c14a2..33f21ab24c92 100644
+> --- a/drivers/remoteproc/imx_rproc.c
+> +++ b/drivers/remoteproc/imx_rproc.c
+> @@ -694,7 +694,7 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
+>  		}
+>  		priv->mem[b].sys_addr = res.start;
+>  		priv->mem[b].size = resource_size(&res);
+> -		if (!strcmp(res.name, "rsc-table"))
+> +		if (strstarts(res.name, "rsc-table"))
+>  			priv->rsc_table = priv->mem[b].cpu_addr;
+>  		b++;
+>  	}
+> -- 
+> 2.43.0
+> 
