@@ -1,179 +1,211 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010054.outbound.protection.outlook.com [52.101.84.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBA2338922
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 07:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765871024; cv=fail; b=rrripgXsOtURu3g2ifs3CodSquj/hV3qmpLKlIrLN8pDh8WcmEXgAHoDyyo7dSO7z8OMYjP/jinib2nRM3OrHqnpgShWtezuB0/qcCyZwKEdowkYJ9zf+S92aG7k21nZUqIUvdeNq6TNCDKTtRsXITabr0DkF1gLWCZv4/fKoAs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765871024; c=relaxed/simple;
-	bh=HB9/EtFElU3QVxQNRt6Yp+4kz1ChrPRFW11o4d09XCc=;
-	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=EHnRMzly/o0OqHG1rtOcV4cjwmQwxAlTUS6/fpE+DpgxxHHxGomjBNHpa/NL4hGH9iA/brvhjTTOPrMuNRucVWWC8bOfsgZvuZ1l1sFcJMfcCEt90HlGYUzF4HOYWJsy9FM5E9PeMaLcoZDXP/w/rhry3s/51Qp4hy4nOX9Kt+g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Qs6TGmL2; arc=fail smtp.client-ip=52.101.84.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C013C337105
+	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 07:56:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765871778; cv=none; b=Yo26UeyTS+4qMwltWtF6d0A1H0+d7QPP7qKgRs9IHokxppCncDOahr15CZctpjWs0L3da14pD8hPwur3QbkvvtqhssISOpbq3nbjC2l4nY+EA8opzchD0I7w9QPqh/SFSSYK1D28DLfblG58/Aj5sqSLqI/MByAudhu6bLDSTwA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765871778; c=relaxed/simple;
+	bh=UvaxdPuzE9cHgjQPNN5Yc11mBV2d86BG3I765ToiYLQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rroK5Gc4YmUDr6/kagHK0EOysyVInD5qtee1HI291WW19sk6Kds9WwYpeHy9Kyi5LEPHRkrMfklFyQmtemETrKapVzpbzFumNSWVmhpiTGO4d7AYXsP5cTDPgyy6EXof64ouoi2jfXwT44n0hbNhYq8fcawc7lcLzbDt2EQBpgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=l7l07e3R; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Qs6TGmL2"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nd3pFv9rMwQ/JKXFq7APSetI+z49X412KJY/UNoX9mJWZvZV8FJpwVu/M/bSt/5kjeDB8KxdD5Ds6wvqyftVX/4yXJhJQIHf4pdPhOpmVJiG2s0ycriGjFzr7oglVXvC7F/a2BiLmItMeLuDpLm1gDuxE6CfELCPsIyyHtNnXlKw8BnILAcFtq3foPKM8pfexsBAvBU22qWKYvFvxQDZe9fn0v1DGrQT9PdbTY7VB2eaHA+dElmJQdOCMJx5NlemdR1Ou/tBU9S3mrqHejezClaSckXaXu6xvvtjR5N3GLjI11qUomeh3vMQS6CAf0XNx+Sov/GbZzAqtNSekRGw9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n9q2wg+KDn1rSPE8Xkm4ICVuHhYr+oJS5uq1KZpxBfI=;
- b=imY+jLYePdfMu7EMtAHWr5r98+WrX0rrksdn8APWKbKNwVRj2eElpi7ZqxCdVxtAepv/Q1DV7YzP8ll7rhmugq1XMNqUnl1w4Ia87tDheTrCY7hnSWf0tTmaRi3DEHNccTenhBKPDZW1zbHjDl91RM668IyZ0nRSjSkbUwU5l3ksSvP4EEoIqLzJT9aR0K0hJySQegtFr2nklp461OLqT6WyicKHOS6GlnzQ73g8S6+6aUTvuHbGZo7wtQRKBhVI7C2w1zd4MOKPqTtOFc7zGAVotquViWmdF/cXUky1TQ/rO1z+lSXIqysWzWZ2F3FimG4HD3BVWg1K3WreQU629Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n9q2wg+KDn1rSPE8Xkm4ICVuHhYr+oJS5uq1KZpxBfI=;
- b=Qs6TGmL2sl/Hp71VGkXkjo/1L7RTqhrNfoAixquura4NM3Wrg4toCvm/NpCf22rO45otiaf6ffxkp4hfGfDiv3d12pRDYDCuUCIuQZ/OlGOsjaodSGGp8cvNWJg2hu+U0Vkjq69HzDlUEhfI+h3sTS5lb45GMWY/Fx6TOMkE9mlAC9/3+E+GKOJW5Pm0wEMf+0Lxk2U7aRLlznC9tzKMBi5fx78Tg9VKK0WK6SwAGC1Z4kYHg7t0gyLyAyySTFtdmSUSMsnPCNPZUKvF+9AG0rwryBiTuBG4elUvmczazrdK+dpNP9GLoP8xX8aI3tvBCW1zRK0A99H53rBRGujeSA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
- by DU6PR04MB11135.eurprd04.prod.outlook.com (2603:10a6:10:5c3::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Tue, 16 Dec
- 2025 07:43:39 +0000
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::bab2:d15c:fcf8:ef2b]) by AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::bab2:d15c:fcf8:ef2b%7]) with mapi id 15.20.9412.011; Tue, 16 Dec 2025
- 07:43:39 +0000
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: andersson@kernel.org,
-	mathieu.poirier@linaro.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	daniel.baluta@nxp.com,
-	linux-remoteproc@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] remoteproc: imx_dsp_rproc: only reset carveout memory at RPROC_OFFLINE state
-Date: Tue, 16 Dec 2025 15:42:16 +0800
-Message-Id: <20251216074216.447193-1-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.37.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR04CA0015.apcprd04.prod.outlook.com
- (2603:1096:4:197::21) To AM0PR04MB7044.eurprd04.prod.outlook.com
- (2603:10a6:208:191::20)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="l7l07e3R"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-477b5e0323bso18605815e9.0
+        for <imx@lists.linux.dev>; Mon, 15 Dec 2025 23:56:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1765871767; x=1766476567; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dgLiR9L5wEhCMccIYV392PBhORkDXeC6wYlSh2crOgg=;
+        b=l7l07e3RCfsNySZO/ehTvAMRWepkWN5+V5DenOHADjspTkcaYRNK3KPYpai6+w+Tes
+         bENRf1OPblvNj9CXjpfZk1nLnrOUaInVRmmAF77P2lVknFiGnCbJmuxoDLaUpSK7hcgt
+         0NFcZqysdVwnbfW7ntfo9DV5eFD4wgt6h/sBPJfRAA1fAmSbp7E1UQJWtTsUdh+9VglE
+         FryVXniow9qZbQhIao0xrXDNG9vbLPcTA9jRlIsa54R8McqRzwLEIfRnxIhVKNP5Euh/
+         9KkvviIt3oa82PXndNIqSRGWvRaf0XWF9fXP+lbFcV+wpR+Xlc6xVVT9Jk/MqfWmk4s5
+         3MmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765871767; x=1766476567;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dgLiR9L5wEhCMccIYV392PBhORkDXeC6wYlSh2crOgg=;
+        b=NU3l9QFR85uCEFCV5Wg97zuR9j8janLmLggXtZML27rrdXV0SimHmY1wOUdfB2PGtW
+         phXLci2n+7tuaX5++FlP1HxI87oMYHhxiNk6jedoXrmxP2XRTYspuzbtmJEU1bPc2slN
+         fpXpnpGY3ZtYPmrCBN4RjqsiewzuUw6J/lioknojIQD0umxCyeTaXIcxnpTg+nhuatxz
+         YNFeqqIMkkA8Ampy+gBoAat1GOdALXOelUNiR/XJ5AJTEPjF/xR6iy5YQwfpnm8FWnAv
+         iHqQkkfaxwNUiKg0b6AKhaUL2GmZWpHW8GGrmayRdHW2j4GDjUSTmfMWo/iw0eHZcZhJ
+         WrpA==
+X-Forwarded-Encrypted: i=1; AJvYcCWSb2CJ8+CKLvviQTv7svf+o7ncrDOLF7Zm936fIjPdk3AIY3ERmbVT7bl7Z7ghEwwpDxU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyn6WEw2J1dkvg5XEYc289xw7lSXIzWYcvO0WeZTsXA4d4EU4aa
+	cKOeQ1mH6q+Bw1vcxMuo1E98sNrttUypwWuWksoJKzLiHn475N1cIhLQRypbQs8gKGs=
+X-Gm-Gg: AY/fxX60I7/cvi+wOelUoeVsYqMRZnjv1pc0EdaaIytKR+bzRGAlJlGQC+kG3Ca9YBR
+	e/GDEkqnW1MkDtzmt5KZia6DXb+0/yKZ67Ak4Ohkh4JBstsr3GyvlcpS22qWasg6jWqQ1UCz4bX
+	oyT4FgrrGVVUWgEkjgItQe9S5KTNbjXUaVl2KPhWMx1Z8rG0KiW+ynsdyLRAlltxLkt+zmi8H3z
+	89MmZQQKy2rBLKAs/uDv3rPxyEddh7XeBoFEPxYZPMrM/ddDdFWJcCGRMrlMqSYjas+mtHGGait
+	Bl8j+Dv6FCTjPAI9VPirRdJiLBBhMAUN2z4fQXByGX6WBRViOwtAQFC6PZ1sioF0QLrbWVrhMrv
+	peBDnIwIgY4P3sTLBowDf3LRvhgfZkV4M3lBIx8G1lWkyItsHodaczDpzWafaVhKqQQARRz3LTj
+	Jlcj1H8HlNiVqgJsmv
+X-Google-Smtp-Source: AGHT+IG+piBYJp8yRE0JaiL0XBKJcrLuB82TEEFiVQtz41FJiO/E2QY1ciGNs20Cvz2Woq6tSTEwTw==
+X-Received: by 2002:a05:6000:26d0:b0:430:f74d:6e9f with SMTP id ffacd0b85a97d-430f74d6ef6mr8155517f8f.14.1765871766545;
+        Mon, 15 Dec 2025 23:56:06 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-430f1fa232csm19824386f8f.6.2025.12.15.23.56.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Dec 2025 23:56:06 -0800 (PST)
+Date: Tue, 16 Dec 2025 10:56:02 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Chester Lin <chester62515@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	imx@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+	Jan Petrous <jan.petrous@oss.nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lee Jones <lee@kernel.org>, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Matthias Brugger <mbrugger@suse.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>, linaro-s32@linaro.org
+Subject: Re: [PATCH v2 0/4] s32g: Use a syscon for GPR
+Message-ID: <aUEQkuzSZXFs5nqr@stanley.mountain>
+References: <cover.1765806521.git.dan.carpenter@linaro.org>
+ <aUAvwRmIZBC0W6ql@lizhi-Precision-Tower-5810>
+ <aUBUkuLf7NHtLSl1@stanley.mountain>
+ <aUBha2/xiZsIF/o5@lizhi-Precision-Tower-5810>
+ <aUBrV2_Iv4oTPkC4@stanley.mountain>
+ <aUB4pFEwmMBzW52T@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|DU6PR04MB11135:EE_
-X-MS-Office365-Filtering-Correlation-Id: 171d6e59-0232-47b5-8433-08de3c76d3a7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|52116014|1800799024|19092799006|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pj492inUgDhkBCA14FMSKnOryexsEkZCcD/c+orHU5Kei0qXS9+p4nANZdu/?=
- =?us-ascii?Q?w+vwaoKGGgtkPI3S3Nmxb11UMOqIY4OMpPIjXjG8PgzceVAwi9OHCIchEqt0?=
- =?us-ascii?Q?M0cHyqTLKIolQOtQNfiqIhPqG/9Gx3A+3qBVGjafstiLRCs52DNb4CGNINNm?=
- =?us-ascii?Q?dT4ei4N7UiUrYCpxPXWo2YDYM2wZ6PQMcdE+Y6Zx8Srp2LVrGVpEm14nvTyi?=
- =?us-ascii?Q?1jOy+Qe6/mZyxcOXPSfljZUaPHcCyQp6NpUU9MMS08od3FlLpfNF+4aOauyI?=
- =?us-ascii?Q?CB6vlLBuGjIhNKgLx5nRfD1MJcG0cFH+0nRbuBDVsDwPJinRuh5bnnic/r+l?=
- =?us-ascii?Q?MPX2D7p6gloF4oOUGxkQYX4rr6i8C7Ml0RMTfdLeLx5Xdd4JW4YOaNooZLh5?=
- =?us-ascii?Q?tQydFc3TjRxkfRo/PrK85EzLfUHfL4vCaa6iaGySjts8Mhez8+XybMKvpF/a?=
- =?us-ascii?Q?tv6mPywYLUUJdamILrdaoenMBU2/LrnPBBNiYYblIoo3jBtmTGvpnwZvbeSz?=
- =?us-ascii?Q?TokgK1e5Ndx/A7O/jjOWBjRA3GJSYYFyCwV0xm5hBKN0O87D4vPoxjL8plQ1?=
- =?us-ascii?Q?mAKhE8hXueOukKWxQOQ6OgWaBOPOcyEGYtFOi4GS+A/Ml05CrMAZb9lrFC+e?=
- =?us-ascii?Q?+GP4WHRckr8ULZ3fMv6xvcCKKXUQyJTL5cH9jyrh5pUBe+8zrB9BjefwwMx2?=
- =?us-ascii?Q?JDRoHq5B3eB2hWWqe3TkKScvF0bIS7Yf6QLu+Pp+g5ylrgmRL5yIfeLfIETw?=
- =?us-ascii?Q?Nr62Yba5Rn/4LVUlv79Iw1oJfBJodATzQ0d1buQbEUXFCJuF46gI9TgLGA3C?=
- =?us-ascii?Q?zJCSCfNnS0QD/RgxUhpkZyOrsz+18fXeJK23aSGJ1aRsWrY+6PTgSh2b1XXg?=
- =?us-ascii?Q?RalxuV+hfp295YhLg5wbwYYcgcaGKKg/04naQVNndbe6c4kJv3yR0K5jStsN?=
- =?us-ascii?Q?aNclWllHENDI8neYPHCnmT+o/OFNSh9OgNatvL1ktIXYOC+8UuNCuYkNn6DC?=
- =?us-ascii?Q?tDzWXaL1H+BT04bvPa8GrCNn0PsMarC1+xCZFFkLj083gqXoSfrLgzhVoLy3?=
- =?us-ascii?Q?ODmAvsV/sDXv/GDkBjmnxGtbfj0WVH6CQCupPxtKIjknC51gTfTZxYhX2DsD?=
- =?us-ascii?Q?iEzkoW9N355ojV2U/RHkorpV9bWZM3xO8vMZIuwS36JD70nwTgz/EPQMAedC?=
- =?us-ascii?Q?pvyToHbNNfvpqOeBusr8iANh3pwsDdPDJhLoc34/l9t6XxdYksQtZ9K/+ETp?=
- =?us-ascii?Q?3XNiVc2t1I+TOoF+Zf2zQAmyAUoU3elCSgQu254GiQ/+SogS9PqvzykWpKnr?=
- =?us-ascii?Q?WTjlo6K+anip82THPJq70H300PSq/V/BzFg57JSM/SvsEsAMi3Stzu011BnF?=
- =?us-ascii?Q?zmOcfpLso8DjqKLik4/T30AaasddR4XTdCkSC9nPqpuTmjH4txUohkKoP8oi?=
- =?us-ascii?Q?ecf/TGjYL4A4+ZkavsqEvM1WDJoOndOsP1WqTOFF6+qYXYBBApj8Zb/vKjTj?=
- =?us-ascii?Q?VoGVENzmcuzLfTKDADursQ/J5kL/CbdqNbppEYsmNKhsMCCY2SY+ANyplw?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(1800799024)(19092799006)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9BAk698esu3K7m4m832Mp29naIT7+eWto9FkXT+oI80aCvR5dwyEGk2tTizn?=
- =?us-ascii?Q?lW4+klzr81ujYnUxkNBv0TQcf2tzOYJzRmrOq2fzzc5Yz3OdWi6kRO5dxf5N?=
- =?us-ascii?Q?+/GL+Ih2KCnbZ2cs/tKdVo9SM6b7PdVplFvDSi+4bxLegwFMusluZ5vC6EeO?=
- =?us-ascii?Q?/CE1iUYjdXmylipXWm7Kl3cazx7tE6uhCZvaNSg1XIh372rOsELsrFWyioQP?=
- =?us-ascii?Q?x2YRiszvD3rMwzBL/ZkAdORn6vNh4i9SrjMWpxV4wVtMXz5re3+hsFPXQBiV?=
- =?us-ascii?Q?OUJJeyKnXXs8YShIVdUn2y5E1A7CqiU3dzYtl+e4ITrWnJBg0Z2Yt9Z9mCeO?=
- =?us-ascii?Q?1nwT3Ap/OutXDKjsNv68Hu4y3nHsyvmt9LUbaUH11US+tOlq6XAX/mmBe74F?=
- =?us-ascii?Q?NPU76zOoaUaDMWWkBVNZTn5HGedm0QxZeq2LXDNafIbmdKMO3FhORR0HhhK2?=
- =?us-ascii?Q?gTYPMSL8Vwe09+aRLplRg/mKtODKVA6MLTFJRPEl5KLpCAID+yC6THe7mixe?=
- =?us-ascii?Q?WYK4J9y7WUTaezKFFzXOuxiZYe0CANTFd5o1tXMKnp9qcbwYJS22icNB+6MH?=
- =?us-ascii?Q?gbXNWx5Rn51OM2cCTqnjhh+kCve4KfEJ2ItZr+/aifTLZXVRy9bOBhj131CE?=
- =?us-ascii?Q?44fHg8dZHJ4hEUcaqqaJNu0o7GMpWLkh+0blHi9S0MmZea9lvHeS37b1e1H5?=
- =?us-ascii?Q?mQo/euLLU8Umzw4oQxwkB3SWpgY3JZzFpuRK8Gz/5IdcsI1DodWySETUUtff?=
- =?us-ascii?Q?TiCVG0Cun8gECBzPa1aNa1gkXG+wvTjkEpFLgVKENYIEHFktRNgW2LAXMIK6?=
- =?us-ascii?Q?h4/LlYjKXzfPWiVTbPm5uxmhXCn8mxjV91fdwy2YS9RFUvLMmEnD5tiBYn3C?=
- =?us-ascii?Q?V10Z4ew1Khnun96FUlUYMWKIOBV9zQCnSkmLMh4VHUzDNvxa6mnObZT/ZimQ?=
- =?us-ascii?Q?X1RxnNSBHjv3EPQXwTaqHSZ8r837TDkePi7nSB1G9KCjZzzFXA8QKzFEqGvM?=
- =?us-ascii?Q?LFtZzeF7+hSu6tQmlT0NTkQX4DR+gdRaIa8lJbeXJyld6dMnStqi/7gcjT25?=
- =?us-ascii?Q?HrM17KX6tRySV0SI7mwucPFkyapgXl0bIInCWx3NFls0oqcqFQw0syo9Aj9o?=
- =?us-ascii?Q?Uf4IC2B0T1qCMwBsFKYuo4ZwnWzNXjKCqHWL3e9L4qtGuCnsCLR2xtPCEJ9e?=
- =?us-ascii?Q?2s5JrhDzjB9Ts7JS0/y3X2Vlzi0nYzMLBx0vOPgzIPgzuNb6Nw8qsBgMnC/7?=
- =?us-ascii?Q?JKYIu9Xvni3Zw+PXN1uptXhXvIvayXDG6Rck0SRLbZSrRAuWUF9uBm9k63Ba?=
- =?us-ascii?Q?mC/+hWWbm9cpt7L33bCq19Riex/y3DWPGr2hTI0Mbp32dRThvScTDuonWrFs?=
- =?us-ascii?Q?V9hSEeookLFazG8xMfsDhhLmW9RmNh1am9VzYoTDmNDVfafl8Xd9WqPjF0KE?=
- =?us-ascii?Q?q7WVe5Bw7015+tR1ZRkvr61iWiVIaS0moWj0gGPKdL6vJkrHGh4ao8GSARtO?=
- =?us-ascii?Q?FiIXZmKmTXKdughowJpuugDt5DHwoBR6oT3/VX0+y44D3LuYRK+tvhvy/FcJ?=
- =?us-ascii?Q?0+lhP7Gv9PR8nDeg+K0iCMgKAnuQfHF4/98K+PuD?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 171d6e59-0232-47b5-8433-08de3c76d3a7
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 07:43:39.1178
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XJEcLhPHQ0HTUgs9z9KZmffmby+CfHYmEeq0kp6L+/X5zaALa3XFbTOblvt1G6Hyh/UnU5EMQQndJfNuYLgzjg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU6PR04MB11135
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aUB4pFEwmMBzW52T@lizhi-Precision-Tower-5810>
 
-Don't need to reset memory at suspend and resume stage, because some
-memory is used to save the software state for resume, if it is cleared,
-the resume operation can fail.
+On Mon, Dec 15, 2025 at 04:07:48PM -0500, Frank Li wrote:
+> On Mon, Dec 15, 2025 at 11:11:03PM +0300, Dan Carpenter wrote:
+> > On Mon, Dec 15, 2025 at 02:28:43PM -0500, Frank Li wrote:
+> > > On Mon, Dec 15, 2025 at 09:33:54PM +0300, Dan Carpenter wrote:
+> > > > On Mon, Dec 15, 2025 at 10:56:49AM -0500, Frank Li wrote:
+> > > > > On Mon, Dec 15, 2025 at 05:41:43PM +0300, Dan Carpenter wrote:
+> > > > > > The s32g devices have a GPR register region which holds a number of
+> > > > > > miscellaneous registers.  Currently only the stmmac/dwmac-s32.c uses
+> > > > > > anything from there and we just add a line to the device tree to
+> > > > > > access that GMAC_0_CTRL_STS register:
+> > > > > >
+> > > > > >                         reg = <0x4033c000 0x2000>, /* gmac IP */
+> > > > > >                               <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
+> > > > > >
+> > > > > > We still have to maintain backwards compatibility to this format,
+> > > > > > of course, but it would be better to access these through a syscon.
+> > > > > > First of all, putting all the registers together is more organized
+> > > > > > and shows how the hardware actually is implemented.  Secondly, in
+> > > > > > some versions of this chipset those registers can only be accessed
+> > > > > > via SCMI, if the registers aren't grouped together each driver will
+> > > > > > have to create a whole lot of if then statements to access it via
+> > > > > > IOMEM or via SCMI,
+> > > > >
+> > > > > Does SCMI work as regmap? syscon look likes simple, but missed abstract
+> > > > > in overall.
+> > > > >
+> > > >
+> > > > The SCMI part of this is pretty complicated and needs discussion.  It
+> > > > might be that it requires a vendor extension.  Right now, the out of
+> > > > tree code uses a nvmem vendor extension but that probably won't get
+> > > > merged upstream.
+> > > >
+> > > > But in theory, it's fairly simple, you can write a regmap driver and
+> > > > register it as a syscon and everything that was accessing nxp,phy-sel
+> > > > accesses the same register but over SCMI.
+> > >
+> > > nxp,phy-sel is not standard API. Driver access raw register value. such
+> > > as write 1 to offset 0x100.
+> > >
+> > > After change to SCMI, which may mapped to difference command. Even change
+> > > to other SOC, value and offset also need be changed. It is not standilzed
+> > > as what you expected.
+> >
+> > We're writing to an offset in a syscon.  Right now the device tree
+> > says that the syscon is an MMIO syscon.  But for SCMI devices we
+> > would point the phandle to a custom syscon.  The phandle and the offset
+> > would stay the same, but how the syscon is implemented would change.
+> 
+> Your SCMI syscon driver will convert some private hard code to some
+> function, such previous example's '1' as SEL_RGMII. It is hard maintained
+> in long term.
+> 
 
-Fixes: c4c432dfb00f ("remoteproc: imx_dsp_rproc: Add support of recovery and coredump process")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- drivers/remoteproc/imx_dsp_rproc.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+No, there isn't any conversion needed.  It's exactly the same as writing
+to the register except it goes through SCMI.
 
-diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-index d03017d6b214..ac8aa71aa56c 100644
---- a/drivers/remoteproc/imx_dsp_rproc.c
-+++ b/drivers/remoteproc/imx_dsp_rproc.c
-@@ -984,9 +984,11 @@ static int imx_dsp_rproc_load(struct rproc *rproc, const struct firmware *fw)
- 	 * Clear buffers after pm rumtime for internal ocram is not
- 	 * accessible if power and clock are not enabled.
- 	 */
--	list_for_each_entry(carveout, &rproc->carveouts, node) {
--		if (carveout->va)
--			memset(carveout->va, 0, carveout->len);
-+	if (rproc->state == RPROC_OFFLINE) {
-+		list_for_each_entry(carveout, &rproc->carveouts, node) {
-+			if (carveout->va)
-+				memset(carveout->va, 0, carveout->len);
-+		}
- 	}
- 
- 	ret = imx_dsp_rproc_elf_load_segments(rproc, fw);
--- 
-2.34.1
+> >
+> > >
+> > > >
+> > > > > You still use regmap by use MMIO. /* GMAC_0_CTRL_STS */
+> > > > >
+> > > > > regmap = devm_regmap_init_mmio(dev, sts_offset, &regmap_config);
+> > > > >
+> > > >
+> > > > You can use have an MMIO syscon, or you can create a custom driver
+> > > > and register it as a syscon using of_syscon_register_regmap().
+> > >
+> > > My means is that it is not necessary to create nxp,phy-sel, especially
+> > > there already have <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
+> > >
+> >
+> > Right now the out of tree dwmac-s32cc.c driver does something like
+> > this:
+> >
+> >     89          if (gmac->use_nvmem) {
+> >     90                  ret = write_nvmem_cell(gmac->dev, "gmac_phy_intf_sel", intf_sel);
+> >     91                  if (ret)
+> >     92                          return ret;
+> >     93          } else {
+> >     94                  writel(intf_sel, gmac->ctrl_sts);
+> >     95          }
+> >
+> > Which is quite complicated, but with a syscon, then it's just:
+> >
+> > 	regmap_write(gmac->sts_regmap, gmac->sts_offset, S32_PHY_INTF_SEL_RGMII);
+> >
+> > Even without SCMI, the hardware has all these registers grouped together
+> > it just feels cleaner to group them together in the device tree as well.
+> 
+> Why not implement standard phy interface,
+> phy_set_mode_ext(PHY_MODE_ETHERNET, RGMII);
+> 
+> For example:  drivers/pci/controller/dwc/pci-imx6.c
+> 
+> In legency platform, it use syscon to set some registers. It becomes mess
+> when more platform added.  And it becomes hard to convert because avoid
+> break compatibltiy now.
+> 
+> It doesn't become worse since new platforms switched to use standard
+> inteface, (phy, reset ...).
+> 
+
+This happens below that layer, this is just saying where the registers
+are found.  The GMAC_0_CTRL_STS is just one register in the GPR region,
+most of the others are unrelated to PHY.
+
+regards,
+dan carpenter
 
