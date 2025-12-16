@@ -1,180 +1,199 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020D5357734
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 12:03:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1961B36656D
+	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 12:16:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765886585; cv=none; b=ae3+ZP+lT1MuPqXuPTekLv+vlAJuWS7+MIarUlY+El2apCmt79ad4pe8sn+A5B9mdshBgS7GkbYVmFA+qoPge8pr+le/rupjxaRW2r4/MZFH70dxGnAXQjJAA0Y04+Hw5Emo0GVOB0lsWP9m+3t8yBaMO8jbBXRFTCt5y0qRD+0=
+	t=1765887370; cv=none; b=PwwBreVaVpqEBqFrN9qAfaIAU0XYnfrgyjuobi+AvZwk0Zhefr+nIzg6oxYUH+KfFvCd0ILO0PowUhtbgz0DdQaT/MT3CyXi+wNFYSwO9QpOJi96Ty7mcQ6YJYB7zq72ZYonzOoGFaBl5kqtnO2hkoEutzOf1nMoCU6eoJRua+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765886585; c=relaxed/simple;
-	bh=1fqkqkNEzTSWAwW3B+qpzd2aY6yMg5j1xLcgYYtCn9M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I2LZCiE4pNpR7xogFQhodAhocUZsMH8VVOvE3lCjpESPYgjIq2YP3FU9Yo03OcwcDnTseKsGlc2AQwEpZRSU3uB7nn6xXEefBxJf0z8JJUFDQ5Day6cF0mhjp/lKj0P5TNtZH4/x2PYZdVQuINuB5YrDnKJihPf5urrZvtmLVaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WTuuKQx8; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=EPBzXNtO; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1765887370; c=relaxed/simple;
+	bh=ygM6iPCH2TydP0HkxyKip8E+b6Ls9AqBqncVC7h+DLg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QLJ/Y7dssHBiH7XcoX2gbweZz9DxVCOVUhYGkkr5VHBEdyVpGunNqfPzCB0gzRgRuScpmUBMkRtvTweZojUOCAVAIHHMrSKKo7ldb/MHzH76NOnsdV/velDhaXs4O1fhxQobXwswQnuqazu1K0Cs0lFl5C3y/s6m2LZPVHl65+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Bl6OTQyq; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WTuuKQx8";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="EPBzXNtO"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BG9bcNi2516186
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 12:03:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	S1bUZC3wQ09/vUi2Wz/LwL1M7PS4s9jI4u+ipA1NkPU=; b=WTuuKQx8zjT7yA9n
-	RcbkvqABZwczl032YJYNNIyEMQQ0tM+vIYIzu5g3Dn6Vu8y9nSVDA/pHjGy0I+DO
-	kf15TiqGU4+zNGPYK06xCKaXZJ7qclWs1jao4YkvXbKIZ+pyozusvyzYCINi6/br
-	lzPLi01djXZzGrCWTp/xAGD0biZWoAwBN3OsG6oF/2MURjRalhKBPSMz+q37jOOJ
-	ZGEoNU9XbiyPLo0IR26nMlkTduTn/0lQvy11X/NvYy+zjberHj69u4tyOk1aPwTS
-	9jI8WWAUDGCRH2jNuU0sknu4VMLaz4s2VrnNfRIrO6wuKogI4/A5TufHPHXhPrLf
-	BdTovQ==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4b34y80gyq-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 12:03:01 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8bbb6031cfdso67002685a.1
-        for <imx@lists.linux.dev>; Tue, 16 Dec 2025 04:03:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Bl6OTQyq"
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-37ba781a6c3so40303831fa.0
+        for <imx@lists.linux.dev>; Tue, 16 Dec 2025 04:16:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1765886580; x=1766491380; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=S1bUZC3wQ09/vUi2Wz/LwL1M7PS4s9jI4u+ipA1NkPU=;
-        b=EPBzXNtOqm7/XQyV8O6do5k1dgBi9nQqiiOQK1SYLZl72i1CWWheYUcyoHx3P7Oq2m
-         krvOILpgw6dn4baFoyyLGMIQGhs8AXq/Nq2zaObXcpZMEE+vY7ByBV/SQzgrFm9DZFbQ
-         xomzltPbxmj0aeHoXpesfSxIaX2IonV0ZRFOKCiAZP2rnun0oB9ks1VMmEUlaifTQaGb
-         Es7ym6PrliDpxEGJecIlO4FYcIkzvjM1SKX5KVA2LMh3vPNZ6/H/IhKv1gGio3cAAXy0
-         SREbwucQUmMOx4PL4SzfFzjLgwhhKWV+XDEPeYE/lw1C144QCf70J6Aw43ZhEKVl/5rM
-         mR5A==
+        d=linaro.org; s=google; t=1765887366; x=1766492166; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5bBHT5GO4OwWFNFQ9+2hmY0RqEYQdKcZYHd8MT27q6k=;
+        b=Bl6OTQyqMQXsiAtrWWv6P6yJISJgODC5LIC5QBDGoZ0kRjorzkYsNk/0R19ZGvyLas
+         aDcPv1cXtUmc3TyU2fRCFrLL3Fw7Jnv52uNxDrFyrlCKuaiF+AcZ6sPbZgoRzD0yebEa
+         3Woeo1Mj2i8zhrjCPWIntWJovMKth1DTlMSkaQVGlkXX1y779Lb5+w9SMJ82brK6dqcF
+         NrV/72b4erQlw4sty3iioR1N7mnaC4VK9izD4+ixIt9kaQhFLOREHysyjZIg5d7pGoH+
+         Qp4ywI4bdjbA28y3Vm/xAZuU2784KfvAJiSJUslA+5xXlFCQ19a/p8JTasIKvMuYCkjW
+         5Geg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765886580; x=1766491380;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=S1bUZC3wQ09/vUi2Wz/LwL1M7PS4s9jI4u+ipA1NkPU=;
-        b=ZsHDFNeuzJVsuxYM/Rpvu8wAfk1KPqKX8F63Zs5kdmv6s8wDOX55rUIbbOk6GUfgrF
-         HS13gVKPT6sqRAac1F7A5NtevqO2t5qkDAG2qGLGgvWbcGkFW9z++Q8X9yMI0cl0VKPx
-         SLEMBGi1zY2rHWoeDf21Gv8RZHqHnD6gsHVbzWScw+PY7CaHTqj8MFlVTOvh4jdGvMmM
-         K0G4XauGm3BvH7fcXunx6Vs6KUoAsmQ2d4VC/OlIYyDsHRfSxhBE8u3AOkGCnJu0aSuk
-         UW+CRYu0hvCXAN5LykZ+Z6lpRVfTJyPinTl92iwf5hBwBhwVi7Z23iJX9owIg67oyiHX
-         mnaw==
-X-Forwarded-Encrypted: i=1; AJvYcCWEP8S8XhbXkl1xO5+gRA70wL64moaX5Sop9pk3WD5bfXylZ2KifiUPBR8sJSvybmLOwKI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyIAugJX38oe3I9Rr+eiIpVIT1DX9bSuBwPGr9RKDNHqIvDyl97
-	AUV3Lv/PiVqfGR8wQnIen13Zp3Bva0q8wYz/rHOy6rVI+blgLXHAUl/WSwpzUqvtB0gSMLAc1Rw
-	AInPckj8XVjtRflRnRcpGMIMbey7yeyWhwjEGqPqli0jLJqhc7RSAbP4=
-X-Gm-Gg: AY/fxX6LF358mD57wxUjFrl7rVwIKWO4u6dM2tJIs6EJBIfqxbCoGAwr4F5XbA95M5D
-	5em/906mYVLsNNZZoxV62TkDyVDZInoUrsYeFiPO1WMRJ53Tr2BUB1WN2/SnmLE9/Ho/UjwJRtT
-	Q2QOr3If1WCRlPqSYM2GohNjKKxM+GfJfAQYWolc+bvmgPy15DOJpiI9T4otBYU5ATzXf6avkOj
-	KV+u6I+OLPDT/eY8t5oOo/VdE0D80tbRJgv2mr/7XaS/FUSFPTTitpMuTL4MyH01RSycmfFSTYX
-	9RFk4YrsfYvQypaUYLffs3aKvt671mmX6XqeBrMo3f1+LR5fMEdz3FN0wuUGDK3ILi4R182Y1Ux
-	AhoAYMrn2GoVzYNR7Lx7nIslgABUZR8fFbrdSvHbKckMmjYjiXK+A/6nqODSqLlcZkg==
-X-Received: by 2002:a05:620a:468f:b0:8b1:fa2a:702f with SMTP id af79cd13be357-8bb3a0b7e5amr1437505785a.3.1765886579623;
-        Tue, 16 Dec 2025 04:02:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH+LwGQhgX+HV6xSu98Kp8PBKIcLhjvja7byx1nEf8nekydl7DDS37zTtoZtPzNHvCnZUEeTw==
-X-Received: by 2002:a05:620a:468f:b0:8b1:fa2a:702f with SMTP id af79cd13be357-8bb3a0b7e5amr1437499185a.3.1765886578963;
-        Tue, 16 Dec 2025 04:02:58 -0800 (PST)
-Received: from [192.168.119.72] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-649820f77e3sm16041066a12.18.2025.12.16.04.02.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Dec 2025 04:02:57 -0800 (PST)
-Message-ID: <695ca5d2-b713-4838-8427-a9d31751c0cf@oss.qualcomm.com>
-Date: Tue, 16 Dec 2025 13:02:52 +0100
+        d=1e100.net; s=20230601; t=1765887366; x=1766492166;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5bBHT5GO4OwWFNFQ9+2hmY0RqEYQdKcZYHd8MT27q6k=;
+        b=uLFMQlN4AGERgQofGebcxa0aYH/7Y5j03LT4KeQGd48Wkw/LqkgoEfOw4THLidzMkg
+         wnCSp3+DQlvJnOq7bFpnGkyOiiBFwQmgqo59OjiLkBg0GiLGnLPTsWjvg/sLrYYY/hdc
+         JbX57u+Gs5pXyjJvOUAtThg1151QYmieWS1TE6uYhw4Tuyx3yAK0qWgx1BBv1PgZw5Fk
+         VT5tEyASo5RhXMUk0/jEKbPb0m1TuET0KrQKmbLcws1SoNk+KAoCRWIDq60rOc9mpZXZ
+         J1ItpU6gla9hvzl35UHjikSc+6EmFgjrdlCohK4GUlwdokoO1Xk6EdY78QQR69sOVwsG
+         X/7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU+Q6gxnAZY5YjeG/lxDKN8yuSM2IbHd9m5LZCDXe4kSKlFRGWGwFMOW8hLxz9YWV0E1JY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxDeritqBL9y/JlRa/oPVr8CxrXbdx42H9OipooZIyDUAJswNk3
+	aIUj6x7ryd2I4kL0SSG6vS9499KrUP9O0CiMmHAAgBBRXk8KpuJDQKsUmk07wU8OUdm7uLzzG5E
+	S+HejGlM8NdrEqGHv2odjONPIEWqc5UFNPPkxkPbx7Q==
+X-Gm-Gg: AY/fxX6IkqrsJ3U4bkHNp4ctOKrkl/EO3qffDtW3+COfjMbq0kXE3GueJfSOW1yGB+2
+	W7eqd/56xmGG+Ww63UFsQ491WIJWzPWQfCPyez9n1KvT+kmxhQ4ZBGACH0C0JPzNNddzjBalYPT
+	YIGtwoku9T18J6EDN5I8E8o5xwml2BfvKwQ4I5TjszyG5CEMpzrdwcvTo/mXZuDDNHRhBvyR+pg
+	+e+Gsz/ytDRRP1DI/cDHyTruCG7cD3a5xOiFuBIgvMRG8HPVjDZWzEmWAkjRAXdye9Ez+Y8
+X-Google-Smtp-Source: AGHT+IHSOzKJUAD0VWoqMbAG9/IlbO2ZSE7puMKuCAi60z6RaWldMe2JJwlbhcYrPz8NDWuyAEiNqo14NocbJW/sTAU=
+X-Received: by 2002:a2e:b8c4:0:b0:37f:b5c8:7cc0 with SMTP id
+ 38308e7fff4ca-37fd08c7ae4mr55985981fa.33.1765887365959; Tue, 16 Dec 2025
+ 04:16:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: Remove unused includes
-To: Jonathan Cameron <jic23@kernel.org>, "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Michal Simek <michal.simek@amd.com>, Vinod Koul <vkoul@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-        David Lechner <dlechner@baylibre.com>,
-        =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>,
-        Andy Shevchenko <andy@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
-        Peter Rosin <peda@axentia.se>, Linus Walleij <linusw@kernel.org>,
-        Chen-Yu Tsai <wens@kernel.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Philipp Zabel
- <p.zabel@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-iio@vger.kernel.org,
-        iommu@lists.linux.dev, linux-gpio@vger.kernel.org,
-        linux-sunxi@lists.linux.dev, imx@lists.linux.dev,
-        linux-sound@vger.kernel.org
-References: <20251212231203.727227-1-robh@kernel.org>
- <20251213165949.4b51f7cb@jic23-huawei>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20251213165949.4b51f7cb@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=LrCfC3dc c=1 sm=1 tr=0 ts=69414a75 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=wP3pNCr1ah4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=i0EeH86SAAAA:8
- a=UbNXja__m5_aMge2JzcA:9 a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-ORIG-GUID: G1FxEPan_BP3povIVgqQRGDnHU9e-tiE
-X-Proofpoint-GUID: G1FxEPan_BP3povIVgqQRGDnHU9e-tiE
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE2MDEwMiBTYWx0ZWRfXwGl4qelttDNi
- gBuWqQ1B9PzI99Cafj4BNaVmy77j4Dt51jTzjKernKdBsC3l9n7T2x1WTsdSZ1uJj6v4Ve4zgoD
- CeoHfPRHhJfeSN2GgFjxHx+ktQ6QQxiIjm1sMWvbWEVPsMUdx0Y1pYeOAtXlpiQT1gm2KBI6LnM
- zNaEBTccn/xXxo4mBsshZlUwpTsIC8XgJn170AhB0WhZN7I9Q5sq6Jh5WxSKAOv85x6Z768wAz7
- UmwP55IqT5EmbbmM3fpa03Kk6YmUis/FgwSlS38Jv7UM064SUOkHSgBzfoNdBEMqmQ6fwtks7Yr
- JAWYV/6o3hMoJAhUCuKI4krQenBJ0XTiipG+P8ahYF9K25vanjsVT3KtqaWQEK5B3P7O95A1E5X
- va/ZRUW6BaJl8vDjzAffH3lYvkBFKw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-16_02,2025-12-15_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
- priorityscore=1501 bulkscore=0 clxscore=1015 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2510240001 definitions=main-2512160102
+References: <20251215102010.608421-1-ziniu.wang_1@nxp.com> <CAPDyKFoLmo=qDru67rj63gQwMjLqVKS+wEQecukuC+3Pz_CjDA@mail.gmail.com>
+ <DU2PR04MB8567C09C52C66C59C9CA6607EDAAA@DU2PR04MB8567.eurprd04.prod.outlook.com>
+In-Reply-To: <DU2PR04MB8567C09C52C66C59C9CA6607EDAAA@DU2PR04MB8567.eurprd04.prod.outlook.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 16 Dec 2025 13:15:28 +0100
+X-Gm-Features: AQt7F2qlgonHE1u8usoQ1ApRhJuG8Mj0nOYZGlZ59wEK9NLeswsioWiDble_0qg
+Message-ID: <CAPDyKFoH+B363wiPi6HoKg1VJXvJVNPoYaRTGXzEDgSTEg9TyA@mail.gmail.com>
+Subject: Re: [EXT] Re: [PATCH v2 0/2] Optimize secure erase performance for
+ certain Kingston eMMC devices
+To: Luke Wang <ziniu.wang_1@nxp.com>
+Cc: "axboe@kernel.dk" <axboe@kernel.dk>, 
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, 
+	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 
-On 12/13/25 5:59 PM, Jonathan Cameron wrote:
-> On Fri, 12 Dec 2025 17:11:52 -0600
-> "Rob Herring (Arm)" <robh@kernel.org> wrote:
-> 
->> Remove includes which are not referenced by either DTS files or drivers.
->>
->> There's a few more which are new, so they are excluded for now.
->>
->> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> 
-> Acked-by: Jonathan Cameron <jonathan.cameron@huawei.com> #for-iio
-> 
-> Ideally we'll get a QC ack on those as well.
-> 
-> Jonathan
->>  .../dt-bindings/iio/qcom,spmi-adc7-pmr735b.h  |  30 --
->>  .../dt-bindings/iio/qcom,spmi-adc7-smb139x.h  |  19 --
+On Tue, 16 Dec 2025 at 11:02, Luke Wang <ziniu.wang_1@nxp.com> wrote:
+>
+>
+>
+> > -----Original Message-----
+> > From: Ulf Hansson <ulf.hansson@linaro.org>
+> > Sent: Monday, December 15, 2025 11:38 PM
+> > To: Luke Wang <ziniu.wang_1@nxp.com>
+> > Cc: axboe@kernel.dk; linux-block@vger.kernel.org; linux-
+> > mmc@vger.kernel.org; linux-kernel@vger.kernel.org; imx@lists.linux.dev
+> > Subject: [EXT] Re: [PATCH v2 0/2] Optimize secure erase performance for
+> > certain Kingston eMMC devices
+> >
+> > Caution: This is an external email. Please take care when clicking links or
+> > opening attachments. When in doubt, report the message using the 'Report
+> > this email' button
+> >
+> >
+> > On Mon, 15 Dec 2025 at 11:18, <ziniu.wang_1@nxp.com> wrote:
+> > >
+> > > From: Luke Wang <ziniu.wang_1@nxp.com>
+> > >
+> > > This patch series optimize secure erase performance for certain Kingston
+> > > eMMC devices (IY2964 and IB2932) that take a fixed ~2 seconds per secure
+> > > erase operation regardless of size.
+> >
+> > Well, that sounds to me like the eMMC isn't really erasing the blocks.
+> > I wonder how "secure" this is in practice.
+>
+> Compared to other eMMC, 2 second secure erase time for 1GB is reasonable.
+>
+> Using the default 3.5MB secure erase chunk, the total time spent secure erasing 1GB:
+> Sandisk SDINBDG4-32G-I 0.8s
+> Micron MTFC32GAKAEEF-AIT 4.7s
+> Longsys FEMDNN032G-C9A55 0.6s
+>
+> In fact, secure erase does not guarantee that data is physically erased. We previously encountered
+> an issue with long secure trim times on the MTFC32GAKAEEF-AIT eMMC, and got confirmation
+> from Micron:
+> "Secure Erase (0x80000000) is treated as a simple Erase (0x00000000), while Secure
+> Trim (0x80000001 + 0x80008000) and Trim (0x00000001) are treated differently. So, it is
+> possible that Secure Trim really is the heaviest possible erase operation for the FW to execute. "
+>
+> And the eMMC 5.1 Spec:
+> "NOTE Secure Erase is included for backwards compatibility. New system level implementations
+> (based on v4.51 devices and beyond) should use Erase combined with Sanitize instead of secure erase."
 
-Those are being moved to dts/qcom:
+Right, thanks for clarifying this! I do recall the complexity around this now.
 
-https://lore.kernel.org/linux-arm-msm/20251127133903.208760-1-jishnu.prakash@oss.qualcomm.com/
+>
+> >
+> > >
+> > > Currently, a 1GB secure erase requires ~300 operations (limited by max
+> > > discard size), taking ~10 minutes. With these changes, the same secure
+> > > erase completes in a single operation, reducing time to just 2 seconds.
+> >
+> > Hmm, is the problem really the size or is it the timeout? Why does 300
+> > operations to erase 1GB take ~10 minutes?
+>
+> I think the problem is caused by the fact that this Kingston eMMC secure erase
+> small chunk need ~2 second. In contrast, other eMMC secure erase small chunk
+> only take tens of milliseconds.
 
-and will hopefully be in use later in this cycle.
+Okay! So it looks like using a card quirk, something along what you
+propose in patch2 could make sense. I will have a closer look.
 
-Krzysztof and the submitter agreed on that outcome since they represent
-hw constants and aren't "real" bindings (connecting sw to sw)
+>
+> Also, the calculated max discard is too small. For the I.MX8MN USBHC controller,
+> host->max_busy_timeout is 2684ms, and the calculated max discard is always
+> card->pref_erase - 1, which is 3.5MB.
 
-Konrad 
+I see, so regular REQ_OP_DISCARDs are suffering from similar problems
+that are taking a very long time to complete?
+
+Are you planning to make a similar card quirk for discards or what do
+you have in mind?
+
+>
+> >
+> > Can you please elaborate what happens on the mmc host driver level for
+> > each operation. What mmc host driver/controller is being used? Does it
+> > support MMC_CAP_WAIT_WHILE_BUSY or do we end up polling for
+> > busy-completion in-between each command?
+>
+> This issue is found on IMX8MN-EVK, uSDHC controller. We end up polling for
+> busy-completion in-between each command.
+>
+> I print some log during secure erasing:
+> Without this patch
+> [  126.760429] mmc2: starting CMD35 arg 01294000 flags 00000095
+> [  126.766530] mmc2: starting CMD36 arg 01295bff flags 00000095
+> [  126.772246] mmc2: starting CMD38 arg 80000000 flags 00000095
+> [  126.777988] mmc2: mmc_poll_for_busy
+> [  128.616245] mmc2: erase operation completes
+> [  128.628511] mmc2: starting CMD35 arg 01295c00 flags 00000095
+> [  128.634293] mmc2: starting CMD36 arg 012977ff flags 00000095
+> [  128.640089] mmc2: starting CMD38 arg 80000000 flags 00000095
+> [  128.645811] mmc2: mmc_poll_for_busy
+> [  130.456184] mmc2: erase operation completes
+> [  130.468390] mmc2: starting CMD35 arg 01297800 flags 00000095
+> [  130.474160] mmc2: starting CMD36 arg 012993ff flags 00000095
+> [  130.479928] mmc2: starting CMD38 arg 80000000 flags 00000095
+> [  130.485798] mmc2: mmc_poll_for_busy
+> [  132.192309] mmc2: erase operation completes
+> ...
+>
+> Apply this patch
+> [  296.480818] mmc2: starting CMD35 arg 01294000 flags 00000095
+> [  296.487219] mmc2: starting CMD36 arg 01493fff flags 00000095
+> [  296.492995] mmc2: starting CMD38 arg 80000000 flags 00000095
+> [  296.498999] mmc2: mmc_poll_for_busy
+> [  298.712865] mmc2: erase operation completes
+
+Thanks for sharing the log, much appreciated!
+
+Just to double check, I assume that you have verified that the
+busy-polling works as expected on your HW? The reason for asking is
+that we have seen problems with this several times in the past, on
+other HWs.
+
+Kind regards
+Uffe
