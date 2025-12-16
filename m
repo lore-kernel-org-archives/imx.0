@@ -1,68 +1,106 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C1E2882C5;
-	Tue, 16 Dec 2025 16:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462EF72602;
+	Tue, 16 Dec 2025 17:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765904183; cv=none; b=obEFzbqSWtTskpQc/EO6vH2KBBWX30ih14xUEvpV9CaENvY2vdks74n5rSCbROyK20Jst0H7NhQItOZe5pGcWGihS18jVds22zsY5QthOhGM53dJ+ShacQELcZ7ftazPvfLgWqfr8TG4WgcJD6B8vYMVbQaS+JrWhl7o2lROj50=
+	t=1765905309; cv=none; b=LnuBWAAjmNS2H98DgxXyYO0++R/7z6nfVFFmOBNxnmRrzJO4YbXJ3UzLvKgXYTaYKuzM4KQ0XghUM0VymuD4mYmdBnSPH7tynXhqwB3tIbpa+pZxfBb8qkIuscPTn9De8dk61UpXIeDtAYiqlJUl0Np+hUBNBxPfkpeWXrOtUEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765904183; c=relaxed/simple;
-	bh=tG1SeQOIXU1i/h7qdkQqs75ay6wmpkRhFCtiG6Q9UtE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=UDUbuoSrtmNOof/5CMZuCYI3JrSAFJPU+s9qk24fy2va2p1o7GeRha+bEPHJJ2fitBDIyqH6xvaUsU2ETJdUthlK+24JpWIzTodHRG+D+z0JfEpFhCjxB9zhHxxSEiLMUbrICygvGL7ba22/wkq19xfKTBZNDZPJnbntzl3HkpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tQJcmnep; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765905309; c=relaxed/simple;
+	bh=mcmdjoIeQ8dVaydge/S3sCXDOzpTarcOqio6eoFh39k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rrHXTHMM8940VyGS/oFtYGMoLc0inKaEen3gfFSjzRe7hxDv+h6CXG8f1C6j1EL+GVsg7SXXRfTic0i4cDAjJGllioKn/CEVIYo3k65J38YH6pkjVC/jeOovTFpI04ejlhHffXEJJeIDMx5eZzfHHNIrto//AQQ7DGmtaBDR07I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fd77r7CV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQJcmnep"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1BD0C4CEF1;
-	Tue, 16 Dec 2025 16:56:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fd77r7CV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79985C4CEF1;
+	Tue, 16 Dec 2025 17:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765904183;
-	bh=tG1SeQOIXU1i/h7qdkQqs75ay6wmpkRhFCtiG6Q9UtE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=tQJcmnep3X5OaTr7M8sl6sAneglR3sSnvztHM/lNU2JFpXSUR+VnRAysvJvxidnbW
-	 hGKH807FiJvuUhcRjyNeIIsZMjrnw+x+agK/YzR8ndjQ5kEFjqQePQ3sW4PaBc9pJd
-	 RAV6s/I9rgpSAd0/K1/tdTX6jdPH4Cj4bSQRSqmxpKZ8AJLnd3pQ26tiVuW/d/tP9S
-	 6tO7ZHHwJda28Lo4ItYxU5ryznvIlh1DB0RyK1nLE7c8vITsg1xqawZ6mbriuva3xL
-	 9/U/Eu+W6lTUg4ky064k5q4nvMSLo0tmshUkjxBsDYTGFBq20mWL5zqk1VNwPAf+zW
-	 GEhJ9zLFVWiLA==
-From: Vinod Koul <vkoul@kernel.org>
-To: Frank.Li@nxp.com, Zhen Ni <zhen.ni@easystack.cn>
-Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20251014090522.827726-1-zhen.ni@easystack.cn>
-References: <20251014090522.827726-1-zhen.ni@easystack.cn>
-Subject: Re: [PATCH v4] dmaengine: fsl-edma: Fix clk leak on
- alloc_chan_resources failure
-Message-Id: <176590418161.422798.10654079302568628725.b4-ty@kernel.org>
-Date: Tue, 16 Dec 2025 22:26:21 +0530
+	s=k20201202; t=1765905308;
+	bh=mcmdjoIeQ8dVaydge/S3sCXDOzpTarcOqio6eoFh39k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fd77r7CVON1lRH0b5ILmf5Gy/OkXnk169H1lioS5jyy9elisWdT1B/13wKfu+8pZc
+	 MMVtqqxS56r1V01p+Q85v7lwRhImLwUnIJJ0vwO75aAuzEyDngWY8pLjYM79dfY8f+
+	 5hyuQnh96NvBdqQApeIyRFLfbs6yW4Y4LKCn8Aw/RrfYIIobxDskLwKUX6wRtVGBKw
+	 R2zpsoAI2i5/AFYKvFT2N8twQh/qnJ6umnF7PnanyQvjDYoEksoloEXlTs+/elMEY/
+	 PTZGiL02hNPhdY5Gtl8RycZ9WpmAyen3c6YEpedvcyXnwPyXz276eehtsd3P+/npXv
+	 IAcWNiEQ0WdfQ==
+Date: Tue, 16 Dec 2025 11:15:05 -0600
+From: Rob Herring <robh@kernel.org>
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Michal Simek <michal.simek@amd.com>, Vinod Koul <vkoul@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Yong Wu <yong.wu@mediatek.com>,
+	Peter Rosin <peda@axentia.se>, Linus Walleij <linusw@kernel.org>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org,
+	linux-iio@vger.kernel.org, iommu@lists.linux.dev,
+	linux-gpio@vger.kernel.org, linux-sunxi@lists.linux.dev,
+	imx@lists.linux.dev, linux-sound@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: Remove unused includes
+Message-ID: <20251216171505.GA2641341-robh@kernel.org>
+References: <20251212231203.727227-1-robh@kernel.org>
+ <20251213165949.4b51f7cb@jic23-huawei>
+ <695ca5d2-b713-4838-8427-a9d31751c0cf@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <695ca5d2-b713-4838-8427-a9d31751c0cf@oss.qualcomm.com>
 
-
-On Tue, 14 Oct 2025 17:05:22 +0800, Zhen Ni wrote:
-> When fsl_edma_alloc_chan_resources() fails after clk_prepare_enable(),
-> the error paths only free IRQs and destroy the TCD pool, but forget to
-> call clk_disable_unprepare(). This causes the channel clock to remain
-> enabled, leaking power and resources.
+On Tue, Dec 16, 2025 at 01:02:52PM +0100, Konrad Dybcio wrote:
+> On 12/13/25 5:59 PM, Jonathan Cameron wrote:
+> > On Fri, 12 Dec 2025 17:11:52 -0600
+> > "Rob Herring (Arm)" <robh@kernel.org> wrote:
+> > 
+> >> Remove includes which are not referenced by either DTS files or drivers.
+> >>
+> >> There's a few more which are new, so they are excluded for now.
+> >>
+> >> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> > 
+> > Acked-by: Jonathan Cameron <jonathan.cameron@huawei.com> #for-iio
+> > 
+> > Ideally we'll get a QC ack on those as well.
+> > 
+> > Jonathan
+> >>  .../dt-bindings/iio/qcom,spmi-adc7-pmr735b.h  |  30 --
+> >>  .../dt-bindings/iio/qcom,spmi-adc7-smb139x.h  |  19 --
 > 
-> Fix it by disabling the channel clock in the error unwind path.
+> Those are being moved to dts/qcom:
 > 
-> [...]
+> https://lore.kernel.org/linux-arm-msm/20251127133903.208760-1-jishnu.prakash@oss.qualcomm.com/
+> 
+> and will hopefully be in use later in this cycle.
+> 
+> Krzysztof and the submitter agreed on that outcome since they represent
+> hw constants and aren't "real" bindings (connecting sw to sw)
 
-Applied, thanks!
+Okay, I'll drop those 2 when applying.
 
-[1/1] dmaengine: fsl-edma: Fix clk leak on alloc_chan_resources failure
-      commit: b18cd8b210417f90537d914ffb96e390c85a7379
-
-Best regards,
--- 
-~Vinod
-
-
+Rob
