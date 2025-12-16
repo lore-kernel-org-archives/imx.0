@@ -1,47 +1,46 @@
-Received: from mx-relay93-hz2.antispameurope.com (mx-relay93-hz2.antispameurope.com [94.100.136.193])
+Received: from mx-relay95-hz2.antispameurope.com (mx-relay95-hz2.antispameurope.com [94.100.136.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7C6398B96
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 13:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE68D39BEC9
+	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 13:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.195
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765891912; cv=pass; b=d5n+eIZ19hHArL1fl0+0ePCeeHeX2IExi6hApZOT2brGCrpTjGWziJCuzCSvXqBQbogDJxbEeGlThkGjHGmlU5YBSCskKKZxYgtXCnK6x1fIWz25RLrHqUqGZYc33cY4hdnFVrCxPfZd5jTE9FIhg8mxoZk0Ti1hEba+nVi0a48=
+	t=1765891926; cv=pass; b=lKvAaI5BPueVqW/uAWgYzWfyQQ3+n+QHO47+4x2P2qdLcOza7pnDCWLv/I80khZ1s3MmQ1hjLiAWAWO8Ec8JDOTBBIMvMcJ4x424XXAnyLMKVAXwGgqIHoNDy6Q9CFLB7qrX823iVPLn6m3sIy937+MjgrGwigo2kVL9BoOA8ZM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765891912; c=relaxed/simple;
-	bh=1vcbNES+su2OO2olrrDYQUbPCkKYn8vT4vs9BjA2X9k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLicuyuTnPGxqCfhy7H5395ZKWnvuJX7D6x+Z0OCuOk6tDxFVDZfd2BhvCQI+qD4oRq0OuXj6anlMlOA/lL4gsapFX5tcO+00+OtN4nDzZPFLBm1jvqsKO44PSWUoWzUuShwfLrRo/R6TtMhA4L1X+7BRwi5u83ggiF7+bgu6fQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=jedvmb5A; arc=pass smtp.client-ip=94.100.136.193
+	s=arc-20240116; t=1765891926; c=relaxed/simple;
+	bh=2kGYXJE/iVahj8BFqpe6AykUip8ftdYsjkq/kDCnExE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OyxyC/vUGek8JZvrAUG8ZxwxYEcqNadW46tom81XbXSdaZ4XmfbHakcB1+8kuvF0XH49Mg1WTTk2S6J1iwp8YttzSgd/ldsBYho11bzpkVWYLMj5dEfCUWXDaAq4QJisGpHNkEnzPg57W3LFmGlr8fmvzGe80BD4TZ3uPAm2JJI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=j1YN4dhN; arc=pass smtp.client-ip=94.100.136.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="jedvmb5A"
-ARC-Authentication-Results: i=1; mx-gate93-hz2.hornetsecurity.com 1; spf=pass
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="j1YN4dhN"
+ARC-Authentication-Results: i=1; mx-gate95-hz2.hornetsecurity.com 1; spf=pass
  reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
  smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out02-hz1.hornetsecurity.com;
  dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
 ARC-Message-Signature: a=rsa-sha256;
- bh=x9mGmXqHfOmeLgdEOLDPoxQ5MFnm0tlfSuhg2kM00pQ=; c=relaxed/relaxed;
+ bh=yh5ZsOcuDpa4wWwoqzqt35sd6N66Msu9e9l9XpN6lLM=; c=relaxed/relaxed;
  d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1765891887;
- b=Q89vDzY0wiR1X7np21N2MiwcIo8Yun7b+zYFFzZmT3JLluKEA85o1Oze+9jyeQMYKgO1GK0s
- hQBheAgNI3grjCpSytyrMdRRe99pLFctT5msJKhEPzT2ptqrMr9jqbr52SoQW0vA4K5AOrd56zg
- z3jrcT77TTYg5TvBNVPLM+2QoRz9Pj8qHg32TW/WhlUPLUbDZVjIbcRrRDD8s4d5DVOJhvhjZBi
- frwzSo98zR4VTuJhV7BpVsbW1evpApWcFjeB2dDk6rlGZJk5SqXuwecviIu/iH3lGgPFY+VZ78r
- OS+z9EGfOFmJgwhP8JhgHD8OtR5Qd75doGB24YKOEgsqA==
+ t=1765891880;
+ b=D9fg7yg8mfb3qBkl+AvZ9h3rZQlXSkVH9jif4AeHBky+k031zSR1EwBey8asRuQfuHHU93Ck
+ mU4NZwdEdrEG4wO0+1Birfh0mAKlxG9Nprv8E3cKlCD9N3sobo0UN6Kkni8aYvIZWWxon5blkEy
+ JX6PxSdXVQXCfJqS/0N7cOM2phv8WzDirsmdyEnNYCE+YMyfb0KLjGcGAJm2X2hhL3leIZaAD9m
+ +3aKKVm7UPTL0mzRTK7js1DwRNc1TXj2N+3Qx00f70GOiZJXKUs4S6DEr5yTiel4ZL9tIXEnT3e
+ S704lTzULMiNWBAO8U9DC6KeOELud4vXX1i8nbYV3OzEQ==
 ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1765891887;
- b=rnOX7Jnu31bTH1aW37wz/BzI8fCHYVGMdDwauo2RTmC482SFb6DJ7+il5ZuNdHLvsjRdtCGZ
- E8onw50NAWXj1fe59D3Z3M/Ph/2t3IsPX5FkvV2hs03mTaTc/Vq42xL6pfbdUDuejdCYPwd+21Q
- +xRixs15rk1AFCT/owFA3S+nSZM7pgJ2qMFvessdCgcMOBgxXYuDumYFP+bi2XVp9XQBGOV9Ipz
- kzrR8zwiHhZ1+O0QPkjZWB4fwzCEK+5wZ+yN+NZrTgbXzuVzoiRY6VT+Ej/EGuXXjGRQ7X8TR80
- 2ipXJC6NDQC4Uwla0KAWa5FFD1TwDI+Fyon2ya3Ro7apw==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay93-hz2.antispameurope.com;
- Tue, 16 Dec 2025 14:31:27 +0100
+ t=1765891880;
+ b=ZbHfGgsrRBpnSFlGsJjK+My+f5ruGI/1l8hDw4LzUXD16y93qep6U9yuasuxqTeDFLB74pnI
+ G+BQBVIZ0WgpLIacYzzKyflaPD61HkPiy0JITFA/w9npfT/29FVVvqpjdlMPER4koVWgYdoA/7y
+ inxJIJjDlL1Pe8Qicy/4UdsfuIlIs7DEYia6IDuGrj/n1Z4lqBite2NoTmQ1Csioe+31SSwuk/o
+ KFAO9dUquSDNjl/PHDSZFsRt9A1FEttukgt3FdHgYzyL8As7uFdubujBjxtF2kYyPcy+YN9yv+r
+ btc6lkyfYnm9eO6R215jrSHbciXUgsek5ktZ6VgplYldg==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay95-hz2.antispameurope.com;
+ Tue, 16 Dec 2025 14:31:20 +0100
 Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
 	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by smtp-out02-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 56EB55A0F66;
-	Tue, 16 Dec 2025 14:31:16 +0100 (CET)
+	by smtp-out02-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 2E46A5A089D;
+	Tue, 16 Dec 2025 14:31:12 +0100 (CET)
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -57,12 +56,10 @@ Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: [PATCH 4/4] arm64: dts: imx8mm-tqma8mqml: fix LDO5 power off
-Date: Tue, 16 Dec 2025 14:31:07 +0100
-Message-ID: <20251216133110.905950-4-alexander.stein@ew.tq-group.com>
+Subject: [PATCH 1/4] arm64: dts: imx8mm-tqma8mqml: remove virtual 3.3V regulator
+Date: Tue, 16 Dec 2025 14:31:04 +0100
+Message-ID: <20251216133110.905950-1-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251216133110.905950-1-alexander.stein@ew.tq-group.com>
-References: <20251216133110.905950-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -72,133 +69,81 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-cloud-security-sender:alexander.stein@ew.tq-group.com
 X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-body-digest:f05457902f37798828b49e9ea5497943
 X-cloud-security-crypt: load encryption module
 X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
 X-cloud-security-Mailarchivtype:outbound
 X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay93-hz2.antispameurope.com with 4dVyW90kQLz4QHDJ
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay95-hz2.antispameurope.com with 4dVyW50clrz2F9KH
 X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:8607d1a79e30606a7dcee9ac57a97bd3
-X-cloud-security:scantime:2.034
+X-cloud-security-Digest:504100b48af9d3fc233a2e6c6ae8df85
+X-cloud-security:scantime:1.536
 DKIM-Signature: a=rsa-sha256;
- bh=x9mGmXqHfOmeLgdEOLDPoxQ5MFnm0tlfSuhg2kM00pQ=; c=relaxed/relaxed;
+ bh=yh5ZsOcuDpa4wWwoqzqt35sd6N66Msu9e9l9XpN6lLM=; c=relaxed/relaxed;
  d=ew.tq-group.com;
  h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1765891886; v=1;
- b=jedvmb5AghQl5BMRJhxedJbA6F9tPUTywE1UIUGl0+oHFlm81tCvAe8gs+1Eq7zKK0B2cJUM
- dH0u7j4CNNX0NTT8zNm9bYzktdZpZMG7Ke2fONR2qr1fK46ZXTP5ovOgBhxURmQlXSk3LfsKpw+
- 0g0FWZr7Pqm1OXlmGaC9RfkS6Vuvsx136jQf36Ety20/3iu9XKqiBofgGONs4YA1eoEUCn130wF
- 7hkZksQNG0LwzSb2JfsWxuur3RYbaJskqH4+cSENEZvYznnSVgXwkY4lwTz/RpfK9coNXUzW/E7
- IHxiOiWN0oSo/KQMLP7f8ZS2qjH2y4EvTI8XYu3mCyS0Q==
+ t=1765891880; v=1;
+ b=j1YN4dhNEadYH7w+SpaPgQtRv1xH5wurkiCTr7lUzzaEr7PxuT1nZOcAXWILwwXUWi8+z2ht
+ SwRYI9IrspMUGOSzkNzxoQnzsKyl2Kt+cP312oixXVgWSyehCaGHad2RDMHXvLc7CYjk6TLcoFT
+ vxdQvzaErPqd5/rkrF0p1gFgsPsLwAUOj4pq5xseMlduYOiMQnfl726+w2iIhUuJuJQLMje57T1
+ 2abDLvC81G7LTY+5bJgMLZER2gingWO9/D83Nzg+c0H7crW/knO/+i95Q85S7uE7lFVzbbvDRuy
+ xBPk/3P1yAIDt2Agf+UcYDk0j2H44Fnmn1VgCOKxtP0zg==
 
 From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
-Fix SD card removal caused by automatic LDO5 power off after boot.
-
-To prevent this, add vqmmc regulator for USDHC, using a GPIO-controlled
-regulator that is supplied by LDO5. Since this is implemented on SoM but
-used on baseboards with SD-card interface, implement the functionality
-on SoM part and optionally enable it on baseboards if needed.
+BUCK4 rail supplies the 3.3V rail. Use the actual regulator
+instead of a virtual fixed regulator.
 
 Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 ---
- .../dts/freescale/imx8mm-tqma8mqml-mba8mx.dts | 13 ++++++-----
- .../boot/dts/freescale/imx8mm-tqma8mqml.dtsi  | 22 +++++++++++++++++++
- 2 files changed, 29 insertions(+), 6 deletions(-)
+ .../arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx.dts b/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx.dts
-index b941c8c4f7bb4..8dcc5cbcb8f66 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml-mba8mx.dts
-@@ -101,6 +101,10 @@ &pcie0 {
- 	status = "okay";
- };
- 
-+&reg_usdhc2_vqmmc {
-+	status = "okay";
-+};
-+
- &sai3 {
- 	assigned-clocks = <&clk IMX8MM_CLK_SAI3>;
- 	assigned-clock-parents = <&clk IMX8MM_AUDIO_PLL1_OUT>;
-@@ -276,8 +280,7 @@ pinctrl_usdhc2: usdhc2grp {
- 			   <MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
- 
- 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-@@ -286,8 +289,7 @@ pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
- 			   <MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
- 
- 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
-@@ -296,7 +298,6 @@ pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
- 			   <MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x1d4>,
- 			   <MX8MM_IOMUXC_SD2_DATA1_USDHC2_DATA1		0x1d4>,
- 			   <MX8MM_IOMUXC_SD2_DATA2_USDHC2_DATA2		0x1d4>,
--			   <MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>,
--			   <MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT	0x84>;
-+			   <MX8MM_IOMUXC_SD2_DATA3_USDHC2_DATA3		0x1d4>;
- 	};
- };
 diff --git a/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi
-index 2e3860a5f4fd2..29b298af0d739 100644
+index b82e9790ea205..16ed8ce5b5c49 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mm-tqma8mqml.dtsi
-@@ -16,6 +16,20 @@ memory@40000000 {
- 		reg = <0x00000000 0x40000000 0 0x40000000>;
+@@ -24,14 +24,6 @@ reg_vcc1v8: regulator-vcc1v8 {
+ 		regulator-max-microvolt = <1800000>;
  	};
  
-+	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
-+		compatible = "regulator-gpio";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_reg_usdhc2_vqmmc>;
-+		regulator-name = "V_SD2";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <3300000>;
-+		gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
-+		states = <1800000 0x1>,
-+			 <3300000 0x0>;
-+		vin-supply = <&ldo5_reg>;
-+		status = "disabled";
-+	};
-+
+-	/* identical to buck4_reg, but should never change */
+-	reg_vcc3v3: regulator-vcc3v3 {
+-		compatible = "regulator-fixed";
+-		regulator-name = "TQMA8MXML_VCC3V3";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-	};
+-
  	reserved-memory {
  		#address-cells = <2>;
  		#size-cells = <2>;
-@@ -227,6 +241,10 @@ &pcie_phy {
- 	fsl,clkreq-unsupported;
- };
- 
-+&usdhc2 {
-+	vqmmc-supply = <&reg_usdhc2_vqmmc>;
-+};
-+
- &usdhc3 {
- 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
- 	pinctrl-0 = <&pinctrl_usdhc3>;
-@@ -281,6 +299,10 @@ pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
- 		fsl,pins = <MX8MM_IOMUXC_SD2_RESET_B_GPIO2_IO19		0x84>;
+@@ -223,14 +215,14 @@ eeprom1: eeprom@53 {
+ 		read-only;
+ 		reg = <0x53>;
+ 		pagesize = <16>;
+-		vcc-supply = <&reg_vcc3v3>;
++		vcc-supply = <&buck4_reg>;
  	};
  
-+	pinctrl_reg_usdhc2_vqmmc: regusdhc2vqmmcgrp {
-+		fsl,pins = <MX8MM_IOMUXC_GPIO1_IO04_GPIO1_IO4		0xc0>;
-+	};
-+
- 	pinctrl_usdhc3: usdhc3grp {
- 		fsl,pins = <MX8MM_IOMUXC_NAND_WE_B_USDHC3_CLK		0x1d4>,
- 			   <MX8MM_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d2>,
+ 	eeprom0: eeprom@57 {
+ 		compatible = "atmel,24c64";
+ 		reg = <0x57>;
+ 		pagesize = <32>;
+-		vcc-supply = <&reg_vcc3v3>;
++		vcc-supply = <&buck4_reg>;
+ 	};
+ };
+ 
+@@ -253,7 +245,7 @@ &usdhc3 {
+ 	non-removable;
+ 	no-sd;
+ 	no-sdio;
+-	vmmc-supply = <&reg_vcc3v3>;
++	vmmc-supply = <&buck4_reg>;
+ 	vqmmc-supply = <&reg_vcc1v8>;
+ 	status = "okay";
+ };
 -- 
 2.43.0
 
