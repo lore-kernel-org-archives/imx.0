@@ -1,65 +1,74 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012011.outbound.protection.outlook.com [52.101.66.11])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013043.outbound.protection.outlook.com [40.107.159.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AA0363C4B
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 15:38:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6B530F958
+	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 15:42:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765899534; cv=fail; b=g+FG67cZV+uDMoFNEcq2svqh6pXRaKt22lnSx9vxa0jRV1Tke18mcp6kw2AEqUMGnomsXrqKoSBFZOfwXG62USkP6SX6Dp7/zYy8HwlrlcUBwPv65IqWlfJfYO08ttXsI8ybwwb9TqIhQoi/nrKNy5Ir3tiQn7nH5Y4zmpXQRQo=
+	t=1765899729; cv=fail; b=DdokV7p3t/p15VPaE37LwKHPTURgp3pv7zWy2Lhjc9Na2pIZ67w/GrVXeLZRY9jkyOalvgqMN9M5MVGUR0mLhxzs5oeA7jduSPCN06P0tzy9oO0S9qn4NYT1kg+MscVDcnrhBHtjcXf1xYpM1ZomRy7u+Ru7HrO8Ug3mOijQ0Zk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765899534; c=relaxed/simple;
-	bh=HmiRcYjOkJLB/iVbB8WrE726tHBfARQXKkaMpNZDmNo=;
+	s=arc-20240116; t=1765899729; c=relaxed/simple;
+	bh=oP7YjxBb8hULlfy4ghQnrm9VbBmZmU0Am9Qf+FtpnhU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=MbnMyGDUyg55Iw+ma1kn4ZaBAmsIjTFSRX1EIF2ZkAT0d4TSBi2xJOvnyd1yCc50nhPMWDgmo627Z2sImuWyI+9LLWUt10+//lel6uspDCCM2j5nn7GTj06l0iJ+jJc+2dcmtcINv7+KYbtfUIRYhmTql3U13HsFfuCpW9UPrLo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ZfYoZg2V; arc=fail smtp.client-ip=52.101.66.11
+	 Content-Disposition:In-Reply-To:MIME-Version; b=UZ3yMsz8P+5AW2dRA4xGxWl9v0k9U4+Qrmh+RbpjP+jKXBbSuVUDt+Wpv1X0GggGQx4sjAu4l+VmPRT8P297gJz7OgziCyLy4geUJXn7hxSuIB8Yt0M15QIOoQZc2IV2NsV5eMmUQSkW6En/TCOOyrQNRP5MvDP28+K3+8kDN3I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=S6w0C6s+ reason="signature verification failed"; arc=fail smtp.client-ip=40.107.159.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ZfYoZg2V"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="S6w0C6s+"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VUXsxB6yLbNZnonq3HpkLVxwPt/VTGGJ2DQBmCYBmqPEr+ftw1tuzdNgiI6+HYVNMHvxBXZ6cTgnaOXo/wHSs7xP+nS1lzPrY1xd2yS8QeHF1SGvmVa/LSauSk7Ejczlr/9x5oitPRd0ZwYgML1FM094htc9Nf40yGewOV5d8fHZY/aB2j5NU+61ItFGEP2rmA3syTYPXej8oASavpep8qyQHVETGi9DS4n2GT9RbZDPzzulqLnL4+GCuSFz6IPvdTeLWaozYWBJ9SZiEXqlrUr1OgZVGFo1qa09S4N+D7qSo3ySn6I2+lp2uYVWsHijBhq9Bi/nC7+HiwhLWpYXXA==
+ b=oJHeryoO/VHTWBk0MhKBspFWhb4YcUP10AHahFBFFkmJeKo9mLqDrZgvGFcBEloPdBxpanzzdQ+1huznpBuIf4pmZsm4p7EiqBXlExpiPXB3LABVFjVcNshktfyQXAspfsR7vujKUnXfkJm23K2yHQTdZ1dMBqPyRFk/uCGdtxdyvTsJq7Whv2UhAdEJWqj6aCTlZ16pUHg+8Yg9cA3mwSdHhlYnOx3cyhQujxQ+6nOxMVK04LdskI1KYU4Ha5afVx7Vu43wyCWlO50GyRuJxkrZV5iC9VsYN93KgmK0243lVMFEXQSHUdNIWDpikLF6lxs353z35wQtJE4znXLPfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2SKYxlRR7J59bMHXOizSVzUDWa4AJnmS7lvS4QkqqOI=;
- b=xtSy3Yu3+dcPeB3QmVjW2sc2EhKiDbnoDkfLjG/dPg739/Jt/jfrbHFpKDw8AjKKdEvtnvzRhvCDachTQAU/btGuJxVkHKkZa1HqvGLDOfovhkzamm3qEVq7kbJ1nda8HPezJ7UjU3cb0B+AhKRX8IsR7Qwetw0aOpwuUuppTcXxhiS3Dr22Y07jor9oG7ON/aEJa4qTMr9ANTez0mteNTVb4zyW3ablMyjA86AulYgxPl/rggffejMCdxSXoKpZl0fG5A2/fUtQ1y9OWSIJ+stYtkN/GuxgtoBPowY9BtIQEy9YeuTToONl1mjV+ArVRUmTXLuQ+Ur7d5Q5p0rXzQ==
+ bh=5gIjWjvRKQaMquyQ4XmRR2SoR63EziobwEAi2GqrIho=;
+ b=LeyVmfDmqWM10ojd69+gPfvbyb81KxCt+VN9rLj/XrWSitn5ymExfjn66Aq82dYuJeiy+3yDH+0AhCOpAbuamVO1e4bjdmLHp36Ajg26RPEC/707gzt2KNC2H9VLvRZaQacaZz5rmIAavaizqj+h/FyhmNzqOFsGAZn6MHykEjbEdvQuU0XTtJ27hy+k+rymPWCf0YYND8084u8IZaKiuIw9iI1YqwTBdKjwllnM9gPVEKbKaK8h1KqyNcBzXtKzzPfsCwVTYC58E8WeNb03GbDbrNeF55VCBvLVnPaojuU3YF4SMNN6bVZy1bFIRsiiDjbtVKBnEcDG79VeJnYQZg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2SKYxlRR7J59bMHXOizSVzUDWa4AJnmS7lvS4QkqqOI=;
- b=ZfYoZg2VeoFOQCmNsNDGSHe8LjO3GNpZ8bWNKM8BH05eJ22T+vwA6DklvOot3Ac2HznkWc35KtpKH4cZFwmLu/DPKAzo3ilzWE2/TXrR9zADdfgZDk+sjl036nTysoSGx5zryxUe+nfujt6jEVcejxvk1JhP2fPjKELaHrcUf/kK4bVdp+/mkM6OIx9dq9S63StM23DoKqtOQYPr+dROhf+44noK7R8rZJK3SECrUGSfCOB37bvJLbqwNwbmjzfoYjyukXbDdwA4gH518zCGZknA7cOm9zrGOdmID1FRWPVGkJ2dhnEsZl21H8ocrPH+aYdj5ebNs7KXiZqkvprVSQ==
+ bh=5gIjWjvRKQaMquyQ4XmRR2SoR63EziobwEAi2GqrIho=;
+ b=S6w0C6s+3gmKfBIiKim1rff7KeeY8zuizayd2okKUUTkMIuIinf3LniQixHzKQ4mJ5NunXwM/7NgBeH7QdWgaVX9EXDJeIxDalNfeFfVpWa0o9NrX+dtRnO+Fbubm/9zt+elM9acTgctPCNajZTBRT8WEOyMZ/zf0g1DB9OWUWcf1qPhxGHtTurvrg/7bvvuwNrmGsTjBnNJ1XTohlInkz+/Xj3fsKx3N5OZzocLI3cLWU2SFVpM/nKaJs15s6rIMfHk7zIjllijkThZA5w1Un//9lA8J1L53qZiAebfmHO0MzGgURET5N93VA8C86ED0GifXT42BIM7DUdT9FYRiw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
- by PA4PR04MB9221.eurprd04.prod.outlook.com (2603:10a6:102:27d::21) with
+ by PA4PR04MB7504.eurprd04.prod.outlook.com (2603:10a6:102:e6::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Tue, 16 Dec
- 2025 15:38:46 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.12; Tue, 16 Dec
+ 2025 15:42:01 +0000
 Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
  ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
  ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9412.011; Tue, 16 Dec 2025
- 15:38:46 +0000
-Date: Tue, 16 Dec 2025 10:38:38 -0500
+ 15:42:01 +0000
+Date: Tue, 16 Dec 2025 10:41:52 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Vinod Koul <vkoul@kernel.org>
-Cc: jeanmichel.hautbois@yoseli.org, Angelo Dureghello <angelo@sysam.it>,
-	Greg Ungerer <gerg@linux-m68k.org>, imx@lists.linux.dev,
-	dmaengine@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] dma: mcf-edma: Add per-channel IRQ naming for
- debugging
-Message-ID: <aUF8/r6FZcPraINk@lizhi-Precision-Tower-5810>
-References: <20251126-dma-coldfire-v2-0-5b1e4544d609@yoseli.org>
- <20251126-dma-coldfire-v2-2-5b1e4544d609@yoseli.org>
- <aScnArV/22L5VmxP@lizhi-Precision-Tower-5810>
- <aUF6CdS6WVZuEP24@vaman>
-Content-Type: text/plain; charset=us-ascii
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Martin Kepplinger-Novakovic <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/5] media: nxp: use dev_err_probe() to simplify code
+Message-ID: <aUF9wPzPaGD1nmM2@lizhi-Precision-Tower-5810>
+References: <20251215-cam_cleanup-v3-0-a61995068f38@nxp.com>
+ <5462566.31r3eYUQgx@steina-w>
+ <aUFwqMiYE+P+KdsO@lizhi-Precision-Tower-5810>
+ <13428800.O9o76ZdvQC@steina-w>
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <aUF6CdS6WVZuEP24@vaman>
-X-ClientProxiedBy: BYAPR01CA0038.prod.exchangelabs.com (2603:10b6:a03:94::15)
- To DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <13428800.O9o76ZdvQC@steina-w>
+X-ClientProxiedBy: PH7PR17CA0020.namprd17.prod.outlook.com
+ (2603:10b6:510:324::11) To DU2PR04MB8951.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e2::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,146 +76,277 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|PA4PR04MB9221:EE_
-X-MS-Office365-Filtering-Correlation-Id: b191531d-c870-4a15-4c98-08de3cb9333f
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|PA4PR04MB7504:EE_
+X-MS-Office365-Filtering-Correlation-Id: 66bfe78f-5070-4d04-fc88-08de3cb9a7d5
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|52116014|376014|19092799006|1800799024|38350700014;
+ BCL:0;ARA:13230040|52116014|376014|366016|7416014|1800799024|19092799006|13003099007|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?jWu8jn+gnifaEnWwFUSmCQJL6fJyu3G8ag6uO5dwlXsEWrIbIYoJMXZL9fw4?=
- =?us-ascii?Q?/5S4UBQPZP7m2WfyquTjAUx3yvcAA4lDaES4rDyuyEDw7fi0I3T+VBzQECkd?=
- =?us-ascii?Q?mN/0IxudeumTK8jQJGszBOYTvyNhwEgPZyqUzliJZm0TkKGbqQoQgNmGkyK1?=
- =?us-ascii?Q?4dgDKe/a5TNX5O3UD9se8wshTcO6/JtOA+hzEHTc42yIW2yQ7G7nA7k+syTK?=
- =?us-ascii?Q?CaxDNbvyAijsnTtRq3OMHuhuq/gcZstdamQaHFzOkTTqIhvpTe0nQo9AUlcJ?=
- =?us-ascii?Q?OfXfuIixpmSXhL0chxI2pufkUWMzTqM41HsCqjxKoL3jjKw/gYRIluVZXkmm?=
- =?us-ascii?Q?8WIQJl/MBKNQAOTMxhsR/SaGYFVsC2nIim0jDIFfeuqz2wntvZ8zbykTFBZF?=
- =?us-ascii?Q?aXckGeWDXInITP40O1xbZGaTyGM5+iCWR6d/CSZ90xLNGODX8V8W7lxI4+Je?=
- =?us-ascii?Q?z0UukrCtbSNMiTB7WzlZTan3twS2wYbcKmkmBLBMJTr3hLUVBv8FwIgxumOe?=
- =?us-ascii?Q?VgIwkMC9Q/ub1rYMd56o5NBT2POiUNhhPWjuFtJAlpQDr8iEES7nC/mh3RX/?=
- =?us-ascii?Q?tBfi5QBXHZuKdvnv1wY7Q/pQp2pVvBKmb44I0xYoBMLGUDAFpSSoNw5gy20G?=
- =?us-ascii?Q?ID43uN+nf834dMXIqRFATLA+FQspFwlZoRn8UKJws+LTK1OPHTLECdYx77CA?=
- =?us-ascii?Q?1K7W36tTf8VIpXN+fs7zbl7cC+41sxSwuRsj5HtxULqdpNbcRpwB9ww+Bbmh?=
- =?us-ascii?Q?CX3ro+uYO79CFGSmiGtbF9P7fdL9KkfAVbE1QtxdTE20wLQWsu71AkZqkXqa?=
- =?us-ascii?Q?g/GcsZY6UgqFRxK01kHtBGo199jzWBQJgHWTiNSFBvpFIzfnjwUU9x9lnz99?=
- =?us-ascii?Q?7bpR9Td9iT4YbvpbtTeM/vvDdVem5x8MkV69mNBG1hUeCfVFxTCJU4T59GUE?=
- =?us-ascii?Q?OrI9g6nSI6ffjjldXzhCtQi4Ez36T5iMTcMJvOeZQ2EaU1vIssvE4ZqNkfO2?=
- =?us-ascii?Q?Iol7qugNjbBbuVTdCMdpaZ4drjWdqm9yOnkzh3o1nU75zIk5z8DNyt2wZU2W?=
- =?us-ascii?Q?9oawGXFuzkBmxmuoj6s64TwLJupIb7bSb6dSPpa4Z+gWg+l39STlMOZvJsV8?=
- =?us-ascii?Q?md7ZkhPrAJVeYtl9ZdzY8cctfJcVyFMGflkOIVtC5joQaGJ1AbY66z1hwDxv?=
- =?us-ascii?Q?R4nhuNFQKFPDf202n+8gwUUJs4f2BFFggWcXZoMhT19G28Fq90+NmAZg6UOV?=
- =?us-ascii?Q?UI+w2Fp/M3dPF9Y2+BW1bdjai6K0zrxt2wHvmxYc2BnYwLvvYeEaIZj9xrpI?=
- =?us-ascii?Q?1Lj8R0/w9Uvin/IgLdk5XO16j8Urr7nv8FhB63T6b42zH5tOb1UtXfjUkzbm?=
- =?us-ascii?Q?OCZ+qTh6EXFVHcwkRgqF18LhZds6Lw1T5qSkiyVbHkFXGdSQFVkobyp0hAWd?=
- =?us-ascii?Q?0lTIhgS5C181MvHCvRFam1m6SQJWt7iq3MOpe2QS+KBMAMSZu79H/OzUYp35?=
- =?us-ascii?Q?MJfTyIBdN2yqsYhDJmTKHNPOfeIRj8VgLd4u?=
+ =?iso-8859-1?Q?JNT+GXskhOccwO51V6uLVptOwiDVnZYho/ugW4bUJkvKU/5NeEtsa7t9nZ?=
+ =?iso-8859-1?Q?w0F04iULZIOLVB/TktYNlxAM6Y6kFZIQGdwJ+YsZvOAmi4t1ZmU96V9fN3?=
+ =?iso-8859-1?Q?lk6TKikOsQaME6dD423lYg2u8KPIRRPS63tZJsPJo4YLgbpjfC3Qu3UuwU?=
+ =?iso-8859-1?Q?xjKhnWpikWomj7eF0CNtbb8XCig1w4xqtuZcZi7R4MhJk88vPgv6KDeaq1?=
+ =?iso-8859-1?Q?JMIBmgMqsqYo6Wn3EdqfLmA6O2TAN3PurCKcT/qNH2wphDBcA9rraBUInX?=
+ =?iso-8859-1?Q?WH6Cai2GUTdVzSLD0TxSlO+lnwIfj7w6QnvUb+8hRuBR3n7OBCK02c+i+Y?=
+ =?iso-8859-1?Q?M8KgdhAU3Q5JmS2B/m+tw3qW+eVBIxQDsFLfgx2zgSzC23GYzloJTLbkjQ?=
+ =?iso-8859-1?Q?4zPOZHzzLckT17SmZMUEeYlnF+oB3sYWp2iTG6qTy+KsxlojwfsG78XihM?=
+ =?iso-8859-1?Q?mo2Y3Q+vcVF1QcTtr8ATD3PB+zvZ5ZnpuwkyFzTT7hEhbFdQED4rGFnZcK?=
+ =?iso-8859-1?Q?cSpuqVolUTtxfOwuP19eQ6kppP3EgXvN2TPXul5vFKmaUjRpoghyYUooce?=
+ =?iso-8859-1?Q?9gTuHhywrZBVcrQ1w355Ke5X5BKMJ1KD5ZTy6+95vetFi7+IipcxA9K/Jv?=
+ =?iso-8859-1?Q?6tW34sC1Nx6Buy61ccR4K6seFspNWcL97vg818GG+1REii4/qng6juDBoB?=
+ =?iso-8859-1?Q?03M++f3VZU/sGUPd/vzTccNqs0r9bTA1mJjSEBd8Li9ZARJgs5oIYtrD5d?=
+ =?iso-8859-1?Q?XsRjL9mTubFdf81qOljqItrGeWCe+3F07ffmeIDNpoIsXSTJEw8rKdgLXa?=
+ =?iso-8859-1?Q?qwwo3wA3EXG5GzUnu/ngSg52FCc+3cIrwGMxf61yQ3GDQsBvntConYlsux?=
+ =?iso-8859-1?Q?i9i8TthUZOu2BVoI1lo/HWFfQlQ4oKxIV+x/ABNOfAAh2Z0p70qt/4jgq+?=
+ =?iso-8859-1?Q?09i+4+dVLHmrpj8OnW4DcweodKc7lVc+LVZwv8KdxZJxWbBZUpoeeqOEt1?=
+ =?iso-8859-1?Q?WWyat0ns3k14mtynhwi2rj0jWRP2JzaIYaW/Tz2QWBUwpGGsIENvrpMtqs?=
+ =?iso-8859-1?Q?vlvH5GALl9rbYf2kZtECAA9J9bT100O1VXYH7mGqTQPB5zE9x5dx1BtAk4?=
+ =?iso-8859-1?Q?L2iG+ETKbFuyuZzZP6idMzlaZg8YVQcUgjmy89aUGldTXPwOpGLt1Jfisz?=
+ =?iso-8859-1?Q?pt+qGjbBBDQSDQek+AJA+WgYUV4sTdytF3X2KnQMbI/ZX0XpnjeaMnp4in?=
+ =?iso-8859-1?Q?vwqvJPYa/tiH143Sdc5JhCINOQE+UIUjfkYi5Aei47cqMGd97DJAKZuPhr?=
+ =?iso-8859-1?Q?lpdcKLLLsTCBxrfHNLoyVEQk9L79/52LEoAEmK8V9rK7GOe5AqPVxKnMuR?=
+ =?iso-8859-1?Q?VOGuQJtVuBb/3pSKC8gTuOMj4F0AvpDMqWsZZ5z9j3ACrH9nUK4tGp2dpr?=
+ =?iso-8859-1?Q?Bbh8zzKq/4ky8vFY1lgzeMFUeXVF83CmyTjjoC0eL5gYABQeQGA09Pi8Eq?=
+ =?iso-8859-1?Q?d3pkIQwYMg8JCWvNEgCwqi5PYoX2GUHXWuIuuW2kyyZA=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(19092799006)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(7416014)(1800799024)(19092799006)(13003099007)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?JZJO4GwJiPqS2L6bMa1VxS6DNrImXeOsQ4fY00zEIV81NkPlIxXmBHVaGleA?=
- =?us-ascii?Q?gVnn2msoyyirv40D66rNi3SjlkNH+wcIbbRJgpnZ9PdUllYtVxibAyHhKoxh?=
- =?us-ascii?Q?DL782WKp9INigU1ekz82yJVv3mFeFxeGZbJX/iK9VaqnRZ3984XaSpLbo8GP?=
- =?us-ascii?Q?lJXYmz4xQE9/LmSlwVL1wF9txE+GXxmBluNTjQkCOyvwVhyfzmpZpnW9O9xn?=
- =?us-ascii?Q?SKKs8rn4AXygH2iD+FXAmSX6qPbm6s2J80gShvggzcIJLM2Cm6kcUryajXXV?=
- =?us-ascii?Q?U06WcCW2kJNZOpIjOfHCtbfpvlGlY2ZokcXT7gHzUBHxG957uhR3Nf5DJTNL?=
- =?us-ascii?Q?0aAnbC2k+HB0pQ3dkxfFTsWL/v5taWKam9pN4K7uWB6WLKhM2SFQetGlQJyh?=
- =?us-ascii?Q?1AFyiE3Bz3NOybTmfmnMaK95sqIUMeSIprKDle0R/NqaA9mPpXNqNovcBEBP?=
- =?us-ascii?Q?h6EQjSfHWU5WFJl6Tch405eIQ219keGy2lXkYv8YA0ydHi1TVV8CvnBbApQV?=
- =?us-ascii?Q?jy4f3vOIlYQB8aYeQdSHOyU7vnnVMn61ucmtCm7m+D8bnyt2i59w9Bo1/Npc?=
- =?us-ascii?Q?8xSLIGNmFbB6+hriOeGJg3VZHEa0Hqch4+Ow+gd/OFLcIcvLZrcUytk9lKqb?=
- =?us-ascii?Q?P2n1O119ONTXDEp7l8nmDU3F+1/2hM7CqLIJhldKXcA5VSuxTdMgeZJ2+D9z?=
- =?us-ascii?Q?mYjqkw5uLjxKQXPXw9+T6J4VDHXg5VecEpa9gq3hJN0WUP9DyHd1NJa75xM9?=
- =?us-ascii?Q?ybCwSYX7Z1m3UWS1D9BiGdHTy4zuJOi0zCUH7XJahG5pzSw12fY2EPIviEu2?=
- =?us-ascii?Q?sZKqUf1Zjn7tSV0m/gZVnrQP0jv0hxUTV3UcyS9lBLP2ODAPkYSK+NnSqpJT?=
- =?us-ascii?Q?i8DOLIxowPtz00m6VlftqO2mXAw6qa5reWtJiDMUMbOBuX7V3yy9jGieYJI4?=
- =?us-ascii?Q?0GbcSyIH3kYOqYqF65MZIV05g1u/lHKHIQMIBhm+OMhg9YrgIgutE7ZUOyvT?=
- =?us-ascii?Q?sd0dZ9Zv+fXJaLud3jUarW8efXuDOgMBT3vGfaVJKlN9ILKFSmTsOtVxtyc7?=
- =?us-ascii?Q?Bjl/HKzxGl3a6WF7uxWOS77BNmWIo0qmrmKR1hPF28j6mPGVQtyzIIAlvfw7?=
- =?us-ascii?Q?NEzh9WVmUNymd9n9cerQ/fZoXEdpOrwI6INolHi0uF3AEfKEzHrp9y8r2weM?=
- =?us-ascii?Q?LFjWmOlQ9TVAJ0DnWIjkDp0EqJRHbI1NN7tHJuVVRMpLSbhMLB9QFSnu9jN4?=
- =?us-ascii?Q?FPGcmsNpBAK8JwkQg8dEhTEdvaLiH89sZ4MdN17UZ1HAACRiyGy4xGR2/b2j?=
- =?us-ascii?Q?9/YkUzvWkT8Y+BK1JdGSlaHb4zp/OrJoC8RHabCoM7dIQ8Kls8Lk8xhfCllk?=
- =?us-ascii?Q?/JWLz+LeMByEEA8PgPFWh6Ty9VvkC8gI+gT5mE/casyk5GvhGgt8N6s0qu8B?=
- =?us-ascii?Q?IIVYEFZVsUTgRYWLNoj1KXaev2BYmuvdxb/TFusmMC+dMTwhnJofNIb4bCnL?=
- =?us-ascii?Q?RrHGoEMPuFl1s1E0Eko2YxjLTCo/YbCtXkmVIKrreKFUbsP1KR+72CMogpRy?=
- =?us-ascii?Q?Zn0whc+5yd1gXa+8mLtWf0f/0/0GhHtWUDGflLOO?=
+ =?iso-8859-1?Q?he+dvW7PjAhp8DKFDOsWJ6wNQcB1SAJgZT6QUiplyfA4Yrm5iVQzdDLGvO?=
+ =?iso-8859-1?Q?NoUHXEZUJ78CE1wFOgM1eaARurZpSaBQkhKKn+K19JoxpPsSmIMeaPiOnD?=
+ =?iso-8859-1?Q?WzipsV8VCScXx3aoUcBKcbtk2ko7TulMtVYCJ7Qbh/uTQglWPorZGSxhW3?=
+ =?iso-8859-1?Q?4Adfyv8QMKpTnyP/SJC/pCv05gM0gy1oIjbnFFTaRQ2HNrkfPKCZb0Mqnx?=
+ =?iso-8859-1?Q?cFXbt4J6hFe2yfxF9PJRBNyd42/6vJ6NmcphcL+SLz3698keQuRQB238I+?=
+ =?iso-8859-1?Q?cYj6KaUuedARqEQXOje8vxmbIjaVHFm3tXkA45kTEiWg5ky7Byz7/4s1ln?=
+ =?iso-8859-1?Q?MRUF+EaWu5aJLjt0iXw3baaYm9to0Sxu8NaLtm/ibWxnTzPFfEuNiZ6uMH?=
+ =?iso-8859-1?Q?EQ855kYLuqE3amLsNAzQ9NzPjeVzPZ3rp2zM6k4Tvz+3m8pJm6+nkKxhFJ?=
+ =?iso-8859-1?Q?+W6+NqYJinyzh6tx+pLLmrkjgy3D9ltwTyyQnUxnzwlbguIA/77aj8PCsh?=
+ =?iso-8859-1?Q?cj1A68U/8sNn30Ucl0pXqgFLhdQ3veHb8pmWQg4InYbTOmSx+emcDr9tbO?=
+ =?iso-8859-1?Q?eXJ5NB7atsbleE8v/NFGv1w2JamX4RYXzDf46hYlZ4XPMWlMgkLTfANAqC?=
+ =?iso-8859-1?Q?bJyMIxqcegsr+WzNZXgkCrHvTan+71J2m1R4yEwlTlSARB9KFabL4ciUlD?=
+ =?iso-8859-1?Q?K3K19jy94uUhdgcZn7L30TWJnjaipbUSO97eczBpFCuzlRLEpn7RoYTPe5?=
+ =?iso-8859-1?Q?6DrM0fef8cpycign2fBS5Llmn2lFcyG6bMnXzXYFa+4QAN40FOtltOfI9Z?=
+ =?iso-8859-1?Q?h7mMOG8hEPGzER9TM1api1+f3eIBfbp/CrQ+RQPgEtFAkyWR1gg6GXPCeg?=
+ =?iso-8859-1?Q?aa8slJfsk0BsZgYVUjCJJh28YN1bySMpjmilCP2K2mogOTbWk2NShCbars?=
+ =?iso-8859-1?Q?XWjemqBP8qmALFomAksC7uqaI6ahGuyccal9zjO0FV4lToK5hBeTpqko3c?=
+ =?iso-8859-1?Q?tbxrcmYtwul+i94w9atiddYhF28MegtHL64XT7/Ec+VgSlaYRVcGUIG/IG?=
+ =?iso-8859-1?Q?hcMlBerIHlsd6VQhrbdPbvh0NUovNJO9p+YuW5jO/i/fw2iSz3KrXwCD5B?=
+ =?iso-8859-1?Q?VNrIqw8ANrsNdAyfvKkIM2K/I7p9Ex+s3jXzP1NGV0pOwyNHlkuddqzYp6?=
+ =?iso-8859-1?Q?IYoT1tg5MKVwzAWKdATifno5oXCTq5QtK/Px3d1JsBf1oS3IOx6CFGZW2w?=
+ =?iso-8859-1?Q?IPrmQAlZxP6BYr1ip69PPgGkFKlFKlxQcBr5TqwRCnIrLTMLvhj5ARDgHr?=
+ =?iso-8859-1?Q?rExbSCA5PM5BtMD0Z+UoDE4hep16tLaIeraNX6YEdFgSvKMaOwQhQydztJ?=
+ =?iso-8859-1?Q?aO6MDtwwJpQ/yMoBrv2wOGlEWjNqvoAAw0Ae1nqC7wBaaTPo81uCjQbHJY?=
+ =?iso-8859-1?Q?4RNcIvKmnQOmB6TxWI2CJsGd9Ri4dZomsc4p/FImiwSan/ebwwQDlwC5/M?=
+ =?iso-8859-1?Q?Q/n6jBaxOPHYNlbyeuF7lDhvicAP4Fz6J2lNeC8lYQ6Azmagn+x+76a4Cz?=
+ =?iso-8859-1?Q?U8I792GXcf2CE9N0BXvqOZxjX+ovINlNYXLGtbJuwhsly9ZD4O8tO5LwQU?=
+ =?iso-8859-1?Q?ImmJq7YJNKFsYTkSdZm47WRHHeMj8l1Le0?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b191531d-c870-4a15-4c98-08de3cb9333f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 66bfe78f-5070-4d04-fc88-08de3cb9a7d5
 X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 15:38:46.0859
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 15:42:01.7808
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cAZe4EW8vB5zQqbAvOyV1pEpFmusJ0GZ7ZQD9znK8WFrWV1M9fL/+1CohBRLyMPrwPp04YCOcyMzMfeLmH+E/w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9221
+X-MS-Exchange-CrossTenant-UserPrincipalName: KsmXgnNI4zIieHeay2GzIhdg1/Uif9YNp0u9WrWwFGVajChqs/lqUujnevbBPQrkHuadvtB4DuIaQT1IqzpETA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7504
 
-On Tue, Dec 16, 2025 at 08:56:01PM +0530, Vinod Koul wrote:
-> On 26-11-25, 11:12, Frank Li wrote:
-> > On Wed, Nov 26, 2025 at 09:36:03AM +0100, Jean-Michel Hautbois via B4 Relay wrote:
-> > > From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-> > >
-> > > Add dynamic per-channel IRQ naming to make DMA interrupt identification
-> > > easier in /proc/interrupts and debugging tools.
-> > >
-> > > Instead of all channels showing "eDMA", they now show:
-> > > - "eDMA-0" through "eDMA-15" for channels 0-15
-> > > - "eDMA-16" through "eDMA-55" for channels 16-55
-> > > - "eDMA-tx-56" for the shared channel 56-63 interrupt
-> > > - "eDMA-err" for the error interrupt
-> > >
-> > > This aids debugging DMA issues by making it clear which channel's
-> > > interrupt is being serviced.
-> > >
-> > > Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-> > > ---
-> > >  drivers/dma/mcf-edma-main.c | 26 ++++++++++++++++++--------
-> > >  1 file changed, 18 insertions(+), 8 deletions(-)
-> > >
-> > > diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
-> > > index f95114829d80..6a7d88895501 100644
-> > > --- a/drivers/dma/mcf-edma-main.c
-> > > +++ b/drivers/dma/mcf-edma-main.c
-> > > @@ -81,8 +81,14 @@ static int mcf_edma_irq_init(struct platform_device *pdev,
-> > >  	if (!res)
-> > >  		return -1;
-> > >
-> > > -	for (ret = 0, i = res->start; i <= res->end; ++i)
-> > > -		ret |= request_irq(i, mcf_edma_tx_handler, 0, "eDMA", mcf_edma);
-> > > +	for (ret = 0, i = res->start; i <= res->end; ++i) {
-> > > +		char *irq_name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
-> > > +						"eDMA-%d", (int)(i - res->start));
-> > > +		if (!irq_name)
-> > > +			return -ENOMEM;
-> > > +
-> > > +		ret |= request_irq(i, mcf_edma_tx_handler, 0, irq_name, mcf_edma);
-> > > +	}
-> > >  	if (ret)
-> > >  		return ret;
-> >
-> > The existing code have problem, it should use devm_request_irq(). if one
-> > irq request failure, return here,  requested irq will not free.
+On Tue, Dec 16, 2025 at 03:50:17PM +0100, Alexander Stein wrote:
+> Hi Frank,
 >
-> Why is that an error!
+> Am Dienstag, 16. Dezember 2025, 15:46:00 CET schrieb Frank Li:
+> > On Tue, Dec 16, 2025 at 08:34:18AM +0100, Alexander Stein wrote:
+> > > Hi,
+> > >
+> > > Am Montag, 15. Dezember 2025, 23:49:53 CET schrieb Frank Li:
+> > > > Use dev_err_probe() to simplify the code. Drop the explicit error message
+> > > > after returning from imx8mq_mipi_csi_parse_dt(), as the error is already
+> > > > reported by this helper.
+> > > >
+> > > > No functional change.
+> > > >
+> > > > Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > ---
+> > > > change in v2:
+> > > > - add  Laurent Pinchart review tags
+> > > > - wrap error message to new line
+> > > > - remove error code print in dev_err_probe();
+> > > > - drop error messaage at imx8mq_mipi_csi_parse_dt()
+> > > > ---
+> > > >  drivers/media/platform/nxp/imx-mipi-csis.c    |  6 ++---
+> > > >  drivers/media/platform/nxp/imx7-media-csi.c   | 14 ++++--------
+> > > >  drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 33 ++++++++++++---------------
+> > > >  3 files changed, 21 insertions(+), 32 deletions(-)
+> > > >
+> > > > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > > > index 088b2945aee33731c565f049dd17721356300b84..ce93d868746f002c22e2f86b1e0aa84ec1a76061 100644
+> > > > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> > > > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > > > @@ -1547,10 +1547,8 @@ static int mipi_csis_probe(struct platform_device *pdev)
+> > > >  	/* Now that the hardware is initialized, request the interrupt. */
+> > > >  	ret = devm_request_irq(dev, irq, mipi_csis_irq_handler, 0,
+> > > >  			       dev_name(dev), csis);
+> > > > -	if (ret) {
+> > > > -		dev_err(dev, "Interrupt request failed\n");
+> > > > -		return ret;
+> > > > -	}
+> > > > +	if (ret)
+> > > > +		return dev_err_probe(dev, ret, "Interrupt request failed\n");
+> > > >
+> > > >  	/* Initialize and register the subdev. */
+> > > >  	ret = mipi_csis_subdev_init(csis);
+> > > > diff --git a/drivers/media/platform/nxp/imx7-media-csi.c b/drivers/media/platform/nxp/imx7-media-csi.c
+> > > > index 933a5f39f9f4c9b43ca8d2a1819d0145981266e6..7ddc7ba06e3d4e007013821f67d783898a15461f 100644
+> > > > --- a/drivers/media/platform/nxp/imx7-media-csi.c
+> > > > +++ b/drivers/media/platform/nxp/imx7-media-csi.c
+> > > > @@ -2218,11 +2218,9 @@ static int imx7_csi_probe(struct platform_device *pdev)
+> > > >
+> > > >  	/* Acquire resources and install interrupt handler. */
+> > > >  	csi->mclk = devm_clk_get(&pdev->dev, "mclk");
+> > > > -	if (IS_ERR(csi->mclk)) {
+> > > > -		ret = PTR_ERR(csi->mclk);
+> > > > -		dev_err(dev, "Failed to get mclk: %d", ret);
+> > > > -		return ret;
+> > > > -	}
+> > > > +	if (IS_ERR(csi->mclk))
+> > > > +		return dev_err_probe(dev, PTR_ERR(csi->mclk),
+> > > > +				     "Failed to get mclk\n");
+> > > >
+> > > >  	csi->irq = platform_get_irq(pdev, 0);
+> > > >  	if (csi->irq < 0)
+> > > > @@ -2236,10 +2234,8 @@ static int imx7_csi_probe(struct platform_device *pdev)
+> > > >
+> > > >  	ret = devm_request_irq(dev, csi->irq, imx7_csi_irq_handler, 0, "csi",
+> > > >  			       (void *)csi);
+> > > > -	if (ret < 0) {
+> > > > -		dev_err(dev, "Request CSI IRQ failed.\n");
+> > > > -		return ret;
+> > > > -	}
+> > > > +	if (ret < 0)
+> > > > +		return dev_err_probe(dev, ret, "Request CSI IRQ failed.\n");
+> > > >
+> > > >  	/* Initialize all the media device infrastructure. */
+> > > >  	ret = imx7_csi_media_init(csi);
+> > > > diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> > > > index 0851f4a9ae52d3096f454da643cfdc5017e000b1..a007c582b4d91660a97910a6a0d53c9b6fcd73e9 100644
+> > > > --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> > > > +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> > > > @@ -951,10 +951,9 @@ static int imx8mq_mipi_csi_parse_dt(struct csi_state *state)
+> > > >  	int ret = 0;
+> > > >
+> > > >  	state->rst = devm_reset_control_array_get_exclusive(dev);
+> > > > -	if (IS_ERR(state->rst)) {
+> > > > -		dev_err(dev, "Failed to get reset: %pe\n", state->rst);
+> > > > -		return PTR_ERR(state->rst);
+> > > > -	}
+> > > > +	if (IS_ERR(state->rst))
+> > > > +		return dev_err_probe(dev, PTR_ERR(state->rst),
+> > > > +				     "Failed to get reset\n");
+> > > >
+> > > >  	if (state->pdata->use_reg_csr) {
+> > > >  		const struct regmap_config regmap_config = {
+> > > > @@ -977,24 +976,22 @@ static int imx8mq_mipi_csi_parse_dt(struct csi_state *state)
+> > > >
+> > > >  	ret = of_property_read_u32_array(np, "fsl,mipi-phy-gpr", out_val,
+> > > >  					 ARRAY_SIZE(out_val));
+> > > > -	if (ret) {
+> > > > -		dev_err(dev, "no fsl,mipi-phy-gpr property found: %d\n", ret);
+> > > > -		return ret;
+> > > > -	}
+> > > > +	if (ret)
+> > > > +		return dev_err_probe(dev, ret, "no %s property found\n",
+> > > > +				    "fsl,mipi-phy-gpr");
+> > >
+> > > Do you really need to pass the (fixed) property name as an argument? Why
+> > > not move into the const string directly? I would also rephrase it a bit:
+> > > "property fsl,mipi-phy-gpr not found"
+> >
+> > Laurent Pinchart provide comments at previous version. The same
+> > "fsl,mipi-phy-gpr" share one entry at RO region. slice save RO region
+> > space.
+> >
+> > https://lore.kernel.org/imx/20251119043307.GH17526@pendragon.ideasonboard.com/
+>
+> "assuming it's worth it". Do you have any numbers? I doubt there is a
+> significant benefit, but I don't have strong opinion here.
 
-        ret = fsl_edma->drvdata->setup_irq(pdev, fsl_edma);
-        if (ret)
-                return ret;
+Yes, only few byte. But no worth to argue this. Laurent Pinchart, who pick
+patches.
 
-if last one of request_irq() failure, mcf_edma_irq_init() return failure.
-probe will return failure also without free irq.
+> But the grammar should still be improved.
 
-So previous irq by request_irq() is never free at this case.
+Okay, will update it.
 
 Frank
 
 >
-> >
-> > You'd better add patch before this one to change to use devm_request_irq()
+> Best regards
+> Alexander
 >
-> Not really, devm_ is a not always good option.
+> > Frank
+> >
+> > >
+> > > With that fixed:
+> > > Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> > >
+> > > >
+> > > >  	ph = *out_val;
+> > > >
+> > > >  	node = of_find_node_by_phandle(ph);
+> > > > -	if (!node) {
+> > > > -		dev_err(dev, "Error finding node by phandle\n");
+> > > > -		return -ENODEV;
+> > > > -	}
+> > > > +	if (!node)
+> > > > +		return dev_err_probe(dev, -ENODEV,
+> > > > +				     "Error finding node by phandle\n");
+> > > > +
+> > > >  	state->phy_gpr = syscon_node_to_regmap(node);
+> > > >  	of_node_put(node);
+> > > > -	if (IS_ERR(state->phy_gpr)) {
+> > > > -		dev_err(dev, "failed to get gpr regmap: %pe\n", state->phy_gpr);
+> > > > -		return PTR_ERR(state->phy_gpr);
+> > > > -	}
+> > > > +	if (IS_ERR(state->phy_gpr))
+> > > > +		return dev_err_probe(dev, PTR_ERR(state->phy_gpr),
+> > > > +				     "failed to get gpr regmap\n");
+> > > >
+> > > >  	state->phy_gpr_reg = out_val[1];
+> > > >  	dev_dbg(dev, "phy gpr register set to 0x%x\n", state->phy_gpr_reg);
+> > > > @@ -1017,10 +1014,8 @@ static int imx8mq_mipi_csi_probe(struct platform_device *pdev)
+> > > >  	state->pdata = of_device_get_match_data(dev);
+> > > >
+> > > >  	ret = imx8mq_mipi_csi_parse_dt(state);
+> > > > -	if (ret < 0) {
+> > > > -		dev_err(dev, "Failed to parse device tree: %d\n", ret);
+> > > > +	if (ret < 0)
+> > > >  		return ret;
+> > > > -	}
+> > > >
+> > > >  	/* Acquire resources. */
+> > > >  	state->regs = devm_platform_ioremap_resource(pdev, 0);
+> > > >
+> > > >
+> > >
+> > >
+> > > --
+> > > TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+> > > Amtsgericht München, HRB 105018
+> > > Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+> > > http://www.tq-group.com/
+> >
+> >
+> >
+>
 >
 > --
-> ~Vinod
+> TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+> Amtsgericht München, HRB 105018
+> Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+> http://www.tq-group.com/
+
+
