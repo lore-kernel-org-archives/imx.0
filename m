@@ -1,152 +1,114 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mx-relay21-hz1.antispameurope.com (mx-relay21-hz1.antispameurope.com [94.100.132.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E93E39378A
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 12:46:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765889200; cv=none; b=uCa60hunkoVM0aAXhcYFskGOHbpeiMLZ7UIt9lo+htq3JgKYUH4/j1PhCXz8+Xc2tLkApV7j4zETme1T0SLcHbwlO1vZsSQEJec3BkysmgQVh/w8hj5I8yPUTGSyWx0fANgCels8DLQtrvRCxlpj7uU2YiF36B9t67BB/xx5H34=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765889200; c=relaxed/simple;
-	bh=z3H+ww0YXdNEVFbQO+H71xD+Nj1JnjAKfDMnH/DFZUc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=RRpp1uMU+yX/7YzTtwaKkJvLzvGHPTKKa/0Y0Dtw6olOC14dQxWGOds920uTsJ32l74R8UDZAjIerKFe0tQzGBTvQF6MplGcmnYsq0FdA5w586XP8Gq+3gSWweCtqGRhNKM4skNCzoN9jaT4KRNBWtyMNQG5vnasH8BjNlUjUCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=m6Q9kiwX; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F713BCC53
+	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 13:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.132.221
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765891033; cv=pass; b=rP4FsoDyuNKgnzGmWTaoItoCyGDN/uGtXhlW2/nUhfuq1SmEh8lZ4+Hq1LA7n0D/nTzJiL8yfNSg1c/Q6fQH88Mui+2TzIGKRKKlbKIw9wP8DHeQEgzekSD7ym4dMy0ZAJQKSj2+wDGaE2bfQrY2HF8i+sotdvpun1MNDWnbChY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765891033; c=relaxed/simple;
+	bh=zxxZrwSMySnJ+NOEKeTKxWL2NpOTHlJHW6Jdr7nLoak=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tAczO2RmTawUi2jhjfuHL/H2CjC9Rbh7i/JKA54Z4xa4euamt6mWKxJ4ZAUPPryT9n50bp5d1jstj+vjt0dEXVqxL0axfzO0Vl3Tv4ZEg8+24XBaSnffQ1SC6fvwIBVzlpFmpSIiP5eY2pPlFUwy+gdyzuTBu5vaxkdwvtAiw6Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=ELXMGcca; arc=pass smtp.client-ip=94.100.132.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="m6Q9kiwX"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id E699A1A2232;
-	Tue, 16 Dec 2025 12:46:29 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A0B896071C;
-	Tue, 16 Dec 2025 12:46:29 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5F6D9119434E1;
-	Tue, 16 Dec 2025 13:46:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1765889187; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=5hHeRHBPz8FHrfA8wBRwIPdvL07IcL4vWcbkjQN6o5U=;
-	b=m6Q9kiwXvA4v1X/hP/+JyTcjUw1OsRZD6sX9zF23Uc56YUe0aF7FfA2KCuP1M2obR4PlMb
-	aPzIj3mIE/PPPTiVXNNK9IvGfQU/IcRxA1u3tSisdJ4StT4ZwIhS9r2tuvD4DcqrWN6HK7
-	r+Fv7dhPRtuhT08YnqBBjRN6nck6Vv5kD/gUckn233hlRlfhJoVzlbq0b8DUv//EcPVzWh
-	C+Xfl+is9PJ7W3ZgO6EOYgUa9QWFL4H0SQzz534bgN3xNr/BymxAexqEz6ffIeUj20qWGx
-	KQmu8ehyJNbQzZEDn46VBO1vOEXe44XkhxfLx234QUnyLF1DRhsghK7L/S8xtg==
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="ELXMGcca"
+ARC-Authentication-Results: i=1; mx-gate21-hz1.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=J+XQ7ergPVCzcXY29psvIoBrucP9oMPTCH1A1rkDzxM=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1765890943;
+ b=KIv0oL+tab8RsYq6f/Wni/aaWUjD3yJTdZ+XVHTiDYiVACEUNDzZitrgRbn+zWEp540tAD2f
+ CArio44Htz8c/9FrT9UuVOe5rttnPEGoQxOzBBedXZZhoeqdWpEDz650cGSD7jVPq2g1VLy5+3R
+ +5YBOrIKVnIwGd70l3X9mD8yVkPc4ha01wKPqpnBRZwB7LQ7Q08s3tj4Or7vBl29b2C9NummlOr
+ seqbfnRdQlkJqNjA8sAMXlp3jf+O0IECrl7t5l7544zP7bDrmNtm8dTTgPjwKloAnXlwE57RCtO
+ OZOzvgEss/FJiEko25+D1KxyL/G2UKHbuGytiVkcJrrAA==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1765890943;
+ b=iDvGTBgJhuebFgHFYSURSjQWPRgj12KOrQjnYcnySnk0Inn+Yk9tqr5oUOVAt7DyUkwwjFg1
+ /Ngh3nWmsdwkZ4pmsEVE/e+UFIjTL64+llK/lPT2Baj48Nupvco3uDrIdzpGah4fXXW51D5pVup
+ 0F3E4FzomxRsLJNogf0n/blqJ4PHbJtIDVLUE7g+ShE7bRrzd5oquw+9t/iw5Hn3Z+ojV7JiHub
+ /uYKQRx+ABRUQpi4YJWTWs6qj4fT5yrOHFADpNdaoW3AusES0M5nwiOMOW7md6IIbq9N5GfccVA
+ EeUvZH9iF99J4d4w+3ltFad1t5earAhxtQ8LDx9G2xjJA==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay21-hz1.antispameurope.com;
+ Tue, 16 Dec 2025 14:15:42 +0100
+Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 8B5FFCC0E8C;
+	Tue, 16 Dec 2025 14:15:33 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/1] arm64: dts: mba8mx: Fix Ethernet PHY IRQ support
+Date: Tue, 16 Dec 2025 14:15:28 +0100
+Message-ID: <20251216131529.886546-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 16 Dec 2025 13:46:11 +0100
-Message-Id: <DEZNGU4VJFK8.Y1LKWVTD7O8K@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v2 17/26] drm/meson: encoder_*: use
- devm_of_drm_get_bridge() to put the next bridge
-Cc: "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
- <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
- <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jonathan
- Corbet" <corbet@lwn.net>, "Alexey Brodkin" <abrodkin@synopsys.com>, "Phong
- LE" <ple@baylibre.com>, "Liu Ying" <victor.liu@nxp.com>, "Shawn Guo"
- <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
- <festevam@gmail.com>, "Adrien Grassein" <adrien.grassein@gmail.com>,
- "Laurent Pinchart" <laurent.pinchart+renesas@ideasonboard.com>, "Tomi
- Valkeinen" <tomi.valkeinen+renesas@ideasonboard.com>, "Kieran Bingham"
- <kieran.bingham+renesas@ideasonboard.com>, "Geert Uytterhoeven"
- <geert+renesas@glider.be>, "Magnus Damm" <magnus.damm@gmail.com>, "Kevin
- Hilman" <khilman@baylibre.com>, "Jerome Brunet" <jbrunet@baylibre.com>,
- "Chun-Kuang Hu" <chunkuang.hu@kernel.org>, "Philipp Zabel"
- <p.zabel@pengutronix.de>, "Matthias Brugger" <matthias.bgg@gmail.com>,
- "AngeloGioacchino Del Regno" <angelogioacchino.delregno@collabora.com>,
- "Anitha Chrisanthus" <anitha.chrisanthus@intel.com>, "Inki Dae"
- <inki.dae@samsung.com>, "Seung-Woo Kim" <sw0312.kim@samsung.com>, "Kyungmin
- Park" <kyungmin.park@samsung.com>, "Krzysztof Kozlowski" <krzk@kernel.org>,
- "Alim Akhtar" <alim.akhtar@samsung.com>, "Hui Pu"
- <Hui.Pu@gehealthcare.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, "Louis Chauvet"
- <louis.chauvet@bootlin.com>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-renesas-soc@vger.kernel.org>, <linux-amlogic@lists.infradead.org>,
- <linux-mediatek@lists.infradead.org>, <linux-samsung-soc@vger.kernel.org>
-To: "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>
-X-Mailer: aerc 0.20.1
-References: <20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-0-88f8a107eca2@bootlin.com> <20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-17-88f8a107eca2@bootlin.com> <CAFBinCCQjeUu7pgfwViH6b0-M6S_sKgfvz9VAP1hpqLRj=bL_g@mail.gmail.com>
-In-Reply-To: <CAFBinCCQjeUu7pgfwViH6b0-M6S_sKgfvz9VAP1hpqLRj=bL_g@mail.gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay21-hz1.antispameurope.com with 4dVy921b72z41r9H
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:0fe9136366c4b6928e5776230e78d4b0
+X-cloud-security:scantime:1.648
+DKIM-Signature: a=rsa-sha256;
+ bh=J+XQ7ergPVCzcXY29psvIoBrucP9oMPTCH1A1rkDzxM=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1765890942; v=1;
+ b=ELXMGccafBOOtLrv+A2QuJ/eulqVIlWIdjs/dJqombnljIZKd2jowLKHpH53sx9rtkh4a1c9
+ tdEIYHveKKGqbUMOgboDckO3iDlK+Bwc3jdUnmjyfrmPm5D4aqihOYh7fYHLIDV6x+ld4Lz/4h6
+ 6F0wtnygybIShXduEqGrSQAcfsgv8tfI7perIS676KmbVUqL3rRhkuIqUt6TDQDbscIBTgHEY/1
+ v+u4z/7Gw87vuhGYWadyfUawPk/LzRUgGEV7vTTAM/CP8HBnyIAXdBONHRxWvffR2xQcU9don8T
+ 5hOut16ujfxaNXjHxIO+RRKLR0hNeTW/rmiWhkaRdrjhQ==
 
-Hello Martin,
+Ethernet PHY interrupt mode is level triggered. Adjust the mode
+accordingly.
 
-On Sun Nov 30, 2025 at 2:09 PM CET, Martin Blumenstingl wrote:
-> Hi Luca,
->
-> On Fri, Nov 28, 2025 at 5:54=E2=80=AFPM Luca Ceresoli <luca.ceresoli@boot=
-lin.com> wrote:
->>
->> This driver obtains a bridge pointer from of_drm_find_bridge() in the pr=
-obe
->> function and stores it until driver removal. of_drm_find_bridge() is
->> deprecated. Move to devm_of_drm_get_bridge() which puts the bridge
->> reference on remove or on probe failure.
->>
->> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
->> ---
->>  drivers/gpu/drm/meson/meson_encoder_cvbs.c | 2 +-
->>  drivers/gpu/drm/meson/meson_encoder_dsi.c  | 2 +-
->>  drivers/gpu/drm/meson/meson_encoder_hdmi.c | 2 +-
->>  3 files changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/meson/meson_encoder_cvbs.c b/drivers/gpu/dr=
-m/meson/meson_encoder_cvbs.c
->> index dc374bfc5951..bf8588a5f6dd 100644
->> --- a/drivers/gpu/drm/meson/meson_encoder_cvbs.c
->> +++ b/drivers/gpu/drm/meson/meson_encoder_cvbs.c
->> @@ -241,7 +241,7 @@ int meson_encoder_cvbs_probe(struct meson_drm *priv)
->>                 return 0;
->>         }
->>
->> -       meson_encoder_cvbs->next_bridge =3D of_drm_find_bridge(remote);
->> +       meson_encoder_cvbs->next_bridge =3D devm_of_drm_get_bridge(priv-=
->dev, remote);
->>         of_node_put(remote);
->>         if (!meson_encoder_cvbs->next_bridge)
->>                 return dev_err_probe(priv->dev, -EPROBE_DEFER,
-> Would you be happy with me sending a patch that replaces the whole
-> logic in two meson_encoder_{cvbs,dsi,hdmi}.c with
-> devm_drm_of_get_bridge()?
-> I see two benefits:
-> - simpler code
-> - a patch less in your series (less maintenance burden for you)
->
-> What I'm not sure about is how this series interacts with
-> devm_drm_of_get_bridge() which is why I'm asking before cooking a
-> patch.
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ arch/arm64/boot/dts/freescale/mba8mx.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Apologies for the long delay in getting back to you. You might have noticed
-some discussion about the overall approach, and I waited for it to settle.
+diff --git a/arch/arm64/boot/dts/freescale/mba8mx.dtsi b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
+index 225cd2f1220bf..10d5c211b1c9b 100644
+--- a/arch/arm64/boot/dts/freescale/mba8mx.dtsi
++++ b/arch/arm64/boot/dts/freescale/mba8mx.dtsi
+@@ -192,7 +192,7 @@ ethphy0: ethernet-phy@e {
+ 			reset-assert-us = <500000>;
+ 			reset-deassert-us = <500>;
+ 			interrupt-parent = <&expander2>;
+-			interrupts = <6 IRQ_TYPE_EDGE_FALLING>;
++			interrupts = <6 IRQ_TYPE_LEVEL_LOW>;
+ 		};
+ 	};
+ };
+-- 
+2.43.0
 
-About devm_drm_of_get_bridge(), it is a very different function so it does
-not affect this series. The name similarity is confusing indeed, but
-devm_of_drm_get_bridge() has been removed from my approach, so one less
-source of confusion.
-
-I'm soon sending v3, and I have updated my patch to
-eson_encoder_{cvbs,dsi,hdmi}.c, actually splitting it in 3. I'd be grateful
-if you could reviewd and/ot test them when I send v3. But I don't think
-there is a need for you to send any patches related to this topic.
-
-Best regards,
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
