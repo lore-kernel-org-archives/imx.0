@@ -1,42 +1,42 @@
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4920433985A
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 18:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC2633D6DF
+	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 18:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765908041; cv=none; b=c+mo1LypZ2MAMS03cv1345/KlwCh19AYHGJXHusYhep99yCwKSSa9iy2g1ClS8MBvoV/xaZfF8HaVo8nzoAHliRF/+rvijoCUOSXYJVhF5rG8bUslqo0dSiSqTf+MVTmvlCCQrnWOexKjSXVr+kkrmIPQT7yxEXUcBzXWFAPTrI=
+	t=1765908045; cv=none; b=VAwDLEJkz9mErMtCHrIMxC/fuPziA23g27dvqZI6vUCYZKRxGM3vvf6m33KUJxXfcOjasM5Qw19Ospl3IqEZ6So+a265RM4wM7EQl/afD3IYAjp59DVWu29FOBGQR9KE/3vUG/GoB0y6cFa2q3i/XWVsOu87PBv/QJMWKzVbBtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765908041; c=relaxed/simple;
-	bh=jBf+9QS+fgjlhCZIGxIYpJTeXQoFWqo+MqIJtIl/xfA=;
+	s=arc-20240116; t=1765908045; c=relaxed/simple;
+	bh=fw3DTgUqur3v1/aF9KW65sNakYQpqN7mideRArARVSc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QnEHcjgy0w99ukMg3T41Hd6KIp09Ch1UzEL5ir2vlK8e/SMMuhtLVwXiHHOR4coJumxSC2k+S7UpP+HdAsKUPa5G5ojk1Pi/Ahgm2DpYQdlxZHK01Pv0qb1wH5rDJjM/NzRcyqoFlL92U3hZn4Uqo96YBwTPcKwXiBdiE7j7Z6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PHTJXyol; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=J1R0eNtbji//eHm/iC7YZXMTOphQ/vDxz4qKDWC6btOwFpEUPZLg6GL5BnpwzdR2KgN7k7DyCawGdywwFtQ+AbRpdoDnhHjqnVuewrNVuyiBdkH9XD2Lnic3uzFKQgvSVDJ78XkXcfbjAv9wkt/EIqH73cyBYe28tG2WKBfnMm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=D2bkKi7N; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PHTJXyol"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="D2bkKi7N"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 876A4C1A582;
-	Tue, 16 Dec 2025 18:00:13 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id DBA66C1A585;
+	Tue, 16 Dec 2025 18:00:16 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 042AD6071C;
-	Tue, 16 Dec 2025 18:00:38 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 54C0A119A97F1;
-	Tue, 16 Dec 2025 19:00:32 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5B1616071C;
+	Tue, 16 Dec 2025 18:00:41 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B6613119A97D5;
+	Tue, 16 Dec 2025 19:00:36 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1765908036; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1765908040; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=lUbaxiw2BnN1ox+Yu5GNCuxcygx9alGi1fjrWLi1OF4=;
-	b=PHTJXyolQZp12tBjpY2uxdapMynKVx6jw+EgyCgB+lF9hYbgZ3ivqEIb+OLNqItIAE/so6
-	36gecuUQJlMv3XaZnQPVCMVvIg0ZHTLrYDdE+m66ZifLMcHjxj9Pm0GfDKUlONqzHmC1yL
-	07FLEzDja2dhvcFnCgFl7GD/vS96r0GB/EAvYbn/XNgPnUrZvo9P+knEVR5uftjClXB6q8
-	xRhf/gee+/IMuA55jShwQtbF76AT1or4OKzn6Usqbc3VnzlZM1JClQtfL9M5HHH6vDLvI1
-	P7XXzww2Fgj6pu2A6eczb/uGtCmHNxrpraxGWZczhmrB2GcqB1WQmvadAJfksA==
+	bh=NYJEE2opxHghuVaIu6hgRW6HhV8SDpecPQJMZReKags=;
+	b=D2bkKi7NoHC8TwpLYNq5yMx4usGX0uvHXODIrL/9+8JmdwSPajQgn/E7vPF5RS/thnq03V
+	qj2HkSYZb/93l2sCultbAcfT58vfNWKl0owNvXpZyKVhfcz4ayDQsq4G5DLU8+DuMUGuOa
+	KwsqVHY4bHAggDoNUIg/QjeSBDmIcNWtXBY8CieJUK827NCquljQkRuCW7rQ8NeC1/yVeq
+	+E8RJVZfrfrm53JS8LVCjR+25aw2ks463N64RZJ9/NMsGeH9dPCllo86xtIL8WpLMCw4AB
+	ilMgq6YwXcipvxchhqY5VGYZqI8O41TDlaNyR3VOndvt5Aa+8d/SIftUOY8VnQ==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Tue, 16 Dec 2025 18:58:48 +0100
-Subject: [PATCH v3 15/22] drm/bridge: imx8qxp-pxl2dpi:
- imx8qxp_pxl2dpi_find_next_bridge: return int, not ERR_PTR
+Date: Tue, 16 Dec 2025 18:58:49 +0100
+Subject: [PATCH v3 16/22] drm/bridge: imx8qxp-pxl2dpi: get/put the next
+ bridge
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-15-b5165fab8058@bootlin.com>
+Message-Id: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-16-b5165fab8058@bootlin.com>
 References: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-0-b5165fab8058@bootlin.com>
 In-Reply-To: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-0-b5165fab8058@bootlin.com>
 To: Andrzej Hajda <andrzej.hajda@intel.com>, 
@@ -71,80 +71,60 @@ Cc: Hui Pu <Hui.Pu@gehealthcare.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-In preparation for using bridge->next_bridge, we need to ensure that it
-will never contain anything but NULL or a valid bridge pointer. Current
-code stores an ERR_PTR when imx8qxp_pxl2dpi_find_next_bridge() errors
-out. Instead of fixing that after the facts in the caller, change the
-function to internally set the next_pointer and just return an int error
-value.
-
-No functional changes.
+This driver obtains a bridge pointer from of_drm_find_bridge() in the probe
+function and stores it until driver removal. of_drm_find_bridge() is
+deprecated. Move to of_drm_find_and_get_bridge() for the bridge to be
+refcounted and use bridge->next_bridge to put the reference on
+deallocation.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c | 30 +++++++++++-----------------
- 1 file changed, 12 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-index e03a411cb9db..2e66b003386e 100644
+index 2e66b003386e..556aec3b3734 100644
 --- a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
 +++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-@@ -255,33 +255,27 @@ imx8qxp_pxl2dpi_get_available_ep_from_port(struct imx8qxp_pxl2dpi *p2d,
- 	return ep;
- }
- 
--static struct drm_bridge *
--imx8qxp_pxl2dpi_find_next_bridge(struct imx8qxp_pxl2dpi *p2d)
-+static int imx8qxp_pxl2dpi_find_next_bridge(struct imx8qxp_pxl2dpi *p2d)
- {
+@@ -35,7 +35,6 @@
+ struct imx8qxp_pxl2dpi {
+ 	struct regmap *regmap;
+ 	struct drm_bridge bridge;
 -	struct drm_bridge *next_bridge;
--	int ret;
--
- 	struct device_node *ep __free(device_node) =
- 		imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1);
--	if (IS_ERR(ep)) {
--		ret = PTR_ERR(ep);
--		return ERR_PTR(ret);
--	}
-+	if (IS_ERR(ep))
-+		return PTR_ERR(ep);
- 
- 	struct device_node *remote __free(device_node) = of_graph_get_remote_port_parent(ep);
- 	if (!remote || !of_device_is_available(remote)) {
- 		DRM_DEV_ERROR(p2d->dev, "no available remote\n");
--		return ERR_PTR(-ENODEV);
-+		return -ENODEV;
- 	} else if (!of_device_is_available(remote->parent)) {
- 		DRM_DEV_ERROR(p2d->dev, "remote parent is not available\n");
--		return ERR_PTR(-ENODEV);
-+		return -ENODEV;
+ 	struct drm_bridge *companion;
+ 	struct device *dev;
+ 	struct imx_sc_ipc *ipc_handle;
+@@ -60,7 +59,7 @@ static int imx8qxp_pxl2dpi_bridge_attach(struct drm_bridge *bridge,
  	}
  
--	next_bridge = of_drm_find_bridge(remote);
--	if (!next_bridge)
--		return ERR_PTR(-EPROBE_DEFER);
-+	p2d->next_bridge = of_drm_find_bridge(remote);
-+	if (!p2d->next_bridge)
-+		return -EPROBE_DEFER;
- 
--	return next_bridge;
-+	return 0;
+ 	return drm_bridge_attach(encoder,
+-				 p2d->next_bridge, bridge,
++				 p2d->bridge.next_bridge, bridge,
+ 				 DRM_BRIDGE_ATTACH_NO_CONNECTOR);
  }
  
- static int imx8qxp_pxl2dpi_set_pixel_link_sel(struct imx8qxp_pxl2dpi *p2d)
-@@ -414,9 +408,9 @@ static int imx8qxp_pxl2dpi_bridge_probe(struct platform_device *pdev)
- 		return ret;
+@@ -271,8 +270,8 @@ static int imx8qxp_pxl2dpi_find_next_bridge(struct imx8qxp_pxl2dpi *p2d)
+ 		return -ENODEV;
  	}
  
--	p2d->next_bridge = imx8qxp_pxl2dpi_find_next_bridge(p2d);
--	if (IS_ERR(p2d->next_bridge))
--		return PTR_ERR(p2d->next_bridge);
-+	ret = imx8qxp_pxl2dpi_find_next_bridge(p2d);
-+	if (ret)
-+		return ret;
+-	p2d->next_bridge = of_drm_find_bridge(remote);
+-	if (!p2d->next_bridge)
++	p2d->bridge.next_bridge = of_drm_find_and_get_bridge(remote);
++	if (!p2d->bridge.next_bridge)
+ 		return -EPROBE_DEFER;
  
- 	ret = imx8qxp_pxl2dpi_set_pixel_link_sel(p2d);
- 	if (ret)
+ 	return 0;
+@@ -351,8 +350,8 @@ static int imx8qxp_pxl2dpi_parse_dt_companion(struct imx8qxp_pxl2dpi *p2d)
+ 	 * the next bridges are connected to.  If they are marked as expecting
+ 	 * even pixels and odd pixels than we need to use the companion PXL2DPI.
+ 	 */
+-	port1 = of_graph_get_port_by_id(p2d->next_bridge->of_node, 1);
+-	port2 = of_graph_get_port_by_id(companion_p2d->next_bridge->of_node, 1);
++	port1 = of_graph_get_port_by_id(p2d->bridge.next_bridge->of_node, 1);
++	port2 = of_graph_get_port_by_id(companion_p2d->bridge.next_bridge->of_node, 1);
+ 	dual_link = drm_of_lvds_get_dual_link_pixel_order(port1, port2);
+ 	of_node_put(port1);
+ 	of_node_put(port2);
 
 -- 
 2.52.0
