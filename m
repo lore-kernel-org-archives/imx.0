@@ -1,84 +1,72 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011043.outbound.protection.outlook.com [40.107.130.43])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013067.outbound.protection.outlook.com [52.101.83.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96F134252D
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 14:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1989234B19A
+	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 14:46:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765896149; cv=fail; b=eERu8SIzqCtYhb5xOtElHpoyaMLRBolV2a5EI0m0NkhnLoA6t7eOl27edrAkHmoA7AXxlJT9mGd0oxLO6FOu/TxpcSu3lw8Iq9SQxX6CDbkbbx4fl0XIsFDr2+f0vBNdXuIQrZuVXtrXkEbqROCJ9dN+jk+O6vypPnfKMU0YEdg=
+	t=1765896380; cv=fail; b=oPtwWCodQJiU/976L2yt91nOyDXMvoPbZ8WNUWQQu0rP2DfOYh2tFusXPVeVGdykrVSKPjr4U4nQzfqS6cfKXWT6yOCX6V1Vbun4chwmYGT+TB7dRi5rEo1peiLKhKEJLurYrLEcU8BldTJ4lXF0m52YmHAXHpOaYrYCQy1A56U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765896149; c=relaxed/simple;
-	bh=1PDZNog2A4gV5AT5HNVjA4A5FlJC+j7w59zKJM/+72U=;
+	s=arc-20240116; t=1765896380; c=relaxed/simple;
+	bh=7pMAnL3pjxLu6pjUJ+1Ofj5+KqURoYWH9WwyGfJD1KU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SowjIiSFlUoLfLVJ6nHgEeH3Q6QNk1ZtUzYwUDbswaVk/odtHeax0Nvv8ab/h7ND5s5GBb9ugQzI/wYXeyhvU0pvJRJW5+cXkLQshaTsVLJc+EaR0IMyeO9qccrkQM8DQnAhXjH9mBQUfBocuVUFLi1wzwEGADIG+B7bvJwHChg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SKiiLB9t; arc=fail smtp.client-ip=40.107.130.43
+	 Content-Disposition:In-Reply-To:MIME-Version; b=bQ3zDZ21E409CCGRTEGXwTUH2f8i+uD5EnbjVwztTTidiSiNoZgrD7WRybvO8CLl0elp5d0W1SPVm6MDMhd6Xeb3eqIeMOwQMemuyuUZVlwEz3uSV8mnqLOvJZRLww3naHuZmqjJY+zSdHFA9BOV4REx79v+pakXdGPId+l0jzs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BW8okLyT reason="signature verification failed"; arc=fail smtp.client-ip=52.101.83.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SKiiLB9t"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BW8okLyT"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GSuMaLKqRlDw1a2l1p0BelP9EDPB7obZjzD6EhF7BwlNxdUDAsZWBkcgHkel6/ld4xSzpx2Fh882QAO8EAzfdMOJvzWluuG1kbiA99Wo+WIwGxD9isWaewR+DvtJTt8gSPFUcmKAxX19J/btGukBjLixR53Z8k6UqNW+V1z56MGnokY7RCXPGtsGX1/dLWO1cLr2MhZ9GOz7mnL+3+btjq8Z3Bqwcl6Zgo3/48Bld5pZ6LwQQ5NIF2ylpSRfA0p3bBna4zELSHDjnBFoxYJJc+/+JK8U/OZa6YuhrAoIRxbP3skzTaX89RZLvUZqFAlFFQN4zmjDg6vN1Dh/jE7rvg==
+ b=J7iC6WzONZIiNtQssj/uxrAchaiuDs92WG+InTFJFoKuqcNp66DUNDMFyl5yAz1aZ/rZqBsdPXSwaLkgfDsOG4UH/JrpsaIUDFFmtLJasTo8BwZZBFgd+o7lD2ztlkkTEg+CaOa7Lz1YPj4Ip3yoDy/xoSfYMTMJXvJmjqXMo7Zqt7/hX+MgCw1aAeV9cequ+372QDFueucoJrF/2gMc5nT0ytMws0BFKP9U1nK87q49LweO8d1/zXv6sUIV5JeA2KHSUR3w9fiIwvivtNgfmys9pig3N9YcU7MCWtgVSYWxmFcsETRhP/0tV0JII1h+JZoQRREMFWO3gWq/6n9K+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HyB1m9AUoFyAxeM0O8mXIkJSDauPa3LsyNCkr//3bFc=;
- b=CW9BiLfLUpnSm5xn7TB2VX7qaxr1CjrYlIv9B++KevkBiT21Igt1k3poDd7Bga0kPY6OGikZl8OBM5z60uCouBW6EiqIBt5Qh5BVIHbpJewXLiYel1bkVxpq/jimaxxQ+d41onbQeS8yhSwjNNdl3zWiXFSiwZH2RHP4YmiXA6mlrccWbHX0bR1ruGIn+DVwcW7xyg22J8OcEXjAs/LTi/E3OyUKzPpsu3dvFvOTr10419Ogz7lcobpUK7foiRFiJBxoTWXB35rrPLyO6RmROHSbaMSfbTeI12SpU/PRgV4hJA4NjqsTWklrAdbiviJSSh5ZLDiTvgkqW1aV4tJeYQ==
+ bh=x6zIqvziQkSaAjcEumzv6Ydd1cAburN4gwS/SoqWdPo=;
+ b=azlyIyWEU1QSKadUn6Zf6OgqGkCZ8lKolxaUOseYKeupFLfparmApgCwI6T6VsvAYGJ893K4aiRvd6aygDlmGYvO1jozjYAIc2FKs+zaDHf6q7J5Sm/eIwMj2DXV/+LvlXFaZpvLaJEb3b/fmAKI5KiwyJ0C48+F4MfdRL7aH2O53MzG4GxhJD3WIGym+bgCkY6cHLOpJVTVwWNlGEHYsXeJkNCrTbv9kTGaR40jn1cRIUTm6qjrPixs8VbNWIPI980gzxff3D+F/vr6h1gqKhjSo0JKONHLHs2yEBVajbOu8I1QG5yiBh+WX6QApUGvrbj2WM16QfPFpLTQPU488w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HyB1m9AUoFyAxeM0O8mXIkJSDauPa3LsyNCkr//3bFc=;
- b=SKiiLB9txa6dEeIhxCtRvwcX/pjBUOQiIHveU0i6filU2zO8MYEPW5ZfKNIzpoG+OlKM23buIyFHEcvDak4DoHiXHN38STVOSeu7/Vp/POcHFKd9elld8XRwdH8mpnlVObU10vYCbjZoonEcOGhvFuCqIROLCzJvAi5syj5MDg9SPAzlndqO7HWWjclmtszUWircEu+rs8MFT+NE+SmH85nAA87yv9nKu8wdAWz0tBtAq6ShUwkf+1exNfccfi3KUR6hZxteMGum1kRrpBx7W5hpuvOpeCRRM6FjiXIZi42zGKYW/ArJUWBZsAkcs6i+aJYbQdYQQGLd8HhPKN58pg==
+ bh=x6zIqvziQkSaAjcEumzv6Ydd1cAburN4gwS/SoqWdPo=;
+ b=BW8okLyT2tktA6TNr21BDpTgKI3GDw7dH1lVUiAPuiN3vIkRB5P7CEgy8LbCZdYrsh6NZDPhHFmMoBw9wv1GHqZt3E0chiRF3M9fIXGSsq4RVfCz7C7QHu19hwptzjgb99VHNvmdOWgEUFdGq/p70Ecf0SZuAnjxDvPNLrTIplpZRZwKAF+59CSGxT7oH+qydp7pRvDH0QH2+GOCpwhXjRbWQatmCQ75qS7Tre6BjXTl9J0fTJohHBu/0hVyEsl6eHdwRC//+bmvOj8Y0KqtlB2ntXgmsFPgdsaxkQOScseWWoiVdsT6V+qD+clCVKwd/MBtj2l/lD161TFO+LL2yw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
- by AS8PR04MB7590.eurprd04.prod.outlook.com (2603:10a6:20b:23d::24) with
+ by AM8PR04MB7731.eurprd04.prod.outlook.com (2603:10a6:20b:249::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Tue, 16 Dec
- 2025 14:42:18 +0000
+ 2025 14:46:11 +0000
 Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
  ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
  ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9412.011; Tue, 16 Dec 2025
- 14:42:18 +0000
-Date: Tue, 16 Dec 2025 09:42:06 -0500
+ 14:46:11 +0000
+Date: Tue, 16 Dec 2025 09:46:00 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Chester Lin <chester62515@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	imx@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-	Jan Petrous <jan.petrous@oss.nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Matthias Brugger <mbrugger@suse.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, linaro-s32@linaro.org
-Subject: Re: [PATCH v2 0/4] s32g: Use a syscon for GPR
-Message-ID: <aUFvvmDUai9QrhZ2@lizhi-Precision-Tower-5810>
-References: <cover.1765806521.git.dan.carpenter@linaro.org>
- <aUAvwRmIZBC0W6ql@lizhi-Precision-Tower-5810>
- <aUBUkuLf7NHtLSl1@stanley.mountain>
- <aUBha2/xiZsIF/o5@lizhi-Precision-Tower-5810>
- <aUBrV2_Iv4oTPkC4@stanley.mountain>
- <aUB4pFEwmMBzW52T@lizhi-Precision-Tower-5810>
- <aUEQkuzSZXFs5nqr@stanley.mountain>
-Content-Type: text/plain; charset=us-ascii
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Martin Kepplinger-Novakovic <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/5] media: nxp: use dev_err_probe() to simplify code
+Message-ID: <aUFwqMiYE+P+KdsO@lizhi-Precision-Tower-5810>
+References: <20251215-cam_cleanup-v3-0-a61995068f38@nxp.com>
+ <20251215-cam_cleanup-v3-2-a61995068f38@nxp.com>
+ <5462566.31r3eYUQgx@steina-w>
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <aUEQkuzSZXFs5nqr@stanley.mountain>
-X-ClientProxiedBy: SJ0PR05CA0184.namprd05.prod.outlook.com
- (2603:10b6:a03:330::9) To DU2PR04MB8951.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5462566.31r3eYUQgx@steina-w>
+X-ClientProxiedBy: SJ0PR13CA0157.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c7::12) To DU2PR04MB8951.eurprd04.prod.outlook.com
  (2603:10a6:10:2e2::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -87,194 +75,247 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|AS8PR04MB7590:EE_
-X-MS-Office365-Filtering-Correlation-Id: 77f5781c-3382-4a43-1726-08de3cb15002
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|AM8PR04MB7731:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8cdeb8b6-73d6-4ec3-e6f9-08de3cb1db1e
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|376014|7416014|366016|52116014|38350700014;
+ BCL:0;ARA:13230040|1800799024|19092799006|376014|7416014|366016|52116014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?RAVrC+xuh5CEg62Fw/O5NDDrsqvfmhzjxNgF3MJZFgGMCFNhhHV7NUYV4eTv?=
- =?us-ascii?Q?bmXDhrlEI5F9QCOQpLis8vNSRo1ynF8Xq+imdw8ypg0Rnj5e+lLIfPOvy/6v?=
- =?us-ascii?Q?VCBn4bSNpjlViOyqwSwQiRnczeSbdH/Q3z0MEc1UjSZnwvUMGNDnZJCrRzrY?=
- =?us-ascii?Q?UIamtr0Fknuy6KR/N8DldjkCfiwnfgD4vA7JiApmmY8TXGqTJ2OOI4IS7K7M?=
- =?us-ascii?Q?kXNCovtEghtosxu09vRViS0nsHSrgdTZfxE1LZJ6T3+NvPBydtrfFFX/NeHn?=
- =?us-ascii?Q?VlrbDhj/+OKTOoyT7Xm30hSB+cRov0RgHgR7tkRT/mBqvaBOekw3h4JElE9M?=
- =?us-ascii?Q?EF3qC/re38y+Q1akCH+f8FyfLxdzncF8dk0Q2vREs4OpNCExbiN3+NTmGs1y?=
- =?us-ascii?Q?DuXPE+ObYXABRLvJYp+BY3gXZZxMRGtLaxdYkIvlIwExTb/SZbdTX4erjb2b?=
- =?us-ascii?Q?ccc1VS6SUcxyyGFRLW2cMoAlt/KdMMaWPeXTYrSVL607+cxoWLmHE8YQNprh?=
- =?us-ascii?Q?3PD01g2OC08SAZvn+5om7sN69GpbsZ3WDErUOFwaLbOKUIymGERth37BYGa/?=
- =?us-ascii?Q?B/F0DNIzchFoLU+koG8+WB4O/2t4s5XXbtwjsGxPKnr5L7nVcgE5vBPx4uSX?=
- =?us-ascii?Q?DODRO5koLDI35UTg4ilmQvOP4xh9EXQOo31nxFVvpguJKhvmWhcL9zKCGto0?=
- =?us-ascii?Q?jTfLRqdn1Oc9oiU+k/l0QzN8RgS5Fpi6uxpB6p5s3JngdjIVvLCKvDbZZzhD?=
- =?us-ascii?Q?DaL7lVUoIXHIgEgVi5dFPY4XcpDZzKuyhRcv9oCpDpA9tGRJ+AH2uNyekl6Q?=
- =?us-ascii?Q?L9vaN52Yt2ru9nISg02o+FcOf9QtGpqLAQPUxkrHH0w0TjKK3mQN1+hvehTR?=
- =?us-ascii?Q?QT2GjqOSX/bB0T0evCKJJC8TLWAxISuCtl0ecwL9WQDV7UR+zXutnKgpO7QR?=
- =?us-ascii?Q?nZBPzwzQI/KKqpzxgUG5nW9YIbFWWBaOpwO8lwO2olqX5DB09wVhA+ODkWCK?=
- =?us-ascii?Q?yK1yeQRxIqCjzbJQerlz9MU1R6RsRjzmB58jCY34emATggCNJudQ3e56zdp9?=
- =?us-ascii?Q?X31zbJWHGxenfbHhpXowkcRv8xFFpaZp9zIYJoCpCOp8OmGZdmgAerH+4BeL?=
- =?us-ascii?Q?jh5A599J20Fj8DIVfOA+a2pSyQA1pguBt6lf99tiaefaS6Dk22xuUlyOEVJI?=
- =?us-ascii?Q?aen8LG8DWQ3salPf3R4YPkV2JSsZQrfQGlAnpSMoJDL0U8KthVADz2emMusm?=
- =?us-ascii?Q?2xPuS2BsvLz+K7Z3e/buQMN+/ADw949ag3RX4UKOf+l+ESKIgvABwrqIRR0E?=
- =?us-ascii?Q?W5auYIXlP91mcs/aWvEMw2+RGSiY5WWENWG4sWibYkUAxtHB7GCDmb1q9EDy?=
- =?us-ascii?Q?dB5Gqn3poMszUHIrhrX+SKpa5XPKuF1SYMQR7Tw1ZcVbNziIzJX1ZoTvqGuE?=
- =?us-ascii?Q?dE3vkTNXbuavyCt2cumL944GOQ7Z+36zjj9OVqjSZsBNVk0vLtWcnOis/Yj+?=
- =?us-ascii?Q?4CJdvr+7BqAMm6T7PSExqz+lPEg1eOjRa9ZJ?=
+ =?iso-8859-1?Q?XPxlgR6uoRGPBLo59Gvh52GUrysOhJ9LSV/tY9rOs13Y2YwCkPqYfmom/G?=
+ =?iso-8859-1?Q?ue/Jv720+Zvwf2dpH1PQqm/m8WbIlI6JgrMDZ3eSC241vt9T9Y4w1lGErK?=
+ =?iso-8859-1?Q?XUWoe1OL2vfdZssXh1NS9aHPbEMFNGTfvc06xQ4YLaIKtXjNpR9LFZ4rJf?=
+ =?iso-8859-1?Q?rEofx4H9FsC0W6ogYg+NzMKODpiXrKzWD52CvcIDO+M7BiF4vdXciFRWgs?=
+ =?iso-8859-1?Q?bmZSrj1uy0Exk21XwyAKAZJw5NB2HC34wgd8qJOF/bTlXgCiYGJyrF1k2r?=
+ =?iso-8859-1?Q?4rrU9Z+1EnhzfsIt7ROO/+rR60G+7VTe1UK8YWWHxj5p1vHQkJIALq0U2L?=
+ =?iso-8859-1?Q?uftVd3b4+6Cy0GHCmqnCziBg2Ffd/eoAPQ75C/AfP57KxpdGx7ZlTFYImC?=
+ =?iso-8859-1?Q?tZIPJ8OBNFrJAinEa02Q3Xm9jPy3HeWbDIrQrdNm95XFvngAhT9oGN87Db?=
+ =?iso-8859-1?Q?GjMqWOLY5iUxseBffruRttE8Qw3HO8FB6tbLqCuIUAo66z6rE8FnG7LA1H?=
+ =?iso-8859-1?Q?pHa5zdyO6YunZCGH+EFhizv+StDZ9Dp2fdrKTqHcxszsIsQrzdJdVk7CCH?=
+ =?iso-8859-1?Q?ugPOHJ30fkmdPs/3gTyzZZ13TzuEhc2/101L6LgskP5yDebgUPaOun6H+y?=
+ =?iso-8859-1?Q?YUz+4XZcecWVVesDciYBXIxzEthpUdsF5nRIVOd1P5hx5mIJfoSpDmC+kN?=
+ =?iso-8859-1?Q?11JrLVRh3pV5M9rxRBXamliygxWfXYOD9mxcqEls0sFD5XZxOvMeYC3NEO?=
+ =?iso-8859-1?Q?fvMgLb9+JPWBUab3B1PP1dqv2kGFweW6Isw5ObtX5P6CuZtZZB2rRGHboB?=
+ =?iso-8859-1?Q?1O2qQldFwiQnRBGxxeoU3b5Z+FvHiV3XX0ci0xP/yApEGxw/51C+cBU6fW?=
+ =?iso-8859-1?Q?8YzbyVet0qdvl7x2xW+2Va9oLSAV8UnsulkxRL+x8huRbx+IAfHCGURS61?=
+ =?iso-8859-1?Q?/hK8of1OboALYgPHBGiLiZbv03qmn2VpVuvhF408WLRz7w0JzrmftALzW9?=
+ =?iso-8859-1?Q?FpiVtFRjYRcJ8fJCBDby8bTAICxkneQsuLkBq0jw0etgtFCCuNLTSw5Cna?=
+ =?iso-8859-1?Q?iNR5EZPPkAIZBRlfz6GMubnS7R2Ti9lS6a4JEk0RN8jTU3F3XFRqeCCfnx?=
+ =?iso-8859-1?Q?G/mxegFBgHXBN993YNKNdsNdop5pKRCr7+1CetepKNd6g6OPgDilWV5fDW?=
+ =?iso-8859-1?Q?mcoIeXZFgq4MwGvoOAV/D7efvJjcic2BjLlXl/3eWiJtjVqiN0b4mXb/nw?=
+ =?iso-8859-1?Q?tJbzOwFLP8TwwKLt2Sn00yWKH5FqhEeaJINH4QELcs819m+HW2N/AS5s1Y?=
+ =?iso-8859-1?Q?d8p0aHlYDhx9hIS00gO0Ei6DOExRmPNltt4EUK4piHbkn0NBg55RA78u3/?=
+ =?iso-8859-1?Q?nGbdTWNDQsWIpVzdaWeTZ/6D+25E8G/D8guroZUuMxAuyNFgRQFmXZWSx6?=
+ =?iso-8859-1?Q?9lESJZVMsqiaH4+ZkKWYvEZw3dJFedMyq3tUh3pi99gkHDmf+2sa27x8EF?=
+ =?iso-8859-1?Q?Cm7mijiinFFN5hRn65MAw3dfZvWq0jPIZ2d2GdkUP/mg=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(7416014)(366016)(52116014)(38350700014);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(7416014)(366016)(52116014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?iSzbRhwZkLTNQXhAO+HEohPEBih+sxm9Xrkst5M53RkWVaisFszXaGxJNOEp?=
- =?us-ascii?Q?An+cjMb9cx0U802KvCGpnfbMbxq7lQoK4LS+krO52USXRbpNxemog1Ecdp4y?=
- =?us-ascii?Q?VUk3BiubtiCO88N9/+MiimP6vJqnEwXmlKzlvfzBQz8edh9+hNk/i7qBomUf?=
- =?us-ascii?Q?NnMkmOm3C4hSNCFglLrK3wWDGFNMDiLIWyzhjHvvpAXD3TbDNtKoXo6alEdO?=
- =?us-ascii?Q?3llxXj0I3RHFkkxWYAa6OOGhHKQw8e2qAj+uhJMdZNZ4XJE4//pRWyqUv82W?=
- =?us-ascii?Q?TmkDCsvKDTGmLHKPuzJLniX4yCY9Q0kbMVdv2h0GBadbQ0LGs6pq5c1CG+1O?=
- =?us-ascii?Q?uCtqPcNPkYTXEAVoqOwg51EOWufHF7hKEoLO6xI9w/32qNP8xLJbJo9CTmtL?=
- =?us-ascii?Q?StJP823NfXSD5NbyK7R10OUCd/Nbt4+8CV0s8t5r+esScRerEImqGg9W010J?=
- =?us-ascii?Q?lAFP9flc1bhXJQIj/v0/AzOdQEu/sToJPVk3eVDFlr4CNLeI4+gAAcfWV3dp?=
- =?us-ascii?Q?IeYzpHxTq+zvgQlnAPod5EkB+b90DjPEdXU73w1dAhv/jU4GceuTPj1MLdGq?=
- =?us-ascii?Q?pV8UBKF18Dd2K5O4XpGUH+kSmeUbZ2ff/bsX9IuxDgA/GRETjF+yj+suoJzR?=
- =?us-ascii?Q?KdcK1qVUFINktkoejCC4Ll1eCfMcUlD2vHtNhhTBgONgCjZ0pu7wsq2fpfPR?=
- =?us-ascii?Q?KiQnDPmVLVoIfgzaSCg23MsGC5pvjuQOPrDy95kQ15gha700cNBxAwBd32PM?=
- =?us-ascii?Q?SopHt1nUXGzgno/+zG/2a+fnng5BXDU2PXwCJaKCKnrVQB+uYUl4V3Z8+Ejc?=
- =?us-ascii?Q?Wf9QZl8ct+bMoP4bhKy0XhOKeQSAzrVzBTgkgwVMhfUtGvnrDPZ8sS6gd8tr?=
- =?us-ascii?Q?bzqMlgUs9o1/FtWfHczPxFrAkxCbqHwTUSKQ6V5w2ZlNqQx6zNCGsv8d+gO+?=
- =?us-ascii?Q?Cczkd2iOh1zPmib9Npe5YeSrnKiDRf+Pf3asknmYI+Mzm9edUAADdWqwlLlx?=
- =?us-ascii?Q?tE3G7rtWUXlLcC2Tcl//835+LEm/M4mTXmZgyYhCh6ALdxHSdTvb4EeIl/4G?=
- =?us-ascii?Q?CjBEDywEd+Mo8UXVfgQh+fLo7s+/8FwzRsuTcXIave24E1jNwGAkEEc4bYWM?=
- =?us-ascii?Q?RQfKR/m3tZnNudjPdmm5HW8wo2YUY0JKjBy3XaIgh7M7+TlIqm6jYmHDvP0G?=
- =?us-ascii?Q?88F77UfZBizhHDvTirOrG+BudSEQZH4yvyYn5NK6i3nLrBmkTrOVs+sXGX3G?=
- =?us-ascii?Q?KCFzHYbTHtzW+ZCQulNvMrU6C4HjSf8HJF7th551WWrObUfg3/B3WlDMq+7U?=
- =?us-ascii?Q?5usgFH7jtR5zU7Mq8JxiAckjDvaUy7GppVIiwN9zGAMvclPS7+dduuA5FQh+?=
- =?us-ascii?Q?UI2oi4J8Nsp2aJWCNYdHcut2wlXix8Be6m1rSGSxHPapKwKJ7u7+q/h18lXG?=
- =?us-ascii?Q?uNzuVE5Ff3pQWZioXpkpPg43ufHikBXmp7x0bx39ByUGkLCUTgMl9X6B3kde?=
- =?us-ascii?Q?BA1E13Q1s9ggRcEkCF2MFtAqS/wZTbZVrY2z9fPfMCraDgaD6neXjcRK+QUB?=
- =?us-ascii?Q?nJMbgGNUPsCJmBW6Z7WDEEwAafF4EiRLxEuqgbSH?=
+ =?iso-8859-1?Q?bkdt34tjSaP/2ve22/lFw5dD6lcw7Q+kZ0FaorBZCPHpqNEzYTukT9tW2K?=
+ =?iso-8859-1?Q?dfE3F66ANIlOa29UQH7PEHfSwu5lC4aYrVg4kqSBdQhL6oNVrfpjFhUeDa?=
+ =?iso-8859-1?Q?ZlrmXN7DYBtnq3tswhHSPKekwfRkrksyic1tZkLBIR+DUAk6RcPqgJPuUw?=
+ =?iso-8859-1?Q?pqMxqCRoeVH2nIQ7Q5pa5n9QMjshXlS7Er5VTld252Osn+v7X3ImRhz0td?=
+ =?iso-8859-1?Q?XhsGHLdzED+JDnf6899yExS6z9BuuQj0hU629nVBhpSnxZB8J4zgPOcntH?=
+ =?iso-8859-1?Q?s5rGqY/FpDfjTLS5Mzx8bMpAYrcJPGnyZZcV015BcyFmJSsYA9g3cIuqhw?=
+ =?iso-8859-1?Q?vknmf96IEqljHpyIye8tmhCyybNg5dC7+Cn+zX+2DkCXdkJ9XVnqsxch3H?=
+ =?iso-8859-1?Q?GtgKT3AGFSTl3jB9fhe9h/7h+c9/f63B6i5yeo5JhG1GWJAidpXd0PGc2N?=
+ =?iso-8859-1?Q?4FEEy+nnFV40RmJFt6l7wLx8hp9hzthj8lpEfSS2iYGUgU6VEn+vP1AqXF?=
+ =?iso-8859-1?Q?r7VTNNNTK5j2+wfXsksJrCTJeAL61wjsC1e+b1T9CNW8k3vtJq7uOSHudB?=
+ =?iso-8859-1?Q?ndtA1SryKME2El8+7wEF4mghJ5mk5C+6GQRY2sty2yUcac5P7r83H7G31x?=
+ =?iso-8859-1?Q?JMa2gT2EtYmz4lrEKxgMkIazLuq9Rel5Q6OCh8W4vhZBVLOAarLG/v0ul4?=
+ =?iso-8859-1?Q?v1onJZGoMsofhMyWa0OKwjRIKRFrjbr4L+/ohh08xCDxwjes+VaUizkhpC?=
+ =?iso-8859-1?Q?j1R2jXTXYtKQtYT7LZXpPHWpB6aZt78iLct/GjTv66i0h43ONC7We/zefk?=
+ =?iso-8859-1?Q?6AHVGRcanViwo3zh1Tk0HnjWBlVr/y7+bDMGR6QqwAQvKeUjPf/oyTrYdn?=
+ =?iso-8859-1?Q?fzlgwvI6IbLAk64hBYOK1bYWnhbSFUSxJl6QyVmIvrXVC6rjn2CpgD+vX1?=
+ =?iso-8859-1?Q?1TUZH7CgdgguKSMj3eALSOM9WXTGcGnOvrbXt+RUe36SEypX8XdiUhwUXE?=
+ =?iso-8859-1?Q?r3QNYKO3LSsQ+QZfmo5Y5eSm6oZ7d6QW3L2YmJGuFAUaigWRZj+/nkTvKv?=
+ =?iso-8859-1?Q?kXQea0D18XXTJcwq66pSUVPnwj6n8+GkGsgcFsTyVtlOz6gAd/J9wYRoI4?=
+ =?iso-8859-1?Q?ftmHil/wA+LdcNepLWAO1YosPM9HdvU3Ew7oCK8bvpOB5zcRGhL4rhgOCS?=
+ =?iso-8859-1?Q?Cz89RRYlrhYnYOgMiNZtVRDx6UH23wDTctD+r1hdlltSp3ilBAfYgJlovx?=
+ =?iso-8859-1?Q?qdM5xxY6RzANeaDqcSZkziFC0AcjLRpfZ7yUPAxLUO+9ZJ3buvpnGO2eQo?=
+ =?iso-8859-1?Q?6CkRmxfK1ucY/XPdqypPrWzp7FOpRHxnNMjTCWjnOH1Du/RWr/2UdskKvi?=
+ =?iso-8859-1?Q?G0Uko42r0VHmfezO3h+Bd/eaZ8aUE1t0Xs0H/KWNRuZBxD6XW2bLygMDYg?=
+ =?iso-8859-1?Q?gThOrEZnT10K2pR0Xjeb60XKojLP3XQdZ4XqnzPB7IZ1l05cgmRf3myLQA?=
+ =?iso-8859-1?Q?s7W7ANlK6zq60aj2C63Lr7UPJbB8mOs8hNghYwF2e10m/MkGbDz5tkirZD?=
+ =?iso-8859-1?Q?7Bay18Cl7xtyJB3Ub6WL797NWA22Ik3CHdcHOB4p/TTsGgFfelrYwVqx1B?=
+ =?iso-8859-1?Q?FfF7C2c2u219xt6511PmtageraniThPej+?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 77f5781c-3382-4a43-1726-08de3cb15002
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8cdeb8b6-73d6-4ec3-e6f9-08de3cb1db1e
 X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 14:42:18.4415
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 14:46:11.7826
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /3pnHxrM2IEY7VV92XDVNYD6sVCaQydZvVvvlPeKfnUidBhU5336vuMrkW/gK37Ybto04P0fjUM1TMlsmC+GNw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7590
+X-MS-Exchange-CrossTenant-UserPrincipalName: z6ElhA5MdBavAVPjSO7veJL2K5Azdf6dK4jp0kaz26bGeLVn8z/vf+JjT6lqyx6ZVkS9Jvvx21HwOajmLC88Tg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7731
 
-On Tue, Dec 16, 2025 at 10:56:02AM +0300, Dan Carpenter wrote:
-> On Mon, Dec 15, 2025 at 04:07:48PM -0500, Frank Li wrote:
-> > On Mon, Dec 15, 2025 at 11:11:03PM +0300, Dan Carpenter wrote:
-> > > On Mon, Dec 15, 2025 at 02:28:43PM -0500, Frank Li wrote:
-> > > > On Mon, Dec 15, 2025 at 09:33:54PM +0300, Dan Carpenter wrote:
-> > > > > On Mon, Dec 15, 2025 at 10:56:49AM -0500, Frank Li wrote:
-> > > > > > On Mon, Dec 15, 2025 at 05:41:43PM +0300, Dan Carpenter wrote:
-> > > > > > > The s32g devices have a GPR register region which holds a number of
-> > > > > > > miscellaneous registers.  Currently only the stmmac/dwmac-s32.c uses
-> > > > > > > anything from there and we just add a line to the device tree to
-> > > > > > > access that GMAC_0_CTRL_STS register:
-> > > > > > >
-> > > > > > >                         reg = <0x4033c000 0x2000>, /* gmac IP */
-> > > > > > >                               <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
-> > > > > > >
-> > > > > > > We still have to maintain backwards compatibility to this format,
-> > > > > > > of course, but it would be better to access these through a syscon.
-> > > > > > > First of all, putting all the registers together is more organized
-> > > > > > > and shows how the hardware actually is implemented.  Secondly, in
-> > > > > > > some versions of this chipset those registers can only be accessed
-> > > > > > > via SCMI, if the registers aren't grouped together each driver will
-> > > > > > > have to create a whole lot of if then statements to access it via
-> > > > > > > IOMEM or via SCMI,
-> > > > > >
-> > > > > > Does SCMI work as regmap? syscon look likes simple, but missed abstract
-> > > > > > in overall.
-> > > > > >
-> > > > >
-> > > > > The SCMI part of this is pretty complicated and needs discussion.  It
-> > > > > might be that it requires a vendor extension.  Right now, the out of
-> > > > > tree code uses a nvmem vendor extension but that probably won't get
-> > > > > merged upstream.
-> > > > >
-> > > > > But in theory, it's fairly simple, you can write a regmap driver and
-> > > > > register it as a syscon and everything that was accessing nxp,phy-sel
-> > > > > accesses the same register but over SCMI.
-> > > >
-> > > > nxp,phy-sel is not standard API. Driver access raw register value. such
-> > > > as write 1 to offset 0x100.
-> > > >
-> > > > After change to SCMI, which may mapped to difference command. Even change
-> > > > to other SOC, value and offset also need be changed. It is not standilzed
-> > > > as what you expected.
-> > >
-> > > We're writing to an offset in a syscon.  Right now the device tree
-> > > says that the syscon is an MMIO syscon.  But for SCMI devices we
-> > > would point the phandle to a custom syscon.  The phandle and the offset
-> > > would stay the same, but how the syscon is implemented would change.
-> >
-> > Your SCMI syscon driver will convert some private hard code to some
-> > function, such previous example's '1' as SEL_RGMII. It is hard maintained
-> > in long term.
-> >
+On Tue, Dec 16, 2025 at 08:34:18AM +0100, Alexander Stein wrote:
+> Hi,
 >
-> No, there isn't any conversion needed.  It's exactly the same as writing
-> to the register except it goes through SCMI.
+> Am Montag, 15. Dezember 2025, 23:49:53 CET schrieb Frank Li:
+> > Use dev_err_probe() to simplify the code. Drop the explicit error message
+> > after returning from imx8mq_mipi_csi_parse_dt(), as the error is already
+> > reported by this helper.
+> >
+> > No functional change.
+> >
+> > Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > change in v2:
+> > - add  Laurent Pinchart review tags
+> > - wrap error message to new line
+> > - remove error code print in dev_err_probe();
+> > - drop error messaage at imx8mq_mipi_csi_parse_dt()
+> > ---
+> >  drivers/media/platform/nxp/imx-mipi-csis.c    |  6 ++---
+> >  drivers/media/platform/nxp/imx7-media-csi.c   | 14 ++++--------
+> >  drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 33 ++++++++++++---------------
+> >  3 files changed, 21 insertions(+), 32 deletions(-)
+> >
+> > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > index 088b2945aee33731c565f049dd17721356300b84..ce93d868746f002c22e2f86b1e0aa84ec1a76061 100644
+> > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> > @@ -1547,10 +1547,8 @@ static int mipi_csis_probe(struct platform_device *pdev)
+> >  	/* Now that the hardware is initialized, request the interrupt. */
+> >  	ret = devm_request_irq(dev, irq, mipi_csis_irq_handler, 0,
+> >  			       dev_name(dev), csis);
+> > -	if (ret) {
+> > -		dev_err(dev, "Interrupt request failed\n");
+> > -		return ret;
+> > -	}
+> > +	if (ret)
+> > +		return dev_err_probe(dev, ret, "Interrupt request failed\n");
+> >
+> >  	/* Initialize and register the subdev. */
+> >  	ret = mipi_csis_subdev_init(csis);
+> > diff --git a/drivers/media/platform/nxp/imx7-media-csi.c b/drivers/media/platform/nxp/imx7-media-csi.c
+> > index 933a5f39f9f4c9b43ca8d2a1819d0145981266e6..7ddc7ba06e3d4e007013821f67d783898a15461f 100644
+> > --- a/drivers/media/platform/nxp/imx7-media-csi.c
+> > +++ b/drivers/media/platform/nxp/imx7-media-csi.c
+> > @@ -2218,11 +2218,9 @@ static int imx7_csi_probe(struct platform_device *pdev)
+> >
+> >  	/* Acquire resources and install interrupt handler. */
+> >  	csi->mclk = devm_clk_get(&pdev->dev, "mclk");
+> > -	if (IS_ERR(csi->mclk)) {
+> > -		ret = PTR_ERR(csi->mclk);
+> > -		dev_err(dev, "Failed to get mclk: %d", ret);
+> > -		return ret;
+> > -	}
+> > +	if (IS_ERR(csi->mclk))
+> > +		return dev_err_probe(dev, PTR_ERR(csi->mclk),
+> > +				     "Failed to get mclk\n");
+> >
+> >  	csi->irq = platform_get_irq(pdev, 0);
+> >  	if (csi->irq < 0)
+> > @@ -2236,10 +2234,8 @@ static int imx7_csi_probe(struct platform_device *pdev)
+> >
+> >  	ret = devm_request_irq(dev, csi->irq, imx7_csi_irq_handler, 0, "csi",
+> >  			       (void *)csi);
+> > -	if (ret < 0) {
+> > -		dev_err(dev, "Request CSI IRQ failed.\n");
+> > -		return ret;
+> > -	}
+> > +	if (ret < 0)
+> > +		return dev_err_probe(dev, ret, "Request CSI IRQ failed.\n");
+> >
+> >  	/* Initialize all the media device infrastructure. */
+> >  	ret = imx7_csi_media_init(csi);
+> > diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> > index 0851f4a9ae52d3096f454da643cfdc5017e000b1..a007c582b4d91660a97910a6a0d53c9b6fcd73e9 100644
+> > --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> > +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> > @@ -951,10 +951,9 @@ static int imx8mq_mipi_csi_parse_dt(struct csi_state *state)
+> >  	int ret = 0;
+> >
+> >  	state->rst = devm_reset_control_array_get_exclusive(dev);
+> > -	if (IS_ERR(state->rst)) {
+> > -		dev_err(dev, "Failed to get reset: %pe\n", state->rst);
+> > -		return PTR_ERR(state->rst);
+> > -	}
+> > +	if (IS_ERR(state->rst))
+> > +		return dev_err_probe(dev, PTR_ERR(state->rst),
+> > +				     "Failed to get reset\n");
+> >
+> >  	if (state->pdata->use_reg_csr) {
+> >  		const struct regmap_config regmap_config = {
+> > @@ -977,24 +976,22 @@ static int imx8mq_mipi_csi_parse_dt(struct csi_state *state)
+> >
+> >  	ret = of_property_read_u32_array(np, "fsl,mipi-phy-gpr", out_val,
+> >  					 ARRAY_SIZE(out_val));
+> > -	if (ret) {
+> > -		dev_err(dev, "no fsl,mipi-phy-gpr property found: %d\n", ret);
+> > -		return ret;
+> > -	}
+> > +	if (ret)
+> > +		return dev_err_probe(dev, ret, "no %s property found\n",
+> > +				    "fsl,mipi-phy-gpr");
 >
-> > >
-> > > >
-> > > > >
-> > > > > > You still use regmap by use MMIO. /* GMAC_0_CTRL_STS */
-> > > > > >
-> > > > > > regmap = devm_regmap_init_mmio(dev, sts_offset, &regmap_config);
-> > > > > >
-> > > > >
-> > > > > You can use have an MMIO syscon, or you can create a custom driver
-> > > > > and register it as a syscon using of_syscon_register_regmap().
-> > > >
-> > > > My means is that it is not necessary to create nxp,phy-sel, especially
-> > > > there already have <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
-> > > >
-> > >
-> > > Right now the out of tree dwmac-s32cc.c driver does something like
-> > > this:
-> > >
-> > >     89          if (gmac->use_nvmem) {
-> > >     90                  ret = write_nvmem_cell(gmac->dev, "gmac_phy_intf_sel", intf_sel);
-> > >     91                  if (ret)
-> > >     92                          return ret;
-> > >     93          } else {
-> > >     94                  writel(intf_sel, gmac->ctrl_sts);
-> > >     95          }
-> > >
-> > > Which is quite complicated, but with a syscon, then it's just:
-> > >
-> > > 	regmap_write(gmac->sts_regmap, gmac->sts_offset, S32_PHY_INTF_SEL_RGMII);
-> > >
-> > > Even without SCMI, the hardware has all these registers grouped together
-> > > it just feels cleaner to group them together in the device tree as well.
-> >
-> > Why not implement standard phy interface,
-> > phy_set_mode_ext(PHY_MODE_ETHERNET, RGMII);
-> >
-> > For example:  drivers/pci/controller/dwc/pci-imx6.c
-> >
-> > In legency platform, it use syscon to set some registers. It becomes mess
-> > when more platform added.  And it becomes hard to convert because avoid
-> > break compatibltiy now.
-> >
-> > It doesn't become worse since new platforms switched to use standard
-> > inteface, (phy, reset ...).
-> >
->
-> This happens below that layer, this is just saying where the registers
-> are found.  The GMAC_0_CTRL_STS is just one register in the GPR region,
-> most of the others are unrelated to PHY.
+> Do you really need to pass the (fixed) property name as an argument? Why
+> not move into the const string directly? I would also rephrase it a bit:
+> "property fsl,mipi-phy-gpr not found"
 
-The other register should work as other function's providor with mfd.
+Laurent Pinchart provide comments at previous version. The same
+"fsl,mipi-phy-gpr" share one entry at RO region. slice save RO region
+space.
+
+https://lore.kernel.org/imx/20251119043307.GH17526@pendragon.ideasonboard.com/
 
 Frank
 
 >
-> regards,
-> dan carpenter
+> With that fixed:
+> Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 >
+> >
+> >  	ph = *out_val;
+> >
+> >  	node = of_find_node_by_phandle(ph);
+> > -	if (!node) {
+> > -		dev_err(dev, "Error finding node by phandle\n");
+> > -		return -ENODEV;
+> > -	}
+> > +	if (!node)
+> > +		return dev_err_probe(dev, -ENODEV,
+> > +				     "Error finding node by phandle\n");
+> > +
+> >  	state->phy_gpr = syscon_node_to_regmap(node);
+> >  	of_node_put(node);
+> > -	if (IS_ERR(state->phy_gpr)) {
+> > -		dev_err(dev, "failed to get gpr regmap: %pe\n", state->phy_gpr);
+> > -		return PTR_ERR(state->phy_gpr);
+> > -	}
+> > +	if (IS_ERR(state->phy_gpr))
+> > +		return dev_err_probe(dev, PTR_ERR(state->phy_gpr),
+> > +				     "failed to get gpr regmap\n");
+> >
+> >  	state->phy_gpr_reg = out_val[1];
+> >  	dev_dbg(dev, "phy gpr register set to 0x%x\n", state->phy_gpr_reg);
+> > @@ -1017,10 +1014,8 @@ static int imx8mq_mipi_csi_probe(struct platform_device *pdev)
+> >  	state->pdata = of_device_get_match_data(dev);
+> >
+> >  	ret = imx8mq_mipi_csi_parse_dt(state);
+> > -	if (ret < 0) {
+> > -		dev_err(dev, "Failed to parse device tree: %d\n", ret);
+> > +	if (ret < 0)
+> >  		return ret;
+> > -	}
+> >
+> >  	/* Acquire resources. */
+> >  	state->regs = devm_platform_ioremap_resource(pdev, 0);
+> >
+> >
+>
+>
+> --
+> TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+> Amtsgericht München, HRB 105018
+> Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+> http://www.tq-group.com/
+
+
