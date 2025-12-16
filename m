@@ -1,285 +1,282 @@
-Received: from mx-relay102-hz1.antispameurope.com (mx-relay102-hz1.antispameurope.com [94.100.133.89])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013056.outbound.protection.outlook.com [52.101.72.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5341D11CA0
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 15:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E80346AD4;
+	Tue, 16 Dec 2025 15:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.56
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765900388; cv=pass; b=YbY4GBdnFlLqJKMHQvGaV1oppuR6Byw3YzJitz/yAtqfNEUB0gQuSeajT8HooYKkNwn2Qbh/5CiyY2Aj/AAcHs3n7Fde6voX8SVN3HUVpkynVXxxCwLmGlStoq9dOnFvw4CfwiUd7dd8ygONoGACqtRzTjacMejANdK8gFc0mgo=
+	t=1765900541; cv=fail; b=RDC8PVHAIvVE1SChFZlngkFLXQbpBwCyHU6jVv7LodCk61M9GMt0tvLhMR1NJVbmwy/6L4Ow/f1DdT+gjPWydpY5kyCNgxpcOgiAKprfrCKglUxv2uq5w0M8/46VHFEItaCKaL442nKQ4FSQpBfNqswn/JvGbPVETPnhwTSYCnc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765900388; c=relaxed/simple;
-	bh=1Dwtsg1GX+VSN5XlbWJ+VzGdP0H2MY7B3cEVblQtOfE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S8nMUXO1aoGh6ycfkCMm0eJEaqmGm+jWxa9Dr5HsYeOsKVHoT9aLcRUMc/6VRj/djUOQ8s+uQMiEM/O+LrRDg6AOTGpVUtWmT0TWeAxzM10WMTr5vykUy6zdvSz6rAR5jOhvoq4RKV4otpoF6VPEiVpqEVlWJpXOHtyBUIwWSuE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=WZAk0bxP; arc=pass smtp.client-ip=94.100.133.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1765900541; c=relaxed/simple;
+	bh=5Qix+p47pAyRLzNAcdLgWnZv1iu6g6ylbAJPUA4CLXo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=DX8Nc9zEiQBxtg+6DISSWrgMb4uIFP6iHhlhWT9dZ1YeKGpz/zYssv1sugvqOkBQUXjEyuJGn+mQg7rB6FQ2l7nSbKuTCtp93KMbf8dBG+vR4Nr/jc/7mnoS5k5JQzTjetVLLFcPB5mFJO1Wf+YOvyiRvADLo2oQEHOiUd529Jg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=MIxWhb2p; arc=fail smtp.client-ip=52.101.72.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="WZAk0bxP"
-ARC-Authentication-Results: i=1; mx-gate102-hz1.hornetsecurity.com 1;
- spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out01-hz1.hornetsecurity.com;
- dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=6bpYrpdLa1BV6o5WcuoYN/S5eTO5xCy/135Fpy8l8VQ=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1765900306;
- b=GgsUJ1IFwfG+1CYHFuAXADzD1vo94XDWie4CLDDJxNCsIWqSx67l1DsKB255b3dyx/ThmlM+
- 7hSgzsXsfeW1rKcZIVAF//sbaJpvg+IHUoBBiFNs5HUMGkqRgNJ/fHk7Rn6d2hGoYMcrgPutNEH
- tyaVdWFtILZVVWfmx4YNCFPetuaWsF+WPGt/2asAptlSaeOw0QQLgF+6k7iwFTvvjWnSFbqeTvL
- cSrN/12ElwC2Qluyt+x+/pILefzN4RpgCDVLJONJ0iyNHmDAyTOS63Ms5DsxhK3tAAMqH/h7YZY
- pvh/f7efpcbvGwsS9b+8HHFAVTToiYyC0yC/gy4LjhzwA==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1765900306;
- b=Mvb1iHmbXR31/CxTXxC2FG/deDe1gdahp3mzf0VcaC3dYWUdls1ZlzRZ0Q5+No9GjIYk6jwY
- 1qcHCi1d06z24Vl3Q43k0UWK48cHr0MVmqsTMsmFSvXRu1FxSXny5ZvNUpsE3xhFN0juAGKD/BC
- pJT+lap+jvJDCmAnLoHVrnTNnIFMm10aigUGV9coiXWzQ9GEYyNwNAHsZ5NJWAGLK2UsPFsdTts
- kbO5BVOrLdF+9bZxx1NYwHZxj4H4nk6hYZn/9lEF2Pbqb9176siHthThqxLrlxS8zV0c71a68lO
- PIwk/QvZg0cryw63yt46lQYa51cYS2y+K5nb9uqXXfz5w==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay102-hz1.antispameurope.com;
- Tue, 16 Dec 2025 16:51:46 +0100
-Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by smtp-out01-hz1.hornetsecurity.com (Postfix) with ESMTPSA id AFB67A4071D;
-	Tue, 16 Dec 2025 16:51:38 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rui Miguel Silva <rmfrfs@gmail.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Martin Kepplinger-Novakovic <martink@posteo.de>,
- Purism Kernel Team <kernel@puri.sm>, linux-arm-kernel@lists.infradead.org,
- linux-media@vger.kernel.org, imx@lists.linux.dev,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/5] media: nxp: use dev_err_probe() to simplify code
-Date: Tue, 16 Dec 2025 16:51:38 +0100
-Message-ID: <5692334.31r3eYUQgx@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <aUF9wPzPaGD1nmM2@lizhi-Precision-Tower-5810>
-References:
- <20251215-cam_cleanup-v3-0-a61995068f38@nxp.com>
- <13428800.O9o76ZdvQC@steina-w> <aUF9wPzPaGD1nmM2@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="MIxWhb2p"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=khk6Kvyw0HvxDPeIJlky/ex/kZMmr93eGfIFg+DzRGEmJGvxb4eeoL81AxoJTQ3Z6Isof8sELimZ4NZgFS4TTqOEDUUdubgrdSyfR1EbOppd2dSg1HM1HAnO2bgTvrQCdkXwLKLU4NgoIJNydykakZlGzENqLRq77B3CyMkxbQh7aF5v+lcm2EhXHkz+oq29DENNO8m2lvcTxKEpLqbnuQILO/I6KWAlFLc4jd6EM7V9OcyMXoLNH0cTOm1QFPFLSQJC+2OAPVlu+DzVAOXgq69nEqgBoPaLK38epE5jIzlGA+GhoEj2qladPN1c1Zwyuc3k48rzY4Roe35Vq+4THg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rWKRvvQqrWnyJvD6H3w1zuqhISioJQivJla4pZjnjvs=;
+ b=pGQlxv5sQibem6bIXN+c3BxmJJPHUjhOwEm/yK1zgf6BGEcekokuAfrKzFKxfP28wd22pcTiqJAtNZxPM7SzkJKj4pvpSLYRPFqhR025R/6pk/2+YBI0vFth2ZNxfPO5tRr++BopXqqpeluUTyYOLn8qZiPMAqtdIaM6bSyPHjC5C2dqmgliZjkF+Z0lg4sAJ8MrFTuoNe6V2HrDNhXd5ULABx8lWwJ/yMHbn9EfAF+BD5xler3s3GzzX3NAPmdb0kwCbrOF1bTc+TMbcIxItV0U2W0u+t1g4q0/bIaLOO6tMTnKtFOow7kwLszri6MEfl+GX/Lt/6k1Sfe3ZDKZvQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rWKRvvQqrWnyJvD6H3w1zuqhISioJQivJla4pZjnjvs=;
+ b=MIxWhb2pfGAo2dGS2wGP4AFdrnhCfJ4XFMKHZfg/uxHD/PVUcZ/lbQCvk3cvyDMbewgIfOJhCQOw1gxQJ5srhBSkEILnng6pEmrrvDqsOO5TwOIT7IGvF+QTxIXMM5WbzZBAYTblK/TVsBDB3qqaLbvkJ3uamw2FNNbtTWzX5PdAKZh6gZgpOH2CIip+dWzRgT6mbhQZEUXsCW8jJdzOeqJoh9gFJJsFPmoRSFhjx9t7blsc/hPhX3E8FtJus96kEkerhJh2oT+I53fTzFhyOj0FqhZCVT1tO5llMNyvvoubC0n+BYzx9P6rJWCR9FmpzPcOIqGHU4BsWFz6acgpSw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
+ by AM9PR04MB8954.eurprd04.prod.outlook.com (2603:10a6:20b:409::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Tue, 16 Dec
+ 2025 15:55:34 +0000
+Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
+ ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
+ ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9412.011; Tue, 16 Dec 2025
+ 15:55:34 +0000
+Date: Tue, 16 Dec 2025 10:55:26 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Vinod Koul <vkoul@kernel.org>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Koichiro Den <den@valinux.co.jp>, Niklas Cassel <cassel@kernel.org>,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
+	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH 0/8] dmaengine: Add new API to combine onfiguration and
+ descriptor preparation
+Message-ID: <aUGA7tmDYm1MhRXn@lizhi-Precision-Tower-5810>
+References: <20251208-dma_prep_config-v1-0-53490c5e1e2a@nxp.com>
+ <aUFUX0e_h7RGAecz@vaman>
+ <aUF2SX/6bV2lHtF0@lizhi-Precision-Tower-5810>
+ <aUF-C8iUCs-dYXGm@vaman>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aUF-C8iUCs-dYXGm@vaman>
+X-ClientProxiedBy: SN7PR04CA0235.namprd04.prod.outlook.com
+ (2603:10b6:806:127::30) To DU2PR04MB8951.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e2::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart5328991.LvFx2qVVIh";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay102-hz1.antispameurope.com with 4dW1d73G2Vz16W4
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:ceddf39c8a353a802996f9c91063b891
-X-cloud-security:scantime:1.849
-DKIM-Signature: a=rsa-sha256;
- bh=6bpYrpdLa1BV6o5WcuoYN/S5eTO5xCy/135Fpy8l8VQ=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1765900305; v=1;
- b=WZAk0bxPW9suzm40CSKH3EFbfbX83HsFQxPDzkcqUKAk4CfRzJbD3yj6OV2U+pZ+jf9hFPV/
- x+mxpd1nK5x38n1vxRQ+r94nwU7HFzOVl+stmKQhnVcssJdp5rnpdoQYXtPZOIWtKonXAWXx9wo
- YYBIlfKmqWlNjAdErAg/FBiSHK56twSUYhL0Gf5HeYrnpNrCk4agK8K51IdvtogbBPL61ATEYML
- ZBtT4c/UWszY6md+HBoPncP7K0h96uEH2RUeomyMah7hK3YiTTsqPfJbZlYRc02jYabwNqmP5H3
- KgJsw/tPr5+dkibM4c4/NxZOwyoUV92D9TPN6cNNnottg==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|AM9PR04MB8954:EE_
+X-MS-Office365-Filtering-Correlation-Id: f632ccca-1e06-4802-15bf-08de3cbb8c1a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|376014|52116014|7416014|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?b9YMGedgganElge629YlXO3Z5ArbwvhE9GEtmKg8WoG89zdHT4l4qhTnw/ip?=
+ =?us-ascii?Q?p8BY3AK1ukYexiElBVJHRLlZPSCei2ymhyfoD3sfq9gGuzen8yRxNH8n7nT9?=
+ =?us-ascii?Q?Tndz5LxWwD46HjHjEcI/ui2in+Ab0OxdDpTQuKXltq1JyVuGpbg90u8/+6aV?=
+ =?us-ascii?Q?t14P7qwOob3TgL/SeT4xPatKEf/cJxqi4m1u+90Gme+n03zKmfhxYN58ue7b?=
+ =?us-ascii?Q?6HRAmo8C5fzCXfvD0F8A2KOEfHEBnEUL9/GWj0I7M7oIqRFJAuAkhoRoHWf5?=
+ =?us-ascii?Q?7+s0RBVM0vH6KBpSHWsWqVY0P7Vno4h4g70AJQ/V2BPHoyumXhl6chua7raY?=
+ =?us-ascii?Q?g65zBsu633+4oK7NN1zSG47w0YO5i987qhBf7ts3RXCYfO47oW02S9Y9LbOt?=
+ =?us-ascii?Q?kCB28kPKhR5GY/lhjsKZHiXGgphw+tEByH7qM2HHAAnSzIUK8li4DFGWuvRB?=
+ =?us-ascii?Q?PuaROQsPJGU9I5C0VAaTcl29StRZDcKE8LqgRDdTjegdda6+sGMjCFnpdyWE?=
+ =?us-ascii?Q?ienWbPGRegxsuMekAxLMmCyXdEgyncEmfj8PVErbtYa9wI8+ZqqOWNOxNfR6?=
+ =?us-ascii?Q?21fV1M6uaQAxcr5lR6RR+i1s1xp3qEhuNmsG9oxzjbYb4r/wIPchgCbPJ1p8?=
+ =?us-ascii?Q?qQ/HV+fDOS5RWyCPBQebZwQCk9wh6mj/XNpatTm3sMLBmc9CtTlcCiQ+YzH5?=
+ =?us-ascii?Q?KaJLEun8nZMRSTmz8oLqXYqct67WsdtgYM8tkaXewWkDoDxUqeSw/U2Z5nRG?=
+ =?us-ascii?Q?dabMCwoYWL1ogKlulWaOEqE+XbPlAD2AaQ5JtlNpA2MQi4SxO7KzAVx/gqk3?=
+ =?us-ascii?Q?9NxCuxD1aEmA/fD/jSCJztLXXJPSgUymUlcvfLaHtG8usbxyGsjQqAlxksTc?=
+ =?us-ascii?Q?TcOL041JcYNUAtNhoDwgkxr/gJ6QAV4XVR05pA0DSChNZ1wEyOIOGgNVBMKz?=
+ =?us-ascii?Q?wiR/Y3bpEGe12lXGzgoGfFiOy7kDW/dESeJ0WBYF+Q6kYmUGSLSuMItCobfp?=
+ =?us-ascii?Q?NTpVPZpZdOgEFTcFNCgBi4coe7vjpsUj4VKLYv9O7sCkIuZwh0+opF1NCQCe?=
+ =?us-ascii?Q?rmNVvC6q3tyCPgrKityzO9h0rQQ7iaTr2nNKvD/SkXfXax6fGjHbYT4lmQVC?=
+ =?us-ascii?Q?YF1O7y3MjQ5BHFpHUjWiV+ykGjNRlRyih8ku99q6ee41Gf55fAV2a2NwqJpX?=
+ =?us-ascii?Q?GTF3m6KEQlCp+3ipN7PJNgT56oZ98rQ54+W2fGn5hyGCe1gnWG1HJU7t+03H?=
+ =?us-ascii?Q?0lJhkM8zJ/IUsK7rurzeXzJPxE1hzTrRn2/gGIBLvZ3kEcGV8yQ93enNwmvn?=
+ =?us-ascii?Q?U4VyBfgfP83C1RjWcJAvYCKC61y10YuJH/pSupZrF240OzZsakdPzSbF3Xb2?=
+ =?us-ascii?Q?IlKQnfoiIbbnYMge+aHxvlIX0XCcaf3WDDB+sFrLQT9iLf1DNwtwjI0M3n1T?=
+ =?us-ascii?Q?auG1gZKtLIyWX7k3uFHkVXJnwUtxlWsO7U/y34fznU1CMCFFIfHimzQbJAoC?=
+ =?us-ascii?Q?frJS27drQXeT1hDbGr/pvMwni7+9pBnYVmT5?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(52116014)(7416014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?iB2L/0CIEBXx1PmYT7v9VCUKzc59mBuvpXG1BpauRoOhvxEoyOUqDHOOXM24?=
+ =?us-ascii?Q?2sr4IHMvZOUIfo3OHTkVq9ytp4Z/57Y21JxYyzY6dtYHQhgeqUGkCZ9e+B0j?=
+ =?us-ascii?Q?SXLBXAMoczBGq4FbzFTG9GdBQq7OP/H4qnGMW+3PwNnHXZ5L+D4yuBlhYx3F?=
+ =?us-ascii?Q?sjmiTdiZutQm3f0TiDhSRkPmH7kU9zT8z7DZsSf0LI72x+fgKhGDtq1RyD4F?=
+ =?us-ascii?Q?+EpwCrSKXFtMIeyNFDFZWKDd5RDJIJ+SCWBidBUhVWuKy8o5RPyJFhC85JLg?=
+ =?us-ascii?Q?vme4n9FVH2k8QPOM2oiOB9+i+BIfMsuTdCvpOvRrLTKuJLkbqyc3Kl4lJVyR?=
+ =?us-ascii?Q?GpIYGhDyB7gbjzwmL8ik3IkJbKnvhHKI2sInNJT4Rnkuzptwi0q1YKDxvGC2?=
+ =?us-ascii?Q?Fvt2gWsNh9dbBqRvZp9Flq8pe4RHQYWRbIzvrtBhxlEvxM5oYrICD6rLzEGF?=
+ =?us-ascii?Q?/GzRtKmHz775CXsnhRo/A5TyK5l7IgrQ0SLiK24TgJiADC15LyiiekFDkfAn?=
+ =?us-ascii?Q?sm4VsMUjLcaoswFX3vQlfsIsf8Wx1YjdqA9hh3XunggYpfQ0ChyoZzGTz4Sk?=
+ =?us-ascii?Q?nxbLVfc9io3IV6SlM6rWQYHxStrS/eGaltD7SAbp2MNxN8uK8X46A6Q3D2nW?=
+ =?us-ascii?Q?7inRk0GCwrS1y4HGCqXOG5Nm0eo85xVykbg8/bWGD4GIvgiwnEQOr9pQpib4?=
+ =?us-ascii?Q?e5VXEQ7kdAJI3OwtIAtl3gKU3jfvDF7Tx6b1Pgis1KHURVRl/4v090NW27fW?=
+ =?us-ascii?Q?vVEs4yMcM6/76lj8/N8mDIhFUp4VZ1lRv9awGrVNtCASGbGCb60CSIrrxdSZ?=
+ =?us-ascii?Q?Wt0aV4PHv9Zk2FnYiArnyel8s3H2l+fXY3NY7n3OTwC+XdoFOU7BRzT3wLD2?=
+ =?us-ascii?Q?JqmrooINZD9StVE0JpdO7FH54WvnhZO8zmnWVxcq4kapDBN7uHd7aMkdY/pi?=
+ =?us-ascii?Q?bKsImGLong9daMhBaX144GpJburnTgnx0zyYTV+L0iO9+yJGyw7ZRysqTSLs?=
+ =?us-ascii?Q?3ykxz+0YwAKUILINgbc9JzPCpluLNqnlQ7NwsYBzEUxezjf7SHMbKJ+5fpGZ?=
+ =?us-ascii?Q?w0KbTU85V0A7ZNT72tG2Xz89XROcdZXI7Pvn7tmdqRuQK0b9EOakt0pQmG4q?=
+ =?us-ascii?Q?fADPwpW33jyPRfgFzzv1ADu53sSAvIh7fVO5YAAzKH6Pfp+W0GA5zkdWBJGX?=
+ =?us-ascii?Q?e49zQj+YvAM2qEstqx5K7t+FHenem3bIDdUE/ULcp3d/KnNgGcobmrCzX6GD?=
+ =?us-ascii?Q?bMdDdSZvpRsncQmzWaG4CD0g3h4Z05GigZcRFXdD76IyjD0SN3A7Lyj4c5p4?=
+ =?us-ascii?Q?RU1bO58AkBSgw0t/xJ2HSLfnWSCRn3M3k2r0nmBAftB8410reA02tIOQsyzd?=
+ =?us-ascii?Q?ZOP8vnBWZU5ya1aA6wbrc28Qi7MasHnuwqmkHPL8jzDvvNjqv3OYiBRRkYTt?=
+ =?us-ascii?Q?4sGxPM5Vr3pc+lAIk9pixZfV3oTrbPP8unmsiAjnVHExXxfbx9Zqxor37A7Q?=
+ =?us-ascii?Q?YI/AOsdareS6peLQbDnQUUSf/RVrNcoaoZaMDgW+YENxKxkietNXQjlg4alA?=
+ =?us-ascii?Q?jq18+gDJCzrTfuarmWmjqOznpXBGfg3PQZgUMwBE?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f632ccca-1e06-4802-15bf-08de3cbb8c1a
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 15:55:34.3562
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: z55vdi7hIw/1NNMsD4xM83rlsi2JYA+NW9fLPc2Vxb/Q9cBelnwosPBimuKsYwFvkVN7Q6L/OlR/WYiVkedzIQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8954
 
---nextPart5328991.LvFx2qVVIh
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.li@nxp.com>
-Date: Tue, 16 Dec 2025 16:51:38 +0100
-Message-ID: <5692334.31r3eYUQgx@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <aUF9wPzPaGD1nmM2@lizhi-Precision-Tower-5810>
-MIME-Version: 1.0
-
-Am Dienstag, 16. Dezember 2025, 16:41:52 CET schrieb Frank Li:
-> On Tue, Dec 16, 2025 at 03:50:17PM +0100, Alexander Stein wrote:
-> > Hi Frank,
-> >
-> > Am Dienstag, 16. Dezember 2025, 15:46:00 CET schrieb Frank Li:
-> > > On Tue, Dec 16, 2025 at 08:34:18AM +0100, Alexander Stein wrote:
-> > > > Hi,
-> > > >
-> > > > Am Montag, 15. Dezember 2025, 23:49:53 CET schrieb Frank Li:
-> > > > > Use dev_err_probe() to simplify the code. Drop the explicit error=
- message
-> > > > > after returning from imx8mq_mipi_csi_parse_dt(), as the error is =
-already
-> > > > > reported by this helper.
-> > > > >
-> > > > > No functional change.
-> > > > >
-> > > > > Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > > > ---
-> > > > > change in v2:
-> > > > > - add  Laurent Pinchart review tags
-> > > > > - wrap error message to new line
-> > > > > - remove error code print in dev_err_probe();
-> > > > > - drop error messaage at imx8mq_mipi_csi_parse_dt()
-> > > > > ---
-> > > > >  drivers/media/platform/nxp/imx-mipi-csis.c    |  6 ++---
-> > > > >  drivers/media/platform/nxp/imx7-media-csi.c   | 14 ++++--------
-> > > > >  drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 33 ++++++++++++-=
-=2D-------------
-> > > > >  3 files changed, 21 insertions(+), 32 deletions(-)
-> > > > >
-> > > > > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers=
-/media/platform/nxp/imx-mipi-csis.c
-> > > > > index 088b2945aee33731c565f049dd17721356300b84..ce93d868746f002c2=
-2e2f86b1e0aa84ec1a76061 100644
-> > > > > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> > > > > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > > > > @@ -1547,10 +1547,8 @@ static int mipi_csis_probe(struct platform=
-_device *pdev)
-> > > > >  	/* Now that the hardware is initialized, request the interrupt.=
- */
-> > > > >  	ret =3D devm_request_irq(dev, irq, mipi_csis_irq_handler, 0,
-> > > > >  			       dev_name(dev), csis);
-> > > > > -	if (ret) {
-> > > > > -		dev_err(dev, "Interrupt request failed\n");
-> > > > > -		return ret;
-> > > > > -	}
-> > > > > +	if (ret)
-> > > > > +		return dev_err_probe(dev, ret, "Interrupt request failed\n");
-> > > > >
-> > > > >  	/* Initialize and register the subdev. */
-> > > > >  	ret =3D mipi_csis_subdev_init(csis);
-> > > > > diff --git a/drivers/media/platform/nxp/imx7-media-csi.c b/driver=
-s/media/platform/nxp/imx7-media-csi.c
-> > > > > index 933a5f39f9f4c9b43ca8d2a1819d0145981266e6..7ddc7ba06e3d4e007=
-013821f67d783898a15461f 100644
-> > > > > --- a/drivers/media/platform/nxp/imx7-media-csi.c
-> > > > > +++ b/drivers/media/platform/nxp/imx7-media-csi.c
-> > > > > @@ -2218,11 +2218,9 @@ static int imx7_csi_probe(struct platform_=
-device *pdev)
-> > > > >
-> > > > >  	/* Acquire resources and install interrupt handler. */
-> > > > >  	csi->mclk =3D devm_clk_get(&pdev->dev, "mclk");
-> > > > > -	if (IS_ERR(csi->mclk)) {
-> > > > > -		ret =3D PTR_ERR(csi->mclk);
-> > > > > -		dev_err(dev, "Failed to get mclk: %d", ret);
-> > > > > -		return ret;
-> > > > > -	}
-> > > > > +	if (IS_ERR(csi->mclk))
-> > > > > +		return dev_err_probe(dev, PTR_ERR(csi->mclk),
-> > > > > +				     "Failed to get mclk\n");
-> > > > >
-> > > > >  	csi->irq =3D platform_get_irq(pdev, 0);
-> > > > >  	if (csi->irq < 0)
-> > > > > @@ -2236,10 +2234,8 @@ static int imx7_csi_probe(struct platform_=
-device *pdev)
-> > > > >
-> > > > >  	ret =3D devm_request_irq(dev, csi->irq, imx7_csi_irq_handler, 0=
-, "csi",
-> > > > >  			       (void *)csi);
-> > > > > -	if (ret < 0) {
-> > > > > -		dev_err(dev, "Request CSI IRQ failed.\n");
-> > > > > -		return ret;
-> > > > > -	}
-> > > > > +	if (ret < 0)
-> > > > > +		return dev_err_probe(dev, ret, "Request CSI IRQ failed.\n");
-> > > > >
-> > > > >  	/* Initialize all the media device infrastructure. */
-> > > > >  	ret =3D imx7_csi_media_init(csi);
-> > > > > diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/driv=
-ers/media/platform/nxp/imx8mq-mipi-csi2.c
-> > > > > index 0851f4a9ae52d3096f454da643cfdc5017e000b1..a007c582b4d91660a=
-97910a6a0d53c9b6fcd73e9 100644
-> > > > > --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> > > > > +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> > > > > @@ -951,10 +951,9 @@ static int imx8mq_mipi_csi_parse_dt(struct c=
-si_state *state)
-> > > > >  	int ret =3D 0;
-> > > > >
-> > > > >  	state->rst =3D devm_reset_control_array_get_exclusive(dev);
-> > > > > -	if (IS_ERR(state->rst)) {
-> > > > > -		dev_err(dev, "Failed to get reset: %pe\n", state->rst);
-> > > > > -		return PTR_ERR(state->rst);
-> > > > > -	}
-> > > > > +	if (IS_ERR(state->rst))
-> > > > > +		return dev_err_probe(dev, PTR_ERR(state->rst),
-> > > > > +				     "Failed to get reset\n");
-> > > > >
-> > > > >  	if (state->pdata->use_reg_csr) {
-> > > > >  		const struct regmap_config regmap_config =3D {
-> > > > > @@ -977,24 +976,22 @@ static int imx8mq_mipi_csi_parse_dt(struct =
-csi_state *state)
-> > > > >
-> > > > >  	ret =3D of_property_read_u32_array(np, "fsl,mipi-phy-gpr", out_=
-val,
-> > > > >  					 ARRAY_SIZE(out_val));
-> > > > > -	if (ret) {
-> > > > > -		dev_err(dev, "no fsl,mipi-phy-gpr property found: %d\n", ret);
-> > > > > -		return ret;
-> > > > > -	}
-> > > > > +	if (ret)
-> > > > > +		return dev_err_probe(dev, ret, "no %s property found\n",
-> > > > > +				    "fsl,mipi-phy-gpr");
-> > > >
-> > > > Do you really need to pass the (fixed) property name as an argument=
-? Why
-> > > > not move into the const string directly? I would also rephrase it a=
- bit:
-> > > > "property fsl,mipi-phy-gpr not found"
+On Tue, Dec 16, 2025 at 09:13:07PM +0530, Vinod Koul wrote:
+> On 16-12-25, 10:10, Frank Li wrote:
+> > On Tue, Dec 16, 2025 at 06:15:19PM +0530, Vinod Koul wrote:
+> > > On 08-12-25, 12:09, Frank Li wrote:
 > > >
-> > > Laurent Pinchart provide comments at previous version. The same
-> > > "fsl,mipi-phy-gpr" share one entry at RO region. slice save RO region
-> > > space.
+> > > Spell check on subject please :-)
 > > >
-> > > https://lore.kernel.org/imx/20251119043307.GH17526@pendragon.ideasonb=
-oard.com/
+> > > > Previously, configuration and preparation required two separate calls. This
+> > > > works well when configuration is done only once during initialization.
+> > > >
+> > > > However, in cases where the burst length or source/destination address must
+> > > > be adjusted for each transfer, calling two functions is verbose.
+> > > >
+> > > > 	if (dmaengine_slave_config(chan, &sconf)) {
+> > > > 		dev_err(dev, "DMA slave config fail\n");
+> > > > 		return -EIO;
+> > > > 	}
+> > > >
+> > > > 	tx = dmaengine_prep_slave_single(chan, dma_local, len, dir, flags);
+> > > >
+> > > > After new API added
+> > > >
+> > > > 	tx = dmaengine_prep_slave_single(chan, dma_local, len, dir, flags, &sconf);
+> > >
+> > > Nak, we cant change the API like this.
 > >
-> > "assuming it's worth it". Do you have any numbers? I doubt there is a
-> > significant benefit, but I don't have strong opinion here.
->=20
-> Yes, only few byte. But no worth to argue this. Laurent Pinchart, who pick
-> patches.
+> > Sorry, it is typo here. in patch
+> > 	dmaengine_prep_slave_single_config(chan, dma_local, len, dir, flags, &sconf);
+> >
+> > > I agree that you can add a new way to call dmaengine_slave_config() and
+> > > dmaengine_prep_slave_single() together.
+> > > maybe dmaengine_prep_config_perip_single() (yes we can go away with slave, but
+> > > cant drop it, as absence means something else entire).
+> >
+> > how about dmaengine_prep_peripheral_single() and dmaengine_prep_peripheral_sg()
+> > to align recent added "dmaengine_prep_peripheral_dma_vec()"
+>
+> It doesnt imply config has been done, how does it differ from usual
+> prep_ calls. I see confusions can be caused!
 
-Agreed.
+dmaengine_prep_peripheral_single(.., &sconf) and
+dmaengine_prep_peripheral_sg(..., &sconf).
 
->=20
-> > But the grammar should still be improved.
->=20
-> Okay, will update it.
+The above two funcitions have pass down &sconf.
 
-Thanks
+The usual prep_ call have not sconf argument, which need depend on previous
+config.
 
-Best regards
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
---nextPart5328991.LvFx2qVVIh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+further, If passdown NULL for config, it means use previuos config.
 
------BEGIN PGP SIGNATURE-----
+>
+> > I think "peripheral" also is reduntant. dmaengine_prep_single() and
+> > dmaengine_prep_sg() should be enough because
+>
+> Then you are missing the basic premises of dmaengine that we have memcpy
+> ops and peripheral dma ops (aka slave) Absence of peripheral always
+> implies that it is memcpy
 
-iQEzBAABCgAdFiEEByESxqszIvkmWRwbaS+g2M0Z/iUFAmlBgAoACgkQaS+g2M0Z
-/iX//gf+LtS33Qw18u2HwxSsJ7cUH4+Wm7d0R4DwbhMp7PG2AOID6bU0gq5fnDCT
-zKRKE+ex3uY7AmJa4GUj8wl+zLqGoedz5hT59N7FC36dKCElvkxehSQpEy/Ci9xv
-5HJ8OSNnXyXSjrDLrkdfGv0vq01whLw1c4IXLf7wzas6vyLR9DN0dQejxvCaJE1/
-UzaCjnZFl/VXFB82rqVFlcl2h9bDMJfl2bJxeCKds4L/UJrWr8eVdej47n1O05hJ
-x/uXTLbnb+TJUuR3M1VkdfEphzSSdIgO5KK9Wgiy39YZwrlLMhjIYL6GsrGkt/r5
-w1t4tDhtQ/nHni5X/XLYFr4dBXlo8A==
-=G4dM
------END PGP SIGNATURE-----
+Okay, it is not big deal. is dmaengine_prep_dma_cyclic() exception? which
+have not "peripheral" or "slave", but it is not for memcpy.
 
---nextPart5328991.LvFx2qVVIh--
-
-
-
+Frank
+>
+> > - dmaengine_prep_dma_cyclic() is actually work with prepiperial FIFO
+> > - some prepierial FIFO work like memory, by use shared memory method, like
+> > PCIe map windows.
+> > - argument: config and dir already passdown information to indicate if it
+> > is device preiperial. So needn't indicate at function name.
+> > - maybe later extend to support mem to mem by config becuase adjust burst
+> > size for difference alignment or difference bus fabric port to optimaze
+> > performance.
+> >
+> > Frank
+> >
+> > >
+> > > I would like to retain the dmaengine_prep_slave_single() as an API for
+> > > users to call and invoke. There are users who configure channel once as
+> > > well
+> > >
+> > > >
+> > > > Additional, prevous two calls requires additional locking to ensure both
+> > > > steps complete atomically.
+> > > >
+> > > >     mutex_lock()
+> > > >     dmaengine_slave_config()
+> > > >     dmaengine_prep_slave_single()
+> > > >     mutex_unlock()
+> > > >
+> > > > after new API added, mutex lock can be moved. See patch
+> > > >      nvmet: pci-epf: Use dmaengine_prep_slave_single_config() API
+> > > >
+> > > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > > > ---
+> > > > Frank Li (8):
+> > > >       dmaengine: Add API to combine configuration and preparation (sg and single)
+> > > >       PCI: endpoint: pci-epf-test: use new DMA API to simple code
+> > > >       dmaengine: dw-edma: Use new .device_prep_slave_sg_config() callback
+> > > >       dmaengine: dw-edma: Pass dma_slave_config to dw_edma_device_transfer()
+> > > >       nvmet: pci-epf: Remove unnecessary dmaengine_terminate_sync() on each DMA transfer
+> > > >       nvmet: pci-epf: Use dmaengine_prep_slave_single_config() API
+> > > >       PCI: epf-mhi:Using new API dmaengine_prep_slave_single_config() to simple code.
+> > > >       crypto: atmel: Use dmaengine_prep_slave_single_config() API
+> > > >
+> > > >  drivers/crypto/atmel-aes.c                    | 10 ++---
+> > > >  drivers/dma/dw-edma/dw-edma-core.c            | 38 +++++++++++-----
+> > > >  drivers/nvme/target/pci-epf.c                 | 21 +++------
+> > > >  drivers/pci/endpoint/functions/pci-epf-mhi.c  | 52 +++++++---------------
+> > > >  drivers/pci/endpoint/functions/pci-epf-test.c |  8 +---
+> > > >  include/linux/dmaengine.h                     | 64 ++++++++++++++++++++++++---
+> > > >  6 files changed, 111 insertions(+), 82 deletions(-)
+> > > > ---
+> > > > base-commit: bc04acf4aeca588496124a6cf54bfce3db327039
+> > > > change-id: 20251204-dma_prep_config-654170d245a2
+> > > >
+> > > > Best regards,
+> > > > --
+> > > > Frank Li <Frank.Li@nxp.com>
+> > >
+> > > --
+> > > ~Vinod
+>
+> --
+> ~Vinod
