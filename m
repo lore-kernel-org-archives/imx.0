@@ -1,292 +1,179 @@
-Received: from mx-relay15-hz2.antispameurope.com (mx-relay15-hz2.antispameurope.com [83.246.65.157])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010054.outbound.protection.outlook.com [52.101.84.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D4031AF1E
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 07:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=83.246.65.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBA2338922
+	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 07:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765870511; cv=pass; b=Apl5ACLK44msukoLRkK+XtRjTjYQUa2ct0UaLKhJrndym0oKX8KLP+lqQYQ+nPU+j6qJHPAV/Txc/Bs2h0Sc+hJWiIQk2JsfBHIypASbGuxmierdcXbDy50Sy5yA+ZhwtziPaAdg5TgGrkiw2z2ETp5Z0VK4+nzbW4d8Ipjeb44=
+	t=1765871024; cv=fail; b=rrripgXsOtURu3g2ifs3CodSquj/hV3qmpLKlIrLN8pDh8WcmEXgAHoDyyo7dSO7z8OMYjP/jinib2nRM3OrHqnpgShWtezuB0/qcCyZwKEdowkYJ9zf+S92aG7k21nZUqIUvdeNq6TNCDKTtRsXITabr0DkF1gLWCZv4/fKoAs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765870511; c=relaxed/simple;
-	bh=PwBMFTRq5i7V5ZlojUAF1zeR8S0ddqiksW6YEBKcrdQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d8c2HWONxgIwWEOyFTpYErwpW/YCYu2YbecUPTM8YKsi+pjDuHn+tWwaRKgQRg8E+sNbPpZ41w6nUibHEFh4ghD2xbRXX+zqVH/9ODPdOtvd7i1INkc59up8diuVHUnSRDbg4Z59uS2Ll3o2lXlMeRqQQv/lkuP9axf1Vzs6iv4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=cVdHM23u; arc=pass smtp.client-ip=83.246.65.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1765871024; c=relaxed/simple;
+	bh=HB9/EtFElU3QVxQNRt6Yp+4kz1ChrPRFW11o4d09XCc=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=EHnRMzly/o0OqHG1rtOcV4cjwmQwxAlTUS6/fpE+DpgxxHHxGomjBNHpa/NL4hGH9iA/brvhjTTOPrMuNRucVWWC8bOfsgZvuZ1l1sFcJMfcCEt90HlGYUzF4HOYWJsy9FM5E9PeMaLcoZDXP/w/rhry3s/51Qp4hy4nOX9Kt+g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Qs6TGmL2; arc=fail smtp.client-ip=52.101.84.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="cVdHM23u"
-ARC-Authentication-Results: i=1; mx-gate15-hz2.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com
- smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
- header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=cXefL1483wNE2cHUN0ZgrldQvbgj+w+ETemoOKVrBJs=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1765870465;
- b=J/ULwRKOAAcKvBdlzhdd1fxYCR+Kbla11Jp/HVaRksr26egZQ87GmZkR96ernJCPer8lZG7W
- nJB334DkjugBTFPBy0L1ubkhd0LrODvtBi3hv7jLo5KLXTIAROdXyEdJZX6e63ih0N/qp0HgNKP
- /c5FZGA0wBTxbn9UlooHZGTn06l8h7tv3NOm9deocbAg1tmnPQB2GclTTLH03GccKv9P491NRhf
- qy2h5m8h0FxXFFWV6b9do11zv8YgohgKd2ijHprBqU0CIcYls7hJcf4drkUV3bnodS+PFCtraEF
- /k4hDs/quDLab0fC+fjjjJhPqt+DimQfnxTB6ccO0jHAA==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1765870465;
- b=sMiVHwalHFvD/Q/QqlQkhSyyUzu8iXcefL5+2K1yrJ7il/LmREi8FoMFzTD1biQIhWPz5u+j
- Ynn7ydRpwP3A7YCexAmljlE9M/NTj41xCcaQRFhgAZuBUAAP0tn/T3QkqClzC5RBfBjz55f3wNZ
- E1KBti5MRJ0fb3AtkJZyDdBaPOuS8oNFh9CjubccuFMuVzuCJVcfbu1ENdSAzGsinnPkf3MInhw
- mJaWkCYo28rfGqwCXftdd31P2Qw+dhaYTYBRa18TfkOTNVCTMm9Sc1MtPAE5wEurXxdhf8xFlnN
- HNoO2RW+evSaBZTFq3D7GRUIf6KGF0Eh7wFI+PVrBqngw==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay15-hz2.antispameurope.com;
- Tue, 16 Dec 2025 08:34:25 +0100
-Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 85EA2220CD2;
-	Tue, 16 Dec 2025 08:34:18 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Philipp Zabel <p.zabel@pengutronix.de>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rui Miguel Silva <rmfrfs@gmail.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Martin Kepplinger-Novakovic <martink@posteo.de>,
- Purism Kernel Team <kernel@puri.sm>, linux-arm-kernel@lists.infradead.org
-Cc: linux-media@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Frank Li <Frank.Li@nxp.com>, Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v3 2/5] media: nxp: use dev_err_probe() to simplify code
-Date: Tue, 16 Dec 2025 08:34:18 +0100
-Message-ID: <5462566.31r3eYUQgx@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20251215-cam_cleanup-v3-2-a61995068f38@nxp.com>
-References:
- <20251215-cam_cleanup-v3-0-a61995068f38@nxp.com>
- <20251215-cam_cleanup-v3-2-a61995068f38@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Qs6TGmL2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nd3pFv9rMwQ/JKXFq7APSetI+z49X412KJY/UNoX9mJWZvZV8FJpwVu/M/bSt/5kjeDB8KxdD5Ds6wvqyftVX/4yXJhJQIHf4pdPhOpmVJiG2s0ycriGjFzr7oglVXvC7F/a2BiLmItMeLuDpLm1gDuxE6CfELCPsIyyHtNnXlKw8BnILAcFtq3foPKM8pfexsBAvBU22qWKYvFvxQDZe9fn0v1DGrQT9PdbTY7VB2eaHA+dElmJQdOCMJx5NlemdR1Ou/tBU9S3mrqHejezClaSckXaXu6xvvtjR5N3GLjI11qUomeh3vMQS6CAf0XNx+Sov/GbZzAqtNSekRGw9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=n9q2wg+KDn1rSPE8Xkm4ICVuHhYr+oJS5uq1KZpxBfI=;
+ b=imY+jLYePdfMu7EMtAHWr5r98+WrX0rrksdn8APWKbKNwVRj2eElpi7ZqxCdVxtAepv/Q1DV7YzP8ll7rhmugq1XMNqUnl1w4Ia87tDheTrCY7hnSWf0tTmaRi3DEHNccTenhBKPDZW1zbHjDl91RM668IyZ0nRSjSkbUwU5l3ksSvP4EEoIqLzJT9aR0K0hJySQegtFr2nklp461OLqT6WyicKHOS6GlnzQ73g8S6+6aUTvuHbGZo7wtQRKBhVI7C2w1zd4MOKPqTtOFc7zGAVotquViWmdF/cXUky1TQ/rO1z+lSXIqysWzWZ2F3FimG4HD3BVWg1K3WreQU629Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=n9q2wg+KDn1rSPE8Xkm4ICVuHhYr+oJS5uq1KZpxBfI=;
+ b=Qs6TGmL2sl/Hp71VGkXkjo/1L7RTqhrNfoAixquura4NM3Wrg4toCvm/NpCf22rO45otiaf6ffxkp4hfGfDiv3d12pRDYDCuUCIuQZ/OlGOsjaodSGGp8cvNWJg2hu+U0Vkjq69HzDlUEhfI+h3sTS5lb45GMWY/Fx6TOMkE9mlAC9/3+E+GKOJW5Pm0wEMf+0Lxk2U7aRLlznC9tzKMBi5fx78Tg9VKK0WK6SwAGC1Z4kYHg7t0gyLyAyySTFtdmSUSMsnPCNPZUKvF+9AG0rwryBiTuBG4elUvmczazrdK+dpNP9GLoP8xX8aI3tvBCW1zRK0A99H53rBRGujeSA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
+ by DU6PR04MB11135.eurprd04.prod.outlook.com (2603:10a6:10:5c3::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Tue, 16 Dec
+ 2025 07:43:39 +0000
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::bab2:d15c:fcf8:ef2b]) by AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::bab2:d15c:fcf8:ef2b%7]) with mapi id 15.20.9412.011; Tue, 16 Dec 2025
+ 07:43:39 +0000
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: andersson@kernel.org,
+	mathieu.poirier@linaro.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	daniel.baluta@nxp.com,
+	linux-remoteproc@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] remoteproc: imx_dsp_rproc: only reset carveout memory at RPROC_OFFLINE state
+Date: Tue, 16 Dec 2025 15:42:16 +0800
+Message-Id: <20251216074216.447193-1-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR04CA0015.apcprd04.prod.outlook.com
+ (2603:1096:4:197::21) To AM0PR04MB7044.eurprd04.prod.outlook.com
+ (2603:10a6:208:191::20)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart5099229.LvFx2qVVIh";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay15-hz2.antispameurope.com with 4dVpbH2fBmz2FbCB
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:cb77c3a0d9b6a7fc0c8e18a2ac2881b9
-X-cloud-security:scantime:1.811
-DKIM-Signature: a=rsa-sha256;
- bh=cXefL1483wNE2cHUN0ZgrldQvbgj+w+ETemoOKVrBJs=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1765870465; v=1;
- b=cVdHM23uojls5GYeyKqxXwQRRn3j6qhOZ0vdjDoolW2T4thYm91A+SlnOcYfq69nnJCepNp0
- fAhmu9XXvNp+hye6ZH3rkPKGhW87hoXsxTtKnrAlCcrkIah7+xC0MSuM0eMN12R8jMsaPIwcJM4
- dIPKWlYC5LZ5NQCbucdmveoJykSsogkiuOCYerJaAF5i5I+DJSmYDaFpSVtxAPhjwqv/cehRubT
- lQCdZndmXnyd/AjGJ/fCfSZFT7WwjuWezjSG0txUSAnUlppmdGYRYWkaUAbrSClVdk5qHWzLQdn
- 7lgBW2kZcBV+kQErviFbhbyrTTY3yQ+ijVbYDTfgjUhXg==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|DU6PR04MB11135:EE_
+X-MS-Office365-Filtering-Correlation-Id: 171d6e59-0232-47b5-8433-08de3c76d3a7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|52116014|1800799024|19092799006|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?pj492inUgDhkBCA14FMSKnOryexsEkZCcD/c+orHU5Kei0qXS9+p4nANZdu/?=
+ =?us-ascii?Q?w+vwaoKGGgtkPI3S3Nmxb11UMOqIY4OMpPIjXjG8PgzceVAwi9OHCIchEqt0?=
+ =?us-ascii?Q?M0cHyqTLKIolQOtQNfiqIhPqG/9Gx3A+3qBVGjafstiLRCs52DNb4CGNINNm?=
+ =?us-ascii?Q?dT4ei4N7UiUrYCpxPXWo2YDYM2wZ6PQMcdE+Y6Zx8Srp2LVrGVpEm14nvTyi?=
+ =?us-ascii?Q?1jOy+Qe6/mZyxcOXPSfljZUaPHcCyQp6NpUU9MMS08od3FlLpfNF+4aOauyI?=
+ =?us-ascii?Q?CB6vlLBuGjIhNKgLx5nRfD1MJcG0cFH+0nRbuBDVsDwPJinRuh5bnnic/r+l?=
+ =?us-ascii?Q?MPX2D7p6gloF4oOUGxkQYX4rr6i8C7Ml0RMTfdLeLx5Xdd4JW4YOaNooZLh5?=
+ =?us-ascii?Q?tQydFc3TjRxkfRo/PrK85EzLfUHfL4vCaa6iaGySjts8Mhez8+XybMKvpF/a?=
+ =?us-ascii?Q?tv6mPywYLUUJdamILrdaoenMBU2/LrnPBBNiYYblIoo3jBtmTGvpnwZvbeSz?=
+ =?us-ascii?Q?TokgK1e5Ndx/A7O/jjOWBjRA3GJSYYFyCwV0xm5hBKN0O87D4vPoxjL8plQ1?=
+ =?us-ascii?Q?mAKhE8hXueOukKWxQOQ6OgWaBOPOcyEGYtFOi4GS+A/Ml05CrMAZb9lrFC+e?=
+ =?us-ascii?Q?+GP4WHRckr8ULZ3fMv6xvcCKKXUQyJTL5cH9jyrh5pUBe+8zrB9BjefwwMx2?=
+ =?us-ascii?Q?JDRoHq5B3eB2hWWqe3TkKScvF0bIS7Yf6QLu+Pp+g5ylrgmRL5yIfeLfIETw?=
+ =?us-ascii?Q?Nr62Yba5Rn/4LVUlv79Iw1oJfBJodATzQ0d1buQbEUXFCJuF46gI9TgLGA3C?=
+ =?us-ascii?Q?zJCSCfNnS0QD/RgxUhpkZyOrsz+18fXeJK23aSGJ1aRsWrY+6PTgSh2b1XXg?=
+ =?us-ascii?Q?RalxuV+hfp295YhLg5wbwYYcgcaGKKg/04naQVNndbe6c4kJv3yR0K5jStsN?=
+ =?us-ascii?Q?aNclWllHENDI8neYPHCnmT+o/OFNSh9OgNatvL1ktIXYOC+8UuNCuYkNn6DC?=
+ =?us-ascii?Q?tDzWXaL1H+BT04bvPa8GrCNn0PsMarC1+xCZFFkLj083gqXoSfrLgzhVoLy3?=
+ =?us-ascii?Q?ODmAvsV/sDXv/GDkBjmnxGtbfj0WVH6CQCupPxtKIjknC51gTfTZxYhX2DsD?=
+ =?us-ascii?Q?iEzkoW9N355ojV2U/RHkorpV9bWZM3xO8vMZIuwS36JD70nwTgz/EPQMAedC?=
+ =?us-ascii?Q?pvyToHbNNfvpqOeBusr8iANh3pwsDdPDJhLoc34/l9t6XxdYksQtZ9K/+ETp?=
+ =?us-ascii?Q?3XNiVc2t1I+TOoF+Zf2zQAmyAUoU3elCSgQu254GiQ/+SogS9PqvzykWpKnr?=
+ =?us-ascii?Q?WTjlo6K+anip82THPJq70H300PSq/V/BzFg57JSM/SvsEsAMi3Stzu011BnF?=
+ =?us-ascii?Q?zmOcfpLso8DjqKLik4/T30AaasddR4XTdCkSC9nPqpuTmjH4txUohkKoP8oi?=
+ =?us-ascii?Q?ecf/TGjYL4A4+ZkavsqEvM1WDJoOndOsP1WqTOFF6+qYXYBBApj8Zb/vKjTj?=
+ =?us-ascii?Q?VoGVENzmcuzLfTKDADursQ/J5kL/CbdqNbppEYsmNKhsMCCY2SY+ANyplw?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(52116014)(1800799024)(19092799006)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?9BAk698esu3K7m4m832Mp29naIT7+eWto9FkXT+oI80aCvR5dwyEGk2tTizn?=
+ =?us-ascii?Q?lW4+klzr81ujYnUxkNBv0TQcf2tzOYJzRmrOq2fzzc5Yz3OdWi6kRO5dxf5N?=
+ =?us-ascii?Q?+/GL+Ih2KCnbZ2cs/tKdVo9SM6b7PdVplFvDSi+4bxLegwFMusluZ5vC6EeO?=
+ =?us-ascii?Q?/CE1iUYjdXmylipXWm7Kl3cazx7tE6uhCZvaNSg1XIh372rOsELsrFWyioQP?=
+ =?us-ascii?Q?x2YRiszvD3rMwzBL/ZkAdORn6vNh4i9SrjMWpxV4wVtMXz5re3+hsFPXQBiV?=
+ =?us-ascii?Q?OUJJeyKnXXs8YShIVdUn2y5E1A7CqiU3dzYtl+e4ITrWnJBg0Z2Yt9Z9mCeO?=
+ =?us-ascii?Q?1nwT3Ap/OutXDKjsNv68Hu4y3nHsyvmt9LUbaUH11US+tOlq6XAX/mmBe74F?=
+ =?us-ascii?Q?NPU76zOoaUaDMWWkBVNZTn5HGedm0QxZeq2LXDNafIbmdKMO3FhORR0HhhK2?=
+ =?us-ascii?Q?gTYPMSL8Vwe09+aRLplRg/mKtODKVA6MLTFJRPEl5KLpCAID+yC6THe7mixe?=
+ =?us-ascii?Q?WYK4J9y7WUTaezKFFzXOuxiZYe0CANTFd5o1tXMKnp9qcbwYJS22icNB+6MH?=
+ =?us-ascii?Q?gbXNWx5Rn51OM2cCTqnjhh+kCve4KfEJ2ItZr+/aifTLZXVRy9bOBhj131CE?=
+ =?us-ascii?Q?44fHg8dZHJ4hEUcaqqaJNu0o7GMpWLkh+0blHi9S0MmZea9lvHeS37b1e1H5?=
+ =?us-ascii?Q?mQo/euLLU8Umzw4oQxwkB3SWpgY3JZzFpuRK8Gz/5IdcsI1DodWySETUUtff?=
+ =?us-ascii?Q?TiCVG0Cun8gECBzPa1aNa1gkXG+wvTjkEpFLgVKENYIEHFktRNgW2LAXMIK6?=
+ =?us-ascii?Q?h4/LlYjKXzfPWiVTbPm5uxmhXCn8mxjV91fdwy2YS9RFUvLMmEnD5tiBYn3C?=
+ =?us-ascii?Q?V10Z4ew1Khnun96FUlUYMWKIOBV9zQCnSkmLMh4VHUzDNvxa6mnObZT/ZimQ?=
+ =?us-ascii?Q?X1RxnNSBHjv3EPQXwTaqHSZ8r837TDkePi7nSB1G9KCjZzzFXA8QKzFEqGvM?=
+ =?us-ascii?Q?LFtZzeF7+hSu6tQmlT0NTkQX4DR+gdRaIa8lJbeXJyld6dMnStqi/7gcjT25?=
+ =?us-ascii?Q?HrM17KX6tRySV0SI7mwucPFkyapgXl0bIInCWx3NFls0oqcqFQw0syo9Aj9o?=
+ =?us-ascii?Q?Uf4IC2B0T1qCMwBsFKYuo4ZwnWzNXjKCqHWL3e9L4qtGuCnsCLR2xtPCEJ9e?=
+ =?us-ascii?Q?2s5JrhDzjB9Ts7JS0/y3X2Vlzi0nYzMLBx0vOPgzIPgzuNb6Nw8qsBgMnC/7?=
+ =?us-ascii?Q?JKYIu9Xvni3Zw+PXN1uptXhXvIvayXDG6Rck0SRLbZSrRAuWUF9uBm9k63Ba?=
+ =?us-ascii?Q?mC/+hWWbm9cpt7L33bCq19Riex/y3DWPGr2hTI0Mbp32dRThvScTDuonWrFs?=
+ =?us-ascii?Q?V9hSEeookLFazG8xMfsDhhLmW9RmNh1am9VzYoTDmNDVfafl8Xd9WqPjF0KE?=
+ =?us-ascii?Q?q7WVe5Bw7015+tR1ZRkvr61iWiVIaS0moWj0gGPKdL6vJkrHGh4ao8GSARtO?=
+ =?us-ascii?Q?FiIXZmKmTXKdughowJpuugDt5DHwoBR6oT3/VX0+y44D3LuYRK+tvhvy/FcJ?=
+ =?us-ascii?Q?0+lhP7Gv9PR8nDeg+K0iCMgKAnuQfHF4/98K+PuD?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 171d6e59-0232-47b5-8433-08de3c76d3a7
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Dec 2025 07:43:39.1178
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XJEcLhPHQ0HTUgs9z9KZmffmby+CfHYmEeq0kp6L+/X5zaALa3XFbTOblvt1G6Hyh/UnU5EMQQndJfNuYLgzjg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU6PR04MB11135
 
---nextPart5099229.LvFx2qVVIh
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-Date: Tue, 16 Dec 2025 08:34:18 +0100
-Message-ID: <5462566.31r3eYUQgx@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20251215-cam_cleanup-v3-2-a61995068f38@nxp.com>
-MIME-Version: 1.0
+Don't need to reset memory at suspend and resume stage, because some
+memory is used to save the software state for resume, if it is cleared,
+the resume operation can fail.
 
-Hi,
+Fixes: c4c432dfb00f ("remoteproc: imx_dsp_rproc: Add support of recovery and coredump process")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ drivers/remoteproc/imx_dsp_rproc.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-Am Montag, 15. Dezember 2025, 23:49:53 CET schrieb Frank Li:
-> Use dev_err_probe() to simplify the code. Drop the explicit error message
-> after returning from imx8mq_mipi_csi_parse_dt(), as the error is already
-> reported by this helper.
->=20
-> No functional change.
->=20
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> change in v2:
-> - add  Laurent Pinchart review tags
-> - wrap error message to new line
-> - remove error code print in dev_err_probe();
-> - drop error messaage at imx8mq_mipi_csi_parse_dt()
-> ---
->  drivers/media/platform/nxp/imx-mipi-csis.c    |  6 ++---
->  drivers/media/platform/nxp/imx7-media-csi.c   | 14 ++++--------
->  drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 33 ++++++++++++---------=
-=2D-----
->  3 files changed, 21 insertions(+), 32 deletions(-)
->=20
-> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/p=
-latform/nxp/imx-mipi-csis.c
-> index 088b2945aee33731c565f049dd17721356300b84..ce93d868746f002c22e2f86b1=
-e0aa84ec1a76061 100644
-> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> @@ -1547,10 +1547,8 @@ static int mipi_csis_probe(struct platform_device =
-*pdev)
->  	/* Now that the hardware is initialized, request the interrupt. */
->  	ret =3D devm_request_irq(dev, irq, mipi_csis_irq_handler, 0,
->  			       dev_name(dev), csis);
-> -	if (ret) {
-> -		dev_err(dev, "Interrupt request failed\n");
-> -		return ret;
-> -	}
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Interrupt request failed\n");
-> =20
->  	/* Initialize and register the subdev. */
->  	ret =3D mipi_csis_subdev_init(csis);
-> diff --git a/drivers/media/platform/nxp/imx7-media-csi.c b/drivers/media/=
-platform/nxp/imx7-media-csi.c
-> index 933a5f39f9f4c9b43ca8d2a1819d0145981266e6..7ddc7ba06e3d4e007013821f6=
-7d783898a15461f 100644
-> --- a/drivers/media/platform/nxp/imx7-media-csi.c
-> +++ b/drivers/media/platform/nxp/imx7-media-csi.c
-> @@ -2218,11 +2218,9 @@ static int imx7_csi_probe(struct platform_device *=
-pdev)
-> =20
->  	/* Acquire resources and install interrupt handler. */
->  	csi->mclk =3D devm_clk_get(&pdev->dev, "mclk");
-> -	if (IS_ERR(csi->mclk)) {
-> -		ret =3D PTR_ERR(csi->mclk);
-> -		dev_err(dev, "Failed to get mclk: %d", ret);
-> -		return ret;
-> -	}
-> +	if (IS_ERR(csi->mclk))
-> +		return dev_err_probe(dev, PTR_ERR(csi->mclk),
-> +				     "Failed to get mclk\n");
-> =20
->  	csi->irq =3D platform_get_irq(pdev, 0);
->  	if (csi->irq < 0)
-> @@ -2236,10 +2234,8 @@ static int imx7_csi_probe(struct platform_device *=
-pdev)
-> =20
->  	ret =3D devm_request_irq(dev, csi->irq, imx7_csi_irq_handler, 0, "csi",
->  			       (void *)csi);
-> -	if (ret < 0) {
-> -		dev_err(dev, "Request CSI IRQ failed.\n");
-> -		return ret;
-> -	}
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "Request CSI IRQ failed.\n");
-> =20
->  	/* Initialize all the media device infrastructure. */
->  	ret =3D imx7_csi_media_init(csi);
-> diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/medi=
-a/platform/nxp/imx8mq-mipi-csi2.c
-> index 0851f4a9ae52d3096f454da643cfdc5017e000b1..a007c582b4d91660a97910a6a=
-0d53c9b6fcd73e9 100644
-> --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> @@ -951,10 +951,9 @@ static int imx8mq_mipi_csi_parse_dt(struct csi_state=
- *state)
->  	int ret =3D 0;
-> =20
->  	state->rst =3D devm_reset_control_array_get_exclusive(dev);
-> -	if (IS_ERR(state->rst)) {
-> -		dev_err(dev, "Failed to get reset: %pe\n", state->rst);
-> -		return PTR_ERR(state->rst);
-> -	}
-> +	if (IS_ERR(state->rst))
-> +		return dev_err_probe(dev, PTR_ERR(state->rst),
-> +				     "Failed to get reset\n");
-> =20
->  	if (state->pdata->use_reg_csr) {
->  		const struct regmap_config regmap_config =3D {
-> @@ -977,24 +976,22 @@ static int imx8mq_mipi_csi_parse_dt(struct csi_stat=
-e *state)
-> =20
->  	ret =3D of_property_read_u32_array(np, "fsl,mipi-phy-gpr", out_val,
->  					 ARRAY_SIZE(out_val));
-> -	if (ret) {
-> -		dev_err(dev, "no fsl,mipi-phy-gpr property found: %d\n", ret);
-> -		return ret;
-> -	}
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "no %s property found\n",
-> +				    "fsl,mipi-phy-gpr");
-
-Do you really need to pass the (fixed) property name as an argument? Why
-not move into the const string directly? I would also rephrase it a bit:
-"property fsl,mipi-phy-gpr not found"
-
-With that fixed:
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-
-> =20
->  	ph =3D *out_val;
-> =20
->  	node =3D of_find_node_by_phandle(ph);
-> -	if (!node) {
-> -		dev_err(dev, "Error finding node by phandle\n");
-> -		return -ENODEV;
-> -	}
-> +	if (!node)
-> +		return dev_err_probe(dev, -ENODEV,
-> +				     "Error finding node by phandle\n");
-> +
->  	state->phy_gpr =3D syscon_node_to_regmap(node);
->  	of_node_put(node);
-> -	if (IS_ERR(state->phy_gpr)) {
-> -		dev_err(dev, "failed to get gpr regmap: %pe\n", state->phy_gpr);
-> -		return PTR_ERR(state->phy_gpr);
-> -	}
-> +	if (IS_ERR(state->phy_gpr))
-> +		return dev_err_probe(dev, PTR_ERR(state->phy_gpr),
-> +				     "failed to get gpr regmap\n");
-> =20
->  	state->phy_gpr_reg =3D out_val[1];
->  	dev_dbg(dev, "phy gpr register set to 0x%x\n", state->phy_gpr_reg);
-> @@ -1017,10 +1014,8 @@ static int imx8mq_mipi_csi_probe(struct platform_d=
-evice *pdev)
->  	state->pdata =3D of_device_get_match_data(dev);
-> =20
->  	ret =3D imx8mq_mipi_csi_parse_dt(state);
-> -	if (ret < 0) {
-> -		dev_err(dev, "Failed to parse device tree: %d\n", ret);
-> +	if (ret < 0)
->  		return ret;
-> -	}
-> =20
->  	/* Acquire resources. */
->  	state->regs =3D devm_platform_ioremap_resource(pdev, 0);
->=20
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
---nextPart5099229.LvFx2qVVIh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEByESxqszIvkmWRwbaS+g2M0Z/iUFAmlBC3oACgkQaS+g2M0Z
-/iXBPAgAuns0Z/5M2rvJGyTchlUPlwCRo6k9vA9+ZnlRFiJOs6b6lgs0XyCE+siX
-wo9qiDnRgE0CkdZZrNXrxJKbr7ut2PZakYm4MZDTiL9VOUr8zAC63SHyHAIIpT6Z
-SCY7qC6hkK75ednfn/W0VM3189TDkUtBNMPLxIx977BTqzGr5nbZLPmmj2vQE1v/
-6DNNvRQEAXa31cNb08y9YW/bVgjVrXC0GCkjqEVL+Dc0H7510ATimhT+gaqBi8C5
-48CX8FiEzYRziUz6/kesCcMcuvYYamQGymDrGiiY9nmSRlZ2fWXLKINIbDy2J9Gj
-IKjmNRD8rkVPtmZMYConvQVie4Tf7A==
-=Wdrp
------END PGP SIGNATURE-----
-
---nextPart5099229.LvFx2qVVIh--
-
-
+diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+index d03017d6b214..ac8aa71aa56c 100644
+--- a/drivers/remoteproc/imx_dsp_rproc.c
++++ b/drivers/remoteproc/imx_dsp_rproc.c
+@@ -984,9 +984,11 @@ static int imx_dsp_rproc_load(struct rproc *rproc, const struct firmware *fw)
+ 	 * Clear buffers after pm rumtime for internal ocram is not
+ 	 * accessible if power and clock are not enabled.
+ 	 */
+-	list_for_each_entry(carveout, &rproc->carveouts, node) {
+-		if (carveout->va)
+-			memset(carveout->va, 0, carveout->len);
++	if (rproc->state == RPROC_OFFLINE) {
++		list_for_each_entry(carveout, &rproc->carveouts, node) {
++			if (carveout->va)
++				memset(carveout->va, 0, carveout->len);
++		}
+ 	}
+ 
+ 	ret = imx_dsp_rproc_elf_load_segments(rproc, fw);
+-- 
+2.34.1
 
