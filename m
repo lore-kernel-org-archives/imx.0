@@ -1,83 +1,75 @@
-Received: from mx-relay100-hz2.antispameurope.com (mx-relay100-hz2.antispameurope.com [94.100.136.201])
+Received: from mx-relay15-hz2.antispameurope.com (mx-relay15-hz2.antispameurope.com [83.246.65.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351B92BEC55
-	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 07:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D4031AF1E
+	for <imx@lists.linux.dev>; Tue, 16 Dec 2025 07:35:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=83.246.65.157
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765870272; cv=pass; b=nckZrk75/RTgyBZNJj/ls/ndq+0OzMJTawXkPshyKe6xMk07zjKgRezBdvotTeoNtZb8HUSXygcJ+1/UKALI5YhQtqFsJnrE5qgd0k+O6vkWtWr6EroqGRFNkDlLy7kAjEv/yVjuZjFwk4mlG/Vu2BYmm3jdk9g6/Pblzn+1DLw=
+	t=1765870511; cv=pass; b=Apl5ACLK44msukoLRkK+XtRjTjYQUa2ct0UaLKhJrndym0oKX8KLP+lqQYQ+nPU+j6qJHPAV/Txc/Bs2h0Sc+hJWiIQk2JsfBHIypASbGuxmierdcXbDy50Sy5yA+ZhwtziPaAdg5TgGrkiw2z2ETp5Z0VK4+nzbW4d8Ipjeb44=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765870272; c=relaxed/simple;
-	bh=p0SwWhsPnYB5QVMPW4Gk+n+l4avtLhr+WAXnjOMOQDE=;
+	s=arc-20240116; t=1765870511; c=relaxed/simple;
+	bh=PwBMFTRq5i7V5ZlojUAF1zeR8S0ddqiksW6YEBKcrdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QzO9tAk8ZICJKU86PzoWyrSC+spLdZUwsJFiceOqcaOL5lmxrY6/J5AFKpyE2MrOqOYsFbTfwwejvOqAQviGAnl/Vpb/NWCpM8gwAqIFOTSKoAfB6AZVyZjN6a29YecnPm281OHJ2ZYJKCbdF5w7gse3u3QsJQsLp5SS+La8hW8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=CJIFgXxv; arc=pass smtp.client-ip=94.100.136.201
+	 MIME-Version:Content-Type; b=d8c2HWONxgIwWEOyFTpYErwpW/YCYu2YbecUPTM8YKsi+pjDuHn+tWwaRKgQRg8E+sNbPpZ41w6nUibHEFh4ghD2xbRXX+zqVH/9ODPdOtvd7i1INkc59up8diuVHUnSRDbg4Z59uS2Ll3o2lXlMeRqQQv/lkuP9axf1Vzs6iv4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=cVdHM23u; arc=pass smtp.client-ip=83.246.65.157
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="CJIFgXxv"
-ARC-Authentication-Results: i=1; mx-gate100-hz2.hornetsecurity.com 1;
- spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="cVdHM23u"
+ARC-Authentication-Results: i=1; mx-gate15-hz2.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
  smtp.mailfrom=ew.tq-group.com
- smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
+ smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
  header.from=ew.tq-group.com orig.disposition=pass
 ARC-Message-Signature: a=rsa-sha256;
- bh=2pyJv45tDjDKywJWeYp3I9ulqUEPqCbg6pglbJWo3s8=; c=relaxed/relaxed;
+ bh=cXefL1483wNE2cHUN0ZgrldQvbgj+w+ETemoOKVrBJs=; c=relaxed/relaxed;
  d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1765870187;
- b=sPqBrVAGEZlzKBkoIwzTXJ0GCb3jRzJO+6CROrztvqGnaESk+aTITboZLGEDsttJI43SOZDK
- ic0OqvauBsTYK0k0DGHcW82Z3Wvy7CcCTnyJ8lWVfX5BE3pb8iXdYaCOp5/k7kjqHjkPqgqXSvk
- e7POcHtjKkq+stlkbRSsEWh6Za3e7SbehBumXvZblArCZCt1104ccy9tP/u79XJk1dNswFY3C2A
- Pk3e5QRKjWmt1A8NXBuLld+R7VWhveSgFVRCeWu/TZjTJQ3b40anePiNEStM7SC7fEhXNEUvcn0
- QW6i7EfkVB+yfsixGmHI7F8mUcr8xDxHLDTZwKgS3+8Cg==
+ t=1765870465;
+ b=J/ULwRKOAAcKvBdlzhdd1fxYCR+Kbla11Jp/HVaRksr26egZQ87GmZkR96ernJCPer8lZG7W
+ nJB334DkjugBTFPBy0L1ubkhd0LrODvtBi3hv7jLo5KLXTIAROdXyEdJZX6e63ih0N/qp0HgNKP
+ /c5FZGA0wBTxbn9UlooHZGTn06l8h7tv3NOm9deocbAg1tmnPQB2GclTTLH03GccKv9P491NRhf
+ qy2h5m8h0FxXFFWV6b9do11zv8YgohgKd2ijHprBqU0CIcYls7hJcf4drkUV3bnodS+PFCtraEF
+ /k4hDs/quDLab0fC+fjjjJhPqt+DimQfnxTB6ccO0jHAA==
 ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1765870187;
- b=TMG5cMlziN52IU5hdafA5aBFIdHZhyalFlkzfr5j4FXlYraaecyU5EcFbL9F62PYpKi1i9ox
- ATjVkWgkuaUudDnaIclQqi8C4N6gA72juPj8cWd/4RP+Mdo+sSIryLndYcZlbsUpBnR78aeRqI3
- dcitBUG9s9sC8IKKVUcnLTkk9PUqKKT+J2qonFSpeueTcU/APYIztGn25T0xl6mAE+fFQic39zc
- LpRXsKaM1DPJtbso+9UGdFlLpxyzL+2/OFaZ8uloNjTsF/5LOaycx0oK7iZ0HVTg9LZG+r2N56L
- qRhTfTNR5nc4y0e6YuT8vLDsTCRZDZPO4N+M3+Dfjb1Qw==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay100-hz2.antispameurope.com;
- Tue, 16 Dec 2025 08:29:47 +0100
+ t=1765870465;
+ b=sMiVHwalHFvD/Q/QqlQkhSyyUzu8iXcefL5+2K1yrJ7il/LmREi8FoMFzTD1biQIhWPz5u+j
+ Ynn7ydRpwP3A7YCexAmljlE9M/NTj41xCcaQRFhgAZuBUAAP0tn/T3QkqClzC5RBfBjz55f3wNZ
+ E1KBti5MRJ0fb3AtkJZyDdBaPOuS8oNFh9CjubccuFMuVzuCJVcfbu1ENdSAzGsinnPkf3MInhw
+ mJaWkCYo28rfGqwCXftdd31P2Qw+dhaYTYBRa18TfkOTNVCTMm9Sc1MtPAE5wEurXxdhf8xFlnN
+ HNoO2RW+evSaBZTFq3D7GRUIf6KGF0Eh7wFI+PVrBqngw==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay15-hz2.antispameurope.com;
+ Tue, 16 Dec 2025 08:34:25 +0100
 Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
 	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 61240CC0DC8;
-	Tue, 16 Dec 2025 08:29:32 +0100 (CET)
+	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 85EA2220CD2;
+	Tue, 16 Dec 2025 08:34:18 +0100 (CET)
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+To: Philipp Zabel <p.zabel@pengutronix.de>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>,
  Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
+ Fabio Estevam <festevam@gmail.com>, Rui Miguel Silva <rmfrfs@gmail.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Martin Kepplinger-Novakovic <martink@posteo.de>,
+ Purism Kernel Team <kernel@puri.sm>, linux-arm-kernel@lists.infradead.org
+Cc: linux-media@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Marco Felsch <m.felsch@pengutronix.de>
-Subject:
- Re: [PATCH v7 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC subnode
- to schema and example
-Date: Tue, 16 Dec 2025 08:29:31 +0100
-Message-ID: <3210190.mvXUDI8C0e@steina-w>
+ Frank Li <Frank.Li@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v3 2/5] media: nxp: use dev_err_probe() to simplify code
+Date: Tue, 16 Dec 2025 08:34:18 +0100
+Message-ID: <5462566.31r3eYUQgx@steina-w>
 Organization: TQ-Systems GmbH
-In-Reply-To: <20251215175436.wwlgzxionq55zu27@pengutronix.de>
+In-Reply-To: <20251215-cam_cleanup-v3-2-a61995068f38@nxp.com>
 References:
- <20251202-v6-18-topic-imx93-parallel-display-v7-0-2cce31d64608@pengutronix.de>
- <705773fc-5aba-4bff-b05e-272e1cd0262c@nxp.com>
- <20251215175436.wwlgzxionq55zu27@pengutronix.de>
+ <20251215-cam_cleanup-v3-0-a61995068f38@nxp.com>
+ <20251215-cam_cleanup-v3-2-a61995068f38@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart13198926.O9o76ZdvQC";
+Content-Type: multipart/signed; boundary="nextPart5099229.LvFx2qVVIh";
  micalg="pgp-sha512"; protocol="application/pgp-signature"
 X-cloud-security-sender:alexander.stein@ew.tq-group.com
 X-cloud-security-recipient:imx@lists.linux.dev
@@ -85,153 +77,216 @@ X-cloud-security-crypt: load encryption module
 X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
 X-cloud-security-Mailarchivtype:outbound
 X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay100-hz2.antispameurope.com with 4dVpTn4rt4z3PJZL
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay15-hz2.antispameurope.com with 4dVpbH2fBmz2FbCB
 X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:7843bfe7f806661645c9883349bcb132
-X-cloud-security:scantime:2.036
+X-cloud-security-Digest:cb77c3a0d9b6a7fc0c8e18a2ac2881b9
+X-cloud-security:scantime:1.811
 DKIM-Signature: a=rsa-sha256;
- bh=2pyJv45tDjDKywJWeYp3I9ulqUEPqCbg6pglbJWo3s8=; c=relaxed/relaxed;
+ bh=cXefL1483wNE2cHUN0ZgrldQvbgj+w+ETemoOKVrBJs=; c=relaxed/relaxed;
  d=ew.tq-group.com;
  h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1765870187; v=1;
- b=CJIFgXxvAXP2DLs8EeBcrXanL3hXPn3EyoC1+Ylys+4bLKdMC76s3PFgoXDni7uzcz0k7UGh
- 0fOUUGFyA3rXy53IdrPZSC6zhrg448IaVOvBiKMuriyRoX5V6Bdt8I0o4nCZQn8MKI/+qv2ozSV
- 67TKZ4CW59Issb6+broLrGOl/SvzXdW230uEUmQjtZmxJ55TD+LF8wFar3Q246akaNaqhAbigpj
- Q2IaHBlxwP78+1ZzqHU/+RpwXdpBJBj/7Dt29k/fpyme0yy1KavbsnOaL870NQ455wDHs79RW5a
- QUUeR03+groFOtotX+NDVdVTONsN/ZMNLq2qGZ/4CiBsQ==
+ t=1765870465; v=1;
+ b=cVdHM23uojls5GYeyKqxXwQRRn3j6qhOZ0vdjDoolW2T4thYm91A+SlnOcYfq69nnJCepNp0
+ fAhmu9XXvNp+hye6ZH3rkPKGhW87hoXsxTtKnrAlCcrkIah7+xC0MSuM0eMN12R8jMsaPIwcJM4
+ dIPKWlYC5LZ5NQCbucdmveoJykSsogkiuOCYerJaAF5i5I+DJSmYDaFpSVtxAPhjwqv/cehRubT
+ lQCdZndmXnyd/AjGJ/fCfSZFT7WwjuWezjSG0txUSAnUlppmdGYRYWkaUAbrSClVdk5qHWzLQdn
+ 7lgBW2kZcBV+kQErviFbhbyrTTY3yQ+ijVbYDTfgjUhXg==
 
---nextPart13198926.O9o76ZdvQC
+--nextPart5099229.LvFx2qVVIh
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
 From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org
-Date: Tue, 16 Dec 2025 08:29:31 +0100
-Message-ID: <3210190.mvXUDI8C0e@steina-w>
+Date: Tue, 16 Dec 2025 08:34:18 +0100
+Message-ID: <5462566.31r3eYUQgx@steina-w>
 Organization: TQ-Systems GmbH
-In-Reply-To: <20251215175436.wwlgzxionq55zu27@pengutronix.de>
+In-Reply-To: <20251215-cam_cleanup-v3-2-a61995068f38@nxp.com>
 MIME-Version: 1.0
 
 Hi,
 
-Am Montag, 15. Dezember 2025, 18:54:36 CET schrieb Marco Felsch:
-> Hi Liu,
+Am Montag, 15. Dezember 2025, 23:49:53 CET schrieb Frank Li:
+> Use dev_err_probe() to simplify the code. Drop the explicit error message
+> after returning from imx8mq_mipi_csi_parse_dt(), as the error is already
+> reported by this helper.
 >=20
-> sorry I didn't fully answer you please see below.
+> No functional change.
 >=20
-> On 25-12-08, Liu Ying wrote:
-> > Hi Marco,
-> >=20
-> > On 12/02/2025, Marco Felsch wrote:
-> > > From: Liu Ying <victor.liu@nxp.com>
-> > >=20
-> > > i.MX93 SoC mediamix blk-ctrl contains one DISPLAY_MUX register which
-> > > configures parallel display format by using the "PARALLEL_DISP_FORMAT"
-> > > field. Document the Parallel Display Format Configuration(PDFC) subno=
-de
-> > > and add the subnode to example.
-> > >=20
-> > > Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> > > [m.felsch@pengutronix.de: port to v6.18-rc1]
-> > > [m.felsch@pengutronix.de: add bus-width]
-> > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > > ---
-> > >  .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml | 92 ++++++++++++=
-++++++++++
-> > >  1 file changed, 92 insertions(+)
-> > >=20
-> > > diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-medi=
-a-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media=
-=2Dblk-ctrl.yaml
-> > > index 34aea58094e55365a2f9c86092f637e533f954ff..6e2d86d9341c75108b492=
-bcbabc8a560d8e707cd 100644
-> > > --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-c=
-trl.yaml
-> > > +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-c=
-trl.yaml
-> > > @@ -26,6 +26,12 @@ properties:
-> > >    reg:
-> > >      maxItems: 1
+> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change in v2:
+> - add  Laurent Pinchart review tags
+> - wrap error message to new line
+> - remove error code print in dev_err_probe();
+> - drop error messaage at imx8mq_mipi_csi_parse_dt()
+> ---
+>  drivers/media/platform/nxp/imx-mipi-csis.c    |  6 ++---
+>  drivers/media/platform/nxp/imx7-media-csi.c   | 14 ++++--------
+>  drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 33 ++++++++++++---------=
+=2D-----
+>  3 files changed, 21 insertions(+), 32 deletions(-)
 >=20
-> ...
->=20
-> > > +            properties:
-> > > +              endpoint:
-> > > +                $ref: /schemas/graph.yaml#/$defs/endpoint-base
-> > > +                unevaluatedProperties: false
-> > > +
-> > > +                properties:
-> > > +                  bus-width:
-> >=20
-> > In v1-v5, I thought the output bus format can be determined by the sink
-> > device(a panel or a bridge) hence properties like bus-width were not ne=
-eded.
-> > But, if this property is really needed, then reference video-interfaces=
-=2Eyaml
-> > since bus-width is documented there.  Should we reference bus-type defi=
-ned
-> > in video-interfaces.yaml too?
->=20
-> You're right, the bus-width should be determined by the connected panel.
-> But there are cases where a 24-bit panel is connected but only the lower
-> 18-bits are muxed. I added the bus-width property to handle this case.
-> In the end most users don't have to specify this since the correct
-> bus-width is coming from the panel bus-fmt.
->=20
-> > > +                    enum: [ 16, 18, 24 ]
-> >=20
-> > The PARALLEL_DISP_FORMAT field of DISPLAY_MUX register says this IP sup=
-ports
-> > below formats.  It seems that the enum here may tell RGB888, RGB666 and=
- RGB565.
-> > How can we tell RGB555, YCbCr 24 bits and YUV444 then?
-> >=20
-> > 000b RGB888 -> RGB888
-> > 001b RGB888 -> RGB666
-> > 010b RGB565 -> RGB565
-> > 011b RGB555 -> RGB555
-> > 100b YUV -> YCbCr 24 bits
-> > 101b YUV -> YUV444
->=20
-> This enum is about the physical bus width. RGB565 =3D=3D 16-bit, YUV =3D=
-=3D
-> 24-bit.
->=20
-> That said, I don't think that you need to specify the bus-fmt since this
-> is coming from the panel. As said above, my itension with the bus-width
-> property is to provide integrators (dts-writers) a possibility to limit
-> the physical available bus width.
+> diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/p=
+latform/nxp/imx-mipi-csis.c
+> index 088b2945aee33731c565f049dd17721356300b84..ce93d868746f002c22e2f86b1=
+e0aa84ec1a76061 100644
+> --- a/drivers/media/platform/nxp/imx-mipi-csis.c
+> +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+> @@ -1547,10 +1547,8 @@ static int mipi_csis_probe(struct platform_device =
+*pdev)
+>  	/* Now that the hardware is initialized, request the interrupt. */
+>  	ret =3D devm_request_irq(dev, irq, mipi_csis_irq_handler, 0,
+>  			       dev_name(dev), csis);
+> -	if (ret) {
+> -		dev_err(dev, "Interrupt request failed\n");
+> -		return ret;
+> -	}
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Interrupt request failed\n");
+> =20
+>  	/* Initialize and register the subdev. */
+>  	ret =3D mipi_csis_subdev_init(csis);
+> diff --git a/drivers/media/platform/nxp/imx7-media-csi.c b/drivers/media/=
+platform/nxp/imx7-media-csi.c
+> index 933a5f39f9f4c9b43ca8d2a1819d0145981266e6..7ddc7ba06e3d4e007013821f6=
+7d783898a15461f 100644
+> --- a/drivers/media/platform/nxp/imx7-media-csi.c
+> +++ b/drivers/media/platform/nxp/imx7-media-csi.c
+> @@ -2218,11 +2218,9 @@ static int imx7_csi_probe(struct platform_device *=
+pdev)
+> =20
+>  	/* Acquire resources and install interrupt handler. */
+>  	csi->mclk =3D devm_clk_get(&pdev->dev, "mclk");
+> -	if (IS_ERR(csi->mclk)) {
+> -		ret =3D PTR_ERR(csi->mclk);
+> -		dev_err(dev, "Failed to get mclk: %d", ret);
+> -		return ret;
+> -	}
+> +	if (IS_ERR(csi->mclk))
+> +		return dev_err_probe(dev, PTR_ERR(csi->mclk),
+> +				     "Failed to get mclk\n");
+> =20
+>  	csi->irq =3D platform_get_irq(pdev, 0);
+>  	if (csi->irq < 0)
+> @@ -2236,10 +2234,8 @@ static int imx7_csi_probe(struct platform_device *=
+pdev)
+> =20
+>  	ret =3D devm_request_irq(dev, csi->irq, imx7_csi_irq_handler, 0, "csi",
+>  			       (void *)csi);
+> -	if (ret < 0) {
+> -		dev_err(dev, "Request CSI IRQ failed.\n");
+> -		return ret;
+> -	}
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "Request CSI IRQ failed.\n");
+> =20
+>  	/* Initialize all the media device infrastructure. */
+>  	ret =3D imx7_csi_media_init(csi);
+> diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/medi=
+a/platform/nxp/imx8mq-mipi-csi2.c
+> index 0851f4a9ae52d3096f454da643cfdc5017e000b1..a007c582b4d91660a97910a6a=
+0d53c9b6fcd73e9 100644
+> --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
+> @@ -951,10 +951,9 @@ static int imx8mq_mipi_csi_parse_dt(struct csi_state=
+ *state)
+>  	int ret =3D 0;
+> =20
+>  	state->rst =3D devm_reset_control_array_get_exclusive(dev);
+> -	if (IS_ERR(state->rst)) {
+> -		dev_err(dev, "Failed to get reset: %pe\n", state->rst);
+> -		return PTR_ERR(state->rst);
+> -	}
+> +	if (IS_ERR(state->rst))
+> +		return dev_err_probe(dev, PTR_ERR(state->rst),
+> +				     "Failed to get reset\n");
+> =20
+>  	if (state->pdata->use_reg_csr) {
+>  		const struct regmap_config regmap_config =3D {
+> @@ -977,24 +976,22 @@ static int imx8mq_mipi_csi_parse_dt(struct csi_stat=
+e *state)
+> =20
+>  	ret =3D of_property_read_u32_array(np, "fsl,mipi-phy-gpr", out_val,
+>  					 ARRAY_SIZE(out_val));
+> -	if (ret) {
+> -		dev_err(dev, "no fsl,mipi-phy-gpr property found: %d\n", ret);
+> -		return ret;
+> -	}
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "no %s property found\n",
+> +				    "fsl,mipi-phy-gpr");
 
-Mh, isn't [1] exactly about this? Not sure about the outcome at that time.
+Do you really need to pass the (fixed) property name as an argument? Why
+not move into the const string directly? I would also rephrase it a bit:
+"property fsl,mipi-phy-gpr not found"
 
-Best regards,
-Alexander
+With that fixed:
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[1] https://lore.kernel.org/all/20250304101530.969920-1-victor.liu@nxp.com/
+> =20
+>  	ph =3D *out_val;
+> =20
+>  	node =3D of_find_node_by_phandle(ph);
+> -	if (!node) {
+> -		dev_err(dev, "Error finding node by phandle\n");
+> -		return -ENODEV;
+> -	}
+> +	if (!node)
+> +		return dev_err_probe(dev, -ENODEV,
+> +				     "Error finding node by phandle\n");
+> +
+>  	state->phy_gpr =3D syscon_node_to_regmap(node);
+>  	of_node_put(node);
+> -	if (IS_ERR(state->phy_gpr)) {
+> -		dev_err(dev, "failed to get gpr regmap: %pe\n", state->phy_gpr);
+> -		return PTR_ERR(state->phy_gpr);
+> -	}
+> +	if (IS_ERR(state->phy_gpr))
+> +		return dev_err_probe(dev, PTR_ERR(state->phy_gpr),
+> +				     "failed to get gpr regmap\n");
+> =20
+>  	state->phy_gpr_reg =3D out_val[1];
+>  	dev_dbg(dev, "phy gpr register set to 0x%x\n", state->phy_gpr_reg);
+> @@ -1017,10 +1014,8 @@ static int imx8mq_mipi_csi_probe(struct platform_d=
+evice *pdev)
+>  	state->pdata =3D of_device_get_match_data(dev);
+> =20
+>  	ret =3D imx8mq_mipi_csi_parse_dt(state);
+> -	if (ret < 0) {
+> -		dev_err(dev, "Failed to parse device tree: %d\n", ret);
+> +	if (ret < 0)
+>  		return ret;
+> -	}
+> =20
+>  	/* Acquire resources. */
+>  	state->regs =3D devm_platform_ioremap_resource(pdev, 0);
+>=20
+>=20
 
-> [snip]
+
 =2D-=20
 TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
 Amtsgericht M=FCnchen, HRB 105018
 Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
 http://www.tq-group.com/
---nextPart13198926.O9o76ZdvQC
+--nextPart5099229.LvFx2qVVIh
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part.
 Content-Transfer-Encoding: 7Bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEByESxqszIvkmWRwbaS+g2M0Z/iUFAmlBClsACgkQaS+g2M0Z
-/iVQ0Qf8CUXPNQgjvninNpUlo9wHMSxcj70F/nwY4xnJ9mAHPkIcrl+Ye0RpxJvm
-HUghMQJsn8g5oW1mw3ihaOEFFyjI2Nmpn839jZzyuWZFCzy+6ZArWMnhjAmU3EK8
-axvxjC6n5kJ2/Dx3wih+X2Ub6IbwNIB01Xq368832yntOGHje3ucsFLNNV8RXaNH
-PRwXcgrJ0fSDoEZPC1Eh59z+2sRZbA8rdLxHP+tqq71jwpBaTJUCZDSUfO1ZgFy7
-LeiQPAchQ1p/gqgo9xvkM5pISy7hj0p/f1jRTroTT1VfHKsp4LDxb71VE/S+IKQU
-dYOr28lQ8IOXSDJuSIAYKAynFx8akw==
-=c8lD
+iQEzBAABCgAdFiEEByESxqszIvkmWRwbaS+g2M0Z/iUFAmlBC3oACgkQaS+g2M0Z
+/iXBPAgAuns0Z/5M2rvJGyTchlUPlwCRo6k9vA9+ZnlRFiJOs6b6lgs0XyCE+siX
+wo9qiDnRgE0CkdZZrNXrxJKbr7ut2PZakYm4MZDTiL9VOUr8zAC63SHyHAIIpT6Z
+SCY7qC6hkK75ednfn/W0VM3189TDkUtBNMPLxIx977BTqzGr5nbZLPmmj2vQE1v/
+6DNNvRQEAXa31cNb08y9YW/bVgjVrXC0GCkjqEVL+Dc0H7510ATimhT+gaqBi8C5
+48CX8FiEzYRziUz6/kesCcMcuvYYamQGymDrGiiY9nmSRlZ2fWXLKINIbDy2J9Gj
+IKjmNRD8rkVPtmZMYConvQVie4Tf7A==
+=Wdrp
 -----END PGP SIGNATURE-----
 
---nextPart13198926.O9o76ZdvQC--
+--nextPart5099229.LvFx2qVVIh--
 
 
 
