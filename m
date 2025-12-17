@@ -1,226 +1,224 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013031.outbound.protection.outlook.com [40.107.162.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAF3335556
-	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 12:13:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765973623; cv=fail; b=bpxjbwSjgihZP71/gM54fqoH3jXpKuNkNJqoz64t+VJOt/WzGaFr0kNfLgHmUps1J5OkS3jsGtSlI+KdlR/ktm+eyvGFx09Xw7tXmjBlvwukxTnr+kMFs6a4ZDrdqRaNNg27MEFQGbjNi9E5x5r9IF2eKnbsjJ5Kte33EEuiYOc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765973623; c=relaxed/simple;
-	bh=njNiwniHQPnjbQsK6SBumlk6bYMjK/x6VKuEL88vPK4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YQ5w6kilMO0ukjMVGyR18wm6pRlSyJm/zUUdTK7+kyfPt556xujlJP5ksNs2xU6WYopLXsEdDv/LA7SgEF8mt8jZyeeRNJVqlZs+Kr2X/uQMtwnDwQsM0sSbSxiRJftGIz4hZ8X/qpj2f0kW3bW/xGxX9ha7v79LIntrW+IYO/E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aTQBj5yw; arc=fail smtp.client-ip=40.107.162.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40E723EA9B
+	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 12:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765976096; cv=none; b=gz/3C00TK1m6qHd7NuaLd1rZ90X0mq13tYa7mQgO8GgxDi3/K0XWwNHJyE+Ngcu3WVblv1BwsWErsbKk9/V3Xxmx5UMMWePrOoDZqks0tf9pPnafPEckNessHvZzf8WHr7WZh+SRwuE2mOqdwSWFWNDB/WXFf66eektL2Bo+llE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765976096; c=relaxed/simple;
+	bh=G4F2uaGJQmt7bSFp2+IgrlP6CrHtglRAzxQKVYY8gok=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XBvfN1WitYHd8NsEJc7vv0US/KL5YEV6W6ehbOGVjrkTyG8cZ5NZWHiwUYTAIp5IgwKdLnU4iyvZ6lQjNc+gyZjE5hlfsiem+8GPqXyQ3nJoKnX0AaI660clrGu60Q/PjGfUCqGt9yVQCnw5lJZJRax8fPPf5KecLoiMR+LDH2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cWxMFDQC; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aTQBj5yw"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iX53n6Vaw0x+7YynCMp3t9Yn9bAtQRT/Z2LQOYDBHYfA729J6BX9o4JQfCeJ9Aa09n2JWeMYnd/w/8c0eR4dvt4GEZ6gBIZCnl2Hju3juPsXALW6UyYN+T2iHB8kG9pYWDuGtnXgsiG1Dnlk9GNmF6iQD/H65XMK2XZ0zRUfkcST0liNBC6v6Oc4hNUKOojuvYqB6s8n4RFZykL3EKEkhpGJAqEXMQacUyLqaIO/r+CDsMv/9qiB/gekjcOUC5dwt/3Nee8acLqQb5cswT8Thw+nhjm2Rd+bP7WYrB7npybIhZw3CbAdhLvdNW6/h5qTweIhj9znWrg+h2dIDUZCnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=w9yCccN5nYfZFG6ZWU4TO7/fBda7cVlelOCirXwdQmE=;
- b=EiQcpqMhiEQSMDU/0f+ZmFzHvhtX1toh8rZuvC8eP4uLXVYn7FW4oT/SszvXz10vbq8EKsLqO9PxmMhHSjxMetWp3DdWkCuSSc3K+vhCPyJgdFbEmfcLJVuJctsCW1AXCBxxMPQ7zDXIFM2FZVbJ5IzFAT8KuSnt+huMfplOYo9YLSoxAbp9+CWxwYsHrd2LPNQBgWJsJHNtTa71JZpy+uivopc0q6Q4An6g3nPjNiYSqTAH5tf0BWjhrOCy4Z6AZhxx+DynBezULXkL9/feXLEkWQ245EO+3FPHFcJbeYZQXsJmvPWwF7H2ttCuJz7odngz8iBAbv4GhYWYRJCSiw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=w9yCccN5nYfZFG6ZWU4TO7/fBda7cVlelOCirXwdQmE=;
- b=aTQBj5yw24J4ke5U5lJYzrhq/gcRbtR3TCQHA9smPiW8htSfLkQGXqEdqwXBuITB1IX6iq08ar2WxzfouObIHnF4eaYZtsGeZgZLxfufZ4LY1Zbo9E0vdC6wv6CKCubodafMNk9icFWHmkwCrkj0gHucGnwWXxIxtVIAzI3XB2UYPnQxmq4/pym1dgUdLm54xgf4rI5HdRBJBn9Og9UcZvn9VqTlKBcwwnschtX0EtdfM3wsT38rHetaR5UaPBwS+cDikcig39phgu7xy/3b2pBsW2CYtnDJYz+lGyNEscQWK5g1KfW1PuChyZjuDpYHB0g9Nx2KTDqUYGbIev8+1Q==
-Received: from AM9PR04MB8604.eurprd04.prod.outlook.com (2603:10a6:20b:43b::21)
- by PA6PR04MB11804.eurprd04.prod.outlook.com (2603:10a6:102:524::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Wed, 17 Dec
- 2025 08:40:05 +0000
-Received: from AM9PR04MB8604.eurprd04.prod.outlook.com
- ([fe80::e751:223e:aa3d:5827]) by AM9PR04MB8604.eurprd04.prod.outlook.com
- ([fe80::e751:223e:aa3d:5827%3]) with mapi id 15.20.9434.001; Wed, 17 Dec 2025
- 08:40:03 +0000
-From: Pankaj Gupta <pankaj.gupta@nxp.com>
-To: Frank Li <frank.li@nxp.com>
-CC: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
-	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: RE: [PATCH v21 5/7] firmware: drivers: imx: adds miscdev
-Thread-Topic: [PATCH v21 5/7] firmware: drivers: imx: adds miscdev
-Thread-Index: AQHca0fzBh349iqDGU2aBcz65HDXXrUeOU0AgAWeHMA=
-Date: Wed, 17 Dec 2025 08:40:03 +0000
-Message-ID:
- <AM9PR04MB860463DED50B8371D349E3F095ABA@AM9PR04MB8604.eurprd04.prod.outlook.com>
-References: <20251212-imx-se-if-v21-0-ee7d6052d848@nxp.com>
- <20251212-imx-se-if-v21-5-ee7d6052d848@nxp.com>
- <aTxIsAQMe3sbxXQ4@lizhi-Precision-Tower-5810>
-In-Reply-To: <aTxIsAQMe3sbxXQ4@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM9PR04MB8604:EE_|PA6PR04MB11804:EE_
-x-ms-office365-filtering-correlation-id: 5dfc26f6-a445-4933-d313-08de3d47df90
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|19092799006|7416014|376014|1800799024|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?KOYrNxBU1NdICwktIlQ2w5EPljEoiAYewNZkf9IGMPK86KCQl1OrZWJeM0lm?=
- =?us-ascii?Q?+QgsoYmgXmvFZV8u/7k2xfK2a6m5MNLZfis1ioZN1KHAVC1SC8m3I5i5AU0E?=
- =?us-ascii?Q?yU/pX+yGRTjQ5x6iui3ILuOo3O1VTd104/wNwtRReK1qgtEMc1WSJZot0GJv?=
- =?us-ascii?Q?vGyKOGEyVZxTRGo/bjGLXeO9LKRngmEOiGg7Nh1PZA0gNOTARmpvzAq93ZnD?=
- =?us-ascii?Q?f1mHqPShOjEbtcA29WtHhb1TPkV2L9tjeHp9PIBbM+jlbspqb/QFEWPJnhGA?=
- =?us-ascii?Q?20OESDZgJloYpaoaY/N6Koc5iOHGTcMqInOb/wAD5WMNbo7bHFHooY3+3ZPr?=
- =?us-ascii?Q?DZKOwU00q0AWP83v5mmE+abIdMV+AbcpYODYikCowrPzCTvKCNK3Kvtvjyd7?=
- =?us-ascii?Q?95dcp+rj9kv4rJgAb6B6u8cvS5V5z2/k4VfbKr7lJfKAxc/qnv/aYvFNsQ06?=
- =?us-ascii?Q?MdaVtKpVdkD+PZotxmSvEcuvPoAwoLaOhSUverDgoDXPZ2yOhGRwb6/YsP8C?=
- =?us-ascii?Q?VETBfRM2vcKeFDAFHSk6ffRzaxtJtcjEhXAT09ASM7EIawIC0M249PnhKBqk?=
- =?us-ascii?Q?XK5vjKLqs7AS2Wni3VMFJZExDm2Cv0kzE47pWZU9v5FMepHVtct7Ev/xS1aE?=
- =?us-ascii?Q?/iuVLJBFTuykNPj11JqL4CNma0qMgP/7mgcDd/swl53yEePXg9St11qBEylu?=
- =?us-ascii?Q?Z85IXqkB8qOJwD/dal+tiVNjxFv0OlNe7OVzUQnGZ23Mr6xNzV+E61w8Z+l+?=
- =?us-ascii?Q?5jbezOU/CXQz7UJbKI04ZS5eVGtYqO6++R3rmPtCU4JjE7GwDLUj1Caow/iN?=
- =?us-ascii?Q?r7UmYIzHPBAW/2LXFwmo9iQJVqvy49ZY7QLZ5pMzASp8a6GjdAf89+ppuYMC?=
- =?us-ascii?Q?R0tXcZlwYHBINO4RJiUtrTiYGJy9tdZl6UD8+sNMHwfkmVCHZkqt2BphxLOL?=
- =?us-ascii?Q?DEP5RvjEbDRj/L8SKTidwbfngMHBCISGHHS7ZuVAQdWw05etRiJHryFKxuG8?=
- =?us-ascii?Q?r0yYS1ljtfjtSBkKWS0VOmQv+330by+iOoPINiX/HYGNyZCoGCPlaIIz/Rb6?=
- =?us-ascii?Q?Hz7LtV6AYKDg5Ih0zdvMQ77gUcHO70OOZTmRGBdZGMhI1nvDaIN1hx5bwQIE?=
- =?us-ascii?Q?vQBWtxDFpAV2D+sIr8wpxNiIX0cqNJQD45pMIsZjjb1DjZPId8qKn6JEl+BQ?=
- =?us-ascii?Q?bap0I+NSdW6gAPzXebeChAFsK60gPzStMmEIQuefOxdbF5GFm6IjVLBJUEPW?=
- =?us-ascii?Q?kDDFQxpY13eoKFfGEqXUmmgSSBywgQwhax+COd0aFNMXbjYSayDAezWzLRt/?=
- =?us-ascii?Q?gRA/RLNkIOcEp3CBuzcZd6lLso8N1vO5njtpaLavoBUUlXUsaMl8NE6rcZBO?=
- =?us-ascii?Q?KXojlgEXDd+pH49VOkaGjBrGdkQOQuajjg02SK/zkBTI9jiJgd21pWiQo9qw?=
- =?us-ascii?Q?rNaDgM2a6oVzAfovnDkS31/IzqKTrYsXB+AykvffY9enOLZ7zE5ktq02DRJ5?=
- =?us-ascii?Q?IHj4hxxNslcHmYFbUXvArZ2kuvSkc3AHtImgpYVEqZHMsEVPWm2hgaugEA?=
- =?us-ascii?Q?=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8604.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(376014)(1800799024)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?xvZWzqfy0COgKgFIGAi4M7KfGsNHD3jVQUFasj3x7HRToMY3csLJOdEoEJKd?=
- =?us-ascii?Q?9SumbaMeqkE31qTjynPDtzl7MGDuN4qlJc/LtKR+KFYk/1jlc3wzmjWidFkC?=
- =?us-ascii?Q?uol0VxgNdnlE5XqDUnKJ9+AGFiSDN70tSgD7IA+4heLDTV11fTvnRJP+qZ6S?=
- =?us-ascii?Q?eNyXTWRoCtEoNWG8XeaqfSgpTEOAuVcWhh8fdsJYVg9xvsQSMLkaPigFsiva?=
- =?us-ascii?Q?Ps410ASv9EK+UI5ofLPVf+qzjfpwatEWp+xBP3qbkcMrX3aLve0yzrgjmFLE?=
- =?us-ascii?Q?AxS2GGZ66xh2qd2DVb56JGfy08DpUnXYgbhXeWSCSzbQf/1OHXlwXmHkLLE5?=
- =?us-ascii?Q?b+qF3o2djpL3k2MkVLcSD8axjj+Jno7N5EaRoGECv0H2RfD06Pjox4InLCin?=
- =?us-ascii?Q?3fKm+EOehrugva2CM51O+tsiF1Bg8wfDX+zYvnFwCJ0j6LMtfVDbR1COsCPe?=
- =?us-ascii?Q?aF9FLsHB2dFlH7PyMUHSjKOofQppE1dXnKn6Ly2yYYFD/dsHdR51oxNAZeZ5?=
- =?us-ascii?Q?lVAejO61CGld0UZQaibYmGjOkUicx82jeN8VVN4Lqv508MRVIMNh42fcbJpb?=
- =?us-ascii?Q?nUDO6NBA1sy/PhpmRUQpemKlCOW+PbGR+nz4d6/3ByKGcnSWW60WdBG1Yjzc?=
- =?us-ascii?Q?bvnnvMBC9VhM7JBEU2F26nImDytSaCkhbBsQgYAtQ9wuYvegVgTfaxEhtaXX?=
- =?us-ascii?Q?iOgqm+RKlUq3Hnd8vPOS4yRl7NN9wP+gOyKy5EA1oet6zmZ1wc14RAmMOznR?=
- =?us-ascii?Q?FCPl4sQJ9+vRyUJwELYu4JbVQw8DSBq7j8O3bWggFomW1i7Ud2SRUNG2SJOC?=
- =?us-ascii?Q?V8HVarxqgjDo0BipjRJfUl0V3BtwOE7mCoXHaJZ3H91p91bBT2z75XeoEX5i?=
- =?us-ascii?Q?GkGzKLGnEcJe4tLqwczNCr+G+sYpVv3Afu93xy75n46KnnLV1M116gjeE7ea?=
- =?us-ascii?Q?hsVmQfKMD31/Uw7A6yk6v6pH2XVwil2Ef2a54U7ENK0RwfwlQSEhwO1EbQIv?=
- =?us-ascii?Q?xVVTZT0K9WtJkqyAxcatD7ChIwbmbcu9FO7BTXEKVHFmyA2Ek3dJiUDc8yid?=
- =?us-ascii?Q?tCnCFrrUQy6V+JJsNVlUq6xsRxb7HN+GRj1zdURDZ8lH4/8Bbu8qd7WuTDcf?=
- =?us-ascii?Q?Do3ZDbwOW+1L4fhOkt4zmxuHMEh1Ouif9PxwPFG8iPPzzGrsMfyzsD5T4fNd?=
- =?us-ascii?Q?z+PwOd1o4ZGgH50HFIG8M6p+d+IbwtkjcGGhv4RJFFeiGXyzZOr5FYa9y2dE?=
- =?us-ascii?Q?k9eqEPSAn2UgNBKnTeFtLVLynPNLSEtvgk0u1QtVkUVH6ecKOU92QmmYmr9Z?=
- =?us-ascii?Q?4OjLWP4ROv+AJBejjdja7J7eZt7DHBKztafCrv4mLIcEFaZje8MIiL3db2CE?=
- =?us-ascii?Q?+0RO6yZbajnzXWCpscD2IMUr9NSKfIiH3SE29jt5D91aM4XR0++V7AD22Uzz?=
- =?us-ascii?Q?iCggr1OikynMhT0EjgAAiKbVPSzYY9cYBUJ9TXR9fwguNNbodAWV2eP80ylX?=
- =?us-ascii?Q?nG7vPeYpv1mTRvqun2og+QqvRpeJ7zd97GrbsFsIj/VK4sBnQmIdaedpK0YC?=
- =?us-ascii?Q?e+CpXE+2z2wPKirhlzCdFXAF5t9vWASHhJm582yr?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cWxMFDQC"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a0bae9aca3so48950545ad.3
+        for <imx@lists.linux.dev>; Wed, 17 Dec 2025 04:54:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765976094; x=1766580894; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1WB9IDMyF7C6rUTb7bWFFG4m+8S18M2qqzE6q3X6CiU=;
+        b=cWxMFDQC2Ei7y7PARX7qH4PDJMSynTQGgCQwF6babGoMUSnqUhMJLFucGp9MtESfDB
+         T70TmHEvEGH7oTpa/jFLb795m0Ju+xvjOJnKKeLWnQ7whp80Zy1RWJs5l52zxK2LBlZJ
+         pMoxnVlqMFtVPPLVRkztihQaDlREdW1z2LGmiIEDZaZuG1s/leawV6iLFAU/JHlyNdC3
+         maBsIPhiJ9aSE0MGA6cZeXvNi0U/gKmFATrZsxwvgBVhwjZC04VG8qwEMh5DjNmWYl/a
+         kIL+eLezWvealwh5DXRmuFyRAUika6o3Kcvz4xCZjKlwMNHzDIzc2aDgXpFqC1fo1fJb
+         Dl6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765976094; x=1766580894;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1WB9IDMyF7C6rUTb7bWFFG4m+8S18M2qqzE6q3X6CiU=;
+        b=u1PwiHAdGjEMCiUtKwhzSgj2Jtkt82NUs5OkpBR49a+ggQ6UwdRdcv0sDaTZbp4mXs
+         u7jfjPLU6xlwVF/sEjM/GAvK3FYKlYXjXdsRZwMf6TU/oVFIqoMUZOEvQNngSz8rR3yL
+         S+PspWc74RFzUsCVJyVTEMv1DJIRAukcah25bEvXbqU1tGqQ/wClwDTDU8Yz21pSV8wu
+         EmFD0rEHomVM2I0q9BhHTeu3aXoBzEsqpqJnion2+NsrYLvD6Ei3ayyxxUIZV4I5pjOv
+         nBD5LzpaO+7Ng5oCHywU+ftfVQ2n54MmYK74rRxO4y/ixNbEImkD2qDxKjJ33AoQ+FC4
+         woyg==
+X-Forwarded-Encrypted: i=1; AJvYcCWUomAzrJHveSqF5hLnVlbZ3cPQci64tX/SFScvrAL4qlcR0IisC4VSyDc1AFa8hvC8X9M=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyE830oE+zi4irlsDebraA8Hib1U/KMyqbdmdjcasB2UoQfrU39
+	DUhNEqdirAauM4uRewNzRxGqt/ESQ8HFZJgLkSSuVEBqJ2A5HNRghuF+rY+DEUH02D+7EJIIhsl
+	PDWDff536nEpANP3Zgn5lRj83xzuZ2G0=
+X-Gm-Gg: AY/fxX55p5n+pKhXv8RXFEQ99SDfxYydkEBWuf51afLYlOC6gFpDxM5fGobE46dKGyM
+	8vkHcA0x54d/2IyhFumyJERKc+94jTvaws7fbl4LlqBvFv4ANqwovKTzyPIbtgZj9nSvm9BwFst
+	Y73VzuOZ2n0i0mUq2SKDWpTV5lmyGodzB+O2NpEGz4QiIkXbxXVsewYZohuRKroDRTTi5VK39WL
+	saSu3vI4YhsZzHnHfF1MWWlMuaLxaOg7ylj9YYds4M91aCFcwfy2A6nkENRS+Mi+vsZbI0OHH1m
+	lsTvMD0VR8Kr2ogqtqGdeMYiEetacoSdHxk5sHH4T2g3irbJgQLmlB3sSJ33KLTOtpeDPEYusUM
+	pLds38iwSiw==
+X-Google-Smtp-Source: AGHT+IFCVxVZKfQazz0Hf+zlDf4DPsGc7oERAwp/C9jL/RfYpJUNkkyKQjqWAoT+yyXwjrVLjDdhD4cpWBi7QA+Z/RI=
+X-Received: by 2002:a05:7022:4393:b0:119:e569:fb96 with SMTP id
+ a92af1059eb24-11f354776a3mr16162731c88.5.1765976094025; Wed, 17 Dec 2025
+ 04:54:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8604.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5dfc26f6-a445-4933-d313-08de3d47df90
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Dec 2025 08:40:03.5511
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: L75mC9uA8FJeYZ114QvgZI0JGCmz92PW01iZboGJbF6yncXqdiliMETiBRr3eT75ECR890ni5cKkvacMEwXvJQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA6PR04MB11804
+References: <20251210154906.99210-1-daniel.baluta@nxp.com> <aUHZaapZ1IAs_mRE@p14s>
+In-Reply-To: <aUHZaapZ1IAs_mRE@p14s>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Wed, 17 Dec 2025 14:57:24 +0200
+X-Gm-Features: AQt7F2pCrjbzUdKtcqyy6UJ2W0Ki6ZTb9uglvOiXJFQ03JP1g08LOHMbnAHpvt0
+Message-ID: <CAEnQRZC0WU+MGfZ5z3yJCz==MBCcFG4BUwNs2v1ABOMkiRbPrw@mail.gmail.com>
+Subject: Re: [PATCH v2] remoteproc: imx_dsp_rproc: Fix multiple start/stop operations
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Daniel Baluta <daniel.baluta@nxp.com>, andersson@kernel.org, m.szyprowski@samsung.com, 
+	shawnguo@kernel.org, kernel@pengutronix.de, festevam@gmail.com, 
+	arnaud.pouliquen@foss.st.com, robh@kernel.org, geert+renesas@glider.be, 
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	iuliana.prodan@nxp.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > Adds the driver for communication interface to secure-enclave, that
-> > enables exchanging messages with NXP secure enclave HW IP(s) like
-> > EdgeLock Enclave, from:
-> > - User-Space Applications via character driver.
+On Wed, Dec 17, 2025 at 12:13=E2=80=AFAM Mathieu Poirier
+<mathieu.poirier@linaro.org> wrote:
+>
+> Good day,
+>
+> On Wed, Dec 10, 2025 at 05:49:06PM +0200, Daniel Baluta wrote:
+> > After commit 67a7bc7f0358 ("remoteproc: Use of reserved_mem_region_*
+> > functions for "memory-region"") following commands with
+> > imx-dsp-rproc started to fail:
 > >
-> > ABI documentation for the NXP secure-enclave driver.
+> > $ echo zephyr.elf > /sys/class/remoteproc/remoteproc0/firmware
+> > $ echo start > /sys/class/remoteproc/remoteproc0/state
+> > $ echo stop > /sys/class/remoteproc/remoteproc0/state
+> > $ echo start > /sys/class/remoteproc/remoteproc0/state #! This fails
+> > -sh: echo: write error: Device or resource busy
 > >
-> > User-space library using this driver:
-> > - i.MX Secure Enclave library:
-> >   -- URL: https://github.com/nxp-imx/imx-secure-enclave.git,
-> > - i.MX Secure Middle-Ware:
-> >   -- URL: https://github.com/nxp-imx/imx-smw.git
+> > This happens because aforementioned commit replaced devm_ioremap_wc wit=
+h
+> > devm_ioremap_resource_wc which will "reserve" the memory region with th=
+e
+> > first start and then will fail at the second start if the memory
+> > region is already reserved.
 > >
-> > Following checks are performed on the incoming msg-header, to block
-> > exchanging invalid arbitrary commands:
-> > - maximum allowed words,
-> > - check if command-tag & response-tag are valid
-> > - version,
-> > - command id validation check, to allow limited base-line API(s)
-> >   and restrict following:
-> >   - exchanging power management commands.
-> >   - reset requests.
-> >   - BBSM configuration requests.
-> >   - re-initializing the FW.
-> >   - RNG init
-> >   - CAAM resource release management
-> >   - SE's internal memory management.
-> > from user-space.
+> > Even partially reverting the faulty commit won't fix the
+> > underlying issue because we map the address in prepare() but we never
+> > unmap it at unprepare(), so we will keep leaking memory regions.
 > >
-> > Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > So, lets use alloc() and release() callbacks for memory carveout
+> > handling. This will nicely map() the memory region at prepare() time
+> > and unmap() it at unprepare().
+> >
+> > Fixes: 67a7bc7f0358 ("remoteproc: Use of_reserved_mem_region_* function=
+s for "memory-region"")
+> > Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
 > > ---
-> > changes from v20 to v21
-> > - removed "__free(kfree)" & added kfree();
->=20
-> KK's means is that correctly use __free according to cleanup.h.
->=20
-> fun()
-> {
-> 	...
-> 	some code logic
-> 	...
->=20
-> 	struct .... __free(kfree) rx_msg =3D
-> kzalloc(cmd_snd_rcv_rsp_info.rx_buf_sz, GFP_KERNEL);
-> 	...
-> }
->=20
-> Frank
+> > Changes since v1:
+> >  * https://lore.kernel.org/imx/091a4f29-5435-428a-9a1c-ef82465211cb@nxp=
+.com/T/#t
+> >  * took a different approach and instead of partially reverting the
+> >   faulty patch, used alloc() and release() callbacks to handle memory
+> >   region mapping.
+> >  drivers/remoteproc/imx_dsp_rproc.c | 50 ++++++++++++++++++++----------
+> >  1 file changed, 33 insertions(+), 17 deletions(-)
+> >
+> > diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/im=
+x_dsp_rproc.c
+> > index 5130a35214c9..83468558e634 100644
+> > --- a/drivers/remoteproc/imx_dsp_rproc.c
+> > +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> > @@ -644,6 +644,32 @@ static void imx_dsp_rproc_free_mbox(struct imx_dsp=
+_rproc *priv)
+> >       mbox_free_channel(priv->rxdb_ch);
+> >  }
+> >
+> > +static int imx_dsp_rproc_mem_alloc(struct rproc *rproc,
+> > +                                struct rproc_mem_entry *mem)
+> > +{
+> > +     struct device *dev =3D rproc->dev.parent;
+> > +     void *va;
+> > +
+> > +     va =3D ioremap_wc(mem->dma, mem->len);
+> > +     if (!va) {
+> > +             dev_err(dev, "Unable to map memory region: %pa+%zx\n",
+> > +                     &mem->dma, mem->len);
+> > +             return -ENOMEM;
+> > +     }
+> > +
+> > +     mem->va =3D va;
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static int imx_dsp_rproc_mem_release(struct rproc *rproc,
+> > +                                  struct rproc_mem_entry *mem)
+> > +{
+> > +     iounmap(mem->va);
+> > +
+> > +     return 0;
+> > +}
+> > +
+> >  /**
+> >   * imx_dsp_rproc_add_carveout() - request mailbox channels
+> >   * @priv: private data pointer
+> > @@ -659,7 +685,6 @@ static int imx_dsp_rproc_add_carveout(struct imx_ds=
+p_rproc *priv)
+> >       struct device *dev =3D rproc->dev.parent;
+> >       struct device_node *np =3D dev->of_node;
+> >       struct rproc_mem_entry *mem;
+> > -     void __iomem *cpu_addr;
+> >       int a, i =3D 0;
+> >       u64 da;
+> >
+> > @@ -673,15 +698,10 @@ static int imx_dsp_rproc_add_carveout(struct imx_=
+dsp_rproc *priv)
+> >               if (imx_dsp_rproc_sys_to_da(priv, att->sa, att->size, &da=
+))
+> >                       return -EINVAL;
+> >
+> > -             cpu_addr =3D devm_ioremap_wc(dev, att->sa, att->size);
+> > -             if (!cpu_addr) {
+> > -                     dev_err(dev, "failed to map memory %p\n", &att->s=
+a);
+> > -                     return -ENOMEM;
+> > -             }
+> > -
+> >               /* Register memory region */
+> > -             mem =3D rproc_mem_entry_init(dev, (void __force *)cpu_add=
+r, (dma_addr_t)att->sa,
+> > -                                        att->size, da, NULL, NULL, "ds=
+p_mem");
+> > +             mem =3D rproc_mem_entry_init(dev, NULL, (dma_addr_t)att->=
+sa,
+> > +                                        att->size, da, imx_dsp_rproc_m=
+em_alloc,
+> > +                                        imx_dsp_rproc_mem_release, "ds=
+p_mem");
+>
+> Was there a reason you kept those here rather than moving them to probe()=
+ as
+> Iuliana suggested?  Note that I would be fine with this solution since th=
+is is
+> how it was before, but if we have to go through a refactoring we may as w=
+ell
+> take those things into account.
 
-Hi Krzysztof, Hi Frank,
+Tried moving imx_dsp_rproc_add_carveout at probe() time but it doesn't work
+because stop() will clean the carveout list and then the next start() will =
+fail.
 
-Thank you for the review comments.
+at probe()
+imx_dsp_rproc_add_carveout
+-> rproc_add_carveout (adds allocated carveout to the list).
 
-I misunderstood earlier and removed __free(kfree) in v21, thinking it was n=
-ot preferred.
-After revisiting your feedback, I see the intent is to use __free(kfree) co=
-rrectly as per cleanup.h guidelines for automatic cleanup instead of manual=
- kfree() calls.
+at start():
+   -> first start OK
 
-I will revert the previous change and update the patch to follow the recomm=
-ended pattern:
--  strucivt se_api_msg *tx_msg __free(kfree) =3D kzalloc (XXXXX, GFP_KERNEL=
-);
--  Make sure the source files has: #include <linux/cleanup.h>
+at stop()
+   -> rproc_shutdown
+       -> rproc_stop
+       -> rproc_resource_cleanup ;//cleans up careveout allocations
 
-This will be included in v22 along with a clear comment disposition referen=
-cing your suggestion.
-Thanks for clarifying and for your guidance.
-
-Best regards,
-Pankaj Gupta
+at next start()
+     -> CRASH
