@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698A9389F55;
-	Wed, 17 Dec 2025 10:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE3D36214B;
+	Wed, 17 Dec 2025 10:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765967123; cv=none; b=VhtnJ39v2aqN70f9HtBB9hFV92AZEojF0clHS4GvNUzTPP/q0vuhN9L7y8ffOH49iANVJ+aGKF+kK6p0baEy6vSn1eYVClEH2BPFmkN6AVus9AUrcqoxreoTTB8YD6RkCzCHIPW8NH3NRclgxrJaqVKKlJYuE/tiDf0WSicf5rE=
+	t=1765967150; cv=none; b=q7ASZEma/+hs8pPA3NaXyVnMAJ6yQ1Px4fCjiYHG/c79A6X53mRXoN9XIE9PJbSN+JzQlvnKePfmvEY5pZsuFOGxaVjzQAIL3PTLfmodTW6bRHwJhFMIZHECqbjD6IdSdbz2/lWtCORiwl2STv/I1XtY/JshiKZcRr3oG4BPcBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765967123; c=relaxed/simple;
-	bh=j6fWBAYEXtE3Kd4XTM6pOK9YC5GmGveHQTJogZwLkDQ=;
-	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=n1ZNzCCtj1sIr/IT7+cChiyGl2hTQqkhpaviUia/jK4QNvurVfaVeYzfJuEY2NnSubj+eyxLa+l3YxDZpwUVGMT1vLc8URBzWM/MpvyHvoIEryNq7l+ROzkFgYp1OSwWZrTFj1zrss+xIkwgEYgYSU7nfDmBMTnrnHl70QOjUVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rm2NHFhS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765967150; c=relaxed/simple;
+	bh=GnNxtunhk2yGE92crKgwZuDyghpZFV6MjwtyyPhQ2Yw=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=jyOcqry5GZJZwDDuGiEwYMWdYn/FJ70qMNJN6yYbAB7ej6Ifm/VOZB16SBCRW4upc01dsaVueHKjq+VoRLn5OFRcZi/RTjBuHr5fjVqniKY8WiDDm7F53ZVrjA4ZDNddgDNTDdt9j5EG0KjNtOLx7ZuZeRxxZImBqtUfkgZBDtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YbFTZ/oc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rm2NHFhS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699B6C4CEF5;
-	Wed, 17 Dec 2025 10:25:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YbFTZ/oc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672F4C4CEFB;
+	Wed, 17 Dec 2025 10:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765967121;
-	bh=j6fWBAYEXtE3Kd4XTM6pOK9YC5GmGveHQTJogZwLkDQ=;
+	s=k20201202; t=1765967149;
+	bh=GnNxtunhk2yGE92crKgwZuDyghpZFV6MjwtyyPhQ2Yw=;
 	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
-	b=Rm2NHFhSLip7bSLXiPGfLGtjzkUVxs6dUDd8ey0B8wNTOtLmMaxmzMTTKRHEFzBWs
-	 sdBBztUA8NDkaASfgt12Wb2zY3TIJdMJ9ZynH+qEpRy1GR9do4WKZMQIlJZeauI5Se
-	 tXkstKJunbralmVZCVBcCXkWZeXUKvqZ56Vh/PLOObvKo05r8ZuWzAxbamZnSPdBx2
-	 a+BViYe4R8LELixb5GNRs1I9i6d2zY/2ebsdiYDAyDpACOnCQfUmE8H8Wps81ikznb
-	 +SPzb+Awo+LWePjP+k2iqoC3iBH8GNM7xvAoIYZTu9TJjr3BpObrFmqZ0kEyRbUgYI
-	 /512xnZHl1/RA==
-Message-ID: <b95966ec5cffced78db429efa87dcf95@kernel.org>
-Date: Wed, 17 Dec 2025 10:25:19 +0000
+	b=YbFTZ/ocqRqcOLMTMFILNJXICobjQuhAvnKW71QN94skeBsUUZZrXpa9oyIL7q180
+	 aDZCrv46lYFzWhM0uJgoZ+jlNKhDrOOZu/KHrXzJf9jrCrwOTa4ffpMNzzW0t5DpH8
+	 6YA301b6LWbk2fVcMjIqMHi/PSX2LKOVPhb99OiuAJfhpYVZUZRhiWg7ViKjKgyPpm
+	 dNdRREU/bPVPzTPFZknnUsYqACMtEajQG2UgYyiyNmvnEmG8y+e3hFkOENS8zZ9lf+
+	 yXBfmQKV1K76D6m8N1wN3z/vaoZ7nZWPJC4umZ6tl1aQltuIQ/arYPqJ69xV9uLEcd
+	 sNnkvhb9edgRw==
+Message-ID: <e6df5ec2f2d0b38a533c3d154587948f@kernel.org>
+Date: Wed, 17 Dec 2025 10:25:47 +0000
 From: "Maxime Ripard" <mripard@kernel.org>
 To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v3 19/22] drm/bridge: imx8qxp-pixel-link: simplify
- freeing of the remote device_node
-In-Reply-To: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-19-b5165fab8058@bootlin.com>
-References: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-19-b5165fab8058@bootlin.com>
+Subject: Re: [PATCH v3 22/22] drm/bridge: imx8qxp-pixel-link: get/put the
+ next bridge
+In-Reply-To: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-22-b5165fab8058@bootlin.com>
+References: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-22-b5165fab8058@bootlin.com>
 Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, "Alexey
  Brodkin" <abrodkin@synopsys.com>, "Andrzej Hajda" <andrzej.hajda@intel.com>, "David
  Airlie" <airlied@gmail.com>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Jernej
@@ -52,12 +52,13 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-On Tue, 16 Dec 2025 18:58:52 +0100, Luca Ceresoli wrote:
-> The main loop in imx8qxp_pixel_link_find_next_bridge() requires calling
-> of_node_put() in multiple places, complicating code flow. Simplify it by
-> using a cleanup action and making the 'remote' variable scope local to the
-> loop.
->=20
+On Tue, 16 Dec 2025 18:58:55 +0100, Luca Ceresoli wrote:
+> This driver obtains a bridge pointer from of_drm_find_bridge() in the pro=
+be
+> function and stores it until driver removal. of_drm_find_bridge() is
+> deprecated. Move to of_drm_find_and_get_bridge() for the bridge to be
+> refcounted and use bridge->next_bridge to put the reference on
+> deallocation.
 >=20
 > [ ... ]
 
