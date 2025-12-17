@@ -1,166 +1,274 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B9A313545
-	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 06:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4E7336EE8;
+	Wed, 17 Dec 2025 07:42:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765953282; cv=none; b=EBC/YKNm/j6Z2ESbYQjIGe4m7rTDkxU6dplI22tOiUNegGkFRL/B5cHQp6wFxKCzmkU6OS8/jb4NlsL60rFNQCywvTjfJ+0uCLtuuVS/2JnbUD54R9c5cu/lsZFbVT66Vxr+jQLGlvs1Ko1iwn2rLjrKiUvuu6sLC+P5YPT0mLI=
+	t=1765957360; cv=none; b=fcKH2kSlEpI0qGiF3cyJrJkaSlerDJzbr+eVIrvtl8r6mcUBwUOh9zAibD7tsAbDSmdOx2i0KQuGzBUXbOhIGT6+lSF3b/mrG7s8+z4Ix4wnODCQiasTm+Nct9axRrt2WxZGwC8IkNNjY8ZFa19VsiRFfm7taPUr4nmYMifRUGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765953282; c=relaxed/simple;
-	bh=FXvzyuor5O93IICa/mEsw7W5vjo1bFaXlXdvxn/LBNs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=On43rCZaLCPjdzrsZ6yyzPGBhYusKEcMC0KvC2SxbAYHOJ+o2VtgL3tQDufZMhtuUPt1Zgk8cbn+fY5mkik2FINWrFUMobx24UQvvHinPoGTvyQb3UU0TacQVErY+Ap7w6ohXhoIzybv0PDPDeBEuSnUwbBVyYBSzwyZ9BHoGFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoseli.org; spf=pass smtp.mailfrom=yoseli.org; dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b=DJbCZ9JI; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yoseli.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yoseli.org
+	s=arc-20240116; t=1765957360; c=relaxed/simple;
+	bh=t3sMS2rvoK+Hy6JMy1gsympBsNJDbFI9shsFoh+CkuE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gPuY5sdkcvvAt1sx1qsb1hlBs9ZKAInoxj75fct5NXQchnYh+QrZjJ4/qUrnum6O6zl3gDHioGcExOSWCgK9H0kfxfTD8tfdFGctIXiJ8r/Arr8O+HnsuACaP3r5FPgWz3a3KoV6vWtUIJy+kYvYLHwQ1xhDYnj2gFouLm/nQ04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HsMpmN3m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yoseli.org header.i=@yoseli.org header.b="DJbCZ9JI"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 19042444B5;
-	Wed, 17 Dec 2025 06:34:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yoseli.org; s=gm1;
-	t=1765953272;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FZh9dHS8Dtfv8ujCmkwpKZQwtkzHUzvrWD3huUC/4dQ=;
-	b=DJbCZ9JIgH9U44U0cyVKOae4zelzA30sA5wo9ssXjDZwQfVA9lp2ELtTponfD54O9v+yl0
-	9u1r8PP1CIHawddyl8XSbgG5OBEVO5F/vIalnymzeYNUwjgfW+LD31Gpf8YB4Eu3y/MGII
-	h1EsEkWz+189NtG2qlDJlDuZNXAz+TQrcFptz2XDW28z+NrSn8XzQYAPgKFT8wm9dZJYsu
-	y7PGVD6p+pmUvVEfUPdk+sbIhGaG9yhJ45hn87CxQ4NVeljqpCOwXrqumSpZU34rT0WOhD
-	8eb9m8WuOIpfHoRDbUm8G7+U95Z65lsInn+dlX9NG9ZIoys8HHxDX3qfa4eURw==
-From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-To: Vinod Koul <vkoul@kernel.org>, Frank Li <Frank.li@nxp.com>,
- Greg Ungerer <gerg@linux-m68k.org>
-Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH v2 2/5] dma: mcf-edma: Add per-channel IRQ naming for debugging
-Date: Wed, 17 Dec 2025 07:34:07 +0100
-Message-ID: <5064909.31r3eYUQgx@jeanmichel-ms7b89>
-In-Reply-To: <aUF8/r6FZcPraINk@lizhi-Precision-Tower-5810>
-References:
- <20251126-dma-coldfire-v2-0-5b1e4544d609@yoseli.org> <aUF6CdS6WVZuEP24@vaman>
- <aUF8/r6FZcPraINk@lizhi-Precision-Tower-5810>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HsMpmN3m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA83C4CEF5;
+	Wed, 17 Dec 2025 07:42:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765957360;
+	bh=t3sMS2rvoK+Hy6JMy1gsympBsNJDbFI9shsFoh+CkuE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HsMpmN3moHHzUX1tScH74pLt+lHIdvdjHvtz+OywNBeAtDHjBnZYBRgMUYlttOcve
+	 YtC4KSaeazM4bCGsMWunKPL3khFF/8O0O05W49WeD3Tyer+QdBkfXI9LDtra0Vph28
+	 EYN6pehx5n33FyAtNiBUhyvNOE0iXnMZpL9ENJ64Fp25cGOtJF7akVwWu4UjL4z7CN
+	 6ATE7zi5NSnmC6HQlDq4at17CJ2q/i9951nCEOAYFkiMRSydKOgXZ5zQBe0/xn5T1/
+	 5kN4852lZKdQxxTHZy83hWw25Sy72JicMfHzEn9WRcyFwC6zVb5CeSwk50hje07Tn6
+	 /jQ8vWV4EhdvQ==
+Message-ID: <360ecc21-b748-474c-9ada-ca72b7ae3a4a@kernel.org>
+Date: Wed, 17 Dec 2025 08:42:34 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-GND-Sasl: jeanmichel.hautbois@yoseli.org
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdegudekhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthhqredttddtjeenucfhrhhomheplfgvrghnqdfoihgthhgvlhcujfgruhhtsghoihhsuceojhgvrghnmhhitghhvghlrdhhrghuthgsohhisheshihoshgvlhhirdhorhhgqeenucggtffrrghtthgvrhhnpeffvefhuddvleduuefgtdeludeuvdfhuedvvefgieeifeeiveetkedttedtieefteenucfkphepvdgrtddumegvtdgrmeduieelmeejudegtdemvdgrgedtmehffegrrgemjedujegvmedufegsvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemvgdtrgemudeileemjedugedtmedvrgegtdemfhefrggrmeejudejvgemudefsgdvpdhhvghlohepjhgvrghnmhhitghhvghlqdhmshejsgekledrlhhotggrlhhnvghtpdhmrghilhhfrhhomhepjhgvrghnmhhitghhvghlrdhhrghuthgsohhisheshihoshgvlhhirdhorhhgpdhqihgupeduledtgedvgeeggeeuhedpmhhouggvpehsmhhtphhouhhtpdhnsggprhgtphhtthhopeejpdhrtghpthhtohepvhhkohhulheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephfhrrghnkhdrlhhisehng
- ihprdgtohhmpdhrtghpthhtohepghgvrhhgsehlihhnuhigqdhmieekkhdrohhrghdprhgtphhtthhopehimhigsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepughmrggvnhhgihhnvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhmieekkheslhhishhtshdrlhhinhhugidqmheikehkrdhorhhg
-X-GND-State: clean
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] media: nxp: Add i.MX9 CSI pixel formatter v4l2
+ driver
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ Frank Li <frank.li@nxp.com>
+Cc: imx@lists.linux.dev, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Guoniu Zhou <guoniu.zhou@nxp.com>
+References: <20251217-csi_formatter-v2-0-62168af80210@nxp.com>
+ <20251217-csi_formatter-v2-2-62168af80210@nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20251217-csi_formatter-v2-2-62168af80210@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Frank,
+On 17/12/2025 07:11, Guoniu Zhou wrote:
+> +
+> +static const struct v4l2_async_notifier_operations formatter_notify_ops = {
+> +	.bound = csi_formatter_notify_bound,
+> +};
+> +
+> +static int csi_formatter_async_register(struct csi_formatter *formatter)
+> +{
+> +	struct device *dev = formatter->dev;
+> +	struct v4l2_async_connection *asc;
+> +	struct fwnode_handle *ep __free(fwnode_handle) = NULL;
 
-Le mardi 16 d=C3=A9cembre 2025, 16:38:38 heure normale d=E2=80=99Europe cen=
-trale Frank Li a=20
-=C3=A9crit :
-> On Tue, Dec 16, 2025 at 08:56:01PM +0530, Vinod Koul wrote:
-> > On 26-11-25, 11:12, Frank Li wrote:
-> > > On Wed, Nov 26, 2025 at 09:36:03AM +0100, Jean-Michel Hautbois via B4=
-=20
-Relay wrote:
-> > > > From: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-> > > >=20
-> > > > Add dynamic per-channel IRQ naming to make DMA interrupt
-> > > > identification
-> > > > easier in /proc/interrupts and debugging tools.
-> > > >=20
-> > > > Instead of all channels showing "eDMA", they now show:
-> > > > - "eDMA-0" through "eDMA-15" for channels 0-15
-> > > > - "eDMA-16" through "eDMA-55" for channels 16-55
-> > > > - "eDMA-tx-56" for the shared channel 56-63 interrupt
-> > > > - "eDMA-err" for the error interrupt
-> > > >=20
-> > > > This aids debugging DMA issues by making it clear which channel's
-> > > > interrupt is being serviced.
-> > > >=20
-> > > > Signed-off-by: Jean-Michel Hautbois <jeanmichel.hautbois@yoseli.org>
-> > > > ---
-> > > >=20
-> > > >  drivers/dma/mcf-edma-main.c | 26 ++++++++++++++++++--------
-> > > >  1 file changed, 18 insertions(+), 8 deletions(-)
-> > > >=20
-> > > > diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-mai=
-n.c
-> > > > index f95114829d80..6a7d88895501 100644
-> > > > --- a/drivers/dma/mcf-edma-main.c
-> > > > +++ b/drivers/dma/mcf-edma-main.c
-> > > > @@ -81,8 +81,14 @@ static int mcf_edma_irq_init(struct platform_dev=
-ice
-> > > > *pdev,> > >=20
-> > > >  	if (!res)
-> > > >  =09
-> > > >  		return -1;
-> > > >=20
-> > > > -	for (ret =3D 0, i =3D res->start; i <=3D res->end; ++i)
-> > > > -		ret |=3D request_irq(i, mcf_edma_tx_handler, 0, "eDMA",=20
-mcf_edma);
-> > > > +	for (ret =3D 0, i =3D res->start; i <=3D res->end; ++i) {
-> > > > +		char *irq_name =3D devm_kasprintf(&pdev->dev,=20
-GFP_KERNEL,
-> > > > +						"eDMA-%d",=20
-(int)(i - res->start));
-> > > > +		if (!irq_name)
-> > > > +			return -ENOMEM;
-> > > > +
-> > > > +		ret |=3D request_irq(i, mcf_edma_tx_handler, 0,=20
-irq_name, mcf_edma);
-> > > > +	}
-> > > >=20
-> > > >  	if (ret)
-> > > >  =09
-> > > >  		return ret;
-> > >=20
-> > > The existing code have problem, it should use devm_request_irq(). if =
-one
-> > > irq request failure, return here,  requested irq will not free.
-> >=20
-> > Why is that an error!
->=20
->         ret =3D fsl_edma->drvdata->setup_irq(pdev, fsl_edma);
->         if (ret)
->                 return ret;
->=20
-> if last one of request_irq() failure, mcf_edma_irq_init() return failure.
-> probe will return failure also without free irq.
->=20
-> So previous irq by request_irq() is never free at this case.
+This is an undesired syntax explicitly documented as one to avoid. You
+need here proper assignment, not NULL. Please don't use cleanup.h if you
+do not intend to follow it because it does not make the code simpler.
 
-=46rom kernel/irq/manage.c I see in a nutshell:
-	request_threaded_irq() {
-		action =3D kzalloc(sizeof(struct irqaction), GFP_KERNEL);
-		retval =3D __setup_irq(irq, desc, action);
-		if (retval) {
-			kfree(action->secondary);
-			kfree(action);
-		}
-	}
+> +	int ret;
+> +
+> +	v4l2_async_subdev_nf_init(&formatter->notifier, &formatter->sd);
+> +
+> +	ep = fwnode_graph_get_endpoint_by_id(dev_fwnode(dev), 0, 0,
+> +					     FWNODE_GRAPH_ENDPOINT_NEXT);
+> +	if (!ep)
+> +		return -ENOTCONN;
+> +
+> +	asc = v4l2_async_nf_add_fwnode_remote(&formatter->notifier, ep,
+> +					      struct v4l2_async_connection);
+> +	if (IS_ERR(asc))
+> +		return PTR_ERR(asc);
+> +
+> +	formatter->notifier.ops = &formatter_notify_ops;
+> +
+> +	ret = v4l2_async_nf_register(&formatter->notifier);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return v4l2_async_register_subdev(&formatter->sd);
+> +}
+> +
+> +/* -----------------------------------------------------------------------------
+> + * Suspend/resume
+> + */
+> +
+> +static int csi_formatter_system_suspend(struct device *dev)
+> +{
+> +	return pm_runtime_force_suspend(dev);
+> +}
+> +
+> +static int csi_formatter_system_resume(struct device *dev)
+> +{
+> +	int ret;
+> +
+> +	ret = pm_runtime_force_resume(dev);
+> +	if (ret < 0) {
+> +		dev_err(dev, "force resume %s failed!\n", dev_name(dev));
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int csi_formatter_runtime_suspend(struct device *dev)
+> +{
+> +	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+> +	struct csi_formatter *formatter = sd_to_formatter(sd);
+> +
+> +	clk_disable_unprepare(formatter->clk);
+> +
+> +	return 0;
+> +}
+> +
+> +static int csi_formatter_runtime_resume(struct device *dev)
+> +{
+> +	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+> +	struct csi_formatter *formatter = sd_to_formatter(sd);
+> +
+> +	return clk_prepare_enable(formatter->clk);
+> +}
+> +
+> +static const struct dev_pm_ops csi_formatter_pm_ops = {
+> +	SYSTEM_SLEEP_PM_OPS(csi_formatter_system_suspend,
+> +			    csi_formatter_system_resume)
+> +	RUNTIME_PM_OPS(csi_formatter_runtime_suspend,
+> +		       csi_formatter_runtime_resume, NULL)
+> +};
+> +
+> +static int csi_formatter_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct csi_formatter *formatter;
+> +	u32 val;
+> +	int ret;
+> +
+> +	formatter = devm_kzalloc(dev, sizeof(*formatter), GFP_KERNEL);
+> +	if (!formatter)
+> +		return -ENOMEM;
+> +
+> +	formatter->dev = dev;
+> +
+> +	formatter->regs = syscon_node_to_regmap(dev->parent->of_node);
+> +	if (IS_ERR(formatter->regs))
+> +		return dev_err_probe(dev, PTR_ERR(formatter->regs),
+> +				     "Failed to get csi formatter regmap\n");
+> +
+> +	ret = of_property_read_u32(dev->of_node, "reg", &val);
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "Failed to get csi formatter reg property\n");
+> +
+> +	formatter->reg_offset = val;
+> +
+> +	formatter->clk = devm_clk_get(dev, NULL);
+> +	if (IS_ERR(formatter->clk))
+> +		return dev_err_probe(dev, PTR_ERR(formatter->clk),
+> +				     "Failed to get pixel clock\n");
+> +
+> +	ret = csi_formatter_subdev_init(formatter);
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "formatter subdev init fail\n");
+> +
+> +	/* Initialize formatter pixel format */
+> +	formatter->fmt = find_csi_format(formatter_default_fmt.code);
+> +
+> +	ret = csi_formatter_async_register(formatter);
+> +	if (ret < 0) {
+> +		v4l2_subdev_cleanup(&formatter->sd);
+> +		return dev_err_probe(dev, ret, "Async register failed\n");
+> +	}
+> +
+> +	platform_set_drvdata(pdev, &formatter->sd);
+> +
+> +	/* Enable runtime PM. */
+> +	pm_runtime_enable(dev);
+> +
+> +	return 0;
+> +}
+> +
+> +static void csi_formatter_remove(struct platform_device *pdev)
+> +{
+> +	struct v4l2_subdev *sd = platform_get_drvdata(pdev);
+> +	struct csi_formatter *formatter = sd_to_formatter(sd);
+> +
+> +	v4l2_async_nf_unregister(&formatter->notifier);
+> +	v4l2_async_nf_cleanup(&formatter->notifier);
+> +	v4l2_async_unregister_subdev(&formatter->sd);
+> +
+> +	pm_runtime_disable(&pdev->dev);
+> +	media_entity_cleanup(&formatter->sd.entity);
+> +	pm_runtime_set_suspended(&pdev->dev);
+> +}
+> +
+> +static const struct of_device_id csi_formatter_of_match[] = {
+> +	{ .compatible = "fsl,imx9-csi-formatter" },
+> +	{ /* sentinel */ },
+> +};
+> +MODULE_DEVICE_TABLE(of, csi_formatter_of_match);
+> +
+> +static struct platform_driver csi_formatter_device_driver = {
+> +	.driver = {
+> +		.owner          = THIS_MODULE,
 
-I don't see an issue with the existing code then ?
-Am I wrong ?
+Why are you sending us 12 year old code without cleaning it up first?
 
-Thanks,
-JM
-
->=20
-> Frank
->=20
-> > > You'd better add patch before this one to change to use
-> > > devm_request_irq()
-> >=20
-> > Not really, devm_ is a not always good option.
-> >=20
-> > --
-> > ~Vinod
-
-
-
-
+> +		.name           = CSI_FORMATTER_DRV_NAME,
+> +		.of_match_table = csi_formatter_of_match,
+> +		.pm             = pm_ptr(&csi_formatter_pm_ops),
+> +	},
+> +	.probe  = csi_formatter_probe,
+> +	.remove = csi_formatter_remove,
+> +};
+> +
+Best regards,
+Krzysztof
