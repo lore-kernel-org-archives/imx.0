@@ -1,128 +1,99 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C18338926
-	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 13:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8983A1D1F
+	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 14:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765979159; cv=none; b=JnQeVmkSdc4APGUowB6grjx3UTNihE/wg47kD4IJtk+Zr/X8Ut4w2seec26jN7cwWD38LASdbT45+gvSp2Z8tDjUX2PR2p/LbnwPdrMlO5K78nKKghapWpkLaXizKPu82t9D8qCGr39zlGP4TcUUn00d4X/aGSF1YOtMKmLLw3I=
+	t=1765981875; cv=none; b=MkweRQAofWfPSBwzPUpnr2vUJunIxojCwi/SYDZGlbI5jS0armLXtq6cKqD3p1IA6T2O+OpYXBe0VATwA3BOUvT5nEP/fQIISsPZqAi7p0s2WiqZPhqEKyivzACWoLClv/VdQSniHgGVKb1hi9KrweZn5u1R/8Dw77CY5aJhOzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765979159; c=relaxed/simple;
-	bh=RulmqSaiOURezsD4cu1+MRR95cud3v1lRvrkSGGSSZs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Yes2liAAdArjcTvlJpmTeaKIEQINl/kvHs9gLrRwPa9ASEwt1P2hF8QiqYlK/Sy5LZm3sVJ/9LhwMPQjJm2ee0CgEANz31s3BqlA8srGhZQZej2L7/FCX+WCQRWzA32xtdNr96Qjn5gM2FotqZ7WapL8RIKoppync6oYgethaZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kYYu/tqq; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1765981875; c=relaxed/simple;
+	bh=yAjEzU0lnm6w9HbHvxnWCw8lQ0bKDnGFd7xXe5yjJo0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=dmpjFdhdnDuF1ZT5vjR9cwiE5bJcX54phpr8wC8xCrAvZCKGDhDgxUHdxTBHg03bcvzwcQ6ozPpNvVn1QCkqR09VqoWvbcKevmsqbch+7Vpaqp7bxrN+0OKicalpQNFDAIiB6V57v4vCcwi+l+Oos0DG0iqDahXKXs9vFJSGJic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=xrG4jKk1; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kYYu/tqq"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5957db5bdedso7183914e87.2
-        for <imx@lists.linux.dev>; Wed, 17 Dec 2025 05:45:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1765979156; x=1766583956; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HeFvcwPuMBzJwPtY2IZ75UX9BR5Ij/OppFp2JBnCGZk=;
-        b=kYYu/tqqvCZmnqyYKZo1N5iire5Aq6sWefzNJ9fTMEcRI5DhL+wIEPE2iinPlPDUmz
-         RkVywTkCR+mOfID3M3uVPJcjMDXAn0+HF/rkvUKnOjkHkfVBIchSYCpragjKlelrg80G
-         boux46/iQnH/oYDWDbOWYHjCOplCMnxGp/0fKi9IAMBObbKtnL1IArU4hc+7DY+XB443
-         rvU9xbfMPATgS24ewD91UNYBkqLtWYQICp+QZr7Rfzzv6s/AAaZnkbUc2uQZe5f4hu75
-         ktWpioY7kRbtFJy5DBJEMKuR8I40qRaSvtQn9frEmb6AYJ4ZdZhTqW5ZGVOekNmNoeiD
-         bUWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765979156; x=1766583956;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HeFvcwPuMBzJwPtY2IZ75UX9BR5Ij/OppFp2JBnCGZk=;
-        b=A3QPRcd8ejdu6/K+H+Zdqnv2zBgC0YGrwS8WDW+5f066Vf6Jpe4YMncI1BPRaljFF5
-         iMaAb2VlsbPs9FyqJWxKibGzf430GPcYzcUij506Vv2dFWbXDqBCSQtFcxm6xELoHWkH
-         Z2dN8xwjNCxdFMu1s79CkM67TsaqPnYUdxtHVcfTjD2oLkuRs1r+daB8g2HfPhs5Kj43
-         CZxpDyv2eYvFcBfUePeDVbr8IvW3cdL4lONUJkzqefx7v2DD86VHR/fqJwl6sDHfw5bW
-         j3EJAw6R4mohyj61zcM6W/elRuZRBeopXKyfEL6nsS+60u17V90IYdD+ev0zc1iTVN/p
-         c2IQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWOG71ah2OumnN1KOGh78NtEiFP7WdaHnrCauG9F6hl7GnhergRLPgrtmU2Mg5KRx3TuDQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwsMRUo+f8uPnIZ5dMg4IDkBKFj7wt6GC/28liat6+c7mck3NFg
-	EkVROtiDIdVjidY/3tQyouqF0LcMqTsLth7miFRtb7o3lA8jRp8FZkv/Ufjjc6S3oztIOD6HAZX
-	C6B34rOenTxhLWv0lsZXEQMejq+ir3RrOqyqGQxyM2g==
-X-Gm-Gg: AY/fxX4h4z4e4w6LC0LZdC3n+sYv+QR58bVihR53mujAm7yJFlVsyr7TpP80wBQK/wB
-	QtRUp58Gw9pLfYEWw1kQwYWYfm0pIXW5vT83T2RedrtFFjXLwP6uWlhVZfB5FEin0hScu9bOZV3
-	7DnkeMKcM++AfZBxk2Y5wDMwKN7Lg7eJkGADw4Ssl6+IdKQmxuOri4N0ZEKa1pnMwL9f5OdcT5B
-	91iAch53ApN/U3p5Hw50F6MhdLNQ87GzV7Y3Ax8IXK+/8/95Gc3Qri/CFv4Ef3+SKkGNVQ=
-X-Google-Smtp-Source: AGHT+IF8DUR3iFEJEHIZVoppRZ2LJ1i16lHQ3Olhnesdn9YtIYVJQ/fNEdH4vIoS5b8Lw4dMFXsWFN+VTySF0wVdcVI=
-X-Received: by 2002:a05:6512:3b86:b0:597:d7dc:b7ce with SMTP id
- 2adb3069b0e04-598faa3bd8amr6408543e87.30.1765979156040; Wed, 17 Dec 2025
- 05:45:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="xrG4jKk1"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 1797C4E41C61;
+	Wed, 17 Dec 2025 14:31:11 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D3C3E6072F;
+	Wed, 17 Dec 2025 14:31:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 08228102F0ADF;
+	Wed, 17 Dec 2025 15:31:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1765981869; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=yAjEzU0lnm6w9HbHvxnWCw8lQ0bKDnGFd7xXe5yjJo0=;
+	b=xrG4jKk1868Dv7dPhgpQxbWfGUHPcegpZHAbpsi68LNt1qCvLavT7qg6pk0LyAOpy6g8vf
+	uCI/c6WhBKRbvJfH/9PevUAINIRZeoOldyX4fOqO+SKCVogGMwcD+YyeCa1fh6K0TiTtqw
+	i7q5sRSu4GJyjVf7mR9Y3/Qri1jAxFNDNws2wV4hE/ssLWNgu61nMSLCC09UXg1/i5guEu
+	143vac/E0zy0QYBvBIJMD6V50VaSq7IRSfaV3EGMI8yx/9ZEj9u8cmOSJceVeRYhrjLvTr
+	yt97q0vB58aPCsDXYu3m2nq3B4klQ0rtZb1eI7qcWYQlJfN12/1sBA27uTxx/w==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20251212-s32g-sdhci-kconfig-v1-1-8e278c8d7f78@redhat.com>
-In-Reply-To: <20251212-s32g-sdhci-kconfig-v1-1-8e278c8d7f78@redhat.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Wed, 17 Dec 2025 14:45:17 +0100
-X-Gm-Features: AQt7F2p99M9efU4Kabtz6odZdNhny0sq2J-1crHyiipLb65xYIkOxCPnes_s36Q
-Message-ID: <CAPDyKFp++OQFxkY_zqkZSJz2R0sqxBnd-6U+VLsyZYDQ4H9MeA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: sdhci-esdhc-imx: add alternate ARCH_S32 dependency
- to Kconfig
-To: Jared Kangas <jkangas@redhat.com>
-Cc: Haibo Chen <haibo.chen@nxp.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Chester Lin <chester62515@gmail.com>, linux-mmc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, s32@nxp.com, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 17 Dec 2025 15:31:01 +0100
+Message-Id: <DF0KBN5Y22XW.2RE8HKDFY87XK@bootlin.com>
+Subject: Re: [PATCH v3 01/22] drm/bridge: add of_drm_find_and_get_bridge()
+Cc: <dri-devel@lists.freedesktop.org>, <imx@lists.linux.dev>,
+ <linux-amlogic@lists.infradead.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Alexey Brodkin" <abrodkin@synopsys.com>,
+ "Andrzej Hajda" <andrzej.hajda@intel.com>, "David Airlie"
+ <airlied@gmail.com>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu"
+ <Hui.Pu@gehealthcare.com>, "Jernej Skrabec" <jernej.skrabec@gmail.com>,
+ "Jerome Brunet" <jbrunet@baylibre.com>, "Jonas Karlman" <jonas@kwiboo.se>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Kevin Hilman" <khilman@baylibre.com>,
+ "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>, "Liu Ying"
+ <victor.liu@nxp.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Martin Blumenstingl"
+ <martin.blumenstingl@googlemail.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Phong LE" <ple@baylibre.com>, "Robert Foss"
+ <rfoss@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Shawn Guo"
+ <shawnguo@kernel.org>, "Simona Vetter" <simona@ffwll.ch>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>
+To: "Maxime Ripard" <mripard@kernel.org>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.20.1
+References: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-1-b5165fab8058@bootlin.com> <0ba037c65f9cadd51082abf2b7857ba7@kernel.org>
+In-Reply-To: <0ba037c65f9cadd51082abf2b7857ba7@kernel.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, 12 Dec 2025 at 16:04, Jared Kangas <jkangas@redhat.com> wrote:
->
-> MMC_SDHCI_ESDHC_IMX requires ARCH_MXC despite also being used on
-> ARCH_S32, which results in unmet dependencies when compiling strictly
-> for ARCH_S32. Resolve this by adding ARCH_S32 as an alternative to
-> ARCH_MXC in the driver's dependencies.
->
-> Fixes: 5c4f00627c9a ("mmc: sdhci-esdhc-imx: add NXP S32G2 support")
-> Signed-off-by: Jared Kangas <jkangas@redhat.com>
+Hi Maxime,
 
-Applied for fixes and by adding a stable-tag, thanks!
+On Wed Dec 17, 2025 at 11:15 AM CET, Maxime Ripard wrote:
+> On Tue, 16 Dec 2025 18:58:34 +0100, Luca Ceresoli wrote:
+>> of_drm_find_bridge() does not increment the refcount for the returned
+>> bridge, but that is required now. However converting it and all its user=
+s
+>> is not realistically doable at once given the large amount of (direct an=
+d
+>> indirect) callers and the complexity of some.
+>>
+>>
+>> [ ... ]
+>
+> Reviewed-by: Maxime Ripard <mripard@kernel.org>
 
-Kind regards
-Uffe
+Thank you for the prompt review!
 
+All patches are reviewed now except patch 18 which has no reply. I'm just
+pointing out in case it's something you missed.
 
-> ---
->  drivers/mmc/host/Kconfig | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-> index 10d0ef58ef493102d3586d7a31d755543297999a..c94ae4794545de1c818ad50be7f91331862b6acf 100644
-> --- a/drivers/mmc/host/Kconfig
-> +++ b/drivers/mmc/host/Kconfig
-> @@ -315,14 +315,14 @@ config MMC_SDHCI_ESDHC_MCF
->
->  config MMC_SDHCI_ESDHC_IMX
->         tristate "SDHCI support for the Freescale eSDHC/uSDHC i.MX controller"
-> -       depends on ARCH_MXC || COMPILE_TEST
-> +       depends on ARCH_MXC || ARCH_S32 || COMPILE_TEST
->         depends on MMC_SDHCI_PLTFM
->         depends on OF
->         select MMC_SDHCI_IO_ACCESSORS
->         select MMC_CQHCI
->         help
->           This selects the Freescale eSDHC/uSDHC controller support
-> -         found on i.MX25, i.MX35 i.MX5x and i.MX6x.
-> +         found on i.MX25, i.MX35, i.MX5x, i.MX6x, and S32G.
->
->           If you have a controller with this interface, say Y or M here.
->
->
-> ---
-> base-commit: 7d0a66e4bb9081d75c82ec4957c50034cb0ea449
-> change-id: 20251211-s32g-sdhci-kconfig-585b6909f7b4
->
-> Best regards,
-> --
-> Jared Kangas <jkangas@redhat.com>
->
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
