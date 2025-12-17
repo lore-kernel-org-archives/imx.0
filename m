@@ -1,65 +1,65 @@
-Received: from mx-relay96-hz2.antispameurope.com (mx-relay96-hz2.antispameurope.com [94.100.136.196])
+Received: from mail-m21469.qiye.163.com (mail-m21469.qiye.163.com [117.135.214.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290D93358AF
-	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 08:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.196
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765961347; cv=pass; b=NpMS3r0o2bl5I3PhTES+6MUS42D4PRejJ0A1cnh5iinDa/v0E3VCJ6MgAK/LmYtTvvPoRW7cd1t9TcLHLI/ZY8trkVnLV21FkMZcUt/HH1oN136RJU7NUxeT3TyE4lYEtv+fqztZAzey9f7JJQIlZVyKwwXCpCG3bKCi3f2KmVs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765961347; c=relaxed/simple;
-	bh=h1Ja/rSQIq1TWvNF38IFvW9sEAqOWuoSLE1OhJQnWqA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rZ7XQFRmJkYwJeDVQk5DOrDTl3kBi/WHcAh+NxfAkHeRKWiHe+xa0ZL62DxGwm8XpS2IcZvYi83L7Fr12qAodZKy7DqYiqvWnsEMnVh1JZGCH3e/B7p16Aw4fIvDhyCF0tKUcyDIsm/48xMg4rC4W/IOUKuVIkyvtjUOZFxOoy4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=s7SHO0P/; arc=pass smtp.client-ip=94.100.136.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392A6277CAF
+	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 09:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.214.69
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765964025; cv=none; b=e3byyAGyACNqO4BJMU1LlBIfgKVegh/oXTebAcm9QnOb6iyrjvMLCTL9lp2Mk4MiZ6e787vTFktXONGZXfP9K08Lay30/x/bGrMpqnW7pdVnhHz0A2obFMBvHD8CH5ca2uPOAC25JhN3Zz/lvNW0M0rE6TgBwYGup4LAmirQZQc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765964025; c=relaxed/simple;
+	bh=QhMIqOAEQDmilc8wdptW4jhXnYeg7507iikwhGry2n8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EXZ3EO7gZcnuK+JUqpKiZS8HkYZ248B2A0wLlvw/6FHinW66oJ6f1/A1s1yHV4WPxoOSyxFFafZjp7/PjlWQiDezoDTo+YUk1plcfn/lrGEj/iQPd5SWYmJ/JBN15oKgjSpSc2ZSXq5ZXjKn0X6M2nb8x9RzhfxPAibVnWG4ors=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=NtWSB/KO; arc=none smtp.client-ip=117.135.214.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="s7SHO0P/"
-ARC-Authentication-Results: i=1; mx-gate96-hz2.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com
- smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
- header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=e8+/cZk0H8N2WAzWr4PEnz6SuI6lU+scC72gDf6sJvg=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1765961300;
- b=qXbQ2A7ENC4P+YBPfdbjkX45AHvksz9j1Xg1iltVS83ZzRWTAE2PTGaS3/8YUHke4bJnjOyu
- JLEQSVzArUyXf25zs83PHhvG6rf26xCfSxJwIJKu+QOWkcABflocCmbwUHZj341Od6KNc/tJtYR
- lcV08IopD+SOd7tVfQyM5la99xGGb7+moQfYw9vKUYU4bWX5bkWRTATRywdz+3Bkd1BKmPgyvEM
- ZD/+r1eAPpu33nG0yJ2dVjgET6zOnbVDz3xdUtRrOjd0UX/FBcbh/pb+r4pC02ATI4szVB8/2Th
- R3cXQw2NTJcGKaUiYZ4vjKc2GRa3sqFR0F1XPojXrsBPg==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1765961300;
- b=eNVHAbmWY9LitnG4X3r1ybGpXRSGGuFcyMZ3RJwOW97XSAlUd+R4qLP/bZ45Fd5SrwWkxuCV
- RgTZzkZ/VgM4daiemp0CGaeDepZau0bGlCnnkJHEqLQHGYYa/Bl+3zC1H6YoVATPYs2Ue1kZ66o
- BgseJYHR428WaMKH7slWyZkW5lkQJ+gY/KHn2oRoKy0CriFhXvM3OTYx71DDzr7SvFwpcmfzBoy
- /tiMezIceQRfVjaFQZ9TyxU2Lobp/ENpmwAKFI7CyerlJ6g+4vt0RQMXYkKSjJRQRrNduCZTh93
- U/Vsy8mjQ5DAafhBIWfMy16++SGNvsQ2UdK5Wr2E5Mzpw==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay96-hz2.antispameurope.com;
- Wed, 17 Dec 2025 09:48:20 +0100
-Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 5FB5A220CD8;
-	Wed, 17 Dec 2025 09:48:09 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux@ew.tq-group.com,
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="NtWSB/KO"
+Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2d931e49e;
+	Wed, 17 Dec 2025 17:33:35 +0800 (GMT+08:00)
+From: Damon Ding <damon.ding@rock-chips.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org
+Cc: Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	inki.dae@samsung.com,
+	sw0312.kim@samsung.com,
+	kyungmin.park@samsung.com,
+	krzk@kernel.org,
+	alim.akhtar@samsung.com,
+	jingoohan1@gmail.com,
+	p.zabel@pengutronix.de,
+	hjc@rock-chips.com,
+	heiko@sntech.de,
+	andy.yan@rock-chips.com,
+	dmitry.baryshkov@oss.qualcomm.com,
+	dianders@chromium.org,
+	m.szyprowski@samsung.com,
+	luca.ceresoli@bootlin.com,
+	jani.nikula@intel.com,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] arm64: dts: mb-smarc-2: Add PCIe support
-Date: Wed, 17 Dec 2025 09:48:04 +0100
-Message-ID: <20251217084806.41853-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
+	linux-samsung-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Damon Ding <damon.ding@rock-chips.com>
+Subject: [PATCH v8 00/18] Apply drm_bridge_connector and panel_bridge helper for the Analogix DP driver
+Date: Wed, 17 Dec 2025 17:33:03 +0800
+Message-Id: <20251217093321.3108939-1-damon.ding@rock-chips.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -67,95 +67,161 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay96-hz2.antispameurope.com with 4dWSB20czCz1TMgh
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:1eff63407a427bebdc6c421623ea4ad2
-X-cloud-security:scantime:2.164
+X-HM-Tid: 0a9b2ba8676303a3kunma9c945a29ed6d
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGktJGlZPSU9LGRkfTkNLGEtWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
 DKIM-Signature: a=rsa-sha256;
- bh=e8+/cZk0H8N2WAzWr4PEnz6SuI6lU+scC72gDf6sJvg=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1765961299; v=1;
- b=s7SHO0P/EebQjRwnH7etOpemk0VbaPHAyw94K45Qv5OJ9YuuLtKHQolvr1rX2FSoyJ4C+rJR
- 8+AE9nz/kw7BhaMkce9J4sjkAhnCQHyew/wRgpHwxYwKWdGgMuaj1uPULMHxZt2+yRVC51yYSII
- 1x55uDPn8JW10ze3lqqM3MptTPQ8qXjLHQOwOTmCdpWcC3MBEtHw6ICFNZ4l3tRXth+j15srEii
- DAK+EOTvzb0Lj4YSzkys26y9tQYjVCG7ByDMSMhcLMdVb03FAWbI5hneRo3A18FtW+wEnC0X7A2
- u0sGriK8o6d6YDUb/epXLrNKgRY7hrSwgheEBKRmNeJIQ==
+	b=NtWSB/KOLelUDre7LHu05JouZqsgWuMjjuU6TRqsFSuaU7yKx2UfOQnxHGHna0FTCPdfu1ju6+XUhZ8R+Jct4f8eplgUo+P/du5UguE1ODlME+Xj5AOlqUVhaDAPz0eHRi0MMDgTyClFLW4y5rWbfby+qStuVbfGQ7ZtuoGEv6A=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=E+VaPm/yqw4QSciorj38SCg03o5AGDHPzyOXLKjx1+c=;
+	h=date:mime-version:subject:message-id:from;
 
-TQMa8XxS on MB-SMARC-2 supports mPCIe on X44.
+PATCH 1 is to ensure the last bridge declares OP_EDID or OP_MODES or both.
+PATCH 2 is a small format optimization for struct analogid_dp_device.
+PATCH 3 is to perform mode setting in &drm_bridge_funcs.atomic_enable.
+PATCH 4 is to add a new parameter to store the point of next bridge.
+PATCH 5 is to make legacy bridge driver more universal.
+PATCH 6-11 are preparations for apply drm_bridge_connector helper.
+PATCH 12 is to apply the drm_bridge_connector helper.
+PATCH 13-15 are to move the panel/bridge parsing to the Analogix side.
+PATCH 16 is to attach the next bridge on Analogix side uniformly.
+PATCH 17-18 are to apply the panel_bridge helper.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+The following reviewed commits, which to make codes more concise, are
+rebased to the front of this patch series:
+
+https://lore.kernel.org/all/20251110085823.1197472-1-damon.ding@rock-chips.com/
+https://lore.kernel.org/all/20251111022103.1350183-1-damon.ding@rock-chips.com/
+
+Damon Ding (18):
+  drm/display: bridge_connector: Ensure last bridge determines
+    EDID/modes detection capabilities
+  drm/bridge: analogix_dp: Formalize the struct analogix_dp_device
+  drm/bridge: analogix_dp: Move &drm_bridge_funcs.mode_set to
+    &drm_bridge_funcs.atomic_enable
+  drm/bridge: analogix_dp: Add &analogix_dp_plat_data.next_bridge
+  drm/bridge: Move legacy bridge driver out of imx directory for
+    multi-platform use
+  drm/exynos: exynos_dp: Remove &exynos_dp_device.ptn_bridge
+  drm/exynos: exynos_dp: Remove unused &exynos_dp_device.connector
+  drm/exynos: exynos_dp: Apply of-display-mode-bridge to parse the
+    display-timings node
+  drm/bridge: analogix_dp: Remove redundant
+    &analogix_dp_plat_data.skip_connector
+  drm/bridge: analogix_dp: Move the color format check to
+    .atomic_check() for Rockchip platforms
+  drm/bridge: analogix_dp: Remove unused
+    &analogix_dp_plat_data.get_modes()
+  drm/bridge: analogix_dp: Apply drm_bridge_connector helper
+  drm/bridge: analogix_dp: Add new API analogix_dp_finish_probe()
+  drm/rockchip: analogix_dp: Apply analogix_dp_finish_probe()
+  drm/exynos: exynos_dp: Apply analogix_dp_finish_probe()
+  drm/bridge: analogix_dp: Attach the next bridge in
+    analogix_dp_bridge_attach()
+  drm/bridge: analogix_dp: Remove bridge disabing and panel unpreparing
+    in analogix_dp_unbind()
+  drm/bridge: analogix_dp: Apply panel_bridge helper
+
+ drivers/gpu/drm/bridge/Kconfig                |  10 +
+ drivers/gpu/drm/bridge/Makefile               |   1 +
+ drivers/gpu/drm/bridge/analogix/Kconfig       |   1 +
+ .../drm/bridge/analogix/analogix_dp_core.c    | 395 +++++++++---------
+ .../drm/bridge/analogix/analogix_dp_core.h    |   5 +-
+ drivers/gpu/drm/bridge/imx/Kconfig            |  10 -
+ drivers/gpu/drm/bridge/imx/Makefile           |   1 -
+ .../gpu/drm/bridge/imx/imx-legacy-bridge.c    |  91 ----
+ .../gpu/drm/bridge/of-display-mode-bridge.c   |  93 +++++
+ .../gpu/drm/display/drm_bridge_connector.c    |  18 +-
+ drivers/gpu/drm/exynos/Kconfig                |   2 +
+ drivers/gpu/drm/exynos/exynos_dp.c            | 110 ++---
+ drivers/gpu/drm/imx/ipuv3/Kconfig             |   4 +-
+ drivers/gpu/drm/imx/ipuv3/imx-ldb.c           |   6 +-
+ drivers/gpu/drm/imx/ipuv3/parallel-display.c  |   5 +-
+ drivers/gpu/drm/rockchip/Kconfig              |   1 +
+ .../gpu/drm/rockchip/analogix_dp-rockchip.c   |  67 +--
+ include/drm/bridge/analogix_dp.h              |   8 +-
+ include/drm/bridge/imx.h                      |  17 -
+ include/drm/bridge/of-display-mode-bridge.h   |  17 +
+ 20 files changed, 391 insertions(+), 471 deletions(-)
+ delete mode 100644 drivers/gpu/drm/bridge/imx/imx-legacy-bridge.c
+ create mode 100644 drivers/gpu/drm/bridge/of-display-mode-bridge.c
+ delete mode 100644 include/drm/bridge/imx.h
+ create mode 100644 include/drm/bridge/of-display-mode-bridge.h
+
 ---
- .../boot/dts/freescale/tqma8xxs-mb-smarc-2.dtsi    | 10 ++++++++++
- arch/arm64/boot/dts/freescale/tqma8xxs.dtsi        | 14 +++++++++++---
- 2 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/tqma8xxs-mb-smarc-2.dtsi b/arch/arm64/boot/dts/freescale/tqma8xxs-mb-smarc-2.dtsi
-index 8bfe77113d64b..050ae23c4dc1e 100644
---- a/arch/arm64/boot/dts/freescale/tqma8xxs-mb-smarc-2.dtsi
-+++ b/arch/arm64/boot/dts/freescale/tqma8xxs-mb-smarc-2.dtsi
-@@ -126,6 +126,12 @@ &flexcan3 {
- 	status = "okay";
- };
- 
-+&hsio_phy {
-+	fsl,hsio-cfg = "pciea-x2-pcieb";
-+	fsl,refclk-pad-mode = "input";
-+	status = "okay";
-+};
-+
- &i2c0 {
- 	tlv320aic3x04: audio-codec@18 {
- 		compatible = "ti,tlv320aic32x4";
-@@ -156,6 +162,10 @@ &lpuart3 {
- 	status = "okay";
- };
- 
-+&pcieb {
-+	status = "okay";
-+};
-+
- &reg_sdvmmc {
- 	off-on-delay-us = <200000>;
- 	status = "okay";
-diff --git a/arch/arm64/boot/dts/freescale/tqma8xxs.dtsi b/arch/arm64/boot/dts/freescale/tqma8xxs.dtsi
-index ebf20d5b5df9c..bfc918f18d011 100644
---- a/arch/arm64/boot/dts/freescale/tqma8xxs.dtsi
-+++ b/arch/arm64/boot/dts/freescale/tqma8xxs.dtsi
-@@ -402,6 +402,14 @@ &mu1_m0 {
- 	status = "okay";
- };
- 
-+&pcieb {
-+	phys = <&hsio_phy 0 PHY_TYPE_PCIE 0>;
-+	phy-names = "pcie-phy";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_pcieb>;
-+	reset-gpio = <&lsio_gpio4 0 GPIO_ACTIVE_LOW>;
-+};
-+
- &sai1 {
- 	assigned-clocks = <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_PLL>,
- 			  <&clk IMX_SC_R_AUDIO_PLL_0 IMX_SC_PM_CLK_SLV_BUS>,
-@@ -646,9 +654,9 @@ pinctrl_i2c0_gpio_mipi_lvds0: mipi-lvds0-i2c0-gpiogrp {
- 	};
- 
- 	pinctrl_pcieb: pcieagrp {
--		fsl,pins = <IMX8QXP_PCIE_CTRL0_PERST_B_LSIO_GPIO4_IO00	0x06000041>,
--			   <IMX8QXP_PCIE_CTRL0_CLKREQ_B_LSIO_GPIO4_IO01	0x06000041>,
--			   <IMX8QXP_PCIE_CTRL0_WAKE_B_LSIO_GPIO4_IO02	0x04000041>;
-+		fsl,pins = <IMX8QXP_PCIE_CTRL0_PERST_B_LSIO_GPIO4_IO00		0x06000041>,
-+			   <IMX8QXP_PCIE_CTRL0_CLKREQ_B_HSIO_PCIE0_CLKREQ_B	0x06000041>,
-+			   <IMX8QXP_PCIE_CTRL0_WAKE_B_LSIO_GPIO4_IO02		0x04000041>;
- 	};
- 
- 	pinctrl_pwm_mipi_lvds0: mipi-lvds0-pwmgrp {
+Changes in v2:
+- Update Exynos DP driver synchronously.
+- Move the panel/bridge parsing to the Analogix side.
+
+Changes in v3:
+- Rebase for the existing devm_drm_bridge_alloc() applying commit.
+- Fix the typographical error of panel/bridge check in exynos_dp_bind().
+- Squash all commits related to skip_connector deletion in both Exynos and
+  Analogix code into one.
+- Apply panel_bridge helper to make the codes more concise.
+- Fix the handing of bridge in analogix_dp_bridge_get_modes().
+- Remove unnecessary parameter struct drm_connector* for callback
+  &analogix_dp_plat_data.attach().
+- In order to decouple the connector driver and the bridge driver, move
+  the bridge connector initilization to the Rockchip and Exynos sides.
+
+Changes in v4:
+- Rebase for the applied &drm_bridge_funcs.detect() modification commit.
+- Rename analogix_dp_find_panel_or_bridge() to analogix_dp_finish_probe().
+- Drop the drmm_encoder_init() modification commit.
+- Rename the &analogix_dp_plat_data.bridge to
+  &analogix_dp_plat_data.next_bridge.
+
+Changes in v5:
+- Add legacy bridge to parse the display-timings node under the dp node
+  for Exynos side.
+- Move color format check to &drm_connector_helper_funcs.atomic_check()
+  in order to get rid of &analogix_dp_plat_data.get_modes().
+- Remove unused callback &analogix_dp_plat_data.get_modes().
+- Distinguish the &drm_bridge->ops of Analogix bridge based on whether
+  the downstream device is a panel, a bridge or neither.
+- Select DRM_DISPLAY_DP_AUX_BUS for DRM_ANALOGIX_DP, and remove it for
+  ROCKCHIP_ANALOGIX_DP.
+- Apply rockchip_dp_attach() to support the next bridge attachment for
+  the Rockchip side.
+- Move next_bridge attachment from Analogix side to Rockchip/Exynos sides.
+
+Changes in v6:
+- Move legacy bridge driver out of imx directory for multi-platform use.
+- Apply DRM legacy bridge to parse display timings intead of implementing
+  the same codes only for Exynos DP.
+- Ensure last bridge determines EDID/modes detection capabilities in DRM
+  bridge_connector driver.
+- Remove unnecessary drm_bridge_get_modes() in
+  analogix_dp_bridge_get_modes().
+- Simplify analogix_dp_bridge_edid_read().
+- If the next is a bridge, set DRM_BRIDGE_OP_DETECT and return
+  connector_status_connected in analogix_dp_bridge_detect().
+- Set flag DRM_BRIDGE_ATTACH_NO_CONNECTOR for bridge attachment while
+  binding. Meanwhile, make DRM_BRIDGE_ATTACH_NO_CONNECTOR unsuppported
+  in analogix_dp_bridge_attach().
+- Move the next bridge attachment to the Analogix side rather than
+  scattered on Rockchip and Exynos sides.
+- Remove the unnecessary analogix_dp_bridge_get_modes().
+- Squash [PATCH v5 15/17] into [PATCH v5 17/17].
+- Fix the &drm_bridge->ops to DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT.
+
+Changes in v7:
+- As Luca suggested, simplify the code and related comment for bridge_connector
+  modifications. Additionally, move the commit related to bridge_connector to
+  the top of this patch series.
+- Rename legacy-bridge driver to of-display-mode-bridge driver.
+- Remove unnecessary API drm_bridge_is_legacy() and apply a temporary flag
+  &exynos_dp_device.has_of_bridge instead, which will be removed finally.
+- Remove exynos_dp_legacy_bridge_init() and inline API
+  devm_drm_of_display_mode_bridge().
+
+Changes in v8:
+- Adapt the related modifications to the newest bridge_connector driver.
+
 -- 
-2.43.0
+2.34.1
 
