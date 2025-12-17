@@ -1,61 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D1D1BEF8A;
-	Wed, 17 Dec 2025 05:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B3B283CB5
+	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 05:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765948232; cv=none; b=iaKrufj689Jt3FdEUBGs/k0W8c7jPsnF5eVdJ0vgfePm4lZdP4kYopG/TdzD9pc5wDH46Uc8cUruWmprC5/k3a0I1Mlujkkr0HcMzHv6A1X0SRPpJJG663K0pg8KayYBhzf6sAB4hoobG5zthuP5KUCRHx0ZU07jyM7XesGASdw=
+	t=1765950745; cv=none; b=KV9sy97lxDIUDfZGirTwbHwy7EJpNDNbKRVCnHqqpQXZcmfsZtMmWD3u9Hb77HTx7OIK64ECpcQZjkqwckoJ+4KDHMwJTwK6QX8/k9Zx/LT5tmUcdhIx0y2WReo8YgLnMc7sABdcJ2JULOIBQ2JXzofO+D4AUjK+pQdUq50Iw0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765948232; c=relaxed/simple;
-	bh=bLaK2gFWACWyalrEyaiMmZm2YYU4Bq1urmASnlDm6Os=;
+	s=arc-20240116; t=1765950745; c=relaxed/simple;
+	bh=TpeEqOiK5wQ/c1ycCBS7/5VQhnVth3fT4BvSXyphtuA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lMvYE7ZyFPFtIz+qYF9MKWRqBHxRIhj8qjKrs8kjCdxiiIH7lM865R8op07J1Q/lAFTdd8jIjrJfzkJZJfzPTHogaPY+qpNcp3W0ASKOYQRcChs4tUdf/3MeTAZ9T7xuyaSkcUSXIu4WK3Ntmj1bhSe99MVmY84HiH1c+Ujo/pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BcJmWWfK; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BcJmWWfK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1DCC19421;
-	Wed, 17 Dec 2025 05:10:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765948231;
-	bh=bLaK2gFWACWyalrEyaiMmZm2YYU4Bq1urmASnlDm6Os=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BcJmWWfK33MwnybWoQwekHilGr5zCy1560YIq82bx13SaA1+NQhhGq6QhzHPOtbEe
-	 g76xucoHWrhcqeg8jb5VE05l6kNRJqy8dzrHM71a0cQhnkMbxx8WNSdtD/xq6p5DJh
-	 bLHZ6CrHbnrrdiA/lniK+9rvYDMqboXAwilsS0aU54t6HtaaMkb9cupJ0QxHomVxV2
-	 yEKUZaMdsykL/s2wdfPiua3AQCBlcTtdYyxETlm+DBvrPfzz8JejKbsd8W5e+SNrmX
-	 GIQpG0as5/ipXXQUCNwIQXZKMAJ3whyWGdWsrBeHqTqlltwGj8NOqaddzfTt/pb5xg
-	 F3WTKkjID57OQ==
-Date: Wed, 17 Dec 2025 10:40:28 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Koichiro Den <den@valinux.co.jp>, Niklas Cassel <cassel@kernel.org>,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
-	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH 0/8] dmaengine: Add new API to combine onfiguration and
- descriptor preparation
-Message-ID: <aUI7RJvQUx3m2IRf@vaman>
-References: <20251208-dma_prep_config-v1-0-53490c5e1e2a@nxp.com>
- <aUFUX0e_h7RGAecz@vaman>
- <aUF2SX/6bV2lHtF0@lizhi-Precision-Tower-5810>
- <aUF-C8iUCs-dYXGm@vaman>
- <aUGA7tmDYm1MhRXn@lizhi-Precision-Tower-5810>
- <aUGURVuW33WSTuyI@vaman>
- <aUGWtarjFNNy2KyZ@lizhi-Precision-Tower-5810>
+	 Content-Type:Content-Disposition:In-Reply-To; b=gsdxw4wGNIRimu5jfvsILT+00K5GRTTWMPTN8eioYK+49ophoeQmDKJghRM9XNxPdwYiGUMxOfVT+p6FuQmv4YTW84dCHpwqKTbVFHd0HAZOl6wMJ94hIzBokjKsn3uZ7gkyZpDJrWlK5yJYfZCu1XDz7Dvqcvhf/MYHxnNrpcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 9F12F1A1AB7;
+	Wed, 17 Dec 2025 06:52:14 +0100 (CET)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 689271A0B5C;
+	Wed, 17 Dec 2025 06:52:14 +0100 (CET)
+Received: from lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com (lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com [10.52.9.99])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 3AE411800089;
+	Wed, 17 Dec 2025 13:52:12 +0800 (+08)
+Date: Wed, 17 Dec 2025 14:52:11 +0900
+From: Joseph Guo <qijian.guo@nxp.com>
+To: Yanan Yang <yanan.yang@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, justin.jiang@nxp.com,
+	Lei Xu <lei.xu@nxp.com>, Xiaofeng Wei <xiaofeng.wei@nxp.com>,
+	qijian.guo@oss.nxp.com
+Subject: Re: [PATCH v2 2/2] arm64: dts: freescale: add NXP FRDM-IMX91S board
+ support
+Message-ID: <aUJFC4ll033PzX7L@lsvm11u0000395.swis.ap-northeast-2.aws.nxp.com>
+References: <20251215-imx91s-frdm-v2-0-87996bdaa59c@nxp.com>
+ <20251215-imx91s-frdm-v2-2-87996bdaa59c@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,27 +48,63 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aUGWtarjFNNy2KyZ@lizhi-Precision-Tower-5810>
+In-Reply-To: <20251215-imx91s-frdm-v2-2-87996bdaa59c@nxp.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On 16-12-25, 12:28, Frank Li wrote:
-> On Tue, Dec 16, 2025 at 10:47:57PM +0530, Vinod Koul wrote:
-> > On 16-12-25, 10:55, Frank Li wrote:
-> > > The usual prep_ call have not sconf argument, which need depend on previous
-> > > config.
-> > >
-> > > further, If passdown NULL for config, it means use previuos config.
-> >
-> > I know it is bit longer but somehow I would feel better for the API to
-> > imply config as well please
+On Mon, Dec 15, 2025 at 05:42:52PM +0900, Yanan Yang wrote:
+> Add DeviceTree support for the NXP FRDM-IMX91S development board based
+> on the i.MX91 SoC. FRDM-IMX91S is a cost-optimized variant of FRDM-IMX91
+> and differs in memory, storage, Ethernet, and PMIC configuration:
 > 
-> I can use you suggested dmaengine_prep_config_perip_single().
+> - 512MB LPDDR4 (FRDM-IMX91 uses 1GB)
+> - 256MB FlexSPI-NAND (FRDM-IMX91 uses 8GB eMMC)
+> - Single GbE port (FRDM-IMX91 has dual GbE)
+> - PMIC PF9453 (FRDM-IMX91 uses PCA9451A)
 > 
-> But how about use dmaengine_prep_config_single(), which little bit shorter
-> and use "config" to imply it is for periperal? (similar to cyclic case?)
+> This DT enables:
+> - ADC1
+> - UART1 and UART5
+> - I2C bus and children nodes
+> - USB and related nodes
+> - uSDHC1 and uSDHC2
+> - FlexSPI NAND flash
+> - Watchdog3
+> - Ethernet (eqos)
+> - FlexCAN
+> - MQS
+> 
+> Link: https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX91S
+> (FRDM-IMX91S board page)
+> Link: https://www.nxp.com/design/design-center/development-boards-and-designs/FRDM-IMX91
+> (FRDM-IMX91 board page)
+> 
+> Co-developed-by: Lei Xu <lei.xu@nxp.com>
+> Signed-off-by: Lei Xu <lei.xu@nxp.com>
+> Co-developed-by: Xiaofeng Wei <xiaofeng.wei@nxp.com>
+> Signed-off-by: Xiaofeng Wei <xiaofeng.wei@nxp.com>
+> Signed-off-by: Yanan Yang <yanan.yang@nxp.com>
+> 
+> ---
+> Changes in v2:
+> - Correct author name: removed extra period in "Yanan.Yang"
+> - Removed aliases pointing to disabled nodes from DTS
+> - Add "rtc0 = &pcf2131;" in aliases to make external RTC the primary device
+> - Fix DT node name: change
+>   "usdhc1_pwrseq: usdhc1_pwrseq" to "usdhc1_pwrseq: usdhc1-pwrseq"
+> - Renamed LED node from 'status' to 'led-0' to comply with gpio-leds binding
+> - Replace regulator-based transceiver (reg_can_stby) with CAN PHY (nxp,tja1051)
+> - Replaced 'xceiver-supply' property with 'phys' in flexcan1 node
+> - Adjusted alignment in fsl,pins property: used spaces between pin names and values for proper DTS style.
+> ---
+>  arch/arm64/boot/dts/freescale/Makefile             |   1 +
+>  .../boot/dts/freescale/imx91-11x11-frdm-s.dts      | 677 +++++++++++++++++++++
+>  2 files changed, 678 insertions(+)
+>
 
-Yes that is a good idea. config does imply peripheral cases. Please make
-sure API documentation marks that clearly
+Hi Yanan,
 
-BR
--- 
-~Vinod
+According to u-boot requirement. We should ensure the minimum difference to the U-boot dts and kernel DTS.
+So I suggesst to add bootph- properties to the nodes should be initialized at u-boot stage.
+
+Regards,
+Joseph
