@@ -1,215 +1,113 @@
-Received: from mail-m15573.qiye.163.com (mail-m15573.qiye.163.com [101.71.155.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0898A33BBCB
-	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 09:34:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A23344023
+	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 09:38:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765964055; cv=none; b=nARmRHsUoyQXr2Fecud3tTEape71NP6TPyBd5JZUW3oGk7RwU1Euhy5f99PPZ2DQBZxLjeepqVjSgJ1sHEbetP9k6q+sbY8nHnEAunneiJWVqrz38fjcn2DyWumF/SRyCmVfT/6hwpDIkgyib+LTEZl7P3LojRAoL0sdqbaTzdQ=
+	t=1765964338; cv=none; b=BAKb7UOt1nyR+CKzFvdpeiWutWYUZoK0+81fvhotVafDm1DDSpOP+LdBVhpqTd4Wy/Z7VAZ9ZOfXm3p0tV/aSBJB4amll+IZff44o3MPHYeG0dvqkYea0RF3YVY2JGXX1z6NVAhY3cgjq6UpxxS+Vmgs0jPEQyuTDQrx2rwcI08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765964055; c=relaxed/simple;
-	bh=8QfuAvEEzuXKWNLusNGCIafLxSN96y35AjIfUY8M1/4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FTVwf6fpJx/xonE/4uyRdxxFUp+D2+SAVGoU67UVfW413kRyJcaUBuzCJ7dVIX/Td9JZbiDHNYUkeiNShUjh3SaUgZI59KNv3ikgY5v2XXHoDRVvE+p6lyTXfUN22vvReXMsH8xWA++rLfsezd62jvVR56zacEFohzmIVwePW9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=Cj2L1fSJ; arc=none smtp.client-ip=101.71.155.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1765964338; c=relaxed/simple;
+	bh=6U8RmIsmmCspUZaxmJtWvDEjx4lOFUFJmBZcq1fdU/U=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=rYli+YBCvEicufZU01jeKx7SbaPntqrTQMfhIDovvQruS9af4uBcxTw834AaxBr/lV5vUx1Hl8XhhYT3wKW0npr8Vn5svoTPBKLrkgqJBIKt9E9JpLk9KYAxsjNgnufaEZqKMCjLbejGVgoMuZg4oPR6jvLHXYdJds6s4rWVn/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OuG03UXx; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="Cj2L1fSJ"
-Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2d931e5a6;
-	Wed, 17 Dec 2025 17:34:07 +0800 (GMT+08:00)
-From: Damon Ding <damon.ding@rock-chips.com>
-To: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org
-Cc: Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	inki.dae@samsung.com,
-	sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com,
-	krzk@kernel.org,
-	alim.akhtar@samsung.com,
-	jingoohan1@gmail.com,
-	p.zabel@pengutronix.de,
-	hjc@rock-chips.com,
-	heiko@sntech.de,
-	andy.yan@rock-chips.com,
-	dmitry.baryshkov@oss.qualcomm.com,
-	dianders@chromium.org,
-	m.szyprowski@samsung.com,
-	luca.ceresoli@bootlin.com,
-	jani.nikula@intel.com,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Damon Ding <damon.ding@rock-chips.com>
-Subject: [PATCH v8 13/18] drm/bridge: analogix_dp: Add new API analogix_dp_finish_probe()
-Date: Wed, 17 Dec 2025 17:33:16 +0800
-Message-Id: <20251217093321.3108939-14-damon.ding@rock-chips.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251217093321.3108939-1-damon.ding@rock-chips.com>
-References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OuG03UXx"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b736d883ac4so873143466b.2
+        for <imx@lists.linux.dev>; Wed, 17 Dec 2025 01:38:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1765964336; x=1766569136; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6U8RmIsmmCspUZaxmJtWvDEjx4lOFUFJmBZcq1fdU/U=;
+        b=OuG03UXxMTUVXv5eu9JJw1ifKNNTX98MyKgdZXuNZNbr4HdPa4zBXizyqKZx6gLXMI
+         3vIc91slfOm7BWeTdRPy93AOIvQdPapvkJQG0eKJcaQANFwQszo2SuRqmOfvZ9pbpf3J
+         VLHrN3nxcpQfPitCubG8k9WZBWh51bA8x55zPAW5gndaBJgwRl5vqsuqnl+v68weqgMg
+         Rl+xaz/7k/dfOC+rwkGiFseGK5mpt5juPO3KRuivUM1ckylVkoAj91JU1zDCgz2TDthc
+         DTPvhd/OiKNrrNRoe28In9Ce7GmYvRGIc9jaeGBfuFymd8U1VQ50jtRrDkRyzPqwXK24
+         SFHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765964336; x=1766569136;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6U8RmIsmmCspUZaxmJtWvDEjx4lOFUFJmBZcq1fdU/U=;
+        b=qpdKR1+YpGeJs8tImFisXY/OG81tCCWJlDuupBa2/ybcpPn4dwTZG2RQnTUo/ZpraG
+         MX3020aF6ou4fKUgMrZEJTWM13S+O2Okokm5zcSBLkuSTboA6MJMcl/a3ehtKPcj4lRC
+         RQdYKDtlxnzCHsPkV29wGfmSCeqa5JKQpuZ0pRLMTrZCzS/oCHl4ZjT9FYfgt9LFw+W+
+         eTNUeLyu/sSozTiq5U7sPck6H53omKsBQhGQQmvglqVgD/RVKKISB0SfSgMy8tGzQBSx
+         YB6UPuubw1nXN+zGzYA4BUJoUEizGCU71CUUpr0wcmrKLRD+Agu5SYw2vjHoit22/pPY
+         F7tg==
+X-Forwarded-Encrypted: i=1; AJvYcCWUY4wPWwDHlZpxe6I/QIgr6FcKyWXiiY31z/jxBT0oTu88wE2a/Eku6IVvtd9ewBd6+vg=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx8IfTsx25ngmB2zxS249tsmtcgaPnhMwUeJV8cKnQahJUgjkc/
+	duWCIlaN/WXPVji5T//AJqLft6CQyRF4YkOexGCna8pdg2o/8bhYRkcc
+X-Gm-Gg: AY/fxX4eIx36HgkhZ95SICJyf8YJYQsLJXcmUy99QDg01mvpfUeN+RG4zbr9z14Yean
+	HWh54lXs0DF5nJu6303tRhuZ26G504DKs9M6MxmDhuJ0ov4VSpEY9c90unU1FhvrrwBA/Bqa5RC
+	zi3h2wahV6BInhs4M9VIFnOYULyKcUR0F+ahjKqXOjc3SI885GUZvWoelCe35d4APJeYIL2nfIa
+	BrTQvY1jrwa2yXQ9pTvzQlVrHeYt5qWnTHsAamgrw/QWoD+hidzOT5gLeM5uCKPLnx9B+u0kOr5
+	hQYaIvlO7y59Ho+gTjkTLOjpl1v0lXJczguV0hjuIMlooPyeS+oXTdD76rG2caeVu1Scbmzr4Wz
+	Q+xM8J6PePO3t6ua0C3LJc8kiAci3R5bJ67W48/GurWhlcX+0BOsjnUWNB9BI0+8WyUyyhqUFFI
+	8B4mne8zvoiD2SrrEHXUpQKpog+b13JYE9bIzaGy949Uo=
+X-Google-Smtp-Source: AGHT+IFzAKXXuZny9gStK6VTzPjayW/7SjoVngvkKhxYreDaWZMWb0JOiqkX6kUUWkxYAZiqBvU7iQ==
+X-Received: by 2002:a17:907:d92:b0:b76:7b85:f630 with SMTP id a640c23a62f3a-b7d238fa0abmr1684969466b.34.1765964335319;
+        Wed, 17 Dec 2025 01:38:55 -0800 (PST)
+Received: from [10.25.213.104] ([128.77.115.158])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7fbd7a55dfsm1070592566b.25.2025.12.17.01.38.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 01:38:54 -0800 (PST)
+Message-ID: <23326a3a-fd1a-440c-acd6-28d2e7c0f186@gmail.com>
+Date: Wed, 17 Dec 2025 01:38:56 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9b2ba8e60103a3kunma9c945a29ef5a
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGUgeQ1ZDHkxKQ0tOSB1JSEpWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=Cj2L1fSJClE694Ce5sMv94axfYqBoBNspYOfrbkGb+OEP60x9svOzGZiujq4R4f9ox4PCLeEJDmhKNHVc4fsSsP7YHjfrURArMzhmhFtSdW6PdLmZSsdWST07TYHSTSh/dqEOj4VPXgLY8NYMzpSp3VGRDpz1c0uQP6D1hUfyWk=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=b4eLcONxj3fXb5R2acgcxDhVDGBywKwE0CE0kXriyQY=;
-	h=date:mime-version:subject:message-id:from;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/5] Add support for i.MX8ULP's SIM LPAV
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>,
+ Daniel Baluta <daniel.baluta@nxp.com>, Shengjiu Wang
+ <shengjiu.wang@nxp.com>, Frank Li <Frank.Li@nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Pengutronix Kernel Team <kernel@pengutronix.de>
+References: <20251126124218.803-1-laurentiumihalcea111@gmail.com>
+Content-Language: en-US
+In-Reply-To: <20251126124218.803-1-laurentiumihalcea111@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Since the panel/bridge should logically be positioned behind the
-Analogix bridge in the display pipeline, it makes sense to handle
-the panel/bridge parsing on the Analogix side. Therefore, we add
-a new API analogix_dp_finish_probe(), which combines the panel/bridge
-parsing with component addition, to do it.
 
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+On 11/26/2025 4:42 AM, Laurentiu Mihalcea wrote:
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+>
+> The LPAV System Integration Module (SIM) is an IP found inside i.MX8ULP's
+> LPAV subsystem, which offers clock gating, reset line
+> assertion/de-assertion, and various other misc. options.
+>
+> This series adds support for the IP by introducing a new clock HW provider
+> driver and by modifying i.MX8MP's AUDIOMIX block control reset driver to
+> allow it to be used for i.MX8ULP's SIM LPAV as well.
+>
+> This series is a spin-off from [1].
+>
+> [1]: https://lore.kernel.org/lkml/20240922174225.75948-1-laurentiumihalcea111@gmail.com/
 
----
 
-Changes in v4:
-- Rename the &analogix_dp_plat_data.bridge to
-  &analogix_dp_plat_data.next_bridge.
-- Remame API analogix_dp_find_panel_or_bridge() to
-  analogix_dp_finish_probe().
+Hi Shawn and Philipp,
 
-Changes in v5:
-- Select DRM_DISPLAY_DP_AUX_BUS for DRM_ANALOGIX_DP.
----
- drivers/gpu/drm/bridge/analogix/Kconfig       |  1 +
- .../drm/bridge/analogix/analogix_dp_core.c    | 48 +++++++++++++++++++
- include/drm/bridge/analogix_dp.h              |  2 +
- 3 files changed, 51 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/Kconfig b/drivers/gpu/drm/bridge/analogix/Kconfig
-index 4846b2e9be7c..964122b5bd39 100644
---- a/drivers/gpu/drm/bridge/analogix/Kconfig
-+++ b/drivers/gpu/drm/bridge/analogix/Kconfig
-@@ -29,6 +29,7 @@ config DRM_ANALOGIX_ANX78XX
- config DRM_ANALOGIX_DP
- 	tristate
- 	depends on DRM
-+	select DRM_DISPLAY_DP_AUX_BUS
- 
- config DRM_ANALOGIX_ANX7625
- 	tristate "Analogix Anx7625 MIPI to DP interface support"
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index 81c6e81dd352..933f1843777f 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -20,12 +20,14 @@
- #include <linux/platform_device.h>
- 
- #include <drm/bridge/analogix_dp.h>
-+#include <drm/display/drm_dp_aux_bus.h>
- #include <drm/drm_atomic.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
- #include <drm/drm_crtc.h>
- #include <drm/drm_device.h>
- #include <drm/drm_edid.h>
-+#include <drm/drm_of.h>
- #include <drm/drm_panel.h>
- #include <drm/drm_print.h>
- #include <drm/drm_probe_helper.h>
-@@ -1581,6 +1583,52 @@ struct drm_dp_aux *analogix_dp_get_aux(struct analogix_dp_device *dp)
- }
- EXPORT_SYMBOL_GPL(analogix_dp_get_aux);
- 
-+static int analogix_dp_aux_done_probing(struct drm_dp_aux *aux)
-+{
-+	struct analogix_dp_device *dp = to_dp(aux);
-+	struct analogix_dp_plat_data *plat_data = dp->plat_data;
-+	int port = plat_data->dev_type == EXYNOS_DP ? 0 : 1;
-+	int ret;
-+
-+	/*
-+	 * If drm_of_find_panel_or_bridge() returns -ENODEV, there may be no valid panel
-+	 * or bridge nodes. The driver should go on for the driver-free bridge or the DP
-+	 * mode applications.
-+	 */
-+	ret = drm_of_find_panel_or_bridge(dp->dev->of_node, port, 0,
-+					  &plat_data->panel, &plat_data->next_bridge);
-+	if (ret && ret != -ENODEV)
-+		return ret;
-+
-+	return component_add(dp->dev, plat_data->ops);
-+}
-+
-+int analogix_dp_finish_probe(struct analogix_dp_device *dp)
-+{
-+	int ret;
-+
-+	ret = devm_of_dp_aux_populate_bus(&dp->aux, analogix_dp_aux_done_probing);
-+	if (ret) {
-+		/*
-+		 * If devm_of_dp_aux_populate_bus() returns -ENODEV, the done_probing() will
-+		 * not be called because there are no EP devices. Then the callback function
-+		 * analogix_dp_aux_done_probing() will be called directly in order to support
-+		 * the other valid DT configurations.
-+		 *
-+		 * NOTE: The devm_of_dp_aux_populate_bus() is allowed to return -EPROBE_DEFER.
-+		 */
-+		if (ret != -ENODEV) {
-+			dev_err(dp->dev, "failed to populate aux bus\n");
-+			return ret;
-+		}
-+
-+		return analogix_dp_aux_done_probing(&dp->aux);
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(analogix_dp_finish_probe);
-+
- MODULE_AUTHOR("Jingoo Han <jg1.han@samsung.com>");
- MODULE_DESCRIPTION("Analogix DP Core Driver");
- MODULE_LICENSE("GPL v2");
-diff --git a/include/drm/bridge/analogix_dp.h b/include/drm/bridge/analogix_dp.h
-index 3428ffff24c5..bae969dec63a 100644
---- a/include/drm/bridge/analogix_dp.h
-+++ b/include/drm/bridge/analogix_dp.h
-@@ -30,6 +30,7 @@ struct analogix_dp_plat_data {
- 	struct drm_bridge *next_bridge;
- 	struct drm_encoder *encoder;
- 	struct drm_connector *connector;
-+	const struct component_ops *ops;
- 
- 	int (*power_on)(struct analogix_dp_plat_data *);
- 	int (*power_off)(struct analogix_dp_plat_data *);
-@@ -49,5 +50,6 @@ int analogix_dp_stop_crc(struct drm_connector *connector);
- 
- struct analogix_dp_plat_data *analogix_dp_aux_to_plat_data(struct drm_dp_aux *aux);
- struct drm_dp_aux *analogix_dp_get_aux(struct analogix_dp_device *dp);
-+int analogix_dp_finish_probe(struct analogix_dp_device *dp);
- 
- #endif /* _ANALOGIX_DP_H_ */
--- 
-2.34.1
+Gentle ping on this.
+
+
+Thanks,
+
+Laurentiu
 
