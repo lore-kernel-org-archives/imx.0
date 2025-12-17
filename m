@@ -1,214 +1,219 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013031.outbound.protection.outlook.com [40.107.162.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f194.google.com (mail-pf1-f194.google.com [209.85.210.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA5B61668
-	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 19:19:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765999180; cv=fail; b=mmx2UiOrlRiwy+kdk+FL+Pf8Vdwr+1lFr0zDGs6kODZ43ElUhzV5AwO69BfvQz0HhHjOA2qQfXYEsEHOp123dkpgVY4z8bOviarsG7aVMWwgzP3v5d5cbTR4j3r7A+kasflwgZGT57nPYf85px2cbJYh3pHgXts6rMGL2jrWoDo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765999180; c=relaxed/simple;
-	bh=LSipYa9bbB1pA/ivUT0X2ASAt3btVkTCtHo02ftVti4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ZrWXjfqm+g7Z4uvdz2gNmQ8Hcaz7vUepAMmpjqMnh+JqxjhO/JO/uH5vEjOFYiw0lcZ5GhiW50XfklzWipwiczGfaLbguHHH25/3J1L3jv40s3zgdQn9BDcvjgKDleOd84OZSEuiNwm2KSGA+W0hTlpLSyPs0ULYZ5VIatbDUXQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=O2KwuoGP; arc=fail smtp.client-ip=40.107.162.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE06274652
+	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 20:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.194
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766001938; cv=none; b=NBMTYh5fmg1CIwJzvnDvuHmECrxeyX20LYdYpNOVXPaC7C9UbBrgOrM0YoH2lfCsMmhsZsqiI1GzuhzOjJsz6ialjLYn+UmVF0+vIKP/mveAiKafZAkrO1mQnN6FY4RTi9EgjVv2VpPIy0/ouOFGsWw2oz1B07950ShJcni2hmE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766001938; c=relaxed/simple;
+	bh=kHsJJXikGda2OOJmHWSibF48zid1V8ZPxUY3m+9TzjQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n5TEgm6nXsg6Iu0Spx+NAe0+QXdQPEKoHLQhHuW5dkfPf9NnlCof/fjTzEu4YSxU6qmIsm/p/SVAJOZDE8ZbJIoouNO1y873nWV33nkQhqv4H537CqFD0iJYwq/aQsCeHH446x0DbuGiZIZMXsQYwkVYWz2CzyImvXxFb51yENg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J/s5Y9kQ; arc=none smtp.client-ip=209.85.210.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="O2KwuoGP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jgskuyzA6esYZRzGSsAKU5aMA7SFtH5UDtE97DtFSjw0g7Geo4/voKSIZKP7AiIrMZvMdB4Ynl8L3Szqspc9IIyQ1Gbpd96jqmC6JinPpvj6DI08pHcE722yhlAbPKmUQHV2P6sAp+VNSy9KqYwWIbN2jqhnVDhOLcC2eKU+gC70Y2H9ZeX1Sx2UwP1RBZN5WBBLQWbuZrxv1l6SVcl8q5czeu5VpGjvGyZR7DdWXgZUd1SRNa2tG7aEcSl4LuNBWMGZYKqfK2d9kkD+LKzh4SLayd033S903otQ0Oz/JfhfxWIkBV4wyPSZV5OGZ05pVswexe2wUtp7v+xJ20GW8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hBD8zTV/fZZabLsCtTOJeEByxi2eZY1xLjHhJuYgSgk=;
- b=AnPArGPn9sHm6xtD+L3nYJuvBeR+5DaMB5oub1EbnU954EyisyDS3xwb6F9J6XdOMJ30fUnxlfw0hHbLik6dmWgLkE5qSYqPXZ4I9BWcrQUT+V0gi60/sWoQW+4gdMfPP6Po/psEwSsrcjOBf469S2MPDAhzzVD6eqM168aYgcLCLnK1hLpbK57UPx+Ecipm+FJiNM3QHtJH4LJ3kpmpsq69/A3ECsqgsHDwEd4fyojINmUX7b6lEG6b/TXhi1NHaZHoYjAGGK1eNhrF9Wm8ipRoSwMTnqcuauUQGw66YZlPTqyWf/2JeX+U9fQx7ZmI8hcCcNeTJA9WgiiXiuTjsQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hBD8zTV/fZZabLsCtTOJeEByxi2eZY1xLjHhJuYgSgk=;
- b=O2KwuoGPJSIw20Kg2DO88iuTYMg/weBrIEQSLUPRN1lqbdvYXcB9LJFXeXEBro2nHKiI572p1o2qbuUyofZZBO5b9/gnHfd+mRS/CC2tj9geGIeotf98NXIWmEmw2MDKY2oSZv4Mrd8LxP4Ztr2VevyZSIcXwiHWB52O9eywmcCfuePJsDe/iTVfyZ4Hsu6IcDFyZ0mMLSG0Dqp1UWZakW94pIzQCgr16x8SPcwVqtGBlRnaosI3tfI6suqZ5fJup3fLF2W4dIsLK+3z/+TKwIsf6/ryxdCucY3lJuvUEYWRuxGkb+VmRjOs6F/UnjE3Tx1SXFHLY+eNB+CDcozVcw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
- by GV2PR04MB12018.eurprd04.prod.outlook.com (2603:10a6:150:30d::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9412.13; Wed, 17 Dec
- 2025 19:19:35 +0000
-Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
- ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
- ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9434.001; Wed, 17 Dec 2025
- 19:19:34 +0000
-Date: Wed, 17 Dec 2025 14:19:24 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Chester Lin <chester62515@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	imx@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-	Jan Petrous <jan.petrous@oss.nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Lee Jones <lee@kernel.org>, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Matthias Brugger <mbrugger@suse.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, linaro-s32@linaro.org
-Subject: Re: [PATCH v2 0/4] s32g: Use a syscon for GPR
-Message-ID: <aUMCPKicgsoICAJ0@lizhi-Precision-Tower-5810>
-References: <cover.1765806521.git.dan.carpenter@linaro.org>
- <aUAvwRmIZBC0W6ql@lizhi-Precision-Tower-5810>
- <aUBUkuLf7NHtLSl1@stanley.mountain>
- <aUBha2/xiZsIF/o5@lizhi-Precision-Tower-5810>
- <aUBrV2_Iv4oTPkC4@stanley.mountain>
- <aUB4pFEwmMBzW52T@lizhi-Precision-Tower-5810>
- <aUEQkuzSZXFs5nqr@stanley.mountain>
- <aUFvvmDUai9QrhZ2@lizhi-Precision-Tower-5810>
- <aUGlMP7J19L_AHF2@stanley.mountain>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aUGlMP7J19L_AHF2@stanley.mountain>
-X-ClientProxiedBy: PH7P223CA0028.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:510:338::29) To DU2PR04MB8951.eurprd04.prod.outlook.com
- (2603:10a6:10:2e2::22)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J/s5Y9kQ"
+Received: by mail-pf1-f194.google.com with SMTP id d2e1a72fcca58-7bf0ad0cb87so7786841b3a.2
+        for <imx@lists.linux.dev>; Wed, 17 Dec 2025 12:05:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1766001936; x=1766606736; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=KkZw88bP/WyfJ8Slp31S2XqQ4vEo9HvTWj1BeMFalg4=;
+        b=J/s5Y9kQkqSvGB+UPHU/cYRyccR3M1EheSvloESzd167/8a9lL4HFLdavDeKRwl8gR
+         8YsMn5D007r4wmYr0uAawICc7ZniMzRc3F+Jc5WwcmzyULITwJVgnys+uOk9qYNxZPt9
+         3xEYDecT+adFuM5JVSUbjAXy4JwHM2oOZcrxrNZfcxvIek99EQgmlZiOJ8dKf9aQM8ZN
+         6q/nl3HkSrWPzvrF847O1Dd8YmPtVHFapDmcQlvwCG2rnySAnWYnMnPkbyi0simM8plv
+         4F/hDdlVR2f8Dy9uC5ncWRBvriIrwAp3gArlytV4J74ayb4YGaXciDO2aWNHev5NR0Jo
+         uecw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766001936; x=1766606736;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KkZw88bP/WyfJ8Slp31S2XqQ4vEo9HvTWj1BeMFalg4=;
+        b=jB04CEo+gJnl9p2Nkq0p+Ce2UwlCBwXNga+oteKRoZeYM/z9CrzFpkgWYmWgATlzDu
+         dSBn+TiOgoCEs/mMKpBkGuyvbk2IaPtnBHmeBwuXUAfWnZaYe5mWnIkoun0htsweyV18
+         dcKL2PHjIJqauC8Ny+JQjYHNN5RWpWiSjS9gj4Mi93AhSVm4U9M08Xi4ZjdThurH4Qoo
+         BMngl+Q76wMjKUMGcux1Pd3FXzj04JgZvUBaTGQ+NPupXjb4x7sy3yADzGk3drOo7CvB
+         UQ06+D8LxR0sYwxqJ+pXwSB0UZ6Xf2HgYvNdfMFv+fCzHylIOuLtznLQAQ6FlC21tBRv
+         lH8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXKdBh2ED52l2irE73FVJnmZ79u011raK/4cY58rby9suWOwL/IsEJb45TDfApSlfJzXeA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxflGpUhH6hUC2DwFakm/+jnF2did10DOoQii8DdVGr7t0U4baH
+	RI4nRbV7bYGXF1i5PzhLl9laSgxqEKgzRXd6ZMqeiWjtgteNnN2GBxBDQojsSGXxilM=
+X-Gm-Gg: AY/fxX4eApZUNyuG4bh2CYj3aoQvT/jyBOIRCs3O6SH7nHa5Vi+/VVRmnU89zE3a2Vs
+	zIZYrT8beH3WT/rA2VtltEPBFeYwOgu4CzXzJsHntGB0WNKTX7TO1E1yYNrjZlqX8UtnQP84njU
+	XbmP/0/ToP8lV+kqudWXhbFStX0gR7t0WZdTXUVJboe+O3xU7yJpwrm74hcI+ENVeoXqJvm/LTs
+	67gpe5Pc3y0dAG3cEjs8oIrNs5WDq3a/Tpn/BaMzLNtjR3qFc1FldFQVaNLXYZRf9SaI9PJLBVU
+	3PvouqWjRUNLIcHBtkFkv1+1WFrN3P9hxXu17HX4eswnjC2mMsrBY/UHj6leAhdvguQXBNnsqu9
+	XZhNeRxiAT1Yrq0LZ2gVwVVzDZFbJU5Y/iWnATMVg73Pk06AR1f2jBAi6KgNYCZL9Jk9TUAMJKz
+	sNfkpIKlTMN3fc7kD1XrjiQgc=
+X-Google-Smtp-Source: AGHT+IGVFo2yytymuAHw5hqToh3gZn9Ym3kLzhpy9bauNTlCV7XCowv2jhys9XWTGUuET8Vi204aBA==
+X-Received: by 2002:a05:6a20:7344:b0:366:581e:1a07 with SMTP id adf61e73a8af0-369afff165cmr18496165637.60.1766001936049;
+        Wed, 17 Dec 2025 12:05:36 -0800 (PST)
+Received: from p14s ([2604:3d09:148c:c800:cfb9:c35:9f28:8222])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c1d304d1909sm206545a12.31.2025.12.17.12.05.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Dec 2025 12:05:35 -0800 (PST)
+Date: Wed, 17 Dec 2025 13:05:32 -0700
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Daniel Baluta <daniel.baluta@gmail.com>
+Cc: Daniel Baluta <daniel.baluta@nxp.com>, andersson@kernel.org,
+	m.szyprowski@samsung.com, shawnguo@kernel.org,
+	kernel@pengutronix.de, festevam@gmail.com,
+	arnaud.pouliquen@foss.st.com, robh@kernel.org,
+	geert+renesas@glider.be, linux-remoteproc@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, iuliana.prodan@nxp.com
+Subject: Re: [PATCH v2] remoteproc: imx_dsp_rproc: Fix multiple start/stop
+ operations
+Message-ID: <aUMNDPDgN7ACvry9@p14s>
+References: <20251210154906.99210-1-daniel.baluta@nxp.com>
+ <aUHZaapZ1IAs_mRE@p14s>
+ <CAEnQRZC0WU+MGfZ5z3yJCz==MBCcFG4BUwNs2v1ABOMkiRbPrw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|GV2PR04MB12018:EE_
-X-MS-Office365-Filtering-Correlation-Id: 60255e1d-cbec-4359-3b23-08de3da13642
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|52116014|376014|7416014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?X1VQzM3FMzown0FPUxKF+plHx73yXdUZ2v3k3ikQOqnW9ER2gj4r7vz14ElT?=
- =?us-ascii?Q?7ffpWuR4kaZXRyp2oT+zg5Pj/rqU2Ys3KaQvlO8i8fL2cXZ/NlVLn8ey4vrG?=
- =?us-ascii?Q?TQHGgHBrqnXQGnbYVzF1LpZP/280cM0xD7+QMocb0hUFeJebECPKYA23Qo9z?=
- =?us-ascii?Q?RVZCgD2+pw/+Wkr+GivVH4oIQ1BypLHeU+8dfNlfcqqpT+RzX4sqJc7dvs1I?=
- =?us-ascii?Q?0ljaRwjJFMilwDNLfAZ/2cJWhXgD744bbvq5FzZRYh4fthBvMDEIx6entm55?=
- =?us-ascii?Q?87T/gYwSDxM1HYW02F2HNcDt1SCtiUMUhrGxZYRyeCmXvv/jrOeVZmlVWKkt?=
- =?us-ascii?Q?p85MDaQujd/LWT/TAu8KOdhHT4xtjNnO0830BsVaz30mFKhzL8kA8ARgqMuV?=
- =?us-ascii?Q?HZxNZEiapwlOU1Vb1CrnNZiocHelE+gU5GRviU4H80T1QdK7K9BmQ1WtmLtJ?=
- =?us-ascii?Q?c1k/A8p8pvF/+yK40BnK+i22fS8ZovMisKLvqOh2YiKneSDF7WLraaxA2xWe?=
- =?us-ascii?Q?Pw7FnZ7MceTs1tKRFyYFGnuP4/ZEfWUnu30qtqq9ubFy+CNWbgPAc6y29wMM?=
- =?us-ascii?Q?CMIyeF3oHtepU3lGAPrRi+v6zVfpzLJwHwfSNglPnC6+JRjqwbvs87Hqpslo?=
- =?us-ascii?Q?547kJy9jABvlaHPhsfSWaMhOGH+5TLb6LK7RD/3/Iyp8+sKZN6bK8qFFbNME?=
- =?us-ascii?Q?aFGUawJ4niR4NaLd0U1Eotpga9Z2xJ6xBabdL8Mavpl4h+rEyKXu7WYX0qvd?=
- =?us-ascii?Q?UVeoYlZkDMpn/H8JiEl2eKi8YgF1vpMD1oJhBm2XsazibRSFvt+hKI4GU0Ny?=
- =?us-ascii?Q?eDKb3bryIoOWHfymXDc34fBCUZmESwoLoC42YowSaZl7s+PhBXsKlXdoQVCl?=
- =?us-ascii?Q?I57yqn/q06qc4PkOu1H+/tsjulqwbNhHeb94fp5XwPEn2Z6YVoV5f8r73+nt?=
- =?us-ascii?Q?cMBTX1QtGWiy2Z4Swhj2vJEb5yFkJILxFO2i0F+v7voLMbmzg8KwDtHXAA0W?=
- =?us-ascii?Q?15axpRLGFB6tE7x1LMPQLQ4G453emLMRGCP+jBk0EqTxwpajxc17xrgSxUYe?=
- =?us-ascii?Q?h4GCR8IJVD2cDyA0MBmPK1nEwQoJn6NNATf6GhIyOK/+7JiG+dZRT7DbwMOD?=
- =?us-ascii?Q?8Ixv8on7BPkrAC5V07/YA+XbWqF5xcPju81pLA7txhRGXVDuQ3HHz+k45YFV?=
- =?us-ascii?Q?+4NaCYpqvykioRAhZ7oQdmGEoFGX+TuDZx9L7y0GTvhwdICb5oAn4TqZeJLI?=
- =?us-ascii?Q?JnQSlncTYhAt+1gg/MJMA4suNbtZcJnuRrjPC1DV8YPf1BB854ge8fQyGudr?=
- =?us-ascii?Q?5NSgruyRcfsLtNryW/fqBYqmrG0h404DcHjcgCvtICETqmABIPWdBdMr+Sz0?=
- =?us-ascii?Q?o2liulkW3vgFtTJtuEC0G9wQzV4TYa+r4PNg4jFQFEoTF98PfZP9xQZkrRYy?=
- =?us-ascii?Q?BSWG0Y+rPDOvqGr1Q5PJ1pL22qa+8ijkfuUVoJK3WggvLCiWSlKWpbpk6jo3?=
- =?us-ascii?Q?gcJV7DB8fjjZwzB9SJw9dMKuXl8N4EmM6PZH?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(52116014)(376014)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?RHhU13zj3m8TXpjT/GXXwx9+Kv3NNnVfxdx01gi07AV1hneb+BPj+KwXqaua?=
- =?us-ascii?Q?dyfc5ldgOLw+HTHPEdxZUOBBisdOfsEpuZwSzljqY8tUBoN6cbgA6pCt+5LV?=
- =?us-ascii?Q?lZw3sSAcs7IFVFwCqufHA8IvYfDa4vMuWYmfV0Ums9IzcLhAj045p0KPHhKj?=
- =?us-ascii?Q?qfcYke6p1ZMUDF1Olybh9YHh8+IgX0ase/j+i1thcyqHfljy9srs7/+4cjTn?=
- =?us-ascii?Q?SI7uUMPFhP33k58wj/HuqCHQQ1pVmQaJxTF7j5D9F30zgnXdYKHG2gcJhM3C?=
- =?us-ascii?Q?Cbfxrkhk+Z4ayxFXG+t0JGvnhFeoOc6818F56aSjYIw4LPDCD1Zsg4pQKXeY?=
- =?us-ascii?Q?WivKYeAB/W6BcP2ENT4k2VJU4HNlWZ3GBXNVEnjSgSmwFqStGpgSPTbxDmNd?=
- =?us-ascii?Q?upKe2eL96BpeQPps9U1CqnVNovz+f3nnt3C/cP5nv+8cU7apT4NL5+zekQp8?=
- =?us-ascii?Q?xFdGyM35V18ciZzSwsxOM/3G0T0SNrajxi4zw3DsFG2QQjD+ROrYXIH+2NAk?=
- =?us-ascii?Q?oQOwGLo/sI0RlSqt47p+q4DaMR8eSoEQX4YNe619GCK34kff8G79FeukOn1k?=
- =?us-ascii?Q?eGPl+8NZb5KKQvkNQ2PRg2EgcNITcQb7510clXu6tgtANPQuF8GUNxPeXFKM?=
- =?us-ascii?Q?yxSICmA+SV9uifuNpSNSbA/h6Zy7a26MNU0XXVY+U9WLUsYuHSB7yDRn+++E?=
- =?us-ascii?Q?GeLWDEUjeRO24Wi7Ik3tCoo9W3t4UZHXNP4W70gjAyn/QKecqSy3YfW/xw3Y?=
- =?us-ascii?Q?QkGJqS+lBXc1/+YuScA1hu/shejqOTQgWiRoz//bzYlQdnvSbaaDNahCnEqQ?=
- =?us-ascii?Q?VqdK/y+sXW0lkbYq4PEROPzDwJfsSNQxlOsB6h8w0Zn9C8EzZ6dtbnfYT+FE?=
- =?us-ascii?Q?/uiuDj6PovMTqcABNuXhH2brdC94bIpA9LSGpBa4A9myaiRqoR5x8h8QQ7Km?=
- =?us-ascii?Q?UyHZ1N4oKezLcRFUDaOxij+2mZg1u8iJy8CuFLTmj+juJqTdTEQW5K7cdQlN?=
- =?us-ascii?Q?7Zaa+DFIaWIcJBPPxhZ5s7Mn4qdXuLuQ9D7biTCkxIMAueI9yqw2VoWzxGZe?=
- =?us-ascii?Q?MpwR3wzdN7fEviinuja17Ox1PpR/bXYSbsKGNXy+ZY7SCuVvSPGzgBs4X2T8?=
- =?us-ascii?Q?rHrF369GDuMohCnAfCKjnDcghueCXjFb/GX77mRuNpVDYl4l1ghrJv7yndr3?=
- =?us-ascii?Q?D4wJN36cIkS+EQPzlLM0tOWQwjOXf7bFTVezc9u0l5K5SpkuZWEq0w5YamaI?=
- =?us-ascii?Q?NqgQ2r2zDPnziDEIQPxOF/HLBxOf1P6O4HheLmmw5dAUY5bDclNlWrruqhxn?=
- =?us-ascii?Q?xmk64Y5V3wH5g2/6lnGpV25A4Xe7YFHiuIsHRqptyOKg/OpIIU5XtuG35VSL?=
- =?us-ascii?Q?3f9hytb5lO7g4P3DAqGv528/hc1xt+v5DPYFYXOUjJee7kzXjAtVIrqYNXP+?=
- =?us-ascii?Q?m5qnHDDtivYHbh3JN6aiWjx1+oZbYXkEJAYLXKbtu1ullUL+KAi7qH+g3dKa?=
- =?us-ascii?Q?IcduodVZg19l1RFgndKbs7ZEEZ23tfmiIivO9tcCT61E9teKoanTj2YVXXNH?=
- =?us-ascii?Q?NFlE+TeOce0Yxf59OMc=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 60255e1d-cbec-4359-3b23-08de3da13642
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2025 19:19:34.6620
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: az4Jt3w73zZI+thgOwY3qY1NwF9KTsUvvFhvoB48WJBx45vc0FykbO0tZfP4ZtpqJEg+xpSVj3tZfc2BjF17Lw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB12018
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAEnQRZC0WU+MGfZ5z3yJCz==MBCcFG4BUwNs2v1ABOMkiRbPrw@mail.gmail.com>
 
-On Tue, Dec 16, 2025 at 09:30:08PM +0300, Dan Carpenter wrote:
-> On Tue, Dec 16, 2025 at 09:42:06AM -0500, Frank Li wrote:
-> > > >
-> > > > Why not implement standard phy interface,
-> > > > phy_set_mode_ext(PHY_MODE_ETHERNET, RGMII);
-> > > >
-> > > > For example:  drivers/pci/controller/dwc/pci-imx6.c
-> > > >
-> > > > In legency platform, it use syscon to set some registers. It becomes mess
-> > > > when more platform added.  And it becomes hard to convert because avoid
-> > > > break compatibltiy now.
-> > > >
-> > > > It doesn't become worse since new platforms switched to use standard
-> > > > inteface, (phy, reset ...).
-> > > >
+On Wed, Dec 17, 2025 at 02:57:24PM +0200, Daniel Baluta wrote:
+> On Wed, Dec 17, 2025 at 12:13 AM Mathieu Poirier
+> <mathieu.poirier@linaro.org> wrote:
+> >
+> > Good day,
+> >
+> > On Wed, Dec 10, 2025 at 05:49:06PM +0200, Daniel Baluta wrote:
+> > > After commit 67a7bc7f0358 ("remoteproc: Use of reserved_mem_region_*
+> > > functions for "memory-region"") following commands with
+> > > imx-dsp-rproc started to fail:
 > > >
-> > > This happens below that layer, this is just saying where the registers
-> > > are found.  The GMAC_0_CTRL_STS is just one register in the GPR region,
-> > > most of the others are unrelated to PHY.
+> > > $ echo zephyr.elf > /sys/class/remoteproc/remoteproc0/firmware
+> > > $ echo start > /sys/class/remoteproc/remoteproc0/state
+> > > $ echo stop > /sys/class/remoteproc/remoteproc0/state
+> > > $ echo start > /sys/class/remoteproc/remoteproc0/state #! This fails
+> > > -sh: echo: write error: Device or resource busy
+> > >
+> > > This happens because aforementioned commit replaced devm_ioremap_wc with
+> > > devm_ioremap_resource_wc which will "reserve" the memory region with the
+> > > first start and then will fail at the second start if the memory
+> > > region is already reserved.
+> > >
+> > > Even partially reverting the faulty commit won't fix the
+> > > underlying issue because we map the address in prepare() but we never
+> > > unmap it at unprepare(), so we will keep leaking memory regions.
+> > >
+> > > So, lets use alloc() and release() callbacks for memory carveout
+> > > handling. This will nicely map() the memory region at prepare() time
+> > > and unmap() it at unprepare().
+> > >
+> > > Fixes: 67a7bc7f0358 ("remoteproc: Use of_reserved_mem_region_* functions for "memory-region"")
+> > > Signed-off-by: Daniel Baluta <daniel.baluta@nxp.com>
+> > > ---
+> > > Changes since v1:
+> > >  * https://lore.kernel.org/imx/091a4f29-5435-428a-9a1c-ef82465211cb@nxp.com/T/#t
+> > >  * took a different approach and instead of partially reverting the
+> > >   faulty patch, used alloc() and release() callbacks to handle memory
+> > >   region mapping.
+> > >  drivers/remoteproc/imx_dsp_rproc.c | 50 ++++++++++++++++++++----------
+> > >  1 file changed, 33 insertions(+), 17 deletions(-)
+> > >
+> > > diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+> > > index 5130a35214c9..83468558e634 100644
+> > > --- a/drivers/remoteproc/imx_dsp_rproc.c
+> > > +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> > > @@ -644,6 +644,32 @@ static void imx_dsp_rproc_free_mbox(struct imx_dsp_rproc *priv)
+> > >       mbox_free_channel(priv->rxdb_ch);
+> > >  }
+> > >
+> > > +static int imx_dsp_rproc_mem_alloc(struct rproc *rproc,
+> > > +                                struct rproc_mem_entry *mem)
+> > > +{
+> > > +     struct device *dev = rproc->dev.parent;
+> > > +     void *va;
+> > > +
+> > > +     va = ioremap_wc(mem->dma, mem->len);
+> > > +     if (!va) {
+> > > +             dev_err(dev, "Unable to map memory region: %pa+%zx\n",
+> > > +                     &mem->dma, mem->len);
+> > > +             return -ENOMEM;
+> > > +     }
+> > > +
+> > > +     mem->va = va;
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static int imx_dsp_rproc_mem_release(struct rproc *rproc,
+> > > +                                  struct rproc_mem_entry *mem)
+> > > +{
+> > > +     iounmap(mem->va);
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > >  /**
+> > >   * imx_dsp_rproc_add_carveout() - request mailbox channels
+> > >   * @priv: private data pointer
+> > > @@ -659,7 +685,6 @@ static int imx_dsp_rproc_add_carveout(struct imx_dsp_rproc *priv)
+> > >       struct device *dev = rproc->dev.parent;
+> > >       struct device_node *np = dev->of_node;
+> > >       struct rproc_mem_entry *mem;
+> > > -     void __iomem *cpu_addr;
+> > >       int a, i = 0;
+> > >       u64 da;
+> > >
+> > > @@ -673,15 +698,10 @@ static int imx_dsp_rproc_add_carveout(struct imx_dsp_rproc *priv)
+> > >               if (imx_dsp_rproc_sys_to_da(priv, att->sa, att->size, &da))
+> > >                       return -EINVAL;
+> > >
+> > > -             cpu_addr = devm_ioremap_wc(dev, att->sa, att->size);
+> > > -             if (!cpu_addr) {
+> > > -                     dev_err(dev, "failed to map memory %p\n", &att->sa);
+> > > -                     return -ENOMEM;
+> > > -             }
+> > > -
+> > >               /* Register memory region */
+> > > -             mem = rproc_mem_entry_init(dev, (void __force *)cpu_addr, (dma_addr_t)att->sa,
+> > > -                                        att->size, da, NULL, NULL, "dsp_mem");
+> > > +             mem = rproc_mem_entry_init(dev, NULL, (dma_addr_t)att->sa,
+> > > +                                        att->size, da, imx_dsp_rproc_mem_alloc,
+> > > +                                        imx_dsp_rproc_mem_release, "dsp_mem");
 > >
-> > The other register should work as other function's providor with mfd.
-> >
->
-> Syscons are a really standard way to do register accesses.
+> > Was there a reason you kept those here rather than moving them to probe() as
+> > Iuliana suggested?  Note that I would be fine with this solution since this is
+> > how it was before, but if we have to go through a refactoring we may as well
+> > take those things into account.
+> 
+> Tried moving imx_dsp_rproc_add_carveout at probe() time but it doesn't work
+> because stop() will clean the carveout list and then the next start() will fail.
+> 
+> at probe()
+> imx_dsp_rproc_add_carveout
+> -> rproc_add_carveout (adds allocated carveout to the list).
+> 
+> at start():
+>    -> first start OK
+> 
+> at stop()
+>    -> rproc_shutdown
+>        -> rproc_stop
+>        -> rproc_resource_cleanup ;//cleans up careveout allocations
+> 
+> at next start()
+>      -> CRASH
 
-It is quite like back door. Many clock/reset also use phandle to node to
-controller by raw register read/write.
+I have applied this patch.
 
-> The
-> pci-imx6.c driver you mentioned earlier does it that way...
+Thanks,
+Mathieu
 
-It is not preferred when we tried to add new one. Give me some time to look
-for original threads.
-
-> The only
-> thing which my code does differently is I put the offset into the
-> phandle, but that's not so unusual and it's arguably a cleaner way
-> because now both the base address and offset are in the same file.
-
-It is not big deal about offset. The key is if use phande to direct access
-other module's register.
-
-Frank
->
-> regards,
-> dan carpenter
->
