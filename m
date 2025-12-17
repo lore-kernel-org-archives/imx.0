@@ -1,154 +1,226 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013031.outbound.protection.outlook.com [40.107.162.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFEB313E34
-	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 11:09:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765969743; cv=none; b=sBMchu0TpL1AXzTI03NsqSDGq+JnEezE/u8EL79fNmsY1O/fjltAhd/Ks41yvQzVrDY6ROo7jmWvUtXCG8jsFcgaTY9Gl76gq9RJ/CECQ//DeGIvtoidqDKH76iJwZatgXEFy5TSJuEd4E07/W6RWJK9UEwblr/O5wqCRUAAzY8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765969743; c=relaxed/simple;
-	bh=hmqOoZZJvHvHQXt9UC424KsCOsv4Rx0pjW0fYiw28i4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ujIcSCPFjH4hpfM3XWvXnvN5jwLpD5reCQYgrqco20qvHOQaQ9Dkwb62f7t6kDSTa09glQ+P/ps5Zp34Hl/Yhoe36aHJlsKfbqbQMxr3vRV8PSZ64QX37kmcIM4Tn/gLjx7srqCA49iQcT2qCb22ynYwnuwx05mLw//bFzzuZcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=eiT+qOKB; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAF3335556
+	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 12:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.31
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1765973623; cv=fail; b=bpxjbwSjgihZP71/gM54fqoH3jXpKuNkNJqoz64t+VJOt/WzGaFr0kNfLgHmUps1J5OkS3jsGtSlI+KdlR/ktm+eyvGFx09Xw7tXmjBlvwukxTnr+kMFs6a4ZDrdqRaNNg27MEFQGbjNi9E5x5r9IF2eKnbsjJ5Kte33EEuiYOc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1765973623; c=relaxed/simple;
+	bh=njNiwniHQPnjbQsK6SBumlk6bYMjK/x6VKuEL88vPK4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=YQ5w6kilMO0ukjMVGyR18wm6pRlSyJm/zUUdTK7+kyfPt556xujlJP5ksNs2xU6WYopLXsEdDv/LA7SgEF8mt8jZyeeRNJVqlZs+Kr2X/uQMtwnDwQsM0sSbSxiRJftGIz4hZ8X/qpj2f0kW3bW/xGxX9ha7v79LIntrW+IYO/E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aTQBj5yw; arc=fail smtp.client-ip=40.107.162.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="eiT+qOKB"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BH6pd1S1394915;
-	Wed, 17 Dec 2025 03:08:21 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=L5LfAcotcrApoC11pZx/JxZ2v
-	PnVWo323nWO/uSuVGM=; b=eiT+qOKBKXFLUlfIJE/OqlHxxJzcxqdo3khktYh7M
-	JJJoWnbK4zkGgbDEnQZs9zsorZZ/ePTPeyC0ddhc8GyBZ19Ei92iFcVXyZTUcAs1
-	QDgWLJhQQOh5utJBw2FSHF7HrKnjFQvzVIuQNK+htF059FH59R1vDTBg/5tzhwK1
-	VDkyGLnQonH294E6/vcOyUhLZ9xhGTXFW1xCx913kiNCEwjsUWCSyCGjD+GKyelB
-	3fddBPeHhr8qJlJwKdjCzkos7Vk68j2iDkyARKqWVZLX4y2SPIc7g82GBuN+iJ90
-	n6R5M6kdlfXnBYDgroEbEbHC8fGTH4nRzSronGt0zioqQ==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4b3qm30dvu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Dec 2025 03:08:21 -0800 (PST)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 17 Dec 2025 03:08:33 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 17 Dec 2025 03:08:33 -0800
-Received: from test-OptiPlex-Tower-Plus-7010 (unknown [10.29.37.157])
-	by maili.marvell.com (Postfix) with SMTP id 1A6253F7063;
-	Wed, 17 Dec 2025 03:08:13 -0800 (PST)
-Date: Wed, 17 Dec 2025 16:38:13 +0530
-From: Hariprasad Kelam <hkelam@marvell.com>
-To: Wei Fang <wei.fang@nxp.com>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <mcoquelin.stm32@gmail.com>,
-        <alexandre.torgue@foss.st.com>, <ast@kernel.org>,
-        <daniel@iogearbox.net>, <hawk@kernel.org>, <john.fastabend@gmail.com>,
-        <sdf@fomichev.me>, <rmk+kernel@armlinux.org.uk>, <0x1207@gmail.com>,
-        <hayashi.kunihiko@socionext.com>, <vladimir.oltean@nxp.com>,
-        <boon.leong.ong@intel.com>, <imx@lists.linux.dev>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <bpf@vger.kernel.org>
-Subject: Re: [PATCH net] net: stmmac: fix the crash issue for zero copy
- XDP_TX action
-Message-ID: <aUKPHdtAPDnMqB7X@test-OptiPlex-Tower-Plus-7010>
-References: <20251204071332.1907111-1-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aTQBj5yw"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iX53n6Vaw0x+7YynCMp3t9Yn9bAtQRT/Z2LQOYDBHYfA729J6BX9o4JQfCeJ9Aa09n2JWeMYnd/w/8c0eR4dvt4GEZ6gBIZCnl2Hju3juPsXALW6UyYN+T2iHB8kG9pYWDuGtnXgsiG1Dnlk9GNmF6iQD/H65XMK2XZ0zRUfkcST0liNBC6v6Oc4hNUKOojuvYqB6s8n4RFZykL3EKEkhpGJAqEXMQacUyLqaIO/r+CDsMv/9qiB/gekjcOUC5dwt/3Nee8acLqQb5cswT8Thw+nhjm2Rd+bP7WYrB7npybIhZw3CbAdhLvdNW6/h5qTweIhj9znWrg+h2dIDUZCnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=w9yCccN5nYfZFG6ZWU4TO7/fBda7cVlelOCirXwdQmE=;
+ b=EiQcpqMhiEQSMDU/0f+ZmFzHvhtX1toh8rZuvC8eP4uLXVYn7FW4oT/SszvXz10vbq8EKsLqO9PxmMhHSjxMetWp3DdWkCuSSc3K+vhCPyJgdFbEmfcLJVuJctsCW1AXCBxxMPQ7zDXIFM2FZVbJ5IzFAT8KuSnt+huMfplOYo9YLSoxAbp9+CWxwYsHrd2LPNQBgWJsJHNtTa71JZpy+uivopc0q6Q4An6g3nPjNiYSqTAH5tf0BWjhrOCy4Z6AZhxx+DynBezULXkL9/feXLEkWQ245EO+3FPHFcJbeYZQXsJmvPWwF7H2ttCuJz7odngz8iBAbv4GhYWYRJCSiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=w9yCccN5nYfZFG6ZWU4TO7/fBda7cVlelOCirXwdQmE=;
+ b=aTQBj5yw24J4ke5U5lJYzrhq/gcRbtR3TCQHA9smPiW8htSfLkQGXqEdqwXBuITB1IX6iq08ar2WxzfouObIHnF4eaYZtsGeZgZLxfufZ4LY1Zbo9E0vdC6wv6CKCubodafMNk9icFWHmkwCrkj0gHucGnwWXxIxtVIAzI3XB2UYPnQxmq4/pym1dgUdLm54xgf4rI5HdRBJBn9Og9UcZvn9VqTlKBcwwnschtX0EtdfM3wsT38rHetaR5UaPBwS+cDikcig39phgu7xy/3b2pBsW2CYtnDJYz+lGyNEscQWK5g1KfW1PuChyZjuDpYHB0g9Nx2KTDqUYGbIev8+1Q==
+Received: from AM9PR04MB8604.eurprd04.prod.outlook.com (2603:10a6:20b:43b::21)
+ by PA6PR04MB11804.eurprd04.prod.outlook.com (2603:10a6:102:524::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Wed, 17 Dec
+ 2025 08:40:05 +0000
+Received: from AM9PR04MB8604.eurprd04.prod.outlook.com
+ ([fe80::e751:223e:aa3d:5827]) by AM9PR04MB8604.eurprd04.prod.outlook.com
+ ([fe80::e751:223e:aa3d:5827%3]) with mapi id 15.20.9434.001; Wed, 17 Dec 2025
+ 08:40:03 +0000
+From: Pankaj Gupta <pankaj.gupta@nxp.com>
+To: Frank Li <frank.li@nxp.com>
+CC: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Shawn Guo
+	<shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+ Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: RE: [PATCH v21 5/7] firmware: drivers: imx: adds miscdev
+Thread-Topic: [PATCH v21 5/7] firmware: drivers: imx: adds miscdev
+Thread-Index: AQHca0fzBh349iqDGU2aBcz65HDXXrUeOU0AgAWeHMA=
+Date: Wed, 17 Dec 2025 08:40:03 +0000
+Message-ID:
+ <AM9PR04MB860463DED50B8371D349E3F095ABA@AM9PR04MB8604.eurprd04.prod.outlook.com>
+References: <20251212-imx-se-if-v21-0-ee7d6052d848@nxp.com>
+ <20251212-imx-se-if-v21-5-ee7d6052d848@nxp.com>
+ <aTxIsAQMe3sbxXQ4@lizhi-Precision-Tower-5810>
+In-Reply-To: <aTxIsAQMe3sbxXQ4@lizhi-Precision-Tower-5810>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM9PR04MB8604:EE_|PA6PR04MB11804:EE_
+x-ms-office365-filtering-correlation-id: 5dfc26f6-a445-4933-d313-08de3d47df90
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|19092799006|7416014|376014|1800799024|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?KOYrNxBU1NdICwktIlQ2w5EPljEoiAYewNZkf9IGMPK86KCQl1OrZWJeM0lm?=
+ =?us-ascii?Q?+QgsoYmgXmvFZV8u/7k2xfK2a6m5MNLZfis1ioZN1KHAVC1SC8m3I5i5AU0E?=
+ =?us-ascii?Q?yU/pX+yGRTjQ5x6iui3ILuOo3O1VTd104/wNwtRReK1qgtEMc1WSJZot0GJv?=
+ =?us-ascii?Q?vGyKOGEyVZxTRGo/bjGLXeO9LKRngmEOiGg7Nh1PZA0gNOTARmpvzAq93ZnD?=
+ =?us-ascii?Q?f1mHqPShOjEbtcA29WtHhb1TPkV2L9tjeHp9PIBbM+jlbspqb/QFEWPJnhGA?=
+ =?us-ascii?Q?20OESDZgJloYpaoaY/N6Koc5iOHGTcMqInOb/wAD5WMNbo7bHFHooY3+3ZPr?=
+ =?us-ascii?Q?DZKOwU00q0AWP83v5mmE+abIdMV+AbcpYODYikCowrPzCTvKCNK3Kvtvjyd7?=
+ =?us-ascii?Q?95dcp+rj9kv4rJgAb6B6u8cvS5V5z2/k4VfbKr7lJfKAxc/qnv/aYvFNsQ06?=
+ =?us-ascii?Q?MdaVtKpVdkD+PZotxmSvEcuvPoAwoLaOhSUverDgoDXPZ2yOhGRwb6/YsP8C?=
+ =?us-ascii?Q?VETBfRM2vcKeFDAFHSk6ffRzaxtJtcjEhXAT09ASM7EIawIC0M249PnhKBqk?=
+ =?us-ascii?Q?XK5vjKLqs7AS2Wni3VMFJZExDm2Cv0kzE47pWZU9v5FMepHVtct7Ev/xS1aE?=
+ =?us-ascii?Q?/iuVLJBFTuykNPj11JqL4CNma0qMgP/7mgcDd/swl53yEePXg9St11qBEylu?=
+ =?us-ascii?Q?Z85IXqkB8qOJwD/dal+tiVNjxFv0OlNe7OVzUQnGZ23Mr6xNzV+E61w8Z+l+?=
+ =?us-ascii?Q?5jbezOU/CXQz7UJbKI04ZS5eVGtYqO6++R3rmPtCU4JjE7GwDLUj1Caow/iN?=
+ =?us-ascii?Q?r7UmYIzHPBAW/2LXFwmo9iQJVqvy49ZY7QLZ5pMzASp8a6GjdAf89+ppuYMC?=
+ =?us-ascii?Q?R0tXcZlwYHBINO4RJiUtrTiYGJy9tdZl6UD8+sNMHwfkmVCHZkqt2BphxLOL?=
+ =?us-ascii?Q?DEP5RvjEbDRj/L8SKTidwbfngMHBCISGHHS7ZuVAQdWw05etRiJHryFKxuG8?=
+ =?us-ascii?Q?r0yYS1ljtfjtSBkKWS0VOmQv+330by+iOoPINiX/HYGNyZCoGCPlaIIz/Rb6?=
+ =?us-ascii?Q?Hz7LtV6AYKDg5Ih0zdvMQ77gUcHO70OOZTmRGBdZGMhI1nvDaIN1hx5bwQIE?=
+ =?us-ascii?Q?vQBWtxDFpAV2D+sIr8wpxNiIX0cqNJQD45pMIsZjjb1DjZPId8qKn6JEl+BQ?=
+ =?us-ascii?Q?bap0I+NSdW6gAPzXebeChAFsK60gPzStMmEIQuefOxdbF5GFm6IjVLBJUEPW?=
+ =?us-ascii?Q?kDDFQxpY13eoKFfGEqXUmmgSSBywgQwhax+COd0aFNMXbjYSayDAezWzLRt/?=
+ =?us-ascii?Q?gRA/RLNkIOcEp3CBuzcZd6lLso8N1vO5njtpaLavoBUUlXUsaMl8NE6rcZBO?=
+ =?us-ascii?Q?KXojlgEXDd+pH49VOkaGjBrGdkQOQuajjg02SK/zkBTI9jiJgd21pWiQo9qw?=
+ =?us-ascii?Q?rNaDgM2a6oVzAfovnDkS31/IzqKTrYsXB+AykvffY9enOLZ7zE5ktq02DRJ5?=
+ =?us-ascii?Q?IHj4hxxNslcHmYFbUXvArZ2kuvSkc3AHtImgpYVEqZHMsEVPWm2hgaugEA?=
+ =?us-ascii?Q?=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8604.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(376014)(1800799024)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?xvZWzqfy0COgKgFIGAi4M7KfGsNHD3jVQUFasj3x7HRToMY3csLJOdEoEJKd?=
+ =?us-ascii?Q?9SumbaMeqkE31qTjynPDtzl7MGDuN4qlJc/LtKR+KFYk/1jlc3wzmjWidFkC?=
+ =?us-ascii?Q?uol0VxgNdnlE5XqDUnKJ9+AGFiSDN70tSgD7IA+4heLDTV11fTvnRJP+qZ6S?=
+ =?us-ascii?Q?eNyXTWRoCtEoNWG8XeaqfSgpTEOAuVcWhh8fdsJYVg9xvsQSMLkaPigFsiva?=
+ =?us-ascii?Q?Ps410ASv9EK+UI5ofLPVf+qzjfpwatEWp+xBP3qbkcMrX3aLve0yzrgjmFLE?=
+ =?us-ascii?Q?AxS2GGZ66xh2qd2DVb56JGfy08DpUnXYgbhXeWSCSzbQf/1OHXlwXmHkLLE5?=
+ =?us-ascii?Q?b+qF3o2djpL3k2MkVLcSD8axjj+Jno7N5EaRoGECv0H2RfD06Pjox4InLCin?=
+ =?us-ascii?Q?3fKm+EOehrugva2CM51O+tsiF1Bg8wfDX+zYvnFwCJ0j6LMtfVDbR1COsCPe?=
+ =?us-ascii?Q?aF9FLsHB2dFlH7PyMUHSjKOofQppE1dXnKn6Ly2yYYFD/dsHdR51oxNAZeZ5?=
+ =?us-ascii?Q?lVAejO61CGld0UZQaibYmGjOkUicx82jeN8VVN4Lqv508MRVIMNh42fcbJpb?=
+ =?us-ascii?Q?nUDO6NBA1sy/PhpmRUQpemKlCOW+PbGR+nz4d6/3ByKGcnSWW60WdBG1Yjzc?=
+ =?us-ascii?Q?bvnnvMBC9VhM7JBEU2F26nImDytSaCkhbBsQgYAtQ9wuYvegVgTfaxEhtaXX?=
+ =?us-ascii?Q?iOgqm+RKlUq3Hnd8vPOS4yRl7NN9wP+gOyKy5EA1oet6zmZ1wc14RAmMOznR?=
+ =?us-ascii?Q?FCPl4sQJ9+vRyUJwELYu4JbVQw8DSBq7j8O3bWggFomW1i7Ud2SRUNG2SJOC?=
+ =?us-ascii?Q?V8HVarxqgjDo0BipjRJfUl0V3BtwOE7mCoXHaJZ3H91p91bBT2z75XeoEX5i?=
+ =?us-ascii?Q?GkGzKLGnEcJe4tLqwczNCr+G+sYpVv3Afu93xy75n46KnnLV1M116gjeE7ea?=
+ =?us-ascii?Q?hsVmQfKMD31/Uw7A6yk6v6pH2XVwil2Ef2a54U7ENK0RwfwlQSEhwO1EbQIv?=
+ =?us-ascii?Q?xVVTZT0K9WtJkqyAxcatD7ChIwbmbcu9FO7BTXEKVHFmyA2Ek3dJiUDc8yid?=
+ =?us-ascii?Q?tCnCFrrUQy6V+JJsNVlUq6xsRxb7HN+GRj1zdURDZ8lH4/8Bbu8qd7WuTDcf?=
+ =?us-ascii?Q?Do3ZDbwOW+1L4fhOkt4zmxuHMEh1Ouif9PxwPFG8iPPzzGrsMfyzsD5T4fNd?=
+ =?us-ascii?Q?z+PwOd1o4ZGgH50HFIG8M6p+d+IbwtkjcGGhv4RJFFeiGXyzZOr5FYa9y2dE?=
+ =?us-ascii?Q?k9eqEPSAn2UgNBKnTeFtLVLynPNLSEtvgk0u1QtVkUVH6ecKOU92QmmYmr9Z?=
+ =?us-ascii?Q?4OjLWP4ROv+AJBejjdja7J7eZt7DHBKztafCrv4mLIcEFaZje8MIiL3db2CE?=
+ =?us-ascii?Q?+0RO6yZbajnzXWCpscD2IMUr9NSKfIiH3SE29jt5D91aM4XR0++V7AD22Uzz?=
+ =?us-ascii?Q?iCggr1OikynMhT0EjgAAiKbVPSzYY9cYBUJ9TXR9fwguNNbodAWV2eP80ylX?=
+ =?us-ascii?Q?nG7vPeYpv1mTRvqun2og+QqvRpeJ7zd97GrbsFsIj/VK4sBnQmIdaedpK0YC?=
+ =?us-ascii?Q?e+CpXE+2z2wPKirhlzCdFXAF5t9vWASHhJm582yr?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20251204071332.1907111-1-wei.fang@nxp.com>
-X-Authority-Analysis: v=2.4 cv=d8j4CBjE c=1 sm=1 tr=0 ts=69428f25 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=w373o-ZMvzc93a0z:21 a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=8AirrxEcAAAA:8 a=Kl3X-cPyiDMRo7OHHioA:9
- a=CjuIK1q_8ugA:10 a=ST-jHhOKWsTCqRlWije3:22
-X-Proofpoint-GUID: XdCkQVAvRv7gCtPhPvNC9ks__pJciWRQ
-X-Proofpoint-ORIG-GUID: XdCkQVAvRv7gCtPhPvNC9ks__pJciWRQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE3MDA4OCBTYWx0ZWRfX4NQw4KFTQd+R
- vaaSpXxOppCubo56wif2WEVBU+MZIU384E0wV47reSde0d3PkVCNXxtBiMAhRaXiM1K+YXYKNrI
- 7/8ZnckBz0Y/R+05DY1y1l0ISKdioUUnaEt2AEG6MmXubWc3FmsuIwafkJEGXnZvr4SkvCdU6eL
- LGnJsKisU3rQpLNFOXniyfLAdJZXZ+uplzOD+AM61lnQw2fm4+LXYyX5w2kG6M1mNiRMweaiLVc
- Ugrf9/Y9KgagUPwLEnNCdOuVWP210548nYgoXqH3FcJwk6rrSJUssqzcTSJbqZbPmnAAoGWE41M
- U84WjISbO9T+adVuTWQJh55aqyWtJ0b9vdqJn0obyyWmB4d9GMuUCJrvoU84kpTh5ka3AzKaUmw
- r9SSUybpcrocJDUwJbSGFNPmq/ifvQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-17_01,2025-12-16_05,2025-10-01_01
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8604.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5dfc26f6-a445-4933-d313-08de3d47df90
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Dec 2025 08:40:03.5511
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: L75mC9uA8FJeYZ114QvgZI0JGCmz92PW01iZboGJbF6yncXqdiliMETiBRr3eT75ECR890ni5cKkvacMEwXvJQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA6PR04MB11804
 
-On 2025-12-04 at 12:43:32, Wei Fang (wei.fang@nxp.com) wrote:
-> There is a crash issue when running zero copy XDP_TX action, the crash
-> log is shown below.
-> 
-> [  216.122464] Unable to handle kernel paging request at virtual address fffeffff80000000
-> [  216.187524] Internal error: Oops: 0000000096000144 [#1]  SMP
-> [  216.301694] Call trace:
-> [  216.304130]  dcache_clean_poc+0x20/0x38 (P)
-> [  216.308308]  __dma_sync_single_for_device+0x1bc/0x1e0
-> [  216.313351]  stmmac_xdp_xmit_xdpf+0x354/0x400
-> [  216.317701]  __stmmac_xdp_run_prog+0x164/0x368
-> [  216.322139]  stmmac_napi_poll_rxtx+0xba8/0xf00
-> [  216.326576]  __napi_poll+0x40/0x218
-> [  216.408054] Kernel panic - not syncing: Oops: Fatal exception in interrupt
-> 
-> For XDP_TX action, the xdp_buff is converted to xdp_frame by
-> xdp_convert_buff_to_frame(). The memory type of the resulting xdp_frame
-> depends on the memory type of the xdp_buff. For page pool based xdp_buff
-> it produces xdp_frame with memory type MEM_TYPE_PAGE_POOL. For zero copy
-> XSK pool based xdp_buff it produces xdp_frame with memory type
-> MEM_TYPE_PAGE_ORDER0. However, stmmac_xdp_xmit_back() does not check the
-> memory type and always uses the page pool type, this leads to invalid
-> mappings and causes the crash. Therefore, check the xdp_buff memory type
-> in stmmac_xdp_xmit_back() to fix this issue.
-> 
-> Fixes: bba2556efad6 ("net: stmmac: Enable RX via AF_XDP zero-copy")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
->  .../net/ethernet/stmicro/stmmac/stmmac_main.c   | 17 +++++++++++++++--
->  1 file changed, 15 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 7b90ecd3a55e..a6664f300e4a 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -88,6 +88,7 @@ MODULE_PARM_DESC(phyaddr, "Physical device address");
->  #define STMMAC_XDP_CONSUMED	BIT(0)
->  #define STMMAC_XDP_TX		BIT(1)
->  #define STMMAC_XDP_REDIRECT	BIT(2)
-> +#define STMMAC_XSK_CONSUMED	BIT(3)
->  
->  static int flow_ctrl = 0xdead;
->  module_param(flow_ctrl, int, 0644);
-> @@ -4988,6 +4989,7 @@ static int stmmac_xdp_get_tx_queue(struct stmmac_priv *priv,
->  static int stmmac_xdp_xmit_back(struct stmmac_priv *priv,
->  				struct xdp_buff *xdp)
->  {
-> +	bool zc = !!(xdp->rxq->mem.type == MEM_TYPE_XSK_BUFF_POOL);
->  	struct xdp_frame *xdpf = xdp_convert_buff_to_frame(xdp);
->  	int cpu = smp_processor_id();
->  	struct netdev_queue *nq;
-> @@ -5004,9 +5006,18 @@ static int stmmac_xdp_xmit_back(struct stmmac_priv *priv,
->  	/* Avoids TX time-out as we are sharing with slow path */
->  	txq_trans_cond_update(nq);
->  
-> -	res = stmmac_xdp_xmit_xdpf(priv, queue, xdpf, false);
-> -	if (res == STMMAC_XDP_TX)
-> +	/* For zero copy XDP_TX action, dma_map is true */
-> +	res = stmmac_xdp_xmit_xdpf(priv, queue, xdpf, zc);
-	Seems stmmac_xdp_xmit_xdpf is using dma_map_single if we pass zc is true.
-        Ideally in case of zc, driver can use page_pool_get_dma_addr, may be you
-        need pass zc param as false. Please check
+> > Adds the driver for communication interface to secure-enclave, that
+> > enables exchanging messages with NXP secure enclave HW IP(s) like
+> > EdgeLock Enclave, from:
+> > - User-Space Applications via character driver.
+> >
+> > ABI documentation for the NXP secure-enclave driver.
+> >
+> > User-space library using this driver:
+> > - i.MX Secure Enclave library:
+> >   -- URL: https://github.com/nxp-imx/imx-secure-enclave.git,
+> > - i.MX Secure Middle-Ware:
+> >   -- URL: https://github.com/nxp-imx/imx-smw.git
+> >
+> > Following checks are performed on the incoming msg-header, to block
+> > exchanging invalid arbitrary commands:
+> > - maximum allowed words,
+> > - check if command-tag & response-tag are valid
+> > - version,
+> > - command id validation check, to allow limited base-line API(s)
+> >   and restrict following:
+> >   - exchanging power management commands.
+> >   - reset requests.
+> >   - BBSM configuration requests.
+> >   - re-initializing the FW.
+> >   - RNG init
+> >   - CAAM resource release management
+> >   - SE's internal memory management.
+> > from user-space.
+> >
+> > Signed-off-by: Pankaj Gupta <pankaj.gupta@nxp.com>
+> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > changes from v20 to v21
+> > - removed "__free(kfree)" & added kfree();
+>=20
+> KK's means is that correctly use __free according to cleanup.h.
+>=20
+> fun()
+> {
+> 	...
+> 	some code logic
+> 	...
+>=20
+> 	struct .... __free(kfree) rx_msg =3D
+> kzalloc(cmd_snd_rcv_rsp_info.rx_buf_sz, GFP_KERNEL);
+> 	...
+> }
+>=20
+> Frank
 
-Thanks,
-Hariprasad k
-	
+Hi Krzysztof, Hi Frank,
+
+Thank you for the review comments.
+
+I misunderstood earlier and removed __free(kfree) in v21, thinking it was n=
+ot preferred.
+After revisiting your feedback, I see the intent is to use __free(kfree) co=
+rrectly as per cleanup.h guidelines for automatic cleanup instead of manual=
+ kfree() calls.
+
+I will revert the previous change and update the patch to follow the recomm=
+ended pattern:
+-  strucivt se_api_msg *tx_msg __free(kfree) =3D kzalloc (XXXXX, GFP_KERNEL=
+);
+-  Make sure the source files has: #include <linux/cleanup.h>
+
+This will be included in v22 along with a clear comment disposition referen=
+cing your suggestion.
+Thanks for clarifying and for your guidance.
+
+Best regards,
+Pankaj Gupta
