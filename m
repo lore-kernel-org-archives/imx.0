@@ -1,43 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585E315B971;
-	Wed, 17 Dec 2025 08:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACE0288D6;
+	Wed, 17 Dec 2025 08:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765960548; cv=none; b=kafOoKx/86jfgN/zm+PJSpS6GaAb+UuZTRaHb+vR3g43uRTU5cPQtDiglquMLzp8rqrkM7Z7w0NSkN/YDqFRIrtbWwzkU7slIzOLLyV77NsQ8IQDbz07xp+SBXU3oE+GUbKQ2JX7TZhiRqKyBxjvuzuiBOZLrA+tyP+ruhoqk/g=
+	t=1765960625; cv=none; b=LxzLr9RufuZZsiL/uMCzDzH/wGc1yAd67fEcW4mia2nfW+W/cmHSZKWua6n20q0DHr97MhdTrYIdVhNiO6VMTpPzQwpNmv6UNYj7r93FEuJHQASlgqu0Vd5y9FXtQmZt2aeC7SC/CU1mK7OVUmxQc2oPQ2s1hufPw9fgCBeNaD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765960548; c=relaxed/simple;
-	bh=qUGP+pe/nIe1zLPJjHrZrQ+CEmfL7inuKRsC5Gm7snc=;
+	s=arc-20240116; t=1765960625; c=relaxed/simple;
+	bh=KAQs8LiC0Yfd4rW28C195gtmvQ2iLTjhXonSSp4r1+c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZdjROKi66P8qxWja/1ArDQD36e62ghEGdTFljBRNr8Al5omO7+2RmLT59VdHl3y8CIs8yiKZl5zAyAtAdXxEdyDKdkn/XaBDjNUX5dJDqOQBu1UcZjF48c8KqOxX9Ro7RGKG50b1lO7GVQ6oQ1reZGzQ16Cri+0Xi16jNLiHSVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ca48HIVk; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y2WYlIIjKDoPcnRi70xQ7j9rqanSrFX3dlILdozpvIjcLpcD/AkGNECB6q1V0rFiQav5inAlE2d43am/ZFMPJmasuhHLNXjzyn1pmPLTq0dg4gkLI6QeqKcettx2EcQSzRKFiXMchX0Daa6Sf91/V4NqtYiXrNpQoPI5Epk65Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W47vCtRc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ca48HIVk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A260C4CEF5;
-	Wed, 17 Dec 2025 08:35:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W47vCtRc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6569BC4CEF5;
+	Wed, 17 Dec 2025 08:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765960546;
-	bh=qUGP+pe/nIe1zLPJjHrZrQ+CEmfL7inuKRsC5Gm7snc=;
+	s=k20201202; t=1765960625;
+	bh=KAQs8LiC0Yfd4rW28C195gtmvQ2iLTjhXonSSp4r1+c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ca48HIVkg4W0V+oR3u1f6NgN8SwfJRJuE4ivS1XpkRRbB3C37kFHlt4xnN/ZZQ9i1
-	 0JQgKbLeOSUfattAB991r9Omqo/9/BT9YgPimeBN5xYkqGN3pAJEbxaioje9Yi/RlK
-	 OPpjl0GX1JMejr8uKHp9AkucijJ88NocnNALotwQuoIb2oV9jGjgPzujC/EDpQzw/P
-	 CYDagn0memx/qwFjpK84ARrgdaYIAe3EA6EyikCADRYWXuN8+0yQRGVPbAiGzrzV36
-	 uGI2JWRaNJit+fYz8WnXLo0Xn1IBdlnjQy13Zz416pQMXRX8qouGNc/PNidJPi2BvL
-	 sh6Plw0HfT1gw==
-Date: Wed, 17 Dec 2025 09:35:44 +0100
+	b=W47vCtRc2fjZpQe/DRm+pPSRqT8FgIjIIRf2fcHiNzSfRwfN9FSNmNhfSNsomcwSZ
+	 shUz34HPQQt6QsrC72mdmgJ2kAOKPXTU5yvT2bf9EzQAoeKTAwi+8Z9q4l5/IyaHJE
+	 w0dIZZ61skCOa1af9EcoK4jlfs4frthhbXwFQbcpYbmYBzCiUmU+0V7dpZFs2FhzY6
+	 Ilw2aNq9h0FBq/T2glswF071hRUoOSkhuY6XwfXZcgpqHZYa1NLC9lrxsvdjf+MbsY
+	 NZ7Hm3zKDEO1+/DWE3pz6PmJZOwopgc3zT/AoM7n9Uo3WbCAQBW0TGMgCLrxbFD0xn
+	 VWQhHJVoQolrA==
+Date: Wed, 17 Dec 2025 09:37:02 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linaro-s32@linaro.org, 
-	NXP S32 Linux Team <s32@nxp.com>
-Subject: Re: [PATCH v2 2/4] dt-bindings: mfd: syscon: Document the GPR syscon
- for the NXP S32 SoCs
-Message-ID: <20251217-sociable-rich-beagle-9321f8@quoll>
+Cc: Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linaro-s32@linaro.org
+Subject: Re: [PATCH v2 3/4] dt-bindings: net: nxp,s32-dwmac: Use the GPR
+ syscon
+Message-ID: <20251217-elated-vicugna-of-whirlwind-23d6bc@quoll>
 References: <cover.1765806521.git.dan.carpenter@linaro.org>
- <792d3f59b9f519529b94e673faf70d77c4b61fb3.1765806521.git.dan.carpenter@linaro.org>
+ <1ecafee4bd7dc3577adfc4ada8bcc50b5eb3e863.1765806521.git.dan.carpenter@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -46,31 +49,45 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <792d3f59b9f519529b94e673faf70d77c4b61fb3.1765806521.git.dan.carpenter@linaro.org>
+In-Reply-To: <1ecafee4bd7dc3577adfc4ada8bcc50b5eb3e863.1765806521.git.dan.carpenter@linaro.org>
 
-On Mon, Dec 15, 2025 at 05:41:52PM +0300, Dan Carpenter wrote:
-> The NXP S32 SoCs have a GPR region which is used by a variety of
-> drivers.  Some examples of the registers in this region are:
+On Mon, Dec 15, 2025 at 05:41:57PM +0300, Dan Carpenter wrote:
+> The S32 chipsets have a GPR region which has a miscellaneous registers
+> including the GMAC_0_CTRL_STS register.  Originally, this code accessed
+> that register in a sort of ad-hoc way, but it's cleaner to use a
+> syscon interface to access these registers.
 > 
->   * DDR_PMU_IRQ
->   * GMAC0_PHY_INTF_SEL
->   * GMAC1_PHY_INTF_SEL
->   * PFE_EMACS_INTF_SEL
->   * PFE_COH_EN
->   * PFE_PWR_CTRL
->   * PFE_EMACS_GENCTRL1
->   * PFE_GENCTRL3
-> 
-> Use the syscon interface to access these registers.
+> We still need to maintain the old method of accessing the GMAC register
+> but using a syscon will let us access other registers more cleanly.
 > 
 > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 > ---
-> v2: Use nxp,s32g2-gpr and nxp,s32g3-gpr instead of nxp,s32g-gpr
+> v2: Add the vendor prefix to the phandle
+>     Fix the documentation
 > 
->  Documentation/devicetree/bindings/mfd/syscon.yaml | 4 ++++
->  1 file changed, 4 insertions(+)
+>  .../devicetree/bindings/net/nxp,s32-dwmac.yaml         | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+> index 2b8b74c5feec..a65036806d60 100644
+> --- a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+> @@ -32,6 +32,15 @@ properties:
+>        - description: Main GMAC registers
+>        - description: GMAC PHY mode control register
+>  
+> +  nxp,phy-sel:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    items:
+> +      - description: phandle to the GPR syscon node
+> +      - description: offset of PHY selection register
+> +    description:
+> +      This is a phandle/offset pair.  The phandle points to the
+> +      GPR region and the offset is the GMAC_0_CTRL_STS register.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Do not repeat description twice. The GMAC_0_CTRL_STS should be explained
+in description of individual item. This description should only say what
+is the purpose of it, why the hardware needs to poke in other devices.
 
 Best regards,
 Krzysztof
