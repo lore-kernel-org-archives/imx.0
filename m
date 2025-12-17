@@ -1,24 +1,24 @@
-Received: from mail-m49207.qiye.163.com (mail-m49207.qiye.163.com [45.254.49.207])
+Received: from mail-m1973179.qiye.163.com (mail-m1973179.qiye.163.com [220.197.31.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5624A34405F
-	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 09:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E088834573F
+	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 09:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765964342; cv=none; b=h+F12QX+NExd2Ll6UZam1zwfS/bCKHvSYYTwJRh9LDUXwcZmAXpRZWAjvVC9csD/5PcSRancD8GAf+vb00fI0Pr+5Zh0RmKteVOFwj1qmYc2HPCLjezgnLZZlNqXYa7bJM+hdfqtujtcj0+5Sl7/GeFs6PRPgRQOrjhRWr2+LFQ=
+	t=1765964355; cv=none; b=WYxZsSAM5MDcsGe+AWFVWzc4v9iTOqQnM5rx1UUyRV1XutR6baMVGjYCuqa0wmsWS//J+EJL3YRycg9oNZjj5PYmoIzUwme1WkmkeWjIbyqUiT9tMzQKqUoZ4nY6shOp6qfelLgzBdGb21scjhycGh3CrBU9u7obSvVg2Ka0F3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765964342; c=relaxed/simple;
-	bh=27sWcGgopy8L9O52zrINaPxkx4hhS3gSfw1vvWRUM44=;
+	s=arc-20240116; t=1765964355; c=relaxed/simple;
+	bh=pxvoyHn9JF3WkHC8Vc1biOcIpDzJ1or7ffIcHNZ4TRU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=V/Zpp+nB/x2rjxovxWOfEIUBnErPf8ep+T45fdg2ESLHfzosEcjkFBMxSPisvFlacVS2QlMrMad6BBCwpjuhGfhQPLZgI2Mf8yS/jxI42HyHoJn8asr4LU5sV149Dk9LSA/MKR/qfVvg4ZTRqVj6NR7VgvRgncpP6GTHYrkOqbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=SMhrvSHR; arc=none smtp.client-ip=45.254.49.207
+	 MIME-Version; b=iEQ+b61fdkZYss7s1PyKQuzn9i34hJpV3OydjcDj3xqqpxe07TBGRb+YIkW5ZockNEt4fiLvJ4fuLmVUzbIU8LXIwfFblB4HKYZSOmwlikw/bgXkNZXBxtNrggBwZa/fo7EuPBsyS1Tu+nLAGZrS0ygnTihWPEVOSGtmsmHuVGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=JcSd0Pcv; arc=none smtp.client-ip=220.197.31.79
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="SMhrvSHR"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="JcSd0Pcv"
 Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2d931e4ca;
-	Wed, 17 Dec 2025 17:33:40 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2d931e56e;
+	Wed, 17 Dec 2025 17:34:00 +0800 (GMT+08:00)
 From: Damon Ding <damon.ding@rock-chips.com>
 To: andrzej.hajda@intel.com,
 	neil.armstrong@linaro.org,
@@ -57,9 +57,9 @@ Cc: Laurent.pinchart@ideasonboard.com,
 	linux-samsung-soc@vger.kernel.org,
 	linux-rockchip@lists.infradead.org,
 	Damon Ding <damon.ding@rock-chips.com>
-Subject: [PATCH v8 02/18] drm/bridge: analogix_dp: Formalize the struct analogix_dp_device
-Date: Wed, 17 Dec 2025 17:33:05 +0800
-Message-Id: <20251217093321.3108939-3-damon.ding@rock-chips.com>
+Subject: [PATCH v8 10/18] drm/bridge: analogix_dp: Move the color format check to .atomic_check() for Rockchip platforms
+Date: Wed, 17 Dec 2025 17:33:13 +0800
+Message-Id: <20251217093321.3108939-11-damon.ding@rock-chips.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251217093321.3108939-1-damon.ding@rock-chips.com>
 References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
@@ -70,49 +70,93 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9b2ba87b9603a3kunma9c945a29edb8
+X-HM-Tid: 0a9b2ba8c87c03a3kunma9c945a29eee1
 X-HM-MType: 1
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGk9OGVYaT09MQhhOQkhPTU1WFRQJFh
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGUMeGlZCGU1PHR5DTx5IQ01WFRQJFh
 	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
 	1VSktLVUpCWQY+
 DKIM-Signature: a=rsa-sha256;
-	b=SMhrvSHRUa/T/s3PgHkcL7kNne1OuPSpFzfU1b7fV9VpeonxxZGSqWrxEanzEiSYJxlCQJ6wZqfo+wvhZGpV1tC5PFsLkMP5Z+gY1BNpO7G9vOIbI8BI1mmY+3RGDcRjbFPzFbk3CzhtRLLalwr+BcxOY+45FE6q9Ekct3MqSB4=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=wMgNU9HKWX4U88wR/qYvG3evHrpviSSz9KGW1/W263o=;
+	b=JcSd0PcvpYWBHOrJ3/u7Wy4ketELf3jXicI9AlDrW9pcU9lQgHdyFPHBhdIyY05JgQpzh6HE5ugPablVkzKWJDK9UNDBquI/sbn+i1YSxfAw+xq6iSu7GyI7oHq/wL5EWBhwYzqIJgVX7EVUhaxGngBoLUvyEvjP++UYfrr4euo=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=T79hFmaaeIrSBvkTdIZknkm3hs/fX1XSoQd2i8RZzkg=;
 	h=date:mime-version:subject:message-id:from;
 
-Use the tap instead of the space for &analogix_dp_device.aux and
-&analogix_dp_device.force_hpd.
+For Rockchip platforms, the YUV color formats are currently unsupported.
+This compatibility check was previously implemented in
+&analogix_dp_plat_data.get_modes().
+
+Moving color format check to &drm_connector_helper_funcs.atomic_check()
+would get rid of &analogix_dp_plat_data.get_modes() and be more
+reasonable than before.
 
 Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 ---
- drivers/gpu/drm/bridge/analogix/analogix_dp_core.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../gpu/drm/bridge/analogix/analogix_dp_core.c | 11 +++++++++++
+ .../gpu/drm/rockchip/analogix_dp-rockchip.c    | 18 ------------------
+ 2 files changed, 11 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.h b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.h
-index b86e93f30ed6..91b215c6a0cf 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.h
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.h
-@@ -156,7 +156,7 @@ struct analogix_dp_device {
- 	struct drm_device	*drm_dev;
- 	struct drm_connector	connector;
- 	struct drm_bridge	bridge;
--	struct drm_dp_aux       aux;
-+	struct drm_dp_aux	aux;
- 	struct clk		*clock;
- 	unsigned int		irq;
- 	void __iomem		*reg_base;
-@@ -166,7 +166,7 @@ struct analogix_dp_device {
- 	struct phy		*phy;
- 	int			dpms_mode;
- 	struct gpio_desc	*hpd_gpiod;
--	bool                    force_hpd;
-+	bool			force_hpd;
- 	bool			fast_train_enable;
- 	bool			psr_supported;
+diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+index 4606ecc3f480..5bf41b364aba 100644
+--- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
++++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+@@ -894,8 +894,19 @@ static int analogix_dp_atomic_check(struct drm_connector *connector,
+ 				    struct drm_atomic_state *state)
+ {
+ 	struct analogix_dp_device *dp = to_dp(connector);
++	struct drm_display_info *di = &connector->display_info;
+ 	struct drm_connector_state *conn_state;
+ 	struct drm_crtc_state *crtc_state;
++	u32 mask = DRM_COLOR_FORMAT_YCBCR444 | DRM_COLOR_FORMAT_YCBCR422;
++
++	if (is_rockchip(dp->plat_data->dev_type)) {
++		if ((di->color_formats & mask)) {
++			DRM_DEBUG_KMS("Swapping display color format from YUV to RGB\n");
++			di->color_formats &= ~mask;
++			di->color_formats |= DRM_COLOR_FORMAT_RGB444;
++			di->bpc = 8;
++		}
++	}
  
+ 	conn_state = drm_atomic_get_new_connector_state(state, connector);
+ 	if (WARN_ON(!conn_state))
+diff --git a/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c b/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
+index fdab71d51e2a..70fe5ae69e2e 100644
+--- a/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
++++ b/drivers/gpu/drm/rockchip/analogix_dp-rockchip.c
+@@ -166,23 +166,6 @@ static int rockchip_dp_powerdown(struct analogix_dp_plat_data *plat_data)
+ 	return 0;
+ }
+ 
+-static int rockchip_dp_get_modes(struct analogix_dp_plat_data *plat_data,
+-				 struct drm_connector *connector)
+-{
+-	struct drm_display_info *di = &connector->display_info;
+-	/* VOP couldn't output YUV video format for eDP rightly */
+-	u32 mask = DRM_COLOR_FORMAT_YCBCR444 | DRM_COLOR_FORMAT_YCBCR422;
+-
+-	if ((di->color_formats & mask)) {
+-		DRM_DEBUG_KMS("Swapping display color format from YUV to RGB\n");
+-		di->color_formats &= ~mask;
+-		di->color_formats |= DRM_COLOR_FORMAT_RGB444;
+-		di->bpc = 8;
+-	}
+-
+-	return 0;
+-}
+-
+ static bool
+ rockchip_dp_drm_encoder_mode_fixup(struct drm_encoder *encoder,
+ 				   const struct drm_display_mode *mode,
+@@ -481,7 +464,6 @@ static int rockchip_dp_probe(struct platform_device *pdev)
+ 	dp->plat_data.dev_type = dp->data->chip_type;
+ 	dp->plat_data.power_on = rockchip_dp_poweron;
+ 	dp->plat_data.power_off = rockchip_dp_powerdown;
+-	dp->plat_data.get_modes = rockchip_dp_get_modes;
+ 
+ 	ret = rockchip_dp_of_probe(dp);
+ 	if (ret < 0)
 -- 
 2.34.1
 
