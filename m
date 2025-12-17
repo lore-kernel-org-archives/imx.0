@@ -1,114 +1,69 @@
-Received: from mail-m3279.qiye.163.com (mail-m3279.qiye.163.com [220.197.32.79])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD67435E53C
-	for <imx@lists.linux.dev>; Wed, 17 Dec 2025 10:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5146835F8D3;
+	Wed, 17 Dec 2025 10:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765966568; cv=none; b=V/1MWc1syv5FjqBgxI6peufsbR5lUGEH8BElRkokA5RifpzxlSYFATeJ8837WGkbSqMq98yLK/KQBNZII+13S/YKsH6rcASaQhrp4ghKQFEK78Upj8Cxneplu2CDI6UfYoyRLhzNKd16FJKVwv7xn7jJQ+LoWGjv0pdOpGD023E=
+	t=1765966583; cv=none; b=kF2niO7j3SNXEX846aVrCqXSJeR5yZHTq0GbTjTnKO5zgIpSGHyeux2K+gUwJqq38G9etSzoNf0yWMoBDdliP6x1yfbyK3Nmv6V2XYnw4sgNXxZwGLj5kHY5WNTNAUW3bmDqkb42CPS2Ilbv84OhLmmudqeqFBGi+4Ki5F+jXN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765966568; c=relaxed/simple;
-	bh=ldb4mGbsFFqIjnQIXDTbTvrshprmTRQfTUZBrh9j0oQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VQdDLx7jDq2QHAh8X84aEZA5n02Wc+v/PhzM22sLkn/QoCLnw9rOoRLKKbXPkPnkX0/kxZaCbl3Q9polq2NFtbDwjJOuSl94q2AOCKMyWJXk6BGWZByZ8GK9F/KaZkPK52ryooFWnaKY5UwiTFLw7uMom4hA0Swccg50rIZU+Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=f4OSfB+7; arc=none smtp.client-ip=220.197.32.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1765966583; c=relaxed/simple;
+	bh=14N7+pYy72kfKgLZ+eBjOCn+SrYbkirrM1jMUhs1cHQ=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=deLgoacOiKhnsL8WKLQTwvF4hv/ddHd2Z2aAFu0/NrTj40MMOA4HjKzmbCUHNjRV+miEO8IXiVs/GowSXCJpQG/jLbSLR7w3Aafbk0XFVqJL3I0pdjw3C9hBVEC5HM9OOIJgq23rNqIc1arK3VmUjkju0Lv8O0sllryhNp5rwek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aO4cKOOV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="f4OSfB+7"
-Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2d942d69e;
-	Wed, 17 Dec 2025 18:00:41 +0800 (GMT+08:00)
-From: Damon Ding <damon.ding@rock-chips.com>
-To: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org
-Cc: Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	inki.dae@samsung.com,
-	sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com,
-	krzk@kernel.org,
-	alim.akhtar@samsung.com,
-	jingoohan1@gmail.com,
-	p.zabel@pengutronix.de,
-	hjc@rock-chips.com,
-	heiko@sntech.de,
-	andy.yan@rock-chips.com,
-	dmitry.baryshkov@oss.qualcomm.com,
-	dianders@chromium.org,
-	m.szyprowski@samsung.com,
-	luca.ceresoli@bootlin.com,
-	jani.nikula@intel.com,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Damon Ding <damon.ding@rock-chips.com>
-Subject: [PATCH v8 17/18] drm/bridge: analogix_dp: Remove bridge disabing and panel unpreparing in analogix_dp_unbind()
-Date: Wed, 17 Dec 2025 17:59:11 +0800
-Message-Id: <20251217095912.3109103-4-damon.ding@rock-chips.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251217095912.3109103-1-damon.ding@rock-chips.com>
-References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
- <20251217095912.3109103-1-damon.ding@rock-chips.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aO4cKOOV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45DA0C4CEF5;
+	Wed, 17 Dec 2025 10:16:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1765966582;
+	bh=14N7+pYy72kfKgLZ+eBjOCn+SrYbkirrM1jMUhs1cHQ=;
+	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
+	b=aO4cKOOVeefvLNc7CIcIB6uIcGA3BuF9GQzoKy8YZd8b2Y4g5nJG7VGIYtYX1RgJl
+	 JtCo8irlnMdjj//V1tJESEEtgcwreO/bhOOE84u8Ntu9XqZw92P5hPXukEJKxtiLAv
+	 oqyivM4O3SUfDmtimYCyNzvkYi/LxQrGOK/Wt4Vl+DOtQGKylSV3oiCYtzz4GU7V1B
+	 aHi4qtO8bodJ7FZa7y1cSasyLx7CbX2x6gEmyA0QSXJzandD7d1JdaL5z0LQb+ReSx
+	 6iMnJVp+NV9mw+hyfHBdymKVubU/pQ8ljPbc8lS/nTiWokbnOqar3D3bq0e+DMzan4
+	 sZwiYbbCTfCCQ==
+Message-ID: <bf2654046433c0f580bac440c3e72299@kernel.org>
+Date: Wed, 17 Dec 2025 10:16:20 +0000
+From: "Maxime Ripard" <mripard@kernel.org>
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v3 04/22] drm/bridge: make of_drm_find_bridge() a
+ wrapper of of_drm_find_and_get_bridge()
+In-Reply-To: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-4-b5165fab8058@bootlin.com>
+References: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-4-b5165fab8058@bootlin.com>
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, "Alexey
+ Brodkin" <abrodkin@synopsys.com>, "Andrzej Hajda" <andrzej.hajda@intel.com>, "David
+ Airlie" <airlied@gmail.com>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Jernej
+ Skrabec" <jernej.skrabec@gmail.com>, "Jerome Brunet" <jbrunet@baylibre.com>, "Jonas
+ Karlman" <jonas@kwiboo.se>, "Jonathan Corbet" <corbet@lwn.net>, "Kevin
+ Hilman" <khilman@baylibre.com>, "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>, "Liu
+ Ying" <victor.liu@nxp.com>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Martin
+ Blumenstingl" <martin.blumenstingl@googlemail.com>, "Maxime Ripard" <mripard@kernel.org>, "Neil
+ Armstrong" <neil.armstrong@linaro.org>, "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Phong
+ LE" <ple@baylibre.com>, "Robert Foss" <rfoss@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Shawn
+ Guo" <shawnguo@kernel.org>, "Simona Vetter" <simona@ffwll.ch>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>, "Thomas Zimmermann" <tzimmermann@suse.de>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9b2bc1362403a3kunm23626673a4401
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGklMSFZOGElDSR4YGEoYGRhWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=f4OSfB+72ecafuIxlss4J/K4WksOrYObzW7Ur1FmhebNA/b9EdFBR1s83NAnpxVYdP2wCDMY93hnVMt33ZrOiO0/1384E2Nzg52WmUrd9pKWLSlsZyR+WmXlH659b72ISlqIhXrCNVthR5nSkTuAJTMClUTYIcRHR4wHRO3b4u4=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=UWpbY7DH1oS0V7oTyi6QaUWxk7HDaeuV22LJGXTHRzw=;
-	h=date:mime-version:subject:message-id:from;
 
-The analogix_dp_unbind() should be balanced with analogix_dp_bind().
-There are no bridge enabling and panel preparing in analogix_dp_bind(),
-so it should be reasonable to remove the bridge disabing and panel
-unpreparing in analogix_dp_unbind().
+On Tue, 16 Dec 2025 18:58:37 +0100, Luca Ceresoli wrote:
+> of_drm_find_bridge() is identical to of_drm_find_and_get_bridge() except =
+it
+> does not increment the refcount. Rewrite it as a wrapper and put the brid=
+ge
+> being returned so the behaviour is still the same.
+>=20
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>=20
+> [ ... ]
 
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
----
- drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 4 ----
- 1 file changed, 4 deletions(-)
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
 
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index a6c5601e16ff..7e3e9d4f4ea2 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -1526,10 +1526,6 @@ EXPORT_SYMBOL_GPL(analogix_dp_bind);
- 
- void analogix_dp_unbind(struct analogix_dp_device *dp)
- {
--	analogix_dp_bridge_disable(&dp->bridge);
--
--	drm_panel_unprepare(dp->plat_data->panel);
--
- 	drm_dp_aux_unregister(&dp->aux);
- }
- EXPORT_SYMBOL_GPL(analogix_dp_unbind);
--- 
-2.34.1
-
+Thanks!
+Maxime
