@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA5536A01E;
-	Wed, 17 Dec 2025 10:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF16E36C59C;
+	Wed, 17 Dec 2025 10:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765966731; cv=none; b=JZ56pVsLs1+Tmu09FEC/rpcnyR8LZ+bdHMJC5PgacyYU1UMwQ8YBpV0WhAQsXgvLVLypHI6a5vThyapEgLW9KvIClsX2HM+qibot2z0gUVi97AG8nEIgaCRM3IMGBOWi/6zI35lwZ2gu2HaptYfRaDux5FI9RH5m70HW7G2i9BM=
+	t=1765966785; cv=none; b=YZiL+d3m2kVnj8sWeUWkjbQNIY6ONBg0wXsRG2abp5y2TxvAuKcFkONwK+bTohIP8GmVoqO9Ev7tUbA4IpgVcCbToHcMgNX50jHD8BK979oskXZKFevLatNqcTSxFVa8/yqckyGoWHc8YUPpFsncqEFw22lh8n5CnevhgtPtHhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765966731; c=relaxed/simple;
-	bh=b3fa3ZW7Btz5urPS10XReNhAoJDTbHbKM52vabWMgfI=;
-	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=AupLS5d+UZI8a5ofT/ue2CeXjsiA9P3dak+nxU1jeHXy+qWQTbEJu8u+IPh18zSv5HjgKn4/WOXID4jSOYrRX1IiTXtXxVvuW2BBtXfIsyJtv0tK48fTYU0ulq8C2c6kMmIayKCgwQtoSHqIXFjBgGYGt7pAG1xMFFVMs9xK9FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f3kcH5UW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1765966785; c=relaxed/simple;
+	bh=fJfYyQsSeLQOss48wj6CAg5BxlIApsVGcX6BEMY+KK8=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=evkX2NDT2DYEzUY4e7fnSBOaSYIcAyFO0QOrLb4vMS6bWvP0YKPFDW+1p+BWbrdesXc0FnAsT5kc0F3Nu+dX8EHeJlkMUx6S7a62HGqawWp8Pye8gWBVGfVcyYTUku0eAbaqm+81RsEGeZ6ah2sFOVJ2EixtDzI4Ut44xH8h7pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQeoRHM+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f3kcH5UW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C015C4CEF5;
-	Wed, 17 Dec 2025 10:18:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQeoRHM+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBFFC19421;
+	Wed, 17 Dec 2025 10:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765966730;
-	bh=b3fa3ZW7Btz5urPS10XReNhAoJDTbHbKM52vabWMgfI=;
+	s=k20201202; t=1765966785;
+	bh=fJfYyQsSeLQOss48wj6CAg5BxlIApsVGcX6BEMY+KK8=;
 	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
-	b=f3kcH5UWPQk5umEClpVniEspgHBzoJL8PmCMlcHQWbehjUOrxiYt8L5rHadEJkd2x
-	 ImU7pskBgAfdRoxBw3hX9YLbjiu3j+YClj+XyH1sOi34ekmWp/xY3NdNbkyWR5GaaV
-	 e62mQUecv476zqqxajER7Qyw6tIBsBjG5sD+3+XVPhyeTq/BM3s+HDU/qSYMsUE4cv
-	 hqixaDHD01uyhVXLm0SC0F76xFqjyRNQ7jf3jNTQAAkZzEJz+UUkVbkjxpZIY5t5SA
-	 ZDEoBMG+Gz65hkUePrn67AOjou0kecYxqrTrM59XAv+0uo2IqmPPt78UacMsM7rgHT
-	 Ak20kSNG1/nfg==
-Message-ID: <36c9a024a4c96830f13bc1e7c005f231@kernel.org>
-Date: Wed, 17 Dec 2025 10:18:48 +0000
+	b=aQeoRHM+TibsLmXwFNHe2NxMIf97IfBwI3Pg30hMh9GSe9zJkjaTYVqnVFvUzK1eO
+	 hqEQHweDaAiEYuLlPpORiJkPZIkXeo6wCE9zochTalRWSUuAlc5hFIsrO83aOjMHQc
+	 dRDBXCaydtBWbBPLhu4uiRNN5MNGkCxbiijFFTpwoKsMjBiyz7fSzN05w0kR1HecYr
+	 2BzJ+YfrqyRk3+VKVNamL+je8lR7xEqaXbUUbdtOq2oWqaScH4kTOjKtiYYWZwhkAP
+	 PrQCawA95SgM7kkFgsvUlGK8wVa42zlA4iNvg64opzMHA23KfnBNWF7wPh3QPeq1fZ
+	 N57d79xsvAOMQ==
+Message-ID: <aff5a75a33e6e111347a7a79ebc26ddc@kernel.org>
+Date: Wed, 17 Dec 2025 10:19:42 +0000
 From: "Maxime Ripard" <mripard@kernel.org>
 To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v3 13/22] drm/bridge: imx8qxp-pxl2dpi: simplify put of
- device_node pointers
-In-Reply-To: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-13-b5165fab8058@bootlin.com>
-References: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-13-b5165fab8058@bootlin.com>
+Subject: Re: [PATCH v3 14/22] drm/bridge: imx8qxp-pxl2dpi: remove excess
+ error message
+In-Reply-To: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-14-b5165fab8058@bootlin.com>
+References: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-14-b5165fab8058@bootlin.com>
 Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, "Alexey
  Brodkin" <abrodkin@synopsys.com>, "Andrzej Hajda" <andrzej.hajda@intel.com>, "David
  Airlie" <airlied@gmail.com>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Jernej
@@ -52,12 +52,12 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-On Tue, 16 Dec 2025 18:58:46 +0100, Luca Ceresoli wrote:
-> Simplify the error-management code in
-> imx8qxp_pxl2dpi_get_available_ep_from_port() by using a release action for
-> the struct device_node pointers.
->=20
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+On Tue, 16 Dec 2025 18:58:47 +0100, Luca Ceresoli wrote:
+> imx8qxp_pxl2dpi_find_next_bridge() already emits a DRM_DEV_ERROR() for
+> every error except -EPROBE_DEFER. The caller emits another one, which is
+> redundant. Remove the message in the caller and keep the two in
+> imx8qxp_pxl2dpi_find_next_bridge() as they are more informative about the
+> error cause.
 >=20
 > [ ... ]
 
