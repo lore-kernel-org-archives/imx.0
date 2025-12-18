@@ -1,216 +1,189 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B98F35E54A
-	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 16:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5013257830
+	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 16:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766075195; cv=none; b=q7ZbcBbfuTNVQF0/tU5lMj3dcIt3BNZe0oYzTnj1oJMrQCp3Sqh0j5bJBQjyfSsfkdcgZq3VtEDSHOx29v2i67GMojUbtQkP55ehFVlI5qDDV6h37MPzeJJfwPVpSfEpn8fQnJGK+7N7SzN7c/VQoKIGllUoj8zgyMsFWbMItpU=
+	t=1766076146; cv=none; b=egRqfTQSgM8sD7LpbsMKueD2IQwtNsloeSghySnUcdl2LYgLrYPSnxxHsuf3jvQJ3ZX52D9r7xzs7wT7K1RfG8BC/m5/GU60LSk9F5HD+ldn0oL5hOZOehYGt8MF5Uw2a1Pf1eifgTeYfgnekxl/qrlSwGyLhYLdm70uyNXPH4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766075195; c=relaxed/simple;
-	bh=PajlIvKA+qiiCxxbkeQoomgkXm+Xqzq2c9FCKYw1Apg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mOlmgHcbY1YqeOepT71dFR5VSQHj3aK+eEg+rtit9y6loODl5iljYuj5PJStsuT2PeeTiPRUgSaptvB6H6vHCpx4vd1/xyb/OhFIE1XrDFQLQvVupH5g13H/S8Nh0yJWBBuI2kU69s1u5Tmcqnx8ySyrWnAb257wYS+kv36lWy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QTwKH4Rt; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QTwKH4Rt"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6418738efa0so1554185a12.1
-        for <imx@lists.linux.dev>; Thu, 18 Dec 2025 08:26:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766075192; x=1766679992; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qJpFHTDEzB05X66xrFgKLfHjWEJGjQ85HofDR0VslZY=;
-        b=QTwKH4Rtz6C8iaTmkdf40aLNPDZWe+0Wn6BZ4k9CRQv10oOTH3wpxblYmuo+in0xjo
-         oFqc9PRdGOT0rlYA/idWAZw1o02SmCJFEiPO5zRPkkLnFWbD9r0KNCH1hWyWzchKWLYX
-         8lqGX7muaa4ZyKDz3a5rI/SmTPx+s0XlUojvKtYWq2f0elClGPXK2+5WGyzhHesW18js
-         wrC473P6/NtsqNF6RRHM7YLTLBWRcFchYHUe7K7Fwc/TFK9MELzO0a1NfvbBKWytk/VB
-         mhCqUKmbbU8h11i7mGgk/Me8zk7IzqKYWwJSBfgToRzeSCHWMW2U2UO0CTBpUCXRkIMn
-         hq0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766075192; x=1766679992;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qJpFHTDEzB05X66xrFgKLfHjWEJGjQ85HofDR0VslZY=;
-        b=maNyieDoeOEhQjwDIdxukJkkb68LacirX2t0nXdI0vd6I94QSV8HQ07OvoGci7kzJU
-         nrXq3XgRiOiKeTrfvTylKm5kaq9C01kSAuOSKQVCc0EgoghLUIFiIm2TGf6O+YrQMwYT
-         wLfK7iomf2M5O1yPnbMd+XOZkY7aQDcIoJnMAYCqfzUsbn67CEmdSBUQAde2sUVw255X
-         ZIPQJGTape4yOKogIgWbMCsgYomlWRV0Dik+INxvtO36benSQ/JTzjA6jX4pxI0wyPnF
-         gXnUUm4B3KC3XV+pR8vpdpW/ny/0CsjMzYTFaSvjeE1eQUnh5Vfz/1/rY+hZlO0jI5jH
-         xfEw==
-X-Forwarded-Encrypted: i=1; AJvYcCXSh9qBbuoB/kXrc1zKb8fDlsPqusg8WGtlZGe7Et+/eI/Qu43jvyR/wjlpkaVhufjT6gg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyxY135F1al0U7XX8wvplqpIE5eTNKUdiSCU4IcJgRZGXEmJVFU
-	6qRhxaHKed1+KgA9MbQAeWycZAKypFoftXhe7/qAPLSVcTWxbYX3ZZOP
-X-Gm-Gg: AY/fxX5evZV/56+edLwwOYVjjmBtE28qSWBtQtrpRN5I8O3C/tFg9mnbPWxU04ceHY5
-	i0iFXVlgbuCr6qPC10bJV4JODj7mHUuBY+C3dOngmxRUkFCn7m1Zv8/UJCcG/X4DMPXW+qhzcOt
-	5DcsXVt01YfbzhkQK/aafs9/voAcyhd4e+P4n96L0QnN8OZrektxTTwtfwg3lySb2c5s0FDJT6g
-	3iDbRUnWoff3kRB2Klv2B93FQ+jBe79aqiycW75Cx1fs7gdu01/FN922yJMIt4UNDqVasogDjnf
-	A72k4gizvwAHqaOgrkKPxZAQk+cPQ/Lmg6d1HzbdAkjtdIJpty7WTXvuEyv4JqTdH6/bTcnmJA8
-	UBsYj1uDqgUE8a6WqqnfWFyKq5MJhCzYpVofsl87u+mt1voKvUOcY7QBTafVCniTgTEPZ6Obb54
-	bv4um4QFfHmKfFNbKLlk7jByVypt8WsAqzSjKYhXpQjA==
-X-Google-Smtp-Source: AGHT+IEiLlrNwayE/OEejVPPibTN9DbqbxeQkY7CK+E1iqQkD32NejUfdbwg4BUX3IiK49c125TzrA==
-X-Received: by 2002:a17:907:3fa7:b0:b72:5d08:486c with SMTP id a640c23a62f3a-b7d23a9d458mr2400079666b.27.1766075191457;
-        Thu, 18 Dec 2025 08:26:31 -0800 (PST)
-Received: from [10.25.219.74] ([128.77.115.158])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b802350dac6sm270774666b.65.2025.12.18.08.26.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 08:26:31 -0800 (PST)
-Message-ID: <3e449b21-5ffb-4a6a-b0c4-e9f381334883@gmail.com>
-Date: Thu, 18 Dec 2025 08:26:34 -0800
+	s=arc-20240116; t=1766076146; c=relaxed/simple;
+	bh=Pb5kooSMTZIvB5WH4r6zk15HZdb1lsTVhsHr7rhwmeg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZbufxhGv2HHixvX/Y+ECIri9XyCh2y0Zvm7K/Mah4qnbcT5PHWAwE7H4nymbnNGwfH7EnSLId2gl3h34iAaAy5KOpZd6Phd0ZZtK0ud/pqlD7ydUcZcaDdJ9fJEl4vQK23UV+daCWtozLVJzx4n+oRGpAooxLRa657KouqQMLV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vWH4s-00029z-19; Thu, 18 Dec 2025 17:42:10 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vWH4r-006Jmi-1h;
+	Thu, 18 Dec 2025 17:42:09 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vWH4r-00EcKV-1D;
+	Thu, 18 Dec 2025 17:42:09 +0100
+Date: Thu, 18 Dec 2025 17:42:09 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Rob Herring <robh@kernel.org>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, barebox@lists.infradead.org,
+	frieder.schrempf@kontron.de, annette.kobou@kontron.de,
+	oualid.derouiche@kontron.de, eberhard.stoll@kontron.de
+Subject: Re: [PATCH] ARM: dts: nxp/imx6: Drop unused .dtsi
+Message-ID: <20251218164209.6ombc6g4gy7tuwcz@pengutronix.de>
+References: <20251212203226.458694-5-robh@kernel.org>
+ <20251213181324.u32ztfblkknfpz44@pengutronix.de>
+ <CAL_JsqK9OREenZjBHrDh7AqsyUXYOzTOhY4e0qHGzYkX8tacWQ@mail.gmail.com>
+ <20251214185750.tzt6jf4zg5gtex63@pengutronix.de>
+ <CAL_JsqLfVemq9k3x5J1pTz--Z+VYLeEQrFdbtdS7Pc-HkRui=w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] arm64: dts: freescale: imx95: Add support for
- i.MX95 15x15 FRDM board
-To: Lei Xu <lei.xu@nxp.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- justin.jiang@nxp.com, qijian.guo@nxp.com
-References: <20251217-127-v2-0-67cb12e56242@nxp.com>
- <20251217-127-v2-2-67cb12e56242@nxp.com>
-Content-Language: en-US
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <20251217-127-v2-2-67cb12e56242@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL_JsqLfVemq9k3x5J1pTz--Z+VYLeEQrFdbtdS7Pc-HkRui=w@mail.gmail.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
+
+On 25-12-15, Rob Herring wrote:
+> On Sun, Dec 14, 2025 at 12:58 PM Marco Felsch <m.felsch@pengutronix.de> wrote:
+> >
+> > On 25-12-14, Rob Herring wrote:
+> > > On Sat, Dec 13, 2025 at 12:13 PM Marco Felsch <m.felsch@pengutronix.de> wrote:
+> > > >
+> > > > Hi Rob,
+> > > >
+> > > > On 25-12-12, Rob Herring (Arm) wrote:
+> > > > > These .dtsi files are not included anywhere in the tree and can't be
+> > > > > tested.
+> > > >
+> > > > not in the tree but by other projects, please see below.
+> > > >
+> > > > > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> > > > > ---
+> > > > >  .../dts/nxp/imx/imx6dl-kontron-samx6i.dtsi    | 12 -----
+> > > > >  .../dts/nxp/imx/imx6q-kontron-samx6i.dtsi     | 12 -----
+> > > > >  .../boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi  | 45 ----------------
+> > > > >  .../boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi  | 54 -------------------
+> > > > >  4 files changed, 123 deletions(-)
+> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
+> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
+> > > > >
+> > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+> > > > > deleted file mode 100644
+> > > > > index 5a9b819d7ee8..000000000000
+> > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
+> > > > > +++ /dev/null
+> > > > > @@ -1,12 +0,0 @@
+> > > > > -// SPDX-License-Identifier: GPL-2.0 OR X11
+> > > > > -/*
+> > > > > - * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de>
+> > > > > - */
+> > > > > -
+> > > > > -#include "imx6dl.dtsi"
+> > > > > -#include "imx6qdl-kontron-samx6i.dtsi"
+> > > > > -
+> > > > > -/ {
+> > > > > -     model = "Kontron SMARC-sAMX6i Dual-Lite/Solo";
+> > > > > -     compatible = "kontron,imx6dl-samx6i", "fsl,imx6dl";
+> > > > > -};
+> > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+> > > > > deleted file mode 100644
+> > > > > index e76963436079..000000000000
+> > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
+> > > > > +++ /dev/null
+> > > > > @@ -1,12 +0,0 @@
+> > > > > -// SPDX-License-Identifier: GPL-2.0 OR X11
+> > > > > -/*
+> > > > > - * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de>
+> > > > > - */
+> > > > > -
+> > > > > -#include "imx6q.dtsi"
+> > > > > -#include "imx6qdl-kontron-samx6i.dtsi"
+> > > > > -
+> > > > > -/ {
+> > > > > -     model = "Kontron SMARC-sAMX6i Quad/Dual";
+> > > > > -     compatible = "kontron,imx6q-samx6i", "fsl,imx6q";
+> > > > > -};
+> > > >
+> > > > I can't speak for the other two .dtsi files but both kontron .dtsi files
+> > > > are used by barebox:
+> > > >
+> > > >  - https://elixir.bootlin.com/barebox/v2025.11.0/source/arch/arm/dts/imx6dl-samx6i.dts#L8
+> > > >  - https://elixir.bootlin.com/barebox/v2025.11.0/source/arch/arm/dts/imx6q-samx6i.dts#L8
+> > > >
+> > > > Removing them here will cause a regression for barebox.
+> > >
+> > > Please upstream something that uses the .dtsi. Other than the
+> > > undocumented barebox property, no reason these can't be.
+> >
+> > My intention wasn't to point to the barebox-only
+> > "barebox,disable-deep-probe" property. I was refering to the include
+> > line.
+> >
+> > The two .dtsi files we're talking about are SoM .dtsi files. We don't
+> > have access to the Kontron EVK baseboard which uses this SoM.
+> >
+> > I've added a few Kontron devs which may can add the missing baseboard
+> > support.
+> >
+> > +Cc: frieder.schrempf@kontron.de
+> > +Cc: annette.kobou@kontron.de
+> > +Cc: oualid.derouiche@kontron.de
+> > +Cc: eberhard.stoll@kontron.de
+> >
+> > I could also add the imx6dl-samx6i.dts and imx6q-samx6i.dts like we do
+> > in barebox. But as said, this would be a devicetree for a SoM which
+> > makes sense for the bootloader but not for the kernel.
+> 
+> Why not? People use the kernel as a bootloader. There's also some
+
+Using the kernel as bootloader is a good point, which I didn't had in my
+mind!
+
+I will add the som.dts, please don't remove the kontron dtsi files yet.
+
+> discussions about splitting SoMs and baseboards into overlays for
+> baseboards (and also even into SoC base DT plus overlay for boards).
+
+Do you have pointers?
+
+Regards,
+  Marco
 
 
-On 12/17/2025 9:56 PM, Lei Xu wrote:
-> The i.MX95 15x15 FRDM board is a compact and cost-effective development
-> platform based on the i.MX95 applications processor.
->
-> Add device tree support for this board, including:
->  - LPUART1 and LPUART5
->  - NETC
->  - USB
->  - PCIe
->  - uSDHC1, uSDHC2 and uSDHC3
->  - FlexCAN2 and FlexCAN5
->  - LPI2C2, LPI2C3, LPI2C4 and their child nodes
->  - Watchdog3
->
-> Signed-off-by: Lei Xu <lei.xu@nxp.com>
-> ---
-> Changes in v2:
-> - Switched from 'xceiver-supply' to CAN PHY nodes using 'phys'.
-> - Added CAN PHY nodes for flexcan2/5 with shared silent-gpio, removed reg_can_stby.
-> - Updated MSI/IOMMU mapping comment to match the i.MX95 15x15 FRDM board.
-> ---
->  arch/arm64/boot/dts/freescale/Makefile             |   1 +
->  arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts | 963 +++++++++++++++++++++
->  2 files changed, 964 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-> index f30d3fd724d0..71308d19d35e 100644
-> --- a/arch/arm64/boot/dts/freescale/Makefile
-> +++ b/arch/arm64/boot/dts/freescale/Makefile
-> @@ -400,6 +400,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-tqma9352-mba93xxla.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx93-var-som-symphony.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx943-evk.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-evk.dtb
-> +dtb-$(CONFIG_ARCH_MXC) += imx95-15x15-frdm.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-19x19-evk-sof.dtb
->  dtb-$(CONFIG_ARCH_MXC) += imx95-toradex-smarc-dev.dtb
-> diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
-> new file mode 100644
-> index 000000000000..414ebdacc3cb
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
-> @@ -0,0 +1,963 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright 2025 NXP
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include <dt-bindings/leds/common.h>
-> +#include <dt-bindings/phy/phy-imx8-pcie.h>
-> +#include <dt-bindings/pwm/pwm.h>
-> +#include <dt-bindings/usb/pd.h>
-> +#include "imx95.dtsi"
-> +
-> +#define BRD_SM_CTRL_SD3_WAKE		0x8000	/*!< PCAL6408A-0 */
-> +#define BRD_SM_CTRL_PCIE1_WAKE		0x8001	/*!< PCAL6408A-4 */
-> +#define BRD_SM_CTRL_BT_WAKE		0x8002	/*!< PCAL6408A-5 */
-> +#define BRD_SM_CTRL_PCIE2_WAKE		0x8003	/*!< PCAL6408A-6 */
-> +#define BRD_SM_CTRL_BUTTON		0x8004	/*!< PCAL6408A-7 */
-> +
-> +/ {
-> +	compatible = "fsl,imx95-15x15-frdm", "fsl,imx95";
-> +	model = "NXP i.MX95 15X15 FRDM board";
-> +
-> +	aliases {
-> +		ethernet0 = &enetc_port0;
-> +		ethernet1 = &enetc_port1;
-> +		gpio0 = &gpio1;
-> +		gpio1 = &gpio2;
-> +		gpio2 = &gpio3;
-> +		gpio3 = &gpio4;
-> +		gpio4 = &gpio5;
-> +		i2c0 = &lpi2c1;
-> +		i2c1 = &lpi2c2;
-> +		i2c2 = &lpi2c3;
-> +		i2c3 = &lpi2c4;
-> +		i2c4 = &lpi2c5;
-> +		i2c5 = &lpi2c6;
-> +		i2c6 = &lpi2c7;
-> +		i2c7 = &lpi2c8;
-> +		mmc0 = &usdhc1;
-> +		mmc1 = &usdhc2;
-> +		mmc2 = &usdhc3;
-> +		serial0 = &lpuart1;
-> +		serial4 = &lpuart5;
-> +	};
-> +
-> +	
+> 
+> Rob
+> 
 
+-- 
+#gernperDu 
+#CallMeByMyFirstName
 
-(snip)
-
-
-> +
-> +	sound-micfil {
-> +		compatible = "fsl,imx-audio-card";
-> +		model = "micfil-audio";
-> +
-> +		pri-dai-link {
-> +			link-name = "micfil hifi";
-> +			format = "i2s";
-> +
-> +			cpu {
-> +				sound-dai = <&micfil>;
-> +			};
-
-
-please add a space in between the definitions of the cpu and codec nodes. With that:
-
-
-Reviewed-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-
-
-> +			codec {
-> +				sound-dai = <&dmic>;
-> +			};
-> +		};
-> +	};
-> +
-> +	usdhc3_pwrseq: usdhc3-pwrseq {
-> +		compatible = "mmc-pwrseq-simple";
-> +		reset-gpios = <&pcal6524 8 GPIO_ACTIVE_LOW>;
-> +	};
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
