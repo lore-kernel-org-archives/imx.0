@@ -1,117 +1,158 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47461DFFD
-	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 09:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5B722126D
+	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 09:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766048958; cv=none; b=Oc9eN96jNPYMeaN18LpdWc3Og+KGMsUjJdWOv0LlF38KfW+GyUr9hutMK3QPb0bPrjgwarwRmpAnjpw02Tu/0nALyxs/KtYsgGRGsst+Bjx48Rjx7teVCARqsfcD1OOlbAdGI+f60njkEsV1xFrFGFkkYYk7kZIJcREyRQgmsYM=
+	t=1766049843; cv=none; b=EtC3A7huEuOz0F1aupjIoNDhsb1yLrk2VnlGMPHKRpvR29igP4ixLBBrGP6Hqu9WhiOwMDi34r11gslgkg6UgTXFcRuUfenkALqTm72Otpe8aIGQtcuh4o+Q8p2vwLuAGQKOCWsCqGjoJ6GsBH33osqPR+nT4iF1VaV69Qr2QqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766048958; c=relaxed/simple;
-	bh=JLOsRuLJC0lQwq8IdJlieAKJlWnRllG5tdlb00mT5Sg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AL335jU+B+iyewphAhKugGIkrpzBFNGNSBUoPVrrWRq3dSdUl7jHWykSN0bpvRrFlVGr59M8gSDr/nSrvBUy8OS1/dqnpfErh6kc4ZAGXJmXNF8hJgH6peRkrQaxw88p3Vr6OvE2KuVnaoS5U6k0p/+Akp75UT8+ac92ClgwR2Y=
+	s=arc-20240116; t=1766049843; c=relaxed/simple;
+	bh=vaUq1tSV0zuUGaK06Qs0CHIreYcp34yQU/RLQrp5cgw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=huhYWvl3WFN7tvrbyxrSw30WIpJsTAy8cRwCY+/a+a4mKbayqTXqRV0dZHq2dVtfBn9bs8+HdhwY5uidmJgziYX3HMcxG1B8yB/KoOOkcMG30zSLJL/HG0gLHKQrxa8+2L8g2lMsq7dAn7mBcpSAoOifax9e/qzfqlyuaABdDm0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1vWA0S-0000bE-Cz; Thu, 18 Dec 2025 10:09:08 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <m.tretter@pengutronix.de>)
-	id 1vWA0R-006FaQ-1N;
-	Thu, 18 Dec 2025 10:09:07 +0100
-Received: from mtr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <m.tretter@pengutronix.de>)
-	id 1vWA0R-00EXba-0t;
-	Thu, 18 Dec 2025 10:09:07 +0100
-Date: Thu, 18 Dec 2025 10:09:07 +0100
+	id 1vWAEo-0002J4-Gp; Thu, 18 Dec 2025 10:23:58 +0100
 From: Michael Tretter <m.tretter@pengutronix.de>
-To: Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Hans Verkuil <hans.verkuil@cisco.com>
-Cc: linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
-	Michael Tretter <michael.tretter@pengutronix.de>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2 0/2] media: staging: imx: fix multiple video input
-Message-ID: <aUPEs4wUHgAyMrPX@pengutronix.de>
-Mail-Followup-To: Michael Tretter <m.tretter@pengutronix.de>,
-	Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Hans Verkuil <hans.verkuil@cisco.com>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org,
-	Michael Tretter <michael.tretter@pengutronix.de>,
-	Frank Li <Frank.Li@nxp.com>
-References: <20251107-media-imx-fixes-v2-0-07d949964194@pengutronix.de>
+Date: Thu, 18 Dec 2025 10:23:49 +0100
+Subject: [PATCH v2 1/3] media: imx-csi: move media_pipeline to video device
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251107-media-imx-fixes-v2-0-07d949964194@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251218-media-imx-cleanup-v2-1-9e3e3c269f7f@pengutronix.de>
+References: <20251218-media-imx-cleanup-v2-0-9e3e3c269f7f@pengutronix.de>
+In-Reply-To: <20251218-media-imx-cleanup-v2-0-9e3e3c269f7f@pengutronix.de>
+To: Steve Longerbeam <slongerbeam@gmail.com>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ linux-staging@lists.linux.dev, Michael Tretter <m.tretter@pengutronix.de>
+X-Mailer: b4 0.14.3
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::54
 X-SA-Exim-Mail-From: m.tretter@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Fri, 07 Nov 2025 11:34:32 +0100, Michael Tretter wrote:
-> If the IMX media pipeline is configured to receive multiple video
-> inputs, the second input stream may be broken on start. This happens if
-> the IMX CSI hardware has to be reconfigured for the second stream, while
-> the first stream is already running.
-> 
-> The IMX CSI driver configures the IMX CSI in the link_validate callback.
-> The media pipeline is only validated on the first start. Thus, any later
-> start of the media pipeline skips the validation and directly starts
-> streaming. This may leave the hardware in an inconsistent state compared
-> to the driver configuration. Moving the hardware configuration to the
-> stream start to make sure that the hardware is configured correctly.
-> 
-> Patch 1 removes the caching of the upstream mbus_config in
-> csi_link_validate and explicitly request the mbus_config in csi_start,
-> to get rid of this implicit dependency.
-> 
-> Patch 2 actually moves the hardware register setting from
-> csi_link_validate to csi_start to fix the skipped hardware
-> reconfiguration.
+The imx-media driver has a single imx_media_device. Attaching the
+media_pipeline to the imx_media_device prevents the execution of
+multiple media pipelines on the device. This should be possible as long
+as the media_pipelines don't use the same pads or pads that be
+configured while the other media pipeline is streaming.
 
-Gentle ping.
+Move the media_pipeline to the imx_media_video_dev to be able to
+construct media pipelines per imx capture device.
 
-Michael
+If different media pipelines in the media device conflict, the
+validation will fail. Thus, the pipeline will fail to start and signal
+an error to user space.
 
-> 
-> Signed-off-by: Michael Tretter <michael.tretter@pengutronix.de>
-> ---
-> Changes in v2:
-> - Document changed locking in commit message
-> - Link to v1: https://lore.kernel.org/r/20251105-media-imx-fixes-v1-0-99e48b4f5cbc@pengutronix.de
-> 
-> ---
-> Michael Tretter (2):
->       media: staging: imx: request mbus_config in csi_start
->       media: staging: imx: configure src_mux in csi_start
-> 
->  drivers/staging/media/imx/imx-media-csi.c | 84 ++++++++++++++++++-------------
->  1 file changed, 48 insertions(+), 36 deletions(-)
-> ---
-> base-commit: 27afd6e066cfd80ddbe22a4a11b99174ac89cced
-> change-id: 20251105-media-imx-fixes-acef77c7ba12
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+---
+Changes in v2:
+- none
+---
+ drivers/staging/media/imx/imx-media-capture.c | 8 ++++----
+ drivers/staging/media/imx/imx-media-utils.c   | 3 ++-
+ drivers/staging/media/imx/imx-media.h         | 7 ++++---
+ 3 files changed, 10 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/staging/media/imx/imx-media-capture.c b/drivers/staging/media/imx/imx-media-capture.c
+index e9cef7af000a..bfd71d25facc 100644
+--- a/drivers/staging/media/imx/imx-media-capture.c
++++ b/drivers/staging/media/imx/imx-media-capture.c
+@@ -722,8 +722,8 @@ static int capture_start_streaming(struct vb2_queue *vq, unsigned int count)
+ 		goto return_bufs;
+ 	}
+ 
+-	ret = imx_media_pipeline_set_stream(priv->md, &priv->src_sd->entity,
+-					    true);
++	ret = imx_media_pipeline_set_stream(priv->md, &priv->vdev,
++					    &priv->src_sd->entity, true);
+ 	if (ret) {
+ 		dev_err(priv->dev, "pipeline start failed with %d\n", ret);
+ 		goto return_bufs;
+@@ -749,8 +749,8 @@ static void capture_stop_streaming(struct vb2_queue *vq)
+ 	unsigned long flags;
+ 	int ret;
+ 
+-	ret = imx_media_pipeline_set_stream(priv->md, &priv->src_sd->entity,
+-					    false);
++	ret = imx_media_pipeline_set_stream(priv->md, &priv->vdev,
++					    &priv->src_sd->entity, false);
+ 	if (ret)
+ 		dev_warn(priv->dev, "pipeline stop failed with %d\n", ret);
+ 
+diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/media/imx/imx-media-utils.c
+index 1b5af8945e6b..f520529a7cfe 100644
+--- a/drivers/staging/media/imx/imx-media-utils.c
++++ b/drivers/staging/media/imx/imx-media-utils.c
+@@ -749,6 +749,7 @@ EXPORT_SYMBOL_GPL(imx_media_pipeline_subdev);
+  * Turn current pipeline streaming on/off starting from entity.
+  */
+ int imx_media_pipeline_set_stream(struct imx_media_dev *imxmd,
++				  struct imx_media_video_dev *vdev,
+ 				  struct media_entity *entity,
+ 				  bool on)
+ {
+@@ -762,7 +763,7 @@ int imx_media_pipeline_set_stream(struct imx_media_dev *imxmd,
+ 	mutex_lock(&imxmd->md.graph_mutex);
+ 
+ 	if (on) {
+-		ret = __media_pipeline_start(entity->pads, &imxmd->pipe);
++		ret = __media_pipeline_start(entity->pads, &vdev->pipe);
+ 		if (ret)
+ 			goto out;
+ 		ret = v4l2_subdev_call(sd, video, s_stream, 1);
+diff --git a/drivers/staging/media/imx/imx-media.h b/drivers/staging/media/imx/imx-media.h
+index f095d9134fee..8b65f79b125f 100644
+--- a/drivers/staging/media/imx/imx-media.h
++++ b/drivers/staging/media/imx/imx-media.h
+@@ -104,6 +104,9 @@ struct imx_media_buffer {
+ struct imx_media_video_dev {
+ 	struct video_device *vfd;
+ 
++	/* the pipeline object */
++	struct media_pipeline pipe;
++
+ 	/* the user format */
+ 	struct v4l2_pix_format fmt;
+ 	/* the compose rectangle */
+@@ -145,9 +148,6 @@ struct imx_media_dev {
+ 	struct media_device md;
+ 	struct v4l2_device  v4l2_dev;
+ 
+-	/* the pipeline object */
+-	struct media_pipeline pipe;
+-
+ 	struct mutex mutex; /* protect elements below */
+ 
+ 	/* master video device list */
+@@ -223,6 +223,7 @@ int imx_media_alloc_dma_buf(struct device *dev,
+ 			    int size);
+ 
+ int imx_media_pipeline_set_stream(struct imx_media_dev *imxmd,
++				  struct imx_media_video_dev *vdev,
+ 				  struct media_entity *entity,
+ 				  bool on);
+ 
+
+-- 
+2.47.3
+
