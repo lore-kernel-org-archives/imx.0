@@ -1,152 +1,114 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5673451BD
-	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 13:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4352E1E3DDB
+	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 14:23:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766065996; cv=none; b=WyXEy96L0h5WFHcdoTziXcTK1H7227OmbR0gCIV/2ZCEHtybw3vGFt/IjFtBq0kG5gTHNwny7RuvwbpBLEJ3DQWkUz+X9wCOWaRTe3xUQwgyrmd90ySOJedgLx+ymYfLX+eUjkJ9z0r8c04kHiXv9V/EYr2gHTwE/GhOVXw4hhA=
+	t=1766067832; cv=none; b=cSbf6odC1W/G8Cand9uTQFoVNfamTlgVKcqR3j2NUnCVwYPOxqrxcYat4Le7v0ReAtsigCAwAAF7s8OtuwlPmzOGXa6R3h13JAID1IibusnDY9OWy0pi/pp9/dCIP3ctoGNDs7gZ3Gx6bLjGSHbI9oOG6yirAyGvlKbRFITmADI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766065996; c=relaxed/simple;
-	bh=k1wtDYSaiiLWFrRrGcwn90MyWbfJ68/tBsZWk8VszJ0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UkThx2v1WZHf6SbyG1+l+I8BhXoLlcoPDQK1iVfUXYnmqDfUzI7NddDu+cse7ML0HVSV0QzVzvruAe+y5SKCHKzp79/CYlq1OKFG2SL0sT1J7xyHCDUqmluJzdQmHKOlYgWODTVC9S1v+qOmEwoLZMxjHRQjruupDG/2EtglAX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vWERE-0008Rc-F2; Thu, 18 Dec 2025 14:53:04 +0100
-Message-ID: <5925c749-1288-4d61-b17f-ac2e1c6c463d@pengutronix.de>
-Date: Thu, 18 Dec 2025 14:53:02 +0100
+	s=arc-20240116; t=1766067832; c=relaxed/simple;
+	bh=IchqKkM1bd+yGaVg6uSU5HkGkxw95z8S5Xb35oyo9pg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=ba1k1P42+E704oSGcHn2e2FAHsbfLAnZ17iXjMRPF0TeSS7l8mrGJfzZpwEofyKi1sXt+HIoupElt9W2EHi+wW9Nzpt0/SC5dI0dvRWEVOC7K1O64e7u8UN6PyjDU0hhf2+sglypOBfydA0d3jJlGf/LnH2SqpET2E22GXasqkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=a+In6PYb; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="a+In6PYb"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id D8203C1A5AF;
+	Thu, 18 Dec 2025 14:23:23 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 666E8606B6;
+	Thu, 18 Dec 2025 14:23:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9E7DA102F0ADC;
+	Thu, 18 Dec 2025 15:23:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1766067826; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=IchqKkM1bd+yGaVg6uSU5HkGkxw95z8S5Xb35oyo9pg=;
+	b=a+In6PYbA1mKvlCzytMKYpqqpNmweyhmmw64DSVm4U+rsYr85nTYAmMTHwlSJxtvBEqHtX
+	RG9L3e6YQz4sa5m6aGWPUxiiWGVSjyLEhN/exrd+gqJsEzD6+adDnHdgIfJ3I3l/Ub95cr
+	m6ZRun7wYQt/QWLrY3qfpzufBblU8xBkL+Utf8jtZleFt+RjBTfCpdlQdNfOOFg5/PpE9z
+	5htB1/d1tqdWQuW8jHkAUioZ4BTEQOj+gDUMJi3re9Q7kkog3zWzduDBkGH3HNeS+tDjFt
+	4dYjI2/PRcpHsOnjTrNzjrxj4/8LPmAtI5S/TkoiZi1fp8Gw+8giOGUZ+OhdaQ==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] Add devicetree for NXP i.MX93 FRDM board
-To: Fabian Pflug <f.pflug@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, Lei Xu <lei.xu@nxp.com>,
- linux-kernel@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>,
- Haidong Zheng <haidong.zheng@nxp.com>, Daniel Baluta
- <daniel.baluta@nxp.com>, Danwei Luo <danwei.luo@nxp.com>,
- linux-arm-kernel@lists.infradead.org
-References: <20251218-fpg-nxp-imx93-frdm-v4-0-cd3a9f6ac89a@pengutronix.de>
- <9a96f664-00ba-4589-b3b8-a04355c0ad0b@pengutronix.de>
- <e15437918fc2e162eec92985e8f11f8e0de91246.camel@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <e15437918fc2e162eec92985e8f11f8e0de91246.camel@pengutronix.de>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Date: Thu, 18 Dec 2025 15:23:35 +0100
+Message-Id: <DF1ESI44XZ00.I0EK3DH2Y7LR@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v3 01/22] drm/bridge: add of_drm_find_and_get_bridge()
+Cc: <dri-devel@lists.freedesktop.org>, <imx@lists.linux.dev>,
+ <linux-amlogic@lists.infradead.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Alexey Brodkin" <abrodkin@synopsys.com>,
+ "Andrzej Hajda" <andrzej.hajda@intel.com>, "David Airlie"
+ <airlied@gmail.com>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu"
+ <Hui.Pu@gehealthcare.com>, "Jernej Skrabec" <jernej.skrabec@gmail.com>,
+ "Jerome Brunet" <jbrunet@baylibre.com>, "Jonas Karlman" <jonas@kwiboo.se>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Kevin Hilman" <khilman@baylibre.com>,
+ "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>, "Liu Ying"
+ <victor.liu@nxp.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Martin Blumenstingl"
+ <martin.blumenstingl@googlemail.com>, "Neil Armstrong"
+ <neil.armstrong@linaro.org>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Phong LE" <ple@baylibre.com>, "Robert Foss"
+ <rfoss@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Shawn Guo"
+ <shawnguo@kernel.org>, "Simona Vetter" <simona@ffwll.ch>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>
+To: "Maxime Ripard" <mripard@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-1-b5165fab8058@bootlin.com> <0ba037c65f9cadd51082abf2b7857ba7@kernel.org> <DF0KBN5Y22XW.2RE8HKDFY87XK@bootlin.com> <20251218-shiny-rugged-bug-d1d3e8@houat>
+In-Reply-To: <20251218-shiny-rugged-bug-d1d3e8@houat>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+Hi Maxime,
 
-On 12/18/25 2:11 PM, Fabian Pflug wrote:
-> Hello Ahmad,
-> 
-> On Thu, 2025-12-18 at 13:52 +0100, Ahmad Fatoum wrote:
->> Hello Fabian,
+On Thu Dec 18, 2025 at 1:50 PM CET, Maxime Ripard wrote:
+> Hi,
+>
+> On Wed, Dec 17, 2025 at 03:31:01PM +0100, Luca Ceresoli wrote:
+>> On Wed Dec 17, 2025 at 11:15 AM CET, Maxime Ripard wrote:
+>> > On Tue, 16 Dec 2025 18:58:34 +0100, Luca Ceresoli wrote:
+>> >> of_drm_find_bridge() does not increment the refcount for the returned
+>> >> bridge, but that is required now. However converting it and all its u=
+sers
+>> >> is not realistically doable at once given the large amount of (direct=
+ and
+>> >> indirect) callers and the complexity of some.
+>> >>
+>> >>
+>> >> [ ... ]
+>> >
+>> > Reviewed-by: Maxime Ripard <mripard@kernel.org>
 >>
->> On 12/18/25 12:39 PM, Fabian Pflug wrote:
->>> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
->>> ---
->>> Changes in v4:
->>> - remove it6263 block in i2c1, since it is not finished
->>> - remove usdhc3 pwrsequence, since WLAN is not tested on my board
->>> - remove eee-broken-1000t on phy2, since it is not broken
->>> - update min/max-microvlt on buck converters
+>> Thank you for the prompt review!
 >>
->> I know you changed this due to reviewer feedback, but it was wrong
->> advice. The Linux driver already has information about the minimum and
->> maximum range support for the PMIC, what you need to write here is the
->> actual board-level constraints.
-> 
-> Yeah, I know, that why I only updated the other two rails and changed to minimum for CPU 0.64 to 0.61V for core.
-> And 1.06 to 1.14V for DRAM, as it is the settings allowed by the CPU.
-> 
-> VCC3.3 and VCC1.8 were not changed, due to them being connected to multiple devices and I did not want to make them
-> flexible, as it would be a hassle in the drivers.
+>> All patches are reviewed now except patch 18 which has no reply. I'm jus=
+t
+>> pointing out in case it's something you missed.
+>
+> Yes, I couldn't really understand the implications of that one, so I'll
+> leave the review to the maintainers.
 
-Ah, good. I read this change log here, checked v3 and then saw you
-applied the feedback on the first regulator and assumed you did so for
-the others mentioned there as well...
+OK, make sense, it's not a trivial patch to review.
 
-0.61 is the minimum in suspend for VDD_SOC, so that's ok.
-For DRAM, that's minimum/maximum operating range so ok too.
+Patches 1-4,6 contain the core changes and they are all reviewed, which is
+the most important part to me. Everything else is just "a bunch of driver
+conversions" and they can flow in over time. I'm also sending more such
+driver conversions in separate series, for other drivers.
 
-Thanks for the clarification,
-Ahmad
+Luca
 
-> 
-> Kind regards
-> Fabian
-> 
->>
->> I don't think the board will like VDD_3V3 at 1.62V or VDD_1V8 at 3.4V.
->> For the fixed voltage rails just set min = max = fixed voltage.
->>
->> Thanks,
->> Ahmad
->>
->>> - Link to v3: https://lore.kernel.org/r/20251022-fpg-nxp-imx93-frdm-v3-0-03ec40a1ccc0@pengutronix.de
->>>
->>> Changes in v3:
->>> - Add Signed-off for original NXP contributors.
->>> - Fixed whitespace errors (Thanks Francesco Valla)
->>> - Added mu1 with status okay (Thanks Francesco Valla)
->>> - Removed address cells from lpi2c3 (Thanks Frank Li)
->>> - Configure pin for watchdog (Thanks Peng Fan)
->>> - Updated regulator config
->>> - Configure i2c0
->>> - Link to v2: https://lore.kernel.org/r/20250526-fpg-nxp-imx93-frdm-v2-0-e5ad0efaec33@pengutronix.de
->>>
->>> Changes in v2:
->>> - 1/2: remove CAN node, as it has not been tested.
->>> - 1/2: ran dt-format (Thanks Frank Li)
->>> 	But also reordered some nodes afterwards again to have
->>> 	regulator-min before regulator-max, have the pinmux at the end
->>> 	of the file, and have the regulator-name as the first node
->>> 	inside the regulators.
->>> 	Re-added comments, that were deleted.
->>> - 1/2: changes subjet to ar64:dts (Thanks Fabio Estevan)
->>> - 1/2: removed reg_vdd_12v (Tanks Fabio Estevan)
->>> - 1/2: added aliases for rtc, emmc, serial (Thanks Fabio Estevan)
->>> - reordered the series to have documentation before dts. (Thanks
->>>   Krzystof Kozlowski)
->>> - Link to v1: https://lore.kernel.org/r/20250523-fpg-nxp-imx93-frdm-v1-0-546b2d342855@pengutronix.de
->>>
->>> ---
->>> Fabian Pflug (2):
->>>       dt-bindings: arm: fsl: add i.MX93 11x11 FRDM board
->>>       arm64: dts: freescale: add support for NXP i.MX93 FRDM
->>>
->>>  Documentation/devicetree/bindings/arm/fsl.yaml     |   1 +
->>>  arch/arm64/boot/dts/freescale/Makefile             |   1 +
->>>  arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts | 620 +++++++++++++++++++++
->>>  3 files changed, 622 insertions(+)
->>> ---
->>> base-commit: ea1013c1539270e372fc99854bc6e4d94eaeff66
->>> change-id: 20250523-fpg-nxp-imx93-frdm-5cc180a1fda9
->>>
->>> Best regards,
-> 
-
--- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
