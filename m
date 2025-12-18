@@ -1,85 +1,64 @@
-Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.11])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FC62D94BF
-	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 21:30:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766093402; cv=pass; b=A4L8tX1xHSJx/jwbfCaFXR9e1yASvhTPb3ZF/x237s7WXvAws8zzIJfChQkMqGpI/+RXnPtCLZx5wBY87b+/1wv4FCbMtBi0T8R/GynRgNWDAWGNXKugSn9wCPT7jBHUyTgxihCDNBruWUsE1oyOpkiV6pTZblrrqMk5Z+0kzAY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766093402; c=relaxed/simple;
-	bh=ZzvEed4sEkcv3SWvfOHQgv/2cRbBc1HpGi2Alr+EpL0=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12B5331217
+	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 21:41:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766094097; cv=none; b=X0jW1NJ/SZJ6xzbNWuuB4OaFG9EJngETuQD0a6nwsHaHHhrEIhr0CZF+ueOjw4wmOT7/9BhXcVAMIC4rPsZyAwTsOm+eGyqIvsL7XP4bSwGhPq1hxw76AlXyu5SEDDRotvXs6I+ow3ctyD0sV3Bmxi+OjMlWg+7tR25SxjaYIu0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766094097; c=relaxed/simple;
+	bh=eTd+DHW7TSu5DSPfgcZrJDkmN3gweMJpuY2+Qfiy3IQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FwzbQE83Ud9aet1YhjY+2WHk5QnGXVwuBSFTDKPSf3AAq9Alvk5zF4WpyICPZxn8LzQftoP8tW/f/GS/SPvGCM4sAb96yB+MOkEk04QiuY3DB7Ne7LnewZ5R29fhdohITgsx9bsVl+cNVj5iVxYoowrisH+AeM6aPkdNH+S58V8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=XMLEyWio; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=NbLdgIkC; arc=pass smtp.client-ip=185.56.87.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="XMLEyWio";
-	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="NbLdgIkC"
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-pn62.prod.antispam.mailspamprotection.com; s=arckey; t=1766093400;
-	 b=QZMZJ6x0BM5L0XodXGdNMdo8RBnpl+MWRdUBFxO3eHs1/GTv/WAnAbqcvFnywsKs0fUrOK4C9M
-	  AzqaEecstZbdorW7DWIPXYm1UIHQg5kj5uY56xXYqwSmKKXYPcsfTbMdVAkru2fsmTEDi21tGv
-	  9r83rn2QXoaZ50vXEA0ArpsWgCfTSROFSZpXW3qttjG9N82imWNK/jM5+e1mklI7q/RQgLQlaa
-	  wIoRaId3z7eQjgHg3xWLTxeyxuGE/1WQ5YZwNIgR5S2Bt2xMg0ZTSIT5dau8uYvcyLjmYfdTKN
-	  XXpvx/CuSZBOTCe3rzmrPyHIznj56z/45VhgScJPPdm+Ew==;
-ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-pn62.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-pn62.prod.antispam.mailspamprotection.com; s=arckey; t=1766093400;
-	bh=ZzvEed4sEkcv3SWvfOHQgv/2cRbBc1HpGi2Alr+EpL0=;
-	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:
-	  From:Date:DKIM-Signature:DKIM-Signature;
-	b=mDBQifK0QU01mdkA6AYr6nMjQIJQ4v9iZTaA6W6OyXga8+sfhd6e9ZTyFwE5MkRyGKaNYmFefK
-	  asjhdA3Y2Pie9nslPL8k3Kt2WqSVVpdFj9yhW6JG9u8vhpW+R6tr5I8IsmnDVSvnq7WSGzUiZA
-	  fu6ojdfZUKyhZxZFWqDYYnB/EekgIkH4JRs5DzQCDp4MmSv6naqqi6yY85Sj3RWCuFYyZBQj20
-	  3qF1lKLTdP4RAbNrh90XgLSjCCEeRN6e9WXFprXs/H32x7ttE9ntSZ7O8eERdeYW7PAavn9tj0
-	  voTk+jH5MbhxD+wZybtVF/58siVk03eQ1gHUdbMFv/+qHg==;
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
-	:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	List-Unsubscribe:Content-Transfer-Encoding;
-	bh=tpKlTYeTCs6R8eO95vUUpCyeGtT/lX8I/YjZJmafD90=; b=XMLEyWioAyrbYKO92C8a2RpCqd
-	qwdRF/3AVj04TWLMUn1WOnrGT7aM9TgggtZ1Y1uljKqJbAz+jWLy99rKmq4HVk1OPJZvUgoNgMsGU
-	KljjpLj3MsUj0JPoWC9vUVb5LmdxgcaRw+LYNha0r82IbRoRsWMyM2floaqQVp8cCVq8=;
-Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
-	by instance-europe-west4-pn62.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.1)
-	(envelope-from <francesco@valla.it>)
-	id 1vWLZL-00000006zx0-280f
-	for imx@lists.linux.dev;
-	Thu, 18 Dec 2025 21:29:58 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
-	s=default; h=Subject:Cc:To:From:Date:list-help:list-unsubscribe:
-	list-subscribe:list-post:list-owner:list-archive;
-	bh=tpKlTYeTCs6R8eO95vUUpCyeGtT/lX8I/YjZJmafD90=; b=NbLdgIkCc+yH/GfSisI0WY9P43
-	XnSIPYXmJf7kWE7vt8ZvjTnyLV9VgjFCywQfzLqCDigWle5tQll4SFHXwFfZQopdyB2NvDhZYZaHg
-	tBE0VeTFYoAD9uVxdZrSOqaRYhNmohIIjo7/Ywb+isipUJz5OngCp3HQXRRi7VRl8zUw=;
-Received: from [95.248.141.113] (port=61650 helo=bywater)
-	by esm19.siteground.biz with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.1)
-	(envelope-from <francesco@valla.it>)
-	id 1vWLZ5-00000000FX5-3itd;
-	Thu, 18 Dec 2025 21:29:39 +0000
-Date: Thu, 18 Dec 2025 22:29:38 +0100
-From: Francesco Valla <francesco@valla.it>
-To: Fabian Pflug <f.pflug@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=t4U7qSaIzuC6YxuVjx/EaceLx9vY/+NpbrDiVoOeUIg59ACorSp0/6jDOZf/++X3Zs9TQlh0RoqS3nTM58jJoEZNls1KRuN0Zg+8l1TfKL46METXknRoAFWWHbSvh4B0ezBQKoKevzcTBOM2Q8/Uy9Lai1GWw+9SUJ64FoUjOzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vWLk8-0004dr-Cf; Thu, 18 Dec 2025 22:41:04 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vWLk6-006Lsm-1S;
+	Thu, 18 Dec 2025 22:41:02 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vWLk6-00EfK3-0v;
+	Thu, 18 Dec 2025 22:41:02 +0100
+Date: Thu, 18 Dec 2025 22:41:02 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Liu Ying <victor.liu@nxp.com>, krzk+dt@kernel.org,
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Haidong Zheng <haidong.zheng@nxp.com>,
-	Danwei Luo <danwei.luo@nxp.com>, Lei Xu <lei.xu@nxp.com>
-Subject: Re: [PATCH v4 2/2] arm64: dts: freescale: add support for NXP i.MX93
- FRDM
-Message-ID: <aURyQsjf7AY09n41@bywater>
-References: <20251218-fpg-nxp-imx93-frdm-v4-0-cd3a9f6ac89a@pengutronix.de>
- <20251218-fpg-nxp-imx93-frdm-v4-2-cd3a9f6ac89a@pengutronix.de>
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v7 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC
+ subnode to schema and example
+Message-ID: <20251218214102.zfv35d2fryz333gl@pengutronix.de>
+References: <20251202-v6-18-topic-imx93-parallel-display-v7-0-2cce31d64608@pengutronix.de>
+ <20251202-v6-18-topic-imx93-parallel-display-v7-1-2cce31d64608@pengutronix.de>
+ <705773fc-5aba-4bff-b05e-272e1cd0262c@nxp.com>
+ <20251215161706.2ea3wtu3xlwcxxar@pengutronix.de>
+ <7127040f-55ab-4bfa-8795-1df76085470c@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -88,59 +67,128 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251218-fpg-nxp-imx93-frdm-v4-2-cd3a9f6ac89a@pengutronix.de>
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - esm19.siteground.biz
-X-AntiAbuse: Original Domain - lists.linux.dev
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - valla.it
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-SGantispam-id: 3abbab9518d833a1fc6e9fae8bc3b8c8
-AntiSpam-DLS: false
-AntiSpam-DLSP: 
-AntiSpam-DLSRS: 
-AntiSpam-TS: 1.0
-CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
-CFBL-Feedback-ID: 1vWLZL-00000006zx0-280f-feedback@antispam.mailspamprotection.com
-Authentication-Results: outgoing.instance-europe-west4-pn62.prod.antispam.mailspamprotection.com;
-	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
-	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
-	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
-	arc=none
+In-Reply-To: <7127040f-55ab-4bfa-8795-1df76085470c@kernel.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Thu, Dec 18, 2025 at 12:39:22PM +0100, Fabian Pflug wrote:
-> The FRDM i.MX 93 development board is a low-cost and compact development
-> board featuring the i.MX93 applications processor.
+On 25-12-18, Krzysztof Kozlowski wrote:
+> On 15/12/2025 17:17, Marco Felsch wrote:
+> > Hi Liu,
+> > 
+> > On 25-12-08, Liu Ying wrote:
+> >> Hi Marco,
+> >>
+> >> On 12/02/2025, Marco Felsch wrote:
+> >>> From: Liu Ying <victor.liu@nxp.com>
+> >>>
+> >>> i.MX93 SoC mediamix blk-ctrl contains one DISPLAY_MUX register which
+> >>> configures parallel display format by using the "PARALLEL_DISP_FORMAT"
+> >>> field. Document the Parallel Display Format Configuration(PDFC) subnode
+> >>> and add the subnode to example.
+> >>>
+> >>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> >>> [m.felsch@pengutronix.de: port to v6.18-rc1]
+> >>> [m.felsch@pengutronix.de: add bus-width]
+> >>> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> >>> ---
+> >>>  .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml | 92 ++++++++++++++++++++++
+> >>>  1 file changed, 92 insertions(+)
+> >>>
+> >>> diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> >>> index 34aea58094e55365a2f9c86092f637e533f954ff..6e2d86d9341c75108b492bcbabc8a560d8e707cd 100644
+> >>> --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> >>> +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> >>> @@ -26,6 +26,12 @@ properties:
+> >>>    reg:
+> >>>      maxItems: 1
+> >>>  
+> >>> +  '#address-cells':
+> >>> +    const: 1
+> >>> +
+> >>> +  '#size-cells':
+> >>> +    const: 1
+> >>> +
+> >>>    '#power-domain-cells':
+> >>>      const: 1
+> >>>  
+> >>> @@ -40,6 +46,60 @@ properties:
+> >>>      minItems: 8
+> >>>      maxItems: 10
+> >>>  
+> >>> +  bridge@60:
+> >>
+> >> The dependency patch series mentioned in cover letter has two links in it's
+> >> cover letter.  Reading the patch sets pointed by the two links, we may find
+> >> Krzysztof's comments - the child nodes of the blk-ctrl should be completely
+> >> documented.
+> > 
+> > Thanks for pointing this out.
+> > 
+> > @Krzysztof
+> > Requesting to add everything seems not feasible if everything added
+> > should be tested too.
+> > I don't see why everything should be added in one step, since the base
+> > .dtsi isn't added in one step too.
 > 
-> It features:
-> - Dual Cortex-A55
-> - 2 GB LPDDR4X / LPDDR4
-> - 32 GB eMMC5.1
-> - MicroSD slot
-> - GbE RJ45 x 2
-> - USB2.0 1x Type C, 1x Type A
-> 
-> This file is based upon the one provided by nxp in their own kernel and
-> yocto meta layer for the device, but adapted for mainline.
-> 
-> Signed-off-by: Haidong Zheng <haidong.zheng@nxp.com>
-> Signed-off-by: Danwei Luo <danwei.luo@nxp.com>
-> Signed-off-by: Lei Xu <lei.xu@nxp.com>
-> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
-> ---
->  arch/arm64/boot/dts/freescale/Makefile             |   1 +
->  arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts | 620 +++++++++++++++++++++
->  2 files changed, 621 insertions(+)
->
+> Because otherwise we do not see entire picture and people post incorrect
+> bindings, claiming they are complete picture, like messing nodes with
+> addressing and nodes without. So sure, if you do not want to post
+> complete picture, we cannot review that complete picture, therefore YOU
+> MUST POST CORRECT CODE.
 
-Reviewed-by: Francesco Valla <francesco@valla.it>
-Tested-by: Francesco Valla <francesco@valla.it>
+It's not that we don't want to post the complete code, it's rather that
+we don't have the projects to cover the complete MEDIA_MIX blk-ctrl.
+Albeit it's a very simple IP with just a few (25) registers, all of them
+do have a complete different purpose:
 
+- control the AXI QoS and IP Cache
+- control the bus NIC settings
+- control the camera parallel-input setup
+- control the LVDS bridge (LDB) setup
+- control the parallel-output (DPI) setup + the MIPI DSI input setup
+- control the MIPI DSI PLL Setup
 
-Thank you!
+> I will not be taking excuses later "we did not know that such code is
+> not allowed". You must know all rules.
+
+I get your point and there are only two options IMHO:
+ 1st) Step-by-step
+ 2nd) Big-Bang
+
+Step-by-step:
+------------
++ Mainline support as fast as possible for each component
++/- Contributors must be trusted that everything is communicated openly
+- Unforeseen issues which may require DT adaptions
+
+Big-Bang
+--------
++ Everything bindings + code can be checked by the maintainers
++/- Less trust required, since everything is added but still min. trust
+    required
+- Unforeseen issues which may require DT adaptions
+- No mainline support at all or very late
+
+I can only speak for myself, I don't want to hide anything from you or
+other maintainers. But I can't guarantee that everything is 100% correct
+and bug-free. I'm quite sure that no one can make such promises.
+E.g. I didn't test the simultaneous DPI + DSI + LVDS output. It would be
+part of this patchset, if I would have tested this.
 
 Regards,
-Francesco
+  Marco
 
+> Best regards,
+> Krzysztof
+> 
+
+-- 
+#gernperDu 
+#CallMeByMyFirstName
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
