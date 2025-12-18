@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE842EC0B4;
-	Thu, 18 Dec 2025 09:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48CD3321B9;
+	Thu, 18 Dec 2025 09:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766050364; cv=none; b=CuEWL0sVAP/w0Vglq8xgxRzj4b4Rv2YF3QrforMraZsDwC3UwumUrQOtoRRcbDj2wEuXcrBTMq8GQOGT/QKBeoeBS2aYB+oV7ngDtF26RtMNmxpS/HZvPWN13adZtPba0kBwpjKj+LR+qpKgzb9iP0yAlviIvqmMCIVnuHjN3Fc=
+	t=1766050369; cv=none; b=Kud7pKPlwt3DH8g6ppeLF/pwdlg49HvNO6FOgaeRq8p9oQmWlBbgHaLe3czmNpNa3LOo6P74UeFI4/O8R0yQPraf9WMDrbqS34GNkh0NK//8TMRtfCWpDPpSHnt7V6770Y1k9lZjiWJsct8jN9OZvoOtJPyCoHxk5/17U23ZXC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766050364; c=relaxed/simple;
-	bh=TvHwwQh6QW4aMRcWQ0xejXsyZkwHJK10UZAYUX2ZWVU=;
+	s=arc-20240116; t=1766050369; c=relaxed/simple;
+	bh=81UJb/tDyeaP+qvZ6Zz59Q3gkULX3YPSvT8fk2ia0Pc=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=s93yyTS9dLEw3eutnCfXnIc+py3cK0wqMu4g+6H97iOzWppLvkFY2xo2uXNt6d+X/yFpGqHPfl52CFAMxEM7wb4qEoIH7k+eyjmUVscHn6/OZj5d1vP5j6521bywRIUpkCJ+b7ZeS2fHjXUMo4yphTLlmNk2xTvghOiBoK8J5lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZLIEAvyP; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=fcZNy1AXaukOdKtcYrIYuUWttB+lIinMq0Jl53mpiPW0ZO8Eh6iZd726/hdA7hTQ7V1n9Djebb8LB4pfNvpNUrfLvKBglUZG5YiSx/WIvTfo+NNcfClxyu/kxuH1GbFRLbHUngRlEkj2shkW5Y5oP9QpD6E4nw055pA9bYwivGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aKwYji/f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZLIEAvyP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0578FC4CEFB;
-	Thu, 18 Dec 2025 09:32:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aKwYji/f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B31C4CEFB;
+	Thu, 18 Dec 2025 09:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766050363;
-	bh=TvHwwQh6QW4aMRcWQ0xejXsyZkwHJK10UZAYUX2ZWVU=;
+	s=k20201202; t=1766050369;
+	bh=81UJb/tDyeaP+qvZ6Zz59Q3gkULX3YPSvT8fk2ia0Pc=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=ZLIEAvyPipdJbsBGy8cdMYXrr+LjCydIMGF+AMTjoGbum7dacm37sXvo0MiE0x3Z3
-	 PBIlaWia7FRplfd3b5HxBmewAdyFUzXy8AWbkl+4W7twqaPpvjEmZ29TbAZilzjdtC
-	 YOSeb7v6uBbZPf5bV5FYctGUc1awZIGNbf4yRT6wY/FrNPvj3yKprzwIZPQdOFzbss
-	 9JDjzAy0xQA/lUPScQ7p09LgHPAoJBP5iGCexexKYmjKftsz0W+3Olkkx9322L6M46
-	 xmCRPp783WICs2aGFINFPH6AadisFLEEEYbB1DmcMtOKHUin0Eo0tflH6su3VK2WlM
-	 qclOYFuoZeeig==
+	b=aKwYji/f8E+1YmeQiWeg2bkwx1HWEbIxjhnET+XKiEKP4jdCqXokC70raZmnFfEAU
+	 Fn936QbztgdaopG6l0bdvRHiPJaPIeYOylJtVwjNR0S/xWy+G9lRTQ9N+J9haW0P6P
+	 q3VrmZWidEbQTZaA3wNmY6oX/fYl8si2eANWlxC/7ioY6gyvYmzTBWDldmq7D1vi17
+	 GaoxQSt49+pR4GFUxUkZZF/tZbOcW0QOsfj1Gnrbusxsjkp4c6Ek8w/2JdxqO5ARTc
+	 cMM6nTSB8OVyOPq5f6R7J5+0WyLfZkK1to9XAcjKbylBC8y9gUUmtCaQeeSg/wzQlo
+	 jPQ6JqY/1JfiQ==
 From: Mark Brown <broonie@kernel.org>
 To: Han Xu <han.xu@nxp.com>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -35,13 +35,13 @@ To: Han Xu <han.xu@nxp.com>, Rob Herring <robh@kernel.org>,
  Fabio Estevam <festevam@gmail.com>, Haibo Chen <haibo.chen@nxp.com>
 Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, frank.li@nxp.com, 
- Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <20251125-xspi-v6-0-22b22de50cda@nxp.com>
-References: <20251125-xspi-v6-0-22b22de50cda@nxp.com>
-Subject: Re: [PATCH v6 0/2] Add support for NXP XSPI
-Message-Id: <176605036072.87569.17728068603081639345.b4-ty@kernel.org>
-Date: Thu, 18 Dec 2025 09:32:40 +0000
+ linux-arm-kernel@lists.infradead.org, Krzysztof Kozlowski <krzk@kernel.org>, 
+ Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20251216-xspi-v7-0-282525220979@nxp.com>
+References: <20251216-xspi-v7-0-282525220979@nxp.com>
+Subject: Re: [PATCH v7 0/2] Add support for NXP XSPI
+Message-Id: <176605036628.87569.2326741752652519619.b4-ty@kernel.org>
+Date: Thu, 18 Dec 2025 09:32:46 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,7 +52,7 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-47773
 
-On Tue, 25 Nov 2025 15:42:17 +0800, Haibo Chen wrote:
+On Tue, 16 Dec 2025 11:20:12 +0800, Haibo Chen wrote:
 > XSPI is a flexible SPI host controller which supports up to
 > 2 external devices (2 CS). It support Single/Dual/Quad/Octal
 > mode data transfer.
@@ -76,8 +76,8 @@ Applied to
 
 Thanks!
 
-[1/2] dt-bindings: spi: Document imx94 xspi
-      (no commit info)
+[1/2] spi: dt-bindings: nxp,imx94-xspi: Document imx94 xspi
+      commit: 64ba616741bcfc4c7ef1ed856179328300ca0422
 [2/2] spi: add driver for NXP XSPI controller
       commit: 29c8c00d9f9db5fb659b6f05f9e8964afc13f3e2
 
