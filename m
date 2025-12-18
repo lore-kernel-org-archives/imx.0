@@ -1,92 +1,125 @@
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D86934E776
-	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 15:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0933587B8;
+	Thu, 18 Dec 2025 15:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766072868; cv=none; b=naAVTGyvsPn/XaBBuT6PjSXe2V17+om7g4Cy97Ux94NrvXHXu+fKngyBgbowo4QyYP/7KDBJUDEWcPqhLvJ+AOJjnymzdmZhvTJv6pm6xKhqqtIjnvS2DbQJ3U5ZTAbHqNlY4LJ50EhzTFMPvMlnrbjlCV1363Nj9ki+D5kE8KA=
+	t=1766072970; cv=none; b=hK6/LnuXGpaOSMG3l7FmhUx5gXPpiM36AbuIG+c1zTl+PzNrh7OmZUkFgUqD//AnTga1bHtfrzEKW3jv//VrisYfWSOyqFifAQlcjZoB+osGX1lLF4WeqJfNbrNbWOE7DfparsdrAn10M87SJj2goHFJ2GiJMwJHyH6I+UrCAOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766072868; c=relaxed/simple;
-	bh=LzxNzF7MpItYcU3pEGmTXATHal65pD7N5vjHukp5bDE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ed3eCqK9icYyHmJrv+ct2Z+91tSwv/i+UzeOlLtt66pmXwOlXzfgiHYt21TUD+D+u7+Uugj++AFgvaA+4YX+DnhGspttFqxHtLR/tubxm8FHyLwk+rzwDizMsGP6nUlqWWc4OXDc4dDJJZk6F+3GgV4+HJ5zo/6B+McUBftzx2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ESvHzK2a; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1766072970; c=relaxed/simple;
+	bh=GbkZzZWJOBorKpQ84s34MR9DJXZF2n9ylfo0s4Zjjkk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U6OKuDUTUiNSXkT5f4Wl7YvrHDc1fE4qyfTt2J/IKDUN+KM5EfumwzlTgDKpcQRp5lGjYwzxNCpoEpjcdrMlNOcj9tQzc7eEPOz+Z4w+g7z2te4WyeK5wDRazwRD1xGS6ZfZ2Lk2lal4viL3HT5j6Jus/sAcKORSPL0kw2zs2Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZNY0Csjx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ESvHzK2a"
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-595825c8eb3so872756e87.0
-        for <imx@lists.linux.dev>; Thu, 18 Dec 2025 07:47:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766072864; x=1766677664; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LzxNzF7MpItYcU3pEGmTXATHal65pD7N5vjHukp5bDE=;
-        b=ESvHzK2aolmRB5RjCH9NsRyxAxqu16gnqvu6GhRJdMBSqVAQC7MyB3Vthr6bwOYAB9
-         YAYjyP2aM0hkiTFaQCNCrVKJ4N+cyMB0aKNgkyRc8qxwIPVEXXyTL4MUyzG6DX1Uz9A1
-         V1jBpwetrw0zLYDi9OXoMTw+wuIJA8vpnWORrrubi99HBIig06KJ0Y5oHwnh3yaNBEUU
-         TKnPbWglIOcLKG4n6c5/j5QrC7kST36Ea2AsR4Z2gVmQx8G0OMnSuX8FTDKi7/3oMAyZ
-         ubKqG8WAzlh67Kf++H/EVrTc0yMJ66yQ8MazFH3jvlNGwXS4Lp98xVIa4YOaAZp8rCUG
-         rs5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766072864; x=1766677664;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LzxNzF7MpItYcU3pEGmTXATHal65pD7N5vjHukp5bDE=;
-        b=iZ35pTMVPdTBEhZ2tgoXkaUGL0nRUM7v/h+sxuNs0hPSw94s0SX9qLxh7TyNYmG7Lo
-         9Huj08YqnkMb8Q/BcWbibMbgi0kVI4e960lmBrVLnh+W3X8vvu4eSlRPlsTBZPh6MfVf
-         of25Sslpr1FDVeBEhm+upxrmacTi+fw9v5PDhKWjy4hP8V4LsB6y/lDK0lteOi+DlcMZ
-         dKEWCKCV7+uDXjfLzEq+AI/lDJzN/zG1L8h2ruiDsEUrhhXEC90nOPWWO0TovBEFw8oY
-         +wM4/MzHorHePXuaCXoAb8LmGnRppM7thtgVZVMfCqblOb2qREmt2D+u7nicUuJwEUuX
-         kDfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWgM/hoUlZ4/0MnL9C8DcAhqnkTpzqtUFLb5xGywHibsLgkNAieQ5N7MRuIKsh57BeMZ2Y=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyaxAQD90fMS6ikQnverFdo1Vx+YCvV3YxpB2ho5rXibW5xakid
-	49v7dnNm85bfQqRzFN9vNUhrlZgdf5vrgei9m4TQVml6N+NuY28Ap0msThv/YF4cg9jsDFoGJOW
-	kSPVsMnS31Nx42hhQ66PFj+o0F5F/Hbc=
-X-Gm-Gg: AY/fxX6JMfhoGgU6n5OVLMzmvCh9FOReJiHX0OqYGcG/e7qyIn6HWAEcGyHeHfF4mB2
-	EvpttkofbQ8bHrS6uH0trvoRC4/WrHoErypp/B8u7aipSGqnkK7Z9YaB2Pj7UESxw6+shIjxzpR
-	8JiYSBEkEFORerLsMn1qgjGinRonvycHe7rW6cRB/F5QWtkWeHh6w5yDJ6KaYV6WQtySF5OuRzn
-	uJr8Em21EEGjzL06SxpMnq3DxhbspOes6IzvQLMGv+cx8I3aClTVz2QXVCURv9+wA6No7X9d81p
-	VAAABw5BA+U9FOH3cKKAYpbHwO0=
-X-Google-Smtp-Source: AGHT+IGrYbGUckFbA0uI/Uak1RoxWaGizxcWDMRvFWxpw/hL/+bdMgS3hQvghW4USBbg4LCsrOKENWVewsmE9VZ7WWY=
-X-Received: by 2002:a05:6512:128c:b0:598:eaf8:8f5a with SMTP id
- 2adb3069b0e04-59a17d573afmr14623e87.38.1766072864074; Thu, 18 Dec 2025
- 07:47:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZNY0Csjx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA26C4CEFB;
+	Thu, 18 Dec 2025 15:49:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766072970;
+	bh=GbkZzZWJOBorKpQ84s34MR9DJXZF2n9ylfo0s4Zjjkk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZNY0Csjxkb00KyK/SjROd4eGrwJthC1grvWh1kRzzMifRL11HKF6LZwy6zZD9G/cE
+	 hvgHkNJPcGX6OCiQIZlq72uOnbXTBhLasFUreLbS00wy7HI1fxrjl5H0Q5TkDd3cpg
+	 ToRg/SiirvhyA6y9jqostMKLzFrHHvsWQwVulbgd8stO6sF3PHQV0QMe1tiu0zWvyp
+	 /x6IhmZckhjZNcqzDPx9yeMG0jNB+7BwADokSM3FB6QlEjTozKiBzmOEqhkUM3AacF
+	 fTu87w97+QjuCaZG+yLBr9rCV6t7Ey/FNojJWaawndvzmM8hbdGWiz99wLZLIcWjpo
+	 nZEwyshnvWrbQ==
+Message-ID: <5f375fff-a371-4674-ad4a-64127e2a4a79@kernel.org>
+Date: Thu, 18 Dec 2025 16:49:19 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251218152058.1521806-1-alexander.stein@ew.tq-group.com> <20251218154412.1524249-1-alexander.stein@ew.tq-group.com>
-In-Reply-To: <20251218154412.1524249-1-alexander.stein@ew.tq-group.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Thu, 18 Dec 2025 12:47:33 -0300
-X-Gm-Features: AQt7F2qc4TJ7gyArwoED7PIRPB0eAsifB8ZnC9eeMqM3yyZByNJJ_XOF-WESW6g
-Message-ID: <CAOMZO5CmP_rdFA=PqGSmKDU+ObzifHFDjwYMD3J67bjs0h_sfw@mail.gmail.com>
-Subject: Re: [PATCH 5/6] arm64: dts: Add TQ imx8qm based board
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Peter Chen <peter.chen@kernel.org>, Pawel Laszczak <pawell@cadence.com>, 
-	Roger Quadros <rogerq@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Magnus Damm <magnus.damm@gmail.com>, 
-	Marek Vasut <marex@denx.de>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org, 
-	linux-usb@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] dt-bindings: clk: rs9: add clock-output-names
+ property
+To: Geert Uytterhoeven <geert@linux-m68k.org>,
+ Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Peter Chen <peter.chen@kernel.org>,
+ Pawel Laszczak <pawell@cadence.com>, Roger Quadros <rogerq@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Magnus Damm <magnus.damm@gmail.com>,
+ Marek Vasut <marex@denx.de>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-usb@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
+References: <20251218152058.1521806-1-alexander.stein@ew.tq-group.com>
+ <20251218152058.1521806-2-alexander.stein@ew.tq-group.com>
+ <CAMuHMdWEJ-eYwUTnotsTVEtKrujYVsEB4kFVjRYh3wXZvyjfGQ@mail.gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <CAMuHMdWEJ-eYwUTnotsTVEtKrujYVsEB4kFVjRYh3wXZvyjfGQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Dec 18, 2025 at 12:45=E2=80=AFPM Alexander Stein
-<alexander.stein@ew.tq-group.com> wrote:
->
-> * TQMa8QM on MBa8x
+On 18/12/2025 16:26, Geert Uytterhoeven wrote:
+> Hi Alexander,
+> 
+> On Thu, 18 Dec 2025 at 16:21, Alexander Stein
+> <alexander.stein@ew.tq-group.com> wrote:
+>> Add "clock-output-names" which is a standard property for clock
+>> providers.
+> 
+> Why? Isn't that property sort of deprecated?
+> 
+> Will be replying to the cover letter next...
+> 
 
-This commit log should be improved by explaining the SoM and base
-board in more detail, providing a URL, etc.
+Yeah, the name is pretty pointless here and its presence in several
+drivers is legacy and incorrect choice.
+
+Best regards,
+Krzysztof
