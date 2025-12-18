@@ -1,189 +1,119 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5013257830
-	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 16:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F51238150
+	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 17:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766076146; cv=none; b=egRqfTQSgM8sD7LpbsMKueD2IQwtNsloeSghySnUcdl2LYgLrYPSnxxHsuf3jvQJ3ZX52D9r7xzs7wT7K1RfG8BC/m5/GU60LSk9F5HD+ldn0oL5hOZOehYGt8MF5Uw2a1Pf1eifgTeYfgnekxl/qrlSwGyLhYLdm70uyNXPH4s=
+	t=1766080211; cv=none; b=ummG0w8TxEJP835FGqE7jr5+4QnlSEnvk3t9sQrL1WYQJQqz2kv3eVX50vGfEEb3lJeKlNhYtMeqzEOMsbha7d52DFyNXg7P5CWu+KbVVM4+L9FetvD7DnqHQQRXznnF95Gp7vrMmkUec+iF3xq6zNLiFwLQ3j7wIqLOly/eJr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766076146; c=relaxed/simple;
-	bh=Pb5kooSMTZIvB5WH4r6zk15HZdb1lsTVhsHr7rhwmeg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZbufxhGv2HHixvX/Y+ECIri9XyCh2y0Zvm7K/Mah4qnbcT5PHWAwE7H4nymbnNGwfH7EnSLId2gl3h34iAaAy5KOpZd6Phd0ZZtK0ud/pqlD7ydUcZcaDdJ9fJEl4vQK23UV+daCWtozLVJzx4n+oRGpAooxLRa657KouqQMLV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWH4s-00029z-19; Thu, 18 Dec 2025 17:42:10 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWH4r-006Jmi-1h;
-	Thu, 18 Dec 2025 17:42:09 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWH4r-00EcKV-1D;
-	Thu, 18 Dec 2025 17:42:09 +0100
-Date: Thu, 18 Dec 2025 17:42:09 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Rob Herring <robh@kernel.org>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, barebox@lists.infradead.org,
-	frieder.schrempf@kontron.de, annette.kobou@kontron.de,
-	oualid.derouiche@kontron.de, eberhard.stoll@kontron.de
-Subject: Re: [PATCH] ARM: dts: nxp/imx6: Drop unused .dtsi
-Message-ID: <20251218164209.6ombc6g4gy7tuwcz@pengutronix.de>
-References: <20251212203226.458694-5-robh@kernel.org>
- <20251213181324.u32ztfblkknfpz44@pengutronix.de>
- <CAL_JsqK9OREenZjBHrDh7AqsyUXYOzTOhY4e0qHGzYkX8tacWQ@mail.gmail.com>
- <20251214185750.tzt6jf4zg5gtex63@pengutronix.de>
- <CAL_JsqLfVemq9k3x5J1pTz--Z+VYLeEQrFdbtdS7Pc-HkRui=w@mail.gmail.com>
+	s=arc-20240116; t=1766080211; c=relaxed/simple;
+	bh=rvJzjLErjW7vPxDrpXzXer4XNOLt+5Lu9/qPOviwYT4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UwZejnolB2Rs7wjhrsDXYMqPvc2PIB3MdCV53xUglOTrkHroJvOCGH5UE2atiXR1TNeyuoWqoB7bYwWAuD1v6jVInvAfraqnym3Tt74W1P57TKiiiSpdKsGuy8bNpeItxk9jq8yl+Rdjwp1DbSrh//ZuDiZ3BaixatIWMXztAD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eJEamhCR; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eJEamhCR"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-42fbbc3df8fso449968f8f.2
+        for <imx@lists.linux.dev>; Thu, 18 Dec 2025 09:50:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766080208; x=1766685008; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AVw7T5bcH3lvfv3rJWK9YzPen8SSd5iHLxvK3gngGo0=;
+        b=eJEamhCRA0lKfF18kzaa8Kvev0jxdsDIO+d7KTlrA5WJKLXvn6eHded94/FpoGN1EH
+         zuWRHPBfmmdnQNshTfyk/QEcj2JuvgeAFh3To5jHPUB3doZHPyG2pCDMWPRst1hfWU/T
+         qafzLf/tZLjRvyXFnA9pY0PbtEczYBR6Ssjch7p5bZbCWeZQaLjxcaJdQzNJ+FbRanf2
+         cfd/zU0kZrxvRGHjLuvZYdIFyPvzDN7bsJY7P5KoZJzlJUQmRQlZ9ThgkmaHiqRsmNO3
+         XeU3RFo5gKg1BwCy/+4bGVDf25sQjtOgYtjBRJqdymoXFTgzpfvdjLp9SLtXumGJ8nOg
+         ue9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766080208; x=1766685008;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AVw7T5bcH3lvfv3rJWK9YzPen8SSd5iHLxvK3gngGo0=;
+        b=Ee7ZKIKNQ1tbOwnh3zMOYduNq1LqWNMQcLnoBkVd7GZHnk0ZO0tXkt4GePjTH0UVFV
+         TAD1d3mas4y60MaWj/zIT2bFbI8dBbNiCmJVRjZWhTTOy6WxTCJ/AsErwjR7m+o2/cL+
+         MDAiV9BuHuUgoKnxWiLVBSV3cgZm57DaKSpdQwlUpfYwouhLx50Sx+YdDBe5zP4SKl+G
+         +izunIa0nmOvXMx9Xt6YcQt7hWJVYcC4C7kHytXJZz/SB4GjjvR6hurMt1yE/JeYuHae
+         asi37wcLiDu336LX2bMhTbbng2dJvugivrQUZxjKmbylQhf2D0wRT97+/+7WG5rfq9qS
+         w98w==
+X-Forwarded-Encrypted: i=1; AJvYcCUm2+dnI4nZPs6BsqtOlkQBxuLpPSpCmpixy1eozjwltZayFcO9LyShsoUYZqhxBd/WMgI=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxh+3EyOpbBWxJ5cmrEAiJodBu+e47RYoO9BbSTBYH7iFNThsAr
+	vxUBgT3bdKBpmH8yiTri4cQjdFyWWNfW14Zc8LbQ+ddrNiBYrN52wP7f
+X-Gm-Gg: AY/fxX4QgM6Vgkp0EOy2l6riWXrPXd1pPODtnrs2s6CsgjhAXSLe70Zh5uKoroZMxlS
+	kMP4oO99W4Kh+wJqQqXijxsyp0pIu9dJELDlowHBuj5IgSFVBcNBSK2qiS29KcyM+gBNx5jZQZX
+	Zb28C7fTkWvLR910bycWe3WbcsVlorYN4nac7NjKacDsSFDTdIIPje8Y3wm+DEJfWnon/i5EqHe
+	6v3hz5U78THyEmCLrQFwMUrjQ7rLiiRdN/dhXlQ1odhZ6o+cFs8DM1k0oiK7aEnM6CB+hhLZo0l
+	2nuDlxjIrwOPAU5nEC9SVy735wZzlLf01m5kXQlXByyWNJrHwZwjNinrbdZreCdLHwCvPElpkDF
+	47CvLP+k0BS6wo0YGR/zFykM15baTUOpRwIYVPJJqh73/wDTnK25S/sNumBmB9FUZe0M1h3iDgz
+	wr8347Fx4QkgC3qM5ifTqDGzxUe3PxJOPW3APIpIzscd1gga2Zjvqz8+w7DV0QaVvP7xF6TEF6V
+	z/gdClfclI4d87uE4SgC6ppQg==
+X-Google-Smtp-Source: AGHT+IHkrVsVPpnhIf2cWnEa+19MOkN09a76xidWg9x92oZBtd32naBG20DJoni8nBJ/zdrSoqP2Dg==
+X-Received: by 2002:a05:6000:2886:b0:42b:4247:b077 with SMTP id ffacd0b85a97d-4324e501629mr374640f8f.41.1766080207883;
+        Thu, 18 Dec 2025 09:50:07 -0800 (PST)
+Received: from Lord-Beerus.station (net-5-94-28-5.cust.vodafonedsl.it. [5.94.28.5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea82c5csm92552f8f.21.2025.12.18.09.50.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 09:50:07 -0800 (PST)
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: vkoul@kernel.org,
+	neil.armstrong@linaro.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	j.zink@pengutronix.de,
+	linux-kernel@vger.kernel.org
+Cc: xu.yang_2@nxp.com,
+	jun.li@nxp.com,
+	Frank.Li@nxp.com,
+	haibo.chen@nxp.com,
+	linux-phy@lists.infradead.org,
+	imx@lists.linux.dev,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Pierluigi Passaro <pierluigi.p@variscite.com>
+Subject: [PATCH v1] phy: fsl-imx8mq-usb: Fix PCS_TX_SWING_FULL register configuration
+Date: Thu, 18 Dec 2025 18:49:20 +0100
+Message-ID: <20251218174920.359282-1-stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL_JsqLfVemq9k3x5J1pTz--Z+VYLeEQrFdbtdS7Pc-HkRui=w@mail.gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On 25-12-15, Rob Herring wrote:
-> On Sun, Dec 14, 2025 at 12:58 PM Marco Felsch <m.felsch@pengutronix.de> wrote:
-> >
-> > On 25-12-14, Rob Herring wrote:
-> > > On Sat, Dec 13, 2025 at 12:13 PM Marco Felsch <m.felsch@pengutronix.de> wrote:
-> > > >
-> > > > Hi Rob,
-> > > >
-> > > > On 25-12-12, Rob Herring (Arm) wrote:
-> > > > > These .dtsi files are not included anywhere in the tree and can't be
-> > > > > tested.
-> > > >
-> > > > not in the tree but by other projects, please see below.
-> > > >
-> > > > > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> > > > > ---
-> > > > >  .../dts/nxp/imx/imx6dl-kontron-samx6i.dtsi    | 12 -----
-> > > > >  .../dts/nxp/imx/imx6q-kontron-samx6i.dtsi     | 12 -----
-> > > > >  .../boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi  | 45 ----------------
-> > > > >  .../boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi  | 54 -------------------
-> > > > >  4 files changed, 123 deletions(-)
-> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
-> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
-> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-dwarf.dtsi
-> > > > >  delete mode 100644 arch/arm/boot/dts/nxp/imx/imx6qdl-pico-nymph.dtsi
-> > > > >
-> > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
-> > > > > deleted file mode 100644
-> > > > > index 5a9b819d7ee8..000000000000
-> > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6dl-kontron-samx6i.dtsi
-> > > > > +++ /dev/null
-> > > > > @@ -1,12 +0,0 @@
-> > > > > -// SPDX-License-Identifier: GPL-2.0 OR X11
-> > > > > -/*
-> > > > > - * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de>
-> > > > > - */
-> > > > > -
-> > > > > -#include "imx6dl.dtsi"
-> > > > > -#include "imx6qdl-kontron-samx6i.dtsi"
-> > > > > -
-> > > > > -/ {
-> > > > > -     model = "Kontron SMARC-sAMX6i Dual-Lite/Solo";
-> > > > > -     compatible = "kontron,imx6dl-samx6i", "fsl,imx6dl";
-> > > > > -};
-> > > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi b/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
-> > > > > deleted file mode 100644
-> > > > > index e76963436079..000000000000
-> > > > > --- a/arch/arm/boot/dts/nxp/imx/imx6q-kontron-samx6i.dtsi
-> > > > > +++ /dev/null
-> > > > > @@ -1,12 +0,0 @@
-> > > > > -// SPDX-License-Identifier: GPL-2.0 OR X11
-> > > > > -/*
-> > > > > - * Copyright 2019 (C) Pengutronix, Marco Felsch <kernel@pengutronix.de>
-> > > > > - */
-> > > > > -
-> > > > > -#include "imx6q.dtsi"
-> > > > > -#include "imx6qdl-kontron-samx6i.dtsi"
-> > > > > -
-> > > > > -/ {
-> > > > > -     model = "Kontron SMARC-sAMX6i Quad/Dual";
-> > > > > -     compatible = "kontron,imx6q-samx6i", "fsl,imx6q";
-> > > > > -};
-> > > >
-> > > > I can't speak for the other two .dtsi files but both kontron .dtsi files
-> > > > are used by barebox:
-> > > >
-> > > >  - https://elixir.bootlin.com/barebox/v2025.11.0/source/arch/arm/dts/imx6dl-samx6i.dts#L8
-> > > >  - https://elixir.bootlin.com/barebox/v2025.11.0/source/arch/arm/dts/imx6q-samx6i.dts#L8
-> > > >
-> > > > Removing them here will cause a regression for barebox.
-> > >
-> > > Please upstream something that uses the .dtsi. Other than the
-> > > undocumented barebox property, no reason these can't be.
-> >
-> > My intention wasn't to point to the barebox-only
-> > "barebox,disable-deep-probe" property. I was refering to the include
-> > line.
-> >
-> > The two .dtsi files we're talking about are SoM .dtsi files. We don't
-> > have access to the Kontron EVK baseboard which uses this SoM.
-> >
-> > I've added a few Kontron devs which may can add the missing baseboard
-> > support.
-> >
-> > +Cc: frieder.schrempf@kontron.de
-> > +Cc: annette.kobou@kontron.de
-> > +Cc: oualid.derouiche@kontron.de
-> > +Cc: eberhard.stoll@kontron.de
-> >
-> > I could also add the imx6dl-samx6i.dts and imx6q-samx6i.dts like we do
-> > in barebox. But as said, this would be a devicetree for a SoM which
-> > makes sense for the bootloader but not for the kernel.
-> 
-> Why not? People use the kernel as a bootloader. There's also some
+Clear the PCS_TX_SWING_FULL field mask before setting the new value
+in PHY_CTRL5 register. Without clearing the mask first, the OR operation
+could leave previously set bits, resulting in incorrect
+register configuration.
 
-Using the kernel as bootloader is a good point, which I didn't had in my
-mind!
+Fixes: 63c85ad0cd81 ("phy: fsl-imx8mp-usb: add support for phy tuning")
+Suggested-by: Pierluigi Passaro <pierluigi.p@variscite.com>
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+---
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I will add the som.dts, please don't remove the kontron dtsi files yet.
+diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+index ad8a55012e42..9458b6e5fcf4 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
++++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+@@ -504,6 +504,7 @@ static void imx8m_phy_tune(struct imx8mq_usb_phy *imx_phy)
+ 
+ 	if (imx_phy->pcs_tx_swing_full != PHY_TUNE_DEFAULT) {
+ 		value = readl(imx_phy->base + PHY_CTRL5);
++		value &= ~PHY_CTRL5_PCS_TX_SWING_FULL_MASK;
+ 		value |= FIELD_PREP(PHY_CTRL5_PCS_TX_SWING_FULL_MASK,
+ 				   imx_phy->pcs_tx_swing_full);
+ 		writel(value, imx_phy->base + PHY_CTRL5);
 
-> discussions about splitting SoMs and baseboards into overlays for
-> baseboards (and also even into SoC base DT plus overlay for boards).
-
-Do you have pointers?
-
-Regards,
-  Marco
-
-
-> 
-> Rob
-> 
-
+base-commit: ea1013c1539270e372fc99854bc6e4d94eaeff66
 -- 
-#gernperDu 
-#CallMeByMyFirstName
+2.47.3
 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
