@@ -1,26 +1,26 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5B722126D
-	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 09:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FDF2DF719
+	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 09:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766049843; cv=none; b=EtC3A7huEuOz0F1aupjIoNDhsb1yLrk2VnlGMPHKRpvR29igP4ixLBBrGP6Hqu9WhiOwMDi34r11gslgkg6UgTXFcRuUfenkALqTm72Otpe8aIGQtcuh4o+Q8p2vwLuAGQKOCWsCqGjoJ6GsBH33osqPR+nT4iF1VaV69Qr2QqQ=
+	t=1766049844; cv=none; b=i+2alTFBqaWq6/WEO4FKtWySn5k+p9JsD9Vkft1ZvAmt/UUylRUM6TTbWHacjnzBIPJgZtbvX4U6rBSFkG0atCxFFDa9cR4b6xRlyfcLj55+AmXEzcxGhoyNv72gQBd69ZduBZOc8BE9FEY+kcWEve1bsXbOrHUpvL0uwNP21RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766049843; c=relaxed/simple;
-	bh=vaUq1tSV0zuUGaK06Qs0CHIreYcp34yQU/RLQrp5cgw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=huhYWvl3WFN7tvrbyxrSw30WIpJsTAy8cRwCY+/a+a4mKbayqTXqRV0dZHq2dVtfBn9bs8+HdhwY5uidmJgziYX3HMcxG1B8yB/KoOOkcMG30zSLJL/HG0gLHKQrxa8+2L8g2lMsq7dAn7mBcpSAoOifax9e/qzfqlyuaABdDm0=
+	s=arc-20240116; t=1766049844; c=relaxed/simple;
+	bh=a7ZN0BgPf1WahBqihGGqSVnKRzkNOJHjpkqofkRgfw0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=AnC7jspRDhCj0UTsWVS5pUkA1GXrmEgh0X/x73TILQufKdroqQxklkQnnYq4lFFVXB4Pk+GKwnBF8Y+P5BAP9ob9fuAnTyAiiu5flGCLpXk++LlP5WDfrYBSRFVuxQQWhXFgKPaAP3BcxFAIjhWFcWwF61RjxXkrx/b1uPY44dM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1vWAEo-0002J4-Gp; Thu, 18 Dec 2025 10:23:58 +0100
+	id 1vWAEo-0002J4-FB; Thu, 18 Dec 2025 10:23:58 +0100
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Thu, 18 Dec 2025 10:23:49 +0100
-Subject: [PATCH v2 1/3] media: imx-csi: move media_pipeline to video device
+Subject: [PATCH v2 0/3] media: imx-csi: cleanup media pipeline start
+Date: Thu, 18 Dec 2025 10:23:48 +0100
+Message-Id: <20251218-media-imx-cleanup-v2-0-9e3e3c269f7f@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -29,9 +29,11 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251218-media-imx-cleanup-v2-1-9e3e3c269f7f@pengutronix.de>
-References: <20251218-media-imx-cleanup-v2-0-9e3e3c269f7f@pengutronix.de>
-In-Reply-To: <20251218-media-imx-cleanup-v2-0-9e3e3c269f7f@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIACTIQ2kC/32NQQ6CMBBFr0Jm7Zh2rAquvIdh0dABJpHStEAwh
+ LtbOYDL95L//gaJo3CCR7FB5EWSjD4DnQpoeus7RnGZgRRdtVZ3HNiJRRlWbN5s/RywUkSuMtq
+ yMZB3IXIr69F81Zl7SdMYP8fFon/2X23RqLAtyd6qS0Nla56BfTdPcfSynh1Dve/7F0UsSCy3A
+ AAA
+X-Change-ID: 20251107-media-imx-cleanup-9022d941ae44
 To: Steve Longerbeam <slongerbeam@gmail.com>, 
  Philipp Zabel <p.zabel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>, 
  Mauro Carvalho Chehab <mchehab@kernel.org>, 
@@ -48,111 +50,38 @@ X-SA-Exim-Mail-From: m.tretter@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-The imx-media driver has a single imx_media_device. Attaching the
-media_pipeline to the imx_media_device prevents the execution of
-multiple media pipelines on the device. This should be possible as long
-as the media_pipelines don't use the same pads or pads that be
-configured while the other media pipeline is streaming.
+The imx media device currently assumes that there is only a single media
+pipeline. However, the media graph has multiple imx capture devices.
+These may be started separately on media pipelines if they don't cause
+conflicts in the media graph.
 
-Move the media_pipeline to the imx_media_video_dev to be able to
-construct media pipelines per imx capture device.
+Move the media pipeline from the media device to the capture devices to
+properly track and handle multiple media pipelines for the imx-csi.
+Refactor the code to start the media pipeline from the driver to help
+the reader.
 
-If different media pipelines in the media device conflict, the
-validation will fail. Thus, the pipeline will fail to start and signal
-an error to user space.
-
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
 Changes in v2:
-- none
+- Improve code readability in Patch 2
+- Update commit message of Patch 3 as suggested by Frank Li
+- Link to v1: https://patch.msgid.link/20251107-media-imx-cleanup-v1-0-f82a693c28f4@pengutronix.de
+
 ---
- drivers/staging/media/imx/imx-media-capture.c | 8 ++++----
- drivers/staging/media/imx/imx-media-utils.c   | 3 ++-
- drivers/staging/media/imx/imx-media.h         | 7 ++++---
- 3 files changed, 10 insertions(+), 8 deletions(-)
+Michael Tretter (3):
+      media: imx-csi: move media_pipeline to video device
+      media: imx-csi: explicitly start media pipeline on pad 0
+      media: imx-csi: use media_pad_is_streaming helper
 
-diff --git a/drivers/staging/media/imx/imx-media-capture.c b/drivers/staging/media/imx/imx-media-capture.c
-index e9cef7af000a..bfd71d25facc 100644
---- a/drivers/staging/media/imx/imx-media-capture.c
-+++ b/drivers/staging/media/imx/imx-media-capture.c
-@@ -722,8 +722,8 @@ static int capture_start_streaming(struct vb2_queue *vq, unsigned int count)
- 		goto return_bufs;
- 	}
- 
--	ret = imx_media_pipeline_set_stream(priv->md, &priv->src_sd->entity,
--					    true);
-+	ret = imx_media_pipeline_set_stream(priv->md, &priv->vdev,
-+					    &priv->src_sd->entity, true);
- 	if (ret) {
- 		dev_err(priv->dev, "pipeline start failed with %d\n", ret);
- 		goto return_bufs;
-@@ -749,8 +749,8 @@ static void capture_stop_streaming(struct vb2_queue *vq)
- 	unsigned long flags;
- 	int ret;
- 
--	ret = imx_media_pipeline_set_stream(priv->md, &priv->src_sd->entity,
--					    false);
-+	ret = imx_media_pipeline_set_stream(priv->md, &priv->vdev,
-+					    &priv->src_sd->entity, false);
- 	if (ret)
- 		dev_warn(priv->dev, "pipeline stop failed with %d\n", ret);
- 
-diff --git a/drivers/staging/media/imx/imx-media-utils.c b/drivers/staging/media/imx/imx-media-utils.c
-index 1b5af8945e6b..f520529a7cfe 100644
---- a/drivers/staging/media/imx/imx-media-utils.c
-+++ b/drivers/staging/media/imx/imx-media-utils.c
-@@ -749,6 +749,7 @@ EXPORT_SYMBOL_GPL(imx_media_pipeline_subdev);
-  * Turn current pipeline streaming on/off starting from entity.
-  */
- int imx_media_pipeline_set_stream(struct imx_media_dev *imxmd,
-+				  struct imx_media_video_dev *vdev,
- 				  struct media_entity *entity,
- 				  bool on)
- {
-@@ -762,7 +763,7 @@ int imx_media_pipeline_set_stream(struct imx_media_dev *imxmd,
- 	mutex_lock(&imxmd->md.graph_mutex);
- 
- 	if (on) {
--		ret = __media_pipeline_start(entity->pads, &imxmd->pipe);
-+		ret = __media_pipeline_start(entity->pads, &vdev->pipe);
- 		if (ret)
- 			goto out;
- 		ret = v4l2_subdev_call(sd, video, s_stream, 1);
-diff --git a/drivers/staging/media/imx/imx-media.h b/drivers/staging/media/imx/imx-media.h
-index f095d9134fee..8b65f79b125f 100644
---- a/drivers/staging/media/imx/imx-media.h
-+++ b/drivers/staging/media/imx/imx-media.h
-@@ -104,6 +104,9 @@ struct imx_media_buffer {
- struct imx_media_video_dev {
- 	struct video_device *vfd;
- 
-+	/* the pipeline object */
-+	struct media_pipeline pipe;
-+
- 	/* the user format */
- 	struct v4l2_pix_format fmt;
- 	/* the compose rectangle */
-@@ -145,9 +148,6 @@ struct imx_media_dev {
- 	struct media_device md;
- 	struct v4l2_device  v4l2_dev;
- 
--	/* the pipeline object */
--	struct media_pipeline pipe;
--
- 	struct mutex mutex; /* protect elements below */
- 
- 	/* master video device list */
-@@ -223,6 +223,7 @@ int imx_media_alloc_dma_buf(struct device *dev,
- 			    int size);
- 
- int imx_media_pipeline_set_stream(struct imx_media_dev *imxmd,
-+				  struct imx_media_video_dev *vdev,
- 				  struct media_entity *entity,
- 				  bool on);
- 
+ drivers/staging/media/imx/imx-media-capture.c |  8 ++++----
+ drivers/staging/media/imx/imx-media-utils.c   | 12 ++++++++----
+ drivers/staging/media/imx/imx-media.h         |  7 ++++---
+ 3 files changed, 16 insertions(+), 11 deletions(-)
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20251107-media-imx-cleanup-9022d941ae44
 
+Best regards,
 -- 
-2.47.3
+Michael Tretter <m.tretter@pengutronix.de>
 
