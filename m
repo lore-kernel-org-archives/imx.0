@@ -1,178 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3404A313E08;
-	Thu, 18 Dec 2025 19:26:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73436277CAB
+	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 19:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766086006; cv=none; b=DWeL9/LbFEolVGRxpYpX+3Nucu4DdjXO49XuxLgJovVodGLjfFUQ3zIclkvJxMRtWkrGKu9RB7roL0TU4imMiI4YYSAlAQDweWZBAFCGAN0bySlztqqv8pyUgsmm9WD7WE23DgI9IWJyr7myb325caMZD104zUwsA4wDfk2DGKw=
+	t=1766086625; cv=none; b=qrBEovP5IiE1E32m5CTW35T3TuGT8KH2hMIpDYVyrRrHq8SF0h0MG/tS6fIeHBf70MwvomwaYLmUmDjAhldm10ZiGv0AsyMLu78K9dQwIVRPLAc/YUkUmlOrW3dc66/ntid0DzVzZwHiJR9dDEPHmconbo/jzTxOBr5qz1YGmdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766086006; c=relaxed/simple;
-	bh=8ougrI2F0o6tZCTw9ybr+PvkeZpYBrHjnd8HgfDiNkE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bOv+PapPYr9TNytRZhOFHWeQc+mVLhPf61ejGol/Ty8V/QxF/yUAL0perStFt1W/+dbo/mP/NGqKI0gqIsJg04k9GFnV8dUWla+CUdvn1z7IEbmroqhxsiCrfmPnUH5H5g57WW1ETJSe77Qf+oJBICqf0e4SPXn6MNkz4JxtLgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uTapCRAE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766086625; c=relaxed/simple;
+	bh=w4ijCxv5nGSdlsC0Jn4air83tfFljT1G/MgpGFT8x2c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GEyXvy3btHipAJVM3pI/gTbjyBIx0Y/74zOFOmOah7JRLT9f3tsxKLApwIIt2ejxNfo4Wz5JM0s8D7+FdZMJF2QuSF0A29OJMdZyaaz1SAi5lDmLfADWniE+m/hQCpgttjESB/znfvrE3g8iEbryvxltZXG96xb/n+YdUAD+Tj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eAYoR2ok; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uTapCRAE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DE2C116D0;
-	Thu, 18 Dec 2025 19:26:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766086005;
-	bh=8ougrI2F0o6tZCTw9ybr+PvkeZpYBrHjnd8HgfDiNkE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uTapCRAELi9WA5wcbSRhHNKgOTwYApwQOZnW+kab86opSG+800gSNesmWBJ7cngW6
-	 roMgUOp1Wtk6giYTh0cyLo6GvFm/apnGGMG/JTDwVhw9ZS+eYvQLmU2SZan8fu0oJo
-	 mJtdMe8GwYSXPfBaoN/sa/44o6rCWZ9koR6f6SG2NKXE+VhyJrrGxTkLrTdmdtoGOr
-	 GHQWZO4OmYlQGngMGtXfXvVm2+N8pKqeRhhhtnqOPJfQLMDl0HvYJiQRUjni3rGG00
-	 6CJD9JwZLxMBqha5fiM5fKEIIje/1aKleeFnKiQPnqK5GZWAHQrjqFYzusF6kSvnCl
-	 +cT7i34KoL2Ug==
-Message-ID: <7127040f-55ab-4bfa-8795-1df76085470c@kernel.org>
-Date: Thu, 18 Dec 2025 20:26:35 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eAYoR2ok"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-42fbad1fa90so888806f8f.0
+        for <imx@lists.linux.dev>; Thu, 18 Dec 2025 11:37:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766086622; x=1766691422; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=k+3WA68tbyaWMaCBDkCMe377aB/ts6/EjKX02uXHPEQ=;
+        b=eAYoR2okSmrbBHbnmOjj6Mvr+cRP2bNqkZe1QuJSi9BSABSmnGaH8G9znp3Ffx9di4
+         t3I13tqFPi52E+5Ac3Bo+GkX4qfwh1Fw5ksx7elIFkv9RHc1VJgQRtiWgT1HPr0aN5Vz
+         AaAjTnL0SSB2dlBrAc5B/RSulxInbzZy0Hf/WKuYLXOF6QR+wLc5GCz/Z4ayKuwQIZ//
+         jzQlz2Et1GC2ugmN9ypRhp2y1f2LDIsuoZL/rxcwXQuF8VIfI+RzuduUTB5Y/3Qk2wCk
+         IFl3dAplLabJtl9HPXdK9Uhfl2wNqHNJ9VdkE2kV7EeMkbdZpp6xVOLypjYzFPwoR0zk
+         9CGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766086622; x=1766691422;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=k+3WA68tbyaWMaCBDkCMe377aB/ts6/EjKX02uXHPEQ=;
+        b=BuQee4Ai6YdgmBK6/JzslG0l0gzJSBY8QBnAxvH/yj/C4wS6WrEcKq9403k7/5DgXS
+         8+XZL9o0bXYM1m38iGrXbFL25t3asmqxcjRLQL6KhxJUXgVNyDOAMEJL9Cqy51cC01s7
+         gqhFkqYCUvpcSplca5lmJquC6zIKVg6xZ771QHNR6PJawMwArTyd3yvDk9UcprrJH5kK
+         I03bOTVuBiR7pnlvphjTRxFUD5oP0oa3O+3QnqUXjHAum4ko5ASl+JjNQSBV2tJ7FJrK
+         nKi+VgjL/85Og8XLb7VTvgJYDcCweZF1XN15PI1UVErGeLBRtBf01hHwQe1ezHeSQDB6
+         uDqg==
+X-Forwarded-Encrypted: i=1; AJvYcCXGP0VjmzDcNuXxtSaMhyqVWuHXq0klVIEjl6GYoiwH2OAXmxGyXZmi/+BMiF8LLfPWcdU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxZ0hMoX17Jx3al22EdbDP2fJUDQfWBNgYcgkQLf/MhX+MPnC2k
+	rrnZ14F4thWF4uXS+55Jr6th07VdMMRGNZ+jVBchHxoAyBCcQ9MJlvSw
+X-Gm-Gg: AY/fxX7YhMMixFw0L4uV9rZotC6r7VztamzSsPRWXvK1lseVKxp0ns7AcTMczdT8z2Y
+	VPK26quILyOGqNyYlg5P3e5VE6d+iWjhxzVQ7wZhbQ7vz7v+b0dABKfCL7dPc1uBQPKVwN/h2CX
+	pp8kLFot+uO4zra7OUoGTDKAi/4qqGZRSvkjp4YXYcED3bsp23U+XPmo8AaO3JCvFug9TvkobHF
+	wzB0WzpFwyy4OSWHvVA8dhaPmTvGmjfBc1Lw6Yj/pW4+eUbS8WB78hs1wbV7VCMS8B1t14g77BR
+	WKf/ikGSohj+kh37qQSsRjexf/ZkmIp3igXtnHUmzCghUw1t3+7h4DFkcO9z+AtqWVxIFUazA0b
+	qWY1S5F0EMHUU0UuQ9a5wNQWmIt8edESqh9IXkV4NBctJ8aw7wFNqGUNUH22545jk/Kmm3aRVGM
+	aUS3wmG83m4eFvBxSvg3cTVNm568FbXROvRHqdRCdRfBXUVlPBGzsTG5KBbV2i2Fq9h7EKDQf+Y
+	hHjlKbgM0qG54/pM709Lg==
+X-Google-Smtp-Source: AGHT+IHrRzBlIY+FRB9tFL8aSm3apHXMpPAzl6Tnco5Z8RZxNW6uXBEK/NYhBHMWetr8sM0EXHXAfw==
+X-Received: by 2002:a05:6000:220b:b0:431:701:4a1a with SMTP id ffacd0b85a97d-4324e4d0f68mr746833f8f.26.1766086621517;
+        Thu, 18 Dec 2025 11:37:01 -0800 (PST)
+Received: from Lord-Beerus.station (net-5-94-28-5.cust.vodafonedsl.it. [5.94.28.5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eaa2bdfsm555186f8f.32.2025.12.18.11.37.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Dec 2025 11:37:01 -0800 (PST)
+Date: Thu, 18 Dec 2025 20:36:59 +0100
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: vkoul@kernel.org, neil.armstrong@linaro.org, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de,
+	j.zink@pengutronix.de, linux-kernel@vger.kernel.org,
+	xu.yang_2@nxp.com, jun.li@nxp.com, Frank.Li@nxp.com,
+	haibo.chen@nxp.com, linux-phy@lists.infradead.org,
+	imx@lists.linux.dev, Stefano Radaelli <stefano.r@variscite.com>,
+	Pierluigi Passaro <pierluigi.p@variscite.com>
+Subject: Re: [PATCH v1] phy: fsl-imx8mq-usb: Fix PCS_TX_SWING_FULL register
+ configuration
+Message-ID: <aURX2-jM0FZbLNrc@Lord-Beerus.station>
+References: <20251218174920.359282-1-stefano.r@variscite.com>
+ <CAOMZO5BGtgDemQeLvJ+hjY+zBtpFLp=pkpD9js0SfknE4fHd4w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC
- subnode to schema and example
-To: Marco Felsch <m.felsch@pengutronix.de>, Liu Ying <victor.liu@nxp.com>,
- krzk+dt@kernel.org
-Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org
-References: <20251202-v6-18-topic-imx93-parallel-display-v7-0-2cce31d64608@pengutronix.de>
- <20251202-v6-18-topic-imx93-parallel-display-v7-1-2cce31d64608@pengutronix.de>
- <705773fc-5aba-4bff-b05e-272e1cd0262c@nxp.com>
- <20251215161706.2ea3wtu3xlwcxxar@pengutronix.de>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251215161706.2ea3wtu3xlwcxxar@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOMZO5BGtgDemQeLvJ+hjY+zBtpFLp=pkpD9js0SfknE4fHd4w@mail.gmail.com>
 
-On 15/12/2025 17:17, Marco Felsch wrote:
-> Hi Liu,
+Hi Fabio,
 > 
-> On 25-12-08, Liu Ying wrote:
->> Hi Marco,
->>
->> On 12/02/2025, Marco Felsch wrote:
->>> From: Liu Ying <victor.liu@nxp.com>
->>>
->>> i.MX93 SoC mediamix blk-ctrl contains one DISPLAY_MUX register which
->>> configures parallel display format by using the "PARALLEL_DISP_FORMAT"
->>> field. Document the Parallel Display Format Configuration(PDFC) subnode
->>> and add the subnode to example.
->>>
->>> Signed-off-by: Liu Ying <victor.liu@nxp.com>
->>> [m.felsch@pengutronix.de: port to v6.18-rc1]
->>> [m.felsch@pengutronix.de: add bus-width]
->>> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
->>> ---
->>>  .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml | 92 ++++++++++++++++++++++
->>>  1 file changed, 92 insertions(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
->>> index 34aea58094e55365a2f9c86092f637e533f954ff..6e2d86d9341c75108b492bcbabc8a560d8e707cd 100644
->>> --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
->>> +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
->>> @@ -26,6 +26,12 @@ properties:
->>>    reg:
->>>      maxItems: 1
->>>  
->>> +  '#address-cells':
->>> +    const: 1
->>> +
->>> +  '#size-cells':
->>> +    const: 1
->>> +
->>>    '#power-domain-cells':
->>>      const: 1
->>>  
->>> @@ -40,6 +46,60 @@ properties:
->>>      minItems: 8
->>>      maxItems: 10
->>>  
->>> +  bridge@60:
->>
->> The dependency patch series mentioned in cover letter has two links in it's
->> cover letter.  Reading the patch sets pointed by the two links, we may find
->> Krzysztof's comments - the child nodes of the blk-ctrl should be completely
->> documented.
+> The change looks good to me, but the Subject is a bit misleading.
 > 
-> Thanks for pointing this out.
+> It gives the impression that PCS_TX_SWING_FULL is a register.
 > 
-> @Krzysztof
-> Requesting to add everything seems not feasible if everything added
-> should be tested too.
-> I don't see why everything should be added in one step, since the base
-> .dtsi isn't added in one step too.
+> What about:
+> 
+> phy: fsl-imx8mq-usb: Clear the PCS_TX_SWING_FULL field before using it
 
-Because otherwise we do not see entire picture and people post incorrect
-bindings, claiming they are complete picture, like messing nodes with
-addressing and nodes without. So sure, if you do not want to post
-complete picture, we cannot review that complete picture, therefore YOU
-MUST POST CORRECT CODE.
-
-I will not be taking excuses later "we did not know that such code is
-not allowed". You must know all rules.
-
+Thank you for the review! You're absolutely right, the subject was
+misleading. I'll send a v2 with the improved subject line you suggested.
 
 Best regards,
-Krzysztof
+Stefano
