@@ -1,119 +1,82 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D446A36BCF4
-	for <imx@lists.linux.dev>; Thu, 18 Dec 2025 16:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C9A2F49F1;
+	Thu, 18 Dec 2025 16:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766074854; cv=none; b=GMc+9ber2zVjvjU+/opaLcFgo6zTTn8xTqHFCUfXVAC0y068/QvaZJH3ibOkZdILM35CJh41PmpqBAM1OFF4fj1sWnL8BhluxDvtaaZqq3W7X0suBJCSdzycU0czXZEcUT4GuSKzKgBXxpH8d52WDwWqoikhpOHTt0Wg498hloE=
+	t=1766075070; cv=none; b=b7PVX4BwAr+Bxnz/V3ybv4WcO7pVyWIVsIWRkOAbjUI0WlQVmdrfoH4VDVuZhgUVTn2XGG93X4yophc74krNsRTeaFTfkPWADs3Sja0ECTzN8M50O1RNBAeJ4zlJXx4ZQqYX9xvo1H6aNcgJEIBwE6lpFRQermPX/e590pyqoTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766074854; c=relaxed/simple;
-	bh=2CkKgkVghxRXLPN/bmJz9X5h1cbFh6fLHEOwpZ0ff6g=;
+	s=arc-20240116; t=1766075070; c=relaxed/simple;
+	bh=/lpz2oIHLovis2e3jie0hBGprwHoazeb7ENFgVjVQXE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YUhwbLgy4NvMVhp045+VEMWbim7QgRtVxtPEFN3fgzsAFez7tinj05mY/rN6C5jQrRD9erqSqips2QVJBbwF2xq4N5r8SfCamDosJx/OfdbgRMtdQq6rrAAhyigiag1LEkHE++wN7vKyBYNd8fw47EYpTfDPFYpT4qSNMwikG/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWGjK-0007oT-B8; Thu, 18 Dec 2025 17:19:54 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWGjJ-006JcI-0d;
-	Thu, 18 Dec 2025 17:19:53 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWGjJ-00EcBP-0A;
-	Thu, 18 Dec 2025 17:19:53 +0100
-Date: Thu, 18 Dec 2025 17:19:53 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Christoph Stoidner <C.Stoidner@phytec.de>
-Cc: Primoz Fiser <primoz.fiser@norik.com>, Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=A/C+orQK2smu8RSDnpBxC1qUikPLqw1tOqMvNpo8timoHBs6ls+JFVGMFXKuZJAvMp5M5hbdUl3Imytd+Ll0QUTB2pyCaXF4FEeVtV87ZAmFNdElNw2nfR1wQS6/dYUXgfm/1pGQVTPLC07yZQatJ5MtRQR9INgtl/1XNYgpDOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=drTlsmJc; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="drTlsmJc"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=wfcZt7qNcxi98tw/5J1IA5qzDVmXbp0zLFyBZDCWT3E=; b=drTlsmJc3MFZby5esPNoFYuawj
+	M/ZBsMdFjGXq8DIOJZtqM15ZszS1sYlUE2LA2kvCVbwfY92hrBaworE37pP9DiEubZ4jvYRxeK2w9
+	dCfM+GaSeimLpDPFTjnDVCak/hKDQeFC2kqXrdmrk618ygpmu51EGvzuRkKnPu/XpWE0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vWGnW-00HM0s-SU; Thu, 18 Dec 2025 17:24:14 +0100
+Date: Thu, 18 Dec 2025 17:24:14 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>, Peter Chen <peter.chen@kernel.org>,
+	Pawel Laszczak <pawell@cadence.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrej Picej <andrej.picej@norik.com>,
-	Christian Hemp <C.Hemp@phytec.de>,
-	Stefan =?utf-8?Q?M=C3=BCller-Klieser?= <S.Mueller-Klieser@phytec.de>,
-	Norbert Wesp <N.Wesp@phytec.de>,
-	"linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH 2/2] arm64: dts: imx93-phyboard-segin: Add peb-av-02
- overlay
-Message-ID: <20251218161953.wjiruxqmib7lchol@pengutronix.de>
-References: <20251202-v6-18-topic-imx93-phyboard-segin-av-02-display-v1-0-9c14be6c7478@pengutronix.de>
- <20251202-v6-18-topic-imx93-phyboard-segin-av-02-display-v1-2-9c14be6c7478@pengutronix.de>
- <15bb2331-713a-4b6a-ae9a-4870066e84dc@norik.com>
- <20251215170750.j2l6gnbocmhdloe6@pengutronix.de>
- <09a773bb51331940e76fbeb5e8128c183bf6d621.camel@phytec.de>
+	Fabio Estevam <festevam@gmail.com>,
+	Magnus Damm <magnus.damm@gmail.com>, Marek Vasut <marex@denx.de>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
+Subject: Re: [PATCH 5/6] arm64: dts: Add TQ imx8qm based board
+Message-ID: <e9d1495f-0d61-4e23-89c9-f06373b52bc0@lunn.ch>
+References: <20251218152058.1521806-1-alexander.stein@ew.tq-group.com>
+ <20251218154412.1524249-1-alexander.stein@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <09a773bb51331940e76fbeb5e8128c183bf6d621.camel@phytec.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20251218154412.1524249-1-alexander.stein@ew.tq-group.com>
 
-On 25-12-16, Christoph Stoidner wrote:
-> Hi Marco,
-> 
-> On Mo, 2025-12-15 at 18:07 +0100, Marco Felsch wrote:
-> > Hi Primoz,
-> > 
-> > On 25-12-03, Primoz Fiser wrote:
+> +&fec1 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&pinctrl_fec1>;
+> +	phy-mode = "rgmii-id";
+> +	phy-handle = <&ethphy0>;
+> +	nvmem-cells = <&fec_mac0>;
+> +	nvmem-cell-names = "mac-address";
+> +	fsl,magic-packet;
 
-...
+I might be repeating myself here...
 
-> > > > +	touchscreen@38 {
-> > > > +		compatible = "edt,edt-ft5406";
-> > > > +		reg = <0x38>;
-> > > > +		pinctrl-names = "default";
-> > > > +		pinctrl-0 = <&pinctrl_touchscreen>;
-> > > > +		interrupt-parent = <&gpio4>;
-> > > > +		interrupts = <12 IRQ_TYPE_EDGE_FALLING>;
-> > > > +		reset-gpios = <&gpio4 1 GPIO_ACTIVE_LOW>;
-> > > > +		touchscreen-size-x = <1792>;
-> > > > +		touchscreen-size-y = <1024>;
-> > > 
-> > > Please add "wakeup-source" property here like in the downstream
-> > > commit.
-> > > 
-> > > With this in place, panel touch can be used to wake up the board
-> > > from sleep.
-> > 
-> > Is this a required feature? Touchscreens with no certain
-> > low-power mode handlig (e.g. reduced scanning time) can draw much
-> > power
-> > in suspend.
-> > 
-> > I can add it if Phytec is aware of this fact and still wants to have
-> > thsi feature.
-> 
-> Yes, please add this "wakeup-source" property again. This feature 
-> shall work on our platform by default. And one who wants to avoid
-> touchscreen as wakeup-source can modify the device-tree or disable 
-> it for wakeup via policy/sysfs.
+Have you tested WoL? Does it work? Or is this just copy/paste from an
+example?
 
-Okay, I added the property for the v2.
+We have a lot of DT blobs which suggest WoL should work, but it does
+not. It is something we need to improve.
 
-Regards,
-  Marco
+Thanks
+	Andrew
