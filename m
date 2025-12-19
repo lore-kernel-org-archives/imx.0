@@ -1,104 +1,164 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010029.outbound.protection.outlook.com [52.101.84.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0982D6400
-	for <imx@lists.linux.dev>; Fri, 19 Dec 2025 05:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766123268; cv=none; b=ZfbP/CxwNn9xVow5+80A03q+b1PhmiyQc6LZksr+iBI0L28RaXsgpu5IuVn7mXELsGoPSqCmxACn5aW1OyhpPRc9ANErgEh3cgM9pRukqpsNw7PcNomniYIJVRkQOtwvUQ89Q0tR87eVkvjNwhTl1Ci/xI9BKxpviTLWjoR5K6E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766123268; c=relaxed/simple;
-	bh=qt82SR/vP5Y4Y18D8U8WzWGSwSBnYC+Vs15v4LyIptE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DkQrsAkSCZfg8K+NjmfpybFWGFgk+tiWnoYaNU0mcnd5FamsnHMnBrPwL9Rrp+rLvJ1/pGdaDP9yQ0GdSIeajGyYO8JFuQlK4PS9OrVhKnL6gcfeEN2VYpIumlM5sekU8TC2iJjZpFhjZ7pJtYUv6vZpyEdLrAGX+vVG/Ldxcwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DMVI061G; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FAD296BC1
+	for <imx@lists.linux.dev>; Fri, 19 Dec 2025 06:35:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766126146; cv=fail; b=N3Tt+Ud8O4t8tZid0Tj991JJwvXMoQwZ/ZdiLSPbcHYsxuVxizMr03A9JbhjbMhtFRfmzlTsGcnoVfoKOZU7/PCA3en8vV4vUgUcyJ0B284FkbQrTh9zeyjd8iu6j83mfquF5vu6rwwlgn3ab0cA2m1jMjyoWOR5Dijb9PaXMQE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766126146; c=relaxed/simple;
+	bh=gvVj+Ka5fn4UdgT+dS5LJk8Ba0JTuK1wp5X87lXFGCM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=NLp4vEegSN/ynMkGjRM8tqLckL2AmVAgny8DrF1zyh5kOgTbVAg4cFSt5SL841uQFTbgDIooH77BKDk53aarJrJ/SNWen8gt4kI4pXEfEpzwjnC2THLpbttrYVdmNIdmt+ro0DEeI4L/2Ew1HZcJEf+psLqNjtT5cfM93PyMrKc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=issiJqG9; arc=fail smtp.client-ip=52.101.84.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DMVI061G"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-34c718c5481so1336534a91.3
-        for <imx@lists.linux.dev>; Thu, 18 Dec 2025 21:47:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766123264; x=1766728064; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WPO0eCOfjOBuPv078w1rY+GCMFEF0wn5Tdnt1BmaNcQ=;
-        b=DMVI061G8R9dND3AqPVaY5ltlNUkdAgqrYleLbNtBXZ7JJquOJt6JwW0kLaqKOVkIj
-         WUYFwineEvrpacSgyhqCYeqIob0j6rEaTeKwWJCg6Wfjdzt+wDVit+8YBQvKH1SF+piY
-         YU/lxTNd+/iusEC7oDMrpub2WO87kn/kZjBzmHi99LYonF/7zeiMu+bIcr9jY1ZVtu/y
-         tAW/cDZ5LSFxcI+EkTirM8wqWkhyOBCNeL/DIqxt4ziPIuoh8WNIiaE9eJq14nt7/RRb
-         YtSPA0D6uj9ECW/42VUqoRJi0gFCzbefOrOp6jsqvPWld+6fh5SIPcplPjYuTFqCpvuP
-         Hpiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766123264; x=1766728064;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WPO0eCOfjOBuPv078w1rY+GCMFEF0wn5Tdnt1BmaNcQ=;
-        b=iujkvSTEFkh0SCSovekS5jwc+j52ZZxs67GuiaXdK/jT/R3qWmKNWZYoGoFrb7f394
-         zRL6vCkSb/N/NVNVZdZzWC7dFRozB91NOk5ApBUyw2k83ZgzVppXbmUbf7gGqUI6+ZmH
-         g2T6Nt87IADtGGhacaA7LKCqUw0otpTQ44PlcRmGNJBcWacD3FBGsFidA/NPhJqW9Ewu
-         XKY9/AlQ2hF0Glq16eMEdCPMk/A4E92zYg0NXdpD6eW+qpaJJrBz+nto41IEqEtGs4Cx
-         H+UHLZrJ5ginUsOrIRr4QLASiRWLS467v/X3yz6VU9Cz99eDFjjJ6OTYTcRqGy2RgUAu
-         dNGw==
-X-Forwarded-Encrypted: i=1; AJvYcCW0VrSAc1Xwtm1JQpO0H5zYAGH1hXA34OLbKqPwEJdVyx6xwdBZWsy7oKXhWAPxljowcPY=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw3hXitlhBc3ssM/33OC/4arOdIUYDLaIgVlq/ypqfQ7WB0B4h8
-	FODsmS0C9Z3b60hELuJpisHhM8gWwJ7CCKCClS0Ql8j9tvo7Ic6+va4h
-X-Gm-Gg: AY/fxX7306SuVfHYeecQphKkH8F+B49Q3YomtJWjQnufCqaknwhcBm8IhNjZM4r2K+g
-	0CQ8AwD/YTHuwZTLpktlct5l/7ZJ4bA6W2eIICjBnSu3YEYPJzsqkjCT9PgWHRuZ3hgTgfKJmYI
-	HfC4vRUKYSEhIybzAd4lufcraAIV9ry9ySXnThi43y0uahuW718OuJZ05FD/8DpD4TkkPivxXxA
-	YzsqfsCIsvxjPrVF8JfqadznvyrqE8a0J74DqgIwUld/NV7RGTTn/dIywsMxhat5oPxWZ2stoWX
-	cfI3ofIkzgTNbJDKXANUiCw4e0cA8AHUDk2FYNVe8b/U8GDb8VbCTXqdA3JIUIO2ipK8YGKAbO1
-	6lfnhliZXT2EiiaqKtClZFrc1B7iV+VdD7gptRNDhP/0HK2+Yk2Ut8r7OJ9ueRlAK1o6KAtDjF0
-	MF22e3b+/p2PK31iMM08gOtJK6z54OPf1MkvLai6tSGT7GgBCQ4UWDZAR9fDfsHcI=
-X-Google-Smtp-Source: AGHT+IFVBwDVTaEx5xp3GqAkaC1oC6P66f5ES/MfkM7Xqee++lMNo0SereuLr6hl3BVB30yHpD8ptQ==
-X-Received: by 2002:a05:701b:2615:b0:11e:354:32cb with SMTP id a92af1059eb24-12172300658mr1959588c88.49.1766123264305;
-        Thu, 18 Dec 2025 21:47:44 -0800 (PST)
-Received: from google.com ([2a00:79e0:2ebe:8:c932:b7cf:9dde:f662])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1217254ce49sm4895244c88.15.2025.12.18.21.47.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Dec 2025 21:47:43 -0800 (PST)
-Date: Thu, 18 Dec 2025 21:47:41 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Josua Mayer <josua@solid-run.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Jon Nettleton <jon@solid-run.com>, Mikhail Anikin <mikhail.anikin@solid-run.com>, 
-	Yazan Shhady <yazan.shhady@solid-run.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-input@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 2/8] Input: ilitek_ts_i2c: fix warning with gpio
- controllers that sleep
-Message-ID: <6bbjei3z3arl2t2alkyl6gzok3yanzbni63q5z53mbcabb3za5@2ot3tcfkld6g>
-References: <20251201-imx8mp-hb-iiot-v4-0-53a4cd6c21bf@solid-run.com>
- <20251201-imx8mp-hb-iiot-v4-2-53a4cd6c21bf@solid-run.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="issiJqG9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mD9cWYodxM+YiX5ITHf15MenZh9yZ65b+7g3Rcuvd/cXbHoMYki8wQWtVd5ETC8YxeaENexRpxPXhvjaRjfs0ri5Z37AMqXOnNZRzuWFbqtMejLyogHodxDN4aZvBbUvqlc//DTZro05+qYlUUksV67a7+TKxb6iU43MhY85hk1OCqIcBURQfFbp0AQppJmQKZNspu5MHwxkhwVGroNBFBgneYYDbnqMkeUwqZZQrmk4tfQLjjHnAWmPR+lZiePZshDKDux+0E4LXig6BtmpD72+34Rpvclyxcxp9gGqsLc+pYjQwvu+rkLTCZJpsPNFI0ReU+P36lAQN7n2529gmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MzecqinKIGMvOs9fsCuNiHV3v0TYa7Dj0rnyxkN/uNQ=;
+ b=Nq78Jsrgcw5pg8rmqnJf3eZWdjbWoCLdeEx3kILKnHxfIv6NSmb7vpTGkl428GpZeUYFyxK+AjLEPYAJ0RUkogDbkuNaoOxN/4Mwc8drBN01ixwjPRqYB1WUkMauje3znUl6dnv7KfuevVroiJJIgWU2Xrkf5RkZKDn+VM34ajR4LHH3Dw5jjidmkpqIjjWkoIFOk+D/njjfTnvryKKvVk8KQxG8MygyoJ4NJd0sMlUxL7kKaHj4i9iBdWOO7oecfmAN0EXSmuNCEINHgw4p/GZPxD5TdbOE1LoSBnkwZifNs4IrVS+DPZ9tbWqUCJF59HoNoWdI+wOQmhNK8F3rnw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MzecqinKIGMvOs9fsCuNiHV3v0TYa7Dj0rnyxkN/uNQ=;
+ b=issiJqG95s10Ifs0lNNwObq/DSSaC+VVDDIpALKLap9eCEmsM/Gv4aZtXwRHBKcUq5VAWv7zSI/ejzcHiofWkdwZMD9R6BYhy/g40ZONkRPhRIF8w/HBRHpiNJKWMFsGlw9vLVajw3gSWhsX7XA+crOUIJgzhjUeTkQq6LaabgbUBTjeMS0NW0XMKk6VBm3UNmQ5sz9RkVKwzy2OqnFK8dRl8Q+JOmHwKWMN1V5MutioVuv6gW5kjzVC6H0kaj6Gao/aj1AQjZMTLFJumi1CM+oWoVufup/fTqeomOblmrkMMDk6Dsy75lzWDRt0kYHVF6e4N1WoT9KAfe0nR0Tofg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by GV1PR04MB10077.eurprd04.prod.outlook.com (2603:10a6:150:1a5::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.8; Fri, 19 Dec
+ 2025 06:35:37 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9434.009; Fri, 19 Dec 2025
+ 06:35:37 +0000
+Date: Fri, 19 Dec 2025 14:36:48 +0800
+From: Peng Fan <peng.fan@oss.nxp.com>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v23 0/7] firmware: imx: driver for NXP secure-enclave
+Message-ID: <aUTybpjIEoFFOC3o@shlinux89>
+References: <20251219-imx-se-if-v23-0-5c6773d00318@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251219-imx-se-if-v23-0-5c6773d00318@nxp.com>
+X-ClientProxiedBy: SI1PR02CA0050.apcprd02.prod.outlook.com
+ (2603:1096:4:1f5::12) To PAXPR04MB8459.eurprd04.prod.outlook.com
+ (2603:10a6:102:1da::15)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251201-imx8mp-hb-iiot-v4-2-53a4cd6c21bf@solid-run.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|GV1PR04MB10077:EE_
+X-MS-Office365-Filtering-Correlation-Id: 85b918c1-f179-4884-610a-08de3ec8d23c
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|19092799006|52116014|1800799024|376014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?iL2z89vID4242XAug0qW3JgRpOwqtmK/j2uQJchMIBnOHhh42xr/wPMdeYn7?=
+ =?us-ascii?Q?EVt0Vsm1ky2SjbeGT2deT0FT1dsb1GnVhK1onucr6cLn+0Oe5ZaM4dfgkd+W?=
+ =?us-ascii?Q?1FWVAEkO3wK3Vc18cKzQ8QmtoGuRE15Uo23B/IQVGLAFqLSbxXAbSjJvjUEH?=
+ =?us-ascii?Q?dXJyIPjJNZTefahgTQUVEnQdru1mpJBH+eC5s+UoBXj8N8VhpmOLTDAvCVRI?=
+ =?us-ascii?Q?IcV2x/4zYxGZ6RKCd1cwok2eoC87KXwq7HdjDHxEASMOLTk3GuDYfj6bIhv8?=
+ =?us-ascii?Q?65ggwZYvSRjIp2bfHV5pfiuOFJcorPcW49y7pMshrCzuNWqZWHgyDAq3IVAw?=
+ =?us-ascii?Q?CIGx23jz6RZSQn0MCTQvxD6TNypG3zuXwh53Xvh3RGYud7UDSzwNp/tQ18Hh?=
+ =?us-ascii?Q?5J4JNCU3xQWctG9AXbaGuccSI5CkKsvbITriRq1+dduDviI6J7wvwgLS+hKi?=
+ =?us-ascii?Q?OMyZVkZ5J5EU3Kw26EbZoTqdh9+n1xZlKBvQP4ZwXNZrinrG+5DLAaBYW913?=
+ =?us-ascii?Q?przSe1a8wVqU99gj0G+jFvf2vf24NG9ly+och4MV2MDesCYI7ULJFsuX53Ye?=
+ =?us-ascii?Q?wfVGoAA1WuCOns7f9zWtK8DWy5Xn1BOuer2+gpOfA4zhLWrteAt0L/75pAsJ?=
+ =?us-ascii?Q?/4BfS5NCqj1v5JRTORDyBRde9ea7tipaOy+jR4vI0RAbfkCIi5vDz3tckIGQ?=
+ =?us-ascii?Q?88qdocZDCcilRnp7QdrcdkDPPnkJfiIDAaA5ZSh/su3WkKVJhChb7rQju6th?=
+ =?us-ascii?Q?PG8nm7Phfg0uPL0cfWvI6xacjdmgkD81RMCnY4vV14v6WgIvk+byPCFGIKvc?=
+ =?us-ascii?Q?2iJ/gscl7Cbmj6JflJ3tPjen6iOmCEz5sGh6IWYILXxWSZbnXo3eRrCWQDSp?=
+ =?us-ascii?Q?6rFQh6b6BA07pSCW+fPEMvHIGCpauMkgVG/tug48VLQNbfigfhVszfOdBWRi?=
+ =?us-ascii?Q?QDX7p/31R3aB6yBmkAhjUE4HCpf6EuIZYKEC7qZF2rCQjvWnGKPJFAXv+JXS?=
+ =?us-ascii?Q?60GhmmZY3lobpM6NfJgXlVPCsMtAUkvYRWe5Gweg12KBNA8Vfuq/WsxaG5tz?=
+ =?us-ascii?Q?/9lavzAdNsVmKs1B4ms2H2yssA/XMwWtxrvXV96nNZtXay8QPVTpjqupuxsp?=
+ =?us-ascii?Q?oC0XDIr6WGDEvP4nAoE2TUvXx7aZkkAPt3NKJ37pnb4ptCVpmMPxHF6tSDMc?=
+ =?us-ascii?Q?RFUnke6sw1VOYefxN0zbJ3PUlM41hoWaKbOi/0KbPDtt4Kv6/BZ/UF4/3Jxx?=
+ =?us-ascii?Q?aZ+xUpIbrcnExTQorOPc5KkX2tfxQJFMLy5gg/51pOTYiKm1i6lRjfGY3N+x?=
+ =?us-ascii?Q?WTEEKOOfuZiqFU2vYd1gMTF/wlw9ppr2RzDPoddv1GvM2tdl2dB7lsa8Gzln?=
+ =?us-ascii?Q?BRrOmgC88l6ZPcg2jE5OAE5ZcyNgMfx22Rzslcy4xcN6AdLG03DGwqUJvPc6?=
+ =?us-ascii?Q?ImfpYvz85QidQI6NkWngx+NkIJO2Mr/rKSlrRZA3W+hAZ/r+/9i9gtRM849A?=
+ =?us-ascii?Q?9x7+fOPTFkNaI7pnog459A/LwC8ADNKhvfRT?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(19092799006)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Ie4E+rhWrAurqUBvdhMV83FIiX21xrbo3yGUqajOvAQkZtnKlin6eV7jqGt1?=
+ =?us-ascii?Q?h6an+G75/a3cS++OKH294t6wwfiwI8MghqJ/ffyy0sFwZWDmYjoB++cYYemR?=
+ =?us-ascii?Q?HiAprY3+s9peOaHV88XIPw3TJkuQ9IJYHqLRRtCD6msz1VVGek1mG/KDOSEQ?=
+ =?us-ascii?Q?EoEQJ1UD03mjmxh71bXjvtms+DMlMRAjwSJ30/qyes3cpO5qOKOujoPPYPX2?=
+ =?us-ascii?Q?3z6N1npxKOmf61iSpS7+mvRED4IA+vP1v1qupUnMiWhi3klIC2V2du8KR3L5?=
+ =?us-ascii?Q?I+9DFnKfEKpB0OY1eYRSUD2+F2wkKxvsW8edVWn3RnttapuI4tVN4YGn9IIo?=
+ =?us-ascii?Q?Ftfg84GNbEec4fQskCJp2sl00Ujz9MsFDrVdfXuBE8PbtoVaercOIN4HClrX?=
+ =?us-ascii?Q?0INTRxBqnZsT2lhPRg++KYVgHKr/pkPEFaW1cf2CIhStUnin/MGBE1Oduw2R?=
+ =?us-ascii?Q?l6/FTESbjOgjvaqMX19zuCM+IicJUpvHvVs7Ag9KOUqcwRQo7NQ1mDEKiqfO?=
+ =?us-ascii?Q?FNiBWj9vgYcWQA1WEBO7TVPWOK0NG+lDbwvEdeB1F5T9zrl1jSiQbkTgIw2r?=
+ =?us-ascii?Q?5XvF6atrR1H7LmHZXsMPYCp1RE5pEJHKOnRCvPFA6cnB/4O9iebQNLqIJnVz?=
+ =?us-ascii?Q?TQRAgI5xX9B3I0kBMGADqoEBjZ0QfEpV6VkN98oE1UeMO5T78+KghVKSiJJA?=
+ =?us-ascii?Q?iPNq3Arr6ekNeDCZ3EfkSRKclYW2KD936JHzWOSTDK3EQQZVE29C3Haac5MK?=
+ =?us-ascii?Q?m49iSxTLU3Iwl7dim1YXhfzEsYFawe7hPS5PBMquRaBqRT8HoRMRSPSXG9lu?=
+ =?us-ascii?Q?NGFR5KnB8R51Tpiu9ZLahHBvJKZEqMIFbDEKIEQDchuW7ls//dgqgnsrH8UV?=
+ =?us-ascii?Q?NKt8QTHx2Y7/4B5jOHFRUiLbq5MMbRcgvZnKHOoimgdNVHSti1pFqe4M8VY1?=
+ =?us-ascii?Q?MedRsqjzWUliESukat7QkFY1p/mCV2bdlghEwoaPQU0itcdHvIBWWQ7eWeVO?=
+ =?us-ascii?Q?CYeUi3+uvFQFjM/+kfFdWbhItNMqpSHym3hJ4KR3CZnI3Mac3C+uNfjRJwtD?=
+ =?us-ascii?Q?z5g15d2hfYZNIuUKMglAhsBbo3r1RyRbvuCSSP7SVBO5sCyktjS55putP6wp?=
+ =?us-ascii?Q?f8MO148DsR6FgNCKZ9F5IMI5s3SQ8UKbXYDv+RsZu6h4iu5EvdJ62ZKXS4qz?=
+ =?us-ascii?Q?nmDSue/cYXh+wTzoMRRgrMt9MQFJ5HVmRBiEDEPiZzlkgTOPJz6v4xN9zTX0?=
+ =?us-ascii?Q?i0funhHpeOGUoDPQYoSGJ1uh0VeOpLIi1niFm52LELbKdi/HXRDMjdSbX3Wz?=
+ =?us-ascii?Q?cutqFyHIvJka3rfp624ppGStiBfg4PrcBJd4sWCmd/A+5cbocRuXSiyTSfT+?=
+ =?us-ascii?Q?J4r9rdqrvg84/at71A7VE1ghVdC4Sn6biM1CoQ7lGoU6kp5ZUY+bRvKBsPzD?=
+ =?us-ascii?Q?Yygs48fBP198IGXCZEitXgcmBp5kJTHVDkpSTHLCHCAR3ageC73NpCNQWzqX?=
+ =?us-ascii?Q?ZEXNESK4clQEfZcqtd60YD71/2rjc1n1AfoWkga2iSZ6TeIECCMMItvZMStO?=
+ =?us-ascii?Q?3ccTuOYuXHKqaTqgTAus0yM0pj7KnFYzZgQDpMmD?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 85b918c1-f179-4884-610a-08de3ec8d23c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2025 06:35:37.7204
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OMYSE62jUA+q6Pz7LK+szfC0/VOBD+tVS2Z5l9Ax9gDu/zi/pAefyZGerAIfphZiOY8ifdDEI/JLMrRMqjAinQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10077
 
-On Mon, Dec 01, 2025 at 02:07:21PM +0100, Josua Mayer wrote:
-> The ilitek touchscreen driver uses the non-sleeping gpiod_set_value
-> function for reset.
-> 
-> Switch to using gpiod_set_value_cansleep() when controlling reset_gpio to
-> support GPIO providers that may sleep, such as I2C GPIO expanders.
-> 
-> Further switch the mdelay calls on the reset path to fsleep (preferred
-> in non-atomic contexts).
-> 
-> This fixes noisy complaints in kernel log for gpio providers that do
-> sleep.
-> 
-> Signed-off-by: Josua Mayer <josua@solid-run.com>
+>Pankaj Gupta (7):
+>      Documentation/firmware: add imx/se to other_interfaces
+>      dt-bindings: arm: fsl: add imx-se-fw binding doc
+>      firmware: imx: add driver for NXP EdgeLock Enclave
+>      firmware: imx: device context dedicated to priv
+>      firmware: drivers: imx: adds miscdev
+>      arm64: dts: imx8ulp: add secure enclave node
+>      arm64: dts: imx8ulp-evk: add reserved memory property
+>
 
-Applied, thank you.
+Tested-by: Peng Fan <peng.fan@nxp.com> #i.MX8ULP-EVK
 
--- 
-Dmitry
+Regards
+Peng.
