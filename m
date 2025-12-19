@@ -1,340 +1,459 @@
-Received: from mx-relay50-hz3.antispameurope.com (mx-relay50-hz3.antispameurope.com [94.100.134.239])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013019.outbound.protection.outlook.com [52.101.72.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A840E241CB7
-	for <imx@lists.linux.dev>; Fri, 19 Dec 2025 07:46:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371948003D
+	for <imx@lists.linux.dev>; Fri, 19 Dec 2025 07:53:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.19
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766130414; cv=pass; b=SdtGJlSYqLyU6B4lx58YoFAjaOIa7LVrm83tlPQsA7TjRHOTQYdvilkGobyCLcKAXt+nJ8GGCXA1ac1HW1S98e6S2zXUKLYV5YBpmvjJmQTKZ2uX3OaMhZhcSUR+EksV+i38+7Xns5CAWuyS2BLE049YodtOXuPkc6qRVf4GiJg=
+	t=1766130830; cv=fail; b=WdIpuWUUw33Dc2wexm8EaS3xwHyKzr6QsW/INNk+7eMtZbXFouZu2DZSNkGwO671/EPZRslC5L+1tVn/GUohEhDsE8t918+1be8RIvmJ9zVJ5ND1yZrEmZvVL7EENJ13hP+ZU2Dfw9ewmjQG65RX2hGFF389O+XVcFVJ4r1kd84=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766130414; c=relaxed/simple;
-	bh=lyWY5fexHjWzT5nxIzJlcIK8R3UIUXXesvpwdpZ4fZE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BliaXlKGP4LpTI//H3PXXyaYgiSMzbT9/782FBQxNE1RGWIYkjoQT13vARGJsNIso7xUflRZw2A06+OrEhfeGrL5xo/s8y8Clx08TTvuHOTXm91ccTV12m6vpW7xTPme/pI/YPOSWXXROs23u1btsU2XyaeLMzR5+AU5dq4nmsA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=hwcuQYSs; arc=pass smtp.client-ip=94.100.134.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1766130830; c=relaxed/simple;
+	bh=yYTPFC9tssf556QvpvupLI4Tq13pYS/OcEy20EhiTek=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=PMITTOGDYOMbGyzsEVvhanFqKlVvDZbDpUW5MpKP62eMXE66uaRlu/CmmF3DQpgnPRY8s4jM4OBqJINgHpFLCYpPmaCURGxjpajwZrFoIDqXTsxxpAWlK07eTQhD835R4nzm3U1E0pqEqN+2/tc8kmECU+avKcjbZmNoXMg+9s4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=T/Df9rUG; arc=fail smtp.client-ip=52.101.72.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="hwcuQYSs"
-ARC-Authentication-Results: i=1; mx-gate50-hz3.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com
- smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
- header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=Q1abUH1CXgHaEMujIjDYzavepPIEdL4AH5/kt7YuC1c=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1766130374;
- b=WbNx9u58a7ISMVag4SEVbeYrHa1naOU09wyO3APzeHKYIee/p72Tvq8gPEQwPMb91+lwReDr
- d5WshtSL9zr2Wl6aUDUb44s27Pa38UitI5mLhaYBA1a+lC8+dgB8jPBX/08JuXy7cGMNyecFegB
- g3EYEWxxJauKlDtO9lTE8KVAuZ4uB3Css/MhLGEl6Wt2N/XRzV2JCMI4OkhIv27ulKJwamwCN5i
- G+lOKFWV4LmIODSAO4x1TcYHgna0E0b78JqGKyzIBxNAxO3pHbSt7XV6ZKS7fgBXV1qCpEeKMjn
- qTKAmP2GS+9l2acR/R9kX1Ye2L7ZHUI3vmheRIC7N3LiA==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1766130374;
- b=Z9QA8eBTi2nCDT1FiQmll5MMVjIoFITp+ejP3JiL9RwDlZP8R/zOsbt7gyWejrbhEzuTMa33
- 8jPuIE6g5zsM7gX3uDhKHAQdmgFu/xc6sxqRSJLLGvOM7qwuY/6JOYROOcOgjNWmESkVRcYQQhv
- YAFM+WqvuU9ZEgr8Rq7IWl4ymrJjQ428VyeBHfl3s42Qi+xPyfK6w6WTp38xukqTBTAa8z3ifop
- lTpBmcGQO2u36GGbf5UaGeA0rGwfBKHZHlPwd4i8m6VpnAT0VqPCynhFMZ8PYmgIX1Tk/MX9GY0
- 3pp2zVs8qMgO/5dALdFDgrVUZVJkSAVugoBeC8d4hBF+w==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay50-hz3.antispameurope.com;
- Fri, 19 Dec 2025 08:46:14 +0100
-Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id C0DFBCC0DAC;
-	Fri, 19 Dec 2025 08:45:57 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH v7 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC subnode
- to schema and example
-Date: Fri, 19 Dec 2025 08:45:57 +0100
-Message-ID: <7637686.lOV4Wx5bFT@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20251218190841.pmn3kwghq6lxsfl4@pengutronix.de>
-References:
- <20251202-v6-18-topic-imx93-parallel-display-v7-0-2cce31d64608@pengutronix.de>
- <3210190.mvXUDI8C0e@steina-w>
- <20251218190841.pmn3kwghq6lxsfl4@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="T/Df9rUG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XMZJwd04HwXr/2zq75xyHp91FaGwau4og5BXGNRN4Z1w63LfD7W6dBJEMXvvH2RQXLndr+WM9qRpHC1NX/h84y7LfGCjf1/HQIc/CSoni5QjAj65usOo76IF9RAv+2Cc6Ty7oGmRUCPO6UXwYTkXtt27NuJUT5Dig+XiiwQS8SlDNgltgmWTCOwc7d1WJK0twTsuw4nmYu8IbgkVMRzETUozCxXKe2e62P4LdM6dp5xJ90hVGt1ImUfkVnEVaHkcz4+pta5Jk1T9Tv4YrFrx+MpbiJyXJyaGMzGuox/iACZsQ6jARwakkcIhB9lMCBOvsdHexWTb5Ts5vA8XhJFwHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TwUUrV4VCzATI2kxgWcJUXT/POlqE4BLts6ceF0FiTQ=;
+ b=VUSrkEC1kUwfaJovNCkb2rJ7S2zbcgan0+j5fKA8tuzj+fFmMSlL7rsVfUE3MqMQKFpA0JY1QV+102TAheL/LLHlBJ1HInkQijvvJW4cw3WZn3WLB3qFPKTFJIarrRxKOFR/yJ+fTdqBkh4IV1IByljO62PUDuGA4NmM/jPHQcfyOkyibnIcm3uEhKznIB56NL0usYuvm4b/5rnLuUlZgGW5O6SYNeTxSmTqhrxJQJuZt8r5tRxaX5jRmHvfUGcCOm5QCeH16GyAhzxdVdjxWt/mdftTACwQZBTN5IWVqx6jr1QcyBomlecD7CZx4EBRpY0Rxk/Xbe1BDHNGk8uDGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TwUUrV4VCzATI2kxgWcJUXT/POlqE4BLts6ceF0FiTQ=;
+ b=T/Df9rUGN/wmwsP/HqCuaTjNkGVMEgTMCXBKlqzbWS4jBn93AcSloc4TUKZqNK44oZFiUJKmzMIyR1qWdbuOedsoTQvtFR6o1tpWe9lW4TkRlT2QDSvoqscwDtIaeCK6lBlg+KABKWMoHVcyRCiZ8993Gve1CiBwc/+JHb9Kate3EvTdFo+TZCBCWFYykRbR6Wa+b+FB37zVeLlcspVAoZ52JuNnQegVYPe+iQtrp9njYldO84NjESJ1qgPv4Y/V5yil27wygngiUiassYQVy3JQhMy0rLHgPsYH3QMmeX9YJecIACFk/K42WEmyVbBW9lqvRummpj4ys7IduWA7qA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by VI0PR04MB10784.eurprd04.prod.outlook.com (2603:10a6:800:266::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.6; Fri, 19 Dec
+ 2025 07:53:45 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9434.009; Fri, 19 Dec 2025
+ 07:53:45 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+To: vkoul@kernel.org,
+	neil.armstrong@linaro.org,
+	shawnguo@kernel.org,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	jun.li@nxp.com,
+	Frank.Li@nxp.com
+Cc: linux-phy@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] phy: fsl-imx8mq-usb: add debugfs to access control register
+Date: Fri, 19 Dec 2025 15:54:47 +0800
+Message-Id: <20251219075447.3672833-1-xu.yang_2@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SI2PR01CA0021.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:192::19) To DU2PR04MB8822.eurprd04.prod.outlook.com
+ (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay50-hz3.antispameurope.com with 4dXfjM6trLz2nJ7p
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:f6d1fa41e90d3fcf88d8c9a603ba697f
-X-cloud-security:scantime:3.688
-DKIM-Signature: a=rsa-sha256;
- bh=Q1abUH1CXgHaEMujIjDYzavepPIEdL4AH5/kt7YuC1c=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1766130373; v=1;
- b=hwcuQYSs8nfBA4PJgKV7N6T1Oqf06Eol09VHXqwye8ty3dXAo3E3SEa0jF07iFbIGRaj4vrm
- rPnO1fx+LvT6qxKBG7GxvQez9b7Spl4BHfz3f/nrW/qOeED5Hu2wfwX/pMq2uggGdG7PRUXuZf0
- 8LsCc+ZmHoFpUQw4yzxPcalKxQIdAl4dLQwuQCAW3RaCf+Qeahp8bspMDFSn4B2UY3bM5QkEZib
- eXdm4eh+tam9/265gbbvdm1l4fnLHDEiCgjIyBzHHctWx4tqQ2FBvFUealgtW2plXM3LfxuSm+a
- 0UCgS6WRoLY+xm/GMYAgPNdC2LsUuWsbuVJ5AP5TDiptQ==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|VI0PR04MB10784:EE_
+X-MS-Office365-Filtering-Correlation-Id: 18b2cde8-ff6e-4505-19e2-08de3ed3babd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|19092799006|366016|1800799024|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UkRzK0RzMDNaRVZoYllvTTJGYVc4cUtmWmZnYmg3b1laa3NrRU9zRVFoU3Qr?=
+ =?utf-8?B?Snk5R0ZBeDFhUG4vVmk5b1RSdFRUYlZBUW92S1FjUDhMZUVOZWNyR253WTZX?=
+ =?utf-8?B?OEJLVlZyZkFsWTc3MnFTY1RKUWZvTHVKNC9kZG1jNkEwREZxNXJONkJINHVw?=
+ =?utf-8?B?RWpoMy9lR29uWHkwbDJNck1uNUtXbko0VGtiQSt0M3ROS1FrbTRBcUptbGp0?=
+ =?utf-8?B?KzEvQm13d2E3QU5Td3RlRE5ySExXbkJsRjBBV0RUUnZFQVM2UkJ4Q0cvbkJl?=
+ =?utf-8?B?VCt4cHpSeTYzU1Fpb3dVL0oxV09oaHZrbnRRbE53TmxESDdHdkhiKy9oMzdE?=
+ =?utf-8?B?Y2Nza2RMejdqUzlKb0QwTnNkQUd5NEJqWkc5WUxnSTkyV3phdFdMTnB2TVZ3?=
+ =?utf-8?B?bFpybzRhRDErMDU5T1JFWS9reGo2T0lncTI1RUxwSXd5aEtRZEo0SlNqQld4?=
+ =?utf-8?B?OGpFcS9NNVE2dTBtc3A0b3hPM2JLd0VodHBySkVPbDJ3Sk9BTWFScnVROEpx?=
+ =?utf-8?B?ZTZrcjFya0lIZG1vRHFXaDVYRlY5anFlcTBkV29zTFp3Y29wY2hDclRTa1lF?=
+ =?utf-8?B?S1BpWVBXeU4yTWFsRzZITkFJQ1cvTmQ0Q0EvOTRmNDVINzk4SVp5dzJOV1Ur?=
+ =?utf-8?B?T0ZvR09sNS9KUG9ydHRBT3orRkNXdEloTkRyRWdmZHp0UWNSYWxnU0dleFQ0?=
+ =?utf-8?B?clZBRnNHVXJ5S2Z5MlMySkZ3b0dOMzNZRnpHTllwOEVBdEZsUHViOGszS1Zv?=
+ =?utf-8?B?S2pzOUR0Q1JjcFlBVVRlN2kyMG84dFB6bk5RYmlISGlGdGtKbXJKUTVhMTV6?=
+ =?utf-8?B?dEw0RHo5YVdTSXpNV3IvZ1Z4SzVPTURDV3RFUHUvVCtBdlA4Y2pPMmorWnUw?=
+ =?utf-8?B?TlcwM09TU2ZsZ20reGpNUGlaZWJpenoyc3ZmbmxrMFduNVZncTBwNnlZc3Ra?=
+ =?utf-8?B?NWVMUkdzL2N6RndGRXd1NVd4VWdaN3RUVTNCR0w2OEthclFJYlJFMEdacWtx?=
+ =?utf-8?B?V2xFeTZPQVpyRVhZZHp0Wk93ZUw0SWc3WWowQVo1VVJBZlNVNzhCV3FiS0Js?=
+ =?utf-8?B?VmZDVmxucGVld1RpV05Dc3kxSE5RNDhlVW0rTkNuVEwvUXhoM0k4YTZBNWtn?=
+ =?utf-8?B?ejBaOEdGL2FvbGVpZ0dVR1Rid2l3Nm1JeU92OEN0Q3FlY1V5eFJnNnp5M01E?=
+ =?utf-8?B?eXpKblBkbDNiVzE1TUc4TEEyenVKSVVtVEhLZTVXU2llM3NOa0Fua1g3ZWdH?=
+ =?utf-8?B?R3lRNmpCbG1YbEVpSW1PUWMzcHIrRzBaL1FIc0UzV1pqVk5BZzdCeFg0Wi92?=
+ =?utf-8?B?bFlUZkVNUUtSaHBMa0RLeEVjZVVyYWY2c0xvWGRvaG1SNW9DSDV6eU1WT3Fo?=
+ =?utf-8?B?QjRLNDcxWEhHOGcyNTQ4Mk14bUI5Y3gxZDJlZ0JScUNhQi9jc3JSRFBzNmV0?=
+ =?utf-8?B?MFYzYXo2SVRLMmRzWmlJYVo1TkFRZzR1SHNPYnByYVRSWVF6Tld3YTFmQW9w?=
+ =?utf-8?B?MjNtOGlSSFk2Vk1nU0hZWmRYUVRBb1RaKzRjeUUwRi9oQ1UvYlNSOE1iVFdM?=
+ =?utf-8?B?T2hEakhNdWlEdnVxQmVWNmp1bnZtWW9nbEZYSXovMllpNmxReEl4SUlYRE5i?=
+ =?utf-8?B?V0NJVk9yV0RjT0tEZ1J0dXMxQkh3eGNtYW12dDAxMjFQNmZLZHJvWHp5WEdX?=
+ =?utf-8?B?QUpOOWNCbEtWSnlxV2ZwaHc5a1RNYWo5ZTFYbkJwOU5lZzZjWjY5d1BJMmRO?=
+ =?utf-8?B?b0VXMmdIdHZheGI3SGNUcU8ySTlHMnpCelNlaWkwRmMyMWR3bmFzSlVyeUtR?=
+ =?utf-8?B?UTQ2R2ZBVDVkbEwzOWwvQTdQTXhsMmQ4dXU3UkRXZW1LbEZPZU9pU1MrVkVX?=
+ =?utf-8?B?MENQbVlWRERtS0dlTTFXbnYzSWFRZmRvRjJxMWp1U1lXMWhjMGh3aU5rMVVv?=
+ =?utf-8?B?WWdBYXJrWTVld3JlK0RtMGJ5Q25TbklqTnIrRHRjZzZoaSttMGJYVFd6M3BR?=
+ =?utf-8?B?blB3YzZjK2M3L1VZVHJxdTRud1BJQy9HdHRSMXNDNWw3RXJIVUwwNGQwbnRZ?=
+ =?utf-8?Q?B7uXLi?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(19092799006)(366016)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RG9OOUpOZHVtY2dHZjFhN0wwMGFnd1hoL2pHMHh6V1ZvUG8zUzZsdW9WZU5L?=
+ =?utf-8?B?emdpcHJRMC9tWHE5TmdnT3ZtclVhVHlLdXFnZ1lrdnQzTkFia1dxNDJnN3R2?=
+ =?utf-8?B?djNzd2NCd2VtVGtxY0Z4c3hGeWtKcUc0Tmo2K0Q0QVZwYWwwdjRLRjFuRTRp?=
+ =?utf-8?B?SmEzKzFYUVZ0c0lFZWdVR1dWYllOam5peW9Idm1SVElpOEJScTVJYldIeWJl?=
+ =?utf-8?B?WlFXQUFEaXZuNHlpQUJaaGVLN205S1puZEN1YmdqMzZkSCtYb2VHSG0rOHF0?=
+ =?utf-8?B?N3l1aVpTTDZ0VkpUUWszY2V4R0ZwTE9oVzFobDFBQjB5WTVBNnBHT1ZXSXdv?=
+ =?utf-8?B?SUg3TEozVzUvK2FudFpQVDFQdU1EYmkrd09FaERHVmZxcTIwaFk0TTdlT08w?=
+ =?utf-8?B?aUs4NWhrd0g5a0xFRmt6VFdBcURRL1g0T2lVRFYrNG1wUTFsekhXQ1lDM2ox?=
+ =?utf-8?B?dVRVeGtYTWpIV1BPR1BWK0lldUhaT2xjSHNJQ2dXUGFZeDFJZTNOTWIxZEZY?=
+ =?utf-8?B?TWhRL1AxZzVIUGM1T0oyY1hsaGVpMlBVM2lKcldZYzVRaUtrSGgvaGlETnpt?=
+ =?utf-8?B?Z1VMekdrZHI1Mk5yVFNNVHhDZ0VzQU5lWjlVUWNjWW82a3BibDRIcGdIRlpj?=
+ =?utf-8?B?eTZyOUNTM0VmTll1MVd5YUd5M3FQN2tsRU1HTUI1dkdzK2d5c01iR283bWN4?=
+ =?utf-8?B?eXlyakNmKzd2Sitodi9jRFBVY3RFUXNldUt3ejJwZksxdjkxR0lmR014NFNz?=
+ =?utf-8?B?NnFLa3hBSk9OMXd6STNURjhPY3NKaEU4VXhnTzZ0UDhLdkNZNzIwM2FqU1hQ?=
+ =?utf-8?B?ZnBzdEJpaU5kVkY1TTc4RGNjQXpZN3k0dmpFWmNaTnNOenBxS1hMU0pRTGJT?=
+ =?utf-8?B?eURmWkkwTjFyTDhaMHZ3QTJvemp0VFVNVVJlb1lqNFVjbmhGNzhBU2ZQUWgv?=
+ =?utf-8?B?Tk83N3lMZitjL1hPdnIzcWRBaEx6WUZXczdKTWNNYXdpZWoybVlqekxWN2VD?=
+ =?utf-8?B?T3Qwbm83c2pPVldyVVFneERuQVNiK0s3aWRaV1pMSmJiRmlRY2hNeXVZZDVN?=
+ =?utf-8?B?SUYya3VaMmpQTmRoS2U3eUtRSEd4d3YxWGI2V1VuZFN6VkQ2V3NBQ2l6bk5D?=
+ =?utf-8?B?Q0ZhN2EvR1I5OHhIMitFZmNaandDcDYwV3loY2puQlBmTWpkMGRuZTJyUTBy?=
+ =?utf-8?B?MzNnWUxGMUxGWWNrQ3ZyZmNHOUs4bjY3MHRuemxiRENYaGNEbWxVbFUzazVj?=
+ =?utf-8?B?ZEIrbUFrWlo5dE5YVmdSVnIxMkE3VVhSRDlkUUVIK0syMjErblVSVUo0S1gw?=
+ =?utf-8?B?V3FYckczVnI0ZG8ycUxhbkxuUEVpT1piSG9veVhURGhMRFJmWFBTaWpQWExp?=
+ =?utf-8?B?MTNEalUybjRBQnZzYWlHVVJOUFcyeXpBejBUaWVKemxNNGJISUttMHN4NURO?=
+ =?utf-8?B?TitaZjFvZTgyK2REMW1zdE5QQVhVZEFzbVl4TXRHNld6NUVtWDJiUlVkR1lN?=
+ =?utf-8?B?aExTRFVXTEFhbjNhM0YvUmRxcWVHdkFELzN4akx5cU1wN0I0ZWJSR0VUd1Bo?=
+ =?utf-8?B?MmltV2E0SXlLMTZHN2U1R20ySzhoTHA2SUVvazBya1JjcUV1aU5ZbGxySWdU?=
+ =?utf-8?B?MjVBZU9UWW0rcWlKOVFkT0RwejZxK3ErdjdyaDd4T2J4N3pVVFdVWTBDNUdO?=
+ =?utf-8?B?Qzc1MWFqbVVtcTJFRTIrRCtlWXFZSktDWE5vL2l5bENtdzJDeWx1Q2FsNmov?=
+ =?utf-8?B?dEdWZklPbGNKeGdRTDFFRjFtUG12Y3lVTmNaWWhMZDJtM3E5aldNZldYYlBa?=
+ =?utf-8?B?SE1SeVlRNURUNmIxenZ0L3UzdHdXanBMWGUyVTRMdGV1VHpFQ0l0QnI3SlNO?=
+ =?utf-8?B?QXdOVjlXbmFXQ0VEZVgvWmQ0ZVVRL1hKVVpWUjVUTnlqUWZqczYrL3N3SjFZ?=
+ =?utf-8?B?ZGpSaHVyY05uQlNjU3NJSER6VzlmYWFqQis2OTRLWC9WTkJOci9OUktQL1V3?=
+ =?utf-8?B?UkR4SVpSVDFydldETGRIK25uc2d2Zm1jL1RLMFl1b1c3VWtiQXB5ZEdNa1ph?=
+ =?utf-8?B?aDg3aUhNOWFEeGZtZ1BaS2xyOENoOXNwelQxekJTbG5nUGQ4NW01NG04UjJ1?=
+ =?utf-8?Q?SLh6wFLHvkPyzpNSOzdIrvphU?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 18b2cde8-ff6e-4505-19e2-08de3ed3babd
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2025 07:53:45.1516
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CLcml6c5uAXwdL0dUWxA3yblXEtWsTxcFvzaOE6Cu/CT5bt0e9As7TwIwJDSQ968Ik5SxxQx3vOWTgZIMVjnoA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10784
 
-Hi Marco,
+The CR port is a simple 16-bit data/address parallel port that is
+provided for on-chip access to the control registers inside the
+USB 3.0 femtoPHY. While access to these registers is not required
+for normal PHY operation, this interface enables you to access
+some of the PHY’s diagnostic features during normal operation or
+to override some basic PHY control signals.
 
-Am Donnerstag, 18. Dezember 2025, 20:08:41 CET schrieb Marco Felsch:
-> Hi Alexander,
->=20
-> On 25-12-16, Alexander Stein wrote:
-> > Hi,
-> >=20
-> > Am Montag, 15. Dezember 2025, 18:54:36 CET schrieb Marco Felsch:
-> > > Hi Liu,
-> > >=20
-> > > sorry I didn't fully answer you please see below.
-> > >=20
-> > > On 25-12-08, Liu Ying wrote:
-> > > > Hi Marco,
-> > > >=20
-> > > > On 12/02/2025, Marco Felsch wrote:
-> > > > > From: Liu Ying <victor.liu@nxp.com>
-> > > > >=20
-> > > > > i.MX93 SoC mediamix blk-ctrl contains one DISPLAY_MUX register wh=
-ich
-> > > > > configures parallel display format by using the "PARALLEL_DISP_FO=
-RMAT"
-> > > > > field. Document the Parallel Display Format Configuration(PDFC) s=
-ubnode
-> > > > > and add the subnode to example.
-> > > > >=20
-> > > > > Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> > > > > [m.felsch@pengutronix.de: port to v6.18-rc1]
-> > > > > [m.felsch@pengutronix.de: add bus-width]
-> > > > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > > > > ---
-> > > > >  .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml | 92 ++++++++=
-++++++++++++++
-> > > > >  1 file changed, 92 insertions(+)
-> > > > >=20
-> > > > > diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-=
-media-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-m=
-edia-blk-ctrl.yaml
-> > > > > index 34aea58094e55365a2f9c86092f637e533f954ff..6e2d86d9341c75108=
-b492bcbabc8a560d8e707cd 100644
-> > > > > --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-b=
-lk-ctrl.yaml
-> > > > > +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-b=
-lk-ctrl.yaml
-> > > > > @@ -26,6 +26,12 @@ properties:
-> > > > >    reg:
-> > > > >      maxItems: 1
-> > >=20
-> > > ...
-> > >=20
-> > > > > +            properties:
-> > > > > +              endpoint:
-> > > > > +                $ref: /schemas/graph.yaml#/$defs/endpoint-base
-> > > > > +                unevaluatedProperties: false
-> > > > > +
-> > > > > +                properties:
-> > > > > +                  bus-width:
-> > > >=20
-> > > > In v1-v5, I thought the output bus format can be determined by the =
-sink
-> > > > device(a panel or a bridge) hence properties like bus-width were no=
-t needed.
-> > > > But, if this property is really needed, then reference video-interf=
-aces.yaml
-> > > > since bus-width is documented there.  Should we reference bus-type =
-defined
-> > > > in video-interfaces.yaml too?
-> > >=20
-> > > You're right, the bus-width should be determined by the connected pan=
-el.
-> > > But there are cases where a 24-bit panel is connected but only the lo=
-wer
-> > > 18-bits are muxed. I added the bus-width property to handle this case.
-> > > In the end most users don't have to specify this since the correct
-> > > bus-width is coming from the panel bus-fmt.
-> > >=20
-> > > > > +                    enum: [ 16, 18, 24 ]
-> > > >=20
-> > > > The PARALLEL_DISP_FORMAT field of DISPLAY_MUX register says this IP=
- supports
-> > > > below formats.  It seems that the enum here may tell RGB888, RGB666=
- and RGB565.
-> > > > How can we tell RGB555, YCbCr 24 bits and YUV444 then?
-> > > >=20
-> > > > 000b RGB888 -> RGB888
-> > > > 001b RGB888 -> RGB666
-> > > > 010b RGB565 -> RGB565
-> > > > 011b RGB555 -> RGB555
-> > > > 100b YUV -> YCbCr 24 bits
-> > > > 101b YUV -> YUV444
-> > >=20
-> > > This enum is about the physical bus width. RGB565 =3D=3D 16-bit, YUV =
-=3D=3D
-> > > 24-bit.
-> > >=20
-> > > That said, I don't think that you need to specify the bus-fmt since t=
-his
-> > > is coming from the panel. As said above, my itension with the bus-wid=
-th
-> > > property is to provide integrators (dts-writers) a possibility to lim=
-it
-> > > the physical available bus width.
-> >=20
-> > Mh, isn't [1] exactly about this? Not sure about the outcome at that ti=
-me.
->=20
-> Thanks for the pointer, I wasn't aware of this discussion. I skimmed
-> through the dt-bindings thread and I agree with Rob and Maxime.
->=20
-> We do have the bus-width endpoint property already. This property is
-> alredy used by media and drm bridge drivers. Why not making use of for
-> this simple bridge driver too?
->=20
-> Furthermore I doubt, that a simple drm-bridge MEDIA_BUS_FMT_* convert
-> driver solves all the problem in a generic way for all platforms, all
-> connectors, all routing options.
+3 debugfs files are created to read and write control registers,
+all use hexadecimal format:
+ctrl_reg_base: the register offset to write, or the start offset
+               to read.
+ctrl_reg_count: how many continuous registers to be read.
+ctrl_reg_value: read to show the continuous registers value from
+                the offset in ctrl_reg_base, to ctrl_reg_base
+                + ctrl_reg_count - 1, one line for one register.
+                when write, override the register at ctrl_reg_base,
+                one time can only change one 16bits register.
 
-Nobody knows what new hardware comes up with =C2=AF\_ (=E3=83=84)_/=C2=AF
-Anyway we already have a similar problem on our MBa6ULx mainboard.
-Current downstream workaround is to clone the display timings but
-change the bus format. See [1]. Although I would like to get rid of it.
-This is just the display connector on the mainboard causing the shift.
+Signed-off-by: Li Jun <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+---
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 221 ++++++++++++++++++++-
+ 1 file changed, 220 insertions(+), 1 deletion(-)
 
-Best regards
-Alexander
-
-[1] https://github.com/tq-systems/linux-tqmaxx/commit/777c02480182d3054264a=
-aaf80e1dbc40a02cfc1
-
-> If the i.MX93 NXP-EVKs in [1] would have connected the upper LCD_DAT*
-> pads instead of the lower ones, there would be no conversion needed by
-> the PDFC bridge driver, albeit the physical bus is cut to 18-bit width
-> due to the RPi ext. header limit, which is expanded to 24-bit again later=
- on
-> via the Adafruit board panel FPC connector.
->=20
-> In such scenario the output width of the PDFC has to be 24-bit else
-> you would lose not only the two LSBs but also the two MSBs for each
-> channel. I tried to visualize what I meant for the blue channel:
->=20
->                  24-bit PDFC bridge
-> 		 ------------------
->         +----+----+----+----+----+----+----+----+
->  LCDIF  | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
->         +----+----+----+----+----+----+----+----+
->           |    |    |    |    |    |    |    |
->         +----+----+----+----+----+----+----+----+
->  PDFC   | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
->         +----+----+----+----+----+----+----+----+
->                     |    |    |    |    |    |
->         +----+----+----+----+----+----+----+----+
-> SOC_PAD | xx | xx | D2 | D3 | D4 | D5 | D6 | D7 |
->         +----+----+----+----+----+----+----+----+
->                     |    |    |    |    |    |
->         +----+----+----+----+----+----+----+----+
->  ext.   | xx | xx | B2 | B3 | B4 | B5 | B6 | B7 |
->  HDR    +----+----+----+----+----+----+----+----+
->                     |    |    |    |    |    |
->                     |    |    |    |    |    |
->                     |    |    |    |    |    |
->           +-----------------------------+    |
->           |    +-----------------------------+
->           |    |    |    |    |    |    |    |
->         +----+----+----+----+----+----+----+----+
->  Ada.   | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
->  FPC    +----+----+----+----+----+----+----+----+
->=20
->                  18-bit PDFC bridge
-> 		 ------------------
->         +----+----+----+----+----+----+----+----+
->  LCDIF  | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
->         +----+----+----+----+----+----+----+----+
->           |    |    |    |    |    |    |    |
->         +----+----+----+----+----+----+----+----+
->  PDFC   | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
->         +----+----+----+----+----+----+----+----+
->                     |    |    |    |    |    |
->           +---------+    |    |    |    |    |
->           |    +---------+    |    |    |    |
->           |    |    +---------+    |    |    |
->           |    |    |    +---------+    |    |
->           |    |    |    |    +---------+    |
->           |    |    |    |    |    +---------+
->           |    |    |    |    |    |
->         +----+----+----+----+----+----+----+----+
-> SOC_PAD | xx | xx | D2 | D3 | D4 | D5 | D6 | D7 |
->         +----+----+----+----+----+----+----+----+
->                     |    |    |    |    |    |
->         +----+----+----+----+----+----+----+----+
->  ext.   | xx | xx | B2 | B3 | B4 | B5 | B6 | B7 |
->  HDR    +----+----+----+----+----+----+----+----+
->                     |    |    |    |    |    |
->                     |    |    |    |    |    |
->                     |    |    |    |    |    |
->           +-----------------------------+    |
->           |    +-----------------------------+
->           |    |    |    |    |    |    |    |
->         +----+----+----+----+----+----+----+----+
->  Ada.   | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
->  FPC    +----+----+----+----+----+----+----+----+
->=20
->=20
-> The mapping can get quite difficult for a single SoC already, just by
-> using a slighlty different HW routing (the upper D[ata] pads).
->=20
-> Therefore I would keep it simple and device/ip specific (in this case
-> PDFC specific) by making use of the bus-width. Specifying the bus-width
-> property could be also wrong albeit it's the case physically, as you can
-> see in my above example.
->=20
-> Therefore the bus-width property must have a good description.
->=20
-> Regards,
->   Marco
->=20
-> > Best regards,
-> > Alexander
-> >=20
-> > [1] https://lore.kernel.org/all/20250304101530.969920-1-victor.liu@nxp.=
-com/
-> >=20
-> > > [snip]
->=20
->=20
->=20
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
-any
-Amtsgericht M=C3=BCnchen, HRB 105018
-Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
-neider
-http://www.tq-group.com/
-
+diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+index ad8a55012e42..cb2392008ad2 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
++++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+@@ -1,8 +1,9 @@
+ // SPDX-License-Identifier: GPL-2.0+
+-/* Copyright (c) 2017 NXP. */
++/* Copyright (c) 2017-2025 NXP. */
+ 
+ #include <linux/bitfield.h>
+ #include <linux/clk.h>
++#include <linux/debugfs.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+@@ -52,6 +53,21 @@
+ 
+ #define PHY_TUNE_DEFAULT		0xffffffff
+ 
++/* PHY control register access */
++#define PHY_CTRL_REG_COUNT_MAX		0x42
++#define PHY_CTRL_REG_OFFSET_MAX		0x201f
++
++#define PHY_CRCTL			0x30
++#define PHY_CRCTL_DATA_IN_MASK		GENMASK(15, 0)
++#define PHY_CRCTL_CAP_ADDR		BIT(16)
++#define PHY_CRCTL_CAP_DATA		BIT(17)
++#define PHY_CRCTL_CR_WRITE		BIT(18)
++#define PHY_CRCTL_CR_READ		BIT(19)
++
++#define PHY_CRSR			0x34
++#define PHY_CRSR_DATA_OUT_MASK		GENMASK(15, 0)
++#define PHY_CRSR_CR_ACK			BIT(16)
++
+ #define TCA_CLK_RST			0x00
+ #define TCA_CLK_RST_SW			BIT(9)
+ #define TCA_CLK_RST_REF_CLK_EN		BIT(1)
+@@ -113,6 +129,9 @@ struct imx8mq_usb_phy {
+ 	void __iomem *base;
+ 	struct regulator *vbus;
+ 	struct tca_blk *tca;
++	struct dentry *debugfs;
++	u16 cr_access_base;
++	u16 cr_read_count;
+ 	u32 pcs_tx_swing_full;
+ 	u32 pcs_tx_deemph_3p5db;
+ 	u32 tx_vref_tune;
+@@ -420,6 +439,204 @@ static u32 phy_pcs_tx_swing_full_from_property(u32 percent)
+ 	percent = min(percent, 100U);
+ 
+ 	return (percent * 127) / 100;
++};
++
++#define IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT 500000
++static int imx8mq_phy_ctrl_reg_addr(struct imx8mq_usb_phy *imx_phy, u16 offset)
++{
++	void __iomem	*cr_ctrl = imx_phy->base + PHY_CRCTL;
++	void __iomem	*cr_sr = imx_phy->base + PHY_CRSR;
++	struct device	*dev = &imx_phy->phy->dev;
++	int i;
++
++	/* Address Phrase */
++	writel(offset, cr_ctrl);
++	writel(readl(cr_ctrl) | PHY_CRCTL_CAP_ADDR, cr_ctrl);
++
++	/* Wait CRSR[16] == 1 */
++	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
++	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
++		i--;
++	if (i == 0)
++		goto cr_addr_err;
++
++	writel(readl(cr_ctrl) & (~PHY_CRCTL_CAP_ADDR), cr_ctrl);
++
++	/* Wait CRSR[16] == 0 */
++	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
++	while ((readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
++		i--;
++	if (i == 0)
++		goto cr_addr_err;
++
++	return 0;
++
++cr_addr_err:
++	dev_err(dev, "Failed to address reg 0x%x.\n", offset);
++	return -EIO;
++}
++
++static int imx8mq_phy_ctrl_reg_read(struct imx8mq_usb_phy *imx_phy, u16 offset)
++{
++	void __iomem	*cr_ctrl = imx_phy->base + PHY_CRCTL;
++	void __iomem	*cr_sr = imx_phy->base + PHY_CRSR;
++	struct device	*dev = &imx_phy->phy->dev;
++	int val, i;
++
++	/* Address Phrase */
++	val = imx8mq_phy_ctrl_reg_addr(imx_phy, offset);
++	if (val)
++		return val;
++
++	/* Read Phrase */
++	writel(readl(cr_ctrl) | PHY_CRCTL_CR_READ, cr_ctrl);
++
++	/* Wait CRSR[16] == 1 */
++	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
++	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
++		i--;
++	if (i == 0)
++		goto cr_read_err;
++
++	val = readl(cr_sr);
++	writel(val & ~PHY_CRCTL_CR_READ, cr_ctrl);
++
++	/* Wait CRSR[16] == 0 */
++	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
++	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
++		i--;
++	if (i == 0)
++		goto cr_read_err;
++
++	return val;
++
++cr_read_err:
++	dev_err(dev, "Failed to read reg 0x%x.\n", offset);
++	return -EIO;
++}
++
++static int imx8mq_phy_ctrl_reg_write(struct imx8mq_usb_phy *imx_phy,
++				     u16 offset, u16 val)
++{
++	void __iomem	*cr_ctrl = imx_phy->base + PHY_CRCTL;
++	void __iomem	*cr_sr = imx_phy->base + PHY_CRSR;
++	struct device	*dev = &imx_phy->phy->dev;
++	int i, ret;
++
++	/* Address Phrase */
++	ret = imx8mq_phy_ctrl_reg_addr(imx_phy, offset);
++	if (ret)
++		return ret;
++
++	writel(val, cr_ctrl);
++
++	/* Set cr_cap_data to be 1'b1 */
++	writel(readl(cr_ctrl) | PHY_CRCTL_CAP_DATA, cr_ctrl);
++	/* Wait CRSR[16] == 1 */
++	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
++	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
++		i--;
++	if (i == 0)
++		goto cr_write_err;
++
++	/* Clear cr_cap_data to be 1'br0 */
++	writel(readl(cr_ctrl) & ~PHY_CRCTL_CAP_DATA, cr_ctrl);
++	/* Wait CRSR[16] == 0 */
++	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
++	while ((readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
++		i--;
++	if (i == 0)
++		goto cr_write_err;
++
++	/* Set cr_write to be 1'b1 */
++	writel(readl(cr_ctrl) | PHY_CRCTL_CR_WRITE, cr_ctrl);
++	/* Wait CRSR[16] == 1 */
++	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
++	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
++		i--;
++	if (i == 0)
++		goto cr_write_err;
++
++	/* Clear cr_write to be 1'br0 */
++	writel(readl(cr_ctrl) & ~PHY_CRCTL_CR_WRITE, cr_ctrl);
++	/* Wait CRSR[16] == 0 */
++	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
++	while ((readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
++		i--;
++	if (i == 0)
++		goto cr_write_err;
++
++	return 0;
++
++cr_write_err:
++	dev_err(dev, "Failed to write reg 0x%x.\n", offset);
++	return -EIO;
++}
++
++static int ctrl_reg_value_show(struct seq_file *s, void *unused)
++{
++	struct imx8mq_usb_phy *imx_phy = s->private;
++	u16 i, val, base = imx_phy->cr_access_base;
++
++	for (i = 0; i < imx_phy->cr_read_count; i++) {
++		val = imx8mq_phy_ctrl_reg_read(imx_phy, base + i);
++		seq_printf(s, "Control Register 0x%x value is 0x%4x\n",
++			   base + i, val);
++	}
++
++	return 0;
++}
++
++static int ctrl_reg_value_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, ctrl_reg_value_show, inode->i_private);
++}
++
++static ssize_t ctrl_reg_value_write(struct file *file, const char __user *ubuf,
++				    size_t count, loff_t *ppos)
++{
++	struct seq_file		*s = file->private_data;
++	struct imx8mq_usb_phy	*imx_phy = s->private;
++	u16			cr_value;
++	int			ret;
++
++	ret = kstrtou16_from_user(ubuf, count, 16, &cr_value);
++	if (ret)
++		return ret;
++
++	imx8mq_phy_ctrl_reg_write(imx_phy, imx_phy->cr_access_base, cr_value);
++
++	return count;
++}
++
++static const struct file_operations ctrl_reg_value_fops = {
++	.open		= ctrl_reg_value_open,
++	.write		= ctrl_reg_value_write,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.release	= single_release,
++};
++
++static void debug_create_files(struct imx8mq_usb_phy *imx_phy)
++{
++	struct device *dev = &imx_phy->phy->dev;
++
++	imx_phy->debugfs = debugfs_create_dir(dev_name(dev), imx_phy->phy->debugfs);
++
++	debugfs_create_x16("ctrl_reg_base", 0600, imx_phy->debugfs,
++			   &imx_phy->cr_access_base);
++	debugfs_create_x16("ctrl_reg_count", 0600, imx_phy->debugfs,
++			   &imx_phy->cr_read_count);
++	debugfs_create_file("ctrl_reg_value", 0600, imx_phy->debugfs,
++			    imx_phy, &ctrl_reg_value_fops);
++
++	imx_phy->cr_access_base = 0;
++	imx_phy->cr_read_count = 1;
++}
++
++static void debug_remove_files(struct imx8mq_usb_phy *imx_phy)
++{
++	debugfs_remove_recursive(imx_phy->debugfs);
+ }
+ 
+ static void imx8m_get_phy_tuning_data(struct imx8mq_usb_phy *imx_phy)
+@@ -724,6 +941,7 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
+ 					"failed to get tca\n");
+ 
+ 	imx8m_get_phy_tuning_data(imx_phy);
++	debug_create_files(imx_phy);
+ 
+ 	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
+ 
+@@ -734,6 +952,7 @@ static void imx8mq_usb_phy_remove(struct platform_device *pdev)
+ {
+ 	struct imx8mq_usb_phy *imx_phy = platform_get_drvdata(pdev);
+ 
++	debug_remove_files(imx_phy);
+ 	imx95_usb_phy_put_tca(imx_phy);
+ }
+ 
+-- 
+2.34.1
 
