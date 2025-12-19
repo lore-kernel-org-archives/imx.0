@@ -1,167 +1,230 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC3F27280F
-	for <imx@lists.linux.dev>; Fri, 19 Dec 2025 10:05:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D10D2253FC;
+	Fri, 19 Dec 2025 10:33:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766138705; cv=none; b=Dl3Mq9gC5rsSCunuiExCG7gDglUceXeYN4dS3UT3fPeYnxmodOsDwJyypgc7OLz0+J446VLL7qUhPpd5Zwo6xiTljph0sPmbUhLKPcdHvJPrjSti/Jm+hbA9tTfUAVZuqWjHY9M18uSVbsCoJttStPqECRqPRxUJA691EV2+AHo=
+	t=1766140427; cv=none; b=eowBTuve2CMfj6dyC920xQmSPvTMDPZLvZlIR4NBN3H/BVpFyjnRvEZo2O0ykulpbYuAAleV2Yp+zi9W6bEJWEjr2f3Pa7RxEqbRrdSfwYx2HHpJj3vPjo/WUVj61gNi3rL8ONQC9kELjg3Ep4aGFAKlDAxQbjgpTVfNGFQ1koY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766138705; c=relaxed/simple;
-	bh=qvTbJcH39/BFQ9aHwMDRIzLhdc64pAOoaNQwNrs00CY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N9K5C2ovw9PyY2G0FOTywqUZV62tX/++UXlPEf101R0m0llkWE0QqWM0JBWpYjRcHdbbBixzHJ5ac5DRgpqyq4OFOnKdx+qZCjGO8geZoeJ/NJgti1oyX9xIYPHbYhRTY4tJDxseckXicP7y2Vni9vMn+Ma8Gu0+992JvCFm19g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=GZkYxcI3; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1766140427; c=relaxed/simple;
+	bh=dtZQq9Tz8X9IApzFIIAr/KFy4FgR9nC4AkGBbD+ruV4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RKIfwxWWMEBo/7AhgwVRXoU98YQD1tZhZsPjMk3Ejy4ecsfn95Yk9VF40ktBn9h/TV9p/Ozl30DghYI4WDu1eEcsdi/kRZnkjRfMmX7asK6mFewGC6ur5STcDHoivZEXHcsZOs0vtQyrjdNMqv+4F1ykgZI8T4vFtmSrkvxpk78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dvhFZA9m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="GZkYxcI3"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BIJjX7F680014;
-	Fri, 19 Dec 2025 02:04:28 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=PBVYq6yiFYv4b2SACgENr1E4a
-	Ni8XV0ZxgX0rcrPAGk=; b=GZkYxcI32MsTUBg2UvzK5NVBdaP9s6EUH2N7B5ULg
-	ftMRdepOnYCwhmb1D1RXEG/z94J2UNi17ZBGYk28TpW0oORIqIg3saITvRnKp8RK
-	7EZoFdFD5egHgU+aZ/WxjeCr8Ux+kb2SP3cs1irViVgC9xb0gAl+EbG2zojCS6Fs
-	0WrOzctKwU4hcHMpCr5MbjrBUExFskEMMJX/ztKVZ148IWHraZV4SfKD6xtWKl+R
-	MRBW2xfokm20sRFIwXgdAS+u9U0SKtwI096vrEOD53NC6Rqhbw+5vb38U7OubhBC
-	eEBr/DcwMrgFSxHQuD4/2tCqmxNwa7DMlLtHWqOdcZvNg==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4b4r241eu1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 19 Dec 2025 02:04:27 -0800 (PST)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 19 Dec 2025 02:04:40 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Fri, 19 Dec 2025 02:04:40 -0800
-Received: from test-OptiPlex-Tower-Plus-7010 (unknown [10.29.37.157])
-	by maili.marvell.com (Postfix) with SMTP id 56EA15B695F;
-	Fri, 19 Dec 2025 02:04:21 -0800 (PST)
-Date: Fri, 19 Dec 2025 15:34:20 +0530
-From: Hariprasad Kelam <hkelam@marvell.com>
-To: Wei Fang <wei.fang@nxp.com>
-CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-        "davem@davemloft.net"
-	<davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
-        "alexandre.torgue@foss.st.com" <alexandre.torgue@foss.st.com>,
-        "ast@kernel.org" <ast@kernel.org>,
-        "daniel@iogearbox.net"
-	<daniel@iogearbox.net>,
-        "hawk@kernel.org" <hawk@kernel.org>,
-        "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-        "sdf@fomichev.me"
-	<sdf@fomichev.me>,
-        "rmk+kernel@armlinux.org.uk" <rmk+kernel@armlinux.org.uk>,
-        "0x1207@gmail.com" <0x1207@gmail.com>,
-        "hayashi.kunihiko@socionext.com"
-	<hayashi.kunihiko@socionext.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        "boon.leong.ong@intel.com" <boon.leong.ong@intel.com>,
-        "imx@lists.linux.dev"
-	<imx@lists.linux.dev>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-stm32@st-md-mailman.stormreply.com"
-	<linux-stm32@st-md-mailman.stormreply.com>,
-        "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-        "bpf@vger.kernel.org"
-	<bpf@vger.kernel.org>
-Subject: Re: [PATCH net] net: stmmac: fix the crash issue for zero copy
- XDP_TX action
-Message-ID: <aUUjJH1tQkN1UcYL@test-OptiPlex-Tower-Plus-7010>
-References: <20251204071332.1907111-1-wei.fang@nxp.com>
- <aUKPHdtAPDnMqB7X@test-OptiPlex-Tower-Plus-7010>
- <AS8PR04MB849779A6392D543049A3F5BE88ABA@AS8PR04MB8497.eurprd04.prod.outlook.com>
- <aUOddielBMkrmwhd@test-OptiPlex-Tower-Plus-7010>
- <PAXPR04MB8510499B65301187736D511088A8A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dvhFZA9m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CA0C4CEF1;
+	Fri, 19 Dec 2025 10:33:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766140426;
+	bh=dtZQq9Tz8X9IApzFIIAr/KFy4FgR9nC4AkGBbD+ruV4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dvhFZA9mSqbLJ4yx1jwkajLjdYyJpg/f+9SuszQZkDtJpoVGrKr+VuyI2UpSTAk63
+	 TbgkCcHbt6vnU8Dl3ct5fdt4iBv5tNkB3tpX0Ymis8/x5zv4SfOtQfEcVOrNwoPr9d
+	 o/TqZs5FaoTMNrlNnl00Lylv9lHjgr2455clLXs9cY+cW7ut5VonZQRs2WBZw5JhQN
+	 qr7EiJyCLb8rxiesfFq0oCoVFmMig7iSpgXbkpL+6dL9bdP2ZAwrUZLFqsJjtL4uF8
+	 Cq4Odqpe3E285Sx/9maLb8nrVVpavMQg9va7oh7H1FeAJgKgnoLQPS5eiDC9K7Z9/y
+	 a8J56MSdiktog==
+Message-ID: <b081d13b-4af2-4b60-83e5-3553939c1749@kernel.org>
+Date: Fri, 19 Dec 2025 19:33:42 +0900
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB8510499B65301187736D511088A8A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDA4MiBTYWx0ZWRfX9GQmj9XB3SQL
- oH49VqzVFggN9rADC22341hevpvUlzCz5zG1MrgQuOsIMCNzc3+yjg5UdZhOVtkK4q6l8G3zdXY
- 0YrrsVUl2BmGnuRzGZujnJcMgtei4YwiBarLbJV7IJV9b3uwcAAOyOVhouAm9Inr25xZLPjTA+a
- JaPOlv+y1Gydv5xSuOc6A4/xsj4bYcDmU9v7F0q9bL8PwuMdzTX2C3QcpqTaNESo6ESjdLGnSQC
- UDOuFH5DTivmNSZA2j3S1tkFyrkRoKC4HpGf2brlqlFV0CzjrhplEEo1houxaNc50opKnfnSY0P
- UOGOX5Hnn5YvpB6OVT8DIQY93acypB0IZys4mklgv0j2nCVseYUkFi2ga82EOKJE72itirstiHr
- rEg3oD15Mm+229wHkEpCPXIGfjXRkwFgOKUVvMEJpIfH3pl71JKD/3c/WDzv6H5popQK4puDPER
- +Dd2qK9AGNJtDewE/Tg==
-X-Proofpoint-ORIG-GUID: lly9dLQ9twDymCjIyijl416JTD7HhVSR
-X-Authority-Analysis: v=2.4 cv=T4uBjvKQ c=1 sm=1 tr=0 ts=6945232b cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=w373o-ZMvzc93a0z:21 a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=8AirrxEcAAAA:8 a=M5GUcnROAAAA:8
- a=DZSnwkNSkk__NUsnbCUA:9 a=CjuIK1q_8ugA:10 a=ST-jHhOKWsTCqRlWije3:22
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: lly9dLQ9twDymCjIyijl416JTD7HhVSR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-19_03,2025-12-17_02,2025-10-01_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/8] dmaengine: Add API to combine configuration and
+ preparation (sg and single)
+To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Kishon Vijay Abraham I <kishon@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>,
+ Sagi Grimberg <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Koichiro Den <den@valinux.co.jp>,
+ Niklas Cassel <cassel@kernel.org>
+Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
+ mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ imx@lists.linux.dev
+References: <20251218-dma_prep_config-v2-0-c07079836128@nxp.com>
+ <20251218-dma_prep_config-v2-1-c07079836128@nxp.com>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20251218-dma_prep_config-v2-1-c07079836128@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 2025-12-18 at 12:06:47, Wei Fang (wei.fang@nxp.com) wrote:
-> > On 2025-12-17 at 18:19:19, Wei Fang (wei.fang@nxp.com) wrote:
-> > > > > -	res = stmmac_xdp_xmit_xdpf(priv, queue, xdpf, false);
-> > > > > -	if (res == STMMAC_XDP_TX)
-> > > > > +	/* For zero copy XDP_TX action, dma_map is true */
-> > > > > +	res = stmmac_xdp_xmit_xdpf(priv, queue, xdpf, zc);
-> > > > 	Seems stmmac_xdp_xmit_xdpf is using dma_map_single if we pass zc is
-> > > > true.
-> > > >         Ideally in case of zc, driver can use
-> > > > page_pool_get_dma_addr, may be you
-> > > >         need pass zc param as false. Please check
-> > > >
-> > >
-> > > No, the memory type of xdpf->data is MEM_TYPE_PAGE_ORDER0 rather than
-> > > MEM_TYPE_PAGE_POOL, so we should use dma_map_single().
-> > > Otherwise, it will lead to invalid mappings and cause the crash.
-> > >
-> > >
-> >  ACK, found below code bit confusing
-> > 		case STMMAC_XDP_CONSUMED:
-> >  			xsk_buff_free(buf->xdp);
-> > +			fallthrough;
-> > +		case STMMAC_XSK_CONSUMED:
-> >  			rx_dropped++;
-> > 
-> >      Ideally in case of STMMAC_XSK_CONSUMED, driver needs to call
-> > xsk_buff_free.
-> >      And in case of STMMAC_XDP_CONSUMED, driver needs to call
-> > xdp_return_frame.
-> >      May be you can move all buffer free logic to stmmac_rx_zc with above
-> > suggested
-> >      changes.
+On 12/19/25 00:56, Frank Li wrote:
+> Previously, configuration and preparation required two separate calls. This
+> works well when configuration is done only once during initialization.
 > 
-> For zero copy, the xdp_buff is freed by xdp_convert_buff_to_frame()
-> when converting the xdp_xdp to xdp_frame. So STMMAC_XSK_CONSUMED
-> means the xdp_buff has been freed, it tells stmmac_rx_zc() no to free a
-> xdp_buff that has been freed.
+> However, in cases where the burst length or source/destination address must
+> be adjusted for each transfer, calling two functions is verbose and
+> requires additional locking to ensure both steps complete atomically.
 > 
-> I have added a comment for STMMAC_XSK_CONSUMED, see
+> Add a new API dmaengine_prep_config_single() and dmaengine_prep_config_sg()
+> and callback device_prep_config_sg() that combines configuration and
+> preparation into a single operation. If the configuration argument is
+> passed as NULL, fall back to the existing implementation.
 > 
-> +       } else if (res == STMMAC_XDP_CONSUMED && zc) {
-> +               /* xdp has been freed by xdp_convert_buff_to_frame(),
-> +                * no need to call xsk_buff_free() again, so return
-> +                * STMMAC_XSK_CONSUMED.
-> +                */
-> +               res = STMMAC_XSK_CONSUMED;
-> +               xdp_return_frame(xdpf);
-> +       }
+> Add a new API dmaengine_prep_config_single_safe() and
+> dmaengine_prep_config_sg_safe() for re-entrancy, which require driver
+> implement callback device_prep_config_sg().
 > 
->
- ACK. 
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com> 
+> Tested-by: Niklas Cassel <cassel@kernel.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change in v2
+> - add () for function
+> - use short name device_prep_sg(), remove "slave" and "config". the 'slave'
+> is reduntant. after remove slave, the function name is difference existed
+> one, so remove _config suffix.
+> ---
+>  Documentation/driver-api/dmaengine/client.rst |   9 +++
+>  include/linux/dmaengine.h                     | 103 ++++++++++++++++++++++++--
+>  2 files changed, 105 insertions(+), 7 deletions(-)
+> 
+> diff --git a/Documentation/driver-api/dmaengine/client.rst b/Documentation/driver-api/dmaengine/client.rst
+> index d491e385d61a98b8a804cd823caf254a2dc62cf4..02c45b7d7a779421411eb9c68325cdedafcfe3b1 100644
+> --- a/Documentation/driver-api/dmaengine/client.rst
+> +++ b/Documentation/driver-api/dmaengine/client.rst
+> @@ -80,6 +80,10 @@ The details of these operations are:
+>  
+>    - slave_sg: DMA a list of scatter gather buffers from/to a peripheral
+>  
+> +  - config_sg: Similar with slave_sg, just pass down dma_slave_config
+> +    struct to avoid call dmaengine_slave_config() every time if need
+
+...struct to avoid calling dmaengine_slave_config() every time adjusting the
+burst length or the FIFO address is needed.
+
+> +    adjust burst length or FIFO address.
+> +
+
+> +static inline struct dma_async_tx_descriptor *
+> +dmaengine_prep_config_single_safe(struct dma_chan *chan, dma_addr_t buf,
+> +	size_t len, enum dma_transfer_direction dir, unsigned long flags,
+> +	struct dma_slave_config *config)
+>  {
+>  	struct scatterlist sg;
+> +
+>  	sg_init_table(&sg, 1);
+>  	sg_dma_address(&sg) = buf;
+>  	sg_dma_len(&sg) = len;
+>  
+> -	if (!chan || !chan->device || !chan->device->device_prep_slave_sg)
+> +	if (!chan || !chan->device || !chan->device->device_prep_config_sg)
+> +		return NULL;
+
+While at it, please move this arguments check before the sg initialization.
+Otherwise, this is a little odd (argument checks generally are done first).
+
+> +
+> +	return chan->device->device_prep_config_sg(chan, &sg, 1, dir,
+> +						   flags, config, NULL);
+> +}
+> +
+> +static inline struct dma_async_tx_descriptor *
+> +dmaengine_prep_config_single(struct dma_chan *chan, dma_addr_t buf, size_t len,
+> +	enum dma_transfer_direction dir, unsigned long flags,
+> +	struct dma_slave_config *config)
+> +{
+> +	struct scatterlist sg;
+> +
+> +	sg_init_table(&sg, 1);
+> +	sg_dma_address(&sg) = buf;
+> +	sg_dma_len(&sg) = len;
+> +
+> +	if (!chan || !chan->device)
+> +		return NULL;
+
+Same here. Check these before initializing sg.
+
+> +
+> +	if (chan->device->device_prep_config_sg)
+> +		return dmaengine_prep_config_sg_safe(chan, &sg, 1, dir,
+> +						     flags, config);
+> +
+> +	if (config)
+> +		if (dmaengine_slave_config(chan, config))
+> +			return NULL;
+> +
+> +	if (!chan->device->device_prep_slave_sg)
+>  		return NULL;
+>  
+>  	return chan->device->device_prep_slave_sg(chan, &sg, 1,
+>  						  dir, flags, NULL);
+>  }
+>  
+> +static inline struct dma_async_tx_descriptor *
+> +dmaengine_prep_slave_single(struct dma_chan *chan, dma_addr_t buf, size_t len,
+> +			    enum dma_transfer_direction dir,
+> +			    unsigned long flags)
+> +{
+> +	return dmaengine_prep_config_single(chan, buf, len, dir, flags, NULL);
+> +}
+> +
+>  /**
+>   * dmaengine_prep_peripheral_dma_vec() - Prepare a DMA scatter-gather descriptor
+>   * @chan: The channel to be used for this descriptor
+> @@ -1009,17 +1079,36 @@ static inline struct dma_async_tx_descriptor *dmaengine_prep_peripheral_dma_vec(
+>  							    dir, flags);
+>  }
+>  
+> -static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_sg(
+> +static inline struct dma_async_tx_descriptor *dmaengine_prep_config_sg(
+
+Very odd line split. Please split this after the "*" of the return type.
+
+>  	struct dma_chan *chan, struct scatterlist *sgl,	unsigned int sg_len,
+> -	enum dma_transfer_direction dir, unsigned long flags)
+> +	enum dma_transfer_direction dir, unsigned long flags,
+> +	struct dma_slave_config *config)
+>  {
+> -	if (!chan || !chan->device || !chan->device->device_prep_slave_sg)
+> +	if (!chan || !chan->device)
+> +		return NULL;
+> +
+> +	if (chan->device->device_prep_config_sg)
+> +		return dmaengine_prep_config_sg_safe(chan, sgl, sg_len,
+> +					dir, flags, config);
+> +
+> +	if (config)
+> +		if (dmaengine_slave_config(chan, config))
+> +			return NULL;
+> +
+> +	if (!chan->device->device_prep_slave_sg)
+>  		return NULL;
+>  
+>  	return chan->device->device_prep_slave_sg(chan, sgl, sg_len,
+>  						  dir, flags, NULL);
+>  }
+>  
+> +static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_sg(
+
+Same comment here.
+
+> +	struct dma_chan *chan, struct scatterlist *sgl, unsigned int sg_len,
+> +	enum dma_transfer_direction dir, unsigned long flags)
+> +{
+> +	return dmaengine_prep_config_sg(chan, sgl, sg_len, dir, flags, NULL);
+> +}
+> +
+>  #ifdef CONFIG_RAPIDIO_DMA_ENGINE
+>  struct rio_dma_ext;
+>  static inline struct dma_async_tx_descriptor *dmaengine_prep_rio_sg(
+> 
+
+
+-- 
+Damien Le Moal
+Western Digital Research
