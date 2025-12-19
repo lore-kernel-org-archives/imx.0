@@ -1,307 +1,167 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6D4241663
-	for <imx@lists.linux.dev>; Fri, 19 Dec 2025 09:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC3F27280F
+	for <imx@lists.linux.dev>; Fri, 19 Dec 2025 10:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766137877; cv=none; b=NlF+aWHi/eErXbbq4JkrcMZSyIwyjuOLftf5u61pNeHYfaqd8sLz5hWRmpoZrlG2UIG4+HxSnAlRzqXssMJU4gNAr9wtQezgHW5MNvcao5+1AtGAS0gaSn69FJP+aPaM9W46o2t4i1C4ucVHYwUf+Ed2BG/MNtpviL0l2o78o6w=
+	t=1766138705; cv=none; b=Dl3Mq9gC5rsSCunuiExCG7gDglUceXeYN4dS3UT3fPeYnxmodOsDwJyypgc7OLz0+J446VLL7qUhPpd5Zwo6xiTljph0sPmbUhLKPcdHvJPrjSti/Jm+hbA9tTfUAVZuqWjHY9M18uSVbsCoJttStPqECRqPRxUJA691EV2+AHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766137877; c=relaxed/simple;
-	bh=92Iupe/LwJP4z6yXHxtBk2CDTF8Sr7F6H57P7lY8Qd4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V5MEzhsQtoPr6FLAd2DES/k4SvbS1iMfDo8S+ZMHbmUlKWvRRg0Ge0HXxGrsZGJJ0YcevDuHlNLJRdnGARnRiswHcUsPmHr4+rOsYI+PMASAiSpavmlBwqOSHJcOo1cqy5tFi3dMFH78T4VyprrsF7Ff3GT77AL+vhqZMp1QV8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWX8K-0007Qo-Sj; Fri, 19 Dec 2025 10:50:48 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWX8J-006R4f-0X;
-	Fri, 19 Dec 2025 10:50:47 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vWX8J-00GS4G-02;
-	Fri, 19 Dec 2025 10:50:47 +0100
-Date: Fri, 19 Dec 2025 10:50:46 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC
- subnode to schema and example
-Message-ID: <20251219095046.dgtaknhnvzjfw6ch@pengutronix.de>
-References: <20251202-v6-18-topic-imx93-parallel-display-v7-0-2cce31d64608@pengutronix.de>
- <3210190.mvXUDI8C0e@steina-w>
- <20251218190841.pmn3kwghq6lxsfl4@pengutronix.de>
- <7637686.lOV4Wx5bFT@steina-w>
+	s=arc-20240116; t=1766138705; c=relaxed/simple;
+	bh=qvTbJcH39/BFQ9aHwMDRIzLhdc64pAOoaNQwNrs00CY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N9K5C2ovw9PyY2G0FOTywqUZV62tX/++UXlPEf101R0m0llkWE0QqWM0JBWpYjRcHdbbBixzHJ5ac5DRgpqyq4OFOnKdx+qZCjGO8geZoeJ/NJgti1oyX9xIYPHbYhRTY4tJDxseckXicP7y2Vni9vMn+Ma8Gu0+992JvCFm19g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=GZkYxcI3; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="GZkYxcI3"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5BIJjX7F680014;
+	Fri, 19 Dec 2025 02:04:28 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=PBVYq6yiFYv4b2SACgENr1E4a
+	Ni8XV0ZxgX0rcrPAGk=; b=GZkYxcI32MsTUBg2UvzK5NVBdaP9s6EUH2N7B5ULg
+	ftMRdepOnYCwhmb1D1RXEG/z94J2UNi17ZBGYk28TpW0oORIqIg3saITvRnKp8RK
+	7EZoFdFD5egHgU+aZ/WxjeCr8Ux+kb2SP3cs1irViVgC9xb0gAl+EbG2zojCS6Fs
+	0WrOzctKwU4hcHMpCr5MbjrBUExFskEMMJX/ztKVZ148IWHraZV4SfKD6xtWKl+R
+	MRBW2xfokm20sRFIwXgdAS+u9U0SKtwI096vrEOD53NC6Rqhbw+5vb38U7OubhBC
+	eEBr/DcwMrgFSxHQuD4/2tCqmxNwa7DMlLtHWqOdcZvNg==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4b4r241eu1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 19 Dec 2025 02:04:27 -0800 (PST)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Fri, 19 Dec 2025 02:04:40 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Fri, 19 Dec 2025 02:04:40 -0800
+Received: from test-OptiPlex-Tower-Plus-7010 (unknown [10.29.37.157])
+	by maili.marvell.com (Postfix) with SMTP id 56EA15B695F;
+	Fri, 19 Dec 2025 02:04:21 -0800 (PST)
+Date: Fri, 19 Dec 2025 15:34:20 +0530
+From: Hariprasad Kelam <hkelam@marvell.com>
+To: Wei Fang <wei.fang@nxp.com>
+CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+        "davem@davemloft.net"
+	<davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "mcoquelin.stm32@gmail.com" <mcoquelin.stm32@gmail.com>,
+        "alexandre.torgue@foss.st.com" <alexandre.torgue@foss.st.com>,
+        "ast@kernel.org" <ast@kernel.org>,
+        "daniel@iogearbox.net"
+	<daniel@iogearbox.net>,
+        "hawk@kernel.org" <hawk@kernel.org>,
+        "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+        "sdf@fomichev.me"
+	<sdf@fomichev.me>,
+        "rmk+kernel@armlinux.org.uk" <rmk+kernel@armlinux.org.uk>,
+        "0x1207@gmail.com" <0x1207@gmail.com>,
+        "hayashi.kunihiko@socionext.com"
+	<hayashi.kunihiko@socionext.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        "boon.leong.ong@intel.com" <boon.leong.ong@intel.com>,
+        "imx@lists.linux.dev"
+	<imx@lists.linux.dev>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-stm32@st-md-mailman.stormreply.com"
+	<linux-stm32@st-md-mailman.stormreply.com>,
+        "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+        "bpf@vger.kernel.org"
+	<bpf@vger.kernel.org>
+Subject: Re: [PATCH net] net: stmmac: fix the crash issue for zero copy
+ XDP_TX action
+Message-ID: <aUUjJH1tQkN1UcYL@test-OptiPlex-Tower-Plus-7010>
+References: <20251204071332.1907111-1-wei.fang@nxp.com>
+ <aUKPHdtAPDnMqB7X@test-OptiPlex-Tower-Plus-7010>
+ <AS8PR04MB849779A6392D543049A3F5BE88ABA@AS8PR04MB8497.eurprd04.prod.outlook.com>
+ <aUOddielBMkrmwhd@test-OptiPlex-Tower-Plus-7010>
+ <PAXPR04MB8510499B65301187736D511088A8A@PAXPR04MB8510.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7637686.lOV4Wx5bFT@steina-w>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <PAXPR04MB8510499B65301187736D511088A8A@PAXPR04MB8510.eurprd04.prod.outlook.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjE5MDA4MiBTYWx0ZWRfX9GQmj9XB3SQL
+ oH49VqzVFggN9rADC22341hevpvUlzCz5zG1MrgQuOsIMCNzc3+yjg5UdZhOVtkK4q6l8G3zdXY
+ 0YrrsVUl2BmGnuRzGZujnJcMgtei4YwiBarLbJV7IJV9b3uwcAAOyOVhouAm9Inr25xZLPjTA+a
+ JaPOlv+y1Gydv5xSuOc6A4/xsj4bYcDmU9v7F0q9bL8PwuMdzTX2C3QcpqTaNESo6ESjdLGnSQC
+ UDOuFH5DTivmNSZA2j3S1tkFyrkRoKC4HpGf2brlqlFV0CzjrhplEEo1houxaNc50opKnfnSY0P
+ UOGOX5Hnn5YvpB6OVT8DIQY93acypB0IZys4mklgv0j2nCVseYUkFi2ga82EOKJE72itirstiHr
+ rEg3oD15Mm+229wHkEpCPXIGfjXRkwFgOKUVvMEJpIfH3pl71JKD/3c/WDzv6H5popQK4puDPER
+ +Dd2qK9AGNJtDewE/Tg==
+X-Proofpoint-ORIG-GUID: lly9dLQ9twDymCjIyijl416JTD7HhVSR
+X-Authority-Analysis: v=2.4 cv=T4uBjvKQ c=1 sm=1 tr=0 ts=6945232b cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=w373o-ZMvzc93a0z:21 a=kj9zAlcOel0A:10 a=wP3pNCr1ah4A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=8AirrxEcAAAA:8 a=M5GUcnROAAAA:8
+ a=DZSnwkNSkk__NUsnbCUA:9 a=CjuIK1q_8ugA:10 a=ST-jHhOKWsTCqRlWije3:22
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: lly9dLQ9twDymCjIyijl416JTD7HhVSR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-12-19_03,2025-12-17_02,2025-10-01_01
 
-On 25-12-19, Alexander Stein wrote:
-> Hi Marco,
+On 2025-12-18 at 12:06:47, Wei Fang (wei.fang@nxp.com) wrote:
+> > On 2025-12-17 at 18:19:19, Wei Fang (wei.fang@nxp.com) wrote:
+> > > > > -	res = stmmac_xdp_xmit_xdpf(priv, queue, xdpf, false);
+> > > > > -	if (res == STMMAC_XDP_TX)
+> > > > > +	/* For zero copy XDP_TX action, dma_map is true */
+> > > > > +	res = stmmac_xdp_xmit_xdpf(priv, queue, xdpf, zc);
+> > > > 	Seems stmmac_xdp_xmit_xdpf is using dma_map_single if we pass zc is
+> > > > true.
+> > > >         Ideally in case of zc, driver can use
+> > > > page_pool_get_dma_addr, may be you
+> > > >         need pass zc param as false. Please check
+> > > >
+> > >
+> > > No, the memory type of xdpf->data is MEM_TYPE_PAGE_ORDER0 rather than
+> > > MEM_TYPE_PAGE_POOL, so we should use dma_map_single().
+> > > Otherwise, it will lead to invalid mappings and cause the crash.
+> > >
+> > >
+> >  ACK, found below code bit confusing
+> > 		case STMMAC_XDP_CONSUMED:
+> >  			xsk_buff_free(buf->xdp);
+> > +			fallthrough;
+> > +		case STMMAC_XSK_CONSUMED:
+> >  			rx_dropped++;
+> > 
+> >      Ideally in case of STMMAC_XSK_CONSUMED, driver needs to call
+> > xsk_buff_free.
+> >      And in case of STMMAC_XDP_CONSUMED, driver needs to call
+> > xdp_return_frame.
+> >      May be you can move all buffer free logic to stmmac_rx_zc with above
+> > suggested
+> >      changes.
 > 
-> Am Donnerstag, 18. Dezember 2025, 20:08:41 CET schrieb Marco Felsch:
-> > Hi Alexander,
-> > 
-> > On 25-12-16, Alexander Stein wrote:
-> > > Hi,
-> > > 
-> > > Am Montag, 15. Dezember 2025, 18:54:36 CET schrieb Marco Felsch:
-> > > > Hi Liu,
-> > > > 
-> > > > sorry I didn't fully answer you please see below.
-> > > > 
-> > > > On 25-12-08, Liu Ying wrote:
-> > > > > Hi Marco,
-> > > > > 
-> > > > > On 12/02/2025, Marco Felsch wrote:
-> > > > > > From: Liu Ying <victor.liu@nxp.com>
-> > > > > > 
-> > > > > > i.MX93 SoC mediamix blk-ctrl contains one DISPLAY_MUX register which
-> > > > > > configures parallel display format by using the "PARALLEL_DISP_FORMAT"
-> > > > > > field. Document the Parallel Display Format Configuration(PDFC) subnode
-> > > > > > and add the subnode to example.
-> > > > > > 
-> > > > > > Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> > > > > > [m.felsch@pengutronix.de: port to v6.18-rc1]
-> > > > > > [m.felsch@pengutronix.de: add bus-width]
-> > > > > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > > > > > ---
-> > > > > >  .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml | 92 ++++++++++++++++++++++
-> > > > > >  1 file changed, 92 insertions(+)
-> > > > > > 
-> > > > > > diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
-> > > > > > index 34aea58094e55365a2f9c86092f637e533f954ff..6e2d86d9341c75108b492bcbabc8a560d8e707cd 100644
-> > > > > > --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
-> > > > > > +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
-> > > > > > @@ -26,6 +26,12 @@ properties:
-> > > > > >    reg:
-> > > > > >      maxItems: 1
-> > > > 
-> > > > ...
-> > > > 
-> > > > > > +            properties:
-> > > > > > +              endpoint:
-> > > > > > +                $ref: /schemas/graph.yaml#/$defs/endpoint-base
-> > > > > > +                unevaluatedProperties: false
-> > > > > > +
-> > > > > > +                properties:
-> > > > > > +                  bus-width:
-> > > > > 
-> > > > > In v1-v5, I thought the output bus format can be determined by the sink
-> > > > > device(a panel or a bridge) hence properties like bus-width were not needed.
-> > > > > But, if this property is really needed, then reference video-interfaces.yaml
-> > > > > since bus-width is documented there.  Should we reference bus-type defined
-> > > > > in video-interfaces.yaml too?
-> > > > 
-> > > > You're right, the bus-width should be determined by the connected panel.
-> > > > But there are cases where a 24-bit panel is connected but only the lower
-> > > > 18-bits are muxed. I added the bus-width property to handle this case.
-> > > > In the end most users don't have to specify this since the correct
-> > > > bus-width is coming from the panel bus-fmt.
-> > > > 
-> > > > > > +                    enum: [ 16, 18, 24 ]
-> > > > > 
-> > > > > The PARALLEL_DISP_FORMAT field of DISPLAY_MUX register says this IP supports
-> > > > > below formats.  It seems that the enum here may tell RGB888, RGB666 and RGB565.
-> > > > > How can we tell RGB555, YCbCr 24 bits and YUV444 then?
-> > > > > 
-> > > > > 000b RGB888 -> RGB888
-> > > > > 001b RGB888 -> RGB666
-> > > > > 010b RGB565 -> RGB565
-> > > > > 011b RGB555 -> RGB555
-> > > > > 100b YUV -> YCbCr 24 bits
-> > > > > 101b YUV -> YUV444
-> > > > 
-> > > > This enum is about the physical bus width. RGB565 == 16-bit, YUV ==
-> > > > 24-bit.
-> > > > 
-> > > > That said, I don't think that you need to specify the bus-fmt since this
-> > > > is coming from the panel. As said above, my itension with the bus-width
-> > > > property is to provide integrators (dts-writers) a possibility to limit
-> > > > the physical available bus width.
-> > > 
-> > > Mh, isn't [1] exactly about this? Not sure about the outcome at that time.
-> > 
-> > Thanks for the pointer, I wasn't aware of this discussion. I skimmed
-> > through the dt-bindings thread and I agree with Rob and Maxime.
-> > 
-> > We do have the bus-width endpoint property already. This property is
-> > alredy used by media and drm bridge drivers. Why not making use of for
-> > this simple bridge driver too?
-> > 
-> > Furthermore I doubt, that a simple drm-bridge MEDIA_BUS_FMT_* convert
-> > driver solves all the problem in a generic way for all platforms, all
-> > connectors, all routing options.
+> For zero copy, the xdp_buff is freed by xdp_convert_buff_to_frame()
+> when converting the xdp_xdp to xdp_frame. So STMMAC_XSK_CONSUMED
+> means the xdp_buff has been freed, it tells stmmac_rx_zc() no to free a
+> xdp_buff that has been freed.
 > 
-> Nobody knows what new hardware comes up with ¯\_ (ツ)_/¯
-> Anyway we already have a similar problem on our MBa6ULx mainboard.
-> Current downstream workaround is to clone the display timings but
-> change the bus format. See [1]. Although I would like to get rid of it.
-> This is just the display connector on the mainboard causing the shift.
-
-I had something similiar in mind as a quick and dirty hack. However, I
-think that the same abbroach used here for the PDFC bridge could be used
-for the panel endpoint node to enforce a specific bus width. Another
-solution could be to add the bus-fmt support to the panel of desciption,
-so you can describe your panel within the OF.
-
-Regards,
-  Marco
-
-
-> Best regards
-> Alexander
+> I have added a comment for STMMAC_XSK_CONSUMED, see
 > 
-> [1] https://github.com/tq-systems/linux-tqmaxx/commit/777c02480182d3054264aaaf80e1dbc40a02cfc1
+> +       } else if (res == STMMAC_XDP_CONSUMED && zc) {
+> +               /* xdp has been freed by xdp_convert_buff_to_frame(),
+> +                * no need to call xsk_buff_free() again, so return
+> +                * STMMAC_XSK_CONSUMED.
+> +                */
+> +               res = STMMAC_XSK_CONSUMED;
+> +               xdp_return_frame(xdpf);
+> +       }
 > 
-> > If the i.MX93 NXP-EVKs in [1] would have connected the upper LCD_DAT*
-> > pads instead of the lower ones, there would be no conversion needed by
-> > the PDFC bridge driver, albeit the physical bus is cut to 18-bit width
-> > due to the RPi ext. header limit, which is expanded to 24-bit again later on
-> > via the Adafruit board panel FPC connector.
-> > 
-> > In such scenario the output width of the PDFC has to be 24-bit else
-> > you would lose not only the two LSBs but also the two MSBs for each
-> > channel. I tried to visualize what I meant for the blue channel:
-> > 
-> >                  24-bit PDFC bridge
-> > 		 ------------------
-> >         +----+----+----+----+----+----+----+----+
-> >  LCDIF  | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
-> >         +----+----+----+----+----+----+----+----+
-> >           |    |    |    |    |    |    |    |
-> >         +----+----+----+----+----+----+----+----+
-> >  PDFC   | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
-> >         +----+----+----+----+----+----+----+----+
-> >                     |    |    |    |    |    |
-> >         +----+----+----+----+----+----+----+----+
-> > SOC_PAD | xx | xx | D2 | D3 | D4 | D5 | D6 | D7 |
-> >         +----+----+----+----+----+----+----+----+
-> >                     |    |    |    |    |    |
-> >         +----+----+----+----+----+----+----+----+
-> >  ext.   | xx | xx | B2 | B3 | B4 | B5 | B6 | B7 |
-> >  HDR    +----+----+----+----+----+----+----+----+
-> >                     |    |    |    |    |    |
-> >                     |    |    |    |    |    |
-> >                     |    |    |    |    |    |
-> >           +-----------------------------+    |
-> >           |    +-----------------------------+
-> >           |    |    |    |    |    |    |    |
-> >         +----+----+----+----+----+----+----+----+
-> >  Ada.   | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
-> >  FPC    +----+----+----+----+----+----+----+----+
-> > 
-> >                  18-bit PDFC bridge
-> > 		 ------------------
-> >         +----+----+----+----+----+----+----+----+
-> >  LCDIF  | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
-> >         +----+----+----+----+----+----+----+----+
-> >           |    |    |    |    |    |    |    |
-> >         +----+----+----+----+----+----+----+----+
-> >  PDFC   | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
-> >         +----+----+----+----+----+----+----+----+
-> >                     |    |    |    |    |    |
-> >           +---------+    |    |    |    |    |
-> >           |    +---------+    |    |    |    |
-> >           |    |    +---------+    |    |    |
-> >           |    |    |    +---------+    |    |
-> >           |    |    |    |    +---------+    |
-> >           |    |    |    |    |    +---------+
-> >           |    |    |    |    |    |
-> >         +----+----+----+----+----+----+----+----+
-> > SOC_PAD | xx | xx | D2 | D3 | D4 | D5 | D6 | D7 |
-> >         +----+----+----+----+----+----+----+----+
-> >                     |    |    |    |    |    |
-> >         +----+----+----+----+----+----+----+----+
-> >  ext.   | xx | xx | B2 | B3 | B4 | B5 | B6 | B7 |
-> >  HDR    +----+----+----+----+----+----+----+----+
-> >                     |    |    |    |    |    |
-> >                     |    |    |    |    |    |
-> >                     |    |    |    |    |    |
-> >           +-----------------------------+    |
-> >           |    +-----------------------------+
-> >           |    |    |    |    |    |    |    |
-> >         +----+----+----+----+----+----+----+----+
-> >  Ada.   | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
-> >  FPC    +----+----+----+----+----+----+----+----+
-> > 
-> > 
-> > The mapping can get quite difficult for a single SoC already, just by
-> > using a slighlty different HW routing (the upper D[ata] pads).
-> > 
-> > Therefore I would keep it simple and device/ip specific (in this case
-> > PDFC specific) by making use of the bus-width. Specifying the bus-width
-> > property could be also wrong albeit it's the case physically, as you can
-> > see in my above example.
-> > 
-> > Therefore the bus-width property must have a good description.
-> > 
-> > Regards,
-> >   Marco
-> > 
-> > > Best regards,
-> > > Alexander
-> > > 
-> > > [1] https://lore.kernel.org/all/20250304101530.969920-1-victor.liu@nxp.com/
-> > > 
-> > > > [snip]
-> > 
-> > 
-> > 
-> > 
-> 
-> 
-> -- 
-> TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
-> Amtsgericht München, HRB 105018
-> Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
-> http://www.tq-group.com/
-> 
-> 
-> 
-
--- 
-#gernperDu 
-#CallMeByMyFirstName
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+>
+ ACK. 
+Reviewed-by: Hariprasad Kelam <hkelam@marvell.com> 
