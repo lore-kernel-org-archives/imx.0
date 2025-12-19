@@ -1,164 +1,340 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010029.outbound.protection.outlook.com [52.101.84.29])
+Received: from mx-relay50-hz3.antispameurope.com (mx-relay50-hz3.antispameurope.com [94.100.134.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FAD296BC1
-	for <imx@lists.linux.dev>; Fri, 19 Dec 2025 06:35:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A840E241CB7
+	for <imx@lists.linux.dev>; Fri, 19 Dec 2025 07:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.239
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766126146; cv=fail; b=N3Tt+Ud8O4t8tZid0Tj991JJwvXMoQwZ/ZdiLSPbcHYsxuVxizMr03A9JbhjbMhtFRfmzlTsGcnoVfoKOZU7/PCA3en8vV4vUgUcyJ0B284FkbQrTh9zeyjd8iu6j83mfquF5vu6rwwlgn3ab0cA2m1jMjyoWOR5Dijb9PaXMQE=
+	t=1766130414; cv=pass; b=SdtGJlSYqLyU6B4lx58YoFAjaOIa7LVrm83tlPQsA7TjRHOTQYdvilkGobyCLcKAXt+nJ8GGCXA1ac1HW1S98e6S2zXUKLYV5YBpmvjJmQTKZ2uX3OaMhZhcSUR+EksV+i38+7Xns5CAWuyS2BLE049YodtOXuPkc6qRVf4GiJg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766126146; c=relaxed/simple;
-	bh=gvVj+Ka5fn4UdgT+dS5LJk8Ba0JTuK1wp5X87lXFGCM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=NLp4vEegSN/ynMkGjRM8tqLckL2AmVAgny8DrF1zyh5kOgTbVAg4cFSt5SL841uQFTbgDIooH77BKDk53aarJrJ/SNWen8gt4kI4pXEfEpzwjnC2THLpbttrYVdmNIdmt+ro0DEeI4L/2Ew1HZcJEf+psLqNjtT5cfM93PyMrKc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=issiJqG9; arc=fail smtp.client-ip=52.101.84.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1766130414; c=relaxed/simple;
+	bh=lyWY5fexHjWzT5nxIzJlcIK8R3UIUXXesvpwdpZ4fZE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BliaXlKGP4LpTI//H3PXXyaYgiSMzbT9/782FBQxNE1RGWIYkjoQT13vARGJsNIso7xUflRZw2A06+OrEhfeGrL5xo/s8y8Clx08TTvuHOTXm91ccTV12m6vpW7xTPme/pI/YPOSWXXROs23u1btsU2XyaeLMzR5+AU5dq4nmsA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=hwcuQYSs; arc=pass smtp.client-ip=94.100.134.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="issiJqG9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mD9cWYodxM+YiX5ITHf15MenZh9yZ65b+7g3Rcuvd/cXbHoMYki8wQWtVd5ETC8YxeaENexRpxPXhvjaRjfs0ri5Z37AMqXOnNZRzuWFbqtMejLyogHodxDN4aZvBbUvqlc//DTZro05+qYlUUksV67a7+TKxb6iU43MhY85hk1OCqIcBURQfFbp0AQppJmQKZNspu5MHwxkhwVGroNBFBgneYYDbnqMkeUwqZZQrmk4tfQLjjHnAWmPR+lZiePZshDKDux+0E4LXig6BtmpD72+34Rpvclyxcxp9gGqsLc+pYjQwvu+rkLTCZJpsPNFI0ReU+P36lAQN7n2529gmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MzecqinKIGMvOs9fsCuNiHV3v0TYa7Dj0rnyxkN/uNQ=;
- b=Nq78Jsrgcw5pg8rmqnJf3eZWdjbWoCLdeEx3kILKnHxfIv6NSmb7vpTGkl428GpZeUYFyxK+AjLEPYAJ0RUkogDbkuNaoOxN/4Mwc8drBN01ixwjPRqYB1WUkMauje3znUl6dnv7KfuevVroiJJIgWU2Xrkf5RkZKDn+VM34ajR4LHH3Dw5jjidmkpqIjjWkoIFOk+D/njjfTnvryKKvVk8KQxG8MygyoJ4NJd0sMlUxL7kKaHj4i9iBdWOO7oecfmAN0EXSmuNCEINHgw4p/GZPxD5TdbOE1LoSBnkwZifNs4IrVS+DPZ9tbWqUCJF59HoNoWdI+wOQmhNK8F3rnw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MzecqinKIGMvOs9fsCuNiHV3v0TYa7Dj0rnyxkN/uNQ=;
- b=issiJqG95s10Ifs0lNNwObq/DSSaC+VVDDIpALKLap9eCEmsM/Gv4aZtXwRHBKcUq5VAWv7zSI/ejzcHiofWkdwZMD9R6BYhy/g40ZONkRPhRIF8w/HBRHpiNJKWMFsGlw9vLVajw3gSWhsX7XA+crOUIJgzhjUeTkQq6LaabgbUBTjeMS0NW0XMKk6VBm3UNmQ5sz9RkVKwzy2OqnFK8dRl8Q+JOmHwKWMN1V5MutioVuv6gW5kjzVC6H0kaj6Gao/aj1AQjZMTLFJumi1CM+oWoVufup/fTqeomOblmrkMMDk6Dsy75lzWDRt0kYHVF6e4N1WoT9KAfe0nR0Tofg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by GV1PR04MB10077.eurprd04.prod.outlook.com (2603:10a6:150:1a5::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.8; Fri, 19 Dec
- 2025 06:35:37 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9434.009; Fri, 19 Dec 2025
- 06:35:37 +0000
-Date: Fri, 19 Dec 2025 14:36:48 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Pankaj Gupta <pankaj.gupta@nxp.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v23 0/7] firmware: imx: driver for NXP secure-enclave
-Message-ID: <aUTybpjIEoFFOC3o@shlinux89>
-References: <20251219-imx-se-if-v23-0-5c6773d00318@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251219-imx-se-if-v23-0-5c6773d00318@nxp.com>
-X-ClientProxiedBy: SI1PR02CA0050.apcprd02.prod.outlook.com
- (2603:1096:4:1f5::12) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="hwcuQYSs"
+ARC-Authentication-Results: i=1; mx-gate50-hz3.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=Q1abUH1CXgHaEMujIjDYzavepPIEdL4AH5/kt7YuC1c=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1766130374;
+ b=WbNx9u58a7ISMVag4SEVbeYrHa1naOU09wyO3APzeHKYIee/p72Tvq8gPEQwPMb91+lwReDr
+ d5WshtSL9zr2Wl6aUDUb44s27Pa38UitI5mLhaYBA1a+lC8+dgB8jPBX/08JuXy7cGMNyecFegB
+ g3EYEWxxJauKlDtO9lTE8KVAuZ4uB3Css/MhLGEl6Wt2N/XRzV2JCMI4OkhIv27ulKJwamwCN5i
+ G+lOKFWV4LmIODSAO4x1TcYHgna0E0b78JqGKyzIBxNAxO3pHbSt7XV6ZKS7fgBXV1qCpEeKMjn
+ qTKAmP2GS+9l2acR/R9kX1Ye2L7ZHUI3vmheRIC7N3LiA==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1766130374;
+ b=Z9QA8eBTi2nCDT1FiQmll5MMVjIoFITp+ejP3JiL9RwDlZP8R/zOsbt7gyWejrbhEzuTMa33
+ 8jPuIE6g5zsM7gX3uDhKHAQdmgFu/xc6sxqRSJLLGvOM7qwuY/6JOYROOcOgjNWmESkVRcYQQhv
+ YAFM+WqvuU9ZEgr8Rq7IWl4ymrJjQ428VyeBHfl3s42Qi+xPyfK6w6WTp38xukqTBTAa8z3ifop
+ lTpBmcGQO2u36GGbf5UaGeA0rGwfBKHZHlPwd4i8m6VpnAT0VqPCynhFMZ8PYmgIX1Tk/MX9GY0
+ 3pp2zVs8qMgO/5dALdFDgrVUZVJkSAVugoBeC8d4hBF+w==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay50-hz3.antispameurope.com;
+ Fri, 19 Dec 2025 08:46:14 +0100
+Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id C0DFBCC0DAC;
+	Fri, 19 Dec 2025 08:45:57 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject:
+ Re: [PATCH v7 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC subnode
+ to schema and example
+Date: Fri, 19 Dec 2025 08:45:57 +0100
+Message-ID: <7637686.lOV4Wx5bFT@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20251218190841.pmn3kwghq6lxsfl4@pengutronix.de>
+References:
+ <20251202-v6-18-topic-imx93-parallel-display-v7-0-2cce31d64608@pengutronix.de>
+ <3210190.mvXUDI8C0e@steina-w>
+ <20251218190841.pmn3kwghq6lxsfl4@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|GV1PR04MB10077:EE_
-X-MS-Office365-Filtering-Correlation-Id: 85b918c1-f179-4884-610a-08de3ec8d23c
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|19092799006|52116014|1800799024|376014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?iL2z89vID4242XAug0qW3JgRpOwqtmK/j2uQJchMIBnOHhh42xr/wPMdeYn7?=
- =?us-ascii?Q?EVt0Vsm1ky2SjbeGT2deT0FT1dsb1GnVhK1onucr6cLn+0Oe5ZaM4dfgkd+W?=
- =?us-ascii?Q?1FWVAEkO3wK3Vc18cKzQ8QmtoGuRE15Uo23B/IQVGLAFqLSbxXAbSjJvjUEH?=
- =?us-ascii?Q?dXJyIPjJNZTefahgTQUVEnQdru1mpJBH+eC5s+UoBXj8N8VhpmOLTDAvCVRI?=
- =?us-ascii?Q?IcV2x/4zYxGZ6RKCd1cwok2eoC87KXwq7HdjDHxEASMOLTk3GuDYfj6bIhv8?=
- =?us-ascii?Q?65ggwZYvSRjIp2bfHV5pfiuOFJcorPcW49y7pMshrCzuNWqZWHgyDAq3IVAw?=
- =?us-ascii?Q?CIGx23jz6RZSQn0MCTQvxD6TNypG3zuXwh53Xvh3RGYud7UDSzwNp/tQ18Hh?=
- =?us-ascii?Q?5J4JNCU3xQWctG9AXbaGuccSI5CkKsvbITriRq1+dduDviI6J7wvwgLS+hKi?=
- =?us-ascii?Q?OMyZVkZ5J5EU3Kw26EbZoTqdh9+n1xZlKBvQP4ZwXNZrinrG+5DLAaBYW913?=
- =?us-ascii?Q?przSe1a8wVqU99gj0G+jFvf2vf24NG9ly+och4MV2MDesCYI7ULJFsuX53Ye?=
- =?us-ascii?Q?wfVGoAA1WuCOns7f9zWtK8DWy5Xn1BOuer2+gpOfA4zhLWrteAt0L/75pAsJ?=
- =?us-ascii?Q?/4BfS5NCqj1v5JRTORDyBRde9ea7tipaOy+jR4vI0RAbfkCIi5vDz3tckIGQ?=
- =?us-ascii?Q?88qdocZDCcilRnp7QdrcdkDPPnkJfiIDAaA5ZSh/su3WkKVJhChb7rQju6th?=
- =?us-ascii?Q?PG8nm7Phfg0uPL0cfWvI6xacjdmgkD81RMCnY4vV14v6WgIvk+byPCFGIKvc?=
- =?us-ascii?Q?2iJ/gscl7Cbmj6JflJ3tPjen6iOmCEz5sGh6IWYILXxWSZbnXo3eRrCWQDSp?=
- =?us-ascii?Q?6rFQh6b6BA07pSCW+fPEMvHIGCpauMkgVG/tug48VLQNbfigfhVszfOdBWRi?=
- =?us-ascii?Q?QDX7p/31R3aB6yBmkAhjUE4HCpf6EuIZYKEC7qZF2rCQjvWnGKPJFAXv+JXS?=
- =?us-ascii?Q?60GhmmZY3lobpM6NfJgXlVPCsMtAUkvYRWe5Gweg12KBNA8Vfuq/WsxaG5tz?=
- =?us-ascii?Q?/9lavzAdNsVmKs1B4ms2H2yssA/XMwWtxrvXV96nNZtXay8QPVTpjqupuxsp?=
- =?us-ascii?Q?oC0XDIr6WGDEvP4nAoE2TUvXx7aZkkAPt3NKJ37pnb4ptCVpmMPxHF6tSDMc?=
- =?us-ascii?Q?RFUnke6sw1VOYefxN0zbJ3PUlM41hoWaKbOi/0KbPDtt4Kv6/BZ/UF4/3Jxx?=
- =?us-ascii?Q?aZ+xUpIbrcnExTQorOPc5KkX2tfxQJFMLy5gg/51pOTYiKm1i6lRjfGY3N+x?=
- =?us-ascii?Q?WTEEKOOfuZiqFU2vYd1gMTF/wlw9ppr2RzDPoddv1GvM2tdl2dB7lsa8Gzln?=
- =?us-ascii?Q?BRrOmgC88l6ZPcg2jE5OAE5ZcyNgMfx22Rzslcy4xcN6AdLG03DGwqUJvPc6?=
- =?us-ascii?Q?ImfpYvz85QidQI6NkWngx+NkIJO2Mr/rKSlrRZA3W+hAZ/r+/9i9gtRM849A?=
- =?us-ascii?Q?9x7+fOPTFkNaI7pnog459A/LwC8ADNKhvfRT?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(19092799006)(52116014)(1800799024)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Ie4E+rhWrAurqUBvdhMV83FIiX21xrbo3yGUqajOvAQkZtnKlin6eV7jqGt1?=
- =?us-ascii?Q?h6an+G75/a3cS++OKH294t6wwfiwI8MghqJ/ffyy0sFwZWDmYjoB++cYYemR?=
- =?us-ascii?Q?HiAprY3+s9peOaHV88XIPw3TJkuQ9IJYHqLRRtCD6msz1VVGek1mG/KDOSEQ?=
- =?us-ascii?Q?EoEQJ1UD03mjmxh71bXjvtms+DMlMRAjwSJ30/qyes3cpO5qOKOujoPPYPX2?=
- =?us-ascii?Q?3z6N1npxKOmf61iSpS7+mvRED4IA+vP1v1qupUnMiWhi3klIC2V2du8KR3L5?=
- =?us-ascii?Q?I+9DFnKfEKpB0OY1eYRSUD2+F2wkKxvsW8edVWn3RnttapuI4tVN4YGn9IIo?=
- =?us-ascii?Q?Ftfg84GNbEec4fQskCJp2sl00Ujz9MsFDrVdfXuBE8PbtoVaercOIN4HClrX?=
- =?us-ascii?Q?0INTRxBqnZsT2lhPRg++KYVgHKr/pkPEFaW1cf2CIhStUnin/MGBE1Oduw2R?=
- =?us-ascii?Q?l6/FTESbjOgjvaqMX19zuCM+IicJUpvHvVs7Ag9KOUqcwRQo7NQ1mDEKiqfO?=
- =?us-ascii?Q?FNiBWj9vgYcWQA1WEBO7TVPWOK0NG+lDbwvEdeB1F5T9zrl1jSiQbkTgIw2r?=
- =?us-ascii?Q?5XvF6atrR1H7LmHZXsMPYCp1RE5pEJHKOnRCvPFA6cnB/4O9iebQNLqIJnVz?=
- =?us-ascii?Q?TQRAgI5xX9B3I0kBMGADqoEBjZ0QfEpV6VkN98oE1UeMO5T78+KghVKSiJJA?=
- =?us-ascii?Q?iPNq3Arr6ekNeDCZ3EfkSRKclYW2KD936JHzWOSTDK3EQQZVE29C3Haac5MK?=
- =?us-ascii?Q?m49iSxTLU3Iwl7dim1YXhfzEsYFawe7hPS5PBMquRaBqRT8HoRMRSPSXG9lu?=
- =?us-ascii?Q?NGFR5KnB8R51Tpiu9ZLahHBvJKZEqMIFbDEKIEQDchuW7ls//dgqgnsrH8UV?=
- =?us-ascii?Q?NKt8QTHx2Y7/4B5jOHFRUiLbq5MMbRcgvZnKHOoimgdNVHSti1pFqe4M8VY1?=
- =?us-ascii?Q?MedRsqjzWUliESukat7QkFY1p/mCV2bdlghEwoaPQU0itcdHvIBWWQ7eWeVO?=
- =?us-ascii?Q?CYeUi3+uvFQFjM/+kfFdWbhItNMqpSHym3hJ4KR3CZnI3Mac3C+uNfjRJwtD?=
- =?us-ascii?Q?z5g15d2hfYZNIuUKMglAhsBbo3r1RyRbvuCSSP7SVBO5sCyktjS55putP6wp?=
- =?us-ascii?Q?f8MO148DsR6FgNCKZ9F5IMI5s3SQ8UKbXYDv+RsZu6h4iu5EvdJ62ZKXS4qz?=
- =?us-ascii?Q?nmDSue/cYXh+wTzoMRRgrMt9MQFJ5HVmRBiEDEPiZzlkgTOPJz6v4xN9zTX0?=
- =?us-ascii?Q?i0funhHpeOGUoDPQYoSGJ1uh0VeOpLIi1niFm52LELbKdi/HXRDMjdSbX3Wz?=
- =?us-ascii?Q?cutqFyHIvJka3rfp624ppGStiBfg4PrcBJd4sWCmd/A+5cbocRuXSiyTSfT+?=
- =?us-ascii?Q?J4r9rdqrvg84/at71A7VE1ghVdC4Sn6biM1CoQ7lGoU6kp5ZUY+bRvKBsPzD?=
- =?us-ascii?Q?Yygs48fBP198IGXCZEitXgcmBp5kJTHVDkpSTHLCHCAR3ageC73NpCNQWzqX?=
- =?us-ascii?Q?ZEXNESK4clQEfZcqtd60YD71/2rjc1n1AfoWkga2iSZ6TeIECCMMItvZMStO?=
- =?us-ascii?Q?3ccTuOYuXHKqaTqgTAus0yM0pj7KnFYzZgQDpMmD?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 85b918c1-f179-4884-610a-08de3ec8d23c
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2025 06:35:37.7204
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OMYSE62jUA+q6Pz7LK+szfC0/VOBD+tVS2Z5l9Ax9gDu/zi/pAefyZGerAIfphZiOY8ifdDEI/JLMrRMqjAinQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10077
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay50-hz3.antispameurope.com with 4dXfjM6trLz2nJ7p
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:f6d1fa41e90d3fcf88d8c9a603ba697f
+X-cloud-security:scantime:3.688
+DKIM-Signature: a=rsa-sha256;
+ bh=Q1abUH1CXgHaEMujIjDYzavepPIEdL4AH5/kt7YuC1c=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1766130373; v=1;
+ b=hwcuQYSs8nfBA4PJgKV7N6T1Oqf06Eol09VHXqwye8ty3dXAo3E3SEa0jF07iFbIGRaj4vrm
+ rPnO1fx+LvT6qxKBG7GxvQez9b7Spl4BHfz3f/nrW/qOeED5Hu2wfwX/pMq2uggGdG7PRUXuZf0
+ 8LsCc+ZmHoFpUQw4yzxPcalKxQIdAl4dLQwuQCAW3RaCf+Qeahp8bspMDFSn4B2UY3bM5QkEZib
+ eXdm4eh+tam9/265gbbvdm1l4fnLHDEiCgjIyBzHHctWx4tqQ2FBvFUealgtW2plXM3LfxuSm+a
+ 0UCgS6WRoLY+xm/GMYAgPNdC2LsUuWsbuVJ5AP5TDiptQ==
 
->Pankaj Gupta (7):
->      Documentation/firmware: add imx/se to other_interfaces
->      dt-bindings: arm: fsl: add imx-se-fw binding doc
->      firmware: imx: add driver for NXP EdgeLock Enclave
->      firmware: imx: device context dedicated to priv
->      firmware: drivers: imx: adds miscdev
->      arm64: dts: imx8ulp: add secure enclave node
->      arm64: dts: imx8ulp-evk: add reserved memory property
->
+Hi Marco,
 
-Tested-by: Peng Fan <peng.fan@nxp.com> #i.MX8ULP-EVK
+Am Donnerstag, 18. Dezember 2025, 20:08:41 CET schrieb Marco Felsch:
+> Hi Alexander,
+>=20
+> On 25-12-16, Alexander Stein wrote:
+> > Hi,
+> >=20
+> > Am Montag, 15. Dezember 2025, 18:54:36 CET schrieb Marco Felsch:
+> > > Hi Liu,
+> > >=20
+> > > sorry I didn't fully answer you please see below.
+> > >=20
+> > > On 25-12-08, Liu Ying wrote:
+> > > > Hi Marco,
+> > > >=20
+> > > > On 12/02/2025, Marco Felsch wrote:
+> > > > > From: Liu Ying <victor.liu@nxp.com>
+> > > > >=20
+> > > > > i.MX93 SoC mediamix blk-ctrl contains one DISPLAY_MUX register wh=
+ich
+> > > > > configures parallel display format by using the "PARALLEL_DISP_FO=
+RMAT"
+> > > > > field. Document the Parallel Display Format Configuration(PDFC) s=
+ubnode
+> > > > > and add the subnode to example.
+> > > > >=20
+> > > > > Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> > > > > [m.felsch@pengutronix.de: port to v6.18-rc1]
+> > > > > [m.felsch@pengutronix.de: add bus-width]
+> > > > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > > > > ---
+> > > > >  .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml | 92 ++++++++=
+++++++++++++++
+> > > > >  1 file changed, 92 insertions(+)
+> > > > >=20
+> > > > > diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-=
+media-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-m=
+edia-blk-ctrl.yaml
+> > > > > index 34aea58094e55365a2f9c86092f637e533f954ff..6e2d86d9341c75108=
+b492bcbabc8a560d8e707cd 100644
+> > > > > --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-b=
+lk-ctrl.yaml
+> > > > > +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-b=
+lk-ctrl.yaml
+> > > > > @@ -26,6 +26,12 @@ properties:
+> > > > >    reg:
+> > > > >      maxItems: 1
+> > >=20
+> > > ...
+> > >=20
+> > > > > +            properties:
+> > > > > +              endpoint:
+> > > > > +                $ref: /schemas/graph.yaml#/$defs/endpoint-base
+> > > > > +                unevaluatedProperties: false
+> > > > > +
+> > > > > +                properties:
+> > > > > +                  bus-width:
+> > > >=20
+> > > > In v1-v5, I thought the output bus format can be determined by the =
+sink
+> > > > device(a panel or a bridge) hence properties like bus-width were no=
+t needed.
+> > > > But, if this property is really needed, then reference video-interf=
+aces.yaml
+> > > > since bus-width is documented there.  Should we reference bus-type =
+defined
+> > > > in video-interfaces.yaml too?
+> > >=20
+> > > You're right, the bus-width should be determined by the connected pan=
+el.
+> > > But there are cases where a 24-bit panel is connected but only the lo=
+wer
+> > > 18-bits are muxed. I added the bus-width property to handle this case.
+> > > In the end most users don't have to specify this since the correct
+> > > bus-width is coming from the panel bus-fmt.
+> > >=20
+> > > > > +                    enum: [ 16, 18, 24 ]
+> > > >=20
+> > > > The PARALLEL_DISP_FORMAT field of DISPLAY_MUX register says this IP=
+ supports
+> > > > below formats.  It seems that the enum here may tell RGB888, RGB666=
+ and RGB565.
+> > > > How can we tell RGB555, YCbCr 24 bits and YUV444 then?
+> > > >=20
+> > > > 000b RGB888 -> RGB888
+> > > > 001b RGB888 -> RGB666
+> > > > 010b RGB565 -> RGB565
+> > > > 011b RGB555 -> RGB555
+> > > > 100b YUV -> YCbCr 24 bits
+> > > > 101b YUV -> YUV444
+> > >=20
+> > > This enum is about the physical bus width. RGB565 =3D=3D 16-bit, YUV =
+=3D=3D
+> > > 24-bit.
+> > >=20
+> > > That said, I don't think that you need to specify the bus-fmt since t=
+his
+> > > is coming from the panel. As said above, my itension with the bus-wid=
+th
+> > > property is to provide integrators (dts-writers) a possibility to lim=
+it
+> > > the physical available bus width.
+> >=20
+> > Mh, isn't [1] exactly about this? Not sure about the outcome at that ti=
+me.
+>=20
+> Thanks for the pointer, I wasn't aware of this discussion. I skimmed
+> through the dt-bindings thread and I agree with Rob and Maxime.
+>=20
+> We do have the bus-width endpoint property already. This property is
+> alredy used by media and drm bridge drivers. Why not making use of for
+> this simple bridge driver too?
+>=20
+> Furthermore I doubt, that a simple drm-bridge MEDIA_BUS_FMT_* convert
+> driver solves all the problem in a generic way for all platforms, all
+> connectors, all routing options.
 
-Regards
-Peng.
+Nobody knows what new hardware comes up with =C2=AF\_ (=E3=83=84)_/=C2=AF
+Anyway we already have a similar problem on our MBa6ULx mainboard.
+Current downstream workaround is to clone the display timings but
+change the bus format. See [1]. Although I would like to get rid of it.
+This is just the display connector on the mainboard causing the shift.
+
+Best regards
+Alexander
+
+[1] https://github.com/tq-systems/linux-tqmaxx/commit/777c02480182d3054264a=
+aaf80e1dbc40a02cfc1
+
+> If the i.MX93 NXP-EVKs in [1] would have connected the upper LCD_DAT*
+> pads instead of the lower ones, there would be no conversion needed by
+> the PDFC bridge driver, albeit the physical bus is cut to 18-bit width
+> due to the RPi ext. header limit, which is expanded to 24-bit again later=
+ on
+> via the Adafruit board panel FPC connector.
+>=20
+> In such scenario the output width of the PDFC has to be 24-bit else
+> you would lose not only the two LSBs but also the two MSBs for each
+> channel. I tried to visualize what I meant for the blue channel:
+>=20
+>                  24-bit PDFC bridge
+> 		 ------------------
+>         +----+----+----+----+----+----+----+----+
+>  LCDIF  | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
+>         +----+----+----+----+----+----+----+----+
+>           |    |    |    |    |    |    |    |
+>         +----+----+----+----+----+----+----+----+
+>  PDFC   | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
+>         +----+----+----+----+----+----+----+----+
+>                     |    |    |    |    |    |
+>         +----+----+----+----+----+----+----+----+
+> SOC_PAD | xx | xx | D2 | D3 | D4 | D5 | D6 | D7 |
+>         +----+----+----+----+----+----+----+----+
+>                     |    |    |    |    |    |
+>         +----+----+----+----+----+----+----+----+
+>  ext.   | xx | xx | B2 | B3 | B4 | B5 | B6 | B7 |
+>  HDR    +----+----+----+----+----+----+----+----+
+>                     |    |    |    |    |    |
+>                     |    |    |    |    |    |
+>                     |    |    |    |    |    |
+>           +-----------------------------+    |
+>           |    +-----------------------------+
+>           |    |    |    |    |    |    |    |
+>         +----+----+----+----+----+----+----+----+
+>  Ada.   | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
+>  FPC    +----+----+----+----+----+----+----+----+
+>=20
+>                  18-bit PDFC bridge
+> 		 ------------------
+>         +----+----+----+----+----+----+----+----+
+>  LCDIF  | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
+>         +----+----+----+----+----+----+----+----+
+>           |    |    |    |    |    |    |    |
+>         +----+----+----+----+----+----+----+----+
+>  PDFC   | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
+>         +----+----+----+----+----+----+----+----+
+>                     |    |    |    |    |    |
+>           +---------+    |    |    |    |    |
+>           |    +---------+    |    |    |    |
+>           |    |    +---------+    |    |    |
+>           |    |    |    +---------+    |    |
+>           |    |    |    |    +---------+    |
+>           |    |    |    |    |    +---------+
+>           |    |    |    |    |    |
+>         +----+----+----+----+----+----+----+----+
+> SOC_PAD | xx | xx | D2 | D3 | D4 | D5 | D6 | D7 |
+>         +----+----+----+----+----+----+----+----+
+>                     |    |    |    |    |    |
+>         +----+----+----+----+----+----+----+----+
+>  ext.   | xx | xx | B2 | B3 | B4 | B5 | B6 | B7 |
+>  HDR    +----+----+----+----+----+----+----+----+
+>                     |    |    |    |    |    |
+>                     |    |    |    |    |    |
+>                     |    |    |    |    |    |
+>           +-----------------------------+    |
+>           |    +-----------------------------+
+>           |    |    |    |    |    |    |    |
+>         +----+----+----+----+----+----+----+----+
+>  Ada.   | B0 | B1 | B2 | B3 | B4 | B5 | B6 | B7 |
+>  FPC    +----+----+----+----+----+----+----+----+
+>=20
+>=20
+> The mapping can get quite difficult for a single SoC already, just by
+> using a slighlty different HW routing (the upper D[ata] pads).
+>=20
+> Therefore I would keep it simple and device/ip specific (in this case
+> PDFC specific) by making use of the bus-width. Specifying the bus-width
+> property could be also wrong albeit it's the case physically, as you can
+> see in my above example.
+>=20
+> Therefore the bus-width property must have a good description.
+>=20
+> Regards,
+>   Marco
+>=20
+> > Best regards,
+> > Alexander
+> >=20
+> > [1] https://lore.kernel.org/all/20250304101530.969920-1-victor.liu@nxp.=
+com/
+> >=20
+> > > [snip]
+>=20
+>=20
+>=20
+>=20
+
+
+=2D-=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+http://www.tq-group.com/
+
+
