@@ -1,155 +1,185 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013037.outbound.protection.outlook.com [52.101.72.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A02B1A238F;
-	Sat, 20 Dec 2025 14:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766241318; cv=none; b=oMk+tOylS/icWy3Q/49/XGqTWaqJt99ahy3/tCrfy0lApcPzK0emMywqoAWb17kadgEuFVQLzrRDAb01CTjEUfY9wFr10yysLofNyGngR1+ywAyyCNewNM1BK60xkvwmy89S++IsxGfrEIxpGf3loBZn1RNH8fmqRKD+Nf5sLqw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766241318; c=relaxed/simple;
-	bh=WM/il7ZMre39u/faJj3qK3pSI2dS3NEYI7+2+0W3exQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qs+OVkT6t+ci8w+hXVGOUMvg3Zc46kcilAoHdscKeaDzf2u5LCauQYWdeUHyBq7urlu2IG3aOJILHu+7tz+dyNdatJDb9mzDCFyfage+4lEQLG10RThav3iQj3DjY27NjXi1d4H7fDHZtyJpi5tcGyN2rqjWdTWEtjK7Ez1YMn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bG3hIOAD; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBA01D88A4
+	for <imx@lists.linux.dev>; Sat, 20 Dec 2025 20:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766261923; cv=fail; b=cCy4HMD5q6aLDYppdigunuiQ2+yNxPZJWM5h1rIYgViXcVDc05zCT+V5/mKg3CmG3GiK07ZS2FvNbfi089vFm9+LiQmYhU26Wwyk6q81KutO8fQAMC1D7J+bKfElSJGbIoMqJI9RvqbUxiepicwW/SQgMkvwsXOIljPbbvASdGs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766261923; c=relaxed/simple;
+	bh=sYqpFntVUJIbCCSdKMGw5tJt2vgIDHCcg4cs4uyX70Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Zyl5rFIHuAYNAme5s3PB5fyWBx/7VSGn23LMPrQvIv+1CpbiqE3FdJrIlc7rSXAh6zRJNRjDuq2Jg7/1HaRUvrwkrWxjxgRW+LGkTrXejvQAfTNZt1rLJ07E9JSB/gfJr8LDOd/LbwTEJn2wFUuzkJ7kBH16R8k816A0c/53y2Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iHil6NDy; arc=fail smtp.client-ip=52.101.72.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bG3hIOAD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1766241316; x=1797777316;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WM/il7ZMre39u/faJj3qK3pSI2dS3NEYI7+2+0W3exQ=;
-  b=bG3hIOADrpOC4IL9gXFLmMBQKZNbJN6vRgMv/N333lDYVd7mEWOkV9PQ
-   fphfMzP5DflhdynNymosWJLbhDsET9qI2UVtwoCUee+C4Shn9Ck25RG7D
-   ahNCM4YbD1kkJf6QM4nIHMsrEwEkTUGU2vZI1yA/MQ0WN40jKjh5muIBO
-   ehYdeLm4WcL+EKSpNyKWs2nYBSsA7H95Pvd6+MXx0c1a79+upv/eo9O7h
-   THG5cjD2nPsMm35mUKI3LBi9wvGdJdlKy2wZP0KsWffJBCxUn0PQC6qO4
-   WxOkMnsX+79+PnyveEDcXOeRz/0idfmSD78KYTBNQPSxGMFcWd4018lG7
-   g==;
-X-CSE-ConnectionGUID: spqNY2wUSJS3B1HNSFD+fw==
-X-CSE-MsgGUID: 4l5hM7V3QdWTyaB8uMB5HQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11648"; a="85760170"
-X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
-   d="scan'208";a="85760170"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2025 06:35:12 -0800
-X-CSE-ConnectionGUID: hWrhJhBLT62i1i8dmPvNBw==
-X-CSE-MsgGUID: 2kf2E3v1ThCIfiZO94rSYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
-   d="scan'208";a="236526229"
-Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 20 Dec 2025 06:35:07 -0800
-Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vWy2z-000000004eL-0Zah;
-	Sat, 20 Dec 2025 14:35:05 +0000
-Date: Sat, 20 Dec 2025 22:34:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linux-iio@vger.kernel.org,
-	joshua.yeong@starfivetech.com, devicetree@vger.kernel.org,
-	linux@roeck-us.net, Frank Li <Frank.Li@nxp.com>,
-	Carlos Song <carlos.song@nxp.com>,
-	Adrian Fluturel <fluturel.adrian@gmail.com>
-Subject: Re: [PATCH v12 2/2] iio: magnetometer: Add mmc5633 sensor
-Message-ID: <202512202141.aAwyC19D-lkp@intel.com>
-References: <20251215-i3c_ddr-v12-2-1ae31225b4d9@nxp.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iHil6NDy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AxDw5fvwChys3HpVA2J/t+WPvVCc6tBqbdxj9xf9hHn3wIzQ9TB+eEFHLLwXnyb9t27fEdWblBgNGenayz1W0/GovkdlMd/EJV5SCusnGeJduKQjkLccklk5ABewZdW6srBQ0P1wlKjdycf4duwtcABHFxNXJM3IE4BrOiJR/btAO0Y6F2S/yiVJNIzxmcbN5X4Fe0gcuxzOruGbbs/ovssGZT1UUBklZZqFb/AKYvJCGEecfOV51C39BIWDMU0+J5X4OHZvIQP9QqtKkG6UPXdrLsvo9F+HiJMjQcd5u1MOWqLO4YcoyEyU2r5oaZWw1aSqGe5rlACxA35JyL7yaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=77RZhcFljqO/0I0KzTdsar1khuV2xq0Q+8Nf3ui+IAY=;
+ b=GwEM25ge2GtUN6ISxW0rFKeAkUYc9m3CLaL6siFKkMIKYZq5297kqrJe0HsxII9lQnQFnc+QNj2+rb0lztR9++Rs4sCOrtvGNWC3SJQIFhR0tJz2h+s+580a9ERu0a3fQpzWtifj1KeZfmlnCwfgFUX89jfKx/1xgYtHOU/oGIOSSRKD2rjh6ACGFd6itpdob89yyBpnDUfC+KVJbxrTDhW8AaeA3zkRrJnccp1ixj3rgSSXPJb880uWQJOw0d1wLwQ3ETX5/p9KK5m06sm7QJbZ84piv9azpl0RYSao9tRwdP1szDz5OjwN+tuO9pCrVW/PJjV5R5DopEo145svWQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=77RZhcFljqO/0I0KzTdsar1khuV2xq0Q+8Nf3ui+IAY=;
+ b=iHil6NDyvlS+CiAg+cUb2bIdVp4oxeqZ5F9ztwccC8gK3cXGk5/p6+5UYm2Gi4e0AD251QI8EXtbUyuIfOppn8qmEJL/vEpYpO6jO3iLIUFYOXa0k1l3jYasJgfAnTW7mfbY5OHqYAcVvh0RDKAexhcvl4Faw1YPiDUD2Jale3GZA0wZPOaHVWB4HYmsagJFJ+eyRoUvkT95vWlQE4gyLpDflqhlPXbWvZ/2+i9zNCAN0v8gokkThbpqrpulWvoy/2OVEtgHqp31QmR8LhmD3R3FgKTrKUIfTDaRf9Tgk5kylorBDTZYNkEab55nZgSTNvsyOT047hQgq19hp/fx3A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
+ by PA1PR04MB10324.eurprd04.prod.outlook.com (2603:10a6:102:448::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.10; Sat, 20 Dec
+ 2025 20:18:38 +0000
+Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::8063:666f:9a2e:1dab]) by AM9PR04MB8585.eurprd04.prod.outlook.com
+ ([fe80::8063:666f:9a2e:1dab%5]) with mapi id 15.20.9434.009; Sat, 20 Dec 2025
+ 20:18:38 +0000
+Date: Sat, 20 Dec 2025 22:18:35 +0200
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Subject: Re: [PATCH net] net: enetc: do not print error log if addr is 0
+Message-ID: <20251220201835.p56yu6birhfv7we3@skbuf>
+References: <20251219082922.3883800-1-wei.fang@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251219082922.3883800-1-wei.fang@nxp.com>
+X-ClientProxiedBy: VI1PR06CA0179.eurprd06.prod.outlook.com
+ (2603:10a6:803:c8::36) To AM9PR04MB8585.eurprd04.prod.outlook.com
+ (2603:10a6:20b:438::13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251215-i3c_ddr-v12-2-1ae31225b4d9@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|PA1PR04MB10324:EE_
+X-MS-Office365-Filtering-Correlation-Id: d5167bf8-ab3b-4712-48fc-08de4004f602
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|1800799024|366016|376014|19092799006;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?zR95wv13xVVK4r92w+fGAgzBEwYmyljfty10r4sNeaS+WypTsu7pfDma++tY?=
+ =?us-ascii?Q?VBfMtGbqFhI1t3ZFhmzDgoaP3hsnStPfAiPulVvaaABQ3k55q3+pY6i1uyeA?=
+ =?us-ascii?Q?1GGWjivJciq5W5SW5wtRaNIAPH2d5vd/HJek7XGBv6pvEwKiZVkq5m3zOfVB?=
+ =?us-ascii?Q?3OMs3B0BPvBbWhORbXmoBYCiIl4I/PlhCMsniTEgsvHqy754/CGX9e0Y3Fpz?=
+ =?us-ascii?Q?sI+P+QOMVHzGK87kD890qBNSU4dIx2hsrB62hNMgtfpJ0Yw1RduU+q6x9UTe?=
+ =?us-ascii?Q?LTywqisHvXlhS9jmUMF25YbPmwH5Cs+dykIOekKuf01FxF61ddCrqMxpHSjl?=
+ =?us-ascii?Q?D5/Y0YROBiA4/bsSLQVxWC+5tmhOYW7tPe8kRCm3tmmff4JUMtTLg1gqNyLU?=
+ =?us-ascii?Q?NwiY2J99/lnBYVCciewfN1twbGtPOtCZg3LKI8qvsu8MvhQ8PdKelrUXgZz/?=
+ =?us-ascii?Q?JYlI2QWHY3JbajhXfjlCcmEvR0M8t02CdrNuHPa9isxAvsFw9rFwvy/PwRnK?=
+ =?us-ascii?Q?qDT4i8RLgIZJuyx9GnUEc2n5qXu/eHEHpzwkPPaA6AaalUS7AaT+YpveTgsy?=
+ =?us-ascii?Q?FimyifrsfBvk2GaJJNjSRWyE6FaJ49VQ21dcQOLbA0RYzad3G8ieUiwkyWU/?=
+ =?us-ascii?Q?u6nhTICy/u/FKZiV/8Jwa2l7F0hpoxHlquxerEruJZo7AUyQE0PXVO1gnoIE?=
+ =?us-ascii?Q?igMntD77gmCEwKFHgGMPnbVU6tEzo3KdE8DkNBqiNucqae5wO0I9CPPqCuPg?=
+ =?us-ascii?Q?O1vjg7+Rh2yt3QT7wgBuZ9GhiAsDcdhqZiAs/sXnwva48O0a52/b/7SV9+Ui?=
+ =?us-ascii?Q?P7qSHZT3QImUCgIxuvnT1rqbGT8MaFzRgR0w33HXo681X7vxBKni9iZGbl/t?=
+ =?us-ascii?Q?J49xg0/j/OynZUR+4jgD10UoRPrvNiwII5CVbz22ragR5rBdtB5RU6flTEOV?=
+ =?us-ascii?Q?Lz/ah0XZ7Zb1vcc4fmdUVeeDVGSR43/KBIOOwAO/5fS9S4rKsvuv4LwGXnoF?=
+ =?us-ascii?Q?NBp9NbNxQ1pIj8Qsz/zvnuV6+dnMoT0zQ7hXdVamAEscDd3QnV7eQrcYzuw0?=
+ =?us-ascii?Q?uTp8Z/gNVgFnnK5BV96z8bLjq3TE5P/tVyPKk43I3Zp6Szq4PJReKsrTohGZ?=
+ =?us-ascii?Q?XfxvnVUadw/Cb1XwfWSfsRUuuDPLerem8rHYLp9lFutQKYUtN0hEfwNDA4ID?=
+ =?us-ascii?Q?EnukwoJertmbJ/ePSPR51UljH0llYR2AsHreVedP+Q7mjbwgvUGnVLtfHMRO?=
+ =?us-ascii?Q?vpbLfxAgNCAx0SduyOH0n3ASNq4/3cxQcOaNGXfZ0adXAJTY9rtjBPBBhHht?=
+ =?us-ascii?Q?3HfyZ5hfOD6DwXfTbcthMrU/7yf3B6uE29IhVn4ppz6FvB3PIhpTt0MFaH4k?=
+ =?us-ascii?Q?gz2wiDPI4nGlffSlbzqrI6bkazAyJu9DUDtrBeleI04rnH2FaYa8+Zm3SRMG?=
+ =?us-ascii?Q?BWozWQX1IyEmOAi7PZFs9bFa+FGa+Tat?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(376014)(19092799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?KQ0whWFcrD3VKzvvX3AroS55hwuVUTznHijUTjvs1iyTvMoLQqIb/2xYCuZM?=
+ =?us-ascii?Q?ZGD0WR3iRg6A+Kkd37SaRg4xzxGR67peGiARlYYbAwDKSNiNdBnTUsenMMoP?=
+ =?us-ascii?Q?B/97sFZsB3OhtausIva0GjJFGsj1Ma8ogatBqa3aYCvAwAVQvbFrH8Fa7h4x?=
+ =?us-ascii?Q?Cwr2SL5jaAUhoOXOUppglmZVpKiwPlaGIWCscdLdsZzDjhSVXpL1pmuX6GpM?=
+ =?us-ascii?Q?0FuqQvFPjhYsboIEaxIFbgMyiklmMjzbHAMAQR3Ku6iWoRUKGJQUnz0CBmoL?=
+ =?us-ascii?Q?bk4GNf7kPakCDLgeWrBTKbIt9KMCbaPndvFfTbVWU9EHW8KlBSP5ZEGVqPHh?=
+ =?us-ascii?Q?iv7c5Y9X+lxKK5ZY/zNP530KK4xt4GCI5pIN0G9Wi7j2re2PTfPIuk3Lx1uZ?=
+ =?us-ascii?Q?NG+Bg3D65U60JxBcKk5Y3Cds0yGTipH3GSLUARPiaLBYKub08fiYCnyHiXJu?=
+ =?us-ascii?Q?gcHCOuS/YNruXuKcNvHvjsfcfkhvMvpRufCRbGvDKDUM5dB1rqqWjTca1yoD?=
+ =?us-ascii?Q?SZt3p8ji4myZqhO61RS2xq/UCryAi1ahstgMOGa/rags/X5tfORWzi1KnCzV?=
+ =?us-ascii?Q?GS/VmejMuR05gqHZ7q4p4FK7CgHcO7KfOd74BquU9W/H9np7R8uzGRldKdqo?=
+ =?us-ascii?Q?u/6SgDKQeDYjs9WUukH3iRIG1YsgP0EHx55KxObEyb2OQV04XZXygMoqn5xQ?=
+ =?us-ascii?Q?GoX7Gm78JcaZqrRg4bSO31r++kyWVT5+1xAG68VQN6vZh2orNQDPgIeJJpUp?=
+ =?us-ascii?Q?35k1U4WOoSxkb+Iy4l+C3Z/ioSdxRzGf4y5SHHIrVx77L335s1EJBjcYt2gT?=
+ =?us-ascii?Q?vSz3PYlKryrYTBBBA72oZQyOQgT7Q6QnizOFxqYnqw9hH9wP0AXvl3eMEofF?=
+ =?us-ascii?Q?sdyezjkwfpsrUiIjf+Vr+vQGXOPTAMZOxNC+mBY+DY0x02FQU76e7Qjk4UAo?=
+ =?us-ascii?Q?FBpNlDrsqqBfIknfDayt5rX0tG2NFP9uwsgd0tDW+nOsXu9Sw7X1cSlPW2xu?=
+ =?us-ascii?Q?dwLV+MT/i+NBxPOxoGV4STRSR8WZVaA/FvLbdJUDEfovtHE3F3FRGenRRRXx?=
+ =?us-ascii?Q?iloUX8EmkBw3dPAdovqWOjPIDc1FrDWKIEqR7l5/byray/k3eeujddByMaQe?=
+ =?us-ascii?Q?YUFoNUEwEdc8Y0CssySDy0UpoaMb3htAJXsvaLy2I8a+3gM0xxYT2nPDt0dK?=
+ =?us-ascii?Q?NiWpfCZ1SkTkvWPf1pIcDEUMnI2TVVAanQGzqRgPQgNk0+TPM5GPUX9G2l9F?=
+ =?us-ascii?Q?LJmKPdzsWTKb/1A6xzqvMT87xeh7f2jBKWQtsv6ddU4oaLPyLBdc1ctQuvq2?=
+ =?us-ascii?Q?ZzShggbx9e5cchfVGtlBwViInz+QIoOSCHUuOoOxAK91G70CILSXZ9tRny4+?=
+ =?us-ascii?Q?tM+6J0iZPeR6zDBrc5C1mek/Qwfi6FODBKjl7hRTIuwTho5xLTF1IYElhA+G?=
+ =?us-ascii?Q?N05ARzIf/TWpt1ftThOB6aeZaRMrmIpnEGUw7LHscqFK92aZaumhN4s8Fc0K?=
+ =?us-ascii?Q?VBH41R1rpHv8N+bJQU4BNTQGJtsdV5Pqtce45WF0wX9UkNjk+qea1P2DTgcD?=
+ =?us-ascii?Q?ujmz+S5if+B/QQluIPxMHTOaSfJ5jYMhLAVj30le/Upw6fZU/dA0I5Teg0n4?=
+ =?us-ascii?Q?JY1eq29N6WpTMqb+Wx2qtK9qvAqFBgjPuHUHegbv8qc21IM3HJVDsClfUu7w?=
+ =?us-ascii?Q?frAWs+WXv7MDOhA+Qe2755fKqs8sBCi0gxRmG+ZWEP/iZhGACv2lftWpmGln?=
+ =?us-ascii?Q?ZPv6A4Gy/HRbJ+wb17SZOcWxOqw90+Dvut7wRIWCuYL268Tdq/3wNkilb0rZ?=
+X-MS-Exchange-AntiSpam-MessageData-1: wQJ63Z1UiZLBYrmwdct1t445Hh1FSUr82JA=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d5167bf8-ab3b-4712-48fc-08de4004f602
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2025 20:18:38.6119
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NpDGQH1Gu82rPi5wvk+P0UbW4fiMDPuJPZsYdcBIrpnpPEuUls0n6NJadGcIn5MkGGbnX+PrkVAFdi6B3V/DDg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10324
 
-Hi Frank,
+Hi Wei,
 
-kernel test robot noticed the following build errors:
+On Fri, Dec 19, 2025 at 04:29:22PM +0800, Wei Fang wrote:
+> A value of 0 for addr indicates that the IEB_LBCR register does not
+> need to be configured, as its default value is 0. However, the driver
+> will print an error log if addr is 0, so this issue needs to be fixed.
+> 
+> Fixes: 50bfd9c06f0f ("net: enetc: set external PHY address in IERB for i.MX94 ENETC")
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+>  drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> index 443983fdecd9..b2d7e0573d32 100644
+> --- a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> +++ b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
+> @@ -578,7 +578,9 @@ static int imx94_enetc_mdio_phyaddr_config(struct netc_blk_ctrl *priv,
+>  
+>  	addr = netc_get_phy_addr(np);
+>  	if (addr <= 0) {
+> -		dev_err(dev, "Failed to get PHY address\n");
+> +		if (addr)
+> +			dev_err(dev, "Failed to get PHY address\n");
+> +
+>  		return addr;
+>  	}
 
-[auto build test ERROR on 8f0b4cce4481fb22653697cced8d0d04027cb1e8]
+Can we please handle this the same way as the other netc_get_phy_addr()
+call path (from imx95_enetc_mdio_phyaddr_config())? Separate tests for
+"if (addr < 0)" and a later "if (!addr)".
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dt-bindings-trivial-devices-add-MEMSIC-3-axis-magnetometer/20251216-010451
-base:   8f0b4cce4481fb22653697cced8d0d04027cb1e8
-patch link:    https://lore.kernel.org/r/20251215-i3c_ddr-v12-2-1ae31225b4d9%40nxp.com
-patch subject: [PATCH v12 2/2] iio: magnetometer: Add mmc5633 sensor
-config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20251220/202512202141.aAwyC19D-lkp@intel.com/config)
-compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251220/202512202141.aAwyC19D-lkp@intel.com/reproduce)
+This leaves the possibility of future refactoring to make more logic
+common, and makes that refactoring obvious for anyone, not having to
+think whether subtle underlying differences exist or not.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202512202141.aAwyC19D-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/iio/magnetometer/mmc5633.c:362:2: error: cannot jump from switch statement to this case label
-     362 |         default:
-         |         ^
-   drivers/iio/magnetometer/mmc5633.c:357:3: note: jump bypasses initialization of variable with __attribute__((cleanup))
-     357 |                 guard(mutex)(&data->mutex);
-         |                 ^
-   include/linux/cleanup.h:414:15: note: expanded from macro 'guard'
-     414 |         CLASS(_name, __UNIQUE_ID(guard))
-         |                      ^
-   include/linux/compiler.h:168:2: note: expanded from macro '__UNIQUE_ID'
-     168 |         __PASTE(__UNIQUE_ID_,                                   \
-         |         ^
-   include/linux/compiler_types.h:16:23: note: expanded from macro '__PASTE'
-      16 | #define __PASTE(a, b) ___PASTE(a, b)
-         |                       ^
-   include/linux/compiler_types.h:15:24: note: expanded from macro '___PASTE'
-      15 | #define ___PASTE(a, b) a##b
-         |                        ^
-   <scratch space>:9:1: note: expanded from here
-       9 | __UNIQUE_ID_guard_966
-         | ^
-   1 error generated.
-
-
-vim +362 drivers/iio/magnetometer/mmc5633.c
-
-   343	
-   344	static int mmc5633_write_raw(struct iio_dev *indio_dev,
-   345				     struct iio_chan_spec const *chan, int val,
-   346				     int val2, long mask)
-   347	{
-   348		struct mmc5633_data *data = iio_priv(indio_dev);
-   349		int ret;
-   350	
-   351		switch (mask) {
-   352		case IIO_CHAN_INFO_SAMP_FREQ:
-   353			ret = mmc5633_get_samp_freq_index(data, val, val2);
-   354			if (ret < 0)
-   355				return ret;
-   356	
-   357			guard(mutex)(&data->mutex);
-   358	
-   359			return regmap_update_bits(data->regmap, MMC5633_REG_CTRL1,
-   360						  MMC5633_CTRL1_BW_MASK,
-   361						  FIELD_PREP(MMC5633_CTRL1_BW_MASK, ret));
- > 362		default:
-   363			return -EINVAL;
-   364		}
-   365	}
-   366	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>  
+> -- 
+> 2.34.1
+>
