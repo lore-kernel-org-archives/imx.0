@@ -1,45 +1,46 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013057.outbound.protection.outlook.com [40.107.159.57])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012032.outbound.protection.outlook.com [52.101.66.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2992C15A9
-	for <imx@lists.linux.dev>; Sat, 20 Dec 2025 22:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F5923A9AD
+	for <imx@lists.linux.dev>; Sat, 20 Dec 2025 22:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766270165; cv=fail; b=moKOiU2dCaLq5lWFUVvnUQzDA1WyRme+ey0OK6403Lq+pNJUCm0HBmlxRWQRVQg/xSLRfm7AQ6NMeOkuglQqmGKLusejTf4914+vZe1YjBnA2wiECV29teqYuaC+sP85IPotWuAkrbR+apGXq5iNIDbEUreL/PB1v7wOJsQVdCA=
+	t=1766270172; cv=fail; b=ZTk6JXtWuT8gz+BB3WZ3SqqINOfnce4mwAiNiaMKi9Xu7mY1Q8ERGq4MZ21fUI2TUbHszr/5O46neBtPHmONBNVKWtCZqVzmqgjXV/ZBBvKVbsvsUcaRefYrGBHX1UmAnIxpyyrx4mYmZJvVVIRBdtOhyRg0SDiHYNxxnTaz7co=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766270165; c=relaxed/simple;
-	bh=Q9EfMRvuadjccWMXUtoumHe+igptqA+5ilPTxmj4Qkw=;
-	h=From:To:CC:Subject:Message-ID:Date:MIME-Version:Content-Type; b=Ul+l1d0qK5DfdAAE7zzgNDdoYIGzvSl3WaGRUJe9UX7X9CCwojBeRbxmEYGCGXv/FAY4CtfWlzxhJHxh2pKz3HEkMA0+7xmxRKgjymaR5/QmWSvfpsQ2IQE8C+bS0EXKisRTn1rfa4YeB1IXLbdG/qI1vpeH5mHFkO4oQ+jOP6U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=MuZYiLyZ; arc=fail smtp.client-ip=40.107.159.57
+	s=arc-20240116; t=1766270172; c=relaxed/simple;
+	bh=isMg+jyBfjD6keBTuSxBaDzHKtzqQrEWUA29U62WUsM=;
+	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
+	 MIME-Version:Content-Type; b=fAicqhOI6dqv0FjpunSjXZjlHuRu/vJg3cOcK26q/Wl3JBxfTO1ayUJKA6wKzPUMBeJj75d10Ll+lomad31j9X2yuT8zwV7sXmSKUakTVwXS+tDPgunvLGb25lZezsBKLdJn2kvtJTiCLWGH3GtL87+N1faWyuOR1LrjxiB54W4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=G0OwIC9c; arc=fail smtp.client-ip=52.101.66.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="MuZYiLyZ"
+	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="G0OwIC9c"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gqXUR1ExOjupTkyY7dOUQPsCWwV/KqGY23EHFKfZSAiKLHZQsmwEnPuu+UJFxkNe/tinMa1q3lIAExoYZupqlcUq6IwbLif8KnCa18X8zzB5tFiNiOsqks7a7W7lUX1PwkHVWidljaU7enfku91LU2HlbKpX8x4+EQSG+bTs8V7TuAyO/MtNqQv0/m588jHiZ55U0+K1N9qT7w59c8pjrrm4DduxzgX0wYCKpuDqisE1vNr3aG6+S3Iuwhf2DJsKtNs6VSzAGN/5nm+IeU9Hx8/JCSJgHUlPG40/7Oo/BetrV8GeqZ6PEk9gU14G+LGMnCkxn84wPyAGoNgZSIfjwg==
+ b=rUG23iwU89wJWKE2BNwKccp7t3pUJ9a0+Y3pMlvvFS7YQ7gh20/ApQzNQok7xNmlYy83KbFBBBhXDH2+Z5J9RYW9lVkQp9ejTgXgTuDiAPbNxd9x05rTqbCx8OsXgV0ToSNV9FNKN/ayp9IdkkoiGySM/ipo3JbryABzDam9oNoKaSXWs3ZHpeM2Iqh56wUMN/yPr9g0lNvaSXnhkqEkgIZN+U4XpvYZvVz6pC8MAee+2slL4IVWEbJa+RWiOEh876SjRZXmikddVu+/xrw0sBw/tCjzl9KXiN/6UZ+Nz8EcAhNDUWiGCoQZpofJcm14KvU/z2aZzKTwJ0zsSC5TVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y6SIBZimb+8gqWhQUFGRQBwSsp4EiUAbdvqcovGdedg=;
- b=l0zkeY75slq5BQ+wr5BDtGtqf+Hn2PQxgZLBiXpZSXW3VTKI2iPzjc4jJLal3Bw5adrAwJ/oytESghA95XhaP2NM3gpU6vVVFr7mdINT8xpgdb5UlolKWiim7g4pQdJzA5tOnCvdRkFosAY5rzoAFsH9PRDlUdl8dlH/oKGXF7LQi2lOXe/4aIdUVlAsYjze3TEDn7XpQtT1YMpi91f6XOj+HWhVWg8pgy9l5A7A4s5Zg/nV06E4zxOTDsnJmsE/h/9dtCLbcCszNYZxWG4VVrWE4xV1rdD+2kKebaqMaIHkauHOnn0dhfE3SAVymlY6UoeRMvSwgyiQTQbQ9zvgBQ==
+ bh=dcD6Lobb4vxzCnhh086hQoR1Lf9dMaS24w3glWIvXrA=;
+ b=PdKwcT5WOGgMz4Zm0ikgDnmtCPVr5YZOoAmN7isLWUA71c7WSE1eZ9qVnuShkdHAXjWw3l+P7dCB/U0podiJwpEZ1l5fhBp8jNLU2kQgXzt1n4i7vJGudQoeIWUC4cuzN5odV2eIP5w5PU9yTvhUgA6BcGigSE9VrqgSnjOKLdkxUSvCkaHli/gGfkEBNw90YVCDbfT2+nweMcRZLHoS3p6cLaarTjzlcdDmH+AZ9msR0474acd8N9LdbbZjbqv/J4CaCQ9emWJYTPyE6CRD8EX3VRp4YFQxhBPV+k5UveVfpmlIGVGsqGpK93uIDAyxHQkmDh12BwFFgAADQbT3Qw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 195.60.68.100) smtp.rcpttodomain=lists.linux.dev smtp.mailfrom=axis.com;
+ 195.60.68.100) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=axis.com;
  dmarc=pass (p=none sp=none pct=100) action=none header.from=axis.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y6SIBZimb+8gqWhQUFGRQBwSsp4EiUAbdvqcovGdedg=;
- b=MuZYiLyZyQ3eJrQTYU//e0VW0G9z0mq1plvQ8yNg7QA1Zg8Ccm16RxeO2qk5wc6oFLZ4mfEskxN6HOWfcX93km3n0E7gExh1iOI03Oj2W1GtldoaMMSGZ9wAFrGFFy6KJjiDh0HlhzqLWSkBLUBwHuyvKDNVMME2AiakzeIzZ8M=
-Received: from DU7P194CA0023.EURP194.PROD.OUTLOOK.COM (2603:10a6:10:553::14)
- by DB4PR02MB8750.eurprd02.prod.outlook.com (2603:10a6:10:381::5) with
+ bh=dcD6Lobb4vxzCnhh086hQoR1Lf9dMaS24w3glWIvXrA=;
+ b=G0OwIC9c3pyjr156KEJDeDK+o97kALADOHKNTze5+CL7fAJfRuhQ4IMJKBqfUvFm8Fbp4Uyx3Y3Zi8OB51UXcxJxc+3n6xkbIrWgtiQnel/a8IHLlmXQlXm1quDDTsQb1dyv4tHIoqmlxgXrpyZbhEVPcv2UuduxeLcx0Fe7jcM=
+Received: from DU7P194CA0022.EURP194.PROD.OUTLOOK.COM (2603:10a6:10:553::26)
+ by PR3PR02MB6220.eurprd02.prod.outlook.com (2603:10a6:102:5e::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.9; Sat, 20 Dec
- 2025 22:35:59 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.10; Sat, 20 Dec
+ 2025 22:36:06 +0000
 Received: from DB1PEPF000509FD.eurprd03.prod.outlook.com
- (2603:10a6:10:553:cafe::42) by DU7P194CA0023.outlook.office365.com
- (2603:10a6:10:553::14) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10a6:10:553:cafe::9) by DU7P194CA0022.outlook.office365.com
+ (2603:10a6:10:553::26) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9434.10 via Frontend Transport; Sat,
- 20 Dec 2025 22:35:57 +0000
+ 20 Dec 2025 22:36:05 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 195.60.68.100)
  smtp.mailfrom=axis.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=axis.com;
@@ -49,29 +50,23 @@ Received-SPF: Pass (protection.outlook.com: domain of axis.com designates
 Received: from mail.axis.com (195.60.68.100) by
  DB1PEPF000509FD.mail.protection.outlook.com (10.167.242.39) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9434.6 via Frontend Transport; Sat, 20 Dec 2025 22:35:59 +0000
+ 15.20.9434.6 via Frontend Transport; Sat, 20 Dec 2025 22:36:06 +0000
 Received: from pc52311-2249 (10.4.0.13) by se-mail10w.axis.com (10.20.40.10)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.39; Sat, 20 Dec
- 2025 23:35:58 +0100
+ 2025 23:36:01 +0100
 From: Waqar Hameed <waqar.hameed@axis.com>
-To: Linus Walleij <linusw@kernel.org>, Sebastian Reichel <sre@kernel.org>,
-	Samuel Kayode <samkay014@gmail.com>, Wenyou Yang <wenyou.yang@atmel.com>,
-	Ricardo Rivera-Matos <r-rivera-matos@ti.com>, Dan Murphy <dmurphy@ti.com>,
-	Tony Lindgren <tony@atomide.com>, "Mike A. Chan" <mikechan@google.com>, Jun
- Nakajima <jun.nakajima@intel.com>, Xiaohui Xin <xiaohui.xin@intel.com>,
-	Yunhong Jiang <yunhong.jiang@intel.com>, Tom Keel <thomas.keel@intel.com>,
-	Frank Li <Frank.Li@nxp.com>, Lee Jones <lee@kernel.org>, Nikita Travkin
-	<nikita@trvn.ru>, Anda-Maria Nicolae <anda-maria.nicolae@intel.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>, Phil Reid <preid@electromag.com.au>,
-	Alan Cox <alan@linux.intel.com>, Sheng Yang <sheng@linux.intel.com>
-CC: <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<imx@lists.linux.dev>
-Subject: [PATCH 00/11] power: supply: Fix use-after-free in
+To: Samuel Kayode <samkay014@gmail.com>, Sebastian Reichel <sre@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>, Lee Jones <lee@kernel.org>
+CC: <kernel@axis.com>, <imx@lists.linux.dev>, <linux-pm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH 07/11] power: supply: pf1550: Fix use-after-free in
  power_supply_changed()
+In-Reply-To: <cover.1766268280.git.waqar.hameed@axis.com>
+References: <cover.1766268280.git.waqar.hameed@axis.com>
 User-Agent: a.out
-Message-ID: <cover.1766268280.git.waqar.hameed@axis.com>
-Date: Sat, 20 Dec 2025 23:35:58 +0100
+Message-ID: <ae5a71b7e4dd2967d8fdcc531065cc71b17c86f5.1766268280.git.waqar.hameed@axis.com>
+Date: Sat, 20 Dec 2025 23:36:01 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -79,106 +74,136 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-ClientProxiedBy: se-mail01w.axis.com (10.20.40.7) To se-mail10w.axis.com
+X-ClientProxiedBy: se-mail02w.axis.com (10.20.40.8) To se-mail10w.axis.com
  (10.20.40.10)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF000509FD:EE_|DB4PR02MB8750:EE_
-X-MS-Office365-Filtering-Correlation-Id: a9c17c9a-bb82-4bb5-dce8-08de401825cb
+X-MS-TrafficTypeDiagnostic: DB1PEPF000509FD:EE_|PR3PR02MB6220:EE_
+X-MS-Office365-Filtering-Correlation-Id: 39a8b81e-453d-44e0-47f3-08de401829fc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|7416014|376014|36860700013|1800799024|13003099007|921020;
+	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?n/Dexb0MWwOvmw/Msgy5qRgBOdSaS9sCa3sfGNR/ptS7V13QQYjlChG2+rpm?=
- =?us-ascii?Q?TXBoOOKv+Dk4Itxinr0UoIS4ut/hehm2FDzv6YdJi2IHL9mmt6hRQckFTrKI?=
- =?us-ascii?Q?+PqwqZEJJpMUCAcpTAeCJ17pwkPEaEu0xC3OAQd946kcA29pFfSXtoj517e9?=
- =?us-ascii?Q?MfTEcojN+Bpb/j3P/dRwDzHzHMsocrsMXNT2x3RwcDo2jlUJ0Qpg/XAlVX2/?=
- =?us-ascii?Q?mOkQEObDFolGt5UP9h/DUEE+QP2U2lvZoWXj1NKN9sDt2KCd5W8Oi6QUdYxt?=
- =?us-ascii?Q?rQrQNDblS6fTNZzpT+k9Uxr2hJJzqSspIZMAcNATuzcadvVhqbVmWJVj3J3Y?=
- =?us-ascii?Q?+cClcGhczVbCDuiSIbwQL7jvGc7JZJwS2471WjrblDlvFWVtWWqnn1K3GHhz?=
- =?us-ascii?Q?7L5OT59lvtsEu8glp2b0hvW9tGuudYwzCZbkt/OKruK8fDu+82Qsh/YdoyPy?=
- =?us-ascii?Q?VnIdWgir742na8Dx9ZfTbuv6f6Hj+wfuAZshP1hxUycwZb9N7gjk4wwFwvGz?=
- =?us-ascii?Q?5xxejipkKnwtJz+nDq0j5kC1Frun12e+t69rZg8NUi0AQm3ecKyz71KRYcHb?=
- =?us-ascii?Q?G3ClBXosxkr6aICHdmt1GhpdWAloPlEMMWZO7zNn6X6dWRs7kZXTksUHhj9O?=
- =?us-ascii?Q?Y1RDP9p5DZRFgVWRHHQ//cS1LD40tpnpwYPUbJiWXEpxWNYAQMlc4xDDGP+v?=
- =?us-ascii?Q?qbb6FZ42iJlh9ZmOLj/lQpHQM6gksvYhLTqXWeEwVfsQqAKtfophz7JbKMQQ?=
- =?us-ascii?Q?Ucd1zs+w4cuYz+qnyejvitaojL2P9nVo6P9p0xcjYIMblQ5zPTUEnFRMFaOw?=
- =?us-ascii?Q?9iYhLC/eSMjZxtl+zS1EjvROdYWPsFvAWQdQmn07sRv986hS7cjlkPReL8Oz?=
- =?us-ascii?Q?5yWA5Pd0LiOkZaoIYBEteGm0nmLEyt4dPZ9tm0ExvUkgMyb1ck62ZhH7IJ92?=
- =?us-ascii?Q?B5lnRmqgMsbxdtczx20Uo58IfaIay0zfLdyNGMdFyrhd5YIifmR7y8a4u+rr?=
- =?us-ascii?Q?Z/etvJS9pF4hdnWFasBQKTiGIBpXOuqukq6kSzDxlTV0worJhjb5b+7qajif?=
- =?us-ascii?Q?mOGJcfXRShacY0ahd55vGkhTgaY2CZ46sIuLcnDDYyV5Ev7jG4kswLpkmcc5?=
- =?us-ascii?Q?FJ+RHLgNqflLFwSFXc5R/PHOJaXRaR8dZ9JLIU3e2MlKxNb9CoDGxwFR14AA?=
- =?us-ascii?Q?KklLZpj2MUUoXpFz9neEG38onYrYmEV0zeLpZtyQXhHWtpeDcuSlmZ+Z3mJd?=
- =?us-ascii?Q?lHV8jCQzKHnAoccnHBiyy/08kWZCBfEaENaqIPV1JB+DK5XarV3N2U38ixSx?=
- =?us-ascii?Q?kR9cIbpEXBSitpYe518IuaHyuzFr2EDThRJfqLLj4hNz1dlUWESNiOjXSVs9?=
- =?us-ascii?Q?243LkBmrUKwpeAzY+CZzCqm17KkMSZFSof8X7hyXW1alEv4XVjxaayM6lugW?=
- =?us-ascii?Q?9C2LOn8USCzdvZPab/lQ1N7GY2UDfKGCIqVzkmOxsJ7LcRhuqrsuOMIGOZx+?=
- =?us-ascii?Q?ihjhdS5xdiD7B4CiWKlbuc+XUhf6+vRr5koMQIkgDuvaHJy91Ap4XwqU1y9J?=
- =?us-ascii?Q?sIyYKeCknEPfi0rDtZT7SgOoxs0/kxPZz5bcHdOE?=
+	=?us-ascii?Q?Rh/1nv0Po1b7uhMEwJQh5Ks8fZF2CfFtsCFmlp1Dw93WWBwBHjvXRPBIQztz?=
+ =?us-ascii?Q?g1+tmmu/SVl1emt78CfO/tH9d0etpI6X9oaTX84EsFOtcdGvUGwK1ezTH/WF?=
+ =?us-ascii?Q?/u0cmk55Af78FjEqBrY472cuQjYpxCDBPNGGlNGU2bBeuc6gaW2mEVLrSzSE?=
+ =?us-ascii?Q?/kYuu9ELjVMRINwI8oIWHKRqDD0Px8UMI8kkykqjC2OPPF+x2LVuz/LPgRDu?=
+ =?us-ascii?Q?2qcjcHnXkPUGL5BW5QmeY4q4mPf2B2fRzWjdeBQ2Yl70EZeI6a0EUqtwIANv?=
+ =?us-ascii?Q?bw4l8g2FGZJz6B5PsLvZZbxI1RNPCWfiHwoI3ZU3FS7/lWm+qIyFb4gw44Ju?=
+ =?us-ascii?Q?mV4GsJ0QVsDgjTQU7O6rWqmw9WnnMFR6sQZSVBdp6BIZI7oNutF72LOz6Jzk?=
+ =?us-ascii?Q?sXogH6u8UIPCIx+hi+Q8T+TBHhar4+IytBXr7shvQQa3RKa/C/rg0SItO6l8?=
+ =?us-ascii?Q?bvIyTh+JkpY5XD4nw6hYW76FRF/O4CwSrSf0f70MTqO6G/OuWTde48etTD1W?=
+ =?us-ascii?Q?yYyFCCaM2oFFXPHUfupT3UZORzRaelwlmkDjn5HSrTScI1TCOejMe865dkTZ?=
+ =?us-ascii?Q?1X0NpjzvK8zcOlDLv+ae0as3u5Xhp1hxvt4KyDc3+fmI69VoqMB86fXaOJY5?=
+ =?us-ascii?Q?kUJ+p1NHmT4jQw5+j5ohEoezJOqXsCslsRbCr3GblgkYpza5+01M6Adfpgb8?=
+ =?us-ascii?Q?oc8JHU6CM8UCxAhm2z7cgeru+7jJD2uV/af0qCqNvOAKP+4DdROByKzohFw3?=
+ =?us-ascii?Q?YQ4fQFMwVvkkkrCWWHIfm0DkSNSTRGaCLyi0E9vElN3g+4zCaztCIqklh4qc?=
+ =?us-ascii?Q?Z0m8M8WOtUBaYVsyNOrndAd/+HVev/BQgDo3+yV+pjilg3j6KMybrBzQRBIM?=
+ =?us-ascii?Q?T5WZfLHtwaK9uih5B4RSywI7PUgllLVc/a9TzR1rCyp8tAsyfBK16SaMo9dg?=
+ =?us-ascii?Q?RETzn1OvoUtpmagSzUjEVVm2OCtaBnhets0TMKhRqWrs9uj40J0wjwFgPR1D?=
+ =?us-ascii?Q?OpHTl9Tu++iDXb3tqdb1irt1Z1nCDStIY3OjvvvDiI+oCgY2tWwaWZiGBAHS?=
+ =?us-ascii?Q?NP79W3IaISIhSgBBiJCpV6T8N+7bK5SHKLCRKdZQt4HtMZxgyc/js5qsvIw2?=
+ =?us-ascii?Q?pysWm3GDUc+qoasd7+2EyTVdd1Vh8wZ/mAMICaUIKCSltsLLUyqna1BXDkVN?=
+ =?us-ascii?Q?/3W15gZ1CoRQJDuaivmFzaoJTcT/H5KQnv1ldDTRBoqTzUWpQfsVwRTY0489?=
+ =?us-ascii?Q?WY12Gge8T5HFIff27yJb1E3yDWYO4Mswhy7VWtzhxWOE+xWDv4wgvWEr7SKV?=
+ =?us-ascii?Q?Y+AGuP7dirEeAfV0mn5BTdedGhg3s/q/Unoph1zFmJPMcNXgp+UquuGlVdrY?=
+ =?us-ascii?Q?/v4OMTVbHGPlL2drXOy2Xvz8BtRIZALTyoE2P5E6tGR7tw7W5UxMdcZgKyL2?=
+ =?us-ascii?Q?+L7soFMgreaMOKFDAvPL8HvtVBiRvtaCnkqJfdgS2WN47aIZy2r4XaGB4w0n?=
+ =?us-ascii?Q?HUziVWqBA/P4Qcj64vRnfsNOdqC+RGw9X8aYpY9jtaXyNMnmtkpgGBfWX3iY?=
+ =?us-ascii?Q?QtEch9MZ/cF+kgLgf2w=3D?=
 X-Forefront-Antispam-Report:
-	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(36860700013)(1800799024)(13003099007)(921020);DIR:OUT;SFP:1101;
+	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2025 22:35:59.0157
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2025 22:36:06.0445
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a9c17c9a-bb82-4bb5-dce8-08de401825cb
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39a8b81e-453d-44e0-47f3-08de401829fc
 X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	DB1PEPF000509FD.eurprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB4PR02MB8750
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR02MB6220
 
-The majority of the drivers in `drivers/power/supply/` do the right
-thing when registering an interrupt handler and the `power_supply`
-handle; namely making sure that the interrupt handler only runs while
-the `power_supply` handle is valid. The drivers in this patch series do
-not however. This can lead to a nasty use-after-free as thoroughly
-explained in the commit message.
+Using the `devm_` variant for requesting IRQ _before_ the `devm_`
+variant for allocating/registering the `power_supply` handle, means that
+the `power_supply` handle will be deallocated/unregistered _before_ the
+interrupt handler (since `devm_` naturally deallocates in reverse
+allocation order). This means that during removal, there is a race
+condition where an interrupt can fire just _after_ the `power_supply`
+handle has been freed, *but* just _before_ the corresponding
+unregistration of the IRQ handler has run.
 
-These were identified by grepping for `request.+irq` and
-`power_supply_changed\(`, and then manually inspecting and fixing the
-affected ones. This issue was found when writing a new driver for the
-upcoming TI BQ25630 [1]. Patch adding support for that one will be sent
-as soon as TI releases the datasheet publicly, which should be anytime
-soon...
+This will lead to the IRQ handler calling `power_supply_changed()` with
+a freed `power_supply` handle. Which usually crashes the system or
+otherwise silently corrupts the memory...
 
-[1] https://www.ti.com/product/BQ25630
+Note that there is a similar situation which can also happen during
+`probe()`; the possibility of an interrupt firing _before_ registering
+the `power_supply` handle. This would then lead to the nasty situation
+of using the `power_supply` handle *uninitialized* in
+`power_supply_changed()`.
 
-Waqar Hameed (11):
-  power: supply: ab8500: Fix use-after-free in power_supply_changed()
-  power: supply: act8945a: Fix use-after-free in power_supply_changed()
-  power: supply: bq256xx: Fix use-after-free in power_supply_changed()
-  power: supply: bq25980: Fix use-after-free in power_supply_changed()
-  power: supply: cpcap-battery: Fix use-after-free in
-    power_supply_changed()
-  power: supply: goldfish: Fix use-after-free in power_supply_changed()
-  power: supply: pf1550: Fix use-after-free in power_supply_changed()
-  power: supply: pm8916_bms_vm: Fix use-after-free in
-    power_supply_changed()
-  power: supply: pm8916_lbc: Fix use-after-free in
-    power_supply_changed()
-  power: supply: rt9455: Fix use-after-free in power_supply_changed()
-  power: supply: sbs-battery: Fix use-after-free in
-    power_supply_changed()
+Fix this racy use-after-free by making sure the IRQ is requested _after_
+the registration of the `power_supply` handle.
 
- drivers/power/supply/ab8500_charger.c   | 40 ++++++++++++-------------
- drivers/power/supply/act8945a_charger.c | 16 +++++-----
- drivers/power/supply/bq256xx_charger.c  | 12 ++++----
- drivers/power/supply/bq25980_charger.c  | 12 ++++----
- drivers/power/supply/cpcap-battery.c    |  8 ++---
- drivers/power/supply/goldfish_battery.c | 12 ++++----
- drivers/power/supply/pf1550-charger.c   | 32 ++++++++++----------
- drivers/power/supply/pm8916_bms_vm.c    | 18 +++++------
- drivers/power/supply/pm8916_lbc.c       | 18 +++++------
- drivers/power/supply/rt9455_charger.c   | 17 ++++++-----
- drivers/power/supply/sbs-battery.c      | 36 +++++++++++-----------
- 11 files changed, 111 insertions(+), 110 deletions(-)
+Fixes: 4b6b6433a97d ("power: supply: pf1550: add battery charger support")
+Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+---
+ drivers/power/supply/pf1550-charger.c | 32 +++++++++++++--------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-
-base-commit: fa084c35afa13ab07a860ef0936cd987f9aa0460
+diff --git a/drivers/power/supply/pf1550-charger.c b/drivers/power/supply/pf1550-charger.c
+index 98f1ee8eca3bc..a457862ef4610 100644
+--- a/drivers/power/supply/pf1550-charger.c
++++ b/drivers/power/supply/pf1550-charger.c
+@@ -584,22 +584,6 @@ static int pf1550_charger_probe(struct platform_device *pdev)
+ 		return dev_err_probe(chg->dev, ret,
+ 				     "failed to add battery sense work\n");
+ 
+-	for (i = 0; i < PF1550_CHARGER_IRQ_NR; i++) {
+-		irq = platform_get_irq(pdev, i);
+-		if (irq < 0)
+-			return irq;
+-
+-		chg->virqs[i] = irq;
+-
+-		ret = devm_request_threaded_irq(&pdev->dev, irq, NULL,
+-						pf1550_charger_irq_handler,
+-						IRQF_NO_SUSPEND,
+-						"pf1550-charger", chg);
+-		if (ret)
+-			return dev_err_probe(&pdev->dev, ret,
+-					     "failed irq request\n");
+-	}
+-
+ 	psy_cfg.drv_data = chg;
+ 
+ 	chg->charger = devm_power_supply_register(&pdev->dev,
+@@ -616,6 +600,22 @@ static int pf1550_charger_probe(struct platform_device *pdev)
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(chg->battery),
+ 				     "failed: power supply register\n");
+ 
++	for (i = 0; i < PF1550_CHARGER_IRQ_NR; i++) {
++		irq = platform_get_irq(pdev, i);
++		if (irq < 0)
++			return irq;
++
++		chg->virqs[i] = irq;
++
++		ret = devm_request_threaded_irq(&pdev->dev, irq, NULL,
++						pf1550_charger_irq_handler,
++						IRQF_NO_SUSPEND,
++						"pf1550-charger", chg);
++		if (ret)
++			return dev_err_probe(&pdev->dev, ret,
++					     "failed irq request\n");
++	}
++
+ 	pf1550_dt_parse_dev_info(chg);
+ 
+ 	return pf1550_reg_init(chg);
 -- 
 2.39.5
 
