@@ -1,130 +1,155 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB091C84AB
-	for <imx@lists.linux.dev>; Sat, 20 Dec 2025 12:46:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A02B1A238F;
+	Sat, 20 Dec 2025 14:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766234817; cv=none; b=CCot0BUaCBPHFHP4CzAdMDYsQy+y4XrRotna7toDn4mNO/iGZPEU20z0y3Juzzcv+QPcNsNS1nJKMiiO+5yEb4d3sfQ1YC6JX+89cwWI96PeNmtawKZ4aG+g/VSV16slPAVlOrnB6v6A9Jql0rCJmbtuU5dNnDfb0Uy9M8qDn9M=
+	t=1766241318; cv=none; b=oMk+tOylS/icWy3Q/49/XGqTWaqJt99ahy3/tCrfy0lApcPzK0emMywqoAWb17kadgEuFVQLzrRDAb01CTjEUfY9wFr10yysLofNyGngR1+ywAyyCNewNM1BK60xkvwmy89S++IsxGfrEIxpGf3loBZn1RNH8fmqRKD+Nf5sLqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766234817; c=relaxed/simple;
-	bh=BMqWG7tVLRpE0d5CCcucZYfHD30N453xL0DULNwoUjE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QiqbZ2rPprAA7vulJcWAFevLLDaZbnYdC2TtabLfwWB9fLR+JWBUax366uC6jGGr+bvAESzgGSfh6ckveaiJcZNAq6A76EIHGbH2gjYiJ3HTQ6xnVNYArkPjjgUoySqIaJQoa0x4T1kz+U8A7TuEHG4R90GQujlDDcjDNqPqNX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=nkiHhim1; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+	s=arc-20240116; t=1766241318; c=relaxed/simple;
+	bh=WM/il7ZMre39u/faJj3qK3pSI2dS3NEYI7+2+0W3exQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qs+OVkT6t+ci8w+hXVGOUMvg3Zc46kcilAoHdscKeaDzf2u5LCauQYWdeUHyBq7urlu2IG3aOJILHu+7tz+dyNdatJDb9mzDCFyfage+4lEQLG10RThav3iQj3DjY27NjXi1d4H7fDHZtyJpi5tcGyN2rqjWdTWEtjK7Ez1YMn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bG3hIOAD; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="nkiHhim1"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a09d981507so18564455ad.1
-        for <imx@lists.linux.dev>; Sat, 20 Dec 2025 04:46:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1766234814; x=1766839614; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PnLeQHT6gKO5LrS+1ND5Ys5FEsU3x/z5LzPcGERhZEM=;
-        b=nkiHhim1KVBfevHIgjSbpcz8m+zz9hr6XSaxSUfa9hFsUA7RYavTOwoOnriv0Il8cy
-         5tM4AyEFQLkrMfBMbYPLS97Vt95FTQSx1HJeWPOjjmSRgG1ErdsFUy5VdUa0/UjXSdrQ
-         rkcZbL4DAuPVRPcr0HhsxQZ8YaO5CDTKEwlPRgLBB1MJST3d58qOoxHzWtUDABPVEjqA
-         LrtuCtpdw8nOpDhhVgMKyrcc7iHZgPw9FGctAEiV5M1Y92nTFb/X6JEJ270gedQuSDAY
-         2jIH+Gh3V79SMdzYKPsp4pQypZcKA3OjNfdBKGoiyZDtr6dAwjCm7XFuBucYmLby26JO
-         FgWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766234814; x=1766839614;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PnLeQHT6gKO5LrS+1ND5Ys5FEsU3x/z5LzPcGERhZEM=;
-        b=fH6NecYqKSMGbC6bOf7Du6iIRlUYJWURe9qCB9J1eBjbkCEbWp18WauD+V7LZSunWF
-         9oFAvalOm1CG3+IrQT6FLMJZ2MkeRVrqM2kL5tIpwAEeZ3E+9BaLKxcp5fmWmfque09L
-         h/Yv0eO6N9EEO41VeSyTiDqnBF50d51TkVX6Ft4m0GGcH9BYlqsxgcMvSqrciqLVMx5v
-         1RR5J0Xp1wgCoGkc75ZbMNuRfTvq536h2thkW/JLOhnFy5zFUOzX6lAaPSr7FGYgG1+K
-         fXoLS0GV7lrpXoWLiYPGzOXDNJybw6oMYj806ULhYZEYd0pVugfkVhx7+ihqkR13ByMP
-         2aWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVOchJ5t6hHeYurf0q904fGdZRwN5kTKoQxF5vD81jKIRUokLAQrmB5UZWCqITS3LpSK4k=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx3/sh8C8BEsZQNz7Q7yi69yuMfQX2fwaWLN+4eQIzVzElXkA6u
-	c17ZKFOp0Lr1CbsPxniMcUmMCtGNyUmQGOAGWGniCgkBMHN/aAhkjCJDyEChY8KOS5TuDK7GA3A
-	MYwEjDQ7/PJ37zfOTqd5REqkX8V/ro+M=
-X-Gm-Gg: AY/fxX6CjaOwOiSQKCPtUspOexouH0A/+u/gloxrXqzZX/SbYdlPNQ4XIF86qjCYoGq
-	hAenJFpm1Mlmbt9fD4L2nDPp4IrA+FMZN47hJf/gsn752KWBG74PG9VdbZquOtz5yjk+nN3Q8o1
-	pNcu0AaPuCMI2dE8wf/6N1kWwgdd/T5kKGMFcL5FQ0bctVcwDaS0CZGG30KE2t7VBsU8htyw4LK
-	d/bWTEPJ0DZVapdfm8J1eRp/pmImluIb5BeFk9kF3qV6wg2akBIr67nnH8SfiAJ1IAcYTL+VS/3
-	JvkuN4pN72KhN0bL+s1lKWXrcX6EnaTrATL09V0=
-X-Google-Smtp-Source: AGHT+IGTZVFXf6rAC1bEGZmO7YaQs0mj72/Bxua6dbMs1yZR8CidcfGRl/4LVrNe9mb+pBaCXI6UiiHmEjBYB9UahrA=
-X-Received: by 2002:a17:903:198e:b0:2a0:99f7:67b4 with SMTP id
- d9443c01a7336-2a2f0cbc904mr55199135ad.8.1766234813931; Sat, 20 Dec 2025
- 04:46:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bG3hIOAD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766241316; x=1797777316;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WM/il7ZMre39u/faJj3qK3pSI2dS3NEYI7+2+0W3exQ=;
+  b=bG3hIOADrpOC4IL9gXFLmMBQKZNbJN6vRgMv/N333lDYVd7mEWOkV9PQ
+   fphfMzP5DflhdynNymosWJLbhDsET9qI2UVtwoCUee+C4Shn9Ck25RG7D
+   ahNCM4YbD1kkJf6QM4nIHMsrEwEkTUGU2vZI1yA/MQ0WN40jKjh5muIBO
+   ehYdeLm4WcL+EKSpNyKWs2nYBSsA7H95Pvd6+MXx0c1a79+upv/eo9O7h
+   THG5cjD2nPsMm35mUKI3LBi9wvGdJdlKy2wZP0KsWffJBCxUn0PQC6qO4
+   WxOkMnsX+79+PnyveEDcXOeRz/0idfmSD78KYTBNQPSxGMFcWd4018lG7
+   g==;
+X-CSE-ConnectionGUID: spqNY2wUSJS3B1HNSFD+fw==
+X-CSE-MsgGUID: 4l5hM7V3QdWTyaB8uMB5HQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11648"; a="85760170"
+X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
+   d="scan'208";a="85760170"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2025 06:35:12 -0800
+X-CSE-ConnectionGUID: hWrhJhBLT62i1i8dmPvNBw==
+X-CSE-MsgGUID: 2kf2E3v1ThCIfiZO94rSYw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,164,1763452800"; 
+   d="scan'208";a="236526229"
+Received: from lkp-server01.sh.intel.com (HELO 0d09efa1b85f) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 20 Dec 2025 06:35:07 -0800
+Received: from kbuild by 0d09efa1b85f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vWy2z-000000004eL-0Zah;
+	Sat, 20 Dec 2025 14:35:05 +0000
+Date: Sat, 20 Dec 2025 22:34:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Andy Shevchenko <andy@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-i3c@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-iio@vger.kernel.org,
+	joshua.yeong@starfivetech.com, devicetree@vger.kernel.org,
+	linux@roeck-us.net, Frank Li <Frank.Li@nxp.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Adrian Fluturel <fluturel.adrian@gmail.com>
+Subject: Re: [PATCH v12 2/2] iio: magnetometer: Add mmc5633 sensor
+Message-ID: <202512202141.aAwyC19D-lkp@intel.com>
+References: <20251215-i3c_ddr-v12-2-1ae31225b4d9@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251219-qcom-sa8255p-emac-v6-0-487f1082461e@oss.qualcomm.com> <20251219-qcom-sa8255p-emac-v6-1-487f1082461e@oss.qualcomm.com>
-In-Reply-To: <20251219-qcom-sa8255p-emac-v6-1-487f1082461e@oss.qualcomm.com>
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date: Sat, 20 Dec 2025 13:46:43 +0100
-X-Gm-Features: AQt7F2qpxOToWQKPYlABMJwLqho0Xychdf9rQln23uKf9MMkpqj4U-v6YeXkrYo
-Message-ID: <CAFBinCAXb87FKwA_=UEx5YTekevVUun1gieUfMux=oQAgjZS7w@mail.gmail.com>
-Subject: Re: [PATCH v6 1/7] dt-bindings: net: qcom: document the ethqos device
- for SCMI-based systems
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Matthew Gerlach <matthew.gerlach@altera.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Keguang Zhang <keguang.zhang@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
-	Romain Gantois <romain.gantois@bootlin.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>, 
-	Emil Renner Berthing <kernel@esmil.dk>, Minda Chen <minda.chen@starfivetech.com>, 
-	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Maxime Ripard <mripard@kernel.org>, Shuang Liang <liangshuang@eswincomputing.com>, 
-	Zhi Li <lizhi2@eswincomputing.com>, Shangjuan Wei <weishangjuan@eswincomputing.com>, 
-	"G. Jaya Kumaran" <vineetha.g.jaya.kumaran@intel.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Linux Team <linux-imx@nxp.com>, Frank Li <Frank.Li@nxp.com>, David Wu <david.wu@rock-chips.com>, 
-	Samin Guo <samin.guo@starfivetech.com>, 
-	Christophe Roullier <christophe.roullier@foss.st.com>, Swathi K S <swathi.ks@samsung.com>, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
-	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
-	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251215-i3c_ddr-v12-2-1ae31225b4d9@nxp.com>
 
-On Fri, Dec 19, 2025 at 12:42=E2=80=AFPM Bartosz Golaszewski
-<bartosz.golaszewski@oss.qualcomm.com> wrote:
->
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> Describe the firmware-managed variant of the QCom DesignWare MAC. As the
-> properties here differ a lot from the HLOS-managed variant, lets put it
-> in a separate file. Since we need to update the maximum number of power
-> domains, let's update existing bindings referencing the top-level
-> snps,dwmac.yaml and limit their maxItems for power-domains to 1.
->
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-> ---
->  .../bindings/net/allwinner,sun7i-a20-gmac.yaml     |  3 +
->  .../bindings/net/altr,socfpga-stmmac.yaml          |  3 +
->  .../bindings/net/amlogic,meson-dwmac.yaml          |  3 +
-Amlogic SoCs have up to one power domain, so for the Amlogic part:
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Hi Frank,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on 8f0b4cce4481fb22653697cced8d0d04027cb1e8]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Frank-Li/dt-bindings-trivial-devices-add-MEMSIC-3-axis-magnetometer/20251216-010451
+base:   8f0b4cce4481fb22653697cced8d0d04027cb1e8
+patch link:    https://lore.kernel.org/r/20251215-i3c_ddr-v12-2-1ae31225b4d9%40nxp.com
+patch subject: [PATCH v12 2/2] iio: magnetometer: Add mmc5633 sensor
+config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20251220/202512202141.aAwyC19D-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251220/202512202141.aAwyC19D-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512202141.aAwyC19D-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/iio/magnetometer/mmc5633.c:362:2: error: cannot jump from switch statement to this case label
+     362 |         default:
+         |         ^
+   drivers/iio/magnetometer/mmc5633.c:357:3: note: jump bypasses initialization of variable with __attribute__((cleanup))
+     357 |                 guard(mutex)(&data->mutex);
+         |                 ^
+   include/linux/cleanup.h:414:15: note: expanded from macro 'guard'
+     414 |         CLASS(_name, __UNIQUE_ID(guard))
+         |                      ^
+   include/linux/compiler.h:168:2: note: expanded from macro '__UNIQUE_ID'
+     168 |         __PASTE(__UNIQUE_ID_,                                   \
+         |         ^
+   include/linux/compiler_types.h:16:23: note: expanded from macro '__PASTE'
+      16 | #define __PASTE(a, b) ___PASTE(a, b)
+         |                       ^
+   include/linux/compiler_types.h:15:24: note: expanded from macro '___PASTE'
+      15 | #define ___PASTE(a, b) a##b
+         |                        ^
+   <scratch space>:9:1: note: expanded from here
+       9 | __UNIQUE_ID_guard_966
+         | ^
+   1 error generated.
+
+
+vim +362 drivers/iio/magnetometer/mmc5633.c
+
+   343	
+   344	static int mmc5633_write_raw(struct iio_dev *indio_dev,
+   345				     struct iio_chan_spec const *chan, int val,
+   346				     int val2, long mask)
+   347	{
+   348		struct mmc5633_data *data = iio_priv(indio_dev);
+   349		int ret;
+   350	
+   351		switch (mask) {
+   352		case IIO_CHAN_INFO_SAMP_FREQ:
+   353			ret = mmc5633_get_samp_freq_index(data, val, val2);
+   354			if (ret < 0)
+   355				return ret;
+   356	
+   357			guard(mutex)(&data->mutex);
+   358	
+   359			return regmap_update_bits(data->regmap, MMC5633_REG_CTRL1,
+   360						  MMC5633_CTRL1_BW_MASK,
+   361						  FIELD_PREP(MMC5633_CTRL1_BW_MASK, ret));
+ > 362		default:
+   363			return -EINVAL;
+   364		}
+   365	}
+   366	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
