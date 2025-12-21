@@ -1,70 +1,70 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D508E22F755
-	for <imx@lists.linux.dev>; Sun, 21 Dec 2025 09:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5E3280A5B
+	for <imx@lists.linux.dev>; Sun, 21 Dec 2025 09:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766309827; cv=none; b=UpCP5DtnXkGY/FP60MJJp0Ch/oV/c+cyO76zvyQ8ZNNpNjxeoHgR9kpYUoTp+LEN0bbkz+Rs3FaAHAkc8WCsBK+rVUA51Gr+I4VP+zQcIbXjD3DdOCKCUQaYAoUoWxwNfRaNsSJX8MHoo8Qv8DRz4M5io6O8jtGqAl+cH17BRtk=
+	t=1766309836; cv=none; b=jXeW28weUHx2ZpLo1pEiut3Zks+FBsfbaTuAOnwbq6Er3BGRRYUdEyWQncvQ46P+uCKgGwmTF1cOWDrUiQyaVb43xBqCh1FrfprQYgxfdw4EBUPPV2phpWfCAe5uqii2vpNnI1gyBoGSKh5xFi1MTAqeTlhN0oaN/6JPAKGePuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766309827; c=relaxed/simple;
-	bh=dYxrT04YcQdwO6b5nzPFQQREgLbm70Vca80uGYbXBbc=;
+	s=arc-20240116; t=1766309836; c=relaxed/simple;
+	bh=BcCWaQDqk2hqFZcbljTe5TshvfrnYl4MYwks/r0wuug=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pJroziGNS0oU2z+vwQmYrn8fvs5HO1jHEBDsAdDlsGjeBFDY/2DhMrWHAmtopqP8nVIjbgm4svLzyYqrIPK4VF/4T2n4TluYyl/i45Odnw1G3LzffCXr1jbd7YkrIziC8xzyukSOJx8RjPVd99QBAN2/l1qotkZIRunRmY+MvOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BFKNiWFE; arc=none smtp.client-ip=209.85.214.178
+	 In-Reply-To:To:Cc; b=mDdvCwftXx3MpqJhcn5i9aLVFl54gk9kDkDgJ9Fs28uipHbcOirK7IRdyOxUX5KuWA17FkcHgdwovIuQMBC2hTx6oCogrfuZcA0wUaqL1qSUw7/o3u0097MidJbgiLV4DYPeP0Gp5UmJ8rfMamAGIEn2KCE04DkWhHlZspnZJqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E66Vc+AV; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BFKNiWFE"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-29efd139227so41130465ad.1
-        for <imx@lists.linux.dev>; Sun, 21 Dec 2025 01:37:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E66Vc+AV"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-29efd139227so41131155ad.1
+        for <imx@lists.linux.dev>; Sun, 21 Dec 2025 01:37:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766309825; x=1766914625; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1766309833; x=1766914633; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=loH8pZ21h3HnsJhHTf084VIuLNxonqEp7O6yoOmUAfQ=;
-        b=BFKNiWFEynJ7f9v1+UpjqdmVYPFmqJqRUtQEwiprVAczh8h0nW7OclrQ57OHXKD2nT
-         jAld6dY0doyZzdPl/JUUgi6jgMTTUkd18mrooYwWCx0lUkahOV2C3kvvCmlAcSLeiYY1
-         TbQUgY1wO11KjoCWPdPZdIqPclehJMhIhkJdypVpD5c4OynBl+BJUqTUklUyDPPPeEpG
-         fXEx2Vkx8ukydLNkTv9CUcZXZzxGxUqmQPlXJMXByevHw/JTNjel1MnNPEbP4GR/olhZ
-         2OaqfKjMi9+YfXlaceXq0Xx8jkEV2JExW5F4c+Ttd3609Dqywi61uvNY8vItxHE8o11X
-         sKaw==
+        bh=V5a5A+6f9bpZxYjLZ9S9FAbY+lPxNj4oyHeruadBhzY=;
+        b=E66Vc+AVNZ+H2Odr0yyQJqNPdbBARfvSPeBPq4DkeLyObVC//LZmokQ5CiaHOPk8vN
+         m1DCbG3j/tKw0tX/uYhCeEekyPgAEbxIK6iP1sD56zRFAVm+qMCpiKNZ/NPPEVUnWU9E
+         OuWT04E2KdAlzLVNSduSoHvLHV4l1zVN5C8zPv+RGVqUWvN1e5Ya0qApj2rR7w9wTyYh
+         FT7axySrSHtiaw09BIzyl66k40TNqX4NFWGelolnl+ndLiH2zvRmow72HI3V9+eaLrXe
+         LOQE4Ibyzx8IL8IRtw/vDBABYu7UBJl9BK7Qmg111Veh6FXZkIV5U2vxvsvdMmIRUlhx
+         EPDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766309825; x=1766914625;
+        d=1e100.net; s=20230601; t=1766309833; x=1766914633;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=loH8pZ21h3HnsJhHTf084VIuLNxonqEp7O6yoOmUAfQ=;
-        b=Q7lZJRVRkNNvf8ebfP0kS/gFnpZ4q5BTfhNUWnWgfWeJFGOUj6tK9MPnowbYoTHjka
-         TvQM44lRWnfr18+RaRMChKGBwGsTiaPqkg2UnySd7AalRcocUhYQZnYXrfd7GUrbvSs4
-         72w0/oAcU6jVctJ0MTwSDb7ZHHGIZMT5LhMDOAJ/HboD7w1www4vO1P9Yz3PxGEzM4o8
-         I45iY19V6dCpH7L2AwXNa+tfGQqBuovqlc2F80MHoBpbLElGN+RiiLW804zCp4zZL+0G
-         ZbnyCjzVRElGd+PLMEceE07RODGAjWapMXm3c8UevDUKDze0FoV9td42iu6BQ9l18F1+
-         bvog==
-X-Forwarded-Encrypted: i=1; AJvYcCV9mbuqyyjl3Ri4c6Q+Kukot7MbRSQfCtd8995hIkQoG/pI+H1y2VddbigM4kQXNewT9RE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzX2zz+puOt9ohN2sCiCSMmfOwo60kdpnkUZuTyQalmny0jw1VD
-	mLZkvHMprH+JSMVvYAzMX/hZ2IT9ekni1HCJ8MNZMOxv3HKQy+//3SYr
-X-Gm-Gg: AY/fxX4ml2lAmU2sXFle93FCUirgcVaH7ejoHah5S+nAoD3IkKeRoNKOalKSD76ynqF
-	tyO4V5FoZfobxv1HN4CJ6kBj5h5Y4RfFiffjbry2kRj46rpONqpcQ4Ymjez+Rop1exkVNalFwVE
-	zocX1bbUCtXsR1wzH2oeF96wK6Vy1pRhJ4sLzTVNwiMGGj95KiiBrI5gEMvjOEHZvrZlepEkHBA
-	/WQDqFb2Q9VWrYpyW9EA8bnSopmhjx5xXo1LwowsIIGauy4To07edDjQE0CGn/Hqmv//c8BjghT
-	cVmTB4VUyKfxhV0scOX/4sY8B0FK5xyC6JY6rlI5T76GEMvQtDMAAeebE9YuuDjt0jgKFtFtliq
-	PoTLk3dQDnPlXXILPggbfgdYK6PTLDNTm72Ai6cfOltBdFJMLp+ykJ+un571FFn6Eb5F9NRrUfk
-	fzNn3l8bVSo9gZG7ng+lh+vOnKuaLPriLhQfTNanlI58co24T5mR75aqwUgksbLSGAXVSHgxyyH
-	SVh3CBMribzePsN8Cm9P7jx/JznRk75ag0FyL5wGwy/HluBiVqclXvHfWEJ3xrlJWxUymsU5EkX
-	CDWxxzH0+WNAb6ERjhyEdwYfMJ1GX3DcrfmyesTACoM1JN7iNsQ=
-X-Google-Smtp-Source: AGHT+IHTEvxzKwKOsqk6jxiFy1KEjLTBz6tFUpjwHXJ/UFHqcxf2UMgauXjpc/2YVHZ7EdAOXNaDmg==
-X-Received: by 2002:a17:902:e803:b0:2a0:d5b0:dd82 with SMTP id d9443c01a7336-2a2f2a420e1mr78890355ad.61.1766309825148;
-        Sun, 21 Dec 2025 01:37:05 -0800 (PST)
+        bh=V5a5A+6f9bpZxYjLZ9S9FAbY+lPxNj4oyHeruadBhzY=;
+        b=QQyATTWlQU3+6nTrkIzDROI0mWlycMaeHozCRQf9qkjfuwSFNXzNEvGLfn2gEGKUn8
+         eZHjQdvHLYQhtP5Oi3ikzSWposB0ZyXMz8co61o95b7w11rhwj+JSojFbuTVVaSW0zIC
+         jXO3aUzVcTDw8Eqdosp1wXRfKr22s3v4u3mUpPy/3ACmsh2KoFocCS+7EDEJ1KbbTZu0
+         dBAVxa009qwHoRyJp9dwvLHWcZPyOOekxI5yMdTFQMg0OwmiYRrSaPEoJHd2zr0jMp+Q
+         y88O/09IPur2CIDJvY+pySYp3mVyPc90qkAZJ+RvHO4jA8MFYYYgO4HXqwmoNYnQ1wXo
+         sfLw==
+X-Forwarded-Encrypted: i=1; AJvYcCW77gn3LpXc2/QW/hZzl9tsicYqW76e0se0KO7VMn2isbSyPYsXq4u78SQC0OpVSBUIJr4=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw0QpTw17UATQY9piQfQm2qDaiyF938FTnPx2mQTRNQBUL9Frug
+	pDwTBZAfAlZDwKWtwSG/DnftR5LyDWK2NDymRaDoz99TjPmXofVOYLZ/
+X-Gm-Gg: AY/fxX5/88UVinA+feC5//gS9nd5ERAjPcp/oZkbHurZPjFjhUkBGu/EB8chMq3ThuE
+	OJaP3sz0TuQm/GRmpfENsJ0bg9CGr3GkoojeHNT31G5kHr72X7+tI/qa1h38OPjyF2K0y5YFI0g
+	mqz/m/V5HL8qHrqVMziuznPACU6PNXkoCHcx3/g6tOut6jbnVnpyTuTxfFzDdj841NexkJd6Cdk
+	s+ACGSayrLEQ/hcz1QDw7tgjCsogQ5UGXtpdn1EnBXQUZuKdRgnB3XbzwxpkK5HLGapyNt3r1YU
+	eacj/iCQwuya7E9r4xaZ7Jx8rPvc+0hHtb1T5UwfrfC77JqIHzH8TqxYtxjPUEWeyKhNJF9iWNQ
+	y3VH0jPRpQUjlahQ04lRCSLD9ZAJ5pVeU1vw8wGKw1bPXa0OSGqVlLkglj7cn4X0x1p8/dQISQv
+	9xIS6rP2kHLh5APP0Ez2m07h1kP1ZVN1HmwlksZjv/6dknIzAjxqprwNdkzcTi9HYwgnwd4HPQ5
+	Mu/BwIvkYgUlKjPiAzfpGqba04ofZ20qHl8D9kOSsFzrFE8UzWPAoZiR4ZN6Yd31gHB35iIBxDX
+	gDRnTnZNKbdnt8atbAzxaDxecy0puKD//JaF9fy/kmy6I5zckMc=
+X-Google-Smtp-Source: AGHT+IGMdyycbEEhzOfaP2Ty3g+HwuUlrykYJWMidFb++M717umnxFkAmzfzB53xMVODmVdckFRerQ==
+X-Received: by 2002:a17:903:4b47:b0:2a0:e94e:5df6 with SMTP id d9443c01a7336-2a2f28335ffmr80140275ad.50.1766309832723;
+        Sun, 21 Dec 2025 01:37:12 -0800 (PST)
 Received: from [192.168.2.3] (2403-580a-80ed-0-4835-5a07-49e7-f115.ip6.aussiebb.net. [2403:580a:80ed:0:4835:5a07:49e7:f115])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d4d363sm67629495ad.62.2025.12.21.01.36.57
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d4d363sm67629495ad.62.2025.12.21.01.37.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Dec 2025 01:37:04 -0800 (PST)
+        Sun, 21 Dec 2025 01:37:12 -0800 (PST)
 From: James Calligeros <jcalligeros99@gmail.com>
-Date: Sun, 21 Dec 2025 19:36:01 +1000
-Subject: [PATCH v2 5/7] ASoC: soc-dai: add common operation to set TDM idle
- mode
+Date: Sun, 21 Dec 2025 19:36:02 +1000
+Subject: [PATCH v2 6/7] ASoC: tas2764: expose SDOUT bus keeper via
+ set_tdm_idle operation
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -73,7 +73,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251221-tdm-idle-slots-v2-5-ed4d96413aec@gmail.com>
+Message-Id: <20251221-tdm-idle-slots-v2-6-ed4d96413aec@gmail.com>
 References: <20251221-tdm-idle-slots-v2-0-ed4d96413aec@gmail.com>
 In-Reply-To: <20251221-tdm-idle-slots-v2-0-ed4d96413aec@gmail.com>
 To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
@@ -91,111 +91,171 @@ Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, asahi@lists.linux.dev, 
  James Calligeros <jcalligeros99@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3972;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4983;
  i=jcalligeros99@gmail.com; h=from:subject:message-id;
- bh=dYxrT04YcQdwO6b5nzPFQQREgLbm70Vca80uGYbXBbc=;
- b=owGbwMvMwCV2xczoYuD3ygTG02pJDJnu+yf3en2e913tbLCZc/CEUy8ENxvx9r1wfNd5xNuJt
- 63AcXVPx0QWBjEuBksxRZYNTUIes43YbvaLVO6FmcPKBDJEWqSBAQhYGPhyE/NKjXSM9Ey1DfUM
- DXWMdYwYuDgFYKp/qDIyrFjrs0FXc0XYTlemLQmTiiatvJr6yCB+1jZBG8Xaq4+iTRn+h/7JuKk
- otcZRSbTkvkCAvWCqxiPJa7Jheit+PD3MIjybCwA=
+ bh=BcCWaQDqk2hqFZcbljTe5TshvfrnYl4MYwks/r0wuug=;
+ b=owGbwMvMwCV2xczoYuD3ygTG02pJDJnu+yeXTb3J8Yz9vVX1g5YygxSGhRIJQhKv88V+6ynkl
+ dry++d1TGRhEONisBRTZNnQJOQx24jtZr9I5V6YOaxMIEOkRRoYgICFgS83Ma/USMdIz1TbUM/Q
+ UMdYx4iBi1MApprhFMNvVq/fM9f3TeT60aaX+KHjVf/r6Qtvvb8j2Dvd+sMcxi2z4hgZ2o7JaDE
+ r9c45+PQi8yW9U247y1WTJbRnm0ebf3E7s+IJGwA=
 X-Developer-Key: i=jcalligeros99@gmail.com; a=openpgp;
  fpr=B08212489B3206D98F1479BDD43632D151F77960
 
-Some audio devices, like certain Texas Instruments codecs, integrate
-configurable bus keepers that dictate the codec's behaviour during
-idle TDM slots. Now that we have definitions for various idle modes,
-add a snd_soc_dai_set_tdm_idle() operation to control this in a
-standardised way.
+TAS2764, and the Apple-exclusive variant SN012776, include bus keepers
+on the SDOUT pin that can be configured to alter the behaviour of the
+SDOUT pin during specified TDM slots. The chip can either leave the
+bus floating (default/uninitialised behaviour) or fill the specified
+slots with zeroes.
 
-This is useful on Apple Silicon laptops, where a single I2S bus is
-comprised of two physical lines which are ORed just before the
-receiving port. When a codec on one line is transmitting, we must
-guarantee that the other line is low. We can achieve this by
-configuring one codec on each line to use its bus keeper to fill
-its line with zeroes during the active slots of the other line.
+Expose the SDOUT bus keeper and allow it to be configured using the
+set_tdm_idle DAI op. The mask must be cropped to only cover slots
+valid for the configured BCLK ratio, so introduce a set_bclk_ratio
+op that properly configures this.
 
 Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
 ---
- include/sound/soc-dai.h |  7 +++++
- sound/soc/soc-dai.c     | 40 +++++++++++++++++++++++++
- 2 files changed, 47 insertions(+)
+ sound/soc/codecs/tas2764.c | 95 +++++++++++++++++++++++++
+ sound/soc/codecs/tas2764.h | 11 +++
+ 2 files changed, 106 insertions(+)
 
-diff --git a/include/sound/soc-dai.h b/include/sound/soc-dai.h
-index 44dd06add52e..6a42812bba8c 100644
---- a/include/sound/soc-dai.h
-+++ b/include/sound/soc-dai.h
-@@ -196,6 +196,10 @@ int snd_soc_dai_set_fmt(struct snd_soc_dai *dai, unsigned int fmt);
- int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
- 	unsigned int tx_mask, unsigned int rx_mask, int slots, int slot_width);
+diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
+index 36e25e48b354..423b7073b302 100644
+--- a/sound/soc/codecs/tas2764.c
++++ b/sound/soc/codecs/tas2764.c
+@@ -44,6 +44,11 @@ struct tas2764_priv {
  
-+int snd_soc_dai_set_tdm_idle(struct snd_soc_dai *dai,
-+			     unsigned int tx_mask, unsigned int rx_mask,
-+			     int tx_mode, int rx_mode);
+ 	bool dac_powered;
+ 	bool unmuted;
 +
- int snd_soc_dai_set_channel_map(struct snd_soc_dai *dai,
- 	unsigned int tx_num, const unsigned int *tx_slot,
- 	unsigned int rx_num, const unsigned int *rx_slot);
-@@ -312,6 +316,9 @@ struct snd_soc_dai_ops {
- 	int (*set_tdm_slot)(struct snd_soc_dai *dai,
- 		unsigned int tx_mask, unsigned int rx_mask,
- 		int slots, int slot_width);
-+	int (*set_tdm_idle)(struct snd_soc_dai *dai,
-+			    unsigned int tx_mask, unsigned int rx_mask,
-+			    int tx_mode, int rx_mode);
- 	int (*set_channel_map)(struct snd_soc_dai *dai,
- 		unsigned int tx_num, const unsigned int *tx_slot,
- 		unsigned int rx_num, const unsigned int *rx_slot);
-diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
-index a1e05307067d..2f370fda1266 100644
---- a/sound/soc/soc-dai.c
-+++ b/sound/soc/soc-dai.c
-@@ -282,6 +282,46 @@ int snd_soc_dai_set_tdm_slot(struct snd_soc_dai *dai,
++	struct {
++		int tx_mode;
++		unsigned int tx_mask;
++	} idle_slot_config;
+ };
+ 
+ #include "tas2764-quirks.h"
+@@ -509,11 +514,101 @@ static int tas2764_set_dai_tdm_slot(struct snd_soc_dai *dai,
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(snd_soc_dai_set_tdm_slot);
  
-+/**
-+ * snd_soc_dai_set_tdm_idle() - Configure a DAI's TDM idle mode
-+ * @dai: The DAI to configure
-+ * @tx_mask: bitmask representing idle TX slots.
-+ * @rx_mask: bitmask representing idle RX slots.
-+ * @tx_mode: idle mode to set for TX slots.
-+ * @rx_mode: idle mode to set for RX slots.
-+ *
-+ * This function configures the DAI to handle idle TDM slots in the
-+ * specified manner. @tx_mode and @rx_mode can be one of
-+ * SND_SOC_DAI_TDM_IDLE_NONE, SND_SOC_DAI_TDM_IDLE_ZERO,
-+ * SND_SOC_DAI_TDM_IDLE_PULLDOWN, or SND_SOC_DAI_TDM_IDLE_HIZ.
-+ * SND_SOC_TDM_IDLE_NONE represents the DAI's default/unset idle slot
-+ * handling state and could be any of the other modes depending on the
-+ * hardware behind the DAI. It is therefore undefined behaviour when set
-+ * explicitly.
-+ *
-+ * Mode and mask can be set independently for both the TX and RX direction.
-+ * Some hardware may ignore both TX and RX masks depending on its
-+ * capabilities.
-+ */
-+int snd_soc_dai_set_tdm_idle(struct snd_soc_dai *dai,
-+			     unsigned int tx_mask, unsigned int rx_mask,
-+			     int tx_mode, int rx_mode)
++static int tas2764_write_sdout_idle_mask(struct tas2764_priv *tas2764, u32 mask)
 +{
-+	int ret = -EOPNOTSUPP;
++	struct snd_soc_component *component = tas2764->component;
++	int i, ret;
 +
-+	/* You can't write to the RX line */
-+	if (rx_mode == SND_SOC_DAI_TDM_IDLE_ZERO)
-+		return soc_dai_ret(dai, -EINVAL);
++	/* Hardware supports up to 64 slots, but we don't */
++	for (i = 0; i < 4; i++) {
++		ret = snd_soc_component_write(component,
++					      TAS2764_SDOUT_HIZ_1 + i,
++					      (mask >> (i * 8)) & 0xff);
++		if (ret < 0)
++			return ret;
++	}
 +
-+	if (dai->driver->ops &&
-+	    dai->driver->ops->set_tdm_idle)
-+		ret = dai->driver->ops->set_tdm_idle(dai, tx_mask, rx_mask,
-+						     tx_mode, rx_mode);
-+
-+	return soc_dai_ret(dai, ret);
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(snd_soc_dai_set_tdm_idle);
 +
- /**
-  * snd_soc_dai_set_channel_map - configure DAI audio channel map
-  * @dai: DAI
++static int tas2764_set_dai_tdm_idle(struct snd_soc_dai *dai,
++				    unsigned int tx_mask, unsigned int rx_mask,
++				    int tx_mode, int rx_mode)
++{
++	struct snd_soc_component *component = dai->component;
++	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(component);
++	int ret;
++
++	/* We don't support setting anything on SDIN */
++	if (rx_mode)
++		return -EOPNOTSUPP;
++
++	if (tas2764->idle_slot_config.tx_mask == tx_mask &&
++	    tas2764->idle_slot_config.tx_mode == tx_mode)
++		return 0;
++
++	switch (tx_mode) {
++	case SND_SOC_DAI_TDM_IDLE_ZERO:
++		if (!tx_mask)
++			return -EINVAL;
++
++		ret = tas2764_write_sdout_idle_mask(tas2764, tx_mask);
++		if (ret < 0)
++			return ret;
++
++		ret = snd_soc_component_update_bits(component,
++						    TAS2764_SDOUT_HIZ_9,
++						    TAS2764_SDOUT_HIZ_9_FORCE_0_EN,
++						    TAS2764_SDOUT_HIZ_9_FORCE_0_EN);
++		if (ret < 0)
++			return ret;
++
++		tas2764->idle_slot_config.tx_mask = tx_mask;
++		tas2764->idle_slot_config.tx_mode = tx_mode;
++		break;
++	case SND_SOC_DAI_TDM_IDLE_HIZ:
++	case SND_SOC_DAI_TDM_IDLE_OFF:
++		/* HiZ mode does not support a slot mask */
++		ret = tas2764_write_sdout_idle_mask(tas2764, 0);
++		if (ret < 0)
++			return ret;
++
++		ret = snd_soc_component_update_bits(component,
++						    TAS2764_SDOUT_HIZ_9,
++						    TAS2764_SDOUT_HIZ_9_FORCE_0_EN, 0);
++		if (ret < 0)
++			return ret;
++
++		tas2764->idle_slot_config.tx_mask = 0;
++		tas2764->idle_slot_config.tx_mode = tx_mode;
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
++	return 0;
++}
++
++/* The SDOUT idle slot mask must be cropped based on the BCLK ratio */
++static int tas2764_set_bclk_ratio(struct snd_soc_dai *dai, unsigned int ratio)
++{
++	struct tas2764_priv *tas2764 = snd_soc_component_get_drvdata(dai->component);
++
++	if (!tas2764->idle_slot_config.tx_mask)
++		return 0;
++
++	tas2764->idle_slot_config.tx_mask &= GENMASK((ratio / 8) - 1, 0);
++
++	return tas2764_write_sdout_idle_mask(tas2764, tas2764->idle_slot_config.tx_mask);
++}
++
+ static const struct snd_soc_dai_ops tas2764_dai_ops = {
+ 	.mute_stream = tas2764_mute,
+ 	.hw_params  = tas2764_hw_params,
+ 	.set_fmt    = tas2764_set_fmt,
++	.set_bclk_ratio = tas2764_set_bclk_ratio,
+ 	.set_tdm_slot = tas2764_set_dai_tdm_slot,
++	.set_tdm_idle = tas2764_set_dai_tdm_idle,
+ 	.no_capture_mute = 1,
+ };
+ 
+diff --git a/sound/soc/codecs/tas2764.h b/sound/soc/codecs/tas2764.h
+index 538290ed3d92..4494bc4889dc 100644
+--- a/sound/soc/codecs/tas2764.h
++++ b/sound/soc/codecs/tas2764.h
+@@ -126,4 +126,15 @@
+ 
+ #define TAS2764_BOP_CFG0                TAS2764_REG(0X0, 0x1d)
+ 
++#define TAS2764_SDOUT_HIZ_1            TAS2764_REG(0x1, 0x3d)
++#define TAS2764_SDOUT_HIZ_2            TAS2764_REG(0x1, 0x3e)
++#define TAS2764_SDOUT_HIZ_3            TAS2764_REG(0x1, 0x3f)
++#define TAS2764_SDOUT_HIZ_4            TAS2764_REG(0x1, 0x40)
++#define TAS2764_SDOUT_HIZ_5            TAS2764_REG(0x1, 0x41)
++#define TAS2764_SDOUT_HIZ_6            TAS2764_REG(0x1, 0x42)
++#define TAS2764_SDOUT_HIZ_7            TAS2764_REG(0x1, 0x43)
++#define TAS2764_SDOUT_HIZ_8            TAS2764_REG(0x1, 0x44)
++#define TAS2764_SDOUT_HIZ_9            TAS2764_REG(0x1, 0x45)
++#define TAS2764_SDOUT_HIZ_9_FORCE_0_EN BIT(7)
++
+ #endif /* __TAS2764__ */
 
 -- 
 2.52.0
