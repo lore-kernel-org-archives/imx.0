@@ -1,209 +1,189 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012032.outbound.protection.outlook.com [52.101.66.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F5923A9AD
-	for <imx@lists.linux.dev>; Sat, 20 Dec 2025 22:36:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766270172; cv=fail; b=ZTk6JXtWuT8gz+BB3WZ3SqqINOfnce4mwAiNiaMKi9Xu7mY1Q8ERGq4MZ21fUI2TUbHszr/5O46neBtPHmONBNVKWtCZqVzmqgjXV/ZBBvKVbsvsUcaRefYrGBHX1UmAnIxpyyrx4mYmZJvVVIRBdtOhyRg0SDiHYNxxnTaz7co=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766270172; c=relaxed/simple;
-	bh=isMg+jyBfjD6keBTuSxBaDzHKtzqQrEWUA29U62WUsM=;
-	h=From:To:CC:Subject:In-Reply-To:References:Message-ID:Date:
-	 MIME-Version:Content-Type; b=fAicqhOI6dqv0FjpunSjXZjlHuRu/vJg3cOcK26q/Wl3JBxfTO1ayUJKA6wKzPUMBeJj75d10Ll+lomad31j9X2yuT8zwV7sXmSKUakTVwXS+tDPgunvLGb25lZezsBKLdJn2kvtJTiCLWGH3GtL87+N1faWyuOR1LrjxiB54W4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=G0OwIC9c; arc=fail smtp.client-ip=52.101.66.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFBD246BBA
+	for <imx@lists.linux.dev>; Sun, 21 Dec 2025 09:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766309791; cv=none; b=oY5iNgD0bvrID4TqAp9uALTkAvlNckbqWLCN2F6S+0LZz67UrtaqAFN2RbEh/tFIGpwg0O+sl0GsbaRZJPXt7+/TaHCrdEn32dfdmfBwzf+vNIgFtosaInt6bIbRP5/zzbTzjZhrNJJvnM3g5Im9Qv7GdUuXeOtNCYgyoaXnm58=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766309791; c=relaxed/simple;
+	bh=eyUwGI0ieunvRa2JS4DDwPNE6CUzg0WKFA2me2XXi8Y=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KhYk6qlubQQlNUI/1I13h2agZwoROAU5bRbcn6C33225GDPk748JYyln7N9XKxMY/aCsCMyKYKhdEWaCnDxo7oDyQqgxqvQLDqzl2pBX38wKuwG9dwWXw6DNjYMQVq/ysMqynmF64VC7kBTkOE5cq2I18sKdfkBx4Qka3GFUkqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EQt+0yzn; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="G0OwIC9c"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rUG23iwU89wJWKE2BNwKccp7t3pUJ9a0+Y3pMlvvFS7YQ7gh20/ApQzNQok7xNmlYy83KbFBBBhXDH2+Z5J9RYW9lVkQp9ejTgXgTuDiAPbNxd9x05rTqbCx8OsXgV0ToSNV9FNKN/ayp9IdkkoiGySM/ipo3JbryABzDam9oNoKaSXWs3ZHpeM2Iqh56wUMN/yPr9g0lNvaSXnhkqEkgIZN+U4XpvYZvVz6pC8MAee+2slL4IVWEbJa+RWiOEh876SjRZXmikddVu+/xrw0sBw/tCjzl9KXiN/6UZ+Nz8EcAhNDUWiGCoQZpofJcm14KvU/z2aZzKTwJ0zsSC5TVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dcD6Lobb4vxzCnhh086hQoR1Lf9dMaS24w3glWIvXrA=;
- b=PdKwcT5WOGgMz4Zm0ikgDnmtCPVr5YZOoAmN7isLWUA71c7WSE1eZ9qVnuShkdHAXjWw3l+P7dCB/U0podiJwpEZ1l5fhBp8jNLU2kQgXzt1n4i7vJGudQoeIWUC4cuzN5odV2eIP5w5PU9yTvhUgA6BcGigSE9VrqgSnjOKLdkxUSvCkaHli/gGfkEBNw90YVCDbfT2+nweMcRZLHoS3p6cLaarTjzlcdDmH+AZ9msR0474acd8N9LdbbZjbqv/J4CaCQ9emWJYTPyE6CRD8EX3VRp4YFQxhBPV+k5UveVfpmlIGVGsqGpK93uIDAyxHQkmDh12BwFFgAADQbT3Qw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 195.60.68.100) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=axis.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=axis.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dcD6Lobb4vxzCnhh086hQoR1Lf9dMaS24w3glWIvXrA=;
- b=G0OwIC9c3pyjr156KEJDeDK+o97kALADOHKNTze5+CL7fAJfRuhQ4IMJKBqfUvFm8Fbp4Uyx3Y3Zi8OB51UXcxJxc+3n6xkbIrWgtiQnel/a8IHLlmXQlXm1quDDTsQb1dyv4tHIoqmlxgXrpyZbhEVPcv2UuduxeLcx0Fe7jcM=
-Received: from DU7P194CA0022.EURP194.PROD.OUTLOOK.COM (2603:10a6:10:553::26)
- by PR3PR02MB6220.eurprd02.prod.outlook.com (2603:10a6:102:5e::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.10; Sat, 20 Dec
- 2025 22:36:06 +0000
-Received: from DB1PEPF000509FD.eurprd03.prod.outlook.com
- (2603:10a6:10:553:cafe::9) by DU7P194CA0022.outlook.office365.com
- (2603:10a6:10:553::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9434.10 via Frontend Transport; Sat,
- 20 Dec 2025 22:36:05 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 195.60.68.100)
- smtp.mailfrom=axis.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=axis.com;
-Received-SPF: Pass (protection.outlook.com: domain of axis.com designates
- 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
- client-ip=195.60.68.100; helo=mail.axis.com; pr=C
-Received: from mail.axis.com (195.60.68.100) by
- DB1PEPF000509FD.mail.protection.outlook.com (10.167.242.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9434.6 via Frontend Transport; Sat, 20 Dec 2025 22:36:06 +0000
-Received: from pc52311-2249 (10.4.0.13) by se-mail10w.axis.com (10.20.40.10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.39; Sat, 20 Dec
- 2025 23:36:01 +0100
-From: Waqar Hameed <waqar.hameed@axis.com>
-To: Samuel Kayode <samkay014@gmail.com>, Sebastian Reichel <sre@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>, Lee Jones <lee@kernel.org>
-CC: <kernel@axis.com>, <imx@lists.linux.dev>, <linux-pm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH 07/11] power: supply: pf1550: Fix use-after-free in
- power_supply_changed()
-In-Reply-To: <cover.1766268280.git.waqar.hameed@axis.com>
-References: <cover.1766268280.git.waqar.hameed@axis.com>
-User-Agent: a.out
-Message-ID: <ae5a71b7e4dd2967d8fdcc531065cc71b17c86f5.1766268280.git.waqar.hameed@axis.com>
-Date: Sat, 20 Dec 2025 23:36:01 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EQt+0yzn"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a081c163b0so28938645ad.0
+        for <imx@lists.linux.dev>; Sun, 21 Dec 2025 01:36:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766309787; x=1766914587; darn=lists.linux.dev;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=F5nB8fHKMaIzWNuSxdIiCgEFq4ZfOznDuDPNBRfGesY=;
+        b=EQt+0yznBdTzoXI9adnDG9sa1n2nk3phNDENV+aWEc0PeMWmNNo78ZTMutYB7tL9eX
+         W67aY9pb03kD9V2oMonWBvGc743HQFDSl6of4fCF2qgCxHZebAtuaNOej91ULBSpDese
+         bq12kNjBYN3jAgUTB1jpgR5aR+W4dgk7tX/Z3/WMxwDPV3H8C5joOazlnaztW/rYwSYe
+         PEFMbYytYSOUAvHL1psQ15TmB8Us8dsi8utAOLNGkHHZPPidDf0YXl6gFibFeptQmN2V
+         OrBWemBk2HIOeS802X+XCKpjh0V7SgecWNWs4NTMhlHfASY95rxtzk81ePN1kDycKnMu
+         y2Mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766309787; x=1766914587;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F5nB8fHKMaIzWNuSxdIiCgEFq4ZfOznDuDPNBRfGesY=;
+        b=AvQTCY6rJL8KEtUsdmcK7Cm8uKv5HFDCzQ8FCTakjAFyPhVd2xivXqdSN2p/w5c1+A
+         ZjGqJOSe2406yiQkH/odazGdpVhi1sZ6F10hLCMv/9PQIPcCGkkFSxuy2Tau0XMjmGbS
+         eAA74o1IlK+cDr9Unh0cy34hdPbUZTM/lpLCdCdgRiFKvB0OGojpkjxGRbkNjUE7nqvR
+         TskTNfX+G7uNliyhWv/S6c4NZC21QpQGf3r/WLyFHd6gMZaYEkW/JRBhWUciv2MjBPKB
+         RiAD+KC6uRrsjVR3Jg+vzlUnkiz39J2rgfNXOss1eGH29FdkuLGzVIK8omyLCoTemn8p
+         61rA==
+X-Forwarded-Encrypted: i=1; AJvYcCWcFCATj4VxlOaaMNGqC4AstA+AUmLad2Ma08vwSJ5IfPziy0Da2RPPmpymgscAFVibX+U=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwUGuzQof3jy8W51s/+HOkt8HWL6iXhnneQlBJwkDPN0+Sx3Vmt
+	SDxwNnV4wZwmXR42rKl14aZ1jU4U94K5Iohpuwk0VhHj582k2ux5UcN2
+X-Gm-Gg: AY/fxX5sggduMSgbcPFNMHq6ZI4SO6CnBetNTdKO9F205nxznq3rOwY8Xhjp7Ep34Bq
+	TAkZ2qKLdYnjgP/smZGRn5VpCtgVkIwVA+LDezXbZj5y4OQEgXd9kOQwcDH8ivF2A4o4ATZlmJu
+	VEcERfrBTvwC2MX3H70GLatJUWPNl4jafHgIpO7wFJuowXaipSf3dgHxsz4tQAYRKYPhpNe5yBf
+	1gy0kc4zJnKAa0qJm7AtmBxJV0zDtp822UNVurteIfMkBl5GeYZ9Cq5tD0vhbhvY1ZVQM7cXeZX
+	iPABaqpeOZZk2D9jgZKtI4vy2ZyUx4FTXF7fYNOUNPvnoihCxQPz5eXMk6CRtzHGEMfdZbSOg0E
+	Zuwa4ovYHm5BFTM3dbrp6mfwPiWB/Hdsvs6mH3hdg43aYQBVysY10y0ejsqgplpp+vjprSajvPi
+	Ivp7vrICRX5z/tEaxbjBwv+kbTGWSbD2YfKYA7fdNpKnvGcRCM/MkkPnjoteH1cwYbqwnCjxPDd
+	9RnqPic/Dt5yIAhVfQUeGKF1pOFKhwBj0U5lCDDnJ6jQtkyeK5FOhuJ+czjRq+D7Wl6x4rIabgV
+	re0kJOCbh8dyuCbKht/CboiSY/f9Ol6FBwp8tPMRAEQZ2j0fMtA=
+X-Google-Smtp-Source: AGHT+IE26hfD24ZsQ6mXHiG/tj55lbvStfyPTDRxrA921e8bn7nv2J67tWRAQHGaVgY7xl65mVGtVg==
+X-Received: by 2002:a17:903:110d:b0:2a0:9402:2175 with SMTP id d9443c01a7336-2a2f2427be6mr68478635ad.27.1766309787305;
+        Sun, 21 Dec 2025 01:36:27 -0800 (PST)
+Received: from [192.168.2.3] (2403-580a-80ed-0-4835-5a07-49e7-f115.ip6.aussiebb.net. [2403:580a:80ed:0:4835:5a07:49e7:f115])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a2f3d4d363sm67629495ad.62.2025.12.21.01.36.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Dec 2025 01:36:26 -0800 (PST)
+From: James Calligeros <jcalligeros99@gmail.com>
+Subject: [PATCH v2 0/7] ASoC: basic support for configuring bus keepers
+Date: Sun, 21 Dec 2025 19:35:56 +1000
+Message-Id: <20251221-tdm-idle-slots-v2-0-ed4d96413aec@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: se-mail02w.axis.com (10.20.40.8) To se-mail10w.axis.com
- (10.20.40.10)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF000509FD:EE_|PR3PR02MB6220:EE_
-X-MS-Office365-Filtering-Correlation-Id: 39a8b81e-453d-44e0-47f3-08de401829fc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Rh/1nv0Po1b7uhMEwJQh5Ks8fZF2CfFtsCFmlp1Dw93WWBwBHjvXRPBIQztz?=
- =?us-ascii?Q?g1+tmmu/SVl1emt78CfO/tH9d0etpI6X9oaTX84EsFOtcdGvUGwK1ezTH/WF?=
- =?us-ascii?Q?/u0cmk55Af78FjEqBrY472cuQjYpxCDBPNGGlNGU2bBeuc6gaW2mEVLrSzSE?=
- =?us-ascii?Q?/kYuu9ELjVMRINwI8oIWHKRqDD0Px8UMI8kkykqjC2OPPF+x2LVuz/LPgRDu?=
- =?us-ascii?Q?2qcjcHnXkPUGL5BW5QmeY4q4mPf2B2fRzWjdeBQ2Yl70EZeI6a0EUqtwIANv?=
- =?us-ascii?Q?bw4l8g2FGZJz6B5PsLvZZbxI1RNPCWfiHwoI3ZU3FS7/lWm+qIyFb4gw44Ju?=
- =?us-ascii?Q?mV4GsJ0QVsDgjTQU7O6rWqmw9WnnMFR6sQZSVBdp6BIZI7oNutF72LOz6Jzk?=
- =?us-ascii?Q?sXogH6u8UIPCIx+hi+Q8T+TBHhar4+IytBXr7shvQQa3RKa/C/rg0SItO6l8?=
- =?us-ascii?Q?bvIyTh+JkpY5XD4nw6hYW76FRF/O4CwSrSf0f70MTqO6G/OuWTde48etTD1W?=
- =?us-ascii?Q?yYyFCCaM2oFFXPHUfupT3UZORzRaelwlmkDjn5HSrTScI1TCOejMe865dkTZ?=
- =?us-ascii?Q?1X0NpjzvK8zcOlDLv+ae0as3u5Xhp1hxvt4KyDc3+fmI69VoqMB86fXaOJY5?=
- =?us-ascii?Q?kUJ+p1NHmT4jQw5+j5ohEoezJOqXsCslsRbCr3GblgkYpza5+01M6Adfpgb8?=
- =?us-ascii?Q?oc8JHU6CM8UCxAhm2z7cgeru+7jJD2uV/af0qCqNvOAKP+4DdROByKzohFw3?=
- =?us-ascii?Q?YQ4fQFMwVvkkkrCWWHIfm0DkSNSTRGaCLyi0E9vElN3g+4zCaztCIqklh4qc?=
- =?us-ascii?Q?Z0m8M8WOtUBaYVsyNOrndAd/+HVev/BQgDo3+yV+pjilg3j6KMybrBzQRBIM?=
- =?us-ascii?Q?T5WZfLHtwaK9uih5B4RSywI7PUgllLVc/a9TzR1rCyp8tAsyfBK16SaMo9dg?=
- =?us-ascii?Q?RETzn1OvoUtpmagSzUjEVVm2OCtaBnhets0TMKhRqWrs9uj40J0wjwFgPR1D?=
- =?us-ascii?Q?OpHTl9Tu++iDXb3tqdb1irt1Z1nCDStIY3OjvvvDiI+oCgY2tWwaWZiGBAHS?=
- =?us-ascii?Q?NP79W3IaISIhSgBBiJCpV6T8N+7bK5SHKLCRKdZQt4HtMZxgyc/js5qsvIw2?=
- =?us-ascii?Q?pysWm3GDUc+qoasd7+2EyTVdd1Vh8wZ/mAMICaUIKCSltsLLUyqna1BXDkVN?=
- =?us-ascii?Q?/3W15gZ1CoRQJDuaivmFzaoJTcT/H5KQnv1ldDTRBoqTzUWpQfsVwRTY0489?=
- =?us-ascii?Q?WY12Gge8T5HFIff27yJb1E3yDWYO4Mswhy7VWtzhxWOE+xWDv4wgvWEr7SKV?=
- =?us-ascii?Q?Y+AGuP7dirEeAfV0mn5BTdedGhg3s/q/Unoph1zFmJPMcNXgp+UquuGlVdrY?=
- =?us-ascii?Q?/v4OMTVbHGPlL2drXOy2Xvz8BtRIZALTyoE2P5E6tGR7tw7W5UxMdcZgKyL2?=
- =?us-ascii?Q?+L7soFMgreaMOKFDAvPL8HvtVBiRvtaCnkqJfdgS2WN47aIZy2r4XaGB4w0n?=
- =?us-ascii?Q?HUziVWqBA/P4Qcj64vRnfsNOdqC+RGw9X8aYpY9jtaXyNMnmtkpgGBfWX3iY?=
- =?us-ascii?Q?QtEch9MZ/cF+kgLgf2w=3D?=
-X-Forefront-Antispam-Report:
-	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Dec 2025 22:36:06.0445
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39a8b81e-453d-44e0-47f3-08de401829fc
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF000509FD.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR02MB6220
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHy/R2kC/12MywrCMBBFf6XM2kgStVhX/od0kce0HUgaSUJQS
+ v7dWHDj8pzLPRskjIQJbt0GEQslCmsDeejALGqdkZFtDJLLi5BcsGx9Uw5ZciEnJrhWQ5t6q87
+ QTs+IE7324GNsvFDKIb73fhFf+0sN/6kiGGenq1V66rXhAu+zV+SOJngYa60fkP3BKKwAAAA=
+X-Change-ID: 20251201-tdm-idle-slots-10ba92516da4
+To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Shenghao Ding <shenghao-ding@ti.com>, 
+ Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>
+Cc: linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, asahi@lists.linux.dev, 
+ James Calligeros <jcalligeros99@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4113;
+ i=jcalligeros99@gmail.com; h=from:subject:message-id;
+ bh=eyUwGI0ieunvRa2JS4DDwPNE6CUzg0WKFA2me2XXi8Y=;
+ b=owGbwMvMwCV2xczoYuD3ygTG02pJDJnu+/tkzmRK8Wo3Rfg3fvMzOrKLlWlqg2sPv59u01mrb
+ k6t2xc7JrIwiHExWIopsmxoEvKYbcR2s1+kci/MHFYmkCHSIg0MQMDCwJebmFdqpGOkZ6ptqGdo
+ qGOsY8TAxSkAU71zA8M/rZsTLl+4MlUl0P1s7sXn/XGciRdPLTS6MTdS36NSfNFnVYb/3lySG2q
+ faJuIzKzd+/CE5y6/VY4XYtUvBegf10n8cE+KFQA=
+X-Developer-Key: i=jcalligeros99@gmail.com; a=openpgp;
+ fpr=B08212489B3206D98F1479BDD43632D151F77960
 
-Using the `devm_` variant for requesting IRQ _before_ the `devm_`
-variant for allocating/registering the `power_supply` handle, means that
-the `power_supply` handle will be deallocated/unregistered _before_ the
-interrupt handler (since `devm_` naturally deallocates in reverse
-allocation order). This means that during removal, there is a race
-condition where an interrupt can fire just _after_ the `power_supply`
-handle has been freed, *but* just _before_ the corresponding
-unregistration of the IRQ handler has run.
+Hi all,
 
-This will lead to the IRQ handler calling `power_supply_changed()` with
-a freed `power_supply` handle. Which usually crashes the system or
-otherwise silently corrupts the memory...
+This series introduces some infrastructure to allow platform drivers
+to specify what a DAI should be doing when it is not active on the
+bus. The primary use case for this is configuring bus keepers which
+may be integrated into various codecs. The instigating use case for
+this functionality is an interesting bus topology on Apple Silicon
+laptops with multiple codecs.
 
-Note that there is a similar situation which can also happen during
-`probe()`; the possibility of an interrupt firing _before_ registering
-the `power_supply` handle. This would then lead to the nasty situation
-of using the `power_supply` handle *uninitialized* in
-`power_supply_changed()`.
+Most Apple Silicon laptops have six codecs split into groups of
+three, driving a pair of dual opposed woofers and a tweeter for
+L/R stereo sound. These codecs report the voltage and current across
+their connected voice coils back to the SoC via the SDOUT pin,
+represented as PCM data sent via configurable TDM slots. This data is
+used in conjunction with the connected speaker's Thiele/Small Parameters
+to ensure that the speaker is not being driven to levels that would
+permanently damage them. This is integrated into CoreAudio on macOS.
+speakersafetyd[1] handles this for Linux.
 
-Fix this racy use-after-free by making sure the IRQ is requested _after_
-the registration of the `power_supply` handle.
+All of the codec SDOUT pins are attached to a single receiver port
+on the SoC's I2S peripheral, however are split across two physical
+data lines (one each for the left and right codec groups). The receiver
+has an OR gate in front of it, which is used to sum the two lines.
 
-Fixes: 4b6b6433a97d ("power: supply: pf1550: add battery charger support")
-Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
+If at any point a codec is trying to transmit data, and the "opposite"
+line ends up floating high, the transmitting codec's data will be
+corrupted. We need to guarantee that the idle line stays idle.
+
+In the downstream Asahi Linux kernel[2], we set up one codec in each
+group to zero-fill or pull down its line while a codec on the opposite
+line is actively transmitting. This is done entirely in the codec
+driver, however this approach is over-fit for this one use case. This
+sort of functionality may also be of use for other hardware, so following
+previous mailing list discussions[3], I have tried to expose the
+functionality in a more configurable and generic way.
+
+I have integrated this approach into our downstream platform driver
+and select Devicetrees as an example of how this mechanism is intended
+to be used[4].
+
+Regards,
+James
+
+[1] https://github.com/AsahiLinux/speakersafetyd
+[2] https://github.com/AsahiLinux/linux/tree/bits/070-audio
+[3] https://lore.kernel.org/asahi/20250227-apple-codec-changes-v3-17-cbb130030acf@gmail.com/
+[4] https://github.com/chadmed/tree/tdm-revised2
+
 ---
- drivers/power/supply/pf1550-charger.c | 32 +++++++++++++--------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+Changes in v2:
+- Reworked tdm-slot.yaml schema to silence dtschema warnings
+- Properly referenced new tdm-slot.yaml schema in affected bindings,
+  again silencing dtschema warnings
+- Add PULLUP and DRIVE_HIGH as possible bus keeper modes
+- Reworded commit messages and cover letter to more clearly explain
+  what the goal is here
+- Link to v1: https://lore.kernel.org/r/20251209-tdm-idle-slots-v1-0-38dabf6bc01e@gmail.com
 
-diff --git a/drivers/power/supply/pf1550-charger.c b/drivers/power/supply/pf1550-charger.c
-index 98f1ee8eca3bc..a457862ef4610 100644
---- a/drivers/power/supply/pf1550-charger.c
-+++ b/drivers/power/supply/pf1550-charger.c
-@@ -584,22 +584,6 @@ static int pf1550_charger_probe(struct platform_device *pdev)
- 		return dev_err_probe(chg->dev, ret,
- 				     "failed to add battery sense work\n");
- 
--	for (i = 0; i < PF1550_CHARGER_IRQ_NR; i++) {
--		irq = platform_get_irq(pdev, i);
--		if (irq < 0)
--			return irq;
--
--		chg->virqs[i] = irq;
--
--		ret = devm_request_threaded_irq(&pdev->dev, irq, NULL,
--						pf1550_charger_irq_handler,
--						IRQF_NO_SUSPEND,
--						"pf1550-charger", chg);
--		if (ret)
--			return dev_err_probe(&pdev->dev, ret,
--					     "failed irq request\n");
--	}
--
- 	psy_cfg.drv_data = chg;
- 
- 	chg->charger = devm_power_supply_register(&pdev->dev,
-@@ -616,6 +600,22 @@ static int pf1550_charger_probe(struct platform_device *pdev)
- 		return dev_err_probe(&pdev->dev, PTR_ERR(chg->battery),
- 				     "failed: power supply register\n");
- 
-+	for (i = 0; i < PF1550_CHARGER_IRQ_NR; i++) {
-+		irq = platform_get_irq(pdev, i);
-+		if (irq < 0)
-+			return irq;
-+
-+		chg->virqs[i] = irq;
-+
-+		ret = devm_request_threaded_irq(&pdev->dev, irq, NULL,
-+						pf1550_charger_irq_handler,
-+						IRQF_NO_SUSPEND,
-+						"pf1550-charger", chg);
-+		if (ret)
-+			return dev_err_probe(&pdev->dev, ret,
-+					     "failed irq request\n");
-+	}
-+
- 	pf1550_dt_parse_dev_info(chg);
- 
- 	return pf1550_reg_init(chg);
+---
+James Calligeros (7):
+      ASoC: dt-bindings: convert tdm-slot to YAML
+      ASoC: dt-bindings: update tdm-slot.txt references to tdm-slot.yaml
+      ASoC: dt-bindings: add TDM slot idle mode properties
+      ASoC: soc-dai: define possible idle TDM slot modes
+      ASoC: soc-dai: add common operation to set TDM idle mode
+      ASoC: tas2764: expose SDOUT bus keeper via set_tdm_idle operation
+      ASoC: tas2770: expose SDOUT bus keeper via set_tdm_idle
+
+ .../bindings/sound/imx-audio-card.yaml   | 14 ++--
+ .../bindings/sound/simple-card.yaml      | 14 +---
+ .../bindings/sound/tdm-slot.txt          | 29 --------
+ .../bindings/sound/tdm-slot.yaml         | 82 +++++++++++++++++++++
+ include/sound/soc-dai.h                  | 22 ++++++
+ sound/soc/codecs/tas2764.c               | 95 +++++++++++++++++++++++++
+ sound/soc/codecs/tas2764.h               | 11 +++
+ sound/soc/codecs/tas2770.c               | 75 +++++++++++++++++++
+ sound/soc/codecs/tas2770.h               | 12 ++++
+ sound/soc/soc-dai.c                      | 40 +++++++++++
+ 10 files changed, 345 insertions(+), 49 deletions(-)
+---
+base-commit: c8d8605fc53e8072848aadc7a5aa00c2f5143cac
+change-id: 20251201-tdm-idle-slots-10ba92516da4
+
+Best regards,
 -- 
-2.39.5
+James Calligeros <jcalligeros99@gmail.com>
 
