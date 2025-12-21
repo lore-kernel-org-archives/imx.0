@@ -1,60 +1,60 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9D126ED3B
-	for <imx@lists.linux.dev>; Sun, 21 Dec 2025 21:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F6026F295
+	for <imx@lists.linux.dev>; Sun, 21 Dec 2025 21:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766353852; cv=none; b=f3fQqXaV09025zE/qiM5tgWoWkAF8+l92IEtMVPvG/oOO+xrTZj7iL7Yt9vp1/Oj3dBkJY/CCF2vCf4IhlpdF+bi3RYET7GIuHkHgMYUZ+Qs7eZS8Y5gZdLn1yD5wwMlu6QxRgdTelM0abJMjdyZGwcK0h9qQbJBqmxhzUElZ+o=
+	t=1766353920; cv=none; b=SFMM3RJctRBWQZUi+AAdoBCQMN0QE8LYKk/o0oxOK/7nTzwlwJqNSQM38UHOseHPH+e9Z/AR5qfUoGMK/JqyoYj4qnTuOcwpSbX9/VbyRlAh2e8YwzDILFOcsYia7uesTCmena5jj+8FpZcI5J72yxR6cOJdpAbY63v/5MxdSko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766353852; c=relaxed/simple;
-	bh=I8ESPuhbHJz02YptQK1tw7Lrl7Cucbn6A3EDj5euzbk=;
+	s=arc-20240116; t=1766353920; c=relaxed/simple;
+	bh=rCv4G4ZvpwPYN7jvzeJNzTGzYbAJCmcgEYZi8qw+CSQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LglQ/dYXTflSPIKuXkRDy1gIfo3946+fEyYjJDp/Z977wQ5VBrZp28UE1+vopHYPAB5me0su4TSX+QIxXK8CrnPCB8ll9eLTlKqJwmA48V5NP76U0434ICXcaVOUjDx5eT6hObRd/B31/gJ3qMuDhCJLpB64zPIEe2M0oICNTyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=cvEheZHe; arc=none smtp.client-ip=209.85.214.169
+	 To:Cc:Content-Type; b=Y0XGNgD3nUAwMGyi4ML2IfgMCIfdiMcCIxBuqhru5IzO0P3/IUVJdCQxgTSyOBGEh4g8wJ+z0ZkasDRb+jEtfDUXR/aKHkN+PpCWBNNPhe+DBRSYCVuOUXYp3mUVAWyosSQuqpWWzfLPJBzQs5wzM3YoI6t9ed3w3QyGr/GTka0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Cchv/K8B; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="cvEheZHe"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a09757004cso42452635ad.3
-        for <imx@lists.linux.dev>; Sun, 21 Dec 2025 13:50:50 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Cchv/K8B"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2a0a33d0585so31181195ad.1
+        for <imx@lists.linux.dev>; Sun, 21 Dec 2025 13:51:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1766353850; x=1766958650; darn=lists.linux.dev;
+        d=googlemail.com; s=20230601; t=1766353918; x=1766958718; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I8ESPuhbHJz02YptQK1tw7Lrl7Cucbn6A3EDj5euzbk=;
-        b=cvEheZHeeXNTXZw5HaJukHQmG6cbwMHMt7ayA2msHR3wHcBfDQ1Km3nM9gH1l5W1Zx
-         dVz6j2MahfS16I6FfnytQVpsBC2W8OheGi0Wx4LYqSQdlxeeCdJh0LQdMkTWBug5RvQ9
-         r+OIxiOuBafJ2yTgfBID9mR9/BtfTJTHveB2tSswASzHlV+Z3V6PaFrwX5AI9r2IC3Mx
-         TZbyUG9A14bgc7iRM5c1adS5GWKu6jWeq4uB8IhH4KfiP4AMfn7jSlWA7JldZtdQZlNb
-         e9pCHfforuIdHboyWqZONLPYDxrIbA/fKU6MaU51tRMHCpme7sgdaDKgeb0DGaas18dF
-         ey3w==
+        bh=rCv4G4ZvpwPYN7jvzeJNzTGzYbAJCmcgEYZi8qw+CSQ=;
+        b=Cchv/K8BfdK5rfHo61w7XGzT3HZ1j4jytg7B1GOL46ppoXKMPM9zMKP4P9ODWDGcoP
+         HnPYqXEQMPE5+PFNdNPrGFwY+7mVZb6VhFxSI5yWd7ORhplCZ8wEecJsICh9tkOfBLrz
+         GTW3HEuB9zw1/Ey/S52GHUrXLNWxZrJu25QhXoUYw+E7aGg1Ix9B+XRFQj9fR7inqv9I
+         eNDnZX5RTvO90Cn5JJUjMniSmsCB1fbWvV10lZjyz1C6TORP9K5Zaac3iIX/H6PDnqvG
+         jKE+YzbWbVV97oW6lQml3OyJ/Lu+HjutaHlFZJbYUGp+PekX2bC6j2sNT/FSxD9jJW7n
+         xIKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766353850; x=1766958650;
+        d=1e100.net; s=20230601; t=1766353918; x=1766958718;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=I8ESPuhbHJz02YptQK1tw7Lrl7Cucbn6A3EDj5euzbk=;
-        b=TViKolCMrTdTRwOav1mc18hyEalhfvbJN6C1nyRMf2/VjLqmtlZL4rQ9AwfGhND/e2
-         uvDhcwhaD86UNPcM3R7MPtn0cab4m8k+duyMqvrp08qrqIqv2F/6tJk0b9dOi8wYDUpu
-         4XIhPHEIr9HQKAaAw2nfSf0NQlKnogg0oxeDWYGW3AZrl+KxSjEV3shkQAJBu97p038K
-         twUHzU4Kht1FhmC2LpZgTuQJkIb08yriIDVc4VWscKAaRue0PFaOoGCirmGKbDOks5yI
-         wbSB16Vm6cc9jT4Pn27Wqj0f+nyCo2Pwwys9oHwK2et8CIY8cmmLz10I6FkgpBHcyhAp
-         +R8w==
-X-Forwarded-Encrypted: i=1; AJvYcCX017wLQ9m9MpUwfS/EAP+jmqPedRBeg2bC3kXr6QXeRU3TzWOM858Ba2ZRGc/Jsb1/cn8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw+PRCwXZrMFCj9oYgb13GXYz0q/i32gpdI/X9I7SUQS5pl70jM
-	h+R0xU60oC03/Ez39GbC20FTlUjvc0vXNkdSh8zufvINhlf12f4+vJKce194rSxJTbXDw+Zz3Fq
-	TcpfuQn3vlforJXJVesu0f8WHBj8VkCY=
-X-Gm-Gg: AY/fxX6oJBg6DuQSbSq6nuj7vd6jH50UNLiMV1mdWJhCVD0LMp2TNsHQBJxJcW4pkQe
-	J3Ushpm/M8weAvFYJeVYuqAtvIesCbC5HJtmPhGWFLVQejlHI9gWb3K3FzVIKOS7vFczptX5mwe
-	mDP49lb70Mk/fW0OKFHCs2UBgZWh3vmyGrbtE0WElJbFa/wj4uk5vVX6A1juY4p8TnXH+ob55Sf
-	ASjm/RrnctzD0iQlGxuelAxoREWooe6B7NGVkxd2KdSwDHtdlCnnTneP88FAXlRka9prqpRQb0g
-	XEGtdsyJQGjAJwBXsbGD23A6KYUO
-X-Google-Smtp-Source: AGHT+IFmGLO1ppe7sd+ZWkCXr5M/lVGVTY4CkYOHQyHuMOoqYtObXJlv15dAaXOXobOy5zBtPFDXPUKZsDC8LF455xI=
-X-Received: by 2002:a17:902:d2d2:b0:294:f310:5218 with SMTP id
- d9443c01a7336-2a2f1f904a0mr102182675ad.0.1766353850211; Sun, 21 Dec 2025
- 13:50:50 -0800 (PST)
+        bh=rCv4G4ZvpwPYN7jvzeJNzTGzYbAJCmcgEYZi8qw+CSQ=;
+        b=PwizcWRikaf9smckEI4dCpfrskNWT+/PugjPxjikN0PZJzW+SCzrHsh559uI4D6EIa
+         CESwoNeB1VolH0evPc1/edCOqNnIDmZnmoKTdfGElxAwU57+TqkJE46/V7F2+Wlydhln
+         eXLigLW+9oAB1PPKjahAdJAqAQYDWkceYiKv6FdtPWKcpDDJfSYtk1IT/zMhuWXallXk
+         2uNoLwSCkv18E/zE3J3xVKoYdWjoXkfHrmdXV9P6QSjkFPl17AudXgdm8JBAnloFlu9T
+         ZFPMkG91YgJOIHwHPYZ6BxDnyQlS1XIEnVJLjY941ymlOAYgKpmrlyHjnmIwjjn0JVLX
+         Rk9A==
+X-Forwarded-Encrypted: i=1; AJvYcCVaYWACiiUd9LCbghInTsFnme9ZSQol7y8Sua+klGJcVyQj9JqZ6o6SwKaVxTpghGfBtw4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzIB4LcHX6k6szgCahS4usU7uSaft7p0A411d8pSC1yoPu2Yml9
+	RboO3j7/VGHiblO3Q4EXHs+dpsbk1LOPKdCNbLREBCRaq6UREyt38LWW90xtJ6sUWhMeOHrgbuX
+	RdOynewXO6HN+qJc//EMnHrSn5PmXWpk=
+X-Gm-Gg: AY/fxX5tVxmoJ9JrZTyNytPJVASglvpmkFOUYFr3RQUpzzAd0fLHW/v8pP2vAynu0GQ
+	6LqRMdBaOE/Wde11ExrhXk4aI1RqfcVgcfDy+uY2yzK+OZiNRuICWCRkNRySrMm1bxttrWBJPCc
+	rhsPBKLDHYF1uzd4yZIk6IHmXlTELWUY4AloPHhrPwvqS0kuTSXoJ4OdE/2CXSMKharmL6C00tL
+	mugyO+fmA/LUm9KfKrQU/2yuSV9cyoXxdtDlDwTwosNx4bY9n71ryGQEnMVZs61GD2gF6TvSOWU
+	MwuUQVCxPokrd6hurhcN/KCQTwdl
+X-Google-Smtp-Source: AGHT+IFhVsKQ8B8hFSiqKoLGfXbsRY75c2m0MOxZCySUkGexjvaMcQL0jHgp8m1+S1WmJwyBE3X0eYB56oovc6ceHh8=
+X-Received: by 2002:a17:902:ccc7:b0:2a0:9759:66fe with SMTP id
+ d9443c01a7336-2a2f2735242mr95258195ad.32.1766353917909; Sun, 21 Dec 2025
+ 13:51:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -62,13 +62,13 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-0-b5165fab8058@bootlin.com>
- <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-11-b5165fab8058@bootlin.com>
-In-Reply-To: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-11-b5165fab8058@bootlin.com>
+ <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-12-b5165fab8058@bootlin.com>
+In-Reply-To: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-12-b5165fab8058@bootlin.com>
 From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date: Sun, 21 Dec 2025 22:50:39 +0100
-X-Gm-Features: AQt7F2oD-fq9YbJ8bBaEtNQvS-l_6JEvIhNv2LhoefMzto1ImTx3Z1Dec3fhOSc
-Message-ID: <CAFBinCArG=-pNRHZTdZX1CDDPrs02zpRJ29GSEUA6TcUckQvww@mail.gmail.com>
-Subject: Re: [PATCH v3 11/22] drm/meson: encoder_dsi: get/put the next bridge
+Date: Sun, 21 Dec 2025 22:51:46 +0100
+X-Gm-Features: AQt7F2rrzqrcB2CqEcsVtsm58CwTVijhfO5EKXQK9KI68D9dnI-HolBL_A2auf8
+Message-ID: <CAFBinCCUVOYsiwwVmyGtxN=MdqYatAaj-piVO9_E_iZX9gwiMQ@mail.gmail.com>
+Subject: Re: [PATCH v3 12/22] drm/meson: encoder_hdmi: get/put the next bridge
 To: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
 	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
@@ -98,3 +98,6 @@ be
 >
 > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+And additionally I runtime tested this on meson-gxl-s905x-libretech-cc
+where I still have HDMI output, so:
+Tested-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
