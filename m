@@ -1,111 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB5E22A7E4;
-	Mon, 22 Dec 2025 15:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1964B30AD00;
+	Mon, 22 Dec 2025 20:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766417984; cv=none; b=gjvlBquImW2nPknnnBQ8IsPb0wTfWYVIrZ+XqHL0WCOZiFxcEE6SFiHYtb7jRlHieYqgRjnDJ5b88ErSYT6pyrzAuhtr8sJIRruskcfuaGnxU6AnZ56+ravS+2D6z9PATwGA+IAPj0Qw6dEwXQCpRtm2+PO0bjUPMpiLisVCtC8=
+	t=1766435836; cv=none; b=OvJIWgZTJh2fQa7rtfOYbarLeHC/rCEFW8P9q6Sm7YY7etv2O9BHFcM2ZFpNB5MKPVfMR9/da2EMExGOo4YCU9mv3lyy8ukUkURKs8dpZwgo8zByjBZcnPam7pTj5q+vG1DhINjpJQjooARCNeYurbCqFd9wLiouYgLi9ewzp/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766417984; c=relaxed/simple;
-	bh=/V5uTkOThZLY7I30BoPQTRuIgxnr/DGzQyp/Dlcr4so=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SFTRWkTXSsruVN+t5UQwTzgUh9plHISP1o69GhlJVC7ul2p2zRzL34oiWB2VnF9XgVhBGkg6jUem65sxXV5xjQp/LzERh2vDQbkGnzBeKffI65LX7Wftw62Y6erlYBZ8Ucbtp/ICIbcaSrBpkG69dwtZBh4cYZHrgUX2lb4znZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmYV56Du; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766435836; c=relaxed/simple;
+	bh=avFh/5KlmZ4H2n0ov6fHQrLzx9Hy3EwavKTT+11CZD0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WR3jHgUS5rLpZVwsxNMF9wmJomjm6ffVFkVRPoYRKs1nRz98KxVgNak0+sHsIGtXNCd1IeArV2SQRzkWIQnd0zZ80S/KCgktW+u+g5QYzKsxBptOH53SkWDAjnuIWXoRI3fTO7t+xL0U6yu8T4+z61x4SlRaZ57vAz7YtBdFnuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kouMa512; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmYV56Du"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B28C4CEF1;
-	Mon, 22 Dec 2025 15:39:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kouMa512"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D6AC4CEF1;
+	Mon, 22 Dec 2025 20:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766417984;
-	bh=/V5uTkOThZLY7I30BoPQTRuIgxnr/DGzQyp/Dlcr4so=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=QmYV56Du/16g5xUSf47U7QaqsJjAZ2u7QwuZVCJx9Nk5SQJ4u8m6YQzb4cyZQclbu
-	 G0mVSmXctlI5ZUm+KoCQ7KDpoVi7R7CfcpqKoOQc2WcPlbgxSckbmDE98j/+YY3Kka
-	 HPTZ3RuKE1dLljNhkawAHEqdjAt59GHgySCDrlgwE69TAPjDjYUZ6BuvyCpqQVrt5m
-	 2ZzjDFCUbQf2ovaD1WeEPwmKxa8Njn7zNq5mB6YX/aGxHhapu2KcS1cpHqH91U/RIZ
-	 o+ETH/Xdrx4Q39/fVmHCzgPtvO6uJ3wmMGL3eu68rmkQkNJaBAtV6IbpOEc8cFxP62
-	 WmwQnOEATKJiw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Haibo Chen <haibo.chen@nxp.com>
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,  Pratyush Yadav
- <pratyush@kernel.org>,  Michael Walle <mwalle@kernel.org>,  Miquel Raynal
- <miquel.raynal@bootlin.com>,  Richard Weinberger <richard@nod.at>,
-  Vignesh Raghavendra <vigneshr@ti.com>,  linux-mtd@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  han.xu@nxp.com,  imx@lists.linux.dev
-Subject: Re: [PATCH v2] mtd: spi-nor: micron-st: add SNOR_CMD_PP_8_8_8_DTR
- sfdp fixup for mt35xu512aba
-In-Reply-To: <20251215-nor-v2-1-e75c0451e597@nxp.com> (Haibo Chen's message of
-	"Mon, 15 Dec 2025 18:04:36 +0800")
-References: <20251215-nor-v2-1-e75c0451e597@nxp.com>
-Date: Tue, 23 Dec 2025 00:39:37 +0900
-Message-ID: <86fr92cypy.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20201202; t=1766435835;
+	bh=avFh/5KlmZ4H2n0ov6fHQrLzx9Hy3EwavKTT+11CZD0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kouMa512U+X1QEd/IVdMhpqcLqsF3TSHlQfGnO04PKLkR9e22OHyMNG+ZFGa+31s5
+	 cznAMCFqb/38WOVX62S0w+d9o7EkTNclBBvf+fMH1iFaouWkYRqoZF2RNQahK7xpeI
+	 b3N37JeluyUOuvvkArvkY8K5i7htqIdWGTraSmRc1PjoATr6UOPKYrC9Zx7YAaPGSc
+	 LM7tNjDCM+Er7rMHSbtWetLqlQmMCCimAUX0iAfXjAAzfKN7s9q4usQB8PF6Ct1cvc
+	 qHr4DgmlSIHrEEZ0MlEGrQlOQvpbHdPP3lOGYrOtnDyjicaitt9pLhRykw++osF21s
+	 MHnRXLrTuR95A==
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Linux PM <linux-pm@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Brian Norris <briannorris@chromium.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+ imx@lists.linux.dev
+Subject:
+ [PATCH v1 19/23] pmdomain: imx: gpcv2: Discard pm_runtime_put() return value
+Date: Mon, 22 Dec 2025 21:29:41 +0100
+Message-ID: <15658107.tv2OnDr8pf@rafael.j.wysocki>
+Organization: Linux Kernel Development
+In-Reply-To: <6245770.lOV4Wx5bFT@rafael.j.wysocki>
+References: <6245770.lOV4Wx5bFT@rafael.j.wysocki>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Dec 15 2025, Haibo Chen wrote:
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-> Find two batches mt35xu512aba has different SFDP but with same
-> jedec ID. The batch which use the new version of SFDP contain
-> all the necessary information to support OCT DTR mode. The batch
-> with old version do not contain the OCT DTR command information,
-> but in fact it did support OCT DTR mode.
->
-> Current mt35xu512aba_post_sfdp_fixup() add some setting including
-> SNOR_CMD_READ_8_8_8_DTR, but still lack SNOR_CMD_PP_8_8_8_DTR. Meet
-> issue on the batch mt35xu512aba with old SFDP version. Because no
-> SNOR_CMD_PP_8_8_8_DTR, micron_st_nor_octal_dtr_en() will not be
-> called, then use SNOR_CMD_READ_8_8_8_DTR will meet issue.
->
-> Fixes: 44dd635cd632 ("mtd: spi-nor: micron-st: use SFDP of mt35xu512aba")
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-> ---
-> Changes in v2:
-> - add 8D pp command in post sfdp fix up for the chip with old SFDP
-> - Link to v1: https://lore.kernel.org/r/20251212-nor-v1-1-20a5a381979c@nxp.com
-> ---
-[...]
-> ---
->  drivers/mtd/spi-nor/micron-st.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/drivers/mtd/spi-nor/micron-st.c b/drivers/mtd/spi-nor/micron-st.c
-> index 88033384a71e5d19f5a26ca91f56a49e3017183a..5797bb748be696b340ff1398155f5ac8b1f74055 100644
-> --- a/drivers/mtd/spi-nor/micron-st.c
-> +++ b/drivers/mtd/spi-nor/micron-st.c
-> @@ -167,6 +167,10 @@ static int mt35xu512aba_post_sfdp_fixup(struct spi_nor *nor)
->  				  0, 20, SPINOR_OP_MT_DTR_RD,
->  				  SNOR_PROTO_8_8_8_DTR);
->  
+Passing pm_runtime_put() return value to the callers is not particularly
+useful.
 
-Please also add a comment here explaining why this fixup is needed, as
-Michael suggested in v1. Probably a shorter version of the explanation
-in the commit message.
+Returning an error code from pm_runtime_put() merely means that it has
+not queued up a work item to check whether or not the device can be
+suspended and there are many perfectly valid situations in which that
+can happen, like after writing "on" to the devices' runtime PM "control"
+attribute in sysfs for one example.
 
-With that, feel free to add:
+Accordingly, update imx_pgc_domain_suspend() to simply discard the
+return value of pm_runtime_put() and always return success to the
+caller.
 
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+This will facilitate a planned change of the pm_runtime_put() return
+type to void in the future.
 
-> +	nor->params->hwcaps.mask |= SNOR_HWCAPS_PP_8_8_8_DTR;
-> +	spi_nor_set_pp_settings(&nor->params->page_programs[SNOR_CMD_PP_8_8_8_DTR],
-> +				SPINOR_OP_PP_4B, SNOR_PROTO_8_8_8_DTR);
-> +
->  	nor->cmd_ext_type = SPI_NOR_EXT_REPEAT;
->  	nor->params->rdsr_dummy = 8;
->  	nor->params->rdsr_addr_nbytes = 0;
->
-> ---
-> base-commit: 4a5663c04bb679631985a15efab774da58c37815
-> change-id: 20251212-nor-2f37cf12eeca
->
-> Best regards,
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
 
--- 
-Regards,
-Pratyush Yadav
+This patch is part of a series, but it doesn't depend on anything else
+in that series.  The last patch in the series depends on it.
+
+It can be applied by itself and if you decide to do so, please let me
+know.
+
+Otherwise, an ACK or equivalent will be appreciated, but also the lack
+of specific criticism will be eventually regarded as consent.
+
+---
+ drivers/pmdomain/imx/gpcv2.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+--- a/drivers/pmdomain/imx/gpcv2.c
++++ b/drivers/pmdomain/imx/gpcv2.c
+@@ -1420,7 +1420,9 @@ static int imx_pgc_domain_suspend(struct
+ 
+ static int imx_pgc_domain_resume(struct device *dev)
+ {
+-	return pm_runtime_put(dev);
++	pm_runtime_put(dev);
++
++	return 0;
+ }
+ #endif
+ 
+
+
+
