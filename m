@@ -1,41 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1964B30AD00;
-	Mon, 22 Dec 2025 20:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BBE320A01;
+	Mon, 22 Dec 2025 20:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766435836; cv=none; b=OvJIWgZTJh2fQa7rtfOYbarLeHC/rCEFW8P9q6Sm7YY7etv2O9BHFcM2ZFpNB5MKPVfMR9/da2EMExGOo4YCU9mv3lyy8ukUkURKs8dpZwgo8zByjBZcnPam7pTj5q+vG1DhINjpJQjooARCNeYurbCqFd9wLiouYgLi9ewzp/M=
+	t=1766435856; cv=none; b=pf/mLB+ntf816V1hqoIbJBTKNgzhqaHvIJBAH6vwI2ZgFC95W4m8quFt3hRljSO+tgSiQR8f50zDG5RyMkda4oNTNBKpDBMX86nMJ1CIy96z4+zWPZFzbwVBYGHM05+e+wGRUN1v+v43eYCUGrhrBF9EpL+oPzPy6sIVBn3mZKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766435836; c=relaxed/simple;
-	bh=avFh/5KlmZ4H2n0ov6fHQrLzx9Hy3EwavKTT+11CZD0=;
+	s=arc-20240116; t=1766435856; c=relaxed/simple;
+	bh=s8U1CydswO0VHrV1/b5U9Cm0WygeIhxn3DiIa3asjrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WR3jHgUS5rLpZVwsxNMF9wmJomjm6ffVFkVRPoYRKs1nRz98KxVgNak0+sHsIGtXNCd1IeArV2SQRzkWIQnd0zZ80S/KCgktW+u+g5QYzKsxBptOH53SkWDAjnuIWXoRI3fTO7t+xL0U6yu8T4+z61x4SlRaZ57vAz7YtBdFnuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kouMa512; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=cwCx3hQgtYTryxKBaHb1OOeYpw3o+0JiUAC6/MzwH2zhw5peiicJmTyRunlC2TQOTlyGIUkFhBstvGObsYl2AAHYFoVXw2SEvs7BJMn2SCAwrPpFI7ZECS/3Kp1dGC1hVB8+v0BP9mAzu1iPdNT11RA293c0awEooYChsw9CjC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cA1aT98U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kouMa512"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D6AC4CEF1;
-	Mon, 22 Dec 2025 20:37:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cA1aT98U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E86C16AAE;
+	Mon, 22 Dec 2025 20:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766435835;
-	bh=avFh/5KlmZ4H2n0ov6fHQrLzx9Hy3EwavKTT+11CZD0=;
+	s=k20201202; t=1766435856;
+	bh=s8U1CydswO0VHrV1/b5U9Cm0WygeIhxn3DiIa3asjrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kouMa512U+X1QEd/IVdMhpqcLqsF3TSHlQfGnO04PKLkR9e22OHyMNG+ZFGa+31s5
-	 cznAMCFqb/38WOVX62S0w+d9o7EkTNclBBvf+fMH1iFaouWkYRqoZF2RNQahK7xpeI
-	 b3N37JeluyUOuvvkArvkY8K5i7htqIdWGTraSmRc1PjoATr6UOPKYrC9Zx7YAaPGSc
-	 LM7tNjDCM+Er7rMHSbtWetLqlQmMCCimAUX0iAfXjAAzfKN7s9q4usQB8PF6Ct1cvc
-	 qHr4DgmlSIHrEEZ0MlEGrQlOQvpbHdPP3lOGYrOtnDyjicaitt9pLhRykw++osF21s
-	 MHnRXLrTuR95A==
+	b=cA1aT98UnLvjBoGeGqk0TzwvOfi2R8HiihJ9HLXfNvoU3NZ56e0+Tac+UBvIs21dN
+	 4u6aoHzoucUh4wGOL3whtSqlAfzHmtxQ+BBgAYPihc6T3uC5Fs7yi9MlsObeu473GK
+	 ZwHspH1/yDRJMxxK2tMDhGeu+ZJPg+ZggG+IHoHPfLpMx3s4D2jnJpxNsoFYaOO/41
+	 AeujObkfnk1+qYBYjGBRAzODpUru8YM43Mh5vvKF9fSNWVUfxCsZZniOSMirLI/VTQ
+	 NBIU6pHjbRa+4mvDRhWQfIwhFKqczcod+5Fab59nG5pjzilzS/7UW5X283uz05acZP
+	 jxtgmAKKFF6dQ==
 From: "Rafael J. Wysocki" <rafael@kernel.org>
 To: Linux PM <linux-pm@vger.kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Brian Norris <briannorris@chromium.org>, Shawn Guo <shawnguo@kernel.org>,
+ Brian Norris <briannorris@chromium.org>, Vinod Koul <vkoul@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
  Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- imx@lists.linux.dev
+ linux-phy@lists.infradead.org, imx@lists.linux.dev
 Subject:
- [PATCH v1 19/23] pmdomain: imx: gpcv2: Discard pm_runtime_put() return value
-Date: Mon, 22 Dec 2025 21:29:41 +0100
-Message-ID: <15658107.tv2OnDr8pf@rafael.j.wysocki>
+ [PATCH v1 13/23] phy: freescale: Discard pm_runtime_put() return value
+Date: Mon, 22 Dec 2025 21:18:46 +0100
+Message-ID: <2012926.taCxCBeP46@rafael.j.wysocki>
 Organization: Linux Kernel Development
 In-Reply-To: <6245770.lOV4Wx5bFT@rafael.j.wysocki>
 References: <6245770.lOV4Wx5bFT@rafael.j.wysocki>
@@ -50,18 +51,17 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Passing pm_runtime_put() return value to the callers is not particularly
-useful.
-
+Printing error messages on pm_runtime_put() returning negative values
+is not particularly useful.
+ 
 Returning an error code from pm_runtime_put() merely means that it has
 not queued up a work item to check whether or not the device can be
 suspended and there are many perfectly valid situations in which that
 can happen, like after writing "on" to the devices' runtime PM "control"
 attribute in sysfs for one example.
 
-Accordingly, update imx_pgc_domain_suspend() to simply discard the
-return value of pm_runtime_put() and always return success to the
-caller.
+Accordingly, update mixel_lvds_phy_reset() to simply discard the return
+value of pm_runtime_put().
 
 This will facilitate a planned change of the pm_runtime_put() return
 type to void in the future.
@@ -79,22 +79,25 @@ Otherwise, an ACK or equivalent will be appreciated, but also the lack
 of specific criticism will be eventually regarded as consent.
 
 ---
- drivers/pmdomain/imx/gpcv2.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/pmdomain/imx/gpcv2.c
-+++ b/drivers/pmdomain/imx/gpcv2.c
-@@ -1420,7 +1420,9 @@ static int imx_pgc_domain_suspend(struct
+--- a/drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c
++++ b/drivers/phy/freescale/phy-fsl-imx8qm-lvds-phy.c
+@@ -286,11 +286,9 @@ static int mixel_lvds_phy_reset(struct d
  
- static int imx_pgc_domain_resume(struct device *dev)
- {
--	return pm_runtime_put(dev);
+ 	regmap_write(priv->regmap, PHY_CTRL, CTRL_RESET_VAL);
+ 
+-	ret = pm_runtime_put(dev);
+-	if (ret < 0)
+-		dev_err(dev, "failed to put PM runtime: %d\n", ret);
 +	pm_runtime_put(dev);
-+
+ 
+-	return ret;
 +	return 0;
  }
- #endif
  
+ static struct phy *mixel_lvds_phy_xlate(struct device *dev,
 
 
 
