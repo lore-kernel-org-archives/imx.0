@@ -1,189 +1,134 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011016.outbound.protection.outlook.com [40.107.130.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41931F91D6
-	for <imx@lists.linux.dev>; Mon, 22 Dec 2025 01:53:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766368423; cv=fail; b=iGqd8yFXb2/q71SecW9uDHX8pVjTJFnKLxU978DG5IDwj2HKvekSVEar3pErwuufBL7e6+kINJa7W6cMermkuUB3Q1K0dHemR9IMk1DiQX7vQO+LSXbaKze8ibgK3MYMxxRnIdlGPsuo5GBPLHGqkgAzbrjvzxzIW+XwOXtAZbA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766368423; c=relaxed/simple;
-	bh=khYmYsQ3OSnAaG3UE342T/uvRe/sYI09KbT6VCIhyeY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=iuvuPWRb6XC75Nj6qWBB0qVotQWJOdkf6yf0nT7NESiB42sFOM8bL8mu5R18MqT7dPz4sY9Rfyhn8a6CSMIjbiLzNInA3Py9FjULs8mfYVv2Gy7Sm+0n1//sfSknNd84/aTtWlXHl6LyPCNPM1eEUkNglQlKNxepAuot32l97+w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Wbj85sc0; arc=fail smtp.client-ip=40.107.130.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E82248F5C;
+	Mon, 22 Dec 2025 02:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766369158; cv=none; b=DO3I3w3jqzsDBgR0bGItMte98Gc6tro2pWScGKu6KzrZIy8E3nJ3YkBzDkY/UULbzQGm+eEeXLV/BcKq3hSNWJaPuVmrpiiNfmo1ct3j4oYbFFPfjL4fn2S1iYSyfajV2a/m9DSTNui+tCowgYEHYMu+wIZIMJ4Vhr06+wHNNyA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766369158; c=relaxed/simple;
+	bh=74Ut1XHK0Vm4PFNeT//uEB30ynxJ0edLsHANsPIf0HY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rQllRadUgCPhAwjvpcC1AbboVZHodvKwZR6y+raUOVcStuqTCXlMmE0fGoQyFKQDX8620bDgTGoxhJcmhL1UymwnOy8/r6Hxmbqcvr7MoXf3BfLo9kHHqUb7fNdcbKtOFTM9v/r9nygwG+ulUwSe7nac7/WV2soyX6UX+UOBYbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aS5C+Cq4; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Wbj85sc0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n9sYd4rgbQXrJrhccNohRnC0xADd/64SqBjRu31ydapGszMsiWSmNQoXlkFCFKAng0M6OuVS52GdjCILElFweFxauKOFw+rubN9uht3KQ43MXlYb6h4+2UyrkWEHLq6pWLWDgedfW2KJqG3ZpWYApQnMJjWBd96MX1XxQVx9VmUI05phLFVkFvrOYOrMyC5MVuEJLsPANhryngwckRlTe1hpN8t9zCdTg3fNJuNtD3vVUAhxZK+RwdYFw7SPa8QI5zs5/QcQk6MVHHEYzPpdbQpWNTkIX1N+XrScLd7thLooK09SS84Q07ZJN+7zbMPanK39oqlQWm0KehKTpY46rA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IkAQzukaIvfIMp044t3NTucy9WdQ4I96yz6iq2epCUA=;
- b=Jud3xU1baqykWkmUGag7AfX7VtpuwPMyIMwAFTZRxmjW7PbH2mgQitq30rCgFqTI0B8VG5+d2O3HZ4zfx9staZc7JDmztuMdYxBjWByUIDmH4MhPsoKXwQOcAv82M5diih4BZc9oNYVcvEhyrgBmwyMG2KF1nbBWZdblYvd0GGre+WucZ2R4Zt6Q2cUPKgttfcL6Lv5jPTDp34QGazWdDa+LjlwK7P33Hbp8BBqgE0hpVxiuWivDHdh+bxrbz9rsOX5E+babZf4CmzzLRLIPtcnQGIHGvIbZ7c0bJDBQ7pYP2a4wCx+Y9cF2XTFLwpqADl6Eyayl2Kuttu15Qh8Gbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IkAQzukaIvfIMp044t3NTucy9WdQ4I96yz6iq2epCUA=;
- b=Wbj85sc0/8sF7faJRSa59jrhSJ6j8ovwb9fZBEAHJHvkVOguInd03E/KIdqSXrC2y3Ia+DEg9TF+8nyXy9ior01Htk3y7TZoTiF3Q1xkkwGHcsLXfPcgopQtvsiFDDFgKdxMOdgh5yYQXkG129zDTtr49lQFpNYlS0EQF54mjocUOW1OugCfemwuoiQqh6PyKA30/A9/bHsm5ZuZNvrUxlUpv8lBRd33r++6R7hsI2xsUvMYed/d6ZmUB/c2pWwj/hW4Af6LqRD2jYNw+M75EtKMnr4sFX00pZK6oWOq4oow2esw1KMJ1VqbyqC+07EG3ib55ykannB9psLuTf6ZOg==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by GV4PR04MB11749.eurprd04.prod.outlook.com (2603:10a6:150:2df::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.11; Mon, 22 Dec
- 2025 01:53:36 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9434.009; Mon, 22 Dec 2025
- 01:53:36 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>
-Subject: RE: [PATCH net] net: enetc: do not print error log if addr is 0
-Thread-Topic: [PATCH net] net: enetc: do not print error log if addr is 0
-Thread-Index: AQHccMGDY6APgIKt3kWPjMG6vFtoF7Uq+h+AgAHvxWA=
-Date: Mon, 22 Dec 2025 01:53:36 +0000
-Message-ID:
- <PAXPR04MB8510C5F4EFC86B442216A34B88B4A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20251219082922.3883800-1-wei.fang@nxp.com>
- <20251220201835.p56yu6birhfv7we3@skbuf>
-In-Reply-To: <20251220201835.p56yu6birhfv7we3@skbuf>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|GV4PR04MB11749:EE_
-x-ms-office365-filtering-correlation-id: 81b2d154-ab6e-4f0a-1fd7-08de40fceb96
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|366016|19092799006|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?QU3nVu2oU5+Wi8jB72c4FUOp4oBDu4axrX2smncxUrEAONWT9yLvRembF3aj?=
- =?us-ascii?Q?5yExttxIwUFjs4eJKEzqbc8UbylLLBCxbOrBZeEakF00n2xuG4woYZnqfqlh?=
- =?us-ascii?Q?ZA87bdFpp+IS9G6lrHISP9v64K9sdLVE3dIBO344+9IMsMSkHR8wrD24QJrQ?=
- =?us-ascii?Q?1qChTcv0w8qDl/D4nhPRdbExe6XhJWp3pls5vv3emQzBaOdO1r6i8WyLioys?=
- =?us-ascii?Q?vLNXj3cRQmDH7GEuY7qVRjhfJSd4iTLNwKN2mmltErs7S7CF8qlQayJzDlQb?=
- =?us-ascii?Q?PqMj0mhLJ8ULe4jhDrhRzLh/KozsxR2j87JTUYd5gPw1DhhoOGLYk39aw77z?=
- =?us-ascii?Q?DB4FoZ402YMo5kz+58Wjd0DA/vdJlnK73dUbHy7TMvVMHVKWwczo23uI/bte?=
- =?us-ascii?Q?bezdXJ5YgkbdvoC8/mk95RFgAyRS4LoKE7IIpcu7bkiiF93EVOpzblCRc6/x?=
- =?us-ascii?Q?jwuQt6zCRXJvwS5ydA2bax7CIRUkgwgwEtkPmNnv2w/D6CGD37w+klF3t0+X?=
- =?us-ascii?Q?Yc2WCLHmpSpynCIlF6aBq20xHFFbOid8zCAyPI3jCDRO+TSazsSYR8Yv1fU2?=
- =?us-ascii?Q?6n3bwS1+Q2zXVWNn0b0hnWpvy3tcd5L5B6SkgAOJr6QYwYQFd60XmugxO4oc?=
- =?us-ascii?Q?pt12Y0TV91JTHWIAf8JS8L4+0CJKMAdN0hBkL2WR6XV+B5KLA9y5W6Q6qmt/?=
- =?us-ascii?Q?wLXXU9LkuMC2Wtb0H5XwP7AszmG1yR5tIA6xq/xdgS0mEWqWuuvpWU278Lsu?=
- =?us-ascii?Q?kNDzU8Nvhgq9JVGo1lw8/uPDwdo72lJpRilaycD/2eI5Bkla5PVEeV2L3qn2?=
- =?us-ascii?Q?1hCLOLvXDu1163XzgFUNNr8UwoQGFQw+uWOceyQUsYeTMT16jhYA9f9yfkYZ?=
- =?us-ascii?Q?/hrT7k08TYP2RAD6E/hzU/tD7jvKYeV5guUDOoJD+9jVO399aLMbiOtowemC?=
- =?us-ascii?Q?WWzDWQ80Nay8ax6a7zORKn1Uf5o3ZpsJ8TeaSR8JmoeMIGxjpILcMExWqYpt?=
- =?us-ascii?Q?sXmvQlC597d3/lN15QYsn2jYRgei/AClWN+04kwN9CncIGtx16QUP0WrIAvI?=
- =?us-ascii?Q?wxvX4eonfxXxMCV0OunyEynIFKTXSbH8Iu/lL4aKuec0IkPuixSfF7LIlHaj?=
- =?us-ascii?Q?9ISIXRiUar71Oe4apDzy8dpF90IS36kGo33KMADpnMY1WIQXoQYls54Zt5Um?=
- =?us-ascii?Q?EIn19cidLREt6I3eH0eO45R2bh5Hc5F2tEdCKyF/oS2JWzRTTjysushq6vfN?=
- =?us-ascii?Q?RDXWdcLCYtrpeJN4FqvQusCA8flfe4qa2Gm+l/Ea3XfN+Os/XAMrQxIv9Fap?=
- =?us-ascii?Q?9b6OTX9o0oyyaCtE8r3Ldoxfw90j+H5DRLJTShUauvDQXCqRrtmX31Hi9X/g?=
- =?us-ascii?Q?Lt3xkwCLLoAklb8R+X4vLS0+aT5iwrWeZ5RzJGXh+zAXWkhTI5/JRLEtZCFt?=
- =?us-ascii?Q?RZ1OnR/hLXRvtScjKjq8yDcjSm7FLWc4wawGIUB4kfZx3WhMIkAiA/BmuQPI?=
- =?us-ascii?Q?MwAS+GR2qezbx+kafV0lzCwWXTOo2AR92VbP?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(19092799006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?BvqdwN5SukMFgBsy7rhL/TJcDX54Xw+C4ufbeYYIzbZiPihiYNr+AMOig+74?=
- =?us-ascii?Q?kQy/WC1D+V3prwEFBdUMHThEAnSfSFEc50l4NblX1gai4wgX4nBChCZo7+rr?=
- =?us-ascii?Q?M1KJYB+ylqEMzB7L7WEMk5O1gdXpPi8q8P3pGxirti9FuyiybQYsIwpy9B0h?=
- =?us-ascii?Q?oMpO5OptKw3OFPKr0rZEpdkKhQM8ZXjzutL9SM6vROA8dORJOdBDyu2TWSyz?=
- =?us-ascii?Q?kVOtrPpnujVDU7pXzEhqw8vRCXBRUzZxTSUc/IhAM7buewGQ3lfJ41cMUsFp?=
- =?us-ascii?Q?tLtu98FEqv40nGFKuu/Chui/gQasdR/ptWIRcWSFM3DDRExD/yXjACELQyUn?=
- =?us-ascii?Q?VXaGcir4+OCS2y8qxqA0HkYiwoNfvlh3LyYYVFLlRiY1YeQWwZdCpjMEfYuR?=
- =?us-ascii?Q?rmgm3HB23M9m2sAi3usunNSevfy79e0wS+uS1w2WXv3qFC78esnJFRqb8Nfi?=
- =?us-ascii?Q?AiW079P0yXSPF7FCj/jozcQW1YsxBO70sGNFtbxFRpMil7F9BEMCl6o2/J9j?=
- =?us-ascii?Q?ShVKGD/eupUQmeqXsjtvIbE7N9qorO2kAZ3wNo2ayl8yFLxYxSZ3hCpFEA6t?=
- =?us-ascii?Q?McOsDwRo0Woqg7ECQLuP++injP+jBIF56LYFDs1oC+YDX/Mj5fldkxcC4HxQ?=
- =?us-ascii?Q?Y0H3ii5scFv4tVP/VCqfFfe4YXHsg7a+4Vi3s1gBUnipXy/F5YNyoHcnmPYb?=
- =?us-ascii?Q?Hr1bB9QZQ2yJ8tPtQuFMCWRu4zHiITKJIcpFira1Ogcgq1hA4AD7VoBtkNiS?=
- =?us-ascii?Q?bqgn9ViWs2RC/dh/sTGl87EeQQr1/s7btkf8j0PSFPf8HJ2cHKR5s9p/XfXk?=
- =?us-ascii?Q?sV6kF1IRWYsveySoSeWM7Ijr9+5GYXO915eAbCkAaOjfh20TzZZeXoIVoz4A?=
- =?us-ascii?Q?Je6th//wZcQNvcSzYcFs9KYTUNPRR9T7rrgiXJwf+Xd7UHGiDsn8Esit/XFn?=
- =?us-ascii?Q?ScL18K5EV2RO2NiDwiQONNzh6KJ9zEvwhN9cMYu0n4sIyW4Dp9+PT/vOBFC7?=
- =?us-ascii?Q?TzEtD0ENS2s6ABc1fAqFscJbfVLKsx7WdaEgoebse9CjvE/3gX6D2YuEf0IG?=
- =?us-ascii?Q?/WqAiWqP8y/DRd29aKQR9uHaPtRiBIluzVciK6AkxRxuCVEtFNoOR+bMM48A?=
- =?us-ascii?Q?AhLsvY/1ZUI8UVEVkk9c3tuOVwsVJ83283h5J+SNt2Z4bTG+W+cY2t1A70ZV?=
- =?us-ascii?Q?txcnwuGiJ8subrqP9NQLSJvvQBknd/8hUJO7vT40Sf+q31S/wx9Na1cw0Ml8?=
- =?us-ascii?Q?YPq3wODD4bvHKnQGgm3Vvwy4hbChlbvbLao/96x6qVr7xn2kP4UGecNII3xm?=
- =?us-ascii?Q?3A5+EvopaheiaNiUhaB8T8hg+hySIZ7uRlvojyteldgM7kxKiHLQutraKmlr?=
- =?us-ascii?Q?p7bHVr71Su7VqUIt6v/oHFKAJAn91ekPrtHQoHUzAkTF4pxW03PGB5rXRIqG?=
- =?us-ascii?Q?C7ftiKsT1YRLa1c6O/0/Ct7S99eIOdAEg6jaLXVn20zHaRgIZyYp0qH+hUvW?=
- =?us-ascii?Q?bjnrGt6C4pVlj7RjNChbHcPnylqFoNtWLYQqkX8e+mi6Mj7Wz0nl0xg8DHFm?=
- =?us-ascii?Q?VGSznArC49k6VQ5FZY36HJ3zshzdJeoQvj/OPS41eKXP83E1dW5E5fR0juQ4?=
- =?us-ascii?Q?ngWya59Ilxqgdq37nyMc/4f6sfV4q4gHKlpkA6c1VwdtIeTI7/sqJPKIM+hI?=
- =?us-ascii?Q?ZE8O1e4qi3z3q+3M0Vs/K6KW3PkmPRSweW3xLpfo9L8gETZR?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aS5C+Cq4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1766369156; x=1797905156;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=74Ut1XHK0Vm4PFNeT//uEB30ynxJ0edLsHANsPIf0HY=;
+  b=aS5C+Cq4daRQr5kEiMNanZZBQZdlFnGNUkSGtVktj1sjy7zFnskhYUjV
+   xdLtZTfOzXkRKmNMFEoSsCCAL0cE+mbUy6Rt+zs7Dau1d4iX7/bMwLToM
+   IAVCtJ0RhihZiq+Zn64QvbOWspBI13ujp/9Jg9Aoh8uA5I+rzfn1H6qyU
+   34zeqnUF72ymZG6xSAprxVH4K+V0K3GBP3WAHt1Zs1TnAoqZwbPiznCAE
+   gl1IWRVuLrQBBnkBEqXrT+58Kdm+8fhtVP7fPfBUtbMNzACbvAhjP11hI
+   /QBSamFhR/4Qoyvl+LApEdR+1sd3WyCBao+UmARLBHbep47fO8yiJrYRr
+   Q==;
+X-CSE-ConnectionGUID: OLi4P90MRBCZR2e0DSD9Rg==
+X-CSE-MsgGUID: voDBJ0bkTr+5r4adf16WYg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11649"; a="68380077"
+X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
+   d="scan'208";a="68380077"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2025 18:05:56 -0800
+X-CSE-ConnectionGUID: yyog3z2hQm6/itLrAJirFQ==
+X-CSE-MsgGUID: G27CFI2eSW6N9+rNHGbJrw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,167,1763452800"; 
+   d="scan'208";a="203873738"
+Received: from lkp-server02.sh.intel.com (HELO 9d662e18a02b) ([10.239.97.151])
+  by fmviesa005.fm.intel.com with ESMTP; 21 Dec 2025 18:05:52 -0800
+Received: from kbuild by 9d662e18a02b with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vXVIY-0000000003B-2U6u;
+	Mon, 22 Dec 2025 02:05:35 +0000
+Date: Mon, 22 Dec 2025 10:03:00 +0800
+From: kernel test robot <lkp@intel.com>
+To: Pankaj Gupta <pankaj.gupta@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v23 3/7] firmware: imx: add driver for NXP EdgeLock
+ Enclave
+Message-ID: <202512220932.Gu4LnMge-lkp@intel.com>
+References: <20251219-imx-se-if-v23-3-5c6773d00318@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81b2d154-ab6e-4f0a-1fd7-08de40fceb96
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Dec 2025 01:53:36.1577
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: N2Kx6bdgOevEIYNJZW8q3jNxX/TqVje3W558/JcO6OgaTiPDnenCkIZk2bZJCaTYmoVBsHjB4+ll7WUbESQ/dg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4PR04MB11749
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251219-imx-se-if-v23-3-5c6773d00318@nxp.com>
 
-> On Fri, Dec 19, 2025 at 04:29:22PM +0800, Wei Fang wrote:
-> > A value of 0 for addr indicates that the IEB_LBCR register does not
-> > need to be configured, as its default value is 0. However, the driver
-> > will print an error log if addr is 0, so this issue needs to be fixed.
-> >
-> > Fixes: 50bfd9c06f0f ("net: enetc: set external PHY address in IERB for =
-i.MX94
-> ENETC")
-> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> > ---
-> >  drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
-> b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
-> > index 443983fdecd9..b2d7e0573d32 100644
-> > --- a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
-> > +++ b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
-> > @@ -578,7 +578,9 @@ static int imx94_enetc_mdio_phyaddr_config(struct
-> netc_blk_ctrl *priv,
-> >
-> >  	addr =3D netc_get_phy_addr(np);
-> >  	if (addr <=3D 0) {
-> > -		dev_err(dev, "Failed to get PHY address\n");
-> > +		if (addr)
-> > +			dev_err(dev, "Failed to get PHY address\n");
-> > +
-> >  		return addr;
-> >  	}
->=20
-> Can we please handle this the same way as the other netc_get_phy_addr()
-> call path (from imx95_enetc_mdio_phyaddr_config())? Separate tests for
-> "if (addr < 0)" and a later "if (!addr)".
->=20
+Hi Pankaj,
 
-Okay, thanks.
+kernel test robot noticed the following build errors:
 
+[auto build test ERROR on 4a26e7032d7d57c998598c08a034872d6f0d3945]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Pankaj-Gupta/Documentation-firmware-add-imx-se-to-other_interfaces/20251219-132830
+base:   4a26e7032d7d57c998598c08a034872d6f0d3945
+patch link:    https://lore.kernel.org/r/20251219-imx-se-if-v23-3-5c6773d00318%40nxp.com
+patch subject: [PATCH v23 3/7] firmware: imx: add driver for NXP EdgeLock Enclave
+config: xtensa-randconfig-001-20251221 (https://download.01.org/0day-ci/archive/20251222/202512220932.Gu4LnMge-lkp@intel.com/config)
+compiler: xtensa-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251222/202512220932.Gu4LnMge-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202512220932.Gu4LnMge-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from drivers/firmware/imx/ele_base_msg.h:14,
+                    from drivers/firmware/imx/ele_common.c:6:
+   drivers/firmware/imx/ele_common.c: In function 'se_val_rsp_hdr_n_status':
+>> drivers/firmware/imx/se_ctrl.h:16:25: error: implicit declaration of function 'FIELD_GET' [-Werror=implicit-function-declaration]
+    #define RES_STATUS(x)   FIELD_GET(0x000000ff, x)
+                            ^~~~~~~~~
+   drivers/firmware/imx/ele_common.c:241:11: note: in expansion of macro 'RES_STATUS'
+     status = RES_STATUS(msg->data[0]);
+              ^~~~~~~~~~
+   cc1: some warnings being treated as errors
+--
+   drivers/firmware/imx/se_ctrl.c: In function 'get_se_soc_info':
+>> drivers/firmware/imx/se_ctrl.c:168:6: error: implicit declaration of function 'FIELD_GET' [-Werror=implicit-function-declaration]
+     if (FIELD_GET(DEV_GETINFO_MIN_VER_MASK, var_se_info.soc_rev))
+         ^~~~~~~~~
+   At top level:
+   drivers/firmware/imx/se_ctrl.c:374:12: warning: 'se_resume' defined but not used [-Wunused-function]
+    static int se_resume(struct device *dev)
+               ^~~~~~~~~
+   drivers/firmware/imx/se_ctrl.c:357:12: warning: 'se_suspend' defined but not used [-Wunused-function]
+    static int se_suspend(struct device *dev)
+               ^~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +/FIELD_GET +16 drivers/firmware/imx/se_ctrl.h
+
+    15	
+  > 16	#define RES_STATUS(x)			FIELD_GET(0x000000ff, x)
+    17	#define MAX_NVM_MSG_LEN			(256)
+    18	#define MESSAGING_VERSION_6		0x6
+    19	#define MESSAGING_VERSION_7		0x7
+    20	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
