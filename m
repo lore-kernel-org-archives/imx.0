@@ -1,102 +1,93 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EE9244692
-	for <imx@lists.linux.dev>; Mon, 22 Dec 2025 07:31:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6722FDC53
+	for <imx@lists.linux.dev>; Mon, 22 Dec 2025 07:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766388679; cv=none; b=M2OZtoUdfP1mBH/kjVrOfeyO33GOrnNFKzc33xy3qs9zx4xBun4SxXVXyv+wCO4xOR/3GMpsWWkuTx/pV4V0Tk34QtUtw/czQQKNW5pWSkkFPoNViDyOELgMKMNTJcWoiuXyp1Gcn17C7ZadDYt032MbgUgQyCwE8VntAO4Ehek=
+	t=1766389718; cv=none; b=oVvaBI46ZhT87fT42VDHypRE+KpsD3vYJqJtSNJ5a3P7wmfzE1ZMIn+js5Bl9KJPB7xbEQIUNB3MM/F+06dMLhChWzpY4mLpc725nm0UFZh4bB5mYbHF1jeAoQFbfNvMOtaPYmRplwGCUaUWoma7qsPV+g5Ef9UT9h/LEoiQkWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766388679; c=relaxed/simple;
-	bh=FhfvIIRgj6Aycs5UyhUwijnDEuwt7q2c8fX68qjbfxI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=lVsT7hZBmtN5RZm0bFiwOOhts1CDrNl1wxb+AXtkifp/279+qyNBz2Gw9ix+IQCHfnFOx8q92MckUo3ZcFsayed1n+BMZ438LcvMbItTq/uSyKooQNhk+NLcpPMqE1JD8P1UxUSDctgWJQ30/7tooPE28A0xEviZOsXyQGpmMq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dds3KG6i; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1766389718; c=relaxed/simple;
+	bh=O9OCWFingE0nz2wPBjE6WWnDNJpfpwzPNb54tcsJZ9Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ec4KUSm+0Nz9rBOo3YjOBphrzD0L5b66UyXfoqrPzPigyA3Qqq+Y8tsYxChJnQx8HD/GRzW6g38aanAFLjGdXjqKLMOwxgX1RHCSUsny6BQ/OUW8sXmacFiBd24nIaEu9yEfx4xtNVfjZsZtD9iXyc+tj/8OL4/Yuf9Mbw+9aZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EEENeuRZ; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dds3KG6i"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 0DEB21A2365;
-	Mon, 22 Dec 2025 07:31:09 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D36DF606C1;
-	Mon, 22 Dec 2025 07:31:08 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AED821037114E;
-	Mon, 22 Dec 2025 08:30:53 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1766388663; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=FhfvIIRgj6Aycs5UyhUwijnDEuwt7q2c8fX68qjbfxI=;
-	b=dds3KG6i2S3Ix1WU4NKTXXyH21pMocW+PTkSDO3Egjok8yzK5zVeHJ3kbiumuGq3Yj2HRo
-	NVBdWWaPxPlQBlayK1IYfKdtbQXz8UbiLzTmGWwtuOZNSfN1xHWHEl3OmAwjZph4aMysaY
-	cOXQENMUe4sMpLVsi1J1TBSR80NIqn3DWJVvZC/1isGu4OQFATbvYVT/R8YGfEIQInjFwt
-	LLS8tjB70jTmOZ7DJOZrqy6J6sHcEDqBiFm/SOzacWNl6J4KlwJBKTtIlEHYC5dxziUrrK
-	IXQLQcVVwdUsfQWxqpQBhLDT9lQ5XYU+M8hgbzYw9WBfLx5gLgarvXMFQYCGbA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EEENeuRZ"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a0fe77d141so39490105ad.1
+        for <imx@lists.linux.dev>; Sun, 21 Dec 2025 23:48:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1766389716; x=1766994516; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O9OCWFingE0nz2wPBjE6WWnDNJpfpwzPNb54tcsJZ9Y=;
+        b=EEENeuRZMIxL5M4nIBk9pZYpPf9csN4JP/hjBY9jcxiLaExoYFjoGX5ugVQjVJuN1a
+         XgEjUTNYWOVmqHmVPBSvecejGeXtgXjUTqn+mVFRclHogjIA3sLMeeIxifaRXpYZ7xAh
+         6gycbCDwFX961G20kjWc1N1Gzud2niikV1oMMF+Gt2mHN4CvqAP36LpapC2bq1qZI5ho
+         xMX4c1RQnbFQeFQ0iKYE6dtdNOokNSxmquG2t34gEV/Vb7V0SbFoN+J4zdojpvU1JMRC
+         OHnqro8SDqxVR5j6eGw4eYbuSMl4gU7S5kpCar1cFwNXk4ANp07C3lSkbiwViNZ+4ORz
+         RYMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766389716; x=1766994516;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=O9OCWFingE0nz2wPBjE6WWnDNJpfpwzPNb54tcsJZ9Y=;
+        b=hY55Jshk2Vz99sM8QIAjR0qDk+WEqc/SmpXfWTvtxAMWVkPxpE5RBdsOKetBftyzFN
+         VuJfs9U9Pl2NdHh9EiYqYlhlWju3C7vddLHpVRD3xVP2YGYElJcFi2xyQ958EtYdtgE0
+         SyuoZ9Ts8ygFEt9WnHYNCExYolHKKyXFitKkQqskkVKboa4gf/yPRs3mYePz8HO9d8D0
+         iyE6//8juW4C9oFs0T6iF5VntGTklbNAtZYRtO6OMn8u4VQH9lNWJpPNOVcr92NMERUT
+         u8c06IoMMEyDkYCp2cIvhoEhRjeUFQJ/koNJHpDQxJnAMKGXX8nGNx9jCZbHmyzlZjo8
+         F2FQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVvgHRrUyhR9MWoKz5ieOendznq3xGRWK17nYbjO1+iH2aWA+YJCkmRoMzZFLgbIMxa3XA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzTsjfxuNQQq7GxfqfVxf06MWzWPPSjzbrQlf1MAuXDF+hSHGTp
+	eYRizMf5L3hUNhNeviu/MQKJGy3E6D7L91/iF0gIAsC/YqW5/rCdk89vFZMk6MpEXqwTz2xL7wN
+	VjR3a2gZL5rnHIUNGgfrtML7CqXg8eLo=
+X-Gm-Gg: AY/fxX6eG/e6cwGrM4rd7X8u5lFR2i96MeuEfnKP6h6+/XfkMrvcSwckFO+zBg3lEcm
+	9LW8nE6oDQN0RQURUoo7Nc6SMiXNHg2VNTufXISK2FAyFjgpb32gfbtdd3h4ygX2hRr5b0L+xjc
+	hd8C0dzvh6fxWdOMlv0Ee8dlD/NAobGk5QyikDB7Zz5LQOvjXcJ54r13boEk1gHlpO9S8SZqjUW
+	tSB7eB2xkiI0UW6iMsQN/5KSA+w7bWoCYnF1jI4sy2MoGH6A7TvcwsBIxqU572d2TVGPylehyFr
+	eiiRrija02ArixNINbCFp0AfcsD53fIZ4k8bB9H9bT7EWgDXrSIZ3g8SlDi7IGuoU1K8wb1miLb
+	3EIfjplkx0825nlj1YtXTJLTo6qECB43kmaz8iV7qXWvmZtB/UoDGG13jmg==
+X-Google-Smtp-Source: AGHT+IGC5H9pk2WaAHD8EAkwNOOrTOxaDyXMdLCEf3TKyiNUxIOmfbIBS3iQduGYUv2H/hy//X3ygqs5vwpMpN5DTqY=
+X-Received: by 2002:a05:7022:6709:b0:11a:29e5:12e5 with SMTP id
+ a92af1059eb24-121722ebc26mr12189814c88.30.1766389716505; Sun, 21 Dec 2025
+ 23:48:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20251222-imx952-v1-v2-0-8793ec8bad6e@nxp.com> <20251222-imx952-v1-v2-1-8793ec8bad6e@nxp.com>
+In-Reply-To: <20251222-imx952-v1-v2-1-8793ec8bad6e@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Mon, 22 Dec 2025 09:48:22 +0200
+X-Gm-Features: AQt7F2qoIk1PNyyX4eWETsNou92XZKeudB4OtSdua0GthSZdmgmSnIjsrscm7Fg
+Message-ID: <CAEnQRZC44ftit9y3hj3x9tLn7G+o_PFnJUOy6cGkD9iGSJGHXw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] dt-bindings: arm: fsl: add i.MX952 EVK board
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 22 Dec 2025 08:30:53 +0100
-Message-Id: <DF4KIOREQYK3.2JEGF51OECQCE@bootlin.com>
-Cc: "Andrzej Hajda" <andrzej.hajda@intel.com>, "Neil Armstrong"
- <neil.armstrong@linaro.org>, "Robert Foss" <rfoss@kernel.org>, "Laurent
- Pinchart" <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman"
- <jonas@kwiboo.se>, "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Jonathan
- Corbet" <corbet@lwn.net>, "Alexey Brodkin" <abrodkin@synopsys.com>, "Phong
- LE" <ple@baylibre.com>, "Liu Ying" <victor.liu@nxp.com>, "Shawn Guo"
- <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
- <festevam@gmail.com>, "Kevin Hilman" <khilman@baylibre.com>, "Jerome
- Brunet" <jbrunet@baylibre.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <imx@lists.linux.dev>,
- <linux-arm-kernel@lists.infradead.org>, <linux-amlogic@lists.infradead.org>
-To: "Martin Blumenstingl" <martin.blumenstingl@googlemail.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v3 12/22] drm/meson: encoder_hdmi: get/put the next
- bridge
-X-Mailer: aerc 0.20.1
-References: <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-0-b5165fab8058@bootlin.com> <20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-12-b5165fab8058@bootlin.com> <CAFBinCCUVOYsiwwVmyGtxN=MdqYatAaj-piVO9_E_iZX9gwiMQ@mail.gmail.com>
-In-Reply-To: <CAFBinCCUVOYsiwwVmyGtxN=MdqYatAaj-piVO9_E_iZX9gwiMQ@mail.gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hello Martin,
+On Mon, Dec 22, 2025 at 3:44=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nxp.co=
+m> wrote:
+>
+> From: Peng Fan <peng.fan@nxp.com>
+>
+> Add DT compatible string for NXP i.MX952 EVK board.
+>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
-On Sun Dec 21, 2025 at 10:51 PM CET, Martin Blumenstingl wrote:
-> On Tue, Dec 16, 2025 at 7:00=E2=80=AFPM Luca Ceresoli <luca.ceresoli@boot=
-lin.com> wrote:
->>
->> This driver obtains a bridge pointer from of_drm_find_bridge() in the pr=
-obe
->> function and stores it until driver removal. of_drm_find_bridge() is
->> deprecated. Move to of_drm_find_and_get_bridge() for the bridge to be
->> refcounted and use bridge->next_bridge to put the reference on
->> deallocation.
->>
->> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> And additionally I runtime tested this on meson-gxl-s905x-libretech-cc
-> where I still have HDMI output, so:
-> Tested-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-
-Thank you for the quick testing!
-
-I think I can append '# meson-gxl-s905x-libretech-cc' to your 'Tested-by:'
-line when I'll apply the patch, to make it more informative.
-
-Best regards,
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
