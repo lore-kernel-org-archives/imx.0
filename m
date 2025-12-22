@@ -1,237 +1,336 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011041.outbound.protection.outlook.com [40.107.130.41])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013050.outbound.protection.outlook.com [52.101.72.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD882FF657
-	for <imx@lists.linux.dev>; Mon, 22 Dec 2025 02:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F592C3252
+	for <imx@lists.linux.dev>; Mon, 22 Dec 2025 03:29:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766372144; cv=fail; b=EaobE/gm+aos8d1njPBZgzIJmc91mcTt2qA4oKkhJ/0sZwxfvqijl11zzGnUDGcqKjJ5MPZSF3ZEulhTahnTFow0MGCYDYDDu78f6v0/vpqxv/21tXpU8ES6KF7Z28JMV2InvUSuusrB3hGJezhOGAGymYewwgZV6339q9U1a+U=
+	t=1766374157; cv=fail; b=gEXLPptskbDcwNRaNkIWhPkupEVNcwnynia/8WTEMDnBcQCnP3NMRqXOGqKAQVyBqKqqjFFZsKQblxh0MVX9YNWDjkbi3CtGBLl6HVBkEJ18Uzyi9cyNE2gmyuTK0SJ/H/BLu8TfNwR2h/D/w2+Z38Zho2wigW/HPZ2nX2rFq6M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766372144; c=relaxed/simple;
-	bh=XjStqnpQqrccjRtKgi6zwhbtFaTKPrqYA6dFl3FrpJY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Mirb3Sremty+n0R5NVQNBDQWIWJP1IdCwoQ9Day9hQdWc3Bb0L2NH/HYe27oI4EIdYwbGsdaGgt/1TJVuJLPEzaiLI5otPIhml84YbrX3zXPHcydmdraew/KYD6DMehLqGeZh0r2uFCPAzDmgJjmRBH1KVG6rdcuXCVJYITSWwg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=OhHGfOvU; arc=fail smtp.client-ip=40.107.130.41
+	s=arc-20240116; t=1766374157; c=relaxed/simple;
+	bh=H1MRLbiUi2OG34tAzVJKRAOWbp9ALs3LNlMLQYqVh2E=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=kpP/o8abMOXst1jKzVchNY6KOZlsAk5SobO3xqsK1JL3W+CRBI3LIJGV3aYVIxJYgHDuqtESTOUQiJpb3SHPCqs5k6iIlhGI/aHf4Zm3DBFz4jgtjoKXb+e8iXY9f9hQ/Qti/a7iT1l0qrkN4c9/4XiNrRLy9JyPSQlxzlhgIPs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jfThC+G8; arc=fail smtp.client-ip=52.101.72.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="OhHGfOvU"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jfThC+G8"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V08zY2lozEdN5nVljkkP9hxMaGBh147D4lnkShTGoeZMBzv9Fr1gIRJ7ig9ZA5izvmoEjnyedXJfWrE5axfqG3jJBMUid6RXGr/RdSxVHe+hF9h6dR+H92K67Fd9XbIDSfWp1ntKauJMNccQDPLTJbXkL59BTwhy3TYD+O1sWsm9a3dvp6/Sb/53/tXXFMQiia9bES3DMi/+519ZOv2AHm07bPvqXls9a5n3BQFG7JiAdsy1P3/MNIp4OgInDbY37IOixJM++qn/FB466/Q7PovtYjd3Y1/cccSyks4BaCwRtQs2BkGPP8QHYcIMeLzXwO1AvuuaIkoAwfLlskJ58w==
+ b=R71gvFZnpZvyqJpfcNb4TQtsQ0MfgdquNY6vhVUHvvNb3o5JWpT8t6p2q7kKtUwdmP3YraXQL7ZtdVxoEfp0npqW4HpqTm1yuU42ba58ByLQc476n4cC55VEb1mhFpKU/sVSVeH8k3bkKE0GkYUWDCxipyF6X0bdBh0S5n81qlUy91DpRggJiJjIVmDLxXd1CD7P9AwCpxzKUdaAZq6o7D/ftp9+BPKfknKludnWLqH4Wg8+S/N5Qg/7xx3r+Mfb3d7GO4kxrfQqLVq/ZBO+VxNE7yb3Lflnpjk3fFRS9+i17YYCZ9Ome2JspOEt157xq8WstLniygSRHFOkJSHtdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Wwue8fHFKDA8MLJIDacdWg7byTXo8CWghuyC9hAK7LA=;
- b=PKw1U58bk667uSZ0Nn1yEFWHy+wKMecjdwWks7fZ0tk7LZNJAXOSiJ7I6cAN9paApr++Cr1yHluYag97g3n5vSWm4YKq/37cViDLIbZi4+7BZCylsP+f+ZFzcTkrB3vh+1VWJmcFsMvpo8phGHE46Vko1YgzHso2IR4W/MciL1cYpw8sIOkVsxZreTkAc5WNYO7TyBFyonivIcvAr42HrPADrlrN6n3pa2Ieayow4ZMa/KNZouPZrDtfKwWzhwUPAc7eNII2/2z6TjeNwwLWsuPWOqX10rW+7RXAO+/z+wY2xR7tqUc5eECqT7g2xrar/89Xv0gAf3QDmrWii++BhQ==
+ bh=kOiLhxKFxxRBmyFXTygn78fe4iyTx+2WdySSp/pO71A=;
+ b=XTkt6t5sFWgjfTGlygklHAgnppVTvIMcI+31IYsTNKVad60bZ/lRai4wBpXwKVQ885vt8QRIDaiDvImy5/2X6nWWA9zG6WB2GLyKT/Qohc8HK5Dkk45mlrork637Ksh792gNJRCguwdluOuEVQRL7RgA2qV/cWMfWIlutZuWXKGjOtgV3zaeAZOLz6zGRVUoL/WwWpsMY/j/49Qe857sWl9P8Vk7VrFxBEDXYURnjoNuH5l45sXTvvKzOUh34488QbGgTRfqZIQiwr0h26s7LTWo/1IMe/BKjC26Y9wUq/7CayMZ38g9q/RkegWKZqCwdXEgDLsXsU52Fbh6xnga2A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Wwue8fHFKDA8MLJIDacdWg7byTXo8CWghuyC9hAK7LA=;
- b=OhHGfOvUKTd62UqMkBcY1ZHdx3mwzEn1jFhsTx+UjULkFrUyBPxWsHKKbUDbgjcwQh/puto6UxDNJuIMi+1x5ukajVWPcoqyrOSvOb1fmB7VwEE9VDAc9Q8s0o0wbVCG91btphj4j0idYajI3gVZ3ZfyKniwUb0A6LCRvP8lguFLUlOtYeayCG0equw6ZYlpIsuJOwjV4a43XduyXGNIHooLWrCUh367udsLlE1gu5IRPESWqziKWzNcmuQadGsdtqGYrjC1FomhVJoWopnTCCI6+yZD17kxUmv7GyY+U1RB8utKqrNMvzKzgG5Jx8UnL23sArPi/JuruSfm29bQ4w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by GV2PR04MB12018.eurprd04.prod.outlook.com (2603:10a6:150:30d::21) with
+ bh=kOiLhxKFxxRBmyFXTygn78fe4iyTx+2WdySSp/pO71A=;
+ b=jfThC+G8wgc6PEgi2GvmF+AHYschNYUElFbwr8ddEH5pR2Xo7Gui+jSWB66RnHmsA9Ra9GdIGfu2chRJht30t7MT6wpLN+rbqabV8GeBCqhwcuZzeUlEHYgFbLQeRft2q8rUpCzaNSJi7EKTH4SAYoh1ae8FInZgZmVlQLvqH4uVD47GYYYJ5MtZx92d6gKo261yyWNMI6bU2/OtaC1Xmrf+BIwsxf0nxV/QW1xelTl1+ndqHZXTy0Ue2F5ptP/5NyVP0MlKbRoC8a1kLxWnMwO9tZ9ObEFqpXOIeTrq9YxQl3AEZB6Rq3cLA9gmTld7XUm95WeolEfUeImYG6/CwA==
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com (2603:10a6:20b:447::16)
+ by PA4PR04MB7807.eurprd04.prod.outlook.com (2603:10a6:102:b8::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.11; Mon, 22 Dec
- 2025 02:55:37 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9434.009; Mon, 22 Dec 2025
- 02:55:36 +0000
-Date: Mon, 22 Dec 2025 10:48:32 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: vkoul@kernel.org, neil.armstrong@linaro.org, shawnguo@kernel.org, 
-	kernel@pengutronix.de, festevam@gmail.com, jun.li@nxp.com, 
-	linux-phy@lists.infradead.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] phy: fsl-imx8mq-usb: enable RxTermination_override_sel
-Message-ID: <iik2dnzkw7fxqm3qlzt3vegyoabgefveopdmwzxwejof2ytrho@dbnq2xj5suaw>
-References: <20251219083004.3883898-1-xu.yang_2@nxp.com>
- <aUV0vn2VPWKAh5f7@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aUV0vn2VPWKAh5f7@lizhi-Precision-Tower-5810>
-X-ClientProxiedBy: SI2PR02CA0011.apcprd02.prod.outlook.com
- (2603:1096:4:194::20) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+ 2025 03:29:10 +0000
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::92c2:2e03:bf99:68eb]) by AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::92c2:2e03:bf99:68eb%6]) with mapi id 15.20.9434.009; Mon, 22 Dec 2025
+ 03:29:10 +0000
+From: "G.N. Zhou" <guoniu.zhou@nxp.com>
+To: Frank Li <frank.li@nxp.com>, "G.N. Zhou (OSS)" <guoniu.zhou@oss.nxp.com>
+CC: Mauro Carvalho Chehab <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-media@vger.kernel.org"
+	<linux-media@vger.kernel.org>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v3 2/2] media: nxp: Add i.MX9 CSI pixel formatter v4l2
+ driver
+Thread-Topic: [PATCH v3 2/2] media: nxp: Add i.MX9 CSI pixel formatter v4l2
+ driver
+Thread-Index: AQHccInHGoXUhNNkNEWHIol6MJo8LrUpIlYAgAPhdAA=
+Date: Mon, 22 Dec 2025 03:29:10 +0000
+Message-ID:
+ <AS8PR04MB9080817D9A557B9D96F55066FAB4A@AS8PR04MB9080.eurprd04.prod.outlook.com>
+References: <20251219-csi_formatter-v3-0-8680d6d87091@nxp.com>
+ <20251219-csi_formatter-v3-2-8680d6d87091@nxp.com>
+ <aUV4enryGRDdIkIb@lizhi-Precision-Tower-5810>
+In-Reply-To: <aUV4enryGRDdIkIb@lizhi-Precision-Tower-5810>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS8PR04MB9080:EE_|PA4PR04MB7807:EE_
+x-ms-office365-filtering-correlation-id: e7d5e9f4-8082-41f4-6cf6-08de410a456b
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|366016|1800799024|19092799006|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?gU8OtqjjefLyFFzeh7nnfo4iYbwkJwk5ZG9VHK9809x9fxjQlac9dw75Ce6j?=
+ =?us-ascii?Q?VWFlR/fQNHdLiShPUJJtnKuY4QHGkVZOclIFJSdYzsjyQnlTZKB6kYvNOSrE?=
+ =?us-ascii?Q?Tt4OlP4pi2ovG69e5o4jrsYKwjWhnRY0CGLYoN37BBfPZN+1lew94IUHo34L?=
+ =?us-ascii?Q?xu6Of35jTHrjtWcZt0AE6feevSiTLI7kg8d0VmwOgRD2kFdSjeBZ8nzbEZQ2?=
+ =?us-ascii?Q?lnUS8v+hbfnzDzGc1SpFEKd+U8nOg88mIDeiJs7TBaljg1CAL3WXvt3O2nX3?=
+ =?us-ascii?Q?GLGTIeVzRYCihcKH1zaV8ViaLHcVeT5LGGF11kVfVzjdiG24QIZnnyV3p+Dy?=
+ =?us-ascii?Q?ZyCz0kWzCRkEdFx7QZgrvANI06ELUivHBsd3sxC7OU4yu5LfkkUbDq7D4lG8?=
+ =?us-ascii?Q?JKd8IsHNiNqGzcQS8+F8TKbp2y1pWtpith9CeWmVc/Q3cOM0XwUzZY09n3qR?=
+ =?us-ascii?Q?2t/ejapZ5kbe9IE3PMjQaYeuN3AcgHQZW2UKw7GxBeHNhe/Htpksi2jrDpMy?=
+ =?us-ascii?Q?kW5lfKWvp8wxKbe5hjBQ2IJVQ811i7KwvOuXa2Z6xiGMtfhS2QbTUWOvmEAJ?=
+ =?us-ascii?Q?gaCfovFeQupoifBKyOi6EpwwXg2BhZ4W70RnzOjp33/hX66dKa5z6yNkuv4Z?=
+ =?us-ascii?Q?L0jnRWqRVxFOEzo+GPejkLOj/7IAy4FFZiQrUqnbGsbgTy+93Bz3n6VDckJO?=
+ =?us-ascii?Q?3g30m1XQnqHaGtYerKAVq15Of3r4koLbHCHvTli9OHzyY4vV6HbwEeDhCWB2?=
+ =?us-ascii?Q?2DAN7tpsRiptitL+y33K3myj/JVn7MiX762AGoWWv+Pfp4/EXQY4wMtzrc+f?=
+ =?us-ascii?Q?pso34QNqK4+4rUdz6W/ogRSqGyGVKAn6RLa8QjR9dm1gX1I2rNDH15SVputi?=
+ =?us-ascii?Q?SkQmR5jNDNT//I+Wh7J4dADrYU4qmzmxD/SfomU0xUXkNeO7zqQT/5Rmnyb7?=
+ =?us-ascii?Q?klHNdeEvas29HBMYGUPAoMSAjue/eS/aNjqkWF4mzYHDQQauOwfq/JnTsDD+?=
+ =?us-ascii?Q?sbgitl+8MxVUxtzoOB4ZDaiztDmLmJd5bJJRqmwGl7vR2m8ElXw6Swa8/2uG?=
+ =?us-ascii?Q?ZlnuIHscUSlJdKc1H+TJf74giAZGuJbBODX8bW7o1vf1r7cB0TZPITdrNQ1n?=
+ =?us-ascii?Q?SbE+EZ9L6XW1rm1zwY5DQ8ZpvNZJKz80VVn6gitItWx0snW4DgXdvwgm3K1x?=
+ =?us-ascii?Q?ZoOos18RoNMfEnv8h5M2AHOQI4hQn13olnKgvbshGIB7iZzpWi/nGkPPnIUh?=
+ =?us-ascii?Q?gD/tECmuocUAN++MqzO2tUWc1ynHQRpgiRxDFShtlUGuHp+UxP1yFoiraGtK?=
+ =?us-ascii?Q?eEyi3HDjc1x7e2Wlp/4s+evDLu2o0/JE/8LTI+vONZdFm1yj0ySMcjRv91PQ?=
+ =?us-ascii?Q?374wFZyzsnjuVReMK1e9I1IsBR/t/h0RScI6L0K1TNWNBYXq+3VK/L365/+k?=
+ =?us-ascii?Q?D4CcXMuESjgIAvQfMtHoGZ19R2ugnq+1ZB/F2O/q+8dyvOftS/YMCvkPTImF?=
+ =?us-ascii?Q?QTKTefuj6/joxQTCi8zl2l0PuCWqGnRClX/t?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9080.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(19092799006)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?xgU1ogMVb8OjRPInY8tTGWdOvC/Puz1p2A0DoH1d4KkChnE5sOBFlSVbbono?=
+ =?us-ascii?Q?JpxLHTfd6SLr1y1jF5j6tByfi+WczzcrFkbmtAkiZjFkEX02kV8pj+PAppvH?=
+ =?us-ascii?Q?ccFTbEPuiVHiNoCkSvkSM+sOWTyb7Yv6pxEh6S1z6lUp2ns4D31YptS2loKK?=
+ =?us-ascii?Q?zMTpBq3rpJE03kIxwBU3dgcbFrnBoAZwZBekRBHBiQa1s0ygZpGAsVC8sSd4?=
+ =?us-ascii?Q?hrPStlmpnybSLQ/nEmYr/l82/cfGu+HJEX/UhCkHMFAVU8S1CDVd8yi1jZPR?=
+ =?us-ascii?Q?DZJxtsBnkLt5SqcIin96q2ZS8qs764PRfg9Ec52KYo1eWCcDkbwuUb1zceRc?=
+ =?us-ascii?Q?m9+/DyqfG1626GYGBE7kOtVIjfBlWdklwWdTAmrR/lPllE3mAqkv3VeiVzt/?=
+ =?us-ascii?Q?CNAmCIlVUfQ0rxAZSQF6zJ/7FnyDD+HQFvMpZLY3JmM6xVONsqQqpORghB5B?=
+ =?us-ascii?Q?UhEC6zb004h7QTGY8hEoQi2nvOaVs+0sZsiNCZdxnUlczDU3+NCeHF/EgIii?=
+ =?us-ascii?Q?znRIkyy/DtBXeeuzYC86DFrwL0oBTft7wnmsUwkmVUY7MUrTpQaUJ9pN0XVZ?=
+ =?us-ascii?Q?Cx3nrTPIweYFvZliqt7RWkFDvAQtix/cfyduyzWhL3CNjPEajOsb8wdDohKA?=
+ =?us-ascii?Q?L1v9LlLU9sM5828Ah8fwHsfBA7dxkwa/TkzaFyoYnXHxJvQk3QwOKE6jAYq6?=
+ =?us-ascii?Q?6SuXC0nQYX23WZAUvMRC0GbpQZycw3fLGezs/A1dsW3O9k0zY3k5wAwZmZZC?=
+ =?us-ascii?Q?/BotqEVAB8QMVn0+dKpHEPcI09trAS+Y78fwCT0uLWa4IhXi7wHkRjdXXpSM?=
+ =?us-ascii?Q?poHMKAfkrv0pXS3ijQFaf/7M5nA9kXknjVyhdZTNAwcd70S2On6R0/8hd5Sv?=
+ =?us-ascii?Q?ZYAF69mMvm0EMVzHQ9xmOhTfvBC01PH5+jrkI42iiYx/P6g7FQ8Vn9zA+T3o?=
+ =?us-ascii?Q?YJ5fLJNF/2Tv5Qol5SpsjxFJ5IGAd9cfdz6YginnpNDbnZtped8pUEJN6G+h?=
+ =?us-ascii?Q?Hx6TAFmz43uIs3Cy4SqOIZ3Snuhfz2t+p+VnxEVclXcP6caz8pfv1CoYIQrf?=
+ =?us-ascii?Q?wkpjJ0wkBNFM/Tj6R/eLL8mgYbB2DYgxAg53YCo7OjOiYj5IeiuBXgUroT2+?=
+ =?us-ascii?Q?W7+qqVkLvDKDm4ZCWpUIZH5u+8h1s9ksgiQ9Ss+5swCI7fn8gPnac5QNpoWk?=
+ =?us-ascii?Q?sTaxSneKyPsuaRTQqPJNWwQHq98ltsTA5c9mfw4OjlBvPlY3RzRHPMnacf40?=
+ =?us-ascii?Q?OQ+QHdVPS9ZiwhwqpDqFuntDooGm4pMq/Tzpq3PCZpADfwj/mLvli7m5MUIA?=
+ =?us-ascii?Q?AdCt374Zx4IUawYCLdazEUPGLGzBW/+F8CaqExVgdvIkTvUaRMUx0K82bHW6?=
+ =?us-ascii?Q?Qm6wdswvzvLlN8F07ZGMloNUsmL/fDBlL9HLRUEh1hv8xHvwFBnXs4wV93uX?=
+ =?us-ascii?Q?6mCd98/fU67jsz2tRUeQkp2zv5O/ruHPQRzbXHnnkj/oUhZl/W9yCgoAXH8x?=
+ =?us-ascii?Q?Caz8saPvHnvo0qC8QcMasnlj7a5jnAQt18LUbj8FDDTj9FgZFT8mnnZvtx8r?=
+ =?us-ascii?Q?je4xAmg0ZkUKGz7yoogez6UJ70YLO/46MaqiVX91mlXC8sDTgYTUE16u0qH/?=
+ =?us-ascii?Q?zBiwomlPBezVYW9dn1YLJ/ZKiOn29qGED+A4ulDqQPsyyjcuM7JV+iC5G2eb?=
+ =?us-ascii?Q?H4yg+AQCRmegdmTGGTtB5DnvSMQ768HqZxQuj4Z3qFW2mX2C?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|GV2PR04MB12018:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41fc8a56-5083-4e36-1f95-08de410594de
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|52116014|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?d2mx8ZKBE4Mxzt0Q88PWHKvaLCGAMKQPEVolBAAuk1otquYPeRC9f0K4+gpc?=
- =?us-ascii?Q?xL7Jmz3zkd+697PqNbFxEstbF0K6JnJpshbCCPyzIsoY2I2lSgxYpMiTvQHP?=
- =?us-ascii?Q?DiY7IImpn8Gz1EYep14kqGvVZQqfoottYZSHeVE3f+YHuHl4aHENPAZNSS4c?=
- =?us-ascii?Q?qUk4O4r4J/5O3NzzHkMTpH+YhW7l0PyJL9WQgkBuChN/dDICAz+XEkqrLBdr?=
- =?us-ascii?Q?Fc/lw6bXJsByoWim6jjSdkdVITJIJKLfWlBMGfU1cJ2W4hkASYJ+dypsHeTe?=
- =?us-ascii?Q?4L9cBObBVAO+0ujbRvMk4dfqW7m3cBLcY0OI8WNgpP3ibhVA1bENVI0HqkvV?=
- =?us-ascii?Q?JgnuvJ9JF96lvfGpHEqQs0cBj9azCxEfu8CbzoVykT+UU+1x3yU6TSlUrW4/?=
- =?us-ascii?Q?01lDR0ex1FfpPSqZADsmErWlzo1lym2zSyNxHstn4TZtHp67kIKECfTq+ZqK?=
- =?us-ascii?Q?O60aqIt9P3PhRIxSPRkpVTXoeSQWa55gWAyHn+qup1g90Vjjio2kYrIbxBbx?=
- =?us-ascii?Q?du7tORlXSoAK/3bDf37OMoNFkPeep+CiQYNhLwPduoIYEx9vZ6yvSinvyFVW?=
- =?us-ascii?Q?YMX3Y70inyrlFrvXz4unjLF46lvUmIgaJs6TS2Wc2ixWUDvO5c/lfkkuGqY9?=
- =?us-ascii?Q?goC6ufGCDcdFGx/SwbfMA7T1EU/Yj61qmtnWAlK2ObIdm1k+Tr6ZFbYfaiSa?=
- =?us-ascii?Q?YEKk4SVtARnZUP4HNtZ5uQyT4M/iUAQ6Z8MzzsDU3KG7iU4lvZiD4JIOvhCL?=
- =?us-ascii?Q?MXXCcu0dddvlDwlRbAPzewhxjhXVcEa5+au6ONHA/cUuBw232s+FnEmoa2UN?=
- =?us-ascii?Q?6gV7Vl3R5tAWe69PSPW/IfM+ca6gHh0SPXL1Ul0MD5NtenEdrS/kATq5rdMX?=
- =?us-ascii?Q?RVRadwj6dzzrk1WntmFZJVvt5F5NmLdJ0g7a58nWwBaq7Ag47Daa1kklOsbt?=
- =?us-ascii?Q?n4c1Xn7cNxqSmHdvDGQ5mkqeZVkA0xLh/VRX7aKZ5bRxH7fzXgYTwW/39j/V?=
- =?us-ascii?Q?7hz2pLAYrYffHDmU+6Dw3uY3m3+zo8Hx8lIGi4j98Xev3YacRQ5rxBPtzeun?=
- =?us-ascii?Q?WA0OVYhtUf7FFuYS7xJF40RfeFcJ8DO/WgHOitDl8y6zDd1BIe+VoS7zLCxW?=
- =?us-ascii?Q?2x8gw5dG5KyXOaeJV70KCKoqDSyUEzO8GjwBS+TNzkoY2Dq1ryA4fhrG+ywu?=
- =?us-ascii?Q?yH/eHPR9WQGau7dFT2zgrH53Uht+cAog0oRQQAhhLUhY8GHVRibJTr9q01A8?=
- =?us-ascii?Q?7vT4S4H+pjr53JdvbmlFYiDfSB34XEY4V0dzjAw2yhVN1UuWGMLu6vOGOVxx?=
- =?us-ascii?Q?qPjX5IhAXknNjBZoiwvg5/017UpCeD0jKTifPnZFGVjcFvfmTQg1ri6eKz4l?=
- =?us-ascii?Q?Xni9izYpkXqSEVckm+HXYx6c5JN4uexoZFzoVrPGZWqIvbvLWUMAadUsH5jl?=
- =?us-ascii?Q?X06dYpHzGVpgQuSD6agyODgiotmoUDG6YapvCy4x3JFQoWZ4BK+GZYaqB+0c?=
- =?us-ascii?Q?8szBcnL24scSKyLTQwzazGaoSKMZfgqB7zle?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(52116014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?cPO5fruQq0QwfDUl7cStgpggGF4wFc5ojBT4GQTaggVkqfJsY4APCF6W0v1Y?=
- =?us-ascii?Q?g3jK/W/QnuDQbjn8/pd3dF4R6914vIlqGYbSUOifKXwrdqQ1Q6KAhMKfdLN9?=
- =?us-ascii?Q?g1jQMSKO5rg4QyjchJph2tOSze6g1kxcrmWq28g1H4/DJQYuJDW2XBllhszX?=
- =?us-ascii?Q?p5iM65RQI2UVXz5LhsgKoWrlty44D67fUPIJsJ7c/ElJ3w7Spd1chaBa8lNp?=
- =?us-ascii?Q?S0GnC8jqTprNDSwW1eEJK8BvXK5QF1pkJZ6XwVuWbT5IEC74/ADDzg3Hbqm+?=
- =?us-ascii?Q?KSoOZBUhdvtIQydU3+1kbKib2QOeT7yh2UANeko1ZRBZn1QU/DY+17Br9WDN?=
- =?us-ascii?Q?FVRz4YQWLyrlw082U3xTuNpNR0TwU1Q016KnI6E4t6VyAzfbR/8oZBVjcuXU?=
- =?us-ascii?Q?tHVnJF/n4RHtJvR4Dpkiq8IITY6LK+dzGxInO+BSMAdKP5DLgVEmNFKLkLMg?=
- =?us-ascii?Q?MkY01U2ZNq06xDJ2dzFQ6mnEbPbTafIE4yqWqG1eNjBYk7SIOC1SNa3ONROa?=
- =?us-ascii?Q?zWYWTNr8zDtKICi/6Sx1Q+zmku7NlLuaVVI0hHJya4mfOBGYkgbKdjB3x6gD?=
- =?us-ascii?Q?rsyWCNity/qSwcepbzXPwW+Mb6xSvYEjEVG0wGSOPp+yvL3cpsoEF+ONV4xx?=
- =?us-ascii?Q?X5aopocL1IGunCTqpKgISUBFURK+l46s6Jb7D9hvg7TYwJu/L9CNFKRLcpI3?=
- =?us-ascii?Q?UdZylLVNedPvtlemmNz6OD22/15Ex1LuBhglTplDh08bMQ8R+OuKs/3padT5?=
- =?us-ascii?Q?b13enxvbDTLcjEJdLWf9TsGPJFHoxvCvK2XVTqj4ifa/1g8l2DQywv7uDI++?=
- =?us-ascii?Q?tXX5hlz7/ymXm3gmanP5JH0ZYadFgRlO26s9B0koOOO35tjzK9XoXfJOJixA?=
- =?us-ascii?Q?pu63gKccI1OKQ4VRoFXJ8mXSPy9EfIpsCzr72pWW4IiW/CADNqEERCFs0m12?=
- =?us-ascii?Q?YTnn5PPCve74+qXaY8W6i6Dwy5uWFLCd2NaWzFbi6z9Qt8c6Os/TWO2QyG3V?=
- =?us-ascii?Q?ZSzIKHaN9ictbfdcb35o2h43HUWGBZ/5lF6K+PuXpYj5SWqyUZdf4b9X7Gxb?=
- =?us-ascii?Q?eSceAlJ/vi5pWa1DImofpo19p8Or7QXmV2E5ZH9AI/McrDMwktsVUXrfm+Dc?=
- =?us-ascii?Q?Y2UwJd22kexUS4Wo9YXZPQJMf/MZAcpNdeeMz27H8tXBBL+3NluwQF2RS0b7?=
- =?us-ascii?Q?OXPsFxPra2iQAsMUkIiX6iqZl5vzdPWdM5xXEFXVjRzhZaeWJyNnPKey1ciX?=
- =?us-ascii?Q?NkkhYCSW4DM1FZNzmndV5535fZWxvGBJfnq7IHNUvhQnE2d+1Wk1CCkM4/yv?=
- =?us-ascii?Q?6SrkrDAyS6vsyQCkGFGYcw7e65AKZg1B233KA6QHm1cbD7+xt/UvtRHJmbWH?=
- =?us-ascii?Q?Kmt9V0f6x7bTqFhLh2387/bYaCSl5ngCsoWFeILt0vgzUghUdBEKoMOVx8Bs?=
- =?us-ascii?Q?lYCGLL8wmS9VbSLlzeVjIa/JDKb92t1opjZAdwpqK5JpkNc4oxXXew8XKN4v?=
- =?us-ascii?Q?N9U+QhIyFqggJu0kR/l+iQY4Ny9xIAPylhX0J+AborKcI0dUFfxpyvNZ9XWV?=
- =?us-ascii?Q?XvhjXZGkYrHbLALKZHx7PI9SszSdXY9mzbTL6ZWxQTRKFOCzWKimLFEjWuqD?=
- =?us-ascii?Q?0Kik/8vSSHtJ7hUvrrt4AIfVh9WlXjdgSr9FZy1gSBehPwLjDjw4crXlxR4g?=
- =?us-ascii?Q?zNYbZx/r80Xm7y3kbiwvktVgn13h+FplTuFJ78lqlvq6LaHwPKxiQSQNrDQ9?=
- =?us-ascii?Q?5t9TjC6bxw=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41fc8a56-5083-4e36-1f95-08de410594de
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Dec 2025 02:55:36.2819
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9080.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7d5e9f4-8082-41f4-6cf6-08de410a456b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Dec 2025 03:29:10.3068
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OYsnkn6WpoOG4R0FStSlUT5Lx8kOhLjOWhTCB2I9Wr2Y2HHydQ9xO0kBmFQ8X/9iQfpy9wjA7uUnEna9vMo0Rg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB12018
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Pux2Avc3OuRMrec0zN+QZmdAXZ0D0BXi677SVXbE9pwrumKrNt7mqy69x9Z+Ar+uu2iY1S/mSGiLnZa/duE6Pw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7807
 
-On Fri, Dec 19, 2025 at 10:52:30AM -0500, Frank Li wrote:
-> On Fri, Dec 19, 2025 at 04:30:04PM +0800, Xu Yang wrote:
-> > This is to resolve the problem of wakeup system by USB3 device
-> > insertion if HSIOMIX on, in that case, the USB3 device detects
-> 
-> Do you means USB3 device wrong regconized as USB2?
+Hi Frank,
 
-No. This patch is to support wakeup by connecting an usb3 device.
+Thanks for your review.
 
-If the HSIOMIX power is OFF during the system suspend, the USB3 device
-will downgrade to High-speed because the link training does not
-happen at all. Then DPDM wakeup can be triggered. 
-Otherwise, the USB3 device will still work at SuperSpeed, but the connect
-wakeup (different one from DPDM) can't be triggered because the 24MHz OSC
-clock is required to be on. Therefore the system can't be waken up.
-
-> 
-> > RX term on so doesn't downgrade to USB2, so DP/DM wakeup can't
-> > happen, with this override bit we can force the RX term off when
-> > enters system suspend, and disable the override after system resume.
-> 
-> Enable RxTermination_override_sel to resolve the problem, which wrong
-> regongized as USB 2.0 device if USB3 device plug-in when HSIOMIX ON.
-> 
-> No clear why force RX term Off can resolve problem. Please rephrase it.
-
-Force RX term off will force the USB3 device works at high-speed from the
-beginning. Then it will switch to super-speed when the host reset it after
-system resume. OK, I will rephrase it.
-
-Thanks,
-Xu Yang
-
-> 
-> Frank
-> 
+> -----Original Message-----
+> From: Frank Li <frank.li@nxp.com>
+> Sent: Saturday, December 20, 2025 12:08 AM
+> To: G.N. Zhou (OSS) <guoniu.zhou@oss.nxp.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>; Rob Herring
+> <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dooley
+> <conor+dt@kernel.org>; Shawn Guo <shawnguo@kernel.org>; Sascha Hauer
+> <s.hauer@pengutronix.de>; Pengutronix Kernel Team
+> <kernel@pengutronix.de>; Fabio Estevam <festevam@gmail.com>; Laurent
+> Pinchart <laurent.pinchart@ideasonboard.com>; imx@lists.linux.dev; linux-
+> media@vger.kernel.org; devicetree@vger.kernel.org; linux-arm-
+> kernel@lists.infradead.org; linux-kernel@vger.kernel.org; G.N. Zhou
+> <guoniu.zhou@nxp.com>
+> Subject: Re: [PATCH v3 2/2] media: nxp: Add i.MX9 CSI pixel formatter v4l=
+2
+> driver
+>=20
+> On Fri, Dec 19, 2025 at 09:50:58AM +0800, Guoniu Zhou wrote:
+> > From: Guoniu Zhou <guoniu.zhou@nxp.com>
 > >
-> > Signed-off-by: Li Jun <jun.li@nxp.com>
-> > Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> > The CSI pixel formatter is a module found on i.MX95 used to reformat
+> > packet info, pixel and non-pixel data from CSI-2 host controller to
+> > match Pixel Link(PL) definition.
+> >
+> > Add data formatting support.
+> >
+> > Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
 > > ---
-> >  drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 15 ++++++++++++++-
-> >  1 file changed, 14 insertions(+), 1 deletion(-)
+> >  MAINTAINERS                                     |   8 +
+> >  drivers/media/platform/nxp/Kconfig              |  14 +
+> >  drivers/media/platform/nxp/Makefile             |   1 +
+> >  drivers/media/platform/nxp/imx9-csi-formatter.c | 880
+> > ++++++++++++++++++++++++
+> >  4 files changed, 903 insertions(+)
 > >
-> > diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> > index 02d9af409b08..0831ed465775 100644
-> > --- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> > +++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> > @@ -52,6 +52,7 @@
-> >  #define PHY_CTRL5_PCS_TX_SWING_FULL_MASK	GENMASK(6, 0)
+> > diff --git a/MAINTAINERS b/MAINTAINERS index
 > >
-> >  #define PHY_CTRL6			0x18
-> > +#define PHY_CTRL6_RXTERM_OVERRIDE_SEL	BIT(29)
-> >  #define PHY_CTRL6_ALT_CLK_EN		BIT(1)
-> >  #define PHY_CTRL6_ALT_CLK_SEL		BIT(0)
+> 4205ca007e076f869613032b51e8cc5bff06b98e..3878957b81156e5cb41da26
+> 99b2f
+> > 588e49521724 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -18626,6 +18626,14 @@ S:	Maintained
+> >  F:	Documentation/devicetree/bindings/media/nxp,imx8-jpeg.yaml
+> >  F:	drivers/media/platform/nxp/imx-jpeg
 > >
-> > @@ -847,6 +848,7 @@ static int imx8mp_usb_phy_init(struct phy *phy)
-> >  static int imx8mq_phy_power_on(struct phy *phy)
-> >  {
-> >  	struct imx8mq_usb_phy *imx_phy = phy_get_drvdata(phy);
-> > +	u32 value;
-> >  	int ret;
-> >
-> >  	ret = regulator_enable(imx_phy->vbus);
-> > @@ -863,12 +865,23 @@ static int imx8mq_phy_power_on(struct phy *phy)
-> >  		return ret;
-> >  	}
-> >
-> > -	return ret;
-> > +	/* Disable rx term override */
-> > +	value = readl(imx_phy->base + PHY_CTRL6);
-> > +	value &= ~PHY_CTRL6_RXTERM_OVERRIDE_SEL;
-> > +	writel(value, imx_phy->base + PHY_CTRL6);
+> > +NXP i.MX 9 CSI PIXEL FORMATTER V4L2 DRIVER
+> > +M:	Guoniu Zhou <guoniu.zhou@nxp.com>
+> > +L:	imx@lists.linux.dev
+> > +L:	linux-media@vger.kernel.org
+> > +S:	Maintained
+> > +F:	Documentation/devicetree/bindings/media/fsl,imx9-csi-formatter.yaml
+> > +F:	drivers/media/platform/nxp/imx9-csi-formatter.c
 > > +
-> > +	return 0;
-> >  }
+> >  NXP i.MX CLOCK DRIVERS
+> >  M:	Abel Vesa <abelvesa@kernel.org>
+> >  R:	Peng Fan <peng.fan@nxp.com>
+> > diff --git a/drivers/media/platform/nxp/Kconfig
+> > b/drivers/media/platform/nxp/Kconfig
+> > index
 > >
-> >  static int imx8mq_phy_power_off(struct phy *phy)
-> >  {
-> >  	struct imx8mq_usb_phy *imx_phy = phy_get_drvdata(phy);
-> > +	u32 value;
+> 40e3436669e213fdc5da70821dc0b420e1821f4f..a7bb62a2b0249659ffdfeac50
+> fa4
+> > 88aee9590a87 100644
+> > --- a/drivers/media/platform/nxp/Kconfig
+> > +++ b/drivers/media/platform/nxp/Kconfig
+> > @@ -28,6 +28,20 @@ config VIDEO_IMX8MQ_MIPI_CSI2
+> >  	  Video4Linux2 driver for the MIPI CSI-2 receiver found on the i.MX8M=
+Q
+> >  	  SoC.
+> >
+> > +config VIDEO_IMX9_CSI_FORMATTER
+> > +	tristate "NXP i.MX9 CSI Pixel Formatter driver"
+> > +	depends on ARCH_MXC || COMPILE_TEST
+> > +	depends on VIDEO_DEV
+> > +	select MEDIA_CONTROLLER
+> > +	select V4L2_FWNODE
+> > +	select VIDEO_V4L2_SUBDEV_API
+> > +	help
+> > +	  This driver provides support for the CSI Pixel Formatter found on
+> > +	  i.MX9 series SoC. This module unpacks the pixels received by the
+> > +	  formatter and reformats them to meet the pixel link format
+> requirement.
 > > +
-> > +	/* Override rx term to be 0 */
-> > +	value = readl(imx_phy->base + PHY_CTRL6);
-> > +	value |= PHY_CTRL6_RXTERM_OVERRIDE_SEL;
-> > +	writel(value, imx_phy->base + PHY_CTRL6);
+> > +	  Say Y here to enable CSI Pixel Formater module for i.MX9 SoC.
+> > +
+> >  config VIDEO_IMX_MIPI_CSIS
+> >  	tristate "NXP MIPI CSI-2 CSIS receiver found on i.MX7 and i.MX8
+> models"
+> >  	depends on ARCH_MXC || COMPILE_TEST
+> > diff --git a/drivers/media/platform/nxp/Makefile
+> > b/drivers/media/platform/nxp/Makefile
+> > index
 > >
-> >  	clk_disable_unprepare(imx_phy->alt_clk);
-> >  	clk_disable_unprepare(imx_phy->clk);
+> 4d90eb71365259ebdda84ea58483e1c4131d3ac7..39ba5660ba923141e7637b
+> 01b5b3
+> > 4a021dad7bb3 100644
+> > --- a/drivers/media/platform/nxp/Makefile
+> > +++ b/drivers/media/platform/nxp/Makefile
+> > @@ -6,6 +6,7 @@ obj-y +=3D imx8-isi/
+> >
+> >  obj-$(CONFIG_VIDEO_IMX7_CSI) +=3D imx7-media-csi.o
+> >  obj-$(CONFIG_VIDEO_IMX8MQ_MIPI_CSI2) +=3D imx8mq-mipi-csi2.o
+> > +obj-$(CONFIG_VIDEO_IMX9_CSI_FORMATTER) +=3D imx9-csi-formatter.o
+> >  obj-$(CONFIG_VIDEO_IMX_MIPI_CSIS) +=3D imx-mipi-csis.o
+> >  obj-$(CONFIG_VIDEO_IMX_PXP) +=3D imx-pxp.o
+> >  obj-$(CONFIG_VIDEO_MX2_EMMAPRP) +=3D mx2_emmaprp.o diff --git
+> > a/drivers/media/platform/nxp/imx9-csi-formatter.c
+> > b/drivers/media/platform/nxp/imx9-csi-formatter.c
+> > new file mode 100644
+> > index
+> >
+> 0000000000000000000000000000000000000000..5786e4690e31ee471caf82
+> 01329c
+> > 8e02a2cc0ee6
+> > --- /dev/null
+> > +++ b/drivers/media/platform/nxp/imx9-csi-formatter.c
+> > @@ -0,0 +1,880 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +/*
+> > + * Copyright 2025 NXP
+> > + */
+> > +
+> ...
+> > +
+> > +static const struct dt_index formatter_dt_to_index_map[] =3D {
+> > +	{ .dtype =3D MIPI_CSI2_DT_YUV420_8B,        .index =3D 0 },
+> > +	{ .dtype =3D MIPI_CSI2_DT_YUV420_8B_LEGACY, .index =3D 2 },
+> > +	{ .dtype =3D MIPI_CSI2_DT_YUV422_8B,        .index =3D 6 },
+> > +	{ .dtype =3D MIPI_CSI2_DT_RGB444,		  .index =3D 8 },
+> > +	{ .dtype =3D MIPI_CSI2_DT_RGB555,           .index =3D 9 },
+> > +	{ .dtype =3D MIPI_CSI2_DT_RGB565,           .index =3D 10 },
+> > +	{ .dtype =3D MIPI_CSI2_DT_RGB666,           .index =3D 11 },
+> > +	{ .dtype =3D MIPI_CSI2_DT_RGB888,           .index =3D 12 },
+> > +	{ .dtype =3D MIPI_CSI2_DT_RAW6,             .index =3D 16 },
+> > +	{ .dtype =3D MIPI_CSI2_DT_RAW7,             .index =3D 17 },
+> > +	{ .dtype =3D MIPI_CSI2_DT_RAW8,             .index =3D 18 },
+> > +	{ .dtype =3D MIPI_CSI2_DT_RAW10,            .index =3D 19 },
+> > +	{ .dtype =3D MIPI_CSI2_DT_RAW12,            .index =3D 20 },
+> > +	{ .dtype =3D MIPI_CSI2_DT_RAW14,            .index =3D 21 },
+> > +	{ .dtype =3D MIPI_CSI2_DT_RAW16,            .index =3D 22 },
+>=20
+> what's these index value from? register bit?
+
+Yes, they represent pixel data type for each virtual channel. You could ref=
+er to
+i.MX95 RM Rev2 section "142.5.1.55 Table 913" for more details.
+
+Best Regards
+G.N Zhou
+
+
+>=20
+> Frank
+> > +
+> > +static u8 get_index_by_dt(u8 data_type) {
+> > +	unsigned int i;
+> > +
+> > +	for (i =3D 0; i < ARRAY_SIZE(formatter_dt_to_index_map); ++i)
+> > +		if (data_type =3D=3D formatter_dt_to_index_map[i].dtype)
+> > +			break;
+> > +
+> > +	if (i =3D=3D ARRAY_SIZE(formatter_dt_to_index_map))
+> > +		return formatter_dt_to_index_map[0].index;
+> > +
+> > +	return formatter_dt_to_index_map[i].index;
+> > +}
+> > +
+> ...
+> >
 > > --
 > > 2.34.1
 > >
