@@ -1,93 +1,190 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx-relay37-hz1.antispameurope.com (mx-relay37-hz1.antispameurope.com [94.100.133.213])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6722FDC53
-	for <imx@lists.linux.dev>; Mon, 22 Dec 2025 07:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766389718; cv=none; b=oVvaBI46ZhT87fT42VDHypRE+KpsD3vYJqJtSNJ5a3P7wmfzE1ZMIn+js5Bl9KJPB7xbEQIUNB3MM/F+06dMLhChWzpY4mLpc725nm0UFZh4bB5mYbHF1jeAoQFbfNvMOtaPYmRplwGCUaUWoma7qsPV+g5Ef9UT9h/LEoiQkWo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766389718; c=relaxed/simple;
-	bh=O9OCWFingE0nz2wPBjE6WWnDNJpfpwzPNb54tcsJZ9Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ec4KUSm+0Nz9rBOo3YjOBphrzD0L5b66UyXfoqrPzPigyA3Qqq+Y8tsYxChJnQx8HD/GRzW6g38aanAFLjGdXjqKLMOwxgX1RHCSUsny6BQ/OUW8sXmacFiBd24nIaEu9yEfx4xtNVfjZsZtD9iXyc+tj/8OL4/Yuf9Mbw+9aZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EEENeuRZ; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57383126B9
+	for <imx@lists.linux.dev>; Mon, 22 Dec 2025 08:19:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.213
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766391547; cv=pass; b=JyVzP3f5rtUdugdHGXVvlp45gHEPiKfbzGZx0+BCpJ3x6JVafhnhWCkHJt64d9aBiM5SAvR/AuKZRcD0sU+6d/302oEgL4ZW2HlY7zkW6nAlZgBpYToHOrrdGUXUsXOsgdpEskQ1feKWSzYytsowxFp9/v0kasJpDfnAP6pHDoY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766391547; c=relaxed/simple;
+	bh=VZ3Rp6U+xMdsGwsMUPytKZdQfwzTwhM8ZpFGjBnSL0w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AmshedrFeAnOPg9x0ohQ2nKaGb5aJwn0GzB0OGil1DK58ynzjDKE0LRK8KqAKNxN078ICDFSN44UkLxQQcPaec58kS9tSrQTidt9/aAcpOGl1AlL6uNnuUP1+1ySDiloLXeUaD7CG991yQmZMHs9omf/jqh5wAiVJudMnHqj/oY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=aeMEUvK1; arc=pass smtp.client-ip=94.100.133.213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EEENeuRZ"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a0fe77d141so39490105ad.1
-        for <imx@lists.linux.dev>; Sun, 21 Dec 2025 23:48:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766389716; x=1766994516; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O9OCWFingE0nz2wPBjE6WWnDNJpfpwzPNb54tcsJZ9Y=;
-        b=EEENeuRZMIxL5M4nIBk9pZYpPf9csN4JP/hjBY9jcxiLaExoYFjoGX5ugVQjVJuN1a
-         XgEjUTNYWOVmqHmVPBSvecejGeXtgXjUTqn+mVFRclHogjIA3sLMeeIxifaRXpYZ7xAh
-         6gycbCDwFX961G20kjWc1N1Gzud2niikV1oMMF+Gt2mHN4CvqAP36LpapC2bq1qZI5ho
-         xMX4c1RQnbFQeFQ0iKYE6dtdNOokNSxmquG2t34gEV/Vb7V0SbFoN+J4zdojpvU1JMRC
-         OHnqro8SDqxVR5j6eGw4eYbuSMl4gU7S5kpCar1cFwNXk4ANp07C3lSkbiwViNZ+4ORz
-         RYMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766389716; x=1766994516;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=O9OCWFingE0nz2wPBjE6WWnDNJpfpwzPNb54tcsJZ9Y=;
-        b=hY55Jshk2Vz99sM8QIAjR0qDk+WEqc/SmpXfWTvtxAMWVkPxpE5RBdsOKetBftyzFN
-         VuJfs9U9Pl2NdHh9EiYqYlhlWju3C7vddLHpVRD3xVP2YGYElJcFi2xyQ958EtYdtgE0
-         SyuoZ9Ts8ygFEt9WnHYNCExYolHKKyXFitKkQqskkVKboa4gf/yPRs3mYePz8HO9d8D0
-         iyE6//8juW4C9oFs0T6iF5VntGTklbNAtZYRtO6OMn8u4VQH9lNWJpPNOVcr92NMERUT
-         u8c06IoMMEyDkYCp2cIvhoEhRjeUFQJ/koNJHpDQxJnAMKGXX8nGNx9jCZbHmyzlZjo8
-         F2FQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVvgHRrUyhR9MWoKz5ieOendznq3xGRWK17nYbjO1+iH2aWA+YJCkmRoMzZFLgbIMxa3XA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzTsjfxuNQQq7GxfqfVxf06MWzWPPSjzbrQlf1MAuXDF+hSHGTp
-	eYRizMf5L3hUNhNeviu/MQKJGy3E6D7L91/iF0gIAsC/YqW5/rCdk89vFZMk6MpEXqwTz2xL7wN
-	VjR3a2gZL5rnHIUNGgfrtML7CqXg8eLo=
-X-Gm-Gg: AY/fxX6eG/e6cwGrM4rd7X8u5lFR2i96MeuEfnKP6h6+/XfkMrvcSwckFO+zBg3lEcm
-	9LW8nE6oDQN0RQURUoo7Nc6SMiXNHg2VNTufXISK2FAyFjgpb32gfbtdd3h4ygX2hRr5b0L+xjc
-	hd8C0dzvh6fxWdOMlv0Ee8dlD/NAobGk5QyikDB7Zz5LQOvjXcJ54r13boEk1gHlpO9S8SZqjUW
-	tSB7eB2xkiI0UW6iMsQN/5KSA+w7bWoCYnF1jI4sy2MoGH6A7TvcwsBIxqU572d2TVGPylehyFr
-	eiiRrija02ArixNINbCFp0AfcsD53fIZ4k8bB9H9bT7EWgDXrSIZ3g8SlDi7IGuoU1K8wb1miLb
-	3EIfjplkx0825nlj1YtXTJLTo6qECB43kmaz8iV7qXWvmZtB/UoDGG13jmg==
-X-Google-Smtp-Source: AGHT+IGC5H9pk2WaAHD8EAkwNOOrTOxaDyXMdLCEf3TKyiNUxIOmfbIBS3iQduGYUv2H/hy//X3ygqs5vwpMpN5DTqY=
-X-Received: by 2002:a05:7022:6709:b0:11a:29e5:12e5 with SMTP id
- a92af1059eb24-121722ebc26mr12189814c88.30.1766389716505; Sun, 21 Dec 2025
- 23:48:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="aeMEUvK1"
+ARC-Authentication-Results: i=1; mx-gate37-hz1.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=kABrYCRuxfjnmNnzzhb9u7inWlE7qpx9z7CqlAxlLjA=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1766391506;
+ b=Hqqt+a/o9iWykil4vQPssp7XfzjOOO+3saXkxd5dY1zM9R1sjwZCoQcOf66aZ3YEo9iMjLe2
+ b3V+g7z1yd3noP4DwWq8nu45Zl4UKiDOOeWyLSN/MYsj9BBgVACvxpGLLGnK0P4+R9CUVLNwhTJ
+ SPNAZaT9Yh3DlJDnc235HdC7C7wg6ns/eH/uaco2gSwjDcfY+ro1/J0CsV7kP0YeFIZQnFNDINU
+ Y/RmzRawZ1TkNz58OWyapYjYJw9OK/fhRE2tkba18/8hI8qmZgfEcHrgDlIV709oFxLolYedxcK
+ wmee6teRJcbdL+HvdZb/WxM/XDZAWoEFfHYbkPmoDEEhQ==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1766391506;
+ b=QI6pMq2OGe4uW2fqumthJ7ESBlZXJidMobKBUh4R9jeV0z+KoX7cbdFKDFcIG/eej0M+N8cD
+ 8LVCEBslUSo24P7nuMuvSB5MgSa014EA52IZU8wPn9vmqIBX4CbVWG5zSRfUXwNDjbFw3QuUVh4
+ c4iq/A4QiWyoXOxZPFnzmoGZRUV5gaf5FgxbdsNifhVG2aLpMtqG/rEEcmqIgYqs7ERBMzGIAe0
+ Q+rS1pmfeclQ6vFA+Tvuq9BVkX/6g2YVRryBG3nH7MlEDHS+nz8kCTOW5cC31lD8l5dRJHu+Np2
+ S+noPDkzhYw5aAlgfblv6fw1V5d1dAu0H4S9fndxcfgFQ==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay37-hz1.antispameurope.com;
+ Mon, 22 Dec 2025 09:18:26 +0100
+Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id C8BC2220C57;
+	Mon, 22 Dec 2025 09:18:16 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] arm64: dts: tqma8mpql-mba8mpxl: Configure multiple queues on eqos
+Date: Mon, 22 Dec 2025 09:18:08 +0100
+Message-ID: <20251222081812.1120998-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251222-imx952-v1-v2-0-8793ec8bad6e@nxp.com> <20251222-imx952-v1-v2-1-8793ec8bad6e@nxp.com>
-In-Reply-To: <20251222-imx952-v1-v2-1-8793ec8bad6e@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Mon, 22 Dec 2025 09:48:22 +0200
-X-Gm-Features: AQt7F2qoIk1PNyyX4eWETsNou92XZKeudB4OtSdua0GthSZdmgmSnIjsrscm7Fg
-Message-ID: <CAEnQRZC44ftit9y3hj3x9tLn7G+o_PFnJUOy6cGkD9iGSJGHXw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] dt-bindings: arm: fsl: add i.MX952 EVK board
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, Peng Fan <peng.fan@nxp.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay37-hz1.antispameurope.com with 4dZWHF30qtz2YfPq
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:3b6200eff25a10e53cebf53f6f11a937
+X-cloud-security:scantime:1.715
+DKIM-Signature: a=rsa-sha256;
+ bh=kABrYCRuxfjnmNnzzhb9u7inWlE7qpx9z7CqlAxlLjA=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1766391505; v=1;
+ b=aeMEUvK1cd5A4Xn68Eg/OX3CGJeQCruPWQTNuJWyk8TSa7vlWv/9ELGEsTSaKhMO5RXHbItu
+ 3foTAbCekdNJUatEd3de98QshLUORnBxJhpXYTzRTLZmx9r3LNrjKhYdQ0g/gd7W4Zkq93gjG6t
+ cgU1vxXFq5MhfOJwqKfoKiAt1Qhl7dZsIHyDk2MXOmxvrS1okxGg3Xv6TA7HCIOcXcbcwW9+ARg
+ RfkuKxchAVEVcjUOqujkcvWx0NOH1H0NtpwUu84hR3L4gTpkREk7PIOtp+S+ev3S2LHWoLhvVG+
+ Ra126xAL4PqYt2BMQMuFRiJc2VTpXSXI9QvEW4XEOTMEA==
 
-On Mon, Dec 22, 2025 at 3:44=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nxp.co=
-m> wrote:
->
-> From: Peng Fan <peng.fan@nxp.com>
->
-> Add DT compatible string for NXP i.MX952 EVK board.
->
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+The MBa8MPxL mainboard has an integrated PHY connected to the EQOS
+ethernet controller which can support up to five queues. Configure
+these queues in the same manor as done on the imx8mp-evk.
+Setting DMA to threas mode is necessary to prevent FIFO overflows, see
+commit 0bc3e333a0c82 ("arm64: dts: imx8mp-evk: configure multiple queues
+on eqos")
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ .../freescale/imx8mp-tqma8mpql-mba8mpxl.dts   | 67 +++++++++++++++++++
+ 1 file changed, 67 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+index 68cecb0987b6b..eb25828f3b26d 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+@@ -360,6 +360,9 @@ &eqos {
+ 	pinctrl-0 = <&pinctrl_eqos>, <&pinctrl_eqos_phy>;
+ 	phy-mode = "rgmii-id";
+ 	phy-handle = <&ethphy3>;
++	snps,force_thresh_dma_mode;
++	snps,mtl-tx-config = <&mtl_tx_setup>;
++	snps,mtl-rx-config = <&mtl_rx_setup>;
+ 	status = "okay";
+ 
+ 	mdio {
+@@ -404,6 +407,70 @@ led@2 {
+ 			};
+ 		};
+ 	};
++
++	mtl_tx_setup: tx-queues-config {
++		snps,tx-queues-to-use = <5>;
++
++		queue0 {
++			snps,dcb-algorithm;
++			snps,priority = <0x1>;
++		};
++
++		queue1 {
++			snps,dcb-algorithm;
++			snps,priority = <0x2>;
++		};
++
++		queue2 {
++			snps,dcb-algorithm;
++			snps,priority = <0x4>;
++		};
++
++		queue3 {
++			snps,dcb-algorithm;
++			snps,priority = <0x8>;
++		};
++
++		queue4 {
++			snps,dcb-algorithm;
++			snps,priority = <0xf0>;
++		};
++	};
++
++	mtl_rx_setup: rx-queues-config {
++		snps,rx-queues-to-use = <5>;
++		snps,rx-sched-sp;
++
++		queue0 {
++			snps,dcb-algorithm;
++			snps,priority = <0x1>;
++			snps,map-to-dma-channel = <0>;
++		};
++
++		queue1 {
++			snps,dcb-algorithm;
++			snps,priority = <0x2>;
++			snps,map-to-dma-channel = <1>;
++		};
++
++		queue2 {
++			snps,dcb-algorithm;
++			snps,priority = <0x4>;
++			snps,map-to-dma-channel = <2>;
++		};
++
++		queue3 {
++			snps,dcb-algorithm;
++			snps,priority = <0x8>;
++			snps,map-to-dma-channel = <3>;
++		};
++
++		queue4 {
++			snps,dcb-algorithm;
++			snps,priority = <0xf0>;
++			snps,map-to-dma-channel = <4>;
++		};
++	};
+ };
+ 
+ &fec {
+-- 
+2.43.0
+
