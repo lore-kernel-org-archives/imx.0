@@ -1,71 +1,79 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F4F2DECDE
-	for <imx@lists.linux.dev>; Tue, 23 Dec 2025 16:36:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169CB29E0E1;
+	Tue, 23 Dec 2025 17:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766507797; cv=none; b=IWnH90jFewr7I7vpRs30mBZItmgN7kO2qdrx23Es3rIDmuTPKLro8iRTHwDjVIWegKe+a3Lll8iIERnAY2+vnNErxWahSR3iyMLaQT7nEe3pdGjUbfM9nic/iO+XXyxObvrruFTEUzjE02cIgCSjpZzkn0v33KQiuQV+hO3Q5zo=
+	t=1766511222; cv=none; b=rq9almBaV5Q2AlqEIluGIzxOlEwuUggWSZ55nHwLJXgkc9QzhlpWdB/tqiiEngU+9V/w29IEXG3WyG3eV/Yq2re0Wl/61ff/lQ4hYqK/UdHFWIzkq49c7AJ09qISfhDtwN73+HDHEVRGeiRDGua7BXLMeiGNbnauzTJz7sR74/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766507797; c=relaxed/simple;
-	bh=bAf2zhDG92BfEOZaentRA+gGdi3r4MU+evnsLIJLRC4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XFN3QVVJXgc7aeSt0aps0wcWSJGOZN7WitySYuXbhbA7smhU2/vbKgx5dM/Z5UGAhKw3gU1Ezm6GyHg60PjgamMzQ5+KpsDpcI9qIUyyh8v6QYVVixgNbMFbsX6VeVBxJSQ6VVChmpNCIF5T7fluDtHfngJ/7KFbWyC89+hxbnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=gIAtkT4E; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1766511222; c=relaxed/simple;
+	bh=m7HpFgNLV9TNM8Cr/q/pRPRVkPEEhFM+P9eE+IsCGLg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=AeqFkZA10P5HJ9mPm8u28hXtcu7QbIcrfpuEcMtx1S+WrgZLjZEqGnNupZQUxrS8J4DEUB2XcaaHYeY0YtoqilFslzm/Ud+Fnj3kLaxkDV13Pmso/G7zo9xFNGayl7+/MxeErhM/FYiwShX1hwPJ86DqopjOhFsBQ8j6v71WXKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a63U1Y7t; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="gIAtkT4E"
-Received: from francesco-nb (xcpe-178-82-120-96.dyn.res.sunrise.net [178.82.120.96])
-	by mail11.truemail.it (Postfix) with ESMTPA id 1B0161FE02;
-	Tue, 23 Dec 2025 17:36:33 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1766507793;
-	bh=weSDYEEDsPi7QMYHrZ0GmXY2iAT3tRHUV6SOV3zayrs=; h=From:To:Subject;
-	b=gIAtkT4ERN4nQ7V8kT4f8IDSXmyQhUTqD9p9f6BVMnTS+lc0stSuQFEzxv209dDi3
-	 i50mz/zwbSe0hqScUREHYxRzxuxIRcqcZ56Jq3SmccEyQPlAuoqeR5FT0P+XUooglk
-	 TXSLcyRhjd+Q1REmwJf3hv/7e/CEQmGXB3OESZOUGS4GlWIPHjOO3fC5JCkqEFC2ku
-	 tvfCDTvTK7WEW4B9p3ShOA7K1RKHPxS80FJWH0VmYjbvAMoRwEdx3371T2FbvOzvZ1
-	 /wAPktOfBC5AF43CTwaMGhiKmkpuUhKSw3/GtrxhzY+GZ0c2vqs87Mp9GuYdq/2WL8
-	 77G6ugZ6oQZ5A==
-Date: Tue, 23 Dec 2025 17:36:29 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	imx@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] net: fec: Add stop mode support on i.MX8DX/i.MX8QP
-Message-ID: <20251223163629.GA138465@francesco-nb>
-References: <20251223163328.139734-1-francesco@dolcini.it>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a63U1Y7t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7633C113D0;
+	Tue, 23 Dec 2025 17:33:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766511221;
+	bh=m7HpFgNLV9TNM8Cr/q/pRPRVkPEEhFM+P9eE+IsCGLg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=a63U1Y7t+uP3fy7j+j3rVDyF8Qn7Ezx49gZ3nu/xsZmcuw3nCyx6HRSf1y68qcUyV
+	 uUUwYe1HZtoTP6eAX9UfKqsA2cNDXmUzj6Nq1tmHadGGWi5U/pPf9q44xU/ASjqHP1
+	 Ytu/EEvTzvr1PvRhWdo6ZR/YqyYsURAC5a2QCPJ0yIgOilgEL/fiGKQRpInOY0Xgw7
+	 e0qy9RNwP/xSTSgQM6jM2qpltSl7wWCFZO0nsvmOL1NUe0rXb1tHgEc1hitcNLd5Am
+	 IR/2NFfbFtb9A+uRO+nMvcesIq7/r8xTNoGQCpxvB9ZS445mauauZYo+BaC9PFEe6I
+	 4vSVXL78iZ4rQ==
+From: Vinod Koul <vkoul@kernel.org>
+To: Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Franz Schnyder <fra.schnyder@gmail.com>
+Cc: Franz Schnyder <franz.schnyder@toradex.com>, 
+ linux-phy@lists.infradead.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, stable@vger.kernel.org, 
+ Xu Yang <xu.yang_2@nxp.com>
+In-Reply-To: <20251126140136.1202241-1-fra.schnyder@gmail.com>
+References: <20251126140136.1202241-1-fra.schnyder@gmail.com>
+Subject: Re: [PATCH v2] phy: fsl-imx8mq-usb: fix typec orientation switch
+ when built as module
+Message-Id: <176651121758.749296.4271020306636125527.b4-ty@kernel.org>
+Date: Tue, 23 Dec 2025 23:03:37 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251223163328.139734-1-francesco@dolcini.it>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
-On Tue, Dec 23, 2025 at 05:33:27PM +0100, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
-> 
-> Add additional machines that requires communication to the SC firmware
-> to set the GPR bit required for stop mode support.
-> 
-> NXP i.MX8DX (fsl,imx8dx) is a low end version of i.MX8QXP (fsl,imx8qxp),
-> while NXP i.MX8QP (fsl,imx8qp) is a low end version of i.MX8QM
-> (fsl,imx8qp).
-> 
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Whoops. I missed the destination branch, this is for net-next, sorry.
+On Wed, 26 Nov 2025 15:01:33 +0100, Franz Schnyder wrote:
+> Currently, the PHY only registers the typec orientation switch when it
+> is built in. If the typec driver is built as a module, the switch
+> registration is skipped due to the preprocessor condition, causing
+> orientation detection to fail.
+> 
+> With commit
+> 45fe729be9a6 ("usb: typec: Stub out typec_switch APIs when CONFIG_TYPEC=n")
+> the preprocessor condition is not needed anymore and the orientation
+> switch is correctly registered for both built-in and module builds.
+> 
+> [...]
 
-Francesco
+Applied, thanks!
+
+[1/1] phy: fsl-imx8mq-usb: fix typec orientation switch when built as module
+      commit: 49ccab4bedd4779899246107dc19fb01c5b6fea3
+
+Best regards,
+-- 
+~Vinod
+
 
