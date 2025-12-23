@@ -1,347 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE06482EB;
-	Tue, 23 Dec 2025 14:19:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6A9286D60
+	for <imx@lists.linux.dev>; Tue, 23 Dec 2025 15:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766499556; cv=none; b=T4tTffxvniezvjcKHArIasm/sE0k2yi0Ltftln0+NHZ97I/0sJldGOps13cvFErn6/nQfykGgBVO4saGGJGwpnjauM4Qck4JccxPK/5UhEg4DJY3CePN5XbccRy1s2yqPRelyhHwmP1tqC1R2oNcPtZA24JhV1fQlSISD5dd1xo=
+	t=1766502216; cv=none; b=pVxVBxv+ZmsY5d4tfvT5GC+PWUI8Nyf8bvUoYjOZjTaDsvNWh4oPZV3tZ/kPu4jx1ETRZ0363rIs4gMCm0IE90BrVeuZSjzJYslfb+egaYB9/8Vj+9UVvpOhdC/FvONRjs8TUwHmAfkzd/3blEoWEpAI1IYANA10o9lUQfdi6fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766499556; c=relaxed/simple;
-	bh=fHt+n+HRt03RdQYU56XGeelEoWfLQjIFIxqVDHoSshw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LYE6HDLWGbBzbiiqCIFO4qkyLfh6m2uNCz9Grdk4t+g1JlCToVrAW5JV53NBqorsjkfOsswl9Pm4+FWtHGPUSdTPsb7kl1EBwZTWK9z5NNAmtdcDcGAseIQO8NNzTdmXPagX42frQ9sm69Ihj1RZ3NTsDCRTQeij31ZyryTVNwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/kmEJZv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766502216; c=relaxed/simple;
+	bh=Y8h2u4IEUHAPn/mDroZpxYRKFzvRZI7gsgCOWisMxMM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R9FTiL2/F2rtt5lEswZ4oqrLAf/WNSfjUkHtKTL6n6bcqnjbR4lkA6ajCd3eerZceD5L1BkNJbfNaugjFiAeznFdEXsoHnxIQAKS0+sqU45daCGeirVN09XQr6vqq3IUtJOOtSIvwN8i9wi+cfqLNXdMv5WxczbFjiG5clYQ0sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=beims.me; spf=pass smtp.mailfrom=beims.me; dkim=pass (2048-bit key) header.d=beims.me header.i=@beims.me header.b=CDV/8891; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PUqnhElF; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=beims.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=beims.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/kmEJZv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90FFC113D0;
-	Tue, 23 Dec 2025 14:19:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766499555;
-	bh=fHt+n+HRt03RdQYU56XGeelEoWfLQjIFIxqVDHoSshw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N/kmEJZvsAd06e8rgHKVlKwZ+lVgKR/LV0wNMIIXTQifbMyDKqPrT5qe12+GnYQ0k
-	 XhWZBPbeSEsVtxIIWj9qJSnne4t6Ko80n77DrSs7d8xUFIyNShpCtoTloWvAt48hG8
-	 oSI4p9gZYPvJw2R0QEwN/9cn0r7Iqv4d8yUhCI8uS53epYKYuQIXvdkngKId4Va4zf
-	 TScjfWXb8nIyOXz4QqMoZfQp9Sprfsn+ZQ1y0dMQwG3izKLjj6T+eU5/mbOKyrLMnq
-	 n5kzznw9s6wSwtzGM5vYIckfzn3Z1orCuZDcjb1bO64G9R6XOM4YdXh2yt2BBQdDhc
-	 tNP66KyFio/bg==
-Date: Tue, 23 Dec 2025 19:49:11 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: neil.armstrong@linaro.org, shawnguo@kernel.org, kernel@pengutronix.de,
-	festevam@gmail.com, jun.li@nxp.com, Frank.Li@nxp.com,
-	linux-phy@lists.infradead.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] phy: fsl-imx8mq-usb: add debugfs to access control
- register
-Message-ID: <aUqk3z8CSVldoO5V@vaman>
-References: <20251219075447.3672833-1-xu.yang_2@nxp.com>
+	dkim=pass (2048-bit key) header.d=beims.me header.i=@beims.me header.b="CDV/8891";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PUqnhElF"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id 3C2B2EC0108;
+	Tue, 23 Dec 2025 10:03:33 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Tue, 23 Dec 2025 10:03:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=beims.me; h=cc
+	:cc:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm1; t=1766502213; x=1766588613; bh=l+VjmMpqeoXGTdow4O/go
+	ELngynUtd1mvs6oU6B69Iw=; b=CDV/8891CofWQWPqwYChTmHxoYzVHnsoY6MrQ
+	3/URfht+XVI9IhW8rqu3xgnOcweSKd6Ie8cL+GQN3ni1vENjAPoFEa9XMCADgdfP
+	YTlvKjta6InrF3U7rzMrfiU1WhPZY/8kcvCVEaWH8eq707QXb9J24jKuNNr9UFnf
+	mrqspHvjelSrzScyOF9bgL+NfQCVEaksih126ozwDDfXCq35PEdlAOhv34/GQIhL
+	UNo/8yJx3zoRN7OknSPvCFB+Hy8xHoNO1CDCehFwLW6Ktb6vCYTkD7a6IWbeHBqR
+	SxMOYkWhEMXleYPhPlES7FGEOs4+neZjMh8nDbnh5QFu6tLEw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1766502213; x=1766588613; bh=l+VjmMpqeoXGTdow4O/goELngynUtd1mvs6
+	oU6B69Iw=; b=PUqnhElF83bqeU43vdBA1Fly2kzVcoNBeLKYPcj9poDqObPhum6
+	A2QKkevf1KyLn3U8e7jcOoZ/Kp43E2X4YFaJyrnQC9n3LwCm6Dd0S0yXgduc3osm
+	oUC6gEni/+dtuK9tif6z/4IiS0+27VNaeJSOzhCo1VKG55R1Fq2WLBfc5pFCpuXP
+	qZfAMf29fPvx+V446FZOTgkuy4mdoc9yIsb7VBFQZIafrVLy1hR+/PkIK67eTPBT
+	aWfH//RdqdhBehZNCBhAuz8bf+S7V+io1ioiADsHEjg7e9Y+MIqRiwof9I1+xxld
+	2dn7KLOi3Kv6DdG3CM00XC+rrV5eYePx+Zw==
+X-ME-Sender: <xms:RK9KaY6aof43jCLbXSsdN8LOhnx2I9FN4py5cDz3ttVwaPRq-zDlcQ>
+    <xme:RK9KafGpEmuYjq7OpiZF16goaKDRZQzLHJLmIfaTjzbxK5f-yWTkTH9Xod4f5lzhC
+    wA7Gt5sNxBdhcms-ZsWpSnCgJ5b5QDOhS7wYHPaQ4GIP4G4KBJQ5g>
+X-ME-Received: <xmr:RK9Kaa1pNyPZ_WC8_22yux42EgQwK2-7Z7OvokiRxoaS3nHF_yOnhklvHkSgCobXQdIn>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeitddufecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeftrghfrggvlhcuuegv
+    ihhmshcuoehrrghfrggvlhessggvihhmshdrmhgvqeenucggtffrrghtthgvrhhnpeegje
+    dvhfetlefhveeljefhtefhjeejffdutefhvdeludfhgfeutdetheeggeekgeenucffohhm
+    rghinhepnhigphdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpehrrghfrggvlhessggvihhmshdrmhgvpdhnsggprhgtphhtthhopedu
+    fedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhhkohhulheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepnhgvihhlrdgrrhhmshhtrhhonhhgsehlihhnrghrohdrohhr
+    ghdprhgtphhtthhopehshhgrfihnghhuoheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    epshdrhhgruhgvrhesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepkhgvrhhn
+    vghlsehpvghnghhuthhrohhnihigrdguvgdprhgtphhtthhopehfvghsthgvvhgrmhesgh
+    hmrghilhdrtghomhdprhgtphhtthhopehlihhnuhigqdhphhihsehlihhsthhsrdhinhhf
+    rhgruggvrggurdhorhhgpdhrtghpthhtohepihhmgieslhhishhtshdrlhhinhhugidrug
+    gvvhdprhgtphhtthhopehrrghfrggvlhdrsggvihhmshesthhorhgruggvgidrtghomh
+X-ME-Proxy: <xmx:RK9KacqrI9d4KmL_0975qBKl1XfaZyVNZTg4v1Z-yPiGk4ZzTXWE3A>
+    <xmx:RK9KaXM0OxMBqlCIDiVmQrrwagF_FzsiAsTwQ27ZeL6gA3OoqbOxDQ>
+    <xmx:RK9KaeUmObZlQ8h3-imcqqfQVMf_cWjfpxaW9GOl4hUqWlJbs2Ex7Q>
+    <xmx:RK9KaaveHqM9h8nHqSTumXpXiimXjRFkOTvS0JSw17O9CwjYSHDhFQ>
+    <xmx:Ra9Kad522RH4sJuvJUdZqhFBxfez1fV4qGTD5o5ugPPV_vvZm_UAXa-O>
+Feedback-ID: idc214666:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 23 Dec 2025 10:03:30 -0500 (EST)
+From: Rafael Beims <rafael@beims.me>
+To: Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: linux-phy@lists.infradead.org,
+	imx@lists.linux.dev,
+	Rafael Beims <rafael.beims@toradex.com>,
+	Sahaj Sarup <sahaj.sarup@linaro.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] phy: freescale: imx8m-pcie: assert phy reset during power on
+Date: Tue, 23 Dec 2025 12:02:54 -0300
+Message-ID: <20251223150254.1075221-1-rafael@beims.me>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251219075447.3672833-1-xu.yang_2@nxp.com>
 
-On 19-12-25, 15:54, Xu Yang wrote:
-> The CR port is a simple 16-bit data/address parallel port that is
-> provided for on-chip access to the control registers inside the
-> USB 3.0 femtoPHY. While access to these registers is not required
-> for normal PHY operation, this interface enables you to access
-> some of the PHY’s diagnostic features during normal operation or
-> to override some basic PHY control signals.
-> 
-> 3 debugfs files are created to read and write control registers,
-> all use hexadecimal format:
-> ctrl_reg_base: the register offset to write, or the start offset
->                to read.
-> ctrl_reg_count: how many continuous registers to be read.
-> ctrl_reg_value: read to show the continuous registers value from
->                 the offset in ctrl_reg_base, to ctrl_reg_base
->                 + ctrl_reg_count - 1, one line for one register.
->                 when write, override the register at ctrl_reg_base,
->                 one time can only change one 16bits register.
-> 
-> Signed-off-by: Li Jun <jun.li@nxp.com>
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> ---
->  drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 221 ++++++++++++++++++++-
->  1 file changed, 220 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> index ad8a55012e42..cb2392008ad2 100644
-> --- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> +++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-> @@ -1,8 +1,9 @@
->  // SPDX-License-Identifier: GPL-2.0+
-> -/* Copyright (c) 2017 NXP. */
-> +/* Copyright (c) 2017-2025 NXP. */
->  
->  #include <linux/bitfield.h>
->  #include <linux/clk.h>
-> +#include <linux/debugfs.h>
->  #include <linux/delay.h>
->  #include <linux/io.h>
->  #include <linux/module.h>
-> @@ -52,6 +53,21 @@
->  
->  #define PHY_TUNE_DEFAULT		0xffffffff
->  
-> +/* PHY control register access */
-> +#define PHY_CTRL_REG_COUNT_MAX		0x42
-> +#define PHY_CTRL_REG_OFFSET_MAX		0x201f
-> +
-> +#define PHY_CRCTL			0x30
-> +#define PHY_CRCTL_DATA_IN_MASK		GENMASK(15, 0)
-> +#define PHY_CRCTL_CAP_ADDR		BIT(16)
-> +#define PHY_CRCTL_CAP_DATA		BIT(17)
-> +#define PHY_CRCTL_CR_WRITE		BIT(18)
-> +#define PHY_CRCTL_CR_READ		BIT(19)
-> +
-> +#define PHY_CRSR			0x34
-> +#define PHY_CRSR_DATA_OUT_MASK		GENMASK(15, 0)
-> +#define PHY_CRSR_CR_ACK			BIT(16)
-> +
->  #define TCA_CLK_RST			0x00
->  #define TCA_CLK_RST_SW			BIT(9)
->  #define TCA_CLK_RST_REF_CLK_EN		BIT(1)
-> @@ -113,6 +129,9 @@ struct imx8mq_usb_phy {
->  	void __iomem *base;
->  	struct regulator *vbus;
->  	struct tca_blk *tca;
-> +	struct dentry *debugfs;
-> +	u16 cr_access_base;
-> +	u16 cr_read_count;
->  	u32 pcs_tx_swing_full;
->  	u32 pcs_tx_deemph_3p5db;
->  	u32 tx_vref_tune;
-> @@ -420,6 +439,204 @@ static u32 phy_pcs_tx_swing_full_from_property(u32 percent)
->  	percent = min(percent, 100U);
->  
->  	return (percent * 127) / 100;
-> +};
-> +
-> +#define IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT 500000
+From: Rafael Beims <rafael.beims@toradex.com>
 
-empty line here, possibly move this to top of file
+After U-Boot initializes PCIe with "pcie enum", Linux fails to detect
+an NVMe disk on some boot cycles with:
 
-> +static int imx8mq_phy_ctrl_reg_addr(struct imx8mq_usb_phy *imx_phy, u16 offset)
-> +{
-> +	void __iomem	*cr_ctrl = imx_phy->base + PHY_CRCTL;
-> +	void __iomem	*cr_sr = imx_phy->base + PHY_CRSR;
-> +	struct device	*dev = &imx_phy->phy->dev;
-> +	int i;
-> +
-> +	/* Address Phrase */
-> +	writel(offset, cr_ctrl);
-> +	writel(readl(cr_ctrl) | PHY_CRCTL_CAP_ADDR, cr_ctrl);
-> +
-> +	/* Wait CRSR[16] == 1 */
-> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
-> +	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
-> +		i--;
-> +	if (i == 0)
-> +		goto cr_addr_err;
-> +
-> +	writel(readl(cr_ctrl) & (~PHY_CRCTL_CAP_ADDR), cr_ctrl);
-> +
-> +	/* Wait CRSR[16] == 0 */
-> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
-> +	while ((readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
-> +		i--;
-> +	if (i == 0)
-> +		goto cr_addr_err;
-> +
-> +	return 0;
-> +
-> +cr_addr_err:
-> +	dev_err(dev, "Failed to address reg 0x%x.\n", offset);
-> +	return -EIO;
-> +}
-> +
-> +static int imx8mq_phy_ctrl_reg_read(struct imx8mq_usb_phy *imx_phy, u16 offset)
-> +{
-> +	void __iomem	*cr_ctrl = imx_phy->base + PHY_CRCTL;
-> +	void __iomem	*cr_sr = imx_phy->base + PHY_CRSR;
-> +	struct device	*dev = &imx_phy->phy->dev;
-> +	int val, i;
-> +
-> +	/* Address Phrase */
-> +	val = imx8mq_phy_ctrl_reg_addr(imx_phy, offset);
-> +	if (val)
-> +		return val;
-> +
-> +	/* Read Phrase */
-> +	writel(readl(cr_ctrl) | PHY_CRCTL_CR_READ, cr_ctrl);
-> +
-> +	/* Wait CRSR[16] == 1 */
-> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
-> +	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
-> +		i--;
-> +	if (i == 0)
-> +		goto cr_read_err;
-> +
-> +	val = readl(cr_sr);
-> +	writel(val & ~PHY_CRCTL_CR_READ, cr_ctrl);
-> +
-> +	/* Wait CRSR[16] == 0 */
-> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
-> +	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
-> +		i--;
-> +	if (i == 0)
-> +		goto cr_read_err;
-> +
-> +	return val;
-> +
-> +cr_read_err:
-> +	dev_err(dev, "Failed to read reg 0x%x.\n", offset);
-> +	return -EIO;
-> +}
-> +
-> +static int imx8mq_phy_ctrl_reg_write(struct imx8mq_usb_phy *imx_phy,
-> +				     u16 offset, u16 val)
-> +{
-> +	void __iomem	*cr_ctrl = imx_phy->base + PHY_CRCTL;
-> +	void __iomem	*cr_sr = imx_phy->base + PHY_CRSR;
-> +	struct device	*dev = &imx_phy->phy->dev;
-> +	int i, ret;
-> +
-> +	/* Address Phrase */
-> +	ret = imx8mq_phy_ctrl_reg_addr(imx_phy, offset);
-> +	if (ret)
-> +		return ret;
-> +
-> +	writel(val, cr_ctrl);
-> +
-> +	/* Set cr_cap_data to be 1'b1 */
-> +	writel(readl(cr_ctrl) | PHY_CRCTL_CAP_DATA, cr_ctrl);
-> +	/* Wait CRSR[16] == 1 */
-> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
-> +	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
-> +		i--;
-> +	if (i == 0)
-> +		goto cr_write_err;
+  phy phy-32f00000.pcie-phy.0: phy poweron failed --> -110
 
-seems like a repeated pattern, maybe move to a helper. (if driver used
-regmap, it could have used helpers from regmap for this polling)
+Discussion with NXP identified that the iMX8MP PCIe PHY PLL may fail to
+lock when re-initialized without a reset cycle [1].
 
-> +
-> +	/* Clear cr_cap_data to be 1'br0 */
-> +	writel(readl(cr_ctrl) & ~PHY_CRCTL_CAP_DATA, cr_ctrl);
-> +	/* Wait CRSR[16] == 0 */
-> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
-> +	while ((readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
-> +		i--;
-> +	if (i == 0)
-> +		goto cr_write_err;
-> +
-> +	/* Set cr_write to be 1'b1 */
-> +	writel(readl(cr_ctrl) | PHY_CRCTL_CR_WRITE, cr_ctrl);
-> +	/* Wait CRSR[16] == 1 */
-> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
-> +	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
-> +		i--;
-> +	if (i == 0)
-> +		goto cr_write_err;
-> +
-> +	/* Clear cr_write to be 1'br0 */
-> +	writel(readl(cr_ctrl) & ~PHY_CRCTL_CR_WRITE, cr_ctrl);
-> +	/* Wait CRSR[16] == 0 */
-> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
-> +	while ((readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
-> +		i--;
-> +	if (i == 0)
-> +		goto cr_write_err;
-> +
-> +	return 0;
-> +
-> +cr_write_err:
-> +	dev_err(dev, "Failed to write reg 0x%x.\n", offset);
-> +	return -EIO;
-> +}
-> +
-> +static int ctrl_reg_value_show(struct seq_file *s, void *unused)
-> +{
-> +	struct imx8mq_usb_phy *imx_phy = s->private;
-> +	u16 i, val, base = imx_phy->cr_access_base;
-> +
-> +	for (i = 0; i < imx_phy->cr_read_count; i++) {
-> +		val = imx8mq_phy_ctrl_reg_read(imx_phy, base + i);
-> +		seq_printf(s, "Control Register 0x%x value is 0x%4x\n",
-> +			   base + i, val);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int ctrl_reg_value_open(struct inode *inode, struct file *file)
-> +{
-> +	return single_open(file, ctrl_reg_value_show, inode->i_private);
-> +}
-> +
-> +static ssize_t ctrl_reg_value_write(struct file *file, const char __user *ubuf,
-> +				    size_t count, loff_t *ppos)
-> +{
-> +	struct seq_file		*s = file->private_data;
-> +	struct imx8mq_usb_phy	*imx_phy = s->private;
-> +	u16			cr_value;
-> +	int			ret;
-> +
-> +	ret = kstrtou16_from_user(ubuf, count, 16, &cr_value);
-> +	if (ret)
-> +		return ret;
-> +
-> +	imx8mq_phy_ctrl_reg_write(imx_phy, imx_phy->cr_access_base, cr_value);
-> +
-> +	return count;
-> +}
-> +
-> +static const struct file_operations ctrl_reg_value_fops = {
-> +	.open		= ctrl_reg_value_open,
-> +	.write		= ctrl_reg_value_write,
-> +	.read		= seq_read,
-> +	.llseek		= seq_lseek,
-> +	.release	= single_release,
-> +};
+The issue reproduces on 7% of tested hardware platforms, with a 30-40%
+failure rate per affected device across boot cycles.
 
-please use DEFINE_DEBUGFS_ATTRIBUTE for this
+Insert a reset cycle in the power-on routine to ensure the PHY is
+initialized from a known state.
 
-> +
-> +static void debug_create_files(struct imx8mq_usb_phy *imx_phy)
-> +{
-> +	struct device *dev = &imx_phy->phy->dev;
-> +
-> +	imx_phy->debugfs = debugfs_create_dir(dev_name(dev), imx_phy->phy->debugfs);
-> +
-> +	debugfs_create_x16("ctrl_reg_base", 0600, imx_phy->debugfs,
-> +			   &imx_phy->cr_access_base);
-> +	debugfs_create_x16("ctrl_reg_count", 0600, imx_phy->debugfs,
-> +			   &imx_phy->cr_read_count);
-> +	debugfs_create_file("ctrl_reg_value", 0600, imx_phy->debugfs,
-> +			    imx_phy, &ctrl_reg_value_fops);
-> +
-> +	imx_phy->cr_access_base = 0;
-> +	imx_phy->cr_read_count = 1;
-> +}
-> +
-> +static void debug_remove_files(struct imx8mq_usb_phy *imx_phy)
-> +{
-> +	debugfs_remove_recursive(imx_phy->debugfs);
->  }
->  
->  static void imx8m_get_phy_tuning_data(struct imx8mq_usb_phy *imx_phy)
-> @@ -724,6 +941,7 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
->  					"failed to get tca\n");
->  
->  	imx8m_get_phy_tuning_data(imx_phy);
-> +	debug_create_files(imx_phy);
+[1] https://community.nxp.com/t5/i-MX-Processors/iMX8MP-PCIe-initialization-in-U-Boot/m-p/2248437#M242401
 
-please use phy->debugfs as root node
+Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+index 68fcc8114d75..7f5600103a00 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
++++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+@@ -89,7 +89,8 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+ 			writel(imx8_phy->tx_deemph_gen2,
+ 			       imx8_phy->base + PCIE_PHY_TRSV_REG6);
+ 		break;
+-	case IMX8MP: /* Do nothing. */
++	case IMX8MP:
++		reset_control_assert(imx8_phy->reset);
+ 		break;
+ 	}
+ 
 -- 
-~Vinod
+2.51.0
+
