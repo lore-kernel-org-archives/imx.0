@@ -1,44 +1,44 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013062.outbound.protection.outlook.com [40.107.159.62])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013025.outbound.protection.outlook.com [40.107.162.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE1A34CFBE
-	for <imx@lists.linux.dev>; Tue, 23 Dec 2025 19:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7FC34F47C
+	for <imx@lists.linux.dev>; Tue, 23 Dec 2025 20:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.25
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766519259; cv=fail; b=eXW1DM9fRzPDUd6UXTYHqQLtjlVW3Vig4bMGtZXYNJoi6UD0ST+lVfX4noSMMi5mEGcho3poqdUAe4/6a/Prn6SYYlXpgFfZYd42672D5za8Dc+uZQ4CS6Sk/EtlN1utUYtD/yJnoooN0ClZnl9tszCUsrvATdShu2/w43RImAw=
+	t=1766521256; cv=fail; b=YOfb7u4dghsx6lGiS03vUsX628h2EtpKpkt07fIn8JHqnOWI1As1A251HbITK78PdUYhv4En1uA4KPqHtWIgW8XAfR6rRKp3QTsCHKhQRRg8KZFK1T1W0hT6xx93+Jd8Hdkg6qSf7yPmr9D70n+ZrWePD+1PFVHmStN8nXtSaa8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766519259; c=relaxed/simple;
-	bh=+A+FHIFRZIZc90VbyrQv5zI122yDa8Z063KFCDqT9tw=;
+	s=arc-20240116; t=1766521256; c=relaxed/simple;
+	bh=RQABRgiDZVEI1sWNpz8N7LnGZtCc6L/ylT24WxgkATQ=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nOXWnNeDhV1djk2ONNG/Xpp9VMqeUlZnf1t+eMYTU6qJEQf3fMh5Z3WDAQIwLeRExuZTtfRZ1Rq/xav4h75AeCAp64kDUKS7suRZHwUqN4eSctDOsIrm0uQzc6c4FUFlxozFCkxEC/aKmB1rLb+l49LwO59HT3oIO0F1s4pPXcs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=bB7BrKBL; arc=fail smtp.client-ip=40.107.159.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	 Content-Type:MIME-Version; b=ODw12aFvDCnvnUCV1gHqdBxQbFF8Ztif22lBtC6t2FaUaMylL0SopOoaiF/nXHY2nmjpO+EG7bh0E5TFutFR24G9E5Rkmrz7tyWP955YjFw54/NyN0qv1mC/8LookA/c3Gf8OG0g4cFecD7g/nAm7IaajXtSGP1A9V/zMin/M2U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=nxp.com; spf=fail smtp.mailfrom=nxp.com; dkim=fail (0-bit key) header.d=nxp.com header.i=@nxp.com header.b=SFyq7DHn reason="key not found in DNS"; arc=fail smtp.client-ip=40.107.162.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="bB7BrKBL"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=nxp.com header.i=@nxp.com header.b="SFyq7DHn"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rprXhOQ/G2aGY7x3dHsUSKEc9RnbyXKCYvBheAvsIDgrq9nDGWDsJVVFoGNm2J7jkKrNyGeTU1mszFpInE2hEMVwiGH9qimsEhiFdlskyyWwlP4OJZEhf18q5MiOpP4VACLZwOIdHcGgN0Hr1Kcmdm9j42VsaW8KmIBKBFEXLaFBcyiFRwLq3QYWFO2JCHA6ssnd9j2dGe9Vs4dWFY3+CJIFwNcq2mv4cLKVLk6uhWziPuqVqIxfk299s0X7W4euQGWYt5hqpEnnia2KeYy/qPJ9w8bRNm7/9tnWdQVBK7P0B9dN0M46xBE37v+nkECXXLGOkI9pEuTFHnhc37lCMQ==
+ b=yMcLWxczfQdWhud5ddE9ehR3qfuMFMzlzZ5JkwWg3Egjf00SrOQNNm+hM3HCx0Npug57/eSSsPwgJnal9+d7mK/bs14VQqpd7R0LEIoP4mig/Ozoz+FKEF0T1b7njSfc7gwsoCWcDiB+vFYcKaLk4Nj+1sBfKKcs99j6of+N+Bu+JRhpQY2+ww8C+TwTBL5IAkH/J/jhg81tviBXaNdMR3+CTUoEmPpDyaN0ccshBJqSjyXbMK4xam5REJG7BtrQ5Uicz2jwDhJuCPxhDSv7kqF3d/hq2WpSJxnN8s46s03wIW+OegfQL4ZdwPg0wv7U265scN81JLn7yywxQFrDWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BtX68TGEJkFNRfGmmOMFayRFVNQkYoqFzxzC2fqF3AA=;
- b=h8Zbbyt0leDLMnhaIrM8MUUl4izwIu10ScdyrvhdrzkD+tIPL8v8F0PPmQzw45470KnZHexj6X3Pnsw5nLXCAnd56MqfZOM2J+OszaosQD6h2pBvpUrq1mE3tkf2qEGGD99dYpt1C903UGEj3hGC2XtkxkOlV2LOdQ3m290JsFLqsoS5Ctwod9SNUygLVug01B+yTN/CxkThyIWX2YY7Tg0FE15ZvUOyb+MgkK/ZcTFDShRmDZuH+Pr81cUO3wfq/U7B4OeF755c1/b7LsFH0oPrZdxXRLQt+ZdfbP+hkeDjGocsLCArswTqPYx5K060/Un0sCvO+EiLFdp1TNtdbg==
+ bh=Y1S5NuuxvML9//8sTdsSQEJY3YaB+KF0zwEJo+3bqaI=;
+ b=Bv/Xb7YZ+DVauhARQOz7ccc2RVNgANOQ0KGzqTswO4tACin2IriR3+TAhHvNECLYqaKawMENeBZwxFnbfJaK1ldq8cP8GFtKnDOihY0ItJWJO48GMD/tjZc6KCmw0n1A3kdLAe0I8TEPvVCPvZymyza4P+3JwVTpmV8mjOmk+4AodCAS3t3/wbQgDYvJCiarLbZbM3sAr9HMzGdtvQ8QWSzKdPko6vSRyafOL1fAVmkH8qPzOHpinPBW/DqKKE+cftOKjQB3+lsE9DNvQOD/zou1FaFTj6Ruf4z1gO3IBfLeV3v9TdAiIXU1p0D0yhXWUiN6Vuhsg2GMPdupAuOXqQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BtX68TGEJkFNRfGmmOMFayRFVNQkYoqFzxzC2fqF3AA=;
- b=bB7BrKBL7PxqjVRVGRrlalKA1pxaTvot/EbnYOSiZmFLWSNgv483OxLVEZgT6k2JXzYdFD6cBXICYkJxhdcZfgMg1YCCMYLLsHZSjt+VXYmK2IiJKa9+ZAtIv/mGWWMg97vNYLf1OgUzMPKPprr8gij/oTjPFjamKEn2YuqYO+coIzk2yFH0e0SilU2LKeVh449f38P7CLNVkFzbkdDqrDCKm80EGxMKtiXD/w9C6Yk33+n50DQjbeFrU4WWY6+HbhgKBixoZfezPfkXZ2yEWM4PBBcBjyfMhtLjTsarERJoi7rfdqSDOjZkjjuWIL3FLMXxcp1aM1fpQ2BqM3Up+g==
+ bh=Y1S5NuuxvML9//8sTdsSQEJY3YaB+KF0zwEJo+3bqaI=;
+ b=SFyq7DHnKG2fd5/J6X2GTeQKY9VB4f87lfJHSMipHRfyKyZh63aeAlXeWCXomKKrhu5ie6tjG5fvSVL9cYWQKUCa69ppIqMP+XKIri4TLPsWziKiiUuRuUK75MVSvt+s0I5Fm1NLO6MqKtsuVP/Alo5ijlt8arNS+OsEtqXUiypdR+9aHWLQp3fZIIq+uN9qSrG3UettU+6kzlacAT/ihfX7wZAZNvxRGRvr3Wa1TwVXf2Vctj+gcSp8BALQZ0yTca+qdU/XE1ifu5grZb03LGsCFhdDMKaSYB2ruh5hvM267VeR87SacggY04yHRldH3fLG1EBXRfFIRgErFrYb8g==
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
- by AM0PR04MB11854.eurprd04.prod.outlook.com (2603:10a6:20b:6fc::8) with
+ by PAWPR04MB11706.eurprd04.prod.outlook.com (2603:10a6:102:50f::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9456.11; Tue, 23 Dec
- 2025 19:47:32 +0000
+ 2025 20:20:49 +0000
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::21bf:975e:f24d:1612]) by PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::21bf:975e:f24d:1612%5]) with mapi id 15.20.9456.008; Tue, 23 Dec 2025
- 19:47:31 +0000
+ 20:20:49 +0000
 From: Shenwei Wang <shenwei.wang@nxp.com>
 To: Bjorn Andersson <andersson@kernel.org>
 CC: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
@@ -54,19 +54,18 @@ CC: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
 	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
 	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
 	<linux-arm-kernel@lists.infradead.org>, "linux-doc@vger.kernel.org"
-	<linux-doc@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>
-Subject: Re: [PATCH v6 2/5] remoteproc: imx_rproc: Populate devices under
- "rpmsg" subnode
-Thread-Topic: [PATCH v6 2/5] remoteproc: imx_rproc: Populate devices under
- "rpmsg" subnode
-Thread-Index: AQHcdET6fGhxnfabg0KDsjwVOs2row==
-Date: Tue, 23 Dec 2025 19:47:31 +0000
+	<linux-doc@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>, Bartosz
+ Golaszewski <brgl@bgdev.pl>, Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [PATCH v6 4/5] gpio: rpmsg: add generic rpmsg GPIO driver
+Thread-Topic: [PATCH v6 4/5] gpio: rpmsg: add generic rpmsg GPIO driver
+Thread-Index: AQHcdEmgC9js9x150UC0C7k0MUEYIw==
+Date: Tue, 23 Dec 2025 20:20:49 +0000
 Message-ID:
- <PAXPR04MB9185AF0B5225CB8DD06F774289B5A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <PAXPR04MB9185B16A2B08E739B2FB64C889B5A@PAXPR04MB9185.eurprd04.prod.outlook.com>
 References: <20251212194341.966387-1-shenwei.wang@nxp.com>
- <20251212194341.966387-3-shenwei.wang@nxp.com>
- <3bbemd2vbsfss3sqpjpokytvvzweoqrtiqygffj5vqazqk3jyq@eobv6ruriiwb>
-In-Reply-To: <3bbemd2vbsfss3sqpjpokytvvzweoqrtiqygffj5vqazqk3jyq@eobv6ruriiwb>
+ <20251212194341.966387-5-shenwei.wang@nxp.com>
+ <mnpg4xanzl45lal72c6kgog7qmqgk2zcp734eqdpk3gsonq63f@vlewh6jgdjy4>
+In-Reply-To: <mnpg4xanzl45lal72c6kgog7qmqgk2zcp734eqdpk3gsonq63f@vlewh6jgdjy4>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -74,72 +73,72 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|AM0PR04MB11854:EE_
-x-ms-office365-filtering-correlation-id: b4984bb8-0a94-49fe-ce58-08de425c1cb1
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|PAWPR04MB11706:EE_
+x-ms-office365-filtering-correlation-id: 8b9717bc-c41b-4481-df3e-08de4260c31e
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|7416014|366016|1800799024|19092799006|38070700021;
+ BCL:0;ARA:13230040|19092799006|1800799024|7416014|376014|366016|38070700021;
 x-microsoft-antispam-message-info:
- =?us-ascii?Q?IkNSSzYtSdLfnSkNzl+I/efFsLqFydjjkK69gj2NNYuBL1OlAPfLUIkNOGmT?=
- =?us-ascii?Q?x4I+Omm7Ak5Z5OWQABq1u0Sua1+BkFqKOU98xYlEtpNLTuWmFoC7X5ZHSgZM?=
- =?us-ascii?Q?QxVASvwhh9afz2QhOZEMXHR95WzR4UoGggyhWEwjxWCuaMpTDi7nhGKf0rXU?=
- =?us-ascii?Q?1oXtUd+nfpsiBUdd4zlnlkbLSTiJN4dylepz91gSSkA2N0K13uCj343IUfQA?=
- =?us-ascii?Q?9sMwT/jO2Dg3W8d5xs6iaLzh621AlkSbvNnmWJ0ZOvnfsgHwmiENgAluYTzj?=
- =?us-ascii?Q?Owpw6FoQBZr9fYWNicy5m1VqBR4MHAlYITPz9HPzyMP/hqLzd+AK8P26SO9b?=
- =?us-ascii?Q?b8KrZQaBEsda55E3xtC0AY3xtyhIGpiclsKLiIktptNknKUeDufiMJijE5dg?=
- =?us-ascii?Q?JAXwi8gCWB9aoNgocyE2ZeThxA5teMphquCs14mc6jE59H9wkpmRhVW6fOdD?=
- =?us-ascii?Q?mWVcAYxNpL/PyB4a0fkk4xSqeNfhJqPswKqEzCvG9ul743tAOJppEwar3nxa?=
- =?us-ascii?Q?rIi08u77+4r0s/4DxC1NCWzVALZCgQLZxB8lZNnihboITTKppZjhRXH0jVFN?=
- =?us-ascii?Q?VYL11ShyklaStyvhwJU18/Pxg8Jj46/9JHfEk742cXkSsWMVX/R01x53pnU9?=
- =?us-ascii?Q?B0giin5qJb+xdBQCwcWyo9/v6HZIsbh1qLMK/8W+uFKo3dmeo23hU5n+NYRF?=
- =?us-ascii?Q?10apy/E1x+f2L8+sQdcUqtwtRld7ugImvbPCn5usA9seOaRzz+AN0Bd7mME0?=
- =?us-ascii?Q?UmEFEnzsd8HZxB3CNf3137vPdAVupYI+5zE72N11RqKSMZbp+q58Wf1XnUjN?=
- =?us-ascii?Q?8ETzEohJ38dPL38KCYXiy3VtHbkTtX5+REqcYEag/QH8VssKVuDtqD/RVUoa?=
- =?us-ascii?Q?S4LhcM1eayNebVIyz3yq4TJsExzE83z6gZRu0puX3aMxdFIeajkEeR4XCpb9?=
- =?us-ascii?Q?g1r+tOXYiD9ji3iSq/CQD04bc091B2vo4986qGjRoRsELCSSQd6vvb7bz9Pt?=
- =?us-ascii?Q?eXuxkDMm+3Uld5mIWNgqnGDxR4gehc4gk4ksS1m+3qbZahzDHQiICFZIZvoR?=
- =?us-ascii?Q?QO2FcBIdSBBaozCXE1JtdwErhgccCU0QFl081eI2aXx5dm/vcu4gbBpTB6HX?=
- =?us-ascii?Q?mLkTME/SbpAU974xUY1QMOKoqMhMbEsWw9Tq6p8+FUNfsobEOFqjJ7Elh05Z?=
- =?us-ascii?Q?Mes+TdJ20GhVGRNrr9iqNdu+MyJUgCNlJPTcAC4qS6+YNTcv7XLBtFV7s6t5?=
- =?us-ascii?Q?zau+MHL5AEdVa4aNykhmkjOAHprECCw1rBXf/ALo0wXTSLvD0gRiWhG2Pbuk?=
- =?us-ascii?Q?DQiLhvrE071CxPuYdZTsFfw5HVxK50on3yLlwM+sOy1BQ0V+ki3j/vIWLX32?=
- =?us-ascii?Q?fKxzWlCBq2EfSWoqkwDK+3Nww28qkiz8FU865c2SC/yvQ7nIe/XsuM01xQUN?=
- =?us-ascii?Q?ij0pzMYiNPIU+rbgAzT4rPqLWbKEHE9TyInuo7AtdYLq/4eu3X9p+QhFIK8Q?=
- =?us-ascii?Q?0Awu5hrp8p3aaZGveqJ32p6JpvAIp5bNQ8QS?=
+ =?us-ascii?Q?2gO0bYYt4dTvH41hm+6+ovSoR0rv2GSkUn60l2Pb7nXWuOhlccxvvJDyC7nY?=
+ =?us-ascii?Q?MSmXg7A/iSQaa4mWihiKaCCr2UG//Gzi3k+lacNqIFX7PKuSEaOQKhcyON1/?=
+ =?us-ascii?Q?xikgPC9RuvhyAIAPWY/QrWJJKBBBLmwHJFMZrdt5y6POHrMxMNQ/7j0He9Cq?=
+ =?us-ascii?Q?tRTydMHm0ozUMz2YeYOFGJaWYaIrWiEg8du8WaICbrW5F97lg3Ry/ZybZWQn?=
+ =?us-ascii?Q?lnF8IqlEM9gWsX3KPyTJRLpDInBoMujagRQ6SFpd5lY6qJn0ZlqWVPQo9bIM?=
+ =?us-ascii?Q?e87lZ6EsjfixFXipXMVFiQo17kA5rso4NNwdyJmgdGA9+HZK1Ha8TzRI7evq?=
+ =?us-ascii?Q?Xhhm+cCDTERzYriOdJqnC26WMExzoBaE2Yt1JSOlKPQuW3ULEgHU2ynEmwBR?=
+ =?us-ascii?Q?qq2fU+oVdNvDkUSlzmo8rUIf8bxA6WxlPFDYqXU6nmVs5+yOYUPjunhQCK59?=
+ =?us-ascii?Q?HwTy01/gUL7KA1ReAd3bP4/H2Wf/MnGfml+711qNTixATcmliRKKtGCGEEFx?=
+ =?us-ascii?Q?RTcT/NpDZ+5bueWT6ju9Ofltks1yyP7jhEI0NZC0qiu3rhjJO4yaqxq03GGI?=
+ =?us-ascii?Q?VuFN5NnH3b+49eFKFB1lr19OxVw6CWEaHObIN+DZ8wDr+krzi2xv2k4lUDvF?=
+ =?us-ascii?Q?n4ozQ26ee7kT0VxLj0W1feSGBA/nDgdd0SEQwGJgnDnlLx9UEFp4IS/RNElD?=
+ =?us-ascii?Q?kATf3576a0BI/74Qsg/6Xuj4YB4bk7eGgZgySxN8Rbi1GfblEKG4OIaahMNx?=
+ =?us-ascii?Q?Sy6B0UIS/uRZgwdLfkM+fhyM9lgaVZh0sslOIXhcOzzPmRNtw1hLix3uZ7u5?=
+ =?us-ascii?Q?9xMbkgJCVW056kBs05ClK4RuUnGvQiKjtrPpaAG3kBf6knqXQiN0IWTR9ec5?=
+ =?us-ascii?Q?AyglPDEd9gEKeqBX9yPLPAfSm9uu63uTrZrDDpgK93kypQ1dBtf52k11oswB?=
+ =?us-ascii?Q?EEW0Uimd18kkuFdcMuhKFcNIOBHtmV3cJ89WetneDczX7q8x+pIZYfr9HGdB?=
+ =?us-ascii?Q?xCV0Iakp0jyElzZnQ+yy5+nQZUMKuAeo9JvkbLrfHUTDpfgLlpDkge8LuaNu?=
+ =?us-ascii?Q?do3WHRk8I8fJe30UsJJb4985Zh3dFHqz2/L2GYmWJiFSqnwyB+E/CpuiwyMF?=
+ =?us-ascii?Q?kedTLOgS9ymyr2j+6LXsbtN7GFIMR/oV+vM3pbsqFd7t5JpTnu/NQb++n1yo?=
+ =?us-ascii?Q?MGwHRuhnUV/DPCbt+AhwBh4ut/Lfldp3AgxCnmwsOa7Yper5mtr5QWKpIOc4?=
+ =?us-ascii?Q?lyVUbOGRl5m2EV2KQ5sXLDpQT0Yo+kWDH4YJ6G8iW+WaxTQx4+7B8kD/kqyp?=
+ =?us-ascii?Q?Xz3OsE+gVYOzagU4rqJzJmodbPocM3yc/lXc0tJYKc+0Rn3nAmkwF1T5JBVN?=
+ =?us-ascii?Q?InqFxXVkJtsvbdb+mTayp9f5J8uC1ABrOBWjReUTqAH++uEWjmLqpnSpkOBz?=
+ =?us-ascii?Q?aF94tKo2dV13cWQesmqzRLb9xyVdhB+y5iNQ7hCiYCzI30/oLCnetW++B1mz?=
+ =?us-ascii?Q?fbuR2iG5smXOvhqK1YUQNLyp27OwxBXsK1S5?=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(19092799006)(38070700021);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(7416014)(376014)(366016)(38070700021);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?GFZS6hgUkQ3wXZX4BF3SFoS8s6Nv6K0X183xADQeQoqstBuLpNgdWzJBMtxU?=
- =?us-ascii?Q?SlF/+G57BvUQ3WIB1TZAhPFQIjF01FDK3L/2z4YsQLBdNxQzMxBeDae7oPSf?=
- =?us-ascii?Q?KYcG7Q/3q/b8eTKOvkl4jDEQIAF6lhfvcMrsgjbDWRq9IFnVWSci8LKz6dnO?=
- =?us-ascii?Q?8JVqr1Hr098yg9dRDxJK/g8s+PLCB8Y385fZr9azEjAYfK7y+a/Og9LNCJ6h?=
- =?us-ascii?Q?nvx+kmC/vfXZhEP0jTdbtclU1wigQesZNr78cnf9x1QdGLHS3BvoWN1YY4Sp?=
- =?us-ascii?Q?y5Qof0AWD/4lCKSSkI9xAvMdhNwB1r8vugiudup7NCU0EZ/aTfATA5l6hpzJ?=
- =?us-ascii?Q?oJB8Juz+slI8VJOW/KpQ8AMt+m692IP3j90lUELlVXhYhTjqlq1V7MtJ79Ux?=
- =?us-ascii?Q?X+2ugDgZDOAeFM/LQXLUH28NkqCjOvaC5XfdVJ4LbtCowkvt0AiRlAaE8REh?=
- =?us-ascii?Q?B+avcohqsn6LchwEB9cq+G9FMAfKnLp5dq85V+nezl+xzGIL3hmH1ZNfAWsW?=
- =?us-ascii?Q?24wNTdF68XtdgP3nJoLjAf8MQjZjLG2c4mlF7CMxoWCs0xbzcBmXytIF/wSI?=
- =?us-ascii?Q?1xS5Rj6QEn9zlkQUcOOcuUqKgWkh8mB5YzfEYqMR2Zg5JSzFsl7lu/XC7ar/?=
- =?us-ascii?Q?itt9Mzzrde/sweCVuCO9CqUHi1Y8wecPpI0XczKQOZK7Fs0gNLS1Dh+TJOjH?=
- =?us-ascii?Q?DwEF6g92PWh8ZeWVQb6QU+3dFZv19fpOI0TEGFrLYj0OlK+SeGcOQcWITZn2?=
- =?us-ascii?Q?oZ0UfAV5U7xoqdRellzwvrY8kEKHFZI9sVqP3CZMxWF5HbxDSoeBwiDTPG2A?=
- =?us-ascii?Q?ErIdSvFjRtiHJkqGpl5GTAaHuSj6NF2tu6Fgw+dPs8jul4gFc8qDHibP9ZHM?=
- =?us-ascii?Q?ADK6WK3FG8sJP5mqMv8awkvMazUZpvuy+csKdldnJVJeO0bW+ZU2LCaPnZ6g?=
- =?us-ascii?Q?269GblQxFeSZumlpQqET0y0R2YzFC+D/3hp91Lh/JH0NqPIwFQa9K/WbFtT/?=
- =?us-ascii?Q?4JBmCtcZ9BvTvebhkuEjjwkbta0QN9PFdN68ijSgfFTOz86AbL/iAtAjjwMD?=
- =?us-ascii?Q?OdYRvwN+IeoaoBGnHV6FCwlIJ2eJLXvP23DXMesHu8GnVK+mRZszfUfggEwi?=
- =?us-ascii?Q?KKjQ9F0K4mI+Ay2w3bTkroY+iP//RSc+H4uWu85DKHtCAEOcJgNAoaV8GwdM?=
- =?us-ascii?Q?9qBUIzyfNxck0RIybzaqDEkj/zTdqFvCYDgSZoUZLMhFGJtXFI/iEgI6sFIF?=
- =?us-ascii?Q?tWO5WAZ3zl09tPZnhs2qSq4SaUYg73ZkW1WpYnZK89eapQHMDmLiWjJDLEIU?=
- =?us-ascii?Q?T51R/9CKrdI1FZMFbPEBKcqBJQD+uZiFLxZBTMvtStqpg8zQL67wRkg5a8IZ?=
- =?us-ascii?Q?7e6O/A9LR27kTKF9u9L4GULJKdu16JoA/YYiPqufYVK2q/QG/nq8eEFzZpTN?=
- =?us-ascii?Q?bXNJi2WZlTdrNehYojWK3N7+tnm35vbZgVbhGqjhbC+zh7h620rcUsS/vap7?=
- =?us-ascii?Q?UOObolzgnFTIEejBeq7hQMBezWgl/tTTmIjXNHA3psBtvoJiPF5Hs2cWOgOI?=
- =?us-ascii?Q?YUp6lc76DwPJBTy4NUW+O3yg7HOhJAUwfkFEE/chbEdgw1MUmLN8G8P0jlZV?=
- =?us-ascii?Q?EEq5KUtJv+AMZO3G+Sebwxp2iCjwQEdjtF8zNIKFLCe8wWE1wA6sHfZESm/y?=
- =?us-ascii?Q?BsyoW2AhomC2oRB9pUcYojJa7Hug/Mt5hj3k4ySdb/0LNFP2?=
+ =?us-ascii?Q?jorZY8rQ5ksFbX2cpNebfJ92r7jstQbjWbdJWEzDEE/T6GNvcXd8Xon4r0Cw?=
+ =?us-ascii?Q?7AbNOzdp9sxFK22WLRm9nTb8/wJkM88fwpUHJMCLUHnxCX0bYZUlIz0IWjLH?=
+ =?us-ascii?Q?7/cfqxS4eQODLHyl+nzMPxcFqdGKH0yeVc9b2znEnkCcUxf8ZqxFRfdgy5tp?=
+ =?us-ascii?Q?J0IPwsz4bcjXnr+eZo2/W1+3r7ADdouGn51oj7R2cDtcgh7MsIIRYiAwp2nw?=
+ =?us-ascii?Q?wCap33SOHe5hCU/VtXhEQ+YrUVNitplmwKrLrDDAxog3bkHUqaF0HAkuZxo8?=
+ =?us-ascii?Q?5I4DO2puSCSAAxUwOjStYdhzcstZLpHDgsD83L22Hy0+gfKmxd20WfxCvgFq?=
+ =?us-ascii?Q?aO5/HUJ1CmnGRqLYz7h3i8eiG5kPuwkgPd7So3HEe7/H0PEH3DLaqR/tQHq6?=
+ =?us-ascii?Q?ZrUICQMa/BV1/dQa+OvymtcuEzPYRubLF3hTwu47sOXEC6tOnE5D7W4OlhHV?=
+ =?us-ascii?Q?zFsqIMijsn5o5/CF7Jo/pzulostqsx6aXOlfExIdoVgig/qFeBOZyWWw6snA?=
+ =?us-ascii?Q?DLFiIrW7UqoRYsVkN+tuXtKsf/TJtVDi8nYk7aZijHExcOL/cgHq0oI5D/Df?=
+ =?us-ascii?Q?peiYuitJrUPl2NKis70N8MBQD+lQmPTmm4RPK+r9zWIf7ZVTjPWCQRxlP/22?=
+ =?us-ascii?Q?4bKcvo1uHjJ53omRy3kd8hSu2geNo1PjQ0FFSqa6UZyK2T89kD4I+QplX3ZM?=
+ =?us-ascii?Q?7EzqXpcleOvdViyqZWyLfE4w4v9huVvY2+SS0UCGnsZqwAV+oHRdCr9piU6x?=
+ =?us-ascii?Q?ANFd2FBmpuAJ7VJRGhXgf/3BkPuH19hb7i/zUxwCPoicjKsnkh8p6vDADcIi?=
+ =?us-ascii?Q?xg/4yCaCvQLSzwkHvbuY1vOXNrwoXGeZ6nDJFjec4T/LOM1wu4sZ29+94nRG?=
+ =?us-ascii?Q?Cp+0mRTAqfu8iOcwEG8Tfa9dUfqk/t9NEcWbokTeDmXysGlHybqoSJCGHAhv?=
+ =?us-ascii?Q?gkCdcso8BpH8AltL2LxxGuV+AoHyIfxBl8FWszRi6DzvO7ivy27uFwnDrG6a?=
+ =?us-ascii?Q?KLw4VXfx7NyXWvy60L1tXsPlyPeZ8un1SHcBUdrkA0M8ERzViw36PMHUKkc6?=
+ =?us-ascii?Q?Q9lR/n0cvMwkULQ6HUntNJp47gbFl25ipxUnQ3Out1ejrXFDJ9+nAwAEyeiZ?=
+ =?us-ascii?Q?kdJBhXoLg5vuEYiXK0HP6XwYe9dqu/t1ULLqLWErF0rq8VosTsF+QpeKfjRa?=
+ =?us-ascii?Q?HrCyvf+NsbIGJgxl7C4wanQ0ZJOqXB63yWkbmIK7D27HHPP/sQqMZLRpQMhR?=
+ =?us-ascii?Q?giGbEZmZr817sWPACha33FUcQut7IDL5+8olkjpxMRmDsd00qMRgAsMj/fCz?=
+ =?us-ascii?Q?PsH8hYwIKsvtaXYAG24oBXBIiJX+OrqE3rT0756KMTjTwpR72SiMJw6GUB/k?=
+ =?us-ascii?Q?kRhrqVu/KFVPT3zk4gFzqQoCujnWI9ul1FAGXmx3undoINo35hG+0L0YSZ8y?=
+ =?us-ascii?Q?IlVpSZGwmTTezRZap62BligPrcVg42fzyi/E0ZmH0AP0boFSKCw+8K7lTEIg?=
+ =?us-ascii?Q?f83/1wMlIavVAB964ZAfIvDaozSqwQLcIDx/HFw8KhjCMPvOYJfIwfQcY5lV?=
+ =?us-ascii?Q?Q5MDSrLGzsBOGUhoj9uC+3xHViW4Sh9RAob2D3rtoI9+UYAOsZ7iljtYpq9J?=
+ =?us-ascii?Q?i0fgNUyjfUyh/B7HL+L1wqw581W7zhKpBdZaqCO3T3CPzx3I5ZEWRBITfbgz?=
+ =?us-ascii?Q?pEiybMI3y0vNPzalf/6J0465V6BFxcZMHGN/EJ4GDppgVPvR?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -151,20 +150,20 @@ MIME-Version: 1.0
 X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b4984bb8-0a94-49fe-ce58-08de425c1cb1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Dec 2025 19:47:31.8407
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8b9717bc-c41b-4481-df3e-08de4260c31e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Dec 2025 20:20:49.0900
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +iTagWxWczxWf6gSmFCPL99K6mqwT4FMcNlqfTpZVOg6FRoQLuxXz9C6DG2H2vNB2DgfgVCxjRx+4it/F+pbUQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB11854
+X-MS-Exchange-CrossTenant-userprincipalname: puT8sAsu9yB4WSrfIclXzcax7nnOAn4657qEtsw1VYDcZP63yWp3mn9eUO/rKTJfSDClQzYvBed7SXCBWXd2lw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB11706
 
 
 
 > -----Original Message-----
 > From: Bjorn Andersson <andersson@kernel.org>
-> Sent: Thursday, December 18, 2025 8:24 PM
+> Sent: Thursday, December 18, 2025 9:58 AM
 > To: Shenwei Wang <shenwei.wang@nxp.com>
 > Cc: Linus Walleij <linusw@kernel.org>; Bartosz Golaszewski <brgl@kernel.o=
 rg>;
@@ -173,240 +172,583 @@ rg>;
 > <mathieu.poirier@linaro.org>; Shawn Guo <shawnguo@kernel.org>; Sascha
 > Hauer <s.hauer@pengutronix.de>; Jonathan Corbet <corbet@lwn.net>;
 > Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
-> <festevam@gmail.com>; Peng Fan <peng.fan@nxp.com>; linux-
-> gpio@vger.kernel.org; devicetree@vger.kernel.org; linux-
-> kernel@vger.kernel.org; linux-remoteproc@vger.kernel.org; imx@lists.linux=
-.dev;
-> linux-arm-kernel@lists.infradead.org; linux-doc@vger.kernel.org; dl-linux=
--imx
-> <linux-imx@nxp.com>
-> Subject: [EXT] Re: [PATCH v6 2/5] remoteproc: imx_rproc: Populate devices
-> under "rpmsg" subnode
+> On Fri, Dec 12, 2025 at 01:43:40PM -0600, Shenwei Wang wrote:
+> > On an AMP platform, the system may include two processors:
 >=20
-> Caution: This is an external email. Please take care when clicking links =
-or opening
-> attachments. When in doubt, report the message using the 'Report this ema=
-il'
-> button
->=20
->=20
-> On Fri, Dec 12, 2025 at 01:43:38PM -0600, Shenwei Wang wrote:
-> > Register the RPMsg channel driver and populate remote devices defined
-> > under the "rpmsg" subnode upon receiving their notification messages.
->=20
-> Please provide a proper description of what "problem" this patch solves.
->=20
-> >
-> > The following illustrates the expected DTS layout structure:
-> >
-> >       cm33: remoteproc-cm33 {
-> >               compatible =3D "fsl,imx8ulp-cm33";
-> >
-> >               rpmsg {
-> >                       rpmsg-io-channel {
-> >                               gpio@0 {
-> >                                       compatible =3D "fsl,imx-rpmsg-gpi=
-o";
-> >                                       reg =3D <0>;
->=20
-> Surely there needs to be some "gpio-controller" and "#gpio-cells" here?
-> Would be useful if the example is somewhat complete, to give a picture of=
- what's
-> actually going on.
+> We have many examples where there's N systems and it's certainly not
+> unreasonable to have multiple remote processors expose GPIOs in this fash=
+ion.
 >=20
 
-Okay. Will add those in next version.
+Agreed. There's no restriction on that.
 
-> >                               };
+> >       - An MCU running an RTOS
+> >       - An MPU running Linux
 > >
-> >                               gpio@1 {
-> >                                       compatible =3D "fsl,imx-rpmsg-gpi=
-o";
-> >                                       reg =3D <1>;
-> >                               };
-> >
-> >                               ...
-> >                       };
-> >
-> >                       ...
-> >               };
-> >       };
-> >
-> > +     drvdata->rpdev =3D rpdev;
-> > +     auxdata[0].compatible =3D devm_kstrdup(dev, imx_rpdrv->compat,
-> GFP_KERNEL);
-> > +     auxdata[0].platform_data =3D drvdata;
-> > +     dev_set_drvdata(dev, drvdata);
+> > These processors communicate via the RPMSG protocol.
+> > The driver implements the standard GPIO interface, allowing the Linux
+> > side to control GPIO controllers which reside in the remote processor
 > > +
-> > +     of_platform_populate(drvdata->channel_node, NULL, auxdata, dev);
+> > +#define GPIOS_PER_PORT               32
+> > +#define RPMSG_TIMEOUT                1000
+> > +
+> > +enum gpio_input_trigger_type {
+> > +     GPIO_RPMSG_TRI_IGNORE,
 >=20
-> auxiliary_bus would be a better choice, but I don't understand why you pr=
-obe a
-> rpmsg_device for each "gpio channel" and then from that create a
-> platform_device.
+> These aren't enumerations, they are well defined constants of the protoco=
+l. I
+> think #define is better.
 >=20
-> Why don't you just make the rpmsg_device register the gpio controller dir=
-ectly?
+> > +     GPIO_RPMSG_TRI_RISING,
+> > +     GPIO_RPMSG_TRI_FALLING,
+> > +     GPIO_RPMSG_TRI_BOTH_EDGE,
+> > +     GPIO_RPMSG_TRI_LOW_LEVEL,
+> > +     GPIO_RPMSG_TRI_HIGH_LEVEL,
+> > +};
+> > +
+> > +enum gpio_rpmsg_header_type {
+> > +     GPIO_RPMSG_SETUP,
+> > +     GPIO_RPMSG_REPLY,
+> > +     GPIO_RPMSG_NOTIFY,
+> > +};
+> > +
+> > +enum gpio_rpmsg_header_cmd {
+> > +     GPIO_RPMSG_INPUT_INIT,
+> > +     GPIO_RPMSG_OUTPUT_INIT,
+> > +     GPIO_RPMSG_INPUT_GET,
+> > +     GPIO_RPMSG_DIRECTION_GET,
+> > +};
+> > +
+> > +struct gpio_rpmsg_head {
+> > +     u8 id;          /* Message ID Code */
+> > +     u8 vendor;      /* Vendor ID number */
+> > +     u8 version;     /* Vendor-specific version number */
+> > +     u8 type;        /* Message type */
+> > +     u8 cmd;         /* Command code */
+> > +     u8 reserved[5];
+> > +} __packed;
+> > +
+> > +struct gpio_rpmsg_packet {
+> > +     struct gpio_rpmsg_head header;
+> > +     u8 pin_idx;
+> > +     u8 port_idx;
+> > +     union {
+> > +             u8 event;
+> > +             u8 retcode;
+> > +             u8 value;
+> > +     } out;
+> > +     union {
+> > +             u8 wakeup;
+> > +             u8 value;
+> > +     } in;
+> > +} __packed __aligned(8);
+> > +
+> > +struct gpio_rpmsg_pin {
+> > +     u8 irq_shutdown;
+> > +     u8 irq_unmask;
+> > +     u8 irq_mask;
+> > +     u32 irq_wake_enable;
+> > +     u32 irq_type;
+> > +     struct gpio_rpmsg_packet msg;
+> > +};
+> > +
+> > +struct gpio_rpmsg_info {
+> > +     struct rpmsg_device *rpdev;
+> > +     struct gpio_rpmsg_packet *notify_msg;
+> > +     struct gpio_rpmsg_packet *reply_msg;
+> > +     struct completion cmd_complete;
+> > +     struct mutex lock;
+> > +     void **port_store;
+> > +};
+> > +
+> > +struct rpmsg_gpio_port {
+> > +     struct gpio_chip gc;
+> > +     struct gpio_rpmsg_pin gpio_pins[GPIOS_PER_PORT];
+> > +     struct gpio_rpmsg_info info;
+> > +     int idx;
+> > +};
+> > +
+> > +static int gpio_send_message(struct rpmsg_gpio_port *port,
+> > +                          struct gpio_rpmsg_packet *msg,
+> > +                          bool sync)
+> > +{
+> > +     struct gpio_rpmsg_info *info =3D &port->info;
+> > +     int err;
+> > +
+> > +     if (!info->rpdev) {
+> > +             pr_err("rpmsg channel doesn't exist, is remote core
+> > + ready?\n");
+>=20
+> How is this possible? You're creating and destroying the platform_device =
+based
+> on the presence of the rpmsg channel/endpoint, in what case would you end=
+ up
+> here without a valid rpdev?
+>=20
+> And if this is to deal with the race during removal, I guess the error me=
+ssage is
+> wrong and rpdev might go away before you access it below?
 >=20
 
-The "GPIO channel" is just one example-there are also "PWM channel", "I2C c=
-hannel", and other channels.=20
-The goal is to manage all these channels under a common logic, which helps =
-avoid redundant code and keeps=20
-the implementation consistent.
+Yes, the error message should be improved.
 
+> > +             return -EINVAL;
+> > +     }
 > > +
-> > +     return 0;
-> > +}
+> > +     reinit_completion(&info->cmd_complete);
+> > +     err =3D rpmsg_send(info->rpdev->ept, (void *)msg,
+> > +                      sizeof(struct gpio_rpmsg_packet));
+> > +     if (err) {
+> > +             dev_err(&info->rpdev->dev, "rpmsg_send failed: %d\n", err=
+);
+> > +             return err;
+> > +     }
 > > +
-> > +     rp_driver->rpdrv.drv.name =3D name;
-> > +     rp_driver->rpdrv.id_table =3D rpdev_id;
-> > +     rp_driver->rpdrv.probe =3D imx_rpmsg_endpoint_probe;
-> > +     rp_driver->rpdrv.remove =3D imx_rpmsg_endpoint_remove;
-> > +     rp_driver->rpdrv.callback =3D imx_rpmsg_endpoint_cb;
-> > +     rp_driver->driver_data =3D driver_data;
-> > +     rp_driver->compat =3D compat;
+> > +     if (sync) {
+> > +             err =3D wait_for_completion_timeout(&info->cmd_complete,
+> > +                                               msecs_to_jiffies(RPMSG_=
+TIMEOUT));
+> > +             if (!err) {
+> > +                     dev_err(&info->rpdev->dev, "rpmsg_send timeout!\n=
+");
+> > +                     return -ETIMEDOUT;
+> > +             }
 > > +
-> > +     register_rpmsg_driver(&rp_driver->rpdrv);
->=20
-> This would then also imply that it's the gpio driver that registers the
-> rpmsg_driver.
->=20
+> > +             if (info->reply_msg->out.retcode !=3D 0) {
+> > +                     dev_err(&info->rpdev->dev, "remote core replies a=
+n error: %d!\n",
+> > +                             info->reply_msg->out.retcode);
+> > +                     return -EINVAL;
+> > +             }
 > > +
-> > +     return 0;
-> > +}
-> > +
-> > +static int rproc_of_rpmsg_node_init(struct platform_device *pdev) {
-> > +     struct device *dev =3D &pdev->dev;
-> > +     const char *compat;
-> > +     int ret;
-> > +
-> > +     struct device_node *np __free(device_node) =3D of_get_child_by_na=
-me(dev-
-> >of_node, "rpmsg");
-> > +     if (!np)
-> > +             return 0;
-> > +
-> > +     for_each_child_of_node_scoped(np, child) {
-> > +             compat =3D imx_of_rpmsg_is_in_map(child->name);
-> > +             if (!compat)
-> > +                     ret =3D of_platform_default_populate(child, NULL,
-> > + dev);
->=20
-> So if you don't recognize the child device node name you just register
-> platform_devices for each of the children?
->=20
-
-Yes. That would register platform_devices without the platform_data.
-
-> > +             else
-> > +                     ret =3D imx_of_rpmsg_register_rpdriver(child, dev=
-,
-> > + child->name, compat);
-> > +
-> > +             if (ret < 0)
-> > +                     return ret;
+> > +             /* copy the reply message */
+> > +             memcpy(&port->gpio_pins[info->reply_msg->pin_idx].msg,
+> > +                    info->reply_msg, sizeof(*info->reply_msg));
 > > +     }
 > > +
 > > +     return 0;
 > > +}
 > > +
-> >  static int imx_rproc_probe(struct platform_device *pdev)  {
-> >       struct device *dev =3D &pdev->dev; @@ -1114,6 +1253,10 @@ static
-> > int imx_rproc_probe(struct platform_device *pdev)
-> >               goto err_put_pm;
-> >       }
-> >
-> > +     ret =3D rproc_of_rpmsg_node_init(pdev);
-> > +     if (ret < 0)
-> > +             dev_info(dev, "populating 'rpmsg' node failed\n");
+> > +static struct gpio_rpmsg_packet *gpio_setup_msg_header(struct
+> rpmsg_gpio_port *port,
+> > +                                                    unsigned int offse=
+t,
+> > +                                                    u8 cmd) {
+> > +     struct gpio_rpmsg_packet *msg =3D &port->gpio_pins[offset].msg;
 > > +
-> >       return 0;
-> >
-> >  err_put_pm:
-> > diff --git a/include/linux/rpmsg/rpdev_info.h
-> > b/include/linux/rpmsg/rpdev_info.h
-> > new file mode 100644
-> > index 000000000000..13e020cd028b
-> > --- /dev/null
-> > +++ b/include/linux/rpmsg/rpdev_info.h
-> > @@ -0,0 +1,33 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +/* Copyright 2025 NXP */
+> > +     memset(msg, 0, sizeof(struct gpio_rpmsg_packet));
+> > +     msg->header.id =3D RPMSG_GPIO_ID;
+> > +     msg->header.vendor =3D RPMSG_VENDOR;
+> > +     msg->header.version =3D RPMSG_VERSION;
+> > +     msg->header.type =3D GPIO_RPMSG_SETUP;
+> > +     msg->header.cmd =3D cmd;
+> > +     msg->pin_idx =3D offset;
+> > +     msg->port_idx =3D port->idx;
+> > +
+> > +     return msg;
+> > +};
+> > +
+> > +static int rpmsg_gpio_get(struct gpio_chip *gc, unsigned int gpio) {
+> > +     struct rpmsg_gpio_port *port =3D gpiochip_get_data(gc);
+> > +     struct gpio_rpmsg_packet *msg =3D NULL;
+>=20
+> There's no reason to initialize msg here, the first reference is an assig=
+nment.
+>=20
+> > +     int ret;
+> > +
+> > +     guard(mutex)(&port->info.lock);
+> > +
+> > +     msg =3D gpio_setup_msg_header(port, gpio, GPIO_RPMSG_INPUT_GET);
+> > +
+> > +     ret =3D gpio_send_message(port, msg, true);
+> > +     if (!ret)
+> > +             ret =3D !!port->gpio_pins[gpio].msg.in.value;
+> > +
+> > +     return ret;
+> > +}
+> > +
+> > +static int rpmsg_gpio_get_direction(struct gpio_chip *gc, unsigned
+> > +int gpio) {
+> > +     struct rpmsg_gpio_port *port =3D gpiochip_get_data(gc);
+> > +     struct gpio_rpmsg_packet *msg =3D NULL;
+> > +     int ret;
+> > +
+> > +     guard(mutex)(&port->info.lock);
+> > +
+> > +     msg =3D gpio_setup_msg_header(port, gpio,
+> > + GPIO_RPMSG_DIRECTION_GET);
+> > +
+> > +     ret =3D gpio_send_message(port, msg, true);
+> > +     if (!ret)
+> > +             ret =3D !!port->gpio_pins[gpio].msg.in.value;
+> > +
+> > +     return ret;
+> > +}
+> > +
+> > +static int rpmsg_gpio_direction_input(struct gpio_chip *gc, unsigned
+> > +int gpio) {
+> > +     struct rpmsg_gpio_port *port =3D gpiochip_get_data(gc);
+> > +     struct gpio_rpmsg_packet *msg =3D NULL;
+> > +
+> > +     guard(mutex)(&port->info.lock);
+> > +
+> > +     msg =3D gpio_setup_msg_header(port, gpio, GPIO_RPMSG_INPUT_INIT);
+> > +
+> > +     return gpio_send_message(port, msg, true); }
+> > +
+> > +static int rpmsg_gpio_set(struct gpio_chip *gc, unsigned int gpio,
+> > +int val) {
+> > +     struct rpmsg_gpio_port *port =3D gpiochip_get_data(gc);
+> > +     struct gpio_rpmsg_packet *msg =3D NULL;
+> > +
+> > +     guard(mutex)(&port->info.lock);
+> > +
+> > +     msg =3D gpio_setup_msg_header(port, gpio, GPIO_RPMSG_OUTPUT_INIT)=
+;
+> > +     msg->out.value =3D val;
+> > +
+> > +     return gpio_send_message(port, msg, true); }
+> > +
+> > +static int rpmsg_gpio_direction_output(struct gpio_chip *gc,
+> > +                                    unsigned int gpio,
+> > +                                    int val) {
+> > +
+> > +     return rpmsg_gpio_set(gc, gpio, val); }
+> > +
+> > +static int gpio_rpmsg_irq_set_type(struct irq_data *d, u32 type) {
+> > +     struct rpmsg_gpio_port *port =3D irq_data_get_irq_chip_data(d);
+> > +     u32 gpio_idx =3D d->hwirq;
+> > +     int edge =3D 0;
+> > +     int ret =3D 0;
+> > +
+> > +     switch (type) {
+> > +     case IRQ_TYPE_EDGE_RISING:
+> > +             edge =3D GPIO_RPMSG_TRI_RISING;
+> > +             irq_set_handler_locked(d, handle_simple_irq);
+> > +             break;
+> > +     case IRQ_TYPE_EDGE_FALLING:
+> > +             edge =3D GPIO_RPMSG_TRI_FALLING;
+> > +             irq_set_handler_locked(d, handle_simple_irq);
+> > +             break;
+> > +     case IRQ_TYPE_EDGE_BOTH:
+> > +             edge =3D GPIO_RPMSG_TRI_BOTH_EDGE;
+> > +             irq_set_handler_locked(d, handle_simple_irq);
+> > +             break;
+> > +     case IRQ_TYPE_LEVEL_LOW:
+> > +             edge =3D GPIO_RPMSG_TRI_LOW_LEVEL;
+> > +             irq_set_handler_locked(d, handle_level_irq);
+> > +             break;
+> > +     case IRQ_TYPE_LEVEL_HIGH:
+> > +             edge =3D GPIO_RPMSG_TRI_HIGH_LEVEL;
+> > +             irq_set_handler_locked(d, handle_level_irq);
+> > +             break;
+> > +     default:
+> > +             ret =3D -EINVAL;
+> > +             irq_set_handler_locked(d, handle_bad_irq);
+> > +             break;
+> > +     }
+> > +
+> > +     port->gpio_pins[gpio_idx].irq_type =3D edge;
+> > +
+> > +     return ret;
+> > +}
+> > +
+> > +static int gpio_rpmsg_irq_set_wake(struct irq_data *d, u32 enable) {
+> > +     struct rpmsg_gpio_port *port =3D irq_data_get_irq_chip_data(d);
+> > +     u32 gpio_idx =3D d->hwirq;
+> > +
+> > +     port->gpio_pins[gpio_idx].irq_wake_enable =3D enable;
+> > +
+> > +     return 0;
+> > +}
 > > +
 > > +/*
-> > + * @file linux/rpdev_info.h
-> > + *
-> > + * @brief Global header file for RPDEV Info
-> > + *
-> > + * @ingroup RPMSG
+> > + * This function will be called at:
+> > + *  - one interrupt setup.
+> > + *  - the end of one interrupt happened
+> > + * The gpio over rpmsg driver will not write the real register, so
+> > +save
+> > + * all infos before this function and then send all infos to M core
+> > +in this
+> > + * step.
 > > + */
-> > +#ifndef __LINUX_RPDEV_INFO_H__
-> > +#define __LINUX_RPDEV_INFO_H__
+> > +static void gpio_rpmsg_unmask_irq(struct irq_data *d) {
+> > +     struct rpmsg_gpio_port *port =3D irq_data_get_irq_chip_data(d);
+> > +     u32 gpio_idx =3D d->hwirq;
 > > +
-> > +#define MAX_DEV_PER_CHANNEL    10
+> > +     port->gpio_pins[gpio_idx].irq_unmask =3D 1; }
 > > +
-> > +/**
-> > + * rpdev_platform_info - store the platform information of rpdev
-> > + * @rproc_name: the name of the remote proc.
-> > + * @rpdev: rpmsg channel device
-> > + * @device_node: pointer to the device node of the rpdev.
-> > + * @rx_callback: rx callback handler of the rpdev.
-> > + * @channel_devices: an array of the devices related to the rpdev.
-> > + */
-> > +struct rpdev_platform_info {
+> > +static void gpio_rpmsg_mask_irq(struct irq_data *d) {
+> > +     struct rpmsg_gpio_port *port =3D irq_data_get_irq_chip_data(d);
+> > +     u32 gpio_idx =3D d->hwirq;
+> > +     /*
+> > +      * No need to implement the callback at A core side.
+> > +      * M core will mask interrupt after a interrupt occurred, and the=
+n
+> > +      * sends a notify to A core.
+> > +      * After A core dealt with the notify, A core will send a rpmsg t=
+o
+> > +      * M core to unmask this interrupt again.
 >=20
-> I don't understand what this structure represents. Why is this glue betwe=
-en the
-> rpmsg_device and a made up platform_device needed?
->=20
-
-The purpose is to have a shared array that can be accessed by all devices w=
-ithin=20
-the same channel.
-
-> > +     const char *rproc_name;
->=20
-> You don't need this, because you can rproc_get_by_child(&self) and then g=
-et the
-> remoteproc name from that.
+> There's nothing in this scheme that dictates that we have A cores and M c=
+ores, or
+> that we have a single core system on both sides, or that they are Arm cor=
+es,
+> please describe things in terms of Linux system and "remote system".
 >=20
 
-Good to know. Will try it in the next version.
+Good point. I will reframe the description in next version.
 
-> > +     struct rpmsg_device *rpdev;
-> > +     struct device_node *channel_node;
-> > +     int (*rx_callback)(struct rpmsg_device *rpdev, void *data,
-> > +                        int len, void *priv, u32 src);
-> > +     void *channel_devices[MAX_DEV_PER_CHANNEL];
+> > +      */
+> > +     port->gpio_pins[gpio_idx].irq_mask =3D 1; }
+> > +
+> > +static void gpio_rpmsg_irq_shutdown(struct irq_data *d) {
+> > +     struct rpmsg_gpio_port *port =3D irq_data_get_irq_chip_data(d);
+> > +     u32 gpio_idx =3D d->hwirq;
+> > +
+> > +     port->gpio_pins[gpio_idx].irq_shutdown =3D 1; }
+> > +
+> > +static void gpio_rpmsg_irq_bus_lock(struct irq_data *d) {
+> > +     struct rpmsg_gpio_port *port =3D irq_data_get_irq_chip_data(d);
+> > +
+> > +     mutex_lock(&port->info.lock);
+> > +}
+> > +
+> > +static void gpio_rpmsg_irq_bus_sync_unlock(struct irq_data *d) {
+> > +     struct rpmsg_gpio_port *port =3D irq_data_get_irq_chip_data(d);
+> > +     struct gpio_rpmsg_packet *msg =3D NULL;
+> > +     u32 gpio_idx =3D d->hwirq;
+> > +
+> > +     if (!port)
+> > +             return;
+> > +
+> > +     /*
+> > +      * For mask irq, do nothing here.
+> > +      * M core will mask interrupt after a interrupt occurred, and the=
+n
+> > +      * sends a notify to A core.
+> > +      * After A core dealt with the notify, A core will send a rpmsg t=
+o
+> > +      * M core to unmask this interrupt again.
+> > +      */
+> > +
+> > +     if (port->gpio_pins[gpio_idx].irq_mask && !port-
+> >gpio_pins[gpio_idx].irq_unmask) {
+> > +             port->gpio_pins[gpio_idx].irq_mask =3D 0;
+> > +             mutex_unlock(&port->info.lock);
+> > +             return;
+> > +     }
+> > +
+> > +     msg =3D gpio_setup_msg_header(port, gpio_idx,
+> > + GPIO_RPMSG_INPUT_INIT);
+> > +
+> > +     if (port->gpio_pins[gpio_idx].irq_shutdown) {
+> > +             msg->out.event =3D GPIO_RPMSG_TRI_IGNORE;
+> > +             msg->in.wakeup =3D 0;
+> > +             port->gpio_pins[gpio_idx].irq_shutdown =3D 0;
+> > +     } else {
+> > +              /* if not set irq type, then use low level as trigger ty=
+pe */
+> > +             msg->out.event =3D port->gpio_pins[gpio_idx].irq_type;
+> > +             if (!msg->out.event)
+> > +                     msg->out.event =3D GPIO_RPMSG_TRI_LOW_LEVEL;
+> > +             if (port->gpio_pins[gpio_idx].irq_unmask) {
+> > +                     msg->in.wakeup =3D 0;
+> > +                     port->gpio_pins[gpio_idx].irq_unmask =3D 0;
+> > +             } else /* irq set wake */
+> > +                     msg->in.wakeup =3D port->gpio_pins[gpio_idx].irq_=
+wake_enable;
+> > +     }
+> > +
+> > +     gpio_send_message(port, msg, false);
+> > +     mutex_unlock(&port->info.lock);
+> > +}
+> > +
+> > +static const struct irq_chip gpio_rpmsg_irq_chip =3D {
+> > +     .irq_mask =3D gpio_rpmsg_mask_irq,
+> > +     .irq_unmask =3D gpio_rpmsg_unmask_irq,
+> > +     .irq_set_wake =3D gpio_rpmsg_irq_set_wake,
+> > +     .irq_set_type =3D gpio_rpmsg_irq_set_type,
+> > +     .irq_shutdown =3D gpio_rpmsg_irq_shutdown,
+> > +     .irq_bus_lock =3D gpio_rpmsg_irq_bus_lock,
+> > +     .irq_bus_sync_unlock =3D gpio_rpmsg_irq_bus_sync_unlock,
+> > +     .flags =3D IRQCHIP_IMMUTABLE,
+> > +};
+> > +
+> > +static int rpmsg_gpio_callback(struct rpmsg_device *rpdev,
+> > +                            void *data, int len, void *priv, u32 src)
+> > +{
+> > +     struct gpio_rpmsg_packet *msg =3D (struct gpio_rpmsg_packet *)dat=
+a;
+> > +     struct rpmsg_gpio_port *port =3D NULL;
+> > +     struct rpdev_platform_info *drvdata;
+> > +
+> > +     drvdata =3D dev_get_drvdata(&rpdev->dev);
+> > +     if (msg)
+> > +             port =3D drvdata->channel_devices[msg->port_idx];
+> > +
+> > +     if (!port)
+> > +             return -ENODEV;
+> > +
+> > +     if (msg->header.type =3D=3D GPIO_RPMSG_REPLY) {
+> > +             port->info.reply_msg =3D msg;
 >=20
-> Why 10? What does it mean?
+> As soon as you return from this function, the msg buffer is put back into=
+ the
+> virtqueue, so you can't just stash a reference to it here and hope that i=
+t's still
+> available when gpio_send_message() tries to read it.
 >=20
 
-This is based on practical experience. For example, on the i.MX platform, w=
-e typically don't have=20
-more than eight same devices on the remote system.
+Will resove it in the next version.
 
-> I think this becomes the list of the 10 grandchildren of the remoteproc (=
-per child
-> node). So what happens if those matches against two different drivers, wh=
-at will
-> rx_callback point to?
+> > +             complete(&port->info.cmd_complete);
+> > +     } else if (msg->header.type =3D=3D GPIO_RPMSG_NOTIFY) {
+> > +             port->info.notify_msg =3D msg;
+>=20
+> Ditto.
+>=20
+> Although notify_msg is assigned, but I never see any further access to it=
+.
+>=20
+> > +             generic_handle_domain_irq_safe(port->gc.irq.domain, msg->=
+pin_idx);
+> > +     } else
+> > +             dev_err(&rpdev->dev, "wrong command type!\n");
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static void rpmsg_gpio_remove_action(void *data) {
+> > +     struct rpmsg_gpio_port *port =3D data;
+> > +
+> > +     port->info.port_store[port->idx] =3D NULL; }
+> > +
+> > +static int rpmsg_gpio_probe(struct platform_device *pdev) {
+> > +     struct rpdev_platform_info *pltdata =3D pdev->dev.platform_data;
+> > +     struct rpmsg_gpio_port *port;
+> > +     struct gpio_irq_chip *girq;
+> > +     struct gpio_chip *gc;
+> > +     int ret;
+> > +
+> > +     if (!pltdata)
+> > +             return -EPROBE_DEFER;
+>=20
+> EPROBE_DEFER would imply that if we try again a bit later, platform_data =
+is
+> suddenly non-NULL, that seems unlikely.
+>=20
+> > +
+> > +     port =3D devm_kzalloc(&pdev->dev, sizeof(*port), GFP_KERNEL);
+> > +     if (!port)
+> > +             return -ENOMEM;
+> > +
+> > +     ret =3D device_property_read_u32(&pdev->dev, "reg", &port->idx);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     if (port->idx > MAX_DEV_PER_CHANNEL)
+> > +             return -EINVAL;
+> > +
+> > +     ret =3D devm_mutex_init(&pdev->dev, &port->info.lock);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     init_completion(&port->info.cmd_complete);
+> > +     port->info.rpdev =3D pltdata->rpdev;
+> > +     port->info.port_store =3D pltdata->channel_devices;
+> > +     port->info.port_store[port->idx] =3D port;
+> > +     if (!pltdata->rx_callback)
+> > +             pltdata->rx_callback =3D rpmsg_gpio_callback;
+>=20
+> What happens if you rmmod your rpmsg gpio driver and then trigger an inte=
+rrupt?
 >=20
 
-This is the limitation. That's why I used the map to populate the known chi=
-ld device for one specific channel.
+The driver has a rpmsg_gpio_remove_action which will clear the devices in t=
+he pltdata->channel_devices[].
+In the rpmsg callback function, it will just return -NODEV error.
 
-Thanks,
+     if (msg)
+             port =3D drvdata->channel_devices[msg->port_idx];
+
+     if (!port)
+             return -ENODEV;
+
+> > +
+> > +     gc =3D &port->gc;
+> > +     gc->owner =3D THIS_MODULE;
+> > +     gc->parent =3D &pdev->dev;
+> > +     gc->label =3D devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s-gpio%d",
+> > +                                pltdata->rproc_name, port->idx);
+> > +     gc->ngpio =3D GPIOS_PER_PORT;
+> > +     gc->base =3D -1;
+> > +
+> > +     gc->direction_input =3D rpmsg_gpio_direction_input;
+> > +     gc->direction_output =3D rpmsg_gpio_direction_output;
+> > +     gc->get_direction =3D rpmsg_gpio_get_direction;
+> > +     gc->get =3D rpmsg_gpio_get;
+> > +     gc->set =3D rpmsg_gpio_set;
+> > +
+> > +     platform_set_drvdata(pdev, port);
+> > +     girq =3D &gc->irq;
+> > +     gpio_irq_chip_set_chip(girq, &gpio_rpmsg_irq_chip);
+> > +     girq->parent_handler =3D NULL;
+> > +     girq->num_parents =3D 0;
+> > +     girq->parents =3D NULL;
+> > +     girq->chip->name =3D devm_kasprintf(&pdev->dev, GFP_KERNEL, "%s-
+> gpio%d",
+> > +                                       pltdata->rproc_name,
+> > + port->idx);
+> > +
+> > +     ret =3D devm_add_action_or_reset(&pdev->dev, rpmsg_gpio_remove_ac=
+tion,
+> port);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     return devm_gpiochip_add_data(&pdev->dev, gc, port); }
+> > +
+> > +static const struct of_device_id rpmsg_gpio_dt_ids[] =3D {
+> > +     { .compatible =3D "rpmsg-gpio" },
+> > +     { /* sentinel */ }
+> > +};
+> > +
+> > +static struct platform_driver rpmsg_gpio_driver =3D {
+>=20
+> It's an "rpmsg gpio driver", but it's a platform_driver...
+>=20
+> I don't think this is the correct design, but if it is then this needs to=
+ be well
+> documented.
+>=20
+> Same thing as platform_data forms a strong ABI between some other driver =
+and
+> this platform_driver, this needs to be well documented (but should be avo=
+ided).
+>=20
+
+Are you suggesting to use "rpmsg_driver" framework here?
+
+Thank you very much for the review.
 Shenwei
 
-> > +};
->=20
 > Regards,
 > Bjorn
 >=20
+> > +     .driver =3D {
+> > +             .name =3D "gpio-rpmsg",
+> > +             .of_match_table =3D rpmsg_gpio_dt_ids,
+> > +     },
+> > +     .probe =3D rpmsg_gpio_probe,
+> > +};
 > > +
-> > +#endif /* __LINUX_RPDEV_INFO_H__ */
+> > +module_platform_driver(rpmsg_gpio_driver);
+> > +
+> > +MODULE_AUTHOR("Shenwei Wang <shenwei.wang@nxp.com>");
+> > +MODULE_DESCRIPTION("generic rpmsg gpio driver");
+> > +MODULE_LICENSE("GPL");
 > > --
 > > 2.43.0
 > >
