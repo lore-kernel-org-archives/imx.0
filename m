@@ -1,175 +1,347 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010018.outbound.protection.outlook.com [52.101.84.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A95533555B
-	for <imx@lists.linux.dev>; Tue, 23 Dec 2025 13:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.18
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766494856; cv=fail; b=Lg1piLUPwnFlsoEdm3GGLxf+9Cf+2/VO/85PMcTtGYyp8kznrQsFAqBHkgn6Edb8bWT6ENNVrbjSjwhiCCVvp2c4L9m1aW+sQzfj9yDTZo47GbdgcMGLMbePgQoZg42MumBUfoUAKLpRkv+K5G7wBcW7YDou6RJwSScxkoKErQs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766494856; c=relaxed/simple;
-	bh=E+unzPwB9DSXVCvk05NO/YRUrXQiidUPuUFaoi53NjE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SifpjosPV9F3HmfluIi1A/8gotw5ukDdQb6bOWP7K19p5/avNpj2Py2zjh9VzqF6l2daU7NXl32TMy/0At7W8hCgIuWm5ZoM+8KyoCfWiTn8a/6PoHQOZ9I4kr+ncj2DHcwQfKQCI31GPqh5F3mxyhzwtgxJJdOWq3rTucdmHXw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=mW6Mh7ER; arc=fail smtp.client-ip=52.101.84.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE06482EB;
+	Tue, 23 Dec 2025 14:19:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766499556; cv=none; b=T4tTffxvniezvjcKHArIasm/sE0k2yi0Ltftln0+NHZ97I/0sJldGOps13cvFErn6/nQfykGgBVO4saGGJGwpnjauM4Qck4JccxPK/5UhEg4DJY3CePN5XbccRy1s2yqPRelyhHwmP1tqC1R2oNcPtZA24JhV1fQlSISD5dd1xo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766499556; c=relaxed/simple;
+	bh=fHt+n+HRt03RdQYU56XGeelEoWfLQjIFIxqVDHoSshw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LYE6HDLWGbBzbiiqCIFO4qkyLfh6m2uNCz9Grdk4t+g1JlCToVrAW5JV53NBqorsjkfOsswl9Pm4+FWtHGPUSdTPsb7kl1EBwZTWK9z5NNAmtdcDcGAseIQO8NNzTdmXPagX42frQ9sm69Ihj1RZ3NTsDCRTQeij31ZyryTVNwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/kmEJZv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="mW6Mh7ER"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TPm/1pkDs1YW2JW3gKF/+aMOhTB/qQJ3/JboiLO8WNXTD+qH6lULK6GkCaL4D8KcZd6xegpN7nK+Y4qH9YDc9Q5SyQaQgblYWbYJ5Ow8E12RhlnavfNdSG9OE8+Ht87KGzVNt8pCk8puWvQq5cbLE+Po6uVTrjS/XjanMRUfMAvvnqjoVwmKJ8TEAWvFrMp9ZKAW0d4osRIne6nYocKW7zs2rni71C2YGYwOOKn8t3eRg01W7WltwQ/AHWiLEHLKtqD0KWYM+DbzOsNOnDHH6z5egxslrT7AJcV7mlpIRDHOsCAr6AeqF4w/FzjJrruBYx2nCa86Nz86whCAl3Ay9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E+unzPwB9DSXVCvk05NO/YRUrXQiidUPuUFaoi53NjE=;
- b=rRITHVjwNtdoc1bRPuPHKUruLSnZdSjRlU5fA7zbBAAj1it+jojG/2P6wEYPrg/h37grCD2eG3wphkWrB4/hFP/e5HRCGtwG/OvD70nck3qbb5YQx4tOQxYOHNxBO4s3wXhNCvimQdN29ZwJIkZzKE4bw008NLYH1bJ3+F7huY7+QGp3iI6gesjOXwfmsPcoYGGj15A2ySUgP0878JI90RJVa6FCQrQ/FGPKn7+mFVxJwlku2p7g9Ggf7fqYj30NZRTfhfra00a4nVqQWTgOeH5IM34MN5Za1+NBntQNVjzFI8ECS/OLeRl/NzdgZRvXT62lpktStNplm+Dtq9rTkg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E+unzPwB9DSXVCvk05NO/YRUrXQiidUPuUFaoi53NjE=;
- b=mW6Mh7ERDShqGNOkGW8F71JmAHjqmFPgkVtidOO10q4dKLnFKeuorLQomvJ2ZorL4YvU0N+XbhuxBs4+dyeeRFeNuxWGmJ07y5jU9I+/XWk3b7hSdLS+DwA/N+Ao7u35zyWqxpSpSn1OsPZPqT03TPp1qfSjFRbz68FLy5NUKsjbjPn9OgpxrhIp+LwzK+uflT9OlN2UmkhjxSKxM/pVhq/Zj1tsBAuPpOA8xfZjt9dZAHQg7LqgXFeZ+Bl70R0uQbbP0Lm3I7PwyGrJvCOQ94hpl4SsMm+9g4xWmS48dnw6vxmaXoSTT42vrj2BrceOUJZKvq3UL3mTTwgjrF/EaA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by GV1PR04MB10243.eurprd04.prod.outlook.com (2603:10a6:150:17d::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.11; Tue, 23 Dec
- 2025 13:00:50 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9434.009; Tue, 23 Dec 2025
- 13:00:50 +0000
-Date: Tue, 23 Dec 2025 21:02:04 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Linux PM <linux-pm@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Brian Norris <briannorris@chromium.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev
-Subject: Re: [PATCH v1 19/23] pmdomain: imx: gpcv2: Discard pm_runtime_put()
- return value
-Message-ID: <aUqSzEyuPgzPyrKo@shlinux89>
-References: <6245770.lOV4Wx5bFT@rafael.j.wysocki>
- <15658107.tv2OnDr8pf@rafael.j.wysocki>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <15658107.tv2OnDr8pf@rafael.j.wysocki>
-X-ClientProxiedBy: SI1PR02CA0015.apcprd02.prod.outlook.com
- (2603:1096:4:1f7::18) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/kmEJZv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90FFC113D0;
+	Tue, 23 Dec 2025 14:19:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766499555;
+	bh=fHt+n+HRt03RdQYU56XGeelEoWfLQjIFIxqVDHoSshw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=N/kmEJZvsAd06e8rgHKVlKwZ+lVgKR/LV0wNMIIXTQifbMyDKqPrT5qe12+GnYQ0k
+	 XhWZBPbeSEsVtxIIWj9qJSnne4t6Ko80n77DrSs7d8xUFIyNShpCtoTloWvAt48hG8
+	 oSI4p9gZYPvJw2R0QEwN/9cn0r7Iqv4d8yUhCI8uS53epYKYuQIXvdkngKId4Va4zf
+	 TScjfWXb8nIyOXz4QqMoZfQp9Sprfsn+ZQ1y0dMQwG3izKLjj6T+eU5/mbOKyrLMnq
+	 n5kzznw9s6wSwtzGM5vYIckfzn3Z1orCuZDcjb1bO64G9R6XOM4YdXh2yt2BBQdDhc
+	 tNP66KyFio/bg==
+Date: Tue, 23 Dec 2025 19:49:11 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: neil.armstrong@linaro.org, shawnguo@kernel.org, kernel@pengutronix.de,
+	festevam@gmail.com, jun.li@nxp.com, Frank.Li@nxp.com,
+	linux-phy@lists.infradead.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] phy: fsl-imx8mq-usb: add debugfs to access control
+ register
+Message-ID: <aUqk3z8CSVldoO5V@vaman>
+References: <20251219075447.3672833-1-xu.yang_2@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|GV1PR04MB10243:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e28e8a5-48a8-4760-d59e-08de42234c4e
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|19092799006|1800799024|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?oAkSiqDKPvEVNphgjjK27ZWM1nX9cT3bcDbynnl3qhsZM+PoEhOBEPzyL2MF?=
- =?us-ascii?Q?12SI5nEh3bVm2Q2Jq+NxMB43HN2k9dwu7glpbteRLZjLirsGOh/FUWF6OyNE?=
- =?us-ascii?Q?Q1FY4xY435zk0RN925yAAyqgbq9SNifOhl8o991f3xU4LlIFvFaU3s4aGHYR?=
- =?us-ascii?Q?jV3snKu4ZXhJkau6LRgYfVJGgcqGRbWlPh4I2rLKQ47jA6m+Eb1ioBtWephY?=
- =?us-ascii?Q?Zgn5gcW5Bdjy6nUi3I54KjGbQunYQTQGopuAn3aVB0Tz5chJfzqoWfYhlItW?=
- =?us-ascii?Q?mZRDgewO1SBkLVOI7fIII8zL6IE5eMQzR+wFTMwaGi4OKx1vQVwj4oCwHOxA?=
- =?us-ascii?Q?1QzhOuaPdZclDU0yEXdDkQPngjjmf5G6/GumSglbdfq7Y0K9nk5T68mfH3tc?=
- =?us-ascii?Q?yxPd+EtQ4N1olyJJBq63/6YI6MSMcFfBNn23AxG9aU72kbyKEnEQS+l6l5f8?=
- =?us-ascii?Q?AsobglwxWdXDhnIm0VBU70KB3CLiivNO6HqTH1gskRDHaqy0qpa9Y1IgVcNp?=
- =?us-ascii?Q?R2yoR7T6wFVe85MnS3dRbk8R4S2s6fECsRjUpCIKBI0esD0rGOipxiYnYgKY?=
- =?us-ascii?Q?1E9QOg1N5C98m+ngLEAbqQyfHjLv/9CT5VJGQ/DD6kYUOGcBCBM88s8e2zmI?=
- =?us-ascii?Q?XE08NiiQqUowyjpsRWKOEipMOJaBkuqiK/Tt30jBqgS18V2yLf9D7vDTqW8P?=
- =?us-ascii?Q?uVVo6tRD9Vo/keLPEKRBZcPrI94VpsnZnAbmEj2V4iZewfSQF6fjA2oq7fKo?=
- =?us-ascii?Q?/3BJc0JEEYDLBK3ajipCw42/16Ln3AKfPeG6DKxoVSgSfh+ONnJbktSYO0rI?=
- =?us-ascii?Q?276n9tHhSSVA/btG1vpIHmtizig4UhZGGfGnV4XxrQ6hFZXAq3fpuKA9AbRG?=
- =?us-ascii?Q?wvhAgHRx+9ZyX/341IuctJhVwd6wqiMWpdGMUrIvizC9UJjvEECqSDty0ms4?=
- =?us-ascii?Q?fSllX4gnf/NWBIDHEA2mNE4XWk3VvCNIs7Ktln8edFf2oaKSB3ucQpSJk7fK?=
- =?us-ascii?Q?mCpG018FUkf76cf2Y2tu4JzhA5VrpGq+KJHQVO3Y9GErYfhCUCTV8hwXa4Nr?=
- =?us-ascii?Q?amZaH1UMzo7FkdOGbjhqhsLf3HdsQVTqFgsjJBcM8K95AauxEKp/nDLFrD0J?=
- =?us-ascii?Q?yyglfzGFpZDOBaA+6qaVdjn7UZRzmqy+ug/esLICqXlxVIN+5VAqbO2ctX5f?=
- =?us-ascii?Q?JMrWiWj9IBcviEtmJoQoUF/SoDtndVEw7zWXzRkYYPD7crF9PsTUiIJ9Asa8?=
- =?us-ascii?Q?ktlfyPknPM5/hbZg2+vBpmL+UyilE9FOTMrqwAU3orPGK5yt8azc5mW4AY6w?=
- =?us-ascii?Q?dIehWfTLbwT1qqIO0NC0QIES/3MMsxdt758Kg8qY9PK5nUkVp0kC5/TWfUQC?=
- =?us-ascii?Q?K9Lc6ndIlPGQ+T8fnBcqKmL3/i4Fx9ZgkON4Nhk6G0NMjPzVJBJS1+vmrONb?=
- =?us-ascii?Q?aJIO0CxFnMBXstUHMbjFkmW3HzNXePXqychn5h3tUeLqrhQf4Xo9g9+c3+AU?=
- =?us-ascii?Q?yfSW55gAE7exVVsz7ij4qZh+x7qW5QnBV6o7?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(19092799006)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Mr/ktrQDK3Nr57cqArNh+at36ejp/RZgkemN8WDal1o69y5aEbywNecNEyfK?=
- =?us-ascii?Q?sfpuVf7OYE65nswVbqrvNsyYAS1vy4Dvq9Alt0tBkFggbCrmv8Caq+MWAguS?=
- =?us-ascii?Q?oUPctGCVPyom/SC7iA2jy4UfFXkCaKGqIW6OVialN6E2wWFx8P0ibeyYaxlD?=
- =?us-ascii?Q?hDb9rMxTWkRbnoA/bLaUgZ/TPZBm+WbFDBS9z148+FF2/WbS10BNST1F13Mt?=
- =?us-ascii?Q?oeS9W7qkvF8isaZi3raQy6tm4yGo09SUPs8dNy7Rs4wHiipu2XIKoTj3UN61?=
- =?us-ascii?Q?0rAi7AuJS7v1deJboNh0qCzdJqCQkNXWVUEjHptIvhr0dWSDXmVXuSgERmb9?=
- =?us-ascii?Q?7V66d6K4WmMmaQSFHHgxFCfpNqzrFQS1FAHDWo8xYoq+sttL//SLJKPlyC20?=
- =?us-ascii?Q?jEKQabJquHIa9poo9CJSwOR5+gcmH8MzGbwc28SrfGo53LHy4V4tc7mF+ICU?=
- =?us-ascii?Q?xDTuk1pYBVZpQOgvze/MUxnddvggg37vsGssf/1EhU4K3Gga00LX/CqHY8W9?=
- =?us-ascii?Q?SHqfH+Qyp0fIGcSv6xd1cBpJy1ZW0JgxJayLGwr68zw6MmXyg0gHlFtinACm?=
- =?us-ascii?Q?ldSwLiS5ITSltXZvSlM/iI+ZY9jZjMhTFq7G4hFmkA/brgfovRDKxnwLoTs9?=
- =?us-ascii?Q?wEw2WNiPJ1COAI/ctWc4PCtOCdaKSxk+zuJgu1UbYLZ6PDRk18fn3XsvBwZP?=
- =?us-ascii?Q?LaJpReS05I7B2gBnSESosC+90Z+iMiWZVFXLawS52CbsTREz/exiCg9Dn1oM?=
- =?us-ascii?Q?wnHet3rBXLrsdadVxCiNcbH2qf4JzmGSbWMbar2WHmuTmyU+lXvkyyE3cgFq?=
- =?us-ascii?Q?Lo+WpLm8YDhok8ubTSPrw17n71cahpn5TObZjDZiyY1k9UWAfvpn5HWbdr3W?=
- =?us-ascii?Q?Zm9HRQI6xHBXc9GXb8vNXI4RgmEHxaSdpR02ETdb5t0xf2xho6+2TFVs0vF/?=
- =?us-ascii?Q?vKxBa0tAnZ219vX40ayTV/uJhN0dYCz0ka8CqnDngycW5qya61LQi90qpOaQ?=
- =?us-ascii?Q?xWCMiHuFKAHIBPvyZQnnHxtm0J7JKqVxweTn2QXlKsm9pp+GJQulbfUtpERR?=
- =?us-ascii?Q?yFmQpwlXCob85NyX/rOosSlszh/dD04WRRQr29m+ylF3W19tDlcjvvM247HD?=
- =?us-ascii?Q?YXpC5ediFe2eU2nqSJAUoSwj9iaXZEjvOpqAG5FfQDgF9quPds+KLyqueMkt?=
- =?us-ascii?Q?muvvtcXAqEEiueO2S1GuKmuAcu933kqrhm2avl22i8sQGkltkSyQXHaZD21R?=
- =?us-ascii?Q?sULryDN02e4B21B57mavcIQ6qWgu21BjLI7CHyba4CzJ7a44607h5UlcBNN6?=
- =?us-ascii?Q?iYCFCAGXCug0RqpcRuU/a5T+0WHcvkqUDzfyvBDKMDbyhUk/zBn3Vv220oLM?=
- =?us-ascii?Q?Hjv//YN/rb9/b1FWTQs1fRo37rvenx1DWivj1flSW0Q7UeX2EIgSTz32C7fi?=
- =?us-ascii?Q?2lURL6V3t1E2FeE33wECxR2KuqHF6wOxf8lsw8Mak+jt4oj1Ac/nhuEcqZ89?=
- =?us-ascii?Q?9V2rINW3QixeDa/AN01amqu/xYINE1Zb/N8hVfaT7fzq5b/VH+e20Qmh2+VL?=
- =?us-ascii?Q?KgcHK0Ez7uViABFJkswaHOVkNns2qhaDIhZu74CQ8ss7uoLD4S88EfrA8mwi?=
- =?us-ascii?Q?9d5eG8r7cfej+7EBgTljgf/0eMIlF7LX2vddrb/b6XPY1nkxERMmj6OuS4hn?=
- =?us-ascii?Q?3ZAW3OuOU6YEJViViFvgTSybW+O+1XbFCajKq6q+rXxtrWs5WTseQ6lNHhIh?=
- =?us-ascii?Q?7KFIeMMiRA=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e28e8a5-48a8-4760-d59e-08de42234c4e
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Dec 2025 13:00:50.7608
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OORi1503zgjCESkKXQDvjHe+T+b8PmiGIIY/bKGbOJnKfxGNMEh/WNlA3RngJkzSZHM71ESIF8miUqgl9OqsOA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10243
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251219075447.3672833-1-xu.yang_2@nxp.com>
 
-On Mon, Dec 22, 2025 at 09:29:41PM +0100, Rafael J. Wysocki wrote:
->From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
->
->Passing pm_runtime_put() return value to the callers is not particularly
->useful.
->
->Returning an error code from pm_runtime_put() merely means that it has
->not queued up a work item to check whether or not the device can be
->suspended and there are many perfectly valid situations in which that
->can happen, like after writing "on" to the devices' runtime PM "control"
->attribute in sysfs for one example.
->
->Accordingly, update imx_pgc_domain_suspend() to simply discard the
->return value of pm_runtime_put() and always return success to the
->caller.
->
->This will facilitate a planned change of the pm_runtime_put() return
->type to void in the future.
->
->Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On 19-12-25, 15:54, Xu Yang wrote:
+> The CR port is a simple 16-bit data/address parallel port that is
+> provided for on-chip access to the control registers inside the
+> USB 3.0 femtoPHY. While access to these registers is not required
+> for normal PHY operation, this interface enables you to access
+> some of the PHY’s diagnostic features during normal operation or
+> to override some basic PHY control signals.
+> 
+> 3 debugfs files are created to read and write control registers,
+> all use hexadecimal format:
+> ctrl_reg_base: the register offset to write, or the start offset
+>                to read.
+> ctrl_reg_count: how many continuous registers to be read.
+> ctrl_reg_value: read to show the continuous registers value from
+>                 the offset in ctrl_reg_base, to ctrl_reg_base
+>                 + ctrl_reg_count - 1, one line for one register.
+>                 when write, override the register at ctrl_reg_base,
+>                 one time can only change one 16bits register.
+> 
+> Signed-off-by: Li Jun <jun.li@nxp.com>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> ---
+>  drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 221 ++++++++++++++++++++-
+>  1 file changed, 220 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+> index ad8a55012e42..cb2392008ad2 100644
+> --- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+> +++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+> @@ -1,8 +1,9 @@
+>  // SPDX-License-Identifier: GPL-2.0+
+> -/* Copyright (c) 2017 NXP. */
+> +/* Copyright (c) 2017-2025 NXP. */
+>  
+>  #include <linux/bitfield.h>
+>  #include <linux/clk.h>
+> +#include <linux/debugfs.h>
+>  #include <linux/delay.h>
+>  #include <linux/io.h>
+>  #include <linux/module.h>
+> @@ -52,6 +53,21 @@
+>  
+>  #define PHY_TUNE_DEFAULT		0xffffffff
+>  
+> +/* PHY control register access */
+> +#define PHY_CTRL_REG_COUNT_MAX		0x42
+> +#define PHY_CTRL_REG_OFFSET_MAX		0x201f
+> +
+> +#define PHY_CRCTL			0x30
+> +#define PHY_CRCTL_DATA_IN_MASK		GENMASK(15, 0)
+> +#define PHY_CRCTL_CAP_ADDR		BIT(16)
+> +#define PHY_CRCTL_CAP_DATA		BIT(17)
+> +#define PHY_CRCTL_CR_WRITE		BIT(18)
+> +#define PHY_CRCTL_CR_READ		BIT(19)
+> +
+> +#define PHY_CRSR			0x34
+> +#define PHY_CRSR_DATA_OUT_MASK		GENMASK(15, 0)
+> +#define PHY_CRSR_CR_ACK			BIT(16)
+> +
+>  #define TCA_CLK_RST			0x00
+>  #define TCA_CLK_RST_SW			BIT(9)
+>  #define TCA_CLK_RST_REF_CLK_EN		BIT(1)
+> @@ -113,6 +129,9 @@ struct imx8mq_usb_phy {
+>  	void __iomem *base;
+>  	struct regulator *vbus;
+>  	struct tca_blk *tca;
+> +	struct dentry *debugfs;
+> +	u16 cr_access_base;
+> +	u16 cr_read_count;
+>  	u32 pcs_tx_swing_full;
+>  	u32 pcs_tx_deemph_3p5db;
+>  	u32 tx_vref_tune;
+> @@ -420,6 +439,204 @@ static u32 phy_pcs_tx_swing_full_from_property(u32 percent)
+>  	percent = min(percent, 100U);
+>  
+>  	return (percent * 127) / 100;
+> +};
+> +
+> +#define IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT 500000
 
-Acked-by: Peng Fan <peng.fan@nxp.com>
+empty line here, possibly move this to top of file
+
+> +static int imx8mq_phy_ctrl_reg_addr(struct imx8mq_usb_phy *imx_phy, u16 offset)
+> +{
+> +	void __iomem	*cr_ctrl = imx_phy->base + PHY_CRCTL;
+> +	void __iomem	*cr_sr = imx_phy->base + PHY_CRSR;
+> +	struct device	*dev = &imx_phy->phy->dev;
+> +	int i;
+> +
+> +	/* Address Phrase */
+> +	writel(offset, cr_ctrl);
+> +	writel(readl(cr_ctrl) | PHY_CRCTL_CAP_ADDR, cr_ctrl);
+> +
+> +	/* Wait CRSR[16] == 1 */
+> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
+> +	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
+> +		i--;
+> +	if (i == 0)
+> +		goto cr_addr_err;
+> +
+> +	writel(readl(cr_ctrl) & (~PHY_CRCTL_CAP_ADDR), cr_ctrl);
+> +
+> +	/* Wait CRSR[16] == 0 */
+> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
+> +	while ((readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
+> +		i--;
+> +	if (i == 0)
+> +		goto cr_addr_err;
+> +
+> +	return 0;
+> +
+> +cr_addr_err:
+> +	dev_err(dev, "Failed to address reg 0x%x.\n", offset);
+> +	return -EIO;
+> +}
+> +
+> +static int imx8mq_phy_ctrl_reg_read(struct imx8mq_usb_phy *imx_phy, u16 offset)
+> +{
+> +	void __iomem	*cr_ctrl = imx_phy->base + PHY_CRCTL;
+> +	void __iomem	*cr_sr = imx_phy->base + PHY_CRSR;
+> +	struct device	*dev = &imx_phy->phy->dev;
+> +	int val, i;
+> +
+> +	/* Address Phrase */
+> +	val = imx8mq_phy_ctrl_reg_addr(imx_phy, offset);
+> +	if (val)
+> +		return val;
+> +
+> +	/* Read Phrase */
+> +	writel(readl(cr_ctrl) | PHY_CRCTL_CR_READ, cr_ctrl);
+> +
+> +	/* Wait CRSR[16] == 1 */
+> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
+> +	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
+> +		i--;
+> +	if (i == 0)
+> +		goto cr_read_err;
+> +
+> +	val = readl(cr_sr);
+> +	writel(val & ~PHY_CRCTL_CR_READ, cr_ctrl);
+> +
+> +	/* Wait CRSR[16] == 0 */
+> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
+> +	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
+> +		i--;
+> +	if (i == 0)
+> +		goto cr_read_err;
+> +
+> +	return val;
+> +
+> +cr_read_err:
+> +	dev_err(dev, "Failed to read reg 0x%x.\n", offset);
+> +	return -EIO;
+> +}
+> +
+> +static int imx8mq_phy_ctrl_reg_write(struct imx8mq_usb_phy *imx_phy,
+> +				     u16 offset, u16 val)
+> +{
+> +	void __iomem	*cr_ctrl = imx_phy->base + PHY_CRCTL;
+> +	void __iomem	*cr_sr = imx_phy->base + PHY_CRSR;
+> +	struct device	*dev = &imx_phy->phy->dev;
+> +	int i, ret;
+> +
+> +	/* Address Phrase */
+> +	ret = imx8mq_phy_ctrl_reg_addr(imx_phy, offset);
+> +	if (ret)
+> +		return ret;
+> +
+> +	writel(val, cr_ctrl);
+> +
+> +	/* Set cr_cap_data to be 1'b1 */
+> +	writel(readl(cr_ctrl) | PHY_CRCTL_CAP_DATA, cr_ctrl);
+> +	/* Wait CRSR[16] == 1 */
+> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
+> +	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
+> +		i--;
+> +	if (i == 0)
+> +		goto cr_write_err;
+
+seems like a repeated pattern, maybe move to a helper. (if driver used
+regmap, it could have used helpers from regmap for this polling)
+
+> +
+> +	/* Clear cr_cap_data to be 1'br0 */
+> +	writel(readl(cr_ctrl) & ~PHY_CRCTL_CAP_DATA, cr_ctrl);
+> +	/* Wait CRSR[16] == 0 */
+> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
+> +	while ((readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
+> +		i--;
+> +	if (i == 0)
+> +		goto cr_write_err;
+> +
+> +	/* Set cr_write to be 1'b1 */
+> +	writel(readl(cr_ctrl) | PHY_CRCTL_CR_WRITE, cr_ctrl);
+> +	/* Wait CRSR[16] == 1 */
+> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
+> +	while (!(readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
+> +		i--;
+> +	if (i == 0)
+> +		goto cr_write_err;
+> +
+> +	/* Clear cr_write to be 1'br0 */
+> +	writel(readl(cr_ctrl) & ~PHY_CRCTL_CR_WRITE, cr_ctrl);
+> +	/* Wait CRSR[16] == 0 */
+> +	i = IMX8M_PHY_DEBUG_PORT_LOOP_TIMEOUT;
+> +	while ((readl(cr_sr) & PHY_CRSR_CR_ACK) && i > 0)
+> +		i--;
+> +	if (i == 0)
+> +		goto cr_write_err;
+> +
+> +	return 0;
+> +
+> +cr_write_err:
+> +	dev_err(dev, "Failed to write reg 0x%x.\n", offset);
+> +	return -EIO;
+> +}
+> +
+> +static int ctrl_reg_value_show(struct seq_file *s, void *unused)
+> +{
+> +	struct imx8mq_usb_phy *imx_phy = s->private;
+> +	u16 i, val, base = imx_phy->cr_access_base;
+> +
+> +	for (i = 0; i < imx_phy->cr_read_count; i++) {
+> +		val = imx8mq_phy_ctrl_reg_read(imx_phy, base + i);
+> +		seq_printf(s, "Control Register 0x%x value is 0x%4x\n",
+> +			   base + i, val);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int ctrl_reg_value_open(struct inode *inode, struct file *file)
+> +{
+> +	return single_open(file, ctrl_reg_value_show, inode->i_private);
+> +}
+> +
+> +static ssize_t ctrl_reg_value_write(struct file *file, const char __user *ubuf,
+> +				    size_t count, loff_t *ppos)
+> +{
+> +	struct seq_file		*s = file->private_data;
+> +	struct imx8mq_usb_phy	*imx_phy = s->private;
+> +	u16			cr_value;
+> +	int			ret;
+> +
+> +	ret = kstrtou16_from_user(ubuf, count, 16, &cr_value);
+> +	if (ret)
+> +		return ret;
+> +
+> +	imx8mq_phy_ctrl_reg_write(imx_phy, imx_phy->cr_access_base, cr_value);
+> +
+> +	return count;
+> +}
+> +
+> +static const struct file_operations ctrl_reg_value_fops = {
+> +	.open		= ctrl_reg_value_open,
+> +	.write		= ctrl_reg_value_write,
+> +	.read		= seq_read,
+> +	.llseek		= seq_lseek,
+> +	.release	= single_release,
+> +};
+
+please use DEFINE_DEBUGFS_ATTRIBUTE for this
+
+> +
+> +static void debug_create_files(struct imx8mq_usb_phy *imx_phy)
+> +{
+> +	struct device *dev = &imx_phy->phy->dev;
+> +
+> +	imx_phy->debugfs = debugfs_create_dir(dev_name(dev), imx_phy->phy->debugfs);
+> +
+> +	debugfs_create_x16("ctrl_reg_base", 0600, imx_phy->debugfs,
+> +			   &imx_phy->cr_access_base);
+> +	debugfs_create_x16("ctrl_reg_count", 0600, imx_phy->debugfs,
+> +			   &imx_phy->cr_read_count);
+> +	debugfs_create_file("ctrl_reg_value", 0600, imx_phy->debugfs,
+> +			    imx_phy, &ctrl_reg_value_fops);
+> +
+> +	imx_phy->cr_access_base = 0;
+> +	imx_phy->cr_read_count = 1;
+> +}
+> +
+> +static void debug_remove_files(struct imx8mq_usb_phy *imx_phy)
+> +{
+> +	debugfs_remove_recursive(imx_phy->debugfs);
+>  }
+>  
+>  static void imx8m_get_phy_tuning_data(struct imx8mq_usb_phy *imx_phy)
+> @@ -724,6 +941,7 @@ static int imx8mq_usb_phy_probe(struct platform_device *pdev)
+>  					"failed to get tca\n");
+>  
+>  	imx8m_get_phy_tuning_data(imx_phy);
+> +	debug_create_files(imx_phy);
+
+please use phy->debugfs as root node
+
+-- 
+~Vinod
