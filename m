@@ -1,189 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083661B4F0A;
-	Tue, 23 Dec 2025 10:41:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E094287254
+	for <imx@lists.linux.dev>; Tue, 23 Dec 2025 11:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766486508; cv=none; b=nOrbRFcAZgu4o4w6CooviXO7yYfBxGjPWg1kRZYK3EN5N+1nCRfX3yA8ZjpWAH7twz7nf65P3wF3clseaXqLQB3MydKENfhDl3SpSp7vBz+yx7SRab1/rMG6uuugoCwjAgFV6EdXQ04qtIgCLDBzKvpKCZbjMhSpEQKRP1Bm91k=
+	t=1766490112; cv=none; b=uJCLaNiEZALlLq9qaSSlaBbOzlc9vsMIzr3iOwLy+hpv3rGwPYnQY4nSgXa3/sqGxI3cHHWafGKZ2U4X9oa6XfJUNRYuA832nQhgkabjG1eDbHUGVqNwhIIVW/lxXZdhHJ8BVXLoMUWVg4p8M0A9uLJjaw2lDi9xVt1qT8dFvCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766486508; c=relaxed/simple;
-	bh=dh1LliqkmgcxlRpXE4EKf7TKTcpUvkSiqOpQkRgrNGg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EN/IaS8PUSLSnb9ivLwmjy79Q+6BDfftKI9rxvnmGX1vzhGNdDxa0zXxpeDOzYETAB3HYP6QoafKJKdeXQEzqUFu5zjUcIadzILigzT9QNdyOjGWJP5fl9k/av1xNHtiNFzGs//pb7e1AkolbnrZGfGrk1WWLpeTmICfYQQM01Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ehXOHZRH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766490112; c=relaxed/simple;
+	bh=7ZK0bTfGxrRAgf5VD4ybvgyLxH2fzuAcw+Dy5S3bJ1E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Tb+Pl81KE8rEwBo7z2JIw/9lnjEy/5luFd0oiy2Gd0WExyB0OMgDAjVQYZ9RoLtjTnU97VneXpUDmDM+RxipwFrbyD5Pui6aZyBlfnosyOFDLwan4mL9kkc2p/6J9pU7TP4aFG1TghNLm5FFVpnFiYSxySGJ4e+huPFLgeMGza4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h1rQc7Pp; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ehXOHZRH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EA8C113D0;
-	Tue, 23 Dec 2025 10:41:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766486507;
-	bh=dh1LliqkmgcxlRpXE4EKf7TKTcpUvkSiqOpQkRgrNGg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ehXOHZRH3fe4YvnWKEw6pTVW2pbWT5bBgiBswCQP+mCqQuswq1dDSeRBBW6rQPwsc
-	 dVR1KzAR1jQesyvFk2/8iKqEUA7IRQyq0Aqaiuv3B8arbU7hB1ECpNxYlOaw2stzMd
-	 5YdxjHkHMOUeEM4UnXoM/CtL49zQg4f0CE9rmQNeeeNs2eh7Y9NiquWHtPs/zHDs/9
-	 DuVhdm3T7PaXeCoFR+P48FnRL2KNsRcoAyGDS2yEiGrkxHtQA+5V0vnDIWFgMjBVfb
-	 dihF+oI+uNHyjra+sM2iijAVYTDaHzpPf8w+oAXzEtzismq6MbeLlFQciymiYGglzd
-	 RH7lvTqmlUMPQ==
-Date: Tue, 23 Dec 2025 16:11:43 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Koichiro Den <den@valinux.co.jp>, Niklas Cassel <cassel@kernel.org>,
-	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
-	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/8] dmaengine: Add API to combine configuration and
- preparation (sg and single)
-Message-ID: <aUpx59CeT4XfL5i1@vaman>
-References: <20251218-dma_prep_config-v2-0-c07079836128@nxp.com>
- <20251218-dma_prep_config-v2-1-c07079836128@nxp.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h1rQc7Pp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1766490109;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6sLHyZjdhjDBt6Tlyx92GjgIeB1OFSYRftB7W+PXVHI=;
+	b=h1rQc7Pplv9q5iItizuIk6J+84wY2O997HU4JYrlk8B9zAlYneXcMFqFaYxytGUY/ABEn7
+	mIH2jDM4AwTP5qqSYo/A671D+kLV5wKuCxbIjJe0YKlcOm2tlrj9N04ogtRWKKeI7MDHTX
+	0o8hdHPrwpDxmN4lbV25LIEJCtFWoVA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-635-txe7w5Z8MrC-XjX5Xe1d1g-1; Tue, 23 Dec 2025 06:41:47 -0500
+X-MC-Unique: txe7w5Z8MrC-XjX5Xe1d1g-1
+X-Mimecast-MFC-AGG-ID: txe7w5Z8MrC-XjX5Xe1d1g_1766490107
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-430fe16b481so2499455f8f.3
+        for <imx@lists.linux.dev>; Tue, 23 Dec 2025 03:41:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766490106; x=1767094906;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6sLHyZjdhjDBt6Tlyx92GjgIeB1OFSYRftB7W+PXVHI=;
+        b=jgfsmPjVy5UcY2qMVSfDNHPP6fbfXHlgr/GXRd4LplNLJypSWZBiVFLeLq9AMecsC4
+         3+GSiJ0JkJBtiswBvsmjtXhh/aDDL5H10vDsZXubDMxZpcBc9ZX6+d6gQIRJtyMzpw66
+         t+jEZT7X5e3uBASkFtz2ZFZdx//asVcpbWOu6LC7si3WBoofpO2rHEiSMC/7kgsFnLoB
+         DxlAmJADe9dZlQpQi/xnwyvbyOzhmBjZIg30bF8PVk4JXWWsaVZXZlt4V2WeHj6tGL/X
+         VidrmFLLUfy1GACHFkxwCwZ/cwzc21l/jWde+uV1oHEEVaT+9WrEvPM7Cm7HowXCqbb9
+         ZiVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWvY/cP1VVuE5V1P80hHEKktTnVJiCe72Vc95STyf09Tuu+1MlP2Q0gUyAFJL1Q3LFDZaM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwQABnzbrIIgd3Zovi80Qlg/YbWTp1U6MPbxK7XrrKuZixX8dBr
+	IJcbqEwwfWlrL1VMgiQO7XQYauNnOPT5LRTcvKPxitBHVYwIL/kr0dvQzvS/hXInxBNw51w00gP
+	RZFTFrNaels/KeLuwxCRSUmYB4pXl4Zrn57pVICGF/g11jHKlQkIOOg==
+X-Gm-Gg: AY/fxX6MqRwa/2ulAjRJVNQku8DgNMzGRoZInHJgsaGEcchLG2MSlibzLw8vaBnSDtS
+	6pedsII8Z1Zw39FKnwDhNQpX4wAeOzkzmOfIbmFg4M/EE3DvbDP2FjW0GClVfZBmXsFLqaxVcUZ
+	9NNMWkBLhkPKSmdI0xJNdPUFjJEHln5pyqHytU+Uvs57pvNvuNIrc0IH+ufAQOpaXlOpUPSEBc/
+	Jtnpp+XDVU9doCyqI6AnNVqVqBcaGR0glplC/le+3wsrOhxOxbpdTJf4pyNHasLkDGGydelpIja
+	Wp429//HDhE2tRtQUf7b6me3ZqkDKDcRJFOxPqL2zMJVPwpJ6l8b5g4XFQ2VEuHcAWQRyA1bBKr
+	9vFhgf1Rc0P4D
+X-Received: by 2002:a05:6000:2886:b0:42b:4247:b077 with SMTP id ffacd0b85a97d-4324e501629mr16143503f8f.41.1766490106481;
+        Tue, 23 Dec 2025 03:41:46 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFPhaXEvdC/d9UBYntc4O15i4YttaJ4C4olbdEgTOb9sXo4XaU7wPfNoTNX8sKpU6s3I2QtjQ==
+X-Received: by 2002:a05:6000:2886:b0:42b:4247:b077 with SMTP id ffacd0b85a97d-4324e501629mr16143448f8f.41.1766490105967;
+        Tue, 23 Dec 2025 03:41:45 -0800 (PST)
+Received: from [192.168.88.32] ([216.128.11.164])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea227casm27605658f8f.15.2025.12.23.03.41.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Dec 2025 03:41:45 -0800 (PST)
+Message-ID: <51c7048a-52dc-47e1-97c3-2aa0d6555643@redhat.com>
+Date: Tue, 23 Dec 2025 12:41:41 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251218-dma_prep_config-v2-1-c07079836128@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/7] net: stmmac: qcom-ethqos: add support for SCMI
+ power domains
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Vinod Koul <vkoul@kernel.org>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Jose Abreu <joabreu@synopsys.com>, Chen-Yu Tsai <wens@kernel.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ Matthew Gerlach <matthew.gerlach@altera.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Keguang Zhang <keguang.zhang@gmail.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>,
+ s32@nxp.com, Romain Gantois <romain.gantois@bootlin.com>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Heiko Stuebner <heiko@sntech.de>, Chen Wang <unicorn_wang@outlook.com>,
+ Inochi Amaoto <inochiama@gmail.com>, Emil Renner Berthing <kernel@esmil.dk>,
+ Minda Chen <minda.chen@starfivetech.com>, Drew Fustini <fustini@kernel.org>,
+ Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>,
+ Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Magnus Damm <magnus.damm@gmail.com>, Maxime Ripard <mripard@kernel.org>,
+ Shuang Liang <liangshuang@eswincomputing.com>,
+ Zhi Li <lizhi2@eswincomputing.com>,
+ Shangjuan Wei <weishangjuan@eswincomputing.com>,
+ "G. Jaya Kumaran" <vineetha.g.jaya.kumaran@intel.com>,
+ Clark Wang <xiaoning.wang@nxp.com>, Linux Team <linux-imx@nxp.com>,
+ Frank Li <Frank.Li@nxp.com>, David Wu <david.wu@rock-chips.com>,
+ Samin Guo <samin.guo@starfivetech.com>,
+ Christophe Roullier <christophe.roullier@foss.st.com>,
+ Swathi K S <swathi.ks@samsung.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, Drew Fustini
+ <dfustini@tenstorrent.com>, linux-sunxi@lists.linux.dev,
+ linux-amlogic@lists.infradead.org, linux-mips@vger.kernel.org,
+ imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, sophgo@lists.linux.dev,
+ linux-riscv@lists.infradead.org,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+References: <20251219-qcom-sa8255p-emac-v6-0-487f1082461e@oss.qualcomm.com>
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20251219-qcom-sa8255p-emac-v6-0-487f1082461e@oss.qualcomm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: rjdDBuf5MICLbO12lP4wFT3glO1X2SU5VhwJl5wpyPA_1766490107
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 18-12-25, 10:56, Frank Li wrote:
-> Previously, configuration and preparation required two separate calls. This
-> works well when configuration is done only once during initialization.
+On 12/19/25 12:42 PM, Bartosz Golaszewski wrote:
+> Add support for the firmware-managed variant of the DesignWare MAC on
+> the sa8255p platform. This series contains new DT bindings and driver
+> changes required to support the MAC in the STMMAC driver.
 > 
-> However, in cases where the burst length or source/destination address must
-> be adjusted for each transfer, calling two functions is verbose and
-> requires additional locking to ensure both steps complete atomically.
+> It also reorganizes the ethqos code quite a bit to make the introduction
+> of power domains into the driver a bit easier on the eye.
 > 
-> Add a new API dmaengine_prep_config_single() and dmaengine_prep_config_sg()
-> and callback device_prep_config_sg() that combines configuration and
-> preparation into a single operation. If the configuration argument is
-> passed as NULL, fall back to the existing implementation.
+> The DTS changes will go in separately.
 > 
-> Add a new API dmaengine_prep_config_single_safe() and
-> dmaengine_prep_config_sg_safe() for re-entrancy, which require driver
-> implement callback device_prep_config_sg().
-> 
-> Tested-by: Niklas Cassel <cassel@kernel.org>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> change in v2
-> - add () for function
-> - use short name device_prep_sg(), remove "slave" and "config". the 'slave'
-> is reduntant. after remove slave, the function name is difference existed
-> one, so remove _config suffix.
-> ---
->  Documentation/driver-api/dmaengine/client.rst |   9 +++
->  include/linux/dmaengine.h                     | 103 ++++++++++++++++++++++++--
->  2 files changed, 105 insertions(+), 7 deletions(-)
-> 
-> diff --git a/Documentation/driver-api/dmaengine/client.rst b/Documentation/driver-api/dmaengine/client.rst
-> index d491e385d61a98b8a804cd823caf254a2dc62cf4..02c45b7d7a779421411eb9c68325cdedafcfe3b1 100644
-> --- a/Documentation/driver-api/dmaengine/client.rst
-> +++ b/Documentation/driver-api/dmaengine/client.rst
-> @@ -80,6 +80,10 @@ The details of these operations are:
->  
->    - slave_sg: DMA a list of scatter gather buffers from/to a peripheral
->  
-> +  - config_sg: Similar with slave_sg, just pass down dma_slave_config
-> +    struct to avoid call dmaengine_slave_config() every time if need
-> +    adjust burst length or FIFO address.
-> +
->    - peripheral_dma_vec: DMA an array of scatter gather buffers from/to a
->      peripheral. Similar to slave_sg, but uses an array of dma_vec
->      structures instead of a scatterlist.
-> @@ -106,6 +110,11 @@ The details of these operations are:
->  		unsigned int sg_len, enum dma_data_direction direction,
->  		unsigned long flags);
->  
-> +     struct dma_async_tx_descriptor *dmaengine_prep_config_sg(
-> +		struct dma_chan *chan, struct scatterlist *sgl,
-> +		unsigned int sg_len, enum dma_transfer_direction dir,
-> +		unsigned long flags, struct dma_slave_config *config);
-> +
->       struct dma_async_tx_descriptor *dmaengine_prep_peripheral_dma_vec(
->  		struct dma_chan *chan, const struct dma_vec *vecs,
->  		size_t nents, enum dma_data_direction direction,
-> diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
-> index 99efe2b9b4ea9844ca6161208362ef18ef111d96..276dca760f95e1131f5ff5bf69752c4c9cb1bcad 100644
-> --- a/include/linux/dmaengine.h
-> +++ b/include/linux/dmaengine.h
-> @@ -835,6 +835,8 @@ struct dma_filter {
->   *	where the address and size of each segment is located in one entry of
->   *	the dma_vec array.
->   * @device_prep_slave_sg: prepares a slave dma operation
-> + *	(Deprecated, use @device_prep_config_sg)
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-Sorry that is _not_ deprecated, we are adding another way to do this in
-a single shot
+Quite unusual SoB chain... I think it would be better if you could stick
+to one or the other; also the subj prefix should include the target tree
+(net-next in this case); finally...
 
-> + * @device_prep_config_sg: prepares a slave DMA operation with dma_slave_config
->   * @device_prep_dma_cyclic: prepare a cyclic dma operation suitable for audio.
->   *	The function takes a buffer of size buf_len. The callback function will
->   *	be called after period_len bytes have been transferred.
-> @@ -934,6 +936,11 @@ struct dma_device {
->  		struct dma_chan *chan, struct scatterlist *sgl,
->  		unsigned int sg_len, enum dma_transfer_direction direction,
->  		unsigned long flags, void *context);
-> +	struct dma_async_tx_descriptor *(*device_prep_config_sg)(
-> +		struct dma_chan *chan, struct scatterlist *sgl,
-> +		unsigned int sg_len, enum dma_transfer_direction direction,
-> +		unsigned long flags, struct dma_slave_config *config,
-> +		void *context);
->  	struct dma_async_tx_descriptor *(*device_prep_dma_cyclic)(
->  		struct dma_chan *chan, dma_addr_t buf_addr, size_t buf_len,
->  		size_t period_len, enum dma_transfer_direction direction,
-> @@ -974,22 +981,85 @@ static inline bool is_slave_direction(enum dma_transfer_direction direction)
->  	       (direction == DMA_DEV_TO_DEV);
->  }
->  
-> -static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_single(
-> -	struct dma_chan *chan, dma_addr_t buf, size_t len,
-> -	enum dma_transfer_direction dir, unsigned long flags)
-> +/*
-> + * Re-entrancy and locking considerations for callers:
-> + *
-> + * dmaengine_prep_config_single(sg)_safe() is re-entrant and requires the
-> + * DMA engine driver to implement device_prep_config_sg(). It returns NULL
-> + * if device_prep_config_sg() is not implemented.
-> + *
-> + * The unsafe variant (without the _safe suffix) falls back to calling
-> + * dmaengine_slave_config() and dmaengine_prep_slave_sg() separately.
-> + * In this case, additional locking may be required, depending on the
-> + * DMA consumer's usage.
-> + */
-> +static inline struct dma_async_tx_descriptor *
-> +dmaengine_prep_config_sg_safe(struct dma_chan *chan, struct scatterlist *sgl,
-> +	unsigned int sg_len, enum dma_transfer_direction dir,
-> +	unsigned long flags, struct dma_slave_config *config)
-> +{
-> +	if (!chan || !chan->device || !chan->device->device_prep_config_sg)
-> +		return NULL;
-> +
-> +	return chan->device->device_prep_config_sg(chan, sgl, sg_len,
-> +						   dir, flags, config, NULL);
-> +}
-> +
-> +static inline struct dma_async_tx_descriptor *
-> +dmaengine_prep_config_single_safe(struct dma_chan *chan, dma_addr_t buf,
-> +	size_t len, enum dma_transfer_direction dir, unsigned long flags,
-> +	struct dma_slave_config *config)
+## Form letter - net-next-closed
 
-Agree with Damien, this could look better!
+The net-next tree is closed for new drivers, features, code refactoring
+and optimizations due to the merge window and the winter break. We are
+currently accepting bug fixes only.
 
--- 
-~Vinod
+Please repost when net-next reopens after Jan 2nd.
+
+RFC patches sent for review only are obviously welcome at any time.
+
