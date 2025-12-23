@@ -1,214 +1,189 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5516C36BCEE
-	for <imx@lists.linux.dev>; Tue, 23 Dec 2025 10:13:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083661B4F0A;
+	Tue, 23 Dec 2025 10:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766484786; cv=none; b=huAzxv95ZozOtOWqFCdYZ1UmW6yLrvhHlXuajk2p8Ca9WamohmeqM3GRH2P1QfFjhnFMqKVLw4/V8O9nxXBPc2RbN0GhJSf05k4lh+gMX6tRGpcELTrxLJieTgBqCtOPfkVwaQw0qomHC1CSsjqBqQ9dxcTxgT+7tnlry0iytUg=
+	t=1766486508; cv=none; b=nOrbRFcAZgu4o4w6CooviXO7yYfBxGjPWg1kRZYK3EN5N+1nCRfX3yA8ZjpWAH7twz7nf65P3wF3clseaXqLQB3MydKENfhDl3SpSp7vBz+yx7SRab1/rMG6uuugoCwjAgFV6EdXQ04qtIgCLDBzKvpKCZbjMhSpEQKRP1Bm91k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766484786; c=relaxed/simple;
-	bh=A9NT9+ObFVURRY5DrjmPg5SlXTK2iGfpCBkIhmcwnOc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EVx0+zJKpeqLw5EN4845WMXbTFdXNPKANH31Q9vCdqIC8fbuXPw8W3IZ7CAW3DC59lz395oN8Cei2UPKBfYWYBDb/zB585X1TFxjMFCaXKnwWBBrL/2XxUBPcbuNkZHZaj6n1G6rKBLY1UVHrjnr1udGjqAEFtRPEk+q+clNH2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h1nnt6XM; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1766486508; c=relaxed/simple;
+	bh=dh1LliqkmgcxlRpXE4EKf7TKTcpUvkSiqOpQkRgrNGg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EN/IaS8PUSLSnb9ivLwmjy79Q+6BDfftKI9rxvnmGX1vzhGNdDxa0zXxpeDOzYETAB3HYP6QoafKJKdeXQEzqUFu5zjUcIadzILigzT9QNdyOjGWJP5fl9k/av1xNHtiNFzGs//pb7e1AkolbnrZGfGrk1WWLpeTmICfYQQM01Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ehXOHZRH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h1nnt6XM"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-42b3c5defb2so3122537f8f.2
-        for <imx@lists.linux.dev>; Tue, 23 Dec 2025 02:13:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766484781; x=1767089581; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kGMtlDyyRbCcoNhJtD681fIKSx7Hpi6HHJrHp091fTU=;
-        b=h1nnt6XMhOs4Y+X4BamGi4toF9ynPxUGvb4T7Q14mMKKi7/VG/habyFdXzEmxBw+ox
-         pecfjtbbe+u9AV88r8FCLX1sopd07BbNwP2ebi82xfKQCIbcaq8Yo52PY15kfmQgJ1TC
-         N6TZwyXRmGZhWF7p8UT3jmH7ac32g4KYSwdDOqEpqZWOvisKzBaGWguI4n8OiKrPVUYW
-         n7cpbXEytG7RTNNsxTqR2dbFWwVp+GnZnI+9T8pKA1I7XnoYMafiyDpLZUZnsnyiDA8W
-         qpeO24NflQp7tdUcINfCz177eDnK6+bvDfoRrXU0A4FLI5g7YcCAHrUnzFlJS/1AIVkJ
-         gDiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766484781; x=1767089581;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kGMtlDyyRbCcoNhJtD681fIKSx7Hpi6HHJrHp091fTU=;
-        b=lr/ZKLXzGbFrpBsCHw0LlTa2jegDHsRKIS/McJhqvHCVR3cazTwHPXEoVIiWcgLGon
-         Ri4jv0DKhxZAsbROIex/jUnt3PvlJPFfFJ0QvCGvw87xWWNXakNZe+Y6Nk+F6JOST8s1
-         oIaqhKr8kjT2derhTIghqHSsB1/PA6/ePCWi/ienLNT+OczZVpgVEzZwHYO59MPYviPd
-         uVudQpNPxHIGaubYKHn9Sd18K4eSa3IDA9Oqned5GuWDrGeS3hIlBWBdOT2g7DjDUvPm
-         earl61dautA1g4rTKlvvqZ+le366Bqcd3UGK9oRgp9BwzketPzecxHfmNq6UnE4t0J1n
-         hFCA==
-X-Forwarded-Encrypted: i=1; AJvYcCUMWFDOPUz0uHrX03b9FbLXb4ynIOK2TJvJdG8WhQE20lQVZCf7FcbgWYXGSc9G+lm4nj8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwQOrsQvO8hnBK7uUsrZ2jFcbwYz0lMp/J2I2jq7zKG91u5E792
-	Y20/DwHjmyE7tLB4k2xvSbLO7Kn/Q88urxqLwVoFRCyD69cV3LqB3HEZ
-X-Gm-Gg: AY/fxX6kpZuabx24lRbLILPV4rwQB7G9Et4slhYu0KCecExUEatOlxcptoF+58n09Qi
-	3uvXVBUU2FZEYghPFcpJ3HPOdf/FdPD5ciZX6dVrf3bSjsRP6HjS1fjDNdQrDQVnySBU48oMK7C
-	qfZjrn+lV767BW0pYawTFBkGCgP8uvsJ+7tBnODZgkNMoQqvtsNerS0VhrD8KuyTcQRFLd1V1Xn
-	wSbj0cXdIQwSaZ4dI5QdohI9nSJ3iZXFGFKMsIeK81nqfR8ltq2xa9SnshTsA8EunWGwgw9/eZI
-	x4Vr1E/hM5C5dlZeNl49KZ7NGfvdSCaf+PgbbC86NHsZucyMp2pQczq4juv/PV8fqLXjsGl+/96
-	ek7o7CzB6IaRxs4iMnXRNQcCAmb+GGnagOZmOxqj8bvsAW5IeRuar4z4+jF9EXYsPOsU4aPPIuH
-	5P2i4+kMv0ccvOvhVWZ0qoumOk8g==
-X-Google-Smtp-Source: AGHT+IGF0o0X3T9TPemtGA4iv5QpXYtSLA5891eQonPhGoJJdeHdYF9/vi2taBPYEXsT/bnOH7uFfA==
-X-Received: by 2002:a05:6000:188e:b0:430:fb26:3409 with SMTP id ffacd0b85a97d-4324e703d95mr14723855f8f.63.1766484780377;
-        Tue, 23 Dec 2025 02:13:00 -0800 (PST)
-Received: from eichest-laptop.lan ([2a02:168:af72:0:db87:3fd:1ea8:b6eb])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324eaa0908sm26759247f8f.31.2025.12.23.02.12.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Dec 2025 02:13:00 -0800 (PST)
-From: Stefan Eichenberger <eichest@gmail.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	linux-stm32@st-md-mailman.stormreply.com
-Cc: netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	robh@kernel.org,
-	francesco.dolcini@toradex.com,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: [PATCH net-next v2] net: stmmac: dwmac: Add a fixup for the Micrel KSZ9131 PHY
-Date: Tue, 23 Dec 2025 11:10:59 +0100
-Message-ID: <20251223101240.10634-1-eichest@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ehXOHZRH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EA8C113D0;
+	Tue, 23 Dec 2025 10:41:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766486507;
+	bh=dh1LliqkmgcxlRpXE4EKf7TKTcpUvkSiqOpQkRgrNGg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ehXOHZRH3fe4YvnWKEw6pTVW2pbWT5bBgiBswCQP+mCqQuswq1dDSeRBBW6rQPwsc
+	 dVR1KzAR1jQesyvFk2/8iKqEUA7IRQyq0Aqaiuv3B8arbU7hB1ECpNxYlOaw2stzMd
+	 5YdxjHkHMOUeEM4UnXoM/CtL49zQg4f0CE9rmQNeeeNs2eh7Y9NiquWHtPs/zHDs/9
+	 DuVhdm3T7PaXeCoFR+P48FnRL2KNsRcoAyGDS2yEiGrkxHtQA+5V0vnDIWFgMjBVfb
+	 dihF+oI+uNHyjra+sM2iijAVYTDaHzpPf8w+oAXzEtzismq6MbeLlFQciymiYGglzd
+	 RH7lvTqmlUMPQ==
+Date: Tue, 23 Dec 2025 16:11:43 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Koichiro Den <den@valinux.co.jp>, Niklas Cassel <cassel@kernel.org>,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-nvme@lists.infradead.org,
+	mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/8] dmaengine: Add API to combine configuration and
+ preparation (sg and single)
+Message-ID: <aUpx59CeT4XfL5i1@vaman>
+References: <20251218-dma_prep_config-v2-0-c07079836128@nxp.com>
+ <20251218-dma_prep_config-v2-1-c07079836128@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251218-dma_prep_config-v2-1-c07079836128@nxp.com>
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+On 18-12-25, 10:56, Frank Li wrote:
+> Previously, configuration and preparation required two separate calls. This
+> works well when configuration is done only once during initialization.
+> 
+> However, in cases where the burst length or source/destination address must
+> be adjusted for each transfer, calling two functions is verbose and
+> requires additional locking to ensure both steps complete atomically.
+> 
+> Add a new API dmaengine_prep_config_single() and dmaengine_prep_config_sg()
+> and callback device_prep_config_sg() that combines configuration and
+> preparation into a single operation. If the configuration argument is
+> passed as NULL, fall back to the existing implementation.
+> 
+> Add a new API dmaengine_prep_config_single_safe() and
+> dmaengine_prep_config_sg_safe() for re-entrancy, which require driver
+> implement callback device_prep_config_sg().
+> 
+> Tested-by: Niklas Cassel <cassel@kernel.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> change in v2
+> - add () for function
+> - use short name device_prep_sg(), remove "slave" and "config". the 'slave'
+> is reduntant. after remove slave, the function name is difference existed
+> one, so remove _config suffix.
+> ---
+>  Documentation/driver-api/dmaengine/client.rst |   9 +++
+>  include/linux/dmaengine.h                     | 103 ++++++++++++++++++++++++--
+>  2 files changed, 105 insertions(+), 7 deletions(-)
+> 
+> diff --git a/Documentation/driver-api/dmaengine/client.rst b/Documentation/driver-api/dmaengine/client.rst
+> index d491e385d61a98b8a804cd823caf254a2dc62cf4..02c45b7d7a779421411eb9c68325cdedafcfe3b1 100644
+> --- a/Documentation/driver-api/dmaengine/client.rst
+> +++ b/Documentation/driver-api/dmaengine/client.rst
+> @@ -80,6 +80,10 @@ The details of these operations are:
+>  
+>    - slave_sg: DMA a list of scatter gather buffers from/to a peripheral
+>  
+> +  - config_sg: Similar with slave_sg, just pass down dma_slave_config
+> +    struct to avoid call dmaengine_slave_config() every time if need
+> +    adjust burst length or FIFO address.
+> +
+>    - peripheral_dma_vec: DMA an array of scatter gather buffers from/to a
+>      peripheral. Similar to slave_sg, but uses an array of dma_vec
+>      structures instead of a scatterlist.
+> @@ -106,6 +110,11 @@ The details of these operations are:
+>  		unsigned int sg_len, enum dma_data_direction direction,
+>  		unsigned long flags);
+>  
+> +     struct dma_async_tx_descriptor *dmaengine_prep_config_sg(
+> +		struct dma_chan *chan, struct scatterlist *sgl,
+> +		unsigned int sg_len, enum dma_transfer_direction dir,
+> +		unsigned long flags, struct dma_slave_config *config);
+> +
+>       struct dma_async_tx_descriptor *dmaengine_prep_peripheral_dma_vec(
+>  		struct dma_chan *chan, const struct dma_vec *vecs,
+>  		size_t nents, enum dma_data_direction direction,
+> diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+> index 99efe2b9b4ea9844ca6161208362ef18ef111d96..276dca760f95e1131f5ff5bf69752c4c9cb1bcad 100644
+> --- a/include/linux/dmaengine.h
+> +++ b/include/linux/dmaengine.h
+> @@ -835,6 +835,8 @@ struct dma_filter {
+>   *	where the address and size of each segment is located in one entry of
+>   *	the dma_vec array.
+>   * @device_prep_slave_sg: prepares a slave dma operation
+> + *	(Deprecated, use @device_prep_config_sg)
 
-Add a fixup to the stmmac driver to keep the preamble before the SFD
-(Start Frame Delimiter) on the Micrel KSZ9131 PHY when the driver is
-used on an NXP i.MX8MP SoC.
+Sorry that is _not_ deprecated, we are adding another way to do this in
+a single shot
 
-This allows to workaround errata ERR050694 of the NXP i.MX8MP that
-states:
-ENET_QOS: MAC incorrectly discards the received packets when Preamble
-Byte does not precede SFD or SMD.
+> + * @device_prep_config_sg: prepares a slave DMA operation with dma_slave_config
+>   * @device_prep_dma_cyclic: prepare a cyclic dma operation suitable for audio.
+>   *	The function takes a buffer of size buf_len. The callback function will
+>   *	be called after period_len bytes have been transferred.
+> @@ -934,6 +936,11 @@ struct dma_device {
+>  		struct dma_chan *chan, struct scatterlist *sgl,
+>  		unsigned int sg_len, enum dma_transfer_direction direction,
+>  		unsigned long flags, void *context);
+> +	struct dma_async_tx_descriptor *(*device_prep_config_sg)(
+> +		struct dma_chan *chan, struct scatterlist *sgl,
+> +		unsigned int sg_len, enum dma_transfer_direction direction,
+> +		unsigned long flags, struct dma_slave_config *config,
+> +		void *context);
+>  	struct dma_async_tx_descriptor *(*device_prep_dma_cyclic)(
+>  		struct dma_chan *chan, dma_addr_t buf_addr, size_t buf_len,
+>  		size_t period_len, enum dma_transfer_direction direction,
+> @@ -974,22 +981,85 @@ static inline bool is_slave_direction(enum dma_transfer_direction direction)
+>  	       (direction == DMA_DEV_TO_DEV);
+>  }
+>  
+> -static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_single(
+> -	struct dma_chan *chan, dma_addr_t buf, size_t len,
+> -	enum dma_transfer_direction dir, unsigned long flags)
+> +/*
+> + * Re-entrancy and locking considerations for callers:
+> + *
+> + * dmaengine_prep_config_single(sg)_safe() is re-entrant and requires the
+> + * DMA engine driver to implement device_prep_config_sg(). It returns NULL
+> + * if device_prep_config_sg() is not implemented.
+> + *
+> + * The unsafe variant (without the _safe suffix) falls back to calling
+> + * dmaengine_slave_config() and dmaengine_prep_slave_sg() separately.
+> + * In this case, additional locking may be required, depending on the
+> + * DMA consumer's usage.
+> + */
+> +static inline struct dma_async_tx_descriptor *
+> +dmaengine_prep_config_sg_safe(struct dma_chan *chan, struct scatterlist *sgl,
+> +	unsigned int sg_len, enum dma_transfer_direction dir,
+> +	unsigned long flags, struct dma_slave_config *config)
+> +{
+> +	if (!chan || !chan->device || !chan->device->device_prep_config_sg)
+> +		return NULL;
+> +
+> +	return chan->device->device_prep_config_sg(chan, sgl, sg_len,
+> +						   dir, flags, config, NULL);
+> +}
+> +
+> +static inline struct dma_async_tx_descriptor *
+> +dmaengine_prep_config_single_safe(struct dma_chan *chan, dma_addr_t buf,
+> +	size_t len, enum dma_transfer_direction dir, unsigned long flags,
+> +	struct dma_slave_config *config)
 
-The bit which disables this feature is not documented in the datasheet
-from Micrel, but has been found by NXP and Micrel following this
-discussion:
-https://community.nxp.com/t5/i-MX-Processors/iMX8MP-eqos-not-working-for-10base-t/m-p/2151032
+Agree with Damien, this could look better!
 
-It has been tested on Verdin iMX8MP from Toradex by forcing the PHY to
-10MBit. Without bit 2 being set in the remote loopback register, no
-packets are received. With the bit set, reception works fine.
-
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
----
-Changes in v2:
-- Use phy_register_fixup_for_uid() instead of adding a new device tree
-  property
-- I will send the conversion of the micrel.txt binding as a separate
-  patch series
-- Link to v1: https://lore.kernel.org/all/20251212084657.29239-1-eichest@gmail.com/
-
- .../net/ethernet/stmicro/stmmac/dwmac-imx.c   | 56 ++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-index db288fbd5a4df..23bc917d3f0bd 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-@@ -19,6 +19,7 @@
- #include <linux/regmap.h>
- #include <linux/slab.h>
- #include <linux/stmmac.h>
-+#include <linux/micrel_phy.h>
- 
- #include "stmmac_platform.h"
- 
-@@ -39,6 +40,12 @@
- #define RMII_RESET_SPEED		(0x3 << 14)
- #define CTRL_SPEED_MASK			GENMASK(15, 14)
- 
-+/* Undocumented bit of the KSZ9131RNX in the remote loopback register to keep
-+ * the preamble before sfd. It was reported by NXP in cooperation with Micrel.
-+ */
-+#define KSZ9x31_REMOTE_LOOPBACK			0x11
-+#define KSZ9x31_REMOTE_LOOPBACK_KEEP_PREAMBLE	BIT(2)
-+
- struct imx_priv_data;
- 
- struct imx_dwmac_ops {
-@@ -282,6 +289,30 @@ imx_dwmac_parse_dt(struct imx_priv_data *dwmac, struct device *dev)
- 	return err;
- }
- 
-+static int imx8mp_dwmac_phy_micrel_fixup(struct phy_device *phydev)
-+{
-+	struct device *mdio_bus_dev = phydev->mdio.dev.parent;
-+	struct device_node *mac_node;
-+
-+	if (!mdio_bus_dev || !mdio_bus_dev->parent)
-+		return 0;
-+
-+	mac_node = mdio_bus_dev->parent->of_node;
-+	if (!mac_node)
-+		return 0;
-+
-+	if (!of_device_is_compatible(mac_node, "nxp,imx8mp-dwmac-eqos"))
-+		return 0;
-+
-+	/* Keep the preamble before the SFD (Start Frame Delimiter) for the
-+	 * Micrel KSZ9131. This is required on the i.MX8MP because of errata
-+	 * ERR050694.
-+	 */
-+	return phy_modify_changed(phydev, KSZ9x31_REMOTE_LOOPBACK,
-+				  KSZ9x31_REMOTE_LOOPBACK_KEEP_PREAMBLE,
-+				  KSZ9x31_REMOTE_LOOPBACK_KEEP_PREAMBLE);
-+}
-+
- static int imx_dwmac_probe(struct platform_device *pdev)
- {
- 	struct plat_stmmacenet_data *plat_dat;
-@@ -389,7 +420,30 @@ static struct platform_driver imx_dwmac_driver = {
- 		.of_match_table = imx_dwmac_match,
- 	},
- };
--module_platform_driver(imx_dwmac_driver);
-+
-+static int __init imx_dwmac_init(void)
-+{
-+	int ret;
-+
-+	if (of_machine_is_compatible("fsl,imx8mp")) {
-+		ret = phy_register_fixup_for_uid(PHY_ID_KSZ9131, MICREL_PHY_ID_MASK,
-+						 imx8mp_dwmac_phy_micrel_fixup);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return platform_driver_register(&imx_dwmac_driver);
-+}
-+module_init(imx_dwmac_init);
-+
-+static void __exit imx_dwmac_exit(void)
-+{
-+	if (of_machine_is_compatible("fsl,imx8mp"))
-+		phy_unregister_fixup_for_uid(PHY_ID_KSZ9131, MICREL_PHY_ID_MASK);
-+
-+	platform_driver_unregister(&imx_dwmac_driver);
-+}
-+module_exit(imx_dwmac_exit);
- 
- MODULE_AUTHOR("NXP");
- MODULE_DESCRIPTION("NXP imx8 DWMAC Specific Glue layer");
 -- 
-2.51.0
-
+~Vinod
