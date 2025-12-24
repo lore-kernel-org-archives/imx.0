@@ -1,66 +1,66 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0D3279907
-	for <imx@lists.linux.dev>; Wed, 24 Dec 2025 19:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F0D2ED86F
+	for <imx@lists.linux.dev>; Wed, 24 Dec 2025 19:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766603886; cv=none; b=seVLVioJ4gv5IjOOW8QPtuz9IBEBskJQrFkqkJj/TGG3dY1F+wp+/xEF/pmqzB677DGP6shybFlOrDdQoTj9i8FN/lV8iVBsW+l03gQlKqkCzwObpPJ9nGRwiZOuiq8vM79UY1yqVmnWHtDj6v+VOba8/qJKZ2A+YrFpVEjMY8g=
+	t=1766604003; cv=none; b=HhaliDs/pk6jIWQbkrJjzbQxOvCqKDhFAOcHpy39vaCiizNkklpxO2inyUI/Qm9cKrc+YjbbPdqhDTLi9VaDRwdTBEQ/H2924joJYy85bSTsjqtCVGF3jdbLJSPkJkfjUr2A172Ih1GCLX17ShZfFg/rzfbzF0nX9dosoSIiGUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766603886; c=relaxed/simple;
-	bh=xZg5eUrmrvQkn5kS5Z5StXMcG2MdDw+ySiCbxKWmi3o=;
+	s=arc-20240116; t=1766604003; c=relaxed/simple;
+	bh=ErfgYdcVqeZdxFW+svquaJZWnpjVxPnFzRILn9Io9/w=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ITJn0QPWSZb0bKeEDQlClq9SUUqsPgOJWFHUEJ8wtjEYVxmuDiis+WOh/pIuqLMQT5TPahqo1i/XL7+m/N+G5JsXgn1LUaM0X82APQUNDsENAKvK2WHsxX/BwfLbRe7w5XHo2abAT9bXWtGE1gG7fbMTZbef2/npxxT9J3Xy90s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=Scog6fPp; arc=none smtp.client-ip=209.85.222.179
+	 Content-Type:MIME-Version; b=GFOzB1UgFK6jdxy0lzsIyK+m5bHXwXk4XBKdq/XxBrJSYWQ8oqzegMdYwpz2OZxG3B33FdBTnXDNaZErXg+QVDofYs0b9WyDkgHK6NEyd9T9zgvj+9RrJngwaZfd03qz2fNnHEBHkqC62asS9oU9Es2D00qWOGJcbMWRWAaK1tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=WrJ2LV/0; arc=none smtp.client-ip=209.85.219.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="Scog6fPp"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-8b31a665ba5so691565485a.2
-        for <imx@lists.linux.dev>; Wed, 24 Dec 2025 11:18:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="WrJ2LV/0"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-88a2ad13c24so58719706d6.1
+        for <imx@lists.linux.dev>; Wed, 24 Dec 2025 11:20:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1766603884; x=1767208684; darn=lists.linux.dev;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1766604000; x=1767208800; darn=lists.linux.dev;
         h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
          :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=xZg5eUrmrvQkn5kS5Z5StXMcG2MdDw+ySiCbxKWmi3o=;
-        b=Scog6fPpK5UNmRLBc+r1S8YxnOBzbTHXag98c4fjlLKB+MWUgdIZgsdy6UPx8QOq8K
-         wSIDmYFwSygEIvL74kv/q78+EgQstTVEfdRa5VDIoyHLXOo0EO2+uw7esxeKex1sWc71
-         B1f/F0CxNomMgASqiKdJqffQs+ym98G3v9mXWQ9tGBfk5gdN9cBFwGae+M0C55veB61k
-         To8gsEe2TULkmJ2woBUCuds//ObBeyf647dX3+72oDl3Yvhq/sj+RdbVOsDNi9nUqRAF
-         oJvZQz1BraD209x8kG6AZLZ7GooAnnDwda6ed/HTVY5328VsaMzI9kZrK1WabVPmtJN6
-         PJGA==
+        bh=FWgFvpw/AHNyDXufCuZ5epDAc/pafdJFP2isUDb12EE=;
+        b=WrJ2LV/0Akc0QnyhdOUwHYKZystAkRX2cNzxzvzElt2AWeUp/p/tapaG8PlcK+rpp4
+         Sox9lbnhSu+axquljFAlPbsDLLE3GBMhjgcErYK7Ir7/hYkaCi8qT5GPUEpVgTKlJzEE
+         Cg4wY2NO7Yk20qBR6i7KqEBr3lC9qnsFc3Mr8i/3IVsLXRQeLGNJ9qCMNLwhiBpewj16
+         IwHgz+aNeeLkDXUjPk81xpXOMOBdVp74p2J2HybMACPc8C9kyT/UAO/HEWi0H3lklwiI
+         dRB0Jtgoir3mP97hmrD52J4Drz8DJP+K4bDAqFdN4KWk2DE2evFf/ifqZlZAoSkwfFpQ
+         ICCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766603884; x=1767208684;
+        d=1e100.net; s=20230601; t=1766604000; x=1767208800;
         h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
          :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xZg5eUrmrvQkn5kS5Z5StXMcG2MdDw+ySiCbxKWmi3o=;
-        b=FKEaha7wZwDx7YbNlcm5WXdfR4Sbesy4ibkd6i8z2U6hPbu9p2xUiWt/x1/RB5x/1v
-         rDTYptRX+KN3/SdmbwoCjYyNWYfRGyd8GcPXh4xeN8AZRHRWAz8zTrW+uAn+L5XIgZRC
-         bjlV8trPPdwpa02zl0D4/kFoosf03/l5992lXTKbVHvFM2KMUgVtTQXjSScdfksACU3c
-         r7brlpIf6BrGwTV4umgcyFA9TwzrOIOmIzwbRoI8MseB8L+HYzCuLc1ykICTI8dfAOrl
-         LNzvF63T89ws9t3dFXsLcdMz9hIWAUGXIVftR0kKu/c7f5EPm1P7l406Pe9jF8+M0+mV
-         Z9HQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXbOHC6YuGDcIh1E5BFehFC/Sd5ManaVVvvNXXZKLZRouCDgxnjpmOUjGKblfWFtVHoYLI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxPngmM6Vp855YC5ef64TTEAlSrKCFiiaRGHl5AVs1H0KJmcUfS
-	iVEhDGETe4nqm7NXwSvIJPbGvX4a03iR7XuQYvOc5gj0mT1JHaiBSUCqh7wCTbSy27g=
-X-Gm-Gg: AY/fxX7VBLymdo7lLXW6UB0GktSCi3sJA7xXyjVK0stiG5ZF+a6mcmUXZ/AYYw1eJry
-	FMOc5+epvPkvuKNr51iD0M+xZWa7MFo0+ceMS6pvKSDokPnq+GYxhQaXrEGHnPA1bBweVDPCR6m
-	QAIa7FUYJi+1XPb7OaWFivlJvoGzIBLNQgZXolLT0tdTJloPZP6AhYDqgBEp5IT1kfWZtKeFRJr
-	CHoSMrDYAF0BAU+SaCX3bmUu7ZW19qCexfMmDfPauijNyyUdoX40LV7u+dcbnN3WJm1ErsKpHEb
-	UYlSC6Ww4Lz0v2GeaKdGZZ4BKZ5ew/Lu+DaTyVrVGZ2xYJymhUFXWNM2mT8IHxeF6MfUF9t/p7a
-	E95DzM8khOnVA729bXgLQymlateGHV5CTFFLhGi34ZdIPN/lemLbctXNoe+TnKU2rKh2cq7lg52
-	Iidd5p4ycpTXGlPjtR
-X-Google-Smtp-Source: AGHT+IFE+lwyQ0lBVNQN9AauKUiupd6cPnSEIMOpaIWg/SbEk3o4rIkkKVIUe+K1qw6hZBgNQd+vpA==
-X-Received: by 2002:a05:620a:4843:b0:8c0:cca6:8522 with SMTP id af79cd13be357-8c0cca68539mr1707477185a.37.1766603883870;
-        Wed, 24 Dec 2025 11:18:03 -0800 (PST)
+        bh=FWgFvpw/AHNyDXufCuZ5epDAc/pafdJFP2isUDb12EE=;
+        b=NYhBCUPQ9lkbKM0ewligkm7h2lbJy+XYd/wGMiJKCyQdcvtnVvCsKtJvOh7yXJ/683
+         a5kfbcolSy6YWVjA2cYUHwl08hFV5ndmpdTgvycEWRwMg4qcw6/Fbsis/xtDrhYz1pSN
+         mb5XWd6PLuKRyozUfg1kWvHO51UEMybhhmAQcJNmIo51peXwWMvKbq8a3XwUy4QRFMEZ
+         Jr5F7orxZdc35/lMR1fwAj7HBhqjDrHl+oiKk+OtrN7UB+aZQneJhQkwwD2X/RKry6Wg
+         +fpvNo6NbrJUKp12E4fangfPCmWteSvH/XsvvTUzhv6sIupDmnQagzyVoJ0VAXCWiBdc
+         X6vQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWIFudEdSfK77l+k5WJrv+r6uFpJWdH9fh2obdVY/t9XVhXxf96hq+8V1HxdxE/t/W39x0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzRrPxD/8elFe4orycD5CB2gKAmK89yceuj3gZoseARWD6cwAkC
+	UfpulvbTCWpexpY99W2DQaPrStWBWAOFeY1JYL4CDrTTnkepdsQfG4N+Tj0sPDP3Ht4=
+X-Gm-Gg: AY/fxX6uNYAfS7b+WC9iHeFqrUhli36ar9GH7GYDgR1TzMZ+Bx1SKHChUD7b88wehep
+	B2gC18fAPoj4v+XZ8868gtBFVRjY9eW0iqZOiwyR0bm/6ObY1qPkuQBf1Uvi28bmczZUAbDHu8F
+	HmivG7e17HtU93xVgmGoy7dnJMR4UX+FxzdTvGPnavAfx3+tsXVT+pxJedPDeYx6o1FG2cTB/mM
+	Vk+B5oSAEwUVvBCleNXLOICUaQtKGZsvC/sUlCLIu3OS3jcQXZnok9sz52SF7s/GBRd8vTk/clE
+	5rrGpmedA700VKIWIO3oU3X45WUNczDytjEhnSy9ohmMH64CbQhQrMxh9XviVeL0jn9KqOgDr2z
+	LoF1ZE1JBlV9oANsn3DCKXwE6eDodBhZEYuNoHoHUEn+bL1A4lfJBWcRzTb0kGPGVSMoExP2gCP
+	1w22kmTNHrzVsgSI0htmqUFgNT71w=
+X-Google-Smtp-Source: AGHT+IEeDZpPPu6YZwcQ8tx4vjP/alqKLZ2iCL81HE8OxCMqXyviVYCPm8KNV8TIbtaCK6+e47FNYg==
+X-Received: by 2002:a05:6214:20a2:b0:880:5279:98eb with SMTP id 6a1803df08f44-88d86290d80mr291887636d6.44.1766604000085;
+        Wed, 24 Dec 2025 11:20:00 -0800 (PST)
 Received: from ?IPv6:2606:6d00:17:7b4b::c41? ([2606:6d00:17:7b4b::c41])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d9623feb0sm136297056d6.2.2025.12.24.11.18.02
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d9a44e26bsm131729676d6.47.2025.12.24.11.19.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Dec 2025 11:18:03 -0800 (PST)
-Message-ID: <b6ae2f157fb6fd0b80602f363b99dab1dc0b1cc6.camel@ndufresne.ca>
-Subject: Re: [PATCH v4 1/3] media: docs: dev-decoder: Trigger dynamic source
- change for colorspace
+        Wed, 24 Dec 2025 11:19:59 -0800 (PST)
+Message-ID: <5500fa4f4ee321a451360a84cf5834781c1a9615.camel@ndufresne.ca>
+Subject: Re: [PATCH v4 2/3] media: amphion: Clear last_buffer_dequeued flag
+ for DEC_CMD_START
 From: Nicolas Dufresne <nicolas@ndufresne.ca>
 To: ming.qian@oss.nxp.com, linux-media@vger.kernel.org
 Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, 
@@ -69,10 +69,10 @@ Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
  linux-imx@nxp.com, Frank.li@nxp.com, 	xiahong.bao@nxp.com,
  eagle.zhou@nxp.com, imx@lists.linux.dev, 	linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org
-Date: Wed, 24 Dec 2025 14:18:02 -0500
-In-Reply-To: <20251217030227.1546-2-ming.qian@oss.nxp.com>
+Date: Wed, 24 Dec 2025 14:19:58 -0500
+In-Reply-To: <20251217030227.1546-3-ming.qian@oss.nxp.com>
 References: <20251217030227.1546-1-ming.qian@oss.nxp.com>
-	 <20251217030227.1546-2-ming.qian@oss.nxp.com>
+	 <20251217030227.1546-3-ming.qian@oss.nxp.com>
 Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
  keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
  /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
@@ -87,7 +87,7 @@ Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
  ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
  bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-n17ZtuMY6Flq/RX7bbkp"
+	protocol="application/pgp-signature"; boundary="=-TbnDfBH7kuP5a4j2UK4h"
 User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -97,7 +97,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 
 
---=-n17ZtuMY6Flq/RX7bbkp
+--=-TbnDfBH7kuP5a4j2UK4h
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -105,47 +105,44 @@ Le mercredi 17 d=C3=A9cembre 2025 =C3=A0 11:02 +0800, ming.qian@oss.nxp.com=
  a =C3=A9crit=C2=A0:
 > From: Ming Qian <ming.qian@oss.nxp.com>
 >=20
-> If colorspace changes, the client needs to renegotiate the pipeline,
-> otherwise the decoded frame may not be displayed correctly.
->=20
-> So add colorspace as a trigger parameter for dynamic resolution change.
+> The V4L2_DEC_CMD_START command may be used to handle the dynamic source
+> change, which will triggers an implicit decoder drain.
+> The last_buffer_dequeued flag is set in the implicit decoder drain,
+> so driver need to clear it to continue the following decoding flow.
 >=20
 > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
 
 Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
 > ---
-> =C2=A0Documentation/userspace-api/media/v4l/dev-decoder.rst | 5 ++++-
-> =C2=A01 file changed, 4 insertions(+), 1 deletion(-)
+> =C2=A0drivers/media/platform/amphion/vdec.c | 1 +
+> =C2=A01 file changed, 1 insertion(+)
 >=20
-> diff --git a/Documentation/userspace-api/media/v4l/dev-decoder.rst
-> b/Documentation/userspace-api/media/v4l/dev-decoder.rst
-> index eb662ced0ab4..2beb6ba1b3c2 100644
-> --- a/Documentation/userspace-api/media/v4l/dev-decoder.rst
-> +++ b/Documentation/userspace-api/media/v4l/dev-decoder.rst
-> @@ -933,7 +933,10 @@ reflected by corresponding queries):
-> =C2=A0
-> =C2=A0* the minimum number of buffers needed for decoding,
-> =C2=A0
-> -* bit-depth of the bitstream has been changed.
-> +* bit-depth of the bitstream has been changed,
-> +
-> +* colorspace of the bitstream has been changed, but it doesn't require
-> +=C2=A0 buffer reallocation.
-> =C2=A0
-> =C2=A0Whenever that happens, the decoder must proceed as follows:
-> =C2=A0
+> diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platfo=
+rm/amphion/vdec.c
+> index c0d2aabb9e0e..f25dbcebdccf 100644
+> --- a/drivers/media/platform/amphion/vdec.c
+> +++ b/drivers/media/platform/amphion/vdec.c
+> @@ -724,6 +724,7 @@ static int vdec_decoder_cmd(struct file *file, void *=
+fh, struct v4l2_decoder_cmd
+> =C2=A0	switch (cmd->cmd) {
+> =C2=A0	case V4L2_DEC_CMD_START:
+> =C2=A0		vdec_cmd_start(inst);
+> +		vb2_clear_last_buffer_dequeued(v4l2_m2m_get_dst_vq(inst->fh.m2m_ctx));
+> =C2=A0		break;
+> =C2=A0	case V4L2_DEC_CMD_STOP:
+> =C2=A0		vdec_cmd_stop(inst);
 
---=-n17ZtuMY6Flq/RX7bbkp
+--=-TbnDfBH7kuP5a4j2UK4h
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaUw8agAKCRDZQZRRKWBy
-9CHGAP9gEAjecV8PUMv/Zb5o06iitW7EtgLf6x+mn9znVa2a7wEA6gnPxAGouGcD
-1gWVb5hh/gTP+c0avA3fnMj4aV97VQc=
-=oB75
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaUw83gAKCRDZQZRRKWBy
+9N4GAPsEStp+V8u3PcY6TUQYOCoH/OAkqDJ6OoG31fahIVD4IQEA+Bl3uh5sZQhc
+KDFtxNYkj8x7KW7YxzN9h3vDdlSs3AM=
+=bMEn
 -----END PGP SIGNATURE-----
 
---=-n17ZtuMY6Flq/RX7bbkp--
+--=-TbnDfBH7kuP5a4j2UK4h--
