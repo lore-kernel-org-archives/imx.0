@@ -1,66 +1,66 @@
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F0D2ED86F
-	for <imx@lists.linux.dev>; Wed, 24 Dec 2025 19:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAAA313266
+	for <imx@lists.linux.dev>; Wed, 24 Dec 2025 19:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766604003; cv=none; b=HhaliDs/pk6jIWQbkrJjzbQxOvCqKDhFAOcHpy39vaCiizNkklpxO2inyUI/Qm9cKrc+YjbbPdqhDTLi9VaDRwdTBEQ/H2924joJYy85bSTsjqtCVGF3jdbLJSPkJkfjUr2A172Ih1GCLX17ShZfFg/rzfbzF0nX9dosoSIiGUs=
+	t=1766604305; cv=none; b=U1caOP4v0WRP/MwMQFdTe9R0pCtoJNSiWysJyUvgx05QYBxKp5NDG9DxosR83/3dHrnC8VjQ3/wIV/qut0x9Rw70DcnpAzxzLZ13CfC5cNK2QGPou8emwOG4kytH9+skqFuCOao9FRqKpIcnwCf6kVo9EaqWiMCEH5HzfJV3ARw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766604003; c=relaxed/simple;
-	bh=ErfgYdcVqeZdxFW+svquaJZWnpjVxPnFzRILn9Io9/w=;
+	s=arc-20240116; t=1766604305; c=relaxed/simple;
+	bh=K5HU1Mj4GKYzyBYiOLADWWgfwEWGDJNoFvlsuFzcmG0=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GFOzB1UgFK6jdxy0lzsIyK+m5bHXwXk4XBKdq/XxBrJSYWQ8oqzegMdYwpz2OZxG3B33FdBTnXDNaZErXg+QVDofYs0b9WyDkgHK6NEyd9T9zgvj+9RrJngwaZfd03qz2fNnHEBHkqC62asS9oU9Es2D00qWOGJcbMWRWAaK1tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=WrJ2LV/0; arc=none smtp.client-ip=209.85.219.46
+	 Content-Type:MIME-Version; b=HGFvJvJhetKhWLDSINT84nb89k7n1Z7yqeFnpcl11jDvqy2a5DrSncPsozoUbsluVUS4oO7XEAuybJrUKs7QeIqHCeIXaf5fCSL2ItxXMmuwIEMKvfNBGMNhZHKmnllVEMI9UodQsqRDyVwZl8gbgrY/AadVF4ZCG6hd9IeZHcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=jBeBBoR5; arc=none smtp.client-ip=209.85.222.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="WrJ2LV/0"
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-88a2ad13c24so58719706d6.1
-        for <imx@lists.linux.dev>; Wed, 24 Dec 2025 11:20:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="jBeBBoR5"
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8b2d6df99c5so680731485a.1
+        for <imx@lists.linux.dev>; Wed, 24 Dec 2025 11:25:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1766604000; x=1767208800; darn=lists.linux.dev;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1766604302; x=1767209102; darn=lists.linux.dev;
         h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
          :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=FWgFvpw/AHNyDXufCuZ5epDAc/pafdJFP2isUDb12EE=;
-        b=WrJ2LV/0Akc0QnyhdOUwHYKZystAkRX2cNzxzvzElt2AWeUp/p/tapaG8PlcK+rpp4
-         Sox9lbnhSu+axquljFAlPbsDLLE3GBMhjgcErYK7Ir7/hYkaCi8qT5GPUEpVgTKlJzEE
-         Cg4wY2NO7Yk20qBR6i7KqEBr3lC9qnsFc3Mr8i/3IVsLXRQeLGNJ9qCMNLwhiBpewj16
-         IwHgz+aNeeLkDXUjPk81xpXOMOBdVp74p2J2HybMACPc8C9kyT/UAO/HEWi0H3lklwiI
-         dRB0Jtgoir3mP97hmrD52J4Drz8DJP+K4bDAqFdN4KWk2DE2evFf/ifqZlZAoSkwfFpQ
-         ICCg==
+        bh=EcC2/wRdvVVn4EBbf9oNqdQI8h7Pk69qNBD1NEvRhAo=;
+        b=jBeBBoR5axCNGG+J5vC4xl7t5yQlg8/EhN2VyU36Cy2+J5NDiZIcvy17aBQT9kY4fx
+         P8YJ4CQPDYwC4e36VdoEFWBQv27w97SmXVM6XDzoszJT4bkOfbwBhi9swUwkA4tghA8i
+         qnYhToga2WKkoxq46fvxFPF2vJFPA/JZTHKl333RnjGrZp/MGkf+/DJIx7cl0jD56QsY
+         O6+7UWio/MDERuhmJBc/YvSJFl5as2pCrOGN/bfULypBQRwWZbOQjsoloY+qJY7UdRll
+         icl9QFYbsKUa5CFt29+sW8lt9QsmDts5GJ1CAdOcdAWdDLfctTivELjzd+taS9IuuwqF
+         4c5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766604000; x=1767208800;
+        d=1e100.net; s=20230601; t=1766604302; x=1767209102;
         h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
          :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FWgFvpw/AHNyDXufCuZ5epDAc/pafdJFP2isUDb12EE=;
-        b=NYhBCUPQ9lkbKM0ewligkm7h2lbJy+XYd/wGMiJKCyQdcvtnVvCsKtJvOh7yXJ/683
-         a5kfbcolSy6YWVjA2cYUHwl08hFV5ndmpdTgvycEWRwMg4qcw6/Fbsis/xtDrhYz1pSN
-         mb5XWd6PLuKRyozUfg1kWvHO51UEMybhhmAQcJNmIo51peXwWMvKbq8a3XwUy4QRFMEZ
-         Jr5F7orxZdc35/lMR1fwAj7HBhqjDrHl+oiKk+OtrN7UB+aZQneJhQkwwD2X/RKry6Wg
-         +fpvNo6NbrJUKp12E4fangfPCmWteSvH/XsvvTUzhv6sIupDmnQagzyVoJ0VAXCWiBdc
-         X6vQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWIFudEdSfK77l+k5WJrv+r6uFpJWdH9fh2obdVY/t9XVhXxf96hq+8V1HxdxE/t/W39x0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzRrPxD/8elFe4orycD5CB2gKAmK89yceuj3gZoseARWD6cwAkC
-	UfpulvbTCWpexpY99W2DQaPrStWBWAOFeY1JYL4CDrTTnkepdsQfG4N+Tj0sPDP3Ht4=
-X-Gm-Gg: AY/fxX6uNYAfS7b+WC9iHeFqrUhli36ar9GH7GYDgR1TzMZ+Bx1SKHChUD7b88wehep
-	B2gC18fAPoj4v+XZ8868gtBFVRjY9eW0iqZOiwyR0bm/6ObY1qPkuQBf1Uvi28bmczZUAbDHu8F
-	HmivG7e17HtU93xVgmGoy7dnJMR4UX+FxzdTvGPnavAfx3+tsXVT+pxJedPDeYx6o1FG2cTB/mM
-	Vk+B5oSAEwUVvBCleNXLOICUaQtKGZsvC/sUlCLIu3OS3jcQXZnok9sz52SF7s/GBRd8vTk/clE
-	5rrGpmedA700VKIWIO3oU3X45WUNczDytjEhnSy9ohmMH64CbQhQrMxh9XviVeL0jn9KqOgDr2z
-	LoF1ZE1JBlV9oANsn3DCKXwE6eDodBhZEYuNoHoHUEn+bL1A4lfJBWcRzTb0kGPGVSMoExP2gCP
-	1w22kmTNHrzVsgSI0htmqUFgNT71w=
-X-Google-Smtp-Source: AGHT+IEeDZpPPu6YZwcQ8tx4vjP/alqKLZ2iCL81HE8OxCMqXyviVYCPm8KNV8TIbtaCK6+e47FNYg==
-X-Received: by 2002:a05:6214:20a2:b0:880:5279:98eb with SMTP id 6a1803df08f44-88d86290d80mr291887636d6.44.1766604000085;
-        Wed, 24 Dec 2025 11:20:00 -0800 (PST)
+        bh=EcC2/wRdvVVn4EBbf9oNqdQI8h7Pk69qNBD1NEvRhAo=;
+        b=LeIVDmK3xWW0eKYsLW25vxBlgfNi8gC0f26DuFoGH1RhppVoFgHGRGbg6pgvhfvzfY
+         qDuVEScIm2qKSJDJGM8DACCQIZjmkBQP//JZA7fUceV/+EJWS2fi3iG+74z9L12OY0Lx
+         EJqA5BvCYPNe1ObxIeny4W2UCrIgzrkRVb1Asi2bhifuHPwAGPnrdnrLHU2I0Mwb7CWz
+         nuTjAGAa32q343JvK3fRXC3k0n3vnBmcq44gA729klVV7LgrESHptHGB1/FEuNalm+eh
+         pwHxQqYPtuZMpu/AONumNHM2hi79dvD9AepsGFmx7tSzv9Fdd+9AvLNDnh6Qi2W+mity
+         tkmg==
+X-Forwarded-Encrypted: i=1; AJvYcCUt5Iz+ZE5GRnMNRYcrZnlmV+U5C85FEELZYTvTwSS9ZKIf45FPH3TF3FNUzx377ePkgMI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxO4OCJedZU9o0+163kRa4eU4DOXSURTs6pRD9y8EsVdvtDPuE2
+	+WAg+1kgL4qLCKW4Ics4mzofKAgiE19VaTDyJPudUxaY7vCTg5PgcbvqgdSWrV6q/B8=
+X-Gm-Gg: AY/fxX5sf4PahxvKKMlcxaaRdNPrVIwWBpjCPHdee7CX4G5tMBFpYhLeyYEgSqyhAJn
+	k331ioK+EFXG5GGCITGR2ckc9IJ8GCZ2Dkub8SHtaZLudiUC+T1y5USBMUu3V0O5ho06xRDk/TF
+	HI+aooqO6lZoXBqPA4vBFgivOYtQ4ostxlrW7YcZcWdqgfpiffKeNbZyNMHDCJ8BMqSm/tNM3Cx
+	qzpLliRPYeYkW0pdRmJRlFirsZo+UPM2t4zjXnsNdKM8LUKE2Bg2Tou6P/OeltIrCaC5ELxaE01
+	k3yhIDHN9kJWaSXrz6iLsdb3Arj7Quyfo+6ut/YlyBgUeSfaP5rWo/jKAwT2ChTKkrObFkdvRvV
+	Uwt+vABPEoFNwOitYeVTjkWf1kcw5saK14I6EoZM522gCHkXPtJb/ysVI3gNUgqt3yDThRReItk
+	P5YhpMRzPNuhFldHK4
+X-Google-Smtp-Source: AGHT+IHz8XgMTn76ZHlPpnpvAj1H6/tJW+eqYOQ1q/VE3zGtKMA6q+I33ugOdqv7oLXVyELPXYLVCg==
+X-Received: by 2002:a05:620a:831b:b0:8c1:7bc9:3aa5 with SMTP id af79cd13be357-8c17bc940d8mr713344385a.0.1766604302282;
+        Wed, 24 Dec 2025 11:25:02 -0800 (PST)
 Received: from ?IPv6:2606:6d00:17:7b4b::c41? ([2606:6d00:17:7b4b::c41])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88d9a44e26bsm131729676d6.47.2025.12.24.11.19.58
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c096783662sm1421044985a.5.2025.12.24.11.25.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Dec 2025 11:19:59 -0800 (PST)
-Message-ID: <5500fa4f4ee321a451360a84cf5834781c1a9615.camel@ndufresne.ca>
-Subject: Re: [PATCH v4 2/3] media: amphion: Clear last_buffer_dequeued flag
- for DEC_CMD_START
+        Wed, 24 Dec 2025 11:25:01 -0800 (PST)
+Message-ID: <8d5952b87a1456b2b2203b6321888a16980d7a8b.camel@ndufresne.ca>
+Subject: Re: [PATCH v4 3/3] media: amphion: Trigger source change if
+ colorspace changed
 From: Nicolas Dufresne <nicolas@ndufresne.ca>
 To: ming.qian@oss.nxp.com, linux-media@vger.kernel.org
 Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, 
@@ -69,10 +69,10 @@ Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
  linux-imx@nxp.com, Frank.li@nxp.com, 	xiahong.bao@nxp.com,
  eagle.zhou@nxp.com, imx@lists.linux.dev, 	linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org
-Date: Wed, 24 Dec 2025 14:19:58 -0500
-In-Reply-To: <20251217030227.1546-3-ming.qian@oss.nxp.com>
+Date: Wed, 24 Dec 2025 14:24:59 -0500
+In-Reply-To: <20251217030227.1546-4-ming.qian@oss.nxp.com>
 References: <20251217030227.1546-1-ming.qian@oss.nxp.com>
-	 <20251217030227.1546-3-ming.qian@oss.nxp.com>
+	 <20251217030227.1546-4-ming.qian@oss.nxp.com>
 Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
  keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
  /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
@@ -87,7 +87,7 @@ Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
  ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
  bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-TbnDfBH7kuP5a4j2UK4h"
+	protocol="application/pgp-signature"; boundary="=-e7Chkxp9Nxc1QldT920F"
 User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -97,52 +97,178 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 
 
---=-TbnDfBH7kuP5a4j2UK4h
+--=-e7Chkxp9Nxc1QldT920F
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+
+Hi Ming,
 
 Le mercredi 17 d=C3=A9cembre 2025 =C3=A0 11:02 +0800, ming.qian@oss.nxp.com=
  a =C3=A9crit=C2=A0:
 > From: Ming Qian <ming.qian@oss.nxp.com>
 >=20
-> The V4L2_DEC_CMD_START command may be used to handle the dynamic source
-> change, which will triggers an implicit decoder drain.
-> The last_buffer_dequeued flag is set in the implicit decoder drain,
-> so driver need to clear it to continue the following decoding flow.
+> After encountering a colorspace change in the stream, the decoder
+> sends a V4L2_EVENT_SOURCE_CHANGE event with changes set to
+> V4L2_EVENT_SRC_CH_RESOLUTION.
+>=20
+> Then the client can detect and handle the colorspace change without any
+> buffer reallocation
 >=20
 > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
 
 Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
 > ---
-> =C2=A0drivers/media/platform/amphion/vdec.c | 1 +
-> =C2=A01 file changed, 1 insertion(+)
+> =C2=A0drivers/media/platform/amphion/vdec.c=C2=A0=C2=A0=C2=A0=C2=A0 | 61 =
++++++++++++++++--------
+> =C2=A0drivers/media/platform/amphion/vpu_v4l2.c |=C2=A0 1 -
+> =C2=A02 files changed, 40 insertions(+), 22 deletions(-)
 >=20
 > diff --git a/drivers/media/platform/amphion/vdec.c b/drivers/media/platfo=
 rm/amphion/vdec.c
-> index c0d2aabb9e0e..f25dbcebdccf 100644
+> index f25dbcebdccf..beeaf75c76b4 100644
 > --- a/drivers/media/platform/amphion/vdec.c
 > +++ b/drivers/media/platform/amphion/vdec.c
-> @@ -724,6 +724,7 @@ static int vdec_decoder_cmd(struct file *file, void *=
-fh, struct v4l2_decoder_cmd
-> =C2=A0	switch (cmd->cmd) {
-> =C2=A0	case V4L2_DEC_CMD_START:
-> =C2=A0		vdec_cmd_start(inst);
-> +		vb2_clear_last_buffer_dequeued(v4l2_m2m_get_dst_vq(inst->fh.m2m_ctx));
-> =C2=A0		break;
-> =C2=A0	case V4L2_DEC_CMD_STOP:
-> =C2=A0		vdec_cmd_stop(inst);
+> @@ -950,7 +950,7 @@ static void vdec_stop_done(struct vpu_inst *inst)
+> =C2=A0	vpu_inst_unlock(inst);
+> =C2=A0}
+> =C2=A0
+> -static bool vdec_check_source_change(struct vpu_inst *inst)
+> +static bool vdec_check_source_change(struct vpu_inst *inst, struct vpu_d=
+ec_codec_info *hdr)
+> =C2=A0{
+> =C2=A0	struct vdec_t *vdec =3D inst->priv;
+> =C2=A0	const struct vpu_format *sibling;
+> @@ -962,26 +962,35 @@ static bool vdec_check_source_change(struct vpu_ins=
+t *inst)
+> =C2=A0		return false;
+> =C2=A0
+> =C2=A0	sibling =3D vpu_helper_find_sibling(inst, inst->cap_format.type, i=
+nst->cap_format.pixfmt);
+> -	if (sibling && vdec->codec_info.pixfmt =3D=3D sibling->pixfmt)
+> -		vdec->codec_info.pixfmt =3D inst->cap_format.pixfmt;
+> +	if (sibling && hdr->pixfmt =3D=3D sibling->pixfmt)
+> +		hdr->pixfmt =3D inst->cap_format.pixfmt;
+> =C2=A0
+> =C2=A0	if (!vb2_is_streaming(v4l2_m2m_get_dst_vq(inst->fh.m2m_ctx)))
+> =C2=A0		return true;
+> -	if (inst->cap_format.pixfmt !=3D vdec->codec_info.pixfmt)
+> +	if (inst->cap_format.pixfmt !=3D hdr->pixfmt)
+> =C2=A0		return true;
+> -	if (inst->cap_format.width !=3D vdec->codec_info.decoded_width)
+> +	if (inst->cap_format.width !=3D hdr->decoded_width)
+> =C2=A0		return true;
+> -	if (inst->cap_format.height !=3D vdec->codec_info.decoded_height)
+> +	if (inst->cap_format.height !=3D hdr->decoded_height)
+> =C2=A0		return true;
+> =C2=A0	if (vpu_get_num_buffers(inst, inst->cap_format.type) < inst->min_b=
+uffer_cap)
+> =C2=A0		return true;
+> -	if (inst->crop.left !=3D vdec->codec_info.offset_x)
+> +	if (inst->crop.left !=3D hdr->offset_x)
+> =C2=A0		return true;
+> -	if (inst->crop.top !=3D vdec->codec_info.offset_y)
+> +	if (inst->crop.top !=3D hdr->offset_y)
+> =C2=A0		return true;
+> -	if (inst->crop.width !=3D vdec->codec_info.width)
+> +	if (inst->crop.width !=3D hdr->width)
+> =C2=A0		return true;
+> -	if (inst->crop.height !=3D vdec->codec_info.height)
+> +	if (inst->crop.height !=3D hdr->height)
+> +		return true;
+> +	if (!hdr->progressive)
+> +		return true;
+> +
+> +	if (vdec->seq_hdr_found &&
+> +	=C2=A0=C2=A0=C2=A0 (hdr->color_primaries !=3D vdec->codec_info.color_pr=
+imaries ||
+> +	=C2=A0=C2=A0=C2=A0=C2=A0 hdr->transfer_chars !=3D vdec->codec_info.tran=
+sfer_chars ||
+> +	=C2=A0=C2=A0=C2=A0=C2=A0 hdr->matrix_coeffs !=3D vdec->codec_info.matri=
+x_coeffs ||
+> +	=C2=A0=C2=A0=C2=A0=C2=A0 hdr->full_range !=3D vdec->codec_info.full_ran=
+ge))
+> =C2=A0		return true;
+> =C2=A0
+> =C2=A0	return false;
+> @@ -1333,20 +1342,25 @@ static void vdec_event_seq_hdr(struct vpu_inst *i=
+nst, struct vpu_dec_codec_info
+> =C2=A0	struct vdec_t *vdec =3D inst->priv;
+> =C2=A0
+> =C2=A0	vpu_inst_lock(inst);
+> -	memcpy(&vdec->codec_info, hdr, sizeof(vdec->codec_info));
+> =C2=A0
+> -	vpu_trace(inst->dev, "[%d] %d x %d, crop : (%d, %d) %d x %d, %d, %d\n",
+> +	vpu_trace(inst->dev,
+> +		=C2=A0 "[%d] %d x %d, crop : (%d, %d) %d x %d, %d, %d, colorspace: %d,=
+ %d, %d, %d\n",
+> =C2=A0		=C2=A0 inst->id,
+> -		=C2=A0 vdec->codec_info.decoded_width,
+> -		=C2=A0 vdec->codec_info.decoded_height,
+> -		=C2=A0 vdec->codec_info.offset_x,
+> -		=C2=A0 vdec->codec_info.offset_y,
+> -		=C2=A0 vdec->codec_info.width,
+> -		=C2=A0 vdec->codec_info.height,
+> +		=C2=A0 hdr->decoded_width,
+> +		=C2=A0 hdr->decoded_height,
+> +		=C2=A0 hdr->offset_x,
+> +		=C2=A0 hdr->offset_y,
+> +		=C2=A0 hdr->width,
+> +		=C2=A0 hdr->height,
+> =C2=A0		=C2=A0 hdr->num_ref_frms,
+> -		=C2=A0 hdr->num_dpb_frms);
+> +		=C2=A0 hdr->num_dpb_frms,
+> +		=C2=A0 hdr->color_primaries,
+> +		=C2=A0 hdr->transfer_chars,
+> +		=C2=A0 hdr->matrix_coeffs,
+> +		=C2=A0 hdr->full_range);
+> =C2=A0	inst->min_buffer_cap =3D hdr->num_ref_frms + hdr->num_dpb_frms;
+> -	vdec->is_source_changed =3D vdec_check_source_change(inst);
+> +	vdec->is_source_changed =3D vdec_check_source_change(inst, hdr);
+> +	memcpy(&vdec->codec_info, hdr, sizeof(vdec->codec_info));
+> =C2=A0	vdec_init_fmt(inst);
+> =C2=A0	vdec_init_crop(inst);
+> =C2=A0	vdec_init_mbi(inst);
+> @@ -1375,7 +1389,12 @@ static void vdec_event_resolution_change(struct vp=
+u_inst *inst)
+> =C2=A0{
+> =C2=A0	struct vdec_t *vdec =3D inst->priv;
+> =C2=A0
+> -	vpu_trace(inst->dev, "[%d]\n", inst->id);
+> +	vpu_trace(inst->dev, "[%d] input : %d, decoded : %d, display : %d, sequ=
+ence : %d\n",
+> +		=C2=A0 inst->id,
+> +		=C2=A0 vdec->params.frame_count,
+> +		=C2=A0 vdec->decoded_frame_count,
+> +		=C2=A0 vdec->display_frame_count,
+> +		=C2=A0 vdec->sequence);
+> =C2=A0	vpu_inst_lock(inst);
+> =C2=A0	vdec->seq_tag =3D vdec->codec_info.tag;
+> =C2=A0	vdec_clear_fs(&vdec->mbi);
+> diff --git a/drivers/media/platform/amphion/vpu_v4l2.c b/drivers/media/pl=
+atform/amphion/vpu_v4l2.c
+> index 47dff9a35bb4..121165a7184f 100644
+> --- a/drivers/media/platform/amphion/vpu_v4l2.c
+> +++ b/drivers/media/platform/amphion/vpu_v4l2.c
+> @@ -102,7 +102,6 @@ static int vpu_notify_eos(struct vpu_inst *inst)
+> =C2=A0int vpu_notify_source_change(struct vpu_inst *inst)
+> =C2=A0{
+> =C2=A0	static const struct v4l2_event ev =3D {
+> -		.id =3D 0,
+> =C2=A0		.type =3D V4L2_EVENT_SOURCE_CHANGE,
+> =C2=A0		.u.src_change.changes =3D V4L2_EVENT_SRC_CH_RESOLUTION
+> =C2=A0	};
 
---=-TbnDfBH7kuP5a4j2UK4h
+--=-e7Chkxp9Nxc1QldT920F
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaUw83gAKCRDZQZRRKWBy
-9N4GAPsEStp+V8u3PcY6TUQYOCoH/OAkqDJ6OoG31fahIVD4IQEA+Bl3uh5sZQhc
-KDFtxNYkj8x7KW7YxzN9h3vDdlSs3AM=
-=bMEn
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaUw+DAAKCRDZQZRRKWBy
+9CCgAQCJEcF67WbJCFUJ9LDCkCSQrAPnJ5AUlW1B1MtmPrdnyQD/bln376ZTtTKz
+q3xQG4oYSaWKF3oR8duW1S5G/Fz0fwc=
+=B805
 -----END PGP SIGNATURE-----
 
---=-TbnDfBH7kuP5a4j2UK4h--
+--=-e7Chkxp9Nxc1QldT920F--
