@@ -1,310 +1,215 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013059.outbound.protection.outlook.com [52.101.72.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206EE1A5B9D;
-	Wed, 24 Dec 2025 00:15:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766535331; cv=none; b=Lxe42Ant7QV8o7Cdsa0PZkFFF7jxGYp0qZNYPN2Z2o5OXcgi0NlvGRtnZPZ6D/Of/ilN0gakeEd7p5mcMivYWhqnEhDsKeGDuHXBg3fr2t+zcq+1mUQpI9GbCPYDeWR/1Xmie5CfRbA5SotH6Lzv0j3fMb9WBsDwQEXvGinFIu8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766535331; c=relaxed/simple;
-	bh=qk+TPjCHtriryA+kZAw0qyFg2zqhGdkatoHam4RPx9g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tp45SCtXWyJzFV9lNYBRhP9KbwmvXOO2YvhTen5HhhzUquEN1cRg59CQlXI8Fw+9NCVR/pyUtCfaTM0egxsRokw7HhGD0ns5tJK+REwQ2ugjKGNRmnym5t5f/jM5GHsDZuj+ks/btAzw0pK77kz4jZRV/W6AXO0GLsQpvqaBHS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXEzg/qD; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9062FF16C
+	for <imx@lists.linux.dev>; Wed, 24 Dec 2025 07:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1766560142; cv=fail; b=RX552BH143LuS0xxbIQD7LYkT9/IyC/FEEnid9fJHbwq+jdzxsct2lGt64fbTm6D2mCgJYTdMJnbV1A6yled4Wh+vbbpAOhe2oNxYsp6j/gy4ywyPhq+sae8mYKbMHlhvwbC1ppP4uX44ZboWqYXpaT4jVwhaXesNY7QeDuWPqo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1766560142; c=relaxed/simple;
+	bh=PprQipwsBRL/MT2knEV+yw27oMnswnwFwBMXM4yetvs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=lu8EkaTATzU60cvafKCOl/sGS4tQZ4yZ469/gH5O9unSxySsmHEGb0UBhfU/tEXWXHsmla8NdKuz6IBQWVCPwN8Af+RtmIEFJocTbp0FF2jXrPBye6xA2UQulQcE4UZ/y2Jr2oMMbFmNxWM6ugvLweLVdq71ss+X+N5ntibyuoQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ig+O/Na6; arc=fail smtp.client-ip=52.101.72.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXEzg/qD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 212BFC113D0;
-	Wed, 24 Dec 2025 00:15:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766535330;
-	bh=qk+TPjCHtriryA+kZAw0qyFg2zqhGdkatoHam4RPx9g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AXEzg/qDGk2n/ubE7jQO6s3yHa2IOqhgBQnSWrOvRuT5/SiUoPdZdpvrLgULoPzZL
-	 PeUS/kexrMEOhDEkMavDbiYX5lw4vwxxKDkTwadKPBca/pQCZNPg1bP4sLviQ6GloG
-	 9gUB5DGtsLvVAml1Hhn+hnip9ug9+W1SGsjJiT8ZYGiu3Ed3p8PiPBkOj/CQDQ762Q
-	 tUVwBDxCSbwFcLnRwy/Ya5iLHBaTHDs+fgTfTx+0mxwUmqbH0jtkyoKM0d0oxQmMft
-	 iHNinYiNA8kEpyclEsfAiecpbwBMfmYoj3/xyaReYbgPeVLTQxnnvupRQ5vnmnX+Du
-	 +clp0FFIOdV9A==
-Date: Tue, 23 Dec 2025 18:15:27 -0600
-From: Bjorn Andersson <andersson@kernel.org>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Linus Walleij <linusw@kernel.org>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Jonathan Corbet <corbet@lwn.net>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	dl-linux-imx <linux-imx@nxp.com>
-Subject: Re: [PATCH v6 2/5] remoteproc: imx_rproc: Populate devices under
- "rpmsg" subnode
-Message-ID: <ctrcrgvevo2liu7v4us4aa37pmt5bytkky2mcvacp5bhmkjl22@sfwzfkgemtyf>
-References: <20251212194341.966387-1-shenwei.wang@nxp.com>
- <20251212194341.966387-3-shenwei.wang@nxp.com>
- <3bbemd2vbsfss3sqpjpokytvvzweoqrtiqygffj5vqazqk3jyq@eobv6ruriiwb>
- <PAXPR04MB9185AF0B5225CB8DD06F774289B5A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ig+O/Na6"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mhacSSzDu/igQE1m0AApwmupUPOCJpImGQImMpj9pphH3fE/Ir97CJcaKhJl2cI23HY+dbWaOVgUv19Brvj3sB5LTrPNz5DBKKw+DxlqZ87+bSWj07yGmGVnOvjGxWXoTy0lNKs4dNElN1OpFUXPz2dJWmPmoACHDvQDDd7lg+owP/MIPwR/BGAVzHhCVLzDmZcn0Y+gTLbLMjvbN2f5P+E7TKOWTTbmhjPKxqeWl7m1z8VZRM5xkkTSuO3hRY3c0oWi/F492eNgKH6BUhMK4EAR7kSqXbMWNPB0YCBQwsY8/sbsLAQwZSFgqUOeJoUWU7KTfmw5HzKeswx0ttpiwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9HEz8BKTZS6EbtOqY3q9H1ZnWpX8tXi02eFT7BqXGB0=;
+ b=u16y6qEU9lWaZkfZfBXiYN9Sh8ojZluMW3y5Utw61E05t8CamtbkVMK0Q55b/zrEOGFFPTPz7BExy5op8GLO+IQFCH9/wGjH8xCp+2btItsoYrPH4KiroEDPc5MbwMnptdnU37a/w6gMw+GxRSccbm2Ut4KfQnMVXgsUBZv0E5WANsLotzkzU1Akje3qftr5e3xylOHlL2MnaYFHkwJBqS+OcK+fT8LFKrh9yHaoZTl6J6cj8zYnIy9yqGxhRK3RgEy2X2f+QoY4BnXf9OeonfW7V1qthTGseoyflAjgnyqQhMqL661zf63cBLfAsWn16WEMwi3H9pG/pr9QF0c/eQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9HEz8BKTZS6EbtOqY3q9H1ZnWpX8tXi02eFT7BqXGB0=;
+ b=Ig+O/Na6cSOYgklfOfMHPILmVEgGhf0Py+CNtzogSs980OlhevgGeI4OTo7B5a76HeUcmUpM2bU8Qesz5nE2QkdReAPUTO7k4JpSH69HfwsT7mWmEpzEXT6WrKYokwZZgiVOq+rvIsYITnjzODL7uv/dIkPiPBmRPOL+o2xonGlDa5HwnwZlZggD9qav9ppbFlpcWB/SVYQk99ca/2jMy7n+DSVfQP+p2FWpDf1aleYvfAE1s5FV9PgG286BJe7fnQknOnfEs26O4pcAmxxW4VnSuI9CdDl0EZWtxEA5RjpW//sxKg7sTMPMk8FSWb436/4/UNCEjaq4EICu2DrsOQ==
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
+ by DB9PR04MB9675.eurprd04.prod.outlook.com (2603:10a6:10:307::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9434.11; Wed, 24 Dec
+ 2025 07:08:55 +0000
+Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
+ ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9456.008; Wed, 24 Dec 2025
+ 07:08:55 +0000
+From: Peng Fan <peng.fan@nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>, Marco Felsch <m.felsch@pengutronix.de>
+CC: Krzysztof Kozlowski <krzk@kernel.org>, Ying Liu <victor.liu@nxp.com>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Andrzej Hajda
+	<andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>, Robert
+ Foss <rfoss@kernel.org>, Laurent Pinchart
+	<laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, Jernej
+ Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "dri-devel@lists.freedesktop.org"
+	<dri-devel@lists.freedesktop.org>
+Subject: RE: [PATCH v7 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC
+ subnode to schema and example
+Thread-Topic: [PATCH v7 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC
+ subnode to schema and example
+Thread-Index:
+ AQHcY5A8dXIlV9t0O0mSTJhIGXzqrbUXTK+AgAuoswCABOvvgIABUc2AgAAD3YCAB0kTYA==
+Date: Wed, 24 Dec 2025 07:08:55 +0000
+Message-ID:
+ <PAXPR04MB84599D676EC1E3879694579688B2A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+References:
+ <20251202-v6-18-topic-imx93-parallel-display-v7-0-2cce31d64608@pengutronix.de>
+ <20251202-v6-18-topic-imx93-parallel-display-v7-1-2cce31d64608@pengutronix.de>
+ <705773fc-5aba-4bff-b05e-272e1cd0262c@nxp.com>
+ <20251215161706.2ea3wtu3xlwcxxar@pengutronix.de>
+ <7127040f-55ab-4bfa-8795-1df76085470c@kernel.org>
+ <20251219153537.zgxcokyhcqerw4jp@pengutronix.de>
+ <033450ab-f14d-4bf7-b7ee-aaffd014820d@lunn.ch>
+In-Reply-To: <033450ab-f14d-4bf7-b7ee-aaffd014820d@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|DB9PR04MB9675:EE_
+x-ms-office365-filtering-correlation-id: 7b55940d-e488-4464-1237-08de42bb4d21
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|19092799006|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?s7O6M0vdsSbeQFphW7oiR1m135SPtvk9puKlCBBosqeZyTafjyh0j/NcX3xX?=
+ =?us-ascii?Q?NZ5jtN2i8dRCCTakExMxLqAdLRi+LAdUx4asDYnZWYC7525uoUyxXHECILgg?=
+ =?us-ascii?Q?7cA5LuscJ8FitvjIrDnIg6DP8JirgUyVYAxn0vLsl0BKFevA5PbzUq/etizk?=
+ =?us-ascii?Q?kh13nitZuipuh16/XwYUidHYJcSvjjHF3Go/ivh3Y/UMKeyaMworVEDMjKjT?=
+ =?us-ascii?Q?ty0Abr4RdN+DAle8BGpC6+yQBfYyBysNA0iYLbxtjdgEb7zs57tScSZBP/jW?=
+ =?us-ascii?Q?1wig5QO7wB6ZHlyg7PM88ecCwqhPaOrjVwd0ARHYtKYu1W1Ose7XseEIfedm?=
+ =?us-ascii?Q?mbRtRc4yO9fZ+IsgrCYxOID6XAMaHVITBesC1MK6RRGCpkxoNJBfYqo0QSM/?=
+ =?us-ascii?Q?vuiNNIx2jadrPxJwUkFdTcRwKw1Q2zn+f8IiyvgIX/jzv/y1EU2VSGVU5C3S?=
+ =?us-ascii?Q?fR6JIhJFSyxuPiXg5Oo2cZAcjthVtgV4JuLvFTKb38STeLsBw9yrkdsg/V44?=
+ =?us-ascii?Q?1taL7NwYWa2kuJDj21/isfgeAksKTpiourhIDqNtTWvqOT79jEVjML4nSrZO?=
+ =?us-ascii?Q?2es8spkqVtYlqIPBbUh8P2VYbN+HmMYbAYcc7kfwRGM8KhwtWv8JUsMUYPeG?=
+ =?us-ascii?Q?8PsbrTQBaFe4W7zpOaLjATPOLG9pRECyP/a8xDUWfXumCBYHcc5USmyswF0D?=
+ =?us-ascii?Q?ibi25JEza6XjNdb0r45Mx2MmcRRZCgm+31sLQidaH+rXf6SGAPQaR64WnY4T?=
+ =?us-ascii?Q?vPtrejd/8jdY6ByXfD+krBsu5edOX6AK0Sxo8o4FzAAfWP4eBHPaIleY/1Pc?=
+ =?us-ascii?Q?yB4fEoMqyQFlNT312PxytD0Q1E0c2FnX7JAbASBHaAOr+BL18xfOp6uTnSuf?=
+ =?us-ascii?Q?OD1pM4/P6v72IbzvgLlT/bIPxdY3EMGU/yGhL39q8S4g0OdGalrt0OGN9/uJ?=
+ =?us-ascii?Q?maFxq6Yzb/vbO/tD7U/49OsFXxv02zwr5cuJX1OCyr+rkiBnMf9wrsc5DF60?=
+ =?us-ascii?Q?CkQGoNmkcIPq+e2be8gWpohL0G+BXs8c9v4w0uLpECMoA3pnPzZ/GGZKTnfU?=
+ =?us-ascii?Q?EOibMtQoPhXzOEb183GsXbUbRuI+ndH96cdqgegAJaWiKkVbBOkxJCscASf4?=
+ =?us-ascii?Q?j+UN7P03whNqgksYK+v9D4lsSKviZ5JqDPeVteurmtFt/Fltu/s26SK5y+4J?=
+ =?us-ascii?Q?8QuKS2JXKfdmILWymiGSKj5tzKHZY/R+hw3xx4APiZOyOleaXIzDPCg+o2VZ?=
+ =?us-ascii?Q?OQ+hlO5LjWWzUkH5yLqFoDfv34c7vrRc2q2nPu29mrWIgu5kOtw2zoR4EOyE?=
+ =?us-ascii?Q?iH64Z6BdyxivRhTurVd8Ps5rXNTg89IjiMC10k+7AMx5qJsnBnY5ozL2Mo3Q?=
+ =?us-ascii?Q?K3yHCXN6H/6kD4CCIByv3AEWJpejFESFeZINOem9YwbWIaY2eHSeBXTx85QZ?=
+ =?us-ascii?Q?eSA3P1tdlilX33leqE16qZwzfe7bDDHypHfDkKalfCtiQ9BJuCJxbTffMRts?=
+ =?us-ascii?Q?1w8JkEh1n3wZvFFyXPPeInv6CaZJqhS8Pslu?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(19092799006)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?2903pRCGpHjbJB1RjIN7iBIR+gYovXlDHTbd+R8ln++88HPihe8LvWqjGfdA?=
+ =?us-ascii?Q?OOs9qltVbzzfm24UIfHrm7dwVmt9ia1dOF+H5Okvxf+CCtycwN7YLZWa8+9u?=
+ =?us-ascii?Q?I7jjp//JhNiLQoMjOiyH1uEiUn9gcJmIjKiotRCOwdqgMZ+3qZQnc4nqMUC7?=
+ =?us-ascii?Q?PW2buyXxEsYzm3/rFl6a9IaKqQc+sxAF8Gc7th854Lk3mlrBN585kS1ZYSRw?=
+ =?us-ascii?Q?eVeD+1yzEBi6jl1S+HGIX2GIkbnRtZFflxoTno2gh+6VDzVISkHZ8epJyo8o?=
+ =?us-ascii?Q?dB1fe2r6z9swm87duYRZkogKL/jRzfWZIAgwcMlz6NCAoPD0O73dMjtOWbtq?=
+ =?us-ascii?Q?8gUf2/ZQN0F6vkoqJe3Ji3Ex3/4TUimBkipO+mpn1JrUnjQ2dwz6YUTxSlI6?=
+ =?us-ascii?Q?WEqjnfEI3Mih9FONKZ5jhMFQSxgr1tEnh+vLSkRkQRSasc49DyittSwAjkHl?=
+ =?us-ascii?Q?uihokkDNn6voMN2V6s9d41BNwjXTcJrUOQvDoozn4OYZCwpaNvUs5ktNLrdM?=
+ =?us-ascii?Q?GMwOQJo4tvLPa2+tUmhqrINAgn1Uy+H7aWkArV/a1Fe9UUd1QlvGDP9AJkIa?=
+ =?us-ascii?Q?iheaKtPUkhYIHer0E6NNp04/RXSLU/L333Xs6BO025TRmYLQdj9rB8HXykCD?=
+ =?us-ascii?Q?i/ZthU4AEjEkB5pZ/3AsBhAjGcxmk9zYDUNIoxdhM9qDnE1/wEY8gjDDbzAk?=
+ =?us-ascii?Q?RintIe5pleCB43TsF7NgukNf4M7usvNZZui+507MgDMN/Io1VxlSCKL3r9KQ?=
+ =?us-ascii?Q?5pT/3M5cLZZltiwz8DQY/2vmj67hj+7hmafcyGnzS7ZWDXPXcrjzoYdsCiaO?=
+ =?us-ascii?Q?fnhATwgYkqWZweW5cxWqKUI4kINI2U4peBr4sZfpFJ9jq1Kjh4DkjwmzQaVR?=
+ =?us-ascii?Q?rORc4ZJod4+axfFqKc+FivRl0MB2o9YWNDyZNRozcdG2bhUEDe2T0q5nnW6H?=
+ =?us-ascii?Q?88NJ/ozQAf65NiQFmSV/OkXj822Fx2x74cKJ39qsJzrbaqnQ8QZG8hzvB5gz?=
+ =?us-ascii?Q?Rj96kkP876QKfbr/L8Jsm0M3B7b6qweVGRZaReidsAMyFtQkN92FuI2bUHAK?=
+ =?us-ascii?Q?NSaAnTsFoOsxqAGuUzoinUzX6avGWeC2u8PGUAOdgHMDuqQ7ef7q0oongpzO?=
+ =?us-ascii?Q?KpPrMBCkkcl9Or1jSFhFux6yj2vrae7K7Nz6+NESNuB1UEhPv6OUTciOux3X?=
+ =?us-ascii?Q?C4ABSfQCf2f4XUTChfPudhi+nf1ryryBDqtRe+E2wVFFDKoQpcU3sk/RscsB?=
+ =?us-ascii?Q?woWAiJJ2n+PTYMdt7BEN4AXwbZ3nLDj/IRi/0S1OhF9zjouFDT4amFe/hj5L?=
+ =?us-ascii?Q?Gwu3tyRjvsoZsEc+iqrLY3wH225OkKOWi4RXY3zxtUtp4JtP7BxM40ymWit+?=
+ =?us-ascii?Q?14/olanY+jkgbKsGlTPlsFJZZZ7NKg0E6YSm0Jvnx9ny9hrKJPAbBCR6if/f?=
+ =?us-ascii?Q?IdvNbwWxY+4cY6bHcDYA2/8vdcQHg7iS+0iekZxlRu3c7kVjiVxCjTHVSIQV?=
+ =?us-ascii?Q?nTSTpYBP9Y1MxhHcVZECR1BrEeKkPmgKNaXKgYy0zXqoqVsytoc4Ih1n5P2J?=
+ =?us-ascii?Q?nkWFjlS2qQF9dvw/yPh5W+md8H+djrl3zS6weblkqAgbrJlPnbOrsura83Wv?=
+ =?us-ascii?Q?eZDcnHxOGMAn86HVsCv/M1UrBpgO3h0TT9vey2XalehyuJCMWh3xPSHCefZ8?=
+ =?us-ascii?Q?CBJUXYZZSCXHuJ2o1mQmHLt1dVvSmlOCNYOSh13m/SVXQ2ag?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB9185AF0B5225CB8DD06F774289B5A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7b55940d-e488-4464-1237-08de42bb4d21
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Dec 2025 07:08:55.3374
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: i/GE4OFUxo+nQ5dtDtpCkdio8y7yY9Nrla7IzNOUU69pYK4gZOjo5nRcMcAbKdurq2qWSQ6yB7L8oZo0fMI1rw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9675
 
-On Tue, Dec 23, 2025 at 07:47:31PM +0000, Shenwei Wang wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Bjorn Andersson <andersson@kernel.org>
-> > Sent: Thursday, December 18, 2025 8:24 PM
-> > To: Shenwei Wang <shenwei.wang@nxp.com>
-> > Cc: Linus Walleij <linusw@kernel.org>; Bartosz Golaszewski <brgl@kernel.org>;
-> > Rob Herring <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>;
-> > Conor Dooley <conor+dt@kernel.org>; Mathieu Poirier
-> > <mathieu.poirier@linaro.org>; Shawn Guo <shawnguo@kernel.org>; Sascha
-> > Hauer <s.hauer@pengutronix.de>; Jonathan Corbet <corbet@lwn.net>;
-> > Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
-> > <festevam@gmail.com>; Peng Fan <peng.fan@nxp.com>; linux-
-> > gpio@vger.kernel.org; devicetree@vger.kernel.org; linux-
-> > kernel@vger.kernel.org; linux-remoteproc@vger.kernel.org; imx@lists.linux.dev;
-> > linux-arm-kernel@lists.infradead.org; linux-doc@vger.kernel.org; dl-linux-imx
-> > <linux-imx@nxp.com>
-> > Subject: [EXT] Re: [PATCH v6 2/5] remoteproc: imx_rproc: Populate devices
-> > under "rpmsg" subnode
-> > 
-> > Caution: This is an external email. Please take care when clicking links or opening
-> > attachments. When in doubt, report the message using the 'Report this email'
-> > button
-> > 
-> > 
-> > On Fri, Dec 12, 2025 at 01:43:38PM -0600, Shenwei Wang wrote:
-> > > Register the RPMsg channel driver and populate remote devices defined
-> > > under the "rpmsg" subnode upon receiving their notification messages.
-> > 
-> > Please provide a proper description of what "problem" this patch solves.
-> > 
-> > >
-> > > The following illustrates the expected DTS layout structure:
-> > >
-> > >       cm33: remoteproc-cm33 {
-> > >               compatible = "fsl,imx8ulp-cm33";
-> > >
-> > >               rpmsg {
-> > >                       rpmsg-io-channel {
-> > >                               gpio@0 {
-> > >                                       compatible = "fsl,imx-rpmsg-gpio";
-> > >                                       reg = <0>;
-> > 
-> > Surely there needs to be some "gpio-controller" and "#gpio-cells" here?
-> > Would be useful if the example is somewhat complete, to give a picture of what's
-> > actually going on.
-> > 
-> 
-> Okay. Will add those in next version.
-> 
-> > >                               };
-> > >
-> > >                               gpio@1 {
-> > >                                       compatible = "fsl,imx-rpmsg-gpio";
-> > >                                       reg = <1>;
-> > >                               };
-> > >
-> > >                               ...
-> > >                       };
-> > >
-> > >                       ...
-> > >               };
-> > >       };
-> > >
-> > > +     drvdata->rpdev = rpdev;
-> > > +     auxdata[0].compatible = devm_kstrdup(dev, imx_rpdrv->compat,
-> > GFP_KERNEL);
-> > > +     auxdata[0].platform_data = drvdata;
-> > > +     dev_set_drvdata(dev, drvdata);
-> > > +
-> > > +     of_platform_populate(drvdata->channel_node, NULL, auxdata, dev);
-> > 
-> > auxiliary_bus would be a better choice, but I don't understand why you probe a
-> > rpmsg_device for each "gpio channel" and then from that create a
-> > platform_device.
-> > 
-> > Why don't you just make the rpmsg_device register the gpio controller directly?
-> > 
-> 
-> The "GPIO channel" is just one example-there are also "PWM channel", "I2C channel", and other channels. 
-> The goal is to manage all these channels under a common logic, which helps avoid redundant code and keeps 
-> the implementation consistent.
-> 
+> Subject: Re: [PATCH v7 1/3] dt-bindings: soc: imx93-media-blk-ctrl:
+> Add PDFC subnode to schema and example
+>=20
+> > We discussed the ranges/reg usage internally as well with the
+> > following
+> > outcome:
+> >
+> > - Situation
+> >
+> >   With i.MX8M SoCs NXP introduced MIX domains. Each domain has
+> a so
+> >   called BLK-CTRL IP. There is no common register layout for the
+> >   BLK-CTRL IPs. In addition to this, the register fields within one
+> >   register may not related to the same IP. Please see my below
+> example:
+> >
+> >   The DISP_MUX register configures the DPI output routed to physical
+> >   SoC pads as well as the internal MIPI-DSI DPI behavior. This PDFC
+> >   bridge binding is only interested in the first part, not the 2nd.
+> >
+> >   In other words, the BLK-CTRL IP can be seen as a bunch of loose
+> >   register fields.
+>=20
+> Why do hardware engineers keep on insisting on doing this. And why
+> don't software engineers when asked to review the proposed registers
+> push back and say No?
+>=20
+> I know this is out of you hands, but it is something we should
+> encourage software engineers at SoC vendors to do. Otherwise we will
+> have to continually live with such a mess.
 
-If you make rpmsg_drivers for each of these channels/functions, then all
-the common code should already be in the rpmsg framework.
+This is kind of system architecture. There are several mixes in the SoC,
+each mix is a group of IPs(in-house designed or 3rd party). The blk-ctrl
+module is to do various settings that could be done in each IP.
 
-What are you missing there?
+I agree that BLK-CTRL is not good for software usage, and we need to
+discuss with architectures for future improvements.
 
-> > > +
-> > > +     return 0;
-> > > +}
-> > > +
-> > > +     rp_driver->rpdrv.drv.name = name;
-> > > +     rp_driver->rpdrv.id_table = rpdev_id;
-> > > +     rp_driver->rpdrv.probe = imx_rpmsg_endpoint_probe;
-> > > +     rp_driver->rpdrv.remove = imx_rpmsg_endpoint_remove;
-> > > +     rp_driver->rpdrv.callback = imx_rpmsg_endpoint_cb;
-> > > +     rp_driver->driver_data = driver_data;
-> > > +     rp_driver->compat = compat;
-> > > +
-> > > +     register_rpmsg_driver(&rp_driver->rpdrv);
-> > 
-> > This would then also imply that it's the gpio driver that registers the
-> > rpmsg_driver.
-> > 
-> > > +
-> > > +     return 0;
-> > > +}
-> > > +
-> > > +static int rproc_of_rpmsg_node_init(struct platform_device *pdev) {
-> > > +     struct device *dev = &pdev->dev;
-> > > +     const char *compat;
-> > > +     int ret;
-> > > +
-> > > +     struct device_node *np __free(device_node) = of_get_child_by_name(dev-
-> > >of_node, "rpmsg");
-> > > +     if (!np)
-> > > +             return 0;
-> > > +
-> > > +     for_each_child_of_node_scoped(np, child) {
-> > > +             compat = imx_of_rpmsg_is_in_map(child->name);
-> > > +             if (!compat)
-> > > +                     ret = of_platform_default_populate(child, NULL,
-> > > + dev);
-> > 
-> > So if you don't recognize the child device node name you just register
-> > platform_devices for each of the children?
-> > 
-> 
-> Yes. That would register platform_devices without the platform_data.
-> 
-> > > +             else
-> > > +                     ret = imx_of_rpmsg_register_rpdriver(child, dev,
-> > > + child->name, compat);
-> > > +
-> > > +             if (ret < 0)
-> > > +                     return ret;
-> > > +     }
-> > > +
-> > > +     return 0;
-> > > +}
-> > > +
-> > >  static int imx_rproc_probe(struct platform_device *pdev)  {
-> > >       struct device *dev = &pdev->dev; @@ -1114,6 +1253,10 @@ static
-> > > int imx_rproc_probe(struct platform_device *pdev)
-> > >               goto err_put_pm;
-> > >       }
-> > >
-> > > +     ret = rproc_of_rpmsg_node_init(pdev);
-> > > +     if (ret < 0)
-> > > +             dev_info(dev, "populating 'rpmsg' node failed\n");
-> > > +
-> > >       return 0;
-> > >
-> > >  err_put_pm:
-> > > diff --git a/include/linux/rpmsg/rpdev_info.h
-> > > b/include/linux/rpmsg/rpdev_info.h
-> > > new file mode 100644
-> > > index 000000000000..13e020cd028b
-> > > --- /dev/null
-> > > +++ b/include/linux/rpmsg/rpdev_info.h
-> > > @@ -0,0 +1,33 @@
-> > > +/* SPDX-License-Identifier: GPL-2.0 */
-> > > +/* Copyright 2025 NXP */
-> > > +
-> > > +/*
-> > > + * @file linux/rpdev_info.h
-> > > + *
-> > > + * @brief Global header file for RPDEV Info
-> > > + *
-> > > + * @ingroup RPMSG
-> > > + */
-> > > +#ifndef __LINUX_RPDEV_INFO_H__
-> > > +#define __LINUX_RPDEV_INFO_H__
-> > > +
-> > > +#define MAX_DEV_PER_CHANNEL    10
-> > > +
-> > > +/**
-> > > + * rpdev_platform_info - store the platform information of rpdev
-> > > + * @rproc_name: the name of the remote proc.
-> > > + * @rpdev: rpmsg channel device
-> > > + * @device_node: pointer to the device node of the rpdev.
-> > > + * @rx_callback: rx callback handler of the rpdev.
-> > > + * @channel_devices: an array of the devices related to the rpdev.
-> > > + */
-> > > +struct rpdev_platform_info {
-> > 
-> > I don't understand what this structure represents. Why is this glue between the
-> > rpmsg_device and a made up platform_device needed?
-> > 
-> 
-> The purpose is to have a shared array that can be accessed by all devices within 
-> the same channel.
-> 
+Thanks,
+Peng.
 
-What does this mean? How are multiple functions multiplexed over a
-single rpmsg channel/endpoint?
-
-Please provide a concrete description of how a device with some gpios
-and PWMs would actually look in this model.
-
-> > > +     const char *rproc_name;
-> > 
-> > You don't need this, because you can rproc_get_by_child(&self) and then get the
-> > remoteproc name from that.
-> > 
-> 
-> Good to know. Will try it in the next version.
-> 
-> > > +     struct rpmsg_device *rpdev;
-> > > +     struct device_node *channel_node;
-> > > +     int (*rx_callback)(struct rpmsg_device *rpdev, void *data,
-> > > +                        int len, void *priv, u32 src);
-> > > +     void *channel_devices[MAX_DEV_PER_CHANNEL];
-> > 
-> > Why 10? What does it mean?
-> > 
-> 
-> This is based on practical experience. For example, on the i.MX platform, we typically don't have 
-> more than eight same devices on the remote system.
-> 
-> > I think this becomes the list of the 10 grandchildren of the remoteproc (per child
-> > node). So what happens if those matches against two different drivers, what will
-> > rx_callback point to?
-> > 
-> 
-> This is the limitation. That's why I used the map to populate the known child device for one specific channel.
-> 
-
-So for each rpdev_platform_info there can only be one type of client
-driver. Where is this limitation defined? What happens if I put a PWM
-and a GPIO controller under my rpmsg-io-channel?
-
-Regards,
-Bjorn
-
-> Thanks,
-> Shenwei
-> 
-> > > +};
-> > 
-> > Regards,
-> > Bjorn
-> > 
-> > > +
-> > > +#endif /* __LINUX_RPDEV_INFO_H__ */
-> > > --
-> > > 2.43.0
-> > >
+>=20
+>      Andrew
