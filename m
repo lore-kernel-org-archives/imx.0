@@ -1,108 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992283164B7
-	for <imx@lists.linux.dev>; Thu, 25 Dec 2025 09:07:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2164299A82
+	for <imx@lists.linux.dev>; Fri, 26 Dec 2025 10:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766653673; cv=none; b=bcvyzIiHsto9Dx+5os5b2EJOET5vfOpUNIP7JRrMtaTFlPNK58J+AxsgP0so5SdOjIbAkMK0XJFFp1OD6V/QTNt20j40pJ3ZWWPF7ulCIPCTkE2BPvusadGq/kkFTRLJxHJlOpVrdaJDqGBeQrzNSyLSwn90I1TSj80OnEoIH6k=
+	t=1766744684; cv=none; b=W2uiPkqRnEJtdhLmw4jiTMcW2aQt5MekFIr8J8T9DlPD/o7+5MlBhtC0ilq9/+XL2avnMppt0XvgJNCEG9Aceov1ChDt2TKmkSjSVm/1oRAbIbZm1ylpxsoCq8vFmVaQfVWQCijxHSo3krwl/oRGagfsQZ4cY1eporNjkCP4Hf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766653673; c=relaxed/simple;
-	bh=hZc1+DU7BxaZ0pHjHw8/tfR/Nq71rMC9Z07diFqHTEw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ve67gorMuUtf0nT/SbW5ePt6h0IEAeZ07yId74XRpeamZANFROrBVLJ9PKGvw9ID8+dRll/lSEST3Spl1Z57HWSDxR0evTb3VX5aYo9Uvym1KmkcfAWrIgNQ+F+NQnF2jr/Pk7YBN2ezXTmeNdQXpp80NdBF+RvKoX46CzYUv14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=caBCnPSr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1766744684; c=relaxed/simple;
+	bh=w5NuVlZ3Mxd4Dtq/uECrT8SFBmnDLpfFkQLmKl2Nak4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sUSbDcg2gOLfe/dJCHg6URxbaTbLyLaOyVJR0chvB5U2IAlLCPBuM2HKIA+jEdXlhs2z2hMriK/fnqT4aGva6sZ9RI1xhtFLCIRwhYT223H2yhuUXXs2WfG1fOr9M0vaCLpgFS6vbuUrXStnCyhnJ5qvP+yVjWcwGP7XwIp567Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=WLd705T8; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="caBCnPSr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C67C116C6
-	for <imx@lists.linux.dev>; Thu, 25 Dec 2025 09:07:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1766653673;
-	bh=hZc1+DU7BxaZ0pHjHw8/tfR/Nq71rMC9Z07diFqHTEw=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=caBCnPSrtJ32X2296HO3meZX1otJPRMu2wMIRegIwALIMzO0rNIdKPF9/ll5/fGfg
-	 tdXLDY+eqDWvJEz4PEMpSgGR/LTyGW4Bg5vpmT4YiHvXXbnCyvH1qNtxtcKqGz++a9
-	 7GuohHuJFJjudgAvRuYY2Bn9x+b8Lhv++VAjYpRDCUle403KSZ78am4pZGBOqIjBHg
-	 ZP9xYPwyZC2O7hqDmuqmXGC3FRtQTxvHiCfEyKERyxJKu9BKhFFk+tKVuXk8thcXYs
-	 Emsb6rG/ENWpdN1jfpFWFZ8sqf8XIyUwjb5HgUQ3OH1IBjFyuzsTjWyriCG+U/yvnc
-	 dLt/Ge4Mx12yA==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-37a2dced861so72818741fa.1
-        for <imx@lists.linux.dev>; Thu, 25 Dec 2025 01:07:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUVN8MgZrFakPtCn2FxMipLLnbNlv2s/QTQoBEXsPFVLw/kurLbRPUgOajO5Hllvn/8dt8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyxQOagBKXLlGyk3Jgg/NxU2j2nNurjfhlSLvW3BHE1C+WfzphR
-	VEjtJUWkA5ipwZXayGn87Rwgy7dV1O+F8iVorsjNpHgtLtcNLKDcmiMJHTWvGuHEtow/QMmNcKu
-	+zjBSashygwbvVzjxSzZwKPvXkv5cjKo=
-X-Google-Smtp-Source: AGHT+IHfPWz1heWtm82AOh8ny5sgT9kzx+lyzDjyJcBgqVf6WZJpwpmEyZeQVabkjvt5oV4xlzU03UcKE5H1xk8UgF0=
-X-Received: by 2002:a05:651c:1470:b0:378:e0f3:53c1 with SMTP id
- 38308e7fff4ca-38113275820mr72648701fa.18.1766653671109; Thu, 25 Dec 2025
- 01:07:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="WLd705T8"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4dd1v446tmz9tcZ;
+	Fri, 26 Dec 2025 11:24:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1766744672;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XBkJaHWBMYgOiv48kF1QDYjafSqkHvQlKdfY3CelGy0=;
+	b=WLd705T81Ccq/lqxekWccd52GzH9d1TaFErX6ISqXS0FvdOqOj6nOnDiIYgJu5ybv93BA0
+	78FqoG66elWOdXVYBe8+d7argkB70apgjyITIJfffMH67HV8aR6SGDmbDAskKaA9LYDs1G
+	sii4zE9ZsMZAWXjiTTYeIh+QbJxsr39vtvSdQ/mYCbzWy35xJtCpAVFMs5xJJtWwTUtBVt
+	oCy5G07zb+3p8oLp4wb8IkyTs/VNKUOjDHS6pkWa84738EdTPM7V66f+hOO4o1gVZ2BsXG
+	GsDLgmD2JSyuLeEXnGSAKWvQy7ga88DxcAcXNF3PIeeBYABr76sxhXzIwC7Vsw==
+Message-ID: <14c48d93-8ee6-4769-8dc3-5c527134bc77@mailbox.org>
+Date: Fri, 26 Dec 2025 11:24:29 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251212231203.727227-1-robh@kernel.org>
-In-Reply-To: <20251212231203.727227-1-robh@kernel.org>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Thu, 25 Dec 2025 17:07:38 +0800
-X-Gmail-Original-Message-ID: <CAGb2v65Pt=c7rNtE-u7j_=SbT4DLw03iOw=PFchbisPQenhOtg@mail.gmail.com>
-X-Gm-Features: AQt7F2qwpZzDsTD1g9DqdU3xoJFe0KlIMNtkshCEa1nlt61s05fF43c85tHciK8
-Message-ID: <CAGb2v65Pt=c7rNtE-u7j_=SbT4DLw03iOw=PFchbisPQenhOtg@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Remove unused includes
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Michal Simek <michal.simek@amd.com>, 
-	Vinod Koul <vkoul@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Yong Wu <yong.wu@mediatek.com>, Peter Rosin <peda@axentia.se>, 
-	Linus Walleij <linusw@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-iio@vger.kernel.org, iommu@lists.linux.dev, linux-gpio@vger.kernel.org, 
-	linux-sunxi@lists.linux.dev, imx@lists.linux.dev, linux-sound@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] arm64: dts: imx8mp: Update Data Modul i.MX8M Plus eDM SBC
+ DT to rev.903
+To: "Rob Herring (Arm)" <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, imx@lists.linux.dev,
+ Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>
+References: <20241226171404.84095-1-marex@denx.de>
+ <173531253398.3886481.9345779510218290682.robh@kernel.org>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <173531253398.3886481.9345779510218290682.robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: c872a8573b8c5cbe46c
+X-MBO-RS-META: 1pimp8jhrujnxcy3xx9ihf7yxt4edirb
 
-On Sat, Dec 13, 2025 at 7:12=E2=80=AFAM Rob Herring (Arm) <robh@kernel.org>=
- wrote:
->
-> Remove includes which are not referenced by either DTS files or drivers.
->
-> There's a few more which are new, so they are excluded for now.
->
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  include/dt-bindings/clock/oxsemi,ox810se.h    |  19 --
->  include/dt-bindings/clock/oxsemi,ox820.h      |  29 --
->  include/dt-bindings/clock/qcom,mss-sc7180.h   |  12 -
->  include/dt-bindings/clock/xlnx-versal-clk.h   | 123 ---------
->  include/dt-bindings/clock/xlnx-zynqmp-clk.h   | 133 ---------
->  include/dt-bindings/dma/jz4775-dma.h          |  44 ---
->  include/dt-bindings/dma/x2000-dma.h           |  54 ----
->  include/dt-bindings/gce/mt6779-gce.h          | 222 ---------------
->  .../dt-bindings/iio/qcom,spmi-adc7-pmr735b.h  |  30 --
->  .../dt-bindings/iio/qcom,spmi-adc7-smb139x.h  |  19 --
->  include/dt-bindings/memory/mt6779-larb-port.h | 206 --------------
->  include/dt-bindings/mux/ti-serdes.h           | 190 -------------
->  include/dt-bindings/pinctrl/mt6397-pinfunc.h  | 257 ------------------
->  .../power/allwinner,sun20i-d1-ppu.h           |  10 -
+On 12/27/24 4:18 PM, Rob Herring (Arm) wrote:
 
-For this one, a node is present in the DT, but there are currently no
-references to it, and thus no users of the header.
+Hello Shawn,
 
-Also this chip hasn't seen a lot of interest after it was initially
-brought up. None of the peripherals that have a separate power
-domain have been enabled.
+> On Thu, 26 Dec 2024 18:13:27 +0100, Marek Vasut wrote:
+>> Update the DT to match newest Data Modul i.MX8M Plus eDM SBC rev.903
+>> board which implements significant changes. Keep some of the rev.900
+>> and rev.902 nodes in the DT so that a DTO can be used to support old
+>> rev.900 and rev.902 boards easily.
 
+[...]
 
-ChenYu
+> arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dtb: tpm@2e: compatible: 'oneOf' conditional failed, one must be fixed:
+> 	['st,st33tphf2ei2c', 'tcg,tpm-tis-i2c'] is too long
+> 	'st,st33tphf2ei2c' is not one of ['infineon,slb9673', 'nuvoton,npct75x', 'st,st33ktpm2xi2c']
+
+This is addressed in bindings patch [1] . Can this patch and the 
+bindings patch be applied ?
+
+https://lore.kernel.org/all/20241226171124.83735-1-marex@denx.de/
+
+Thank you.
