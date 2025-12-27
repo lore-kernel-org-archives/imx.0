@@ -1,84 +1,75 @@
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2164299A82
-	for <imx@lists.linux.dev>; Fri, 26 Dec 2025 10:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C33731CA68;
+	Sat, 27 Dec 2025 13:02:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766744684; cv=none; b=W2uiPkqRnEJtdhLmw4jiTMcW2aQt5MekFIr8J8T9DlPD/o7+5MlBhtC0ilq9/+XL2avnMppt0XvgJNCEG9Aceov1ChDt2TKmkSjSVm/1oRAbIbZm1ylpxsoCq8vFmVaQfVWQCijxHSo3krwl/oRGagfsQZ4cY1eporNjkCP4Hf4=
+	t=1766840557; cv=none; b=XsJ7BsX3Hbnzh53ourUFAGs7n+XbFK4sJZAnazqx8f5HATlsV//gSoXTaOVSmw9Am1DH/r/VNpUNsZ2I5TY5KnTLoWtaqBYGsg12QKj8QcwzXifzt9VVnNFzYUwJ75LQ0ZIJWEr6vPmRsdJprkShcImoc5/fhZzujndCZAzgxyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766744684; c=relaxed/simple;
-	bh=w5NuVlZ3Mxd4Dtq/uECrT8SFBmnDLpfFkQLmKl2Nak4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sUSbDcg2gOLfe/dJCHg6URxbaTbLyLaOyVJR0chvB5U2IAlLCPBuM2HKIA+jEdXlhs2z2hMriK/fnqT4aGva6sZ9RI1xhtFLCIRwhYT223H2yhuUXXs2WfG1fOr9M0vaCLpgFS6vbuUrXStnCyhnJ5qvP+yVjWcwGP7XwIp567Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=WLd705T8; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1766840557; c=relaxed/simple;
+	bh=eu9YmoAVPx9G2RqP7sOlI4dEJ+qLQ8lmQAKMzvDuWsY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fTIMv+Hqij4zw43ynrOBvgqhEDSpFqowBK5voXm5EldH8BUb81+zIc2MfzcoDmjI+hDE3Pe+F5T9MY8hj9BixisTYPm8arXvsxpxriLLPeS/AFSlc9ZcPBfxUH6/HOhpm3FGaewsUG25j80UUFkVj45QDMoJa8D46x4tI9QCihE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LKlVrq2b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="WLd705T8"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4dd1v446tmz9tcZ;
-	Fri, 26 Dec 2025 11:24:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1766744672;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XBkJaHWBMYgOiv48kF1QDYjafSqkHvQlKdfY3CelGy0=;
-	b=WLd705T81Ccq/lqxekWccd52GzH9d1TaFErX6ISqXS0FvdOqOj6nOnDiIYgJu5ybv93BA0
-	78FqoG66elWOdXVYBe8+d7argkB70apgjyITIJfffMH67HV8aR6SGDmbDAskKaA9LYDs1G
-	sii4zE9ZsMZAWXjiTTYeIh+QbJxsr39vtvSdQ/mYCbzWy35xJtCpAVFMs5xJJtWwTUtBVt
-	oCy5G07zb+3p8oLp4wb8IkyTs/VNKUOjDHS6pkWa84738EdTPM7V66f+hOO4o1gVZ2BsXG
-	GsDLgmD2JSyuLeEXnGSAKWvQy7ga88DxcAcXNF3PIeeBYABr76sxhXzIwC7Vsw==
-Message-ID: <14c48d93-8ee6-4769-8dc3-5c527134bc77@mailbox.org>
-Date: Fri, 26 Dec 2025 11:24:29 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LKlVrq2b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767F0C4CEF1;
+	Sat, 27 Dec 2025 13:02:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1766840557;
+	bh=eu9YmoAVPx9G2RqP7sOlI4dEJ+qLQ8lmQAKMzvDuWsY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LKlVrq2bOy4hP0YLqKJFavJ9XAk3qcaSNstmLmXaSWJTtmxvgzPfKCR5IxIyVfITO
+	 BHCfndgnHaCAiiLY6ViRURNysOKKryRO5DDerfAl/YueantgNOHcfY9Zm+MPLTetHI
+	 Ct0ddu5FJFkVvl6FG+g7aiJtQgLUqcVL9RArpt/UfbtVQGx4kcGM/x83SWxc/LHbBQ
+	 WKgHwN3OAKiQcmCdUluDDGZLPS5aZyBE/n22kmidWFkxAUD680Ch/Zy1+BsbW5DsFp
+	 Fwhwpydgle0/CKnQ77apLrYdLXD7VIdsUACW0oMikGZWCWcjVBa8giyQNdrxVu2WfH
+	 4EzaW++2usE7w==
+Date: Sat, 27 Dec 2025 14:02:34 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Francesco Dolcini <francesco.dolcini@toradex.com>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v1 1/4] dt-bindings: arm: fsl: Add Apalis iMX8QP
+Message-ID: <20251227-polite-malachite-chameleon-f446cc@quoll>
+References: <20251223162833.138286-1-francesco@dolcini.it>
+ <20251223162833.138286-2-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH] arm64: dts: imx8mp: Update Data Modul i.MX8M Plus eDM SBC
- DT to rev.903
-To: "Rob Herring (Arm)" <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, imx@lists.linux.dev,
- Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20241226171404.84095-1-marex@denx.de>
- <173531253398.3886481.9345779510218290682.robh@kernel.org>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <173531253398.3886481.9345779510218290682.robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-ID: c872a8573b8c5cbe46c
-X-MBO-RS-META: 1pimp8jhrujnxcy3xx9ihf7yxt4edirb
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251223162833.138286-2-francesco@dolcini.it>
 
-On 12/27/24 4:18 PM, Rob Herring (Arm) wrote:
+On Tue, Dec 23, 2025 at 05:28:27PM +0100, Francesco Dolcini wrote:
+> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> 
+> Add binding documentation for the Apalis iMX8QP SoM mated with Apalis
+> Ixora and Apalis Evaluation board.
+> 
+> Apalis iMX8QP is a variant of the Apalis iMX8QM, using an NXP i.MX8QP
+> SoC instead of the i.MX8QM. The two SoCs are pin to pin compatible, with
+> the i.MX8QP being a lower end variant, with a slower GPU and one Cortex
+> A72 core instead of two.
+> 
+> The two Apalis SoMs variants share the same schematics and PCB, and the
+> iMX8QP variant exists only on revision V1.1 of board.
+> 
+> Link: https://www.nxp.com/products/i.MX8
+> Link: https://www.toradex.com/computer-on-modules/apalis-arm-family/nxp-imx-8
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> ---
 
-Hello Shawn,
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-> On Thu, 26 Dec 2024 18:13:27 +0100, Marek Vasut wrote:
->> Update the DT to match newest Data Modul i.MX8M Plus eDM SBC rev.903
->> board which implements significant changes. Keep some of the rev.900
->> and rev.902 nodes in the DT so that a DTO can be used to support old
->> rev.900 and rev.902 boards easily.
+Best regards,
+Krzysztof
 
-[...]
-
-> arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dtb: tpm@2e: compatible: 'oneOf' conditional failed, one must be fixed:
-> 	['st,st33tphf2ei2c', 'tcg,tpm-tis-i2c'] is too long
-> 	'st,st33tphf2ei2c' is not one of ['infineon,slb9673', 'nuvoton,npct75x', 'st,st33ktpm2xi2c']
-
-This is addressed in bindings patch [1] . Can this patch and the 
-bindings patch be applied ?
-
-https://lore.kernel.org/all/20241226171124.83735-1-marex@denx.de/
-
-Thank you.
