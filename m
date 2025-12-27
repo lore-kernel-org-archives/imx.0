@@ -1,88 +1,150 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70B11BEF8A
-	for <imx@lists.linux.dev>; Sat, 27 Dec 2025 18:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DC91D5ACE
+	for <imx@lists.linux.dev>; Sat, 27 Dec 2025 21:38:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766858856; cv=none; b=JT9HM2UbG/cPc0t+Vo97c8ryd+Qqjrj59E5oI3rf50oJhZ3cHJo7b1bMvx0KMWQzJ7S4EUUtvyOBadAaIc4PsxWXJkkRoxOZYkzAJBknSdWTghCN7opD5XgG9nBbYidiw52dJjKO4kEPbH9Ba+VYRp3h0WZQ4wkRInI5b3sNfeM=
+	t=1766871521; cv=none; b=lgz9EY/eEQaKQkRuHskAuD23FQzqVMYL87junnhJ3Dd9QplCzlhom/dTdHf0UPRBLLWYZv1NUdfHHs6xnNa4Appeh4oMIkxyV8V1l2oP/7aBKW3Yw4EdhX34gqfBiJb0Ytp6fhsm+kzSn7XhQM4VtunRpE+NOoMs8Z4CDLEOFKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766858856; c=relaxed/simple;
-	bh=Waazk7Chr4RkJhnZHpZEcccDmzXQvP+M+uK+a+IMu58=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FY+3uB4Zt1q8sgF8tHVJi78/Qr/UqLxLsqGqQ4f8HLutv8EV0i3hpXrk+JlZQ1/LWmpPfKa3TPBv6FwBwafRvauyIAe8MpUHRClPdxnJRCuXSm/A3s4a4tIqgkj3FeCuA3SsBOPNW8SrPK6jKKgrvxDKKVslZSM8pDq6fqut0E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ti6vcQUA; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1766871521; c=relaxed/simple;
+	bh=DI0DJoKUTxqb2A4/47Obc9gSZwHv6pbX1wIH+ApG7Yo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mMnDp4PZ+nGSjVLksMAnqrrNM9cCYLzSa1Inssg8J2lzxfhd2HoQH1n64PFnWtTNij0kDyU0QYzNoFH7am3iBYCZccE7sJEJ4VPlhdz/nEdJhlzvQfbwhAAsSubeB48/rqc9UhmpM7UrJQ2S645bp+dGZ4JByzlZYNwDuTjl72c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=mXokZZdZ; arc=none smtp.client-ip=161.97.139.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ti6vcQUA"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5957db5bdedso9246906e87.2
-        for <imx@lists.linux.dev>; Sat, 27 Dec 2025 10:07:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1766858853; x=1767463653; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Waazk7Chr4RkJhnZHpZEcccDmzXQvP+M+uK+a+IMu58=;
-        b=Ti6vcQUAjHk1yln9qdYMnCM1p8c1r1tTVdkeFvPfr2l+XlUjiIGoY1QgeZCTAdjWxw
-         7ahxz54Nnj63vIn1JIu9wkr1R6W7ePIHGl4tUSjN/Ssf78uYpUdmKoyluZidqD0PhjxV
-         0FFv140Qk/LVprpDblyyOD3/OSMV7BgTGXjffxDWDBXqKoRVrIePDH2c/J+4EP1F/2+4
-         7kCad+/NGR/J1f9GAEWy65jMKLpLEvgmNYv3uR/Mk/2xf7mnLCXQoun8jHj+U1n6NsIq
-         aMDo7aqRZhmIQwdau7kXzMkkRlnkkTRvZ9smoKZHAfmC0rGCLxBH5GP/MtCtVfwJ3pV/
-         +WVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766858853; x=1767463653;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Waazk7Chr4RkJhnZHpZEcccDmzXQvP+M+uK+a+IMu58=;
-        b=Qc+JiK8kIJrj4gXHduP4JvYTB0UX7U/HLJykbKuyce/rVfk1twIIEABvCnAUZI2uMf
-         /nWxyw81ZrOxj7vqNulO6eCCJbHAE77g97KadmjpSv/4WaKUEZRB4Q0qcsZHz1M32alo
-         F1inyJCSj0VsCo7jvXknM3O5UKt9gZN5wIl8e21jEr2A0VzqTcqplgQGYAEq0+h8ruEv
-         7K8Vhd8KY3vEK30wLDazFQbPj3eGMG4NYXWF7MQlbiVJ7CW9oPPJsYBN8TGa9izSHj6i
-         +uxtxZIdhHoFgjPAKMB7RtSJIccvJJ4sSsER9E084E4fLHs3/WKwR7mjdtVRoJoJy6zg
-         CkqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUyZpY7cX8cmq6L8ZIdg6q/dhQbAb+uNWkQrtbtehVzfWoFVyhMaghPE3glNBH2PbZyJag=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxOH0QNVPHhfRhIOqsRge1A+loSgEhm1bE0+UazLxX3wBA/hRtv
-	MYAfBCYVhPezdCVjIwwCeMMbaAZe2MI39cCPHv6mS8V/hBog/7zSbTBSYmeKUSwSscsFh8880So
-	5ptrurp1L/JB/3sTuYlCTPOyKPClovco=
-X-Gm-Gg: AY/fxX5uJrnR2pGEyHCexcFUtZNsIbTiDvI6I8cuoA0a62jzW4f7oh7U5KCh7dowB/l
-	zOxnYrhdb+2k1WWBbPAH5TbRRWIOWWOzzPtQ29IVL/hqJyu6XAmleNfZ3MvrtNtswfpUKzaPU2b
-	NKTRuB+jb8WcVKopepYgSGV0lGu08GO5BxWOHvx/vIsjE+B+ojwOD85gkeqnQZII9C7ycsK53tw
-	enJ2VxTlvvjc58jxYZm54IT6O5xL7IOxg1QNvxjJ94+2Nrc9+ymKbegTd3vTlrhUwuFvSkcBzsx
-	ktAZFrBP
-X-Google-Smtp-Source: AGHT+IFCWi+xcOloUMoROGoIzYaFAUJZIdqTotKSlbJ0z4kD2aXq3+J175FyLSw03roG3BWHfLUepv8zQ3y6JDq+uvo=
-X-Received: by 2002:a05:6512:23a7:b0:598:ef18:accd with SMTP id
- 2adb3069b0e04-59a17d366afmr8212530e87.22.1766858852671; Sat, 27 Dec 2025
- 10:07:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="mXokZZdZ"
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <andreas@kemnade.info>)
+	id 1vZbzc-00000003hI5-0Txa
+	for imx@lists.linux.dev;
+	Sat, 27 Dec 2025 22:38:32 +0100
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=F+zOPMJ/+XQOoQnBvgthrqy4sMQ6IWP6qjfRNJSiwKc=; b=mXokZZdZCUhEmvIIodt4+AKwvf
+	qV+hn0iP51XPavx8HvYW5FR1ZNN2C6zl3xzZzGppGTUsMWgucwNEQi0xnQ4Uqzu3eMToE795u0r61
+	f3viGkybinu7ceE/m/hqVhfLJnGXNWpJKe/t0TYIXqPoUI2Qy+OGGal/Zaf7ihnl+bcmXp3piO5Gk
+	Phh9R1SCOk3+c4FrrgNjTnhv58qIl/RByk1yPM4/UkC7GzHGOxOU3i/1s1jfvljeREW83SfFYa8IR
+	jTVFx6OZAi/8XSI5tpVrCuYeHC6DWcECq+LU8x1zERvRg5k06rX+xy/NcipPf2EVgnJTIq1xMv3x/
+	srzCshwg==;
+Date: Sat, 27 Dec 2025 22:38:15 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Josua Mayer <josua.mayer@jm0.eu>
+Cc: Jonathan =?UTF-8?B?TmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>, Lee Jones
+ <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Sebastian Reichel
+ <sre@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/3] power: supply: add battery driver for netronix ec
+Message-ID: <20251227223815.17dea51d@kemnade.info>
+In-Reply-To: <20251227-kobo-aura-battery-v1-1-328a90ef5122@jm0.eu>
+References: <20251227-kobo-aura-battery-v1-0-328a90ef5122@jm0.eu>
+	<20251227-kobo-aura-battery-v1-1-328a90ef5122@jm0.eu>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; aarch64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251227-armv45defconfig-fix-v1-1-d7b64abda9fe@solid-run.com>
-In-Reply-To: <20251227-armv45defconfig-fix-v1-1-d7b64abda9fe@solid-run.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Sat, 27 Dec 2025 15:07:21 -0300
-X-Gm-Features: AQt7F2pBf0S97cd38koSQNUJhPS0_8sYhzk2OunlAUme4hgTnsZt7aAHQIzKjyk
-Message-ID: <CAOMZO5C=TcDSQE6Snuzs4Ry-2qP36qDZmoDCL7qJ+UHDUgkVYA@mail.gmail.com>
-Subject: Re: [PATCH] ARM: imx_v4_v5_defconfig: update for v6.19-rc1
-To: Josua Mayer <josua@solid-run.com>
-Cc: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Dec 27, 2025 at 10:24=E2=80=AFAM Josua Mayer <josua@solid-run.com> =
-wrote:
->
-> The i.MX5/6 defconfig has gone out of sync with some dead options, some
-> removed and some missing.
+On Sat, 27 Dec 2025 17:28:13 +0100
+Josua Mayer <josua.mayer@jm0.eu> wrote:
 
-You mention "i.MX5/6 defconfig" here, but this patch touches
-imx_v4_v5_defconfig.
+> Implement a simple battery driver for monitoring voltage with the
+> netronix embedded controller found in certain ebook readers.
+> 
+> Signed-off-by: Josua Mayer <josua.mayer@jm0.eu>
 
-i.MX5/6 is covered by imx_v6_v7_defconfig.
+This also produces a value somehow depending on battery voltage
+on the Tolino vision.
+[...]
+> diff --git a/drivers/mfd/ntxec.c b/drivers/mfd/ntxec.c
+> index 08c68de0f01bc..d5059b8862aa8 100644
+> --- a/drivers/mfd/ntxec.c
+> +++ b/drivers/mfd/ntxec.c
+> @@ -139,6 +139,7 @@ static const struct regmap_config regmap_config = {
+> static const struct mfd_cell ntxec_subdev[] = {
+> 	{ .name = "ntxec-rtc" },
+> 	{ .name = "ntxec-pwm" },
+> +	{ .name = "ntxec-battery" },
+> };
+> 
+> static const struct mfd_cell ntxec_subdev_pwm[] = {
+
+I think that should be a separate patch for mfd.
+
+[...]
+> +	switch (psp) {
+> +		case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+> +			ret = regmap_read(priv->ec->regmap, NTXEC_REG_READ_BATTERY, &value);
+> +			if (ret < 0)
+> +				return ret;
+> +
+> +			/* ec value to microvolt conversion:
+> +			 * vendor kernel source suggests linear behaviour from 3V to 4.2V
+> +			 * with readings 767 to 1023; each increment represents 4687,5uV.
+> +			 * adjust 3V boundary slightly to report exactly 4.2V when full.
+> +			 */
+> +			val->intval = 2999872 + (value - 767) * 4688;
+> +			break;
+I find this code both in some kobo 2.6.35.3 code and on the tolino 3.0.35:
+
+        const unsigned short battGasgauge[] = {
+        //      3.0V, 3.1V, 3.2V, 3.3V, 3.4V, 3.5V, 3.6V, 3.7V, 3.8V, 3.9V, 4.0V, 4.1V, 4.2V,
+//               743,  767,  791,  812,  835,  860,  885,  909,  935,  960,  985, 1010, 1023,
+                 767,  791,  812,  833,  852,  877,  903,  928,  950,  979,  993, 1019, 1023,
+        };
+
+This does not look very linear... We have offsets
+24
+21
+21
+19
+25
+26
+25
+22
+29
+14
+26
+4
+
+Do you have something looking more sane?
+No idea what should produce such flaky offsets besides of
+improper measurements. At least that should be commented.
+And why do these tables exist at all?
+
+Hmm, the more weird thing is that these voltages are translated linearly
+inot capacity. So maybe they are just adjusted to have the capacity look
+more sane. That would explain the 4 units step between 4.1V and 4.2V.
+Having linear adc result -> voltage and nonlinear voltage-> capcity would
+make more sense.
+
+looking at such code snippet like this:
+case POWER_SUPPLY_PROP_CAPACITY:
+                if (POWER_SUPPLY_STATUS_NOT_CHARGING == g_ntx_bat_di->battery_status) {
+                        val->intval = 100;
+                        return 0;
+                }
+                value = ntx_up_battery_vol();
+[...]
+                                val->intval  = 100 - ((4100000 - value)/7000);
+
+
+I am wondering whether we should just return capacity that way without
+calculating voltage...
+
+Regards,
+Andreas
