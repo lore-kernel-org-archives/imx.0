@@ -1,130 +1,135 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E002D3750
-	for <imx@lists.linux.dev>; Sun, 28 Dec 2025 15:51:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6C3238C0A
+	for <imx@lists.linux.dev>; Sun, 28 Dec 2025 15:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766937120; cv=none; b=PW/QzhLA4AAODbdvWfwWEjyr/FmuaYfr14hqGD1pHjZcFwCQxmMuix8Armr6DRgNVD/y6bOX5djDQ1hDe8SMCWZarlh0f1ceeRiKXvzS0YCjbR4pq0rBZcbEzhP7PV+9paqQJJrdYpUvF1vWw9dyh0G7Triy7h4bs2yGU0YkJIg=
+	t=1766937126; cv=none; b=UK6utB3els9BuNpNDtcwwkWudW1xe271EtLBKO/Q99QPcTps3FLyY35Wy3bB9rppV7JM3oTw1VhuMbcyQaPyRHwOGmScKrswo7DHDzU3pANSMwKw85MHKfSFPEOWXGBjfiz9ZExmE5RZC95zo8jzmYrNjenGzj0hnLNIJCZi9wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766937120; c=relaxed/simple;
-	bh=Fe6KnB13Ls5dHY9O1D27EZ0qAE3PZZJ7I6YiRPmbAWw=;
+	s=arc-20240116; t=1766937126; c=relaxed/simple;
+	bh=V66pYSRi4A1St60uNsQQJZZVJDEc2XRLg87YUH4BafE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t3zRx5KDBQRjqRYRGwjCTJWrZ+6Pz7roH/LMRKdaIciS44RFAuSGrtMO9Ch1v8aHZBHhJMPFMhg4TjAmW3l6IubQDeQSUBz8atu97FI92ss7un8lqGxf6tYfReNAjNNLMmmQk7fIYuuJPruq90QRjZty1sm7TP63JhpF5YzLe+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lGpVNtXP; arc=none smtp.client-ip=209.85.167.45
+	 To:Cc:Content-Type; b=lWKl8+jB4v4NYZLas3K+GNWEOQ9Ipn34e2vdLgj4Mm4qaa+FlYRJi1teQRSTMPfefatN6vAFKweP6lXusUulmZIa5wnDlNZPfERwPPn4cyGjjVa2H8cSWk8Law14WSR041KKdK31EJgRlgQSPmegnn4R+a8FiYgvuMrQYEmHFPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hyV9xRbp; arc=none smtp.client-ip=209.85.208.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lGpVNtXP"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-598eaafa587so9590785e87.3
-        for <imx@lists.linux.dev>; Sun, 28 Dec 2025 07:51:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hyV9xRbp"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-37fcec29834so70877791fa.0
+        for <imx@lists.linux.dev>; Sun, 28 Dec 2025 07:52:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1766937116; x=1767541916; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1766937123; x=1767541923; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=P/m1vxR02WOyUjv42kPGF/giy/R0/NhZdgtsGDSOxAM=;
-        b=lGpVNtXPO9HLhmZRXJQuJc85+ixlfIn1kH/6FNdEpQtsL5xPzVbogDdu6xPEPigORT
-         iyRqztF4iuKxiLx8pVoUT2BJ0qjGfmOeJwXZwI0sf/IY+uMDBlr75j/Pev0bjWjWcXEP
-         yxvGZ4i7+jz64GKvVwm3gEhXwk/eN0zeyX2anUtf/AFTyrQ/Zp84jULmre+Kvb6wHwLX
-         sbDbudyo0ynQuXy+NyueZu15R4Ifkaj9LdRl7NCPdGvVT+NZ3oe+yFB56+3DgPO3zJI/
-         bJpphx44hu4dKtLrcJSyQLC2/VcJDwp0bDsZkxvn6y5g3TyrTMrgJeMvJyPLFKf+ZB0I
-         9XVg==
+        bh=qAheLyw1k9qY+mz/MVoVF7TVeH1WUkty9nHXwVJPAT8=;
+        b=hyV9xRbpQP3ffCSMDYSkU4TqTeiSbVFgqEQdCTaa/DnPTcqogsIDj7M63797x3ODD7
+         MQitaCYCEcFV6KoIqzgQXqMsItkowRl5d0DXC4pGspM5N1yBTJo+K9/0uo6DB1C/Y1Gf
+         KXL3iIFHOlsWs+Qu5lyImQKJxSspXz7DCfhKA1ShUm1CxuGEkusNu4Tiy57yX16zod3L
+         V1PzYoTcdTTibWoAJ0bqic/YyfTh40/RhT+7xAgxVgXozJr0CQj/gilrCkVDLFvAzi0n
+         oLanP63N5cReZbesrcTGWJhPeqDDlZp7HXJiqftOwKyyv2U+nsdbwdtyQItLV5KD8twq
+         DbNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766937116; x=1767541916;
+        d=1e100.net; s=20230601; t=1766937123; x=1767541923;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=P/m1vxR02WOyUjv42kPGF/giy/R0/NhZdgtsGDSOxAM=;
-        b=ROGFdDdz0uVl8+uZ59vVGzgbJVMVtiz55sOuuKwW0XWw40HpsJaPUQiBN56eRdhXkI
-         4owncyXH/zY1IlNW0XeJy9FbGeAtx3vl4M/J4VckcS8N5JWrTdD/5s3F88HfK8nWN4Gh
-         P2UgFCP2CkgGug7s4Q7xpwP8N2mEg0PqFoydZ+zxB7eqhZE+Ud/z3XRC/WoIcFLeb83s
-         RlrcTTBcndPG8yZo+O7DBQZvc/v4qQgsE0SP8I++a0pwc8WPOQT1YGh5yogLJ94IPPkm
-         +N2tUQo9Zt8J9Y9BbYaxYqRsXsXoRD3TPu7tXsq66XXU5eSA/l9FGlY2y+XB/lYKYgiS
-         hTQw==
-X-Forwarded-Encrypted: i=1; AJvYcCVuXZgcxi0f2G0xkQF+sK6Lp1dXN5FZH1afjQzG/EcD1PUVWHWds8dcDDg3u4IawzRWHrM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxG7zyX2hdO7C4LRW5jBWhuBwG3fgi7Scoazy0GS16BzKE+DE38
-	dGC8dOUxmBl+Z9s1Keczv7iybuBU8Re7RrG4uCL7w8wkkZobHzWLiVIKpzxzZ12I8ANJUXHTu3+
-	c6JO0fJfr7jAZvkrHZQMKZBDRS9kPK3tN9kq1jx4u2Q==
-X-Gm-Gg: AY/fxX5cuSYxpwqUfHfTgEX7Wri1NxHFEagsskWKk1AAjIVlNEoCHSHCYcnD3tnYNV5
-	odc0iXst76HFdgI7Izt7do2yH66b7OKJaPfTav/DY+zDNxjxND+9fiSVS4SakKAiKH0IN7c5lPQ
-	Jkmbcj23OsRvPZlEYewL5kySVKmwSqox7VRMjDDNIYsIHDjQECu0TOmhH0XEQmagy+Fm7W9hGB0
-	FZIcGB69o2S3CdsBa+rZNgmfZfYSkRgCM4pUCFDXC+F6QSD0QXR73N0qhpksRzl8GlOh2BUY8AA
-	/AX4p9s=
-X-Google-Smtp-Source: AGHT+IGB3UutjLANyz+UGrs1Pqtz1ghxCPTBV3dlt5zsd0azNruBIQWwpwIrTOgY2yNs1XyuNUwLWDwXCb5ktjQfulg=
-X-Received: by 2002:a2e:ae08:0:b0:37e:884f:b6ad with SMTP id
- 38308e7fff4ca-381216725damr72755891fa.23.1766937116107; Sun, 28 Dec 2025
- 07:51:56 -0800 (PST)
+        bh=qAheLyw1k9qY+mz/MVoVF7TVeH1WUkty9nHXwVJPAT8=;
+        b=h+wCgQd9av0VxyjKDgaDuRSxgz4jNDocLEeKFg/c6G5fryt+nmw15C231hPwBWrZj/
+         6QLgLl/1ALk4KzZtCEwinlqTe628rp2WnqFlkmmEWE8A36RntRxTb7lU9ddmDWSbVbwv
+         XuYrdIPB4MF4xZWnobmnmjQHyIVpL1nieuK5oftitYnnVX9uCeHZNBsXmlJndMuMFlUe
+         OeCbuoSjcdDUd9uvUfSuMuVK1T89tGyB8gS8xjWEqDG6JXQ3knESQiugyaoCHHkkKXeb
+         oqsWL9BgdRpGYhfVRCvjdYwiDnkSCr0pQ06X/wNtTdjbrnsW3SM43vNgucgUi5Odec8c
+         GzKA==
+X-Forwarded-Encrypted: i=1; AJvYcCWW1Ckg4dncjkKjSu5j2XuzWULOalPXowNfFRYQoyc0KhcUTtjnxhonXmkMtF0jr5Jlkrs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxH7PtJRaF80OPkHTwy7SbbDr6nFckfd8KlVmpf6/0TUfhB8A51
+	YibfNVxTbV3v4/5P/kWwIQG8ulg8bhHe51BLmrFuXYya8Qdg19Boe/Ufi+Y2cRisFyU1OYsQsyn
+	9Rxc2NggaYrYWlI78WHyt+PcBQpSfaPMF2zPrnq342Q==
+X-Gm-Gg: AY/fxX43lQpC8QFPrq8x8skjYdS5OVZ50qKMR6OdVmXznUb4YjTLAVDVknhKwo6JW7e
+	Thcrh1jRm+1IYJNoynseRnDkdDSIEEL6ulwE9oxLaB5GWCivFb3LE/RrgcxZ3+bTC8AoIHGWJ9X
+	vo1BPKJCIsVZBOt/aG87dZIwQ7vjAuJq8d3JzNmV/XksIKMsniDjWjE11TIJ3DwMo6ULtjELwAl
+	40g0vamIzOn5cO09INwMca7MQ7pWMdchGhBNQWhSccmC9A6bI7vc/1NkYJPoDHx6q68D8fKw0jy
+	eL0xOTU=
+X-Google-Smtp-Source: AGHT+IHDXYiOjycsrIKZ7zOp2mbTEo2Zm5sublU20unZSOVOyEDUtBbKhYfhPO49TVyqnesEU9CtfO6gW6oj2nEpfho=
+X-Received: by 2002:a05:651c:111b:b0:37a:3768:3b20 with SMTP id
+ 38308e7fff4ca-38121689bd2mr77622181fa.39.1766937122775; Sun, 28 Dec 2025
+ 07:52:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251215-v6-18-topic-imx93-blkctrl-v3-0-51dbd1333938@pengutronix.de>
-In-Reply-To: <20251215-v6-18-topic-imx93-blkctrl-v3-0-51dbd1333938@pengutronix.de>
+References: <6245770.lOV4Wx5bFT@rafael.j.wysocki> <15658107.tv2OnDr8pf@rafael.j.wysocki>
+In-Reply-To: <15658107.tv2OnDr8pf@rafael.j.wysocki>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Sun, 28 Dec 2025 16:51:19 +0100
-X-Gm-Features: AQt7F2rrgyY9PnfhYGRnz3aE_FjJItGK6XwPKeNDQpDGt15NF8-FEH9rM6gu3fs
-Message-ID: <CAPDyKFqjJV8=PH7bTkWKJD4Dc7JoT6p02mPMrKA3uGuAKGsYvQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] i.MX91/93 BLK-CTRL improvements
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-pm@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, 
-	Alexander Stein <alexander.stein@ew.tq-group.com>, Frank Li <Frank.Li@nxp.com>
+Date: Sun, 28 Dec 2025 16:51:26 +0100
+X-Gm-Features: AQt7F2q_cycC7hMecsrMvd9LXqesqMPWAqlcKFduTzmro2KUI5Ojv_wP0hLSjhg
+Message-ID: <CAPDyKFrgXG5X-y0teE-wVvqaeNepStMN3=0M4zkZs8Kb88U22A@mail.gmail.com>
+Subject: Re: [PATCH v1 19/23] pmdomain: imx: gpcv2: Discard pm_runtime_put()
+ return value
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Linux PM <linux-pm@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Brian Norris <briannorris@chromium.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 15 Dec 2025 at 20:18, Marco Felsch <m.felsch@pengutronix.de> wrote:
+On Mon, 22 Dec 2025 at 21:37, Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> Hi,
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 >
-> there were several approaches to bring the sub-devices population
-> mainline [1,2] but non of them made it upstream. Both approaches were
-> part of either the i.MX93 LVDS or MIPI-CSI enablement.
+> Passing pm_runtime_put() return value to the callers is not particularly
+> useful.
 >
-> This small patchset decouples the blk-ctrl changes which allows the
-> MIPI-CSI and LVDS patchstack to be rebased ontop of this patchset.
+> Returning an error code from pm_runtime_put() merely means that it has
+> not queued up a work item to check whether or not the device can be
+> suspended and there are many perfectly valid situations in which that
+> can happen, like after writing "on" to the devices' runtime PM "control"
+> attribute in sysfs for one example.
 >
-> Before adding the sub-device supprt, I converted the driver to devm_*
-> only API.
+> Accordingly, update imx_pgc_domain_suspend() to simply discard the
+> return value of pm_runtime_put() and always return success to the
+> caller.
 >
-> Regards,
->   Marco
+> This will facilitate a planned change of the pm_runtime_put() return
+> type to void in the future.
 >
-> [1] https://lore.kernel.org/all/20250701-95_cam-v1-3-c5172bab387b@nxp.com/
-> [2] https://lore.kernel.org/all/20250304154929.1785200-4-alexander.stein@ew.tq-group.com/
->
-> ---
-> Changes in v3:
-> - Link to v2: https://lore.kernel.org/r/20251202-v6-18-topic-imx93-blkctrl-v2-0-e73501034adc@pengutronix.de
-> - Add r-b (Frank)
-> - Rebase to v6.19-rc1
->
-> Changes in v2:
-> - Link to v1: https://lore.kernel.org/r/20251201-v6-18-topic-imx93-blkctrl-v1-0-b57a72e60105@pengutronix.de
-> - Adapt patch2 commit message (Frank)
-> - Check devm_pm_runtime_enable() return (Frank)
-> - Add r-b tags (Frank, Alexander)
->
-> ---
-> Marco Felsch (3):
->       pmdomain: imx93-blk-ctrl: cleanup error path
->       pmdomain: imx93-blk-ctrl: convert to devm_* only
->       pmdomain: imx93-blk-ctrl: add support for optional subnodes
->
->  drivers/pmdomain/imx/imx93-blk-ctrl.c | 77 ++++++++++++++++-------------------
->  1 file changed, 36 insertions(+), 41 deletions(-)
-> ---
-> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> change-id: 20251201-v6-18-topic-imx93-blkctrl-341220f7084d
->
-> Best regards,
-> --
-> Marco Felsch <m.felsch@pengutronix.de>
->
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-The series applied for next, thanks!
+Applied for next, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>
+> This patch is part of a series, but it doesn't depend on anything else
+> in that series.  The last patch in the series depends on it.
+>
+> It can be applied by itself and if you decide to do so, please let me
+> know.
+>
+> Otherwise, an ACK or equivalent will be appreciated, but also the lack
+> of specific criticism will be eventually regarded as consent.
+>
+> ---
+>  drivers/pmdomain/imx/gpcv2.c |    4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> --- a/drivers/pmdomain/imx/gpcv2.c
+> +++ b/drivers/pmdomain/imx/gpcv2.c
+> @@ -1420,7 +1420,9 @@ static int imx_pgc_domain_suspend(struct
+>
+>  static int imx_pgc_domain_resume(struct device *dev)
+>  {
+> -       return pm_runtime_put(dev);
+> +       pm_runtime_put(dev);
+> +
+> +       return 0;
+>  }
+>  #endif
+>
+>
+>
+>
