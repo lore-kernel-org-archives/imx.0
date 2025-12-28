@@ -1,132 +1,130 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE89238C0A
-	for <imx@lists.linux.dev>; Sun, 28 Dec 2025 15:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E002D3750
+	for <imx@lists.linux.dev>; Sun, 28 Dec 2025 15:51:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766937104; cv=none; b=bjZJHGpXncbkNzAsy3AO6uBZjnWf1TjbluQ8DwkdU9LsbMoumJj9gZwXlWM01dmbVSmvkLIJ/dQPzAYzB/2NGoKbGJjlNM4Vg6uRrDT0iLATEKqM+MUyafljsEdzEMxE+PmY4sdBaCiHY4y+6QkpLTJ306zh/e6Xk67Bb2GHBZo=
+	t=1766937120; cv=none; b=PW/QzhLA4AAODbdvWfwWEjyr/FmuaYfr14hqGD1pHjZcFwCQxmMuix8Armr6DRgNVD/y6bOX5djDQ1hDe8SMCWZarlh0f1ceeRiKXvzS0YCjbR4pq0rBZcbEzhP7PV+9paqQJJrdYpUvF1vWw9dyh0G7Triy7h4bs2yGU0YkJIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766937104; c=relaxed/simple;
-	bh=UPBdwscMbeewUmZS1YlHhhaecNMpTlEwPf4hXKqUXHI=;
+	s=arc-20240116; t=1766937120; c=relaxed/simple;
+	bh=Fe6KnB13Ls5dHY9O1D27EZ0qAE3PZZJ7I6YiRPmbAWw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BsxgZu8W7VuiZI2wyE+7XPqPJ/uYGaDM7bBZf4fZbW2Y1qxp0WPe+czsSiAALMk/JQvs0bJd/DQ+lCUmLw+h9DxbO/84BL/4PUTQL2lSTU4bHFhP4aUE7f0jTB5Hz/2uFcLfyJiY+uq1/Ps87xPG4XOY4hNr3hGnANIjJnA23n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hKVQ0Z8G; arc=none smtp.client-ip=209.85.208.174
+	 To:Cc:Content-Type; b=t3zRx5KDBQRjqRYRGwjCTJWrZ+6Pz7roH/LMRKdaIciS44RFAuSGrtMO9Ch1v8aHZBHhJMPFMhg4TjAmW3l6IubQDeQSUBz8atu97FI92ss7un8lqGxf6tYfReNAjNNLMmmQk7fIYuuJPruq90QRjZty1sm7TP63JhpF5YzLe+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lGpVNtXP; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hKVQ0Z8G"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-37b935df7bfso72631311fa.2
-        for <imx@lists.linux.dev>; Sun, 28 Dec 2025 07:51:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lGpVNtXP"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-598eaafa587so9590785e87.3
+        for <imx@lists.linux.dev>; Sun, 28 Dec 2025 07:51:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1766937101; x=1767541901; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1766937116; x=1767541916; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vMOElam5lFCQ00bwoN+FTpOkP8287mrJpVz34H2qYuM=;
-        b=hKVQ0Z8G9FXnZmS1Wbr5lKtYjQ7kyrOw6DMjAfmuEWK0qRO0WLk/sfeEQVpgbkIPXe
-         XkBhZl0PQMqAMzjdFSQ6QVNmZAJNDr+lFQ2gzdL5NBQobm4adjtvn+V292sr5hYrHIBM
-         RbjtS/jU4T1DHQSs9/++SW6HlSVn1oIiJ2xCWCRgYBvistQmRZTkDxieNMh1IvG0L1i0
-         UUCdqj7NHpgmeGb6LablPFaBojUeKYoDAcXjJ6JgynWkwj/AtSvp559G0vewJ3/oficV
-         o5GPsYISV9LrPOTUULkAklLvo8x5mF2lbb97qkfC/d3+qoU93xR75e2WPOGZTyr00XLq
-         RaTA==
+        bh=P/m1vxR02WOyUjv42kPGF/giy/R0/NhZdgtsGDSOxAM=;
+        b=lGpVNtXPO9HLhmZRXJQuJc85+ixlfIn1kH/6FNdEpQtsL5xPzVbogDdu6xPEPigORT
+         iyRqztF4iuKxiLx8pVoUT2BJ0qjGfmOeJwXZwI0sf/IY+uMDBlr75j/Pev0bjWjWcXEP
+         yxvGZ4i7+jz64GKvVwm3gEhXwk/eN0zeyX2anUtf/AFTyrQ/Zp84jULmre+Kvb6wHwLX
+         sbDbudyo0ynQuXy+NyueZu15R4Ifkaj9LdRl7NCPdGvVT+NZ3oe+yFB56+3DgPO3zJI/
+         bJpphx44hu4dKtLrcJSyQLC2/VcJDwp0bDsZkxvn6y5g3TyrTMrgJeMvJyPLFKf+ZB0I
+         9XVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766937101; x=1767541901;
+        d=1e100.net; s=20230601; t=1766937116; x=1767541916;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vMOElam5lFCQ00bwoN+FTpOkP8287mrJpVz34H2qYuM=;
-        b=XYGCbT3iZ45O0f0WWAgQlqLpOG3i+pglVPxUD44tDptHiv3dD3qy8s9VtUGIuZ7+bV
-         SsTxt3plATuXR27t+qDF1EVtteBUPVJcAub42b8kCvJuZ+cdgF3zXf57e6PvkhS7qXoS
-         R9klZwutKNzxVoLcK1/ysoqNMPXhEqcBLoPg4W2fG8BfBIUyoYIP8/c8c6ZODa0hYUIw
-         Lk1458Hv4T5pv4MAP/4OdKTOFTqNYilUDGBoD9vMi63pmhUOGgYCMqc6R4po7LcXE59Q
-         A2F1F/8s/oyUMYWRsmzXZbk68FZpL0Eqo2cbLbd+dyOWVMLmzZUJc1EVNaMf/wpKWc05
-         mbbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX/YQisOx0HZlCjpjHdXvOnUOThicen8rjbWf2qpLGvbCOmkpJrG5NCE9Jb1Q8itGNnokw=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy58MeoQuEcDKQtZfsXbJ5IFbJl6cE8yTRx/xIlm9RbwCELh1tV
-	vO9tbmJ90QOQ239qoSVUeeAKJFIAMy4BsU7hM31i2g8gfwjkfoYGRaaJQaSwRnqVH7ulePYNPtg
-	5lf9KtzZxlwKDMLyV1PM5JYccyb8mqAgTN5GJJIta1A==
-X-Gm-Gg: AY/fxX63AI8fuaKFQ7xagw1MALoJFg+JNKd5TLRsqakdYZ9XJhpZkZ4CV4cGJZcDXfW
-	hS+CfWrgu9JZcnpX94Zlo2+pjlX2395Fm/pRTp2ym5prODwIUs7eQQmbCfvhIumM3vyHjxQI3pe
-	zxGC3PjjdWCDhKTPP6I6b7Mmd4125SWvSYNhKoVtZOCRnzFNc28AwUnschimxHf7OIc2J1Q7scU
-	VOIHB0mzLbbDabWtlCefT7hkrLiQu9qIvsk6RLR7TebqbjVyniCO7E9lX+T/NTADUf8JS1y
-X-Google-Smtp-Source: AGHT+IHLUFVsnwRwkLFb3Tq4L6Zc3f/V8NutlxDmQ4VBL3ts9a5/EsxCVdAPRyCi+loA38VXEQC6iUojrpiM88ffZ7E=
-X-Received: by 2002:a2e:a913:0:b0:37b:ba96:ce07 with SMTP id
- 38308e7fff4ca-38121596892mr81755101fa.15.1766937100554; Sun, 28 Dec 2025
- 07:51:40 -0800 (PST)
+        bh=P/m1vxR02WOyUjv42kPGF/giy/R0/NhZdgtsGDSOxAM=;
+        b=ROGFdDdz0uVl8+uZ59vVGzgbJVMVtiz55sOuuKwW0XWw40HpsJaPUQiBN56eRdhXkI
+         4owncyXH/zY1IlNW0XeJy9FbGeAtx3vl4M/J4VckcS8N5JWrTdD/5s3F88HfK8nWN4Gh
+         P2UgFCP2CkgGug7s4Q7xpwP8N2mEg0PqFoydZ+zxB7eqhZE+Ud/z3XRC/WoIcFLeb83s
+         RlrcTTBcndPG8yZo+O7DBQZvc/v4qQgsE0SP8I++a0pwc8WPOQT1YGh5yogLJ94IPPkm
+         +N2tUQo9Zt8J9Y9BbYaxYqRsXsXoRD3TPu7tXsq66XXU5eSA/l9FGlY2y+XB/lYKYgiS
+         hTQw==
+X-Forwarded-Encrypted: i=1; AJvYcCVuXZgcxi0f2G0xkQF+sK6Lp1dXN5FZH1afjQzG/EcD1PUVWHWds8dcDDg3u4IawzRWHrM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxG7zyX2hdO7C4LRW5jBWhuBwG3fgi7Scoazy0GS16BzKE+DE38
+	dGC8dOUxmBl+Z9s1Keczv7iybuBU8Re7RrG4uCL7w8wkkZobHzWLiVIKpzxzZ12I8ANJUXHTu3+
+	c6JO0fJfr7jAZvkrHZQMKZBDRS9kPK3tN9kq1jx4u2Q==
+X-Gm-Gg: AY/fxX5cuSYxpwqUfHfTgEX7Wri1NxHFEagsskWKk1AAjIVlNEoCHSHCYcnD3tnYNV5
+	odc0iXst76HFdgI7Izt7do2yH66b7OKJaPfTav/DY+zDNxjxND+9fiSVS4SakKAiKH0IN7c5lPQ
+	Jkmbcj23OsRvPZlEYewL5kySVKmwSqox7VRMjDDNIYsIHDjQECu0TOmhH0XEQmagy+Fm7W9hGB0
+	FZIcGB69o2S3CdsBa+rZNgmfZfYSkRgCM4pUCFDXC+F6QSD0QXR73N0qhpksRzl8GlOh2BUY8AA
+	/AX4p9s=
+X-Google-Smtp-Source: AGHT+IGB3UutjLANyz+UGrs1Pqtz1ghxCPTBV3dlt5zsd0azNruBIQWwpwIrTOgY2yNs1XyuNUwLWDwXCb5ktjQfulg=
+X-Received: by 2002:a2e:ae08:0:b0:37e:884f:b6ad with SMTP id
+ 38308e7fff4ca-381216725damr72755891fa.23.1766937116107; Sun, 28 Dec 2025
+ 07:51:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251211040252.497759-1-vulab@iscas.ac.cn>
-In-Reply-To: <20251211040252.497759-1-vulab@iscas.ac.cn>
+References: <20251215-v6-18-topic-imx93-blkctrl-v3-0-51dbd1333938@pengutronix.de>
+In-Reply-To: <20251215-v6-18-topic-imx93-blkctrl-v3-0-51dbd1333938@pengutronix.de>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Sun, 28 Dec 2025 16:51:04 +0100
-X-Gm-Features: AQt7F2q4HOmCP3AtHKfQGHLB3c99yZpMtVEIsP3Gmo2gfisxBcr_gBvsZWBQEl4
-Message-ID: <CAPDyKFrPZqwDmgFuPfbpX+FF3-r9F-r+9+Mm5v8z5Wb7TQJvmg@mail.gmail.com>
-Subject: Re: [PATCH v4] pmdomain: imx: Fix reference count leak in imx_gpc_probe()
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, linux-pm@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+Date: Sun, 28 Dec 2025 16:51:19 +0100
+X-Gm-Features: AQt7F2rrgyY9PnfhYGRnz3aE_FjJItGK6XwPKeNDQpDGt15NF8-FEH9rM6gu3fs
+Message-ID: <CAPDyKFqjJV8=PH7bTkWKJD4Dc7JoT6p02mPMrKA3uGuAKGsYvQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/3] i.MX91/93 BLK-CTRL improvements
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-pm@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, 
+	Alexander Stein <alexander.stein@ew.tq-group.com>, Frank Li <Frank.Li@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 11 Dec 2025 at 05:03, Wentao Liang <vulab@iscas.ac.cn> wrote:
+On Mon, 15 Dec 2025 at 20:18, Marco Felsch <m.felsch@pengutronix.de> wrote:
 >
-> of_get_child_by_name() returns a node pointer with refcount incremented.
-> Use the __free() attribute to manage the pgc_node reference, ensuring
-> automatic of_node_put() cleanup when pgc_node goes out of scope.
+> Hi,
 >
-> This eliminates the need for explicit error handling paths and avoids
-> reference count leaks.
+> there were several approaches to bring the sub-devices population
+> mainline [1,2] but non of them made it upstream. Both approaches were
+> part of either the i.MX93 LVDS or MIPI-CSI enablement.
 >
-> Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> This small patchset decouples the blk-ctrl changes which allows the
+> MIPI-CSI and LVDS patchstack to be rebased ontop of this patchset.
+>
+> Before adding the sub-device supprt, I converted the driver to devm_*
+> only API.
+>
+> Regards,
+>   Marco
+>
+> [1] https://lore.kernel.org/all/20250701-95_cam-v1-3-c5172bab387b@nxp.com/
+> [2] https://lore.kernel.org/all/20250304154929.1785200-4-alexander.stein@ew.tq-group.com/
+>
+> ---
+> Changes in v3:
+> - Link to v2: https://lore.kernel.org/r/20251202-v6-18-topic-imx93-blkctrl-v2-0-e73501034adc@pengutronix.de
+> - Add r-b (Frank)
+> - Rebase to v6.19-rc1
+>
+> Changes in v2:
+> - Link to v1: https://lore.kernel.org/r/20251201-v6-18-topic-imx93-blkctrl-v1-0-b57a72e60105@pengutronix.de
+> - Adapt patch2 commit message (Frank)
+> - Check devm_pm_runtime_enable() return (Frank)
+> - Add r-b tags (Frank, Alexander)
+>
+> ---
+> Marco Felsch (3):
+>       pmdomain: imx93-blk-ctrl: cleanup error path
+>       pmdomain: imx93-blk-ctrl: convert to devm_* only
+>       pmdomain: imx93-blk-ctrl: add support for optional subnodes
+>
+>  drivers/pmdomain/imx/imx93-blk-ctrl.c | 77 ++++++++++++++++-------------------
+>  1 file changed, 36 insertions(+), 41 deletions(-)
+> ---
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> change-id: 20251201-v6-18-topic-imx93-blkctrl-341220f7084d
+>
+> Best regards,
+> --
+> Marco Felsch <m.felsch@pengutronix.de>
+>
 
-Applied for fixes, thanks!
+The series applied for next, thanks!
 
 Kind regards
 Uffe
-
-
->
-> ---
-> Change in V4:
-> - Fix typo error in code
->
-> Change in V3:
-> - Ensure variable is assigned when using cleanup attribute
->
-> Change in V2:
-> - Use __free() attribute instead of explicit of_node_put() calls
-> ---
->  drivers/pmdomain/imx/gpc.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
-> index f18c7e6e75dd..56a78cc86584 100644
-> --- a/drivers/pmdomain/imx/gpc.c
-> +++ b/drivers/pmdomain/imx/gpc.c
-> @@ -403,13 +403,12 @@ static int imx_gpc_old_dt_init(struct device *dev, struct regmap *regmap,
->  static int imx_gpc_probe(struct platform_device *pdev)
->  {
->         const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
-> -       struct device_node *pgc_node;
-> +       struct device_node *pgc_node __free(device_node)
-> +               = of_get_child_by_name(pdev->dev.of_node, "pgc");
->         struct regmap *regmap;
->         void __iomem *base;
->         int ret;
->
-> -       pgc_node = of_get_child_by_name(pdev->dev.of_node, "pgc");
-> -
->         /* bail out if DT too old and doesn't provide the necessary info */
->         if (!of_property_present(pdev->dev.of_node, "#power-domain-cells") &&
->             !pgc_node)
-> --
-> 2.34.1
->
->
