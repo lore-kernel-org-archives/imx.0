@@ -1,121 +1,128 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BB32DC338
-	for <imx@lists.linux.dev>; Mon, 29 Dec 2025 20:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C123A1E8A
+	for <imx@lists.linux.dev>; Mon, 29 Dec 2025 21:37:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767041946; cv=none; b=cHfCwmW7HUDWRE2pt9dnkkUqZVNSJe/+/Gqn6a5wdpsWap2LCjU+pGG9sH8fUM0vXi7BpZyfIlYt45Yv9zMAu8YboMXrUMVZmiHv7Cxi0ch+lpjpBmDQVSAeFOYFXxr+Sm+kqBLum9yIaeNQWaxymEbt0Kre7GPjiKqjHd9V8bA=
+	t=1767044256; cv=none; b=SMmJKM6G95hsrUZQDDfd1mAF6c4cz0VHmozAf19RW/HnDce7zH/UxcEggUoGxCeseSRN56jO1jlinvBRx6yYisj3lncvj71MVvNh8WPD+Qm0aGcxAcltToD3QGH1nbn/DBmJebvxW9rkb3vEHRekK/ApHDCjvM6tclaUxic1CEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767041946; c=relaxed/simple;
-	bh=GSEUxsESE1/8GTMWfz0hBGHd90EMa8Seyja17ObPhrs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E9ia2lg61vpilxAR0KWIQAwqChsIMsLomNSXhM2rVhDAonnMVX7K2UTFxhGoFNF4TAWnbL4F7Ub8WJA6KEoKNd9L8lXtdiYfFJ5S558kS7b57kmqKAL/seWhU2pBqF+Zr3e1vd3FmxPAIdtwgXCS4Rx6b45QM8ivFefqyaOKb6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cJrNIeUp; arc=none smtp.client-ip=209.85.221.41
+	s=arc-20240116; t=1767044256; c=relaxed/simple;
+	bh=zIbPbz4p9WDTi045QfNFdh8jBTca3i1CozlJVdUl9KY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sIRyAtVsP2DLNChAvLPAurqlpqb3V3Y10hc7AuyxTbV++f9iLxWnALHr1dAFfe1KcshaY3rroSY0ZJnq+o5ww/ppnHaSxUsfkDvjY+CoQ0+JX3rJViHQbo6AEx0R1gXhbFgPxl8cqSYFgaeY8pWt4SYX8VZqbyEbQcIXfFS4WWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N0gYxi0F; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cJrNIeUp"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-42fb4eeb482so4693492f8f.0
-        for <imx@lists.linux.dev>; Mon, 29 Dec 2025 12:59:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N0gYxi0F"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4775ae77516so93792575e9.1
+        for <imx@lists.linux.dev>; Mon, 29 Dec 2025 13:37:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767041942; x=1767646742; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mT72sLXnNV3V/jTjLvqc6CW9rW/yO+T8uURGolooNUk=;
-        b=cJrNIeUp7ndbNjqC1RS1WQdMj5RyWnAYXwT4lDh0tFlKlkvjz12nP9TFthTJJ7NNKc
-         ZNrOXHXkY1q9NkTs3F7EcK3SOSpf6DoHQmjI10xgkcvJv7Fa3d3H1SQFMfcSYLu0SMRg
-         wKOJ/ICAVW3fO7QttYoGCOfT9IhcdpqKIQQfpUGjlZWr5M1JtLVe80yDTX+EDXqCMbz6
-         2SQmSYox1jlpTcSZ3uruyE5+AHw+CMujNFPRN6uR9BAKg0BMLahanKJqEKxm9sOANbSe
-         9KEM88HiqqvSyGvrOge6VbBaE7R+td5bKMw0Qy9aXJr7GJdhwmhYdw16MPG9KfiWlWhr
-         3DAQ==
+        d=gmail.com; s=20230601; t=1767044253; x=1767649053; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qGz6E3CsAxGfK1c5nO3wGu40/ZtakdbQb1FmTqKeIMI=;
+        b=N0gYxi0FaxDb2hdbWX6fQxbm97TGaUIEO9Tre1Ylb8R15OEe/2iavGQgv1eKa8YCDl
+         yQIqoZY5NT/fr5jBlMrsGj88X31L9ek1D3zK7Aw2wFwgPTegb4MMee0s990Z5odBvGYK
+         JC2LldE3PPfUOBQmzp0CMYK8OeTzbU0EurV5dQ7a9xUENAteDH1vPGrXvazhCnV1BTOL
+         Dlg9WP8nAAfFgCIOpPJKIneEGGFciCNdZ7ePl+xIqIUD9kvR5sMuIPgAqz+eTArfbNks
+         JdtkHoDh2s1KFg2vgVRnsgxSkNxGXdFjr7vw5KuhMXWqi1FynTsgrocch90mPzhpd/41
+         y1aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767041942; x=1767646742;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mT72sLXnNV3V/jTjLvqc6CW9rW/yO+T8uURGolooNUk=;
-        b=VxL7K+cETR6bMNAXlLivmG2f8StJ8vpiuIZ+sYe3S0lh5vYC5ehc6XSS+ypXLonFVm
-         PoGApmMuspUmM695CLeCIgOG54XYbZZUogjWtCk89QaDBL/2n7V4Zw7Ms37bNSaIsdeI
-         H2H3VRpFHn3Gw1bqSdhdb93pYXcj8IP4HShFxGb2+Qlmi72bXe7v2wf6R9+Ez3s2y0f4
-         VQ0IOQl8BXZm6584TifnhupytdGdRbW04tyIMG1B8BRmZ1pDspepOlkMzaU2Z5efbrnj
-         TcYlWKfXQKbzpSxpZ6LtYhZx8LC4zez2eYd5PxkfpHX2kQYjd3YcmvT8ijRqdD+Hw9qe
-         xcNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXQfR9DBbhPM+Tw8cWkFxJCVHp25qW2Y6HGtqdWq70LG0Kr3ZudLkyLH0kc4HbrG1pbX10=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyOHxJ0HaIrY+iojBfrAUYD38s+PL+zBxZ08tdw4RZtjC8cB6gX
-	+AgJ1wOUy1mdEdqpE2KB9UQIhZ8vy3PmG5vrRnvuhhKfo96ROZ9TwZXQ
-X-Gm-Gg: AY/fxX4tQqgD51BQ7Iax90L5RwBMcPs+5i4TQDVmtJv2rm4CS4d8bq9tBzyqlUvCMB0
-	fS+gnqX6i0mnd63A5ubxDK5Mjbv1vRRl91boQ452YiAPu+D0LHUg+dj8b27o8L2d2PiCrrjBt0L
-	2NYgybsgLixeJW11bSH6LNP9HUVP3OEFI++GxDdI5WekihgOLLxp1KXh1TfY6jZ5jBnWN4tVAih
-	HeKrfI/kCQCd5X3U4CIUp8C2AL89SEWU2dXv+G07+p0aYPfpwG6ha+/TlKwEUE4iTpY9Xa0q3mx
-	2vnFfByR5b9Rmn+9cEnQ3oiXJNEHijPjhgbQr1oLMPrHPINuydGr7QUiPWQ3lYhiJVLOO4udshD
-	QsVYWKTiNqgNYIGzzMucCKUPWnSlxHtGeidt43EYYxrG2g8hDAaKd/IUY8qecc5fq9iiLrJT/q1
-	6MtT6aeV8zen+PJ7/pCyHFw5QjdBjADZvvAxEh5hjAp7ALON3G7bKZ/sG5wtEzRTxa8qU2Q/HfU
-	f089n5sw+Iiw94PW2DuRb+X5n0=
-X-Google-Smtp-Source: AGHT+IF+6dfGz8jAW2jy8V3d7wl/tvhBrzoFF1KjAPTCU32EzmQO5hO9Wctj+4CVYLo8hx4OP+5hSg==
-X-Received: by 2002:a05:6000:186e:b0:432:4c01:db00 with SMTP id ffacd0b85a97d-4324e4cff0dmr41189328f8f.27.1767041941354;
-        Mon, 29 Dec 2025 12:59:01 -0800 (PST)
+        d=1e100.net; s=20230601; t=1767044253; x=1767649053;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qGz6E3CsAxGfK1c5nO3wGu40/ZtakdbQb1FmTqKeIMI=;
+        b=AzDZzFvN72q6c3dv+etLPUh9663/Owmd2BiFBj2DPwboAg2Iy4hsj7tpk3sUnOFfdj
+         hykvAXlx/J6RSugDhyYiM1FZGQlI2pmpl0VJ6kJ60OY19bS0mPyjKHPeEEDm8XAOQB8S
+         1gA2+alsRnI8+ToYUjddcVNO4YOYFf406hN1ifg8Cut8nLFQntWfD3NPvEINhnw4k4o0
+         3Ct9RHKNBZhWj/GEHMOMdHL0grPZ2Qs3ml2YzXMiQlc+W5CYF2O0Vvx0AJm07dGK8E3a
+         QPuVQFk2u4cRX5GlqUpojpuNlGG7Zs62XuCDeQ+jYIZMLTMyqki2xSJHnW7o/gCngcN+
+         okVg==
+X-Forwarded-Encrypted: i=1; AJvYcCX0odHWsyIRQmBSgrK4dgwJUnCvJhk2XTJc+yx1mUZbIbU6DpCEwefsDdTAYiYCECIW9v4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YznnsEI4qO7JDYiD6dr/cRTAoIIH2ywJFAptz9Vi9WystKjTCfV
+	Qg9MeeuOCJPlKvXtZ1vnUdufDmutcwtry0/6bCPnTndwM5S7ht2lyrqO
+X-Gm-Gg: AY/fxX7MAcOsqmK8woYcUttvZWsCqz1mTiq1yUN6ejiiqRgJsvjgQkjEYAiZkSxscIQ
+	fCnR+H4AXj1EFmhhDtBsj6KmMbGFDd889LrfEj4suXz6N/QDDauu/aXUrTLCvxnYLaaDBOl3ecK
+	efhKTkketStEKB7o3NDIg7hVotUrYKfZcSw0rExbUQmCIBcrVXlzRExRgcAQP/mQ0lKHE19GSQl
+	huCrhtq4pZbpQ7Y1xjJS5g1Nusl6XFF2Z7vGqM17aco8B6ILNf/ty+g6zOyL1w4/9GKCopOaK+X
+	fhFmkdn6VwWS0fP9402lj4f4zkzHZPf2R3rpesYuwKQBwxk+IvUdtSZ/q2G4xE9bFgjrG2L0cFZ
+	slwwkvv4QuXbg84ergw7eSp/CgPWtw3prCV6OkPeAzIeVY9MR34CDynbhT+Kb6QYBTlNySOZ/oI
+	LMlih5bMtTTl2B+tQW560Mbcdr5GxAHJz1zRI4ezqyuYfmII+WixNob+IgYG0wjCB9SWP5mLZh2
+	1i8cj78mlJdInwiV6nC
+X-Google-Smtp-Source: AGHT+IEJqCt8LPEO1gH1XPCkgXU5Nau72TepR4FWtrEw6Lak1kKcRdl1oqPEMIXKOijGtZuQP2wEew==
+X-Received: by 2002:a05:6000:178e:b0:430:b100:f594 with SMTP id ffacd0b85a97d-4324e50d9bcmr38628906f8f.50.1767044253036;
+        Mon, 29 Dec 2025 13:37:33 -0800 (PST)
 Received: from Lord-Beerus.station (net-5-94-28-220.cust.vodafonedsl.it. [5.94.28.220])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432613f7e6esm53784810f8f.21.2025.12.29.12.59.00
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4324ea1b36fsm64046230f8f.5.2025.12.29.13.37.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Dec 2025 12:59:00 -0800 (PST)
-Date: Mon, 29 Dec 2025 21:58:58 +0100
+        Mon, 29 Dec 2025 13:37:32 -0800 (PST)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Stefano Radaelli <stefano.r@variscite.com>,
+X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
+To: devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Stefano Radaelli <stefano.r@variscite.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
 	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Primoz Fiser <primoz.fiser@norik.com>,
 	Yannic Moog <y.moog@phytec.de>,
+	Primoz Fiser <primoz.fiser@norik.com>,
 	Markus Niebel <Markus.Niebel@tq-group.com>,
 	Josua Mayer <josua@solid-run.com>,
 	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v1 3/3] arm64: dts: imx95-var-dart: Add support for
- Variscite Sonata board
-Message-ID: <aVLrkqgjrsX7jfYw@Lord-Beerus.station>
-References: <20251229150421.57616-1-stefano.r@variscite.com>
- <20251229150421.57616-4-stefano.r@variscite.com>
- <0afc0945-af65-410d-8556-1d09792981cb@lunn.ch>
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v2 0/3] Add support for Variscite DART-MX95 and Sonata board
+Date: Mon, 29 Dec 2025 22:37:14 +0100
+Message-ID: <20251229213726.79374-1-stefano.r@variscite.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0afc0945-af65-410d-8556-1d09792981cb@lunn.ch>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 29, 2025 at 07:24:50PM +0100, Andrew Lunn wrote:
-> 
-> What is this ethernet connected to? In the commit message you mention
-> an SFP? So i would expect a phandle pointing to the SFP cage node,
-> which follows:
-> 
-> Documentation/devicetree/bindings/net/sff,sfp.yam
-> 
-> 	Andrew
+From: Stefano Radaelli <stefano.r@variscite.com>
 
-Hi Andrew,
+This patch series adds support for the Variscite DART-MX95 system on
+module and the Sonata carrier board.
 
-You're absolutely right, thanks for pointing that out!
+The series includes:
+- Device tree bindings documentation for both SOM and carrier board
+- SOM device tree with on-module peripherals
+- Sonata carrier board device tree with board-specific features
 
-I mistakenly thought fixed-link alone was sufficient, but after reading
-the sff,sfp.yaml binding I understand the sfp node is needed to properly
-handle the SFP+ cage and transceiver module detection via I2C.
+The implementation follows the standard SOM + carrier board pattern
+where the SOM dtsi contains only peripherals mounted on the module,
+while carrier-specific interfaces are enabled in the board dts.
 
-I've updated the patch to include the sfp node with i2c-bus and
-los-gpios properties.
+v2:
+- Add SFP cage node for enetc_port2 following sff,sfp.yaml binding
 
-Sending v2 shortly.
+Stefano Radaelli (3):
+  dt-bindings: arm: fsl: add Variscite DART-MX95 Boards
+  arm64: dts: freescale: Add support for Variscite DART-MX95
+  arm64: dts: imx95-var-dart: Add support for Variscite Sonata board
 
-Thanks,
-Stefano
+ .../devicetree/bindings/arm/fsl.yaml          |   6 +
+ arch/arm64/boot/dts/freescale/Makefile        |   1 +
+ .../dts/freescale/imx95-var-dart-sonata.dts   | 595 ++++++++++++++++++
+ .../boot/dts/freescale/imx95-var-dart.dtsi    | 462 ++++++++++++++
+ 4 files changed, 1064 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx95-var-dart-sonata.dts
+ create mode 100644 arch/arm64/boot/dts/freescale/imx95-var-dart.dtsi
+
+
+base-commit: 40fbbd64bba6c6e7a72885d2f59b6a3be9991eeb
+-- 
+2.47.3
+
