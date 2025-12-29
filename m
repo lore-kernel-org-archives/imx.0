@@ -1,97 +1,100 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D233B1D86DC;
-	Mon, 29 Dec 2025 18:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CF023ABBF
+	for <imx@lists.linux.dev>; Mon, 29 Dec 2025 19:45:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767032694; cv=none; b=P7PMgMipDS9QvoEbK0AQqCj+ovRP/6NSgydn4+wWbQBXhag6sbXa7dbE0TXIZzk2n5zWRCHDVg36zIw9tIWnkgWfRwwxiYrt7Fa1kgt046fW8nT/4BNzCAegCOb4fOpQ4Bzh+Q09eN3B1/5cfDPZlDNAHkonmRrny2eeBAm6jwI=
+	t=1767037553; cv=none; b=MgC36xlCNtbyhYqofVYTb3NITH2EBNnHi3BCAQraqjU576xLn9x1TAfQ4JwlNpwztUs8bvrgt6eQDlw1wUq9pF1L0Cg8q4wC6dY4wsa6s1WjL0MWO5tGvlpDfVH9TBQZcBThc2p+HwEvuzEmG19fGz/iAeHPCXnKFnBcV4YBMJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767032694; c=relaxed/simple;
-	bh=TwZUtr7ddPyOP0IlCPWeh/PSO5fNU6jcEsmo6z2xurg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TdcrGonjE3DxZ3gIyU1RESWesKeSrb/Mua9kZTG8Ak+1KycMeWo5m0m7wPPHLyxbJePwaK4lIasM+P6uXFx3DTa3MQ5n/0eivQcfrSohXp9JcSy0C+LGngY90ANO5WrvmUx9KtS7RZdDmLGyZKLfSz5R7BknlIQYtonVto04hm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dScYmoVu; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1767037553; c=relaxed/simple;
+	bh=TxNRvKX4JH4588EW7T+76NCFYuHpZ6BErRBennwRbKU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FVflbLpygtXWyzVt+Oh3aMrJ9wD+lbvsOB3p9FUjH09o2+jIvgx80UM0thHs61JCEjwDKFmzLvwAHsc95lVqPCjvWVqnbbCWgzeZytI5XzVW+pmFaKC4UeseiCC2KqCnkWmxT2dQ4H7jl1cdlBseyX1fF7hXlkJmrPE8C1Af2wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=XdfwlXze; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dScYmoVu"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=G6OFf6qhaZUZaSxhy68zC+vqqr64ZivU7vCX7ZbM4a4=; b=dScYmoVu2rUO1D2Qr8lmxofk3c
-	IVcMp2uBfLTgDyuzVrpND5X5YQkuLdzzf8Trxdfi+73qhcrv0pA1LojXYskM2Yh2LoTHlcPiLa4KQ
-	aQRn2YdcnsuobBwpMq5vOSvKlMmgxdKe9jgkuOum2SAycVTZBjeQBcMYTEEQJqJrj1rI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vaHvG-000ogh-NL; Mon, 29 Dec 2025 19:24:50 +0100
-Date: Mon, 29 Dec 2025 19:24:50 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="XdfwlXze"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 20AAA10CC98;
+	Mon, 29 Dec 2025 20:37:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1767037065; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=MFiGSY8cOxIDdZFxqeVoqn31I86jZ/x1KTQLSNLEbPY=;
+	b=XdfwlXzeuT8nz4u8Boq8RURMO32eTFkpJJeYHgb0bALgh2aUHxD+2QwaSc18PwYiEtSs+k
+	VBoQ2c6uL2KeP7RQi5IdPNzrDny3TvQpwD8G3heoo+CWbU2RfgDO5uiUgx/I1WhLCWIhuh
+	WAmWT9ChcyB8CjykkZoMkMnmAlb0n/X89ytZv30V47Pqhfv/HWaSCGYeTDtItCfolIKiYQ
+	Nlwn/jdBSINDeahQVqMet4FXFN9gD1jOQPcH3unw0CCjJsKsJD94uRqJrfHYcgtqaUfmg2
+	gCMXI13aR04/7D7+mDI8aWyV0PgkCaAhuhMDe2FXYSbakyK8Z6hOFLYva8XnBg==
+From: Marek Vasut <marex@nabladev.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	Christian Eggers <ceggers@arri.de>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Primoz Fiser <primoz.fiser@norik.com>,
-	Yannic Moog <y.moog@phytec.de>,
-	Markus Niebel <Markus.Niebel@tq-group.com>,
-	Josua Mayer <josua@solid-run.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v1 3/3] arm64: dts: imx95-var-dart: Add support for
- Variscite Sonata board
-Message-ID: <0afc0945-af65-410d-8556-1d09792981cb@lunn.ch>
-References: <20251229150421.57616-1-stefano.r@variscite.com>
- <20251229150421.57616-4-stefano.r@variscite.com>
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Markus Heidelberg <m.heidelberg@cab.de>,
+	Rob Herring <robh@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 3/4] arm64: dts: imx8mn: Add SNVS LPGPR
+Date: Mon, 29 Dec 2025 20:36:42 +0100
+Message-ID: <20251229193706.73564-3-marex@nabladev.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251229193706.73564-1-marex@nabladev.com>
+References: <20251229193706.73564-1-marex@nabladev.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251229150421.57616-4-stefano.r@variscite.com>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> +&enetc_port1 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_enetc1>;
-> +	phy-handle = <&ethphy1>;
-> +	/*
-> +	 * The required RGMII TX and RX 2ns delays are implemented directly
-> +	 * in hardware via passive delay elements on the SOM PCB.
-> +	 * No delay configuration is needed in software via PHY driver.
-> +	 */
-> +	phy-mode = "rgmii";
-> +	status = "okay";
-> +};
+Add SNVS LPGPR bindings to MX8M Nano, the LPGPR is used to store
+boot counter.
 
-This node is O.K, thanks for the comment.
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: Christian Eggers <ceggers@arri.de>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Markus Heidelberg <m.heidelberg@cab.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: devicetree@vger.kernel.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+V2: New patch
+---
+ arch/arm64/boot/dts/freescale/imx8mn.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-> +
-> +&enetc_port2 {
-> +	phy-mode = "10gbase-r";
-> +	status = "okay";
-> +
-> +	fixed-link {
-> +		speed = <10000>;
-> +		full-duplex;
-> +		link-gpios = <&pca9534 1 GPIO_ACTIVE_LOW>;
-> +	};
-> +};
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn.dtsi b/arch/arm64/boot/dts/freescale/imx8mn.dtsi
+index b98b3d0ddf25a..3199bc0966b03 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn.dtsi
+@@ -628,6 +628,11 @@ snvs_pwrkey: snvs-powerkey {
+ 					wakeup-source;
+ 					status = "disabled";
+ 				};
++
++				snvs_lpgpr: snvs-lpgpr {
++					compatible = "fsl,imx8mn-snvs-lpgpr",
++						     "fsl,imx7d-snvs-lpgpr";
++				};
+ 			};
+ 
+ 			clk: clock-controller@30380000 {
+-- 
+2.51.0
 
-What is this ethernet connected to? In the commit message you mention
-an SFP? So i would expect a phandle pointing to the SFP cage node,
-which follows:
-
-Documentation/devicetree/bindings/net/sff,sfp.yam
-
-	Andrew
