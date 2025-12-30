@@ -1,46 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B30E2DAFD7;
-	Tue, 30 Dec 2025 02:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A5F2DEA74;
+	Tue, 30 Dec 2025 02:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767061187; cv=none; b=iwhFf4b6it0bFkNAz29Vuc/d4uuCN7Lb+UFLwctSrmx6I0X4QS1P8o/sZ94hfKGNoLLQF8IMCPYhaxJZc1lQVnhZU1+gTLSapnmfhBDl2bjQzZcT6ewLHvpRLdwArUBCWXU72HnGJQfR33aFSi98zQAxH9kvYkceD7MegD7bTGc=
+	t=1767061389; cv=none; b=lzZxtiZYlZKIajHMspdjDIoWNRafPURKYgVkBvtD0ly7+G6nHMHYmI3pj/O8yOcb2CaDSNpSv+luwHUXrgJwhXle2Ijzm26/wuezPub16QOUdnmTkZIXvir3FBQnmQiXsKrCDe9+Wko3hW0CEt7OUcQnhFm6/FMWfcW8gGXmf9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767061187; c=relaxed/simple;
-	bh=WsPnlXAeGWWyvfoz7fE2YJBhrIMmZkk6VEdC/cu1WMs=;
+	s=arc-20240116; t=1767061389; c=relaxed/simple;
+	bh=JJBLWrKZJscwjA3cx9oGiJGVinABxL8hJC6q1izjjk8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=is1eFuDL/Xwjf9W1EPG0j94/WP5JE8CpI6z066uvR8FiJxW/F9MNIRFJuWHioGger3s8xl+9Po5mp8VP8Xq77aSDp2gm0RYXa3bbYmAlJe20rAcKm43C4B2xaecM3VsbNhIeD/VXWRxdpi3GxJj25laBw9IxG438hii+f+NvVYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lGnKrIZJ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=VG4FjlVx+SwlDdcidSZzGUvtuu3eedcLg35uDd5XpFFF9b7FDRi/3R7C/M97N7pU/rgylNmlncAWMjdZxdXzXMUg7agOz79Rru/HZkSJRnBCceypwAEWc/4PE4meGKR5tvghWaHt1M76l4UGh0c2XRT8fJUN4EiT9Xeiuz92lMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rqYbwLcC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lGnKrIZJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6C2C4CEF7;
-	Tue, 30 Dec 2025 02:19:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rqYbwLcC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF22EC4CEF7;
+	Tue, 30 Dec 2025 02:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767061186;
-	bh=WsPnlXAeGWWyvfoz7fE2YJBhrIMmZkk6VEdC/cu1WMs=;
+	s=k20201202; t=1767061389;
+	bh=JJBLWrKZJscwjA3cx9oGiJGVinABxL8hJC6q1izjjk8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lGnKrIZJQzFQCw241+iLQOodHcNvwIGaG9yN0ld0s/xBn79ZHrh8XHm6tLEOewFjq
-	 MQSrgrrYGCnrZOO+zv3TchwuKQP7aSZa2kxHAAQDReFWs2AmP/w8aVJFeTlAhu57TM
-	 DgrqZNJ6OEDoiso0OEF6ldRMOQfVC0zGHxQowc+4N788x6KqpX186efW6r+5wI2IE1
-	 LzyLQcLDfF2OoiohoGYov3dDXy7oLgWOC7Sc5llJwnDLCT/tCYRfZM2AxcHQ6nIGri
-	 OtSZ7QHwPcdybRAVPuIrXb9UNF6mJ9FvbwqKcPFz5tx0aiZVteWoJxQuArwSbtt/Rp
-	 LYakBXwE4tEBQ==
-Date: Tue, 30 Dec 2025 10:19:40 +0800
+	b=rqYbwLcCSdqZrAaL/5UsPcAo8T2EDLTfE1oTIkzwEfPaJdrUnSmDDV55LSKJ47gcj
+	 YBFLWcMkGwLr3aFXJVHwprtarb3yS9dlbYMKYiM4OqhCIxxs4Q97Ek/XhiqlRPx1Sv
+	 nDb2mTjXDgfzKwjRgVeMZFPprSPZqqIcIPaqNquB/3MJ1DqmTeQ2TmY0MftLWCNTl6
+	 cqGmi0dIvmVXdrDj6YK8R56n4hKb8eIBpFwSV1Kk7z+4rqNQmthXbHcx8mzUAFA6Jc
+	 DSD9co6p2wVqWwFbmKdRhUNdRodck8eHI5Nhd7DM4s2KfuXFVKjEH+7ipHXly8CiUr
+	 bBu6+rzZ9g9NA==
+Date: Tue, 30 Dec 2025 10:23:04 +0800
 From: Shawn Guo <shawnguo@kernel.org>
-To: Ian Ray <ian.ray@gehealthcare.com>
+To: maudspierings@gocontroll.com
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Justin Waters <justin.waters@timesys.com>,
-	Akshay Bhat <akshay.bhat@timesys.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: imx6q-ba16: fix RTC interrupt level
-Message-ID: <aVM2vJIPggFjHn2t@dragon>
-References: <20251201095606.990-1-ian.ray@gehealthcare.com>
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 0/3] arm64: dts: freescale: moduline-display: several
+ fixes
+Message-ID: <aVM3iCWrKkpcqe2N@dragon>
+References: <20251201-disp_fix-v2-0-9b03026311b6@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,17 +48,27 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251201095606.990-1-ian.ray@gehealthcare.com>
+In-Reply-To: <20251201-disp_fix-v2-0-9b03026311b6@gocontroll.com>
 
-On Mon, Dec 01, 2025 at 11:56:05AM +0200, Ian Ray wrote:
-> RTC interrupt level should be set to "LOW". This was revealed by the
-> introduction of commit:
+On Mon, Dec 01, 2025 at 12:56:49PM +0100, Maud Spierings via B4 Relay wrote:
+> A couple of issues where discovered:
+> - compatibles should integrate the SoM
+> - the eqos mac address is stored in eth_mac1
 > 
->   f181987ef477 ("rtc: m41t80: use IRQ flags obtained from fwnode")
+> The first one is breaking, but it is early enough that it can be
+> corrected without causing any issues.
 > 
-> which changed the way IRQ type is obtained.
+> Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+> ---
+> Changes in v2:
+> - re-add the old compatible to fsl.yaml
+> - expand the reasoning for these changes in the commit messages
+> - Link to v1: https://lore.kernel.org/r/20251114-disp_fix-v1-0-49cbe826afc2@gocontroll.com
 > 
-> Fixes: 56c27310c1b4 ("ARM: dts: imx: Add Advantech BA-16 Qseven module")
-> Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+> ---
+> Maud Spierings (3):
+>       dt-bindings: arm: fsl: moduline-display: fix compatible
+>       arm64: dts: freescale: moduline-display: fix compatible
+>       arm64: dts: freescale: tx8p-ml81: fix eqos nvmem-cells
 
-Applied, thanks!
+Applied all, thanks!
