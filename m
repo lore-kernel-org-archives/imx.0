@@ -1,78 +1,77 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0DD221F12
-	for <imx@lists.linux.dev>; Tue, 30 Dec 2025 10:25:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D745D2E6CDB;
+	Tue, 30 Dec 2025 10:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767090337; cv=none; b=ErBN7hIt0IarIm78s1xGW729YBLHNXGiBZsJlLibrEKS5HvXXg2nlaEYQBLQYEsZMQ3arxo1IuzrdAuG+M4gkQ0gbwrCEGbGhg/wVDWbwQSYCndtllyn18hUQAYRkK4wuxC1H8Cnyt/0Tls5AH/9S75Sij525CtewZAP+5R7z7Y=
+	t=1767090806; cv=none; b=kSeSGKtlE4T3tzdUS+dhxmawVYcdVvjH1jwliPOV0V4VAzLU6h2NZ2WUxOQ0w0lAGEDPw+GNUTVTza8hrCXW8RJ17bkv+wPz31gQBtIRZkw3bMWFYlEj1B47Xno+3PiNECgfA138Zk1s4RepGyTQCu7KE/Gw0NshUqnqq7hkbJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767090337; c=relaxed/simple;
-	bh=UaMW4Isg1Ih7YV7hIfUjjn3+wCoccITuuZCbWsJ6/mc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ce0vwzzB49dbjHXtks3xChwh+EP6NxdWy9nvRMLV8DfFhM9xjVjxZ/mKHybsytdfFytFSZDMH5sKKqfxeZu3b3InrsuX/Tikn1ohQ53T6mCT4ajTw9+0Ftl4NBs6ugWIC9NmwdDSmEy6sSuT6hOsOouz8R8MH9xekjf+mkfIYro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=WenOvTcH; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1767090806; c=relaxed/simple;
+	bh=NjopScScNjiTaDj0Pt/NIrfapPm/FVFgEDlh1wyz6rE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=VCMHz8Y3KYO358+6kgIRC+On178nKwpTuuIuXwm8JOUnZPoT6UX8PnW6Kue3N/tfFZUz5WlQrlMqJsRNQsv9hj9k721tJRInskEsook6Q6UZecMOv38I4FjW4ZapZLPb30pxUGQ9CmEoYBPoWVE9CrDN4oc/MpXM8WzJAXpkRsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Po9DcAYw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="WenOvTcH"
-Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id EBFEF22D01;
-	Tue, 30 Dec 2025 11:25:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1767090326;
-	bh=UaMW4Isg1Ih7YV7hIfUjjn3+wCoccITuuZCbWsJ6/mc=;
-	h=Received:Received:From:To:Subject;
-	b=WenOvTcH9vJw+rKtYP66MBnWLyrRhFtNlv64tAQWNg1q4Xeaopj37HiNM6B1OlsFk
-	 AC8/FqBJs2O+zjGP7z6BAv+MdOr4tF1JwLGp8RaCNhF7omeBa9wb/r99uPOZt0rT2f
-	 Fq0uhfCswEluexqkia76aOpiGPgEJ3g4kiSRzB7c+Bnh91FOJp1nplKSIm4WSjvv8m
-	 EScwc2/7cnNK5ethxADtvCu2pTO0Itn4JCKwdkfxkuwsyR5oIlch3i6HabkQWQzA5b
-	 ay22oD3Q3oOx1JIKMJyUSj8477v7e7HhgyhDrnjmRfTR18GLYYeq0gf81BM/BAqrds
-	 6aftgHTauCEIg==
-Received: from livingston (unknown [192.168.42.11])
-	by gaggiata.pivistrello.it (Postfix) with ESMTP id 8A6227F9E6;
-	Tue, 30 Dec 2025 11:25:25 +0100 (CET)
-Received: from pivi by livingston with local (Exim 4.98.2)
-	(envelope-from <francesco@dolcini.it>)
-	id 1vaWur-000000001Ej-1eKT;
-	Tue, 30 Dec 2025 11:25:25 +0100
-Date: Tue, 30 Dec 2025 11:25:25 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Shawn Guo <shawnguo@kernel.org>
-Cc: Max Krummenacher <max.krummenacher@toradex.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, max.oss.09@gmail.com
-Subject: Re: [PATCH v1 0/3] arm64: dts: imx8x-colibri: add additional
- functionality
-Message-ID: <aVOolTfi5s9jqG2v@livingston.pivistrello.it>
-References: <20251031125003.275033-1-max.oss.09@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Po9DcAYw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB30C4CEFB;
+	Tue, 30 Dec 2025 10:33:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767090805;
+	bh=NjopScScNjiTaDj0Pt/NIrfapPm/FVFgEDlh1wyz6rE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Po9DcAYwY5tIE4dEQ86vPWJZaTUjXFQR1kHTj2umcizKxLAAH1ps5b3JH3h6/UiLf
+	 6AEczmi3teGvrkym2s8rhCqVGEyZXNpHCenWNaBpObeFSE8LnPNp8FIgO4NpDys/2x
+	 hgVnFGM+IBTvcts62LHn79uM4Mi6jvthKt3dSkqeNXFsXvLkWA7PUqYAN8gEJ1aVNk
+	 IK6gQpdZsvzr5jlwwC1NCM3l6Y4ouyGQjbEzkjhLjIIv+IC103pfqjhk+MPQPOogqL
+	 oLyELfnV57TqFukcx9F7Y+Z9mJRXu9DTsdqF/Zyo+uXt0S7ZMIrXu93hwYbsPMi/lF
+	 AXcYTXzKEIRZg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B59753808205;
+	Tue, 30 Dec 2025 10:30:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251031125003.275033-1-max.oss.09@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 net] net: enetc: do not print error log if addr is 0
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176709060754.3205848.10930624411819154546.git-patchwork-notify@kernel.org>
+Date: Tue, 30 Dec 2025 10:30:07 +0000
+References: <20251222022628.4016403-1-wei.fang@nxp.com>
+In-Reply-To: <20251222022628.4016403-1-wei.fang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
 
-Hello Shawn,
+Hello:
 
-On Fri, Oct 31, 2025 at 01:49:40PM +0100, max.oss.09@gmail.com wrote:
-> Provide a pwm-backlight.
-> Provide the 32kHz Wi-Fi clock used during low-power operation.
-> Configure CMA from the device tree.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-This series was not applied, any concern? Anything to change?
+On Mon, 22 Dec 2025 10:26:28 +0800 you wrote:
+> A value of 0 for addr indicates that the IEB_LBCR register does not
+> need to be configured, as its default value is 0. However, the driver
+> will print an error log if addr is 0, so this issue needs to be fixed.
+> 
+> Fixes: 50bfd9c06f0f ("net: enetc: set external PHY address in IERB for i.MX94 ENETC")
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> 
+> [...]
 
-Thanks,
-Francesco
+Here is the summary with links:
+  - [v2,net] net: enetc: do not print error log if addr is 0
+    https://git.kernel.org/netdev/net/c/5939b6dbcda8
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
