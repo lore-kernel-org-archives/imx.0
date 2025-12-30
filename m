@@ -1,77 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D745D2E6CDB;
-	Tue, 30 Dec 2025 10:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469D5248F73;
+	Tue, 30 Dec 2025 10:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767090806; cv=none; b=kSeSGKtlE4T3tzdUS+dhxmawVYcdVvjH1jwliPOV0V4VAzLU6h2NZ2WUxOQ0w0lAGEDPw+GNUTVTza8hrCXW8RJ17bkv+wPz31gQBtIRZkw3bMWFYlEj1B47Xno+3PiNECgfA138Zk1s4RepGyTQCu7KE/Gw0NshUqnqq7hkbJk=
+	t=1767091617; cv=none; b=Ieh0zZQYwX71ARoQVpt6Fh9kWV2TC6b4WPOv8itAgTq8lbCn4sYJ/qijrViFd+hQms/g7CQIhFMRBX/rgWnYf4W2tb695/Ow+Jq3chXSzs6/Vsn0bgXJ3GyGuoCYEu4UUJOU1M/4MY9bhwnFygaff8cgbyXWFJPIES/xhJHzBTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767090806; c=relaxed/simple;
-	bh=NjopScScNjiTaDj0Pt/NIrfapPm/FVFgEDlh1wyz6rE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=VCMHz8Y3KYO358+6kgIRC+On178nKwpTuuIuXwm8JOUnZPoT6UX8PnW6Kue3N/tfFZUz5WlQrlMqJsRNQsv9hj9k721tJRInskEsook6Q6UZecMOv38I4FjW4ZapZLPb30pxUGQ9CmEoYBPoWVE9CrDN4oc/MpXM8WzJAXpkRsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Po9DcAYw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767091617; c=relaxed/simple;
+	bh=XdtjgpQAgRDdjh2oZzm0in6AV/QXe+GroHwLTh8qWr4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nj/DLduauk0nXBsNMmS4eQ937krjf5JQUWnggCjclrmPFhflJ6p8IMTFM3UMLmVMhNtf2vnJ7crTPPaHh7WRC/4lI4MN2tfyRUD8QXdFN81gvE9P1sIDR0zH1h81rQD77PKx9Gtnn0rbm+wLHCTJwnVJK5255drTuLQ2SfEGKaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=PZTl4DwF; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Po9DcAYw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB30C4CEFB;
-	Tue, 30 Dec 2025 10:33:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767090805;
-	bh=NjopScScNjiTaDj0Pt/NIrfapPm/FVFgEDlh1wyz6rE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Po9DcAYwY5tIE4dEQ86vPWJZaTUjXFQR1kHTj2umcizKxLAAH1ps5b3JH3h6/UiLf
-	 6AEczmi3teGvrkym2s8rhCqVGEyZXNpHCenWNaBpObeFSE8LnPNp8FIgO4NpDys/2x
-	 hgVnFGM+IBTvcts62LHn79uM4Mi6jvthKt3dSkqeNXFsXvLkWA7PUqYAN8gEJ1aVNk
-	 IK6gQpdZsvzr5jlwwC1NCM3l6Y4ouyGQjbEzkjhLjIIv+IC103pfqjhk+MPQPOogqL
-	 oLyELfnV57TqFukcx9F7Y+Z9mJRXu9DTsdqF/Zyo+uXt0S7ZMIrXu93hwYbsPMi/lF
-	 AXcYTXzKEIRZg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B59753808205;
-	Tue, 30 Dec 2025 10:30:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="PZTl4DwF"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=aateUwJAsBS5ebefM0Zc7Bz+yjeqfX9VuoGySIleu9E=; b=PZTl4DwF3xaHNqfimFBTn4RXBA
+	DkT3T/aWBGIF1MgWAaP11qTxSOxD0I0+IQRzQKSUSwWJL+lfdJHbhp4FSPoa/kW19siILDLIP2W/2
+	pFve28IcEjalh5z3HMTU7ZyJa2/qV9V4swmuu/Ydy7Stw5Y8+56nU8Ab48r4pJLvQ+NE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vaXFJ-000raV-5k; Tue, 30 Dec 2025 11:46:33 +0100
+Date: Tue, 30 Dec 2025 11:46:33 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Marek Vasut <marex@nabladev.com>
+Cc: linux-arm-kernel@lists.infradead.org, Fedor Ross <fedor.ross@ifm.com>,
+	Christian Eggers <ceggers@arri.de>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Markus Heidelberg <m.heidelberg@cab.de>,
+	Rob Herring <robh@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] arm64: dts: imx8mn: Add ifm VHIP4 EvalBoard v1
+ and v2
+Message-ID: <e3d305ce-cdfa-4a11-bd54-9648b12a013f@lunn.ch>
+References: <20251229193706.73564-1-marex@nabladev.com>
+ <20251229193706.73564-4-marex@nabladev.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net] net: enetc: do not print error log if addr is 0
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176709060754.3205848.10930624411819154546.git-patchwork-notify@kernel.org>
-Date: Tue, 30 Dec 2025 10:30:07 +0000
-References: <20251222022628.4016403-1-wei.fang@nxp.com>
-In-Reply-To: <20251222022628.4016403-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251229193706.73564-4-marex@nabladev.com>
 
-Hello:
+> +&fec1 {
+> +	fsl,magic-packet;
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Upps, i probably cut out too much context. This FEC is connected to the Ethernet switch.
 
-On Mon, 22 Dec 2025 10:26:28 +0800 you wrote:
-> A value of 0 for addr indicates that the IEB_LBCR register does not
-> need to be configured, as its default value is 0. However, the driver
-> will print an error log if addr is 0, so this issue needs to be fixed.
-> 
-> Fixes: 50bfd9c06f0f ("net: enetc: set external PHY address in IERB for i.MX94 ENETC")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> 
-> [...]
+WoL for a port connected to a switch? Have you tested this? Normally
+you would have WoL on each port of the switch, and not on the conduit
+interface.
 
-Here is the summary with links:
-  - [v2,net] net: enetc: do not print error log if addr is 0
-    https://git.kernel.org/netdev/net/c/5939b6dbcda8
+> +&fec1 {
+> +	fsl,magic-packet;
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Have you tested WoL?
 
+> +&fec1 {
+> +	fsl,magic-packet;
 
+WoL again?
+
+	Andrew
