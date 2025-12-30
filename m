@@ -1,88 +1,114 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399C63191C2
-	for <imx@lists.linux.dev>; Tue, 30 Dec 2025 16:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F643A1E82;
+	Tue, 30 Dec 2025 16:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767111877; cv=none; b=oR653lM2BB3Veqot06WhwlmxJ891VAiwRRHbYixL6tQ8nQEaR91lkrGUiIVTOIk0JS98kLPgD/kwkglRnf62mmotj2kVMX2+KoYE2FNsEPhhhTRMYCAE7xVa8c/7RQqaOLB1n24oKX2LNmVUjud4AZJn5rapHZ0NX5pXpeUgLVg=
+	t=1767112258; cv=none; b=RhIj0vYaBITeJ3fhM6Ap19LeTb8The8DS0gER3JWyr2SWUM2y0X9sZSzYnf26tYERdTyIU0kZMdFCBK3WH5mJ5uN7ttE5PlX0Yq5wAwqe1ex8xscjc6mhKtQCrASaLw1HGSF1mXxlKSGEJxK5hiivu7AHGhbPaFKLokUNv9FmgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767111877; c=relaxed/simple;
-	bh=kcJx4Chw8iTa6crvHDEcBSzGwBKEtsF0UrxWd1VgPTc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S6z8F6lke18sFQub0Xq0ZOfQsfIg0eQaqCl6A7m6/W97qLBVxaq94ZBGEkUBZrb6M+fwcWmnpO2vmjiTj8KkgOM1S4MXHVFwI7zM2V9sGTtyIfCnUjx4utQk0QHDqkeQuxhotKVNYAtvedQA4gP2irVDH4jWiGkkdbZZc3auve8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=X3KfMSP8; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1767112258; c=relaxed/simple;
+	bh=xBkplaWe3jxxylobUpSj/kmtOngI9khErBF92jtJ7Ag=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AQTk1fdzf163HNEQhvCakGM7KWvu8yMDRbZQFXT30YRQHYMwgd5vH+K6EGerMx0GG/A2+YTIpV2x+duJVlaN9asHg5Wpasw+kEtaeDzMlJvEzvD5HZyBBT3B/yRIhU3Vt+tjl23vqVmzL/Foh9Q70u4TPl4lQcKwGWs/JzFO5tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p0B7Q66U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="X3KfMSP8"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 8A8BCC1D73A;
-	Tue, 30 Dec 2025 16:24:07 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id EDEA56072C;
-	Tue, 30 Dec 2025 16:24:32 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0C8CA113B029B;
-	Tue, 30 Dec 2025 17:24:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767111871; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=PjLaYjrR1MKuGXNVMXC/3x7JElHhhnNjgoytiQMaSJ4=;
-	b=X3KfMSP85DHhW63H9aYJGfgf7piH+p8p/oKHaqM0A3q1yoh9B4WigDduzbQlJBtk0/Rxgd
-	7rINi6glPvbrkkisffEiOZG/p1DfWz9D/yjmf6mqsWZ6jN2fy5E0m5xu6hBgrE+ZpGZecn
-	y8Oz0YFHt60/2ev1XLSNVOIAQLlGaB2dSvGpfHk8naCwZrtV2KA3Ta4h5jQ8QPqtkXLfGH
-	pxEdp2m8rfoH6lmvzsRvooC8VGnEDLl7WlvSXx39MM/On/ujHwxaNWsrWrzSlcNJ/Jvvxk
-	hgfaThTIhPdc+hTgy2UIqnLxwlrnefR1RtuWH6Y2l8OWGNtzoxF2KnF9UGPnZw==
-Date: Tue, 30 Dec 2025 17:24:27 +0100
-From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-To: Fabian Pflug <f.pflug@pengutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Haidong Zheng
- <haidong.zheng@nxp.com>, Danwei Luo <danwei.luo@nxp.com>, Lei Xu
- <lei.xu@nxp.com>
-Subject: Re: [PATCH v4 2/2] arm64: dts: freescale: add support for NXP
- i.MX93 FRDM
-Message-ID: <20251230172427.4f22ac7c@windsurf>
-In-Reply-To: <20251230171548.67289601@windsurf>
-References: <20251218-fpg-nxp-imx93-frdm-v4-0-cd3a9f6ac89a@pengutronix.de>
-	<20251218-fpg-nxp-imx93-frdm-v4-2-cd3a9f6ac89a@pengutronix.de>
-	<20251230171548.67289601@windsurf>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p0B7Q66U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8AD5C4CEFB;
+	Tue, 30 Dec 2025 16:30:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767112258;
+	bh=xBkplaWe3jxxylobUpSj/kmtOngI9khErBF92jtJ7Ag=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p0B7Q66UP68nuME1SLqJlEaLnd6guein2q2GVriVleGpkIbJi/3FzCgdqLRe6tVut
+	 VyfauZPJ/+h5e1eTVwCM/xL5J0XeV8k5MxgaL9GpsN8Yhz2NQJX5a9PKdBPahkCBH1
+	 eXafAuIE/q3h5SEidXfVZr6hsNyMjTy//tXFzWbSOMn6HNhegXnkY4az7ZlExVJ6mH
+	 tnzEfhmF3bcW5eYVOqm035d/SoEiemt0Sj+iYxPjuWJi7TCpeKlXbmXcJNQNPw0GAQ
+	 B62bmAR3eXaxana49jJlMzaoRpsh77TPI2p1rbUwLqhEftidQFxTnHe8P4m8yy3t5L
+	 fvcg789xk9OSA==
+Date: Tue, 30 Dec 2025 22:00:49 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Vinod Koul <vkoul@kernel.org>, 
+	Gustavo Pimentel <Gustavo.Pimentel@synopsys.com>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Christoph Hellwig <hch@lst.de>, Niklas Cassel <cassel@kernel.org>, dmaengine@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-nvme@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH 01/11] dmaengine: dw-edma: Add spinlock to protect
+ DONE_INT_MASK and ABORT_INT_MASK
+Message-ID: <u5morpcx47pgyg7emt6yhhyivevwtbgvp7xme4uf6ssrcvew2n@yznzt7mj4ns3>
+References: <20251212-edma_ll-v1-0-fc863d9f5ca3@nxp.com>
+ <20251212-edma_ll-v1-1-fc863d9f5ca3@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251212-edma_ll-v1-1-fc863d9f5ca3@nxp.com>
 
-Hello (again),
-
-On Tue, 30 Dec 2025 17:15:48 +0100
-Thomas Petazzoni <thomas.petazzoni@bootlin.com> wrote:
-
-> I see the PMIC interrupt and the RTC interrupts are routed to the I2C
-> GPIO expander at 1-0022, so I imagine either the PMIC or the RTC are
-> triggering an interrupt (left enabled by U-Boot), and the kernel isn't
-> compiled with the driver for either the PMIC or the RTC, and therefore
-> there's no IRQ handler?
+On Fri, Dec 12, 2025 at 05:24:40PM -0500, Frank Li wrote:
+> The DONE_INT_MASK and ABORT_INT_MASK registers are shared by all DMA
+> channels, and modifying them requires a read-modify-write sequence.
+> Because this operation is not atomic, concurrent calls to
+> dw_edma_v0_core_start() can introduce race conditions if two channels
+> update these registers simultaneously.
 > 
-> (I confess I didn't investigate more than that at this point.)
+> Add a spinlock to serialize access to these registers and prevent race
+> conditions.
+> 
 
-Upon closer inspection, I in fact get thousands over IRQ #100 per
-seconds right after boot, until the point where it reaches 100000 IRQ
-events, and the splat appears, with the IRQ being subsequently
-disabled. So it's not just one interrupt, but a storm of it.
+dw_edma_v0_core_start() is called by dw_edma_start_transfer() in 3 places, and
+protected by 'chan->vc.lock' in 2 places. Only in dw_edma_device_resume(), it is
+not protected. Don't you need to protect it instead?
 
-Thomas
+- Mani
+
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/dma/dw-edma/dw-edma-v0-core.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/dma/dw-edma/dw-edma-v0-core.c b/drivers/dma/dw-edma/dw-edma-v0-core.c
+> index b75fdaffad9a4ea6cd8d15e8f43bea550848b46c..2850a9df80f54d00789144415ed2dfe31dea3965 100644
+> --- a/drivers/dma/dw-edma/dw-edma-v0-core.c
+> +++ b/drivers/dma/dw-edma/dw-edma-v0-core.c
+> @@ -364,6 +364,7 @@ static void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+>  {
+>  	struct dw_edma_chan *chan = chunk->chan;
+>  	struct dw_edma *dw = chan->dw;
+> +	unsigned long flags;
+>  	u32 tmp;
+>  
+>  	dw_edma_v0_core_write_chunk(chunk);
+> @@ -408,6 +409,8 @@ static void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+>  			}
+>  		}
+>  		/* Interrupt unmask - done, abort */
+> +		raw_spin_lock_irqsave(&dw->lock, flags);
+> +
+>  		tmp = GET_RW_32(dw, chan->dir, int_mask);
+>  		tmp &= ~FIELD_PREP(EDMA_V0_DONE_INT_MASK, BIT(chan->id));
+>  		tmp &= ~FIELD_PREP(EDMA_V0_ABORT_INT_MASK, BIT(chan->id));
+> @@ -416,6 +419,9 @@ static void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+>  		tmp = GET_RW_32(dw, chan->dir, linked_list_err_en);
+>  		tmp |= FIELD_PREP(EDMA_V0_LINKED_LIST_ERR_MASK, BIT(chan->id));
+>  		SET_RW_32(dw, chan->dir, linked_list_err_en, tmp);
+> +
+> +		raw_spin_unlock_irqrestore(&dw->lock, flags);
+> +
+>  		/* Channel control */
+>  		SET_CH_32(dw, chan->dir, chan->id, ch_control1,
+>  			  (DW_EDMA_V0_CCS | DW_EDMA_V0_LLE));
+> 
+> -- 
+> 2.34.1
+> 
+
 -- 
-Thomas Petazzoni, co-owner and CEO, Bootlin
-Embedded Linux and Kernel engineering and training
-https://bootlin.com
+மணிவண்ணன் சதாசிவம்
