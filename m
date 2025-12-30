@@ -1,74 +1,73 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEFD2DAFBE
-	for <imx@lists.linux.dev>; Tue, 30 Dec 2025 11:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF4F2D0635
+	for <imx@lists.linux.dev>; Tue, 30 Dec 2025 11:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767093175; cv=none; b=LzhT8Um1zr04VQWJXhZ3IVy8uw3qNMERAAdD/RbnFn7gU9hX2KpYhYEavevbFD8Y7Ryzo4HAD/emqqj/rZRRAzK98tddduFQY3TJw198t7ML1TlOzD4SwsdeooqYmMXccxMnWcUJlKbyzVLArmQOmEKKLHTgS4bksW913KYWZyM=
+	t=1767093208; cv=none; b=bNItmaJawFA4ILHd6Uwxz0tMkRD0werU98a3rN1ELrTteUEU8CfNKFAg1C9iGZ1wDSCclPoO8DKJEZrF//zOv/PO4f5Q1KCFTf1QTse+WQYWRErpK0Hrt5cIcVcZHRKVJktiS+Y9lEnsnhYyK5D1PvneZUNCeKljVJGhxBTA9sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767093175; c=relaxed/simple;
-	bh=JcU9GrRpSQvM7DMb6kcX9IdaSrJg/ryVTN6TW/UWbCY=;
+	s=arc-20240116; t=1767093208; c=relaxed/simple;
+	bh=Mou9GuRir7LDbJR0BMVejC7OoEPX0gIL3s17cmVn5IM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=At2RJIiwmley9vRYZqXp1vzU0tiEKr04WUMn7fd8LuLdSMjhFsVrlzWFR/tgdjoVCRXEGAWZZwddlrcPeRF+6oQc90mfVdNbQMptcFTSMqfqUoIEommn1SrTUkvMQ8gbvqkvXlzPyJWib8+qze1Q3Utkz13VHZE3Assbs3a8U08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CFrBkeaZ; arc=none smtp.client-ip=209.85.208.177
+	 To:Cc:Content-Type; b=CXxLIJki3P2RoUeu+LTZaTsSkqSwE7+yrEQQuTipKKwvZgeWQSwLcfbTylKpwYckI0+ObXO5uL8LjXQM1Drc2zu2UTpnmrlxDjXYI+fi3l3Ei4oBngaOyieoDbYpv4AldqGPEkNbpd3+QzjoG4jOQMwK3cTPzG3YWPQQdLY4Mg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CTg7mBrt; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CFrBkeaZ"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-37b99da107cso91499831fa.1
-        for <imx@lists.linux.dev>; Tue, 30 Dec 2025 03:12:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CTg7mBrt"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-59b30275e69so4886950e87.1
+        for <imx@lists.linux.dev>; Tue, 30 Dec 2025 03:13:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1767093172; x=1767697972; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1767093205; x=1767698005; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/yNA1AV5iM1LS0NSmDZcE4cFhhXCoef1YyBUYDjkr1Y=;
-        b=CFrBkeaZHvjUemi2wwQMjHFE1Xh/NwMwAy8MI19jZDraMTVEgDDFnSwtpBYENPO8sq
-         OtXvMBaBh1GrZtOuiFidO866JcQNkqgGvQsoOuW5Xh50N3I6BduP1nHjAnwKf5EP6Uv9
-         vZ0AM59prRxGuvhWTmNWoNhyaMSn/lpmeOCoeteL4mpFBmTYrw6PJVHa32FEBjrOoeYe
-         5NK+zn+VDQ1DoogQ0GSoxrhjgjBjZqClmpLG1kRcCRWSOkxdwopGEyvVsFZVWluGiDnF
-         +2tOqze+EOccIWk3z18YlIcfGJ1GgJsu0J1+KNvkmwGK08Ix+79IL2rHBYYg6IBKr3m/
-         VSxA==
+        bh=0DhaHJWr2nWv1al9K6mLQLe34skpWhfOOb6P3+q+LeM=;
+        b=CTg7mBrtIMip3iAjDgNGvgHaM+rvhSHrlsnudbFW/gCQhxl/AdlCHVDhxH0Qfuj5Z9
+         jCS5w+f6/P0D7feS9Mv34nxziav7+ynvpdbDgDiN3xxno2n+2LqHz1pzS0zMBZQ8VId7
+         u/dnu5PAj7MAG97zRkjM35WvHJ07mu5iA//dFnFYlVSwj/0rSlXemr8mC76HFCB+1FeG
+         siTSkd6grpZ6skJsIn8cKZMMIWloV2R/g/xNVRS0+5Myh9Hk/Hdq+R0OozK/YorwsI5e
+         NnLBRSUBbyiNVh0WaTUub5XRLYCTeuIw8RcvQtBJAEBx/pkBzksI2w9s6NDnFI9NpaKs
+         5ehA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767093172; x=1767697972;
+        d=1e100.net; s=20230601; t=1767093205; x=1767698005;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=/yNA1AV5iM1LS0NSmDZcE4cFhhXCoef1YyBUYDjkr1Y=;
-        b=JYun8ZFsPUzHkmD00rsm1229hXTRYiIraBRomYLXsTFPMeIaGKVSDT9mxCGKjMWyNn
-         5zFlTHlujhj6+hke+X1shumlwRzEUJy07jVSYpaqofDdSZrTJKW+BW+oCN4pZq4dhLFz
-         s9yJ2g0zoSl775KT9jiYZ58+DQkDSaExAK9L7hMgTT7FVzotLsAt8IfdHiGCxzOwAP/j
-         +amF+hddNhN0SihMEJqXl9EzR9uecooQuwk0es0xARpNlsmaLbx/jBjeDg8XYIGIAwif
-         URF352seruyvVIrfZB+ZpKnUWtUUXkePr4fC02+jy31dNhUMAqasRmOioIRDk7oJ/4OU
-         1ssw==
-X-Forwarded-Encrypted: i=1; AJvYcCW5MoKIWx3ujD6BCP7+9m8G1cpadAIwlejRyfFST1p8+RvipK36Fz5zKm9xiBiHu/V3yx8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw1GqDIlXOy+xX21O25QtT83qE0ZjSan+aqXCHivxieWJXYvEpL
-	t6e23JyUkye99ZPYb/uXFcNVTDwxm8SjzUY/fLLyqDhG0gbAU9X6fpw7cFHjg22TVy/X2N/wUly
-	BLiE+o52WVtSacroK/9ce1MJTp2YxxbY=
-X-Gm-Gg: AY/fxX6g6d8JTE4BfBazNlb12FSZnMDFOTppDNGCQHn7eiFEw4wotWbY5JRWajABXZ4
-	SXHSFkxpjBmEdov65Q8Q3nfjGf4kRpyYs6nMHCe4htCn9g0T5Nsw1tdBkydkpNayhZe/CjgrwCC
-	6fKojcFHlvXm9Iiab9yBeHI4iEFAxOF2RY+QpVbN+T5gXOwLxKTr1f3avy/xc75liAvJJM01LGM
-	3JPfmv026+DMm6B9KnbAh8dAu2YL0ej3iGB0K7n9OPKSqNm8ssfXls6ehKTF9UKhOXFJeZT/WhU
-	5vViNzhs2NGtloVA56AOFebskHY=
-X-Google-Smtp-Source: AGHT+IE2M4WxFZqnEfPrEAcC8SMB2vOImghddR//qgcMdMKJ1JqjQfXz0rueUs8Uu20fw0GhWjMPl3LuKHp94JXv2fI=
-X-Received: by 2002:a05:651c:1508:b0:382:4ed0:2b90 with SMTP id
- 38308e7fff4ca-3824ed037e2mr69073551fa.11.1767093168319; Tue, 30 Dec 2025
- 03:12:48 -0800 (PST)
+        bh=0DhaHJWr2nWv1al9K6mLQLe34skpWhfOOb6P3+q+LeM=;
+        b=eKVU4lqLVa9AXjlRgMrdSR6zCv5fjytI4x4/hYxakP5KC2F3taCIIOHrlQUE8HRSSR
+         7B/ltRiJqei7LRQyZy34VxQq3++u2MHPuNlxL0a83tk4u2W61P0kldW5dfrG2/OdmqqZ
+         /WGyYisCtvXEnub26PPqLD8PUdj7RNO3Oykr6LX4MU/9cFsPeTyRgaVBVZY90K1Sfdue
+         ApI1+swT5BFEEkYjj42AkudXGS90J/sLinSJTwd/CSMxCgryPS/qJkP0RcSpUAxDwOW5
+         WCstIZge0KyOtoLbInP3siaPRLiZZhoMMpVHQPtZerTy9C9lc+oMtMPT66ennXhjAEw8
+         ZMOg==
+X-Forwarded-Encrypted: i=1; AJvYcCW4doZWGbp8Nsk1QL49gt+RrMM8rddn8oRLS3VcA+Q9gEp1RqEZ7ra2lz6uo+Cr1oddA2E=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzoZKi35Nty//1kE3Tb99xmB9HY9wpwxekaGBaHQkygWhmoR3LJ
+	ljOTVKdAIydP7SIoUkq5CV3s1kj0eSJo0TKhpgEWIthNPaBQwDc7wf2YmvyS/B2n8ZZsBciH1pL
+	Rd8gtCOcWWSgLx8ujaoCk2n/BcLEV/W0=
+X-Gm-Gg: AY/fxX6Rbwm0mvQo1hW1TGi54yHMfFF785GZsNVoIRIHb3JHBKkAkBSaMJuPWV/hIjO
+	jkiO6NLQdxcxLc4kHD2jFxAEQoQ5SmCXwRChSsIirQIq8EHhGp47g7+8FaMyD8onI4TGNnfykcX
+	Y4FbPho1RnnvU38iLsBvx2awG1L9ooogRvLq5pdqKXlfZSKzTaTUrBCElju28s5WbDZf4b7Bo53
+	BoNvRbT232S6A59jsUjztVN8YvzvTOFDQQwey2evkW/2830WGy84cG/6SybNx1mJeuhJUf+uzbS
+	Vd56JQxybuvIl+5mF8w/FfnFnYc=
+X-Google-Smtp-Source: AGHT+IFq8iKQHu6vpcCYiWXyzz3tsn0MBXJbshrFfK/UlMVKowVKSf2tIcJTFEyHx5cpFKKTRtj3dLTLa2JxOdsPHZc=
+X-Received: by 2002:a05:6512:3e06:b0:59a:107a:4593 with SMTP id
+ 2adb3069b0e04-59a17d722admr11700584e87.4.1767093204378; Tue, 30 Dec 2025
+ 03:13:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251229213726.79374-1-stefano.r@variscite.com> <20251229213726.79374-4-stefano.r@variscite.com>
-In-Reply-To: <20251229213726.79374-4-stefano.r@variscite.com>
+References: <20251229213726.79374-1-stefano.r@variscite.com> <20251229213726.79374-3-stefano.r@variscite.com>
+In-Reply-To: <20251229213726.79374-3-stefano.r@variscite.com>
 From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 30 Dec 2025 08:12:37 -0300
-X-Gm-Features: AQt7F2pM6UnQwKRWIIbHFDh2-hbVrXhUaR1MhekQgxaBPsnwjGmNGu1vdJLxk04
-Message-ID: <CAOMZO5CjdQiy2nJTEL-HK+xzZ9EyAE1PMhoUroP2nTZ07pJbzg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] arm64: dts: imx95-var-dart: Add support for
- Variscite Sonata board
+Date: Tue, 30 Dec 2025 08:13:13 -0300
+X-Gm-Features: AQt7F2omZLLu61VmQRr9xvfISMKNSHVaUEafxRkAtNsj_CTzmp5R38uxHvlk4qA
+Message-ID: <CAOMZO5CsN-DMKoJ2Fz063tVKVqsr6Y1dq7B1Mg=Krz+_g1tQcg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] arm64: dts: freescale: Add support for Variscite DART-MX95
 To: Stefano Radaelli <stefano.radaelli21@gmail.com>
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Stefano Radaelli <stefano.r@variscite.com>, Rob Herring <robh@kernel.org>, 
@@ -85,12 +84,26 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Dec 29, 2025 at 6:37=E2=80=AFPM Stefano Radaelli
 <stefano.radaelli21@gmail.com> wrote:
 
-> +       /* Capacitive touch controller */
-> +       ft5x06_ts: ft5x06_ts@38 {
+> +       reg_audio: regulator-audio-vdd {
+> +               compatible =3D "regulator-fixed";
+> +               regulator-name =3D "wm8904_supply";
+> +               regulator-min-microvolt =3D <3300000>;
+> +               regulator-max-microvolt =3D <3300000>;
+> +               regulator-always-on;
 
-Node names should be generic: touchscreen@38
+Please drop 'regulator-always-on'. reg_audio is consumed by the audio codec=
+.
 
-> +       /* Resistive touch controller */
-> +       ads7846@0 {
+> +&lpi2c8 {
+> +       clock-frequency =3D <400000>;
+> +       pinctrl-names =3D "default","gpio","sleep";
+> +       pinctrl-0 =3D <&pinctrl_lpi2c8>;
+> +       pinctrl-1 =3D <&pinctrl_lpi2c8_gpio>;
+> +       pinctrl-2 =3D <&pinctrl_lpi2c8_gpio>;
+> +       scl-gpios =3D <&gpio2 10 GPIO_ACTIVE_HIGH>;
+> +       sda-gpios =3D <&gpio2 11 GPIO_ACTIVE_HIGH>;
+> +       status =3D "okay";
+> +
+> +       wm8904: codec@1a {
 
-touchscreen@0
+audio-codec@1a
