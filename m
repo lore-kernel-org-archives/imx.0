@@ -1,44 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403957E0E4;
-	Tue, 30 Dec 2025 03:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244C52641FC;
+	Tue, 30 Dec 2025 03:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767064746; cv=none; b=P0jy3QMkr66lDHFdYq5Ld+dhWUdkkiM7quhUoLNfI28uhIohUp5DmlEvAV/Z85y0TsYYyUl+MHoYUM0W+fHMy6XwvNCEm4qXMlggtYrB0pAffW5iiLxP3uH8DhAo8hfh9uLu0gaSoD02vwMrs8zlZHXFwwjct/5fYJruTqaNXYU=
+	t=1767065303; cv=none; b=p6GP/36OZdOQy7znwoo2O3/ONUYtiTCQZULE67PTb0wHMZygZPhfupz4ki5UsC17Oy5Dn+uopIIOzPGHZIEMeIZagJDDXYXYK7OjYjooPugbhuRajCjYvHIKNUERFB74WXr9oXCBN1ffqmAISS6ZTP0A7gS/tsL5NEN7k8DbH0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767064746; c=relaxed/simple;
-	bh=O2r1KwYYSDALwqUvU7r3CqahDZShCtKWBjve35FT1yg=;
+	s=arc-20240116; t=1767065303; c=relaxed/simple;
+	bh=Dccpw7NPvtBDj/FiKmoCP1aZ1Hu8cpN1GGFZQAOlyAE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FDu3CfXo5VbWsv5O8xYazmTHny9VnVu49JA76G7ilCpnyo4ZA3IEMf0awkAKNEhBNDhsOPlPZiS+47M73Fi/5IJoWbViTVHo9MuvC8iq5r84YIjn63qp85ydVaTasygmQtczkIBSaktXlJLzrcH1LQiru/TDaGQawooqn2RkA8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MGYeLxOW; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=oUsLbBNTcvtli16R8c/gE7EqWueBANdYzREczdjblYp1K0tZr8RoM/sHPuGro0JSd1B1AjfESCBnHRBkHm7CcnMmOnQOguiv05VhQ/Vu956hzTFfI9oFXKgdRVdbK55M3l18UoRTHk+qoyaC6mw2QBUyz0T1T1XIbdqVF99dRoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S3/K7jpk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MGYeLxOW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495F8C4CEF7;
-	Tue, 30 Dec 2025 03:19:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S3/K7jpk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87405C16AAE;
+	Tue, 30 Dec 2025 03:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767064746;
-	bh=O2r1KwYYSDALwqUvU7r3CqahDZShCtKWBjve35FT1yg=;
+	s=k20201202; t=1767065302;
+	bh=Dccpw7NPvtBDj/FiKmoCP1aZ1Hu8cpN1GGFZQAOlyAE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MGYeLxOWYN/Zq1UplbA7ORcLUNaZVqIbkVkof0sen7rRVF20HpmHevaE3Whe96Ixi
-	 6cwDUlwvfx/blUnoiWJYgseAEoeHysqVB3+bFYSTAMEIqDUG9muoDiiOPJAX/AkEKi
-	 GspB300ck4WjNDWmvMp407nnK/YRUjaLKadyNVbJBDR1/rEGbAL5rsANgFJERG6SuQ
-	 0KlLoUbkEBKvJkoLb6GCVTMY9359U7qNpYDKMNG8XmPzwr1O9l6EErDPPR9PD7Z4Q8
-	 wQtP8WVpfkTrtE5bCqhJfLhFmJWOKRVwh+WvCwBkyWuoQisO/Yz/IFsvs4tQleVOJe
-	 2COgC16X2L2Og==
-Date: Tue, 30 Dec 2025 11:19:01 +0800
+	b=S3/K7jpk/8nZPjwYl44wpek4Pb6k5lsqGww8UKUxKm0vtED6l/Qe6gmgMFRl22BR0
+	 Rb0Hbp6YVKnByxVtcyD5CLRDuUzvtx+SITxnWHn1oUemGtsV8vsguciQI55RRm85AL
+	 Lg3BiEh5kRHpVeKfjHWDCDx0GutRyXKaFIEFVZ5znJvGR5BfBZDBunoaTKq6aZKH+H
+	 33DQo2cxFKA+uvpnZl5y27MTkzfP77a2YQN+oCeFtrTngRqMdQ0y50E8i0adNTfeeb
+	 8/YqrJNGlXXHdYo52LQo+xVR9nkHxFRUO0HMwmoVprvOdMmmOC/9a5jNIeB4dABhoV
+	 eDpJOeW7fuGDg==
+Date: Tue, 30 Dec 2025 11:28:16 +0800
 From: Shawn Guo <shawnguo@kernel.org>
-To: Tim Harvey <tharvey@gateworks.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	bhelgaas@google.com, frank.li@nxp.com, l.stach@pengutronix.de,
+	lpieralisi@kernel.org, kwilczynski@kernel.org, mani@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: imx8m{m,p}-venice-gw71xx: Add Magetometer
-Message-ID: <aVNEpXM3XG8Dfczl@dragon>
-References: <20251209205828.689999-1-tharvey@gateworks.com>
+Subject: Re: [PATCH v10 4/4] arm64: dt: imx95: Add the missed ref clock for
+ PCIe[0,1]
+Message-ID: <aVNG0BjbEVHhgNCa@dragon>
+References: <20251211064821.2707001-1-hongxing.zhu@nxp.com>
+ <20251211064821.2707001-5-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,11 +49,53 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251209205828.689999-1-tharvey@gateworks.com>
+In-Reply-To: <20251211064821.2707001-5-hongxing.zhu@nxp.com>
 
-On Tue, Dec 09, 2025 at 12:58:28PM -0800, Tim Harvey wrote:
-> Add support for the optional LIS2MDL magnetometer on GW71xx baseboards.
+On Thu, Dec 11, 2025 at 02:48:21PM +0800, Richard Zhu wrote:
+> i.MX95 PCIes have two reference clock inputs, one of them is from
+> internal PLL. It's wired inside chip and present as "ref" clock. It's
+> not an optional clock.
 > 
-> Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+> Add the missed ref clock for PCIe[0,1].
+> 
+> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
 
-Applied, thanks!
+It doesn't seem to apply to my tree.
+
+Shawn
+
+> ---
+>  .../boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
+> index 5b6b2bb80b288..1258fcb54681e 100644
+> --- a/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx95-tqma9596sa-mb-smarc-2.dts
+> @@ -237,8 +237,9 @@ &pcie0 {
+>  	clocks = <&scmi_clk IMX95_CLK_HSIO>,
+>  		 <&pcieclk 1>,
+>  		 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+> -		 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+> -	clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
+> +		 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>,
+> +		 <&hsio_blk_ctl 0>;
+> +	clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux", "ref";
+>  	reset-gpio = <&expander2 9 GPIO_ACTIVE_LOW>;
+>  	status = "okay";
+>  };
+> @@ -250,8 +251,9 @@ &pcie1 {
+>  	clocks = <&scmi_clk IMX95_CLK_HSIO>,
+>  		 <&pcieclk 0>,
+>  		 <&scmi_clk IMX95_CLK_HSIOPLL_VCO>,
+> -		 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>;
+> -	clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux";
+> +		 <&scmi_clk IMX95_CLK_HSIOPCIEAUX>,
+> +		 <&hsio_blk_ctl 0>;
+> +	clock-names = "pcie", "pcie_bus", "pcie_phy", "pcie_aux", "ref";
+>  	reset-gpio = <&expander2 10 GPIO_ACTIVE_LOW>;
+>  	status = "okay";
+>  };
+> -- 
+> 2.37.1
+> 
