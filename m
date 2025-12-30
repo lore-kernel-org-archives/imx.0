@@ -1,103 +1,96 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7F413957E;
-	Tue, 30 Dec 2025 10:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEFD2DAFBE
+	for <imx@lists.linux.dev>; Tue, 30 Dec 2025 11:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767092002; cv=none; b=asrNftZNxgFylBwLplzbAHN9uyNPiNneC+rQlnh+eqJToqXXvLuL7WyrWOMlyaw8aSiG0RjBHKe0pmdtpeJPvTqpiKAur7ibM7m32fFU2Q1r0vZlYMLWUTprtwVVKUHeQm4D7kRtHY2pzjAuwM7XqNdCVSoeKu/GCpvDuJnzS0Y=
+	t=1767093175; cv=none; b=LzhT8Um1zr04VQWJXhZ3IVy8uw3qNMERAAdD/RbnFn7gU9hX2KpYhYEavevbFD8Y7Ryzo4HAD/emqqj/rZRRAzK98tddduFQY3TJw198t7ML1TlOzD4SwsdeooqYmMXccxMnWcUJlKbyzVLArmQOmEKKLHTgS4bksW913KYWZyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767092002; c=relaxed/simple;
-	bh=YH5K4RwvK0mSgWXXBkf+H6wGSy4p/o+F8pMT1PLCKno=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ugx+rG7EW61skqjPzTEFts9uCiTCLJVWpWodFHE2nerrxPupwsdSEUNEzG5p6Oq2khrwTNabGKHttrftrfUDzeLSVr0/4w132QMOsNs+kRYt02KedcQhnDv3QuTpqKwsF85f7stJ8ODuj/V8yhf1A3/rVgOeM05bXDtQETT8K8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=VF9GFn1+; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1767093175; c=relaxed/simple;
+	bh=JcU9GrRpSQvM7DMb6kcX9IdaSrJg/ryVTN6TW/UWbCY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=At2RJIiwmley9vRYZqXp1vzU0tiEKr04WUMn7fd8LuLdSMjhFsVrlzWFR/tgdjoVCRXEGAWZZwddlrcPeRF+6oQc90mfVdNbQMptcFTSMqfqUoIEommn1SrTUkvMQ8gbvqkvXlzPyJWib8+qze1Q3Utkz13VHZE3Assbs3a8U08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CFrBkeaZ; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="VF9GFn1+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=RvrIXXtJkwQLpKLNYX+FQY6pO76+th3R8O23dDJCL7Y=; b=VF9GFn1+aPe5Sxe33P/Kxgmtza
-	6sKw4xc5OUnR5WrTwjMLpMwF+Su7o9Yg1chE/E0HgIL9PXbmPwAC5RRjfJUVJjoGh/Q9VgfWTqevN
-	MdRvAQ3AgTN/6x8xJZoQj+21QpMm1DS4lbrNtgIXleh17Kf/GndrGNAOFwRSBcPQeCuo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vaXLp-000rca-IT; Tue, 30 Dec 2025 11:53:17 +0100
-Date: Tue, 30 Dec 2025 11:53:17 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Yannic Moog <y.moog@phytec.de>,
-	Primoz Fiser <primoz.fiser@norik.com>,
-	Markus Niebel <Markus.Niebel@tq-group.com>,
-	Josua Mayer <josua@solid-run.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 3/3] arm64: dts: imx95-var-dart: Add support for
- Variscite Sonata board
-Message-ID: <138b59d1-e001-4c9b-bf8b-a5af703d747a@lunn.ch>
-References: <20251229213726.79374-1-stefano.r@variscite.com>
- <20251229213726.79374-4-stefano.r@variscite.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CFrBkeaZ"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-37b99da107cso91499831fa.1
+        for <imx@lists.linux.dev>; Tue, 30 Dec 2025 03:12:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767093172; x=1767697972; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/yNA1AV5iM1LS0NSmDZcE4cFhhXCoef1YyBUYDjkr1Y=;
+        b=CFrBkeaZHvjUemi2wwQMjHFE1Xh/NwMwAy8MI19jZDraMTVEgDDFnSwtpBYENPO8sq
+         OtXvMBaBh1GrZtOuiFidO866JcQNkqgGvQsoOuW5Xh50N3I6BduP1nHjAnwKf5EP6Uv9
+         vZ0AM59prRxGuvhWTmNWoNhyaMSn/lpmeOCoeteL4mpFBmTYrw6PJVHa32FEBjrOoeYe
+         5NK+zn+VDQ1DoogQ0GSoxrhjgjBjZqClmpLG1kRcCRWSOkxdwopGEyvVsFZVWluGiDnF
+         +2tOqze+EOccIWk3z18YlIcfGJ1GgJsu0J1+KNvkmwGK08Ix+79IL2rHBYYg6IBKr3m/
+         VSxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767093172; x=1767697972;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/yNA1AV5iM1LS0NSmDZcE4cFhhXCoef1YyBUYDjkr1Y=;
+        b=JYun8ZFsPUzHkmD00rsm1229hXTRYiIraBRomYLXsTFPMeIaGKVSDT9mxCGKjMWyNn
+         5zFlTHlujhj6+hke+X1shumlwRzEUJy07jVSYpaqofDdSZrTJKW+BW+oCN4pZq4dhLFz
+         s9yJ2g0zoSl775KT9jiYZ58+DQkDSaExAK9L7hMgTT7FVzotLsAt8IfdHiGCxzOwAP/j
+         +amF+hddNhN0SihMEJqXl9EzR9uecooQuwk0es0xARpNlsmaLbx/jBjeDg8XYIGIAwif
+         URF352seruyvVIrfZB+ZpKnUWtUUXkePr4fC02+jy31dNhUMAqasRmOioIRDk7oJ/4OU
+         1ssw==
+X-Forwarded-Encrypted: i=1; AJvYcCW5MoKIWx3ujD6BCP7+9m8G1cpadAIwlejRyfFST1p8+RvipK36Fz5zKm9xiBiHu/V3yx8=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw1GqDIlXOy+xX21O25QtT83qE0ZjSan+aqXCHivxieWJXYvEpL
+	t6e23JyUkye99ZPYb/uXFcNVTDwxm8SjzUY/fLLyqDhG0gbAU9X6fpw7cFHjg22TVy/X2N/wUly
+	BLiE+o52WVtSacroK/9ce1MJTp2YxxbY=
+X-Gm-Gg: AY/fxX6g6d8JTE4BfBazNlb12FSZnMDFOTppDNGCQHn7eiFEw4wotWbY5JRWajABXZ4
+	SXHSFkxpjBmEdov65Q8Q3nfjGf4kRpyYs6nMHCe4htCn9g0T5Nsw1tdBkydkpNayhZe/CjgrwCC
+	6fKojcFHlvXm9Iiab9yBeHI4iEFAxOF2RY+QpVbN+T5gXOwLxKTr1f3avy/xc75liAvJJM01LGM
+	3JPfmv026+DMm6B9KnbAh8dAu2YL0ej3iGB0K7n9OPKSqNm8ssfXls6ehKTF9UKhOXFJeZT/WhU
+	5vViNzhs2NGtloVA56AOFebskHY=
+X-Google-Smtp-Source: AGHT+IE2M4WxFZqnEfPrEAcC8SMB2vOImghddR//qgcMdMKJ1JqjQfXz0rueUs8Uu20fw0GhWjMPl3LuKHp94JXv2fI=
+X-Received: by 2002:a05:651c:1508:b0:382:4ed0:2b90 with SMTP id
+ 38308e7fff4ca-3824ed037e2mr69073551fa.11.1767093168319; Tue, 30 Dec 2025
+ 03:12:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20251229213726.79374-1-stefano.r@variscite.com> <20251229213726.79374-4-stefano.r@variscite.com>
 In-Reply-To: <20251229213726.79374-4-stefano.r@variscite.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 30 Dec 2025 08:12:37 -0300
+X-Gm-Features: AQt7F2pM6UnQwKRWIIbHFDh2-hbVrXhUaR1MhekQgxaBPsnwjGmNGu1vdJLxk04
+Message-ID: <CAOMZO5CjdQiy2nJTEL-HK+xzZ9EyAE1PMhoUroP2nTZ07pJbzg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] arm64: dts: imx95-var-dart: Add support for
+ Variscite Sonata board
+To: Stefano Radaelli <stefano.radaelli21@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Stefano Radaelli <stefano.r@variscite.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Alexander Stein <alexander.stein@ew.tq-group.com>, 
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>, Yannic Moog <y.moog@phytec.de>, 
+	Primoz Fiser <primoz.fiser@norik.com>, Markus Niebel <Markus.Niebel@tq-group.com>, 
+	Josua Mayer <josua@solid-run.com>, Francesco Dolcini <francesco.dolcini@toradex.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> +	sfp0: sfp {
-> +		compatible = "sff,sfp";
-> +		i2c-bus = <&lpi2c3>;
-> +		los-gpios = <&pca9534 1 GPIO_ACTIVE_HIGH>;
+On Mon, Dec 29, 2025 at 6:37=E2=80=AFPM Stefano Radaelli
+<stefano.radaelli21@gmail.com> wrote:
 
-Minimalist for GPIOs, but O.K.
+> +       /* Capacitive touch controller */
+> +       ft5x06_ts: ft5x06_ts@38 {
 
-> +		maximum-power-milliwatt = <2000>;
-> +	};
-> +};
-> +
-> +&enetc_port1 {
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&pinctrl_enetc1>;
-> +	phy-handle = <&ethphy1>;
-> +	/*
-> +	 * The required RGMII TX and RX 2ns delays are implemented directly
-> +	 * in hardware via passive delay elements on the SOM PCB.
-> +	 * No delay configuration is needed in software via PHY driver.
-> +	 */
-> +	phy-mode = "rgmii";
-> +	status = "okay";
-> +};
-> +
-> +&enetc_port2 {
-> +	phy-mode = "10gbase-r";
-> +	sfp = <&sfp0>;
-> +	status = "okay";
-> +
-> +	fixed-link {
-> +		speed = <10000>;
-> +		full-duplex;
-> +	};
-> +};
+Node names should be generic: touchscreen@38
 
-The fixed link is not needed. phylink will ask the SFP plugged into
-the cage what it is, and then configure the MAC as needed, 10GBase-R,
-5GBase-X, 2.5BaseX, 1000BaseX, SGMII etc.
+> +       /* Resistive touch controller */
+> +       ads7846@0 {
 
-	Andrew
+touchscreen@0
