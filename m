@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BBD1427A;
-	Tue, 30 Dec 2025 02:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106CC22301;
+	Tue, 30 Dec 2025 03:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767063594; cv=none; b=GE1H7mfszIj8O7sAZtxYTA0kbgR97GotQ6d0RB2lQnAiQZVaHnPAUyNGCr3/nM5e9mRUvzHsbTSopaBh2VNOIUUxfLI/i3Orb5U+n7GjsM6lH/y3xtS5mkNRZfhdwCC/M6oI4GC0TiXRqF+AfuFwvnhXW1+THg4SPZaUiLvrVy0=
+	t=1767064413; cv=none; b=hx9eiMCv8tIpbbQj3xHXCjfk5900URomQCuiSuz1P9UlqfZtXY/kJaGIrLHOaYWisd6XzJFFwdTDqMSsQmUqUp1nEfTw1930JBvkRQ4P3ODPFtOvnfSV4JrIZ7MBsCRGRVvmf8tUqfv+6SRIKCaxjcxi7Car0AkOsdtVUtm4EEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767063594; c=relaxed/simple;
-	bh=+BmXUEiiyeVcTdYDhJWiItwNydOodkCcStv+E5cUu+s=;
+	s=arc-20240116; t=1767064413; c=relaxed/simple;
+	bh=SChn05DCiVGJdEArMObQBUB0k7u74rd1jxqKVOfotXA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AEGgoaPOpARtz6a1s/xhPQ4obK9CKiJyAno1ZF2UppjNbhR5KXNF9/yMdFJe2DwIEOTLn7J+VnUlaMkTTtzia9QS5ESCCnv2lth5T0Jci/vrmNPRPZpFtrlqURHURTi+ELO0YHx1AfbcgwQmEIL2rPsz4CXlwAc264MkHDp4Rps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m6ZGAiJr; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ls9dEYVy8EnsayrUbV9lrKhLwzVSjs1vs/B3MJSIrp+bsSBIfwanAs6Qn96toMjrOKyOHJ6SXBzSWiIKYsJbucXHAzy6m+SwxzQNuxWjQpwIY1lIxq/GB2TcUYca/f3DkrALGIiHbMfeEv/LVw5xwwkHxPdOpkw8Hfvnah7aaE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZsMCxrhl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m6ZGAiJr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5F5C4CEF7;
-	Tue, 30 Dec 2025 02:59:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZsMCxrhl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025F9C4CEF7;
+	Tue, 30 Dec 2025 03:13:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767063593;
-	bh=+BmXUEiiyeVcTdYDhJWiItwNydOodkCcStv+E5cUu+s=;
+	s=k20201202; t=1767064411;
+	bh=SChn05DCiVGJdEArMObQBUB0k7u74rd1jxqKVOfotXA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m6ZGAiJrPHrIhhO4g4V1dz5F2Gww7i1mwBejaUoWSNhAvt9sbFb441e49xcEjLGK1
-	 leNRQPlBzQr8aeRVJ4sDm6/bZX86e+GoSZpeCc1cnX4dVeDqSzxW6c1Ug8Vpa+7Ro0
-	 M641v/KT0Qg9OrB6lVC676Vye6SzwZYcmX8ZkMDx6QUHOuGMI93uClOay+FxOLDt3i
-	 NNNeylg0ae+c5c2aytrnGj9QlU9ImKfqLUBhrQ/hGDA5mBR4Zq6Qrnl26112BR2Na4
-	 JgEpC0cMuXtkKOd+THjC2xSyu0hdJjVvB3d0dDyN4uIaFLtEQtJEnFNKD/xt8FMuY5
-	 O/IR7Z0IH9DiQ==
-Date: Tue, 30 Dec 2025 10:59:48 +0800
+	b=ZsMCxrhl0Y73xf02NnAyflBkAM8ZsZ/LKgcNJBMCS27TtnxlLNcKL5JH4COq9XRNr
+	 dtr0JtYv7gSSXvU6d7HOV9QRtzNap6B7u1FMnQu4Is5Er9VH0CfQDWZio13Kg/kFtk
+	 MdDeBycYF2n6lEKE8Orbhy5icD69jRNysg9o94du2c9xrZRgMEU2lCgqOnns1ohNxk
+	 5CNE1iRarixNZWS/YEwLz2gX4qF3s1Trc2QRxARpR++IizojkqGrOSDeJoHKNQ84BY
+	 2uXUy0v5jNnrewNFVcueycqXAYcTH6wUBvDTpZ4D2KuVJyL5EEurXLtOmOgrBsBbJX
+	 l0+FxIeNPirDQ==
+Date: Tue, 30 Dec 2025 11:13:26 +0800
 From: Shawn Guo <shawnguo@kernel.org>
 To: Francesco Dolcini <francesco@dolcini.it>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -37,9 +37,10 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Francesco Dolcini <francesco.dolcini@toradex.com>,
 	devicetree@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] arm64: dts: freescale: imx8-apalis: Add ethernet alias
-Message-ID: <aVNAJDTkBihpsmi8@dragon>
-References: <20251209085747.39009-1-francesco@dolcini.it>
+Subject: Re: [PATCH v1 0/3] arm64: dts: freescale:
+ imx8mp-(verdin|toradex-smarc): Add HDMI audio support
+Message-ID: <aVNDVu0ELBsKR11J@dragon>
+References: <20251209101754.54067-1-francesco@dolcini.it>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,15 +49,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251209085747.39009-1-francesco@dolcini.it>
+In-Reply-To: <20251209101754.54067-1-francesco@dolcini.it>
 
-On Tue, Dec 09, 2025 at 09:57:46AM +0100, Francesco Dolcini wrote:
+On Tue, Dec 09, 2025 at 11:17:48AM +0100, Francesco Dolcini wrote:
 > From: Francesco Dolcini <francesco.dolcini@toradex.com>
 > 
-> Add alias for the apalis first ethernet interface, this ensures
-> consistent interface naming (e.g. `end0`) and this is used by the
-> firmware to correctly set the MAC address.
+> Add support for HDMI audio on Verdin and Toradex SMARC iMX8M Plus boards, as
+> done in commit b21f87b8322f ("arm64: dts: imx8mp-evk: enable hdmi_pai device")
+> on the NXP i.MX8MP EVK board.
 > 
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> In addition a small cleanup on spurious comments.
+> 
+> Francesco Dolcini (3):
+>   arm64: dts: freescale: imx8mp-verdin: Remove obsolete TODO comments
+>   arm64: dts: freescale: imx8mp-verdin: enable hdmi_pai device
+>   arm64: dts: freescale: imx8mp-toradex-smarc: enable hdmi_pai device
 
-Applied, thanks!
+Applied all, thanks!
