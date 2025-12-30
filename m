@@ -1,47 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5061B3A1E99;
-	Tue, 30 Dec 2025 02:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F14322F16E;
+	Tue, 30 Dec 2025 02:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767061904; cv=none; b=cOteG+SEqXA/inWvtI3QVuGFiXcBFOCRHeFBcp4oG9qw0c1mdYhCmin2NCQe4S6nqNuQ1lRAZWJLgF06Vb+ta8ts4wdF98kVqLy4cabtSv/ynhF1pN4rUEFhWdAbmyyTKFkD/mnh0hA9aJrfOusduonXJXJ0j2r4cKu7JToYWQ4=
+	t=1767062083; cv=none; b=syZWIABUI/w29HosshDq9kyw5DUwJb3BqGjMsLGk7Qr9NTVGrepFpcw6Ln0wilLgUWcupxWIvDawAwm9CEAzLKH3cPv+B/wPRL+HZOBO9Zj/RZYRo/OI4E+QqXooM7jZ2GvUbKaBgF1GD5Id0Q9ryTGQ+GoaM94ma/FN/QIutXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767061904; c=relaxed/simple;
-	bh=PpmZYSJZUmcJSLVio/K5CzQLpAMxvk8XXs1hZULmZo4=;
+	s=arc-20240116; t=1767062083; c=relaxed/simple;
+	bh=wJVGkSrJGS6nKQTsVQJ8xPBvCeoZSgJcaM+oaFSM/jg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QOZGuwbghHLCd7EWh6zkZPsfHadJg+t9zodvrnzx41YCWIDsAgbSTi31U7nV+3zv6FE7scRZq1LT4685UgJ6TYugDY3hmMOoyINgqhmfjjqoRduYlBGybfrmbjQTK34QsEQkZS7EP5Hva2y4WV7nezasAdbMoip4SZTbprcfT4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JnZqKccp; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=btDzXUy+YhhfWyzDC69ZVDqMS/uWoTa63LXzAOGx0pa8LfbRK1bvnsL/ZJqmW+AXrZ4g04hKrATgYdkGgEamaWLO7G7UYTy1Y/ys43FzMJJfBuvU4N5GFJOS+cMgwXnP+eeDyWyqKF5ZvwsYn1ASRpeB65W9oc0AzXokTAZeG2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ktNMvPaO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JnZqKccp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE71C4CEF7;
-	Tue, 30 Dec 2025 02:31:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ktNMvPaO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2685C4CEF7;
+	Tue, 30 Dec 2025 02:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767061903;
-	bh=PpmZYSJZUmcJSLVio/K5CzQLpAMxvk8XXs1hZULmZo4=;
+	s=k20201202; t=1767062083;
+	bh=wJVGkSrJGS6nKQTsVQJ8xPBvCeoZSgJcaM+oaFSM/jg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JnZqKccpeffYdpN549CTIEwOOmr1YyKa4QV/+pvBpPl4QbVUh1LKPjgmHlt1Il1Zy
-	 lxJplZMJRYpYQF3V6/l5QuoR/wch0lVTElbukOBOwao0OOZ9es1nxcyB9YMd5IALlS
-	 Ljp9nFLloazOIC0cMR73R5GpfIjC0mjp/n8SU8eVsCWRbc+ub+ZikFKDiiAnNFflJ9
-	 6PsOHyRqJXRBRAKfY6nTR6lz7oCKxN0pAX44YTbd3/mb9QY+0UgiX713XuFfBRvtoG
-	 kNbKXCLfIjqKKrsiA7WALxwPLKD4qbO+FEw3As3lKwyzbi9ZI8oXha82NQEDdY33Nz
-	 NE0UTKWCpIvfQ==
-Date: Tue, 30 Dec 2025 10:31:37 +0800
+	b=ktNMvPaOCjzqObrT8Wed4EYqEdN6p88QowFBNCc+ZyS9kc6fYv6uXAI3w4KHWd5gS
+	 eTVSHihz2u+0N64QWEbFxl8EPUnA20jYo5ibiWosN9S0oZP6ODtFJK5GSpeTTSSeR5
+	 elfzsA80ANBeKfYFTaamPDALAyR3aojZkaItz9QXU+r4oFGrOCOHlk8LIXKUZq6Pew
+	 4yPxKYhuETrB2pERb5JZnIWPdNfflO8rw+PQwR2tGV7TDi5xw7qwpZjLUhypfj3sbk
+	 rXc3Z2XagWu6CsOLAulAgE7ynmoTL6s+Fox1rgh1UpoIaX77B1ty3N+5L+ERL3hPGl
+	 XFVGix9gBN8tA==
+Date: Tue, 30 Dec 2025 10:34:35 +0800
 From: Shawn Guo <shawnguo@kernel.org>
-To: Marek Vasut <marek.vasut@mailbox.org>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, kernel@dh-electronics.com
-Subject: Re: [PATCH] arm64: dts: imx8mp: Fix LAN8740Ai PHY reference clock on
- DH electronics i.MX8M Plus DHCOM
-Message-ID: <aVM5iadHU5ipnQ0M@dragon>
-References: <20251202134200.8397-1-marek.vasut@mailbox.org>
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	s.hauer@pengutronix.de, festevam@gmail.com,
+	alexander.stein@ew.tq-group.com, frank.li@nxp.com,
+	devicetree@vger.kernel.org, kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH V2] arm64: dts: imx8qm-ss-dma: correct the dma channels
+ of lpuart
+Message-ID: <aVM6O4OMk0I9F0Cc@dragon>
+References: <20251203015956.116364-1-sherry.sun@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -50,18 +47,20 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251202134200.8397-1-marek.vasut@mailbox.org>
+In-Reply-To: <20251203015956.116364-1-sherry.sun@nxp.com>
 
-On Tue, Dec 02, 2025 at 02:41:51PM +0100, Marek Vasut wrote:
-> Add missing 'clocks' property to LAN8740Ai PHY node, to allow the PHY driver
-> to manage LAN8740Ai CLKIN reference clock supply. This fixes sporadic link
-> bouncing caused by interruptions on the PHY reference clock, by letting the
-> PHY driver manage the reference clock and assure there are no interruptions.
+On Wed, Dec 03, 2025 at 09:59:56AM +0800, Sherry Sun wrote:
+> The commit 616effc0272b5 ("arm64: dts: imx8: Fix lpuart DMA channel
+> order") swap uart rx and tx channel at common imx8-ss-dma.dtsi. But miss
+> update imx8qm-ss-dma.dtsi.
 > 
-> This follows the matching PHY driver recommendation described in commit
-> bedd8d78aba3 ("net: phy: smsc: LAN8710/20: add phy refclk in support")
+> The commit 5a8e9b022e569 ("arm64: dts: imx8qm-ss-dma: Pass lpuart
+> dma-names") just simple add dma-names as binding doc requirement.
 > 
-> Fixes: 8d6712695bc8 ("arm64: dts: imx8mp: Add support for DH electronics i.MX8M Plus DHCOM and PDK2")
-> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+> Correct lpuart0 - lpuart3 dma rx and tx channels, and use defines for
+> the FSL_EDMA_RX flag.
+> 
+> Fixes: 5a8e9b022e56 ("arm64: dts: imx8qm-ss-dma: Pass lpuart dma-names")
+> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
 
 Applied, thanks!
