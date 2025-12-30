@@ -1,48 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F882E6CD8;
-	Tue, 30 Dec 2025 08:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9562DEA89;
+	Tue, 30 Dec 2025 08:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767083996; cv=none; b=a0RnuWhV1Igvz+FoTXkcdqxJPbvWD6XwFIRb8KaacGl2E9jew5oMbovXD3ZsNnJQ2/XZUaPkVxV0XMrc6NEP4PwOoK/1V6GTa6m5C53wC6WvvzRrMFfJv2EviAU9402j/nDLUhTxLGGw282Y2IKmH2qxERjyBelW1AEJoV44ggo=
+	t=1767084365; cv=none; b=XhgcIBNh+jTr8KglmAG2S1mBNQLA9Eux0OYVCnN6fETyfgpLjWNDuBI/xWqe9sGJEdrMQcRwYqqMUvJVkqGCCOaKpj5oI9jSLdGqWDzUz0jyMB0DCPOUlhkFfSlrj7OjYpGgWPk009RtU8TylsA0l1b9q3TibpHclqbsP6XaOIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767083996; c=relaxed/simple;
-	bh=2dOZFcmc9Z4oX5yQZR4ajWRkx1TMtyp5DJ+PG+B2X8k=;
+	s=arc-20240116; t=1767084365; c=relaxed/simple;
+	bh=xNRxgng69p3lmr7nvljneo8pSEZGbXBkepxe7xcVWUo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B13TPi+nU/0J9ul36ipF6JPqBW9OcDzxPk1pJbmarqbdWlNChoVK2/gC1RmdKYcq9KQIjU0Kgi2Vdhvr+k1UtT9q2GqMmq1598bWIGTIJ7BB7RF1ImZYH4TwaPwuvbd6vbTGroHLtzsB574Gig15Vu7K29kc59MGBknclPGja/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iDzlMKVR; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=JAJggqWe+i7OtqcAtDYQTaXquQLTv23t+Qj0VKeCQraevwqUDsSi1X7WpUUXzZArAQR4sJeILDusRihdl7/6qU/wYay0UNp6oXC71fheb/jmYEZp81tAsMrSlRt21eiOAMLAKj+gRwvN7STzQv+ADgEzm71a2TsI2t8a1tZ3O94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DZccvwS6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iDzlMKVR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E715BC4CEFB;
-	Tue, 30 Dec 2025 08:39:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DZccvwS6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2F1C4CEFB;
+	Tue, 30 Dec 2025 08:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767083995;
-	bh=2dOZFcmc9Z4oX5yQZR4ajWRkx1TMtyp5DJ+PG+B2X8k=;
+	s=k20201202; t=1767084363;
+	bh=xNRxgng69p3lmr7nvljneo8pSEZGbXBkepxe7xcVWUo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iDzlMKVRlXkF9UpB7FmM4wO/dZCAafrnPmq/jf0ng4UOm0tsxMMkJvaZeeYg/iwQL
-	 7uVKA1gZR8xEyh7THb/tSp52TcZ6D5yw12zC88zThjxn4YQJHLyzfbREhIfI3UkTyX
-	 wdJPr9xpwD5O8SX1AoGXKgUJX+qzbEgMdGT2tnVP2oQ9dc/C7R92JZkKeMlEXCG7hF
-	 iGp08Te2GXnEkHjqtz/QKAFDw6nTVOlNrZcvw8vBRSG0+LsJKOjhHp2qYd5Mjpa/HW
-	 OuiZqvlwq2tB7bh7HFPCionKnCkrI8dZbDU2f5HoPLhXrP9gbfwtpF9R9EPzhsceh5
-	 MzRdwSNPn51Hg==
-Date: Tue, 30 Dec 2025 16:39:43 +0800
+	b=DZccvwS6/l4VeKZTE7+rbQjozC8NX/4D+ODnTRkL8SyUZVvriInFIXCZHsEdYmfg+
+	 EGO27xwYekMT9cBJhc9pUzVWSNNopUDGPruYsQWNx7nSbaxLz1A+xKQ+VtUjvJ4npx
+	 eHyqfEV3FIBOF7HfeG2rL+i+uF7KQllF9YlehO2f+tZVNRlxsTQf/QO6DZpGFAtxNa
+	 wpCgwLKrMyl62jxdN9Fk4E/DAcuLRI7wRrLl7NBmrzr1wUL07Rf2j5pTaBrWYBqxni
+	 JhLD2q9F6aYxeR8H17XwJOG6tzNfhBfo5GPIBHs6uxlgVWVIZFW3d07yehdoQZzFSC
+	 YQWV4S6R3ThGg==
+Date: Tue, 30 Dec 2025 16:45:53 +0800
 From: Shawn Guo <shawnguo@kernel.org>
-To: Fabian Pflug <f.pflug@pengutronix.de>
+To: Teresa Remmet <t.remmet@phytec.de>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Haidong Zheng <haidong.zheng@nxp.com>,
-	Danwei Luo <danwei.luo@nxp.com>, Lei Xu <lei.xu@nxp.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH v4 0/2] Add devicetree for NXP i.MX93 FRDM board
-Message-ID: <aVOPz3LOrLHqOM-w@dragon>
-References: <20251218-fpg-nxp-imx93-frdm-v4-0-cd3a9f6ac89a@pengutronix.de>
+	Fabio Estevam <festevam@gmail.com>, Jan Remmet <j.remmet@phytec.de>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, upstream@lists.phytec.de,
+	Yannic Moog <y.moog@phytec.de>, Benjamin Hahn <b.hahn@phytec.de>,
+	Yashwanth Varakala <y.varakala@phytec.de>
+Subject: Re: [PATCH] arm64: boot: dts: imx8mm-phycore-som: Update eth phy
+ impedance
+Message-ID: <aVORQQlMpbgonBlw@dragon>
+References: <20251218-wip-t-remmet-phytec-de-bspimx8m-3841_upstream-v1-1-2ea15181aaf2@phytec.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,11 +50,16 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251218-fpg-nxp-imx93-frdm-v4-0-cd3a9f6ac89a@pengutronix.de>
+In-Reply-To: <20251218-wip-t-remmet-phytec-de-bspimx8m-3841_upstream-v1-1-2ea15181aaf2@phytec.de>
 
-On Thu, Dec 18, 2025 at 12:39:20PM +0100, Fabian Pflug wrote:
-> Fabian Pflug (2):
->       dt-bindings: arm: fsl: add i.MX93 11x11 FRDM board
->       arm64: dts: freescale: add support for NXP i.MX93 FRDM
+On Thu, Dec 18, 2025 at 01:00:06PM +0100, Teresa Remmet wrote:
+> Update the DP83867 ethernet phy impedance settings to
+> to optimize signal quality and reduce potential signal integrity issues.
+> 
+> Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 
-Applied both, thanks!
+Subject prefix "arm64: dts: imx8mm-phycore-som: ..." is good enough.
+
+I fixed it up and applied the patch.
+
+Shawn
