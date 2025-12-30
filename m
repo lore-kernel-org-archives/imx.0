@@ -1,73 +1,1096 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2A528DB56;
-	Tue, 30 Dec 2025 12:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1355126F0A;
+	Tue, 30 Dec 2025 12:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767098128; cv=none; b=nTIZDl9t0G1Hpth8Z38Gcc9FP2rTj+rx8lEbB2ujG1O/qTZ4MoUc5yNVaX4t9kxL+jSK8ncIJi8nySTYQllZ3rN4z1CUnqeyPOr0xpIDuSQIZ17OzfdSLRFLMehb+XmiQFrUBZtMATq3dblIF+hT/dUQhfdUO0Eo7ALtdBE8M/w=
+	t=1767098829; cv=none; b=W2MJHGWnUbp5StTcF+BlI2jMQufjlbamdsZSbLzGm3/f86zk2/3IU+cKlvuEWlQvt5AB9Rn2B99uhxaSCaeg4jyjwvpJWk25j78kLRLkVE+AwXatcpBjxrSkXROlVqd6I5BXoeLQjK3t2oAYFYzcCY02Jq96YCyc4IF0FnnX+h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767098128; c=relaxed/simple;
-	bh=SwXASAmQsuqXGdIcB4eRnI5om/oEaYAfTTSnerxLjyw=;
+	s=arc-20240116; t=1767098829; c=relaxed/simple;
+	bh=R6e3/J8kRrb5wXPP5iQzudsJhd5tE9L10zlPUnH7pyI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H1XHcYSNjxDQJjhX1lWl2LfDl9xAI4SITAHQj9mYF4HinRce4Lzeno/eRxMJ7n2IDKblaayUXRX/P/+Z+k5iqYL+/pfU4TgdIxQX9TD1cjEm1RAYfIQHT0XBW7wXKBgY2Ea74o1+yISn2J40SWgQBliCQyKbpjH3X9zdZIObpJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iy2zL7cG; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hv8ZOCuyRK3BtomlkltENmuKI2tiyLEPlSJqYGFhqrn5bcrZrp68LrGkgBX9fZBWigsbgUmSXywJwZjXCJHdW86RgoWfjKz89AlU0Nmc7WEIeZiCY2TnGQVoEepMslfm8VxNIaoNoydsTgLgObs42hZWazS7ku1rigosuizsWZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TC+rdL9h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iy2zL7cG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786ACC4CEFB;
-	Tue, 30 Dec 2025 12:35:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TC+rdL9h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A255EC4CEFB;
+	Tue, 30 Dec 2025 12:47:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767098128;
-	bh=SwXASAmQsuqXGdIcB4eRnI5om/oEaYAfTTSnerxLjyw=;
+	s=k20201202; t=1767098829;
+	bh=R6e3/J8kRrb5wXPP5iQzudsJhd5tE9L10zlPUnH7pyI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iy2zL7cG8hPx+Unpu0jiQyHR689YJWOIYrXyIpxfjqgQAr14gqwuqn7yov1TYySzs
-	 5buxKOemldUeDUEYWnlhpZQzM2Zq9hk010n5K5p1wPeCuQ5ADXR3yjVTLd29wpG2hc
-	 GgHiZZcOWzOKgGhoFfHqlU0k+jyo88NguhGUChys+yzE3rO7vOH2Nsnoy8kd0AsBBS
-	 zVhvmX/Qf7Sg9juDQFEQ9X6XOFmyx+UlHe+d+VORUWumY0QKPXKSIZLLIJUNGCJWgI
-	 b4CEr77XJo+VOQ+ucBZB28tw1TEARb1H2Mt9jjN+5E7TOvVQiaH7l7/a937CSCEeNR
-	 ulYUZZoul5aAg==
-Date: Tue, 30 Dec 2025 13:35:25 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Nandor Han <nandor.han@gehealthcare.com>
-Cc: wim@linux-watchdog.org, linux@roeck-us.net, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, festevam@gmail.com, linux-watchdog@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] watchdog: imx2_wdt: Allow to continue in low power
- mode
-Message-ID: <20251230-pastoral-enigmatic-chamois-b65343@quoll>
-References: <20251229145000.421426-1-nandor.han@gehealthcare.com>
- <20251229145000.421426-2-nandor.han@gehealthcare.com>
+	b=TC+rdL9h84fPebsvZ0iXwzVM5nLD9dIETPrqNFQajfnaRni6o5jAuO8NL16r2rlA8
+	 QTL5l37XoynSCusVcPdxVnVSwCi8vRX5W/VB1Xu3mIOOHmGCmpeiIdHMCxRBc0xYFg
+	 g8By+HloQBTZhrNh9DNlZ6lFshQB3yE15EB5kNbWd+gcQFSIxBB8ks6IZYQTIs+L0V
+	 qTQg6vjgYRwdtV7KMmjW0eJzf9PHbdyZyuFK2+g3gpfl3m5WujVVohh1KbVm7W9YvD
+	 VnHeUet89fNJFrbcoNF0yupbX0CuUXSmNrLPD+sseRyre49qcV+Gjipqv2Eus0aYlB
+	 n81ieOEr6cp2Q==
+Date: Tue, 30 Dec 2025 20:47:02 +0800
+From: Shawn Guo <shawnguo@kernel.org>
+To: Josua Mayer <josua@solid-run.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jon Nettleton <jon@solid-run.com>,
+	Mikhail Anikin <mikhail.anikin@solid-run.com>,
+	Yazan Shhady <yazan.shhady@solid-run.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v5 5/7] arm64: dts: add description for solidrun imx8mp
+ hummingboard-iiot
+Message-ID: <aVPJxlrT8GG2A75r@dragon>
+References: <20251221-imx8mp-hb-iiot-v5-0-4a4dad916348@solid-run.com>
+ <20251221-imx8mp-hb-iiot-v5-5-4a4dad916348@solid-run.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251229145000.421426-2-nandor.han@gehealthcare.com>
+In-Reply-To: <20251221-imx8mp-hb-iiot-v5-5-4a4dad916348@solid-run.com>
 
-On Mon, Dec 29, 2025 at 04:49:59PM +0200, Nandor Han wrote:
-> By default, the driver suspends the watchdog in low power modes (STOP
-> and DOZE). In some situations this is not desired.
+On Sun, Dec 21, 2025 at 12:28:54PM +0100, Josua Mayer wrote:
+> Add description for the SolidRun i.MX8MP HummingBoard IIoT.
+> The board is a new design around the i.MX8MP System on Module, not
+> sharing much with previous HummingBoards.
 > 
-> Add the possibility to configure the continuation of the watchdog timer
-> in the above mentioned low power modes.
+> It comes with some common features:
+> - 3x USB-3.0 Type A connector
+> - 2x 1Gbps RJ45 Ethernet
+> - USB Type-C Console Port
+> - microSD connector
+> - RTC with backup battery
+> - RGB Status LED
+> - 1x M.2 M-Key connector with PCI-E Gen. 3 x1
+> - 1x M.2 B-Key connector with USB-2.0/3.0 + SIM card holder
+> - 1x LVDS Display Connector
+> - 1x DSI Display Connector
+> - GPIO header
+> - 2x RS232/RS485 ports (configurable)
+> - 2x CAN
 > 
-> Note:
-> Please be advised that the difference between the variable name and the
-> device tree option has been intentionally selected to uphold the
-> prevailing driver functionality. This ensures that the watchdog remains
-> suspended by default in low power mode, while also facilitating a clear
-> and intelligible device tree option name.
->
+> In addition there is a board-to-board expansion connector to support
+> custom daughter boards with access to SPI, a range of GPIOs and -
+> notably - CAN and UART. Both 2x CAN and 2x UART can be muxed either
+> to this b2b connector, or a termianl block connector on the base board.
+> 
+> The routing choice for UART and CAN is expressed through gpio
+> mux-controllers in DT and can be changed by applying dtb addons.
+> 
+> Four dtb addons are provided:
+> 
+> - dsi panel Winstar WJ70N3TYJHMNG0
+> - lvds panel Winstar WF70A8SYJHLNGA
+> - RS485 on UART port "A" (default rs232)
+> - RS485 on UART port "B" (default rs232)
+> 
+> Signed-off-by: Josua Mayer <josua@solid-run.com>
+> ---
+>  arch/arm64/boot/dts/freescale/Makefile             |   6 +
+>  ...hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtso |  69 ++
+>  ...ummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtso | 105 +++
+>  .../imx8mp-hummingboard-iiot-rs485-a.dtso          |  18 +
+>  .../imx8mp-hummingboard-iiot-rs485-b.dtso          |  18 +
+>  .../dts/freescale/imx8mp-hummingboard-iiot.dts     | 719 +++++++++++++++++++++
+>  6 files changed, 935 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+> index c4c6fd6de9637..97e6000154640 100644
+> --- a/arch/arm64/boot/dts/freescale/Makefile
+> +++ b/arch/arm64/boot/dts/freescale/Makefile
+> @@ -213,6 +213,12 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-pdk3.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-dhcom-picoitx.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-edm-g-wb.dtb
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-evk.dtb
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-hummingboard-iiot.dtb
+> +DTC_FLAGS_imx8mp-hummingboard-iiot := -@
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-hummingboard-iiot-rs485-a.dtbo
+> +dtb-$(CONFIG_ARCH_MXC) += imx8mp-hummingboard-iiot-rs485-b.dtbo
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-hummingboard-mate.dtb
+>  DTC_FLAGS_imx8mp-hummingboard-mate := -@
+>  dtb-$(CONFIG_ARCH_MXC) += imx8mp-hummingboard-pro.dtb
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtso b/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtso
+> new file mode 100644
+> index 0000000000000..e66ee2ce69d8d
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtso
+> @@ -0,0 +1,69 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2025 Josua Mayer <josua@solid-run.com>
+> + *
+> + * Overlay for enabling HummingBoard IIoT MIPI-DSI connector
+> + * with Winstar WJ70N3TYJHMNG0 panel.
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +&{/} {
+> +	dsi_backlight: dsi-backlight {
+> +		compatible = "gpio-backlight";
+> +		gpios = <&tca6408_u48 3 GPIO_ACTIVE_LOW>;
+> +	};
+> +};
+> +
+> +&i2c_dsi {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +
+> +	touchscreen@41 {
+> +		compatible = "ilitek,ili2130";
+> +		reg = <0x41>;
+> +		reset-gpios = <&tca6408_u48 6 GPIO_ACTIVE_LOW>;
+> +		interrupts-extended = <&tca6416_u21 13 IRQ_TYPE_LEVEL_LOW>;
+> +	};
+> +};
+> +
+> +&lcdif1 {
+> +	status = "okay";
+> +};
+> +
+> +&mipi_dsi {
+> +	samsung,esc-clock-frequency = <10000000>;
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +	status = "okay";
+> +
+> +	panel@0 {
+> +		/* This is a Winstar panel, but the ronbo panel uses same controls. */
+> +		compatible = "ronbo,rb070d30";
+> +		reg = <0>;
+> +		vcc-lcd-supply = <&reg_dsi_panel>;
+> +		power-gpios = <&tca6408_u48 2 GPIO_ACTIVE_HIGH>;
+> +		/* reset is active-low but driver inverts it internally */
+> +		reset-gpios = <&tca6408_u48 1 GPIO_ACTIVE_HIGH>;
+> +		updn-gpios = <&tca6408_u48 5 GPIO_ACTIVE_HIGH>;
+> +		shlr-gpios = <&tca6408_u48 4 GPIO_ACTIVE_LOW>;
+> +		backlight = <&dsi_backlight>;
+> +
+> +		port {
+> +			panel_from_dsim: endpoint {
+> +				remote-endpoint = <&dsim_to_panel>;
+> +			};
+> +		};
+> +	};
+> +
+> +	port@1 {
+> +		dsim_to_panel: endpoint {
+> +			remote-endpoint = <&panel_from_dsim>;
+> +			data-lanes = <1 2 3 4>;
+> +		};
+> +	};
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtso b/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtso
+> new file mode 100644
+> index 0000000000000..f8fb7fd0e4e49
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtso
+> @@ -0,0 +1,105 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2025 Josua Mayer <josua@solid-run.com>
+> + *
+> + * Overlay for enabling HummingBoard IIoT LVDS connector
+> + * with Winstar WF70A8SYJHLNGA panel.
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +&{/} {
+> +	lvds_backlight: lvds-backlight {
+> +		compatible = "gpio-backlight";
+> +		gpios = <&tca6408_u37 3 GPIO_ACTIVE_LOW>;
+> +	};
+> +
+> +	panel-lvds {
+> +		compatible = "winstar,wf70a8syjhlnga", "panel-lvds";
+> +		backlight = <&lvds_backlight>;
+> +		power-supply = <&reg_dsi_panel>;
+> +		enable-gpios = <&tca6408_u37 2 GPIO_ACTIVE_HIGH>;
+> +		reset-gpios = <&tca6408_u37 1 GPIO_ACTIVE_HIGH>;
+> +		data-mapping = "vesa-24";
+> +		width-mm = <154>;
+> +		height-mm = <86>;
+> +
+> +		panel-timing {
+> +			/*
+> +			 * Note: NXP BSP hard-codes 74MHz clock in ldb driver:
+> +			 * drivers/gpu/drm/imx/imx8mp-ldb.c
+> +			 * SolidRun BSP carries patch.
+> +			 */
+> +			clock-frequency = <49500000>;
+> +			hactive = <1024>;
+> +			vactive = <600>;
+> +			hfront-porch = <40>;
+> +			hback-porch = <144>;
+> +			hsync-len = <104>;
+> +			hsync-active = <0>;
+> +			vfront-porch = <3>;
+> +			vback-porch = <11>;
+> +			vsync-len = <10>;
+> +			vsync-active = <1>;
+> +			de-active = <1>;
+> +		};
+> +
+> +		port {
+> +			panel_from_lvds: endpoint {
+> +				remote-endpoint = <&lvds_ch0_out>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&i2c_lvds {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +
+> +	touchscreen@41 {
+> +		compatible = "ilitek,ili2130";
+> +		reg = <0x41>;
+> +		reset-gpios = <&tca6408_u37 6 GPIO_ACTIVE_LOW>;
+> +		interrupts-extended = <&tca6416_u21 13 IRQ_TYPE_LEVEL_LOW>;
+> +	};
+> +};
+> +
+> +&lcdif2 {
+> +	status = "okay";
+> +};
+> +
+> +&lvds_bridge {
+> +	status = "okay";
+> +
+> +	ports {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		status = "okay";
 
-Please organize the patch documenting the compatible (DT bindings)
-before the patch using that compatible.
-See also: https://elixir.bootlin.com/linux/v6.14-rc6/source/Documentation/devicetree/bindings/submitting-patches.rst#L46
+Is it disabled somewhere so that you need to flip 'status' here?
 
-Best regards,
-Krzysztof
+> +
+> +		port@1 {
+> +			lvds_ch0_out: endpoint {
+> +				remote-endpoint = <&panel_from_lvds>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&tca6408_u37 {
+> +	lvds-lr-hog {
+> +		gpio-hog;
+> +		gpios = <4 GPIO_ACTIVE_HIGH>;
+> +		output-high;
+> +		line-name = "lvds-l/r";
+> +	};
+> +
+> +	lvds-ud-hog {
+> +		gpio-hog;
+> +		gpios = <5 GPIO_ACTIVE_HIGH>;
+> +		output-high;
+> +		line-name = "lvds-u/d";
+> +	};
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot-rs485-a.dtso b/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot-rs485-a.dtso
+> new file mode 100644
+> index 0000000000000..7bbf800b78fb1
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot-rs485-a.dtso
+> @@ -0,0 +1,18 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2025 Josua Mayer <josua@solid-run.com>
+> + *
+> + * Overlay for enabling HummingBoard IIoT on-board RS485 Port A on connector J5004.
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +&uart3_rs_232_485_mux {
+> +	/* select rs485 */
+> +	idle-state = <1>;
+> +};
+> +
+> +&uart3 {
+> +	linux,rs485-enabled-at-boot-time;
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot-rs485-b.dtso b/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot-rs485-b.dtso
+> new file mode 100644
+> index 0000000000000..d4bfea886ad12
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot-rs485-b.dtso
+> @@ -0,0 +1,18 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2025 Josua Mayer <josua@solid-run.com>
+> + *
+> + * Overlay for enabling HummingBoard IIoT on-board RS485 Port B on connector J5004.
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +&uart4_rs_232_485_mux {
+> +	/* select rs485 */
+> +	idle-state = <1>;
+> +};
+> +
+> +&uart4 {
+> +	linux,rs485-enabled-at-boot-time;
+> +};
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot.dts b/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot.dts
+> new file mode 100644
+> index 0000000000000..32351d4db9ced
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-hummingboard-iiot.dts
+> @@ -0,0 +1,719 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2024 Yazan Shhady <yazan.shhady@solid-run.com>
+> + * Copyright 2025 Josua Mayer <josua@solid-run.com>
+> + */
+> +
+> +/dts-v1/;
+> +
+> +#include <dt-bindings/leds/common.h>
+> +#include <dt-bindings/phy/phy-imx8-pcie.h>
+> +
+> +#include "imx8mp-sr-som.dtsi"
+> +
+> +/ {
+> +	model = "SolidRun i.MX8MP HummingBoard IIoT";
+> +	compatible = "solidrun,imx8mp-hummingboard-iiot",
+> +		     "solidrun,imx8mp-sr-som", "fsl,imx8mp";
+> +
+> +	aliases {
+> +		ethernet0 = &eqos; /* J10 */
+> +		ethernet1 = &fec; /* J11 */
+> +		rtc0 = &carrier_rtc;
+> +		rtc1 = &snvs_rtc;
 
+Could you sort aliases alphabetically?
+
+> +		gpio5 = &tca6408_u48;
+> +		gpio6 = &tca6408_u37;
+> +		gpio7 = &tca6416_u20;
+> +		gpio8 = &tca6416_u21;
+> +		i2c6 = &i2c_exp;
+> +		i2c7 = &i2c_csi;
+> +		i2c8 = &i2c_dsi;
+> +		i2c9 = &i2c_lvds;
+> +	};
+> +
+> +	v_1_2: regulator-1-2 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "1v2";
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <1800000>;
+> +	};
+> +
+> +	reg_dsi_panel: regulator-dsi-panel {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "dsi-panel";
+> +		regulator-min-microvolt = <11200000>;
+> +		regulator-max-microvolt = <11200000>;
+> +		gpios = <&tca6416_u20 15 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +	};
+> +
+> +	/* power for M.2 B-Key connector (J6) */
+> +	regulator-m2-b {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "m2-b";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		gpios = <&tca6416_u20 5 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +		regulator-always-on;
+> +	};
+> +
+> +	/* power for M.2 M-Key connector (J4) */
+> +	regulator-m2-m {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "m2-m";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		gpios = <&tca6416_u20 6 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +		regulator-always-on;
+> +	};
+> +
+> +	vmmc: regulator-mmc {
+> +		compatible = "regulator-fixed";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&vmmc_pins>;
+> +		regulator-name = "vmmc";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		gpio = <&gpio2 19 GPIO_ACTIVE_LOW>;
+> +		enable-active-high;
+
+enable-active-high conflicts with GPIO_ACTIVE_LOW.
+
+> +		startup-delay-us = <250>;
+> +	};
+> +
+> +	/* power for USB-A J5003 */
+> +	vbus1: regulator-vbus-1 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "vbus1";
+> +		gpio = <&tca6416_u20 14 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +	};
+> +
+> +	/* power for USB-A J27 behind USB Hub Port 3 */
+> +	regulator-vbus-2 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "vbus2";
+> +		gpio = <&tca6416_u20 12 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +		regulator-always-on;
+> +	};
+> +
+> +	/* power for USB-A J27 behind USB Hub Port 4 */
+> +	regulator-vbus-3 {
+> +		compatible = "regulator-fixed";
+> +		regulator-name = "vbus3";
+> +		gpio = <&tca6416_u20 13 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +		regulator-min-microvolt = <5000000>;
+> +		regulator-max-microvolt = <5000000>;
+> +		regulator-always-on;
+> +	};
+> +
+> +	rfkill-m2-b-gnss {
+> +		compatible = "rfkill-gpio";
+> +		label = "m2-b gnss";
+> +		radio-type = "gps";
+> +		/* rfkill-gpio inverts internally */
+> +		shutdown-gpios = <&tca6416_u20 10 GPIO_ACTIVE_HIGH>;
+> +	};
+> +
+> +	rfkill-m2-b-wwan {
+> +		compatible = "rfkill-gpio";
+> +		label = "m2-b radio";
+> +		radio-type = "wwan";
+> +		/* rfkill-gpio inverts internally */
+> +		shutdown-gpios = <&tca6416_u20 9 GPIO_ACTIVE_HIGH>;
+> +	};
+> +
+> +	flexcan1_flexcan2_b2b_mux: mux-controller-0 {
+> +		compatible = "gpio-mux";
+> +		#mux-control-cells = <0>;
+> +		/*
+> +		 * Mux switches both flexcan1 and flexcan2 tx/rx between
+> +		 * expansion connector (J22) and on-board transceivers
+> +		 * using one GPIO: 0 = on-board, 1 connector.
+> +		 */
+> +		mux-gpios = <&tca6416_u20 3 GPIO_ACTIVE_HIGH>;
+> +		/* default on-board */
+> +		idle-state = <0>;
+> +	};
+> +
+> +	mux-controller-1 {
+> +		compatible = "gpio-mux";
+> +		#mux-control-cells = <0>;
+> +		/*
+> +		 * Mux switches can bus between different SoM board-to-board
+> +		 * connector pins which is used to support different SoMs.
+> +		 * i.MX8M Plus uses J7-12/16 and J9-54/56 for 2x flexcan.
+> +		 */
+> +		mux-gpios = <&tca6416_u20 4 GPIO_ACTIVE_HIGH>;
+> +		idle-state = <1>;
+> +	};
+> +
+> +	spi_mux: mux-controller-2 {
+> +		compatible = "gpio-mux";
+> +		#mux-control-cells = <0>;
+> +		/*
+> +		 * Mux switches spi bus between on-board tpm
+> +		 * and expansion connector (J22).
+> +		 */
+> +		mux-gpios = <&tca6416_u21 0 GPIO_ACTIVE_HIGH>;
+> +		/* default on-board */
+> +		idle-state = <0>;
+> +	};
+> +
+> +	uart3_uart4_b2b_mux: mux-controller-3 {
+> +		compatible = "gpio-mux";
+> +		#mux-control-cells = <0>;
+> +		/*
+> +		 * Mux switches both uart3 and uart4 tx/rx between expansion
+> +		 * connector (J22) and on-board rs232/rs485 transceivers
+> +		 * using one GPIO: 0 = on-board, 1 connector.
+> +		 */
+> +		mux-gpios = <&tca6416_u20 0 GPIO_ACTIVE_HIGH>;
+> +		/* default on-board */
+> +		idle-state = <0>;
+> +	};
+> +
+> +	uart3_rs_232_485_mux: mux-controller-4 {
+> +		compatible = "gpio-mux";
+> +		#mux-control-cells = <0>;
+> +		/*
+> +		 * Mux switches uart3 tx/rx between rs232 and rs485
+> +		 * transceivers. using one GPIO: 0 = rs232; 1 = rs485.
+> +		 */
+> +		mux-gpios = <&tca6416_u20 1 GPIO_ACTIVE_HIGH>;
+> +		/* default rs232 */
+> +		idle-state = <0>;
+> +	};
+> +
+> +	uart4_rs_232_485_mux: mux-controller-5 {
+> +		compatible = "gpio-mux";
+> +		#mux-control-cells = <0>;
+> +		/*
+> +		 * Mux switches uart4 tx/rx between rs232 and rs485
+> +		 * transceivers. using one GPIO: 0 = rs232; 1 = rs485.
+> +		 */
+> +		mux-gpios = <&tca6416_u20 2 GPIO_ACTIVE_HIGH>;
+> +		/* default rs232 */
+> +		idle-state = <0>;
+> +	};
+> +
+> +	gpio-keys {
+> +		compatible = "gpio-keys";
+> +
+> +		wakeup-event {
+> +			label = "m2-m-wakeup";
+> +			interrupts-extended = <&tca6416_u21 11 IRQ_TYPE_EDGE_FALLING>;
+> +			linux,code = <KEY_WAKEUP>;
+> +			wakeup-source;
+> +		};
+> +	};
+> +};
+> +
+> +&ecspi2 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&ecspi2_pins>;
+> +	num-cs = <1>;
+> +	cs-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
+> +	status = "okay";
+> +
+> +	ecspi2_muxed: spi@0 {
+> +		compatible = "spi-mux";
+> +		reg = <0>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		/* mux bandwidth is 2GHz, soc max. spi clock is 166MHz */
+> +		spi-max-frequency = <166000000>;
+> +		mux-controls = <&spi_mux>;
+> +
+> +		tpm@0 {
+> +			compatible = "infineon,slb9670", "tcg,tpm_tis-spi";
+> +			reg = <0>;
+> +			spi-max-frequency = <43000000>;
+> +			reset-gpios = <&tca6416_u21 1 (GPIO_ACTIVE_LOW | GPIO_OPEN_DRAIN)>;
+> +			interrupts-extended = <&tca6416_u21 9 IRQ_TYPE_LEVEL_LOW>;
+> +		};
+> +	};
+> +};
+> +
+> +&flexcan1 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&can1_pins>;
+> +	status = "okay";
+> +
+> +	can-transceiver {
+> +		max-bitrate = <8000000>;
+> +	};
+> +};
+> +
+> +&flexcan2 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&can2_pins>;
+> +	status = "okay";
+> +
+> +	can-transceiver {
+> +		max-bitrate = <8000000>;
+> +	};
+> +};
+> +
+> +&i2c2 {
+> +	i2c-mux@70 {
+> +		compatible = "nxp,pca9546";
+> +		reg = <0x70>;
+> +		/*
+> +		 * This reset is open drain,
+> +		 * but reset core does not support GPIO_OPEN_DRAIN flag.
+> +		 */
+> +		reset-gpios = <&tca6416_u21 2 GPIO_ACTIVE_LOW>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		/* channel 0 routed to expansion connector (J22) */
+> +		i2c_exp: i2c@0 {
+> +			reg = <0>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +		};
+> +
+> +		/* channel 1 routed to mipi-csi connector (J23) */
+> +		i2c_csi: i2c@1 {
+> +			reg = <1>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +		};
+> +
+> +		/* channel 2 routed to mipi-dsi connector (J25) */
+> +		i2c_dsi: i2c@2 {
+> +			reg = <2>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			tca6408_u48: gpio@21 {
+> +				compatible = "ti,tca6408";
+> +				reg = <0x21>;
+> +				/*
+> +				 * reset shared between U37 and U48, to be
+> +				 * supported once gpio-pca953x switches to
+> +				 * reset framework.
+> +				 *
+> +				 * reset-gpios = <&tca6416_u21 4 (GPIO_ACTIVE_LOW|GPIO_PULL_UP|GPIO_OPEN_DRAIN)>;
+> +				 */
+> +				gpio-controller;
+> +				#gpio-cells = <2>;
+> +				gpio-line-names = "CAM_RST#", "DSI_RESET",
+> +						  "DSI_STBYB", "DSI_PWM_BL",
+> +						  "DSI_L/R", "DSI_U/D",
+> +						  "DSI_CTP_/RST", "CAM_TRIG";
+> +			};
+> +		};
+> +
+> +		/* channel 2 routed to lvds connector (J24) */
+> +		i2c_lvds: i2c@3 {
+> +			reg = <3>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			tca6408_u37: gpio@20 {
+> +				compatible = "ti,tca6408";
+> +				reg = <0x20>;
+> +				/*
+> +				 * reset shared between U37 and U48, to be
+> +				 * supported once gpio-pca953x switches to
+> +				 * reset framework.
+> +				 *
+> +				 * reset-gpios = <&tca6416_u21 4 (GPIO_ACTIVE_LOW|GPIO_PULL_UP|GPIO_OPEN_DRAIN)>;
+> +				 */
+> +				gpio-controller;
+> +				#gpio-cells = <2>;
+> +				gpio-line-names = "SELB", "LVDS_RESET",
+> +						  "LVDS_STBYB", "LVDS_PWM_BL",
+> +						  "LVDS_L/R", "LVDS_U/D",
+> +						  "LVDS_CTP_/RST", "";
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&i2c3 {
+> +	/* highest i2c clock supported by all peripherals is 400kHz */
+> +	clock-frequency = <400000>;
+> +
+> +	tca6416_u20: gpio@20 {
+> +		/*
+> +		 * This is a TI TCAL6416 using same programming model as
+> +		 * NXP PCAL6416, not to be confused with TI TCA6416.
+> +		 */
+> +		compatible = "nxp,pcal6416";
+> +		reg = <0x20>;
+> +		gpio-controller;
+> +		#gpio-cells = <2>;
+> +		gpio-line-names = "TCA_INT/EXT_UART", "TCA_UARTA_232/485",
+> +				  "TCA_UARTB_232/485", "TCA_INT/EXT_CAN",
+> +				  "TCA_NXP/REN", "TCA_M.2B_3V3_EN",
+> +				  "TCA_M.2M_3V3_EN", "TCA_M.2M_RESET#",
+> +				  "TCA_M.2B_RESET#", "TCA_M.2B_W_DIS#",
+> +				  "TCA_M.2B_GPS_EN#", "TCA_USB-HUB_RST#",
+> +				  "TCA_USB_HUB3_PWR_EN", "TCA_USB_HUB4_PWR_EN",
+> +				  "TCA_USB1_PWR_EN", "TCA_VIDEO_PWR_EN";
+> +
+> +		m2-b-reset-hog {
+> +			gpio-hog;
+> +			gpios = <8 GPIO_ACTIVE_LOW>;
+> +			output-low;
+> +			line-name = "m2-b-reset";
+> +		};
+> +	};
+> +
+> +	tca6416_u21: gpio@21 {
+> +		/*
+> +		 * This is a TI TCAL6416 using same programming model as
+> +		 * NXP PCAL6416, not to be confused with TI TCA6416.
+> +		 */
+> +		compatible = "nxp,pcal6416";
+> +		reg = <0x21>;
+> +		gpio-controller;
+> +		#gpio-cells = <2>;
+> +		interrupt-controller;
+> +		#interrupt-cells = <2>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&tca6416_u21_int_pins>;
+> +		interrupts-extended = <&gpio1 15 IRQ_TYPE_EDGE_FALLING>;
+> +		gpio-line-names = "TCA_SPI_TPM/EXT", "TCA_TPM_RST#",
+> +				  "TCA_I2C_RST", "TCA_RS232_SHTD#",
+> +				  "TCA_LCD_I2C_RST", "TCA_DIG_OUT1",
+> +				  "TCA_bDIG_IN1", "TCA_SENS_INT",
+> +				  "TCA_ALERT#", "TCA_TPM_PIRQ#",
+> +				  "TCA_RTC_INT", "TCA_M.2M_WAKW_ON_LAN",
+> +				  "TCA_M.2M_CLKREQ#", "TCA_LVDS_INT#",
+> +				  "", "TCA_POE_AT";
+> +
+> +		rs232_shutdown: rs232-shutdown-hog {
+> +			gpio-hog;
+> +			gpios = <3 GPIO_ACTIVE_LOW>;
+> +			output-low;
+> +			line-name = "rs232-shutdown";
+> +		};
+> +
+> +		lcd-i2c-reset-hog {
+> +			/*
+> +			 * reset shared between U37 and U48, to be
+> +			 * supported once gpio-pca953x switches to
+> +			 * reset framework.
+> +			 */
+> +			gpio-hog;
+> +			gpios = <4 (GPIO_ACTIVE_LOW|GPIO_PULL_UP|GPIO_OPEN_DRAIN)>;
+> +			output-low;
+> +			line-name = "lcd-i2c-reset";
+> +		};
+> +
+> +		m2-m-clkreq-hog {
+> +			gpio-hog;
+> +			gpios = <12 GPIO_ACTIVE_LOW>;
+> +			input;
+> +			line-name = "m2-m-clkreq";
+> +		};
+> +	};
+> +
+> +	led-controller@30 {
+> +		compatible = "ti,lp5562";
+> +		reg = <0x30>;
+> +		/* use internal clock, could use external generated by rtc */
+> +		clock-mode = /bits/ 8 <1>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		multi-led@0 {
+> +			reg = <0x0>;
+> +			label = "D7";
+> +			color = <LED_COLOR_ID_RGB>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +
+> +			led@0 {
+> +				reg = <0x0>;
+> +				color = <LED_COLOR_ID_RED>;
+> +				led-cur = /bits/ 8 <0x32>;
+> +				max-cur = /bits/ 8 <0x64>;
+> +			};
+> +
+> +			led@1 {
+> +				reg = <0x1>;
+> +				color = <LED_COLOR_ID_GREEN>;
+> +				led-cur = /bits/ 8 <0x19>;
+> +				max-cur = /bits/ 8 <0x32>;
+> +			};
+> +
+> +			led@2 {
+> +				reg = <0x2>;
+> +				color = <LED_COLOR_ID_BLUE>;
+> +				led-cur = /bits/ 8 <0x19>;
+> +				max-cur = /bits/ 8 <0x32>;
+> +			};
+> +		};
+> +
+> +		led@3 {
+> +			reg = <3>;
+
+0x3 to be consistent?
+
+Shawn
+
+> +			chan-name = "D8";
+> +			label = "D8";
+> +			color = <LED_COLOR_ID_GREEN>;
+> +			led-cur = /bits/ 8 <0x19>;
+> +			max-cur = /bits/ 8 <0x64>;
+> +		};
+> +	};
+> +
+> +	light-sensor@44 {
+> +		compatible = "isil,isl29023";
+> +		reg = <0x44>;
+> +		/* IRQ shared between accelerometer, light-sensor and Tamper input (J5007) */
+> +		interrupts-extended = <&tca6416_u21 7 IRQ_TYPE_EDGE_FALLING>;
+> +	};
+> +
+> +	accelerometer@53 {
+> +		compatible = "adi,adxl345";
+> +		reg = <0x53>;
+> +		/* IRQ shared between accelerometer, light-sensor and Tamper input (J5007) */
+> +		interrupt-names = "INT1";
+> +		interrupts-extended = <&tca6416_u21 7 IRQ_TYPE_EDGE_FALLING>;
+> +	};
+> +
+> +	carrier_eeprom: eeprom@57{
+> +		compatible = "atmel,24c02";
+> +		reg = <0x57>;
+> +		pagesize = <8>;
+> +	};
+> +
+> +	carrier_rtc: rtc@69 {
+> +		compatible = "abracon,ab1805";
+> +		reg = <0x69>;
+> +		abracon,tc-diode = "schottky";
+> +		abracon,tc-resistor = <3>;
+> +		/*
+> +		 * AM1805 RTC used on this board has only nTIRQ pins wired,
+> +		 * which is for countdown timer irqs only.
+> +		 * Driver does not support this, disable for now.
+> +		 *
+> +		 * interrupts-extended = <&tca6416_u21 10 IRQ_TYPE_EDGE_FALLING>;
+> +		 */
+> +	};
+> +};
+> +
+> +&iomuxc {
+> +	can1_pins: pinctrl-can1-grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_SPDIF_RX__CAN1_RX			0x154
+> +			MX8MP_IOMUXC_SPDIF_TX__CAN1_TX			0x154
+> +		>;
+> +	};
+> +
+> +	can2_pins: pinctrl-can2-grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_SAI5_MCLK__CAN2_RX			0x154
+> +			MX8MP_IOMUXC_SAI5_RXD3__CAN2_TX			0x154
+> +		>;
+> +	};
+> +
+> +	ecspi2_pins: pinctrl-ecspi2-grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_ECSPI2_SCLK__ECSPI2_SCLK		0x140
+> +			MX8MP_IOMUXC_ECSPI2_MOSI__ECSPI2_MOSI		0x140
+> +			MX8MP_IOMUXC_ECSPI2_MISO__ECSPI2_MISO		0x140
+> +			MX8MP_IOMUXC_ECSPI2_SS0__GPIO5_IO13		0x140
+> +		>;
+> +	};
+> +
+> +	tca6416_u21_int_pins: pinctrl-tca6416-u21-int-grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_GPIO1_IO15__GPIO1_IO15		0x0
+> +		>;
+> +	};
+> +
+> +	/* UARTA */
+> +	uart3_pins: pinctrl-uart3-grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_ECSPI1_SCLK__UART3_DCE_RX		0x140
+> +			MX8MP_IOMUXC_ECSPI1_MOSI__UART3_DCE_TX		0x140
+> +			MX8MP_IOMUXC_ECSPI1_SS0__GPIO5_IO09		0x140
+> +		>;
+> +	};
+> +
+> +	/* UARTB */
+> +	uart4_pins: pinctrl-uart4-grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_UART4_RXD__UART4_DCE_RX		0x140
+> +			MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX		0x140
+> +			MX8MP_IOMUXC_ECSPI1_MISO__GPIO5_IO08		0x140
+> +		>;
+> +	};
+> +
+> +	usdhc2_pins: pinctrl-usdhc2-grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x190
+> +			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d0
+> +			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d0
+> +			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d0
+> +			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d0
+> +			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d0
+> +			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT		0x140
+> +			MX8MP_IOMUXC_SD2_CD_B__USDHC2_CD_B		0x140
+> +		>;
+> +	};
+> +
+> +	usdhc2_100mhz_pins: pinctrl-usdhc2-100mhz-grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x194
+> +			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d4
+> +			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d4
+> +			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d4
+> +			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d4
+> +			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d4
+> +			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT		0x140
+> +			MX8MP_IOMUXC_SD2_CD_B__USDHC2_CD_B		0x140
+> +		>;
+> +	};
+> +
+> +	usdhc2_200mhz_pins: pinctrl-usdhc2-200mhz-grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x196
+> +			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d6
+> +			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d6
+> +			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d6
+> +			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d6
+> +			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d6
+> +			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT		0x140
+> +			MX8MP_IOMUXC_SD2_CD_B__USDHC2_CD_B		0x140
+> +		>;
+> +	};
+> +
+> +	vmmc_pins: pinctrl-vmmc-grp {
+> +		fsl,pins = <
+> +			MX8MP_IOMUXC_SD2_RESET_B__GPIO2_IO19		0x0
+> +		>;
+> +	};
+> +};
+> +
+> +&pcie {
+> +	reset-gpio = <&tca6416_u20 7 GPIO_ACTIVE_LOW>;
+> +	status = "okay";
+> +};
+> +
+> +/* M.2 M-Key (J4) */
+> +&pcie_phy {
+> +	clocks = <&hsio_blk_ctrl>;
+> +	clock-names = "ref";
+> +	fsl,clkreq-unsupported;
+> +	fsl,refclk-pad-mode = <IMX8_PCIE_REFCLK_PAD_OUTPUT>;
+> +	status = "okay";
+> +};
+> +
+> +&phy0 {
+> +	leds {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		/* ADIN1300 LED_0 pin */
+> +		led@0 {
+> +			reg = <0>;
+> +			color = <LED_COLOR_ID_GREEN>;
+> +			function = LED_FUNCTION_LAN;
+> +			default-state = "keep";
+> +		};
+> +	};
+> +};
+> +
+> +&phy1 {
+> +	leds {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		/* ADIN1300 LED_0 pin */
+> +		led@0 {
+> +			reg = <0>;
+> +			color = <LED_COLOR_ID_GREEN>;
+> +			function = LED_FUNCTION_LAN;
+> +			default-state = "keep";
+> +		};
+> +	};
+> +};
+> +
+> +&uart3 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&uart3_pins>;
+> +	rts-gpios = <&gpio5 9 GPIO_ACTIVE_HIGH>;
+> +	/* select 80MHz parent clock to support maximum baudrate 4Mbps */
+> +	assigned-clocks = <&clk IMX8MP_CLK_UART3>;
+> +	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_80M>;
+> +	status = "okay";
+> +};
+> +
+> +&uart4 {
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&uart4_pins>;
+> +	rts-gpios = <&gpio5 8 GPIO_ACTIVE_HIGH>;
+> +	/* select 80MHz parent clock to support maximum baudrate 4Mbps */
+> +	assigned-clocks = <&clk IMX8MP_CLK_UART4>;
+> +	assigned-clock-parents = <&clk IMX8MP_SYS_PLL1_80M>;
+> +	status = "okay";
+> +};
+> +
+> +&usb3_phy0 {
+> +	fsl,phy-tx-preemp-amp-tune-microamp = <1200>;
+> +	vbus-supply = <&vbus1>;
+> +	status = "okay";
+> +};
+> +
+> +&usb3_0 {
+> +	status = "okay";
+> +};
+> +
+> +&usb3_phy1 {
+> +	status = "okay";
+> +};
+> +
+> +&usb3_1 {
+> +	status = "okay";
+> +};
+> +
+> +&usb_dwc3_0 {
+> +	dr_mode = "host";
+> +};
+> +
+> +&usb_dwc3_1 {
+> +	dr_mode = "host";
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +
+> +	hub_2_0: hub@1 {
+> +		compatible = "usb4b4,6502", "usb4b4,6506";
+> +		reg = <1>;
+> +		peer-hub = <&hub_3_0>;
+> +		reset-gpios = <&tca6416_u20 11 GPIO_ACTIVE_LOW>;
+> +		vdd-supply = <&v_1_2>;
+> +		vdd2-supply = <&v_3_3>;
+> +	};
+> +
+> +	hub_3_0: hub@2 {
+> +		compatible = "usb4b4,6500", "usb4b4,6504";
+> +		reg = <2>;
+> +		peer-hub = <&hub_2_0>;
+> +		reset-gpios = <&tca6416_u20 11 GPIO_ACTIVE_LOW>;
+> +		vdd-supply = <&v_1_2>;
+> +		vdd2-supply = <&v_3_3>;
+> +	};
+> +};
+> +
+> +&usdhc2 {
+> +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+> +	pinctrl-0 = <&usdhc2_pins>;
+> +	pinctrl-1 = <&usdhc2_100mhz_pins>;
+> +	pinctrl-2 = <&usdhc2_200mhz_pins>;
+> +	vmmc-supply = <&vmmc>;
+> +	bus-width = <4>;
+> +	cap-power-off-card;
+> +	full-pwr-cycle;
+> +	status = "okay";
+> +};
+> 
+> -- 
+> 2.51.0
+> 
+> 
