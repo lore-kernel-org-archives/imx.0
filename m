@@ -1,48 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FFC1E9B37;
-	Wed, 31 Dec 2025 02:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AE34D8CE;
+	Wed, 31 Dec 2025 02:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767147204; cv=none; b=jlaizaU8wB/Dvkb4GrWPk9DlaibRjubsDd8awXhgggC7xYd39/hYmDl4VzUkWyFNU3KHSKjARKoAYV8GtjQ0K5oLCBmU1beDdrIgB2hhuoqQ0rymzavKbEO2P3kFkjBm02pBbO7Necs4fkO2OKjh/CWd7C80sbvIdhf84JiEZx0=
+	t=1767147505; cv=none; b=FkQ9GBFW8DlxSbS+VZZnQyCGghVWXXdXdGZn0Wa5U7B/7RzQ62ibViB0H/pfJ8Kj3QH5YvNFLPA3hSzqYH8pv2WJWhC+s4oScWv0mUVY2jpqYWAcNmf1scZ40YfAB5IFglUEAOvc9AxrUvFWxhaExfQTl/M+YwhX0yf45eHW4Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767147204; c=relaxed/simple;
-	bh=PCoedTJGv1Pig+WmC7clDH0HKtaOVbe/hHN1RGvcRTM=;
+	s=arc-20240116; t=1767147505; c=relaxed/simple;
+	bh=pRWn7rpvOpmSzAKdEiA8vbbyCFJU68TB0Ux+WK0H2BQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EimZ58u0Sj5c/otjhuWqLvJyNSf2woXoqcm6acuwjAcnLqonReMwSGLMUseE++lVk7FKxEi1c54rZhW0cMvRwyRe10b4cEJAsuDLDDnnLehktJc8pTSBSB/p/K3sLpFXc7l1WpJZzULNNxachJF/EF8e8hV/dAnmKo8JjyDk/lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jzd9x2z7; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=qv+jO98kBOKy7SroHrOviKyNsp5yO+tTbZAzIfVORSlpom2pImyLD9QNT6k76Y/iigraoHcEb4un9etR+oP3+8hxuiVhFkGsjhLstbhkVvRtezdhAUDArdLxdR9U5zvSLYv4giELQoVlghwkCz5qj9SBfeWz+j6ZY8yF5l6SNwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TApW9ab9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jzd9x2z7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D097C116C6;
-	Wed, 31 Dec 2025 02:13:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TApW9ab9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEE2C116C6;
+	Wed, 31 Dec 2025 02:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767147203;
-	bh=PCoedTJGv1Pig+WmC7clDH0HKtaOVbe/hHN1RGvcRTM=;
+	s=k20201202; t=1767147504;
+	bh=pRWn7rpvOpmSzAKdEiA8vbbyCFJU68TB0Ux+WK0H2BQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Jzd9x2z76lUHE9i9/eoEcrwHT8qHqY3qSXA48kgRVpCeyo7CO+0S2ywMuWq/M2/1+
-	 CwkXyDvT1a1J/siUxm6NupKhrp+tD9b6MxCjHu8299ifXVHi2+XZyTtNR4ktvRkqxk
-	 W/J3ML4F9IpfFFSWAwu04gpCmVos3xCVcQuMsWebbysbGeYr7jWKxG3cF6I30pyNfh
-	 6y3Z2HyvpqElq/7uYQfd+/oUeo5wI9SI/gSwYEaBcjZcgTeYBw8zaR7mcMgZhoVs72
-	 l6TvWsh2dix9Jgij9XHwhv/PpHaicsLw8uT4A3+GB2H/ukfGgpKQwTe5Q6yZWaVW5g
-	 igsA+lSp/amwg==
-Date: Wed, 31 Dec 2025 10:13:17 +0800
+	b=TApW9ab9gCZrjhqfr+HCK3YzhyrgTmM+8Ow8r/d9S9I5fWmHLIhWMY7VejEvfgNhm
+	 ciYsdC9wOzZmW23lqoMZNUorAS1n0XW7raC36zW6lXhPptVPqB8e20C8hmkqNO63z3
+	 zD280rUCKy7wOnQgIMH9i8Z0l9G9Km+3Jtn2aGrkVcJxTJQGJosDhhHshCUBsDg4C2
+	 GvMPZCG/b9DNQXIjivNAQUpu5QJLLS3LWUxmoq4A+AtVe+rMaU8MsWNndwOAD/M6K6
+	 rXX3n+kRYoZ8WKdeKnsBpgG2Y4hNk/x9MRtU5NUZPxcSdrq6/EElnHduWI5Se9Tppw
+	 oh/4vkG8fH4LA==
+Date: Wed, 31 Dec 2025 10:18:19 +0800
 From: Shawn Guo <shawnguo@kernel.org>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Max Krummenacher <max.krummenacher@toradex.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, max.oss.09@gmail.com
-Subject: Re: [PATCH v1 0/3] arm64: dts: imx8x-colibri: add additional
- functionality
-Message-ID: <aVSGvY0Zls3Fxr84@dragon>
-References: <20251031125003.275033-1-max.oss.09@gmail.com>
- <aVOolTfi5s9jqG2v@livingston.pivistrello.it>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: conor+dt@kernel.org, devicetree@vger.kernel.org, festevam@gmail.com,
+	imx@lists.linux.dev, kernel@pengutronix.de, krzk+dt@kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	robh@kernel.org, s.hauer@pengutronix.de
+Subject: Re: [PATCH v2 1/1] arm64: dts: imx8mp-evk: add camera ov5640 and
+ related nodes
+Message-ID: <aVSH6zOaXqmVfwzq@dragon>
+References: <20251229163101.4004478-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,18 +45,11 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aVOolTfi5s9jqG2v@livingston.pivistrello.it>
+In-Reply-To: <20251229163101.4004478-1-Frank.Li@nxp.com>
 
-On Tue, Dec 30, 2025 at 11:25:25AM +0100, Francesco Dolcini wrote:
-> Hello Shawn,
+On Mon, Dec 29, 2025 at 11:31:01AM -0500, Frank Li wrote:
+> Add camera ov5640 and related nodes.
 > 
-> On Fri, Oct 31, 2025 at 01:49:40PM +0100, max.oss.09@gmail.com wrote:
-> > Provide a pwm-backlight.
-> > Provide the 32kHz Wi-Fi clock used during low-power operation.
-> > Configure CMA from the device tree.
-> 
-> This series was not applied, any concern? Anything to change?
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Sorry for missing it.  Applied, thanks!
-
-Shawn
+Applied, thanks!
