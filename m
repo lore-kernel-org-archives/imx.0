@@ -1,93 +1,92 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791332248B0
-	for <imx@lists.linux.dev>; Wed, 31 Dec 2025 15:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1213A30E855
+	for <imx@lists.linux.dev>; Wed, 31 Dec 2025 21:51:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767193603; cv=none; b=iP16fajnY58OL6xI2i9nMyD8j8MzBWo/hUnXmfOI/pavR1kuHZjF606dEuxGxV//N1dDr8IkwP+LSzorUwzjvMOP32LDTg/sbE3Pvr2xKVqeYGtg2fz1b3uniGa6GRzSOdwRVzYHN6+qkhfDgXRVllVSrlna/16IuWV6MRtvRIk=
+	t=1767217867; cv=none; b=S2haaKdukX6mE6a2uiSlPcj3V/mFYK3E9/WAJ9snRc9ewGjXOUKvBaJKQ+l+imxvGigHGbwF77HiqH5HVBgrmHxX67+1eTvqLgCvaqya619kYiyljMYT2te0H3YKEwtJ+dWp/AeC09dYJfD1+qj/ZEuvd1Vim6ivdzgRSy2Wzps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767193603; c=relaxed/simple;
-	bh=mwLe0hg4gRppnufmu9WMc1YOzRwOt3oj6WZDNTVFyp4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G4LGoA/pNu8EcVVPUCgyXMCGIJaT87zsBUXeL6pNgQ7wVFWZgyXGQHnnpCj/UMJHCRr5yk3HGUT/kiD5t0HSC1B8YFB5M4d3m6+nI+53LfARRK0uSJcqdGOk3qQPk7y6Uawq0+CFG9Yw6kAXtOTyB7z+1A2ciTaBqn/lEw+85V4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Asx1XP+i; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1767217867; c=relaxed/simple;
+	bh=1dgOiCMHW+Z7a4Iq31trxTmP5l0kzHmrGC9ib/clXB4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mn04MLfQVGDCg5o0dKbBOZW2y6BiQe6haEwca2eArPw7zbpE1xzQbNC2DV776TgPoW5dY2Il+dIUOC58pDRaY0lRcEqPLqMEYAzAPfH5FEv7fwto6cPtGGzgh8M0X+ar9nnf3Af4SBH7eleu1ubwlnQ0aPewhM1F2EjQPPCGdiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUhkrStJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Asx1XP+i"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4dhCwG0DDkz9tl6;
-	Wed, 31 Dec 2025 16:06:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1767193598;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lM/LDEXQ59nBAxlq+a/Py0Lpzo0PBuXD2pbfBww4E0Y=;
-	b=Asx1XP+iK6i9hd9W7t7F6twLwvZLgknRFiVWAJtmFEKwWhEpg95MI/5bPlJ7BuTiu9g4jZ
-	zwLA4V3y5lWOjd1jhSVH+2OE8Z9jy33X2Z/OBimKm9vYIganTuJN+dObTeGLj9fT5yyZRp
-	dJcT3/qsedaLjTXA4e1fL/x2pP99YFb350pAtz7Dy7AfiKdOMiIWzHPS0XuJJ7n8tXrW49
-	yG5jgR7LNN7ejW2yPmqB+F8vfNG76QzcGpqus0cEMxDE5JZuxSoB1LvYhvyq8JwBpUDmc4
-	OG6Y6VoLWEvvETwUSIpt8kiiPGOR4NMBIpHVwmvPzDHMGmiBtd3bbAjVXj7b0A==
-Message-ID: <37489cb7-820d-46cd-a7ea-0f9097604895@mailbox.org>
-Date: Wed, 31 Dec 2025 15:11:21 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUhkrStJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A3BC2BC9E
+	for <imx@lists.linux.dev>; Wed, 31 Dec 2025 21:51:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767217866;
+	bh=1dgOiCMHW+Z7a4Iq31trxTmP5l0kzHmrGC9ib/clXB4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=sUhkrStJSwjGZ2XRy9OJb6HUvUKwET0l9AiU6cNZosCauIHjFKzQ1b7TOKHLwxRdc
+	 b5nPDpnnlCBqd2zATN+TSwKN09UnT06oJMorI7qRZ7tPu617nyFv3V/JLc41jgAqRO
+	 XU6yU5g2bc8G5DLtO5Ozd0fkI+hOKqEXLWbIojJAu9ZZq+xWNlLQtzqq3P3Qsr3p0t
+	 gYJsWSrl/Xsmn9vIJo+Et94QdgZtWVQIlhq/FSVhksJkp97iiSl60ZHTNxClwhfB4M
+	 GKWL2T1hvzLJoPdTS5xcn/Tl7IuVvFRWwIxokPYKkN8VdOAA4Gf3DDXugPLUC0V6Df
+	 uho202+Fyh+LA==
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-640e065991dso9278089d50.3
+        for <imx@lists.linux.dev>; Wed, 31 Dec 2025 13:51:06 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXNlgDrt/UdgRtVqv/+72YV1K/qu7UF7r5dW2xPibDE5P4zV+gIh+ZPFPACnjmWFu+6HuM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy3VS1CavSluJG26rK5VdrvyNl/KdxSakHUq1YoU+ju624HeGWb
+	Qeq49zpJ65xAfxhjRjPJCTzTU+8d0xArODoZGeOMAjsw7Rr007Fmp/FV7waZOB8+eg/nq9ZVNOa
+	W3X3aFSYTTbp8YWxJiyM6u3WTzjgQrDE=
+X-Google-Smtp-Source: AGHT+IH29S99+HYf8SuC4lZx27OfrHABr4tetzXdccaN2xUVWn/wgVS/NlKdgLQVr0jKfoYAGzsi8EIIhZ5XvfkifzI=
+X-Received: by 2002:a05:690e:1486:b0:63e:b41:cebc with SMTP id
+ 956f58d0204a3-6466a8395admr30714655d50.17.1767217865999; Wed, 31 Dec 2025
+ 13:51:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH] arm64: dts: imx95: remove CLK_GPUAPB
-To: Rain Yang <jiyu.yang@oss.nxp.com>, imx@lists.linux.dev,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, Frank.Li@nxp.com, liviu.dudau@arm.com,
- Rain Yang <jiyu.yang@nxp.com>
-References: <20251231031915.752262-1-jiyu.yang@oss.nxp.com>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <20251231031915.752262-1-jiyu.yang@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: cj1nf6xkoodfn1a4i3danjiknax1xpez
-X-MBO-RS-ID: 487dd8ea82aa49fe10d
+References: <20251212-dev-b4-aaeon-mcu-driver-v1-0-6bd65bc8ef12@bootlin.com>
+ <20251212-dev-b4-aaeon-mcu-driver-v1-3-6bd65bc8ef12@bootlin.com> <019aa49f-fe59-488d-aff8-f07cf07ee68d@kernel.org>
+In-Reply-To: <019aa49f-fe59-488d-aff8-f07cf07ee68d@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Wed, 31 Dec 2025 22:50:55 +0100
+X-Gmail-Original-Message-ID: <CAD++jLmKL4afaOn_eka6v=j_Wu0orZMb-2NbPZgP4SM2q4V7qw@mail.gmail.com>
+X-Gm-Features: AQt7F2pjZLgNxaiWJYqspkMb-XGMxgFbeL4lckn8FGNkckGZmMd1GQVA1LvpjDo
+Message-ID: <CAD++jLmKL4afaOn_eka6v=j_Wu0orZMb-2NbPZgP4SM2q4V7qw@mail.gmail.com>
+Subject: Re: [PATCH 3/8] dt-bindings: watchdog: Add AAEON embedded controller
+ watchdog binding
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, 
+	=?UTF-8?B?SsOpcsOpbWllIERhdXRoZXJpYmVz?= <jeremie.dautheribes@bootlin.com>, 
+	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/31/25 4:19 AM, Rain Yang wrote:
-> From: Rain Yang <jiyu.yang@nxp.com>
-> 
-> Dropping CLK_GPUAPB simplifies OPP handling and avoids unnecessary
-> complexity.
-> 
-> Fixes: 67934f248e64 ("arm64: dts: imx95: Describe Mali G310 GPU")
-> Signed-off-by: Rain Yang <jiyu.yang@nxp.com>
-> ---
->   arch/arm64/boot/dts/freescale/imx95.dtsi | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> index 88bde59e61b2..ab446aa6f73c 100644
-> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-> @@ -2164,8 +2164,8 @@ netc_emdio: mdio@0,0 {
->   		gpu: gpu@4d900000 {
->   			compatible = "nxp,imx95-mali", "arm,mali-valhall-csf";
->   			reg = <0 0x4d900000 0 0x480000>;
-> -			clocks = <&scmi_clk IMX95_CLK_GPU_CGC>, <&scmi_clk IMX95_CLK_GPUAPB>;
-> -			clock-names = "core", "coregroup";
-> +			clocks = <&scmi_clk IMX95_CLK_GPU_CGC>;
-> +			clock-names = "core";
+On Fri, Dec 12, 2025 at 9:20=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
+> On 12/12/2025 08:41, Thomas Perrot (Schneider Electric) wrote:
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    watchdog {
+> > +      compatible =3D "aaeon,srg-imx8pl-wdt";
+>
+> No, that was discussed many times on the mailing list already. Fold the
+> child into the parent. Your driver model really do not matter for DT.
 
-I don't think this is correct, SM can disable the GPUAPB clock from the 
-SM monitor:
+True. For an example in Linux check how I spawn a watchdog
+platform device from a timer node in:
+drivers/clocksource/timer-ixp4xx.c
 
- >$ clock.w gpuapb off
+It's just one node in the device tree, in Linux it is in two different
+subsystems but we just deal with that in code.
 
-Linux has to make sure the GPUAPB clock are enabled to access the GPU 
-register, hence the clock have to be described in DT.
+Yours,
+Linus Walleij
