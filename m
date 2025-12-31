@@ -1,128 +1,144 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778B93101BB
-	for <imx@lists.linux.dev>; Wed, 31 Dec 2025 11:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65EF2561AB
+	for <imx@lists.linux.dev>; Wed, 31 Dec 2025 14:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767179486; cv=none; b=u4+Cpb50tJbMbPki+gMnqmgR9lsslsKK8jD9IHes+qp9qZiaI7WfC6T9xJwx0Ica4J3vHqpBDfEK7YkHWcY9yfnWvVCp19sE7uvK8nikpNAE+U+BIr6Me3LGZ5KwNsKXOF5/Rf0h6OFPcUwwsXVPqhi7kOasybDc0+X5ZKE6kEY=
+	t=1767190725; cv=none; b=Zz4+rT6/qu7iRIaJaRUq6AwyOYxRh5VjllT57tDHFvRy49Un6qZmxBfnjxv19g9HyD4/2PD8CBheOHTM5TREDd5HZuzHWd2aFMLg3pXH16pBHIIVr9QoxP7kXO2fu2mvf8GPnyz0csaxJPyJVk3d57Qa2fN4qV3Lk6nunfIGqzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767179486; c=relaxed/simple;
-	bh=MMWC0dLFr7ImsLLBrwRfsSXbM89kIqiNvA29IB0yasY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=BD82Zk+c1SuKg8ho47DdrqEmSsyZ7mPklopYbExn/63/boyWzVtbIKP2m1s6gSvT4xN8oM2asqUViVEc2bvdMnumjO5w/gEKiDAHDjOIGaPLxuJvOTp7NEj/8S0un/44wuCQOGXeUQbB5c/w+7VWA/XXyzWbfkZEByz8sKihSEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SV1z9pfV; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1767190725; c=relaxed/simple;
+	bh=AS7nhlMTcPiu2PhgOP1yMKKRYiNT0qVT8Me6nXBTwmU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f7FC1MtA2O0OQTEkOkapLyJuWHIH5Eo23/FDl3Sp88GOXbVGknVEd9Jg6KkWKJkgEaxQDBCGUv0SiJcvMEWY9TtQG6wcH7k6AycmfiU9uPgbGXzwd/kphWfvpCTo9X1CMV2C9qw3noD04E86DIrRswPX7+djxUOrj88yX2/prFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Wmnkntqr; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SV1z9pfV"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 838ACC1AE22;
-	Wed, 31 Dec 2025 11:10:56 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E455C60744;
-	Wed, 31 Dec 2025 11:11:21 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 23832113B0764;
-	Wed, 31 Dec 2025 12:11:08 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767179480; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=55XhYgANfix4/exU+jGGVTiGXqeuZF3yQcF00ZiG0dM=;
-	b=SV1z9pfVtcvrATQfVDliiBBq97NU2utS5KLqyYqYIEj6QCeA4MJLMV0/aD0g5Kgy2ee3tw
-	veAPFFUoIjkP14Qn16fce692SQjf3ADHMll9fqtbkPG3bp6oQWbpgBpvzE+wWPpZgT+pXV
-	eYO2QQC1jxOxq44S19F4xyBKx0SCOpxb5zQ/ly1kI4hEIm4pb7Sh+yOhXln3rGW02DunPj
-	EJQlHqWuVLbsLvvlhtnaoHXIERp1gRaD4S6ql/3Yjzy47tbZM/cCNTPWXT5qCEu53eNF1P
-	AAve6YLAB9fWQWUp/Yu9yIzJrpJV1l1SZdgRcIuzp8Ez1v7p1prS1R34TIwyLw==
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Wmnkntqr"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4dhBfL5C1Tz9t0t;
+	Wed, 31 Dec 2025 15:09:30 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1767190170;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wBGL6dDCOuh3bhIrx5PRK90WNsQm4b6NujEGQuwgXlc=;
+	b=WmnkntqrVjtbVL9rhRPZkD8dJqB0ZtjKLxb8yCVnDjSzHkOR0/sfatTe633pfK/iiHAf0d
+	fOYAa0urixQTv2kVaPk3ZnoCr9KpAgPMFfGoC4rCGKAjEnLQGtuDLHPhtX9GF9jisbDuQ8
+	5nQiCGZYdPeBDhpWUnW3UfIbXNInyONLzE8AoHPJZXjXLfaQP8nb4gqUWJPmQjzKOMgq9q
+	27yL0cNFqdYGEeVD63e/WPUsLa58nsO3rl1mNHaqKMOBYZ9h3t/IyHz5O/MvfjfoNwJMM/
+	TBbxSS/eSjcVK3uYR7+4Qcy0WR9JlnJ0/tOfy6EoC6bWnMPQN9pn2IBqblZZ6A==
+Message-ID: <4f890538-f2f9-408b-9644-73708e7e7b24@mailbox.org>
+Date: Wed, 31 Dec 2025 15:09:27 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 31 Dec 2025 12:11:08 +0100
-Message-Id: <DFCCU8AN0GZQ.2CYTKKV40JYLI@bootlin.com>
-To: "Damon Ding" <damon.ding@rock-chips.com>, <andrzej.hajda@intel.com>,
- <neil.armstrong@linaro.org>, <rfoss@kernel.org>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v8 04/18] drm/bridge: analogix_dp: Add
- &analogix_dp_plat_data.next_bridge
-Cc: <Laurent.pinchart@ideasonboard.com>, <jonas@kwiboo.se>,
- <jernej.skrabec@gmail.com>, <maarten.lankhorst@linux.intel.com>,
- <mripard@kernel.org>, <tzimmermann@suse.de>, <airlied@gmail.com>,
- <simona@ffwll.ch>, <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
- <kernel@pengutronix.de>, <festevam@gmail.com>, <inki.dae@samsung.com>,
- <sw0312.kim@samsung.com>, <kyungmin.park@samsung.com>, <krzk@kernel.org>,
- <alim.akhtar@samsung.com>, <jingoohan1@gmail.com>,
- <p.zabel@pengutronix.de>, <hjc@rock-chips.com>, <heiko@sntech.de>,
- <andy.yan@rock-chips.com>, <dmitry.baryshkov@oss.qualcomm.com>,
- <dianders@chromium.org>, <m.szyprowski@samsung.com>,
- <jani.nikula@intel.com>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <imx@lists.linux.dev>,
- <linux-arm-kernel@lists.infradead.org>,
- <linux-samsung-soc@vger.kernel.org>, <linux-rockchip@lists.infradead.org>
-X-Mailer: aerc 0.20.1
-References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
- <20251217093321.3108939-5-damon.ding@rock-chips.com>
-In-Reply-To: <20251217093321.3108939-5-damon.ding@rock-chips.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Subject: Re: [PATCH] arm64: dts: imx95: Use GPU_CGC as core clock for GPU
+To: Rain Yang <jiyu.yang@oss.nxp.com>
+Cc: Frank.li@nxp.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
+ festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de,
+ krzk+dt@kernel.org, linux-arm-kernel@lists.infradead.org, peng.fan@nxp.com,
+ robh@kernel.org, s.hauer@pengutronix.de, shawnguo@kernel.org
+References: <aTACuRjC_Zpf8IOU@oss.nxp.com>
+ <de36091e-c890-4897-b3e3-2a7575029a5d@mailbox.org>
+ <aTD5np-HGaJqhzkD@oss.nxp.com>
+ <5944d872-01a3-47e9-977b-029f3be4fd83@mailbox.org>
+ <aTKVMAMQ6v_BwD6R@oss.nxp.com>
+ <9b593731-898f-46a7-8ee5-68f8c170351c@mailbox.org>
+ <aTYxm_dfMwF4H0_b@oss.nxp.com>
+ <53ea529f-3538-4ab5-aa99-0caa6729b4cd@mailbox.org>
+ <aVM-mSkSubMPd7Du@oss.nxp.com>
+ <6055d6f3-2b31-4225-a42e-0f5ad79f7256@mailbox.org>
+ <aVSTJdnWm2KfpXa1@oss.nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <aVSTJdnWm2KfpXa1@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: bc2861c1611d36a4a05
+X-MBO-RS-META: xs4hkq5sdw3gihc6abz8t11whgpf6x4w
 
-Hello Damon,
+On 12/31/25 4:06 AM, Rain Yang wrote:
+> On Tue, Dec 30, 2025 at 03:17:44PM +0100, Marek Vasut wrote:
+>> On 12/30/25 3:53 AM, Rain Yang wrote:
+>>> On Tue, Dec 30, 2025 at 02:53:38AM +0100, Marek Vasut wrote:
+>>>> On 12/8/25 3:02 AM, Rain Yang wrote:
+>>>>
+>>>>>>> Okay, I’ll submit a patch later.
+>>>>>>> The commit message should reflect that only CLK_GPU_CGC is enabled.
+>>>>>>
+>>>>>> The commit message , and this change , is unrelated to GPUAPB clock.
+>>>>> The commit message is ambiguous. Could you clarify which parent clock
+>>>>> you are referring to, and whether it can be enabled by CLK_GPU_CGC?
+>>>>> If it was CLK_GPU, CLK_GPU_CGC can't be able to control it.
+>>>>
+>>>> The commit message clearly states "These new GPU_CGC clock
+>>>> gate the existing GPU clock." and "GPU_CGC as well as its parent GPU clock."
+>>>> , I don't perceive any ambiguity, sorry.
+>>>>
+>>>> Frankly, the whole GPUAPB discussion is entirely unrelated and it only stalls
+>>>> application of this bugfix and keeps upstream broken. This is not helping.
+>>>>
+>>>> So unless there is anything in particular that is on-topic and prevents this
+>>>> patch from being applied, it would be good to apply it, otherwise the GPU on
+>>>> MX95 in mainline Linux is not working.
+>>> Hi Marek,
+>>>
+>>> I’m not opposed to this patch being merged into mainline, but the commit
+>>> message needs to be accurate. the parent CLK_GPU cannot be enabled or
+>>> disabled externally. The last sentence should clearly state:
+>>
+>> Look here, this is what you can do with the MX95 SM:
+>>
+>> "
+>>> $ clock.r
+>> ...
+>> 083: gpuapb               =  on,  133333333Hz
+>> 084: gpu                  =  on,  800000000Hz
+>> ...
+>> 174: gpu_cgc              =  on,  800000000Hz
+>>
+>>> $ clock.w gpu_cgc off
+>>> $ clock.w gpu off
+>>> $ clock.w gpuapb off
+>>
+>>> $ clock.r
+>> ...
+>> 083: gpuapb               = off,  133333333Hz
+>> 084: gpu                  = off,  800000000Hz
+>> ...
+>> 174: gpu_cgc              = off,  800000000Hz
+>> "
+>>
+>> Notice how all clock are disabled, including GPU clock.
+>>
+>> That does not agree with your statement.
+>>
+>>> When the panthor driver enables the GPU core clock, it enables the GPU_CGC.
+>>
+>> It also enables all disabled parent clock in the process, which includes the
+>> GPU clock.
+>>
+>>> This ensures the description reflects the actual hardware behavior and
+>>> avoids confusion for future maintainers.
+>>> Thanks for addressing this issue — once the commit message is corrected,
+>>> I’m fine with this going in.
+>>
+>> See above.
+> 
+> Hi Marek,
+> Based on the instructions you gave, I’d put it this way, even though the
+> CLK_GPU clock can only be controlled internally.
+> 
+> I’m fine with your patch now.
 
-On Wed Dec 17, 2025 at 10:33 AM CET, Damon Ding wrote:
-> In order to move the panel/bridge parsing and attachmenet to the
-> Analogix side, add component struct drm_bridge *next_bridge to
-> platform data struct analogix_dp_plat_data.
->
-> The movement makes sense because the panel/bridge should logically
-> be positioned behind the Analogix bridge in the display pipeline.
->
-> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
->
-> ---
->
-> Changes in v4:
-> - Rename the &analogix_dp_plat_data.bridge to
->   &analogix_dp_plat_data.next_bridge
-> ---
->  include/drm/bridge/analogix_dp.h | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/include/drm/bridge/analogix_dp.h b/include/drm/bridge/analog=
-ix_dp.h
-> index cf17646c1310..582357c20640 100644
-> --- a/include/drm/bridge/analogix_dp.h
-> +++ b/include/drm/bridge/analogix_dp.h
-> @@ -27,6 +27,7 @@ static inline bool is_rockchip(enum analogix_dp_devtype=
- type)
->  struct analogix_dp_plat_data {
->  	enum analogix_dp_devtype dev_type;
->  	struct drm_panel *panel;
-> +	struct drm_bridge *next_bridge;
->  	struct drm_encoder *encoder;
->  	struct drm_connector *connector;
->  	bool skip_connector;
-
-It took a while to understand why you are adding the next_bridge pointer in
-struct analogix_dp_plat_data instead of struct analogix_dp_device, where it
-would be more natural. I found an answer in patch 16: with current code you
-need to place next_bridge in struct analogix_dp_plat_data because it is
-used by user drivers to attach, and those drivers have no access to struct
-analogix_dp_device. However patch 16 (which looks a very good cleanup BTW)
-next_bridge can be moved to struct analogix_dp_device.
-
-So I'd suggest to move patch 16 before this one if it easily doable, so
-that you can introduce next_bridge in struct analogix_dp_device from the
-beginning. Should that be impossible, you can send a separate patch to move
-next_bridge, after patch 16.
-
-Best regards,
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Thank you
