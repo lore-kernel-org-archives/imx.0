@@ -1,49 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03FE1F95C;
-	Wed, 31 Dec 2025 02:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FB412CDBE;
+	Wed, 31 Dec 2025 03:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767147953; cv=none; b=N4c0aYaSX7GDpytvLY6u5wPrCN/acuLtSsLynryLfm9KjiRZbiJ7zoE/cNJeFFSCz14PohQSv/rfdBOGLFRQxgT0CvKKQRAhGyfHzLiLYUvl4EGprDSzlIHHauvqgK2iZkZYRY/bUw8qajhtmzx1wtNW5rJgeE3Bpj4KqPZvTVs=
+	t=1767150345; cv=none; b=EmPWJSRFrjEZ0c4MRyiTmWtoV+Hcep4XS3XiMW3dpalqfpAdHuTef+tESasWk7L3tWGDbkiFTLafTMtD2zjCfSKvffiIieHFVBWUe9usGXq4tfprNKj6L18X0DKlF4iQPlTfTuc0s7I833Hax5fy2OTM/elS5FNMz2FaqBb3AO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767147953; c=relaxed/simple;
-	bh=tHQ9S/Ivz/LfPTqBZFEnLr38RdRE/dlYpzYs3nse1z0=;
+	s=arc-20240116; t=1767150345; c=relaxed/simple;
+	bh=MqHLvL68KAQb7SXagB6QkmhNElLWAClnQb+Cnw8dcUk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I8M7epp4wIlBRkRF4SJnehF3GN/rXYeOY/4Hi8yMogPQZQ0e7hSfRQZhudLFU6/FiVrPAYzChWq3jO0EFA0Hw9CQK/RSyXapCpQZDF8sf7+4/Wtfi/l3aXPh3omlUHsXarf9Pj2gbY4q0dnn/fsOpq2oGqc2cYrz24bTCW/L3AU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fdGGgFZC; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=deIFEqa4Ib/C10dhyObioJw8jsbD/4FhXEa+B4kSGK2+y2m5YMwZrbkUGlHhBzgzeGnAzHeycXF27EGo5UpEGPjVHgk650fu0quYAwrvDC1LMHobtIzVSIufTvlAvTlk/qTW/N3f5RFgFWJkQN/YkekTNbmy3BPtvu+7iBdkCfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ic8+St29; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fdGGgFZC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F93C116C6;
-	Wed, 31 Dec 2025 02:25:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ic8+St29"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A276C116C6;
+	Wed, 31 Dec 2025 03:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767147952;
-	bh=tHQ9S/Ivz/LfPTqBZFEnLr38RdRE/dlYpzYs3nse1z0=;
+	s=k20201202; t=1767150345;
+	bh=MqHLvL68KAQb7SXagB6QkmhNElLWAClnQb+Cnw8dcUk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fdGGgFZClh2nVp6l3AT5LqKFhdRpWp8h4QNR4p2fmgnIUnunNb/++SvKBNNHBnPKl
-	 Fn+yMvxjM1Tt5sYhj8/hthKJnQcF8nynRDqb43T1yUjTwlXRArALigWPV1MblX0Rjn
-	 7br+oPvjsqvuE13FA3Ql+6D0lQZIDTaoaL2/4826fmdgbGfGTezNVn/2CwBfq+I9C6
-	 v2/UbE0yF1YP0S6rfJXg8EZi9NwWzhHUH42NQLqQEwI3Seb+d2WDbk1Dmn0Z2LA084
-	 xwwquYCjJwnfDc3LhW3yB70YjDFD/L35QlPwmSGmZxv2v7wSPkeA1C9XfVZUlRCrIC
-	 dNKebNoT4loOA==
-Date: Wed, 31 Dec 2025 10:25:45 +0800
+	b=ic8+St29FOOQ39l/NebKgSGGDd4gYL1qDKdxaJlLRa/olQXp5znmSRQDplZRfDYSE
+	 CHvzYgwqXWJaaDyYvf/Gd3kpMjw/xJdHPjptT36ktjk+QcU3F6JpuUq5wXRswxuzeR
+	 ezUcrlCZT6N6pOWsRSBmyAogQt7bkyDNLThLNQ6Aicu+RwcgIW0S7vPWn2lHRCqKNt
+	 9040PxNjefVA4qXJ2O4v0KdOF3nR0b3f3ht/70gU5RJLleVqypeQmKEEbx6L54BD/e
+	 ClXs49HiTYKfNuxAVNvyF6ozv3ORFaTUpxIpFl3kChhqZSQkqMfDw1S12prKt5SukR
+	 xt9smCDs1CCTw==
+Date: Wed, 31 Dec 2025 11:05:37 +0800
 From: Shawn Guo <shawnguo@kernel.org>
-To: Marek Vasut <marek.vasut@mailbox.org>
-Cc: linux-arm-kernel@lists.infradead.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+To: Joseph Guo <qijian.guo@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Peter Huewe <peterhuewe@gmx.de>, Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-integrity@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: tpm: Add st,st33tphf2ei2c
-Message-ID: <aVSJqQHcvettOKeZ@dragon>
-References: <20251230014047.149677-1-marek.vasut@mailbox.org>
+	Fabio Estevam <festevam@gmail.com>,
+	Justin Jiang <justin.jiang@nxp.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, qijian.guo@oss.nxp.com,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Francesco Valla <francesco@valla.it>,
+	Tom Zheng <haidong.zheng@nxp.com>,
+	Steven Yang <steven.yang@nxp.com>, Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [PATCH v3 0/2] Add FRDM i.MX 91 Development board support
+Message-ID: <aVSTARNDcNqvam1f@dragon>
+References: <20251230-imx91_frdm-v3-0-60cac61c96ec@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,17 +53,16 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251230014047.149677-1-marek.vasut@mailbox.org>
+In-Reply-To: <20251230-imx91_frdm-v3-0-60cac61c96ec@nxp.com>
 
-On Tue, Dec 30, 2025 at 02:40:34AM +0100, Marek Vasut wrote:
-> Add the ST chip st33tphf2ei2c to the supported compatible strings of the
-> TPM TIS I2C schema. The chip is compliant with the TCG PC Client TPM
-> Profile specification.
-> 
-> For reference, a databrief is available at:
-> https://www.st.com/resource/en/data_brief/st33tphf2ei2c.pdf
-> 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+On Tue, Dec 30, 2025 at 04:58:52PM +0900, Joseph Guo wrote:
+> Joseph Guo (2):
+>       dt-bindings: arm: imx Add FRDM-IMX91 board
 
-Applied both, thanks!
+Subject prefix "dt-bindings: arm: fsl: " might be better.
+
+Fixed it up and applied both patches, thanks!
+
+Shawn
+
+>       arm64: dts: freescale: Add FRDM-IMX91 basic support
