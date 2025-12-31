@@ -1,92 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1213A30E855
-	for <imx@lists.linux.dev>; Wed, 31 Dec 2025 21:51:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A75E30F81B
+	for <imx@lists.linux.dev>; Wed, 31 Dec 2025 23:41:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767217867; cv=none; b=S2haaKdukX6mE6a2uiSlPcj3V/mFYK3E9/WAJ9snRc9ewGjXOUKvBaJKQ+l+imxvGigHGbwF77HiqH5HVBgrmHxX67+1eTvqLgCvaqya619kYiyljMYT2te0H3YKEwtJ+dWp/AeC09dYJfD1+qj/ZEuvd1Vim6ivdzgRSy2Wzps=
+	t=1767224482; cv=none; b=oBu+Lvj7mSxUnLmT5y6WnHK4mV1OFDEsk4YyA8bNZGHwCQSDFgDgnYC5px9Nr5NcgpNc0CCTIqAbTqWt2yfC5ICrTfjC5sh6aLjpnv9cGZMgxRRYfuoqBIgqOv49jP1qxcOmENtl5pjqsxamrBpG+T4WYr6TOLHqyS1h2OWmgVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767217867; c=relaxed/simple;
-	bh=1dgOiCMHW+Z7a4Iq31trxTmP5l0kzHmrGC9ib/clXB4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mn04MLfQVGDCg5o0dKbBOZW2y6BiQe6haEwca2eArPw7zbpE1xzQbNC2DV776TgPoW5dY2Il+dIUOC58pDRaY0lRcEqPLqMEYAzAPfH5FEv7fwto6cPtGGzgh8M0X+ar9nnf3Af4SBH7eleu1ubwlnQ0aPewhM1F2EjQPPCGdiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUhkrStJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767224482; c=relaxed/simple;
+	bh=BWy1gXyOOWYNnYUBz6Zo1eDM/lnD8SOnC63pK454g8g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m/lyR2Xzbj4CZxFXCA/XPAU2wXmaGvOgwQKKbIVxPvqyA2hXqbsXtZA5Fz3qWIVfXcooNmkKu8rHjH4Wb1+v+NaL6bQhFwEDAG/8YLRGiIhnnPYC/28f4oy383tzpFn2kdBRho+nrB/mVIA6ZjjV9vjuv77Nsj5Cq4REcMdKj+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YwcwKQTq; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUhkrStJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A3BC2BC9E
-	for <imx@lists.linux.dev>; Wed, 31 Dec 2025 21:51:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767217866;
-	bh=1dgOiCMHW+Z7a4Iq31trxTmP5l0kzHmrGC9ib/clXB4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=sUhkrStJSwjGZ2XRy9OJb6HUvUKwET0l9AiU6cNZosCauIHjFKzQ1b7TOKHLwxRdc
-	 b5nPDpnnlCBqd2zATN+TSwKN09UnT06oJMorI7qRZ7tPu617nyFv3V/JLc41jgAqRO
-	 XU6yU5g2bc8G5DLtO5Ozd0fkI+hOKqEXLWbIojJAu9ZZq+xWNlLQtzqq3P3Qsr3p0t
-	 gYJsWSrl/Xsmn9vIJo+Et94QdgZtWVQIlhq/FSVhksJkp97iiSl60ZHTNxClwhfB4M
-	 GKWL2T1hvzLJoPdTS5xcn/Tl7IuVvFRWwIxokPYKkN8VdOAA4Gf3DDXugPLUC0V6Df
-	 uho202+Fyh+LA==
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-640e065991dso9278089d50.3
-        for <imx@lists.linux.dev>; Wed, 31 Dec 2025 13:51:06 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXNlgDrt/UdgRtVqv/+72YV1K/qu7UF7r5dW2xPibDE5P4zV+gIh+ZPFPACnjmWFu+6HuM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy3VS1CavSluJG26rK5VdrvyNl/KdxSakHUq1YoU+ju624HeGWb
-	Qeq49zpJ65xAfxhjRjPJCTzTU+8d0xArODoZGeOMAjsw7Rr007Fmp/FV7waZOB8+eg/nq9ZVNOa
-	W3X3aFSYTTbp8YWxJiyM6u3WTzjgQrDE=
-X-Google-Smtp-Source: AGHT+IH29S99+HYf8SuC4lZx27OfrHABr4tetzXdccaN2xUVWn/wgVS/NlKdgLQVr0jKfoYAGzsi8EIIhZ5XvfkifzI=
-X-Received: by 2002:a05:690e:1486:b0:63e:b41:cebc with SMTP id
- 956f58d0204a3-6466a8395admr30714655d50.17.1767217865999; Wed, 31 Dec 2025
- 13:51:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YwcwKQTq"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7f1243792f2so7480501b3a.1
+        for <imx@lists.linux.dev>; Wed, 31 Dec 2025 15:41:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767224480; x=1767829280; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BWy1gXyOOWYNnYUBz6Zo1eDM/lnD8SOnC63pK454g8g=;
+        b=YwcwKQTqo48fcYchOeDHzmYIYz3vnonmO+SZic+6hSX7TMcTi4TfxABYI5pYskKclb
+         +VtoN+7tvH5DLeNTZvdFyM6enVe7nWv3Hv82pk46oNn7ivX0HGGw4YW6u+4P0CFJrlq4
+         1MkmQ4wL9ikv5KLGpIryswySveRgfbYSPW1QlPNDXvDJkmlSgIIDclnhX7z5TZCg5VjA
+         ah6Q4Z6YbZOVwio8gtXtCg5CplDlCwh1jxWjl5sJ2eemQNPbde1B+YNh/0AfFQ3cKNhl
+         jZrShfLdNBU+cUhepn3ego07CmkbXA+sKX/W+1q7ij5uwZ5bu72/Gza3RbfyLI6nnAFR
+         2Vkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767224480; x=1767829280;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=BWy1gXyOOWYNnYUBz6Zo1eDM/lnD8SOnC63pK454g8g=;
+        b=eqkUc2wXQYQO3arYaWU1dzU8CpLRz2pCHbDmbrfe43YA/syBq6aXnm3hz7/ngg4AEH
+         z5A0CVzIhfizg54t23MetdjlYybFwMp70aFY8FwyAHwOmMZRvHgvUuDjtTSWese+sa+U
+         7MrIwD9KIWKYpd9YQGC4hsGOnfOuLTs6B+YOP55Pww7NTESz9p0mmip3tmnLuczutfXy
+         vzVtllidgYKkUTS14AbrS/e1indNuwjOR1qRdp24pG8bt+i8dueJjWDV/awnQ0VEKDQ+
+         B+6fBT/UQhCM3SOlFpMzotm3EFAnWISMDWm/aUOp7mrSrdmda42Aqs1dPWQToMHm/YJe
+         rJFw==
+X-Forwarded-Encrypted: i=1; AJvYcCVVLhDQww9nMl3zzY0jhZUFgTZdTVRr401HvKK5YvkrxJewUBH3lxWtFMhY3fxQzS5kaQQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxmNDCyPEj5vtCAY9sg1PrVVbl7lRJDEwNq+RrdlkwWf09VVGBI
+	VslpDMa4lIHWP94hQi43eCg0Ry/5Ap4+IVxSqyospCT82zxKs+/EzJEe
+X-Gm-Gg: AY/fxX43Qjo2Bob5WO9g9HGEtyVY096jwcVxVwRofyFmR7vACXZuf7c24PjINIL57wr
+	6LrdLeJneJ1eH9+sxJd6cZjQmDRjczBbxzrRQMogvWnjNQyhuLkdvT8d81DBMWeOGzSvHy60n/v
+	SG/nqg55LpgP68WwBA93GI+tvkUIQ+b8SaeEOEDZupp4JbDbSTrGFTZmspAzMqrQhz9ZnkUJBGA
+	PvI6os8sFGjw1m/ek522hwK4CNvGUDB1fVMm87F+4S8nu3YVuoKhlahmQe2FjmhsqbZO54nF+2u
+	X4+gE9Kpu+hvBWDZCvTfDpv3lOOgK13CJWTqk6rvpf57Uey6piem1sfkwVyLf8WgT8quNoUS4sf
+	/rO+mYdPkHGwOvmWFnn3DI3/vXb+XxvcYQc+fJFU5QtbRgwMrGbpTDBz3PTv9qPmQDGKqIJPaLb
+	KfkBAPausKFizeIZo7bKPQieUq
+X-Google-Smtp-Source: AGHT+IHdS1XCFIF/s+R2MzEjCr3KsXQm81WSnRd7sNkVOMb7Y4hp3EFixXPpBvYYArS7H/0Gwn6dbQ==
+X-Received: by 2002:a05:7022:3b8d:b0:119:e55a:9bfa with SMTP id a92af1059eb24-121722b46d6mr35420452c88.22.1767224480383;
+        Wed, 31 Dec 2025 15:41:20 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1217253c058sm143562327c88.11.2025.12.31.15.41.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Dec 2025 15:41:19 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Wed, 31 Dec 2025 15:41:18 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Nandor Han <nandor.han@gehealthcare.com>
+Cc: wim@linux-watchdog.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com,
+	linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] watchdog: imx2_wdt: Allow to continue in low power
+ mode
+Message-ID: <ee2771f2-539d-4bb2-adc1-663e39488148@roeck-us.net>
+References: <20251229145000.421426-1-nandor.han@gehealthcare.com>
+ <20251229145000.421426-2-nandor.han@gehealthcare.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251212-dev-b4-aaeon-mcu-driver-v1-0-6bd65bc8ef12@bootlin.com>
- <20251212-dev-b4-aaeon-mcu-driver-v1-3-6bd65bc8ef12@bootlin.com> <019aa49f-fe59-488d-aff8-f07cf07ee68d@kernel.org>
-In-Reply-To: <019aa49f-fe59-488d-aff8-f07cf07ee68d@kernel.org>
-From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 31 Dec 2025 22:50:55 +0100
-X-Gmail-Original-Message-ID: <CAD++jLmKL4afaOn_eka6v=j_Wu0orZMb-2NbPZgP4SM2q4V7qw@mail.gmail.com>
-X-Gm-Features: AQt7F2pjZLgNxaiWJYqspkMb-XGMxgFbeL4lckn8FGNkckGZmMd1GQVA1LvpjDo
-Message-ID: <CAD++jLmKL4afaOn_eka6v=j_Wu0orZMb-2NbPZgP4SM2q4V7qw@mail.gmail.com>
-Subject: Re: [PATCH 3/8] dt-bindings: watchdog: Add AAEON embedded controller
- watchdog binding
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, 
-	=?UTF-8?B?SsOpcsOpbWllIERhdXRoZXJpYmVz?= <jeremie.dautheribes@bootlin.com>, 
-	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251229145000.421426-2-nandor.han@gehealthcare.com>
 
-On Fri, Dec 12, 2025 at 9:20=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
-> On 12/12/2025 08:41, Thomas Perrot (Schneider Electric) wrote:
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    watchdog {
-> > +      compatible =3D "aaeon,srg-imx8pl-wdt";
->
-> No, that was discussed many times on the mailing list already. Fold the
-> child into the parent. Your driver model really do not matter for DT.
+On Mon, Dec 29, 2025 at 04:49:59PM +0200, Nandor Han wrote:
+> By default, the driver suspends the watchdog in low power modes (STOP
+> and DOZE). In some situations this is not desired.
 
-True. For an example in Linux check how I spawn a watchdog
-platform device from a timer node in:
-drivers/clocksource/timer-ixp4xx.c
+Following up on Krzysztof's comment to the devicetree patch:
+Assuming the watchdog is in low power mode while the system is
+suspended, it is all but impossible to imagine what those situations
+might be. A reset by watchdog after the system is suspended simply
+does not make sense. A system which must not go into suspend mode
+must not be permitted to go into suspend mode to start with, or in
+other words suspend mode must not be enabled to start with on such
+systems.
 
-It's just one node in the device tree, in Linux it is in two different
-subsystems but we just deal with that in code.
-
-Yours,
-Linus Walleij
+Guenter
