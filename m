@@ -1,427 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18CCA221FCC;
-	Fri,  2 Jan 2026 14:43:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3E91EDA2C
+	for <imx@lists.linux.dev>; Fri,  2 Jan 2026 14:52:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767365017; cv=none; b=V/hbVNmhqOeDf+XMq9IcsK6T7v1dsRY9JDMZYR0hviF3PVomZfV2g0yRf9c0UFEPgEFsNCfmYyfGKIFMrRtZ90TLHFvhOtBYkxa0vDRgEz3keP6E+nD2RrLGP4Tw0N7hWiJESt9zSrw+a/FyuYgshlNJF3PorTHNXAE2mpaKWGA=
+	t=1767365534; cv=none; b=fVsns8iymqCI9wLcaa7Rex5ROJRAVPkmgtYjhsGJCd9mUfWvF5+G859rKmOl0kdCwXDvLotyiY3YfdPvHGQJ/cFPhd+YrUBYzld4lRCF/spu1IlmtCs7tiZZy68x6bqgcLynNXDdghfdqwmxSTSbFJLO14De3csKbX5ad9jDvGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767365017; c=relaxed/simple;
-	bh=XVEsFqEG/IZVEwsfy3Izs25RabVDKGcMpArFmXmdw4Q=;
-	h=From:Date:Content-Type:MIME-Version:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=KDfLFgPv3QzwdV03ghK9Gkvoc6E4Z7aK7tvJUQ/fn2KU+/uFShhxcxK4c/ylPWC4/DljKqa1VMJsKTQwi8fcwt8sy8hrJsoi3/glt/qchC8dKTKamRv/kwHt66IVokpk2l3J1yqV5jBj0nhvBDg++Mw4h/rgw+XbWvzZF+WG28Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=svJ2oV8N; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767365534; c=relaxed/simple;
+	bh=JOKW02zFEcJa6YcyzFzBvqiMDmz8XBC84K/tcR6sPXA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FKJJakJaAaQBEhN8IOw4OUQ0ISkFUSTGEt2zIYimHmqTTm2H5ZHUSdEByxzBVJ0vZ0TVAJZdYyFl23dIFQOlC39tWgxetEg1f9ZfZTSIosiAOTfpMo8unWqNvv8Aok1HD7CqFuTdi5LAUt08HIRyEm4MEXXScgfKqPb8pMkDdhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k41eLEzD; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="svJ2oV8N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E710C116B1;
-	Fri,  2 Jan 2026 14:43:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767365016;
-	bh=XVEsFqEG/IZVEwsfy3Izs25RabVDKGcMpArFmXmdw4Q=;
-	h=From:Date:Cc:To:In-Reply-To:References:Subject:From;
-	b=svJ2oV8NwccnrrqMY+zxcdAmdVM4HdvmGi+EOR9xxL3Wewigahn2XOTZP0yaVtiV8
-	 0bo9VDkRpmK6uWRRYQ+sAvsn44vjnuOEgOHkFymSTxHT4s+PxmHnxQNHh3/fX+FxFr
-	 oFR/0t4MYGp6qM1pFl5AGhGtds/f6BlGxVKPI39y6Td2DKJ5zB4mzvy0Wh7vYt2lov
-	 Tx4oQ08c5gBtn/S7IqQdiIcb8hkpzXTx5hYTPnzNoSLW2ut9dxEGOOWsoD71SxeziU
-	 zMKrzLw61k5oeann9HTy2arsA0Pxfr0rsQB4ZaK0FWiYw4hUkqTjtzzRkHhCgwimOu
-	 n+OMMkM1n5s5g==
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 02 Jan 2026 08:43:35 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k41eLEzD"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-37a3340391cso98150971fa.3
+        for <imx@lists.linux.dev>; Fri, 02 Jan 2026 06:52:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767365530; x=1767970330; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JOKW02zFEcJa6YcyzFzBvqiMDmz8XBC84K/tcR6sPXA=;
+        b=k41eLEzDZXcgilYhJLMaDoJprO8GT/JpeQ84ofSNBKw7uQJaw3jdMEum8R0vtDtBJT
+         xg/CvBoUzu1G6s/jrdaZHHSpbHa5FYhJCvWf+AHJxNMpBnupKyykUK+UQj6BojEkXr/w
+         0G2dY/z82+6iJKm71hx6N7x6tdNf+0hwHQuGxnnvTTxhPKdVWY4i67t8eh+A7+EE8blA
+         jwUw319aYCzlF1sWbNGhWfQDcD6uDml+s3qI4rIEyyyYBosG7DPcBj52m7JLo5LiiULD
+         5Oe6DftN7cMS3K6d90QGn+f9PRdFAl2xryjsk5L/k4oiGvQ33CdCvin/LqUmuhJz9hnL
+         jHnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767365530; x=1767970330;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=JOKW02zFEcJa6YcyzFzBvqiMDmz8XBC84K/tcR6sPXA=;
+        b=aPGyF+MLI/OHccU2bVygOEDrdKZAf43b303zmL1qCoKcwL6EZfsXB8UzjrTdC0jTsx
+         AE/RqONhPh+DtzVdJJCZqAF1rTeazl2GEBCpJjhFmNTbMkcdlxiyeiIQ9T4uvHrYRIUy
+         o/vt8JSs0Y41aCjqS6r9EbQkYuM2ZoGE/QGy87ajQaAD6yayeyz3z09IMHdv2XjycihL
+         fceubZ7wRJS4Z1cogFXylbMkQIYl9ass37wri56KDaFJ6BQu5baI8FsWTbnqp/J5Xs1Q
+         CN0XZpUOADAwruEfHvAShm2dPxeQsiMNaIs32yiBTAi1FXEGHLfrvSZJBkQWG5eFgVmT
+         QEbw==
+X-Forwarded-Encrypted: i=1; AJvYcCUZulXxc1XS+5eQF2zsRj3zth3tq7nwujTaAIfgWJN3Lc+5UcMK4/9HPicBTIshQrYe4MY=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw6/FpjMjDQf40aCjbApYQDjmzQn1iMC5TuSplveU1MyO/yQy/j
+	efzZDZF4vlSHLwIRcN8N2Xoby/LqiJjy89vzoj534G3Gup6bOfZA/FOWZSgJNhR5W+0B/cnA09N
+	t9+SsuMtSqsQ8pHZq5pj4h0rD30WSr6A=
+X-Gm-Gg: AY/fxX4os4NgRv7RL6GpVzKI+noIy81gXbyimPwamVaWDA5Iocl8sE4XmXwU6syjQmu
+	AV8ttkuuIqYHCJOdKVT16yZkePF914ZBnonf4lNw5SUOjeKGOhdDInQNaVH/1qiwhZD3WYOevHR
+	UjYDNYo7WgktQy9i6e99Cd5mf1bPPt+Rv/YZEq6Aqbo3nUhiwD3Aeq9bvWmmQzHM17KJLFIsXUf
+	i+GfB+8NgpwR9Q+a+eg+34t/ZK/m3OPN3/urDB4zsy64ZcgHus/cXEf7CkwcnUVKrztE0bG8C7x
+	8mooyndhuJsi+Le7BSD2nFpkgA==
+X-Google-Smtp-Source: AGHT+IFGSP0WIXeW56/d36iNW4wftOiWFYzfmmnbj37r9h7tjPe2UQ0ZehS5BUGbIDZFkEsfEteFUqU5FJ239xAHiGo=
+X-Received: by 2002:a2e:a915:0:b0:338:10c9:5871 with SMTP id
+ 38308e7fff4ca-3812161d8ffmr110163551fa.34.1767365529452; Fri, 02 Jan 2026
+ 06:52:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Cc: linux-arm-kernel@lists.infradead.org, Shawn Guo <shawnguo@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
- devicetree@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+References: <20260101-armv45defconfig-v2-1-3a57f69624e0@solid-run.com>
+In-Reply-To: <20260101-armv45defconfig-v2-1-3a57f69624e0@solid-run.com>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Fri, 2 Jan 2026 11:51:58 -0300
+X-Gm-Features: AQt7F2rTWtpnDxwUx1NNgMEHsWNfQ04mtquh3qojbl8Oooiz5nLz1ccv6oEyu1E
+Message-ID: <CAOMZO5B1MM3FxutDRP4_pWJQYRdGO8kE9hqe4vuSxygEgRW2aA@mail.gmail.com>
+Subject: Re: [PATCH v2] ARM: imx_v4_v5_defconfig: update for v6.19-rc1
 To: Josua Mayer <josua@solid-run.com>
-In-Reply-To: <20260101-imx8mp-hb-iiot-v5-0-b369b2e0c07f@solid-run.com>
-References: <20260101-imx8mp-hb-iiot-v5-0-b369b2e0c07f@solid-run.com>
-Message-Id: <176736452823.3671482.4196945570874126466.robh@kernel.org>
-Subject: Re: [PATCH v5 0/7] arm64: dts: add description for solidrun imx8mp
- hummingboard-iiot
+Cc: Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Jan 1, 2026 at 11:43=E2=80=AFAM Josua Mayer <josua@solid-run.com> w=
+rote:
+>
+> The i.MX ARM v4/v6 defconfig has gone out of sync with some dead options,
 
-On Thu, 01 Jan 2026 17:05:40 +0200, Josua Mayer wrote:
-> This patchset mainly adds description for 3 SolidRun boards:
-> - i.MX8MP Hummingboard IIoT
-> - SolidSense N8 Compact
-> - i.MX8MM Hummingboard Ripple
-> 
-> This includes dt bindings and a range of bug-fixes:
-> 
-> - dt bindings for the boards
-> - fix to dsi panel bindings referncing panel-common and adding port
->   property
-> - cosmetic fix to some  solidrun imx8mp boards for regulator gpio
->    polarity
-> - fix dsi hdmi bridge on hummingboard pulse
-> - compile dtbs with symbols to support overlays
-> - gpiod_set_value _can_sleep conversion for panel and touchscreen
->    drivers
-> 
-> Open Questions:
-> 
-> - How to describe HX3 USB-2.0/3.0 Hub placed on a USB-2.0-only Bus
->   (affects imx8mm-hummingboard-ripple.dts)
-> - Is "description for" implied not only on dt-bindings patches, but also
->   dts? E.g. is this commit subject acceptable?:
->   "arm64: dts: add solidrun solidsense-n8 board"
-> 
-> To: Rob Herring <robh@kernel.org>
-> To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> To: Conor Dooley <conor+dt@kernel.org>
-> To: Shawn Guo <shawnguo@kernel.org>
-> To: Sascha Hauer <s.hauer@pengutronix.de>
-> To: Pengutronix Kernel Team <kernel@pengutronix.de>
-> To: Fabio Estevam <festevam@gmail.com>
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> Signed-off-by: Josua Mayer <josua@solid-run.com>
-> 
-> Changes in v6:
-> - imx8mm-hb-ripple: sorted i2c devices by address;
->   removed unnecessary newline.
->   (Reported-by: Shawn Guo <shawnguo@kernel.org>)
-> - hb-iiot dts: sorted aliases alphabetically;
->   fixed gpio flags for vmmc regulator;
->   specified led@3 reg field in hexadecimal.
->   (Reported-by: Shawn Guo <shawnguo@kernel.org>)
-> 
-> Changes in v5:
-> - rebased on v6.19-rc1
-> - dropped ilitek-ts patch already picked into input-next
-> - solidsense-n8 / imx8mm-sr-som: drop untested wake-on-lan support
-> - hb-iiot: disable software unsupported rtc timer irq
-> - hb-iiot: fix wrong pins selected for uart4
-> - Link to v4: https://lore.kernel.org/r/20251201-imx8mp-hb-iiot-v4-0-53a4cd6c21bf@solid-run.com
-> 
-> Changes in v4:
-> - dropped patches already picked into drm-misc-next
-> - ronbo panel: picked up reviewed-by tag
->   (Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>)
-> - ilitek-ts: changed mdelay calls on reset path to fsleep
->   (Note Dmitry requested msleep/usleep_range)
->   (Reported-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>)
-> - changed hummingboard-iiot tpm irq type to level
-> - Link to v3: https://lore.kernel.org/r/20251117-imx8mp-hb-iiot-v3-0-bf1a4cf5fa8e@solid-run.com
-> 
-> Changes in v3:
-> - sinmplified language in gpiod_can_sleep patches.
->   (Reported-By: Frank Li <Frank.li@nxp.com>)
-> - collected ack on winstar lvds panel binding
->   (Acked-by: Conor Dooley <conor.dooley@microchip.com>)
-> - Link to v2: https://lore.kernel.org/r/20251107-imx8mp-hb-iiot-v2-0-d8233ded999e@solid-run.com
-> 
-> Changes in v2:
-> - fix spelling mistakes in commit descriptions.
-> - remove redundant "binding for" from subject:
->   https://elixir.bootlin.com/linux/v6.17-rc3/source/Documentation/devicetree/bindings/submitting-patches.rst
->   (Reported-by: Krzysztof Kozlowski <krzk@kernel.org>)
-> - remove one useless comment from imx8mm-sr-som.dtsi to fix long line
->   warning.
-> - change ronbo panel binding to inherit panel-common and switch
->   additionalProperties to unevaluatedProperties.
->   (Reported-by: Krzysztof Kozlowski <krzk@kernel.org>)
-> - add dt binding for winstar lvds panel
-> - fix dtbs_check for dsi & lvds panel addons
-> - change n8 board dts comment-style in header
-> - collected ack on solidrun boards bindings patch (patch 1 in the series)
->   (Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>)
-> - added standard led label property to hb-iiot multi-purpose leds
->   ensuring consistent names in case lp5562 driver starts using it.
-> - Link to v1: https://lore.kernel.org/r/20251027-imx8mp-hb-iiot-v1-0-683f86357818@solid-run.com
-> 
-> ---
-> Josua Mayer (7):
->       dt-bindings: arm: fsl: Add various solidrun i.mx8m boards
->       arm64: dts: imx8mp-hummingboard-pulse/cubox-m: fix vmmc gpio polarity
->       arm64: dts: imx8mp-hummingboard-pulse: fix mini-hdmi dsi port reference
->       arm64: dts: imx8mp-sr-som: build dtbs with symbols for overlay support
->       arm64: dts: add description for solidrun imx8mp hummingboard-iiot
->       arm64: dts: add description for solidrun solidsense-n8 board
->       arm64: dts: add description for solidrun i.mx8mm som and evb
-> 
->  Documentation/devicetree/bindings/arm/fsl.yaml     |   9 +
->  arch/arm64/boot/dts/freescale/Makefile             |  15 +
->  .../dts/freescale/imx8mm-hummingboard-ripple.dts   | 335 ++++++++
->  arch/arm64/boot/dts/freescale/imx8mm-sr-som.dtsi   | 393 ++++++++++
->  .../dts/freescale/imx8mn-solidsense-n8-compact.dts | 851 +++++++++++++++++++++
->  arch/arm64/boot/dts/freescale/imx8mp-cubox-m.dts   |   2 +-
->  ...hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtso |  69 ++
->  ...ummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtso | 105 +++
->  .../imx8mp-hummingboard-iiot-rs485-a.dtso          |  18 +
->  .../imx8mp-hummingboard-iiot-rs485-b.dtso          |  18 +
->  .../dts/freescale/imx8mp-hummingboard-iiot.dts     | 719 +++++++++++++++++
->  .../imx8mp-hummingboard-pulse-common.dtsi          |   2 +-
->  .../imx8mp-hummingboard-pulse-mini-hdmi.dtsi       |  11 +-
->  13 files changed, 2538 insertions(+), 9 deletions(-)
-> ---
-> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> change-id: 20251026-imx8mp-hb-iiot-525b03beea62
-> 
-> Best regards,
-> --
-> Josua Mayer <josua@solid-run.com>
-> 
-> 
-> 
-> 
+Typo: it is " i.MX ARM v4/v5".
 
+With that fixed:
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-This patch series was applied (using b4) to base:
- Base: 8f0b4cce4481fb22653697cced8d0d04027cb1e8 (use --merge-base to override)
-
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20260101-imx8mp-hb-iiot-v5-0-b369b2e0c07f@solid-run.com:
-
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-scripts/Makefile.dtbs:20: .dtbo is not applied to any base: imx8mp-hummingboard-iiot-panel-dsi-WJ70N3TYJHMNG0.dtbo imx8mp-hummingboard-iiot-panel-lvds-WF70A8SYJHLNGA.dtbo imx8mp-hummingboard-iiot-rs485-a.dtbo imx8mp-hummingboard-iiot-rs485-b.dtbo
-
-
-
-
-
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
