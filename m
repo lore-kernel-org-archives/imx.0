@@ -1,88 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m21469.qiye.163.com (mail-m21469.qiye.163.com [117.135.214.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E212868B5
-	for <imx@lists.linux.dev>; Sun,  4 Jan 2026 11:38:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FB52882A7
+	for <imx@lists.linux.dev>; Sun,  4 Jan 2026 11:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.214.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767526687; cv=none; b=NDocWgfcGNTn91iXux32OLrUxc6BNsiGe2r9TVHc2gem2kJuZw8TPWNW6mgvwTnXpAtqb9lizgyZlSNhyHk3mEydUe5uHdR4Zec7t0lSYcyWV2+lY9avr8tKJjyImv2E9liNtWzACZV3QeMFjQ9s36twKBrLIm1cOcBExJIHMIk=
+	t=1767527692; cv=none; b=eSi0e3wfI8fDCV8/21Ijtcrj45vOk5iKGH+PZ3DVJEPda69JxDM0H/oafs4v4cU/8NE3xAvm5dL1Ac1L04X5oKYGP0S3vFSXrZO6dhz/+r+OhWCJPauB9frCQOFF5U7kPfaAIAnmEIy/eRZ1C5GJzpY69VYRXYGko4zaDQ5hpwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767526687; c=relaxed/simple;
-	bh=zzt8nsTReCOrFFimHSYnuwYVhyLibD7TXrGiySpB+f0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TYLDmR7NJ/gkqOIUHaftt6XDnaUmaExwVcKJ6m+O7tSZn4Hus0VjnXE9nGqqknEV5LnK3WQEyYQy3wE2k3UoFLKmNmfT/ukZJ2K8rSJ0b3ltCiZXSKW9vETMMaAbq8L2J5J1wRT6iLFx2MtfjWSB7vJBXzJFW+L1tKtRA1UWlVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G+Ry6+QP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767527692; c=relaxed/simple;
+	bh=G9NZDnOPZuICA+JmhJRwlj4wa5JZogXr97XY8R5BBcM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LZgYFrE9RrBh8iBNZG0Ifpp270fgQ0qACwAxYNGNIl7WYcc54u2thI/fJ2VGWZ++b1ZbqhPuixJXXT5gqRiepz2oRMbPscGTU0Dmwg0cCRNbTr7C0FgTEIZ8pfuU8Tf8eyIksWb2Fm1Zq90K8L95p52c+q91nansSYmlvAbKUKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=VN9D4w7t; arc=none smtp.client-ip=117.135.214.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G+Ry6+QP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE05C19423
-	for <imx@lists.linux.dev>; Sun,  4 Jan 2026 11:38:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767526687;
-	bh=zzt8nsTReCOrFFimHSYnuwYVhyLibD7TXrGiySpB+f0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=G+Ry6+QPOkBBcBJbHW2neCD+lpxjvvgqlnRTj+dmLXWcbfjSaT8gwyYfyWm5P+1zB
-	 dT9DPG65ISjbkZfDmBcfNYHvPRsAVnM/aCmTnMzRchYjUujLkjkwISZbT8nwKOWYUa
-	 SW1YbPvOkN1KqBnlXU3Zx/M10hBkbqgTAw4Ohb67vGnOLDHJOwyDxzNCfvKFE5IUnY
-	 nBG/A7xrdk3uxiCCwNqDl5DjAXpJHbTMg8PnBN1zEvh18g6q5OGcXngea5WpUhuJXe
-	 r9j607+jokQ6cCCW396lYQR3PjV9oUCWhWLAoGnT9zxGY6GBRwl+1Z12BP6UjKlgMB
-	 ymicPIXVjPheg==
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-78d6a3c3b77so10529887b3.0
-        for <imx@lists.linux.dev>; Sun, 04 Jan 2026 03:38:06 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXeCUcRONquF3MnCOkihq+DXJ7WwYTb1B51ZMKfz2fXrKIQvV1Cgrfv/4wBp5yRGJ3Uvlk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz+be5Rve83UC+PRqO5ylzRa7+OHjaQJrVJcqfe9ORvgTJmZIw9
-	QWwdbSFadMm2wGu6oij2dqOcu4h3VDSwleW/e93nWs1GKhTt4I6QlKkQWVfX4i4mQFK7J7yqbST
-	KgNEPBwNxQkDJgOCfyNteReicxRWuzoI=
-X-Google-Smtp-Source: AGHT+IF4Orabbp+U3oU6DE4mJfK9KKnbEOxrcm3UcvoG3IBBIUd0oK3DmWjwYq82sAXiIcIbWSh2iznA2Fvf8inAirk=
-X-Received: by 2002:a05:690e:b4d:b0:645:591a:cb5c with SMTP id
- 956f58d0204a3-646e341a6cdmr3638468d50.23.1767526685648; Sun, 04 Jan 2026
- 03:38:05 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="VN9D4w7t"
+Received: from [172.16.12.43] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2f64a21bd;
+	Sun, 4 Jan 2026 10:51:21 +0800 (GMT+08:00)
+Message-ID: <187b2c32-5a10-4555-8d49-cf1ee86a8eaa@rock-chips.com>
+Date: Sun, 4 Jan 2026 10:51:20 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251212231203.727227-1-robh@kernel.org>
-In-Reply-To: <20251212231203.727227-1-robh@kernel.org>
-From: Linus Walleij <linusw@kernel.org>
-Date: Sun, 4 Jan 2026 12:37:54 +0100
-X-Gmail-Original-Message-ID: <CAD++jLkAaAH9_YdTGqHUcOp8PfW+1P=ZLZzS_QseVYWxA4kiWw@mail.gmail.com>
-X-Gm-Features: AQt7F2qijkDXeXovdHRRQ5QEL33UZBQlEMiEIzun3p2-rj7cwfnP7kAmQfWhUyg
-Message-ID: <CAD++jLkAaAH9_YdTGqHUcOp8PfW+1P=ZLZzS_QseVYWxA4kiWw@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Remove unused includes
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Michal Simek <michal.simek@amd.com>, 
-	Vinod Koul <vkoul@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Andy Shevchenko <andy@kernel.org>, Yong Wu <yong.wu@mediatek.com>, Peter Rosin <peda@axentia.se>, 
-	Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-iio@vger.kernel.org, iommu@lists.linux.dev, linux-gpio@vger.kernel.org, 
-	linux-sunxi@lists.linux.dev, imx@lists.linux.dev, linux-sound@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 04/18] drm/bridge: analogix_dp: Add
+ &analogix_dp_plat_data.next_bridge
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, andrzej.hajda@intel.com,
+ neil.armstrong@linaro.org, rfoss@kernel.org
+Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
+ kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
+ jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
+ heiko@sntech.de, andy.yan@rock-chips.com, dmitry.baryshkov@oss.qualcomm.com,
+ dianders@chromium.org, m.szyprowski@samsung.com, jani.nikula@intel.com,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
+References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
+ <20251217093321.3108939-5-damon.ding@rock-chips.com>
+ <DFCCU8AN0GZQ.2CYTKKV40JYLI@bootlin.com>
+Content-Language: en-US
+From: Damon Ding <damon.ding@rock-chips.com>
+In-Reply-To: <DFCCU8AN0GZQ.2CYTKKV40JYLI@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-HM-Tid: 0a9b86ea9d6203a3kunm609d12354f1e56
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGkwdT1ZMHk4dTUpJH0JDSkhWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=VN9D4w7tVJY1+ljTAsa1MLD6Mu0695ntJQk+KIoXGFCQLS3AiPDzWBuYLRrFP0sAOg9safZng8mqTRky7UnUhtfUSarzUuLouyURZ1nj5GNN756VDJNoBoz0VnDjQWRid6XqjAc5x1XIGQu2r4+UGXppXY0p2CdNt9zvZDLGVvQ=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=ZqFoCcwJQuU5a4YfLtrUVBGWJRctrtxu3bkHphWi05w=;
+	h=date:mime-version:subject:message-id:from;
 
-On Sat, Dec 13, 2025 at 12:12=E2=80=AFAM Rob Herring (Arm) <robh@kernel.org=
-> wrote:
+Hi Luca,
 
-> Remove includes which are not referenced by either DTS files or drivers.
->
-> There's a few more which are new, so they are excluded for now.
->
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+On 12/31/2025 7:11 PM, Luca Ceresoli wrote:
+> Hello Damon,
+> 
+> On Wed Dec 17, 2025 at 10:33 AM CET, Damon Ding wrote:
+>> In order to move the panel/bridge parsing and attachmenet to the
+>> Analogix side, add component struct drm_bridge *next_bridge to
+>> platform data struct analogix_dp_plat_data.
+>>
+>> The movement makes sense because the panel/bridge should logically
+>> be positioned behind the Analogix bridge in the display pipeline.
+>>
+>> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+>> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+>> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+>>
+>> ---
+>>
+>> Changes in v4:
+>> - Rename the &analogix_dp_plat_data.bridge to
+>>    &analogix_dp_plat_data.next_bridge
+>> ---
+>>   include/drm/bridge/analogix_dp.h | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/include/drm/bridge/analogix_dp.h b/include/drm/bridge/analogix_dp.h
+>> index cf17646c1310..582357c20640 100644
+>> --- a/include/drm/bridge/analogix_dp.h
+>> +++ b/include/drm/bridge/analogix_dp.h
+>> @@ -27,6 +27,7 @@ static inline bool is_rockchip(enum analogix_dp_devtype type)
+>>   struct analogix_dp_plat_data {
+>>   	enum analogix_dp_devtype dev_type;
+>>   	struct drm_panel *panel;
+>> +	struct drm_bridge *next_bridge;
+>>   	struct drm_encoder *encoder;
+>>   	struct drm_connector *connector;
+>>   	bool skip_connector;
+> 
+> It took a while to understand why you are adding the next_bridge pointer in
+> struct analogix_dp_plat_data instead of struct analogix_dp_device, where it
+> would be more natural. I found an answer in patch 16: with current code you
+> need to place next_bridge in struct analogix_dp_plat_data because it is
+> used by user drivers to attach, and those drivers have no access to struct
+> analogix_dp_device. However patch 16 (which looks a very good cleanup BTW)
+> next_bridge can be moved to struct analogix_dp_device.
+> 
+> So I'd suggest to move patch 16 before this one if it easily doable, so
+> that you can introduce next_bridge in struct analogix_dp_device from the
+> beginning. Should that be impossible, you can send a separate patch to move
+> next_bridge, after patch 16.
+> 
+> 
 
-Good.
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+Thanks for your nice suggestion! After patch 16, bridge attachment is 
+unified to the Analogix side, which acts as a common bridge driver for 
+both the Rockchip and Exynos sides, so moving next_bridge there makes 
+perfect sense. I will add a separate patch to move next_bridge in v9.
 
-Yours,
-Linus Walleij
+Best regards,
+Damon
+
