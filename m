@@ -1,66 +1,65 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A407F20299B
-	for <imx@lists.linux.dev>; Mon,  5 Jan 2026 18:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98BB314B87
+	for <imx@lists.linux.dev>; Mon,  5 Jan 2026 18:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767636495; cv=none; b=spFSISr2TAkuyKZ2xLILaTTPGgKN4+vPskyUGxP5LVGWyR+Rv4wK5Oq7dMyoQqf0HdRSEqVFuaddPBeXuy9lW/QYo9/e3QMivdK+Te/+fL7ajBV2RvmjYvuXNa7OBQd25X22kndyUkD1OklRzLFhIqPhSK8zyFcH43uGC4nQ3oA=
+	t=1767636608; cv=none; b=H28UYKtOWaGNlpiNe3COwr8Nbn3NTu3IodCpxY/McvSVM1elxuNvrdbJ9OvDv0eFZgj/mwfAgn+XP0YcJ0jHZnIRNUlUgF94TZ/VqZ1DVPeWJN5yZH1TgHQPN/oDY7fVmtETO0iwWBPDoqaFuBR3eOypDVCKAz9vK4V/gak+bTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767636495; c=relaxed/simple;
-	bh=1gtqFFWFbmnYqsdra7V6E0H/IysyN/79mV6ZrXnL61U=;
+	s=arc-20240116; t=1767636608; c=relaxed/simple;
+	bh=aOnfX3XPhgpVehluEO+HeLrdEIbIUxCCiC8mUuqAjdo=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gFYJVpkSXhye+nm6fxkcGblRP9MQoFFNa/RMFFknQ4S3ZL3u4XQr4oChs1toEoaEF+qrdgHZEvDGSNnB4kLeGa4uOKydOjxB9tkqdKyxh58WDadqONwHAv3qmTmwhEa850xDrURoJIQOfZR3wW3z6AJ+8WglG25GcCIKa1p3zwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=VmLa78NK; arc=none smtp.client-ip=209.85.219.45
+	 Content-Type:MIME-Version; b=VKd0usrnenwA9XSbdKsAs4P1gjA8DHTKTsVo1dIK1Wh0hYiSeHWQFbP43NijLdhgAfpnqpV0r9v2qqPXGPRdvQqN3BhcPdT0BcBI9mmMz7WXqNuFW/CaSqJnL/ufYJ3tfOIjFEi6Vqc8mns9U3oRZrkFRPyqWypkf4zDO8MSb/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=zFSPKirQ; arc=none smtp.client-ip=209.85.222.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="VmLa78NK"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-88a2e3bd3cdso2177126d6.0
-        for <imx@lists.linux.dev>; Mon, 05 Jan 2026 10:08:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="zFSPKirQ"
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8b25ed53fcbso22959185a.0
+        for <imx@lists.linux.dev>; Mon, 05 Jan 2026 10:10:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1767636491; x=1768241291; darn=lists.linux.dev;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1767636605; x=1768241405; darn=lists.linux.dev;
         h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
          :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=1gtqFFWFbmnYqsdra7V6E0H/IysyN/79mV6ZrXnL61U=;
-        b=VmLa78NKrHZ8c2ElFlilF8lUGYdl5iTsrA1hkmDH3a58r4tLvNPaYHk2PSyhAP1ZyO
-         txOMZ+1wnyRtxKMuLZB173NLSBGj48QlAVvEIeSFXokm5MC0bf8ozhoxcRRDEK2mXwmd
-         5EujZ5h0gbieSeLFh57ZKx5dfWnsha+bd1CDeG6ijox5H1bEhWVvNMW8FqszyEP6zFc5
-         aJays7DCOVjgrNUrbrJ4VTdsuOjW5ztLADVdNgd2DvR1QYFwDuOKTWMMb4qK+Ss6iUx1
-         HrxbiHPsMFW33/AskEVwzOyj/Rw/Nw7j4HSTkNFBEypMDIdBMxYOWglpO+acrOpWnygo
-         PrpQ==
+        bh=aOnfX3XPhgpVehluEO+HeLrdEIbIUxCCiC8mUuqAjdo=;
+        b=zFSPKirQOsYtPSBz4ZZu1eQmpgs6Hv8wWKGEl+6/5MC4ZlIaOLkfHC/KOCufTXXaJz
+         bfdi5KGVQ+YKo80BnFK2f+lsq7dEZ496AOma+SFuJ3D75JGO+eyLd5nDq7cF0ATBV1ge
+         thzP3HlQjR8cjEr7sMjlZmCA0HfhE8fg2aBC97k2OKKFoNDkHyXCgNWyha5JBvnsC+rU
+         Xk/WzZQaTGtW+lWlc4qavvcb+6mjiPdqwdYv4Xb0d9FzDjF2k6SKkgR7aPD//RJ0YIv0
+         Qu8IEVe6uUgc1TjmYq7WA6daV0+aOMNg7bWgWlYEBPNdGpHe7hBLJZWNLam0ihGnULhM
+         7Ozg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767636491; x=1768241291;
+        d=1e100.net; s=20230601; t=1767636605; x=1768241405;
         h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
          :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1gtqFFWFbmnYqsdra7V6E0H/IysyN/79mV6ZrXnL61U=;
-        b=QaN/SEw9mqJg2IvSLXwHbhoZfaQELqVbLXizz7QSGuOXbeY+m5Dk2Ttb4et2ZvnQoa
-         8bHUSBLoGb85muEnrtYgeqHKcCZs8PJ38e72TxIQKtWJVDsA8+cQBe8VnfLSexwVbOTs
-         jg9vDazEo8T9gMqnobaVNqlF9jC80KiwHDUIhGz1/z4uSeUK7aRZSZjCSho3+DWs1oHr
-         kaTfTHI+rkQjIkmX1Ebqm1kzqF6cMbSoH9po31Brp4RrLXBVHm0KX6yL3RA53+SBKUC5
-         HjZVSYNdsssM9x4QZzDhy6vnmB8gEdIopOPjzAYvkI37kM9ycw0yFZtPSeC0HA0F7W/0
-         kYnw==
-X-Forwarded-Encrypted: i=1; AJvYcCXKEbMTCsEnRT6fbI2zdHLneQKle1O7brQO9ftrevCLB32bdtbGhdH+QFhbtTNRB2LJslQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxfNd9q9OxSwL0jpvRaZy0etvePTAGVJBbPQLtFzvrZsQKrd7DY
-	sHD3BYKyQZMZY/84VBbmJlYeM3uCzRqF+EHhgb7NffkaoX74kh2azhDKPHKvZ8zJ9MQ=
-X-Gm-Gg: AY/fxX56KDc2rSwZ/D4yvTUil5yTqgZruQlLCvlsyTsik1P8gGvH5rAqNNxuMCKqDD3
-	sqMOki2RWGal7cZB9UU69aVfoTd55rwhmRrQKjcWVrPKtEQhKPKZqR9mgnjeo+sX73wasSTcKy/
-	j9JkzMYcQ5jblfwpM7P32z9pTmw18fYKLWf2hBeNOOsNBCQNgzGO6zJ6fm+ZGgzzfstx8NyUhuy
-	nCeXVn17f2hhqrqIObDBbZN/zMqepVWhjPClvCfUhbCcbbuCdjcCpBw+7MhuCe6R9bnzJOZUgpI
-	qpxMUud9z70jIFI62+MBvef4vDgEcqjSKe2tYHB59BIlEAmnAR83xGjQirPJ7fml/kZc9J0Sw59
-	pEtN9PFPycKP/QIOWXE7nZncrA3txENK+4GArettlfiuiE1WKrJph58osHRsvWtpfOORj8rnNRw
-	cEdMBSOxR7cBCvUtl2
-X-Google-Smtp-Source: AGHT+IENhU1Bd6KYqPomQwkI/vDljW6F2Sf1y49E1gWNuGUePlUTcFMG+iVNXpq2O9aWulA+yUJXTw==
-X-Received: by 2002:a05:6214:224e:b0:88a:525a:8dbf with SMTP id 6a1803df08f44-890769ababcmr850536d6.15.1767636491324;
-        Mon, 05 Jan 2026 10:08:11 -0800 (PST)
+        bh=aOnfX3XPhgpVehluEO+HeLrdEIbIUxCCiC8mUuqAjdo=;
+        b=PeRfyhBD5uZPVq5P3+y5ZV3c5kQKMFdlgNoL/kWqJ6BX2VRnwcq+qWRgZP+a8sgZFf
+         rB9D7ZpxMUUJjWkNfepFEHL7+xtt3m6tCIoGzRKKkjvF98oHkRoU55VSS7vGCyUAcYi6
+         Z8bIKMgKzvGFhwBaMK7HlVwcRvPjrPpbixwg0qib4lJOKRXCZWoek5MXAy491RKBay2M
+         4WOy4mX4YE7R0zGU3mTT09oaStTOWUmkBkHcYBXiRuh+onF6BXWlFTgnYeAMCB9PfsgQ
+         H+tzZCtFxdhphFHdH/z0BATz7RSyfv1ZfTSMgZ65p0JyyQWqPYTblKfL7USKxM2jCL+j
+         PRfA==
+X-Forwarded-Encrypted: i=1; AJvYcCXnDajKB7BFPlhZLTwXvFbyZGcZafiaznCfV9XFcQhOZS3/mOf/16zGY/EVbd5eCNz+1b4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwIzehoezUBKvgJo4L1amnlRRVq5mW4gkah8ucFfkqxhhLDAS3a
+	LfbflxRvH8Tusc+Lb8VTRXDXHoBIbRFDB8dRFs6wp6VnrTUCXYdARaP71ovret/67iU=
+X-Gm-Gg: AY/fxX5JUOyWMbkFHsORZBlXiu1OGzFFzyBGEnC3cP8WxhaujFJ4a8ID2QinsnwD4E0
+	CfJRVpRJsP/A2U3/BpQDVg4AIXrObgNy+Hly+pZmtHR9IMbAtRrmgBUzkCu5u41tWd+prQvIq/8
+	L0wQgcSfrld/LNWbTreXSpW+Pdeq7UvWg5luMjJOYCgjIGgBxB0GiycBkl8KBY5dbE0lVWUD1ls
+	klxfsKyCkxWHdNbSYOFlGnRBedQf4WzvuzxBDkaiQvCm4UJKwaSU8MmJrRhpugVMi28TbqqC4aK
+	BdauewQlwVb7dPyCGFVuwkaWr/x/t1QHCFbApIVWVapKJIeSNBbFoliS55KnpStTtyGPf1bNO2n
+	nco2YlUab8zW2xylYPMMABIvOQuBJDnygYt8vi+mVEsycNx+97IqfeAEYYsBTdmi9GkXsX9H64T
+	SMP0Q5fwHjgdIkqaapERP9qC3VvRY=
+X-Google-Smtp-Source: AGHT+IFR3DFd9jpe0oN2x6M/8bWNFU8mAiEEjbZ9LTTfuDxwfvW0bq8zMCRJmYOp1ZK5Jd4YL/mM9g==
+X-Received: by 2002:a05:620a:46a0:b0:85b:8a42:eff9 with SMTP id af79cd13be357-8c37ebbb452mr64060085a.53.1767636604517;
+        Mon, 05 Jan 2026 10:10:04 -0800 (PST)
 Received: from ?IPv6:2606:6d00:17:7b4b::5ac? ([2606:6d00:17:7b4b::5ac])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-890753ef51csm3947706d6.16.2026.01.05.10.08.09
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4a9a19sm3638685a.1.2026.01.05.10.10.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 10:08:10 -0800 (PST)
-Message-ID: <16eb88083b68e3701f22799d8ccc20b800b59d61.camel@ndufresne.ca>
-Subject: Re: [PATCH v4 1/3] media: v4l2-mem2mem: Add a kref to the
- v4l2_m2m_dev structure
+        Mon, 05 Jan 2026 10:10:03 -0800 (PST)
+Message-ID: <4d885ca36bef3e8227f8e0ee80bf5bcc3959e9ce.camel@ndufresne.ca>
+Subject: Re: [PATCH v4 0/3] Fix concurrency issues between G1 and G2 on
 From: Nicolas Dufresne <nicolas@ndufresne.ca>
 To: Ulf Hansson <ulf.hansson@linaro.org>, ming.qian@oss.nxp.com
 Cc: linux-media@vger.kernel.org, mchehab@kernel.org,
@@ -71,11 +70,10 @@ Cc: linux-media@vger.kernel.org, mchehab@kernel.org,
  Frank.li@nxp.com, peng.fan@nxp.com, eagle.zhou@nxp.com, 
 	imx@lists.linux.dev, linux-pm@vger.kernel.org,
  linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org
-Date: Mon, 05 Jan 2026 13:08:08 -0500
-In-Reply-To: <CAPDyKFpt-GL-RFcJ5mTWFqaRfy1dQJ7LL8OBCoQK0+zPDFEzsg@mail.gmail.com>
+Date: Mon, 05 Jan 2026 13:10:02 -0500
+In-Reply-To: <CAPDyKFpFm9kCSNbALJTqeyzFdg3OoooE2gUOXJcjv=WgQeZ84Q@mail.gmail.com>
 References: <20251205015428.643-1-ming.qian@oss.nxp.com>
-	 <20251205015428.643-2-ming.qian@oss.nxp.com>
-	 <CAPDyKFpt-GL-RFcJ5mTWFqaRfy1dQJ7LL8OBCoQK0+zPDFEzsg@mail.gmail.com>
+	 <CAPDyKFpFm9kCSNbALJTqeyzFdg3OoooE2gUOXJcjv=WgQeZ84Q@mail.gmail.com>
 Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
  keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
  /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
@@ -90,7 +88,7 @@ Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
  ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
  bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-4H25zADnHXlwNymaecNy"
+	protocol="application/pgp-signature"; boundary="=-zvFzPoy3A7lV+wocoxlB"
 User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -100,199 +98,72 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 
 
---=-4H25zADnHXlwNymaecNy
+--=-zvFzPoy3A7lV+wocoxlB
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-Le mardi 30 d=C3=A9cembre 2025 =C3=A0 14:39 +0100, Ulf Hansson a =C3=A9crit=
+Le mardi 30 d=C3=A9cembre 2025 =C3=A0 14:42 +0100, Ulf Hansson a =C3=A9crit=
 =C2=A0:
 > On Fri, 5 Dec 2025 at 02:55, <ming.qian@oss.nxp.com> wrote:
 > >=20
-> > From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+> > From: Ming Qian <ming.qian@oss.nxp.com>
 > >=20
-> > Adding a reference count to the v4l2_m2m_dev structure allow safely
-> > sharing it across multiple hardware nodes. This can be used to prevent
-> > running jobs concurrently on m2m cores that have some internal resource
-> > sharing.
+> > On the i.MX8MQ, we encountered some concurrency issues with H264 and HE=
+VC
+> > decoding.
 > >=20
-> > Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-> > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> > There are two main reasons:
+> > 1. The vpu blk-ctrl don't have separate reset and clock enable bits.
+> > 2. The g1 VPU and g2 VPU cannot decode simultaneously.
+> >=20
+> > We attempted to make corresponding fix to address these two issues.
+> >=20
+> > Ming Qian (2):
+> > =C2=A0 pmdomain: imx8m-blk-ctrl: Remove separate rst and clk mask for 8=
+mq vpu
+> > =C2=A0 media: verisilicon: Avoid G2 bus error while decoding H.264 and =
+HEVC
+> >=20
+> > Nicolas Dufresne (1):
+> > =C2=A0 media: v4l2-mem2mem: Add a kref to the v4l2_m2m_dev structure
+> >=20
+> > =C2=A0drivers/media/platform/verisilicon/hantro.h=C2=A0=C2=A0 |=C2=A0 2=
+ +
+> > =C2=A0.../media/platform/verisilicon/hantro_drv.c=C2=A0=C2=A0 | 42 ++++=
++++++++++++++--
+> > =C2=A0.../media/platform/verisilicon/imx8m_vpu_hw.c |=C2=A0 8 ++++
+> > =C2=A0drivers/media/v4l2-core/v4l2-mem2mem.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 23 ++++++++++
+> > =C2=A0drivers/pmdomain/imx/imx8m-blk-ctrl.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 | 11 +++--
+> > =C2=A0include/media/v4l2-mem2mem.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 21 +++=
++++++++
+> > =C2=A06 files changed, 100 insertions(+), 7 deletions(-)
+> >=20
 >=20
-> I certainly don't have the complete picture for how this needs to work.
->=20
-> However, I was thinking that rather than using a kref and having to
-> share two specific functions to update it (v4l2_m2m_get|put), couldn't
-> we just use a device-link instead?
+> Can I pick the pmdomain patch separately from the others? Or does this
+> need to go together?
 
-The device link seems to be intended for power management, I'm effectively =
-not
-familiar with it, so thanks for the information. However, my impression is =
-that
-this is indented to describe power management dependencies on siblings, but=
- this
-was done differently on this SoC (way before my time here), the DT seems to
-describe a block controller which is common to the two (defective) cores. S=
-o
-power management wise, its already handled.
-
-Be aware that my intent is to rename v4l2_m2m_dev into v4l2_m2m_sched. Its =
-not a
-dev wrapper, but a helper object that will schedule work coming from N
-v4l2_m2m_ctx (per open() calls). Making this helper object ref counted make=
-s the
-live-time management a lot simpler, and since its not a dev wrapper, this p=
-atch
-is not creating a second refcount for the same object.
+I believe you did already, and its perfect, we have picked the rest in the =
+media
+tree now.
 
 regards,
 Nicolas
 
-
->=20
-> Kind regards
-> Uffe
->=20
-> > ---
-> > v4
-> > - Add my Signed-off-by
-> >=20
-> > =C2=A0drivers/media/v4l2-core/v4l2-mem2mem.c | 23 +++++++++++++++++++++=
-++
-> > =C2=A0include/media/v4l2-mem2mem.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 | 21 +++++++++++++++++++++
-> > =C2=A02 files changed, 44 insertions(+)
-> >=20
-> > diff --git a/drivers/media/v4l2-core/v4l2-mem2mem.c b/drivers/media/v4l=
-2-
-> > core/v4l2-mem2mem.c
-> > index fec93c1a9231..ae0de54d4c3e 100644
-> > --- a/drivers/media/v4l2-core/v4l2-mem2mem.c
-> > +++ b/drivers/media/v4l2-core/v4l2-mem2mem.c
-> > @@ -90,6 +90,7 @@ static const char * const m2m_entity_name[] =3D {
-> > =C2=A0 * @job_work:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 worker to run queued jobs.
-> > =C2=A0 * @job_queue_flags:=C2=A0=C2=A0 flags of the queue status, %QUEU=
-E_PAUSED.
-> > =C2=A0 * @m2m_ops:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 driver callbacks
-> > + * @kref:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 device reference count
-> > =C2=A0 */
-> > =C2=A0struct v4l2_m2m_dev {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct v4l2_m2m_ctx=C2=A0=C2=
-=A0=C2=A0=C2=A0 *curr_ctx;
-> > @@ -109,6 +110,8 @@ struct v4l2_m2m_dev {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 job_queue_flags;
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct v4l2_m2m_ops *m=
-2m_ops;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct kref kref;
-> > =C2=A0};
-> >=20
-> > =C2=A0static struct v4l2_m2m_queue_ctx *get_queue_ctx(struct v4l2_m2m_c=
-tx
-> > *m2m_ctx,
-> > @@ -1200,6 +1203,7 @@ struct v4l2_m2m_dev *v4l2_m2m_init(const struct
-> > v4l2_m2m_ops *m2m_ops)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 INIT_LIST_HEAD(&m2m_dev->job=
-_queue);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 spin_lock_init(&m2m_dev->job=
-_spinlock);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 INIT_WORK(&m2m_dev->job_work=
-, v4l2_m2m_device_run_work);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kref_init(&m2m_dev->kref);
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return m2m_dev;
-> > =C2=A0}
-> > @@ -1211,6 +1215,25 @@ void v4l2_m2m_release(struct v4l2_m2m_dev *m2m_d=
-ev)
-> > =C2=A0}
-> > =C2=A0EXPORT_SYMBOL_GPL(v4l2_m2m_release);
-> >=20
-> > +void v4l2_m2m_get(struct v4l2_m2m_dev *m2m_dev)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kref_get(&m2m_dev->kref);
-> > +}
-> > +EXPORT_SYMBOL_GPL(v4l2_m2m_get);
-> > +
-> > +static void v4l2_m2m_release_from_kref(struct kref *kref)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct v4l2_m2m_dev *m2m_dev =3D =
-container_of(kref, struct
-> > v4l2_m2m_dev, kref);
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 v4l2_m2m_release(m2m_dev);
-> > +}
-> > +
-> > +void v4l2_m2m_put(struct v4l2_m2m_dev *m2m_dev)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kref_put(&m2m_dev->kref, v4l2_m2m=
-_release_from_kref);
-> > +}
-> > +EXPORT_SYMBOL_GPL(v4l2_m2m_put);
-> > +
-> > =C2=A0struct v4l2_m2m_ctx *v4l2_m2m_ctx_init(struct v4l2_m2m_dev *m2m_d=
-ev,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 void *drv_priv,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 int (*queue_init)(void *priv, struct vb2_queue *src_v=
-q,
-> > struct vb2_queue *dst_vq))
-> > diff --git a/include/media/v4l2-mem2mem.h b/include/media/v4l2-mem2mem.=
-h
-> > index bf6a09a04dcf..ca295c660c7f 100644
-> > --- a/include/media/v4l2-mem2mem.h
-> > +++ b/include/media/v4l2-mem2mem.h
-> > @@ -547,6 +547,27 @@ v4l2_m2m_register_media_controller(struct v4l2_m2m=
-_dev
-> > *m2m_dev,
-> > =C2=A0 */
-> > =C2=A0void v4l2_m2m_release(struct v4l2_m2m_dev *m2m_dev);
-> >=20
-> > +/**
-> > + * v4l2_m2m_get() - take a reference to the m2m_dev structure
-> > + *
-> > + * @m2m_dev: opaque pointer to the internal data to handle M2M context
-> > + *
-> > + * This is used to share the M2M device across multiple devices. This
-> > + * can be used to avoid scheduling two hardware nodes concurrently.
-> > + */
-> > +void v4l2_m2m_get(struct v4l2_m2m_dev *m2m_dev);
-> > +
-> > +/**
-> > + * v4l2_m2m_put() - remove a reference to the m2m_dev structure
-> > + *
-> > + * @m2m_dev: opaque pointer to the internal data to handle M2M context
-> > + *
-> > + * Once the M2M device have no more references, v4l2_m2m_realse() will=
- be
-> > + * called automatically. Users of this method should never call
-> > + * v4l2_m2m_release() directly. See v4l2_m2m_get() for more details.
-> > + */
-> > +void v4l2_m2m_put(struct v4l2_m2m_dev *m2m_dev);
-> > +
-> > =C2=A0/**
-> > =C2=A0 * v4l2_m2m_ctx_init() - allocate and initialize a m2m context
-> > =C2=A0 *
-> > --
-> > 2.52.0
-> >=20
-
---=-4H25zADnHXlwNymaecNy
+--=-zvFzPoy3A7lV+wocoxlB
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaVv+CAAKCRDZQZRRKWBy
-9GnBAP9YVI4l3nVSoW8LuEWowJqpYHQplV4632VpWVcZXPWxgQD/VvEAJf8OJJu4
-siPIvlpEB/ftrpXiSKkVbExl1UWd6AI=
-=a96A
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaVv+egAKCRDZQZRRKWBy
+9FfKAPwIfuzu0Oju3HLojCHI9FM9JdnnqW5c8KFbwAK37MdTNgD/erN0pVhummc6
+5FGqJ5UvmnrrAGczimw1n6SlMWulQQk=
+=CTsW
 -----END PGP SIGNATURE-----
 
---=-4H25zADnHXlwNymaecNy--
+--=-zvFzPoy3A7lV+wocoxlB--
