@@ -1,74 +1,72 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC2626F28A
-	for <imx@lists.linux.dev>; Mon,  5 Jan 2026 21:09:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D033D2D7802;
+	Mon,  5 Jan 2026 22:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767647364; cv=none; b=Atc1/ZQt7TjodutJT/NkcdwbWGd3ESRk9JDPU34yjnAtmQcb/Ir+SI5Dth28UONzEa6Mkc2vjAgzUOGR5JwSn69XBgbZUN1qxl3nKHmSxpbQdL4cJ3bjbrjK9yPLP/YwF7PJYFiKTfPScG+iAUNv6CKwVZJLiVyp6elhvQO2xN0=
+	t=1767652606; cv=none; b=CKMFXpmwbo6gsGoffpgz2NJVp+vDgXbUOhIPC1zwd+sSTYLiujRDWoRI2aYdFj9Lq98Z2s0op51f8bL5LznF3K1fq4z/2mZVJLU/PtOsKkRcfw01SthnsepXRwQZeYcBECxlIoNCxcOzvU4T3T+L2f7HZuO/EKR08QAU/h7fvok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767647364; c=relaxed/simple;
-	bh=jwLkcTvlIBQUkhCwf3AoG2rQ1UjqOwQNEsd9gNEIZw4=;
+	s=arc-20240116; t=1767652606; c=relaxed/simple;
+	bh=kzkUocZGzbldAqL7H+ZbDJj1W7al0AimC+VuLG+yvHQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fUbUDNxe4m2LC9uPBq3ssD33MWKdTolgc0WfegEQ1+FaA/cp6dc/1aofBjb25vvCM3xHekCdg4Si1ujcU5UsPDWFAWvC6CMlaLNYic2pqv5zQVG3S2yClffQ+GdgPf4MVVqflhs/3MwQnNEy1TZ6I2z/0riUWxGn1XFx/eOQpUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=f1BXyjyh; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=cJLFygb0USqQfTS6wZQRAehzfJJPwW8wU0lX1PTY0XandKY8GS15TquxWZOSvQoG4XSp5e018JntgMsah1QtqfRtrwCmNyhg/XvEjfXIJEeC8OtMSJmYYcrZlfuNl8rVuux2uJnT9nI5xpDO2kDeV+w+i+lhwPvq4EJxMm/5Ovk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dmbHwuIs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="f1BXyjyh"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a2ea96930cso3657415ad.2
-        for <imx@lists.linux.dev>; Mon, 05 Jan 2026 13:09:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1767647362; x=1768252162; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4tSkxCKwZXCfTTNee+KHC5cdt2q9BOYUvx4EdY3LV9o=;
-        b=f1BXyjyhW+rOCBPwLDFl9Qlmk896cysaYuKUwzbDP2lWA3zEMeIEUbjG9vtA6bGMp8
-         tz073eNvnI8tu3AZTmamybJCqam4ejlt90tVRCfyyP0z/gZdkYg0k7cg9T4yHMoUOuWF
-         A/rmH6FL9KniAIRoHwclCDrtk9Xb1HcEdqb7nBJqqbqU7iMEYE3mZkP4GjOMJk3UujAZ
-         g3eC8EYv9XAwiYBskH0akG1UL5CRnVN3eGE60saDHW9EImdUF3zLi8tWOlM0+QMYkXEE
-         VIIW90gG3zBPCIYakzWN2tOGguR926Zkbe6zaJVMBo/Hztg2U0GLQKb3c9whH0aYGIBZ
-         qOrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767647362; x=1768252162;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4tSkxCKwZXCfTTNee+KHC5cdt2q9BOYUvx4EdY3LV9o=;
-        b=rUZ03AH1uGZ6wkVULXcg6a48YOkuEwtWQ55mV4fzDO0Nbw2dVOweQQATf3lnJsejDv
-         PTmFhbI8LWdua+l8YgUu3//Ez+zvx/SxqS6bslgfDu9iQfzV0FK/YNQQtR2JD/Bnlswg
-         zA8AYDswGXSj84H4diND1FVXWMbVmsdl8Tp4lqdN6c0T+wP8bnbya3MS3ym4fm1WNRbz
-         vsoyYc0GgGwCjgnqI3h2gZnpKUewDav1OrLDYsVCNOx+vfeCLrgnMFPYXmSDTWXD8SNk
-         DKWLDiaB93D7lBOAm62yGrWg+xsNcbdoQzTxieE3vdBccMYfNI+LkpghlzPgasIjyAOE
-         UWAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX60/5YhnjqOEGxgx4D0QpLYfQZg8b3Bi+yyE0huN3DzTOnsvtqZG+hJbcZNM1XsCWjLuA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzVipejLqyI9Yd5mJrcb8zOHg085aFxwjH4NSaiVItL9j4cuare
-	nKeUoUv2sgQP0WovT4G9tdiSJHXp+LdBlS7YKqFHv6iAki3edIMiEfBVCqAatJyWbpM=
-X-Gm-Gg: AY/fxX5vqdP2eVbd9vBsiTwxPSRd2yX1Zbs8FSXN7F5pQ59Z156eL1/ICSucuMXGfya
-	8vwEaUt3eiHDylMYnisXI2P6YynO++S0OiUaHzXvE/404p0cD+Wn6pW0YTAk/95sywjSu6Vodzm
-	xKsmmauyl+xZL75WAGZv4UIsSdSS9sZ64Xe3+rcLJAbmRVuHZaX+Mz1Qy7puo/MmmDRaUMzyKeD
-	T11rFJ8s4m/dKK93O8bMniCDHkVkzrLKPPMoWjPtzhkYcIsEba+eTDTEl33+aWBlZOIU/oeR3dQ
-	Sg8mBfJejIW/2Lu4MenO7/WVyQfqcZrfc+RQRnvFMc7Mcb2bCxeCt62LIMokwPhydNSk5yBziSY
-	JhejYkz4gifu2mSpYJReCibUPV11UjIeFOiZhBTdfYlM2MjPIeqUgxs8buusKs0zfZ1rJQJjkFe
-	cHXjii1uFsW6xdNw==
-X-Google-Smtp-Source: AGHT+IHXo6DMFCW0WpfI4RbwmQ0/+SMw7AIolM0jI+6hLOC2qL1pTqhGB59TCu4aAjBQnNj3aCaTnQ==
-X-Received: by 2002:a17:903:2f46:b0:29f:2b8a:d3d with SMTP id d9443c01a7336-2a3e2d7896dmr8294395ad.4.1767647361918;
-        Mon, 05 Jan 2026 13:09:21 -0800 (PST)
-Received: from p14s ([2604:3d09:148c:c800:3f6b:5551:220f:8f13])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3ba03f9sm1721825ad.0.2026.01.05.13.09.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 13:09:21 -0800 (PST)
-Date: Mon, 5 Jan 2026 14:09:19 -0700
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: andersson@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, daniel.baluta@nxp.com,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] remoteproc: imx_dsp_rproc: only reset carveout memory
- at RPROC_OFFLINE state
-Message-ID: <aVwof_w31EMxi5st@p14s>
-References: <20251218071750.2692132-1-shengjiu.wang@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dmbHwuIs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47434C116D0;
+	Mon,  5 Jan 2026 22:36:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767652605;
+	bh=kzkUocZGzbldAqL7H+ZbDJj1W7al0AimC+VuLG+yvHQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dmbHwuIs+Jus28fsK5wm0xq/ylwPIKhkr5dyCyT/XQL2ulRMOn63qz9aCdKiEaCov
+	 Jd9a57EMPcFXqJhga7Fp0ZIjS73JKd5dOkHRg2dEcMidwoO77HKO1vriP/dsVzHPfA
+	 dzPOnbxH4z4WVGzGyN2Nr4qg2ODsudK2C4wa2JDGQ0ENC81eHPfEfU/stMY7zXBjiK
+	 hvO+GP6m++TN9SO+Pnmaf14Kg/z0dcI+Z+ggkx97EtvnNELUIPfS8uHdbyyFT1OCs6
+	 RzPiRnzPyb2M/xb2uU6ERe6nlnPwbEx5h/c8oyr8ufiJP2RVk6dBGg0wT0ctIQs++l
+	 kUKgFhWdsrlYw==
+Date: Mon, 5 Jan 2026 16:36:44 -0600
+From: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Nipun Gupta <nipun.gupta@amd.com>,
+	Nikhil Agarwal <nikhil.agarwal@amd.com>,
+	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Vinod Koul <vkoul@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	llvm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-clk@vger.kernel.org, imx@lists.linux.dev,
+	dmaengine@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	Jonathan Cameron <jonathan.cameron@huawei.com>
+Subject: Re: [PATCH 01/11] of: Add for_each_compatible_node_scoped() helper
+Message-ID: <20260105223644.GA3633916-robh@kernel.org>
+References: <20260105-of-for-each-compatible-scoped-v1-0-24e99c177164@oss.qualcomm.com>
+ <20260105-of-for-each-compatible-scoped-v1-1-24e99c177164@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -77,49 +75,58 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251218071750.2692132-1-shengjiu.wang@nxp.com>
+In-Reply-To: <20260105-of-for-each-compatible-scoped-v1-1-24e99c177164@oss.qualcomm.com>
 
-On Thu, Dec 18, 2025 at 03:17:50PM +0800, Shengjiu Wang wrote:
-> Do not reset memory at suspend and resume stage, because some
-> memory is used to save the software state for resume, if it is cleared,
-> the resume operation can fail.
+On Mon, Jan 05, 2026 at 02:33:39PM +0100, Krzysztof Kozlowski wrote:
+> Just like looping through children and available children, add a scoped
+> helper for for_each_compatible_node() so error paths can drop
+> of_node_put() leading to simpler code.
 > 
-> Fixes: c4c432dfb00f ("remoteproc: imx_dsp_rproc: Add support of recovery and coredump process")
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-> Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+> Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> 
 > ---
-> changes in v2:
-> - refine commit message.
->
-
-Applied.
-
-Thanks,
-Mathieu
- 
->  drivers/remoteproc/imx_dsp_rproc.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
-> index d03017d6b214..ac8aa71aa56c 100644
-> --- a/drivers/remoteproc/imx_dsp_rproc.c
-> +++ b/drivers/remoteproc/imx_dsp_rproc.c
-> @@ -984,9 +984,11 @@ static int imx_dsp_rproc_load(struct rproc *rproc, const struct firmware *fw)
->  	 * Clear buffers after pm rumtime for internal ocram is not
->  	 * accessible if power and clock are not enabled.
->  	 */
-> -	list_for_each_entry(carveout, &rproc->carveouts, node) {
-> -		if (carveout->va)
-> -			memset(carveout->va, 0, carveout->len);
-> +	if (rproc->state == RPROC_OFFLINE) {
-> +		list_for_each_entry(carveout, &rproc->carveouts, node) {
-> +			if (carveout->va)
-> +				memset(carveout->va, 0, carveout->len);
-> +		}
->  	}
->  
->  	ret = imx_dsp_rproc_elf_load_segments(rproc, fw);
+> Prerequisite for all further patches.
+> ---
+>  .clang-format      | 1 +
+>  include/linux/of.h | 7 +++++++
+>  2 files changed, 8 insertions(+)
+
+You need to update scripts/dtc/dt-extract-compatibles
+
+> 
+> diff --git a/.clang-format b/.clang-format
+> index c7060124a47a..1cc151e2adcc 100644
+> --- a/.clang-format
+> +++ b/.clang-format
+> @@ -259,6 +259,7 @@ ForEachMacros:
+>    - 'for_each_collection'
+>    - 'for_each_comp_order'
+>    - 'for_each_compatible_node'
+> +  - 'for_each_compatible_node_scoped'
+>    - 'for_each_component_dais'
+>    - 'for_each_component_dais_safe'
+>    - 'for_each_conduit'
+> diff --git a/include/linux/of.h b/include/linux/of.h
+> index 9bbdcf25a2b4..be6ec4916adf 100644
+> --- a/include/linux/of.h
+> +++ b/include/linux/of.h
+> @@ -1485,6 +1485,13 @@ static inline int of_property_read_s32(const struct device_node *np,
+>  #define for_each_compatible_node(dn, type, compatible) \
+>  	for (dn = of_find_compatible_node(NULL, type, compatible); dn; \
+>  	     dn = of_find_compatible_node(dn, type, compatible))
+> +
+> +#define for_each_compatible_node_scoped(dn, type, compatible) \
+> +	for (struct device_node *dn __free(device_node) =		\
+> +	     of_find_compatible_node(NULL, type, compatible);		\
+> +	     dn;							\
+> +	     dn = of_find_compatible_node(dn, type, compatible))
+> +
+>  #define for_each_matching_node(dn, matches) \
+>  	for (dn = of_find_matching_node(NULL, matches); dn; \
+>  	     dn = of_find_matching_node(dn, matches))
+> 
 > -- 
-> 2.34.1
+> 2.51.0
 > 
