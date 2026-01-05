@@ -1,102 +1,118 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC753A1E89;
-	Mon,  5 Jan 2026 10:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5AD335063
+	for <imx@lists.linux.dev>; Mon,  5 Jan 2026 11:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767610379; cv=none; b=hdSD0HEoyL1bJGfaZxImX8zlxTI03kW7KGBB/TIKSJbRG98xzIJThtIx7dMh2PGLRV91aVgQiRSXClsZEfL63Xqkzk6H8tGDI30L7OpKDpAJ9Jd0r6NXz051AOinhsNRpnPUMn0uUwiIcu/EbwlN65PSBz60rTnuchNNykC7558=
+	t=1767611711; cv=none; b=pN42wrnGLueYRkZKVcHRrUFHG2MT+HOcLtd0xmMCkO3fWSzY6OvNiFXTLy255Wu1+aqhASXv9yIM3waKhBmQIsZPm2Lv52TkaRp/Hox1tkeXa5iW+9KpwQ6+Y2ork69VXesfFbH9neLlwo8gU5c4QZL7lucgZdfHIqCkfJfLMA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767610379; c=relaxed/simple;
-	bh=Q2P69CQwyZPVXD08je39Ji5HIqSbRTNQlcSkwdK+RKM=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k5uN98KrTXoIoaASGkHtGJU8WhTbqXr+Y+86IUDwN7AnyQXXYv3DZOIeq+tDcvBSr/nLza40lu2XqAm3ehIMm+EnGz9P80ok0HyyiutWsIHQ9SCFUC21XiF/1+tbEqLXS3uyrZNysMCTndVucIa/t2x2g8sQAo6TCQ5kv9bHdcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.150])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4dlB230nTyzJ46hp;
-	Mon,  5 Jan 2026 18:51:55 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 579F840539;
-	Mon,  5 Jan 2026 18:52:55 +0800 (CST)
-Received: from localhost (10.48.146.88) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 5 Jan
- 2026 10:52:54 +0000
-Date: Mon, 5 Jan 2026 10:52:52 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-CC: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>, Nathan Chancellor <nathan@kernel.org>, "Nick
- Desaulniers" <nick.desaulniers+lkml@gmail.com>, Bill Wendling
-	<morbo@google.com>, Justin Stitt <justinstitt@google.com>,
-	<linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
-	<llvm@lists.linux.dev>
-Subject: Re: [PATCH 1/3] ata: ahci-dwc: Simplify with scoped for each OF
- child loop
-Message-ID: <20260105105252.00003b5a@huawei.com>
-In-Reply-To: <20260102125040.65256-4-krzysztof.kozlowski@oss.qualcomm.com>
-References: <20260102125040.65256-4-krzysztof.kozlowski@oss.qualcomm.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1767611711; c=relaxed/simple;
+	bh=3TiAhp9+bFrltt5FUytvkR8rwwCQaS9SxQuRjEvWYqQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r0g8OFboBTkmDV6bjqwnENK5U7XMhevN4B91IPDHa6aZL6a3U7pjaL6dNTYnkS0XXS3RhP1tQpw/NymVzuGEErLxouu0VXEvyuz170T8tUMxgWCKbn51xgKOvgAEa2tDilv+8HJ/ZeHj6+FpiwC0eGtkQsOk6KDisyASGmM5hOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vciXx-0004Q0-Gn; Mon, 05 Jan 2026 12:14:49 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vciXx-0099sn-02;
+	Mon, 05 Jan 2026 12:14:49 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vciXw-00CR1k-2s;
+	Mon, 05 Jan 2026 12:14:48 +0100
+Date: Mon, 5 Jan 2026 12:14:48 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] arm64: dts: imx8mp-skov: add pinctrl-name 'reset' to
+ fix CHECK_DTB warning
+Message-ID: <20260105111448.slm2yqiwivx2t3vh@pengutronix.de>
+References: <20251229165127.4006134-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251229165127.4006134-1-Frank.Li@nxp.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Fri,  2 Jan 2026 13:50:41 +0100
-Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com> wrote:
+Hi Frank,
 
-> Use scoped for-each loop when iterating over device nodes to make code a
-> bit simpler.
+On 25-12-29, Frank Li wrote:
+> Add pinctrl-name 'reset' to fix below CHECK_DTB warnings:
+>   arch/arm64/boot/dts/freescale/imx8mp-skov-basic.dtb: switch@5f (microchip,ksz9893): pinctrl-names: ['default'] is too short
+> 	from schema $id: http://devicetree.org/schemas/net/dsa/microchip,ksz.yaml#
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> The commit (e469b87e0fb0d dt-bindings: net: dsa: microchip: Add strap
+> description to set SPI mode" force use two pinctrl-name 'default' and
+> 'reset'. switch@5f doesn't use SPI, so it is safe to use the same pinctrl
+> setting for both.
 
-A whilst you are here suggestion inline to make it a bit simpler.
+please see:
+- https://lore.kernel.org/all/20251112084717.ea7fchu7jcz6dzsi@pengutronix.de/
 
+I stumbled over the same warning, but came to the conclusion, that the
+dt-bindings should be fixed instead of workaround broken bindings within
+the dtb.
+
+Regards,
+  Marco
+
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 > ---
->  drivers/ata/ahci_dwc.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+>  arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/ata/ahci_dwc.c b/drivers/ata/ahci_dwc.c
-> index aec6d793f51a..bfd24772ee67 100644
-> --- a/drivers/ata/ahci_dwc.c
-> +++ b/drivers/ata/ahci_dwc.c
-> @@ -260,7 +260,6 @@ static void ahci_dwc_init_timer(struct ahci_host_priv *hpriv)
->  static int ahci_dwc_init_dmacr(struct ahci_host_priv *hpriv)
->  {
->  	struct ahci_dwc_host_priv *dpriv = hpriv->plat_data;
-> -	struct device_node *child;
->  	void __iomem *port_mmio;
->  	u32 port, dmacr, ts;
+> diff --git a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
+> index 020f20c8ce667..7d2fc5fdd3bd1 100644
+> --- a/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx8mp-skov-reva.dtsi
+> @@ -373,8 +373,8 @@ &i2c4 {
 >  
-> @@ -271,14 +270,12 @@ static int ahci_dwc_init_dmacr(struct ahci_host_priv *hpriv)
->  	 * the HBA global reset so we can freely initialize it once until the
->  	 * next system reset.
->  	 */
-> -	for_each_child_of_node(dpriv->pdev->dev.of_node, child) {
-> +	for_each_child_of_node_scoped(dpriv->pdev->dev.of_node, child) {
->  		if (!of_device_is_available(child))
-
-for_each_available_child_of_node_scoped()?
-
->  			continue;
+>  	switch: switch@5f {
+>  		compatible = "microchip,ksz9893";
+> -		pinctrl-names = "default";
+> -		pinctrl-0 = <&pinctrl_switch>;
+> +		pinctrl-names = "default", "reset";
+> +		pinctrl-0 = <&pinctrl_switch>, <&pinctrl_switch>;
+>  		reset-gpios = <&gpio5 1 GPIO_ACTIVE_LOW>;
+>  		reg = <0x5f>;
 >  
-> -		if (of_property_read_u32(child, "reg", &port)) {
-> -			of_node_put(child);
-> +		if (of_property_read_u32(child, "reg", &port))
->  			return -EINVAL;
-> -		}
->  
->  		port_mmio = __ahci_port_base(hpriv, port);
->  		dmacr = readl(port_mmio + AHCI_DWC_PORT_DMACR);
+> -- 
+> 2.34.1
+> 
+> 
+> 
 
+-- 
+#gernperDu 
+#CallMeByMyFirstName
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
