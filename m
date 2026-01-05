@@ -1,48 +1,71 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F65C334C1F;
-	Mon,  5 Jan 2026 15:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6C433D6E7;
+	Mon,  5 Jan 2026 16:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767627353; cv=none; b=qw7N3P246RoOQMokV2HoJ7iATmMRTrwpn7N9g8xiDEqC4bOfPBAcSSQbYZqzO5D1W4QTwgJYleOavygLe6AHFBu46d4GrZ2de42sizUMlMHVp4klayMT+PCYYebT99wymUqXpodNjYj2gvTDIIn/j8tLkHvoxez47LKH3pjwJkE=
+	t=1767629990; cv=none; b=Ipv4jDqgwdkDw9hVMj1DHVJupncBnuTMKHViuODOrro7MgvdPFT7fLfH/MNSaX+kXnj+ybAuqcehMgoUWgRws4yUakW4tYkHKWNIBK7vumI3NZoiMpzRJWYthAaZ81EToYbFMnqxM/rC1gM8qZ0TkiTo766XdPZMQVE2aZoOv4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767627353; c=relaxed/simple;
-	bh=1MTChmLrOZUO1PTrEDIoithmlLSAZlsyb/4VWReOOXw=;
+	s=arc-20240116; t=1767629990; c=relaxed/simple;
+	bh=AtN7od0JeLsN9YbMUfbbQk/4L1P9KKm0XcoR8cmj7CA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lBrUry0JidEek7X1kZjsOqWQsdu41zXe5CbD8tr2ntdLbO0hCOch+SawBlbxKJU10mvmDYkYVsrzwko96dSlL/93k+sMmB/jCapO1AkrluceEofuN0QRGuESSfZuYInQ7xShiZ3O7IFBv/0mQ2VOnhd5n4ORj8stQDsbSEcBhEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0LeuMVSp; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=YKPLrjf/ItY5RMRjrzzH/6sollMb93DI9JiG8kx4fNJYhu8KbHjDe/drx0zYANSddQYo48jV7rSuEXuzJ0nqkBUR66iCWhgCGNje5PcOTEl9dLu9JwsTuYQ5PY5sRlJa9JqYV7Ti4srftLzRPobAbhSg8FZZGRDITk4FjFhenT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KhHlARlN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0LeuMVSp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=K7yq1732eMKsor7g4md0pKiQDNOJcbfUwif3tEqKzAE=; b=0LeuMVSptPSn/ReUPkVg0wSrce
-	YgsRflqh8J4MIf3nMliqMsxR8Ng+uuJcWbounPrNM3MV80WDj7bcPmvTwq3NHMBXk7f4uCPc2Iwpb
-	JQBftAqQ2LoqBjKlDZla7qj1qR0QoVrMBCxdvgc3AOM9F/0qjWogWNah30sD9dbxuhWI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vcmcO-001VC9-Nm; Mon, 05 Jan 2026 16:35:40 +0100
-Date: Mon, 5 Jan 2026 16:35:40 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	imx@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] net: fec: Add stop mode support on
- i.MX8DX/i.MX8QP
-Message-ID: <9acdb8d1-529e-46f2-8931-780287b8cb16@lunn.ch>
-References: <20260105152452.84338-1-francesco@dolcini.it>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KhHlARlN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE25AC116D0;
+	Mon,  5 Jan 2026 16:19:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767629990;
+	bh=AtN7od0JeLsN9YbMUfbbQk/4L1P9KKm0XcoR8cmj7CA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KhHlARlNAGXphZOOMOLPXXdYboH6rQGoEW00D0fi7fuAHJOXGzeRgKYG5X1gpaPFj
+	 uzXh4SM8KE4Na2K2V9fmxDxkWzBKNxqKopKgrNor3jKn7aZ4gRQLdsF3X5+jLkxh4U
+	 0SjmlPwW3RkL7OZV9qDHm54Wi5IR/Al4nYVxEV392JoniVlmeAEahNMfp1JOK7ns/o
+	 liXgqtNjg/fiLGTcysf30O4NzJSIrFMFIdeHpIqm/F1jF8Uc7Kjsgi/Ihe8FPPnrY3
+	 DDJqu93pjX4IWDHcObkDD4CagtAouZaUKOTXJ3tft846K9m7kLSRbZtQZs8CYaPD91
+	 0Xn6ZM8O1egOQ==
+Date: Mon, 5 Jan 2026 17:19:38 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Sumit Kumar <sumit.kumar@oss.qualcomm.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Greentime Hu <greentime.hu@sifive.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Chuanhua Lei <lchuanhua@maxlinear.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Pratyush Anand <pratyush.anand@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev,
+	linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Subject: Re: [PATCH 2/2] PCI: dwc: Add multi-port controller support
+Message-ID: <aVvkmkd5mWPmxeiS@ryzen>
+References: <20260105-dt-parser-v1-0-b11c63cb5e2c@oss.qualcomm.com>
+ <20260105-dt-parser-v1-2-b11c63cb5e2c@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,20 +74,46 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260105152452.84338-1-francesco@dolcini.it>
+In-Reply-To: <20260105-dt-parser-v1-2-b11c63cb5e2c@oss.qualcomm.com>
 
-On Mon, Jan 05, 2026 at 04:24:50PM +0100, Francesco Dolcini wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Mon, Jan 05, 2026 at 05:57:55PM +0530, Sumit Kumar wrote:
+> The current DesignWare PCIe RC implementation supports only the controller
+> (Host Bridge) node for specifying the Root Port properties in an assumption
+> that the underlying platform only supports a single root Port per
+> controller instance. This limits support for multi-port controllers where
+> different ports may have different lane configurations and speed limits.
 > 
-> Add additional machines that requires communication to the SC firmware
-> to set the GPR bit required for stop mode support.
+> Introduce a separate dw_pcie_port structure to enable multi-port support.
+> Each Root Port can have independent lane count, speed limit through pcie@N
+> child nodes in device tree. Add dw_pcie_parse_root_ports()
+> API to parse these child nodes.
 > 
-> NXP i.MX8DX (fsl,imx8dx) is a low end version of i.MX8QXP (fsl,imx8qxp),
-> while NXP i.MX8QP (fsl,imx8qp) is a low end version of i.MX8QM
-> (fsl,imx8qm).
+> Equalization presets and link width detection currently use common DBI
+> space for all the root ports. Per-port DBI space assignment for these
+> features will be added in future.
 > 
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> Signed-off-by: Sumit Kumar <sumit.kumar@oss.qualcomm.com>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Hello Sumit,
 
-    Andrew
+Is there a reason why you represent this as a list of ports rather than a
+simple array?
+
+The number of ports is known by parsing the device tree, so it should be
+static, no?
+
+At least to me, this seem similar to e.g. how a gpio_device has multiple
+gpio_descriptors "struct gpio_desc *descs":
+https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib.h#L68C1-L68C26
+
+A list is usually used for something that is dynamic.
+I don't think that the number of ports to a PCIe controller will be dynamic.
+
+I can see that struct qcom_pcie in pcie-qcom.c has struct list_head ports,
+but that does not necessarily mean that we need to have a list of ports in
+pcie-designware-host.c. (pcie-qcom could also be modified to have an array
+of ports if there is a desire for similar design pattern.)
+
+
+Kind regards,
+Niklas
