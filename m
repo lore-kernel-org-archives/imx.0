@@ -1,104 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BF82DC787;
-	Mon,  5 Jan 2026 20:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC2626F28A
+	for <imx@lists.linux.dev>; Mon,  5 Jan 2026 21:09:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767645603; cv=none; b=dFOKRf/bFJh7JhOmfLZ1GdvWmkIEyksKjwmdSlhabiK344cACDbn3DaCJPyEMDwpAzVfojacoA4Ekoo4x1z94f38Uoilskb1G0ox92g+dhZO1Tlyf7sWOuGaMWWF/tnyOOkKMP7UlVkvIn02eG9ZScVmEAV8AJF0lu3vZWWssGY=
+	t=1767647364; cv=none; b=Atc1/ZQt7TjodutJT/NkcdwbWGd3ESRk9JDPU34yjnAtmQcb/Ir+SI5Dth28UONzEa6Mkc2vjAgzUOGR5JwSn69XBgbZUN1qxl3nKHmSxpbQdL4cJ3bjbrjK9yPLP/YwF7PJYFiKTfPScG+iAUNv6CKwVZJLiVyp6elhvQO2xN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767645603; c=relaxed/simple;
-	bh=CVpX/S7y+WNjSJw8sgxQxlG0GBmMDerBsAHYJiDcp9s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Ecxb9kgnkvHGMQyXImeo9fvKC0KTDZTkYQCb+CD/BiLdSbKEzroYuIlEdsbYYfDcNQf0W4cS2/TkB11VjxurxTue5GJwvbo5hk8MYFOuIRF2O05jG7W5UKi/mx+CegRKuClFCM5qo+8PIfS5GPzPlhhO2a60U3nun+KQBcnMnv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qByPEqYv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767647364; c=relaxed/simple;
+	bh=jwLkcTvlIBQUkhCwf3AoG2rQ1UjqOwQNEsd9gNEIZw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fUbUDNxe4m2LC9uPBq3ssD33MWKdTolgc0WfegEQ1+FaA/cp6dc/1aofBjb25vvCM3xHekCdg4Si1ujcU5UsPDWFAWvC6CMlaLNYic2pqv5zQVG3S2yClffQ+GdgPf4MVVqflhs/3MwQnNEy1TZ6I2z/0riUWxGn1XFx/eOQpUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=f1BXyjyh; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qByPEqYv"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2ED5CC2BCB4;
-	Mon,  5 Jan 2026 20:40:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767645603;
-	bh=CVpX/S7y+WNjSJw8sgxQxlG0GBmMDerBsAHYJiDcp9s=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=qByPEqYvaB7LBc7uaE/5hoTWyqF8gLJCp/tKeL3+VPLAbCTgGwFmZ5lZ9abh5dnDE
-	 7KmT9dcsiYJPMh1wbkVGatFpFlgwcL66rGDQIJsHyWb6+lq1lfJnj20HOKaUljicOp
-	 Av58siTae8YN5c0CLzz0UcoQTQoyeDgnMH21aFp9VGf31i1ge8HRekrz2IXLCZLbEl
-	 mxZmRNs59b/Mx13sAq7UBOXopPSZjox6YggEltM8eCtENyFsk1bbDZbGUJf8Vt+ZKP
-	 t5H3IdYlRId99sQHx+ca+UvrU3SCeUroW4xi86TRofZkughWmfv8M7NYLCYq3R6oa0
-	 QGN7qHbxJ/9Xw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 27363C9833D;
-	Mon,  5 Jan 2026 20:40:03 +0000 (UTC)
-From: Sebastian Krzyszkowiak via B4 Relay <devnull+sebastian.krzyszkowiak.puri.sm@kernel.org>
-Date: Mon, 05 Jan 2026 21:39:43 +0100
-Subject: [PATCH 6/6] arm64: dts: imx8mq-librem5: Don't set mic-cfg for
- wm8962
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="f1BXyjyh"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2a2ea96930cso3657415ad.2
+        for <imx@lists.linux.dev>; Mon, 05 Jan 2026 13:09:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1767647362; x=1768252162; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4tSkxCKwZXCfTTNee+KHC5cdt2q9BOYUvx4EdY3LV9o=;
+        b=f1BXyjyhW+rOCBPwLDFl9Qlmk896cysaYuKUwzbDP2lWA3zEMeIEUbjG9vtA6bGMp8
+         tz073eNvnI8tu3AZTmamybJCqam4ejlt90tVRCfyyP0z/gZdkYg0k7cg9T4yHMoUOuWF
+         A/rmH6FL9KniAIRoHwclCDrtk9Xb1HcEdqb7nBJqqbqU7iMEYE3mZkP4GjOMJk3UujAZ
+         g3eC8EYv9XAwiYBskH0akG1UL5CRnVN3eGE60saDHW9EImdUF3zLi8tWOlM0+QMYkXEE
+         VIIW90gG3zBPCIYakzWN2tOGguR926Zkbe6zaJVMBo/Hztg2U0GLQKb3c9whH0aYGIBZ
+         qOrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767647362; x=1768252162;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4tSkxCKwZXCfTTNee+KHC5cdt2q9BOYUvx4EdY3LV9o=;
+        b=rUZ03AH1uGZ6wkVULXcg6a48YOkuEwtWQ55mV4fzDO0Nbw2dVOweQQATf3lnJsejDv
+         PTmFhbI8LWdua+l8YgUu3//Ez+zvx/SxqS6bslgfDu9iQfzV0FK/YNQQtR2JD/Bnlswg
+         zA8AYDswGXSj84H4diND1FVXWMbVmsdl8Tp4lqdN6c0T+wP8bnbya3MS3ym4fm1WNRbz
+         vsoyYc0GgGwCjgnqI3h2gZnpKUewDav1OrLDYsVCNOx+vfeCLrgnMFPYXmSDTWXD8SNk
+         DKWLDiaB93D7lBOAm62yGrWg+xsNcbdoQzTxieE3vdBccMYfNI+LkpghlzPgasIjyAOE
+         UWAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX60/5YhnjqOEGxgx4D0QpLYfQZg8b3Bi+yyE0huN3DzTOnsvtqZG+hJbcZNM1XsCWjLuA=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzVipejLqyI9Yd5mJrcb8zOHg085aFxwjH4NSaiVItL9j4cuare
+	nKeUoUv2sgQP0WovT4G9tdiSJHXp+LdBlS7YKqFHv6iAki3edIMiEfBVCqAatJyWbpM=
+X-Gm-Gg: AY/fxX5vqdP2eVbd9vBsiTwxPSRd2yX1Zbs8FSXN7F5pQ59Z156eL1/ICSucuMXGfya
+	8vwEaUt3eiHDylMYnisXI2P6YynO++S0OiUaHzXvE/404p0cD+Wn6pW0YTAk/95sywjSu6Vodzm
+	xKsmmauyl+xZL75WAGZv4UIsSdSS9sZ64Xe3+rcLJAbmRVuHZaX+Mz1Qy7puo/MmmDRaUMzyKeD
+	T11rFJ8s4m/dKK93O8bMniCDHkVkzrLKPPMoWjPtzhkYcIsEba+eTDTEl33+aWBlZOIU/oeR3dQ
+	Sg8mBfJejIW/2Lu4MenO7/WVyQfqcZrfc+RQRnvFMc7Mcb2bCxeCt62LIMokwPhydNSk5yBziSY
+	JhejYkz4gifu2mSpYJReCibUPV11UjIeFOiZhBTdfYlM2MjPIeqUgxs8buusKs0zfZ1rJQJjkFe
+	cHXjii1uFsW6xdNw==
+X-Google-Smtp-Source: AGHT+IHXo6DMFCW0WpfI4RbwmQ0/+SMw7AIolM0jI+6hLOC2qL1pTqhGB59TCu4aAjBQnNj3aCaTnQ==
+X-Received: by 2002:a17:903:2f46:b0:29f:2b8a:d3d with SMTP id d9443c01a7336-2a3e2d7896dmr8294395ad.4.1767647361918;
+        Mon, 05 Jan 2026 13:09:21 -0800 (PST)
+Received: from p14s ([2604:3d09:148c:c800:3f6b:5551:220f:8f13])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3ba03f9sm1721825ad.0.2026.01.05.13.09.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 13:09:21 -0800 (PST)
+Date: Mon, 5 Jan 2026 14:09:19 -0700
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: andersson@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, daniel.baluta@nxp.com,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] remoteproc: imx_dsp_rproc: only reset carveout memory
+ at RPROC_OFFLINE state
+Message-ID: <aVwof_w31EMxi5st@p14s>
+References: <20251218071750.2692132-1-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260105-l5-dtb-fixes-v1-6-f491881a7fe7@puri.sm>
-References: <20260105-l5-dtb-fixes-v1-0-f491881a7fe7@puri.sm>
-In-Reply-To: <20260105-l5-dtb-fixes-v1-0-f491881a7fe7@puri.sm>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- kernel@puri.sm, Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=847;
- i=sebastian.krzyszkowiak@puri.sm; h=from:subject:message-id;
- bh=iFYwHw0xgQRdhe+3vnkoxkuFJ0xjTKuaUaWtu79bHaw=;
- b=owEBbQKS/ZANAwAKAejyNc8728P/AcsmYgBpXCGhzVlyX3SOiwl0zjSkdqxo5SJDUEfUGn+Yx
- cg4R3ha+9SJAjMEAAEKAB0WIQQi3Z+uAGoRQ1g2YXzo8jXPO9vD/wUCaVwhoQAKCRDo8jXPO9vD
- /xOLD/9WUc6hoI0nps0Y5JE1FvDpvYojnUw7HY8XWbPpo0MCODdQzM7mFlqnoJCcRwezi11j2SR
- atDjtGdYpFlyVhU+erBM+5kwCoQulFI/+wb0Gu/qIsUJaOkAvHZ5e+xjMo6EBg4E74K7PuQn4A7
- J7+E9xo9Hl07CNGhcs5xQ9QqdoaYs+/3z5VIrKA2DK3fXXEs32VXoN9vohnAhM6G1B26edOWMIw
- 9BPHoLtX0x/m0FsniLRUsCLtuyLI7YGNgIqP0xjnBO5eiqDYQn0RvwD1GM1CfL6xBF+P/JlEIOZ
- Lj/COX0MjnTXSuPr5OSBjJ5cKWbQZsSGRjy8ZjA3JY25PmSvD5pWfiiKiNCRuST+bBHe/7X2lfa
- EHmaB17AOBnQe3VngkSZztCwzcTbRrbN0fage/BfdKfuSKAQ4lQoBOT9IGUtIGebdrwlzwivFsA
- 9ejJ7g8+98PJeu8o2zsSsOVg7AcrAdpDZmFxp4zMpmMs6ravcMAIHQWAnt34V9C+z76w4YsNSDa
- vfCkOGe5huJXv/Co1zedudRe4npKTANU9+38stpyDbSSpVRsP9nl1q6p+5xfRcma0w4kIUduH0U
- i3j+1kIK1SjJGYTmNKucPVu7kAXqP1mvBuY1JYpN+F1rhI1CsKG0jDbARViuowdSOm8QDxE5Roz
- AjqXxh4SWLby+2Q==
-X-Developer-Key: i=sebastian.krzyszkowiak@puri.sm; a=openpgp;
- fpr=22DD9FAE006A11435836617CE8F235CF3BDBC3FF
-X-Endpoint-Received: by B4 Relay for sebastian.krzyszkowiak@puri.sm/default
- with auth_id=32
-X-Original-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Reply-To: sebastian.krzyszkowiak@puri.sm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251218071750.2692132-1-shengjiu.wang@nxp.com>
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+On Thu, Dec 18, 2025 at 03:17:50PM +0800, Shengjiu Wang wrote:
+> Do not reset memory at suspend and resume stage, because some
+> memory is used to save the software state for resume, if it is cleared,
+> the resume operation can fail.
+> 
+> Fixes: c4c432dfb00f ("remoteproc: imx_dsp_rproc: Add support of recovery and coredump process")
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+> Reviewed-by: Iuliana Prodan <iuliana.prodan@nxp.com>
+> ---
+> changes in v2:
+> - refine commit message.
+>
 
-The default values are fine, and MICDET_ENA is handled by the driver on
-its own anyway.
+Applied.
 
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
----
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-index 22b1a29ad440..b6f7daebadf2 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -1085,7 +1085,6 @@ codec: audio-codec@1a {
- 		assigned-clock-parents = <&clk IMX8MQ_AUDIO_PLL1_OUT>;
- 		assigned-clock-rates = <24576000>;
- 		#sound-dai-cells = <0>;
--		mic-cfg = <0x200>;
- 		DCVDD-supply = <&reg_aud_1v8>;
- 		DBVDD-supply = <&reg_aud_1v8>;
- 		AVDD-supply = <&reg_aud_1v8>;
-
--- 
-2.52.0
-
-
+Thanks,
+Mathieu
+ 
+>  drivers/remoteproc/imx_dsp_rproc.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/remoteproc/imx_dsp_rproc.c b/drivers/remoteproc/imx_dsp_rproc.c
+> index d03017d6b214..ac8aa71aa56c 100644
+> --- a/drivers/remoteproc/imx_dsp_rproc.c
+> +++ b/drivers/remoteproc/imx_dsp_rproc.c
+> @@ -984,9 +984,11 @@ static int imx_dsp_rproc_load(struct rproc *rproc, const struct firmware *fw)
+>  	 * Clear buffers after pm rumtime for internal ocram is not
+>  	 * accessible if power and clock are not enabled.
+>  	 */
+> -	list_for_each_entry(carveout, &rproc->carveouts, node) {
+> -		if (carveout->va)
+> -			memset(carveout->va, 0, carveout->len);
+> +	if (rproc->state == RPROC_OFFLINE) {
+> +		list_for_each_entry(carveout, &rproc->carveouts, node) {
+> +			if (carveout->va)
+> +				memset(carveout->va, 0, carveout->len);
+> +		}
+>  	}
+>  
+>  	ret = imx_dsp_rproc_elf_load_segments(rproc, fw);
+> -- 
+> 2.34.1
+> 
