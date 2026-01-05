@@ -1,169 +1,140 @@
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98BB314B87
-	for <imx@lists.linux.dev>; Mon,  5 Jan 2026 18:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A8D2F5461
+	for <imx@lists.linux.dev>; Mon,  5 Jan 2026 18:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767636608; cv=none; b=H28UYKtOWaGNlpiNe3COwr8Nbn3NTu3IodCpxY/McvSVM1elxuNvrdbJ9OvDv0eFZgj/mwfAgn+XP0YcJ0jHZnIRNUlUgF94TZ/VqZ1DVPeWJN5yZH1TgHQPN/oDY7fVmtETO0iwWBPDoqaFuBR3eOypDVCKAz9vK4V/gak+bTo=
+	t=1767637312; cv=none; b=soVsgvtYvo1WQ029zrAhgQxIMn/8PUzBerwkovJeAbn9co/oBWL+Zog8K8JI0oPZj6kuOCgyLSyN9LH8/IFzLaDkoH2eHVTO18bF2ziSgSJZ2uqpyokjeTwwNiBsBnrlbVPjzDRdaTj0Nnx2YpM2cCDDKuMUOOBKFlRgHSa/brc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767636608; c=relaxed/simple;
-	bh=aOnfX3XPhgpVehluEO+HeLrdEIbIUxCCiC8mUuqAjdo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VKd0usrnenwA9XSbdKsAs4P1gjA8DHTKTsVo1dIK1Wh0hYiSeHWQFbP43NijLdhgAfpnqpV0r9v2qqPXGPRdvQqN3BhcPdT0BcBI9mmMz7WXqNuFW/CaSqJnL/ufYJ3tfOIjFEi6Vqc8mns9U3oRZrkFRPyqWypkf4zDO8MSb/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=zFSPKirQ; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
+	s=arc-20240116; t=1767637312; c=relaxed/simple;
+	bh=z6/Wphu0OAMssonNpeRuI/trkuqvtCdVfy8qVsTvcIw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QjcVTMb1YYW8CnHOb+tMUmirv37p5vBUBEbiVwT62/fqIXAL1OMmOsN2rPXLyhl5Bf3mZwu0+NQf9GniKzUABuLz3G04q4dhWwoyd7PR11KExYSWcdZIEKdUfapxzGRF9gSDbVOoBUpnLxUCEM0B2MvId5JyLc8MHCaqrvfOYPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=D+zS7y9c; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="zFSPKirQ"
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8b25ed53fcbso22959185a.0
-        for <imx@lists.linux.dev>; Mon, 05 Jan 2026 10:10:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1767636605; x=1768241405; darn=lists.linux.dev;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=aOnfX3XPhgpVehluEO+HeLrdEIbIUxCCiC8mUuqAjdo=;
-        b=zFSPKirQOsYtPSBz4ZZu1eQmpgs6Hv8wWKGEl+6/5MC4ZlIaOLkfHC/KOCufTXXaJz
-         bfdi5KGVQ+YKo80BnFK2f+lsq7dEZ496AOma+SFuJ3D75JGO+eyLd5nDq7cF0ATBV1ge
-         thzP3HlQjR8cjEr7sMjlZmCA0HfhE8fg2aBC97k2OKKFoNDkHyXCgNWyha5JBvnsC+rU
-         Xk/WzZQaTGtW+lWlc4qavvcb+6mjiPdqwdYv4Xb0d9FzDjF2k6SKkgR7aPD//RJ0YIv0
-         Qu8IEVe6uUgc1TjmYq7WA6daV0+aOMNg7bWgWlYEBPNdGpHe7hBLJZWNLam0ihGnULhM
-         7Ozg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767636605; x=1768241405;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aOnfX3XPhgpVehluEO+HeLrdEIbIUxCCiC8mUuqAjdo=;
-        b=PeRfyhBD5uZPVq5P3+y5ZV3c5kQKMFdlgNoL/kWqJ6BX2VRnwcq+qWRgZP+a8sgZFf
-         rB9D7ZpxMUUJjWkNfepFEHL7+xtt3m6tCIoGzRKKkjvF98oHkRoU55VSS7vGCyUAcYi6
-         Z8bIKMgKzvGFhwBaMK7HlVwcRvPjrPpbixwg0qib4lJOKRXCZWoek5MXAy491RKBay2M
-         4WOy4mX4YE7R0zGU3mTT09oaStTOWUmkBkHcYBXiRuh+onF6BXWlFTgnYeAMCB9PfsgQ
-         H+tzZCtFxdhphFHdH/z0BATz7RSyfv1ZfTSMgZ65p0JyyQWqPYTblKfL7USKxM2jCL+j
-         PRfA==
-X-Forwarded-Encrypted: i=1; AJvYcCXnDajKB7BFPlhZLTwXvFbyZGcZafiaznCfV9XFcQhOZS3/mOf/16zGY/EVbd5eCNz+1b4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwIzehoezUBKvgJo4L1amnlRRVq5mW4gkah8ucFfkqxhhLDAS3a
-	LfbflxRvH8Tusc+Lb8VTRXDXHoBIbRFDB8dRFs6wp6VnrTUCXYdARaP71ovret/67iU=
-X-Gm-Gg: AY/fxX5JUOyWMbkFHsORZBlXiu1OGzFFzyBGEnC3cP8WxhaujFJ4a8ID2QinsnwD4E0
-	CfJRVpRJsP/A2U3/BpQDVg4AIXrObgNy+Hly+pZmtHR9IMbAtRrmgBUzkCu5u41tWd+prQvIq/8
-	L0wQgcSfrld/LNWbTreXSpW+Pdeq7UvWg5luMjJOYCgjIGgBxB0GiycBkl8KBY5dbE0lVWUD1ls
-	klxfsKyCkxWHdNbSYOFlGnRBedQf4WzvuzxBDkaiQvCm4UJKwaSU8MmJrRhpugVMi28TbqqC4aK
-	BdauewQlwVb7dPyCGFVuwkaWr/x/t1QHCFbApIVWVapKJIeSNBbFoliS55KnpStTtyGPf1bNO2n
-	nco2YlUab8zW2xylYPMMABIvOQuBJDnygYt8vi+mVEsycNx+97IqfeAEYYsBTdmi9GkXsX9H64T
-	SMP0Q5fwHjgdIkqaapERP9qC3VvRY=
-X-Google-Smtp-Source: AGHT+IFR3DFd9jpe0oN2x6M/8bWNFU8mAiEEjbZ9LTTfuDxwfvW0bq8zMCRJmYOp1ZK5Jd4YL/mM9g==
-X-Received: by 2002:a05:620a:46a0:b0:85b:8a42:eff9 with SMTP id af79cd13be357-8c37ebbb452mr64060085a.53.1767636604517;
-        Mon, 05 Jan 2026 10:10:04 -0800 (PST)
-Received: from ?IPv6:2606:6d00:17:7b4b::5ac? ([2606:6d00:17:7b4b::5ac])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4a9a19sm3638685a.1.2026.01.05.10.10.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jan 2026 10:10:03 -0800 (PST)
-Message-ID: <4d885ca36bef3e8227f8e0ee80bf5bcc3959e9ce.camel@ndufresne.ca>
-Subject: Re: [PATCH v4 0/3] Fix concurrency issues between G1 and G2 on
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Ulf Hansson <ulf.hansson@linaro.org>, ming.qian@oss.nxp.com
-Cc: linux-media@vger.kernel.org, mchehab@kernel.org,
- hverkuil-cisco@xs4all.nl, 	benjamin.gaignard@collabora.com,
- p.zabel@pengutronix.de, 	sebastian.fricke@collabora.com,
- shawnguo@kernel.org, s.hauer@pengutronix.de, 	kernel@pengutronix.de,
- festevam@gmail.com, linux-imx@nxp.com, 	l.stach@pengutronix.de,
- Frank.li@nxp.com, peng.fan@nxp.com, eagle.zhou@nxp.com, 
-	imx@lists.linux.dev, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-arm-kernel@lists.infradead.org
-Date: Mon, 05 Jan 2026 13:10:02 -0500
-In-Reply-To: <CAPDyKFpFm9kCSNbALJTqeyzFdg3OoooE2gUOXJcjv=WgQeZ84Q@mail.gmail.com>
-References: <20251205015428.643-1-ming.qian@oss.nxp.com>
-	 <CAPDyKFpFm9kCSNbALJTqeyzFdg3OoooE2gUOXJcjv=WgQeZ84Q@mail.gmail.com>
-Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-zvFzPoy3A7lV+wocoxlB"
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="D+zS7y9c"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4dlN170fMhz9tQq;
+	Mon,  5 Jan 2026 19:21:47 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1767637307;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MMJqVJMgue288REwsy/Kw6YGKx1SN8vSeF+6ZE5Moss=;
+	b=D+zS7y9cPJmp7H19AB12Uc+mBc/ke2p2UuL4YS/0DSDQ4r9a1VtgyxCG3UMOVgOgehUf28
+	SC4w4+OQxJagppCvCwXk+2ay5KJdqaSkokOqIBSHotCxFb+laTaFAOTXUu+SUOb0qdzUpx
+	90yJkRxTdCmw/FuXWXIvMjkpNt9hStakeolIv+f+MkFrZ5totTC/Hz5wE7C2KnS/muevNw
+	JGDj1ZmrNZ624ofZCrxpHgjcEFfrYWxZ95rKILE13KfaVyvWGpLFhdZUIyC5ETUGfs0gNE
+	cnatCGqwGVkFCuTb+0jXZKCoKWSRE9CpChJ9ILyUnJlATxGRAS7CFiN2y34LYw==
+Message-ID: <0355f521-e506-447f-bc6a-cf4405903cfd@mailbox.org>
+Date: Mon, 5 Jan 2026 17:31:55 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Subject: Re: [PATCH] arm64: dts: imx95: remove CLK_GPUAPB
+To: Rain Yang <jiyu.yang@oss.nxp.com>
+Cc: Frank.Li@nxp.com, conor+dt@kernel.org, devicetree@vger.kernel.org,
+ festevam@gmail.com, imx@lists.linux.dev, jiyu.yang@nxp.com,
+ kernel@pengutronix.de, krzk+dt@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ liviu.dudau@arm.com, robh@kernel.org, s.hauer@pengutronix.de,
+ shawnguo@kernel.org
+References: <20251231031915.752262-1-jiyu.yang@oss.nxp.com>
+ <37489cb7-820d-46cd-a7ea-0f9097604895@mailbox.org>
+ <aVXByNiEfC66RDG0@oss.nxp.com>
+ <b2dd2109-c2d9-412e-9b11-5851485acf04@mailbox.org>
+ <aVegAt002L20oBGf@oss.nxp.com>
+ <0de33175-1dc3-417b-8dab-9b57940f0789@mailbox.org>
+ <aVsfpHtID4SdPP1n@oss.nxp.com>
+Content-Language: en-US
+From: Marek Vasut <marek.vasut@mailbox.org>
+In-Reply-To: <aVsfpHtID4SdPP1n@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-META: xdypdcre8setbt9xhn7hd96tdehyypri
+X-MBO-RS-ID: f32776500066e9b0833
 
+On 1/5/26 3:19 AM, Rain Yang wrote:
+> On Fri, Jan 02, 2026 at 02:53:31PM +0100, Marek Vasut wrote:
+>> On 1/2/26 11:37 AM, Rain Yang wrote:
+>>> On Thu, Jan 01, 2026 at 05:51:12PM +0100, Marek Vasut wrote:
+>>>> On 1/1/26 1:37 AM, Rain Yang wrote:
+>>>>> On Wed, Dec 31, 2025 at 03:11:21PM +0100, Marek Vasut wrote:
+>>>>>> On 12/31/25 4:19 AM, Rain Yang wrote:
+>>>>>>> From: Rain Yang <jiyu.yang@nxp.com>
+>>>>>>>
+>>>>>>> Dropping CLK_GPUAPB simplifies OPP handling and avoids unnecessary
+>>>>>>> complexity.
+>>>>>>>
+>>>>>>> Fixes: 67934f248e64 ("arm64: dts: imx95: Describe Mali G310 GPU")
+>>>>>>> Signed-off-by: Rain Yang <jiyu.yang@nxp.com>
+>>>>>>> ---
+>>>>>>>      arch/arm64/boot/dts/freescale/imx95.dtsi | 4 ++--
+>>>>>>>      1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
+>>>>>>> index 88bde59e61b2..ab446aa6f73c 100644
+>>>>>>> --- a/arch/arm64/boot/dts/freescale/imx95.dtsi
+>>>>>>> +++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
+>>>>>>> @@ -2164,8 +2164,8 @@ netc_emdio: mdio@0,0 {
+>>>>>>>      		gpu: gpu@4d900000 {
+>>>>>>>      			compatible = "nxp,imx95-mali", "arm,mali-valhall-csf";
+>>>>>>>      			reg = <0 0x4d900000 0 0x480000>;
+>>>>>>> -			clocks = <&scmi_clk IMX95_CLK_GPU_CGC>, <&scmi_clk IMX95_CLK_GPUAPB>;
+>>>>>>> -			clock-names = "core", "coregroup";
+>>>>>>> +			clocks = <&scmi_clk IMX95_CLK_GPU_CGC>;
+>>>>>>> +			clock-names = "core";
+>>>>>>
+>>>>>> I don't think this is correct, SM can disable the GPUAPB clock from the SM
+>>>>>> monitor:
+>>>>>>
+>>>>>>> $ clock.w gpuapb off
+>>>>>>
+>>>>>> Linux has to make sure the GPUAPB clock are enabled to access the GPU
+>>>>>> register, hence the clock have to be described in DT.
+>>>>> Hi Marek,
+>>>>
+>>>> Hello Jiyu,
+>>>>
+>>>>> CLK_GPU and CLK_GPUAPB can only be controlled internally by the SM, not by Linux.
+>>>>> CLK_GPUAPB always runs at a fixed frequency, does not require dynamic adjustment,
+>>>>> and is practically always on.
+>>>>> Additionally, CLK_GPUAPB's frequency is absent from all OPP entries. Removing it
+>>>>> could simplify OPP handling logic and reduce unnecessary complexity.
+>>>>
+>>>> But the SM can turn the GPUAPB clock off, correct ?
+>>>>
+>>>> Linux has to be able to turn GPUAPB clock on, therefore the GPUAPB clock have
+>>>> to be described in DT, correct ?
+>>>
+>>> Yes, CLK_GPUAPB can be turned off by the SM, but by default it remains on, just like
+>>> CLK_GPU. AFAIK, there is no scenario where either of these clocks could or would be
+>>> disabled in both SM and Linux.
+>>>
+>>> If enabling or disabling CLK_GPUAPB in Linux was wanted, the same shall apply to CLK_GPU
+>>> to make this approach reasonable.
+>>> Also, OPP framework shall be adjusted to meet these changes too.
+>>
+>> You can not depend on the state in which bootloader or any other prior stage
+>> left the platform. If the clock can be turned off, you must make sure they
+>> are turned on for correct hardware operation.
+>>
+>> CLK_GPU is enabled as parent clock of CLK_GPUCGC already.
+> Hi Marek,
+> I'm afraid it's not what you expected, the CLK_GPUCGC patch already based on the CLK_GPU is
+> always-on, you can disable the CLK_GPU in SM, then run any gles application, the board will reboot.
+Which kernel version are you testing ?
 
---=-zvFzPoy3A7lV+wocoxlB
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-Le mardi 30 d=C3=A9cembre 2025 =C3=A0 14:42 +0100, Ulf Hansson a =C3=A9crit=
-=C2=A0:
-> On Fri, 5 Dec 2025 at 02:55, <ming.qian@oss.nxp.com> wrote:
-> >=20
-> > From: Ming Qian <ming.qian@oss.nxp.com>
-> >=20
-> > On the i.MX8MQ, we encountered some concurrency issues with H264 and HE=
-VC
-> > decoding.
-> >=20
-> > There are two main reasons:
-> > 1. The vpu blk-ctrl don't have separate reset and clock enable bits.
-> > 2. The g1 VPU and g2 VPU cannot decode simultaneously.
-> >=20
-> > We attempted to make corresponding fix to address these two issues.
-> >=20
-> > Ming Qian (2):
-> > =C2=A0 pmdomain: imx8m-blk-ctrl: Remove separate rst and clk mask for 8=
-mq vpu
-> > =C2=A0 media: verisilicon: Avoid G2 bus error while decoding H.264 and =
-HEVC
-> >=20
-> > Nicolas Dufresne (1):
-> > =C2=A0 media: v4l2-mem2mem: Add a kref to the v4l2_m2m_dev structure
-> >=20
-> > =C2=A0drivers/media/platform/verisilicon/hantro.h=C2=A0=C2=A0 |=C2=A0 2=
- +
-> > =C2=A0.../media/platform/verisilicon/hantro_drv.c=C2=A0=C2=A0 | 42 ++++=
-+++++++++++++--
-> > =C2=A0.../media/platform/verisilicon/imx8m_vpu_hw.c |=C2=A0 8 ++++
-> > =C2=A0drivers/media/v4l2-core/v4l2-mem2mem.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 | 23 ++++++++++
-> > =C2=A0drivers/pmdomain/imx/imx8m-blk-ctrl.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 | 11 +++--
-> > =C2=A0include/media/v4l2-mem2mem.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 21 +++=
-+++++++
-> > =C2=A06 files changed, 100 insertions(+), 7 deletions(-)
-> >=20
->=20
-> Can I pick the pmdomain patch separately from the others? Or does this
-> need to go together?
-
-I believe you did already, and its perfect, we have picked the rest in the =
-media
-tree now.
-
-regards,
-Nicolas
-
---=-zvFzPoy3A7lV+wocoxlB
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaVv+egAKCRDZQZRRKWBy
-9FfKAPwIfuzu0Oju3HLojCHI9FM9JdnnqW5c8KFbwAK37MdTNgD/erN0pVhummc6
-5FGqJ5UvmnrrAGczimw1n6SlMWulQQk=
-=CTsW
------END PGP SIGNATURE-----
-
---=-zvFzPoy3A7lV+wocoxlB--
+Also, can you share your /sys/kernel/debug/clk/clk_summary ? The clock 
+relationship should be visible there.
