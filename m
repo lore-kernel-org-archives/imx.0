@@ -1,166 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FD830C60D;
-	Tue,  6 Jan 2026 13:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428F83314A9
+	for <imx@lists.linux.dev>; Tue,  6 Jan 2026 13:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767705085; cv=none; b=LubNjq0+T1lWN66DbymIkecvzhvQ6fmyzEZocwQQVZwHh+W5yAtXhmzpsZxyVAFLTE/jORt9+OUeUmJoevTZevi3oyJux/gR2MDEUEBbfQFvA+EnRntnaQgOG/Jtvkcgdg6CtPFT6y/qTOEQf4EKovZJBstcGfY8Hq4rckQ4FTU=
+	t=1767706141; cv=none; b=WvGJQ2EpLelhwvwod0DFuFS5iQcFpyGuUH4Z1JhZmIN0Ku2BGHEaLcxkUENiFKAuIuAClRK31doOvdJxHQQZ9vgAQGF3m9sDBvZQkqieZKzYLM2gshnmuGCGZCgcRKyikg/djwvS/p6OrjP3RaDpfmpJQwRQGh///6ps9AsWWqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767705085; c=relaxed/simple;
-	bh=up2iff1BZxa94kRdGC8JpHKlWbcnvKvXoZYjbXT7JJI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GqhGKYaUpTxXn5YIZiLPjyQtVH6B3x2js4LXmJv/Qgk588aE2WeTFuiua2gPbMTREjGZAmkgKaZ3o0q9KEj1pBqLCEhYCof9b2m0QCOgzzugnFwOMtkPAsgKXByAetUF6UzwjQQBfvz+dEzsQUgFe3yM7F4TzODxdDWuWrCssb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n9VSxyA6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767706141; c=relaxed/simple;
+	bh=1P1MLHblIEblLscCyAsxLjS0olkfH791KSwC5KO7UyE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=arePji9cTCfum49CaOPGcQhtkdasbAPE2as6ICulxiXLPwrA8ydSSgvld3DMXFBFW+SeDdecai50nBgavgJoGVcMaTmInpIwv5bkac2ma7wc1JH8nyFdfEc+oKKXwIQaptNKa59WeJ/GqPgRRQo7nGAuum9gSPNvTQM4HHQoUzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Bpb6GnqK; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n9VSxyA6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B83DC116C6;
-	Tue,  6 Jan 2026 13:11:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767705084;
-	bh=up2iff1BZxa94kRdGC8JpHKlWbcnvKvXoZYjbXT7JJI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n9VSxyA6dLZYidFmR3YKrnuiZmFCzcB/BXSKq32qKyENyNq4aYaGeJAl6It6ZWDae
-	 fNHETbHe0yBHeHjen+HujqOr71J0UL8kKlDhPZPwBXLp5KOJzvtamRwgbC1dTWtzoU
-	 dU8zDzs8a3uCTCqPdqAaHawnWUWhg0/LDiK9aM5Vnv5eyd/YlNschdxUR68oCwFSuq
-	 lsb+Yem3dGUbajGYyEcIG1jGg3tb4MFgBauIq1kXi/bjkYNnEjRcZYahTuLaT6sg8S
-	 43n3wc587dSole11rjV87w4Lq2gF90tg+wVYlie+AZg/u/3/SL0a3CFyoH3K0toWyp
-	 KnseknnkVQXOg==
-Date: Tue, 6 Jan 2026 18:41:09 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Sumit Kumar <sumit.kumar@oss.qualcomm.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Richard Zhu <hongxing.zhu@nxp.com>, 
-	Lucas Stach <l.stach@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Greentime Hu <greentime.hu@sifive.com>, 
-	Samuel Holland <samuel.holland@sifive.com>, Chuanhua Lei <lchuanhua@maxlinear.com>, 
-	Marek Vasut <marek.vasut+renesas@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Pratyush Anand <pratyush.anand@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-tegra@vger.kernel.org, linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 2/2] PCI: dwc: Add multi-port controller support
-Message-ID: <5gne3bureusi45sy4zqr2zrfvt4ba4uxgnsfdnjeh2eno5zspe@ldvhq2nilsan>
-References: <20260105-dt-parser-v1-0-b11c63cb5e2c@oss.qualcomm.com>
- <20260105-dt-parser-v1-2-b11c63cb5e2c@oss.qualcomm.com>
- <aVvkmkd5mWPmxeiS@ryzen>
- <m5ukeugo2lazipljqpubyvm7j3xk2j5o7i2xgdbkkhii57xmyk@lh32qdzjhe4n>
- <aVzqMqTUWIuKhgmC@fedora>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Bpb6GnqK"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-598f81d090cso1008119e87.2
+        for <imx@lists.linux.dev>; Tue, 06 Jan 2026 05:28:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1767706136; x=1768310936; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1P1MLHblIEblLscCyAsxLjS0olkfH791KSwC5KO7UyE=;
+        b=Bpb6GnqKyk8thUolkXeErtcTMUFZ+sEknhfs6zZ5vfPvhiJ2Uh+VCyXoxKp5lwtADk
+         lV/6GWxSgiRgIWQNqxwjdVaAUNFGUGmwOJlOq35rui48zWCghp4R2i9RdnQmuPSHKegq
+         kuf6M7Mqyqu03CHsbfFqeyHfS8FNSvW7DSXVKR5kO1CwrVidKW1lu5L/aLqlAxPBYn+G
+         DxbXht8qtl9jgT2QjsCxJAxXw8oB0GIReRf7Cpm2hMNDGIcgGRWYNBgdC+PsRHxb7cp/
+         uX0KRuUxA43wlHNSxdRAewNO0YId1eJsomC/oF6KrfiDKXuLHcSi5yC/QU25tSlyduo/
+         zk2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767706136; x=1768310936;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1P1MLHblIEblLscCyAsxLjS0olkfH791KSwC5KO7UyE=;
+        b=Q2i2LH8Dmj2aI8FhQws4DvTGumSB2f1aB5U6u0xIIwMVVLaICMSxcZPoyIVOtNzDAi
+         26St0kzPLsLlwJCRsFlgk5b4k5+/9MkmkkcRUDmaBWt2peG1SQ7NQUo2bEDu4BWMFhhh
+         eca2uqEfCsoO5lo3+GeDIiKFq9DSp5rKkIIkEt4Sa+yqYoDWq4Imn/5VC5IKtjf67arq
+         1/pjMEFH6TONkANbPTBD7Tv+KzXsMXcJheIFXJrv3Mo9d0xuLmGuQEIGSkomI2f4grlK
+         tXLB46lHSwfkgaFJOumxEqeRpka6u5CIASgL+OZYLPz/CFvnubAVR8X3st0Ca0Z/P8VW
+         Dp6A==
+X-Forwarded-Encrypted: i=1; AJvYcCXIN//2GkIieBEaoocZsgpdDGrFTh9rt/GBValgzYa+NnWnglvBTwK0UFqS584RRJ9roUc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwfeAni03OvlJL5xFKmq2lQzcys9XPFCR9ExivvJF1XUVoUpORp
+	5t99ZbSnniBtyO1oh2mWXKm22xp3zdYi3P36p0zcqELsehziwiZCp1EeOqGX9GEJwyBGG6B/2R3
+	lWVlSwhX8BVVrfXw4Mg/7FYxNYFWDro4XNClISD9q7w==
+X-Gm-Gg: AY/fxX79uUyB3iS0dqvXSKQhziudtgAbjcIDp4G2/Tg2CbcVSBHFV3dVo2p95YFIAr+
+	vIPulQPpd8n9ULViXj1RXyupqPt1XSe19B9CUrt9ancFWJo+pCH4SVFhptxgt9xl+/6Bkp/yLis
+	n1//kkiSSQ9P5Qt16ytwBDF8htWteSZcNK7vFuM2vavTqvqOfk0aMWcgG90Pv/108p0oCRyLWI+
+	hNSMkhzF2ScZvL0DuOECTypGM+N9yUjhpX0M/5ZlRpwdF/BRSSzqEHj+uaT44sJFaWsfyo=
+X-Google-Smtp-Source: AGHT+IHkKfseNVlbexy7OYWanrOUhCQ9xbT4x6amCXeiCeHgnckAsxqlsczo+X6SDJmlQDkKr5zQ1Uvoi6Pw/dvfyTY=
+X-Received: by 2002:a05:6512:688:b0:595:7854:af77 with SMTP id
+ 2adb3069b0e04-59b65225f3amr1166436e87.22.1767706136101; Tue, 06 Jan 2026
+ 05:28:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aVzqMqTUWIuKhgmC@fedora>
+References: <20251205015428.643-1-ming.qian@oss.nxp.com> <20251205015428.643-2-ming.qian@oss.nxp.com>
+ <CAPDyKFpt-GL-RFcJ5mTWFqaRfy1dQJ7LL8OBCoQK0+zPDFEzsg@mail.gmail.com> <16eb88083b68e3701f22799d8ccc20b800b59d61.camel@ndufresne.ca>
+In-Reply-To: <16eb88083b68e3701f22799d8ccc20b800b59d61.camel@ndufresne.ca>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 6 Jan 2026 14:28:19 +0100
+X-Gm-Features: AQt7F2rDAkeOIKvNG1n_1ix69cFZ19Y_sfdt-a0UsEok8udvX69D57IFSE6PaYY
+Message-ID: <CAPDyKFrWx3FwNDAzYrsQTaoZtmaM+bnx=Q7c5vxjntv4L06BiQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] media: v4l2-mem2mem: Add a kref to the
+ v4l2_m2m_dev structure
+To: Nicolas Dufresne <nicolas@ndufresne.ca>
+Cc: ming.qian@oss.nxp.com, linux-media@vger.kernel.org, mchehab@kernel.org, 
+	hverkuil-cisco@xs4all.nl, benjamin.gaignard@collabora.com, 
+	p.zabel@pengutronix.de, sebastian.fricke@collabora.com, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-imx@nxp.com, l.stach@pengutronix.de, Frank.li@nxp.com, peng.fan@nxp.com, 
+	eagle.zhou@nxp.com, imx@lists.linux.dev, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 06, 2026 at 11:55:46AM +0100, Niklas Cassel wrote:
-> On Tue, Jan 06, 2026 at 10:49:19AM +0530, Manivannan Sadhasivam wrote:
-> > On Mon, Jan 05, 2026 at 05:19:38PM +0100, Niklas Cassel wrote:
-> > > On Mon, Jan 05, 2026 at 05:57:55PM +0530, Sumit Kumar wrote:
-> > > > The current DesignWare PCIe RC implementation supports only the controller
-> > > > (Host Bridge) node for specifying the Root Port properties in an assumption
-> > > > that the underlying platform only supports a single root Port per
-> > > > controller instance. This limits support for multi-port controllers where
-> > > > different ports may have different lane configurations and speed limits.
-> > > > 
-> > > > Introduce a separate dw_pcie_port structure to enable multi-port support.
-> > > > Each Root Port can have independent lane count, speed limit through pcie@N
-> > > > child nodes in device tree. Add dw_pcie_parse_root_ports()
-> > > > API to parse these child nodes.
-> > > > 
-> > > > Equalization presets and link width detection currently use common DBI
-> > > > space for all the root ports. Per-port DBI space assignment for these
-> > > > features will be added in future.
-> > > > 
-> > > > Signed-off-by: Sumit Kumar <sumit.kumar@oss.qualcomm.com>
-> > > 
-> > > Hello Sumit,
-> > > 
-> > > Is there a reason why you represent this as a list of ports rather than a
-> > > simple array?
-> > > 
-> > > The number of ports is known by parsing the device tree, so it should be
-> > > static, no?
-> > > 
-> > > At least to me, this seem similar to e.g. how a gpio_device has multiple
-> > > gpio_descriptors "struct gpio_desc *descs":
-> > > https://github.com/torvalds/linux/blob/master/drivers/gpio/gpiolib.h#L68C1-L68C26
-> > > 
-> > > A list is usually used for something that is dynamic.
-> > > I don't think that the number of ports to a PCIe controller will be dynamic.
-> > > 
-> > > I can see that struct qcom_pcie in pcie-qcom.c has struct list_head ports,
-> > > but that does not necessarily mean that we need to have a list of ports in
-> > > pcie-designware-host.c. (pcie-qcom could also be modified to have an array
-> > > of ports if there is a desire for similar design pattern.)
-> > > 
-> > 
-> > Only reason why I went with lists in pcie-qcom is flexibility. There are useful
-> > helpers available for traversing the lists and they seem much more elegant to
-> > use rather than manually traversing the array in C.
-> > 
-> > But to be frank, I don't really care which one is used as there is going to be
-> > only a handful of ports at max anyway and there is not much overhead.
-> 
-> Personally, when I see lists, I automatically think of something that is
-> dynamic, so using lists for something static just looks a little bit out of
-> place IMHO.
-> 
-> Technically, the difference is speed. If we want a specific element, we
-> will need to traverse the list. With an array, we can access the element
-> directly. However, looking at the current patch, it seems like it never
-> looks for a specific port, it always does an operation for all ports.
-> So from a speed perspective, it doesn't matter, at least not for now.
-> 
+On Mon, 5 Jan 2026 at 19:08, Nicolas Dufresne <nicolas@ndufresne.ca> wrote:
+>
+> Hi,
+>
+> Le mardi 30 d=C3=A9cembre 2025 =C3=A0 14:39 +0100, Ulf Hansson a =C3=A9cr=
+it :
+> > On Fri, 5 Dec 2025 at 02:55, <ming.qian@oss.nxp.com> wrote:
+> > >
+> > > From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+> > >
+> > > Adding a reference count to the v4l2_m2m_dev structure allow safely
+> > > sharing it across multiple hardware nodes. This can be used to preven=
+t
+> > > running jobs concurrently on m2m cores that have some internal resour=
+ce
+> > > sharing.
+> > >
+> > > Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+> > > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> >
+> > I certainly don't have the complete picture for how this needs to work.
+> >
+> > However, I was thinking that rather than using a kref and having to
+> > share two specific functions to update it (v4l2_m2m_get|put), couldn't
+> > we just use a device-link instead?
+>
+> The device link seems to be intended for power management, I'm effectivel=
+y not
+> familiar with it, so thanks for the information. However, my impression i=
+s that
+> this is indented to describe power management dependencies on siblings, b=
+ut this
+> was done differently on this SoC (way before my time here), the DT seems =
+to
+> describe a block controller which is common to the two (defective) cores.=
+ So
+> power management wise, its already handled.
+>
+> Be aware that my intent is to rename v4l2_m2m_dev into v4l2_m2m_sched. It=
+s not a
+> dev wrapper, but a helper object that will schedule work coming from N
+> v4l2_m2m_ctx (per open() calls). Making this helper object ref counted ma=
+kes the
+> live-time management a lot simpler, and since its not a dev wrapper, this=
+ patch
+> is not creating a second refcount for the same object.
 
-Yes. I don't envision the driver doing element based lookup even in the future.
+Okay, fair enough. No objections from my side,
 
-> 
-> One advantage I can see, instead of doing:
-> 
-> +	struct dw_pcie_port *port = list_first_entry(&pci->pp.ports,
-> +						struct dw_pcie_port, list);
-> +	return dw_pcie_wait_for_link(pci, port);
-> 
-> for drivers with only one port (most drivers), we could just instead do:
-> 
-> +	return dw_pcie_wait_for_link(pci, pci->pp.port);
-> 
-> To simply get the first element in the array. No need to sprinkle
-> list_first_entry() everywhere in all the drivers if they just have one port.
-> 
-> 
-> For iterating, to avoid manually traversing the array, we could do like
-> libata and create a simple macro, e.g. ata_qc_for_each():
-> https://github.com/torvalds/linux/blob/v6.19-rc4/drivers/ata/libata-eh.c#L851-L854
-> https://github.com/torvalds/linux/blob/v6.19-rc4/include/linux/libata.h#L1657-L1659
-> 
+[...]
 
-I specifically do not want to introduce custom helpers. That's one of my primary
-motivation for using lists :)
-
-> And at least personally, I think my brain will parse dw_pcie_port_for_each() { }
-> faster than it parses list_for_each_entry(port, &pcie->ports, list) { },
-> since it is more unique, but perhaps I am the weird one here :)
-> 
-
-Arrays for sure will allow us to do O(1) lookups, but considering that we will
-only be traversing the ports from the start, I still prefer using lists.
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+Kind regards
+Uffe
