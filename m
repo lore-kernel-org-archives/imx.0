@@ -1,195 +1,121 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013046.outbound.protection.outlook.com [52.101.83.46])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3C62989B7
-	for <imx@lists.linux.dev>; Tue,  6 Jan 2026 11:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767700212; cv=fail; b=GpBIcxzm2BNaoAkWoCZWj97zSI5DcZz/7zSunN/WUONVqrKEH457PrKUZgyA0ntiO0GdAF/FaInFQ9rm7VUwWaRj5k3aVSrD2HjSE3p9PO3y/aNxtb6D9Q9V9r4UOlYKhGIyD1nNgRkbePG3tVCNH2wnMpLe741uRtG7WKHUiws=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767700212; c=relaxed/simple;
-	bh=vv0Vu06YBm64IzI+0lafJoM++7MN2sDd5Q1kviU8drA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=XTCHnoKrkiLDbzxQeFCWlq/HG5ccKbEr0Jh/DNMkQpHLMphaqZQ0yDJxjsiOEOGq+wyaXYziPhqG8upZD4EuKzbz/U6tpXUjQaUVXKOkSahgAJGi7rNasFN/pUFOCCQtRA+fB/IhbGMXvRDDTvMht7DXQm/UsalGXH3hOGr654o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=bFhHJ6dr; arc=fail smtp.client-ip=52.101.83.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A8E219A8E;
+	Tue,  6 Jan 2026 12:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767704070; cv=none; b=Gkf6k4hVsD7X+PgwrQHMS4AEJcm09B2kBq1+bY6jUeSIqKWrDHl/6gku4Qq6RV1m6B7VYLs2/2laqC30nMvhRbBUTkmxTeKAOrtYe2Yp+ZngFu4JIU1vWTr45r1yZV0ECanOBZ1bfzJsFEWwvbGEXEdKa5w7ogSVqToBAKDCIIs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767704070; c=relaxed/simple;
+	bh=Oe82Dko28Elj2iz2dw44a9YNxq8NU/2D2uNU8P53OZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jyr3GKABrh0EpaOq0weZevxg73Tz/cEqGZj/ATI3EfFX8FDP/fujOCP4N5fRqbmFn3jK11cv98qQX5zU2CybPhsBYVh7sHgf6KbAwfH0baOeTMtMLEGjPHgzCjlqipCE7eNePpX+Zz1xWJZrpcdqXBUaZae/ij/D9jwXk5FyZoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KN4oqz61; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="bFhHJ6dr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iBf55Oy/12j6XiFpgPr90vMoIlPNkR2QepmI09YXtbIXtu2moRKMg1BQ6UNA5zmE8ncgyqtT0+0b3CnifGAmfJDBVLZW5iqsKYC8+XiTaD2elr6Ner/yRxivX1UTcHZlh9QgmCkT153Q7uL9nv8D89IyQBfcTUSyM1ElqV2DspStbfmlVB/ZAqmk02hpHgm2HRVAr2N38ibef/aAX/4J9TvDur+owUwP+i3VXGyZtusLY+7da+upWNku2eY1N7q29JXhkM3jDSe2Hyp2tgfltaH4h/bCGJAFmtqE76gxWANZgqoHmCbNSN501puAB9XVl2pc8ZlkEak7OeCpPG/Owg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uNNjtns5vh+jwtLWP+8nWUsBn+0F9LWxxqYU1BIxeLU=;
- b=VgK5pSWesHrCemZZ9HIafOSZct8lxTP/v70kYwZWzxG3tDqNqziXMrNIvfhISvSP1rl+72cdthmGmq/pbNx766F8P16C5OPkM3KSmYlbRUWTffxq2XQ1ZOteZra3xvbyypA6mtaH+NnMDe+DoJdV2w82YZtGKL09dsHhBPD17x+eUvuAZGprqGHLyQzUcysULkKsFDsAwJ+ItnhB6stDZpLq6iwkTYiTHNF+IB/F6MmIr+Ks8Ys5XdnTirKghMf58c0tcaPz9siArJsLd/jS9I9dusYFZMQRcM+tF0DcCL5+xrY47f9dPH+fSO+KVLczp38qscUxQf/c5Y8c/GdvoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uNNjtns5vh+jwtLWP+8nWUsBn+0F9LWxxqYU1BIxeLU=;
- b=bFhHJ6dr6tmuakxeLnI3ey6jFXHVoLW12FnNaVFGJUSRFUVS7Op/PyYP1aGhld66CY2aQ8xkSyy5PGbHzrjJvW5vaSegHSI55GCJvu/XCJBcNIiVfMwx8bFZSpQEanw0PDWrqItyw3WjtB7QZykYEhaclkM1kTQyVIrVIv+od1k1a5SbRm0nZJzdDWco3SS4/QqBwapDmCjUVBo18vi8IemQhWhhrhDbGyLymiw6OwSIzbFuRIRHUoBySPENs7gqxp64dk8P1Gc9BbezokotuPG3Eqfm37RuDAaCgp4supf5aCWeJ+pC/SD00zyVJzArGXncy2RhMMJoWUTESqYKTA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com (2603:10a6:10:2cf::20)
- by AM9PR04MB9001.eurprd04.prod.outlook.com (2603:10a6:20b:408::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.4; Tue, 6 Jan
- 2026 11:50:02 +0000
-Received: from DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197]) by DB9PR04MB8461.eurprd04.prod.outlook.com
- ([fe80::b1b9:faa9:901b:c197%4]) with mapi id 15.20.9478.004; Tue, 6 Jan 2026
- 11:50:02 +0000
-Date: Tue, 6 Jan 2026 19:51:31 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Nandor Han <nandor.han@gehealthcare.com>
-Cc: wim@linux-watchdog.org, linux@roeck-us.net, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KN4oqz61"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43702C116C6;
+	Tue,  6 Jan 2026 12:54:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767704069;
+	bh=Oe82Dko28Elj2iz2dw44a9YNxq8NU/2D2uNU8P53OZE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KN4oqz610r/u6hH1tOaCgWtj2JyIk3YpqEs6IVXdlw5ZZserrRV2qnOUJAjhDeMN8
+	 EA1973sY8RCkfakuEgJhX0g5rBystiIKEJkue0fUT59yOgCUnaKf/I+tvs24+F8Itg
+	 xerfB9qu2s4y0MhlPlIXMd3IdIVq/t4UYxcNDF5sfbpVwloD+66FZvPR5jLkYnIJZC
+	 V2KUnxAvW8q2fxiYkva91OfDw0TFX1xSN8TokROXvJCZlGUhhXv6IFgQ7mUeXWIFdw
+	 LXks9wMYH/rc1LcnwIQEMD3+d8IH9kuvkIECy0I70YCL6uILhhIZsZOwJeehUCbslL
+	 9PCvDC9tlkB6A==
+Date: Tue, 6 Jan 2026 18:24:19 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Richard Zhu <hongxing.zhu@nxp.com>
+Cc: frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	bhelgaas@google.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com, linux-pci@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] dt-bindings: watchdog: fsl-imx: document continue in
- low power mode
-Message-ID: <aVz3Q34/nchMuqVX@shlinux89>
-References: <20251229145000.421426-1-nandor.han@gehealthcare.com>
- <20251229145000.421426-3-nandor.han@gehealthcare.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251229145000.421426-3-nandor.han@gehealthcare.com>
-X-ClientProxiedBy: SG2PR03CA0086.apcprd03.prod.outlook.com
- (2603:1096:4:7c::14) To DB9PR04MB8461.eurprd04.prod.outlook.com
- (2603:10a6:10:2cf::20)
+Subject: Re: [PATCH v6 0/11] PCI: imx6: Add a method to handle CLKREQ#
+ override
+Message-ID: <inzg46tc2fwsajxq4vzdyuiq7krzy6xtcg2mjaieninz7zsmgm@mtdjr4tuegpq>
+References: <20251015030428.2980427-1-hongxing.zhu@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB8461:EE_|AM9PR04MB9001:EE_
-X-MS-Office365-Filtering-Correlation-Id: d3522232-df82-4e47-fe28-08de4d19b9c5
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|52116014|376014|7416014|1800799024|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?QLMWn0SoSLr7P6Omdu1Z59h7WWhbd+pcXeDTHbHBACZssZzeyd/mkSqQmYS2?=
- =?us-ascii?Q?M57rD85xT49R+XuC7DYVNQAIdiBnp5kGMJepr9tvCLBEmO8LQrRNf8l0qAQp?=
- =?us-ascii?Q?Ya4NendRHWfCdVt1rikkZzd96ITj5e0EfxnXwdlp48iOcKqzGHunRBj9/5TI?=
- =?us-ascii?Q?2hCBFH0doqsmB/553T8Eb5t+E9wlH6oux4b/L251qPXFHrkFPWmq2OHA/cgQ?=
- =?us-ascii?Q?8zg8x6DQNrP6HI+R0uVckcjHgTEmDztBnw5VlqqiNq5JybQbH3E8JL3nUp7u?=
- =?us-ascii?Q?/7+gDWwxcVw7GmhJ256MrllSGO+IpXV6jL3T6OKZa/D9jaFUSUxJSKKFyVyS?=
- =?us-ascii?Q?4duCWpW/e1llymmucIitoWBfb24VMdh49PmmIYvXRQ8edSELy7a0rZtZUzVO?=
- =?us-ascii?Q?h7j+7s52Cb7Y46ZSuxw7lZAFyzlOufqNSFhEAoUk3IyT2hh7asdW6sC3erI5?=
- =?us-ascii?Q?OSjJs029lWRIRo4RwKcu5TS8vjw+bQFScJ5ZR/m9nO76T2gzyRgZZ2hgQ2Hx?=
- =?us-ascii?Q?mfwnCCObOhs6/9by8zX9AFeW1m5zweWZMdWbCYPZz32gsgMxd30ougUJayOW?=
- =?us-ascii?Q?H8bLHRWI4psCuHwPsZvAzHfxBtsYo2G8GrZlIEJM3dKRqntBLgg8ELwTKVtv?=
- =?us-ascii?Q?22Wdo7Z5JrfNwYJg+4jvI0Bnyl4zDy6uqCglhNaKV57I+gNsKfeT6+j5upUr?=
- =?us-ascii?Q?lZoyKKsyOPQbMbczz1ESQE7u6l2LvhQchDdp45a88Nwlf7HyY5zCjv+HqVWL?=
- =?us-ascii?Q?yakSNzPHEYIYO3BWTAL0hlUeOWVW8Kr7I8mU9GoOhEgFk/7DMVFFf8Vnst78?=
- =?us-ascii?Q?h1PbZ8pTcZEUH38eGuEkpq2sO53J5vINwj3QwXUlMDrt4uRKB90aoHdz0Nus?=
- =?us-ascii?Q?5k8t+dn766iLJAxivOgoNfpsc/qEkmdU37/2AQsxMyAkRksUv1qWrJuhwDKo?=
- =?us-ascii?Q?nEiAV1wK+7voDLRMoA7RQQR7HiUX+U/Qw1NLK5SAEGG9K5Aw5aoWPDmk+Zoa?=
- =?us-ascii?Q?ZYoMqgPwykeOe8T66/rlHbr6lAlYDtaeCHbkKSAt1e3m2eu5AjAPaX1CsUG8?=
- =?us-ascii?Q?o7Eq3B42pmYcT/Iy2d8fgSnDtlhMeIRGQOxSgee4MEJGYQ1iGNZ8R6ebS4qw?=
- =?us-ascii?Q?H/czc/HFtL2GvdUwVNxouf8Jb/qiqB1fYMMPHiGaTAGyr2nVUFQGqB/HcPBa?=
- =?us-ascii?Q?eUzWPCf3a8V6+0xiorvq1/ijAlfIWWTj4iCNzOOfL4DPc7aqz+NIppwCWirf?=
- =?us-ascii?Q?/ROhFpjsK+ZMFq1P7AyE8Ym3yE06dZy5HrydBat5DVIjd7d7sqOWEZvryNTq?=
- =?us-ascii?Q?XSfVI36y6P/BqHdoDx7I0mkF8juomGs3eo4zj6vUM2zNq4PrOb5e1PGMc0qJ?=
- =?us-ascii?Q?2IfmwF4MWNflenPJyIdKW0fOeDPi5B7tApgK8CvK1x39v3xxCwjCL9lh9fpG?=
- =?us-ascii?Q?NU+We8X6yWK93yY+yOAMK+P3w5MqFfmyPpbKDNR42GqCRYH6w4flInZ8Tp1T?=
- =?us-ascii?Q?nAeCU2bT1ACEOQC4dWvIOuxQL9Vu7yxqeoK1?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB8461.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(52116014)(376014)(7416014)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?b+E3v7owQnfuLNa7B5d+crKDw76Wd3xQWR6giy4Wkp5NBZqUdeto4UasoFvt?=
- =?us-ascii?Q?zsCkdbg4En5Hqv85/JibG9+u5qoP4yS3PUxM0bsrP7acDBNZ1/8TM+1NDGcA?=
- =?us-ascii?Q?j2K9FWX02qE6aBsI0QJlqnnxqWneHFj5lYTQlBusSJbLuFsriA5fLbjNSP43?=
- =?us-ascii?Q?QX1EFw6Zo7lK5I503uvaWmz7ZigXtIfM93bUKol4r+ncAu2qe2HqXQ8uKaJx?=
- =?us-ascii?Q?ZP+X+upyjJC09yLDqnj2Q972CH/lp7MJTVme3K6coxlr+UhbYUakA7ph1fWm?=
- =?us-ascii?Q?lneK8VMKzCK6F2N519eChgk81mIphcrF/C7Je2mchctHNSB+cvlIlYfF9akP?=
- =?us-ascii?Q?mlSdio+hUGPuQ06U8dLFA5aoGf4hwk5rVQLFcCgCia/vWevCfxiewVWs1M5W?=
- =?us-ascii?Q?9Y7JAU1l+gsxn1GUvydga7iHv9NYpBvTAZAnXWT9K6v49+98ziAoIqhf4n1p?=
- =?us-ascii?Q?HbfjXgG9FCuPdr30XG/mxmAZbbHfYami8QeOGkyHx5hSDIoSOoTfH3RjpCZK?=
- =?us-ascii?Q?VS6W8wDCDYE7CoBRR0Z1FvkBqEQOq8w4cXzbT6CPC0fvShg5OuzCYkQHb/oo?=
- =?us-ascii?Q?3GOgzybj25INjNS6ggEzYgaoaIMGqT5O94HqH0K2pfpBcQOKh7AfFa1SyJqO?=
- =?us-ascii?Q?gjQsaoVmZweqHrguEIEef2o+RePYarxS2G5SMXX7KcYxpTOgI86mfiXMO761?=
- =?us-ascii?Q?3zdYJNwj5CMJnw7s/3yalIoikSzeF1L1SnULyZ2C/esYfIWkdOxxPjbdWt1W?=
- =?us-ascii?Q?4rKgpWddSc60FvG2G3PuLmQuGDYjpNc/y/CY6d9hltTgF0WRNfY7ec/yI9oc?=
- =?us-ascii?Q?+SRV6qthQmnXHOImyd5494LhqJTX9Ljuguv0tlK+uDA0Ewc0pbSSHGYr1w2l?=
- =?us-ascii?Q?8mffjDcUTRw8u0fcxWjn6u8eaffBrdZvJCxTOjF3Fx1SZ1pYMDrMjU0m84zG?=
- =?us-ascii?Q?IDBmUrJh61yCG2c6FwYXFZ/4wnnL/R/lDonFszxwYn9BGBhmYZgF1D4WimQY?=
- =?us-ascii?Q?d4VxEFEeVkQQKGJCkszyLtrw2Xwd6t8J5Ma5r2xxDzFAQVod4sFIBPlX5Dc2?=
- =?us-ascii?Q?QzGNlRcqWesiyaOrLXiib7rppPxyKx+CF8ilSy8oy3l7M/db4CiTRibhvc4t?=
- =?us-ascii?Q?UYJI8mkB5PZeleT792/VorwAKUys9C7FHNtRHkLui3QCa0IQ97+7jKaiaRSV?=
- =?us-ascii?Q?nBw57D0NhYv4kPzYm8QstDvbAT2diU6Pybs2UP7lZcAWlFDe/QfAEI6K5XMB?=
- =?us-ascii?Q?c2GFixz2v8edKdmjPhTsU8UE5kUsIzQt1bRIj2zXn//6ZdjOK/AqnGk9alqj?=
- =?us-ascii?Q?tkcvzbsb0K8JY56cu7WRxHSRNl5wvatuiXroJCbreEpxeKYVlIkRzy8RpB1A?=
- =?us-ascii?Q?/t5jpAcnYuRc174BEPOo2n2TBCPX9ee6AzOMir3WUbZ0ZSEwkcLbfwdyw0e6?=
- =?us-ascii?Q?fNrTTwk4tcVsA/gsgGj6MLH5iwP4fhTJVXGcOLxFGqOymuOucfgxql6mdmZi?=
- =?us-ascii?Q?AT5pSmuhowTGpFSP5YUpJ8UYx0gfXNDyWTzdX5Kbjr85JNV6DdNzJGRO0JX0?=
- =?us-ascii?Q?Gi+pzQnXrMiHeT4gG80MdMqGI6H19jBE9/Mu1+vmjka0MRwLgEXbtK10gjyE?=
- =?us-ascii?Q?MK2RCbfTGwn2fwCvo/1Bs5tafHffqHC+6V4XKg66uujOBwf9GzWLozO84N/s?=
- =?us-ascii?Q?OjMnOuy/HLTtJRrktTMtlfOamL0TKMwi9Qkm8RwYMzDXj9i7alEkCjWkT1K3?=
- =?us-ascii?Q?WgY/wlPPgA=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3522232-df82-4e47-fe28-08de4d19b9c5
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB8461.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2026 11:50:02.2846
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qUkVdx6A7gK4Ir5j0rsAI4EyX8SyWEsrE6Qc7SnsmZN6gvAsg/T5hb8StTfRMZAo+C3Vq0xG4vThfy4JTGaA6w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB9001
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251015030428.2980427-1-hongxing.zhu@nxp.com>
 
-Hi Nandor,
-
-On Mon, Dec 29, 2025 at 04:50:00PM +0200, Nandor Han wrote:
->Property "fsl,wdt-continue-in-low-power" allows the watchdog to continue
->running in low power modes (STOP and DOZE). By default, the watchdog is
->suspended in these modes. This property provides the option to keep the
->watchdog active during low power states when needed.
-
-From the cover letter, I see that system should reset if runs into
-low power mode. So your system are not allowed to run into low power mode.
-
-If my understanding is correct, DT property should not be used.
-You may need to use sysfs or module_parameter for your case.
-
-Regards,
-Peng
-
->
->Signed-off-by: Nandor Han <nandor.han@gehealthcare.com>
->---
-> Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml | 6 ++++++
-> 1 file changed, 6 insertions(+)
->
->diff --git a/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml b/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
->index 34951783a633..4dd9cc81c926 100644
->--- a/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
->+++ b/Documentation/devicetree/bindings/watchdog/fsl-imx-wdt.yaml
->@@ -64,6 +64,12 @@ properties:
->       If present, the watchdog device is suspended in WAIT mode
->       (Suspend-to-Idle). Only supported on certain devices.
+On Wed, Oct 15, 2025 at 11:04:17AM +0800, Richard Zhu wrote:
+> Clock Request is a reference clock request signal as defined by the PCIe
+> Mini CEM and M.2 specification; Also used by L1 PM Substates. But it's
+> an optional signal added in PCIe CEM r4.0, sec 2. The CLKREQ# support is
+> relied on the exact hardware board and device designs.
 > 
->+  fsl,wdt-continue-in-low-power:
->+    $ref: /schemas/types.yaml#/definitions/flag
->+    description: |
->+      If present, the watchdog device continues to run in low power modes
->+      (STOP and DOZE). By default, the watchdog is suspended in these modes.
->+
-> required:
->   - compatible
->   - interrupts
->-- 
->2.39.5
->
+> Add supports-clkreq property to i.MX PCIe M.2 port since the CLKREQ#
+> signal would be driven active low on this M.2 connector by the add-in
+> card to requtest reference clock. And, the host bridge driver can enable
+> the ASPM L1 PM Substates support if this property present.
+> 
+> To support L1 PM Substates, add a callback to clear CLKREQ# override on
+> the boards that support CLKREQ# in the hardware designs.
+> 
+> Main changes in v6:
+> - Rebase to v6.18-rc1.
+> - Add the dts changes into the v6 version patch-set.
+> - Fix the i.MX95 refclk enable that was missed in the v5 series.
+> - Make i.MX95 refclk enable parallel to the others.
+> - Describe the potential CLKREQ# problem on i.MX95 19x19 EVK second
+>   slot in the commit, and emphasis the CLKREQ# issue is caused by the
+>   board and device hardware designs.
+> 
+> Main changes in v5:
+> - New create imx8mm_pcie_clkreq_override() and keep the original
+>   enable_ref_clk callback function.
+> 
+> Main changes in v4:
+> - To align the function name when add the CLKREQ# override clear, rename
+> imx8mm_pcie_enable_ref_clk(), clean up codes refer to Mani' suggestions.
+> 
+> Main changes in v3:
+> - Rebase to v6.17-rc1.
+> - Update the commit message refer to Bjorn's suggestions.
+> 
+> Main changes in v2:
+> - Update the commit message, and collect the reviewed-by tag.
+> 
+> [PATCH v6 01/11] arm64: dts: imx95-15x15-evk: Add supports-clkreq
+> [PATCH v6 02/11] arm64: dts: imx95-19x19-evk: Add supports-clkreq
+> [PATCH v6 03/11] arm64: dts: imx8mm-evk: Add supports-clkreq property
+> [PATCH v6 04/11] arm64: dts: imx8mp-evk: Add supports-clkreq property
+> [PATCH v6 05/11] arm64: dts: imx8mq-evk: Add supports-clkreq property
+> [PATCH v6 06/11] arm64: dts: imx8qm-mek: Add supports-clkreq property
+> [PATCH v6 07/11] arm64: dts: imx8qxp-mek: Add supports-clkreq
+> [PATCH v6 08/11] PCI: dwc: Invoke post_init in dw_pcie_resume_noirq()
+> [PATCH v6 09/11] PCI: imx6: Add a new imx8mm_pcie_clkreq_override()
+> [PATCH v6 10/11] PCI: imx6: Add CLKREQ# override to enable REFCLK for
+> [PATCH v6 11/11] PCI: imx6: Add a callback to clear CLKREQ# override
+
+Squashed patch 9 with 11 and applied to controller/dwc-imx6, thanks!
+
+- Mani
+
+> 
+> arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi     |  1 +
+> arch/arm64/boot/dts/freescale/imx8mp-evk.dts      |  1 +
+> arch/arm64/boot/dts/freescale/imx8mq-evk.dts      |  2 ++
+> arch/arm64/boot/dts/freescale/imx8qm-mek.dts      |  1 +
+> arch/arm64/boot/dts/freescale/imx8qxp-mek.dts     |  1 +
+> arch/arm64/boot/dts/freescale/imx95-15x15-evk.dts |  1 +
+> arch/arm64/boot/dts/freescale/imx95-19x19-evk.dts |  1 +
+> drivers/pci/controller/dwc/pci-imx6.c             | 50 +++++++++++++++++++++++++++++++++++++++++++++++++-
+> drivers/pci/controller/dwc/pcie-designware-host.c |  3 +++
+> 9 files changed, 60 insertions(+), 1 deletion(-)
+> 
+
+-- 
+மணிவண்ணன் சதாசிவம்
