@@ -1,1321 +1,420 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F68834C81E
-	for <imx@lists.linux.dev>; Tue,  6 Jan 2026 19:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB69A2BDC0A
+	for <imx@lists.linux.dev>; Tue,  6 Jan 2026 20:13:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767726130; cv=none; b=lozKMKNv3dCHj3DT8J4EiEx3wIe+SnpHgU94NHR7YZ9gO1H95+XWsbdiAdcbVliOlvQwy4YYKhjUocTCzpfzMEkwql9A0cGSg2kWMGN9IpjmIbyNs33nTzxitoPC2dDCPC/aKZCqUXNbpOIJtV4UwuAhc1sau3sMCGfrC2rUVCI=
+	t=1767730398; cv=none; b=eNAFbbuMF/sWNrF4vAiF1KyvoowrXwN2HdpMmlFQVxNMjkR2huXPuiRl5PZfh/FKdqTrGp9CtavA1Z0CqKrfElARes3IhFMkMPljupvn84Cg73FiLB0f4wvsgBXKz7pRF7Mq2Ex776E//nRgqL0IOodZYP7DjVHXSJYRanB913g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767726130; c=relaxed/simple;
-	bh=bHlE0G6MIZZLI3lTjlCLEsUvwloosqwdkgb78OPjhyk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DsTLWIceS4gJH2MTfokSeJv8KK3puWXc/DrF2vZI1RcJQsMZde6LZnz7qcCz+E9rYP2D68L51AQSh0cDlL9L7kujbJZesgtOy/qcqxVJH0UgRUydeGhuhKv9qHj6xWnm6LDhqiyxYS+aZF9WEmPFJSwAdS3hIQ6LKigrGxDBXMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=SAuj0tMx; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1767730398; c=relaxed/simple;
+	bh=jPVdqhWs2TPwcHlMq0L0CE1YYe4u5iPs7FdsFKOVGs8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=PrXtsRK4XPCbs2L3HsNh+P3l9ITlnQB2LUXe98KEbw7cwuowufqFu+QW69mo2GnKQThL59XODQ3g1ExGHioQNG6KOE8WC3y1autfsE/vj4ALOztx3qEHtv0+x9zNBlqud+UgHhWJTGrvShXwDV8mZHu3o3jyzBJybMLAqnKQMno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=ncugG3HD; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="SAuj0tMx"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 89A7310C9B3;
-	Tue,  6 Jan 2026 20:02:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1767726125; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=AMbQ6nJARwEaiqgbucDVt3X1SE0XWJtYxjyC+xTNfpY=;
-	b=SAuj0tMxkFYBFLW/w0u1ixtzGD9oVPCpB7af4b2Iy5nVGqmDfJ3IJLg0n7C59+hwah2Cj1
-	5wYUZbQUvNZeB7iZ90JjOIu7qxIOFquQjBNQQuV9l6mcgV73JuQfHTcK8lJwnWPI+dNl3g
-	6XYox2ke1/ZsEkyHz+AN0gLoSWE5j1PQ9pCp2IaGklOMeTYCaUFgnUytB6A6YPORr1xPRH
-	7TpJLcnBXl7kOP+infoiut6bsBo/VwUW+gsPKZacAc/AJHWW+G9EBnGqniDusVXf5h4mMc
-	L8BvgRkkF5meu0bGBaz0TCo6xUa4XrUJ47njI5Ep1R5CfS4ViXHWZXEj56Z64g==
-From: Marek Vasut <marex@nabladev.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: Fedor Ross <fedor.ross@ifm.com>,
-	Marek Vasut <marex@nabladev.com>,
-	Christian Eggers <ceggers@arri.de>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Markus Heidelberg <m.heidelberg@cab.de>,
-	Rob Herring <robh@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 4/4] arm64: dts: imx8mn: Add ifm VHIP4 EvalBoard v1 and v2
-Date: Tue,  6 Jan 2026 20:00:40 +0100
-Message-ID: <20260106190147.31924-4-marex@nabladev.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260106190147.31924-1-marex@nabladev.com>
-References: <20260106190147.31924-1-marex@nabladev.com>
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="ncugG3HD"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8b2f2c5ec36so144042485a.1
+        for <imx@lists.linux.dev>; Tue, 06 Jan 2026 12:13:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1767730395; x=1768335195; darn=lists.linux.dev;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=zGgADW9nZD17Da1M/Fe+ypFmIKBVR0gBMWrtY6svF8g=;
+        b=ncugG3HDJXroGaWywkimRIHXcXM7fL8PmhhO+J5/ispTn8UYrYxusIYM15oGxAv2+I
+         GWcVkdVAN6nhzh+w5qdpUaiyO2XoqcFm3SIazsNmqmnyBur2HGuqPoX4yVO9B+N7MGcz
+         KYscMFpy9cRKGdxKlBj2o1jiVdB1q3/U+yGIPD/2Yi4iuJFfUptX8ZocyrMZsacoZrfy
+         jn3zKhyEKTmqavBhMJMnZsFMLtxN5DAR3fa+sUbwGdX6i2snejYnBXrYB7VsvUotzzWs
+         Xw9NRpWBQgTgYJchfUhhkzuibhSeOY4WOMry+TFvEbvwEzHUi276E/tt0RztoCo7vKgh
+         5Tag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767730395; x=1768335195;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zGgADW9nZD17Da1M/Fe+ypFmIKBVR0gBMWrtY6svF8g=;
+        b=cZCU20764O+S43HMelrDUDRl3eMsl/rZ6pAIYF1wIgJMlEwca1WYPj5oR40AlcMyTZ
+         G0lPWLwcntmOdiamDpTtZE0t1G+HpznNz5H5pY2JZx1iqD02C4d3sPi0FjVm7/vRBl94
+         YBYheSotlTtMJeWhdAzTRNUcNWpjX/LR8GMu1XztluNwTANJd8bVNbZ6M/6azIbty1OH
+         fjmjSVJZwUeANMAkYvL1rLSulUFKmF0t6OFob6l+ijbpfKzIxHw+l2pe5sZomBkqRf9O
+         uPk7M1libTkNzNIOBeqPVpQLCrF8mfzD/Ct8HT8osILk/P9mCiZHhdszo81GwMbNfj/I
+         0u3g==
+X-Forwarded-Encrypted: i=1; AJvYcCXYky/YP8OLFLrjzRQd1/KtW3gzqOL7FSRzEkqyOi3/c2Rc1DuwiScmA0Ahe3DC81sa6bw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzB4ILYf0vwVRxgp6GvKhqSOz9LYtfeuAFkSyXRcYTp59IITjk4
+	ZxLgPur07+kIRyW2VjerczhKsP5z8P0gPLwhY5Vi0KW1Pv3KAPf+13enk1dMwl0p3DQ=
+X-Gm-Gg: AY/fxX5GaLGwjapkxCs0LsPenoBMqA2yneesOV17nNv/2O4XP1h99PFSJu5ntyDs1I8
+	Z5O8dnAjuyu0R0clgooLE10VARhWAkmaZWgTn/3lt7E5s+FGG+Zkm+NzNakk932dXRn9e6I3rc4
+	sq9/b4G5ZEyRLzC2go23lIj+ukVimZZ4yK3PYk421rl1kWZ+eLeuP0xB2jgh3x2rVB22gO8bdpd
+	htb9qdCS1ffyh4b1k+pixvAtWGO2aPMkfCQmvYq+LbgsyB+8+a4MgQ6xXG+R5h4OWWlwECfDjo0
+	/GrRyBJ+y0UjgtBYFccxYe5Dw6oSpQ91hMw/2rxzyBQrFkWdxaMNVoZlQiIOQgq88RPz+4KKMg0
+	l6JO3y76kdC5E9Vl9nglN8QBhOkPO/jqFppJiWaROWSfl+lVTNHUvKiAkZ/HEup6EsE8uBsqYeC
+	MbBXHO1JbYooabnNfb
+X-Google-Smtp-Source: AGHT+IH/wLE7DdiFM+Bb8jYRFbO6Or+cMF7NwB8CGndt9QUJmgsJUJfLZ+U7BiCGgvq+Cm5fvn3UeQ==
+X-Received: by 2002:a05:620a:29cc:b0:8b2:e1bc:f2a2 with SMTP id af79cd13be357-8c3893eb72bmr8510985a.54.1767730394771;
+        Tue, 06 Jan 2026 12:13:14 -0800 (PST)
+Received: from ?IPv6:2606:6d00:17:7b4b::5ac? ([2606:6d00:17:7b4b::5ac])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f51cf95sm232070985a.33.2026.01.06.12.13.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jan 2026 12:13:13 -0800 (PST)
+Message-ID: <5ae7ea006e78377c22181b7455aea280214b8471.camel@ndufresne.ca>
+Subject: Re: [PATCH] media: amphion: Use kmalloc instead of vmalloc
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: ming.qian@oss.nxp.com, linux-media@vger.kernel.org
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, 
+	sebastian.fricke@collabora.com, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, 	kernel@pengutronix.de, festevam@gmail.com,
+ linux-imx@nxp.com, Frank.li@nxp.com, 	xiahong.bao@nxp.com,
+ eagle.zhou@nxp.com, imx@lists.linux.dev, 	linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Date: Tue, 06 Jan 2026 15:13:12 -0500
+In-Reply-To: <20251222084912.747-1-ming.qian@oss.nxp.com>
+References: <20251222084912.747-1-ming.qian@oss.nxp.com>
+Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-FYyUlJPAcllBQWTM48ij"
+User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-From: Fedor Ross <fedor.ross@ifm.com>
 
-Add support for ifm i.MX8MN VHIP4 EvalBoard v1 and v2 reference design.
-This system exists in two generations, v1 and v2, which share a lot of
-commonality. The boards come with either single gigabit ethernet or an
-KSZ8794 fast-ethernet switch, boot from eMMC, and offer CAN interfaces
-via Microchip MCP25xx SPI CAN controllers, UART, and USB host. The GPU
-is not available in the SoC populated on these devices.
+--=-FYyUlJPAcllBQWTM48ij
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Fedor Ross <fedor.ross@ifm.com>
-Signed-off-by: Marek Vasut <marex@nabladev.com>
----
-Cc: Christian Eggers <ceggers@arri.de>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Markus Heidelberg <m.heidelberg@cab.de>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
----
-V2: - Drop snvs-lpgpr node in favor of separate patch to imx8mn.dtsi
-    - Sort properties and update newlines according to V1 feedback
-V3: - Drop fsl,magic-packet
-V4: - Switch USB hub to compatible = "usb424,2512", "usb424,2514"
-    - Use temperature-sensor@48 for temperature sensor node names
-    - Sort pinctrl_gpio_5 iomux node
-V5: - Fix ECSPI1/ECSPI3 pinctrl description
----
- arch/arm64/boot/dts/freescale/Makefile        |  19 +
- .../imx8mn-vhip4-evalboard-common.dtsi        | 396 ++++++++++++++++++
- ...imx8mn-vhip4-evalboard-ksz8794-common.dtsi |  98 +++++
- ...mn-vhip4-evalboard-v1-overlay-ksz8794.dtso |  24 ++
- ...mn-vhip4-evalboard-v1-overlay-ksz9031.dtso |  48 +++
- .../freescale/imx8mn-vhip4-evalboard-v1.dts   | 258 ++++++++++++
- ...n-vhip4-evalboard-v2-overlay-adin1300.dtso |  60 +++
- ...mn-vhip4-evalboard-v2-overlay-ksz8794.dtso |  24 ++
- .../freescale/imx8mn-vhip4-evalboard-v2.dts   | 221 ++++++++++
- 9 files changed, 1148 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-common.dtsi
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-ksz8794-common.dtsi
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-ksz9031.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1.dts
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v2-overlay-adin1300.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtso
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v2.dts
+Hi,
 
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index ce8f937c23152..83df038701def 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -193,6 +193,25 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mn-tqma8mqnl-mba8mx.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mn-var-som-symphony.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mn-venice-gw7902.dtb
- 
-+imx8mn-vhip4-evalboard-v1-overlay-ksz8794-dtbs := imx8mn-vhip4-evalboard-v1.dtb \
-+						  imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtbo
-+imx8mn-vhip4-evalboard-v1-overlay-ksz9031-dtbs := imx8mn-vhip4-evalboard-v1.dtb \
-+						  imx8mn-vhip4-evalboard-v1-overlay-ksz9031.dtbo
-+imx8mn-vhip4-evalboard-v2-overlay-ksz8794-dtbs := imx8mn-vhip4-evalboard-v2.dtb \
-+						  imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtbo
-+imx8mn-vhip4-evalboard-v2-overlay-adin1300-dtbs := imx8mn-vhip4-evalboard-v2.dtb \
-+						   imx8mn-vhip4-evalboard-v2-overlay-adin1300.dtbo
-+dtb-$(CONFIG_ARCH_MXC) += imx8mn-vhip4-evalboard-v1.dtb \
-+			  imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtb \
-+			  imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtbo \
-+			  imx8mn-vhip4-evalboard-v1-overlay-ksz9031.dtb \
-+			  imx8mn-vhip4-evalboard-v1-overlay-ksz9031.dtbo \
-+			  imx8mn-vhip4-evalboard-v2.dtb \
-+			  imx8mn-vhip4-evalboard-v2-overlay-adin1300.dtb \
-+			  imx8mn-vhip4-evalboard-v2-overlay-adin1300.dtbo \
-+			  imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtb \
-+			  imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtbo
-+
- imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33-dtbs += imx8mn-tqma8mqnl-mba8mx.dtb imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtbo
- imx8mn-tqma8mqnl-mba8mx-usbotg-dtbs += imx8mn-tqma8mqnl-mba8mx.dtb imx8mn-tqma8mqnl-mba8mx-usbotg.dtbo
- dtb-$(CONFIG_ARCH_MXC) += imx8mn-tqma8mqnl-mba8mx-lvds-tm070jvhg33.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-common.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-common.dtsi
-new file mode 100644
-index 0000000000000..aaf9761703aaf
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-common.dtsi
-@@ -0,0 +1,396 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2020-2024 Fedor Ross <fedor.ross@ifm.com>
-+ */
-+
-+#include "imx8mn.dtsi"
-+#include <dt-bindings/leds/common.h>
-+
-+/ {
-+	model = "ifm i.MX8MNano VHIP4 Evaluation Board";
-+	compatible = "ifm,imx8mn-vhip4-evalboard", "ifm,imx8mn-vhip4", "fsl,imx8mn";
-+
-+	aliases {
-+		mmc0 = &usdhc3;
-+		mmc1 = &usdhc1;
-+		mmc2 = &usdhc2;
-+		rtc0 = &hw_rtc;
-+		rtc1 = &snvs_rtc;
-+	};
-+
-+	chosen {
-+		bootargs = "console=ttymxc2,115200 earlycon=ec_imx6q,0x30880000,115200 rootwait";
-+		stdout-path = &uart3;
-+	};
-+
-+	memory@40000000 {
-+		device_type = "memory";
-+		reg = <0x0 0x40000000 0 0x40000000>;
-+	};
-+
-+	can_clk20m: can-clk20m {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <20000000>;
-+	};
-+
-+	can_clk40m: can-clk40m {
-+		compatible = "fixed-clock";
-+		#clock-cells = <0>;
-+		clock-frequency = <40000000>;
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+		pinctrl-0 = <&pinctrl_gpio_button>;
-+		pinctrl-names = "default";
-+
-+		button-2 {
-+			label = "Button2";
-+			gpios = <&gpio2 16 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_2>;
-+		};
-+
-+		button-3 {
-+			label = "Button3";
-+			gpios = <&gpio2 18 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_3>;
-+		};
-+	};
-+
-+	ifm_led: led {
-+		compatible = "gpio-leds";
-+		pinctrl-0 = <&pinctrl_gpio_led>;
-+		pinctrl-names = "default", "extended";
-+
-+		led-0 {
-+			function = LED_FUNCTION_STATUS;
-+			function-enumerator = <1>;
-+			color = <LED_COLOR_ID_YELLOW>;
-+			gpios = <&gpio2 13 GPIO_ACTIVE_HIGH>;
-+			default-state = "keep";
-+		};
-+
-+		led-1 {
-+			function = LED_FUNCTION_STATUS;
-+			function-enumerator = <2>;
-+			color = <LED_COLOR_ID_GREEN>;
-+			gpios = <&gpio2 15 GPIO_ACTIVE_HIGH>;
-+			default-state = "keep";
-+		};
-+	};
-+};
-+
-+&A53_0 {
-+	cpu-supply = <&buck2_reg>;
-+};
-+
-+&A53_1 {
-+	cpu-supply = <&buck2_reg>;
-+};
-+
-+&A53_2 {
-+	cpu-supply = <&buck2_reg>;
-+};
-+
-+&A53_3 {
-+	cpu-supply = <&buck2_reg>;
-+};
-+
-+&ddrc {
-+	operating-points-v2 = <&ddrc_opp_table>;
-+
-+	ddrc_opp_table: opp-table {
-+		compatible = "operating-points-v2";
-+
-+		opp-25000000 {
-+			opp-hz = /bits/ 64 <25000000>;
-+		};
-+
-+		opp-100000000 {
-+			opp-hz = /bits/ 64 <100000000>;
-+		};
-+
-+		opp-600000000 {
-+			opp-hz = /bits/ 64 <600000000>;
-+		};
-+	};
-+};
-+
-+&ecspi1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ecspi1>, <&pinctrl_ecspi1_cs>;
-+	/delete-property/ dmas;
-+	/delete-property/ dma-names;
-+};
-+
-+&ecspi3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_ecspi3>, <&pinctrl_ecspi3_cs>;
-+	/delete-property/ dmas;
-+	/delete-property/ dma-names;
-+};
-+
-+&gpu {
-+	/* SoC has GPU fused off. */
-+	status = "disabled";
-+};
-+
-+&i2c1 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c1>;
-+	pinctrl-1 = <&pinctrl_i2c1_gpio>;
-+
-+	eeprom@51 {
-+		compatible = "atmel,24c128";
-+		reg = <0x51>;
-+	};
-+
-+	hw_rtc: rtc@52 {
-+		compatible = "microcrystal,rv3028";
-+		reg = <0x52>;
-+	};
-+};
-+
-+&i2c3 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c3>;
-+	pinctrl-1 = <&pinctrl_i2c3_gpio>;
-+
-+	ifm_pmic: pmic@4b {
-+		compatible = "rohm,bd71847";
-+		reg = <0x4b>;
-+		pinctrl-0 = <&pinctrl_pmic>;
-+		rohm,reset-snvs-powered;
-+
-+		regulators {
-+			buck1_reg: BUCK1 {
-+				regulator-name = "buck1";
-+				regulator-min-microvolt = <790000>;
-+				regulator-max-microvolt = <860000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+				regulator-ramp-delay = <1250>;
-+			};
-+
-+			buck2_reg: BUCK2 {
-+				regulator-name = "buck2";
-+				regulator-min-microvolt = <840000>;
-+				regulator-max-microvolt = <960000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+				regulator-ramp-delay = <1250>;
-+			};
-+
-+			buck3_reg: BUCK3 {
-+				// BUCK5 in datasheet
-+				regulator-name = "buck3";
-+				regulator-min-microvolt = <700000>;
-+				regulator-max-microvolt = <1350000>;
-+			};
-+
-+			buck4_reg: BUCK4 {
-+				// BUCK6 in datasheet
-+				regulator-name = "buck4";
-+				regulator-min-microvolt = <3300000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			buck5_reg: BUCK5 {
-+				// BUCK7 in datasheet
-+				regulator-name = "buck5";
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			buck6_reg: BUCK6 {
-+				// BUCK8 in datasheet
-+				regulator-name = "buck6";
-+				regulator-min-microvolt = <1100000>;
-+				regulator-max-microvolt = <1100000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			ldo1_reg: LDO1 {
-+				regulator-name = "ldo1";
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			ldo2_reg: LDO2 {
-+				regulator-name = "ldo2";
-+				regulator-min-microvolt = <800000>;
-+				regulator-max-microvolt = <800000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			ldo3_reg: LDO3 {
-+				regulator-name = "ldo3";
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+
-+			ldo4_reg: LDO4 {
-+				regulator-name = "ldo4";
-+				regulator-min-microvolt = <900000>;
-+				regulator-max-microvolt = <1800000>;
-+			};
-+
-+			ldo5_reg: LDO5 {
-+				regulator-name = "ldo5";
-+				regulator-min-microvolt = <3300000>;
-+				regulator-max-microvolt = <3300000>;
-+			};
-+
-+			ldo6_reg: LDO6 {
-+				regulator-name = "ldo6";
-+				regulator-min-microvolt = <1200000>;
-+				regulator-max-microvolt = <1200000>;
-+				regulator-boot-on;
-+				regulator-always-on;
-+			};
-+		};
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl_ecspi1: ecspi1-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_ECSPI1_SCLK_ECSPI1_SCLK		0x110
-+			MX8MN_IOMUXC_ECSPI1_MOSI_ECSPI1_MOSI		0x110
-+			MX8MN_IOMUXC_ECSPI1_MISO_ECSPI1_MISO		0x190
-+		>;
-+	};
-+
-+	pinctrl_ecspi3: ecspi3-grp {
-+		fsl,pins = <
-+			/* SPI3_CAN_CLK */
-+			MX8MN_IOMUXC_UART1_RXD_ECSPI3_SCLK		0x110
-+			/* SPI3_CAN_MOSI */
-+			MX8MN_IOMUXC_UART1_TXD_ECSPI3_MOSI		0x110
-+			/* SPI3_CAN_MISO */
-+			MX8MN_IOMUXC_UART2_RXD_ECSPI3_MISO		0x190
-+		>;
-+	};
-+
-+	pinctrl_gpio_button: gpiobutton-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_SD2_DATA1_GPIO2_IO16		0x96
-+			MX8MN_IOMUXC_SD2_DATA3_GPIO2_IO18		0x96
-+		>;
-+	};
-+
-+	pinctrl_gpio_led: gpioled-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_SD2_CLK_GPIO2_IO13			0x116
-+			MX8MN_IOMUXC_SD2_DATA0_GPIO2_IO15		0x116
-+		>;
-+	};
-+
-+	pinctrl_usdhc3: usdhc3-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_NAND_WE_B_USDHC3_CLK		0x40000110
-+			MX8MN_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d0
-+			MX8MN_IOMUXC_NAND_DATA04_USDHC3_DATA0		0x1d0
-+			MX8MN_IOMUXC_NAND_DATA05_USDHC3_DATA1		0x1d0
-+			MX8MN_IOMUXC_NAND_DATA06_USDHC3_DATA2		0x1d0
-+			MX8MN_IOMUXC_NAND_DATA07_USDHC3_DATA3		0x1d0
-+			MX8MN_IOMUXC_NAND_RE_B_USDHC3_DATA4		0x1d0
-+			MX8MN_IOMUXC_NAND_CE2_B_USDHC3_DATA5		0x1d0
-+			MX8MN_IOMUXC_NAND_CE3_B_USDHC3_DATA6		0x1d0
-+			MX8MN_IOMUXC_NAND_CLE_USDHC3_DATA7		0x1d0
-+			MX8MN_IOMUXC_NAND_CE1_B_USDHC3_STROBE		0x190
-+			MX8MN_IOMUXC_NAND_READY_B_USDHC3_RESET_B	0x150
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_100mhz: usdhc3-100mhz-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_NAND_WE_B_USDHC3_CLK		0x40000114
-+			MX8MN_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d4
-+			MX8MN_IOMUXC_NAND_DATA04_USDHC3_DATA0		0x1d4
-+			MX8MN_IOMUXC_NAND_DATA05_USDHC3_DATA1		0x1d4
-+			MX8MN_IOMUXC_NAND_DATA06_USDHC3_DATA2		0x1d4
-+			MX8MN_IOMUXC_NAND_DATA07_USDHC3_DATA3		0x1d4
-+			MX8MN_IOMUXC_NAND_RE_B_USDHC3_DATA4		0x1d4
-+			MX8MN_IOMUXC_NAND_CE2_B_USDHC3_DATA5		0x1d4
-+			MX8MN_IOMUXC_NAND_CE3_B_USDHC3_DATA6		0x1d4
-+			MX8MN_IOMUXC_NAND_CLE_USDHC3_DATA7		0x1d4
-+			MX8MN_IOMUXC_NAND_CE1_B_USDHC3_STROBE		0x194
-+			MX8MN_IOMUXC_NAND_READY_B_USDHC3_RESET_B	0x150
-+		>;
-+	};
-+
-+	pinctrl_usdhc3_200mhz: usdhc3-200mhz-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_NAND_WE_B_USDHC3_CLK		0x40000116
-+			MX8MN_IOMUXC_NAND_WP_B_USDHC3_CMD		0x1d6
-+			MX8MN_IOMUXC_NAND_DATA04_USDHC3_DATA0		0x1d6
-+			MX8MN_IOMUXC_NAND_DATA05_USDHC3_DATA1		0x1d6
-+			MX8MN_IOMUXC_NAND_DATA06_USDHC3_DATA2		0x1d6
-+			MX8MN_IOMUXC_NAND_DATA07_USDHC3_DATA3		0x1d6
-+			MX8MN_IOMUXC_NAND_RE_B_USDHC3_DATA4		0x1d6
-+			MX8MN_IOMUXC_NAND_CE2_B_USDHC3_DATA5		0x1d6
-+			MX8MN_IOMUXC_NAND_CE3_B_USDHC3_DATA6		0x1d6
-+			MX8MN_IOMUXC_NAND_CLE_USDHC3_DATA7		0x1d6
-+			MX8MN_IOMUXC_NAND_CE1_B_USDHC3_STROBE		0x196
-+			MX8MN_IOMUXC_NAND_READY_B_USDHC3_RESET_B	0x150
-+		>;
-+	};
-+
-+	pinctrl_wdog: wdog-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_GPIO1_IO02_WDOG1_WDOG_B		0x64
-+		>;
-+	};
-+};
-+
-+&pgc_gpumix {
-+	/* SoC has GPU fused off. */
-+	status = "disabled";
-+};
-+
-+&snvs_pwrkey {
-+	status = "okay";
-+};
-+
-+&uart3 { /* console */
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_uart3>;
-+	status = "okay";
-+};
-+
-+&usbotg1 {
-+	status = "okay";
-+};
-+
-+&usdhc3 {
-+	assigned-clocks = <&clk IMX8MN_CLK_USDHC3_ROOT>;
-+	assigned-clock-rates = <400000000>;
-+	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-+	pinctrl-0 = <&pinctrl_usdhc3>;
-+	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
-+	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
-+	bus-width = <8>;
-+	non-removable;
-+	status = "okay";
-+};
-+
-+&wdog1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_wdog>;
-+	fsl,ext-reset-output;
-+	status = "okay";
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-ksz8794-common.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-ksz8794-common.dtsi
-new file mode 100644
-index 0000000000000..c1a98ec2f4382
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-ksz8794-common.dtsi
-@@ -0,0 +1,98 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2025 Fedor Ross <fedor.ross@ifm.com>
-+ */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+
-+#include "imx8mn-pinfunc.h"
-+
-+&ecspi1 {
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	status = "okay";
-+
-+	ksz8794: ethernet-switch@1 {
-+		compatible = "microchip,ksz8794";
-+		pinctrl-names = "default", "reset";
-+		pinctrl-0 = <&pinctrl_ks8794>;
-+		pinctrl-1 = <&pinctrl_ks8794>;
-+		reg = <1>;
-+		reset-gpios = <&gpio4 28 GPIO_ACTIVE_LOW>;
-+		spi-max-frequency = <5000000>;
-+
-+		ethernet-ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+				label = "lan1";
-+			};
-+
-+			port@1 {
-+				reg = <1>;
-+				label = "lan2";
-+			};
-+
-+			port@2 {
-+				reg = <2>;
-+				label = "lan3";
-+			};
-+
-+			port@4 {
-+				reg = <4>;
-+				label = "cpu";
-+				ethernet = <&fec1>;
-+				phy-mode = "rgmii-id";
-+				rx-internal-delay-ps = <2000>;
-+				tx-internal-delay-ps = <2000>;
-+				fixed-link {
-+					full-duplex;
-+					speed = <1000>;
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&fec1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_fec1>;
-+	phy-mode = "rgmii-id";
-+	status = "okay";
-+
-+	fixed-link {
-+		full-duplex;
-+		speed = <1000>;
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl_fec1: fec1-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_ENET_MDC_ENET1_MDC			0x16
-+			MX8MN_IOMUXC_ENET_MDIO_ENET1_MDIO		0x96
-+			MX8MN_IOMUXC_ENET_TD3_ENET1_RGMII_TD3		0x16
-+			MX8MN_IOMUXC_ENET_TD2_ENET1_RGMII_TD2		0x16
-+			MX8MN_IOMUXC_ENET_TD1_ENET1_RGMII_TD1		0x16
-+			MX8MN_IOMUXC_ENET_TD0_ENET1_RGMII_TD0		0x16
-+			MX8MN_IOMUXC_ENET_RD3_ENET1_RGMII_RD3		0x96
-+			MX8MN_IOMUXC_ENET_RD2_ENET1_RGMII_RD2		0x96
-+			MX8MN_IOMUXC_ENET_RD1_ENET1_RGMII_RD1		0x96
-+			MX8MN_IOMUXC_ENET_RD0_ENET1_RGMII_RD0		0x96
-+			MX8MN_IOMUXC_ENET_TXC_ENET1_RGMII_TXC		0x10
-+			MX8MN_IOMUXC_ENET_RXC_ENET1_RGMII_RXC		0x96
-+			MX8MN_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x96
-+			MX8MN_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x16
-+			MX8MN_IOMUXC_SAI3_TXFS_GPIO4_IO31		0x1d6
-+		>;
-+	};
-+
-+	pinctrl_ks8794: ks8794-grp {
-+		fsl,pins = <
-+			/* KSZ8794 reset line */
-+			MX8MN_IOMUXC_SAI3_RXFS_GPIO4_IO28		0x16
-+		>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtso b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtso
-new file mode 100644
-index 0000000000000..20eb427f3dd66
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-ksz8794.dtso
-@@ -0,0 +1,24 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2021 Marek Vasut
-+ */
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+
-+#include "imx8mn-pinfunc.h"
-+
-+&pinctrl_ecspi1 {
-+	fsl,pins = <
-+		MX8MN_IOMUXC_ECSPI1_SCLK_ECSPI1_SCLK		0x10
-+		MX8MN_IOMUXC_ECSPI1_MOSI_ECSPI1_MOSI		0x10
-+		MX8MN_IOMUXC_ECSPI1_MISO_ECSPI1_MISO		0x90
-+		/* KS8794 nCS */
-+		MX8MN_IOMUXC_I2C4_SDA_GPIO5_IO21		0x150
-+		/* ANV32C81 nCS */
-+		MX8MN_IOMUXC_ECSPI1_SS0_GPIO5_IO9		0x150
-+	>;
-+};
-+
-+#include "imx8mn-vhip4-evalboard-ksz8794-common.dtsi"
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-ksz9031.dtso b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-ksz9031.dtso
-new file mode 100644
-index 0000000000000..de24206106b3b
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1-overlay-ksz9031.dtso
-@@ -0,0 +1,48 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2021 Marek Vasut
-+ */
-+/dts-v1/;
-+/plugin/;
-+
-+#include "imx8mn-pinfunc.h"
-+
-+&fec1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_fec1>;
-+	phy-handle = <&ethphy0>;
-+	phy-mode = "rgmii-id";
-+	status = "okay";
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ethphy0: ethernet-phy@0 {
-+			compatible = "ethernet-phy-ieee802.3-c22";
-+			reg = <0>;
-+		};
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl_fec1: fec1-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_ENET_MDC_ENET1_MDC			0x16
-+			MX8MN_IOMUXC_ENET_MDIO_ENET1_MDIO		0x96
-+			MX8MN_IOMUXC_ENET_TD3_ENET1_RGMII_TD3		0x16
-+			MX8MN_IOMUXC_ENET_TD2_ENET1_RGMII_TD2		0x16
-+			MX8MN_IOMUXC_ENET_TD1_ENET1_RGMII_TD1		0x16
-+			MX8MN_IOMUXC_ENET_TD0_ENET1_RGMII_TD0		0x16
-+			MX8MN_IOMUXC_ENET_RD3_ENET1_RGMII_RD3		0x96
-+			MX8MN_IOMUXC_ENET_RD2_ENET1_RGMII_RD2		0x96
-+			MX8MN_IOMUXC_ENET_RD1_ENET1_RGMII_RD1		0x96
-+			MX8MN_IOMUXC_ENET_RD0_ENET1_RGMII_RD0		0x96
-+			MX8MN_IOMUXC_ENET_TXC_ENET1_RGMII_TXC		0x16
-+			MX8MN_IOMUXC_ENET_RXC_ENET1_RGMII_RXC		0x96
-+			MX8MN_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x96
-+			MX8MN_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x16
-+			MX8MN_IOMUXC_SAI3_TXFS_GPIO4_IO31		0x1d6
-+		>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1.dts b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1.dts
-new file mode 100644
-index 0000000000000..5f37065bf43f3
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v1.dts
-@@ -0,0 +1,258 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2020-2024 Fedor Ross <fedor.ross@ifm.com>
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx8mn-vhip4-evalboard-common.dtsi"
-+
-+/ {
-+	model = "ifm i.MX8MNano VHIP4 Evaluation Board v1";
-+	compatible = "ifm,imx8mn-vhip4-evalboard-v1", "ifm,imx8mn-vhip4-evalboard",
-+		     "ifm,imx8mn-vhip4", "fsl,imx8mn";
-+};
-+
-+&ifm_led {
-+	pinctrl-1 = <&pinctrl_gpio_led_v1>;
-+
-+	led-2 {
-+		function = LED_FUNCTION_STATUS;
-+		function-enumerator = <3>;
-+		color = <LED_COLOR_ID_YELLOW>;
-+		gpios = <&gpio2 17 GPIO_ACTIVE_HIGH>;
-+		default-state = "keep";
-+	};
-+
-+	led-3 {
-+		function = LED_FUNCTION_STATUS;
-+		function-enumerator = <4>;
-+		color = <LED_COLOR_ID_GREEN>;
-+		gpios = <&gpio2 19 GPIO_ACTIVE_HIGH>;
-+		default-state = "keep";
-+	};
-+};
-+
-+&ecspi1 {
-+	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>, <&gpio5 21 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+
-+	eeprom@0 {
-+		compatible = "anvo,anv32c81w", "atmel,at25";
-+		reg = <0>;
-+		spi-max-frequency = <20000000>;
-+		spi-cpha;
-+		spi-cpol;
-+		pagesize = <1>;
-+		size = <32768>;
-+		address-width = <16>;
-+	};
-+};
-+
-+&ecspi3 {
-+	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>, <&gpio5 4 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+
-+	can0: can@0 {
-+		compatible = "microchip,mcp25625";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_mcp25625>;
-+		reg = <0>;
-+		clocks = <&can_clk20m>;
-+		interrupt-parent = <&gpio4>;
-+		interrupts = <21 IRQ_TYPE_LEVEL_LOW>;
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+	};
-+
-+	can1: can@1 {
-+		compatible = "microchip,mcp2518fd";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_mcp2518>;
-+		reg = <1>;
-+		clocks = <&can_clk40m>;
-+		interrupt-parent = <&gpio5>;
-+		interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
-+		microchip,rx-int-gpios = <&gpio5 1 GPIO_ACTIVE_LOW>;
-+		spi-max-frequency = <20000000>;
-+	};
-+};
-+
-+&i2c1 {
-+	scl-gpios = <&gpio5 14 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio5 15 GPIO_ACTIVE_HIGH>;
-+	status = "okay";
-+
-+	temperature-sensor@48 {
-+		compatible = "national,lm75";
-+		reg = <0x48>;
-+	};
-+
-+	eeprom@50 {
-+		compatible = "atmel,24c128";
-+		reg = <0x50>;
-+	};
-+};
-+
-+&i2c2 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c2>;
-+	pinctrl-1 = <&pinctrl_i2c2_gpio>;
-+	scl-gpios = <&gpio5 16 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio5 17 GPIO_ACTIVE_HIGH>;
-+	status = "okay";
-+};
-+
-+&i2c3 {
-+	scl-gpios = <&gpio2 10 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio2 11 GPIO_ACTIVE_HIGH>;
-+	status = "okay";
-+};
-+
-+&ifm_pmic {
-+	interrupt-parent = <&gpio2>;
-+	interrupts = <0 GPIO_ACTIVE_LOW>;
-+};
-+
-+&iomuxc {
-+	pinctrl_ecspi1_cs: ecspi1-cs-grp {
-+		fsl,pins = <
-+			/* KS8794 nCS */
-+			MX8MN_IOMUXC_I2C4_SDA_GPIO5_IO21		0x150
-+			/* ANV32C81 nCS */
-+			MX8MN_IOMUXC_ECSPI1_SS0_GPIO5_IO9		0x150
-+		>;
-+	};
-+
-+	pinctrl_ecspi3_cs: ecspi3-cs-grp {
-+		fsl,pins = <
-+			/* MCP25625 nCS */
-+			MX8MN_IOMUXC_UART2_TXD_GPIO5_IO25		0x150
-+			/* MCP2518FD nCS */
-+			MX8MN_IOMUXC_SPDIF_RX_GPIO5_IO4			0x150
-+		>;
-+	};
-+
-+	pinctrl_gpio_5: gpio5-grp {
-+		fsl,pins = <
-+			/* CFG_EEPROM_WP */
-+			MX8MN_IOMUXC_I2C4_SCL_GPIO5_IO20		0x140
-+		>;
-+	};
-+
-+	pinctrl_gpio_led_v1: gpioled-v1-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_SD2_DATA2_GPIO2_IO17		0x116
-+			MX8MN_IOMUXC_SD2_RESET_B_GPIO2_IO19		0x116
-+		>;
-+	};
-+
-+	pinctrl_i2c1: i2c1-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_I2C1_SCL_I2C1_SCL			0x40000056
-+			MX8MN_IOMUXC_I2C1_SDA_I2C1_SDA			0x400000d6
-+		>;
-+	};
-+
-+	pinctrl_i2c1_gpio: i2c1-gpio-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_I2C1_SCL_GPIO5_IO14		0x56
-+			MX8MN_IOMUXC_I2C1_SDA_GPIO5_IO15		0xd6
-+		>;
-+	};
-+
-+	pinctrl_i2c2: i2c2-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_I2C2_SCL_I2C2_SCL			0x40000056
-+			MX8MN_IOMUXC_I2C2_SDA_I2C2_SDA			0x400000d6
-+		>;
-+	};
-+
-+	pinctrl_i2c2_gpio: i2c2-gpio-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_I2C2_SCL_GPIO5_IO16		0x56
-+			MX8MN_IOMUXC_I2C2_SDA_GPIO5_IO17		0xd6
-+		>;
-+	};
-+
-+	pinctrl_i2c3: i2c3-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_SD1_RESET_B_I2C3_SCL		0x40000056
-+			MX8MN_IOMUXC_SD1_STROBE_I2C3_SDA		0x400000d6
-+		>;
-+	};
-+
-+	pinctrl_i2c3_gpio: i2c3-gpio-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_SD1_RESET_B_GPIO2_IO10		0x56
-+			MX8MN_IOMUXC_SD1_STROBE_GPIO2_IO11		0xd6
-+		>;
-+	};
-+
-+	pinctrl_mcp2518: mcp2518-grp {
-+		fsl,pins = <
-+			/* MCP2518 nINT line */
-+			MX8MN_IOMUXC_SAI3_MCLK_GPIO5_IO2		0x116
-+			/* MCP2518 nINT1/GPIO1 line */
-+			MX8MN_IOMUXC_SAI3_TXD_GPIO5_IO1			0x116
-+		>;
-+	};
-+
-+	pinctrl_mcp25625: mcp25625-grp {
-+		fsl,pins = <
-+			/* MCP25625 nINT line */
-+			MX8MN_IOMUXC_SAI2_RXFS_GPIO4_IO21		0x156
-+		>;
-+	};
-+
-+	pinctrl_pmic: pmic-irq-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_SD1_CLK_GPIO2_IO0			0x16
-+		>;
-+	};
-+
-+	pinctrl_uart3: uart3-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_UART3_RXD_UART3_DCE_RX		0x142
-+			MX8MN_IOMUXC_UART3_TXD_UART3_DCE_TX		0x142
-+		>;
-+	};
-+
-+	pinctrl_usb_nreset: usbnreset-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_SAI3_RXC_GPIO4_IO29                0x14a
-+		>;
-+	};
-+
-+	pinctrl_wdog: wdog-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_GPIO1_IO02_WDOG1_WDOG_B		0x64
-+		>;
-+	};
-+};
-+
-+&gpio5 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_gpio_5>;
-+	gpio-line-names =
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "",
-+		"ifm_device_info_eeprom_wp",
-+		"", "", "",
-+		"", "", "", "", "", "", "", "";
-+};
-+
-+&usbotg1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_usb_nreset>;
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+
-+	usb-hub@1 {
-+		compatible = "usb424,2512", "usb424,2514";
-+		reg = <1>;
-+		reset-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v2-overlay-adin1300.dtso b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v2-overlay-adin1300.dtso
-new file mode 100644
-index 0000000000000..6ad7434a1787e
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v2-overlay-adin1300.dtso
-@@ -0,0 +1,60 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2024 Fedor Ross <fedor.ross@ifm.com>
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/arm-gic.h>
-+#include "imx8mn-pinfunc.h"
-+
-+&fec1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_fec1>;
-+	phy-handle = <&ethphy0>;
-+	phy-mode = "rgmii-id";
-+	status = "okay";
-+
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ethphy0: ethernet-phy@0 {
-+			reg = <0>;
-+
-+			adi,rx-internal-delay-ps = <1800>;
-+			adi,tx-internal-delay-ps = <2200>;
-+			interrupts-extended = <&gpio4 31 IRQ_TYPE_LEVEL_LOW>;
-+			reset-gpios = <&gpio4 28 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <10000>;
-+			reset-deassert-us = <10000>;
-+		};
-+	};
-+};
-+
-+&iomuxc {
-+	pinctrl_fec1: fec1-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_ENET_MDC_ENET1_MDC			0x16
-+			MX8MN_IOMUXC_ENET_MDIO_ENET1_MDIO		0x96
-+			MX8MN_IOMUXC_ENET_TD3_ENET1_RGMII_TD3		0x16
-+			MX8MN_IOMUXC_ENET_TD2_ENET1_RGMII_TD2		0x16
-+			MX8MN_IOMUXC_ENET_TD1_ENET1_RGMII_TD1		0x16
-+			MX8MN_IOMUXC_ENET_TD0_ENET1_RGMII_TD0		0x16
-+			MX8MN_IOMUXC_ENET_RD3_ENET1_RGMII_RD3		0x96
-+			MX8MN_IOMUXC_ENET_RD2_ENET1_RGMII_RD2		0x96
-+			MX8MN_IOMUXC_ENET_RD1_ENET1_RGMII_RD1		0x96
-+			MX8MN_IOMUXC_ENET_RD0_ENET1_RGMII_RD0		0x96
-+			MX8MN_IOMUXC_ENET_TXC_ENET1_RGMII_TXC		0x16
-+			MX8MN_IOMUXC_ENET_RXC_ENET1_RGMII_RXC		0x96
-+			MX8MN_IOMUXC_ENET_RX_CTL_ENET1_RGMII_RX_CTL	0x96
-+			MX8MN_IOMUXC_ENET_TX_CTL_ENET1_RGMII_TX_CTL	0x16
-+			/* nRST */
-+			MX8MN_IOMUXC_SAI3_RXFS_GPIO4_IO28		0x156
-+			/* nIRQ */
-+			MX8MN_IOMUXC_SAI3_TXFS_GPIO4_IO31		0x1d6
-+		>;
-+	};
-+};
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtso b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtso
-new file mode 100644
-index 0000000000000..ab1304ebd965e
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v2-overlay-ksz8794.dtso
-@@ -0,0 +1,24 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (C) 2021 Marek Vasut
-+ */
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+
-+#include "imx8mn-pinfunc.h"
-+
-+&pinctrl_ecspi1 {
-+	fsl,pins = <
-+		MX8MN_IOMUXC_ECSPI1_SCLK_ECSPI1_SCLK		0x10
-+		MX8MN_IOMUXC_ECSPI1_MOSI_ECSPI1_MOSI		0x10
-+		MX8MN_IOMUXC_ECSPI1_MISO_ECSPI1_MISO		0x90
-+		/* KS8794 nCS */
-+		MX8MN_IOMUXC_GPIO1_IO11_GPIO1_IO11		0x150
-+		/* ANV32C81 nCS */
-+		MX8MN_IOMUXC_ECSPI1_SS0_GPIO5_IO9		0x150
-+	>;
-+};
-+
-+#include "imx8mn-vhip4-evalboard-ksz8794-common.dtsi"
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v2.dts b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v2.dts
-new file mode 100644
-index 0000000000000..4dadfb7f78de2
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-vhip4-evalboard-v2.dts
-@@ -0,0 +1,221 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2024 Fedor Ross <fedor.ross@ifm.com>
-+ */
-+
-+/dts-v1/;
-+
-+#include "imx8mn-vhip4-evalboard-common.dtsi"
-+
-+/ {
-+	model = "ifm i.MX8MNano VHIP4 Evaluation Board v2";
-+	compatible = "ifm,imx8mn-vhip4-evalboard-v2", "ifm,imx8mn-vhip4-evalboard",
-+		     "ifm,imx8mn-vhip4", "fsl,imx8mn";
-+
-+	multi-led {
-+		compatible = "leds-group-multicolor";
-+		color = <LED_COLOR_ID_RGB>;
-+		function = LED_FUNCTION_INDICATOR;
-+		leds = <&rgb_0>, <&rgb_1>, <&rgb_2>;
-+	};
-+};
-+
-+&ifm_led {
-+	pinctrl-1 = <&pinctrl_gpio_led_v2>;
-+
-+	rgb_0: rgb-led-red {
-+		color = <LED_COLOR_ID_RED>;
-+		gpios = <&gpio2 17 GPIO_ACTIVE_HIGH>;
-+		default-state = "keep";
-+	};
-+
-+	rgb_1: rgb-led-green {
-+		color = <LED_COLOR_ID_GREEN>;
-+		gpios = <&gpio2 19 GPIO_ACTIVE_HIGH>;
-+		default-state = "keep";
-+	};
-+
-+	rgb_2: rgb-led-blue {
-+		color = <LED_COLOR_ID_BLUE>;
-+		gpios = <&gpio2 20 GPIO_ACTIVE_HIGH>;
-+		default-state = "keep";
-+	};
-+};
-+
-+&ecspi1 {
-+	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>, <&gpio1 11 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+
-+	eeprom@0 {
-+		compatible = "fujitsu,mb85rs64", "atmel,at25";
-+		reg = <0>;
-+		spi-max-frequency = <20000000>;
-+		spi-cpha;
-+		spi-cpol;
-+		pagesize = <1>;
-+		size = <32768>;
-+		address-width = <16>;
-+	};
-+};
-+
-+&ecspi3 {
-+	cs-gpios = <&gpio5 25 GPIO_ACTIVE_LOW>;
-+	status = "okay";
-+
-+	can0: can@0 {
-+		compatible = "microchip,mcp2518fd";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_mcp2518>;
-+		reg = <0>;
-+		clocks = <&can_clk40m>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <1 IRQ_TYPE_LEVEL_LOW>;
-+		microchip,rx-int-gpios = <&gpio1 4 GPIO_ACTIVE_LOW>;
-+		spi-max-frequency = <20000000>;
-+	};
-+};
-+
-+&i2c1 {
-+	scl-gpios = <&gpio2 6 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio2 7 GPIO_ACTIVE_HIGH>;
-+	status = "okay";
-+
-+	temperature-sensor@48 {
-+		compatible = "ti,tmp1075";
-+		reg = <0x48>;
-+	};
-+
-+	eeprom@54 {
-+		compatible = "atmel,24c128";
-+		reg = <0x54>;
-+	};
-+};
-+
-+&i2c3 {
-+	scl-gpios = <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio5 19 GPIO_ACTIVE_HIGH>;
-+	status = "okay";
-+};
-+
-+&ifm_pmic {
-+	interrupt-parent = <&gpio5>;
-+	interrupts = <17 GPIO_ACTIVE_LOW>;
-+};
-+
-+&iomuxc {
-+	pinctrl_ecspi1_cs: ecspi1-cs-grp {
-+		fsl,pins = <
-+			/* KS8794 nCS */
-+			MX8MN_IOMUXC_GPIO1_IO11_GPIO1_IO11		0x150
-+			/* Retain memory nCS (FRAM or MRAM) */
-+			MX8MN_IOMUXC_ECSPI1_SS0_GPIO5_IO9		0x150
-+			/* RETAIN_nHOLD */
-+			MX8MN_IOMUXC_SPDIF_RX_GPIO5_IO4			0x140
-+		>;
-+	};
-+
-+	pinctrl_ecspi3_cs: ecspi3-cs-grp {
-+		fsl,pins = <
-+			/* MCP2518FD nCS */
-+			MX8MN_IOMUXC_UART2_TXD_GPIO5_IO25		0x150
-+		>;
-+	};
-+
-+	pinctrl_gpio_led_v2: gpioled-v2-grp {
-+		fsl,pins = <
-+			/* LED_RGB_RED */
-+			MX8MN_IOMUXC_SD2_DATA2_GPIO2_IO17		0x116
-+			/* LED_RGB_GREEN */
-+			MX8MN_IOMUXC_SD2_RESET_B_GPIO2_IO19		0x116
-+			/* LED_RGB_BLUE */
-+			MX8MN_IOMUXC_SD2_WP_GPIO2_IO20			0x116
-+		>;
-+	};
-+
-+	pinctrl_i2c1: i2c1-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_SD1_DATA4_I2C1_SCL			0x40000056
-+			MX8MN_IOMUXC_SD1_DATA5_I2C1_SDA			0x400000d6
-+		>;
-+	};
-+
-+	pinctrl_i2c1_gpio: i2c1-gpio-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_SD1_DATA4_GPIO2_IO6		0x56
-+			MX8MN_IOMUXC_SD1_DATA5_GPIO2_IO7		0xd6
-+			/* CFG_EEPROM_WP */
-+			MX8MN_IOMUXC_SD1_STROBE_GPIO2_IO11		0x140
-+			/* RTC_nIRQ */
-+			MX8MN_IOMUXC_SPDIF_EXT_CLK_GPIO5_IO5		0x116
-+			/* LOG_EE_WP */
-+			MX8MN_IOMUXC_SPDIF_TX_GPIO5_IO3			0x140
-+		>;
-+	};
-+
-+	pinctrl_i2c3: i2c3-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_I2C3_SCL_I2C3_SCL			0x40000056
-+			MX8MN_IOMUXC_I2C3_SDA_I2C3_SDA			0x400000d6
-+		>;
-+	};
-+
-+	pinctrl_i2c3_gpio: i2c3-gpio-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_I2C3_SCL_GPIO5_IO18		0x56
-+			MX8MN_IOMUXC_I2C3_SDA_GPIO5_IO19		0xd6
-+		>;
-+	};
-+
-+	pinctrl_mcp2518: mcp2518-grp {
-+		fsl,pins = <
-+			/* CAN0_CLKO */
-+			MX8MN_IOMUXC_GPIO1_IO00_GPIO1_IO0		0x116
-+			/* CAN0_nINT0 */
-+			MX8MN_IOMUXC_GPIO1_IO03_GPIO1_IO3		0x116
-+			/* CAN0_nINT1 */
-+			MX8MN_IOMUXC_GPIO1_IO04_GPIO1_IO4		0x116
-+			/* CAN0_nINT */
-+			MX8MN_IOMUXC_GPIO1_IO01_GPIO1_IO1		0x116
-+		>;
-+	};
-+
-+	pinctrl_pmic: pmic-irq-grp {
-+		fsl,pins = <
-+			/* PMIC_nIRQ */
-+			MX8MN_IOMUXC_I2C2_SDA_GPIO5_IO17		0x1d6
-+		>;
-+	};
-+
-+	pinctrl_uart3: uart3-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_SD1_DATA6_UART3_DCE_TX		0x142
-+			MX8MN_IOMUXC_SD1_DATA7_UART3_DCE_RX		0x142
-+		>;
-+	};
-+
-+	pinctrl_wdog: wdog-grp {
-+		fsl,pins = <
-+			MX8MN_IOMUXC_GPIO1_IO02_WDOG1_WDOG_B		0x64
-+		>;
-+	};
-+};
-+
-+&gpio2 {
-+	gpio-line-names =
-+		"", "", "", "", "", "", "", "",
-+		"", "", "",
-+		"ifm_device_info_eeprom_wp",
-+		"", "", "", "",
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "", "", "", "", "";
-+};
-+
-+&gpio5 {
-+	gpio-line-names =
-+		"", "", "",
-+		"ifm_logging_eeprom_wp",
-+		"", "", "", "",
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "",	"", "", "", "",
-+		"", "", "", "", "", "", "", "";
-+};
--- 
-2.51.0
 
+Le lundi 22 d=C3=A9cembre 2025 =C3=A0 16:49 +0800, ming.qian@oss.nxp.com a =
+=C3=A9crit=C2=A0:
+> From: Ming Qian <ming.qian@oss.nxp.com>
+>=20
+> Replace vmalloc/vfree with kmalloc/kfree for allocating small
+> driver structures (vpu_inst, vdec_t, venc_t, vpu_cmd_t, and
+> frame objects).
+>=20
+> vmalloc() is designed for large memory allocations and incurs
+> unnecessary overhead for small objects due to virtual memory
+> mapping. kmalloc() is more appropriate as it allocates physically
+> contiguous memory with lower overhead.
+>=20
+> ftrace measurements of vpu_alloc_cmd() show significant improvement:
+>=20
+> =C2=A0 Before (vmalloc):=C2=A0 35-72 us=C2=A0=C2=A0 (avg ~45.7 us)
+> =C2=A0 After (kmalloc):=C2=A0=C2=A0 11-26 us=C2=A0=C2=A0 (avg ~16.8 us)
+>=20
+> This reduces allocation time by approximately 63%.
+>=20
+> No functional changes are intended.
+>=20
+> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+
+Looks good to me.
+
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+
+> ---
+> =C2=A0drivers/media/platform/amphion/vdec.c=C2=A0=C2=A0=C2=A0=C2=A0 | 16 =
++++++++---------
+> =C2=A0drivers/media/platform/amphion/venc.c=C2=A0=C2=A0=C2=A0=C2=A0 | 20 =
++++++++++-----------
+> =C2=A0drivers/media/platform/amphion/vpu_cmds.c | 15 +++++++--------
+> =C2=A0drivers/media/platform/amphion/vpu_core.c | 11 ++++-------
+> =C2=A04 files changed, 27 insertions(+), 35 deletions(-)
+>=20
+> diff --git a/drivers/media/platform/amphion/vdec.c
+> b/drivers/media/platform/amphion/vdec.c
+> index c0d2aabb9e0e..7a1c58cac02d 100644
+> --- a/drivers/media/platform/amphion/vdec.c
+> +++ b/drivers/media/platform/amphion/vdec.c
+> @@ -9,7 +9,6 @@
+> =C2=A0#include <linux/list.h>
+> =C2=A0#include <linux/kernel.h>
+> =C2=A0#include <linux/module.h>
+> -#include <linux/vmalloc.h>
+> =C2=A0#include <linux/videodev2.h>
+> =C2=A0#include <media/v4l2-device.h>
+> =C2=A0#include <media/v4l2-event.h>
+> @@ -17,7 +16,6 @@
+> =C2=A0#include <media/v4l2-ioctl.h>
+> =C2=A0#include <media/videobuf2-v4l2.h>
+> =C2=A0#include <media/videobuf2-dma-contig.h>
+> -#include <media/videobuf2-vmalloc.h>
+> =C2=A0#include "vpu.h"
+> =C2=A0#include "vpu_defs.h"
+> =C2=A0#include "vpu_core.h"
+> @@ -1642,9 +1640,9 @@ static void vdec_cleanup(struct vpu_inst *inst)
+> =C2=A0		vdec->slots =3D NULL;
+> =C2=A0		vdec->slot_count =3D 0;
+> =C2=A0	}
+> -	vfree(vdec);
+> +	kfree(vdec);
+> =C2=A0	inst->priv =3D NULL;
+> -	vfree(inst);
+> +	kfree(inst);
+> =C2=A0}
+> =C2=A0
+> =C2=A0static void vdec_init_params(struct vdec_t *vdec)
+> @@ -1909,13 +1907,13 @@ static int vdec_open(struct file *file)
+> =C2=A0	struct vdec_t *vdec;
+> =C2=A0	int ret;
+> =C2=A0
+> -	inst =3D vzalloc(sizeof(*inst));
+> +	inst =3D kzalloc(sizeof(*inst), GFP_KERNEL);
+> =C2=A0	if (!inst)
+> =C2=A0		return -ENOMEM;
+> =C2=A0
+> -	vdec =3D vzalloc(sizeof(*vdec));
+> +	vdec =3D kzalloc(sizeof(*vdec), GFP_KERNEL);
+> =C2=A0	if (!vdec) {
+> -		vfree(inst);
+> +		kfree(inst);
+> =C2=A0		return -ENOMEM;
+> =C2=A0	}
+> =C2=A0
+> @@ -1923,8 +1921,8 @@ static int vdec_open(struct file *file)
+> =C2=A0				=C2=A0=C2=A0=C2=A0 sizeof(*vdec->slots),
+> =C2=A0				=C2=A0=C2=A0=C2=A0 GFP_KERNEL | __GFP_ZERO);
+> =C2=A0	if (!vdec->slots) {
+> -		vfree(vdec);
+> -		vfree(inst);
+> +		kfree(vdec);
+> +		kfree(inst);
+> =C2=A0		return -ENOMEM;
+> =C2=A0	}
+> =C2=A0	vdec->slot_count =3D VDEC_SLOT_CNT_DFT;
+> diff --git a/drivers/media/platform/amphion/venc.c
+> b/drivers/media/platform/amphion/venc.c
+> index aced76401b69..9e5cbc2b0d3f 100644
+> --- a/drivers/media/platform/amphion/venc.c
+> +++ b/drivers/media/platform/amphion/venc.c
+> @@ -13,14 +13,12 @@
+> =C2=A0#include <linux/videodev2.h>
+> =C2=A0#include <linux/ktime.h>
+> =C2=A0#include <linux/rational.h>
+> -#include <linux/vmalloc.h>
+> =C2=A0#include <media/v4l2-device.h>
+> =C2=A0#include <media/v4l2-event.h>
+> =C2=A0#include <media/v4l2-mem2mem.h>
+> =C2=A0#include <media/v4l2-ioctl.h>
+> =C2=A0#include <media/videobuf2-v4l2.h>
+> =C2=A0#include <media/videobuf2-dma-contig.h>
+> -#include <media/videobuf2-vmalloc.h>
+> =C2=A0#include "vpu.h"
+> =C2=A0#include "vpu_defs.h"
+> =C2=A0#include "vpu_core.h"
+> @@ -844,7 +842,7 @@ static int venc_get_encoded_frames(struct vpu_inst *i=
+nst)
+> =C2=A0					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 v4l2_m2m_dst_buf_remove(i=
+nst-
+> >fh.m2m_ctx)))
+> =C2=A0			break;
+> =C2=A0		list_del_init(&frame->list);
+> -		vfree(frame);
+> +		kfree(frame);
+> =C2=A0	}
+> =C2=A0
+> =C2=A0	return 0;
+> @@ -860,7 +858,7 @@ static int venc_frame_encoded(struct vpu_inst *inst, =
+void
+> *arg)
+> =C2=A0	if (!info)
+> =C2=A0		return -EINVAL;
+> =C2=A0	venc =3D inst->priv;
+> -	frame =3D vzalloc(sizeof(*frame));
+> +	frame =3D kzalloc(sizeof(*frame), GFP_KERNEL);
+> =C2=A0	if (!frame)
+> =C2=A0		return -ENOMEM;
+> =C2=A0
+> @@ -912,9 +910,9 @@ static void venc_cleanup(struct vpu_inst *inst)
+> =C2=A0		return;
+> =C2=A0
+> =C2=A0	venc =3D inst->priv;
+> -	vfree(venc);
+> +	kfree(venc);
+> =C2=A0	inst->priv =3D NULL;
+> -	vfree(inst);
+> +	kfree(inst);
+> =C2=A0}
+> =C2=A0
+> =C2=A0static int venc_start_session(struct vpu_inst *inst, u32 type)
+> @@ -1067,7 +1065,7 @@ static void venc_cleanup_frames(struct venc_t *venc=
+)
+> =C2=A0
+> =C2=A0	list_for_each_entry_safe(frame, tmp, &venc->frames, list) {
+> =C2=A0		list_del_init(&frame->list);
+> -		vfree(frame);
+> +		kfree(frame);
+> =C2=A0	}
+> =C2=A0}
+> =C2=A0
+> @@ -1151,7 +1149,7 @@ static int venc_process_capture(struct vpu_inst *in=
+st,
+> struct vb2_buffer *vb)
+> =C2=A0		return ret;
+> =C2=A0
+> =C2=A0	list_del_init(&frame->list);
+> -	vfree(frame);
+> +	kfree(frame);
+> =C2=A0	return 0;
+> =C2=A0}
+> =C2=A0
+> @@ -1309,13 +1307,13 @@ static int venc_open(struct file *file)
+> =C2=A0	struct venc_t *venc;
+> =C2=A0	int ret;
+> =C2=A0
+> -	inst =3D vzalloc(sizeof(*inst));
+> +	inst =3D kzalloc(sizeof(*inst), GFP_KERNEL);
+> =C2=A0	if (!inst)
+> =C2=A0		return -ENOMEM;
+> =C2=A0
+> -	venc =3D vzalloc(sizeof(*venc));
+> +	venc =3D kzalloc(sizeof(*venc), GFP_KERNEL);
+> =C2=A0	if (!venc) {
+> -		vfree(inst);
+> +		kfree(inst);
+> =C2=A0		return -ENOMEM;
+> =C2=A0	}
+> =C2=A0
+> diff --git a/drivers/media/platform/amphion/vpu_cmds.c
+> b/drivers/media/platform/amphion/vpu_cmds.c
+> index 5695f5c1cb3e..ab69412e0aa7 100644
+> --- a/drivers/media/platform/amphion/vpu_cmds.c
+> +++ b/drivers/media/platform/amphion/vpu_cmds.c
+> @@ -13,7 +13,6 @@
+> =C2=A0#include <linux/slab.h>
+> =C2=A0#include <linux/types.h>
+> =C2=A0#include <linux/delay.h>
+> -#include <linux/vmalloc.h>
+> =C2=A0#include "vpu.h"
+> =C2=A0#include "vpu_defs.h"
+> =C2=A0#include "vpu_cmds.h"
+> @@ -84,13 +83,13 @@ static struct vpu_cmd_t *vpu_alloc_cmd(struct vpu_ins=
+t
+> *inst, u32 id, void *data
+> =C2=A0	int i;
+> =C2=A0	int ret;
+> =C2=A0
+> -	cmd =3D vzalloc(sizeof(*cmd));
+> +	cmd =3D kzalloc(sizeof(*cmd), GFP_KERNEL);
+> =C2=A0	if (!cmd)
+> =C2=A0		return NULL;
+> =C2=A0
+> -	cmd->pkt =3D vzalloc(sizeof(*cmd->pkt));
+> +	cmd->pkt =3D kzalloc(sizeof(*cmd->pkt), GFP_KERNEL);
+> =C2=A0	if (!cmd->pkt) {
+> -		vfree(cmd);
+> +		kfree(cmd);
+> =C2=A0		return NULL;
+> =C2=A0	}
+> =C2=A0
+> @@ -98,8 +97,8 @@ static struct vpu_cmd_t *vpu_alloc_cmd(struct vpu_inst
+> *inst, u32 id, void *data
+> =C2=A0	ret =3D vpu_iface_pack_cmd(inst->core, cmd->pkt, inst->id, id, dat=
+a);
+> =C2=A0	if (ret) {
+> =C2=A0		dev_err(inst->dev, "iface pack cmd %s fail\n",
+> vpu_id_name(id));
+> -		vfree(cmd->pkt);
+> -		vfree(cmd);
+> +		kfree(cmd->pkt);
+> +		kfree(cmd);
+> =C2=A0		return NULL;
+> =C2=A0	}
+> =C2=A0	for (i =3D 0; i < ARRAY_SIZE(vpu_cmd_requests); i++) {
+> @@ -118,8 +117,8 @@ static void vpu_free_cmd(struct vpu_cmd_t *cmd)
+> =C2=A0		return;
+> =C2=A0	if (cmd->last_response_cmd)
+> =C2=A0		atomic_long_set(cmd->last_response_cmd, cmd->key);
+> -	vfree(cmd->pkt);
+> -	vfree(cmd);
+> +	kfree(cmd->pkt);
+> +	kfree(cmd);
+> =C2=A0}
+> =C2=A0
+> =C2=A0static int vpu_session_process_cmd(struct vpu_inst *inst, struct vp=
+u_cmd_t
+> *cmd)
+> diff --git a/drivers/media/platform/amphion/vpu_core.c
+> b/drivers/media/platform/amphion/vpu_core.c
+> index 168f0514851e..85cc4a14f8ed 100644
+> --- a/drivers/media/platform/amphion/vpu_core.c
+> +++ b/drivers/media/platform/amphion/vpu_core.c
+> @@ -17,7 +17,6 @@
+> =C2=A0#include <linux/pm_runtime.h>
+> =C2=A0#include <linux/pm_domain.h>
+> =C2=A0#include <linux/firmware.h>
+> -#include <linux/vmalloc.h>
+> =C2=A0#include "vpu.h"
+> =C2=A0#include "vpu_defs.h"
+> =C2=A0#include "vpu_core.h"
+> @@ -265,7 +264,7 @@ static int vpu_core_register(struct device *dev, stru=
+ct
+> vpu_core *core)
+> =C2=A0	INIT_WORK(&core->msg_work, vpu_msg_run_work);
+> =C2=A0	INIT_DELAYED_WORK(&core->msg_delayed_work, vpu_msg_delayed_work);
+> =C2=A0	buffer_size =3D roundup_pow_of_two(VPU_MSG_BUFFER_SIZE);
+> -	core->msg_buffer =3D vzalloc(buffer_size);
+> +	core->msg_buffer =3D kzalloc(buffer_size, GFP_KERNEL);
+> =C2=A0	if (!core->msg_buffer) {
+> =C2=A0		dev_err(core->dev, "failed allocate buffer for fifo\n");
+> =C2=A0		ret =3D -ENOMEM;
+> @@ -282,10 +281,8 @@ static int vpu_core_register(struct device *dev, str=
+uct
+> vpu_core *core)
+> =C2=A0
+> =C2=A0	return 0;
+> =C2=A0error:
+> -	if (core->msg_buffer) {
+> -		vfree(core->msg_buffer);
+> -		core->msg_buffer =3D NULL;
+> -	}
+> +	kfree(core->msg_buffer);
+> +	core->msg_buffer =3D NULL;
+> =C2=A0	if (core->workqueue) {
+> =C2=A0		destroy_workqueue(core->workqueue);
+> =C2=A0		core->workqueue =3D NULL;
+> @@ -308,7 +305,7 @@ static int vpu_core_unregister(struct device *dev, st=
+ruct
+> vpu_core *core)
+> =C2=A0
+> =C2=A0	vpu_core_put_vpu(core);
+> =C2=A0	core->vpu =3D NULL;
+> -	vfree(core->msg_buffer);
+> +	kfree(core->msg_buffer);
+> =C2=A0	core->msg_buffer =3D NULL;
+> =C2=A0
+> =C2=A0	if (core->workqueue) {
+>=20
+> base-commit: b70886ff5833cf499e77af77d2324ce8f68b60ce
+
+--=-FYyUlJPAcllBQWTM48ij
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaV1s2AAKCRDZQZRRKWBy
+9MQyAQDxpxzr9kihozUH+t2YsCS8uiqoV1YKptAS4KpREXxtcAEAiT1yqKfjFLoF
+EuHuBeiiTmRL6/5CkzLEg5xRbhEOxAE=
+=1XYq
+-----END PGP SIGNATURE-----
+
+--=-FYyUlJPAcllBQWTM48ij--
