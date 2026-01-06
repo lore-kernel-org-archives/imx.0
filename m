@@ -1,151 +1,142 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC751DE2AD
-	for <imx@lists.linux.dev>; Tue,  6 Jan 2026 14:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB2130FC04
+	for <imx@lists.linux.dev>; Tue,  6 Jan 2026 14:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767708863; cv=none; b=gLU5H5t56hlQ3aIWiZ5O8kpqH8NYZxNh12q8k6cXIYBzE3X+zUMc2u4WXG8/0rM6wZSTrvbcpPfbA0Bxk4L/vQmxorjAZ0YbuE44idzIp6xVxPI5cbIsQADfrANploynwXEWNcsh36J9diRRkAi4rNJCTlAZplH+lDM6JYH3H20=
+	t=1767709088; cv=none; b=KM2vP+DHxzip0/qw9V4CqcbMJsUKCepMo5FrqcmYtLIGA+pCUNbU6IyfMwXVmtY1hspLIxyTWxbTESsuyjRkr3tm1tOL8aAkw3tvrrS850EidbC9/ENU8Ix9fiIP7/5YiOEcuTrqCDrRHQdAy+zQnu+YaojYFynW8/qiTwpm69A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767708863; c=relaxed/simple;
-	bh=J5D3AxYk/KGiW51uGhMznr9BjtqXn7rl5KAiX9QfyT8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DbVxsIyPvA4NghP1W4wdGRTStof+pkz8yRKw/uHypd0989iE7N2dvmJKX7nlmrIUNKu/wVYmR4aRSpzAQGfRuiUo8yyghXfK3ozU61y3xSnSpLk5ggVcjJhm9E1JfK5b+k0npu/Md61bjL0c6bbPhPZnrhY9+WI6VR5sYEfpXQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vd7or-0004tZ-MH; Tue, 06 Jan 2026 15:13:57 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vd7or-009ML8-0u;
-	Tue, 06 Jan 2026 15:13:57 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vd7or-00EKca-0X;
-	Tue, 06 Jan 2026 15:13:57 +0100
-Date: Tue, 6 Jan 2026 15:13:57 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
-	"moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/1] arm64: dts: imx8mp-skov: add pinctrl-name 'reset' to
- fix CHECK_DTB warning
-Message-ID: <20260106141357.a7jsmligapumcfau@pengutronix.de>
-References: <20251229165127.4006134-1-Frank.Li@nxp.com>
- <20260105111448.slm2yqiwivx2t3vh@pengutronix.de>
- <aVzhhH4BRFC7XlAL@shlinux89>
+	s=arc-20240116; t=1767709088; c=relaxed/simple;
+	bh=9Ym168jY0juUmceNY7e8j0i+6pSJU5pRFOBf6YtVzDo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ra3bh2273hT0wVxr+pC9GOsS7Nb5FE63BGsc65WNysVMZLZojM4SemZSGT64WywpOTv+Gyr6uPwwxzwx//rFXeOh0QWDZchDKPb277qwbONLsJfPDwDX5/4elAenACNzK0Ek4Kdj3N4L7oUYTbe01zCbN3ganw8IIbmS5FkGqH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOOHiz+z; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOOHiz+z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53A0C116C6
+	for <imx@lists.linux.dev>; Tue,  6 Jan 2026 14:18:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767709087;
+	bh=9Ym168jY0juUmceNY7e8j0i+6pSJU5pRFOBf6YtVzDo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=bOOHiz+z351DggBlKZJG1l4SIBZi5rGrJuMJFrTSuCC2bhYg3GVmw+EzTJ8+4o8d6
+	 mfYKrjdZQleutU3LNIOJvytnRti1+tJxYEb5+FMc6i0af14bQLGN0lgtW7mtsU2Nzu
+	 6ryFz4M8Vn1p9iUNI1fLTWCa+m4bpeR2lNFEDKERvGn1VG6CP12akkl/4e/LRbhqaQ
+	 62Twt75lEl7bQuHsNLBEHkd+BPwKedPvj2JfLdCbCO/vQwTZc6DBtiCiXsT/Efz4cM
+	 7UiMgJqXCVK8SCkbDxCkKvsHQiwcHjxf2pPEiyTaEp11J2cA9WDICgY+7wYxuhNMRE
+	 KZcuMKroFvL4g==
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-37b935df7bfso9237621fa.2
+        for <imx@lists.linux.dev>; Tue, 06 Jan 2026 06:18:07 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXcXXcngVqpqPM208BqSj2hEtq8yVmbtGaeRNvFsk+xq6SHOZkVI4RaXPkvaBCi4lj9AzM=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyoFQoRoiHl7POemcXC2f/KhnYpMSFEYQcwKkZ+Th61mxDlqQql
+	ApggpWmekw9IFk1AB0M3fnMcj4FITW+zy+zSpx7H02M5VNj82gO/iOHQMYC5Pwv36h5DBsguI8h
+	u9f1sdLq/WXLFl7CrWlrgdoW4IpQCB6mbkTA6FUoF7A==
+X-Google-Smtp-Source: AGHT+IGMmSz6Ltdahe1rVY6f+YVLJmMwESu8W203AziADCClkRGLN7rkSW5dIW6LKxsDjFSC7ntBorz6/82D0HbV854=
+X-Received: by 2002:a2e:bc15:0:b0:37a:9558:5bda with SMTP id
+ 38308e7fff4ca-382eaa05568mr8077901fa.14.1767709085885; Tue, 06 Jan 2026
+ 06:18:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aVzhhH4BRFC7XlAL@shlinux89>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+References: <20251223-i2c-adap-dev-config-v1-0-4829b1cf0834@oss.qualcomm.com>
+ <20251223-i2c-adap-dev-config-v1-6-4829b1cf0834@oss.qualcomm.com> <CAMuHMdW5ffiW_vEuDjV5bnmTeduhoqph7t8rsaFEVO7RXOM8jg@mail.gmail.com>
+In-Reply-To: <CAMuHMdW5ffiW_vEuDjV5bnmTeduhoqph7t8rsaFEVO7RXOM8jg@mail.gmail.com>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Tue, 6 Jan 2026 15:17:54 +0100
+X-Gmail-Original-Message-ID: <CAMRc=MctSufFn4Ku_8KBHmThvNOXo94DJDep-hzBem1yGw4wkg@mail.gmail.com>
+X-Gm-Features: AQt7F2rlYGWw0wYVcdfcu_38DzK8jJE5ZLbWHuaZHuyFfl6BwHPNSW4tcfiCMeQ
+Message-ID: <CAMRc=MctSufFn4Ku_8KBHmThvNOXo94DJDep-hzBem1yGw4wkg@mail.gmail.com>
+Subject: Re: [PATCH 06/12] i2c: rcar: set device parent and of_node through
+ the adapter struct
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>, 
+	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>, Andi Shyti <andi.shyti@kernel.org>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Vignesh R <vigneshr@ti.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+	Tony Lindgren <tony@atomide.com>, Andreas Kemnade <andreas@kemnade.info>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Patrice Chotard <patrice.chotard@foss.st.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>, linux-i2c@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-omap@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	linux-rpi-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Peng,
-
-On 26-01-06, Peng Fan wrote:
-> Hi Marco,
-> 
-> On Mon, Jan 05, 2026 at 12:14:48PM +0100, Marco Felsch wrote:
-> >Hi Frank,
+On Tue, Jan 6, 2026 at 10:14=E2=80=AFAM Geert Uytterhoeven <geert@linux-m68=
+k.org> wrote:
+>
+> Hi Bartosz,
+>
+> On Tue, 23 Dec 2025 at 11:05, Bartosz Golaszewski
+> <bartosz.golaszewski@oss.qualcomm.com> wrote:
+> > Configure the parent device and the OF-node using dedicated fields in
+> > struct i2c_adapter and avoid dereferencing the internal struct device.
 > >
-> >On 25-12-29, Frank Li wrote:
-> >> Add pinctrl-name 'reset' to fix below CHECK_DTB warnings:
-> >>   arch/arm64/boot/dts/freescale/imx8mp-skov-basic.dtb: switch@5f (microchip,ksz9893): pinctrl-names: ['default'] is too short
-> >> 	from schema $id: http://devicetree.org/schemas/net/dsa/microchip,ksz.yaml#
-> >> 
-> >> The commit (e469b87e0fb0d dt-bindings: net: dsa: microchip: Add strap
-> >> description to set SPI mode" force use two pinctrl-name 'default' and
-> >> 'reset'. switch@5f doesn't use SPI, so it is safe to use the same pinctrl
-> >> setting for both.
-> >
-> >please see:
-> >- https://lore.kernel.org/all/20251112084717.ea7fchu7jcz6dzsi@pengutronix.de/
-> >
-> >I stumbled over the same warning, but came to the conclusion, that the
-> >dt-bindings should be fixed instead of workaround broken bindings within
-> >the dtb.
-> 
-> If reset is optional, the dt-bindings should include "minItems:1" per my
-> understanding.
+> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.co=
+m>
+>
+> Thanks for your patch!
+>
+> > --- a/drivers/i2c/busses/i2c-rcar.c
+> > +++ b/drivers/i2c/busses/i2c-rcar.c
+> > @@ -1149,8 +1149,8 @@ static int rcar_i2c_probe(struct platform_device =
+*pdev)
+> >         adap->algo =3D &rcar_i2c_algo;
+> >         adap->class =3D I2C_CLASS_DEPRECATED;
+> >         adap->retries =3D 3;
+> > -       adap->dev.parent =3D dev;
+> > -       adap->dev.of_node =3D dev->of_node;
+> > +       adap->parent =3D dev;
+> > +       adap->of_node =3D dev->of_node;
+> >         adap->bus_recovery_info =3D &rcar_i2c_bri;
+> >         adap->quirks =3D &rcar_i2c_quirks;
+> >         i2c_set_adapdata(adap, priv);
+>
+>     [....]
+>     ret =3D rcar_i2c_clock_calculate(priv);
+>     [...]
+>     ret =3D i2c_add_numbered_adapter(adap);
+>
+> As rcar_i2c_clock_calculate() uses rcar_i2c_priv_to_dev(priv):
+>
+>     #define rcar_i2c_priv_to_dev(p)         ((p)->adap.dev.parent)
+>
+> I believe this will deference dev.parent before it is initialized by
+> the newly added code in i2c_register_adapter().
+>
+> Let's check...
+>
+>     Unable to handle kernel NULL pointer dereference at virtual
+> address 0000024c when read
+>     [0000024c] *pgd=3D80000040004003, *pmd=3D00000000
+>     Internal error: Oops: 206 [#1] SMP ARM
+>     Modules linked in:
+>     CPU: 1 UID: 0 PID: 1 Comm: swapper/0 Not tainted
+> 6.19.0-rc3-koelsch-04401-g9e22366a23cd #2288 NONE
+>     Hardware name: Generic R-Car Gen2 (Flattened Device Tree)
+>     PC is at device_property_read_u32_array+0x0/0x14
+>     LR is at i2c_parse_timing+0x14/0x30
+>     [...]
+>     Call trace:
+>      device_property_read_u32_array from i2c_parse_timing+0x14/0x30
+>      i2c_parse_timing from i2c_parse_fw_timings+0x28/0x12c
+>      i2c_parse_fw_timings from rcar_i2c_probe+0x1cc/0x534
+>      rcar_i2c_probe from platform_probe+0x58/0x90
+>
 
-Not sure, since the pinctrl-names is just an enum list. That beeing
-said, I don't see it as required since the strapping may not be required
-for systems which do already has correct ext. strapping options.
-Therefore the binding should be always optional and the driver should be
-adapted.
+Thanks for the heads-up. I'm still waiting for Wolfram to decide if
+these changes will be accepted or not before sending a v2.
 
-> But..
-> 
-> >
-> >> -		pinctrl-names = "default";
-> >> -		pinctrl-0 = <&pinctrl_switch>;
-> >> +		pinctrl-names = "default", "reset";
-> >> +		pinctrl-0 = <&pinctrl_switch>, <&pinctrl_switch>;
-> 
-> Per checking
-> https://elixir.bootlin.com/linux/v6.18.3/source/drivers/net/dsa/microchip/ksz_common.c#L5372
-> 
-> seems "reset" is required in driver.
-
-For the ksz8463 but not for the ksz9893 which is used by the
-imx8mp-skov-reva.dtsi (here).
-
-Regards,
-  Marco
-
-
-
-
-> 
-> Regards
-> Peng
-> 
-> >>  		reset-gpios = <&gpio5 1 GPIO_ACTIVE_LOW>;
-> >>  		reg = <0x5f>;
-> >>  
-> >> -- 
-> >> 2.34.1
-> >> 
-> >> 
-> >> 
-> >
-> >-- 
-> >#gernperDu 
-> >#CallMeByMyFirstName
-> >
-> >Pengutronix e.K.                           |                             |
-> >Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-> >31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> >Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
-> 
-
--- 
-#gernperDu 
-#CallMeByMyFirstName
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+Bartosz
