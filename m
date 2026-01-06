@@ -1,210 +1,166 @@
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9873D2745C
-	for <imx@lists.linux.dev>; Tue,  6 Jan 2026 01:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95CA242D95
+	for <imx@lists.linux.dev>; Tue,  6 Jan 2026 02:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767663433; cv=none; b=RJXYM52VF1xJ4GvU29GdpfS4h1pl1JPHjO7hSSexs0YoQuik/hgjGH12E7QaDZb98K4F95IrFgPf3aB0VjqkNrJgvwhWHzsoPW7tM4pSQPvo75LdMh/n7KGG6FcZdtuNsDn4sDHZlTuUbT1P0pRWLa59tLMnUog/18N4QKhdDdw=
+	t=1767668377; cv=none; b=SDsQzATNMRL8jM5yEYo+iwnROIWFbOP+BxH8OXuGqumCIQXo/+SrM1/Gzis81CsUZxyDjeX2mMHD5LuSexH59/kbZ8Grsyqgf1Fls+fQNr54uDYd8whcerB7VhQTtKWXIjj4PYQuuZ9CN9pSC1bEy5XnAIYQAjkqHhXqh3DvEVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767663433; c=relaxed/simple;
-	bh=RhrIKJ1phrF1B4sebXYrndvI9FyrAZYu/k9qmYytntg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rdCkD+a407Z2W/KUBhdDl03YUlnpDUeunFORlSNN4mRCudQVHPVcyouTKaP8yDzgk6eg2bsZW3sHgcglVh44GU/ONBVgyTxbbCOQkvNo211IIA0Dv7sv59jxHmHhknd5pJJIMqyiUukwLwAT03pVgC7lXa5eleRcXwRnEJL89Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=QReAPE7k; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1767668377; c=relaxed/simple;
+	bh=KRw2b4R9PFIlO/drnHXKLMuOyIF5ZUeIW9noWvMfoPE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=trpuPg6WJ9r1qXW9XDK7qLIolJab9+choISPMnBKRODpku/Dxqkb4RnXD6zZfxO+R9vUoKf4vBH0Q3LqMYEEtUWakMnrEdaYZk/BlAFtTZaO1g565CwriD0MjFE46N6VIUJyR+dUQwPolgbJktUZrYSVyYU8zINiBZw1uygMmwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XukQ+XHV; arc=none smtp.client-ip=209.85.222.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="QReAPE7k"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4dlYgR559sz9t8l;
-	Tue,  6 Jan 2026 02:37:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1767663427;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vZdZ6z94WkwXLP8aTircs4WcG7hRxfUszazs7DfQTcA=;
-	b=QReAPE7ke0wiZOzVxM3a+dKfeWMTiR+P+pxZJKx7eZrI6m3p9b4JzkT6PL8iTPFl0+fs8z
-	PetcKAB7TzuBlZsmok6+/WjeLB3cgzvhDxU17sxj1Rv+Sst7sjLimqPs2mCLrcFHvfvA94
-	Zt1C2XyL8R7kneUy6RN4xvOxQZa25ZERMcOBFCOXAjfAbdwNxEdhRZ3hVJ+fnzayfmUokX
-	kkCoJEqCB3tk8Oc+JJXYp3P8JCr1CqJDtkAzyiXPZIjQUswuHYH9EdZb7wZY2YYNc8QAje
-	FemL8DTDplAylFvImKRL0m/B4m4LQVK4GixZR/ntkLC/vQ3x6unQokSD8o71Jw==
-Message-ID: <9912e2dc-50cc-464d-8372-b3b79334ac67@mailbox.org>
-Date: Tue, 6 Jan 2026 02:36:18 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XukQ+XHV"
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8b1bfd4b3deso44676785a.2
+        for <imx@lists.linux.dev>; Mon, 05 Jan 2026 18:59:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767668373; x=1768273173; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vx/qAej5N4kP3ROX4pofW6IJjT74Jh+ftw/LnFdFGx0=;
+        b=XukQ+XHV40Hpj42glS1SLJOGtqTOO9uHdy0xJ6lRozO5+r5VQ0DthWLktAFg7GtzmS
+         yVQh4uu49DVTOAZUO2p4ngRtCcBObtNzZMwnu9aG7Li+MCdrLsf93SdlHn+R9N5MvUQD
+         y51CLrNWJzgdX1XZGV3d1Dnwv/N0ck35VdiT3kalybt6oSW9TPPeiQJD1icUZ0i5n0R4
+         8NuDeIXJCtkIo9lrPWdOA0xEDGBoi93QO2ddYjoim0HSWP8oFokH1rvwZSeudvKM4TLa
+         dz1ouE5ngu83EZpjEsDvCHu/lOl2GVdpoefXeWWK3HzbXuCUgZLnGrB04qul08Oy8ciI
+         ed+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767668373; x=1768273173;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vx/qAej5N4kP3ROX4pofW6IJjT74Jh+ftw/LnFdFGx0=;
+        b=d8oy+0MsG1IlpzGbTA5iS4Ly48epIZ0mPk0S8g/ApGgws48Fwxfn6vEy05ZxXGNo3I
+         qOOYBZjb5w3Hryc/spNNXEyAAYToh4VUKHa5PVYKWGkjjwltzGXxYMjJ6I2vrXvr8yRi
+         r58SN+U4KkE+UseD6P1cCWcyBXoogvTE0weGVAw7QBgprNjvEx4iyKJQvZvTp4/ScgeU
+         izT14Qh91PbbMYhHf6fYFveaTnjkGgiuyl6r0KDkDUNvCqDls2ZFjFit/WUthosGixFf
+         e+eqd2sKzObArYOP1YyzZG+dXzVeS0lf0wye4f4xBZ6hJ4pWUha0YVx2kW9AfUbXoF23
+         rObQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXPqgTn4N4NTVzSOo8oqUGUtGwYnCYHinsQC/edxEN3pni5VTr6S7o0NZmHxq+6QVnEECU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzP4kHWr6z7nkqv/9DLZRKPsn+iU+LJ9AFROV0nzqRRTQvRjoTR
+	WB0qfORa/g5XfJoPxSQ8WRUWo0Ap5PZnQPtt5ck+lst6zSf5gY39JWIQ
+X-Gm-Gg: AY/fxX6GIqUlHc2JdpjpFsPPyRx+UkcjdgJn+KpwjfbjRbH44lm45u9xqe/4clrY2Qm
+	arabhmUVCSs0eC/VERFH3V05Blce6otZtQ+dDz/lTwqnuUYvf/Dem9c6Xu2cXZ4iHvp9Mofxx4y
+	tqQV5U4W4eyLoOtntXKYAdXlzF/sWDDj8BftTkWOzfZOClxArA6MU0o0aafIFRfi4cLRsCbJWgN
+	+QIBhXyxlIFd3vumFVwdcuGgc5PHAUjadABELiTiINABvsV00NIw0j1tJlaiS1Ckg1q8ghS772t
+	2YqflF4mR9eSKsSySCD+fm8G1be11llzPt/Ng8bIC9nM11VfV+R8RfU3CnSmRUMlxNWYH4YivN6
+	IVBGlr+WB2011boDrrfkLMcvYd0ADrx3KcTH1gJITkpZ1JH2ZOwxYq4PV/eYuezGU+xgfY4lNNh
+	+1GK/wGGF6mg==
+X-Google-Smtp-Source: AGHT+IGfzpRNHPBFd6mQg2Ynna6tB59sqYBTdeaJw7TnW20z6C7vEd+2oXqE4VOqORArcYacVQCHxQ==
+X-Received: by 2002:a05:622a:1e1a:b0:4ed:b978:91db with SMTP id d75a77b69052e-4ffa781bd49mr22824561cf.77.1767668372780;
+        Mon, 05 Jan 2026 18:59:32 -0800 (PST)
+Received: from sam-fedora ([2605:b100:549:78f5:d4cd:470:c405:d573])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ffa8e363b7sm4984501cf.20.2026.01.05.18.59.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jan 2026 18:59:32 -0800 (PST)
+Date: Mon, 5 Jan 2026 21:59:29 -0500
+From: Samuel Kayode <samkay014@gmail.com>
+To: Waqar Hameed <waqar.hameed@axis.com>
+Cc: Sebastian Reichel <sre@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Lee Jones <lee@kernel.org>, kernel@axis.com, imx@lists.linux.dev,
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 07/11] power: supply: pf1550: Fix use-after-free in
+ power_supply_changed()
+Message-ID: <aVx6kVc34fpBPJ0J@sam-fedora>
+References: <cover.1766268280.git.waqar.hameed@axis.com>
+ <ae5a71b7e4dd2967d8fdcc531065cc71b17c86f5.1766268280.git.waqar.hameed@axis.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 07/14] drm/imx: dc: Add DPR channel support
-To: Liu Ying <victor.liu@oss.nxp.com>, Liu Ying <victor.liu@nxp.com>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Dmitry Baryshkov <lumag@kernel.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
-References: <20251016-imx8-dc-prefetch-v4-0-dfda347cb3c5@nxp.com>
- <20251016-imx8-dc-prefetch-v4-7-dfda347cb3c5@nxp.com>
- <174bdb5a-b5a8-4856-a0ac-8caaaefde136@mailbox.org>
- <24f99c46-ca5d-43cc-a2eb-a6e5029e9f86@nxp.com>
- <500852c9-2cd5-4897-a139-4e93988f5469@mailbox.org>
- <df8751ba-7215-4635-98b0-ca659ec786cd@nxp.com>
- <de695268-1241-4658-871c-30dbf068ad92@mailbox.org>
- <3d622f3c-ddd4-4feb-bc88-a1eea7dd936d@oss.nxp.com>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <3d622f3c-ddd4-4feb-bc88-a1eea7dd936d@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: o3msartdmiogq9p5x1ggudos8skw5gfh
-X-MBO-RS-ID: f3f8d579d449a7f2514
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ae5a71b7e4dd2967d8fdcc531065cc71b17c86f5.1766268280.git.waqar.hameed@axis.com>
 
-On 11/14/25 11:03 AM, Liu Ying wrote:
-
-Hello Liu,
-
-sorry for my late reply.
-
->>>>>>> +++ b/drivers/gpu/drm/imx/dc/Kconfig
->>>>>>> @@ -1,6 +1,7 @@
->>>>>>>      config DRM_IMX8_DC
->>>>>>>          tristate "Freescale i.MX8 Display Controller Graphics"
->>>>>>>          depends on DRM && COMMON_CLK && OF && (ARCH_MXC || COMPILE_TEST)
->>>>>>> +    depends on IMX_SCU
->>>>>> Can the SCU dependency be made optional,
->>>>>
->>>>> I don't think this can be done.  If you grep 'depends on IMX_SCU' in
->>>>> kernel, you may find a handful of existing dependancies.
->>>>
->>>> Sure, I do not dispute this part.
->>>>
->>>> But the SCU dependency can be contained in a component of this driver,
->>>> which is not used by MX95, and used only by MX8Q . Then there will be
->>>> no problem.
->>>
->>> Which component?  You mean PRG and DPRC?
->>>
->>> If we add something like CONFIG_DRM_IMX8_DC_PRG and make CONFIG_DRM_IMX8_DC_PRG
->>> depend on SCU, then should we make CONFIG_DRM_IMX8_DC depend on
->>> CONFIG_DRM_IMX8_DC_PRG?  That's yet another dependency.
->>
->> I would say, if possible, put the SCU-dependent parts behind
->> CONFIG_DRM_IMX8_DC_PRG symbol, and make that symbol configurable via
->> Kconfig . Users of iMX95-only can turn it off, generic kernel config
->> should keep it on.
+On Sat, Dec 20, 2025 at 11:36:01PM +0100, Waqar Hameed wrote:
+> Using the `devm_` variant for requesting IRQ _before_ the `devm_`
+> variant for allocating/registering the `power_supply` handle, means that
+> the `power_supply` handle will be deallocated/unregistered _before_ the
+> interrupt handler (since `devm_` naturally deallocates in reverse
+> allocation order). This means that during removal, there is a race
+> condition where an interrupt can fire just _after_ the `power_supply`
+> handle has been freed, *but* just _before_ the corresponding
+> unregistration of the IRQ handler has run.
 > 
-> Both i.MX8 and i.MX95 would use arm64 defconfig.  Most distros if not all
-> would use that to generate a single kernel image + modules for i.MX8 and
-> i.MX95.  We can't presume that __most__ users would change the configs
-> for i.MX95.
-
-That wasn't my point. My point was, make it possible to compile the PRG 
-parts out if they aren't needed (and with them, SCU support). If I build 
-the kernel for iMX95, I don't need iMX8Q support in, so I can turn MX8Q 
-support off alongside the SCU parts. The clean way to do that is to keep 
-the SCU-dependent parts in dedicated file(s), which may or may not be 
-compiled in. For generic kernel builds, they should be compiled in and 
-decide at runtime, whether or not they should be used of course.
-
-[...]
-
->>>>> Like I replied to your i.MX95 DC patch series's cover letter, SCU accesses
->>>>> registers via Cortex-M core instead of Cortex-A core IIUC.  I really don't
->>>>> know how to abstract IMX_SCU out, especially via regmap.
->>>>
->>>> The simplest way would be to use regmap_config .reg_read and .reg_write ,
->>>> if there is no better way.
->>>
->>> Can you shed more light on this?  Any examples?
->>
->> I'll just reply to this part, because that is probably the most relevant
->> to this whole conversation.
->>
->> git grep '\.reg_write' drivers -> drivers/hwmon/aspeed-pwm-tacho.c as a
->> simple example.
->>
->> Then such a reg_write implementation can do:
->>
->> if (SCU)
->>    use SCU accessor
->> else
->>    use writel() or so
+> This will lead to the IRQ handler calling `power_supply_changed()` with
+> a freed `power_supply` handle. Which usually crashes the system or
+> otherwise silently corrupts the memory...
 > 
-> Thanks for the example, it makes regmap idea a bit more clear.  But, how
-> would you pass the SCU flag to .reg_write?  I hope i.MX95 code path won't
-> see any information about SCU.
-
-You could have one regmap for MX8Q and one regmap for MX95. For the 
-register IO in the driver which uses regmap, either regmap is still only 
-a generic regmap, no matter what the hardware accessor in that regmap 
-are. Therefore most of the code can be generic (use generic regmap) and 
-only the probe code decides which regmap (MX8Q SCU regmap or MX95 
-regmap) is going to be used by the driver.
-
-> Also, IMO, wrapping SCU with regmap is abusing the regmap API.
-> How would you pass the resource, ctrl and val parameters to .reg_write?
+> Note that there is a similar situation which can also happen during
+> `probe()`; the possibility of an interrupt firing _before_ registering
+> the `power_supply` handle. This would then lead to the nasty situation
+> of using the `power_supply` handle *uninitialized* in
+> `power_supply_changed()`.
 > 
-> int imx_sc_misc_set_control(struct imx_sc_ipc *ipc, u32 resource,
->                              u8 ctrl, u32 val)
+> Fix this racy use-after-free by making sure the IRQ is requested _after_
+> the registration of the `power_supply` handle.
 > 
-> Regarding the 'else' clause, I don't think we can use writel(), because
-> SCU accesses registers via Cortex-M core, not Cortex-A core(I mentioned
-> this before).  I don't see anything we can put under the 'else' clause.
+> Fixes: 4b6b6433a97d ("power: supply: pf1550: add battery charger support")
+> Signed-off-by: Waqar Hameed <waqar.hameed@axis.com>
 
-You could have one regmap definition for MX8Q/SCU and one for MX95, and 
-at probe time, select which of those is going to be used. That could 
-work I think ?
+Reviewed-by: Samuel Kayode <samkay014@gmail.com>
 
->>>>>> so iMX95 support can be added into the driver easily too ?
->>>>>
->>>>> Like I replied to your i.MX95 DC patch series, I think i.MX95 DC support
->>>>> can be in drivers/gpu/drm/imx/dc, but it should be in a separate module
->>>>> (something like imx95_dc_drm) plus an additional common module(like
->>>>> imx_dc_drm_common).
->>>> This design part is something I do not fully understand. Sure, it can be
->>>> two modules, but in the end, the result would have to be capable of being
->>>> compiled into single kernel binary if both modules would be =y in Kconfig
->>>> anyway.
->>>
->>> This is something like imx8qm_ldb, imx8qxp_ldb and imx_ldb_helper modules -
->>> DRM_IMX8QM_LDB and DRM_IMX8QXP_LDB select DRM_IMX_LDB_HELPER.
->>>
->>> Note you may make CONFIG_DRM_IMX8QM_LDB=y and CONFIG_DRM_IMX8QXP_LDB=m with
->>> CONFIG_DRM_IMX_LDB_HELPER=y.
->> Do we have to make it this complicated right from the start ?
-> 
-> I don't think imx_dc_drm_common would make it complicated, but instead it
-> makes drivers simple and easy to maintain.
-> 
->> Maybe we can start simple, with one module, and then split it up if it turns
->> out to be unsuitable ?
-> 
-> Hmm, maybe it's time to split it up now, because:
-> 1) Your below patch has already been adding DB to CRTC function.
->     See dc_db_shdtokgen() in dc_crtc_atomic_enable(), which certainly breaks
->     i.MX8 DC.  To avoid that, you'll add branches to the atomic enable
->     callback, which is something I don't want.
+Thank you!
+Sam
 
-Can we have separate atomic_enable() callback for MX8Q and MX95 for 
-example ?
-
-> https://patchwork.freedesktop.org/patch/680085/?series=155784&rev=1
+> ---
+>  drivers/power/supply/pf1550-charger.c | 32 +++++++++++++--------------
+>  1 file changed, 16 insertions(+), 16 deletions(-)
 > 
-> 2) This patch series is trying to add i.MX8 DC prefetch engine support.
->     i.MX95 really doesn't embed the prefetch engine.  And I hope i.MX95 code
->     path doesn't need to know the prefetch engine/SCU existence or non-existence.
-I think the prefetch code can be contained in a single file and called 
-only if the SoC is MX8Q, that shouldn't be difficult to do ?
+> diff --git a/drivers/power/supply/pf1550-charger.c b/drivers/power/supply/pf1550-charger.c
+> index 98f1ee8eca3bc..a457862ef4610 100644
+> --- a/drivers/power/supply/pf1550-charger.c
+> +++ b/drivers/power/supply/pf1550-charger.c
+> @@ -584,22 +584,6 @@ static int pf1550_charger_probe(struct platform_device *pdev)
+>  		return dev_err_probe(chg->dev, ret,
+>  				     "failed to add battery sense work\n");
+>  
+> -	for (i = 0; i < PF1550_CHARGER_IRQ_NR; i++) {
+> -		irq = platform_get_irq(pdev, i);
+> -		if (irq < 0)
+> -			return irq;
+> -
+> -		chg->virqs[i] = irq;
+> -
+> -		ret = devm_request_threaded_irq(&pdev->dev, irq, NULL,
+> -						pf1550_charger_irq_handler,
+> -						IRQF_NO_SUSPEND,
+> -						"pf1550-charger", chg);
+> -		if (ret)
+> -			return dev_err_probe(&pdev->dev, ret,
+> -					     "failed irq request\n");
+> -	}
+> -
+>  	psy_cfg.drv_data = chg;
+>  
+>  	chg->charger = devm_power_supply_register(&pdev->dev,
+> @@ -616,6 +600,22 @@ static int pf1550_charger_probe(struct platform_device *pdev)
+>  		return dev_err_probe(&pdev->dev, PTR_ERR(chg->battery),
+>  				     "failed: power supply register\n");
+>  
+> +	for (i = 0; i < PF1550_CHARGER_IRQ_NR; i++) {
+> +		irq = platform_get_irq(pdev, i);
+> +		if (irq < 0)
+> +			return irq;
+> +
+> +		chg->virqs[i] = irq;
+> +
+> +		ret = devm_request_threaded_irq(&pdev->dev, irq, NULL,
+> +						pf1550_charger_irq_handler,
+> +						IRQF_NO_SUSPEND,
+> +						"pf1550-charger", chg);
+> +		if (ret)
+> +			return dev_err_probe(&pdev->dev, ret,
+> +					     "failed irq request\n");
+> +	}
+> +
+>  	pf1550_dt_parse_dev_info(chg);
+>  
+>  	return pf1550_reg_init(chg);
