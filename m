@@ -1,41 +1,41 @@
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13D4322B75
-	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 13:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D852C322B7A
+	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 13:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767791629; cv=none; b=Ie9NTb2RbszN93010Mg0Y6zGpsYXACNNvtSb2dvC72VUnuupztsheQBT0fQKPij9woXDCn4WhW/yuzIN1SVpsYucBMNrR8zznjhG9yIJ9WZUiYZArxMDF4AKuMYhti3P+m0zC1NW2tCPaKz0KQU7A4umRelxBIxEZt4gx5YjzaI=
+	t=1767791632; cv=none; b=n6qRyhYDeLV8uip3BqTaPpfixSC/GWK4QuMn0FbB2xePDI6c+5CdRtb7luiGWwlzOsZVfEc50OCucKlXocZMgZxvZyxXKfnbXKgJ7leVwJeZF50qMJt7U2EnmVYj7hdDdzjwG6Jnzy1IsgOD2lVBEl8KABDuLDYX0ndRY6puDV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767791629; c=relaxed/simple;
-	bh=4ylN1pBdc0e/pl84O/LNo2jXs53jzp+L0ARfG3VDe8c=;
+	s=arc-20240116; t=1767791632; c=relaxed/simple;
+	bh=geQevuXHdefJplJWRFXCTgfRVlyUpFRRHxc8gAIKsfo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fGjQPLupWmY+g2UqD/x57ZthX6J8fsrRbQ4YOQY3FEEVgnKO88s49hOeN4XNt0cYp+SmBTY2w2raCULMJmwyLrlq5Jz1J9ei/GEEriVulvCcQkB9mf0RfFUA1PL76gLfI7aBLiGNtsWz/WYnSyJvDuYSEhhiS0viYsMRBvpy9FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dfq0fNtO; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=aVC8WD5gDUPI+mP5W7N1o9ZhX2lSBfPDH10PJq9SsF+BwK2otxG9cxLkHBfrb9746UUVCYdy35Nh/ba3InTmh6pFz9n3nut1GjbKofzGtQSy4pNIKpmTTLt9m8yFYnw0COQvMk+BRzdxI4BbhU3+QUUjouy9qc0AnKoNt4GBdpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pPm8csoJ; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dfq0fNtO"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pPm8csoJ"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 0150CC1EC8B;
-	Wed,  7 Jan 2026 13:13:19 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 503E8C1EC90;
+	Wed,  7 Jan 2026 13:13:23 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1C945606F8;
-	Wed,  7 Jan 2026 13:13:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1F64A103C8741;
-	Wed,  7 Jan 2026 14:13:39 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6EA5B606F8;
+	Wed,  7 Jan 2026 13:13:49 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4BC18103C8744;
+	Wed,  7 Jan 2026 14:13:44 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767791623; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1767791627; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=kcPTDN7TfpXL+5tbxQ2V14FG9zJXkIPfnt9CMkeJHG4=;
-	b=dfq0fNtOTSUa9Ae1iTqDZCcgA0P+8l1KsU+tx56jFXhdxp3NbglAEKOkeS+qqhJCjOM05w
-	B1sJJ40Emdj3FCPgFIpcYEvxDqoMPFwIA9l1LFbzxql6wtkOJKfn7Rl0gqi2IP3pXf42Qt
-	fqkSi6AlE5KOW7Rlwm3Ksz6ABMZFaL7Z7/35mTrvHrRFrPu3KDMnBMKU1sHsJ0PZ8FBQsK
-	bIiHH0XXyEDvSJULVP+F8pmizTaMxUpDdQufVzWFLf71pMZZ8HqpidQsqm3UZ2lkhg1/Mk
-	KP1mcGlA+a0f4/wDR45L2cVEBghP1XBBFAb8VkvcOmJz0zKlkiDWFFp1QfByiw==
+	bh=AofJV46GCcIycup8AyvdwScpLkblbZyy7dzUs70zbeM=;
+	b=pPm8csoJHFOtCpXH2s+CTdsiSGlOr6aFzuCyOraotIbgXUOF67e30ioJY4KQ30d/H6x7gc
+	G6WKbMrwHr2QbJzFOtDlld557GcNqd0KKD+Sni+DQ5Id3tTWL+1MUxKcJylQ3rW9WctVZu
+	/2SdyuZcUpXPHO7GK2Mx6K59cv9frqTGZYRo6Q5xDYqjDjibdL4gMRCxcyjIAXKSlBOgA9
+	6m45RVyHag4wNIpNkZUzPjXxrTXPMzr28GWso7PMYzjK7g8fU9YXeMnwZBON2kvOmyixOO
+	ff7hgGnjSfA8/dLgG9b7VEs94HlAHXGbGvNLqCQrKDmnmF0wJQJ3WVQCU+1RIA==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 07 Jan 2026 14:12:55 +0100
-Subject: [PATCH 04/12] drm/bridge: thc63lvd1024: convert to
+Date: Wed, 07 Jan 2026 14:12:56 +0100
+Subject: [PATCH 05/12] drm/bridge: tfp410: convert to
  of_drm_find_and_get_bridge()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-4-283d7bba061a@bootlin.com>
+Message-Id: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-5-283d7bba061a@bootlin.com>
 References: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-0-283d7bba061a@bootlin.com>
 In-Reply-To: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-0-283d7bba061a@bootlin.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -76,42 +76,103 @@ is put when done by using the drm_bridge::next_bridge pointer.
 
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/gpu/drm/bridge/thc63lvd1024.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/bridge/ti-tfp410.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/thc63lvd1024.c b/drivers/gpu/drm/bridge/thc63lvd1024.c
-index 2cb7cd0c0608..c804222846c3 100644
---- a/drivers/gpu/drm/bridge/thc63lvd1024.c
-+++ b/drivers/gpu/drm/bridge/thc63lvd1024.c
-@@ -32,7 +32,6 @@ struct thc63_dev {
- 	struct gpio_desc *oe;
- 
- 	struct drm_bridge bridge;
--	struct drm_bridge *next;
+diff --git a/drivers/gpu/drm/bridge/ti-tfp410.c b/drivers/gpu/drm/bridge/ti-tfp410.c
+index b80ee089f880..11b5bb50e9f4 100644
+--- a/drivers/gpu/drm/bridge/ti-tfp410.c
++++ b/drivers/gpu/drm/bridge/ti-tfp410.c
+@@ -30,7 +30,6 @@ struct tfp410 {
+ 	struct gpio_desc	*powerdown;
  
  	struct drm_bridge_timings timings;
- };
-@@ -48,7 +47,7 @@ static int thc63_attach(struct drm_bridge *bridge,
- {
- 	struct thc63_dev *thc63 = to_thc63(bridge);
+-	struct drm_bridge	*next_bridge;
  
--	return drm_bridge_attach(encoder, thc63->next, bridge, flags);
-+	return drm_bridge_attach(encoder, thc63->bridge.next_bridge, bridge, flags);
+ 	struct device *dev;
+ };
+@@ -53,8 +52,8 @@ static int tfp410_get_modes(struct drm_connector *connector)
+ 	const struct drm_edid *drm_edid;
+ 	int ret;
+ 
+-	if (dvi->next_bridge->ops & DRM_BRIDGE_OP_EDID) {
+-		drm_edid = drm_bridge_edid_read(dvi->next_bridge, connector);
++	if (dvi->bridge.next_bridge->ops & DRM_BRIDGE_OP_EDID) {
++		drm_edid = drm_bridge_edid_read(dvi->bridge.next_bridge, connector);
+ 		if (!drm_edid)
+ 			DRM_INFO("EDID read failed. Fallback to standard modes\n");
+ 	} else {
+@@ -89,7 +88,7 @@ tfp410_connector_detect(struct drm_connector *connector, bool force)
+ {
+ 	struct tfp410 *dvi = drm_connector_to_tfp410(connector);
+ 
+-	return drm_bridge_detect(dvi->next_bridge, connector);
++	return drm_bridge_detect(dvi->bridge.next_bridge, connector);
  }
  
- static enum drm_mode_status thc63_mode_valid(struct drm_bridge *bridge,
-@@ -132,9 +131,9 @@ static int thc63_parse_dt(struct thc63_dev *thc63)
- 		return -ENODEV;
+ static const struct drm_connector_funcs tfp410_con_funcs = {
+@@ -126,7 +125,7 @@ static int tfp410_attach(struct drm_bridge *bridge,
+ 	struct tfp410 *dvi = drm_bridge_to_tfp410(bridge);
+ 	int ret;
+ 
+-	ret = drm_bridge_attach(encoder, dvi->next_bridge, bridge,
++	ret = drm_bridge_attach(encoder, dvi->bridge.next_bridge, bridge,
+ 				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+ 	if (ret < 0)
+ 		return ret;
+@@ -134,14 +133,14 @@ static int tfp410_attach(struct drm_bridge *bridge,
+ 	if (flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR)
+ 		return 0;
+ 
+-	if (dvi->next_bridge->ops & DRM_BRIDGE_OP_DETECT)
++	if (dvi->bridge.next_bridge->ops & DRM_BRIDGE_OP_DETECT)
+ 		dvi->connector.polled = DRM_CONNECTOR_POLL_HPD;
+ 	else
+ 		dvi->connector.polled = DRM_CONNECTOR_POLL_CONNECT | DRM_CONNECTOR_POLL_DISCONNECT;
+ 
+-	if (dvi->next_bridge->ops & DRM_BRIDGE_OP_HPD) {
++	if (dvi->bridge.next_bridge->ops & DRM_BRIDGE_OP_HPD) {
+ 		INIT_DELAYED_WORK(&dvi->hpd_work, tfp410_hpd_work_func);
+-		drm_bridge_hpd_enable(dvi->next_bridge, tfp410_hpd_callback,
++		drm_bridge_hpd_enable(dvi->bridge.next_bridge, tfp410_hpd_callback,
+ 				      dvi);
  	}
  
--	thc63->next = of_drm_find_bridge(remote);
-+	thc63->bridge.next_bridge = of_drm_find_and_get_bridge(remote);
- 	of_node_put(remote);
--	if (!thc63->next)
-+	if (!thc63->bridge.next_bridge)
+@@ -149,8 +148,8 @@ static int tfp410_attach(struct drm_bridge *bridge,
+ 				 &tfp410_con_helper_funcs);
+ 	ret = drm_connector_init_with_ddc(bridge->dev, &dvi->connector,
+ 					  &tfp410_con_funcs,
+-					  dvi->next_bridge->type,
+-					  dvi->next_bridge->ddc);
++					  dvi->bridge.next_bridge->type,
++					  dvi->bridge.next_bridge->ddc);
+ 	if (ret) {
+ 		dev_err(dvi->dev, "drm_connector_init_with_ddc() failed: %d\n",
+ 			ret);
+@@ -169,8 +168,8 @@ static void tfp410_detach(struct drm_bridge *bridge)
+ {
+ 	struct tfp410 *dvi = drm_bridge_to_tfp410(bridge);
+ 
+-	if (dvi->connector.dev && dvi->next_bridge->ops & DRM_BRIDGE_OP_HPD) {
+-		drm_bridge_hpd_disable(dvi->next_bridge);
++	if (dvi->connector.dev && dvi->bridge.next_bridge->ops & DRM_BRIDGE_OP_HPD) {
++		drm_bridge_hpd_disable(dvi->bridge.next_bridge);
+ 		cancel_delayed_work_sync(&dvi->hpd_work);
+ 	}
+ }
+@@ -362,10 +361,10 @@ static int tfp410_init(struct device *dev, bool i2c)
+ 	if (!node)
+ 		return -ENODEV;
+ 
+-	dvi->next_bridge = of_drm_find_bridge(node);
++	dvi->bridge.next_bridge = of_drm_find_and_get_bridge(node);
+ 	of_node_put(node);
+ 
+-	if (!dvi->next_bridge)
++	if (!dvi->bridge.next_bridge)
  		return -EPROBE_DEFER;
  
- 	endpoint = of_graph_get_endpoint_by_regs(thc63->dev->of_node,
+ 	/* Get the powerdown GPIO. */
 
 -- 
 2.52.0
