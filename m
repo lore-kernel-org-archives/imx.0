@@ -1,179 +1,158 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010012.outbound.protection.outlook.com [52.101.201.12])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2670978F59
-	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 09:12:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767777180; cv=fail; b=LV1BVaBlqp1jBlS9hNvzLMhinXkZYUHGSZexE3vpfBRcE8eGXhiRTLNHdKAZSXfzXcTjj4I9kzuCh84rLgD0yg/oxFvbFYiJwiqfEwGSBK0+2J+jUwc/BmsSQtXzxxDa61dbYZC1mwQcFvFeFrNlMMgtapSxw0qoQlbodehwe7I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767777180; c=relaxed/simple;
-	bh=bKuxCdi4DAF2JtNHqMN4ZpZ+JKUPdciQlF+6eEoFEug=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UUmOZhQlKKQ5eazF98+iqwvID8wVOHEM/lwsT5CY3kaydDHAw4cEYwnht7spd7EJy0N3jxQ22aAwSPnKB1rcm5oOzeus1IFOrzZcGLAlw558tyF8nd5FrfzQXW1Qln8YpvaXSPncf+hjigBAxU+VRm1tx9K6EzKm2CxobrP/UDw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gehealthcare.com; spf=pass smtp.mailfrom=gehealthcare.com; dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b=bSGxBXrm; arc=fail smtp.client-ip=52.101.201.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gehealthcare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gehealthcare.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57155313E38
+	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 09:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767779820; cv=none; b=RNrYzJIOCPtRTYktE09VOte5T4UlpqRxEMa4B49zaFf3gmT63+avMN7QS/Zw61+jbwl1R3Sve94CLU+KjrVl0DPrXdOHYm3K1+USF24Fa/MYxKwVnAhMMj3OjUvfh+DokVQh0EV1fRtNE0ZJzQrkkt+Zazg4WGbrzbcCAiRpEDU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767779820; c=relaxed/simple;
+	bh=EXsmHorxP98JQwdx3rhYCMbTcoRsKeax2CxClyHnEXw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CENtofHyjnJMvLO4iDBQ83kQetggds1jyDQtH2IF1zH56NDRsgLx0NLr/SXTLOzCOIJTggrFrLH/ISSXNWGKex7hhPQzcIKQJoFyn7I0VkPoWyhDNgJQfjU46RTeXjsR94iGs2H6NCObojgAKOtCh9c2rc656dSQbZidWqkJ4kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ttIFfJEx; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b="bSGxBXrm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qSX6/YjQe+mYXUhqKbVV182SHYH45cXJxZqCrK0aAvfV0yS7C8pdB7UaDgTgPaBY4FbDzGwGIC34XalJVuNw+Yox6FcbG0tINRcK8wxtAFrTOEQ1wy7Z+q/pWTU3LLFPXxfcnuqYwL6nPkMScQv4E4AVlwUQ4uV8Q+C82CcQKX5IiFQsWlBvPE/1N9EbZ4BNQfbmuzIxUrZaExo2rDhnBqF1vlW34GK5ebwO+7UuabmdPz+dB/K4qt37XPzzSVropMvj3bCebn2daCDZoHReDyw70nRfAzgMyQMuimtBlF+hWDTz16T6wJDBBf5JIzl91esmD2qtQLV8Mu0eZma9sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bKuxCdi4DAF2JtNHqMN4ZpZ+JKUPdciQlF+6eEoFEug=;
- b=mON+jmYNKphefBhObvrvYRt1mFT4V8iS8sTi5nwJyO2GpkO2LyuNjUvMPw49ysz/N+U73oBh0pqctEHof1lCZY2AmVcEme5tBznalfE1Ij1ZKXrVr2r3BJMEtooQaND98HJkaKIGkuuxyT/PPmKocoU+VC6cN0ua6o7eLfG/49Xu2vlwEpJ2U9x8doYWHM1InJpu0QfdusDUNjk+CoV4DCqVWFdL0CYQetUeiAzDFMWOBYYmWgfn00OZYweNonjP8dmTC09gi7FDnMBiuzK6Cx7a5oKFpx8M6dyL8oBD3MOXiPl4Xx0Wc3S1vHWjHWBqOMinlN5JI3Dcx80ja2dgpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 165.85.157.49) smtp.rcpttodomain=lists.linux.dev
- smtp.mailfrom=gehealthcare.com; dmarc=fail (p=quarantine sp=quarantine
- pct=100) action=quarantine header.from=gehealthcare.com; dkim=none (message
- not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gehealthcare.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bKuxCdi4DAF2JtNHqMN4ZpZ+JKUPdciQlF+6eEoFEug=;
- b=bSGxBXrmRJelGM9rtDu192lGytEquHD4+mr0oAJIeg2v0/gJCwb5ihxgiSJyZ52oEKxInfHn1aFI4+PPczhQQ2dl4dPxgYWHgmmMeRA5G2A5nhwQZJDIQ5Zjxxu6DVlbPSOyVMsDJRPy6uzqsVo3kz75z+DARKtdDQOr5z4BzPSRb/q6pxEq48fsGk640q6pZHV6Xl8sSij0xWG/IGgtfxg8dkVFYldK0b/fBM44HjF42V5NURvssoBxTVgXJ8I/wJB/283xVUOe68TF9cHbyyc7sw5xLZafiZSYo8EBDUnB6MGGmwUPLpSrhsa6FMA5yANFy1O4sz7vFDb08JZzhg==
-Received: from PH7PR03CA0004.namprd03.prod.outlook.com (2603:10b6:510:339::30)
- by LV3PR22MB5794.namprd22.prod.outlook.com (2603:10b6:408:26b::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
- 2026 09:12:55 +0000
-Received: from SN1PEPF00036F3F.namprd05.prod.outlook.com
- (2603:10b6:510:339:cafe::77) by PH7PR03CA0004.outlook.office365.com
- (2603:10b6:510:339::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.2 via Frontend Transport; Wed, 7
- Jan 2026 09:12:53 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 165.85.157.49)
- smtp.mailfrom=gehealthcare.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=quarantine header.from=gehealthcare.com;
-Received-SPF: Fail (protection.outlook.com: domain of gehealthcare.com does
- not designate 165.85.157.49 as permitted sender)
- receiver=protection.outlook.com; client-ip=165.85.157.49;
- helo=atlrelay2.compute.ge-healthcare.net;
-Received: from atlrelay2.compute.ge-healthcare.net (165.85.157.49) by
- SN1PEPF00036F3F.mail.protection.outlook.com (10.167.248.23) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9499.1 via Frontend Transport; Wed, 7 Jan 2026 09:12:54 +0000
-Received: from [127.0.0.1] (zoo10.fihel.lab.ge-healthcare.net [10.168.174.92])
-	by builder1.fihel.lab.ge-healthcare.net (Postfix) with ESMTP id A8EA9E57C8;
-	Wed,  7 Jan 2026 11:12:51 +0200 (EET)
-Message-ID: <e24ec822-4d13-4136-8fb6-1bc6cbaf8e20@gehealthcare.com>
-Date: Wed, 7 Jan 2026 11:12:35 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ttIFfJEx"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 88F14C1EC90;
+	Wed,  7 Jan 2026 09:56:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A0D83606F8;
+	Wed,  7 Jan 2026 09:56:55 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CD731103C86EC;
+	Wed,  7 Jan 2026 10:56:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1767779814; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=O03c43fGSEZQVQFtpxF/DS+c2fwG8qAt2Ztdrucq5N4=;
+	b=ttIFfJExO8R0+j/MBjTDXlt5oCnOVH/dS3CH5t+Tm8HuEe72JjygFxkgrptLvYiaLQPzmc
+	BoYNiCTleSaPninD3b+ypiOm2QAl/QEhgRAtT8xdaeR6iTX+jIYY7o6/QFUPNRCYd57eLr
+	JI3Yobl7llt8iKmvlcQQnmCYuj6vcLKvK60+1q2Uati53oMgpeRBBGfJ5BF2jj5vjrbAt8
+	YaGkNlkwclCfhQnnq/qZUm9EhPI0sCkfqdkkBbj2LQqBWreFgDvZWggdGH8PRDCHd5FNYZ
+	oiqDWOVtWMzsarBt5Jd/dkxi9IGnIwiSM9Llgk4kXXgoNKKpmfbaSUXUmvhRkA==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH v4 0/4] drm/bridge: add of_drm_find_and_get_bridge() and a
+ managed *next_bridge, deprecate of_drm_find_bridge()
+Date: Wed, 07 Jan 2026 10:56:25 +0100
+Message-Id: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-v4-0-a62b4399a6bf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] dt-bindings: watchdog: fsl-imx: document continue in
- low power mode
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: wim@linux-watchdog.org, linux@roeck-us.net, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20251229145000.421426-1-nandor.han@gehealthcare.com>
- <20251229145000.421426-3-nandor.han@gehealthcare.com>
- <20251230-hidden-okapi-of-reputation-6ef8be@quoll>
-Content-Language: en-US
-From: Nandor Han <nandor.han@gehealthcare.com>
-In-Reply-To: <20251230-hidden-okapi-of-reputation-6ef8be@quoll>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3F:EE_|LV3PR22MB5794:EE_
-X-MS-Office365-Filtering-Correlation-Id: 99306a8b-b5de-4282-5502-08de4dccf14f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|82310400026|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cFVQY3ZQUHplK3VIZ2pmSTdkRUdtOE9HZEplUG80QzR2eDhFNy8yTzdzczYz?=
- =?utf-8?B?ZGNkNW9pWkNiTE16TEMvUGFyd2ZQNWdHUEZxb3N3Yjk4MGptMzk2dnhieC9B?=
- =?utf-8?B?SjFzRmNybkJWM2h4R3ZFZVYzbnlKcnUwaVg0UEdjb2o3eVFNY0dueTFBN2xu?=
- =?utf-8?B?VWR5NzBpdXhWT0NUVmMzc1BlVTIyTnBjNGxCV1hwVWdLM2dVbEhqNGJiNzBO?=
- =?utf-8?B?QnNXb2JMckhuL2FWZUl1R05JOVBzOWhXZm5wTXg4SUxndGc0UjJrbjFFQUJu?=
- =?utf-8?B?V3pGSEFoOVR4RmNrV3c3eGNtVU1lWTEyMG5jZlBIWUpPZDlsVUFvL0NLVmVv?=
- =?utf-8?B?SjRnWENRbGtoR2E2WC9jdks1bTlYVGx6aElORmd5a0hCbSs3cWF5UEp2SWZV?=
- =?utf-8?B?M2pZN0t2WXBkdHJaOVpFVVJFT2MwMXhEeUttZzlYMGgwYnd4RWZYUGh2c0w4?=
- =?utf-8?B?RWJJNXNUdlpPQmltd3dVWmN3Vk91UTZBMlVmaTZjR1FLdFQ0U2xUeDFaZHpH?=
- =?utf-8?B?UzRyeEZ2S3pPdGVkSjkyV282SFhiTjJUVldxM3JUQjRKMUt6YjdlUExQSGdx?=
- =?utf-8?B?Wlc4ZENYRmd6VCtjZmwxTmswNEJ6a21vQTRveXFId3JBdk0yb3BWZEZFTDFy?=
- =?utf-8?B?S2dXY0twbmE3UGdBUkRkMFNoUCtma2pOY3E4MlF0RE1aYm8vUnFFM3dEaUpT?=
- =?utf-8?B?dmRvRStMN1ROeExWWmdqclVlK0xkKzNwYnY4NE9QMitCeVBYby9neXNiVVFt?=
- =?utf-8?B?d212WFc5YmszNVZwTkphNnRmT2NLVHhsMFpjTEhWUTdIdktzWkxvT3puZ0ls?=
- =?utf-8?B?dmgwSlRrcHhHUnpZa1Y0VmIwaWtaMXRpa1hxdjcrZERJR2NUZy85SDlyMXJm?=
- =?utf-8?B?aTFSU1VVcUhCaDQ0bzNOVEhGaTErOEdUcWhtZndvMS9KYnFIUkpRbTcvVitM?=
- =?utf-8?B?Uyt6M3YwYWJFcVNoc2ZWa2xuN09CQ2VTdStmSUpmT0YzaDBZRlVBRFh1dFVQ?=
- =?utf-8?B?N3FFODkybHhRblV5SjdzNUE4V3dQV3Z4WXBTV092eVpsTDZnUEpwMzZtUkFP?=
- =?utf-8?B?VjRuV1djWlQ1b3VReEUrNXUzSE9aTWpFNGFEUTY1cVNSNk1BT2NiWDRGdnhr?=
- =?utf-8?B?ci92dTdzc3RiK1FzR0JoUmR6bU5RNWpWbVlNVTEzMFQza3hNcGU4MjlYQ000?=
- =?utf-8?B?T3ZsdXlRWUhPZ1MzM29udFBUaWszaitNcFZubTJuc0xCY3VoZDgyVCswUWZn?=
- =?utf-8?B?eUJhQ1RRSk5nOUZ6cE9CSDFrUmkyUUx5bks3M3BYLzJkazF1ODBpcE5kbFJ0?=
- =?utf-8?B?VVV4Q0xVVnExNCtFbHd0WHVhQlhqZjA2UnBjV3p5bHJPMmRHY2NxSmdBVmpW?=
- =?utf-8?B?QjRteE85N2ZEVHo4VncyVW1sd2xGSUk0Mml0WS9nQWo0TUZ6MXEybzdiRkNv?=
- =?utf-8?B?MTg5REEyemovUTRyZ3Y1SnpkYkdGN0RGN1AxMlF1SitwT3lFdm04bkkwZXZk?=
- =?utf-8?B?Ly80d0NJK0ZSNUtnNE5Yak80eDNEZDY2UlpCQzMxRW1Bd0hXTXMraXNTY1lj?=
- =?utf-8?B?NGlXRG4yRENtVkRFdVBqQU1rQ0kyNVIxVkREY3ArZE43N0dRV2d4cmRhcEVJ?=
- =?utf-8?B?QWwxYTZzb1NzWEp6YUNKM29sUDNvandWSFdUUXBlellFTWh3YnRoMEN5WnZW?=
- =?utf-8?B?VGlIMk9KK0JLd1Rxc0hBZFRJTnpBQ3FqZkJON2JTVSsrU21YUThIcDVjZldi?=
- =?utf-8?B?bmd6ODZGeGVJa0xlcUJVSWZhcnUzRU5tL2lvanZYVUM5TjZ1UEV3SVlBVG1V?=
- =?utf-8?B?SmhlYWtXKzhHVXpaMkdtWjN1Ynd5eGZweVVoRHA5Z0FNTi9Qd2hUcGlNMEli?=
- =?utf-8?B?ZDd3YWV2enZyNWlXZnU1T3pRaS96ZHZDVzVkWHM1cE5WdzNiR2NLUUJYTkZp?=
- =?utf-8?B?MFh4MUZuMCswY200UW0zcG5iVnNiNTRMOGtoTnl6Z1p0SWtEekN0eHdhZVJk?=
- =?utf-8?B?cHJ3NUZBRTNJNm5CQUVBYStkOENGWXJEYlluTnRyL3FCd3d1elVhMTBzbWlE?=
- =?utf-8?B?NGtXK21Zby9JTEV4UE52ZmFhM2ZUVmVwYnl1TDR1bGZ3WWJPVUo2ZHo3WlM0?=
- =?utf-8?Q?SgTc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.85.157.49;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:atlrelay2.compute.ge-healthcare.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: gehealthcare.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 09:12:54.8467
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 99306a8b-b5de-4282-5502-08de4dccf14f
-X-MS-Exchange-CrossTenant-Id: 9a309606-d6ec-4188-a28a-298812b4bbbf
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=9a309606-d6ec-4188-a28a-298812b4bbbf;Ip=[165.85.157.49];Helo=[atlrelay2.compute.ge-healthcare.net]
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-SN1PEPF00036F3F.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR22MB5794
+X-B4-Tracking: v=1; b=H4sIAMktXmkC/5XN0Q6CIBTG8VdpXEcDRMGueo/WHAjk2VQcmqs53
+ z10tWpdefmds/3+E+ptANuj425CwY7Qg2/j4PsdKivVXi0GEzdihKWUUoFNaLAOYOJH1bUv8dU
+ O3W1Y7oV3hYPWFK+/4DlJkkxwLg2KYBesg/saO1/irqAffHis7ZEu13cm35IZKSaYGJ1LJZzlg
+ p+090MN7aH0DVpCI/vCmdyEs4hL6aSiRNhSsX88+eCMZpvwJOI6pVnqlJYklb/4PM9PvZGf7KA
+ BAAA=
+X-Change-ID: 20251117-drm-bridge-alloc-getput-drm_of_find_bridge-74903367448d
+To: Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
+This v4 contains the leftovers of the v3 series that deprecated
+of_drm_find_bridge(), added a replacement which handles bridge refcounting,
+and converted some of the direct users. All patches have been applied
+except the imx8qxp-pixel-link ones, which still need a review for the first
+patch.
 
-On 12/30/25 14:34, Krzysztof Kozlowski wrote:
-> CAUTION: This email originated from outside of GE HealthCare. Only open links or attachments if you trust the sender. Report suspicious emails using Outlook’s “Report” button.
->
-> On Mon, Dec 29, 2025 at 04:50:00PM +0200, Nandor Han wrote:
->> Property "fsl,wdt-continue-in-low-power" allows the watchdog to continue
->> running in low power modes (STOP and DOZE). By default, the watchdog is
->> suspended in these modes. This property provides the option to keep the
->> watchdog active during low power states when needed.
-> And why exactly would that be a DT property? If system is sleeping
-> (assuming this is what you meant by low power), no one will pet the dog,
-> thus watchdog makes no sense.
+@Liu, patch 1 is waiting for a review and it's non-trivial, it would be
+nice if you could have a look at that one at least.
 
-Thanks for the feedback Krzysztof and Guenter.
+This is part of the work to support hotplug of DRM bridges. The grand plan
+was discussed in [0].
 
-In our case, low-power mode is disabled. However, we have identified that under certain conditions,
-specifically during simulated high-load scenarios, the device becomes unresponsive because it enters
-one of these power states.
+Here's the work breakdown (➜ marks the current series):
 
-> Otherwise I fail to see how this is a hardware property and we do not
-> accept SW properties (see writing bindings, numerous presentations).
+ 1. ➜ add refcounting to DRM bridges struct drm_bridge,
+      based on devm_drm_bridge_alloc()
+    A. ✔ add new alloc API and refcounting (v6.16)
+    B. ✔ convert all bridge drivers to new API (v6.17)
+    C. ✔ kunit tests (v6.17)
+    D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
+         and warn on old allocation pattern (v6.17)
+    E. ➜ add get/put on drm_bridge accessors
+       1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
+       2. ✔ drm_bridge_get_prev_bridge() (v6.18)
+       3. ✔ drm_bridge_get_next_bridge() (v6.19)
+       4. ✔ drm_for_each_bridge_in_chain() (v6.19)
+       5. ✔ drm_bridge_connector_init (v6.19)
+       6. … protect encoder bridge chain with a mutex
+       7. ➜ of_drm_find_bridge()
+          a. ➜✔… add of_drm_get_bridge(), convert basic direct users
+	         (v6.20?, one driver still pending)
+	  b. convert other direct users
+	  c. convert bridge-only drm_of_find_panel_or_bridge() users
+       8. drm_of_find_panel_or_bridge, *_of_get_bridge
+       9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
+    F. ✔ debugfs improvements
+       1. ✔ add top-level 'bridges' file (v6.16)
+       2. ✔ show refcount and list lingering bridges (v6.19)
+ 2. … handle gracefully atomic updates during bridge removal
+    A. ✔ Add drm_dev_enter/exit() to protect device resources (v6.20?)
+    B. … protect private_obj removal from list
+ 3. … DSI host-device driver interaction
+ 4. ✔ removing the need for the "always-disconnected" connector
+ 5. finish the hotplug bridge work, moving code to the core and potentially
+    removing the hotplug-bridge itself (this needs to be clarified as
+    points 1-3 are developed)
 
-Our system is based on the i.MX7D CPU and the watchdog peripheral supports the configuration:
+[0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/#t
 
-(From i.MX 7Dual Applications Processor Reference Manual, Rev. 1, 01/2018, page: 1174)
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
-WDZST
-Watchdog Low Power. Determines the operation of the WDOG during low-power modes. This bit is write
-once-only.
----
-Given that our system does not support low-power modes, we intend to enable the watchdog across all power
-states to ensure the device can recover properly under these conditions.
+Changes in v4:
+- Added review trailers
+- Link to v3: https://lore.kernel.org/r/20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-0-b5165fab8058@bootlin.com
 
-Regards,
-Nandor
+Changes in v3:
+- Completely rewrote using the __drm_bridge_free() idea to prevent
+  use-after-free of the next_bridge for the common cases
+- Added needed cleanups to the imx8qxp-pixel-link and imx8qxp-pxl2dpi
+  drivers
+- Removed various patches converting simple cases, to reduce the number of
+  e-mails sent; will be moved to the follow-up series
+- Link to v2: https://lore.kernel.org/r/20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-0-88f8a107eca2@bootlin.com
+
+Changes in v2:
+- All patches: renamed drm_of_find_bridge() -> of_drm_get_bridge()
+- Various fixes and improvements to patches 1-6, see individual patches
+  changelog
+- Removed bouncing recipient: Edmund Dea <edmund.j.dea@intel.com>
+- Link to v1: https://lore.kernel.org/r/20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com
+
+---
+Luca Ceresoli (4):
+      drm/bridge: imx8qxp-pixel-link: simplify logic to find next bridge
+      drm/bridge: imx8qxp-pixel-link: simplify freeing of the remote device_node
+      drm/bridge: imx8qxp-pixel-link: imx8qxp_pixel_link_find_next_bridge: return int, not ERR_PTR
+      drm/bridge: imx8qxp-pixel-link: get/put the next bridge
+
+ drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c | 53 ++++++++++++-------------
+ 1 file changed, 25 insertions(+), 28 deletions(-)
+---
+base-commit: f12ad2e5233a1a30b3bd6fe1e784b3544caa2383
+change-id: 20251117-drm-bridge-alloc-getput-drm_of_find_bridge-74903367448d
+
+Best regards,
+-- 
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
