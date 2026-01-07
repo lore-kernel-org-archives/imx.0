@@ -1,185 +1,179 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010033.outbound.protection.outlook.com [52.101.84.33])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010012.outbound.protection.outlook.com [52.101.201.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8057C2561AE
-	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 09:11:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2670978F59
+	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 09:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767777062; cv=fail; b=XMzI4BIvZDx6eyqE/L7tjLFdzTvt2mf/kEI6iubJ75Zss8rADZVEZ5ppMS0Olg/Q8RGx9HPDF+34/NUo1WCrW6UD3AcMRtbS5pYiDlmlw05VVuKelnP9h35gu24NkTXkqD5l7dJoG2jvdxHTaXR4A0JM5Q0wMZ4ndY91kTOfxSU=
+	t=1767777180; cv=fail; b=LV1BVaBlqp1jBlS9hNvzLMhinXkZYUHGSZexE3vpfBRcE8eGXhiRTLNHdKAZSXfzXcTjj4I9kzuCh84rLgD0yg/oxFvbFYiJwiqfEwGSBK0+2J+jUwc/BmsSQtXzxxDa61dbYZC1mwQcFvFeFrNlMMgtapSxw0qoQlbodehwe7I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767777062; c=relaxed/simple;
-	bh=J5jA+FP3W9slZVGCgP0XsvPLP2FQFVbUJOaXa5FTcfA=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=If+r8qdRlJD+ftISQe09NcwDeYMCpx9R75VjxcIVdIRVQAAYkGNFbubQR+vx2FiASLIxlmCY9EnskMxm3VX5FPC3YR988ybuvvYrKynkoxCGZEDN6HeZzKAQaNDCitJQ839d3OVEhpVbECEIiksMDOB4RH4ajVYnEZ/JpvnKKNg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SRf5WAZQ; arc=fail smtp.client-ip=52.101.84.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1767777180; c=relaxed/simple;
+	bh=bKuxCdi4DAF2JtNHqMN4ZpZ+JKUPdciQlF+6eEoFEug=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UUmOZhQlKKQ5eazF98+iqwvID8wVOHEM/lwsT5CY3kaydDHAw4cEYwnht7spd7EJy0N3jxQ22aAwSPnKB1rcm5oOzeus1IFOrzZcGLAlw558tyF8nd5FrfzQXW1Qln8YpvaXSPncf+hjigBAxU+VRm1tx9K6EzKm2CxobrP/UDw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gehealthcare.com; spf=pass smtp.mailfrom=gehealthcare.com; dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b=bSGxBXrm; arc=fail smtp.client-ip=52.101.201.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gehealthcare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gehealthcare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SRf5WAZQ"
+	dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b="bSGxBXrm"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mx7fQP97c7mgNS2pmZj8dIN67u7Ttn7IBSKtwR463slCllPM1isMqS+0yYurcAq6VisKG3+3no42MoJpVcVbjaOzm4VM1pOChjAurYLPMMJMPgPM2H2KcQ+HS9Mfg5sDj91DuLJav/zrG29thX7RZAnCselM++w6e2DH3Z4Tx6/eb86QG+ayVsuD96AVPKObI1Vk87QlqTCPa+bQf/a+bPqrQJdZ76E3BCzvZQuLJG/cy4FN6S+iB/OBiSMlgPHZbAiQuu6paW8dln3bzQqmHDDxUYf0fZsDNx9HHnLeHHiv+xRXCseX+yAYlJAKC3Uo5o3UdLtMuT3Y87TCRN8lnA==
+ b=qSX6/YjQe+mYXUhqKbVV182SHYH45cXJxZqCrK0aAvfV0yS7C8pdB7UaDgTgPaBY4FbDzGwGIC34XalJVuNw+Yox6FcbG0tINRcK8wxtAFrTOEQ1wy7Z+q/pWTU3LLFPXxfcnuqYwL6nPkMScQv4E4AVlwUQ4uV8Q+C82CcQKX5IiFQsWlBvPE/1N9EbZ4BNQfbmuzIxUrZaExo2rDhnBqF1vlW34GK5ebwO+7UuabmdPz+dB/K4qt37XPzzSVropMvj3bCebn2daCDZoHReDyw70nRfAzgMyQMuimtBlF+hWDTz16T6wJDBBf5JIzl91esmD2qtQLV8Mu0eZma9sw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sr2l12JryNtEcmC/LFB7T5XFvRdvND9sHvVEvpmBU6U=;
- b=u14YepjT3QcvHCtLa4GCzr2H6FvoI1mDvObKD7u53Sdlt7ks9Y2Uo9u41FdHTtilJHNpn3uPLaGccgkp9ToxYtK0VLRKgL4JRQAU9BYQT93OACfNvWzjeMfvioo4BjGDzDZR0CBjljNJGOvk5G0j3cBdqieNAkXVOesz3MYUksmknkJENtFgCgsHH77XpIHeBy1ChmkhIe/Weai7YBIS/1ZwrxVB9GCiKE40wRC4xARPEqqXMAEjjDpdopFWw2c4gLt+YZuo7Ervlgqr3V/5gq87Gdw+J/cl4GjrurUta0oS6BBc+vwEB2g7I3Z+9QjYKWj1bJPX/AxHm/C7Now6Ig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ bh=bKuxCdi4DAF2JtNHqMN4ZpZ+JKUPdciQlF+6eEoFEug=;
+ b=mON+jmYNKphefBhObvrvYRt1mFT4V8iS8sTi5nwJyO2GpkO2LyuNjUvMPw49ysz/N+U73oBh0pqctEHof1lCZY2AmVcEme5tBznalfE1Ij1ZKXrVr2r3BJMEtooQaND98HJkaKIGkuuxyT/PPmKocoU+VC6cN0ua6o7eLfG/49Xu2vlwEpJ2U9x8doYWHM1InJpu0QfdusDUNjk+CoV4DCqVWFdL0CYQetUeiAzDFMWOBYYmWgfn00OZYweNonjP8dmTC09gi7FDnMBiuzK6Cx7a5oKFpx8M6dyL8oBD3MOXiPl4Xx0Wc3S1vHWjHWBqOMinlN5JI3Dcx80ja2dgpQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 165.85.157.49) smtp.rcpttodomain=lists.linux.dev
+ smtp.mailfrom=gehealthcare.com; dmarc=fail (p=quarantine sp=quarantine
+ pct=100) action=quarantine header.from=gehealthcare.com; dkim=none (message
+ not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gehealthcare.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sr2l12JryNtEcmC/LFB7T5XFvRdvND9sHvVEvpmBU6U=;
- b=SRf5WAZQ1Yfkiorl/pSLY7hBbUEfbdkkoGMm8ED7uhkld4s+b9bp9OiMLUdST/IZ99kNUi+Jf0rOE0zysyrBUbBCcBUyeD8yrme6wcjHwA+4YP5eV9ki6VJ+OHqWM0yFt6+IZmR7XgfEXu8xUPTFsOe1zwHoRl5opKjtZjofgOx647UTZdCldqHpfsrNf08mt3a2SVC0/lAq01rOu6CkDKNU+oCGiQtcgSSYTqnHz6uWj4Wa4amXU+Cw3a+KP/ZfkMwAXtmnrSuGlVnd809hrNEIvsEBl/r5/ujbmr1oU4lgE8Ua1Uv0Hk4iAMWkdx5BNOjIU/kzp1Y85xnJyDkQBg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DB9PR04MB8171.eurprd04.prod.outlook.com (2603:10a6:10:24f::19) with
+ bh=bKuxCdi4DAF2JtNHqMN4ZpZ+JKUPdciQlF+6eEoFEug=;
+ b=bSGxBXrmRJelGM9rtDu192lGytEquHD4+mr0oAJIeg2v0/gJCwb5ihxgiSJyZ52oEKxInfHn1aFI4+PPczhQQ2dl4dPxgYWHgmmMeRA5G2A5nhwQZJDIQ5Zjxxu6DVlbPSOyVMsDJRPy6uzqsVo3kz75z+DARKtdDQOr5z4BzPSRb/q6pxEq48fsGk640q6pZHV6Xl8sSij0xWG/IGgtfxg8dkVFYldK0b/fBM44HjF42V5NURvssoBxTVgXJ8I/wJB/283xVUOe68TF9cHbyyc7sw5xLZafiZSYo8EBDUnB6MGGmwUPLpSrhsa6FMA5yANFy1O4sz7vFDb08JZzhg==
+Received: from PH7PR03CA0004.namprd03.prod.outlook.com (2603:10b6:510:339::30)
+ by LV3PR22MB5794.namprd22.prod.outlook.com (2603:10b6:408:26b::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
- 2026 09:10:57 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9499.001; Wed, 7 Jan 2026
- 09:10:57 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH net] net: enetc: fix build warning when PAGE_SIZE is greater than 128K
-Date: Wed,  7 Jan 2026 17:12:04 +0800
-Message-Id: <20260107091204.1980222-1-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0047.apcprd02.prod.outlook.com
- (2603:1096:4:196::14) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+ 2026 09:12:55 +0000
+Received: from SN1PEPF00036F3F.namprd05.prod.outlook.com
+ (2603:10b6:510:339:cafe::77) by PH7PR03CA0004.outlook.office365.com
+ (2603:10b6:510:339::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9499.2 via Frontend Transport; Wed, 7
+ Jan 2026 09:12:53 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 165.85.157.49)
+ smtp.mailfrom=gehealthcare.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=quarantine header.from=gehealthcare.com;
+Received-SPF: Fail (protection.outlook.com: domain of gehealthcare.com does
+ not designate 165.85.157.49 as permitted sender)
+ receiver=protection.outlook.com; client-ip=165.85.157.49;
+ helo=atlrelay2.compute.ge-healthcare.net;
+Received: from atlrelay2.compute.ge-healthcare.net (165.85.157.49) by
+ SN1PEPF00036F3F.mail.protection.outlook.com (10.167.248.23) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9499.1 via Frontend Transport; Wed, 7 Jan 2026 09:12:54 +0000
+Received: from [127.0.0.1] (zoo10.fihel.lab.ge-healthcare.net [10.168.174.92])
+	by builder1.fihel.lab.ge-healthcare.net (Postfix) with ESMTP id A8EA9E57C8;
+	Wed,  7 Jan 2026 11:12:51 +0200 (EET)
+Message-ID: <e24ec822-4d13-4136-8fb6-1bc6cbaf8e20@gehealthcare.com>
+Date: Wed, 7 Jan 2026 11:12:35 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] dt-bindings: watchdog: fsl-imx: document continue in
+ low power mode
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: wim@linux-watchdog.org, linux@roeck-us.net, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20251229145000.421426-1-nandor.han@gehealthcare.com>
+ <20251229145000.421426-3-nandor.han@gehealthcare.com>
+ <20251230-hidden-okapi-of-reputation-6ef8be@quoll>
+Content-Language: en-US
+From: Nandor Han <nandor.han@gehealthcare.com>
+In-Reply-To: <20251230-hidden-okapi-of-reputation-6ef8be@quoll>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DB9PR04MB8171:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0354459c-d1bd-40be-c920-08de4dccab24
+X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3F:EE_|LV3PR22MB5794:EE_
+X-MS-Office365-Filtering-Correlation-Id: 99306a8b-b5de-4282-5502-08de4dccf14f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|19092799006|376014|52116014|366016|38350700014;
+	BCL:0;ARA:13230040|376014|36860700013|82310400026|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7J8qTYiB/J8ifRbk0ySFsMacG9+zEhSj6ekamoGkdz/P3IJj4QW3+jjwlN6G?=
- =?us-ascii?Q?roDJsw6ZJXU0wmSRZa49kuBjQxMp0bPk9rM64ziFQt8HeBZqTvg6jlNZltoa?=
- =?us-ascii?Q?wl0WPb1xAYyl6gKhrL8PgdPRn0PymrcSh29eR8k5GlQZQFK3zuw2lxno3rFz?=
- =?us-ascii?Q?j/+rge7gOYG5xpY8E81Qo6SV5DJ6WTeXmLxrqJKndfpsxxBrJgmAIrhOYufn?=
- =?us-ascii?Q?yJHg9rvjhMLE+WavmqyMFyAikQp1X+aXfq+79EV3Wyrj6NFQuWaIAfpRfrgf?=
- =?us-ascii?Q?vK+O1OYCO59H1aqQ0isQ7NNzLrPGf2o6QDCLgZ8tUA7fFWx5cLoU/JBf/hyk?=
- =?us-ascii?Q?mh3e1bvhCd+0/ykN6EW7iB/tbgo3MrG3cjjL7RfbAnFiKh2oM+z2SVhiLHdG?=
- =?us-ascii?Q?IaVXctwVxZqRcRw9vDaXl8sHqccwUYhARsvWg5NOuRPdTdQf4NyJjbzwe5E6?=
- =?us-ascii?Q?BHEknLaWJTJxi+MDnZQR80G5WEdVpdtLU4E3fZKPDVSrhKpltpgLIgqSRIix?=
- =?us-ascii?Q?NrvpOVOONeKqme/Si8x1PIKODop51apMpC/IcXot4aLCItJra6p2SxUpNXnJ?=
- =?us-ascii?Q?xuG4HZLusvgA9ks/P1qErHipX8+af0Pc2MGwex+UbJthbC1ULJQpEALa0edE?=
- =?us-ascii?Q?BWje9SvKQHlasVZKXyiV+o9s9yIbfSawlRLjvt+GmKemq7rq8skhsHI09FX6?=
- =?us-ascii?Q?RMvxZ04KiNxfg0ebKSpOGVFjAHIS1Md1d8Ty2qSuZj6bpdtUocxyjQOdYoY0?=
- =?us-ascii?Q?zNQSJpQe9ALpDE/nTln5j3kSofEJy2qS7RcZYcUzgzyIkKcFamcq8slcUFGn?=
- =?us-ascii?Q?6S2g2Hr0vCzoHrHStJvZRADXkwsjxUlJT1DHCOU8g+C5v8w863wgvuALSDYV?=
- =?us-ascii?Q?l6gWhjWUqVHEQ6u+Kt/cUhnkLKfyM16ShGBf+sTWAodzZgL80DdA6TodxU37?=
- =?us-ascii?Q?GU3r3wbk2JkjwlYnnQ5D78dKz7yUuiIlRUUIf2dP5F7Bz6w9P+6D7iPgL6WL?=
- =?us-ascii?Q?inH/cJf6yu79IDUOKHbV38SqGYtZu2J23tYRLzOtb84B2FL1TdJbbjz4JrRZ?=
- =?us-ascii?Q?IyQe5xWoq2IiUAkgXb9iDfd32X/OTTCExXb2wT/krJKPNfAa+RsSdM2fo3aY?=
- =?us-ascii?Q?/8XKLHws6boWADjH/blyHYvEoLM8uNRr7tKRIzOtDRUXsLTjbWyxPOas3mqQ?=
- =?us-ascii?Q?/Uf0L+Bs/1evJzSgdsMRU37r3QMpb7o62/butKIX2XxuRvSHYEBvpdm/htFw?=
- =?us-ascii?Q?3q727wZbRfYWCuoUvGo+eih7fZqAK+Fm2Jr9kXlkiJ1mQeIsYBCwZLu0fsQO?=
- =?us-ascii?Q?XkP1kcyTX8t3vLcxnQ/Z8zN3WTcFk9ogoktfjB/Ok3aazPBPAv0V9d3dzXie?=
- =?us-ascii?Q?VmEXWsvsH1avISeR6UiSnttRLtowJw+v9DrHR9UeP3OfF6rl3pN1Apfqyb18?=
- =?us-ascii?Q?StWASR4qpxVdRFdKfbTFqiqsT0tlwMcaKS5bSLZDuUrNyDOxIYWAMG9fYKn3?=
- =?us-ascii?Q?SwxviXCcMtofPjkCB8NIEdp9HngkXrJtsN+B?=
+	=?utf-8?B?cFVQY3ZQUHplK3VIZ2pmSTdkRUdtOE9HZEplUG80QzR2eDhFNy8yTzdzczYz?=
+ =?utf-8?B?ZGNkNW9pWkNiTE16TEMvUGFyd2ZQNWdHUEZxb3N3Yjk4MGptMzk2dnhieC9B?=
+ =?utf-8?B?SjFzRmNybkJWM2h4R3ZFZVYzbnlKcnUwaVg0UEdjb2o3eVFNY0dueTFBN2xu?=
+ =?utf-8?B?VWR5NzBpdXhWT0NUVmMzc1BlVTIyTnBjNGxCV1hwVWdLM2dVbEhqNGJiNzBO?=
+ =?utf-8?B?QnNXb2JMckhuL2FWZUl1R05JOVBzOWhXZm5wTXg4SUxndGc0UjJrbjFFQUJu?=
+ =?utf-8?B?V3pGSEFoOVR4RmNrV3c3eGNtVU1lWTEyMG5jZlBIWUpPZDlsVUFvL0NLVmVv?=
+ =?utf-8?B?SjRnWENRbGtoR2E2WC9jdks1bTlYVGx6aElORmd5a0hCbSs3cWF5UEp2SWZV?=
+ =?utf-8?B?M2pZN0t2WXBkdHJaOVpFVVJFT2MwMXhEeUttZzlYMGgwYnd4RWZYUGh2c0w4?=
+ =?utf-8?B?RWJJNXNUdlpPQmltd3dVWmN3Vk91UTZBMlVmaTZjR1FLdFQ0U2xUeDFaZHpH?=
+ =?utf-8?B?UzRyeEZ2S3pPdGVkSjkyV282SFhiTjJUVldxM3JUQjRKMUt6YjdlUExQSGdx?=
+ =?utf-8?B?Wlc4ZENYRmd6VCtjZmwxTmswNEJ6a21vQTRveXFId3JBdk0yb3BWZEZFTDFy?=
+ =?utf-8?B?S2dXY0twbmE3UGdBUkRkMFNoUCtma2pOY3E4MlF0RE1aYm8vUnFFM3dEaUpT?=
+ =?utf-8?B?dmRvRStMN1ROeExWWmdqclVlK0xkKzNwYnY4NE9QMitCeVBYby9neXNiVVFt?=
+ =?utf-8?B?d212WFc5YmszNVZwTkphNnRmT2NLVHhsMFpjTEhWUTdIdktzWkxvT3puZ0ls?=
+ =?utf-8?B?dmgwSlRrcHhHUnpZa1Y0VmIwaWtaMXRpa1hxdjcrZERJR2NUZy85SDlyMXJm?=
+ =?utf-8?B?aTFSU1VVcUhCaDQ0bzNOVEhGaTErOEdUcWhtZndvMS9KYnFIUkpRbTcvVitM?=
+ =?utf-8?B?Uyt6M3YwYWJFcVNoc2ZWa2xuN09CQ2VTdStmSUpmT0YzaDBZRlVBRFh1dFVQ?=
+ =?utf-8?B?N3FFODkybHhRblV5SjdzNUE4V3dQV3Z4WXBTV092eVpsTDZnUEpwMzZtUkFP?=
+ =?utf-8?B?VjRuV1djWlQ1b3VReEUrNXUzSE9aTWpFNGFEUTY1cVNSNk1BT2NiWDRGdnhr?=
+ =?utf-8?B?ci92dTdzc3RiK1FzR0JoUmR6bU5RNWpWbVlNVTEzMFQza3hNcGU4MjlYQ000?=
+ =?utf-8?B?T3ZsdXlRWUhPZ1MzM29udFBUaWszaitNcFZubTJuc0xCY3VoZDgyVCswUWZn?=
+ =?utf-8?B?eUJhQ1RRSk5nOUZ6cE9CSDFrUmkyUUx5bks3M3BYLzJkazF1ODBpcE5kbFJ0?=
+ =?utf-8?B?VVV4Q0xVVnExNCtFbHd0WHVhQlhqZjA2UnBjV3p5bHJPMmRHY2NxSmdBVmpW?=
+ =?utf-8?B?QjRteE85N2ZEVHo4VncyVW1sd2xGSUk0Mml0WS9nQWo0TUZ6MXEybzdiRkNv?=
+ =?utf-8?B?MTg5REEyemovUTRyZ3Y1SnpkYkdGN0RGN1AxMlF1SitwT3lFdm04bkkwZXZk?=
+ =?utf-8?B?Ly80d0NJK0ZSNUtnNE5Yak80eDNEZDY2UlpCQzMxRW1Bd0hXTXMraXNTY1lj?=
+ =?utf-8?B?NGlXRG4yRENtVkRFdVBqQU1rQ0kyNVIxVkREY3ArZE43N0dRV2d4cmRhcEVJ?=
+ =?utf-8?B?QWwxYTZzb1NzWEp6YUNKM29sUDNvandWSFdUUXBlellFTWh3YnRoMEN5WnZW?=
+ =?utf-8?B?VGlIMk9KK0JLd1Rxc0hBZFRJTnpBQ3FqZkJON2JTVSsrU21YUThIcDVjZldi?=
+ =?utf-8?B?bmd6ODZGeGVJa0xlcUJVSWZhcnUzRU5tL2lvanZYVUM5TjZ1UEV3SVlBVG1V?=
+ =?utf-8?B?SmhlYWtXKzhHVXpaMkdtWjN1Ynd5eGZweVVoRHA5Z0FNTi9Qd2hUcGlNMEli?=
+ =?utf-8?B?ZDd3YWV2enZyNWlXZnU1T3pRaS96ZHZDVzVkWHM1cE5WdzNiR2NLUUJYTkZp?=
+ =?utf-8?B?MFh4MUZuMCswY200UW0zcG5iVnNiNTRMOGtoTnl6Z1p0SWtEekN0eHdhZVJk?=
+ =?utf-8?B?cHJ3NUZBRTNJNm5CQUVBYStkOENGWXJEYlluTnRyL3FCd3d1elVhMTBzbWlE?=
+ =?utf-8?B?NGtXK21Zby9JTEV4UE52ZmFhM2ZUVmVwYnl1TDR1bGZ3WWJPVUo2ZHo3WlM0?=
+ =?utf-8?Q?SgTc=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?X23ZEXWmGNZOnU3DoCwmI6qmNuGw7ylRe42+woHJxH4ht2C/jUgoaoNeOzPs?=
- =?us-ascii?Q?7B6GJ6zXTn7a1cpazTvksfdf5V9ITWQ0Rz/u96jQUqe9LwMT8mxnOgQZlUYn?=
- =?us-ascii?Q?+MDf7YVcKE17bQJ4R6hWWvIFFlwSgbTuncCxPsXMCy8+qsqiu0KGKzCkKpTn?=
- =?us-ascii?Q?BdeYvcyD28dw5s1Qt4gruJ16H57GQeWBI4uXiWkM8+npOADmd9VpPQsL0dlF?=
- =?us-ascii?Q?a9mxdoWx/yYm5F+VWTJ8s8zzN1P1syKAq97fjzkM5oxGYusMkH/5oayLSPeO?=
- =?us-ascii?Q?GJWPY60MRBnvN4a8BsdMQWzLKb61k/EJUewBVpHEPil69adPh7RhHXmW+5cZ?=
- =?us-ascii?Q?KIVo30fVuvuw5nV2XnnOHYjspCBZvHStWfBXcXHF+FUn3Pflmfxr3CgzCTNo?=
- =?us-ascii?Q?90gpUpMzvZplNM/O7bDHpLsdfkNi5TBAdk4AQfLC+L8ESBiuYXohqGk+9ojL?=
- =?us-ascii?Q?wYlq3tw/oIy+SAJ6Q39U7XB7podk53KIGVpE/oAffjVVg5xiN/k0JU6FyV1X?=
- =?us-ascii?Q?7AsBcdrng+OBjI8kXKtS1S6HX/T3gaaC15iINIyb/DzqyrwLw9w1PY4BwV3b?=
- =?us-ascii?Q?5JS2hgH1SfUNN6pHdiPYFl7/jWCixwKlyp2DDOsvCYSqmCBBR9rdcVwE27GO?=
- =?us-ascii?Q?HqcVwxDAHtUe6sG7WhUfVoLhH0Xpzvv8sOXCHNmRQ9WdiuLY3A0Bc+LY/nyZ?=
- =?us-ascii?Q?mkS3NBVWLGuFaiOV/Dz6SPot+yIswXSKWJPtYeq75X3TsbMYPjcLq24JrKy2?=
- =?us-ascii?Q?/8VRlKUhgAsqfWmHHjxr7IE7A+CWm1+rfZ26ssZmrW+dE3EpJX53PeWMr+Ps?=
- =?us-ascii?Q?43f+DxuLfVsjMCL3Q4CeOHnhuZPUXr8lCwCo1M1gpW8PuSuzIes3zMavLxE3?=
- =?us-ascii?Q?mWnD1HFZNkLfzJlho7piNNzcqm0gSUi+1fPcCUF7lpIvVCjF7V655eWcPMFB?=
- =?us-ascii?Q?vcWb5vAK5teR376rPQt4F+ya/FU8RISCiT2iXvDGxSd1zbpL9AqZ3nVIe+iC?=
- =?us-ascii?Q?J8mLFry5/4B0hih5QCNg98qEhFoZQYa2a1uxpN1Flxe5QlT8tglxaOISDcGH?=
- =?us-ascii?Q?likqQa0W5sk9dlcsfe9SnkXryKpLimCPt36CTkgqyD+TCI1Z2DANb+iJHy9z?=
- =?us-ascii?Q?REJuCfL49UHqt7Z0fx4HisgxQ9C1XatLkc1Jk4xwjXNL/3Y+We42XCFv7t9D?=
- =?us-ascii?Q?urb2s+uvo9tK00FsPxk3f1uIPqTQCN8w6NYspSF3shtHmTSaUXtc8T13wxYb?=
- =?us-ascii?Q?V4CmCFGhnDrslMAZYNfi9Bwucn2ddtiAYe1JOFPnnC8SgU/AlYKMTKlRqXYq?=
- =?us-ascii?Q?sPM/u+l6wavCp0W9SbQffaX6LBNFyD+utzZxNe1nmSvelVDIEtZFGGOF4VUb?=
- =?us-ascii?Q?aJtYVRY2C0XWbmIcbtxsYXQ07OdMEQSMYBZtZrtdZYLPFT69neVcjvDGIlqf?=
- =?us-ascii?Q?yR3DXDi82XtV/ngRwrlGMk5UrS2h5fZ+Gg3yo4ykAUX5VKGG6YydkmjnoUNd?=
- =?us-ascii?Q?2hpQM/cBIgB7JUM0uWC/AHYVIua6paeB2BOpDUZF3w2EHnyt+ryAcjVAy/Hv?=
- =?us-ascii?Q?8UwRFCiVw3nv+s3QggwiFjVXRZ7QEYO4dqh3ECj2l5rvsDzD9QTeqztpk7Gd?=
- =?us-ascii?Q?v1+SrDRHzO7KcH4tmHinMKZJMfNSJ0Fb67+BKdjtOe/J64R4AsVzvwZ3XqQ5?=
- =?us-ascii?Q?UM5jtX7Zc73iKnM1ZDEAvxhv603Zb4bkPSEl9XAtooObUaW7XWHlr+E8A9Fb?=
- =?us-ascii?Q?+Npf60AaUw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0354459c-d1bd-40be-c920-08de4dccab24
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 09:10:57.5484
+	CIP:165.85.157.49;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:atlrelay2.compute.ge-healthcare.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: gehealthcare.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 09:12:54.8467
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZYysatsz9tGPcO1SiWPsbG5NeqitKM4hVXN7SNxnbNDvpJqzCLj08V46ijsZKOrPRvPHUVcEnSI3WahgY2RvUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8171
+X-MS-Exchange-CrossTenant-Network-Message-Id: 99306a8b-b5de-4282-5502-08de4dccf14f
+X-MS-Exchange-CrossTenant-Id: 9a309606-d6ec-4188-a28a-298812b4bbbf
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=9a309606-d6ec-4188-a28a-298812b4bbbf;Ip=[165.85.157.49];Helo=[atlrelay2.compute.ge-healthcare.net]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-SN1PEPF00036F3F.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR22MB5794
 
-The max buffer size of ENETC RX BD is 0xFFFF bytes, so if the PAGE_SIZE
-is greater than 128K, ENETC_RXB_DMA_SIZE and ENETC_RXB_DMA_SIZE_XDP will
-be greater than 0xFFFF, thus causing a build warning.
 
-This will not cause any practical issues because ENETC is currently only
-used on the ARM64 platform, and the max PAGE_SIZE is 64K. So this patch
-is only for fixing the build warning that occurs when compiling ENETC
-drivers for other platforms.
+On 12/30/25 14:34, Krzysztof Kozlowski wrote:
+> CAUTION: This email originated from outside of GE HealthCare. Only open links or attachments if you trust the sender. Report suspicious emails using Outlook’s “Report” button.
+>
+> On Mon, Dec 29, 2025 at 04:50:00PM +0200, Nandor Han wrote:
+>> Property "fsl,wdt-continue-in-low-power" allows the watchdog to continue
+>> running in low power modes (STOP and DOZE). By default, the watchdog is
+>> suspended in these modes. This property provides the option to keep the
+>> watchdog active during low power states when needed.
+> And why exactly would that be a DT property? If system is sleeping
+> (assuming this is what you meant by low power), no one will pet the dog,
+> thus watchdog makes no sense.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202601050637.kHEKKOG7-lkp@intel.com/
-Fixes: e59bc32df2e9 ("net: enetc: correct the value of ENETC_RXB_TRUESIZE")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Thanks for the feedback Krzysztof and Guenter.
+
+In our case, low-power mode is disabled. However, we have identified that under certain conditions,
+specifically during simulated high-load scenarios, the device becomes unresponsive because it enters
+one of these power states.
+
+> Otherwise I fail to see how this is a hardware property and we do not
+> accept SW properties (see writing bindings, numerous presentations).
+
+Our system is based on the i.MX7D CPU and the watchdog peripheral supports the configuration:
+
+(From i.MX 7Dual Applications Processor Reference Manual, Rev. 1, 01/2018, page: 1174)
 ---
- drivers/net/ethernet/freescale/enetc/enetc.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+WDZST
+Watchdog Low Power. Determines the operation of the WDOG during low-power modes. This bit is write
+once-only.
+---
+Given that our system does not support low-power modes, we intend to enable the watchdog across all power
+states to ensure the device can recover properly under these conditions.
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
-index dce27bd67a7d..aecd40aeef9c 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.h
-@@ -79,9 +79,9 @@ struct enetc_lso_t {
- #define ENETC_RXB_TRUESIZE	(PAGE_SIZE >> 1)
- #define ENETC_RXB_PAD		NET_SKB_PAD /* add extra space if needed */
- #define ENETC_RXB_DMA_SIZE	\
--	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD)
-+	min(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD, 0xffff)
- #define ENETC_RXB_DMA_SIZE_XDP	\
--	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - XDP_PACKET_HEADROOM)
-+	min(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - XDP_PACKET_HEADROOM, 0xffff)
- 
- struct enetc_rx_swbd {
- 	dma_addr_t dma;
--- 
-2.34.1
+Regards,
+Nandor
 
