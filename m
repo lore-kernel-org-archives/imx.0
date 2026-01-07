@@ -1,111 +1,186 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7827334C3D;
-	Wed,  7 Jan 2026 20:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A3A2F9DA1
+	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 23:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767816810; cv=none; b=DWItzHKHKP1AItOvEEGHJvuCs0v68VGMEYj5elFc0GTEzaX5jioz2lFAs8jN9Cb4DFcGytCHCtVOmnUNZan3ZakRAc9wniBP7V0Z8J6gDkUbc1buvFq7F+lUrCUAeg6A9I9Mljclo+EQ8C3KSoDR1qczlRUAngXo5iZIgr0v3OM=
+	t=1767829718; cv=none; b=DWcqgzicLJrP0XrwYcCk5jjBhqDFCtZ4l/jODTpYnS2d1AuehxvJvbE4iGaG0fCrdJ7Z0t3W4cWW5OVdaTu3CclGAJIxTlot5l0+ebqB0AmqDNIJXcV3Vc91d9JOoPSv57cTMeqYswYCUExtqHPsdKjau7RM42ryaAKe9aikIcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767816810; c=relaxed/simple;
-	bh=4PmyOcjuUAuQC00TXSZnc4NpP7+naircmS/+sn6yl+Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ut40DUSgI2ue0S8kdPy1Taiez4RkMAb0uFeRVw8coU6YTeKjwqpwACFwSWVgBKIruyA9WNHE7UlE0N1YibKjFsSwpDFAY4/0Fg/Og831BTnKKYavQuinyhQiKALiPfhEwKn5pk5gE2jI+4qWc9wo/UBd2HSfAwkTxGMFVutX/rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dEA76Ubp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767829718; c=relaxed/simple;
+	bh=IBdssBqJKoYD0WUOz99qEmTZBGFUz6xCIAU0jUt02Rs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=lQpiE+TTmna/2iCQSCPveLtk0fPzxPdOtJoGv7XXg8fyt1ah7UsfwMKiURmOuSLAgr30sIqMfn5I3NnW13u1R0odXf/x7BPXrlOKf7tOOtICeR70hzh4Sb8ycsLBLgoANuyAcG2tCTboCQICN3RvkbOhICdycjXU7Zg1TxBk+f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=ZcRbrUwE; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dEA76Ubp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75230C4CEF1;
-	Wed,  7 Jan 2026 20:13:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767816809;
-	bh=4PmyOcjuUAuQC00TXSZnc4NpP7+naircmS/+sn6yl+Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dEA76UbpBU7G8jX+YypizwPSzE8/5gK1vFTwb6Yxm0U+SrDVCUFl/6+32NMSgZZwd
-	 j4YAmfJ5uX++anOG7IBfMxkQaX7dNN0GZvr1pzqLHl0nRsI2tmnT7vCl4ag2mbs6AN
-	 DlvXhl4uLBVBRIgSCmX7kr9gfLPoKn7rUXz6fzdmpV4TnkLzHYGNZJZg5h3GEU9IcL
-	 M3KVZwDvd/8yVZ3Dk68citmHrEZFM6CNhN+/6xIK+fH/DQIFzYp9O8WPpUG30gauUV
-	 xsoblF0pYpuHYrsrpJVKTikO9czCRM1q94VbaLsTqpSJvKqv0mJ1SrEvmvgk8BR6IY
-	 qwcy1kyG82gQw==
-Date: Wed, 7 Jan 2026 21:13:24 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, festevam@gmail.com, linux-i2c@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, bsp-development.geo@leica-geosystems.com
-Subject: Re: [PATCH V1] i2c: imx: Fix SMBus block read hang on zero length
-Message-ID: <aV60-Wm0c_Oo0zWF@zenone.zhora.eu>
-References: <20251229081629.4081452-1-Qing-wu.Li@leica-geosystems.com.cn>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="ZcRbrUwE"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260107234828euoutp0232a5ce7805ff7230787ae6d7a017aa59~Il8D5Yqvs1570915709euoutp024
+	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 23:48:28 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260107234828euoutp0232a5ce7805ff7230787ae6d7a017aa59~Il8D5Yqvs1570915709euoutp024
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1767829708;
+	bh=TYCzIUiOEy3kP/HiVQ2wZRrRPpZ4XZI8gw9kTIvwkig=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=ZcRbrUwE0aCSm07m0ZAGZxJqi+smXR6sOaSkQNGRA/aaVVXXra1EA26P9OVZXHgoM
+	 aGEhVYVOd3cGxnnM9aKFvNxes9G4ULczGDrTrEa1JxXTa/SmBbzJIT9RCMK9VIrcKZ
+	 UFzKdI1lMTHP5Czb15+QUV6lIyPeYK3iCwEMt8FE=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260107234827eucas1p27fbd224b2f588f92989d2f7bfa08ab37~Il8C276YY0130501305eucas1p2E;
+	Wed,  7 Jan 2026 23:48:27 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260107234825eusmtip2ddfb2c42a8a3442eed7670b1dee474df~Il8AyfPoH0345103451eusmtip2c;
+	Wed,  7 Jan 2026 23:48:25 +0000 (GMT)
+Message-ID: <77c70d7b-23bc-4f74-9a13-d10f4af132dd@samsung.com>
+Date: Thu, 8 Jan 2026 00:48:24 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251229081629.4081452-1-Qing-wu.Li@leica-geosystems.com.cn>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 00/12] drm/bridge: convert users of
+ of_drm_find_bridge(), part 2
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>, Philippe Cornu <philippe.cornu@st.com>,
+	benjamin.gaignard@linaro.org, Andrzej Hajda <andrzej.hajda@intel.com>, Neil
+	Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+	<jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Adrien
+	Grassein <adrien.grassein@gmail.com>, Liu Ying <victor.liu@nxp.com>, Shawn
+	Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>, Jagan Teki
+	<jagan@amarulasolutions.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni
+	<thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-0-283d7bba061a@bootlin.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260107234827eucas1p27fbd224b2f588f92989d2f7bfa08ab37
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260107131333eucas1p2ee0b7afe47dc2fafa29e893e4283962b
+X-EPHeader: CA
+X-CMS-RootMailID: 20260107131333eucas1p2ee0b7afe47dc2fafa29e893e4283962b
+References: <CGME20260107131333eucas1p2ee0b7afe47dc2fafa29e893e4283962b@eucas1p2.samsung.com>
+	<20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-0-283d7bba061a@bootlin.com>
 
-Hi,
+On 07.01.2026 14:12, Luca Ceresoli wrote:
+> This series converts all DRM bridge drivers (*) from the now deprecated
+> of_drm_find_bridge() to its replacement of_drm_find_and_get_bridge() which
+> allows correct bridge refcounting. It also converts per-driver
+> "next_bridge" pointers to the unified drm_bridge::next_bridge which puts
+> the reference automatically on bridge deallocation.
+>
+> This is part of the work to support hotplug of DRM bridges. The grand plan
+> was discussed in [0].
 
-Can anyone from Pengutronix give this patch a look and possibly a
-try? Oleksij?
+This patchset breaks Exynos DSI (Samsung-DSIM) driver operation on all 
+my test boards. I will try to debug it and provide more information 
+tomorrow though.
 
-On Mon, Dec 29, 2025 at 08:16:29AM +0000, LI Qingwu wrote:
-> SMBus block read transfers encode the payload length in the first data
-> byte. When this first byte is zero, there is no payload and the
-> transaction should terminate immediately.
-> 
-> On i.MX, if the first byte of an SMBus block read is zero, the driver
-> unconditionally overwrites the state with IMX_I2C_STATE_READ_CONTINUE.
-> This causes the state machine to enter an endless read loop, eventually
-> overrunning internal buffers and leading to a crash.
-> 
-> At the same time, the controller remains in master receive mode and
-> never generates a proper STOP condition, leaving the I2C bus permanently
-> busy and preventing any further transfers on the bus.
-> 
-> Fix this by handling the zero-length case explicitly: when the first
-> byte is zero, ensure that a clean STOP is generated. In this situation
-> the controller is in master receive mode, so it must be switched to
-> master transmit mode before stopping. This is done by draining the
-> pending received byte from I2DR, setting I2CR_MTX to enter transmit
-> mode, waiting briefly for the mode change, and then proceeding with the
-> normal STOP sequence.
-> 
-> This change has been tested on i.MX 8M Plus platform.
-> 
-> Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
 
-Is this a fix?
-
+> Here's the work breakdown (➜ marks the current series):
+>
+>   1. ➜ add refcounting to DRM bridges struct drm_bridge,
+>        based on devm_drm_bridge_alloc()
+>      A. ✔ add new alloc API and refcounting (v6.16)
+>      B. ✔ convert all bridge drivers to new API (v6.17)
+>      C. ✔ kunit tests (v6.17)
+>      D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
+>           and warn on old allocation pattern (v6.17)
+>      E. ➜ add get/put on drm_bridge accessors
+>         1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
+>         2. ✔ drm_bridge_get_prev_bridge() (v6.18)
+>         3. ✔ drm_bridge_get_next_bridge() (v6.19)
+>         4. ✔ drm_for_each_bridge_in_chain() (v6.19)
+>         5. ✔ drm_bridge_connector_init (v6.19)
+>         6. … protect encoder bridge chain with a mutex
+>         7. ➜ of_drm_find_bridge
+>            a. ✔… add of_drm_get_bridge(), convert basic direct users
+> 	        (v6.20?, one driver still pending)
+> 	  b. ➜ convert direct of_drm_get_bridge() users, part 2
+> 	  c.   convert direct of_drm_get_bridge() users, part 3
+> 	  d.   convert direct of_drm_get_bridge() users, part 4
+> 	  e.   convert bridge-only drm_of_find_panel_or_bridge() users
+>         8. drm_of_find_panel_or_bridge, *_of_get_bridge
+>         9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
+>      F. ✔ debugfs improvements
+>         1. ✔ add top-level 'bridges' file (v6.16)
+>         2. ✔ show refcount and list lingering bridges (v6.19)
+>   2. … handle gracefully atomic updates during bridge removal
+>      A. ✔ Add drm_dev_enter/exit() to protect device resources (v6.20?)
+>      B. … protect private_obj removal from list
+>   3. … DSI host-device driver interaction
+>   4. ✔ removing the need for the "always-disconnected" connector
+>   5. finish the hotplug bridge work, moving code to the core and potentially
+>      removing the hotplug-bridge itself (this needs to be clarified as
+>      points 1-3 are developed)
+>
+> [0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/#t
+>
+> This work is a continuation of the work to correctly handle bridge
+> refcounting for existing of_drm_find_bridge(). The ground work is in:
+>
+>    - commit 293a8fd7721a ("drm/bridge: add of_drm_find_and_get_bridge()")
+>    - commit 9da0e06abda8 ("drm/bridge: deprecate of_drm_find_bridge()")
+>    - commit 3fdeae134ba9 ("drm/bridge: add next_bridge pointer to struct drm_bridge")
+>
+> The whole conversion is split in multiple series to make the review process
+> a bit smoother. Parts 3 and 4 are converting non-bridge drivers (mostly
+> encoders).
+>
+> (*) One bridge driver (synopsys/dw-hdmi) is converted in another series,
+>      together with its (non-bridge) users. Additionally this series converts
+>      drm_of_panel_bridge_remove() which is a special case, and has a bugfix
+>      for it too.
+>
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 > ---
->  drivers/i2c/busses/i2c-imx.c | 13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-> index dcce882f3eba..f40deecf0f66 100644
-> --- a/drivers/i2c/busses/i2c-imx.c
-> +++ b/drivers/i2c/busses/i2c-imx.c
-> @@ -735,6 +735,16 @@ static void i2c_imx_stop(struct imx_i2c_struct *i2c_imx, bool atomic)
->  		temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
->  		if (!(temp & I2CR_MSTA))
->  			i2c_imx->stopped = 1;
-> +		if ((temp & I2CR_MSTA) && !(temp & I2CR_MTX)) {
-> +			(void)imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR);
+> Luca Ceresoli (12):
+>        drm: of: drm_of_panel_bridge_remove(): fix device_node leak
+>        drm: of: drm_of_panel_bridge_remove(): convert to of_drm_find_and_get_bridge()
+>        drm/bridge: sii902x: convert to of_drm_find_and_get_bridge()
+>        drm/bridge: thc63lvd1024: convert to of_drm_find_and_get_bridge()
+>        drm/bridge: tfp410: convert to of_drm_find_and_get_bridge()
+>        drm/bridge: tpd12s015: convert to of_drm_find_and_get_bridge()
+>        drm/bridge: lt8912b: convert to of_drm_find_and_get_bridge()
+>        drm/bridge: imx8mp-hdmi-pvi: convert to of_drm_find_and_get_bridge()
+>        drm/bridge: imx8qxp-ldb: convert to of_drm_find_and_get_bridge()
+>        drm/bridge: samsung-dsim: samsung_dsim_host_attach: use a temporary variable for the next bridge
+>        drm/bridge: samsung-dsim: samsung_dsim_host_attach: don't use the bridge pointer as an error indicator
+>        drm/bridge: samsung-dsim: samsung_dsim_host_attach: convert to of_drm_find_and_get_bridge()
+>
+>   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c | 15 +++++++-------
+>   drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c     |  3 ++-
+>   drivers/gpu/drm/bridge/lontium-lt8912b.c     | 31 ++++++++++++++--------------
+>   drivers/gpu/drm/bridge/samsung-dsim.c        | 28 ++++++++++++++++---------
+>   drivers/gpu/drm/bridge/sii902x.c             |  7 +++----
+>   drivers/gpu/drm/bridge/thc63lvd1024.c        |  7 +++----
+>   drivers/gpu/drm/bridge/ti-tfp410.c           | 27 ++++++++++++------------
+>   drivers/gpu/drm/bridge/ti-tpd12s015.c        |  8 +++----
+>   include/drm/bridge/samsung-dsim.h            |  1 -
+>   include/drm/drm_of.h                         |  6 +++++-
+>   10 files changed, 69 insertions(+), 64 deletions(-)
+> ---
+> base-commit: 2bcba510a612cea32b8a536eedeabd7fcb413cd0
+> change-id: 20251223-drm-bridge-alloc-getput-drm_of_find_bridge-2-12c6bbcb6896
+>
+> Best regards,
 
-why do we need a cast here?
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-> +			temp |= I2CR_MTX;
-> +			imx_i2c_write_reg(temp, i2c_imx, IMX_I2C_I2CR);
-> +			if (atomic)
-> +				udelay(25);
-
-where is this 25 coming from?
-
-> +			else
-> +				usleep_range(25, 50);
-> +			temp = imx_i2c_read_reg(i2c_imx, IMX_I2C_I2CR);
-
-Thanks,
-Andi
