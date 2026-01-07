@@ -1,185 +1,122 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012029.outbound.protection.outlook.com [52.101.66.29])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4A9354AD5
-	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 14:33:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767796424; cv=fail; b=ZtpX6echW7XlHVWupDQETFJ0/7gSrCGEcVwwuO3ez9gDcut4IM0v0EILOeLMq0HHKdCSUb2OTwNxJUvoEKg+t2JlG15ofnJm+SO0sLnmtGaWNriDAh62KAtJEhywaqwhz7JwalR7exyGsZZ/dQK6wWIwE13GUaY6m+gDsTr0/wE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767796424; c=relaxed/simple;
-	bh=wQaC0SBeS9YnIOly2AJWxl9gfuwQhnF0JX78OvD9Awg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=UOAkPY+AtT0N06QwyllxgO2ztalZNq7zMmHeVC6m+GLvJsmZjbvAt/oQmZnFYsyHqBPozsx6wMm64pb+wwKp7hXlHhf8YvqKH4MB2LhPeYj6hsv1U68XAKZhLbB5exti2ghedMCuTs5HDVCIQuqIKTHLQdxhRkrN8I5cwxYUego=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XBnBl2LE; arc=fail smtp.client-ip=52.101.66.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A35D3054EB
+	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 14:45:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767797141; cv=none; b=hSNX/hAbdi6jU7RH0HN0Zimx8DjDM596btlisHCByyFI6iTmJMeqBpl4G3H/QWjaCtsNPy2Ydm7emedq26dNDD+7uImzovS19zme8jst5iBYLGdiPAv+ylHix0BuklZCExfo69Q9ftK8Zu0ukIGx89wz5WlaWzpW8R1M/GQHyqs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767797141; c=relaxed/simple;
+	bh=qebzucOqrBSH1D2guSGfc6reEYtzMB040F5q1JVMq9g=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=u2h+TxNO7gTibUgAcEImO4QX7eRqQjFnjq8kEfoabVWyCaCU66WUUkZfRBCtvSIeIaXJFKDeSJlPDSrt5kr1J2dPmil0bPyMBFFJU4qBJ+NTxXiKPMR5oP7A54JPVHlhze8UAo1awcQtipKJ5YYd7bam6epLn8lOruQg9BgfUME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mwG58V21; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XBnBl2LE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g38ev6E+zbtLi1VM7Dj0pzkH1vTOdEdtKaelAUh6fB7bqoLQxSBbBlo13uSe1qUFTKNX5Q3GGUsviju13tXlkCEaQ5YH3cM8FXoEkalHSOYJIeRFxyFw77CDkySdRq64uwM/hvIa0x9WaYJ38CwF4OLxCuiB51/p+NCDpfX2Jj6FlpyAarSMxfrcBOcJvljZkJOI63kkZ8GpmZvGNFNKEZUcQ7mLB35c0yNUGLdYGc3dtQ1JMAQwAG5zD+LWTYr5US+C/YAmtGStZfRkZ8957B1h5CMZBu5U3Y+EhWjTSWAXzPsDpuRtkijPI8R+MeZDXyWJcUoM8W2RMqGV4L88pg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dF1mbS1bhK9eipsoxt/w0VjfPcEAMVlu4G6pkBziQ1s=;
- b=ZkpX9/FM/w0uvGDOU/SlPeczoTPvHW1MRu6rDbpivnKOTYUNoioN3AY8fB4EuBqyH8Is4+eSXfsN78U8Ylw7YVxejWkNhwarU35oJ1mxkEzJdGb4vk690Gqp+dObCRNT2QzINezOKOpFEVyxTYNwZa4WYBR3/TH3Cyl44JFxT+wynj7XYYE8gqiwckFeiTe6jjotkFyWwdDuaXzxQfyeAKxqlCVVzMa+cy+KmkI2DvQJHKpOdPtSNIUxCbghoxmLWM9A/VLnQx2XRxmUcKXmWLuJ1N+/T8LUdjMVsbZlAkSfn5kXlMeLP+1Zy4FkT2BO+cwGJ1tO11bOP/EdoFeWpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dF1mbS1bhK9eipsoxt/w0VjfPcEAMVlu4G6pkBziQ1s=;
- b=XBnBl2LE1tLMMQbAdKOD19E7D7OeFCgfpasgY0jc33e/FQE3p39tAc+LO0inzphT4x3RMpV/bsVxHps69NrjRZwAQpBvd+HxEKZkxJ8hyRENXShCyGfQq+l4FP/TSaMa0hDs1kWTVfR96r/qOHxwUqqvFb1Ziv52LVbGh457AuS8ZeMgGDdc14wrtLKyRB1CWEI/5NmIK4FOA5W1k01XGdIeaFsjp8liAQAyXR9tsH1W3o8hr9CfKy17dvw3Hy2Mw4O9RwONSPKGO++mx3YrlApHzaURgWNOjCE7qpSbdxnULlZ3Y1PZx6NKtQsY3NDG2V5sxLuMG7GhcVQCv6GGdQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
- by DB8PR04MB6794.eurprd04.prod.outlook.com (2603:10a6:10:11b::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9478.5; Wed, 7 Jan
- 2026 14:33:38 +0000
-Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
- ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
- ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9478.004; Wed, 7 Jan 2026
- 14:33:38 +0000
-Date: Wed, 7 Jan 2026 09:33:27 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH net] net: enetc: fix build warning when PAGE_SIZE is
- greater than 128K
-Message-ID: <aV5utzwO6WZS0aT8@lizhi-Precision-Tower-5810>
-References: <20260107091204.1980222-1-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260107091204.1980222-1-wei.fang@nxp.com>
-X-ClientProxiedBy: BYAPR05CA0095.namprd05.prod.outlook.com
- (2603:10b6:a03:e0::36) To DU2PR04MB8951.eurprd04.prod.outlook.com
- (2603:10a6:10:2e2::22)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mwG58V21"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 1EBA5C1EC90;
+	Wed,  7 Jan 2026 14:45:10 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3334A606F8;
+	Wed,  7 Jan 2026 14:45:36 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 54B3D103C87C1;
+	Wed,  7 Jan 2026 15:45:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1767797135; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=nTlOT3AM4kdk7PxlNs3Skb2xq4/lCpkf95bKd6Z7IFA=;
+	b=mwG58V21Feidw7j15RkZ1DlmeBnygryUTg12PFyeun6SbL9UTMeQuBa/8vHS1eHFd8029L
+	gUBiXaA5jWnwZ2IoTRm9A0ijTAesUa4m5wNMBnTmFh/kEfP25+oWQuPHZcFzPm52arShlN
+	Z6LgEDcsgolgB1iwvYzSEO7kLDdcRqlxXrCocxejFHvB+d3UGfDMa3mipAFKt/h/EQuM9/
+	vMFxUGBzyLB/mtlmKx5GPM6T8Ub5eDu524wcrnK1htz4OoOxRzvVkBhGLLVU2p/DojiX3V
+	E3WLiGA8J/pTx5Gb0zznUhkhDBxNE2CLn0CfTKOwLLdUB8Mgwhp5crAsU6ogSg==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|DB8PR04MB6794:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8a222753-cf79-4ae2-3e73-08de4df9beff
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|19092799006|52116014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pLrXDCehZVIbvw305a4IEVkysHvFM77ixNMTVRIuEDu+FiuyPAsYGh9Mi/rG?=
- =?us-ascii?Q?6WJ813/k6fApkbHYYUhcpTfKAstv7x5Ffcz0KBtrVFctDv3nmPGlcqcVhs+C?=
- =?us-ascii?Q?g63ssPCtOkXyeJb2x+TYXbbKGKxlRL0PXVCiIQYxKka6Zb6bDTYxpnHVd2DJ?=
- =?us-ascii?Q?dLPPodDNSL6YfD72atRTEN+J4TU+87Ag62kGkc3N4FT+FhqGFjbsi0TZXUa1?=
- =?us-ascii?Q?xbMq+lXFd9HsUWRY6LnVCJsaH9K8rs93/SIiBohkh9CtEu8UEYmy0Gdb36Ys?=
- =?us-ascii?Q?C/y+Yf7raKPUO2BWd2PrmGKyYx3gbVc2HdnbOo2bRfprQsrKBV4uqFpSEUAj?=
- =?us-ascii?Q?EexdSl+2yyP4ZIZ477QS/TMzu8bHmgm4jUPV7R216jE7UwFSgoeqwOOxQFql?=
- =?us-ascii?Q?AY5ryox7MiIVg3tgsDhIp+kiz1LeOdYjTFLAEnkVanVoOAnxCtrFsfUV1y9n?=
- =?us-ascii?Q?H6dDNs+gJWWVnByKAMyenC1gktKaNaOFwjQB0qPvrJx6OMqZfk8dfXZjeRy5?=
- =?us-ascii?Q?1qUxgb/sm2OW0yV1rySfMMiEjddSNeb6zVpHBLtY7jGM1a/OHgm5pHfGTJj/?=
- =?us-ascii?Q?GXxSt786fNO4QcGsRSjjFsgpfm8AbhC61edEMe3ShYZ89DHpdSd3oyEzptX6?=
- =?us-ascii?Q?fU63aLGG3xCgZvE8ArbXzmJz+qGYXdud4pHhKuxQyRBie7+8KJGnW+qflkfK?=
- =?us-ascii?Q?Nxz999N3cTCiRDahA4sRh1ndVxQvWDkcVWB0hudAUb64h0Hw9qN4VynrGKbj?=
- =?us-ascii?Q?MVBQ8YkzcCVPynwG9zPjRr/hgWisPj7Q0oh9CDsQMU66buQGfp2y7CzmGCDy?=
- =?us-ascii?Q?ElnwR/oHtC8veYLAb9WG8i3q2HQp1vGoL441S7v2sqWNJmYORPRoR38e7bWB?=
- =?us-ascii?Q?PjZ+jS2/tXheTWevMilRNGngo2JplwdSVJT+CCMWY+jIVmblCmZ+uDD1/UY0?=
- =?us-ascii?Q?Zxut+muOCkIoJnfb4/VJTXhsIt+nyWiga/ZUghdzQrlED6fnN5GpQUiLrR8Z?=
- =?us-ascii?Q?TCnpo0kqh5t4WTdIoDxJ0Di0Oj3POfPtlERfYcjjYp9VSPcIuWf3pS38fsyQ?=
- =?us-ascii?Q?36FGyFpUP1qkVQMs36ndetasJqwW5LK0C+LxkXToqJGXaJr7P4ZOsaxTCKUV?=
- =?us-ascii?Q?PpZJs3oip5Q78wUBOEuESpDWDNKc6en1ICBahvzZX4Xo7ghG+R0xRBzTZSMV?=
- =?us-ascii?Q?+XN+yUTN52cQeFkFM79KhytmGm2HROJmHV60/rCx7OK7PJmFxhR7btTYJIP/?=
- =?us-ascii?Q?UrazUJfVtRvwU8vzo2dQJsDFl34rexcGuf2L0JcwmhYe8GfijAxfroea3FxO?=
- =?us-ascii?Q?WR934iGuctYk6l7ibBstnNodEIQ1gen4eE9w2KSjJJEjxraptrFBQv9Bml+W?=
- =?us-ascii?Q?Sc7kUV5yXfIx5cUMheIColIj4gaicJAheNbu+6gho/98qamWyk0zzGVRhohp?=
- =?us-ascii?Q?GLB8QJ0zbnz5XACn2bzk1sj7OUDA+8EF0JMj8I3bBrNCoP+nYy5oHSsHUCX1?=
- =?us-ascii?Q?Gpjx0gzNV7IgcdsZmjdmHKebw0q/Z0QkmW+W?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?SCVnTGwAlqfowCcv2qJWPtqUqRMAS3pIzDEACOEJDKA05smVLcrB4lb7BWLT?=
- =?us-ascii?Q?bE6IEx+IaiMcMyhxSKzneD1uS+jtwtdJvmPaoSSUgUubPiKvydrtQQWCIXlW?=
- =?us-ascii?Q?jClwQYOmrmjORClVTJX5lpMivFgSfYJROST30v095J52bushkZukG5bMLgAs?=
- =?us-ascii?Q?ifZN2FmkSEoJNxZ7AUIxMJk5cLG0x6KAAFHhxmxlKK1BQVCX24k/K+xIYIU+?=
- =?us-ascii?Q?WpNlR0pm0kHpNCO5sByvMaefPNMNsUYpo30lQvSuNhEAy4rLqPMKyBRRULH2?=
- =?us-ascii?Q?+GQ+PPYfUxvmXkkYtKa4iZMHF9M6icM/WWnaI8XJejZ6uyBloe6cxjeVv2ZR?=
- =?us-ascii?Q?FraaoWKa1ZdEzpIom9aHGNssUvWY6cpsgqcvnZoDJ3v6He3ibUzMC8NuIpez?=
- =?us-ascii?Q?EGSkdy5MmTWSE4ax9smlC4+ubqVJMBBV0EjKXfFekyX7Md6+CUbCm77ZGxeP?=
- =?us-ascii?Q?L4jb7jKQwu0adr/G6a3YtFeSA/pTgeryKJGuR7T6u7tUN89q8GxO+HPo8vBo?=
- =?us-ascii?Q?c+OoVAQ/WkzVkTzK0Ha6mlO1dsTVY1oclHQLfiv7S6hIRlRm93gDHGNOVmaw?=
- =?us-ascii?Q?qER2wix7le+B4cXrDWQ7+1Z6QUdVZ0tAUamgqv1RdP3ZHq34gKgG1rnP6VlY?=
- =?us-ascii?Q?CtnMVWFHtVcP9rA1Bw+xzcPYF9VMe3sR5qZAuVjwiW90cMEndVjfmi0spHan?=
- =?us-ascii?Q?tb/Y6yVJwx03E/o7zl4E3Uzl3/bsjxP0UQjDocefY2ogmMFlBT9/Gu3zu7WG?=
- =?us-ascii?Q?pqAIQEt0YgKECM1CnTgyzoYj+Z2Dsjah5CGg+JKUAiGHRxGd+Bg1bR1Q+9TE?=
- =?us-ascii?Q?L8JmohBPoT7R82qwgkz4S1E0c+NsM9Y1dCcBhLo3mIaKpYmEJT/FV81k+eMB?=
- =?us-ascii?Q?AMNUUnsH+Sfa2Fy9tVm61GeJaiIKqnLJKByRk+QKVsv9ZyeuDrcmDdw/IgAe?=
- =?us-ascii?Q?bfDbVoCPt5wsd3MEhmJomt6z1+ieATIns96OuO8xKAd5R9MOLayQEQJoFPDc?=
- =?us-ascii?Q?3T/yEGfDEPHlpV0332rZSiW7wv4OjVnkDZM9ga8yEmqwLvj6lbP+65wiaDJ9?=
- =?us-ascii?Q?V0WfF7ng135KsQ2Wrz8WEpAvB4MZyzcY4zOFu+bwa5gObPkz14sn2EbPhHe7?=
- =?us-ascii?Q?3pFrqVXHktkc2lGleXpbuHgPgUbQe7ZlUeaI5WUO58SGD8rtMN9kbpL9BAID?=
- =?us-ascii?Q?W3W2rKQ1SFBg6kXQbBJfgRQq4t3EFYNfLH7ae38OMSSE2199tKSvQ/fvDxO+?=
- =?us-ascii?Q?skh6tmguwy1TEFUEnU3VpU/V2vm3aNyey4nmzuwlz8HNSEviRx7gNNU8dK7k?=
- =?us-ascii?Q?dwX/mSXluWsZLg8ygfHTcA7Bbi4RvfCBFuOBWrs1etf0CAtf+L6ZarXcyH2a?=
- =?us-ascii?Q?fdDgGDkz6leSZAlH17D8wRm4oM+5jdab5YCMj4f/2lyrOcEkzdMrSp0lqA01?=
- =?us-ascii?Q?od2EyRwRR1q+MGdtA491tQ07/3nk013PiSF1hfXgRDFm8jbe2g4zzxyJcPRM?=
- =?us-ascii?Q?s36mcht2Va8URAVuQEVgLH3XNNCayLKYSqk5iSXjvdHXblj+Xq3axFiOVhh+?=
- =?us-ascii?Q?Kebz6yD/zRv5bUQJv5oHWSx1PY/C5QNMJI6miwk6il909b1XqoZq5pMQm5+9?=
- =?us-ascii?Q?PqFgOR7BMA8Cyy55NxYatAqlj5LLbXFmfNbdGaA9S6K0AWczMwJ1flRwhKAw?=
- =?us-ascii?Q?HIDVBYQ7Bbx3N1ufVttl3j119QpEzRv8RwgbdtBeHdlkkzwM?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8a222753-cf79-4ae2-3e73-08de4df9beff
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 14:33:38.3337
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MgknQECpZ1f4OSoDe9mN4LwEa5FcBDJ6+SsPF/Amrp1ETSNGSbumKq+3YNwSSFKK5q2CB/VUD1nLgfJcCyHq/Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB6794
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 07 Jan 2026 15:45:24 +0100
+Message-Id: <DFIFS3S64SGO.3UGHYN3F6HHRQ@bootlin.com>
+Subject: Re: [PATCH 09/12] drm/bridge: imx8qxp-ldb: convert to
+ of_drm_find_and_get_bridge()
+Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Thomas
+ Zimmermann" <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>,
+ "Simona Vetter" <simona@ffwll.ch>, "Philippe Cornu"
+ <philippe.cornu@st.com>, <benjamin.gaignard@linaro.org>, "Andrzej Hajda"
+ <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
+ <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
+ "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Adrien Grassein"
+ <adrien.grassein@gmail.com>, "Liu Ying" <victor.liu@nxp.com>, "Shawn Guo"
+ <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
+ <festevam@gmail.com>, "Inki Dae" <inki.dae@samsung.com>, "Jagan Teki"
+ <jagan@amarulasolutions.com>, "Marek Szyprowski"
+ <m.szyprowski@samsung.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>
+To: "Maxime Ripard" <mripard@kernel.org>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.20.1
+References: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-0-283d7bba061a@bootlin.com> <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-9-283d7bba061a@bootlin.com> <20260107-weightless-adaptable-wildebeest-a3ed6f@houat>
+In-Reply-To: <20260107-weightless-adaptable-wildebeest-a3ed6f@houat>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Jan 07, 2026 at 05:12:04PM +0800, Wei Fang wrote:
-> The max buffer size of ENETC RX BD is 0xFFFF bytes, so if the PAGE_SIZE
-> is greater than 128K, ENETC_RXB_DMA_SIZE and ENETC_RXB_DMA_SIZE_XDP will
-> be greater than 0xFFFF, thus causing a build warning.
->
-> This will not cause any practical issues because ENETC is currently only
-> used on the ARM64 platform, and the max PAGE_SIZE is 64K. So this patch
-> is only for fixing the build warning that occurs when compiling ENETC
-> drivers for other platforms.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202601050637.kHEKKOG7-lkp@intel.com/
-> Fixes: e59bc32df2e9 ("net: enetc: correct the value of ENETC_RXB_TRUESIZE")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Hi Maxime,
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Thanks for the blazingly fast review of the entire series!
 
-> ---
->  drivers/net/ethernet/freescale/enetc/enetc.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+On Wed Jan 7, 2026 at 3:08 PM CET, Maxime Ripard wrote:
+> Hi,
 >
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
-> index dce27bd67a7d..aecd40aeef9c 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.h
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.h
-> @@ -79,9 +79,9 @@ struct enetc_lso_t {
->  #define ENETC_RXB_TRUESIZE	(PAGE_SIZE >> 1)
->  #define ENETC_RXB_PAD		NET_SKB_PAD /* add extra space if needed */
->  #define ENETC_RXB_DMA_SIZE	\
-> -	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD)
-> +	min(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD, 0xffff)
->  #define ENETC_RXB_DMA_SIZE_XDP	\
-> -	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - XDP_PACKET_HEADROOM)
-> +	min(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - XDP_PACKET_HEADROOM, 0xffff)
+> On Wed, Jan 07, 2026 at 02:13:00PM +0100, Luca Ceresoli wrote:
+>> of_drm_find_bridge() is deprecated. Move to its replacement
+>> of_drm_find_and_get_bridge() which gets a bridge reference, and ensure i=
+t
+>> is put when done.
+>>
+>> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>> ---
+>>  drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c b/drivers/gpu/drm/=
+bridge/imx/imx8qxp-ldb.c
+>> index 122502968927..6b80d798b27a 100644
+>> --- a/drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c
+>> +++ b/drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c
+>> @@ -552,7 +552,7 @@ static int imx8qxp_ldb_parse_dt_companion(struct imx=
+8qxp_ldb *imx8qxp_ldb)
+>>  		goto out;
+>>  	}
+>>
+>> -	imx8qxp_ldb->companion =3D of_drm_find_bridge(companion_port);
+>> +	imx8qxp_ldb->companion =3D of_drm_find_and_get_bridge(companion_port);
+>>  	if (!imx8qxp_ldb->companion) {
+>>  		ret =3D -EPROBE_DEFER;
+>>  		DRM_DEV_DEBUG_DRIVER(dev,
+>> @@ -679,6 +679,7 @@ static void imx8qxp_ldb_remove(struct platform_devic=
+e *pdev)
+>>  	struct ldb *ldb =3D &imx8qxp_ldb->base;
+>>
+>>  	ldb_remove_bridge_helper(ldb);
+>> +	drm_bridge_put(imx8qxp_ldb->companion);
 >
->  struct enetc_rx_swbd {
->  	dma_addr_t dma;
-> --
-> 2.34.1
->
+> the companion bridge is used in pretty much every KMS hook, we need to
+> put the reference in destroy.
+
+Ouch, indeed! Will fix in v2.
+
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
