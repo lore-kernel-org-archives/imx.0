@@ -1,39 +1,39 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D3133ADA2;
-	Wed,  7 Jan 2026 13:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F8D33BBC0;
+	Wed,  7 Jan 2026 13:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767792833; cv=none; b=MpTcGfBVa+XwA2DvCzGXrevyvO1NBfAFStzxeVmd4ynKOv/qrChRPF3Nr6OdDRNI/1hmtZk6ZCJCAZoFoYbRYevqSCmNtx5G8Kuejb/wwmnSiRWwWAsNmhH2cHnCrYk8U8/XHk1ngWn7tfOGr/8Xgzm7EcjNhBZ7uw42yoJpksk=
+	t=1767792859; cv=none; b=TRNEgKmm/TAf0kAMNhQqCL90lJEAJpOsf6gN/vDymvdUUfc0ZJ6kQJ5YRyTqRoTAjtKIaBe9zB9Vpd8R9S5fUwJAZq6Bb6qjoDJOzjNSL/EkG5TyhITzRWP8GmpPi7vnq0g+CaQYeNM3zjqBnIuGlbjMH6gj1muiEAQXWhkmqWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767792833; c=relaxed/simple;
-	bh=eRal9aRJEBMws0AwIbeE+xWsj4dyQhrtTO2oF039rMA=;
-	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=IC7+v86YW2O6dHxnuAeLenlx9XexMsjDRBUKo46fgUJ7bxqHTPIhTnq70JoqIPLb+EIy7qxORY/imFjZpWg0RzNLiMYfEtKWuYxs6UQiKneWSOI1vx5OJG61lyzOFkSvodhI2kjp/z/nJWlmDZoCLZcIeV3dinartIzBQfyu9Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZsLZbs7o; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767792859; c=relaxed/simple;
+	bh=2QtxPB4O11+KaZ0o4eJv9y4N9YG3MEL4lpbPyh0e+WA=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=uqX9sh+bfT9+wCUi2MdOSm+2U0FkK7eIHDnQ9rij+BRLJVMXZZ89mvWm6rsy1N6nJFP4nh674kpSWD6u/Jv0BMBXUTKHRJhUGTOhSxcyrzKpHXOqA60hS2nI0nb0V5jWP6RhRAYHfylEmKBF0Kx1X0G466Yrf7eIiyOuNku17Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/tZCTvf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZsLZbs7o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D683CC4CEF7;
-	Wed,  7 Jan 2026 13:33:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/tZCTvf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D57C4CEF7;
+	Wed,  7 Jan 2026 13:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767792832;
-	bh=eRal9aRJEBMws0AwIbeE+xWsj4dyQhrtTO2oF039rMA=;
+	s=k20201202; t=1767792859;
+	bh=2QtxPB4O11+KaZ0o4eJv9y4N9YG3MEL4lpbPyh0e+WA=;
 	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
-	b=ZsLZbs7o8rWvOy1KXRQEHXUY+OZNgKMmY0wLvJ8iieksy79lUKP2qpEbtYYjj18AN
-	 E7Xd9oiOs9XbNxr+4a9Ia06cop1T+OsmXvlKomwA1JcpOKqFyXILxvBcNGcMq38DZp
-	 HKbwnC7jmd/ik1tz4BPGB9OR3OcTMLK9ETrR22i4v2rVF8AKst/eJmHg3pizbZ0FCZ
-	 ciyGXWN51TABOpmO5w4SPjJ/n0kYXGAld0XeeODer6T7xx+Q6wEGXzip1eGcNwjLeM
-	 P+aBsWtH1MwJXQHaAnU27itZ5joYHKy6ZNad+h2Z7Sx4DhaMZt9mwn9z9kKmC5JLUb
-	 KNZlEazVnbbrQ==
-Message-ID: <7e796e122dcbce9a8d7678db9bbfc89d@kernel.org>
-Date: Wed, 07 Jan 2026 13:33:49 +0000
+	b=b/tZCTvfCfHByza9l0a6Ji0KswDphXz/YHcBcze19Mt7spGm2wvy0JoFbmhpITj6A
+	 va1jFI0ieMytMgvgjaWUG/c776zK/TAeA79iUyM+qLfmyVtXFLUumyEjh1FPfVmIZl
+	 CXiiYWZ21e+CerVbF0Kz0EkbDYqn9WVHjitFp6R7el9Z9vbO6laGH0WKSQvkgAFPIG
+	 TjE5kaMAhJT3Tu9twlw1iJRC559NecBHPmNosSvSyC2R2YJ7LExR1f9AqRbDTCKiJk
+	 V5bxBYmlGSzlv9QunRZK4K2WdoN1hSUWduATYu6f1vU5N3S6S24IEGv5/l4jCIBvlV
+	 4V1tVqOfNN9ng==
+Message-ID: <89c4c08341b8f6098fb93a8a65ea4727@kernel.org>
+Date: Wed, 07 Jan 2026 13:34:16 +0000
 From: "Maxime Ripard" <mripard@kernel.org>
 To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH 01/12] drm: of: drm_of_panel_bridge_remove(): fix
- device_node leak
-In-Reply-To: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-1-283d7bba061a@bootlin.com>
-References: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-1-283d7bba061a@bootlin.com>
-Cc: benjamin.gaignard@linaro.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, "Adrien
+Subject: Re: [PATCH 02/12] drm: of: drm_of_panel_bridge_remove(): convert to
+ of_drm_find_and_get_bridge()
+In-Reply-To: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-2-283d7bba061a@bootlin.com>
+References: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-2-283d7bba061a@bootlin.com>
+Cc: benjamin.gaignard@linaro.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "Adrien
  Grassein" <adrien.grassein@gmail.com>, "Andrzej Hajda" <andrzej.hajda@intel.com>, "David
  Airlie" <airlied@gmail.com>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Inki
  Dae" <inki.dae@samsung.com>, "Jagan Teki" <jagan@amarulasolutions.com>, "Jernej
@@ -52,13 +52,12 @@ List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 
-On Wed, 7 Jan 2026 14:12:52 +0100, Luca Ceresoli wrote:
-> drm_of_panel_bridge_remove() uses of_graph_get_remote_node() to get a
-> device_node but does not put the node reference.
+On Wed, 7 Jan 2026 14:12:53 +0100, Luca Ceresoli wrote:
+> of_drm_find_bridge() is deprecated. Move to its replacement
+> of_drm_find_and_get_bridge() which gets a bridge reference, and ensure it
+> is put when done.
 >=20
-> Fixes: c70087e8f16f ("drm/drm_of: add drm_of_panel_bridge_remove function=
-")
-> Cc: stable@vger.kernel.org # v4.15
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 >=20
 > [ ... ]
 
