@@ -1,202 +1,153 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011013.outbound.protection.outlook.com [52.101.70.13])
+Received: from mail-m83220.xmail.ntesmail.com (mail-m83220.xmail.ntesmail.com [156.224.83.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B96486353
-	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 02:46:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767754018; cv=fail; b=sN03NU4eUwiBCLah24o/tdd6q1i+xNq/9SmHy0Qain7NzCypO1AYuF3PmNWvfHrbZv1LWsWGIzF1x17S1soY+VewEP3QT6YVjbFAkTGym1hcJHTEdVsVWFICtFgfdbxv/GChtDVdMqO3CnLNMf/avaMXLWJwAVoF8c2R7126L2A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767754018; c=relaxed/simple;
-	bh=6Nl5GOjjrvCtveva+YwqMGQwlkv5SLKEa2S5CstHQpU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RIJH/LSZvsRIiJ5dgiyt2lbs0RDIzEJqZmUlBE8MSu5WF3DFssuwDMYJkPBFtSGQH/5vwCHGDmR5BzG5VUB6jLyh/DBip+3RMcJxXu/itdOYTy2U/ftHqExdWqHs3LVmI3eFld6j6w3Xo52buglEd3VfqR8H84lRhmldkmnytuM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=E0Tx9NSh; arc=fail smtp.client-ip=52.101.70.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E38013A244
+	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 03:52:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.224.83.220
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767757969; cv=none; b=VzcBkpvGg9SLTh5qkpiMuATOWXaXVxAP+qeyXjsG8mnB/V4QibR4njziOSeIXBPIThJrt4yYSrUwDK1DrWcwteO74SMQ8kRSVE/JSAHrRrPCOIQZx9QEmJa16AxE3E39qxYuEvmeFVlKDg/YDA1QxOxIRijRj1RN31TYK7XB5Fc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767757969; c=relaxed/simple;
+	bh=ICn4qhhsrF4pu4EGci52koh5C3HnFNE/YySH2HqVflY=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=B2Lg/H2/zx1tg+K2oI9owgZM0ygLzo5XPAc8h+RNnCJdGjFhhwWc7LMyh/bpyUMUlgbR8/iQfro84gNH7UFGVBKcOkYtfG2kVgBSY1IObIpnHL+r0vjUaX0aU5le1xe2a9v39qpjl1zH5y0ZoIFvu0oDpOQ+xo6NDIXo2o80b6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=XTc3ywoN; arc=none smtp.client-ip=156.224.83.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="E0Tx9NSh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LEZfxOsrrm4CUEkqocbycu+3o/mE7fOih52jYyc9tNEXE1fHw+qz3AFiHhbczvopKDq+huinq12ZwOwrHhlv/n5fqI8oV3t07AUJmtZY1aS3T/h9k2Vl3edXLENQJg4pLelRqN0/zLLfjipGI5ZJ0r4y9VPH5bKKtw0Y0aYhi9SPqd2+IDapsmirgF7jFhqhYgZAbe0bHq1LRRaIEHLxhvLj3eFjIJva6jzJ9f2EhAyOSSRkHICQjGIl5seIEDEDB9DAB5gbNtKPwAKAFOR2YgqeKDgXw3ux7lSi9xw969m0Fa7dXpem4BiacF2cOzXDpi4BUKZQJjuqFL9KhfqSOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H7ULkiovZ3xsrXZkQ4i7QUJmnicg9p+/+HyOiaAuPjU=;
- b=CRFi/4koPuNRZ50nfMMu15Yc6zUp8gocI1YRgfRuNU5URt/+DdBKBCvho8kv0o44NJw1sv0qKZnpevbTIVRHInJv62EFCjnI5Bw3dKQAQrcjHfuA+bSSNE2THNi+hrib8MtG46c8dq2i5n2y0fPDlykBLGnOYVSJMeMA03lwSbvBxFchYpvcZ72kFiH75hOzLoDkNqa16jO+8S1nxPc1a6/ZaHKm9WS5Y2XacN4Y7dC7HRfUgeayjHiL9LcRv8zgOKIZnwmHWPKi1ap60o/lB8MHvzNAkYEDQeI/78ztvKhx41Udv3rO+Yqt3iY1rBjLYrGT0gAnHYo253bJ0c0M7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H7ULkiovZ3xsrXZkQ4i7QUJmnicg9p+/+HyOiaAuPjU=;
- b=E0Tx9NShKC7BCVu6wyfjXpODcA3mZsE+7oRbzABG5CXRd3Pw8eXaRsrgMVPT3+oUETm25TPsU/7fBBmsq/5F1Q298TQstWSqpqaRCHjcao0aJ3qZwuks3u9xHH4f5nsSHlU+HSGBT3WxVq5EcGA51MAG/7V38KU2VLGkc+1qK5TR/iOTxVaYmV5J/gQlYNfzxZ52iBejOXIWMrNyllw4GnH87p4C5qzAU5TRlQb0G2d9ec1B9st+c3KeNHv3L1SW8pv2ZEC4N9N70ftcSvU1pCaSYtxbZwpaPYX5D3DHZSAc1XTirtlNCC7YCv6b+QbXUCoMidtBq3w+uQyn9ejemA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8833.eurprd04.prod.outlook.com (2603:10a6:20b:42c::19)
- by GV1PR04MB10332.eurprd04.prod.outlook.com (2603:10a6:150:1ca::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Wed, 7 Jan
- 2026 02:46:54 +0000
-Received: from AS8PR04MB8833.eurprd04.prod.outlook.com
- ([fe80::209c:44e4:a205:8e86]) by AS8PR04MB8833.eurprd04.prod.outlook.com
- ([fe80::209c:44e4:a205:8e86%7]) with mapi id 15.20.9499.002; Wed, 7 Jan 2026
- 02:46:54 +0000
-From: Richard Zhu <hongxing.zhu@nxp.com>
-To: frank.li@nxp.com,
-	jingoohan1@gmail.com,
-	l.stach@pengutronix.de,
-	lpieralisi@kernel.org,
-	kwilczynski@kernel.org,
-	mani@kernel.org,
-	robh@kernel.org,
-	bhelgaas@google.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	stable@vger.kernel.org,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH v8 2/2] PCI: dwc: Don't return error when wait for link up in dw_pcie_resume_noirq()
-Date: Wed,  7 Jan 2026 10:45:53 +0800
-Message-Id: <20260107024553.3307205-3-hongxing.zhu@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20260107024553.3307205-1-hongxing.zhu@nxp.com>
-References: <20260107024553.3307205-1-hongxing.zhu@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR02CA0113.apcprd02.prod.outlook.com
- (2603:1096:4:92::29) To AS8PR04MB8833.eurprd04.prod.outlook.com
- (2603:10a6:20b:42c::19)
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="XTc3ywoN"
+Received: from [172.16.12.43] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 2fbef9ce3;
+	Wed, 7 Jan 2026 10:36:57 +0800 (GMT+08:00)
+Message-ID: <f644a5ab-5dd1-4f4e-b2e9-3585dec81a96@rock-chips.com>
+Date: Wed, 7 Jan 2026 10:36:57 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8833:EE_|GV1PR04MB10332:EE_
-X-MS-Office365-Filtering-Correlation-Id: e38b10f7-dff1-493d-0b36-08de4d970471
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|52116014|376014|7416014|1800799024|366016|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dXGRZ2OqRKpt9bdEG8/jxdSBw/7rAco+pv3zVq/hA95pxWcR3G0na/Cn2XS+?=
- =?us-ascii?Q?DKCGuNF5W2rmNdIWvZyVMcZ7IhDFieTjeOJ7bhtILEFQtb6V4Vv6QIP9A4Hf?=
- =?us-ascii?Q?DF/TL25tk1fGKf8+B84ppIEzMiH4MWZOHJLQQ1YoSZom8NJgdLmYZtmlBBY5?=
- =?us-ascii?Q?BuXuJ3HnmzM927wY9WcwSzqinxEAkfEthZq3D09iKx4LE9cpZWZyU8NXJDgw?=
- =?us-ascii?Q?i0fVWjXVx5QrRUcsSyv1CCyqA45XzHbieBvLYQobRwOSy26OGf72HuzhM8Uz?=
- =?us-ascii?Q?gRFgucU268tZSBIgbFu3JiRSHcCarzLPv7ORkUNJugkBNiNjrEkWFk4xmG1w?=
- =?us-ascii?Q?B218+Mw8Ljf35Mghtk/9WKQSgCMPRYG9hWoZQkk6c30ZaQ77C10hX0+KGubm?=
- =?us-ascii?Q?6kCywUPL1VgUxRnD+QhHQw5JGynHcBbryg2ylW2jmy6gHY9jkvMmd5hVj76K?=
- =?us-ascii?Q?UyVLY9RAVtJlmc1KpSJ+IfCD9mPCVV1rNdRBEK7ApY0IwhUwmNKrk1vWDpHF?=
- =?us-ascii?Q?WrLaqaADnpCVnl0zN8ramAmaCUqCuAC+j/7B3bVQOyrbb6NGB6WlL4ommEQU?=
- =?us-ascii?Q?XmsTbQgSTHsST0kOp2WldZbaWh0VSQdw2IyT7PPwXuYRyhPLvvNsZq3zHJ4p?=
- =?us-ascii?Q?fmP5BXB9HkEySSJh215n8KVIFE25PHSHoG66kk/+y3j2H02q/NlN2LaJgyBY?=
- =?us-ascii?Q?wqJMqhFSBh7P+vDitNTto5+7GonnwcRJWXBb33xvOI9aLRwcSkOFo+axD/7y?=
- =?us-ascii?Q?bASlsKR4guObmumsOoFGieZ/+uIc9dSmrBFS7eDxVWQuJ345gxXs17Aqk0kX?=
- =?us-ascii?Q?E2Y1DgFxitIPwJjls+lsL+YaYHmQjAnbv0uzTRks6L1scqAdVqLZnLB5EsUw?=
- =?us-ascii?Q?Ay9KEFpTNGvwqYDx72OycoDqAsCsoM/p1FrL3d0wyvUCLNejhJp2ErBD/+mS?=
- =?us-ascii?Q?RWchYYxmNirqhrJKIYt1DwmtN4yYfep6tCfkwOofBzfDCG5zT3Ks6XO7iUoK?=
- =?us-ascii?Q?GHbitGAcTmA0PU+UVpfzY8HE9b9PYZgQ8COCuAiPLFBKYXdtHO9LlT9siNOq?=
- =?us-ascii?Q?hPDs0A1TP9ad66wysrn0+pegzhMD/cZijYE2N/1knypIpKbRSGyV5K06nMd6?=
- =?us-ascii?Q?y5lzC873L5YB+4wwiDD7KHQKz52Szitm8rDG2fd3JuDnBlywwjG0jU2uXOj6?=
- =?us-ascii?Q?DLR/wvbfPvJAInDaCnmdOalM5j/tGMuPSpM8kTlJU7hvgOe7bIxhlataUF3r?=
- =?us-ascii?Q?CvvihSVX00O8ntjL4s4c9L1682Ua8x+SGMI2apsmVNJR1E5iPlP3qL80ffB6?=
- =?us-ascii?Q?iCY5VzUBP8QDYsahFyvkDtxeTGWMPkLmLspxyw9vuz7Bc+RikjlmVP+5dNNg?=
- =?us-ascii?Q?n0tZyWc6T/banA9/+hX1phVH7xU2GwGyd3/Mrq4x3nj5rxMsj6sfXpF6585Q?=
- =?us-ascii?Q?Ap+rqqTLH+icdS82/3u6hb3pnV6/FQSl4SBSRmt3bEx4CX1nYthJHbLPuoh+?=
- =?us-ascii?Q?uM4esMsvz6un4WXtwCt3J4NN3H/dMYy9X12nYRrieGa2sHUdrDTter5rOQ?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8833.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(52116014)(376014)(7416014)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?331CK+SRlvwXTUpIxdJxWHnCo0iwgnNe5c70AYYMlIj9LC3lLJdKKCml/8BU?=
- =?us-ascii?Q?p1YYtdZIAXTWPLMm1cx98uZKX0ptcSt0R0edmdU3GsiFimIKNVIFNLc7tTTd?=
- =?us-ascii?Q?yVfemZFSvjQZCNIhAHB4l4bsg3YBFR5j+I7ETeVs2hvJ+DBxgXFs8PetFxBF?=
- =?us-ascii?Q?Pm3ukBrr8PaPcc4wuHqLayNmYAn+WdWwWVIkkkNpUNaxj9eoZksm97f1qpVN?=
- =?us-ascii?Q?7n4tAoMaPpr3OvbcEKlLO8c4G6zBEVr5PXHzOhsZPBIO71gia9Y/3vpxMuXX?=
- =?us-ascii?Q?yF1FaNKEiGE29Q6es24y47nPwpfSGAY2DVcU6ibq3ZW5NwqnBbTDAtYnZXw0?=
- =?us-ascii?Q?P4AWFQ1qUbw72eZjxVgPLvxu5Ps2oQY/weJhZ2zKbSwl5nw3UwVke/QRTjRn?=
- =?us-ascii?Q?nO2BzX68aZsVwdQcOD++xX3QUNxO3WvesSH71pa+TolfSdz/ifCbaIzd/KHv?=
- =?us-ascii?Q?tNPWbaCGdDF/YuoyvSgIfWJbuc6mr+vpPpNmFirObBfjmggBQZ9ql+bHZIKC?=
- =?us-ascii?Q?jQJ3GNPwiROsBpugAB2ZkvywDlEVJiGqMDas6rBukVxydiM9xNjJCrGS0IEs?=
- =?us-ascii?Q?DRJa6PrnJpxYIEK1jqCHXPl4v1JgGZ/eqVTffZrB0U1qDeD8dojSUQMxTVsm?=
- =?us-ascii?Q?ekFpD7GwcrGbAIBlHgWRSdEHfEHZPAIhV8xguUFbuGxnWkgIMfazjXOFhHx7?=
- =?us-ascii?Q?zpNNL8U2fWaJw7zItFu/y5lNHE0dFPG9AnuK/tLuBMoQRMko1qxl5zNWFHPO?=
- =?us-ascii?Q?Q8ygLTkRrGQNNwhBuPmTiFcewApSvN6NtRkKOIOYfY7zYmsC+nfiohZBPNzK?=
- =?us-ascii?Q?kdwwc3s5raI/rVZRIKdXg+l5CTQctOEGdt6w53T5XXkloHA11T1HVHw5ed8b?=
- =?us-ascii?Q?caT7kqk5G9WJ5RP75vsOjGADvf97XQSYsVrCW3+DlAYKrdZUuMsdwspv0zAj?=
- =?us-ascii?Q?hM88PwIdBHOTERyPXbFwh57QJpTQ0pIA6BQ20to+kbxI2u1cnPFC7rKzmSQH?=
- =?us-ascii?Q?7eNsmGqDG6OgaKLXILUfcu6jt6VBKv2A/eIWsx+uzWDhIo8jXPXIFRX68skx?=
- =?us-ascii?Q?Ylk0jEeVW3RWoXipslIpSNXPkCw4gDZ+LsvguexDJSb5YQnmmCp4uV7nPRYd?=
- =?us-ascii?Q?q+Js5DXT6JgKTo4rynXLQKPX36er0/qu63kUvJpHclryV+fkccTi2KRPhpvt?=
- =?us-ascii?Q?2VObBcrv3azJ8zMHFT60tYwwrw+XieFKEGrQU8LAeNIIK+aEZntERFP8RY+G?=
- =?us-ascii?Q?mML5yBBKbXEr5C1YoFFByDqTV0gWEO2DsPDwyeQgqM/MvmbOttYQNpzSOVVw?=
- =?us-ascii?Q?KHbCwADJSGcL2HvNSatOUnN8m49xYLMnsP59NgKalBAekh/kbSjt+vMsJhuP?=
- =?us-ascii?Q?hTniSJgdMJl4sB436AFL2HS2mMccwOvLVfkRNlT7FIU+aGCSe2HynyiEEcnE?=
- =?us-ascii?Q?XjQ/EP8Trkf8/oR6ZzGeEhmD1IYZsa2nF9jntuyEMh/zQPMeMrSB6JyWtTGv?=
- =?us-ascii?Q?t1XjU5YnSoE3uqyEd9vf8JYRGJEJUFzzsCmktf+eDgIjQPpYVcIkYcgZq84U?=
- =?us-ascii?Q?vNBe4zYw9CS+G1sXKw2MfxhTHVbE40lfrmERsLl22nFWy5/LFpYyAZTD4f+T?=
- =?us-ascii?Q?KCuK/TeQ51/gsivSOYy4R1nn7pYBgAIDmJscNS4xQueNz/wSqw5+20gbhow1?=
- =?us-ascii?Q?ub+jk5nh+r80kVBnRX2HHVeDEGT4pnyxKIZIoUKsWBbq1OuS9plKfUOeYRLv?=
- =?us-ascii?Q?+Dp2gOkGcQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e38b10f7-dff1-493d-0b36-08de4d970471
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8833.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jan 2026 02:46:54.7131
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: akeT6vqC8fpyXvDBEWFdJgk0/2DELclCWnxHyESUbotPmuxCTPu2amng+W+gyHRVluiAW6RuBsa51dHPGLuNWw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10332
+User-Agent: Mozilla Thunderbird
+From: Damon Ding <damon.ding@rock-chips.com>
+Subject: Re: [PATCH v8 04/18] drm/bridge: analogix_dp: Add
+ &analogix_dp_plat_data.next_bridge
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, andrzej.hajda@intel.com,
+ neil.armstrong@linaro.org, rfoss@kernel.org
+Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
+ kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
+ jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
+ heiko@sntech.de, andy.yan@rock-chips.com, dmitry.baryshkov@oss.qualcomm.com,
+ dianders@chromium.org, m.szyprowski@samsung.com, jani.nikula@intel.com,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
+References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
+ <20251217093321.3108939-5-damon.ding@rock-chips.com>
+ <DFCCU8AN0GZQ.2CYTKKV40JYLI@bootlin.com>
+ <187b2c32-5a10-4555-8d49-cf1ee86a8eaa@rock-chips.com>
+Content-Language: en-US
+In-Reply-To: <187b2c32-5a10-4555-8d49-cf1ee86a8eaa@rock-chips.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9b965081fc03a3kunme7026636f3fcd
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQx5DHlYdTEofSRpLSklPH0JWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=XTc3ywoNaUASUctvi7aqpNtFJToV3y76ir90mhINcT3SspMUdeAXdYHXWAhULkBokH/TOTyxAl1xgR5zUham/P2R2/bTWNZKibwHhve030/J2UcGgRkWDPAlabHxczeZ0+/YEt8YtK3jl3yaUXGchACliUpEFdyJR41n+ftMllA=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=XG1ve9KKgO4Stoa/EGMqCZSP6qpS5GUgHSKbTxkyq9Q=;
+	h=date:mime-version:subject:message-id:from;
 
-When waiting for the PCIe link to come up, both link up and link down
-are valid results depending on the device state.
+Hi Luca,
 
-Since the link may come up later and to get rid of the following
-mis-reported PM errors. Do not return an -ETIMEDOUT error, as the
-outcome has already been reported in dw_pcie_wait_for_link().
+On 1/4/2026 10:51 AM, Damon Ding wrote:
+> Hi Luca,
+> 
+> On 12/31/2025 7:11 PM, Luca Ceresoli wrote:
+>> Hello Damon,
+>>
+>> On Wed Dec 17, 2025 at 10:33 AM CET, Damon Ding wrote:
+>>> In order to move the panel/bridge parsing and attachmenet to the
+>>> Analogix side, add component struct drm_bridge *next_bridge to
+>>> platform data struct analogix_dp_plat_data.
+>>>
+>>> The movement makes sense because the panel/bridge should logically
+>>> be positioned behind the Analogix bridge in the display pipeline.
+>>>
+>>> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+>>> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+>>> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+>>>
+>>> ---
+>>>
+>>> Changes in v4:
+>>> - Rename the &analogix_dp_plat_data.bridge to
+>>>    &analogix_dp_plat_data.next_bridge
+>>> ---
+>>>   include/drm/bridge/analogix_dp.h | 1 +
+>>>   1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/include/drm/bridge/analogix_dp.h b/include/drm/bridge/ 
+>>> analogix_dp.h
+>>> index cf17646c1310..582357c20640 100644
+>>> --- a/include/drm/bridge/analogix_dp.h
+>>> +++ b/include/drm/bridge/analogix_dp.h
+>>> @@ -27,6 +27,7 @@ static inline bool is_rockchip(enum 
+>>> analogix_dp_devtype type)
+>>>   struct analogix_dp_plat_data {
+>>>       enum analogix_dp_devtype dev_type;
+>>>       struct drm_panel *panel;
+>>> +    struct drm_bridge *next_bridge;
+>>>       struct drm_encoder *encoder;
+>>>       struct drm_connector *connector;
+>>>       bool skip_connector;
+>>
+>> It took a while to understand why you are adding the next_bridge 
+>> pointer in
+>> struct analogix_dp_plat_data instead of struct analogix_dp_device, 
+>> where it
+>> would be more natural. I found an answer in patch 16: with current 
+>> code you
+>> need to place next_bridge in struct analogix_dp_plat_data because it is
+>> used by user drivers to attach, and those drivers have no access to 
+>> struct
+>> analogix_dp_device. However patch 16 (which looks a very good cleanup 
+>> BTW)
+>> next_bridge can be moved to struct analogix_dp_device.
+>>
+>> So I'd suggest to move patch 16 before this one if it easily doable, so
+>> that you can introduce next_bridge in struct analogix_dp_device from the
+>> beginning. Should that be impossible, you can send a separate patch to 
+>> move
+>> next_bridge, after patch 16.
+>>
+>>
+> 
+> Thanks for your nice suggestion! After patch 16, bridge attachment is 
+> unified to the Analogix side, which acts as a common bridge driver for 
+> both the Rockchip and Exynos sides, so moving next_bridge there makes 
+> perfect sense. I will add a separate patch to move next_bridge in v9.
+> 
+> 
 
-PM error logs introduced by the -ETIMEDOUT error return.
-imx6q-pcie 33800000.pcie: Phy link never came up
-imx6q-pcie 33800000.pcie: PM: dpm_run_callback(): genpd_resume_noirq returns -110
-imx6q-pcie 33800000.pcie: PM: failed to resume noirq: error -110
+My apologies for reversing the plan to move next_bridge to the Analogix 
+side in v9 -- I only considered the Rockchip side before.
 
-Cc: stable@vger.kernel.org
-Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume functionality")
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/pci/controller/dwc/pcie-designware-host.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+When I tried modifying the code based on your suggestion, I found it 
+better to keep &analogix_plat_data.next_bridge as is. This is because 
+the Exynos side needs to maintain compatibility with the legacy method 
+of parsing panels and bridges, so the next bridge isn't always parsed by 
+the common Analogix side driver.
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index 06cbfd9e1f1e..025e11ebd571 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -1245,10 +1245,9 @@ int dw_pcie_resume_noirq(struct dw_pcie *pci)
- 	if (ret)
- 		return ret;
- 
--	ret = dw_pcie_wait_for_link(pci);
--	if (ret)
--		return ret;
-+	/* Ignore errors, the link may come up later */
-+	dw_pcie_wait_for_link(pci);
- 
--	return ret;
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(dw_pcie_resume_noirq);
--- 
-2.37.1
+This patch series has been pending for ages, and I'm even a bit fuzzy on 
+the details myself. ;-)
+
+Best regards,
+Damon
 
