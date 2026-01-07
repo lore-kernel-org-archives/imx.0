@@ -1,151 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59ED231771B;
-	Wed,  7 Jan 2026 10:48:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39C831B83B
+	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 13:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767782928; cv=none; b=DpOc7kUeo+ku4nUswqo1tITAKbWlAaZOlVhU6RDMJjXbfiloIGHQIBg068SvCdoS8wiMohodYqNFMNO4NtrgXCcNPQ30stR8lCk3WLBjZcvuIYfECa2Kfsccm1WdJmCBgCWrv7PiFV7VI4ddYiL5/11x6HkohUBfOStY2cKaiTg=
+	t=1767791611; cv=none; b=X9oUwFa/b7WrJxSUPhzB2ZSWoaJtRkCAffrdzVdD6bu6t2vMrxuZjvEpgnWPSTjtkSLMUcujQsPgZGQCe4N367PklIHYENQzZZwn+R7ad8wLbmMvnoiMhchewdgDcrpr41tC2gLt8oVj2CZAUmAL9H1HU4FJ6/ImpYOidgVtp0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767782928; c=relaxed/simple;
-	bh=elz7b0vRGAXydvDoYJOal+0LEqRABOCnweSBG07nrMo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q2ofjB0x/pVfqS9hvS8HU0uNxbj62jsdrM0BnxbhvNibDVMWT7RpI9b4iXwlYKOHrAGb1+0NRnGhyYBb18dZuAhZxSB/qwqRZLf2m+BDCl3P4OU8x4imeEa6ZCznXTPb98JNl1TyDjCxBjewXnsoLAizOTkK2+839vjO56+Hgqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GAs5p4G1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1767791611; c=relaxed/simple;
+	bh=5jVeuSzJT+n8P47HXLLZTs/JzIhVT2VEdre1Y8Rz2Gc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=e1ddovOBy1TGP/kSVXN1abQaOLhkS6UoCBmzT9BTkrhKSgQdaMvTJpe5ezy6YAe8JyG9UscJ9/UA2hmZvUpC5CLVKfgf4h+w44ErrXNa97mrL1CV4HBriCads3ije9o9tSq+JNa7wjOXKHzLANTgIswfKMcqbTsawEWit1rGvaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dYsutHAa; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GAs5p4G1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8E9C4CEF7;
-	Wed,  7 Jan 2026 10:48:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767782928;
-	bh=elz7b0vRGAXydvDoYJOal+0LEqRABOCnweSBG07nrMo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GAs5p4G1TrQaJQMQTBBrsEsxNhMhkIDdQ0ETldQ3iU6Z4EbbmdtUzplu/vcqt75jS
-	 eqQdmfFcLf/OJi8OLgbmKIxOmWy6G3TBBqDR3mEX7TMUXJsPa6LrMe3VRKkJJDRZuc
-	 hzbncfezVqvkHRuK8+TaSx/w7xzV7UYL0OszyJJKgvvrEni0NRRnpS50YLwHPG7o3U
-	 peB3SoNvdgh0TLmlZVJy8eyXP8gU7x16PxDoBbx4rIn9scWnfgp3Lgu8HSbrnPqhpt
-	 8MRTWAnisJvv7toMRPIgCe6rydcvj4HKNX09V0HM+AlHdvC3PDePgb1ah11pBaCZoa
-	 DWr8d82WmcrPw==
-Message-ID: <04d8766f-0f79-409b-9290-3170e99e9750@kernel.org>
-Date: Wed, 7 Jan 2026 11:48:42 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dYsutHAa"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 7AB74C1EC8B;
+	Wed,  7 Jan 2026 13:13:01 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7EAFA606F8;
+	Wed,  7 Jan 2026 13:13:27 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7BE8E103C821A;
+	Wed,  7 Jan 2026 14:13:16 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1767791605; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=/6/7zEjl1v9ZVxgb94JYXoUenLxDhgfv7BOcFf4jkQ8=;
+	b=dYsutHAaJcpAzsYO8Pen87tXlqWFzho5PghJp7MFXwoxlDfSycJAjKWX9cm1BWjSM/2grF
+	ko5DlJF8QTdMecr+4piqX0YiOx/8AMpktt80Xg+BJ4S+eOZ2Otm8GyOh7mU115qeQ589pv
+	xntnqIDYySfiE1Rn4BmBQNUk4QFGseZPYCRJFeMoCTL8I2QxImvo7h3buUcUrpMsTUcGyH
+	pjIyVC40HCn+fFO13cLJUubKwlC/6ds5W7djAAlNILCFJ0y2zOGl5bPQ2Sisaoo2yVOATp
+	ZaZFz3Zt67cJsV5U3NpgjP0BG5TFjBiP2IqEK5sFHfQgK55qSgYRCyY43aDPvA==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 00/12] drm/bridge: convert users of of_drm_find_bridge(),
+ part 2
+Date: Wed, 07 Jan 2026 14:12:51 +0100
+Message-Id: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-0-283d7bba061a@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] dt-bindings: watchdog: fsl-imx: document continue in
- low power mode
-To: Nandor Han <nandor.han@gehealthcare.com>
-Cc: wim@linux-watchdog.org, linux@roeck-us.net, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- linux-watchdog@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20251229145000.421426-1-nandor.han@gehealthcare.com>
- <20251229145000.421426-3-nandor.han@gehealthcare.com>
- <20251230-hidden-okapi-of-reputation-6ef8be@quoll>
- <e24ec822-4d13-4136-8fb6-1bc6cbaf8e20@gehealthcare.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJoF1BKBQkWlnSaAAoJEBuTQ307
- QWKbHukP/3t4tRp/bvDnxJfmNdNVn0gv9ep3L39IntPalBFwRKytqeQkzAju0whYWg+R/rwp
- +r2I1Fzwt7+PTjsnMFlh1AZxGDmP5MFkzVsMnfX1lGiXhYSOMP97XL6R1QSXxaWOpGNCDaUl
- ajorB0lJDcC0q3xAdwzRConxYVhlgmTrRiD8oLlSCD5baEAt5Zw17UTNDnDGmZQKR0fqLpWy
- 786Lm5OScb7DjEgcA2PRm17st4UQ1kF0rQHokVaotxRM74PPDB8bCsunlghJl1DRK9s1aSuN
- hL1Pv9VD8b4dFNvCo7b4hfAANPU67W40AaaGZ3UAfmw+1MYyo4QuAZGKzaP2ukbdCD/DYnqi
- tJy88XqWtyb4UQWKNoQqGKzlYXdKsldYqrLHGoMvj1UN9XcRtXHST/IaLn72o7j7/h/Ac5EL
- 8lSUVIG4TYn59NyxxAXa07Wi6zjVL1U11fTnFmE29ALYQEXKBI3KUO1A3p4sQWzU7uRmbuxn
- naUmm8RbpMcOfa9JjlXCLmQ5IP7Rr5tYZUCkZz08LIfF8UMXwH7OOEX87Y++EkAB+pzKZNNd
- hwoXulTAgjSy+OiaLtuCys9VdXLZ3Zy314azaCU3BoWgaMV0eAW/+gprWMXQM1lrlzvwlD/k
- whyy9wGf0AEPpLssLVt9VVxNjo6BIkt6d1pMg6mHsUEVzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmgXUF8FCRaWWyoACgkQG5NDfTtBYptO0w//dlXJs5/42hAXKsk+PDg3wyEFb4NpyA1v
- qmx7SfAzk9Hf6lWwU1O6AbqNMbh6PjEwadKUk1m04S7EjdQLsj/MBSgoQtCT3MDmWUUtHZd5
- RYIPnPq3WVB47GtuO6/u375tsxhtf7vt95QSYJwCB+ZUgo4T+FV4hquZ4AsRkbgavtIzQisg
- Dgv76tnEv3YHV8Jn9mi/Bu0FURF+5kpdMfgo1sq6RXNQ//TVf8yFgRtTUdXxW/qHjlYURrm2
- H4kutobVEIxiyu6m05q3e9eZB/TaMMNVORx+1kM3j7f0rwtEYUFzY1ygQfpcMDPl7pRYoJjB
- dSsm0ZuzDaCwaxg2t8hqQJBzJCezTOIkjHUsWAK+tEbU4Z4SnNpCyM3fBqsgYdJxjyC/tWVT
- AQ18NRLtPw7tK1rdcwCl0GFQHwSwk5pDpz1NH40e6lU+NcXSeiqkDDRkHlftKPV/dV+lQXiu
- jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
- zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
- XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <e24ec822-4d13-4136-8fb6-1bc6cbaf8e20@gehealthcare.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANNbXmkC/y2NUQrCMBAFr1L224BZMahXEQlNsqkLNambVITSu
+ xu1nzMP3ixQSJgKXLoFhF5cOKcGeteBv/dpIMWhMeAejxrxoII8lBMObenHMXs1UJ3m+vU2Rxs
+ 5BbvtqDR645x35nQ20C4nocjvX+56+7PQc27Vusl1/QCqbC9hkwAAAA==
+X-Change-ID: 20251223-drm-bridge-alloc-getput-drm_of_find_bridge-2-12c6bbcb6896
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Philippe Cornu <philippe.cornu@st.com>, benjamin.gaignard@linaro.org, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Adrien Grassein <adrien.grassein@gmail.com>, Liu Ying <victor.liu@nxp.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
+ Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 07/01/2026 10:12, Nandor Han wrote:
-> 
-> On 12/30/25 14:34, Krzysztof Kozlowski wrote:
->> CAUTION: This email originated from outside of GE HealthCare. Only open links or attachments if you trust the sender. Report suspicious emails using Outlook’s “Report” button.
->>
->> On Mon, Dec 29, 2025 at 04:50:00PM +0200, Nandor Han wrote:
->>> Property "fsl,wdt-continue-in-low-power" allows the watchdog to continue
->>> running in low power modes (STOP and DOZE). By default, the watchdog is
->>> suspended in these modes. This property provides the option to keep the
->>> watchdog active during low power states when needed.
->> And why exactly would that be a DT property? If system is sleeping
->> (assuming this is what you meant by low power), no one will pet the dog,
->> thus watchdog makes no sense.
-> 
-> Thanks for the feedback Krzysztof and Guenter.
-> 
-> In our case, low-power mode is disabled. However, we have identified that under certain conditions,
+This series converts all DRM bridge drivers (*) from the now deprecated
+of_drm_find_bridge() to its replacement of_drm_find_and_get_bridge() which
+allows correct bridge refcounting. It also converts per-driver
+"next_bridge" pointers to the unified drm_bridge::next_bridge which puts
+the reference automatically on bridge deallocation.
 
-If your system has low power mode disabled, then you do not need this
-property - you already know that watchdog must continue (or whatever you
-want to achieve here).
+This is part of the work to support hotplug of DRM bridges. The grand plan
+was discussed in [0].
 
-> specifically during simulated high-load scenarios, the device becomes unresponsive because it enters
-> one of these power states.
+Here's the work breakdown (➜ marks the current series):
 
-Device as watchdog? I really do not understand your explanations, but
-for sure system load is not relevant to DT property.
+ 1. ➜ add refcounting to DRM bridges struct drm_bridge,
+      based on devm_drm_bridge_alloc()
+    A. ✔ add new alloc API and refcounting (v6.16)
+    B. ✔ convert all bridge drivers to new API (v6.17)
+    C. ✔ kunit tests (v6.17)
+    D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
+         and warn on old allocation pattern (v6.17)
+    E. ➜ add get/put on drm_bridge accessors
+       1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
+       2. ✔ drm_bridge_get_prev_bridge() (v6.18)
+       3. ✔ drm_bridge_get_next_bridge() (v6.19)
+       4. ✔ drm_for_each_bridge_in_chain() (v6.19)
+       5. ✔ drm_bridge_connector_init (v6.19)
+       6. … protect encoder bridge chain with a mutex
+       7. ➜ of_drm_find_bridge
+          a. ✔… add of_drm_get_bridge(), convert basic direct users
+	        (v6.20?, one driver still pending)
+	  b. ➜ convert direct of_drm_get_bridge() users, part 2
+	  c.   convert direct of_drm_get_bridge() users, part 3
+	  d.   convert direct of_drm_get_bridge() users, part 4
+	  e.   convert bridge-only drm_of_find_panel_or_bridge() users
+       8. drm_of_find_panel_or_bridge, *_of_get_bridge
+       9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
+    F. ✔ debugfs improvements
+       1. ✔ add top-level 'bridges' file (v6.16)
+       2. ✔ show refcount and list lingering bridges (v6.19)
+ 2. … handle gracefully atomic updates during bridge removal
+    A. ✔ Add drm_dev_enter/exit() to protect device resources (v6.20?)
+    B. … protect private_obj removal from list
+ 3. … DSI host-device driver interaction
+ 4. ✔ removing the need for the "always-disconnected" connector
+ 5. finish the hotplug bridge work, moving code to the core and potentially
+    removing the hotplug-bridge itself (this needs to be clarified as
+    points 1-3 are developed)
 
-> 
->> Otherwise I fail to see how this is a hardware property and we do not
->> accept SW properties (see writing bindings, numerous presentations).
-> 
-> Our system is based on the i.MX7D CPU and the watchdog peripheral supports the configuration:
-> 
-> (From i.MX 7Dual Applications Processor Reference Manual, Rev. 1, 01/2018, page: 1174)
-> ---
-> WDZST
-> Watchdog Low Power. Determines the operation of the WDOG during low-power modes. This bit is write
-> once-only.
-> ---
-> Given that our system does not support low-power modes, we intend to enable the watchdog across all power
-> states to ensure the device can recover properly under these conditions.
+[0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/#t
 
-That's not what your property said. Your property said watchdog should
-continue in low power modes. So when system enters low power mode, how
-the watchdog petting would work?
+This work is a continuation of the work to correctly handle bridge
+refcounting for existing of_drm_find_bridge(). The ground work is in:
 
-Now you claim you want to enable it in low power mode but you do not
-have low power mode? Does not make sense to me at all.
+  - commit 293a8fd7721a ("drm/bridge: add of_drm_find_and_get_bridge()")
+  - commit 9da0e06abda8 ("drm/bridge: deprecate of_drm_find_bridge()")
+  - commit 3fdeae134ba9 ("drm/bridge: add next_bridge pointer to struct drm_bridge")
+
+The whole conversion is split in multiple series to make the review process
+a bit smoother. Parts 3 and 4 are converting non-bridge drivers (mostly
+encoders).
+
+(*) One bridge driver (synopsys/dw-hdmi) is converted in another series,
+    together with its (non-bridge) users. Additionally this series converts
+    drm_of_panel_bridge_remove() which is a special case, and has a bugfix
+    for it too.
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Luca Ceresoli (12):
+      drm: of: drm_of_panel_bridge_remove(): fix device_node leak
+      drm: of: drm_of_panel_bridge_remove(): convert to of_drm_find_and_get_bridge()
+      drm/bridge: sii902x: convert to of_drm_find_and_get_bridge()
+      drm/bridge: thc63lvd1024: convert to of_drm_find_and_get_bridge()
+      drm/bridge: tfp410: convert to of_drm_find_and_get_bridge()
+      drm/bridge: tpd12s015: convert to of_drm_find_and_get_bridge()
+      drm/bridge: lt8912b: convert to of_drm_find_and_get_bridge()
+      drm/bridge: imx8mp-hdmi-pvi: convert to of_drm_find_and_get_bridge()
+      drm/bridge: imx8qxp-ldb: convert to of_drm_find_and_get_bridge()
+      drm/bridge: samsung-dsim: samsung_dsim_host_attach: use a temporary variable for the next bridge
+      drm/bridge: samsung-dsim: samsung_dsim_host_attach: don't use the bridge pointer as an error indicator
+      drm/bridge: samsung-dsim: samsung_dsim_host_attach: convert to of_drm_find_and_get_bridge()
+
+ drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c | 15 +++++++-------
+ drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c     |  3 ++-
+ drivers/gpu/drm/bridge/lontium-lt8912b.c     | 31 ++++++++++++++--------------
+ drivers/gpu/drm/bridge/samsung-dsim.c        | 28 ++++++++++++++++---------
+ drivers/gpu/drm/bridge/sii902x.c             |  7 +++----
+ drivers/gpu/drm/bridge/thc63lvd1024.c        |  7 +++----
+ drivers/gpu/drm/bridge/ti-tfp410.c           | 27 ++++++++++++------------
+ drivers/gpu/drm/bridge/ti-tpd12s015.c        |  8 +++----
+ include/drm/bridge/samsung-dsim.h            |  1 -
+ include/drm/drm_of.h                         |  6 +++++-
+ 10 files changed, 69 insertions(+), 64 deletions(-)
+---
+base-commit: 2bcba510a612cea32b8a536eedeabd7fcb413cd0
+change-id: 20251223-drm-bridge-alloc-getput-drm_of_find_bridge-2-12c6bbcb6896
 
 Best regards,
-Krzysztof
+-- 
+Luca Ceresoli <luca.ceresoli@bootlin.com>
+
