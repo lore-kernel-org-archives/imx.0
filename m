@@ -1,275 +1,265 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33593239E63
-	for <imx@lists.linux.dev>; Thu,  8 Jan 2026 15:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29941D435F;
+	Thu,  8 Jan 2026 15:17:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767885018; cv=none; b=doqbPo6goA/owzAKukJ281YCLo9uIBuTcpfMgyMK5rN00rcHK6WLsHdPoS20aaOso4Ivg9Prl03D1bLlr3qS8BekhHWAC2sW3ymTe4EDmpirGXbQn22piEoYXZZFnjMskJy21/N0/bzoPO1O9+nLDyiW5rOWwC3UH89yJtFC0cc=
+	t=1767885445; cv=none; b=Rtu09STYham1RHPoUa/AMzyLWy82pX+5rrwLIMTsaoPvNSAAPhhzFix7NdBjYn6qmnBWPrcr0iw0KsuHHNVsHctppbLvC+zIohzqhvsC3h7zcvtuI6204qpKgGKt48InX3pH+aAaq0ssGDSMvzAwQW4W+JNm2aOrjX7hkkUWK44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767885018; c=relaxed/simple;
-	bh=qKoNns7ZimbfPEEy1t4QVDO1CmWWwQqfbpDDZVsHnmY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pXx7OqjU2FpmpT9LdKMIor0+S16bWux2Djqsd9vMykdLefxA9MwtVWNxqgeTHj7KhW+lk9qTqTPKE0CZA0UgZuuvbNNhCjswhTeMDNLXWjLNkKYAFMVqnHhNEo5oCZWQkq3EPEvf81+WIA4kHip56JkAk5ok6MqftshQwCEosYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dkecV59O; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1767885445; c=relaxed/simple;
+	bh=MVUd2mPnw+PufvW3fzHiPeR63pakRAw7EqgNUPsOg8c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LlziPR7Axb3Ehmv2alDk0kdUWBFLPj7bAIK3Yto9wIPdgzqhoQ/q3UBXisUpVdvmjAyHpg9Es+ZglIv/whs56Asl5ApSnevk3Vf9fTuj3EWVtvLhwCFk9yS7IGLqNfYqAtVPZgxadOSOYMQL2DLmqpKZ6KaCcFtDG51eySMsJHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e6LkVeGw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dkecV59O"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c03e8ac1da3so1556255a12.2
-        for <imx@lists.linux.dev>; Thu, 08 Jan 2026 07:10:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1767885013; x=1768489813; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dhcuq9el8jXisrdDDPJhueutUdvIyETPBmEWgvOuRc0=;
-        b=dkecV59O0/FyRn7jCcDiIABu1VHqLIvRvFSQiOHV/sCcObsVShyNifnRwLiO4k7Don
-         TIDATH5sAepTN9fM3eLEEfGMcs71aUQFFEKIjGrpP0vbqONR8UvdK649fC3FeGApkZrO
-         PyqqVs60xRauB/bAIF2LXu//14PgvmxnX2GRRjUmFG5M5INo9SjiB2+nM3gA6AiVU0n1
-         52HCNezPZXVZRd0Vw2vGw8UpDubENQkxyL3m6L0JbWJ5gozHFHT05xE0I1E5fpPw9lnx
-         K7JhTlwg7oBGexvAa6lSrITK835Vjc77x9VdJua27Yk0NIA2EsXvy77ytyFcC1YFcCn0
-         gN4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767885013; x=1768489813;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Dhcuq9el8jXisrdDDPJhueutUdvIyETPBmEWgvOuRc0=;
-        b=eDByv5sBZ7NsQP1PyL5mwk4x45g+/jw5vgYmeZMFhrdy1mA+xE0K3gjOteeATi6pJk
-         robHNP5KIuczt2ITc5n4sqsBq02pe0EJIV/+BKyuF18mL4d//oEChYFLrhZnD7Awd65p
-         Tt4jIOprwIp4kfmUnoqU+tZq5Hco0pkj9EWJNPN9lGYNf1T15W+MBsM0P2C0hJtR2icA
-         CD+7rAFu9fo49ZoGvV0pcZSInqWVcryMz1PjHsU1qZPX92eA9EAKi7hFAJuwYv7iTfHf
-         OT7r9oXFzpmpobqoa1IZC18pGCVO8dcCfnuCjqpYutrpOGegM9qCV6mRG62Zh7NR5f5M
-         Tk4g==
-X-Forwarded-Encrypted: i=1; AJvYcCV4s8R6ke5oBQKE4gY6MpPAvsekX9fLHmxcbLg3W+UkAhrRXH1VTw5mu1BWPKSYgVDpyhI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxCdzYC+fKUwUB2qYtSQyB3XqQgOlKbvm21cS9haGfkw9sXiTFZ
-	0iv/lnH+uzKHInqajZGzDIPpZA12l4NmTt45ZGPAe3srrECWlHvJIyobJ8X0VfDCnUE=
-X-Gm-Gg: AY/fxX5RjdZG/qUCOy9m9tpkDDQuPNJT/XoK1eAWmXTe4MB9n/55okwlFTJWjqLqNVM
-	TlS0jfB1YjvgagrkJXKBS08i4ODxijV3HKQBn13uTqWl3gpBR6gKSv64IDJNmd5gzRcyksN2nqn
-	y1ujRQ6TvuuR6ZBcMxP4Opojl26DmtGjCZwUfkIFZ6EtOkm8+66IsW3wFbnUnlGUeRncKH/1Tl7
-	ta0wwe+H/8mSaLtr2kiW96JQbg2GYo18Ev2qj8+qwW8Ev5+5iGGWkswtDpsBGEmEMY4UvFq/eYo
-	PXTOSmzUIEXXTv01zonT7TaWn9RAmYkV8q0jA6zj9AMMAooUZqwLCf+e/873/UBe7wB5TjDifAn
-	69DPLDmmutC2ojWxiLl3zcgGeTaqvnzjmR8eGe1Me01hrJGfDdzChrct9G0QqsK1Y4wYT2Vtr+v
-	pLr4exZrUJvNmYog==
-X-Google-Smtp-Source: AGHT+IHdVQFm0LoRLpz5ffOipFREjXXoGNgUc0A0LwHWdii2Nr5bh8+R06mGKRoJf0I2Vwoi809Uig==
-X-Received: by 2002:a17:902:e846:b0:2a1:39cd:7462 with SMTP id d9443c01a7336-2a3ee43892bmr52476395ad.8.1767885013214;
-        Thu, 08 Jan 2026 07:10:13 -0800 (PST)
-Received: from p14s ([2604:3d09:148c:c800:9a09:dd70:79df:b876])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c48c75sm83669855ad.35.2026.01.08.07.10.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jan 2026 07:10:12 -0800 (PST)
-Date: Thu, 8 Jan 2026 08:10:10 -0700
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v5 4/5] remoteproc: imx_rproc: Add support for System
- Manager API
-Message-ID: <aV_I0iGYt1lxEIUw@p14s>
-References: <20251218-imx95-rproc-2025-12-18-v5-0-b56a27d4158f@nxp.com>
- <20251218-imx95-rproc-2025-12-18-v5-4-b56a27d4158f@nxp.com>
- <aV6ow9dGUNaPDqZg@p14s>
- <aV+HEAzwNSOCUx88@shlinux89>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e6LkVeGw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AD8C116C6;
+	Thu,  8 Jan 2026 15:17:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767885445;
+	bh=MVUd2mPnw+PufvW3fzHiPeR63pakRAw7EqgNUPsOg8c=;
+	h=From:To:Cc:Subject:Date:From;
+	b=e6LkVeGwqmyg+tZH00Pbv0sUjzTkZ12hr4mI6KY0y5j/pn3xpEA6XlYZYLKfDz5BP
+	 2+O12PQ5UQgnMp3F4lemyx63nnkyEhvmchahR9tizUdowPNeIwCDFYQ2HX6zTaRPZM
+	 7fAe82FflAY0g8j2p8pOS17mtkiUXCA2IEphud0uVFqh3K1tZbYaB01w2eEIx7YEWj
+	 9ASDWjyeIqg3zYQYE2+hp/tQfz46VeCKKJ8VTLKIleupiny7QrbM+0/fnftgyjU8Q3
+	 /AR7D/CNyl/eo8U9LjAsy2VKyBN0w/KI55RKnL0tXA5DzwXVXx9this1SLqztjgHcd
+	 7XpXhHOsXfYug==
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Linux PM <linux-pm@vger.kernel.org>, imx@lists.linux.dev
+Cc: LKML <linux-kernel@vger.kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Brian Norris <briannorris@chromium.org>, Liviu Dudau <liviu.dudau@arm.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ Dave Stevenson <dave.stevenson@raspberrypi.com>,
+ Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
+ dri-devel@lists.freedesktop.org,
+ =?ISO-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>
+Subject: [RESEND][PATCH v1] drm: Discard pm_runtime_put() return value
+Date: Thu, 08 Jan 2026 16:17:17 +0100
+Message-ID: <2256082.irdbgypaU6@rafael.j.wysocki>
+Organization: Linux Kernel Development
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aV+HEAzwNSOCUx88@shlinux89>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Jan 08, 2026 at 06:29:36PM +0800, Peng Fan wrote:
-> Hi Mathieu,
-> 
-> On Wed, Jan 07, 2026 at 11:41:07AM -0700, Mathieu Poirier wrote:
-> >On Thu, Dec 18, 2025 at 01:17:38PM +0800, Peng Fan (OSS) wrote:
-> >> From: Peng Fan <peng.fan@nxp.com>
-> >> 
-> ...
-> >> +/* Linux has permission to handle the Logical Machine of remote cores */
-> >> +#define IMX_RPROC_FLAGS_SM_LMM_AVAIL	BIT(0)
-> >> +
-> >
-> >This should be named IMX_RPROC_FLAGS_SM_LMM_CTRL.
-> 
-> Fix in V6.
-> 
-> >
-> >>  static int imx_rproc_xtr_mbox_init(struct rproc *rproc, bool tx_block);
-> >>  static void imx_rproc_free_mbox(void *data);
-> >>  
-> ...
-> >> +static int imx_rproc_sm_lmm_start(struct rproc *rproc)
-> >> +{
-> >> +	struct imx_rproc *priv = rproc->priv;
-> >> +	const struct imx_rproc_dcfg *dcfg = priv->dcfg;
-> >> +	struct device *dev = priv->dev;
-> >> +	int ret;
-> >> +
-> >
-> >A comment is needed here to say that if the remoteproc core can't start the M7,
-> >it will already be handled in imx_rproc_sm_lmm_prepare()
-> 
-> Add in V6:
->         /*
->          * If the remoteproc core can't start the LM, it will already be
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-The remoteproc core starts a remote processor, which in this case is the M7.
-I'm not sure why you are referring to the logical machine (LM).
+Multiple DRM drivers use the pm_runtime_put() return value for printing
+debug or even error messages and all of those messages are at least
+somewhat misleading.
+
+Returning an error code from pm_runtime_put() merely means that it has
+not queued up a work item to check whether or not the device can be
+suspended and there are many perfectly valid situations in which that
+can happen, like after writing "on" to the devices' runtime PM "control"
+attribute in sysfs for one example.  It also happens when the kernel
+has been configured with CONFIG_PM unset.
+
+For this reason, modify all of those drivers to simply discard the
+pm_runtime_put() return value which is what they should be doing.
+
+This will facilitate a planned change of the pm_runtime_put() return
+type to void in the future.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+---
+
+This patch is requisite for converting pm_runtime_put() into a void
+function.
+
+If you decide to pick it up, please let me know.
+
+Otherwise, an ACK or equivalent will be appreciated, but also the lack
+of specific criticism will be eventually regarded as consent.
+
+Originally posted here:
+
+https://lore.kernel.org/linux-pm/3045480.e9J7NaK4W3@rafael.j.wysocki/
+
+---
+ drivers/gpu/drm/arm/malidp_crtc.c                   |    6 +-----
+ drivers/gpu/drm/bridge/imx/imx8qm-ldb.c             |    4 +---
+ drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c            |    4 +---
+ drivers/gpu/drm/bridge/imx/imx8qxp-pixel-combiner.c |    5 +----
+ drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c        |    5 +----
+ drivers/gpu/drm/imx/dc/dc-crtc.c                    |   12 +++---------
+ drivers/gpu/drm/vc4/vc4_hdmi.c                      |    5 +----
+ drivers/gpu/drm/vc4/vc4_vec.c                       |   12 ++----------
+ 8 files changed, 11 insertions(+), 42 deletions(-)
+
+--- a/drivers/gpu/drm/arm/malidp_crtc.c
++++ b/drivers/gpu/drm/arm/malidp_crtc.c
+@@ -77,7 +77,6 @@ static void malidp_crtc_atomic_disable(s
+ 									 crtc);
+ 	struct malidp_drm *malidp = crtc_to_malidp_device(crtc);
+ 	struct malidp_hw_device *hwdev = malidp->dev;
+-	int err;
+ 
+ 	/* always disable planes on the CRTC that is being turned off */
+ 	drm_atomic_helper_disable_planes_on_crtc(old_state, false);
+@@ -87,10 +86,7 @@ static void malidp_crtc_atomic_disable(s
+ 
+ 	clk_disable_unprepare(hwdev->pxlclk);
+ 
+-	err = pm_runtime_put(crtc->dev->dev);
+-	if (err < 0) {
+-		DRM_DEBUG_DRIVER("Failed to disable runtime power management: %d\n", err);
+-	}
++	pm_runtime_put(crtc->dev->dev);
+ }
+ 
+ static const struct gamma_curve_segment {
+--- a/drivers/gpu/drm/bridge/imx/imx8qm-ldb.c
++++ b/drivers/gpu/drm/bridge/imx/imx8qm-ldb.c
+@@ -280,9 +280,7 @@ static void imx8qm_ldb_bridge_atomic_dis
+ 	clk_disable_unprepare(imx8qm_ldb->clk_bypass);
+ 	clk_disable_unprepare(imx8qm_ldb->clk_pixel);
+ 
+-	ret = pm_runtime_put(dev);
+-	if (ret < 0)
+-		DRM_DEV_ERROR(dev, "failed to put runtime PM: %d\n", ret);
++	pm_runtime_put(dev);
+ }
+ 
+ static const u32 imx8qm_ldb_bus_output_fmts[] = {
+--- a/drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c
++++ b/drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c
+@@ -282,9 +282,7 @@ static void imx8qxp_ldb_bridge_atomic_di
+ 	if (is_split && companion)
+ 		companion->funcs->atomic_disable(companion, state);
+ 
+-	ret = pm_runtime_put(dev);
+-	if (ret < 0)
+-		DRM_DEV_ERROR(dev, "failed to put runtime PM: %d\n", ret);
++	pm_runtime_put(dev);
+ }
+ 
+ static const u32 imx8qxp_ldb_bus_output_fmts[] = {
+--- a/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-combiner.c
++++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-combiner.c
+@@ -181,11 +181,8 @@ static void imx8qxp_pc_bridge_atomic_dis
+ {
+ 	struct imx8qxp_pc_channel *ch = bridge->driver_private;
+ 	struct imx8qxp_pc *pc = ch->pc;
+-	int ret;
+ 
+-	ret = pm_runtime_put(pc->dev);
+-	if (ret < 0)
+-		DRM_DEV_ERROR(pc->dev, "failed to put runtime PM: %d\n", ret);
++	pm_runtime_put(pc->dev);
+ }
+ 
+ static const u32 imx8qxp_pc_bus_output_fmts[] = {
+--- a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
++++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
+@@ -127,11 +127,8 @@ static void imx8qxp_pxl2dpi_bridge_atomi
+ 						  struct drm_atomic_state *state)
+ {
+ 	struct imx8qxp_pxl2dpi *p2d = bridge->driver_private;
+-	int ret;
+ 
+-	ret = pm_runtime_put(p2d->dev);
+-	if (ret < 0)
+-		DRM_DEV_ERROR(p2d->dev, "failed to put runtime PM: %d\n", ret);
++	pm_runtime_put(p2d->dev);
+ 
+ 	if (p2d->companion)
+ 		p2d->companion->funcs->atomic_disable(p2d->companion, state);
+--- a/drivers/gpu/drm/imx/dc/dc-crtc.c
++++ b/drivers/gpu/drm/imx/dc/dc-crtc.c
+@@ -300,7 +300,7 @@ dc_crtc_atomic_disable(struct drm_crtc *
+ 				drm_atomic_get_new_crtc_state(state, crtc);
+ 	struct dc_drm_device *dc_drm = to_dc_drm_device(crtc->dev);
+ 	struct dc_crtc *dc_crtc = to_dc_crtc(crtc);
+-	int idx, ret;
++	int idx;
+ 
+ 	if (!drm_dev_enter(crtc->dev, &idx))
+ 		goto out;
+@@ -313,16 +313,10 @@ dc_crtc_atomic_disable(struct drm_crtc *
+ 	dc_fg_disable_clock(dc_crtc->fg);
+ 
+ 	/* request pixel engine power-off as plane is off too */
+-	ret = pm_runtime_put(dc_drm->pe->dev);
+-	if (ret)
+-		dc_crtc_err(crtc, "failed to put DC pixel engine RPM: %d\n",
+-			    ret);
++	pm_runtime_put(dc_drm->pe->dev);
+ 
+ 	/* request display engine power-off when CRTC is disabled */
+-	ret = pm_runtime_put(dc_crtc->de->dev);
+-	if (ret < 0)
+-		dc_crtc_err(crtc, "failed to put DC display engine RPM: %d\n",
+-			    ret);
++	pm_runtime_put(dc_crtc->de->dev);
+ 
+ 	drm_dev_exit(idx);
+ 
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -848,7 +848,6 @@ static void vc4_hdmi_encoder_post_crtc_p
+ 	struct vc4_hdmi *vc4_hdmi = encoder_to_vc4_hdmi(encoder);
+ 	struct drm_device *drm = vc4_hdmi->connector.dev;
+ 	unsigned long flags;
+-	int ret;
+ 	int idx;
+ 
+ 	mutex_lock(&vc4_hdmi->mutex);
+@@ -867,9 +866,7 @@ static void vc4_hdmi_encoder_post_crtc_p
+ 	clk_disable_unprepare(vc4_hdmi->pixel_bvb_clock);
+ 	clk_disable_unprepare(vc4_hdmi->pixel_clock);
+ 
+-	ret = pm_runtime_put(&vc4_hdmi->pdev->dev);
+-	if (ret < 0)
+-		drm_err(drm, "Failed to release power domain: %d\n", ret);
++	pm_runtime_put(&vc4_hdmi->pdev->dev);
+ 
+ 	drm_dev_exit(idx);
+ 
+--- a/drivers/gpu/drm/vc4/vc4_vec.c
++++ b/drivers/gpu/drm/vc4/vc4_vec.c
+@@ -542,7 +542,7 @@ static void vc4_vec_encoder_disable(stru
+ {
+ 	struct drm_device *drm = encoder->dev;
+ 	struct vc4_vec *vec = encoder_to_vc4_vec(encoder);
+-	int idx, ret;
++	int idx;
+ 
+ 	if (!drm_dev_enter(drm, &idx))
+ 		return;
+@@ -556,17 +556,9 @@ static void vc4_vec_encoder_disable(stru
+ 
+ 	clk_disable_unprepare(vec->clock);
+ 
+-	ret = pm_runtime_put(&vec->pdev->dev);
+-	if (ret < 0) {
+-		drm_err(drm, "Failed to release power domain: %d\n", ret);
+-		goto err_dev_exit;
+-	}
++	pm_runtime_put(&vec->pdev->dev);
+ 
+ 	drm_dev_exit(idx);
+-	return;
+-
+-err_dev_exit:
+-	drm_dev_exit(idx);
+ }
+ 
+ static void vc4_vec_encoder_enable(struct drm_encoder *encoder,
 
 
->          * handled in imx_rproc_sm_lmm_prepare().
->          */
-> 
-> >
-> >> +	ret = scmi_imx_lmm_reset_vector_set(dcfg->lmid, dcfg->cpuid, 0, 0);
-> >> +	if (ret) {
-> >> +		dev_err(dev, "Failed to set reset vector lmid(%u), cpuid(%u): %d\n",
-> >> +			dcfg->lmid, dcfg->cpuid, ret);
-> >> +		return ret;
-> >> +	}
-> >> +
-> >>  
-> ...
-> >> +static int imx_rproc_sm_lmm_prepare(struct rproc *rproc)
-> >> +{
-> >> +	struct imx_rproc *priv = rproc->priv;
-> >> +	const struct imx_rproc_dcfg *dcfg = priv->dcfg;
-> >> +	int ret;
-> >> +
-> >
-> >>>>>>>>>>>>
-> >
-> >> +	/*
-> >> +	 * IMX_RPROC_FLAGS_SM_LMM_AVAIL not set indicates Linux is not able
-> >> +	 * to start/stop rproc LM, then if rproc is not in detached state,
-> >> +	 * prepare should fail. If in detached state, this is in rproc_attach()
-> >> +	 * path.
-> >> +	 */
-> >> +	if (!(priv->flags & IMX_RPROC_FLAGS_SM_LMM_AVAIL))
-> >> +		return rproc->state == RPROC_DETACHED ? 0 : -EACCES;
-> >
-> ><<<<<<<<<<<
-> >
-> >        if (rproc->state == RPROC_DETACHED)
-> >                return 0;
-> >
-> >        if (!(priv->flags & IMX_RPROC_FLAGS_SM_LMM_AVAIL))
-> >                return -EACCES;
-> >
-> ><<<<<<<<<<<
-> 
-> Update in v6 with your code snippets.
-> 
-> >> +
-> >> +	/* Power on the Logical Machine to make sure TCM is available. */
-> >> +	ret = scmi_imx_lmm_operation(dcfg->lmid, SCMI_IMX_LMM_POWER_ON, 0);
-> >> +	if (ret) {
-> >> +		dev_err(priv->dev, "Failed to power on lmm(%d): %d\n", dcfg->lmid, ret);
-> >> +		return ret;
-> >> +	}
-> >> +
-> >> +	dev_info(priv->dev, "lmm(%d) powered on by Linux\n", dcfg->lmid);
-> >> +
-> >> +	return 0;
-> >> +}
-> >> +
-> >>  static int imx_rproc_prepare(struct rproc *rproc)
-> >>  {
-> >>  	struct imx_rproc *priv = rproc->priv;
-> >> @@ -980,6 +1078,93 @@ static int imx_rproc_scu_api_detect_mode(struct rproc *rproc)
-> >>  	return 0;
-> >>  }
-> >>  
-> >> +static int imx_rproc_sm_lmm_check(struct rproc *rproc, bool started)
-> >> +{
-> >> +	struct imx_rproc *priv = rproc->priv;
-> >> +	const struct imx_rproc_dcfg *dcfg = priv->dcfg;
-> >> +	struct device *dev = priv->dev;
-> >> +	int ret;
-> >> +
-> >> +	/*
-> >> +	 * Use power on to do permission check. If rproc is in different LM,
-> >> +	 * and linux has permission to handle the LM, set IMX_RPROC_FLAGS_SM_LMM_AVAIL.
-> >> +	 */
-> >
-> >Two things here:
-> >(1) This whole comment describes what this function does rather than what the
-> >code is doing in the next few lines.  As such it needs to be moved above the
-> >function declaration.
-> >(2) We know the M7 is in a different LM, otherwise "dcfg->lmid == info.lmid" in
-> >imx_rproc_sm_detect_mode() and we would not be here.  As such the comment is
-> >wrong.  The only thing this code is doing is check if the remoteproc core is
-> >responsible for the M7 lifecycle.
-> 
-> Update in v6:
-> /* Check whether remoteproc core is responsible for LM lifecycle */
 
-Same comment as above.
-
-> static int imx_rproc_sm_lmm_check(struct rproc *rproc, bool started)
-> 
-> >
-> >> +	ret = scmi_imx_lmm_operation(dcfg->lmid, SCMI_IMX_LMM_POWER_ON, 0);
-> >> +	if (ret) {
-> ...
-> >> +
-> >> +
-> >
-> >>>>>>>>>>>>
-> >
-> >> +	/* rproc was started before boot Linux and under control of Linux, directly return */
-> >> +	if (started) {
-> >> +		priv->flags |= IMX_RPROC_FLAGS_SM_LMM_AVAIL;
-> >> +		return 0;
-> >> +	}
-> >> +
-> >> +	/* else shutdown the LM to save power */
-> >> +	ret = scmi_imx_lmm_operation(dcfg->lmid, SCMI_IMX_LMM_SHUTDOWN, 0);
-> >> +	if (ret) {
-> >> +		dev_err(dev, "shutdown lmm(%d) failed: %d\n", dcfg->lmid, ret);
-> >> +		return ret;
-> >> +	}
-> >> +
-> >> +	priv->flags |= IMX_RPROC_FLAGS_SM_LMM_AVAIL;
-> >
-> ><<<<<<<<<<<
-> >
-> >        /* Shutdown remote processor if not started */
-> >        if (!started) {
-> >	        ret = scmi_imx_lmm_operation(dcfg->lmid, SCMI_IMX_LMM_SHUTDOWN, 0);
-> >	        if (ret) {
-> >		        dev_err(dev, "shutdown lmm(%d) failed: %d\n", dcfg->lmid, ret);
-> >		        return ret;
-> >	        }
-> >        }
-> >
-> >	priv->flags |= IMX_RPROC_FLAGS_SM_LMM_AVAIL;
-> >
-> ><<<<<<<<<<<
-> 
-> Thanks for your code snippets. Update in v6.
-> 
-> >
-> >This patchset would be a lot easier to digest if you had split the support for
-> >CPU and LMM protocols in diffent patches.
-> 
-> I appreciate your detailed review and the code snippets you provided. Please
-> let me know if you'd prefer that I split the support for LMM
-> and CPU into separate patches in v6, or keep them combined as they are.
-
-Please split.
-
-> 
-> Thanks,
-> Peng.
