@@ -1,186 +1,202 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013040.outbound.protection.outlook.com [52.101.72.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A3A2F9DA1
-	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 23:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767829718; cv=none; b=DWcqgzicLJrP0XrwYcCk5jjBhqDFCtZ4l/jODTpYnS2d1AuehxvJvbE4iGaG0fCrdJ7Z0t3W4cWW5OVdaTu3CclGAJIxTlot5l0+ebqB0AmqDNIJXcV3Vc91d9JOoPSv57cTMeqYswYCUExtqHPsdKjau7RM42ryaAKe9aikIcw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767829718; c=relaxed/simple;
-	bh=IBdssBqJKoYD0WUOz99qEmTZBGFUz6xCIAU0jUt02Rs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=lQpiE+TTmna/2iCQSCPveLtk0fPzxPdOtJoGv7XXg8fyt1ah7UsfwMKiURmOuSLAgr30sIqMfn5I3NnW13u1R0odXf/x7BPXrlOKf7tOOtICeR70hzh4Sb8ycsLBLgoANuyAcG2tCTboCQICN3RvkbOhICdycjXU7Zg1TxBk+f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=ZcRbrUwE; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E6235F8CC
+	for <imx@lists.linux.dev>; Thu,  8 Jan 2026 07:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767858114; cv=fail; b=RZHWojBhFKuEmuF/eFTOmD/jjJwYTZWw0tW/Mafzl/1HQkVowRJPUSJpV7Ksy1bKUJdqlrVtPHj3LQmsXTiIOfXsfJ0QP7cnzfTPE1NJcpCjimpGFW9sl0dKDbSY2OKVazQBxn7Ya0IegWAVwz8wAG3t5u6RHd9KnsoCYoa6U5c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767858114; c=relaxed/simple;
+	bh=seDhMHLf62cbMXhbB4/9QR3/T1MJPFK/cVXj8km5hro=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=T+1zUhL/U0FTWy3HWeX59qB+rAcMD+GSEWgfchTXlw6q2duJ+HzaDbyNDuKtenySKQOSPT29btDD/ho8tVDWOd+cB4bBcvTa3PlrKc4jABeY/2z/yOrAVd1OOr5ryywpEOIv+ZkGxvN+V0CKFKkY++MeDrMAGmqBbOe9epZwFzA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=m21jptEo; arc=fail smtp.client-ip=52.101.72.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="ZcRbrUwE"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260107234828euoutp0232a5ce7805ff7230787ae6d7a017aa59~Il8D5Yqvs1570915709euoutp024
-	for <imx@lists.linux.dev>; Wed,  7 Jan 2026 23:48:28 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260107234828euoutp0232a5ce7805ff7230787ae6d7a017aa59~Il8D5Yqvs1570915709euoutp024
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1767829708;
-	bh=TYCzIUiOEy3kP/HiVQ2wZRrRPpZ4XZI8gw9kTIvwkig=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=ZcRbrUwE0aCSm07m0ZAGZxJqi+smXR6sOaSkQNGRA/aaVVXXra1EA26P9OVZXHgoM
-	 aGEhVYVOd3cGxnnM9aKFvNxes9G4ULczGDrTrEa1JxXTa/SmBbzJIT9RCMK9VIrcKZ
-	 UFzKdI1lMTHP5Czb15+QUV6lIyPeYK3iCwEMt8FE=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260107234827eucas1p27fbd224b2f588f92989d2f7bfa08ab37~Il8C276YY0130501305eucas1p2E;
-	Wed,  7 Jan 2026 23:48:27 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260107234825eusmtip2ddfb2c42a8a3442eed7670b1dee474df~Il8AyfPoH0345103451eusmtip2c;
-	Wed,  7 Jan 2026 23:48:25 +0000 (GMT)
-Message-ID: <77c70d7b-23bc-4f74-9a13-d10f4af132dd@samsung.com>
-Date: Thu, 8 Jan 2026 00:48:24 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="m21jptEo"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yqr6/iezK9LZZCFtZM4hToXGGDgJ+xFouBhqOysrkfbWJfEzLwsJD0mAgcGWq4NdH7Y/do7wuOCSUtMpfl95pInHMRqwtna439v+6Xw2dfAiZWOuHEmC7LyIgl0iMwbz8/2gea+xBfCKKoUgVY26RwMLTC7+UZEUS+R1sPoElDstWVIRPi2uwOTcRAIhU6wO4faPYcP70EsnnJc8EJwHBLm+CWNCoIH2sRt4A4l6V3dYo3naSs1L49fR+83Wlnei8311uVBhAJd/Nv6ZKOokmBWKjBcbarSxdyL2BoJ5XSdXnyXWJC3yx4PKWqTkQbGDirH+ssWB85z1bAJCNUbbcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xqIVabKyoOJpUn5lJut7VZQ7xg9+f1VVppmGH2aEGp4=;
+ b=bMfWdS8zpxGqaqdIyTfxDPOnj67pbvk9omSG/aXNp0QuDLFHwnbyqJW6Kks2oS8ZN1SUFyFfOvC9s6DR8p4/8lj7lqV4k0UxAkITqqrZ0ZX90OP/1dAMaOcU5n4UarPWw5ioPAcv4qqfF6bQk1qwi8MHyWbswGiqvw4lHjCUyf4G4i5UDgl/kcyK+FhASpmioVo7SR7yhYy3shY5UAWk4hu4X1vUHopHoGKDdUyEvEP56IqCJiFmb1v5Amq47d/Uz2EK9PMG8rkxM1O+nqUta8BXqu1cc1RG6H6nPuSOgAzHtj884hUaxHEQ4IsEWidpb8A7NFwTcCWl80COu0RBOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xqIVabKyoOJpUn5lJut7VZQ7xg9+f1VVppmGH2aEGp4=;
+ b=m21jptEoGhs7s8sHog0LEIEUPERdrk0cwlTcT5wVvDqLadPWuhD4pCElo9xTT2OmJasqxYlCoJxgIA6IiQUxdcGUL26MQ3GgARxn7OFo9Bdc3A8YGosQL02sN24W6Z7nKcOdKKMXAwzEUPaOaEOpd0f4hxEhCzitoqhGbnMOlcQtNoxDKlsSyRWX30OEhAGjihx74rf0hmWkXZUDCGWYhiyGj5Xodb8wqBB84SnWS77bqgoqd1gdQe6cLymvII7qowl3fa8irz1GSrR3H31Fy7Rbd0IkaX6DpPf2jXUxeujrjdkUXGoxjGhmF6oRALgBxGLwqt2xOzK0fbFA2C+pMg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
+ by VI1PR04MB7197.eurprd04.prod.outlook.com (2603:10a6:800:129::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.3; Thu, 8 Jan
+ 2026 07:41:45 +0000
+Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
+ ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9478.004; Thu, 8 Jan 2026
+ 07:41:45 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+Subject: [PATCH 0/4] Some fix patches for uvc gadget function
+Date: Thu, 08 Jan 2026 15:43:01 +0800
+Message-Id: <20260108-uvc-gadget-fix-patch-v1-0-8b571e5033cc@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAZgX2kC/x2MQQqAIBAAvxJ7bsGUovpKdNh0s72UaEUg/T3pO
+ AwzGRJH4QRjlSHyLUmOvUBTV2A32j2juMKgle5Uo3q8bouenOcTV3kw0Gk3JGqHoTNGL0sLJQ2
+ Ri/y30/y+Hx3MdmdmAAAA
+X-Change-ID: 20260108-uvc-gadget-fix-patch-aa5996332bb5
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Michael Grzeschik <m.grzeschik@pengutronix.de>
+Cc: jun.li@nxp.com, imx@lists.linux.dev, linux-usb@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Xu Yang <xu.yang_2@nxp.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1767858202; l=1213;
+ i=xu.yang_2@nxp.com; s=20250815; h=from:subject:message-id;
+ bh=seDhMHLf62cbMXhbB4/9QR3/T1MJPFK/cVXj8km5hro=;
+ b=5dR6MP7bTz14rVYAsnpgs4Su2IEjh/5qyvgJ+iD0OvmTlmSOuaxaRBuAfv/YX7gKwFjjYb0X4
+ dXYKVhGraaECYhT636YfJ4JuTcl7ck5vnDTJFbOWM/4aeBsLy0DmLHN
+X-Developer-Key: i=xu.yang_2@nxp.com; a=ed25519;
+ pk=5c2HwftfKxFlMJboUe40+xawMtfnp5F8iEiv5CiKS+4=
+X-ClientProxiedBy: SG2PR06CA0201.apcprd06.prod.outlook.com (2603:1096:4:1::33)
+ To DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 00/12] drm/bridge: convert users of
- of_drm_find_bridge(), part 2
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>, Philippe Cornu <philippe.cornu@st.com>,
-	benjamin.gaignard@linaro.org, Andrzej Hajda <andrzej.hajda@intel.com>, Neil
-	Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
-	<jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Adrien
-	Grassein <adrien.grassein@gmail.com>, Liu Ying <victor.liu@nxp.com>, Shawn
-	Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>, Jagan Teki
-	<jagan@amarulasolutions.com>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Thomas Petazzoni
-	<thomas.petazzoni@bootlin.com>, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-0-283d7bba061a@bootlin.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260107234827eucas1p27fbd224b2f588f92989d2f7bfa08ab37
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260107131333eucas1p2ee0b7afe47dc2fafa29e893e4283962b
-X-EPHeader: CA
-X-CMS-RootMailID: 20260107131333eucas1p2ee0b7afe47dc2fafa29e893e4283962b
-References: <CGME20260107131333eucas1p2ee0b7afe47dc2fafa29e893e4283962b@eucas1p2.samsung.com>
-	<20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-0-283d7bba061a@bootlin.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|VI1PR04MB7197:EE_
+X-MS-Office365-Filtering-Correlation-Id: 93838c07-bb1d-4a17-f526-08de4e895fad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|19092799006|52116014|376014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WTVyaHhGdktzV0hhcGRHNDU1NlZqRTRRbWxZc0FsK1JIM3lhMk1oeU90R2FN?=
+ =?utf-8?B?WEZXUURCdU5WUW5GVXZmUVg3djJXc0ZGSVE0T1V2UHpvZFRiOWVMamJvNVFP?=
+ =?utf-8?B?SHgwZkZSZ2t5R2xwd255WnhqbENsTDlzeGlVSmQ2OUk5UmtHSTZFcnRqdHpY?=
+ =?utf-8?B?T1EyMVJZa3NjdHB5VnBhRFlSeE4xWWZFMk5MNEFCbnV4Mzd1Vk1KY0x2MGZL?=
+ =?utf-8?B?QVp6b3lSc1p6T0tUZDBxWW9lbjZheTE5U053Wlk0L0FTN1dNcnR3UGJOOWNC?=
+ =?utf-8?B?QnFDQjJOZVNLc1BkaDNVdFY3ejhCTUFnbWIzYWtyK1BDcm9SMjR6S2FLZzFv?=
+ =?utf-8?B?UWlYdDB3ZkVDcUF4ZnZpTUpoc2QwTXMzeHZtdDJsMVR5MXJGNnZWMFlkNWtP?=
+ =?utf-8?B?TVRBeFZyVGo1ZUlGNVdERW1yUU41YnpBRktOUXhPK1d3dnJ4dnhVR0dDTnhz?=
+ =?utf-8?B?VlNuUkIxYmdRV3k0aW01L21iTlE5S0c0Tnc5MWxiV3NrbGtpUDJtc3d4QlMz?=
+ =?utf-8?B?UDNhWGJUT1NjV20zMDN2N1dVbWNaUGhCRVB4dW9jOVlTcS9oQjlZdDA2OXpX?=
+ =?utf-8?B?eE1vMFNZVkNSY3NOOU5DMGxXaGh3TG1ObEx3QjhNZE5vQlRNSzBBQjlrSlpl?=
+ =?utf-8?B?VDVpMm84QVRjTTZrY3E5VlIxNkFZOXBwNnJhRnNBZlY3S29VRFJFTS9lUnhp?=
+ =?utf-8?B?NFg5TWxxN1BabW56TkpXcGM1aGhrZElhbGFiS2lTRnRWbzVveXY1Vm1GTXJ1?=
+ =?utf-8?B?MWY4Q2JZeHd5OWIyN2EzN29uVFFGbVJYejZWY1BqTi9UeFp5NXJGdXZvMjhR?=
+ =?utf-8?B?cldhNTNBVkJrcCt5bk5nT0Zqc1hkOTh5QzdUamlTQVJPN0VaN0RqZjJvV21l?=
+ =?utf-8?B?clAzWm9YQTkxQXhsVjBScm16S0YyRHV1WGRGdkFxcmhzZnFrZlExcy9MdjBn?=
+ =?utf-8?B?YTdhRmhiY0prdmNsb2xVQlNSQ0F4czE0N1QyWmpOMFpIQ3FwczZsSFlhekxX?=
+ =?utf-8?B?NXkrVThJcFlkYUV2Qk0ydG9sZUN0TTZ1VENTU3RydXM1bGRXcGY0YnA4czJj?=
+ =?utf-8?B?UlNlbnZVMW0zem0vWUNLL0w2cTE0UUMyVUlyUy90eEdaVjFabW8vN0pqeG9o?=
+ =?utf-8?B?MjJuN3pUQ1RCdDlmank3Y281T2ZOOG5CK2VaaEJiU2k1cmtTbDA3cVpvT2dM?=
+ =?utf-8?B?S2pMdTkwbzFZdm5oN0tyd3hQRFh6RTVyOW5GVWYvLzdKUEo1WmNUUW50OWRW?=
+ =?utf-8?B?NkxMN0g1SFc0NSs4YVRxMDZDM1N2SDFzeFljSzJCaXpiaHdjYjVaNmNLYlZh?=
+ =?utf-8?B?NFRIMWZLYnlEUTlQL0lPUmxXU2k5STBOTHlxeExuRHdXWEswb0RNMVNVNXBT?=
+ =?utf-8?B?NExhOWtDY3Q5WVFkNURycWVKSm9DVUxiMFlRZG1DVVl4aUJYeWhZREQ3bTJM?=
+ =?utf-8?B?Ny9POEJxbGVvRjJPZk9CYks3ZEs3cmE4ak5iNVREbnErNkpBZ0pSUWNnYm9Q?=
+ =?utf-8?B?RlFWSWxMRm03Yy9OalpVRjM4RUJ2cHR1SDFSRHA1dE8zeWZIeW8xR1JLdkQ3?=
+ =?utf-8?B?M1QveGxUcis1YjVReFFVbDJkWEl3S2FVczUwc2RZWEFzc0VpNkYwOWNZbmZB?=
+ =?utf-8?B?bDB6aUV4Z3RpYUREOVc4UEx6R1BxMlVQM2F5M2RFMXFhQ3Myd3hHT0JYVkdz?=
+ =?utf-8?B?b3cvek85MUJyMWZxQlZYa2Zvb0lMUmpsdUJ0NW9VdTZrWjFXUDRZdWFsZXJH?=
+ =?utf-8?B?czk4ZUZrN204T1o1Zmc1Zml0K05BcGZMTDlzUU1YRkdUSFcwOGhuNG9kRE5J?=
+ =?utf-8?B?QzFZWUdQcTViVGIva0FncWhtODk0cWl5T0FvUklZeVhYTnpEVzlHbytORThN?=
+ =?utf-8?B?YXRWcFBaaW16clFrZUJaTDVIYkdBdHpSenBBUDVhTlc4bzFNN0JHaGdlVW9I?=
+ =?utf-8?B?RUp2SEpNa0JGN2VxUWNRUVVueVl2eGptRWVoSTlDeWlLOUYrRXdXaElhRlRj?=
+ =?utf-8?B?OFV5S2ZlL1hQdVlkUXRuRXZLVytOVEhWbUpHYzZYTm92R0pKN3NQUFpBOUJF?=
+ =?utf-8?Q?pJdL6D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MnllMWJyd1BNYWdnUjNQYjgxTFk1aUhJT25zQm1ZRXpBTEFuUW1TUytPUGM3?=
+ =?utf-8?B?T2RtM1g5dGVLLzJlQm9EcWdmdGk4eGFDZ1JLd2l3K2NJRzRnZi83a2Uwam9N?=
+ =?utf-8?B?djQ1ZzhsZ1ZvZk03eG0yK3d6ZlppK3hRamhnazJNTzNXZVVHakVKUmlwSGcr?=
+ =?utf-8?B?TFZma2R3WHk2MjVRZ2MyUzU0WUhwdHowVWlLZEpOQm10V0swWWNOTWdpa3BG?=
+ =?utf-8?B?Q1FtT1IvVHh0eitFMURBazYwZFcrRzR1VUJBYXJFb3oxaHJFa2M2VGVzbno2?=
+ =?utf-8?B?ZjhWSWpCWndGSW5wR3VmK3QxRnBwUDlzSUduRzFRY3pua1F1M1Q0S0Q1U05i?=
+ =?utf-8?B?eDBKVlBqdTRvdHpSa2JKTWZ1QmhCUm9wYjdXdGJDR3IvZm1NbUVqbDQxcjl3?=
+ =?utf-8?B?WHVqRzBUeVkvYzJHRHNqNGVXa3N4NHp3b2FiNzNham03Wk5SdENVWFVxUDdG?=
+ =?utf-8?B?SEptRW0rbE5qQW5TZzRiTFZpSklZQzAvanJNb1FFaEgxc0RPQW5DRjV5emFr?=
+ =?utf-8?B?L241UnVyaVJ4Y2ovaTBEYTdvQnNUOWRZM044b1NKUUN1WHFuclNuck9ENDdV?=
+ =?utf-8?B?aWtMbVF5UEZ1eHhlUm90ZjlBTTgza3dCak0vVmxVUXpmanVBY1diNktJbVVI?=
+ =?utf-8?B?RjFMYzcrTGNWb3V0clRFQ0NKN3JFZ1hTMGVaMzNTNER3MDZURFRFem5TcllX?=
+ =?utf-8?B?UDJTREROWUlCU01md2hjUlJaN1Y0bTk2alF4YzNFNGlQR0ZZYkJQYVRsb01G?=
+ =?utf-8?B?U21uV3lsa1g4Rlp3QnNVMGhRaDROTWdGcjViQ2ZmYVR4cTg4UHdUcCtEMFBx?=
+ =?utf-8?B?MXo2em9OdWRPUVV1eHhJc2ZaaDNKTS9Hckl2RXJXYmtJRHVMbEJPS1gwcVd5?=
+ =?utf-8?B?cVl2SWlKKzU2bUlrYVdvcVdpTFdzam9uTnpvVGMrR3RyMDBDd3hJNmJUbXZa?=
+ =?utf-8?B?LzQwRkdtakxhdzB1ZXpnTEl6aFVacnNweHJ0RWdQNDY3MlZYdEdhTS9RbzY1?=
+ =?utf-8?B?TGhycUg3N2pvdzlyNlhwbTJCcW9YaGwvcG5jb1p1VTdvcG9uZDhHcDdjWU9F?=
+ =?utf-8?B?UHpra3NQWmExblFSZTdCdUtuQnNYQ3lydFRJZ1B4dXQxUUc4ZDF6VzM2Sko3?=
+ =?utf-8?B?MGRCeUV5Y2FLc1RSd0NtTnk3M05FWDZ3aENqVW9SbGJmTXAyaFhqWmFFMkpo?=
+ =?utf-8?B?VTI1YzdWbW5iN3lONkdaeGNvSzQxMWVMS0dRdC9EeWRDajhyMlZvdHArVWl2?=
+ =?utf-8?B?bWhlNzZjVXNrZm40MEY5Vnp3clJTQm5Cdmk1SUU0cHhCWmNiL0V3aTlyRS9H?=
+ =?utf-8?B?dldQV3hFTnhaV25rbUlDR1VOd0hLTnR5NzdBV2VYbFFuWUFIeWhiZ28ramEw?=
+ =?utf-8?B?VENlSHd1ZEFoekJqUVVNcW52ZlQwdDYrR2tIQXplN1ZzN3NHZlZPNTJNeUpI?=
+ =?utf-8?B?TDkxb0k0aFBDR0tBN1hYTGFSbGtJQlB2S3NVbTJtYm1EV2VYdGVRRXdqTnpq?=
+ =?utf-8?B?RXRDZmg3eFNaRUJWcGpsMkcyNFYwSjd5VVNkU012Uzk3TzZWa3J6UGtiR3ZF?=
+ =?utf-8?B?b0p6ZHBYdXdYUWFPcU1sMzNKdXpISGp5YlpRUUk0VnU1QWtrdTRjVGNjRFlC?=
+ =?utf-8?B?UE5Lakdld3hJaTdkL2xFQVRzS2NWYmhGSnpsakRpVExmUHEyazhvbHZXdHcx?=
+ =?utf-8?B?Rm1kRGxON3Q0dStVK0hIMTkzdElGeUhoQzBvVEtpbG5rNHJ0TGdwWHQyUkFY?=
+ =?utf-8?B?NEd3bnNoWmRLU1ZBMUpWTEt6a3AxR1o4SUtHTFdUNFh5Q1V5NnRXZFE2Uzdm?=
+ =?utf-8?B?RmVoWW16MlU2V2RwL0xGQm1tWkRpTUxiU1UydWU4R3c1WjhFV0E5dWQ1UkxY?=
+ =?utf-8?B?OWxucGJJUlRGR3lSMFN3QUdSRHQ4U3M2RE10dXRBYTc4T1ZUajN0YzNmWmtX?=
+ =?utf-8?B?Q1hGaEQyanVCTkI3RmI1RjRycWFTQVlBM1J6RE1JUU42N2dSLzRXN05EVmlF?=
+ =?utf-8?B?UVpKRDBMUE5JTnM4YjAyaDNMSVd1c05ZWUFYaFNFMWI5M01CT3hXTDRMcWVu?=
+ =?utf-8?B?VkNJc0hEOWpHa3ZXNHR5Y3dNZ0RLR0laWXdGUnAxVHdXYXV5Y0xmcHpqZHdm?=
+ =?utf-8?B?UGYvckw4ajd5Vjh3bThPa0tIL21LQjZyNk9OaG5uUzdVa2hFcjc0ZFM5eFJw?=
+ =?utf-8?B?TDRhOUp6V3lTSUc5VWxVNTlxQ2ZOTFZWZVdJa1FmWWZWcVR4QlFvVitwTUtL?=
+ =?utf-8?B?OFdTckpoNUNzWHZrNC80RVlkelBoN210MUxGTTVnMUZBTXk2Rk9EejAxdEtr?=
+ =?utf-8?B?VWpDNmQ3U3NBcms2d0NOZ0xZcEVZZmJoeVFnSmxPeUVkd2VqUzBQZz09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 93838c07-bb1d-4a17-f526-08de4e895fad
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2026 07:41:45.7711
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hpjk7Yfe9ODWRRxE7qrYRJeHAA87ngMimaEIl7kphFvnHT0aY75CHiBCWSfKYJVFUgNTiaTN1AxLx8W6LWS/UQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7197
 
-On 07.01.2026 14:12, Luca Ceresoli wrote:
-> This series converts all DRM bridge drivers (*) from the now deprecated
-> of_drm_find_bridge() to its replacement of_drm_find_and_get_bridge() which
-> allows correct bridge refcounting. It also converts per-driver
-> "next_bridge" pointers to the unified drm_bridge::next_bridge which puts
-> the reference automatically on bridge deallocation.
->
-> This is part of the work to support hotplug of DRM bridges. The grand plan
-> was discussed in [0].
+Recenly when test uvc gadget function I find some YUYV pixel format
+720p and 1080p stream can't output normally. However, small resulution
+and MJPEG format stream works fine. The first patch#1 is to fix the issue.
 
-This patchset breaks Exynos DSI (Samsung-DSIM) driver operation on all 
-my test boards. I will try to debug it and provide more information 
-tomorrow though.
+Patch#2 and #3 are small fix or improvement.
 
+For patch#4: it's a workaround for a long-term issue in videobuf2. With
+it, many device can work well and not solely based on the SG allocation
+method.
 
-> Here's the work breakdown (➜ marks the current series):
->
->   1. ➜ add refcounting to DRM bridges struct drm_bridge,
->        based on devm_drm_bridge_alloc()
->      A. ✔ add new alloc API and refcounting (v6.16)
->      B. ✔ convert all bridge drivers to new API (v6.17)
->      C. ✔ kunit tests (v6.17)
->      D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
->           and warn on old allocation pattern (v6.17)
->      E. ➜ add get/put on drm_bridge accessors
->         1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
->         2. ✔ drm_bridge_get_prev_bridge() (v6.18)
->         3. ✔ drm_bridge_get_next_bridge() (v6.19)
->         4. ✔ drm_for_each_bridge_in_chain() (v6.19)
->         5. ✔ drm_bridge_connector_init (v6.19)
->         6. … protect encoder bridge chain with a mutex
->         7. ➜ of_drm_find_bridge
->            a. ✔… add of_drm_get_bridge(), convert basic direct users
-> 	        (v6.20?, one driver still pending)
-> 	  b. ➜ convert direct of_drm_get_bridge() users, part 2
-> 	  c.   convert direct of_drm_get_bridge() users, part 3
-> 	  d.   convert direct of_drm_get_bridge() users, part 4
-> 	  e.   convert bridge-only drm_of_find_panel_or_bridge() users
->         8. drm_of_find_panel_or_bridge, *_of_get_bridge
->         9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
->      F. ✔ debugfs improvements
->         1. ✔ add top-level 'bridges' file (v6.16)
->         2. ✔ show refcount and list lingering bridges (v6.19)
->   2. … handle gracefully atomic updates during bridge removal
->      A. ✔ Add drm_dev_enter/exit() to protect device resources (v6.20?)
->      B. … protect private_obj removal from list
->   3. … DSI host-device driver interaction
->   4. ✔ removing the need for the "always-disconnected" connector
->   5. finish the hotplug bridge work, moving code to the core and potentially
->      removing the hotplug-bridge itself (this needs to be clarified as
->      points 1-3 are developed)
->
-> [0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/#t
->
-> This work is a continuation of the work to correctly handle bridge
-> refcounting for existing of_drm_find_bridge(). The ground work is in:
->
->    - commit 293a8fd7721a ("drm/bridge: add of_drm_find_and_get_bridge()")
->    - commit 9da0e06abda8 ("drm/bridge: deprecate of_drm_find_bridge()")
->    - commit 3fdeae134ba9 ("drm/bridge: add next_bridge pointer to struct drm_bridge")
->
-> The whole conversion is split in multiple series to make the review process
-> a bit smoother. Parts 3 and 4 are converting non-bridge drivers (mostly
-> encoders).
->
-> (*) One bridge driver (synopsys/dw-hdmi) is converted in another series,
->      together with its (non-bridge) users. Additionally this series converts
->      drm_of_panel_bridge_remove() which is a special case, and has a bugfix
->      for it too.
->
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> ---
-> Luca Ceresoli (12):
->        drm: of: drm_of_panel_bridge_remove(): fix device_node leak
->        drm: of: drm_of_panel_bridge_remove(): convert to of_drm_find_and_get_bridge()
->        drm/bridge: sii902x: convert to of_drm_find_and_get_bridge()
->        drm/bridge: thc63lvd1024: convert to of_drm_find_and_get_bridge()
->        drm/bridge: tfp410: convert to of_drm_find_and_get_bridge()
->        drm/bridge: tpd12s015: convert to of_drm_find_and_get_bridge()
->        drm/bridge: lt8912b: convert to of_drm_find_and_get_bridge()
->        drm/bridge: imx8mp-hdmi-pvi: convert to of_drm_find_and_get_bridge()
->        drm/bridge: imx8qxp-ldb: convert to of_drm_find_and_get_bridge()
->        drm/bridge: samsung-dsim: samsung_dsim_host_attach: use a temporary variable for the next bridge
->        drm/bridge: samsung-dsim: samsung_dsim_host_attach: don't use the bridge pointer as an error indicator
->        drm/bridge: samsung-dsim: samsung_dsim_host_attach: convert to of_drm_find_and_get_bridge()
->
->   drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c | 15 +++++++-------
->   drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c     |  3 ++-
->   drivers/gpu/drm/bridge/lontium-lt8912b.c     | 31 ++++++++++++++--------------
->   drivers/gpu/drm/bridge/samsung-dsim.c        | 28 ++++++++++++++++---------
->   drivers/gpu/drm/bridge/sii902x.c             |  7 +++----
->   drivers/gpu/drm/bridge/thc63lvd1024.c        |  7 +++----
->   drivers/gpu/drm/bridge/ti-tfp410.c           | 27 ++++++++++++------------
->   drivers/gpu/drm/bridge/ti-tpd12s015.c        |  8 +++----
->   include/drm/bridge/samsung-dsim.h            |  1 -
->   include/drm/drm_of.h                         |  6 +++++-
->   10 files changed, 69 insertions(+), 64 deletions(-)
-> ---
-> base-commit: 2bcba510a612cea32b8a536eedeabd7fcb413cd0
-> change-id: 20251223-drm-bridge-alloc-getput-drm_of_find_bridge-2-12c6bbcb6896
->
-> Best regards,
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+---
+Xu Yang (4):
+      usb: gadget: uvc: fix req_payload_size calculation
+      usb: gadget: uvc: fix interval_duration calculation
+      usb: gadget: uvc: improve error handling in uvcg_video_init()
+      usb: gadget: uvc: retry vb2_reqbufs() with vb_vmalloc_memops if use_sg fail
 
-Best regards
+ drivers/usb/gadget/function/f_uvc.c     |  4 ++++
+ drivers/usb/gadget/function/uvc.h       |  3 ++-
+ drivers/usb/gadget/function/uvc_queue.c | 23 +++++++++++++++++++----
+ drivers/usb/gadget/function/uvc_video.c | 14 +++++++-------
+ 4 files changed, 32 insertions(+), 12 deletions(-)
+---
+base-commit: 56a512a9b4107079f68701e7d55da8507eb963d9
+change-id: 20260108-uvc-gadget-fix-patch-aa5996332bb5
+
+Best regards,
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+Xu Yang <xu.yang_2@nxp.com>
 
