@@ -1,193 +1,280 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013026.outbound.protection.outlook.com [40.107.162.26])
+Received: from OS0P286CU010.outbound.protection.outlook.com (mail-japanwestazon11021080.outbound.protection.outlook.com [40.107.74.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C157E2D641C
-	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 06:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C8C2ECD39
+	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 07:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.74.80
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767940303; cv=fail; b=gTQGs1KwEhVCIZQ7UVLIZANlvHKdbxgoGk6wMOZ1W/x2PGeizOyRZdNAv8tPS2oa7Y4PREapufoTUZ3vA62r8bsRHZsTnrWpisZmzbSWWQiHl9Vl9uwDp2cX7RTPjsrOuAwwr/mEpsbTwjr3W2VekcqPSpQVJ6EEb4pOxsQcz2s=
+	t=1767943762; cv=fail; b=H1egB4jBXxFTngGlcdFTEuXY5orcPfPpaxdXOs5cS1FwqErCqOy7dRrWMvzWcUHFif/D9fb79WPXIJ2HcjoE0RXDb7FZXcnUuWTec5M4TYLu6hDl6ifflDz5+yQoVUU5K0V9eEsofdRuShNJFxyxvsG7zdGIhntlXHywu8DE9hY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767940303; c=relaxed/simple;
-	bh=cvKi8SOT9rima1ASNmy2aXelu03lFeOpmQHE5jIjoVE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=fwdTR6VxWSji5bIrkcafeN7KDnYDw2zB4pmyGJys46kLPV3wLvePfwoLC0VuCjO+yldMOrXUAJziKnJrUHjh2kLUgq62Y+MCjx4fJvKJUhfLEBGWcBE0FKYHeXiWUW8+m8HXzu5m1h4BANr56cbHg7ToNqtq/8RpiS1InHEplFA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dMm1K4IB; arc=fail smtp.client-ip=40.107.162.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1767943762; c=relaxed/simple;
+	bh=mYXXjCc3VTs4noUvrgVdq3rWwfHDA/quf6l9oaTjkAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=COdm4Gw0yiR8h2kboA4kAFDtLOLQLGu66zCxUl74r/4nh0dGyrsRhd22nlsnyDgNtQNhEAKNQEWYaHjXrIjxSKwrl4IlTuZIJmCXt6Ixn/kfm5UV3Db9/GbxTZcbNijbQsH0tQHEOb7WZPFy23dDGBAORm+rbuJB8KW02sz/zkg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=MSpFLE8b; arc=fail smtp.client-ip=40.107.74.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dMm1K4IB"
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="MSpFLE8b"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vZ/HBLD8q/BDIXWUdRt2leqHx6JLZMQE5y2tOqFqa1/K8q7fCkMz2jGsKZqPQKJpbX8z3gdpl2MTOYqcoijLMvmTYJRzwtlQDub2LOKeJ43gzkpp7/j/dCiJMdjri2m0K0ogqa/mhjWc1IFrCkTjstKbZ2Ja3z325ScTSHRwkcn0QJF2WkPg+1Hto8QIuyFRDqUOaNXP1tUCb4yrM7h79GcKco8ovhFaxeT+pRhdu6LOADCn2mD4cDvmAQUOKde7wzvqFhlBCR2E+0HKuQwQ8SB8wWBY/dQphkREzjncjLcQHGZ3mtEf1v7N5kEeLQvMAbVxLypSTdKvgJgqDwaSSw==
+ b=zJWu0JDFgtRwniLm0OmAkbS11y0d1pgxmEtSQ8yYPd+43J4OvNHIcRMjRdpZ1Q+i+6rounpZv0jZXBm672nO/0mtSktpA3W9dHP1/01OdgPdH+8dQtVQ+NodBZcaHgOdZki+rWrdK21EU0UAQyzdqRHjy8PJpRife6vHHE81kcAJ2mdOn+qLBfTpZC3zX2PM2aNPtsWxOJ6/+8zAo90QZDgQKbcPE8NMKk6zeGlKvwENeQNtOxO1zd4O7IWvtEABCGToMuZLPUbHi78OrMbS4NfQ95C4WFKJjY+RrEFbTUFpub2PikDWr7jITQCVWWttSw6Rjbe4ao6viqeI5l56Iw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2XkLLjsRiDgA5g6tfEeefhWNKNKkr/JhR6SB2dNXlH4=;
- b=YwdaYUeHD+VqXQVquhJR+W7w6PARfr8DtukxNvdq8YFwfZeGyF3L/svXS6AMqPcC7dnvqehjhJmIFWN62pFaaiAO6vmKVTDmWT6j8HKRbP2R7RtgO601K4SLqcz5FxxydSz7fawIq6rsF01eYmqWa2Eq2R95c//xe7OO6unCfjBEFDAqZX7km9Q3EpApVXxBqWhwykc369Ck4QCjrcCiEaxyc2njlTwAOiK5LRAhuOdfcGsxXtrBEcCcAl+2I7+uTRCLySyZ/Z4Mm9E1BZXlLUfY8GhAKeBWRRoRiYbfS9CvR+WUWmCmpwu761SRlZJdXsn2E/2nc9cJwz6PdS96eA==
+ bh=veU9tN9zvF09zNzl0P1xcmIqmWhRyWZWlSWTCLXzXPA=;
+ b=lJPmX4TkrjCC90eFD21f1ZysXf+giemNBXrfW4bvlO/b3N/loAoS/+e1BRTACNn8MFLwrs7iDXqy+q0c8N0XiePClymzhEBZMz78E0vIGqgoepZRVhbcHW+Ydc7c6gcw1rN3O8V//XmjJ1z5uO4Y04zwpfCyCu2hWq3/xEggwrFbnbn3l0PV1GpoEFOvH2YRxdfptlFr60TUCXIKis+9eCUorTxZRb0mjCbPqJxm8jMbpJpAMf7uE92QwMhpQ5S1KkTATuYHi5Mp1SMB6KhmRSD5oHMA1HC3AfTiaKKIdTRvVQxZj53dhXR16noyT3/D9+likWQoLwS/OTZOxpmKwA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2XkLLjsRiDgA5g6tfEeefhWNKNKkr/JhR6SB2dNXlH4=;
- b=dMm1K4IBzj2hNQeIIuAkdOkq1b90CaAC+Ptegor3Z9TrOI+WVidBiVdOMcU/TsekCorWC4Veix3Gtn3I4GXsEX+4H0jiZGB93dXzBe04JF96AFPS9yXDHtJPgjAPoikSTQnZ/QrZTf8ua/W0IbuKYyrnzQpUSS50atA8t4svcu56lIaFbbntVwDQzbmsKsZC/SsSSNlW8SKdbN2n7e3thvAJ379mS/VGYf0LDsDV97lLS4WDC1qUaE2BXz3zUyf6PC4cq3JkKcvOvxHRZCeLhETe1GXL3vgs1mEYLaCJt9ZEeYjn6T6AvMKaXz/DDmpk0RMXn6bjfQVplNhu3yrArg==
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by AM8PR04MB7891.eurprd04.prod.outlook.com (2603:10a6:20b:237::15) with
+ bh=veU9tN9zvF09zNzl0P1xcmIqmWhRyWZWlSWTCLXzXPA=;
+ b=MSpFLE8b5Qm18oi1ZMW8MraSipXiejbbWXnPZFBQcIpzBTy1R9ZPS0qGSVvZFMbLJ0FZjoDVmoLKP4mWxusbssatzNtwBJ6dY0x8XmHH3hPOBQFTPwKS4odyYRy676cZgbAeK/Ba2VH3qGEwTlKnAubYmjXyRRqxALwMU7mFQUc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by TY7P286MB6304.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:327::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.2; Fri, 9 Jan
- 2026 06:31:38 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::165a:30a2:5835:9630%4]) with mapi id 15.20.9499.003; Fri, 9 Jan 2026
- 06:31:38 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Mathieu Poirier <mathieu.poirier@linaro.org>, "Peng Fan (OSS)"
-	<peng.fan@oss.nxp.com>
-CC: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
-	<festevam@gmail.com>, Frank Li <frank.li@nxp.com>, Daniel Baluta
-	<daniel.baluta@nxp.com>, "linux-remoteproc@vger.kernel.org"
-	<linux-remoteproc@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v5 4/5] remoteproc: imx_rproc: Add support for System
- Manager API
-Thread-Topic: [PATCH v5 4/5] remoteproc: imx_rproc: Add support for System
- Manager API
-Thread-Index: AQHcb928ti36/V6ulE6fyk0pzEPtrLVHKqOAgAEJAACAAE5kAIABAHRQ
-Date: Fri, 9 Jan 2026 06:31:38 +0000
-Message-ID:
- <PAXPR04MB8459A8FB2A2AF57C2F506BCE8882A@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20251218-imx95-rproc-2025-12-18-v5-0-b56a27d4158f@nxp.com>
- <20251218-imx95-rproc-2025-12-18-v5-4-b56a27d4158f@nxp.com>
- <aV6ow9dGUNaPDqZg@p14s> <aV+HEAzwNSOCUx88@shlinux89> <aV_I0iGYt1lxEIUw@p14s>
-In-Reply-To: <aV_I0iGYt1lxEIUw@p14s>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|AM8PR04MB7891:EE_
-x-ms-office365-filtering-correlation-id: a678e539-6b33-4099-f904-08de4f48be7b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|1800799024|366016|19092799006|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?KgIZpnu9nZ7wxClytgmQdo5+r3e5dfcuvrlpOyaYNOzLDk9jkkcbX2kIxpo7?=
- =?us-ascii?Q?krO2/2q/92VxLMTWykx4EY7i/0Ng1lzBmrq9LFYJjZn2IpTuRf2OKIBLJNdW?=
- =?us-ascii?Q?KZgNyHHsID7XlkrACISSCoNZijGqTcHLz2t9LgTPK0IFad/08tOOBVuiBIY/?=
- =?us-ascii?Q?4Nr4X58Z3JU+c0I5G8M9p3mbdcHzl9vIojcgIUY+q3Q4Tg8tSff+HciwNIPK?=
- =?us-ascii?Q?umMTf+xVZW3/oiT3WVCCo6m672fzE1Wq5GdzsAFenkuGNRIECL+zkchXju65?=
- =?us-ascii?Q?3QKSyVubJ11iK2ma9ywr/T7+fHiblq1QLYKL1Uget0zgz7nxhASQNlW9tGoZ?=
- =?us-ascii?Q?TVLDWMjVgn7952PAmgKV+3dbml5cFkfYr43Iunqkw6jS6UMgyYtDvK/nyGtw?=
- =?us-ascii?Q?DRmsPKUWxL/CbZLV+iLEXtAJRwzGa/5Ps4XXdJxA64T99MeXLnr/pjPsSkHa?=
- =?us-ascii?Q?V4xmlFqcJ+sn5/Zq/rCFuk4xxULVBUxL/ibpDdWv8O8soZaSivtBF3JB0xbC?=
- =?us-ascii?Q?VDYwSRNxzvwgISQe+NrnTrsX0QaMTMGtO7joDTRLk9qFRi0UOAMz9aNswTbE?=
- =?us-ascii?Q?onDRUVNvP9axRQ6i+3s5kzwZIwHVzka4EtQJnwmihMggOKqVnlaeUbVMwV4c?=
- =?us-ascii?Q?JjAY2IUDzwOv/SY/H6rWMBLl/7rxz70YbEzqJ/ErKOexNgRIh7cUnvciyFCD?=
- =?us-ascii?Q?B8c/3L7nvFh6DEH7iUkOgd4tEYeMUWWmMsng2IOdNEzEvzhJnAkGS4blEvNZ?=
- =?us-ascii?Q?ApjZE1DX/n50fm20tlSI91N684AAeJ/1HDdAzwVFfAbqnTZxg3Sh+vyAI3ER?=
- =?us-ascii?Q?5sOnVSlom2fmu3lX7B3OAuw5UJJJYvbYJXo6QtbT06X1NWZnPoxvzVCQBo3Z?=
- =?us-ascii?Q?Z2cwNWBKaKWs3iM+6KaP8RU0b3Ez+Vxp508jUud0EneGzm0HAOcG9cRSh7nd?=
- =?us-ascii?Q?roZ+tDl92dr/+1aWJ3JSH8qnn6cpxs7kBUQG2OPBEnHrAxxP/Okkt0XOdQie?=
- =?us-ascii?Q?8uPHIpEh/Wxyja6z9WqxU+TaAiJMx5UpG4tvffZwM+uUH4uxsOqOU7jd8L/G?=
- =?us-ascii?Q?IFTL8MkTVNYCwfIVYBEqv2el3MbYDYvEC/JEVCU3HScPR35pZDRHTRm9k+gR?=
- =?us-ascii?Q?mAOn8RVQ2+x40CxjbJdns/txl8sojqcVGKsYU18jqp0TT8tWxxfUZd4kkKeu?=
- =?us-ascii?Q?eCniT0Yj7hxN6j7PtQpCpTCTw+VcNZf3uSo4QhAhlR0K/ZsqWzNlQpmNLmqt?=
- =?us-ascii?Q?rmaP/zatn62EDW1oGEqLMv/r4tyYn8wlFBPqWu9d7i4Gi6LPZ1JCM95aU8O7?=
- =?us-ascii?Q?UYtf/s017JCSpFVTDlihH5nqUz3ramBwyFBvzf5HwunQhmZEZHCam9g8cjVQ?=
- =?us-ascii?Q?+9I5wWi5EO505MTb7mBWRD0lxr+GFRH8RXsOr+lVbEUBjQw9G65MSt2LPvCs?=
- =?us-ascii?Q?0+m8Gg49jEClDIkL6PPo7cjppMqytsuADK7K1aUePiTOltFK79mq7Dy6Hy1x?=
- =?us-ascii?Q?lNnrL4ZkZpVvW1cRNZx6vXhLcoAUCAvEiLiX?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(19092799006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?cGNJbKfWKPIxJdxVP4d83YRxpnLmnW2JXSa//F2N+Yyl++ompRwQGv8CDG+7?=
- =?us-ascii?Q?UNkJZfqyb8FoKfHDMhJEiOpa5fk7vr8/tZokchB0oK1U1xi1t9VpTN27mPUi?=
- =?us-ascii?Q?CHswGV26gaYrWfTQHnV+dZQ1ttZkEZ28cnTu3IcEX8pI1OSEPCh9TwMfOZKO?=
- =?us-ascii?Q?i+f7/3MUxdAoWhOFSfnXhhA/htSYW/u4R09ja5va26H/9/lpDx91ZgnER3vX?=
- =?us-ascii?Q?Sxu1nq8wXU83Dmi6ivGplyw+pbCKmfXKr/l7lB/snDBcCrrQVNrkXIQplzJa?=
- =?us-ascii?Q?8xKi95ZdPS/zARyQgleh82Gz04uo28XQnZnI4tYiJtZOGADlP2T0iJE3HJe/?=
- =?us-ascii?Q?XQB07EgHGNcXxOyuRJZZT7ef2HjsMaOYhPBfqTRQfFQB98pfZNC8ZStiiqbf?=
- =?us-ascii?Q?DEHXhU4WMtmhGbSF+EmYzJS3a5nGHpHJoG6Wiys8NEBm2BJO2YoTLRNDo9U1?=
- =?us-ascii?Q?lSY69//IZ5UsKgZcQe/GGZTnLei/PySvhvVobAPTO4d7WPWBGOo0GwVpxwWb?=
- =?us-ascii?Q?3Z4tOeq9v4EdS3XIMeCGb0AF2ayjqUmekn7rPgk+ex3sq25IMq26vPkHg025?=
- =?us-ascii?Q?X8DNSxnjDOjhRUImnCcGgy9I5qnYIivOa2dNoAdmi5zsDSx2w/mudCQODPel?=
- =?us-ascii?Q?On3AXNA42Zv/srwQSDDl3L+gOZkXIEcMqoMA2cVrf6+RTDuYTstWXdQ0tSYw?=
- =?us-ascii?Q?nc8+mR2zIoSFUVuFPZztDJiTTmQ+P25UsBm4uMpNGbcHdD4mIzOvQpq+EDT9?=
- =?us-ascii?Q?/KhUWGHj7rjjGWiRxfOn1OxoGQKf6q6/N2KUUEPfIHXkl+yFj+3PpmTCYR8q?=
- =?us-ascii?Q?sYzkmnAhCGSBCh3v+G8ZbiKD0Tu3IGDwVv+p+PiLfhDABnjGj2mIqIfidAlk?=
- =?us-ascii?Q?F0eToiph2ZlAVW0lLX+M5wsY9ChZLAjFfgQouTWU3ePvA1rGByyUIuGxGGTd?=
- =?us-ascii?Q?Uo9jIO5pCKv6myLw96XwMup+6XA2zaH39wsPempMGFHuTmPJVbvC/6deWlA0?=
- =?us-ascii?Q?+kSUjXlqeg3BVESHnM/pBn2frl97sRjug5IUmGjwS3C+SKPjknauQbL/RiOB?=
- =?us-ascii?Q?QXlXeRycLOiZPN7SXFuqQo6tgl1VDLB37s3mFUupPnUM1G9o0U1YXG+dEJWx?=
- =?us-ascii?Q?MEgP3st9J+imI478fFIjVT1y4wiO9mGrbpI7BwWPbfIaDAm/rcg3uLVDIvgX?=
- =?us-ascii?Q?DoFKEnqDcU2S4XLv/IoF4G9WEBItWGLlBtOjFb1gxsnLeHDShTiXKcL0NWMO?=
- =?us-ascii?Q?nZxahhKP3sek6uV6th97JheLMnYqayHVOCY5mvf6+05xsgxxspis1UL8iC3s?=
- =?us-ascii?Q?A58+UlK6EgMQuJ3Pj4larm9AZNqWepyrlwsaLf5T3ZEAlotbKPR1pDRh86c5?=
- =?us-ascii?Q?A/ZiYidnRBrbTlFJmJwEck1HYjdz1dI2mVe8yhe9riDGMaAxTySx7xgOpkIj?=
- =?us-ascii?Q?byLW97RkvgUisd/lrZfqt7/c3pa1aOja17Jiwun2oSQKPlHsh/iKiKk+opKn?=
- =?us-ascii?Q?LedIbc45HITslFt2XzoqQwoWvTopsF6c7zzX+4yN42MZLcsttKhbt+NXA8yd?=
- =?us-ascii?Q?i9bNgxP+j6Jnu9x1IbonbsGNJ9Djc+LrHoetAg7Tso6hF2LJ3eiSL2KO3MKw?=
- =?us-ascii?Q?qOcf1tbk1hER70fPGffl3nWvl86fFTXUFYNG06XDytTh80zAjgK2BFXcqi2l?=
- =?us-ascii?Q?qax91VNdGT7gWpYRgEB4SVQKxuNZnJ7VPg98Z/2i/eHi6aIj?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.3; Fri, 9 Jan
+ 2026 07:29:16 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.20.9499.003; Fri, 9 Jan 2026
+ 07:29:16 +0000
+Date: Fri, 9 Jan 2026 16:29:14 +0900
+From: Koichiro Den <den@valinux.co.jp>
+To: Niklas Cassel <cassel@kernel.org>
+Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, vigneshr@ti.com, 
+	s-vadapalli@ti.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com, 
+	jesper.nilsson@axis.com, heiko@sntech.de, srikanth.thokala@intel.com, 
+	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com, geert+renesas@glider.be, 
+	magnus.damm@gmail.com, christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com, 
+	alexandre.torgue@foss.st.com, thierry.reding@gmail.com, jonathanh@nvidia.com, 
+	hayashi.kunihiko@socionext.com, mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org, 
+	rongqianfeng@vivo.com, 18255117159@163.com, shawn.lin@rock-chips.com, 
+	nicolas.frattaroli@collabora.com, linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com, 
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v5 3/3] PCI: dwc: ep: Support BAR subrange inbound
+ mapping via Address Match Mode iATU
+Message-ID: <nqpwi6ewen4kf7jqgon4ljerceqjeaule25dzb6ytas3wslqhp@ddkr3jum6eac>
+References: <20260108172403.2629671-1-den@valinux.co.jp>
+ <20260108172403.2629671-4-den@valinux.co.jp>
+ <aWAZv3ZwdUmo4_wc@ryzen>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aWAZv3ZwdUmo4_wc@ryzen>
+X-ClientProxiedBy: TY4PR01CA0111.jpnprd01.prod.outlook.com
+ (2603:1096:405:378::12) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TY7P286MB6304:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4cf8b417-ad3d-4b48-75e3-08de4f50cb6e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?7rrogRkJRKyKCKDVsYAQGGuLq8eFtMKxxc3/z/t4amg3fsWv9WOY1nJGVbUf?=
+ =?us-ascii?Q?+GeVqoPGM5Vif/AbtG29642poQmyQznw3L9Ye02mcR1fiiG44pxQMyQ0ZPPh?=
+ =?us-ascii?Q?XQNi37eJm+NTGi6CWAWwZ+pImES58iqT5wtZ0VGkljsr+zcHc+MkK0zFEsAI?=
+ =?us-ascii?Q?QEIXteMgCcqYmuUGo6czo1nufCPq9axNx960tky822PeINDQFuqw3uM/mwlV?=
+ =?us-ascii?Q?JKbMARbwdcB2nDskuXhWAkPHlxsYpJws2RY3roHOuH+2Zk7DSm2f3kofBbwn?=
+ =?us-ascii?Q?dyMLx3hCi3KJUj44DuW40+6Y3PKBHzo0H8AWyiwcBq1RZfNtlB0EyNRPgmzM?=
+ =?us-ascii?Q?8Hu5MY/FJZJi/trI6STZEkmqk008k7BkadaN3uKXw9pBb4hy6qbQS9cmiYd3?=
+ =?us-ascii?Q?jt+yGSAqZyk2rKvgVH9SmpiloOn7yKMf++cI6KVGUademMSmkKnh5WzAo4yS?=
+ =?us-ascii?Q?hYdI+zGS8UJTlA75fW29HbkAL5L8581uXRxqqRiQF9MqQUVD/CJrCtZ20OJA?=
+ =?us-ascii?Q?t29HYokGAcJPvvzeSfkaulPyGgfEfxQxrwCs2mDGtR4CGzKNLbpdn2uNUYht?=
+ =?us-ascii?Q?aSMlAvCE0IMEh2vaKJD5hGv+WCZ1d1TYVi2qWKEQ4EaFqAA2HuAMsn5LPk5K?=
+ =?us-ascii?Q?XVieH3YvYyIsZF3LNQPleniMkOwWku1c2gGTPpePgIerOeEQtRLI5SLQ9Dmw?=
+ =?us-ascii?Q?b3RhIrvOF9NJKPd0yzplEfL07Hrxjthe2SMDzZtMyDK5rtyj6p2lq38B1Est?=
+ =?us-ascii?Q?5MhH3N5CytQm7Tlo0OMlj5MNSg1CeTtrH3ogpokEV3EPC3fhynfG/iGcnTa9?=
+ =?us-ascii?Q?1+h+w+NE/BFADgmlwPKm+3GTVBCEz3m90wHV2YWpAymBTtjEBi1uXbtWNW9R?=
+ =?us-ascii?Q?bs9f3PNNbN8+3XzEo3+JIzx0TdALA1xZa75yqMzhVxCTLunnOzskc3gmqZVv?=
+ =?us-ascii?Q?rOZT5YYxg0fUai2fGcojRSe7St8OYkNyeglbOTw8/+67vWTJL5fBNxNlbb4a?=
+ =?us-ascii?Q?3a4QXLf3cKa78E2xVyLliOtrVe1yYXZCB1QKx3Xo9HXbavwIor0vqd6nSsYd?=
+ =?us-ascii?Q?pZ3iJYur6fWd7Q3WQu2scf1wVrQjxjsaI+sisnr8I9brJ0DypzMDuboxAN05?=
+ =?us-ascii?Q?9/MCDaMgDJcyZJ7F4b6xKSSvUTrjuXjQZgQ2/u/PbXKGPqqe8tw/jedqfpB9?=
+ =?us-ascii?Q?o5dPbek8SngthU8OzUU+BwUDpU+qnc1jD8cQc7SDG3ewFLzKXgcTYWX8+cdg?=
+ =?us-ascii?Q?A7nCHU/jrJhg7OCg467IRa2/uN0VUKF2m93XE5vcVRfPElRLOQxAAmtHI0EL?=
+ =?us-ascii?Q?huOkpJ6IMZqrHWHl6z4ZVF/rnBJSOshaoPwxqj2FXuYS5WP4IcWPHMQt/76b?=
+ =?us-ascii?Q?ZXvKBNYWFAo4qUFTVooWBImXxJri/83hR2kIBZSVkiziG/4wFSkUXcETaAiz?=
+ =?us-ascii?Q?3Jvn0KGuIIhSJONHevGIbn/cdl763n+q?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?GF21yx6dHxf6HHDBRIl6KA9e7SQ72oMXM7pf+yTY+hrC/cW36qcete2yZ9aE?=
+ =?us-ascii?Q?eJoojKQ1mBpxKpPnAyjkqZNGLYSOqASCQ1ghIRbCpOQvRBveOifZrkWtq6Zg?=
+ =?us-ascii?Q?b+jTm+fFvK1TDFqvyUSyEzzr6k54WWIKPRA9PbWdxnh8dOkWVvd54uhMzvaK?=
+ =?us-ascii?Q?YOmqbnV+mQNAC7yHAevQ/sMtm5T9D08aUE3spWPx+L1NXZXWi/LNrni1QGNY?=
+ =?us-ascii?Q?olUtAKvSc0dWEzBc8M8ZQDoglkcVi/Ilb7r03y2p3rNQXjFnxtoTFC/FYwYv?=
+ =?us-ascii?Q?QZvzUIGo+jEMzyF4s5Bv6yJybVGiQFETwx1HocKjjayOvDveuSeFqoTSrwfq?=
+ =?us-ascii?Q?qP38Kaacg3Q9rNkTmRogVWjFGMqnEboCbwb88gtp8/VW0f0yd3ePtSYbBDfV?=
+ =?us-ascii?Q?/JMmJFgpC6iSxiz7+XtOxY8eTl6OGmTTx3ARG0cSKiN1bqlwgFCIBZMI/ItK?=
+ =?us-ascii?Q?F5epYZKdgmBuUSaiXq7Yi98f7nS6sX5BiBQIE+VjRXkmh8pN5aDLCIsJHf87?=
+ =?us-ascii?Q?XnCSsV4dRyiHYtXiNTGtukqRRPUaKwHBOWYaopVfFiQp50yFobrfYIclxaA0?=
+ =?us-ascii?Q?w6/VUMZUkJU6Yxqw9e89Dyjvz/dMnpSrC1zLyHeQFbEq0faVeLNOY8emDiX9?=
+ =?us-ascii?Q?5LCSnvJRKkE6ATd2e3dwl4aP2vlnWCW6xJz4eDNz64o4LEaFrUcufMj0x9v/?=
+ =?us-ascii?Q?qPTifm+8H44vofdBSMBHmAkWirPAYxxhOrqn2zd97R/F0kj/qv2MeQUuryR6?=
+ =?us-ascii?Q?vuFvT76mqk8O9K3Zh5cSBjNxtEV/w7J5Bw1Nrfd7SX2NOgaf6D2KS+7K7083?=
+ =?us-ascii?Q?YPVBZJ0O3xSDYdVY7oHO7i5TeiE5RivKEdHnxanUsy/ET1GvjZ5ad8UwSjrs?=
+ =?us-ascii?Q?4GLRCPP9+ftSmO+rauqYBy1MrQgRQH37czGnWApbGzRS/m0cZAVO9vs/mNsC?=
+ =?us-ascii?Q?3RPF42DkQdZ5kQt+lAGGs3LUjbaE/AZCaimWWziG46VFc/ALVw4lMQfL6WUJ?=
+ =?us-ascii?Q?qt1xKtM59/Eig5JfbpIWHZ6dIhIfcGFp6JowOOYmAZeHLMMlOsdfAKdMUUoT?=
+ =?us-ascii?Q?7dKlQKEUKuIBXgkUUjQ/xn9oUtxc6F4lxEFCKL8XdBv/71suco/Our9JfwW3?=
+ =?us-ascii?Q?NWoo8u3Xl3N4X7/qVMecq1Iox6HQpD4Uab2fgrYyAuGKt9Y++4mQDk93+Xh/?=
+ =?us-ascii?Q?2ZRUTqiu2b/f1owS6D2DwZ0EWzUcba9olPJdJGnUW0LlS3x68ONp2K7bt7kd?=
+ =?us-ascii?Q?9rbx/gecNMD9peZ4zzJshNxteL/qS+aKwtUrHrbNeHzwD+P+YBNQpiuM78t9?=
+ =?us-ascii?Q?/41E+GlEKpcZXlGTwCmjrEoGMZc2ftGH4XSdTew82Zl+0vBxFFx8DC/fi2kL?=
+ =?us-ascii?Q?HfAO21Wm7705a4Uz+f3/NTDp479p15kQ5yH97Y0J0ZyVc44jUcia+lZCRIY3?=
+ =?us-ascii?Q?fjJYJYAnLXaCgPxCZ/mNxz4gpyKQuz8gwNs5v8Ej3L9fWQPUgcQDL4r72qd5?=
+ =?us-ascii?Q?jgwLcdJLTdQqiPrfVbFGfzuwLILQNzHhup66hZg3Pj1TjxJnDlhrRrBAvvaG?=
+ =?us-ascii?Q?NnUgPQ8/PtT7lMLWNv12YkNFUmc9LEXkXSd32Zf8Cnjr/KMki9q4gu5ff9g5?=
+ =?us-ascii?Q?rTT0uXK7YBFFZV5oAR8PvoS+IvaWyLUqHHAi99X9emeiT5uZyinnm580DJiS?=
+ =?us-ascii?Q?wIm5sIdFPc4xMCdbTtYSzucgAZb1/4VEg0rCT4OJEzB3LvGqnX9HGWsBmIfV?=
+ =?us-ascii?Q?3yhyLLlvD8gPLYjPclQZYBOrFczQSsJzuc4qpmHq/fNC5k2diyhT?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4cf8b417-ad3d-4b48-75e3-08de4f50cb6e
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a678e539-6b33-4099-f904-08de4f48be7b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Jan 2026 06:31:38.4613
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 07:29:16.3830
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: k7rN3uB2MG51yYtD4cxwp7b4Rs/Y8bQuQTQQBBsMyovU0qGTUbqek21aZv+GOfhphoZnbZydB39wiUqQAGTbLw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7891
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2AYi5gJQMuOfXriMSAot87G4ZilBhrugThcH60/g3mTMW9DxFdYj5duN0m/03k7Qsqd39WFR/AlJ752KyPSs7Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY7P286MB6304
 
-> Subject: Re: [PATCH v5 4/5] remoteproc: imx_rproc: Add support for
-> System Manager API
->=20
-> > >imx_rproc_sm_lmm_prepare()
-> >
-> > Add in V6:
-> >         /*
-> >          * If the remoteproc core can't start the LM, it will already
-> > be
->=20
-> The remoteproc core starts a remote processor, which in this case is
-> the M7.
-> I'm not sure why you are referring to the logical machine (LM).
+On Thu, Jan 08, 2026 at 09:55:27PM +0100, Niklas Cassel wrote:
+> Hello Koichiro,
+> 
+> On Fri, Jan 09, 2026 at 02:24:03AM +0900, Koichiro Den wrote:
+> 
+> (snip)
+> 
+> > +/* Address Match Mode inbound iATU mapping */
+> > +static int dw_pcie_ep_ib_atu_addr(struct dw_pcie_ep *ep, u8 func_no, int type,
+> > +				  const struct pci_epf_bar *epf_bar)
+> > +{
+> > +	const struct pci_epf_bar_submap *submap = epf_bar->submap;
+> > +	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+> > +	enum pci_barno bar = epf_bar->barno;
+> > +	struct device *dev = pci->dev;
+> > +	u64 pci_addr, parent_bus_addr;
+> > +	struct dw_pcie_ib_map *new;
+> > +	u64 size, off, base;
+> > +	unsigned long flags;
+> > +	int free_win, ret;
+> > +	unsigned int i;
+> > +
+> > +	if (!epf_bar->num_submap || !submap || !epf_bar->size)
+> > +		return -EINVAL;
+> > +
+> > +	ret = dw_pcie_ep_validate_submap(ep, submap, epf_bar->num_submap,
+> > +					 epf_bar->size);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	base = dw_pcie_ep_read_bar_assigned(ep, func_no, bar, epf_bar->flags);
+> > +	if (!base) {
+> > +		dev_err(dev,
+> > +			"BAR%u not assigned, cannot set up sub-range mappings\n",
+> > +			bar);
+> > +		return -EINVAL;
+> > +	}
+> 
+> Sorry for giving additional review comments.
 
-I was thinking to align with function name. I will use M7 in v6.
+Thanks again for the detailed feedback.
 
-> >
-> > I appreciate your detailed review and the code snippets you provided.
-> > Please let me know if you'd prefer that I split the support for LMM
-> > and CPU into separate patches in v6, or keep them combined as they
-> are.
->=20
-> Please split.
+> 
+> But there is one thing that I might not be so obvious for someone just
+> reading this source. How is this API supposed to be used in practice?
+> 
+> Most DWC-based controllers are not hotplug capable.
+> 
+> That means that we must boot the EP, create the EPF symlink in configfs,
+> and start link training by writing to configfs, before starting the host.
+> 
+> dw_pcie_ep_ib_atu_addr() reads the PCI address that the host has assigned
+> to the BAR, and returns an error if the host has not already assigned a
+> PCI addres to the BAR.
+> 
+> Does that mean that the usage of this API will be something like:
+> 
+> 1) set_bar() ## using BAR match mode, since BAR match mode can write
+>    the BAR mask to define a BAR size, so that the host can assign a
+>    PCI address to the BAR.
 
-ok. v6 will have them separated.
+BAR sizing is done by dw_pcie_ep_set_bar_{programmable,resizable}() before
+iATU programming regardless of match mode. I keep BAR match mode here just
+because Address match mode requires a valid base address. That's why I
+added the `if (!base)` guard.
 
-Thanks,
-Peng.
+> 
+> 2) start() ## start link
+> 
+> 3) link up
+> 
+> 4) wait for some special command, perhaps NTB_EPF_COMMAND
+> CMD_CONFIGURE_DOORBELL or NTB_EPF_COMMAND CMD_CONFIGURE_MW
+> 
+> 5) set_bar() ## using Address match mode. Because address match mode
+>    requires that the host has assigned a PCI address to the BAR, we
+>    can only change the mapping for a BAR after the host has assigned
+>    PCI addresses for all bars.
+> 
 
->=20
-> >
-> > Thanks,
-> > Peng.
+The overall usage flow matches what I'm assuming.
+
+> 
+> 
+> Perhaps you should add some text to:
+> Documentation/PCI/endpoint/pci-endpoint.rst
+> 
+> Because right now the documentation for pci_epc_set_bar() says:
+> 
+>    The PCI endpoint function driver should use pci_epc_set_bar() to configure
+>    the Base Address Register in order for the host to assign PCI addr space.
+>    Register space of the function driver is usually configured
+>    using this API.
+> 
+> So it is obviously meant to be called *before* the host assigns a PCI
+> address for the BAR. Now with submap ranges, it appears that it has to
+> be called *after* the host assigned a PCI address for the BAR.
+
+I agree. As I understand it, the current text seems not to reflect mainline
+since commit 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar()
+update inbound map address"), but anyway I should add explicit
+documentation for this subrange mapping use case.
+
+> 
+> So I can only assume that you will call set_bar() twice.
+> Once with BAR match mode, and then a second time with address map mode.
+> 
+> It might be obvious to you, but I think it makes sense to also have some
+> kind of documentation for this feature.
+
+Ok, I'll update Documentation/PCI/endpoint/pci-endpoint.rst accordingly.
+
+Kind regards,
+Koichiro
+
+> 
+> 
+> Kind regards,
+> Niklas
