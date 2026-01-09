@@ -1,179 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5793002D8;
-	Fri,  9 Jan 2026 08:30:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BC71DA628
+	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 08:42:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767947417; cv=none; b=dQwjZ+KSmAYScKBoZiSV2AQuwSXSvOa2bMUc4vGrQQJDSUXhdzVGEwY56WsoHiXoO/RWM6ynIZ3x2fR8b9MQlnyFBG09FoPqYWRs6QtT5FYWXjyspnUEoLGYpFv93EQVQSsQVCqwbVUsEhAw1iX1arufxG2QOxINEn6TL38s/UA=
+	t=1767948138; cv=none; b=nwsMEvO43mlhpITH40Vp+jJDjBJ6CjJkx7hkNj6oOERYOmrudrAuNWxA9mkXas17KHXu0GezZ5JwzSSnqk7ZT412a7Z0tglqkw4NclNjbqMB9MyX+4DK5U4ywgJGPPmCWP4at7Z+I1A/K1zQjurd75KOQRCUOiVhfKQK/gOa68o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767947417; c=relaxed/simple;
-	bh=3Y/4K7MdRQsPCaqilZFCu7ZODfNDBbKlBmqwPSVOHE4=;
+	s=arc-20240116; t=1767948138; c=relaxed/simple;
+	bh=02A6x4UGa/2dbvl2Im6Qey6hXFFU0uIY+U1g300uWoc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s33D3PpzsQGPGiv5MhIFJw2ZEWRoJ+amQq78BnByhvwWDWasaA434BuxKtLabLBx5EhxCasQc60OdWZswKF4Qc1SMF3mvO7ihANU1U3NJKcT1gO3Ol2lRzhDy0jYFvse9jdnKnEbhTbxItxazKXwVo9TcC9YocUMYVpp/2N8njY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KaHmVdUw; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=e177EBLfZMTCJUvJcgYsvJ/BnnKQmnBHdGAy4twmlyT1e9wgIw4icH8GXTvBBF9YqNjYHsmHNLwWjwjC7luW8bagaTI7iFH2PiCCysw853C6Twff2xASw/+LXybRqT0Fp76DFEUZ/Fn5Pyrp/jSEyaxHINq4iF5ZvvSQ+TRjlas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BpTlVqU7; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KaHmVdUw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929F2C4CEF1;
-	Fri,  9 Jan 2026 08:30:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767947416;
-	bh=3Y/4K7MdRQsPCaqilZFCu7ZODfNDBbKlBmqwPSVOHE4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KaHmVdUwZWxvuB7ircX7ZztfhNCS1a9BTb6T0uPs+Q8BKvaZCbB+xYdh0efbbA/BR
-	 bkIBdQCmh2pdinGW6ArMfuOO6fvAaC1nJbcezIMdkn2kzkbHwDwRFXL2OpiN19nk8N
-	 4igYJU5hWPQG9zpkf1UjRb9Issh9v819ZcqIFnR52+WTmYfRzEv07jzrVDy/GKTXyi
-	 Y5gf1lPSGGMTiKQqntrZ6xy4Or5V7cJVR+A/Mo2DBg60Vo6XrD+dgWiMldLe/rBdU2
-	 SJIPFSwArTjX0JW+7sHkCG2FBzFloJGX/CmtARnJdYrNMmKN9qvU6cFpl6PtI7O/ep
-	 fOAbK1oUz946A==
-Date: Fri, 9 Jan 2026 09:30:04 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Koichiro Den <den@valinux.co.jp>
-Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com,
-	vigneshr@ti.com, s-vadapalli@ti.com, hongxing.zhu@nxp.com,
-	l.stach@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, minghuan.Lian@nxp.com,
-	mingkai.hu@nxp.com, roy.zang@nxp.com, jesper.nilsson@axis.com,
-	heiko@sntech.de, srikanth.thokala@intel.com,
-	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com,
-	geert+renesas@glider.be, magnus.damm@gmail.com,
-	christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com, thierry.reding@gmail.com,
-	jonathanh@nvidia.com, hayashi.kunihiko@socionext.com,
-	mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org,
-	rongqianfeng@vivo.com, 18255117159@163.com,
-	shawn.lin@rock-chips.com, nicolas.frattaroli@collabora.com,
-	linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com,
-	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v5 3/3] PCI: dwc: ep: Support BAR subrange inbound
- mapping via Address Match Mode iATU
-Message-ID: <aWC8jGTtKIzVuG-X@ryzen>
-References: <20260108172403.2629671-1-den@valinux.co.jp>
- <20260108172403.2629671-4-den@valinux.co.jp>
- <aWAZv3ZwdUmo4_wc@ryzen>
- <nqpwi6ewen4kf7jqgon4ljerceqjeaule25dzb6ytas3wslqhp@ddkr3jum6eac>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BpTlVqU7"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-432d2c7a8b9so960339f8f.2
+        for <imx@lists.linux.dev>; Fri, 09 Jan 2026 00:42:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1767948135; x=1768552935; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=N/+wP7VUxOoGGhH+GyCKQ5tv6/IVz0LS1NxGo+a69kI=;
+        b=BpTlVqU7ZPXgdK1aT3JfD4cm5AL0WvnBejKsEDBgC4r8LzRuEF0KtOq0ncbmRMhbKb
+         mwrE6/1NFDpcjRfmL1RRmv5TD7m23D2uwYe/KMOutlGLZoozFeypgA0EmXIOPRjmpqFv
+         isXjkqsWkMpf0U4DuU5NhDg9DtkuB8Ie18ZD0X7GcazDszS0VsA4IVHQvVy+/qdQyEtk
+         6RCk6epIkuiQ4IkGve+B8UEdSetgoxi/3C2c9DRvzAGatfuAvXpy8IqjUIPRYU5UAaRk
+         +SBJ5is26DiKbo6JMDJYuVk3W3VaPqkGW2EFwe3BiHopaYbxtuA2+Jg52wnjesauUWuM
+         e2IQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767948135; x=1768552935;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=N/+wP7VUxOoGGhH+GyCKQ5tv6/IVz0LS1NxGo+a69kI=;
+        b=fIpB5xwWPsjalSqRGoHUE4OqDV5E9Qvlvcnel2XZRyCJ1b4Ai558qrQ6hhCFdV5OTG
+         MxmPzmvNXejxFD+zyZTCA4hfmA/+UcVxnYq/1nTU0U5ddnPUodiUc3+ITbHXiR22HBPp
+         2MlwNsJTo9shv8SrfLceRLdU++JfEGGybVeITaRRkBrwTqp2v3DOFFNWiLHsdTxUA749
+         0EJbFVgGCs7WQOwx2jjTHMiStxCLYm9XNFWmddHaw46vcOivjLfDihUlsidoAz0Z/CiQ
+         tL0CLLX5T2WVkAokvJebcHneXy5oQXcTQbqqM2b9EFnhYGuZrR0Z0nRRA67yBUTAtxyt
+         7LJw==
+X-Forwarded-Encrypted: i=1; AJvYcCUI2TXqhJCo84ldi2aLUQkfnRcXLM0lfLftSZumfhHVG6DkmP2lsfSivUjFaSSeq09aDOg=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyr1+df4/St6YNroVBG2Z4lZ2TtZEwU7M7HOZw+/sczMKMBfZgS
+	JrKV7OKngFMTc6/jJhTPzluu0zACMpETejfHZM5rb9zMAD3dt08G0vpd
+X-Gm-Gg: AY/fxX7+jw6Y+9smlr0DHIrrZDSMRD1rzSg55v04IzST/Hda8uZXLtMnXSffRAkJOil
+	7ZgVJz3KGvp/N43mCTqPMcuv/UNeh8vNckCs1DoOQ67DnFsqOAwV04jvunr+aomgntX4qK82r7b
+	sKvDHmK1XaEokPe8hOevkQ1xlFnihYyPKdmnbWbLwOZXvdeBoJi1o3GRHXI2l6hOXHZSOEN7LQw
+	fDbxto2mptei71qU2Gt9q81QGDsLTTKTWXSThQhj/uQwB96G5Nb6ALbDjq0cq//2E2EccfwInaP
+	/CmlsoXiUmAhZ6ywSlT2OZnlzm4Cbjm36TZluwK32JRl7c6+/h0XURugsu40SULdWAzg/ySlUe2
+	L7E30ZaYyl2HousynUL0WAhmi9wNL/Cx7pkFUC+n8bE12VMzfupNj7ewoC/F7Yq/uUxR1Onwx8I
+	dN2jvTwU1A29k=
+X-Google-Smtp-Source: AGHT+IGYAk2S3Qdr9OmtCXbZaajNREwTznfK/Lnn5IG7bEwG+8LMc/qLBJq9BAHsaKGTT3hoN4rQcA==
+X-Received: by 2002:a5d:64e3:0:b0:430:f68f:ee7d with SMTP id ffacd0b85a97d-432c379b79cmr11104260f8f.47.1767948135127;
+        Fri, 09 Jan 2026 00:42:15 -0800 (PST)
+Received: from eichest-laptop ([2a02:168:af72:0:66a2:be50:e0d3:29f9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0dacc5sm20839538f8f.5.2026.01.09.00.42.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jan 2026 00:42:14 -0800 (PST)
+Date: Fri, 9 Jan 2026 09:42:12 +0100
+From: Stefan Eichenberger <eichest@gmail.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, francesco.dolcini@toradex.com,
+	robh@kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH RESEND net-next v2] net: stmmac: dwmac: Add a fixup for
+ the Micrel KSZ9131 PHY
+Message-ID: <aWC_ZDu0HipuVhQS@eichest-laptop>
+References: <20260105100245.19317-1-eichest@gmail.com>
+ <6ee0d55a-69de-4c28-8d9d-d7755d5c0808@bootlin.com>
+ <aVuxv3Pox-y5Dzln@eichest-laptop>
+ <a597b9d6-2b32-461f-ac90-2db5bb20cdb2@lunn.ch>
+ <aVvp70S2Lr3o_jyB@eichest-laptop>
+ <aVvwOYce1CFOLiBk@shell.armlinux.org.uk>
+ <aVv7wD2JFikGkt3F@eichest-laptop>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <nqpwi6ewen4kf7jqgon4ljerceqjeaule25dzb6ytas3wslqhp@ddkr3jum6eac>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aVv7wD2JFikGkt3F@eichest-laptop>
 
-On Fri, Jan 09, 2026 at 04:29:14PM +0900, Koichiro Den wrote:
-> > Does that mean that the usage of this API will be something like:
+Hi everyone,
+
+On Mon, Jan 05, 2026 at 06:58:24PM +0100, Stefan Eichenberger wrote:
+> On Mon, Jan 05, 2026 at 05:09:13PM +0000, Russell King (Oracle) wrote:
+> > On Mon, Jan 05, 2026 at 05:42:23PM +0100, Stefan Eichenberger wrote:
+> > > Yes this is correct. ERR050694 from NXP states:
+> > > The IEEE 802.3 standard states that, in MII/GMII modes, the byte
+> > > preceding the SFD (0xD5), SMD-S (0xE6,0x4C, 0x7F, or 0xB3), or SMD-C
+> > > (0x61, 0x52, 0x9E, or 0x2A) byte can be a non-PREAMBLE byte or there can
+> > > be no preceding preamble byte. The MAC receiver must successfully
+> > > receive a packet without any preamble(0x55) byte preceding the SFD,
+> > > SMD-S, or SMD-C byte.
+> > > However due to the defect, in configurations where frame preemption is
+> > > enabled, when preamble byte does not precede the SFD, SMD-S, or SMD-C
+> > > byte, the received packet is discarded by the MAC receiver. This is
+> > > because, the start-of-packet detection logic of the MAC receiver
+> > > incorrectly checks for a preamble byte.
+> > > 
+> > > NXP refers to IEEE 802.3 where in clause 35.2.3.2.2 Receive case (GMII)
+> > > they show two tables one where the preamble is preceding the SFD and one
+> > > where it is not. The text says:
+> > > The operation of 1000 Mb/s PHYs can result in shrinkage of the preamble
+> > > between transmission at the source GMII and reception at the destination
+> > > GMII. Table 35–3 depicts the case where no preamble bytes are conveyed
+> > > across the GMII. This case may not be possible with a specific PHY, but
+> > > illustrates the minimum preamble with which MAC shall be able to
+> > > operate. Table 35–4 depicts the case where the entire preamble is
+> > > conveyed across the GMII.
+> > > 
+> > > We would change the behavior from "no preamble is preceding SFD" to "the
+> > > enitre preamble is preceding SFD". Both are listed in the standard and
+> > > shall be supported by the MAC.
 > > 
-> > 1) set_bar() ## using BAR match mode, since BAR match mode can write
-> >    the BAR mask to define a BAR size, so that the host can assign a
-> >    PCI address to the BAR.
+> > Thanks for providing the full explanation, it would be good to have
+> > that in the commit message.
 > 
-> BAR sizing is done by dw_pcie_ep_set_bar_{programmable,resizable}() before
-> iATU programming regardless of match mode. I keep BAR match mode here just
-> because Address match mode requires a valid base address. That's why I
-> added the `if (!base)` guard.
+> Okay thanks, I will provide the full explanation in the next commit
+> message.
 > 
 > > 
-> > 2) start() ## start link
+> > The next question would be, is it just the NXP EQOS implementation
+> > that this breaks on, or are other EQOS implementations affected?
 > > 
-> > 3) link up
-> > 
-> > 4) wait for some special command, perhaps NTB_EPF_COMMAND
-> > CMD_CONFIGURE_DOORBELL or NTB_EPF_COMMAND CMD_CONFIGURE_MW
-> > 
-> > 5) set_bar() ## using Address match mode. Because address match mode
-> >    requires that the host has assigned a PCI address to the BAR, we
-> >    can only change the mapping for a BAR after the host has assigned
-> >    PCI addresses for all bars.
-> > 
+> > In other words, if we choose to conditionally enable the preable at
+> > the PHY, should the generic parts of stmmac handle this rather than
+> > ending up with multiple platform specific glue having to code this.
+> > (This is something I really want to avoid - it doesn't scale.)
 > 
-> The overall usage flow matches what I'm assuming.
-
-Ok, perhaps document something that the submap feature requires that the
-BAR already has been assigned an address (and that it thus has to call
-set_bar() twice, without calling clear_bar() in-between.
-
-This is a new feature, and since you provide a mapping for the whole BAR,
-I think it is logical for people to incorrectly assume that you could use
-this feature by just calling set_bar() once.
-
-
-> > Perhaps you should add some text to:
-> > Documentation/PCI/endpoint/pci-endpoint.rst
-> > 
-> > Because right now the documentation for pci_epc_set_bar() says:
-> > 
-> >    The PCI endpoint function driver should use pci_epc_set_bar() to configure
-> >    the Base Address Register in order for the host to assign PCI addr space.
-> >    Register space of the function driver is usually configured
-> >    using this API.
-> > 
-> > So it is obviously meant to be called *before* the host assigns a PCI
-> > address for the BAR. Now with submap ranges, it appears that it has to
-> > be called *after* the host assigned a PCI address for the BAR.
+> From the errata from NXP it sounds to me like it is a configuration
+> issue by NXP. I checked the following ERRATAs from vendors where I have
+> access to:
+> - ST STM32MP1: not affected: https://www.st.com/resource/en/errata_sheet/es0438-stm32mp151x3x7x-device-errata-stmicroelectronics.pdf
+> - Renesas RZN1: not affected: https://www.renesas.com/en/document/tcu/ethernet-mac-gmac-function-issue-0?r=1054561
+> - Starvive JH7110: not affected: https://doc-en.rvspace.org/JH7110/PDF/JH7110_Errata.pdf
+> - NXP S32: affected: (ERR050706 under NDA)
 > 
-> I agree. As I understand it, the current text seems not to reflect mainline
-> since commit 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar()
-> update inbound map address"), but anyway I should add explicit
-> documentation for this subrange mapping use case.
+> So from that I would conclude that it is an NXP specific issue and it's
+> not the full EQOS implementation that is broken.
 
-Sure, 4284c88fff0e ("PCI: designware-ep: Allow pci_epc_set_bar() update
-inbound map address") modified so that set_bar() can be called twice,
-without calling clear_bar().
+I just wanted to check whether I should continue with the current
+approach or if I should instead enable the preamble in the PHY for all
+MACs. While I prefer the current approach, as the issue lies with the
+MAC rather than the PHY, I can also see the advantage of always enabling
+the feature.
 
-However, that patch was a mess because:
-1) It got merged via the NTB tree, even though the PCI maintainer wanted a
-   different design:
-   https://lore.kernel.org/linux-pci/20220818060230.GA12008@thinkpad/T/#m411b3e9f6625da9dde747f624ed6870bef3e8823
-2) It was buggy:
-   https://github.com/torvalds/linux/commit/c2a57ee0f2f1ad8c970ff58b78a43e85abbdeb7f
-3) It lacked the proper conditional checks for the feature to work (and it
-   lacked any comments in the source explaining why it was skipping steps):
-   https://github.com/torvalds/linux/commit/3708acbd5f169ebafe1faa519cb28adc56295546
-4) It failed to update the documentation.
-5) It failed to add a new flag for this feature in epc_features.
-   I seriously doubt that any non-DWC based EP controller supports changing
-   the inbound address translations without first disabling the BAR.
-   (It probably should have added a epc_features->dynamic_inbound_mapping bit.)
-
-
-So all in all 4284c88fff0e in not the best example :)
-
-
-Your new feature (epc_features->subrange_mapping) in epc_features appears
-to depend on epc_features->dynamic_inbound_mapping, so it is a shame that
-we don't have a epc_features->dynamic_inbound_mapping bit, so that this new
-feature could have depended on that bit.
-
-	if (epf_bar->use_submap &&
-	    !(epc_features->dynamic_inbound_mapping &&
-	      epc_features->subrange_mapping))
-		return -EINVAL;
-
-
-I think adding some documentation is a good step.
-
-Perhaps we should also introduce a epc_features->dynamic_inbound_mapping bit?
-Since you are making DWC glue drivers return a mutable EPC features, we could
-set this bit in the DWC driver after that commit. What do you think?
-
-I realize that we would not be able to add any actual verification for the
-epc_features->dynamic_inbound_mapping feature itself (in set_bar()), since
-there is no way for set_bar() to know if a BAR has already been configured
-(since struct pci_epc does not have an array of the currently configured BARs).
-
-But at least it would allow an EPF driver (e.g. vNTB) to know if it can call
-set_bar() twice or not, and can error out if the EPF driver is being used on
-a EPC that doesn't support epc_features->dynamic_inbound_mapping.
-
-
-Kind regards,
-Niklas
+Regards,
+Stefan
