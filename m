@@ -1,41 +1,41 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3844E2F0C7F
-	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 07:31:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3C72EDD57
+	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 07:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767943915; cv=none; b=EMCVeZLa/KQm34lwmOzfjxoX0KRWYql+0m4INH8AB93ub57ftJ2x5EXOI5eJ5Y4AJWf3vh6VlYz35Re+E40UAu93ZBwTK1Pfa7qwpPuMKDpB4DFaA0PpuXdGtTBcYukx9nbT/+ng21oqXZ+mQPvcYihJ/HNdWcQgJNDNtZwuzVQ=
+	t=1767943919; cv=none; b=ick1pLt0r5WnQctPWPtu0fj8yEQFQlSkIHXD8kluqT2mS0z6ZOJmuUTtAHV9KXe5yVnbr4zDeXR2LVZgy18UKgRbIlcxZM3Ezo/Bp8pq2/MVrsL2HlK1AcC5HH1pyqs0LYV++b8wDL1IR/QyLUB/aOR3NaxJcNTCLDW/GtWjweE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767943915; c=relaxed/simple;
-	bh=lCoE1iIwBZ3+cKNZRDBiptAWs5br4SmMSzQWSEEet2c=;
+	s=arc-20240116; t=1767943919; c=relaxed/simple;
+	bh=nT+4wy5IuQ1fTasRk376WO3GHIalG7SRQ/MlMuxaomM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CSC0AGwePVIgiIUEit2q4Zc/EORxMxHv4DcD7aHdGsPTxrXdatuugXAyJG5kyc9vrtP+AZn4xLOxo5rzeE6lhD2k/vIfd66CVWhK6JXnw0kfRYXoLH6gbjVniTCsFUzb6AVJqbGRYS9mXW0WyjncH+JOC5WCGnhO0xr6Npv9ABI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=d/GBUMzy; arc=none smtp.client-ip=185.171.202.116
+	 In-Reply-To:To:Cc; b=dmW4i0287H/AvSYypWXoR6qlSwZpa49SU+hd5w74CNj/VaHAhcajr2LzaLnd3DgGU2kqTsyxsj0MwokTFSHCaI6ltiImlT1ptX7OZYXYIHDEvbu+C98DXBg5Depv4il0ok0PRjTcBVLdmRHnObFFNmaEeMMiomNm9ICyrowBcd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Wj+4gEOs; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="d/GBUMzy"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Wj+4gEOs"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 8E725C1F6CE;
-	Fri,  9 Jan 2026 07:31:26 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2435E1A272E;
+	Fri,  9 Jan 2026 07:31:57 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CE3FF60734;
-	Fri,  9 Jan 2026 07:31:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 56B9E103C8820;
-	Fri,  9 Jan 2026 08:31:48 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id ED8A360734;
+	Fri,  9 Jan 2026 07:31:56 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E56EA103C87E8;
+	Fri,  9 Jan 2026 08:31:51 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767943911; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1767943915; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=gRp+L8UjoWDmuIpXqFfLmzodLWWfkNseQ+dp2qEU4qk=;
-	b=d/GBUMzyOhyO6LiVGwWMVSTwjXJiCKoYcpKd9hSZVUfHnaWKqsfm77Es/Y3M4CDLrDmE7T
-	q/Np1b0DiwrGutUJuMxA8VlxH1GAcBbWgs29aOxh2sDn/VAKdmRdsonPD8pAkXtjNncmKF
-	v3BlnsL78EGj5KNwKQUqRZTqdsK8euUgX2TPT/czOtUTnFD2q//gOWMBEjNkagV6DWwt6M
-	j/7bGcj+3gJAKAZ7ek+YNMxHT2YYYSr1+41gzbCQ+BYmbzBmRVgi4sTSJfR0KnobunBHnJ
-	YlGEYY3wHaMXPR7i1nzIQeRV7OouKo0K3C0EX6FNJu+ti976/h4aPcemX+uSUA==
+	bh=xbfkkRL/MGRcgqDvDpIMuvcsCJnlzFYd2Dd6uEyNIfE=;
+	b=Wj+4gEOsRDpvVFKtj85yDoEYt0GlQBO/GV44M9b6EjHHFe2U47E2xYOG2Y6Nho9UJHBkyH
+	t53Y7OJYp/uu1v8nuQgSwSj3lQyfJR+sLkr8OrkKWiBjsu6hKdgxUuHY6lMU+WLE28kugh
+	lt1ImhFCS3fknd8S8kJQaKuGp8IH4JW/q6fe5/8ym7KWXTVM1dTzy7zhKJwOjE4kyESM7K
+	aDhqUvDW1LZhHE0RlYJVtNpp7hakA7X1WHECacKR82S+pr6vtgJX3S0jMsceQobszIE2fK
+	Q6Nd/+RE0tlV/3M9KNk3GLR/lFER7XYiMZfiZgfsyf428iQvqOoIG4dacgQGmQ==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Fri, 09 Jan 2026 08:31:33 +0100
-Subject: [PATCH v2 02/12] drm: of: drm_of_panel_bridge_remove(): convert to
+Date: Fri, 09 Jan 2026 08:31:34 +0100
+Subject: [PATCH v2 03/12] drm/bridge: sii902x: convert to
  of_drm_find_and_get_bridge()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-2-8bad3ef90b9f@bootlin.com>
+Message-Id: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-3-8bad3ef90b9f@bootlin.com>
 References: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-0-8bad3ef90b9f@bootlin.com>
 In-Reply-To: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-0-8bad3ef90b9f@bootlin.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
@@ -72,30 +72,47 @@ X-Last-TLS-Session-Version: TLSv1.3
 
 of_drm_find_bridge() is deprecated. Move to its replacement
 of_drm_find_and_get_bridge() which gets a bridge reference, and ensure it
-is put when done.
+is put when done by using the drm_bridge::next_bridge pointer.
 
 Acked-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- include/drm/drm_of.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/sii902x.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/include/drm/drm_of.h b/include/drm/drm_of.h
-index f3e55ea2174c..f2f2bf82eff9 100644
---- a/include/drm/drm_of.h
-+++ b/include/drm/drm_of.h
-@@ -171,9 +171,10 @@ static inline int drm_of_panel_bridge_remove(const struct device_node *np,
- 	if (!remote)
- 		return -ENODEV;
+diff --git a/drivers/gpu/drm/bridge/sii902x.c b/drivers/gpu/drm/bridge/sii902x.c
+index 1f0aba28ad1e..12497f5ce4ff 100644
+--- a/drivers/gpu/drm/bridge/sii902x.c
++++ b/drivers/gpu/drm/bridge/sii902x.c
+@@ -175,7 +175,6 @@ struct sii902x {
+ 	struct i2c_client *i2c;
+ 	struct regmap *regmap;
+ 	struct drm_bridge bridge;
+-	struct drm_bridge *next_bridge;
+ 	struct drm_connector connector;
+ 	struct gpio_desc *reset_gpio;
+ 	struct i2c_mux_core *i2cmux;
+@@ -421,7 +420,7 @@ static int sii902x_bridge_attach(struct drm_bridge *bridge,
+ 	int ret;
  
--	bridge = of_drm_find_bridge(remote);
-+	bridge = of_drm_find_and_get_bridge(remote);
- 	drm_panel_bridge_remove(bridge);
+ 	if (flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR)
+-		return drm_bridge_attach(encoder, sii902x->next_bridge,
++		return drm_bridge_attach(encoder, sii902x->bridge.next_bridge,
+ 					 bridge, flags);
  
-+	drm_bridge_put(bridge);
- 	of_node_put(remote);
+ 	drm_connector_helper_add(&sii902x->connector,
+@@ -1204,9 +1203,9 @@ static int sii902x_probe(struct i2c_client *client)
+ 			return -ENODEV;
+ 		}
  
- 	return 0;
+-		sii902x->next_bridge = of_drm_find_bridge(remote);
++		sii902x->bridge.next_bridge = of_drm_find_and_get_bridge(remote);
+ 		of_node_put(remote);
+-		if (!sii902x->next_bridge)
++		if (!sii902x->bridge.next_bridge)
+ 			return dev_err_probe(dev, -EPROBE_DEFER,
+ 					     "Failed to find remote bridge\n");
+ 	}
 
 -- 
 2.52.0
