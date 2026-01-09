@@ -1,440 +1,168 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011066.outbound.protection.outlook.com [52.101.70.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06D92F3C0E
-	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 20:14:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767989658; cv=fail; b=e9modkCQzj8ZE03Id8X41WCCBBbMSikRDCau5EDfTwnBU7ZzXMuzp/Yz9i9ykcRa0hsmKZsaofWQOGHhOCXTprpcTpoCKyoLYD4/hQzwSbU83HHhXI6YtU+URY0BuF0e0aJ5qy3TAEk/7hgsE2CqYeO5qS6DV2gKusLlHQykq+s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767989658; c=relaxed/simple;
-	bh=YSZ0p06OajOfaZljT0C5X0e+QmJ7Iw3Sj84MQU3Ifg4=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=DaYeyUl+b8eHM7km9sOzXNEpG+VnDZ7yRmMkI/PrD/Z5eNYZZEF3dF4ZVrnFIcJtsb6NzhLtc/sPMknQK2r6pMla2sRbwRUUhCSAnIpEfBhSdyDQ4V2LxGKLhie6nWgxBREwxREBxIOndjU2RwEmKvltJLS8Ihi7De6qpE86EWg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=F538i7ce; arc=fail smtp.client-ip=52.101.70.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A7931AF30
+	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 21:05:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767992761; cv=none; b=V0c1npm2nE1jEhi3LWo0yRpNyd85lBq8RpECuw2a9PnopgTdt4JGk86udD0WX/Ob+n5Uwmq4BspuAtuXeWHe6sBrJJQZCfKS1ByQT5/GKq+Smimi+NBK2W+EwW+Exogllero7dpc060WVt9uo1HNjF3dsOkbFXhZRiICMNHBJcU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767992761; c=relaxed/simple;
+	bh=hFkoYS6mSblvGR8UZ5SC4jjV6cZBaoNUpvigDTKOQCw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GlJIzFzHuujVCKQkxmj+MHp1wMNYQUVjAdECvwLync3XRyG0ngDqPy40BFR59q2rDaoI3Dd7KkleTaC6Gh8aR3/FiQcaxBIrUB2VuJ9nONiAu+c4gumDrO2fmE55ojDeB3wlHHqP3JDFh9EP4avE7z9oDQsYVG2XqOfelz3vK38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=FXgYlF+v; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="F538i7ce"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hk7tu3Fqj4oaGOG04c32no9JxgMWUg/QXSSv4ls+yiej593qRe9UEmkGvUjdyMatdrJQ9CZep/uztc7zDfmodVYYdLsseEtIqm+WV+ayfLgIQjgPmoU5s57ak84HntfoStsKo4zssLym5FqJqQGwxJuMlDAo2VoKbe27odg+seDYLvy0SEJgnSON2JJW5xfOT3hGkfP8ufWurBn8gkXoOdJIZxrFejcstJ4ppX4enQQfniX1JAUU/nsdA51sSjy50RssbRST6sc6Pdj313bdTkOvsUruR34dFNtMgP8a2Aea/tEDAurbVqZcJRY0eddrApJwH4EqQnVJ8xj/qZcjzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tCsFumrSQGRZ+YEeVjasmy+WcbcHdpjtrrzEyMZ2b2Q=;
- b=BVAOXHHnz2MOVrGgcppbnrBvYvexx7nd6Z98hwY3XBNCaZX5PyVQb1ALd8Mqh5fXAncN8+XmaBza6E8HtmBJMdPo3vzol8Q4OFi3dQjtMCs8xAXbEr8VzvyPf/iSvlwDbhg9iG5yF8WI3QC7tQ6cillH6pEKwAURy0AvoAD6rW1BuYNI22bTc4pXYjHenAJQyMkcaBnFxE9D3+fndnzYd1v/Knvv5qlB6JJ01qV2tGAhmNdRKvWr2FGeudv1LVE76B4omz4gfNTgPicalKK2fJMYOI61roBar73baLJGXLBqWeAC3WcR0g0Mowzm7jm8IWQBJPKwedDjr8xSezj8eQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tCsFumrSQGRZ+YEeVjasmy+WcbcHdpjtrrzEyMZ2b2Q=;
- b=F538i7ceWZDVRykcWHhVr+F6bSCgfDlzBKtFdaDMFDhmmD4rIXk8p9ASvB0QSLRne1/xX6T1CLqTnmiqH6v52scq1x+e+yhObgaHP7CFZPISWdjIUlSE5hz43B7RQh90O26EWiJDb++A/gs3Mm8NJ9VWUErSJx7b4ZJtxXHITxCnIABGWHSSsiSZJYCOwjR8dvn6M3AXHpaq1gWqSdyY39sS3wSpTtdNuV96fqbc8KMBDawQ+eFOmxmXsnmlQQe31W8885Ov/B3HIBw8B+nGsxhLvzO/P1u7kB1UXA5Zvw2AEGVFGVnt/qfJCM6I4JAJ9jJFUjNnvg4ME8dhNLYBwg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8951.eurprd04.prod.outlook.com (2603:10a6:10:2e2::22)
- by PAXPR04MB9106.eurprd04.prod.outlook.com (2603:10a6:102:227::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.5; Fri, 9 Jan
- 2026 20:14:08 +0000
-Received: from DU2PR04MB8951.eurprd04.prod.outlook.com
- ([fe80::753c:468d:266:196]) by DU2PR04MB8951.eurprd04.prod.outlook.com
- ([fe80::753c:468d:266:196%4]) with mapi id 15.20.9478.004; Fri, 9 Jan 2026
- 20:14:08 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Fri, 09 Jan 2026 15:13:29 -0500
-Subject: [PATCH RFT 5/5] dmaengine: dw-edma: Add trace support
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260109-edma_dymatic-v1-5-9a98c9c98536@nxp.com>
-References: <20260109-edma_dymatic-v1-0-9a98c9c98536@nxp.com>
-In-Reply-To: <20260109-edma_dymatic-v1-0-9a98c9c98536@nxp.com>
-To: Manivannan Sadhasivam <mani@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
- Gustavo Pimentel <Gustavo.Pimentel@synopsys.com>, 
- Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
- Manivannan Sadhasivam <mani@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>, 
- Niklas Cassel <cassel@kernel.org>
-Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-hardening@vger.kernel.org, linux-pci@vger.kernel.org, 
- linux-nvme@lists.infradead.org, Damien Le Moal <dlemoal@kernel.org>, 
- imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1767989623; l=8053;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=YSZ0p06OajOfaZljT0C5X0e+QmJ7Iw3Sj84MQU3Ifg4=;
- b=AkURRH9GgUTTiSrhja/s8JZHlE5ONAgrqktt94Rn62cqd5YNkupfYji7r1tJ3sBwqH7ObGnUO
- mzkNc6y3RYjCa4SGYUaxRCA+vcdnHyWYJhb4sc0MnfDYPJFErfr5lOb
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: BYAPR05CA0073.namprd05.prod.outlook.com
- (2603:10b6:a03:e0::14) To DU2PR04MB8951.eurprd04.prod.outlook.com
- (2603:10a6:10:2e2::22)
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="FXgYlF+v"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-29f1bc40b35so53566615ad.2
+        for <imx@lists.linux.dev>; Fri, 09 Jan 2026 13:05:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1767992757; x=1768597557; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f+kn0nlzGkQ0BViOYfFFGO8lkUm/rT4hSAopw8yn9RE=;
+        b=FXgYlF+v1kwDnZQB8S2OQqA+/8oebL2CAS74UvjMvPmTcr/ZwXruuHwZXfmsqxVofR
+         fQLLPwE/4XFZNmwEQUpYK7Imq7nRW6qyJfk23GQYdywu7cHLbvJoS1P8vgD9POMe8l7l
+         W2UlqbMS9OnJSQQ4nyfQx3za0b5a6HsK99mAvKjAGI5ZJgAXpfFCGwbTwLz0NLnrXqhc
+         QYta7zEDkYVb1BEuHe3OhisIIU7d9Mpn1TLRqmJXjW3CEcAg6jbZ1p0VuomhBOW6yEyU
+         qLaTZ6f3vT9nizvh4l3JEuIrFSFlqVk3RGms0kfjwhRexqu4bwnPu/KdAFkn0dDGSFij
+         ZiOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767992757; x=1768597557;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=f+kn0nlzGkQ0BViOYfFFGO8lkUm/rT4hSAopw8yn9RE=;
+        b=L0MK+nn2HdfIYh9MHlRbz3JG7ah14hnhuzHZczqxyuDj4H846+YkswQEpKotvu4Tz1
+         OMRwU5rnJE4BglVcOfYBa9GCXPFkp/o4dm4Pb23bOrTBe4OuoUjW0WD4WMn8fZfxbejz
+         5MVK0nyCYDAJFflGsNxu7t/AiZmEmZsMK2FQLd2jxHY5uJzj7WyXup4d6sI1oVjfjhiw
+         c5q0q5Cf1DUFn5ZTA+n9kux/5LZ5V7AEdfd2vdvjAoZLBdSobMjg3i9bnp1kmMk7whwJ
+         b+HKEMRTdU+Id8XG4/8LP0lCOIoD8SZTeSPVh8LmTW5tdLaIKHOF4ZDjr+evujuOrZ+r
+         PPbA==
+X-Forwarded-Encrypted: i=1; AJvYcCX2JiqH7gfRDC3PgdKbbOiz/nL8Q2VCFltbmDCSRb1SndS4guLeCU9MinjSASPEmhtnCmE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzv33aZJofgek0Cq2iybE+5bYKM/dh8t1hNLwkhhNJtr1QFyctA
+	bLEK9D6rx5Nr1EzhvsI9LJB+XV4opSzER5gyU+2vjUblYdCgpt1amTlEaErP75PHGPz5lUhxItl
+	i/g+upCm2pdutFrSAcAOFUYzaeUQ055s=
+X-Gm-Gg: AY/fxX5L4OqQhJGpMqvYuzEbUh7hiurRes9IEJJNatHJTl5V9wxQbbf3zoBkS5FEbTn
+	VitvS/dDzh6Huvlvs4tNhBH62WCfuzDczStsfTPR+fY5H5x7yrOF/UastVR7b8RLIYkLda3J5eB
+	pp6T1Rxcphskc32EXJISZIOpnTBx4gM8dcLnU4/wWFyX6s4jiEgZywDri1MOYe8x/Ixlu4gqnZA
+	yugY9Oq7RIXtQYOMl29i1VoPypEqK2zAYMC/EvGV6/Iac5AIsF32kxbUJgymGCBWNJKSCTSX3f4
+	urKUm1MyHVafFPE86n/uVqikU4v1bqPy+6zHcK8=
+X-Google-Smtp-Source: AGHT+IGzEqZSKhDh+mfZnkqq/TwV9IRDJvdndDZXOgFLWIDXGIN31XCilSikaluLQUb1REl5xfFtQyCdyy3ZvPXVWkE=
+X-Received: by 2002:a17:903:1acc:b0:295:592f:94a3 with SMTP id
+ d9443c01a7336-2a3ee49b5camr115632895ad.48.1767992757127; Fri, 09 Jan 2026
+ 13:05:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8951:EE_|PAXPR04MB9106:EE_
-X-MS-Office365-Filtering-Correlation-Id: a56d3496-d3a0-4c49-3576-08de4fbba547
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|19092799006|7416014|376014|1800799024|366016|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cHJWeXJTWGlsc2diWjkrb0tCMEZ3QmJlNjkyVzRnRXR3UnR6YUFLMUc0NG1a?=
- =?utf-8?B?NHgra1dCZlpVQUFOaFc3U3h5U2o0QkFWVnYxWjlJdlRZYUxQbWJ2bm9iZjg5?=
- =?utf-8?B?MVVoQXF2MHRJa1JBdlN6STlZSlNFWnB2N21reWJiRlhoR3l1YWdZQTZ6b1BR?=
- =?utf-8?B?R05ZdUl1bGx1K2R4MXBuQjA3RFhTdkMrVVhURDRZMzd0Vmt4ZWdHVWoxVGFG?=
- =?utf-8?B?K21kWnZkLzNteWxmU1QvQ3RjdklSeklpdU5uNnN1YllxdlVXZVlWdkt0TURI?=
- =?utf-8?B?ekFYQ2tBWlRLY25KOFJ3ZWJ0NEdpUGZ4bXBIcVNvd05ncDZzODM4MEx0RFI1?=
- =?utf-8?B?dm1FL2doU2hINGxEaHhEbTZkbGZicnI3TUV1Tmp6cFIydzV6VDJEZnZHVGZu?=
- =?utf-8?B?SGoyVU9EUm01WkM4Y0QxZDNnbWw1aTVudUl6SCtic1NFYlV5KzdKTWRPVUIw?=
- =?utf-8?B?V09jNkxwWFY5N2FReXpIUXIreVp1RGlMa3Z4TnM0MVVuWVI4eHdSc3ljNkd5?=
- =?utf-8?B?aXBPWm1KVjRTVmpING56blNqWHZWdm5WcGUxYWNhQ1crQ2pVZmFSRUhNaWVl?=
- =?utf-8?B?bGNmeWw3dXppWGN1K1BaZ2dRT1RSV2paM3J3bCtHZUpLVkd1eUIzQk4zWW5q?=
- =?utf-8?B?RDlPdnpienFzNHRxSml0TDZ4RitiWUlhVnNKOCsxbU9oZzI5b0psQUxrN3FB?=
- =?utf-8?B?VXZsT2txeWw4Ung4RmlsQWt4a0s5U05oZXR6MzdHOUFqcTJSWXphSUVUdkkr?=
- =?utf-8?B?bFhJdzJJQlRvV3hGSGxDZUFuWW9Ba0JCNU45bkFCa3hoSlBEME95YUFyRmd4?=
- =?utf-8?B?Rnc5bHpyZHkyZDBJdyt6VDVOcGlxM012YjBBRUUzNm1tQ3FIVEhZL0J5T1lS?=
- =?utf-8?B?WjFvS0R3WHErZzZ4Znk1ZmZaWG1sTU5WWFlTQ3FpZUxza1hTN3RMeEF1ekNW?=
- =?utf-8?B?bG1IR0F6VkNaWDN5NFpOQkN0WlJUM1lDaEVOOUJNeHZIMGY2ZXdIZGUzcjFl?=
- =?utf-8?B?a2pDQndGV2crdTNOcENCRFpoTmNNSGkyWm9pOFpiRms3dXdkTTZ6c2NEMWtF?=
- =?utf-8?B?YTAwamU5emQxU2F4eVBiQmQyNWZkaUZhUGcvNWwwaU5xWis3Vy9VM2J5ZlA1?=
- =?utf-8?B?aHYwMUFWSXBDR1M2UDBORG9scldzbHdxRFVKTnR2ZGpxTGdBQXNpaHU1UGVK?=
- =?utf-8?B?Tm5JN29qNmhJVUxwbFhqVHp5MFFTZ2QzemlpNkVtdXAvTkwzbkpwcFBJRWpj?=
- =?utf-8?B?RWJ1ZW9LVHRiMHhJRHN5eDQ1bUp5S2RmbTlvY3VkQWd3KzRvcWlvSzJ0QUVq?=
- =?utf-8?B?eGNaRTMrR3M2OTNiQVlrWGhBaDBvVmhTcmEvbWFkWWlId1JUVkwyaUR4dldQ?=
- =?utf-8?B?RHBYbEVlTnZqV0hXY2JldUpMZ01LMU42UTVMV3A0RDNhbWk2Rnd6S3NiSWZK?=
- =?utf-8?B?WVQ5Z3BEUVdSVVNsUVBzdGllZ3JnK212TWdmWlNNVjFtZUxKOVYzdXpZZ3RZ?=
- =?utf-8?B?S1NZeXQ2aHU1cEhjUUcySGt0blBSeVlxRk8wYm8yell2R1dueE1CQnVWSG5X?=
- =?utf-8?B?QkJtT2FobFdWR3JiS3hWWThUTEtMZmZscDFIS0hJa0p1SFhZMTcxNzcyVE1J?=
- =?utf-8?B?L3hVQmRRazk4SVpka0Z1NldRanN3R2UxWFRzdFJDeXY3MGxIK0wrNEtTUTlG?=
- =?utf-8?B?S3k5OXFhdHVYbWhnK3Z4c1V3Y1ZqSFVSWkJNMmxyVHUvcTEwbXZsRHdiNlBH?=
- =?utf-8?B?blN0Z3F3cldraVNRNW10TWMrRUlPVFdQdFVmRituNjJwbzVhbXBzc2xBZS9C?=
- =?utf-8?B?RHBBTk9yVnMyMnhGQkRHK0RVdWJnWURmTmszQU9SYkRZbng3aVRUSkFudHJn?=
- =?utf-8?B?MUVHZkRHcW1vcmdWRWpQMUU0WE1haUs0dmZ6UDVCbXhZeTlON09EK1AweXlj?=
- =?utf-8?B?ZEQveWt0eU9rZkRuOHR6K1hpVDF3by9JUXVzSG1Fa2hJUkh5YzhyZURXaWRC?=
- =?utf-8?B?aTZQMnU3MlhTVGRIV1hsUjVGTjZDbzdQNXo2VGZ2bytaQit3MGEvTzJxWlVM?=
- =?utf-8?B?YkxjR3FPSEJnNmZLWEJBRC81SUYrUnJCWHQ4Zz09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8951.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(19092799006)(7416014)(376014)(1800799024)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RCtoSEdSd01SSlR0Z1RmL1YvVUFqU2F3QjcwV3ByVlVGeW9sZTBmRXhTK2lp?=
- =?utf-8?B?ck5SaGRmMVNhU0R0K1Y2UDFtVjFMOVprOFQ3VmxvWkptQUVZeTJQdHpwdU4w?=
- =?utf-8?B?b0FQZ2RTMFV0UW5sQVFaaTVON20reFpaTXp2MmZaOEE2R243bG5vNGhSd0lE?=
- =?utf-8?B?cjVyay9rY2tRMXNFalExalQxS0U3c29vbzFSZzBPenViYXZzbkpyTVV0WmU0?=
- =?utf-8?B?K2E3ZC9tdmtScXU5dTdlUUdhKyt2eDlyTndtaHJMM3FINFU1ZXhNSFBOTFh6?=
- =?utf-8?B?TkNRTlN3SEd0Q0NvcGhWMmFMQmFKV3F6MS91WFJCWXVyZHdsenEvZUFmYjlz?=
- =?utf-8?B?VUtqOUhieWp3TUgxRHJuOGJZTlpWbVhWK3IxbVVGZUFFemRIckFKVVhIVlVN?=
- =?utf-8?B?Q2ZiWDU1QWludlB4QkFKckYyK2hKRDNZaXlyckR6aFZLVWQydlhubUJtbHhK?=
- =?utf-8?B?NjV2alU0TzE1MGZFSWZPSW9xalBGT3o2cU10RXE4ejI0VHRTTE9qSG55MGEz?=
- =?utf-8?B?WXNlaThTZk5tS0Radld1b0hUd29EOEJjV2h6b2UwYmRlbXl6WVJQWi83NG5I?=
- =?utf-8?B?SUdVS1hsUmE0akEyNW1nK05oUWNNcDE1bjFTUStYTUZtcCthck03dGJEeUFy?=
- =?utf-8?B?bUk0di9uOGNpNDJBaXczMDNHcEM1Zks2TjBVVlkreHFFa2UyM3ZWTWVSZHhv?=
- =?utf-8?B?TE1teko0NHdhK3VEaVRCR1J1aVZuRFBqdWQ5aTkrQm95T2dsL2NvYmtpMGRB?=
- =?utf-8?B?R2ZTeTJXTkl6bEw2YkEwOEdkT0lHSmExRXF2OU4vdGFoMXdCblJxaW01ZnJ2?=
- =?utf-8?B?bXFzYTdFRGFPeGtnNzdiWUdpT0FFajZLWlVHeFgwWmFuTWZmTlV6NE9VbnlD?=
- =?utf-8?B?MGdGaC8wNGFaaVk2RTM3aEloanFha2ZBV2hhaW51V25yUXpVNnNscTZXTmlp?=
- =?utf-8?B?Q1BLbk1LNTdta0tZVG9laDJaL2duTGRidWNSRlIwSmNvb0N6MGJOWmN4SWFU?=
- =?utf-8?B?ZWYvdEx2Wjl4S1dhblhtbDhObFdpV09BTE1PRW1TSVdIeDV2TUc0K2p4aXUv?=
- =?utf-8?B?RWRvQWdQNjlNb3BXbjRVZy9KNE91S3QraXhaZkFuQVNSSUlOWER4NDRpMVBi?=
- =?utf-8?B?UHkvUS9DSXFERXNsSlY0NUxUekNTdUlaVDhxT2pHajFPTTVyL3pCVzl5eGFk?=
- =?utf-8?B?SXdtRXAwTEZLQ2Erb083RW9tNnE3WVpsQlFkTVVjVEZ4dXljQkY4dnZ3M0dn?=
- =?utf-8?B?REVRSElQYXlkck5DODlhZXJORHZVemtqU0JNL1FRQ3g1aUlmZUtBbCtnZk04?=
- =?utf-8?B?TXN1WGxrUnVJVWdIaG4xalhiYjJrSDdVRCtDT0RYTjdtbm5IRmpPQVdmR2sz?=
- =?utf-8?B?bitCTmFuL3prTGVlWk5CaVQzMjYvdWhETTFhbVNCbUpJUFcxT2lSNFg0VXdQ?=
- =?utf-8?B?dzF3YlAvWHVDb2c3aVZIenJTR1VidXBnS3pVN2F0RnQrS1hhd2NCczR3S1hm?=
- =?utf-8?B?UzVvNVlUREVVdXppZVpmaUxqWGFOcmhFQnk2SGZnOTU4c2lhMnl0dUJaR1V5?=
- =?utf-8?B?ekQwRm5ERDN4RjZISVJxeFFVMUJsYkxSNzFTaHk1ekNqcFdSNVFRT1FWUGk5?=
- =?utf-8?B?M0pIdUgxSW1ZREdSMHQvS0NuVjA3bi9OVHJEKzRnNzF4d0YrdkNHSVFISU5p?=
- =?utf-8?B?bmxCZmpiandOcFhGVW9CNGtvSHhBYzVyVHZEeE44emFRMEFiYUFMR3RhUE9r?=
- =?utf-8?B?YWQrTTZJeVJLSmpURFRSamNqeTl2aXJOazZ2dzZjbzF6RTdaRmpEditwUlFy?=
- =?utf-8?B?NlZNTXVUUm1oZjhtLzJieEEvaVJDV1VlaGU1V0xDT2pmd3RuRXE4RkpKODZK?=
- =?utf-8?B?M2N3cHd5NDBrQ0l5THF6bEtLd1BIa254OEswVFZ6RWlNVkMyWllvSkpweXc1?=
- =?utf-8?B?dlR1czBKaXNLaGx5Z0VMYVJjODY0UlRuV1VrazkxU01OMkZEdnRvSXZkbkZS?=
- =?utf-8?B?cmFaTUVibDlhMm11TjJQUUhldnZJV2VTZ3M0ckFzOStMQjFwaW1QQzY4MEVU?=
- =?utf-8?B?b05pVm5Fcnkvb2pqb05pay9PcFV5eitqVXZpRjFPbmVuNkdkY2FodmtMNktx?=
- =?utf-8?B?K0t6cHJCWHFrc09EVHhJT2wveWQ4bERWNnJNa0Vkd0I1RGJVVW42LzZIQkNV?=
- =?utf-8?B?UXNsVFNBZUtONkJSTDQ3cFZ3TjJnY241WnJCL0kxcTd5QWduQTdSb3lnTlR1?=
- =?utf-8?B?aTFPSnJPQnFxQXg5aUt4aFlpVzZBVkpDNU1ESmhIRnpIaXIxalNHY3RTc1h5?=
- =?utf-8?Q?KhgR04PimrMVXhCTqc?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a56d3496-d3a0-4c49-3576-08de4fbba547
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8951.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 20:14:08.4720
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vUa7ivKZn5zVqGCzL6YKdpEr2rwUDH5NGmrZHS4n/CpPSBGooEEbXNBFr6jxQ7f9intRX+TUNdhAGbnSciuwGQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9106
+References: <20260108203004.3538449-1-andriy.shevchenko@linux.intel.com> <20260108203004.3538449-3-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20260108203004.3538449-3-andriy.shevchenko@linux.intel.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date: Fri, 9 Jan 2026 22:05:46 +0100
+X-Gm-Features: AZwV_QgnJP_ucVFfV4UzfxU71gNnGoxRPDRc5QYDA0rdtBqGfiMffeomtdZlKmw
+Message-ID: <CAFBinCDzAOC9Sc_LZEbLhtajvPC4zjRiaoq6k9at2iJQnJxwjw@mail.gmail.com>
+Subject: Re: [PATCH v1 2/4] spi: Drop duplicate of_node assignment
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Mark Brown <broonie@kernel.org>, 
+	Varshini Rajendran <varshini.rajendran@microchip.com>, 
+	Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Sunny Luo <sunny.luo@amlogic.com>, 
+	Janne Grunau <j@jannau.net>, Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>, 
+	CL Wang <cl634@andestech.com>, Manikandan Muralidharan <manikandan.m@microchip.com>, 
+	David Lechner <dlechner@baylibre.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Jonas Gorski <jonas.gorski@gmail.com>, Hang Zhou <929513338@qq.com>, Jun Guo <jun.guo@cixtech.com>, 
+	Philipp Stanner <phasta@kernel.org>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Bartosz Golaszewski <brgl@kernel.org>, =?UTF-8?Q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
+	Shiji Yang <yangshiji66@outlook.com>, James Clark <james.clark@linaro.org>, 
+	Jonathan Marek <jonathan@marek.ca>, Carlos Song <carlos.song@nxp.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	Xianwei Zhao <xianwei.zhao@amlogic.com>, 
+	Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>, 
+	Sergio Perez Gonzalez <sperezglz@gmail.com>, Miquel Raynal <miquel.raynal@bootlin.com>, 
+	Qianfeng Rong <rongqianfeng@vivo.com>, Haibo Chen <haibo.chen@nxp.com>, 
+	Gabor Juhos <j4g8y7@gmail.com>, Md Sadre Alam <quic_mdalam@quicinc.com>, 
+	Rosen Penev <rosenp@gmail.com>, Luis de Arquer <luis.dearquer@inertim.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>, 
+	Tudor Ambarus <tudor.ambarus@linaro.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Longbin Li <looong.bin@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
+	=?UTF-8?Q?Cl=C3=A9ment_Le_Goffic?= <clement.legoffic@foss.st.com>, 
+	Alessandro Grassi <alessandro.grassi@mailbox.org>, Chen-Yu Tsai <wens@kernel.org>, 
+	Darshan R <rathod.darshan.0896@gmail.com>, Aaron Kling <webgeek1234@gmail.com>, 
+	Vishwaroop A <va@nvidia.com>, Haixu Cui <quic_haixcui@quicinc.com>, 
+	Darshan Rathod <darshanrathod475@gmail.com>, linux-spi@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-amlogic@lists.infradead.org, asahi@lists.linux.dev, 
+	linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org, 
+	linux-rpi-kernel@lists.infradead.org, linux-sound@vger.kernel.org, 
+	patches@opensource.cirrus.com, imx@lists.linux.dev, 
+	linux-arm-msm@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	linux-renesas-soc@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
+	linux-tegra@vger.kernel.org, virtualization@lists.linux.dev, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Ray Liu <ray.liu@airoha.com>, Sven Peter <sven@kernel.org>, 
+	Neal Gompa <neal@gompa.dev>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+	Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+	Ryan Wanner <ryan.wanner@microchip.com>, 
+	Michael Hennerich <michael.hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Kamal Dasu <kamal.dasu@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, William Zhang <william.zhang@broadcom.com>, 
+	Kursad Oney <kursad.oney@broadcom.com>, Anand Gore <anand.gore@broadcom.com>, 
+	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
+	David Rhodes <david.rhodes@cirrus.com>, Richard Fitzgerald <rf@opensource.cirrus.com>, 
+	Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>, Jean-Marie Verdun <verdun@hpe.com>, 
+	Nick Hawkins <nick.hawkins@hpe.com>, Yang Shen <shenyang39@huawei.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Lixu Zhang <lixu.zhang@intel.com>, Yinbo Zhu <zhuyinbo@loongson.cn>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, Conor Dooley <conor.dooley@microchip.com>, 
+	Daire McNamara <daire.mcnamara@microchip.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, 
+	Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, 
+	Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, Han Xu <han.xu@nxp.com>, 
+	Yogesh Gaur <yogeshgaur.83@gmail.com>, Linus Walleij <linusw@kernel.org>, 
+	Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
+	Robert Jarzmik <robert.jarzmik@free.fr>, Chris Packham <chris.packham@alliedtelesis.co.nz>, 
+	Heiko Stuebner <heiko@sntech.de>, Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+	Andi Shyti <andi.shyti@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Paul Walmsley <pjw@kernel.org>, Samuel Holland <samuel.holland@sifive.com>, 
+	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Chunyan Zhang <zhang.lyra@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Alain Volmat <alain.volmat@foss.st.com>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Li-hao Kuo <lhjeff911@gmail.com>, 
+	Masahisa Kojima <masahisa.kojima@linaro.org>, Jassi Brar <jaswinder.singh@linaro.org>, 
+	Laxman Dewangan <ldewangan@nvidia.com>, Thierry Reding <thierry.reding@gmail.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Sowjanya Komatineni <skomatineni@nvidia.com>, 
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	=?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+	Michal Simek <michal.simek@amd.com>, Max Filippov <jcmvbkbc@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add trace support to help debug eDMA problem.
-
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
----
- drivers/dma/dw-edma/Makefile        |   3 +
- drivers/dma/dw-edma/dw-edma-core.c  |  12 +++
- drivers/dma/dw-edma/dw-edma-core.h  |   2 +
- drivers/dma/dw-edma/dw-edma-trace.c |   4 +
- drivers/dma/dw-edma/dw-edma-trace.h | 150 ++++++++++++++++++++++++++++++++++++
- 5 files changed, 171 insertions(+)
-
-diff --git a/drivers/dma/dw-edma/Makefile b/drivers/dma/dw-edma/Makefile
-index 83ab58f87760831883bcfad788306e1722634a83..3e31e7d92f3ecb577136bbb0e430801b6f8ff2b3 100644
---- a/drivers/dma/dw-edma/Makefile
-+++ b/drivers/dma/dw-edma/Makefile
-@@ -1,9 +1,12 @@
- # SPDX-License-Identifier: GPL-2.0
- 
-+dw-edma-trace-$(CONFIG_TRACING)	:= dw-edma-trace.o
-+CFLAGS_dw-edma-trace.o		:= -I$(src)
- obj-$(CONFIG_DW_EDMA)		+= dw-edma.o
- dw-edma-$(CONFIG_DEBUG_FS)	:= dw-edma-v0-debugfs.o	\
- 				   dw-hdma-v0-debugfs.o
- dw-edma-objs			:= dw-edma-core.o	\
- 				   dw-edma-v0-core.o	\
-+				   ${dw-edma-trace-y} \
- 				   dw-hdma-v0-core.o $(dw-edma-y)
- obj-$(CONFIG_DW_EDMA_PCIE)	+= dw-edma-pcie.o
-diff --git a/drivers/dma/dw-edma/dw-edma-core.c b/drivers/dma/dw-edma/dw-edma-core.c
-index 5aacd04bd2da4a65aabec48f6631f6f8882eecfd..339e372eb8cf60c3baa0de3e3576865e27d91716 100644
---- a/drivers/dma/dw-edma/dw-edma-core.c
-+++ b/drivers/dma/dw-edma/dw-edma-core.c
-@@ -111,6 +111,12 @@ static void dw_edma_core_start(struct dw_edma_desc *desc, bool first)
- 				     chan->ll_head, chan->cb,
- 				     i == desc->nburst - 1 || free == 1);
- 
-+		trace_edma_fill_ll(chan, chan->ll_head,
-+				   desc->vd.tx.cookie,
-+				   desc->burst[i].sar,
-+				   desc->burst[i].dar, desc->burst[i].sz,
-+				   chan->cb);
-+
- 		chan->ll_head++;
- 
- 		if (chan->ll_head == chan->ll_max - 1) {
-@@ -141,6 +147,8 @@ static int dw_edma_start_transfer(struct dw_edma_chan *chan)
- 
- 		desc = vd2dw_edma_desc(vd);
- 
-+		trace_edma_start_desc(desc);
-+
- 		if (desc->start_burst != desc->nburst) {
- 			dw_edma_core_start(desc, !desc->start_burst);
- 			ret = 1;
-@@ -193,6 +201,7 @@ static void dw_edma_ll_clean_pending(struct dw_edma_chan *chan, int idx)
- 							    DMA_TRANS_NOERROR);
- 				list_del(&vd->node);
- 				vchan_cookie_complete(vd);
-+				trace_edma_complete_desc(desc);
- 				chan->ll_end = desc->ll_end;
- 			}
- 		} else {
-@@ -348,6 +357,8 @@ dw_edma_device_tx_status(struct dma_chan *dchan, dma_cookie_t cookie,
- 	}
- 	spin_unlock_irqrestore(&chan->vc.lock, flags);
- 
-+	trace_edma_tx_status_info(chan, idx);
-+
- 	/* check gain because dw_edma_ll_clean_pending() may update cookie */
- 	ret = dma_cookie_status(dchan, cookie, txstate);
- 	if (ret == DMA_COMPLETE)
-@@ -609,6 +620,7 @@ static void dw_edma_done_interrupt(struct dw_edma_chan *chan)
- 
- 	spin_lock_irqsave(&chan->vc.lock, flags);
- 	idx = dw_edma_core_ll_cur_idx(chan);
-+	trace_edma_irq(chan, idx);
- 	if (idx != chan->cur_idx) {
- 		chan->cur_idx = idx;
- 		dw_edma_ll_clean_pending(chan, idx);
-diff --git a/drivers/dma/dw-edma/dw-edma-core.h b/drivers/dma/dw-edma/dw-edma-core.h
-index 94d49f8359b99a9b0f8ca708edf81ca854dff4c2..ecc08dc0d34f4a86cc739dd12a1ce46ace58045c 100644
---- a/drivers/dma/dw-edma/dw-edma-core.h
-+++ b/drivers/dma/dw-edma/dw-edma-core.h
-@@ -140,6 +140,8 @@ struct dw_edma {
- 	const struct dw_edma_core_ops	*core;
- };
- 
-+#include "dw-edma-trace.h"
-+
- typedef void (*dw_edma_handler_t)(struct dw_edma_chan *);
- 
- struct dw_edma_core_ops {
-diff --git a/drivers/dma/dw-edma/dw-edma-trace.c b/drivers/dma/dw-edma/dw-edma-trace.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..2620ad61a9436a8d21b2408f3613c585fba0d9bb
---- /dev/null
-+++ b/drivers/dma/dw-edma/dw-edma-trace.c
-@@ -0,0 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#define CREATE_TRACE_POINTS
-+#include "dw-edma-core.h"
-diff --git a/drivers/dma/dw-edma/dw-edma-trace.h b/drivers/dma/dw-edma/dw-edma-trace.h
-new file mode 100644
-index 0000000000000000000000000000000000000000..3be77b42b04947407536523d1535d1eb7d9bdf71
---- /dev/null
-+++ b/drivers/dma/dw-edma/dw-edma-trace.h
-@@ -0,0 +1,150 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * Copyright 2023 NXP.
-+ */
-+
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM dw_edma
-+
-+#if !defined(__LINUX_DW_EDMA_TRACE) || defined(TRACE_HEADER_MULTI_READ)
-+#define __LINUX_DW_EDMA_TRACE
-+
-+#include <linux/types.h>
-+#include <linux/tracepoint.h>
-+
-+DECLARE_EVENT_CLASS(edma_desc_info,
-+	TP_PROTO(struct dw_edma_desc *desc),
-+	TP_ARGS(desc),
-+	TP_STRUCT__entry(
-+		__field(u32, nburst)
-+		__field(u32, start_burst)
-+		__field(u32, ll_end)
-+		__field(u32, cookie)
-+		__field(u32, id)
-+		__field(u8, dir)
-+	),
-+	TP_fast_assign(
-+		__entry->nburst = desc->nburst,
-+		__entry->start_burst = desc->start_burst,
-+		__entry->ll_end = desc->ll_end,
-+		__entry->id = desc->chan->id,
-+		__entry->dir = desc->chan->dir,
-+		__entry->cookie = desc->vd.tx.cookie;
-+	),
-+	TP_printk("chan %d%c desc %d, nburst %d, start_burst %d, ll_end %d\n",
-+		__entry->id,
-+		__entry->dir ? 'R': 'W',
-+		__entry->cookie,
-+		__entry->nburst,
-+		__entry->start_burst,
-+		__entry->ll_end)
-+);
-+
-+DEFINE_EVENT(edma_desc_info, edma_start_desc,
-+        TP_PROTO(struct dw_edma_desc *desc),
-+        TP_ARGS(desc)
-+);
-+
-+DEFINE_EVENT(edma_desc_info, edma_complete_desc,
-+        TP_PROTO(struct dw_edma_desc *desc),
-+        TP_ARGS(desc)
-+);
-+
-+DECLARE_EVENT_CLASS(edma_ll_info,
-+	TP_PROTO(struct dw_edma_chan *chan, int idx),
-+	TP_ARGS(chan, idx),
-+	TP_STRUCT__entry(
-+		__field(u32, head)
-+		__field(u32, end)
-+		__field(u32, total)
-+		__field(u32, index)
-+		__field(u32, completed_cookie)
-+		__field(u32, cookie)
-+		__field(u32, id)
-+		__field(u8, dir)
-+	),
-+	TP_fast_assign(
-+		__entry->head = chan->ll_head,
-+		__entry->end = chan->ll_end,
-+		__entry->total = chan->ll_max,
-+		__entry->index = idx,
-+		__entry->completed_cookie = chan->vc.chan.completed_cookie,
-+		__entry->cookie = chan->vc.chan.cookie,
-+		__entry->id = chan->id,
-+		__entry->dir = chan->dir;
-+	),
-+	TP_printk("chan %d%c head: %d end: %d: dma cur index: %d, complete cookie: %d, cookie: %d\n",
-+		__entry->id,
-+		__entry->dir ? 'R': 'W',
-+		__entry->head,
-+		__entry->end,
-+		__entry->index,
-+		__entry->completed_cookie,
-+		__entry->cookie)
-+);
-+
-+DEFINE_EVENT(edma_ll_info, edma_tx_status_info,
-+        TP_PROTO(struct dw_edma_chan *chan, int idx),
-+        TP_ARGS(chan, idx)
-+);
-+
-+DEFINE_EVENT(edma_ll_info, edma_irq,
-+        TP_PROTO(struct dw_edma_chan *chan, int idx),
-+        TP_ARGS(chan, idx)
-+);
-+
-+DEFINE_EVENT(edma_ll_info, emda_terminate_all,
-+	TP_PROTO(struct dw_edma_chan *chan, int idx),
-+	TP_ARGS(chan, idx)
-+);
-+
-+DECLARE_EVENT_CLASS(edma_log_ll,
-+	TP_PROTO(struct dw_edma_chan *chan, u32 idx, u32 cookie, u64 src, u64 dest, u32 sz, bool flag),
-+	TP_ARGS(chan, idx, cookie, src, dest, sz, flag),
-+	TP_STRUCT__entry(
-+		__field(u32, idx)
-+		__field(u64, src)
-+		__field(u64, dest)
-+		__field(u32, sz)
-+		__field(u32, id)
-+		__field(u32, cookie)
-+		__field(bool, flag)
-+		__field(u8, dir)
-+	),
-+	TP_fast_assign(
-+		__entry->idx = idx,
-+		__entry->src = src,
-+		__entry->dest = dest,
-+		__entry->sz = sz,
-+		__entry->id = chan->id,
-+		__entry->dir = chan->dir,
-+		__entry->cookie = cookie,
-+		__entry->flag = flag;
-+	),
-+	TP_printk("chan %d%c %d [%d] %c src: %08llx dest: %08llx sz: %04x\n",
-+		__entry->id,
-+		__entry->dir ? 'R' : 'W',
-+		__entry->cookie,
-+		__entry->idx,
-+		__entry->flag ? 'C' : 'c',
-+		__entry->src,
-+		__entry->dest,
-+		__entry->sz)
-+);
-+
-+DEFINE_EVENT(edma_log_ll, edma_fill_ll,
-+	TP_PROTO(struct dw_edma_chan *chan, u32 idx, u32 cookie, u64 src, u64 dest, u32 sz, bool flag),
-+	TP_ARGS(chan, idx, cookie, src, dest, sz, flag)
-+);
-+
-+#endif
-+
-+/* this part must be outside header guard */
-+
-+#undef TRACE_INCLUDE_PATH
-+#define TRACE_INCLUDE_PATH .
-+
-+#undef TRACE_INCLUDE_FILE
-+#define TRACE_INCLUDE_FILE dw-edma-trace
-+
-+#include <trace/define_trace.h>
-
--- 
-2.34.1
-
+On Thu, Jan 8, 2026 at 9:30=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> The SPI core provides the default of_node for the controller,
+> inherited from the actual (parent) device. No need to repeat it
+> in the driver.
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+[...]
+>  drivers/spi/spi-amlogic-spifc-a1.c   | 1 -
+>  drivers/spi/spi-amlogic-spisg.c      | 1 -
+[...]
+>  drivers/spi/spi-meson-spicc.c        | 1 -
+>  drivers/spi/spi-meson-spifc.c        | 1 -
+For the Amlogic and Amlogic Meson drivers:
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
