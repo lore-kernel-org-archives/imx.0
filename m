@@ -1,220 +1,333 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15C736923C
-	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 16:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3C335C18C;
+	Fri,  9 Jan 2026 17:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767977929; cv=none; b=CVcwfSLXYWwvKGq1yZMNiwq+cBP5EUB2txcxjadu0HQAw8xO/o+4TnLI+55v3iAuO8ZztBKmtiK6MULuqY0Ty28+ctOwIeV85xubNzChbt4HuLYaf0Vqlvp9hFVPONz0eaVMiS7D+JFTSnSUEdHzMsyh8ZcvooUbkKv2pwyw0Ow=
+	t=1767978878; cv=none; b=XNECFeOmgQKaBcWG14ogvHssMpZJRH5fqovt51yMdUaKwjFquedmf+pwSo8rGTwrFDjBOmlC+ti4xPCimBFdAHjPDI31l7jwN+VAnofsBwodrtISpm+GybRBzpsWux/APCVgH6//tAhSCIN5bMT8GYrzvIWZazA4jEuMkgVyhCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767977929; c=relaxed/simple;
-	bh=46+dN1Wr2iW0/BK6fG/zPk6hr7jUd2kTZ1jgEalx+Y8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SDHTkwt1kzXwSuJ0Je3m9c0GV5yYBIVsNspWvb/soNO9K5egD+eakfefSVrJyhIuxr9+2nISoJQjrdFZ923NeeDYUzazvYJdr+fGIVcO2mUidyDrLooD1ufZ3TmugXr6f9hnntVcWSRnLc64jhy6LznQD0G52dhd2KZB6Z9BCbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pSOEp4FN; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=DQNJTcY/; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1767978878; c=relaxed/simple;
+	bh=2Tm0fMd5t0M2k+iJezPcvnpMr6g9radqhrx1rJMUG5w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zzggr51Q68ZkJPrWJLuVoQ8FBtIRzHITOntsksRRbaviiEhmRskQzhmObjqG2j/kSAdNPujbGDGFw0ZRIyZpqp2WgnRV5zMqOQLykg1uRm5ueUGalCxWqYhu5PUeE2Mye60zpRCelaMWHMtyYi6odGVm4JlpjlitLXcpSqUklGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IW5eBFxM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pSOEp4FN";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="DQNJTcY/"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6099Xhc31048228
-	for <imx@lists.linux.dev>; Fri, 9 Jan 2026 16:58:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ms6tRibMZn/vZL9r+qf7/fS0pNW7QVbS6EPzdsel7IY=; b=pSOEp4FNvNGihwit
-	ifEoYbdVK9KNCWJHNFjGj4HSDMB0kqe14DD7PZBtal9hywH9N/t9TeCZzLggsMPE
-	8nAih9mBcRGHGGZpImSouDQOK8+CAt3Ia2cjY9FkKaSRypGnhO48lWNFFoP9yBnx
-	G5JNfUvzgcwtdh9VewMhUVNWZHg9D78gO8rGwImgVcgieqFotWx7aOiCRYdLOb04
-	mZm1Ni/HADOBx2Zjgo6DHWCiiOZBXljnGJlvHa6P+M95dTsjLA+HNy+KcSi1qDOs
-	Uwj71sgo65zs/u9S82UoD5o2O6nbC6pis1eh8wzAm5l0Zym1459LRbLRlymzIEso
-	BX24FA==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bjy5b97c7-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Fri, 09 Jan 2026 16:58:39 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8c38129a433so1096418885a.2
-        for <imx@lists.linux.dev>; Fri, 09 Jan 2026 08:58:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1767977919; x=1768582719; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ms6tRibMZn/vZL9r+qf7/fS0pNW7QVbS6EPzdsel7IY=;
-        b=DQNJTcY/36Nyj/puuoxp1aDMGKQpMDz5qVAdmUMI9UUilun/gz9/VKg88J9hvrJtbe
-         kyyykTSJfNGUT1rLhubXQZy/KY/Rj+I9kCMlYMeam6eSQjL3Ux5Wlg3JPjCMk31AaIJT
-         njdpRYiIm1UG+wp2DhgoV/wtSgbNi9nbIXjS4IPj3efh4176zhhrXwj+UA2ZAdbTi4s0
-         5CzByojKCJIoP6j7XBqYGTzVEG3KTJ1WMOt4w1Zlhl+jsFtoVLFwqIRx+fewvwXMFXas
-         z5jms8XKpAUEbIgQkyy+lLKcigqV3LDLIq4mZPp8Ygr6kLKlvpZHzVtHSjtKL08+GIJa
-         hgiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767977919; x=1768582719;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ms6tRibMZn/vZL9r+qf7/fS0pNW7QVbS6EPzdsel7IY=;
-        b=W4xxclAA7WmEuPfPphlVAbIWihd+meGzYtTZ0S7GeVNzNtBSBLxQR1ZdRoIAUS2SqU
-         6O1u+QEUHdO0qNENYLwEBI+1p1oEutRSfDGvvDAdpl66cGGy8SvUVMaKZ7/DGOjidLFR
-         GDlkQJxWQHt2sg30SKE5ujAXIM+sZ8wblg0qTzyCmVhsYFCiDmJeAqXaFRXGcO3F0ULp
-         EtDS+a5fXKF7DOS6jsonckYMgA9aoQNUs30bC71x0XHJVfSw1E3WWNFfMnDbfHg1cShS
-         Z2opHrxirHh3jIwbynb3xIWyG8t8KQT3TZ/ChXv4wFkeUCIz9wDI5EWzCvvRsUt0Z7hT
-         dJ2g==
-X-Forwarded-Encrypted: i=1; AJvYcCX1f1ypS1SEH0WMuXlWNQ2+deDVScsxaV2AP6zX4Lmlu9/A47K8U1kaMHOcSf8xXkHtPqM=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz8p+W9MsCt0KhI82GZQTQqNeqhfddvOcjQ74wBu9WtXQaMqrkw
-	q6DquH37x8pc41aT1zMoJ+RPeALoGxQpY6i4KezlfJO2aSqGbeER633XDZTQ30TYh7kd0Pp8/1x
-	spiSUT27daNmh/1IcAcGGO04OTQVM7FR6SoFeaF6Vkt34H828fxoq03I=
-X-Gm-Gg: AY/fxX4FYxCqOcjYRnv5wY/COLjnxmwjC3Q+hYRiezGz7P1bHB/Rk03kgcmsF98pUQs
-	atN39ycaspA9SB5fA4ilutaIv9pOfXtlM2N2LEf2cyLYVgO+IMj+crQFZynqX2nhi3ACUpDZaTK
-	zNNMux4XEzurZrswV7ZwQemD1moJN03Fj7H0gdfMkIXfgD32njNBoYwbj3a4sLffAUr3m/iiYpZ
-	+E7rU9jw0PiSnt9z8kBdIpauPfi+fsFCZygneW2ph5QmOQFHpqm8wnLxyYvUIYk9QIxWc8NMIKR
-	deE4tqM2zInXSwZawg+EZV41MarbpNnewM/4HaCmleAF9zwAWd5nMTFOXde7RyBnTAhUykkVG1Z
-	Dwc62rnbeztVUxj6Ej6Z7RX1GC2Gd92fsHw==
-X-Received: by 2002:a05:620a:410e:b0:8b2:e9d2:9c69 with SMTP id af79cd13be357-8c389392416mr1382476285a.22.1767977919148;
-        Fri, 09 Jan 2026 08:58:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEwg753kf5uZPuL/ts3/1VM0NbhxSNDo5KXXx8Nlx3hwU9BTSSZmTTpcwzS9dlUqhVQ3PB/Ug==
-X-Received: by 2002:a05:620a:410e:b0:8b2:e9d2:9c69 with SMTP id af79cd13be357-8c389392416mr1382467785a.22.1767977918488;
-        Fri, 09 Jan 2026 08:58:38 -0800 (PST)
-Received: from [127.0.1.1] ([178.197.218.229])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd5ee243sm23231784f8f.31.2026.01.09.08.58.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 08:58:37 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Date: Fri, 09 Jan 2026 17:57:56 +0100
-Subject: [PATCH v3 12/12] media: samsung: exynos4-is: Simplify with scoped
- for each OF child loop
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IW5eBFxM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27DE6C4CEF1;
+	Fri,  9 Jan 2026 17:14:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767978878;
+	bh=2Tm0fMd5t0M2k+iJezPcvnpMr6g9radqhrx1rJMUG5w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IW5eBFxM2WzqXDQHhWUVigQfGskKUAU/DRDQiFbFbX/N7F6u9DuhcQWOnPVJVXfLC
+	 0mZkXZ6CysStt8rTACr0vu64CMePHRQxC4Qc0FWay8XVwjw3n4p41tBVmnJ7KjjHkU
+	 hCiU2O2tg/vsI0/KOaGvNi0spLPf4SEyhZpEwEIk1+Htw2ikZ9XDCFFTfNsdc0LsnG
+	 +bDZ5aMVGmb6iSpSSbpeOWzSP1IYlF25iobf+WO8WY2EPoUfr7BG4qXJrLKaAZAXAZ
+	 o3CIZKbWKxSSb+WSO9xS4R9ydcOvEZry8JSn6xlBdwu2D3ZJ00WTjMNYhsCvkJ970P
+	 tRzVxOa34NXrg==
+Date: Fri, 9 Jan 2026 17:14:31 +0000
+From: Lee Jones <lee@kernel.org>
+To: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	=?iso-8859-1?Q?J=E9r=E9mie?= Dautheribes <jeremie.dautheribes@bootlin.com>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-watchdog@vger.kernel.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 5/8] mfd: aaeon: Add SRG-IMX8PL MCU driver
+Message-ID: <20260109171431.GE1808297@google.com>
+References: <20251212-dev-b4-aaeon-mcu-driver-v1-0-6bd65bc8ef12@bootlin.com>
+ <20251212-dev-b4-aaeon-mcu-driver-v1-5-6bd65bc8ef12@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260109-of-for-each-compatible-scoped-v3-12-c22fa2c0749a@oss.qualcomm.com>
-References: <20260109-of-for-each-compatible-scoped-v3-0-c22fa2c0749a@oss.qualcomm.com>
-In-Reply-To: <20260109-of-for-each-compatible-scoped-v3-0-c22fa2c0749a@oss.qualcomm.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>,
-        Saravana Kannan <saravanak@google.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-        Bill Wendling <morbo@google.com>,
-        Justin Stitt <justinstitt@google.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Nipun Gupta <nipun.gupta@amd.com>,
-        Nikhil Agarwal <nikhil.agarwal@amd.com>,
-        Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, Vinod Koul <vkoul@kernel.org>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        llvm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-clk@vger.kernel.org, imx@lists.linux.dev,
-        dmaengine@vger.kernel.org, linux-media@vger.kernel.org,
-        linux-pm@vger.kernel.org,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1568;
- i=krzysztof.kozlowski@oss.qualcomm.com; h=from:subject:message-id;
- bh=46+dN1Wr2iW0/BK6fG/zPk6hr7jUd2kTZ1jgEalx+Y8=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBpYTOaXjxvTt/ySukjArTvuXv0saPpVyuR5oc3G
- Bq6+PS/Rd6JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaWEzmgAKCRDBN2bmhouD
- 11AHD/43uD+XZcx4LF4NkQnOa9Yvx0EAGD+NHIwK5BMG2xh/33lfGTAvbYPAoBQJNjzwRJ6JVbq
- FRbVqXrKSCuIx23a7i5XeOKdUk0ztOsgM/Tw0rHVz7Tzb2dBHVMvhGD8fa8pulvSCwlEcBmcmOQ
- 6yJ6YEBd6dCgCJaSSBVJyYxgKyQh9W0ti47PLPQuXlvxj+L1bcd5V8jWs5oIxrDZ5oDHzKtkyzM
- oSmvu5pl08Lzx8YtTlr/mFnscu9VJ7H1RrRVvS0vnXXCBKb9aGjOsse0VhzamJSO4iVjCOEJgB7
- pUCe/pX1YrxgSpphl6c79yovha3c+H0ywy63/9Baptla7q2QlSQAmh9Ki/hcnWcrsmoiRLknL2j
- UbzhioQQFfU9661sn9HXpMJiqRcpPqWKjWZ8hhnJ+otzp24g1576RS4q6mfFZH85nXd8KV5fNmj
- okEbo+acC1XOnnJ9mm5dIa2DxxIyPdRwno6ntvIPDeZXVUlwgfQWbQnPxF5MGaqkI58Y/52z4La
- dpT4NWWyI/PDm8q8a0iyYkMTG/awTyRAsMpMKcfQqb/qhi2J9GfDi1dgeAAT/lS3ZugrLhDtHhL
- YdmfOJh4JzvbmTNjwM03w8eHgw2xZHAXdy9QTgaZlaMW9No0RFEU0jQiSaPB2S5FCrctBttK2oa
- mjpJLQG4T1vyVew==
-X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
-X-Proofpoint-ORIG-GUID: FF3PAFljgdnOw74u_vyjAEBJvDodg9cB
-X-Authority-Analysis: v=2.4 cv=JP42csKb c=1 sm=1 tr=0 ts=696133bf cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=Eb9f15NH/cHKzfGOmZSO4Q==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=i0EeH86SAAAA:8
- a=2mm1MoeH4kfNTzOWiPUA:9 a=QEXdDO2ut3YA:10 a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA5MDEyOCBTYWx0ZWRfX19vq63iGXU/z
- ZU7l8i16l2CD4/n4Y8dBri1LPxcLgmRpudM/htLaosnTe2bY5rKBcMawu7AIXFuWUS+RuBYCluM
- hs3v962Jj9Mu8Ku3BKUkCV5TsbmL4v8fsppMwoXTFRvJYWKOIRE0lDMOD7XjR/o+Nrji1i9XL0u
- 8SgyHqDfkkXOv1+4CkClssbcLnudT2+NwOFbXZ4QTQuLWElM8YV3GS9aN/1H/aYoju4iOFNatvE
- +75Tfhl1SabCpB4gShZa5NKTkVndCHrJY+aFPTcVzzf1N32+VuZNGZXr+JmmmP7edB33UrHx3qj
- xGTCKLwptGT8bb1XQZHFCOIiB8aysMCyf1H7X4Pf50aVzQeLLxkHTEsfo21n6oeA+c29xbkubcU
- jafj6ij28w/S6RKdhsnkKAgtkKr7/QtMU8F1dtv2UISScI+6BJWkhC/n/tgVLYCEml2cLDZRqkt
- tZx5IpnsVVHIeR8vJLA==
-X-Proofpoint-GUID: FF3PAFljgdnOw74u_vyjAEBJvDodg9cB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-09_05,2026-01-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 adultscore=0 suspectscore=0 spamscore=0 priorityscore=1501
- clxscore=1015 malwarescore=0 bulkscore=0 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601090128
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251212-dev-b4-aaeon-mcu-driver-v1-5-6bd65bc8ef12@bootlin.com>
 
-Use scoped for_each_compatible_node_scoped() loop when iterating over
-device nodes to make code a bit simpler.
+On Fri, 12 Dec 2025, Thomas Perrot (Schneider Electric) wrote:
 
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
----
+> Add Multi-Function Device (MFD) driver for the Aaeon SRG-IMX8PL
 
-Depends on the first patch and on:
-https://lore.kernel.org/all/20260102124955.64904-2-krzysztof.kozlowski@oss.qualcomm.com/
----
- drivers/media/platform/samsung/exynos4-is/fimc-is.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+Drop all mentions of MFD.  It's not a real thing - we made it up.
 
-diff --git a/drivers/media/platform/samsung/exynos4-is/fimc-is.c b/drivers/media/platform/samsung/exynos4-is/fimc-is.c
-index 14d84cc96831..b7d9bfedd590 100644
---- a/drivers/media/platform/samsung/exynos4-is/fimc-is.c
-+++ b/drivers/media/platform/samsung/exynos4-is/fimc-is.c
-@@ -200,21 +200,19 @@ static int fimc_is_parse_sensor_config(struct fimc_is *is, unsigned int index,
- 
- static int fimc_is_register_subdevs(struct fimc_is *is)
- {
--	struct device_node *i2c_bus;
- 	int ret, index = 0;
- 
- 	ret = fimc_isp_subdev_create(&is->isp);
- 	if (ret < 0)
- 		return ret;
- 
--	for_each_compatible_node(i2c_bus, NULL, "samsung,exynos4212-i2c-isp") {
-+	for_each_compatible_node_scoped(i2c_bus, NULL, "samsung,exynos4212-i2c-isp") {
- 		for_each_available_child_of_node_scoped(i2c_bus, child) {
- 			ret = fimc_is_parse_sensor_config(is, index, child);
- 
--			if (ret < 0 || index >= FIMC_IS_SENSORS_NUM) {
--				of_node_put(i2c_bus);
-+			if (ret < 0 || index >= FIMC_IS_SENSORS_NUM)
- 				return ret;
--			}
-+
- 			index++;
- 		}
- 	}
+> embedded controller. This driver provides the core I2C communication
+> interface and registers child devices (GPIO and watchdog controllers).
+> 
+> The MCU firmware version is queried during probe and logged for
+> diagnostic purposes. All I2C transactions are serialized using a mutex
+> to ensure proper communication with the microcontroller.
+> 
+> Co-developed-by: Jérémie Dautheribes (Schneider Electric) <jeremie.dautheribes@bootlin.com>
+> Signed-off-by: Jérémie Dautheribes (Schneider Electric) <jeremie.dautheribes@bootlin.com>
+> Signed-off-by: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.com>
+> ---
+>  drivers/mfd/Kconfig           |  10 ++++
+>  drivers/mfd/aaeon-mcu.c       | 133 ++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/mfd/aaeon-mcu.h |  30 ++++++++++
+>  3 files changed, 173 insertions(+)
+> 
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> index aace5766b38aa5e46e32a8a7b42eea238159fbcf..9195115c7bcd619439cb9ff71d70e46629291867 100644
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -1574,6 +1574,16 @@ config AB8500_CORE
+>  	  the irq_chip parts for handling the Mixed Signal chip events.
+>  	  This chip embeds various other multimedia functionalities as well.
+>  
+> +config MFD_AAEON_MCU
+> +	tristate "Aaeon SRG-IMX8PL MCU Driver"
+> +	depends on I2C
+> +	select MFD_CORE
+> +	help
+> +	  Select this option to enable support for the Aaeon SRG-IMX8PL
+> +	  onboard microcontroller (MCU). This driver provides the core
+> +	  functionality to communicate with the MCU over I2C. The MCU
+> +	  provides various sub-devices including GPIO and watchdog controllers.
+
+Is that an exhaustive list of sub-devices?
+
+>  config MFD_DB8500_PRCMU
+>  	bool "ST-Ericsson DB8500 Power Reset Control Management Unit"
+>  	depends on UX500_SOC_DB8500
+> diff --git a/drivers/mfd/aaeon-mcu.c b/drivers/mfd/aaeon-mcu.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..472d44d5e8627f46806015599542753a5bda4526
+> --- /dev/null
+> +++ b/drivers/mfd/aaeon-mcu.c
+> @@ -0,0 +1,133 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Aaeon MCU MFD driver
+
+Not MFD - describe the actual device.
+
+> + *
+> + * Copyright (C) 2025 Bootlin
+
+Has it been agreed that you would hold the copyright to this?
+
+> + * Author: Jérémie Dautheribes <jeremie.dautheribes@bootlin.com>
+> + * Author: Thomas Perrot <thomas.perrot@bootlin.com>
+> + */
+> +
+> +#include <linux/err.h>
+> +#include <linux/i2c.h>
+> +#include <linux/mfd/core.h>
+> +#include <linux/mfd/aaeon-mcu.h>
+
+Alphabetical.
+
+> +#define AAEON_MCU_GET_FW_VERSION 0x76
+
+Is that what the register is called in the datasheet?
+
+The GET part is odd.
+
+> +static struct mfd_cell aaeon_mcu_devs[] = {
+> +	{
+> +		.name = "aaeon-mcu-wdt",
+> +		.of_compatible = "aaeon,srg-imx8pl-wdt",
+> +	},
+> +	{
+> +		.name = "aaeon-mcu-gpio",
+> +		.of_compatible = "aaeon,srg-imx8pl-gpio",
+> +	},
+> +};
+> +
+> +static int aaeon_mcu_print_fw_version(struct i2c_client *client)
+> +{
+> +	u8 cmd[3], version[2];
+> +	int ret;
+> +
+> +	/* Major version number */
+> +	cmd[0] = AAEON_MCU_GET_FW_VERSION;
+> +	cmd[1] = 0x00;
+> +	cmd[2] = 0x00;
+> +
+> +	ret = aaeon_mcu_i2c_xfer(client, cmd, 3, &version[0], 1);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* Minor version number */
+> +	cmd[0] = AAEON_MCU_GET_FW_VERSION;
+> +	cmd[1] = 0x01;
+> +	/* cmd[2] = 0x00; */
+> +
+> +	ret = aaeon_mcu_i2c_xfer(client, cmd, 3, &version[1], 1);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	dev_info(&client->dev, "firmware version: v%d.%d\n",
+> +		 version[0], version[1]);
+
+What do you expect a user to do with this information?
+
+Let's cut the debug cruft - you can add it again locally if you need to debug.
+
+> +
+> +	return 0;
+> +}
+
+Besides providing a questionable print, you don't seem to be doing
+anything with this information - is it needed at all?
+
+> +static int aaeon_mcu_probe(struct i2c_client *client)
+> +{
+> +	struct aaeon_mcu_dev *mcu;
+> +	int ret;
+> +
+> +	mcu = devm_kzalloc(&client->dev, sizeof(*mcu), GFP_KERNEL);
+> +	if (!mcu)
+> +		return -ENOMEM;
+> +
+> +	i2c_set_clientdata(client, mcu);
+
+> +	mcu->dev = &client->dev;
+> +	mcu->i2c_client = client;
+
+How do you expect to be able to 'get' this data back if you do not have
+the 'dev' or the 'client'?
+
+> +	mutex_init(&mcu->i2c_lock);
+> +
+> +	ret = aaeon_mcu_print_fw_version(client);
+> +	if (ret) {
+> +		dev_err(&client->dev, "unable to read firmware version\n");
+> +		return ret;
+> +	}
+> +
+> +	return devm_mfd_add_devices(mcu->dev, PLATFORM_DEVID_NONE, aaeon_mcu_devs,
+> +				    ARRAY_SIZE(aaeon_mcu_devs), NULL, 0, NULL);
+> +}
+> +
+> +int aaeon_mcu_i2c_xfer(struct i2c_client *client,
+> +		       const u8 *cmd, int cmd_len,
+> +		       u8 *rsp, int rsp_len)
+> +{
+> +	struct aaeon_mcu_dev *mcu = i2c_get_clientdata(client);
+> +	int ret;
+> +
+> +	mutex_lock(&mcu->i2c_lock);
+> +
+> +	ret = i2c_master_send(client, cmd, cmd_len);
+> +	if (ret < 0)
+> +		goto unlock;
+> +
+> +	ret = i2c_master_recv(client, rsp, rsp_len);
+> +	if (ret < 0)
+> +		goto unlock;
+
+Isn't this all very generic?
+
+I wonder how many similar functions there are in the kernel.
+
+Worth making this global?
+
+> +	if (ret != rsp_len) {
+> +		dev_err(&client->dev,
+> +			"i2c recv count error (expected: %d, actual: %d)\n",
+> +			rsp_len, ret);
+> +		ret = -EIO;
+> +		goto unlock;
+> +	}
+> +
+> +	ret = 0;
+> +
+> +unlock:
+> +	mutex_unlock(&mcu->i2c_lock);
+> +	return ret;
+> +}
+> +EXPORT_SYMBOL_GPL(aaeon_mcu_i2c_xfer);
+
+This should be much further up.  At least above probe - perhaps higher.
+
+> +static const struct of_device_id aaeon_mcu_of_match[] = {
+> +	{ .compatible = "aaeon,srg-imx8pl-mcu" },
+> +	{},
+> +};
+> +
+
+Remove this line.
+
+> +MODULE_DEVICE_TABLE(of, aaeon_mcu_of_match);
+> +
+> +static struct i2c_driver aaeon_mcu_driver = {
+> +	.driver = {
+> +		.name = "aaeon_mcu",
+> +		.of_match_table = aaeon_mcu_of_match,
+> +	},
+> +	.probe = aaeon_mcu_probe,
+> +};
+> +
+
+And this one.
+
+> +module_i2c_driver(aaeon_mcu_driver);
+> +
+> +MODULE_DESCRIPTION("Aaeon MCU MFD Driver");
+
+Not MFD.
+
+> +MODULE_AUTHOR("Jérémie Dautheribes");
+
+Email?
+
+> +MODULE_LICENSE("GPL");
+> diff --git a/include/linux/mfd/aaeon-mcu.h b/include/linux/mfd/aaeon-mcu.h
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..89632cb46bc6c9518755dc43afb87faa94acb6f5
+> --- /dev/null
+> +++ b/include/linux/mfd/aaeon-mcu.h
+> @@ -0,0 +1,30 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * Aaeon MCU driver definitions
+> + *
+> + * Copyright (C) 2025 Bootlin
+> + * Author: Jérémie Dautheribes <jeremie.dautheribes@bootlin.com>
+> + * Author: Thomas Perrot <thomas.perrot@bootlin.com>
+> + */
+> +
+> +#ifndef __LINUX_MFD_AAEON_MCU_H
+> +#define __LINUX_MFD_AAEON_MCU_H
+> +
+> +/**
+> + * struct aaeon_mcu_dev - Internal representation of the Aaeon MCU
+> + * @dev: Pointer to kernel device structure
+> + * @i2c_client: Pointer to the Aaeon MCU I2C client
+> + * @i2c_lock: Mutex to serialize I2C bus access
+> + */
+> +
+> +struct aaeon_mcu_dev {
+> +	struct device *dev;
+> +	struct i2c_client *i2c_client;
+> +	struct mutex i2c_lock;
+> +};
+> +
+> +int aaeon_mcu_i2c_xfer(struct i2c_client *client,
+> +		       const u8 *cmd, int cmd_len,
+> +		       u8 *rsp, int rsp_len);
+> +
+> +#endif /*  __LINUX_MFD_AAEON_MCU_H */
+> 
+> -- 
+> 2.52.0
+> 
 
 -- 
-2.51.0
-
+Lee Jones [李琼斯]
