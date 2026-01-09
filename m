@@ -1,158 +1,274 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010039.outbound.protection.outlook.com [52.101.69.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D7A3590B2
-	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 09:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767951526; cv=none; b=RHvLB75yw3YgRJ12o0t9QsbZJfw6RQFWBalVkzt2iOwxLAyQ7R1j02wGO0PyUS5kOowV5QMCPTONKCQv6MxvnNZ+nspbg/3m1gdxUWyhRF9bXtJ2TTi6IyBfw1BW32kW2ljfIK13/hpPIIBT3q/v7lB2Lh9hysq3xc/BqmCU0Hg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767951526; c=relaxed/simple;
-	bh=T4kWA/shHAgVSBpr8ogg2jejAMNpENBZ87rDBgVAvwk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MbwrfX3pDxgaD0rCN8Ov+aj64jdcldLNF19z70GfXd1dTQN8ivcY2BFlp+ZDVMkawGVi1e48bj2bpHbs5MCHCv6mo7QmDincDbTiHBUAnbAgdIgL4oh8eFfywl+mb9uTqGnd7ntz4DOR3KcPvihdN0eR9o/mcwwYkwnDTla+gtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wMaJ5JcS; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD0A2FC86C
+	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 09:52:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767952363; cv=fail; b=FE1Gx4w4Pt3QCxb7esSSqElF+WW5Yt41dfrbCAB3ahvWgrSleKI5xl6sW9poDqP3kDQdhBPp4uWIz5Jk/5DSDpnL+6kmY361N/PnJe3x2VRmq5oFM6vpJnIoflRE7G1pRPXpnkyhBN3TnGaQg1C0TUwzkqXNGJxZza4D5tRh+LM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767952363; c=relaxed/simple;
+	bh=wQafTOqAA8+y7SNSIyeTSPS308135nfFtQfeBpueGbU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Ef/kX4YPnDrKe1Ips9fRTI+sP6i+7vDcBKmQorCxlKq2GmfaIB09qQWTmi4XMlZHtFVBTtsF9m8/O8SjfvIYQKfzG7Ne7mjg7ol/NFlmPzRKQ7kgDbCSXDXkRQnCmUU0cUY63rsU86XO7+bogBGfDMbMUrlbmYbpU1NXJ2w5mXo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=niTrJOXr; arc=fail smtp.client-ip=52.101.69.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wMaJ5JcS"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id C4823C1F6D3;
-	Fri,  9 Jan 2026 09:38:15 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 065EF60734;
-	Fri,  9 Jan 2026 09:38:42 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E3529103C87CC;
-	Fri,  9 Jan 2026 10:38:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767951521; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=JRAJH9fBOd961NcgKi+jmYxD8E+1gYZ7UQ1tbcQg+GY=;
-	b=wMaJ5JcSagj3AqIWTTLy4J7dxcTi5IsBqHkOOvTasVGNFxUBD4SiXVZI2HmcxxwBv/kuUI
-	BSGJRM9PewmgRHEVGRkvIBM35NmiKyUgvzOKc2uD9d3X/ykNySDf5CPmk+/zsXPxiIcMHV
-	qoNcHKaPprGiQxYpVz+iSJtn6vkxcinKhTtjaRJJGV35EZmKwisNys51sjnfIlWTutnRHw
-	yf9d9Xw9WjkzPkx5QO0JsTUlLTjOFJ5H9FHQEmu7303lFX/7664/YjGIXHAmvIVgTo0E4B
-	SvjQTn574q8VxxYKIDE6QGXYNzVOTsG3FxksROn64h7QGSebxBDTeaYWd27B+Q==
-Message-ID: <8f70bd9d-747f-4ffa-b0f2-1020071b5adc@bootlin.com>
-Date: Fri, 9 Jan 2026 10:38:30 +0100
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="niTrJOXr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XkNHZtJUEiM4OJ3pi8H7kD+YLz8bE2Y7I7a9fuBoVNxb1hdzrSk051HgDSoN5cUZ5yJM1YHFvHnqvJsYN+lgfSUUAwdpTUfkIAIbd+VbPLgVPMfT213K5rqLk5kAp4GI0z3UVJAgC1JwQrLr9OmkU3n0F6qIhInDbnHYmaOju2wxF2cXKzP3evm52h74sMG/k/Ed48YySSIfQNdFc1/xHNscR5lu7BXF+m5qHGCqaMUhhihHslJkoDKRvlpx2w1SbFqpBeAqvCPt9N7vluGbxpcZacmh+X6k05HtlzgEwcqvg4P3ZuAOFVRGgMX8i9cmWF2ss/azRCiGZjkIqCcOrg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2ExZ+zkVvCJjndQkuCQZgTezQPV4mKu7ZsZRAZ6qC78=;
+ b=MY/USBnUH5VN7zd/9S2eCa+wS8EWid/1VLfBada4XNRP4I5P7cniczXWj+NUTsq0eedrgQhKbwC6qz3e9QhS3BCbNTiG0G11numt5cESWBNGeamY7ogDBr6MSkR9GtrIuJVnaJxq9fpx/cI9pJgR8aq7D5fBxEh8zKClx2N9vXK/I4JHy6DOcBmBnZi3f/Xz4DPGG+1Jr+6jfcaewV1KONT9h1eIE53VfMvBebNBvnTX4m9/U5H8hQytF+n0IU8PMX33TSHNSf6YxP+uHogoQOkZ6zyzeiXzi/+VCiSJhNRgC7kI4RNYEysqtX8T9vupV4Wf+92+Lg8pgweCbwZ8bw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2ExZ+zkVvCJjndQkuCQZgTezQPV4mKu7ZsZRAZ6qC78=;
+ b=niTrJOXrbPMhyrXqerdjcFJ3Av2CTfzqf3QCb2+G5uV2oGdhFcMYeD3RYSDVHHugClaB1ARbhL0lmm5snZwCSFyBn9RoKd1lRvbzAgOMi0mvKrFQA4FvPpB+YlFysXKKECqC41k9v78T35Dk7PpOKWO45QICa0pTiVyp2NLjCdG19l02VCrEuegibYL0LM7PcmYHEwl0AmPnOPZVXL6WKC54+VHy1NR00fkbQOcBpyKNGeLrvhMoqnZxSda2jqvb0ArrqOUzbDXH1UjKecYKAQ/nk9y1dFy8ag9hnmYmZ9nIg2PvK9XwNDNXG2QfyWv9OuIx8HXoG0ziaPDa1Ij0Og==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by VI1PR04MB7166.eurprd04.prod.outlook.com (2603:10a6:800:121::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.4; Fri, 9 Jan
+ 2026 09:52:36 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64%6]) with mapi id 15.20.9499.004; Fri, 9 Jan 2026
+ 09:52:35 +0000
+Message-ID: <7d937ad1-dd7c-4a68-9af7-f386ca2c27dc@nxp.com>
+Date: Fri, 9 Jan 2026 17:53:17 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/4] drm/bridge: add of_drm_find_and_get_bridge() and a
+ managed *next_bridge, deprecate of_drm_find_bridge()
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-v4-0-a62b4399a6bf@bootlin.com>
+Content-Language: en-US
+From: Liu Ying <victor.liu@nxp.com>
+In-Reply-To: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-v4-0-a62b4399a6bf@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA0P287CA0001.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:d9::6) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND net-next v2] net: stmmac: dwmac: Add a fixup for
- the Micrel KSZ9131 PHY
-To: Stefan Eichenberger <eichest@gmail.com>,
- "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, francesco.dolcini@toradex.com,
- robh@kernel.org, Stefan Eichenberger <stefan.eichenberger@toradex.com>
-References: <20260105100245.19317-1-eichest@gmail.com>
- <6ee0d55a-69de-4c28-8d9d-d7755d5c0808@bootlin.com>
- <aVuxv3Pox-y5Dzln@eichest-laptop>
- <a597b9d6-2b32-461f-ac90-2db5bb20cdb2@lunn.ch>
- <aVvp70S2Lr3o_jyB@eichest-laptop> <aVvwOYce1CFOLiBk@shell.armlinux.org.uk>
- <aVv7wD2JFikGkt3F@eichest-laptop> <aWC_ZDu0HipuVhQS@eichest-laptop>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <aWC_ZDu0HipuVhQS@eichest-laptop>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|VI1PR04MB7166:EE_
+X-MS-Office365-Filtering-Correlation-Id: a711797c-96a8-45f2-b2fd-08de4f64d128
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|376014|7416014|19092799006|1800799024|366016|921020;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?YVZ1UDQyQ0laT1BlVEljUkNjdEpBaWUrWUozbU5Jc1lxTlIyOWlCcFdxYVBG?=
+ =?utf-8?B?Nk9tbzJhY3dBaGFwMFM1cERadnBEUlp6UlFCNDVUdWx6bmtOVDJZMlBpR2RK?=
+ =?utf-8?B?bWsyN2U5TVhrNHJ1ZllRYytGQ2VOSzJwSWVUVUxNUStjY2RFR0NMRzUrMUtp?=
+ =?utf-8?B?OENSeUt2b3owditNQXhwRk9ZeTZGUlNBOTNHYWJMcHlqZ2dQclhuVTNwcFhX?=
+ =?utf-8?B?SkpMSmtxQk1jdFlrK2dGcFdiK3RiSnpVZW1JSkFGdlQySVJSVTVJNFhtajlk?=
+ =?utf-8?B?NnJmcm9LaDJXaG5GSi9pUHFONFBZV0xRMTRuaGhnY2Zlc21iaDQwaWx4Nllh?=
+ =?utf-8?B?dGdValJGZG5kYlliajRBNHBYdDc0eFQwcjNpdUd0a0VSQm5uTEIvRk5GckNJ?=
+ =?utf-8?B?SWE3QUdXbDU5R0t4MjZIVFZrcFA5dEw1Q2dGUnJvUGdMZVEzZ1A1VkRldjVz?=
+ =?utf-8?B?M3NVQy9SWHdna1RaZnQ0NlRlUm5BRGI3RElSWlp6TG9tQ0l5T2V3dzdyN2RY?=
+ =?utf-8?B?RDAycHdBN2RZYjYrSEZSOGFVOXZMVC9mMmFYT1FKbkpRdVNKMVpxOUd4SFFZ?=
+ =?utf-8?B?K29MZTg2RnJnb3hwVnlnS1I0TUZIMzE0cUJBaFA3dUY0NkJHS3ZpVTFkL2JV?=
+ =?utf-8?B?elZtQ2RESHNiaVA2MUNTejczR0pRQ2xmYWI3eWoyTytTWVZoeEFXc2lic1g3?=
+ =?utf-8?B?Zm5oWVVUZjMyU3MxRTdhcnhvcktSYXFMYnVGZzJlVEFjL3NZa3dMMXNkdy8z?=
+ =?utf-8?B?MFd3LzBjTnR4RDZxcGNyMFBsRFgvZ2dPcHNlTUxuR1BsME9hdlJqY3JJbzYy?=
+ =?utf-8?B?NGJNeXZBR0g4TUpqU2drUHZMMzhuczNnZk45L1BwYVFuK3Bkb1h4Q2pWb0VZ?=
+ =?utf-8?B?a09TNnI4TFkrUzVhTFlpRXQvc1dOYk1GWnhTSm80V2JtYzJpclp1TEFVSStr?=
+ =?utf-8?B?M3IwN0NhdUYya1lXcm9KZldmSVNvZk9lekUrZFhPWStJWTNSOXRTd1ZCek9E?=
+ =?utf-8?B?bnpwTjdTTk5QbEpFZEpoTFlLWS9nQ2pFeEdrZ3ZiR0JnVTNCM0lub2lDaWJw?=
+ =?utf-8?B?K0RmeTNlK2hOZzBvYkE4cTF2VitSZ1FYOXFoazNBYTJWTXNDbjgwTWpKYTJt?=
+ =?utf-8?B?cjhqM29nMWtNQUlzRUJJWGVhdkZWT1d3OHdkenBpb2YrNUJmaHlnaGlOVE1u?=
+ =?utf-8?B?RmNBRE90U0JIWHdJNE5aQ1dWRjlYVHRIalB1NUI0OTRsTXFNUytaczBrQUtX?=
+ =?utf-8?B?SXB2TUVWTHAwZFdRSTNDTzNvWkp5eTNtQ3pIUDJrZTBYVWRCWFZqU1VWQXpR?=
+ =?utf-8?B?T05zRGNCemtqZmtRV1p6M1NtcGMzZzJ0bVNuZjVqVW5TQUJ4TW9KcjRLanZv?=
+ =?utf-8?B?OHM4NHo0M1pRWWlTcHgzNkFaVWRzVmhCMk9CNDZ0dXZ4Q25PTzFTZ3JDbTZl?=
+ =?utf-8?B?b3lTTXUyTjhZMmttU3pTRFVNeWNQUEJranVvQ05kZFZvdC9ONmJzWm9kbEtD?=
+ =?utf-8?B?YUUydm5FclZEVDNNdVRCUXdacmxjTDd4WGVteEQyZ0hWQWJwbG9rTFFqT1cw?=
+ =?utf-8?B?bUUxYlVpWDh2bllUckRFbUJIUkhyNFJRSGs0MEk4cSswWVpGOHcrcjFKN2Vu?=
+ =?utf-8?B?UklDT0tUYlQwMVRVU3JXdEZ6NUkxS0lyZkhodEF5andFNFZUeEdzWDFmbncw?=
+ =?utf-8?B?UFgwK09vTHdkTmdrYmQzeVVobU1VcnFsNW1tSWs1bURwTWpzbWJYNmd5RkZS?=
+ =?utf-8?B?TjNCNFRkbFVjOG55Z1drZXhCRUpBZkhqWXh2cEYyb1NJdG9jYU5ZWUE4OGUy?=
+ =?utf-8?B?N3JJM0pzSE05ZkU1K2NvZHR2L3NhSFNmNzU3NS8wNk5GcWRCZndlUjB4b3BP?=
+ =?utf-8?B?ZzdOSVhsT2tIb3cwM0pYdktIMEE2bUdiNVltaWlCUUF2a1gyd1Jib0xVc2dC?=
+ =?utf-8?B?U1l1b0ZWRlFsUW1qWWM1T2EyNVZCdVFyUVVoNjRRN0MvOGs3ZTg2L3FpeUZQ?=
+ =?utf-8?B?VUxkeVhkU0NLRzdHQ2RPSmlnd3JpeVZxOGtqa1FuR1E2N1AxNVd4K3drQnJH?=
+ =?utf-8?Q?ge0UOE?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(19092799006)(1800799024)(366016)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?TWs0L2ZRdXhRdlBjWWo1cGhzcDd3ckpLWHRvSW1xT2FxUlpzRjV6YktXdUc4?=
+ =?utf-8?B?STlvbjFoaGNjNUV1Zng3dEVpZTV1eU56TnNhckwzTlUySnYxTXdOekRoOXpa?=
+ =?utf-8?B?MDNaVjZIeldHZGRQMGpLQllBUUZLTi96TTNuNzlCa2hGcnBBN2tsejRlN0p3?=
+ =?utf-8?B?ZjhMdDhxY3M5ZThpWFc3NjJtTXdzbGtSMFhGdG11UjM1aUF5bjhKUHl4dUZZ?=
+ =?utf-8?B?NnlRRmVjcit5SzJRRFk4T1hyRnJvbEx6aG8wQ0IrTXdaUTdLdEZRMmVLWEhQ?=
+ =?utf-8?B?T245MGVmbnlzZTcyWkdRaVlvc0pvc2IwWkRDUzRaQ3RaSVJMVHRESHA5aFJV?=
+ =?utf-8?B?ZldpK1hBazU4UmtxTk1QTXI0cFB6VTJuOEtwRlplekZpb3JuLzY4RExqZHlu?=
+ =?utf-8?B?VlZKRDBJeitJaElURVQvK1poUmRlNTBtTUFHOE9hNjk3QkN6b0c0d3ovN2Z0?=
+ =?utf-8?B?elA0MWMwdjFXZVdlZk84SFpvc2JOMEkxSllreFVUNHFGWk14UGEvYXVsL0Y5?=
+ =?utf-8?B?dG15aFNaMDBRc0p3M2U5Ukh1cUtrdHkxSi9JRlp2eERwUG42SnZORDZPb1hI?=
+ =?utf-8?B?K3FZN1o4eGNXbURiQndKZzBFQWxhYWNGNVRpWjJkVGE5Sy9TOVNYdFJvN1Ux?=
+ =?utf-8?B?UDJlemhLM0svOHlwYStVRm1sSTUzSEw0MHFSbWdqWjV4MVpydWQzc29RUjFq?=
+ =?utf-8?B?amVOLys0MExaZ1Q0b2JkbHpiVHRJbm5KY05MK2dYZ2JMSm1paStBakVXdEdK?=
+ =?utf-8?B?cER1Sm9kcUtTRGhsaWYvRldqR1dMQzlaNjdSYmJmODF1ZXFqdEFMTXJNS1pl?=
+ =?utf-8?B?OTZ4ZTVidFkrYm1mdHJZcDI4TVd2V3k0SElXL3FmSGNEVDhlUzVqTGhXRk5p?=
+ =?utf-8?B?Z2dKcU92aU4wR3BUNDN4dEp4eWI0RmxBOUhIdjJneHRyQnlyWC91V1ZwRm9q?=
+ =?utf-8?B?V20waVhMYWVjVmFZeU52UmFEektUaHYzaTkxN3o5dmx4WnNNU3NmM1hiQ3Ns?=
+ =?utf-8?B?alRLL3N4b3QreTl0VXpoeEs5c1N3U0VQZHRYVExocWh6cWJMR24vdHc4Vy8v?=
+ =?utf-8?B?S1pnZTNFc2JQYm1sSkJEOFkrcFZVSjU4dHlaczBpQ2FBTzcyMXFmbVdyMi91?=
+ =?utf-8?B?MFlxMXhicG9oendtTnUyWHM3VUYzOHEwbHA5RkVqL2ViT3BJWnBRQUV2bzdu?=
+ =?utf-8?B?Qit3TElTZlFRbFNjVnY2RXhIRUxQQ1U3MzcybWJCYjhFMkQwVVVzazl2RzlL?=
+ =?utf-8?B?OHcwbFpRTkk2VThDMU5nRUdYOVgwRUhtNklnS1IrZ29WNVIxSlRwOFBleExj?=
+ =?utf-8?B?Vzc4Q3djQkkzMXlpUTVYQzNTSkYrWU9rZlpYSXZGSkZ5T0pPaldreFVPZ0VD?=
+ =?utf-8?B?eGRXTU91SElYaTV4Z1hmK2ljMDlxa2gwaVh0ckZUTElTWGxDR2pTMkpMUWFi?=
+ =?utf-8?B?K2wxK2xFZkk1Ym5GUVJTbU9nUEpUeHdPclpNME9OQWpTcUZwc1pOMzNZVmhq?=
+ =?utf-8?B?Sjd1RGhraFpZbXZ0dE5TZW5TdnNhbTJXOXB1TUtuV2ZxWWkyOHhraDE5MDZs?=
+ =?utf-8?B?WVlhc2ZWUFpENGtIa0J2RllBVGdWVXNweW5BU292Q1JieTBRa1JCM2s5QjQv?=
+ =?utf-8?B?VGttWEgyNlU5TkFTMEFxclFiWjdCam9QWi93M3VTazJaYTJ5TDB3S0V6VHN4?=
+ =?utf-8?B?ZCtOUC9uQmpiQ2pIdlBpb0NZWlFEZVNyYjlONzFkanE0Rzh0N2p0WTR5N25a?=
+ =?utf-8?B?K1NmNXplOGorNzFMK3YraGlnT1NKbHVOcklDN2xwS3hPMGxRVFYzUS8zaVRF?=
+ =?utf-8?B?cWU2NDM2Q0JoZXpuQTIyTFRLRy9MaWxSZDhTbkovcmN1VkJHcmV0dXVDdE92?=
+ =?utf-8?B?NDRGZ1Q3NDhvM1BvVTFEU1llR0JtOVIyNUxCUU5KNFcwVDhBYkY3N0ROakNT?=
+ =?utf-8?B?TlBNcyttS3JnSzJzYlNTM2wrcUR4a0RNWXBMUFFEVkVUMFRkK1lPUHY5WUEv?=
+ =?utf-8?B?WGpZR0NsQVFZL2RqdEdWeURHTTB2dVMxRTFRSmI5UVhTUHFMcXBwVUR2Umhu?=
+ =?utf-8?B?WDVSNkNENXJ0cmZKSE9POUFGMEhPcU1FWFhrdE9KVGVxa3I5UllEM1NGdlBq?=
+ =?utf-8?B?VnFWMXVYQ2VDY1V6anRvVVorOWdveDNTaEhTUnB0ZkdJalBOVmZVVHorZ0Nw?=
+ =?utf-8?B?VE9CRmQ3dGs2bitJbDFEVTZqUEZzTzUvTU41cTl6YVBiMU90V2ZZSmx2UU5Q?=
+ =?utf-8?B?aWVCUUVzSFdWa3EvTGhFeG1yVWV3ZGdVb1NpakJLaDRPdzdteVcyVE9LcFRq?=
+ =?utf-8?B?NUVhMEtZK244QnB5SUFtZlUzWlYyc0RZWHorZlFoQ1RHVkFnQVBDQT09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a711797c-96a8-45f2-b2fd-08de4f64d128
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 09:52:35.8999
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AuQGWcEzNL5h9pEL9TMR7dDsKJT2wkI/zQqJM2VNqdV7QkKLv3GG/XkJvaGi+aW8N3cuajk8y1OA0soyD7MQ8w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7166
 
-Hi Stefan,
 
-On 09/01/2026 09:42, Stefan Eichenberger wrote:
-> Hi everyone,
+
+On 1/7/26 17:56, Luca Ceresoli wrote:
+> This v4 contains the leftovers of the v3 series that deprecated
+> of_drm_find_bridge(), added a replacement which handles bridge refcounting,
+> and converted some of the direct users. All patches have been applied
+> except the imx8qxp-pixel-link ones, which still need a review for the first
+> patch.
 > 
-> On Mon, Jan 05, 2026 at 06:58:24PM +0100, Stefan Eichenberger wrote:
->> On Mon, Jan 05, 2026 at 05:09:13PM +0000, Russell King (Oracle) wrote:
->>> On Mon, Jan 05, 2026 at 05:42:23PM +0100, Stefan Eichenberger wrote:
->>>> Yes this is correct. ERR050694 from NXP states:
->>>> The IEEE 802.3 standard states that, in MII/GMII modes, the byte
->>>> preceding the SFD (0xD5), SMD-S (0xE6,0x4C, 0x7F, or 0xB3), or SMD-C
->>>> (0x61, 0x52, 0x9E, or 0x2A) byte can be a non-PREAMBLE byte or there can
->>>> be no preceding preamble byte. The MAC receiver must successfully
->>>> receive a packet without any preamble(0x55) byte preceding the SFD,
->>>> SMD-S, or SMD-C byte.
->>>> However due to the defect, in configurations where frame preemption is
->>>> enabled, when preamble byte does not precede the SFD, SMD-S, or SMD-C
->>>> byte, the received packet is discarded by the MAC receiver. This is
->>>> because, the start-of-packet detection logic of the MAC receiver
->>>> incorrectly checks for a preamble byte.
->>>>
->>>> NXP refers to IEEE 802.3 where in clause 35.2.3.2.2 Receive case (GMII)
->>>> they show two tables one where the preamble is preceding the SFD and one
->>>> where it is not. The text says:
->>>> The operation of 1000 Mb/s PHYs can result in shrinkage of the preamble
->>>> between transmission at the source GMII and reception at the destination
->>>> GMII. Table 35–3 depicts the case where no preamble bytes are conveyed
->>>> across the GMII. This case may not be possible with a specific PHY, but
->>>> illustrates the minimum preamble with which MAC shall be able to
->>>> operate. Table 35–4 depicts the case where the entire preamble is
->>>> conveyed across the GMII.
->>>>
->>>> We would change the behavior from "no preamble is preceding SFD" to "the
->>>> enitre preamble is preceding SFD". Both are listed in the standard and
->>>> shall be supported by the MAC.
->>>
->>> Thanks for providing the full explanation, it would be good to have
->>> that in the commit message.
->>
->> Okay thanks, I will provide the full explanation in the next commit
->> message.
->>
->>>
->>> The next question would be, is it just the NXP EQOS implementation
->>> that this breaks on, or are other EQOS implementations affected?
->>>
->>> In other words, if we choose to conditionally enable the preable at
->>> the PHY, should the generic parts of stmmac handle this rather than
->>> ending up with multiple platform specific glue having to code this.
->>> (This is something I really want to avoid - it doesn't scale.)
->>
->> From the errata from NXP it sounds to me like it is a configuration
->> issue by NXP. I checked the following ERRATAs from vendors where I have
->> access to:
->> - ST STM32MP1: not affected: https://www.st.com/resource/en/errata_sheet/es0438-stm32mp151x3x7x-device-errata-stmicroelectronics.pdf
->> - Renesas RZN1: not affected: https://www.renesas.com/en/document/tcu/ethernet-mac-gmac-function-issue-0?r=1054561
->> - Starvive JH7110: not affected: https://doc-en.rvspace.org/JH7110/PDF/JH7110_Errata.pdf
->> - NXP S32: affected: (ERR050706 under NDA)
->>
->> So from that I would conclude that it is an NXP specific issue and it's
->> not the full EQOS implementation that is broken.
+> @Liu, patch 1 is waiting for a review and it's non-trivial, it would be
+> nice if you could have a look at that one at least.
+
+Luca, I'v been too busy recently for tasks assigned by my employer to
+give an in-time review, sorry about that.  I'll try to review this late
+next week if not sooner.
+
 > 
-> I just wanted to check whether I should continue with the current
-> approach or if I should instead enable the preamble in the PHY for all
-> MACs. While I prefer the current approach, as the issue lies with the
-> MAC rather than the PHY, I can also see the advantage of always enabling
-> the feature.
+> This is part of the work to support hotplug of DRM bridges. The grand plan
+> was discussed in [0].
+> 
+> Here's the work breakdown (➜ marks the current series):
+> 
+>  1. ➜ add refcounting to DRM bridges struct drm_bridge,
+>       based on devm_drm_bridge_alloc()
+>     A. ✔ add new alloc API and refcounting (v6.16)
+>     B. ✔ convert all bridge drivers to new API (v6.17)
+>     C. ✔ kunit tests (v6.17)
+>     D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
+>          and warn on old allocation pattern (v6.17)
+>     E. ➜ add get/put on drm_bridge accessors
+>        1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
+>        2. ✔ drm_bridge_get_prev_bridge() (v6.18)
+>        3. ✔ drm_bridge_get_next_bridge() (v6.19)
+>        4. ✔ drm_for_each_bridge_in_chain() (v6.19)
+>        5. ✔ drm_bridge_connector_init (v6.19)
+>        6. … protect encoder bridge chain with a mutex
+>        7. ➜ of_drm_find_bridge()
+>           a. ➜✔… add of_drm_get_bridge(), convert basic direct users
+> 	         (v6.20?, one driver still pending)
+> 	  b. convert other direct users
+> 	  c. convert bridge-only drm_of_find_panel_or_bridge() users
+>        8. drm_of_find_panel_or_bridge, *_of_get_bridge
+>        9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
+>     F. ✔ debugfs improvements
+>        1. ✔ add top-level 'bridges' file (v6.16)
+>        2. ✔ show refcount and list lingering bridges (v6.19)
+>  2. … handle gracefully atomic updates during bridge removal
+>     A. ✔ Add drm_dev_enter/exit() to protect device resources (v6.20?)
+>     B. … protect private_obj removal from list
+>  3. … DSI host-device driver interaction
+>  4. ✔ removing the need for the "always-disconnected" connector
+>  5. finish the hotplug bridge work, moving code to the core and potentially
+>     removing the hotplug-bridge itself (this needs to be clarified as
+>     points 1-3 are developed)
+> 
+> [0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/#t
+> 
+> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> ---
+> Changes in v4:
+> - Added review trailers
+> - Link to v3: https://lore.kernel.org/r/20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-0-b5165fab8058@bootlin.com
+> 
+> Changes in v3:
+> - Completely rewrote using the __drm_bridge_free() idea to prevent
+>   use-after-free of the next_bridge for the common cases
+> - Added needed cleanups to the imx8qxp-pixel-link and imx8qxp-pxl2dpi
+>   drivers
+> - Removed various patches converting simple cases, to reduce the number of
+>   e-mails sent; will be moved to the follow-up series
+> - Link to v2: https://lore.kernel.org/r/20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-0-88f8a107eca2@bootlin.com
+> 
+> Changes in v2:
+> - All patches: renamed drm_of_find_bridge() -> of_drm_get_bridge()
+> - Various fixes and improvements to patches 1-6, see individual patches
+>   changelog
+> - Removed bouncing recipient: Edmund Dea <edmund.j.dea@intel.com>
+> - Link to v1: https://lore.kernel.org/r/20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com
+> 
+> ---
+> Luca Ceresoli (4):
+>       drm/bridge: imx8qxp-pixel-link: simplify logic to find next bridge
+>       drm/bridge: imx8qxp-pixel-link: simplify freeing of the remote device_node
+>       drm/bridge: imx8qxp-pixel-link: imx8qxp_pixel_link_find_next_bridge: return int, not ERR_PTR
+>       drm/bridge: imx8qxp-pixel-link: get/put the next bridge
+> 
+>  drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c | 53 ++++++++++++-------------
+>  1 file changed, 25 insertions(+), 28 deletions(-)
+> ---
+> base-commit: f12ad2e5233a1a30b3bd6fe1e784b3544caa2383
+> change-id: 20251117-drm-bridge-alloc-getput-drm_of_find_bridge-74903367448d
+> 
+> Best regards,
 
-My main concern was that we may end-up with a lot of different fixups
-for the various KSZ-family PHY devices, especially since this feature is
-sometimes undocumented.
-
-I've gone through the micrel.c driver, and looked at the datasheet of
-most PHYs in there, and so far I've found that to fix this issue, we
-need to set :
-
-KSZ9131 / KSZ8041: Register 0x14 bit 6
-KSZ8061 / KSZ8051 : Register 0x18 bit 6
-
-So in the end, the complexity appears to be a bit less exponential than
-I originally thought, we may end-up with only a few fixups in this driver.
-
-I'd say, I'm fine with you proceeding with this original approach as it
-minimizes the impact and risk to break other setups.
-
-I'm sorry for triggering this whole discussion only to get back to the
-starting point :(
-
-Maxime
+-- 
+Regards,
+Liu Ying
