@@ -1,110 +1,73 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1AA3382F8
-	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 10:44:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7507338F5E;
+	Fri,  9 Jan 2026 10:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767955451; cv=none; b=uMz913Ia7bY6o01YeW43nSoNEwggPi9/8GVYg1I2NAM741l5EkX5TpWi6wlST+dzUjNmSGW3lh68uubvCWbJq/wd4gezRAepCvTnSRlQ6VNEKn7Quvxd5j4ImqxnGDPq8wPOtLsQ46axMOrfxRH9WR9nxlE+uP/eQLXO+C7GP8Y=
+	t=1767956091; cv=none; b=LuJf3TcSNWTu7MMH1Hl7mvaf4ZAGS+dsQdir8ozwOy9PAE43XNDyUY0RIFGtgWJ83iTZA9J5O+2eK7volOJhz5ueGYxovrWW4XNWklL4FvkHbyL0mYUZkyr6eO/HvOTVddnQTpN9BoAwbHC2Up9mh7IWVRRtagXpCbugh+3CAM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767955451; c=relaxed/simple;
-	bh=heRUsgtR8J5gfVgo3v5KkSNHlF4BfjCnFvshhBUlf0c=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=W81n4b/yEs38xB+ROrZavsOG3C7qhjDmnzEzBQAPdNuukljI8wo/EGNcs00KTMluETtjjP/t1qxCOYn8mgLNa9p+ezY32UxEy7DLoznRa+Zm0+l3a0VlhUxhJuAVORrDk14H6FUtQ0E5078QFmtRf0CKvOV/nfLIZZS5WT+2OBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CHHVmWab; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1767956091; c=relaxed/simple;
+	bh=UJG+fnw8Qh3YOXILE6R2Q0v2U5Bs1ONSSyoTBxazsE0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=XySOd9n94L+ILoVULNJw18BkPDxXDM1ViMdPUEP5/fCTZloKZqt9GjqEGBcus59/SG0Ch8d/fRrn7Shd+bHaxzSolNaPsUozIsw2GOzeSPtvQnkiCrXM243Dj/kkllO9Anh0r5c5qDyBmFcU+3G/Scv6iy6xY6m1dXFnPMP1N3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PkfxoPqm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="CHHVmWab"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 1B28D1A274B;
-	Fri,  9 Jan 2026 10:44:07 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E132160734;
-	Fri,  9 Jan 2026 10:44:06 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 81CCF103C88D6;
-	Fri,  9 Jan 2026 11:43:58 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767955445; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=SiCIIDZ8DQ4eVHwh0jh/RzqDH1KSvakfkkduuvCNYtk=;
-	b=CHHVmWabxW4J/FmEQWQbUQcLH8cRIxzAgak+rlrLVxhBB2O5qUMp+0aTrZYpUZwDEM2+k0
-	4y3Pq+0kpPbv3sEh0MQO68+EKWWON4m3vFnbhSeAfcEEskuzDo6oKvKTvr3ItBGPbchM2b
-	6iopx7goSrbT2ijmFwt27qimHfFzTsgWNNhEoAKS/4YyyMZhk73zlTXB5jrgbXS//0Jdee
-	sx6pS0gYykrS3erWjnqH64b2J1cmOGYPQ3/LMT3yKQQ3gd8HUm4pICNfR5iOtUMblWVHIz
-	LicE7Ye8j8vmLi6pipJmBpcPYwmdDo2RBgVA0SvgJNBTZDOG8JcDnxvvjFnkJA==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PkfxoPqm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F89FC4CEF1;
+	Fri,  9 Jan 2026 10:54:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767956091;
+	bh=UJG+fnw8Qh3YOXILE6R2Q0v2U5Bs1ONSSyoTBxazsE0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=PkfxoPqmix4UJko2+N48KVvJ6KGdbXv1RjFqFc+PKKu7BSHtvMUJpWIEYB3xrVCxt
+	 Ew5CVsYAMTUN9UCLkbDjraHwqudJMumo5v86gO62WDNcvj3d2vlM+N433St/MSQ2Ds
+	 XS/sTt11Sr0Ei2Ysm/z+EqFaJHN7mdGWNIS7FTCMx61yUXgiRV3IkyTNWM+5S6KWz0
+	 EBoFXUP/7cwoWw05ItHjJnoQ0iqgXopncSYDjgV6it2PMjHZwBRBep2vAl7ct6cuaG
+	 MEQTZ/Y7/MgiuTM7LGni6wzIYNHIYlqkZ6rCZg9zCz02nURGBkqQMrIceaBxxkUBcE
+	 7xCW93OmzYArw==
+From: Lee Jones <lee@kernel.org>
+To: Lee Jones <lee@kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev, linaro-s32@linaro.org, 
+ NXP S32 Linux Team <s32@nxp.com>
+In-Reply-To: <792d3f59b9f519529b94e673faf70d77c4b61fb3.1765806521.git.dan.carpenter@linaro.org>
+References: <792d3f59b9f519529b94e673faf70d77c4b61fb3.1765806521.git.dan.carpenter@linaro.org>
+Subject: Re: (subset) [PATCH v2 2/4] dt-bindings: mfd: syscon: Document the
+ GPR syscon for the NXP S32 SoCs
+Message-Id: <176795608886.1640392.11563131653526245122.b4-ty@kernel.org>
+Date: Fri, 09 Jan 2026 10:54:48 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 09 Jan 2026 11:43:57 +0100
-Message-Id: <DFJZWBL17LBX.X68EJ7CSQFB8@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v4 0/4] drm/bridge: add of_drm_find_and_get_bridge() and
- a managed *next_bridge, deprecate of_drm_find_bridge()
-Cc: "Hui Pu" <Hui.Pu@gehealthcare.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-kernel@vger.kernel.org>
-To: "Liu Ying" <victor.liu@nxp.com>, "Andrzej Hajda"
- <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
- "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Shawn Guo"
- <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
- <festevam@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-v4-0-a62b4399a6bf@bootlin.com> <7d937ad1-dd7c-4a68-9af7-f386ca2c27dc@nxp.com>
-In-Reply-To: <7d937ad1-dd7c-4a68-9af7-f386ca2c27dc@nxp.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.15-dev-52d38
 
-Hello Liu,
+On Mon, 15 Dec 2025 17:41:52 +0300, Dan Carpenter wrote:
+> The NXP S32 SoCs have a GPR region which is used by a variety of
+> drivers.  Some examples of the registers in this region are:
+> 
+>   * DDR_PMU_IRQ
+>   * GMAC0_PHY_INTF_SEL
+>   * GMAC1_PHY_INTF_SEL
+>   * PFE_EMACS_INTF_SEL
+>   * PFE_COH_EN
+>   * PFE_PWR_CTRL
+>   * PFE_EMACS_GENCTRL1
+>   * PFE_GENCTRL3
+> 
+> [...]
 
-On Fri Jan 9, 2026 at 10:53 AM CET, Liu Ying wrote:
->
->
-> On 1/7/26 17:56, Luca Ceresoli wrote:
->> This v4 contains the leftovers of the v3 series that deprecated
->> of_drm_find_bridge(), added a replacement which handles bridge refcounti=
-ng,
->> and converted some of the direct users. All patches have been applied
->> except the imx8qxp-pixel-link ones, which still need a review for the fi=
-rst
->> patch.
->>
->> @Liu, patch 1 is waiting for a review and it's non-trivial, it would be
->> nice if you could have a look at that one at least.
->
-> Luca, I'v been too busy recently for tasks assigned by my employer to
-> give an in-time review, sorry about that.  I'll try to review this late
-> next week if not sooner.
+Applied, thanks!
 
-That would be great, thanks! And I understand, aren't we all busy? :)
-
-I have resent as v4 just to ensure it's clear that these patches are not
-yet applied. My e-mail [0] might have suggested the opposite, due to my
-total noobness in using the b4 auto-thankanator, sorry if that was the
-case.
-
-Having patch 1 reviewed is the most important thing here. Other patches are
-already reviewed by Maxime, so your review would of course be very useful
-but not strictly necessary for this series to go forward.
-
-[0] https://lore.kernel.org/lkml/176708623356.127863.8623917477288453126.b4=
--ty@bootlin.com/
-
-Best regards,
-Luca
+[2/4] dt-bindings: mfd: syscon: Document the GPR syscon for the NXP S32 SoCs
+      commit: 441db0e922485befe0cfed2523e8e452a3b5f7cc
 
 --
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Lee Jones [李琼斯]
+
