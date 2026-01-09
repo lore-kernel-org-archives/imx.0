@@ -1,186 +1,110 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F27B336EF7
-	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 10:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1AA3382F8
+	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 10:44:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767953611; cv=none; b=HUGRCXYahyyl36mv83orz6JiKxrFQ1cLKwVDtTNLeyINTF/g1QJ60ty9n704TMGxr3l0o/JVVRZ4dV+Gz3uJ1gW2dJfFeJzSnkhlpoicZ2yS+FK1VK7KYB9uqtlNAjjfMDpi7xb1JfjtCg8+ILPCzYSkdJlE6W4grQLnUP1ON20=
+	t=1767955451; cv=none; b=uMz913Ia7bY6o01YeW43nSoNEwggPi9/8GVYg1I2NAM741l5EkX5TpWi6wlST+dzUjNmSGW3lh68uubvCWbJq/wd4gezRAepCvTnSRlQ6VNEKn7Quvxd5j4ImqxnGDPq8wPOtLsQ46axMOrfxRH9WR9nxlE+uP/eQLXO+C7GP8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767953611; c=relaxed/simple;
-	bh=yXMsr8zM5W0NidfzhDEAVyLX6qDA6qMap15O3IWhwt0=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=TN2LK8Xc8pE1WrQigjPrChYYy+tRuXhAteuzGP07JVOInCKMO7NGDLmLecOtTlLX5aNcWUeG7l4BQGG4+bvBAKeqbYLcJPT1bEw154yIu16CMArFtugDYnfB/bvDQeO70+3ElDwvHrfhPuJUYNKFsqU+X77yHeEEFToZluVqoaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sP+GbpQn; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1767955451; c=relaxed/simple;
+	bh=heRUsgtR8J5gfVgo3v5KkSNHlF4BfjCnFvshhBUlf0c=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=W81n4b/yEs38xB+ROrZavsOG3C7qhjDmnzEzBQAPdNuukljI8wo/EGNcs00KTMluETtjjP/t1qxCOYn8mgLNa9p+ezY32UxEy7DLoznRa+Zm0+l3a0VlhUxhJuAVORrDk14H6FUtQ0E5078QFmtRf0CKvOV/nfLIZZS5WT+2OBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CHHVmWab; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sP+GbpQn"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-432d2c96215so1184707f8f.3
-        for <imx@lists.linux.dev>; Fri, 09 Jan 2026 02:13:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1767953607; x=1768558407; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=azmATrh1ehd50qg4sLH5mbIDJwpy+FR7iJS1nCS0pn0=;
-        b=sP+GbpQnWmyJYGaYbrJtj/NXrkPM9yAfyF2jC7x8dWD/hfY7DxshM+2G9ghSHtc4OA
-         KfiZB2RDRakR2dFFhNL2mQBQAGGP9DTJlaeUE1QBd8+227xEt/BrjU0XIkwT7rJSjEAF
-         a6GQwJGg+jCZbikNvjZmGVxWeX4u2G905CdLtvjPjX1hhHJigh1oXgKWggYvLwgSa210
-         eo+YIRjCSzlCkk5qs6D5SBk04euMgk5LgwbNKLSegRdR+2Q54XjQUwQeN6I/kNZ3kxz9
-         w4UZBSxgdMWw1O/FOtgDPkboKSMdjFVryBkoQW6/igq5g6KZX8hQYViawFd9Go8gnfLf
-         Gj6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767953607; x=1768558407;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=azmATrh1ehd50qg4sLH5mbIDJwpy+FR7iJS1nCS0pn0=;
-        b=dzIm2UkxyhNvo7SJRGFgv4dZR/U70Yg8Z+1q6ekSPGBUFTHXUUym7DuucHUzaYPJ8u
-         t5sxFny4CWeGObBQvKCS809lSHpkcgLfDHWskhIy2F4sfGjibOsB1wT3O8GGGGtvYs9n
-         qJaWXP6WemWTbjihgNKciEAtd7J2DuyEyuQi95NEF55M92YoPnfwF49ixh6v8H+bHTfW
-         3ci5zXJP3kUU5casZJC6MLqEueU5E2Um4QMT1zfJZUTKdRI2vmImgU3BnmZPHem/e/Q/
-         9ya8d5VBFTVJ9SjW4gGYOvoSzXKo7iAg0liI0gBKTTmGD5q2X4wjgkZL9kE9V5Vj17Jq
-         NNRA==
-X-Forwarded-Encrypted: i=1; AJvYcCUk3FS+awLul9o2ukXmLXWYANfui5Ie8VLm75E1slYiD5EMtQPHZetrIOG3rl2LtMgbiOE=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz2jWh7nXsgO1rm55ub4z/nqAPbuwtPKTaOZc2Y2N7C8wtenSKB
-	0U4/K8E59u7uONEivCu/coh/uC7+cH5S6UrmYpld/lrpGPRidoPmFYI02plBHpUyO8o=
-X-Gm-Gg: AY/fxX5pS4Yx6zweKw/j2cm15FZHvOHVgRegh5AIyfdbDbcbedEw+SRroyR7QAmd/Gf
-	+AgJYnCsrF4QvolZTSCEPbz08a8OTnFMVzHoFzjqI2o1E4yqAOji9TqlSTGgVQi32e4JsFEtfPh
-	6PDcLnIR36OU1TYDH+zBW6tM5ByIXJkWyhEMkWNkMGmHjAxvLTCR0ey406g3NFNptYtpZfHqC49
-	WEmRi/L+XrA26PxEnZ/OFK0E1MRaLe6x6Az7WTcMpfcvXUIWJ0b8Ap5zONNne7LQN3Cnfisk0lD
-	anK60Xmlwlv5BX2DTInfBn36UEUR5dGwcgDELgwiBQgqUyDRViwk7R1xo2BOj9glrnX8qoPUm+P
-	lZfdosKvLyUt9HOsO3g3mhftqGkx0CqBSKh+RT/8sLkBhEXJ1BL/rcQwBwmjrtjTWGUu8CZAGJr
-	GUdZj1X2WPqUFhaN3agXzMkMnATxMOY4RhVwQk8GWaKExM3eqBHJdConIi9hMiSrQ=
-X-Google-Smtp-Source: AGHT+IFCikJ03J/WgyrsSQPwxIM5AkWewsU7YWY0NL1QPgGkyLNv66hXXYzshWOTAsB92VRUvv8j1A==
-X-Received: by 2002:a5d:5f94:0:b0:432:5bac:3915 with SMTP id ffacd0b85a97d-432c37c87e4mr11007824f8f.39.1767953607247;
-        Fri, 09 Jan 2026 02:13:27 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:3d9:2080:d283:7a7e:4c57:678d? ([2a01:e0a:3d9:2080:d283:7a7e:4c57:678d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0e175csm21370007f8f.14.2026.01.09.02.13.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Jan 2026 02:13:26 -0800 (PST)
-Message-ID: <ef2c22a0-3335-456c-9281-e54085c849d2@linaro.org>
-Date: Fri, 9 Jan 2026 11:13:25 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="CHHVmWab"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 1B28D1A274B;
+	Fri,  9 Jan 2026 10:44:07 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E132160734;
+	Fri,  9 Jan 2026 10:44:06 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 81CCF103C88D6;
+	Fri,  9 Jan 2026 11:43:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1767955445; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=SiCIIDZ8DQ4eVHwh0jh/RzqDH1KSvakfkkduuvCNYtk=;
+	b=CHHVmWabxW4J/FmEQWQbUQcLH8cRIxzAgak+rlrLVxhBB2O5qUMp+0aTrZYpUZwDEM2+k0
+	4y3Pq+0kpPbv3sEh0MQO68+EKWWON4m3vFnbhSeAfcEEskuzDo6oKvKTvr3ItBGPbchM2b
+	6iopx7goSrbT2ijmFwt27qimHfFzTsgWNNhEoAKS/4YyyMZhk73zlTXB5jrgbXS//0Jdee
+	sx6pS0gYykrS3erWjnqH64b2J1cmOGYPQ3/LMT3yKQQ3gd8HUm4pICNfR5iOtUMblWVHIz
+	LicE7Ye8j8vmLi6pipJmBpcPYwmdDo2RBgVA0SvgJNBTZDOG8JcDnxvvjFnkJA==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH v2 2/6] drm/meson/dw-hdmi: convert to
- of_drm_find_and_get_bridge()
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Philipp Zabel <p.zabel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Chun-Kuang Hu <chunkuang.hu@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim <sw0312.kim@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
- <alim.akhtar@samsung.com>,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
- Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Magnus Damm <magnus.damm@gmail.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
- Hui Pu <Hui.Pu@gehealthcare.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, linux-mediatek@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-References: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-3-v2-0-8d7a3dbacdf4@bootlin.com>
- <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-3-v2-2-8d7a3dbacdf4@bootlin.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-3-v2-2-8d7a3dbacdf4@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 09 Jan 2026 11:43:57 +0100
+Message-Id: <DFJZWBL17LBX.X68EJ7CSQFB8@bootlin.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v4 0/4] drm/bridge: add of_drm_find_and_get_bridge() and
+ a managed *next_bridge, deprecate of_drm_find_bridge()
+Cc: "Hui Pu" <Hui.Pu@gehealthcare.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Liu Ying" <victor.liu@nxp.com>, "Andrzej Hajda"
+ <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
+ <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
+ "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Shawn Guo"
+ <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
+ "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
+ <festevam@gmail.com>
+X-Mailer: aerc 0.20.1
+References: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-v4-0-a62b4399a6bf@bootlin.com> <7d937ad1-dd7c-4a68-9af7-f386ca2c27dc@nxp.com>
+In-Reply-To: <7d937ad1-dd7c-4a68-9af7-f386ca2c27dc@nxp.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 1/9/26 11:02, Luca Ceresoli wrote:
-> of_drm_find_bridge() is deprecated. Move to its replacement
-> of_drm_find_and_get_bridge() which gets a bridge reference, and ensure it
-> is put when done.
-> 
-> dw_hdmi->bridge is used only in dw_hdmi_top_thread_irq(), so in order to
-> avoid potential use-after-free ensure the irq is freed before putting the
-> dw_hdmi->bridge reference.
-> 
-> Acked-by: Maxime Ripard <mripard@kernel.org>
-> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> ---
->   drivers/gpu/drm/meson/meson_dw_hdmi.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/meson/meson_dw_hdmi.c b/drivers/gpu/drm/meson/meson_dw_hdmi.c
-> index 0d7c68b29dff..fef1702acb14 100644
-> --- a/drivers/gpu/drm/meson/meson_dw_hdmi.c
-> +++ b/drivers/gpu/drm/meson/meson_dw_hdmi.c
-> @@ -778,7 +778,7 @@ static int meson_dw_hdmi_bind(struct device *dev, struct device *master,
->   	if (IS_ERR(meson_dw_hdmi->hdmi))
->   		return PTR_ERR(meson_dw_hdmi->hdmi);
->   
-> -	meson_dw_hdmi->bridge = of_drm_find_bridge(pdev->dev.of_node);
-> +	meson_dw_hdmi->bridge = of_drm_find_and_get_bridge(pdev->dev.of_node);
->   
->   	DRM_DEBUG_DRIVER("HDMI controller initialized\n");
->   
-> @@ -789,8 +789,12 @@ static void meson_dw_hdmi_unbind(struct device *dev, struct device *master,
->   				   void *data)
->   {
->   	struct meson_dw_hdmi *meson_dw_hdmi = dev_get_drvdata(dev);
-> +	struct platform_device *pdev = to_platform_device(dev);
-> +	int irq = platform_get_irq(pdev, 0);
->   
-> +	devm_free_irq(dev, irq, meson_dw_hdmi);
->   	dw_hdmi_unbind(meson_dw_hdmi->hdmi);
-> +	drm_bridge_put(meson_dw_hdmi->bridge);
->   }
->   
->   static const struct component_ops meson_dw_hdmi_ops = {
-> 
+Hello Liu,
 
-Acked-by: Neil Armstrong <neil.armstrong@linaro.org>
+On Fri Jan 9, 2026 at 10:53 AM CET, Liu Ying wrote:
+>
+>
+> On 1/7/26 17:56, Luca Ceresoli wrote:
+>> This v4 contains the leftovers of the v3 series that deprecated
+>> of_drm_find_bridge(), added a replacement which handles bridge refcounti=
+ng,
+>> and converted some of the direct users. All patches have been applied
+>> except the imx8qxp-pixel-link ones, which still need a review for the fi=
+rst
+>> patch.
+>>
+>> @Liu, patch 1 is waiting for a review and it's non-trivial, it would be
+>> nice if you could have a look at that one at least.
+>
+> Luca, I'v been too busy recently for tasks assigned by my employer to
+> give an in-time review, sorry about that.  I'll try to review this late
+> next week if not sooner.
 
-Thanks,
-Neil
+That would be great, thanks! And I understand, aren't we all busy? :)
+
+I have resent as v4 just to ensure it's clear that these patches are not
+yet applied. My e-mail [0] might have suggested the opposite, due to my
+total noobness in using the b4 auto-thankanator, sorry if that was the
+case.
+
+Having patch 1 reviewed is the most important thing here. Other patches are
+already reviewed by Maxime, so your review would of course be very useful
+but not strictly necessary for this series to go forward.
+
+[0] https://lore.kernel.org/lkml/176708623356.127863.8623917477288453126.b4=
+-ty@bootlin.com/
+
+Best regards,
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
