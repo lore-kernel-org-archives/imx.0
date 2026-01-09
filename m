@@ -1,41 +1,42 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8541416EB42
-	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 07:31:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D442ECD39
+	for <imx@lists.linux.dev>; Fri,  9 Jan 2026 07:31:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767943910; cv=none; b=CqZXCmzn4QEWAipy2mSwjgGStwGW9REv7CHOaNnpogbzh35ddbmSMt2m8SEs+CrLsPp4fXFURS/FYUq/1kuqz/mbya3TlI/rn3Q3XPrwSXA5B0xvy/PfdVRmyn3PEqXxbhri3rIOJ3I8SbIDz7Phnz1xjhdFyYFlWpTuWd4CDFk=
+	t=1767943912; cv=none; b=WjE7y62UvnUwx5/EqZD4TgRpkOCJEypi7vjg2p+Xd6c6Obcf6+SdqXs0c6FabhKETyHMRFacoJ4aQIJYBt4qtVnW/aPqlHiM3e0xHujXKLEnaEt0yoel4vpmbJjs840b2wTgxH3Y9kImoUoSuYkJETPuFf1fFHDsx83lm0eAi7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767943910; c=relaxed/simple;
-	bh=WsvJsVALgC0cijAFEiCO7CCeTFF0GGqchkJSqu/RrRk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jatC/gNyyltV6WOlSmN0tKHaQpw0DsYtSAyeqzB6JZ++7JQyUntGOg8LeTOxNE3TizLBre/3U41pl/v7soTH6S6UrSxZeTNKa7uAFjKNJy0dbMELneB38J3+yrlZ9YWWgZE9wq4cOr9dpfsScNzDQUWhHa4vNnYBfjjiEa9Wt/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vWenyqBD; arc=none smtp.client-ip=185.246.85.4
+	s=arc-20240116; t=1767943912; c=relaxed/simple;
+	bh=pW8Rqlf9CIE7RE0N7FuyghveRIlSbCH8G1NmOkF9Fkw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=NCp2cCeLWY2gfNQ8mCozUhPFKskwq31YtvbCWP2I4sioGJyL9hvP656Lsv6Jqp03JI6ehXXhgP9Wqr78iMyR8zRMxbx5DHjBforCk/FGdNiQVx9SJntAM8d8zWSYCD/nigjLVqYC5IdjOEUOuc2tFEt0wjhwV7Gx41S1uzvcwgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jABOhxKZ; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vWenyqBD"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jABOhxKZ"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id B87594E4201A;
-	Fri,  9 Jan 2026 07:31:45 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 859DB1A273A;
+	Fri,  9 Jan 2026 07:31:49 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7FBB160734;
-	Fri,  9 Jan 2026 07:31:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BBFBB103C87E8;
-	Fri,  9 Jan 2026 08:31:35 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5418060734;
+	Fri,  9 Jan 2026 07:31:49 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D2901103C87F9;
+	Fri,  9 Jan 2026 08:31:44 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767943904; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=O7pzVTj6X0AEeV6swURMFMUKvFmICmffgzcekptf2P0=;
-	b=vWenyqBDDH8G1zzaYpSa7Rrze6ECMjD08JHWjpuC9NeezlEl8GKQMyr6uPHyJ76o824+As
-	FzzSYtLMwGVmuDgeTPxQJZIBN3mcgSo0Dw8aZDq+ZttsrbUSBUbfg6No6g4dYbTqJlDXih
-	yApcnzSTeppghscMgDHf9Gilzo986LSZTDNL/xzNXktqAEgwu4xxtY+Jgz5qpqQODQrFO5
-	0XzZ/QGa7eWoVQ1vzkldtn1FjCbEgbyw4OzRYFRBc8z0zlhmVlar3Sx4S1FejR7tNj8Z9f
-	1TBajImkXcBSK8bmcYOmNiinYrljqkaT42IXL8yGHmjBIjUfGYcuTP6vr4QVhA==
+	t=1767943907; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=7G0VQZhCL0E1RG/9vT5q4DhtmO9Jz5X+7mGnytpns6k=;
+	b=jABOhxKZYevXq35Y/dw2OauCpOzC4O5PvKI4NVE0SWcsexbyfyRaVjJEYfkRcMOwLrsmmc
+	JZsZZPMU/tn1RZ11AeFV8wudEjS0FpNduTmCweyYhIkpHZhJ6Eqj2YAzo7y3tpHyMpO4YE
+	lf02ZwqPTxUlrPRJYx7USyhoZDAaBgqH6PjXGbMgb0ZGuWHclq6JKI+OXUdiyPMtc8YV7l
+	sMbWc//+lnblF9FnL3mL3ARa2rq3yVQ5ZdEL3l30W+0O2P5acKrZd8YvanmZS8E0MAlh4B
+	G0CYNTSrWZ/AqT+N+3Ve0DGrsyljbGn7k5/X8BP40arYYyIZ5oRMhZipOEXDPQ==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH v2 00/12] drm/bridge: convert users of
- of_drm_find_bridge(), part 2
-Date: Fri, 09 Jan 2026 08:31:31 +0100
-Message-Id: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-0-8bad3ef90b9f@bootlin.com>
+Date: Fri, 09 Jan 2026 08:31:32 +0100
+Subject: [PATCH v2 01/12] drm: of: drm_of_panel_bridge_remove(): fix
+ device_node leak
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -43,12 +44,10 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIANOuYGkC/5WOzQ6CMBAGX4X0bE27xIKefA9DSP+ATZBiW4iG8
- O4WNPHsceZLdnYhwXq0gVyyhXg7Y0A3JIBDRnQnh9ZSNIkJMDhxgJwaf6fKo0mL7HunaWvjOMX
- N166pGxxM/d2BctBCKa1EeRYknRy9bfC5527Vh719TKkaf7LDEJ1/7S/NfLNbXTDOiv/qM6eMQ
- pmbQinJBJdX5VzscThqdyfVuq5vAxQV6/8AAAA=
-X-Change-ID: 20251223-drm-bridge-alloc-getput-drm_of_find_bridge-2-12c6bbcb6896
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-1-8bad3ef90b9f@bootlin.com>
+References: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-0-8bad3ef90b9f@bootlin.com>
+In-Reply-To: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-0-8bad3ef90b9f@bootlin.com>
 To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
  David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
@@ -71,109 +70,39 @@ Cc: Hui Pu <Hui.Pu@gehealthcare.com>,
 X-Mailer: b4 0.14.3
 X-Last-TLS-Session-Version: TLSv1.3
 
-This series converts all DRM bridge drivers (*) from the now deprecated
-of_drm_find_bridge() to its replacement of_drm_find_and_get_bridge() which
-allows correct bridge refcounting. It also converts per-driver
-"next_bridge" pointers to the unified drm_bridge::next_bridge which puts
-the reference automatically on bridge deallocation.
+drm_of_panel_bridge_remove() uses of_graph_get_remote_node() to get a
+device_node but does not put the node reference.
 
-This is part of the work to support hotplug of DRM bridges. The grand plan
-was discussed in [0].
-
-Here's the work breakdown (➜ marks the current series):
-
- 1. ➜ add refcounting to DRM bridges struct drm_bridge,
-      based on devm_drm_bridge_alloc()
-    A. ✔ add new alloc API and refcounting (v6.16)
-    B. ✔ convert all bridge drivers to new API (v6.17)
-    C. ✔ kunit tests (v6.17)
-    D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
-         and warn on old allocation pattern (v6.17)
-    E. ➜ add get/put on drm_bridge accessors
-       1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
-       2. ✔ drm_bridge_get_prev_bridge() (v6.18)
-       3. ✔ drm_bridge_get_next_bridge() (v6.19)
-       4. ✔ drm_for_each_bridge_in_chain() (v6.19)
-       5. ✔ drm_bridge_connector_init (v6.19)
-       6. … protect encoder bridge chain with a mutex
-       7. ➜ of_drm_find_bridge
-          a. ✔… add of_drm_get_bridge(), convert basic direct users
-	        (v6.20?, one driver still pending)
-	  b. ➜ convert direct of_drm_get_bridge() users, part 2
-	  c. … convert direct of_drm_get_bridge() users, part 3
-	  d.   convert direct of_drm_get_bridge() users, part 4
-	  e.   convert bridge-only drm_of_find_panel_or_bridge() users
-       8. drm_of_find_panel_or_bridge, *_of_get_bridge
-       9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
-    F. ✔ debugfs improvements
-       1. ✔ add top-level 'bridges' file (v6.16)
-       2. ✔ show refcount and list lingering bridges (v6.19)
- 2. … handle gracefully atomic updates during bridge removal
-    A. ✔ Add drm_dev_enter/exit() to protect device resources (v6.20?)
-    B. … protect private_obj removal from list
- 3. … DSI host-device driver interaction
- 4. ✔ removing the need for the "always-disconnected" connector
- 5. finish the hotplug bridge work, moving code to the core and potentially
-    removing the hotplug-bridge itself (this needs to be clarified as
-    points 1-3 are developed)
-
-[0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/#t
-
-This work is a continuation of the work to correctly handle bridge
-refcounting for existing of_drm_find_bridge(). The ground work is in:
-
-  - commit 293a8fd7721a ("drm/bridge: add of_drm_find_and_get_bridge()")
-  - commit 9da0e06abda8 ("drm/bridge: deprecate of_drm_find_bridge()")
-  - commit 3fdeae134ba9 ("drm/bridge: add next_bridge pointer to struct drm_bridge")
-
-The whole conversion is split in multiple series to make the review process
-a bit smoother. Parts 3 and 4 are converting non-bridge drivers (mostly
-encoders).
-
-(*) One bridge driver (synopsys/dw-hdmi) is converted in another series,
-    together with its (non-bridge) users. Additionally this series converts
-    drm_of_panel_bridge_remove() which is a special case, and has a bugfix
-    for it too.
-
+Fixes: c70087e8f16f ("drm/drm_of: add drm_of_panel_bridge_remove function")
+Cc: stable@vger.kernel.org # v4.15
+Acked-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
-Changes in v2:
-- Fix bug in samsung-dsim code, patch 10;
-  update patch 12 on top of those changes
-- Fix in imx8qxp-ldb code, patch 9
-- Link to v1: https://lore.kernel.org/r/20260107-drm-bridge-alloc-getput-drm_of_find_bridge-2-v1-0-283d7bba061a@bootlin.com
+ include/drm/drm_of.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
----
-Luca Ceresoli (12):
-      drm: of: drm_of_panel_bridge_remove(): fix device_node leak
-      drm: of: drm_of_panel_bridge_remove(): convert to of_drm_find_and_get_bridge()
-      drm/bridge: sii902x: convert to of_drm_find_and_get_bridge()
-      drm/bridge: thc63lvd1024: convert to of_drm_find_and_get_bridge()
-      drm/bridge: tfp410: convert to of_drm_find_and_get_bridge()
-      drm/bridge: tpd12s015: convert to of_drm_find_and_get_bridge()
-      drm/bridge: lt8912b: convert to of_drm_find_and_get_bridge()
-      drm/bridge: imx8mp-hdmi-pvi: convert to of_drm_find_and_get_bridge()
-      drm/bridge: imx8qxp-ldb: convert to of_drm_find_and_get_bridge()
-      drm/bridge: samsung-dsim: samsung_dsim_host_attach: use a temporary variable for the next bridge
-      drm/bridge: samsung-dsim: samsung_dsim_host_attach: don't use the bridge pointer as an error indicator
-      drm/bridge: samsung-dsim: samsung_dsim_host_attach: convert to of_drm_find_and_get_bridge()
+diff --git a/include/drm/drm_of.h b/include/drm/drm_of.h
+index 7f0256dae3f1..f3e55ea2174c 100644
+--- a/include/drm/drm_of.h
++++ b/include/drm/drm_of.h
+@@ -5,6 +5,7 @@
+ #include <linux/err.h>
+ #include <linux/of_graph.h>
+ #if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_DRM_PANEL_BRIDGE)
++#include <linux/of.h>
+ #include <drm/drm_bridge.h>
+ #endif
+ 
+@@ -173,6 +174,8 @@ static inline int drm_of_panel_bridge_remove(const struct device_node *np,
+ 	bridge = of_drm_find_bridge(remote);
+ 	drm_panel_bridge_remove(bridge);
+ 
++	of_node_put(remote);
++
+ 	return 0;
+ #else
+ 	return -EINVAL;
 
- drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pvi.c | 15 ++++++-----
- drivers/gpu/drm/bridge/imx/imx8qxp-ldb.c     | 12 ++++++++-
- drivers/gpu/drm/bridge/lontium-lt8912b.c     | 31 +++++++++++------------
- drivers/gpu/drm/bridge/samsung-dsim.c        | 37 +++++++++++++++++++---------
- drivers/gpu/drm/bridge/sii902x.c             |  7 +++---
- drivers/gpu/drm/bridge/thc63lvd1024.c        |  7 +++---
- drivers/gpu/drm/bridge/ti-tfp410.c           | 27 ++++++++++----------
- drivers/gpu/drm/bridge/ti-tpd12s015.c        |  8 +++---
- include/drm/bridge/samsung-dsim.h            |  1 -
- include/drm/drm_of.h                         |  6 ++++-
- 10 files changed, 86 insertions(+), 65 deletions(-)
----
-base-commit: 814b88f91b121246b35be9c519b537041fe3d178
-change-id: 20251223-drm-bridge-alloc-getput-drm_of_find_bridge-2-12c6bbcb6896
-
-Best regards,
 -- 
-Luca Ceresoli <luca.ceresoli@bootlin.com>
+2.52.0
 
