@@ -1,67 +1,67 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DA350097D
-	for <imx@lists.linux.dev>; Sat, 10 Jan 2026 14:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0811F34A79B
+	for <imx@lists.linux.dev>; Sat, 10 Jan 2026 15:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768056544; cv=none; b=sFdA9yheVrUxNvVmrFuY0YEKKAWwVc/GYTl+O13jCPEMZPNVM1/kALVIpQu7UusBv6+9spXkBot/mS8dkjtqkL2i5hpHZQ3DqZCJkaPU2SNFqetRWKqbe06PWX3rQkS9pBdLxSCkKc5o6tl9NW2UuaJbHimieqTEGpNb5VJeNC0=
+	t=1768057793; cv=none; b=WSLGr9xB0XnsVl58E2QR3b+9yYqSrO2GN/0pIkAVaog329bqjs8R4UinQ1v5PrGEWJgDlWsUDyiv3w+NPcMydPR21x4vc1/H5ceRzO93xBdE1Et+m4/YhWGGVXucZ2IRDEHfQ9wiVJgOKzyB2NDQNuu9ofU5DOoaVujv//8BHDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768056544; c=relaxed/simple;
-	bh=8cZF88ZHHeswEWIoZ1XSpuokeFUHz2t/rDtmfT1Fb54=;
+	s=arc-20240116; t=1768057793; c=relaxed/simple;
+	bh=veOrw/m8cCXNOzS0YhBEMZHiqb+wrCM+D/j1ZadzRgQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b0vIoduMBxi2HHSaNClPC6XJwrp7DtPSHmQBXX6rj6hSmW79Iz/j3EmEuOWM7ozJsYlRl2Enqjgs2QYOKFsVwPUHOhHLJM6AHKUJj0XS1gUppCVGWUTmQPMWnzhUgbqh/wtqjvAsYNQjE7oFlSLo5YjOws00cjoq3VxpJhdTmPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=VJQOKxQh; arc=none smtp.client-ip=209.85.221.47
+	 In-Reply-To:Content-Type; b=WTdrJuknZSwZiS8vKuMiRTYVYrCbfsD0mE5/SEKs9iLUEtkIW/Jawd+iSs2I9V06nXIalau+PEp90+Ymo2+esT4kwhx5uFMfRUEvr2TZxWS/m0R0HL9M7uENBco/MnwqbUn/vPux0z8XdDj19hqyWdoVZrHLTo95jh81wPbGBcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=MdKsCVVg; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="VJQOKxQh"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4327555464cso2977709f8f.1
-        for <imx@lists.linux.dev>; Sat, 10 Jan 2026 06:49:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="MdKsCVVg"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-432755545fcso2961670f8f.1
+        for <imx@lists.linux.dev>; Sat, 10 Jan 2026 07:09:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1768056540; x=1768661340; darn=lists.linux.dev;
+        d=tuxon.dev; s=google; t=1768057784; x=1768662584; darn=lists.linux.dev;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=IHk6EgoNk8lP2vqJMYUzvRzyl3K2JzNhjFEm/rJg//s=;
-        b=VJQOKxQhoOnvhNvaY/aTr0tGIw/X8PCJwqiPHVYWEOsduw1dwc3JVaXgKyG4Udtzph
-         2BtvrzoJCtV0LKXerd1I0LmxFskmG1/QnNdHh2bLzSn3PeLrS98fuhe5wavC1Y+Ya8RX
-         kq5OQEIMle4RR9A3K1ERW6Od3mbahVWoTP2EgrRV2M6LprguzrzWySyZzyIXLlEsmKUH
-         b5teekPFVT4Q40KXna7dMjw3+hxd7fSk2Ufv6V4/1YXV53c15K9PpWQsEYtXUGu1Ya8Z
-         w4t13xp3RqjLHSni4K+KlONUdce3Zyy3UKFYkmsSa9c09GS4KTOWKf0oQ3qgwoDsNPnq
-         7wvg==
+        bh=ZYFiIfX0/KjQWE2M1MYc+2i7VSmAxQXe92tai7T06wg=;
+        b=MdKsCVVgQso3xlBMS7ds9u4uTK4wxOFop+voOovGEdygzHGSYKYkpdIIxnHzgIGhvK
+         lP8Dm1jUVZzkOwpgrL7RGNhE8LN0fqgrzpu+cZGNpCjLVIf/aEwRS2cIZkgxyw33j/DI
+         3URAp1xvrwMbTxC/kTJMeUZE0r3S5/7XwFZnjNTXovjGcXhhYieYiGa4pZFXXQbcF2R8
+         DiW5kDa5GmSzyYzSLQN8q0XUrAU5EiXrZIstj76V5w7XlFKYaH1PIpMOuPFFXYr97fYl
+         nqj6/QPMT0CpvwHxSs7d3onvsnHRUNx86VogsUtpjgLwd+gcxMYCJvcwb1Tlzmku7G/b
+         3Z/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768056540; x=1768661340;
+        d=1e100.net; s=20230601; t=1768057784; x=1768662584;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=IHk6EgoNk8lP2vqJMYUzvRzyl3K2JzNhjFEm/rJg//s=;
-        b=PkBiuSSb5U2wPHXJm96CPn9BfKyb9qOWIzb8WbgmGQ+xcH1pWxA/EoOP1Z6bQYpxbr
-         ZWb437bBG361DlwtcZBkfmNx24HAQdzrAxEhfPZ1/OV5oOIe/L5v70gh2++0yhDuO0rP
-         q2Fd97Awe+T+BmZlU53gc90cYVL9X6g1sYxHMOvTNaI51lPJWH/sXeEl47k9wgDKB6IG
-         NyzpZ1cNkRC31wP7qgicIc/wA5HJCgHAbVPyydgaJciOAxbZr4q++dpMR981UddXxdyx
-         lrqvHblkj4cZOEzbcldV2GLvFWdEpKqXrsnO7Rn90ZFps02F+wzOvSa9x0eoO6uQiV2K
-         8ySg==
-X-Forwarded-Encrypted: i=1; AJvYcCXGhkEGxtyBhQ+4dAhwzcsyrEIHHHA7YvhE+9gWzFd6ZxpQpIc4uqj8ANM4TbbupAq9LQ8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwbgoXj3/Gfd5P3AHDasH1rIPdGfMu5Ckx90HSOEN7E6xPus1jC
-	DRdWiMnfrFm0lh3dGI7fbK46j1illhFtGVIIu3a3TNBmHI/kNllyT7l5/BwVhuslD0Y=
-X-Gm-Gg: AY/fxX4ufzQAIHNZwQbV4SrcvQzS/1m5GB1lj2yJB/FizO/cwbUmXRxzZJMvbzDIUNB
-	a0sl3dqCdxzjQH6olPMszhVsnAaijJSllUZIbrmvRQcBRme7KFrmfT+SqC2om8lLJJJPh9iHvU7
-	VIz3en2wOByiJcQeqbXHWinypSFrQtapRMJda2HVPcdllVq+Hnv1DN9h1TkPcl3eviPQPsq4/oH
-	mGmZd/slIGTemvtU+LoAxZJcOxD7ey3YJ/6OayGMpe4oDPoxE9jzOz+Vo/BGaKPtITQ5AMBaXcC
-	AKbCFLfhGEyZLQahKd8gvvC4p//JV+b5wsPFDTw/9ykYOypJZiT6CngWFRRFUT8SpkMducqyjHN
-	RPDHG8ECkaELqPnuQ2RTLKez9MEMcEKbOKOqOJ2fo247JN19RM6++fB0OFOYlAbYTxCtNEOJlhj
-	ZMyz6KikkVnheazbx2I/KNPuG7tp8K
-X-Google-Smtp-Source: AGHT+IExDiyl6+cMqnLU0OScR46v/DhXxaFlI7KfbIz5c0gjBYd8wiO/Eo5iH1Cn00OMlkpwekH3Hg==
-X-Received: by 2002:adf:f54f:0:b0:432:e00b:866f with SMTP id ffacd0b85a97d-432e00b8b14mr2891143f8f.60.1768056540373;
-        Sat, 10 Jan 2026 06:49:00 -0800 (PST)
+        bh=ZYFiIfX0/KjQWE2M1MYc+2i7VSmAxQXe92tai7T06wg=;
+        b=foK2jYT5j1p66ITRMiykJnwTtLpvXwT8pV4ZFRiM79Dbjxa6OugbKSxi6VpnOTtST1
+         QFWhyu+0Do5DzGEe4D85r1ODJNtyFurCpBU4gxBPO1WD6q8PtnUcZZu8JyqtZjX0XOSN
+         4QLQHK/09iGD5OGaUfLYJNU9EqkyY2c1cIVV4T+cSu4pawjnI4tcFaPnxJv4/Kvh9doz
+         4gtQ9z2S1N7xJey6Bu6gCcUBZ22bNyjhrbZcgXxuL5FbtvmBzy4EFxK38sTchlXQvXbn
+         VJcgqEggNhztkn+MUIvLklH9SgPyUwb6xZ5Dd8qNr+xzqWV0squDaNbP894IgqZDNdY4
+         KvEA==
+X-Forwarded-Encrypted: i=1; AJvYcCV58tmUYYHOLK1B9ktkTP0kZUlSjbq8AqmZhQULcthcruB6iMth1M2Nas2fcwx5WfCh/2c=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzZqTLhygtbXU1dDbjgtC6IRsKwFRRLy6fEkEdlC+9RTbpew/NX
+	+dj2kAle/6zOWcS056/T4XS4BvpXx0ltxwBj5ZA9qRJFkPA2NI1CqQbpfxS8O5Hvc6Y=
+X-Gm-Gg: AY/fxX6AKGGdOYmT8JuWvzM0RxOG80fJU6vqpOUYnYFJ0R78wb6dR37/rTD7GUu2Tl7
+	aDFMhFQIAedTOBxSN6BXCPJrUN74AtCW63cTW5AqjweRQEg0P4P1GGiMXd/aB4kWaNSSbAd9Sun
+	BBWEMzgeVp5EHz/L0sQSvhqbSjJE5vvjd7M6/UYRKMvV+eXaTq0rxB5gSviuTNjYOnFMh96PFGL
+	CYO54Es3cM+/tH8LAdT6vrq25RnbebVN8IArVpZBYjQ7HVSsts1jglPJvkUezwnoY68Rp8uS0VX
+	B8hDdBtOLvuyLnAQtZYX7gpTdIF93EZScoj3nIcMPiNJU9qrQa1uBpMtYsR0SLDat8qoOd+sDiT
+	lPbvyWwAr20+0t8xT+NiCXSa1hgyQzGhHvQiSrDf3dNTeN4KzmFPI2XKhbPCEKOhXZRLPROgl/M
+	+O0XisTnfhYLm5STS9E4A8e7pJ02T1
+X-Google-Smtp-Source: AGHT+IHwvRNK+qwBLjP9mJj148RzU5png6+Rsy9u3J7EYhE07UUYa3vVSxYXarlT5BZGC6AC5xVP2w==
+X-Received: by 2002:a05:6000:40da:b0:430:f23f:4bc5 with SMTP id ffacd0b85a97d-432c3760d02mr14529601f8f.45.1768057784134;
+        Sat, 10 Jan 2026 07:09:44 -0800 (PST)
 Received: from [192.168.50.4] ([82.78.167.31])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0dacd1sm27764794f8f.4.2026.01.10.06.48.56
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0e199bsm28208208f8f.16.2026.01.10.07.09.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 10 Jan 2026 06:48:59 -0800 (PST)
-Message-ID: <b0dec3fb-51df-4bcd-ba13-c2049695266e@tuxon.dev>
-Date: Sat, 10 Jan 2026 16:48:55 +0200
+        Sat, 10 Jan 2026 07:09:43 -0800 (PST)
+Message-ID: <6c2612f9-97de-49e4-a7c2-eacea2d33f51@tuxon.dev>
+Date: Sat, 10 Jan 2026 17:09:40 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -69,8 +69,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/11] ARM: at91: Simplify with scoped for each OF child
- loop
+Subject: Re: [PATCH v3 02/12] ARM: at91: Simplify with scoped for each OF
+ child loop
 To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
  Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>,
  Saravana Kannan <saravanak@google.com>, Nathan Chancellor
@@ -98,22 +98,23 @@ Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
  llvm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  linux-samsung-soc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  linux-clk@vger.kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org,
- linux-media@vger.kernel.org, linux-pm@vger.kernel.org
-References: <20260105-of-for-each-compatible-scoped-v1-0-24e99c177164@oss.qualcomm.com>
- <20260105-of-for-each-compatible-scoped-v1-2-24e99c177164@oss.qualcomm.com>
+ linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
+ Jonathan Cameron <jonathan.cameron@huawei.com>
+References: <20260109-of-for-each-compatible-scoped-v3-0-c22fa2c0749a@oss.qualcomm.com>
+ <20260109-of-for-each-compatible-scoped-v3-2-c22fa2c0749a@oss.qualcomm.com>
 Content-Language: en-US
 From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-In-Reply-To: <20260105-of-for-each-compatible-scoped-v1-2-24e99c177164@oss.qualcomm.com>
+In-Reply-To: <20260109-of-for-each-compatible-scoped-v3-2-c22fa2c0749a@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
-On 1/5/26 15:33, Krzysztof Kozlowski wrote:
+On 1/9/26 18:57, Krzysztof Kozlowski wrote:
 > Use scoped for-each loop when iterating over device nodes to make code a
 > bit simpler.
 > 
+> Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> 
-
 Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
