@@ -1,120 +1,109 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0811F34A79B
-	for <imx@lists.linux.dev>; Sat, 10 Jan 2026 15:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E8C34888A
+	for <imx@lists.linux.dev>; Sat, 10 Jan 2026 15:47:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768057793; cv=none; b=WSLGr9xB0XnsVl58E2QR3b+9yYqSrO2GN/0pIkAVaog329bqjs8R4UinQ1v5PrGEWJgDlWsUDyiv3w+NPcMydPR21x4vc1/H5ceRzO93xBdE1Et+m4/YhWGGVXucZ2IRDEHfQ9wiVJgOKzyB2NDQNuu9ofU5DOoaVujv//8BHDQ=
+	t=1768060071; cv=none; b=mjlVWEa7yimbK+EysPHdYz9pOo5UTLm3bMNlTigiKwYZgulLFqZa5K+e6ufORYrH+FymgTBLmA2wNQ6UZSCksntMIJ/bUsZN0EvJ5hsBlWd0lDg2ctoG7KZpQwFrrvD8hfyukxYpSpcpYtjGgT6JiA7u/oWrS4MBMB+7eUvyOys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768057793; c=relaxed/simple;
-	bh=veOrw/m8cCXNOzS0YhBEMZHiqb+wrCM+D/j1ZadzRgQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WTdrJuknZSwZiS8vKuMiRTYVYrCbfsD0mE5/SEKs9iLUEtkIW/Jawd+iSs2I9V06nXIalau+PEp90+Ymo2+esT4kwhx5uFMfRUEvr2TZxWS/m0R0HL9M7uENBco/MnwqbUn/vPux0z8XdDj19hqyWdoVZrHLTo95jh81wPbGBcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=MdKsCVVg; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+	s=arc-20240116; t=1768060071; c=relaxed/simple;
+	bh=bSDYgxW83k3pPLWt9O3y4zO+XoLVRH3WyrTLNZpoO3E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f5pZGxFBAr8Fbqz72ELZwk0q/bwbLtKeq27tKkE8lZnRcswEWDdL7kz4JSjz+UGIWQBm07k8Zpl9dd5gMPSdZtvcZqmZKlMbTchnnvsLCyMvZiGaB4chAHkkJ+qQU+7MkHDzZyqZDck899LTqVYsmaiqvWZoAPKoGeFzQTmpnPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=A0iYr7pr; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="MdKsCVVg"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-432755545fcso2961670f8f.1
-        for <imx@lists.linux.dev>; Sat, 10 Jan 2026 07:09:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1768057784; x=1768662584; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZYFiIfX0/KjQWE2M1MYc+2i7VSmAxQXe92tai7T06wg=;
-        b=MdKsCVVgQso3xlBMS7ds9u4uTK4wxOFop+voOovGEdygzHGSYKYkpdIIxnHzgIGhvK
-         lP8Dm1jUVZzkOwpgrL7RGNhE8LN0fqgrzpu+cZGNpCjLVIf/aEwRS2cIZkgxyw33j/DI
-         3URAp1xvrwMbTxC/kTJMeUZE0r3S5/7XwFZnjNTXovjGcXhhYieYiGa4pZFXXQbcF2R8
-         DiW5kDa5GmSzyYzSLQN8q0XUrAU5EiXrZIstj76V5w7XlFKYaH1PIpMOuPFFXYr97fYl
-         nqj6/QPMT0CpvwHxSs7d3onvsnHRUNx86VogsUtpjgLwd+gcxMYCJvcwb1Tlzmku7G/b
-         3Z/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768057784; x=1768662584;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZYFiIfX0/KjQWE2M1MYc+2i7VSmAxQXe92tai7T06wg=;
-        b=foK2jYT5j1p66ITRMiykJnwTtLpvXwT8pV4ZFRiM79Dbjxa6OugbKSxi6VpnOTtST1
-         QFWhyu+0Do5DzGEe4D85r1ODJNtyFurCpBU4gxBPO1WD6q8PtnUcZZu8JyqtZjX0XOSN
-         4QLQHK/09iGD5OGaUfLYJNU9EqkyY2c1cIVV4T+cSu4pawjnI4tcFaPnxJv4/Kvh9doz
-         4gtQ9z2S1N7xJey6Bu6gCcUBZ22bNyjhrbZcgXxuL5FbtvmBzy4EFxK38sTchlXQvXbn
-         VJcgqEggNhztkn+MUIvLklH9SgPyUwb6xZ5Dd8qNr+xzqWV0squDaNbP894IgqZDNdY4
-         KvEA==
-X-Forwarded-Encrypted: i=1; AJvYcCV58tmUYYHOLK1B9ktkTP0kZUlSjbq8AqmZhQULcthcruB6iMth1M2Nas2fcwx5WfCh/2c=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzZqTLhygtbXU1dDbjgtC6IRsKwFRRLy6fEkEdlC+9RTbpew/NX
-	+dj2kAle/6zOWcS056/T4XS4BvpXx0ltxwBj5ZA9qRJFkPA2NI1CqQbpfxS8O5Hvc6Y=
-X-Gm-Gg: AY/fxX6AKGGdOYmT8JuWvzM0RxOG80fJU6vqpOUYnYFJ0R78wb6dR37/rTD7GUu2Tl7
-	aDFMhFQIAedTOBxSN6BXCPJrUN74AtCW63cTW5AqjweRQEg0P4P1GGiMXd/aB4kWaNSSbAd9Sun
-	BBWEMzgeVp5EHz/L0sQSvhqbSjJE5vvjd7M6/UYRKMvV+eXaTq0rxB5gSviuTNjYOnFMh96PFGL
-	CYO54Es3cM+/tH8LAdT6vrq25RnbebVN8IArVpZBYjQ7HVSsts1jglPJvkUezwnoY68Rp8uS0VX
-	B8hDdBtOLvuyLnAQtZYX7gpTdIF93EZScoj3nIcMPiNJU9qrQa1uBpMtYsR0SLDat8qoOd+sDiT
-	lPbvyWwAr20+0t8xT+NiCXSa1hgyQzGhHvQiSrDf3dNTeN4KzmFPI2XKhbPCEKOhXZRLPROgl/M
-	+O0XisTnfhYLm5STS9E4A8e7pJ02T1
-X-Google-Smtp-Source: AGHT+IHwvRNK+qwBLjP9mJj148RzU5png6+Rsy9u3J7EYhE07UUYa3vVSxYXarlT5BZGC6AC5xVP2w==
-X-Received: by 2002:a05:6000:40da:b0:430:f23f:4bc5 with SMTP id ffacd0b85a97d-432c3760d02mr14529601f8f.45.1768057784134;
-        Sat, 10 Jan 2026 07:09:44 -0800 (PST)
-Received: from [192.168.50.4] ([82.78.167.31])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0e199bsm28208208f8f.16.2026.01.10.07.09.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 10 Jan 2026 07:09:43 -0800 (PST)
-Message-ID: <6c2612f9-97de-49e4-a7c2-eacea2d33f51@tuxon.dev>
-Date: Sat, 10 Jan 2026 17:09:40 +0200
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="A0iYr7pr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=nUHVAoAREYLF1TzcvPdgfaRGlq1lrNPziR3WwRPXhq4=; b=A0iYr7prmMiASSL1AOz8/XgGnp
+	ovZha2vbY0r/bjN1U7KLi7QQ95Ls88EQ7rWpiXyuL4qd5r5L5sAxP6f18XrMYnZfdbPpXk+CATM+k
+	7hyz++Y0TvK6+c6JaSPTlVYElOR7Ov9sUzc4dGjAtrF6+Mc8Ev73r4UOwQBLJdlJaVVlaOk9Yz91e
+	0EFZdcfLSQC9+VcyGqk7RdkISvlDd9/jUERKYAM1CLejmpG+vYtP50qQE3HqPSiGJ4gsrh0MS5trN
+	Pk1sI854m9fkkLK88dF6pD/ZIrKSKrM6I04zOdgPRGmSAfZgxygS1zea+BnrP0mGVUT8dwzXKd7Bt
+	lbHi5hXQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53048)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vebBV-000000004qn-3BkF;
+	Sat, 10 Jan 2026 15:47:25 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vebBR-000000004Mx-2YK5;
+	Sat, 10 Jan 2026 15:47:21 +0000
+Date: Sat, 10 Jan 2026 15:47:21 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Stefan Eichenberger <eichest@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com,
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, francesco.dolcini@toradex.com,
+	robh@kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH RESEND net-next v2] net: stmmac: dwmac: Add a fixup for
+ the Micrel KSZ9131 PHY
+Message-ID: <aWJ0iV6-_4XqpeHD@shell.armlinux.org.uk>
+References: <20260105100245.19317-1-eichest@gmail.com>
+ <6ee0d55a-69de-4c28-8d9d-d7755d5c0808@bootlin.com>
+ <aVuxv3Pox-y5Dzln@eichest-laptop>
+ <a597b9d6-2b32-461f-ac90-2db5bb20cdb2@lunn.ch>
+ <aVvp70S2Lr3o_jyB@eichest-laptop>
+ <aVvwOYce1CFOLiBk@shell.armlinux.org.uk>
+ <aVv7wD2JFikGkt3F@eichest-laptop>
+ <aWC_ZDu0HipuVhQS@eichest-laptop>
+ <8f70bd9d-747f-4ffa-b0f2-1020071b5adc@bootlin.com>
+ <aWJXNSiDLHLFGV8F@eichest-laptop>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/12] ARM: at91: Simplify with scoped for each OF
- child loop
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
- Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>,
- Saravana Kannan <saravanak@google.com>, Nathan Chancellor
- <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Russell King <linux@armlinux.org.uk>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
- <alim.akhtar@samsung.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Nipun Gupta <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>,
- Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Vinod Koul <vkoul@kernel.org>,
- Sylwester Nawrocki <s.nawrocki@samsung.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- llvm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-clk@vger.kernel.org, imx@lists.linux.dev, dmaengine@vger.kernel.org,
- linux-media@vger.kernel.org, linux-pm@vger.kernel.org,
- Jonathan Cameron <jonathan.cameron@huawei.com>
-References: <20260109-of-for-each-compatible-scoped-v3-0-c22fa2c0749a@oss.qualcomm.com>
- <20260109-of-for-each-compatible-scoped-v3-2-c22fa2c0749a@oss.qualcomm.com>
-Content-Language: en-US
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-In-Reply-To: <20260109-of-for-each-compatible-scoped-v3-2-c22fa2c0749a@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aWJXNSiDLHLFGV8F@eichest-laptop>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-
-
-On 1/9/26 18:57, Krzysztof Kozlowski wrote:
-> Use scoped for-each loop when iterating over device nodes to make code a
-> bit simpler.
+On Sat, Jan 10, 2026 at 02:42:13PM +0100, Stefan Eichenberger wrote:
+> Hi Maxime,
 > 
-> Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+> Not problem, thanks a lot for the feedback and the discussion. I will
+> then proceed with the current approach and send a new version with an
+> updated commit message.
+
+We could add a flag to:
+
+/* Generic phy_device::dev_flags */
+#define PHY_F_NO_IRQ            0x80000000
+#define PHY_F_RXC_ALWAYS_ON     0x40000000
+
+indicating that the MAC requires the full preamble, which the PHY can
+then test for and configure appropiately.
+
+The question is, whether the requirement for the full preamble applies
+to many MACs, and whether there are PHYs that default to producing
+short preambles.
+
+Looking at Marvell 88e151x, the only control it has is to pad odd
+nibbles of preambles on copper (page 2, register 16, bit 6.)
+
+AR8035 seems to make no mention of preamble for the MII interfaces, so
+I guess it has no control over it.
+
+I've not looked further than that.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
