@@ -1,119 +1,153 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738F2281369
-	for <imx@lists.linux.dev>; Sat, 10 Jan 2026 17:15:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC3D237180
+	for <imx@lists.linux.dev>; Sun, 11 Jan 2026 05:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768065322; cv=none; b=WH4dc5+AfScAvFrStOIvv2j+Op0+a1G/TzTuurJ4uh8Lcdv77Ucyx4fbG2ec8r7ZvRBrS91ug9rzejYh2y46PPJG8BY/ard7QNLhy4sbKLD4lyy2TR4AmyIkyQIwlyMEmjsr3KLjEvxTZXRQBHiWQEaRFhAwLtpR9SXR0rag4XY=
+	t=1768110722; cv=none; b=jJFI0I3SeXTkGcUyFYDnp3OY6iY6JcmW/nak6pljzoQgPtnRzS/T4f6CkNtfqnDmJgOX7lzt8k+P1OM1aEpP/K5Rn2aee35Vw66ZsmyoGV5INFNv01bcA5+Gsu53lA4cImMn3iE0IKVL+XQnoHG13SWuTIVUUgtMmKcxWMqEvMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768065322; c=relaxed/simple;
-	bh=O02xKoL83aPggV9KKs39NRhLhuG30e9T9mx6B7I92V0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IObBMVDyBa7+qkj9NlyMu/VngEXmPpuErCL20OrIvK1kECWX6qtRvUVf/Qga+uDHmDG6f0jfoMG86guFDCTzCpabD4hz7fY52MrQiq9pSNlD90Y1KbmbdlwEZHG0fcIekBAJJKizSwCVC0A+s9HpGAhfkWnltAlMt4BGK66K00I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=Yr6K9PYn; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1768110722; c=relaxed/simple;
+	bh=gFOqW5EllA9fOAMNFfoSxTnUWA45XGayQuA1pDHkobg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MtA+iDQU+AKvU1mvNMAnZ9L68ZYN1i9DjTzvQHVhD/DBDj49KdTTuw4Hi56gU1Egiv3kt0XOTnu8UIEq2Y4UMR4veFaEg42YYLc97qjY5NfNAxJdUa7MGORGbQSE9Nh5EIUhGqilLdScac5ql2fxeBwOX1jFTTAsJfrdB7rj2tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EaG/5oDA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="Yr6K9PYn"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 22211103463;
-	Sat, 10 Jan 2026 18:15:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1768065316; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=/pWu63fv2X4piZLVw/R8K7A4ZYtCKrF3gKuywcnCCi8=;
-	b=Yr6K9PYnDF/mEE6bWMrY80V6pFaQJ0SQ6YrofMdeF8PCmrBfH3rcEVqrpMaxH8Twd8M78U
-	yTmPH9VnpCwe/xGB9ZKajxGf28ZF+IcozRLWchF7ZduT9zLA5XIziXUun30n20RZzdRNIQ
-	dBIGMqy9PGhmlRz/vB143x+SXjAtUIPnLLiauFUIiQq9PSZHoXY233sqcpgjZuRrMIpyQq
-	KoFAkr0SWlirPQ18xHIkjDQQVDKpgfSL+0F/74murXa2NeTExpBBvlJYlTtV2szq65wOa8
-	9rTRVCVVpOi9ghCDweD1zfLkikmPBE7vrSuee5HKdeN8aETQIxU8Q0CjmFkCHw==
-From: Marek Vasut <marex@nabladev.com>
-To: dri-devel@lists.freedesktop.org
-Cc: Marek Vasut <marex@nabladev.com>,
-	stable@vger.kernel.org,
-	David Airlie <airlied@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/imx: parallel-display: Prefer bus format set via legacy "interface-pix-fmt" DT property
-Date: Sat, 10 Jan 2026 18:14:10 +0100
-Message-ID: <20260110171510.692666-1-marex@nabladev.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EaG/5oDA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 114C8C19425
+	for <imx@lists.linux.dev>; Sun, 11 Jan 2026 05:52:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768110722;
+	bh=gFOqW5EllA9fOAMNFfoSxTnUWA45XGayQuA1pDHkobg=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
+	b=EaG/5oDAR9smlSfbzttjy3FKgAcfmuUQr5RohlvPT82k8gDogNTuPeVkhnNnUzN1Q
+	 PUOYV9pyWf373DPlkm8bWa7AsjFvsbAbUFYXOSuK0uzvYWRb876UbNBjf7MUQ5hkon
+	 bUFWMcwSnyeeICSZEdVry0FTr34MGTriVAUR5JZOHnEWo7WtKX1Zar86vjFoWEP31k
+	 gk+I+morpNnQnEeEmDnBg7M0hgwxAV8m2Ct2Z/e+uEEtP48pakFbj9avoda79dJcxD
+	 ypgQlN9Ed8KhEcF7CrAD1jQYrdgMLb/QRKIT7Zjo8LxcnbiYvQXEigeCDsGKtRwxxs
+	 vQTRaVoQZ/NFg==
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-59b8364e4ccso2160817e87.3
+        for <imx@lists.linux.dev>; Sat, 10 Jan 2026 21:52:01 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXJ0xCK8YdKDqXwnChvrkDnqi5RCWOoaEIrvAUskClsn8iWm6rmwx23lmvx8/j1q4EsRDE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwYdUXb1LLEgs2Hk6q0QfkSi7G2xjw3dkUJ6qzxP1NOs9ANDQ6c
+	B8DLQM8PaiKNr+m6LZwVDKpmlwzYyD8qJ6Mx8SOQPmPTi1SRdROCCxFVW7YpMI8QKTq8DJDIBBc
+	zoHz9Vci41VkTBPCK1nciPFORM2fp7sk=
+X-Google-Smtp-Source: AGHT+IHdx8MpFefSjShCgzPfxBNx4mIFIm/zyAePE38bdBhjZyOXA6x69rTwWZ2pdG4l9l0f7a6WNZMxH5DhWbEqc7E=
+X-Received: by 2002:a05:6512:31cd:b0:59b:6853:f085 with SMTP id
+ 2adb3069b0e04-59b6ef04985mr5236958e87.16.1768110718798; Sat, 10 Jan 2026
+ 21:51:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260108203004.3538449-1-andriy.shevchenko@linux.intel.com> <20260108203004.3538449-3-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20260108203004.3538449-3-andriy.shevchenko@linux.intel.com>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Sun, 11 Jan 2026 13:51:46 +0800
+X-Gmail-Original-Message-ID: <CAGb2v640nT=+g6bVuROizSG5Qb-upfQefs0-j9X0BnOHf9NYMg@mail.gmail.com>
+X-Gm-Features: AZwV_QjlNyXyyBCLSJ5be_kfqm-PbzUe8msaEi6oZsEaSVwRVLe_bhZOZe6iKv4
+Message-ID: <CAGb2v640nT=+g6bVuROizSG5Qb-upfQefs0-j9X0BnOHf9NYMg@mail.gmail.com>
+Subject: Re: [PATCH v1 2/4] spi: Drop duplicate of_node assignment
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Mark Brown <broonie@kernel.org>, 
+	Varshini Rajendran <varshini.rajendran@microchip.com>, 
+	Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Sunny Luo <sunny.luo@amlogic.com>, 
+	Janne Grunau <j@jannau.net>, Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>, 
+	CL Wang <cl634@andestech.com>, Manikandan Muralidharan <manikandan.m@microchip.com>, 
+	David Lechner <dlechner@baylibre.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Jonas Gorski <jonas.gorski@gmail.com>, Hang Zhou <929513338@qq.com>, Jun Guo <jun.guo@cixtech.com>, 
+	Philipp Stanner <phasta@kernel.org>, Charles Keepax <ckeepax@opensource.cirrus.com>, 
+	Bartosz Golaszewski <brgl@kernel.org>, =?UTF-8?Q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
+	Shiji Yang <yangshiji66@outlook.com>, James Clark <james.clark@linaro.org>, 
+	Jonathan Marek <jonathan@marek.ca>, Carlos Song <carlos.song@nxp.com>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	Xianwei Zhao <xianwei.zhao@amlogic.com>, 
+	Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>, 
+	Sergio Perez Gonzalez <sperezglz@gmail.com>, Miquel Raynal <miquel.raynal@bootlin.com>, 
+	Qianfeng Rong <rongqianfeng@vivo.com>, Haibo Chen <haibo.chen@nxp.com>, 
+	Gabor Juhos <j4g8y7@gmail.com>, Md Sadre Alam <quic_mdalam@quicinc.com>, 
+	Rosen Penev <rosenp@gmail.com>, Luis de Arquer <luis.dearquer@inertim.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>, 
+	Tudor Ambarus <tudor.ambarus@linaro.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Longbin Li <looong.bin@gmail.com>, Patrice Chotard <patrice.chotard@foss.st.com>, 
+	=?UTF-8?Q?Cl=C3=A9ment_Le_Goffic?= <clement.legoffic@foss.st.com>, 
+	Alessandro Grassi <alessandro.grassi@mailbox.org>, Darshan R <rathod.darshan.0896@gmail.com>, 
+	Aaron Kling <webgeek1234@gmail.com>, Vishwaroop A <va@nvidia.com>, 
+	Haixu Cui <quic_haixcui@quicinc.com>, Darshan Rathod <darshanrathod475@gmail.com>, 
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+	asahi@lists.linux.dev, linux-aspeed@lists.ozlabs.org, 
+	openbmc@lists.ozlabs.org, linux-rpi-kernel@lists.infradead.org, 
+	linux-sound@vger.kernel.org, patches@opensource.cirrus.com, 
+	imx@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
+	linux-samsung-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, 
+	virtualization@lists.linux.dev, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Ray Liu <ray.liu@airoha.com>, Sven Peter <sven@kernel.org>, 
+	Neal Gompa <neal@gompa.dev>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+	Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
+	Ryan Wanner <ryan.wanner@microchip.com>, 
+	Michael Hennerich <michael.hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Kamal Dasu <kamal.dasu@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, William Zhang <william.zhang@broadcom.com>, 
+	Kursad Oney <kursad.oney@broadcom.com>, Anand Gore <anand.gore@broadcom.com>, 
+	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>, 
+	David Rhodes <david.rhodes@cirrus.com>, Richard Fitzgerald <rf@opensource.cirrus.com>, 
+	Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>, Jean-Marie Verdun <verdun@hpe.com>, 
+	Nick Hawkins <nick.hawkins@hpe.com>, Yang Shen <shenyang39@huawei.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Lixu Zhang <lixu.zhang@intel.com>, Yinbo Zhu <zhuyinbo@loongson.cn>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Conor Dooley <conor.dooley@microchip.com>, Daire McNamara <daire.mcnamara@microchip.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, Avi Fishman <avifishman70@gmail.com>, 
+	Tomer Maimon <tmaimon77@gmail.com>, Tali Perry <tali.perry1@gmail.com>, 
+	Patrick Venture <venture@google.com>, Nancy Yuen <yuenn@google.com>, 
+	Benjamin Fair <benjaminfair@google.com>, Han Xu <han.xu@nxp.com>, 
+	Yogesh Gaur <yogeshgaur.83@gmail.com>, Linus Walleij <linusw@kernel.org>, 
+	Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
+	Robert Jarzmik <robert.jarzmik@free.fr>, Chris Packham <chris.packham@alliedtelesis.co.nz>, 
+	Heiko Stuebner <heiko@sntech.de>, Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
+	Andi Shyti <andi.shyti@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Paul Walmsley <pjw@kernel.org>, Samuel Holland <samuel.holland@sifive.com>, 
+	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Chunyan Zhang <zhang.lyra@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Alain Volmat <alain.volmat@foss.st.com>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Li-hao Kuo <lhjeff911@gmail.com>, 
+	Masahisa Kojima <masahisa.kojima@linaro.org>, Jassi Brar <jaswinder.singh@linaro.org>, 
+	Laxman Dewangan <ldewangan@nvidia.com>, Thierry Reding <thierry.reding@gmail.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Sowjanya Komatineni <skomatineni@nvidia.com>, 
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	=?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+	Michal Simek <michal.simek@amd.com>, Max Filippov <jcmvbkbc@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Prefer bus format set via legacy "interface-pix-fmt" DT property
-over panel bus format. This is necessary to retain support for
-DTs which configure the IPUv3 parallel output as 24bit DPI, but
-connect 18bit DPI panels to it with hardware swizzling.
+On Fri, Jan 9, 2026 at 4:30=E2=80=AFAM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> The SPI core provides the default of_node for the controller,
+> inherited from the actual (parent) device. No need to repeat it
+> in the driver.
+>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+[...]
 
-This used to work up to Linux 6.12, but stopped working in 6.13,
-reinstate the behavior to support old DTs.
+>  drivers/spi/spi-sun4i.c              | 1 -
+>  drivers/spi/spi-sun6i.c              | 1 -
 
-Cc: stable@vger.kernel.org
-Fixes: 5f6e56d3319d ("drm/imx: parallel-display: switch to drm_panel_bridge")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
----
-Cc: David Airlie <airlied@gmail.com>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: dri-devel@lists.freedesktop.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
----
- drivers/gpu/drm/imx/ipuv3/parallel-display.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+Acked-by: Chen-Yu Tsai <wens@kernel.org> # sun4i, sun6i
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/parallel-display.c b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-index 6fbf505d2801d..02bb38a1ee4eb 100644
---- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-+++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-@@ -110,8 +110,7 @@ imx_pd_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
- 		output_fmt = imxpd->bus_format ? : MEDIA_BUS_FMT_RGB888_1X24;
- 
- 	/* Now make sure the requested output format is supported. */
--	if ((imxpd->bus_format && imxpd->bus_format != output_fmt) ||
--	    !imx_pd_format_supported(output_fmt)) {
-+	if (!imx_pd_format_supported(output_fmt)) {
- 		*num_input_fmts = 0;
- 		return NULL;
- 	}
-@@ -121,7 +120,17 @@ imx_pd_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
- 	if (!input_fmts)
- 		return NULL;
- 
--	input_fmts[0] = output_fmt;
-+	/*
-+	 * Prefer bus format set via legacy "interface-pix-fmt" DT property
-+	 * over panel bus format. This is necessary to retain support for
-+	 * DTs which configure the IPUv3 parallel output as 24bit, but
-+	 * connect 18bit DPI panels to it with hardware swizzling.
-+	 */
-+	if (imxpd->bus_format && imxpd->bus_format != output_fmt)
-+		input_fmts[0] = imxpd->bus_format;
-+	else
-+		input_fmts[0] = output_fmt;
-+
- 	return input_fmts;
- }
- 
--- 
-2.51.0
-
+[...]
