@@ -1,191 +1,221 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012000.outbound.protection.outlook.com [52.101.48.0])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC47030B532
-	for <imx@lists.linux.dev>; Mon, 12 Jan 2026 13:09:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.0
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768223345; cv=fail; b=h0v7RKDHd05Ac8uDoAE6Ft0ERQ3OODU+te9dMGPHQdK/SpbZCAAr/unC53yCWJy1iQWeGXERBkFKMvdgK2h1ZKmvT6gpoWHnVgtsm7dinn1zeTNZYi0SJKT/Y483MthDUdZIMXLJB5lntmWcUWXf1KZyDMDVC/8Flf0BtMQevSs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768223345; c=relaxed/simple;
-	bh=nVrm846pIWwu8ZPCG4QtnUTwFjvIdj1VkmJsmdjTGKY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PQivvA3pdveu7HI3huDUfi9CAAH4MIOCnZYOp5O7HapJGkyC2paDyZADg+whqn/nL9AOcuWfeXGNbEAjzqE34GBMvOBSUPbbCLbUCwhjMnfSFKAtoaZ1cm/EaoyqHh4H2xerVkd9a4aB2JFDGXErJQ79knD3t4ilv/mEPdX0rpY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gehealthcare.com; spf=pass smtp.mailfrom=gehealthcare.com; dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b=H0YIwPNC; arc=fail smtp.client-ip=52.101.48.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gehealthcare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gehealthcare.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DD93587A1;
+	Mon, 12 Jan 2026 13:35:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768224941; cv=none; b=A7nEE4qRuMG/oXelVpdLdkQapmH9KxUmoiq6F4TQxmMwElBxDLKJjU9d6gNQbYoc4ODnKMnxppcdYTozUQdLNE3AFPr7EX3ReiVsGCMHCMeclOIUulxQy/EHrvrOEN4GaMa96gtJbJfBnYzTiJued3poiUVEMRi7dC9ng+I0dts=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768224941; c=relaxed/simple;
+	bh=hAdDNP0uJNY4vw73AVjOI055cmk4EXKQe7NLD05xkKg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R8rbZ1l1UoOn265ySLmIUdi+JRY5vHpthAwsBfswmAwOzUmnqfnAvHOAQ2cCJKuFUyCx6hVMfPFTiO31iRVKnwNYTzKPJL8UtFEzUsZhJnMr3ZbLrGHjIEbb/XRjoLLdW1GtoI00fE2td3L5X+IDNJgokMVWMPti22WXLJAmpGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sSAsE2ck; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b="H0YIwPNC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n0c1izGEYgwMNj49ZiKvuGCOZ4sGWa1K60YLM342NCxAryHpnVF4paAM8aiqOqizq5sWKxnfsiJLiDucjgLPSzzORkThRgF3e3jgLIfVma+H+8KBmw8sbh5KpRlld5BrCvb165eUWbH4SksD56L0ZIHEYRs4AFX/9/opFunCR/2/z7MDqnYeJgemH3i5sjwBgVk40vyoTuJpolb6s1Raf2g4eU99ilyQtL5utWlyVxspKreSSYYkrEegGme06hAUDQ3EC3mXqUNKjyvLyS1Dpy15lbPEm3hESHV1fiMw8YIezClmqr+Q1u+u+zn2+zSdLR74B+174VBVZ2gawZbyvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=puThyK3zA4CcndHOvIZCGH6RxjnQrNKfmjAmzy5CtnA=;
- b=A7v8N6VCfdta1U8yH87IYFvHWkVWWNjBLVhepIdaB2zin6L83iCLRj7mlH5GJOGKnL41Z9/IMdqIa1F72ln13FF4+C5QV8/Wfo+vLBJXxURsftsK9mQf78taCL6wqVT579upOZcB/KIJMlB9Jeib2FvimpyUbFOM1HlQbLeAOuPcvswOk7QbOcLitoQKbFpI9ItmFMymCNcMT4N8+wQdrU/qEj+6M/9iUN8oKtDj+3IA11IrYxl6hKZnHj/2DU7DFzC1ST0t/UP/ocNeq7pCSLYd++YEl7gYvEcfgUzvEgszxo3G2JrCigz37hPEh9qidcsxkMn7mdEBAsO/RcZQ9A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 165.85.157.49) smtp.rcpttodomain=lists.linux.dev
- smtp.mailfrom=gehealthcare.com; dmarc=fail (p=quarantine sp=quarantine
- pct=100) action=quarantine header.from=gehealthcare.com; dkim=none (message
- not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gehealthcare.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=puThyK3zA4CcndHOvIZCGH6RxjnQrNKfmjAmzy5CtnA=;
- b=H0YIwPNCYbfIfBFJxNBOXqoq8rW6zdReA0a7Sdi+YA9BrHAm2Uk3GZ2xj6/iBn83iv8tNDkbt4ZlPw/pC5komv9lVUMHJDMfmxLkQmZDC9QX0Gt3/tZU7vMAjve32BPrem1B5pDzSSWhChvFQk+6RMemTaM26bsJtaLDkb6WYYVGyqWCIpgaHoN3RJn0JD2mizYMZYgbOR14tCN9AWG6vZ2/chdeLGh/bBNNy41lfTu7c8dbwp6LwyceY6XeibNuEfZ3EQyUl6l16eV/yMnoLf9IoLayn0ssdZ4BclQsk9tpjgYFm2Q8GTCVnpMDbLh8J60cvWsBrasDwo6gKCHoAQ==
-Received: from BY3PR05CA0021.namprd05.prod.outlook.com (2603:10b6:a03:254::26)
- by LV8PR22MB5316.namprd22.prod.outlook.com (2603:10b6:408:1c7::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Mon, 12 Jan
- 2026 13:08:59 +0000
-Received: from CO1PEPF000042AB.namprd03.prod.outlook.com
- (2603:10b6:a03:254:cafe::de) by BY3PR05CA0021.outlook.office365.com
- (2603:10b6:a03:254::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.4 via Frontend Transport; Mon,
- 12 Jan 2026 13:09:05 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 165.85.157.49)
- smtp.mailfrom=gehealthcare.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=quarantine header.from=gehealthcare.com;
-Received-SPF: Fail (protection.outlook.com: domain of gehealthcare.com does
- not designate 165.85.157.49 as permitted sender)
- receiver=protection.outlook.com; client-ip=165.85.157.49;
- helo=mkerelay1.compute.ge-healthcare.net;
-Received: from mkerelay1.compute.ge-healthcare.net (165.85.157.49) by
- CO1PEPF000042AB.mail.protection.outlook.com (10.167.243.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9520.1 via Frontend Transport; Mon, 12 Jan 2026 13:08:58 +0000
-Received: from podman-dev.fihel.lab.ge-healthcare.net (zoo10.fihel.lab.ge-healthcare.net [10.168.174.92])
-	by builder1.fihel.lab.ge-healthcare.net (Postfix) with ESMTP id D4AC9F2E71;
-	Mon, 12 Jan 2026 15:08:52 +0200 (EET)
-From: Nandor Han <nandor.han@gehealthcare.com>
-To: wim@linux-watchdog.org,
-	linux@roeck-us.net,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de
-Cc: kernel@pengutronix.de,
-	festevam@gmail.com,
-	nandor.han@gehealthcare.com,
-	linux-watchdog@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] watchdog: imx2_wdt: Allow to continue in low power mode
-Date: Mon, 12 Jan 2026 15:08:49 +0200
-Message-Id: <20260112130849.3748465-3-nandor.han@gehealthcare.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251230-pastoral-enigmatic-chamois-b65343@quoll>
-References: <20251230-pastoral-enigmatic-chamois-b65343@quoll>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sSAsE2ck"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D250C16AAE;
+	Mon, 12 Jan 2026 13:35:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768224941;
+	bh=hAdDNP0uJNY4vw73AVjOI055cmk4EXKQe7NLD05xkKg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sSAsE2ckcMezYmFQIV9Yd3FvJ6NJatqBOWcglypCWCOOZcaRknUNzSGc1K1VDI6Q8
+	 G0+bUFIRre9DiQ8r9tI7UlnoO5tRY7Ry76RH6d/S7VS+YRTR2msLcsGXwXF2zA6GqL
+	 zAG+Ci/fWtl+3TQ+geYxXPx0H9l0tZmRXY9i5MC54T3nrR1oqNAMPtLFhAgceeehCA
+	 ZFYReahADgOJcNjwd5qjjTEduqvXJghwtfiQ2LHpMDlzRrYztueJoEt6PIR8kE07Fe
+	 L87h2tJEN7v2yrW04x6YoiiBTm9Sh/MqmMFic8lIUkq6ZP2FA7EvHBPS1NOjCL+ibG
+	 Gxx+qqK3PtHNw==
+Date: Mon, 12 Jan 2026 14:35:35 +0100
+From: Niklas Cassel <cassel@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Manivannan Sadhasivam <mani@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Gustavo Pimentel <Gustavo.Pimentel@synopsys.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-nvme@lists.infradead.org, Damien Le Moal <dlemoal@kernel.org>,
+	imx@lists.linux.dev
+Subject: Re: [PATCH RFT 0/5] dmaengine: dw-edma: support dynamtic add link
+ entry during dma engine running
+Message-ID: <aWT4p7RnFykJnuOz@ryzen>
+References: <20260109-edma_dymatic-v1-0-9a98c9c98536@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000042AB:EE_|LV8PR22MB5316:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 29880615-9837-4045-5448-08de51dbbf74
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?HUN/ZqrWG04aks7B5+c2+RaIaWZSlB9z/9r9DAo6UwgtcVn0EjHHYFqA+MXE?=
- =?us-ascii?Q?AzLL/EpFxsElftrQqHGrBtGvsmdeGvhVFi0ZLRVGeRd8ufe8RaGqqeRWAQZ2?=
- =?us-ascii?Q?mAI+pU8k0WAFllzETuHJ230H91bq2XO0qt5/j93fNSMoRIm1490b3VuNzzEz?=
- =?us-ascii?Q?jAuaexpD/BjGkhiKrO5uhWCiJnZ++iCoYgRH3rI55DGAJPkLMjXD9LjtL2Nj?=
- =?us-ascii?Q?5ByoQq2qbmqIm7wtbuaSjhOr3sF3ImuVVwKNzlJrnP9ChDlfucZfAjboRQXE?=
- =?us-ascii?Q?c6b0QM/GsIwiicuDvfG6j2ceXAyD6J5kgZRFhdNK7N6rnNEogvxjJUvXUWTy?=
- =?us-ascii?Q?3/1hoXkongZKJpNGUUD4RiXNAAx9/PLERzF40KlUkB2sfrdPpcSsGVdhZki7?=
- =?us-ascii?Q?sVAZUMkSqSVOLLYBFen/fErg32kOajymb26o6LqomG+SUlzN+wQ0Ml2QmXUb?=
- =?us-ascii?Q?q3FurWLu9vpH/TaEEQk36U7pgoWlk7zjqPXenfXviApLuQys7VsO1eYKf/4y?=
- =?us-ascii?Q?YqoqTkjkq2yttmniT4XDmsum/knQB8tVd+YNQrByr38DipaYmoHx0F8+38lH?=
- =?us-ascii?Q?ajzbnM+uUipMmpOl2OJ+13GgW4urFVuroPS7rcK9kuGBzCpQxOaMrxJbAuPE?=
- =?us-ascii?Q?hLBjz/P6vZOBW0cXxqX5h2lhkgSTKf3lap7xD9QQL06JcyDfVm4IOungaQf7?=
- =?us-ascii?Q?eu++YMtNQn8gg5QJQITf5FF+ZGDiBTjtRd2o0a+GKyAdXXycUr9vqaznaqxa?=
- =?us-ascii?Q?JerBC7jCdhcvrBgbD3NMVMyYddD+AH/zWNTiUhDr0s645urSntplxf+3l7bD?=
- =?us-ascii?Q?VdvUFjBndCUU6WFO2fIUVkua/KWa9o0EueOxZZPOZ0CQc7zNppK2ZP1BY2T0?=
- =?us-ascii?Q?bcAwxzqnwglihsIK8goxVH/V09K7W/fZpxWD8GYQ0caopb+WLhXLz6a4+n6q?=
- =?us-ascii?Q?FhRZmgIIC/WSt8LpbLqovoApgMG6+PkbdZqh0eVsJPwbPx9Bott3kJPjhk9Y?=
- =?us-ascii?Q?pefASV9SDchCclXK/YSbIgg3dTYGWHirt4cg8WfjekmcLhEcp8Bd+s63eIEC?=
- =?us-ascii?Q?iBCn0XMmeNulXNJcXJRLMOd2ARyihalTYSChnJdddmdBDJD1dUJHxyaz98W7?=
- =?us-ascii?Q?Dzp7ujjV0w4of+qJmdSAdem9ukEDBpxKO1276wTc2hM8+VMJ4HdFoqX3SGiy?=
- =?us-ascii?Q?3d7DHoW9n9eZdBjdyGU2mFQQl6dTnDc9jCkcq0YzFHT5I7Ca17IWZp1JPTmB?=
- =?us-ascii?Q?gr6wVVOptDXvwaxnVM/PPTrmL0npcIZFORL+73XyQKCeZRG4XK2wGAvheTm2?=
- =?us-ascii?Q?tKrXiijWJZtzwYH5srGGBtJiIj8oZ8vnkgG8Xct7ocaTVCO8q/LkXRubqvoN?=
- =?us-ascii?Q?9BpqWUuEyK/0FlPX5ty4msq5nkvdUo2/RD6VOvirittx4X6r0FmDsxYd4hd+?=
- =?us-ascii?Q?59922FndWX7qhcu5BBB2Rt3Mg/VeflWbxrbpKVnh4QHGv0kePqEp9BuCsnXz?=
- =?us-ascii?Q?W7GwxK3QEcUmvMDqf9LZzMyBg/y4QosAlV6r1kbTHGTC4gXgVjps0gvGsF2i?=
- =?us-ascii?Q?JwwV5iNBVItU+VdfK5c=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.85.157.49;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mkerelay1.compute.ge-healthcare.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: gehealthcare.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2026 13:08:58.1643
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 29880615-9837-4045-5448-08de51dbbf74
-X-MS-Exchange-CrossTenant-Id: 9a309606-d6ec-4188-a28a-298812b4bbbf
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=9a309606-d6ec-4188-a28a-298812b4bbbf;Ip=[165.85.157.49];Helo=[mkerelay1.compute.ge-healthcare.net]
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-CO1PEPF000042AB.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR22MB5316
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260109-edma_dymatic-v1-0-9a98c9c98536@nxp.com>
 
-By default, the driver suspends the watchdog in low power modes (STOP
-and DOZE). In some situations this is not desired.
+Hello Frank,
 
-Add the possibility to configure the continuation of the watchdog timer
-in the above mentioned low power modes.
+On Fri, Jan 09, 2026 at 03:13:24PM -0500, Frank Li wrote:
 
-Note:
-Please be advised that the difference between the variable name and the
-device tree option has been intentionally selected to uphold the
-prevailing driver functionality. This ensures that the watchdog remains
-suspended by default in low power mode, while also facilitating a clear
-and intelligible device tree option name.
+Subject: dmaengine: dw-edma: support dynamtic add link entry during dma engine running
 
-Signed-off-by: Nandor Han <nandor.han@gehealthcare.com>
----
- drivers/watchdog/imx2_wdt.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+s/dynamtic/dynamic/
 
-diff --git a/drivers/watchdog/imx2_wdt.c b/drivers/watchdog/imx2_wdt.c
-index 4b3a192ee3e8..6e837cfc3c5a 100644
---- a/drivers/watchdog/imx2_wdt.c
-+++ b/drivers/watchdog/imx2_wdt.c
-@@ -71,6 +71,7 @@ struct imx2_wdt_device {
- 	struct watchdog_device wdog;
- 	const struct imx2_wdt_data *data;
- 	bool ext_reset;
-+	bool wdt_suspend_in_low_power;
- 	bool clk_is_on;
- 	bool no_ping;
- 	bool sleep_wait;
-@@ -135,7 +136,8 @@ static inline void imx2_wdt_setup(struct watchdog_device *wdog)
- 	regmap_read(wdev->regmap, IMX2_WDT_WCR, &val);
- 
- 	/* Suspend timer in low power mode, write once-only */
--	val |= IMX2_WDT_WCR_WDZST;
-+	if (wdev->wdt_suspend_in_low_power)
-+		val |= IMX2_WDT_WCR_WDZST;
- 	/* Suspend timer in low power WAIT mode, write once-only */
- 	if (wdev->sleep_wait)
- 		val |= IMX2_WDT_WCR_WDW;
-@@ -326,6 +328,9 @@ static int __init imx2_wdt_probe(struct platform_device *pdev)
- 	wdev->ext_reset = of_property_read_bool(dev->of_node,
- 						"fsl,ext-reset-output");
- 
-+	wdev->wdt_suspend_in_low_power = !of_property_read_bool(dev->of_node,
-+						"fsl,wdt-continue-in-low-power");
-+
- 	if (of_property_read_bool(dev->of_node, "fsl,suspend-in-wait")) {
- 		if (!wdev->data->wdw_supported) {
- 			dev_err(dev, "suspend-in-wait not supported\n");
--- 
-2.39.5
+Also in patch 1/5:
+s/dymatic/dynamic/
 
+
+> Patch depend on
+> https://lore.kernel.org/imx/20260109-edma_ll-v2-0-5c0b27b2c664@nxp.com/T/#t
+
+To make it easier for the reader, please include the full list of
+dependencies, i.e. also include:
+https://lore.kernel.org/dmaengine/20260105-dma_prep_config-v3-0-a8480362fd42@nxp.com/
+here.
+
+
+> 
+> Only test eDMA, have not tested HDMA.
+> Corn case have not tested, such as pause/resume transfer.
+
+s/Corn case/Corner cases/
+
+
+> 
+> Before
+> 
+>   Rnd read,    4KB,  QD=1, 1 job :  IOPS=6780, BW=26.5MiB/s (27.8MB/s)
+>   Rnd read,    4KB, QD=32, 1 job :  IOPS=28.6k, BW=112MiB/s (117MB/s)
+>   Rnd read,    4KB, QD=32, 4 jobs:  IOPS=33.4k, BW=130MiB/s (137MB/s)
+>   Rnd read,  128KB,  QD=1, 1 job :  IOPS=1188, BW=149MiB/s (156MB/s)
+>   Rnd read,  128KB, QD=32, 1 job :  IOPS=1440, BW=180MiB/s (189MB/s)
+>   Rnd read,  128KB, QD=32, 4 jobs:  IOPS=1282, BW=160MiB/s (168MB/s)
+>   Rnd read,  512KB,  QD=1, 1 job :  IOPS=254, BW=127MiB/s (134MB/s)
+>   Rnd read,  512KB, QD=32, 1 job :  IOPS=354, BW=177MiB/s (186MB/s)
+>   Rnd read,  512KB, QD=32, 4 jobs:  IOPS=388, BW=194MiB/s (204MB/s)
+>   Rnd write,   4KB,  QD=1, 1 job :  IOPS=6282, BW=24.5MiB/s (25.7MB/s)
+>   Rnd write,   4KB, QD=32, 1 job :  IOPS=24.9k, BW=97.5MiB/s (102MB/s)
+>   Rnd write,   4KB, QD=32, 4 jobs:  IOPS=27.4k, BW=107MiB/s (112MB/s)
+>   Rnd write, 128KB,  QD=1, 1 job :  IOPS=1098, BW=137MiB/s (144MB/s)
+>   Rnd write, 128KB, QD=32, 1 job :  IOPS=1195, BW=149MiB/s (157MB/s)
+>   Rnd write, 128KB, QD=32, 4 jobs:  IOPS=1120, BW=140MiB/s (147MB/s)
+>   Seq read,  128KB,  QD=1, 1 job :  IOPS=936, BW=117MiB/s (123MB/s)
+>   Seq read,  128KB, QD=32, 1 job :  IOPS=1218, BW=152MiB/s (160MB/s)
+>   Seq read,  512KB,  QD=1, 1 job :  IOPS=301, BW=151MiB/s (158MB/s)
+>   Seq read,  512KB, QD=32, 1 job :  IOPS=360, BW=180MiB/s (189MB/s)
+>   Seq read,    1MB, QD=32, 1 job :  IOPS=193, BW=194MiB/s (203MB/s)
+>   Seq write, 128KB,  QD=1, 1 job :  IOPS=796, BW=99.5MiB/s (104MB/s)
+>   Seq write, 128KB, QD=32, 1 job :  IOPS=1019, BW=127MiB/s (134MB/s)
+>   Seq write, 512KB,  QD=1, 1 job :  IOPS=213, BW=107MiB/s (112MB/s)
+>   Seq write, 512KB, QD=32, 1 job :  IOPS=273, BW=137MiB/s (143MB/s)
+>   Seq write,   1MB, QD=32, 1 job :  IOPS=168, BW=168MiB/s (177MB/s)
+>   Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=255, BW=128MiB/s (134MB/s)
+>    IOPS=266, BW=135MiB/s (141MB/s)
+> 
+> After
+> 
+>   Rnd read,    4KB,  QD=1, 1 job :  IOPS=6148, BW=24.0MiB/s (25.2MB/s)
+>   Rnd read,    4KB, QD=32, 1 job :  IOPS=29.4k, BW=115MiB/s (121MB/s)
+>   Rnd read,    4KB, QD=32, 4 jobs:  IOPS=38.8k, BW=151MiB/s (159MB/s)
+>   Rnd read,  128KB,  QD=1, 1 job :  IOPS=859, BW=107MiB/s (113MB/s)
+>   Rnd read,  128KB, QD=32, 1 job :  IOPS=1504, BW=188MiB/s (197MB/s)
+>   Rnd read,  128KB, QD=32, 4 jobs:  IOPS=1531, BW=191MiB/s (201MB/s)
+>   Rnd read,  512KB,  QD=1, 1 job :  IOPS=238, BW=119MiB/s (125MB/s)
+>   Rnd read,  512KB, QD=32, 1 job :  IOPS=390, BW=195MiB/s (205MB/s)
+>   Rnd read,  512KB, QD=32, 4 jobs:  IOPS=404, BW=202MiB/s (212MB/s)
+>   Rnd write,   4KB,  QD=1, 1 job :  IOPS=5801, BW=22.7MiB/s (23.8MB/s)
+>   Rnd write,   4KB, QD=32, 1 job :  IOPS=24.7k, BW=96.6MiB/s (101MB/s)
+>   Rnd write,   4KB, QD=32, 4 jobs:  IOPS=32.7k, BW=128MiB/s (134MB/s)
+>   Rnd write, 128KB,  QD=1, 1 job :  IOPS=744, BW=93.1MiB/s (97.6MB/s)
+>   Rnd write, 128KB, QD=32, 1 job :  IOPS=1278, BW=160MiB/s (168MB/s)
+>   Rnd write, 128KB, QD=32, 4 jobs:  IOPS=1278, BW=160MiB/s (168MB/s)
+>   Seq read,  128KB,  QD=1, 1 job :  IOPS=853, BW=107MiB/s (112MB/s)
+>   Seq read,  128KB, QD=32, 1 job :  IOPS=1511, BW=189MiB/s (198MB/s)
+>   Seq read,  512KB,  QD=1, 1 job :  IOPS=240, BW=120MiB/s (126MB/s)
+>   Seq read,  512KB, QD=32, 1 job :  IOPS=386, BW=193MiB/s (203MB/s)
+>   Seq read,    1MB, QD=32, 1 job :  IOPS=200, BW=201MiB/s (211MB/s)
+>   Seq write, 128KB,  QD=1, 1 job :  IOPS=749, BW=93.7MiB/s (98.3MB/s)
+>   Seq write, 128KB, QD=32, 1 job :  IOPS=1266, BW=158MiB/s (166MB/s)
+>   Seq write, 512KB,  QD=1, 1 job :  IOPS=198, BW=99.0MiB/s (104MB/s)
+>   Seq write, 512KB, QD=32, 1 job :  IOPS=352, BW=176MiB/s (185MB/s)
+>   Seq write,   1MB, QD=32, 1 job :  IOPS=184, BW=184MiB/s (193MB/s)
+>   Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=287, BW=145MiB/s (152MB/s)
+>  IOPS=299, BW=149MiB/s (156MB/s)
+
+We can clearly see the improvement, but overall, your numbers are quite low.
+What is the PCIe Gen + number of lanes you are using?
+Are you running nvmet-pci-epf backed by a real drive or backed by null-blk?
+(Having nvmet-pci-epf backed by null-blk is much better for benchmarking.)
+
+I'm using nvmet-pci-epf backed by null-blk, with a PCIe Gen3 link with 4 lanes.
+
+
+Applying only your dependencies, I get:
+
+  Rnd read,    4KB,  QD=1, 1 job :  IOPS=12.1k, BW=47.2MiB/s (49.5MB/s)
+  Rnd read,    4KB, QD=32, 1 job :  IOPS=51.1k, BW=200MiB/s (209MB/s)
+  Rnd read,    4KB, QD=32, 4 jobs:  IOPS=72.2k, BW=282MiB/s (296MB/s)
+  Rnd read,  128KB,  QD=1, 1 job :  IOPS=2922, BW=365MiB/s (383MB/s)
+  Rnd read,  128KB, QD=32, 1 job :  IOPS=18.9k, BW=2368MiB/s (2483MB/s)
+  Rnd read,  128KB, QD=32, 4 jobs:  IOPS=18.7k, BW=2334MiB/s (2447MB/s)
+  Rnd read,  512KB,  QD=1, 1 job :  IOPS=1867, BW=934MiB/s (979MB/s)
+  Rnd read,  512KB, QD=32, 1 job :  IOPS=4738, BW=2369MiB/s (2484MB/s)
+  Rnd read,  512KB, QD=32, 4 jobs:  IOPS=4675, BW=2338MiB/s (2451MB/s)
+  Rnd write,   4KB,  QD=1, 1 job :  IOPS=10.6k, BW=41.4MiB/s (43.5MB/s)
+  Rnd write,   4KB, QD=32, 1 job :  IOPS=34.4k, BW=135MiB/s (141MB/s)
+  Rnd write,   4KB, QD=32, 4 jobs:  IOPS=34.4k, BW=135MiB/s (141MB/s)
+  Rnd write, 128KB,  QD=1, 1 job :  IOPS=2624, BW=328MiB/s (344MB/s)
+  Rnd write, 128KB, QD=32, 1 job :  IOPS=10.2k, BW=1277MiB/s (1339MB/s)
+  Rnd write, 128KB, QD=32, 4 jobs:  IOPS=10.3k, BW=1282MiB/s (1344MB/s)
+  Seq read,  128KB,  QD=1, 1 job :  IOPS=3195, BW=399MiB/s (419MB/s)
+  Seq read,  128KB, QD=32, 1 job :  IOPS=18.6k, BW=2321MiB/s (2434MB/s)
+  Seq read,  512KB,  QD=1, 1 job :  IOPS=2162, BW=1081MiB/s (1134MB/s)
+  Seq read,  512KB, QD=32, 1 job :  IOPS=4727, BW=2364MiB/s (2479MB/s)
+  Seq read,    1MB, QD=32, 1 job :  IOPS=2360, BW=2361MiB/s (2476MB/s)
+  Seq write, 128KB,  QD=1, 1 job :  IOPS=2997, BW=375MiB/s (393MB/s)
+  Seq write, 128KB, QD=32, 1 job :  IOPS=10.2k, BW=1278MiB/s (1341MB/s)
+  Seq write, 512KB,  QD=1, 1 job :  IOPS=1434, BW=717MiB/s (752MB/s)
+  Seq write, 512KB, QD=32, 1 job :  IOPS=2557, BW=1279MiB/s (1341MB/s)
+  Seq write,   1MB, QD=32, 1 job :  IOPS=1276, BW=1276MiB/s (1338MB/s)
+  Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=2110, BW=1058MiB/s (1109MB/s)
+ IOPS=2127, BW=1068MiB/s (1120MB/s)
+
+
+Applying your dependencies + this series, I get:
+
+  Rnd read,    4KB,  QD=1, 1 job :  IOPS=12.5k, BW=48.7MiB/s (51.0MB/s)
+  Rnd read,    4KB, QD=32, 1 job :  IOPS=55.3k, BW=216MiB/s (226MB/s)
+  Rnd read,    4KB, QD=32, 4 jobs:  IOPS=175k, BW=682MiB/s (715MB/s)
+  Rnd read,  128KB,  QD=1, 1 job :  IOPS=3018, BW=377MiB/s (396MB/s)
+  Rnd read,  128KB, QD=32, 1 job :  IOPS=20.1k, BW=2519MiB/s (2641MB/s)
+  Rnd read,  128KB, QD=32, 4 jobs:  IOPS=24.4k, BW=3051MiB/s (3199MB/s)
+  Rnd read,  512KB,  QD=1, 1 job :  IOPS=1850, BW=925MiB/s (970MB/s)
+  Rnd read,  512KB, QD=32, 1 job :  IOPS=5846, BW=2923MiB/s (3065MB/s)
+  Rnd read,  512KB, QD=32, 4 jobs:  IOPS=6141, BW=3071MiB/s (3220MB/s)
+  Rnd write,   4KB,  QD=1, 1 job :  IOPS=11.6k, BW=45.4MiB/s (47.6MB/s)
+  Rnd write,   4KB, QD=32, 1 job :  IOPS=49.6k, BW=194MiB/s (203MB/s)
+  Rnd write,   4KB, QD=32, 4 jobs:  IOPS=82.0k, BW=320MiB/s (336MB/s)
+  Rnd write, 128KB,  QD=1, 1 job :  IOPS=3051, BW=381MiB/s (400MB/s)
+  Rnd write, 128KB, QD=32, 1 job :  IOPS=13.0k, BW=1619MiB/s (1698MB/s)
+  Rnd write, 128KB, QD=32, 4 jobs:  IOPS=12.5k, BW=1559MiB/s (1635MB/s)
+  Seq read,  128KB,  QD=1, 1 job :  IOPS=3445, BW=431MiB/s (452MB/s)
+  Seq read,  128KB, QD=32, 1 job :  IOPS=18.3k, BW=2283MiB/s (2394MB/s)
+  Seq read,  512KB,  QD=1, 1 job :  IOPS=2048, BW=1024MiB/s (1074MB/s)
+  Seq read,  512KB, QD=32, 1 job :  IOPS=5766, BW=2883MiB/s (3023MB/s)
+  Seq read,    1MB, QD=32, 1 job :  IOPS=3038, BW=3038MiB/s (3186MB/s)
+  Seq write, 128KB,  QD=1, 1 job :  IOPS=2961, BW=370MiB/s (388MB/s)
+  Seq write, 128KB, QD=32, 1 job :  IOPS=12.3k, BW=1535MiB/s (1609MB/s)
+  Seq write, 512KB,  QD=1, 1 job :  IOPS=1482, BW=741MiB/s (777MB/s)
+  Seq write, 512KB, QD=32, 1 job :  IOPS=3144, BW=1572MiB/s (1648MB/s)
+  Seq write,   1MB, QD=32, 1 job :  IOPS=1549, BW=1550MiB/s (1625MB/s)
+  Rnd rdwr, 4K..1MB, QD=8, 4 jobs:  IOPS=2596, BW=1303MiB/s (1366MB/s)
+ IOPS=2617, BW=1313MiB/s (1377MB/s)
+
+
+So I can clearly see an improvement with this patch series.
+Great work so far!
+
+
+Kind regards,
+Niklas
