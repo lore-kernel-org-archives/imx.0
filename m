@@ -1,170 +1,89 @@
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961831EDA3C;
-	Sun, 11 Jan 2026 19:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D45A23C506;
+	Mon, 12 Jan 2026 01:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768160604; cv=none; b=NodAetYNj3wLMSY6/xPZ2Isd/h86XxHNWrJ8xHvppxu3/HVNaMHx5GbN/HjHYrmmgJ3I1RtNpxUpT1Ecnx8tcmq7Q7uFKM2Z8e2iHcCTU2qTp1MPCQCtIVFUV0nALehMJrRbJgADDKpNpVs2+150Yl/zYCa+78Bduohp61mzp/s=
+	t=1768182966; cv=none; b=t3ktTEeAdDl2DghEfO8x5/56PUfI5aaKuZ36A+RxSFsRN43eDPSLrmaE8/5GMiFVYaopL6QuCVkA3mqNMIJ0lKiW4jzkEp5brE+/HDPgjRcyXWvM/ZCYJzlBC9b6jVocEyM9274sZg0yi+o0Vxoz+36cUcjMcbyXOQMBh0djFFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768160604; c=relaxed/simple;
-	bh=6ZO358wLWJv/7P+XiGaHMqEVTywze7565bGmQ4IzofM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m0bG3NSb3GHkqQVAh7bNoGGJW+QT/gMGgKOKDBiW1f0cadVd6q4Gtz3QaHerPNgU7GuL2rpRwsG1GwdOPGWEs/hXAfxkgfx8K4hBTp5Pup00laHE3v7Np+i1s4Yqc73Zp1XwEUQShlt+vYrwis9UG+BaJiCROQdCABRrKwMiJ+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=zGZTG77h; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="zGZTG77h"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=vyCElViucl+cLlUVhuVJcUJ20mw8TamaI7jWvsVoS30=; b=zGZTG77h1xr2PAvnP5M0ngyGAl
-	Es/dPUiyTwI/SyqG+ZIuZ3rOtVW/12j7XQr7d5aonB3wQsRXE8UHrw1tFxPg5ZpfiVZNO2T/cVHLv
-	geG9A3sxKpjugqC8rZYrqV6SEDZZUv5Mz/zmQPX6EGdmLZxgq9EMlRFHGWX2Mj+wXPYPwpJiZFl2h
-	QE7JGQYc7ldmySSxW/k/g2PQfDlA1r7cGsQGuGCqeUQsGaO0Atp/LPRP6U/zy/n24zT2DumDZuWLJ
-	5LcE+MEJKyZ6YgCn00XU73GORZqYWdgtEKhSu84RJQfG43W/cHzHlVz5lv2JLULcfv+EnfC0Ud7yw
-	4NKTtwbQ==;
-Received: from i53875aef.versanet.de ([83.135.90.239] helo=diego.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1vf1K0-001rtK-85; Sun, 11 Jan 2026 20:41:56 +0100
-From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
-To: Mark Brown <broonie@kernel.org>,
- Varshini Rajendran <varshini.rajendran@microchip.com>,
- Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Sunny Luo <sunny.luo@amlogic.com>, Janne Grunau <j@jannau.net>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>, CL Wang <cl634@andestech.com>,
- Manikandan Muralidharan <manikandan.m@microchip.com>,
- David Lechner <dlechner@baylibre.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Jonas Gorski <jonas.gorski@gmail.com>, Hang Zhou <929513338@qq.com>,
- Jun Guo <jun.guo@cixtech.com>, Philipp Stanner <phasta@kernel.org>,
- Charles Keepax <ckeepax@opensource.cirrus.com>,
- Bartosz Golaszewski <brgl@kernel.org>,
- =?UTF-8?B?QmVub8OudA==?= Monin <benoit.monin@bootlin.com>,
- Shiji Yang <yangshiji66@outlook.com>, James Clark <james.clark@linaro.org>,
- Jonathan Marek <jonathan@marek.ca>, Carlos Song <carlos.song@nxp.com>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Huacai Chen <chenhuacai@kernel.org>, Xianwei Zhao <xianwei.zhao@amlogic.com>,
- Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>,
- Sergio Perez Gonzalez <sperezglz@gmail.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Qianfeng Rong <rongqianfeng@vivo.com>, Haibo Chen <haibo.chen@nxp.com>,
- Gabor Juhos <j4g8y7@gmail.com>, Md Sadre Alam <quic_mdalam@quicinc.com>,
- Rosen Penev <rosenp@gmail.com>, Luis de Arquer <luis.dearquer@inertim.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>,
- Tudor Ambarus <tudor.ambarus@linaro.org>,
- Krzysztof Kozlowski <krzk@kernel.org>, Longbin Li <looong.bin@gmail.com>,
- Patrice Chotard <patrice.chotard@foss.st.com>,
- =?UTF-8?B?Q2zDqW1lbnQ=?= Le Goffic <clement.legoffic@foss.st.com>,
- Alessandro Grassi <alessandro.grassi@mailbox.org>,
- Chen-Yu Tsai <wens@kernel.org>, Darshan R <rathod.darshan.0896@gmail.com>,
- Aaron Kling <webgeek1234@gmail.com>, Vishwaroop A <va@nvidia.com>,
- Haixu Cui <quic_haixcui@quicinc.com>,
- Darshan Rathod <darshanrathod475@gmail.com>, linux-spi@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-amlogic@lists.infradead.org, asahi@lists.linux.dev,
- linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org,
- linux-rpi-kernel@lists.infradead.org, linux-sound@vger.kernel.org,
- patches@opensource.cirrus.com, imx@lists.linux.dev,
- linux-arm-msm@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-renesas-soc@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev,
- linux-tegra@vger.kernel.org, virtualization@lists.linux.dev,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Ray Liu <ray.liu@airoha.com>,
- Sven Peter <sven@kernel.org>, Neal Gompa <neal@gompa.dev>,
- =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>,
- Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Ryan Wanner <ryan.wanner@microchip.com>,
- Michael Hennerich <michael.hennerich@analog.com>,
- Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Kamal Dasu <kamal.dasu@broadcom.com>,
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
- Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
- William Zhang <william.zhang@broadcom.com>,
- Kursad Oney <kursad.oney@broadcom.com>, Anand Gore <anand.gore@broadcom.com>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
- David Rhodes <david.rhodes@cirrus.com>,
- Richard Fitzgerald <rf@opensource.cirrus.com>,
- Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>,
- Jean-Marie Verdun <verdun@hpe.com>, Nick Hawkins <nick.hawkins@hpe.com>,
- Yang Shen <shenyang39@huawei.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Lixu Zhang <lixu.zhang@intel.com>,
- Yinbo Zhu <zhuyinbo@loongson.cn>, Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Conor Dooley <conor.dooley@microchip.com>,
- Daire McNamara <daire.mcnamara@microchip.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>,
- Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>,
- Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>,
- Han Xu <han.xu@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>,
- Linus Walleij <linusw@kernel.org>, Daniel Mack <daniel@zonque.org>,
- Haojian Zhuang <haojian.zhuang@gmail.com>,
- Robert Jarzmik <robert.jarzmik@free.fr>,
- Chris Packham <chris.packham@alliedtelesis.co.nz>,
- Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
- Andi Shyti <andi.shyti@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- Paul Walmsley <pjw@kernel.org>, Samuel Holland <samuel.holland@sifive.com>,
- Orson Zhai <orsonzhai@gmail.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Chunyan Zhang <zhang.lyra@gmail.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Alain Volmat <alain.volmat@foss.st.com>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Li-hao Kuo <lhjeff911@gmail.com>,
- Masahisa Kojima <masahisa.kojima@linaro.org>,
- Jassi Brar <jaswinder.singh@linaro.org>,
- Laxman Dewangan <ldewangan@nvidia.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Sowjanya Komatineni <skomatineni@nvidia.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Jonathan =?UTF-8?B?TmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>,
- Michal Simek <michal.simek@amd.com>, Max Filippov <jcmvbkbc@gmail.com>
-Subject: Re: [PATCH v1 2/4] spi: Drop duplicate of_node assignment
-Date: Sun, 11 Jan 2026 20:41:50 +0100
-Message-ID: <2911099.XrmoMso0CX@diego>
-In-Reply-To: <20260108203004.3538449-3-andriy.shevchenko@linux.intel.com>
-References:
- <20260108203004.3538449-1-andriy.shevchenko@linux.intel.com>
- <20260108203004.3538449-3-andriy.shevchenko@linux.intel.com>
+	s=arc-20240116; t=1768182966; c=relaxed/simple;
+	bh=6MiylRbjGmEIpV5/vx0stKnsNHaDQ06g4RF9YLBa6VY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=cEjXxrou63Fhp8Gszfkrl69XLoJTGgEbMqCKJppaX52TDBBXjdcew/WfPGlql/GZ8Hj1vqKf2ok8bejJlaxbHGXx7o8cJh1IhCkqNQk2gcMZO63qFGCFi3PBTS/zoeTrHNPvvW8/Th+co9x/YIM5gGbrRN2z6vEuTbJMLqvfSlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30106C4AF0B;
+	Mon, 12 Jan 2026 01:56:06 +0000 (UTC)
+Received: by venus (Postfix, from userid 1000)
+	id 11D5818054C; Mon, 12 Jan 2026 02:56:04 +0100 (CET)
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Linus Walleij <linusw@kernel.org>, Sebastian Reichel <sre@kernel.org>, 
+ Samuel Kayode <samkay014@gmail.com>, Wenyou Yang <wenyou.yang@atmel.com>, 
+ Ricardo Rivera-Matos <r-rivera-matos@ti.com>, Dan Murphy <dmurphy@ti.com>, 
+ Tony Lindgren <tony@atomide.com>, "Mike A. Chan" <mikechan@google.com>, 
+ Jun Nakajima <jun.nakajima@intel.com>, Xiaohui Xin <xiaohui.xin@intel.com>, 
+ Yunhong Jiang <yunhong.jiang@intel.com>, Tom Keel <thomas.keel@intel.com>, 
+ Frank Li <Frank.Li@nxp.com>, Lee Jones <lee@kernel.org>, 
+ Nikita Travkin <nikita@trvn.ru>, 
+ Anda-Maria Nicolae <anda-maria.nicolae@intel.com>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, Phil Reid <preid@electromag.com.au>, 
+ Alan Cox <alan@linux.intel.com>, Sheng Yang <sheng@linux.intel.com>, 
+ Waqar Hameed <waqar.hameed@axis.com>
+Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev
+In-Reply-To: <cover.1766268280.git.waqar.hameed@axis.com>
+References: <cover.1766268280.git.waqar.hameed@axis.com>
+Subject: Re: [PATCH 00/11] power: supply: Fix use-after-free in
+ power_supply_changed()
+Message-Id: <176818296405.643060.14179816348676976265.b4-ty@collabora.com>
+Date: Mon, 12 Jan 2026 02:56:04 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
-
-Am Donnerstag, 8. Januar 2026, 21:23:39 Mitteleurop=C3=A4ische Normalzeit s=
-chrieb Andy Shevchenko:
-> The SPI core provides the default of_node for the controller,
-> inherited from the actual (parent) device. No need to repeat it
-> in the driver.
->=20
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
-
->  drivers/spi/spi-rockchip-sfc.c       | 1 -
->  drivers/spi/spi-rockchip.c           | 1 -
-
-Acked-by: Heiko Stuebner <heiko@sntech.de>
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 
 
+On Sat, 20 Dec 2025 23:35:58 +0100, Waqar Hameed wrote:
+> The majority of the drivers in `drivers/power/supply/` do the right
+> thing when registering an interrupt handler and the `power_supply`
+> handle; namely making sure that the interrupt handler only runs while
+> the `power_supply` handle is valid. The drivers in this patch series do
+> not however. This can lead to a nasty use-after-free as thoroughly
+> explained in the commit message.
+> 
+> [...]
+
+Applied, thanks!
+
+[01/11] power: supply: ab8500: Fix use-after-free in power_supply_changed()
+        commit: c4af8a98bb52825a5331ae1d0604c0ea6956ba4b
+[02/11] power: supply: act8945a: Fix use-after-free in power_supply_changed()
+        commit: 3291c51d4684d048dd2eb91b5b65fcfdaf72141f
+[03/11] power: supply: bq256xx: Fix use-after-free in power_supply_changed()
+        commit: 8005843369723d9c8975b7c4202d1b85d6125302
+[04/11] power: supply: bq25980: Fix use-after-free in power_supply_changed()
+        commit: 5f0b1cb41906e86b64bf69f5ededb83b0d757c27
+[05/11] power: supply: cpcap-battery: Fix use-after-free in power_supply_changed()
+        commit: 642f33e34b969eedec334738fd5df95d2dc42742
+[06/11] power: supply: goldfish: Fix use-after-free in power_supply_changed()
+        commit: b2ce982e2e0c888dc55c888ad0e20ea04daf2e6b
+[07/11] power: supply: pf1550: Fix use-after-free in power_supply_changed()
+        commit: 838767f5074700552d3f006d867caed65edc7328
+[08/11] power: supply: pm8916_bms_vm: Fix use-after-free in power_supply_changed()
+        commit: 62914959b35e9a1e29cc0f64cb8cfc5075a5366f
+[09/11] power: supply: pm8916_lbc: Fix use-after-free in power_supply_changed()
+        commit: b7508129978ae1e2ed9b0410396abc05def9c4eb
+[10/11] power: supply: rt9455: Fix use-after-free in power_supply_changed()
+        commit: e2febe375e5ea5afed92f4cd9711bde8f24ee6d2
+[11/11] power: supply: sbs-battery: Fix use-after-free in power_supply_changed()
+        commit: 8d59cf3887fbabacef53bfba473e33e8a8d9d07b
+
+Best regards,
+-- 
+Sebastian Reichel <sebastian.reichel@collabora.com>
 
