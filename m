@@ -1,54 +1,80 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8491A2EC571
-	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 16:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126692512C8
+	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 17:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768322382; cv=none; b=XecJKfPHNbIl7/4hrLAWJE+EAzPDtU33LjVw+VzrrF37tvhvmJIsxVizKWRsGMrGLH5w3Zfw72z5SQlTsKwQ3hvrqwl0VML1QePAnUlIxXftM18DVjYd6dpp5465xxRrcpEhFE2Xeok3q9cs7FzRLy3dtRWiBko9OUG5zrrmVLQ=
+	t=1768324044; cv=none; b=n/LK087sVSZ7GGsBlLFC85ZYZa4SXROUjZTeq90awNo3ucl+jKYlOGy1DGzPrFOlz4Xp3u4r08dCphX68T6X3O09eFc+/qFcC3K/xkK8sz8tYBKfeK3vYiP2U90iZrC2VWLULDNzfWOn2dhVYEaymvIi6G8cpc5kbAAPaW1nOHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768322382; c=relaxed/simple;
-	bh=un+OnYAKpWv31OPXE9Ml69Wwy72czNmDKes0PjOtimM=;
+	s=arc-20240116; t=1768324044; c=relaxed/simple;
+	bh=VKQO1dvhlSzjN1XUqKBcYefeEELarKqe4KTlZLk2ixM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N3tm7CsV0VotlcBnNJ6yrxrlQjKAPmincJ+ztmG81MbXKm6WP2pIukqR8fnhRMVOeGwRnQs0lp9AFqGwJgm7/rRfL7t6Xt2SGF2nouvD7B9Hs/LZClSfnCnM4CCGLvx/egytGnxfuKiWqAPIhIoW2Ltweh4xM6dFSbAh2m1di6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vfhQc-0007MI-35; Tue, 13 Jan 2026 17:39:34 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vfhQb-000SBd-12;
-	Tue, 13 Jan 2026 17:39:32 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vfhQa-009v7W-1h;
-	Tue, 13 Jan 2026 17:39:32 +0100
-Date: Tue, 13 Jan 2026 17:39:32 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Marek Vasut <marek.vasut@mailbox.org>
-Cc: dri-devel@lists.freedesktop.org, Rob Herring <robh@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, devicetree@vger.kernel.org,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Peng Fan <peng.fan@nxp.com>, Liu Ying <victor.liu@nxp.com>,
-	imx@lists.linux.dev,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=TWgPNOtd4RIdVrShaIkyVvFeRbmC3n2jzMQHWXzd7l/hw7iEqqzwztgTemwsXbcOMRb3XQv7C4D5Jv6521Bo/kqvvrfEMtilHwd7qeGi/lms7iNjZOC9W27ioqccU9L3bYxA0jWCruasNQ/czd+jYPdS3pt+s7QFiCiPnaJl0/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ih+uArxG; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ih+uArxG"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a0bb2f093aso53099875ad.3
+        for <imx@lists.linux.dev>; Tue, 13 Jan 2026 09:07:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1768324039; x=1768928839; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=h7lOqExgMcdugcI9HIbQ5JeCIYCF/f+YAISpiToc7uE=;
+        b=Ih+uArxGl410q3afKIynSsI06lC0HgRsd+MEAtMDNijuZ2SCWAuvG05uTAWX1PLMiE
+         7prDOM9d5Rv0O0NIjDw76phOMW2eFa/n1ZHSLnibvo9kmBTt4AsDt8Y588WhXUu4Tt4I
+         lGUa+5ofdRR/p0A5/YqBro3jkZXpILur/uYJjfYO+HTRZPgeYdarA7lITB845hFFnQQS
+         bLd/iqRWYvh5YHgmFgD/e7R1KkwZ+VxNXE5HlX4ujl/VPVvnRA58o8GG86wujJRS53+z
+         VTiPYSuFbsiBvMXnJfQy61cnDBZfnV0xYofrGYL2wOXrQO0NJcIfYi/BiK+qrSz/oF9V
+         z/UQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768324039; x=1768928839;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h7lOqExgMcdugcI9HIbQ5JeCIYCF/f+YAISpiToc7uE=;
+        b=BPR34Hj2hqd4ewuQAwPCHchyBxrXspuL6i+jDpmt/vB08kui/bJJ0VA8B9gKunHdYa
+         rKYNmdiLMePiDuG0zcx4Dkh8ZFLy9g8zyc4GkpfAPbZm1Oo7ZalzTcGiUTtcL298H3pZ
+         XlGlGQ3rM4j+l17Azi/20KDH2nykcUa0yhDiTz1YN9NUIm9v1JwBFlR9bvObcHXH/vwK
+         UtvwDVueS7q3qnrxXG4upik9A2lRW2BHKlOieR/fRXS2wpIHP5qMYEcplbsA0y77OE1K
+         yIMC3K3qmJsJIURhat+P51v7HWWgxUHsvAZEOaSAxqxZBwl4K5gt5Ib9dSKCtQH+tlAz
+         ckMA==
+X-Forwarded-Encrypted: i=1; AJvYcCU32dbFNGDIyzApTRHICyW5wpeSiMuEytbI6+9ucbZ28nwOg4vTg2QtQ0z8hxUhZE8RNoI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzeHT67zQEFyLio7UcX1LSk+eheXUFt4c9ZUVL9azgUqbrw7ke6
+	SmpNHoTMbMjOsZEd99FcH2A4/g/BqXsJqpXc+pHkjMiIkFPoRmB4MrmgeQ1e+OBHe6M=
+X-Gm-Gg: AY/fxX6D8BVZ/usk9CGXJlff34UrMrrwSRsbl9xtJet4dNIlBCEw95ot3pCjAV28U6o
+	8U5FZT5s2UBrnxMT4yVkmSMvxWXCiF91F+x/Kz81GnFbeItqqK9cKwasn+glrOdsaJCpsC0HxRu
+	xJGGrSX+7zLarxJs7yNeI4vO+euh+NT2bLrMn+T02C5X3GJiBgh797vAKVu4/r7MBsF863hQOYY
+	97sG/nPUlW9gGs4J0NqnxLhyEbk1BQavf2Rw9Yml5qhjoizAWVBk0GOI36qebl2iXhU+6epUcbT
+	9HRb0unFoJU7IHNn8S4c9WtJvOT01uIo4JdtaegbX0LOVutHt/yD/oI4uHqrRCe5XYQnNfZSDSp
+	J03cunh2LCrsALAKIq2a0lcWZbjHHL6w/vUpMGRI8PyIfyFAJFbIsQEQoJIIuSxQJvCNWDLF8mi
+	pBYif7+GvJt62WDQ==
+X-Google-Smtp-Source: AGHT+IFOvPJP9R1hw4cpVp6os/r5K7GEms65q/AlzRFH4grW4yqI7xvevFuJtgCcEOr5tWpPHLh0Mg==
+X-Received: by 2002:a17:902:ce92:b0:2a0:b62e:e016 with SMTP id d9443c01a7336-2a3ee4aad5amr188877205ad.32.1768324039181;
+        Tue, 13 Jan 2026 09:07:19 -0800 (PST)
+Received: from p14s ([2604:3d09:148c:c800:82f2:906c:a8da:1fdb])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3cd3632sm208565395ad.95.2026.01.13.09.07.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jan 2026 09:07:18 -0800 (PST)
+Date: Tue, 13 Jan 2026 10:07:15 -0700
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Abel Vesa <abelvesa@kernel.org>
-Subject: Re: [PATCH v3] drm/bridge: fsl-ldb: Parse register offsets from DT
-Message-ID: <20260113163932.vx4245vyiafwvehg@pengutronix.de>
-References: <20260104213712.128982-1-marek.vasut@mailbox.org>
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH v6 0/6] remoteproc: imx_rproc: Support i.MX95
+Message-ID: <aWZ7w5g7mYMDoffv@p14s>
+References: <20260109-imx95-rproc-2026-1-8-v6-0-d2fefb36263d@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,220 +83,117 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260104213712.128982-1-marek.vasut@mailbox.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20260109-imx95-rproc-2026-1-8-v6-0-d2fefb36263d@nxp.com>
 
-Hi Marek,
-
-On 26-01-04, Marek Vasut wrote:
-> The DT bindings for this bridge describe register offsets for the LDB,
-> parse the register offsets from DT instead of hard-coding them in the
-> driver. No functional change.
-
-during the discussion of the i.MX9 PDFC bridge dt-bindings [1] we came
-to the conclusion that the 'reg' property shouldn't have been added to
-the dt-bindings in the first place.
-
-[1] https://lore.kernel.org/all/20251219153537.zgxcokyhcqerw4jp@pengutronix.de/
-
-As descibed in [1], the PDFC and LDB aren't standalone IPs with
-dedicated register spaces. For some cases like the LDB, there may be two
-dedicated registers, but for other cases like the PDFC, there is only a
-single register-field and the register containing this field is shared
-between the PDFC and the MIPI-DSI block.
-
-Therefore the 'reg' DT abstraction is wrong, instead the BLK-CTRL child
-devices should appear without a 'reg' property as simple child devices.
-The child devices need to get the register space from the syscon parent
-and need to code the registers and register-fields within the driver
-like the LDB does currently.
-
-Sorry for the late feedback.
-
-Regards,
-  Marco
-
-> The LDB was always meant to parse the 'reg' offsets out of the DT, it
-> only went somewhat wrong in the process and we ended up with hard-coded
-> reg<->compatible mapping. It was never intended to be that way, so fix
-> it.
+On Fri, Jan 09, 2026 at 08:08:00PM +0800, Peng Fan (OSS) wrote:
+> This patchset is pick up a previous patchset [1] with rebased on
+> next-20251030, and some changes applied.
+>  - Add runtime ops to separate cpu ops and lmm ops
+>  - added more comments
+>  - moved some check imx_sm_rproc_detect_mode() from imx_rproc_sm_prepare().
 > 
-> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
-> ---
-> Cc: Abel Vesa <abelvesa@kernel.org>
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: Fabio Estevam <festevam@gmail.com>
-> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-> Cc: Liu Ying <victor.liu@nxp.com>
-> Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> Cc: Lucas Stach <l.stach@pengutronix.de>
-> Cc: Peng Fan <peng.fan@nxp.com>
-> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-> Cc: Rob Herring <robh@kernel.org>
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: devicetree@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: imx@lists.linux.dev
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-clk@vger.kernel.org
-> ---
-> V2: - Switch to of_property_read_reg()
->     - Parse single-register LDB variants from DT too
-> V3: - Update commit message
->     - Drop "likely" from the comment
-> ---
->  drivers/gpu/drm/bridge/fsl-ldb.c | 58 ++++++++++++++++++++------------
->  1 file changed, 36 insertions(+), 22 deletions(-)
+> No changes to the dt-binding patch, so R-b/A-b are kept.
+> More info could be found in commit message of each patch and below.
 > 
-> diff --git a/drivers/gpu/drm/bridge/fsl-ldb.c b/drivers/gpu/drm/bridge/fsl-ldb.c
-> index 5c3cf37200bce..aa352c70b9ab2 100644
-> --- a/drivers/gpu/drm/bridge/fsl-ldb.c
-> +++ b/drivers/gpu/drm/bridge/fsl-ldb.c
-> @@ -8,6 +8,7 @@
->  #include <linux/mfd/syscon.h>
->  #include <linux/module.h>
->  #include <linux/of.h>
-> +#include <linux/of_address.h>
->  #include <linux/of_graph.h>
->  #include <linux/platform_device.h>
->  #include <linux/regmap.h>
-> @@ -61,24 +62,13 @@ enum fsl_ldb_devtype {
->  };
->  
->  struct fsl_ldb_devdata {
-> -	u32 ldb_ctrl;
-> -	u32 lvds_ctrl;
->  	bool lvds_en_bit;
-> -	bool single_ctrl_reg;
->  };
->  
->  static const struct fsl_ldb_devdata fsl_ldb_devdata[] = {
-> -	[IMX6SX_LDB] = {
-> -		.ldb_ctrl = 0x18,
-> -		.single_ctrl_reg = true,
-> -	},
-> -	[IMX8MP_LDB] = {
-> -		.ldb_ctrl = 0x5c,
-> -		.lvds_ctrl = 0x128,
-> -	},
-> +	[IMX6SX_LDB] = { },
-> +	[IMX8MP_LDB] = { },
->  	[IMX93_LDB] = {
-> -		.ldb_ctrl = 0x20,
-> -		.lvds_ctrl = 0x24,
->  		.lvds_en_bit = true,
->  	},
->  };
-> @@ -90,8 +80,11 @@ struct fsl_ldb {
->  	struct clk *clk;
->  	struct regmap *regmap;
->  	const struct fsl_ldb_devdata *devdata;
-> +	u64 ldb_ctrl;
-> +	u64 lvds_ctrl;
->  	bool ch0_enabled;
->  	bool ch1_enabled;
-> +	bool single_ctrl_reg;
->  };
->  
->  static bool fsl_ldb_is_dual(const struct fsl_ldb *fsl_ldb)
-> @@ -204,15 +197,15 @@ static void fsl_ldb_atomic_enable(struct drm_bridge *bridge,
->  		reg |=	(fsl_ldb->ch0_enabled ? LDB_CTRL_DI0_VSYNC_POLARITY : 0) |
->  			(fsl_ldb->ch1_enabled ? LDB_CTRL_DI1_VSYNC_POLARITY : 0);
->  
-> -	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->ldb_ctrl, reg);
-> +	regmap_write(fsl_ldb->regmap, fsl_ldb->ldb_ctrl, reg);
->  
-> -	if (fsl_ldb->devdata->single_ctrl_reg)
-> +	if (fsl_ldb->single_ctrl_reg)
->  		return;
->  
->  	/* Program LVDS_CTRL */
->  	reg = LVDS_CTRL_CC_ADJ(2) | LVDS_CTRL_PRE_EMPH_EN |
->  	      LVDS_CTRL_PRE_EMPH_ADJ(3) | LVDS_CTRL_VBG_EN;
-> -	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl, reg);
-> +	regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl, reg);
->  
->  	/* Wait for VBG to stabilize. */
->  	usleep_range(15, 20);
-> @@ -220,7 +213,7 @@ static void fsl_ldb_atomic_enable(struct drm_bridge *bridge,
->  	reg |=	(fsl_ldb->ch0_enabled ? LVDS_CTRL_CH0_EN : 0) |
->  		(fsl_ldb->ch1_enabled ? LVDS_CTRL_CH1_EN : 0);
->  
-> -	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl, reg);
-> +	regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl, reg);
->  }
->  
->  static void fsl_ldb_atomic_disable(struct drm_bridge *bridge,
-> @@ -231,12 +224,12 @@ static void fsl_ldb_atomic_disable(struct drm_bridge *bridge,
->  	/* Stop channel(s). */
->  	if (fsl_ldb->devdata->lvds_en_bit)
->  		/* Set LVDS_CTRL_LVDS_EN bit to disable. */
-> -		regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl,
-> +		regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl,
->  			     LVDS_CTRL_LVDS_EN);
->  	else
-> -		if (!fsl_ldb->devdata->single_ctrl_reg)
-> -			regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->lvds_ctrl, 0);
-> -	regmap_write(fsl_ldb->regmap, fsl_ldb->devdata->ldb_ctrl, 0);
-> +		if (!fsl_ldb->single_ctrl_reg)
-> +			regmap_write(fsl_ldb->regmap, fsl_ldb->lvds_ctrl, 0);
-> +	regmap_write(fsl_ldb->regmap, fsl_ldb->ldb_ctrl, 0);
->  
->  	clk_disable_unprepare(fsl_ldb->clk);
->  }
-> @@ -296,7 +289,7 @@ static int fsl_ldb_probe(struct platform_device *pdev)
->  	struct device_node *remote1, *remote2;
->  	struct drm_panel *panel;
->  	struct fsl_ldb *fsl_ldb;
-> -	int dual_link;
-> +	int dual_link, idx, ret;
->  
->  	fsl_ldb = devm_drm_bridge_alloc(dev, struct fsl_ldb, bridge, &funcs);
->  	if (IS_ERR(fsl_ldb))
-> @@ -309,6 +302,27 @@ static int fsl_ldb_probe(struct platform_device *pdev)
->  	fsl_ldb->dev = &pdev->dev;
->  	fsl_ldb->bridge.of_node = dev->of_node;
->  
-> +	/* No "reg-names" property means single-register LDB */
-> +	idx = of_property_match_string(dev->of_node, "reg-names", "ldb");
-> +	if (idx < 0) {
-> +		fsl_ldb->single_ctrl_reg = true;
-> +		idx = 0;
-> +	}
-> +
-> +	ret = of_property_read_reg(dev->of_node, idx, &fsl_ldb->ldb_ctrl, NULL);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!fsl_ldb->single_ctrl_reg) {
-> +		idx = of_property_match_string(dev->of_node, "reg-names", "lvds");
-> +		if (idx < 0)
-> +			return idx;
-> +
-> +		ret = of_property_read_reg(dev->of_node, idx, &fsl_ldb->lvds_ctrl, NULL);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
->  	fsl_ldb->clk = devm_clk_get(dev, "ldb");
->  	if (IS_ERR(fsl_ldb->clk))
->  		return PTR_ERR(fsl_ldb->clk);
+> [1]https://lore.kernel.org/linux-remoteproc/20250821-imx95-rproc-1-v5-0-e93191dfac51@nxp.com/
+> 
+> i.MX95 features a Cortex-M33 core, six Cortex-A55 cores, and
+> one Cortex-M7 core. The System Control Management Interface(SCMI)
+> firmware runs on the M33 core. The i.MX95 SCMI firmware named System
+> Manager(SM) includes vendor extension protocols, Logical Machine
+> Management(LMM) protocol and CPU protocol and etc.
+> 
+> There are three cases for M7:
+> (1) M7 in a separate Logical Machine(LM) that Linux couldn't control it.
+> (2) M7 in a separate Logical Machine that Linux could control it using
+>     LMM protocol
+> (3) M7 runs in same Logical Machine as A55, so Linux could control it
+>     using CPU protocol
+> 
+> In patch 3, Use LMM and CPU protocol to manage M7. More info could be
+> found in the patch commit log
+>     Current setup relies on pre-Linux software(U-Boot) to do
+> M7 TCM ECC initialization. In future, we could add the support in Linux
+> 
+> Patchset was tested with below boot images when the patchset based on next-20251030:
+> imx-boot-variant-rpmsg-imx95-19x19-lpddr5-evk-sd.bin-flash_lpboot_sm_a55 (Use LMM protocol)
+> imx-boot-variant-alt-imx95-19x19-lpddr5-evk-sd.bin-flash_alt (Use CPU protocol)
+> imx-boot-imx95-19x19-lpddr5-evk-sd.bin-flash_all (M7 not under A55 control)
+> 
+> Also tested i.MX8MP/8ULP-EVK.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+> Changes in v6:
+> Added R-b from Frank for patch 4
+> Following Mathieu's suggestions for patch 4
+>  - Renamed IMX_RPROC_FLAGS_SM_LMM_AVAIL to IMX_RPROC_FLAGS_SM_LMM_CTRL
+>  - Added comment in imx_rproc_sm_lmm_start and add comment for
+>    imx_rproc_sm_lmm_check, and update comment to use "M7"
+>  - Following the suggested code snippets, update imx_rproc_sm_lmm_prepare
+>    and imx_rproc_sm_lmm_check
+>  - With above done, separate the CPU API support into a separate patch,
+>    no other changes.
+> 
+> Changes in v5:
+> - Add R-b from Daniel for patch 4
+> - Patch 4, per Mathieu's comments:
+>   Move imx_rproc_ops_sm_lmm and imx_rproc_ops_sm_cpu to bottom of the file.
+>   Set IMX_RPROC_FLAGS_SM_LMM_AVAIL when scmi_imx_lmm_operation(shutdown)
+>   pass or m7 is started before Linux.
+> - Link to v4: https://lore.kernel.org/r/20251216-imx95-rproc-2025-12-15-v4-0-bf1064ea8daf@nxp.com
+> 
+> Changes in V4:
+> - Rebased to 6.19-rc1 to resolve conflicts.
+> - Address Frank's comment patch 4 regarding "if (ret != 0)" -> "if (ret)"
+> - Link to v3: https://lore.kernel.org/linux-remoteproc/20251122-imx95-rproc-2025-11-20-v3-0-9ae6ee619a78@nxp.com/#t
+> 
+> Changes in v3:
+> - Add R-b for patch 2,3,5
+> - Patch 4:
+>   Rename imx_rproc_ops_sm to imx_rproc_ops_sm_lmm.
+>   Add more comments in code
+>   Simplify if check in imx_rproc_sm_lmm_prepare()
+>   Update commit log
+>   Use dev_err for failure path
+> - Link to v2: https://lore.kernel.org/linux-remoteproc/20251031-imx95-rproc-2025-10-31-v2-0-758b2e547a55@nxp.com/T/#t
+> 
+> Changes in v2:
+> - Patch 2: Change to const pointer for ops, update commit log and add R-b from Frank
+> - Patch 3: New patch, introduce prepare ops
+> - Patch 4: Rename imx_rproc_sm_prepare to imx_rproc_sm_lmm_prepare
+>            drop IMX_RPROC_FLAGS_SM_CPU_OP and IMX_RPROC_FLAGS_SM_LMM_OP
+>            Add a bool for dcfg->lmid and info->lmid check.
+>            Provide separate plat ops for lmm and cpu setup.
+>            Move LM permission check to a separate function.
+> - Patch 5: Drop macro IMX95_M7_CPUID and IMX95_M7_LMID
+> - Link to v1: https://lore.kernel.org/r/20251028-imx95-rproc-2025-10-28-v1-0-ce9e7db9edcb@nxp.com
+> 
+> ---
+> Peng Fan (6):
+>       dt-bindings: remoteproc: fsl,imx-rproc: Add support for i.MX95
+>       remoteproc: imx_rproc: Add runtime ops copy to support dynamic behavior
+>       remoteproc: imx_rproc: Introduce prepare ops for imx_rproc_dcfg
+>       remoteproc: imx_rproc: Add support for System Manager LMM API
+>       remoteproc: imx_rproc: Add support for System Manager CPU API
+>       remoteproc: imx_rproc: Add support for i.MX95
+> 
+>  .../bindings/remoteproc/fsl,imx-rproc.yaml         |   1 +
+>  drivers/remoteproc/Kconfig                         |   2 +
+>  drivers/remoteproc/imx_rproc.c                     | 249 +++++++++++++++++++--
+>  drivers/remoteproc/imx_rproc.h                     |   4 +
+>  4 files changed, 243 insertions(+), 13 deletions(-)
+
+I have applied this set.
+
+Thanks,
+Mathieu
+
+> ---
+> base-commit: fc4e91c639c0af93d63c3d5bc0ee45515dd7504a
+> change-id: 20260108-imx95-rproc-2026-1-8-04f759890742
+> 
+> Best regards,
 > -- 
-> 2.51.0
+> Peng Fan <peng.fan@nxp.com>
 > 
-> 
-> 
-
--- 
-#gernperDu 
-#CallMeByMyFirstName
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
