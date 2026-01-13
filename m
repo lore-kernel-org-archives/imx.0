@@ -1,66 +1,109 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013043.outbound.protection.outlook.com [52.101.83.43])
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021124.outbound.protection.outlook.com [52.101.125.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEFA2EAD09
-	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 16:22:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D902B2EC0AA
+	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 16:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768321348; cv=fail; b=SxOSD8qbYLnsXup6FAty2E3qn1bf83/NpNpayPumQQkvO7AUOAinGP5JlGL9ULRbNZ4Vqr3bNZgb3975n9A00IzF4+kHIy2QLOFYtgs2x8Bk0QptbMCE2apr1997kgLd3Pyq2ZBO+6utwwqvhba0UZmFIcYnchrRA3mXbO4TRpo=
+	t=1768321650; cv=fail; b=iu00YznIz33BY6FYySn+hvirGBfJK5KwPhV5EPjHvUeP1oeGfIlc+frbIZJ3HfBGpTqvsIwQIo/dN2Gkxq6u/iqApCDzAcGphTx7//tC5mBjuxO3eGMnZizRwVDbjIUjHzvKfTBuWbAYhSYXU2Mg9WquXhHhVwngh7hbpAGfELM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768321348; c=relaxed/simple;
-	bh=bIUL29shfJ8vfop+tJyVRggY3fdjVSHDhLpfeNn68+k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=iR34TUy0EzhU2r35HRMWtPE0yhLf+wW/JIcUv1pcUD17Y+jwt+L6kLGU3tFADbFEWhY1GbECi86002EYoQZhxckXUfjVSHLSyJZ/xrXns/Mr8TKeE6vbPPxYuf+/TgTGyzI80iNibYxYgo4piKp5cGP8l88JvTJmEfAvhZnD+vA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WM2l9TN6; arc=fail smtp.client-ip=52.101.83.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1768321650; c=relaxed/simple;
+	bh=CHx2akBPMwdxzl+uuValuW71nnwkWWJf5O8XMOiRzf4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=hVZ+6EzPoMtFqsqtT5ILyJZePhWhZf8U27unwViH55uED2/H85mH24SfGq3HNXK1+9akW1/JZDWW6LJ17CjqITh7QtKal6hg5MdR5nxhRuaA5q4EAMgtp4y7N9qVYn3zGkhtdtpKeqpvUxREjIeYh/ZLJ3QmbmgTBOx9iSSMqvo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=Jc61lukE; arc=fail smtp.client-ip=52.101.125.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WM2l9TN6"
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="Jc61lukE"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=H2kLNMQcNw9FPB/fJlJ9vSCiZp0SwX2RgTyi+LDRD03V96RsJxKpNrMwbMipboDhUuzQDPDOoZGxLvYbUSliBdhuWBxQyYPNAJ6mLltWRZBfQFrvxQE3YkyCHq/6vwDsx+6NY4dwqfH0SVjnD+/Sk9Ydr1UHfjYtwCrHJCCDJEt/9jM0q+SKvgokvKjbWidRuWlqfetK+4+NSWCFzKlsDi5xIeuJPlfr8VWHDtNX5d+CiR2TGdsGGjiFTNt4q1xDdeQsPhdmtD2qJVRcb/UrrAZ8vGiL2PIcmd1L3k4F19H7vz5aOtfS72HsUKqYiQlwDhIR75TF0gKWzs3cvR1gVA==
+ b=X+qKJ413iop8ATM1MF4AtJSxsuSMcvkeRnRbHgY74l1s4YVuKne+R8q2xWa79sW3sDr/cY5Oa1RMAWoeYgZdnYE0HpSdb5zjqwaSJ/8fwXGEISPZd6dq0t7sfYuMcyTJlCR51tBV92eH82uz8s4f4hAH6mBZSeV87Ro7kTwuhCIilWPzKmkZLMXndR6CnSFfOleU4riUOiPzfedOB4WEO7e1Serpb0ziDCkIChB0KdpvPhg13B5daWLZue996mJWqmkHA0iuThBuIoNJq6gx/ctEMCxICDiqEjfDB7v/QzQVsmPWeQuBTV5jydhpu3ToHae2lzBCf/sk/T5X3yu8pA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ioqzSQJOi2fSGDA/vh+rcUHV4gFkWuNXNbzHB5ztj9M=;
- b=cwwswN5M9e+ROkjM7aoI2iP6Fkd2kud9IEjXZb1E9ypSChbnWNYrE6CdNDxuelntPcuZ1nnqguCvzNVNjlhnICGuaWhQuIrwEmEFOlR7W3teOcDiOsXXoLy6xtyhIB3PYehgOJqbj6RN3T6VcWg4bvcx7Jt+Ewx2lbFaqVgd3l24wXXh0ktopB26ltTwKSNrYX8tjGR8wX718hPQKiQz4vYs4uOiQr4ajl/Uaj44ZDlN37FEbU9537XWATnsA4QpssCDp57qybjNwYE7TSptepo/WpzsfJBjm8TUbbjkCvUxYZIiWfWqbmVvM+YvtKe1uaN/N+p1LlAEiff2ffP9Eg==
+ bh=SKydzTgvTCa1zYB0yieRBorpZeMVX60WKsYpzkEsXxI=;
+ b=O9JWWG/3Z7LkihAGnFLc/kqzzJmX95ShSAYlnYlyjPJ9TRDSc741yUinbiDbJQt8toBki5rXno5yciCLmT4ovZXBpJyLoYEAv2zIXOMrSWYHGMgta6SrTRWS0EbGNkq91/7T4sFaOlqPLHn6gXoBZHyTnMUa0esoj+TtZH0QccQrQ4X6z3pi3Qsm38GNJ+FJvNTLZPqVS5rgB70Ij4qbi1MInU23UjWaBYXXzhr6aTTcDJvc4kSEMpwoIgKCSYgprn/gBsO0NPA1ZaFWt6vYRE2xqBW/F4nU77Fkr8+GRlAV3OzLzsp8FsjAScaWgapl29tKx5KNSZAW9Cbzfw0UiA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ioqzSQJOi2fSGDA/vh+rcUHV4gFkWuNXNbzHB5ztj9M=;
- b=WM2l9TN6icai8KE2/ExCHrwODvU4O5o32SLAuYiAyRh2sG4MaNHSc+uew61uMuXpKTFJMBbUoa15tQ52gdNPCgZK5go7CvOoWSIlv3yNhZkO8pSdXn2zJLhUihRuzGC55Ukotez0Ckg2ZJsssQPTj5QdEIxyxAOIdS4LmST3dzK1b0qisQNuNuYJLOsRu6j9vBt1QNYazsTZt2orsivNZnKGMO1TIziv2tvO5MK62XNkS03GDQEyBxCtIObBsBPX6Zqx2beZdDgjRVdtcOXsrs8+Yvm6OFCTJZH6cuU45dztiClykKLCC59GrWAVwQWuh0kOfkbMiLjOFyJWDuBh+Q==
+ bh=SKydzTgvTCa1zYB0yieRBorpZeMVX60WKsYpzkEsXxI=;
+ b=Jc61lukEwVWbuLSAIHC9LLhxEVbVwRcGLQWrkNM0QNwJrzv3dVdWxrj95XjwaLlXfme4YsD0zPluhNDy4c1S+ruKHZqsd4yfQAZzF8xYUgaG22zSlfPaX/J3Bb1AL7tSjbR+0PV4G5bEtHN3e91XJ5qp0pcrsJmsUCAZBQ+w4gs=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8948.eurprd04.prod.outlook.com (2603:10a6:20b:42f::17)
- by GVXPR04MB10660.eurprd04.prod.outlook.com (2603:10a6:150:221::12) with
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by TYWP286MB3400.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:2dd::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Tue, 13 Jan
- 2026 16:22:22 +0000
-Received: from AS8PR04MB8948.eurprd04.prod.outlook.com
- ([fe80::843f:752e:60d:3e5e]) by AS8PR04MB8948.eurprd04.prod.outlook.com
- ([fe80::843f:752e:60d:3e5e%4]) with mapi id 15.20.9499.002; Tue, 13 Jan 2026
- 16:22:22 +0000
-Date: Tue, 13 Jan 2026 11:22:12 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: shenwei.wang@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
-	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next 07/11] net: fec: use switch statement to check
- the type of tx_buf
-Message-ID: <aWZxNFIh2trMm04T@lizhi-Precision-Tower-5810>
-References: <20260113032939.3705137-1-wei.fang@nxp.com>
- <20260113032939.3705137-8-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260113032939.3705137-8-wei.fang@nxp.com>
-X-ClientProxiedBy: SJ0PR13CA0218.namprd13.prod.outlook.com
- (2603:10b6:a03:2c1::13) To AS8PR04MB8948.eurprd04.prod.outlook.com
- (2603:10a6:20b:42f::17)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Tue, 13 Jan
+ 2026 16:27:25 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.20.9499.005; Tue, 13 Jan 2026
+ 16:27:25 +0000
+From: Koichiro Den <den@valinux.co.jp>
+To: jingoohan1@gmail.com,
+	mani@kernel.org,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	robh@kernel.org,
+	bhelgaas@google.com,
+	cassel@kernel.org
+Cc: vigneshr@ti.com,
+	s-vadapalli@ti.com,
+	hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	minghuan.Lian@nxp.com,
+	mingkai.hu@nxp.com,
+	roy.zang@nxp.com,
+	jesper.nilsson@axis.com,
+	heiko@sntech.de,
+	srikanth.thokala@intel.com,
+	marek.vasut+renesas@gmail.com,
+	yoshihiro.shimoda.uh@renesas.com,
+	geert+renesas@glider.be,
+	magnus.damm@gmail.com,
+	christian.bruel@foss.st.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com,
+	hayashi.kunihiko@socionext.com,
+	mhiramat@kernel.org,
+	kishon@kernel.org,
+	jirislaby@kernel.org,
+	rongqianfeng@vivo.com,
+	18255117159@163.com,
+	shawn.lin@rock-chips.com,
+	nicolas.frattaroli@collabora.com,
+	linux.amoon@gmail.com,
+	vidyas@nvidia.com,
+	Frank.Li@nxp.com,
+	linux-omap@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@axis.com,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH v7 0/6] PCI: endpoint: BAR subrange mapping support
+Date: Wed, 14 Jan 2026 01:27:13 +0900
+Message-ID: <20260113162719.3710268-1-den@valinux.co.jp>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYCP286CA0102.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:2b4::9) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -68,358 +111,211 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8948:EE_|GVXPR04MB10660:EE_
-X-MS-Office365-Filtering-Correlation-Id: 82fa5b02-c374-4c11-cbcc-08de52bfedf3
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TYWP286MB3400:EE_
+X-MS-Office365-Filtering-Correlation-Id: dafcb2cf-69d3-46cb-e927-08de52c0a2c2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|19092799006|376014|7416014|366016|1800799024|38350700014;
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|10070799003;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?XXOdNnd5GXh1ZtrudXRLNWxf1poerY8iTAPFsNXPtUNDc9sU4Nof15rlENGk?=
- =?us-ascii?Q?0YnqKrMDxrgELFXl7rmAsS1BNOtrfBMg7awh5bxzgJKuCQqCLbyUL35pxHJ1?=
- =?us-ascii?Q?emvy91iEooH2KtlVQ+agOgaIWlPBv7vQVwrwWonwtPZlZK2Kkl/nvMHZOXkj?=
- =?us-ascii?Q?f6HKl+GykDU+CzATZTNWrazIrfs+NGhwvdcYzIrHK0WmW1XSIwS4EQE60Boc?=
- =?us-ascii?Q?zNQVNMcpnbVlnDonP7BplMiwlvwskdk6WebI5dbpDZLELp9eG0iYCKlo479k?=
- =?us-ascii?Q?pGI52iwNkZ9EYExzwngPHmR9gDWLptge+VNxFbq5jpEsHpnHKUrQRvSGkyNG?=
- =?us-ascii?Q?diCl9mdwjkOcCZ2J9iGMKkxAmwZeYnMe3tI4aeNhK5R/red61t501IU4CkGH?=
- =?us-ascii?Q?9S/0VpCPMp9i1J7dK1V0Yurs0efTLfyqouffdMvnlrUL8aryEBh3sg/fQcu7?=
- =?us-ascii?Q?d2dc8JbNlHfBsSQL1FPyAFLL6+PLrv+vF0Mql7CR3YXQmls8mGDLpSLNsqBv?=
- =?us-ascii?Q?BQJQDB1lQy1cNsANK8d3VuWShAOPQF5FDZuu+ZnQ1NmuE+ChROvEuhzD1/8/?=
- =?us-ascii?Q?EOADlHza0hqHCjcv5FwLnfGh5rPXmuPeSyJKlDFUWNci4evKKnr4m85EiTZ7?=
- =?us-ascii?Q?GwviJBU0OzEWM+uDfBkm+OSgk3jkNQ7XsBbUl3z4e0JGx8GtVkNAy20Lymc+?=
- =?us-ascii?Q?fUIcPPr8BsIXT5DQRwhJmFnDKfPoQd5rBrkWSceW6VMpteqPi7HZoHu0+Yig?=
- =?us-ascii?Q?5KHQegOXDIRmN1QCqcjEQwqJTt6XAmCc8BIUhXDV76RTMF+fG3+dB299xYaS?=
- =?us-ascii?Q?jRllt/Ae6kRkMo9JDIaPx7oO+uUfS2A8oi49TlXKjyDq+sxwi3jEyoYDwncB?=
- =?us-ascii?Q?IQOgICmWh3E2KRi6qR10D+HpQzIS2JEsaeMLebWnXxPUXUhmqeWNIAFw/7Md?=
- =?us-ascii?Q?Wjc9TKgEu9h6O+5HYt1fO7FL7edJNOoTXo+alISSwFBff6KW6wQcVR314fhM?=
- =?us-ascii?Q?Izk08u6Xa2JKVLqY42CR52FG9OfspghrgaNe3j518Z/EC7oHOq9Mcwz8m/3w?=
- =?us-ascii?Q?Fj3IVV/HSpIw+KGaY7H+VkjJoGefVzMUG3jcfFvEV3WXsaKp9fzYjP/b1DgE?=
- =?us-ascii?Q?nOPGVFzfrFRWmAz5lODMc+WNnnJ5dKVAyZ3v5HNxlcWJuwS8bP9lEl0s16oJ?=
- =?us-ascii?Q?AwNY8yMhHSrblPTfBK8iFOU4vuBl07LAy/lVuuawfdY1UMEoExrK+hND2082?=
- =?us-ascii?Q?5x79HDJXGDKtu2ZPgkMcBwW02+4C6DWbvXEhuKVfz0JAFPzwjBqWEjXAcPxz?=
- =?us-ascii?Q?VrDOflyvaJGzFBStVCFmuR2VOBK5xKX8ugfr6oHL5ifn4i5xMik2iwhWWyHq?=
- =?us-ascii?Q?o4cwsEAaOiS9m30DeGoqT6M0Fhq1zc8Di+q2JmDmA81nv6o3X28QHVvCeVFt?=
- =?us-ascii?Q?rXrz0gR3xmFtcjt5SGpMHhsw9tKQFum0qNglSZ8AKGr6QjpOcpvwnwG+2VJX?=
- =?us-ascii?Q?txdB9CH3PHIOKS+RyKgf+Oit5vB5c3/oOKp+?=
+	=?us-ascii?Q?zHaVy+tbiR075tGEzCLse254zFq2nAcdkJDL02nFfaIAmKEx+XmUhHFvUBih?=
+ =?us-ascii?Q?2oErmW2bltubg6yXl9IJmrklZV44i/rC9HGenGOMrZJ2d8mK9Ew0/ZDzlugU?=
+ =?us-ascii?Q?c7hmsyBej/+Co2ZXAsblsUuEuhIl90Ipv78W/OHdGMwtet33912o+Jv9t009?=
+ =?us-ascii?Q?xzDiVQXLMTgu3JvvtKiAB4ZiuDB8Kr2be9LJ9R6H8cp3/vvAk0j4Sef/QycI?=
+ =?us-ascii?Q?UvhceDrjX23YAuJom3ig+kJSwx6D8gOaOEl6GhgGXjLA7+rwYwhzzgENVUts?=
+ =?us-ascii?Q?m/rdj4kXReKtVMoHCy7rQEK6HYrrVmXNkzbLip1oJvVjKtxZFwh6Vt0DLu+S?=
+ =?us-ascii?Q?UaXURPCLqQ/l0RhTHdeZFhxipaFE1zFjBiYYBwcESFETiRvdPIzMLu+EmWp4?=
+ =?us-ascii?Q?JBuog/1kKzwuxDmrY+Eo9udVJ4fRc+gfW0IIUev5Ipb+uxbA+OWDg3sGrcDw?=
+ =?us-ascii?Q?5X1pp+OvWbK8ZFolIkKgASE7g07XBEwLhwO11rAJto069i7WcoX5ahW95Tqq?=
+ =?us-ascii?Q?H327P8+RJXOe2mqVKqBhPgkwaTuLjYMTNzB78OsnoR+7GJtAHL6hb/DYSVcP?=
+ =?us-ascii?Q?b4G9BXaYqfNUsGF3gGap9H6SOrxmuyI2aXqJa0DIhUc481QhDH62Yp1xjVmQ?=
+ =?us-ascii?Q?cMf1RwPtdNtHuklCTgYIWNl3tATe0H6SaoC/joRebPwQUnqVRtNei/RQ9hSU?=
+ =?us-ascii?Q?4KfMQwbmseHbHLsg/aVdnk2tswV7vdrsR9bUUGlQ5emazykBtkQptK4aN0FK?=
+ =?us-ascii?Q?Zl+rB9M5opHXoda6CJaDBEnEGxrt8miPVXraOguhW7Zt9k+DdGM+8fxr8+pX?=
+ =?us-ascii?Q?E018cR5EE8qJKa4WQ3LbHk+GNsjTyCJNwOFRE7m6ZyIwNHRd9kienjQqg8CK?=
+ =?us-ascii?Q?bF3XLBrj8IiF4TODqG1VB1NzUgIDevnI+A2V81ojr//LvV1+GINheAjKlQtB?=
+ =?us-ascii?Q?UbWsH8TIiwLmfYPXRy26omjlpvTYvahVIvvVtv9/ACXW8RuTMrxpNoCEpYC0?=
+ =?us-ascii?Q?fP6tUugwUfFwsdqCF3ROf51qxzfHJMgqUQTJisQCRBKmx4/cbcNBdKHznM21?=
+ =?us-ascii?Q?uyORJzLcJtKxyPJS48K8+/AQ6nNDqnXwTjv3N+FvalBKcVSkfDlmkkejZzOM?=
+ =?us-ascii?Q?gtOBg16Q/xFhr7b6T7NieRVSARYaEHMDNLRlV7VBqbzdoeSEJq9sU4b/gExK?=
+ =?us-ascii?Q?kWGBliEGBDptUbeZgiY2srbfT/hE/Bzcq2CfY4fNv3gCVE35g/r3nmNIDD3P?=
+ =?us-ascii?Q?GD/rUzXg2Hp2Q0na+2ua0DZ5oqAN54cPW+6wKI6EOQqlzQbXFxEzZ/0AGPXJ?=
+ =?us-ascii?Q?n7req7qSXlsZ7S/6NUYpNxE0gSTkKMs+y95nMp3SzDSX85PzMQZ3hA2fQvbj?=
+ =?us-ascii?Q?CWIx09qwWeMHHaKfbK4FRjtueYEiuwBX/X4Kz0sNOBu+2QPQ6IAlTfFNUqcG?=
+ =?us-ascii?Q?PVhgG4zSzbYqxeH4pptD3K0m9NLeTj33?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8948.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(19092799006)(376014)(7416014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(10070799003);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MIfvvYVTbIi5OE20jOCs9LpqfddhdG9EKR55dRV+clR+FCDhnUqFFRtIbg6y?=
- =?us-ascii?Q?dS+neiDij5BcIXNtebZa+EuLPUti++8IASBUS6SodVuBH/fYUYfz2NXjd6Zy?=
- =?us-ascii?Q?PZyrxM6PXQxISDgiqhUuNvg+5nt2xuakM7Rb8ynBwG7XavE8nt/oxdh5w3+h?=
- =?us-ascii?Q?AyimVqYLZzKs+O7mFEqyatAyC7a7wVUOmQDVcslDDWupEBMkwNo35jApjkdH?=
- =?us-ascii?Q?dp4s7seuXxdh0gef3MhP5wHGptdp5q0XDRBvZBLGIjAlJWeDiE3DKl3l8yV0?=
- =?us-ascii?Q?W/Aia6J0XjQr62d+b0yqo743e2pFdTSA2p4nWpH5eAZbEv7ifCWfYGuo0y/b?=
- =?us-ascii?Q?HCKAL8UEyBSd5Qlh0t6Ta4WFRdSnb2sOduf3YNRH8U0hX2d6IMTGBIiOugBW?=
- =?us-ascii?Q?iZcFlKqlw45+T4LmMlKxkZ39jTcd2fNKgg8MEMhAa/PcjWiq0/XMAzL1Z9st?=
- =?us-ascii?Q?hWR6IAFzppd4otRcnd0tbMKLgYD0Q0MM+zLmbcSwtta9dwPHIu/akUZ+MNzq?=
- =?us-ascii?Q?FQBBKtZJ852hzFowRWAThxmUan/nC2Ys7k6vJ88jmfsng97XU8g/v6XnMFwi?=
- =?us-ascii?Q?WcH8yUKUXY9p0dFpTw23gy99LIrIxVzWTnawwKXctb68EDtxdFk30OjkNpZ2?=
- =?us-ascii?Q?iCplQioJcCMTeIcFjowRaJAUAlbSHtr0sNbKDBUy4ylSaG0Tn9CjS7yMjjmX?=
- =?us-ascii?Q?ySjQL0FCXx7RHkDz335BBCKEJVm6S/8RTH/gW3B0M/uaxc7R7nXOEn0Bkfst?=
- =?us-ascii?Q?SCRo2O1NKgda5S8qwm3LImRtWFPiVQjXCBxQ5HOXDDeegk9LV1wgcLizd2N3?=
- =?us-ascii?Q?oZdm1utYTfTYqlmrzZV4bMa1r2h3B/IHpptFfNE/b62rtbNPym7d4Qvy5N4j?=
- =?us-ascii?Q?I5f9uLpx2z+omqVdN0MKAbC93spQXaUXGVC7sjMHPfiiRIG5wHUQp5K0I9m1?=
- =?us-ascii?Q?5UG4hOuWZaEE1TdzPJlWsxvcETkTvfssLI8g9YAMZ5+zFKiMTdCoGqWehyFK?=
- =?us-ascii?Q?qIZpS3JXWt618cG/cv1jek3u42CmIgPFK1tPT3ptJ12zfyNVnZuBum63VcMY?=
- =?us-ascii?Q?QtSeTtvEcXfo4vMbJBp6VhYfNwOSanyUoIOmd4kFgXdja5C06ouVjA+Bk2uW?=
- =?us-ascii?Q?yFAIYm6ww/z16x3c4+VZsZ0MNMkEQ7vtsrpWVQvZu/bpSXtzV5M8ykpu66u3?=
- =?us-ascii?Q?T4OtKP4REZ9yvWka6xqIf3l4756rNpg9A9saaO/rcaegRSwhfhiR1zboLC5L?=
- =?us-ascii?Q?a+A8QSd/q1VHo4q1KNmiVFT55Usb7w9zGKW1F5URaQg/ahNj8FsUSKehArdP?=
- =?us-ascii?Q?KI0Xa0HHA59D1z9MXYji4uWI867KbiC10GLM5UvpfluH5WDgYo+gA3ttbFbj?=
- =?us-ascii?Q?FOONgEXd0bMelgMuhCCUWcD+2/Uz0p+xGBIG/SbETItI/3rkex+0KsM5f/kG?=
- =?us-ascii?Q?IgnMYjVts3gLsdIEu0kmKemX3dxInmz4C53GwGQxAgEedgpAMxDwNNgYLtKp?=
- =?us-ascii?Q?Re8fllFi9RnWoO92YfUthbR+NwaLeMTF9+Wfoo2ivPB0//15Qe3g8w6zehHD?=
- =?us-ascii?Q?qU4hYp9DbOmbAjTzkxx3iANgKQeCHmPsUKRXPshlElwiTe8p475cFo708PC3?=
- =?us-ascii?Q?8pcLzC7qgXMx4ITyLb7Bu6C1GoYkGtk0Ud1xMU4JOtkCHhoj7kQJbmwEekWY?=
- =?us-ascii?Q?ZGr4rCOJd9fDMA50fovzHhKQZi8Xa2I5qtqhJYPC5itBX6Ei4EazlZ7hAmiL?=
- =?us-ascii?Q?X0LAGsAASg=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 82fa5b02-c374-4c11-cbcc-08de52bfedf3
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8948.eurprd04.prod.outlook.com
+	=?us-ascii?Q?nni88LhrRAqOWj+fjFngZOCTrnRWmCUXq9cRa1RbxsRjsdvVcqfOnLFRUqq7?=
+ =?us-ascii?Q?JFpEm1/iBUd6bmp7SSB7L/qLD/E3rqvEzznFGYgfGkBUQMcD/9b6rM6QDysi?=
+ =?us-ascii?Q?/Fb51w8Q0ceieutOhWzIkW0ZqhH5w9bAnMidmJkRPJCrQDtcwWG8Q2LJXcNL?=
+ =?us-ascii?Q?ExBs9GRq+04Dbq4CaDxhlr50g4VnfjkW97Q3tSQCl/kcmcDgTf+zxqS/FSlJ?=
+ =?us-ascii?Q?2k7mHGqb/3aLUncfYreR2FTKN74ZZQekQVGU4FoaM67qFCiAqrz7NJ9nAJ0b?=
+ =?us-ascii?Q?E6D0wl0U72Ct4UwpcgqOjwR2iqnJtYl0f9xihDZZf8em/G4dA7cdxdLcRkx4?=
+ =?us-ascii?Q?PeoNeZD20PdjUBeQA3+cHYs2aoq7WN39mP2CPNYVF17Gu5XHBQ1UgBjX4qUW?=
+ =?us-ascii?Q?Yny50tHSCYoPj9n0EUP+25vRk9y160IynHQxvaKCt+jInp5BirHxf50tYc7q?=
+ =?us-ascii?Q?s97s5py1Nf/o95TPivLGGofSKATSgLgv5kCDutRhv1RNZnc74PiUcNeP2tEz?=
+ =?us-ascii?Q?hjR2UK30nQTyh/h2Mfg1uYuZh9WaXLGcStaxY/eymIMhNXdDqPylFnn+fOml?=
+ =?us-ascii?Q?pAwERIR/3OvWqdahS76SI0VVFFsvwmU70V+1+JG7NWef7UL/KT8wcjPpKoiG?=
+ =?us-ascii?Q?7+AQYjn30X69sNiDJqrJtbaAvEYcL4zMDhF0MZEv4LK7J2tPjVwAo2hknoo1?=
+ =?us-ascii?Q?oaa/vGrPJXPcriPXeP64rGxK1FEnD2CBRGVgtfbdI2SNFZ659iTRnGmxSC0e?=
+ =?us-ascii?Q?N2P7CVLTbeJXdWGCz32nJKCqK7uUYNwCJEuHFNPxyliKxD6f6Fn1WOl0NCEZ?=
+ =?us-ascii?Q?0wuFM/ftgVBD1NISK1PdDAp78siUL57CiECJPphcLKX9axtzw5iMiBMj8rAY?=
+ =?us-ascii?Q?vPlg+5OhJljRkvmBV/z0Ylh0QuDf2qgR9MVOUo58kH3FgQqAxOVM2YxoNnpF?=
+ =?us-ascii?Q?fzZyEEPvXSLyBDJlHYCeBYS5nP+K97xgRZfSWsxkNuqVFcRtcLOxxM7isiCt?=
+ =?us-ascii?Q?fdjGCPNwqGSUUBN36hXFWwR21mTJNakPcsVJ+AYt+0BTL3QjEXmk5ppNGWm+?=
+ =?us-ascii?Q?UWyVgr5ufEIM3ma3zFdCZE0UqBPlKx+7Ifpf/uy4S4NWRXYzArwyENCwQ/w4?=
+ =?us-ascii?Q?dc5fWQvYNw5CwRTj4fbvY7KMCpnsoQvpWuCp9j19eOr4l8xSOEX6q0GWTf78?=
+ =?us-ascii?Q?qhQYbzaOW6qAYZ8ebRdw8K4+qCWxT2l+23KnXo1U8smTNSwAQ9pxeCkJ+q3m?=
+ =?us-ascii?Q?X9SdFrgsxVaRDBzw3ltFoc3MI3MmXnP5QzuyU/fBc3uSOhrKS2UNF0W1X02k?=
+ =?us-ascii?Q?qugjTBfaOre51IKsmfriEHRqWMV+18o6lh8qGjwbAwqJvBZ9t7UOTKi7v/wh?=
+ =?us-ascii?Q?WROohTeSMdMA9T6LkS46zfyfpdAjuznHkMJm2BcxdGerWyP3DG+D7ydIpXei?=
+ =?us-ascii?Q?JPmgTAUfisyEqgpRGVwp/urdQbJxEgJDh2yVEG5FweUk6/U4NnBbiI2ZBf2v?=
+ =?us-ascii?Q?OkE1kCuOLzNpYXqa4W3J1i0Ywf7V7Xo3VqCtQqf7jWHq7sq1egjDRb08FhxZ?=
+ =?us-ascii?Q?+yhUBhgOZktG1hSQ7+QG9r0EbHd5UPrrg4rJju2q5gjisvUzlAwqakQX59c0?=
+ =?us-ascii?Q?i4+laJZa9s6VUiA4yzVE/JqDdKzMP59kZmSSHtfGqlPn8MAeO7jYgNcTkWoh?=
+ =?us-ascii?Q?96N7fYWzJ5KbIfHxIy0YfeCIvxPeGCLbG6vKO7Wao87ZV5bJUZDkoEvBzDpQ?=
+ =?us-ascii?Q?ERFurGjdotvt1VfYGAyB67MgZGkkBE278q3lT3E4XsYhgvb/V7ep?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: dafcb2cf-69d3-46cb-e927-08de52c0a2c2
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 16:22:22.0198
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 16:27:25.1802
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P1e6zu3vGVd6WxODwfAxOPGLqrNSux2wgB8S+lFataqdfKmr7Z/IDMTREq1Y8Z73lGgRTwYjB1YJZhm6BJNCPg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10660
+X-MS-Exchange-CrossTenant-UserPrincipalName: fU6+3nan56ZB71NeXcUDxyUn8pnRYzwnL68t1Z/PJvjLmXCgtIECLQxrdUcuIjc/XxU9nDcKq5MJg3IMZNcCJQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWP286MB3400
 
-On Tue, Jan 13, 2026 at 11:29:35AM +0800, Wei Fang wrote:
-> The tx_buf has three types: FEC_TXBUF_T_SKB, FEC_TXBUF_T_XDP_NDO and
-> FEC_TXBUF_T_XDP_TX. Currently, the driver uses 'if...else...' statements
-> to check the type and perform the corresponding processing. This is very
-> detrimental to future expansion. For example, if new types are added to
-> support XDP zero copy in the future, continuing to use 'if...else...'
-> would be a very bad coding style. So the 'if...else...' statements in
-> the current driver are replaced with switch statements to support XDP
-> zero copy in the future.
->
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
->  drivers/net/ethernet/freescale/fec_main.c | 167 +++++++++++-----------
->  1 file changed, 82 insertions(+), 85 deletions(-)
->
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index f3e93598a27c..3bd89d7f105b 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -1023,33 +1023,33 @@ static void fec_enet_bd_init(struct net_device *dev)
->  		txq->bd.cur = bdp;
->
->  		for (i = 0; i < txq->bd.ring_size; i++) {
-> +			dma_addr_t dma = fec32_to_cpu(bdp->cbd_bufaddr);
-> +			struct page *page;
-> +
->  			/* Initialize the BD for every fragment in the page. */
->  			bdp->cbd_sc = cpu_to_fec16(0);
-> -			if (txq->tx_buf[i].type == FEC_TXBUF_T_SKB) {
-> -				if (bdp->cbd_bufaddr &&
-> -				    !IS_TSO_HEADER(txq, fec32_to_cpu(bdp->cbd_bufaddr)))
-> -					dma_unmap_single(&fep->pdev->dev,
-> -							 fec32_to_cpu(bdp->cbd_bufaddr),
-> -							 fec16_to_cpu(bdp->cbd_datlen),
-> -							 DMA_TO_DEVICE);
-> -				if (txq->tx_buf[i].buf_p)
-> -					dev_kfree_skb_any(txq->tx_buf[i].buf_p);
-> -			} else if (txq->tx_buf[i].type == FEC_TXBUF_T_XDP_NDO) {
-> -				if (bdp->cbd_bufaddr)
-> -					dma_unmap_single(&fep->pdev->dev,
-> -							 fec32_to_cpu(bdp->cbd_bufaddr),
-> +			switch (txq->tx_buf[i].type) {
-> +			case FEC_TXBUF_T_SKB:
-> +				if (dma && !IS_TSO_HEADER(txq, dma))
-> +					dma_unmap_single(&fep->pdev->dev, dma,
->  							 fec16_to_cpu(bdp->cbd_datlen),
->  							 DMA_TO_DEVICE);
->
-> -				if (txq->tx_buf[i].buf_p)
-> -					xdp_return_frame(txq->tx_buf[i].buf_p);
-> -			} else {
-> -				struct page *page = txq->tx_buf[i].buf_p;
-> -
-> -				if (page)
-> -					page_pool_put_page(pp_page_to_nmdesc(page)->pp,
-> -							   page, 0,
-> -							   false);
-> +				dev_kfree_skb_any(txq->tx_buf[i].buf_p);
-> +				break;
-> +			case FEC_TXBUF_T_XDP_NDO:
-> +				dma_unmap_single(&fep->pdev->dev, dma,
-> +						 fec16_to_cpu(bdp->cbd_datlen),
-> +						 DMA_TO_DEVICE);
-> +				xdp_return_frame(txq->tx_buf[i].buf_p);
+This series proposes support for mapping subranges within a PCIe endpoint
+BAR and enables controllers to program inbound address translation for
+those subranges.
 
-look like logic is not exactly same as original one
+- Patch 1/6 introduces dynamic_inbound_mapping feature bit. This can be
+  used as a safeguard to check whether a BAR can really be reconfigured
+  without clearing/resetting it.
 
-if (txq->tx_buf[i].type == FEC_TXBUF_T_XDP_NDO) {
-	if (bdp->cbd_bufaddr)
-		...
+- Patch 2/6 introduces generic BAR subrange mapping support in the PCI
+  endpoint core.
 
-Frank
+- Patch 3/6 changes dw_pcie_ep_ops.get_features() to return a mutable
+  struct pci_epc_features * and updates all DWC-based glue drivers
+  accordingly. This is preparatory work for subsequent patches.
 
-> +				break;
-> +			case FEC_TXBUF_T_XDP_TX:
-> +				page = txq->tx_buf[i].buf_p;
-> +				page_pool_put_page(pp_page_to_nmdesc(page)->pp,
-> +						   page, 0, false);
-> +				break;
-> +			default:
-> +				break;
->  			}
->
->  			txq->tx_buf[i].buf_p = NULL;
-> @@ -1514,45 +1514,66 @@ fec_enet_tx_queue(struct net_device *ndev, u16 queue_id, int budget)
->  			break;
->
->  		index = fec_enet_get_bd_index(bdp, &txq->bd);
-> +		frame_len = fec16_to_cpu(bdp->cbd_datlen);
->
-> -		if (txq->tx_buf[index].type == FEC_TXBUF_T_SKB) {
-> -			skb = txq->tx_buf[index].buf_p;
-> +		switch (txq->tx_buf[index].type) {
-> +		case FEC_TXBUF_T_SKB:
->  			if (bdp->cbd_bufaddr &&
->  			    !IS_TSO_HEADER(txq, fec32_to_cpu(bdp->cbd_bufaddr)))
->  				dma_unmap_single(&fep->pdev->dev,
->  						 fec32_to_cpu(bdp->cbd_bufaddr),
-> -						 fec16_to_cpu(bdp->cbd_datlen),
-> -						 DMA_TO_DEVICE);
-> -			bdp->cbd_bufaddr = cpu_to_fec32(0);
-> +						 frame_len, DMA_TO_DEVICE);
-> +
-> +			skb = txq->tx_buf[index].buf_p;
->  			if (!skb)
->  				goto tx_buf_done;
-> -		} else {
-> +
-> +			frame_len = skb->len;
-> +
-> +			/* NOTE: SKBTX_IN_PROGRESS being set does not imply it's we who
-> +			 * are to time stamp the packet, so we still need to check time
-> +			 * stamping enabled flag.
-> +			 */
-> +			if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_IN_PROGRESS &&
-> +				     fep->hwts_tx_en) && fep->bufdesc_ex) {
-> +				struct bufdesc_ex *ebdp = (struct bufdesc_ex *)bdp;
-> +				struct skb_shared_hwtstamps shhwtstamps;
-> +
-> +				fec_enet_hwtstamp(fep, fec32_to_cpu(ebdp->ts), &shhwtstamps);
-> +				skb_tstamp_tx(skb, &shhwtstamps);
-> +			}
-> +
-> +			/* Free the sk buffer associated with this last transmit */
-> +			napi_consume_skb(skb, budget);
-> +			break;
-> +		case FEC_TXBUF_T_XDP_NDO:
->  			/* Tx processing cannot call any XDP (or page pool) APIs if
->  			 * the "budget" is 0. Because NAPI is called with budget of
->  			 * 0 (such as netpoll) indicates we may be in an IRQ context,
->  			 * however, we can't use the page pool from IRQ context.
->  			 */
->  			if (unlikely(!budget))
-> -				break;
-> +				goto out;
->
-> -			if (txq->tx_buf[index].type == FEC_TXBUF_T_XDP_NDO) {
-> -				xdpf = txq->tx_buf[index].buf_p;
-> -				if (bdp->cbd_bufaddr)
-> -					dma_unmap_single(&fep->pdev->dev,
-> -							 fec32_to_cpu(bdp->cbd_bufaddr),
-> -							 fec16_to_cpu(bdp->cbd_datlen),
-> -							 DMA_TO_DEVICE);
-> -			} else {
-> -				page = txq->tx_buf[index].buf_p;
-> -			}
-> -
-> -			bdp->cbd_bufaddr = cpu_to_fec32(0);
-> -			if (unlikely(!txq->tx_buf[index].buf_p)) {
-> -				txq->tx_buf[index].type = FEC_TXBUF_T_SKB;
-> -				goto tx_buf_done;
-> -			}
-> +			xdpf = txq->tx_buf[index].buf_p;
-> +			dma_unmap_single(&fep->pdev->dev,
-> +					 fec32_to_cpu(bdp->cbd_bufaddr),
-> +					 frame_len,  DMA_TO_DEVICE);
-> +			xdp_return_frame_rx_napi(xdpf);
-> +			break;
-> +		case FEC_TXBUF_T_XDP_TX:
-> +			if (unlikely(!budget))
-> +				goto out;
->
-> -			frame_len = fec16_to_cpu(bdp->cbd_datlen);
-> +			page = txq->tx_buf[index].buf_p;
-> +			/* The dma_sync_size = 0 as XDP_TX has already synced
-> +			 * DMA for_device
-> +			 */
-> +			page_pool_put_page(pp_page_to_nmdesc(page)->pp, page,
-> +					   0, true);
-> +			break;
-> +		default:
-> +			break;
->  		}
->
->  		/* Check for errors. */
-> @@ -1572,11 +1593,7 @@ fec_enet_tx_queue(struct net_device *ndev, u16 queue_id, int budget)
->  				ndev->stats.tx_carrier_errors++;
->  		} else {
->  			ndev->stats.tx_packets++;
-> -
-> -			if (txq->tx_buf[index].type == FEC_TXBUF_T_SKB)
-> -				ndev->stats.tx_bytes += skb->len;
-> -			else
-> -				ndev->stats.tx_bytes += frame_len;
-> +			ndev->stats.tx_bytes += frame_len;
->  		}
->
->  		/* Deferred means some collisions occurred during transmit,
-> @@ -1585,35 +1602,12 @@ fec_enet_tx_queue(struct net_device *ndev, u16 queue_id, int budget)
->  		if (status & BD_ENET_TX_DEF)
->  			ndev->stats.collisions++;
->
-> -		if (txq->tx_buf[index].type == FEC_TXBUF_T_SKB) {
-> -			/* NOTE: SKBTX_IN_PROGRESS being set does not imply it's we who
-> -			 * are to time stamp the packet, so we still need to check time
-> -			 * stamping enabled flag.
-> -			 */
-> -			if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_IN_PROGRESS &&
-> -				     fep->hwts_tx_en) && fep->bufdesc_ex) {
-> -				struct skb_shared_hwtstamps shhwtstamps;
-> -				struct bufdesc_ex *ebdp = (struct bufdesc_ex *)bdp;
-> -
-> -				fec_enet_hwtstamp(fep, fec32_to_cpu(ebdp->ts), &shhwtstamps);
-> -				skb_tstamp_tx(skb, &shhwtstamps);
-> -			}
-> -
-> -			/* Free the sk buffer associated with this last transmit */
-> -			napi_consume_skb(skb, budget);
-> -		} else if (txq->tx_buf[index].type == FEC_TXBUF_T_XDP_NDO) {
-> -			xdp_return_frame_rx_napi(xdpf);
-> -		} else { /* recycle pages of XDP_TX frames */
-> -			/* The dma_sync_size = 0 as XDP_TX has already synced DMA for_device */
-> -			page_pool_put_page(pp_page_to_nmdesc(page)->pp, page,
-> -					   0, true);
-> -		}
-> -
->  		txq->tx_buf[index].buf_p = NULL;
->  		/* restore default tx buffer type: FEC_TXBUF_T_SKB */
->  		txq->tx_buf[index].type = FEC_TXBUF_T_SKB;
->
->  tx_buf_done:
-> +		bdp->cbd_bufaddr = cpu_to_fec32(0);
->  		/* Make sure the update to bdp and tx_buf are performed
->  		 * before dirty_tx
->  		 */
-> @@ -1632,6 +1626,8 @@ fec_enet_tx_queue(struct net_device *ndev, u16 queue_id, int budget)
->  		}
->  	}
->
-> +out:
-> +
->  	/* ERR006358: Keep the transmitter going */
->  	if (bdp != txq->bd.cur &&
->  	    readl(txq->bd.reg_desc_active) == 0)
-> @@ -3413,6 +3409,7 @@ static void fec_enet_free_buffers(struct net_device *ndev)
->  	unsigned int i;
->  	struct fec_enet_priv_tx_q *txq;
->  	struct fec_enet_priv_rx_q *rxq;
-> +	struct page *page;
->  	unsigned int q;
->
->  	for (q = 0; q < fep->num_rx_queues; q++) {
-> @@ -3436,20 +3433,20 @@ static void fec_enet_free_buffers(struct net_device *ndev)
->  			kfree(txq->tx_bounce[i]);
->  			txq->tx_bounce[i] = NULL;
->
-> -			if (!txq->tx_buf[i].buf_p) {
-> -				txq->tx_buf[i].type = FEC_TXBUF_T_SKB;
-> -				continue;
-> -			}
-> -
-> -			if (txq->tx_buf[i].type == FEC_TXBUF_T_SKB) {
-> +			switch (txq->tx_buf[i].type) {
-> +			case FEC_TXBUF_T_SKB:
->  				dev_kfree_skb(txq->tx_buf[i].buf_p);
-> -			} else if (txq->tx_buf[i].type == FEC_TXBUF_T_XDP_NDO) {
-> +				break;
-> +			case FEC_TXBUF_T_XDP_NDO:
->  				xdp_return_frame(txq->tx_buf[i].buf_p);
-> -			} else {
-> -				struct page *page = txq->tx_buf[i].buf_p;
-> -
-> +				break;
-> +			case FEC_TXBUF_T_XDP_TX:
-> +				page = txq->tx_buf[i].buf_p;
->  				page_pool_put_page(pp_page_to_nmdesc(page)->pp,
->  						   page, 0, false);
-> +				break;
-> +			default:
-> +				break;
->  			}
->
->  			txq->tx_buf[i].buf_p = NULL;
-> --
-> 2.34.1
->
+- Patch 4/6 advertises dynamic inbound mapping support centrally for all
+  DWC-based glue drivers.
+
+- Patch 5/6 adds an implementation for the DesignWare PCIe endpoint
+  controller using Address Match Mode IB iATU. It also advertises
+  subrange_mapping support from the DWC EP midlayer.
+
+- Patch 6/6 updates a documentation for pci_epc_set_bar().
+
+This series is originally a spin-off from a larger RFC series posted
+earlier:
+https://lore.kernel.org/all/20251217151609.3162665-4-den@valinux.co.jp/
+The first user will likely be Remote eDMA-backed NTB transport,
+demonstrated in that RFC series.
+
+Kernel base:
+  - repo: git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git
+  - branch: controller/dwc
+  - commit: 68ac85fb42cf ("PCI: dwc: Use cfg0_base as iMSI-RX target address
+                           to support 32-bit MSI devices")
+
+Changelog:
+* v6->v7 changes:
+  - Added missing check of dynamic_inbound_mapping feature bit in
+    pci_epc_set_bar() when use_submap is set true.
+  - Addressed the remaining review comments from Niklas (patch reordering,
+    splitting, and source code comment/documentation refinements).
+
+* v5->v6 changes:
+  - Added a new feature bit dynamic_inbound_mapping and set it centrally
+    in dw_pcie_ep_get_features() for all DWC-based glue drivers.
+  - Updated documentation for pci_epc_set_bar().
+  - Dropped a needless and harmful dw_pcie_ep_clear_bar() call on the error
+    path.
+  - Fixed "Bar Match Mode" to "BAR Match Mode" in a source code comment.
+
+* v4->v5 changes:
+  - Added subrange_mapping to struct pci_epc_features and enforced a
+    strict capability check in pci_epc_set_bar() (reject use_submap when
+    unsupported).
+  - Changed DWC-based glue drivers to return a mutable features pointer
+    and set subrange_mapping centrally at the DWC midlayer.
+  - Split the series into 3 patches accordingly.
+
+* v3->v4 changes:
+  - Drop unused includes that should have been removed in v3
+
+* v2->v3 changes:
+  - Remove submap copying and sorting from dw_pcie_ep_ib_atu_addr(), and
+    require callers to pass a sorted submap. The related source code
+    comments are updated accordingly.
+  - Refine source code comments and commit messages, including normalizing
+    "Address Match Mode" wording.
+  - Add const qualifiers where applicable.
+
+* v1->v2 changes:
+  - Introduced stricter submap validation: no holes/overlaps and the
+    subranges must exactly cover the whole BAR. Added
+    dw_pcie_ep_validate_submap() to enforce alignment and full-coverage
+    constraints.
+  - Enforced one-shot (all-or-nothing) submap programming to avoid leaving
+    half-programmed BAR state:
+    * Dropped incremental/overwrite logic that is no longer needed with the
+      one-shot design.
+    * Added dw_pcie_ep_clear_ib_maps() and used it from multiple places to
+      tear down BAR match / address match inbound mappings without code
+      duplication.
+  - Updated kernel source code comments and commit messages, including a
+    small refinement made along the way.
+  - Changed num_submap type to unsigned int.
+
+v6: https://lore.kernel.org/all/20260113023715.3463724-1-den@valinux.co.jp/
+v5: https://lore.kernel.org/all/20260108172403.2629671-1-den@valinux.co.jp/
+v4: https://lore.kernel.org/all/20260108044148.2352800-1-den@valinux.co.jp/
+v3: https://lore.kernel.org/all/20260108024829.2255501-1-den@valinux.co.jp/
+v2: https://lore.kernel.org/all/20260107041358.1986701-1-den@valinux.co.jp/
+v1: https://lore.kernel.org/all/20260105080214.1254325-1-den@valinux.co.jp/
+
+
+Thank you for reviewing,
+
+
+Koichiro Den (6):
+  PCI: endpoint: Add dynamic_inbound_mapping EPC feature
+  PCI: endpoint: Add BAR subrange mapping support
+  PCI: dwc: Allow glue drivers to return mutable EPC features
+  PCI: dwc: Advertise dynamic inbound mapping support
+  PCI: dwc: ep: Support BAR subrange inbound mapping via Address Match
+    Mode iATU
+  Documentation: PCI: endpoint: Clarify pci_epc_set_bar() usage
+
+ Documentation/PCI/endpoint/pci-endpoint.rst   |  24 ++
+ drivers/pci/controller/dwc/pci-dra7xx.c       |   4 +-
+ drivers/pci/controller/dwc/pci-imx6.c         |  10 +-
+ drivers/pci/controller/dwc/pci-keystone.c     |   4 +-
+ .../pci/controller/dwc/pci-layerscape-ep.c    |   2 +-
+ drivers/pci/controller/dwc/pcie-artpec6.c     |   4 +-
+ .../pci/controller/dwc/pcie-designware-ep.c   | 240 +++++++++++++++++-
+ .../pci/controller/dwc/pcie-designware-plat.c |   4 +-
+ drivers/pci/controller/dwc/pcie-designware.h  |   4 +-
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c |   8 +-
+ drivers/pci/controller/dwc/pcie-keembay.c     |   4 +-
+ drivers/pci/controller/dwc/pcie-qcom-ep.c     |   4 +-
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c   |   4 +-
+ drivers/pci/controller/dwc/pcie-stm32-ep.c    |   4 +-
+ drivers/pci/controller/dwc/pcie-tegra194.c    |   4 +-
+ drivers/pci/controller/dwc/pcie-uniphier-ep.c |  58 +++--
+ drivers/pci/endpoint/pci-epc-core.c           |   5 +
+ include/linux/pci-epc.h                       |   9 +
+ include/linux/pci-epf.h                       |  31 +++
+ 19 files changed, 360 insertions(+), 67 deletions(-)
+
+-- 
+2.51.0
+
