@@ -1,92 +1,125 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE64365A1E
-	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 09:07:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BAD381716;
+	Tue, 13 Jan 2026 09:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768295258; cv=none; b=Gc54ILaZokDqtjm2xfaqSMw3TT6YRjgETP38GPnjAbfX4EC/WVih8u7Hf+Y526bbJJ1PEFxDy9qYQCiSpEyZkQPwNGqaVyFP52yJv1VaXDwQ+EGQJNE2s3KR1CUw7YPXKMohgQyeNmSPKBGWj8nnm56KxE57qcoSM5wP4VNmZ2w=
+	t=1768296659; cv=none; b=IKMuSQFoVRGTp3xf6q1TkPRHwqwwZovcI/zF1ITeVUY31j2ThMWf4G/5R3b/qdVJ+wUn8Pb7I90P5mZgi6NAgqo8QD5Hkh60zij3yFwqNxlNC3gCWzd69BVBLiYL0lJ6U43mCngLHyu1NgvF+9IbtSaOdFMF/UAlPbjN00kBTuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768295258; c=relaxed/simple;
-	bh=koPjTBX4iK9OQ+Ff94Uc6fblTMyD4uSDXtmNeEAxpE0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I8IJZrSOmz/smqN0l3x/Uae8DV820vH+tCygmqxTW5EvdRzTbZgsMUrNAw8k/Pj0bPS+A2qGa1vzwcxttfsoUEIABj+C6kaK4Oxv+DxeSX2fZdifCA/GAQqZDwvGmTVTvZ9N7rmBrCHi0rQxibqUMya10oUIsXV5rbWBuUWlzPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fS8n2Ruf; arc=none smtp.client-ip=74.125.82.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768296659; c=relaxed/simple;
+	bh=msk/tauSQ6PJoieOyol1fe1LeWfeLYbroHLDA1WX8do=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EzfKPzoqk2ugmvKPX+SUXdqb9nwk1FA3LkXT07kqO0rFkJHX0ch+9ityYief2z6XCU8wZ91uPhXIpppBIo5Ij/MYYWh3YarjhDBEKzFeOEMdgKSwoDFEQIzGduXi8O4SmDIVrU00/J6uVAIei0Oo/FYNujI90C6YaU+oAS2LvtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NFsTs781; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fS8n2Ruf"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-11f1fb91996so12161584c88.1
-        for <imx@lists.linux.dev>; Tue, 13 Jan 2026 01:07:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768295256; x=1768900056; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=koPjTBX4iK9OQ+Ff94Uc6fblTMyD4uSDXtmNeEAxpE0=;
-        b=fS8n2RufknwFzjqfaD6k4dD8qiLm0BYiolp78rk/1VI2aG+V0nHBaY64sSmJlgUFor
-         z8L7ccpoxk3wd3by93GW4QV1rs9iC9yKubz0YQ8JSlOWxTmbLEA6vxkuH99hrKbRlF65
-         NNZkCIzv9PWCekDBb3Aym0PA+xMnOMBd00LbAeUEN5JF6M/lEirw5FpF8pTTU4DDgP75
-         JhzaSBF45+YxQh1PT0GCP9pKJ413v5n3pds7aUb3ooozzgnh4oDpghtPL5ioP2npdmdq
-         zbRVsjeNujDlwdZFcvVVT8Zyt72Q7mdOnmc7e6fkCxJGTbPfHcFiwThUVaDrmr6xoiqV
-         ykDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768295256; x=1768900056;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=koPjTBX4iK9OQ+Ff94Uc6fblTMyD4uSDXtmNeEAxpE0=;
-        b=ndyr/GeNah/i9exTEgjNRVLTBHN4Zlqu9/Tt8Y1IVBM7KLZIiqizItoygn1K47MC+W
-         2EaGC9kk/kEobxfcwKfqy4ut8iqffipcuq+fgq77v1YUTdcM/iFKRh4+yc+TePJ1vuOx
-         O0Z/oAYeSW8MlHmfdr0UC63K7bHv+UODcE7Ei/Nkoar7Z2QTvTHWCea8yYotvF4Ef67l
-         QGkx+MPEUPOEMddpqccbkbnhWcTtoJlSIBuCfExPC0N98hH6PwMZYMjPZUWa+NHmMe3A
-         9DEZ/mhxO3OSOYtcRUavZgJ8fIRHh09XfkpAhj57taY4lxoo82QWdfcBggVfobaLrVwP
-         93Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCXyDcaJ4w857rHAJiHSo5ZNO7haD8qGek2WSZZ8E0OJv9HrVTw9S9ZaBzo71SfsSIV5FGE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyCUtRm2PljsVcsGZFcP0fGf9jNCQ4SO8X9yVt43RPJ1EmJe7cB
-	+8MR0ocB8qXrzLk8hi+UB6yU90FM2/QbfTA3F20wpLKCQgg9E3M1iuxpiqg1qBEJj9UEowVsJpc
-	DVqsngLUnkoACKtEs5Q1YiVoBs/uDpfw=
-X-Gm-Gg: AY/fxX5u6NvsjgTFz1N0dET0l+N6wgG0XW0F4lI3xGwoKWe6Lu2SLpZqYVSLjRN8bjL
-	Z3BgorP5wcWv2D2E8euyqM2h8hymXbdMpMAYNgxJKRF2EulrDrcj1KAViHlhRO7idXvdCpmFDkq
-	jW/sUx8MIlH0clDp2Y+rtJgzxXGrCsOf3p2ZKq3OT7urkWhTZskARsL5K+3qM8Ermz6susodvGc
-	NsDEUokD1BbOceL8fQT6LoPdKYzcDqAC9hQtPro25Aw38KX+JnhlFjYfKi/lYeTuOVaymxGKFcI
-	kDGQQl0XVuuQhSJJH1isd095HIT6rgsqP6EIZZyB8NYVMN1P8/mB9wRi/vFtv+k1KP6INCKSOhi
-	0/PYiIn2Ycg==
-X-Google-Smtp-Source: AGHT+IF3RX9nAlZTR2amE9GxDzDwPqdE7Cjqqbe7GDtDpeVioGO8As8gNYcnkAyF+8R6p5o6StJOxLoio/8dQb2c+Lg=
-X-Received: by 2002:a05:7022:43a0:b0:11d:f440:b758 with SMTP id
- a92af1059eb24-121f8b450b3mr24817667c88.25.1768295256086; Tue, 13 Jan 2026
- 01:07:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NFsTs781"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768296657; x=1799832657;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=msk/tauSQ6PJoieOyol1fe1LeWfeLYbroHLDA1WX8do=;
+  b=NFsTs781d94TK3bv36A4hRqdwpdeVRzy1a9Rt1ZedyXqFFSifLEtWX3Q
+   0aVDqPC0uAdOcCHobrLZBhU5Oc3H+P35NdUEFxMSyiV/YBYDck1PXXh9m
+   TbVGExUDaNayoyw81k2Go8o7z/dv+kuLcLc6rxpL/KY+GK71akCicgH/n
+   V1Rc2ehJ54ci7HQ4Ea4Hv6Zl5OnnnTuKtPdF5Mxubya2QL6WLlNukumaC
+   +n1xRLKftKqoBbO4uTuvFKPWgVEg9gEr9Rh8obzBSR1bSN9V9jgrewyx0
+   Q3ZEZ2LRAeCQgUySdKESnqZuKQ4M6PgHro7cYYHG9WxnMDRv2a5UH71lR
+   w==;
+X-CSE-ConnectionGUID: t8AHUn7aQWa9mTHqBt1DhA==
+X-CSE-MsgGUID: 0xgQMXktQCys91ttCdVgMg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11669"; a="95052423"
+X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
+   d="scan'208";a="95052423"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 01:30:55 -0800
+X-CSE-ConnectionGUID: GpcKksRDRniwK+tQiUUz5A==
+X-CSE-MsgGUID: 3fWlMPCcTJaN/AF6wpHrUQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
+   d="scan'208";a="203550699"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 13 Jan 2026 01:30:51 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vfajf-00000000EXw-3oXr;
+	Tue, 13 Jan 2026 09:30:47 +0000
+Date: Tue, 13 Jan 2026 17:29:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Wei Fang <wei.fang@nxp.com>, shenwei.wang@nxp.com,
+	xiaoning.wang@nxp.com, frank.li@nxp.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
+	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	bpf@vger.kernel.org
+Subject: Re: [PATCH net-next 11/11] net: fec: add AF_XDP zero-copy support
+Message-ID: <202601131736.i41CNo5A-lkp@intel.com>
+References: <20260113032939.3705137-12-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260111-imx952-dts-v2-v2-0-5773fa57e89e@nxp.com> <20260111-imx952-dts-v2-v2-10-5773fa57e89e@nxp.com>
-In-Reply-To: <20260111-imx952-dts-v2-v2-10-5773fa57e89e@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 13 Jan 2026 11:10:04 +0200
-X-Gm-Features: AZwV_Qg-q7k5jyzvnB6ALn27XAuNQ9bYa59uAz3y6dRfMLXSzH7lkJ4OAjmRmcw
-Message-ID: <CAEnQRZCKAfhDT0p+MFjdZ+bLQJad1Wm6YT872FXyWB63u=zegQ@mail.gmail.com>
-Subject: Re: [PATCH v2 10/10] arm64: dts: imx952-evk: Add nxp,ctrl-ids for
- scmi misc
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Peng Fan <peng.fan@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260113032939.3705137-12-wei.fang@nxp.com>
 
-On Sun, Jan 11, 2026 at 2:54=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp.co=
-m> wrote:
->
-> From: Peng Fan <peng.fan@nxp.com>
->
-> Add nxp,ctrl-ids in scmi_misc node for wakeup notification.
->
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Hi Wei,
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on net-next/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Wei-Fang/net-fec-add-fec_txq_trigger_xmit-helper/20260113-113607
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20260113032939.3705137-12-wei.fang%40nxp.com
+patch subject: [PATCH net-next 11/11] net: fec: add AF_XDP zero-copy support
+config: sh-allyesconfig (https://download.01.org/0day-ci/archive/20260113/202601131736.i41CNo5A-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260113/202601131736.i41CNo5A-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601131736.i41CNo5A-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   drivers/net/ethernet/freescale/fec_main.c: In function 'fec_enet_rx_queue_xsk':
+>> drivers/net/ethernet/freescale/fec_main.c:2261:20: warning: variable 'dma' set but not used [-Wunused-but-set-variable]
+    2261 |         dma_addr_t dma;
+         |                    ^~~
+
+
+vim +/dma +2261 drivers/net/ethernet/freescale/fec_main.c
+
+  2245	
+  2246	static int fec_enet_rx_queue_xsk(struct fec_enet_private *fep, int queue,
+  2247					 int budget, struct bpf_prog *prog)
+  2248	{
+  2249		u32 data_start = FEC_ENET_XDP_HEADROOM + fep->rx_shift;
+  2250		struct fec_enet_priv_rx_q *rxq = fep->rx_queue[queue];
+  2251		struct net_device *ndev = fep->netdev;
+  2252		struct bufdesc *bdp = rxq->bd.cur;
+  2253		u32 sub_len = 4 + fep->rx_shift;
+  2254		int cpu = smp_processor_id();
+  2255		bool wakeup_xsk = false;
+  2256		struct xdp_buff *xsk;
+  2257		int pkt_received = 0;
+  2258		struct sk_buff *skb;
+  2259		u16 status, pkt_len;
+  2260		u32 xdp_res = 0;
+> 2261		dma_addr_t dma;
+  2262		int index, err;
+  2263		u32 act;
+  2264	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
