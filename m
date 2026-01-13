@@ -1,61 +1,61 @@
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDCA1CAA79
-	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 15:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6158A29D27D
+	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 15:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768319351; cv=none; b=EwVZQKPAL7y24TXKZFXuAf2HpLzgY0+z5kPCx3PnCN9XQxLo2fQyN/1XL7LrYsn3n2XODdK1eS48/VITB/w2rkzq9QdsSmHbPwLTDa330EjcTfRK90Xf2iVfwGICfKVLbbEi9RW3vUeNLq8sEhn9ya6d+y9kOYWs84R8Y6FO2EY=
+	t=1768319382; cv=none; b=SNei+C+uE4gDNffIQkZr3avOZMkR1ywUg6D91Fx+B6zgFvhWEaZzgdp+18fwUxe8rNzVAAU721+PS8ltlCmIfhjB++W8N10QAZ5OpXz1UuNppPvra2A6miBZFr5BsvDOiNJyYBRPK/JaCx3QkDBu0xuVBLng1UWWK/haHR0Hc3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768319351; c=relaxed/simple;
-	bh=L3oLbFvwOOJts0UzMwGyJmDUy99A1kmDLLXXtP4qNCY=;
+	s=arc-20240116; t=1768319382; c=relaxed/simple;
+	bh=KwDBqmE8DzZnhS9XuHRGHXbq3OKd36PRfwkAUcwYLh4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HpvHtnZtH108t8zl7uskk9drnDba+Enwmtedc7p4AvCz2riJzFUnN/rAS0drdDrQ2A2DOjcWgYk9hpzMztZiEnkU/3hWEgxHnCwmHuEhN+JE198k4ojfjjALXe92tRWemVRNteyN/BW2lD8luAoh18Dv4X8arTuRkyWiMMwg16M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bl96r09l; arc=none smtp.client-ip=74.125.82.51
+	 To:Cc:Content-Type; b=LoYSWIfmOxqUpnUJZFAeZLC1GQYIxszxKqMxnI8iuLbtgn/IerHRJiz77SB3aogxLViIdPn730RhK4CHU2WUesgREln53z5RbisYSMV0NZsp0LaKtp8ZUnlewZvvX9CuGgmfvO1mZVCedVPvK0rj9B2KBew7ZXcd7Gso+eB+fSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DwfeYx4N; arc=none smtp.client-ip=74.125.82.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bl96r09l"
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-11f1fb91996so447765c88.1
-        for <imx@lists.linux.dev>; Tue, 13 Jan 2026 07:49:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DwfeYx4N"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-11beb0a7bd6so4794122c88.1
+        for <imx@lists.linux.dev>; Tue, 13 Jan 2026 07:49:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768319349; x=1768924149; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1768319380; x=1768924180; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=L3oLbFvwOOJts0UzMwGyJmDUy99A1kmDLLXXtP4qNCY=;
-        b=bl96r09lGsVCbHT/IvTFo7duQNDZUq0u5QcUp5rPRcr4ZT5idsqlsdxcObDe0rPk2O
-         lmAz3fWy54LYO28m8KIJfe9fWgBafmymy7seZLQXrvLd9HRhvck203QNir/UqmuIqSee
-         hQt5Ls0kloS+LVf2wmubDYPgwxzWTIgsKSZ2z10clZfxx7jSO6KD07v8gzPZ4vP/vpfq
-         Fnj3VQTLWw6gsjImFMfferJvXinO5yZvWI6grXW+9ku/4/MZS+AW4svy/gAPn7XdjztQ
-         wAuWg0Nv3B94oLgUZRycrvlQZ2D+1y4/xLUKFC6YBTjckhYVg3oLmZJDoWxDUabMPp59
-         +fXQ==
+        bh=KwDBqmE8DzZnhS9XuHRGHXbq3OKd36PRfwkAUcwYLh4=;
+        b=DwfeYx4NWtmTGV2EQWa5qneAIxEwL8JYTuaP4p6TZFxQuIGsBn2NbpLCx6YQzI4Y8y
+         Q2GkAT0j1WsFK0kl1ecfd3GcDTKottHbc4++pkUrQbitwCisUBJbX13Jrrg2Y7PtyZcz
+         7BD7WRrxmMx69WQkQ33hGKpfSC2YggtcKNK9yhodrSKdHjawpUboiS1IA6D9WQ51WEC6
+         Iu0W12wY678jU6rRJlvj01d/w0w9m5nX0BoGDPiX3NMgisrCJLN9fPq54Au5eA6+zfvr
+         /oM9/RuqZp53XDq5k7CL1khLAWNcsasfvzOrGRCUzT8GMCjb+kAUz69NcMKY/HyUt3Wo
+         8/Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768319349; x=1768924149;
+        d=1e100.net; s=20230601; t=1768319380; x=1768924180;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=L3oLbFvwOOJts0UzMwGyJmDUy99A1kmDLLXXtP4qNCY=;
-        b=wzkScH6+xFnL+07a3pPLJ/ah0XSUZAMPI0KaNtFLUuEaZVhOO30YkU6OYUYQ1bFGPr
-         uAtdS/63US9M2VSh8fKsoLU5PpjcwTCwAenHHu4Wu6pZTl8ereFEN+OQ8UXWymXPUTqG
-         7zhz9alsSUDNIjh4oOHkn0ZPBNYCdEypHUH/ITs9szu6DpUTQPUVIErf3EJaKX7xSi5V
-         TuYp1t6Lt7cDVLsPdFmoKdO5Z1k8GVA39q/0vA1W96W/5nZjU/XUdxyNzJhvi3nB3e4G
-         ZhOdVC//M7UaTLQqdS0W7nnKAHi47ltJ7oxRnlCgmk9LLP99VuV6oeesvevRgqGS4IJb
-         ZJMg==
-X-Forwarded-Encrypted: i=1; AJvYcCW2/P6rsH/Zacu5TKvbqALcPPeiDIya8B8Kk6mzzOspxhbtJ1QGdzPVcbI+IEHC3cvq7vM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzSGf/3dbDE4iD2ydtDuA83CnInkyCHRXjjZTpLCWyA9DLnULCV
-	BsIJbsXBnF4joaz5LnqAoDQYd7/C0hBZZqi64V/iybyEBLNdtjA04yPiWpnUfNphJffBgyHqjN9
-	OIqnzu+jhzbBH8dwbgOCs9j4BqEQ4mBM=
-X-Gm-Gg: AY/fxX7yYjTtZ7vish01R2pEk/NcL5rqqVQh3wcldnsc1Y3icIrhZhtix6u2/5FFdLQ
-	aFK6eTo1gw2upMB6u8vlSdRtu1InveWg7De6VXuf4VgvDRPeNAfwLoIJSXs63u6eUzPkBTRWbL3
-	aVJA/a0u3XR8KRoUr3sJ3eIyyrwmeA29/E1+JlSUCzyHDuHHKoglIBFZLyojB7a2udsrPN3altq
-	wHvrQw5ZOy2HVr6vrk15W2rH0inic3KWljLR3lWAqUn32jWunnQIWQjby5BIqAfwurkZGb8kQkr
-	q5VGSWWAol0dF+W4/+eyDtz3gdHwJHJP688gAh5+p190gCyW8J5zAG/DFAQgrjHdkdnm+a/XHhj
-	15n47aHoBWiuMUlVoJmvJ
-X-Google-Smtp-Source: AGHT+IEtf3xHFMK7bh85v7wy+tj/RylyAyqCoV9aOeql1xusdXvXq6rsq1/RBjQjsVrrgZEZyOQmOhuD4FnrB8WmMNE=
-X-Received: by 2002:a05:701b:2207:b0:11b:9386:a3c1 with SMTP id
- a92af1059eb24-121f8b750d4mr14170039c88.44.1768319349465; Tue, 13 Jan 2026
- 07:49:09 -0800 (PST)
+        bh=KwDBqmE8DzZnhS9XuHRGHXbq3OKd36PRfwkAUcwYLh4=;
+        b=uS6+FJHkMvV02ZlslxRcPZYA7ZHorFlxBBv/0QG1JN5Tq9ZGwyturnZtQSmtK8gl00
+         6HxOkIyjoauzqCMRQ9AUVNS557ZBzZ3XP4poBYCdOXYZkb5WvgyLgXmi6QD3csDYxcmB
+         fWgXinERQZc9h0e2wMZFLzOm/U2Wyhh6ob7lWop2V4HuhfeJI+vQ+zwNnCaojhn0MGPj
+         qsyU8fjPqrIxhoTibhmpHxScalZC4wG3NWi5XrgNv46/f5EIiloNOqq5zcaHztMzOwnd
+         0WluM4h2YfRof7En93b836954NAwcxgwqyr+mdv71qo6IcOmRm8Q9WHAWq+jo10wNSt3
+         vDgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV8ANpG5R+EHIA8UX4LguyN4fjeK5k0l2y+Zxn1Ffdf9DDVypWx1lVc5mHoMkyN7hf9pg8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyY30Ht4vRvW/HxvFMpkNLwFxpkqWL8Nk32d2bQfQJ5hQN/6Zre
+	g93oHkfYXs7SbGAMC+7Z5F7UdxM5yl5b/16paklxNtAwQXZUONBgiDdKO8E5xrhaFHt7RSj+ZSi
+	7qOyh6yeDqC6buzVvBWX/ryC7wo2gMyc=
+X-Gm-Gg: AY/fxX6uS+CeZeag1fty6dM/Ff/0T++4a6Z9NX72gljnShWo6nq9zLzbUxEtlx5I8Qh
+	pTjgG6AFwX00FvMsOrgB73u9oRsT3CPuvKg0oo9FNsLxx/gh9nXlYqSbe9Q6GmQzPlvDzyCyyRq
+	Qm0UZkYqg3cN2S++CyMbkX0qR5UwPspACLFcrH9hU/q+0vF/BcLohgaGzvizxe4mgba3tXanye9
+	bfotZlt2wbm1YefJxnNN2I1ESF5dUPNV7+5JRvWqcE/M9/00J8GXg47nXqVjmrF+4UMUQQXlgfE
+	/fdfTuYLeZtwvoQeY+zsmBI6k/gimIC3j3r4GzWyWlaJ+uHKDPt1KQudj6MwY5A4/7dIIFd1kYb
+	UxWIJOgG1eA==
+X-Google-Smtp-Source: AGHT+IGjwuR69qA8lHJxE6iN497KsDTMWZ2U3kZzgncmWwfux7F5qK7HWUrvnZrqKDNyxZj/FyGWFvfT5x9jkoebLmw=
+X-Received: by 2002:a05:7022:f111:b0:123:2d00:c074 with SMTP id
+ a92af1059eb24-1232d00c1b4mr2953367c88.25.1768319380033; Tue, 13 Jan 2026
+ 07:49:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -63,30 +63,29 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 References: <20260113-v6-18-topic-clk-fracn-gppll-v3-0-45da70f43c98@pengutronix.de>
- <20260113-v6-18-topic-clk-fracn-gppll-v3-1-45da70f43c98@pengutronix.de>
-In-Reply-To: <20260113-v6-18-topic-clk-fracn-gppll-v3-1-45da70f43c98@pengutronix.de>
+ <20260113-v6-18-topic-clk-fracn-gppll-v3-2-45da70f43c98@pengutronix.de>
+In-Reply-To: <20260113-v6-18-topic-clk-fracn-gppll-v3-2-45da70f43c98@pengutronix.de>
 From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 13 Jan 2026 17:51:38 +0200
-X-Gm-Features: AZwV_QiQSE65KDDt7M1WU-fsU0Y3sGYlf63F7cu4HgA_-IsmphqZd0FRyAjQOBM
-Message-ID: <CAEnQRZCUJKmH5TM9F9zMHpTtZ8K55bNL+7AtaMysyaCBru3wug@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] clk: imx: fracn-gppll: Add 332.60 MHz Support
+Date: Tue, 13 Jan 2026 17:52:06 +0200
+X-Gm-Features: AZwV_Qio2Twao-YGROiITtozUb3Ksp-2XNSe0asye7QZjZsW6UFB1JKtigNETmM
+Message-ID: <CAEnQRZAUw8cVb8N4tvVP6scs2dTedRra653WPvpKOWanQ0gNGw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] clk: imx: fracn-gppll: Add 241.90 MHz Support
 To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
 	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
 	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
 	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org, 
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Primoz Fiser <primoz.fiser@norik.com>
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Tue, Jan 13, 2026 at 4:53=E2=80=AFPM Marco Felsch <m.felsch@pengutronix.=
 de> wrote:
 >
-> Some parallel panels have a pixelclk of 33.260 MHz. Add support for
-> 332.60 MHz so a by 10 divider can be used to derive the exact pixelclk.
+> Some parallel panels have a pixelclk of 24.19 MHz. Add support for
+> 241.90 MHz so a by 10 divider can be used to derive the exact pixelclk.
 >
-> Reviewed-by: Primoz Fiser <primoz.fiser@norik.com>
 > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 
 Acked-by: Daniel Baluta <daniel.baluta@nxp.com>
