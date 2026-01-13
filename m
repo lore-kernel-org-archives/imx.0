@@ -1,98 +1,67 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFF13933EA;
-	Tue, 13 Jan 2026 15:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718793939B2;
+	Tue, 13 Jan 2026 15:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768318208; cv=none; b=dty8ArPNK7SDYIAIJhpu4YFEvXw8EZFg7XYxBbBWWmUwTYEFgEX2m2wEIeeiqtCVfvIfQwFYmqYYkBjnxrZkVNgfRGMajLFE7bVE0vc0W8uCypft9lkzbLE1EvYNv1qQReXKHSQYXfayhLBRRUE4ECjqkAnSPeTISJSj5hzLvwU=
+	t=1768318963; cv=none; b=u/yhI+Mb2vSzsLDuzwsOsEMfeUwaUCmQRUKUmGF3MCVRGw8sFNzQC5tZD/45sR5f435cj2xXF+gQZlXqyCC/X1HqgBKfnkajuemmrJUCJQCnyCVeSpPiUXuAExM1HvspJUAf6yPcA4GDj/PnvO0DDEvjo6wmfXdA3uOFul5HKrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768318208; c=relaxed/simple;
-	bh=WgEe/MDg5GDJ9RD4sxJBGuALxPFpoPlF76iKnLPpSHc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o2lR9eBsQLWypYDickimwCZfFW/B5K2VyGJ+aWIbJPXGhk9NgOdOF1LtuI9gXtP9fs9VwwgJwF2o1hy2ot8lNM4dHRd7jvHWsTjcnqKZyZqpNBCBB7URdHL4NnSQGEw7eX4ziePMmVaziUyF4ufs2K+UOvHgmRYtvcxXIbSTxpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tyd3AN3/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768318963; c=relaxed/simple;
+	bh=rrnWNw3vkU2Ih+pUchIRcev1TZ+Nr+r2PD7leoOT0ic=;
+	h=Message-ID:Date:From:To:Subject:In-Reply-To:References:Cc; b=pxSLbj8KyLRAcFZ+Rw79/HshAxRL5LXccnj8d/SFyRwnaH9cWMmDtXB3dqvBGh0Yv7J3XfXNhdDGb1rAMkl8m0yDOqyK3Yg0h79swjfl45NicXMj0Saux/E0Jk5BQpuCAakxV4UNv+dciaCBnvcSYoXtaCU2Safwnyk6B6DKPz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dRIX4ovA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tyd3AN3/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B2EC19421;
-	Tue, 13 Jan 2026 15:30:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dRIX4ovA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84744C19425;
+	Tue, 13 Jan 2026 15:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768318207;
-	bh=WgEe/MDg5GDJ9RD4sxJBGuALxPFpoPlF76iKnLPpSHc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tyd3AN3/NLo4E6aWTbjnhX4eVBd4vmYpuMLT4fBGFXaysXWKxqie0AZh0zVhvbJXK
-	 08CzliUSNfo2vc9GA8vFE+8y2fj6HFrL+O8aT24S5dE8OSwN+nI1K44UvY//GPL6KP
-	 dJh6FWvF+mr839ZCDzRlY+jKfiwX3MDCkG7Hm9U7VGPzwqbljuEAEstAmh+0eQM4iZ
-	 bvZCPz2x9UpbNb02IZXmeYjGB7DRGQs5xoE3V1mOYSAtiR1N1/KUyZErtbE2ji8RNN
-	 ZMnk/Ro6rBt37GFE8c7kTmORdog5LZXyxKQuMFz+CbKjL61amvu5lQixKlLWp39QkK
-	 gHeBTi7H42QMw==
-Date: Tue, 13 Jan 2026 20:59:58 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Richard Zhu <hongxing.zhu@nxp.com>
-Cc: frank.li@nxp.com, jingoohan1@gmail.com, l.stach@pengutronix.de, 
-	lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v8 2/2] PCI: dwc: Don't return error when wait for link
- up in dw_pcie_resume_noirq()
-Message-ID: <7akwvdfve5jcj2tm7jiwowkvcctsmqeslia4pulvtdgcgicp4p@h5ztwyp4h7ft>
-References: <20260107024553.3307205-1-hongxing.zhu@nxp.com>
- <20260107024553.3307205-3-hongxing.zhu@nxp.com>
+	s=k20201202; t=1768318961;
+	bh=rrnWNw3vkU2Ih+pUchIRcev1TZ+Nr+r2PD7leoOT0ic=;
+	h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
+	b=dRIX4ovAcZciutAuOjH7KQc2v9gHBtJoOBqf4Pxso1e7n9i4dWqiX+7IqmwrjPTPJ
+	 B0e5/4HJ7m54NhbtKd6S9xn2jiVbR4u/eV8I8+jALdOPwALqwmScrcM10i+OkgwtFp
+	 y8LgNs1nJxKeX2TY4+yq6gIpP8z5YZiVRJsr5cWkdSg67W4BVMTa0QYnme2T7YBQm7
+	 UgwdrDoBegVx8/wmLfJiMJmB7ll6tIsVzXk/O5fQWvMk1D5Fhh+HTU/NZ2lGmbiOUR
+	 vb6yvGPhdaSXuswQaRoRBCFC5JjMfEAJvh/gtzzX4eFYKLDEvHcV4LRuVHGLcwhC2g
+	 vKxh6FazgkQ+A==
+Message-ID: <45d26d0bc35eb157f798cc74004af133@kernel.org>
+Date: Tue, 13 Jan 2026 15:42:38 +0000
+From: "Maxime Ripard" <mripard@kernel.org>
+To: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v2 10/12] drm/bridge: samsung-dsim:
+ samsung_dsim_host_attach: use a temporary variable for the next bridge
+In-Reply-To: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-10-8bad3ef90b9f@bootlin.com>
+References: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-10-8bad3ef90b9f@bootlin.com>
+Cc: benjamin.gaignard@linaro.org, dri-devel@lists.freedesktop.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, "Adrien
+ Grassein" <adrien.grassein@gmail.com>, "Andrzej Hajda" <andrzej.hajda@intel.com>, "David
+ Airlie" <airlied@gmail.com>, "Fabio Estevam" <festevam@gmail.com>, "Hui Pu" <Hui.Pu@gehealthcare.com>, "Inki
+ Dae" <inki.dae@samsung.com>, "Jagan Teki" <jagan@amarulasolutions.com>, "Jernej
+ Skrabec" <jernej.skrabec@gmail.com>, "Jonas Karlman" <jonas@kwiboo.se>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, "Liu Ying" <victor.liu@nxp.com>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Marek Szyprowski" <m.szyprowski@samsung.com>, "Maxime
+ Ripard" <mripard@kernel.org>, "Neil Armstrong" <neil.armstrong@linaro.org>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, "Philippe Cornu" <philippe.cornu@st.com>, "Robert
+ Foss" <rfoss@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Shawn
+ Guo" <shawnguo@kernel.org>, "Simona Vetter" <simona@ffwll.ch>, "Thomas
+ Petazzoni" <thomas.petazzoni@bootlin.com>, "Thomas Zimmermann" <tzimmermann@suse.de>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260107024553.3307205-3-hongxing.zhu@nxp.com>
 
-On Wed, Jan 07, 2026 at 10:45:53AM +0800, Richard Zhu wrote:
-> When waiting for the PCIe link to come up, both link up and link down
-> are valid results depending on the device state.
-> 
-> Since the link may come up later and to get rid of the following
-> mis-reported PM errors. Do not return an -ETIMEDOUT error, as the
-> outcome has already been reported in dw_pcie_wait_for_link().
-> 
-> PM error logs introduced by the -ETIMEDOUT error return.
-> imx6q-pcie 33800000.pcie: Phy link never came up
-> imx6q-pcie 33800000.pcie: PM: dpm_run_callback(): genpd_resume_noirq returns -110
-> imx6q-pcie 33800000.pcie: PM: failed to resume noirq: error -110
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume functionality")
-> Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  drivers/pci/controller/dwc/pcie-designware-host.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-> index 06cbfd9e1f1e..025e11ebd571 100644
-> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
-> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-> @@ -1245,10 +1245,9 @@ int dw_pcie_resume_noirq(struct dw_pcie *pci)
->  	if (ret)
->  		return ret;
->  
-> -	ret = dw_pcie_wait_for_link(pci);
-> -	if (ret)
-> -		return ret;
-> +	/* Ignore errors, the link may come up later */
-> +	dw_pcie_wait_for_link(pci);
+On Fri, 9 Jan 2026 08:31:41 +0100, Luca Ceresoli wrote:
+> In preparation to handle refcounting of the out_bridge, we need to ensure
+> the out_bridge pointer contains either a valid bridge pointer or NULL, not
+> an ERR_PTR. Otherwise calls such as drm_bridge_get/put() would try to
+> redeference an ERR_PTR.
+>=20
+>=20
+> [ ... ]
 
-It is not safe to ignore failures during resume. Because, if a device gets
-removed during suspend, the link up error will be unnoticed. I've proposed a
-different logic in this series, which should address your issue:
-https://lore.kernel.org/linux-pci/20260107-pci-dwc-suspend-rework-v4-0-9b5f3c72df0a@oss.qualcomm.com/
+Acked-by: Maxime Ripard <mripard@kernel.org>
 
-Please test it out.
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+Thanks!
+Maxime
