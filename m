@@ -1,98 +1,247 @@
-Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11020130.outbound.protection.outlook.com [52.101.228.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508A62D374F
-	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 16:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768320378; cv=none; b=FLGRvXn5gdGXFWpWZN1HEuAm7XP5rlmeoFbUty5hryodHXQOf5RQu8wqTCY2dD20KypsQxpkwA83Xx0rQU5Iotu1WZbJ2W1l+bM4E2dEtJ2BGqOc9sLDP8/4VEcoFCv7lB+FEACSwNKiWPgjwhHOAMyoZFK9+LsCoRt/IR+8fos=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768320378; c=relaxed/simple;
-	bh=bBc+mfqKr3uL9dadx2ba1PgNMN8oNbSq2rlIFExQJKo=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sdlokrBqH/nnY/IVNDCY5rAmoQ7BExJ8h82r5EFumlJ19PwcuEhlIn0YJqUkjizm0avvjDFALtNfOeL8524opKvMvU8zqipE3hlwUSxsw66ALLTEp1fwG/uI2D0vLuBxLGkpGaiaGlpX8mu9yLFWWfj1G755O5NnRDPSYQm5Un8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=CqykJfQA; arc=none smtp.client-ip=161.97.139.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6414031D36D
+	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 16:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.130
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768320464; cv=fail; b=LVrUgjvC1BFKD/O0FxC14UhOwM3sMZ4276dFs22lazeGwBC09n6tUbAiUukXSOqROMbDQjfXighYrTrze2POnW9CIELftou+gCbha4g5iDN4qwmefLOYXUXR1kLc6vt9sImMGAB46HR2km4nckp3XG9VeI4uoZjMKs7L0GPhCIA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768320464; c=relaxed/simple;
+	bh=0FEi3SH5f+5ssiqGLcHysVk9qpxzS0Wctr22ahbnpO0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=DLJwsZFaY4/qm9g4avBt6MgVCk9DjblMWhTrx8NidqGn1uZQ17+2rHdm72NFtvsUigMQQwW02pLYNSYz6ysK8qKRs0V1QZ2FzdkBoQpdf1wlIRaBFFhz5ISJWKFf1xaFKMFptAOX20BbG7SQmRnklMY9EUfq6wimt2SH46DiRFo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=GkD+pgie; arc=fail smtp.client-ip=52.101.228.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="CqykJfQA"
-Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
-	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <andreas@kemnade.info>)
-	id 1vfgOa-00000005WHW-3sKl
-	for imx@lists.linux.dev;
-	Tue, 13 Jan 2026 16:33:24 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kemnade.info; s=20220719; h=Cc:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=TBIjrv4Y8OCNFBCu4sCpO8dv9dAjBKgPmh8xrmvTw4k=; b=CqykJfQAMzzxW08XAMUVqzuQd/
-	dXeHErJk8dedGFD3st4JDdDkPr0WhUw8QajWMph/fr+cElv98NIcffLsu9o8BD/ZR8hx6n8mAVrsk
-	eJObhJaU6hIey5iDdBkG4hmPZb93FCNC0mgz2Sqyqox3phEdoAA7EQMm8orI4IOpTNVaIrQlj2rHB
-	xYk3FavNqgyJwouerKTB9nvin2dS7ufexoiysNfz6y5tZdcuKAPstEf2OzIMLsMqe2UZc75QP8pL5
-	JMhWAHzFXkyCrdMeBAn3qKdrzY/RGlRjwNRKrefO95ydJdNp91RmEhPV3EygYAr4Ka15qEQ325Kj5
-	tQR9uZcQ==;
-From: Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH 0/3] ARM: dts: imx: wire up the TPS65185 for various
- ereaders
-Date: Tue, 13 Jan 2026 16:31:33 +0100
-Message-Id: <20260113-tps65185-dt-v1-0-66d376ba5f65@kemnade.info>
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="GkD+pgie"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nOtGEw3bha7rHQpTKF8I6Muy58zcgZY7aJa9YXemyTT/vP0Lil1vEWUrFradiqhMJk3Ivhaz1LRudk1f8he7sTo2DCJEcYQID59lXHFcYO1TYvXykZARJghfp2pcA4B7NITbq948RlcHFRpP0tw16OmULDHDroJ3XtEFJJ44Hlb2vuoUHnUCht4N6pq/kFhAFHp11PiEdL5G+wfrvzWWcGafhjw9xJ6uSFwrBdu6ZnCQr6TDLU49J2syzl9kPC0HB+otzq9WLxhOO3IVMmPTAh9TSCusjJoCij6P85IfiEepho7Gt+s/FrLtWTwDTtYam4B73EY9CIXORCP9Ofev3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=949QPzK8boFEecRA0fKPbQZdTAJAIVuK3CJTgsdmwBo=;
+ b=vsOkY8Mq2U/9uot1H6WwPKq8jD+ksefNnZfi3RHpkkIP0FZGjqowanzzqSTwe0C5APC3W7bIxL3+Ep0wsMR06gMmdQVQcx7a5xPmdleGZObuJvDgzwpi7UlwRG+qYEPTWIQ43Q1b4yICbAj286kaQLOR1h/fG593ELW9BSrUe11kVQD0ksW8u6KIDulHXC6rH23xxBaKfLTuXkaq91ZONia1KBEOYaAAu7xT2E+m6cvyNxgYvo1aPWHghDIrngFhYozJQxwXlpoU4l6sCrqKL6xiRclZZLYwb6ikUTVmPJc8K55KhoCeRy/sVilGdLNi7TXeFlud6fSQA+BUGnqG5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=949QPzK8boFEecRA0fKPbQZdTAJAIVuK3CJTgsdmwBo=;
+ b=GkD+pgieXHvxFxKFRQAXrhQ08Wp3rGPqWzuMAa3f8veNb7ofvTCDj6WbZdZDpIJ9bP5EtbbZX7lbfJQTOCUWNJAYdkn5jfXI47MYhMGCNMKP6G9wjoRaz/3RCZXOERaYHRf1q7Xq0Zt7VGfziFvVA3pppOVJxe204mCI4tLf4XU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by TYYP286MB1689.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:112::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Tue, 13 Jan
+ 2026 16:07:39 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.20.9499.005; Tue, 13 Jan 2026
+ 16:07:38 +0000
+Date: Wed, 14 Jan 2026 01:07:36 +0900
+From: Koichiro Den <den@valinux.co.jp>
+To: Niklas Cassel <cassel@kernel.org>
+Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, vigneshr@ti.com, 
+	s-vadapalli@ti.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com, 
+	jesper.nilsson@axis.com, heiko@sntech.de, srikanth.thokala@intel.com, 
+	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com, geert+renesas@glider.be, 
+	magnus.damm@gmail.com, christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com, 
+	alexandre.torgue@foss.st.com, thierry.reding@gmail.com, jonathanh@nvidia.com, 
+	hayashi.kunihiko@socionext.com, mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org, 
+	rongqianfeng@vivo.com, 18255117159@163.com, shawn.lin@rock-chips.com, 
+	nicolas.frattaroli@collabora.com, linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com, 
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v6 1/5] PCI: endpoint: Add BAR subrange mapping support
+Message-ID: <6dplmb2csjthlzbzqrca34a5px5osavj5ziij7snfyxbhpumlb@b4wupbsld7ph>
+References: <20260113023715.3463724-1-den@valinux.co.jp>
+ <20260113023715.3463724-2-den@valinux.co.jp>
+ <aWYa59GgcB7jOfQq@ryzen>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aWYa59GgcB7jOfQq@ryzen>
+X-ClientProxiedBy: TY4P286CA0021.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:2b0::6) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFVlZmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDQ0Nj3ZKCYjNTQwtT3ZQS3dTUFHOTRAMLS1ODZCWgjoKi1LTMCrBp0bG
- 1tQATdF29XQAAAA==
-X-Change-ID: 20260113-tps65185-dt-eed74a08950c
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Andreas Kemnade <andreas@kemnade.info>, Josua Mayer <josua.mayer@jm0.eu>
-X-Mailer: b4 0.15-dev-a6db3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1073; i=andreas@kemnade.info;
- h=from:subject:message-id; bh=bBc+mfqKr3uL9dadx2ba1PgNMN8oNbSq2rlIFExQJKo=;
- b=owGbwMvMwCUm/rzkS6lq2x3G02pJDJlpqU3yv37qTa68uEWQI5J7o1t1+m6W9NL1J+Vfp669e
- sD4peimjlIWBjEuBlkxRZZf1gpun1Se5QZPjbCHmcPKBDKEgYtTACayvoPhf0yRbOw8E+XEjM/M
- ucWtNkuyNcO+vSqwbtilJzz5iMkyCUaGz3vvsMvGbRaLOK5srxY8L49ZyFb607d/6kYPW3e99Fn
- LDwA=
-X-Developer-Key: i=andreas@kemnade.info; a=openpgp;
- fpr=EEC0DB858E66C0DA70620AC07DBD6AC74DE29324
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TYYP286MB1689:EE_
+X-MS-Office365-Filtering-Correlation-Id: 90d2828d-457f-4884-d2cd-08de52bddf37
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?2FYQ86KB6a1ICrgGLto/G0aJHzbgC0StDWrNo3KjexOwKW2M7dKMK84DMq1X?=
+ =?us-ascii?Q?HeX0dDAlFfMuqhG1Mf8ic5rd0dot1Nfz18T/KFXiHHg7lf6IYuGkNawQNePq?=
+ =?us-ascii?Q?DnHrWGsbFvCB/6w3w+XCVfjtYHRXhXWeTn0IGtTil3P7O+9Nj/MgmHGNPH8j?=
+ =?us-ascii?Q?ITB70FfsqFWKwy7Huoz/junG0n/T3gP5IhdBe937l6J4JLEVHjLa6RqcRnQ8?=
+ =?us-ascii?Q?bXNEmIDrtf7prQfVORfkAsQ9dLO47R9Nbx3crwb+Hk4D8l4e9Ntd0TD5KSud?=
+ =?us-ascii?Q?8kZMaSShgegZi2Oqj2k2Kns8qk8jHLZWH7MlWG3JtT/if7AMIeoISzN7L3yD?=
+ =?us-ascii?Q?UMLgXs+oN8Jw+ALFzW26YIB8tcc5Hn2X804Car8jYnu7iOxPauVnd/CsQV9n?=
+ =?us-ascii?Q?4MuPamlCtSmHHURtaGhIvAPUOegcNCNEHdAWs4V2ywIfjZgqRWVmbwDwrC+S?=
+ =?us-ascii?Q?FNzcvc3R0noD0t9YV1X6Q9a0fhQxTw8Ojpt2F0eVlg8SmhH0mAVfEb4mlFi7?=
+ =?us-ascii?Q?uFQOdXycYJNpWIUTqMbrkMGSjFBlIZ7omn9lvKdvB7aSkSk2O4XOLksZOC2A?=
+ =?us-ascii?Q?V1Z0bZsQbD+mvmEkgie3khc6hxgkVWUfSxDYPTGPgEmwbmTXh6TXvBXjeHvH?=
+ =?us-ascii?Q?X46we0FrU0EtkJO4tfL0G+yWxZAFzmM7bbny/ANcYDsnuwW1o4z1Bg3W8NO7?=
+ =?us-ascii?Q?IuYF/TNDsyHIMoyLl865UUanfuGiIoshfeFj3Ic1lI4AyD6y1q9vpmho8/QG?=
+ =?us-ascii?Q?eIpD0+dECePaF231eZ7AJAu37i9lkTSYfVCAujbkXM4ZEJOFpeuKPS0h+KnU?=
+ =?us-ascii?Q?Clx3FZIhzglsaUtKbPVr4KaRZMRTkxgrKdmbhyvBoU7hW4jBxFOUSOUVMYRs?=
+ =?us-ascii?Q?Jeh8H+B8csrxdk//hIZ711s8AReJPdHCCCbm42nN3uXNWNfU0G8LQHUTjdyu?=
+ =?us-ascii?Q?oLajPGrQ3ucJU5aKRdoptR3EoAObVzFuzBqHZs6mgTdH22CLBThjg40sbIyn?=
+ =?us-ascii?Q?sHph/Z+4CVGg/1Zh6YLo7duK/Lh6IXjkuv2a/qh2L4ggwYr34Yc/pbYaSSih?=
+ =?us-ascii?Q?UOjse9BoXJDhZnO1LhXcLpwKGdDuegnW14JaLfEaqv5ngdCYpvqm1+PjgftW?=
+ =?us-ascii?Q?J9icuda7nelB+PxJWTRAdlHYupMLUjnzzMswtVV5evo+idjKrkcev7gliUSs?=
+ =?us-ascii?Q?iZ0zXy2FCR/xcBRKBR/s8r18DbaHGKbMikur7mYlWK5zd4/Dz0WzdMMlrSCo?=
+ =?us-ascii?Q?C7/T+vRn8SoF5pZPuWoUOS77OcZsfsi3bUH+hf497JutWloURfhJI6oQyWgU?=
+ =?us-ascii?Q?ydLGnjoEzvdL15tCdlVbF5YVwqjivbe86lvNR+0jvH4hhM1Qs1yvwWgOsSSD?=
+ =?us-ascii?Q?dWbEEwlODlQtZwqwMU0CByL3sD6tm/U0zeVR1eQnEXH6yZLAJJtmSMBLcTk3?=
+ =?us-ascii?Q?2XKDtaocHuE/i8UlJVYoS4iS5ZYuDmk7?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?EcwK6tDPM1zmZ/x2FLZIsr1Y2381zUx/kFrngCnKSzpHo3SFJtGdctv/FwRh?=
+ =?us-ascii?Q?Xq1yEiDqnoXxBPRVyJ4DsLdPcyfp/A7aL7x6vpryyTw8YvkAtIU4B3FtEv1P?=
+ =?us-ascii?Q?sBVmh2hwJFEvXDk+fjjY+S/XuPBeuv27W5RZ4JJdL0WkcDu96/oaAzsefSY/?=
+ =?us-ascii?Q?AncoBAZRQnsiWa5XP64uykRRzPkF6zU2fjuYN2ulB9HLiSOCGvCg0MkqdUeR?=
+ =?us-ascii?Q?3Qso96lMp40KxdEKWa/iojLgPzHCf6i2koRg0sH1nIeW4siw0/DKE4WfTvRs?=
+ =?us-ascii?Q?ipQ8nCSeICmUyuwgSGlsvpaRLU9Zk7MxBQGaXSEzXROjLU8jInvKDYcee2tz?=
+ =?us-ascii?Q?gQJoM7xwlQak2ATkxrIXnL+G8LwC8JB37ewj3L+s/P6qb3GxWes1apD1rUQJ?=
+ =?us-ascii?Q?BCTXjCI5dA6D5jwMt1tD5xc0O7UVEYXcS/l/34vyB6eBFbJrRk4Go3aT5AOG?=
+ =?us-ascii?Q?6740JcYMzrk0nDA8v99wy/4dmxhAeNUaz4upWrTLIG737u2M9r4vfh427OhJ?=
+ =?us-ascii?Q?IUGnn5zHNUr3PiqljEepgHMELg7u2bFaZufi+9KOrBPKoKxuLpS7KHnjsWnD?=
+ =?us-ascii?Q?Wxyh18QZXp2LjAIhQsZafSeZEUjvBNoTV/uyLHUCffL3POy1rka6MR9NIR6w?=
+ =?us-ascii?Q?HG2pxUazXxkky8Jlc45U0SqZj6eSamqQCXRKBAa1gjs/cbEXpQk0QNpAdE1A?=
+ =?us-ascii?Q?vbaOztygHUoi944t0aKzI2ORpZ6813ZN+VxAiled6+wPhkbd5V6t1VNSuOYY?=
+ =?us-ascii?Q?tzzDNFGADwsyqUnJUKiAp6A/ptAXZ01ENvsKF0ZJOqMnlbAj8vbRfBW2ByxM?=
+ =?us-ascii?Q?xwcJiY9XIly7VW+FdWwgqLjB+9l6CROgOLU7PT/hjJYf5LV3sajf5h0QtkWj?=
+ =?us-ascii?Q?iRTEtY/gB0gYBW6ry3qbKY9sVA72Efk9wskM7Zg/WJB4iImWCcfW9zH7wKWN?=
+ =?us-ascii?Q?LtfuJpBZIltXLeD4XjoWN3/8jzpOIe6qgXovVULvQsbU0N24sbAufHKM0yn9?=
+ =?us-ascii?Q?Angtw5jJiuh64jK/4g7zjuZfvv3Hx1gvjiqsVU3oQM9bblVk+VUZpxjypX6J?=
+ =?us-ascii?Q?YOukMufXZgM1SjYipwYWpC4tBDqb3gkvKf/hyw/LpewUCgZ/uAk79ANpjMKl?=
+ =?us-ascii?Q?qG6bJKMrCWqPl26r8QIvWykL174eQLVcQIB8yKEXwASJkr+S/nw/kPbZJSDC?=
+ =?us-ascii?Q?neji35gNTAh+wXKLohxeDeMbgyrJoG4e4unnZJsyP+0CTk8GMP/HB1iiW4P5?=
+ =?us-ascii?Q?ugsqmEMeJVMlv6o+sYeqpk47JN2FCh8tx5/xI69/f2YvvqSIKL/EIuQSMH7D?=
+ =?us-ascii?Q?7OfG2zelkA0T2UA/nULKGoEkpY4JR/5HigKWa0LsuV0hZWMwvvLNInPUUiL7?=
+ =?us-ascii?Q?X5IWqQKKdQ/I4uD/aGprDkeJp80IWqWKAm7kY4JIfhTydAMP99JhjNv4iw+S?=
+ =?us-ascii?Q?9VqH12glt0x7e8AmTuVOA1LSa24v5hGzCgE7wN/yEBIALOGI2xLkC0NcgYkT?=
+ =?us-ascii?Q?A7rmaSSKDVm9aKbclGvGt+B87lGTa1zERQhGOw8d1SRlmWYNIZkDLBgPb2BF?=
+ =?us-ascii?Q?dewq/nEgY/vJ5WN56HpR6I3fpRneaFfKyLxxSSMgw/8OFQR6LVyZJdw0EFTm?=
+ =?us-ascii?Q?RGtYH4E9qt3zm5kjw1r6xsDqcCh1h8U95vIt0KTk3m6DxoeRwaEpFGczcjAA?=
+ =?us-ascii?Q?qFJ8J7kePc1a4bshGBDC8EXv/Fze6EhSWnq0gVtD0SaUA9YXw1LWGupJVbkk?=
+ =?us-ascii?Q?BCVdLmSr5joMk47nPdksdEa8S/GaJizmF5gJGe9QaoBnU0VzUnL6?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: 90d2828d-457f-4884-d2cd-08de52bddf37
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2026 16:07:38.1216
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 76x3HgFb1Ocxk0pCD3R5z0ToHQF0Yw+EDK9VwP4Ckw0qIGeEM+/3ItJewOmn93bhK8e2OPupapsFd0FKoE/kgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYYP286MB1689
 
-As the driver is now upstream, wire it up for various ebook readers
-containing imx6sl/6sll/50 SoCs.
+On Tue, Jan 13, 2026 at 11:13:59AM +0100, Niklas Cassel wrote:
+> On Tue, Jan 13, 2026 at 11:37:11AM +0900, Koichiro Den wrote:
+> > Extend the PCI endpoint core to support mapping subranges within a BAR.
+> > Introduce a new 'submap' field and a 'use_submap' flag in struct
+> > pci_epf_bar so an endpoint function driver can request inbound mappings
+> > that fully cover the BAR.
+> > 
+> > Add a subrange_mapping feature bit to struct pci_epc_features so EPC
+> > drivers can explicitly advertise support. Make pci_epc_set_bar() reject
+> > use_submap requests (-EINVAL) when the EPC does not advertise
+> > subrange_mapping, to avoid silently accepting a configuration that the
+> > controller cannot implement.
+> > 
+> > The submap array describes the complete BAR layout (no overlaps and no
+> > gaps are allowed to avoid exposing untranslated address ranges). This
+> > provides the generic infrastructure needed to map multiple logical
+> > regions into a single BAR at different offsets, without assuming a
+> > controller-specific inbound address translation mechanism. Also, the
+> > array must be sorted in ascending order by offset.
+> > 
+> > Signed-off-by: Koichiro Den <den@valinux.co.jp>
+> > ---
+> 
+> I think this patch should be after the:
+> "PCI: endpoint: Add dynamic_inbound_mapping EPC feature"
+> patch...
+> 
+> 
+> >  drivers/pci/endpoint/pci-epc-core.c |  3 +++
+> >  include/linux/pci-epc.h             |  3 +++
+> >  include/linux/pci-epf.h             | 31 +++++++++++++++++++++++++++++
+> >  3 files changed, 37 insertions(+)
+> > 
+> > diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
+> > index ca7f19cc973a..8d809a2c3ce9 100644
+> > --- a/drivers/pci/endpoint/pci-epc-core.c
+> > +++ b/drivers/pci/endpoint/pci-epc-core.c
+> > @@ -596,6 +596,9 @@ int pci_epc_set_bar(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+> >  	if (!epc_features)
+> >  		return -EINVAL;
+> >  
+> > +	if (epf_bar->use_submap && !epc_features->subrange_mapping)
+> > +		return -EINVAL;
 
-The driver for the EPD itself (not included) still needs polishing
-which would be the consumer for these regulators.
+Hi Niklas,
 
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
----
-Andreas Kemnade (2):
-      ARM: dts: imx: tolino-shine2: add tps65185
-      ARM: dts: imx: e60k02: add tps65185
+> 
+> ...then you can change this condition to:
+> 
+> 	if (epf_bar->use_submap &&
+> 	    !(epc_features->dynamic_inbound_mapping &&
+> 	      epc_features->subrange_mapping))
+> 		return -EINVAL;
 
-Josua Mayer (1):
-      ARM: dts: imx50-kobo-aura: add epd pmic description
+Somehow this slipped my mind.. Thanks for pointing this out.
 
- arch/arm/boot/dts/nxp/imx/e60k02.dtsi              | 35 ++++++++++++-
- arch/arm/boot/dts/nxp/imx/imx50-kobo-aura.dts      | 60 +++++++++++++++++++++-
- .../boot/dts/nxp/imx/imx6sl-tolino-shine2hd.dts    | 55 +++++++++++++++++++-
- arch/arm/boot/dts/nxp/imx/imx6sl-tolino-shine3.dts | 26 ++++++++++
- arch/arm/boot/dts/nxp/imx/imx6sll-kobo-clarahd.dts | 26 ++++++++++
- 5 files changed, 199 insertions(+), 3 deletions(-)
----
-base-commit: 9448598b22c50c8a5bb77a9103e2d49f134c9578
-change-id: 20260113-tps65185-dt-eed74a08950c
+And I don't have any objections to the rest of the points you left comments
+on v6 (patch ordering, splitting, and doc refinements).
 
-Best regards,
---  
-Andreas Kemnade <andreas@kemnade.info>
+I'll address them in v7.
+Thank you for the detailed review.
 
+Koichiro
+
+> 
+> 
+> > +
+> >  	if (epc_features->bar[bar].type == BAR_RESIZABLE &&
+> >  	    (epf_bar->size < SZ_1M || (u64)epf_bar->size > (SZ_128G * 1024)))
+> >  		return -EINVAL;
+> > diff --git a/include/linux/pci-epc.h b/include/linux/pci-epc.h
+> > index 4286bfdbfdfa..898a29e7d6f7 100644
+> > --- a/include/linux/pci-epc.h
+> > +++ b/include/linux/pci-epc.h
+> > @@ -223,6 +223,8 @@ struct pci_epc_bar_desc {
+> >  /**
+> >   * struct pci_epc_features - features supported by a EPC device per function
+> >   * @linkup_notifier: indicate if the EPC device can notify EPF driver on link up
+> > + * @subrange_mapping: indicate if the EPC device can map inbound subranges for a
+> > + *                    BAR
+> 
+> This text should probably also mention that this feature depends on the
+> dynamic_inbound_mapping feature.
+> 
+> 
+> With those comments fixed, looks good to me:
+> Reviewed-by: Niklas Cassel <cassel@kernel.org>
