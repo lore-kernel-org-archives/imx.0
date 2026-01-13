@@ -1,119 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9164B394465
-	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 12:38:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9C538F94E
+	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 12:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768307902; cv=none; b=Fh/vb3v746W2IJXjWktcwtdOgIAFhUQZxRVqBn/k+We1ZH0ll6EKNr53xTgCXdRfug3OdTiBUy/pFmmN81huCNsHa/Hqm5qIqjJ448mNFa672pR3zC6Fp4SQEy+olyQ841OFnLPFSTIJTOvhPcFu0qef/BlLwx3KB5xwhGO7Jbs=
+	t=1768308043; cv=none; b=EfRw65rPLKw4LOSOdQqfEi5riVzdjUV56Ls0V2ndmIZvRO1wTK2FGbrfj4x3Btp8i6GJiwAL8jswWKAzXvRg29t/2NMi8bIEnhMfIhCdXb+nhgxfNKRNhB3VOOszc4GZcO0/1tWSAcePMVUDagX2cW3uDvR5qAV7rs3GypdD07M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768307902; c=relaxed/simple;
-	bh=qXScHYuCzd215t8hnmVMyfAJzYu9LaTDkfUenYtogos=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mGnl+pYnqDZTrhubotv7FS8qyUEYK31FTWE/X40Hz2P8FyEeroQRU6jiiuicDP55tQbD3/lBA6CgP4KGY8zW5mzUntRWebt2n6SD+vpH9ZT2kkc8jGfszIN5ZuFB9jLnqySj82sHL9qdVO8QLAia3KZre6SXrvbMg+oEvEr/oSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DMKO3wDO; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DMKO3wDO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E399C4AF51
-	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 12:38:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768307901;
-	bh=qXScHYuCzd215t8hnmVMyfAJzYu9LaTDkfUenYtogos=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=DMKO3wDOQyqAMkRsF3KjP1QgKWLmG/bIgkwkqikQWX7/JxeRnNe7RTYQnbhOkMfPE
-	 G+G+GVnK7BcA67OKp/w9uYGtoDKb6gYsPJFta0W9o3WbrjYSxf+gdK+PIoWXEDVRpB
-	 Q5EBZu76fgMusQwSmXX/liK7piEEVzbTmPGCiEh5Np1ueLICoCxv+JeymLWcnk+8zE
-	 HJZlIdI9MFRGAndmHTk7bTK8js1iFU5lIaAW8gyi5nhPAB7QNOe9kboOVP1zt4i3+k
-	 wUKGh42sKh+F35XHH38iMuMWdGE+RTZk9+LCDvYE3jVMx6N3ZypoG2kBxgAbxjzKHh
-	 WESRwPJzz6AdA==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-382fb6d38f7so48045371fa.3
-        for <imx@lists.linux.dev>; Tue, 13 Jan 2026 04:38:20 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCX4LIxyygEyeqXRiwGDxuxgdsn6+lvk/trURis2l39XA/FUkEmGo8fnxL1knfxXv3Dsbfo=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxluzq/dD38044prwvsllHMtOZQoilM5GZ+w7UVLvSIHymtnqFL
-	M+tTryGSj/bSCgdpswOH8nSIh4c/5zLZRAH2zUn55EqiJ2e/vxjB8ymZrcMA+cO/Rwwt+I99CFO
-	gZtJRjufkrk6cB0cpl/MPvAHPuKUFCBMPVc+XD5MfvQ==
-X-Google-Smtp-Source: AGHT+IHqazDCuLxwH7Iu/G2PkGJgVTJ7/k1UTcZwajhZd9YF9n/CenHYLasZcuGAB0SV4lL43Mgtox5RINYhxwkIRxc=
-X-Received: by 2002:a05:651c:30c9:b0:37b:967e:d73 with SMTP id
- 38308e7fff4ca-382ff8115efmr73607701fa.29.1768307899461; Tue, 13 Jan 2026
- 04:38:19 -0800 (PST)
+	s=arc-20240116; t=1768308043; c=relaxed/simple;
+	bh=WarqN185cyd7Pe1rhKwns4DKNXdydx2g5SvCDtgbdiU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Bosh4yqu/8OSf1siQKPTVapVRGuEX7mCZ++ebwvZMNmiiCi1OxHRInVFh6ziqOOe195U7DGVTrUBNGvA2KvYLrPi1wa/oDFPCASjusSNb9gYlSzylSgRoCtpjaBD5DEtkLZSrd8gMGXgaTmwzLQSkSc5XOwJEAYlzUafYq9TfD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1vfdhQ-0005zD-Be; Tue, 13 Jan 2026 13:40:40 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+Subject: [PATCH v2 0/2] Add more PLL frequencies to i.MX FRACN GPLL
+Date: Tue, 13 Jan 2026 13:40:33 +0100
+Message-Id: <20260113-v6-18-topic-clk-fracn-gppll-v2-0-44567319aef7@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260112-qcom-sa8255p-emac-v6-0-86a3d4b2ad83@oss.qualcomm.com>
- <20260112-qcom-sa8255p-emac-v6-7-86a3d4b2ad83@oss.qualcomm.com> <41b9a414-55a0-4602-9be5-54137a691d9f@lunn.ch>
-In-Reply-To: <41b9a414-55a0-4602-9be5-54137a691d9f@lunn.ch>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Tue, 13 Jan 2026 13:38:07 +0100
-X-Gmail-Original-Message-ID: <CAMRc=McP7vt2VS=2FpzYcXNG_+beb9O0AAvAJ9E2g8DT2WTfPA@mail.gmail.com>
-X-Gm-Features: AZwV_QhJCTDCGsC5t4RHVGQlo_Vyd1Okk9vVsia2jA5DJVHGvVefyoWQdJ752O4
-Message-ID: <CAMRc=McP7vt2VS=2FpzYcXNG_+beb9O0AAvAJ9E2g8DT2WTfPA@mail.gmail.com>
-Subject: Re: [PATCH RESEND net-next v6 7/7] net: stmmac: qcom-ethqos: add
- support for sa8255p
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Vinod Koul <vkoul@kernel.org>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Matthew Gerlach <matthew.gerlach@altera.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Keguang Zhang <keguang.zhang@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Jan Petrous <jan.petrous@oss.nxp.com>, s32@nxp.com, 
-	Romain Gantois <romain.gantois@bootlin.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner <heiko@sntech.de>, 
-	Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto <inochiama@gmail.com>, 
-	Emil Renner Berthing <kernel@esmil.dk>, Minda Chen <minda.chen@starfivetech.com>, 
-	Drew Fustini <fustini@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
-	Nobuhiro Iwamatsu <nobuhiro.iwamatsu.x90@mail.toshiba>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Maxime Ripard <mripard@kernel.org>, Shuang Liang <liangshuang@eswincomputing.com>, 
-	Zhi Li <lizhi2@eswincomputing.com>, Shangjuan Wei <weishangjuan@eswincomputing.com>, 
-	"G. Jaya Kumaran" <vineetha.g.jaya.kumaran@intel.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Linux Team <linux-imx@nxp.com>, Frank Li <Frank.Li@nxp.com>, David Wu <david.wu@rock-chips.com>, 
-	Samin Guo <samin.guo@starfivetech.com>, 
-	Christophe Roullier <christophe.roullier@foss.st.com>, Swathi K S <swathi.ks@samsung.com>, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, Drew Fustini <dfustini@tenstorrent.com>, 
-	linux-sunxi@lists.linux.dev, linux-amlogic@lists.infradead.org, 
-	linux-mips@vger.kernel.org, imx@lists.linux.dev, 
-	linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	sophgo@lists.linux.dev, linux-riscv@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEE9ZmkC/43NQQ7CIBCF4as0rB3TgQaNK+9hukA6tBMbIFBJT
+ dO7iz2By+8t/reJTIkpi1uziUSFMwdfIU+NsJPxIwEP1UK2UreICooGvMISIluw8wtcMtbDGOM
+ 8g3aoOmWl6qwStRATOV6P+qOvnjgvIX2Os4K/9b9uQWgBtSZ96Yx5OrxH8uN7ScHzeh5I9Pu+f
+ wGunHfVywAAAA==
+X-Change-ID: 20260113-v6-18-topic-clk-fracn-gppll-6f1343c234c3
+To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Marco Felsch <m.felsch@pengutronix.de>, 
+ Primoz Fiser <primoz.fiser@norik.com>
+X-Mailer: b4 0.14.2
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
+X-SA-Exim-Mail-From: m.felsch@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Mon, Jan 12, 2026 at 2:55=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Mon, Jan 12, 2026 at 11:15:46AM +0100, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <brgl@kernel.org>
-> >
-> > Extend the driver to support a new model - sa8255p. Unlike the
-> > previously supported variants, this one's power management is done in
-> > the firmware using SCMI. This is modeled in linux using power domains s=
-o
-> > add support for them.
->
-> >  static const struct of_device_id qcom_ethqos_match[] =3D {
-> >       { .compatible =3D "qcom,qcs404-ethqos", .data =3D &emac_qcs404_da=
-ta},
-> > +     { .compatible =3D "qcom,sa8255p-ethqos", .data =3D &emac_sa8255p_=
-data},
->
-> Is this device being probed via DT or ACPI?
->
+Hi,
 
-On the sa8255p it's probed via DT but all its resources are managed in
-firmware over SCMI.
+this adds two new PLL frequencies for the i.MX FRACN GPLL.
 
-Bartosz
+Patch-1 was previously part of [1]. The new version of [1] will drop the
+the patch which is now part of this patchset.
+ 
+[1] https://lore.kernel.org/all/20251202-v6-18-topic-imx93-phyboard-segin-av-02-display-v1-0-9c14be6c7478@pengutronix.de/
+
+Regard,
+  Marco
+
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+Changes in v2:
+- Link to v1: https://lore.kernel.org/r/20260113-v6-18-topic-clk-fracn-gppll-v1-0-166e674aabf1@pengutronix.de
+- add already provided r-b [1] from primoz
+
+---
+Marco Felsch (2):
+      clk: imx: fracn-gppll: Add 332.60 MHz Support
+      clk: imx: fracn-gppll: Add 241.90 MHz Support
+
+ drivers/clk/imx/clk-fracn-gppll.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+---
+base-commit: 7d0a66e4bb9081d75c82ec4957c50034cb0ea449
+change-id: 20260113-v6-18-topic-clk-fracn-gppll-6f1343c234c3
+
+Best regards,
+-- 
+Marco Felsch <m.felsch@pengutronix.de>
+
