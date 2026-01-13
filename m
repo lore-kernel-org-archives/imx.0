@@ -1,90 +1,143 @@
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432053806D2
-	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 09:00:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B6B3176F8
+	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 09:04:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768294813; cv=none; b=L9uzTPaFj1JT2yqXM9GtWCibQr38WN4lppKfrnzg0/fRbVk5oiyPfVYaNEMD5/h4VVNTlW1gC3a5ci1e+aB/1CsBCXxcNlSxjVoqLP7xo4iU3a5I+mhfl/kpfYUkZlB56bVdmZ6kFKgASLoPDUlBPD7vFCWtxOVPS5RpnNeGcoU=
+	t=1768295102; cv=none; b=a7qV3jtpazrnJtr9ydbRHTWsKJXlRq2DjeRjgibW40VQ6DDej1eESmRZPKKTN3FVcdlbdWuQ+kHkau6xflFcljOSXNMrj2BFahMJJeoS5YINPQO3s/YMAa7XQfi6kMBesTmI8aJ+26s08Sm63k+ktf09OumTGL+LzlrcToz5qsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768294813; c=relaxed/simple;
-	bh=dBgh3Jpx9q0vMwoLAMjf7VGH77cU87wpAE8E4CagitA=;
+	s=arc-20240116; t=1768295102; c=relaxed/simple;
+	bh=7UftW7AxgAgJS4Mb3DiWtQZF+1LauWyB2nHqcsVo2YI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d8TWb+9HodHIIEuvZLNPakanA0QX0LIyjYLHjV0tNxX2gyvDfaWeQ6Bp39oE/PJQfPBlT7Zplp5tWDBA7MNmnY92elkW6Rkd+OskXDauZjC/q3BP1ECMp0jUR24Sp+ZlgzaVDEtGG4G8oW6um4OA6LzKOlt4ulonDdjWVVX7Ayg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eaMvjPjM; arc=none smtp.client-ip=74.125.82.54
+	 To:Cc:Content-Type; b=rM2wpl7sh1dxn+D2bzKZBV9XwGzs8b/JTxdphhVkk2VNMHt/qNAqTGXAtPZS/eKxh13wlnzVyQkE1G6RyC0YbzUaCu1h7Rf3ovqos0EA/jDVdCjHgdCus7yitAAP5d5Nl09cJdulTbkYmyE+zZDXlvtQXFG44I7Ri0yetu1SxS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F+PUApdH; arc=none smtp.client-ip=74.125.82.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eaMvjPjM"
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-121b251438eso3767625c88.0
-        for <imx@lists.linux.dev>; Tue, 13 Jan 2026 01:00:12 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F+PUApdH"
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-12332910300so127704c88.0
+        for <imx@lists.linux.dev>; Tue, 13 Jan 2026 01:04:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768294811; x=1768899611; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1768295099; x=1768899899; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dBgh3Jpx9q0vMwoLAMjf7VGH77cU87wpAE8E4CagitA=;
-        b=eaMvjPjMu6bnBP9rIBsvovre+4xlnlbrQC23ydotgv/jz1RFdgvZBhTaBTRrMK6/QH
-         QZ1erwTshMNLE3PmGnamxUomHe3MyXHgCUdmYcTrggYnoUmdvf5zueHCmx0gAvWyOgXJ
-         txFPySemg4j9WTfQmBAXcVKCFzdA2Uh5+sVfY4mtm/X0Kpa8hVVOUtM4iRxIMNMYefhS
-         D2lkAQjolnZ+oLiT5BdHxzIwtP2PtZp3yHQzPJZLND+g9bQXV0bqiQBdRgDUyANM68Jv
-         u8oohF9xpY7++vXNnTlSKq/uv14AvNjKiNc4RPa5g0xOKdd9dghVMQCbn2gNbPFxCXF5
-         U7NA==
+        bh=TF3eFYrkHc1cOZLA7Pry0zv5VjtfYubZccA+TeijqI4=;
+        b=F+PUApdHyScMoeRhOeco7CD1ECxGIqhylOvnqj+fSGnkhFnrnPMlm2tqo/sTNzoppK
+         AiAh6ggSLp8N2Uxz4WB4Q3s5PUSunllX71VUHAX1In7ezUjr386tlrQ/sdKyIXTDu3gU
+         e5P9M1Jqzi5/fS5DrHRg8Xlz52BIp+dlAUbtQaOmuXWFT37I6HDK4sstquV+o7hPzPDW
+         Gh/1hWZujQ7dhusczCaYQxIzL62xpXj2MEKGZfYv/I4dpm9LV0Zd7DR+upB+ZMPYCTRc
+         94CW3XB/B45ZPuE1xNei5Co2Y5oiVbi0lzQCxxtINh0ENqbgfbTzwv+BF3yconX6M9Wv
+         vMOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768294811; x=1768899611;
+        d=1e100.net; s=20230601; t=1768295099; x=1768899899;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=dBgh3Jpx9q0vMwoLAMjf7VGH77cU87wpAE8E4CagitA=;
-        b=mSbneEDIH8Api+Xb4WHIXKXYZ11sZx5naqV+fwYmSB1YtDZphSJ6cvvQHp06mtOf6S
-         fw4dqB7DJDkBZvjrYFDL62rGpi8cEcL99/dLtza0VE/8xmRFoOIhy4hZQ8p6OYahs81Y
-         Rs9U0mwKttbZ9jrZh1vFtnhXJsgcUEU3zVxoZWqP36x5pJSK7HotjUZr49AvM2T1RebJ
-         9ixTzs8Dna8HpVOKa/nxSZz77cVYFh8Ak5PuLSdfZ6o4cSpPfR1lVYGvCg+EJrzDe0lD
-         22fpCEg58s3foPq89ngUujOGK/L4qIzYRFzeX0JiA+JyL6Jva3GJrZnqvLAAA2G5+TY9
-         ap1A==
-X-Forwarded-Encrypted: i=1; AJvYcCX6IhlM2q7fMBCZdwu6XOzSZ8jAzw0O+KtWAsR1b++7z6o0kQBa4YR/pnyOBvC9IC5jkWA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy98DZ47iXWqzWhZK5+m5lnCXGiMNCCCAsfEf/nGPoDNcGSEhaK
-	I79pRURpC/HxusITlH7vofdWww8P3XWwLPOyTrB0EiaPuN69cKfHcXsx8U6TcRwW128+YIXjd7R
-	wmfX1cgkdPb2G1iphG+MXVgNKKBFbQxU=
-X-Gm-Gg: AY/fxX4pAPbz3oZQep6svwRot7UJtByVosPkYdQKktaexR5M7dEaYRt3/0orW7Qc0pr
-	4xnN2YE2Z3jMmIByDg34nDlit8d6zAWHW9L5yv4Midbl+2kyU9iQ19ILDw3KxICH5Q2H3zP0PVt
-	Aq5CczASHhsIfZoR8YJ9OWwhHGBJmsbn4zMeyiLaAQpL91tqqh3xO28oXWJ0EdxG8g5r+xrdL4w
-	w3p4tZIgm+PyERkZpf6qNN7+u8dKCRpif1rZFBCZwUYP74ehJHq4qGFNqs2pMZHukm5J6jkKuG5
-	u0pIxtzGpd8/2TDTxKOxeCVMSRgiU9QtE3Bf9K/8Y/upUoaQ7Ib+3xJtIe+LR0lL9JPcU0SrA8T
-	eT8hZXci3PA==
-X-Received: by 2002:a05:7022:419b:b0:11f:46b4:449f with SMTP id
- a92af1059eb24-1232b6425f5mr2643006c88.24.1768294810986; Tue, 13 Jan 2026
- 01:00:10 -0800 (PST)
+        bh=TF3eFYrkHc1cOZLA7Pry0zv5VjtfYubZccA+TeijqI4=;
+        b=W1QK2krL0kcPMT5dTIDsuffFafcOdHPN2xzRO1Gy7mG5sFwaPu9kh111MPfbijX7mt
+         DwBJk7Rn6QaFWwkKBH4xkggK61TQdm6ndhNEmO5V++Pot2ikD4UUKM2/9pndqs8I1BPl
+         Ko3wyhw+6kADKYDWLXgkQXD7YdqD42/vTmQabq5dYtCzmoniTlw8fSi9sZxJLj/hbBy4
+         piaDbgG3rfbfKyTw4bxbNlTHlipc7iEwNSjW9nPcEXkqWH/WJvCUUl1ErsIuCKL+AfIq
+         kviuKdDJhRzc6n3JPcsrFUig9VHPVEfpOeNJTnuHkCrKWtqGVqn9pgyy0O4Suio4apc5
+         QhjA==
+X-Forwarded-Encrypted: i=1; AJvYcCWL0VBv9eCcSO2gpFnKgT+pn6HzmuPhuVqiBcTM47tO3UGvvyEUk671tRbnPQ9ov8H7UJY=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx9WeEenc3EiBPlBePxrmIaQt7KRbOJaZkAFjaqbM89ylBVDsk8
+	M3q3mNx31EeHkFldTbkRRAqATM6iDJ4GGkpi4p4ip8lbrsRkfR2/CFKU5+coZTnR9PMXMgVs7Xa
+	+PbFa4B0QqSn7cg7y/xfaX0bb7+pRpQk=
+X-Gm-Gg: AY/fxX6klvqdNyfRjU9XYc+OCe+znHmuQisPw+iFqsYT+sPXPi6mF5o4JYj06U1xKwi
+	4Zy8beJiF5u/ROo5SW6Ss3JdUjnhHFJk4CA4+1Mst1eB7Ou49uTan+Y7DZOU1KUr+Yea4z99anY
+	zb5CSzTqAZ3s+ix3b4hLNS+V6yrqOScSpA35TfCI9K9jac560klO3rEurDkiz+u5P76RXTrI904
+	/vM2qyxaJj5Z/EiyH3aZMbucfWWVwbjUrjZhaIdSOl+wpcbzuCmF6kOA3ExSBzQ8JiRv5+CRkYd
+	DPdYi/OE+zJpfwGGlP/azuq3lasL6nvX5kuIpQ/3UHxatQO0i4BH4skaocUXHbxMX4oC8e9huum
+	M1g5gE6gRdw==
+X-Google-Smtp-Source: AGHT+IH1J0toJnhizL3PbL7ktkyTfdnjpbyE1HhT2awO0xq5WfFz2zWAUDP63sX81eGbqeQTkeo9sdBX4290VLvm5yw=
+X-Received: by 2002:a05:7022:248e:b0:122:33e:7545 with SMTP id
+ a92af1059eb24-122033e7683mr17502402c88.6.1768295098705; Tue, 13 Jan 2026
+ 01:04:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260111-imx952-dts-v2-v2-0-5773fa57e89e@nxp.com> <20260111-imx952-dts-v2-v2-7-5773fa57e89e@nxp.com>
-In-Reply-To: <20260111-imx952-dts-v2-v2-7-5773fa57e89e@nxp.com>
+References: <20260111-imx952-dts-v2-v2-0-5773fa57e89e@nxp.com> <20260111-imx952-dts-v2-v2-9-5773fa57e89e@nxp.com>
+In-Reply-To: <20260111-imx952-dts-v2-v2-9-5773fa57e89e@nxp.com>
 From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 13 Jan 2026 11:02:38 +0200
-X-Gm-Features: AZwV_QiS-vbZEBI1B5-7VHnaj5-2xQU7eh6G0NpgJs-gint5WBMU_wp9zkj0OrU
-Message-ID: <CAEnQRZDODr2a3fvobXM7RWN_yo1mu5W+h6+tpbLho3QL=cQDuQ@mail.gmail.com>
-Subject: Re: [PATCH v2 07/10] arm64: dts: imx952-evk: Enable wdog3
+Date: Tue, 13 Jan 2026 11:07:28 +0200
+X-Gm-Features: AZwV_Qi865ruliWjfUeM4dFbMw-2xdIzSGSLpHt9sdtKpygo1iYWiegXtWJvoTs
+Message-ID: <CAEnQRZBpD67MWk7T4j6RTymGiFJNW5kAs2TMS=BxVTVs7qjUAQ@mail.gmail.com>
+Subject: Re: [PATCH v2 09/10] arm64: dts: imx952-evk: Add flexcan support
 To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
 	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
 	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Peng Fan <peng.fan@nxp.com>
+	Peng Fan <peng.fan@nxp.com>, Haibo Chen <haibo.chen@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jan 11, 2026 at 2:45=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp.co=
+On Sun, Jan 11, 2026 at 2:46=E2=80=AFPM Peng Fan (OSS) <peng.fan@oss.nxp.co=
 m> wrote:
 >
-> From: Peng Fan <peng.fan@nxp.com>
+> From: Haibo Chen <haibo.chen@nxp.com>
 >
-> Enable wdog3 to allow System manager reset Linux.
+> Add flexcan support, since flexcan1 share pins with PDM,
+> default disable flexcan1.
 >
+> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
 > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx952-evk.dts | 45 ++++++++++++++++++++++=
+++++++
+>  1 file changed, 45 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx952-evk.dts b/arch/arm64/bo=
+ot/dts/freescale/imx952-evk.dts
+> index 21b951a2156414819dfb589e5e7e736e7b1fe48a..bae7b88f8229babc42952b7ab=
+beb912cbefc10fd 100644
+> --- a/arch/arm64/boot/dts/freescale/imx952-evk.dts
+> +++ b/arch/arm64/boot/dts/freescale/imx952-evk.dts
+> @@ -64,6 +64,22 @@ linux_cma: linux,cma {
+>                 };
+>         };
+>
+> +       flexcan1_phy: can-phy0 {
+> +               compatible =3D "nxp,tjr1443";
+> +               #phy-cells =3D <0>;
+> +               max-bitrate =3D <8000000>;
+> +               enable-gpios =3D <&pcal6416 6 GPIO_ACTIVE_HIGH>;
+> +               standby-gpios =3D <&pcal6416 5 GPIO_ACTIVE_LOW>;
+> +       };
+> +
+> +       flexcan2_phy: can-phy1 {
+> +               compatible =3D "nxp,tjr1443";
+> +               #phy-cells =3D <0>;
+> +               max-bitrate =3D <8000000>;
+> +               enable-gpios =3D <&i2c4_pcal6408 4 GPIO_ACTIVE_HIGH>;
+> +               standby-gpios =3D <&i2c4_pcal6408 3 GPIO_ACTIVE_LOW>;
+> +       };
+> +
+>         reg_3p3v: regulator-3p3v {
+>                 compatible =3D "regulator-fixed";
+>                 regulator-max-microvolt =3D <3300000>;
+> @@ -108,6 +124,21 @@ reg_usb_vbus: regulator-vbus {
+>
+>  };
+>
+> +/* pin conflict with PDM */
+> +&flexcan1 {
+> +       pinctrl-names =3D "default";
+> +       pinctrl-0 =3D <&pinctrl_flexcan1>;
+> +       phys =3D <&flexcan1_phy>;
+> +       status =3D "disabled";
+> +};
+
+So we add this here just for simplicity right? And then enable
+flexcan1 in a separate dts?
+
+With this,
 
 Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
