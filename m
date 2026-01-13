@@ -1,77 +1,73 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750FE35CB86
-	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 11:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98D238F25C
+	for <imx@lists.linux.dev>; Tue, 13 Jan 2026 12:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768303911; cv=none; b=sTCEiktw8bH4TLZ0No1mEDHD3GSFupWCXYlegFrbXvbT3TZcIeGRt9OA1qXMCLWFX8ha5y1ac6ejLQgyiA71r9wXfxZ5nJV8ogE8YBsBW1lL48mpB3zfTtscbvkNDLydyh6ROqlnLvvP8KFH/rAzgqGDw1pr05xFwOviFaXbCU0=
+	t=1768307355; cv=none; b=LjlbIUYeUS+Q9HAExfPbmQy//qD3+E82k2h/DwyhpoQM1DG4KwSapsjMn22+uNzhPDcQt8ed6C/9LlOvCtcgEr3wkpzwucPAgjTDQwKs65z14f6lLgqw57Z1uMCMV9ceiIBaNv3sCzkk9HtirGgFke7HvFG9L1UHVSonGJltbhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768303911; c=relaxed/simple;
-	bh=B4kWBn9gjdvScHFjE+y4UkWXcGn5pKA7zE+7suaO1v0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AlgPFG0/Y+AyExW9PLFP7ntcWa0XKTC95YCSlPyyX/zZNZVxDoRu3Jc4PCB+ncLyKXcsyom+gl2hbGm+QRQ3jaDc14BNcZpYBG/iaiJ3rMbtn/n+arx1oUUjQ8Biaf6p+MdBDcL2Kpo7xRD8FMFjpdT34QR+fIA055A/bb316H8=
+	s=arc-20240116; t=1768307355; c=relaxed/simple;
+	bh=oUZExTv7ysjsJn5nlTFByWlJf9IP6c/MsHLmv5tO6SQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=TMmw+KYmKrpmHImJtP63MD8VjiwF+tpNqiihKhd9V+9jisj9rOQ0XlNCcAQV12eCUvukvrmJ+btHBIME0akHl6e2JPrtsJiFde6dIBPQqSSJvynQaF1n7Z8NeRcHFuTHf5Kyw9zxlwbfdRyhvFXruQXkxSKRQ4eiW3X8t92W7yE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vfccf-0008LF-8r; Tue, 13 Jan 2026 12:31:41 +0100
-Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vfccf-000Pj3-1h;
-	Tue, 13 Jan 2026 12:31:40 +0100
-Received: from pza by lupine with local (Exim 4.98.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1vfccZ-000000005PZ-3ACz;
-	Tue, 13 Jan 2026 12:31:35 +0100
-Message-ID: <0d3a41526ba02eee28457fafc95f5152a9c7bb4b.camel@pengutronix.de>
-Subject: Re: [PATCH] drm/imx: parallel-display: Prefer bus format set via
- legacy "interface-pix-fmt" DT property
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Marek Vasut <marex@nabladev.com>, dri-devel@lists.freedesktop.org
-Cc: stable@vger.kernel.org, David Airlie <airlied@gmail.com>, Fabio Estevam	
- <festevam@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Simona Vetter <simona@ffwll.ch>,  Thomas Zimmermann <tzimmermann@suse.de>,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Date: Tue, 13 Jan 2026 12:31:35 +0100
-In-Reply-To: <20260110171510.692666-1-marex@nabladev.com>
-References: <20260110171510.692666-1-marex@nabladev.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1vfdWG-000338-BB; Tue, 13 Jan 2026 13:29:08 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+Date: Tue, 13 Jan 2026 13:29:06 +0100
+Subject: [PATCH 1/2] clk: imx: fracn-gppll: Add 332.60 MHz Support
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260113-v6-18-topic-clk-fracn-gppll-v1-1-166e674aabf1@pengutronix.de>
+References: <20260113-v6-18-topic-clk-fracn-gppll-v1-0-166e674aabf1@pengutronix.de>
+In-Reply-To: <20260113-v6-18-topic-clk-fracn-gppll-v1-0-166e674aabf1@pengutronix.de>
+To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Marco Felsch <m.felsch@pengutronix.de>
+X-Mailer: b4 0.14.2
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
+X-SA-Exim-Mail-From: m.felsch@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Sa, 2026-01-10 at 18:14 +0100, Marek Vasut wrote:
-> Prefer bus format set via legacy "interface-pix-fmt" DT property
-> over panel bus format. This is necessary to retain support for
-> DTs which configure the IPUv3 parallel output as 24bit DPI, but
-> connect 18bit DPI panels to it with hardware swizzling.
->
-> This used to work up to Linux 6.12, but stopped working in 6.13,
-> reinstate the behavior to support old DTs.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 5f6e56d3319d ("drm/imx: parallel-display: switch to drm_panel_brid=
-ge")
-> Signed-off-by: Marek Vasut <marex@nabladev.com>
+Some parallel panels have a pixelclk of 33.260 MHz. Add support for
+332.60 MHz so a by 10 divider can be used to derive the exact pixelclk.
 
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ drivers/clk/imx/clk-fracn-gppll.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-regards
-Philipp
+diff --git a/drivers/clk/imx/clk-fracn-gppll.c b/drivers/clk/imx/clk-fracn-gppll.c
+index 090d608672508a8819dc68eedec5b8d4a2c140c8..579f76494eb041dfba58b8cd10eb2453a0ec4178 100644
+--- a/drivers/clk/imx/clk-fracn-gppll.c
++++ b/drivers/clk/imx/clk-fracn-gppll.c
+@@ -88,6 +88,7 @@ static const struct imx_fracn_gppll_rate_table fracn_tbl[] = {
+ 	PLL_FRACN_GP(445333333U, 167, 0, 1, 0, 9),
+ 	PLL_FRACN_GP(400000000U, 200, 0, 1, 0, 12),
+ 	PLL_FRACN_GP(393216000U, 163, 84, 100, 0, 10),
++	PLL_FRACN_GP(332600000U, 138, 584, 1000, 0, 10),
+ 	PLL_FRACN_GP(300000000U, 150, 0, 1, 0, 12)
+ };
+ 
+
+-- 
+2.47.3
+
