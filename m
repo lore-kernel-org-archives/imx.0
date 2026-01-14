@@ -1,178 +1,94 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6379A37BE6F
-	for <imx@lists.linux.dev>; Wed, 14 Jan 2026 08:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0E5272816
+	for <imx@lists.linux.dev>; Wed, 14 Jan 2026 08:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768377777; cv=none; b=u4fF0Snw+v/ihRxnKa79cqbkkdaTVuCx+nAlxyUaaIxdm0OI740UVRFjsAdwv9tZU2xif4cnZX4uFBQAMXy7TPqbddonKNZlgqRdh4cHIJVpIsSPOOJHFp70Oq/miXLe8wSCIWQQOsa41cRga1Encbf9s2RcUsbsgEcPDxtAO6g=
+	t=1768377904; cv=none; b=u9+puIBBQF/5tE8/UtyS/ag7UywuolXk+CI2YEMIynkL3gyIKIoQlt7HvM+Vq1oDPCqwem8HZyLGGPdSZsh27wSa8sajbN1NrcipCdWRop7Giw2yiwm1Ilp2tGkDQXX4/euNTauXGQVBaS/NS7owG/bvEF0eCyt6kiEaHIDQVaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768377777; c=relaxed/simple;
-	bh=fYWlMzo/H6Y+xJ86qirphWJAlV1PP+ab4iXQTYQcluk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=KN1hmHML/FB8H5xwsQqwVwIV/0Wf0sqdxDe9H7A3/pTTR4xnneyT9rNSuV4WLzTF2IPoREtXx8FG5mDiJzyNGhrdllVOqRDsfkQuo8VGDMKpDtjaHmdPpX0fSl2FIvfwzg7xp0Hbf89dL1+6tVVJFAT+PLf0gFjwbO1WsgvEo3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=x88kuLUq; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1768377904; c=relaxed/simple;
+	bh=jYPkzS8uwgSyR2vpbKtgewGdh4NqLZqcruiqtTuKQyY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ch9kfqz0E7AZ1k69xSDe3v+cOcULUV2JidHdM0fylib0H+TYbfGPa04A7//i6BfKOdCVq2Kwq/MspyeXRNPB/fGV455vtMyMM0btcJthZaZppQpjt/6lkvhdpz/ZBXBov+X6VV+UMZsgXAYtpUA5bAifUwBeux2Vwkw4hbDlVE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NOavdKwx; arc=none smtp.client-ip=74.125.82.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="x88kuLUq"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 9F7E0C1E4B4;
-	Wed, 14 Jan 2026 08:02:17 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0E5C76074A;
-	Wed, 14 Jan 2026 08:02:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 95556103C82AE;
-	Wed, 14 Jan 2026 09:02:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768377762; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=OrlcgvLEASE7cgCAVQW4sEC2L2tinvXr+j0pOUZUjvY=;
-	b=x88kuLUqFra37jp+2L7Hmyl1rJK9Luj34PccVPygGuBCC5mIUNebQlygEiXB90nJrOOq+B
-	bdtRJbNiaHF/QALBf/DPpUr60ZpM5vhmVOXLlkv7oMKeKJQNP+BV4YdafCKgB1jDyaAPS2
-	tq5kA2oEP25DWOWvI0u2Fyifk3icvqsLbMsUmjXV3ejO7GBvLUNaiqfEvB2ZkGbiC+5LTu
-	zHYrpWi9KCbcQZYi3IgsxHlw0lA3zBo1u/c47qXxbQWSy3rWbbKhvEIWU87kPC41Ert43H
-	A1ighEQjWb6vQJdU5S1OfOJxLVA3ZVpXbWi0B45Cr3vvnRFlbka6Iwu8FsX63Q==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NOavdKwx"
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-12332910300so2842685c88.0
+        for <imx@lists.linux.dev>; Wed, 14 Jan 2026 00:05:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768377899; x=1768982699; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jYPkzS8uwgSyR2vpbKtgewGdh4NqLZqcruiqtTuKQyY=;
+        b=NOavdKwxVZWNJKPQGHViKAp/ESewtoD6lkWyfMEOrSONkr3B5I6p7FLZb/Hvp5AwNd
+         E0dotGEJYmcHbG5l10XCIU8MoKHi7Bsfw8AcviPU4cCC3UCbyvqq725my/hE3BwwneXY
+         z5OIfYX/inE51cmghyXjliRWAUFJVLcyER2KxiJyU3oe7+jjJwOzsxLnrtUOLdSOybbh
+         7AO514KY19BZXq8mWnyqOTIlI4ijvmbUxrC8qWDHNw/bwql7hMO3J78gMUtpVbACRevT
+         h+L7ELjrdc87M8N6z48UGsFga/ZXNrI9LdvUPh6gJ652BTNe1+hh+coAsX9Ym+cPmmya
+         /J/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768377899; x=1768982699;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jYPkzS8uwgSyR2vpbKtgewGdh4NqLZqcruiqtTuKQyY=;
+        b=fsPH7hdm4hNJjRc7FojgwyCMGK+Ce+aWDg1ERFV7gUtNdK46ajSn98kRZchV7ByIFU
+         GztvpN9On3xtXJVZS9ySVtdCmDNf5u0y6JwDgU5gUNw98NqG60IRwsdfP2+8/kqRs/UE
+         hPuh30UFArci0irvhfRQXprmSjOmFAA2dEQrV8oU6HCD05PSRz/4mXuWxn9DyvTCSPhi
+         0o2henbDsNcOS1PmQwjOqiKgPt3X0nBh1nwkfc+58MzFNIFKdPrvPLGWrPIGPIwwFuBa
+         DvxTfzMCO/HvmtZa5ndNicmn8SArJP1ASbBxCJ9qN8X1wDteqadgNXztG3NkXovHgpvY
+         a7Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUsdUppn8p2BG3tVWvDz8EYlha6A8BlR+MFL+Ad8caXQk1PsqFbL1yySyY0kEDSF7Swie4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxtQcoWhpZhB8IEAE1ODutUAejO1HJGYjRy5mqOAJTehsybS9XS
+	XNSa9lZJBP2wPrmaaP71k39AFTd01DY2pU4M32G6TeIUF4ckE5/8sWs8fYHfUDz1rRTkC6sqMYo
+	dXZbXcFzz7//U68PhCZepfURcKg0j1TM=
+X-Gm-Gg: AY/fxX7tYXtm1wzDXJ3uNwPU5sDnYJisGS+CH/g53BqjeKzyBfSSFT40QmfLMMUcgdl
+	8JXg8IUMk2xV/qVMT8qDVo7CwqlA9HRgduAZPcPMMwoRBMlc5U4G7+lePxuB1yJOkS7GeAipVVq
+	06n2YOIndS/9vpIh4VLyG2xVr0J+pTFSLR/T7NyphPG3CDi5KBwCY1Qg0QKY3CTbdMFU4udEhDL
+	3D9+ib29Lmh7X1OvVv/MlIjnJ38HO8SL2c6efZY3KJO2sS2KDnRGxgmfM1Bos2cEBAdEXdvJjqA
+	tcGusSpvmOy1+YqoLq0M9vcwfI4HKJ2xeYpzptb9sh9yg0S7mcNN+X9YohCyxEOPog3S7zaRTpJ
+	rO7/Km87vEA==
+X-Received: by 2002:a05:701b:2211:b0:123:2d38:929a with SMTP id
+ a92af1059eb24-12336ab506emr1783847c88.38.1768377899101; Wed, 14 Jan 2026
+ 00:04:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260114-fix-soc-imx8m-v1-1-143de91ef077@nxp.com>
+In-Reply-To: <20260114-fix-soc-imx8m-v1-1-143de91ef077@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Wed, 14 Jan 2026 10:07:40 +0200
+X-Gm-Features: AZwV_QiQ2GxOfUl7_qoYYXBsoM4-1o56L0DpD7bTOn0TWKITOwqTzpk0MfT3zD4
+Message-ID: <CAEnQRZAX4HVjaaPbdUBp6aOreba8BNfkDXeyt4_OH9WVajcCTQ@mail.gmail.com>
+Subject: Re: [PATCH] soc: imx8m: Fix error handling for clk_prepare_enable()
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Marco Felsch <m.felsch@pengutronix.de>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Peng Fan <peng.fan@nxp.com>, kernel test robot <lkp@intel.com>, Dan Carpenter <error27@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 14 Jan 2026 09:02:35 +0100
-Message-Id: <DFO5LHWDD7S2.19P595M4CWIPI@bootlin.com>
-Cc: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
- <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>
-To: "Marco Felsch" <m.felsch@pengutronix.de>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, "Shawn Guo" <shawnguo@kernel.org>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Peng Fan"
- <peng.fan@nxp.com>, "Liu Ying" <victor.liu@nxp.com>, "Andrzej Hajda"
- <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
- "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v8 2/3] drm/bridge: imx: Add i.MX93 parallel display
- format configuration support
-X-Mailer: aerc 0.20.1
-References: <20260113-v6-18-topic-imx93-parallel-display-v8-0-4abccdc473a5@pengutronix.de> <20260113-v6-18-topic-imx93-parallel-display-v8-2-4abccdc473a5@pengutronix.de>
-In-Reply-To: <20260113-v6-18-topic-imx93-parallel-display-v8-2-4abccdc473a5@pengutronix.de>
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hello Marco, Liu,
-
-On Tue Jan 13, 2026 at 8:07 PM CET, Marco Felsch wrote:
-> From: Liu Ying <victor.liu@nxp.com>
+On Wed, Jan 14, 2026 at 12:13=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nxp.c=
+om> wrote:
 >
-> NXP i.MX93 mediamix blk-ctrl contains one DISPLAY_MUX register which
-> configures parallel display format by using the "PARALLEL_DISP_FORMAT"
-> field. Add a DRM bridge driver to support the display format configuratio=
-n.
+> From: Peng Fan <peng.fan@nxp.com>
 >
-> Signed-off-by: Liu Ying <victor.liu@nxp.com>
-> [m.felsch@pengutronix.de: port to v6.19-rc1]
-> [m.felsch@pengutronix.de: add review feedback (Alexander)]
-> [m.felsch@pengutronix.de: fix to short Kconfig description (checkpath)]
-> [m.felsch@pengutronix.de: use "GPL" instead of "GPL v2" (checkpatch)]
-> [m.felsch@pengutronix.de: add bus-width support]
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-
-I'm sorry to be reviewing at v8 only, I hadn't noticed this series before.
-
-> ---
->  drivers/gpu/drm/bridge/imx/Kconfig      |  11 ++
->  drivers/gpu/drm/bridge/imx/Makefile     |   1 +
->  drivers/gpu/drm/bridge/imx/imx93-pdfc.c | 221 ++++++++++++++++++++++++++=
-++++++
->  3 files changed, 233 insertions(+)
+> imx8m_soc_prepare() directly returns the result of clk_prepare_enable(),
+> which skips proper cleanup if the clock enable fails. Check the return
+> value of clk_prepare_enable() and release resources if failure.
 >
-> diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/=
-imx/Kconfig
-> index b9028a5e5a065c3237b404111d8df57e8e017f9d..181ee87bc0f9f65ee0b6e5edb=
-b48ba808dfbb71f 100644
-> --- a/drivers/gpu/drm/bridge/imx/Kconfig
-> +++ b/drivers/gpu/drm/bridge/imx/Kconfig
-> @@ -99,4 +99,15 @@ config DRM_IMX93_MIPI_DSI
->  	  Choose this to enable MIPI DSI controller found in Freescale i.MX93
->  	  processor.
->
-> +config DRM_IMX93_PARALLEL_DISP_FMT_CONFIG
-> +	tristate "NXP i.MX91/i.MX93 parallel display format configuration"
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <error27@gmail.com>
+> Closes: https://lore.kernel.org/r/202601111406.ZVV3YaiU-lkp@intel.com/
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 
-Minor nit: this is a driver for a device, so calling it "configuration"
-seems weird. From the code it looks like a device converting the color
-format, so what about "NXP i.MX91/i.MX93 parallel display format
-converter"?
-
-[...]
-
-> +static int imx93_pdfc_bridge_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev =3D &pdev->dev;
-> +	struct imx93_pdfc *pdfc;
-> +	struct device_node *ep;
-> +	int err;
-> +
-> +	pdfc =3D devm_drm_bridge_alloc(dev, struct imx93_pdfc, bridge, &funcs);
-> +	if (IS_ERR(pdfc))
-> +		return PTR_ERR(pdfc);
-> +
-> +	pdfc->regmap =3D syscon_node_to_regmap(dev->of_node->parent);
-> +	if (IS_ERR(pdfc->regmap))
-> +		return dev_err_probe(dev, PTR_ERR(pdfc->regmap),
-> +				     "failed to get regmap\n");
-> +
-> +	/* No limits per default */
-> +	pdfc->phy_bus_width =3D 24;
-> +
-> +	/* Get output ep (port1/endpoint) */
-> +	ep =3D of_graph_get_endpoint_by_regs(dev->of_node, 1, -1);
-> +	if (ep) {
-> +		err =3D of_property_read_u32(ep, "bus-width", &pdfc->phy_bus_width);
-> +		of_node_put(ep);
-> +
-> +		/* bus-width is optional but it must have valid data if present */
-> +		if (err && err !=3D -EINVAL)
-> +			return dev_err_probe(dev, err,
-> +					     "failed to query bus-width\n");
-> +	}
-> +
-> +	pdfc->next_bridge =3D devm_drm_of_get_bridge(dev, dev->of_node, 1, 0);
-> +	if (IS_ERR(pdfc->next_bridge))
-> +		return dev_err_probe(dev, PTR_ERR(pdfc->next_bridge),
-> +				     "failed to get next bridge\n");
-> +
-> +	pdfc->dev =3D dev;
-> +	pdfc->bridge.driver_private =3D pdfc;
-
-pdfc embeds the struct drm_bridge, which is the mandatory design since
-devm_drm_bridge_alloc() got added, so driver_private shouldn't be needed
-anymore. Most drivers have a bridge_to_foo() inline function using
-component_of() to get the private struct from the drm_bridge pointer,
-e.g. [0] and [1].
-
-[0] https://elixir.bootlin.com/linux/v6.18.5/source/drivers/gpu/drm/bridge/=
-simple-bridge.c#L39-L43
-[1] https://elixir.bootlin.com/linux/v6.18.5/source/drivers/gpu/drm/bridge/=
-ti-sn65dsi83.c#L287-L290
-
-A short discussion took place a few months ago about driver_private, kind
-of suggesting it might be removed after all drivers have switched to
-devm_drm_bridge_alloc(). I think we should at least not introduce new users
-of driver_private at least.
-
-Best regards,
-Luca
-
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
