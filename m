@@ -1,243 +1,178 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010062.outbound.protection.outlook.com [52.101.69.62])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE3E36E477
-	for <imx@lists.linux.dev>; Wed, 14 Jan 2026 06:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768373460; cv=fail; b=TuL2zBwqHQzxTLnyExW3TCTrtg1yWhMOzDOE7ZdHrU2VESDpG8lQGpkU7KNhTI6HY9dNid+DGeJV6PVgyreTmAxrKhYor/5M2imqQHTMWzoRX+F/4ds5xeaT5DWx/8Ya35ynDSWbeuRxvFCZYKakCPU06gVBPA4qv5gjqJhknFs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768373460; c=relaxed/simple;
-	bh=4rKpY6jUelm00TA1gGvLi9jliY4aso4/wJ4R3IgSS60=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=TYdfUJvzd6svUJRkUeTQOg0sqOr8ZAgN6sCuctHkGeiAYskDazJnSMOu3Lf11ug0kXZ+AOyqbGBQ/OHZ4xPMHe19kzTBnXcxYkXVcMG1/5taOu/7pspBH44D6/Q/pbuIi+hn7R/IvasZ6Nd0Kgfi6DM54OPM5KhhxAqxPzp/AqA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eH71g5Vz; arc=fail smtp.client-ip=52.101.69.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6379A37BE6F
+	for <imx@lists.linux.dev>; Wed, 14 Jan 2026 08:02:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768377777; cv=none; b=u4fF0Snw+v/ihRxnKa79cqbkkdaTVuCx+nAlxyUaaIxdm0OI740UVRFjsAdwv9tZU2xif4cnZX4uFBQAMXy7TPqbddonKNZlgqRdh4cHIJVpIsSPOOJHFp70Oq/miXLe8wSCIWQQOsa41cRga1Encbf9s2RcUsbsgEcPDxtAO6g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768377777; c=relaxed/simple;
+	bh=fYWlMzo/H6Y+xJ86qirphWJAlV1PP+ab4iXQTYQcluk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=KN1hmHML/FB8H5xwsQqwVwIV/0Wf0sqdxDe9H7A3/pTTR4xnneyT9rNSuV4WLzTF2IPoREtXx8FG5mDiJzyNGhrdllVOqRDsfkQuo8VGDMKpDtjaHmdPpX0fSl2FIvfwzg7xp0Hbf89dL1+6tVVJFAT+PLf0gFjwbO1WsgvEo3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=x88kuLUq; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eH71g5Vz"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PUyJOYAXd93fNnhX/M3guRX6mS+biUoQ830VFEMyKlERA6UuQg/W8w/MqXi7kFH2Z5OLbv1HQr6fdV3e1ExNUdLHJuHNQTFtugq371R/zXUDFpy7EmZyhuFMIeFTVcVFhX1Kr0NRYLnffYsrS5P++GxCskm3mn/zT3UXBU6qHiyILO+z865DNHH413j8vd0ja9CJSbOY8YLjllvUyiRMVuKY8eZiuUtls8JNoJcaMDdm8KBqVgrbfiepGH69itBn8hikMioyh1UL51o5K9LI12Fid/n7LfPSnu4P1vUHXGbsjvQZVDa4LGGKjphxPG9esIgbYUrZkHxdxkiHgPkovQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=y+8+FS27iMWkYLcApdXkmEDbZRTF8+gCh5qz6tevu0U=;
- b=uMzM4ni5w/+2A728D1xP36Bmq95Qnr4GeBOY9ryYl8LaFNOpje/ZBR4gdOpVR9adqINNpuj9Sv5Bln7aD/2ZVQJoeJ6bV3ToBunaHVdGas+v6o/QPhfWNPakwSQ6iaHgEwuL+zF0P0HRDk2HM5vvi9jfviOqK3KUmgt4hX822ZaCi+qT5d1jXDDJSSpBG34seExZ7HSxBRpBRe6fb1m/aDdiJqgUy9PG9fivR2vwDY8EMDlbc3PlaxY/mgPmbc7pYM09h69tYnYW1SH7qKigJWotUkYpottnU6pDY7Jv0yb2gU5yqO89W6a0TARjUaHx19WVz6sUpER4ZLEpMH7YRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=y+8+FS27iMWkYLcApdXkmEDbZRTF8+gCh5qz6tevu0U=;
- b=eH71g5Vz7RTnC1ug6+CLgpbyKWNYxSPfQH5IhjfGK7BEOzN/lygNPGq/dEeUFy2zm5wjPgInGn3zM4emrwJuaEx3IMCo+Ml36nQ/h4rsJ0cmBc8da4JI0sYO9fbq0RASvUglx/0t79jvocK2s4Eg97t8i7+F//zpgTcyEopW0b3bCbr0E81iatSnVtoTmxwc2f7irG8VOkt0OIv5KWZyWIVrBSnxKNtYBsC/YUxRBNrtf4tF80JLnJK9DUWDJ7+gApCGeQK0FgTDGkIjY6Az2QZaIVwI8WtsQ/zupZTPxJFhYIqO3BtX8aJ5ym9fNHhrfwqvZMOOPCmEKxXVcspZkw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
- by AS8PR04MB8673.eurprd04.prod.outlook.com (2603:10a6:20b:428::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Wed, 14 Jan
- 2026 06:50:28 +0000
-Received: from DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::868b:3935:5e0f:6a33]) by DU0PR04MB9496.eurprd04.prod.outlook.com
- ([fe80::868b:3935:5e0f:6a33%6]) with mapi id 15.20.9520.005; Wed, 14 Jan 2026
- 06:50:28 +0000
-From: Haibo Chen <haibo.chen@nxp.com>
-Date: Wed, 14 Jan 2026 14:49:47 +0800
-Subject: [PATCH 3/3] arm64: dts: imx952-evk: add MT35XU01G spi nor flash
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260114-xspi-imx952-v1-3-acc60a5a2a9d@nxp.com>
-References: <20260114-xspi-imx952-v1-0-acc60a5a2a9d@nxp.com>
-In-Reply-To: <20260114-xspi-imx952-v1-0-acc60a5a2a9d@nxp.com>
-To: Han Xu <han.xu@nxp.com>, Mark Brown <broonie@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: linux-spi@vger.kernel.org, imx@lists.linux.dev, 
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Haibo Chen <haibo.chen@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768373406; l=2197;
- i=haibo.chen@nxp.com; s=20250421; h=from:subject:message-id;
- bh=4rKpY6jUelm00TA1gGvLi9jliY4aso4/wJ4R3IgSS60=;
- b=JgZ/Jw0w/SpxA80qLOD1QGBbrmoPWZa0hZ5ETpn8qw2zgBAZlu7O3Nzvyvd6IsJKD//5EBv4m
- WFZ8XdTv1k9DknowOHjcCJa5XLP1+/YbsyOci2cOlUSIC0mbE3rSxDI
-X-Developer-Key: i=haibo.chen@nxp.com; a=ed25519;
- pk=HR9LLTuVOg3BUNeAf4/FNOIkMaZvuwVJdNrGpvKDKaI=
-X-ClientProxiedBy: SGBP274CA0020.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::32)
- To DU0PR04MB9496.eurprd04.prod.outlook.com (2603:10a6:10:32d::19)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="x88kuLUq"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 9F7E0C1E4B4;
+	Wed, 14 Jan 2026 08:02:17 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0E5C76074A;
+	Wed, 14 Jan 2026 08:02:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 95556103C82AE;
+	Wed, 14 Jan 2026 09:02:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1768377762; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=OrlcgvLEASE7cgCAVQW4sEC2L2tinvXr+j0pOUZUjvY=;
+	b=x88kuLUqFra37jp+2L7Hmyl1rJK9Luj34PccVPygGuBCC5mIUNebQlygEiXB90nJrOOq+B
+	bdtRJbNiaHF/QALBf/DPpUr60ZpM5vhmVOXLlkv7oMKeKJQNP+BV4YdafCKgB1jDyaAPS2
+	tq5kA2oEP25DWOWvI0u2Fyifk3icvqsLbMsUmjXV3ejO7GBvLUNaiqfEvB2ZkGbiC+5LTu
+	zHYrpWi9KCbcQZYi3IgsxHlw0lA3zBo1u/c47qXxbQWSy3rWbbKhvEIWU87kPC41Ert43H
+	A1ighEQjWb6vQJdU5S1OfOJxLVA3ZVpXbWi0B45Cr3vvnRFlbka6Iwu8FsX63Q==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9496:EE_|AS8PR04MB8673:EE_
-X-MS-Office365-Filtering-Correlation-Id: bb7260ad-8ba6-4e8e-5cca-08de5339341d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|7416014|366016|19092799006|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Z1VJbjhkdjF1eVdCWkh5WndjM1paK3BqenVMMzVHYXBQaGRVN0wrdlREWkll?=
- =?utf-8?B?Ym5MdHBEN3ZSczBDNnFXbkxHRDVXUGw5Y3Y0dDZuMkhUblBIbEhUejROcVor?=
- =?utf-8?B?d2NXQW1aQzBSK3h0ZGJnajVuMjVBS2N4TXN5V2Nad09BSExUb2syNVNjZXVI?=
- =?utf-8?B?azVYM2wwN3pZY1RtRHN6NTF0Y2hzdHVYcTFDL0FnT3k3Tk84UWZ4MHJuUkQ2?=
- =?utf-8?B?bm9SSkxYR05ueTNmUytJSE92VHlLQkxKT2VlZ01xTjZmd1RwdWhaaEZ1M2JH?=
- =?utf-8?B?UGRpZW91TFN2OE1xT3RYRkNwWG1tTENXbkY3R2p6SFFaa0J0VHJmWGs5YjQw?=
- =?utf-8?B?THFDa25iaXphd1ozM0RxT2QzR3VaNjBVSHJOTHY1RVVDV2dzWFh5d0JhQUJ3?=
- =?utf-8?B?ZllMKzdpRlZqNnE3TDY5VkN2MDA1cWIrMlEzQ0FMWlFzSjBjSWsyTlZsQlkr?=
- =?utf-8?B?N3NkUy9qdVZRS1NDQ0JlM0RhbS9HZThYenRPM0FUckdlVW1ZU24xeGFKWmkx?=
- =?utf-8?B?K2o1N2RoRWtDREQ4N3N5SWpTUkJDNnBva3k3eXVNNEhRTkxDZERFNW9KSDB4?=
- =?utf-8?B?VDlXTUhtbU4xNXFwNjUwSmR0R283em5xSjY3Rk5IT29TWGU5aUs1ZldFc0dS?=
- =?utf-8?B?UE1qQUhDNURzQUhRVEUwSkF0NVBQK2QwRWdkY1VCSzk0T2U1OE83OU1ocmhJ?=
- =?utf-8?B?Rk5ycUh3Sy9qYytWNU9VN3VYQUQ2TkYzMldIOWtKUWY4Y09nRnN4eFJmcVhi?=
- =?utf-8?B?aVBCWENFUFp1aUFKbm0zbHJYUjBMSGRxQ1VUekFlRjV3dTlYWERpMzZxWDNs?=
- =?utf-8?B?WDFES0dFWFJ3QmVJLzhUM0RLdVA1UG5QYmhRVGtRalBiSGdyNXpPZmxPQnVl?=
- =?utf-8?B?SWw3STZSK1hISTNIYjUxSGY3NzN2Q1pCUndCSEptZ2J5OG9GTmVYWnVEc01a?=
- =?utf-8?B?S0FJUXFhZjJSbWcveVg4MWN2dlppQVcrNnVBM090Q2tPOW12SzQwck9GUldG?=
- =?utf-8?B?VGpiSjU5cU1TNFg5Uzl5aDNMbWJzUUJxeHBBMWk2NWxQSjB6K0lNMUVXT3FX?=
- =?utf-8?B?U1hFME9scmhBbjFCOUFSTk1MQ1g3dW1Mbi9DdEZRWTFKdGRRVXlEY1E1V2RC?=
- =?utf-8?B?VDYzVGpaS3ZxaElSMURzRm1rN09YR201NWUzRFltcjAyaHVMWmwrQjREK05z?=
- =?utf-8?B?NElPd0xocUpZR0dyUS9YeFR2TWptYWljcktzNHN2TnhpMittYnJCSGp3dlEy?=
- =?utf-8?B?OVRLOHhaald6QUxqREI1cXVYV0tPZ3hCc040MmVKSjY5STVlT2JHWGc1RTVp?=
- =?utf-8?B?bUYzaEdYTmc4aFFOakZ0M05zL01aVEdjdlpUdnNWS3RBVVVjVm02MXUyaHkw?=
- =?utf-8?B?KzZPU1FwcU5zRmFEYVZpS1VRUk4rZVVLRGRUQXlSc3dmaWxicFJkY2I5MHV0?=
- =?utf-8?B?T0pnaUV3S1U0bW5GUU9yenJHQlgxdWRvaC8xaUFDRGhkWmJmSFEyQkJpWHdG?=
- =?utf-8?B?d2pNVEdaY0NjOXFPSzBFZlBGVU9Vd0g1TWF1V21TdnVRTFVwQzcrMHVVZmh0?=
- =?utf-8?B?QnY1ejVuYlVNM1FpblhicXZBK1R3eXlEV1VmVFpaeWdLL0szYjNiM0ZGMyt3?=
- =?utf-8?B?c282am9Pd05UZ3JoUWlKTlQ2VUswenlISkV3cEtTUmI4cmxSNDJGeUdMRm5N?=
- =?utf-8?B?ZnNOcGE1bEtQeW12NGVac1FnU1k3bkRYMG5za1lqVXZIZWNlMm1zczJMS1lj?=
- =?utf-8?B?NWxzcUR0RGsrekN3em5oZGxSaVV6Zk5kdG5kM2MvamVlRjN4NHhtL3VJckYz?=
- =?utf-8?B?NWJSNnFaSVZMOHJ3MFNmNUo1WHRxKzNYdWVVVWNab0NDRHRMQm9wNk5Id1M4?=
- =?utf-8?B?elpUQ2hDazlmekEwZ25OUFJEdTJnS1ZQeUE0Y0FzclAzRVJKcThSd2Jja3Ay?=
- =?utf-8?B?NldHMlhueFdIZ3pWMStLTEVDTmIyMVVjN0o2UTVKZGU2RnovaWRiMExBUUZC?=
- =?utf-8?B?dGErbmFaNUhWOVZEaTVSVnlIV2Z6dTBHWmk2alkySHByR1ZsdW11TFhEVi9I?=
- =?utf-8?Q?Pd2hkO?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9496.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(19092799006)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UFVLWS9STWg1ZDdodDhvTy9NNGFURDRtRVA4NUI1b1lsNkhKcG92Vzc5N2pn?=
- =?utf-8?B?aHNobTBUeXhURlZrZ0I3eSt0MEJkTEN3VUU5S3lIZk1QeklrNXpXdVRiUGpi?=
- =?utf-8?B?NGJVekZQMjNTN2VQYmd6T1hIMG82b1czMzZEVTd0cFM0RHBQSmpFN2Zpa25I?=
- =?utf-8?B?d29KS2VwandnVkZieHZZNGMwNVB6NmdoajN5eVREeW5uQXBSd3VBanRCOHJB?=
- =?utf-8?B?cU15ZXRORnB5UUdlUXh1cm5MSlYxYlZwd0hzMG5mMitSWjFZUms2MVFzbmVW?=
- =?utf-8?B?Yy9oVU1kaDhDUWszM0VYcjBBUHovSkgrSUJQakpVQlIzbjYyNUZpWnpmN1Zo?=
- =?utf-8?B?dG9BcHowQ1cwS1N4RjYwM0dtWGtoUjNXdjN3Vzc1OEF0LzlqNEZLSFlxUFJM?=
- =?utf-8?B?QlN3N1dhZ1o2NlJKRGV5WjcwRk9XclBDV2tSUElITGo5OXk2Qlk0dE52dXJp?=
- =?utf-8?B?SkFoa21mMzNKbWgzVUIwZEtTQ0d6d1IzYjVjZUdoMVRwR0oycVNKd1BVSUtM?=
- =?utf-8?B?NEhudmNyVGFaM2JsUVBSYXRkOXZkUDU5R1hTQU44UTVpamJqTDQ2dS9NUDFh?=
- =?utf-8?B?UlF0MG56NUxkQ0h1NWk4bmFaTnJHZFp6NmxUZTVRZ0FXT1ZWdkxUcjYyQ3JU?=
- =?utf-8?B?VEVJZU5uSTJpVkZZbVlMSG5RdE9vTnpvQ0Y2YmJ0UGZKd0ZPQzJjVSs3Mjcz?=
- =?utf-8?B?Y2Fra1VtdzJMbFNFMTlQZ0FkUW5keWpLWFRiMmVNSHJKR2FMOWc0NWlNZ3BM?=
- =?utf-8?B?OGhTUU41bC8veFRYUnpsaU5jbldFUUVzUEV6RUFLaDBSc1o1UWhVQldiWWx3?=
- =?utf-8?B?ZnBleU9hZ2RGWTJRNlFvUUZtMkd5R0NsS3UwdGs5M3g1QzVoTnRVUlc4UUto?=
- =?utf-8?B?S3R3QnY5R3crVld6UmpTVm96NGZSbjlwZkd5RGlYajJsT3dHaGI0NVZTWFEx?=
- =?utf-8?B?RFpMT2xsc0hjKzBWL2xIQmlUb0ZRencyWFlGaDNITVc1NEIyUVZoS0UwQzZk?=
- =?utf-8?B?NEwvbVRjQ0lqTmZHVWl1cU9Yek85eVRiZXd5RHJWcFNyazlpaG1JTlI1aENN?=
- =?utf-8?B?NmRKd3BTRHZqSWkrdmx3cWgvcTBiVEtxU1pXV2dNOVdCd0x2QU84V1NxeWNa?=
- =?utf-8?B?TTc3aS9hTFRBSGE5c2xJTkNta1o2a1ZtLzlXc2FHNXBEWGN3VTNyV1hwZTFS?=
- =?utf-8?B?VHZadjNXeENCSnN5NjBxejkrRHdGWlFpcVpENGVMeklZMkowSHZDaXprdTB3?=
- =?utf-8?B?SDhURi9ZUlM4a2ZoK1J1TDYyWjB2OTlpK2VTWXgrNm5ObEtNWXNqeEtGYXhH?=
- =?utf-8?B?TzkrNjF4Z3F4ai9TanhkSXg0Uk1NNFlFUXRSb0paR2Jlak43ZVF3NzlINzZ4?=
- =?utf-8?B?M3FyRlp5YnBuL3orc2ppenBSSThBMytDUlJsSGVSRDZ6dE50dGk4aUN3R3RX?=
- =?utf-8?B?cnpISHNxcmR2dzVMOEVVeEl2dTk4L25VdWZPZzFScXhBekM5U0RINFdlMWN6?=
- =?utf-8?B?ZHBaVEpkcFdBZDJZMW05WTRVY2VheFBEOFVVS3cwRXBoRmVzejJQNGphSUNj?=
- =?utf-8?B?aEY3T2l0azNFbDdZUytHbzU5YUI5T1hwL2Q4bnN3b21nRlJFRWc5b3MxMHRh?=
- =?utf-8?B?ZnY5Smp6L1JZTU1udXV0MVdUaHBPZTNzNlM5alV4NkYwTC9lTDVxeGdDWTlM?=
- =?utf-8?B?VjZuekRYbnpITnJCcFc0RmtmYXJoWXppM1EzT2d4ODlkYmc0VUdDa2JtdXFh?=
- =?utf-8?B?Q1RuWm13VDg2ZVZOSFRxQlNGR1ZSNS9DUnBrWkxVQWh5QnpaZUdYZ0hocHJo?=
- =?utf-8?B?S2NpTTZPa1JGRXgzVzhxKytKYk13ek51MThDcjlzeE44U3BOa3FobWV3bXFv?=
- =?utf-8?B?OVBqYXJ0SEs2cWtTM3VkeGY5QmdwZEQxZGZvNWRmK1p2aWhOZW0wR2orWm9k?=
- =?utf-8?B?NjlKN2dCbEtwWUdoZVNNeTFxMFhLOTVqdWhSVS9ISXhldnlpYVFvL281c1Rj?=
- =?utf-8?B?VU1OcUhvbUFnVEJhOUhqbXpDWGtxSjdORHlZNm50UURKOThQaDJTREdaV3pm?=
- =?utf-8?B?eE9xZkR2dXZzbVVFSndPdTBHNlh0dUVNdTU1VHVvSDVsd1FHWDM4NUpNV3VS?=
- =?utf-8?B?dUNsZXpYZ1VGdkIzU0xwbmlSanp5WTQyQzJVSVFzWm9pS0g3SEllR0RZSkVx?=
- =?utf-8?B?ZW1tUHlNeDJjOFYwY0MxVnR6QzltU2lDbXNFRThZUUwxMDB3bnVYWEszVW8x?=
- =?utf-8?B?ZHBwMHJ5SEpCN0lYWUJvck9rRURjNndyWC9FYXNGQmZuaGVab2pDWXdrSUtz?=
- =?utf-8?B?V0hpOVlXNEtNa1VmSjJxVWhHeDFNaWs1cWt4ekRmalpGT0ZoZFBwdz09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb7260ad-8ba6-4e8e-5cca-08de5339341d
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9496.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2026 06:50:28.7340
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: m/k9kPdsSPevTry8oEwQPpu5zlLlZbS95GQFINqnCmdVow6A8D+QU3WfT+EgQJ15VYrMOzw+QhV++cRE9GJEBg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8673
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 14 Jan 2026 09:02:35 +0100
+Message-Id: <DFO5LHWDD7S2.19P595M4CWIPI@bootlin.com>
+Cc: <devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>
+To: "Marco Felsch" <m.felsch@pengutronix.de>, "Rob Herring"
+ <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
+ Dooley" <conor+dt@kernel.org>, "Shawn Guo" <shawnguo@kernel.org>, "Sascha
+ Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
+ <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "Peng Fan"
+ <peng.fan@nxp.com>, "Liu Ying" <victor.liu@nxp.com>, "Andrzej Hajda"
+ <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
+ "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
+ <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
+ "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v8 2/3] drm/bridge: imx: Add i.MX93 parallel display
+ format configuration support
+X-Mailer: aerc 0.20.1
+References: <20260113-v6-18-topic-imx93-parallel-display-v8-0-4abccdc473a5@pengutronix.de> <20260113-v6-18-topic-imx93-parallel-display-v8-2-4abccdc473a5@pengutronix.de>
+In-Reply-To: <20260113-v6-18-topic-imx93-parallel-display-v8-2-4abccdc473a5@pengutronix.de>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Add spi nor flash MT35XU01G support, it support OCT DTR mode
-at 200MHz.
+Hello Marco, Liu,
 
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
----
- arch/arm64/boot/dts/freescale/imx952-evk.dts | 41 ++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+On Tue Jan 13, 2026 at 8:07 PM CET, Marco Felsch wrote:
+> From: Liu Ying <victor.liu@nxp.com>
+>
+> NXP i.MX93 mediamix blk-ctrl contains one DISPLAY_MUX register which
+> configures parallel display format by using the "PARALLEL_DISP_FORMAT"
+> field. Add a DRM bridge driver to support the display format configuratio=
+n.
+>
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> [m.felsch@pengutronix.de: port to v6.19-rc1]
+> [m.felsch@pengutronix.de: add review feedback (Alexander)]
+> [m.felsch@pengutronix.de: fix to short Kconfig description (checkpath)]
+> [m.felsch@pengutronix.de: use "GPL" instead of "GPL v2" (checkpatch)]
+> [m.felsch@pengutronix.de: add bus-width support]
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 
-diff --git a/arch/arm64/boot/dts/freescale/imx952-evk.dts b/arch/arm64/boot/dts/freescale/imx952-evk.dts
-index 2c753fcbae3c5d545f5d835bd70492667061d626..534c93e527d0f3fb14ff3f21114993aae1d88a88 100644
---- a/arch/arm64/boot/dts/freescale/imx952-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx952-evk.dts
-@@ -111,6 +111,25 @@ &usdhc2 {
- 	status = "okay";
- };
- 
-+&xspi1 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pinctrl_xspi1>;
-+	status = "okay";
-+
-+	mt35xu01gbba: flash@0 {
-+		compatible = "jedec,spi-nor";
-+		reg = <0>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_xspi1_reset>;
-+		reset-gpios = <&gpio5 11 GPIO_ACTIVE_LOW>;
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		spi-max-frequency = <200000000>;
-+		spi-tx-bus-width = <8>;
-+		spi-rx-bus-width = <8>;
-+	};
-+};
-+
- &scmi_iomuxc {
- 	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
- 		fsl,pins = <
-@@ -214,4 +233,26 @@ pinctrl_usdhc2_gpio: usdhc2gpiogrp {
- 			IMX952_PAD_SD2_CD_B__WAKEUPMIX_TOP_GPIO3_IO_0		0x31e
- 		>;
- 	};
-+
-+	pinctrl_xspi1: xspi1grp {
-+		fsl,pins = <
-+			IMX952_PAD_XSPI1_DATA0__WAKEUPMIX_TOP_XSPI1_A_DATA_0		0x39e
-+			IMX952_PAD_XSPI1_DATA1__WAKEUPMIX_TOP_XSPI1_A_DATA_1		0x39e
-+			IMX952_PAD_XSPI1_DATA2__WAKEUPMIX_TOP_XSPI1_A_DATA_2		0x39e
-+			IMX952_PAD_XSPI1_DATA3__WAKEUPMIX_TOP_XSPI1_A_DATA_3		0x39e
-+			IMX952_PAD_XSPI1_DATA4__WAKEUPMIX_TOP_XSPI1_A_DATA_4		0x39e
-+			IMX952_PAD_XSPI1_DATA5__WAKEUPMIX_TOP_XSPI1_A_DATA_5		0x39e
-+			IMX952_PAD_XSPI1_DATA6__WAKEUPMIX_TOP_XSPI1_A_DATA_6		0x39e
-+			IMX952_PAD_XSPI1_DATA7__WAKEUPMIX_TOP_XSPI1_A_DATA_7		0x39e
-+			IMX952_PAD_XSPI1_DQS__WAKEUPMIX_TOP_XSPI1_A_DQS			0x39e
-+			IMX952_PAD_XSPI1_SCLK__WAKEUPMIX_TOP_XSPI1_A_SCLK		0x39e
-+			IMX952_PAD_XSPI1_SS0_B__WAKEUPMIX_TOP_XSPI1_A_SS0_B		0x39e
-+		>;
-+	};
-+
-+	pinctrl_xspi1_reset: xspi1-reset-grp {
-+		fsl,pins = <
-+			IMX952_PAD_XSPI1_SS1_B__WAKEUPMIX_TOP_GPIO5_IO_11	0x39e
-+		>;
-+	};
- };
+I'm sorry to be reviewing at v8 only, I hadn't noticed this series before.
 
--- 
-2.34.1
+> ---
+>  drivers/gpu/drm/bridge/imx/Kconfig      |  11 ++
+>  drivers/gpu/drm/bridge/imx/Makefile     |   1 +
+>  drivers/gpu/drm/bridge/imx/imx93-pdfc.c | 221 ++++++++++++++++++++++++++=
+++++++
+>  3 files changed, 233 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/=
+imx/Kconfig
+> index b9028a5e5a065c3237b404111d8df57e8e017f9d..181ee87bc0f9f65ee0b6e5edb=
+b48ba808dfbb71f 100644
+> --- a/drivers/gpu/drm/bridge/imx/Kconfig
+> +++ b/drivers/gpu/drm/bridge/imx/Kconfig
+> @@ -99,4 +99,15 @@ config DRM_IMX93_MIPI_DSI
+>  	  Choose this to enable MIPI DSI controller found in Freescale i.MX93
+>  	  processor.
+>
+> +config DRM_IMX93_PARALLEL_DISP_FMT_CONFIG
+> +	tristate "NXP i.MX91/i.MX93 parallel display format configuration"
 
+Minor nit: this is a driver for a device, so calling it "configuration"
+seems weird. From the code it looks like a device converting the color
+format, so what about "NXP i.MX91/i.MX93 parallel display format
+converter"?
+
+[...]
+
+> +static int imx93_pdfc_bridge_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev =3D &pdev->dev;
+> +	struct imx93_pdfc *pdfc;
+> +	struct device_node *ep;
+> +	int err;
+> +
+> +	pdfc =3D devm_drm_bridge_alloc(dev, struct imx93_pdfc, bridge, &funcs);
+> +	if (IS_ERR(pdfc))
+> +		return PTR_ERR(pdfc);
+> +
+> +	pdfc->regmap =3D syscon_node_to_regmap(dev->of_node->parent);
+> +	if (IS_ERR(pdfc->regmap))
+> +		return dev_err_probe(dev, PTR_ERR(pdfc->regmap),
+> +				     "failed to get regmap\n");
+> +
+> +	/* No limits per default */
+> +	pdfc->phy_bus_width =3D 24;
+> +
+> +	/* Get output ep (port1/endpoint) */
+> +	ep =3D of_graph_get_endpoint_by_regs(dev->of_node, 1, -1);
+> +	if (ep) {
+> +		err =3D of_property_read_u32(ep, "bus-width", &pdfc->phy_bus_width);
+> +		of_node_put(ep);
+> +
+> +		/* bus-width is optional but it must have valid data if present */
+> +		if (err && err !=3D -EINVAL)
+> +			return dev_err_probe(dev, err,
+> +					     "failed to query bus-width\n");
+> +	}
+> +
+> +	pdfc->next_bridge =3D devm_drm_of_get_bridge(dev, dev->of_node, 1, 0);
+> +	if (IS_ERR(pdfc->next_bridge))
+> +		return dev_err_probe(dev, PTR_ERR(pdfc->next_bridge),
+> +				     "failed to get next bridge\n");
+> +
+> +	pdfc->dev =3D dev;
+> +	pdfc->bridge.driver_private =3D pdfc;
+
+pdfc embeds the struct drm_bridge, which is the mandatory design since
+devm_drm_bridge_alloc() got added, so driver_private shouldn't be needed
+anymore. Most drivers have a bridge_to_foo() inline function using
+component_of() to get the private struct from the drm_bridge pointer,
+e.g. [0] and [1].
+
+[0] https://elixir.bootlin.com/linux/v6.18.5/source/drivers/gpu/drm/bridge/=
+simple-bridge.c#L39-L43
+[1] https://elixir.bootlin.com/linux/v6.18.5/source/drivers/gpu/drm/bridge/=
+ti-sn65dsi83.c#L287-L290
+
+A short discussion took place a few months ago about driver_private, kind
+of suggesting it might be removed after all drivers have switched to
+devm_drm_bridge_alloc(). I think we should at least not introduce new users
+of driver_private at least.
+
+Best regards,
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
