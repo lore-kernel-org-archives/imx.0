@@ -1,106 +1,278 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B407B67E;
-	Wed, 14 Jan 2026 00:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768351857; cv=none; b=OTb5bKzY0mxFENJPQe9XcbOK2o782hFkROQPOQIaRznovnVYjTTzgbkfX4i+w4mjhSVtuijo1alC2i+F+D4iCuG003CI+jxgo7RIjrTnWwYA1s1DuJ/teLtnkdeEVcXI3YKW13jPxA/EZs51JXMbHjpTSlImX88tq4POpOQGqjY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768351857; c=relaxed/simple;
-	bh=+4hoae6wCkSkzxItSPvkfqfjm0ujTzA0v4ghsxEfF+g=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CCE14A8E
+	for <imx@lists.linux.dev>; Wed, 14 Jan 2026 00:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768352162; cv=pass; b=fuNZTZuSGbxgaoyEwDM+Mp+N9h0NQkLtDd7UEQ0zfqL1DY1Zt2hjZ2CrjtAxbhRAweKHQ88xigSZg5ajiaHOQ+fr8Sc0Lof2qQZ2dA5ykhP+iYZXFfKXWWZxyNW9sra1TRhJPGpa2u9r3XKKFhLU7Af5AK+zXjm9nzt/0Xcl4As=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768352162; c=relaxed/simple;
+	bh=IkZ347Tvh5UxWpgJAceJUvRXHnVqjkqtVJclMQ6s3/g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XhZ/sby7Rd7YylHMX8dM+zDgqNex09qonjcWIE+P+unj5p3sPrA98q9M7VwmJDc9hZgDm4i1MCR4bSYdmiBqe/mS2ssV7fAGzhPPva0rIfmwZJOiNx+N5p7a5VDwuhnxG7sEBKiPtQSlH64O0rW5YWVx0zqhXjt/JoJLgNxYuqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Aqqr0e1x; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=cM8jNzgeWRbKvjFqLb6VRIBpgJqhYMJc8UDSdmZc774yFPFkQRG8xFTERZUH3PPQEdKmTFH83KdXcKfw0OM41mfxl6V4u8YqZviyIb09DPNabsh9AYIwYXLsHCaEh75noRwwbStDTm1JTEA+/McA9roXegJwU0lLBZTPdHpH+7E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=ERWZVRix; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Aqqr0e1x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67236C116C6;
-	Wed, 14 Jan 2026 00:50:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768351857;
-	bh=+4hoae6wCkSkzxItSPvkfqfjm0ujTzA0v4ghsxEfF+g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Aqqr0e1xICwOF3fuLxxhjPVYLGsxyHEM/JW9DbLtIZwh3nm3diO4PBgjuH01Ze7/h
-	 ptMOH0YCux8hh2JJWA23nH+WrwK+qe2Bqr/INhbUXFsGzk1tyjb1195MsZS7xlhF+N
-	 MG4tcJrU7q6dcNnSBH1xu56kmqEqJjReYygDFph/BNOQnXMT9DMyz5Urfk4/t0HNid
-	 Iw/BnftztMBeCt3Qa1BFsSao91JaeD42u9spmujPfOVitG/PdrCbYQmOdNeCdgIic4
-	 JJfjZ6ZUqQdhhulnaSOftNuuRmOUOWB70AG0UV7TZrsuV49Ms5SJNDf+q32pekT+wH
-	 a6jBTZK5uWPtA==
-Date: Wed, 14 Jan 2026 08:50:52 +0800
-From: "Peter Chen (CIX)" <peter.chen@kernel.org>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: gregkh@linuxfoundation.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	jun.li@nxp.com
-Subject: Re: [PATCH v2] usb: chipidea: ci_hdrc_imx: use "wakeup" suffix for
- wakeup interrupt name
-Message-ID: <20260114005052.GA2295746@nchen-desktop>
-References: <20260112110408.3263954-1-xu.yang_2@nxp.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="ERWZVRix"
+ARC-Seal: i=1; a=rsa-sha256; t=1768352154; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=me9Ls9oYKtfulWvqnrW70RBJKuT3fgrHZlaS6eZZIlmo2fBZp8RpzLKj1pRsVQJRHIeo/g7hTGsNT0x/l8Ee8T/tRuaTkgQ0Hpltl4NUEy5Y6IXozvNSRabS8wwq19GnAJIjUrQwIxHLpX9qQTHnPrEXEAXIe1tv6buBzxMXxEs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1768352154; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=+Ext8msLhoBecX7Fpbdp+73tXE9MeV0UomGOCXQFEQM=; 
+	b=ZA53bfwfeeTbNZ1beM57SYhMTcuC7W56YEQo6wYuyO465DYkyD2HnMaCR4ZLIQHSqX1k8Ix3I4anJdAaH+xip5dXh2NFnkEChQXVFazVXI2OAaLNGEuR0omeS+GBrovLZ4kFgX1fLqSMyoz1C9lUftrX6ZI803a3M5O59wCeYEU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
+	dmarc=pass header.from=<sebastian.reichel@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1768352154;
+	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=+Ext8msLhoBecX7Fpbdp+73tXE9MeV0UomGOCXQFEQM=;
+	b=ERWZVRixuIRt4OzNh7HTLrMngknLqEDfsmVUuTd/aILZuNqhvFmtw5KWG3O7mBgh
+	HYrxV2Gs6iozUBdS039SiIYyNQq1xZgpPuqnVnwwQKeCoGEmUkT8AoQLTzIcTevCbC2
+	fEjU4VJV8NlGFJCVwtNxB1XS5ejYqteYHuMumQy8=
+Received: by mx.zohomail.com with SMTPS id 1768352152701661.3386817883359;
+	Tue, 13 Jan 2026 16:55:52 -0800 (PST)
+Received: by venus (Postfix, from userid 1000)
+	id BDB05181010; Wed, 14 Jan 2026 01:55:47 +0100 (CET)
+Date: Wed, 14 Jan 2026 01:55:47 +0100
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Josua Mayer <josua.mayer@jm0.eu>
+Cc: Jonathan =?utf-8?Q?Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+	Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 3/4] power: supply: add battery driver for netronix ec
+Message-ID: <aWblrimQTy5-khZF@venus>
+References: <20260102-kobo-aura-battery-v1-0-501f2a8fa575@jm0.eu>
+ <20260102-kobo-aura-battery-v1-3-501f2a8fa575@jm0.eu>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="sqik7oiq3dkakjj4"
 Content-Disposition: inline
-In-Reply-To: <20260112110408.3263954-1-xu.yang_2@nxp.com>
+In-Reply-To: <20260102-kobo-aura-battery-v1-3-501f2a8fa575@jm0.eu>
+X-Zoho-Virus-Status: 1
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-1.5.1/268.322.40
+X-ZohoMailClient: External
 
-On 26-01-12 19:04:08, Xu Yang wrote:
-> Currently the wakeup and controller interrupt name are same. It's not
-> easy to find the correct one in /proc/interrupt at the first glance.
-> Rename the wakeup interrupt name for better distinction.
-> 
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 
-Acked-by: Peter Chen <peter.chen@kernel.org>
+--sqik7oiq3dkakjj4
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 3/4] power: supply: add battery driver for netronix ec
+MIME-Version: 1.0
 
-Peter
-> 
+Hi,
+
+On Fri, Jan 02, 2026 at 07:00:32PM +0100, Josua Mayer wrote:
+> Implement a simple battery driver for monitoring voltage with the
+> netronix embedded controller found in certain ebook readers.
+>=20
+> Signed-off-by: Josua Mayer <josua.mayer@jm0.eu>
 > ---
-> Changs in v2:
->  - check return value
-> ---
->  drivers/usb/chipidea/ci_hdrc_imx.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-> index d4ee9e16332f..56d2ba824a0b 100644
-> --- a/drivers/usb/chipidea/ci_hdrc_imx.c
-> +++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-> @@ -385,6 +385,7 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->  	const struct ci_hdrc_imx_platform_flag *imx_platform_flag;
->  	struct device_node *np = pdev->dev.of_node;
->  	struct device *dev = &pdev->dev;
-> +	const char *irq_name;
->  
->  	imx_platform_flag = of_device_get_match_data(&pdev->dev);
->  
-> @@ -525,10 +526,16 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
->  
->  	data->wakeup_irq = platform_get_irq_optional(pdev, 1);
->  	if (data->wakeup_irq > 0) {
-> +		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s:wakeup", pdata.name);
-> +		if (!irq_name) {
-> +			dev_err_probe(dev, -ENOMEM, "failed to create irq_name\n");
-> +			goto err_clk;
-> +		}
+>  drivers/power/supply/Kconfig         |   9 ++++
+>  drivers/power/supply/Makefile        |   1 +
+>  drivers/power/supply/ntxec-battery.c | 101 +++++++++++++++++++++++++++++=
+++++++
+
+That's indeed simple :)
+
+>  3 files changed, 111 insertions(+)
+>=20
+> diff --git a/drivers/power/supply/Kconfig b/drivers/power/supply/Kconfig
+> index 92f9f7aae92f..0f944c10e50b 100644
+> --- a/drivers/power/supply/Kconfig
+> +++ b/drivers/power/supply/Kconfig
+> @@ -1132,4 +1132,13 @@ config FUEL_GAUGE_MM8013
+>  	  the state of charge, temperature, cycle count, actual and design
+>  	  capacity, etc.
+> =20
+> +config BATTERY_NTXEC
+> +	tristate "Battery driver for Netronix embedded controller"
+> +	depends on MFD_NTXEC
+
+You can add "|| COMPILE_TEST"
+
+> +	help
+> +	  Say yes here to enable netronix ec battery monitoring driver.
+> +	  It enables the monitoring battery voltage on certain e-book readers
+> +	  using an embedded controller by ODM Netronix. Battery design
+> +	  characteristics are read from device-tree if available.
 > +
->  		ret = devm_request_threaded_irq(dev, data->wakeup_irq,
->  						NULL, ci_wakeup_irq_handler,
->  						IRQF_ONESHOT | IRQF_NO_AUTOEN,
-> -						pdata.name, data);
-> +						irq_name, data);
->  		if (ret)
->  			goto err_clk;
->  	}
-> -- 
-> 2.34.1
-> 
+>  endif # POWER_SUPPLY
+> diff --git a/drivers/power/supply/Makefile b/drivers/power/supply/Makefile
+> index 4b79d5abc49a..db6fc815f9da 100644
+> --- a/drivers/power/supply/Makefile
+> +++ b/drivers/power/supply/Makefile
+> @@ -128,3 +128,4 @@ obj-$(CONFIG_CHARGER_SURFACE)	+=3D surface_charger.o
+>  obj-$(CONFIG_BATTERY_UG3105)	+=3D ug3105_battery.o
+>  obj-$(CONFIG_CHARGER_QCOM_SMB2)	+=3D qcom_smbx.o
+>  obj-$(CONFIG_FUEL_GAUGE_MM8013)	+=3D mm8013.o
+> +obj-$(CONFIG_BATTERY_NTXEC)	+=3D ntxec-battery.o
+> diff --git a/drivers/power/supply/ntxec-battery.c b/drivers/power/supply/=
+ntxec-battery.c
+> new file mode 100644
+> index 000000000000..f49f0966d18d
+> --- /dev/null
+> +++ b/drivers/power/supply/ntxec-battery.c
+> @@ -0,0 +1,101 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * The Netronix embedded controller is a microcontroller found in some
+> + * e-book readers designed by the original design manufacturer Netronix,=
+ Inc.
+> + * It contains RTC, battery monitoring, system power management, and PWM
+> + * functionality.
+> + *
+> + * This driver implements battery monitoring.
+> + *
+> + * Copyright 2021 Josua Mayer <josua.mayer@jm0.eu>
+> + */
+> +
+> +#include <linux/mfd/ntxec.h>
 
--- 
+^ you probably don't need this with my comments down below :)
 
-Best regards,
-Peter
+> +#include <linux/module.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/power_supply.h>
+> +#include <linux/property.h>
+> +#include <linux/regmap.h>
+> +
+> +static const enum power_supply_property ntxec_battery_properties[] =3D {
+> +	POWER_SUPPLY_PROP_VOLTAGE_NOW,
+> +};
+> +
+> +struct ntxec_battery {
+> +	struct ntxec *ec;
+> +};
+
+Store the regmap instead of the ec. You don't need anything else.
+
+> +#define NTXEC_REG_READ_BATTERY	0x41
+> +
+> +static int ntxec_battery_get_property(struct power_supply *psy,
+> +				     enum power_supply_property psp,
+> +				     union power_supply_propval *val)
+> +{
+> +	struct ntxec_battery *priv =3D power_supply_get_drvdata(psy);
+> +	int ret;
+> +	unsigned int value;
+> +
+> +	switch (psp) {
+> +		case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+> +			ret =3D regmap_read(priv->ec->regmap, NTXEC_REG_READ_BATTERY, &value);
+> +			if (ret < 0)
+> +				return ret;
+> +
+> +			/* ec value to microvolt conversion:
+> +			 * vendor kernel source suggests linear behaviour from 3V to 4.2V
+> +			 * with readings 767 to 1023; each increment represents 4687,5uV.
+
+4687.5uV ?
+
+> +			 * adjust 3V boundary slightly to report exactly 4.2V when full.
+> +			 */
+> +			val->intval =3D 2999872 + (value - 767) * 4688;
+> +			break;
+> +		default:
+> +			dev_err(&psy->dev, "%s: invalid property %u\n", __func__, psp);
+> +			return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct power_supply_desc ntxec_battery_desc =3D {
+> +	.name =3D "ec-battery",
+> +	.type =3D POWER_SUPPLY_TYPE_BATTERY,
+> +	.properties =3D ntxec_battery_properties,
+> +	.get_property =3D ntxec_battery_get_property,
+> +	.num_properties =3D ARRAY_SIZE(ntxec_battery_properties),
+> +};
+> +
+> +static int ntxec_battery_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev =3D &pdev->dev;
+> +	struct ntxec *ec =3D dev_get_drvdata(dev->parent);
+
+Based on the regmap comment above, I think you can just do the
+following and completley avoid 'struct ntxec' (please test):
+
+struct regmap *regmap =3D dev_get_regmap(dev->parent, NULL);
+
+> +	struct power_supply_config psy_cfg =3D {};
+> +	struct ntxec_battery *priv;
+> +	struct power_supply *psy;
+> +
+> +	priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +	if (!priv)
+> +		return -ENOMEM;
+> +
+> +	priv->ec =3D ec;
+> +	psy_cfg.drv_data =3D priv;
+> +	psy_cfg.fwnode =3D dev_fwnode(dev->parent);
+> +	psy_cfg.no_wakeup_source =3D true;
+> +	psy =3D devm_power_supply_register(dev, &ntxec_battery_desc, &psy_cfg);
+> +	if (IS_ERR(psy))
+> +		return PTR_ERR(psy);
+> +
+> +	return 0;
+> +}
+> +
+> +static struct platform_driver ntxec_battery_driver =3D {
+> +	.driver =3D {
+> +		.name =3D "ntxec-battery",
+> +	},
+> +	.probe =3D ntxec_battery_probe,
+> +};
+> +module_platform_driver(ntxec_battery_driver);
+> +
+> +MODULE_AUTHOR("Josua Mayer <josua.mayer@jm0.eu>");
+> +MODULE_DESCRIPTION("Battery driver for Netronix EC");
+> +MODULE_LICENSE("GPL");
+> +MODULE_ALIAS("platform:ntxec-battery");
+
+I know there are a bunch of wrong examples in my subsystem, but the
+proper way to do this is to drop this alias and instead add a
+platform_device_id table together with MODULE_DEVICE_TABLE(platform, ...).
+See for example cros_peripheral_charger.c
+
+Greetings,
+
+-- Sebastian
+
+--sqik7oiq3dkakjj4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmlm6ZAACgkQ2O7X88g7
++pq9fg/9G9xfrQVyTahHnzobU36zUpcA4CWZCRUiREKpiVLJYXLaR3j6bhluf4cU
+DUP7DBU5U+OqFxS6pLuPJUe4m92iy2t3YEGiSCxGUmf7Mss5z2UytzFl1aqaZzgX
+UZeu6n073CtgPwILLykDZJq6dFDlVFVRS2JuN27XiqZy/rZ0XbE6YKna/HxLAHCo
+MNPg0kjtfya69ULOtiTxk1PJqkyoq5k6D4A/2kEDtKBPAgj/fosghtJZAaepPLz+
+5TrtBW0XeSMz1u0aKKvdyRWHM67NqTggXhxVa9R9gRVzaCAp9wUWmQBSHKgaXEGg
+jTz4N3VJMtcFrPVMnE5J1TgKRZT68xJlgnmd3tX1Eby2SoiiBdzgzNwaILnoyDDL
+fidH96UM9/lC8GlWM0FKeoY5xlWMcEbj8vogBRfO2XSfgAhGIaX8986QE7d6tMtW
+K5A6LRfjtvpZCA6uSJK/Flw7MDZ+3z6bwL1WlLAjeVh4ubxU+aWjgQRgH381DjlO
+FDqJgfQf3WCEMfmfhCpCeGQc7xRKcvL3U5ymJD2eh256p0XS47Oj2qzgQ+kr7KNQ
+Bcp0IIypmebUyoo3xYaRIctevxdB++pFvFPBioCSHRjxH0nwaFBeel900VW2Yq04
+qIweScg+GJjyzepFcjxN/CDE9pfLfW4yK+0lVz8pm0L4UxKp8yE=
+=fqrB
+-----END PGP SIGNATURE-----
+
+--sqik7oiq3dkakjj4--
