@@ -1,49 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F38330C343;
-	Wed, 14 Jan 2026 10:58:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245AB3064B5
+	for <imx@lists.linux.dev>; Wed, 14 Jan 2026 11:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768388301; cv=none; b=I7l7HkGdZyOBLwJkkHdfsU5yM8jERgNlQ0iyjrQACbDkolmjevZz3NBHVE3Zkpsn2F1vpAfcpeG1H4mGg5Irfn/JD03gBrBRKGIYTCbX4bYrJrredQB4UFt2G06BhMv+3VQzHkHeKoY2JLy1qeHSiPpNaPvaC2eqCBEMlQaEJos=
+	t=1768391974; cv=none; b=e+Vn9MGwFUlIJ/cJioMxWk34YVEuKD0km0+mzCu9OdOOU1NbiAg+KBo8Yi8T0l1TDBqtEM2Yy13ZSWrQvi9/ZlmrPvQHL69xCkTgSxpIunbWVv2E4UwhdrQSUcoLFIKJuEVECqwNUIyEco2cYqRfv+XYti6IYQXHMS7h106R/Gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768388301; c=relaxed/simple;
-	bh=FB084Np/65yIBtVlFoVrgt1UnmRqnwSuLFcsfpReaVc=;
+	s=arc-20240116; t=1768391974; c=relaxed/simple;
+	bh=2XvwYtXYU+Rubef0aBCZQFBdAsXFBc9YG5RxqQnD6vc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MeTAXl7r68vq6RDqsKxlgiSfbkpVN1f3u3e3v694MGqNGxmu0oE4cy+CXICZyk0Ty4IcPp7+2IZPmGbHGgMjJ8VdIiqMS8NsjcTvxafu4MppbEpUe9vhj+zMVInjztzYjoCs8vTDlAdzxFR1pZ317WPrz5ZHr8NtdzffHFd+2vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WHjS9huI; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=MA8ZxxtwH/6CDGe5qGopF7tiJYYI5T6Yq3Ghaqpn8ffDwHw4C8hFSmRM1xojz2ciyk9v7MNKqftcnHSlK6pfMoK6Wz4l9WIMx90/QdzR6orooyzriwZoF22YJGCmIV97blC0bkUYuvNWK9BZv6mCCyKs1WatpIsnwFeiJO1otW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=JDhrYuve; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WHjS9huI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25891C4CEF7;
-	Wed, 14 Jan 2026 10:58:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768388301;
-	bh=FB084Np/65yIBtVlFoVrgt1UnmRqnwSuLFcsfpReaVc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WHjS9huI0ccr9soEgGscgbKtE43l9HoUp/hC1eo0cIGhBsCn9dJQ/i3ZIJLF2/tyQ
-	 amyXviqtbyFwiwPqMCCkE7ybli1l1L7uLcmE410r3+fzCb4AgnKG6MLoefvKtrgpZ+
-	 TZga5GCgoOBB9Yc1cpQCdUhZRA9IS92eC7ZyjsF+IQaFDBIe5TvbGgLMB2jE42YxvR
-	 XGUwhqTa/A/I0zQs8+J3JZQtEuIJ1h1jv/vfcDpzvvge3IbDNnlr40c5eIyh3PRoBS
-	 V2+VlFWOgtnUXT1Tt/gb1/b4mv5nMuhX+/1OQ0cLFz6voLx3zb8lhHExs4+cbx4FIr
-	 FG11aC9Tw8HRg==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1vfyZq-000000002tn-2MjG;
-	Wed, 14 Jan 2026 11:58:14 +0100
-Date: Wed, 14 Jan 2026 11:58:14 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2] drm/imx/tve: fix probe device leak
-Message-ID: <aWd2xizOQAnVRaSs@hovoldconsulting.com>
-References: <20251030163456.15807-1-johan@kernel.org>
- <aR8TWJurF1a0LLGJ@hovoldconsulting.com>
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="JDhrYuve"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=DiiV
+	rnvzlQr5Cq67SbrH7P4Pzbq4h86xOafA0L9a+yk=; b=JDhrYuve2lN91zc07CLA
+	Y4qtiPhz8jRDv/LHeSwZlAtmMRAPR/WCafJDEsFBOEm5UTxH3otG7ksevUj1j+Xe
+	1rGdLnsbbX8xLeVRzR1B3YAjIEZAtGrP0i5lblpvxsPCgo5P6osaEmDMcMBxCBN2
+	6Wo2+b/pIRRYIxOm/XEVPFIfthGnnav8+pLWepNqMx8tKKvaPhGsvccIVO1G8O99
+	JU1Oe5e9CBc2k6ya3ffn+Bxaky0SmmxOqf2GQkcHVi52fm6rn+v90tRGSwFSyfTX
+	4EzFFr6eJPuursUVdbLW4ckOq2d9LjNRem0fXkL+aAawmTdkWE+z8rZwaxPOss6H
+	7A==
+Received: (qmail 2115980 invoked from network); 14 Jan 2026 12:59:29 +0100
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 14 Jan 2026 12:59:29 +0100
+X-UD-Smtp-Session: l3s3148p1@HeXl1ldIIL8ujnsM
+Date: Wed, 14 Jan 2026 12:59:24 +0100
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Carlos Song <carlos.song@nxp.com>
+Cc: frank.li@nxp.com, aisheng.dong@nxp.com, andi.shyti@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] i2c: imx-lpi2c: change to PIO mode in system-wide
+ suspend/resume progress
+Message-ID: <aWeFHNiNuHLdhZrO@ninjato>
+References: <20251121030030.1844530-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,27 +48,23 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aR8TWJurF1a0LLGJ@hovoldconsulting.com>
+In-Reply-To: <20251121030030.1844530-1-carlos.song@nxp.com>
 
-On Thu, Nov 20, 2025 at 02:10:48PM +0100, Johan Hovold wrote:
-> On Thu, Oct 30, 2025 at 05:34:56PM +0100, Johan Hovold wrote:
-> > Make sure to drop the reference taken to the DDC device during probe on
-> > probe failure (e.g. probe deferral) and on driver unbind.
-> > 
-> > Fixes: fcbc51e54d2a ("staging: drm/imx: Add support for Television Encoder (TVEv2)")
-> > Cc: stable@vger.kernel.org	# 3.10
-> > Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > Signed-off-by: Johan Hovold <johan@kernel.org>
-> > ---
-> > 
-> > Changes in v2:
-> >  - add missing NULL ddc check
+On Fri, Nov 21, 2025 at 11:00:30AM +0800, Carlos Song wrote:
+> EDMA resumes early and suspends late in the system power transition
+> sequence, while LPI2C enters the NOIRQ stage for both suspend and resume.
+> This means LPI2C resources become available before EDMA is fully resumed.
+> Once IRQs are enabled, a slave device may immediately trigger an LPI2C
+> transfer. If the transfer length meets DMA requirements, the driver will
+> attempt to use EDMA even though EDMA may still be unavailable.
 > 
-> Can this one be picked up for 6.19?
+> This timing gap can lead to transfer failures. To prevent this, force
+> LPI2C to use PIO mode during system-wide suspend and resume transitions.
+> This reduces dependency on EDMA and avoids using an unready DMA resource.
+> 
+> Fixes: a09c8b3f9047 ("i2c: imx-lpi2c: add eDMA mode support for LPI2C")
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-It's been two more months so sending another reminder.
+Applied to for-current, thanks!
 
-Can this one be merged now?
-
-Johan
