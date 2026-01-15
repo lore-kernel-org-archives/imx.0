@@ -1,27 +1,27 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E497436C0BB
-	for <imx@lists.linux.dev>; Thu, 15 Jan 2026 15:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0003A9018
+	for <imx@lists.linux.dev>; Thu, 15 Jan 2026 15:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768490728; cv=none; b=JqLjmL6Ok1xGiUFIoAaO8g+l7D7kDjWM29O/WzDNtiOq1EQnXhgu1WJGlmBbIdCdH0wgh67Wksl8kzdv541cjetEgDTtviKXDWHwcPrdnIQM3hCL96qpllqDwGCZfLqIlta6qEUcftK2CRMUwCNKxU3dxscjy9RmFGCiDmTap/4=
+	t=1768490730; cv=none; b=KuCwXCb/rL3RsNdWNaJtcGuRjbce2riThgzMkdk8yclBYPhPAHJJaOZiGoKkQqAgavi9khNSEcUsUG7lflvbnDbm2Sm7/VZBunmQZv+s+DfnsrN/gKuVed676q91qXirR85aymhvDzECOGEdVVKUXEIKhdIgceoaefZcsBR2z5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768490728; c=relaxed/simple;
-	bh=6GzEO5B1xEnUxV7yC8QlkAoYLKPFxG2WvfwOaqX2bWw=;
+	s=arc-20240116; t=1768490730; c=relaxed/simple;
+	bh=U49ly9oVcEoVcSNJ36hsLhpyUT4ecf7TGKt3La3DLVk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=howcd07Hij7TwwYxeq6VXvJfJPc24tchjQsmTO3jPxAFIOpN4740uwQ4kiPvRO6khJQZG4ZnO4eRHejE+tQMBEl9NbYS4ptvccC3IL5ISxY5/195BaEQBWTfOcMuPZiDnoTlv5h14tWxQ5aotICbEccUe96g62/0FTSZTaVwmUE=
+	 In-Reply-To:To:Cc; b=lu4Vjp66/ZhEaPjgWwiaOqcL5b3Dmu74zeqrAW4bh0fFYkcbOQ2u7Z7s5OJN+cWzNYoiRlt7VUzGu3srfwiaL1xreTRnQIsEjTZIPl1bXrn2DMZdDjOk1GRWnTnaVB+RW2oyw3mtua1NAP9gRa4gop1M326Drx6yma0GuAf/PpE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vgPDS-0003hw-Ht; Thu, 15 Jan 2026 16:24:54 +0100
+	id 1vgPDS-0003hw-Bo; Thu, 15 Jan 2026 16:24:54 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Thu, 15 Jan 2026 16:24:53 +0100
-Subject: [PATCH v9 3/3] arm64: dts: imx93: Add parallel display output
- nodes
+Date: Thu, 15 Jan 2026 16:24:51 +0100
+Subject: [PATCH v9 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC
+ subnode to schema and example
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -30,7 +30,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260115-v6-18-topic-imx93-parallel-display-v9-3-2c5051e4b144@pengutronix.de>
+Message-Id: <20260115-v6-18-topic-imx93-parallel-display-v9-1-2c5051e4b144@pengutronix.de>
 References: <20260115-v6-18-topic-imx93-parallel-display-v9-0-2c5051e4b144@pengutronix.de>
 In-Reply-To: <20260115-v6-18-topic-imx93-parallel-display-v9-0-2c5051e4b144@pengutronix.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -56,115 +56,115 @@ X-SA-Exim-Mail-From: m.felsch@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Add required OF nodes to support the i.MX93 parallel output (DPI) path.
+From: Liu Ying <victor.liu@nxp.com>
 
-On the i.MX93 a single LCDIF is connected to three bridges: DPI, LVDS
-LDB and the MIPI-DSI whereas the i.MX91 support only the DPI bridge.
+i.MX93 SoC mediamix blk-ctrl contains one DISPLAY_MUX register which
+configures parallel display format by using the "PARALLEL_DISP_FORMAT"
+field. Document the Parallel Display Format Configuration(PDFC) subnode
+and add the subnode to example.
 
-Map endpoint@0 as DPI bridge output since the i.MX93 TRM (Figure 485.
-MEDIAMIX block diagram) doesn't mention any port-number <-> bridge
-combination.
-
-Set the MEDIA-AXI and MEDIA-APB clocks to the overdrive (OD) values
-since the i.MX93 and i.MX91 use the overdrive (OD) clk settings per
-default.
-
+Signed-off-by: Liu Ying <victor.liu@nxp.com>
+[m.felsch@pengutronix.de: port to v6.18-rc1]
+[m.felsch@pengutronix.de: add bus-width]
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/arm64/boot/dts/freescale/imx91_93_common.dtsi | 54 ++++++++++++++++++++++
- arch/arm64/boot/dts/freescale/imx93.dtsi           | 12 +++++
- 2 files changed, 66 insertions(+)
+ .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml | 78 ++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-index 7958cef353766a430df5e626ff2403dc05a974b1..5a8813df6bc993d559fb0b20fc742a106bfe6315 100644
---- a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
-@@ -1122,8 +1122,62 @@ media_blk_ctrl: system-controller@4ac10000 {
- 				 <&clk IMX93_CLK_MIPI_DSI_GATE>;
- 			clock-names = "apb", "axi", "nic", "disp", "cam",
- 				      "pxp", "lcdif", "isi", "csi", "dsi";
-+			assigned-clocks = <&clk IMX93_CLK_MEDIA_AXI>,
-+					  <&clk IMX93_CLK_MEDIA_APB>,
-+					  <&clk IMX93_CLK_MEDIA_DISP_PIX>;
-+			assigned-clock-parents = <&clk IMX93_CLK_SYS_PLL_PFD1>,
-+						 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
-+						 <&clk IMX93_CLK_VIDEO_PLL>;
-+			assigned-clock-rates = <400000000>, <133333333>;
- 			#power-domain-cells = <1>;
- 			status = "disabled";
-+
-+			dpi_bridge: dpi-bridge {
-+				compatible = "nxp,imx93-pdfc";
-+				status = "disabled";
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+
-+						dpi_from_lcdif: endpoint {
-+							remote-endpoint = <&lcdif_to_dpi>;
-+						};
-+					};
-+
-+					port@1 {
-+						reg = <1>;
-+
-+						dpi_to_panel: endpoint {
-+						};
-+					};
-+				};
-+			};
-+		};
-+
-+		lcdif: display-controller@4ae30000 {
-+			compatible = "fsl,imx93-lcdif";
-+			reg = <0x4ae30000 0x23c>;
-+			interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
-+			clocks = <&clk IMX93_CLK_MEDIA_DISP_PIX>,
-+				 <&clk IMX93_CLK_LCDIF_GATE>,
-+				 <&clk IMX93_CLK_MEDIA_AXI>;
-+			clock-names = "pix", "axi", "disp_axi";
-+			power-domains = <&media_blk_ctrl IMX93_MEDIABLK_PD_LCDIF>;
-+			status = "disabled";
-+
-+			port {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				lcdif_to_dpi: endpoint@0 {
-+					reg = <0>;
-+					remote-endpoint = <&dpi_from_lcdif>;
-+				};
-+			};
- 		};
+diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+index 34aea58094e55365a2f9c86092f637e533f954ff..d828c2e82965c7a4cd69a67136047d83c96b0a35 100644
+--- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
++++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+@@ -40,6 +40,58 @@ properties:
+     minItems: 8
+     maxItems: 10
  
- 		usbotg1: usb@4c100000 {
-diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
-index 7b27012dfcb564650882dc8c40e836e797b2fda1..5436b48b30e89eb1f939b398ce1bf105abe7e34b 100644
---- a/arch/arm64/boot/dts/freescale/imx93.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
-@@ -150,6 +150,18 @@ l3_cache: l3-cache {
- 	};
- };
- 
-+&lcdif {
-+	port {
-+		lcdif_to_ldb: endpoint@1 {
-+			reg = <1>;
-+		};
++  dpi-bridge:
++    type: object
++    additionalProperties: false
 +
-+		lcdif_to_dsi: endpoint@2 {
-+			reg = <2>;
-+		};
-+	};
-+};
++    properties:
++      compatible:
++        enum:
++          - nxp,imx91-pdfc
++          - nxp,imx93-pdfc
 +
- &src {
- 	mlmix: power-domain@44461800 {
- 		compatible = "fsl,imx93-src-slice";
++      ports:
++        $ref: /schemas/graph.yaml#/properties/ports
++
++        properties:
++          port@0:
++            $ref: /schemas/graph.yaml#/properties/port
++            description: Input port node to receive pixel data.
++
++          port@1:
++            $ref: /schemas/graph.yaml#/$defs/port-base
++            unevaluatedProperties: false
++            description: Output port node to downstream pixel data receivers.
++
++            properties:
++              endpoint:
++                $ref: /schemas/media/video-interfaces.yaml#
++                unevaluatedProperties: false
++
++                properties:
++                  bus-width:
++                    enum: [ 16, 18, 24 ]
++                    description:
++                      Specify the physical parallel bus width.
++
++                      This property is optional if the display bus-width
++                      matches the SoC bus-width, e.g. a 18-bit RGB666 (display)
++                      is connected and all 18-bit data lines are muxed to the
++                      parallel-output pads.
++
++                      This property must be set to 18 to cut only the LSBs
++                      instead of the MSBs in case a 24-bit RGB888 display is
++                      connected and only the lower 18-bit data lanes are muxed
++                      to the parallel-output pads.
++
++        required:
++          - port@0
++          - port@1
++
++    required:
++      - compatible
++      - ports
++
+ allOf:
+   - if:
+       properties:
+@@ -112,4 +164,30 @@ examples:
+                clock-names = "apb", "axi", "nic", "disp", "cam",
+                              "pxp", "lcdif", "isi", "csi", "dsi";
+       #power-domain-cells = <1>;
++
++      dpi-bridge {
++        compatible = "nxp,imx93-pdfc";
++
++        ports {
++          #address-cells = <1>;
++          #size-cells = <0>;
++
++          port@0 {
++            reg = <0>;
++
++            pdfc_from_lcdif: endpoint {
++              remote-endpoint = <&lcdif_to_pdfc>;
++            };
++          };
++
++          port@1 {
++            reg = <1>;
++
++            pdfc_to_panel: endpoint {
++              remote-endpoint = <&panel_from_pdfc>;
++              bus-width = <18>;
++            };
++          };
++        };
++      };
+     };
 
 -- 
 2.47.3
