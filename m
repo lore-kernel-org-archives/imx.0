@@ -1,80 +1,92 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079BC30E0FB
-	for <imx@lists.linux.dev>; Thu, 15 Jan 2026 08:11:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5603733A9D6
+	for <imx@lists.linux.dev>; Thu, 15 Jan 2026 08:41:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768464690; cv=none; b=DQTC6dOSQHKPYtgvLak9U/xGrRIW1zkwAE5MCl98xvXGcanhf6Y1ZsemPvglz7Y4vazpGwmypOLe+LSmClaf38LlBeUrGmKYO8P98FTf3J080wpE4g2f0QY4gcxYu5kTz+7APhruTQ6OrslmaD05PuKev3TCz29/GDIaWIaXV8I=
+	t=1768466484; cv=none; b=c0x7bnaZX+nOUQ9B9M8xVCCEq8fKb5bnBmR2x/v5lzsd5LmSv/hALu97bIYPSrop23Jm2mPVdaL4zJw3ev9ASoncB+Vz34d7mzleF/STBrNvRmgZPDR1RcingeNbN6Gjo1mEOyI7F+0RioQ5aOC0mwqBipC0G4IFRiqCcCT8VWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768464690; c=relaxed/simple;
-	bh=LRko8ZPK6lmm1lPdcjFvpKsGtawD0N6Ya1fudz7vCgA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tvxr/WvG7KRhmq44MKKbC8sjOIdTYlkSEr/PzBsUOdJPMcrbx5U1Bez6KzhrTscXk1G12UsK37BfDo7KU/ABR9p8u8Uz3mPwkkgZkRKshefvrCa3506/1trOQV/riO2Ki6mlmigZia551EIIT9X1jO04mfNna514SwmCYYxPwgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=N6GVMSqJ; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	s=arc-20240116; t=1768466484; c=relaxed/simple;
+	bh=pebBiil2ei/oib7mZd9mepzUxVShBPvTNogkSnHrW1U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YFdxladeq4Ns+tUzNIDskuQzm46ExdwD0RJR/y6uvC4a+/Xds5Ro5ipn8mWuOxTrOmuSqJFufESIk9eT8+SMG+92xI8voXbfE6vgtYI9XafxIijlczSrdwCfrxfpeJgNPjsWK/UOfOzm2z2oNbI6YjumYaz2+C26GC7PrmY67bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lQkZPOIE; arc=none smtp.client-ip=74.125.82.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="N6GVMSqJ"
-Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 134B01FC54;
-	Thu, 15 Jan 2026 09:11:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1768464687;
-	bh=QYGV+NwzF1dz9CuqQx4SAArBW6pXJn6utmAZk/0qyDY=;
-	h=Received:From:To:Subject;
-	b=N6GVMSqJjiwxk8xlrQZ0ahE2y+mzFxDaBDxtgJpIf55s9HxD/in1cOwyjN1OvyDvm
-	 D0OiunZnhegfh8giYoPUiUwqEFHATwZFPfhKPrttGERSVSLcdk39KHNauKdjTUlcKf
-	 FAYrFX1v6lbbPGPHWDga3VeRHT3k3wYw7SiGqRrchBk6tLNa7jDnZwFpsAm+bmGLtR
-	 /WKlrrJCdm6plhRk3r7RQH671fbuNM9ckyBzzMzcISFZLy1hZq9NtR4faF3AbJYKrx
-	 BUY1A/bhbWsbrxLbvCUPI/ybUHG5j0Aoq2XlRIBVtM0FiOONVSs+SnHJNIGP1Bbuag
-	 Qoi4pfmA0zTCw==
-Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
-	id BA5E37F9C8; Thu, 15 Jan 2026 09:11:26 +0100 (CET)
-Date: Thu, 15 Jan 2026 09:11:26 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Sherry Sun <sherry.sun@nxp.com>, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, festevam@gmail.com, kwilczynski@kernel.org,
-	mani@kernel.org, bhelgaas@google.com, hongxing.zhu@nxp.com,
-	frank.li@nxp.com, l.stach@pengutronix.de, lpieralisi@kernel.org,
-	kernel@pengutronix.de, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] fsl,imx6q-pcie: Remove the deprecated
- "reset-gpio-active-high" property
-Message-ID: <aWihLru9aT75LCPm@gaggiata.pivistrello.it>
-References: <20260115071816.115798-1-sherry.sun@nxp.com>
- <20260115073418.GA4366@francesco-nb>
- <aWigj011i0pGgTRi@smile.fi.intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lQkZPOIE"
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-11f1fb91996so1516983c88.1
+        for <imx@lists.linux.dev>; Thu, 15 Jan 2026 00:41:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768466482; x=1769071282; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pebBiil2ei/oib7mZd9mepzUxVShBPvTNogkSnHrW1U=;
+        b=lQkZPOIEDads59B+r/STTruORNxgNgzeJ7dklkCSjMHCJaG3I8qqBtnAW+CDJ0c6U9
+         VuitiRJamH3tnSWLZ6O5rkPkJkeUqZQvy5CIppBDsb2lwMBOHGo9n5+E1btVrRdBMEjO
+         nFp2T2xs3+/kihZWrTAl0JIc0C+uSwapyjHytJGlnfEt5IxetQAlklz4QhSzaEVd3DtS
+         gNcFPFQ0isf3N9rbIhYcENtBqxH5a+BiHnax9AUMmA8h5MZVFc7v31ZFEs0kQxsuPpck
+         pweeZ2X9/btHbI4EJp6WjUFS9eR6j+Veb5Lma6lujbCodhfTOEdUYLbc70+ATZaF2kZ/
+         iCrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768466482; x=1769071282;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pebBiil2ei/oib7mZd9mepzUxVShBPvTNogkSnHrW1U=;
+        b=GLOxesqPRnU78X4RnMJHuAII92UXNQiUIJ9gRm+OlVko6/IKCvHHDAv3fCM76JJ8yw
+         PTM7xRTOlzn5YPDfXu6DUUxztlqf+geg90fuGRMByftibYJ55UUEasGcsRpdenQ7ovSx
+         Z+Mzs+iyZIhwZFPbsDB1g+4OvdyBeuxqBYbkzMAIVVFiNVFNPdQwSkrdWOerCG+fh7+Z
+         nGQDiP+F3S7TqU6kJbuwEkuU8/cuBBy0R09MhvebKj6D3bVJVzyQPDtlq//HYpjhViNB
+         b/vZnjZnkei1vcYkmvesZWn6lw8yW8xEB2kvOtXSsYNWoCSaYN0uWVZvdzVsVKIw3yZE
+         Rnyg==
+X-Forwarded-Encrypted: i=1; AJvYcCXmX6yR8+ROUuOo2LuCfgtcRn07IlBCSonJbWZaO1SD+6EmrDy4AGdRnh1Zw4oQ6mlvw7c=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw1y2HWIUzlPTSb8A4+9MXtU4f4iOHSdTKmElIQEAtoctOwiqBB
+	o/ksVSoyvuIt8tF9faWopREmTWrS810RHAkTEab0sKq6LrVQcJBJwJARnL32ZF1gUKa85xEZvPX
+	etJm16RdcvlXElozhwrCPJIgtDsbDToI=
+X-Gm-Gg: AY/fxX7TYqQyHaOsTfoD67Cw+VeFAVNHaWyJ2I+Ln3sUhhkZFefcScPVOQgzqlwZJNh
+	HEpz817Co8OQgvln78zG5jbjjKrLLt9huGWdUbpVOWuBMS7x+Ur4CXwbTyC+5lXA70vJt8jov3+
+	VWdjCMNFm8xm4+0YhLASt0rhdOd2srNBX3trZuXuvCCAAhNIMvOQX6V9dHXaec0x2HmOBC0nDaK
+	ymvKSeH1Dg0x+Uu4ThZb2of0FvhxGXSHGrLosro4EONLOzglBK2Lfqt1QX6l4+FMlYVUGbNIWBs
+	+htjRy+IdAW7KN9MDOIeuLMoYe653SgK42F2oVuRfEiUGw8MPL09XO/6gGDVQDRJHji4NSD9lMC
+	FmtaPC8i6qg==
+X-Received: by 2002:a05:7022:2392:b0:11b:9386:a3bf with SMTP id
+ a92af1059eb24-12336adc557mr5402464c88.42.1768466482362; Thu, 15 Jan 2026
+ 00:41:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aWigj011i0pGgTRi@smile.fi.intel.com>
+References: <20260114-mxsdma-module-v1-0-9b2a9eaa4226@nxp.com> <20260114-mxsdma-module-v1-1-9b2a9eaa4226@nxp.com>
+In-Reply-To: <20260114-mxsdma-module-v1-1-9b2a9eaa4226@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Thu, 15 Jan 2026 10:44:04 +0200
+X-Gm-Features: AZwV_QgLOj1RDdzVccL_41XskfEEs9aTrYg8yhWQDuDVwvWQC6YUiA6AbKgDm9g
+Message-ID: <CAEnQRZBkxugbzhNk+HE_t=2z_-1OZ_mgON=8=5Q6wV0zJcNHbA@mail.gmail.com>
+Subject: Re: [PATCH 01/13] dmaengine: of_dma: Add devm_of_dma_controller_register()
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, Vinod Koul <vkoul@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, dmaengine@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Shawn Guo <shawn.guo@freescale.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 15, 2026 at 10:08:47AM +0200, Andy Shevchenko wrote:
-> On Thu, Jan 15, 2026 at 08:34:18AM +0100, Francesco Dolcini wrote:
-> > On Thu, Jan 15, 2026 at 03:18:13PM +0800, Sherry Sun wrote:
-> 
-> ...
-> 
-> > And , the property is still handled, see commit b8b80348c57b
-> > ("gpiolib: of: add polarity quirk for Freescale PCIe controller"), the
-> > DT compatibility was not broken as you seem to imply in this series.
-> 
-> This is a quirk and not a 1st class support. There must be no such property
-> in new DTs, it's only present for the backward compatibility.
-> 
-> For the old ones, indeed the property is needed.
+On Thu, Jan 15, 2026 at 12:34=E2=80=AFAM Frank Li <Frank.Li@nxp.com> wrote:
+>
+> Add a managed API, devm_of_dma_controller_register(), to simplify DMA
+> engine controller registration by automatically handling resource
+> cleanup.
 
-Ack, we just agree here.
+<snip>
 
-Francesco
+> +static inline
+> +devm_of_dma_controller_register(struct device *dev, struct device_node *=
+np,
 
+static inline int?
