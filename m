@@ -1,227 +1,171 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011027.outbound.protection.outlook.com [52.101.65.27])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5363793AC
-	for <imx@lists.linux.dev>; Thu, 15 Jan 2026 15:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768490663; cv=fail; b=lTnz7O7ZSxlgoas+gZglkcSif+ZaRDouTh6X/C4QtFLQuGCR5ZpeZoeFNxWCqegPLkahb4tA00l9IdhXQp/XkHGZ3ieTVBboNboic94GarHNsvyJ3a97K/xY1iyCaoQr+Pr7rg+mi5jGmLW/N+U+VGCkddWzKlWdsMJ00wnPMfc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768490663; c=relaxed/simple;
-	bh=xaK/V7MWVU50QcPR66k3Ml9GHqzBZ5sq1okfqz2QEgg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=RCK7ahiwlnhrVKRFGVEwjhRNenAgT5ZvxJbA0NHEBubh+VKZsuFIImS392FvrQ3ebVo+wJhoRTrM//cjfOikFfEI0XYahwvjzfeS1QqCt3kPbiCWgl27FS9/yWwpg4+JlHwPZqOpx3t6ZfsaU0Q5DWqPRE5m0utp2hwgSMqm0rc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eJQqDVLN; arc=fail smtp.client-ip=52.101.65.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eJQqDVLN"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UmIMQ/gFliVjMFiRBq1mbQr0xraGi72ISGKI7wHBeRSgjSdIfJzyaot29N4V+tGbeH3ejwnRGD5RKoRvZQhvtMDTXzXA1vduZR2yOZhyJ1un9n9R+ghQI2nc8dfDt3lzERpgPzOMrIN1UCJ2sBsfbVD5jyYxLmIYto7DFS3KfaUITIGdqTbeYSdDFzMeKvegtCf7jIdCTHga+VbgPxDwXJT4HTTort9Ugpe54b6MgG2F/Hpxlnjd3w37owZt9TdStkwpZJbNuKBbrx/2ORPbFpMLSW2Lt5S44G61qzbIoe+yzJqrvzk2PXD3m3NwKOZ66LeDzKN+WIqb9xxXxfHprg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+hUgYjH7OCHSFJB6K819F9UmTPlFrHa18xEmMODxPk8=;
- b=hL/ZvTRHO2QA8WdLQW8ZVGlvsFUpEhCFyP01ns4a1nZBwNKKDWdNRdyjuCE72cAaqMaCxP/2ZptAcUyhHHhb79vU9KF6ngbuvSe+36MXCPQjrgcYlisCybiLko9EvDPEYQ3O/PRFw6KaPnTyaYyLLPulnCXPteV+h2f4MlelLMC+VT4aj3Kxw3Oytn8rfw5c6lyA02QHGCBsmr1aXWpt5h+Lz2QOYp9o1Ap+q6ckAr45O8xjT85evo6Ox5gRN9PV1Gl+WgN6Pnyv+udDiR3YLZSNKIc9XXp4eOBn8Vk5ETD53q4v8KKYX0KJ4JC5QcFrjiSmLo06KOLZjR+3HH7Qnw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+hUgYjH7OCHSFJB6K819F9UmTPlFrHa18xEmMODxPk8=;
- b=eJQqDVLNBkQShyy8zz6kfd/nE/KI9To2cYfQJxnV99IdUdlIzOqQq1ja9G5mVq3LlvNPO6zXJYhzvDdZiYNqEkoPLr6JTEjy5F0R5EBHBe7STB4nb9vvvo2MEJgKjCJMK5TlD7iuDfYWFzoedtk4Lf0QwPHkDuyBPDQDZVJ15LEG/y1WTb56P66NVBktJFVsfaCFnSt/Xsju1y3oAw9Evdu8zJypL1ny92CyLEtGgrM0UDZSk3B9xFku19T0bUfA47rjxJkyzXAvrROA9y+mSZTRI+sqnVe4OlWrFcoXq6t82fqEr/g28Q4UE/89+12w8pjwtpeU+YzjKoqTFdNPtQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8948.eurprd04.prod.outlook.com (2603:10a6:20b:42f::17)
- by DU2PR04MB8662.eurprd04.prod.outlook.com (2603:10a6:10:2dd::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Thu, 15 Jan
- 2026 15:24:05 +0000
-Received: from AS8PR04MB8948.eurprd04.prod.outlook.com
- ([fe80::843f:752e:60d:3e5e]) by AS8PR04MB8948.eurprd04.prod.outlook.com
- ([fe80::843f:752e:60d:3e5e%4]) with mapi id 15.20.9499.002; Thu, 15 Jan 2026
- 15:24:05 +0000
-Date: Thu, 15 Jan 2026 10:23:48 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Koichiro Den <den@valinux.co.jp>
-Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com,
-	cassel@kernel.org, vigneshr@ti.com, s-vadapalli@ti.com,
-	hongxing.zhu@nxp.com, l.stach@pengutronix.de, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-	minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com,
-	jesper.nilsson@axis.com, heiko@sntech.de,
-	srikanth.thokala@intel.com, marek.vasut+renesas@gmail.com,
-	yoshihiro.shimoda.uh@renesas.com, geert+renesas@glider.be,
-	magnus.damm@gmail.com, christian.bruel@foss.st.com,
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-	thierry.reding@gmail.com, jonathanh@nvidia.com,
-	hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
-	kishon@kernel.org, jirislaby@kernel.org, rongqianfeng@vivo.com,
-	18255117159@163.com, shawn.lin@rock-chips.com,
-	nicolas.frattaroli@collabora.com, linux.amoon@gmail.com,
-	vidyas@nvidia.com, linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@axis.com,
-	linux-rockchip@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v8 5/5] Documentation: PCI: endpoint: Clarify
- pci_epc_set_bar() usage
-Message-ID: <aWkGhPM3WRK+Xq+C@lizhi-Precision-Tower-5810>
-References: <20260115084928.55701-1-den@valinux.co.jp>
- <20260115084928.55701-6-den@valinux.co.jp>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260115084928.55701-6-den@valinux.co.jp>
-X-ClientProxiedBy: BY3PR04CA0017.namprd04.prod.outlook.com
- (2603:10b6:a03:217::22) To AS8PR04MB8948.eurprd04.prod.outlook.com
- (2603:10a6:20b:42f::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E497436C0BB
+	for <imx@lists.linux.dev>; Thu, 15 Jan 2026 15:25:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768490728; cv=none; b=JqLjmL6Ok1xGiUFIoAaO8g+l7D7kDjWM29O/WzDNtiOq1EQnXhgu1WJGlmBbIdCdH0wgh67Wksl8kzdv541cjetEgDTtviKXDWHwcPrdnIQM3hCL96qpllqDwGCZfLqIlta6qEUcftK2CRMUwCNKxU3dxscjy9RmFGCiDmTap/4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768490728; c=relaxed/simple;
+	bh=6GzEO5B1xEnUxV7yC8QlkAoYLKPFxG2WvfwOaqX2bWw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=howcd07Hij7TwwYxeq6VXvJfJPc24tchjQsmTO3jPxAFIOpN4740uwQ4kiPvRO6khJQZG4ZnO4eRHejE+tQMBEl9NbYS4ptvccC3IL5ISxY5/195BaEQBWTfOcMuPZiDnoTlv5h14tWxQ5aotICbEccUe96g62/0FTSZTaVwmUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1vgPDS-0003hw-Ht; Thu, 15 Jan 2026 16:24:54 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+Date: Thu, 15 Jan 2026 16:24:53 +0100
+Subject: [PATCH v9 3/3] arm64: dts: imx93: Add parallel display output
+ nodes
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8948:EE_|DU2PR04MB8662:EE_
-X-MS-Office365-Filtering-Correlation-Id: ffd74b9c-e802-427a-b22e-08de544a1e8f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|1800799024|52116014|376014|7416014|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?c6ENE8n5Hc1Xjx+7u7TsVLXN/UPBYFdpjh9LoCzxNjH8mmH+QrYj7NgVgVKt?=
- =?us-ascii?Q?XRzFdRWqWZcBWw8rEWgHzj/EioXCb92fWL12p4XgwCLM6qRZPJLG5QPNwJJu?=
- =?us-ascii?Q?ugFABMUdI4MqcXRmXTu3jpVE6V/uOhmr1N2BKjFkxJ8Hmak4TaJSd5gjKg+y?=
- =?us-ascii?Q?SdOESSL1uGv7W2tcEKMDXCrFvYvGWfdxFNA2C1U1bHmS4NE1zjrofg3jcm0T?=
- =?us-ascii?Q?uKjgdwhVHHlWeW3j/2+wIXq169U53LC3DKx7LfbzIGjyUDhCboIeAzp4nOmx?=
- =?us-ascii?Q?efkwPRo1wNRmWeuVGLJV/5uPoX/SL4ImZ8DGv8qhyBpQdAJleMfU6W7kDRVU?=
- =?us-ascii?Q?7t7SKyhtlyVH8JrmyhscWbaSl+aezSnMZPzxmt1BBhw4eL8glZ9V60n2oEQN?=
- =?us-ascii?Q?GG9OnEMmdB9ekWkObk4P06QOHlnNHS2V8L4xQVnaRjV1S6k/2R7KgSS+XQEK?=
- =?us-ascii?Q?Q2GroyvXa/08X64Vwksieaz+EXDZWMsQtFzhi/TB/nb0WQ5MXPRUlKHXbteF?=
- =?us-ascii?Q?owm9q3r+J3w/NyRT6pvNWIoPAYFj6A2iOKFihfz/AafKC6GjBs1+lmXIZbbK?=
- =?us-ascii?Q?pvKo7MQl9EDah/9McpvN4KZR4hk6RpwxD1lDH0BpOj4jQgp6ZHlRnb6oKfu3?=
- =?us-ascii?Q?NWss+5KZhpeJBTsRrxCjUghhGwCZmP1wulAWquDliS9rg3ziQ05qDhlK3kLT?=
- =?us-ascii?Q?R6nQ/XLYt09KC7xGOJVdlU8jPb3bmtLC3EHgDqGQJo106WHt1rvHcUb1sz4Y?=
- =?us-ascii?Q?/bD47xjfDx7ypC05tWopCxbZgbS0nVMEBWuiiA3WVOAD0OhIQAROWZdO1ico?=
- =?us-ascii?Q?Ipj3TJh/eSRJVmyfflL4quusCjedcrJmy7tqKBm4UYyH+seI50AF/zzQFg5z?=
- =?us-ascii?Q?t7sy3/Ey4bzqm+8Jma4iTmRDF0tTOa2B42WXr4MvKkJHl7vNVck++7Zcnfkd?=
- =?us-ascii?Q?diZWw/hx7B0rKT92c3j3PIeMGP5vMCbWJ3DuFE6NPAZO3lZz4V1XviPTxI/m?=
- =?us-ascii?Q?ZAfJNJ0StIlsh34l2aaaEZLd34UOzVZ9LDpHr//cGStFT3XAqa2M8ldxktPi?=
- =?us-ascii?Q?4W6LzYnrl5CsWfn79ZHUaXT08V/grAihyPZUmpaNavemTIDvhuYIv9qML4Yf?=
- =?us-ascii?Q?B48gtSqvYgwPyfKnUKhMLDTF4cap/tvJhK4utlD4LseJqZdKZSg81FIGnFf3?=
- =?us-ascii?Q?qf8ILoGOJqf00DJt8u1pOOIr3ciDBEWlF3fZGxGTPTlz4O8XFApJSw4yX3f8?=
- =?us-ascii?Q?x3df+X0kmuLixScHCCWx0RQNB3g54VsLPjVRvQwuss3X1Ad35Ki+jHQkOTM4?=
- =?us-ascii?Q?5SrNkmbrM2ZDi+Z18Dxtlh7z8n50S0HdnqffSAB5dCV1HuOCGOWxnmH0WuP1?=
- =?us-ascii?Q?dt7VMQNybRxaZxMT7SeJQCe16nb1VCk564fjHL9OA0BEbVioFvECpVx4FssH?=
- =?us-ascii?Q?lupq8u0cGgfctt59us4jJr4YnivRoIlG1OehG3YvIwYVXlZ/YNP6FtfLyKir?=
- =?us-ascii?Q?SbDJFZpbT4yg7SWNTZ1yaXvdM7Bl906GtRhuvX/OHsimis/6qjLSPCSzqZLg?=
- =?us-ascii?Q?iskHDDP0xLQ7jxY1dx/z0h3irwyfZaKpzDrO/bpD2Wc54sBD7NkIHbdCmwCI?=
- =?us-ascii?Q?KpFHqZa2Rg9Aju1Jo1A3DyE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8948.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(52116014)(376014)(7416014)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?peQqdrQshvJ00g7WAL6fV6PkTTZgWJAJWrxoMpjB9Hyt2ezUOIkD4uf6s20l?=
- =?us-ascii?Q?2Dg+8y/ptpu1riis2V/AqCZwuhtnQcQLoDnpr0QzPGtNcNySWwu1qhnKn2/5?=
- =?us-ascii?Q?VSk4g1yzYs0kb6rmtDMMAPW20I6kFwKJ/1vMpY0NR5kz1UxZMvnRnxJTweuy?=
- =?us-ascii?Q?SSxL7yFYevtIKRLvBzDHnFKmWAhX9tPUO8b/ItsSHOuB0iCJechigPXvM+PL?=
- =?us-ascii?Q?9zO4I7G3GjaMm/juGXIHeYNbZdw+wYvTV+6JMtLEMV707B3fQ0uB9SMuLfTf?=
- =?us-ascii?Q?IUhU7/zN5FRrXhRb2gyidZc3DUCcBeXbTIoRrX+8HFrkPJ/NpxLfizvbPd/j?=
- =?us-ascii?Q?y4ZociiDEolrtE2j4Kf/2rO72c8U96Emkp3D+Y48kHUoOnqfJz6grLO5cAOr?=
- =?us-ascii?Q?87weAN5cT3k042Y3wAIBvBIP5rUOg/p9dnGHDGs39B/65cPJ/4o4c0QvsV0k?=
- =?us-ascii?Q?z3M0oSbenjM1hBoBrzH0ucNNle42gK+zjKcjLwS3fSMQ7LTIyjJyuDRvsvUr?=
- =?us-ascii?Q?uUy3vKodcUpQYe8PvMJpwmPMqqJC/DtaLlxCgKj5LbREMRJ/IfBG+ndJOx4c?=
- =?us-ascii?Q?I6oBWR5GQgBZiCTvNyPJsQA6i+WgaocMzX7bqziXnrVsmpgPAduNQmorfB3r?=
- =?us-ascii?Q?E9n5nZbcropwUfHawmzH/ZL6UnhGaNrcImespSqZu2ZIZSASfGNu3/RKBW6/?=
- =?us-ascii?Q?cZAfEaXKjf2fuUJyY0Qpp2NwKShKSRK7qUDUOSilFZRk1spb5s/YGFetpiMd?=
- =?us-ascii?Q?diWzaCbKCyD/nAnUriyN9Nz24S/Yv7fm0XxDt+oiY5vyDH6TZeXjc0cZ4JfQ?=
- =?us-ascii?Q?ma/KIxFHoklso6czAnLHkNQKgAmeUuQuEQaFiXr5d3lAcpxSRaZlcKvu6Bkl?=
- =?us-ascii?Q?CQyX68w/IBlCikFXhQNIqb25Kb/TcKmPvLlnlHYINOaYKbvHBWZYMvOU8K/p?=
- =?us-ascii?Q?v+u6FA6H2Pil5wsj4dHLA12UngQxn7H7JHJCQ1Kq0LWWOYVuiCGGlG4BZeRZ?=
- =?us-ascii?Q?8Kglz+tqb/2BZiL59Ov/jvC4rFe+PCzuX/aO/I7hDqnxWSsfCARshZnWnfLy?=
- =?us-ascii?Q?VjEgo9Px0lLrQ7d2hBYSz1Mb1wApORY8p2suV9JzPXsvUNKtv/AVDOgAbyE6?=
- =?us-ascii?Q?p8a5VrGck3O6y3xuSigjJ0BNLtCsmLTOG54W173znRIQ5CU7A2r+LY9BC/gm?=
- =?us-ascii?Q?mqMzjJXSCu+yDkBUtQoNvlyrfeaxTaCtKmMLnEfiVhGheDl6F2mzlB+ACDxj?=
- =?us-ascii?Q?xs6z8NcmheEYvny+6KyYULL8Wta7WDjGjTv2o3sb0L9ER3bW3GLieBRXiBzU?=
- =?us-ascii?Q?oN2ObEFQMHPNkF8fpoK+wbIJahuushybfJ3df+X+hf7jS1hQk7AMynglL+97?=
- =?us-ascii?Q?nhhBWUQWBtXwC9VZYpJYTYV6iA8fopAWbuH4PxaUmkxX0OZWBIcJ8o7NfprD?=
- =?us-ascii?Q?IBKXLVmoDn3ZTo/ZlmkaMXYd0x3jcigK4CYUUv+eV9nBIzZnYtRu8wodxKX7?=
- =?us-ascii?Q?dMCfusuN2W8TpGTXnPdjJxackAzZ0ym7NbrN0IygHHPAtoL8d/R+ypEPrczv?=
- =?us-ascii?Q?19wL6eaRCAl1HBfmcvUms6EPe8thqfPA3dlA1toM6Wj+VJGiPxEVE3bWbfzy?=
- =?us-ascii?Q?wj9OAnSHZ/+MDItOJVA1NXNZcTU9mFzYQ4LDdR++tiTjfxNa2ao31M8Metob?=
- =?us-ascii?Q?5NUxh12rRuSavywwtamT83d1POqhfNvCjr4EVlRMiTrhl3h3?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ffd74b9c-e802-427a-b22e-08de544a1e8f
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8948.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 15:24:05.1535
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: l790yAvTGYjBbFSUiagVmk9SsGvkT7IH2EyPpi2QYd39Q0BAyKc2UAmTxsQDZY+VttrAAcyLNstI8Uq7hvjh0Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8662
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260115-v6-18-topic-imx93-parallel-display-v9-3-2c5051e4b144@pengutronix.de>
+References: <20260115-v6-18-topic-imx93-parallel-display-v9-0-2c5051e4b144@pengutronix.de>
+In-Reply-To: <20260115-v6-18-topic-imx93-parallel-display-v9-0-2c5051e4b144@pengutronix.de>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+ Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ luca.ceresoli@bootlin.com
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, kernel@pengutronix.de, 
+ Marco Felsch <m.felsch@pengutronix.de>
+X-Mailer: b4 0.14.2
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
+X-SA-Exim-Mail-From: m.felsch@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Thu, Jan 15, 2026 at 05:49:28PM +0900, Koichiro Den wrote:
-> The current documentation implies that pci_epc_set_bar() is only used
-> before the host enumerates the endpoint.
->
-> In practice, some Endpoint Controllers support calling pci_epc_set_bar()
-> multiple times for the same BAR (without clearing it) in order to update
-> inbound address translations after the host has programmed the BAR base
-> address, which some Endpoint Functions such as vNTB already rely on.
-> Add document text for that.
->
-> Also document the expected call flow for BAR subrange mapping
-> (pci_epf_bar.num_submap / pci_epf_bar.submap), which may require a
-> second pci_epc_set_bar() call after the host has programmed the BAR base
-> address.
->
-> Signed-off-by: Koichiro Den <den@valinux.co.jp>
-> ---
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
->  Documentation/PCI/endpoint/pci-endpoint.rst | 24 +++++++++++++++++++++
->  1 file changed, 24 insertions(+)
->
-> diff --git a/Documentation/PCI/endpoint/pci-endpoint.rst b/Documentation/PCI/endpoint/pci-endpoint.rst
-> index 0741c8cbd74e..4697377adeae 100644
-> --- a/Documentation/PCI/endpoint/pci-endpoint.rst
-> +++ b/Documentation/PCI/endpoint/pci-endpoint.rst
-> @@ -95,6 +95,30 @@ by the PCI endpoint function driver.
->     Register space of the function driver is usually configured
->     using this API.
->
-> +   Some endpoint controllers also support calling pci_epc_set_bar() again
-> +   for the same BAR (without calling pci_epc_clear_bar()) to update inbound
-> +   address translations after the host has programmed the BAR base address.
-> +   Endpoint function drivers can check this capability via the
-> +   dynamic_inbound_mapping EPC feature bit.
-> +
-> +   When pci_epf_bar.num_submap is non-zero, the endpoint function driver is
-> +   requesting BAR subrange mapping using pci_epf_bar.submap. This requires
-> +   the EPC to advertise support via the subrange_mapping EPC feature bit.
-> +
-> +   When an EPF driver wants to make use of the inbound subrange mapping
-> +   feature, it requires that the BAR base address has been programmed by
-> +   the host during enumeration. Thus, it needs to call pci_epc_set_bar()
-> +   twice for the same BAR (requires dynamic_inbound_mapping): first with
-> +   num_submap set to zero and configuring the BAR size, then after the PCIe
-> +   link is up and the host enumerates the endpoint and programs the BAR
-> +   base address, again with num_submap set to non-zero value.
-> +
-> +   Note that when making use of the inbound subrange mapping feature, the
-> +   EPF driver must not call pci_epc_clear_bar() between the two
-> +   pci_epc_set_bar() calls, because clearing the BAR can clear/disable the
-> +   BAR register or BAR decode on the endpoint while the host still expects
-> +   the assigned BAR address to remain valid.
-> +
->  * pci_epc_clear_bar()
->
->     The PCI endpoint function driver should use pci_epc_clear_bar() to reset
-> --
-> 2.51.0
->
+Add required OF nodes to support the i.MX93 parallel output (DPI) path.
+
+On the i.MX93 a single LCDIF is connected to three bridges: DPI, LVDS
+LDB and the MIPI-DSI whereas the i.MX91 support only the DPI bridge.
+
+Map endpoint@0 as DPI bridge output since the i.MX93 TRM (Figure 485.
+MEDIAMIX block diagram) doesn't mention any port-number <-> bridge
+combination.
+
+Set the MEDIA-AXI and MEDIA-APB clocks to the overdrive (OD) values
+since the i.MX93 and i.MX91 use the overdrive (OD) clk settings per
+default.
+
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ arch/arm64/boot/dts/freescale/imx91_93_common.dtsi | 54 ++++++++++++++++++++++
+ arch/arm64/boot/dts/freescale/imx93.dtsi           | 12 +++++
+ 2 files changed, 66 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+index 7958cef353766a430df5e626ff2403dc05a974b1..5a8813df6bc993d559fb0b20fc742a106bfe6315 100644
+--- a/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx91_93_common.dtsi
+@@ -1122,8 +1122,62 @@ media_blk_ctrl: system-controller@4ac10000 {
+ 				 <&clk IMX93_CLK_MIPI_DSI_GATE>;
+ 			clock-names = "apb", "axi", "nic", "disp", "cam",
+ 				      "pxp", "lcdif", "isi", "csi", "dsi";
++			assigned-clocks = <&clk IMX93_CLK_MEDIA_AXI>,
++					  <&clk IMX93_CLK_MEDIA_APB>,
++					  <&clk IMX93_CLK_MEDIA_DISP_PIX>;
++			assigned-clock-parents = <&clk IMX93_CLK_SYS_PLL_PFD1>,
++						 <&clk IMX93_CLK_SYS_PLL_PFD1_DIV2>,
++						 <&clk IMX93_CLK_VIDEO_PLL>;
++			assigned-clock-rates = <400000000>, <133333333>;
+ 			#power-domain-cells = <1>;
+ 			status = "disabled";
++
++			dpi_bridge: dpi-bridge {
++				compatible = "nxp,imx93-pdfc";
++				status = "disabled";
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++
++						dpi_from_lcdif: endpoint {
++							remote-endpoint = <&lcdif_to_dpi>;
++						};
++					};
++
++					port@1 {
++						reg = <1>;
++
++						dpi_to_panel: endpoint {
++						};
++					};
++				};
++			};
++		};
++
++		lcdif: display-controller@4ae30000 {
++			compatible = "fsl,imx93-lcdif";
++			reg = <0x4ae30000 0x23c>;
++			interrupts = <GIC_SPI 176 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&clk IMX93_CLK_MEDIA_DISP_PIX>,
++				 <&clk IMX93_CLK_LCDIF_GATE>,
++				 <&clk IMX93_CLK_MEDIA_AXI>;
++			clock-names = "pix", "axi", "disp_axi";
++			power-domains = <&media_blk_ctrl IMX93_MEDIABLK_PD_LCDIF>;
++			status = "disabled";
++
++			port {
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				lcdif_to_dpi: endpoint@0 {
++					reg = <0>;
++					remote-endpoint = <&dpi_from_lcdif>;
++				};
++			};
+ 		};
+ 
+ 		usbotg1: usb@4c100000 {
+diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
+index 7b27012dfcb564650882dc8c40e836e797b2fda1..5436b48b30e89eb1f939b398ce1bf105abe7e34b 100644
+--- a/arch/arm64/boot/dts/freescale/imx93.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
+@@ -150,6 +150,18 @@ l3_cache: l3-cache {
+ 	};
+ };
+ 
++&lcdif {
++	port {
++		lcdif_to_ldb: endpoint@1 {
++			reg = <1>;
++		};
++
++		lcdif_to_dsi: endpoint@2 {
++			reg = <2>;
++		};
++	};
++};
++
+ &src {
+ 	mlmix: power-domain@44461800 {
+ 		compatible = "fsl,imx93-src-slice";
+
+-- 
+2.47.3
+
