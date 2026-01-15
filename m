@@ -1,48 +1,64 @@
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD042749C1
-	for <imx@lists.linux.dev>; Thu, 15 Jan 2026 07:34:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62ECA27510E
+	for <imx@lists.linux.dev>; Thu, 15 Jan 2026 08:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768462473; cv=none; b=ZCoDj+sVkgV35JJ2TpNKR65Jke7ydCogOk9cRsA6CU0La/e9Q52XJVs6cfHUIu9rWc8HOj7IoITikPG/hXWJHNTlG9Q201FPca339b9YsfqH/hldOy9qTW9N2n2qJ+5LGBxvFFDPYL3m42THvt1fLxTIyHmWpWUOOEfef5m0D10=
+	t=1768464536; cv=none; b=TYrBMMG03/EwNxwAOtl5KH88zWSWezBP+TK3j9bBveBEaieSDwCtx4SvTWzOP1itvm0O4lmA0/l9c7tQ1wJxlDo20FbZ4ifVADGf49DbdA7RdrouSHWfMSWxmnH0KXvMU1XLpdT+K7W6VWVZn1GBNT2Fx/yLV8S8ver+I67P0dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768462473; c=relaxed/simple;
-	bh=J41h1gGqXCp+D7XdRgVOjoCXlGiSBPgGvotcfkroK8k=;
+	s=arc-20240116; t=1768464536; c=relaxed/simple;
+	bh=4J1FcG4dxmkP5PoBZ0hZyfoKYhf61kzQ7mIPLm/KVhs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DQYIbvgwOroyBbvO5tnfCo048VD9NjmzKUCZG4kEAZNbeIBe3+D1ykVEkWK4zSyyA9fAmMENWYkJ/CII3vFRDO/gBbs7kdLAG7Y+2cSq1zruEkhrv2w6asWV8LBAumeyc/wJoDBJ/m2jrT6LV6qZpe/ECQlUNR+7JBspuSYUZJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=JoyFheb1; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+	 Content-Type:Content-Disposition:In-Reply-To; b=JKeY8WH6W85QlXRVl2XH9JOQ0czdPYLVmx7WCgtse1guPxFGRAu98nBkPdZV4phXgjyS1AOwCQzdCli7oiudDQUKSphj0WlqqpKz6ZCz8Ma9k19+tiIQdTn2mPbfjR+mR12B0wQHDzFfxtwmSFvURExw6PErcBovuUOei7SSiTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LirNzOIb; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="JoyFheb1"
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 4AA641FB6C;
-	Thu, 15 Jan 2026 08:34:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1768462462;
-	bh=UbEuSfoC/WNUVqtU0A2Dex7ZSI1NDiP/B9w9lXMIyPc=; h=From:To:Subject;
-	b=JoyFheb1cuMVGql9CA2LpqlWfMk7H6OR/doc2/8n0Dx9mO7plT2bjUdHET25mYSZ1
-	 /6D+24YHDCONqoVkdoWsUV6J9x9YdkfK9KVpBdAVIJ8KIjvC2TOxtyuXlmoU118iWB
-	 B3gZGRkyZZvb6RCbz1ctluG523jtrGS52mhzmwQhyh+sCzzTLuu0gE+N9X1QDJ4HqX
-	 iJ+rYfkd5FyhcT1zO8THFCNiQIEWI8E8+TZLOi5HSpjysqoR+ycKGoUzc5l3mNb8wN
-	 rM+u8Xn9XbBC22pAJBMyAliNS5Dcykkq352IrXhws0RpMdvCsQxO92gz0hb5Qk5pVf
-	 UgxGbo+NwZA/w==
-Date: Thu, 15 Jan 2026 08:34:18 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Sherry Sun <sherry.sun@nxp.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
-	kwilczynski@kernel.org, mani@kernel.org,
-	andriy.shevchenko@linux.intel.com, bhelgaas@google.com,
-	hongxing.zhu@nxp.com, frank.li@nxp.com, l.stach@pengutronix.de,
-	lpieralisi@kernel.org, kernel@pengutronix.de,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LirNzOIb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768464535; x=1800000535;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4J1FcG4dxmkP5PoBZ0hZyfoKYhf61kzQ7mIPLm/KVhs=;
+  b=LirNzOIb9joWxlIb/T5wTtFyfWl1tQnlL57twzYGhOfyGWj7osyWmeT5
+   HnLSN2hXrPaQFQR0E17r/Ka3Rg5kfczpyN3ogjVlyrL8KHsIv1JtqAGPu
+   IL7URSXk1cL8Vez5jQQ2oVzdQwsjILf5gVU4x9oe8JgvyrlLsop8+QTYz
+   mCSafo+qX9gjB32kByW5NGH35FPRabc9+yXtm/jPtZnR8fmv8TeXk5Whb
+   uT2LZbM1V/xa2XTQmnkqKiHCZ6AoURf5V/bG9xeB3wBnVOuqoGbKbBl5Q
+   lyCDQEx7IKfvMkeFUVlXLP91tD9Kyj+YH7GpyzTfBgg86OZ+2XyZ7GWrl
+   Q==;
+X-CSE-ConnectionGUID: Dy0isclHQw6IvuMGEGRUzw==
+X-CSE-MsgGUID: XVppqg13Q+WZ8DI2UZnPww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11671"; a="92437286"
+X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
+   d="scan'208";a="92437286"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 00:08:55 -0800
+X-CSE-ConnectionGUID: J6vCKZaCRcK0EcN3RPBO2g==
+X-CSE-MsgGUID: hlrtToK9QmO45010/8J97Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,226,1763452800"; 
+   d="scan'208";a="204103732"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.216])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 00:08:50 -0800
+Date: Thu, 15 Jan 2026 10:08:47 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Sherry Sun <sherry.sun@nxp.com>, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	festevam@gmail.com, kwilczynski@kernel.org, mani@kernel.org,
+	bhelgaas@google.com, hongxing.zhu@nxp.com, frank.li@nxp.com,
+	l.stach@pengutronix.de, lpieralisi@kernel.org,
+	kernel@pengutronix.de, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 0/3] fsl,imx6q-pcie: Remove the deprecated
  "reset-gpio-active-high" property
-Message-ID: <20260115073418.GA4366@francesco-nb>
+Message-ID: <aWigj011i0pGgTRi@smile.fi.intel.com>
 References: <20260115071816.115798-1-sherry.sun@nxp.com>
+ <20260115073418.GA4366@francesco-nb>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,22 +67,32 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260115071816.115798-1-sherry.sun@nxp.com>
+In-Reply-To: <20260115073418.GA4366@francesco-nb>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Jan 15, 2026 at 03:18:13PM +0800, Sherry Sun wrote:
-> Commit 2e81122d681c ("PCI: imx6: Convert to use agnostic GPIO API")
-> deleted the "gpio_active_high" flag in pci-imx6 driver, so currently
-> the imx6 PCIe driver doesn't support "reset-gpio-active-high" property.
-> 
-> Let's remove this deprecated property in imx6* dts and the
-> corresponding dt-binding.
+On Thu, Jan 15, 2026 at 08:34:18AM +0100, Francesco Dolcini wrote:
+> On Thu, Jan 15, 2026 at 03:18:13PM +0800, Sherry Sun wrote:
 
-Are you sure this is not breaking anything?
-DT files from the Linux repository are not used just in Linux.
+...
 
-And , the property is still handled, see commit b8b80348c57b
-("gpiolib: of: add polarity quirk for Freescale PCIe controller"), the
-DT compatibility was not broken as you seem to imply in this series.
+> And , the property is still handled, see commit b8b80348c57b
+> ("gpiolib: of: add polarity quirk for Freescale PCIe controller"), the
+> DT compatibility was not broken as you seem to imply in this series.
 
-Francesco
+This is a quirk and not a 1st class support. There must be no such property
+in new DTs, it's only present for the backward compatibility.
+
+For the old ones, indeed the property is needed. The problem of reuse of Linux
+DTs somewhere else is orthogonal to the Linux kernel. If this is a real problem
+the DTs should have been maintained outside of Linux kernel and, if needed, be
+synchronised from time to time.
+
+TL;DR: we must discourage people to use deprecated and (historically) wrong
+properties.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
