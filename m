@@ -1,275 +1,390 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011046.outbound.protection.outlook.com [52.101.70.46])
+Received: from delivery.antispam.mailspamprotection.com (delivery.antispam.mailspamprotection.com [185.56.87.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4D13B8D7A
-	for <imx@lists.linux.dev>; Thu, 15 Jan 2026 16:07:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E41A3BC4F3
+	for <imx@lists.linux.dev>; Thu, 15 Jan 2026 17:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.56.87.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768493286; cv=fail; b=JWgS7kfXWTIwY30SnCc0SMxOt5nWirSxFQ/D97pNpCRB4JXYNJnAuGXtzABw46uOFg0u2nBRXvj3OxNGQxBtLdNtg5NhcLYl5ZuURZ5rJ3vK4+GPfbcawIL1nFNzQv4WKP5uKVPs/TVtdRUxNWhjmocZzohiVxec8XFfwQd39ts=
+	t=1768497134; cv=pass; b=PZi5Qx9VYR7QUsKaab6yaUGP/GW0aqpkcx2yrciibQd6i88Y0dhxLJ9ZadllQw+ZHVOUxFkJajxmjk4KRXSER37UDl8rATMhmFfL8ahSMEgVx99lyh1KKkB7LhNhuShZjWAIMaDCjTqYOBUfu7t8yqy5iwJAY47geC+iyWtsRXg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768493286; c=relaxed/simple;
-	bh=qa12qCvVjcto3KZzY4Y3LKmNK5yieXGtyEDDIcjU46c=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=RyQchqBGjGGERezcI5fdKrL33OKuPfwN8wi8ujUM1PkGSHD4mQfMMQQgw9MWMYY5hEc7YxYla3jBKjLqyaAGzAGczwbUshBcccJZtysBWMVlSf+H/Dt5Rfmqev+cX0W+zD/Pf9TgVxC2+6sgt3kcYvw54p1100Z+rZ1HyYYuMgU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=WtOIsJyD; arc=fail smtp.client-ip=52.101.70.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1768497134; c=relaxed/simple;
+	bh=UDNJN6h9z20eAdQX41sTSOjvbFWI2ZO13KG6s3qqNlY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mw/56v2OOlBav4JObi2XoKO9WWM98mmijyc6LezlUBFCzzYOqPTTp97BsgQJ+DLmtMm/ro8u5jrMtYXthdji8Zy03HW0XFibMS2WQuI74CVzpq05+5ZEmByO+Wl/SMLlN7zccD5zZYTWFzytyad5SKwXXs4RuT0RddZQeQHmgkM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it; spf=pass smtp.mailfrom=valla.it; dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b=PrVG7V9X; dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b=b1iS/RdZ; arc=pass smtp.client-ip=185.56.87.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valla.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valla.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="WtOIsJyD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Xu/S5n0QL0PkpYU7Jufy2bYKzch/ERpKT29MPDw4K7AKK+7PPYNAF2XiiBPlm76OCLTaeRMb2qNuUTT/rHBCAAyKghiTEIdLX/96JfVthF86PCDmxE6YpidyMm5YVko/XjlfSNzTUfu9YuNXnz9QEM0vZ42VHvKIz36ADkU/20LPMwdqbhqJ5UefvS/ixetg2VxVqZ+6maxL/+rIJPeULHQfW6cF8zJSB/tF8d6wQUZHAAA83HYSwoKU/2H8/ZsxmGN10oEbuehxI2YvYcCLB8DAhnuzIL4ALxkHn4w7B8mp6Lo/ddZN6RT27CyPDZTG8I0JSuGi8BCSlePU32bLAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kzXVUfCikU/CH6YenUvZ8dbJ+qttDoX5n9MFRjohbnM=;
- b=fab83swoASsj0h0KlYk9UeBTeTBoc9JgEYX7PkLEVwPSKo2yZrOPEJdJgBCctBWgk0575FzDVqgvhbRBh6xR1bdwGSF3FDNkbExJfdA3ZEST57K71bVFB2/8hODLNQE7h7CRU1fXCLz/WAD3aN7SQ5DCBzAvyVkstlpzN8e1tjEXJ6WNeGLGRWhhptsq3QjR/YNeWn70DvC9X7shUbJTRORc74H3UBmEEla+NbXToXvugwZo/iO9MBU+PVkGshhBxEAXTWcHgK6uvP4soD4i18RSEmCBDyv9MRJ5+YXuAtFFoInGi5Io96DSKEUNpRzMnmEDcQOuTQF1112XOVgK/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kzXVUfCikU/CH6YenUvZ8dbJ+qttDoX5n9MFRjohbnM=;
- b=WtOIsJyDwLwN+XNHABJ+VoIgL0cpAiqHFKZPbd5lBi75Hez8KsIA0w2rsEcP5yEHKab4gRfdjG3a0IdvitD724oUlbn/raQSKwlSOiX1NWlQzjz1AfEdjIbZQe6YjY5wnf4oW52RUJN3yIoz6oI1nT6iVFdUCqV2kL/+dceuDc4Z/0I/ET/STSmSlXOtcC8wz+9Al70mjgdcqbm0ZcSswAZfTQg5hDUum4et5t74oEN7hr5dWcjanhhAVURBlS7BmwkF+uuDweNa6g2fS2Kyc/bt5mSvnfPtcOiz06+gt1ZcjW/6PYvaqEbxolqZpy4h37GnhtjfXR7FjROhNsvEjg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8948.eurprd04.prod.outlook.com (2603:10a6:20b:42f::17)
- by DBBPR04MB7628.eurprd04.prod.outlook.com (2603:10a6:10:204::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Thu, 15 Jan
- 2026 16:07:48 +0000
-Received: from AS8PR04MB8948.eurprd04.prod.outlook.com
- ([fe80::843f:752e:60d:3e5e]) by AS8PR04MB8948.eurprd04.prod.outlook.com
- ([fe80::843f:752e:60d:3e5e%4]) with mapi id 15.20.9499.002; Thu, 15 Jan 2026
- 16:07:48 +0000
-From: Frank Li <Frank.Li@nxp.com>
-Date: Thu, 15 Jan 2026 11:06:52 -0500
-Subject: [PATCH v2 13/13] dmaengine: fsl-qdma: Use dev_err_probe() to
- simplify code
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260115-mxsdma-module-v2-13-0e1638939d03@nxp.com>
-References: <20260115-mxsdma-module-v2-0-0e1638939d03@nxp.com>
-In-Reply-To: <20260115-mxsdma-module-v2-0-0e1638939d03@nxp.com>
-To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
- Vinod Koul <vkoul@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: dmaengine@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, Shawn Guo <shawn.guo@freescale.com>, 
- Frank Li <Frank.Li@nxp.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768493221; l=2838;
- i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=qa12qCvVjcto3KZzY4Y3LKmNK5yieXGtyEDDIcjU46c=;
- b=GTyQ1POY7w5He4cY/TqtgmQ1ll/pc7KDEnaf6hxXNgPyTBxVYEhrtw5ZUNSoAov7w7CBezqu/
- 2qOGteGcc9WDbkLUmC0UDMTyysPKPi+1hsJSuVxZ+/3CRz0CvSTsZ7M
-X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
- pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
-X-ClientProxiedBy: PH7PR03CA0018.namprd03.prod.outlook.com
- (2603:10b6:510:339::15) To AS8PR04MB8948.eurprd04.prod.outlook.com
- (2603:10a6:20b:42f::17)
+	dkim=pass (1024-bit key) header.d=antispam.mailspamprotection.com header.i=@antispam.mailspamprotection.com header.b="PrVG7V9X";
+	dkim=pass (1024-bit key) header.d=valla.it header.i=@valla.it header.b="b1iS/RdZ"
+ARC-Seal: i=1; cv=none; a=rsa-sha256; d=outgoing.instance-europe-west4-plm9.prod.antispam.mailspamprotection.com; s=arckey; t=1768497132;
+	 b=KY75Bcuddx+rOuuEJkdoEz6oyk7omzpKZkNVfgnENlGbjWltV8Jfw1qxwZPRk58ibXNJBWrysa
+	  ZEfHEuvfswNiIZVli0t9kP1jRN0uiUK+4WSHejcbU4N48/T0dkdUif6zGvzEZvVXvzbMMYbXQO
+	  Qy/2Nd6t3Y1zVW9oV6tZ2Qhvhw2P6xJQQsDO17N17F0oE3aOOkcY0Pwj1DwJkWXw8ZgBc3HOvx
+	  xisbQirMohcL6WH/PjkAtxBwkregV0S1CI56GArCbhkhNKSXxxHIHBuLbobXeaW2Az+10OgJls
+	  FC7MXg7YE6ALmDxOPJ3I/RoaoLozvWFQPrOZ0v6wWqUWPQ==;
+ARC-Authentication-Results: i=1; outgoing.instance-europe-west4-plm9.prod.antispam.mailspamprotection.com; smtp.remote-ip=35.214.173.214;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=outgoing.instance-europe-west4-plm9.prod.antispam.mailspamprotection.com; s=arckey; t=1768497132;
+	bh=UDNJN6h9z20eAdQX41sTSOjvbFWI2ZO13KG6s3qqNlY=;
+	h=Cc:To:Message-ID:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	  Subject:Date:From:DKIM-Signature:DKIM-Signature;
+	b=J30098dvbJFcfbdHWa9JN+1s71g668wGRuKnPUF9l45KKbdv4+0rW1301fK7N8IPKdsXedkRWU
+	  yX11b+L2XiYUf31QMG7q3hXe/Vii83akdQCw/v6fID1ZJaX7pGDfjqjaddBQvVQLIm8Dif8rPa
+	  X/I5DHP334wUUGI+RdKSJRbETJyEhD+il9BeydNs4CMc6N5Ujjy3zjhP2X+FWc/YDXCRd4VMgM
+	  mw84kjVanqWh0leVF0MWTV5IPWIHCD6v9K2RN6HNwgXXEoqy1qCMTDzMEq02pIfadO+mPpDiCF
+	  ZSv5Y0mXDNbwTgXSlwXPeoA24N1Wz6kF4ISfG34+PaySfQ==;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=antispam.mailspamprotection.com; s=default; h=CFBL-Feedback-ID:CFBL-Address
+	:Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject
+	:Date:From:Reply-To:List-Unsubscribe;
+	bh=UbXNxa+iA/ps3lkeOKk9nvJHBlfYpEGoGtY/DDNTVqI=; b=PrVG7V9XPeew+cTyG/pzBSyiZu
+	7xHdW8lrpmVznYwI/CTak+zDC0SwVV86GxURHM677IrtI78KxsR1u5IGGh6STD7Ba1QB/4GzyzxpU
+	gKzgrgrYTdfKwRXwCvGXg0NJcp7DCfZDfSHqyhq6AtgZFT8q5/K89dFKB768+f5/oaA8=;
+Received: from 214.173.214.35.bc.googleusercontent.com ([35.214.173.214] helo=esm19.siteground.biz)
+	by instance-europe-west4-plm9.prod.antispam.mailspamprotection.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.1)
+	(envelope-from <francesco@valla.it>)
+	id 1vgQtF-0000000CL3v-0lvt
+	for imx@lists.linux.dev;
+	Thu, 15 Jan 2026 17:12:10 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=valla.it;
+	s=default; h=Cc:To:Subject:Date:From:list-help:list-unsubscribe:
+	list-subscribe:list-post:list-owner:list-archive;
+	bh=UbXNxa+iA/ps3lkeOKk9nvJHBlfYpEGoGtY/DDNTVqI=; b=b1iS/RdZ4Id4/cGi/TGuWgR2X+
+	97h8limaBqXWT/Yn+7W7KxiHUi+5iGe6acwH7ZP3ipqvkrYuR/Jn/zkPtEhLbu7J2wK/XgOLZCl6Z
+	51gx3tb/JNot7u88E0JVrJEiTzBPsSbps07rPofIwC32avnFupWhh+UeMD2mGAZFphEs=;
+Received: from [95.248.141.113] (port=64273 helo=[192.168.178.65])
+	by esm19.siteground.biz with essmtpa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.1)
+	(envelope-from <francesco@valla.it>)
+	id 1vgQsq-00000000Ee3-1WSg;
+	Thu, 15 Jan 2026 17:11:44 +0000
+From: Francesco Valla <francesco@valla.it>
+Date: Thu, 15 Jan 2026 18:11:34 +0100
+Subject: [PATCH] arm64: dts: imx93-11x11-frdm: enable additional devices
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8948:EE_|DBBPR04MB7628:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2b70f63f-b435-4907-7b46-08de54503a45
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|7416014|366016|19092799006|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UjlXSlNRWkJySTI1TlZTb2ZIdm5WaCtFdWJKNlBWZE1wazVCakFHQ0RORFFp?=
- =?utf-8?B?MGg0SEJNcEE1K1BLMVVyNXczSzl0N09VdURDUjE5ZkdEU0g3WHB3dVNFYzFW?=
- =?utf-8?B?VWJ2SUNubEJ6V0JMUHgvZkk5Y01CYVZFUmkyemJmd2grWWxza0ExbTF4NGpQ?=
- =?utf-8?B?bG1vZHQ3K05aT3dpRGZ3Mnlab0NndlNFbmZMdGZhNEI0cXJ2Zi9Sajh3NkZC?=
- =?utf-8?B?NHlPRG5YQk5Tb0ZqRFhCenhsekl2T0VjTFlPOUhkOXc3NStOM0V6Nm9ZbUxI?=
- =?utf-8?B?TE81elJ0ZE5FTHl0VGJ5VUZKRlVnN252Z0tTRGV1RURqN0hzdmhsbm5SSTRX?=
- =?utf-8?B?dEJNY3ZtQzVxYlBGalZOMnFlRUNwODBpMEozNmFPbUQra0U0dURFUExuRllF?=
- =?utf-8?B?UGdqLzBmQWRxSHJPSUNRQXRPVTJ0RUJIMDUzUjlGT3orZSszN2VENkJ3QlJn?=
- =?utf-8?B?YmNBZTZJTFhsU3JXYkwxQ21DaUk3bXdiNDg2NElBUWNaNTg0elBUR3NjUjI1?=
- =?utf-8?B?VkROZ0VYZG1yZitCdExVOGs0clgxWTFiZUxnRmJWbkdibUtkMnFVRnJXaVho?=
- =?utf-8?B?U1A4VmN4SEpQSXZUTVNwKzd3TUlSUTlIa3RJUEptYmR5VVJLUzF5RjZuMDBh?=
- =?utf-8?B?eitNUEtMWGNwQmtYN2ExUWpnMjQ0K01lRnBIOElHaytnTXpuNFpEdEFFR1Fw?=
- =?utf-8?B?aHVhYjErMVVpWVFPZDUxREw4d25DWkJDOWl6cWNnV1dFZ3FpT3R6SjRYdVlt?=
- =?utf-8?B?Nm5pRkY4QXd4NGQzcE5QZG84aXFuWTgvMHdER2RmaWo3blFUekcra0pSQmEz?=
- =?utf-8?B?bDJCK1NIckcrNG1VYmtVYis4SUd5V1d5Yjc4WXc1Y1cxcGxqSlFJSWQ2ZDh0?=
- =?utf-8?B?bDFLUm1BTitVS2R1WlNWQkU3NHk5Zlpib2pva3UvQW9BWHhZT3Y4cnZTdzdt?=
- =?utf-8?B?N3hPak95cVY0Y3dtMDJWUFB3WjZOb3JVSEIxVS96QXJZYUptMWlMZUUycmpR?=
- =?utf-8?B?eW01UHhqZHlBWnZKQ0MrbkVPZkxRc0g5TVVhY0pvaVlaOUVJUGV2a2FtU2Jp?=
- =?utf-8?B?RlJSTGFPYVhFZHAvcWhiM3pUdmEwclN0TjVTSWo3YnM5bnJyaGluRFZxOTJx?=
- =?utf-8?B?azRtQ3lZL3NVSTd0V3ptMTBXV1RLeU9QSjJueXdOU0NzVzlhbUtFNXBrcXNB?=
- =?utf-8?B?dFpvK2hpaTZqVmpMSlRheHhuUVJoL0VCZStCb05EM1AwZmZybzNRcEoxZFln?=
- =?utf-8?B?bFRDeDdOa3BZdjkxYjBmY05CT3BDcm92WDJhWUZiVFFmTUZ1M2svdEdmWXAw?=
- =?utf-8?B?OStWQ25pRjA2VlFIRXNTTm1qQVQyOEJ4RUxkUHVGTEh5VGVEWFM1UityMlE4?=
- =?utf-8?B?T0RINm1GNGFDeFhadDg5NHNpSlQ1Qkh6eG4zOGFMbzM3cDN5RDd4ZGI0aEc2?=
- =?utf-8?B?SWlEeFB6SktTZ3N3RUUxTjJ3anZsSW8vV2x2Z0t6bE5jSGdqVDJEdjdZdlBl?=
- =?utf-8?B?SDJjWkFtTklBd1dLTDJqZVQ0M0RPOWZ6bkcvTzdFUGNyUVN1aDNYQ0xQVDJC?=
- =?utf-8?B?cmNRTDIyOUhtTWZQMGl3UWxXN3cvK0R3d0NUaGhsUDNCTTNiMjdmYlRTUm45?=
- =?utf-8?B?a1o2TkxZTkxFQmJFU005ODBVdC8rclFsUTM4UlN4V0tWWk5maitJNExEbU5S?=
- =?utf-8?B?ZzRNR0FxYk1rN1pieXM5am5NUDZjdk5LL0N4c0R6bmlFd0tWM3RLVU1DUGhi?=
- =?utf-8?B?NFc3eG1ZR2VNZ0luWTltTGdHZzZlaEpyT3kwN3hYLzVVbzFvZEk5cklyZnA5?=
- =?utf-8?B?Zk1iSXQ1dEp3ZlhXYzVIekxmSVRkSGVyRnZmZFIvOEE1QlhtMFJiblpLY1R2?=
- =?utf-8?B?eXR0VkNkUEtxWkg5VnZVY0EyMnFvN3ZWK2lPaUV4b2t5QWNiUkhVSGx2cjdM?=
- =?utf-8?B?RW5VNitEOW5zMWN6U0xVMnF2QUp3YVRlZG1NZm1rOXVpbkRPVTJ3UlFHaExD?=
- =?utf-8?B?NmJPSW5PT3JDNUJmZjZ6MTJuWHk1L1hjNCtOR2R3Z0djMEhhQ3dudXAxUmxG?=
- =?utf-8?B?UnpMMzdkQVZzZVkzOHhFc1hpMm01emlNcEdodUZzTEl6cEhWYmNWckJOd0lv?=
- =?utf-8?B?Y08zc3M3REwxLzFGaGlWaDVLKzd1Z0l6UUR2OG5hZGJndXE0V2xoY1VlRkFl?=
- =?utf-8?Q?n5esAyAQdZ04iDQmIdv9McI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8948.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(366016)(19092799006)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TGp5S0dRN1hsNkk5SHBnSUR3bmE3ZEorekRMR2JWcEZVSGprc2dTV0Z5SS81?=
- =?utf-8?B?Q3kwWjJaanFrOEtMVkkzZWk2Tk9qV0NISGhOKzlZMFc3cEJkK01QS3JOamJJ?=
- =?utf-8?B?eGVGOU40QlhObmdvSkV5ZXNWRjdCZHNmT210aHp5cStLUXhleWVQbTlkZVlw?=
- =?utf-8?B?QXdIM3lIYjVpMkh2OTRFYVZSbTBqTFA4cEFENGJ3Z0tDZkV1dUtRUE1KZVI4?=
- =?utf-8?B?WFRvY2wyZ2tFalR4VTV3THZXalNtWUlUV1pUdGR5WFpkQ0Y4Y0ZLTHorZm5w?=
- =?utf-8?B?TzhpaVdFNklobFZGTS81MnhPWUhQOU1ra0pjeUtjM0lsUUNKblhtMk5Pa0Ri?=
- =?utf-8?B?cWFnWkI1dTNBTWZsOHlwV01sTzh0RFBRYjJPSE8xRGxOWXQ1Zi9ZU2tja3VS?=
- =?utf-8?B?ZHBqMC9ZWkRDVHJEcy8zRjlHYkFJbmFxNjFtRm1Za2JJR3ptSWthclR3RUQ2?=
- =?utf-8?B?d1pHQjFHTk14R1c3Q0VEcGowcjNJUGNiT1dUYnM1MGtuWnBGemhWdEZuajlY?=
- =?utf-8?B?ZzlXTWhUZVlaQ3VzSGpYRmJPWUtqelc2MEoxUld6M0YreVBhVGMyVzZNUCtq?=
- =?utf-8?B?U1VtYUpVTVlDUXZsVVFESjhvTlNSeUlBMUx5azA1cXAyb1Byc0JHQytLcHZ1?=
- =?utf-8?B?YkloaHVYWS9HRUFMRjltdUtaalNuNmswMlBBbFJNNUt6WWhIYnFaeXhaRWxu?=
- =?utf-8?B?bERNNGhNWnEyOUxRR0RqVHNYMElFdTNsd1BrRjIyaklPYnZvYjJSUVgyV01Z?=
- =?utf-8?B?aE1yNmY4VkRCOGRQMkVNei9OY2JaNEwyemFvZ3FPdGZNYXprZkxrSUs0OTV0?=
- =?utf-8?B?ajFhUndHa3E2bHVheU9tdytEQ202c2N1SFVtaHMwWkZBUGhXRE42MVA2a1Rs?=
- =?utf-8?B?K2NpeTVQMCswTDdqWjVqMTdhM0YxWml6UkR3SGpRL2FTSVM1OHZvMmpTME4x?=
- =?utf-8?B?ekdQZFlwNm9IS0x6Sm43ZDZYUVRPblJTMDVCSlZLZHNIaVVGRlpIVHFqaDll?=
- =?utf-8?B?eXI5VU51ME01aUV4ZFR4QkdpVFdJQ05vaHFoVzMzN1R5SjZLMVIrQ3NPR1R4?=
- =?utf-8?B?WnB2Tm5KbWxzZHN6eWVrT2JBeTBNc0tBMzAwMUNBY3gxWGluUklJZUJ2aDZH?=
- =?utf-8?B?RjhTMnUrczhiTVRBcHlUQU1mWU5VZGpRVHpoSDduNnoxcUUvNVpOenNITmt0?=
- =?utf-8?B?dXZ3ZWJKNEZiZTBCZExwL05UaFQ5VkpTM1ZGTE12TEw1bjNKVmJlb054SGpa?=
- =?utf-8?B?TGtTOE5lZ1Yrb2Z6TWIzREhjMjNVNW1FZFBVNzNoMkNEclEvYm1zcE9RSjNQ?=
- =?utf-8?B?emdiT0NzNmRrUUNpdXhvOTZvc2Z0UGhzYnlXc3dEWjJRSytEOSs2TXNSMmJv?=
- =?utf-8?B?d3hQTHpzdU5vMGE1Y0Y1eFJEWStzcEVjbE43a3ArNThSTWVQT2o5YVJXVEN0?=
- =?utf-8?B?WXJWajZuUVhkT0ZRNm15WUFhOTI0Vyt4djc0UTl2eDYyeDg5VFhZMGVhQ2Ns?=
- =?utf-8?B?Mml4L2NXWStZdVZXWWx1S0FMSTdEeFRlSXpQYUxkSVgxS2RVblZZTmNrSEE5?=
- =?utf-8?B?ck5Pa0QycXY0YnVTY1FZT2tSWHhmdVB0enVvWGN2OStGaUtWbUJUSGY3RkdQ?=
- =?utf-8?B?aWVacjV4L2pXdVplUTdYaVVpU1RSczNlVGNIMDFBQUZQdHlsbEZicmxsOE8v?=
- =?utf-8?B?VnZ0cmhWcVQreHMyTi82a0FPUEJYOTRPWm93T3NhUVA4cFNvUy92WXp5OXBR?=
- =?utf-8?B?ZmtDdE5mNmFMbEtiZ3pqbUVzT3U5VXR6a0ZDQyt5YlpLYVN3cDNZa0RldGVx?=
- =?utf-8?B?TUU0SmZHOWt4WWlZT1pVRE1VMGtZOVF3cm54S3dxMHhwL0MzSUR6b3VRSTBo?=
- =?utf-8?B?VGpuTHFsaDVsSTN1eldlYUh1dGlkYjJnQTZlUjhDWUFRSmJURE80TDZpTzlQ?=
- =?utf-8?B?TnErNnhDdk00aHRsSDYwY3RHT0syVmdWMGZkei9QbVZlV2J2MlFvNWw0dkNr?=
- =?utf-8?B?MFUyYlE5bHhXZ0d0WitZNGs2NkJCYXdwaDBYVWFReU8yazNqNkNEYlFwYjZj?=
- =?utf-8?B?bGtyL0xSbDlsM2xzb1JuRlh4bGdvTVY2SWxvVFRVeW8rU2lzUU5ITGNEV1lK?=
- =?utf-8?B?OWgyVFJ0ekpKVy8ybG1qaC9SRXpINlVVYXZKMG9HMHpQU3N2VGJuVmppWXZr?=
- =?utf-8?B?cDU0RVd0MWhRVHUzOG94NE9oeEJWdXBXVTVsU1ZhcnhyS3JQYnpXdzA5aGY5?=
- =?utf-8?B?QjQxUjNrbU84V1I5WWtUMkxOeUJmNDVYS3gvdkFIZ2pGSGpHM1BDWnF0S20z?=
- =?utf-8?B?d21KNU40djNDOEdITDBuZTcwY0hac1hEdXZiNkdLY2tNR2RxejJvQT09?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b70f63f-b435-4907-7b46-08de54503a45
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8948.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 16:07:48.6237
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2fBlQ6EGOKi9dGDgu3SaT1tUDpejzlHt3Ehm5IF6sXvBOhcfaoIAn9ODPZnpXWoV3AMQzpm9zXWmvncVj9WylA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7628
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260115-imx93_devices-v1-1-b2c840cafa2e@valla.it>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAIBAAvxJ7TnA1JPtKRFRutYcsFEIQ/550H
+ JiZDJECU4ShyRDo5ci3r4BtA9u5+IMEu8qgpDISsRN8JatnV9WNolhsT4imM3rVUJsn0M7p/41
+ TKR9vEzEUXwAAAA==
+X-Change-ID: 20260114-imx93_devices-a98e116463b3
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Francesco Valla <francesco@valla.it>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7269; i=francesco@valla.it;
+ h=from:subject:message-id; bh=UDNJN6h9z20eAdQX41sTSOjvbFWI2ZO13KG6s3qqNlY=;
+ b=owGbwMvMwCX2aH1OUIzHTgbG02pJDJmZ8ucD/y+NXH3wWu6HaqPQea/v/QjJeJeh9Yhfdmllp
+ Vgiy/KzHaUsDGJcDLJiiiwh627c2zPX/FvaBsZHMHNYmUCGMHBxCsBEDL0Z/nAdKtjk4b6AZbLU
+ jNOxRRHT8/qnHpSs9Te4n716grXgNimGv6IdbaXt1z2//1p5VzVrxy3R1x6Ne05fkQkXi238mPV
+ OkB8A
+X-Developer-Key: i=francesco@valla.it; a=openpgp;
+ fpr=CC70CBC9AA13257C6CCED8669601767CA07CA0EA
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - esm19.siteground.biz
+X-AntiAbuse: Original Domain - lists.linux.dev
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - valla.it
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-SGantispam-id: ad0d512992b01d6f4fa43af142784a72
+AntiSpam-DLS: false
+AntiSpam-DLSP: 
+AntiSpam-DLSRS: 
+AntiSpam-TS: 1.0
+CFBL-Address: feedback@antispam.mailspamprotection.com; report=arf
+CFBL-Feedback-ID: 1vgQtF-0000000CL3v-0lvt-feedback@antispam.mailspamprotection.com
+Authentication-Results: outgoing.instance-europe-west4-plm9.prod.antispam.mailspamprotection.com;
+	iprev=pass (214.173.214.35.bc.googleusercontent.com) smtp.remote-ip=35.214.173.214;
+	auth=pass (LOGIN) smtp.auth=esm19.siteground.biz;
+	dkim=pass header.d=valla.it header.s=default header.a=rsa-sha256;
+	arc=none
 
-Use dev_err_probe() to simplify code. No functional change.
+Enable additional devices on the i.MX93 FRDM board:
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+  - CAN port and associated transceiver
+  - Bluetooth portion of the IW612 chipset
+  - WiFi SDIO port
+  - user buttons
+
+The WiFi portion of the on-board IW612 chipset is still not supported
+upstream, but since SDIO is a discoverable bus it will be probed once it
+is.
+
+Signed-off-by: Francesco Valla <francesco@valla.it>
 ---
- drivers/dma/fsl-qdma.c | 47 +++++++++++++++++++----------------------------
- 1 file changed, 19 insertions(+), 28 deletions(-)
+Applies on top of [0].
 
-diff --git a/drivers/dma/fsl-qdma.c b/drivers/dma/fsl-qdma.c
-index 6ace5bf80c40be4226b17503fbe8caf8f08dd139..4c3a06653c909ce89677b66aa6a900c82c38a872 100644
---- a/drivers/dma/fsl-qdma.c
-+++ b/drivers/dma/fsl-qdma.c
-@@ -1127,22 +1127,19 @@ static int fsl_qdma_probe(struct platform_device *pdev)
- 	struct device_node *np = pdev->dev.of_node;
- 
- 	ret = of_property_read_u32(np, "dma-channels", &chans);
--	if (ret) {
--		dev_err(&pdev->dev, "Can't get dma-channels.\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "Can't get dma-channels.\n");
- 
- 	ret = of_property_read_u32(np, "block-offset", &blk_off);
--	if (ret) {
--		dev_err(&pdev->dev, "Can't get block-offset.\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "Can't get block-offset.\n");
- 
- 	ret = of_property_read_u32(np, "block-number", &blk_num);
--	if (ret) {
--		dev_err(&pdev->dev, "Can't get block-number.\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "Can't get block-number.\n");
- 
- 	blk_num = min_t(int, blk_num, num_online_cpus());
- 
-@@ -1167,10 +1164,8 @@ static int fsl_qdma_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	ret = of_property_read_u32(np, "fsl,dma-queues", &queues);
--	if (ret) {
--		dev_err(&pdev->dev, "Can't get queues.\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret, "Can't get queues.\n");
- 
- 	fsl_qdma->desc_allocated = 0;
- 	fsl_qdma->n_chans = chans;
-@@ -1231,28 +1226,24 @@ static int fsl_qdma_probe(struct platform_device *pdev)
- 	fsl_qdma->dma_dev.device_terminate_all = fsl_qdma_terminate_all;
- 
- 	ret = dma_set_mask(&pdev->dev, DMA_BIT_MASK(40));
--	if (ret) {
--		dev_err(&pdev->dev, "dma_set_mask failure.\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret, "dma_set_mask failure.\n");
- 
- 	platform_set_drvdata(pdev, fsl_qdma);
- 
- 	ret = fsl_qdma_reg_init(fsl_qdma);
--	if (ret) {
--		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "Can't Initialize the qDMA engine.\n");
- 
- 	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
- 	if (ret)
- 		return ret;
- 
- 	ret = dma_async_device_register(&fsl_qdma->dma_dev);
--	if (ret) {
--		dev_err(&pdev->dev, "Can't register NXP Layerscape qDMA engine.\n");
--		return ret;
--	}
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret,
-+				     "Can't register NXP Layerscape qDMA engine.\n");
- 
- 	return 0;
- }
+WiFi was tested using the nxpwifi driver proposed in [1].
 
+[0] https://lore.kernel.org/all/20260113075002.561453-1-daniel.baluta@nxp.com/
+[1] https://lore.kernel.org/all/20251205065545.3325032-1-jeff.chen_1@nxp.com/
+
+Reagrds,
+Francesco
+---
+ arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts | 152 +++++++++++++++++++++
+ 1 file changed, 152 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
+index 5bb6ae0d154a655283295b6902fc29bf6f744d5c..bd14ba28690c081817111aaabef12fb56a7c56a4 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm.dts
+@@ -9,6 +9,7 @@ / {
+ 	model = "NXP i.MX93 11X11 FRDM board";
+ 
+ 	aliases {
++		can0 = &flexcan2;
+ 		ethernet0 = &fec;
+ 		ethernet1 = &eqos;
+ 		i2c0 = &lpi2c1;
+@@ -18,12 +19,40 @@ aliases {
+ 		mmc1 = &usdhc2; /* uSD */
+ 		rtc0 = &pcf2131;
+ 		serial0 = &lpuart1;
++		serial4 = &lpuart5;
+ 	};
+ 
+ 	chosen {
+ 		stdout-path = &lpuart1;
+ 	};
+ 
++	flexcan2_phy: can-phy {
++		compatible = "nxp,tja1051";
++		#phy-cells = <0>;
++		max-bitrate = <5000000>;
++		silent-gpios = <&pcal6524 23 GPIO_ACTIVE_HIGH>;
++	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++
++		button-k2 {
++			label = "Button K2";
++			linux,code = <BTN_1>;
++			gpios = <&pcal6524 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
++			interrupt-parent = <&pcal6524>;
++			interrupts = <5 IRQ_TYPE_EDGE_FALLING>;
++		};
++
++		button-k3 {
++			label = "Button K3";
++			linux,code = <BTN_2>;
++			gpios = <&pcal6524 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
++			interrupt-parent = <&pcal6524>;
++			interrupts = <6 IRQ_TYPE_EDGE_FALLING>;
++		};
++	};
++
+ 	reg_usdhc2_vmmc: regulator-usdhc2 {
+ 		compatible = "regulator-fixed";
+ 		off-on-delay-us = <12000>;
+@@ -37,6 +66,16 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
+ 		enable-active-high;
+ 	};
+ 
++	reg_usdhc3_vmmc: regulator-usdhc3 {
++		compatible = "regulator-fixed";
++		regulator-name = "VPCIe_3V3";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		startup-delay-us = <20000>;
++		gpio = <&pcal6524 13 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
++
+ 	reserved-memory {
+ 		ranges;
+ 		#address-cells = <2>;
+@@ -88,6 +127,11 @@ sound-mqs {
+ 		audio-cpu = <&sai1>;
+ 		audio-codec = <&mqs1>;
+ 	};
++
++	usdhc3_pwrseq: mmc-pwrseq {
++		compatible = "mmc-pwrseq-simple";
++		reset-gpios = <&pcal6524 12 GPIO_ACTIVE_LOW>;
++	};
+ };
+ 
+ &adc1 {
+@@ -157,11 +201,27 @@ ethphy2: ethernet-phy@2 {
+ 	};
+ };
+ 
++&flexcan2 {
++	phys = <&flexcan2_phy>;
++	pinctrl-0 = <&pinctrl_flexcan2>;
++	pinctrl-1 = <&pinctrl_flexcan2_sleep>;
++	pinctrl-names = "default", "sleep";
++	status = "okay";
++};
++
+ &lpi2c1 {
+ 	clock-frequency = <400000>;
+ 	pinctrl-0 = <&pinctrl_lpi2c1>;
+ 	pinctrl-names = "default";
+ 	status = "okay";
++
++	pcal6408: gpio@20 {
++		compatible = "nxp,pcal6408";
++		reg = <0x20>;
++		#gpio-cells = <2>;
++		gpio-controller;
++		reset-gpios = <&pcal6524 20 GPIO_ACTIVE_LOW>;
++	};
+ };
+ 
+ &lpi2c2 {
+@@ -322,6 +382,21 @@ &lpuart1 { /* console */
+ 	status = "okay";
+ };
+ 
++&lpuart5 {
++	pinctrl-0 = <&pinctrl_uart5>;
++	pinctrl-names = "default";
++	status = "okay";
++
++	uart-has-rtscts;
++
++	bluetooth {
++		compatible = "nxp,88w8987-bt";
++		device-wakeup-gpios = <&pcal6408 3 GPIO_ACTIVE_HIGH>;
++		reset-gpios = <&pcal6524 19 GPIO_ACTIVE_LOW>;
++		vcc-supply = <&reg_usdhc3_vmmc>;
++	};
++};
++
+ &mqs1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_mqs1>;
+@@ -394,6 +469,20 @@ &usdhc2 {
+ 	status = "okay";
+ };
+ 
++&usdhc3 {
++	bus-width = <4>;
++	keep-power-in-suspend;
++	mmc-pwrseq = <&usdhc3_pwrseq>;
++	non-removable;
++	pinctrl-0 = <&pinctrl_usdhc3>;
++	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
++	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
++	pinctrl-3 = <&pinctrl_usdhc3_sleep>;
++	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
++	vmmc-supply = <&reg_usdhc3_vmmc>;
++	status = "okay";
++};
++
+ &wdog3 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_wdog>;
+@@ -486,6 +575,13 @@ MX93_PAD_GPIO_IO27__CAN2_RX			0x139e
+ 		>;
+ 	};
+ 
++	pinctrl_flexcan2_sleep: flexcan2sleepgrp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO25__GPIO2_IO25			0x31e
++			MX93_PAD_GPIO_IO27__GPIO2_IO27			0x31e
++		>;
++	};
++
+ 	pinctrl_lpi2c1: lpi2c1grp {
+ 		fsl,pins = <
+ 			MX93_PAD_I2C1_SCL__LPI2C1_SCL			0x40000b9e
+@@ -533,6 +629,15 @@ MX93_PAD_UART1_TXD__LPUART1_TX			0x31e
+ 		>;
+ 	};
+ 
++	pinctrl_uart5: uart5grp {
++		fsl,pins = <
++			MX93_PAD_DAP_TDO_TRACESWO__LPUART5_TX		0x31e
++			MX93_PAD_DAP_TDI__LPUART5_RX			0x31e
++			MX93_PAD_DAP_TMS_SWDIO__LPUART5_RTS_B		0x31e
++			MX93_PAD_DAP_TCLK_SWCLK__LPUART5_CTS_B		0x31e
++		>;
++	};
++
+ 	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+ 	pinctrl_usdhc1: usdhc1grp {
+ 		fsl,pins = <
+@@ -647,6 +752,53 @@ MX93_PAD_SD2_VSELECT__GPIO3_IO19	0x51e
+ 		>;
+ 	};
+ 
++		/* need to config the SION for data and cmd pad, refer to ERR052021 */
++	pinctrl_usdhc3: usdhc3grp {
++		fsl,pins = <
++			MX93_PAD_SD3_CLK__USDHC3_CLK		0x1582
++			MX93_PAD_SD3_CMD__USDHC3_CMD		0x40001382
++			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x40001382
++			MX93_PAD_SD3_DATA1__USDHC3_DATA1	0x40001382
++			MX93_PAD_SD3_DATA2__USDHC3_DATA2	0x40001382
++			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x40001382
++		>;
++	};
++
++	/* need to config the SION for data and cmd pad, refer to ERR052021 */
++	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
++		fsl,pins = <
++			MX93_PAD_SD3_CLK__USDHC3_CLK		0x158e
++			MX93_PAD_SD3_CMD__USDHC3_CMD		0x4000138e
++			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x4000138e
++			MX93_PAD_SD3_DATA1__USDHC3_DATA1	0x4000138e
++			MX93_PAD_SD3_DATA2__USDHC3_DATA2	0x4000138e
++			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x4000138e
++		>;
++	};
++
++	/* need to config the SION for data and cmd pad, refer to ERR052021 */
++	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
++		fsl,pins = <
++			MX93_PAD_SD3_CLK__USDHC3_CLK		0x15fe
++			MX93_PAD_SD3_CMD__USDHC3_CMD		0x400013fe
++			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x400013fe
++			MX93_PAD_SD3_DATA1__USDHC3_DATA1	0x400013fe
++			MX93_PAD_SD3_DATA2__USDHC3_DATA2	0x400013fe
++			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x400013fe
++		>;
++	};
++
++	pinctrl_usdhc3_sleep: usdhc3grpsleepgrp {
++		fsl,pins = <
++			MX93_PAD_SD3_CLK__GPIO3_IO20		0x31e
++			MX93_PAD_SD3_CMD__GPIO3_IO21		0x31e
++			MX93_PAD_SD3_DATA0__GPIO3_IO22		0x31e
++			MX93_PAD_SD3_DATA1__GPIO3_IO23		0x31e
++			MX93_PAD_SD3_DATA2__GPIO3_IO24		0x31e
++			MX93_PAD_SD3_DATA3__GPIO3_IO25		0x31e
++		>;
++	};
++
+ 	pinctrl_wdog: wdoggrp {
+ 		fsl,pins = <
+ 			MX93_PAD_WDOG_ANY__WDOG1_WDOG_ANY	0x31e
+
+---
+base-commit: 8ce368ca61310f425012fea4549d2b6ad0c5c54c
+change-id: 20260114-imx93_devices-a98e116463b3
+
+Best regards,
 -- 
-2.34.1
+Francesco Valla <francesco@valla.it>
 
