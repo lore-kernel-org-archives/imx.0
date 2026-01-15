@@ -1,124 +1,198 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69F33A0E99
-	for <imx@lists.linux.dev>; Thu, 15 Jan 2026 13:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4522919E968
+	for <imx@lists.linux.dev>; Thu, 15 Jan 2026 14:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768484401; cv=none; b=mAb74LGN8NJjarroO1GJ2usKlb4rsnsS2W/b4LCvigum+2OxhIuSp3RC9XOIPJsBFih5pr2TIqnaXKpZR/JUuMsCOY+nU37TnqRXimOzaZxwGak6tFQR4FiybNsCU1kOM2ZbQHvYD7FQUxqQSW9Ah0nwp9dPFTFmG1kKrWUQCOM=
+	t=1768486345; cv=none; b=Inzu/sTCwEWsra7TsGsO0WNjckVrSrG1frJyERsys+DJJ3vfdWKmbPAa/Wvtui7AcBgJA+O3C55AzCfWHYxC3eKLogTDZxWrwgVz3cmh+cQ0veb2/SnxzDzBWJIz+D4No0VUa5egX8BOsxCfmmGRzX6nAqmjHR8PgS148/PAJZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768484401; c=relaxed/simple;
-	bh=mrAbzAWxr60dAFBMUskJrOYI7tum+hisLhbJRq6FwWM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m0Q+5rqu8q6EzdWrXAG23+/R5UtIGjKukT62/kf5TGHcLY6et26YJHTn2uAMkiXQS4r/teqNSRY73N1hTfQClqbGKQOeNb+ugaCyBMCotB0lg+suXe7b8KAcRpZb057TF+ljhCCKDrWdntZGN6z/3EIgtfXJwp1iTc9NkFyYhYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M3V7Rawm; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M3V7Rawm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946A7C19423
-	for <imx@lists.linux.dev>; Thu, 15 Jan 2026 13:40:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768484400;
-	bh=mrAbzAWxr60dAFBMUskJrOYI7tum+hisLhbJRq6FwWM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=M3V7RawmkDE9Q3K8qh2nKPqr4Bimpz1iGHUYBhDh3Pfz6xWHu1tluLCoIFDgibWDN
-	 Zw+dxpP1SZibCrhI2EEOeCxwUcaMr0EHwlgiy5f11S3yY7e5PdJ92RV0Aj6nffrP79
-	 7sZ1+s5l1qAE2CHT4f9insjBWEYfBfL4nX1LUbpg99WKuQk0NYtcv3/Nwi7VzAK868
-	 6pJPQDnF/MfwFdUkzgiKJkKhtg76+kvqkvcHp1bxWRGm+M0/NPODR0KAvPqGI01C4/
-	 HshGyd9uTJ6zaW5GYbsVdvDuWGKDcqjU8AB8shveedXea1Hzht8snPFwiDg4U5/3KY
-	 eGlxDlrhhHCXQ==
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7cfd10887d5so398899a34.1
-        for <imx@lists.linux.dev>; Thu, 15 Jan 2026 05:40:00 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVnu7NThKQoYYLEe9VJ56DH3u8JlrfPt0sNRkAnkAiJ7sEJ0mocUhM/S4v7+iPqjrJSEGQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxtJQk8IA+XTwuZMErAeiDsuQXXCxC0BBdBMqaeykY/v74kHtny
-	LDIGreUK1hzm6Y1YNBrJ23TSF5Bt1hQk1iV8XN9Jh8mJTR4JYBWNyObdrWSx69/giQSReCfuh3T
-	y+XPR5hTdKyGdNrEo1tec1STUfBetB0g=
-X-Received: by 2002:a05:6820:229b:b0:660:fd8d:9567 with SMTP id
- 006d021491bc7-661006caf58mr4486708eaf.42.1768484394669; Thu, 15 Jan 2026
- 05:39:54 -0800 (PST)
+	s=arc-20240116; t=1768486345; c=relaxed/simple;
+	bh=eggpPxTN7RjoQpqxP9jBcHBsnHBk/37W4iSE2x3kKgk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yqly+8PYqXU3NIUmXvSazwXyLO+1YVf8UkbEqtpRzmVxjX2/EAKg/93OdhQP97EMqdwQDZmaa3gbXeMfw+PlXefH3fPrT7vqE/3MiQ8adEeYR7wT5LIPTE1vExRaYapmXb4bNxN4AZEB8U8AbvSgqaRegX5DxXvytLG/WUbc8dQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vgO4v-0007fo-B1; Thu, 15 Jan 2026 15:12:01 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vgO4u-000lR8-2N;
+	Thu, 15 Jan 2026 15:12:00 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vgO4t-00DdOA-2k;
+	Thu, 15 Jan 2026 15:11:59 +0100
+Date: Thu, 15 Jan 2026 15:11:59 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Liu Ying <victor.liu@nxp.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v8 2/3] drm/bridge: imx: Add i.MX93 parallel display
+ format configuration support
+Message-ID: <20260115141159.7wepnmnvnhd4la3s@pengutronix.de>
+References: <20260113-v6-18-topic-imx93-parallel-display-v8-0-4abccdc473a5@pengutronix.de>
+ <20260113-v6-18-topic-imx93-parallel-display-v8-2-4abccdc473a5@pengutronix.de>
+ <DFO5LHWDD7S2.19P595M4CWIPI@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <2256082.irdbgypaU6@rafael.j.wysocki> <CAJZ5v0gdj6Oe=LSJX8+6JbxTt42W3RkabLDWh=VqEkjUvAWxow@mail.gmail.com>
- <aWjbPpkDd_SORcfC@e142607>
-In-Reply-To: <aWjbPpkDd_SORcfC@e142607>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 15 Jan 2026 14:39:43 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0i+uXsCRk7kxLb8t+96k-SOJY-wEwNvYBXTdMKWSCdR9w@mail.gmail.com>
-X-Gm-Features: AZwV_QjYJ0BHmX3LmoNRKoKvX64bvSOuZN1goYZbg_jJwN3xZNHgDMdAG5htFnI
-Message-ID: <CAJZ5v0i+uXsCRk7kxLb8t+96k-SOJY-wEwNvYBXTdMKWSCdR9w@mail.gmail.com>
-Subject: Re: [RESEND][PATCH v1] drm: Discard pm_runtime_put() return value
-To: Liviu Dudau <liviu.dudau@arm.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux PM <linux-pm@vger.kernel.org>, imx@lists.linux.dev, 
-	LKML <linux-kernel@vger.kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	Brian Norris <briannorris@chromium.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Dave Stevenson <dave.stevenson@raspberrypi.com>, 
-	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DFO5LHWDD7S2.19P595M4CWIPI@bootlin.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Thu, Jan 15, 2026 at 1:20=E2=80=AFPM Liviu Dudau <liviu.dudau@arm.com> w=
-rote:
->
-> On Wed, Jan 14, 2026 at 01:03:25PM +0100, Rafael J. Wysocki wrote:
-> > On Thu, Jan 8, 2026 at 4:38=E2=80=AFPM Rafael J. Wysocki <rafael@kernel=
-.org> wrote:
-> > >
-> > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > >
-> > > Multiple DRM drivers use the pm_runtime_put() return value for printi=
-ng
-> > > debug or even error messages and all of those messages are at least
-> > > somewhat misleading.
-> > >
-> > > Returning an error code from pm_runtime_put() merely means that it ha=
-s
-> > > not queued up a work item to check whether or not the device can be
-> > > suspended and there are many perfectly valid situations in which that
-> > > can happen, like after writing "on" to the devices' runtime PM "contr=
-ol"
-> > > attribute in sysfs for one example.  It also happens when the kernel
-> > > has been configured with CONFIG_PM unset.
-> > >
-> > > For this reason, modify all of those drivers to simply discard the
-> > > pm_runtime_put() return value which is what they should be doing.
-> > >
-> > > This will facilitate a planned change of the pm_runtime_put() return
-> > > type to void in the future.
-> > >
-> > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > Acked-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> > > Acked-by: Liviu Dudau <liviu.dudau@arm.com>
-> > > ---
-> > >
-> > > This patch is requisite for converting pm_runtime_put() into a void
-> > > function.
-> > >
-> > > If you decide to pick it up, please let me know.
-> > >
-> > > Otherwise, an ACK or equivalent will be appreciated, but also the lac=
-k
-> > > of specific criticism will be eventually regarded as consent.
-> > >
-> > > Originally posted here:
-> > >
-> > > https://lore.kernel.org/linux-pm/3045480.e9J7NaK4W3@rafael.j.wysocki/
+Hi Luca,
+
+On 26-01-14, Luca Ceresoli wrote:
+> Hello Marco, Liu,
+> 
+> On Tue Jan 13, 2026 at 8:07 PM CET, Marco Felsch wrote:
+> > From: Liu Ying <victor.liu@nxp.com>
 > >
-> > This is the last patch from the "discard pm_runtime_put() return
-> > values" lot that has not been applied yet, AFAICS, so this is the last
-> > call for objections or concerns related to it.
->
-> I think you can go ahead and apply it, I don't see how the imx8 driver wi=
-ll
-> be affected by the lack of debug messages.
+> > NXP i.MX93 mediamix blk-ctrl contains one DISPLAY_MUX register which
+> > configures parallel display format by using the "PARALLEL_DISP_FORMAT"
+> > field. Add a DRM bridge driver to support the display format configuration.
+> >
+> > Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> > [m.felsch@pengutronix.de: port to v6.19-rc1]
+> > [m.felsch@pengutronix.de: add review feedback (Alexander)]
+> > [m.felsch@pengutronix.de: fix to short Kconfig description (checkpath)]
+> > [m.felsch@pengutronix.de: use "GPL" instead of "GPL v2" (checkpatch)]
+> > [m.felsch@pengutronix.de: add bus-width support]
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> 
+> I'm sorry to be reviewing at v8 only, I hadn't noticed this series before.
+> 
+> > ---
+> >  drivers/gpu/drm/bridge/imx/Kconfig      |  11 ++
+> >  drivers/gpu/drm/bridge/imx/Makefile     |   1 +
+> >  drivers/gpu/drm/bridge/imx/imx93-pdfc.c | 221 ++++++++++++++++++++++++++++++++
+> >  3 files changed, 233 insertions(+)
+> >
+> > diff --git a/drivers/gpu/drm/bridge/imx/Kconfig b/drivers/gpu/drm/bridge/imx/Kconfig
+> > index b9028a5e5a065c3237b404111d8df57e8e017f9d..181ee87bc0f9f65ee0b6e5edbb48ba808dfbb71f 100644
+> > --- a/drivers/gpu/drm/bridge/imx/Kconfig
+> > +++ b/drivers/gpu/drm/bridge/imx/Kconfig
+> > @@ -99,4 +99,15 @@ config DRM_IMX93_MIPI_DSI
+> >  	  Choose this to enable MIPI DSI controller found in Freescale i.MX93
+> >  	  processor.
+> >
+> > +config DRM_IMX93_PARALLEL_DISP_FMT_CONFIG
+> > +	tristate "NXP i.MX91/i.MX93 parallel display format configuration"
+> 
+> Minor nit: this is a driver for a device, so calling it "configuration"
+> seems weird. From the code it looks like a device converting the color
+> format, so what about "NXP i.MX91/i.MX93 parallel display format
+> converter"?
 
-Applied then, thanks!
+works for me.
+
+> 
+> [...]
+> 
+> > +static int imx93_pdfc_bridge_probe(struct platform_device *pdev)
+> > +{
+> > +	struct device *dev = &pdev->dev;
+> > +	struct imx93_pdfc *pdfc;
+> > +	struct device_node *ep;
+> > +	int err;
+> > +
+> > +	pdfc = devm_drm_bridge_alloc(dev, struct imx93_pdfc, bridge, &funcs);
+> > +	if (IS_ERR(pdfc))
+> > +		return PTR_ERR(pdfc);
+> > +
+> > +	pdfc->regmap = syscon_node_to_regmap(dev->of_node->parent);
+> > +	if (IS_ERR(pdfc->regmap))
+> > +		return dev_err_probe(dev, PTR_ERR(pdfc->regmap),
+> > +				     "failed to get regmap\n");
+> > +
+> > +	/* No limits per default */
+> > +	pdfc->phy_bus_width = 24;
+> > +
+> > +	/* Get output ep (port1/endpoint) */
+> > +	ep = of_graph_get_endpoint_by_regs(dev->of_node, 1, -1);
+> > +	if (ep) {
+> > +		err = of_property_read_u32(ep, "bus-width", &pdfc->phy_bus_width);
+> > +		of_node_put(ep);
+> > +
+> > +		/* bus-width is optional but it must have valid data if present */
+> > +		if (err && err != -EINVAL)
+> > +			return dev_err_probe(dev, err,
+> > +					     "failed to query bus-width\n");
+> > +	}
+> > +
+> > +	pdfc->next_bridge = devm_drm_of_get_bridge(dev, dev->of_node, 1, 0);
+> > +	if (IS_ERR(pdfc->next_bridge))
+> > +		return dev_err_probe(dev, PTR_ERR(pdfc->next_bridge),
+> > +				     "failed to get next bridge\n");
+> > +
+> > +	pdfc->dev = dev;
+> > +	pdfc->bridge.driver_private = pdfc;
+> 
+> pdfc embeds the struct drm_bridge, which is the mandatory design since
+> devm_drm_bridge_alloc() got added, so driver_private shouldn't be needed
+> anymore. Most drivers have a bridge_to_foo() inline function using
+> component_of() to get the private struct from the drm_bridge pointer,
+> e.g. [0] and [1].
+> 
+> [0] https://elixir.bootlin.com/linux/v6.18.5/source/drivers/gpu/drm/bridge/simple-bridge.c#L39-L43
+> [1] https://elixir.bootlin.com/linux/v6.18.5/source/drivers/gpu/drm/bridge/ti-sn65dsi83.c#L287-L290
+> 
+> A short discussion took place a few months ago about driver_private, kind
+> of suggesting it might be removed after all drivers have switched to
+> devm_drm_bridge_alloc(). I think we should at least not introduce new users
+> of driver_private at least.
+
+Sure, I wasn't aware that driver_private is going to be removed.
+
+Regards,
+  Marco
+
+> 
+> Best regards,
+> Luca
+> 
+> --
+> Luca Ceresoli, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+> 
+
+-- 
+#gernperDu 
+#CallMeByMyFirstName
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
