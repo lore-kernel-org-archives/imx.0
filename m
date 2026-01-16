@@ -1,157 +1,138 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011000.outbound.protection.outlook.com [52.101.70.0])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7BB3128B6
-	for <imx@lists.linux.dev>; Fri, 16 Jan 2026 09:17:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA9F31AAAB
+	for <imx@lists.linux.dev>; Fri, 16 Jan 2026 09:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768555035; cv=fail; b=n/adMGJhdxwfuljucoQgzVm6Z5LEg65sKRrviOQTSbOZXhjSoSAmjxdszmiv9l+XV7KabqTgtUadFUbbuAZKF6HOz6phN8ZpE98D1x0raTEV5xUHiUsBEj6NHx6DwgbbiGOOqhG7N/mvGYtS12skWg4dB7jVZgcvPabH9mPC3Y8=
+	t=1768555518; cv=pass; b=ml3AcnevseXVkekh64FvmHRyqyowuWQ/eFmLPj/kTIcJXWssRJZscO6aSNlqQ7vEGMn+LiTJtXTksk7CqZg8Dw0tDkZUK1+9NQhAMeHQFpIXyds6pUSSStOiMaME8ZIFApoG6OU/tqK7eWo3GfG1UYMsoH1IorZ2eEI9hGsD9ok=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768555035; c=relaxed/simple;
-	bh=zenxyCnrk2PkVimw63TYeDFyU5E/XODwKaV/Rk6O6wk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pzJQuZ4XTFysohgzn6+fm6NWQpr8Nc/vNarAMORnZX8enhe+37o8NJE7+aGi6GeXthmnQR/fHPEUKaH4al14r4xdKO4c16rkZZ3alTQ/I3yMNSfF1rfSWF95hxZAo6mXlV/RWDj9Jx/TAJdhsA2XtWRGdrHDCS6I7Z2gxtUwUyg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com.cn; spf=fail smtp.mailfrom=leica-geosystems.com.cn; dkim=pass (1024-bit key) header.d=leica-geosystems.com.cn header.i=@leica-geosystems.com.cn header.b=1Dz9CtEi; arc=fail smtp.client-ip=52.101.70.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=leica-geosystems.com.cn
+	s=arc-20240116; t=1768555518; c=relaxed/simple;
+	bh=2kXTc6rtb1n8msxIhzkYUgOALIZz59Pq2CxmSyGP5mU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ffoBI95yB6r3V3iZd4FutYjtbjeCw+Y2hhwuKyR/UagFyrJjaFZSIMCTlj9nliFEwf0HT8G+i9FyR+xhZE2kX4TfRnH6kjDwT6q/ELk9xeUBKHcBW0J4T6mWX19BCm/D+gZLgdTz0u2CDTzxhoay/pLZk9j0OJFV/QykWKZLtbQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WPdd/WQ5; arc=pass smtp.client-ip=74.125.82.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=leica-geosystems.com.cn header.i=@leica-geosystems.com.cn header.b="1Dz9CtEi"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hMqPudI6O4HMWv/zaO/NndgS/ax7qYp/odleQpzhFvKIuIbUn4sWiu8eMZxr9UT0a1FkcNIca1n9bb7zv0af48+NWAzUR7/khsEGygzU72EGU3coLKcOP1SYOJZaX0+kDhx1n1KhDtcWamOLsJJ0k/UuxLjAvXNhfZ6ZlBHmF3i4rlEzLGIijPjNnqR1h8L/5+3fo8Q2NW9Ksds9GyBVNTyKY9Io78s70XxY+qcnpJdhu+/xGXyAw56JFQKoHzIF5Qnrm4YJ273+/gNSsUvEFdkzsXjSL+h+X/H5nwR+U/qKezKzdcWbKljFFfsDcVxV9cEqtbD5xaU0vyFLHEHGLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YvOLKgBt0iIkqmp00gos0etEo79aDgCs4FvkScVEjIQ=;
- b=wR+WTvUTEj+jMU5zItpo09s91PXqAXvTgTtp3NgSRyUAAuHdGTF2Pr4Kj29tzDJXriYOYLGbWW11i+8Qr5A8tTQuN2km65y2RUwW/ijH9rI3gGMdK9tBkIVMU5X2moiWtwj8KYSPtHU0vWwpn1wzSpfOvwykCHySqkfIbwjzBvre8o3z0uXuJusUueSO0OEFMrgS+BXxpqCaMVnSupnqTrgRxF5mIrd1XfGiHK6UEeIybiMUBxTm0yHvfVd6oHf9+K5PhL212KWJSXOuLp1H/mM4Yl/5KkgZ6O6UJJmjemXqSmx7zWg+30jhizoMfPyDt3ANZS/bnv2Gd6VxJexOWA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 193.8.40.99) smtp.rcpttodomain=lists.linux.dev
- smtp.mailfrom=leica-geosystems.com.cn; dmarc=pass (p=reject sp=reject
- pct=100) action=none header.from=leica-geosystems.com.cn; dkim=none (message
- not signed); arc=none (0)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WPdd/WQ5"
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-1233702afd3so2305430c88.0
+        for <imx@lists.linux.dev>; Fri, 16 Jan 2026 01:25:17 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768555517; cv=none;
+        d=google.com; s=arc-20240605;
+        b=U8emzCAQBclRZ3p06eNWVkkB3KrbSC8BBzFYJM0Q2yhHfvh+uumhD/j4SeAbqruYIu
+         7I+kAUxd/M5GCe+wnaBSE6EPylVzt8aIY9qZLQFjSWyuFSsf9ShGxbYZqVAxqG7u7TXP
+         +j4BJrVELyeqYlSIsy13Ermqp2XIvW4SFb2s/To599XLdNO/Zz38Y+r1ppwwhb/NccGy
+         /AlT8tC7Y0L3VVuqWox6vRgco1llLWjmrzYyPQWk4i2lRfCyMlGQv6vVusTqJN40NCbX
+         66HXN2D952Z8BHla2EzhJTDBJpTZWXmggOSjo2Pt1EFFyhPygkLfmIVjBua6gQQeCoSB
+         K0wQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1gVkLjFWXdsLXhZXMgSkslb6Gc2W6vyzdGMqF3LNrLk=;
+        fh=wBKLSY1Bdr+igaGrlKWybWG+qeKL4mombDEgAYC5AKA=;
+        b=XDNIFOOfoIfxDsA2fzTRDfDbiStKQ4/MK+rk7j2OQx3+kkjiQaLaIo9NpiU7eovqSP
+         Hw8hzhqybq7epl0Oy26gD0fFHvndRVTzd7jv77nRveNdh0BWDH1vl3s3L7ywPwqt7mhI
+         VYj7FvYC42F+Rr+2Pt/QJtaJtLWIfolc2zdq3Mbmf4RagR0GEf1kVMZIVGHZ+oBCie/s
+         2HaFM3pi+oEeE5ER4yWi9INr4fHp+8Mu+FCafyKvmmEX0zuoi8NQjYqkhtBnVhucTFfk
+         yCHK+Z+bpUrSEBNgnibRBwFwJ5vj4WefKrzwQ0nWUTj3/po5de2wTy88GMn+S/tLwTIv
+         nhZQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=leica-geosystems.com.cn; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YvOLKgBt0iIkqmp00gos0etEo79aDgCs4FvkScVEjIQ=;
- b=1Dz9CtEiPvUXqH/Je0XMKHcVPKLPO5pO6rQXa6TjsLtr5XznKwbHn85+OUBO/LyvMou/5mpPBkK++JJ0EZTn7Rc5aPvXPZyGK9ybXBmbdDOQn2tkr0YcABBLfjIme8cH/MKhU5fH/v6qK3ZUPji5p4OFj7UPV+dDxLC4foHW5uY=
-Received: from AS4P189CA0033.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:5dd::6)
- by GVUPR06MB10753.eurprd06.prod.outlook.com (2603:10a6:150:32d::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Fri, 16 Jan
- 2026 09:17:07 +0000
-Received: from AMS0EPF00000199.eurprd05.prod.outlook.com
- (2603:10a6:20b:5dd:cafe::8f) by AS4P189CA0033.outlook.office365.com
- (2603:10a6:20b:5dd::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.8 via Frontend Transport; Fri,
- 16 Jan 2026 09:17:04 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.99)
- smtp.mailfrom=leica-geosystems.com.cn; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=leica-geosystems.com.cn;
-Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com.cn
- designates 193.8.40.99 as permitted sender) receiver=protection.outlook.com;
- client-ip=193.8.40.99; helo=hexagon.com; pr=C
-Received: from hexagon.com (193.8.40.99) by
- AMS0EPF00000199.mail.protection.outlook.com (10.167.16.245) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9542.4 via Frontend Transport; Fri, 16 Jan 2026 09:17:06 +0000
-Received: from aherlnxbspsrv01.lgs-net.com ([10.61.228.61]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
-	 Fri, 16 Jan 2026 10:17:06 +0100
-From: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-To: o.rempel@pengutronix.de,
-	kernel@pengutronix.de,
-	andi.shyti@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	festevam@gmail.com,
-	linux-i2c@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: bsp-development.geo@leica-geosystems.com,
-	LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-Subject: [PATCH V2 0/2] i2c: imx: Fix block read handling for invalid length
-Date: Fri, 16 Jan 2026 09:17:02 +0000
-Message-ID: <20260116091704.3399142-1-Qing-wu.Li@leica-geosystems.com.cn>
-X-Mailer: git-send-email 2.43.0
+        d=gmail.com; s=20230601; t=1768555517; x=1769160317; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1gVkLjFWXdsLXhZXMgSkslb6Gc2W6vyzdGMqF3LNrLk=;
+        b=WPdd/WQ57EL/QpICqnmwuhl4vf9SC1aCrJ7KWfigjLw383OU1LzpNunRCjGhbCYamc
+         I4yELT0C/7vSwHtaL0tPRTTIlyA3KfGI22esghG1kDzM6yOII5Rq2sIz/LUpjsKFrH6j
+         lJZ0WX+iaX7a+RCNNRoftQKyBv6pfZ6NPvtuRPyS2OXrIYngNLJ3yIP9DD30DTWgt6uo
+         Kv1NOL87rUAX944+GzFYKTsO4XEGW+1n/DRaDQIj7lvZrOrkgLAO/HJ+Nrucw+2+2tli
+         MaiXhtpSFE33FCjODkErXpUmocO/XYvw7Gu4+NY74i1bm/hPOQ6ZPmnPXqAiG+BF7dEF
+         ss6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768555517; x=1769160317;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1gVkLjFWXdsLXhZXMgSkslb6Gc2W6vyzdGMqF3LNrLk=;
+        b=XGlUDWK3u9BNbbB3OUQcEzxcy00371Lhmrr/y9YKmYjJL+yx4uOu9598oxN17OBTfJ
+         rKSA2qQKEYS4HjwOU3xuDCoAhePzpUDJd0Hj7OLMpEu+8WXIT73qDIj35t4nLGG2Bos+
+         zieQoEMp0mW1IyY6zqCwuSdgBo7LBhyHqO16mOP2VeiQmh7so/RgOnLyuqqesJt6LsQK
+         LaHBFzHoNCaNPlRDYshRcp2xsLdqQGw4cWoQLj6/LUUYSKOwOF+AKRcsuyHEpUrQWqwd
+         +YwrpVMphKq1N2y93JxZu+dajAr8pIbxl1iH9mdhnzN426RATSsW7+y5d/gp3Y13Xdyw
+         4D4w==
+X-Forwarded-Encrypted: i=1; AJvYcCXA2yJovGHI18Ja5kquYvaLW/wlTX3U2+Tw5yDZLmZiIbsZbDvR2gh/Pzq4AkDrji4r06I=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy1+U6/uKiAUgpq+HBEa3QjmsUEGjie5gLbi7OAVF84a4w+9zSa
+	VRyEHVgkk70m6yAlU8yZris5GYQLZU2ahVY7JNR+CP0SLMVn8RxiJA3M+/u4TCtehhy30gRogIx
+	+yB260wL1SX1ZRW1X8doRxR9CTz67bWc=
+X-Gm-Gg: AY/fxX6AjYaSvhHepnSBKWJyXV/Uu38odaml0g1AVJAxq3lYsRXS+DiF7hqPconIXfK
+	LxF2IioBGXsF9HSmBcnBiXojxgr3G4N1RwLkB4HBq6Pikkl1QkScPa6avvzkMMmVpRGSA55+Kh/
+	fE03AAMPDluqnqkmkeqV4xYUY6iELv91G07Fs/vyYhvgkblpVqdXdIlyh9LfxekCBisTmkUYvJ7
+	pIVm8585SnqZ4ZFuySSDwpKvVthOf+pkI8oBTXIIG8YrkSg9RGFf0faLZoSVVjl66wEXy/1w2nV
+	e4qRce0lc8QTrvh5lqDAww35IDtm5oY2k3wx2kBBPD19jzk4AtN6pDDW2Ch6a3ipAqbmRrAr1DH
+	1usurI15gM1Q6GxDvLPJ0
+X-Received: by 2002:a05:7022:128e:b0:11f:3483:bbb2 with SMTP id
+ a92af1059eb24-1244a72e2c6mr2287226c88.12.1768555516713; Fri, 16 Jan 2026
+ 01:25:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 16 Jan 2026 09:17:06.0386 (UTC) FILETIME=[E260FB20:01DC86C8]
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS0EPF00000199:EE_|GVUPR06MB10753:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 46448750-2b2e-4401-f4b2-08de54e004f8
-X-SET-LOWER-SCL-SCANNER: YES
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700013|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pBr2kiPCr1j9f76wVTBMwSP06a0lJDpZWGHIMdlZAwmyu5wD4qog0YeMO0JF?=
- =?us-ascii?Q?N/6VuWqO78tfiSpJdO2L90PdALhq69t0EuqHMIMLbwrNlUKu7j8BlSZP1gQT?=
- =?us-ascii?Q?I8xbKwn8eF1fe7a2nAE3u8DmcMAWZS7fez1JWQc0K+Mw9yUpYgj89R+qKdHf?=
- =?us-ascii?Q?tnvogL5MIlK4KxP5ywPkMkDujoCfYtfCRRaQREtJUSAMH1W7F45SMUh0tlgl?=
- =?us-ascii?Q?9qzWTgxJY2j7pXsh1/jMjKmd1rChBfjuKXRIZBGA9ZGcl1GHcJjjMRm5TKUT?=
- =?us-ascii?Q?gNurNhH2jYFa0CW/iKHPJPqtuBPx6CKzzcjl1csOtsSHBGl0UGJLxMZzLtyw?=
- =?us-ascii?Q?5B7T/s0l1qAWssPRHvjpBSioB72uDCc6Kh5OIViXogq7aN3IXMAj5BV4WJnH?=
- =?us-ascii?Q?XGgu2GCL6+FtHbMIIaSOje3wWvALfrKDyqS1jKaRBL7RRLSvSr3nddz8Hatf?=
- =?us-ascii?Q?4LlbJiJaec3iNLtWQxYV2QuzfXJxciz6tnK0/ecFhCw+hV6zN01MaZXR2eN4?=
- =?us-ascii?Q?rfiQikyp7bZNClDjOAYhoashF4g9yOjxyK3VpDMbCJhecovtPLMWDUQUfZ4R?=
- =?us-ascii?Q?AfkEtf+MxXWFysAipvNRFoF/O/ilqs3AGaeRpBZpXbKjZ3TNVADBqoaEHvdI?=
- =?us-ascii?Q?AAadz0T8mJkHbnb6DvtLEM8AJc/6VCP1OtjKIn4pIy+inYCxlI44Q4K9Acz7?=
- =?us-ascii?Q?QiISK/n8gDSVKAGsjBnNI8mm74l7W1Ti4v4gfGIsurv0c+bw5sD1XX7bPkNM?=
- =?us-ascii?Q?DYkEK8Boc71RUI62ZHqPmcf41stgCR4GUMYswIvait5ynVAopUo0esL0YsFV?=
- =?us-ascii?Q?AanqEZzX9l69LayaGFIqLnjJBhV1SiJ4WMEwQWdaapeEEDNgaKPUaumJgM5W?=
- =?us-ascii?Q?etuNSl01StgfU5Sj/qWsX7RdF1DPsX3REj1jTXEzYnt1E3L4UiI95nUgPRZE?=
- =?us-ascii?Q?ohZxqHQJGg55gpvUpzZDkGe8KfYU+tkP3o7f4v9NImFj207dSojKpkgVVrWB?=
- =?us-ascii?Q?+wSF4CifemZadXJvRVemCMgw1q5pxu/4yhs4X1W/e3cAux7NBbpJI24IElGY?=
- =?us-ascii?Q?QaPy1MoERr0nNnyWFlRnPrEbcJSJ9/y2QGOmq9v0G7yN6dvBV+DPGOhRirTU?=
- =?us-ascii?Q?mAcIp7cx/ssw1NGC0D7VL3R4zlFpsWBZN5IYHJl77dL2QJ/gXvEZMjzdSDwN?=
- =?us-ascii?Q?lw2qzPIb461U/f9NEytZkcYmu/qVo1PYcXilyvS20g3L1sWuVyyoE+2GzTAV?=
- =?us-ascii?Q?EeNiu2ril3TbVplDsaY4w612OFsRsaB9xXRltONu9lx1PL6GDr4TGY+TzPyw?=
- =?us-ascii?Q?LWm+FxAUUmIp6F3hySIVZKxVXWC5kozKHeFpd9VSLRzi7+DcivxhpioIDvMi?=
- =?us-ascii?Q?wZoAGnihJfJp7UPnkLoL0lkBDLnecjFmQoUj7xytGskvQyRl5KY44ccpqkF3?=
- =?us-ascii?Q?dHaU+jtSlk22ckbVzAUhs+4iaZn1nApDPjaowu1CAcf9oq/qQ1MR3z9KGGiG?=
- =?us-ascii?Q?atWvNc/ijetEPCIBbv91JGBDCGB5MNDOT5hQR+trEn7FMmEHqUb4cqBx9X+z?=
- =?us-ascii?Q?gl9YkoPJXTObUi8JHdqNUif06yJkKKdH2VyBtWwE5xK3u3udCqs7UjQjmva2?=
- =?us-ascii?Q?3Hi5Dii3QCj/LUSygdZCf3ZdV4EJLFobDJy3mAkfTo+SVXAPx5BRpo7GTs6D?=
- =?us-ascii?Q?pDZ6EAdK+5eaVY5pUJi6M9eozpA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: leica-geosystems.com.cn
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 09:17:06.5661
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 46448750-2b2e-4401-f4b2-08de54e004f8
-X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.99];Helo=[hexagon.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS0EPF00000199.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVUPR06MB10753
+References: <20260116091704.3399142-1-Qing-wu.Li@leica-geosystems.com.cn> <20260116091704.3399142-3-Qing-wu.Li@leica-geosystems.com.cn>
+In-Reply-To: <20260116091704.3399142-3-Qing-wu.Li@leica-geosystems.com.cn>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Fri, 16 Jan 2026 11:27:58 +0200
+X-Gm-Features: AZwV_Qhvgz-kbrRItIaZk0_yMWKQZjkC3dhXXrMaQSnI1xaVYEnm76i5Ds3FryY
+Message-ID: <CAEnQRZAz_-S29L66a_ySxGAX-SKAeAvHfKqjanLsGNCZ7_zsAw@mail.gmail.com>
+Subject: Re: [PATCH V2 2/2] i2c: imx: add abort path for invalid block length
+To: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com, 
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	bsp-development.geo@leica-geosystems.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This series fixes a crash and bus lockup when SMBus block read operations
-encounter invalid length values (zero or greater than I2C_SMBUS_BLOCK_MAX).
+On Fri, Jan 16, 2026 at 11:19=E2=80=AFAM LI Qingwu
+<Qing-wu.Li@leica-geosystems.com.cn> wrote:
+>
+> When a block read returns an invalid length (0 or >I2C_SMBUS_BLOCK_MAX),
+> the current implementation leaves the bus hanging with SDA held low,
+> blocking all further I2C communication on the bus.
+>
+> Add a dedicated IMX_I2C_STATE_READ_BLOCK_DATA_ABORT state and ISR
+> handler to properly terminate the transfer when an invalid block length
+> is detected:
+>   - Set TXAK and receive the next byte with NACK
+>   - On the following interrupt, generate a Stop condition
+>   - Read and discard the final byte
+>   - Report -EPROTO to the caller
+>
+> This ensures the bus is released correctly and allows other devices on
+> the bus to continue operating normally.
+>
+> Tested on i.MX 8M Plus with continuous block read operations.
+>
+> Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+> ---
+>  drivers/i2c/busses/i2c-imx.c | 55 ++++++++++++++++++++++++++++++++++--
+>  1 file changed, 53 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> index 85f554044cf1..71457dbffb7a 100644
+> --- a/drivers/i2c/busses/i2c-imx.c
+> +++ b/drivers/i2c/busses/i2c-imx.c
+> @@ -233,6 +233,7 @@ enum imx_i2c_state {
+>         IMX_I2C_STATE_READ_CONTINUE,
+>         IMX_I2C_STATE_READ_BLOCK_DATA,
+>         IMX_I2C_STATE_READ_BLOCK_DATA_LEN,
+> +       IMX_I2C_STATE_READ_BLOCK_DATA_ABORT
 
-Both patches have been tested on i.MX 8M Plus with continuous block read
-operations from battery and keyboard devices sharing the same I2C bus.
-
-Changes in v2:
-  - Split into two patches for clearer separation of concerns
-  - Add detailed comments with reference manual citations
-  - Implement abort handling in a dedicated ISR state and handler function
-  - Remove modifications to i2c_imx_stop() to avoid affecting normal stop
-
-LI Qingwu (2):
-  i2c: imx: preserve error state in block data length handler
-  i2c: imx: add abort path for invalid block length
-
- drivers/i2c/busses/i2c-imx.c | 58 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 55 insertions(+), 3 deletions(-)
-
--- 
-2.43.0
-
+Please add the comma at the end of the last line so that we still have
+nice diffs
+next time we add an element at the end of the enum.
