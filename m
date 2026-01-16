@@ -1,116 +1,151 @@
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26011357A37
-	for <imx@lists.linux.dev>; Fri, 16 Jan 2026 09:37:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BDF3587B8
+	for <imx@lists.linux.dev>; Fri, 16 Jan 2026 09:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768556226; cv=none; b=CeTilXf64ufIBZ5nufU1len9lutVepCe26uI8JEr3XEK+QCjRl4G4rH6k9ZsLT6vvHHPGs14ZJo76suNRab/JFlenv7BU05elO+yoYlvh+uLa2vt1WWQrhIZ7+ewdcur+Orhq8IOrnPqI/PzvSNryUtbFHUCklHeLrNTr8jGHK8=
+	t=1768556577; cv=none; b=VGqA9EwxE6HbIN5Vrud69cuFvdSYWMbExW8ksknU3rxv3gj1Kayhyxiiy/2eUsvRQLrxVD/RsNWCVGNschURqaDOf9WKsbIDLJDn24aIQC8UFp3+NM4xOB+NFNHRvEOOWbCnNAS5UZ96Wuw1FQl0oEFprvDUPyO5U+tMH2SMdx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768556226; c=relaxed/simple;
-	bh=veSWyZPxgBl3O2bkm46uT0hLgcL0oIcoN6YW7LLsatk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I8l3cgRdMpKrlV0CDPlnPrYkCMYuU/iCfNvcUIXVT9EyuT6pMCurrBIgyHP5via1HNyzVQervhYeAt5AtR6quIWtsZDS470uKeIgu9c78lzyZCVHsJMW/n0zIcKvsTpxZF05+JVZqeg8e7BIlWbTn+wugvgzkpeoOPJPnMM7iLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HFRLSMY7; arc=none smtp.client-ip=74.125.82.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768556577; c=relaxed/simple;
+	bh=vP063z1xuHc0hC+vX2dzTXC8+KnCaJkWrtP6q+wirGs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=u9jZMHaPMOrwtajioyCglqOI5jKS3O6uLCWxfPkG623dz+3BPytGdU03AJTBU4wnVKEybs/QxxAzDHf5PBfWeur9Cih+3UO1aBuerNlQZz+Wj48kdqG+F0yDndLni0BIwqT0yDzuGZ8HU8gRwZAdwLVrdTPq9W1C8jYDambxMR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cCGIrKGV; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HFRLSMY7"
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-11f1fb91996so4305247c88.1
-        for <imx@lists.linux.dev>; Fri, 16 Jan 2026 01:37:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cCGIrKGV"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-59b786b2a6aso146651e87.3
+        for <imx@lists.linux.dev>; Fri, 16 Jan 2026 01:42:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768556220; x=1769161020; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1768556573; x=1769161373; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rjevClhNecUKOFoTrhz/ZX3fWZv5rxd0vUGBfcrCQjY=;
-        b=HFRLSMY7QQUl8rRm/i4bt5G1UOZ4FPVaYgDr2lcbNYn7DkTt+lYHR+DvFaUHA7Lqii
-         osZFyH56TLArgE+e9b4pcZ90YiywgXB2AtZ/j1tVPWWs0bD65s5q4hxFmPM4A+FvkswJ
-         ThEbHxyVN0v16ovD2Jwz+4BdypJ1J59tUNMBnIyBiWWbyFicoF99cXBuiJmhoSNmk7Ln
-         LARsEFieVsawYPWWKD7BKkMv4BbAnDPiN6Yd8z2VO71TM4r+jZKGgSoICZ96/uXv7k6f
-         eOJjGeyd1t40dFXDhIrIfucGwzTajfM8DuFNBYOa34VecLsI7b0+CEFQFVzl7hYGg1sV
-         9RWA==
+        bh=ABv8OdJi32Gg0FcjWxhtSwfXTwcweC/Wx9N7YPA9N0A=;
+        b=cCGIrKGVsE/cDM24SmdY2/sWFlFZoG4IHqyltzv31pYyiLpYm7dsoZ+MxcaCGkag9k
+         1EK82IkduJqQN3eLEl0rOiY6V2HVDXmgp4Ugvj1F6NZOXKdRAIdzxuZx4PUjeQA3HHJN
+         sg6GwZFGBMDIH5BfRxKttn2f9by9Q82vtQSvWUbXkmj7QA6aqkR9C7lxmchd+NT8AtQO
+         66hufhzpeKZFaiVZqJSY6nVhpV4RWDQ71MSr5lWxTND3qxj9/YkiLW40PalPre2mLBMn
+         j4r6Ja0bWo5xwESqyzMq/30Mu5zDWvBHnOmuOji3fhU9GUpRaqTWca+SEgIWj3GOPnDZ
+         9b4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768556220; x=1769161020;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rjevClhNecUKOFoTrhz/ZX3fWZv5rxd0vUGBfcrCQjY=;
-        b=wury+jraGEJIoR05s3LnhdY8HCjw92a2aWrngFXJs+GfLMOVcxLjjyJvX4IYPxxU0G
-         MXeHRLYi175OualUI7n7FrbCpDwKMSA8vR9EvwC7hrBiQX6uWCA4h4zK0THQFMUmd2Le
-         ZsjSCjTdBzmP1V8s9jm/Z3zD427JWCgEVn9fT/cG718xmNlK1qik1ktwgIw8WK/RaspP
-         puw2h/aVOU/opMkkxUBTRaiNEGjN0rGqKCbS6gF8kLUYAp6UJZQXucovpchKADnKpZHE
-         9Ajm/MixIGNEWpMGLRzZL6DWhdHeYHsYxTdCmFJNtDU7iJoAgHmvBO4eUOPGFlzfzEcc
-         7yfA==
-X-Forwarded-Encrypted: i=1; AJvYcCVn0RQU/kHqV/WeKJQqr1lTq8cyfDxVctpMGmQF++18cNBoZpySDhvi8ao3zPPQDyfFims=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyKXXrHKk7JSFs9mt719UC6fvsBcXLvV3c0H2qEtVNe54raHOEi
-	Xrup0EGFgRK/1KW0qYvu6osWYlChcQCzVdJBTCKkJa7s/8AOEQp3LW9Q6RnElfdqjYymnFJCM0o
-	p5Z66nsvS6CAivvfkCBb7KcVyBj6X/co=
-X-Gm-Gg: AY/fxX5au9tSkIyymPHW0ak9xhzfD8dqQTlza2sETnIliB2uXy2u76bhfYV8wZ4F8wu
-	LzbnW36YXiYeN+5oPw4uiLtIr7kpoPNGmG6EpjOkCDx6RRt9gZPc+M2KgBDoKjOWDvm2saVdeRP
-	+7ZZBGYkHBqIaxuGj4xFoAAyjw0N2n4WCWcCKYgAkPr5P1kaoXBVhrPhkK3HH0heb1LKeG2FgRe
-	zcBYsseeYeNHSFHWzATXhoWGiTiFruX0y9+12V/T9OzHXNqD0f23gOl6nxFDDpDO2Lxn6/xiT+s
-	PcsjzOXF4ppwp7murQd7/CdDTQ+r1d3KQHUUDU3HF73P9RpPzBsCz3DNbjgOVRh37hi+S1sS9pi
-	j+H3ZnUx/ymQq064hrOJj
-X-Received: by 2002:a05:7022:6182:b0:11d:c91e:3b58 with SMTP id
- a92af1059eb24-1244b381f4fmr1752175c88.39.1768556220218; Fri, 16 Jan 2026
- 01:37:00 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768556573; x=1769161373;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ABv8OdJi32Gg0FcjWxhtSwfXTwcweC/Wx9N7YPA9N0A=;
+        b=NYN9A9gV1gH6CTLl+H2IrqKCIL3bGiQz4OSXKdlBVHarQUDkcQm5e2eRiT8S4dbfPl
+         2IzlmzoHl7YnC0/jQCdHGhlfuKsxeOlRYRR0Vbzsyn8ylVNeB7D6kk5Xw2I7IEWVqN+d
+         dUfl8tAIkRaRD2Ko3+zCkZErHMg6sLVXjUtO2nxKeMTRnLsR2X8XW/kpSNGModPlnm/e
+         tM2BJvJmD3GfQ65B1EvE815Hy6g5bdZxe4W58JAafzvPePckB+jjfVk9QG9Owp02KftO
+         kYU4BqW8ZK7IZ9f+/WK2WBmHs0/7RITG+ZqO9eOiFcRR4ObM8PJ2K+bqGlGFYYEfTqSt
+         sKJg==
+X-Forwarded-Encrypted: i=1; AJvYcCX5sNoIJgm1tpZmxBpiN7sE3AL5nqgPHLh7exCfYS1xRteNf/TvaNww0imRRZgZqiYu2oU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxnUErQHKwUxQknkUOW8k8zm9nkpp/YLg5IvU3aGqdcmc43HLgW
+	hcEYxrykI5kbqbtlXaJKH4w+D8kWlq+j+Hwxf8UiudaT1RcLQpInNReF2qybi0ZcidU=
+X-Gm-Gg: AY/fxX4grk3m/SE3QiOE68pgrVCv9krlaFrV3AR7mya3nQjk3P8D8kBk6irCPTIH3Wm
+	+p58IfNQy0kxOCT8AQCwqbtHBmYuGIrk/8a1JJ4OTjOw7qRaiVe7HMSUxZKTTqtvJ9BHi3LApUs
+	ttgEsRJghjyxcaASh9t5d0J17A4+mGPFzLe7HhGY87lBcj3e+JuKCVhZeXO4x+ODmoUd//njC0y
+	KOjunw9jz2p5+zT4pYyyhU9+zkcUXxGsLt+ilm6u+D3IiOV8uJyuud2jBLZyIIeeZMGYisBvN35
+	qyyCj+dvqcblZm1akm9NmWO6rhc5TXe3RVS0yJpdzT+aqfPEJigCyWhKlX4p3LtWGj/HYmC2Lsf
+	N83KqkI959Oq8fhGtqmUyUNON+Cg4ldtJNuMV3jm8IwdnzGSGg/E47cagXpWZeSMTP7jCvESAeu
+	F7mBOrlqE3e48w/HU9Xa+O8Is/H7OKs6SXKLytX0iwlKTNevlzYgr0jOg/gMI8aNSung==
+X-Received: by 2002:a05:6512:1514:20b0:597:d790:a1a2 with SMTP id 2adb3069b0e04-59baef18155mr314794e87.8.1768556573145;
+        Fri, 16 Jan 2026 01:42:53 -0800 (PST)
+Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi. [91.159.24.186])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59baf33e82dsm618507e87.11.2026.01.16.01.42.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Jan 2026 01:42:52 -0800 (PST)
+Message-ID: <e081fa74-9e0b-4e54-a51d-eee97ae6f4fa@linaro.org>
+Date: Fri, 16 Jan 2026 11:42:51 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260116-127-v3-0-3dc49545a745@nxp.com> <20260116-127-v3-1-3dc49545a745@nxp.com>
- <94c920e9-cde0-416e-9b6a-16255eda2b73@kernel.org>
-In-Reply-To: <94c920e9-cde0-416e-9b6a-16255eda2b73@kernel.org>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Fri, 16 Jan 2026 11:39:41 +0200
-X-Gm-Features: AZwV_Qh6ntqhZTGdRL0PXfGXgKQs_rs353EC_4pMNSP4GTlexk3c6guYld7I3zc
-Message-ID: <CAEnQRZDrchcDr51r7HWjq_=S184n2rq1o=XAnvQKVrXLxS+qjA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] dt-bindings: arm: fsl: Add compatible for i.MX95
- 15x15 FRDM board
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Lei Xu <lei.xu@nxp.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, justin.jiang@nxp.com, 
-	qijian.guo@nxp.com, Daniel Baluta <daniel.baluta@nxp.com>, 
-	Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/5] arm64: dts: qcom: talos-evk-camera: Add DT overlay
+To: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>,
+ Loic Poulain <loic.poulain@oss.qualcomm.com>,
+ Andi Shyti <andi.shyti@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20260115-sm6150_evk-v3-0-81526dd15543@oss.qualcomm.com>
+ <20260115-sm6150_evk-v3-5-81526dd15543@oss.qualcomm.com>
+ <3b16ffa2-1580-426c-aa9c-f377d913d49c@linaro.org>
+ <e27deffc-bbcc-48bc-9e4e-ce52698d98f3@oss.qualcomm.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+In-Reply-To: <e27deffc-bbcc-48bc-9e4e-ce52698d98f3@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 16, 2026 at 11:36=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.o=
-rg> wrote:
->
-> On 16/01/2026 09:56, Lei Xu wrote:
-> > Introduce a new DT compatible string for the NXP i.MX95 15x15 FRDM
-> > development board, a compact and cost-effective platform based on
-> > the i.MX95 applications processor.
-> >
-> > Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> > Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-> > Reviewed-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-> > Signed-off-by: Lei Xu <lei.xu@nxp.com>
-> > ---
-> >  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documenta=
-tion/devicetree/bindings/arm/fsl.yaml
-> > index 68a2d5fecc43..4b6188d39be6 100644
-> > --- a/Documentation/devicetree/bindings/arm/fsl.yaml
-> > +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-> > @@ -1432,6 +1432,7 @@ properties:
-> >          items:
-> >            - enum:
-> >                - fsl,imx95-15x15-evk       # i.MX95 15x15 EVK Board
-> > +              - fsl,imx95-15x15-frdm      # i.MX95 15x15 FRDM Board
->
-> It's always surprising how many people need to review such one liners,
-> but for more complex patches from NXP there are no reviews happening...
->
+On 1/16/26 11:32, Wenmeng Liu wrote:
+> 
+> 
+> On 1/16/2026 5:12 PM, Vladimir Zapolskiy wrote:
+>> On 1/15/26 12:12, Wenmeng Liu wrote:
+>>> Enable IMX577 via CCI on Taloss EVK Core Kit.
+>>>
+>>> The Talos EVK board does not include a camera sensor
+>>> by default, this DTSO has enabled the Arducam 12.3MP
+>>> IMX577 Mini Camera Module on the CSI-1 interface.
+>>>
+>>> Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+>>> ---
+>>>    arch/arm64/boot/dts/qcom/Makefile                  |  3 ++
+>>>    .../boot/dts/qcom/talos-evk-camera-imx577.dtso     | 63 ++++++++++++
+>>> ++++++++++
+>>>    2 files changed, 66 insertions(+)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/
+>>> qcom/Makefile
+>>> index
+>>> 00652614e73582fa9bd5fbeff4836b9496721d2d..be9aeff2cd1555bc436e1b8eb78d8e1c9b84f9c4 100644
+>>> --- a/arch/arm64/boot/dts/qcom/Makefile
+>>> +++ b/arch/arm64/boot/dts/qcom/Makefile
+>>> @@ -339,8 +339,11 @@ dtb-$(CONFIG_ARCH_QCOM)    += sm8650-qrd.dtb
+>>>    dtb-$(CONFIG_ARCH_QCOM)    += sm8750-mtp.dtb
+>>>    dtb-$(CONFIG_ARCH_QCOM)    += sm8750-qrd.dtb
+>>>    dtb-$(CONFIG_ARCH_QCOM)    += talos-evk.dtb
+>>> +dtbo-$(CONFIG_ARCH_QCOM)    += talos-evk-camera-imx577.dtbo
+>>
+>> Please remind me, what does dtbo-y Makefile target serve for?
+> Rob mentioned:
+> https://lore.kernel.org/all/20260106192609.GA2581379-robh@kernel.org/
 
-Krzysztof we are just warming up.
+It'd be better to ask Rob about it, I suppose that the concern may be about
+a missing in the qcom/Makefile mechanism to build standalone .dtbo artefacts.
+
+> I checked, dtbo- is not an upstream usage, it will be updated form
+
+Right, that's why it attracted the attention.
+
+> dtbo-$(CONFIG_ARCH_QCOM) to dtb-$(CONFIG_ARCH_QCOM) in the next version.
+> 
+
+But...
+
+>>> +talos-evk-camera-imx577-dtbs    := talos-evk.dtb talos-evk-camera-
+>>> imx577.dtbo
+>>>    talos-evk-lvds-auo,g133han01-dtbs    := \
+>>>        talos-evk.dtb talos-evk-lvds-auo,g133han01.dtbo
+>>> +dtb-$(CONFIG_ARCH_QCOM)    += talos-evk-camera-imx577.dtb
+
+it's already here and it was here in the previous version.
+
+-- 
+Best wishes,
+Vladimir
