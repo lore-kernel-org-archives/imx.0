@@ -1,73 +1,73 @@
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B56934EEEA
-	for <imx@lists.linux.dev>; Fri, 16 Jan 2026 09:26:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E329E34D4C4
+	for <imx@lists.linux.dev>; Fri, 16 Jan 2026 09:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768555617; cv=none; b=TkZNOrAb9D0pffUag5ijjJ73ZEGnPplnH+SEOEAoJatvzyU3b5cgMw35pzv5Pinl3lnCIlrOat1Bk330v2UhrODBR0SgRmnnxbseiQ5j++T6F1sd6frsZEHa+gGqAfZIv+LsbeD6gIoEardACjU2gkTvWLcW8Uesh4t4E+Ob2hk=
+	t=1768555882; cv=none; b=T+kbdVW9S5qS1DHa7jw38iTFOP8Nt8dsZbLzZoSypuK9A64WLIoTpzTTIe/OUi3jPRpS2SysHrmNzby3pn2d4uwVrj8TYoWVLt4JvUkHBy5j4vUIhZ9Oo7vxx7v7ZytHgjp7m1m57NCiaG66kQT2arKWYC39fKgP0qH/df7vmnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768555617; c=relaxed/simple;
-	bh=w5nXkknwo+0TmPQcwS99jRHRtVkofZG2b6gSRD8S0lE=;
+	s=arc-20240116; t=1768555882; c=relaxed/simple;
+	bh=vDwziWtkQVPoVaREHacSSM1aN/WzACohKb157keq24s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RKvxKj5Jac7/KRqdWzropfZMIBZYrNq8tjOprbFuLCgBLBkfNFHwvOiWT44PtZrJlqOIWmXkMNWbqPLmre7gY4zrVKa6QSpnqEMglIbO7CJG9pymnU0in6f4VJwVVUgeNb0BhBayv95KnKK9QDYsahHfaBVaF1qwBa/k7fCs8Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P6tDnEfW; arc=none smtp.client-ip=74.125.82.51
+	 To:Cc:Content-Type; b=Ivh1Y0zuNR/rYmo82yvd0YxCJOTXx2ZEh7V/hcSiNHSRj/7Evmgqzm876z6MPWHGKzGiQx0OfJyRe0r6s5wpc2xprha0GMAJxG2VPdCQ/lVo4O/VzZFablWMYhjcJKqBMndjiiCmnZ9lTBVSiIfOub7SMikMAJbMoaJxvZJ6eHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a1+JNyei; arc=none smtp.client-ip=74.125.82.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P6tDnEfW"
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-12331482b8fso5945919c88.1
-        for <imx@lists.linux.dev>; Fri, 16 Jan 2026 01:26:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a1+JNyei"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2b6bf6adc65so200837eec.0
+        for <imx@lists.linux.dev>; Fri, 16 Jan 2026 01:31:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768555615; x=1769160415; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1768555880; x=1769160680; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=w5nXkknwo+0TmPQcwS99jRHRtVkofZG2b6gSRD8S0lE=;
-        b=P6tDnEfWQu6UPMcsW7I4+z8N1qLUnFvAZrIU8Yu/Ra3ebWEZXY/X77a1zEVwd2Xnoi
-         EnvPSRMD7Rki+2naJgL0FciUoY2+dtpWX3LyOw4+EOsHJiW5ZyQBMiWCSGks5IQs9bMl
-         vvLNfjnZNbwki85B0qrlpbQLoLYAr2B5aZjZlgr65Cmj3yWvYzv5hrkDxzDr6TsuvXTf
-         o5liuUiNWBvUTE8VV1xrP9CpXXCT+yfoIw3P5aGb8Y9qOFZnsouuswoFdI2jG+sIKWNH
-         qZTwPQRBm3YHvNUhGcxdwsqVti37Xx2i1C1ysrbEcO2GHM9UuJrm49725xPBP1fyOt6z
-         Gb9g==
+        bh=kE97FQFptYMK9vhs3k1ZWJYJHvuV6FL1bLt8wQQXeXk=;
+        b=a1+JNyeiMdzgE30lt3vuhCA5LZdLUQ+XevglZ5+yuhueCvGOL8oAGBHQaGzRX4CvT1
+         7Z5YeiVz9ic/cpVO39Im4gb33uLlc8davTXFrzVW/c4OyZmxa4R7ru8HTguXqMEw5EE2
+         0D9JLW5N25OOpXKR9leoqfp2M/tFiTB0XeC191m2u/sO1/4HGXuXuXrDZ+J+flR4BamX
+         ER/7LqZpjrWsvlKPEd61rTZ7rDG5B1zVsD0RHVPtcOnk/zZwyJ96avBGW3Z4XYMlQPOq
+         D3B7s/WrXiSyALbk9pFQp4ac7gTSizQDw/NKUw8eRV7+MMhZnOS4eqiCk72v1cKypWWL
+         EgLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768555615; x=1769160415;
+        d=1e100.net; s=20230601; t=1768555880; x=1769160680;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=w5nXkknwo+0TmPQcwS99jRHRtVkofZG2b6gSRD8S0lE=;
-        b=BlP4l0YJ86wuGXlSYyb3+88yHXHE37kB6UQfXyi23ioATYV0EllJZvozw6UiYSuG8p
-         weUWopqc6dP6cUUGTVi1LWOeOBwN3IDgC+3Rk7RipZUGndmwrsHiP7VgbDktfWYaBOJ0
-         z5NJcJhhaC6ijUO0JLbey+DWyNnr3g6WSB3MOA/Rfw3r5h7O5coZZi7z9xTIpAJ9fiGA
-         bfWNL86RB7BWjyeHKoXGHK2bTkNUtDXnuWlzHKRQHjlXjOLggjMNkl67t5rTA+HRRex/
-         uZ+Nr4H6MFZGJI6vgYjePWQzo6wBfPfk+GuT9n9V44+ACJPJc4T6ONZjLN29FNh05xEV
-         IvUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXVWHjtbltbdS8t6K05DT3rey1YdMlBDamR4Qt48DkL7Oqc871P4LC3mQt0lBTsywOpL28=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzEroYJAJZkABPRG28a0kw7HhINOcDp2kgo+0HY+4JLZ9S2hkZ5
-	EshwY5wpXUDj+v+x3WJuvs4YFojFLSXV9GnxJs8av9I8vrxDPbuVdFPfUDOOJvoALkxxBIwE2la
-	SSg6h8KC8QNLarYqkKYsH2w6o2L7k8gg=
-X-Gm-Gg: AY/fxX5LSUnqNH/dP8T4UGU4fVOgfICoK7q80nkVRdyBRfzrYWw/NV3Dr421oOxM84b
-	FEK5BUIhzoLISfmCj2kEo0beNw95UvgLKIVNkwVejTC1UFqTEs4DlJ41vS5GVviIyMISvqF7Wdr
-	KQhG8Hsw4dBsa5TpNtgVY3f9CiOtKKmifvitoNgSYEORQzSkANS/m3203QBRpxTfy8bHWu1JnZp
-	d5USUUJAzxHzch56MACybA+GXXRhUYEl0sExBntKh3/348L7uqkGEfd63tr1zpiE3cTqa8qMZiG
-	yr/gr3xnNHidwmHBYemUh/Mvlwuq8cYeZsdnVel17BEeaRjiH2ifEWR71DgWjeuWA+P9TOJVeAj
-	AH+SV+bEXMQ==
-X-Received: by 2002:a05:7022:b8d:b0:11a:3734:3db3 with SMTP id
- a92af1059eb24-1244a769e03mr2330673c88.32.1768555615390; Fri, 16 Jan 2026
- 01:26:55 -0800 (PST)
+        bh=kE97FQFptYMK9vhs3k1ZWJYJHvuV6FL1bLt8wQQXeXk=;
+        b=L0R8+QwCMtZF0Zrt1pVrK/PfOsDrBL9JiO8gnbz0JVu6B3ta4thWxb3fB+Wqquv0Ci
+         OUtiliLPj55xJG+/PcB82abvS7a2zTy5bue59CYBk4XasH6YF/6vGay5ouxt3ZtwDWBE
+         9gGQHjFVua4+JiQwdZIWTXbnxw/RDrlcCCbI6VQWtaD2tmuz6zWGbuU0Nn5X0zc2Uf0f
+         YyM0sELYXgrrU0xdSZac3kZc8FhdugTiWHKVoBrjDH5TB/pIhXZKInvxLGbzwLe/6dfV
+         uMbyJXvjhzQu5pL7U0V2zn2/K9X8QVdqJ10GhfVREshi1RzazV1MaNJO0STqdQUnsK/w
+         efdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9BP2JqWhGGN000RJbAFBYEZ5/xIAveExe3cjF9o4POGJJTOXUY3MMrMekhWPOzWkVDDU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzAOh//KaikvcuLIHKdfaWGOgefHalIRbeBcYdDpq83jHXuBwed
+	IGOC+mRPSluq9tfgFkjc1fALZUMJPWWW3HeUm4fu7uv5JNN3ZqYB8+pFtui+SxTrTMnYZ6YasbC
+	3M/uvACeHtM/NFSPSKTf50qqteuaeLFU=
+X-Gm-Gg: AY/fxX7LEkLgCoOthMnJ5G4nocnTDf55bgWv58oJQv6qxtdMRz8D1ciU4QIU5GCNBzl
+	OrhYrytjG9eSPz2XCtaBBs0HfOdpszWu7Na+nEexR3UjA/MHTTgZYRPwHqeyeHr882E3z49xzji
+	6m4IFu8XQEVgokk/aHTctdB54oyqOb+nY+sh5FQLur3vM5kUyGNNZjp0NX5zLV4R3PXb/VBSW2g
+	z0u6572BNMqGfL5lR33zCVrsLyALVb3kb/LJQGp5b83M6VJHgLevjrn57Nk602jqRVKQ6V7JQ4K
+	hVtK/9uk/XXA7keG2+kqDiQLsdUjcQCQSRBHi/RPY7s609/M/4CG2c9C/tJg1XJ1fvWnWWUrYWj
+	Mtzrfh1QAwrMZaO60El6q
+X-Received: by 2002:a05:7022:1e01:b0:11b:d6f2:a6d6 with SMTP id
+ a92af1059eb24-1244b36efefmr2110118c88.34.1768555879884; Fri, 16 Jan 2026
+ 01:31:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260116-imx91s-frdm-v3-0-98671de64925@nxp.com> <20260116-imx91s-frdm-v3-1-98671de64925@nxp.com>
-In-Reply-To: <20260116-imx91s-frdm-v3-1-98671de64925@nxp.com>
+References: <20260116-imx91s-frdm-v3-0-98671de64925@nxp.com> <20260116-imx91s-frdm-v3-2-98671de64925@nxp.com>
+In-Reply-To: <20260116-imx91s-frdm-v3-2-98671de64925@nxp.com>
 From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Fri, 16 Jan 2026 11:29:37 +0200
-X-Gm-Features: AZwV_QifTzULMtGjkjSS3S8CC5_mhR_1WSH4xBiT1nAYE-It9I2PKynf_0a8WPk
-Message-ID: <CAEnQRZA0TsOdttpZA3DGb7xrDXuEJp8PQTC3d1tXFQGqdY3SJQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] dt-bindings: arm: fsl: Add FRDM-IMX91S board
+Date: Fri, 16 Jan 2026 11:33:59 +0200
+X-Gm-Features: AZwV_QjLNUqqgYctbRDffJUiJuH_tW04Q23rVvRNxKu0gJcAkwrTYmAk7h08eJ8
+Message-ID: <CAEnQRZDtE+0gDxAnu9vWGhj3rYEv6CmMNjQLWnKu=ud9Yo9XcQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] arm64: dts: freescale: add NXP FRDM-IMX91S board support
 To: Yanan Yang <yanan.yang@nxp.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
 	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
@@ -75,26 +75,32 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org, qijian.guo@nxp.com, 
-	justin.jiang@nxp.com, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+	justin.jiang@nxp.com, Lei Xu <lei.xu@nxp.com>, Xiaofeng Wei <xiaofeng.wei@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 16, 2026 at 5:46=E2=80=AFAM Yanan Yang <yanan.yang@nxp.com> wro=
+On Fri, Jan 16, 2026 at 5:45=E2=80=AFAM Yanan Yang <yanan.yang@nxp.com> wro=
 te:
 >
-> Add DT compatible string for NXP FRDM-IMX91S board
+> Add DeviceTree support for the NXP FRDM-IMX91S development board based
+> on the i.MX91 SoC. FRDM-IMX91S is a cost-optimized variant of FRDM-IMX91
+> and differs in memory, storage, Ethernet, and PMIC configuration:
 >
-> The FRDM-IMX91S is a low-cost, compact development board based on the
-> i.MX91 applications processor. It is a cost-optimized variant of the
-> FRDM-IMX91 board, with notable hardware differences requiring a separate
-> DTS:
 > - 512MB LPDDR4 (FRDM-IMX91 uses 1GB)
 > - 256MB FlexSPI-NAND (FRDM-IMX91 uses 8GB eMMC)
 > - Single GbE port (FRDM-IMX91 has dual GbE)
 > - PMIC PF9453 (FRDM-IMX91 uses PCA9451A)
 >
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> Signed-off-by: Yanan Yang <yanan.yang@nxp.com>
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+<snip>
+
+
+> +       sound-mqs {
+> +               compatible =3D "fsl,imx6sx-sdb-mqs", "fsl,imx-audio-mqs";
+
+There is little sense to have compatible =3D ""fsl,imx6sx-sdb-mqs". Just
+use
+
+compatible =3D "fsl,imx-audio-mqs";
+
+Move model property after compatible as per already existing code practice.
