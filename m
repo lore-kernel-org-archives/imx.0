@@ -1,225 +1,259 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011034.outbound.protection.outlook.com [52.101.70.34])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557AF2DAFDE
-	for <imx@lists.linux.dev>; Fri, 16 Jan 2026 10:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768558741; cv=fail; b=P/AT2mK9aSrmiCDgNTiS2ZLUpDLXmsrBdog+iUikRGP5D9T/fOY8r2DcuNqJHt+9fOj1yISVQ4buCZUj0zXte6rfg8K9tnnEHwJvyburS1rMDuGycMGOwfwf2Q9E8KzgK/PtfVczklXA+u0VaLrsYD7q7HW7x6lLIDCcQKyZfSE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768558741; c=relaxed/simple;
-	bh=gfKjxaB57+nTPKUKZD69zwHwLZU5WS3N5JaTSv1nq5M=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=AVGoY86zdVy6CR3eJP1So/Gz24FjSGeHxsxW/Hbl15er6MLgeDXzmHU/l7L3EKSbmhFshBg9ipt5GMMWwf5qhnXtM+m9kk2VbiN8D/dNgVAF6jOQbF/FmqYG76/+PopWzA4oi7S6JEw40ut1Axags/hNQMcObcLUk8jhCnJhJmE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SR36u2JX; arc=fail smtp.client-ip=52.101.70.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641203612FB
+	for <imx@lists.linux.dev>; Fri, 16 Jan 2026 10:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768561199; cv=none; b=cwvQmOdksRETSo3x3PQtQt+4L1GViGF6ytJvjpaNjI0dyqb2OLChAxjzoj21ZjH+8ha27fgHID2tX0IpQEfNHpSYosN69Nmyt1PRD8jHupoepTpVL+94Y8vHgX40Ay97jBbCuoVP9Z3QMOWP1xaDK6B3ai7Snl94DMlVxJtHjT8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768561199; c=relaxed/simple;
+	bh=bUco4N1M7It+4JUQORbZ61sanRZKijYO39C7SFRFjpI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TPhN18JCWEswsfK516hTSGw0xrQBYD6P6FsN6mGWKjQ0hY91jSCP3nHDuzXSEwow4JxT8y0/n1wxOHfc3WaHke3bRJm6KLf6bmcDHRw5PbQVYN11xLRx3+hQwlJkLtZihsS8wY6JOm3EneDNpVFu2AdQcWKbWFKvAXM3X4AXXdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GzcbB5Ud; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=d9aH0nbS; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SR36u2JX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AZnEO5hWpQrpyA0juW7fmb+haEx7yTwEXcIUy/3vMx0SBUgdWnKNV5m8GBqpJy9VC1jzkzEAkufuXg1OeulPzkKUzftBjCDfFZd9UjDUTS5DS8yC8gHUWQXLIwgCdG0PCpT25qtftGzO67sGJguxVPMtXq+7GLlvThAcwKkX24gE1yal5cEM3f4E2Fkmi89bhKQFVY3QiL3Gxj6dePBoOvVr+FG26FNqZmCd52V6bHS26g91PMr0h2EBHTXijlYqn56+GH2YUjs5YS2LwWjXLYRSHlPOrmrdU4l5iMBBOHbxKMKW5jLTAoU6sO/vrGuJwmt7zFzKHRGwpptbn2ETaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JPWPKrusARvZo9bcLDmfsx4WNdRcrKUYne/89kQC3K4=;
- b=QHT8Jqx4XzOyMU4J5MGeudWKA9dzwnspnN6+TdpvmcLc6zrZhlHPub+cvfMEE3uadARuO2g2jJS5p3lw4S6RUw5HLQf20fUEjR55jEy80HHIfcEPm8mx7so93ZhQ5R/yjPMStsAk0XsAoXMwK1MQFq5OgjXYDEUx05dURa7dBUzN0HEF55unfrZm4Nh/SWl8Dnm1M5GlkWLA+N4rb16ARSK+4oil/iX7W5olyhd13VOYGTQ/flAFFYo+ILp0jzZJ5ybFmLb8fwbCPgsnWf9u+NLnQiRe9pOCw9hXWUlpee4eoVeojbP4LmjyweJviR6YPdnLV1r5I07g2PQ7iLhiug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JPWPKrusARvZo9bcLDmfsx4WNdRcrKUYne/89kQC3K4=;
- b=SR36u2JX4JCvnuF/Kb+/OOn3Wc+L9AqeaBZoPLlSDYRhRB4jtTUogiuAunV677+75AsiWVYRuu3C4GrW+Wz9YMReGfOtbBWaWrPH/jXgLhbG6Z3JrRi5G4YPjcxR4LQESr+Cbf57zLd+0culRLzVKm6wsDGDxmsCIdtC1ECbjhzAcT0eMrKyHRVMlrmmFIPWqCdobkI5hRLahUGGzVuAk6dQSysJh90XTfzCj0VnXAyROL2/6zafWXUpITnQ3LwqsEgY0l1uI2qWmvkG3pdAZ+igksH9e0wS0SE4eX73eTGf8mE6jM0Zo4WvWC7bSxl5FMVt9osTCHNfJpX/PUPLbg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com (2603:10a6:10:2e1::11)
- by PAWPR04MB9807.eurprd04.prod.outlook.com (2603:10a6:102:384::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.5; Fri, 16 Jan
- 2026 10:18:56 +0000
-Received: from DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce]) by DU2PR04MB8822.eurprd04.prod.outlook.com
- ([fe80::c67b:71cd:6338:9dce%5]) with mapi id 15.20.9478.004; Fri, 16 Jan 2026
- 10:18:56 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-To: vkoul@kernel.org,
-	neil.armstrong@linaro.org,
-	shawnguo@kernel.org,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	jun.li@nxp.com,
-	Frank.Li@nxp.com
-Cc: linux-phy@lists.infradead.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] phy: fsl-imx8mq-usb: enable RX Termination override
-Date: Fri, 16 Jan 2026 18:18:35 +0800
-Message-Id: <20260116101835.1810675-1-xu.yang_2@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0040.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::7) To DU2PR04MB8822.eurprd04.prod.outlook.com
- (2603:10a6:10:2e1::11)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GzcbB5Ud";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="d9aH0nbS"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60G9iK9J006940
+	for <imx@lists.linux.dev>; Fri, 16 Jan 2026 10:59:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	hXYF/SU0x0cq4kg0To9gqp3URoD3jz2g2zAKZXrW05Y=; b=GzcbB5Ud3p+q+RYr
+	8G9E3u4YpMb2z9On800o+85X5W5g4CuhgZ1c1PEWHZWLS+eu1bW0Yu4drjWY4Hai
+	oCsJIzXRMPk8pYD5oyyFNZC6QndmUtiGX/QZh32psjqlmZnExXYwQlHkLae0MlqL
+	7pzRLa83c/+wgl6IsHuT3nABhshR2hMUYGtJvBUkJtM3p1P8KOErIK/m+bRc5HP1
+	GD8XOt/+9N7k8R7A778FVdinVLEWDfF6dvIewz/+2cX4ToEOE97nl50gpHeFC4oG
+	I5UDoz8wJsOTr6FujHgGupLf8V0KGhWpkAfb5+5ImLxuY1bmV71IaFZnStCU/gUH
+	Sa4+YA==
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bqjy9r769-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Fri, 16 Jan 2026 10:59:56 +0000 (GMT)
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-45c840f19f4so3767431b6e.3
+        for <imx@lists.linux.dev>; Fri, 16 Jan 2026 02:59:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1768561196; x=1769165996; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hXYF/SU0x0cq4kg0To9gqp3URoD3jz2g2zAKZXrW05Y=;
+        b=d9aH0nbSNMzP0za1BSdofDmdrnMfKOYoJLWWZs3M2x6yHEFdL6PhbgPqnykZTnCETS
+         SZUqGGvVdW9c4IQuMQVc/lMps4f7WnYK+bguZ7wYdOE4HPJ7zqFD0jGl0pVaIfuH5YDm
+         WgeY3tcA8827PXXhvJpxYKvHtOORLYoY5Xu3D6NEJihBOnaOVzBsVjmncc4uWIcx77x9
+         0DQ0hmXmo7CjgBzE7086NvPG9/bDy9f3Y3wziPF8fooAt97TsF1WMynHK9gaJiROqNpz
+         IvArrt4CWHzBGTrYXZLoww8JTqfgfX2Jti1VfHILn9+ijAAFaD7g4+z/LvzPEV1/jylr
+         FZFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768561196; x=1769165996;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hXYF/SU0x0cq4kg0To9gqp3URoD3jz2g2zAKZXrW05Y=;
+        b=cnFhmE1QyhscKfb020f+OlsOrG6z9sWHv1s2fJZROIw8HCursW1E7cQR9AqpJxstAP
+         PM+E1a9MtAoZrCyIvXirkmbyoEyt6cadR+bFkJCehxM9aYVjGRjdR5Z2OT73TXLgxxm9
+         x1Qjkeeihu+xBthM9zLTO0SjeKsBIaGeGw8BAueWm4Ez1Zdw/p4tEs5i4hsu5PGpTvdU
+         fvGUYDvO8MLQkaDRqYPYoME1xHG6rRhsr0IGoRoL7DXeG41DJBrUflcX/ACqD3TjrxrY
+         OzREQdsVqncASbZY45GUhmd1u0lf3S4prUg8SrAUi049cSxa9VUtF1D8R42Kxbfif4Jy
+         7d6g==
+X-Forwarded-Encrypted: i=1; AJvYcCX+ItcSousbILPN1lThE6WkBUY3No0x2kAR44enjSXmj8Ep7e9Oc6FnhCRmrPgTVKBpIMo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YymwtpP5FrheDU3llAV+3dIF6WGIqKXWT/m8yNb7uyjcp/KkMfT
+	I8PukboIiiK1gsA6gVXnvsZx48ni+OwrsliWDV80DJMw0dZOrKe4zYjo5QjvnC9Rlfi+UYZ+zEE
+	QucxzN02XltIhStfZ1S9sHEC0HSv0PFqrWQTFNwP7/0VFKEaW+0/kWoGMxCfdZ9a+N4wSP1wYxX
+	xxPuDLVpjbx8/GpNkrCsrW6sYC4tgVjw==
+X-Gm-Gg: AY/fxX6M3hf5TKQujp8yu/k2Nq5ruI7hW+0y2wwJa/jfg1/k4ZnpvWi2LvgOaMqaymv
+	s6cOrak/hE838dgRlabmlM9jmjiPGbdTS78Rh0zuYpMRSyTMW0AbiJ83M0HrNAXok/1OwTb0DrC
+	Q4qoSmxCUQm73cnh0iEczAbldWb8O9gzaHEEl+5zgq0xpD5MzCeOzyEF0/gH//n2ra7vLU81Fiy
+	J3HxiI2FUbdiRW4PPeSXKkkmXC8SZoyqCWJpLrszl1D8Ak1aEX7UEBu
+X-Received: by 2002:a05:6820:4410:b0:65f:69f7:d0e3 with SMTP id 006d021491bc7-661189e5644mr616431eaf.84.1768561195676;
+        Fri, 16 Jan 2026 02:59:55 -0800 (PST)
+X-Received: by 2002:a05:6820:4410:b0:65f:69f7:d0e3 with SMTP id
+ 006d021491bc7-661189e5644mr616407eaf.84.1768561195190; Fri, 16 Jan 2026
+ 02:59:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8822:EE_|PAWPR04MB9807:EE_
-X-MS-Office365-Filtering-Correlation-Id: f8276e45-db03-4353-aa57-08de54e8a830
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|376014|52116014|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?h9F4Wpa+IodecB+EgtC2PDvem4UJuFKbIlkji06XTuhKixOtWBkrGH/Kqnpu?=
- =?us-ascii?Q?62zW8HQgDgEDZEUJP5DYZRmTXhHfcjI3gyzpM7/VTT5g+dVXIp7Mya3i7mRf?=
- =?us-ascii?Q?GLSPXVgOYuPFqRKFXvcMLphpHsVjOxawdSkpRb1Prkm0xvBr0mab7uorXvq5?=
- =?us-ascii?Q?Ejm7X3UfbGFXSBXfk5L1yyvci1Ydrc8SKDM91BX2pAwt24dEzW6SOFbxu5pi?=
- =?us-ascii?Q?P8lVMK0b7essFJxP+OnaSsEATz0oVT0oPZbrq2ot1oIToV0nv/bOCn3TinPO?=
- =?us-ascii?Q?oNr3TBPZZftBIEtTBKn/URwMMxubM6nQhKCtNZsgTVhIEyC/1QjKTtySbE0F?=
- =?us-ascii?Q?4qsASHXVYNqHAfOtu2lNG8UqztA6FgEZTlSqcYudMVJwPIkuWHJwUNO6k+v7?=
- =?us-ascii?Q?N+4ym0kS8eygfNpdbY7UfQlbJJj6bMxsiJYs01t/f0Ep04btlJeKXvcVBtHt?=
- =?us-ascii?Q?eCw6V1HKsB4+uQXFv4VrSCJB9lQWLAojYARV3fDjMcnPU8Wtw//CqNyam98Z?=
- =?us-ascii?Q?2nAsQZurWIkjQzSOzU9oUB+d1m7hVqsjwVwi8iCcx+AbSr6W1/WTYeMvlRel?=
- =?us-ascii?Q?NW9yvtnvfSJJP1PPflHfpJhftHJaoZVQyTPTHypCarqS4x+SzE2TupnYyqPo?=
- =?us-ascii?Q?W5r3u5RVNhcb3XO3h//cHeUpAORUePyMr+5ZaxRCvK1r41j8VzGNoJvUk6X9?=
- =?us-ascii?Q?HFvX2Vg3pEHPItMiMlXUAp3SL/kHHr48Pv+5VLGU4+XGxJhF20nVRtq1PfRv?=
- =?us-ascii?Q?UBeX7Gxqlk1Q2i98kCTrbmjzIutzlvJdYdnwaBIrspViCDksw7vXl2aL9KJe?=
- =?us-ascii?Q?MQ/jFvsgKHaRXMVcP79vFo5LdSJ+GaBks1JnRG9gvFns2ejlfljg02d8qdD0?=
- =?us-ascii?Q?wtQ/4eQvIn84+3XOIqjftbekY/XZ6T0PvN2kEbRd1r16CorLJWjRjJFv62Qc?=
- =?us-ascii?Q?X2mWxrOXM4hdtF9/AYBmDKi7derCTSeuHAJ9p/JTNFLOUBbkzqlkXQRYAFUf?=
- =?us-ascii?Q?EZtu0rQJ2KxDkEZnTIiFsx3qExwnqSKgjVJEMoc/bb7WFe597mKgoVn9uY9M?=
- =?us-ascii?Q?2lri8lICGmkV9G68xgQ93WTGicuEVflqAxETqy9FrTo7Pt8lOftMKTq7KgzP?=
- =?us-ascii?Q?tWjIAxoZJrah010LsWQkOZrdNo8RBDiXIM4PhMKVXcoG0Dh7aGl59T5y6KY3?=
- =?us-ascii?Q?ap9uKp0g/4UlDeHiwQdRUshqeFcAQUqBb6nnDX5guK248Zung1hdn6dIiGGN?=
- =?us-ascii?Q?zNlnCm8T3lXrChoAVI2UhwS77jPabWUulvr+liHYMXOVEXOeiY3I+13Iiw82?=
- =?us-ascii?Q?8VMqpFh7Z5PnPh1tLIV0pPKTVPsWlabdbzrRoQkyM7UZwDUcz7FNmDHlqWNl?=
- =?us-ascii?Q?Bzoawvk7pdGn0apJi0d9mmAkLxiTpbeefE0t0GCZlRn+DlMreBXAvCrnHuHf?=
- =?us-ascii?Q?I4Qmse1NhogERiJfq4d9LJwTMVcylhhP7ju2X4OCP3yZR7k/jOuhXJrN/crg?=
- =?us-ascii?Q?Xq8hHMii2YJEyK9HahQpGJEzHAxOA+IYIMQgvU6OxsOCkAk0k41qg1RnygbG?=
- =?us-ascii?Q?ww9GK9pDZ68KPh8BifPAwGJ4MLWcrWs6Qn4dG8H56fzA9ydy5xMbnhP8taeV?=
- =?us-ascii?Q?vtCRE1tMbfC2jJuSrS3av3M=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8822.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(52116014)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?eo9c/cl8BheTx0c1+r8LLjqJc0GLD85uUtZrEcXPyBnjliLtEpr49zaYTOdn?=
- =?us-ascii?Q?pfWKp14A8SiAmd0wJ7N7POXtlQ8KpVS0ZjAcQI7BbcWR5qV/huVF5RPzE/ve?=
- =?us-ascii?Q?8ik15MvfVLnVgnWdKATzazCc+oWHJh5dPzLTJhVf/BsZDBju5jms12/QOeRt?=
- =?us-ascii?Q?fYJIhgYUhu9EACJA0J6ZNsnXOL6qocp3KKitN0JGT0IeaBUHmB9ZjCMGs4ex?=
- =?us-ascii?Q?0zJIvHyDpO58R85WP4FG728IRHCLcmSiKE7PXoD35eKO2LlpXcZN/spnXTw+?=
- =?us-ascii?Q?T8sUQhJhZTjSarwCTV/skblJjR8Kim0FrbvO+Gp5FdUMBEfvY13qg9zhfg0H?=
- =?us-ascii?Q?jHKUR3Sm48ejKvPK6IHo/SHPVYt07QB8MGgtpyNUdRDNS+Beba12oQWGB2A3?=
- =?us-ascii?Q?7APoVt0ZK6X+1NqQuMtSFCBzy8d5NwiSLEeEaMq+3CCKSycoDYe0WxzXK+Hv?=
- =?us-ascii?Q?ZH/NgjI+7waAyxpy5o5sDa4ytwV6HoW6213vzvhKJGh6lB5rsO/B+08CV/VR?=
- =?us-ascii?Q?FbtmtrswUpNtCCIjEmmQnXaTKZ0281W51mymnCt/nScXYqx/Z19H0Hmsq6Ju?=
- =?us-ascii?Q?sI6n9FrLvCDVR5+ZKV7qXmmkdQcK+YwpphmyZW6NVI/Yt0B+qITW5f6DsPzQ?=
- =?us-ascii?Q?/eopYdkbwPRNJuo3ieTrJOUOkAoEeun2ElRnjBcrmEKuIDfubRU8j+APxkWT?=
- =?us-ascii?Q?MGZc/pP4VYcmRWu4eo423vyNI0qJOGIg6r1r955TelDWVwZhSNt+qRRFA/cL?=
- =?us-ascii?Q?KMze3s7Hjf+i6jTdXqSaH2BRdW0BYzq0bGNxDZGdtFM7pNK/5wW14poQxlKw?=
- =?us-ascii?Q?+0+03CnlvnFm1zZ00MoQYEW8B396J7ScqeGpPbZSn3LwB+ess8fFhBeETJUI?=
- =?us-ascii?Q?byUpx54/rWqdFalDNY9j41nXTUazsPcgmUnZ1genMucyS7NoqgQ8BFTXglKU?=
- =?us-ascii?Q?WcJetQD112ebkZ8y3UlpWcdhGszh9LHpUzhQdUuYq1zN1KmFJ8+j0l828DWx?=
- =?us-ascii?Q?yTr4kLrdurHfuAHoeKF8oPCNo8KkLr3mq8GzYNreQiQEy4nD0b590Y9dBNG+?=
- =?us-ascii?Q?UVQ4nFOPCf9TdH9WOwZq+Ybbd0tTol91W+81dJsoiCLh9ZV22tI/kw/7NTsL?=
- =?us-ascii?Q?YxkonCgzbt1036ZRdwDTBXl/SwDZlO3TYtRXuxj8jrz3YaY2ODFRhMMMLaRi?=
- =?us-ascii?Q?1/NJWDTMFO8VP4HJ0c1jP172Au2PW/pkZndiu+9Y89mxD9Rd2valSQhPFrob?=
- =?us-ascii?Q?5wKNa3l7Jl2JdByKUoA8Fmd9tRU0CAoo/BdBJwheYQvbvFIKwPFnNFonj1gB?=
- =?us-ascii?Q?BQe0gQuhSYrhmKXL95lfJQcUaLMUrz8l2i4R6gmQla0CEbj3m9r3IX97jqcb?=
- =?us-ascii?Q?5Ecgcn7t96xZqWIiaSeMOfqsFEUqMBeJa40rOETf1mY3WNcvQgBir4ye4cfQ?=
- =?us-ascii?Q?XYATH0RNBvwPIJ1uP40rPizRQcTW3KH/cUkv9mEZxle2875OuK6nwxlMrzp5?=
- =?us-ascii?Q?JgiuUPnVk/2KbTIT56n32+7R+t++U7UKFR6sXEZ0/YIkEvajuNFcUlB2fBh/?=
- =?us-ascii?Q?4QHJz3MLCVLSVPNXqeO3GJpwKfA4aQi/ZzSEtvyn4aGNRq09PUQr3tQgwynn?=
- =?us-ascii?Q?Nd81Hv+ahyf1Jw99mRInO7ZqSYG0ZhSxDBkOW2w1qtiLONLD1d+THzotvGpg?=
- =?us-ascii?Q?WrP8kpFoN7VDp25xQdQ71QvmhUQ1glyPhvf82ieBPDyeh9q5Vy3u1VKlj+BY?=
- =?us-ascii?Q?386fzHV5/A=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f8276e45-db03-4353-aa57-08de54e8a830
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8822.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 10:18:56.7770
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6U3CaR/wQoBBh55x+xgc6IGI0xgYHS2Rq5EyXusJVqnaAP7yHq7aRXXk6T3brOnGTUkxqyGVOZ8BcaNn85SsSQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB9807
+References: <20260115-sm6150_evk-v3-0-81526dd15543@oss.qualcomm.com>
+ <20260115-sm6150_evk-v3-2-81526dd15543@oss.qualcomm.com> <20260116-malachite-spaniel-of-refinement-af22ae@quoll>
+ <025cefd3-888b-4744-bde3-2d5c007db66f@oss.qualcomm.com>
+In-Reply-To: <025cefd3-888b-4744-bde3-2d5c007db66f@oss.qualcomm.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Fri, 16 Jan 2026 11:59:43 +0100
+X-Gm-Features: AZwV_QiWfPjW_f8oYcCD8lMx6vbrDji93S-M42fv7xecvQpuV1cj3bM6NcGZ2oQ
+Message-ID: <CAFEp6-0nVaq2qEoyBuAUpEQZ8Xm8ENJu2QAEFbC0h6XX5JmmoQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/5] dt-bindings: i2c: qcom-cci: Document sm6150 compatible
+To: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Robert Foss <rfoss@kernel.org>,
+        Todor Tomov <todor.too@gmail.com>,
+        "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
+        Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+        Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>, linux-i2c@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: oFkEs9UGSNJhH4wuhQI8nXcDrvwW2syf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE2MDA4MCBTYWx0ZWRfXyQ526OtD1kGq
+ 2rpTPDlB+tty4x2/e2PkPdu90cna6pKNJzz56swxd7HfhiBwHM8Pm/j2/cYA3a+2R810y7S91Dx
+ tsuINyLyVLR4kMslfLQ1X1iLa6g2QxrDd+yO03WaSzcSRxvjGG5hFdGfnWy5A2oy4f9ZJ93KRCe
+ weOObr8Nsv2jA1w9G4DCeBE7+VDuJUyAfV7n2FZIUKzyI4bHLm0uj7svlQzxsLQEG9tweoP7h/p
+ LKm6fwpKAsbHsQ9eZTwj3E/y37zwSMWEg8sHx169d7tFnxkYFIK4yup1p4AaG6AiL1pJ2QXDuUl
+ cfNI+otkrTlvA7q7vZSSzL0MN09FgsSoBYTWQ5GwqlKvXB/rgEHyK64sDsMUXkvvVkE2RH9KxIn
+ mm9t+WTsYVOOU0uwIUNxJbLCF3VHpWYojJuTt1rH5AVabcy6VTh3Zdop0PCmP+c3gvttI4AFDt2
+ xrnoYcuHBLD9eVBf+UA==
+X-Authority-Analysis: v=2.4 cv=OJIqHCaB c=1 sm=1 tr=0 ts=696a1a2c cx=c_pps
+ a=AKZTfHrQPB8q3CcvmcIuDA==:117 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=KKAkSRfTAAAA:8 a=Oz61Ga8zfdW3iksW4uwA:9 a=QEXdDO2ut3YA:10
+ a=pF_qn-MSjDawc0seGVz6:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-ORIG-GUID: oFkEs9UGSNJhH4wuhQI8nXcDrvwW2syf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-16_03,2026-01-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 bulkscore=0 priorityscore=1501 malwarescore=0 spamscore=0
+ suspectscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601160080
 
-This is to resolve the problem of wakeup system by USB3 device insertion
-if HSIOMIX on, in that case, the USB3 device detects RX term on so the
-USB3 device doesn't downgrade to high-speed, we can't expect CONN wakeup
-(for USB3) happen because the 24MHz OSC is required ON to trigger it.
-Because the device works at Super-speed so DP/DM wakeup can't happen
-either. Then the entire systen can't be waken up by such device attach
-event.
+On Fri, Jan 16, 2026 at 9:34=E2=80=AFAM Wenmeng Liu
+<wenmeng.liu@oss.qualcomm.com> wrote:
+>
+>
+>
+> On 1/16/2026 4:28 PM, Krzysztof Kozlowski wrote:
+> > On Thu, Jan 15, 2026 at 06:12:38PM +0800, Wenmeng Liu wrote:
+> >> Add the sm6150 CCI device string compatible.
+> >>
+> >> SM6150 include three clock:
+> >> bus: Bus clock responsible for data transfer.
+> >> iface: Interface clock responsible for register read and write.
+> >> cci: Clock for CCI core operations.
+> >>
+> >> Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+> >> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+> >> ---
+> >>   .../devicetree/bindings/i2c/qcom,i2c-cci.yaml          | 18 ++++++++=
+++++++++++
+> >>   1 file changed, 18 insertions(+)
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml b=
+/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+> >> index a3fe1eea6aece9685674feaa5ec53765c1ce23d8..3472670fdc908ef8f3b3af=
+c68ff437c0435b69a7 100644
+> >> --- a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+> >> +++ b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+> >> @@ -33,6 +33,7 @@ properties:
+> >>                 - qcom,sc8280xp-cci
+> >>                 - qcom,sdm670-cci
+> >>                 - qcom,sdm845-cci
+> >> +              - qcom,sm6150-cci
+> >>                 - qcom,sm6350-cci
+> >>                 - qcom,sm8250-cci
+> >>                 - qcom,sm8450-cci
+> >> @@ -263,6 +264,23 @@ allOf:
+> >>               - const: cpas_ahb
+> >>               - const: cci
+> >>
+> >> +  - if:
+> >> +      properties:
+> >> +        compatible:
+> >> +          contains:
+> >> +            enum:
+> >> +              - qcom,sm6150-cci
+> >> +    then:
+> >> +      properties:
+> >> +        clocks:
+> >> +          minItems: 3
+> >> +          maxItems: 3
+> >> +        clock-names:
+> >> +          items:
+> >> +            - const: bus
+> >> +            - const: iface
+> >> +            - const: cci
+> >
+> > So basically the same as camnoc_axi+cpas_ahb+cci, so just put it into
+> > existing enum with qcom,sm8550-cci.
+> >
+> > I asked for this at v1.
+> > https://lore.kernel.org/all/43efa6fd-53c3-4680-8aca-7b37089ca295@kernel=
+.org/
+> >
+> >
+> > Best regards,
+> > Krzysztof
+> >
+> I raised this question in the previous version.
+> And got reply as:
+>
+>
+> ---
+> me:
+>
+> +                       clocks =3D <&camcc CAM_CC_SOC_AHB_CLK>,
+> +                                <&camcc CAM_CC_CPAS_AHB_CLK>,
+> +                                <&camcc CAM_CC_CCI_CLK>;
+> +                       clock-names =3D "camnoc_axi",
+> +                                     "cpas_ahb",
+> +                                     "cci";
+>
+>
+>          clocks =3D <&camcc CAM_CC_SOC_AHB_CLK>,
+>          clock-names =3D "camnoc_axi";
+>
+> If this is acceptable, I will update it this way in the next version.
+> ---
+> Loic:
+>
+> No, the idea is to name the clock from the device=E2=80=99s perspective.
+> For example, from the CCI perspective, you typically have:
+> - A core clock, clocking the logic, which could be named 'core' (but
+> 'cci' here is ok)
+> - Clocks related to the bus interfaces (such as AHB or AXI), which
+> could be named 'iface...' or 'bus...'.
+>
+> This approach clearly identifies the role of each clock and keeps
+> naming consistent, without depending on where the clock originates or
+> its source name.
+>
+>  From that standpoint, some of the existing bus clock names defined in
+> qcom,i2c-cci.yaml are not ideal. You can find better naming in bindings
+> like qcom,i2c-qup.yaml or qcom,i2c-geni-qcom.yaml.
+> ---
+>
+>
+>          clocks =3D <&camcc CAM_CC_SOC_AHB_CLK>,
+>          clock-names =3D "camnoc_axi";
+>
+> so is this acceptable?
 
-With this override bit we can force the RX term off when enters system
-suspend, and disable the override after system resume. Therefore, the
-USB3 device will always downgrade to High-speed, then DP/DM wakeup can
-always happen. It will correctly switch to Super-speed later when the
-host reset it after the system resume back.
+My answer was mostly meant to expand on Krzysztof=E2=80=99s point about clo=
+ck
+naming, but it probably ended up adding more confusion. Unfortunately,
+we originally picked some poor clock names, such as camnoc_axi.
 
-Signed-off-by: Li Jun <jun.li@nxp.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+So, if you need to introduce new bindings, you should avoid repeating
+this pattern. I initially thought you were introducing a new clock set,
+but apparently your device can match an already existing one.
 
----
-Changes in v3:
- - remove CamelCase style in title
-Changes in v2:
- - rephase the message
----
- drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+In that case, camnoc_axi should simply be treated as a generic bus
+clock rather than taken literally, since it is clearly not AXI in this
+context.
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-index f33eef218db1..e9c113edd470 100644
---- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-@@ -54,6 +54,7 @@
- #define PHY_CTRL5_PCS_TX_SWING_FULL_MASK	GENMASK(6, 0)
- 
- #define PHY_CTRL6			0x18
-+#define PHY_CTRL6_RXTERM_OVERRIDE_SEL	BIT(29)
- #define PHY_CTRL6_ALT_CLK_EN		BIT(1)
- #define PHY_CTRL6_ALT_CLK_SEL		BIT(0)
- 
-@@ -699,6 +700,7 @@ static int imx8mp_usb_phy_init(struct phy *phy)
- static int imx8mq_phy_power_on(struct phy *phy)
- {
- 	struct imx8mq_usb_phy *imx_phy = phy_get_drvdata(phy);
-+	u32 value;
- 	int ret;
- 
- 	ret = regulator_enable(imx_phy->vbus);
-@@ -715,12 +717,23 @@ static int imx8mq_phy_power_on(struct phy *phy)
- 		return ret;
- 	}
- 
--	return ret;
-+	/* Disable rx term override */
-+	value = readl(imx_phy->base + PHY_CTRL6);
-+	value &= ~PHY_CTRL6_RXTERM_OVERRIDE_SEL;
-+	writel(value, imx_phy->base + PHY_CTRL6);
-+
-+	return 0;
- }
- 
- static int imx8mq_phy_power_off(struct phy *phy)
- {
- 	struct imx8mq_usb_phy *imx_phy = phy_get_drvdata(phy);
-+	u32 value;
-+
-+	/* Override rx term to be 0 */
-+	value = readl(imx_phy->base + PHY_CTRL6);
-+	value |= PHY_CTRL6_RXTERM_OVERRIDE_SEL;
-+	writel(value, imx_phy->base + PHY_CTRL6);
- 
- 	clk_disable_unprepare(imx_phy->alt_clk);
- 	clk_disable_unprepare(imx_phy->clk);
--- 
-2.34.1
-
+Regards,
+Loic
