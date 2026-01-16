@@ -1,259 +1,155 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013042.outbound.protection.outlook.com [40.107.159.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641203612FB
-	for <imx@lists.linux.dev>; Fri, 16 Jan 2026 10:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768561199; cv=none; b=cwvQmOdksRETSo3x3PQtQt+4L1GViGF6ytJvjpaNjI0dyqb2OLChAxjzoj21ZjH+8ha27fgHID2tX0IpQEfNHpSYosN69Nmyt1PRD8jHupoepTpVL+94Y8vHgX40Ay97jBbCuoVP9Z3QMOWP1xaDK6B3ai7Snl94DMlVxJtHjT8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768561199; c=relaxed/simple;
-	bh=bUco4N1M7It+4JUQORbZ61sanRZKijYO39C7SFRFjpI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TPhN18JCWEswsfK516hTSGw0xrQBYD6P6FsN6mGWKjQ0hY91jSCP3nHDuzXSEwow4JxT8y0/n1wxOHfc3WaHke3bRJm6KLf6bmcDHRw5PbQVYN11xLRx3+hQwlJkLtZihsS8wY6JOm3EneDNpVFu2AdQcWKbWFKvAXM3X4AXXdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GzcbB5Ud; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=d9aH0nbS; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108AB369984
+	for <imx@lists.linux.dev>; Fri, 16 Jan 2026 11:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768562357; cv=fail; b=oqMifZFmoXACDBcb5gJ9bRqXXpxWdjemx3naC+MlWlt5bUg2UlaJhX1fH+nDWqVNGbAN7Ec5TuYrUq1J3AKjohcAM3SR0U1N3a44dJ6x7LYRr3UNtv7kdGBPR1k7PT0GuFP4WKvVUkysghO3w/CuzZPfwy+RkhMyl2qzak/R44U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768562357; c=relaxed/simple;
+	bh=XRdV4fuk3okZuGsQRCrbEsVAQ8dVphVOSnN3t8lrnys=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dFrqitEFsCG13yAgdkWKq3uAiS+Tm089g2yrXOtkVgpVpFpd9ZnhagmVySq6+tzRB3OP+dP/jJ1yddqbk7OnkMAnku1s5tG9zfhfZ9+Y66c4NrQvoIkfhqKbra/7qz/hpMJBDYlgR99Z+qvvJbJtUykmCYMTxg//AIMw+QFJfNc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com.cn; spf=fail smtp.mailfrom=leica-geosystems.com.cn; dkim=pass (1024-bit key) header.d=leica-geosystems.com.cn header.i=@leica-geosystems.com.cn header.b=dINjtcW7; arc=fail smtp.client-ip=40.107.159.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=leica-geosystems.com.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GzcbB5Ud";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="d9aH0nbS"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60G9iK9J006940
-	for <imx@lists.linux.dev>; Fri, 16 Jan 2026 10:59:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	hXYF/SU0x0cq4kg0To9gqp3URoD3jz2g2zAKZXrW05Y=; b=GzcbB5Ud3p+q+RYr
-	8G9E3u4YpMb2z9On800o+85X5W5g4CuhgZ1c1PEWHZWLS+eu1bW0Yu4drjWY4Hai
-	oCsJIzXRMPk8pYD5oyyFNZC6QndmUtiGX/QZh32psjqlmZnExXYwQlHkLae0MlqL
-	7pzRLa83c/+wgl6IsHuT3nABhshR2hMUYGtJvBUkJtM3p1P8KOErIK/m+bRc5HP1
-	GD8XOt/+9N7k8R7A778FVdinVLEWDfF6dvIewz/+2cX4ToEOE97nl50gpHeFC4oG
-	I5UDoz8wJsOTr6FujHgGupLf8V0KGhWpkAfb5+5ImLxuY1bmV71IaFZnStCU/gUH
-	Sa4+YA==
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bqjy9r769-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Fri, 16 Jan 2026 10:59:56 +0000 (GMT)
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-45c840f19f4so3767431b6e.3
-        for <imx@lists.linux.dev>; Fri, 16 Jan 2026 02:59:56 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=leica-geosystems.com.cn header.i=@leica-geosystems.com.cn header.b="dINjtcW7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=izttycINlth+Ss3c5D5MdTSTXD9/3+gO8MxHa4aCqLC5uH2+lxJlXxB5ugF8D/5q7XvoVqRFzSZiauKQTm5vSSIqyNWtNznL/sb2Zf9+8uXTrh6vsybzJ+cMSHAWgoG0yszfrnn2gbp659dSq+p/FHJ4np1Swj3JrnVy0dsIZwE7Ak6ua4Vv3Bn6Ridzy/6pzGh8fq8sbyGDU9NrRJoau4dv1f4Daw8dIBg4l1W+utLxZGtRc5oWmCLN0j2kyHP73GyO3rMnV5DywNbbkpT0BuCoPKI9R7dzq6pjkUnvR8PKzXBpZiCLHfUZuBAOHYhB+f5CZ/CoM25Kq4CJBAILXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=X6hi2Ng57jOgja0NHfG8qsfVJKsfUIfcFnUYxfdNiuA=;
+ b=s805yd3TK/O+xN9A+XCU74RqpqXNKXnTBCbn5QfL4MQnYqE//w0gEQW5widk4Vx9lmiX1hRtpUm9VYqU41ghiODI6/GhzZNcLeDnIjWbbENPih/XIy2+o5gbv+eMcBIRUzBniar8f/mzYfuxWerQ1ca6sDhCXj1diU5JvMxIWU/VGDR19/NDezmsXhWyEWldL06PNWfR51FXGPe/MhqEi+jO5ggrEQbrttanG6gHHQcrUE7zO2oSX5cqpLIw0ZHcdrg2x7JXk2CZFnbg3/ojpoeGXOfDXXdclzxKpizk1rjQeLFTO5sM7CFNblxposCB45dxc9FFbth9FeLpx4HCug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 193.8.40.99) smtp.rcpttodomain=lists.linux.dev
+ smtp.mailfrom=leica-geosystems.com.cn; dmarc=pass (p=reject sp=reject
+ pct=100) action=none header.from=leica-geosystems.com.cn; dkim=none (message
+ not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1768561196; x=1769165996; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hXYF/SU0x0cq4kg0To9gqp3URoD3jz2g2zAKZXrW05Y=;
-        b=d9aH0nbSNMzP0za1BSdofDmdrnMfKOYoJLWWZs3M2x6yHEFdL6PhbgPqnykZTnCETS
-         SZUqGGvVdW9c4IQuMQVc/lMps4f7WnYK+bguZ7wYdOE4HPJ7zqFD0jGl0pVaIfuH5YDm
-         WgeY3tcA8827PXXhvJpxYKvHtOORLYoY5Xu3D6NEJihBOnaOVzBsVjmncc4uWIcx77x9
-         0DQ0hmXmo7CjgBzE7086NvPG9/bDy9f3Y3wziPF8fooAt97TsF1WMynHK9gaJiROqNpz
-         IvArrt4CWHzBGTrYXZLoww8JTqfgfX2Jti1VfHILn9+ijAAFaD7g4+z/LvzPEV1/jylr
-         FZFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768561196; x=1769165996;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hXYF/SU0x0cq4kg0To9gqp3URoD3jz2g2zAKZXrW05Y=;
-        b=cnFhmE1QyhscKfb020f+OlsOrG6z9sWHv1s2fJZROIw8HCursW1E7cQR9AqpJxstAP
-         PM+E1a9MtAoZrCyIvXirkmbyoEyt6cadR+bFkJCehxM9aYVjGRjdR5Z2OT73TXLgxxm9
-         x1Qjkeeihu+xBthM9zLTO0SjeKsBIaGeGw8BAueWm4Ez1Zdw/p4tEs5i4hsu5PGpTvdU
-         fvGUYDvO8MLQkaDRqYPYoME1xHG6rRhsr0IGoRoL7DXeG41DJBrUflcX/ACqD3TjrxrY
-         OzREQdsVqncASbZY45GUhmd1u0lf3S4prUg8SrAUi049cSxa9VUtF1D8R42Kxbfif4Jy
-         7d6g==
-X-Forwarded-Encrypted: i=1; AJvYcCX+ItcSousbILPN1lThE6WkBUY3No0x2kAR44enjSXmj8Ep7e9Oc6FnhCRmrPgTVKBpIMo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YymwtpP5FrheDU3llAV+3dIF6WGIqKXWT/m8yNb7uyjcp/KkMfT
-	I8PukboIiiK1gsA6gVXnvsZx48ni+OwrsliWDV80DJMw0dZOrKe4zYjo5QjvnC9Rlfi+UYZ+zEE
-	QucxzN02XltIhStfZ1S9sHEC0HSv0PFqrWQTFNwP7/0VFKEaW+0/kWoGMxCfdZ9a+N4wSP1wYxX
-	xxPuDLVpjbx8/GpNkrCsrW6sYC4tgVjw==
-X-Gm-Gg: AY/fxX6M3hf5TKQujp8yu/k2Nq5ruI7hW+0y2wwJa/jfg1/k4ZnpvWi2LvgOaMqaymv
-	s6cOrak/hE838dgRlabmlM9jmjiPGbdTS78Rh0zuYpMRSyTMW0AbiJ83M0HrNAXok/1OwTb0DrC
-	Q4qoSmxCUQm73cnh0iEczAbldWb8O9gzaHEEl+5zgq0xpD5MzCeOzyEF0/gH//n2ra7vLU81Fiy
-	J3HxiI2FUbdiRW4PPeSXKkkmXC8SZoyqCWJpLrszl1D8Ak1aEX7UEBu
-X-Received: by 2002:a05:6820:4410:b0:65f:69f7:d0e3 with SMTP id 006d021491bc7-661189e5644mr616431eaf.84.1768561195676;
-        Fri, 16 Jan 2026 02:59:55 -0800 (PST)
-X-Received: by 2002:a05:6820:4410:b0:65f:69f7:d0e3 with SMTP id
- 006d021491bc7-661189e5644mr616407eaf.84.1768561195190; Fri, 16 Jan 2026
- 02:59:55 -0800 (PST)
+ d=leica-geosystems.com.cn; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=X6hi2Ng57jOgja0NHfG8qsfVJKsfUIfcFnUYxfdNiuA=;
+ b=dINjtcW7MOA9xBOw0SofEPLzyYXcpOOTAwvXBJnjF4PenD3UUDjqhnm1VaK6yRC2SGV0NcGqWqWGQxeFJJl2FDfuxXV6pcwtNjXYJAGQmWhRyRDlh2qeLGaLIy/lAWl4mGBsvtps6WzrWEexlYB2K+X/uB4RtOPNMk9DT/DXwx0=
+Received: from AM0P190CA0002.EURP190.PROD.OUTLOOK.COM (2603:10a6:208:190::12)
+ by AS5PR06MB9039.eurprd06.prod.outlook.com (2603:10a6:20b:680::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Fri, 16 Jan
+ 2026 11:19:10 +0000
+Received: from AMS0EPF000001AE.eurprd05.prod.outlook.com
+ (2603:10a6:208:190:cafe::c7) by AM0P190CA0002.outlook.office365.com
+ (2603:10a6:208:190::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.7 via Frontend Transport; Fri,
+ 16 Jan 2026 11:19:06 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.99)
+ smtp.mailfrom=leica-geosystems.com.cn; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=leica-geosystems.com.cn;
+Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com.cn
+ designates 193.8.40.99 as permitted sender) receiver=protection.outlook.com;
+ client-ip=193.8.40.99; helo=hexagon.com; pr=C
+Received: from hexagon.com (193.8.40.99) by
+ AMS0EPF000001AE.mail.protection.outlook.com (10.167.16.154) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9542.4 via Frontend Transport; Fri, 16 Jan 2026 11:19:09 +0000
+Received: from aherlnxbspsrv01.lgs-net.com ([10.61.228.61]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
+	 Fri, 16 Jan 2026 12:19:09 +0100
+From: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+To: o.rempel@pengutronix.de,
+	kernel@pengutronix.de,
+	andi.shyti@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com,
+	linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: bsp-development.geo@leica-geosystems.com,
+	LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+Subject: [PATCH V3 0/2] i2c: imx: Fix block read handling for invalid length
+Date: Fri, 16 Jan 2026 11:19:04 +0000
+Message-ID: <20260116111906.3413346-1-Qing-wu.Li@leica-geosystems.com.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260115-sm6150_evk-v3-0-81526dd15543@oss.qualcomm.com>
- <20260115-sm6150_evk-v3-2-81526dd15543@oss.qualcomm.com> <20260116-malachite-spaniel-of-refinement-af22ae@quoll>
- <025cefd3-888b-4744-bde3-2d5c007db66f@oss.qualcomm.com>
-In-Reply-To: <025cefd3-888b-4744-bde3-2d5c007db66f@oss.qualcomm.com>
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Date: Fri, 16 Jan 2026 11:59:43 +0100
-X-Gm-Features: AZwV_QiWfPjW_f8oYcCD8lMx6vbrDji93S-M42fv7xecvQpuV1cj3bM6NcGZ2oQ
-Message-ID: <CAFEp6-0nVaq2qEoyBuAUpEQZ8Xm8ENJu2QAEFbC0h6XX5JmmoQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/5] dt-bindings: i2c: qcom-cci: Document sm6150 compatible
-To: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Robert Foss <rfoss@kernel.org>,
-        Todor Tomov <todor.too@gmail.com>,
-        "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
-        Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>, linux-i2c@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: oFkEs9UGSNJhH4wuhQI8nXcDrvwW2syf
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE2MDA4MCBTYWx0ZWRfXyQ526OtD1kGq
- 2rpTPDlB+tty4x2/e2PkPdu90cna6pKNJzz56swxd7HfhiBwHM8Pm/j2/cYA3a+2R810y7S91Dx
- tsuINyLyVLR4kMslfLQ1X1iLa6g2QxrDd+yO03WaSzcSRxvjGG5hFdGfnWy5A2oy4f9ZJ93KRCe
- weOObr8Nsv2jA1w9G4DCeBE7+VDuJUyAfV7n2FZIUKzyI4bHLm0uj7svlQzxsLQEG9tweoP7h/p
- LKm6fwpKAsbHsQ9eZTwj3E/y37zwSMWEg8sHx169d7tFnxkYFIK4yup1p4AaG6AiL1pJ2QXDuUl
- cfNI+otkrTlvA7q7vZSSzL0MN09FgsSoBYTWQ5GwqlKvXB/rgEHyK64sDsMUXkvvVkE2RH9KxIn
- mm9t+WTsYVOOU0uwIUNxJbLCF3VHpWYojJuTt1rH5AVabcy6VTh3Zdop0PCmP+c3gvttI4AFDt2
- xrnoYcuHBLD9eVBf+UA==
-X-Authority-Analysis: v=2.4 cv=OJIqHCaB c=1 sm=1 tr=0 ts=696a1a2c cx=c_pps
- a=AKZTfHrQPB8q3CcvmcIuDA==:117 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=KKAkSRfTAAAA:8 a=Oz61Ga8zfdW3iksW4uwA:9 a=QEXdDO2ut3YA:10
- a=pF_qn-MSjDawc0seGVz6:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-ORIG-GUID: oFkEs9UGSNJhH4wuhQI8nXcDrvwW2syf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-16_03,2026-01-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 bulkscore=0 priorityscore=1501 malwarescore=0 spamscore=0
- suspectscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601160080
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 16 Jan 2026 11:19:09.0541 (UTC) FILETIME=[EF51C150:01DC86D9]
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AMS0EPF000001AE:EE_|AS5PR06MB9039:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: a20ccb2d-00d1-4511-c17c-08de54f111f0
+X-SET-LOWER-SCL-SCANNER: YES
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?9lWbYa/8RKg98KtNra4f6WjDYMkcKE9G+hXPJP+HRBE0p6V/sKQDTmU522PR?=
+ =?us-ascii?Q?PO4QlARJW/a5BvGCVkPL/X1qeiix0ituvps+GTkeM7cg8Tk0rYSOzNyT9QxN?=
+ =?us-ascii?Q?HStgIRblG0L2A1u5lhDtGylEEhnlAF9nLu6hRqzZJJMwx+Lbakeel/deHy+5?=
+ =?us-ascii?Q?jeoUyqAak064Vy/AJlE7MdinTBCr3sdkS3UjKKx54+FoNucPJSUOUgdj9ppb?=
+ =?us-ascii?Q?RYLCp4GgQkaxPKmZSCumQUs7rLjHnB5Hp7SRyntDAqxyDbEEdx1/vf+NaM7L?=
+ =?us-ascii?Q?G1bSDN7upVzDwy6yTBwyRTtaXmJdJ1P3aAYKys+zm8lkNfsMdUqwprQjn5hh?=
+ =?us-ascii?Q?F9A0eiO/wlzd3/oyIuufU7xWyLHeueO8WX5y6g2Xcwu1OYGuSJJJJ6kP0L13?=
+ =?us-ascii?Q?JX8aa+ETaMAD+/9xwRJEV/oiMRmfudpBWWpj9XIAFX4115QSXUfnFuqkPm7w?=
+ =?us-ascii?Q?i+dENBxdKbLgocQUwjxaZnCKebZL73ZBKK2hcyfFjsYoZWL3442leyetlCVF?=
+ =?us-ascii?Q?FzXFnDdILaoY+QRZ82FLskhMU24r320M43FhEBQ+oLFW1l3PpJEsh5UcsJJN?=
+ =?us-ascii?Q?oE/gPbxF65DWNqCXmGg22x5apuD0jptNq7v5XK3UeASKhe6c4dB+xY5C6p8t?=
+ =?us-ascii?Q?jq6ZhN3+TsO2Pg5n8FyAgcHh0mXiR1F3eUdt0cKEYtWzInIs7eA0tZ4oAups?=
+ =?us-ascii?Q?Z59VwHphxcUh1hv2dcycDkr/r20mB0YGa+NMVnRYYaMMLwSfHouxpH9S9Scf?=
+ =?us-ascii?Q?btMSE8QmXlyyW+LjS8HptSRXhXbr5yHGK3KqpeyIKB41+PPPkhRJbxGs28W+?=
+ =?us-ascii?Q?NrbQtqOoICtjyTgScZZuc2DEbZCHMDRFCw2ylc6v+kDc4Rld6DbN6+ELhOiB?=
+ =?us-ascii?Q?wej8f8IawezZIiIR9D8fx/7B8XGJEe/SqJsCH4Gjb7/oGuVSuRSWz6nRszQJ?=
+ =?us-ascii?Q?61xAkCKNt7XpQH5dQd+K5zptsfOh4Vn/yECXeomfS1B2XoVfBwIBPQHrAhaa?=
+ =?us-ascii?Q?hKpxBfh5vhg4TGWeej6gBJ1WtMyoiSgmcIEl8+D62caBsS8KE/wNxqFR4gvd?=
+ =?us-ascii?Q?mQxJz3t5QFv47vJPl+/EvTB8HMSA8gQIcfQm4oAPwjP1Vm+5ICbkW18nJUeF?=
+ =?us-ascii?Q?hHYJG9s+32yxkS1ouxzt2dCkNqRgo1Tf/CQMjJSd5u+i5L+vzj+O34C7I7Hy?=
+ =?us-ascii?Q?SNtPzX1nzZIlO0Ef2sHinq6fb3mu5kO4AIZDN0eIarjsatIhxAx1RYEVSO0N?=
+ =?us-ascii?Q?4dEIDKtMRyyaUJTdWMRyGkz6TK/jxzsnPSpqINBvNXFjapCAm9tqw7/OU7uz?=
+ =?us-ascii?Q?11PkRNWlKiwVq9iDjfUdjAqqjEUVSW/IFa+FASWKnLJGMFetPOzT0fqK0FSa?=
+ =?us-ascii?Q?7tmvEORXOna0QeFdEshzel5pGEepFwFeL6NnPPtGFMWDWOE2gp3kfYWPleyC?=
+ =?us-ascii?Q?zbv480WyyWgWcRnD8wh7CuS1l5duzSdcLgTBuG5xpg0r4NB/5gajQglV2Hns?=
+ =?us-ascii?Q?0LLwTrXCzo34ImtooKiv9wNT7y7hjZd90qYfEe7y+B3e65bi61lkZRziUBuG?=
+ =?us-ascii?Q?1vg6NGQId3icXrHzZ3MZ7YbW/gLe6fp3GkGdlMWiajz1yiSPWfQtiCPAPed2?=
+ =?us-ascii?Q?cafVct10CrjTbhyHnCYQEGMjOvsiaKj2ZP4b3pHuXlc2d26mEhxPFzQXw17D?=
+ =?us-ascii?Q?zquc9A=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: leica-geosystems.com.cn
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 11:19:09.7676
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a20ccb2d-00d1-4511-c17c-08de54f111f0
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.99];Helo=[hexagon.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS0EPF000001AE.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR06MB9039
 
-On Fri, Jan 16, 2026 at 9:34=E2=80=AFAM Wenmeng Liu
-<wenmeng.liu@oss.qualcomm.com> wrote:
->
->
->
-> On 1/16/2026 4:28 PM, Krzysztof Kozlowski wrote:
-> > On Thu, Jan 15, 2026 at 06:12:38PM +0800, Wenmeng Liu wrote:
-> >> Add the sm6150 CCI device string compatible.
-> >>
-> >> SM6150 include three clock:
-> >> bus: Bus clock responsible for data transfer.
-> >> iface: Interface clock responsible for register read and write.
-> >> cci: Clock for CCI core operations.
-> >>
-> >> Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
-> >> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
-> >> ---
-> >>   .../devicetree/bindings/i2c/qcom,i2c-cci.yaml          | 18 ++++++++=
-++++++++++
-> >>   1 file changed, 18 insertions(+)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml b=
-/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
-> >> index a3fe1eea6aece9685674feaa5ec53765c1ce23d8..3472670fdc908ef8f3b3af=
-c68ff437c0435b69a7 100644
-> >> --- a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
-> >> +++ b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
-> >> @@ -33,6 +33,7 @@ properties:
-> >>                 - qcom,sc8280xp-cci
-> >>                 - qcom,sdm670-cci
-> >>                 - qcom,sdm845-cci
-> >> +              - qcom,sm6150-cci
-> >>                 - qcom,sm6350-cci
-> >>                 - qcom,sm8250-cci
-> >>                 - qcom,sm8450-cci
-> >> @@ -263,6 +264,23 @@ allOf:
-> >>               - const: cpas_ahb
-> >>               - const: cci
-> >>
-> >> +  - if:
-> >> +      properties:
-> >> +        compatible:
-> >> +          contains:
-> >> +            enum:
-> >> +              - qcom,sm6150-cci
-> >> +    then:
-> >> +      properties:
-> >> +        clocks:
-> >> +          minItems: 3
-> >> +          maxItems: 3
-> >> +        clock-names:
-> >> +          items:
-> >> +            - const: bus
-> >> +            - const: iface
-> >> +            - const: cci
-> >
-> > So basically the same as camnoc_axi+cpas_ahb+cci, so just put it into
-> > existing enum with qcom,sm8550-cci.
-> >
-> > I asked for this at v1.
-> > https://lore.kernel.org/all/43efa6fd-53c3-4680-8aca-7b37089ca295@kernel=
-.org/
-> >
-> >
-> > Best regards,
-> > Krzysztof
-> >
-> I raised this question in the previous version.
-> And got reply as:
->
->
-> ---
-> me:
->
-> +                       clocks =3D <&camcc CAM_CC_SOC_AHB_CLK>,
-> +                                <&camcc CAM_CC_CPAS_AHB_CLK>,
-> +                                <&camcc CAM_CC_CCI_CLK>;
-> +                       clock-names =3D "camnoc_axi",
-> +                                     "cpas_ahb",
-> +                                     "cci";
->
->
->          clocks =3D <&camcc CAM_CC_SOC_AHB_CLK>,
->          clock-names =3D "camnoc_axi";
->
-> If this is acceptable, I will update it this way in the next version.
-> ---
-> Loic:
->
-> No, the idea is to name the clock from the device=E2=80=99s perspective.
-> For example, from the CCI perspective, you typically have:
-> - A core clock, clocking the logic, which could be named 'core' (but
-> 'cci' here is ok)
-> - Clocks related to the bus interfaces (such as AHB or AXI), which
-> could be named 'iface...' or 'bus...'.
->
-> This approach clearly identifies the role of each clock and keeps
-> naming consistent, without depending on where the clock originates or
-> its source name.
->
->  From that standpoint, some of the existing bus clock names defined in
-> qcom,i2c-cci.yaml are not ideal. You can find better naming in bindings
-> like qcom,i2c-qup.yaml or qcom,i2c-geni-qcom.yaml.
-> ---
->
->
->          clocks =3D <&camcc CAM_CC_SOC_AHB_CLK>,
->          clock-names =3D "camnoc_axi";
->
-> so is this acceptable?
+This series fixes a crash and bus lockup when SMBus block read operations
+encounter invalid length values (zero or greater than I2C_SMBUS_BLOCK_MAX).
 
-My answer was mostly meant to expand on Krzysztof=E2=80=99s point about clo=
-ck
-naming, but it probably ended up adding more confusion. Unfortunately,
-we originally picked some poor clock names, such as camnoc_axi.
+Both patches have been tested on i.MX 8M Plus with continuous block read
+operations from battery and keyboard devices sharing the same I2C bus.
 
-So, if you need to introduce new bindings, you should avoid repeating
-this pattern. I initially thought you were introducing a new clock set,
-but apparently your device can match an already existing one.
+Changes in v3:
+  - Add trailing comma to IMX_I2C_STATE_READ_BLOCK_DATA_ABORT enum
+  - Clean up reference manual citations
 
-In that case, camnoc_axi should simply be treated as a generic bus
-clock rather than taken literally, since it is clearly not AXI in this
-context.
+LI Qingwu (2):
+  i2c: imx: preserve error state in block data length handler
+  i2c: imx: add abort path for invalid block length
 
-Regards,
-Loic
+ drivers/i2c/busses/i2c-imx.c | 58 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 55 insertions(+), 3 deletions(-)
+
+-- 
+2.43.0
+
