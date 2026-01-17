@@ -1,106 +1,134 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F035C2580E1;
-	Sat, 17 Jan 2026 11:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137362AE77;
+	Sat, 17 Jan 2026 11:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768649651; cv=none; b=rhoMd4EJF+8XNmROxuuw/CR1bwCT0Z/36I323o8KAERg63KzJKTXIJ9fjdYS2hcD/fWmbpxbOzVjUNVzzkeWFWNd4NWBO5f8pHeOGhMi9eW0ZDwl38a/bQl4uDx7YOHzNd7slivVtMzxyAtGK9R6q8pZEsAxBEp4+N3oghWwY+8=
+	t=1768650250; cv=none; b=NKoc0S+bR/GsJSuOwTyrmqozPKbn/CQThXzCWt0W4YC255jrZAMIEyuaB0WEaDSlWOQLm54czd8ULZloxM8HL5d06kM24VgiNuF1PAMpLtqLB+sqivBJaLB8gzSRzE1AlxnYeBN4eU7nFKE4NCyxkfAgh1xzgS6qFIupK8QNOow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768649651; c=relaxed/simple;
-	bh=fv7CZKE3aaSA68XB9hs5SRb1yJ22PTBB5qdBpAufLtE=;
+	s=arc-20240116; t=1768650250; c=relaxed/simple;
+	bh=7lknc6FIsN8kTaQ3hRHqL8L6jIldGI7xwi+wz3k2pVU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P3y55zDem3q2/TsdSJF11/TSRbc1LeoWM0p5gCCp/C2z78zZr9jisTPzQgMfCUNh25Rf0R/J0Qd5ZnxkXq/IWB3SkCDdFr61JuFqEwiJc96m4FAhxakKQNXL6avTjvK3Wji6E32hPqDhJ+3bdzmZYqZZUY3z7pDqdFbcrrMLAfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HgL1Brga; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=G3rm0PzdgAf3SSCvbJreahj2Yo+AmIMaNIq5CKI4k/fMTIwJkllEz2+mSko6uUtWvqN0IMyoiij6BBuKQm/NctQull8+n4xcLfpsF/3VritIeL/rxCKhSXDEw6raO9i5O6LVrSueILIp2zJnT1GLXRh0ofwrCMjEmVz89SCByUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cUrkHI3T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HgL1Brga"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28765C4CEF7;
-	Sat, 17 Jan 2026 11:34:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cUrkHI3T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B1EEC4CEF7;
+	Sat, 17 Jan 2026 11:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768649650;
-	bh=fv7CZKE3aaSA68XB9hs5SRb1yJ22PTBB5qdBpAufLtE=;
+	s=k20201202; t=1768650249;
+	bh=7lknc6FIsN8kTaQ3hRHqL8L6jIldGI7xwi+wz3k2pVU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HgL1BrgaT52iSum4tdHARsgvsLwD7xKFLvJG31MzNCvKC7ueYCW/5nHSK6dJ3u+QQ
-	 o+yw64hK19tYtRwAIbTlrm9pB44tz2S1lCIgzvFb72fQKGydZYBwtggW428jL4u3sn
-	 icci5MmA7ytNwQ6XoNAbfAQ2rSzhy71hQdvHuUk3ZWjJfLEy8DIiEycKWzIIfDBS4S
-	 6UWaHkbDzoBflMWYP35UuBFFvw1tVCYZ1lMYt0O/ZCQGx6qiYOIykInc5Ju3w1o//w
-	 jf9nvSwFKeZOxdZLguezq2PA3bcWlGqKkCe7TpjK+Un+Rk/aHIba+axo+cWkQ+SSEP
-	 qaDQ6vyg69k7g==
-Date: Sat, 17 Jan 2026 12:34:00 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Manivannan Sadhasivam <mani@kernel.org>, Christoph Hellwig <hch@lst.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Keith Busch <kbusch@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Koichiro Den <den@valinux.co.jp>, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-nvme@lists.infradead.org, mhi@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, linux-crypto@vger.kernel.org,
-	imx@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>
-Subject: Re: [PATCH v3 0/9] dmaengine: Add new API to combine configuration
- and descriptor preparation
-Message-ID: <aWtzqJKsCHPJqDDH@ryzen>
-References: <20260105-dma_prep_config-v3-0-a8480362fd42@nxp.com>
- <aWTwrOOXX3AR8Ght@ryzen>
- <6f4elcu5iql65jeqfeqhmllquv253xh4gb37ivef2kyvsj5lps@w35ciehuwxym>
+	b=cUrkHI3TVz80ah/2V2OAa3YVWKUKlfBKTjrVaFB4AvpYJLenjYw9sIIbogSR970f8
+	 cvGB31uAzYakxyaHsj1BFcCz55w8Mz/hymC0nr0RrfpvsMeLZdfb5ZxTU2A9814g5j
+	 t1loXK3qayAfqBwBD4uwBn/HIh14LsGlngm/Wwm7DzHcqI8DGBM3giqP1+TjCTwFEX
+	 SqlVmei7xQ2O9BMJZFQXZQ75mvE1uaGLhMEdvvTUHmRXhSM7CovoKwl/Hi4f4WaWEO
+	 MGLT1KHJBv3T7Wk0UQgD5CBJ84TbxroJ9OcVHNYDcH4QkIx2XPUzMCWo0FHWVuIaQQ
+	 wK0e+49RC5ceA==
+Date: Sat, 17 Jan 2026 12:44:07 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, 
+	tiwai@suse.com, linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	devicetree@vger.kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 1/2] ASoC: dt-bindings: fsl,audmix: Add support for
+ i.MX952 platform
+Message-ID: <20260117-versed-proficient-pigeon-bd0b2a@quoll>
+References: <20260116101648.377952-1-shengjiu.wang@nxp.com>
+ <20260116101648.377952-2-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <6f4elcu5iql65jeqfeqhmllquv253xh4gb37ivef2kyvsj5lps@w35ciehuwxym>
+In-Reply-To: <20260116101648.377952-2-shengjiu.wang@nxp.com>
 
-On Sat, Jan 17, 2026 at 04:35:40PM +0530, Manivannan Sadhasivam wrote:
-> On Mon, Jan 12, 2026 at 02:01:32PM +0100, Niklas Cassel wrote:
-> > Frank,
-> > 
-> > Thanks a lot for your work on this series!
-> > 
-> > On Mon, Jan 05, 2026 at 05:46:50PM -0500, Frank Li wrote:
-> > >  Documentation/driver-api/dmaengine/client.rst |   9 ++
-> > >  drivers/crypto/atmel-aes.c                    |  10 +--
-> > >  drivers/dma/dmaengine.c                       |   3 +
-> > >  drivers/dma/dw-edma/dw-edma-core.c            |  41 ++++++---
-> > >  drivers/nvme/target/pci-epf.c                 |  21 ++---
-> > >  drivers/pci/endpoint/functions/pci-epf-mhi.c  |  52 ++++--------
-> > >  drivers/pci/endpoint/functions/pci-epf-test.c |   8 +-
-> > >  include/linux/dmaengine.h                     | 117 ++++++++++++++++++++++++--
-> > >  8 files changed, 177 insertions(+), 84 deletions(-)
-> > 
-> > Is the plan to merge this series via the dmaengine tree?
-> > 
+On Fri, Jan 16, 2026 at 06:16:47PM +0800, Shengjiu Wang wrote:
+> The specific feature for AUDMIX on i.MX952 is that it can be bypassed,
+> so add fsl,amix-bypass property for this feature, besides this there is
+> no power domain defined on i.MX952, so make power-domains to be
+> dedicated to i.MX8QM.
 > 
-> It makes sense to take it through dmaengine tree given that the changes in PCI
-> and other drivers are straightforward.
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  .../devicetree/bindings/sound/fsl,audmix.yaml | 35 +++++++++++++++++--
+>  1 file changed, 33 insertions(+), 2 deletions(-)
 > 
-> > If so, we might need an Ack from Mani on the pci-epf-mhi.c and
-> > pci-epf-test.c patch.
-> > 
-> 
-> Just did.
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,audmix.yaml b/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
+> index 3ad197b3c82c..50fb08460b4f 100644
+> --- a/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
+> +++ b/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
+> @@ -34,7 +34,9 @@ description: |
+>  
+>  properties:
+>    compatible:
+> -    const: fsl,imx8qm-audmix
+> +    enum:
+> +      - fsl,imx8qm-audmix
+> +      - fsl,imx952-audmix
+>  
+>    reg:
+>      maxItems: 1
+> @@ -75,12 +77,41 @@ properties:
+>          unevaluatedProperties: false
+>          description: Output port to SAI RX
+>  
+> +  fsl,amix-bypass:
+> +    type: boolean
+> +    description:
+> +      The audmix module is bypassed from hardware.
 
-Great!
-
-Keith, Christoph, any chance to get an ack on the NVMe patches?
-
-
-Herbert Xu, David Miller (crypto API maintainers),
-any chance to get an ack on the crypto driver ?
-There does not seem to be an explicit entry in MAINTAINERS for the atmel
-crypto driver, and another atmel crypto driver is marked as orphan.
+I don't understand why device AUDMIX would have property saying AUDMIX
+(so itself) can by bypassed. If you bypass the device itself, what do
+you configure here?
 
 
-Kind regards,
-Niklas
+> +
+>  required:
+>    - compatible
+>    - reg
+>    - clocks
+>    - clock-names
+> -  - power-domains
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx8qm-audmix
+> +    then:
+> +      required:
+> +        - power-domains
+> +      not:
+> +        required:
+> +          - fsl,amix-bypass
+
+fsl,amix-bypass: false
+
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,imx952-audmix
+> +    then:
+> +      not:
+> +        required:
+> +          - power-domains
+
+Not sure what you want to say here, but disallowing properties is shown
+in example-schema (:false).
+
+Best regards,
+Krzysztof
+
