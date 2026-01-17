@@ -1,45 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068031DB356;
-	Sat, 17 Jan 2026 02:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CF41FC7;
+	Sat, 17 Jan 2026 02:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768617603; cv=none; b=OLAeMLxSx4J96ukGY8wcnc2n1iVm80345lhqZe8HEIli8EwlZPHqW0OE3HQT/PBrJrP428z6fB0+8XKQHl7aEkHNIU4tqgwqFZhyDztCOjgPo+tCDk1UcY6l0zwXwtOBWZsecbvs6PHXCIYBt2NjAAMsa0s0YkI8MQOi+z6rlCg=
+	t=1768617808; cv=none; b=etKvFQZMOaiIuugFjzZWtQtycoYe+lyFwuvZDQsjlVEPK3EzDYNAEhNh7leTFI1dqKoWzJ/GE8W8nZa66xzu+eIktv1B+wGNd3y5WuAw6N48Tx26gwhLeMqInEns94Vkt/0niGnsc8GvBzSkCtp6b2AIs3VG+dqSvuUEDE5ksjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768617603; c=relaxed/simple;
-	bh=Oo9C9eIHexmndWqq4weLNVea2ly8DZIkz1rKY/arHW0=;
+	s=arc-20240116; t=1768617808; c=relaxed/simple;
+	bh=M8I0P+6+kQfZVYRfMsIkrT3kwJeTYt5m5hoJ5qwOuIY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S6oll9COeOLicAvFjNYRAxd4s6NY7R1MRanMOCtNVb3+TEg04HY2EFuqEmF+xNNqOK6GSVN6Idd1j9KN4iyDBEL5A8ARR0YjIoXhwy1q4OUjJpUMR8BFUSAGD4JpD1yRuUbzTEXPn0qk58tMcNVGAyfHK7Coa/SyaU86cDZF5jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZVolOei; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=dYl6G3uJcBmv69kz4R76xqSdLlsBws7zVIgYUdbxZcfufiyx7FahUr5s+rXL5iYNFua/5ZLrQzmU5bRqECAPhy65sZv3q8K1ml37/kBBlJAzrlgPUATtHvoAnxWHjEnq/IZUPZWcosM5Jb6K2pB5PFY8Ay3hup0qY/pzuhBgTLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iOdeCkWM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZVolOei"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58579C116C6;
-	Sat, 17 Jan 2026 02:39:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iOdeCkWM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4B3C116C6;
+	Sat, 17 Jan 2026 02:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768617601;
-	bh=Oo9C9eIHexmndWqq4weLNVea2ly8DZIkz1rKY/arHW0=;
+	s=k20201202; t=1768617807;
+	bh=M8I0P+6+kQfZVYRfMsIkrT3kwJeTYt5m5hoJ5qwOuIY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BZVolOei8IUUJfVrVLMpDxlMCNlxuLKvN59rLMO3Mll/KZU4DhUoMwLssNnz9jjbW
-	 WIPiE1tz8Uw6zaKniVdcSCXOcem8qxL7DL+qH5cUh1XGBzMsva5+tWnziEqhTmHteY
-	 HVCSZfNfV0Zet5CU+32hbqKwLdZab8bPnXhaTfDaOsN0oGWXxnt96+D7BofSZPyLfo
-	 jIaGAn0ReCrZzCAlIbqXKhQZfHI6fxcd9qeDQr9S0Gzd/5B7MmEQGl4DisrJyKbwk9
-	 Y1oEp7RsR/CVv5903c84N93SrrAOW4lRabPHzJnXbymGpwU+XVBnBBlYGCywL8/WMq
-	 dk4m2rAa0QXtA==
-Date: Sat, 17 Jan 2026 10:39:55 +0800
+	b=iOdeCkWMhN9WnWZxErtm5Hm2SO6e1OYgFzVOxSN5IwSyO5pmzbdapo5Ot+4c+GrEQ
+	 Gmz0C5eQ9AhCq/BwZUiQuR9rDqfDU+c3GXVEzbaF8ZfEIMSK2bu1t4jknRu9w8WEzs
+	 QRt8BGWgiSvF7JAlWXRxe74aEhVWlPuaMVOi0w/9jdqrg9+/2goye6UcPfFrhMZb/z
+	 K60GAcMWsyJyMSuKTSMZUiSg1pG65aOBDHLM5z7lbPHsq6mx8xTFigMuJo5RYSugYR
+	 UFlV7ePveLsp1zwHmtlj/WxSl9XTi22n6BKfTEuhkE6KHE4p/9TKrTLgBL+Lbv14Jh
+	 WHq6jtURQ5ckA==
+Date: Sat, 17 Jan 2026 10:43:19 +0800
 From: Shawn Guo <shawnguo@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
+To: Frank Li <Frank.li@nxp.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	Fabio Estevam <festevam@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] ARM: dts: imx: cleanup most gpmi related CHECK_DTB
- warning
-Message-ID: <aWr2e7xwVM6Im1XR@dragon>
-References: <20251104-gpmi_dts-v1-0-886865393d0f@nxp.com>
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Sherry Sun <sherry.sun@nxp.com>, Li Jun <jun.li@nxp.com>,
+	Fugang Duan <fugang.duan@nxp.com>
+Subject: Re: [PATCH 0/9] arm64: dts: imx8m*: misc update
+Message-ID: <aWr3R-phzjSS9GL-@dragon>
+References: <20251110-misc_dts-v1-0-7564b9f69a18@nxp.com>
+ <aVwWnAMqVqE7jtCy@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,12 +53,48 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251104-gpmi_dts-v1-0-886865393d0f@nxp.com>
+In-Reply-To: <aVwWnAMqVqE7jtCy@lizhi-Precision-Tower-5810>
 
-On Tue, Nov 04, 2025 at 05:27:11PM -0500, Frank Li wrote:
-> Frank Li (3):
->       ARM: dts: imx6qdl: add '#address-cells' and '#size-cells' for gpmi-nand
->       ARM: dts: imx6sx: update gpmi #size-cells to 0
->       ARM: dts: imx: move nand related property under nand@0
+On Mon, Jan 05, 2026 at 02:53:00PM -0500, Frank Li wrote:
+> On Mon, Nov 10, 2025 at 03:54:40PM -0500, Frank Li wrote:
+> > Some misc update for imx8m* dts
+> >
+> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> > ---
+> > Frank Li (2):
+> >       arm64: dts: imx8mm-evk: replace space with tab
+> >       arm64: dts: imx8mp-evk: replace space with tab
+> >
+> > Fugang Duan (1):
+> >       arm64: dts: imx8mm-evk: add uart3 port
+> >
+> > Li Jun (2):
+> >       arm64: dts: imx8mm-evk: add wakeup-source for usb phy
+> >       arm64: dts: imx8mn: add wakeup-source for usb phy
+> >
+> > Shengjiu Wang (1):
+> >       arm64: dts: imx8mm-evk: correct the spdif compatible string
+> >
+> > Sherry Sun (3):
+> >       arm64: dts: imx8mm-evk: add uart1 and bluetooth node
+> >       arm64: dts: imx8mn-evk: add bluetooth dts node
+> >       arm64: dts: imx8mp-evk: add bluetooth dts node
+> >
+> >  arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi | 78 ++++++++++++++++++++-------
+> >  arch/arm64/boot/dts/freescale/imx8mm.dtsi     |  4 +-
+> >  arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi |  4 ++
+> >  arch/arm64/boot/dts/freescale/imx8mn.dtsi     |  1 +
+> >  arch/arm64/boot/dts/freescale/imx8mp-evk.dts  | 32 ++++++-----
+> >  5 files changed, 85 insertions(+), 34 deletions(-)
+> > ---
+> 
+> Shawn:
+> 
+> 	Can you help check these patches?  only patch 4 need remove "evk"
+> at subject, do you need me respin it?
 
-Applied all, thanks!
+It doesn't apply to my tree.
+
+  Patch failed at 0008 arm64: dts: imx8mp-evk: replace space with tab
+
+Shawn
