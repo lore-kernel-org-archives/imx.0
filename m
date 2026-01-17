@@ -1,49 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9158F1F0991;
-	Sat, 17 Jan 2026 02:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068031DB356;
+	Sat, 17 Jan 2026 02:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768617253; cv=none; b=FTdUryc08liwcZaPnbZhaxBymoqHQk2jNxIa0XZ5c7Jyf+PkQDZoQiNqFl+SyulfK0WMgGWBcPE8usPHPGyo6GXuFFXlBQnnjuBnuAdIZNJoTWvPgBWV+dyS7lV+UTBCWjhkeDg7OhRA3VSS0ShngBF3iv0tpbb796jHTsbGgVc=
+	t=1768617603; cv=none; b=OLAeMLxSx4J96ukGY8wcnc2n1iVm80345lhqZe8HEIli8EwlZPHqW0OE3HQT/PBrJrP428z6fB0+8XKQHl7aEkHNIU4tqgwqFZhyDztCOjgPo+tCDk1UcY6l0zwXwtOBWZsecbvs6PHXCIYBt2NjAAMsa0s0YkI8MQOi+z6rlCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768617253; c=relaxed/simple;
-	bh=ZHT4FwSvrHdlntgWg5o2UVfQ6X6/Gh/zS5tYKlScw1Q=;
+	s=arc-20240116; t=1768617603; c=relaxed/simple;
+	bh=Oo9C9eIHexmndWqq4weLNVea2ly8DZIkz1rKY/arHW0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jBvjEwKBGXBl1lmWB/f+Qo7Q6jk/qSDh5bh+5GH0Tbp5dMoJMwwnOEWnHpYzFD6s9wZWqTEdK7T0dMbSzsyXg5o45s7ziKBLjk9KnLb67/WpS/0DLHzn3kj+F2ZnU8HD8q+vDfjcqdaJS26xKeJqhm/wKZMEb0R3A+5OnRUKLiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tC7y9fZ5; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=S6oll9COeOLicAvFjNYRAxd4s6NY7R1MRanMOCtNVb3+TEg04HY2EFuqEmF+xNNqOK6GSVN6Idd1j9KN4iyDBEL5A8ARR0YjIoXhwy1q4OUjJpUMR8BFUSAGD4JpD1yRuUbzTEXPn0qk58tMcNVGAyfHK7Coa/SyaU86cDZF5jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZVolOei; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tC7y9fZ5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53A8C116C6;
-	Sat, 17 Jan 2026 02:34:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZVolOei"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58579C116C6;
+	Sat, 17 Jan 2026 02:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768617253;
-	bh=ZHT4FwSvrHdlntgWg5o2UVfQ6X6/Gh/zS5tYKlScw1Q=;
+	s=k20201202; t=1768617601;
+	bh=Oo9C9eIHexmndWqq4weLNVea2ly8DZIkz1rKY/arHW0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tC7y9fZ5aRK2X9vNDw+oI3NCnw4kxydoc5EG2VkM88gAy00E8qAjKNe/zlGryz880
-	 syEhxs3UPHJF3n7gN4Bc5KOmzerb4LphNpime1WjRZLl/8nqHFXfkz06nYfVBB6246
-	 RI5ZOaWXIDbpXiI4kq8xWJHLVmWSexG5OFDLhV+IFOBe5DGLsP+JzlvSvjlz1XL6ow
-	 5jInDfwoi1PNURRVEmqPBpviqK4cIXf9KYytV//DQmk5ljMDYSCBgPjs/LILaKxSQW
-	 QwN8jSwb213CQK2z8HeAejcS0u9aDm75JCXuAXvQiM+YpCWzpHMTcM9jBLOXFvrTBD
-	 j9HbnE5WNbe7A==
-Date: Sat, 17 Jan 2026 10:34:06 +0800
+	b=BZVolOei8IUUJfVrVLMpDxlMCNlxuLKvN59rLMO3Mll/KZU4DhUoMwLssNnz9jjbW
+	 WIPiE1tz8Uw6zaKniVdcSCXOcem8qxL7DL+qH5cUh1XGBzMsva5+tWnziEqhTmHteY
+	 HVCSZfNfV0Zet5CU+32hbqKwLdZab8bPnXhaTfDaOsN0oGWXxnt96+D7BofSZPyLfo
+	 jIaGAn0ReCrZzCAlIbqXKhQZfHI6fxcd9qeDQr9S0Gzd/5B7MmEQGl4DisrJyKbwk9
+	 Y1oEp7RsR/CVv5903c84N93SrrAOW4lRabPHzJnXbymGpwU+XVBnBBlYGCywL8/WMq
+	 dk4m2rAa0QXtA==
+Date: Sat, 17 Jan 2026 10:39:55 +0800
 From: Shawn Guo <shawnguo@kernel.org>
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Peng Fan <peng.fan@oss.nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, arm-scmi@vger.kernel.org,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/2] firmware: arm_scmi/imx: Support dump syslog
-Message-ID: <aWr1Hgw26ZKW3k2S@dragon>
-References: <20251029-sm-syslog-v3-v3-0-64e14a6e3f87@nxp.com>
- <aUCy5+vAPzDGeux3@shlinux89>
- <aVuzVNmG2l-igiEB@nxa18884-linux.ap.freescale.net>
- <aV0uVXXbxKQ5qzLD@bogus>
- <aV24N72FoGeGwgqm@shlinux89>
- <aWTiC78PXRoadeJy@bogus>
+Subject: Re: [PATCH 0/3] ARM: dts: imx: cleanup most gpmi related CHECK_DTB
+ warning
+Message-ID: <aWr2e7xwVM6Im1XR@dragon>
+References: <20251104-gpmi_dts-v1-0-886865393d0f@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,43 +48,12 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aWTiC78PXRoadeJy@bogus>
+In-Reply-To: <20251104-gpmi_dts-v1-0-886865393d0f@nxp.com>
 
-On Mon, Jan 12, 2026 at 11:59:07AM +0000, Sudeep Holla wrote:
-> On Wed, Jan 07, 2026 at 09:34:47AM +0800, Peng Fan wrote:
-> > On Tue, Jan 06, 2026 at 03:46:29PM +0000, Sudeep Holla wrote:
-> > >On Mon, Jan 05, 2026 at 08:49:24PM +0800, Peng Fan wrote:
-> > >> Hi Sudeep,
-> > >> 
-> > >> Hope you're doing well. Apologies for following up again, but this v3 patchset
-> > >> has been pending for quite some time. I wanted to check if everything looks
-> > >> good on your end.
-> > >> 
-> > >
-> > >Yes overall it looks good to me.
-> > 
-> > Thanks a lot.
-> > 
-> > >
-> > ...
-> > >> Alternatively, I can ask Shawn to pick patch 2 if you only intend to take patch 1.
-> > >
-> > >I think that would break build or need to wait for another cycle.
-> > >I can ack if it can be routed via i.MX tree or need ACK to pick it up myself.
-> > 
-> > Shawn,
-> > 
-> > Do you plan to pick the two patches with Sudeep's Ack in patch 1? Or
-> > you prefer to route the patches via SCMI tree with your Ack?
-> 
-> I noticed this morning we are already at -rc5, which is later than my usual PR
-> timing (I generally aim to send to the SoC team between -rc4 and -rc5). I have
-> already sent the SCMI PR.
-> 
-> For these changes, would it be acceptable to route them via the i.MX tree if
-> they are still intended for v7.0/v6.20? If not, I am happy to defer and pick
-> them up for the merge window after next.
+On Tue, Nov 04, 2025 at 05:27:11PM -0500, Frank Li wrote:
+> Frank Li (3):
+>       ARM: dts: imx6qdl: add '#address-cells' and '#size-cells' for gpmi-nand
+>       ARM: dts: imx6sx: update gpmi #size-cells to 0
+>       ARM: dts: imx: move nand related property under nand@0
 
-I picked them up for v7.0/v6.20, thanks!
-
-Shawn
+Applied all, thanks!
