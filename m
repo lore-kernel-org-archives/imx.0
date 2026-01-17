@@ -1,50 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CF41FC7;
-	Sat, 17 Jan 2026 02:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F3B32694D;
+	Sat, 17 Jan 2026 05:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768617808; cv=none; b=etKvFQZMOaiIuugFjzZWtQtycoYe+lyFwuvZDQsjlVEPK3EzDYNAEhNh7leTFI1dqKoWzJ/GE8W8nZa66xzu+eIktv1B+wGNd3y5WuAw6N48Tx26gwhLeMqInEns94Vkt/0niGnsc8GvBzSkCtp6b2AIs3VG+dqSvuUEDE5ksjs=
+	t=1768628117; cv=none; b=RPjuXwD9NLatWFoJg9RY7mOkSN88bCM8X5LkZnNVR63s2is/LHS8/9u1PS7GIqciqnJE43h522t8hcJnWafSqMsiRSMix/eMgAX172xPXvQkAY7loenxf6qa+KnyB8GctB2w5xyG2sC8C53LKbmCIWFcZkYiZeOQW75Pj8GSMvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768617808; c=relaxed/simple;
-	bh=M8I0P+6+kQfZVYRfMsIkrT3kwJeTYt5m5hoJ5qwOuIY=;
+	s=arc-20240116; t=1768628117; c=relaxed/simple;
+	bh=ceJeR19228xDyeAf7C6ytS7EXYJ6ms0mb5AIMVr7rVU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dYl6G3uJcBmv69kz4R76xqSdLlsBws7zVIgYUdbxZcfufiyx7FahUr5s+rXL5iYNFua/5ZLrQzmU5bRqECAPhy65sZv3q8K1ml37/kBBlJAzrlgPUATtHvoAnxWHjEnq/IZUPZWcosM5Jb6K2pB5PFY8Ay3hup0qY/pzuhBgTLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iOdeCkWM; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=nX1grPcnJjqGMzr/FwJuaHZIeJLUNL6Bsn0R6/asxlnKgsVKJ+jL99GeCWZ0y2DEKamydZNtMUJegisTf2SXUjbGTo9Z6URJBcnc6ijTxy+nKNFRA5+S1emc5QNf8XzyZbsTVqb6doYr8toij53H0y5/p3y3jBOuHgGBVcl2EeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GjcOSWVI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iOdeCkWM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4B3C116C6;
-	Sat, 17 Jan 2026 02:43:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GjcOSWVI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4074C4CEF7;
+	Sat, 17 Jan 2026 05:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768617807;
-	bh=M8I0P+6+kQfZVYRfMsIkrT3kwJeTYt5m5hoJ5qwOuIY=;
+	s=k20201202; t=1768628116;
+	bh=ceJeR19228xDyeAf7C6ytS7EXYJ6ms0mb5AIMVr7rVU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iOdeCkWMhN9WnWZxErtm5Hm2SO6e1OYgFzVOxSN5IwSyO5pmzbdapo5Ot+4c+GrEQ
-	 Gmz0C5eQ9AhCq/BwZUiQuR9rDqfDU+c3GXVEzbaF8ZfEIMSK2bu1t4jknRu9w8WEzs
-	 QRt8BGWgiSvF7JAlWXRxe74aEhVWlPuaMVOi0w/9jdqrg9+/2goye6UcPfFrhMZb/z
-	 K60GAcMWsyJyMSuKTSMZUiSg1pG65aOBDHLM5z7lbPHsq6mx8xTFigMuJo5RYSugYR
-	 UFlV7ePveLsp1zwHmtlj/WxSl9XTi22n6BKfTEuhkE6KHE4p/9TKrTLgBL+Lbv14Jh
-	 WHq6jtURQ5ckA==
-Date: Sat, 17 Jan 2026 10:43:19 +0800
+	b=GjcOSWVIRQ1clNcdTf12UnxA2dLkPUV6bd8jHSggg3bYjltwQY6EgMzkO/wo7ofv3
+	 Mc7+T4A/1R6lMhetZrejlNY2J5oVUsaSKaQKvGlCb7z/SUqCGPUbXAHDTMEBfYfVZt
+	 e/sebQmpYqjhrfvxuRPPZua0O8LyDAoHV7RUqn5oduU0FIO5yS/GHf/Lr7rDcoXbij
+	 BQhp+u2kwv4xfMBYIoP2OSa5t0qbumXrsILxU7LudZqp14zwwUTf9UnDjXmyUdoNIv
+	 +I1FXS9aKFRmQ5Zk5WTHhHXSkxChrS6WqAcAFZBFbyXyJXqtyIYCrBUivJtuEJ/0Lp
+	 q7ifkYnt7O0PA==
+Date: Sat, 17 Jan 2026 13:35:09 +0800
 From: Shawn Guo <shawnguo@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To: Marek Vasut <marek.vasut@mailbox.org>
+Cc: linux-arm-kernel@lists.infradead.org,
 	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.li@nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nsc@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Sherry Sun <sherry.sun@nxp.com>, Li Jun <jun.li@nxp.com>,
-	Fugang Duan <fugang.duan@nxp.com>
-Subject: Re: [PATCH 0/9] arm64: dts: imx8m*: misc update
-Message-ID: <aWr3R-phzjSS9GL-@dragon>
-References: <20251110-misc_dts-v1-0-7564b9f69a18@nxp.com>
- <aVwWnAMqVqE7jtCy@lizhi-Precision-Tower-5810>
+	Rain Yang <jiyu.yang@oss.nxp.com>, Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: Re: [PATCH] arm64: dts: imx95: Use GPU_CGC as core clock for GPU
+Message-ID: <aWsfjTMz04r07bEU@dragon>
+References: <20251129143220.14834-1-marek.vasut@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -53,48 +49,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aVwWnAMqVqE7jtCy@lizhi-Precision-Tower-5810>
+In-Reply-To: <20251129143220.14834-1-marek.vasut@mailbox.org>
 
-On Mon, Jan 05, 2026 at 02:53:00PM -0500, Frank Li wrote:
-> On Mon, Nov 10, 2025 at 03:54:40PM -0500, Frank Li wrote:
-> > Some misc update for imx8m* dts
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > Frank Li (2):
-> >       arm64: dts: imx8mm-evk: replace space with tab
-> >       arm64: dts: imx8mp-evk: replace space with tab
-> >
-> > Fugang Duan (1):
-> >       arm64: dts: imx8mm-evk: add uart3 port
-> >
-> > Li Jun (2):
-> >       arm64: dts: imx8mm-evk: add wakeup-source for usb phy
-> >       arm64: dts: imx8mn: add wakeup-source for usb phy
-> >
-> > Shengjiu Wang (1):
-> >       arm64: dts: imx8mm-evk: correct the spdif compatible string
-> >
-> > Sherry Sun (3):
-> >       arm64: dts: imx8mm-evk: add uart1 and bluetooth node
-> >       arm64: dts: imx8mn-evk: add bluetooth dts node
-> >       arm64: dts: imx8mp-evk: add bluetooth dts node
-> >
-> >  arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi | 78 ++++++++++++++++++++-------
-> >  arch/arm64/boot/dts/freescale/imx8mm.dtsi     |  4 +-
-> >  arch/arm64/boot/dts/freescale/imx8mn-evk.dtsi |  4 ++
-> >  arch/arm64/boot/dts/freescale/imx8mn.dtsi     |  1 +
-> >  arch/arm64/boot/dts/freescale/imx8mp-evk.dts  | 32 ++++++-----
-> >  5 files changed, 85 insertions(+), 34 deletions(-)
-> > ---
+On Sat, Nov 29, 2025 at 03:31:30PM +0100, Marek Vasut wrote:
+> The i.MX95 imx-sm introduced new GPU_CGC clock since imx-sm commit
+> ca5e078833fa ("SM-128: Add clock management via CCM LPCG direct control")
+> which are downstream clock of GPU clock. These new GPU_CGC clock
+> gate the existing GPU clock. Currently, without clk_ignore_unused
+> on kernel command line, those new GPU_CGC clock are unused and the
+> kernel will disable them. This has no impact on i.MX95 A0/A1, but
+> does prevent GPU register access from working at all on i.MX95 B0.
+> The GPU_CGC clock are present on both i.MX95 A0/A1/B0, therefore
+> update the DT such, that the GPU core clock are the GPU_CGC clock.
+> When the panthor driver enables the GPU core clock, it enables both
+> the GPU_CGC as well as its parent GPU clock.
 > 
-> Shawn:
-> 
-> 	Can you help check these patches?  only patch 4 need remove "evk"
-> at subject, do you need me respin it?
+> Fixes: 67934f248e64 ("arm64: dts: imx95: Describe Mali G310 GPU")
+> Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
 
-It doesn't apply to my tree.
-
-  Patch failed at 0008 arm64: dts: imx8mp-evk: replace space with tab
-
-Shawn
+Applied, thanks!
