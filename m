@@ -1,116 +1,160 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759FB212542
-	for <imx@lists.linux.dev>; Sun, 18 Jan 2026 20:50:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610D3500976
+	for <imx@lists.linux.dev>; Sun, 18 Jan 2026 20:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768769440; cv=none; b=d7Ulekgj2XdfadFHFgIOM4FJRhIsmaZreCL+7PguKUz4qmPj5r86zUOZx8D8ULkCAohboSvlEDOZS1bAoE6+LTgu4ItqeGgaxdWYGgmyCF4Os3Uuikwb603Y4gzamISBdhwzpSYcTDWeCXif/xwyHgTLbjxhKDhjGrnYh2MWsqQ=
+	t=1768769695; cv=none; b=oRe7ob6X3XdMw0H0NANZjSsGyT9HHTGBZ/3eg0AaSL9xJvSFWHcQK8wm2SWvHi9eSjg/d1Gk3s/D5x+AfTC3U816u0DXzfMlxI3vi8fMnMn+wPzYHjVXG23F6Z6j0lozxlrR7V/T5TM9z0jJo+dZvAJfCibh8V/h8uS9goB+UPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768769440; c=relaxed/simple;
-	bh=12pYU0nsh1edvtQBn+62FSk6cQSXGIkciUmANowJnNo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dEaQOOCeoyVcN25/UgnevFwDMzXRiDVOb0DFCE0Z/isZWI42pzDXb+A9ve/oAklQZ4t8pVb1pMfZMVAB+C25/hcBphYgN2QV4rDLVIITX/IjR37DJcxb/GewR0D8ffiQj/UJKcpEMO3FFh+70O/ZZkeMjV9e3mNOP44fz2SHJXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cxmJBocG; arc=none smtp.client-ip=74.125.82.46
+	s=arc-20240116; t=1768769695; c=relaxed/simple;
+	bh=gCmkNaOz+ROXaG/GDMvLkt3S3eqw31C4DPq+R0e9ZB8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TUckkjqDvK/euEfZoEUUiIJ+8FZuc15oK0GMNN7AJLLVS6Kmr5YBXdDRqXrRE/Q//oyxYEFTQ9Eb2T83jshMOJrtGlsM4kLdTqdnrTR+FvwabgQqpy62sP7Hcv+FosebmvIpY+f8TSgS9myOx+w9fwobw4pzb5Pjnd/tJy7bs/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lk2WfkSO; arc=none smtp.client-ip=209.85.167.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cxmJBocG"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-12331482b8fso4980195c88.1
-        for <imx@lists.linux.dev>; Sun, 18 Jan 2026 12:50:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lk2WfkSO"
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-45c9fdf2a06so1498242b6e.2
+        for <imx@lists.linux.dev>; Sun, 18 Jan 2026 12:54:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768769438; x=1769374238; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Puynjv+Dl13PC2EAzTsegEpQBiQKymq7P+RdFdVlq08=;
-        b=cxmJBocGQPvbLqei8pzVvuLzxhyb3LivQ3fWfpGFxdsHFE8udu4qXdEN+K7RMEvpca
-         MNhZZUch/+ZA6DYdQ7Ct5cZEpJ5yaMe1C6Q8lQsCzYPX6a6VIB1EqNTHKYufL+9QJ1f1
-         SIoXdVCVyZn6fcWnPO6y1nBeYQMfl88fVNvqHyOUjkVdHWtwBNi21FpUC8LJl9wK714n
-         3INMBtSAAU4obP9SJXG1La49MuF+CQTFx6RRArRfWeH8cDxk8tyDj7JbYFQJS8RD65BB
-         XJ4ewr79QbOAFlcvqK9JXrRMK2nWjZiXUuDZNLiM1oNCXQn/Oj2ZeBGBinD0kzLYPcB5
-         2fWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768769438; x=1769374238;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1768769693; x=1769374493; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Puynjv+Dl13PC2EAzTsegEpQBiQKymq7P+RdFdVlq08=;
-        b=Aj+m5A3yvdLpTllDc9USmR9gANFzBYikcjg6B4SWzR4w8W5a5xu0zKZW/yjMtRI8/B
-         1LFlpYP6dTCDFYEyn0Rsv7S5vi+Eujy+0/Oj0NINyxPWQWCDWoelAen3/Qy7ro9rscmH
-         EDXMfK6/LgZnsO71y+FBNbhQ28I7mJHNMvO6ItaGCU2Pl9A3NsH2BLEXqJfKBvYPHNKD
-         WKTZ6k70M298W5HUIuOv692PIc/3cuRoDk3em6JYhgZgFB688scrutvx8bp7bkFdttzU
-         RqwY0TG8H8LZR15wtHuoFirJklxhNeSfN9qLzIwI8Y83DRwu255EisY3LAlqO3M7gMv1
-         9Dkw==
-X-Forwarded-Encrypted: i=1; AJvYcCW8ZUl9Bi87s9I0TtxGrILTeMfKAwtBBk1V4oq5DwFX+w/ytuMeznrzMDgE8dUt7dNxg6k=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyugQsI5NG+5RtEjKSHxdH7MSIShbKoySzeTNa0wb7Ki5+k9ooY
-	M6v4UIBmac8D1KzjfKoulO49SbytAWX60MqlnmPh+FtHejqfSH5f4rY6
-X-Gm-Gg: AY/fxX5JKPVPSGa+q6qT9yA+ceKK3ZxZ4Adme4oqLWR3u1hQP7gbKTeu0pW0za3FJGX
-	fZP7PZDar7FcymyJ26oJNgBX1mARQhZgqjX6TMOGLaTeFD8esXcvbPwwTUgh3a39pGJcvnRhkSg
-	IsUsoUKtFvkciUKvy6hBi0uwtSBWhVs3WAUVbf2scfjHzohgda7YGCqWZAOA6zYD2Zp5C9EL+ZL
-	m7r0LZMlk3Cn07g1AexeZ+YAOy4hXBsIfn7zGglirLnOuIokgHvrLOUWCC7XdF3TTcq5KfEV0sH
-	uyCpwrsybYmb88vmW2sBJ++YDwtJKqWF4KxcNqBszlwOsusUgMw8Wnzheke2NFt2iFFa5bShzzp
-	YZSoGLqSaZKp0E0Kf0oiW4O8BIK/28q0h+cNJDlSRW5myzwEqIVeAwrKf1LdfOvpMFSAGnuKW0P
-	/jcBrZgw==
-X-Received: by 2002:a05:7300:cd99:b0:2a4:3593:6474 with SMTP id 5a478bee46e88-2b6b410367bmr6876089eec.36.1768769437417;
-        Sun, 18 Jan 2026 12:50:37 -0800 (PST)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61::1001])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b3619a7bsm10167364eec.19.2026.01.18.12.50.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 12:50:35 -0800 (PST)
-From: Fabio Estevam <festevam@gmail.com>
-To: broonie@kernel.org
-Cc: shengjiu.wang@gmail.com,
-	linux-sound@vger.kernel.org,
-	imx@lists.linux.dev,
-	Fabio Estevam <festevam@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] ASoC: fsl: imx-card: Do not force slot width to sample width
-Date: Sun, 18 Jan 2026 17:50:30 -0300
-Message-Id: <20260118205030.1532696-1-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        bh=SGN46lGiiSn5Nw49WHCV3A8HEoxH39zs+bPdgj/zyCo=;
+        b=Lk2WfkSOiElPG4A70Ds2ESTDns4qlA8FLzITO9z0xJV95R3gjdaVjzVV9eRlPbHd8Q
+         QB1DFHUsvnhGptKi9FeSOzvbAmhHvtZyeYpVxyEA8AQo38QVxb8fCdtNask3O361K3oH
+         BazBFYW237S5fVp5kQWsG3qnNJ5osdo/1wFVDTtvs8Vh8+IB+9Udg3UgiPuMBGha0YQB
+         xEtbWosCNpZtMe54VbRX5thHT0Ui36R1qLCLZk4vw4HNz1gV0DO85z2trvvBYBbuVwKp
+         FywhwG7izEJARrGo60mZvi75fu20d0+kzHyApLamDBOPji/wVcBfPhara4i+UhvT12iv
+         bSVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768769693; x=1769374493;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SGN46lGiiSn5Nw49WHCV3A8HEoxH39zs+bPdgj/zyCo=;
+        b=iHaZRjzPawIPFdAO85tXblWKJPYFYaDAAvsIgni6PylcP2T+Li4JgzksF58DvMHOz5
+         nJbKuWS1HPiVAKTycM3BeCJKOFalkid2mVEXfYAgD0N2cjxlB1UTPTPJU6WVC76jJJY7
+         hNJsURO+b24MocSMwBv98X0GyKrHydS7DzCqBwGoGxF6iwdktcD2Y8X1f3oGFoX5tYDh
+         RHghpuB461YfDfoNayUIeXMFXCdNygY0nHb48n8Ebfsq26xGKklRL//u3JqFOroKCp7g
+         xTlk7PVc08EkeJkYy5/Glg1+1vuA9lU+p9u5s9WoeJ5lMchex1dDGZKwD77duEOAjdKt
+         3ycQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW2KUk/xkQUSmGm4WW2jwnlrEcXrvgxKkiIvr+jqV42sgL0M+fAF+TtG4qiQQA45ScAGZE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwWdFMe51ULe6mUzv2OikKm1vSkYBF9gPie9eTx0DWUL+h+H5vR
+	SdnzAoCeyUgFXeroC4NPlWSNXPJrmGmg7gEOoj7M5ucwDWyBRE2736HI881GNNs1YwldWVyhPFf
+	eeAxQArO7kZGeu0xFK46H4Hz3QrXiUdw=
+X-Gm-Gg: AY/fxX53UCZoeCVQcRhbtPggtc6eWm5tLpK4S9FesUI+YrpnAfnJ9R2+z/bhMv7ynkI
+	l71LEwXE5i3H/PcyslXewuJ83PmQxxV9dAWr/xuarJhG6c9xga3lG7/kXT/uDyGBMzTUsX8BFOx
+	gTlg1lc8LSJ2lo09r9BVSXSvRnXya5VGBcv0AYOROoXMm4IRStLDf3SGhxYr4bnD2RBMxZHerHL
+	pAaIIOfCbCN67mDZ9yuqJ3bX4Wr9bEiNDy+nimcih7bIhfM4hrQQ7ExAcu6VzczysTnERuLLATr
+	SbMZRO8=
+X-Received: by 2002:a05:6808:f91:b0:45c:7b2c:10ca with SMTP id
+ 5614622812f47-45c9beb8758mr4712801b6e.13.1768769688407; Sun, 18 Jan 2026
+ 12:54:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251216-imx7ulp_mailbox-v1-1-66b5bbcd3005@nxp.com>
+In-Reply-To: <20251216-imx7ulp_mailbox-v1-1-66b5bbcd3005@nxp.com>
+From: Jassi Brar <jassisinghbrar@gmail.com>
+Date: Sun, 18 Jan 2026 14:54:37 -0600
+X-Gm-Features: AZwV_QhIxbEz92mLErTU5GwUSqKCCNXMoI5nHSsvKDXWYHWqLAJqWsOFKMlpZco
+Message-ID: <CABb+yY3SAUiw=_Pa7RQqfaP7LsX5cS2OprEAq9HRY1inebjCaA@mail.gmail.com>
+Subject: Re: [PATCH] mailbox: imx: Skip the suspend flag for i.MX7ULP
+To: Jacky Bai <ping.bai@nxp.com>
+Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, peng.fan@nxp.com, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-imx-card currently sets the slot width to the physical sample width
-for I2S links. This breaks controllers that use fixed-width slots
-(e.g. 32-bit FIFO words), causing the unused bits in the slot to
-contain undefined data when playing 16-bit streams.
-
-Do not override the slot width in the machine driver and let the CPU
-DAI select an appropriate default instead. This matches the behavior
-of simple-audio-card and avoids embedding controller-specific policy
-in the machine driver.
-
-On an i.MX8MP-based board using SAI as the I2S master with 32-bit slots,
-playing 16-bit audio resulted in spurious frequencies and an incorrect
-SAI data waveform, as the slot width was forced to 16 bits. After this
-change, audio artifacts are eliminated and the 16-bit samples correctly
-occupy the first half of the 32-bit slot, with the remaining bits padded
-with zeroes.
-
-Cc: stable@vger.kernel.org
-Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
----
- sound/soc/fsl/imx-card.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index 28699d7b75ca..05b4e971a366 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -346,7 +346,6 @@ static int imx_aif_hw_params(struct snd_pcm_substream *substream,
- 			      SND_SOC_DAIFMT_PDM;
- 		} else {
- 			slots = 2;
--			slot_width = params_physical_width(params);
- 			fmt = (rtd->dai_link->dai_fmt & ~SND_SOC_DAIFMT_FORMAT_MASK) |
- 			      SND_SOC_DAIFMT_I2S;
- 		}
--- 
-2.34.1
-
+On Tue, Dec 16, 2025 at 1:59=E2=80=AFAM Jacky Bai <ping.bai@nxp.com> wrote:
+>
+> In current imx-mailbox driver, the MU IRQ is configured with
+> 'IRQF_NO_SUSPEND' flag set. So during linux suspend/resume flow,
+> the MU IRQ is always enabled. With commit 892cb524ae8a ("mailbox: imx:
+> fix wakeup failure from freeze mode"), if the MU IRQ is triggered after
+> the priv->suspended flag has been set, the system suspend will be
+> aborted.
+>
+> On i.MX7ULP platform, certain drivers that depend on rpmsg may need
+> to send rpmsg request and receive an acknowledgment from the remote
+> core during the late_suspend stage. Early suspend abort is not
+> expected, and the i.MX7ULP already has additional hardware and
+> software to make sure the system can be wakeup from freeze mode
+> correctly when MU IRQ is trigger.
+>
+> Skip the 'suspend' flag handling logic on i.MX7ULP to avoid the
+> early abort when doing suspend.
+>
+> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+> ---
+>  drivers/mailbox/imx-mailbox.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.=
+c
+> index 6778afc64a048c70a3afbdf44783ede0d1626937..003f9236c35e0943441b5e3cb=
+01569451d7d0a96 100644
+> --- a/drivers/mailbox/imx-mailbox.c
+> +++ b/drivers/mailbox/imx-mailbox.c
+> @@ -122,6 +122,7 @@ struct imx_mu_dcfg {
+>         u32     xRR;            /* Receive Register0 */
+>         u32     xSR[IMX_MU_xSR_MAX];    /* Status Registers */
+>         u32     xCR[IMX_MU_xCR_MAX];    /* Control Registers */
+> +       bool    skip_suspend_flag;
+>  };
+>
+>  #define IMX_MU_xSR_GIPn(type, x) (type & IMX_MU_V2 ? BIT(x) : BIT(28 + (=
+3 - (x))))
+> @@ -988,6 +989,7 @@ static const struct imx_mu_dcfg imx_mu_cfg_imx7ulp =
+=3D {
+>         .xRR    =3D 0x40,
+>         .xSR    =3D {0x60, 0x60, 0x60, 0x60},
+>         .xCR    =3D {0x64, 0x64, 0x64, 0x64, 0x64},
+> +       .skip_suspend_flag =3D true,
+>  };
+>
+>  static const struct imx_mu_dcfg imx_mu_cfg_imx8ulp =3D {
+> @@ -1071,7 +1073,8 @@ static int __maybe_unused imx_mu_suspend_noirq(stru=
+ct device *dev)
+>                         priv->xcr[i] =3D imx_mu_read(priv, priv->dcfg->xC=
+R[i]);
+>         }
+>
+> -       priv->suspend =3D true;
+> +       if (!priv->dcfg->skip_suspend_flag)
+> +               priv->suspend =3D true;
+>
+>         return 0;
+>  }
+> @@ -1094,7 +1097,8 @@ static int __maybe_unused imx_mu_resume_noirq(struc=
+t device *dev)
+>                         imx_mu_write(priv, priv->xcr[i], priv->dcfg->xCR[=
+i]);
+>         }
+>
+> -       priv->suspend =3D false;
+> +       if (!priv->dcfg->skip_suspend_flag)
+> +               priv->suspend =3D false;
+>
+>         return 0;
+>  }
+>
+> ---
+> base-commit: 563c8dd425b59e44470e28519107b1efc99f4c7b
+> change-id: 20251216-imx7ulp_mailbox-9dd35bb9b94d
+>
+> Best regards,
+> --
+> Jacky Bai <ping.bai@nxp.com>
+>
+Applied to mailbox/for-next.
+Thanks.
