@@ -1,160 +1,72 @@
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610D3500976
-	for <imx@lists.linux.dev>; Sun, 18 Jan 2026 20:54:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C92F3B2AA;
+	Sun, 18 Jan 2026 23:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768769695; cv=none; b=oRe7ob6X3XdMw0H0NANZjSsGyT9HHTGBZ/3eg0AaSL9xJvSFWHcQK8wm2SWvHi9eSjg/d1Gk3s/D5x+AfTC3U816u0DXzfMlxI3vi8fMnMn+wPzYHjVXG23F6Z6j0lozxlrR7V/T5TM9z0jJo+dZvAJfCibh8V/h8uS9goB+UPc=
+	t=1768780690; cv=none; b=LoARnZfLg7SvjDyfkzmwyoJ8lhcjZfXEno4JzewLQTvrZUdrJKuzJINexRpl+LSC2nIhS90U1gUl4Tsxc7mITqvAmAcZvIzy9zhmeBFCTNc8pgdm7ElKuBgqXMZRIBW4H5C4ECKmXRhe5wrOpBvj5ARpMSjHb2LX6yIQMpgr7C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768769695; c=relaxed/simple;
-	bh=gCmkNaOz+ROXaG/GDMvLkt3S3eqw31C4DPq+R0e9ZB8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TUckkjqDvK/euEfZoEUUiIJ+8FZuc15oK0GMNN7AJLLVS6Kmr5YBXdDRqXrRE/Q//oyxYEFTQ9Eb2T83jshMOJrtGlsM4kLdTqdnrTR+FvwabgQqpy62sP7Hcv+FosebmvIpY+f8TSgS9myOx+w9fwobw4pzb5Pjnd/tJy7bs/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lk2WfkSO; arc=none smtp.client-ip=209.85.167.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768780690; c=relaxed/simple;
+	bh=6bMKJ5lG0PNdrSpn1+M0W36NUJ6bnMbRMOKJStqQ4yQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X/x4Fmypl0SGXdo3dzk5DRDfT+FLHdcCbtpv2XSS0PhekFz7AHpEcCPqeB87bS/8eZ9EuZGO0ucIYbM3n5uCNBKnHGmeTZvLQFSqNC7BIeBm2kqt0vgI+E+B2lLYxEni/XlKq83VlqNNOGzKPHGY2WzSfllvuaBYsovgpXGcOHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tuTyV86w; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lk2WfkSO"
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-45c9fdf2a06so1498242b6e.2
-        for <imx@lists.linux.dev>; Sun, 18 Jan 2026 12:54:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768769693; x=1769374493; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SGN46lGiiSn5Nw49WHCV3A8HEoxH39zs+bPdgj/zyCo=;
-        b=Lk2WfkSOiElPG4A70Ds2ESTDns4qlA8FLzITO9z0xJV95R3gjdaVjzVV9eRlPbHd8Q
-         QB1DFHUsvnhGptKi9FeSOzvbAmhHvtZyeYpVxyEA8AQo38QVxb8fCdtNask3O361K3oH
-         BazBFYW237S5fVp5kQWsG3qnNJ5osdo/1wFVDTtvs8Vh8+IB+9Udg3UgiPuMBGha0YQB
-         xEtbWosCNpZtMe54VbRX5thHT0Ui36R1qLCLZk4vw4HNz1gV0DO85z2trvvBYBbuVwKp
-         FywhwG7izEJARrGo60mZvi75fu20d0+kzHyApLamDBOPji/wVcBfPhara4i+UhvT12iv
-         bSVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768769693; x=1769374493;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SGN46lGiiSn5Nw49WHCV3A8HEoxH39zs+bPdgj/zyCo=;
-        b=iHaZRjzPawIPFdAO85tXblWKJPYFYaDAAvsIgni6PylcP2T+Li4JgzksF58DvMHOz5
-         nJbKuWS1HPiVAKTycM3BeCJKOFalkid2mVEXfYAgD0N2cjxlB1UTPTPJU6WVC76jJJY7
-         hNJsURO+b24MocSMwBv98X0GyKrHydS7DzCqBwGoGxF6iwdktcD2Y8X1f3oGFoX5tYDh
-         RHghpuB461YfDfoNayUIeXMFXCdNygY0nHb48n8Ebfsq26xGKklRL//u3JqFOroKCp7g
-         xTlk7PVc08EkeJkYy5/Glg1+1vuA9lU+p9u5s9WoeJ5lMchex1dDGZKwD77duEOAjdKt
-         3ycQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW2KUk/xkQUSmGm4WW2jwnlrEcXrvgxKkiIvr+jqV42sgL0M+fAF+TtG4qiQQA45ScAGZE=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwWdFMe51ULe6mUzv2OikKm1vSkYBF9gPie9eTx0DWUL+h+H5vR
-	SdnzAoCeyUgFXeroC4NPlWSNXPJrmGmg7gEOoj7M5ucwDWyBRE2736HI881GNNs1YwldWVyhPFf
-	eeAxQArO7kZGeu0xFK46H4Hz3QrXiUdw=
-X-Gm-Gg: AY/fxX53UCZoeCVQcRhbtPggtc6eWm5tLpK4S9FesUI+YrpnAfnJ9R2+z/bhMv7ynkI
-	l71LEwXE5i3H/PcyslXewuJ83PmQxxV9dAWr/xuarJhG6c9xga3lG7/kXT/uDyGBMzTUsX8BFOx
-	gTlg1lc8LSJ2lo09r9BVSXSvRnXya5VGBcv0AYOROoXMm4IRStLDf3SGhxYr4bnD2RBMxZHerHL
-	pAaIIOfCbCN67mDZ9yuqJ3bX4Wr9bEiNDy+nimcih7bIhfM4hrQQ7ExAcu6VzczysTnERuLLATr
-	SbMZRO8=
-X-Received: by 2002:a05:6808:f91:b0:45c:7b2c:10ca with SMTP id
- 5614622812f47-45c9beb8758mr4712801b6e.13.1768769688407; Sun, 18 Jan 2026
- 12:54:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tuTyV86w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82652C116D0;
+	Sun, 18 Jan 2026 23:58:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768780689;
+	bh=6bMKJ5lG0PNdrSpn1+M0W36NUJ6bnMbRMOKJStqQ4yQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tuTyV86wzK2Ik/Ya2XK6dOYuwvctqTKnZO3kTt4mNF4DumN8NWsF96RjVQu0ZXjKa
+	 i2s/HqLuyalOM7Gw2f2ZG/3QTXaRpSXqixHqWu09hUqBZnNzTk50ljCqePctcx87G1
+	 zb3yE/FsZn43FxhjfnNo/RremMNUWzXDtscaSpMlV7Y+fCRsMDwgGcm0kOdkKmomlR
+	 Uq4gw03GebaUUU8BlXgmcrgTA17ecqQS8p228GE2SnS+OnbcC9wRao6CrwM64O5X6H
+	 yNjpqH3k5cZqh6KzWgbRSk1ihvx9a9VFBAZKQNpBVGB+zmqfYggbq6V0Lr/DQQWGaE
+	 X94BS51f5yNyw==
+Date: Mon, 19 Jan 2026 00:58:04 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Carlos Song <carlos.song@nxp.com>
+Cc: frank.li@nxp.com, aisheng.dong@nxp.com, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-i2c@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] i2c: imx-lpi2c: Add runtime PM support for IRQ and
+ clock management on i.MX8QXP/8QM
+Message-ID: <aW1zaXZsC_8KaM3N@zenone.zhora.eu>
+References: <20251125084718.2156168-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20251216-imx7ulp_mailbox-v1-1-66b5bbcd3005@nxp.com>
-In-Reply-To: <20251216-imx7ulp_mailbox-v1-1-66b5bbcd3005@nxp.com>
-From: Jassi Brar <jassisinghbrar@gmail.com>
-Date: Sun, 18 Jan 2026 14:54:37 -0600
-X-Gm-Features: AZwV_QhIxbEz92mLErTU5GwUSqKCCNXMoI5nHSsvKDXWYHWqLAJqWsOFKMlpZco
-Message-ID: <CABb+yY3SAUiw=_Pa7RQqfaP7LsX5cS2OprEAq9HRY1inebjCaA@mail.gmail.com>
-Subject: Re: [PATCH] mailbox: imx: Skip the suspend flag for i.MX7ULP
-To: Jacky Bai <ping.bai@nxp.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, peng.fan@nxp.com, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251125084718.2156168-1-carlos.song@nxp.com>
 
-On Tue, Dec 16, 2025 at 1:59=E2=80=AFAM Jacky Bai <ping.bai@nxp.com> wrote:
->
-> In current imx-mailbox driver, the MU IRQ is configured with
-> 'IRQF_NO_SUSPEND' flag set. So during linux suspend/resume flow,
-> the MU IRQ is always enabled. With commit 892cb524ae8a ("mailbox: imx:
-> fix wakeup failure from freeze mode"), if the MU IRQ is triggered after
-> the priv->suspended flag has been set, the system suspend will be
-> aborted.
->
-> On i.MX7ULP platform, certain drivers that depend on rpmsg may need
-> to send rpmsg request and receive an acknowledgment from the remote
-> core during the late_suspend stage. Early suspend abort is not
-> expected, and the i.MX7ULP already has additional hardware and
-> software to make sure the system can be wakeup from freeze mode
-> correctly when MU IRQ is trigger.
->
-> Skip the 'suspend' flag handling logic on i.MX7ULP to avoid the
-> early abort when doing suspend.
->
-> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-> ---
->  drivers/mailbox/imx-mailbox.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.=
-c
-> index 6778afc64a048c70a3afbdf44783ede0d1626937..003f9236c35e0943441b5e3cb=
-01569451d7d0a96 100644
-> --- a/drivers/mailbox/imx-mailbox.c
-> +++ b/drivers/mailbox/imx-mailbox.c
-> @@ -122,6 +122,7 @@ struct imx_mu_dcfg {
->         u32     xRR;            /* Receive Register0 */
->         u32     xSR[IMX_MU_xSR_MAX];    /* Status Registers */
->         u32     xCR[IMX_MU_xCR_MAX];    /* Control Registers */
-> +       bool    skip_suspend_flag;
->  };
->
->  #define IMX_MU_xSR_GIPn(type, x) (type & IMX_MU_V2 ? BIT(x) : BIT(28 + (=
-3 - (x))))
-> @@ -988,6 +989,7 @@ static const struct imx_mu_dcfg imx_mu_cfg_imx7ulp =
-=3D {
->         .xRR    =3D 0x40,
->         .xSR    =3D {0x60, 0x60, 0x60, 0x60},
->         .xCR    =3D {0x64, 0x64, 0x64, 0x64, 0x64},
-> +       .skip_suspend_flag =3D true,
->  };
->
->  static const struct imx_mu_dcfg imx_mu_cfg_imx8ulp =3D {
-> @@ -1071,7 +1073,8 @@ static int __maybe_unused imx_mu_suspend_noirq(stru=
-ct device *dev)
->                         priv->xcr[i] =3D imx_mu_read(priv, priv->dcfg->xC=
-R[i]);
->         }
->
-> -       priv->suspend =3D true;
-> +       if (!priv->dcfg->skip_suspend_flag)
-> +               priv->suspend =3D true;
->
->         return 0;
->  }
-> @@ -1094,7 +1097,8 @@ static int __maybe_unused imx_mu_resume_noirq(struc=
-t device *dev)
->                         imx_mu_write(priv, priv->xcr[i], priv->dcfg->xCR[=
-i]);
->         }
->
-> -       priv->suspend =3D false;
-> +       if (!priv->dcfg->skip_suspend_flag)
-> +               priv->suspend =3D false;
->
->         return 0;
->  }
->
-> ---
-> base-commit: 563c8dd425b59e44470e28519107b1efc99f4c7b
-> change-id: 20251216-imx7ulp_mailbox-9dd35bb9b94d
->
-> Best regards,
-> --
-> Jacky Bai <ping.bai@nxp.com>
->
-Applied to mailbox/for-next.
-Thanks.
+Hi Carlos,
+
+On Tue, Nov 25, 2025 at 04:47:18PM +0800, Carlos Song wrote:
+> On i.MX8QXP/8QM SoCs, both the lvds/mipi and lvds/mipi-lpi2c power domains
+> must enter low-power mode during runtime suspend to achieve deep power
+> savings.
+> 
+
+...
+
+> - Free its IRQ during runtime suspend and re-request it on resume.
+> - Disable and unprepare all clocks during runtime suspend and prepare
+>   and rne ble them on resume.
+> 
+> This enables the lvds/mipi domains to enter deep low-power mode,
+> significantly reducing power consumption compared to active mode.
+> 
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+
+merged to i2c/i2c-host.
+
+Thanks,
+Andi
