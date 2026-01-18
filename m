@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876F442A80
-	for <imx@lists.linux.dev>; Sun, 18 Jan 2026 17:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA072DE1E4
+	for <imx@lists.linux.dev>; Sun, 18 Jan 2026 17:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768757393; cv=none; b=uGQ8VAF3ph9zWTpgxS0ak5R0/9/elEf2+T1gI/KHWSe4eQB8/UXD95gIlyr4yHysnGgrjS12G5cnkVwL3mUdGZk9spdu83nOOpCAkSwp7SfH4K8/6V7XwuoA0DGbl21t1NFtdx32i7fFfHSLQT/q1++qCGZgDtmTk/mGzqH8wNE=
+	t=1768757425; cv=none; b=tHE9XV64pFNluGA6D0qgDvZOY//rlIQjd9OyGIzsNVwSfRCziyVFq7LwCVqNSKgoe8qiz1UIv8zwxnMH+RP8yVsw+6HLbbIaotmDq82UPXWfjhfWz6bbwa7ZwYLnO3aZwYzOY2OGDJmwX3OBuxqGMyDh+Djm+CobwYOqzOhJnHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768757393; c=relaxed/simple;
-	bh=GouJXTBoMNve/sNEP/o0W06S9rrd+8dd4qk3Fx1rmYM=;
+	s=arc-20240116; t=1768757425; c=relaxed/simple;
+	bh=sgqOZ/s4D3B5B7Qzjv1nWhj5l2xRF081KlvbvxnMZw8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UcE85cjH1wXBAewYoOC8llOyzHqUWnGns2gQ6LuSu8incH9Bfq/ZwXOjtQxR6K0/97mSjOSErXioHFQplAFRbLJFNhi4pWGpoGjZlA65mmgRM6QSXzAGqXE8d22SwQt79QdFj6y8xIbR5eam5rjF+ENt14BmD3FABYns3GPpBxE=
+	 Content-Type:Content-Disposition:In-Reply-To; b=WHHrhptyavT1St6twMkuXfnFt1kXRtGqdCw2JYweWNwGwfPnE1WNteQjxgTORWElJ7sJ0Y+G/TfkfvMk4o3wZ4qlpdpUapvbXyhPhInC61J/k/7r3DnA9hwB5DGSh4hyrYJBaFdbXWFz+tDSxzXVc0biM2+Xba6pW4wKG5Wf/Uo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,35 +18,33 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vhWax-0007el-F1; Sun, 18 Jan 2026 18:29:47 +0100
+	id 1vhWbL-0007kc-OA; Sun, 18 Jan 2026 18:30:11 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vhWax-001HJm-1U;
-	Sun, 18 Jan 2026 18:29:46 +0100
+	id 1vhWbM-001HJq-0P;
+	Sun, 18 Jan 2026 18:30:11 +0100
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vhWaw-001bIa-27;
-	Sun, 18 Jan 2026 18:29:46 +0100
-Date: Sun, 18 Jan 2026 18:29:46 +0100
+	id 1vhWbL-001bIr-17;
+	Sun, 18 Jan 2026 18:30:11 +0100
+Date: Sun, 18 Jan 2026 18:30:11 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	devicetree@vger.kernel.org, Fabio Estevam <festevam@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
-	imx@lists.linux.dev,
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Nicolas Schier <nsc@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, Li Jun <jun.li@nxp.com>
-Subject: Re: [PATCH v2 4/9] arm64: dts: imx8mm: add wakeup-source for usb phy
-Message-ID: <20260118172946.zsqokjhp76trijq3@pengutronix.de>
+	Fabio Estevam <festevam@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>, devicetree@vger.kernel.org,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2 8/9] arm64: dts: imx8mp-evk: replace space with tab
+Message-ID: <20260118173011.qcl6rgxoo4444eaj@pengutronix.de>
 References: <20260117-misc_dts-v2-0-0f319c7e9b55@nxp.com>
- <20260117-misc_dts-v2-4-0f319c7e9b55@nxp.com>
- <20260118172208.h7yts2yuf2lkhd4n@pengutronix.de>
+ <20260117-misc_dts-v2-8-0f319c7e9b55@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -55,40 +53,15 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260118172208.h7yts2yuf2lkhd4n@pengutronix.de>
+In-Reply-To: <20260117-misc_dts-v2-8-0f319c7e9b55@nxp.com>
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
 X-SA-Exim-Mail-From: mfe@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On 26-01-18, Marco Felsch wrote:
-> On 26-01-17, Frank Li wrote:
-> > From: Li Jun <jun.li@nxp.com>
-> > 
-> > USB phy can be wakeup source to support wakeup system from USB.
+On 26-01-17, Frank Li wrote:
+> Replace spaces with tabs to follow the coding style.
 > 
-> Was USB wakeup tested? That beeing said, marking the device as
-> wakeup-src is fine.
-> 
-> > Signed-off-by: Li Jun <jun.li@nxp.com>
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> 
-> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Just noticed that this targets the base soc.dtsi. IMHO this is board
-desicion to make and therefore belongs to the real board.dts(i) or dtso.
-
-Therefore please drop my r-b.
-
-Regards,
-  Marco
-
-
--- 
-#gernperDu 
-#CallMeByMyFirstName
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
