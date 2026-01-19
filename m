@@ -1,70 +1,70 @@
-Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD742BDC0A
-	for <imx@lists.linux.dev>; Mon, 19 Jan 2026 19:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B60F29B777
+	for <imx@lists.linux.dev>; Mon, 19 Jan 2026 19:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768850621; cv=none; b=PKqXRZpUk2NROj+vBx6uv5k6029YHawHvAoVnnucJUYg1TNYpEGxIVb9IA2BX1lf4zrDrIQ+BCloVpp5CVOnrgH3g3f2TTIWmcHlP9kq2Yq2UCj9f2LqwX1gXB6G9pcOJ2gvWI9pRdGwRPuQyztepqn5EQ5YB7QyowwPW8skWg8=
+	t=1768850744; cv=none; b=cohbN8lMpYQW6nNmJfdeGDjVgIA3JLDzi+zyZt64TX1t6u5zMJB4OgyHRo8Ai25hc5T+EdDD4gL+Y57b9klqdXl24ky1LVOByN+l5pSdXrLrrVIEmCCaD/NJ4E5np1+xGW2EhwlyKRxXrPkGOK9LKy6Yjh3BBlJ4mf+CcFJsrcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768850621; c=relaxed/simple;
-	bh=mMp6iFxraRTP7W2rjXz9S3lRqN19hV6viOdRrtle5z0=;
+	s=arc-20240116; t=1768850744; c=relaxed/simple;
+	bh=6w5YfztAxp+kt70NlhcKY/Kkm11Las2qp371F9dYbyM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tOujf/DJjp40DY3dJWCL4r5+4eEnEE6DcI0mhiwM9n6sVKQk6UDFrsX1mXYkpFrIvY0PKnnLiTZOnMsGLt6ESBzb6jhzETVlWbn6k8HyaVkvPWK98yALajRrDSwofQdge1U1lJbAAU1fWzzULqz4T86JVuCJEs+LCBhHDpGIWUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.43
+	 To:Cc:Content-Type; b=UwNXAKHxsklrWE71ijAblnNiywFs4wRMwFzULHLKdqC/6VPKxVyG4mXv/kHiGA4b4fyCJh0cWZcGBCuiFVmOHpSv7FFk6E783W4HPwK40tcwYU50PYBBWCyMZ+dGSa6wtXLiWTngJXcQdHHdz9vNHB2kXjG118RBskUXYsQhqok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-5ec8781f5c9so2061387137.1
-        for <imx@lists.linux.dev>; Mon, 19 Jan 2026 11:23:35 -0800 (PST)
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5636dce976eso3546976e0c.0
+        for <imx@lists.linux.dev>; Mon, 19 Jan 2026 11:25:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768850614; x=1769455414;
+        d=1e100.net; s=20230601; t=1768850740; x=1769455540;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DCb1Q/eNGJuZWnaSy0QMCWG02dACV3WSdsoPlEt9HTE=;
-        b=HVw4xS+mRCBt5XKppZx7P0YC3BDerEvolJNJg9nBHFwIyA2SchlyfeTk7/77ZvJ45W
-         P4sfsP5PQTSH5aY6N0BGL32VpiU+eE1YTmDzHaVZFHr/6nEu/R3Bu0djYekBJ50qU6Fh
-         nkFldpsdoQkoxGQnCCN5vNP7kVu5mGYgTDhfTwYGwN7002uFeElFGOfCP4JcIVcY62Na
-         ey6IRho2wR1/MblaqYcXvm2KOSkrdoh7Yr5Xtq5NYVK8JwAlRwW1QDWem3th6qNXRno9
-         4okZ/FvR6DjtWN567s+Ts045Q4Tdt4GKxoANfSR1VzrI44ar9p/ac3d0BvxTvhKQkHoE
-         NJhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWYlOBrODMerCiqAxhBIFpn3TiXolEn1g6T3QeHEwPRnzWUitgf8/9/78+uCD0gyvC3MAk=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yys6MVp5n4peIF+akA90+6fFindwu6tCzi7FH2nQ52l2Jtz7kKY
-	Ru7N3H9Ql1VbSongeH4965aFdDD2xRo9J3/Yxv/qV2j81TWXWEtG+fdH/wGC7XLP
-X-Gm-Gg: AY/fxX7P58RomjMgqdQpabdQyVtjxqM1r8dZ+P4e6tQMy6+BlkHAXvH5p8PG1TsiPkz
-	klVDJCrnuLj9LTzq7Sz/Q7ulr5K94snX6erndmnqIO6eqzmn3vCPnnspTxKAzmD0tmIAzmqOfvG
-	0vRVKNlzhickRBmBimMcgi6AHmRGuQ6Nr4gbOep39Lhx2S5MFCoaVHdfOz9nFwarGpMC6P8Cotp
-	6DZ39Of+LxJNdWYRYZQugTLd5Er1/eqf3SjPZ/8/NWCOq8qzLtC6fdO0pNjMJkp71E1dfel3D/b
-	ZHOX23Nuo5YaF4xxcoeUED1lup1gfDc490JjL8DGIMPQoaZ77JMdGBTHhZX1Fz0Lsk64nCDiG4l
-	HEIIDmgfG7max3lhB39ZMSCZSAcPJAJKpTx9hRUSZMb2pR1wsAknfQ3FSNmKOEA+GUib2Y3v1lS
-	8gl/AHOJztymtSNpl2Q49kgYeI5ompMvAoz8ufOZPgPnX2mTIF
-X-Received: by 2002:a05:6102:cc6:b0:5e5:2655:d401 with SMTP id ada2fe7eead31-5f1a5513588mr3818997137.24.1768850614098;
-        Mon, 19 Jan 2026 11:23:34 -0800 (PST)
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com. [209.85.222.46])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5f1a69444f0sm3641293137.7.2026.01.19.11.23.32
+        bh=6Y1wTxdZLJ7XhSQYYR0Ku2EXGP2C5XG02vKe6+mSL78=;
+        b=e/v792tNFa9Q0/4BpiwIlPHkAib9TIXwKLi0bDs1YgkrJ3lvHEFUQF0iJgQS2c2sHy
+         qF3okQpcy/Vcm6UCXEP2THDZuN0HeFT7DqyH8ju1ER3QSVLnU512LpPwxllXGVVOksBM
+         RYM6nxLWoUJyKV6l93V8R7dx0lAma75lMP+JrAmLcol5rAIGQFsvHQLBkHHa1BKsaKBI
+         SOaWA40+PWaR1UCPNGOCco46Ccq5gkyYF8LG/jQ36+ckN0S2tst/4sNvDHo/Ykgdn8Uy
+         zeNyFzpiexbiA3ydb0HW8QmkT9fQFlKuHbZjO0hBGjvK8qxenZaZZnWbcKU8nvzj1kkk
+         4mQA==
+X-Forwarded-Encrypted: i=1; AJvYcCUyh/maTHqGLfwXUHSriIcrs7i/y1D08wNIPobqM/8vo9O/Ij78RlaoYXji9fZEi+AIkvQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxFmSNcx3R4Ikn1bNVgWDmRy94e4xpP3oOMpemcZS09G/p/o1US
+	PKSXYyerym7ZOyH3KgP9HI3A7HSS3Tm1+ahoohi+aTxAzP4BL3sEmRgXmM5BU7nE
+X-Gm-Gg: AY/fxX6XPB+U61+jd3k42V8nQwLhoB8UsBblCgoZJYj6tiRr6MFx2qV3zhCI9NVRNOM
+	guAGCjLDcLQYbkaonS6kxqA1ElOgBCuKeltAIMsfnOGVtb+OQcZNDTHk1vZw+b+m0vnCqyFzdFg
+	jrvFusqcEQwEAuwas0AUQzna+UpGxG/ZvBfJx/HgV9+qhPQIjBj07r9zbg6WTD3yLI30lB36XC2
+	onGKBLuypqAIFA/KGENRIj9nJPQwxb8kmdYaS8OgxZfZ6gGpicShaZ+N6EbizyLI8XKtteTw0z1
+	qyxT+AtIgZV5tyccdVHmR86xRlvdKQQ/svf6FXpH8XkL72A/QTWB2t/0Guq+xaURD/H1HLQEbH3
+	pu+wQW7xFSWmUJVimHp86acN2kiHMbv/Pdm1Y1BJMrlGQf0tAOtFFFs1PdS/aDM4tZIhAdEuviE
+	JaGs9DoA0aVzRp683KkQ2MjJhfim6jblG6w1FsouUervHDsKip
+X-Received: by 2002:a05:6122:4685:b0:54a:a3b1:db63 with SMTP id 71dfb90a1353d-563b63dc48cmr3851511e0c.6.1768850740241;
+        Mon, 19 Jan 2026 11:25:40 -0800 (PST)
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com. [209.85.217.41])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-563b6fdb07asm2902788e0c.2.2026.01.19.11.25.38
         for <imx@lists.linux.dev>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jan 2026 11:23:32 -0800 (PST)
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-941063da73eso3011866241.3
-        for <imx@lists.linux.dev>; Mon, 19 Jan 2026 11:23:32 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUgfAnmHcTR4RaXdJsTaN2c0iDNbb+aRodAMYoIxyUdZci04dxZpf/YE2tCSXlM/cc/glg=@lists.linux.dev
-X-Received: by 2002:a05:6102:44d2:10b0:5f1:c453:b5ab with SMTP id
- ada2fe7eead31-5f1c453b6acmr1782180137.13.1768850612507; Mon, 19 Jan 2026
- 11:23:32 -0800 (PST)
+        Mon, 19 Jan 2026 11:25:39 -0800 (PST)
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-5eea75115ceso4081115137.1
+        for <imx@lists.linux.dev>; Mon, 19 Jan 2026 11:25:38 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXTTJU1+2yTLjpvBdEkr5j1hY6achV7yQ/eBUlQGH+U48s9Ru/SGAr4zvfbdLn6DtvoJLs=@lists.linux.dev
+X-Received: by 2002:a05:6102:3e96:b0:5ef:b32c:dff8 with SMTP id
+ ada2fe7eead31-5f1923fb2c1mr5826988137.5.1768850738083; Mon, 19 Jan 2026
+ 11:25:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260119-soc-of-root-v1-0-32a0fa9a78b4@oss.qualcomm.com> <20260119-soc-of-root-v1-3-32a0fa9a78b4@oss.qualcomm.com>
-In-Reply-To: <20260119-soc-of-root-v1-3-32a0fa9a78b4@oss.qualcomm.com>
+References: <20260119-soc-of-root-v1-0-32a0fa9a78b4@oss.qualcomm.com> <20260119-soc-of-root-v1-7-32a0fa9a78b4@oss.qualcomm.com>
+In-Reply-To: <20260119-soc-of-root-v1-7-32a0fa9a78b4@oss.qualcomm.com>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 19 Jan 2026 20:23:21 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXt69AywBVsY3DKH+cS52=Cw1xsvvBDBV3MXirZ+LYj+A@mail.gmail.com>
-X-Gm-Features: AZwV_Qja2okCrIX9za1x2Adx7NBF3Qx2Xd3iJQm2I4PbFkiFeek_zkUKX3woR2E
-Message-ID: <CAMuHMdXt69AywBVsY3DKH+cS52=Cw1xsvvBDBV3MXirZ+LYj+A@mail.gmail.com>
-Subject: Re: [PATCH 3/8] base: soc: export soc_device_get_machine()
+Date: Mon, 19 Jan 2026 20:25:26 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdU56p9jH8OZ5bpwKq8Q31C-8X85YAjiXZm8amYdo+Xotw@mail.gmail.com>
+X-Gm-Features: AZwV_QjRSaQ_qXyXNZN9OqtIjEIE6rAZwNcvdO7jDgxqMH0vtYkLnv2_hmzs9Y4
+Message-ID: <CAMuHMdU56p9jH8OZ5bpwKq8Q31C-8X85YAjiXZm8amYdo+Xotw@mail.gmail.com>
+Subject: Re: [PATCH 7/8] soc: renesas: don't access of_root directly
 To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
@@ -83,55 +83,47 @@ Hi Bartosz,
 
 On Mon, 19 Jan 2026 at 11:40, Bartosz Golaszewski
 <bartosz.golaszewski@oss.qualcomm.com> wrote:
-> Some SoC drivers reimplement the functionality of
-> soc_device_get_machine(). Make this function accessible through the
-> sys_soc.h header. Rework it slightly to return a negative error number
-> on failure to read the machine string (SoC core can keep on ignoring
-> it). While at it: make it use the __free() helper from cleanup.h.
+> Don't access of_root directly as it reduces the build test coverage for
+> this driver with COMPILE_TEST=y and OF=n. Use existing helper functions
+> to retrieve the relevant information.
 >
+> Suggested-by: Rob Herring <robh@kernel.org>
 > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
 Thanks for your patch!
 
-> --- a/drivers/base/soc.c
-> +++ b/drivers/base/soc.c
-> @@ -5,6 +5,7 @@
->   * Author: Lee Jones <lee.jones@linaro.org> for ST-Ericsson.
+> --- a/drivers/soc/renesas/renesas-soc.c
+> +++ b/drivers/soc/renesas/renesas-soc.c
+> @@ -6,6 +6,7 @@
 >   */
 >
+>  #include <linux/bitfield.h>
 > +#include <linux/cleanup.h>
->  #include <linux/err.h>
->  #include <linux/glob.h>
->  #include <linux/idr.h>
-> @@ -111,17 +112,18 @@ static void soc_release(struct device *dev)
->         kfree(soc_dev);
->  }
+>  #include <linux/io.h>
+>  #include <linux/of.h>
+>  #include <linux/of_address.h>
+> @@ -468,7 +469,11 @@ static int __init renesas_soc_init(void)
+>         const char *soc_id;
+>         int ret;
 >
-> -static void soc_device_get_machine(struct soc_device_attribute *soc_dev_attr)
-> +int soc_device_get_machine(struct soc_device_attribute *soc_dev_attr)
->  {
-> -       struct device_node *np;
-> -
->         if (soc_dev_attr->machine)
-> -               return;
-> +               return -EBUSY;
-> +
-> +       struct device_node *np __free(device_node) = of_find_node_by_path("/");
-> +       if (!np)
+> -       match = of_match_node(renesas_socs, of_root);
+> +       struct device_node *root __free(device_node) = of_find_node_by_path("/");
+> +       if (!root)
 > +               return -ENOENT;
->
-> -       np = of_find_node_by_path("/");
-> -       of_property_read_string(np, "model", &soc_dev_attr->machine);
-> -       of_node_put(np);
-> +       return of_property_read_string(np, "model", &soc_dev_attr->machine);
+> +
+> +       match = of_match_node(renesas_socs, root);
 
 I am not so fond of these of_find_node_by_path("/") + something replacements.
-What about adding an of_machine_get_model() helper?
+What about adding an of_match_root() helper?
 
->  }
-> +EXPORT_SYMBOL_GPL(soc_device_get_machine);
+However, in the previous patch you used a different strategy:
+
+-       if (!of_match_node(imx8_soc_match, of_root))
++       if (!of_machine_device_match(imx8_soc_match))
+
+>         if (!match)
+>                 return -ENODEV;
 >
->  static struct soc_device_attribute *early_soc_dev_attr;
 >
 
 Gr{oetje,eeting}s,
