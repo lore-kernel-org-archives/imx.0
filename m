@@ -1,138 +1,150 @@
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B60F29B777
-	for <imx@lists.linux.dev>; Mon, 19 Jan 2026 19:25:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768850744; cv=none; b=cohbN8lMpYQW6nNmJfdeGDjVgIA3JLDzi+zyZt64TX1t6u5zMJB4OgyHRo8Ai25hc5T+EdDD4gL+Y57b9klqdXl24ky1LVOByN+l5pSdXrLrrVIEmCCaD/NJ4E5np1+xGW2EhwlyKRxXrPkGOK9LKy6Yjh3BBlJ4mf+CcFJsrcA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768850744; c=relaxed/simple;
-	bh=6w5YfztAxp+kt70NlhcKY/Kkm11Las2qp371F9dYbyM=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DE72DF6F6
+	for <imx@lists.linux.dev>; Mon, 19 Jan 2026 21:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768857869; cv=pass; b=Pb59W0gcqeDSONld6kTdVw6bleQy57WdNfMpJ+iZfOPL6NCtFZ/0RL6N+5F2IIHO5j5cll4c1TqlbsWoUHvbx0cLHIrhPON8Q6CmWxZhzCj149O4NeCik6zLjBH5h+OlKFzRF1hYG2+TQ6fDWOc6pdAu5jCZSmJ8LWOx6ULipPU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768857869; c=relaxed/simple;
+	bh=P564zifxGq7gpIAXiYMGNHPdZBZ6qjwcGkLD/d5fbQ8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UwNXAKHxsklrWE71ijAblnNiywFs4wRMwFzULHLKdqC/6VPKxVyG4mXv/kHiGA4b4fyCJh0cWZcGBCuiFVmOHpSv7FFk6E783W4HPwK40tcwYU50PYBBWCyMZ+dGSa6wtXLiWTngJXcQdHHdz9vNHB2kXjG118RBskUXYsQhqok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5636dce976eso3546976e0c.0
-        for <imx@lists.linux.dev>; Mon, 19 Jan 2026 11:25:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768850740; x=1769455540;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+	 To:Cc:Content-Type; b=Js2E4THjBN9iwRyrdxpf6xSM/mTgOMjAlTraC3puBLHQRcPonehBkbNplfn7oc9HVyHSV1Dfg32VVEdB9ICqrS3SFEfwgfZmVE4OKbcWxpzwgBi4NzZe1XuxF+uc8KmD+Hd6U+qd1NxDCF4ADBwVJR4EfBeCGtI2CNhbvwXd+ZM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=cM+HZDqo; arc=pass smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="cM+HZDqo"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a09d981507so35621145ad.1
+        for <imx@lists.linux.dev>; Mon, 19 Jan 2026 13:24:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768857867; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Nxctyq5MyvD+NQ+gb1NTluZPktj2OLWLfuITpPU9vRu6+RjGp2d1pdB0XPI1kYWyxz
+         6b5YKzvlzeD2wOamgKTS3Wk55sgd2LJ4D0frcwkyQi/arciyLuiBvzllXbO8G9iMRXQR
+         Blo3+n9uHqn1fOZt+4rDGjqyT+tqG+LXB9BvjlqjDJuhLMAvQh18KdC20PGKctO+EV2p
+         7fGYWdQ0iqPqfEp8Q+lTAOkpeXPUY5qII9htmcLfWw3+Y0v3CeESb7maSwZ2tE+cetqo
+         Euu8fkyxMKJws6kKkgUfYV1Dutih26b2ffOnuO3u2yK84zYQbZ46yNCU30faF+bqW06a
+         z6Dg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AP5uij4auzaarNTMKGDAE5deLZectmAWZbcZ2tCl4Wo=;
+        fh=I6z+Wtl0RG0EeGWqm5zEPWpG8rSQy51Cz7pAvwp/MfU=;
+        b=lr33ao5oiaEVhanYrmKXwQC9/VdlH3mgktuiMtg8Hpd6w3n+oqvfi5+MvMThoFo7XL
+         FYeMcwFRgUsrETxHTq4ms8ugY8PgtjsvkdN9GLraoohNA5fHo0qhskDxFNZUlOx6lrZK
+         ka94MbvJbn5wdT/7JpwPlaK6kH+JdrHU3y0ja2DGsscNn2ybUF6m7E/GfwjUcz8KsPne
+         6sVmMACnK33yMwQBb0rlqhqBdW4aJOlf6/CdmgkaEelMopf84ptrLA7wLgAkTONNbWqa
+         VDP99V8/hLCLEFZos5CeXF7S1WUX3aZXH2TfZ2Eh/USp8TPLJSt+/4Yj13lw66WuzeZH
+         3cRQ==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1768857867; x=1769462667; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6Y1wTxdZLJ7XhSQYYR0Ku2EXGP2C5XG02vKe6+mSL78=;
-        b=e/v792tNFa9Q0/4BpiwIlPHkAib9TIXwKLi0bDs1YgkrJ3lvHEFUQF0iJgQS2c2sHy
-         qF3okQpcy/Vcm6UCXEP2THDZuN0HeFT7DqyH8ju1ER3QSVLnU512LpPwxllXGVVOksBM
-         RYM6nxLWoUJyKV6l93V8R7dx0lAma75lMP+JrAmLcol5rAIGQFsvHQLBkHHa1BKsaKBI
-         SOaWA40+PWaR1UCPNGOCco46Ccq5gkyYF8LG/jQ36+ckN0S2tst/4sNvDHo/Ykgdn8Uy
-         zeNyFzpiexbiA3ydb0HW8QmkT9fQFlKuHbZjO0hBGjvK8qxenZaZZnWbcKU8nvzj1kkk
-         4mQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUyh/maTHqGLfwXUHSriIcrs7i/y1D08wNIPobqM/8vo9O/Ij78RlaoYXji9fZEi+AIkvQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxFmSNcx3R4Ikn1bNVgWDmRy94e4xpP3oOMpemcZS09G/p/o1US
-	PKSXYyerym7ZOyH3KgP9HI3A7HSS3Tm1+ahoohi+aTxAzP4BL3sEmRgXmM5BU7nE
-X-Gm-Gg: AY/fxX6XPB+U61+jd3k42V8nQwLhoB8UsBblCgoZJYj6tiRr6MFx2qV3zhCI9NVRNOM
-	guAGCjLDcLQYbkaonS6kxqA1ElOgBCuKeltAIMsfnOGVtb+OQcZNDTHk1vZw+b+m0vnCqyFzdFg
-	jrvFusqcEQwEAuwas0AUQzna+UpGxG/ZvBfJx/HgV9+qhPQIjBj07r9zbg6WTD3yLI30lB36XC2
-	onGKBLuypqAIFA/KGENRIj9nJPQwxb8kmdYaS8OgxZfZ6gGpicShaZ+N6EbizyLI8XKtteTw0z1
-	qyxT+AtIgZV5tyccdVHmR86xRlvdKQQ/svf6FXpH8XkL72A/QTWB2t/0Guq+xaURD/H1HLQEbH3
-	pu+wQW7xFSWmUJVimHp86acN2kiHMbv/Pdm1Y1BJMrlGQf0tAOtFFFs1PdS/aDM4tZIhAdEuviE
-	JaGs9DoA0aVzRp683KkQ2MjJhfim6jblG6w1FsouUervHDsKip
-X-Received: by 2002:a05:6122:4685:b0:54a:a3b1:db63 with SMTP id 71dfb90a1353d-563b63dc48cmr3851511e0c.6.1768850740241;
-        Mon, 19 Jan 2026 11:25:40 -0800 (PST)
-Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com. [209.85.217.41])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-563b6fdb07asm2902788e0c.2.2026.01.19.11.25.38
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jan 2026 11:25:39 -0800 (PST)
-Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-5eea75115ceso4081115137.1
-        for <imx@lists.linux.dev>; Mon, 19 Jan 2026 11:25:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXTTJU1+2yTLjpvBdEkr5j1hY6achV7yQ/eBUlQGH+U48s9Ru/SGAr4zvfbdLn6DtvoJLs=@lists.linux.dev
-X-Received: by 2002:a05:6102:3e96:b0:5ef:b32c:dff8 with SMTP id
- ada2fe7eead31-5f1923fb2c1mr5826988137.5.1768850738083; Mon, 19 Jan 2026
- 11:25:38 -0800 (PST)
+        bh=AP5uij4auzaarNTMKGDAE5deLZectmAWZbcZ2tCl4Wo=;
+        b=cM+HZDqoMx1cPUuDn/WBhxj++7Agq2XgYQZcTOzMRkCSuK6x2HXUzn3eD+mSEguOhw
+         npSKfqDRC+YOBku6PEVfLMJc3W4rI+egHbtlAPezNlhUVgexDDNu6RB49NIN73FxUtqf
+         iMi12Qeasu5bu8frikGBIId+IqukEmhifTYTJEvWi6Om4V5EZOZ1cinPoifrw8KnRl/3
+         3mN+WAw2R5lRh3RGidnp98iKe0jA6aIP3/3l9q/SnKL/ZwOQ8COWr2Dn/r2Pta0K6Pa5
+         XAzmJBKwf0FsbQacayiYE6D0spnBIA2fe7tUJcYcba+9xcvJne6Z4/ka1xxYGGKAceeJ
+         8T5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768857867; x=1769462667;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AP5uij4auzaarNTMKGDAE5deLZectmAWZbcZ2tCl4Wo=;
+        b=JRTHPE0UoIHE3MiWM0R6i2vMky6ekt7rkC5oHHXGZ3inDbT8djo9cqMMfOqVXa0vgp
+         FGJaaPUZJeaSDIU45lEAqDn6rm9zjFzNjR5YBi9AOXLckrz2ZweZ196O2G5mXUYfWznX
+         vaNXLashZrvjSMf2L4kY8nmXUd4WPmKZRGymR970CbHnem8nNrKTpZn0oz6GaYmhnawJ
+         1o3vrDA8476006K8Wv86Y7CQ+/j/pfFca0yN0j2QFI8jLjBJdlK/YaOpYTLc/3RukgJp
+         Q4Oi1w/8orV+w/UvWS0+YB5hWwvv3DF2OB1ftPk+YHo5AGQklksZZN2XIl5H9vC25twA
+         VF5w==
+X-Forwarded-Encrypted: i=1; AJvYcCUZil1NFNccuxNIEZmpJFNtYAEy2PiQSMRQ81eOV5GRQ+Y/soJZFRcyFNcHjed7525P4Sc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw38ThlE7AyyDsBQ2mGJovr+v50zGlIGIXJLYLTU45DIKSVbrPw
+	7JlhO5HxuLalEbxPruCIHXhos0ekmzhES8cMFbIUa23LT8VVPydd5nKgpG2j2LIVskbwjVuAmCL
+	l/VM8ROiPTlhCJc2cZ+CdtkVpGoLQXLA=
+X-Gm-Gg: AZuq6aLpw9vFWkKbdmS4bSbnTNTqOMwlgLi13XvaTfPU0VALZmcG7Ry1AQZcb4Cev4j
+	nNAvsH45EHNJJrZCEjhjSJohBN9IyQB+HzQPuiovWOwShRwSL1muIiBjYvN5lzk+ycd2pwtGKmn
+	UkES24Xcyms4wIYN/vrOLEmy41hH1QmezsgMf/2kLhJRzvdS7DxSNbTUR0ympJocaij+erDNqkf
+	ndaMGlZ/AQ/vPnb49xK0Clr1t18X4SnSTXF5OzqrX2KEEMnBEMOiz5+/UsAGwFU+pROfYwKL7/L
+	m/yxbFiG7eWm6+JwlDxbCzj8UBEjmdziZb07vwc=
+X-Received: by 2002:a17:902:e787:b0:2a0:fb1c:144e with SMTP id
+ d9443c01a7336-2a700990c98mr136201155ad.7.1768857866821; Mon, 19 Jan 2026
+ 13:24:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260119-soc-of-root-v1-0-32a0fa9a78b4@oss.qualcomm.com> <20260119-soc-of-root-v1-7-32a0fa9a78b4@oss.qualcomm.com>
-In-Reply-To: <20260119-soc-of-root-v1-7-32a0fa9a78b4@oss.qualcomm.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 19 Jan 2026 20:25:26 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdU56p9jH8OZ5bpwKq8Q31C-8X85YAjiXZm8amYdo+Xotw@mail.gmail.com>
-X-Gm-Features: AZwV_QjRSaQ_qXyXNZN9OqtIjEIE6rAZwNcvdO7jDgxqMH0vtYkLnv2_hmzs9Y4
-Message-ID: <CAMuHMdU56p9jH8OZ5bpwKq8Q31C-8X85YAjiXZm8amYdo+Xotw@mail.gmail.com>
-Subject: Re: [PATCH 7/8] soc: renesas: don't access of_root directly
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
-	linux-sunxi@lists.linux.dev
+References: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-3-v2-0-8d7a3dbacdf4@bootlin.com>
+ <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-3-v2-2-8d7a3dbacdf4@bootlin.com>
+ <CAFBinCBWUXNwEDCJNEmdCtOcGO9eVFfZFC9p9fpdRTesZ7xBSQ@mail.gmail.com> <DFNN251V4JL9.2ECEDGOKN8I4F@bootlin.com>
+In-Reply-To: <DFNN251V4JL9.2ECEDGOKN8I4F@bootlin.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date: Mon, 19 Jan 2026 22:24:15 +0100
+X-Gm-Features: AZwV_QgxI3L9klOeJM7lsCljCRIK_bf05uJfhQMd5VWt4KtGJ4pArfXR_EjKQn4
+Message-ID: <CAFBinCCz+MobtXYdiyWRBBFBDo77iULLOZ1p2i4fAVnpJ1NzJw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/6] drm/meson/dw-hdmi: convert to of_drm_find_and_get_bridge()
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	linux-mediatek@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Bartosz,
+Hi Luca,
 
-On Mon, 19 Jan 2026 at 11:40, Bartosz Golaszewski
-<bartosz.golaszewski@oss.qualcomm.com> wrote:
-> Don't access of_root directly as it reduces the build test coverage for
-> this driver with COMPILE_TEST=y and OF=n. Use existing helper functions
-> to retrieve the relevant information.
+On Tue, Jan 13, 2026 at 6:31=E2=80=AFPM Luca Ceresoli <luca.ceresoli@bootli=
+n.com> wrote:
+[...]
+> >> @@ -789,8 +789,12 @@ static void meson_dw_hdmi_unbind(struct device *d=
+ev, struct device *master,
+> >>                                    void *data)
+> >>  {
+> >>         struct meson_dw_hdmi *meson_dw_hdmi =3D dev_get_drvdata(dev);
+> >> +       struct platform_device *pdev =3D to_platform_device(dev);
+> >> +       int irq =3D platform_get_irq(pdev, 0);
+> >>
+> >> +       devm_free_irq(dev, irq, meson_dw_hdmi);
+> > I have one question (so I can understand things better):
+> > is there a particular reason why you went with free'ing the IRQ
+> > instead of "just" masking it (so the hardware won't fire anymore of
+> > those IRQs)?
 >
-> Suggested-by: Rob Herring <robh@kernel.org>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-
-Thanks for your patch!
-
-> --- a/drivers/soc/renesas/renesas-soc.c
-> +++ b/drivers/soc/renesas/renesas-soc.c
-> @@ -6,6 +6,7 @@
->   */
+> One reason is symmetry: _bind requests the irq, so _unbind does the
+> reverse.
 >
->  #include <linux/bitfield.h>
-> +#include <linux/cleanup.h>
->  #include <linux/io.h>
->  #include <linux/of.h>
->  #include <linux/of_address.h>
-> @@ -468,7 +469,11 @@ static int __init renesas_soc_init(void)
->         const char *soc_id;
->         int ret;
+> Another is I don't have the hardware, so I wanted my changes to be as sma=
+ll
+> and clear as possible.
+Understood, thanks!
+
+> In principle one could request/free the irq in probe/remove and then
+> enable/disable it in bind/unbind. Whether it would be a good or bad idea =
+I
+> don't know, but surely it would be more complex and I wouldn't want to do
+> it without any chance to test it on hardware.
 >
-> -       match = of_match_node(renesas_socs, of_root);
-> +       struct device_node *root __free(device_node) = of_find_node_by_path("/");
-> +       if (!root)
-> +               return -ENOENT;
-> +
-> +       match = of_match_node(renesas_socs, root);
-
-I am not so fond of these of_find_node_by_path("/") + something replacements.
-What about adding an of_match_root() helper?
-
-However, in the previous patch you used a different strategy:
-
--       if (!of_match_node(imx8_soc_match, of_root))
-+       if (!of_machine_device_match(imx8_soc_match))
-
->         if (!match)
->                 return -ENODEV;
+> Also, that would only optimize the case of multiple bind/unbind cycles,
+> which are not quite realistic without bridge hotplug. And brigde hotplug
+> does not exist yet in mainline, and when it will arrive it will be used
+> only for a few use cases.
 >
->
+> I hope this answers your question.
+Yes, I was curious whether you considered devm_free_irq() as the only
+"correct" approach (in this case I would have recommended a comment)
+or whether other approaches are fine too.
+This is useful knowledge for me in case we ever need to restructure the dri=
+ver.
 
-Gr{oetje,eeting}s,
 
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Best regards,
+Martin
