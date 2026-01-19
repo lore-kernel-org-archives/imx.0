@@ -1,33 +1,50 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378BE33F8B9;
-	Mon, 19 Jan 2026 09:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B413559D9;
+	Mon, 19 Jan 2026 09:27:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768814451; cv=none; b=RZMI3H+YW2vOAh4DlUIHmS/G89MNbgpLnpJs0e4THJHOBGS331q2p0P6hLMJpfq2o2SJUEIbt+EtSNheb8yXSG8MXOF6EAylu5U5n/EAE4GqyVDmu7ujY/H8Vb7vqx3Sui3qkDOxahHuySpqGtfwrJUGtzpF4Q6wLmchVBvNhCM=
+	t=1768814844; cv=none; b=W0KGtznTlMZoXi5ynPIvad+T8TX1h/0cg8R8rb+eU5TjSMmDaAX7qoWlSMrgaR0jIBDUzB64+rNGua3OnpZa+PMhHmq/ckE6V+enGF179plfzJCfprLrtWLH6TeLk3l8TtGzxf8SlLBvvntOT1v+kHJcD545zF/aH6ksab72Yww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768814451; c=relaxed/simple;
-	bh=VZIEV36lyrDyWpApc+J1eqJzEtFI3QvNsRFeLIEuegg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wb09i7hczV7GiCJAoIh6QDX/LmHTtd8p+y92kkAudrVCiszqp1Sq9wm6TNdq3RkiZrbvPhfO9NGp6XIHlwpze1NBQ2LXb45MxrDetj+iyY301nMRmbFRptByN0cXoEDRH8ZLQlWJNSydc5XtODa+93k89GnnV2e48Z1NFvk68pI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rw4tPUop; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768814844; c=relaxed/simple;
+	bh=FnDqYCqY4eMQu1KfJO2diG09+hGAQVkPBUCJXUeIZ0A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=A8pTliKXcsBGELtl96Dp9tYPAWppxTrrkUtzXBtWzJshG6ZdtyukpgRfiRWEYtr/jnwUk1k4lIR7yAq2+lH6Olls78v8mvTN5RYC8yRuatjQSEHb+U00CxtnAzjfhZGp/xXB0AUKzQhmoYlDRx3XpidkrwJDH8A9UthnDLAGwsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=qzI+jUV4; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rw4tPUop"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3721C116C6;
-	Mon, 19 Jan 2026 09:20:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768814450;
-	bh=VZIEV36lyrDyWpApc+J1eqJzEtFI3QvNsRFeLIEuegg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rw4tPUopGLBQ68tG0xu6++Kn6mmLdlhfj9RgX4Hlg8+cPOsfVLRGHa6qhmABR5QVJ
-	 5euPjO/Y/dgrIkjP2aEOgRXnNK8FfOacfui7gnvsB2hLOcIzirbymElNK6m8sbcM8R
-	 G7DPN5mE8HaPSOdHc8DzLjadZqnr40Kq0ceJ7VEtv/zazqVFDAo7qVdjUf8EICNYRH
-	 smN7o4Ch7+mWMyfltUFUJpHiAOSZDnEr62RBOHDk7vVBCOpVqHuHR3iAqeLUyuQ0Tw
-	 nTMbVGX97FeZSMEc9UN1gypajPNUO4DU3F5tdI1X63pI8G+6QCvE7CfOL5jjYJq82f
-	 Pe4j0PAuogLDQ==
-Message-ID: <295b7b13-b44e-429a-b410-f1e80bb46e95@kernel.org>
-Date: Mon, 19 Jan 2026 10:20:45 +0100
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="qzI+jUV4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1768814842; x=1800350842;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=FnDqYCqY4eMQu1KfJO2diG09+hGAQVkPBUCJXUeIZ0A=;
+  b=qzI+jUV4F4r188AbBTHdpLNnjp1d8gSJoR3wif7ABt6XpEmfDpbNSJdP
+   CYUxz4vHcOZpqvThGgUwjtsX1Z0Xp+R2YuM88k+MbX75KhJsrWmQ8fyA7
+   a35ZK54PLMnDt1p4VsC0nwtpiDtbNNuN3H/qDKkDaCb3d8sp4yBjisL/1
+   eCK0hKTrwfstcHptvJGebQpIgTWe2f0fcWOsx96GRGsQW4M5CzrfJfTbz
+   6PlKYgldruDc6rncmL7lw5pX0KJ2Utd6UTeDTpD48f3BL2fWDjiwETQtl
+   ox2Wqw0zwb8CpSkmjZEiObe1Aj6W2OAdKrpDmHlQSUi+YGmKbnKzgvlxJ
+   w==;
+X-CSE-ConnectionGUID: i0zijf1nTfiJcIl2a1rGow==
+X-CSE-MsgGUID: 5Vc33klYRPeu5OUwKZF+zg==
+X-IronPort-AV: E=Sophos;i="6.21,237,1763449200"; 
+   d="scan'208";a="219379894"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 19 Jan 2026 02:27:15 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Mon, 19 Jan 2026 02:26:44 -0700
+Received: from [10.159.245.205] (10.10.85.11) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Mon, 19 Jan 2026 02:26:40 -0700
+Message-ID: <bc019bd8-34d3-420e-8519-09700437fb01@microchip.com>
+Date: Mon, 19 Jan 2026 10:26:39 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,92 +52,79 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] Fix the imx8mm gpu hang due to adb400 reset wrongly
-To: Jacky Bai <ping.bai@nxp.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20260119-imx8mm_gpu_power_domain-v1-0-34d81c766916@nxp.com>
- <20260119-imx8mm_gpu_power_domain-v1-1-34d81c766916@nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20260119-imx8mm_gpu_power_domain-v1-1-34d81c766916@nxp.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v3 9/9] crypto: atmel: Use dmaengine_prep_config_single()
+ API
+To: Frank Li <Frank.Li@nxp.com>, Vinod Koul <vkoul@kernel.org>, Manivannan
+ Sadhasivam <mani@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?=
+	<kwilczynski@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, Bjorn
+ Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>, Sagi Grimberg
+	<sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>, Herbert Xu
+	<herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
+	<claudiu.beznea@tuxon.dev>, Koichiro Den <den@valinux.co.jp>, Niklas Cassel
+	<cassel@kernel.org>
+CC: <dmaengine@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>, <linux-nvme@lists.infradead.org>,
+	<mhi@lists.linux.dev>, <linux-arm-msm@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<imx@lists.linux.dev>
+References: <20260105-dma_prep_config-v3-0-a8480362fd42@nxp.com>
+ <20260105-dma_prep_config-v3-9-a8480362fd42@nxp.com>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
+Content-Language: en-US, fr
+Organization: microchip
+In-Reply-To: <20260105-dma_prep_config-v3-9-a8480362fd42@nxp.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 19/01/2026 09:53, Jacky Bai wrote:
-> Due to the HW limitation on i.MX8MM, the gpumix, gpu2d and
-> gpu3d share the same reset domain, that means when gpu2d/3d
-> go through the power off/on cycle, the gpu2d/3d reset will
-> also reset the gpumix domain, The GPUMIX ADB400 port also be
-> reset. But the ADB400 must be put into power down before reset
-> it.
+On 05/01/2026 at 23:46, Frank Li wrote:
+> Using new API dmaengine_prep_config_single() to simple code.
 > 
-> currently, gpumix, gpu2d/3d power domain use the pm runtime_pm
-> to handle these power domain dependency, but in some corner case,
-> the gpumix power off will be skipped, then the ADB400 port will
-> be in active while gpu2d/3d doing the reset. The GPUMIX the ADB400
-> port will be reset wrongly, so lead to unpredictable bus behavior.
+> No functional change.
 > 
-> To simplify these domain on/off order & dependency, refine the
-> code to directly handle GPUMIX domain on/off along with the
-> gpu2d/3d power on/off flow.
-> 
-> Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+> Tested-by: Niklas Cassel <cassel@kernel.org>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Looks good to me:
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+
+Thanks, best regards,
+   Nicolas
+
 > ---
+>   drivers/crypto/atmel-aes.c | 10 +++-------
+>   1 file changed, 3 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/crypto/atmel-aes.c b/drivers/crypto/atmel-aes.c
+> index 3a2684208dda9ee45d71b4bc2958be293a4fb6fe..e300672ffd7185b0f5bf356c2376681537047def 100644
+> --- a/drivers/crypto/atmel-aes.c
+> +++ b/drivers/crypto/atmel-aes.c
+> @@ -795,7 +795,6 @@ static int atmel_aes_dma_transfer_start(struct atmel_aes_dev *dd,
+>          struct dma_slave_config config;
+>          dma_async_tx_callback callback;
+>          struct atmel_aes_dma *dma;
+> -       int err;
+> 
+>          memset(&config, 0, sizeof(config));
+>          config.src_addr_width = addr_width;
+> @@ -820,12 +819,9 @@ static int atmel_aes_dma_transfer_start(struct atmel_aes_dev *dd,
+>                  return -EINVAL;
+>          }
+> 
+> -       err = dmaengine_slave_config(dma->chan, &config);
+> -       if (err)
+> -               return err;
+> -
+> -       desc = dmaengine_prep_slave_sg(dma->chan, dma->sg, dma->sg_len, dir,
+> -                                      DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+> +       desc = dmaengine_prep_config_sg(dma->chan, dma->sg, dma->sg_len, dir,
+> +                                       DMA_PREP_INTERRUPT | DMA_CTRL_ACK,
+> +                                       &config);
+>          if (!desc)
+>                  return -ENOMEM;
+> 
+> 
+> --
+> 2.34.1
+> 
 
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching. For bindings, the preferred subjects are
-explained here:
-https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
-
-Best regards,
-Krzysztof
