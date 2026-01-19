@@ -1,126 +1,243 @@
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013026.outbound.protection.outlook.com [40.107.162.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FD528D830;
-	Mon, 19 Jan 2026 16:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768838842; cv=none; b=bn5ViY1nTqZxgbAMm0ZSsNHBLVd0VjjDxOR9ajLsylf/QkDKbEPb7yasBKbLzUB6YTzLwDA771it0RI2RsUoNfpmE3s1ZCE+77LrAsTJIwOwt8MDLCawE8dRD3BsQ58yQmbkKT+1JIxsBEw3LwQ0rJwECdSl9sug39bYvTaCfiU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768838842; c=relaxed/simple;
-	bh=FNOVC7smJ25SH7Gdtg7GStcPGWpINi+mo/0Q6qqpZ7s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P7nB2rO2aHhTR9xEz0h52fOI6tABO+4KSs6RpbX2HJNvyWgpOkY2KfQL8jiQ3yawxB4utKdty4wr5egwMkrqvlL5KiPBJKmDhV8UlvNCZbN8ox9QLIQ5AR4eDkptJfwNhkAagKkCg5ekg+qq5OTwktSuaRGfnkALt5YfhASLbXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=NCLAf0Gy; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227B12DB7BF
+	for <imx@lists.linux.dev>; Mon, 19 Jan 2026 16:15:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768839316; cv=fail; b=gp/ZVY1J3oDxSxkcsxguXg8dCBwXm1H5MO5yqt/2kreJgpBUTzP/+1dpRpM1tWOWzPlTj0KFNugHWieBKZkYhi5LoqAkVlv0Yvr8DIoIUuQSBKeFx9g0Q/XGWdR2rY+ilGLUesSu7/pgsRtSbHYriqvQDllOz7PEcffEiawpw5w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768839316; c=relaxed/simple;
+	bh=4x3QfSrM1aOqbGh5J40Q/mGKDxttylJ5jx0UMCeNlOY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=p68Ls+WPvuXm0s78+HGDh9LYnqYPtIrbQrtumL2Qz7fPS9DdkcaO2FTWDMYdCRDg3IXCX6kQvVJYKv/Fz9r+OugQ1yr2vgdL8q6zJ0dyry9I9zn8jovsCZvZ+yQXFkyBDrmBXdg/ozfdjH+qLntbY5DSL/bonnjNklh/8W98pc0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=SBBYpPKd; arc=fail smtp.client-ip=40.107.162.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="NCLAf0Gy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=8pPZdQPY4l/E6Ki51s+kyYAdtveDcn2eRM82KhpKvEs=; b=NCLAf0GyaclQZPdMNf4kV+ydak
-	6AOdai735qQfi6T1UQ3K+ccjB1uImgyZUNmG93Tm03D3La8nM6AWcjwQNRgGIpoZCVP9XmqhH2eG8
-	cHedeNeY7IC4dYd0GYcW/QrLJxQ6jfW+7/H8ffARoq4O4fi3ye8TpQJheeEObtEde1vOd25ED51B/
-	/BlMHAiDjORwBRjW9/ZR+4UDHdN+ZMJ3YQoKyYzy8O92PBa8FrpqzhuVDHd2BBtAQH3LqiA3utzWH
-	s5GZF2eLd1PC5rgjvkWZ+xeBBkYm8asn/ll956TTgFVtFl/6vJSrvBBpzwFUCdc0NWg2VJaf5Q6YB
-	Endu1X2g==;
-Received: from i53875a9c.versanet.de ([83.135.90.156] helo=diego.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1vhrmB-0037VG-F4; Mon, 19 Jan 2026 17:06:48 +0100
-From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
-To: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- Damon Ding <damon.ding@rock-chips.com>
-Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
- kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
- jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
- andy.yan@rock-chips.com, dmitry.baryshkov@oss.qualcomm.com,
- dianders@chromium.org, m.szyprowski@samsung.com, luca.ceresoli@bootlin.com,
- jani.nikula@intel.com, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
- linux-rockchip@lists.infradead.org, Damon Ding <damon.ding@rock-chips.com>
-Subject:
- Re: [PATCH v8 00/18] Apply drm_bridge_connector and panel_bridge helper for
- the Analogix DP driver
-Date: Mon, 19 Jan 2026 17:06:46 +0100
-Message-ID: <6571983.R56niFO833@diego>
-In-Reply-To: <20251217093321.3108939-1-damon.ding@rock-chips.com>
-References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="SBBYpPKd"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=B7rOk53vIY54ex1dtDfPkehO/0g8uGGsamma85Miv84mxmWAufU773wYyzOR2ixE+t0sJTmzvYFACXNUPszSkHYhAoOPtWPCx3nl+Zdks/3wag8jedwYUnLfiQOWvgK0MgUZZdxs7mKTOcoM/A+EvjU+Bquhh1z+OGdt2kLJTaue844Gq5aCDNt9QfWmiwu4/fAZGdK7PQF1vjzjYxpjYP/Bz1BCMqYqTNfFBJUcSKKZK8+lMbP0XF4Gl7u+nRzXl9EPiVzECVm+9bF96tt4oIrg5DZCZksU0I8rvGRSstfB3fRCM10NehubPvbEqmfiVbUYhb7gwnpLErd2MckLRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e1z/TiPyzpgsI+rxYYcvYp1pdsm29rt1OfxChJ0tTGU=;
+ b=hOqADQF+PSneGbeGm2w7Ez1FMky+uwutxedaK9eO+73Dk2UdCerpI4/hmd/DblL0vIO0KWCtRYiYCrnAKaaJ1GKhs89Xk/NRsRFZ5rXBMY6Nc9y5TVzAety1f+vWK2cmgaabLubKl5/NME7yfqcZLybbNd5O+1L5cjUwFe5HD3DmPdoZvuibynViRW4yUqZwWVjwEAej23e8l38An2bSI+9r9uUfPVf8axgfEnG+8zrHHjg/NJscDg2x/lIuwYQilfCAHFe9tZJFge0ySurXm1e+KuoZFYzY4+TuXogwIdM5DejTm5UcoY3GTxcyitbToYF8odf4D/8cRknlXORFnA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e1z/TiPyzpgsI+rxYYcvYp1pdsm29rt1OfxChJ0tTGU=;
+ b=SBBYpPKdCelDsHmWkYvIa4TudqgyFd2i4wTrnntROEoVKPPnxvHMHZm+uCz2jKg4HjRuyq5RKJ9G4Lyq/p4ODaCovyLPgLi6xgTjYR/oXXcH/eVBsLKTNaXcDoA2MYDIhEl6AtK0KkhuaGeSDDsMX4Mzuko7Cf4UEtA7CEmwAZOjiEUpfMZ0pOvBk1V7kW4Fp6/Cgui9ZLXrj1KFXM249x3SOpCEItV9GLCohrbsLNJMg3H9g2odA9Ras5PPZLNiWJ0wWlA9Z0dhzzueOvZSniliP4JrI5Fnj+0ATr7+D+fEbExrEpf/tMb+6kTof4otzg4VfBxLeSKQ6J2ti5IEkQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PRASPRMB0004.eurprd04.prod.outlook.com (2603:10a6:102:29b::6)
+ by AM7PR04MB6888.eurprd04.prod.outlook.com (2603:10a6:20b:107::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Mon, 19 Jan
+ 2026 16:15:12 +0000
+Received: from PRASPRMB0004.eurprd04.prod.outlook.com
+ ([fe80::6ab3:f427:606a:1ecd]) by PRASPRMB0004.eurprd04.prod.outlook.com
+ ([fe80::6ab3:f427:606a:1ecd%4]) with mapi id 15.20.9520.009; Mon, 19 Jan 2026
+ 16:15:12 +0000
+Date: Mon, 19 Jan 2026 11:15:01 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: hongxing.zhu@nxp.com, l.stach@pengutronix.de, bhelgaas@google.com,
+	lpieralisi@kernel.org, kwilczynski@kernel.org, mani@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+	kernel@pengutronix.de, linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 01/10] dt-bindings: PCI: fsl,imx6q-pcie: Add reset GPIO
+ in Root Port node
+Message-ID: <aW5YhTaclPKB9s14@lizhi-Precision-Tower-5810>
+References: <20260119100235.1173839-1-sherry.sun@nxp.com>
+ <20260119100235.1173839-2-sherry.sun@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260119100235.1173839-2-sherry.sun@nxp.com>
+X-ClientProxiedBy: BY3PR05CA0013.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::18) To PRASPRMB0004.eurprd04.prod.outlook.com
+ (2603:10a6:102:29b::6)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PRASPRMB0004:EE_|AM7PR04MB6888:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1d7ff847-cf4a-44f5-8d6a-08de5775ec5a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|19092799006|376014|7416014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?rboAubay3V866KPlYFlkkvpkFhobdZK8PIsR6kOIAUr+mD2FN/vFQB0GCnr4?=
+ =?us-ascii?Q?U5UTJdCN9K67sLzhWP9bxb5f8+0z8/tNy2GplTe3D9cFia+DtfazubGEOIij?=
+ =?us-ascii?Q?9FI06Z7os7JOoc/krcdiGkg20kdw5/Z5PfRWu7kyvTewpzUQIcXTXac5V7jA?=
+ =?us-ascii?Q?0dBJctN67c41QIcHQWbgA1ZUxud+hnZkcgR8R7eORZ2XAgQh6HANG09/Cd+K?=
+ =?us-ascii?Q?RxaASZ6pYv+DVWfT7zqWID7aRjXykpwuGeTtFANZk/uLg4mPA2JD8KzV+Udl?=
+ =?us-ascii?Q?SflBsm5gt7PY9H550KQQYcMjn1KOym6yOBNIAV9DjJCOBD5lWqHU2em1Jr5U?=
+ =?us-ascii?Q?wJDIEXuZ8ZlW9xpDUAzMB6rxDvmptiZSFAXUKwofe3t12+t9ok9Ut06yZAF2?=
+ =?us-ascii?Q?epIVUAX6j67jVRMEL6KsCY7mXhxbr6RoKUxt7kOYx/mawvKuH+2paPLuYxhW?=
+ =?us-ascii?Q?D6ypYXaxhvIKuF681uIEq+NPV4d7shnGvFMetVy/KddRXVVM7p4U9XYupjfe?=
+ =?us-ascii?Q?zkPm3rak8PiVdXf9OvEoptvKo/bIUcFAo/AYEH8K/jzPDaOWKEtgOxTOT8/m?=
+ =?us-ascii?Q?Bu32SCgKQjd14ujBiDcmZ8azfoD5uNJ/Ig85kRGuKaTsurpF70e25UR/xpVw?=
+ =?us-ascii?Q?PJqE79FFmrvx5+BTEq6PAV2gqFviSwK7Kcm/02XPSF3ej2aoESpalfwsFevg?=
+ =?us-ascii?Q?MIF8/TbMVommGU1Ly3cKsQC66nYqO4ZG6SybaAt7WkF4GvEiZ3TLENE3LkgO?=
+ =?us-ascii?Q?nvJeZYynoHZFkF1nyenAIt3l27tR61kDUWA1LTb898F6t+RxWjZ/YE1RFWPx?=
+ =?us-ascii?Q?IrhYCEwy1TZ1HQl/KaNACFV4qtpgP7tOrLm0fwYEjc1H97rGWsrCr9iZoRv6?=
+ =?us-ascii?Q?hpVrxlaWY4PZSYkO0xltHsqbiVbJKcrFe8G0tg7D8usUy7eiIaCAsL616GYP?=
+ =?us-ascii?Q?DdJXvfat5mlsN8q++oaGI05fbuUBK7PzD2/Vl/lK32v2RPeGKDOx8RpJhmYe?=
+ =?us-ascii?Q?AEaXv07sV33NSxdtE7l9ZAeiERpJY/rXHM7ho3jkR7bSOxS8V5hZNQDeN0gX?=
+ =?us-ascii?Q?HLkM37qbbN8M0IIAGS0JxSws/u8wcC4q0Ks8WmA1cFPRTHcVinhi6LpXQt4N?=
+ =?us-ascii?Q?E/6p4kHyryAqJDL2JBTmpHdDMdL1+i5P7pa9s6ukfyKhofFgPzdn1OnzukFu?=
+ =?us-ascii?Q?XhS4pfFKVMoXEvoSculgHprS2YoGIfmJlctBqkUoBIf4xap3ov87LGt50KJR?=
+ =?us-ascii?Q?kDHLUHh0TyjzMS/5SrtZqosmQMEHL31ZTizVvscnFz3Bk0zhwxSepSsOBQ/o?=
+ =?us-ascii?Q?Dfz7Qp73hQnE41c3d9nVXVrIkqcqE/htrKYI3DHFkQwZ7I6yy7dcTnjlHTl8?=
+ =?us-ascii?Q?4U3iFmza0mI1zsMQEInI7FBZHZ2NI4FAcgWOsYPSvqrW+f8I1QfKOqTHMvwE?=
+ =?us-ascii?Q?2DgNS7FdlMuUnl0D1OffjnfzUKm2s+013zGoJ07z1Jg1iOpcupvXktrh0VED?=
+ =?us-ascii?Q?Xc1oI5eFxtDug/GZgnPzJMDtSb7lnRSkSOMocMt5Yl5qL+de1coGtt1NOgFr?=
+ =?us-ascii?Q?Eu12KTtME5FNlo3IJpVrgiuZxVrkmrn0LLpEDRCwCK9WNEbrh3xZPV77ZPX1?=
+ =?us-ascii?Q?KLyabkixxmhgsjX6KZa+cHc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PRASPRMB0004.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(19092799006)(376014)(7416014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?zYNPYUZCmPIuzcTE9PqseOjXG7FezB5l47WUm0OyeRT0u32lGpMD71/smNAO?=
+ =?us-ascii?Q?CRgioCdWiVXWQdfOQGteyvAOOTAVrHm+cvA84uk+B19NsQr78tc4a5WhY6mw?=
+ =?us-ascii?Q?jSYrVoQwDNHPMXCIT+jSzKi0gmh+Y7xxA6mtmRPXO+0LupKGJpUaDs4TSV4f?=
+ =?us-ascii?Q?6s0kwoICrKuF6XgzK8VWUYquSBf6Kfkh9gKtwqcS8sf0kby0RI2lCaeChSJD?=
+ =?us-ascii?Q?vdaFFnTWTt/xF8cUlzt2gCVyjw5Q2oT/K2rzVr5fZdeG7mePcbzNqJyNZ4y1?=
+ =?us-ascii?Q?oxwkAfEBBjFkCwJhQ+sk9I1Ehq7s+0fNLgkESm3jMz6qbsimw7zX1KnUSfM3?=
+ =?us-ascii?Q?zP4y1VoSnPSSSIRJi46QxDpCZpNIvODR5AJPoONWRI631gshMEn9Sf0Hxa1r?=
+ =?us-ascii?Q?pGaKZjK9ZHdpzPuKPLcq9lSE/JWkZNi2hcr2rdly8i6WzFngRhHEs8p+gsXp?=
+ =?us-ascii?Q?6TVemHh3EGOt8afvgw/0azInttsQUbu+rjOx6mFfg4OdC5ii2FlUwRxTXjUh?=
+ =?us-ascii?Q?GmfdU3JMrQ4GUjLM5uhLVg+ntE1AWIx9ec7IVpMngvdyiaTsTFsQuXnPjcA7?=
+ =?us-ascii?Q?Eb7JC482sPiNc5ZC2cg8ME7j1kZnfHqnYKtr5mbxIZjBK+V64KjmhQn6G1Sa?=
+ =?us-ascii?Q?Pac2jdLMdpZra95Z0heQvTZlMRcR0cg0BtdyOqbQSjlR2dMR7hCVSB1kWlez?=
+ =?us-ascii?Q?RwiqS9BYfhmrMXTRfwo30usyg84J3gaHwidvLoPjI38r1iaUjRJt12nIiWUJ?=
+ =?us-ascii?Q?4vr7pRwGEeF0NBlHMrgFwGZaWe7CqNYCfmFvt7G6Sk/4CDXGeLXEodqJwhOw?=
+ =?us-ascii?Q?MOhoal80OMfa8PIU/Z0haJ2uWnrMM8iypeuK/FYzPwLkBcKvSugC4EwLlDqM?=
+ =?us-ascii?Q?OY+p8cUfuLPXp36fKdZ/vU8JVZNWNLplwG/RjNYJVmbiGJh8ArF9FnmTl2D5?=
+ =?us-ascii?Q?yhrsGvn/YMGEfr8rFBL+TkYvGDeCHI0hAgbF9ScFrY8h3s6J3uuY4v7Zn73v?=
+ =?us-ascii?Q?YwFP52ezgmY6bIluBRHpeY+Z70TOpqcQM92x8XU2c7YQdjp0AfzuAdT9LQpg?=
+ =?us-ascii?Q?nGQucFoyTFxykjykWgdbEzqPi+L9sCuRtfFtSrMeP3MUmtDsEqH9EeS9HTRP?=
+ =?us-ascii?Q?y/8otkdgAnbHnIADah10LRTMCG5WzAyIEEaqBHzJjqKSNx5bmkZpQvvcjRdZ?=
+ =?us-ascii?Q?4Q43LrVm7RmUF9wE8/JrdF27tua8//LXw5Lft26+DZyltHzuhP4gHC+4qN6L?=
+ =?us-ascii?Q?ztWByTniJjUJOqGRjxRLjR1lUlcHSlIGnDgZfm7mEJ3y9g9Z7CsjfMDYaoGb?=
+ =?us-ascii?Q?EYfYVbZxFRiY935X5qf2WevJS+fA5URkiy1l8NV/nhLR3TtMtyfuO/KeFT44?=
+ =?us-ascii?Q?qKcm/XP98nAtBN1Boh9nMrt6uyQYMAOg5d2IKQshexwhGTQbbA0xA/QsO+HQ?=
+ =?us-ascii?Q?EmWiiYew1YcPMEwlgAIJk+Tr2O8owEWjSXaJoS55j3f6plnfKF5lUXwd4T94?=
+ =?us-ascii?Q?AjQX6CouMhpRepm6MtZGdMrl2SAmWU0JgM6drekO7tV73T2uJxTbhDsFKCzE?=
+ =?us-ascii?Q?eYXlYLYoatIY/nnbAHaRBqFfREprN+G/BzgvzWHLZJzXNeQirdZuUsQ6yKuX?=
+ =?us-ascii?Q?sJLfHQugqe0llamzs7sbGn5NvkTZ64XC552DWS4+bQWACYReV3C62gkskiY3?=
+ =?us-ascii?Q?xAa1IKH27fG+npHy1ACvf+96Mr8cl8DcFwcxh4YjDelzIEMm?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1d7ff847-cf4a-44f5-8d6a-08de5775ec5a
+X-MS-Exchange-CrossTenant-AuthSource: PRASPRMB0004.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 16:15:12.3320
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Y15qCAbYzUWBPrBowSVxSIWHRF5kuEIXW3lrx9TH4UCNtLfefj98uLGicsSL5Z705BmkozTJdN2OiwZFxrWEgg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6888
 
-Hi Damon,
-
-Am Mittwoch, 17. Dezember 2025, 10:33:03 Mitteleurop=C3=A4ische Normalzeit =
-schrieb Damon Ding:
-> PATCH 1 is to ensure the last bridge declares OP_EDID or OP_MODES or both.
-> PATCH 2 is a small format optimization for struct analogid_dp_device.
-> PATCH 3 is to perform mode setting in &drm_bridge_funcs.atomic_enable.
-> PATCH 4 is to add a new parameter to store the point of next bridge.
-> PATCH 5 is to make legacy bridge driver more universal.
-> PATCH 6-11 are preparations for apply drm_bridge_connector helper.
-> PATCH 12 is to apply the drm_bridge_connector helper.
-> PATCH 13-15 are to move the panel/bridge parsing to the Analogix side.
-> PATCH 16 is to attach the next bridge on Analogix side uniformly.
-> PATCH 17-18 are to apply the panel_bridge helper.
-
-On top of all the recent bridge-related commits, this series still works
-on my rk3588-eDP board - when the display is plugged in on boot.
-
-As that is the current state we also had before, this series:
-Tested-by: Heiko Stuebner <heiko@sntech.de> on rk3588
+On Mon, Jan 19, 2026 at 06:02:26PM +0800, Sherry Sun wrote:
+> Update the fsl,imx6q-pcie.yaml to include the reset-gpios property in
+> the Root Port node.
+>
+> There is already 'reset-gpios' property defined for PERST# in
+> pci-bus-common.yaml, so use that property instead of 'reset-gpio' in
+> this file, for backward compatibility, do not remove the existing
+> property in the bridge node, but mark them as 'deprecated' instead.
 
 
-=3D=3D=3D=3D=3D=3D
-!!! The following should not hold up this series though, because the
-analogix-dp not handling hotplug, is also the current state already!!!
-=3D=3D=3D=3D=3D=3D
+Update fsl,imx6q-pcie.yaml to include the standard reset-gpios property
+for the Root Port node.
 
-However, actually hotplugging the device does not seem to work.
-
-With the hpd-gpio inside a dp-connector node.
-
-
-(1) When booting connected and unplugging the display I get:
-
-[   42.725888] rockchip-dp fdec0000.edp: Rx Max Link Rate is abnormal :0 !
-[   42.733325] rockchip-dp fdec0000.edp: Rx Max Lane count is abnormal :0 !
-[   42.764853] rockchip-dp fdec0000.edp: LT link start failed!
-[   42.771105] rockchip-dp fdec0000.edp: eDP link training failed (-110)
-[   42.778329] rockchip-dp fdec0000.edp: unable to do link train, ret=3D-110
-[   42.785747] [drm:analogix_dp_bridge_atomic_enable] *ERROR* dp commit err=
-or, ret =3D -110
-( ... repeasts a bunch of times ... )
-[   43.284897] rockchip-dp fdec0000.edp: failed to set bridge, retry: 4
-[   43.292045] rockchip-dp fdec0000.edp: too many times retry set bridge, g=
-ive it up
-
-plugging the eDP back in reenables the display successfully though.
-
-(2) Booting with the display unplugged
-
-Same messages as above, but plugging the display in for the first time
-does not create an output.
-
-I'll try to dig more, but if you have an idea, what I should look at, I'd,
-be really grateful.
+The reset-gpios property is already defined in pci-bus-common.yaml for
+PERST#, so use it instead of the local reset-gpio property. Keep the
+existing reset-gpio property in the bridge node for backward
+compatibility, but mark it as deprecated.
 
 
-Thanks
-Heiko
-
-
-
+Frank
+>
+> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> ---
+>  .../bindings/pci/fsl,imx6q-pcie.yaml          | 29 +++++++++++++++++++
+>  1 file changed, 29 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> index 12a01f7a5744..74156b42e7a2 100644
+> --- a/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> +++ b/Documentation/devicetree/bindings/pci/fsl,imx6q-pcie.yaml
+> @@ -59,9 +59,12 @@ properties:
+>        - const: dma
+>
+>    reset-gpio:
+> +    deprecated: true
+>      description: Should specify the GPIO for controlling the PCI bus device
+>        reset signal. It's not polarity aware and defaults to active-low reset
+>        sequence (L=reset state, H=operation state) (optional required).
+> +      This property is deprecated, instead of referencing this property from the
+> +      host bridge node, use the reset-gpios property from the root port node.
+>
+>    reset-gpio-active-high:
+>      description: If present then the reset sequence using the GPIO
+> @@ -69,6 +72,18 @@ properties:
+>        L=operation state) (optional required).
+>      type: boolean
+>
+> +  pcie@0:
+> +    description:
+> +      Describe the i.MX6 PCIe Root Port.
+> +    type: object
+> +    $ref: /schemas/pci/pci-pci-bridge.yaml#
+> +
+> +    properties:
+> +      reg:
+> +        maxItems: 1
+> +
+> +    unevaluatedProperties: false
+> +
+>  required:
+>    - compatible
+>    - reg
+> @@ -229,6 +244,7 @@ unevaluatedProperties: false
+>  examples:
+>    - |
+>      #include <dt-bindings/clock/imx6qdl-clock.h>
+> +    #include <dt-bindings/gpio/gpio.h>
+>      #include <dt-bindings/interrupt-controller/arm-gic.h>
+>
+>      pcie: pcie@1ffc000 {
+> @@ -255,5 +271,18 @@ examples:
+>                  <&clks IMX6QDL_CLK_LVDS1_GATE>,
+>                  <&clks IMX6QDL_CLK_PCIE_REF_125M>;
+>          clock-names = "pcie", "pcie_bus", "pcie_phy";
+> +
+> +        pcie_port0: pcie@0 {
+> +            compatible = "pciclass,0604";
+> +            device_type = "pci";
+> +            reg = <0x0 0x0 0x0 0x0 0x0>;
+> +            bus-range = <0x01 0xff>;
+> +
+> +            #address-cells = <3>;
+> +            #size-cells = <2>;
+> +            ranges;
+> +
+> +            reset-gpios = <&gpio7 12 GPIO_ACTIVE_LOW>;
+> +        };
+>      };
+>  ...
+> --
+> 2.37.1
+>
