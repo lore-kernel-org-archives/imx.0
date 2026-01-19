@@ -1,73 +1,94 @@
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5699E3559C0
-	for <imx@lists.linux.dev>; Mon, 19 Jan 2026 10:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768817694; cv=none; b=qDOA3PvQgvNMTL/QdaYE0EvXTXgocI8SmeyRQIFiTUYS503686HPLePdQvI7dtEf/3O1Z0OjRWtwq/2LOad4ZVUTppBTwQXyFtUZLUoRCxYg6Boz7EidHmclcrD347FbEwJ9w7ecG3ZUCxw1uVkq6sKPe/lbI6bbdmAgiC3TAu0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768817694; c=relaxed/simple;
-	bh=/TKRnJ+VtMZF6TaWgWCKUw95h9bhw7Ve7U+aGgjkJdw=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022DF1A23B9
+	for <imx@lists.linux.dev>; Mon, 19 Jan 2026 10:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768817774; cv=pass; b=S873YvRVWQGbYFwbyK9cJdMHv1ZCzImxchkDIBul6pEke+OBog4ZSntHkVs5vZ02mvQK/iWfyiCf2PuGVR5zpWLjqYd9CEKCT8DI1bFqd8q4KnXi/i+WdE+1a2X7WCvNH0J+GBKKBfToMApXg7CNl3hrBnkoO0grbxmvaQD3ugI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768817774; c=relaxed/simple;
+	bh=kjW2cdDM+NTx8Y+zHvjqMRHQapz9fGB+/aetJ7+p/UE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h5mCgeDdv9TmW2KLBDnpvYkRGS8n0tMTEZ60PE9wPeQHmsWJEL5HQA8WdsKcZAD7oDx+lqAXs4vn32zCfyqbrl05mbmFDHw/vMLBK/VaxxOOWjX8AvoEhi50cpf5NB1qIIPrCZ46b3PRflGYsaB29m1ocRRcRX4qn3wTLG/ebR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oq0kNjq/; arc=none smtp.client-ip=74.125.82.45
+	 To:Cc:Content-Type; b=VnYnOkR2dbkJy3LSEx98/kiZFQQ4cDgNowyB5g0XGA0zrcSZBE5DMxjcvQZ8lP4cXYGu6EwfeEx6narSxUbR4rmooCdDH/LXgmDf2wbI+neIaaV/LOz4FVMv6W9x2bGDMgS1lMNuzLtmogDQs8UHUILzhlYJSlcY3Z4R+8iCrAU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QwFUCdgU; arc=pass smtp.client-ip=74.125.82.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oq0kNjq/"
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-12336c0a8b6so8892278c88.1
-        for <imx@lists.linux.dev>; Mon, 19 Jan 2026 02:14:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QwFUCdgU"
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-121bf277922so5535596c88.0
+        for <imx@lists.linux.dev>; Mon, 19 Jan 2026 02:16:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768817772; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QMapGEkGOmRCDBhP2ewU9e/U2tWtFcuwsBipiCTt1vw0KLmZmOYjTCHRWtikCK/Ezg
+         6DB3H6GEy4KnHeRFCidNwrR2y3xo+orHNCYh90sgexgCQrSbkTwW5bwfhUK5t+jJMlYL
+         bb4U1XisCfUhGdyx2dyVFFkEs8ozYGZZgd1PRIHfsuVJTHtsb+Klt62hUqYTo/1/3X2I
+         Sf7PpppRKurtDethf6DnH0JKNOcYAu3Ntlw4H7/GqFSs0AQ4895t33C81VP5J/kyip6X
+         YWVvx2Qp/Tg2qnYcS+yS+vlYwgc6dRBfsQEb6NAahHRk3wsIh2WgzCobXfysZuvTu211
+         CDRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kjW2cdDM+NTx8Y+zHvjqMRHQapz9fGB+/aetJ7+p/UE=;
+        fh=kspnKdVz+V3TFBpukd74icQ5gv64hYa2aLdGq7cF2LM=;
+        b=M3NlPXkYgPQthE3i3npQNySKdp00TWOhrD5wjRqdLuAhtXUDEbMD7+aMglQfg5QtTf
+         7/cbN39mzX8y896CSSg2ZY47CQRUuPbhaFX91On+HKLqHNl4DRxWaVhbwDSMhqqMaAnV
+         Q8UwHDAeLOpOGADmXaCmbCQUgZX0Aj8sjG3ddffPfg79qPLu70P9SbfcTsC8q0sHZrMc
+         UfAURofN02OkZFS6EkIM1nL3R4xks3x5M9eOtAkb6US3Zou+sqdJwNirLWmCY37NiSPK
+         cGugSXNPFpmCCA8eUzjMTJhePvodRu+++s3VibxwHg2KpcX8sRKS4PSRkUQtYnOuziDe
+         g72A==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768817692; x=1769422492; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1768817772; x=1769422572; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/TKRnJ+VtMZF6TaWgWCKUw95h9bhw7Ve7U+aGgjkJdw=;
-        b=Oq0kNjq/kjEZvecc/rBcer3RXDGxYd5zRTDiMUMhUWZFpKsmMMaj6UmnjPWURJ3jNX
-         L6ez67hOTLptnOXDAm2fHwrNXKJZGik5YDnH6fL9R0iFcKBuCvSNjNA65rG60FZk/Ntl
-         vkgm4Sk6Q66ZNqNB0f8ilBDhnaq/0SviBJ7l/rW1eDjtAyXezzN9+N+Efq41jYwW6fBP
-         bjl0wz5JFTrKdKI8VgRu846xlfQS16G0o/C1+Hs32ugRlm7KUJH4Nqp4Z4CmWWAgg0Wm
-         q0RFSsh1j7r9AkV0G40SE6V09G7rjRfixtu9tjP5CbYYCpuwFoyRv+Rftqb4PuRL7vaE
-         flmw==
+        bh=kjW2cdDM+NTx8Y+zHvjqMRHQapz9fGB+/aetJ7+p/UE=;
+        b=QwFUCdgU/jaBCqn9rIDXu7f5e3vvWFCVJbPgervT25pJF0F65EZ7AKQ+BfhwLFH/pB
+         Bnk8S9kusoDzdR9kpOnYn//zPG7+JE5NCUfkuUq2ilkjzAVgJxYtCWqZahtcEXofTJfq
+         8dz1cZA6BuwUbm582ZcFhbVHOcl/6TjusNSSZCjtnNUdmQuHc85eU8QlhcW5K/5cMsl4
+         Q+UC28YYVdNM/OOFEWfrr7IcXnqWYTKgmzNMXbtjIgMWb+21tzxOtTgsBmqQd+VwZRdX
+         /FgmGu2nzYDmJHmMuhMVvBVaqjGE6NkKlRJP6oi4YVKOYCpfuoa0nGA4xPzvEl+5vTX5
+         MwoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768817692; x=1769422492;
+        d=1e100.net; s=20230601; t=1768817772; x=1769422572;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=/TKRnJ+VtMZF6TaWgWCKUw95h9bhw7Ve7U+aGgjkJdw=;
-        b=DYffGkvYovcZYHq+mbxbyX6byh6UMsXgCb6aUKWHvq1w3L7VuHWoL68kd5eEhe7Mwq
-         GOBcvQjTGis7qLumPr4EWtdrp4oF+iUEpPfykFobU7w6UD99FplciqeVvH88aFLNP3Xk
-         f0OcHv8iw6AydoPWd/2pT+CFzW2h8YzY8j884eFiuFU4DeAMys05r9ws4hRj7yLqUo9/
-         Sm6vGnIUwj0VVmBLEm7QroQbyiRawY+u6w1n3Q015Jz+giGGB60Ui1xtgtBM/YrbMte7
-         DOigRsSrc84kBHOniP4Fef04j5cZWAp9VhXfJai1/BYZwX3oWEjW8Uh1CmePZixe03GI
-         1Qfw==
-X-Forwarded-Encrypted: i=1; AJvYcCWTUFqCKOxOOj5LC8Cltieq4KRU456Ijt8iehH3t/WfHt/Tsjv5Bcj6ihrV845xnhpkemo=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwREhKaD31k/ma2wsFgTbheaQWEYAAKe5AKD/DfigT36vF64ExD
-	WaAri74kiJDSOH/4JCA9y05OfHGCe8gkDPcMq0J0bO7F0WxuxyA9Amol4Ih7Y+uWOQcmAWh4v12
-	1RvdULNr89EXfOqVJX9YgSM+QXgWtYFI=
-X-Gm-Gg: AY/fxX5kMeeL0i29decLW2MRMsKBsbSVJJ8VaXb4+L2i8PBsPOrEhxzk2YyzVbnJayX
-	dWLq8o9+MehQBzGEQCnatKi8qtQC69z8IV8/ZcUrk34Mu8HnwSeRNtLOxVpPa4mMWKNE2w3HSEj
-	8HaLRAoTcjzzo/x6PYq2pbRmgUGJNJOjFlz+rowJJ2hEQhtsFDNTcEuOEPGFv4DNnnXFwC7yqRZ
-	a0qO+Z9eeA8V0MSTkSxbhDI8iUq7W8IthTwuj9TfrDlM3Q3+G5Czngi26/FIJZn8wuLsXi9VKrF
-	YYvQXVuOrMwTuGyqWCJj4STEQJ/tDfx7vIqppr5HCyfQPDIYe7fA1v3pnoAPiOo7Rf9deg8kGXH
-	p7RiSY+8zxQ==
-X-Received: by 2002:a05:7022:48f:b0:11b:9386:a3cb with SMTP id
- a92af1059eb24-1244a77e0a4mr10011720c88.44.1768817692373; Mon, 19 Jan 2026
- 02:14:52 -0800 (PST)
+        bh=kjW2cdDM+NTx8Y+zHvjqMRHQapz9fGB+/aetJ7+p/UE=;
+        b=u7VbHl/BY1ca4wkuiME3FEdthXQWiuFkJeegIvSntVB8unLQyrxOxRsumLZljYJDYy
+         1ArHvVcfhplMQPxcdPVGlZoxgPI2614u4wFo4dJcIO96BKx7dyLGExHk8e1HBlAw7N2/
+         2TNKdVIgRhFYFuh3rsshxduXMLgQ6ziseIjjC+tUFXzkaqpuOs3vj8Vb4CSemRme7Pgs
+         tKo1ju7qnWTzkb7XiHxIe9+ci7VS1KjbtlR6rbynxXfHeNM0IVFEV8YYoqnqdFUa5C+E
+         ETNfZ0UsQPJVTNNMj5f/Q+U7BDP/CYgUud3Op+JJsjNbHmPsZVB1O83onzE2HC1gmVJ/
+         BmUA==
+X-Forwarded-Encrypted: i=1; AJvYcCUoe8dFRbZol+4vMJAi5e2NoxlHDa5kE3HLcfmgzfFCuDZZ/PRMbB/9WoQEEWAmJeCmqUU=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz/yk4xEMxsIwxAUk9DNYSXwPC3Ga1gBrskCva5BwY/m//1ROYT
+	zQYacz/92oXVfFMtS6cMCoP82ff3wWbUclK0cFeYJvcl6F2YpJmAm0XeqaPih0Pax4c/lT+WqZQ
+	GTze6Tm5OWdiM+Mczk3gmTMpx2bdKfh8=
+X-Gm-Gg: AY/fxX63lSpZB0ZLyCnw8XDBSjvvDF4+EhormAoXVOsWeH9vbYK/UgEof7HTLXGp88Y
+	OkvlgifnNjXGNyXJxo8COwgdJOjbWBUB0r1wOnGOl5Z8y/xqiPwmQiMHBy8lu1oB1CKDYo2Njfc
+	aUj14uAWKn3pxBBNygOVFLmqk781ERiIXd/Ct14+XbO4551P23uUeeG41SDcDmuOqX1k/3Yafzf
+	s6K8cC4HNFjcAI66v7XftxRFAOo2AmEgFFyo1L07dazeFBrr+FSqJKbYX6tYtIOGI+UdpAFh22p
+	tR0ZDCEsg16JiG03++BUzmIyijPBEZO+Zwjv9KyssQBC9FtdWHTj/FbsXdxmFYAWWJhkqxvISPY
+	PLdwPYt877g==
+X-Received: by 2002:a05:7022:4186:b0:119:e569:f610 with SMTP id
+ a92af1059eb24-1244b3050aamr8034972c88.9.1768817772025; Mon, 19 Jan 2026
+ 02:16:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260119095511.3030739-1-zhipeng.wang_1@nxp.com> <20260119095511.3030739-2-zhipeng.wang_1@nxp.com>
-In-Reply-To: <20260119095511.3030739-2-zhipeng.wang_1@nxp.com>
+References: <20260119095511.3030739-1-zhipeng.wang_1@nxp.com> <20260119095511.3030739-3-zhipeng.wang_1@nxp.com>
+In-Reply-To: <20260119095511.3030739-3-zhipeng.wang_1@nxp.com>
 From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Mon, 19 Jan 2026 12:17:31 +0200
-X-Gm-Features: AZwV_QhxRo6F5HrkZuvbzdlVN1eKqrMGyjLqsb6FzOBXX-W-zaQ2c6zE6aIsaxU
-Message-ID: <CAEnQRZAtLYG=ddDSfF3LMOtpGWYAU4Y=UJKAyi7NH-sZyLubMA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] clocksource/drivers/mmio: Export clocksource_mmio_init()
+Date: Mon, 19 Jan 2026 12:18:51 +0200
+X-Gm-Features: AZwV_QixVtScRtb2C4OPOYIUU0C3OQvhdNUPWS99N4NE6jCxi1_9ifc9b22NkVs
+Message-ID: <CAEnQRZCm+r3TgvnwsYTbiC6K4ODGK=rCCsi-LxXq=EMtMAndaA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] clocksource/drivers/timer-of: Remove __init markings
 To: Zhipeng Wang <zhipeng.wang_1@nxp.com>
 Cc: daniel.lezcano@linaro.org, tglx@kernel.org, shawnguo@kernel.org, 
 	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
@@ -80,14 +101,13 @@ Cc: daniel.lezcano@linaro.org, tglx@kernel.org, shawnguo@kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 19, 2026 at 11:59=E2=80=AFAM Zhipeng Wang <zhipeng.wang_1@nxp.c=
+On Mon, Jan 19, 2026 at 12:00=E2=80=AFPM Zhipeng Wang <zhipeng.wang_1@nxp.c=
 om> wrote:
 >
 > From: Chun-Hung Wu <chun-hung.wu@mediatek.com>
 >
-> Export clocksource_mmio_init() and clocksource_mmio_readl_up()
-> to support building clocksource driver as module,
-> such as timer-mediatek.c.
+> Remove __init markings to allow timer drivers
+> can be compiled as modules.
 >
 > Signed-off-by: Chun-Hung Wu <chun-hung.wu@mediatek.com>
 > Signed-off-by: Walter Chang <walter.chang@mediatek.com>
