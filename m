@@ -1,158 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC31B2C326F;
-	Mon, 19 Jan 2026 07:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C651335098
+	for <imx@lists.linux.dev>; Mon, 19 Jan 2026 07:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768806436; cv=none; b=n09WN2ZYxDvkEh8aWnDio27z4t5EdzT+jbhuQf+IAf/m/q7/mYqxEeX5chr7+YFwcnhBC75zxjOA0xx6gS1oZ7ifG0Co1nMB40A7od8DtNlVXtRAfb0V09nvlfLXWA5iHBhjJ4NUJqZjgX2LSmt9Z0/UO1ffWrHp89Aaug7YsQU=
+	t=1768807881; cv=none; b=C+Pgoh0+R7G4eJ5Lf/kvh1Y645+xlsomhqj9TXyy1tH+Q+hHVDm0I3Lu7+y2e67sXgLvVi60ApjsFeUWkEycSd7pV89ZxmcpJWkrfgGTF4c3LirurcqJYaTUWulGnd/MmiaDyXm27Tu/P3DsLHsAB5yWVsfTwz8mNniLVssLXs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768806436; c=relaxed/simple;
-	bh=Hk8NxqcbidEUwJE3pLOiALsK8b78kr73krUklb2X43o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IO/3CZSe/umrMlVDet2NOugFDz3WIiixL0yxv3RCv2LYI4rnl/xPT41iDajNMCi8tFnEgHw23d5uhPLqWuKfb9gefWAY36s7VxmBnaBeR06dQ+nT/VbWo4vrmGyxQOD1SpxsMLn6hf2YuyvAgzPb0YTnIk9CrFbl7OFlnW2mWNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LSGyhXLN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768807881; c=relaxed/simple;
+	bh=05TtTHgNdkznqfwnElj2udcrcsdoU2jg/0WhEE3uwVo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KDwFjOQafmQHwJ2L557Qae6ek3QzlTtzODltxwN4smDXw3ZCLjOtD7lSMPa9TdxX5WM4ZR2BDEDvuScej/sprdrtxIWkjp4VwEx7m4Oc9YZQqElZMzY0pj584yRz+AaAdpyoInHi4g+VdRUWmkz+M3DiG6kkK4RfXIPpGjaX6r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FTsSthRt; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LSGyhXLN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063DAC16AAE;
-	Mon, 19 Jan 2026 07:07:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768806436;
-	bh=Hk8NxqcbidEUwJE3pLOiALsK8b78kr73krUklb2X43o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LSGyhXLN9k/avbWu71arIFgPvT78GvEjn/g6Qftx/J1rnd7fWZHkJ4tCn30v/O/op
-	 8wtn1qWmqhwIogMUEru1+5/Ije5KF7u/slxtzdQPqUcDGDF9YmLUNqmYCYt9UrXvMv
-	 rYVlHsjQr1NC5u7QP3nEZGs3kP9jqsSo32epi89PqgL+DvlKTw0fto8iixn1WgU5nz
-	 FFWcRV0E5J5RDlq1t2uMpKcxGKSc8/ykwf3ouraoSm5nnfxzc7x6X04/Le/Dk0Imzr
-	 /JX8jaiRUIs6AFv5QxUmL40eHXMWfNAjlC6VU5/JvREZ2TannDg7eCUcYSxtraIUdG
-	 OH/LqufQav/yA==
-Message-ID: <2be56ba8-5659-4d03-a886-ad32a32f6b44@kernel.org>
-Date: Mon, 19 Jan 2026 08:07:10 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FTsSthRt"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-34ccdcbe520so2626300a91.1
+        for <imx@lists.linux.dev>; Sun, 18 Jan 2026 23:31:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768807878; x=1769412678; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AmBvNvnKo3AicJkVDkgT9ULTWLrciXVW8Cf69nuUyxE=;
+        b=FTsSthRtpELK2DTvaEFib/sPfxWL+tww5YUR4xBu8pVY1RtpjQs8wLd1O8wQv+bSXi
+         to4LezLiealYiIskKXOvAeTOpZUlw/UP36M132uJGASVMVJRl9ybPHFhTD8O6fHDAdtP
+         Rl1EmsJqbKD7uN+JLXRvHUgUe90CbpcV6Ia8/Cxh1cVv2WZCvH3+wTIHoT0y5SrpWYHD
+         NChE6wHa6MRTqAIfQ2YEB362yYDT/HvUIDGRU66nrVuX1DkvhPvrZppxXE+Xetrsbq18
+         E0kDICS0T7rIDkPUhJYmqHpjhJ3nwbiWHUO21hpclC7tns5jAk9IC5F+W0UZQrg8pKAq
+         5Vag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768807878; x=1769412678;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=AmBvNvnKo3AicJkVDkgT9ULTWLrciXVW8Cf69nuUyxE=;
+        b=j0WrXcaZDbicgi7rWAtJWh3w/We0jHDmNBrgxImJmogTAOhyKmejvew6mTK5DfxI2c
+         FCOJdRMYjQd72H89C7OQAFSnkkn0aauK2vJWOPMC3TdWiRB0X2EqjPLvLEk0Uls5Mtdg
+         Agr4IRmnPx9B+7QMr2jritavC+nzTFLMlSJxwr6K3AwIhs/L16rDTf9LbKN9G2sqxdEj
+         EhoOB89AMepQKK2uZV6rtjIb1Et+Bv8a5GodPtjjNL62aOS23NrF3cDuNpwvkkMzFmGs
+         7TA2X0/91S1hv2AEtOIcOZcX+CAVwb8m3jghlEBiZwGhsmYWjosGsprpkrUJppp5NlLO
+         7goA==
+X-Forwarded-Encrypted: i=1; AJvYcCX3oCLxEb18Njj/DvKzR9Z/H+JMrEb8O4GV9dFluzdAzVj7A49I8GkGqCQn8/X9LFxV2Iw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwIfolWhCGrXbj+/6HyvAXo6x9766lu7jPQFB2BFEPZ23yflva2
+	ASz3Mdf1pmkrpdZAS+Xpzzxh0HpFhrlLSYiajA9y6ewZUjd8Lp09TMG3KwJEnz6rGTROxjipJlu
+	s2O7dOX2QF16CskgFHVx8njVvLtBcZS4=
+X-Gm-Gg: AZuq6aLZf4JvyGCZzwjNaYyl5VbyhuXb803hquzxLrswmK3nz/ZkzBQKi5sfCyWh81R
+	rMUFUvL0fPnRL6rDsLCiyZzuueJ8m9I2wx+warUaQT5BxL6tFTgUJ13nZXa6L66DQXAObIqknVU
+	9/WRocb6wRTFqWSPgSrehN2KU6SUN3jpCbGIq3J5csnbdOfM/2E7J6BK5s11/UEfbhhFtabjtFG
+	6Oah0zYVEjC3z+lmwLMhBCbK2x49qi3+J5Y8H6KGyIP1kGUaOvPG1ow0h2SWxKKSrTaZ34=
+X-Received: by 2002:a17:90b:3884:b0:34f:6ddc:d9de with SMTP id
+ 98e67ed59e1d1-352678fcf6fmr11202077a91.16.1768807878309; Sun, 18 Jan 2026
+ 23:31:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20260116101648.377952-1-shengjiu.wang@nxp.com>
+ <20260116101648.377952-2-shengjiu.wang@nxp.com> <20260117-versed-proficient-pigeon-bd0b2a@quoll>
+ <CAA+D8ANrcjvOCfRN7gGGW+7YzvVieU7P2uexUpVYTw6MEHAKYQ@mail.gmail.com> <2be56ba8-5659-4d03-a886-ad32a32f6b44@kernel.org>
+In-Reply-To: <2be56ba8-5659-4d03-a886-ad32a32f6b44@kernel.org>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Mon, 19 Jan 2026 15:31:04 +0800
+X-Gm-Features: AZwV_Qh5iuoRHWZMiK5VT4SDQMVso2DrWmENEWodorBSh_MSb2zROT8lpDWRAvg
+Message-ID: <CAA+D8AMv0TaGwCU8yWWVbVfuYHyPMjMnz0MWNLh86nfsGMZtYQ@mail.gmail.com>
 Subject: Re: [PATCH 1/2] ASoC: dt-bindings: fsl,audmix: Add support for
  i.MX952 platform
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, Xiubo.Lee@gmail.com,
- festevam@gmail.com, nicoleotsuka@gmail.com, lgirdwood@gmail.com,
- broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, devicetree@vger.kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org
-References: <20260116101648.377952-1-shengjiu.wang@nxp.com>
- <20260116101648.377952-2-shengjiu.wang@nxp.com>
- <20260117-versed-proficient-pigeon-bd0b2a@quoll>
- <CAA+D8ANrcjvOCfRN7gGGW+7YzvVieU7P2uexUpVYTw6MEHAKYQ@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <CAA+D8ANrcjvOCfRN7gGGW+7YzvVieU7P2uexUpVYTw6MEHAKYQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, 
+	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 19/01/2026 07:27, Shengjiu Wang wrote:
-> On Sat, Jan 17, 2026 at 7:44 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>
->> On Fri, Jan 16, 2026 at 06:16:47PM +0800, Shengjiu Wang wrote:
->>> The specific feature for AUDMIX on i.MX952 is that it can be bypassed,
->>> so add fsl,amix-bypass property for this feature, besides this there is
->>> no power domain defined on i.MX952, so make power-domains to be
->>> dedicated to i.MX8QM.
->>>
->>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
->>> ---
->>>  .../devicetree/bindings/sound/fsl,audmix.yaml | 35 +++++++++++++++++--
->>>  1 file changed, 33 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/sound/fsl,audmix.yaml b/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
->>> index 3ad197b3c82c..50fb08460b4f 100644
->>> --- a/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
->>> +++ b/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
->>> @@ -34,7 +34,9 @@ description: |
->>>
->>>  properties:
->>>    compatible:
->>> -    const: fsl,imx8qm-audmix
->>> +    enum:
->>> +      - fsl,imx8qm-audmix
->>> +      - fsl,imx952-audmix
->>>
->>>    reg:
->>>      maxItems: 1
->>> @@ -75,12 +77,41 @@ properties:
->>>          unevaluatedProperties: false
->>>          description: Output port to SAI RX
->>>
->>> +  fsl,amix-bypass:
->>> +    type: boolean
->>> +    description:
->>> +      The audmix module is bypassed from hardware.
->>
->> I don't understand why device AUDMIX would have property saying AUDMIX
->> (so itself) can by bypassed. If you bypass the device itself, what do
->> you configure here?
-> 
-> The case is that the SAI interface is connected to AUDMIX,  but AUDMIX can also
-> be bypassed by hardware configuration.
-> 
-> Yes, adding this property in the AUDMIX module looks strange.  Another
-> choice is to
-> add this property in the SAI binding document.  Is this better?
-> 
+On Mon, Jan 19, 2026 at 3:07=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
+g> wrote:
+>
+> On 19/01/2026 07:27, Shengjiu Wang wrote:
+> > On Sat, Jan 17, 2026 at 7:44=E2=80=AFPM Krzysztof Kozlowski <krzk@kerne=
+l.org> wrote:
+> >>
+> >> On Fri, Jan 16, 2026 at 06:16:47PM +0800, Shengjiu Wang wrote:
+> >>> The specific feature for AUDMIX on i.MX952 is that it can be bypassed=
+,
+> >>> so add fsl,amix-bypass property for this feature, besides this there =
+is
+> >>> no power domain defined on i.MX952, so make power-domains to be
+> >>> dedicated to i.MX8QM.
+> >>>
+> >>> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> >>> ---
+> >>>  .../devicetree/bindings/sound/fsl,audmix.yaml | 35 +++++++++++++++++=
+--
+> >>>  1 file changed, 33 insertions(+), 2 deletions(-)
+> >>>
+> >>> diff --git a/Documentation/devicetree/bindings/sound/fsl,audmix.yaml =
+b/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
+> >>> index 3ad197b3c82c..50fb08460b4f 100644
+> >>> --- a/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
+> >>> +++ b/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
+> >>> @@ -34,7 +34,9 @@ description: |
+> >>>
+> >>>  properties:
+> >>>    compatible:
+> >>> -    const: fsl,imx8qm-audmix
+> >>> +    enum:
+> >>> +      - fsl,imx8qm-audmix
+> >>> +      - fsl,imx952-audmix
+> >>>
+> >>>    reg:
+> >>>      maxItems: 1
+> >>> @@ -75,12 +77,41 @@ properties:
+> >>>          unevaluatedProperties: false
+> >>>          description: Output port to SAI RX
+> >>>
+> >>> +  fsl,amix-bypass:
+> >>> +    type: boolean
+> >>> +    description:
+> >>> +      The audmix module is bypassed from hardware.
+> >>
+> >> I don't understand why device AUDMIX would have property saying AUDMIX
+> >> (so itself) can by bypassed. If you bypass the device itself, what do
+> >> you configure here?
+> >
+> > The case is that the SAI interface is connected to AUDMIX,  but AUDMIX =
+can also
+> > be bypassed by hardware configuration.
+> >
+> > Yes, adding this property in the AUDMIX module looks strange.  Another
+> > choice is to
+> > add this property in the SAI binding document.  Is this better?
+> >
+>
+> Not sure, but certainly it does not look like a property of AUDMIX.
+>
+> I assume you acknowledge all other comments.
 
-Not sure, but certainly it does not look like a property of AUDMIX.
+I will move the property to the SAI binding document, then please
+have a review.  As this change, the binding document will be updated, for
+the comments to use the example-schema (:false) will be adopted if needed.
 
-I assume you acknowledge all other comments.
+Thanks.
 
-
-Best regards,
-Krzysztof
+Best regards
+Shengjiu Wang
+>
+>
+> Best regards,
+> Krzysztof
