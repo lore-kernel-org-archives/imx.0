@@ -1,100 +1,97 @@
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B2035CBDA
-	for <imx@lists.linux.dev>; Mon, 19 Jan 2026 12:43:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE173624DE
+	for <imx@lists.linux.dev>; Mon, 19 Jan 2026 13:00:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768826615; cv=none; b=f7/xgwA2Gn0XUH+0TYHxvz6r/sNbhCnA0/v+9beSfaptJ4g71036qIPZpn55tohLMiu16TzsYh3WSNfKFSIRA8/I8ph7rNu23n/ezU98wJt9Ja0Qoy19HZJGd+/fXfFM9LZx5udrxzMW7XhB6QL0gnRAiEdWZzIgA0JhSVTCRt8=
+	t=1768827648; cv=none; b=oHPAScsvQOPGU9eftPgthTUDgDTgwNKldEiOVIeP0ALRDcw/70HgzgTEBK39j+l/7zd7o2lk9VKfLKcmtI8GcBhCuvDykM2HbROrO3It/q25f2SGmJdQ30XFwXKB4hcgjtRGHagkd1RTWTXjZXkb4+AqXFD76FCSUNLtE6Bls98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768826615; c=relaxed/simple;
-	bh=Djc2DXwbCV0lJ4fSssFOWRnwLtrLyDYVkvyL/nbyTuA=;
+	s=arc-20240116; t=1768827648; c=relaxed/simple;
+	bh=UmKKLGh10RPN1svLNZxmqR0nL1F2Drx46Fu4EdQWxE0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dlMAVjirizyilyxj/uLORQ02wKuZGIi5i1wEv237FcKY8DPdTRH1KEqkLxF76BrjrCdWQWaeRctDZFGDDDQ0rfbOateIThzfDv6q64JUYcVcJ0K9nnuGvSIh+mQgYxBCjHREqKdzcK9H0yXgUCw9lArgmqvZR9HITdgu1fClu1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dwdrEI8B; arc=none smtp.client-ip=74.125.82.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=Qq1Wony2iTwk40yCu2iGQtJjdnTCa0EPaeWAjFv6Bjg6vcbitcgG/2T/WHuLhZVAhPIR0VflAO2t4mcxO+RIK3F4rps/Y6TOfyEi9W7XsZYYBkgkH+Iugp5fbhVwdlClw8RUQSGEzovdVcPYPBn/kYaqV0bEAkqNmdkeiqMgONg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ER3296Lk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dwdrEI8B"
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-12336c0a8b6so9121025c88.1
-        for <imx@lists.linux.dev>; Mon, 19 Jan 2026 04:43:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768826613; x=1769431413; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OHtPJU0DUMKO1F2sqGZCMsKmvXgpAwApi+pqfSny0WY=;
-        b=dwdrEI8Bx4i+IcNB5jHb9VL+gVnpxoKidc2MiFpyB03W8QaIS2Jf0UAf8kt4uRt1BX
-         XwqJuO7qKGBPNDZpbTKX5N+UpphBMZl4A8qymZ4DbMLnWpgaTysjMYqVPioV+Gg4Hf0a
-         jlBii4rQje//4bOmBpPG72UczTUoLISV85b+BqUGYSypivM7PbaRg7XqRLjGuvbP7BGu
-         xRcgpyiTxrj4oU9ozjDmHXOgVv7EZz7wpudmyH/NHuIi9Mzf4+ShpTffLx5G9alWr1ne
-         3BU7q+6ZmcfXqDo28e3AjZSipdB+kppyAkKYUdIf8zrlJGIKY98JplSigG3pg0lJrdK8
-         NNpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768826613; x=1769431413;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OHtPJU0DUMKO1F2sqGZCMsKmvXgpAwApi+pqfSny0WY=;
-        b=JGhjqmdRMTCl+PgikU3TYgK8gM8d7NXWbI8/mzsoHvoOtdG8h4s65ERYdFEFzctbT5
-         uyxtDZthnP/1iezDsVfudzlZcJRbNXGrD9CnW5PUu7WY5OlPfww1an3m8Ujp9wbm1UVm
-         T6U+foQosIyYok0GxXjvAmZdrTSfHxMBnjL+8tbYLD9sv8MpaRKSQwlVG42wSd07XIOe
-         E9uuq4TX2AaFjUxC4Q31uq+R6w96y7De49DaJsVJsKcvqe+Dos8hQma4Bvc+S/b9/GwR
-         BkUfUPM63r+ZOVANS9PFn8qoIUosaUOcg6btBNj086gB2hbhPmxQPjZ6x9nF/ANy38b/
-         lw6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUqBj2BcxrF/mrZ58Nz004GXrcSk87Uzf6mT83IACNYe2bg93qi1r331UPUfSoTUSpqI44=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxeD7KQPJyPmtbp1ySYCtmWlN0UPUg8mBrpq47mk9AJdRs5qy2F
-	7uD+/MjnZHRUzA0eb8lv//lrp0if5bcW/Vb2ZteYtKNu5mD2auQBHyCAd6p+KheVnemnemUXqYV
-	z7dhcCNWmaCvOA9v1IWkNHSEcwB1MrB0=
-X-Gm-Gg: AY/fxX7l8C/daX7wzQH7p43xg5vr7MCWkJ2q9WpsRU/Xr3c7JBaRqDvkfNPdWVxV7vf
-	lf3xz0J5blpZTEK+zXdqL/0uxQgGY04xTdy1Fc7+pu3PFmnBY16vzy9zRAHX3/6ld614GSas+WI
-	vt1bXXCUs5d5GR/Zjmsn3duPWR906nX1/P9X/okv9vTeG0pAPqg7Z8uekbRVwoezDEUDSynvr9Q
-	BFdRbhOECx38/KsGVSVZi2nDlp5wVgQyp6xi1aA21fCiVotSGGlnAPPOG+tkdSAL7SwJom5nbBb
-	4SPkBIUfY1ucwwn3CAmE7zYbdwkTEF9kc9qpH5ZcBYu3OnX7V81Qh5fIf9JFMHk0Sr7qv+4iQOJ
-	I+/2bdwMKEg==
-X-Received: by 2002:a05:7022:222:b0:11b:ade6:45bd with SMTP id
- a92af1059eb24-1244a6fa90amr8867693c88.8.1768826613054; Mon, 19 Jan 2026
- 04:43:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ER3296Lk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79EE1C2BCC4
+	for <imx@lists.linux.dev>; Mon, 19 Jan 2026 13:00:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768827648;
+	bh=UmKKLGh10RPN1svLNZxmqR0nL1F2Drx46Fu4EdQWxE0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ER3296Lkgw70Klu/exJKetBSAMzlIu7GK5CegbTBj8yMhUjvfA9liQoG6N3JAd132
+	 NAP4sFSthxsKI0+tD0diPdB5I5XZ6+vWkFEiwYGSZSQtZDwz2GrJTVKD7mCFsXNXFI
+	 3Fj3qluS3lbszDkpsq824ntuR12GhyE1iddCAo4pn+SBZPrg9O8Yy47IWQNoH4tB8H
+	 2VqeCfbOaiy/QVQERg/wBM8fa01g98AXLFKs5p9nIgtWqm9xO28ErxctHloHOUm9B6
+	 Gqrb2objZmqM9gJNwgtTohvImLYmqryQc+LU+GZKeUMLu1TqeU/4akyvMNbQDvQAm6
+	 6x9IcCpaUyY6Q==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-59b6f267721so3850912e87.2
+        for <imx@lists.linux.dev>; Mon, 19 Jan 2026 05:00:48 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX0sZP9L6Y+rPkCZ4qXyAVCq5ezG80atvq0cBEIn82K8x9BqEKnQHHdkATsPGDwcfkUMS4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyNE/+QHjRZyHux08tzi7R09NB39MmuaVJktUTZk9PE/sB7W+N1
+	KThfWqilfLoE1fpfa36KNBFhUOjndh0qzZWlVg8xUGtafZZ4ZxIE8eCZGXK+biSfD31SQfXovTQ
+	FXVq6SSFopfS9XoWaW8XwOhObQyd8vGgeZGvIuXsr0Q==
+X-Received: by 2002:a05:6512:ba0:b0:598:faf0:66e7 with SMTP id
+ 2adb3069b0e04-59baffc59d5mr3615354e87.26.1768827646961; Mon, 19 Jan 2026
+ 05:00:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260119103411.50397-1-francesco@dolcini.it>
-In-Reply-To: <20260119103411.50397-1-francesco@dolcini.it>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Mon, 19 Jan 2026 14:46:13 +0200
-X-Gm-Features: AZwV_QjtNyiBHeLdUkjbl18_ROfadpDkB4z74sf-P-WeirXN-mnvQRL6Snmf3Zw
-Message-ID: <CAEnQRZA9yHGs4xodNZrYP2oto2QhOJXtiX4BFkgNM7RydkJ4YQ@mail.gmail.com>
-Subject: Re: [PATCH v1] arm64: dts: imx8-apalis: Fix LEDs name collision
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+References: <20260119-soc-of-root-v1-0-32a0fa9a78b4@oss.qualcomm.com>
+ <20260119-soc-of-root-v1-1-32a0fa9a78b4@oss.qualcomm.com> <DFSJ2AD562CP.1ZX1JO1F0Y1UU@kernel.org>
+In-Reply-To: <DFSJ2AD562CP.1ZX1JO1F0Y1UU@kernel.org>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Mon, 19 Jan 2026 14:00:34 +0100
+X-Gmail-Original-Message-ID: <CAMRc=McTaTGPM6fMWb3b+S0+Gq_V-Vi7DF9JxDeOEfPAavgXaQ@mail.gmail.com>
+X-Gm-Features: AZwV_QhN8PNZUNgPe6qogeVHpUfMZNp33VjYbo53S4KjyCuojwPBvWZd3s1oEdA
+Message-ID: <CAMRc=McTaTGPM6fMWb3b+S0+Gq_V-Vi7DF9JxDeOEfPAavgXaQ@mail.gmail.com>
+Subject: Re: [PATCH 1/8] of: provide of_machine_get_compatible()
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
 	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Francesco Dolcini <francesco.dolcini@toradex.com>, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
+	linux-sunxi@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 19, 2026 at 12:35=E2=80=AFPM Francesco Dolcini <francesco@dolci=
-ni.it> wrote:
+On Mon, Jan 19, 2026 at 12:26=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
 >
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+> On Mon Jan 19, 2026 at 11:40 AM CET, Bartosz Golaszewski wrote:
+> > +/**
+> > + * of_machine_get_compatible - Get the compatible string of this machi=
+ne
+> > + * @compatible: address at which the compatible string will be stored
+> > + *
+> > + * Returns:
+> > + * 0 on success, negative error number on failure.
+> > + */
+> > +int of_machine_get_compatible(const char **compatible)
 >
-> Ixora boards have multiple instances of status leds, to avoid a name
-> collision add the function-enumerator property.
+> I think the name of this function is not ideal. 'get' usually indicates t=
+hat a
+> reference count will be taken, but this is not the case here.
 >
-> This fixes the following Linux kernel warnings:
+> I'm also not sure about the machine prefix. If we really want this helper=
+ I'd
+> suggest something along the lines of e.g. of_root_read_compatible().
 >
->   leds-gpio leds: Led green:status renamed to green:status_1 due to name =
-collision
->   leds-gpio leds: Led red:status renamed to red:status_1 due to name coll=
-ision
->
-> Fixes: c083131c9021 ("arm64: dts: freescale: add apalis imx8 aka quadmax =
-carrier board support")
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Makes sense for the "read" part but I'm not sure about the "root" bit.
+We already have a whole set of "of_machine_" interfaces, like
+of_machine_is_compatible().
+
+How about of_machine_read_compatible()?
+
+Bartosz
