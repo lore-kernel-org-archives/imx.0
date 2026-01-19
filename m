@@ -1,200 +1,189 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6386926B2D7
-	for <imx@lists.linux.dev>; Mon, 19 Jan 2026 06:27:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768804058; cv=pass; b=Bo/GKV1yM4mFQSH2SPyyqkNpUgvLB6OSZ6tIT64HvX42yCru23/FCTHQ2VI9cebNzB8qNHrx4BnlTY7BreW+DAXIhHz9Ew5jJECtED6HsVyRFe2SELcxHDXiies1rCj2l7rsxW6pyQ8Eqj+/3yv4CzSDaJrYlH/nM+o3O4PVBhA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768804058; c=relaxed/simple;
-	bh=oieor7VL7XmLcFuWp2WFAIYBHFITLArY/5uQmoKHexk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PIsdrxxq2wHEJaKHZZUIrMA65pM/2eZl7OMkFfC8NFm3BP8OdRHn1nvjueuDnW3sk/1MPksPbYwt8Cz9j61/CaQB/5yVakAGmliLBoeRxm0eCjiqI0fFamx21oBLuZAw7mOQ1ty8TXNpLceSt4IyZNobtWeCSXDXqh9pfMZEydA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iLw/61Dd; arc=pass smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B786B2737E0
+	for <imx@lists.linux.dev>; Mon, 19 Jan 2026 06:37:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.67
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768804681; cv=none; b=PWmDY/zr6dpHVRWOmmAUK9nKqVfPafvE5mSWP1/Az1JhWJ2ijJO628ASvhwWUIjPRQYUFHtTFKRDETgtCLLqB5BhPn4pZA1Z59BXLVhxLFMS0mEiiy1ScaXzS7qREoU1gp8L4/y6bFB6NPBr1RMiHRNDRn9okKYcYoaZc6SIgA4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768804681; c=relaxed/simple;
+	bh=VQIElQkHzSoB4CojSAcKrVgZGqKfDuF8onKxP7DS2/c=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=iOtQf54sSavsVwVzJgxTGmjqnwiu66h9W2ixKf8GLiMnHV+UWDF2ofVSCyGTmRfptWDVBBeGX2+Catgb/3i+k079nuuF0XMgABKrSorKbsue4g7VjLstZCXnk62KqMQE2szr3Sc17axGST1mkbm4o6zyO4FC61i2r7CQkYeaVf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NIGEwW17; arc=none smtp.client-ip=209.85.128.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iLw/61Dd"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c2a9a9b43b1so2712284a12.2
-        for <imx@lists.linux.dev>; Sun, 18 Jan 2026 22:27:36 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768804056; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NNxdgzxRNSXjawHgXA+TMNaTk4IE1cZHmGqufWs0k1zndg/H6tN4e653XgWKpyj2c2
-         HCDRG8dDshah+qu0kn9mNmNSfhiUMCJRHPId6JA3TnqCrRlcNcQvhgqbhJ74L0e/P+s8
-         c4nuZ9KcoSge/TVa8YuXndhLmeSgOtNGtVso37cXY87rF8LqvXd4uoo88X0i+oIogsdN
-         Wo/+1c+WWeStNPSySH376wMlRXX+FXNwakxpUR3hz9XkPFTqBhom04G3Rv3iEMaD8ol7
-         wJgqUClQrtV+nXSmg3p9MqoJTXZc75foklt8em7v6Tbg14TLrme8xllXjs/eVjs65Fpd
-         LgQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kcxGM/H9ZkFQ5SWC+rNZTfsrD0aCTEHeA1hsk+XXsT8=;
-        fh=lmLqVhsNicLkEQt/LS0Ni6TBuhn/FacRlLrhj5CXseo=;
-        b=ROPd0XWPja3dRA+N7lStFcoiEpH8liv5ZxrNPE54a1OUuqA7Fzgs8f9ITvn3o807Uh
-         r+jRbLAcwHtMXEykDVCYYCqyj6zdVi616nOoRab7QLsFFTSdyR03GGWhj/7dhn7N1agx
-         p6OdblIY1r30KXa+OK7+BjPDnW2juJ34J5119f4SaWLiYpNIbpNoD+XQCEdwuR2iNYkZ
-         IWfcN0lWwaCHakoiO4Jj/p0IeB+CjEyIbAMXqSo71B7JDDWJrkdfq9WMViEsZQFsJXXc
-         MfCLaG1Szcjaa1+cJv23vEXzJAcjozzYEjtGrwDfyD1oEbmrLkUi/Cd05bXH9D99GxvB
-         fePg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NIGEwW17"
+Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-47ee807a4c5so28426775e9.2
+        for <imx@lists.linux.dev>; Sun, 18 Jan 2026 22:37:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768804056; x=1769408856; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kcxGM/H9ZkFQ5SWC+rNZTfsrD0aCTEHeA1hsk+XXsT8=;
-        b=iLw/61Dd7dh8ZHw74G+KKbTu4xamb6L1ZP9q5XmeGD+qpuOdQaITU/VQSZjTVFcsTO
-         c1BLXhtjX6oxZaNQkNkKM7WMqB6fYbR9nWoNZ7eAtEvMuO4dwOPUGKgUUNmAB5eh1Zf9
-         aJyWt01Fnxezfu74Y78Oj4T6MoizMY2l4oQqt8FVuIswi/eRWKg78GXXaunVcb2L3Mc9
-         fsQgZFtKiC4gf1b/UELdWnejnAEmDws+1uvaMnnaRorZblsEn9ViWo0MM1jPpcdIhlyZ
-         QTgnXThIB9YkMzYu2s82Z3vuBipVY+gKo1NolTigeVzrRe0CUkF4/P67FBzJz8QWYUeF
-         trkg==
+        d=linaro.org; s=google; t=1768804677; x=1769409477; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CbWcz9mMKDIu3Eeo2pw/1X+znIUuGvzIKZFjWHoDt0Q=;
+        b=NIGEwW17t2PsjE0k2UKSb0PfB3WjUq4zLY04vSQ2azWIcSzME1/8RLEcGhG3uh3ewd
+         MKKWiXSnZDz5EHO8DT6QA8NCBmLvWqOM5xUh2DcLmQU9Fl4w52ZrCXWycdblL1KYch8V
+         ZCYYp65PnuX/oBcYlAS4vzBaMM2Wcni+CTfNm43o16+PMsL3Of30GGdM0MtPZy1EdnTf
+         yWwwshnZFvmZdqwIbfun9eqLb7uF045DnbNWmOaU6wys8aQrWgrUV4scvXXCvKzRl0ji
+         a94q0CEVm+FceifviQDcWJHSEWbaEftEN6BBysaK6CFrT60aIkESRkih5UTUOsPbe4Hs
+         mv4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768804056; x=1769408856;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kcxGM/H9ZkFQ5SWC+rNZTfsrD0aCTEHeA1hsk+XXsT8=;
-        b=a72M/us6dJKlMHPMEnjtoLHcFM/ZMyResBynjefu7++r6nf0//MAoCsfCV8/+yQO5l
-         rERB4U3AMeTzKrKko49S+XsYCSfvLEu/eoffUTPIZmwR4jdt4LkjjQYmMvGhaq728FDH
-         c4kQQXOkK06KPUzG/SueZCUgS2aS24sIE2i1PkWd0FDrFZ/k3vxGOrFPr/xclODuaarc
-         a0uOxyUq7rJ9MuKe9/bes8WtqPuiirB9VAPn5PvokxSOZoALNDl1pvGsW20+cygZMfcg
-         haU3ji46PMHUhbKrt9DUEoT6YShE17Xs3cUHtaJlBI2xOWIfZvUjnWeEws8uQQaU0LV3
-         ywsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW+j9q/bEuUwGaMa5aF91Wx5xP5yvAKcKnG03xMtt73Be1TWXRKU/Io2VAUgV0E35OSQNw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzqduudBxIVRtLMId1UeK9dLiPsmftuYuGcoWyRYTebD9DwPONj
-	fxOEqeKZcTMsKeiULXZB39pmAzsNi/kAODr5/hWqktHnCfHeNYiBUUuvLfD4Zj7ZPgxXnCN+pT0
-	gvpTxpGOBSf7fgBPzIlANXCaAP89rRhQ=
-X-Gm-Gg: AZuq6aLun3buQ97JfRMTIwI5VKh/NM7XTqBsU8RqTGkKiYgdDXB7CAvay/WW4AZtioQ
-	p+akkNwyMjpOetOC761D5Jr8b3u26Xn7g/RHWlOM1iKhNYsxdH4J7rsHtBIFO0CavXaghAogxWC
-	6wsmAf0hxuoMIf9gE4GUebDAeoTrzyntaTUUUq0JMAE21i+h6J3oTNQS5rbAbyrOdkiXr4hPhi8
-	xDy83GLgokNnSiyVo2eBqg7S2+cqWVeIeW5+YSX8MWHOb1a6kaesQR1hywOk/Q96d9YI3KR8Aph
-	llvjyQ==
-X-Received: by 2002:a17:90b:3b8d:b0:340:b908:9665 with SMTP id
- 98e67ed59e1d1-3527329ea06mr8752017a91.37.1768804055769; Sun, 18 Jan 2026
- 22:27:35 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768804677; x=1769409477;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CbWcz9mMKDIu3Eeo2pw/1X+znIUuGvzIKZFjWHoDt0Q=;
+        b=jSF81023WXDyiZnOxTkaDt33VS4u8xa7R6Ga6Su8SAHMaYXab+1aMwPtqW84Lz2nc1
+         0XD3Zyt9zlsxVve3SlsUQbg3Nr1bx7RV3Tj19a+1qrKzvOMxt1TSlIoDe8kOtM2V275A
+         2PVlZ8bydG3SUIwKwQj2pwue5Ab6uoaDNg83CTMJkQ/QG7rHytX/MBMkxtDA05GjxCeL
+         BBtruzJDS7h4J0q68H+67F0VjYEwRFprVxLSZpmxOU7K8p1Ws011Y1qT5rb0ECNtSAIN
+         EuW7mllJVN/c6wehcy+FthpaUjj4eZb6i7SGWmpJDyeNcALP0GuZGkHaPBTCAWFFC/3l
+         vCqA==
+X-Forwarded-Encrypted: i=1; AJvYcCWRpYVI+tWJ/6rdHXrar4Tpo+NF0cY5KANe/O2qRTq9Irf/ykEM9WRdY528Ix51M7plGkE=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwF+93KpzbQzqGzV018CeoMm9fj/dgsDA50XlT1svlrYuYuXaYf
+	gB/I8Q2JYmlHZqGbpleCRi8I6vVxLST2ZkSThyzN+FigIn8oxubunfH2KXgV/AO3FGc=
+X-Gm-Gg: AY/fxX6CWBk2Dxxtngw7q0BPHy1bLIGA+hAUKYIXaqjKrrNHc2ETyKDJKGIUd5ZFfFv
+	7u5t/9g2aP+h0lkM2JIQvC+1eD6H4B9n3nYxkrVjRV0yl8+8UFMQV4YgB6oFEJbQpVTJv3uUldK
+	DdeE3cYWUwCgMXbMi9suBdrE7K1IAHH2RaJLVRRnu3n5zo2OpKbk3t/gSrAMiy+pyxHM4ErIQ86
+	g+/ZT4qp5j8FYIHdvNiky6yWOUroqM5bOk73ekfjSZQhKmcTyzhmU0sTYl6i7wgKALpVeszxXlt
+	+xyHru6VKkWPFIsVzmBPEIZYoDo+GBcjVVwMqRg+/YIgBGEZYRhO1NYfu4g7InQk7Xzz9yX/JP4
+	DoG83XfTGQFR43QUNEDhKZ4wYgOv+QeOqEjjFGCsvCghG2rHKhfJrEgkMWJOGzlTido7g1y825X
+	ZlnADR3YmV5AF8kiCYF10Jt66UG6Q=
+X-Received: by 2002:a05:600c:37c8:b0:47e:e87f:4bba with SMTP id 5b1f17b1804b1-4801eb0e1cfmr109058555e9.29.1768804677011;
+        Sun, 18 Jan 2026 22:37:57 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4801fe6d9a7sm75156405e9.17.2026.01.18.22.37.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Jan 2026 22:37:56 -0800 (PST)
+Date: Mon, 19 Jan 2026 09:37:53 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev, Shengjiu Wang <shengjiu.wang@nxp.com>,
+	shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com,
+	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	devicetree@vger.kernel.org, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 2/2] ASoC: fsl_audmix: Add support for i.MX952 platform
+Message-ID: <202601170203.upPyGvI2-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260116101648.377952-1-shengjiu.wang@nxp.com>
- <20260116101648.377952-2-shengjiu.wang@nxp.com> <20260117-versed-proficient-pigeon-bd0b2a@quoll>
-In-Reply-To: <20260117-versed-proficient-pigeon-bd0b2a@quoll>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Mon, 19 Jan 2026 14:27:24 +0800
-X-Gm-Features: AZwV_Qh2xtpI3oElyCcH4AM0eV_DbnEZq9du-jVlcZi7tddPI18dsGW5cus42Lw
-Message-ID: <CAA+D8ANrcjvOCfRN7gGGW+7YzvVieU7P2uexUpVYTw6MEHAKYQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ASoC: dt-bindings: fsl,audmix: Add support for
- i.MX952 platform
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, Xiubo.Lee@gmail.com, festevam@gmail.com, 
-	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, 
-	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org, 
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260116101648.377952-3-shengjiu.wang@nxp.com>
 
-On Sat, Jan 17, 2026 at 7:44=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
->
-> On Fri, Jan 16, 2026 at 06:16:47PM +0800, Shengjiu Wang wrote:
-> > The specific feature for AUDMIX on i.MX952 is that it can be bypassed,
-> > so add fsl,amix-bypass property for this feature, besides this there is
-> > no power domain defined on i.MX952, so make power-domains to be
-> > dedicated to i.MX8QM.
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  .../devicetree/bindings/sound/fsl,audmix.yaml | 35 +++++++++++++++++--
-> >  1 file changed, 33 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/sound/fsl,audmix.yaml b/=
-Documentation/devicetree/bindings/sound/fsl,audmix.yaml
-> > index 3ad197b3c82c..50fb08460b4f 100644
-> > --- a/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
-> > +++ b/Documentation/devicetree/bindings/sound/fsl,audmix.yaml
-> > @@ -34,7 +34,9 @@ description: |
-> >
-> >  properties:
-> >    compatible:
-> > -    const: fsl,imx8qm-audmix
-> > +    enum:
-> > +      - fsl,imx8qm-audmix
-> > +      - fsl,imx952-audmix
-> >
-> >    reg:
-> >      maxItems: 1
-> > @@ -75,12 +77,41 @@ properties:
-> >          unevaluatedProperties: false
-> >          description: Output port to SAI RX
-> >
-> > +  fsl,amix-bypass:
-> > +    type: boolean
-> > +    description:
-> > +      The audmix module is bypassed from hardware.
->
-> I don't understand why device AUDMIX would have property saying AUDMIX
-> (so itself) can by bypassed. If you bypass the device itself, what do
-> you configure here?
+Hi Shengjiu,
 
-The case is that the SAI interface is connected to AUDMIX,  but AUDMIX can =
-also
-be bypassed by hardware configuration.
+kernel test robot noticed the following build warnings:
 
-Yes, adding this property in the AUDMIX module looks strange.  Another
-choice is to
-add this property in the SAI binding document.  Is this better?
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Best regards
-Shengjiu Wang
->
->
-> > +
-> >  required:
-> >    - compatible
-> >    - reg
-> >    - clocks
-> >    - clock-names
-> > -  - power-domains
-> > +
-> > +allOf:
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          contains:
-> > +            enum:
-> > +              - fsl,imx8qm-audmix
-> > +    then:
-> > +      required:
-> > +        - power-domains
-> > +      not:
-> > +        required:
-> > +          - fsl,amix-bypass
->
-> fsl,amix-bypass: false
->
-> > +
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          contains:
-> > +            enum:
-> > +              - fsl,imx952-audmix
-> > +    then:
-> > +      not:
-> > +        required:
-> > +          - power-domains
->
-> Not sure what you want to say here, but disallowing properties is shown
-> in example-schema (:false).
->
-> Best regards,
-> Krzysztof
->
+url:    https://github.com/intel-lab-lkp/linux/commits/Shengjiu-Wang/ASoC-dt-bindings-fsl-audmix-Add-support-for-i-MX952-platform/20260116-182050
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+patch link:    https://lore.kernel.org/r/20260116101648.377952-3-shengjiu.wang%40nxp.com
+patch subject: [PATCH 2/2] ASoC: fsl_audmix: Add support for i.MX952 platform
+config: s390-randconfig-r071-20260116 (https://download.01.org/0day-ci/archive/20260117/202601170203.upPyGvI2-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 8.5.0
+smatch version: v0.5.0-8985-g2614ff1a
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202601170203.upPyGvI2-lkp@intel.com/
+
+smatch warnings:
+sound/soc/fsl/fsl_audmix.c:522 fsl_audmix_probe() warn: missing error code 'ret'
+
+vim +/ret +522 sound/soc/fsl/fsl_audmix.c
+
+be1df61cf06efb Viorel Suman  2019-01-22  465  static int fsl_audmix_probe(struct platform_device *pdev)
+be1df61cf06efb Viorel Suman  2019-01-22  466  {
+0c44e9e9e61cde Shengjiu Wang 2026-01-16  467  	const struct fsl_audmix_soc_data *soc_data;
+62be484f7ad844 Viorel Suman  2019-04-10  468  	struct device *dev = &pdev->dev;
+be1df61cf06efb Viorel Suman  2019-01-22  469  	struct fsl_audmix *priv;
+be1df61cf06efb Viorel Suman  2019-01-22  470  	void __iomem *regs;
+be1df61cf06efb Viorel Suman  2019-01-22  471  	int ret;
+f2a36a78423ee8 Viorel Suman  2019-04-10  472  
+62be484f7ad844 Viorel Suman  2019-04-10  473  	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+be1df61cf06efb Viorel Suman  2019-01-22  474  	if (!priv)
+be1df61cf06efb Viorel Suman  2019-01-22  475  		return -ENOMEM;
+be1df61cf06efb Viorel Suman  2019-01-22  476  
+be1df61cf06efb Viorel Suman  2019-01-22  477  	/* Get the addresses */
+959bb6b54d7086 YueHaibing    2019-07-27  478  	regs = devm_platform_ioremap_resource(pdev, 0);
+be1df61cf06efb Viorel Suman  2019-01-22  479  	if (IS_ERR(regs))
+be1df61cf06efb Viorel Suman  2019-01-22  480  		return PTR_ERR(regs);
+be1df61cf06efb Viorel Suman  2019-01-22  481  
+3feaba79d8f701 Shengjiu Wang 2021-03-24  482  	priv->regmap = devm_regmap_init_mmio(dev, regs, &fsl_audmix_regmap_config);
+be1df61cf06efb Viorel Suman  2019-01-22  483  	if (IS_ERR(priv->regmap)) {
+62be484f7ad844 Viorel Suman  2019-04-10  484  		dev_err(dev, "failed to init regmap\n");
+be1df61cf06efb Viorel Suman  2019-01-22  485  		return PTR_ERR(priv->regmap);
+be1df61cf06efb Viorel Suman  2019-01-22  486  	}
+be1df61cf06efb Viorel Suman  2019-01-22  487  
+62be484f7ad844 Viorel Suman  2019-04-10  488  	priv->ipg_clk = devm_clk_get(dev, "ipg");
+be1df61cf06efb Viorel Suman  2019-01-22  489  	if (IS_ERR(priv->ipg_clk)) {
+62be484f7ad844 Viorel Suman  2019-04-10  490  		dev_err(dev, "failed to get ipg clock\n");
+be1df61cf06efb Viorel Suman  2019-01-22  491  		return PTR_ERR(priv->ipg_clk);
+be1df61cf06efb Viorel Suman  2019-01-22  492  	}
+be1df61cf06efb Viorel Suman  2019-01-22  493  
+fe965096c9495d Shengjiu Wang 2019-11-11  494  	spin_lock_init(&priv->lock);
+be1df61cf06efb Viorel Suman  2019-01-22  495  	platform_set_drvdata(pdev, priv);
+62be484f7ad844 Viorel Suman  2019-04-10  496  	pm_runtime_enable(dev);
+be1df61cf06efb Viorel Suman  2019-01-22  497  
+62be484f7ad844 Viorel Suman  2019-04-10  498  	ret = devm_snd_soc_register_component(dev, &fsl_audmix_component,
+be1df61cf06efb Viorel Suman  2019-01-22  499  					      fsl_audmix_dai,
+be1df61cf06efb Viorel Suman  2019-01-22  500  					      ARRAY_SIZE(fsl_audmix_dai));
+be1df61cf06efb Viorel Suman  2019-01-22  501  	if (ret) {
+62be484f7ad844 Viorel Suman  2019-04-10  502  		dev_err(dev, "failed to register ASoC DAI\n");
+77fffa742285f2 Chuhong Yuan  2019-12-03  503  		goto err_disable_pm;
+be1df61cf06efb Viorel Suman  2019-01-22  504  	}
+be1df61cf06efb Viorel Suman  2019-01-22  505  
+294a60e5e98300 Shengjiu Wang 2025-02-26  506  	/*
+294a60e5e98300 Shengjiu Wang 2025-02-26  507  	 * If dais property exist, then register the imx-audmix card driver.
+294a60e5e98300 Shengjiu Wang 2025-02-26  508  	 * otherwise, it should be linked by audio graph card.
+294a60e5e98300 Shengjiu Wang 2025-02-26  509  	 */
+294a60e5e98300 Shengjiu Wang 2025-02-26  510  	if (of_find_property(pdev->dev.of_node, "dais", NULL)) {
+5057d108d69a55 Fabio Estevam 2020-12-02  511  		priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
+be1df61cf06efb Viorel Suman  2019-01-22  512  		if (IS_ERR(priv->pdev)) {
+be1df61cf06efb Viorel Suman  2019-01-22  513  			ret = PTR_ERR(priv->pdev);
+5057d108d69a55 Fabio Estevam 2020-12-02  514  			dev_err(dev, "failed to register platform: %d\n", ret);
+77fffa742285f2 Chuhong Yuan  2019-12-03  515  			goto err_disable_pm;
+be1df61cf06efb Viorel Suman  2019-01-22  516  		}
+294a60e5e98300 Shengjiu Wang 2025-02-26  517  	}
+be1df61cf06efb Viorel Suman  2019-01-22  518  
+0c44e9e9e61cde Shengjiu Wang 2026-01-16  519  	soc_data = of_device_get_match_data(dev);
+0c44e9e9e61cde Shengjiu Wang 2026-01-16  520  	if (!soc_data) {
+0c44e9e9e61cde Shengjiu Wang 2026-01-16  521  		dev_err(dev, "failed to match device\n");
+0c44e9e9e61cde Shengjiu Wang 2026-01-16 @522  		goto err_disable_pm;
+
+missing error code.
+
+0c44e9e9e61cde Shengjiu Wang 2026-01-16  523  	}
+0c44e9e9e61cde Shengjiu Wang 2026-01-16  524  
+0c44e9e9e61cde Shengjiu Wang 2026-01-16  525  	if (of_property_read_bool(pdev->dev.of_node, "fsl,amix-bypass") &&
+0c44e9e9e61cde Shengjiu Wang 2026-01-16  526  	    soc_data->bypass_index > 0) {
+0c44e9e9e61cde Shengjiu Wang 2026-01-16  527  		ret = scmi_imx_misc_ctrl_set(soc_data->bypass_index, 0);
+0c44e9e9e61cde Shengjiu Wang 2026-01-16  528  		if (ret)
+0c44e9e9e61cde Shengjiu Wang 2026-01-16  529  			goto err_disable_pm;
+0c44e9e9e61cde Shengjiu Wang 2026-01-16  530  	}
+0c44e9e9e61cde Shengjiu Wang 2026-01-16  531  
+77fffa742285f2 Chuhong Yuan  2019-12-03  532  	return 0;
+77fffa742285f2 Chuhong Yuan  2019-12-03  533  
+77fffa742285f2 Chuhong Yuan  2019-12-03  534  err_disable_pm:
+77fffa742285f2 Chuhong Yuan  2019-12-03  535  	pm_runtime_disable(dev);
+be1df61cf06efb Viorel Suman  2019-01-22  536  	return ret;
+be1df61cf06efb Viorel Suman  2019-01-22  537  }
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
