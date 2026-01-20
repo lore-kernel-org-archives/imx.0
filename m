@@ -1,58 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BB6425CFB
-	for <imx@lists.linux.dev>; Tue, 20 Jan 2026 12:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433E34279E8
+	for <imx@lists.linux.dev>; Tue, 20 Jan 2026 12:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768911380; cv=none; b=PlGDJCwHnh/m4tz1ZGJpESd+e9IALihRwBKNiOHreEJRtB5nJ+ohffIe0P9/gmB4H7fL4zHDZahKH9GcYgWv2qcgnSLhy1KyzBRY8/DIBXWUxXjlJ97OIRbbIlnPNcbZ4x7fr+41WHtk3sAtN1bCRRJO8cTCEv7mcgHyOLbYRRs=
+	t=1768911392; cv=none; b=lx4fyzVmVJ3mJyGyZQnuQ/sul91o0UVCWoJk06QdnBRUC7vX/81cEiL/ObFKcfnVhVvwA3f8vqyy1aMs50xIzcGMCdmM21ES17fAP9DcES/ciG/cbhZtRqiuq5dUURNMZ1O51wqOhYLo6Om07Ofa4FR2qnJFzVxhAgftSzhf9bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768911380; c=relaxed/simple;
-	bh=+zZx1UCGop6TYPZIxrfkSxnpM9rhdSNLbAwPt6AGnAU=;
+	s=arc-20240116; t=1768911392; c=relaxed/simple;
+	bh=f4SQu8TLteMQk418u5SbKNfQe6oAUTEfS0S5lAZ0Tcs=;
 	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VYvwM906AMSry6rKtUn/6kJ+aXKc8TwCIGRwXr548F9uZTbYyteAd31ExRgX0qs3C86tKQXHZ+L2TNORhMei89Ut/Hu0l3BtXtlgWVsp8KxU+JG/QNdvK6PAFxwYerTSftriEa51wuFytPsjGkN+1wxfSYpb3yaPNMn4c0aPi/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U1odw0Pr; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=W2x1pSllV7XIzjW1Eyca7qJ2o4YarBKdwLBSj2/O7Hw9DzhHcuZ8J071FQMeyUXHsyyBvRnPLoDBsf7pOl1dw+QDd+C8vIMz+UtXiBHQAScrswjEDW+VSX6MyzKEjL36xwle23L0YjOFe3F1FcG5iIv3V/mloA824aU3sxNfmwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dGy40jut; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U1odw0Pr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25777C19422
-	for <imx@lists.linux.dev>; Tue, 20 Jan 2026 12:16:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dGy40jut"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3941C4AF11
+	for <imx@lists.linux.dev>; Tue, 20 Jan 2026 12:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768911380;
-	bh=+zZx1UCGop6TYPZIxrfkSxnpM9rhdSNLbAwPt6AGnAU=;
+	s=k20201202; t=1768911391;
+	bh=f4SQu8TLteMQk418u5SbKNfQe6oAUTEfS0S5lAZ0Tcs=;
 	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
-	b=U1odw0PrRpRYvsyVvrJc1UXSLBbIb71vSdHNQXB2yQvYuoiT+Xwe124qIi4PoASSZ
-	 EDOnb98z4dV7yc6kakO9s/ejE4owE6JiTya+OYru/zBTNVGu7WAj+pvBBiAfKIc9W+
-	 TK6Q4JQrBzWo/MhVi1ZHOlW1uLfzEO+oj1f14oUEq9a4qloHhXdIQ765J4OZH91Tda
-	 lrpdbIT5itOJVCnSAPb0c6uwij7EW63AHBMaKaaDnWExWuorqm3YBJC4Y6I7L/enBs
-	 aW67yzfrY5eg10aNbiPURAwVAbBIJvbRoLO/pTKoiMO7vGJztWMzbTT4Tk4OqFUZfN
-	 lSnmA7KNzYb+g==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-59b6f04cae6so5487636e87.2
-        for <imx@lists.linux.dev>; Tue, 20 Jan 2026 04:16:20 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWbEadoXyFw2WTv3UBVnrNPES91Bj9V0ojjBuDHzFD+Sd2Bfi2fekWLrzLSRoWlmWIeQd0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwXDspYesx7imU61tlpRx7RoUemJ1EcGuCx+lxSta+MdY9N8Nbx
-	Rf1EoQWTloOjlkPCYI9EM3fRuSUveLgITVZt2uG9SJrZU0R6VdG5hUEpMfYSEmdKcmNibepfs1A
-	iy5zUY3i8Tt7gBZ9p7TqKt6ajFM/sK//HEboA1GsZUw==
-X-Received: by 2002:a05:6512:2526:b0:59b:6853:f085 with SMTP id
- 2adb3069b0e04-59dc8f2348fmr709971e87.16.1768911378444; Tue, 20 Jan 2026
- 04:16:18 -0800 (PST)
+	b=dGy40jutA+5sYQr5rlYKmQj9WnJPyLnL4ZJG3v9OpoH+oRvnp79n9+vmrgRC6TtpK
+	 A+RlMg9yZKt7NzJh7s8hiHUm8ST7a1iWUhmFl1T6ZEeKE6/XHiTVzcbjABkUnpDK02
+	 zBpfdAx3JDw1muB6/iFa5mt2Rc8VIWQ5gPqCPj/1vG05pPx59hTJv76VeofYQTUD2t
+	 aYv53poCdGjDy0YPOydTDyyWx6+x3Vn/VPX/kMj2Pz5ZG759+DsaVUz2TE0rG9FcUY
+	 4a+ai3RFv8MR0fVpWwL+4zt7cfqZ8aKyHD6FoAsqOsM4yGJbqFbYor19FSbfPb996b
+	 gIDkULjjY+QYA==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-382fd6cbae1so45685671fa.3
+        for <imx@lists.linux.dev>; Tue, 20 Jan 2026 04:16:31 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUNwI7SgTxX3udV/VPXhkioXhOA5lEIOM9xK3RKVMr+GhyaP2OKd9dvHzRZAihxIAWRF/w=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy8+/STT1dCFN0kCqQ5kZ6S5LJlYjxdnC0y3yTfTXTdxvR+CNhv
+	hhhpGP3oSAmfFaIqe+dqVln9wNIETqKZeqAmHIB9irvHeJU1/B33b8jxiecmn4sd/ad/RYfpk+0
+	pdo7dfbBETWI0+/k41lOEF3zPD6nlNiFkY5gMRKqCug==
+X-Received: by 2002:a05:6512:2398:b0:55f:4633:7b2 with SMTP id
+ 2adb3069b0e04-59baef01bf5mr5299465e87.46.1768911390457; Tue, 20 Jan 2026
+ 04:16:30 -0800 (PST)
 Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 20 Jan 2026 06:16:17 -0600
+ HTTPREST; Tue, 20 Jan 2026 12:16:28 +0000
 Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 20 Jan 2026 06:16:17 -0600
+ HTTPREST; Tue, 20 Jan 2026 12:16:28 +0000
 From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260120115923.3463866-11-khristineandreea.barbulescu@oss.nxp.com>
+In-Reply-To: <20260120115923.3463866-8-khristineandreea.barbulescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com> <20260120115923.3463866-11-khristineandreea.barbulescu@oss.nxp.com>
-Date: Tue, 20 Jan 2026 06:16:17 -0600
-X-Gmail-Original-Message-ID: <CAMRc=McD0cRxtb3RCzzYPewFisto=4OjvA4gjaTcOk8ghTw_qA@mail.gmail.com>
-X-Gm-Features: AZwV_QiTyzFRnq5hh7hZRZvq1Kgy4gAD4D9HxCaMuBiHbH1GRoIc82NCrITXf6Y
-Message-ID: <CAMRc=McD0cRxtb3RCzzYPewFisto=4OjvA4gjaTcOk8ghTw_qA@mail.gmail.com>
-Subject: Re: [PATCH v8 10/10] pinctrl: s32cc: set num_custom_params to 0
+References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com> <20260120115923.3463866-8-khristineandreea.barbulescu@oss.nxp.com>
+Date: Tue, 20 Jan 2026 12:16:28 +0000
+X-Gmail-Original-Message-ID: <CAMRc=Md7+SWMpF20y-+-+Hn7ymkzuMeTxT2EsE3Cnb=B6YUG0w@mail.gmail.com>
+X-Gm-Features: AZwV_QiewUw2Hjrv10M89S0t63JoJsu7jxaj9pA-T120txrnOoBROFqPAhkrEn8
+Message-ID: <CAMRc=Md7+SWMpF20y-+-+Hn7ymkzuMeTxT2EsE3Cnb=B6YUG0w@mail.gmail.com>
+Subject: Re: [PATCH v8 07/10] pinctrl: s32cc: skip syscon child nodes when
+ parsing funcs and groups
 To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
 Cc: Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>, devicetree@vger.kernel.org, 
 	Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev, 
@@ -70,37 +71,65 @@ Cc: Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>, de
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 20 Jan 2026 12:59:22 +0100, Khristine Andreea Barbulescu
+On Tue, 20 Jan 2026 12:59:19 +0100, Khristine Andreea Barbulescu
 <khristineandreea.barbulescu@oss.nxp.com> said:
-> From: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+> The SIUL2 node contains child nodes for syscon
+> instances (SIUL2_0 and SIUL2_1) to expose register
+> ranges for SoC information. These nodes are not
+> part of the pinctrl configuration and should not
+> be treated as pinctrl functions or groups.
 >
-> The `num_custom_params` was not set to 0 and the pinctrl_desc structure
-> was not initialized with 0. This would result in errors when parsing
-> pinconf properties from the device tree.
->
-
-Shoudn't this come as first in the series and with a Fixes tag?
-
-Bartosz
-
-> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
 > ---
->  drivers/pinctrl/nxp/pinctrl-s32cc.c | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/pinctrl/nxp/pinctrl-s32cc.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
 >
 > diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pinctrl-s32cc.c
-> index 3e0c48068f08..27ea0b44a7aa 100644
+> index cdd3a1cd4fe5..50d5a01107eb 100644
 > --- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
 > +++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
-> @@ -1272,6 +1272,7 @@ int s32_pinctrl_probe(struct platform_device *pdev,
->  	s32_pinctrl_desc->pctlops = &s32_pctrl_ops;
->  	s32_pinctrl_desc->pmxops = &s32_pmx_ops;
->  	s32_pinctrl_desc->confops = &s32_pinconf_ops;
-> +	s32_pinctrl_desc->num_custom_params = 0;
->  	s32_pinctrl_desc->owner = THIS_MODULE;
+> @@ -2,7 +2,7 @@
+>  /*
+>   * Core driver for the S32 CC (Common Chassis) pin controller
+>   *
+> - * Copyright 2017-2022,2024-2025 NXP
+> + * Copyright 2017-2022,2024-2025-2026 NXP
+>   * Copyright (C) 2022 SUSE LLC
+>   * Copyright 2015-2016 Freescale Semiconductor, Inc.
+>   */
+> @@ -832,6 +832,9 @@ static int s32_pinctrl_parse_functions(struct device_node *np,
 >
->  	ipctl->regions = devm_kcalloc(&pdev->dev, soc_data->mem_regions,
+>  	dev_dbg(info->dev, "parse function(%u): %pOFn\n", index, np);
+>
+> +	if (of_device_is_compatible(np, "syscon"))
+> +		return 0;
+> +
+>  	func = &info->functions[index];
+>
+>  	/* Initialise function */
+> @@ -941,7 +944,8 @@ static int s32_pinctrl_probe_dt(struct platform_device *pdev,
+>  		return -ENODEV;
+>
+>  	for_each_child_of_node_scoped(np, child)
+> -		++nfuncs;
+> +		if (!of_device_is_compatible(child, "syscon"))
+> +			++nfuncs;
+>  	if (nfuncs <= 0)
+>  		return dev_err_probe(&pdev->dev, -EINVAL,
+>  				     "No functions defined\n");
+> @@ -962,6 +966,9 @@ static int s32_pinctrl_probe_dt(struct platform_device *pdev,
+>  		return -ENOMEM;
+>
+>  	for_each_child_of_node_scoped(np, child) {
+> +		if (of_device_is_compatible(child, "syscon"))
+> +			continue;
+> +
+>  		ret = s32_pinctrl_parse_functions(child, info, i++);
+>  		if (ret)
+>  			return ret;
 > --
 > 2.50.1
 >
 >
+
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
