@@ -1,225 +1,126 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com [209.85.221.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BEC44A73D
-	for <imx@lists.linux.dev>; Tue, 20 Jan 2026 15:04:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482614657D8
+	for <imx@lists.linux.dev>; Tue, 20 Jan 2026 16:11:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768921490; cv=none; b=W4xMX4zp7xkxc2ij8o/ChMOBXXV2TzQqS99yUD6TtJNZGKXst9PFhCMDP8SZ/UyByxGd8KxNoIeUVd6zX0rfYHVEmxZ14RBmntes5gWlouckKgboQ5O4ZhJNM3OrzeTt+ZmfWa34widyOz/7nK7+qypKzKGd/1mJ1MdC+049MR8=
+	t=1768925511; cv=none; b=VAnIr8OrOzat4fqcx+g2WuhzIa4BqPWkpBugcbdFWucpg5wxZy+5ERBtAFrYWD2p96laigLcFEgYwbn1DfgR5X0DA/RPTLswIO6Viye0JnVVMNkJVqtvbLRm1/qHX15wD4PShaZmoKEtIwEnphCTwBlNYNwQmNyy5j3Me00IFw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768921490; c=relaxed/simple;
-	bh=Jl3N+qCdcymJQepNuOa3YD/ijHGOuCtZx6z1DXj31tE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8HcRXriaK6fatmeYyb4M3RhSbva3EOLSSiZmK0NU2GMOKF21Iv1LqZmn1xawklsMDAfIisRmlOr8w6VAJmbfc2bAJPj1LQqkbBuhULU1hC080xuza2pU5/EzwgAh/jnRQYrMunH9Jsu93PQ2P7Q0IDeIytunNAuUhiFj54VVt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jCF+6cDm; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1768925511; c=relaxed/simple;
+	bh=buupeckl6Ur2K0f6PNMs+weNQzg7qW70tzVIb7P2wJo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X9HdxkIXTTIyxKIAE/0izqWrUG7euAhkPXQ/GTjlkuTOu+I88B6soBbf2/hPtWmakWmeWhbzsf3W8RtkefLRxc0qTm5K0RHyfX6zcJXa6L7RvE3fCHee4nHqhzRtfb3ED0yHxVqrEAgISeXpbC8M9jlHOVS4cOp/UFJjWYA0orM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r6eOjI19; arc=none smtp.client-ip=209.85.221.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jCF+6cDm"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b870732cce2so831824166b.3
-        for <imx@lists.linux.dev>; Tue, 20 Jan 2026 07:04:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r6eOjI19"
+Received: by mail-wr1-f67.google.com with SMTP id ffacd0b85a97d-43596062728so302977f8f.1
+        for <imx@lists.linux.dev>; Tue, 20 Jan 2026 08:11:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768921487; x=1769526287; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GhLdh2zZK+bYAbQvWFFaUIm6SUaBfCue1vhMyALyCxw=;
-        b=jCF+6cDmsg9Y2NtVKEyRU+lWNxqdhLPp+3R3TzN4ObSOMKTW1hUzUcieQTrzyRNOs5
-         53ACedxmBj7kymQDkYi+7x/WGZj5T1KStUqJ/EwrU0fWWDSVWEpOT6htMod25s6JTejU
-         tRi4RjXhlOkUPoSNtaDxrXT7Gval4HQA1G9qWuDbeoJ5o4ZqMJ51rgHEypHYydu/vJrI
-         FaaENYhAg7nBCDrn9y4QAeZrlts7CS5KVUQNHaU1QLNoZ+BF3oZxz982DIqDG1jUKaem
-         e2MnquMiHROQvmox+6blr6OAbEyLBWU2mVxxQFFX2m97ceSZ10eRqrtblVV9PQgSspbJ
-         RoNQ==
+        d=linaro.org; s=google; t=1768925507; x=1769530307; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eDF4hEQ49oVuoE1o1FuTuulQQD1AKtsuCPOT8o0CxOI=;
+        b=r6eOjI199NhPJO06xUH9+9HeRQVmZHxgIVAFMLRlGioEGTOum3FudX4Nn4jo1B/IHX
+         oc9FW99QQ9A0sIXKlb/e9GJNUpBPs64hq0+L3FycQ2G91ZCHaawExCJYIYzTl5JkglXt
+         +rwYapL971gZYXmrqbtfvc6jQQEgRdpBuhAo06guMiOkhH9sCxKbkPrG8Y1R7rsP1srJ
+         rfQLjHFyP7gZG7A0/8n2dPXMXgTOKjSXmHRWoZR944uDdmfb+9rbLUb+APaLEG8BhIly
+         JZZsHqVNx9kpAapDD41b3IOz9FTEQ0MoR90zTm29+A4rgZeVkNx/WnmwIGFmubxlY3vv
+         M0Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768921487; x=1769526287;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GhLdh2zZK+bYAbQvWFFaUIm6SUaBfCue1vhMyALyCxw=;
-        b=PplzUKs6iQavR35qHnhJUmD4cdhfhg2H1uF4pO7qKgao2sFo3SAkSaE3t0fUeYMUHW
-         cjiullvamTbgeRm74AU/XcgNY+oZTqk6UobAbhKbiPsku4N4gsiMDRl6SwnDsvbmk7We
-         HRlWo7c9/sGpFmCrISYuGErNt6RCrwkVqOTnkRSFl/BIeS+5rlQHHX0DqcEBssmF4vb/
-         KmjN4wF3OkVnM8OZI7rZjKBJcK5ihEZi4OQ1EhDGm3t6tLZ5bA2NxymF8q7c12hSFQe5
-         f8l5d4dGyswSkOU4OokL/wqJBtRXbBuQ7MyEvbm9f/6f2M9mAZWV09GGOD2HXttbYfBy
-         LgDA==
-X-Forwarded-Encrypted: i=1; AJvYcCWzmGFG2eNtpZuhlMhvqc2oB4aBe08Vmpcm5Q5x+euOXbCP7QgxdbF0r5y54lrswLIYunI=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxr3/YXMGaplze8GOWVv1HZHUE5DkLBgmx+mV3IdhvOtAg/2ZRo
-	bno6cqjP+Inpm5C9hIQoPJVz+uWINHYlIPcQQPyJQkkSOg/olgp8fKIu
-X-Gm-Gg: AZuq6aIG9PuGpOZaKV2SiAfGxaVaIdAuNgr7tENU19BE9msG0gUakL5qzasykQ35bXz
-	q3l0cFJvLsIG2WV3YL5dmM+CApSEWotD53r2s8V6RfW6d4l8bUj0JmWTBfDA4VzWYLr0hMtrHw4
-	D3IQYe6gNw/1P5D8+VDKYp8PLIBIil1kPHpJ+0uHCglk77VTvuqwqA6R/HraBKQS1VQjWNF9ItG
-	stfposILzCenMit30QO+Hlg6TsHIjEqnLBrTXerzdQYfupvhzHR9nGmN+DxexTQguSvcKRh0Z2/
-	k2TZqXSDtaPKnDRxSclUdQ28lnMxpSfvNvG/tVbDKLU07mu6qHus6rZsKJY0p4fZRRBXB+WcKp/
-	VOsyeHWJBXjX+5JxdoEQCqvyo5F7dGmyxzv6VzPvhmj+cZAt76R8WCDdxx9xDx7KOLBpWk/3lFg
-	lcCRT6qbIqhdf35AGMTtosxiVY0XHlH9TzkbGg
-X-Received: by 2002:a17:907:97c8:b0:b87:40fd:c913 with SMTP id a640c23a62f3a-b87968b6b22mr1267788266b.2.1768921486189;
-        Tue, 20 Jan 2026 07:04:46 -0800 (PST)
-Received: from SMW024614.wbi.nxp.com ([128.77.115.157])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8795a214e8sm1427045966b.60.2026.01.20.07.04.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 07:04:45 -0800 (PST)
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-To: Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Chancel Liu <chancel.liu@nxp.com>
-Cc: linux-sound@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH 2/2] arm64: dts: imx95-15x15-frdm: support AONMIX MQS
-Date: Tue, 20 Jan 2026 07:03:29 -0800
-Message-ID: <20260120150329.1486-3-laurentiumihalcea111@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260120150329.1486-1-laurentiumihalcea111@gmail.com>
-References: <20260120150329.1486-1-laurentiumihalcea111@gmail.com>
+        d=1e100.net; s=20230601; t=1768925507; x=1769530307;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eDF4hEQ49oVuoE1o1FuTuulQQD1AKtsuCPOT8o0CxOI=;
+        b=e6vzsz1hLQ/DFSihq8U/NVRb7DMWG19FI9JTdhzttJqKixYpdbvB91ZiOMogu1uEub
+         e1KQoz8c3EkLwgJlZHG0s2gIaaAgj97Pt/X3siBvCJnljupo7DSAfcUVRpaBW+dobpaz
+         VBKBVwF0X0hqQ4pX6EYnItVtHbxdoFot1/qAVUnKJjModGKN2PaRkKK3/umwxZoeRibW
+         om6I/hJPtQMbrjcX0HYeO/iaO4eNRhLINg8niyGMJsOLldhWuO1hi4J/xBasF/SNENv2
+         BRc0XErCzH3vNLBc8X+2RaCWpWTB4GAwotmfzV21mDQKLOtrFDweOA9GvesA4UIavhvs
+         3N1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU3329RyQr9PBQ38drTvEiZzsuAPiG43JN/gq7WWiqB+ogEB3iR2oW6n4UgoraoasxTYC0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzMX9X3SNSGdZvxUZD34jQjr+i2ZW9w9Z2UNJ38Pa92eRaca7JV
+	1KZlcOWrD5GfMDYRBjFAf2xOJnRDp6jLGDtlOd9jbixpOK8l9FSilIc8BfOHUfZ87PE=
+X-Gm-Gg: AZuq6aIzf9/kOor6Bt6XpShodxOLTDBnPHlv8crQrD3GLMih20Wk1007H/teF89z5pK
+	7OCr9DRoI3f4hA7RSJbUNRvDgH+XEHky6kFYFVZNY4FhemCU9Y69IhzNktbymzbaSclL2arwOL6
+	ea+1SPtEvg9gHM5Snau7dT9aWFcUGuR5bpt6inKCYp5BgbsuO6xHghhtKT9J8tMRVf+pWg/khsm
+	4kORqCoGtLdy9mxRNADfBV4TOOi3xjIVWko35DghEovrbWS9KbGDRzCjf0qaw1Fg+6rzpK1l0zb
+	joZxu4pMtOspE5/+eJZvfLgOIGruxnWQkF/rMlDRBsqPf4vkt1y3v+9TYmHCMiYMrTD4wgR4xkb
+	zmq2snLt14x75oVqC+SKHK167vk6ONk9OcXapiE8VokMsx89RHZB8rp+/J2A/iY1xN9Xb9AV4d3
+	X96ObamExeSuhIp47J/ZTrb2ZiUz9J6G6IrfBMggC4+i8fqqMJ+xtQegck0dF7shSYNA==
+X-Received: by 2002:a05:6000:400e:b0:432:c17c:3094 with SMTP id ffacd0b85a97d-434cc99cd37mr25319021f8f.3.1768925507512;
+        Tue, 20 Jan 2026 08:11:47 -0800 (PST)
+Received: from ?IPV6:2a05:6e02:1041:c10:73c1:f0e1:c420:e523? ([2a05:6e02:1041:c10:73c1:f0e1:c420:e523])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-4356996cf42sm30553088f8f.20.2026.01.20.08.11.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Jan 2026 08:11:47 -0800 (PST)
+Message-ID: <dedf467f-594a-4039-8baa-f43744463b1a@linaro.org>
+Date: Tue, 20 Jan 2026 17:11:45 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] clocksource/drivers/imx-tpm: Support building
+ imx-tpm driver as module
+To: Daniel Baluta <daniel.baluta@gmail.com>,
+ Zhipeng Wang <zhipeng.wang_1@nxp.com>
+Cc: tglx@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, chun-hung.wu@mediatek.com,
+ walter.chang@mediatek.com, jstultz@google.com, amergnat@baylibre.com,
+ aisheng.dong@nxp.com, jindong.yue@nxp.com, xuegang.liu@nxp.com
+References: <20260119095511.3030739-1-zhipeng.wang_1@nxp.com>
+ <20260119095511.3030739-5-zhipeng.wang_1@nxp.com>
+ <CAEnQRZBf6ymmrHUVXPdvQ3pQWwhON-dCqJ2v8FZPRBEo-X=zPQ@mail.gmail.com>
+Content-Language: en-US
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <CAEnQRZBf6ymmrHUVXPdvQ3pQWwhON-dCqJ2v8FZPRBEo-X=zPQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On 1/19/26 11:38, Daniel Baluta wrote:
+> On Mon, Jan 19, 2026 at 11:56 AM Zhipeng Wang <zhipeng.wang_1@nxp.com> wrote:
+>>
+>> From: Jindong Yue <jindong.yue@nxp.com>
+>>
+>> Change defconfig as tristate type and add platform driver
+>> to support building it as a module.
+>>
+>> Signed-off-by: Jindong Yue <jindong.yue@nxp.com>
+>> Signed-off-by: Zhipeng Wang <zhipeng.wang_1@nxp.com>
+> 
+> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+> 
+> So you can now select the driver Y/M/n even if no COMPILE_TEST present.
+> 
+> I wonder why we needed the `if COMPILE_TEST` in the first place. But anyhow,
+> this change looks good.
 
-Add support for AONMIX MQS (i.e. MQS1).
+The logic is to keep the timer option silent and let the platform's 
+Kconfig to select the timer driver when enabling the platform.
 
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
----
- .../boot/dts/freescale/imx95-15x15-frdm.dts   | 73 +++++++++++++++++++
- arch/arm64/boot/dts/freescale/imx95.dtsi      |  5 ++
- 2 files changed, 78 insertions(+)
+Then we wanted to be able to compile-test those drivers even if the 
+platform is not selected.
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
-index ca1c4966c867..53aae25db7e4 100644
---- a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
-+++ b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
-@@ -243,6 +243,12 @@ codec {
- 		};
- 	};
- 
-+	sound-mqs {
-+		compatible = "audio-graph-card2";
-+		links = <&sai1_port1>;
-+		label = "mqs-audio";
-+	};
-+
- 	usdhc3_pwrseq: usdhc3-pwrseq {
- 		compatible = "mmc-pwrseq-simple";
- 		reset-gpios = <&pcal6524 8 GPIO_ACTIVE_LOW>;
-@@ -473,6 +479,21 @@ &mu7 {
- 	status = "okay";
- };
- 
-+&mqs1 {
-+	clocks = <&scmi_clk IMX95_CLK_SAI1>;
-+	clock-names = "mclk";
-+	pinctrl-0 = <&pinctrl_mqs1>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+
-+	mqs1_port: port {
-+		mqs1_ep: endpoint {
-+			dai-format = "left_j";
-+			remote-endpoint = <&sai1_port1_ep>;
-+		};
-+	};
-+};
-+
- &netc_blk_ctrl {
- 	status = "okay";
- };
-@@ -534,6 +555,51 @@ &pcie0 {
- 	status = "okay";
- };
- 
-+&sai1 {
-+	clocks = <&scmi_clk IMX95_CLK_BUSAON>, <&dummy>,
-+		 <&scmi_clk IMX95_CLK_SAI1>, <&dummy>,
-+		 <&dummy>, <&scmi_clk IMX95_CLK_AUDIOPLL1>,
-+		 <&scmi_clk IMX95_CLK_AUDIOPLL2>;
-+	clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3", "pll8k", "pll11k";
-+	assigned-clocks = <&scmi_clk IMX95_CLK_AUDIOPLL1_VCO>,
-+			  <&scmi_clk IMX95_CLK_AUDIOPLL2_VCO>,
-+			  <&scmi_clk IMX95_CLK_AUDIOPLL1>,
-+			  <&scmi_clk IMX95_CLK_AUDIOPLL2>,
-+			  <&scmi_clk IMX95_CLK_SAI1>;
-+	assigned-clock-parents = <0>, <0>, <0>, <0>, <&scmi_clk IMX95_CLK_AUDIOPLL1>;
-+	assigned-clock-rates = <3932160000>, <3612672000>,
-+			       <393216000>, <361267200>,
-+			       <24576000>;
-+	fsl,sai-mclk-direction-output;
-+	status = "okay";
-+
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		/* leave unconnected - no RX in the context of MQS */
-+		port@0 {
-+			reg = <0>;
-+
-+			endpoint {
-+			};
-+		};
-+
-+		sai1_port1: port@1 {
-+			reg = <1>;
-+			mclk-fs = <512>;
-+
-+			sai1_port1_ep: endpoint {
-+				dai-format = "left_j";
-+				system-clock-direction-out;
-+				bitclock-master;
-+				frame-master;
-+				remote-endpoint = <&mqs1_ep>;
-+			};
-+		};
-+	};
-+};
-+
- &scmi_iomuxc {
- 	pinctrl_emdio: emdiogrp {
- 		fsl,pins = <
-@@ -618,6 +684,13 @@ IMX95_PAD_GPIO_IO31__LPI2C4_SCL				0x40000b9e
- 		>;
- 	};
- 
-+	pinctrl_mqs1: mqs1grp {
-+		fsl,pins = <
-+			IMX95_PAD_SAI1_TXFS__AONMIX_TOP_MQS1_LEFT               0x31e
-+			IMX95_PAD_SAI1_RXD0__AONMIX_TOP_MQS1_RIGHT              0x31e
-+		>;
-+	};
-+
- 	pinctrl_pcal6524: pcal6524grp {
- 		fsl,pins = <
- 			IMX95_PAD_GPIO_IO34__GPIO5_IO_BIT14			0x31e
-diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-index 55e2da094c88..0c55861d673c 100644
---- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-@@ -391,6 +391,11 @@ scmi_misc: protocol@84 {
- 		};
- 	};
- 
-+	mqs1: mqs-1 {
-+		compatible = "fsl,imx95-aonmix-mqs";
-+		status = "disabled";
-+	};
-+
- 	pmu {
- 		compatible = "arm,cortex-a55-pmu";
- 		interrupts = <GIC_PPI 7 (GIC_CPU_MASK_SIMPLE(6) | IRQ_TYPE_LEVEL_HIGH)>;
+Now we want to choose between module or compiled-in.
+
+I'm not sure if we really want to manually select the timer driver or 
+switch to module.
+
+
 -- 
-2.43.0
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
 
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
