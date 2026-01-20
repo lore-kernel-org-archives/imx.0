@@ -1,59 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA133E9F6E
-	for <imx@lists.linux.dev>; Tue, 20 Jan 2026 12:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BB6425CFB
+	for <imx@lists.linux.dev>; Tue, 20 Jan 2026 12:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768910937; cv=none; b=aZkERpr2xTMDsbL+j5emNptiCeLUuLId6KiKkKQc+9mFg2RpiAvB1t7frMHXSld6I86vwjqoWNIDGBOFPML2+8Gmue80iEA8UO8uceRb0LT5Y+3MP7ZdiIobk6X7eZ5ntDPgXR62XKN6TnKjHgdR64UFeWcoYL5Kr1jfu+9sVv4=
+	t=1768911380; cv=none; b=PlGDJCwHnh/m4tz1ZGJpESd+e9IALihRwBKNiOHreEJRtB5nJ+ohffIe0P9/gmB4H7fL4zHDZahKH9GcYgWv2qcgnSLhy1KyzBRY8/DIBXWUxXjlJ97OIRbbIlnPNcbZ4x7fr+41WHtk3sAtN1bCRRJO8cTCEv7mcgHyOLbYRRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768910937; c=relaxed/simple;
-	bh=wWduyM9RlO+S4Fnf/tbYPskuyvgMrxmnLzQbsy0Fsm4=;
+	s=arc-20240116; t=1768911380; c=relaxed/simple;
+	bh=+zZx1UCGop6TYPZIxrfkSxnpM9rhdSNLbAwPt6AGnAU=;
 	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SO9rz7t6RawQixOVxGcXgwNHyZTv062enCIUXj+4Wlb7h4bZ0ID3Ihn37On/UWnhH2krUG+8Zq8fr5ziXCovsPaRypOGaH6X2naqSl8R6msH9UgZBK7WZntiTviRIIH5dhzaTgioZBnUqrhb4hXshkuRc+RppR3HJusAGAYG6ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DCswIA6y; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=VYvwM906AMSry6rKtUn/6kJ+aXKc8TwCIGRwXr548F9uZTbYyteAd31ExRgX0qs3C86tKQXHZ+L2TNORhMei89Ut/Hu0l3BtXtlgWVsp8KxU+JG/QNdvK6PAFxwYerTSftriEa51wuFytPsjGkN+1wxfSYpb3yaPNMn4c0aPi/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U1odw0Pr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DCswIA6y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720E6C19424
-	for <imx@lists.linux.dev>; Tue, 20 Jan 2026 12:08:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U1odw0Pr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25777C19422
+	for <imx@lists.linux.dev>; Tue, 20 Jan 2026 12:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768910937;
-	bh=wWduyM9RlO+S4Fnf/tbYPskuyvgMrxmnLzQbsy0Fsm4=;
+	s=k20201202; t=1768911380;
+	bh=+zZx1UCGop6TYPZIxrfkSxnpM9rhdSNLbAwPt6AGnAU=;
 	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
-	b=DCswIA6yG5bSVLokevhtRKzOiDjk5PmG+p/kcPu68Rgj2ZJ+Uus1Aod6ukvmY5VyB
-	 VUWDFQrfNra2zlmB/N89m03P0Xr688h7w60rmcU1dTYpfCSO3yeEJyyWc/c6CMX9db
-	 T6EKXnU3IYBTh0JYdRYi7pD+9JIWGilHKotlI5d2DbVZV6xWaE6YKZXms9igmLbiGJ
-	 OWqU7Mq6UHNHpesG/J+TJDacagdK74huWY3b+1AcsSgC79VWlyp2wVnJjo7mV6xGzE
-	 i4TPA5avHk7XmHYIlCEroDCZV2Z/HkYSKr+3PZCVhq0a//Uvc/PhKaHxrZebzfcf2w
-	 F+cDN5zEB6qbA==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-59b679cff1fso4781868e87.0
-        for <imx@lists.linux.dev>; Tue, 20 Jan 2026 04:08:57 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWD/zhcWg3tq6zVTbRvhVFOL8jCL0WqUXuO93MLwDQOiLbRFi6bIACAiUaROh+ncRz3SqY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzvFUb+foLqK87ktHgy9ZM9uQvmXtjz93UvvqRbP7F/6YrjCt4B
-	tJaYmemlNEVwVKRsAV+vBf/3ejoZnnrzo3sEahrXM2BFwTiqHuk4FXuEukotDR38GzbbCJGfpRu
-	MbTN9t+GV65TkTiM1JVZyAbazfuGh9MItNpK1zdABpw==
+	b=U1odw0PrRpRYvsyVvrJc1UXSLBbIb71vSdHNQXB2yQvYuoiT+Xwe124qIi4PoASSZ
+	 EDOnb98z4dV7yc6kakO9s/ejE4owE6JiTya+OYru/zBTNVGu7WAj+pvBBiAfKIc9W+
+	 TK6Q4JQrBzWo/MhVi1ZHOlW1uLfzEO+oj1f14oUEq9a4qloHhXdIQ765J4OZH91Tda
+	 lrpdbIT5itOJVCnSAPb0c6uwij7EW63AHBMaKaaDnWExWuorqm3YBJC4Y6I7L/enBs
+	 aW67yzfrY5eg10aNbiPURAwVAbBIJvbRoLO/pTKoiMO7vGJztWMzbTT4Tk4OqFUZfN
+	 lSnmA7KNzYb+g==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-59b6f04cae6so5487636e87.2
+        for <imx@lists.linux.dev>; Tue, 20 Jan 2026 04:16:20 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWbEadoXyFw2WTv3UBVnrNPES91Bj9V0ojjBuDHzFD+Sd2Bfi2fekWLrzLSRoWlmWIeQd0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwXDspYesx7imU61tlpRx7RoUemJ1EcGuCx+lxSta+MdY9N8Nbx
+	Rf1EoQWTloOjlkPCYI9EM3fRuSUveLgITVZt2uG9SJrZU0R6VdG5hUEpMfYSEmdKcmNibepfs1A
+	iy5zUY3i8Tt7gBZ9p7TqKt6ajFM/sK//HEboA1GsZUw==
 X-Received: by 2002:a05:6512:2526:b0:59b:6853:f085 with SMTP id
- 2adb3069b0e04-59dc8f2348fmr701250e87.16.1768910935983; Tue, 20 Jan 2026
- 04:08:55 -0800 (PST)
+ 2adb3069b0e04-59dc8f2348fmr709971e87.16.1768911378444; Tue, 20 Jan 2026
+ 04:16:18 -0800 (PST)
 Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 20 Jan 2026 07:08:54 -0500
+ HTTPREST; Tue, 20 Jan 2026 06:16:17 -0600
 Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 20 Jan 2026 07:08:54 -0500
+ HTTPREST; Tue, 20 Jan 2026 06:16:17 -0600
 From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260120115923.3463866-7-khristineandreea.barbulescu@oss.nxp.com>
+In-Reply-To: <20260120115923.3463866-11-khristineandreea.barbulescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com> <20260120115923.3463866-7-khristineandreea.barbulescu@oss.nxp.com>
-Date: Tue, 20 Jan 2026 07:08:54 -0500
-X-Gmail-Original-Message-ID: <CAMRc=McfjhfLwDR-wK=-WrC0yMZ3nt1YjAJ5RyQfsrgk1o6raA@mail.gmail.com>
-X-Gm-Features: AZwV_QisPQ-QjOl5tcjlAYHwC875PPGQpfp236P6QoGB-8mZ48tjgJMnK8XIV-Y
-Message-ID: <CAMRc=McfjhfLwDR-wK=-WrC0yMZ3nt1YjAJ5RyQfsrgk1o6raA@mail.gmail.com>
-Subject: Re: [PATCH v8 06/10] pinctrl: s32g2: change the driver to also be
- probed as an MFD cell
+References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com> <20260120115923.3463866-11-khristineandreea.barbulescu@oss.nxp.com>
+Date: Tue, 20 Jan 2026 06:16:17 -0600
+X-Gmail-Original-Message-ID: <CAMRc=McD0cRxtb3RCzzYPewFisto=4OjvA4gjaTcOk8ghTw_qA@mail.gmail.com>
+X-Gm-Features: AZwV_QiTyzFRnq5hh7hZRZvq1Kgy4gAD4D9HxCaMuBiHbH1GRoIc82NCrITXf6Y
+Message-ID: <CAMRc=McD0cRxtb3RCzzYPewFisto=4OjvA4gjaTcOk8ghTw_qA@mail.gmail.com>
+Subject: Re: [PATCH v8 10/10] pinctrl: s32cc: set num_custom_params to 0
 To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
 Cc: Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>, devicetree@vger.kernel.org, 
 	Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev, 
@@ -71,21 +70,37 @@ Cc: Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>, de
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 20 Jan 2026 12:59:18 +0100, Khristine Andreea Barbulescu
+On Tue, 20 Jan 2026 12:59:22 +0100, Khristine Andreea Barbulescu
 <khristineandreea.barbulescu@oss.nxp.com> said:
 > From: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
 >
-> The old pinctrl bindings for SIUL2 are deprecated by a previous commit.
-> The new bindings for the SIUL2 represent it as an MFD device:
-> - one cell for combined pinctrl&GPIO
-> - two cella acting as syscon providers for SoC registers access
+> The `num_custom_params` was not set to 0 and the pinctrl_desc structure
+> was not initialized with 0. This would result in errors when parsing
+> pinconf properties from the device tree.
 >
-> This commit allows the existing driver to also be probed as an MFD cell.
-> The changes only impact the way the driver initializes the regmaps for
-> accessing MSCR and IMCR registers.
->
-> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
-> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
-> ---
 
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Shoudn't this come as first in the series and with a Fixes tag?
+
+Bartosz
+
+> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+> ---
+>  drivers/pinctrl/nxp/pinctrl-s32cc.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+> index 3e0c48068f08..27ea0b44a7aa 100644
+> --- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
+> +++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+> @@ -1272,6 +1272,7 @@ int s32_pinctrl_probe(struct platform_device *pdev,
+>  	s32_pinctrl_desc->pctlops = &s32_pctrl_ops;
+>  	s32_pinctrl_desc->pmxops = &s32_pmx_ops;
+>  	s32_pinctrl_desc->confops = &s32_pinconf_ops;
+> +	s32_pinctrl_desc->num_custom_params = 0;
+>  	s32_pinctrl_desc->owner = THIS_MODULE;
+>
+>  	ipctl->regions = devm_kcalloc(&pdev->dev, soc_data->mem_regions,
+> --
+> 2.50.1
+>
+>
