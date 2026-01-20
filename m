@@ -1,204 +1,281 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC358303C87;
-	Tue, 20 Jan 2026 19:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC043A1A4E;
+	Tue, 20 Jan 2026 19:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768936984; cv=none; b=teDMDnyOGKs9WZ3x8X8RUAtpVr0UzCWCsitGUPSkEFmSYrh8eyKpcrUNmU4b7sgEuqEVFpJE4lPcMOoD6YR4Q7jiqLjDX7EM8+TNcJTDER2YkgFBjvpoGh/ip/hJydgsYPZUB6ar/SdBO1kIkOqrwQUj1kZrleJkZhJeCs4DSSo=
+	t=1768938582; cv=none; b=VRvmH0cBkiBBhxKfLAZb4NeXO5E5QEob0vMYI/SlimA+txQaNf5MtdjcEfroZ/n79Ts/etzSziKS6QGavBYsku1q4vpyMz112+tIYoEjfXZUPQvVdubyn/EtXMg/ichwkUYW9l7qS789ISKycYSszKH4ZcfvON9pEjHyREkTFmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768936984; c=relaxed/simple;
-	bh=8rZs4ctIFUWV+s7flKGQlMaVzkDSCztd/ihtff8Ht6w=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=G7Eiee9cOQ7+u1BNFsUax/4KwwNrloQeR9+EXUPBiJB+58yb/xZao0fPVJmdr7NzQfekOpcl4sEWeSpR4j2Q3AA+hZPRMKpQYbspgG4HskHfENCg9QEXW6u8SFbSslNR34AVlljEMDLkCO0JfmRzK6geu5/LyrjkWtL2n2J/VZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jgX58MKi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768938582; c=relaxed/simple;
+	bh=KcOj+JsQoGK/0bADpgrpqVHEBcwxEgzUFgAm4cNBfcs=;
+	h=From:Date:Content-Type:MIME-Version:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=IUe29zJQsOeVf5mAReqGO5EzLelM4OMFlXdni7btwKVheovgeLw5fRudS4V5LsDlaHvA6tZgAMRRaif9QK7x+a5BjKTbvCLBG6Fk5rkF+F83ZfyTmBPRRhjgNDUSfmdvOobfV/engXgGhWwozmk3Ac1GBIx6wcpmRhQlqjAvjCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UkobEx4l; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jgX58MKi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA9BC16AAE;
-	Tue, 20 Jan 2026 19:22:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UkobEx4l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA5DC2BCAF;
+	Tue, 20 Jan 2026 19:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768936983;
-	bh=8rZs4ctIFUWV+s7flKGQlMaVzkDSCztd/ihtff8Ht6w=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=jgX58MKi+zjgv/xDIQx4cHK0wTdbY5WHIpWy6zaWGiyru1YA6cG7Qbw7G8M9RhL3S
-	 SSiru+ZKHzsLIh6rtTpzRanq5020WDpXXkfsUjC/Hil6perlOH41PXAjqsRSipdXvS
-	 IPP61htVkOsCqcy9Pqn5fLS8BPsTMosoZ9eOUO70Q6cEURtv9hoJC0lOmTM5QlYWiG
-	 wz6tqUkz/prRaWfMAFRhQ1iN0dHrXg8oROA8glqKMy/5Onkhv0z+Jp0+qs66q2UQYi
-	 BzO1NPQx1qqbWombFmTG5JqwfCmxs4g31+tAPZmi39pA4KsUWJBmYbw0vvIV/lZYxv
-	 FMvcuLOxsC4SQ==
-From: Mark Brown <broonie@kernel.org>
-To: Varshini Rajendran <varshini.rajendran@microchip.com>, 
- Mikhail Kshevetskiy <mikhail.kshevetskiy@iopsys.eu>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- Haotian Zhang <vulab@iscas.ac.cn>, Sunny Luo <sunny.luo@amlogic.com>, 
- Janne Grunau <j@jannau.net>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Geert Uytterhoeven <geert+renesas@glider.be>, 
- Chen-Yu Tsai <wens@kernel.org>, 
- Amelie Delaunay <amelie.delaunay@foss.st.com>, 
- Chin-Ting Kuo <chin-ting_kuo@aspeedtech.com>, CL Wang <cl634@andestech.com>, 
- Patrice Chotard <patrice.chotard@foss.st.com>, 
- Heiko Stuebner <heiko@sntech.de>, 
- William Zhang <william.zhang@broadcom.com>, 
- =?utf-8?q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
- Manikandan Muralidharan <manikandan.m@microchip.com>, 
- David Lechner <dlechner@baylibre.com>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Jonas Gorski <jonas.gorski@gmail.com>, Hang Zhou <929513338@qq.com>, 
- Jun Guo <jun.guo@cixtech.com>, Philipp Stanner <phasta@kernel.org>, 
- Charles Keepax <ckeepax@opensource.cirrus.com>, 
- Bartosz Golaszewski <brgl@kernel.org>, 
- =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
- Shiji Yang <yangshiji66@outlook.com>, James Clark <james.clark@linaro.org>, 
- Jonathan Marek <jonathan@marek.ca>, Carlos Song <carlos.song@nxp.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Huacai Chen <chenhuacai@kernel.org>, 
- Xianwei Zhao <xianwei.zhao@amlogic.com>, 
- Prajna Rajendra Kumar <prajna.rajendrakumar@microchip.com>, 
- Sergio Perez Gonzalez <sperezglz@gmail.com>, 
- Qianfeng Rong <rongqianfeng@vivo.com>, Haibo Chen <haibo.chen@nxp.com>, 
- Gabor Juhos <j4g8y7@gmail.com>, Md Sadre Alam <quic_mdalam@quicinc.com>, 
- Rosen Penev <rosenp@gmail.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
- Luis de Arquer <luis.dearquer@inertim.com>, 
- Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, 
- Krzysztof Kozlowski <krzk@kernel.org>, Longbin Li <looong.bin@gmail.com>, 
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
- =?utf-8?q?Cl=C3=A9ment_Le_Goffic?= <clement.legoffic@foss.st.com>, 
- Alessandro Grassi <alessandro.grassi@mailbox.org>, 
- Darshan R <rathod.darshan.0896@gmail.com>, 
- Aaron Kling <webgeek1234@gmail.com>, Vishwaroop A <va@nvidia.com>, 
- Haixu Cui <quic_haixcui@quicinc.com>, 
- Darshan Rathod <darshanrathod475@gmail.com>, linux-spi@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-amlogic@lists.infradead.org, asahi@lists.linux.dev, 
- linux-aspeed@lists.ozlabs.org, openbmc@lists.ozlabs.org, 
- linux-rpi-kernel@lists.infradead.org, linux-sound@vger.kernel.org, 
- patches@opensource.cirrus.com, imx@lists.linux.dev, 
- linux-arm-msm@vger.kernel.org, linux-riscv@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, linux-rockchip@lists.infradead.org, 
- linux-renesas-soc@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
- linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev, 
- linux-tegra@vger.kernel.org, virtualization@lists.linux.dev, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Lorenzo Bianconi <lorenzo@kernel.org>, Ray Liu <ray.liu@airoha.com>, 
- Sven Peter <sven@kernel.org>, Neal Gompa <neal@gompa.dev>, 
- Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>, 
- Ryan Wanner <ryan.wanner@microchip.com>, 
- Michael Hennerich <michael.hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Kamal Dasu <kamal.dasu@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
- Kursad Oney <kursad.oney@broadcom.com>, 
- Anand Gore <anand.gore@broadcom.com>, 
- =?utf-8?q?Rafa=C5=82_Mi=C5=82ecki?= <rafal@milecki.pl>, 
- David Rhodes <david.rhodes@cirrus.com>, 
- Richard Fitzgerald <rf@opensource.cirrus.com>, 
- Vladimir Oltean <olteanv@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
- Jean-Marie Verdun <verdun@hpe.com>, Nick Hawkins <nick.hawkins@hpe.com>, 
- Yang Shen <shenyang39@huawei.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Lixu Zhang <lixu.zhang@intel.com>, 
- Yinbo Zhu <zhuyinbo@loongson.cn>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
- Conor Dooley <conor.dooley@microchip.com>, 
- Daire McNamara <daire.mcnamara@microchip.com>, 
- Matthias Brugger <matthias.bgg@gmail.com>, 
- Avi Fishman <avifishman70@gmail.com>, Tomer Maimon <tmaimon77@gmail.com>, 
- Tali Perry <tali.perry1@gmail.com>, Patrick Venture <venture@google.com>, 
- Nancy Yuen <yuenn@google.com>, Benjamin Fair <benjaminfair@google.com>, 
- Han Xu <han.xu@nxp.com>, Yogesh Gaur <yogeshgaur.83@gmail.com>, 
- Linus Walleij <linusw@kernel.org>, Daniel Mack <daniel@zonque.org>, 
- Haojian Zhuang <haojian.zhuang@gmail.com>, 
- Robert Jarzmik <robert.jarzmik@free.fr>, 
- Chris Packham <chris.packham@alliedtelesis.co.nz>, 
- Fabrizio Castro <fabrizio.castro.jz@renesas.com>, 
- Andi Shyti <andi.shyti@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
- Paul Walmsley <pjw@kernel.org>, Samuel Holland <samuel.holland@sifive.com>, 
- Orson Zhai <orsonzhai@gmail.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Chunyan Zhang <zhang.lyra@gmail.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Alain Volmat <alain.volmat@foss.st.com>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, Li-hao Kuo <lhjeff911@gmail.com>, 
- Masahisa Kojima <masahisa.kojima@linaro.org>, 
- Jassi Brar <jaswinder.singh@linaro.org>, 
- Laxman Dewangan <ldewangan@nvidia.com>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>, 
- Sowjanya Komatineni <skomatineni@nvidia.com>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
- Michal Simek <michal.simek@amd.com>, Max Filippov <jcmvbkbc@gmail.com>
-In-Reply-To: <20260112203534.4186261-1-andriy.shevchenko@linux.intel.com>
-References: <20260112203534.4186261-1-andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v2 0/4] spi: Make SPI core to take care of fwnode
- assignment
-Message-Id: <176893695845.778248.8132133480043006428.b4-ty@kernel.org>
-Date: Tue, 20 Jan 2026 19:22:38 +0000
+	s=k20201202; t=1768938582;
+	bh=KcOj+JsQoGK/0bADpgrpqVHEBcwxEgzUFgAm4cNBfcs=;
+	h=From:Date:Cc:To:In-Reply-To:References:Subject:From;
+	b=UkobEx4lZ6dx5VJQ8XB5BiZMhrxCzr11qwqdyvq0D1N1bH/sKVUZnIUP86IWXAPST
+	 fAdZCgAmD40rZGI7phYrpHWGF3Cd46gsAminAIOXtuUZZUSa8SsF0Lsf/fv2TSpY90
+	 SYvwgs4EY+gTe2vI/nNh3NL3DMHgagc/YxjFwVm6c1kSsDM6jbVFfAEGE+n4JvMX22
+	 Ip9Yh9QItlnLa49EXDhJlAd4met+g9bjQYn5m6kDOIIqfbd7Ug7GjHhhsVCYxYPjWN
+	 rOPLPP5s7p+1SmWEP/LEIDTciuIEvS2Pk4KOifVucgeO4d8LJqXh0I/rKH/uY0Wsao
+	 8gY/vF4ULudyg==
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 20 Jan 2026 13:49:41 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev-47773
+Cc: NXP S32 Linux Team <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>, 
+ Dong Aisheng <aisheng.dong@nxp.com>, linux-arm-kernel@lists.infradead.org, 
+ Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, Jacky Bai <ping.bai@nxp.com>, 
+ Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ linux-gpio@vger.kernel.org, Chester Lin <chester62515@gmail.com>, 
+ Enric Balletbo <eballetb@redhat.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ devicetree@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Vincent Guittot devicetree @ vger . kernel . org" <vincent.guittot@linaro.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Alberto Ruiz <aruizrui@redhat.com>, imx@lists.linux.dev, 
+ Larisa Grigore <larisa.grigore@nxp.com>, 
+ Eric Chanudet <echanude@redhat.com>, Fabio Estevam <festevam@gmail.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>, 
+ Matthias Brugger <mbrugger@suse.com>
+To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+In-Reply-To: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
+References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
+Message-Id: <176893840760.631021.17752522800220517955.robh@kernel.org>
+Subject: Re: [PATCH v8 00/10] gpio: siul2-s32g2: add initial GPIO driver
 
-On Mon, 12 Jan 2026 21:21:22 +0100, Andy Shevchenko wrote:
-> It seems all of the SPI drivers want to propagate fwnode (or of_node)
-> of the physical device to the SPI device. Make sure we don't duplicate
-> it over and over in each new driver (+2 in this cycle) by making core
-> to take care of that. Note, similar is done already by IIO and
-> I²C subsystems.
+
+On Tue, 20 Jan 2026 13:59:12 +0200, Khristine Andreea Barbulescu wrote:
+> This patch series adds support for basic GPIO
+> operations(set, get, direction_output/input, set_config).
 > 
-> There is one noticeable and quite specific case that is taken care in
-> the first patch and now we have a confirmation from Cirrus that everything
-> is okay.  The rest is just a mechanical conversion after checking that
-> the parent device is assigned to the same that provides the respective
-> fwnode.
+> There are two SIUL2 hardware modules: SIUL2_0 and SIUL2_1.
+> However, this driver exports both as a single GPIO driver.
+> This is because the interrupt registers are located only
+> in SIUL2_1, even for GPIOs that are part of SIUL2_0.
 > 
-> [...]
+> There are two gaps in the GPIO ranges:
+> - 102-111(inclusive) are invalid
+> - 123-143(inclusive) are invalid
+> 
+> Writing and reading GPIO values is done via the PGPDO/PGPDI
+> registers(Parallel GPIO Pad Data Output/Input) which are
+> 16 bit registers, each bit corresponding to a GPIO.
+> 
+> Note that the PGPDO order is similar to a big-endian grouping
+> of two registers:
+> PGPDO1, PGPDO0, PGPDO3, PGPDO2, PGPDO5, PGPDO4, gap, PGPDO6.
+> 
+> v8 -> v7
+> - remove all ': true' lines from properties in dt bindings
+> - remove NVMEM MFD cell from SIUL2 in dtsi
+> - remove NVMEM driver and configs
+> - expose SoC information via syscon cells SIUL2_0
+> and SIUL2_1 in MFD driver
+> - add SIUL2_0 and SIUL2_1 syscon nodes in dtsi
+> - add patternProperties for "^siul2_[0-1]$" for syscon nodes
+> - update example to include syscon cells with proper format
+> - remove `reg` property from pinctrl node in dt binding
+> - update Kconfig help text to reflect new syscon structure
+> instead of NVMEM for SoC information
+> - squash deprecated SIUL2 pinctrl binding with new MFD binding
+> - dropped "nxp,s32g3-siul2" from MFD driver match table
+> - fixed commit messages
+> - fixed dtb warnings
+> 
+> v7 -> v6
+> - fixed MAINTAINERS wrong file path
+> - add unevaluatedProperties, change siul2 node name, remove
+>   jtag_pins label in the device tree schema
+> - change compatible definition in schema
+> - change node name in dtsi
+> - mentioned binding deprecation in commit messages
+> - split mfd cell conversion commit in two: one for the
+>   previous refactoring, one for the mfd cell conversion
+> - removed Acked-by: Linus Walleij from commit:
+>   "pinctrl: s32: convert the driver into an mfd cell"
+>   because of changes to that commit
+> - deprecate the nxp,s32g2-siul2-pinctrl binding
+> - add NVMEM MFD cell for SIUL2
+> - made the GPIO driver not export invalid pins
+>   (there are some gaps 102-111, 123-143)
+> - removed the need for gpio-reserved-ranges
+> - force initialized pinctrl_desc->num_custom_params to 0
+> 
+> v6 -> v5
+> - removed description for reg in the dt-bindings and added
+>   maxItems
+> - dropped label for example in the dt-bindings
+> - simplified the example in the dt-bindings
+> - changed dt-bindings filename to nxp,s32g2-siul2.yaml
+> - changed title in the dt-bindings
+> - dropped minItmes from gpio-ranges/gpio-reserved-ranges
+>   and added maxItems to gpio-reserved-ranges
+> - added required block for -grp[0-9]$ nodes
+> - switch to using "" as quotes
+> - kernel test robot: fixed frame sizes, added description
+>   for reg_name, fixed typo in gpio_configs_lock, removed
+>   uninitialized ret variable usage
+> - ordered includes in nxp-siul2.c, switched to dev-err-probe
+>   added a mention that other commits will add nvmem functionality
+>   to the mfd driver
+> - switched spin_lock_irqsave to scoped_guard statement
+> - switched dev_err to dev_err_probe in pinctrl-s32cc in places
+>   reached during the probing part
+> 
+> v5 -> v4
+> - fixed di_div error
+> - fixed dt-bindings error
+> - added Co-developed-by tags
+> - added new MFD driver nxp-siul2.c
+> - made the old pinctrl driver an MFD cell
+> - added the GPIO driver in the existing SIUL2 pinctrl one
+> - Switch from "devm_pinctrl_register" to
+>   "devm_pinctrl_register_and_init"
+> 
+> v4 -> v3
+> - removed useless parentheses
+> - added S32G3 fallback compatible
+> - fixed comment alignment
+> - fixed dt-bindings license
+> - fixed modpost: "__udivdi3"
+> - moved MAINTAINERS entry to have the new GPIO driver
+>   together with other files related to S32G
+> 
+> v3 -> v2
+> - fix dt-bindings schema id
+> - add maxItems to gpio-ranges
+> - removed gpio label from dt-bindings example
+> - added changelog for the MAINTAINERS commit and
+>   added separate entry for the SIUL2 GPIO driver
+> - added guard(raw_spinlock_irqsave) in
+>   'siul2_gpio_set_direction'
+> - updated the description for
+>   'devm_platform_get_and_ioremap_resource_byname'
+> 
+> v2 -> v1
+> dt-bindings:
+> - changed filename to match compatible
+> - fixed commit messages
+> - removed dt-bindings unnecessary properties descriptions
+> - added minItems for the interrupts property
+> driver:
+> - added depends on ARCH_S32 || COMPILE_TEST to Kconfig
+> - added select REGMAP_MMIO to Kconfig
+> - remove unnecessary include
+> - add of_node_put after `siul2_get_gpio_pinspec`
+> - removed inline from function definitions
+> - removed match data and moved the previous platdata
+>   definition to the top of the file to be visible
+> - replace bitmap_set/clear with __clear_bit/set_bit
+>   and devm_bitmap_zalloc with devm_kzalloc
+> - switched to gpiochip_generic_request/free/config
+> - fixed dev_err format for size_t reported by
+>   kernel test robot
+> - add platform_get_and_ioremap_resource_byname wrapper
+> 
+> Andrei Stefanescu (9):
+>   dt-bindings: mfd: add support for the NXP SIUL2 module
+>   mfd: nxp-siul2: add support for NXP SIUL2
+>   arm64: dts: s32g: change pinctrl node into the new mfd node
+>   pinctrl: s32cc: use dev_err_probe() and improve error messages
+>   pinctrl: s32cc: change to "devm_pinctrl_register_and_init"
+>   pinctrl: s32g2: change the driver to also be probed as an MFD cell
+>   pinctrl: s32cc: implement GPIO functionality
+>   MAINTAINERS: add MAINTAINER for NXP SIUL2 MFD driver
+>   pinctrl: s32cc: set num_custom_params to 0
+> 
+> Khristine Andreea Barbulescu (1):
+>   pinctrl: s32cc: skip syscon child nodes when parsing funcs and groups
+> 
+>  .../bindings/mfd/nxp,s32g2-siul2.yaml         | 165 +++++
+>  .../pinctrl/nxp,s32g2-siul2-pinctrl.yaml      |   2 +
+>  MAINTAINERS                                   |   2 +
+>  arch/arm64/boot/dts/freescale/s32g2.dtsi      |  35 +-
+>  arch/arm64/boot/dts/freescale/s32g3.dtsi      |  35 +-
+>  drivers/mfd/Kconfig                           |  13 +
+>  drivers/mfd/Makefile                          |   1 +
+>  drivers/mfd/nxp-siul2.c                       | 440 ++++++++++++
+>  drivers/pinctrl/nxp/pinctrl-s32.h             |   4 +-
+>  drivers/pinctrl/nxp/pinctrl-s32cc.c           | 652 ++++++++++++++----
+>  drivers/pinctrl/nxp/pinctrl-s32g2.c           |  32 +-
+>  include/linux/mfd/nxp-siul2.h                 |  55 ++
+>  12 files changed, 1259 insertions(+), 177 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
+>  create mode 100644 drivers/mfd/nxp-siul2.c
+>  create mode 100644 include/linux/mfd/nxp-siul2.h
+> 
+> --
+> 2.50.1
+> 
+> 
+> 
 
-Applied to
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-Thanks!
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-[1/4] spi: Propagate default fwnode to the SPI controller device
-      commit: f2d1a3318eb1ec860999db48cb8d13b43261624d
-[2/4] spi: Drop duplicate of_node assignment
-      commit: 3974a585be78a1dc90a19d5cf1846a99954e3842
-[3/4] spi: Drop duplicate fwnode assignment
-      commit: 103c510e1c6832720059756d155dd13a42baa7ab
-[4/4] spi: Drop duplicate device_set_node() call
-      commit: 37fbc1ab0f225d23f0839260a11375b4f1f7cf8c
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+  pip3 install dtschema --upgrade
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+This patch series was applied (using b4) to base:
+ Base: attempting to guess base-commit...
+ Base: tags/v6.19-rc1-8-gea6806346080 (best guess, 8/9 blobs matched)
+ Base: tags/v6.19-rc1-8-gea6806346080 (use --merge-base to override)
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
 
-Thanks,
-Mark
+
+Warnings in base: 24
+Warnings after series: 42
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com:
+
+arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: pinctrl@4009c000 (nxp,s32g3-siul2): 'siul2_0@4009c000', 'siul2_1@44010000' do not match any of the regexes: '-hog(-[0-9]+)?$', '-pins$', '^pinctrl-[0-9]+$', '^siul2_[0-1]$'
+	from schema $id: http://devicetree.org/schemas/mfd/nxp,s32g2-siul2.yaml
+arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: siul2_0@4009c000 (syscon): compatible: ['syscon'] is too short
+	from schema $id: http://devicetree.org/schemas/mfd/syscon-common.yaml
+arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: siul2_1@44010000 (syscon): compatible: ['syscon'] is too short
+	from schema $id: http://devicetree.org/schemas/mfd/syscon-common.yaml
+arch/arm64/boot/dts/freescale/s32g274a-evb.dtb: pinctrl@4009c000 (nxp,s32g2-siul2): 'siul2_0@4009c000', 'siul2_1@44010000' do not match any of the regexes: '-hog(-[0-9]+)?$', '-pins$', '^pinctrl-[0-9]+$', '^siul2_[0-1]$'
+	from schema $id: http://devicetree.org/schemas/mfd/nxp,s32g2-siul2.yaml
+arch/arm64/boot/dts/freescale/s32g274a-evb.dtb: siul2_0@4009c000 (syscon): compatible: ['syscon'] is too short
+	from schema $id: http://devicetree.org/schemas/mfd/syscon-common.yaml
+arch/arm64/boot/dts/freescale/s32g274a-evb.dtb: siul2_1@44010000 (syscon): compatible: ['syscon'] is too short
+	from schema $id: http://devicetree.org/schemas/mfd/syscon-common.yaml
+arch/arm64/boot/dts/freescale/s32g274a-rdb2.dtb: pinctrl@4009c000 (nxp,s32g2-siul2): 'siul2_0@4009c000', 'siul2_1@44010000' do not match any of the regexes: '-hog(-[0-9]+)?$', '-pins$', '^pinctrl-[0-9]+$', '^siul2_[0-1]$'
+	from schema $id: http://devicetree.org/schemas/mfd/nxp,s32g2-siul2.yaml
+arch/arm64/boot/dts/freescale/s32g274a-rdb2.dtb: siul2_0@4009c000 (syscon): compatible: ['syscon'] is too short
+	from schema $id: http://devicetree.org/schemas/mfd/syscon-common.yaml
+arch/arm64/boot/dts/freescale/s32g274a-rdb2.dtb: siul2_1@44010000 (syscon): compatible: ['syscon'] is too short
+	from schema $id: http://devicetree.org/schemas/mfd/syscon-common.yaml
+
+
+
+
 
