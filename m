@@ -1,281 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC043A1A4E;
-	Tue, 20 Jan 2026 19:49:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3903B52F1
+	for <imx@lists.linux.dev>; Tue, 20 Jan 2026 20:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768938582; cv=none; b=VRvmH0cBkiBBhxKfLAZb4NeXO5E5QEob0vMYI/SlimA+txQaNf5MtdjcEfroZ/n79Ts/etzSziKS6QGavBYsku1q4vpyMz112+tIYoEjfXZUPQvVdubyn/EtXMg/ichwkUYW9l7qS789ISKycYSszKH4ZcfvON9pEjHyREkTFmA=
+	t=1768941553; cv=none; b=fC8eBzVEkVRX0NEM2tTop7uHn4Pcgzp4gYS1VK3c1meN4+BQtkcARBidQSRd9IOxX6s0zzqYACkrITexW/jCxkyw5HoH2Gp6lcyl9MT9h3yMCOjZM+iU4Vplbvi4PwBvZRjLnXIA+sXWFGD8MHW2MaGuYZl/Kgsh+QNmlM1kXsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768938582; c=relaxed/simple;
-	bh=KcOj+JsQoGK/0bADpgrpqVHEBcwxEgzUFgAm4cNBfcs=;
-	h=From:Date:Content-Type:MIME-Version:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=IUe29zJQsOeVf5mAReqGO5EzLelM4OMFlXdni7btwKVheovgeLw5fRudS4V5LsDlaHvA6tZgAMRRaif9QK7x+a5BjKTbvCLBG6Fk5rkF+F83ZfyTmBPRRhjgNDUSfmdvOobfV/engXgGhWwozmk3Ac1GBIx6wcpmRhQlqjAvjCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UkobEx4l; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768941553; c=relaxed/simple;
+	bh=mMtTD74lHWGhMPk0VhK0pFoRiy76ELQ90jr0VFXLeVE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OUUtDE/hOSaj/kxeJmsogBQFsJglyIl/hh98Vt/UAKIfCWOcWOUGvNqKZN9TQciAfqd4ALTm3sHhUOrJJX81FcOuE9dNNay0Mwa42sOdseBCjNmBrqEHNTrp/U49OmvU0LvbZ8DRjwG+Ul8ZgdYqlANZGLf1pLmxUBG+IkpuRNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HAAYcAoz; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UkobEx4l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA5DC2BCAF;
-	Tue, 20 Jan 2026 19:49:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768938582;
-	bh=KcOj+JsQoGK/0bADpgrpqVHEBcwxEgzUFgAm4cNBfcs=;
-	h=From:Date:Cc:To:In-Reply-To:References:Subject:From;
-	b=UkobEx4lZ6dx5VJQ8XB5BiZMhrxCzr11qwqdyvq0D1N1bH/sKVUZnIUP86IWXAPST
-	 fAdZCgAmD40rZGI7phYrpHWGF3Cd46gsAminAIOXtuUZZUSa8SsF0Lsf/fv2TSpY90
-	 SYvwgs4EY+gTe2vI/nNh3NL3DMHgagc/YxjFwVm6c1kSsDM6jbVFfAEGE+n4JvMX22
-	 Ip9Yh9QItlnLa49EXDhJlAd4met+g9bjQYn5m6kDOIIqfbd7Ug7GjHhhsVCYxYPjWN
-	 rOPLPP5s7p+1SmWEP/LEIDTciuIEvS2Pk4KOifVucgeO4d8LJqXh0I/rKH/uY0Wsao
-	 8gY/vF4ULudyg==
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 20 Jan 2026 13:49:41 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HAAYcAoz"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4801d1daf53so42139275e9.2
+        for <imx@lists.linux.dev>; Tue, 20 Jan 2026 12:39:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768941547; x=1769546347; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qrKCUKKckHcjjuwU+EHrOyUAQd4woAILl74Bd1qw4Gk=;
+        b=HAAYcAoz5BqfEToB6s/fJN73oxF47jnz0MAwD9GPgYgBDMPoy25o7Ym12SZmIgSmYS
+         5YiNAB3rjC9o7fLEGjTkjUe05T3d2MJ4AWBH5HCmkeUvqTKCX7qr8KGXm7iZoaKSiNQm
+         mZRgVxy3z6AmQWi5tYXlN9EFJpgaBmVdOHP++lg26njscSufe4EkV2WghJx/FwKdksJ9
+         9zUfxTJO2k3UzkTEZ8ex3agLVANzpv+Xd4xVzvs/AMGUQEb1v1qmn9G/i0qWY/kYgLc0
+         uOUdMkmGwLmrG0rYCvf0teXAnBwPotJNm8O/4y/cQtXSk1zw/LLIcLZ0I6/aPPEYqffb
+         qTzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768941547; x=1769546347;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qrKCUKKckHcjjuwU+EHrOyUAQd4woAILl74Bd1qw4Gk=;
+        b=H3hg9qqrGEpoX+cRgtPy4TfYjv3mSqS/T0RSTvxPcvFJQASFZTkdhu/WWsvJIbkuAj
+         htcVyzvF2I97VaxFW/dK6cbqacNj4Z7UXECJoMZ1bZNsmsM8UDRt9zJYcDEOYgFcvW5Z
+         ZS2WybH4TjbyhqdxCD1Pztk0J5YPACorbhzmNemq/TBA6ZT0l80OpLU5FDPeSx6/N0A5
+         IzYVNFTI0VeRPgUmXkcroXm8OFZzruRlY7ZhVeO0hPOaRaU8Gdb8VItRIgKujTnv5eq3
+         l/xFebCFVOT2fB/73Skee5UMj4E8U3Ru5stElUbpEF+HlhVu3KZr6RjDRKtVnzg/3kLb
+         w8Mw==
+X-Forwarded-Encrypted: i=1; AJvYcCUuLCnwty4Um8pHsUHf5NCNIO2vm/rgMXK+Cwn4Yi1Rj7oVewt3DMls7UI7qZwmpd6uuIc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyRleGfJbxVX5Wy1yohyOssoEr1ZXsJMaiBbknwWn9K47X8dAse
+	S1+8Oxq1hKyx3/zps4KR8Hg/OZqgenQwa/DFeLLFPNUd5radkPcghqqB
+X-Gm-Gg: AY/fxX6MwwCn38Xz5o1yPqI5vXvk7L3nTLeWiF7c6pCVpVFa5tqtvmCQ1kLChv4efWF
+	QswAFiVvVk7K7Frv5mpkNLrOO3xkLGMU4L+8hcIYvDC2HIUXy2DwRGftuYDQoJ7JMW1QziMUljJ
+	zSCmdbU2U02cyjhBUPQ0UfXTJR/5+i/gH2CqKl/AaNA74qt9hGyVGQ4PKk7DuC9m15XJRzpD+pI
+	hHbWod7vxTJidjIQ2fTHpaz2Poelx5VnZkjqm/PEM+3bKJgOfghKZ5pqE5W5hd4Rw62i8JApJvd
+	HLvsAcv5pN2nv9AVCunJ1gqkhZ2dRTQZmLa0/Bpbp+mB3nfYawIEEvRm5Vykzsbxv4vmsAuB24Z
+	Jvsk04gMvl4HkYS6d4tPFOE+4cyz46vqAVzo3UMYt3UUOTM4KBCZ2OYz3C/TyAmBAkVJvpOZRgm
+	2y1OwmCnUNT4Rdzr3D
+X-Received: by 2002:a05:600c:414f:b0:480:20f1:7abd with SMTP id 5b1f17b1804b1-48020f17c12mr160684545e9.31.1768941546639;
+        Tue, 20 Jan 2026 12:39:06 -0800 (PST)
+Received: from eichest-laptop.lan ([2a02:168:af72:0:378b:c660:2f9c:b651])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48042c3a7c1sm850425e9.13.2026.01.20.12.39.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 12:39:06 -0800 (PST)
+From: Stefan Eichenberger <eichest@gmail.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	linux-stm32@st-md-mailman.stormreply.com,
+	maxime.chevallier@bootlin.com,
+	francesco.dolcini@toradex.com
+Cc: netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3 0/3] net: stmmac: dwmac: enforce preamble before SFD for i.MX8MP
+Date: Tue, 20 Jan 2026 21:30:01 +0100
+Message-ID: <20260120203905.23805-1-eichest@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Cc: NXP S32 Linux Team <s32@nxp.com>, Christophe Lizzi <clizzi@redhat.com>, 
- Dong Aisheng <aisheng.dong@nxp.com>, linux-arm-kernel@lists.infradead.org, 
- Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, Jacky Bai <ping.bai@nxp.com>, 
- Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- linux-gpio@vger.kernel.org, Chester Lin <chester62515@gmail.com>, 
- Enric Balletbo <eballetb@redhat.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- devicetree@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Vincent Guittot devicetree @ vger . kernel . org" <vincent.guittot@linaro.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Alberto Ruiz <aruizrui@redhat.com>, imx@lists.linux.dev, 
- Larisa Grigore <larisa.grigore@nxp.com>, 
- Eric Chanudet <echanude@redhat.com>, Fabio Estevam <festevam@gmail.com>, 
- Linus Walleij <linus.walleij@linaro.org>, 
- Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>, 
- Matthias Brugger <mbrugger@suse.com>
-To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
-In-Reply-To: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
-References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
-Message-Id: <176893840760.631021.17752522800220517955.robh@kernel.org>
-Subject: Re: [PATCH v8 00/10] gpio: siul2-s32g2: add initial GPIO driver
+Content-Transfer-Encoding: 8bit
 
+This series adds a new phy_device flag PHY_F_KEEP_PREAMBLE_BEFORE_SFD
+that allows a MAC driver to request to keep the preamble bytes before
+the start frame delimiter (SFD) when receiving frames from the PHY.
 
-On Tue, 20 Jan 2026 13:59:12 +0200, Khristine Andreea Barbulescu wrote:
-> This patch series adds support for basic GPIO
-> operations(set, get, direction_output/input, set_config).
-> 
-> There are two SIUL2 hardware modules: SIUL2_0 and SIUL2_1.
-> However, this driver exports both as a single GPIO driver.
-> This is because the interrupt registers are located only
-> in SIUL2_1, even for GPIOs that are part of SIUL2_0.
-> 
-> There are two gaps in the GPIO ranges:
-> - 102-111(inclusive) are invalid
-> - 123-143(inclusive) are invalid
-> 
-> Writing and reading GPIO values is done via the PGPDO/PGPDI
-> registers(Parallel GPIO Pad Data Output/Input) which are
-> 16 bit registers, each bit corresponding to a GPIO.
-> 
-> Note that the PGPDO order is similar to a big-endian grouping
-> of two registers:
-> PGPDO1, PGPDO0, PGPDO3, PGPDO2, PGPDO5, PGPDO4, gap, PGPDO6.
-> 
-> v8 -> v7
-> - remove all ': true' lines from properties in dt bindings
-> - remove NVMEM MFD cell from SIUL2 in dtsi
-> - remove NVMEM driver and configs
-> - expose SoC information via syscon cells SIUL2_0
-> and SIUL2_1 in MFD driver
-> - add SIUL2_0 and SIUL2_1 syscon nodes in dtsi
-> - add patternProperties for "^siul2_[0-1]$" for syscon nodes
-> - update example to include syscon cells with proper format
-> - remove `reg` property from pinctrl node in dt binding
-> - update Kconfig help text to reflect new syscon structure
-> instead of NVMEM for SoC information
-> - squash deprecated SIUL2 pinctrl binding with new MFD binding
-> - dropped "nxp,s32g3-siul2" from MFD driver match table
-> - fixed commit messages
-> - fixed dtb warnings
-> 
-> v7 -> v6
-> - fixed MAINTAINERS wrong file path
-> - add unevaluatedProperties, change siul2 node name, remove
->   jtag_pins label in the device tree schema
-> - change compatible definition in schema
-> - change node name in dtsi
-> - mentioned binding deprecation in commit messages
-> - split mfd cell conversion commit in two: one for the
->   previous refactoring, one for the mfd cell conversion
-> - removed Acked-by: Linus Walleij from commit:
->   "pinctrl: s32: convert the driver into an mfd cell"
->   because of changes to that commit
-> - deprecate the nxp,s32g2-siul2-pinctrl binding
-> - add NVMEM MFD cell for SIUL2
-> - made the GPIO driver not export invalid pins
->   (there are some gaps 102-111, 123-143)
-> - removed the need for gpio-reserved-ranges
-> - force initialized pinctrl_desc->num_custom_params to 0
-> 
-> v6 -> v5
-> - removed description for reg in the dt-bindings and added
->   maxItems
-> - dropped label for example in the dt-bindings
-> - simplified the example in the dt-bindings
-> - changed dt-bindings filename to nxp,s32g2-siul2.yaml
-> - changed title in the dt-bindings
-> - dropped minItmes from gpio-ranges/gpio-reserved-ranges
->   and added maxItems to gpio-reserved-ranges
-> - added required block for -grp[0-9]$ nodes
-> - switch to using "" as quotes
-> - kernel test robot: fixed frame sizes, added description
->   for reg_name, fixed typo in gpio_configs_lock, removed
->   uninitialized ret variable usage
-> - ordered includes in nxp-siul2.c, switched to dev-err-probe
->   added a mention that other commits will add nvmem functionality
->   to the mfd driver
-> - switched spin_lock_irqsave to scoped_guard statement
-> - switched dev_err to dev_err_probe in pinctrl-s32cc in places
->   reached during the probing part
-> 
-> v5 -> v4
-> - fixed di_div error
-> - fixed dt-bindings error
-> - added Co-developed-by tags
-> - added new MFD driver nxp-siul2.c
-> - made the old pinctrl driver an MFD cell
-> - added the GPIO driver in the existing SIUL2 pinctrl one
-> - Switch from "devm_pinctrl_register" to
->   "devm_pinctrl_register_and_init"
-> 
-> v4 -> v3
-> - removed useless parentheses
-> - added S32G3 fallback compatible
-> - fixed comment alignment
-> - fixed dt-bindings license
-> - fixed modpost: "__udivdi3"
-> - moved MAINTAINERS entry to have the new GPIO driver
->   together with other files related to S32G
-> 
-> v3 -> v2
-> - fix dt-bindings schema id
-> - add maxItems to gpio-ranges
-> - removed gpio label from dt-bindings example
-> - added changelog for the MAINTAINERS commit and
->   added separate entry for the SIUL2 GPIO driver
-> - added guard(raw_spinlock_irqsave) in
->   'siul2_gpio_set_direction'
-> - updated the description for
->   'devm_platform_get_and_ioremap_resource_byname'
-> 
-> v2 -> v1
-> dt-bindings:
-> - changed filename to match compatible
-> - fixed commit messages
-> - removed dt-bindings unnecessary properties descriptions
-> - added minItems for the interrupts property
-> driver:
-> - added depends on ARCH_S32 || COMPILE_TEST to Kconfig
-> - added select REGMAP_MMIO to Kconfig
-> - remove unnecessary include
-> - add of_node_put after `siul2_get_gpio_pinspec`
-> - removed inline from function definitions
-> - removed match data and moved the previous platdata
->   definition to the top of the file to be visible
-> - replace bitmap_set/clear with __clear_bit/set_bit
->   and devm_bitmap_zalloc with devm_kzalloc
-> - switched to gpiochip_generic_request/free/config
-> - fixed dev_err format for size_t reported by
->   kernel test robot
-> - add platform_get_and_ioremap_resource_byname wrapper
-> 
-> Andrei Stefanescu (9):
->   dt-bindings: mfd: add support for the NXP SIUL2 module
->   mfd: nxp-siul2: add support for NXP SIUL2
->   arm64: dts: s32g: change pinctrl node into the new mfd node
->   pinctrl: s32cc: use dev_err_probe() and improve error messages
->   pinctrl: s32cc: change to "devm_pinctrl_register_and_init"
->   pinctrl: s32g2: change the driver to also be probed as an MFD cell
->   pinctrl: s32cc: implement GPIO functionality
->   MAINTAINERS: add MAINTAINER for NXP SIUL2 MFD driver
->   pinctrl: s32cc: set num_custom_params to 0
-> 
-> Khristine Andreea Barbulescu (1):
->   pinctrl: s32cc: skip syscon child nodes when parsing funcs and groups
-> 
->  .../bindings/mfd/nxp,s32g2-siul2.yaml         | 165 +++++
->  .../pinctrl/nxp,s32g2-siul2-pinctrl.yaml      |   2 +
->  MAINTAINERS                                   |   2 +
->  arch/arm64/boot/dts/freescale/s32g2.dtsi      |  35 +-
->  arch/arm64/boot/dts/freescale/s32g3.dtsi      |  35 +-
->  drivers/mfd/Kconfig                           |  13 +
->  drivers/mfd/Makefile                          |   1 +
->  drivers/mfd/nxp-siul2.c                       | 440 ++++++++++++
->  drivers/pinctrl/nxp/pinctrl-s32.h             |   4 +-
->  drivers/pinctrl/nxp/pinctrl-s32cc.c           | 652 ++++++++++++++----
->  drivers/pinctrl/nxp/pinctrl-s32g2.c           |  32 +-
->  include/linux/mfd/nxp-siul2.h                 |  55 ++
->  12 files changed, 1259 insertions(+), 177 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
->  create mode 100644 drivers/mfd/nxp-siul2.c
->  create mode 100644 include/linux/mfd/nxp-siul2.h
-> 
-> --
-> 2.50.1
-> 
-> 
-> 
+This flag is set in the stmmac driver for the i.MX8MP SoC due to errata
+(ERR050694), which causes it to drop frames without a preamble.
 
+The Micrel KSZ9131 PHY supports keeping the preamble before SFD by
+setting an undocumented flag, that was confirmed by NXP and Micrel. This
+new feature has been added to the Micrel PHY driver for the KSZ9131 PHY.
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+Changes since v2:
+- Instead of using phy_register_fixup add a new phy_device::dev_flags
+  flag PHY_F_KEEP_PREAMBLE_BEFORE_SFD so that a MAC can request to keep
+  the preamble before SFD if needed (Russell)
+- Link to v2: https://lore.kernel.org/all/20260105100245.19317-1-eichest@gmail.com/
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+Changes since v1:
+- Use phy_register_fixup_for_uid() instead of adding a new device tree
+  property
+- I will send the conversion of the micrel.txt binding as a separate
+  patch series
+- Link to v1: https://lore.kernel.org/all/20251212084657.29239-1-eichest@gmail.com/
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
+Stefan Eichenberger (3):
+  net: phy: add a new phy_device flag to keep preamble before sfd
+  net: phy: micrel: add option to keep the preamble before sfd for
+    KSZ9131
+  net: stmmac: dwmac-imx: keep preamble before sfd on i.MX8MP
 
-  pip3 install dtschema --upgrade
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c   |  6 +++++-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |  8 +++++++-
+ drivers/net/phy/micrel.c                          | 14 +++++++++++++-
+ include/linux/phy.h                               |  5 +++--
+ include/linux/stmmac.h                            |  1 +
+ 5 files changed, 29 insertions(+), 5 deletions(-)
 
-
-This patch series was applied (using b4) to base:
- Base: attempting to guess base-commit...
- Base: tags/v6.19-rc1-8-gea6806346080 (best guess, 8/9 blobs matched)
- Base: tags/v6.19-rc1-8-gea6806346080 (use --merge-base to override)
-
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
-
-
-Warnings in base: 24
-Warnings after series: 42
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/freescale/' for 20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com:
-
-arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: pinctrl@4009c000 (nxp,s32g3-siul2): 'siul2_0@4009c000', 'siul2_1@44010000' do not match any of the regexes: '-hog(-[0-9]+)?$', '-pins$', '^pinctrl-[0-9]+$', '^siul2_[0-1]$'
-	from schema $id: http://devicetree.org/schemas/mfd/nxp,s32g2-siul2.yaml
-arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: siul2_0@4009c000 (syscon): compatible: ['syscon'] is too short
-	from schema $id: http://devicetree.org/schemas/mfd/syscon-common.yaml
-arch/arm64/boot/dts/freescale/s32g399a-rdb3.dtb: siul2_1@44010000 (syscon): compatible: ['syscon'] is too short
-	from schema $id: http://devicetree.org/schemas/mfd/syscon-common.yaml
-arch/arm64/boot/dts/freescale/s32g274a-evb.dtb: pinctrl@4009c000 (nxp,s32g2-siul2): 'siul2_0@4009c000', 'siul2_1@44010000' do not match any of the regexes: '-hog(-[0-9]+)?$', '-pins$', '^pinctrl-[0-9]+$', '^siul2_[0-1]$'
-	from schema $id: http://devicetree.org/schemas/mfd/nxp,s32g2-siul2.yaml
-arch/arm64/boot/dts/freescale/s32g274a-evb.dtb: siul2_0@4009c000 (syscon): compatible: ['syscon'] is too short
-	from schema $id: http://devicetree.org/schemas/mfd/syscon-common.yaml
-arch/arm64/boot/dts/freescale/s32g274a-evb.dtb: siul2_1@44010000 (syscon): compatible: ['syscon'] is too short
-	from schema $id: http://devicetree.org/schemas/mfd/syscon-common.yaml
-arch/arm64/boot/dts/freescale/s32g274a-rdb2.dtb: pinctrl@4009c000 (nxp,s32g2-siul2): 'siul2_0@4009c000', 'siul2_1@44010000' do not match any of the regexes: '-hog(-[0-9]+)?$', '-pins$', '^pinctrl-[0-9]+$', '^siul2_[0-1]$'
-	from schema $id: http://devicetree.org/schemas/mfd/nxp,s32g2-siul2.yaml
-arch/arm64/boot/dts/freescale/s32g274a-rdb2.dtb: siul2_0@4009c000 (syscon): compatible: ['syscon'] is too short
-	from schema $id: http://devicetree.org/schemas/mfd/syscon-common.yaml
-arch/arm64/boot/dts/freescale/s32g274a-rdb2.dtb: siul2_1@44010000 (syscon): compatible: ['syscon'] is too short
-	from schema $id: http://devicetree.org/schemas/mfd/syscon-common.yaml
-
-
-
-
+-- 
+2.51.0
 
