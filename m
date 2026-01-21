@@ -1,196 +1,210 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010044.outbound.protection.outlook.com [52.101.69.44])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E4D21B9C1
-	for <imx@lists.linux.dev>; Wed, 21 Jan 2026 01:57:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768960669; cv=fail; b=egVneNlYn0DH52i6lo8IIEKaiakfwL+cm+MoAaTQuH52n2ruH4w8LihrKgMuZSoDWJMM/g6E7hauy4lfhVAJedBFYeSI5A6xKaK17maS3WGjqOW0e0UmsywnJyGsaECXoc+T3VBtq2jCaaD7fOmCxkXrc770fHUVpFDlmOzq+kw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768960669; c=relaxed/simple;
-	bh=hX8PQCuGfblHVA5KWlQnhDl3tV7oyqZ3JFx4o2F1hf8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=j/NUxs0fu2ir7K4pWrDlHobDpfCwmOZ5pnbigNFUvvOuP3YLy5M3+E9mTOI3XegSDiuDFXxKXNk4kv6V02/mHr6EzOE0YFVuyoNtT9L6MMv75/sm+iQZ30KJyMakMYIpATfK5G/LQG0kAMKhoITAuHLRIFuPS4jilHDFyK/9CIQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PKh77YLD; arc=fail smtp.client-ip=52.101.69.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C0D30AAA6;
+	Wed, 21 Jan 2026 01:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768960799; cv=none; b=k/3BWkY0xMnOHAgqRrGzyUF6qUJ6NDPrqE0lxPGMJzV2gUTnSMHwRxncFpjdRpRSektz7cLCKgIiQAHkFakTvcCEF1wWLq1e/KDoSvOlJ6Kog5YA+ye7Gf1ckaJK2qxvlcgZvs1eecciqNHBedCdUmqloArmSIcnm2Dl4k+kAhg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768960799; c=relaxed/simple;
+	bh=8RN2xhdxYtlPZSFrrSkuAOlcpuA2PtIbQAvv62QfoHo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z8y6VnGA2skU309Bd860WeUqrsORQhfuSL938CAHC3x9RI8y4IMHkRy8jF5CyBQlHYgHbRveTNuLT1zO66UZSmKrozDtXjBe3ZCxN5vXpAhTBwtZWlvWSXJooC4hPylsNu+ZjHDvj0jiVgQ4KlL5HLAs0Gi9FVMNZvNFz8+KzQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=iZyf7JTS; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PKh77YLD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ekaqTrjXnVizMR3PhQ9MFHkM65aRw4ci7/vSXxDHEOUJPJQYaXhSyk5/ykas39KJ5vy91UIya9dwENdy3DScXhlUIuAFT34XKEuWBePg9Of9EYZxqAR6JOSH/jwQoRHPE2vp1hNKaAGitdaLlgsQWoJOVoxBbiJx6VPiQ/jk/yZfu0mK4R2rY1GZixLOCEMOYn3QkV5iX7yj5FPcr2Ko2wlt6TQWvbMBFPG1K+soam709Rt9EHgZI3GVncAloniXuobWBpQaI6XmQ/NOmW/+v9e7nuCdKPvhgOEfvY//7njB53fzeQmjNtWh4W8BZ3vVrJLY71EOw6xFfTWdfm+M6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tiFZFu3hKt66JR4IUtYnMwYKrO/wrr9vy+FllSj4RSg=;
- b=tw9OxU2OZNAP9fGpCv8+34OXe2xdclXPUaSDHWOlVoh20dsqigykBbEwiMNdu6P9tjcsdSCQZ1nPMH+T8rCgp1YK1sK9tnHtfvmQo5OGpuNMI2ELOs4jMEqOzo9VncKYnBC8lpl5pwaZ+zmqahQlzdMfcjCbO1oGypviQStd8zZFloqcRo6Zb7UnJ265glgG3oOEGUmE5rY8ugawbxE1AaXI6kQqaxTNy1EbZH7mrKEn1cB87XS9lTr4pKkCPXsYRjmIyrm2BrkK+68UyqNmxecFs5T4MJkI2lz5K5z+6r3MK9b8rxpw2nulZcbjfm0WAPqLq+AK4FuAg7iiBGylug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tiFZFu3hKt66JR4IUtYnMwYKrO/wrr9vy+FllSj4RSg=;
- b=PKh77YLDJCOxUsN9u8MEwT4NFQlUDCbqdeAlm2jrld+S6h+lyeE9JUyIoKzlRA2kKb+JW0nSTAK9I2/PYlrp316KM1ehfnpT107SWTMTSEmaKuN0TK450bDPtapxOpicZPE2w7mr6e/Pf6oAaLb61MNgurrzMYUrljv82luFH8BWyAw1KMIQR2SScV5JIqVkd1ZdnVyKEyYH3m9oyHWnioxckLLM+jm/FhqWTOo8GDUB0G0pAi0pw3RVx0BrkZk/uAjScJNQoa6+OcDghzwl8aMjj+fGT5mIwDvNZBDgTiDUfO/Q2ztLyHfE9ogFtXYVmEWPMQNmnbeFTRkzF2jvZg==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by AM9PR04MB8619.eurprd04.prod.outlook.com (2603:10a6:20b:43a::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Wed, 21 Jan
- 2026 01:57:38 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9499.001; Wed, 21 Jan 2026
- 01:57:38 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Clemens Gruber <mail@clemensgruber.at>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: Shenwei Wang <shenwei.wang@nxp.com>, Jakub Kicinski <kuba@kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "stable@kernel.org"
-	<stable@kernel.org>
-Subject: RE: [PATCH] net: fec: account for VLAN header in MAX_FL calculation
-Thread-Topic: [PATCH] net: fec: account for VLAN header in MAX_FL calculation
-Thread-Index: AQHciiZ7qTF3p/vWgEGfopUeHFZUmLVb2siQ
-Date: Wed, 21 Jan 2026 01:57:38 +0000
-Message-ID:
- <PAXPR04MB851064BB30B2D5A39AE49CCE8896A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20260120160407.101273-1-mail@clemensgruber.at>
-In-Reply-To: <20260120160407.101273-1-mail@clemensgruber.at>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AM9PR04MB8619:EE_
-x-ms-office365-filtering-correlation-id: 0554775b-fc28-44a1-0ea7-08de58907490
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|376014|366016|1800799024|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?kNv3UvofbdAbc2qcY77gHLsq9kyL6kNudB3Mo/UCekqR8MsjgSZp95Q+kauL?=
- =?us-ascii?Q?wy3nQ8gyRbxzNBJa1JSha0uJi375e4BI+oEki8JJ3Dbtcinca1LxLky/r7sk?=
- =?us-ascii?Q?ZGUpWHQqdUi/Hx6E1Q4JXHxWXBTRSI5Pp2WFY9mCEflT+MPEng/tHZD4fU3g?=
- =?us-ascii?Q?fNux4za2SZpMNif9KbO02PIlDn3h5pllxST/tsnN51uH7BeXiB7XpUnYKJdp?=
- =?us-ascii?Q?LiITO73+8U2FHECNTF5NdCya0Cquk4JTvPWHawJ2pGcQbHa0Qh/AI++zmPgz?=
- =?us-ascii?Q?lEWziRfRDY4XIpi79Z6WrGJKUl2FIIosqc2uNELSah3pdwQVYwM6nH5AM8xU?=
- =?us-ascii?Q?A6MZyff3C2mA/g8qd4fzWo3KVhLHeISipYKtjf/2kKt09SKMuIPYc9efJJMg?=
- =?us-ascii?Q?RVg9b3OOV6DV231udzAiwRQ1c8+UYPe2ydD+7V8aBM2Enp2CBDnIXRqZ1VRs?=
- =?us-ascii?Q?mu6ahF3WqJlzyrKduC5UMP3G4y7Guf8Vb9YIYlD8pKSB4V58xJMfI9SDw5ld?=
- =?us-ascii?Q?Twu+I1cip0wnS/8bAxBR2nyQa9TNfAm7C3ksuynKSWrp9i+1HDVeGnwANLOB?=
- =?us-ascii?Q?qITCYTVJ67gcX2Z2LV0kxBM2DXEJE8d1eF2sW9v124AZaTlFl8EBHiYTy3Ic?=
- =?us-ascii?Q?9CnOLSWzzugybBxdviNsZFCotHsHZ7HzXmgt/CvLglk3vnQKKI02zH+0aFXA?=
- =?us-ascii?Q?hSfnHaFA6Dc6PM/bXpzBEAaSYe066XCHmcF8YhjWv75q5EuSGS6Pf5Qvq8wd?=
- =?us-ascii?Q?v/N9/btBlYU+iBRvZerE/7KuPBu7oVy6Dpz5nca4gZU+2rqUWCdjtlDAwTqx?=
- =?us-ascii?Q?PB3Yft4QvnYnRBSx2gxf/EdeNXfLqh/CUywyuJ81sUmHITpno+ilpa1VW5oY?=
- =?us-ascii?Q?kPsy31Chq+i9/ZyGeVI//RoNCWGgfttqlIzyaiAysAY5oHuQpl2gc3rmlxCl?=
- =?us-ascii?Q?yvtax6jp1lTAm6m2qstCSl4NFzmGH4SshZh5+m/x+TL8bJMXd8myJRSWqIqg?=
- =?us-ascii?Q?RLiIjU15uWTiRdZ7ylVoVWi/RQmhJ5fQQ5VSrj4xbYzZj8J8X4V2hLXWBO1e?=
- =?us-ascii?Q?jqjbEkVSu/na57j+p7zsB91qNgDBp0jB4zw1P93HwhreQMeuw/FRvvKCjz3v?=
- =?us-ascii?Q?1M5xk2SLSQY4zt/olSCyzcBEROUEZTPLyz4Glllbyltrsf5DvbqBSPp06bmm?=
- =?us-ascii?Q?/xAHHIIletObcj8pKaremF0c5ZBtGFDw8rU6mlz1h12OBehSOaRYcnyb6WXa?=
- =?us-ascii?Q?PS+26L/mOGybVPGLwu/k5KV8gJJxFc2gv9A1vaqkgXmi2pXJiuCaoPJZcb7K?=
- =?us-ascii?Q?F1aFM/QCiErEB3MCReKjCHZCfMJKwRKrub+l+Z/J/E5ePVKQiY0GFAn5wpVd?=
- =?us-ascii?Q?uFUKj9wm95vtDgi07lDSOTUAkK90FjCW9eORtkSe2mfoUW0A/681OK02iQ7S?=
- =?us-ascii?Q?B0t7CcgGBVTTCB60gXb2Z/qi6qo85kcF2NP5Yn09sD+8ouEGMwYcPIaV+ASw?=
- =?us-ascii?Q?/1MV8yQXoPrI5UvEk6Mg0yg1c5DAcNX//+C17HYHzvy76v6NU+neSltg6MGA?=
- =?us-ascii?Q?vVrGScMQNgZpNRkKCDd7QjDOjt9vbGRfGI9f0CZzk1HdkHD9/qwmNQXSd7+T?=
- =?us-ascii?Q?m7ge1p6byae4FG6KywdgzCw=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(366016)(1800799024)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?bB7YI+rTOo34SAzvO0inRATYtJ8HJfBAe9T6o3T1tbM/g5cudi9tE+Qq34f3?=
- =?us-ascii?Q?Kfcf9eueV5Bk0jOZ0W7j4I07t7lZMWrQzYC436Oqr0OokfIIukDUdl3o49nv?=
- =?us-ascii?Q?i+hNP1liLMZZ2q5tGEvuvBb4ZmrV75N1B0h7DTTjW0eg9Cn4ELJL/lxanTXH?=
- =?us-ascii?Q?FCiHiSnul2ObdjQV2D+o/qRuPLLtyqeAxjWtA9/NyZHoLwOy1v5U6m67L7tH?=
- =?us-ascii?Q?fN8uQjXP+Sf+YLDHBWIIX0rsSYNRbhbAPr+T+qoTDksMZ8CynqqrMvOzYbcn?=
- =?us-ascii?Q?KmTo8Jdc8LW2rUPXt6HyIWVYwgdLvFncJo+KoVSSDZTf7da8YJ3pssitQJlp?=
- =?us-ascii?Q?4lbYQZqdhX7W8Ndea04duIIXfxvAGz+FyyRsWg+/pN7KMSTFlpTNSYBjCaOU?=
- =?us-ascii?Q?yNmAQzkgwIGQ+KkwOmWKy1ggu3uB0UzcUJPrTydJa+M+Ryfgh4Kp9a39d+5A?=
- =?us-ascii?Q?wBAjpWHw+DGbI/+Stv+kMF/+3aeokD+MDG0HNgvK2jN46asWmFZ5cFYJXibx?=
- =?us-ascii?Q?zQcUW+Mckxb3QFcOFhoqoyZW++kwuQwD5u/Zh7Xf5FxuYOcx+setP7/EyX5f?=
- =?us-ascii?Q?OkyZ+l1p5DEpjkGa/JpZYYa8rbxf9j9Mrak+yb3+c30/1wTTAM3k1wsUzGok?=
- =?us-ascii?Q?Tkd9QzyM9UnrVhPEOE4WwHyOQzChrTL1DyjCwNzoHow82mXOWHfcClkA0eGz?=
- =?us-ascii?Q?1ffN9B1/jOsIG2zDVIRnfPAmkMq3TMbeweFdHgMJ2kmflHe36DH2EPfJAOAf?=
- =?us-ascii?Q?ROOW3fhzxKXYORVZm+0FBF07uA0rzXDI5fuNFvZKxOSE7Sc+iteFeFU4IApr?=
- =?us-ascii?Q?cxME0WpYsnuCWmfAJnPchWV8LvIha3mnYghBlG6EUatT7YQcaro+nyitYuWH?=
- =?us-ascii?Q?bdyuC7IsKsAc6sAtF3b8k48klwKHEVoXgMVEnCQuyvOyvw4/XfKKDbG/PBUU?=
- =?us-ascii?Q?9H//bMjqEU6QwjamhjPsL8ACUL1HQK2odCPMnSRlIZvh8QDmXN7U5yDw6EU8?=
- =?us-ascii?Q?6i6omC0FZfcKjdNwN8aqRBAR+2l/Okx6ugRdUImqLk6fQi0Wa32kQrYBFnHB?=
- =?us-ascii?Q?kDzPFRkkj/uth0muw0xveyIsYNWprd4GHFSKT/G+yvYnzagcA1mk7pOSqPC6?=
- =?us-ascii?Q?pNi8OZFUJkvh6TpI6xo1zeQ/ag3I4cRgerKflkgl4JctjlzV6ijHlKuzG1FY?=
- =?us-ascii?Q?C+KPwHWyHO80sYtol9fN4nqz2oKcLu/fjQNNb2Mi4Vc01CLOc5tqCYiZ0jze?=
- =?us-ascii?Q?nxmbNWs+GKpvkHbaiOljSg8EAYmZv9RkAMakaUKh5ses6tCFXMiTHLrsr+se?=
- =?us-ascii?Q?Lb5ZcsG2xGtAn70a7kl+uhlxoQb9o8iiri9APvRtWf1VBEGG3n1/rRHW7e53?=
- =?us-ascii?Q?carK6ggrLtKVnYeNPxagPm8qb5OACswaFlS5ghOKeYDV3Bk0LVi1wX2SsD1Q?=
- =?us-ascii?Q?k++TlcLMhKp40w6ee5DJEZxGphCeC/7/NgmXWLIABLqv431knEV1eD6SNZEO?=
- =?us-ascii?Q?zlHSNX2LYIcQQtjMKBbrERjhLDOiVn+m4mcg4ks3507gN/E33SBBaFbLWsYo?=
- =?us-ascii?Q?M9FsBr1m3lfcicIvuf8XHH6Ru8C/BCrjH6KDbheAIpdbyzLTRIXg8zKfDd3Q?=
- =?us-ascii?Q?XlSdlq2vh7DAH3oFBRIsj4wjdSV+JROjYKPAabROLhIt1pSSR4uGBHkY/o/I?=
- =?us-ascii?Q?bfMwhQ0AOVj1Gks03jhQpGwEMNRnXGOme/nMK5kg396ML9Tz?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="iZyf7JTS"
+Received: from pendragon.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id A016C2D7;
+	Wed, 21 Jan 2026 02:59:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1768960752;
+	bh=8RN2xhdxYtlPZSFrrSkuAOlcpuA2PtIbQAvv62QfoHo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iZyf7JTSTiEfXJl65wDxP1MIaMVUy9yepFiJNIqmmD7FksZkm5JEwfySyl1PsEOMH
+	 K4qZKq/xjNcWcBRmW3FHdfkXzDL1UTjVTI+cIFlYWJ3TJNPGHCCF+RAm5jvXkiUo2E
+	 iOvHMfowcpWbvU5OFjDJYZTM5A7t1DK+bTpgw2u0=
+Date: Wed, 21 Jan 2026 03:59:42 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Steve Longerbeam <slongerbeam@gmail.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND v2 1/5] media: staging: media: imx6-mipi-csi2:
+ replace spaces with tabs for alignment
+Message-ID: <20260121015942.GE403250@killaraus>
+References: <20260116-stage-csi2-cleanup-v2-0-a56e9cb25196@nxp.com>
+ <20260116-stage-csi2-cleanup-v2-1-a56e9cb25196@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0554775b-fc28-44a1-0ea7-08de58907490
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jan 2026 01:57:38.6908
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WO9/Z8cGd4IZ2F/9NaY+AFAhkpqp0rM+8a8Ii6CB4YJ0qQSh+YFEZR2DyofMUAtO1tc6y3V4p+cB0qHochoLvw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8619
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260116-stage-csi2-cleanup-v2-1-a56e9cb25196@nxp.com>
 
-> Commit 62b5bb7be7bc ("net: fec: update MAX_FL based on the current MTU")
-> changed the MAX_FL (maximum frame length) calculation without accounting
-> for VLAN-tagged frames, leading to RX errors / dropped frames.
->=20
-> Add VLAN_HLEN to the MAX_FL calculation.
->=20
-> Fixes: 62b5bb7be7bc ("net: fec: update MAX_FL based on the current MTU")
->=20
-> Signed-off-by: Clemens Gruber <mail@clemensgruber.at>
-> Cc: stable@kernel.org
+Hi Frank,
+
+Thank you for the patch.
+
+On Fri, Jan 16, 2026 at 11:17:56AM -0500, Frank Li wrote:
+> Replace spaces with tabs to align register value definitions, making it
+> easier to add new entries and maintain consistent formatting.
+> 
+> Also use a space between the type and field in struct csi2_dev.
+> 
+> No functional change.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
 > ---
->  drivers/net/ethernet/freescale/fec_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c
-> b/drivers/net/ethernet/freescale/fec_main.c
-> index e2b75d1970ae..f8f88c592323 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -1151,7 +1151,7 @@ fec_restart(struct net_device *ndev)
->         u32 rcntl =3D FEC_RCR_MII;
->=20
->         if (OPT_ARCH_HAS_MAX_FL)
-> -               rcntl |=3D (fep->netdev->mtu + ETH_HLEN + ETH_FCS_LEN) <<
-> 16;
-> +               rcntl |=3D (fep->netdev->mtu + ETH_HLEN + ETH_FCS_LEN +
-> VLAN_HLEN) << 16;
+> changes in v2
+> - struct use one space between type and field name.
+> ---
+>  drivers/staging/media/imx/imx6-mipi-csi2.c | 84 +++++++++++++++---------------
+>  1 file changed, 42 insertions(+), 42 deletions(-)
+> 
+> diff --git a/drivers/staging/media/imx/imx6-mipi-csi2.c b/drivers/staging/media/imx/imx6-mipi-csi2.c
+> index dd8c7b3233bccfc34b59e0f0ff813b36752e1526..1113ea2a37f03753423164069b95c049968cc0af 100644
+> --- a/drivers/staging/media/imx/imx6-mipi-csi2.c
+> +++ b/drivers/staging/media/imx/imx6-mipi-csi2.c
+> @@ -23,65 +23,65 @@
+>   * there must be 5 pads: 1 input pad from sensor, and
+>   * the 4 virtual channel output pads
+>   */
+> -#define CSI2_SINK_PAD       0
+> -#define CSI2_NUM_SINK_PADS  1
+> -#define CSI2_NUM_SRC_PADS   4
+> -#define CSI2_NUM_PADS       5
+> +#define CSI2_SINK_PAD		0
+> +#define CSI2_NUM_SINK_PADS	1
+> +#define CSI2_NUM_SRC_PADS	4
+> +#define CSI2_NUM_PADS		5
+>  
+>  /*
+>   * The default maximum bit-rate per lane in Mbps, if the
+>   * source subdev does not provide V4L2_CID_LINK_FREQ.
+>   */
+> -#define CSI2_DEFAULT_MAX_MBPS 849
+> +#define CSI2_DEFAULT_MAX_MBPS	849
+>  
+>  struct csi2_dev {
+> -	struct device          *dev;
+> -	struct v4l2_subdev      sd;
+> +	struct device *dev;
+> +	struct v4l2_subdev sd;
+>  	struct v4l2_async_notifier notifier;
+> -	struct media_pad       pad[CSI2_NUM_PADS];
+> -	struct clk             *dphy_clk;
+> -	struct clk             *pllref_clk;
+> -	struct clk             *pix_clk; /* what is this? */
+> -	void __iomem           *base;
+> +	struct media_pad pad[CSI2_NUM_PADS];
+> +	struct clk *dphy_clk;
+> +	struct clk *pllref_clk;
+> +	struct clk *pix_clk; /* what is this? */
+> +	void __iomem *base;
+>  
+> -	struct v4l2_subdev	*remote;
+> -	unsigned int		remote_pad;
+> -	unsigned short		data_lanes;
+> +	struct v4l2_subdev *remote;
+> +	unsigned int remote_pad;
+> +	unsigned short data_lanes;
+>  
+>  	/* lock to protect all members below */
+>  	struct mutex lock;
+>  
+>  	struct v4l2_mbus_framefmt format_mbus;
+>  
+> -	int                     stream_count;
+> -	struct v4l2_subdev      *src_sd;
+> -	bool                    sink_linked[CSI2_NUM_SRC_PADS];
+> +	int stream_count;
+> +	struct v4l2_subdev *src_sd;
+> +	bool sink_linked[CSI2_NUM_SRC_PADS];
+>  };
+>  
+>  #define DEVICE_NAME "imx6-mipi-csi2"
+>  
+>  /* Register offsets */
+> -#define CSI2_VERSION            0x000
+> -#define CSI2_N_LANES            0x004
+> -#define CSI2_PHY_SHUTDOWNZ      0x008
+> -#define CSI2_DPHY_RSTZ          0x00c
+> -#define CSI2_RESETN             0x010
+> -#define CSI2_PHY_STATE          0x014
+> -#define PHY_STOPSTATEDATA_BIT   4
+> -#define PHY_STOPSTATEDATA(n)    BIT(PHY_STOPSTATEDATA_BIT + (n))
+> -#define PHY_RXCLKACTIVEHS       BIT(8)
+> -#define PHY_RXULPSCLKNOT        BIT(9)
+> -#define PHY_STOPSTATECLK        BIT(10)
+> -#define CSI2_DATA_IDS_1         0x018
+> -#define CSI2_DATA_IDS_2         0x01c
+> -#define CSI2_ERR1               0x020
+> -#define CSI2_ERR2               0x024
+> -#define CSI2_MSK1               0x028
+> -#define CSI2_MSK2               0x02c
+> -#define CSI2_PHY_TST_CTRL0      0x030
+> +#define CSI2_VERSION		0x000
+> +#define CSI2_N_LANES		0x004
+> +#define CSI2_PHY_SHUTDOWNZ	0x008
+> +#define CSI2_DPHY_RSTZ		0x00c
+> +#define CSI2_RESETN		0x010
+> +#define CSI2_PHY_STATE		0x014
+> +#define PHY_STOPSTATEDATA_BIT	4
+> +#define PHY_STOPSTATEDATA(n)	BIT(PHY_STOPSTATEDATA_BIT + (n))
+> +#define PHY_RXCLKACTIVEHS	BIT(8)
+> +#define PHY_RXULPSCLKNOT	BIT(9)
+> +#define PHY_STOPSTATECLK	BIT(10)
+> +#define CSI2_DATA_IDS_1		0x018
+> +#define CSI2_DATA_IDS_2		0x01c
+> +#define CSI2_ERR1		0x020
+> +#define CSI2_ERR2		0x024
+> +#define CSI2_MSK1		0x028
+> +#define CSI2_MSK2		0x02c
+> +#define CSI2_PHY_TST_CTRL0	0x030
+>  #define PHY_TESTCLR		BIT(0)
+>  #define PHY_TESTCLK		BIT(1)
+> -#define CSI2_PHY_TST_CTRL1      0x034
+> +#define CSI2_PHY_TST_CTRL1	0x034
+>  #define PHY_TESTEN		BIT(16)
+>  /*
+>   * i.MX CSI2IPU Gasket registers follow. The CSI2IPU gasket is
+> @@ -106,13 +106,13 @@ static inline struct csi2_dev *notifier_to_dev(struct v4l2_async_notifier *n)
+>   * reference manual is as follows:
+>   *
+>   * 1. Deassert presetn signal (global reset).
+> - *        It's not clear what this "global reset" signal is (maybe APB
+> - *        global reset), but in any case this step would be probably
+> - *        be carried out during driver load in csi2_probe().
+> + *	It's not clear what this "global reset" signal is (maybe APB
+> + *	global reset), but in any case this step would be probably
+> + *	be carried out during driver load in csi2_probe().
+>   *
+>   * 2. Configure MIPI Camera Sensor to put all Tx lanes in LP-11 state.
+> - *        This must be carried out by the MIPI sensor's s_power(ON) subdev
+> - *        op.
+> + *	This must be carried out by the MIPI sensor's s_power(ON) subdev
+> + *	op.
+>   *
+>   * 3. D-PHY initialization.
+>   * 4. CSI2 Controller programming (Set N_LANES, deassert PHY_SHUTDOWNZ,
 
-The line is more than 80 characters after the change, so you can use
-VLAN_ETH_HLEN instead of (ETH_HLEN + VLAN_HLEN).
+-- 
+Regards,
 
-Additionally, I believe the code in other places also needs to be modified
-accordingly. See below.
-
-fec_restart():
-if ((fep->quirks & FEC_QUIRK_JUMBO_FRAME) &&
-  (ndev->mtu > (PKT_MAXBUF_SIZE - ETH_HLEN - ETH_FCS_LEN)))
-		writel(0xF, fep->hwp + FEC_X_WMRK);
-
-fec_change_mtu():
-order =3D get_order(new_mtu + ETH_HLEN + ETH_FCS_LEN
-			  + FEC_DRV_RESERVE_SPACE);
-
-fec_probe():
-ndev->max_mtu =3D fep->max_buf_size - ETH_HLEN - ETH_FCS_LEN;
-
+Laurent Pinchart
