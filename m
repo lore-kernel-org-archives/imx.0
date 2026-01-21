@@ -1,127 +1,158 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A0E2DF13D;
-	Wed, 21 Jan 2026 14:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A138148AE21;
+	Wed, 21 Jan 2026 14:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769005258; cv=none; b=VtoXe+lcQTUvweb4I9zcSOGiyrGGeJ/VfVEHyRX2PImYosjRaSNygTaMS595DNxM2pUBPMEG3A/e5YLV8qQe3WMQgw74TKsHgWFzuFmdqAftxInSKdu4U4HTW94+Cziy+vqZYvuWD5EcI9FWtq6RBZEgWkY7lFQWWTu1F2ShBsQ=
+	t=1769005436; cv=none; b=OFprBdprw3iWENQMuLV500ZrhfIkiOEcHhHk0ys65Dvx+5t0NLCr3SRoZn58UkeZw2BQ6qhiXCeSJf/FUFKTR9+q97uyYstoy5zY9pv4tEjksObR3GlUri5zODmpar6Ad+0xgj8061nh3b4DdU6fnws323isuSMhdPwjkL3pn5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769005258; c=relaxed/simple;
-	bh=jeXEgpP+V9qFmcpgwhBun21iImEiA4QYpWK+iPST8oY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=POGyKY6S/OMx0cWfg3VeYXWg6/KuR79pv1rJp1ddYhA3exjXFB3B18tmPApIarYZIfmIB3AIZIGV3CmamJN2AeKZxPQ9G/Xt6fVnWX3NJ7QBpro1nHS99DK7x/FQJRChj5ksctLU/trbv1dO6bhicPfYPddk2UfHDKLpp1AB8kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cQIsxrqH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769005436; c=relaxed/simple;
+	bh=bDsa5qr79ONQyLB8IWcNyqXU1o6S3KzvbCNukf7liXQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=TzLWyZOrfPXpPVhXmpVIsqHoHP01ZyVIB3hXcCT41Xq/cWohqEWW5t10OpCtVgSmwwOKUj9SeccB6ypCUfwBqN+K2BwwkJcxNuawYGacHQY5qdpV7PH7e96WBrxc6R288NCzriGlRzXsgfDeV3P7MxQQeTcJ6rPeFf2xn8gMQHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f1ULJnrF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cQIsxrqH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB22C116D0;
-	Wed, 21 Jan 2026 14:20:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f1ULJnrF"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 51D5FC19425;
+	Wed, 21 Jan 2026 14:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769005257;
-	bh=jeXEgpP+V9qFmcpgwhBun21iImEiA4QYpWK+iPST8oY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=cQIsxrqH1U0dsS9PCEKkOM5Gek7TfdO1z4VzudwuizC4ywmQzcotq+A9ztr0rH6lA
-	 CYp8+0Br6pJ5MpfDGU6ygt9ayyIstPao9MmexDdh32ubLqvNL2T+Bg09qGxKT3499o
-	 FeBaKhL+RXIQy5/hb1MAHzBNaryyqrCD2gWwM8qDxL+uYtRMd3J6tpEICAM9Q72JtN
-	 LU8RjLsIR+rDI7E4VU6KQJ7RxNBu0iXJnhO2TuNuLgIrAEg4Kyf/cq1AzbqYGz52pP
-	 h0bIZVIbTF3brY0Dg1etlWDt9th0YSpEN6gTOwQsdz4wb3IW82xyC92MZzsAe4KoV3
-	 Scr0egsL8TnNQ==
-From: Shawn Guo <shawnguo@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Linus Walleij <linusw@kernel.org>,
-	kernel@pengutronix.de,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-gpio@vger.kernel.org,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH] MAINTAINERS: Replace Shawn with Frank as i.MX platform maintainer
-Date: Wed, 21 Jan 2026 22:20:47 +0800
-Message-ID: <20260121142047.10887-1-shawnguo@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=k20201202; t=1769005436;
+	bh=bDsa5qr79ONQyLB8IWcNyqXU1o6S3KzvbCNukf7liXQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=f1ULJnrFWRK2oIYY+AkPZt7+jDEIrep0EbMb2kPzctwEvLUySDijOstfftQ5v24RC
+	 vztc+aot8Ftxr8/asdU0AbAxOzpa1SgfpfvvhhKPIYn8HWEshFtoFyQOr7HiG1ADdM
+	 nOIxpWCp3SsTuTGRK+7aC7+olluzvWrjqmeAsf6rwzPRDCUlDA5JqUykfslSSSUCGx
+	 YzJT+8LOonhNATO5TxRV3auzRVvRIstgsDTmhkwI062wL0f5/CWC4/98mCOKZf6ZPT
+	 JgzcG91UL5pUAom+0AlBevBNjRyJoI8lb9Z24Qf+pEZyEUewTizgA332WDsUD9EfVa
+	 6Tt2kVhosq4/Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 492CED2ECF9;
+	Wed, 21 Jan 2026 14:23:56 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Wed, 21 Jan 2026 15:23:36 +0100
+Subject: [PATCH RFC v2 2/4] dt-bindings: net: nxp,s32-dwmac: Declare
+ per-queue interrupts
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260121-dwmac_multi_irq-v2-2-3b829230d071@oss.nxp.com>
+References: <20260121-dwmac_multi_irq-v2-0-3b829230d071@oss.nxp.com>
+In-Reply-To: <20260121-dwmac_multi_irq-v2-0-3b829230d071@oss.nxp.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769005434; l=3038;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=FKbkDY6yPX+AkAtZztOM7Nw6IaGU94yLN0TxsfuzqXA=;
+ b=ICCzzPbRwQTsDldkrmty0eQwlypncRsjY/LZ6AnF9Tj9xGncFlNqpjVGOEFLu6K1tABzJJiBw
+ cFS2eB87LWNCG5WV80R5y5xInl2JdG5ny08mfpXlxCNb895qs7n2oV0
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-Shawn is no longer interested in maintaining i.MX platform, and would like
-to step down.  On the other hand, Frank seems to be the best successor
-for this role.
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
- - He has been one of the most outstanding contributors to i.MX platform
-   in the recent years.
+The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lines,
+set them to allow using Multi-IRQ mode when supported.
 
- - He has been actively working as a co-maintainer reviewing i.MX
-   patches and keep the platform support in good shape.
-
- - He works for NXP and could be the bridge and coordinator between
-   NXP internal developers and community contributors.
-
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
- MAINTAINERS | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 42 +++++++++++++++++++---
+ 1 file changed, 37 insertions(+), 5 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5b11839cba9d..a294b4e952a9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2745,14 +2745,14 @@ F:	arch/arm/include/asm/hardware/dec21285.h
- F:	arch/arm/mach-footbridge/
+diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+index 2b8b74c5feec..e1ebc3bea095 100644
+--- a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+-# Copyright 2021-2024 NXP
++# Copyright 2021-2026 NXP
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/net/nxp,s32-dwmac.yaml#
+@@ -33,10 +33,22 @@ properties:
+       - description: GMAC PHY mode control register
  
- ARM/FREESCALE IMX / MXC ARM ARCHITECTURE
--M:	Shawn Guo <shawnguo@kernel.org>
-+M:	Frank Li <Frank.Li@nxp.com>
- M:	Sascha Hauer <s.hauer@pengutronix.de>
- R:	Pengutronix Kernel Team <kernel@pengutronix.de>
- R:	Fabio Estevam <festevam@gmail.com>
- L:	imx@lists.linux.dev
- L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
- S:	Maintained
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git
- F:	Documentation/devicetree/bindings/firmware/fsl*
- F:	Documentation/devicetree/bindings/firmware/nxp*
- F:	arch/arm/boot/dts/nxp/imx/
-@@ -2767,22 +2767,22 @@ N:	mxs
- N:	\bmxc[^\d]
+   interrupts:
+-    maxItems: 1
++    minItems: 1
++    maxItems: 11
  
- ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE
--M:	Shawn Guo <shawnguo@kernel.org>
-+M:	Frank Li <Frank.Li@nxp.com>
- L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
- S:	Maintained
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git
- F:	arch/arm/boot/dts/nxp/ls/
- F:	arch/arm64/boot/dts/freescale/fsl-*
- F:	arch/arm64/boot/dts/freescale/qoriq-*
+   interrupt-names:
+-    const: macirq
++    - items:
++        - const: macirq
++        - const: rx-queue-0
++        - const: tx-queue-0
++        - const: rx-queue-1
++        - const: tx-queue-1
++        - const: rx-queue-2
++        - const: tx-queue-2
++        - const: rx-queue-3
++        - const: tx-queue-3
++        - const: rx-queue-4
++        - const: tx-queue-4
  
- ARM/FREESCALE VYBRID ARM ARCHITECTURE
--M:	Shawn Guo <shawnguo@kernel.org>
-+M:	Frank Li <Frank.Li@nxp.com>
- M:	Sascha Hauer <s.hauer@pengutronix.de>
- R:	Pengutronix Kernel Team <kernel@pengutronix.de>
- R:	Stefan Agner <stefan@agner.ch>
- L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
- S:	Maintained
--T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git
- F:	arch/arm/boot/dts/nxp/vf/
- F:	arch/arm/mach-imx/*vf610*
- 
-@@ -20562,7 +20562,7 @@ F:	drivers/pinctrl/pinctrl-amd.c
- PIN CONTROLLER - FREESCALE
- M:	Dong Aisheng <aisheng.dong@nxp.com>
- M:	Fabio Estevam <festevam@gmail.com>
--M:	Shawn Guo <shawnguo@kernel.org>
-+M:	Frank Li <Frank.Li@nxp.com>
- M:	Jacky Bai <ping.bai@nxp.com>
- R:	Pengutronix Kernel Team <kernel@pengutronix.de>
- R:	NXP S32 Linux Team <s32@nxp.com>
+   clocks:
+     items:
+@@ -75,8 +87,28 @@ examples:
+         reg = <0x0 0x4033c000 0x0 0x2000>, /* gmac IP */
+               <0x0 0x4007c004 0x0 0x4>;    /* GMAC_0_CTRL_STS */
+         interrupt-parent = <&gic>;
+-        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+-        interrupt-names = "macirq";
++        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 0: tx, rx */
++                     <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 1: tx, rx */
++                     <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 2: tx, rx */
++                     <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 3: tx, rx */
++                     <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 4: tx, rx */
++                     <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
++        interrupt-names = "macirq",
++                          "tx-queue-0", "rx-queue-0",
++                          "tx-queue-1", "rx-queue-1",
++                          "tx-queue-2", "rx-queue-2",
++                          "tx-queue-3", "rx-queue-3",
++                          "tx-queue-4", "rx-queue-4";
+         snps,mtl-rx-config = <&mtl_rx_setup>;
+         snps,mtl-tx-config = <&mtl_tx_setup>;
+         clocks = <&clks 24>, <&clks 17>, <&clks 16>, <&clks 15>;
+
 -- 
-2.43.0
+2.47.0
+
 
