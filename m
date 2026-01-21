@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82FD44B67D;
-	Wed, 21 Jan 2026 07:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299DF2DB7A8;
+	Wed, 21 Jan 2026 08:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768982390; cv=none; b=tt1OGJWN3jSKayTH05Ol+bkPD57nu6CnMy45ZMvx8L6eQBAFCkYqlFsPlYON16Y34rmwrYavpRICJT7WC2s8sM9WlqSZzDXHBTC3sFgguFdkTQJqFYluYpmJIZwiY3aVM3CCbrhz1XPos0un/XhUzwNslMTJQ73GSSS7m5LDv/w=
+	t=1768982639; cv=none; b=rmNVYYbmexxxmxuQFmYBUyWE+kkBSiOUxT4mm1ht2byZdgqja4MehZaOikJkmfAqt52uh21o1CV9q6sJ+MiXzgkSQdAT3QTPQNF/AK10oNntqw+TcshJh8zQnHoxVKNtrUhWoSkrDsI99WNzoDfyZoHZz9Z2ULOZcupt4O5KTKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768982390; c=relaxed/simple;
-	bh=lVIWh4J9elC8/GQ5p9OTBhZ3dYWROl05hspT5Eh9jUw=;
+	s=arc-20240116; t=1768982639; c=relaxed/simple;
+	bh=PsqDsmtUvSMoAGPchw0ANb9blEgv2FuLIEh2Q6T95uo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=vBvanmNZCvCDeEz3miJYXBdpWhTO7urAupdq2xJEat6/SHkdbIzmkUGknukyK2gxaspjG06FyiqJTDzdgn1owxpS1oa0AxpQoeAVJ3eMtj3VtqyG9rjFlX/4GwlifCsPfepR1er3Vv+GbQk8382QPfEdTMotdh4NkmUM1CPeOEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CgM8GGSm; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=QwfRLIewEKqa6LNEbD1JMb8SySfAsrTWWUTpRjvqS8uIts5+ck5exdNW1lYQHavgwIu5qhJlPJ1C6klB1ln7gx66cu0CM/6tRDYLQ2Od4GE6nLu+Os0rNCVzbLKvlv6aHdEwLSbAzzI6xq039XRoLE39oNIjocnCGW0yJe3Rg8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nZ1vmbG+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CgM8GGSm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19E6C16AAE;
-	Wed, 21 Jan 2026 07:59:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nZ1vmbG+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E830C116D0;
+	Wed, 21 Jan 2026 08:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768982390;
-	bh=lVIWh4J9elC8/GQ5p9OTBhZ3dYWROl05hspT5Eh9jUw=;
+	s=k20201202; t=1768982638;
+	bh=PsqDsmtUvSMoAGPchw0ANb9blEgv2FuLIEh2Q6T95uo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CgM8GGSmTqWHJFpegeG2+oUmnmm6z5KRc+iEZY7EKuqzS9jjDWkkIEYjBS59bJ0G9
-	 AZBf017wyEGE6D9Cm8xLFOKDs/GvRvujbc2udpU/OVaNGTlzpaTvrc4OCU5QAysSHB
-	 T96kur/kbzI5zLzcVl6JzarBgfDhxrbNO83tEbsqCHDgt8m9OJ97NHry0ZwM2G/O9g
-	 iCpDPG3XS385yk5vQEZJADykqyaQfqnHggcm3tdYaCs7TCjuwMr2qc6VWyH5tG62f8
-	 dwfSCnAVCmh9FgPf+EmOiiH0CUkz0C924vXyOrm4QaHBbYPGUZZCBFqHOciluZizDO
-	 d4BQ6AS6TkHIQ==
-Date: Wed, 21 Jan 2026 08:59:47 +0100
+	b=nZ1vmbG+beB2iwfhyj3XVTL2l++mCmI6l5ZmExwsa68lW58lTMGsTDs6Xs+ZkM6oy
+	 Og7ixvumC6seNlVkVoEBb/17yi/LiSgNvXmuCkRw6rtwKL+atFAfvaPCNZpzLog7q1
+	 YDFBy3X69Liig5y8ZQy8ResbG6BcbU21IVgsfcLmDSjvmI/cQ3g02sqjxZpguNdKjC
+	 OndH9JSnSqgOMh7/uw7/5d3igi6NzPxuluvUmUkxQQJyoKVrpR35g3GbSaDGQzOiFx
+	 ItIpu/Qn7FJrpCpj+xKt7Xbhlkgk2ODhP6QDdS1xSDJeyfhExvHl77ubmICS9ntTE+
+	 0pCtHucBM4DcA==
+Date: Wed, 21 Jan 2026 09:03:56 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Shengjiu Wang <shengjiu.wang@nxp.com>
 Cc: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
@@ -35,11 +35,11 @@ Cc: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com,
 	linux-kernel@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
 	devicetree@vger.kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
 	kernel@pengutronix.de, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2 1/4] ASoC: dt-bindings: fsl,audmix: Add support for
- i.MX952 platform
-Message-ID: <20260121-magpie-of-wondrous-tenacity-6cf6fb@quoll>
+Subject: Re: [PATCH v2 2/4] ASoC: dt-bindings: fsl,sai: Add AUDMIX mode
+ support on i.MX952
+Message-ID: <20260121-careful-beige-iguana-c32bbd@quoll>
 References: <20260120035210.1593742-1-shengjiu.wang@nxp.com>
- <20260120035210.1593742-2-shengjiu.wang@nxp.com>
+ <20260120035210.1593742-3-shengjiu.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,22 +48,71 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260120035210.1593742-2-shengjiu.wang@nxp.com>
+In-Reply-To: <20260120035210.1593742-3-shengjiu.wang@nxp.com>
 
-On Tue, Jan 20, 2026 at 11:52:07AM +0800, Shengjiu Wang wrote:
-> There is no power domain defined on i.MX952, so make power-domains to be
-> dedicated to i.MX8QM.
+On Tue, Jan 20, 2026 at 11:52:08AM +0800, Shengjiu Wang wrote:
+> The SAI can connect to AUDMIX, but AUDMIX can be bypassed or not on
+> i.MX952, so add 'fsl,sai-amix-mode' property for this feature, with
+> this property present, then SAI driver will try to config the setting,
+
+I am still not sure this is hardware static property. You say "can be
+bypassed", so I imagine same board could have it bypassed or not,
+depending on use case (so mixers).
+
+> fsl,sai-amix-mode = <0> is bypass mode, fsl,sai-amix-mode = <1> is
+> the AUDMIX mode.
 > 
 > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 > ---
->  .../devicetree/bindings/sound/fsl,audmix.yaml    | 16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
->
+>  .../devicetree/bindings/sound/fsl,sai.yaml       | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/sound/fsl,sai.yaml b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> index d838ee0b61cb..7808c324eebc 100644
+> --- a/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> +++ b/Documentation/devicetree/bindings/sound/fsl,sai.yaml
+> @@ -133,6 +133,13 @@ properties:
+>          - description: dataline mask for 'rx'
+>          - description: dataline mask for 'tx'
+>  
+> +  fsl,sai-amix-mode:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
 
-With changes to commit msg:
+Anyway, string is more readable.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+> +    description:
+> +      The audmix module is bypassed from hardware or not.
+> +      Bypass AUDMIX(0), AUDMIX mode(1)
 
-Best regards,
-Krzysztof
+Drop last sentence and use enum [ bypass, mode-1-whatever-this-means ]
 
+> +    enum: [0, 1]
+
+What is the default? What is the meaning of lack of this property?
+
+> +
+>    fsl,sai-mclk-direction-output:
+>      description: SAI will output the SAI MCLK clock.
+>      type: boolean
+> @@ -180,6 +187,15 @@ allOf:
+>        properties:
+>          fsl,sai-synchronous-rx: false
+>  
+> +  - if:
+> +      required:
+> +        - fsl,sai-amix-mode
+> +    then:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: fsl,imx952-sai
+
+There is no such compatible.
+
+> +
+>  required:
+>    - compatible
+>    - reg
+> -- 
+> 2.34.1
+> 
