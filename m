@@ -1,221 +1,101 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8948E3090F1;
-	Wed, 21 Jan 2026 02:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DE630AAA6;
+	Wed, 21 Jan 2026 02:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768961297; cv=none; b=ZGuCLjVAHqH4EhISzeMWqNei8ryma3nh9/blJQDzH/9z9zeOmLJ3HcVsw+Fhr035ERD+4yJVCbT8M60eJ5D05GLknW1TUrvNU3Zfd5hSrKPr2/0Kb4Bf09JH+dh9HT9+2rpiUfxkI2nEGuULf345CZXLI/pYXr5zJGb9KMVRF/A=
+	t=1768961501; cv=none; b=o1VwZwzGW08aaQHNZJNLiaCdttKaTmqcws9sjr6K/CXUOdNJiSJIA0lY2E9Rj3AkfOVJbrMRkqANsIDaIlb97fzAjZOhJ2fIVnOBI3/38SffFvrDKSGj5H2llVwkvrxn4J3gej7lXjQrOQV07QGTGD7cGkotrzfZTsqnjjGfvZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768961297; c=relaxed/simple;
-	bh=9c/Vyx5uG8NjX9q2/14qV8q/mnJjh/fI6PuZbTidzmo=;
+	s=arc-20240116; t=1768961501; c=relaxed/simple;
+	bh=/KGdhDaKaLBJN6yZlpLTZ1ZclR4grZLUB70QioIqzqo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DhVFDmZGjjUYtmgp6pPnJRAWHg3regL4OIk/qkPuVmu0l+C/1mCkplgMDiTQCGtLZCon42Jtw+0u3bFSq0DzGa0G/t9PZKcJ4bWh3ndCCrQqvQkPCc0Z2MGUaPUlgVbQlnDvlVmopL6jLIvw5ER6fqKi8qLJIs/1WDm1eQW9rGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=JCf/KKFb; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=PKFWa2MNX0QfM0SPLjxULU5XqoXNNs8fSbwpXOl8C4zIIcHUv1k7TFi4bbaw0rBrzpIWKT4Eoh2gkFprhE+c4TxsTvIkRhKf6s3TQkwBCUIOIYAmor7jTQMBgTgyfcWKyTu7QpM1FbsA/VXEG7a25MbmryXuWK9f9QaAsXx7LKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JmuJmz9n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="JCf/KKFb"
-Received: from pendragon.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id F067E2D7;
-	Wed, 21 Jan 2026 03:07:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1768961259;
-	bh=9c/Vyx5uG8NjX9q2/14qV8q/mnJjh/fI6PuZbTidzmo=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JmuJmz9n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A20DC16AAE;
+	Wed, 21 Jan 2026 02:11:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768961501;
+	bh=/KGdhDaKaLBJN6yZlpLTZ1ZclR4grZLUB70QioIqzqo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JCf/KKFbao+idj7P0iGL05QQZgAsf1ct1/3HWhGXgrFaeRiK1vDIBDR5oMba8jpBN
-	 GqCpRmSpWLjx5MJSfmF3OMiTAtK8G75skCftCGyegj9vGgpi6dagsGtWHh3ABj1DPO
-	 Mc3dUzZLZE3G62hVpUi/1wTIg7BgK13XWve7S22g=
-Date: Wed, 21 Jan 2026 04:08:08 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
+	b=JmuJmz9ne2giYJgM05lbIVAzQnrqRB6rgNu6X1zj4EbT9rnhG1hqyFu+EBKmuKRQP
+	 eU668ym8IXwTvFEDAz7kz+p26tFNneupjsiJdyY6sIalr5Fa6BJ7s23aEcL2hY8OY0
+	 vU991IsPI+vUmnPHT5wNraIMNh4LZ8KTOEPcMG6EdzkSK8cA+lZnSdc+wKB3S7p5Pv
+	 z6z+1LGle9Jzwi5lOorBhCAB2j/x4kj4o5kP/Z7oUEuL9yBomD7IY2tcI0PL6NDMjK
+	 lrIniiMpO4RMq024RDeqq2NV9XF2ufGIIJYGysjfjMiQtLSk1zSYEeFqzR+2avYMmu
+	 Kv4XK3xtDWGfg==
+Date: Tue, 20 Jan 2026 20:11:40 -0600
+From: Rob Herring <robh@kernel.org>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RESEND v2 3/5] media: staging: media: imx6-mipi-csi2: use
- devm_clk_bulk_get_all() to fetch clocks
-Message-ID: <20260121020808.GG403250@killaraus>
-References: <20260116-stage-csi2-cleanup-v2-0-a56e9cb25196@nxp.com>
- <20260116-stage-csi2-cleanup-v2-3-a56e9cb25196@nxp.com>
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	Liu Ying <victor.liu@nxp.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	luca.ceresoli@bootlin.com, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v9 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC
+ subnode to schema and example
+Message-ID: <20260121021140.GA1677576-robh@kernel.org>
+References: <20260115-v6-18-topic-imx93-parallel-display-v9-0-2c5051e4b144@pengutronix.de>
+ <20260115-v6-18-topic-imx93-parallel-display-v9-1-2c5051e4b144@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260116-stage-csi2-cleanup-v2-3-a56e9cb25196@nxp.com>
+In-Reply-To: <20260115-v6-18-topic-imx93-parallel-display-v9-1-2c5051e4b144@pengutronix.de>
 
-On Fri, Jan 16, 2026 at 11:17:58AM -0500, Frank Li wrote:
-> Use devm_clk_bulk_get_all_enabled() helper to simplify clock handling.
+On Thu, Jan 15, 2026 at 04:24:51PM +0100, Marco Felsch wrote:
+> From: Liu Ying <victor.liu@nxp.com>
 > 
-> Defer all clock prepare and enable to csi2_start(), which previous only
-> enable pix clock here.
+> i.MX93 SoC mediamix blk-ctrl contains one DISPLAY_MUX register which
+> configures parallel display format by using the "PARALLEL_DISP_FORMAT"
+> field. Document the Parallel Display Format Configuration(PDFC) subnode
+> and add the subnode to example.
 > 
-> Add clk_enable at log_status().
-> 
-> Do that safely because there are not register access before csi2_start().
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> [m.felsch@pengutronix.de: port to v6.18-rc1]
+> [m.felsch@pengutronix.de: add bus-width]
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > ---
-> changes in v2
-> - add clk_bulk_prepare_enable() get at csi2_log_status()
-> ---
->  drivers/staging/media/imx/imx6-mipi-csi2.c | 57 +++++++++---------------------
->  1 file changed, 16 insertions(+), 41 deletions(-)
+>  .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml | 78 ++++++++++++++++++++++
+>  1 file changed, 78 insertions(+)
 > 
-> diff --git a/drivers/staging/media/imx/imx6-mipi-csi2.c b/drivers/staging/media/imx/imx6-mipi-csi2.c
-> index 4f740170d2bbf586ac0a58b5d25f8f8432e9e6a3..e1b4b7fb53131ce9515b9441d8fc420e85d3e993 100644
-> --- a/drivers/staging/media/imx/imx6-mipi-csi2.c
-> +++ b/drivers/staging/media/imx/imx6-mipi-csi2.c
-> @@ -39,9 +39,8 @@ struct csi2_dev {
->  	struct v4l2_subdev sd;
->  	struct v4l2_async_notifier notifier;
->  	struct media_pad pad[CSI2_NUM_PADS];
-> -	struct clk *dphy_clk;
-> -	struct clk *pllref_clk;
-> -	struct clk *pix_clk; /* what is this? */
-> +	struct clk_bulk_data *clks;
-> +	int num_clks;
->  	void __iomem *base;
+> diff --git a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> index 34aea58094e55365a2f9c86092f637e533f954ff..d828c2e82965c7a4cd69a67136047d83c96b0a35 100644
+> --- a/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> +++ b/Documentation/devicetree/bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml
+> @@ -40,6 +40,58 @@ properties:
+>      minItems: 8
+>      maxItems: 10
 >  
->  	struct v4l2_subdev *remote;
-> @@ -343,7 +342,7 @@ static int csi2_start(struct csi2_dev *csi2)
->  	unsigned int lanes;
->  	int ret;
->  
-> -	ret = clk_prepare_enable(csi2->pix_clk);
-> +	ret = clk_bulk_prepare_enable(csi2->num_clks, csi2->clks);
->  	if (ret)
->  		return ret;
->  
-> @@ -390,7 +389,7 @@ static int csi2_start(struct csi2_dev *csi2)
->  err_assert_reset:
->  	csi2_enable(csi2, false);
->  err_disable_clk:
-> -	clk_disable_unprepare(csi2->pix_clk);
-> +	clk_bulk_disable_unprepare(csi2->num_clks, csi2->clks);
->  	return ret;
->  }
->  
-> @@ -401,7 +400,7 @@ static void csi2_stop(struct csi2_dev *csi2)
->  	v4l2_subdev_call(csi2->src_sd, video, post_streamoff);
->  
->  	csi2_enable(csi2, false);
-> -	clk_disable_unprepare(csi2->pix_clk);
-> +	clk_bulk_disable_unprepare(csi2->num_clks, csi2->clks);
->  }
->  
->  /*
-> @@ -570,6 +569,11 @@ static int csi2_registered(struct v4l2_subdev *sd)
->  static int csi2_log_status(struct v4l2_subdev *sd)
->  {
->  	struct csi2_dev *csi2 = sd_to_dev(sd);
-> +	int ret;
+> +  dpi-bridge:
+> +    type: object
+> +    additionalProperties: false
 > +
-> +	ret = clk_bulk_prepare_enable(csi2->num_clks, csi2->clks);
-> +	if (ret)
-> +		return ret;
->  
->  	v4l2_info(sd, "-----MIPI CSI status-----\n");
->  	v4l2_info(sd, "VERSION: 0x%x\n",
-> @@ -601,6 +605,8 @@ static int csi2_log_status(struct v4l2_subdev *sd)
->  	v4l2_info(sd, "PHY_TST_CTRL1: 0x%x\n",
->  		  readl(csi2->base + CSI2_PHY_TST_CTRL1));
->  
-> +	clk_bulk_disable_unprepare(csi2->num_clks, csi2->clks);
-> +
->  	return 0;
->  }
->  
-> @@ -749,24 +755,6 @@ static int csi2_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
->  
-> -	csi2->pllref_clk = devm_clk_get(&pdev->dev, "ref");
-> -	if (IS_ERR(csi2->pllref_clk)) {
-> -		v4l2_err(&csi2->sd, "failed to get pll reference clock\n");
-> -		return PTR_ERR(csi2->pllref_clk);
-> -	}
-> -
-> -	csi2->dphy_clk = devm_clk_get(&pdev->dev, "dphy");
-> -	if (IS_ERR(csi2->dphy_clk)) {
-> -		v4l2_err(&csi2->sd, "failed to get dphy clock\n");
-> -		return PTR_ERR(csi2->dphy_clk);
-> -	}
-> -
-> -	csi2->pix_clk = devm_clk_get(&pdev->dev, "pix");
-> -	if (IS_ERR(csi2->pix_clk)) {
-> -		v4l2_err(&csi2->sd, "failed to get pixel clock\n");
-> -		return PTR_ERR(csi2->pix_clk);
-> -	}
-> -
->  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->  	if (!res) {
->  		v4l2_err(&csi2->sd, "failed to get platform resources\n");
-> @@ -781,20 +769,12 @@ static int csi2_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
->  
-> -	ret = clk_prepare_enable(csi2->pllref_clk);
-> -	if (ret) {
-> -		v4l2_err(&csi2->sd, "failed to enable pllref_clk\n");
-> -		return ret;
-> -	}
-> -
-> -	ret = clk_prepare_enable(csi2->dphy_clk);
-> -	if (ret) {
-> -		v4l2_err(&csi2->sd, "failed to enable dphy_clk\n");
-> -		goto pllref_off;
-> -	}
-> -
->  	platform_set_drvdata(pdev, &csi2->sd);
->  
-> +	csi2->num_clks = devm_clk_bulk_get_all(&pdev->dev, &csi2->clks);
-> +	if (csi2->num_clks < 0)
-> +		return dev_err_probe(&pdev->dev, csi2->num_clks, "Failed to get clocks\n");
+> +    properties:
+> +      compatible:
+> +        enum:
+> +          - nxp,imx91-pdfc
+> +          - nxp,imx93-pdfc
 
-I'm still really not a fan of devm_clk_bulk_get_all(). I would prefer
-using clk_bulk_get(). The rest looks fine, although I would have split
-this patch in two, one to switch to the bulk API, and one to move
-enabling/disabling of the clocks.
-
-Ah, no, there's one clock that's already enabled at start time, so a
-single patch is fine.
-
-> +
->  	ret = csi2_async_register(csi2);
->  	if (ret)
->  		goto clean_notifier;
-> @@ -804,9 +784,6 @@ static int csi2_probe(struct platform_device *pdev)
->  clean_notifier:
->  	v4l2_async_nf_unregister(&csi2->notifier);
->  	v4l2_async_nf_cleanup(&csi2->notifier);
-> -	clk_disable_unprepare(csi2->dphy_clk);
-> -pllref_off:
-> -	clk_disable_unprepare(csi2->pllref_clk);
->  	return ret;
->  }
->  
-> @@ -818,8 +795,6 @@ static void csi2_remove(struct platform_device *pdev)
->  	v4l2_async_nf_unregister(&csi2->notifier);
->  	v4l2_async_nf_cleanup(&csi2->notifier);
->  	v4l2_async_unregister_subdev(sd);
-> -	clk_disable_unprepare(csi2->dphy_clk);
-> -	clk_disable_unprepare(csi2->pllref_clk);
->  	media_entity_cleanup(&sd->entity);
->  }
->  
-
--- 
-Regards,
-
-Laurent Pinchart
+Looks like there's a register for this at 0x60. That should be a 'reg' 
+entry in the DT.
