@@ -1,158 +1,158 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC8A477E24
-	for <imx@lists.linux.dev>; Wed, 21 Jan 2026 08:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768983340; cv=none; b=kxF0nDlGf23CcEvU/LcvCdpXA7KY4Kw24mnv0rNFqzbPUPi9K7IeX5NmyG4L6DeXzpd6dj9d/PeEqKIZHb7aMLTpkZip+flPpTn1sWCDn0e5YddH1BHWBvhujN7cBmGlatMXrSY5NahWWKdhg9+EIS/D6JRE7+CaIUD8iTZVcWI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768983340; c=relaxed/simple;
-	bh=emrIjLOeabyV6LGirlRSI+d/LxMACmtI5ia646ss2eg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZT4bj8CZGGA+EqOSBEMgLf1W34ETdBS0W6/zTNeVb6pKaWWqieBtwdLM4rRQ2C4ENZQ0+OmigEjxXf8OmPSBs/I3EvzHpW+OtG1bhxMBUQeA9eC56MvIa7tc42TzS/FlxgrDbFan0eawXfRNltkmamnSGZANg3pHS10+uFkMYIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id C18021A0D7D;
-	Wed, 21 Jan 2026 09:15:30 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A994F1A0D78;
-	Wed, 21 Jan 2026 09:15:30 +0100 (CET)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 15432202C4;
-	Wed, 21 Jan 2026 09:15:30 +0100 (CET)
-Date: Wed, 21 Jan 2026 09:15:30 +0100
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Shawn Guo <shawnguo@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>, devicetree@vger.kernel.org,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, imx@lists.linux.dev,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH RFC 2/4] dt-bindings: net: nxp,s32-dwmac: Declare
- per-queue interrupts
-Message-ID: <aXCLIjrGfLVGv+Si@lsv051416.swis.nl-cdc01.nxp.com>
-References: <20251214-dwmac_multi_irq-v1-0-36562ab0e9f7@oss.nxp.com>
- <20251214-dwmac_multi_irq-v1-2-36562ab0e9f7@oss.nxp.com>
- <176582217911.3066791.4926710165988218857.robh@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471FC4418CD
+	for <imx@lists.linux.dev>; Wed, 21 Jan 2026 08:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768984196; cv=pass; b=qfo0knzNsK58aRJiQiJM01CSQKqk3H/N+3+5cqvUfzchIzV7ieujpelAbTjvw5hRYRZh9Pis0oIld7NK4mDJ5ELT4wDNVO2u28V3oy8Uw4zEnUAcihqjYNsFSlGGTqLs6fp4dSspYmipmqkeQgpaIE9/9Wh+Imvo54RjrSnIArw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768984196; c=relaxed/simple;
+	bh=IYiLR/6ee2XqEtSUBEP2QD572evtL/NpvdANhUBe7g4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hllhY1hLx0DUzrWt00+EOpNo3NP4k0jZkIkGc7Z0J8Izr8uiKy1SRSE644O4jal8TnK/Y1r3/YMhuwLsuCxzGMlH2QLjjtBnkTyZY6FOQpnT7zW+ypDRoGaQ7cca79iN96pQOhTcsxgu66MqF6X2pAFmmOAnZhfk605NkBHeKVY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hzLCoLFE; arc=pass smtp.client-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hzLCoLFE"
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b70abe3417so2273747eec.0
+        for <imx@lists.linux.dev>; Wed, 21 Jan 2026 00:29:54 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768984194; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ICu0ZmO3O7HnzGMm6rAzRRvXVNCQbGwtiQDV7clq4n9gXuYXfO5oXED113Hqqfta7Z
+         lqjWsnaEPRERNkBymvifPrnGXzVINyXg4YYmHhGtbCi9bNveOnWDPNXNkuItr4nwpQUB
+         PgR51/aRr9Ym3b9B6UDnrFgu5E/BUSeF3ok+fngewgvZ0zK7Q7cWeCiGfFcGK1v21Emf
+         6Z/8zrisgh5i97LYNbyUYJMdIonYSBqoIZdXQLsKqXpU3gO2jP+0Wx6Sc3fC6YT/3RaM
+         l7IXyU+iQXuZZy7Ju7Rxhgm2awxEMaQB2W1pKImtmyqaNQxDbSAWuFwqdRf2Qf4wMOe4
+         jWFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7aI+GPwAH0BUEU90sHG77IoEanYx72AgVA1ohd1zcDk=;
+        fh=0/99yHrThSdwPOmMB9Gos2iN/UuEtWgrKfSO62QU1ro=;
+        b=Agw8EcF0adsHM12UNkKDDjNW3mOL2fix+AH9kE8cPGvwxhswYHG1Bn69coKW3HmOjE
+         r0hU9iD1X9JUfMnthF6D0w5IWOINAK6CJvuUCF6YU1VJAPch/CTl/j36ZxVqrMTLvAjQ
+         dHBemGR5JdPwpH1m9xI/7ncHQVSUqWzUuKVsGZ9jhXP9ryTlfvsLFd8BqaYZ7IHaw0tz
+         6q7ZdfppMfHEHTB5fi3ZMn1MHK4I/8ZAVOrRW/42SwRNXOXENs0RmssynZAtwW7h/sRS
+         iFboY/6zGHp3mqglSg8kKqUoEFKpMdlWrc6ALWbp0fijBbprJQwbwe4HKfTV4N8MYGBD
+         MdVw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768984194; x=1769588994; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7aI+GPwAH0BUEU90sHG77IoEanYx72AgVA1ohd1zcDk=;
+        b=hzLCoLFEj4Oc8dlKMCLHOxCC2tvztQghYDxG5C+38rcak/c4yqJlGZTwm/bBX0hhyj
+         ImgIUtguVlKx7BOF3HDFn0Ed9YiMHZo0n04vFdHfjxbsTHVFm4Lw1RxNVhgCnFHuUSmf
+         Dbqf04lr9Wx4MrVg1Sv3zb+FWGILU0fnaYII40VcqiiTbtrlQSDEAKXdBHpcnhNe9gtH
+         62mZDf3rt56UlnpKLgcvWEKiQRsMp3vFIXj0FNBf00+ao4mePxcYtAVvgLIYZ0rvYCiJ
+         Lzr9ISLDtf2WEbm7dmhyAovJhAqZf5m432KOjHo9v8TRfH2m+I6OT5QgkAV+35M61RmN
+         SRgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768984194; x=1769588994;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7aI+GPwAH0BUEU90sHG77IoEanYx72AgVA1ohd1zcDk=;
+        b=k+xHBX+TEmf25sGgtfIXFmjX7pwcT0pR5wUgRK4BiLwy+ulOq9tz3+VvvVLahBaLjY
+         OLEo7MpmlUU1NSAD7S+EVwlqmxtrwZuynE89TBkb60jnMn1Gn+eQi7cvLqgnuIVSZxb+
+         pzPJyrUV6WtoN7KLAmf8Cb6iF798l899V8KZQoA3mf7wH9KT7GjR1D8cjC4ttU77wh0H
+         Dqe51mO8/rBaLzH9B/EpbES1/MiSclkQ3aruDXUWmTi6a2rUz56EGvfDcM8Iaan8xuGa
+         vCR5c77+RvnFEtHO1dWNupHMqjzFcvkq0EMXVs+Bor98H68MOtILDmzJtqMH+kY5PYR8
+         EYsg==
+X-Forwarded-Encrypted: i=1; AJvYcCVGZzM9acOF1kv86uHk4v4WUrynWKxEasd7tbrk2yLIq7zbrmUDhod+1+qPSYYBWGKVF8E=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzDB4Laot+ou88UEw6whj4Q/YTLmxctoMvOwCkW/Soc7X5GAPxa
+	gx0Ibu+8jWsn5hyqTVi403iLxR60xMTGIHxTrzW2Y17FJRSVH++28TPfGWWNcqEkOFfH9JhNduY
+	/p6ep9TZrRLCuvwK8tVur3qCzknju+No=
+X-Gm-Gg: AZuq6aLSXN8jBObdfEFnJmvSm+v7+my/ZZZXV9NFgcTKocOfyMBljz2QJ1E1cZzTpFm
+	LoWtTW5mixTQ9RDBYaCjHRKjLbvwRi3xIRH741nabGtSlZ0cT8OFEwfSQwV2UQtjygxnZ0KfOGG
+	5O3QltoCqO+6a4mT8uWL1PPRc+cBteVaT/WNhuRU8wNjxhN+yhk55mrYytF/YRN3vLnND7jOkK5
+	h2iig3k5tVvh3n3Nlvxqei1WLGJGD1WV/k6bMXoP8eRqLKgRTcKmrrNNRGfmbI1htttmBNouEKT
+	+uO9AtsKqkkMv/WIL97XAOjaZbdefIb/cVNfmX3zTZVZ0G/ItZoVC0DNCTMnrq8eRg18VaitgMM
+	vyENf6hnt/DYoAsx8LCf0
+X-Received: by 2002:a05:7022:4399:b0:123:348d:8576 with SMTP id
+ a92af1059eb24-1244a6fb15amr13122314c88.6.1768984193944; Wed, 21 Jan 2026
+ 00:29:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <176582217911.3066791.4926710165988218857.robh@kernel.org>
-X-Virus-Scanned: ClamAV using ClamSMTP
+References: <20260120102604.1989725-1-sherry.sun@nxp.com> <20260120102604.1989725-2-sherry.sun@nxp.com>
+ <aW+ullwMtDq0RpNt@lizhi-Precision-Tower-5810> <VI0PR04MB121146CD3EDDE9C4771B83A939296A@VI0PR04MB12114.eurprd04.prod.outlook.com>
+In-Reply-To: <VI0PR04MB121146CD3EDDE9C4771B83A939296A@VI0PR04MB12114.eurprd04.prod.outlook.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Wed, 21 Jan 2026 10:32:33 +0200
+X-Gm-Features: AZwV_QiY0sD13-nX9UTIpSYPXU-DrhdabVw0h6HRC3hxGCNgeBaTfACxmKoz6Dw
+Message-ID: <CAEnQRZAfRLL1c19WHbQjJfgZfQLQx6CaBYx7KW9wSmVzVa6Q+A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Add i.MX93W EVK board
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>, "robh@kernel.org" <robh@kernel.org>, 
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
+	"shawnguo@kernel.org" <shawnguo@kernel.org>, Daniel Baluta <daniel.baluta@nxp.com>, 
+	"dario.binacchi@amarulasolutions.com" <dario.binacchi@amarulasolutions.com>, 
+	"alexander.stein@ew.tq-group.com" <alexander.stein@ew.tq-group.com>, 
+	"Markus.Niebel@tq-group.com" <Markus.Niebel@tq-group.com>, 
+	"matthias.schiffer@tq-group.com" <matthias.schiffer@tq-group.com>, "y.moog@phytec.de" <y.moog@phytec.de>, 
+	"josua@solid-run.com" <josua@solid-run.com>, Francesco Dolcini <francesco.dolcini@toradex.com>, 
+	"primoz.fiser@norik.com" <primoz.fiser@norik.com>, "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, 
+	"festevam@gmail.com" <festevam@gmail.com>, 
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"kernel@pengutronix.de" <kernel@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 15, 2025 at 12:09:39PM -0600, Rob Herring (Arm) wrote:
-> 
-> On Sun, 14 Dec 2025 23:15:38 +0100, Jan Petrous (OSS) wrote:
-> > The DWMAC IP on supported SoCs has connected queue-based IRQ lines.
-> > 
-> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> > ---
-> >  .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 40 +++++++++++++++++++---
-> >  1 file changed, 36 insertions(+), 4 deletions(-)
-> > 
-> 
-> My bot found errors running 'make dt_binding_check' on your patch:
-> 
-> yamllint warnings/errors:
-> 
-> dtschema/dtc warnings/errors:
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: ignoring, error in schema: properties: interrupt-names
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
-> 	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml: properties:interrupt-names: [{'items': [{'const': 'macirq'}, {'const': 'rx-queue-0'}, {'const': 'tx-queue-0'}, {'const': 'rx-queue-1'}, {'const': 'tx-queue-1'}, {'const': 'rx-queue-2'}, {'const': 'tx-queue-2'}, {'const': 'rx-queue-3'}, {'const': 'tx-queue-3'}, {'const': 'rx-queue-4'}, {'const': 'tx-queue-4'}]}] is not of type 'object', 'boolean'
-> Traceback (most recent call last):
->   File "/usr/local/bin/dt-doc-validate", line 8, in <module>
->     sys.exit(main())
->              ~~~~^^
->   File "/usr/local/lib/python3.13/dist-packages/dtschema/doc_validate.py", line 66, in main
->     ret |= check_doc(f)
->            ~~~~~~~~~^^^
->   File "/usr/local/lib/python3.13/dist-packages/dtschema/doc_validate.py", line 37, in check_doc
->     dtsch.check_schema_refs()
->     ~~~~~~~~~~~~~~~~~~~~~~~^^
->   File "/usr/local/lib/python3.13/dist-packages/dtschema/schema.py", line 241, in check_schema_refs
->     self._check_schema_refs(resolver, self)
->     ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
->   File "/usr/local/lib/python3.13/dist-packages/dtschema/schema.py", line 212, in _check_schema_refs
->     self._check_schema_refs(resolver, v, parent=k, is_common=is_common,
->     ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->                             has_constraint=has_constraint)
->                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->   File "/usr/local/lib/python3.13/dist-packages/dtschema/schema.py", line 216, in _check_schema_refs
->     self._check_schema_refs(resolver, schema[i], parent=parent, is_common=is_common,
->     ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->                             has_constraint=has_constraint)
->                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->   File "/usr/local/lib/python3.13/dist-packages/dtschema/schema.py", line 203, in _check_schema_refs
->     ref_sch = resolver.lookup(schema['$ref']).contents
->               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
->   File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 682, in lookup
->     retrieved = self._registry.get_or_retrieve(uri)
->   File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 422, in get_or_retrieve
->     registry = self.crawl()
->   File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 500, in crawl
->     id = resource.id()
->   File "/usr/local/lib/python3.13/dist-packages/referencing/_core.py", line 231, in id
->     id = self._specification.id_of(self.contents)
->   File "/usr/local/lib/python3.13/dist-packages/referencing/jsonschema.py", line 50, in _dollar_id
->     return contents.get("$id")
->            ^^^^^^^^^^^^
-> AttributeError: 'list' object has no attribute 'get'
-> Lexical error: Documentation/devicetree/bindings/net/nxp,s32-dwmac.example.dts:58.13-17 Unexpected 'snps'
-> Error: Documentation/devicetree/bindings/net/nxp,s32-dwmac.example.dts:58.13-17 syntax error
-> FATAL ERROR: Unable to parse input tree
-> make[2]: *** [scripts/Makefile.dtbs:141: Documentation/devicetree/bindings/net/nxp,s32-dwmac.example.dtb] Error 1
-> make[2]: *** Waiting for unfinished jobs....
-> make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1559: dt_binding_check] Error 2
-> make: *** [Makefile:248: __sub-make] Error 2
-> 
-> doc reference errors (make refcheckdocs):
-> 
-> See https://patchwork.kernel.org/project/devicetree/patch/20251214-dwmac_multi_irq-v1-2-36562ab0e9f7@oss.nxp.com
-> 
-> The base for the series is generally the latest rc1. A different dependency
-> should be noted in *this* patch.
-> 
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
-> 
-> pip3 install dtschema --upgrade
-> 
-> Please check and re-submit after running the above command yourself. Note
-> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-> your schema. However, it must be unset to test all examples with your schema.
-> 
+On Wed, Jan 21, 2026 at 5:25=E2=80=AFAM Sherry Sun <sherry.sun@nxp.com> wro=
+te:
+>
+>
+>
+> > Subject: Re: [PATCH 1/2] dt-bindings: arm: fsl: Add i.MX93W EVK board
+> >
+> > On Tue, Jan 20, 2026 at 06:26:03PM +0800, Sherry Sun wrote:
+> > > Add DT compatible string for NXP i.MX93W EVK board.
+> > >
+> > > Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> > > ---
+> > >  Documentation/devicetree/bindings/arm/fsl.yaml | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml
+> > b/Documentation/devicetree/bindings/arm/fsl.yaml
+> > > index 93ad6f0027d0..1769f243d70f 100644
+> > > --- a/Documentation/devicetree/bindings/arm/fsl.yaml
+> > > +++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+> > > @@ -1432,6 +1432,7 @@ properties:
+> > >                - fsl,imx93-11x11-evk       # i.MX93 11x11 EVK Board
+> > >                - fsl,imx93-11x11-frdm      # i.MX93 11x11 FRDM Board
+> > >                - fsl,imx93-14x14-evk       # i.MX93 14x14 EVK Board
+> > > +              - fsl,imx93w-evk            # i.MX93W EVK Board
+> >
+> > Is 93w 11x11 or 14x14? can you add suffix to keep align existing one.
+> >
+>
+> Hi Frank,
+>
+> IMX93W-EVK is the official board name, it basically reuse the  i.MX93 11x=
+11
+> EVK board, as described in the cover letter and dts patch. I prefer to st=
+ill use
+> this name (imx93w-evk) to keep align with the board official name.
 
-It was missing closing semicolon in the example. Thanks for catch.
-Fixed in v2.
 
-/Jan
+No matter of what name we decide to use in the end please add this clarific=
+ation
+in the commit message.
 
+Also please add small comment describing what are the major
+differences between imx93w and
+imx93 11x11 board.
+
+thanks,
+Daniel.
