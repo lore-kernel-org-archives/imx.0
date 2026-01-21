@@ -1,139 +1,89 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149ED492511
-	for <imx@lists.linux.dev>; Wed, 21 Jan 2026 15:19:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05D8421A0A
+	for <imx@lists.linux.dev>; Wed, 21 Jan 2026 15:23:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769008798; cv=none; b=Wvznv+9Ubw7S6js/ImLQbjEDgapJv+AkOuL99/CJqWSrpQT/q7zBOf8PWjnnd3nQDrFGgNiTlwza0rtgUaD8s6JFMEiCW3/OBm6b4uVra+vnBia5PLUybPYBUikOk3X2Z7AgOGXMIm4+hyedQBdF2AVbYDitg4nXNehlM93wSyE=
+	t=1769009007; cv=none; b=haMhjmOQgBzGMxinAA6ZiHsePq2XH/+AuYqrzkev8M8YYhMGT1Yf2MVUV72KwZ1KziV7RMD/YL9GePH8oqRrgNOnlyERY3uFsVNymcEDRbTF0exAQQZ8Yqw1qxGg1Zk+aY9ugjMiETLHYegZ77Aqmeq37hnFbc2l+/iJ6A7ZjGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769008798; c=relaxed/simple;
-	bh=ZXr9VlNJbLNIw7WZW4pYI5IacLcq1+h9ykJJmC2085M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UaXKAjty98IJGFF2ebaejSXjgvfCsBeuqnuaHrhV37PySZEX+AubCoAAxIuA65C4tdgToxfLB4SWWfK9mhZfjetwJsjB/SRJfOmY+3IQ5QPQYe+FXgDS9YHIP44YwUsJg2KGx31RGir3htaTDhqLpCeNFHr+DvXFOF2H5Vtt9Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1viZzq-00022J-Cx; Wed, 21 Jan 2026 16:19:50 +0100
-Message-ID: <f002f394-0887-403b-a705-58bbffe362d4@pengutronix.de>
-Date: Wed, 21 Jan 2026 16:19:49 +0100
+	s=arc-20240116; t=1769009007; c=relaxed/simple;
+	bh=iFZDwVA7Uf5gTTRjwXE5KL6hD6mjuWvyyFd50SkCOww=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u0KPDHe3bCNcgZn9WPcl184JMXPkcvPzbVoQgFqrrAY/xbyg26LUbUEmr1U2/11let6LzRY6WdEVus4sdOZa3gR2WcW4SVu+kDxOW0xZJKkM6RDMZK1ZisFddBWSRPgxUWj6D2XY5FfhqE146zeHzjOq7qCnbPp4cVdNYn5HAP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BHDrl9Yv; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BHDrl9Yv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8913CC19425
+	for <imx@lists.linux.dev>; Wed, 21 Jan 2026 15:23:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769009006;
+	bh=iFZDwVA7Uf5gTTRjwXE5KL6hD6mjuWvyyFd50SkCOww=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=BHDrl9YvUw1kUmyeB5MKtI+9Si9Ol+wXHBplkBKPYd0u6pOod8g+vZMCRzh3eakKZ
+	 hxZjqAfUj/a/W3kjBtsXY32Xbx9a3K6gkviSTuquB8U2InBWDrtWxASH6XhKl3Xkum
+	 v3rjLqGs7uW2h5QpPZRfiNem8VLwG+aFK7BUg8+mH5s5pfsHJiJyE2PeZQ5+QE+a5L
+	 2wzpfED5ThqUGvwIEi8bBzAwhSmusA92wsvS3RVP4UI/H4CspPPYiIi5KHhHPV4kry
+	 vpy0Rk8i4nnLzrQOpQlngrMwDebpVBqS3BGVC7aiNetk+R2Cuqh4KGCHLT8SQ0+9fB
+	 f8AeZgJbgoYVg==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b876c0d5318so876033066b.0
+        for <imx@lists.linux.dev>; Wed, 21 Jan 2026 07:23:26 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXX0/b3PDPltSHrwpEH7/U+w24WbzJ86br/chZNU1NUiEOsqHJPB/JsSPaaYvIYUSex7Zc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxgKkQ5rtbXAq4iWYJuYVaNDLUWdgmnVB4Pu84+V7Lw7+Z05D+q
+	RJs+MV7RgMv9tBfkxpLeP+e7lF0sHwHQYcdEsIhMKVSeSfS/oUzHk/irFytubEumzbOYToW0NXs
+	QbJPU/kG8//8MDhCp3qUrx0q6mEUZ0A==
+X-Received: by 2002:a17:907:3e8c:b0:b87:2579:b6cf with SMTP id
+ a640c23a62f3a-b8800348798mr476675266b.41.1769009004718; Wed, 21 Jan 2026
+ 07:23:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Replace Shawn with Frank as i.MX platform
- maintainer
-To: Shawn Guo <shawnguo@kernel.org>, Arnd Bergmann <arnd@arndb.de>
-Cc: imx@lists.linux.dev, Sascha Hauer <s.hauer@pengutronix.de>,
- linux-gpio@vger.kernel.org, kernel@pengutronix.de,
- Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>,
- linux-arm-kernel@lists.infradead.org
-References: <20260121142047.10887-1-shawnguo@kernel.org>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20260121142047.10887-1-shawnguo@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+References: <20260115-v6-18-topic-imx93-parallel-display-v9-0-2c5051e4b144@pengutronix.de>
+ <20260115-v6-18-topic-imx93-parallel-display-v9-1-2c5051e4b144@pengutronix.de>
+In-Reply-To: <20260115-v6-18-topic-imx93-parallel-display-v9-1-2c5051e4b144@pengutronix.de>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 21 Jan 2026 09:23:12 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLLZXwvht0KbPfoMVRhp0doNh971rKKv3FoCOTDjoDWKA@mail.gmail.com>
+X-Gm-Features: AZwV_Qgxsl8jhK-Kzr0JzdnglYTDbfqkbMibvySBi5iB5cvgn_7BXkMMMsPSmxU
+Message-ID: <CAL_JsqLLZXwvht0KbPfoMVRhp0doNh971rKKv3FoCOTDjoDWKA@mail.gmail.com>
+Subject: Re: [PATCH v9 1/3] dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC
+ subnode to schema and example
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+	Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	luca.ceresoli@bootlin.com, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
-
-On 1/21/26 3:20 PM, Shawn Guo wrote:
-> Shawn is no longer interested in maintaining i.MX platform, and would like
-> to step down.  On the other hand, Frank seems to be the best successor
-> for this role.
-> 
->  - He has been one of the most outstanding contributors to i.MX platform
->    in the recent years.
-> 
->  - He has been actively working as a co-maintainer reviewing i.MX
->    patches and keep the platform support in good shape.
-> 
->  - He works for NXP and could be the bridge and coordinator between
->    NXP internal developers and community contributors.
-> 
-> Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-
-Thanks Shawn for your tremendous work over the years and much success to
-Frank in his new maintainership!
-
-Cheers,
-Ahmad
-
+On Thu, Jan 15, 2026 at 9:25=E2=80=AFAM Marco Felsch <m.felsch@pengutronix.=
+de> wrote:
+>
+> From: Liu Ying <victor.liu@nxp.com>
+>
+> i.MX93 SoC mediamix blk-ctrl contains one DISPLAY_MUX register which
+> configures parallel display format by using the "PARALLEL_DISP_FORMAT"
+> field. Document the Parallel Display Format Configuration(PDFC) subnode
+> and add the subnode to example.
+>
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
+> [m.felsch@pengutronix.de: port to v6.18-rc1]
+> [m.felsch@pengutronix.de: add bus-width]
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > ---
->  MAINTAINERS | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 5b11839cba9d..a294b4e952a9 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2745,14 +2745,14 @@ F:	arch/arm/include/asm/hardware/dec21285.h
->  F:	arch/arm/mach-footbridge/
->  
->  ARM/FREESCALE IMX / MXC ARM ARCHITECTURE
-> -M:	Shawn Guo <shawnguo@kernel.org>
-> +M:	Frank Li <Frank.Li@nxp.com>
->  M:	Sascha Hauer <s.hauer@pengutronix.de>
->  R:	Pengutronix Kernel Team <kernel@pengutronix.de>
->  R:	Fabio Estevam <festevam@gmail.com>
->  L:	imx@lists.linux.dev
->  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
->  S:	Maintained
-> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git
-> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git
->  F:	Documentation/devicetree/bindings/firmware/fsl*
->  F:	Documentation/devicetree/bindings/firmware/nxp*
->  F:	arch/arm/boot/dts/nxp/imx/
-> @@ -2767,22 +2767,22 @@ N:	mxs
->  N:	\bmxc[^\d]
->  
->  ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE
-> -M:	Shawn Guo <shawnguo@kernel.org>
-> +M:	Frank Li <Frank.Li@nxp.com>
->  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
->  S:	Maintained
-> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git
-> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git
->  F:	arch/arm/boot/dts/nxp/ls/
->  F:	arch/arm64/boot/dts/freescale/fsl-*
->  F:	arch/arm64/boot/dts/freescale/qoriq-*
->  
->  ARM/FREESCALE VYBRID ARM ARCHITECTURE
-> -M:	Shawn Guo <shawnguo@kernel.org>
-> +M:	Frank Li <Frank.Li@nxp.com>
->  M:	Sascha Hauer <s.hauer@pengutronix.de>
->  R:	Pengutronix Kernel Team <kernel@pengutronix.de>
->  R:	Stefan Agner <stefan@agner.ch>
->  L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
->  S:	Maintained
-> -T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git
-> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git
->  F:	arch/arm/boot/dts/nxp/vf/
->  F:	arch/arm/mach-imx/*vf610*
->  
-> @@ -20562,7 +20562,7 @@ F:	drivers/pinctrl/pinctrl-amd.c
->  PIN CONTROLLER - FREESCALE
->  M:	Dong Aisheng <aisheng.dong@nxp.com>
->  M:	Fabio Estevam <festevam@gmail.com>
-> -M:	Shawn Guo <shawnguo@kernel.org>
-> +M:	Frank Li <Frank.Li@nxp.com>
->  M:	Jacky Bai <ping.bai@nxp.com>
->  R:	Pengutronix Kernel Team <kernel@pengutronix.de>
->  R:	NXP S32 Linux Team <s32@nxp.com>
+>  .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml | 78 ++++++++++++++++=
+++++++
+>  1 file changed, 78 insertions(+)
 
--- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
