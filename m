@@ -1,135 +1,69 @@
-Received: from mail.gruber-software.com (mail.gruber-software.com [3.120.200.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BF643CEF2
-	for <imx@lists.linux.dev>; Wed, 21 Jan 2026 08:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.120.200.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5053A4F36;
+	Wed, 21 Jan 2026 08:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768984744; cv=none; b=DWLsZxznch6rqmI2Vz0gF2bfr8Wy2VweeAWFfXjKgkdmsuMD/ZcUWvmrtkhohd94DCG3EQguvpr6bcvW3G7ANqV0EEq7DC7uh6rB/JwF6C/aax8wqNPNsjcXdquUpYs7+ptpbTNuWyPIiuOQnwQ5++09tyfKlJvnMgRNY2in9sE=
+	t=1768985524; cv=none; b=hJlSLyiSPTvD/MG3XC9d0pDeubaUyC4JHHvnkYk6zeAEeQOQ2xEtLp8JS9CBn3FoymYWUVaoKppM/BeH7755qL6Wu4vKm3KQV5oFPQoR32i/XlZu/VbAJmhtXSZGXVQLggaEp93uPTP88s3Tsa2OEE04A3AbRW5GHZo+WRZJDxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768984744; c=relaxed/simple;
-	bh=lSJq/VUxHsPHf3f1N1Yp14yQ41kvQxFXuqrR4PO5dyw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RI6EO8mHTFDQDIO7XbMAXMl/3cILYVdvI5aP67/e9ScYAN15MNf7LaE6oLXhg/NDw90+frlrYR0s3xhpYzZAGR5c3ndsYpey8FFbV1zbSdGfv2qlVGX6PpVW4s0UmTuZ3LvkNXuQXJCBBld8hjVW3ZZY2wuCuDijPJ3s2yXuJGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=clemensgruber.at; spf=pass smtp.mailfrom=clemensgruber.at; dkim=pass (2048-bit key) header.d=clemensgruber.at header.i=@clemensgruber.at header.b=AUcFTWCh; arc=none smtp.client-ip=3.120.200.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=clemensgruber.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=clemensgruber.at
+	s=arc-20240116; t=1768985524; c=relaxed/simple;
+	bh=F1Divp1iQY//EJAcHECb5Zq6njuhGj6QCZPRtvomuos=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=FaBB+D+USql5Bjb0y8/2IFAD4+vQyNcal7CRa0AnRTC2UBQr/1pVi1M/NSdrM4dZ/HzdBTO3WtHFU2xY0ZLs98jhmYrj+JciFVU3PfBOwJYmYxJKuUookaDgXKXByQ52MFyBNijmr4bJJr4uAGieo4QHUk6hK6WUPsv8gvOg+b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K2kwRGzN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=clemensgruber.at header.i=@clemensgruber.at header.b="AUcFTWCh"
-Received: from workstation.tuxnet (213-47-81-100.cable.dynamic.surfer.at [213.47.81.100])
-	by mail.gruber-software.com (Postfix) with ESMTPSA id 8BFC98062F5;
-	Wed, 21 Jan 2026 09:38:57 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=clemensgruber.at;
-	s=default; t=1768984738;
-	bh=S1SyByoHsJZ0J10acxvnqKxQRVHbknAEHOMpHY+l+GI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUcFTWChCcv7R5osislcD8KOp1ARMAoJxu1zLSjEgpo4mF9DoVxrX144vLfhNifl9
-	 +TYQecqWx5mC+KyC/7N9yEBHnuQM94eP1faKyOoKnMxRsdPwOWIBEU+p0m/nKTWOg7
-	 zOa0JfLtYzcRpgPkP4LKMWVHVmu0/gE65na0Qz2TUHM3QEFZxtA4Wny9jbKZ7nyFMi
-	 8+dCiMKPqemrq1VjMBkUAqUIpRbJOgT5pmC4xW1YPSIBXkjB+576CpKk1WBH77zDCb
-	 xvQkLpEfh/1E7es6lMY+L8F/65BtQlJacquGZTdkFUREVXhg/p5F21PcYuWMtQm7zV
-	 OPLzX7SLy92MQ==
-From: Clemens Gruber <mail@clemensgruber.at>
-To: wei.fang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: shenwei.wang@nxp.com,
-	xiaoning.wang@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	Clemens Gruber <mail@clemensgruber.at>,
-	stable@kernel.org
-Subject: [PATCH v2] net: fec: account for VLAN header in frame length calculations
-Date: Wed, 21 Jan 2026 09:37:51 +0100
-Message-ID: <20260121083751.66997-1-mail@clemensgruber.at>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260120160407.101273-1-mail@clemensgruber.at>
-References: <20260120160407.101273-1-mail@clemensgruber.at>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K2kwRGzN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BF3C19422;
+	Wed, 21 Jan 2026 08:51:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768985522;
+	bh=F1Divp1iQY//EJAcHECb5Zq6njuhGj6QCZPRtvomuos=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=K2kwRGzN/ESMFFKtDbdSUFHEEU40g+DCA+1adBQDQ4LhGJMkcHUYGuj4MkJgbZU48
+	 iV1Dc5vP1Z9cmV36iVX9IsT1peRrN8S6ErRA3EQbs3rugPzZhLRInhGItipFaQQTP1
+	 DtZIYNna2JEtlt/G6cao+uty5J/JGN2qeU8LM6sxJYMwfpWEVwfUwf0qDS604GDtIK
+	 ZKUTo+0uaDYeeTucqB/JY90xGUX8I6s77+SexDrOP3SUpfqOz5Ulr40tk/0+yXyU1Q
+	 x18nsPTY/6XU8QOvh+gLVtc/Ur2XtMEhNVFma7Vo0YUlV3nBvmr1zsMcUMjKyRn+VB
+	 9rV7oL2A6u0lg==
+From: Vinod Koul <vkoul@kernel.org>
+To: neil.armstrong@linaro.org, shawnguo@kernel.org, kernel@pengutronix.de, 
+ festevam@gmail.com, jun.li@nxp.com, Frank.Li@nxp.com, 
+ Xu Yang <xu.yang_2@nxp.com>
+Cc: linux-phy@lists.infradead.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260120111712.3159782-1-xu.yang_2@nxp.com>
+References: <20260120111712.3159782-1-xu.yang_2@nxp.com>
+Subject: Re: [PATCH] phy: fsl-imx8mq-usb: disable bind/unbind platform
+ driver feature
+Message-Id: <176898551703.1268719.2573998309118426062.b4-ty@kernel.org>
+Date: Wed, 21 Jan 2026 14:21:57 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
-The MAX_FL (maximum frame length) and related calculations used ETH_HLEN,
-which does not account for the 4-byte VLAN tag in tagged frames. This
-caused the hardware to reject valid VLAN frames as oversized, resulting
-in RX errors and dropped packets.
 
-Use VLAN_ETH_HLEN instead of ETH_HLEN in the MAX_FL register setup,
-cut-through mode threshold, buffer allocation, and max_mtu calculation.
+On Tue, 20 Jan 2026 19:17:12 +0800, Xu Yang wrote:
+> Disabling PHYs in runtime usually causes the client with external abort
+> exception or similar issue due to lack of API to notify clients about PHY
+> removal. This patch removes the possibility to unbind i.MX PHY drivers in
+> runtime.
+> 
+> 
 
-Cc: stable@kernel.org # v6.18+
-Fixes: 62b5bb7be7bc ("net: fec: update MAX_FL based on the current MTU")
-Fixes: d466c16026e9 ("net: fec: enable the Jumbo frame support for i.MX8QM")
-Fixes: 59e9bf037d75 ("net: fec: add change_mtu to support dynamic buffer allocation")
-Fixes: ec2a1681ed4f ("net: fec: use a member variable for maximum buffer size")
-Signed-off-by: Clemens Gruber <mail@clemensgruber.at>
----
-Changes in v2:
-- Fix the other frame length calculations too
-- Improved title and commit message
+Applied, thanks!
 
-One line in fec_restart (after the FEC_QUIRK_JUMBO_FRAME check) has now
-82 characters but I think folding it would make it less readable.
-Let me know if this should be changed.
----
- drivers/net/ethernet/freescale/fec_main.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+[1/1] phy: fsl-imx8mq-usb: disable bind/unbind platform driver feature
+      commit: 27ee0869d77b2cb404770ac49bdceae3aedf658b
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index a753265961af..797ef6899657 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1150,7 +1150,7 @@ fec_restart(struct net_device *ndev)
- 	u32 rcntl = FEC_RCR_MII;
- 
- 	if (OPT_ARCH_HAS_MAX_FL)
--		rcntl |= (fep->netdev->mtu + ETH_HLEN + ETH_FCS_LEN) << 16;
-+		rcntl |= (fep->netdev->mtu + VLAN_ETH_HLEN + ETH_FCS_LEN) << 16;
- 
- 	if (fep->bufdesc_ex)
- 		fec_ptp_save_state(fep);
-@@ -1285,12 +1285,13 @@ fec_restart(struct net_device *ndev)
- 
- 		/* When Jumbo Frame is enabled, the FIFO may not be large enough
- 		 * to hold an entire frame. In such cases, if the MTU exceeds
--		 * (PKT_MAXBUF_SIZE - ETH_HLEN - ETH_FCS_LEN), configure the interface
--		 * to operate in cut-through mode, triggered by the FIFO threshold.
-+		 * (PKT_MAXBUF_SIZE - VLAN_ETH_HLEN - ETH_FCS_LEN), configure
-+		 * the interface to operate in cut-through mode, triggered by
-+		 * the FIFO threshold.
- 		 * Otherwise, enable the ENET store-and-forward mode.
- 		 */
- 		if ((fep->quirks & FEC_QUIRK_JUMBO_FRAME) &&
--		    (ndev->mtu > (PKT_MAXBUF_SIZE - ETH_HLEN - ETH_FCS_LEN)))
-+		    (ndev->mtu > (PKT_MAXBUF_SIZE - VLAN_ETH_HLEN - ETH_FCS_LEN)))
- 			writel(0xF, fep->hwp + FEC_X_WMRK);
- 		else
- 			writel(FEC_TXWMRK_STRFWD, fep->hwp + FEC_X_WMRK);
-@@ -4037,7 +4038,7 @@ static int fec_change_mtu(struct net_device *ndev, int new_mtu)
- 	if (netif_running(ndev))
- 		return -EBUSY;
- 
--	order = get_order(new_mtu + ETH_HLEN + ETH_FCS_LEN
-+	order = get_order(new_mtu + VLAN_ETH_HLEN + ETH_FCS_LEN
- 			  + FEC_DRV_RESERVE_SPACE);
- 	fep->rx_frame_size = (PAGE_SIZE << order) - FEC_DRV_RESERVE_SPACE;
- 	fep->pagepool_order = order;
-@@ -4588,7 +4589,7 @@ fec_probe(struct platform_device *pdev)
- 	else
- 		fep->max_buf_size = PKT_MAXBUF_SIZE;
- 
--	ndev->max_mtu = fep->max_buf_size - ETH_HLEN - ETH_FCS_LEN;
-+	ndev->max_mtu = fep->max_buf_size - VLAN_ETH_HLEN - ETH_FCS_LEN;
- 
- 	ret = register_netdev(ndev);
- 	if (ret)
+Best regards,
 -- 
-2.52.0
+~Vinod
+
 
