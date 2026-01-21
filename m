@@ -1,122 +1,127 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCA730EF89
-	for <imx@lists.linux.dev>; Wed, 21 Jan 2026 14:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A0E2DF13D;
+	Wed, 21 Jan 2026 14:20:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769005049; cv=none; b=ZWaRB1t9VOZYKahI61krBN1n0t7e4LnBxYD1xne+rSmPOBSC1yc0YpAQR5yrcwrDNsWpq9sk9gA8+rHqc+GCLei0C/GZ9xjvTvAZorRqpu/BlliUH8e3cBqBxuTki1Dur9aLKvjRW6QGIkRp/1C9guEIZxtcLjUWayb134qVeSw=
+	t=1769005258; cv=none; b=VtoXe+lcQTUvweb4I9zcSOGiyrGGeJ/VfVEHyRX2PImYosjRaSNygTaMS595DNxM2pUBPMEG3A/e5YLV8qQe3WMQgw74TKsHgWFzuFmdqAftxInSKdu4U4HTW94+Cziy+vqZYvuWD5EcI9FWtq6RBZEgWkY7lFQWWTu1F2ShBsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769005049; c=relaxed/simple;
-	bh=psXMmI1AnrTNmbUPhfuPxpMrDFwww3OT+Tpf52rUs4k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=B4qVzU5PwmFhVmWNC4bbtixOYmeWljwTDzfwllZk019EUvFLHyJARHKL5BCOagiTVFffqPGydOF0girelegfg1yU5+4Fjne82N5ENdNcx9htj3YL/umNYQub5HD+zDdc9fdKaQVHCEXpJ8YNyeSc/sIea6UUt/Tdy5ULOsVsj+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I+eVAGYt; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769005258; c=relaxed/simple;
+	bh=jeXEgpP+V9qFmcpgwhBun21iImEiA4QYpWK+iPST8oY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=POGyKY6S/OMx0cWfg3VeYXWg6/KuR79pv1rJp1ddYhA3exjXFB3B18tmPApIarYZIfmIB3AIZIGV3CmamJN2AeKZxPQ9G/Xt6fVnWX3NJ7QBpro1nHS99DK7x/FQJRChj5ksctLU/trbv1dO6bhicPfYPddk2UfHDKLpp1AB8kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cQIsxrqH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I+eVAGYt"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a0c20ee83dso58767685ad.2
-        for <imx@lists.linux.dev>; Wed, 21 Jan 2026 06:17:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769005047; x=1769609847; darn=lists.linux.dev;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iKrrqjcg46QuFiM8rQG6H6noqywu73UQ7w/zxl2mM20=;
-        b=I+eVAGYtoTSJJgPYDYLYahWsoW/M/jwRwc7ZBaF/m9zyxzJ1qiAFh9Z+MuZDjIEiR9
-         VvX4mQKkvmRgJXdCr9j8pWEFLeKIxthHp12boc64+k6j+slwCzdQf7YXKDvpZ+4Shw5C
-         BxIlijXY3Ev88QM6jLOba7M7nr8tt7jAvK2q/YeG16Ke8JVva4ra4aIHEaSM7/yDNvrC
-         mvuEB25MgzeJnVuc2u97VuDx2QQZZLs534Y+ecg0vfUBQ/JTwnztzYdK/PzvazH3fjA5
-         XK6aZk+hG7T6nMfTGMdDz3HAKTADm28vSi0t8c+HLDlE1Ey+f0TpJO5F0tVeBgBC6wzm
-         TUMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769005047; x=1769609847;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iKrrqjcg46QuFiM8rQG6H6noqywu73UQ7w/zxl2mM20=;
-        b=JMwoB2KYKLdXadOQBopdCKLOdbmRCb+iRVnWpOxufB9bCEsmD96Q9Q8VcRGVGW7i9f
-         6oNBWF0sekd5EdAp8ojt1KCINOIWgsQkSSyZVH9ZQZ54xfN0lNCIiAa8bRr9ayd0zKti
-         626/OT+wvUBVwOj0HsocSKNrFQKSM31TgtoDLH4+ZRw/EvGIEwdiFmMnG8tYBAP5PEfB
-         6dcLZK1hTvDldlN1MreDAyA6eR1k+suIYfy6QGRcnUTY9HfEGwa+y/PY1ZPSx1gXrMMm
-         3/9oJJv37tDE0sWMhl0hHcmMtu4rMhb5pn2MNxAZy5NkoyyTW/lM1JseD6HOLFLvhksw
-         jGaA==
-X-Forwarded-Encrypted: i=1; AJvYcCV7H/FWKgtA70232YttEw3VELnDTTDEXqbnmussOs3QG2A8ZP4Do6v6mzr/Jqb3xZKTcPY=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw2Qs4NhdypvKdK9ZYakVFafQ32Yq48yaTvVbw2LCyTHHBbrUI/
-	mtXi9/CS79fmxL0wQ55rnxt5Lcb1X/5ibon5Yl1pw4gTzWngXhrBRPsQ
-X-Gm-Gg: AZuq6aI9TInxaKgG5A51XU05tg0EOl5ivF6wREmQcXkaKcETubQJX8QtduPXvzlbuWH
-	2a22cJU26nYqzf1aGRtLDqIZ2LvRNU97Ohv/mOK6Teeup3qslmWHYogmBbUs8mL2S88VmnXnbbW
-	6LzwVXa+ODlwGdTFUItrr7/zhewszZB0/cL+Pi5MQ0SHxxpEyOp/z+rbjzTeEvqaXK+9fkrUX81
-	0aLpqEfCdUIdVPCzb/WZR2wYjWqv6a3CdeWgjBURdHNfQCAX3+kpIUbfqdRbzA1yBJK3ohq18tg
-	+I59c1hMWxGhKCVJtRI3xc0rVdeeEIlUlgtpUkNTNiqahEWRrM3SJlMV3eLi/Om7mARX1oOOMha
-	qwH+cCl/RQjHHS+PD80pjtkrcpEhRyd43eE0tf5JRbn9J3PpKdNluWx0wJ6YtGbYimpaqQ24QJX
-	mBQUv3SMhmoJjCHYaXX4y0n3FL
-X-Received: by 2002:a17:903:2f91:b0:2a7:5751:5b30 with SMTP id d9443c01a7336-2a757515da0mr55304155ad.12.1769005047012;
-        Wed, 21 Jan 2026 06:17:27 -0800 (PST)
-Received: from junjungu-PC.localdomain ([188.253.124.89])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190d14cfsm158144605ad.38.2026.01.21.06.17.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 06:17:26 -0800 (PST)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Wed, 21 Jan 2026 22:17:17 +0800
-Subject: [PATCH] firmware: imx: scu-pd: Fix device_node reference leak in
- imx_sc_pd_get_console_rsrc()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cQIsxrqH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB22C116D0;
+	Wed, 21 Jan 2026 14:20:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769005257;
+	bh=jeXEgpP+V9qFmcpgwhBun21iImEiA4QYpWK+iPST8oY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cQIsxrqH1U0dsS9PCEKkOM5Gek7TfdO1z4VzudwuizC4ywmQzcotq+A9ztr0rH6lA
+	 CYp8+0Br6pJ5MpfDGU6ygt9ayyIstPao9MmexDdh32ubLqvNL2T+Bg09qGxKT3499o
+	 FeBaKhL+RXIQy5/hb1MAHzBNaryyqrCD2gWwM8qDxL+uYtRMd3J6tpEICAM9Q72JtN
+	 LU8RjLsIR+rDI7E4VU6KQJ7RxNBu0iXJnhO2TuNuLgIrAEg4Kyf/cq1AzbqYGz52pP
+	 h0bIZVIbTF3brY0Dg1etlWDt9th0YSpEN6gTOwQsdz4wb3IW82xyC92MZzsAe4KoV3
+	 Scr0egsL8TnNQ==
+From: Shawn Guo <shawnguo@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
+	kernel@pengutronix.de,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH] MAINTAINERS: Replace Shawn with Frank as i.MX platform maintainer
+Date: Wed, 21 Jan 2026 22:20:47 +0800
+Message-ID: <20260121142047.10887-1-shawnguo@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260121-b4-scu-pd-v1-1-f993e4082089@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAOzfcGkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDQyND3SQT3eLkUt2CFF0jU/NEy0QTg1QLk1QloPqCotS0zAqwWdGxtbU
- Aj9diLFsAAAA=
-X-Change-ID: 20260121-b4-scu-pd-257a9a40e84e
-To: Ulf Hansson <ulf.hansson@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>
-Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769005040; l=967;
- i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=psXMmI1AnrTNmbUPhfuPxpMrDFwww3OT+Tpf52rUs4k=;
- b=UewNA73STZQdwpe60NY3QQLvtNzecqxLwUk0xLMEiSVclZNQAxE+IH3eKK335EAGp/MKGyHZG
- wY4gCGmtTJ0DRQcZJY1wETuCJmC9PKgZPFG3SozHPeDF6CexTqIJ/lk
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
+Content-Transfer-Encoding: 8bit
 
-When calling of_parse_phandle_with_args(), the caller is responsible
-to call of_node_put() to release the reference of device node.
-In imx_sc_pd_get_console_rsrc(), it does not release the reference.
+Shawn is no longer interested in maintaining i.MX platform, and would like
+to step down.  On the other hand, Frank seems to be the best successor
+for this role.
 
-Fixes: 893cfb99734f ("firmware: imx: scu-pd: do not power off console domain")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+ - He has been one of the most outstanding contributors to i.MX platform
+   in the recent years.
+
+ - He has been actively working as a co-maintainer reviewing i.MX
+   patches and keep the platform support in good shape.
+
+ - He works for NXP and could be the bridge and coordinator between
+   NXP internal developers and community contributors.
+
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 ---
- drivers/pmdomain/imx/scu-pd.c | 1 +
- 1 file changed, 1 insertion(+)
+ MAINTAINERS | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pmdomain/imx/scu-pd.c b/drivers/pmdomain/imx/scu-pd.c
-index 01d465d88f60..3ec33667a308 100644
---- a/drivers/pmdomain/imx/scu-pd.c
-+++ b/drivers/pmdomain/imx/scu-pd.c
-@@ -326,6 +326,7 @@ static void imx_sc_pd_get_console_rsrc(void)
- 		return;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5b11839cba9d..a294b4e952a9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2745,14 +2745,14 @@ F:	arch/arm/include/asm/hardware/dec21285.h
+ F:	arch/arm/mach-footbridge/
  
- 	imx_con_rsrc = specs.args[0];
-+	of_node_put(specs.np);
- }
+ ARM/FREESCALE IMX / MXC ARM ARCHITECTURE
+-M:	Shawn Guo <shawnguo@kernel.org>
++M:	Frank Li <Frank.Li@nxp.com>
+ M:	Sascha Hauer <s.hauer@pengutronix.de>
+ R:	Pengutronix Kernel Team <kernel@pengutronix.de>
+ R:	Fabio Estevam <festevam@gmail.com>
+ L:	imx@lists.linux.dev
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+ S:	Maintained
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git
+ F:	Documentation/devicetree/bindings/firmware/fsl*
+ F:	Documentation/devicetree/bindings/firmware/nxp*
+ F:	arch/arm/boot/dts/nxp/imx/
+@@ -2767,22 +2767,22 @@ N:	mxs
+ N:	\bmxc[^\d]
  
- static int imx_sc_get_pd_power(struct device *dev, u32 rsrc)
-
----
-base-commit: 053966c344dbd346e71305f530e91ea77916189f
-change-id: 20260121-b4-scu-pd-257a9a40e84e
-
-Best regards,
+ ARM/FREESCALE LAYERSCAPE ARM ARCHITECTURE
+-M:	Shawn Guo <shawnguo@kernel.org>
++M:	Frank Li <Frank.Li@nxp.com>
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+ S:	Maintained
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git
+ F:	arch/arm/boot/dts/nxp/ls/
+ F:	arch/arm64/boot/dts/freescale/fsl-*
+ F:	arch/arm64/boot/dts/freescale/qoriq-*
+ 
+ ARM/FREESCALE VYBRID ARM ARCHITECTURE
+-M:	Shawn Guo <shawnguo@kernel.org>
++M:	Frank Li <Frank.Li@nxp.com>
+ M:	Sascha Hauer <s.hauer@pengutronix.de>
+ R:	Pengutronix Kernel Team <kernel@pengutronix.de>
+ R:	Stefan Agner <stefan@agner.ch>
+ L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
+ S:	Maintained
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git
++T:	git git://git.kernel.org/pub/scm/linux/kernel/git/frank.li/linux.git
+ F:	arch/arm/boot/dts/nxp/vf/
+ F:	arch/arm/mach-imx/*vf610*
+ 
+@@ -20562,7 +20562,7 @@ F:	drivers/pinctrl/pinctrl-amd.c
+ PIN CONTROLLER - FREESCALE
+ M:	Dong Aisheng <aisheng.dong@nxp.com>
+ M:	Fabio Estevam <festevam@gmail.com>
+-M:	Shawn Guo <shawnguo@kernel.org>
++M:	Frank Li <Frank.Li@nxp.com>
+ M:	Jacky Bai <ping.bai@nxp.com>
+ R:	Pengutronix Kernel Team <kernel@pengutronix.de>
+ R:	NXP S32 Linux Team <s32@nxp.com>
 -- 
-Felix Gu <ustc.gu@gmail.com>
+2.43.0
 
