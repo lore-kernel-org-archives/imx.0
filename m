@@ -1,90 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B423876AC;
-	Wed, 21 Jan 2026 07:42:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9745C3A640E
+	for <imx@lists.linux.dev>; Wed, 21 Jan 2026 07:44:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768981347; cv=none; b=ctfHdSdKYPnoSkYyZlK1n/8q5anGw53ybawsG5Us0v1s5THcRFjr4LmOrgbMQHXubSWWuy3UU87S4r+TSBXKoj+/dbbNn0qs0EjD/piLYYCv3a6ceTlBC4hAlLZGnLxIUPEh5LScGCSOwWy6wAX/qeGxZr54+DXls6svWTC7Fl0=
+	t=1768981499; cv=none; b=gE/MkK4Kc/qJum854xiYHwJpkiDFOyjtnT1D41Ylqs44Mr9MqlvjEpNXyyVxJJzw7yvnb05DoSQLm8JDvlxLc8t5+GA/5D9Dsqh9WAC2PwomkYmyUTh3th9Rf1A3ofuwQukr2DHE4j9OIEjU44wkHBreF/xcaaM3pSnfxZ2SaU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768981347; c=relaxed/simple;
-	bh=bte/XQ4DIY+20st0PFZ4A741YBlWScrZ0zOdXWQH50k=;
+	s=arc-20240116; t=1768981499; c=relaxed/simple;
+	bh=IefQU51qzJ4yD/UHG/6qxxEwZ+bk9a0mwin+q0hz+OA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XZVZD2gtiXiVpf1kqIDq49epamDR4PkE2C0W+p6qxqNy/15cqVARVLZ1jmWUmdefe5x5GDDw1fB2s6irUYtFL3stXW47+UrSC8JL0Gwv+PBT9Zn9jiqvz2mPwPnoaPFkcd5QuEjqLEYmyA7I/9LabzKa3XK3BfTWPLRClmC/nUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rIeP31Ij; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rIeP31Ij"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F050C116D0;
-	Wed, 21 Jan 2026 07:42:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768981346;
-	bh=bte/XQ4DIY+20st0PFZ4A741YBlWScrZ0zOdXWQH50k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rIeP31Ij9uGOS5j+Mc24fKtxEPHM9BKYkUtJA3mDe9250G0Mggh8qOGv9UNGLhbXR
-	 DX2XtYCw6ieRnjBon31V4xrq8AbjCcU0BUMcvpcltj2GcNEt/ThHJzwLfqb50iA/bE
-	 ARXyylEX3on9ijQFThfDwjaXPBFD8pW2rcKTOPqnkK+kGMEm5p91ZrHf2slT3YPwgN
-	 Gy+HFFBJaIxQtIW97cD6S5o6AdkyBmz+txMIgaWElD2p6vLRBHIej5bUA5uMiNDE2h
-	 EQoeHS2gHI2ULewogq9xdLMfjQyowOi3oR1u5j6h3y4CA3I468HJbkFMgs6SAllEPT
-	 LCTHAofRoIkQw==
-Date: Wed, 21 Jan 2026 13:12:16 +0530
-From: "mani@kernel.org" <mani@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Hongxing Zhu <hongxing.zhu@nxp.com>, Frank Li <frank.li@nxp.com>, 
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>, "lpieralisi@kernel.org" <lpieralisi@kernel.org>, 
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>, "robh@kernel.org" <robh@kernel.org>, 
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
-	"bhelgaas@google.com" <bhelgaas@google.com>, "shawnguo@kernel.org" <shawnguo@kernel.org>, 
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de" <kernel@pengutronix.de>, 
-	"festevam@gmail.com" <festevam@gmail.com>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6 08/11] PCI: dwc: Invoke post_init in
- dw_pcie_resume_noirq()
-Message-ID: <dbnnvvpki6oaqaribiuycpshk7qmisl42x3iti24aqzzrw2rfr@afoer4ku4do4>
-References: <20260109152750.GA544801@bhelgaas>
- <20260120220441.GA1170239@bhelgaas>
+	 Content-Type:Content-Disposition:In-Reply-To; b=tHQ3I1TDu0milnhrACq/G4TMeT8wM130LVfDDuDKNtuio3+9sA76FrSb/SuBJ909noeoydJOefm/p601UyabLhr27SdJ0HD/u6TJzKUfTxwPDms2zU3AH1cAohsyp53dZRjhbqT9yGiiFi3dEXJNcIzlOF0AsElWmo1hIU2GspM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id AAE9D200D44;
+	Wed, 21 Jan 2026 08:44:49 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 93A1B200D2C;
+	Wed, 21 Jan 2026 08:44:49 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 00D46202C4;
+	Wed, 21 Jan 2026 08:44:49 +0100 (CET)
+Date: Wed, 21 Jan 2026 08:44:49 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org
+Subject: Re: [PATCH RFC 1/4] net: stmmac: platform: read channels irq
+Message-ID: <aXCD8US9KQR4lq9W@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20251214-dwmac_multi_irq-v1-0-36562ab0e9f7@oss.nxp.com>
+ <20251214-dwmac_multi_irq-v1-1-36562ab0e9f7@oss.nxp.com>
+ <b9c8580f-e615-4eaa-8878-2fb8d888c0aa@lunn.ch>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260120220441.GA1170239@bhelgaas>
+In-Reply-To: <b9c8580f-e615-4eaa-8878-2fb8d888c0aa@lunn.ch>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Tue, Jan 20, 2026 at 04:04:41PM -0600, Bjorn Helgaas wrote:
-> On Fri, Jan 09, 2026 at 09:27:50AM -0600, Bjorn Helgaas wrote:
-> > ...
-> 
-> > The current commit log for this patch is this:
+On Sun, Dec 14, 2025 at 11:30:43PM +0100, Andrew Lunn wrote:
+> On Sun, Dec 14, 2025 at 11:15:37PM +0100, Jan Petrous via B4 Relay wrote:
+> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 > > 
-> >   Some SoCs like i.MX95 require enabling REFCLK after resuming from suspend
-> >   in their post_init callback. So invoke the callback at the end of
-> >   dw_pcie_resume_noirq() if available.
+> > Read IRQ resources for all channels, to allow multi IRQ mode
+> > for platform glue drivers.
 > > 
-> > When .post_init() is called, the link is already up and PCIe devices
-> > have already been enumerated.  I think REFCLK is required for the link
-> > to come up, so it doesn't sound right to me that .post_init() would be
-> > *enabling* REFCLK.
+> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> > ---
+> >  .../net/ethernet/stmicro/stmmac/stmmac_platform.c  | 38 +++++++++++++++++++++-
+> >  1 file changed, 37 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> > index 8979a50b5507..29e40253bdfe 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> > @@ -700,6 +700,9 @@ EXPORT_SYMBOL_GPL(stmmac_pltfr_find_clk);
+> >  int stmmac_get_platform_resources(struct platform_device *pdev,
+> >  				  struct stmmac_resources *stmmac_res)
+> >  {
+> > +	int i;
+> > +	char name[8];
 > 
-> This never got resolved.
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?h=controller/dwc-imx6&id=199c18221622
-> says imx_pcie_host_post_init() enables REFCLK by applying the
-> IMX_PCIE_FLAG_8GT_ECN_ERR051586 workaround.
-> 
-> I don't think that commit log is correct.  Can you please supply some
-> correct text for that commit?
+> Reverse Christmas tree please.
 > 
 
-Sorry, I messed it up. This callback is not supposed to enable REFCLK, but just
-clear CLKREQ# override to allow the endpoint to drive it low when required.
+Fixed in v2.
 
-I've just updated the commit text in the controller/dwc-imx6 branch.
+> >  	memset(stmmac_res, 0, sizeof(*stmmac_res));
+> >  
+> >  	/* Get IRQ information early to have an ability to ask for deferred
+> > @@ -743,7 +746,40 @@ int stmmac_get_platform_resources(struct platform_device *pdev,
+> >  
+> >  	stmmac_res->addr = devm_platform_ioremap_resource(pdev, 0);
+> >  
+> > -	return PTR_ERR_OR_ZERO(stmmac_res->addr);
+> > +	if (IS_ERR(stmmac_res->addr))
+> > +		return PTR_ERR(stmmac_res->addr);
+> > +
+> > +	/* RX channels irq */
+> > +	for (i = 0; i < MTL_MAX_RX_QUEUES; i++) {
+> > +		scnprintf(name, 8, "rx-queue-%d", i);
+> 
+> It would be better to use sizeof(name), not 8.
+> 
+> Also, 'rx-queue-' is 9 characters. So i don't see how this can
+> actually work?
+> 
 
-- Mani
+That is true. My fault, I accidentally pushed incorrect version.
+Fixed in v2.
 
--- 
-மணிவண்ணன் சதாசிவம்
+Thanks.
+/Jan
