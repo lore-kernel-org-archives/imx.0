@@ -1,42 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F8E410D02;
-	Wed, 21 Jan 2026 08:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863B632FA21;
+	Wed, 21 Jan 2026 08:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768985535; cv=none; b=QBw7Y8ipXpuZlNzgAY2lbUWLHl3fnlILP+KbjmMIPRB6eft03U+NRANUhOTtEhYqANVbdiIayqNhTT6aoEqszmnY5nEc5eYRyAlyjv1HDqrpaSAto4hap34WOfN+ehbpoXx2B4gfw3mZev29ow6tATpVxdXPMu64KDJBfp94PEA=
+	t=1768985545; cv=none; b=gRwkf0sJgJclYCYyK5gDBXAJDquyO8EV2jW7cADZILQZ3gi8qPyYqmdGvYe2aZ8D9my80xdsMClYZcHj8tI9RUTcbXKY9NP3CKJi/UTcSPID1obFZpA1y95K7h4YP7sQJfNSsRTTQMMcgc81acorHFMeGpK28Th8Sa45OxW+jt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768985535; c=relaxed/simple;
-	bh=jgRIhCmAaFipOkGH+vdMQTIQ3U/7dYSKGd7V7jJZOpQ=;
+	s=arc-20240116; t=1768985545; c=relaxed/simple;
+	bh=D5ht449KAUzc5+yK2DExu5/NxubUP012nBVXKyuHYSo=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Wv0dmR/BUB8Hg3X7z0P9Zb0FW173fgNWiLtxu7F2A0FjXycsgxOCsmiS/R7JECTqgggACXoTv0IDU1zaa01yLrXP0Fwc5+sq0tpJIlRuPY1n9U8lBDPDw65NvGnle3MyiB6z9WKDaL8kUqATxAEt5zLPMvy40V/Pe2Ijt3la2uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gCajSL74; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=iziHKun5o+nWtEblO7eibCSESWou/vK16QL+SgXrdszWdaUhhAZ4WlX06HVnquIo6vu9JjB10InUy94zr6TgnxbPxThqlaRNtO40BBP7g+2JW3PjO/saA/B5UNKVQyJ5+zgfLlxDlK3TKGYJAmcO1kOK+0rmBPa85I1jkRZRxtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GH+DU1cN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gCajSL74"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35377C19424;
-	Wed, 21 Jan 2026 08:52:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GH+DU1cN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89847C19422;
+	Wed, 21 Jan 2026 08:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768985534;
-	bh=jgRIhCmAaFipOkGH+vdMQTIQ3U/7dYSKGd7V7jJZOpQ=;
+	s=k20201202; t=1768985544;
+	bh=D5ht449KAUzc5+yK2DExu5/NxubUP012nBVXKyuHYSo=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=gCajSL74VRRWMeuogyEQFdrV7BWypTWkDAt07WMUnZd8pKYp2jgA0bJ0MAq4u12qm
-	 vLlcPwJ8dSjsfKn/D5kESRONoyKniO1zW2rLVPuK3vj6UfSEOpXxqbC/FUQ0yaFctj
-	 eBSttlRyC1+Qyp2VZb3ihGB71pe/1VYONJRlMDqw6PH7pqmJAZb5hm7PfzmuLzXhSM
-	 d82xAzLPBcXTD6siR6kygVU5DoOrTTew1l6luHrX0GQ00NkVyyV3KjtLPHitG4LY4A
-	 6hhSpsnsgXf0aYinVbsHCHyBYuQnBVBDyoSAb++/c+hnEMny6AAByV99ws/NZRdNkL
-	 Dp7KoMNp7hibQ==
+	b=GH+DU1cNzzaJ0EtqvDv7O/ffPlXrxIEflW63r/uZknWPYScGmUZ9iR/ZTRA+Xxnyh
+	 gDrWJzab8BHM6+Ixlp5vjHJRFBIOQJZaZIzKnVP8GGTkx36da7Wp1xyTLuX487lqhc
+	 cIN9sYssijkbbyK9UGLWw2CC5aaVhYBol7OZX6mYX/yeK8/wjIWUBNnpBe7OG8s7bg
+	 ZZMSZtgsNLJAgkCvDBRyZJzGs/o6gLOPCIcHwvyEmmGnriPchUlnE2l+lpArv+5Udx
+	 5e6r0M27cB67fTSyczZ7UxztiEgREp8P5cP9fEjZAeDCh482rurtkcmZUruziPQWLt
+	 D8lGmTbc6vjow==
 From: Vinod Koul <vkoul@kernel.org>
-To: neil.armstrong@linaro.org, shawnguo@kernel.org, kernel@pengutronix.de, 
- festevam@gmail.com, jun.li@nxp.com, Frank.Li@nxp.com, 
- Xu Yang <xu.yang_2@nxp.com>
-Cc: linux-phy@lists.infradead.org, imx@lists.linux.dev, 
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
+ Richard Zhu <hongxing.zhu@nxp.com>, 
+ Thomas Richard <thomas.richard@bootlin.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-phy@lists.infradead.org, imx@lists.linux.dev, 
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260116101835.1810675-1-xu.yang_2@nxp.com>
-References: <20260116101835.1810675-1-xu.yang_2@nxp.com>
-Subject: Re: [PATCH v3] phy: fsl-imx8mq-usb: enable RX Termination override
-Message-Id: <176898552763.1268719.6857926656823193062.b4-ty@kernel.org>
-Date: Wed, 21 Jan 2026 14:22:07 +0530
+In-Reply-To: <20260114-phy-fsl-imx8qm-hsio-fix-null-pointer-dereference-v1-1-730e941be464@bootlin.com>
+References: <20260114-phy-fsl-imx8qm-hsio-fix-null-pointer-dereference-v1-1-730e941be464@bootlin.com>
+Subject: Re: [PATCH] phy: freescale: imx8qm-hsio: fix NULL pointer
+ dereference
+Message-Id: <176898553780.1268719.17549107476486766127.b4-ty@kernel.org>
+Date: Wed, 21 Jan 2026 14:22:17 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,21 +53,20 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.13.0
 
 
-On Fri, 16 Jan 2026 18:18:35 +0800, Xu Yang wrote:
-> This is to resolve the problem of wakeup system by USB3 device insertion
-> if HSIOMIX on, in that case, the USB3 device detects RX term on so the
-> USB3 device doesn't downgrade to high-speed, we can't expect CONN wakeup
-> (for USB3) happen because the 24MHz OSC is required ON to trigger it.
-> Because the device works at Super-speed so DP/DM wakeup can't happen
-> either. Then the entire systen can't be waken up by such device attach
-> event.
+On Wed, 14 Jan 2026 17:50:23 +0100, Thomas Richard wrote:
+> During the probe the refclk_pad pointer is set to NULL if the
+> 'fsl,refclk-pad-mode' property is not defined in the devicetree node. But
+> in imx_hsio_configure_clk_pad() this pointer is unconditionally used which
+> could result in a NULL pointer dereference. So check the pointer before to
+> use it.
+> 
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] phy: fsl-imx8mq-usb: enable RX Termination override
-      commit: 05b56ef347495239da896f310c9d613e9bd1a015
+[1/1] phy: freescale: imx8qm-hsio: fix NULL pointer dereference
+      commit: 4dd5d4c0361af0a3fd24f45c815996abf4429770
 
 Best regards,
 -- 
