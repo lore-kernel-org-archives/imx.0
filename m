@@ -1,92 +1,302 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1049D305064;
-	Wed, 21 Jan 2026 02:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA69724E4C4;
+	Wed, 21 Jan 2026 02:19:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768961852; cv=none; b=pM/gfoUwYttfqrCst1RvF/ye2PXJSUdoFGUAco3ur7B19LC2PundsFt9fq4tYbUaeACht7gmF4Qc8JcNksgpoBVb1kgirpu1nzqj9HXcgCmziqEraejFg2qfHE4nFHfVOvj9wGMAhF6B5HkIDaoIX00+AWywDuUQzcB/eMKrKW4=
+	t=1768961955; cv=none; b=U0oC+26VYX4YodBIVe2jwSvsdn2mkNsk95Y0V/mbiDcJH/DxgKqVU0fYgMW/JjGnVI0FyZVO2FNUqULIx4DzNAWi6xgk0bzZJyPO2eWpNa4QpZGmywK7xO2rgjojavruk7uFQE0477bsEbR9t7ciPAmS0c6lxfY0TjZeO3/HBqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768961852; c=relaxed/simple;
-	bh=l0aUY0/1BbKSc3HEsxELZqYEPEPlOw016Ycg7UMubsQ=;
+	s=arc-20240116; t=1768961955; c=relaxed/simple;
+	bh=yGMEQ4ojmcfspvpRv2qKf7LcLugvHtAKNMYSBdIlZYM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c26I/V2qzAru0k4uoS/LJe7Fnz6gUUj/Oe4hGAixOdlvzBmIxQ4V1/6zpV285Pq5VHdN0uLDLyqtNLRQ8T+heKfHqMJXb3icUCurJ1SkWqxWi+LlbGUbwETYnlI0TqiLEzEDSoZ5153lasYFFvOKPCvFSOjESSIP4th9dA8biU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=YHBT0vTR; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=fiUt8Eah5MM7JclI3gnVUr/IbUzmXSMXCFsvbEYiEss8BytcGxY3I5zitRZdsItlkRlMjER4fSilVV1fMzp7AcN5iaTonKZkZHJn8pOzbbPK5wPU6JscFQQYbQL6E2t+JxIGOnArfsAu2uEkQaVgqjNpfC5/3XtZ5zt16vpymrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sgK4DjRv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="YHBT0vTR"
-Received: from pendragon.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id D5BA32D7;
-	Wed, 21 Jan 2026 03:16:57 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1768961818;
-	bh=l0aUY0/1BbKSc3HEsxELZqYEPEPlOw016Ycg7UMubsQ=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sgK4DjRv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5345EC16AAE;
+	Wed, 21 Jan 2026 02:19:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768961954;
+	bh=yGMEQ4ojmcfspvpRv2qKf7LcLugvHtAKNMYSBdIlZYM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YHBT0vTRvJYrmzDfPlUwurx9+clUr8Ml34BMXzZHPheQ3SkaxoQAh6F8xX8DE1dK4
-	 cCwAbUc6T04GdS6+f5z+PpKv3NtEvq8gfyhcvKGpCcNApP3zuajOAqLfv9pFp8JAMJ
-	 Kc1aptHZSLk774A3byJ5qKmMCR2pE8gvNm6eEL/E=
-Date: Wed, 21 Jan 2026 04:17:28 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	b=sgK4DjRvUdDyxCUmm7yH+Hn1hvBJvLmgL4p5/VvbVIgR6NaLgZ0VtZLlP5PEdx1sn
+	 W7U4UWBmr/i2f9h0/aKpb6Ix8y7VSxIRx7G0b3JgV8M53LPJIkXPpha2WNI6EGwCAW
+	 qgieh6bqsDoQVlhM04xqSEzcjEChC1QFgzbQSyB4N7JY9WuugWz5xLEPaYOjGWK4GB
+	 1T+2r3PaLZbWbd7RMaISEZlPtjFRzBnCti6v4b3H1WM5mjCjHzahh95kiqCiOIsaR4
+	 gvC4S0WmIy/xkMMe0diUuqfwW9iUac70rJQEbud+6m+Qla5k0oWE8YyNgpCP/jetGh
+	 XsuvMODmHH7kA==
+Date: Tue, 20 Jan 2026 20:19:13 -0600
+From: Rob Herring <robh@kernel.org>
+To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+	Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Alberto Ruiz <aruizrui@redhat.com>,
+	Christophe Lizzi <clizzi@redhat.com>, devicetree@vger.kernel.org,
+	Enric Balletbo <eballetb@redhat.com>,
+	Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
-	linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RESEND v2 0/5] media: staging: media: imx6-mipi-csi2:
- trivial cleanup to prepare convert to common dw mipi csi2
-Message-ID: <20260121021728.GI403250@killaraus>
-References: <20260116-stage-csi2-cleanup-v2-0-a56e9cb25196@nxp.com>
+	"Vincent Guittot devicetree @ vger . kernel . org" <vincent.guittot@linaro.org>
+Subject: Re: [PATCH v8 01/10] dt-bindings: mfd: add support for the NXP SIUL2
+ module
+Message-ID: <20260121021913.GA1704619-robh@kernel.org>
+References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
+ <20260120115923.3463866-2-khristineandreea.barbulescu@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260116-stage-csi2-cleanup-v2-0-a56e9cb25196@nxp.com>
+In-Reply-To: <20260120115923.3463866-2-khristineandreea.barbulescu@oss.nxp.com>
 
-On Fri, Jan 16, 2026 at 11:17:55AM -0500, Frank Li wrote:
-> Previous https://lore.kernel.org/imx/20250821-95_cam-v3-0-c9286fbb34b9@nxp.com/
-> There are too much patches (32) in above thread.
+On Tue, Jan 20, 2026 at 01:59:13PM +0200, Khristine Andreea Barbulescu wrote:
+> From: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
 > 
-> Just extract first 6 cleanup patches to review easily. The overall road
-> map see above 32 patch serise.
-
-I've applied 1/5, 2/5 and 5/5 to my tree.
-
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Changes in v2:
-> - collect review by tags
-> - drop media: staging: media: imx6-mipi-csi2: use devm_add_action_or_reset() to simplify code
->   need more time to understand nf_unregister() and subdev_unregister()'s relationship.
-> - detail change see each patch's change log
-> - move devm_mutex_init() patch to second one
-> - Link to v1: https://lore.kernel.org/r/20251107-stage-csi2-cleanup-v1-0-5d42535243ac@nxp.com
+> Add the new dt-bindings for the NXP SIUL2 module which is a multi
+> function device. It can export information about the SoC, configure
+> the pinmux&pinconf for pins and it is also a GPIO controller with
+> interrupt capability.
 > 
-> ---
-> Frank Li (5):
->       media: staging: media: imx6-mipi-csi2: replace spaces with tabs for alignment
->       media: staging: media: imx6-mipi-csi2: use devm_mutex_init() to simplify code
->       media: staging: media: imx6-mipi-csi2: use devm_clk_bulk_get_all() to fetch clocks
->       media: staging: media: imx6-mipi-csi2: use guard() to simplify code
->       media: staging: media: imx6-mipi-csi2: use devm_platform_ioremap_resource() simplify code
+> The existing SIUL2 pinctrl bindings becomes deprecated because it
+> do not correctly describe the hardware. The SIUL2 module also
+> offers GPIO control and exposes some registers which contain
+> information about the SoC. Adding drivers for these functionalities
+> would result in incorrect bindings with a lot of carved out regions
+> for registers.
 > 
->  drivers/staging/media/imx/imx6-mipi-csi2.c | 209 +++++++++++------------------
->  1 file changed, 80 insertions(+), 129 deletions(-)
+> SIUL2 is a complex module that spans multiple register regions
+> and provides several functions: pinmux and pin configuration
+> through MSCR and IMCR registers, GPIO control through PGPDO
+> and PGPDI registers, interrupt configuration registers,
+> and SoC identification registers (MIDR).
+> These registers are grouped under two instances, SIUL2_0 and
+> SIUL2_1, and share the same functional context. The legacy
+> binding models SIUL2 as a standalone pinctrl node, which only
+> covers MSCR and IMCR.
+> 
+> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
 > ---
-> base-commit: df5d79720b152e7ff058f11ed7e88d5b5c8d2a0c
-> change-id: 20251106-stage-csi2-cleanup-6db1715fd187
+>  .../bindings/mfd/nxp,s32g2-siul2.yaml         | 165 ++++++++++++++++++
+>  .../pinctrl/nxp,s32g2-siul2-pinctrl.yaml      |   2 +
+>  2 files changed, 167 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
 
--- 
-Regards,
+Doesn't look like this was tested...
 
-Laurent Pinchart
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml b/Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
+> new file mode 100644
+> index 000000000000..ec743cf5f73e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/nxp,s32g2-siul2.yaml
+> @@ -0,0 +1,165 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +# Copyright 2024 NXP
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mfd/nxp,s32g2-siul2.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP S32 System Integration Unit Lite2 (SIUL2)
+> +
+> +maintainers:
+> +  - Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+> +
+> +description: |
+> +  SIUL2 is a hardware block which implements pinmuxing,
+> +  pinconf, GPIOs (some with interrupt capability) and
+> +  registers which contain information about the SoC.
+> +  There are generally two SIUL2 modules whose functionality
+> +  is grouped together. For example interrupt configuration
+> +  registers are part of SIUL2_1 even though interrupts are
+> +  also available for SIUL2_0 pins.
+> +
+> +  The following register types are exported by SIUL2:
+> +    - MIDR (MCU ID Register) - information related to the SoC
+> +    - interrupt configuration registers
+> +    - MSCR (Multiplexed Signal Configuration Register) - pinmuxing and pinconf
+> +    - IMCR (Input Multiplexed Signal Configuration Register)- pinmuxing
+> +    - PGPDO (Parallel GPIO Pad Data Out Register) - GPIO output value
+> +    - PGPDI (Parallel GPIO Pad Data In Register) - GPIO input value
+> +
+> +  Most registers are 32bit wide with the exception of PGPDO/PGPDI which are
+> +  16bit wide.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - const: nxp,s32g2-siul2
+> +      - items:
+> +          - enum:
+> +              - nxp,s32g3-siul2
+> +          - const: nxp,s32g2-siul2
+> +
+> +  gpio-controller: true
+> +
+> +  "#gpio-cells":
+> +    const: 2
+> +
+> +  gpio-ranges:
+> +    maxItems: 2
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  interrupt-controller: true
+> +
+> +  "#interrupt-cells":
+> +    const: 2
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 1
+> +
+> +  ranges:
+> +    description: Address translation ranges for child nodes.
+> +
+> +
+> +patternProperties:
+> +  "^siul2_[0-1]$":
+
+Don't use '_'.
+
+> +    type: object
+> +    description: SIUL2 hardware instances represented as syscon.
+> +    properties:
+> +      compatible:
+> +        const: syscon
+
+'syscon' alone is not allowed.
+
+> +      reg:
+> +        maxItems: 1
+
+You have 'reg' so the node name should have unit-address.
+
+However, there's not any real DT resources in this child node, so you 
+should just drop it.
+
+> +    required:
+> +      - compatible
+> +      - reg
+> +
+> +  "-hog(-[0-9]+)?$":
+> +    required:
+> +      - gpio-hog
+> +
+> +  "-pins$":
+> +    type: object
+> +    additionalProperties: false
+> +
+> +    patternProperties:
+> +      "-grp[0-9]$":
+> +        type: object
+> +        allOf:
+> +          - $ref: /schemas/pinctrl/pinmux-node.yaml#
+> +          - $ref: /schemas/pinctrl/pincfg-node.yaml#
+> +        description:
+> +          Pinctrl node's client devices specify pin muxes using subnodes,
+> +          which in turn use the standard properties below.
+> +
+> +        properties:
+> +          pinmux:
+> +            description: |
+> +              An integer array for representing pinmux configurations of
+> +              a device. Each integer consists of a PIN_ID and a 4-bit
+> +              selected signal source(SSS) as IOMUX setting, which is
+> +              calculated as: pinmux = (PIN_ID << 4 | SSS)
+> +
+> +          slew-rate:
+> +            description: Supported slew rate based on Fmax values (MHz)
+> +            enum: [83, 133, 150, 166, 208]
+> +        required:
+> +          - pinmux
+> +
+> +        unevaluatedProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - gpio-controller
+> +  - "#gpio-cells"
+> +  - gpio-ranges
+> +  - interrupts
+> +  - interrupt-controller
+> +  - "#interrupt-cells"
+> +  - "#address-cells"
+> +  - "#size-cells"
+> +  - ranges
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    pinctrl@4009c000 {
+> +      compatible = "nxp,s32g2-siul2";
+> +      gpio-controller;
+> +      #gpio-cells = <2>;
+> +      gpio-ranges = <&siul2 0 0 102>, <&siul2 112 112 79>;
+> +      interrupt-controller;
+> +      #interrupt-cells = <2>;
+> +      interrupts = <GIC_SPI 210 IRQ_TYPE_LEVEL_HIGH>;
+> +      #address-cells = <1>;
+> +      #size-cells = <1>;
+> +      ranges;
+> +
+> +      siul2_0: siul2_0@4009c000 {
+> +        compatible = "syscon";
+> +        reg = <0x0 0x4009c000 0x0 0x179c>;
+> +      };
+> +
+> +      siul2_1: siul2_1@44010000 {
+> +        compatible = "syscon";
+> +        reg = <0x0 0x44010000 0x0 0x17b0>;
+> +      };
+> +
+> +      jtag-pins {
+> +        jtag-grp0 {
+> +          pinmux = <0x0>;
+> +          input-enable;
+> +          bias-pull-up;
+> +          slew-rate = <166>;
+> +        };
+> +      };
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
+> index a24286e4def6..332397a21394 100644
+> --- a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
+> +++ b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
+> @@ -11,6 +11,8 @@ maintainers:
+>    - Ghennadi Procopciuc <Ghennadi.Procopciuc@oss.nxp.com>
+>    - Chester Lin <chester62515@gmail.com>
+>  
+> +deprecated: true
+> +
+
+I don't really see why you can't just extend this binding with GPIO and 
+interrupt provider properties.
+
+Rob
