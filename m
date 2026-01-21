@@ -1,86 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70D629E0E8;
-	Tue, 20 Jan 2026 22:04:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCED730F7E8
+	for <imx@lists.linux.dev>; Wed, 21 Jan 2026 01:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768946683; cv=none; b=nn2Mh0/wzwQ2953iksCakPHvPb9xh81yoIuI7iDyPgdd06Ah4YpOKDWGceTnLYOSr0XI3E5P6vGD6nMQIY2ks5ZsNbcMuqirm3U7rNjLCUyaCPVwnekPisB1CTcdzsOITkhnRvTgGHiLUCWzpJKBz0f92LNY1wQv/NvMFI/xqXA=
+	t=1768959835; cv=none; b=rfucBGeBNEofiuovdUrusw+3nzWSVEucl9r44N2f7TzMl3g2zy3+i5JdgoerLN9cYSXYDNaUXEsZjd4+oy1wuN9UURH4cPPFQTDAJ+b6ADfLyH+6VUPRwt9ApywCwXSjYgPUqYlTNaP3oEOOqudjgG5ck2IZYqD24iji4z3Lh5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768946683; c=relaxed/simple;
-	bh=Ksd7axcgTS0Lavz7Iw2jFrS2gsUr2aSKtbp2LAryPmk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=C+AJRkTnLgYLbLJFMdBO0/7LB4nSsLsDhNSVVCzC3KffhNJnEOcDwawrRkzBRkclntXEV6TWJ80D0u70vnWSKOYKp2I8k/zw43S1PLnmMHX6W04x1XMC3j2GjGmNFCD9/YiOgeHLMy/ZIUf1jfpzl5X/fyCEbntiHmU1tnGpD/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=laUvCro2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1768959835; c=relaxed/simple;
+	bh=4tldAe57KIhnwtzr8Bq/hvpgF6dJBV0FlSqy2EGPIco=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QFvljtSCuwSXa8xsXfJ/Bb/z9jRZuVrBKSmD+Fw9s32KnrgvQtpXPtt2lLTwzYF++B/NK81doIk7hyBVhCKrX8bsO6qWZE0iB9g4NepQifWD/4BrDzw/ViGZnOddeObp2/H8Kli9d4gAN3oDzNJEsUaLJaDx9XAIk9NsXc9FSVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Ru1Q91pt; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="laUvCro2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF7FC16AAE;
-	Tue, 20 Jan 2026 22:04:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768946682;
-	bh=Ksd7axcgTS0Lavz7Iw2jFrS2gsUr2aSKtbp2LAryPmk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=laUvCro2hjtkpMTyGGJ9dHJXz8JR1c4XofHhT5wJf+CPN8Qo9/ULqHboEeChcQIrc
-	 ZdxPuldd8oR/hlIMOVXWM0l15XGGzhvBYSlZ0tz4POx2KCuVpjZcTFXbsBvVqhWbUY
-	 9SCowjOihAhnpzvVcDLNwDr5cOaisQeeQdOP0t5cOgWWwPHKo2IpM5FA9nBcf9JG4W
-	 nN4u5A8aYkx5OleM2+2Rhcpt0mxqd2hfCW2dDzY3375uO5Gzf/7RjxcxvpZiiCxvYZ
-	 hre4i0DyrOzTLJ8XFevDbrz7Ge0RLz5K9N8fXYTXbPShr0CFHVReq4My4QB8bpi7X2
-	 ESpPrzrZXBhKA==
-Date: Tue, 20 Jan 2026 16:04:41 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Hongxing Zhu <hongxing.zhu@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
-	"mani@kernel.org" <mani@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"shawnguo@kernel.org" <shawnguo@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v6 08/11] PCI: dwc: Invoke post_init in
- dw_pcie_resume_noirq()
-Message-ID: <20260120220441.GA1170239@bhelgaas>
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Ru1Q91pt"
+Received: from pendragon.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 31B182D7;
+	Wed, 21 Jan 2026 02:43:14 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1768959794;
+	bh=4tldAe57KIhnwtzr8Bq/hvpgF6dJBV0FlSqy2EGPIco=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ru1Q91ptMf7hveD3WxgR/C5BZjDqyKE8SqVBUqZNE6ltTIsv87fdJLJ8PKVk/CHmS
+	 +Nj+Q2LFzqSr9spnLmtTocPaIFlH7eFD7E/2FIVmJApNl2pml3c9gQt2rUBB97YgKe
+	 ENTG8QunDOkoc0J+bKMzdJ8NonSF8Im1NPo1nOkw=
+Date: Wed, 21 Jan 2026 03:43:44 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Rui Miguel Silva <rmfrfs@gmail.com>,
+	Martin Kepplinger-Novakovic <martink@posteo.de>,
+	Purism Kernel Team <kernel@puri.sm>, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/4] media: nxp: imx8-isi: use
+ devm_pm_runtime_enable() to simplify code
+Message-ID: <20260121014344.GA403250@killaraus>
+References: <20260116-cam_cleanup-v4-0-29ce01640443@nxp.com>
+ <20260116-cam_cleanup-v4-2-29ce01640443@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260109152750.GA544801@bhelgaas>
+In-Reply-To: <20260116-cam_cleanup-v4-2-29ce01640443@nxp.com>
 
-On Fri, Jan 09, 2026 at 09:27:50AM -0600, Bjorn Helgaas wrote:
-> ...
+Hi Frank,
 
-> The current commit log for this patch is this:
+Thank you for the patch.
+
+On Fri, Jan 16, 2026 at 11:29:20AM -0500, Frank Li wrote:
+> Use devm_pm_runtime_enable() to simplify code. Change to use
+> dev_err_probe() because previous goto change to return.
 > 
->   Some SoCs like i.MX95 require enabling REFCLK after resuming from suspend
->   in their post_init callback. So invoke the callback at the end of
->   dw_pcie_resume_noirq() if available.
+> No functional change.
 > 
-> When .post_init() is called, the link is already up and PCIe devices
-> have already been enumerated.  I think REFCLK is required for the link
-> to come up, so it doesn't sound right to me that .post_init() would be
-> *enabling* REFCLK.
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-This never got resolved.
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?h=controller/dwc-imx6&id=199c18221622
-says imx_pcie_host_post_init() enables REFCLK by applying the
-IMX_PCIE_FLAG_8GT_ECN_ERR051586 workaround.
+> ---
+> change in v2
+> - remove error code print at dev_err_probe.
+> ---
+>  drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c | 16 +++++++---------
+>  1 file changed, 7 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> index c3d411ddf492eb27b372763ce5d344a90c6ec524..486092511d1f9381c250ddcf844fc74c61a789b7 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.c
+> @@ -499,13 +499,14 @@ static int mxc_isi_probe(struct platform_device *pdev)
+>  	dma_size = isi->pdata->has_36bit_dma ? 36 : 32;
+>  	dma_set_mask_and_coherent(dev, DMA_BIT_MASK(dma_size));
+>  
+> -	pm_runtime_enable(dev);
+> +	ret = devm_pm_runtime_enable(dev);
+> +	if (ret)
+> +		return ret;
+>  
+>  	ret = mxc_isi_crossbar_init(isi);
+> -	if (ret) {
+> -		dev_err(dev, "Failed to initialize crossbar: %d\n", ret);
+> -		goto err_pm;
+> -	}
+> +	if (ret)
+> +		return dev_err_probe(dev, ret,
+> +				     "Failed to initialize crossbar\n");
+>  
+>  	for (i = 0; i < isi->pdata->num_channels; ++i) {
+>  		ret = mxc_isi_pipe_init(isi, i);
+> @@ -528,8 +529,7 @@ static int mxc_isi_probe(struct platform_device *pdev)
+>  
+>  err_xbar:
+>  	mxc_isi_crossbar_cleanup(&isi->crossbar);
+> -err_pm:
+> -	pm_runtime_disable(isi->dev);
+> +
+>  	return ret;
+>  }
+>  
+> @@ -548,8 +548,6 @@ static void mxc_isi_remove(struct platform_device *pdev)
+>  
+>  	mxc_isi_crossbar_cleanup(&isi->crossbar);
+>  	mxc_isi_v4l2_cleanup(isi);
+> -
+> -	pm_runtime_disable(isi->dev);
+>  }
+>  
+>  static const struct of_device_id mxc_isi_of_match[] = {
 
-I don't think that commit log is correct.  Can you please supply some
-correct text for that commit?
+-- 
+Regards,
 
-Bjorn
+Laurent Pinchart
