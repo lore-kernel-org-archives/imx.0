@@ -1,147 +1,98 @@
-Received: from mout.web.de (mout.web.de [212.227.15.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F33D357734
-	for <imx@lists.linux.dev>; Thu, 22 Jan 2026 15:01:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F853803F2
+	for <imx@lists.linux.dev>; Thu, 22 Jan 2026 15:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769094084; cv=none; b=nywBnLNaNp5HbO6ipRbdqW9QeW0zZGtB/5dBCCtXDHQ/BVy31LLWftrgCWOVEOLd8J7F78T/2QwjlxO77NcG3XteLN476Tne2kUNlC9BlZFZjFovWX1NvaJSbLXlsmErivKfQj+tYGj3Y5hKyEpWygYmRxDfV4gBds2wE2AUqxU=
+	t=1769095539; cv=none; b=beUjBs9Ni2e2sW8+Ckay6yA1ge9gjYOGlIfVyXIvJ0YiiVRXkJ+b5U3Qod9//wHlhkjgDwP7twWnr1/FZanYoEma03F8bqmofVsNZ0/NvtSgPMsdWxSHcuNkWSX62ScrMBlp7C/DQiRIO2+JOzeyZM13fC03GjWY6g8o+UHP0zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769094084; c=relaxed/simple;
-	bh=0LC2JUV8CUJ2J1XRF5YZfCktBg9LAbLRSIFc8a3lxPA=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=BZBNyVrND+/pjO1UNidVOoX/5XL842/eL6/KOid2rtNjehkCrmgljHuVUZVpaIR/u1eXyBNQ0oLgXjDFkbnuw9qjgoC0SR9bDYj1qYgxAYqzVfuLzD1sDpNE59dYmbyKxpnw6HRUsgMJGZ6Wh4JEd3i0l87N8d4sIQzoSATYeao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=LDgSjIzp; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1769095539; c=relaxed/simple;
+	bh=pgNiofgJLQjI2k4U5MZqlxSIxjaIGbb5I0Xm0TFUekM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VQTgNo7Oh1LxtG2UAxIwES5mBsEGBT30f4WjW/IdOnmXRhaeHUmYfzrB0X/mEslv0Yg3IL7WvpH+6fSbTtFnEYuJsykj2PJMu28prmZTCpAbQc4DV5Lvy5/sQSf0NglU3hLD1RuyJu1MFyl5+PTxcc4FLTQ1YPNMr9SvrXAeYQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d7MNE26z; arc=none smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="LDgSjIzp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1769094069; x=1769698869; i=markus.elfring@web.de;
-	bh=0LC2JUV8CUJ2J1XRF5YZfCktBg9LAbLRSIFc8a3lxPA=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=LDgSjIzpu5pPGPM0NY9ZQrk94d87rbNAee5i8spe/P2E8YEXf1QzP/mmHBuqPoJt
-	 lOZbRJGGCrKZKOJQ6uIc1CDj++RMjZdFtGyy28Gab7RYFS9hovG3GezQ2KghVCe/v
-	 L+PBuV3K22Q+r9MMw0s1YJcd2LFvzTm/U+25ABqporJJ2I0AomggC9mj2shM+Gt/5
-	 qrhjEzABpYuWhYV8tWv+dqN8bYEVOrLD29I/4nzU07Z64jHbgZw+h7/5sW/s0qIIa
-	 Y+9kMEbaNQ9zcR7VJHgATCb0qSS1Trd7rzczPklqaWsPwLpzHpCuiVxljqa39Bulb
-	 R1a9gr6XWOYW4nRyXw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.92.239]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MECGX-1vbTv61lxd-00AEfw; Thu, 22
- Jan 2026 16:01:09 +0100
-Message-ID: <a69e08ea-c4b6-43a5-95ca-eba9263e8211@web.de>
-Date: Thu, 22 Jan 2026 16:01:07 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d7MNE26z"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2b71557299dso1488431eec.1
+        for <imx@lists.linux.dev>; Thu, 22 Jan 2026 07:25:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769095532; x=1769700332; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fK/Bd6ZC4I2BWi9zAGM5OINFSwJZAF+Q/z/0mdibPSw=;
+        b=d7MNE26zmHozsuFxUrjAUnkxZv4W4pLzAu+8UyLbaxFGiaUEoGLueYZxh0Ak07D7nV
+         0KNdippjC/0HQPRWfxWx8s3T8sjChIrrAMxstwOU1moGJH/ZgbLCjA9ba64D/cSrcbAy
+         9yq1yKLk6ZtekvR8IwDCe7NUppHKonmwYDhaCnzCHpL4qL7nTeW6GmLp6B2youGSAm75
+         qEMCzZReUK2CNLG3ZsVwjCm+SalBpbhwlnFByANxjglWtAOVV0YRaaa4mg5Z07FVYCsR
+         aqbDlFdgm4/KsyrmLDZKGr7YM3FA6QoantMYdRGu4FvYlRzTOmTtuQx86L8bdTk/KiBf
+         wtYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769095532; x=1769700332;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fK/Bd6ZC4I2BWi9zAGM5OINFSwJZAF+Q/z/0mdibPSw=;
+        b=GEuWLVHZAdgyC1LXGV+HOS/wxgTqjGdHE2W5B0JYzxvr/yNYnEsc/iepwqHVCGjlFT
+         1hhbnswYAs+9LhaWH/I4TKg0fLfI31/JsjkdZIMm6oKOQ/CjzkQrIaQPBPd8Ss8IOuv0
+         iZNM9/x5Dr1ZezQ8kiXxWrEIt0ub+rItlAkvg+T9xysZmReWizL65nOo3vW+abwZYA25
+         DNn0O/4XdNPwGaPsLSyFNCjBSieCiccpA3jvtVqd4XpgCdAuWLBBwWGhlgc/u77QK6fM
+         SpDVKxHRrpG6gE0MB/Y9O6g3RkeWGgffUqC3e9adG9v+h3mYFYHxRwJcGFe3imotHjV2
+         BtzA==
+X-Forwarded-Encrypted: i=1; AJvYcCV0OEYiQn7hQf38Y5JfTNx5i4Swhrc5ILK2BukSLsFB9FjURQLgYxjmUyLc7CU/Z8RFa9Y=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzvjjBWYIr7Oam4Q+S6/M3qKc4+IdFYDZzwEz83oK90g2ILJAHp
+	9Nz9+bskZc79q66wvwqKcFW2i0UAasdMwmFYZLcFsLn4wRkG+aFft+ro
+X-Gm-Gg: AZuq6aJJcO7tYv6cXVVex9mJTyXIOTIuPq/1J1r3PG5aK2y48+qESIx9ij5MK7y3RKN
+	FIgAguaS4N7Fp86xgcZ9u5Z4c8pxzD1a+5NZ9hqvepfmQ/ZeUdQkq1MUEMsQh8uo4uFoqIl3ozh
+	Xv9z0CehWsVnWTwsj9TJ8vVJ34RVW0IqKJtqmQ5no2wUaD47odOQmbbBbI9L000ta74YCn4iz+n
+	HgQeGdFA8fsmWg67jLdSzI5pM1HYpHLMVjkmHBDPJOow1GhCwEjXWYuFFODXAQ/LbYICcGSM5nn
+	mLcuzmQozRzaAb+PV5uZRCmNGWpUeiHgCv1ZxMh7X1KzIHcf3e1syUT7CTAy/nNjR7S7ZAuljeW
+	1zwuxhJ+CKAJKSsjhcX0hyIV+L1cHoB86VTXjEkiQT7+MzJl/Bf0PNInIAG3GwTYE8kYMhb1P0y
+	1ukGXesPxkaHE9RFiwkxi0laGKdDcdND/uh3DtqS03s+ljzLjI8vM=
+X-Received: by 2002:a05:7301:9e43:b0:2b0:4c5f:c05c with SMTP id 5a478bee46e88-2b6b46c691cmr14222927eec.4.1769095531525;
+        Thu, 22 Jan 2026 07:25:31 -0800 (PST)
+Received: from google.com ([2a00:79e0:2ebe:8:777f:716:9c18:5588])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7070eeec2sm9198224eec.21.2026.01.22.07.25.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jan 2026 07:25:30 -0800 (PST)
+Date: Thu, 22 Jan 2026 07:25:27 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Samuel Kayode <samkay014@gmail.com>
+Cc: Vaibhav Gupta <vaibhavgupta40@gmail.com>, imx@lists.linux.dev, 
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] Input: pf1550 - Remove "defined but unused" warning
+Message-ID: <qrtwktjjxjphuan2brtltc54p7j5hryl62hghwyjmloujpwonz@eckisacyhd73>
+References: <20251210211149.543928-1-vaibhavgupta40@gmail.com>
+ <wfdhjzhkggp26mwqgvxuanuzjq6v2g4pmc44jz6kx4xwkewwhr@movikefnuvcz>
+ <aXIhp_c0zjS9dfWQ@sam-fedora>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Felix Gu <ustc.gu@gmail.com>, imx@lists.linux.dev, kernel@pengutronix.de,
- linux-arm-kernel@lists.infradead.org, linux-pm@vger.kernel.org
-Cc: LKML <linux-kernel@vger.kernel.org>, Dong Aisheng <aisheng.dong@nxp.com>,
- Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Ulf Hansson <ulf.hansson@linaro.org>
-References: <20260121-b4-scu-pd-v1-1-f993e4082089@gmail.com>
-Subject: Re: [PATCH] firmware: imx: scu-pd: Fix device_node reference leak in
- imx_sc_pd_get_console_rsrc()
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20260121-b4-scu-pd-v1-1-f993e4082089@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+H6pZaKyymJWYd84hJBe78XHubU65IuQq4W/oAJCt2DHb+OJ4kS
- CFhYbrMFxabwIGt9Co6NhWSfcOJGJUzZjki4pWXLU7WZHng9St0qLcMt9pcS6jmuQCOI1g+
- WcNhVuHLbZybqbTyMmupbaT8DqbGm45ARgG7sN+qw7vYJ+rbKzYKXG741z+PtgeG/GDzkD2
- z/89F3VUqiFEEB9wzls6w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:2pLqjF6h4A0=;ylnJFJCx+YvnX2kdFqnx2MUK9kt
- Y6bmIjEMK8lBVDLoeBEda0I3v+62w0TJYGNO4IVrvSDGcboFHbEo0Ru3ehH5jP+uIxZrvL2mc
- p9WpRIbWSS+Di4u40nEdTyxsxxzI7omugSG8zNmF/OmJ4OHd+1YdXURU6/QcheqnxlGiyrbRy
- layixJgCK5gb+L+20pejaJ+rSll8I2l0pwtETEwCf6Lm/e+AmLcvgCGyf+PEJg5YdQP+8IZUJ
- FJAFjvtYlnxsXNEAz+Wnyx5wD+u8CiWfLgZSYyvdZ3XTLMxbmn73BAd4ofhTxfbUsP6+vhufN
- KsRgOiDN+hq/OijD0+bXM3ORQtkrvuehmoTaSL99NgAlbH6byoGhy12e7d/O7+tHIjnasOLGl
- e5cus52R/K4NmaO66r6jWijZIWNNH02pDbYlqjpKc08AQK5dJbx//uO24OiI/8H0ZJZdhv2io
- yud98XH3IsteVy9TKVzJYijLT3KFNPiOHSir4DXpTFux2GWSI8W8j2GosqGoVx9OR3OaxSrW4
- sUI01XK+ihXW1JFxtv0fookP8n2J3YzJq8slcPDxaGOBrVA6GTFfNYzJW7j5QcYnACb+c3zdN
- ughPFoKpVwCPqrmb58gfaziYv3HzxzTF9qZtWSEh3fu6PCdXLJrTumEZZegzYOnC8w4aSZElO
- +fdumTQ5Pk9nWgQcs/GUzXLAVqou2p05SJAwwP5jEJJRCR63zRYNMWqeniSw0m9OybVNuZICC
- zVHN99wxxSBZyjbAOqwXlJdfiFByvoTPaLoIlo3eMIFRNZ7WZLs/HF2/i6dDeAC9H/yrkIfO3
- RdM6mH2IbEiuC7DrBxDsyAhRkjQy3yJ08+c9py/Jw0rQZ4sZllPwceNxBT+sbYfxTzNSJTCr3
- eA97TYkcvQQstYPr4Gxl1W7kWOAeIqW3HbnHR6IGRZiZouHhvKT1zGBcobphYJ2qVuIGWD6p3
- RJs7bD2cFm90JhAM+OtL/idoWWL0tOWgsBg2dhDj3VRJzUcv7QuBASCkgWI4TEYb61WHQbxVU
- RasY8xU1BW07WMwQUTuc+9zWDfFdvCDxQxrJsjRV9Z9KcINzM842fp+lLDTvUz8RhJMWuO8/r
- bPLE7aqcjYZF545jK/w5qwpZaQr2ph58OXEU7bpDaDkjb8eBlxg96R5LGEXHsu6ogq2DrnVlO
- x7kaYllpcSm7lRBY1N9CsELlWk0Ae89DXHTiNJMPq4Bct3FS01GohzumpooA6/XHnB5ScKRPa
- z5jDeyFytaNZo/EuL/CZmHI6mhU3lCAIh7L704L+HL5A+M6JTPAb0JGprVQ4VXbyfPMyQpi4I
- AkyiSXL7m5aMak0sYuYBpTFAHk3vekGuX1NCFk6eCnt0UkFHLi5lguHbblPqJvdnjFMZZRTz7
- lZaf3YE+rJV4KbX+batIJjsCypbJEqngpiFmBvXmpzxTvFcGirTsjCLaZb7TiiFxIJEVXqUMs
- raPoaZZZHg2UbWfng7W2KX16uIezQREw5SiJ5fOZXoc9kL4DdQgz3H5lzMEv9HOZbisdzGvXN
- 7WS15butBIVdeATx7LQHONCmxuI+boSFseWKQGX38TtXCSFy2VJH6F8o7pPED//o5L0XsHIcm
- fZp52rtKELjkKRqDqG8b9ShZe9fxZfoaQmyRlV4bbWDT9UVseVaCLweOs5zf2WB5cD388DIQl
- 3b33P0Oj7k7gLVhW0AG8BxDlBEkaqD0Paf8S/bwaIBLSw4COrDAn99zuMaV7Gjhi48Fk88epm
- y0sHniMafsrlX7wFPapJvnauWz0CWQDXFdOy0WpRLTTkZKyf9Dks5I9YlZntj3pLLlHmzbgc4
- zu3Jo1hODpX687LpQDxX8zFPj/5jQ/XUYY/YCa+54lHZz1skHTlqAeu9dOLFOb2ipGc3FEs4d
- Yk6O/Y3YaegIiJsEZ+BtmB8dcRtuW9IKGHhjo19ZpPThQ1hpyU4BkfjAcRPKICyurJBEEWqyD
- 4G/b16cjcYEYocXe25cvsH+nSTjBGhr7d6REeM2awCHnfPnkJr6sX3IB92Z3pU/IneGyIwL00
- 46m8zkfB2j5F+g4R685YaVDbDVulYjc7JNd4JfOdIWTDfpnBYpDLQx6sbPWLgmynpnuMuEZHH
- sa4vw0AQQIg5sHoTcdW+OltAal60Y3kutUhcdxDqPYO/0e5cOS2Qgyy8jaiRqsO30TzjaeCnr
- zFYZsxUVK0vdNdRusbqa/nry//QRnoZXgT6TySOAAniYmc0L3ezXeXm4k8ophZMl0MvyShKRD
- iz/opzSZQR02HoB0+I4SgSbbPUPsUnNjv6TqBnwsfHKQYSd3ADlFXPYZptuJsQFav0U3FHg5R
- ijbDKWiTX61Z+BRxW+aS3o4+jG7+Z5J3KE/p077qq51qajxCUlV5Kin0q6W+tq7xUNtF9uOY7
- oODeoSKInnS/NGl+Iy0fnNxZKFaGqiY0J26wbj4ECELU/WaATP8y79Ons/53LRTR160khZEmx
- 3UMRv7qV5Q5bZyZ56gb+VuDw8M1BbCsqZU0d0xspBYzTDsvougseXW6GctGypiJYFveOL6bX4
- OpMFwC6NwWnQdw5ZCgqGcgYbm6oRCeRiMncumbCuPrkab7v/Z8o5mZMZf4lSIEMvhxIX/nyr3
- 6hscnPtapXn168od0FI2oVr92ot5Be0RSqRdbtkSBoBA1bKSU9gMUN1c1VPwFTqhTh5badra3
- ISxai4HsI3nEshU0LZ/4ENDcqTiLzMWY7s0p/sObZX6qzm5SEd3KRz3c460vAJyoADkajGWCW
- LV2zDMNcLGsN0geBvbIt4CjMBD7j6N2O/jyUM7WHK3WGRck5o3t46FMuk/66tSSB8J9ivenfe
- +vntILTWXQgYAL0m4ddJXr49j98Xdz10Oqv1hTQ3bWe2+7N4JB/hgaPShqeG5/fueGmPGcGRz
- TCWWwzHbs9XPK7JiqKAKtNK7lWyIJnlTaThsSKpK1TGzZzWcq2xpyaj7MZoqwoXoysDNddXcJ
- +tY0tycuhLyR/0pCFdA8+jbvc8ds3xIU3vAjxNv/wlqHcq6WbyccYRVhhLCWC70NwWZCvuFWX
- HJdw8gCcNQGAfaMo/eHVIOwqtNHjtyS3gJo4FPAcGoNWvn+e6Rzq2iht+LNF7x5jaRmW9B8+s
- CDB2hdAaszACVu2mCouTmuT+9Oqjh63dt6WY3zl5t17P2s5EFPwP5Ptw/NVuO12a3Ccc8Xveq
- VcPRta2l5tOZXbj82usZXlzhM23+kmdmfguK+g2aNlM6CKbgXk+Lyp2WGh625xCi+Ah7mrhlg
- FrmG5A8txrSNVUf2Oa4HEIwB+lFbXGK+6lYBjd44KJFrkyKQwu3l0C6GRNXaO0Ozk43Fo/OBU
- DKLQ9aZl12017OZOSJoWRkYLV0xurgxcz0WhLsTSS56oZAyvva7szuHEquAm9lSFfDKVd0rfp
- dJr/pOkQoxkuoY88wZKVZ/XYYfK3ZJ5O6TebtL+pJiIrV8nGbSPjTAds1pezdTN14bvGJd9i/
- Tz2RHsnU5xgRxWHT07JoBru1EkrBOAKCrRPmZRvF9MkWT0/pK1GcM3bGbobWpfbgPmdlHmoJs
- j3KU7GitVgXnicm2mviv1RHaOOt5fwyOwWJ32CMdDQDbeWn3i77HULVDGMkO+bKptxXBmM+VN
- qGBOe4WZZgwoW6Ze6czsQFCVFUDR1OzciUxx4KCG4daQULoh6gEDmOtzWCv3IeY18nJyIQd3A
- ssLFpFfl0cDgid2B4pVuZ3CREp+3agm3Jt+QSEd7FjHHRp2sczWRSqPiMxLYhAu5ZliF0rcsW
- 8vfJrCtV/MzV/Ws+/Y6a/oGJNbEF3qcAZUb00AEC+BDX5Z76UDtvYSDQC/JqT27qgobnmH/X5
- H2GR3jIiZHDyscynr8C1A86bhfCylNoKWwUTN+ci06RVWVOyeF8R859ysnaQ6C3ZtPhKSR8Ji
- nHtkEJJEseLytHm5aZJMrheN827jlFT/krcAMWOLL/OdQjBP6RW0eyMlL82WYiJBU655vA4Tn
- GLqIh71BLFoN3FdC1wWXYhkF6y90WhTGA5I5U5eXScYhnh6zeAgSQL/IHgZj/5OzIsTDZL+lC
- O4PUcBDpBeRevu7VRY2+WIhZpAtLIt/vxnfcYgbScevEXpAAajFqiU91melp6RPScsCCDJl12
- 76t790C61sSvFGgyFs0InzjzCPQHz5e/19aMjOLd1w+9Fl4sKArqf8TkdHT/v5mgUfu57c9u1
- W3ROBlJ+yuzpYWD+V06WGe5Ia6HhBH+lLI291/S17rxy1KXF2YU7QsnZGovVLn+8jZvCoBxY3
- ughGRLZIAGdPJOfC29h/i+ulMQ/tmt6gw6SbwPvPMGwRwTa3IEpw/6o3Vti6/7rmOzNlbfYyT
- 1NfEUefk50ZIPtSAZ+2MvEp44izVukL7Js7HGa04/k0a2G3ZeCR9km3uMzwdMJMwp0/Htqp6e
- d6WRsVj0CC5kNx48tmS+6VAh3QPhaAUku87OYO1LT9j7X5Y5gcr10iaPcdYmMcAgGRTMTYC1N
- M13hIOFhQxlGHWWd46xOVMNXmpC+fBY/n+O0dVup7l2nVpapccCzO8fHksAk1RsUcrDuO6juJ
- RteIGVdTjvBa5WzFJMpDjKUCNZFWSZww7EwzaUJU59pjXytJOcAtFhxf6rxh6YXXzx3aUpvPC
- DWPFprrjJN9X4klq/EwGyqhX4SD9zfty3BfJgFAWaYxrZPPVh8E/WhMRX85+H5q22wFOZZe4I
- d/thTp6canpC/YDikdoaf4KUAK4Z79bNvNvqJkE5mPVAqyQIDr0eToVWdhE8SXsat+FYV8h/q
- yIpI0fuiGihMpMhhu8yc3lok6YPIAHf+uljM7Opq4M2efKghXivdXAXPaqymSH47Oh6TuvM0O
- IIfqJbFheVpWP2KQWIyzLQuYq+LyXBe4j3OsPrSBZgkwG0tM4I7/5YhnRNy6XVPO0RRjK1ABk
- OYPQIEjuh2D3Tm8diRQOZtcx3hDFFdpuS6kjdmr2GvkZekJZx5vcn0c6j4zjK3OYHS1LiFdcr
- zTtVujpTB4njW851BTILPCF/gCLq/YjuyDwgIycV70Wvkr9BLLxlQIEEedwhFu9f+scfzbyY2
- TmGav7ZmovP1J0/EWIol6xZvvvIG+lUfUjAb7pAK5RSDblULwVqFeSr35UEMa/CtXUR7658Z6
- ouN2+OI74szq3ImE0woZEoYGAeoNpjjAq3V9PGTwR/3TdsRFKZwofiZ+r+60GYBETtbagxlAJ
- EbPWSIaXXsmjMnznFmLnNYbzdvbkOH8Vg6CWVFWgoT0uTzbHUCg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXIhp_c0zjS9dfWQ@sam-fedora>
 
-=E2=80=A6
-> In imx_sc_pd_get_console_rsrc(), it does not release the reference.
+On Thu, Jan 22, 2026 at 08:09:59AM -0500, Samuel Kayode wrote:
+> On Sat, Dec 13, 2025 at 01:38:57AM -0800, Dmitry Torokhov wrote:
+> > On Wed, Dec 10, 2025 at 09:11:41PM +0000, Vaibhav Gupta wrote:
+> > > If 'CONFIG_PM_SLEEP' is not set, compiler throws warning for *suspend() and
+> > > *resume() function for this driver. Using new 'DEFINE_SIMPLE_DEV_PM_OPS'
+> > > fixes it.
+> > > 
+> > > Signed-off-by: Vaibhav Gupta <vaibhavgupta40@gmail.com>
+> > 
+> > Applied, thank you.
+> > 
+> I think this patch was dropped.
 
-See also once more:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.19-rc6#n94
+I see it in my 'next' branch so it should be in linux-next.
 
-Regards,
-Markus
+Thanks.
+
+-- 
+Dmitry
