@@ -1,115 +1,91 @@
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025B33F23BF
-	for <imx@lists.linux.dev>; Thu, 22 Jan 2026 12:04:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769083452; cv=pass; b=r59UBy+3NL8covpqpuk55UJ1jA+Q4qGZHdaKBz/5XN1Ppr8EMllpzHPWDWDXWCq9W6LrOxpdPEX5sI/iWt+ImmY1QfTmDEGAMUb11i1OjGNJfD2onIeIU3JCM4x2JbmQgHBhwj8K8SQsCRiD6C9g7vcWGPR/h9lpE7KwsY3A4dY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769083452; c=relaxed/simple;
-	bh=X3hWCPtAHf66rCoHEjgzZZXz3d7jr9a0ZdE4RDvb9rA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GslQBGaN+QiYILe1mEs17EjYcj5aiP03iz0PT20cN6bHzmobKqjgtFVkL5cHHp55OF7s0fIyqEVlQJSck/r4JFaiuyRan4SvQWuS5yzI1rzEsbeAlWwwvlg1C5xJVgPCPcqIAv8BmoLw5i63eglNx9yJQarUkM5uWjHOYouE/ns=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iPTFVFEe; arc=pass smtp.client-ip=74.125.82.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D13644B694
+	for <imx@lists.linux.dev>; Thu, 22 Jan 2026 12:13:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769084006; cv=none; b=IFMlX1XHQnNM9UO+X9T4qdhA9CeTITXR6TUnB6oYx5DwEg4FOOHfuMzjPzjDDGQ11pGCPQ1Y3PtSLk2UgnUVLwQHGKpN/bxTWS2cMzTSI/JwnJyS7SPltabFOK7SawfFmPKQ0bC6JHI2K9o1kNUshzYdXh35G6AJg6CmBXEB5JU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769084006; c=relaxed/simple;
+	bh=iFGImodtGg26v12KZnlfUBCIK6r1uqgX8glwyh8adKk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=asSUWLMY2Te8A5GM/Asf7C5xvfB/U8w0RYXHaZUpoHnvtpD2mgdzPNzF3JEut+3aXhLcbhEyQXJVi488gmXq+Raf68gGbVmRJp9bdGRof8d/YI+ixdSHZ1rVwlk3PjPPoaibGwe4OcMd5odaLThcOwIczl+nCrGKOjVaUv/ZfCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=iyD8MTpB; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iPTFVFEe"
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-1233c155a42so1251516c88.1
-        for <imx@lists.linux.dev>; Thu, 22 Jan 2026 04:04:09 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769083449; cv=none;
-        d=google.com; s=arc-20240605;
-        b=go7gOipu5HNZwMr8cdvcjoVaS+rvynfghrttgSxzEFnqLuHm9EDhuwaAgaVhHky3Sc
-         8mVVulIms4GgQYX5909hkSsEa+kImDjZnH0MCU49Lzk0Ngk8aLFDJUHBKCoXx9C+hn5P
-         eq6FYmSvhRk4CDO8NU+q35sPqiEGMGeUSp2bRHNelIJMPziCBDImuw0cee47rdeg+Vp8
-         Dr/3nZl9kpxr+n0NVqc0tvZM1F/PJEQInRBCgpjuYqFGMtLgx9IwNJeLVnszAQB5jUPO
-         EoYqOdNDRgyySyeNIBWA2Iy0cvAMRglmaRMMVHuVEU1BosZ+/sezifNKwk+J6cF8P2Du
-         jX2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZNBdB7Lhd+f+BWkI5lcufgpivjRwqjcdh4wM3ExInI4=;
-        fh=c+B5rN1xLeIRp9vHyrZ+2D6kAVHzx7RrdJDh0G7Nfnw=;
-        b=OcwUOT+z1y9BM9ZB3zj+8lYkMdAfJdhYgTGR1cUxn7wVGiE2CjNqP2DzcdXXFYrI4L
-         3Ed0VYPPC2eVRRwU7ML9AQubxAqrk6qbs90tb9JxP+kio4Fij6L2iiKmY91FMxTmunge
-         DHRPd05ZOoXv+5NPEekILXFnvSNtwwj+w7E68dYn939FwR8wHlYW8HRry9WBZN9TRoz1
-         w/Bw8NtKQwtHzpClFjeXN/b6TgcVS1nbXtAeceF2z2GtTBY9sLKqr/bostMiDafeksbM
-         QxqJDPcMziQSI2rcQu3hVfNuxyTgnRBIt4idQ3CFbX2LWpHhMy0m5o6OSrNTEPwZFLyD
-         n5BA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769083449; x=1769688249; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZNBdB7Lhd+f+BWkI5lcufgpivjRwqjcdh4wM3ExInI4=;
-        b=iPTFVFEeEsd/1Us/Os093g3L22zEl4F4at1EQTuFOc4aE3yiQfXvNSvjPqRjtp58dt
-         tzNrNqOT/aN6lDyLjtqE/5E+sG3DRDOXDWnt3zrdxee6TKj3TNf84xe0m49TY1Ev97PK
-         S5xSctE/NmB3OeiReCktSlLZBj2hFyX0fWjblZTKG3vATqgfgchXnweg7X3Q4o82r8jr
-         xmTCVlxs6sGn4NNXsupUUSRv7FEnRaBStpEEYcU6LM9OMY4VIOO2q7hk1oECeYK6EgqU
-         7lMAGOxqNnsvqhHU+P1eMuKeG93ayoci9ku8j9bctZ/78jCQjspWV6AL4xeeg5l1sgMY
-         RRQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769083449; x=1769688249;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZNBdB7Lhd+f+BWkI5lcufgpivjRwqjcdh4wM3ExInI4=;
-        b=jaYpVHSv8jBzBvkb12veYc/z3IzdniTFzJGJq778vdpIaVIUfjO8wadVnWuayQEvq5
-         q+mvHTbneGgzF8UQ5F7U4w3ikcUwefMClOtrXwmkhnyswBifvCugPNk4k985sQaxLu0R
-         4TIJPlCwuNJuZt9EuY3mbmKnf48dPLpqZhk7wB0N4wC03e+k18mfTGpsEhVUeVwbXSoW
-         ayRS9R+n7WkdXzoaH2Kqqwpo9G1aTpYesB6HgGbfW65UvRZ/6aSr/Gwe4XTPEGT/hoTM
-         fE3XE6o1j+WKKU/osi9wbCUIEdS2aNIpGNfTINzppumRM3YkNTgPUefgcVycFVcGhZA0
-         0yDA==
-X-Forwarded-Encrypted: i=1; AJvYcCXogWPf8V6xA18UuZbUeInWaWMZ/aMEHziQV7lvoq3tRmZbiVfz0Udg/jOMB0dbtRENKs8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwtoEIwAHp8hOc9htftyEF6c0UqghP7Nm8cM9KHlRFZjv7sm5R2
-	rUmm58DDGrghLrBuefDL8apXA/4XJJNag6mmoCAQrKRXv4ex0budxbFg+KREdtrlPcQmO3Y54tN
-	4jPIJHbCNrfRVvpUZjOq9lBgTrthTXP4=
-X-Gm-Gg: AZuq6aLecBNRF4ZcTcRd2FljDlscwH6AY7Ki6ndHulzYkNZqWIoSug/7vJ4JxuUTUCP
-	t8D5tM+JygQYIxzu92hSmE3USs1zQtREkmHmtRXqbZJVeuLEGMf2vEK2T/xmrrgiVKVJS0nq7WJ
-	JXmtAgmIA7xduCbNj6Nl2TJwRB5QcpHjwppiVfN9lt69kssvPkHdw39ASbq74IF0DsUCYqG9cky
-	mdhA7F01t4ChOtfbSkgnAL+YKz9iQN+E8DRorsjYcoIhxRNJb7cOSYQCTlfeuRQ6Vqq5MdypYdV
-	e0AGVB9ZVi/LGfFLicdS/L4n17CNooiq8S8Pia0k7vCwLZ9wascIp4+bmR1Q0nfYSCN0q/c0R0u
-	oh7A272DxjNZtlA==
-X-Received: by 2002:a05:7022:6986:b0:11b:b3a1:713c with SMTP id
- a92af1059eb24-1246a958283mr5461620c88.9.1769083448808; Thu, 22 Jan 2026
- 04:04:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="iyD8MTpB"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=99WeiO5u+l3PtnXWsgEb1Ggl01P6ZHYFWERHUSgNsgI=; b=iyD8MTpBQ4AJ8EUuEnND0jx9k8
+	tsG6pbPaRaORNoZBNHSVbFHVoJYD2c3zOuR1xwZJpuuir+y/nMifRqKAFGb6EebfoWcDqFy/E3iWo
+	483US66ALS+CQtAu36tdq29upmjLkNeRgZ4t1SV3fgHqVelgbg/sJa0Kq8nt9zuUM12sFjo76OQEP
+	XVSssTnrgQZ2mQ0AeX2zrkL5aEzwzAkl1WxpEhnHDXPrV0ZINtPPwZj4jIE7nHiLp731Qtud22sU1
+	HyrBZVcYHPb6iDXfWigJ9+2o+xlwW9949IWohqC1eqmPcx7N5zB9WYbGP0uxlrCJEj4CE9P0inQMD
+	HTG2wdyQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51682)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vitYi-000000000LC-0kvR;
+	Thu, 22 Jan 2026 12:13:08 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vitYf-000000000zX-1d0f;
+	Thu, 22 Jan 2026 12:13:05 +0000
+Date: Thu, 22 Jan 2026 12:13:05 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Stefan Eichenberger <eichest@gmail.com>, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, hkallweit1@gmail.com,
+	linux-stm32@st-md-mailman.stormreply.com,
+	maxime.chevallier@bootlin.com, francesco.dolcini@toradex.com,
+	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: Re: [PATCH net-next v3 1/3] net: phy: add a new phy_device flag to
+ keep preamble before sfd
+Message-ID: <aXIUUStYnRt2Ad0x@shell.armlinux.org.uk>
+References: <20260120203905.23805-1-eichest@gmail.com>
+ <20260120203905.23805-2-eichest@gmail.com>
+ <86b8feca-8e82-465e-a17a-b751758306ce@redhat.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260121-ccm_dts-v3-0-820ce9b5fa38@nxp.com> <20260121-ccm_dts-v3-3-820ce9b5fa38@nxp.com>
-In-Reply-To: <20260121-ccm_dts-v3-3-820ce9b5fa38@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Thu, 22 Jan 2026 14:06:47 +0200
-X-Gm-Features: AZwV_QjimaKd_p8jdtYQifLmLFybP2fWAwRE2czS_YKMQ7pErfdW-RzqTfHjkKk
-Message-ID: <CAEnQRZCR3oNgfuknUnm88P2Cc4=CYc+MEd-hPtdceRhGhNR-ag@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] ARM: dts: imx: add required clocks and clock-names
- for ccm
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org, 
-	imx@lists.linux.dev, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <86b8feca-8e82-465e-a17a-b751758306ce@redhat.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Wed, Jan 21, 2026 at 8:22=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
->
-> Add required clocks and clock-names for ccm to fix below CHECK_DTBS
-> warnings:
->   arch/arm/boot/dts/nxp/imx/imx6dl-alti6p.dtb: clock-controller@20c4000 (=
-fsl,imx6q-ccm): clock-names:0: 'osc' was expected
->         from schema $id: http://devicetree.org/schemas/clock/imx6q-clock.=
-yaml#
->
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+On Thu, Jan 22, 2026 at 12:37:17PM +0100, Paolo Abeni wrote:
+> On 1/20/26 9:30 PM, Stefan Eichenberger wrote:
+> > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> > 
+> > Add a new flag, PHY_F_KEEP_PREAMBLE_BEFORE_SFD, to indicate that the PHY
+> > shall not remove the preamble before the SFD if it supports it. MACs
+> > that do not support receiving frames without a preamble can set this
+> > flag.
+> > 
+> > Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> 
+> I understand this has been suggested by Russell, and LGTM, but still it
+> would be nice explicit ack from the phy lib crew to ensure it matches
+> expectations.
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Since I suggested it, I feel it would only be right for Andrew to ack
+it to show his agreement with my suggestion.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
