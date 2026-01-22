@@ -1,104 +1,101 @@
-Received: from polaris.svanheule.net (polaris.svanheule.net [84.16.241.116])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827C638BDCD
-	for <imx@lists.linux.dev>; Thu, 22 Jan 2026 19:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.241.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D68D37F8AB
+	for <imx@lists.linux.dev>; Thu, 22 Jan 2026 19:05:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769108415; cv=none; b=czP3jUaMxlJ5CFq2P4yo9z34m0fhhZLobNBHACuNVn5u7UrUkhvvRrtvh87coIdjndoE/vO0IVa8y0tDEikMgYQPAm3UiticbeAYKVpvYhlVgaBoKsQwauqhLZHHuOiBJ0kflU4VLw99iRt/wcQ/AKLPQNVfxOvjwyHs/GeHm18=
+	t=1769108734; cv=none; b=Gie1ny+Fwr4aC4vDZq5/uk1E78KCYsVv385pX/Plme3Zmc1eeDtl8Q9a8Qu5SVb+diWK9uGJxKTjJSB37BCqJFFA1fNd4puZrel+aCRUhAmGz+7MyrW3aY3luipRvs/hvceb77pN2V/qqcuYREnPUSJ6kBV8/EJ/daPQwJtSsGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769108415; c=relaxed/simple;
-	bh=swrlHPUBKtlnhMtciE5+QOaGnR0HJsJDWjwTDiXUfRA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lR9gljTNcZveEDNV+dDpc9YGNNpni8dfBGm/FZCpRiu7Muv8ovEA4L2ZT0SV9oMwqGhSuGBf/rZPC/tL2OgFUZ+0ZBdd2MQrqxbQGPurjjuzYbFejhDUdUvJYiAGbAUDgEyAfN1OEUA3rI4OAZwvuTDP4AHLLjwxAaIATSvMAyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svanheule.net; spf=pass smtp.mailfrom=svanheule.net; dkim=pass (2048-bit key) header.d=svanheule.net header.i=@svanheule.net header.b=scWXGvmN; arc=none smtp.client-ip=84.16.241.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svanheule.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=svanheule.net
+	s=arc-20240116; t=1769108734; c=relaxed/simple;
+	bh=l9340XWXgy7Ii9BVEFccXD+g3ujL+U773odNXH7XVHQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FtMbehOW+iJfnw0kjPHTxNG6uhd63xIT5WfeIDv/B4UG2zT1D+wU4f4Cayaebvc583VS+1b+vw91TjzLY4oLkBBAXzKbEQO6VaNVJd93l1l3B0M4jkGMn1xaRdewOeFmdHI4H6bpa1Te4vJq21yZWhRuav1xEXMmwxhH8OY5TnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=Pw7Hi2tz; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=svanheule.net header.i=@svanheule.net header.b="scWXGvmN"
-Received: from [IPv6:2a02:1812:162c:8f00:19d9:5e35:1cd7:5d5d] (2a02-1812-162c-8f00-19d9-5e35-1cd7-5d5d.ip6.access.telenet.be [IPv6:2a02:1812:162c:8f00:19d9:5e35:1cd7:5d5d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sander@svanheule.net)
-	by polaris.svanheule.net (Postfix) with ESMTPSA id AD3656CF57C;
-	Thu, 22 Jan 2026 19:52:59 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svanheule.net;
-	s=mail1707; t=1769107980;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XN4B5DCK0dBB222GFaDnpJxzaLb0lnsfXuQUUNsyrak=;
-	b=scWXGvmNainY1kQ77gLARjznXHp6TO+wM6m+tn1/+83ESV/HT6d1twjbe2ueHYcn1LskEI
-	zCr4pexsV9ktEqIDhFMO2pRHYvqeI7AHUV7/yHj+EkGt2iP49UTW/3ueGTDHwboGX3dvSZ
-	h14cTdHbs8+iEL5vkbS2Z80FBJK2hYZ/UMIhrYxEBV9i2JMKWw7pzbF2wFBU4hBbfE8M9x
-	AstzPZbmUZjsJWC48dlWh1KuePneV3+CR4beym6x8oIAxl+pXz+0lc6YdJEt/hKuVdTMmL
-	PF4hyJpcpvSr/gPWmCLK6jCr4eOBp4C4GPP+C3WgHnHGgI2ru28Cs7B8/8OaHQ==
-Message-ID: <25fb1bb85424e9d27348a51ce5bb1fe727d363ed.camel@svanheule.net>
-Subject: Re: [PATCH v8 02/10] mfd: nxp-siul2: add support for NXP SIUL2
-From: Sander Vanheule <sander@svanheule.net>
-To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>, 
- Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
- <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski	
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Chester Lin	
- <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, Ghennadi
- Procopciuc <ghennadi.procopciuc@nxp.com>, Larisa Grigore
- <larisa.grigore@nxp.com>, Lee Jones	 <lee@kernel.org>, Shawn Guo
- <shawnguo@kernel.org>, Sascha Hauer	 <s.hauer@pengutronix.de>, Fabio
- Estevam <festevam@gmail.com>, Dong Aisheng	 <aisheng.dong@nxp.com>, Jacky
- Bai <ping.bai@nxp.com>, Greg Kroah-Hartman	 <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi
- <clizzi@redhat.com>, 	devicetree@vger.kernel.org, Enric Balletbo
- <eballetb@redhat.com>, Eric Chanudet	 <echanude@redhat.com>,
- imx@lists.linux.dev, 	linux-arm-kernel@lists.infradead.org,
- linux-gpio@vger.kernel.org, 	linux-kernel@vger.kernel.org, NXP S32 Linux
- Team <s32@nxp.com>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Vincent Guittot <vincent.guittot@linaro.org>
-Date: Thu, 22 Jan 2026 19:52:57 +0100
-In-Reply-To: <20260120115923.3463866-3-khristineandreea.barbulescu@oss.nxp.com>
-References: 
-	<20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
-	 <20260120115923.3463866-3-khristineandreea.barbulescu@oss.nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="Pw7Hi2tz"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1FF37108962;
+	Thu, 22 Jan 2026 20:05:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1769108724;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=QTPahbF3n4Y+k+onnDFwlQa1Xun5RdBFV/nFJ5gb74A=;
+	b=Pw7Hi2tzBlVT+5b50ixF9lBYzEztFHlPTGGXLuQ0S/yAljY4e1eazqu4LMEHr3kWIEULBO
+	1oGF20gUuptDkDnV5uvDYajJNdwGzkXVWms1FAt+Tbz7xRKOFgyxQTI4YsWaN3wpMqRX1b
+	GxVwllbWsyHJijWYHYYdwzVlWFRAGED9jtiLVCP1tLFsV7CrUt1syTz1HsXkOLkv30SN/X
+	Uukb3kay6XdM+xU4WhYu3oMxzsV9S6BTr0oyyph7VVltvh5rmQnf+F4wbx4DTMWRUf5Nt4
+	/xRFBGa6o/4q7OSLP4q8b94S6/WO0fYzj4MbesbrFQZyJtiTpvQTGK4i8pL1zg==
+Date: Thu, 22 Jan 2026 20:05:14 +0100
+From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukma@nabladev.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Michael Turquette <mturquette@baylibre.com>, Abel Vesa
+ <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, Stephen Boyd
+ <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] clk: vf610: Add support for the Ethernet switch clocks
+Message-ID: <20260122200514.3cdb6fb6@wsk>
+In-Reply-To: <4a593537-e848-4ed2-b6c9-fd2e6b165f73@lunn.ch>
+References: <20260122130649.4150338-1-lukma@nabladev.com>
+	<4a593537-e848-4ed2-b6c9-fd2e6b165f73@lunn.ch>
+Organization: Nabla
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Khristine,
+Hi Andrew,
 
-On Tue, 2026-01-20 at 13:59 +0200, Khristine Andreea Barbulescu wrote:
-> +static const struct regmap_config nxp_siul2_regmap_pgpdo_conf =3D {
-> +	.val_bits =3D 16,
-> +	.val_format_endian =3D REGMAP_ENDIAN_LITTLE,
-> +	.reg_bits =3D 32,
-> +	.reg_stride =3D 2,
-> +	.cache_type =3D REGCACHE_FLAT,
-> +	.use_raw_spinlock =3D true,
-> +};
+> On Thu, Jan 22, 2026 at 02:06:49PM +0100, Lukasz Majewski wrote:
+> > The vf610 device has built in the MoreThanIP L2 switch. For proper
+> > operation it is required to enable ESW and MAC table lookup
+> > clocks.
+> > 
+> > The MAC table spans from 0x400E_C000 for 0x4000 and it is necessary
+> > to provide clocks for each AIPS1-"slot", which size is 0x1000
+> > (hence four separate entries).
+> > 
+> > Those can be enabled via clock gating CCM_CCGR10 register
+> > (0x4006_B068).  
+> 
+> Sorry, i lost track of the state of the switch driver.
 
-I see you are using REGCACHE_FLAT ...
+New year, new MTIP L2 switch patches in preparation :-)
 
-> +		if (tmp_conf.cache_type !=3D REGCACHE_NONE)
-> +			tmp_conf.num_reg_defaults_raw =3D
-> +				1 + tmp_conf.max_register /
-> tmp_conf.reg_stride;
+> Is there also a
+> patch to add consumers of these clocks?
 
-... and initialize the cache defaults from hardware.
+In short - this patch set is a preparatory one for vf610 SoC support of
+the MTIP L2 switch.
 
-This series predates the addition of REGCACHE_FLAT_S in v6.19 with commit
-9c7f7262bc1a ("regmap: add flat cache with sparse validity"), but I think
-switching to the sparse flat cache would allow you to drop this. Then the c=
-ache
-will just be initialized on the first hardware access instead of at regmap =
-init.
+Those changes describe more thoroughly the clock subsystem of this SoC.
 
+> 
+> > Signed-off-by: Lukasz Majewski <lukma@nabladev.com>  
+> 
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> 
+>     Andrew
 
-Best,
-Sander
+-- 
+Best regards,
+
+Lukasz Majewski
+
+--
+Nabla Software Engineering GmbH
+HRB 40522 Augsburg
+Phone: +49 821 45592596
+E-Mail: office@nabladev.com
+Managing Director : Stefano Babic
