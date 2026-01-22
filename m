@@ -1,117 +1,194 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A68A3587C1
-	for <imx@lists.linux.dev>; Thu, 22 Jan 2026 11:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A70C3A901E
+	for <imx@lists.linux.dev>; Thu, 22 Jan 2026 11:41:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769081846; cv=none; b=hhwc+zp0QxNJjC8CiXKDXsgEQkB6xSnGqo80n2Twc8RvMhboqRzD9pLw5BzkFNSp7ClKSsel4ikxJH0uIsMjJ2hp8DsBA0UFt5r2cTOXvVBZ3x7pnhxKL8qyCNg3pjCoSITcMBP7bwyQZsn8G7an3QAHysOz4O1RKcjHvu7ONjc=
+	t=1769082107; cv=none; b=G/PZtTVWU7UPyZJCkW2cFBog7AjlR8vSzkeW/unmpfyKvVBxCL9fI0ReA96mwKnkPa8vFlyq3Mrt/wjS4311Qe46y3qEuEMPxoqHwBJD/WpaV3alHT8uoFhtzfMONcV1K8/YKL5tXGPwhfRMHKeHxRaBY0LdYPC868gGmB/zicU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769081846; c=relaxed/simple;
-	bh=47vdssggo+h/Zlz7kBJBl5ByRnPHVor2xs5SYsppYa8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O7hBI6UeyM4xeHbf25CZTdI7dEXtC9//8jBRhZmk/Vesw0wewr7lk1VAglUBrU0Z+TuBZB5zZhqaiSulugSvdNpIh8G2VWUKY6Iwh5NS/DylcvjyZxChn6vKdy97nfwR+4QduDuZ3BglB8CMo8GYPVgddW2fXpKFqD5jVOnkq8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NvVpSFwc; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1769082107; c=relaxed/simple;
+	bh=NqQtXUERc3v4NzNZ99SDCcNfgBv7D/bmH0cyLocfDQo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JPPEDrcFhSzuDfHZISpTMzeEGZ6Mv5hNwHsvCiBhgT/wsdQL1KbJi2C3ySo++GknxaSA3y+p7dTWw9i5TMDPAmKQgIjf0C4EKp+YSB5TDUo5GecPDZJRfWkla/jDRaFvcD8xt02r/dyKonjGf3R44QkhhyhQYdSLat0SreYlN+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=UEFpYXOg; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NvVpSFwc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769081843;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0wNs9tyPabqN3sAug4aUnrZjg9O+jb6nYLQLd09yp0k=;
-	b=NvVpSFwcVsuZzeXbByWp6S4i32vdSpFJrIB7mcxwInVMTc/a8Gt3ZHAZVfKeRWYO1FNUT9
-	yqNPzoKcax7Mmi+rvb9fwZpbZTo88JLCf5yqV0hltrNJbqNBKxVj9YVOQIezep8Hcz6i3n
-	bSrsG7T22EuxBRMqkIBahUQBLFmQDOA=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-300-6VAIodLuP_Cx0w21u11QNg-1; Thu, 22 Jan 2026 06:37:21 -0500
-X-MC-Unique: 6VAIodLuP_Cx0w21u11QNg-1
-X-Mimecast-MFC-AGG-ID: 6VAIodLuP_Cx0w21u11QNg_1769081841
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-430fd96b2f5so856725f8f.3
-        for <imx@lists.linux.dev>; Thu, 22 Jan 2026 03:37:21 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769081840; x=1769686640;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0wNs9tyPabqN3sAug4aUnrZjg9O+jb6nYLQLd09yp0k=;
-        b=c8yZQRtGg9rZpA1wNSdc0FK/kzB+QRX6CfmMOZRnuNnrRAXXAFui0UfyjIBtK7VRoT
-         0m4Ghh7g4yigkGnK8+UkrAPuCFaxLjpoo7ihPN/B5icF1mpfzUlwNzPcKwWBX088QEv7
-         uecgbM3CscdcW08uxjh4dfGLQ3QKrU+UCsls6WoUJJ9z4NN0VhIa6VQ7uOutrdFSgiPG
-         j1A66VdZNKSS3drdWLBE4LXL59DeQo1i9HN2aem81ikp4P4N6btFnxm7DCKkEwCR0qRW
-         Qtw43ci6rpU2Jyl8P/+lCAp9d1Bra+5UG/zw4pJXwfjZ9wLSWHpDBfr9yJ7Dor4Jzd6z
-         5XeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWn5ej9QN73qXC0KSKNvu0LcfJiVNcWi4Nz0TOf2RWeF6rsu+iEHSpwilphmVTfMmGEVgk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwalQNuMzNUH2R+GHSyeBDqzD8HT4W/XAwdYUP7pvMpsdO0jySK
-	TFFl5f2AXW1A99XOLFSgnXB3G9SG2UeSFQU07Q8DEk0rV0qzF45fkJHrNenQRdqkzXYptLFrj2o
-	XxHjgZp4Zdxse2l72Nbkf36WOjfanQjusF7DZBkr4o+PiRTm5tB5CvA==
-X-Gm-Gg: AZuq6aLzfKj1Q3x8KlYMC1i2JAwCA+oB/qKlj2BifO+hb3kYbQbeMxaSy6MExzD1J3W
-	WS8N4+fp+zWxPhDd2kMZvf1hdFcdoH3UOEQJZLpv+QOsBJTsnTLf7guR8QGSVDM5st628GagQam
-	7pvOOEotuYG6HPSU273AYglqLA4+x6rHLrvwd1KSfUrkyBZTtKO2sn6iPHb8cGGdZSl6GBkHalp
-	amQQGgEgUVNcU+O5dXrE9nEgCxsg24yQRPsYEpieCGGvdYFrL9YRtw4L+cuz4J7FnoQ3PV32ugp
-	FWuO7yO8uS35d0GUEYWOig6aGqUkGu+lyiVgqYSL3dHH8lkBaaBVQl4YlI2ZanRAbW5RAw1dPfI
-	x+4ksRBjhSDmt
-X-Received: by 2002:a05:600c:34d3:b0:479:1348:c614 with SMTP id 5b1f17b1804b1-4803e7f03fdmr128686845e9.26.1769081840537;
-        Thu, 22 Jan 2026 03:37:20 -0800 (PST)
-X-Received: by 2002:a05:600c:34d3:b0:479:1348:c614 with SMTP id 5b1f17b1804b1-4803e7f03fdmr128686445e9.26.1769081840134;
-        Thu, 22 Jan 2026 03:37:20 -0800 (PST)
-Received: from [192.168.88.32] ([216.128.11.175])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-480424b18cesm51351875e9.4.2026.01.22.03.37.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Jan 2026 03:37:19 -0800 (PST)
-Message-ID: <86b8feca-8e82-465e-a17a-b751758306ce@redhat.com>
-Date: Thu, 22 Jan 2026 12:37:17 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UEFpYXOg"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id EB8A31A2A53;
+	Thu, 22 Jan 2026 11:41:37 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B573A606B6;
+	Thu, 22 Jan 2026 11:41:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B0CD5119B0105;
+	Thu, 22 Jan 2026 12:41:16 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769082094; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Fl2SnsCgDRhlccmCWpsQ4CBlDuamahnW5kxpsohCwvo=;
+	b=UEFpYXOgJL+WIY89Mx/EpOyceBBILQiL0TxFQWpW01yiEySAJH2g1HcWGNeQm8jHeKv+xN
+	O2csc+HhLdo2gWFITsAzh6mTWYo9h+2QnQHxO2GdqZlsPvpTAG/XFqvOefokUsJca73PWu
+	919NjC9kftG/xECA0iNKY+BT7G6XeddTLl+YrGq6EFQ7innqv2Qzt9u7ZQzupbkT37WFhV
+	mgEsWUeGSzIj/19gb+Tq8BosxVfyi4TFbwa3Kmjo2kuM+uE7HxnX7idMvi9PAvs7Wiw+OR
+	Jl3h0x9NzvUaJ7inKLTNk1kZu+isqj/tgMXHTzscOm2flBtD/RFBursuZs9FuQ==
+Date: Thu, 22 Jan 2026 12:41:14 +0100
+From: Herve Codina <herve.codina@bootlin.com>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Rob Herring
+ <robh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Ulf Hansson
+ <ulf.hansson@linaro.org>, Kalle Niemi <kaleposti@gmail.com>,
+ linux-arm-kernel@lists.infradead.org, Andrew Lunn <andrew@lunn.ch>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Danilo Krummrich <dakr@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha
+ Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
+ <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Andi
+ Shyti <andi.shyti@kernel.org>, Wolfram Sang
+ <wsa+renesas@sang-engineering.com>, Peter Rosin <peda@axentia.se>, Arnd
+ Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>, Charles
+ Keepax <ckeepax@opensource.cirrus.com>, Richard Fitzgerald
+ <rf@opensource.cirrus.com>, David Rhodes <david.rhodes@cirrus.com>, Linus
+ Walleij <linus.walleij@linaro.org>, Mark Brown <broonie@kernel.org>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Daniel Scally
+ <djrscally@gmail.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Len Brown <lenb@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, Dave Jiang <dave.jiang@intel.com>, Alison
+ Schofield <alison.schofield@intel.com>, Vishal Verma
+ <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>, Dan Williams
+ <dan.j.williams@intel.com>, Wolfram Sang <wsa@kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-clk@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ patches@opensource.cirrus.com, linux-gpio@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-cxl@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Saravana Kannan
+ <saravanak@kernel.org>
+Subject: Re: [PATCH v4 01/29] Revert "treewide: Fix probing of devices in DT
+ overlays"
+Message-ID: <20260122124114.44812cc7@bootlin.com>
+In-Reply-To: <CAMuHMdWGk5ig3v9tGy1cMOg1LmKu3KrxQq2HO1vcQeZPuRxWBQ@mail.gmail.com>
+References: <20251015071420.1173068-1-herve.codina@bootlin.com>
+	<5cf2a12a-7c66-4622-b4a9-14896c6df005@gmail.com>
+	<CAL_JsqJjm12LxpDg6LmpY=Ro_keHwnrWiYMLVnG=s_pSP4X2WQ@mail.gmail.com>
+	<072dde7c-a53c-4525-83ac-57ea38edc0b5@gmail.com>
+	<CAL_JsqKyG98pXGKpL=gxSc92izpzN7YCdq62ZJByhE6aFYs1fw@mail.gmail.com>
+	<55076f4b-d523-4f8c-8bd4-0645b790737e@gmail.com>
+	<20251202102619.5cd971cc@bootlin.com>
+	<088af3ff-bd04-4bc9-b304-85f6ed555f2a@gmail.com>
+	<20251202175836.747593c0@bootlin.com>
+	<dc813fc2-28d2-4f2c-a2a3-08e33eec8ec7@gmail.com>
+	<20251204083839.4fb8a4b1@bootlin.com>
+	<CAMuHMdXdwf7La1EYBWTJadsTAJG3nKQVW6wtBn-bUqshA=XHRw@mail.gmail.com>
+	<20251210132140.32dbc3d7@bootlin.com>
+	<c50c40cc-69f6-436c-a94e-94a3a10f6727@gmail.com>
+	<20251211132044.10f5b1ea@bootlin.com>
+	<1b9fa77b-d74a-4fa7-b2e7-8b389d59a5a0@gmail.com>
+	<20251211161902.11ef4248@bootlin.com>
+	<CAMuHMdWGk5ig3v9tGy1cMOg1LmKu3KrxQq2HO1vcQeZPuRxWBQ@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 1/3] net: phy: add a new phy_device flag to
- keep preamble before sfd
-To: Stefan Eichenberger <eichest@gmail.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
- linux-stm32@st-md-mailman.stormreply.com, maxime.chevallier@bootlin.com,
- francesco.dolcini@toradex.com
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org,
- Stefan Eichenberger <stefan.eichenberger@toradex.com>
-References: <20260120203905.23805-1-eichest@gmail.com>
- <20260120203905.23805-2-eichest@gmail.com>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260120203905.23805-2-eichest@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: _wCGAKA5M8GTGkUWr9qpTnM4DKmJQIOjgQPl_rp84dk_1769081841
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 1/20/26 9:30 PM, Stefan Eichenberger wrote:
-> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Hi Geert,
+
+On Wed, 21 Jan 2026 13:59:26 +0100
+Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+
+> Hi Hervé,
 > 
-> Add a new flag, PHY_F_KEEP_PREAMBLE_BEFORE_SFD, to indicate that the PHY
-> shall not remove the preamble before the SFD if it supports it. MACs
-> that do not support receiving frames without a preamble can set this
-> flag.
+> Revisiting his old thread (sorry for the delay)...
 > 
-> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+> On Thu, 11 Dec 2025 at 16:19, Herve Codina <herve.codina@bootlin.com> wrote:
+> > On Thu, 11 Dec 2025 15:52:28 +0200
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:  
+> > > On 11/12/2025 14:20, Herve Codina wrote:  
+> > > > On Thu, 11 Dec 2025 10:34:46 +0200
+> > > > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> > > > Do you see the same trace with:
+> > > > - "pinctrl-0 = <&i2c1_pins>;" in your overlay
+> > > > - fragment0 removed from the overlay (i2c1_pins definition removed from
+> > > >    the overlay.
+> > > > - i2c1_pins node defined in your base DT.  
+> > >
+> > > Just tested. The i2c1 appears and the test-overlay probe gets called,
+> > > when the i2c1_pins is in the base-dt and not in the overlay.  
+> >
+> > Geert, do you expirement same results?  
+> 
+> Yes, after moving the pin control subnode from the overlay[1] to the
+> base DTS, the SPI bus and FLASH work after loading the overlay for
+> the first time.
 
-I understand this has been suggested by Russell, and LGTM, but still it
-would be nice explicit ack from the phy lib crew to ensure it matches
-expectations.
+Ok. What I said for Matti's use-case is also valid for your use-case.
 
-Thanks,
+> 
+> > > > In other word, is the issues related to adding a pinctrl sub-node (pinctrl
+> > > > pins definition) in the overlay or is it something else?  
+> > >
+> > > Seems to be related to the pinctrl.  
+> >
+> > I don't think that the issue is related to pinctrl itself.
+> >
+> > IMHO, I think the issue is related to overlays and fw_devlink.
+> > The distinction between "a new node is going to lead to a device" vs "a new
+> > node is just data and will never been attached to a new device" when an
+> > overlay is applied is broken.
+> >
+> > This is broken with the upstream "treewide: Fix probing of devices in DT
+> > overlays" commit I've tried to revert. Indeed, on the LAN966x PCI device
+> > use case devlinks created are not correct with this commit applied.
+> >
+> > I am not sure also that devlinks created with a more complex overlay will be
+> > correct. For instance, Matti, with your overlay not sure that a phandle from
+> > the oscillator node referencing the pmic node will lead to a correct
+> > provider/consumer devlink between the pmic device and the oscillator device.
+> >
+> > On the other hand, this is broken with "of: dynamic: Fix overlayed devices
+> > not probing because of fw_devlink" works for the LAN966x PCI device use case
+> > an lead to correct devlinks but breaks your use cases.  
+> 
+> Loading my overlay[1] causes the following changes under
+> /sys/class/devlink/:
+> 
+>     + genpd_provider:ca53-cpu0--platform:e6e90000.spi ->
+> ../../devices/virtual/devlink/genpd_provider:ca53-cpu0--platform:e6e90000.spi
+>     + platform:e6055000.gpio--platform:e6e90000.spi ->
+> ../../devices/virtual/devlink/platform:e6055000.gpio--platform:e6e90000.spi
+>     + platform:e6060000.pinctrl--platform:e6e90000.spi ->
+> ../../devices/virtual/devlink/platform:e6060000.pinctrl--platform:e6e90000.spi
+>     - platform:e6060000.pinctrl--platform:keys ->
+> ../../devices/virtual/devlink/platform:e6060000.pinctrl--platform:keys
+>     + platform:e6150000.clock-controller--platform:e6e90000.spi ->
+> ../../devices/virtual/devlink/platform:e6150000.clock-controller--platform:e6e90000.spi
+>     + platform:soc--platform:e6e90000.spi ->
+> ../../devices/virtual/devlink/platform:soc--platform:e6e90000.spi
+> 
+> Note that these changes are exactly the same in the working and the
+> non-working case.
+> 
+> Removing the overlay again removes all added links, but does not
+> restore the keys link:
 
-Paolo
+I think you should have the exact same behavior with and without my
+modification.
 
+Can you confirm?
+
+Best regards,
+Hervé
