@@ -1,87 +1,80 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309C12BDC3E
-	for <imx@lists.linux.dev>; Fri, 23 Jan 2026 19:51:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE2F22339
+	for <imx@lists.linux.dev>; Fri, 23 Jan 2026 19:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769197872; cv=none; b=Lw1gB4+VG1bnj9Heszt7HcFPmrvIK2eI+huQghi6hUFJc/hOQcIjqHgnbLA59A6OoQ2fQIfGDmVIUIbnAbYzFG4idGM0g9sUI0UK9CgHfQGq5OWqXbupp07z4zv7UsGxFGXsijcQeMgiQWZb+w2P1JjZA0B+6hOcOKVDE3Jsw/8=
+	t=1769197877; cv=none; b=BFLBSft10oOkOPDHWsTbAY2FSbY7ggYDuvX0EExU2+QOxxG89qI8bfKTNiDYwKoLnSxrWlB7RLeyhFGzpO212CXmiX71MxEh0mG2ErTjvSOu5A16o8ZnpLGCi6ai2jh2DlEoMY5SXO94gOn2h9imR145smR5HMz06hjQAJJh3ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769197872; c=relaxed/simple;
-	bh=kx6N8Fat+v4rKXAq3jr9szVFIZj8vDQESPGqHR9vba4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=hq0wEcIpBgL3miGUrLU2/u5/rHB0ki1HuZg5a0Oa7uWDXl/eYYx+/4J38Pj3X0iw5VVWCqLn3UF+XF3CbURgKwbi8jkjWuoJAdvrcs2RoqgCkXVKHS8F6MB1IWVH5TqhHx2DJNEW+KF1NGvkjvwbwylKsbpIHET9wmoVvb3m674=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qNdp5I4r; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1769197877; c=relaxed/simple;
+	bh=4cqSz3lY0LahuG/j0CMYaZzp90KYqJNiS3dbc0Xv/6w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Acny3rirpdL2mVUIz9cqAAu/rV+Sk4UzLe3sBAdWWQpIx7tPV99BhIbF6hLRIMAzS4X17qyUnlx74Z/L5e6PY5P6NazhGkBZxQg1V6XVfdNRrk7hhYOklgAU1C20tuJlEqsa0aJxWhAI4L9riSvDKA0mNi/LUqajVlN+3A5g6H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=x+/fHXwn; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qNdp5I4r"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4801bc328easo29631955e9.3
-        for <imx@lists.linux.dev>; Fri, 23 Jan 2026 11:51:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="x+/fHXwn"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43591b55727so2336803f8f.3
+        for <imx@lists.linux.dev>; Fri, 23 Jan 2026 11:51:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1769197868; x=1769802668; darn=lists.linux.dev;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8jNsJjXS8M5t/mEUZRdZlxrFzfCZpFMkBqFJLBshMIk=;
-        b=qNdp5I4rcVJ8w9J/0qPNzGmCQK4wZn2J7J2dTRpxhwOZ0+wBaVl8iWCYLRA4BAzxKc
-         qPIU75CZRrIFYfDW/icdW73I5wwK4Y03y+By6OvrbWoWqImcAixbYGFXFNl4wAPCOb+x
-         RvdFe1C9WrFXhAQ8SeWp9vJMEdeMwBEBmcQBbHi+NJAGVKXZjSvWjy3HsvCYF4SlEvt/
-         VuBz8VhOPgzQSeb3zrqV/TFOSAfa7/LMXwWSX2cGOrdXDYE9jZ5ekFjp63s19M2nFPT8
-         HKhFQQkMMwfeTqpX8Z/VRQyaR+1R2jTfQmd7i/l6DACqnGBS0rVu9rguVMM+D86VimI5
-         qWtQ==
+        d=linaro.org; s=google; t=1769197874; x=1769802674; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UmphJA0oiA6TDyGHVSdklpPRPAEFYSyTBQggvAD3gKE=;
+        b=x+/fHXwnalcuzrjnMSATO6WECpjUwQnGofqgCQvI/79en3zowGCDkIrgYhPu/fd7l9
+         mEE2RHcrABQdsVjITp5gQaLcWg3x/71VJxw9Ma8TBFU6AytYR4G7UquBDm3nIrORAmsk
+         QBd5Po8OVdeZbJWYWMsF25GqTJeNKO9ucNXk6+EisHhi4nglHNRPE+WBkOcs+eXjE7Za
+         Nofti7YWFC6mJPMi6iqjBUMIxobveqAnumGs2mFAqHI87/uSujzoVf4CTIAQUQqMfXW8
+         TptV3JzcYorP1vZh2YRUDk+bK85ZM63BjxYHS7hyucd6EH5bvIXYW9hgd46DuwGLmfYO
+         46Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769197868; x=1769802668;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8jNsJjXS8M5t/mEUZRdZlxrFzfCZpFMkBqFJLBshMIk=;
-        b=ppttU4wUop2jhho45ChoUXd++RFru6dIZzxu2mr7POpO0Yqar+1RH6eE8FTeQUAKU2
-         y7rBHcrdoJ1odsR7uO3ZO+HD0J9uaLhG3dKco1MC261/yzfN6KeY7avbd8Zv7Qgm7aU4
-         2m2BvAEdn9XGBEIiGvhOsdc3T39aAOnUURMSw4lI9JDD4wR4+fZvWz0c406VbUDSGXfF
-         pbPIZatoaC466fkqq7+F3LFl7fXpbxXsgsBsTjBAhBpAvX75KNTdPBKWdWIqo7+BOz+u
-         xppwp0dgyF7noEmgR5Y8rQG+n3XP2W5z9WwF2OsSlho05n8wpHiVYAs9C5gq5Bk6Fp/m
-         UZkA==
-X-Forwarded-Encrypted: i=1; AJvYcCXoc6LK5bIYsH/5RRPo9oINYl2TP+Xp4XY9tDaES4kd1OcSI/9P8hWciz8OT/KX7HGYOqU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyQR8aViK6f3MFLvjpHF04R7FCVWobWsLaM9UCkNZa8HtR7PnYr
-	/siB1zSuZSrh8kAYGa7I6aQKBOevU8zPQ8tMzj8ZEL7ioxbOhKPGQM7R6Ij0U4cWwgw=
-X-Gm-Gg: AZuq6aIyGbOsAVWfOnZmU9HnZ6e31Mz+JKBQ71ayQqNUYatmrGa+FVLQNB/HS5fLnve
-	ciWCRkj8cavE1Sw0EXvZIqHcETwJj1ArB+He3n6lgycd1HKoLykyWUnSVfSA68lQ+zYXMLgERWT
-	a2oOSgy+r7NpK0duiVy/hd4cM6TGlTHVgA6IfaeALcSlKnxEtHOKSpA1vJdestHJRvGfy2tNmAe
-	IGfoF0T5Q9vuQyaqEa1OBLSD6zwURjVH9f5l/gLOEVoTRtvOPSvLu8Wt5H+q5UsNnkX7ymSPkgX
-	56puXuQQzHOMK/cHtciH2MojMB8YQ2i6Oi6q2Jg2vsKhQgWox/xM9Rmk9x9PEfy7ddTavR0IC/l
-	YfxvtxzH77pmYrXtHXI90ircV/Y2WSUMGTExotv0WnIdzJxk6G1e4KzaJCk/R/NvzZsM4EIdS/i
-	33zuEMRRR1oX1j/1Wo
-X-Received: by 2002:a05:600c:5494:b0:480:1e9e:f9d with SMTP id 5b1f17b1804b1-4804c94810fmr65373435e9.8.1769197868314;
-        Fri, 23 Jan 2026 11:51:08 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769197874; x=1769802674;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UmphJA0oiA6TDyGHVSdklpPRPAEFYSyTBQggvAD3gKE=;
+        b=dw7HoY0rPSoo2JFBE28ZzpIlKpoU00x5va/UR9qsawmqjL9dmaeGgpSTthIZHlfvDm
+         AYbQrQ04L5KFOa3mHHAFd+8y32n5RFPsG4m/+2jM3Ldbqg/ZZaGGvThjluchK/GjDCDy
+         +oZLGovW8JzSDC9pjJ3VmkbhSvfZ6902gBE/q8FFzar9hTUFlsbRDBbN7ZSLPCa4mTCF
+         wQgJtM/ux/m+Cyr6KmhPevAbE388JsRliEcLyWhW2BvPuHQrKjIVBwFkjdabAHnmu8yx
+         LgU7Fn9OZLty7j1mLzlCaefw5b9tTE9LzdbjQhOvq265pdqzmSJDfjNg0KSP9Jnnj+ET
+         WNYw==
+X-Forwarded-Encrypted: i=1; AJvYcCXdicDxfC5BzNrxxLZ1Uwi0utljLTBfjpUVWCi5A6l4YTMk/7TSNzAQMmyt7HV1+kBwnIo=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxiWOju+DeQFXQmIrgWiIh3YbNQOsSLC2MHsZVMELjqiJ4md3Xy
+	0USzfhiy5p88sjo9ioK8hh6q4ePHO3f5qX0rwqiUUglp4QSmv5HbsYcj2P3kIvG7HvhXksHaIMJ
+	C1QeFN8Y=
+X-Gm-Gg: AZuq6aKKXneca8lJZwadm4bY2OSgKhXhS0/Dz04PDL2k/rMLaAUSNs+6pETmMNqFNMA
+	zckIXlnrlpBMYg+RLyEbyPFXTT6DHZJR+jtIsnMUZg1A1lq4tjcIPG47u+ZAZm3KL0XmfDDTouo
+	tO14tJpD4kj4703yvUt4GPPGITD4psLi2BNaF0afSM37uNZPONtlSJFPiQO3LZ2SnUVwHlM3RVt
+	7uLb3bSpofqQmXSOEoIs1rg18pOw8mhpSCLwD87hqDvjtGsX00991HIJZNMc3gBxPs2JBs4lKRp
+	ZUFlGyQOuvh8sO0EydodUmQjwPYm9qHvDPGtcoaQkcuxo+ogC9fFsgTMl55qrvHY/PQB7TnUqXY
+	J+e8r/GmBS60VAO5gdEqo1u7utaOzmBACjgJ5GMcWOaNgqCoAB30gM0STvcVGRgi4GFQ+ODycjV
+	tjclNGNohluh2Pshzx
+X-Received: by 2002:a05:6000:22c1:b0:42f:b707:56f0 with SMTP id ffacd0b85a97d-435b1605719mr7557722f8f.37.1769197874256;
+        Fri, 23 Jan 2026 11:51:14 -0800 (PST)
 Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4804d8a5c32sm94300895e9.11.2026.01.23.11.51.07
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1f742d6sm8529079f8f.30.2026.01.23.11.51.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 11:51:07 -0800 (PST)
-Date: Fri, 23 Jan 2026 22:51:04 +0300
+        Fri, 23 Jan 2026 11:51:13 -0800 (PST)
+Date: Fri, 23 Jan 2026 22:51:10 +0300
 From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Chester Lin <chester62515@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org,
+To: Jan Petrous <jan.petrous@oss.nxp.com>
+Cc: s32@nxp.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	imx@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-	Jan Petrous <jan.petrous@oss.nxp.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Matthias Brugger <mbrugger@suse.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	NXP S32 Linux Team <s32@nxp.com>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>, Frank Li <Frank.li@nxp.com>,
-	linaro-s32@linaro.org
-Subject: [PATCH v4 0/3] s32g: Use a syscon for GPR
-Message-ID: <cover.1769195864.git.dan.carpenter@linaro.org>
+	Frank Li <Frank.li@nxp.com>, linaro-s32@linaro.org,
+	imx@lists.linux.dev
+Subject: [PATCH v4 1/3] net: stmmac: s32: use a syscon for
+ S32_PHY_INTF_SEL_RGMII
+Message-ID: <8f2139e8adf02b485a4c84d558fc23f78cf04add.1769195864.git.dan.carpenter@linaro.org>
+References: <cover.1769195864.git.dan.carpenter@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -90,123 +83,86 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <cover.1769195864.git.dan.carpenter@linaro.org>
 
-The s32g devices have a GPR register region which holds a number of
-miscellaneous registers.  Currently only the stmmac/dwmac-s32.c uses
-anything from there and we just add a line to the device tree to
-access that GMAC_0_CTRL_STS register:
+On the s32 chipsets the GMAC_0_CTRL_STS register is in GPR region.
+Originally, accessing this register was done in a sort of ad-hoc way,
+but we want to use the syscon interface to do it.
 
-                        reg = <0x4033c000 0x2000>, /* gmac IP */
-                              <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
+This is a little bit ugly because we have to maintain backwards
+compatibility to the old device trees so we have to support both ways
+to access this register.
 
-I have included the whole list of registers below.
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+v3: no change
+v2: no change
+v1: Fix forward porting bug.  s/PHY_INTF_SEL_RGMII/S32_PHY_INTF_SEL_RGMII/
 
-We still have to maintain backwards compatibility to this format,
-of course, but it would be better to access these registers through a
-syscon.  Putting all the registers together is more organized and shows
-how the hardware actually is implemented.
-
-Secondly, in some versions of this chipset those registers can only be
-accessed via SCMI.  It's relatively straight forward to handle this
-by writing a syscon driver and registering it with of_syscon_register_regmap()
-but it's complicated to deal with if the registers aren't grouped
-together.
-
-Changes since v3:
-* Fix the yaml file format
-* Add netdev to the CC list on all emails so the CI triggers
-
-Changes since v2:
-* Improve the documentation in .../bindings/net/nxp,s32-dwmac.yaml
-* "[PATCH v2 2/4] dt-bindings: mfd: syscon: Document the GPR syscon
-  for the NXP S32 SoCs" was applied so drop it.
-
-Changes since v1:
-* Add imx@lists.linux.dev to the CC list.
-* Fix forward porting bug.  s/PHY_INTF_SEL_RGMII/S32_PHY_INTF_SEL_RGMII/
-* Use the correct SoC names nxp,s32g2-gpr and nxp,s32g3-gpr instead of
-  nxp,s32g-gpr which is the SoC family.
-* Fix the phandle name by adding the vendor prefix
-* Fix the documentation for the phandle
-* Remove #address-cells and #size-cells from the syscon block
-
-Here is the whole list of registers in the GPR region
-
-Starting from 0x4007C000
-
-0  Software-Triggered Faults (SW_NCF)
-4  GMAC Control (GMAC_0_CTRL_STS)
-28 CMU Status 1 (CMU_STATUS_REG1)
-2C CMUs Status 2 (CMU_STATUS_REG2)
-30 FCCU EOUT Override Clear (FCCU_EOUT_OVERRIDE_CLEAR_REG)
-38 SRC POR Control (SRC_POR_CTRL_REG)
-54 GPR21 (GPR21)
-5C GPR23 (GPR23)
-60 GPR24 Register (GPR24)
-CC Debug Control (DEBUG_CONTROL)
-F0 Timestamp Control (TIMESTAMP_CONTROL_REGISTER)
-F4 FlexRay OS Tick Input Select (FLEXRAY_OS_TICK_INPUT_SELECT_REG)
-FC GPR63 Register (GPR63)
-
-Starting from 0x4007CA00
-
-0  Coherency Enable for PFE Ports (PFE_COH_EN)
-4  PFE EMAC Interface Mode (PFE_EMACX_INTF_SEL)
-20 PFE EMACX Power Control (PFE_PWR_CTRL)
-28 Error Injection on Cortex-M7 AHB and AXI Pipe (CM7_TCM_AHB_SLICE)
-2C Error Injection AHBP Gasket Cortex-M7 (ERROR_INJECTION_AHBP_GASKET_CM7)
-40 LLCE Subsystem Status (LLCE_STAT)
-44 LLCE Power Control (LLCE_CTRL)
-48 DDR Urgent Control (DDR_URGENT_CTRL)
-4C FTM Global Load Control (FLXTIM_CTRL)
-50 FTM LDOK Status (FLXTIM_STAT)
-54 Top CMU Status (CMU_STAT)
-58 Accelerator NoC No Pending Trans Status (NOC_NOPEND_TRANS)
-90 SerDes RD/WD Toggle Control (PCIE_TOGGLE)
-94 SerDes Toggle Done Status (PCIE_TOGGLEDONE_STAT)
-E0 Generic Control 0 (GENCTRL0)
-E4 Generic Control 1 (GENCTRL1)
-F0 Generic Status 0 (GENSTAT0)
-FC Cortex-M7 AXI Parity Error and AHBP Gasket Error Alarm (CM7_AXI_AHBP_GASKET_ERROR_ALARM)
-
-Starting from 4007C800
-
-4  GPR01 Register (GPR01)
-30 GPR12 Register (GPR12)
-58 GPR22 Register (GPR22)
-70 GPR28 Register (GPR28)
-74 GPR29 Register (GPR29)
-
-Starting from 4007CB00
-
-4 WKUP Pad Pullup/Pulldown Select (WKUP_PUS)
-
-Dan Carpenter (3):
-  net: stmmac: s32: use a syscon for S32_PHY_INTF_SEL_RGMII
-  dt-bindings: net: nxp,s32-dwmac: Use the GPR syscon
-  dts: s32g: Add GPR syscon region
-
- .../bindings/net/nxp,s32-dwmac.yaml           | 12 ++++++++++
- arch/arm64/boot/dts/freescale/s32g2.dtsi      |  6 +++++
- arch/arm64/boot/dts/freescale/s32g3.dtsi      |  6 +++++
  .../net/ethernet/stmicro/stmmac/dwmac-s32.c   | 23 +++++++++++++++----
- 4 files changed, 42 insertions(+), 5 deletions(-)
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
--- 
-2.51.0
-*** BLURB HERE ***
-
-Dan Carpenter (3):
-  net: stmmac: s32: use a syscon for S32_PHY_INTF_SEL_RGMII
-  dt-bindings: net: nxp,s32-dwmac: Use the GPR syscon
-  dts: s32g: Add GPR syscon region
-
- .../bindings/net/nxp,s32-dwmac.yaml           | 13 +++++++++++
- arch/arm64/boot/dts/freescale/s32g2.dtsi      |  6 +++++
- arch/arm64/boot/dts/freescale/s32g3.dtsi      |  6 +++++
- .../net/ethernet/stmicro/stmmac/dwmac-s32.c   | 23 +++++++++++++++----
- 4 files changed, 43 insertions(+), 5 deletions(-)
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+index 5a485ee98fa7..2e6bb41f49e1 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+@@ -11,12 +11,14 @@
+ #include <linux/device.h>
+ #include <linux/ethtool.h>
+ #include <linux/io.h>
++#include <linux/mfd/syscon.h>
+ #include <linux/module.h>
+ #include <linux/of_mdio.h>
+ #include <linux/of_address.h>
+ #include <linux/phy.h>
+ #include <linux/phylink.h>
+ #include <linux/platform_device.h>
++#include <linux/regmap.h>
+ #include <linux/stmmac.h>
+ 
+ #include "stmmac_platform.h"
+@@ -32,6 +34,8 @@
+ struct s32_priv_data {
+ 	void __iomem *ioaddr;
+ 	void __iomem *ctrl_sts;
++	struct regmap *sts_regmap;
++	unsigned int sts_offset;
+ 	struct device *dev;
+ 	phy_interface_t *intf_mode;
+ 	struct clk *tx_clk;
+@@ -40,7 +44,10 @@ struct s32_priv_data {
+ 
+ static int s32_gmac_write_phy_intf_select(struct s32_priv_data *gmac)
+ {
+-	writel(S32_PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
++	if (gmac->ctrl_sts)
++		writel(S32_PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
++	else
++		regmap_write(gmac->sts_regmap, gmac->sts_offset, S32_PHY_INTF_SEL_RGMII);
+ 
+ 	dev_dbg(gmac->dev, "PHY mode set to %s\n", phy_modes(*gmac->intf_mode));
+ 
+@@ -125,10 +132,16 @@ static int s32_dwmac_probe(struct platform_device *pdev)
+ 				     "dt configuration failed\n");
+ 
+ 	/* PHY interface mode control reg */
+-	gmac->ctrl_sts = devm_platform_get_and_ioremap_resource(pdev, 1, NULL);
+-	if (IS_ERR(gmac->ctrl_sts))
+-		return dev_err_probe(dev, PTR_ERR(gmac->ctrl_sts),
+-				     "S32CC config region is missing\n");
++	gmac->sts_regmap = syscon_regmap_lookup_by_phandle_args(dev->of_node,
++					"nxp,phy-sel", 1, &gmac->sts_offset);
++	if (gmac->sts_regmap == ERR_PTR(-EPROBE_DEFER))
++		return PTR_ERR(gmac->sts_regmap);
++	if (IS_ERR(gmac->sts_regmap)) {
++		gmac->ctrl_sts = devm_platform_get_and_ioremap_resource(pdev, 1, NULL);
++		if (IS_ERR(gmac->ctrl_sts))
++			return dev_err_probe(dev, PTR_ERR(gmac->ctrl_sts),
++					     "S32CC config region is missing\n");
++	}
+ 
+ 	/* tx clock */
+ 	gmac->tx_clk = devm_clk_get(&pdev->dev, "tx");
 -- 
 2.51.0
 
