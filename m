@@ -1,71 +1,83 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011033.outbound.protection.outlook.com [40.107.130.33])
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021073.outbound.protection.outlook.com [52.101.125.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAD730EF9D
-	for <imx@lists.linux.dev>; Fri, 23 Jan 2026 14:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFBD2FD1CA
+	for <imx@lists.linux.dev>; Fri, 23 Jan 2026 14:28:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.73
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769178111; cv=fail; b=SvnCZVfaG5i5TO26P8+ipd+Q61lyvG08i7MDRWfbI/6Pxa8b2VmwZNhVVhLL0s2prttuMqqWd1Ogcg+omrxZt8NF0Szz5x0P07lSNEKGcX0IKx/7gKJFtjjkUV1dJ63UzPuSDJSiRN23T0LdwjN4ok1we+Xal24Qirw9f5HhUpY=
+	t=1769178514; cv=fail; b=S6Ke71sv9PrZkSGgDIhx066+XIi56yexP24JfGrOeaSIZMUEhT/Y08sOFdCCnVty5W027J7Zw7yzJoDDDlxgOI4LmZkeqwBcb0eDO4EYlYUBGwN3cxG9IcZY/ovqwfQl2oRJ8QoBca4YlzpHYNVVlV64LCtiyKKZC5WgtlVKqj4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769178111; c=relaxed/simple;
-	bh=fDdoq6uqo8mYOiTwB5uB8sy4be0/lqMdCgvxxH3g5f0=;
+	s=arc-20240116; t=1769178514; c=relaxed/simple;
+	bh=0lQfHdcocpUvOzF+ahqti2+4TAfQYg7znF/H1vgUBa8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qQ+U5NL1McWyv/9CwP1D+sirgUJEM7lZ9Z5Xag4tqgXM/M1qHkQkZCE4iKqea9G6DGiVU6PkPE71jD7LA0u2pv3wqYwpwlsOJW7i6QiiLpKB/PcH9AW6fs4swG40d+qC8PJlzDv+9kWcj/gEB6QmedBjOw3uhqQQeYwCMmFX3GA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BRJR1qgy; arc=fail smtp.client-ip=40.107.130.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=XDhIhjMD/UJXSqy6t52TC7k1+RxFd9qKxz2KkAIaT9Jra64sHaLYastvuuLuQFwrzLIZIxZ03mAsm1ixv+Z/mqYVi1zQJ0hTDy2ATDxDz/qUxaTariWD/mFmrGTXzEoWpdI5kXN1dLtW4xpe/WprHUXgQSZS1o2NXwEPP5AN8+4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=Zi/Gxgb0; arc=fail smtp.client-ip=52.101.125.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BRJR1qgy"
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="Zi/Gxgb0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WOxbf2CnbTtVAXI8j+hl3xBnbM3Z8VvOS1+GiqWB0rDw5jYCruhWF/ku+nheVOr04oXR2W4kjtqOMUcRxydh//Pe2aXfyZsKScaRxupDk6bZ9iB16bpP/BBt2iUuJIvCDtv0yuc0YnNLPLRKeuTIQ6Hms7MZ1QWqlvfhr8jenZ8xXoMsPF86wHFHENK6UnYdXsRhdpHWhiwLpAxHUByFEe7YJBJb1Ox0iMSv/yZsRp5B0ZK41Q5IQoydE8rInt4osbFJV+YSUKpP3eaZhsh3UBgw0t13RsaWC409FO3RHNRp9jV66nwq96E67xtyKWSUOS40vt+Wd8GNeUfLzPdRJA==
+ b=JC7N19/BRTxZYOBTx9pdcb0oIc7/PAL7ipjh2K5iSkizKYiP26gzZIaZSSNTwuQPuMEYw4YHpOZ0T2dNLKQbcDUg2PVR4s7x1ty3eWtGYNj9JUfTRkapzw2wrTeEC7gm3ZlZQLAFHAWZpNnZEZwnrnyPRBLqMBqLACUoz0xEayWNrH8MjJJE5kKLF5Fj2L9FOS+RQBiMzDwIxO7yWoitsr3V5nK14wT6AlkMVgGtCm0ZHmjqb5UlaeNAECcUVYTKIYrLWg8yIQUQHjxXEC2zTdfVQ/dXjqf6IkI8GArmkUZ/grjgaPQWNl6GAGoPh5gY5kg1CRAWZFy5oIgQFaWLig==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0znYzDIJeubZ8Rq91erQsdfVqehlDe/vcyhx78hSFGc=;
- b=NZtelT5bF5IO7R5rstuskc2IUv0GEfA4VZ5GqBXEsV2fOoc7rFaeuDcW2S0+0ieyzrwHwYQ/UbBlZ80EuzV7VVhgLM6Y0RLM5o9lTxAOi6PYsf3YzQNByhBmTdBOAGgAfnXgSYAf3U8S54+r/aKVFYPo9c+HroWLFrWkpQ7jsIvZz4oM+XF5EVz1/g9C28NmBPO3JtYTIm4XplU6v01gwMPrQ0uhdLuVWWz4rvFXfhBo8t+enrZL+0BSP7daORGeyPkw8OK28jB2/aKRw24KsIzHPyBeujK5kIylUyxFWt6WKVhWiooSj0ahS6lZvUTIaWbXATkbnFq0yYp6LWyyQg==
+ bh=ytnkaAICS/2Id7jXbgU8CoJYMoDKfH/xTA0PQeJfwkE=;
+ b=hDJRkh5fDd4+57Pp9Oh6rwvQKXGzLsuvV0ITY+9UUczN4NsKHKIeigA3U+xEcCYEuo5ylj03iBJSOJvVy6MWauvgtKqnbeN7CSRVuxlyLSneHoBPbMIlWHU2MdZdfOlr2k318T6OT0U+qu50Lnm6qH9XoCwVwTCswXL0yPE8k0dmde5Cv1yJSN7O5pdgQiOY98tVz5Hw1ngN1G1A/Op8wIMsHj8+nV4Oeebu8zlKb4zIIOa7Wj1Sw0QZ058Gg6F2CrpHMuUbW3oRdI/VieBAeYjPFrMR6r1Q6iEkpO6QDTkKRQ0Zrp9YgtHSebQjn1Q591HJe5KDJWt4SFKhQLccCA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0znYzDIJeubZ8Rq91erQsdfVqehlDe/vcyhx78hSFGc=;
- b=BRJR1qgytdxVOiuE5lgQOig1qbReHuJBqI84qGuBsIw18okJvWvral8OwbcsSQTY7IC+9zIsD1JjpyaV6Nf8g4QgCvUWZKKh4mugHyQR9fx426wefwVmAOEAMZwru7sd3t4GvpERhYjYN9xRPariLn/M/4CZsXIOW8U3tFxeVzTIP/zid0PphSVIjUo8EEfZiisLn3HA+NY+tL54M7bLbuddQuYV9yzrrTwUBXcO1Mk4xUO4Kf9UuciKg4QBN2C5+Ex7Y5AkmjUOBcROxrKSvF3Qk1y0M7onB25vGxhcWL5oB+2OiDp7OGHjhUm2S4FEtlqC0E20IUVvOZiVuAkhMw==
+ bh=ytnkaAICS/2Id7jXbgU8CoJYMoDKfH/xTA0PQeJfwkE=;
+ b=Zi/Gxgb0R+b9EsSKv9hT3kkZHJe4Wb65YFnhMb6A1ORCF/nIg/4enwWmkqgkGTCkt+FC9odBc/LwBxa4vsnda2z429H8W7kY19K0bL50bDWA/WgwQcCpJ/NS6RwzVML+P8leooJIBU96TmAi8rJljvBXiwTdFOnexNKW7RCn3uM=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8957.eurprd04.prod.outlook.com (2603:10a6:102:20c::5)
- by PR3PR04MB7322.eurprd04.prod.outlook.com (2603:10a6:102:8e::10) with
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by TYRP286MB5430.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:191::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Fri, 23 Jan
- 2026 14:21:46 +0000
-Received: from PAXPR04MB8957.eurprd04.prod.outlook.com
- ([fe80::9c5d:8cdf:5a78:3c5]) by PAXPR04MB8957.eurprd04.prod.outlook.com
- ([fe80::9c5d:8cdf:5a78:3c5%3]) with mapi id 15.20.9499.005; Fri, 23 Jan 2026
- 14:21:46 +0000
-Date: Fri, 23 Jan 2026 09:21:37 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Rui Miguel Silva <rmfrfs@gmail.com>,
-	Martin Kepplinger-Novakovic <martink@posteo.de>,
-	Purism Kernel Team <kernel@puri.sm>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5] media: nxp: Add dev_err_probe() to all error paths in
- *async_register() helpers
-Message-ID: <aXOD8VHX3BQLlt8t@lizhi-Precision-Tower-5810>
-References: <20260121-cam_cleanup-v5-1-01d1ab38db9d@nxp.com>
- <20260123000047.GG215800@killaraus>
+ 2026 14:28:30 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.20.9542.010; Fri, 23 Jan 2026
+ 14:28:30 +0000
+Date: Fri, 23 Jan 2026 23:28:28 +0900
+From: Koichiro Den <den@valinux.co.jp>
+To: Niklas Cassel <cassel@kernel.org>
+Cc: jingoohan1@gmail.com, mani@kernel.org, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com, vigneshr@ti.com, 
+	s-vadapalli@ti.com, hongxing.zhu@nxp.com, l.stach@pengutronix.de, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, minghuan.Lian@nxp.com, mingkai.hu@nxp.com, roy.zang@nxp.com, 
+	jesper.nilsson@axis.com, heiko@sntech.de, srikanth.thokala@intel.com, 
+	marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com, geert+renesas@glider.be, 
+	magnus.damm@gmail.com, christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com, 
+	alexandre.torgue@foss.st.com, thierry.reding@gmail.com, jonathanh@nvidia.com, 
+	hayashi.kunihiko@socionext.com, mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org, 
+	rongqianfeng@vivo.com, 18255117159@163.com, shawn.lin@rock-chips.com, 
+	nicolas.frattaroli@collabora.com, linux.amoon@gmail.com, vidyas@nvidia.com, Frank.Li@nxp.com, 
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@axis.com, linux-rockchip@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v9 4/5] PCI: dwc: ep: Support BAR subrange inbound
+ mapping via Address Match Mode iATU
+Message-ID: <tyudbsfjh2b7rzcascz4blv4uhkesemxqby6r5mmvgyfqrms45@mshhj53p53pt>
+References: <20260122084909.2390865-1-den@valinux.co.jp>
+ <20260122084909.2390865-5-den@valinux.co.jp>
+ <aXHsd7-WWAGyhy_w@ryzen>
+ <s6bnqkbuugi7oio7ybekdbk3dokpbe2bui2wjltdwajxix2app@wosgmhrfsriv>
+ <19D609EC-F850-4B43-A83C-0B8C70E641B5@kernel.org>
+ <l7wknbayighcczjkqfwhbaqrepjtbgxxstgkntoqvnrs7dnm6g@wvmy67ky37pv>
+ <aXM2hwCrziK2I8OL@ryzen>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260123000047.GG215800@killaraus>
-X-ClientProxiedBy: BY1P220CA0003.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59d::10) To PAXPR04MB8957.eurprd04.prod.outlook.com
- (2603:10a6:102:20c::5)
+In-Reply-To: <aXM2hwCrziK2I8OL@ryzen>
+X-ClientProxiedBy: TYCP286CA0115.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:29c::19) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -73,287 +85,170 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8957:EE_|PR3PR04MB7322:EE_
-X-MS-Office365-Filtering-Correlation-Id: a54c639e-07e9-489d-efcb-08de5a8abd56
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TYRP286MB5430:EE_
+X-MS-Office365-Filtering-Correlation-Id: 085d56e8-448c-4ba3-5caa-08de5a8badfa
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
- BCL:0;ARA:13230040|19092799006|376014|7416014|52116014|366016|1800799024|38350700014;
+	BCL:0;ARA:13230040|366016|1800799024|10070799003|376014|7416014;
 X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?me0DhdVwV7p3G9lDdMIKQAJI9HQgA6wW9d5aobRw/ieganbzKfp4mKGPT7WL?=
- =?us-ascii?Q?PUX9rPhP5yMi345jg64+nxwtK0/kyO1LTTacZCNW9uoE/wdiE4c0itnVXnrB?=
- =?us-ascii?Q?YfvKBT+Zntoi9aQ1/wkYYDrPcT/DMg1pbTqUXe+yQcwIH/y2OcPrYoeOkUfU?=
- =?us-ascii?Q?zMPCRmrX5g6JqaW1h3HrPwOaniXdNt28UVEJR+K9/220yb1wTr7qPcPT1EAd?=
- =?us-ascii?Q?jRtgF0ROrf/HI4jVIfJ+AMDj6zcCl1jVTawVsK5TrPuhaOaaQq877FMss//0?=
- =?us-ascii?Q?njBLo0m3YVaTZhlPCMFqa/Tduq/8fHd0gl7njSO8cMyTGXWE5bG8fZX4JFhr?=
- =?us-ascii?Q?FFiNkIrKmt2c0F0COmGTtzt8PTgTp0rHBxvPiFL+nwCSmpdC+sRIRqP1vvX7?=
- =?us-ascii?Q?fFanvEmnTVON6M3Vs6Fv5H4AyU4IIGuIYgDGM62bh3qWHkB4LvzEaNPaEBPl?=
- =?us-ascii?Q?nBPIem25GzXx6R3weQcYvjRn4hd9LXwH8AhwCbwKedrNgOGidEd6z0Y2d1qT?=
- =?us-ascii?Q?TsWpGdpQXBt9E54nKOzOv5gh08OV1yFTgf6CXmahnj43rtqD+TaUXNYVk2m3?=
- =?us-ascii?Q?Y1AVFF017x5W/sIaDxKgi+ntm/zcGo1iX48ECtt7hyd+//5Ks8stYciBZoBK?=
- =?us-ascii?Q?GQgURPvcyUHTCZLnLLS0ReXtxfyvqfnlet24cuFbTbzmOiqEPLFyjzD8DBfe?=
- =?us-ascii?Q?UnFsx4MOAMyaGNtF6Ar1vjbQ8D8CIgsUuyDCcG6m1WFP31AYG+wkenbdwwl8?=
- =?us-ascii?Q?iqoBTdOVJkBazoy3nH/IhBUYWghBrF6hP9TMyhhQQtX4oA8JovcCzOiYlPam?=
- =?us-ascii?Q?UsefZUSXFCTCqyBronr7wqexKthQbv1wD4pp3zVgk+6ZSK0CnWdiTpv9TXBZ?=
- =?us-ascii?Q?ekL7XiVo6Rr9AnFnTb+lcQ9ewhFfLfeSgIF97YFc0MOCjLO2BWv3B8yja7Wb?=
- =?us-ascii?Q?oH6AbV2HjYA/HWouR97w91wYnqlM/F7T7j5/+8EKZMyWl5jQRoedXHTY7JDg?=
- =?us-ascii?Q?eB+g3D7Mi3Sewi24D3ghkdz4ls0p3SJQUOI8EhBzfR9ljx6YWr2Zz0mwDi6Y?=
- =?us-ascii?Q?ThuDsEw759BNZ2twogNGgjoTp+jxcNcjhr94tD8aIs/vzElU0KMCimObCXh6?=
- =?us-ascii?Q?xqWTDrPolGnTQYL+VK+WWTCGn4Z/hphBa7nOMHzmzIhC4+2NOi0t6HIeL6Xr?=
- =?us-ascii?Q?B7MKZZshwhNw8iJ7fejCkDYEwjluUsqzGncSsCqzFISiVP1gYTWAN98cHH95?=
- =?us-ascii?Q?TgEqV/OUfXJGeHc6pq8Y6H6wTHz8E/Gwa6fFef1UGdDQWKecbE0ZKCMq2wwg?=
- =?us-ascii?Q?YZ/hXgeQUYGGIqRwVWsMCUP5J0Cz28M/NYsT94RSUngn0/8AtCUl3gR7HR4v?=
- =?us-ascii?Q?ILmM+q0W7gcJsUhD77JcfMZsO0i+bTaJwJXcg/KV3Hol4WfdcWPCRrOQQN49?=
- =?us-ascii?Q?zNgOuV+bUk6a1iB8kSP0qnn5yI+LEA/GyaWesknKjf7+baKwXjFvo5k5wDJR?=
- =?us-ascii?Q?/vNGCODcPk+5g+hYG9Wm5zcSPIqi3ehNmSplbKJKm6S/LNJMLmMnw0HVb0U+?=
- =?us-ascii?Q?I/uXcf4MvITaSZqj8ek=3D?=
+	=?us-ascii?Q?teFzt6ongHxglH4Jao1c+WGnHlNpaeP3L3J4xRGbakyLOSXQvEq8DHI2frKB?=
+ =?us-ascii?Q?4A6pGE+v5nFX1RVEHSNhMmmSb1Ggg4htHw/EHkbni3fGfYXYSCKgTNlqHs57?=
+ =?us-ascii?Q?IR/R9RW8f4zzaTvz8SyMLpvr+U3OjVVZgBEVMhaLyFHvqdfmYdUffURb5xIg?=
+ =?us-ascii?Q?9HD/UzRbCG9ju/1PbO1rfrhke0UB1hn+cFhThfjqv5XnOpwec/8kB9RYrwqN?=
+ =?us-ascii?Q?sn076+sm4mfy+svM/5GLtBfMFD65PINpAFLhjluXTohyFH9ZOUrsolXzBG4u?=
+ =?us-ascii?Q?UTFSMaxBsmHU/iUEfojQFWcobgXLoclnn/l5SJCZ1XP8A25hLp/6G/gpO87h?=
+ =?us-ascii?Q?l3W3iJ5AXnZprg5iu80FpaNhSK2qexgKGoCmb55EY+PPtDWDWK8OGJ3FbgS0?=
+ =?us-ascii?Q?u6WRGHWPIrrly7cfA9jz+YPhxgpcbDT50xeQlh4bLXhSkgvw9GEl5mOXcEbV?=
+ =?us-ascii?Q?JiKHL537V1uGQ+qJ/w3SIu9rWEZuW9dFdG3XkxpeBfTPQ7yWU2W/gAlbmKWE?=
+ =?us-ascii?Q?29BeeNHX77KuG4UArskukdVKWkljEOR/7ASLs3h+5SJLbxHb4GNffG+V/9LV?=
+ =?us-ascii?Q?/4j8bsuz4SHsVU/itA1PK5Xda7I4nX+vb/mFLWyYhUzXb4wcNKdVTpgcp8OH?=
+ =?us-ascii?Q?MUB22J90zL90vijIB3S73GeF0lRnauHtox2e+vGz89nw2IvnHwtd4LAJB7CM?=
+ =?us-ascii?Q?dUl9FkxfFE2UBJrRJB6tX4B4p63IA6iIhV05WkVJp6dHjmWY+BN703Rf/Q0o?=
+ =?us-ascii?Q?IS2aozGT+PtxP7Ds0tb5pcBqnFMLAKmQliQtDvDk4LjJJFm4K/VWRkLdDFNu?=
+ =?us-ascii?Q?f1m7WYPGd1bPT/Wi7yC9LjmPcxFXkSf+TbK9ZaMneOSlF01HZg2//pI1iGX8?=
+ =?us-ascii?Q?nCeeBDid8ZRVPZsdRP6RtCjmjXp6b7SyZ+HpTD/t3qu/oLlMOqCRVf47pv3V?=
+ =?us-ascii?Q?I12paQ3gqRyciiJouJHp9w/yJTMEsPSOB6t86WUnQQH7JDumOsn/Y8hHdmMI?=
+ =?us-ascii?Q?WsUB60Eb1qZv6KoZKNUlAY1C7UC6GCB42qjd88c/yAjCYCK78iF8bp6GV6Hk?=
+ =?us-ascii?Q?BbZ6x0Hdp5NNsIcX5gU9OUj6dNR9t2rNDkPEvIVyXOcWf6+3JIAzsWngT39B?=
+ =?us-ascii?Q?A+NYBjybImAZ59wcSNqf6xq0e0qrqh7p4wKj0ZtZvGcbnTm5b3cC+PNv+4ay?=
+ =?us-ascii?Q?b9Z5/2MvMfDAdYpev6/NOQ0FSR9To2k/DScVVvhL9i8aUFQ1vuDGGEW+Hkt0?=
+ =?us-ascii?Q?dM3X6ND96l+1O+przXfB7GgHAct80tpj1ONPxK4pay+MlEcAqTDu08AIUxMz?=
+ =?us-ascii?Q?DFA3SoOooa4ecNqoJzrk4rRF5Sn2t5OuSq91/rl+828IsjGBd/libvINpLDD?=
+ =?us-ascii?Q?uYIXm+v9zbrgwnbymTrbXib5+MljrzNHk/u1FhMfdHr+Ygx6vMrdlmt7UWau?=
+ =?us-ascii?Q?HUdq2LNidVtKdVJ9vCBK7jlcVEjIB/x9XlRClXdmyM6xtwD5UKslS4WHUwVR?=
+ =?us-ascii?Q?cmsRKUxECT1H7N3S7Q9hMpFHXS2xEOD/1H8T/igEV2z+r53RLqxOmipj5SwN?=
+ =?us-ascii?Q?2y8+0Ubk1goyML7M7SytUk4d5PVOkhBKC6JTB/hz?=
 X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8957.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(7416014)(52116014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(7416014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?Rciu8/vGFpkDtZ4o+tmq7Hy81VcfLneLW/7baEGcfUs04mLFCrbnhL8zW10M?=
- =?us-ascii?Q?j02vtUzxfCLNSt2Kco6MADkqT7rAf6kCaWa3TAqlSJregToezzoZiq7CIIuK?=
- =?us-ascii?Q?3xv1WB/J1jhjuzZBH3NKNuv5zXRnICPOOesxGkhiFNb+oXRuy+Ph0QxNTq3M?=
- =?us-ascii?Q?6g1cZ96vT1+Fzv0mMABnXkhZeQa6/WUYICM78gi/SN2VkOuWrCKNfW4P5ICt?=
- =?us-ascii?Q?WNYaEjJTY+2zSZsTTomU92Se58eqXOcT2M1f3oBWInxEMw+SBiYdAYpUWxRy?=
- =?us-ascii?Q?/s9/rdDMatlxwVdLwXAW/25pIBo0tHn1FuvkOgnQdoMI3DqmVI0mSbrgvmq0?=
- =?us-ascii?Q?8kTSmiFgRpM8fg7yYU1Sxyw9da74Ib597lnE3eLndHdfAGKjEXVPWyYTyl5z?=
- =?us-ascii?Q?aHQcamSFi2kDf5dLkBOfO4/HAtaM0G0I7GOKntHOO2GXHyFaPxRnO5g6Nl4h?=
- =?us-ascii?Q?0CKMXM8Xa5CAALls8o7dG2MeOy8GgGDRA/OpSYyJiy15ROM6KI1BWdLXDV4h?=
- =?us-ascii?Q?QlzuTNQU3EaDg/O7wjsmD4cKLCXd0OUFtqLM7jtWRi/Fl63GKN+FtRnWHEWr?=
- =?us-ascii?Q?BMBkG0dTaTEuiU2xV01q80DKTHbCu5m28hB5hXyibugr6f+Q+hb2DvZ1nOSC?=
- =?us-ascii?Q?Fzx98/X0MwpnBkLZAuxpxECitp68EN+wPyTaupgoXBNhBoHGjPlkjJcOPa4X?=
- =?us-ascii?Q?qJpG31bamLUUaPmlIkvAmsrHci/o/SiPFkkqMeVRBKq6Enxad90tvppTN8mZ?=
- =?us-ascii?Q?8F+dO3Gid6CGJEJOjJzoT+0gPihn9kahngtz6o3EXuhRDuA1U48nh8dhUePA?=
- =?us-ascii?Q?Nuen9OL3Dxoaod8qj36Lg08REBgqHOxjKBV17GAfAFXv4kYunFrEKuUAP9bC?=
- =?us-ascii?Q?lKSEQUCMYgMfIGt+V6LpOR+a4fTveL8IoIjdSEV6kKiH4/UmzWhF6HO2ZnTQ?=
- =?us-ascii?Q?UarIDYSradan8T68eAtQtOi2c2alzmC0ZykT2PWspw590qjwyQPl3whfTE5I?=
- =?us-ascii?Q?ph4Ul5A2eP0x4sQWv9Ty8Itg7dSeX4+9SrBHCIOTexusFyXh3HiTXbrBsRwr?=
- =?us-ascii?Q?5+Esiea3eMYK7xCYCd4+BdF6aHhIi10L+x0KqHPVp0RpVqS7/XDnnmMeqsXV?=
- =?us-ascii?Q?fIt2RrElotn5AE2n1ajLthCqDZDx9GVWOqZYAjOLlRfZH2i6wVijARXqqo0E?=
- =?us-ascii?Q?mJFWR5/aEixcIA09SOfKYmlLCShKlRnk6Y8d4y+pcRjjZG7LrTDjffBopK/W?=
- =?us-ascii?Q?BoL0fKOBUwmNHl4xH5WB/qTfjkEo0AzNLiKqIL2eAXn8xB01ZNR+W7pbu5uC?=
- =?us-ascii?Q?FkvPUY6LUfCsgOcvgNdwCX7B0SGEsp7vs7OoIbeuzCKd/tf8viYPZd6fNG0s?=
- =?us-ascii?Q?a9lBI1a+hsIL7x9G8wpEQGYWwIot9nnwOlY+ajS7chGYqUlLja8UOw2prtxJ?=
- =?us-ascii?Q?BJJA7fGiAwKpD9M2pFqZL30fk/ICyCNMGhVlIvsGn12Qg0gRomVj5zp3b0a6?=
- =?us-ascii?Q?X4mXCAt+ItuMda1oNKl2+BaTRGHf33Y+7tPd2iWr/VZavEj0jG8+WkozFdmB?=
- =?us-ascii?Q?yxJI0Fd49LXbNwQxfUImI2BJmOendjXvUS8kgUMJeT9Vuo6UbFqfE77LwgVP?=
- =?us-ascii?Q?H44S8E9C4ec38AtVlfO5M2ixPOigUiQ7YKh3aX8VOzT7kUnk2+75nR35Jg+/?=
- =?us-ascii?Q?LoespMuteLNcGcV7RUcUsiLraagtLqibYa3kwOtSV8LR4IYrO8AeEcK9//Ti?=
- =?us-ascii?Q?50OD1QVmLg=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a54c639e-07e9-489d-efcb-08de5a8abd56
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8957.eurprd04.prod.outlook.com
+	=?us-ascii?Q?+yWVREqRY2nbvDcwzGyoD0OOhdvQ/c0V1015Aof8YRinZxmeOOkKjpv+3soo?=
+ =?us-ascii?Q?YMoZO/Nsw2VRv2I24Mhc0t4KAAFp4OUTkvI2zbKimAvjmHIhBw6GE5hMsIFp?=
+ =?us-ascii?Q?dj1adkCIxZNV5fso7HZ6vm5k/B49/wVbhJ6dTpWjWHkSLVHslaoLS2sZkexT?=
+ =?us-ascii?Q?K77OYfBin5JRzPbSF1YXlOrmXAVcfydDS8dYY2GLOO8EmSM2rsExb9q0JEfy?=
+ =?us-ascii?Q?Shtzebxzc9XpaQ2aCsCKC8GRadtKNBXJZ/9fPCmhut4yX73ADhLsQ+sGyaKG?=
+ =?us-ascii?Q?KT612o1iiecxtPGcu5zHqJWaHKz4NO4WWr5F13sjx1KUUt2vER9NFs1S+fCL?=
+ =?us-ascii?Q?wiwZrBaSie36DX0YivXeo1Yxh5mR9sv1sYEiQd+3OS+yTP6doAzc8ARouoOx?=
+ =?us-ascii?Q?v5LRHqjaxjEOHCnvPszcDDMQVvRZ+354n3QVAOPK4vs9S+aJPB6qf+/5sF9V?=
+ =?us-ascii?Q?MahGEWubG8KGlHsO1q35sBi+/4EpnFyq0DhVuXdRIqMNJX0sXSvxyr93uxWg?=
+ =?us-ascii?Q?wIZ+ncNWDwZAokAg13c41hrz/CfUzNBocVeFwOymeiAqy/zmkpXRL8hphdpZ?=
+ =?us-ascii?Q?h0H1alwOUNtOrU1lNbuQn+B+FBygVx8QHmvjVg++FLAYEulIML11aY/Szwbr?=
+ =?us-ascii?Q?x2edHytBBjgCN1vNwKW4jxlSP1lDlf2ItcsgpN22J7YEdsWd1hRg9b6ilR7F?=
+ =?us-ascii?Q?ATgEKBXIU1wT350L5dEWTdt2sswEosaP9T+p90iAolan7CHW1TxL6JWqwdPz?=
+ =?us-ascii?Q?VHzHp1hbaIxkWmAlHOTLqSyI3LnuwfWFn4VQvjXrYtax4LSCpKdwGt7tTutE?=
+ =?us-ascii?Q?kdlYxSsI155x5cVzTIj8URV8NQJ9vvRFG6mYyZpGcyMd3oDBKKqWmA87P51E?=
+ =?us-ascii?Q?Edy+ITk+KRIdjpEUB8nxLsUQ38li3OFj25HBFysYEoSXuW/AjEddMSzZzd9l?=
+ =?us-ascii?Q?fRozVqCE1Ow1D9INYnkXLp2S/T6U13Rv1eMoLd0krqFYgyq+SNqSTwcc5GhA?=
+ =?us-ascii?Q?L3/xmM7QcYouvwlBUIPoMwZsVbra3wAY7L40J4yjZV1pjsAGc21G7Zyj0D4b?=
+ =?us-ascii?Q?sNBICXD+RajmbjFnfses0J88GMYny5/W8wwtwESNaVS0XCgUENYPKmQ901kX?=
+ =?us-ascii?Q?7U+l8iQkyrvPyaa5JoSRAWsT4OCJvBZGtPRn9JgxRIGgiyd+89X5Sjjks7VI?=
+ =?us-ascii?Q?LecUzJOTniCYA4FpOM3JqZAlZf+zWdCGG/wbZl4o2vGknqts4yCzN9N56ITb?=
+ =?us-ascii?Q?ZOg2lF41w3YX5ydmDY8n7xCIilVhlbIYyk1pMvCCaE7NDyeQ6VLXLoESmKXH?=
+ =?us-ascii?Q?Pxu0j+5uKTlbVKBIqqRL/hDb/SjgmmCo1JR4e+tQNcWovlR0u7Oix4j8LMfA?=
+ =?us-ascii?Q?jOXRk7x+u/xWY3z/TtmVUtKMz/Eld8U3EiVSh5Nms4acvlZazk9B0r9nKJwK?=
+ =?us-ascii?Q?w9PKLnRF8JAuyWUfNV+OJ8baWDPULLmw0nKNA1lM2UnoFDjgasuGJeXpnmI8?=
+ =?us-ascii?Q?e4x0gZGxCdaKrM5k40e+3jN66QuZ2Jev5QyG8+IpFZmR8Ls2rJdLMIBM/RTq?=
+ =?us-ascii?Q?wIPbziB/F5ZOfG6L/ZSXZGlRancNjPgJXaG4p5gMAnyi9rHnUACnU1qOTUVA?=
+ =?us-ascii?Q?BecMiJ7IHjvFB9qIfXqiXNkgUHkGXYdYx/phfPBVCSdELni6xnMxyDf9D4m+?=
+ =?us-ascii?Q?qSAXIp2IkXDNGlg96Ixk2FYvcv7A0UglaikzaanfUmuWRrRQjdkFbXM87NNd?=
+ =?us-ascii?Q?EP7+gbVFWYfZsb8sPTIjH42ILJHFeGqSg+XDWibTUi0OmXn6w1PA?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: 085d56e8-448c-4ba3-5caa-08de5a8badfa
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 14:21:46.3302
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 14:28:29.9571
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lsWyRK3KcfAhOVTgixnmO0zlm1P4ZfJI9bcPJhJwCDfPgqz5gEYc4uFLMve4jYnyEH2y/DQAOmUOhoHRvwu9Jg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7322
+X-MS-Exchange-CrossTenant-UserPrincipalName: InOf8FpzC3J3dvoe1hHhzNoM5Em6OjsdSgQc/nLGN5jLulc3OUmT7PcUJ3G3qOwFi+YO0gH/JV7+JpnGpuxRZg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYRP286MB5430
 
-On Fri, Jan 23, 2026 at 02:00:47AM +0200, Laurent Pinchart wrote:
-> Hi Frank,
->
-> Thank you for the patch.
->
-> On Wed, Jan 21, 2026 at 03:42:03PM -0500, Frank Li wrote:
-> > Add dev_err_probe() to all error branches in the *async_register() helpers
-> > to provide clearer diagnostic information when device registration fails.
+On Fri, Jan 23, 2026 at 09:51:19AM +0100, Niklas Cassel wrote:
+> On Fri, Jan 23, 2026 at 10:16:21AM +0900, Koichiro Den wrote:
+> > >
+> > > There might be other EPC drivers that don't disable all BARs in their .init(), so I would say that simply checking if the BAR has an address is not sufficient to guarantee that an EPF driver has called set_bar().
+> > >
 > >
-> > Drop the explicit error message after returning from
-> > mipi_csis_async_register(), as the error is already reported by this
-> > helper.
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> > Some trivial patch to reduce goto at probe functions.
-> > ---
-> > Changes in v5:
-> > - rebase to https://gitlab.freedesktop.org/linux-media/users/pinchartl.git tags/next-media-nxp-20260120
-> > - Link to v4: https://lore.kernel.org/r/20260116-cam_cleanup-v4-0-29ce01640443@nxp.com
-> >
-> > Changes in v4:
-> > - collect alex's review tag
-> > - fix grammer in error message
-> > - Link to v3: https://lore.kernel.org/r/20251215-cam_cleanup-v3-0-a61995068f38@nxp.com
-> >
-> > Changes in v3:
-> > - rebase to v6.19-rc1
-> > - avoid use __free() == NULL according to cleanup.h
-> > - Link to v2: https://lore.kernel.org/r/20251119-cam_cleanup-v2-0-df732cc83ff1@nxp.com
-> >
-> > Changes in v2:
-> > - add new patch media: nxp: Add dev_err_probe() to all error paths in *async_register() helpers
-> > - detail change see each patch's change log.
-> > - Link to v1: https://lore.kernel.org/r/20251117-cam_cleanup-v1-0-6cd42872db79@nxp.com
-> > ---
-> > Change in v5
-> > - remove "no functional change" in commit message
-> > - fix error message.
-> >
-> > change in v2
-> > - new patch
-> > ---
-> >  drivers/media/platform/nxp/imx-mipi-csis.c    | 31 ++++++++++++++++-----------
-> >  drivers/media/platform/nxp/imx8mq-mipi-csi2.c | 27 ++++++++++++++---------
-> >  2 files changed, 35 insertions(+), 23 deletions(-)
-> >
-> > diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > index 9a43fd1eb0bcee7ac0c47f28ad89012de45a70d9..06ea96b8eaf61058d6979b7be747496480c4bc69 100644
-> > --- a/drivers/media/platform/nxp/imx-mipi-csis.c
-> > +++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-> > @@ -1359,18 +1359,18 @@ static int mipi_csis_async_register(struct mipi_csis_device *csis)
-> >  		fwnode_graph_get_endpoint_by_id(dev_fwnode(csis->dev), 0, 0,
-> >  						FWNODE_GRAPH_ENDPOINT_NEXT);
-> >  	if (!ep)
-> > -		return -ENOTCONN;
-> > +		return dev_err_probe(csis->dev, -ENOTCONN,
-> > +				     "failed to get local endpoint\n");
-> >
-> >  	ret = v4l2_fwnode_endpoint_parse(ep, &vep);
-> >  	if (ret)
-> > -		return ret;
-> > +		return dev_err_probe(csis->dev, ret,
-> > +				     "failed to parse endpoint\n");
-> >
-> >  	for (i = 0; i < vep.bus.mipi_csi2.num_data_lanes; ++i) {
-> > -		if (vep.bus.mipi_csi2.data_lanes[i] != i + 1) {
-> > -			dev_err(csis->dev,
-> > -				"data lanes reordering is not supported");
-> > -			return -EINVAL;
-> > -		}
-> > +		if (vep.bus.mipi_csi2.data_lanes[i] != i + 1)
-> > +			return dev_err_probe(csis->dev, -EINVAL,
-> > +					     "data lanes reordering is not supported\n");
-> >  	}
-> >
-> >  	csis->bus = vep.bus.mipi_csi2;
-> > @@ -1382,15 +1382,22 @@ static int mipi_csis_async_register(struct mipi_csis_device *csis)
-> >  	asd = v4l2_async_nf_add_fwnode_remote(&csis->notifier, ep,
-> >  					      struct v4l2_async_connection);
-> >  	if (IS_ERR(asd))
-> > -		return PTR_ERR(asd);
-> > +		return dev_err_probe(csis->dev, PTR_ERR(asd),
-> > +				     "failed to add remote fnnode to notifier\n");
->
-> s/fnnode/fwnode/
->
-> >
-> >  	csis->notifier.ops = &mipi_csis_notify_ops;
-> >
-> >  	ret = v4l2_async_nf_register(&csis->notifier);
-> >  	if (ret)
-> > -		return ret;
-> > +		return dev_err_probe(csis->dev, ret,
-> > +				     "failed to register notifier\n");
-> >
-> > -	return v4l2_async_register_subdev(&csis->sd);
-> > +	ret = v4l2_async_register_subdev(&csis->sd);
-> > +	if (ret)
-> > +		return dev_err_probe(csis->dev, ret,
-> > +				     "failed to register subdev\n");
-> > +
-> > +	return 0;
-> >  }
-> >
-> >  /* -----------------------------------------------------------------------------
-> > @@ -1549,10 +1556,8 @@ static int mipi_csis_probe(struct platform_device *pdev)
-> >  	platform_set_drvdata(pdev, &csis->sd);
-> >
-> >  	ret = mipi_csis_async_register(csis);
-> > -	if (ret < 0) {
-> > -		dev_err(dev, "async register failed: %d\n", ret);
-> > +	if (ret < 0)
-> >  		goto err_cleanup;
-> > -	}
-> >
-> >  	/* Initialize debugfs. */
-> >  	mipi_csis_debugfs_init(csis);
-> > diff --git a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> > index 9d946b68cf59d9f4fb3413fc90219efd380d9d95..8304b3d3a338394d6325929d28aa69d865ac8a92 100644
-> > --- a/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> > +++ b/drivers/media/platform/nxp/imx8mq-mipi-csi2.c
-> > @@ -727,18 +727,18 @@ static int imx8mq_mipi_csi_async_register(struct csi_state *state)
-> >  		fwnode_graph_get_endpoint_by_id(dev_fwnode(state->dev), 0, 0,
-> >  						FWNODE_GRAPH_ENDPOINT_NEXT);
-> >  	if (!ep)
-> > -		return -ENOTCONN;
-> > +		return dev_err_probe(state->dev, -ENOTCONN,
-> > +				     "failed to get remote endpoint fwnode\n");
->
-> s/remote/local/
->
-> >
-> >  	ret = v4l2_fwnode_endpoint_parse(ep, &vep);
-> >  	if (ret)
-> > -		return ret;
-> > +		return dev_err_probe(state->dev, ret,
-> > +				     "failed to parse endpoint fwnode\n");
->
-> s/ fwnode//
->
-> to match the message above.
->
-> With that,
->
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
->
-> I'll apply the changes locally, no need to submit a v6.
+> > Even if an EPC driver does not reset the BAR in their .init() and some
+> > default translation is left exposed, wouldn't it be safe as long as
+> > dw_pcie_ep_ib_atu_addr() succeeds in programming inbound mappings for the
+> > entire BAR?
+> 
+> For e.g. on RK3588, the default HW configuration of the DWC controller has
+> all 5 BARs as enabled, with a size of 1 GB.
+> 
+> There is no inbound address translation for these BARs by default.
+> 
+> So for it to be safe, the size of the set_bar() call would have to
+> match the current size of the BAR, but how should the EPF driver know
+> that when it has not called set_bar() yet?
+> 
+> dw_pcie_ep_read_bar_assigned() does not return the current size of the
+> BAR. So you can't verify that the set_bar() call has the same size as
+> the BARs "default size".
 
-Sorry for typo.
+I wasn't considering either of the following cases as unsafe:
+- succeeding by chance in programming via a one-shot set_bar() with submaps
+- such a set_bar() failing (due to incorrect size recognition)
 
-Thanks
+while as I mentioned in my previous reply, the first case effectively
+becomes a loophole that contradicts the docs and git commit messages.
 
-Frank
->
+However, since v8, the second case clears any existing mappings, which
+could indeed lead to an unsafe situtation.
+
+> 
+> 
 > >
-> >  	for (i = 0; i < vep.bus.mipi_csi2.num_data_lanes; ++i) {
-> > -		if (vep.bus.mipi_csi2.data_lanes[i] != i + 1) {
-> > -			dev_err(state->dev,
-> > -				"data lanes reordering is not supported");
-> > -			return -EINVAL;
-> > -		}
-> > +		if (vep.bus.mipi_csi2.data_lanes[i] != i + 1)
-> > +			return dev_err_probe(state->dev, -EINVAL,
-> > +					     "data lanes reordering is not supported");
-> >  	}
+> > That said, such usage apparently contradicts the documented usage (1st
+> > set_bar with no submap, then with submap) described in the docs and commit
+> > messages in this series, and allowing it would make things unnecessarily
+> > complicated. So I agree that adding such a safeguard is the right approach.
 > >
-> >  	state->bus = vep.bus.mipi_csi2;
-> > @@ -750,15 +750,22 @@ static int imx8mq_mipi_csi_async_register(struct csi_state *state)
-> >  	asd = v4l2_async_nf_add_fwnode_remote(&state->notifier, ep,
-> >  					      struct v4l2_async_connection);
-> >  	if (IS_ERR(asd))
-> > -		return PTR_ERR(asd);
-> > +		return dev_err_probe(state->dev, PTR_ERR(asd),
-> > +				     "failed to add fwnode to notifier\n");
+> > >
+> > > I think the safest option is my second suggestion because then we know that we will only call
+> > > dw_pcie_ep_ib_atu_addr()
+> > >
+> > > When:
+> > >
+> > > 1) If ep->epf_bar[bar] is set:
+> > > https://github.com/torvalds/linux/blob/v6.19-rc6/drivers/pci/controller/dwc/pcie-designware-ep.c#L363
+> > >
+> > >
+> > > 2) All the other requirements to dynamically update a BAR is also met:
+> > >
+> > > https://github.com/torvalds/linux/blob/v6.19-rc6/drivers/pci/controller/dwc/pcie-designware-ep.c#L368-L370
+> > >
 > >
-> >  	state->notifier.ops = &imx8mq_mipi_csi_notify_ops;
-> >
-> >  	ret = v4l2_async_nf_register(&state->notifier);
-> >  	if (ret)
-> > -		return ret;
-> > +		return dev_err_probe(state->dev, ret,
-> > +				     "failed to register notifier\n");
-> >
-> > -	return v4l2_async_register_subdev(&state->sd);
-> > +	ret = v4l2_async_register_subdev(&state->sd);
-> > +	if (ret)
-> > +		return dev_err_probe(state->dev, ret,
-> > +				     "failed to register subdev\n");
-> > +
-> > +	return 0;
-> >  }
-> >
-> >  /* -----------------------------------------------------------------------------
-> >
-> > ---
-> > base-commit: b7af7c950e1076a9e3d855045571be2de4ce9f2c
-> > change-id: 20250807-cam_cleanup-b6d90ba9dac3
->
-> --
-> Regards,
->
-> Laurent Pinchart
+> > That makes sense, and it ensures that the behavior always accords with the
+> > docs and commit messages in this series.
+> 
+> I think it makes most sense to put the "use_addr_translation = true"
+> 
+> after the check:
+> 
+> 		/*
+> 		 * We can only dynamically change a BAR if the new BAR size and
+> 		 * BAR flags do not differ from the existing configuration.
+> 		 */
+> 		if (ep->epf_bar[bar]->barno != bar ||
+> 		    ep->epf_bar[bar]->size != size ||
+> 		    ep->epf_bar[bar]->flags != flags)
+> 			return -EINVAL;
+> 
+> 
+> So we know that dw_pcie_ep_ib_atu_addr() is only called when the size is the
+> same.
+
+I'll send v10 with the fix, possibly adding a BAR_SUBRANGE_TEST to pci
+endpoint test as well.
+
+Kind regards,
+Koichiro
+
+> 
+> 
+> Kind regards,
+> Niklas
