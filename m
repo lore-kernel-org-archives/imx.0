@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B1F301022
-	for <imx@lists.linux.dev>; Fri, 23 Jan 2026 16:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2E13B7A8
+	for <imx@lists.linux.dev>; Fri, 23 Jan 2026 16:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769187463; cv=none; b=KDmuUSy+CcfsseC8jEeYfpT0hTPBu0+tKN5hhLElDFiZTTSbza5+H8VvNZHQoBRfaP0x9RKB4/cVdulxSl59gpaET95MsRD+lnMUOiATof/ds7QT5qNFXroVGufLX8YgVCYNs/b+8OKQ5ouplRjznHXlr63VHNaRP3B1g0TxmrY=
+	t=1769187545; cv=none; b=cEFXAYvK4bEXpXwCX+TFESYoWuOo0Bw96K9wv0jnrG0cWlKPTiVaQzmQSxwDl0QFq9r8plYRwU2NFHqRJvTp/TDxaD97/lGIoVJDXRsc0JE6dofqTQpe7ETD/P6aeat5LtT8dnoBXUZ7zxQwuoRTw35z0Tu3y3RFX0LUVhDFXcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769187463; c=relaxed/simple;
-	bh=8JofLvbX85CcFWI7BdG+PfUNgXsPE7lO7RaltC9LZHU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ddSitxifkUtxNGbqeao8jOWVzLDAs+erslNkd7YX3+5JTD7r+SYWrBsFDdw96UFLOwRYdfVCilNiQIjkVX9IPF60THYF1Er8QFLwKOvEuCCqgyhrP5Nax/MSzBDQBuKq/IGWfyoEu514BKSrgN5GQYLC6i7e3VMMCtZOnRUWTQ8=
+	s=arc-20240116; t=1769187545; c=relaxed/simple;
+	bh=tIbHyyCJjgPdT9x/qi7cfGnXl+ngSC4bNv6F8VAXN/0=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BF3/qrN1FLpiQDeEJJx2IAI9BSTS/59FhzwU/cyLH/OjGg57Z6vcgxKMHfmySUjh91V4IoblvL5Sa7ywIXfjloTjl41Kch0E6DOumigfnRm1LYPdrjN0vzDzaRkwFXS6X6wtiDymAe6fFmZiNTyKIa3T8R669GLW2yVR6zLvxes=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,44 +18,44 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1vjKTM-0003OD-9r; Fri, 23 Jan 2026 17:57:24 +0100
+	id 1vjKUs-0003bz-UX; Fri, 23 Jan 2026 17:58:58 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1vjKTM-0027qL-1E;
-	Fri, 23 Jan 2026 17:57:23 +0100
+	id 1vjKUs-0027qZ-1F;
+	Fri, 23 Jan 2026 17:58:57 +0100
 Received: from mtr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1vjKTL-00B4r0-1l;
-	Fri, 23 Jan 2026 17:57:23 +0100
-Date: Fri, 23 Jan 2026 17:57:23 +0100
+	id 1vjKUr-00B4rI-1y;
+	Fri, 23 Jan 2026 17:58:57 +0100
+Date: Fri, 23 Jan 2026 17:58:57 +0100
 From: Michael Tretter <m.tretter@pengutronix.de>
 To: Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Cc: linux-media@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-staging@lists.linux.dev
-Subject: Re: [PATCH v2 0/3] media: imx-csi: cleanup media pipeline start
-Message-ID: <aXOoc0lvAtPt0fAL@pengutronix.de>
+	Fabio Estevam <festevam@gmail.com>,
+	Hans Verkuil <hans.verkuil@cisco.com>, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org,
+	Michael Tretter <michael.tretter@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: Re: [PATCH v2 0/2] media: staging: imx: fix multiple video input
+Message-ID: <aXOo0cc07cRi7-rF@pengutronix.de>
 Mail-Followup-To: Michael Tretter <m.tretter@pengutronix.de>,
 	Steve Longerbeam <slongerbeam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>, Frank Li <Frank.Li@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	linux-staging@lists.linux.dev
-References: <20251218-media-imx-cleanup-v2-0-9e3e3c269f7f@pengutronix.de>
+	Fabio Estevam <festevam@gmail.com>,
+	Hans Verkuil <hans.verkuil@cisco.com>, linux-media@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	stable@vger.kernel.org,
+	Michael Tretter <michael.tretter@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>
+References: <20251107-media-imx-fixes-v2-0-07d949964194@pengutronix.de>
+ <aUPEs4wUHgAyMrPX@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251218-media-imx-cleanup-v2-0-9e3e3c269f7f@pengutronix.de>
+In-Reply-To: <aUPEs4wUHgAyMrPX@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -74,45 +74,48 @@ X-SA-Exim-Mail-From: m.tretter@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Thu, 18 Dec 2025 10:23:48 +0100, Michael Tretter wrote:
-> The imx media device currently assumes that there is only a single media
-> pipeline. However, the media graph has multiple imx capture devices.
-> These may be started separately on media pipelines if they don't cause
-> conflicts in the media graph.
+On Thu, 18 Dec 2025 10:09:07 +0100, Michael Tretter wrote:
+> On Fri, 07 Nov 2025 11:34:32 +0100, Michael Tretter wrote:
+> > If the IMX media pipeline is configured to receive multiple video
+> > inputs, the second input stream may be broken on start. This happens if
+> > the IMX CSI hardware has to be reconfigured for the second stream, while
+> > the first stream is already running.
+> > 
+> > The IMX CSI driver configures the IMX CSI in the link_validate callback.
+> > The media pipeline is only validated on the first start. Thus, any later
+> > start of the media pipeline skips the validation and directly starts
+> > streaming. This may leave the hardware in an inconsistent state compared
+> > to the driver configuration. Moving the hardware configuration to the
+> > stream start to make sure that the hardware is configured correctly.
+> > 
+> > Patch 1 removes the caching of the upstream mbus_config in
+> > csi_link_validate and explicitly request the mbus_config in csi_start,
+> > to get rid of this implicit dependency.
+> > 
+> > Patch 2 actually moves the hardware register setting from
+> > csi_link_validate to csi_start to fix the skipped hardware
+> > reconfiguration.
 > 
-> Move the media pipeline from the media device to the capture devices to
-> properly track and handle multiple media pipelines for the imx-csi.
-> Refactor the code to start the media pipeline from the driver to help
-> the reader.
+> Gentle ping.
 
-Gentle ping.
+Is there anything still missing to get these patches applied?
 
 Michael
 
-> 
-> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-> ---
-> Changes in v2:
-> - Improve code readability in Patch 2
-> - Update commit message of Patch 3 as suggested by Frank Li
-> - Link to v1: https://patch.msgid.link/20251107-media-imx-cleanup-v1-0-f82a693c28f4@pengutronix.de
-> 
-> ---
-> Michael Tretter (3):
->       media: imx-csi: move media_pipeline to video device
->       media: imx-csi: explicitly start media pipeline on pad 0
->       media: imx-csi: use media_pad_is_streaming helper
-> 
->  drivers/staging/media/imx/imx-media-capture.c |  8 ++++----
->  drivers/staging/media/imx/imx-media-utils.c   | 12 ++++++++----
->  drivers/staging/media/imx/imx-media.h         |  7 ++++---
->  3 files changed, 16 insertions(+), 11 deletions(-)
-> ---
-> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> change-id: 20251107-media-imx-cleanup-9022d941ae44
-> 
-> Best regards,
-> -- 
-> Michael Tretter <m.tretter@pengutronix.de>
-> 
-> 
+> > 
+> > Signed-off-by: Michael Tretter <michael.tretter@pengutronix.de>
+> > ---
+> > Changes in v2:
+> > - Document changed locking in commit message
+> > - Link to v1: https://lore.kernel.org/r/20251105-media-imx-fixes-v1-0-99e48b4f5cbc@pengutronix.de
+> > 
+> > ---
+> > Michael Tretter (2):
+> >       media: staging: imx: request mbus_config in csi_start
+> >       media: staging: imx: configure src_mux in csi_start
+> > 
+> >  drivers/staging/media/imx/imx-media-csi.c | 84 ++++++++++++++++++-------------
+> >  1 file changed, 48 insertions(+), 36 deletions(-)
+> > ---
+> > base-commit: 27afd6e066cfd80ddbe22a4a11b99174ac89cced
+> > change-id: 20251105-media-imx-fixes-acef77c7ba12
