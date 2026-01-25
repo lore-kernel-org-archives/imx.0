@@ -1,56 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EE430E0D3;
-	Sun, 25 Jan 2026 21:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513B13090C9;
+	Sun, 25 Jan 2026 22:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769377523; cv=none; b=gV4bGjpax+uDLU33kHRtms2W+9C4/+Uj85e+DD1X4MrOKMzzVYnMm4Zv8Kl0zah3hUp6vs24YIdlOO9e+s1IId/aWROXXpEVCXI/oAMAg4ba0hqYfAUhCCaE8Y3oV1Eu5ITZ6BFGVsjBUSdJfSN+pphWfuhqEFGRiFh0agaS+IQ=
+	t=1769379248; cv=none; b=OIuc27wEfTDTginLE7l+5G4p0bDZvQj5CuOt1rsfQHihRhUyMjeetD6Ptvl2qolL0lyacM5jkCdQ98jMwPT3EQy21GsKfovex30iCzhQ8FOd4BQkNzvQpZzmJTKLM2u03zbrwJyKrcQFe10kekMLC+HsG9pLp/moDGHeQsYf2sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769377523; c=relaxed/simple;
-	bh=2xoo2eyP1Ra2vHGy7A0s6glBdg87bpoHN64gXy3qjvk=;
+	s=arc-20240116; t=1769379248; c=relaxed/simple;
+	bh=iZlQMjT87MAKVDpNXN3PnkGFzV2iu5aW29TTIBiz4LU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n4Z5di+pniboft07OiGeLtR8yYSs98ovErNZWwgmLESKkLaG9vKpWxo4sU15TeSZnx9LU5bB/VyFdc15C2DWc4M+AtZPcHh1cl5Ezjo21t6MFQj7otw+v3moWMNj9zIV/PZO4f+fhYjRqpNX2i0IOWVFiWy/Qcdv1rzdGsYJSNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H0StyOsM; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=WTgWM+KE4VPoRSNaYVoGjiJs3fRK5KfhLqXS1jaixddlIbWNJ5OrCHB/zfB0LCLOLvMHrUpLX2XIkZ6Ogbo6Dczadkc5V5uJuAC4jWRLGtVeDCeQULSnIPlhFqzeCnGA4DZBTAhcMD2D455aHLVwx8Tw5Rj/lJV7eTyDyzLMEoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J6akJgre; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H0StyOsM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695A8C4CEF1;
-	Sun, 25 Jan 2026 21:45:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J6akJgre"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED55EC4CEF1;
+	Sun, 25 Jan 2026 22:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769377523;
-	bh=2xoo2eyP1Ra2vHGy7A0s6glBdg87bpoHN64gXy3qjvk=;
+	s=k20201202; t=1769379247;
+	bh=iZlQMjT87MAKVDpNXN3PnkGFzV2iu5aW29TTIBiz4LU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H0StyOsME6oZ5n4CnIzAsuWUk+/sUC80ElOZUfYcELAzUgc+tl1vArUhntV72WNDL
-	 guijiV/TOcvQ0Zpr+mmnPyHfuJsaO7lPlX2tFhJzRtLq3n17Zky+bMulOrdKl0mUUW
-	 JNuAwGtYKWLb0NYb8nf0/hdQD4WDw3WJNyLbBfXAHxRYbpBwajiq/4C8+gzDVhkL5o
-	 I0s4tTh4OZxz6tA9bfZ0ccBiJl7M9nLwlTj4MqWV944oRKTdjufeVlATetZ2pie9VA
-	 St8LGJFY1Fi8wruPiPO3Js6F0RpvJLpmpXWQCtNIWlzn51Yqfyf13g2NcX9H58EUkh
-	 LLmh8Vvvp9u9g==
+	b=J6akJgre43BvTHV/oVpuun6heVrwS1teSyBWH6FuCNcPiuDiEFO1PgpjDWyLdqP8N
+	 QOsluSCZROsPBl5eVixeH74A1gNrAVod6jue+z9olPAMdcM6v7L2iSrq5h1cH8v+52
+	 6XUIosoZiM4ohYRhYXi2143dPv+iUUh2syQRhIbAJx5NOkLnNCVfklF1UNtAqQ50kS
+	 D6bIljup//yXFN3doJv8I4aRgDuvNMdEjZJKQ8s4WFqcLSzfu59UkUrrqWYXtIuQtr
+	 SMQP64HzuOLGlgr2mhNknQFPUmOw+okgeif9F50vg+UrLJCvKw8pS3r53domFjqAI4
+	 x9N3q6FO5pbdA==
 From: Jakub Kicinski <kuba@kernel.org>
-To: wei.fang@nxp.com
+To: jan.petrous@oss.nxp.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
-	john.fastabend@gmail.com,
-	linux-kernel@vger.kernel.org,
-	shenwei.wang@nxp.com,
-	daniel@iogearbox.net,
-	frank.li@nxp.com,
-	netdev@vger.kernel.org,
-	xiaoning.wang@nxp.com,
-	ast@kernel.org,
-	sdf@fomichev.me,
-	imx@lists.linux.dev,
-	davem@davemloft.net,
-	edumazet@google.com,
-	hawk@kernel.org,
-	bpf@vger.kernel.org,
+	robh@kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	mcoquelin.stm32@gmail.com,
+	kernel@pengutronix.de,
 	pabeni@redhat.com,
-	andrew+netdev@lunn.ch
-Subject: Re: [v4,net-next,15/15] net: fec: add AF_XDP zero-copy support
-Date: Sun, 25 Jan 2026 13:45:21 -0800
-Message-ID: <20260125214521.3384305-1-kuba@kernel.org>
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	chester62515@gmail.com,
+	s32@nxp.com,
+	linux-kernel@vger.kernel.org,
+	ghennadi.procopciuc@oss.nxp.com,
+	festevam@gmail.com,
+	alexandre.torgue@foss.st.com,
+	davem@davemloft.net,
+	krzk+dt@kernel.org,
+	mbrugger@suse.com,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: Re: [v3,4/4] stmmac: s32: enable support for Multi-IRQ mode
+Date: Sun, 25 Jan 2026 14:14:05 -0800
+Message-ID: <20260125221405.3395497-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260123022143.4121797-16-wei.fang@nxp.com>
-References: <20260123022143.4121797-16-wei.fang@nxp.com>
+In-Reply-To: <20260123-dwmac_multi_irq-v3-4-cc53f2be8961@oss.nxp.com>
+References: <20260123-dwmac_multi_irq-v3-4-cc53f2be8961@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -64,90 +71,44 @@ email has considered the AI review valid, or at least plausible.
 
 For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
-net: fec: add AF_XDP zero-copy support
+stmmac: s32: enable support for Multi-IRQ mode
 
-This patch adds AF_XDP zero-copy support for both TX and RX on the FEC
-driver, enabling higher performance packet processing through XSK pools.
+This patch enables Multi-IRQ mode for the S32 DWMAC driver when both
+multi-queue and per-queue IRQs are configured. The driver now selects
+between Multi-IRQ and MAC IRQ modes based on device tree configuration.
 
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index c19ae60b04d7..d3e54dcf6a4c 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> index 5a485ee98fa7..342091045714 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
 
 [ ... ]
 
-> +static int fec_setup_xsk_pool(struct net_device *ndev,
-> +			      struct xsk_buff_pool *pool,
-> +			      u16 queue)
-> +{
-> +	struct fec_enet_private *fep = netdev_priv(ndev);
-> +	bool is_run = netif_running(ndev);
-> +	struct fec_enet_priv_rx_q *rxq;
-> +	struct fec_enet_priv_tx_q *txq;
-> +	bool enable = !!pool;
-> +	int err;
+> @@ -149,6 +149,16 @@ static int s32_dwmac_probe(struct platform_device *pdev)
+>  	plat->core_type = DWMAC_CORE_GMAC4;
+>  	plat->pmt = 1;
+>  	plat->flags |= STMMAC_FLAG_SPH_DISABLE;
 > +
-> +	if (queue >= fep->num_rx_queues || queue >= fep->num_tx_queues)
-> +		return -ERANGE;
-> +
-> +	if (is_run) {
-> +		napi_disable(&fep->napi);
-> +		netif_tx_disable(ndev);
-> +		synchronize_rcu();
-> +		fec_enet_free_buffers(ndev);
-> +	}
-> +
-> +	rxq = fep->rx_queue[queue];
-> +	txq = fep->tx_queue[queue];
-> +
-> +	if (enable) {
-> +		err = xsk_pool_dma_map(pool, &fep->pdev->dev, 0);
-> +		if (err) {
-> +			netdev_err(ndev, "Failed to map xsk pool\n");
-> +			return err;
-                        ^^^^^^^^^^
+> +	/* Check for multi-IRQ config. Assumption: symetrical rx/tx queues */
+> +	if (plat->rx_queues_to_use > 1 &&
+> +	    (res.rx_irq[0] >= 0 || res.tx_irq[0] >= 0)) {
+                        ^^^^            ^^^^
 
-If xsk_pool_dma_map() fails here when the device was running (is_run ==
-true), the function returns without restoring the device state. At this
-point NAPI is disabled, TX queues are disabled, and all buffers have been
-freed. Should the error path restore the device to a working state similar
-to the err_alloc_buffers path below?
+Should these checks be "> 0" instead of ">= 0"?
 
-The err_alloc_buffers label handles the cleanup for xsk_pool state but it
-looks like that error path would also need to call fec_enet_alloc_buffers(),
-fec_restart(), napi_enable(), and netif_tx_start_all_queues() to restore
-the device when is_run was true.
+stmmac_get_platform_resources() initializes the res structure with
+memset(0), then only writes positive IRQ values when per-queue IRQs are
+found in the device tree. If no "rx-queue-0" or "tx-queue-0" interrupt
+names are defined, rx_irq[0] and tx_irq[0] remain 0 from the memset.
 
-> +		}
-> +
-> +		rxq->xsk_pool = pool;
-> +		txq->xsk_pool = pool;
-> +	} else {
-> +		xsk_pool_dma_unmap(rxq->xsk_pool, 0);
-> +		rxq->xsk_pool = NULL;
-> +		txq->xsk_pool = NULL;
-> +	}
-> +
-> +	if (is_run) {
-> +		err = fec_enet_alloc_buffers(ndev);
-> +		if (err) {
-> +			netdev_err(ndev, "Failed to alloc buffers\n");
-> +			goto err_alloc_buffers;
-> +		}
-> +
-> +		fec_restart(ndev);
-> +		napi_enable(&fep->napi);
-> +		netif_tx_start_all_queues(ndev);
-> +	}
-> +
-> +	return 0;
-> +
-> +err_alloc_buffers:
-> +	if (enable) {
-> +		xsk_pool_dma_unmap(pool, 0);
-> +		rxq->xsk_pool = NULL;
-> +		txq->xsk_pool = NULL;
-> +	}
-> +
-> +	return err;
-> +}
+Since 0 >= 0 evaluates to true, this condition will enable Multi-IRQ
+mode even when no per-queue IRQs are available. The commit message states
+that "queue based IRQs are set" is a prerequisite, but the current check
+does not properly verify this.
+
+> +		plat->flags |= STMMAC_FLAG_MULTI_MSI_EN;
+> +		dev_info(dev, "Multi-IRQ mode (per queue IRQ) selected\n");
+
+[ ... ]
+-- 
+pw-bot: cr
