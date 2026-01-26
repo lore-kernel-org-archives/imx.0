@@ -1,182 +1,310 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AB1330B2A
-	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 10:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B8B32AAA8
+	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 10:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769423574; cv=none; b=OODZb+iSmjzl8GYKwfmPGjmfAQ+oo43MaI+wfOYfLenwUSnIrQ4CSWVwCPJuCWQ8lrJfOLlPxgTlRiqm+SxSY2Es5r5JzAKm//XEo3dpq81qdOxar/8EisYpteauzYWWzekPXTNDJCAzUR+VUN3wiyS8Vcxq9Zt32Yux86SDp1s=
+	t=1769423695; cv=none; b=MwnxnvhHr5Mj4Fnj3qizGZALs1QqNwXBttOanC+37yj7w4zLTaF9nlez4AG6HTbve8sSFwHu5eQzppztTvmCfyuGCtBbqpYTs4VwWOqYFYtFmmWFUhHkuFW9cADG3mCz8eQ7g1K/f5FkW0bWYrDGu+v+0diF22R2yHmKIVrz1yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769423574; c=relaxed/simple;
-	bh=eWAdrV6TAtui1MJq3ZE1m/+gDAFZQQwdZF81DH6TaDQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lq0fzFuSXNzkoXS3VZ3TbcHlxE2dNBgGze+cFn1a+QSSIF0TS10pzXr54VzbbiC1SQkoCrYsV7ikwqrhnWdMuqZlWW4rL24a7UCffhsU9fZE4ZRyADZQO/+Gb5p+s827GpeuU2WqGLK1sDNLKsGEBiq11lxIlLry5JoBnp9rGLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ULxdXg8G; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YSxOCrXY; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1769423695; c=relaxed/simple;
+	bh=b4+B9r1zDYZRzms5aDNePDqkLvcrfUIE3sxefT2Ndz8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WKHkcaBRQyrlqUXM5yCihd6Sh748XIXXDTZ9zrZeWPjtlUQKhevXfgH2bwI4E2d6D4v0KP0uX1lBJQaTcS3KrgfCvuIL02Ohxnjtf6vUYnU49A5wz+GVQ1hESdu4kTo5EpWWGRjgJzwPpMPg2OjVhY+LrmZ+40i4+81cKzSO1Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=wBb1A2WJ; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=pbGdxIPz; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ULxdXg8G";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YSxOCrXY"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60Q8dO0l2135451
-	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 10:32:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	JnGQa+VppXSpGH8Db51uvFUmO5TW2cub0y3XamdlXbo=; b=ULxdXg8GOuwlgBJL
-	TgivDwLrLmZGDQj6b7363AGK+1t5pNEoyeTBAP87E7bO8F2CRgksn+JM4V6iF9cB
-	TedXI5UGCAgtChJkpTvInxkibW3S4B9oS0ie3qbqr/9ZPIBNoFfHFVPBH0gEVNJv
-	psl+3qIqHyDB1Cq2MC2Jml1UuRptrNf+O8xs0i8PvvpOaIG8OMNVZRvzoLG+7WNE
-	by8je9iU5ZEYXN7AOcZwUAzF5w0ZE5onMXRLIA3zWu1cENk2NCxJqQKBeunQF5eH
-	WWqv+SowYjxeCAV/9/TqfcRCP/sVgmS7djm+h6GeMps28Y84192T5UWZr4/Hw4Z5
-	oeFgOw==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bvq8dm8v1-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 10:32:52 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8c533f07450so116148485a.0
-        for <imx@lists.linux.dev>; Mon, 26 Jan 2026 02:32:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769423571; x=1770028371; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JnGQa+VppXSpGH8Db51uvFUmO5TW2cub0y3XamdlXbo=;
-        b=YSxOCrXYCqX3raq/ucQIa7hz1ZBCMT881gAAsP0aueesTi8h7Z3RxyaCSz6Q+jWDnk
-         RbPNPP5cp9UQHogxMpHBUFx/TG4J7owbDDcf2yOAxf9yd3uw0itRGpwk4dgJwaJUUSXD
-         WRndVwn6lz8rBYEDj5rEFNJev+y6SChlb4HFKUAaI5IEWxQ5G3J/vyruA1DvLDprwEY9
-         pEq7rrJtdVMz/oeZzeOixHIN/8vyXx0xxRirMuIYzzD99U8sWZPS+zbqNXlVRCPjt+tO
-         ZSKKEBGfXoEGbMm6z6bqVO9cxrTffgj9alb+mxoifL9lpLyNcFxFovyojTlhcFDOR0t1
-         Cc3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769423571; x=1770028371;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JnGQa+VppXSpGH8Db51uvFUmO5TW2cub0y3XamdlXbo=;
-        b=gT66Jcnm/4Q5DB31fq/lW+oMhnfR1oPAp1US8VYRyW1W3WgShP/KzMUa4YHGJ6IDv0
-         jF9j8fpw8CwD+BG+TeAQvOGQKy/ZPPO222Y2ThUMaAP5FzMxJ9LnXdMAYK9D1jSZCRow
-         8JU/TqeRrdBeDTEHMo+Ohl0GLCD9nT7KLyBbiOMRVOVQDwkVGE4LemOsBPX8YG5IJimG
-         flEkMPDJZiOUwNMMW2Sf/A/prYGGxAmvAWVrDwz8pQ3Oe/F0xxkOP2uGSVXanOQSkPIJ
-         UW++i0JrNO9PXJpKKl8eIIVWGO6ccshtcRoi45gFX02mbqmF0lgV8ICR7Rgz28KvXoGS
-         DKlw==
-X-Forwarded-Encrypted: i=1; AJvYcCXCRPxj133MIxc5umd+vyn93g1Fo/faJ75b71AVG6H8EvKtxzbU8Rbift2G1HZzfB+bXmg=@lists.linux.dev
-X-Gm-Message-State: AOJu0YysDddOkoYXukXxLdvkcnfd5AevDA6m94mg+PykcQPDS93LQ6Wl
-	PzmFHspw9fCP7hkrKunKzXnbWNBelAvVoNuahppfV87VDw9s25R2hypvqmr2CJ85x5xSMZBmgSY
-	TZt4c8s3cU/B55BB7gMDOl3q8Bray2FoRXH1pNG8HuOUSk/P9cMJHWQ8=
-X-Gm-Gg: AZuq6aJQk66rFQY+x8tdYCcHCBLwSLs2KS0bTAN9HGLTupEk2hQKypSY2zDcuiZY14w
-	fI9HRMuaB/Dra+t+ByPrE36/f/9HX8toMYPNjWjcq01RtMwJN+2608r5ziOCBcrnZRzBSBpHa3p
-	NWhJNzQUC0klYJrNK8gQci0VAobcL5tLcuvYfa/hIO/Gp0j0RJtT9octrlkaY8kU7aazM+8lQWq
-	drk3ryFRZyJERdJrD+wn6D6UfqntQObAviifQ66EyWvTyVnvOq4JMW1LXXi+MYYy8MhmlfkHf+D
-	ig+kfhK1wgwkexk7Kal2ZcHlW1q8BqhUHPxsGz/T6obX64knbV8A3jHowKB4BUNqCHvoUvtAHzt
-	z8NxF4nGiZJPjW5u4D7LGvnBFAACWu0X/nfjgXFgT1DlfpzwHFRYEQ61vl8ZobRuaumU=
-X-Received: by 2002:a05:620a:2588:b0:8c6:a707:dae7 with SMTP id af79cd13be357-8c6f95790c0mr358638785a.1.1769423571036;
-        Mon, 26 Jan 2026 02:32:51 -0800 (PST)
-X-Received: by 2002:a05:620a:2588:b0:8c6:a707:dae7 with SMTP id af79cd13be357-8c6f95790c0mr358637685a.1.1769423570661;
-        Mon, 26 Jan 2026 02:32:50 -0800 (PST)
-Received: from [192.168.119.254] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b885b7d7d89sm606513966b.68.2026.01.26.02.32.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Jan 2026 02:32:49 -0800 (PST)
-Message-ID: <291206cc-85e7-4251-9507-5848f721a708@oss.qualcomm.com>
-Date: Mon, 26 Jan 2026 11:32:46 +0100
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="wBb1A2WJ";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="pbGdxIPz"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4f04fY4sZRz9tf2;
+	Mon, 26 Jan 2026 11:34:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1769423685;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u9nIxk/zG+UgRCkU0RatOdYA3lT0UQF1MmzwUZwPGHY=;
+	b=wBb1A2WJjcOi9EC5LNFNRxvld4+OPqCjBXPYnnMcyR2eKfmdOY1m7aRnnBe4Xh1o+AFzbm
+	1OgU4E3AuuxsrhNIy6dsMRiiKJtrlTqVU2T3288haLxJCqER/qdqy/f1+FEhKYACLsgkNS
+	MC1wXHO7EFfALFYQMZI1TyB14F4QEfpGHtlS49rWexT1eePtO9UggIkxVLujydlIEb6dl8
+	E1BOkR9eIr5V2vNung1xABWRAmfIfYBFFmVod/3QR5XmOw24tu81M4SxLgkQ1Ulu9Pm2t2
+	nt78a5mxavZYvAt1A0HUWoFpW4DxOqpRaQz1gxrqGcS4oRnCQe+ppHtLDqEs3A==
+From: Lukasz Majewski <lukasz.majewski@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1769423683;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u9nIxk/zG+UgRCkU0RatOdYA3lT0UQF1MmzwUZwPGHY=;
+	b=pbGdxIPzrhJD6jBf3wHZIYxDMCF2HG3xALuro90JbX2JtS9pTEc3UoBqPUkFL4Bo3nQJLG
+	5jUD2c7qgx+BfyYUBkTQsyVm3Wfjeww6goDcCSSEqsWyaqYI7SNWse9ONUR2fseyc6LqEE
+	AXoFwmb/33vXGtx8XsdWO+j1gT3cjCp73hcf8JX+bIF1b0Ucp91CM6Y3EIWB/GIB/pI1VW
+	pRZshfDS6aV/EhqyMC2qxDeK4QgudUhbRDDUbqaCcdn2HmPsmQqx061XGFyKVeHNDxtbDu
+	62pFIk0F2PALSo2wxVL6h2exboNXh0K5Qf8V/rIOTQ978QLIk28119p2gmjiiw==
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Lukasz Majewski <lukasz.majewski@mailbox.org>
+Subject: [net-next v20 1/7] dt-bindings: net: Add MTIP L2 switch description
+Date: Mon, 26 Jan 2026 11:33:54 +0100
+Message-Id: <20260126103400.1683125-2-lukasz.majewski@mailbox.org>
+In-Reply-To: <20260126103400.1683125-1-lukasz.majewski@mailbox.org>
+References: <20260126103400.1683125-1-lukasz.majewski@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 5/5] arm64: dts: qcom: talos-evk-camera: Add DT overlay
-To: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>,
-        Loic Poulain <loic.poulain@oss.qualcomm.com>,
-        Andi Shyti <andi.shyti@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Robert Foss <rfoss@kernel.org>,
-        Todor Tomov <todor.too@gmail.com>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>
-Cc: linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, imx@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org
-References: <20260122-sm6150_evk-v5-0-039b170450a3@oss.qualcomm.com>
- <20260122-sm6150_evk-v5-5-039b170450a3@oss.qualcomm.com>
- <825c3e7c-469a-4d69-b298-18f2edf72ea4@oss.qualcomm.com>
- <e0e6f248-3d82-4b0c-9ee2-4a655b7bbbfd@oss.qualcomm.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <e0e6f248-3d82-4b0c-9ee2-4a655b7bbbfd@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI2MDA5MCBTYWx0ZWRfX6zG0lcBdpTFG
- LEdL0kKM0Aja1u8pi7wI0Hv54qJtzLEAYemfVySx655dezufsz/y0UfMQH2Ix0h6+37OAqOCLU2
- B1q5mn66rkJYC3Z/YuwUD8FsH6w92Cf9mpzYvW1fkTfB4KnCEwy7yaOTwvf1ADQVecpbobxFohO
- w+SP77SIK3YWPvou8rHhbUs6dD7tYh0HM3STX4GBHMstlYRiiKalIP3F2vRj1ygFzt3+5UkCRBm
- 7BUmAwsFqosN58vOHIx+n4R+h1TndUCzCQn97KB8R9t4lQlG7U4LhW8ec1/uegkHwNmuX33V7/z
- pe3FObZHalPR/r63ZoRmX7VFlQQJ6J9NX+VpxTOqu9TXVINJAKx1ICIK+ufrzZbbeDwbV/0u+y2
- mBn52b7gsuIjIEtn6ODATLEpb2kdOcdu4zxGAgrBCoT76XwxamjmVOhiz8EY6CqDU/OgplrfMDM
- zeiVhIbEsyzKU5/0MjA==
-X-Authority-Analysis: v=2.4 cv=RIq+3oi+ c=1 sm=1 tr=0 ts=697742d4 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8
- a=qa14B8Bdw_gfn3ERDOEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-ORIG-GUID: Q7QTpKqg8c_5pOBLpyq3V74GynbBJtUf
-X-Proofpoint-GUID: Q7QTpKqg8c_5pOBLpyq3V74GynbBJtUf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-26_02,2026-01-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 adultscore=0 clxscore=1015 phishscore=0
- impostorscore=0 lowpriorityscore=0 spamscore=0 suspectscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601260090
+X-MBO-RS-META: ot8ugfxswa1mfmetifoeb87n6y1b6tj5
+X-MBO-RS-ID: 3931f7f4c8b7283ed80
 
-On 1/23/26 3:30 AM, Wenmeng Liu wrote:
-> Hi Konrad,
-> 
-> On 1/22/2026 9:44 PM, Konrad Dybcio wrote:
->> On 1/22/26 11:48 AM, Wenmeng Liu wrote:
->>> Enable IMX577 via CCI on Taloss EVK Core Kit.
->>>
->>> The Talos EVK board does not include a camera sensor
->>> by default, this DTSO has enabled the Arducam 12.3MP
->>> IMX577 Mini Camera Module on the CSI-1 interface.
->>>
->>> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
->>> Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
->>> ---
->>
->> [...]
->>
->>> +&cci_i2c1 {
->>> +    #address-cells = <1>;
->>> +    #size-cells = <0>;
->>> +
->>> +    camera@1a {
->>> +        compatible = "sony,imx577";
->>> +        reg = <0x1a>;
->>> +
->>> +        reset-gpios = <&tlmm 29 GPIO_ACTIVE_LOW>;
->>
->> Let's define the pin settings for the reset pin too, otherwise lgtm
-> 
-> The reset pin on the Talos EVK board is different from the default. Do you recommend that I define the reset pin's pinctrl in the Talos EVK board's DTS?
+This patch provides description of the MTIP L2 switch available in some
+NXP's SOCs - e.g. imx287.
 
-Certianly not in the SoC DTSI
+Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-The other question is whether to put it in the board or mezz DTS(O)
+---
+Changes for v2:
+- Rename the file to match exactly the compatible
+  (nxp,imx287-mtip-switch)
 
-I think the latter makes more sense, as presumably a different mezz
-could use it for different purposes
+Changes for v3:
+- Remove '-' from const:'nxp,imx287-mtip-switch'
+- Use '^port@[12]+$' for port patternProperties
+- Drop status = "okay";
+- Provide proper indentation for 'example' binding (replace 8
+  spaces with 4 spaces)
+- Remove smsc,disable-energy-detect; property
+- Remove interrupt-parent and interrupts properties as not required
+- Remove #address-cells and #size-cells from required properties check
+- remove description from reg:
+- Add $ref: ethernet-switch.yaml#
 
-Konrad
+Changes for v4:
+- Use $ref: ethernet-switch.yaml#/$defs/ethernet-ports and remove already
+  referenced properties
+- Rename file to nxp,imx28-mtip-switch.yaml
+
+Changes for v5:
+- Provide proper description for 'ethernet-port' node
+
+Changes for v6:
+- Proper usage of
+  $ref: ethernet-switch.yaml#/$defs/ethernet-ports/patternProperties
+  when specifying the 'ethernet-ports' property
+- Add description and check for interrupt-names property
+
+Changes for v7:
+- Change switch interrupt name from 'mtipl2sw' to 'enet_switch'
+
+Changes for v8:
+- None
+
+Changes for v9:
+- Add GPIO_ACTIVE_LOW to reset-gpios mdio phandle
+
+Changes for v10:
+- None
+
+Changes for v11:
+- None
+
+Changes for v12:
+- Remove 'label' from required properties
+- Move the reference to $ref: ethernet-switch.yaml#/$defs/ethernet-ports
+  the proper place (under 'allOf:')
+
+Changes for v13 - v20:
+- None
+---
+ .../bindings/net/nxp,imx28-mtip-switch.yaml   | 150 ++++++++++++++++++
+ 1 file changed, 150 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+
+diff --git a/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+new file mode 100644
+index 000000000000..6a07dcd119ea
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+@@ -0,0 +1,150 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/nxp,imx28-mtip-switch.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: NXP SoC Ethernet Switch Controller (L2 MoreThanIP switch)
++
++maintainers:
++  - Lukasz Majewski <lukma@denx.de>
++
++description:
++  The 2-port switch ethernet subsystem provides ethernet packet (L2)
++  communication and can be configured as an ethernet switch. It provides the
++  reduced media independent interface (RMII), the management data input
++  output (MDIO) for physical layer device (PHY) management.
++
++allOf:
++  - $ref: ethernet-switch.yaml#/$defs/ethernet-ports
++
++properties:
++  compatible:
++    const: nxp,imx28-mtip-switch
++
++  reg:
++    maxItems: 1
++
++  phy-supply:
++    description:
++      Regulator that powers Ethernet PHYs.
++
++  clocks:
++    items:
++      - description: Register accessing clock
++      - description: Bus access clock
++      - description: Output clock for external device - e.g. PHY source clock
++      - description: IEEE1588 timer clock
++
++  clock-names:
++    items:
++      - const: ipg
++      - const: ahb
++      - const: enet_out
++      - const: ptp
++
++  interrupts:
++    items:
++      - description: Switch interrupt
++      - description: ENET0 interrupt
++      - description: ENET1 interrupt
++
++  interrupt-names:
++    items:
++      - const: enet_switch
++      - const: enet0
++      - const: enet1
++
++  pinctrl-names: true
++
++  ethernet-ports:
++    type: object
++    additionalProperties: true
++
++    patternProperties:
++      '^ethernet-port@[12]$':
++        type: object
++        additionalProperties: true
++        properties:
++          reg:
++            items:
++              - enum: [1, 2]
++            description: MTIP L2 switch port number
++
++        required:
++          - reg
++          - phy-mode
++          - phy-handle
++
++  mdio:
++    type: object
++    $ref: mdio.yaml#
++    unevaluatedProperties: false
++    description:
++      Specifies the mdio bus in the switch, used as a container for phy nodes.
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++  - interrupts
++  - interrupt-names
++  - mdio
++  - ethernet-ports
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include<dt-bindings/interrupt-controller/irq.h>
++    #include<dt-bindings/gpio/gpio.h>
++    switch@800f0000 {
++        compatible = "nxp,imx28-mtip-switch";
++        reg = <0x800f0000 0x20000>;
++        pinctrl-names = "default";
++        pinctrl-0 = <&mac0_pins_a>, <&mac1_pins_a>;
++        phy-supply = <&reg_fec_3v3>;
++        interrupts = <100>, <101>, <102>;
++        interrupt-names = "enet_switch", "enet0", "enet1";
++        clocks = <&clks 57>, <&clks 57>, <&clks 64>, <&clks 35>;
++        clock-names = "ipg", "ahb", "enet_out", "ptp";
++
++        ethernet-ports {
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            mtip_port1: ethernet-port@1 {
++                reg = <1>;
++                label = "lan0";
++                local-mac-address = [ 00 00 00 00 00 00 ];
++                phy-mode = "rmii";
++                phy-handle = <&ethphy0>;
++            };
++
++            mtip_port2: ethernet-port@2 {
++                reg = <2>;
++                label = "lan1";
++                local-mac-address = [ 00 00 00 00 00 00 ];
++                phy-mode = "rmii";
++                phy-handle = <&ethphy1>;
++            };
++        };
++
++        mdio_sw: mdio {
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            reset-gpios = <&gpio2 13 GPIO_ACTIVE_LOW>;
++            reset-delay-us = <25000>;
++            reset-post-delay-us = <10000>;
++
++            ethphy0: ethernet-phy@0 {
++                reg = <0>;
++            };
++
++            ethphy1: ethernet-phy@1 {
++                reg = <1>;
++            };
++        };
++    };
+-- 
+2.39.5
+
