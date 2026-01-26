@@ -1,120 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4DA23EAB0;
-	Mon, 26 Jan 2026 16:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E883A28DB54
+	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 16:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769443295; cv=none; b=rCkP6pb6Oc2e2haqiKCLO/RlWSskMj46xXPNB7L0P2mozX8S2X9pfRLGQar4Z9KH0VE6Mk8n6VsscSkF0ewkwRJbD/W14Js0+i/BZVLXh219AG31WxevL4ljW97kOSD1lTBk6HF6f3lyDfiKQGx3bGXMeF61EYke/xZpgLdjqYw=
+	t=1769444532; cv=none; b=qYElN6AS4VAWMrnQv3rZnQqo7CkPHn/3UzFfy3gEaFL9ANFS8tfMlE/B5Z4m2CcUklennkkO1hJPCTZ4Yb+7MTe7dOvl0/Kx9YHLJWNQNK3c0GaD92m4Pa+1C6Oh8T1nJZkkwtxgDORXTYxhCfuez+KFMoLeNtdenlA56P44rfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769443295; c=relaxed/simple;
-	bh=vbKOKo1zqwByHLjQtZsnbrccfQFl5y8geWYwihFRq24=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aTpqe4hXV3jO7dT4v8CEgZ7D9HA3erCFb+uf0hEbICoBL3Xet0J7C5ym4lAP3xTTaIbuS0GEKIuOCj+LuFbPyaYTuZxlPD4q69Nvc/TnMzXEkjmZPfBbr6ShMBOVKFeoGmUMQVUblEBCh+tHPyf8rOabs9+mxQX+nIqxjBgPtL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lv48+hpv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769444532; c=relaxed/simple;
+	bh=Fd9GQuehxbj9j2DTeWqb+eSdlxbgxasHE7nVHCXXnQY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OuMNOWqvAnEHiRbZKa9cGNiLnDvNojyE2rJ1tQFcdEeiPqWN1IsfZExsnZcy9mQ1JfTpt3hOoBpXnYPYvoCgsNtEX/RX64ugZ4i6OE8swdb0eC6sgT9s0U42P0EuK3+JER1v28NmV3Pg4Bk8tQsrQP6hZw3exvqTiVvgJn6102w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EAEy4c3h; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lv48+hpv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1FAC116C6;
-	Mon, 26 Jan 2026 16:01:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769443295;
-	bh=vbKOKo1zqwByHLjQtZsnbrccfQFl5y8geWYwihFRq24=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Lv48+hpvfTsHWMpL2abDkYYBE7hAds8hj8Zp5X6/XmVEmhic146EMnkENPQuRymhj
-	 ZRDrCiDmBFyXzlfWKA/+BpJSBX1IFnuz3yFbv0Aga9FAzsY9lPhGKKgacbQAXlAUl1
-	 4LKJyr8N9Ri/NmncXH7qkWRo/fVK+c2qByK0m/PkRMeUcEv33AsYsgnPZOpigfLVPw
-	 2DxDngwxhwfVPspu2PvUQnrf51kjIyeAf8ZSb6R/CxmqMyHCBbniSAMnZv2BIXU+R5
-	 mgnwO6u4E6jEBck2yVdqf4f4BghaHdP8aDdDGhDvqyW7M69MBHIDKnnpAzV5dMyXPI
-	 NnIIw93NUqj2Q==
-Date: Mon, 26 Jan 2026 16:01:27 +0000
-From: Simon Horman <horms@kernel.org>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: dan.carpenter@linaro.org, robh@kernel.org, kuba@kernel.org,
-	festevam@gmail.com, ghennadi.procopciuc@oss.nxp.com,
-	alexandre.torgue@foss.st.com, linux-kernel@vger.kernel.org,
-	andrew+netdev@lunn.ch, shawnguo@kernel.org, mbrugger@suse.com,
-	mcoquelin.stm32@gmail.com, linaro-s32@linaro.org,
-	davem@davemloft.net, s.hauer@pengutronix.de, edumazet@google.com,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	conor+dt@kernel.org, krzk+dt@kernel.org, devicetree@vger.kernel.org,
-	Frank.li@nxp.com, chester62515@gmail.com, netdev@vger.kernel.org,
-	kernel@pengutronix.de, pabeni@redhat.com, jan.petrous@oss.nxp.com,
-	linux-stm32@st-md-mailman.stormreply.com, s32@nxp.com
-Subject: Re: [v4,1/3] net: stmmac: s32: use a syscon for
- S32_PHY_INTF_SEL_RGMII
-Message-ID: <aXeP1y7cK0XRx3Wo@horms.kernel.org>
-References: <8f2139e8adf02b485a4c84d558fc23f78cf04add.1769195864.git.dan.carpenter@linaro.org>
- <20260126152430.1390514-1-horms@kernel.org>
- <aXeJYo-0iiNuXVGH@shell.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EAEy4c3h"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47ee2715254so24212455e9.3
+        for <imx@lists.linux.dev>; Mon, 26 Jan 2026 08:22:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769444529; x=1770049329; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WzBUc5N1uABfKTBaSkUrbtG7cZ34SqM6HHCoVrUSUaA=;
+        b=EAEy4c3hQsk/C/4UsObvY1kaxXBp3GBXhf4Vo4n0sU8rP9u8lusU7XE8liZMpzqUcA
+         me7XWo3HRTFV8PWjnaIGFLVb7oF6phfd0xjdA0/gopKvWpY1HOJYWncSYPupRoflQqCs
+         uctigvn5ktC6F3e9ISdAYgDnlAHaEB5fSkaVW2PtD1y2DsXwxDIh/bprbXGQZC7+gYBL
+         VyFVvTQy//glIxeqCMOF6o7ceVBTUyxjJ7Q9vnLKUh0YJ5gl2KogoC9UOTXwC/hm4l3j
+         lqCKHyfLPc6C5Jc3Ja+/xhzaRJzIMApY4rUSKKzDAd/aIZDRfvFWyUmRh3Y0+xGcDrje
+         sRvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769444529; x=1770049329;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WzBUc5N1uABfKTBaSkUrbtG7cZ34SqM6HHCoVrUSUaA=;
+        b=i+Vug4teDNGX6YWlZWLEWGm1sQezt61m4haNMcmsXKlpCKI771fxgRQPyMGerMgZ69
+         bYE9LPkBnWlRjMl+C1Hyl0/fK8hlkXeAcwmJAEJSrCMgu5dS0NvkXL90ep+2T5KRrDvT
+         VzHWm6SZe752KMiwiBF/yvENL59S3i+Ax+m2N6OZRSuD5il+Ja7el36Hh50lxOm5DH4l
+         ONvv91wIFbIeqY4w/HztVqlA2Ku/BCi/tx7UQofuGAtDwYn4Gig3Ie3tvivvpnguZxwF
+         yjrOI9Qeuu/q7AORjC3WdQTVCiF1CR4tdFHxPap/27WQ756TFd/SQj5QHbOfafVKDQLu
+         I/kg==
+X-Gm-Message-State: AOJu0YwksaSskABGuwvolSIVMoq53O5uq/eHGwx9Z7HZRbFm8Cv/SUpN
+	3iPmsACvtfNLSbAxYdLpSfIL/P+h4nJaPPKUF+88diLHCsmqH/aw+1wv
+X-Gm-Gg: AZuq6aICLQEeXILUayQhwvxUMlRnGrLcEoLFTHVdzTRx3bPep6gKUz53p4oyvvJgEab
+	QLjjjzwIdJloQB3tn6KsoHHLLBxSytBzYE3TxAj975M8+EcT93A6QKmuRHyDH9+puswFAXhLUrX
+	l+YqNZkQGOdTEhF9c8pY+5BS4YxTtgBMxh72td8eT1YeUVoN3QpxOV9EMRXGB8gXrgLiGDgohIo
+	hZs/mTc5/f+vLU/+xpialtC68jl5WAjhqQ05lUWlwgFSWvkLVYITNdYGjIqLj6BwfAEb7WGoZyj
+	anOQvk3n92Yjmde9IYsWibzkWPHEGj9xHHhb4v2zp3m0qN2JBMLV7gQTA/bipo8F/GM15njQU+C
+	QXJnka7Tse2v2hXS/L4+7/jYBp+TdCB+xnQYR3LGNcPIDHQlDxyMP0zsQ9EKuTQtjnzu5PzL1b4
+	NMroo9MQjGIvy+Um9MozU7EXcDX4LE7Qywu5UJpA==
+X-Received: by 2002:a05:600c:3e1a:b0:479:1b0f:dfff with SMTP id 5b1f17b1804b1-4805ce4e55dmr88548785e9.10.1769444528753;
+        Mon, 26 Jan 2026 08:22:08 -0800 (PST)
+Received: from SMW024614.wbi.nxp.com ([128.77.115.158])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-480470cf1acsm370371035e9.14.2026.01.26.08.22.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jan 2026 08:22:08 -0800 (PST)
+From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+To: Philipp Zabel <p.zabel@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>
+Cc: imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: [PATCH v7 0/4] Add support for i.MX8ULP's SIM LPAV
+Date: Mon, 26 Jan 2026 08:21:59 -0800
+Message-ID: <20260126162203.708-1-laurentiumihalcea111@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aXeJYo-0iiNuXVGH@shell.armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 26, 2026 at 03:33:54PM +0000, Russell King (Oracle) wrote:
-> On Mon, Jan 26, 2026 at 03:24:30PM +0000, Simon Horman wrote:
-> > This is an AI-generated review of your patch. The human sending this
-> > email has considered the AI review valid, or at least plausible.
-> > 
-> > For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
-> > ---
-> >     net: stmmac: s32: use a syscon for S32_PHY_INTF_SEL_RGMII
-> > 
-> > This commit adds syscon/regmap support for accessing the GMAC_0_CTRL_STS
-> > register on s32 chipsets, while maintaining backwards compatibility with
-> > the existing direct MMIO approach for older device trees.
-> > 
-> > > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-> > > index 5a485ee98fa7..2e6bb41f49e1 100644
-> > > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-> > > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-> > 
-> > [ ... ]
-> > 
-> > > @@ -40,7 +44,10 @@ struct s32_priv_data {
-> > >
-> > >  static int s32_gmac_write_phy_intf_select(struct s32_priv_data *gmac)
-> > >  {
-> > > -	writel(S32_PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
-> > > +	if (gmac->ctrl_sts)
-> > > +		writel(S32_PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
-> > > +	else
-> > > +		regmap_write(gmac->sts_regmap, gmac->sts_offset, S32_PHY_INTF_SEL_RGMII);
-> > 
-> > Should the regmap_write() return value be checked here? The function
-> > returns int and the caller s32_gmac_init() checks the return value
-> > expecting errors to be propagated. For comparison, dwmac-sun55i.c in
-> > sun55i_gmac200_set_syscon() does check regmap_write() return value:
-> > 
-> >     ret = regmap_write(regmap, SYSCON_REG, reg);
-> >     if (ret < 0)
-> >         return dev_err_probe(dev, ret, "Failed to write to syscon\n");
-> 
-> AI is wrong on this last line - s32_gmac_write_phy_intf_select() is
-> called from s32_gmac_init(), which is called from plat_dat->init.
-> 
-> plat_dat->init is called from two paths:
-> 
-> 1. stmmac_pltfr_probe() -> stmmac_dvr_probe() -> plat_dat->init()
-> 
-> 2. stmmac_resume() -> plat_dat->resume() -> stmmac_plat_resume() ->
->    stmmac_pltfr_init() -> plat_dat->init()
-> 
-> In the resume path, it is not appropriate to use dev_err_probe()
-> because we're not in the probe path.
+From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Hi Russell,
+The LPAV System Integration Module (SIM) is an IP found inside i.MX8ULP's
+LPAV subsystem, which offers clock gating, reset line
+assertion/de-assertion, and various other misc. options.
 
-I agree that using dev_err_probe() is not appropriate here.
-And, FWIIW, I took that part to be an illustration that
-sun55i_gmac200_set_syscon() handles a similar case,
-rather than a suggestion of how to handle it here.
+This series adds support for the IP by introducing a new clock HW provider
+driver and by modifying i.MX8MP's AUDIOMIX block control reset driver to
+allow it to be used for i.MX8ULP's SIM LPAV as well.
 
-But at any rate, I think the key question is should the case
-where regmap_write() returns an error be handled in
-s32_gmac_write_phy_intf_select() (by some means)?
+This series is a spin-off from [1].
+
+[1]: https://lore.kernel.org/lkml/20240922174225.75948-1-laurentiumihalcea111@gmail.com/
+
+---
+Changes in v7:
+
+* drop the DTS-related patch, which was already picked up by Shawn.
+* link to v6: https://lore.kernel.org/lkml/20251126124218.803-1-laurentiumihalcea111@gmail.com/
+
+Changes in v6:
+
+* store a "const struct imx8mp_reset_map" pointer instead of
+  a "const struct imx8mp_reset_info" pointer in
+  "struct imx8mp_audiomix_reset"
+* switch back to the mask-based approach
+* link to v5: https://lore.kernel.org/lkml/20251114133738.1762-1-laurentiumihalcea111@gmail.com/
+
+Changes in v5:
+
+* drop patches that were already picked up by Philipp/Abel.
+* include the "bits.h" header.
+* replace mask with bit index.
+* link to v4: https://lore.kernel.org/lkml/20251104120301.913-1-laurentiumihalcea111@gmail.com/
+
+Changes in v4:
+
+* shorten commit message for patch 5
+* drop base from "struct imx8mp_audiomix_reset" and use local variable
+* imx8mp_audiomix_reset_get_regmap() now takes "struct imx8mp_audiomix_reset *"
+  as its argument instead of a "struct device *"
+* use base pointer as the data argument for devm_add_action_or_reset()
+* shorten commit message for patch 6
+* drop regmap field from "struct clk_imx8ulp_sim_lpav_data", use local
+  variable and let devres manage it
+* drop base field from "struct clk_imx8ulp_sim_lpav_data", use local
+  variable and let devres manage it.
+* CONFIG_CLK_IMX8ULP now selects CONFIG_AUXILIARY_BUS, which is needed
+  for devm_auxiliary_device_create().
+* drop static definition of "struct regmap_config" and change to using
+  local one in the clock driver.
+* link to v3: https://lore.kernel.org/lkml/20251029135229.890-1-laurentiumihalcea111@gmail.com/
+
+Changes in v3:
+
+* rename "lpav_bus", "hifi_core", and "hifi_plat" to "bus", "core", "plat"
+* don't assign the "name" field of "struct clk_parent_data". Previously, we
+  were assigning the local parent name to this field, which wouldn't have
+  worked anyways if, for whatever reason, the fallback mechanism would kick in.
+* replace the whole auxiliary reset driver creation chunk by
+  a single devm_auxiliary_device_create() call.
+* replace the "shift" field from "struct imx8mp_reset_map" with the usage of
+  ffs()
+* shorten commit description for patch 6
+* cast "id->driver_data" to "void *" instead of the previous
+  "const struct imx8mp_reset_info *", which makes the line shorter.
+* open question resulting from Peng Fan's comment on V2: how to access
+  interconnect QoS registers? do we need to model the sim_lpav as an
+  interconnect provider as well or is it fine to have another interconnect
+  provider that references the sim_lpav node and accesses its registers
+  via regmap (dev_get_regmap(), specifically, NOT syscon).
+* link to v2: https://lore.kernel.org/lkml/20251017112025.11997-1-laurentiumihalcea111@gmail.com/
+
+Changes in v2:
+
+* drop redundant description for "#clock-cells"/"#reset-cells" properties
+  from binding
+* make "mux-controller" and "#reset-cells" properties mandatory
+* add "mux-controller" child to binding example node
+* drop the compatiblity with syscon - this was never actually needed and
+  it was done to allow using "mmio-mux", which requires a syscon parent
+* modify the auxiliary reset driver to use regmap - this will allow the
+  mux controller, clock control and reset control APIs to use the same
+  spinlock.
+* rename "imx8ulp-reset-sim-lpav.h" to "fsl,imx8ulp-sim-lpav.h"
+* drop the "IMX8ULP_CLK_SIM_LPAV_END" macro, which doesn't belong to the
+  binding headers
+* fix the values of "IMX8MP_AUDIOMIX_EARC_RESET_MASK" and
+  "IMX8MP_AUDIOMIX_EARC_PHY_RESET_MASK", which were previously incorrect
+* drop redundant macros from auxiliary reset driver - replace their
+  occurrences with their values
+* squash the binding-related macro additions into the binding patch
+* add mux-controller child node to the sim_lpav node
+* make the "gates" array static
+* link to v1: https://lore.kernel.org/lkml/20250804155407.285353-1-laurentiumihalcea111@gmail.com/
+---
+
+Laurentiu Mihalcea (4):
+  reset: imx8mp-audiomix: Drop unneeded macros
+  reset: imx8mp-audiomix: Switch to using regmap API
+  reset: imx8mp-audiomix: Extend the driver usage
+  reset: imx8mp-audiomix: Support i.MX8ULP SIM LPAV
+
+ drivers/reset/reset-imx8mp-audiomix.c | 169 +++++++++++++++++++-------
+ 1 file changed, 125 insertions(+), 44 deletions(-)
+
+-- 
+2.43.0
+
