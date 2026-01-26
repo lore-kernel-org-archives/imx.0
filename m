@@ -1,130 +1,115 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F4A285C8C
-	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 19:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769456880; cv=pass; b=cDoSiddAW3Trj1RQwCW2tflkRZwtNX1AZdbbRPCuT8zrmx2efnMsATMIPr2XsPcKLobedX0GeqeEyix/tCWRnEf81LHdaOJBikUfmjJ8qyDApS3uX3vgh39jVdKq7y0vX7gWmbou08N5ITci05MH/6RH8iYP3A62+DAds4eGMwk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769456880; c=relaxed/simple;
-	bh=E86U2Pp1+kEMZ5xTDOjPoM6DE7sOtiZh75Z6gIblXu0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SOinfnYd7+zETRxRZDup2bmZWniv0UDK8ZWuljczVkpe4Emuh24j//vTRtpSr4LzvHELWBkrbBivv6qx65NsRM994VuxfVitW/uTLqXsUYFIjct83gI0oQtjDu2rs4ZCJm9j9/xXozW8WBrGnnqYadY/y89oNz8Pqystv12wDV0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VIzAkmIQ; arc=pass smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119AD13957E;
+	Mon, 26 Jan 2026 20:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769457641; cv=none; b=Ug3NZPxb3YsrIrRAhg4CiHfI/faKYOjs+2D2D6P/bQrIxyNueY+XKh1AjjvZ4UEMwsZGDh2WJpekotngm2lGxt7uFBwESWyNM9mtQ4mshYbCAh59ASO7B79YW1gCF6/S6iozW8vBb6W7+gx9AK7E3Hqaozu2zojt1/YIl1yQjNE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769457641; c=relaxed/simple;
+	bh=W/s9B8G5AAVa1Ka8hwUbZ0G6I72DbzHIqE5HpGQCPNk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dj2t5pGCEMF7AXzx/CpG7ZORiLENbS0GY7gupcYXafUNkZibqq9WCVA9dLL4S+XGeAIItUaxzo+sr/1g5RulNLw/643OeIBO8mJGYr0DSI/we+u47AK72NkLIawKDoNZB5tXy6IJy2kQUX8cO3E9lHx3OnM+9vXSj8/OTlYqtyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vQpeICey; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VIzAkmIQ"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-59de8155501so3230740e87.3
-        for <imx@lists.linux.dev>; Mon, 26 Jan 2026 11:47:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769456877; cv=none;
-        d=google.com; s=arc-20240605;
-        b=N0b3WyYJp2vSOKiQ1K0zlF7PeJoKwL/vDkVFua5PrXRCcluEDnsCRd88JkTBx98dh3
-         RxEgavIPyHYSttV3YVyeNXVqLpS78/vskR0NIqnGoxAJQJMSUIWb3jUynWGIeJKhTsKK
-         vSIqAL1tGXbCEFV3Wfx2j9O03w9nhO8z7SxFO9jTIUPQoWbCsZ32HHBYiB9RwDyB6NBM
-         wBo2GE6MWXTDHOJTHnD3Ora2buI0DHqYSRWOGWSqfL5YqkrANelAKh0urkRv2Eiix4Yg
-         epIjyn1WK4tgMjTZAzQxMPsTWryGfdvPwbfy1I2w/GOtfLKBb+wm8io94bPn+MER5sBy
-         etcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=tvHi5BlR/jfPN2hk45XeIUKXD0zHTAJed9qhiZYAB1U=;
-        fh=Co0F3N9fgGuB3EWp5PFvBplJM6V+lKeyXJUu/DZ4Gg0=;
-        b=F8GjFSTpDLZ0PT9K7NM9Ly6CenOOrS117k6Ng8Cu6uUgzY/tnPcSLRs4s9Y5FXn6ir
-         DcYJFzXpnUy+f8R1PsLP+01FfndwCQZ4cB31OJHqOi2rYy+MMuQkbcbxrzI1cMq7nkp9
-         gWEGyjgmmzA3kTUn+gTBi5ElSPLKqRZrX53O6NRVKMcgB6NdEUtIr4uQMMaLeLzbdqQU
-         6VrwxM3mZy6GNANCAsUvbviUVZygHfbNk0zkqsOo6czehN35pOPOHWWFyk28dDuzftXI
-         t6+SU3M9ZgHAiTZS+CjvtBYTTHmj2Sj241/jUaPBjVbnDKYHh2n41G/uXHFmhovAYveC
-         MW2A==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769456877; x=1770061677; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tvHi5BlR/jfPN2hk45XeIUKXD0zHTAJed9qhiZYAB1U=;
-        b=VIzAkmIQOx9FLWbz76/26X9tY0vmEXLjhZPZlntA2wRv+2WxpVMWOdyO4hXuUQgqE4
-         GJ4d92mlN5LX4u9Zofsr8hmlrp23CRNpXt4joaM8E/J8irNoDCQXjOMJNz+RftYFXffE
-         GeGu0XgD757AOToDOBlbB7+ajKcXDers/8CdzSzNZmnlDOTLNcrA+agdZVj/xJnhUGYG
-         2aeKVjhPHz8IIUDnE7yQEfUmy8//vxhvk6lYuBHRkDtKDO0ghKYqfFZqsfeVZJV4NuLu
-         YuGilem3WaXNk/9IRgQmcXsxpHXwNJwkV5lQJ1jtOoDB8zRqd/xzYRsr6swkp2QgcU+t
-         VZig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769456877; x=1770061677;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=tvHi5BlR/jfPN2hk45XeIUKXD0zHTAJed9qhiZYAB1U=;
-        b=p6L3snZf0KO0pQ7iZCMC1nac/BOCzh6SY95RSiKIZfg370ULSB4eKHarLcMdh2JOay
-         0KuY57qD+aalLh1fOFfogH4wVhsIGEfe9kbdm+CCaqFKA6ViojqUxNo+XOG88Utwk5Yn
-         UI4BUzCOJmib9J0siZM2EOj8U3pJIXO3h5neUiuYa3w/BGVp/2gU4c9wqagUdgwUsG9g
-         YpTTq2IH8Z4AUD6AGZvWn34QcRee3wL+F89Xo/Tfeb9Tgr6KdEQewcjv64uXZ77Gf74E
-         FmOms0zGdEW7I+U2FcAPbg4zruhjU6NwXGEhoWJPgCwMalKnSly3Ktb1IOhaDLXFYGj4
-         6Qxw==
-X-Forwarded-Encrypted: i=1; AJvYcCUE/xigqFiYLbiAWi2v1xKjzl7REeXZ85ZrjUgMFUQTNFvdm/6f5C31r16YRzK3SivcaGI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyxebqJw9DcM4Vgs7E9rh0sqKpD2uHxDS8YZaMSLdumRNgeWxyW
-	m23YhPw6DAB7m7J/KTMg0QYzA3Y2/7GtcjxjmG+v2D9lodZ409a+VN9oyrwRdUB6gCYgK5e0LKL
-	BbzdXDAIb7UNcAXWFofvZNGfi75G7Wgs=
-X-Gm-Gg: AZuq6aJG9aaM1RUqsARa6WuObVuPWpm1x7SO7qlWuijB7MNmuLoEBcQJ/JExC6Z7w9e
-	ifgZVJZYeS46glCQ1iS94QoarxMsu+A9su+yq27zmy3TkIJizCPHha/IMZ+8ShJT7jAVlW0jD97
-	Ba8ro9hcm+SIe11+Hk84RRSZyFMVfrp1Ezv5973zOlecBSZA/6GExHd66wffYKIFn/yYNefYGwR
-	kITRr+rpjEiMQJo8NurItysFGeb014UPr/Bvh+mTQLFq2NNjd0V0ewCtG5mj+QQXm/6Zk3OXLPJ
-	eR7sBfdVd9QDSHAq8WeXsOmIM0I=
-X-Received: by 2002:a05:6512:1087:b0:59d:e9f6:1391 with SMTP id
- 2adb3069b0e04-59df3a1408amr2177134e87.34.1769456877066; Mon, 26 Jan 2026
- 11:47:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vQpeICey"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489E6C116C6;
+	Mon, 26 Jan 2026 20:00:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769457640;
+	bh=W/s9B8G5AAVa1Ka8hwUbZ0G6I72DbzHIqE5HpGQCPNk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vQpeICeyJSjkOhlUCdhsHfBjOVMQbxJZt5iv694GjcLRSgCdNa70WSlPLusbcNSIG
+	 cf7KBZEUGxL7QkUkQmqPRUFfGjPUxIu2D2ugRxPTcbsnbB9AN3a7LhW/vJL0M0n2Ki
+	 L5w0znY9rQ5iBzW9JnwxwmEynbt7Hl8LnZ2YNbpywE7BVbGpt1Or/HrmpshUPduDm6
+	 OKoBYCLyyvrtN0n25eTeS+/3E84PyvcO1me1ZMeo99FNFowVq2CWwoGlKmj/VEVwYm
+	 gno+nZ5oYW8my4Lrun/5mweiK8UP4tn92qiPzifhiby96RbUkuic0livRkinilnaxf
+	 DKj7WQMGi/IBQ==
+Date: Mon, 26 Jan 2026 20:00:33 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Jan Petrous <jan.petrous@oss.nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 2/4] dt-bindings: net: nxp,s32-dwmac: Declare
+ per-queue interrupts
+Message-ID: <20260126-blinker-secluding-a745f60caccb@spud>
+References: <20260123-dwmac_multi_irq-v3-0-cc53f2be8961@oss.nxp.com>
+ <20260123-dwmac_multi_irq-v3-2-cc53f2be8961@oss.nxp.com>
+ <20260123-dinner-aloft-e57deb6c546a@spud>
+ <aXdiNb92B4HH+ZFt@lsv051416.swis.nl-cdc01.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260126115349.1750578-1-lukma@nabladev.com> <7671b833-f823-44cd-b5af-0b473a8ae23e@lunn.ch>
- <20260126203307.6076ba9c@wsk>
-In-Reply-To: <20260126203307.6076ba9c@wsk>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Mon, 26 Jan 2026 16:47:45 -0300
-X-Gm-Features: AZwV_QizXfEBcPuoLKyFUr1dg6OQ-LmaBQRERKbYiAht9E5yQHfaWrYosy_qY4E
-Message-ID: <CAOMZO5C2Hg06wb08cRDLCXGDS_rmUAq3fC7Jm++kSumjukyuXA@mail.gmail.com>
-Subject: Re: [PATCH v2] clk: vf610: Add support for the Ethernet switch clocks
-To: =?UTF-8?Q?=C5=81ukasz_Majewski?= <lukma@nabladev.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Conor Dooley <conor+dt@kernel.org>, Abel Vesa <abelvesa@kernel.org>, 
-	Peng Fan <peng.fan@nxp.com>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="yK1i+yQq5ZBwutQC"
+Content-Disposition: inline
+In-Reply-To: <aXdiNb92B4HH+ZFt@lsv051416.swis.nl-cdc01.nxp.com>
+
+
+--yK1i+yQq5ZBwutQC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi =C5=81ukasz,
+On Mon, Jan 26, 2026 at 01:46:45PM +0100, Jan Petrous wrote:
+> On Fri, Jan 23, 2026 at 05:13:03PM +0000, Conor Dooley wrote:
+> > On Fri, Jan 23, 2026 at 11:09:55AM +0100, Jan Petrous via B4 Relay wrot=
+e:
+> > > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> > >=20
+> > > The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lines,
+> > > set them to allow using Multi-IRQ mode when supported.
+> >=20
+> > The binding only supports s32{g,r} devices, why is the existing minimum
+> > retained? What devices are going to not have all 11 interrupts
+> > connected?
+> >=20
+>=20
+> The original idea was to support backward compatibility, as older DTs
+> didn't contain queue-based interrupt lines described.
+>=20
+> But now, when you asked, I started to think it is not needed,
+> the requirement for backward compatibility is managed inside the driver
+> and yaml shall describe the hardware not used configuration.
 
-On Mon, Jan 26, 2026 at 4:33=E2=80=AFPM =C5=81ukasz Majewski <lukma@nablade=
-v.com> wrote:
+Just to be clear, cos the last portion of that "yaml shall..." isn't to
+me, you mean that the driver will support 1 or 11 interrupts but you
+will make the binding only allow 11? That would be fine.
+Just note in the commit message that all of these devices have the 11
+interrupts.
 
-> Conor (on CC) explicitly asked to remove VF610_CLK_END:
-> "[PATCH] dt-bindings: clock: vf610: Add definitions for MTIP L2 switch"
->
-> ------>8------------
-> > -#define VF610_CLK_END                        191
->
-> If end is modifiable, it is removable. If you need the define for the
-> driver, please move it there.
-> ------8<------------
->
-> I just follow what he asked.
+> Is it my understanding right? Should I provide v4 with minimum =3D 11?
 
-You should still use VF610_CLK_END. Just define it inside the clk
-driver instead of in the dt-bindings.
 
-Please check these two i.MX93 patches that explain the rationale:
+--yK1i+yQq5ZBwutQC
+Content-Type: application/pgp-signature; name="signature.asc"
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-h=3Dv6.19-rc7&id=3Dc0813ce2e5b0d1174782aff30d366509377abc7b
+-----BEGIN PGP SIGNATURE-----
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-h=3Dv6.19-rc7&id=3D0af18ba60752e8a4ba34404c1d9a4a799da690f5
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaXfH4QAKCRB4tDGHoIJi
+0tNuAPoDxV/IAeHe/4sVvqAaVI5emQP++yc9VFODMCulOLOD3wD/ZLyJy71N+Tg4
+4efjJ30p/XNWBZVQgvn0cruDyAqP1ws=
+=0Jjo
+-----END PGP SIGNATURE-----
+
+--yK1i+yQq5ZBwutQC--
