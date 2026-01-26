@@ -1,49 +1,49 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10ED823372C;
-	Mon, 26 Jan 2026 15:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D930244694;
+	Mon, 26 Jan 2026 15:51:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769442343; cv=none; b=pLygN8Cmzk2sMqgQLL3LiMKh6n5wXyYBwULvZYhkQsJRbwo2JEPaJ76IqWGWJagzfiozvQEIkbpYchpSSMEijhsD4rit2guaZ0QfSPPSNaWYb7q0SV/0NqL7lRYa+cDLu/dJ141Eh+w6W1s0sZkeUvdSANidk+d+Adh29z1ynAQ=
+	t=1769442693; cv=none; b=RgaQPnmlYxHKDVYYvAEM4b6esY6nht0FXf/SE0CCnWGoqoW/mfV14dc026A8CX8NUbKnEqjeUB45PknCRltksxXoyka573SVn2qTUdfZwgQHK2kfBPeePbeWVDKr9jxLSxYLRdDk88r1lmxpoIa00oc1fa+zs9701rtbR0QDlTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769442343; c=relaxed/simple;
-	bh=n/lls3phe2cSkmNEQQEG19GZZOfLotDDwfl5PvbxnT4=;
+	s=arc-20240116; t=1769442693; c=relaxed/simple;
+	bh=79ymqkrUgULFdA4N33ltiBtFQqKmWQ7wWRxV5gDqFkU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tXrBVzGPAn18YI24estUIJZ61C0CBeEMPfbERVtzvJ2Y132TxqUzgl6hYuZCXPGqOSd3B5JqR+0XSh6JYXouc6Xt2cDiiOA5+vKUGzJo/7WhscSJZH0qj1HjBRc68QaNF3gy0hTkjH/00o489eFBeWauqzs0vtUL6R/pzNUDkxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k9rl15vP; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=jRM6LgwXth/Ho/6KPVnrDRJPjKc4M3Y2oJNyIm9gxmDpzFQeydwIJJKE+/PPdDD+iHONozuLvX7yvu1Jiij8BN1DufHXLB6ve/ugVVQYiyckH0pBFUUZN6f89h5MadIcMP1cF95CA2u7jQnpycxuY6E1HLIae4UJlRFWB7HfS94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=UWtxI+Nq; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k9rl15vP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5ADC116C6;
-	Mon, 26 Jan 2026 15:45:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769442342;
-	bh=n/lls3phe2cSkmNEQQEG19GZZOfLotDDwfl5PvbxnT4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k9rl15vPO8eDYA/wP2UCmAcf8MaGFjvDS8q2zpDw1stXc46IqBOYUezgLIsJQg8fX
-	 teqs0OD4JGYzmu+dPZpx8SUQ5RjyVZgz68Srt9/Sj8kApasf9nI2Jd0LvF3yRQmpQh
-	 L/cZJ7yVXUIQLC6TgMqFQq+417wLmHGB5SdYNBeu3z8bH/JM+zD1ZBUvaR1x6S0RKz
-	 xO/DPRe/VX1eb8YcZxA+1BBjO0pgQjmmHCkxrtTLd6revV05ubVPmjjc/t7gaZHliP
-	 9/XmNPn2fQdI/e0Z7p3/voMjIgl9JIZOHiXxdzLgxIFZsLQTVIHwpAwAqiJ9zXmDxB
-	 zfbaWXtzSBY7w==
-Date: Mon, 26 Jan 2026 09:45:40 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Frank Li <Frank.li@nxp.com>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	linux-kernel@vger.kernel.org, s32@nxp.com,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="UWtxI+Nq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=9bxk/uEW0KP9Vda/3cxHnt1EEylgRwLtuxYT78ZkzzY=; b=UWtxI+NqF4QX3O6jvd5PPFrtDN
+	K+ZF4VGYEsIYqw8+VZzdlv4Uo7iX7Ey7HGGCQoLuIPOxjXTVTXylucK0Hf0vLG1OmU4FajWSnOvfI
+	KOmsEKJtkYs301A7+C/V2d+9VrwYD3leQ8nX7rvukWWq9VC5VihVczGeiHjBhHFlYoPg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vkOs4-004oFs-Hw; Mon, 26 Jan 2026 16:51:20 +0100
+Date: Mon, 26 Jan 2026 16:51:20 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Lukasz Majewski <lukma@nabladev.com>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jan Petrous <jan.petrous@oss.nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>, linaro-s32@linaro.org,
-	imx@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>
-Subject: Re: [PATCH v4 2/3] dt-bindings: net: nxp,s32-dwmac: Use the GPR
- syscon
-Message-ID: <176944234037.2470745.663646756174541534.robh@kernel.org>
-References: <cover.1769195864.git.dan.carpenter@linaro.org>
- <63369be0ec8a49294462f7ec061a7066b8ce9425.1769195864.git.dan.carpenter@linaro.org>
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Lukasz Majewski <lukma@denx.de>
+Subject: Re: [PATCH v2] clk: vf610: Add support for the Ethernet switch clocks
+Message-ID: <7671b833-f823-44cd-b5af-0b473a8ae23e@lunn.ch>
+References: <20260126115349.1750578-1-lukma@nabladev.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -52,28 +52,36 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <63369be0ec8a49294462f7ec061a7066b8ce9425.1769195864.git.dan.carpenter@linaro.org>
+In-Reply-To: <20260126115349.1750578-1-lukma@nabladev.com>
 
-
-On Fri, 23 Jan 2026 22:51:15 +0300, Dan Carpenter wrote:
-> The S32 chipsets have a GPR region which has a miscellaneous registers
-> including the GMAC_0_CTRL_STS register.  Originally, this code accessed
-> that register in a sort of ad-hoc way, but it's cleaner to use a
-> syscon interface to access these registers.
+On Mon, Jan 26, 2026 at 12:53:49PM +0100, Lukasz Majewski wrote:
+> From: Lukasz Majewski <lukma@denx.de>
 > 
-> We still need to maintain the old method of accessing the GMAC register
-> but using a syscon will let us access other registers more cleanly.
+> The vf610 device has built in the MoreThanIP L2 switch. For proper
+> operation it is required to enable ESW and MAC table lookup clocks.
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> The MAC table spans from 0x400E_C000 for 0x4000 and it is necessary
+> to provide clocks for each AIPS1-"slot", which size is 0x1000
+> (hence four separate entries).
+> 
+> Those can be enabled via clock gating CCM_CCGR10 register (0x4006_B068).
+> 
+> This patch also adds VF610_CLK_ESW and VF610_CLK_ESW_MAC_TAB{0123}
+> macros definitions for L2 switch.
+> 
+> The VF610_CLK_END has been removed as its number had to be increased
+> when MTIP L2 switch clocks were added.
+> 
+> Signed-off-by: Lukasz Majewski <lukma@nabladev.com>
 > ---
-> v4: Fix the formatting issue Rob pointed out
-> v3: Better documentation about what GMAC_0_CTRL_STS register does.
-> v2: Add the vendor prefix to the phandle
->     Fix the documentation
-> 
->  .../devicetree/bindings/net/nxp,s32-dwmac.yaml      | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
+> Changes for v2:
+> - Squash clock DT bindings to this single patch
+> - Replace VF610_CLK_END with VF610_CLK_ESW_MAC_TAB3 + 1
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+I'm not sure this is the correct thing to do. Normally these _END
+values are there so you don't need to change any code when new things
+are added to the list. 
 
+Why not just keep VF610_CLK_END at the end, with the value of 196?
+
+    Andrew
