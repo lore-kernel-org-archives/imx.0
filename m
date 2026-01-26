@@ -1,157 +1,209 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012013.outbound.protection.outlook.com [52.101.66.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF93347FD1
-	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 16:49:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769446188; cv=none; b=EtjuZi0/hB/sShLpHtJwlNKXjJGvR6MKExX1wx1TwDAcjtC/C0GKNoy2WZd2bq6h/7uLqbxWSutYoajlgYLzB4xvOaB0ApoS7gqDw7mNXHECRcmZ75bE2Tb87BliP2S2T4tD9stXPwPp5Sy480zrJVhojNH28rBWxzYwfdBCiuQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769446188; c=relaxed/simple;
-	bh=wcDl92qrj6gtr3M+a+7Ixmj+6kaZn8WOD9ZkxcA6MLQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o+Mh9rE72iX8eAmLEBn3bpDKVCKfxIwOjTN08rfU6aq3ECrF0pTM3SvtMjznfO30ZPpa1cQqQd2I0YgKGKtJJne0hM7C43Y3NBukU/djSclZn0gqjhcB53J7c8fk9rGN7PCREadXwNPkzriBuPsxVfq7+D87g1/mZgYpdD7CEo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L2SLloSW; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07123009D4
+	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 17:49:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769449792; cv=fail; b=ZtUpxIJAjIujkrfL5Wh+tRElNSRAKV7W/YASyP/lV/QC9/W7YGaW9XwxY1o1ebezaR/fKUKQeddx7j10yxLKbkecClbTlAGnUuOdvoxjBZs0k1AKbOFjX33m9tHaXk/VoU57lztR/ynJ5K6W3mMLp5Ht3htkvKpG2yE+982lEBw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769449792; c=relaxed/simple;
+	bh=Ju2hUIpcLgGILM7lkF3zFL0ktYp99eyP61CPKGttgY4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=et36KiY860qrzldngcAlw7g6iGx7qQLR4ks+gQB4/HI4rdE/KMN9OlkQ7jqPH0/atqgOpI0An4y0Wv8hwHNoZqyEBkpLn8Y8eFpHPlTESovxGJHS0sFRRSWJlFrFBGEFtxKSIQt5+xD3opw0tZJ4/H0tCPBVzBRrhvf+EkN//jA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Sj2JDsBQ; arc=fail smtp.client-ip=52.101.66.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L2SLloSW"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a7bced39cfso52282745ad.1
-        for <imx@lists.linux.dev>; Mon, 26 Jan 2026 08:49:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1769446182; x=1770050982; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YKR5exgvtJ4nN+wmy7UGkJjcYwJf1VIP0gn7pcEz2lI=;
-        b=L2SLloSWsrKUZl3kuBUvShpqYn5dfIRBPyAfttEVq39UjFRsuTHDwgelpoT5O48XpT
-         jWYdKcHePCuU13miQTF2ermF45xbBV0jA06h1m+Ra3HmVEFVmDy+5GQdpnO0n/VPqzBG
-         Ma8JeFh7CYurrTslxZUoJjZcP5vqQxQgjE5KVTR93ijgG/OegVmr3AQh9HXUvYfD/G13
-         pxWNZFUUAuKrpM7DiT349SaHn53fnJZ+qFpIldnavXrVqisXLAyQSzs++ogrAwJhx3ij
-         57TRLeTmcnuNthadgPTeZODNnwBSekjzrBlehgXY7Cwu6isa/XJLbVREfxpQT3y0oRds
-         GlkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769446182; x=1770050982;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YKR5exgvtJ4nN+wmy7UGkJjcYwJf1VIP0gn7pcEz2lI=;
-        b=UhLQgH0ZRHt2Gs+HRfqNHesVfJNJZfu2V0TPtg0gF5ptbJk4/nRgkATLF/VTLi5zIx
-         dW7wDHE8SHY9ScWR4b6V5VoIXKgI9PYohlGO3D8hHJ/s3hgJ9Kq4NBM9fwjw5RHvOW/x
-         FMF+PHGi3Azys017Iy66pbZVc1ebKIHPzsHl1VnzkEPOxu6w2XkeYwtyLym6FSY8nRnR
-         Fc6v2M+KqtCX9P9cFSN9prUyduRQtp3eK8BoNO/zIPJ1PNcVndZt7vhr2x/3DeSptSAl
-         fSU+kkZtcgJcpD6T50bd0+GvWvUnOcEMewi9NCJfWMeTsMmCXRF4qSBaEZ2VNQARVFxo
-         WXhg==
-X-Forwarded-Encrypted: i=1; AJvYcCXzk6Eb5iWON+wXNsl2eyjiD2nKJLTm/wFeXGvKkb++X43YBgAxqF4r+NR03gFWO6RBiSk=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxgidUXDzSHAL+FJWI1f44HEvFMvkuwDudHZ88wp3FUGbWzQXh3
-	W+Fk6RGvgG2/3dKstI8QSZnkE3aDXD5iulA7m3hNqkdsLxsApADOqjZ/a0YPT5byR+k=
-X-Gm-Gg: AZuq6aIo6ejNS70Mzt+apQYRypopkT5bDCKh4+qLTW37t6rjIaQCLHsm0R1EogjrC7+
-	ggQgkr6gpAooTsO8pQ1BPqGIGEc/xaFTDwjQteBMwNio6jGGQBhxnnO3T+3XcaeriWP6fr9P98d
-	VQ8aZeqECiYSvbUDGDj2IxmkzzCk5YYFHPM81Q8rk17638LvEYJRoymBwdqJFHK0vkfLaVnMQw2
-	4EvpWdUoqaSxx8cRG4NC+jtpvOiZtm2ZVA4N9C+/eMkxQwPOAsPYQZYjemgR849cqkNKx9hYxRA
-	lS25qdH4OwXoWIIwvUDAfuC6KkRNwlUH4jzCypx2nS4lf2VTQpiCa3Mx0oqn9mf3DKDfSruoJcO
-	MQJDGy7ouDa7SI8ARwq8+f3bIgUTF1GpRavUjMmYd1u1/DQDHrUmuWq/HJLBPjo7dpsokAPsn2Q
-	5Eqn9BOEwrxyUQcQ==
-X-Received: by 2002:a17:903:11c3:b0:2a2:caca:35d2 with SMTP id d9443c01a7336-2a845224d47mr49945825ad.16.1769446182265;
-        Mon, 26 Jan 2026 08:49:42 -0800 (PST)
-Received: from p14s ([2604:3d09:148c:c800:6260:7bcf:7e2d:fa8d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a802dcdb8csm94531115ad.31.2026.01.26.08.49.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 08:49:41 -0800 (PST)
-Date: Mon, 26 Jan 2026 09:49:39 -0700
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Sj2JDsBQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=T5ioW9aOhtplDbKDCbYPxydKHzqIX4xjAEWk0kicyP3BcDhp89Vz9LPMzi0o3aahXavdWGoJiponOHBeNTxTLgCvRx9egmx91xgR4Q/XKt3ibOrKsxvgVzkBVa3MshmdE2Yjru+tbFF1C8Fin6qhxxI8kKOZp1sHoBqEut/CMd2NqEVYgG4py37El0CSQaMfaj2sqN6MtiwhlB7HgY++SLnxhExWbjIEaFyavVKSW/ZyCQY26Xi9fLr8KWwHUqdYpcx3H/xNa58X8+2ayt7AAZcRf5kIS7FV3m+U8subVBig6YxFRF8+0cbrzw2rPjJWN2sVL5swXdbsO8VvKwaRbg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oQxarEQnATFJDykVCV7vIQFPjE/G8DbJxNyaID9eh/Y=;
+ b=sygGz88PH0K7r4hABJlm2O4ROUHtLKcG29Sako0lR4zPx3lZ1WGOYtPY9jQ38T+5I4MrDLP9N90Hob1vm8JvRxGbOLu83ofe9FfjS8dewot/xmoYPv+jSPJodJApi8Xgq/8gflrJ4WDxefOEKcvsojsnd53pp1Q4nLMO0OG+izuHTcIxdVlS1DKBFC0eHGZe/44Ji5FvB4sSgh8HwymcyzdkGGx4aRtwXrwS+7p8E7YLSclLAV7tdu88xNxjcTDvcF0u/zKNAvaruiUjbW3Px6cCGx2eYVqTKwki3qT69CG/ow1Jh/cI0tIk8x9q1rDBJ+ckYYFKxoHFgt/HVTEMvA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oQxarEQnATFJDykVCV7vIQFPjE/G8DbJxNyaID9eh/Y=;
+ b=Sj2JDsBQYnPLj2WZVQBZDyGGi6n5lYCtZ2BmUsdtf4YYj3Utla7mT/cNHR2PaLNVCdA1qFqdtbvj0lhNZe1P3dIH1pJlhvoBQC24k2zglOOjiW5XBUsedrHCkTebWQ4BTKG/blHkc1mof/0z77BPtoY/y87RJz1f07BGs98/VOW1dpRP3BCpd3pAjvhS+m9/vlGos5u6m9XOWkE9vtrUZUe4CrFi4PhoWTTn4HUH2aa0nFgkqwmmmxxZgXj2uB0aEkZ/hxP64msbY93oDs++eUxZK2hVOXdZuY8MTHy1rVhd/eA8vtri2ETTb9XVg+SiBi9C9uK7tIbKQ5f93YS7oA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by DB9PR04MB11558.eurprd04.prod.outlook.com (2603:10a6:10:60c::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Mon, 26 Jan
+ 2026 17:49:49 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9520.005; Mon, 26 Jan 2026
+ 17:49:49 +0000
+Date: Mon, 26 Jan 2026 12:49:39 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Felix Gu <ustc.gu@gmail.com>
+Cc: Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>, Frank Li <frank.li@nxp.com>,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] remoteproc: imx_rproc: Not report loaded resource table
- when none
-Message-ID: <aXebIztkPihBsLRK@p14s>
-References: <20260122-imx-rproc-fix-v1-1-36cc64369a40@nxp.com>
+	Trent Piepho <tpiepho@impinj.com>, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] PCI: imx6: Fix device node reference leak in
+ imx_pcie_probe()
+Message-ID: <aXepMzJJXRz9G2rf@lizhi-Precision-Tower-5810>
+References: <20260124-pci_imx6-v2-1-acb8d5187683@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260124-pci_imx6-v2-1-acb8d5187683@gmail.com>
+X-ClientProxiedBy: SJ0PR03CA0270.namprd03.prod.outlook.com
+ (2603:10b6:a03:3a0::35) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260122-imx-rproc-fix-v1-1-36cc64369a40@nxp.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DB9PR04MB11558:EE_
+X-MS-Office365-Filtering-Correlation-Id: 17fa414c-08e4-434f-991c-08de5d034cec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|52116014|7416014|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?S/AwcNvCHXQoU7ZYx6MzptmkjEPgLNH9hVPzi23o3hSaqsK+p/sEwOGB9Xaa?=
+ =?us-ascii?Q?RaCdhbH2Mynx8ctrX71riY7DfxwmDJcMObIfPuS37dbOn+kG/IIYXMZRo4tq?=
+ =?us-ascii?Q?//1lkZiQXOxW0lKNwwtccQ8BzQ/N7Qk+l/kx6p0tVLi7oSlsbGMSOL8NLVJh?=
+ =?us-ascii?Q?7ufR1rbZYjmuyX+yp0QLwp5DUXtJqoWsQGuXWwv+RwFpamqbmAF30S8FTsRl?=
+ =?us-ascii?Q?TrHIJdtTCo3lxG7b26+TWMiMn8mjM5XypYxrv5CBXKR+8gpHLJJDBQB58OEF?=
+ =?us-ascii?Q?UKaGhoKxt1TpMBQCDxYI4EuWJllz4YbyE5javdRnxqwV8E54dY03SKfoHM7Q?=
+ =?us-ascii?Q?0HRFoYzvZWgjzEQjwoUOU9sApS2DcdaInCMcXQa3ok+jo+gxSPJI5k0hdoCd?=
+ =?us-ascii?Q?U4BUG6o52dqdVnAd/FTuW3Q6NJBpsfrtxoeFyog1Lvt5Un1cDtxxDMevUIcS?=
+ =?us-ascii?Q?Vy4tX51nXo2SN3bm9di2AemIUBBh6CtZxrPaP+GQSjio/Uvc2jTwUdgfo80w?=
+ =?us-ascii?Q?IwR5v/2ShjuEhrUy1+oM2ba3wWICMsK8arTiq0C/XeOgeLfif6KEyaIuyQQW?=
+ =?us-ascii?Q?fCUKf6J2ZGcT3nAfArOkmtRTUuzQjHYqdHW2YGQqell7qgzY/zJatURlneJK?=
+ =?us-ascii?Q?rq5HXml8mtNS9MHQ7KA2Iq89WX+iLJzzQIPkYN/C7w3PPPTFiXawTC3C3C5N?=
+ =?us-ascii?Q?e0pwwhktSvloGbUtJBTI95rE+pT1jnn45/f0Ze7NPmFhC1jvm1kq29jJgniZ?=
+ =?us-ascii?Q?rSV6bdLYGjuwly13E85po2nyDLZ2GdCqq6xTc/SfV1U1lqfxi2Er6j7mvWVE?=
+ =?us-ascii?Q?gz6wI9Kys2E2goYyz+ipGwj2zD9gVeNHgYFOTDJfF9RdMcNlv9KxL0/8RlnU?=
+ =?us-ascii?Q?NcXWbZaf+R0/wqaHXBikNWCoCQaUJsB+hhIGQbvG3EajMAhN12Udw3idXrId?=
+ =?us-ascii?Q?EQGEouCqwJtb6ZydCTwFOTIIUhQSUDkvADbsEKyy/qQvekOUaGaU6Dz34jZn?=
+ =?us-ascii?Q?7GJf9dHZWMtO0ggn51T60wcfrs9xWjCrAtatwNSLFw39EfK3K6JmU4w+O4Uj?=
+ =?us-ascii?Q?1Mnylc4y/Z/Zw0PWXcw/igZn/uQROKAHw26RwHkJLuLWOHNv2t85qfiMknzT?=
+ =?us-ascii?Q?Csss/9gGx+WaJvsqF+K2RcG9TEh5apz1WuGC4+RMhYBJnFuoqpemUH/LnqgH?=
+ =?us-ascii?Q?RKXPx09qub00whAhGl7w84/tW2tQkh7h5UylDKAVKT3A+8pYPPw+xtRpEgPU?=
+ =?us-ascii?Q?8Fn632Sklobm3aX4fSHIj2Rj25eTnaEWf2+WgYP15nXXnLlj3qFTTL0coDHx?=
+ =?us-ascii?Q?PGUoPr6vSsvgAJBXQo98jntglx2k7Xrh070n6oIRmDKvk3NUM6fmoj8fSSss?=
+ =?us-ascii?Q?EKPzkhu9YWsDhhcp+A+iPgkeE13lkOXPE47OpKl+iOm75VI+GZ91TWfEzfOE?=
+ =?us-ascii?Q?PExSCc29YCkO6MUwUHLfbNM/KXViubCfleQHtEsNxUJgoze0RnEs3HlADc2K?=
+ =?us-ascii?Q?XavrQrpaTX1U54GPR3ZLnfnH1A8mCKnKOruZZBjxLndOTOp5jacc7FDnViXX?=
+ =?us-ascii?Q?wTKrOtKtu3YpLklp+QDWBFJTmeJKB22JyVQZuESBtysendjvwdFNkTlZf/rf?=
+ =?us-ascii?Q?u7rh//DLsVUCbc0SH7Zj+qE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(52116014)(7416014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?qWJ9lIAD3txm9B5H1htFUOmWlwi4y6PwqKw4ykF41v59ass1YfHmcw39lGFU?=
+ =?us-ascii?Q?k0FdUFjFIP5CtaSe9YddpfrID9J+/vERqy/4RMkOAgrCQGOAb6tKNPXk9CnS?=
+ =?us-ascii?Q?4HlpF5C1f3jNeRTCwpvTXZYMr3J6Jt4kuQt/OCWv1XLnuauEpxtbm+UeY6Rz?=
+ =?us-ascii?Q?97LTpVBOp/12vo8GNf6hdlyQZNPIKBfYMRlHWhNQwN9yRCCrOpjmbtPtdt2g?=
+ =?us-ascii?Q?7KjC+B/XHrYC98+lgkY7O7CVVehl16uR6jpUdvjfr4sp5cZu7B2VR2Z+MLWj?=
+ =?us-ascii?Q?kgjaVcDFY3VbDrkNcuP0nJ7s4lqrcQ9xffJNMwVCuRhGyCHkMTP/Dx+BrSn4?=
+ =?us-ascii?Q?09yTTSvEte4JLwVZCY32Gks5wEeZS1owgYFQKEHBAuH17z22k00TcCBT2Ff3?=
+ =?us-ascii?Q?S/3uU7cl5KPeXfbsGy7eHB+0ds+hjN1Z8BDVxOCtkfz+eRMRUXp7LG9jIvwZ?=
+ =?us-ascii?Q?x/t/5dIUl5+8qz7jwpr9JeQclwCo86o2dSvDHWlakHM2NEOx8oadBYKti6+O?=
+ =?us-ascii?Q?Sn0uIweHqJtlPFRYFYr+iTxRjrf9rhQTdsdb4ZMwKXjUPfp61S78grMj6Z7d?=
+ =?us-ascii?Q?D28fWjztVKPm7MvF07RC3UxmbU5Eo1Y+W+pKu7XU0/PvMcJLJ3N01o6UXOxy?=
+ =?us-ascii?Q?XZuMvyksM9YWuEUzvUMX1vf4n7Z/qaE7niz42AdaW5i7onhqoFWQkfen0kO1?=
+ =?us-ascii?Q?0Wjof7YiLtkBkwxXTGGDf7w9o4bLC8NQYiPdalmsp/0bpo2+/YJQDQI8LXYw?=
+ =?us-ascii?Q?Y+w1SQ9DlGl8pppGqMkU3t1hAbEarNtF4YOfRILi09qTV08qRNCqvwbHTmiF?=
+ =?us-ascii?Q?NnK7X8jLLqmjXIwUmioE4FqeAiHzBPhTUDb86gsAdMUwJvsN2iXfG/JZ0UIe?=
+ =?us-ascii?Q?Pjmk9DISl44I6+rvwKnGjvi59kRp1omT4ID2+ZWOp78K5o2soTfoe0TG0QY8?=
+ =?us-ascii?Q?en6j8t/dmdLYi6Lpy2C4471OwidEH85uWgtYn6cr3tA1Qb+h/OuGBl6lFEZ/?=
+ =?us-ascii?Q?/3C+7cBjaqAllBW+GmG2Dq0W2Cs1kUE2v5jE/s0i8yDgteEKMSggW4rlGWTF?=
+ =?us-ascii?Q?qGA2n7c6cKC6awp3/c/+dXiYjab3FFRvinBP15nm1xku0yO1j45WaplEauF+?=
+ =?us-ascii?Q?r0ijV9pA+bEKllzzO9u7CBilkUMTnnqJPONYG8W4SZ4rSqTIF1ZhjqdWsyPP?=
+ =?us-ascii?Q?WSaeXKxY5nIJrreyYHXEK1AKbUXvCW1/Fbmf6XfKV6nneMlphZNMX4S1aH72?=
+ =?us-ascii?Q?O1zze6OqwRQvFEfIEzuQvbcx5Yp5iTdYsgXgWJCcBdfZcJa0x6Pfradu9Z1+?=
+ =?us-ascii?Q?pItZ3L9GQe7hzm7W9jTjtrESB3QWgDFQUVlGtlLjuNGdoNfiPkUrA4Y2VNjA?=
+ =?us-ascii?Q?cU4FYFAreCePkVNKlhEhW0nqaGYIGRrwrmtT6ZvvLd00E1DooBhud4PoF+9e?=
+ =?us-ascii?Q?TVBGN5JKWOjH59aHRebN4p32GewVBTIkGrWcLIeLOpqmnafXyGeQcHdYZ7RI?=
+ =?us-ascii?Q?vnNJw5l3cgYPK+/k/4JUdvk3RlIksOBo1Yo0t0AmjcN5rFIT30B/JnItMscq?=
+ =?us-ascii?Q?LDGq1VchZh0E/qV54hGiftWxWD0JWjlTJgROdy7IDgSUbEK2IGCK+RTzyNDr?=
+ =?us-ascii?Q?KUjaxQbV1vhlH6oj7BEa/wKQvKt9LYNXX9sKJ8IJQh3t/YJGbLJoLD6Czqlc?=
+ =?us-ascii?Q?XOS7gTduaxmc0PtAJJjV35lJ9+c6KjiA8M+C0upkGXtzWg76?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 17fa414c-08e4-434f-991c-08de5d034cec
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 17:49:49.2750
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ONGob71POxvLkPf1YRQklwuPFE7SZ03lVK4S1aJq4mDjLGNH9Dz7bwoSaFitb4O00NWAEtO9fnrSaeRmx440mQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB11558
 
-Good day,
-
-On Thu, Jan 22, 2026 at 11:24:43AM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
-> 
-> When starting a firmware without a resource table after previously running
-> one that had a resource table, imx_rproc_elf_find_loaded_rsc_table() may
-> incorrectly return a valid device memory pointer (priv->rsc_table).
-
-priv->rsc_table is not NULL if the DT has a "rsc-table" entry, indicating that
-_if_ there is a resource table in memory, that's where it should be.  Function
-imx_rproc_elf_find_loaded_rsc_table() is buggy so the narrative about a
-previously running FW with a valid resource table can be dropped.
-
-> 
-> In this case rproc->cached_table is NULL because the current firmware does
-> not contain a resource table, but the remoteproc core still interprets the
-> non-NULL return value as a loaded resource table and attempts to memcpy()
-> from rproc->cached_table, leading to a NULL pointer dereference and kernel
-> panic.
-> 
-> Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table() when
-> there is no cached resource table for the current firmware. This ensures
-> that a loaded resource table is only reported when a valid cached_table
-> exists, which matches the remoteproc core expectations.
-> 
-> This issue can be reproduced by:
->   1) start a firmware with a resource table
->   2) stop the remote processor
->   3) start a firmware without a resource table
-> 
-> With this change, starting a firmware without a resource table no longer
-> causes kernel dump.
-> 
-> Fixes: e954a1bd1610 ("remoteproc: imx_rproc: Use imx specific hook for find_loaded_rsc_table")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+On Sat, Jan 24, 2026 at 11:42:45PM +0800, Felix Gu wrote:
+> In imx_pcie_probe, np is obtained by of_parse_phandle() and must be
+> released when it's no longer needed. However, it doesn't release the
+> reference, which cuases a reference leak.
+> Fix this by using the __free(device_node) cleanup handler to release the
+> reference when it goes out of scope.
+>
+> Fixes: 1df82ec46600 ("PCI: imx: Add workaround for e10728, IMX7d PCIe PLL failure")
+> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
 > ---
->  drivers/remoteproc/imx_rproc.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index 375de79168a1c8d11b87ac1bd63774a3feac106d..cf044b385b58fe1e17d0fc440c243d76ecf020ae 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -729,6 +729,10 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *
->  {
->  	struct imx_rproc *priv = rproc->priv;
->  
-> +	/* No resource table in the firmware */
-> +	if (!rproc->cached_table)
-> +		return NULL;
-> +
 
-I think rproc->cached_table should be kept for internal remoteproc core usage
-only.  Please use rproc->table_ptr.
+After fix Bjons's comments.
 
-Thanks,
-Mathieu
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
->  	if (priv->rsc_table)
->  		return (struct resource_table *)priv->rsc_table;
->  
-> 
+> Changes in v2:
+> - Use __free(device_node) clean handler to fix the leak.
+> - Link to v1: https://lore.kernel.org/r/20260124-pci_imx6-v1-1-6f4379fc5160@gmail.com
 > ---
-> base-commit: e3b32dcb9f23e3c3927ef3eec6a5842a988fb574
-> change-id: 20260122-imx-rproc-fix-e206f8e6e477
-> 
+>  drivers/pci/controller/dwc/pci-imx6.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> index 1d8677d7de04..f459d05ecd7d 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -1643,7 +1643,6 @@ static int imx_pcie_probe(struct platform_device *pdev)
+>  	struct device *dev = &pdev->dev;
+>  	struct dw_pcie *pci;
+>  	struct imx_pcie *imx_pcie;
+> -	struct device_node *np;
+>  	struct device_node *node = dev->of_node;
+>  	int i, ret, domain;
+>  	u16 val;
+> @@ -1670,7 +1669,8 @@ static int imx_pcie_probe(struct platform_device *pdev)
+>  		pci->pp.ops = &imx_pcie_host_dw_pme_ops;
+>
+>  	/* Find the PHY if one is defined, only imx7d uses it */
+> -	np = of_parse_phandle(node, "fsl,imx7d-pcie-phy", 0);
+> +	struct device_node *np __free(device_node) =
+> +		of_parse_phandle(node, "fsl,imx7d-pcie-phy", 0);
+>  	if (np) {
+>  		struct resource res;
+>
+>
+> ---
+> base-commit: a0c666c25aeefd16f4b088c6549a6fb6b65a8a1d
+> change-id: 20260124-pci_imx6-f97d70887dfc
+>
 > Best regards,
-> -- 
-> Peng Fan <peng.fan@nxp.com>
-> 
+> --
+> Felix Gu <ustc.gu@gmail.com>
+>
