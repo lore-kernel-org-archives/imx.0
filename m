@@ -1,228 +1,117 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE491DE8BE
-	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 18:18:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4456F281357
+	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 19:33:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769451542; cv=none; b=PQH3oIDTznDi2B/MTPP46fL2GH+n8v4DHyKKHc+k1veJN0/PEWqEkNH9hZ94Ni81NWPNZi7ABYHvZjR9viKPPBn8XW51Y6wB2NE8GKdiHNdwB92ypnxCe48l/IP29hfZkMzNJJcb7ReaphunBf7kgKljOEfILs3FOUADS8oBUfI=
+	t=1769455999; cv=none; b=l4g8v+j2VhbgOCakke3/CjLXow/iqS/maUm+LIXqtSYLm/6SyDxqaOwwR1C10q8Kw1lS/dWUEgaKd4TGZOzsI+omMFf2d5fC7ZhLkj5EqzubXLI0zyLJhNRzfGGiS4PVy87aBx/7td3Uet0RxR18YWELLNENcWkUOHI4Jw1PIBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769451542; c=relaxed/simple;
-	bh=nUJDz3Krsa+J2Yf8rpXbhAKPggSYETDIXFRvihdG7aY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=maeeWFBaW9Q+ay8pG5W102xzadewRNe0bbVj42dHC/GeMY98DdDLL4Rp7ACguSU7vUJUoDVbYrZFBjzguG69es3xK4RHDmJSU1RTgKW90ZZyKRNrB9THbm/4Q3g0Xf7MygIlXgVtaHpI5L/fGw6GAdwmK1wkxDRkgHsuGNVFJ0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=NcArdz7x; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1769455999; c=relaxed/simple;
+	bh=264+Xfb5c4awn+mzb3XEn33nMkHF+cNYJxf99O8WpCE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RMJfrXGFjd4oeMDG7PsG0WbkWsrtE/Lnoq1kTZs8fbQDw+Qrw+pyz5hHJf8RCrMvV2/Cyn/5P8b8wQiGeh+ALqFeEdJRqbHqXYNKYVA6HZFDuOj9QNI1egoplFJrVB1pM//L8jppyhpIWa4xUhBMnEYZGJglWxFfr8o2IVPMlGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=Y3KtdntC; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="NcArdz7x"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 0B921C214CF;
-	Mon, 26 Jan 2026 18:18:58 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3774260717;
-	Mon, 26 Jan 2026 18:18:56 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 79086119A8652;
-	Mon, 26 Jan 2026 19:18:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769451534; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="Y3KtdntC"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8C7A310CB40;
+	Mon, 26 Jan 2026 20:33:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1769455995;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=ls3taMwzvNNXHeVbQeNP5rFTYcAY6U5onCvB1yfNoQ8=;
-	b=NcArdz7xzE0B9ZKlGEpC4zys8TGIgogLWz9VpMtrP6U+Em5MEEDrFaMiAA9LMfnJOpreJv
-	+ZdWvIbH72LlOeGJQrsfZtHfGRyEexTvGXSZH6iMeG+1cpyK2Fi1EIwRshDDheiXKzKyd6
-	wFNvp/9Bn4tLGNKIVhFjrKh4uJQ0WTU3BXvL2twizcVRwZbaeSzyo4fl5XICglLCoCeaC/
-	xitZfUwjJmHl2YgbfQWLn4TR5aftP7+FMbOufQuPhkrL8oZwOx17YjlVJQgnJ5ioVgpTfz
-	aYri0JDVyWhMbP97zYlt7JDxojnKMCruFM1l22lKmreDdrZRvqinZs6aNjVMCA==
+	bh=wt4OrgVEIcV51CcZvKwLJ3NpZgfF1uIkSphQcpsf+Cg=;
+	b=Y3KtdntCmeXAWNwkilx8KtuOSSR6ibCodG6TqhiDsMDNqKcTcgeKkaMlcQoZxFAgx9NLsk
+	dFYIcxCns5jSTjaaFYtky8wd46Hy1TKGicr0PD5peIHmjVI8JOayhJ37s5x0t6vTcnCLVy
+	tJAHnv0a8xyJKPCiAlRxcjCv4H8I/ZoSFMbbDcD8OvlLlwn2Sk6kGyXJbU1F8VVeY5qvif
+	tcjnkppQEGgHmZWXaEnVsfSq/CorQPwKsz7ryjnX2MS+sBNvplNgtpl/k9c+0JU0IneCdo
+	QHG59G0vIoslHAtYiq2gtBpJMH/qUmiAQImbXkOslbhToepYAy0tSOn/WVr/YQ==
+Date: Mon, 26 Jan 2026 20:33:07 +0100
+From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukma@nabladev.com>
+To: Andrew Lunn <andrew@lunn.ch>, Conor Dooley <conor+dt@kernel.org>
+Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, Michael
+ Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Shawn
+ Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2] clk: vf610: Add support for the Ethernet switch
+ clocks
+Message-ID: <20260126203307.6076ba9c@wsk>
+In-Reply-To: <7671b833-f823-44cd-b5af-0b473a8ae23e@lunn.ch>
+References: <20260126115349.1750578-1-lukma@nabladev.com>
+	<7671b833-f823-44cd-b5af-0b473a8ae23e@lunn.ch>
+Organization: Nabla
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 Jan 2026 19:18:47 +0100
-Message-Id: <DFYQ7TS25SQT.2F7NBYOP8P5R4@bootlin.com>
-Subject: Re: [PATCH v4 4/4] drm/bridge: imx8qxp-pixel-link: get/put the next
- bridge
-Cc: "Hui Pu" <Hui.Pu@gehealthcare.com>, "Thomas Petazzoni"
- <thomas.petazzoni@bootlin.com>, <dri-devel@lists.freedesktop.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-kernel@vger.kernel.org>
-To: "Liu Ying" <victor.liu@nxp.com>, "Andrzej Hajda"
- <andrzej.hajda@intel.com>, "Neil Armstrong" <neil.armstrong@linaro.org>,
- "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
- "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Shawn Guo"
- <shawnguo@kernel.org>, "Sascha Hauer" <s.hauer@pengutronix.de>,
- "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam"
- <festevam@gmail.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.20.1
-References: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-v4-0-a62b4399a6bf@bootlin.com> <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-v4-4-a62b4399a6bf@bootlin.com> <e2536229-f8d9-4d65-8211-cf445677bef2@nxp.com>
-In-Reply-To: <e2536229-f8d9-4d65-8211-cf445677bef2@nxp.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hello Liu,
+Hi Andrew,
 
-On Mon Jan 26, 2026 at 9:06 AM CET, Liu Ying wrote:
-> Hi Luca,
->
-> On Wed, Jan 07, 2026 at 10:56:29AM +0100, Luca Ceresoli wrote:
->> This driver obtains a bridge pointer from of_drm_find_bridge() in the pr=
-obe
->> function and stores it until driver removal. of_drm_find_bridge() is
->> deprecated. Move to of_drm_find_and_get_bridge() for the bridge to be
->> refcounted and use bridge->next_bridge to put the reference on
->> deallocation.
->>
->> This needs to be handled in various steps:
->>
->>  * the bridge returned of_drm_get_bridge() is stored in the local tempor=
-ary
->>    variable next_bridge whose scope is the for loop, so a cleanup action=
- is
->>    enough
->>  * the value of next_bridge is copied into selected_bridge, potentially
->>    more than once, so a cleanup action at function scope plus a
->>    drm_bridge_put() in case of reassignment are enough
->>  * on successful return selected_bridge is stored in bridge->next_bridge=
-,
->>    which ensures it is put when the bridge is deallocated
->>
->> Reviewed-by: Maxime Ripard <mripard@kernel.org>
->> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> On Mon, Jan 26, 2026 at 12:53:49PM +0100, Lukasz Majewski wrote:
+> > From: Lukasz Majewski <lukma@denx.de>
+> > 
+> > The vf610 device has built in the MoreThanIP L2 switch. For proper
+> > operation it is required to enable ESW and MAC table lookup clocks.
+> > 
+> > The MAC table spans from 0x400E_C000 for 0x4000 and it is necessary
+> > to provide clocks for each AIPS1-"slot", which size is 0x1000
+> > (hence four separate entries).
+> > 
+> > Those can be enabled via clock gating CCM_CCGR10 register
+> > (0x4006_B068).
+> > 
+> > This patch also adds VF610_CLK_ESW and VF610_CLK_ESW_MAC_TAB{0123}
+> > macros definitions for L2 switch.
+> > 
+> > The VF610_CLK_END has been removed as its number had to be increased
+> > when MTIP L2 switch clocks were added.
+> > 
+> > Signed-off-by: Lukasz Majewski <lukma@nabladev.com>
+> > ---
+> > Changes for v2:
+> > - Squash clock DT bindings to this single patch
+> > - Replace VF610_CLK_END with VF610_CLK_ESW_MAC_TAB3 + 1  
+> 
+> I'm not sure this is the correct thing to do. Normally these _END
+> values are there so you don't need to change any code when new things
+> are added to the list. 
+> 
+> Why not just keep VF610_CLK_END at the end, with the value of 196?
+> 
+>     Andrew
 
-Thanks for having found the time to go into the details and provide a
-careful review of this series!
+Conor (on CC) explicitly asked to remove VF610_CLK_END:
+"[PATCH] dt-bindings: clock: vf610: Add definitions for MTIP L2 switch"
 
->> --- a/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
->> +++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
->> @@ -23,7 +23,6 @@
->>
->>  struct imx8qxp_pixel_link {
->>  	struct drm_bridge bridge;
->> -	struct drm_bridge *next_bridge;
->>  	struct device *dev;
->>  	struct imx_sc_ipc *ipc_handle;
->>  	u8 stream_id;
->> @@ -140,7 +139,7 @@ static int imx8qxp_pixel_link_bridge_attach(struct d=
-rm_bridge *bridge,
->>  	}
->>
->>  	return drm_bridge_attach(encoder,
->> -				 pl->next_bridge, bridge,
->> +				 pl->bridge.next_bridge, bridge,
->>  				 DRM_BRIDGE_ATTACH_NO_CONNECTOR);
->>  }
->>
->> @@ -260,7 +259,7 @@ static int imx8qxp_pixel_link_find_next_bridge(struc=
-t imx8qxp_pixel_link *pl)
->>  {
->>  	struct device_node *np =3D pl->dev->of_node;
->>  	struct device_node *port;
->> -	struct drm_bridge *selected_bridge =3D NULL;
->> +	struct drm_bridge *selected_bridge __free(drm_bridge_put) =3D NULL;
->>  	u32 port_id;
->>  	bool found_port =3D false;
->>  	int reg;
->> @@ -297,7 +296,8 @@ static int imx8qxp_pixel_link_find_next_bridge(struc=
-t imx8qxp_pixel_link *pl)
->>  			continue;
->>  		}
->>
->> -		struct drm_bridge *next_bridge =3D of_drm_find_bridge(remote);
->> +		struct drm_bridge *next_bridge __free(drm_bridge_put) =3D
->> +			of_drm_find_and_get_bridge(remote);
->>  		if (!next_bridge)
->>  			return -EPROBE_DEFER;
->>
->> @@ -305,12 +305,14 @@ static int imx8qxp_pixel_link_find_next_bridge(str=
-uct imx8qxp_pixel_link *pl)
->>  		 * Select the next bridge with companion PXL2DPI if
->>  		 * present, otherwise default to the first bridge
->>  		 */
->> -		if (!selected_bridge || of_property_present(remote, "fsl,companion-px=
-l2dpi"))
->> -			selected_bridge =3D next_bridge;
->> +		if (!selected_bridge || of_property_present(remote, "fsl,companion-px=
-l2dpi")) {
->> +			drm_bridge_put(selected_bridge);
->> +			selected_bridge =3D drm_bridge_get(next_bridge);
->
-> Considering selecting the first bridge without the companion pxl2dpi,
-> there would be a superfluous refcount for the selected bridge:
->
-> 1) of_drm_find_and_get_bridge: refcount =3D 1
-> 2) drm_bridge_put: noop, since selected_bridge is NULL, refcount =3D 1
-> 3) drm_bridge_get: refcount =3D 2
-> 4) drm_bridge_put(__free): refcount =3D 1
-> 5) drm_bridge_get: for the pl->bridge.next_bridge, refcount =3D 2
+------>8------------
+> -#define VF610_CLK_END			191  
 
-Here you are missing one put. There are two drm_bridge_put(__free), one for
-next_bridge and one for selected_bridge. So your list should rather be:
+If end is modifiable, it is removable. If you need the define for the
+driver, please move it there.
+------8<------------
 
-1) next_bridge =3D of_drm_find_and_get_bridge: refcount =3D 1
-2) drm_bridge_put(selected_bridge): noop, since selected_bridge is NULL, re=
-fcount =3D 1
-3) selected_bridge =3D drm_bridge_get: refcount =3D 2
-4) drm_bridge_put(next_bridge) [__free at loop scope end]: refcount =3D 1
-5) pl->bridge.next_bridge =3D drm_bridge_get(), refcount =3D 2
-6) drm_bridge_put(selected_bridge) [__free at function scope end]: refcount=
- =3D 1
+I just follow what he asked.
 
-The idea is that for each pointer (which is a reference) we get a reference
-(refcount++) when the pointer is set and put the reference when that same
-pointer goes out of scope or is reset to NULL. "the pointer is set" can be
-either of_drm_find_and_get_bridge() or an assignment, as each of these
-operations creates another reference (pointer) to the same bridge.
+-- 
+Best regards,
 
-Does it look correct?
-
-> I think the below snippet would be the right thing to do:
-> -8<-
-> {
-> 	...
->
-> 	struct drm_bridge *next_bridge __free(drm_bridge_put) =3D
-> 		of_drm_find_and_get_bridge(remote);
->   		if (!next_bridge)
->   			return -EPROBE_DEFER;
->
-> 	/*
-> 	 * Select the next bridge with companion PXL2DPI if
-> 	 * present, otherwise default to the first bridge
-> 	 */
-> 	if (!selected_bridge)
-> 		selected_bridge =3D drm_bridge_get(next_bridge);
->
-> 	if (of_property_present(remote, "fsl,companion-pxl2dpi")) {
-> 		if (selected_bridge)
-> 			drm_bridge_put(selected_bridge);
->
-> 		selected_bridge =3D drm_bridge_get(next_bridge);
-> 	}
-> }
-
-Your version of the code looks OK as well so far, but totally equivalent to
-what my patch proposes.
-
-Do you think splitting the if() into two if()s is clearer? Would you like
-me to change this?
-
-> ...
-> pl->bridge.next_bridge =3D selected_bridge;
-
-Based on the logic above the drm_bridge_get() is still needed here (both
-with the single if() or the split if()s) because at function exit the
-selected_bridge reference will be put.
-
-Luca
+Lukasz Majewski
 
 --
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Nabla Software Engineering GmbH
+HRB 40522 Augsburg
+Phone: +49 821 45592596
+E-Mail: office@nabladev.com
+Managing Director : Stefano Babic
