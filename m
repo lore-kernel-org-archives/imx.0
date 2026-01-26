@@ -1,113 +1,120 @@
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4212264A3
-	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 15:55:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769442910; cv=pass; b=iWXwW8k+wOhew9ag3b4AzPXezHlhneyRIj87dP+8Wl7qFSRv7TWUdcJud2tAAoJyFBZdQBAQN69Nk54YOEF+NPBrTC5oTudWJHjOPAkJ9fwje+ye4UJayh+Pc34VBAPsY6ruzxyDlhgU6Rs71mTkAxJ/UyFGKDOkr9X1+7grXCo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769442910; c=relaxed/simple;
-	bh=/Hesy3WNA157TAdMBzarWweQcPLGwH1r5vKjc9cMaj8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ggQ3z6tNSjWMfbtUResc6KX8fYPYlRpTXqJ3VIzO5NaYa74Ff5o618Qv9Tx36TOdo5sZnS5esLCITnQqnYBltP4yVdql6+ro3/RxELlSbYMW0Zw2VwmC6YM+GoU+KULuNhURJ319WoSRjGjUCYSTDB1mh+1jeoS8+w5rfiadXQM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R/QgT7H9; arc=pass smtp.client-ip=74.125.82.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4DA23EAB0;
+	Mon, 26 Jan 2026 16:01:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769443295; cv=none; b=rCkP6pb6Oc2e2haqiKCLO/RlWSskMj46xXPNB7L0P2mozX8S2X9pfRLGQar4Z9KH0VE6Mk8n6VsscSkF0ewkwRJbD/W14Js0+i/BZVLXh219AG31WxevL4ljW97kOSD1lTBk6HF6f3lyDfiKQGx3bGXMeF61EYke/xZpgLdjqYw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769443295; c=relaxed/simple;
+	bh=vbKOKo1zqwByHLjQtZsnbrccfQFl5y8geWYwihFRq24=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aTpqe4hXV3jO7dT4v8CEgZ7D9HA3erCFb+uf0hEbICoBL3Xet0J7C5ym4lAP3xTTaIbuS0GEKIuOCj+LuFbPyaYTuZxlPD4q69Nvc/TnMzXEkjmZPfBbr6ShMBOVKFeoGmUMQVUblEBCh+tHPyf8rOabs9+mxQX+nIqxjBgPtL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lv48+hpv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R/QgT7H9"
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1249b9f5703so281076c88.0
-        for <imx@lists.linux.dev>; Mon, 26 Jan 2026 07:55:08 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769442907; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Bv7szPYKb4p3oFGiTfR77d+xLgwoDmpEowDAk2z8QDgxbxJhfNv7b4ikPsXdW0RG9b
-         oo7GHkbwnB9KWe0DIAFSCt5nBOuoBF8XpD3n6M3wlUGCv4/YVmVMqHWRgJtEtvgzfjQj
-         yWqFJ4Z3psgVFZwrm8eTAX01n4Ll7NUgOcrRkVaBsFsyhrAvl6hx3nCIV1fvb3yqKk8a
-         9inY+wQZk8ye9dbcK3Rp/XG3hFJgb44T/3eoiO2SJyBmc9rphX57AVCDE4bjbAFN9sVv
-         UKB1f0HtrsLTHdqTJKr5uWzLzZFq7ledBTG/qVXXt9IOL3Z825cxqAJfyNvFKnGOnV/g
-         7rrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/Hesy3WNA157TAdMBzarWweQcPLGwH1r5vKjc9cMaj8=;
-        fh=MbD9+iRIH9viOScF4CtTKmwp71OAW8G1kiwHRwM6iR8=;
-        b=UKkSrFmh2q6ZpA1xl/UkEFZ3CCL9eztq0xjv3Nee7IW1wdQNPDEVYZVcDRRF7cBb4k
-         rL7pbNMo11dx2pHugeL5FbUJVMAh3NFtOV7Ja37+350OCY1ggmJIpG8UJvDbZMINf19f
-         dfK0M9UNTJHtkpaw4LRN62fjmYduN3mrlPPWq0crHgc8KeYtlIGScdn9IUsCbRei0Ogv
-         6L/fQKvTrqYluHi6A1Od/ZrhUaUV2eMes92K8F5JGbzgoj0ybGqXWGrBjz8ul4x89urE
-         CB8bxznkGxeBVbPmBLjIhF1euOFs7kjexXMoAnTDZ2Fij61ecncTb0JVEIIG2U1PEZRB
-         I50Q==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769442907; x=1770047707; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/Hesy3WNA157TAdMBzarWweQcPLGwH1r5vKjc9cMaj8=;
-        b=R/QgT7H97Zxjt/gwxoOn8436J1W5wo4RkDdCKGsfi5+uj4bQ+RMTX65iDu3HxFcNpd
-         km6C0tFtcHRli1Jzmf7dxoY7al6heXGHEYx/zFMRKCUa+DZGkQ3grJMMczKEqE7dHKvK
-         Blg953sNnqPxvK3plrxP8nmHXVpqmmrVHtdSqRLAwT7z7zpvMnjl4dHpJimlZoeQwZYA
-         5P2UchHW6OPU7AauZfpSsrZlZEpfg+nzVlatGPfp7BaDbR8I7fTrWXv8deEFrRgGw36p
-         UjGy9TMcvoXrRo4LtqRIz7irF4AN5DPAnjQGRwCIDIf0egk4jqPjARx4W+dOk7+atlQ/
-         yt/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769442907; x=1770047707;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/Hesy3WNA157TAdMBzarWweQcPLGwH1r5vKjc9cMaj8=;
-        b=MX+jVCAjm0OlopDlFunqzQJurOo3CthqXrI6juMr1ZrezReAuBLE0oi0diyLM9V6PG
-         M9wJ0eJVNS7NauFsPLGFrfsbac71hzfef/i+Rp6GuZ9FhcnXE8p0LjPlX9C52PWwrZnm
-         jXrlNM61cD0bqYq9L+EFzRetPPSN0PgAd1yGR6ZC749JjpPLzzsGoKZYI6ZnUa+3tbxb
-         dUhfWU1Em9v0l2Lm1gWRp55MLJ6xAaVVI9zIhSRxu3hyko3z0Pi9EJwlmsy8C1O01T30
-         y0jgS/VIqcjwHg+t/VKvQZj0yAaTwQtgxksDvrSJMQ3dBg6wnXpm2mj8A3AohW7wRDWW
-         zpJw==
-X-Forwarded-Encrypted: i=1; AJvYcCUwMuOtb2x0oMeK1OlPaEFBtPUfw0xD9VXKWhrmxtyYEhznFYKG6YOrrDIOYj4J6dTFT2I=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwWTHyitDe811CKIL6QHjKtduVVKnK3Rc5ZnwhsfeluhvVkaIpC
-	6DJ9jWnBEtFwhg1Vn76CXIRa3O7iO2Nm8urEQdS13ADWhRKHSgEScx+9Tx0ngkV/6mNwz0+Gv+u
-	Nd54kYR5/R9mXJFysAtEJqVmDHjuMhaw=
-X-Gm-Gg: AZuq6aLsDuaaLguI+4+mGBiZn6WEgjoE0ZZyQmcHzaSiwNjCex5H6aNPSsUBaApoo2f
-	A/Rr3N+q7bnjfEWhhGRT47UyhKWLyiJ5CL2RRphoKmVpXlyHqr6ypLuSVskoEQwmr4QZXXDCGDh
-	YQGnM/E7f5qfAdfaXqYSQPkbtAIv4aPXgA/4zexuNs2HAfAIGkfHuTEMzaujFPM+o1eXPUcykpS
-	V07Fkq3JMy+8pZWSN4K9ra8Shgf9p8AcROmuMHdAcLf4nJLqqWlrDo6cVinImVzaUoiOCBJP6oX
-	6JdvcJW5ciQyv5u3f5L/pDRR2Vf3pvXUceXXr81R5Yw0NNmlrGk5jO37Oj2lefvVrnpkmcknfU7
-	Z2gWRuVT9AzUa4w==
-X-Received: by 2002:a05:7022:6083:b0:119:e569:f610 with SMTP id
- a92af1059eb24-1248ebf0a49mr1954211c88.9.1769442907480; Mon, 26 Jan 2026
- 07:55:07 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lv48+hpv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1FAC116C6;
+	Mon, 26 Jan 2026 16:01:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769443295;
+	bh=vbKOKo1zqwByHLjQtZsnbrccfQFl5y8geWYwihFRq24=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Lv48+hpvfTsHWMpL2abDkYYBE7hAds8hj8Zp5X6/XmVEmhic146EMnkENPQuRymhj
+	 ZRDrCiDmBFyXzlfWKA/+BpJSBX1IFnuz3yFbv0Aga9FAzsY9lPhGKKgacbQAXlAUl1
+	 4LKJyr8N9Ri/NmncXH7qkWRo/fVK+c2qByK0m/PkRMeUcEv33AsYsgnPZOpigfLVPw
+	 2DxDngwxhwfVPspu2PvUQnrf51kjIyeAf8ZSb6R/CxmqMyHCBbniSAMnZv2BIXU+R5
+	 mgnwO6u4E6jEBck2yVdqf4f4BghaHdP8aDdDGhDvqyW7M69MBHIDKnnpAzV5dMyXPI
+	 NnIIw93NUqj2Q==
+Date: Mon, 26 Jan 2026 16:01:27 +0000
+From: Simon Horman <horms@kernel.org>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: dan.carpenter@linaro.org, robh@kernel.org, kuba@kernel.org,
+	festevam@gmail.com, ghennadi.procopciuc@oss.nxp.com,
+	alexandre.torgue@foss.st.com, linux-kernel@vger.kernel.org,
+	andrew+netdev@lunn.ch, shawnguo@kernel.org, mbrugger@suse.com,
+	mcoquelin.stm32@gmail.com, linaro-s32@linaro.org,
+	davem@davemloft.net, s.hauer@pengutronix.de, edumazet@google.com,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+	conor+dt@kernel.org, krzk+dt@kernel.org, devicetree@vger.kernel.org,
+	Frank.li@nxp.com, chester62515@gmail.com, netdev@vger.kernel.org,
+	kernel@pengutronix.de, pabeni@redhat.com, jan.petrous@oss.nxp.com,
+	linux-stm32@st-md-mailman.stormreply.com, s32@nxp.com
+Subject: Re: [v4,1/3] net: stmmac: s32: use a syscon for
+ S32_PHY_INTF_SEL_RGMII
+Message-ID: <aXeP1y7cK0XRx3Wo@horms.kernel.org>
+References: <8f2139e8adf02b485a4c84d558fc23f78cf04add.1769195864.git.dan.carpenter@linaro.org>
+ <20260126152430.1390514-1-horms@kernel.org>
+ <aXeJYo-0iiNuXVGH@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260126145537.2301-1-laurentiumihalcea111@gmail.com> <20260126145537.2301-3-laurentiumihalcea111@gmail.com>
-In-Reply-To: <20260126145537.2301-3-laurentiumihalcea111@gmail.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Mon, 26 Jan 2026 17:57:52 +0200
-X-Gm-Features: AZwV_QhA7W5Q3bPcFDKVTkQAu_DrVk_1nocQQ4dhm96_V9DFsolG5j1PxG9BQFE
-Message-ID: <CAEnQRZAsiciJDQTAOjwQRZqxMW7sNifRf5rGBNq_sS0s0kJKcQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] arm64: dts: imx95-15x15-frdm: support AONMIX MQS
-To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>, 
-	Chancel Liu <chancel.liu@nxp.com>, Frank Li <Frank.Li@nxp.com>, linux-sound@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXeJYo-0iiNuXVGH@shell.armlinux.org.uk>
 
-On Mon, Jan 26, 2026 at 4:57=E2=80=AFPM Laurentiu Mihalcea
-<laurentiumihalcea111@gmail.com> wrote:
->
-> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->
-> Add support for AONMIX MQS (i.e. MQS1).
->
-> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On Mon, Jan 26, 2026 at 03:33:54PM +0000, Russell King (Oracle) wrote:
+> On Mon, Jan 26, 2026 at 03:24:30PM +0000, Simon Horman wrote:
+> > This is an AI-generated review of your patch. The human sending this
+> > email has considered the AI review valid, or at least plausible.
+> > 
+> > For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+> > ---
+> >     net: stmmac: s32: use a syscon for S32_PHY_INTF_SEL_RGMII
+> > 
+> > This commit adds syscon/regmap support for accessing the GMAC_0_CTRL_STS
+> > register on s32 chipsets, while maintaining backwards compatibility with
+> > the existing direct MMIO approach for older device trees.
+> > 
+> > > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> > > index 5a485ee98fa7..2e6bb41f49e1 100644
+> > > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> > > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> > 
+> > [ ... ]
+> > 
+> > > @@ -40,7 +44,10 @@ struct s32_priv_data {
+> > >
+> > >  static int s32_gmac_write_phy_intf_select(struct s32_priv_data *gmac)
+> > >  {
+> > > -	writel(S32_PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
+> > > +	if (gmac->ctrl_sts)
+> > > +		writel(S32_PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
+> > > +	else
+> > > +		regmap_write(gmac->sts_regmap, gmac->sts_offset, S32_PHY_INTF_SEL_RGMII);
+> > 
+> > Should the regmap_write() return value be checked here? The function
+> > returns int and the caller s32_gmac_init() checks the return value
+> > expecting errors to be propagated. For comparison, dwmac-sun55i.c in
+> > sun55i_gmac200_set_syscon() does check regmap_write() return value:
+> > 
+> >     ret = regmap_write(regmap, SYSCON_REG, reg);
+> >     if (ret < 0)
+> >         return dev_err_probe(dev, ret, "Failed to write to syscon\n");
+> 
+> AI is wrong on this last line - s32_gmac_write_phy_intf_select() is
+> called from s32_gmac_init(), which is called from plat_dat->init.
+> 
+> plat_dat->init is called from two paths:
+> 
+> 1. stmmac_pltfr_probe() -> stmmac_dvr_probe() -> plat_dat->init()
+> 
+> 2. stmmac_resume() -> plat_dat->resume() -> stmmac_plat_resume() ->
+>    stmmac_pltfr_init() -> plat_dat->init()
+> 
+> In the resume path, it is not appropriate to use dev_err_probe()
+> because we're not in the probe path.
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Hi Russell,
+
+I agree that using dev_err_probe() is not appropriate here.
+And, FWIIW, I took that part to be an illustration that
+sun55i_gmac200_set_syscon() handles a similar case,
+rather than a suggestion of how to handle it here.
+
+But at any rate, I think the key question is should the case
+where regmap_write() returns an error be handled in
+s32_gmac_write_phy_intf_select() (by some means)?
