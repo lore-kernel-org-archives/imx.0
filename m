@@ -1,77 +1,78 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA314339860
-	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 13:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AD633B979;
+	Mon, 26 Jan 2026 14:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769434171; cv=none; b=Noi0q0h7Yn82j56WOwm2XfA+rh+75LYzeaW9FoNSA1B57MpjGMDfdVbo5MhE13So7PuJntw/cQZaehN+S1Hgs0gip5UA+Z68mOfFwIFtZTx0yHeILXjqLSwbi5EpIgsuIxzn6/6eFSAuUZ2W9PgZ2GQT/cGO5RtDVh+q/SUq7vY=
+	t=1769436826; cv=none; b=E4MLb5JfgKlWqUOoHlCSw/zQd4j7r+zafO5mvAO8AJ7rYuIsMvYw1VdX/NFITo1BavbaZoQzt8ZGqBFOxLOEU3Dhc0SmFEdvM1O/UQ9/AFTp87PTHmyldEHnKVXJbZo5vo/aTTyn0NKvuetIkYP6D+qFeR54x2KUKJufLpnZKxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769434171; c=relaxed/simple;
-	bh=e5/cfbgmcZ8VtWGWKmm/w6akYaG//Yt8RiRfZ6FFiHs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e8azk2ozFVUHC+q5GXv6rzVp6KTd06Fv6O9JiZ4vybJsphprfI5FTj7QrY4Bpyu1BVUqOTC+UYp6CqmvDS9TYrf3di7Pb98b+JLUPZ/+mMoOMB7OC9eaE+rlZPBmUMq1fxe0dp7TpsKke4PY6g+DkE2mgqBp2Hn5otOp3TLOuBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BCrSE+mw; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1769436826; c=relaxed/simple;
+	bh=c8wHS1GSDT/p7+BB9QJ+uPyVPlyARHIFJQOIjLEpzsM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wqd+uhzBskQbPHb1t6kLqJ7NR16VP8WaRg8LBgwZFCWA8vsVXGxcIe//WVihQpzgha3gjhqC1tkYCxIBxrkZLKvfyGk35/rM/A4ctNEw9kg8WHFssjFSoEpvepCK+aID7oq3qoYZTtYZqm9xcZTn6qml4Tq6JZI5uBPhowtVRwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qy/ZK3AK; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BCrSE+mw"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id C2393C21A84;
-	Mon, 26 Jan 2026 13:29:28 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 150F460717;
-	Mon, 26 Jan 2026 13:29:27 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 99E0E119A8633;
-	Mon, 26 Jan 2026 14:29:19 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769434166; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=4VpehwRlJ7i5t1l2Yl9R834m3oPT3yev9rVS4TQ1wVY=;
-	b=BCrSE+mwhylQ4tQixlFfLMNCHR1HqfQYOItuKPvQ6/aoZHerpdcVoSB7In1NJ5PwEqF5kM
-	irzRf74H31TNzv3Dyj3h7OlEmNZJUVjQUUhru8R1ff2RPeqJGgi8gnt9PkNMTXXUKq/k+Y
-	DlzUB+84WjuXD4FN6wGA7IwcLNav2zCTomQZNN75hCIiWBBzZc/dtSls6bNK+hDxUGcDkp
-	5rLG/zkVRryOwJ9NSRIri6OQ8llqfnNXCmbfz3K+MiooPSWiRR+e9iZZIhRt93ZDxZlDXA
-	T62L6mnYQ4tO7Amw1WOFEWb04bfT1scWymEKbqOvFPiaHJGhS6TPLuFUFV15Nw==
-Message-ID: <2ce008fd-cb9b-4f5d-bdb0-cccb1f09eae8@bootlin.com>
-Date: Mon, 26 Jan 2026 14:29:18 +0100
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qy/ZK3AK"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Si7F027L4MHkHl6W8g2C1ydhbQv99XYtueMfjkYDZqk=; b=qy/ZK3AKQMpij9zi3RjCOr/C4F
+	ALnwB/uPmNV13sdSWjpXYuEuOjkJUKcoLtkGqVsyQIj674vpmj/Qg+WMGqh3QBruCfD3BWcu7ioSy
+	eHQ4rEpC/+cHxLMpSSyknH8fCuSFUqBzimbvOvADBdqDB4tTOeKTDQ1k6zcLflyMPdtI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vkNLK-004nBB-B5; Mon, 26 Jan 2026 15:13:26 +0100
+Date: Mon, 26 Jan 2026 15:13:26 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	florian.fainelli@broadcom.com, xiaolei.wang@windriver.com,
+	maxime.chevallier@bootlin.com, quic_abchauha@quicinc.com,
+	quic_sarohasa@quicinc.com, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: phy: add device link between MAC device and
+ MDIO device
+Message-ID: <2344001a-08c4-42f9-b4e6-116e39fbf1a3@lunn.ch>
+References: <20260126104409.1070403-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: stmmac: don't pass ioaddr to
- fix_soc_reset() method
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- imx@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>
-References: <E1vkLmM-00000005vE1-0nop@rmk-PC.armlinux.org.uk>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <E1vkLmM-00000005vE1-0nop@rmk-PC.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260126104409.1070403-1-wei.fang@nxp.com>
 
-Hi,
+> The commit bc66fa87d4fd ("net: phy: Add link between phy dev and mac
+> dev") has created a device link between the MAC and the PHY if the MAC
+> uses a shared MDIO bus (The MDIO and the MAC are two separate devices).
 
-On 26/01/2026 13:33, Russell King (Oracle) wrote:
-> As the stmmac_priv struct is passed to the fix_soc_reset() method which
-> has the ioaddr, there is no need to pass ioaddr separately. Pass just
-> the stmmac_priv struct. Fix up the glues that use it.
+> Sarosh Hasan tried to change the DL_FLAG_STATELESS flag to
+> DL_FLAG_AUTOREMOVE_SUPPLIER to fix the issue [1]. However, the solution
+> does not take into account the hot-swappable PHY devices (such as SFP).
+> so when the PHY device is unplugged, the MAC driver will automatically
+> be removed, which is not the expected behavior.
 > 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Therefore, to solve this issue of the shared MDIO bus, we create the
+> device link between the MAC device and the MDIO device, rather than
+> between the MAC device and the PHY device. And when the shared MDIO bus
+> is removed, all MAC drivers that depend on it will also be removed.
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Shouldn't there be a full chain here? MAC->MDIO->PHY?
 
-Maxime
+For the case of the SFP, maybe it should be
+
+MAC->SFP Cage and I2C MDIO->PHY
+
+So if the PHY inside an SFP disappears, the I2C MDIO bus is
+removed. But there is no link upwards from that, so the SFP cage and
+the MAC are left alone?
+
+    Andrew
