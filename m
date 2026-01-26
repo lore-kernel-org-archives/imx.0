@@ -1,160 +1,87 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC31A2F60B2
-	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 12:33:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE7E78F59
+	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 12:46:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769430801; cv=none; b=S2nkkGQ6GuLPGo8D0ek99HAy+Twpntg6rk9nFTqLZx3ofXyd5LARrxXJ+Q7EvWpXJo9+2TqdGZlMxCh0vrLyyONX5LSdlbKDjm5zd9qXtq+krCtHI8szXThRabE02zU0+RwL+3lYpxr+aRk61NTUhS2AV9j0PnIrWWwAraTre80=
+	t=1769431613; cv=none; b=ar/0BXj/SFk/kFI4ZdbSo95b8x25aNp0D87hb4FU7SBadq7IPLWBswn+tYQ7xaeT32otENbNP8cX7PCAytiH7IbzK0ADuDQKUSpz2uaKmWpvvlBbL9kasWFGF8PWd8898rcQk+yDhjVN8rpH7ivfL92c5IyVEHnjM+cS+AwGL50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769430801; c=relaxed/simple;
-	bh=OaxYGudCI5gkMkHS471pmUeXDsGjJOqSNIu5Rs/mAzA=;
-	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
-	 Message-Id:Date; b=ZVmgA7Y1g6hpRyDRTuMNYvxvKyrRQW21gKw6yPd3TH2ehzmQNFtN+87w7lmg6xUn7LwVVYhwIPjac6bqLszGEUvj0bjslXsqV3UmibtgbKslnXN3S51zwoLcubenEitgL4rQ6HGcoCPIwRtYoYejOW/yCj4S912adZkfoh12Te4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=hWxLtS7B; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="hWxLtS7B"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
-	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
-	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Wg/dOnG781SWjs7CoGEbkT1P6etmPjivu2HuJgD0COY=; b=hWxLtS7BpmMeAI9fBkfEvqzDge
-	DXnVM4bgozkpzZaoqlIZweq2goDdXp9qbnd8XA5qnSFEmxOAI25winOvkWxW+z3qNwmVxIK7cPMpC
-	2AUw8cF5Rqtgbw1QlCr6XA1nxQA2SjBOzdvVo+chp/GU79rCeFuXDcncy1FTwmD95EM5NPXNfafaZ
-	SiShaRwGILyh2SKZBEGPUisDLB3MAXNchj/12Rh4e24PS3O7X/9SipnuATgsWmsVXD6IymczsfOwZ
-	2jyAod1I/FEWcdM2E9zoRpl0PK6Hhn6XO+/auKezJ5rwlMR7Gfgdy3rmgvDRDHoL1zkU3PpuCTMA6
-	eMFx1IsA==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:50600 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vkLmM-000000004oZ-40gK;
-	Mon, 26 Jan 2026 12:33:14 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vkLmM-00000005vE1-0nop;
-	Mon, 26 Jan 2026 12:33:14 +0000
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	s=arc-20240116; t=1769431613; c=relaxed/simple;
+	bh=xzF+70RCHLThVHeN+fikhTq2hQTzCjlVjm0fsvownQE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IfVgdpw1F2paDQXSje81g1RlNQCx5DQb5HhzrnX4ldX5B1msb+/5sBZbazw3L23wXa4bPSaWjZh+wxUpTqzh4UQOBIWB2cDDb4CG87to2joOQPOGkHuP8gAJrLhY1UL+zwZEl2tWQCcPQYV5P3VSwezPusJlM3ob8inFY5OE/i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 3AE6F200EE2;
+	Mon, 26 Jan 2026 13:46:45 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 23B2A200E9A;
+	Mon, 26 Jan 2026 13:46:45 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id D33D62035B;
+	Mon, 26 Jan 2026 13:46:44 +0100 (CET)
+Date: Mon, 26 Jan 2026 13:46:45 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	imx@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH net-next] net: stmmac: don't pass ioaddr to fix_soc_reset()
- method
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 2/4] dt-bindings: net: nxp,s32-dwmac: Declare
+ per-queue interrupts
+Message-ID: <aXdiNb92B4HH+ZFt@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20260123-dwmac_multi_irq-v3-0-cc53f2be8961@oss.nxp.com>
+ <20260123-dwmac_multi_irq-v3-2-cc53f2be8961@oss.nxp.com>
+ <20260123-dinner-aloft-e57deb6c546a@spud>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vkLmM-00000005vE1-0nop@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 26 Jan 2026 12:33:14 +0000
+In-Reply-To: <20260123-dinner-aloft-e57deb6c546a@spud>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-As the stmmac_priv struct is passed to the fix_soc_reset() method which
-has the ioaddr, there is no need to pass ioaddr separately. Pass just
-the stmmac_priv struct. Fix up the glues that use it.
+On Fri, Jan 23, 2026 at 05:13:03PM +0000, Conor Dooley wrote:
+> On Fri, Jan 23, 2026 at 11:09:55AM +0100, Jan Petrous via B4 Relay wrote:
+> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> > 
+> > The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lines,
+> > set them to allow using Multi-IRQ mode when supported.
+> 
+> The binding only supports s32{g,r} devices, why is the existing minimum
+> retained? What devices are going to not have all 11 interrupts
+> connected?
+> 
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c      | 8 +++++---
- drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 6 ++++--
- drivers/net/ethernet/stmicro/stmmac/hwif.c           | 2 +-
- include/linux/stmmac.h                               | 2 +-
- 4 files changed, 11 insertions(+), 7 deletions(-)
+The original idea was to support backward compatibility, as older DTs
+didn't contain queue-based interrupt lines described.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-index c722ff2dc1fc..97de4726208e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-@@ -46,7 +46,7 @@ struct imx_dwmac_ops {
- 	u32 flags;
- 	bool mac_rgmii_txclk_auto_adj;
- 
--	int (*fix_soc_reset)(struct stmmac_priv *priv, void __iomem *ioaddr);
-+	int (*fix_soc_reset)(struct stmmac_priv *priv);
- 	int (*set_intf_mode)(struct imx_priv_data *dwmac, u8 phy_intf_sel);
- 	void (*fix_mac_speed)(void *priv, int speed, unsigned int mode);
- };
-@@ -220,12 +220,14 @@ static void imx93_dwmac_fix_speed(void *priv, int speed, unsigned int mode)
- 	writel(old_ctrl, dwmac->base_addr + MAC_CTRL_REG);
- }
- 
--static int imx_dwmac_mx93_reset(struct stmmac_priv *priv, void __iomem *ioaddr)
-+static int imx_dwmac_mx93_reset(struct stmmac_priv *priv)
- {
- 	struct plat_stmmacenet_data *plat_dat = priv->plat;
--	u32 value = readl(ioaddr + DMA_BUS_MODE);
-+	void __iomem *ioaddr = priv->ioaddr;
-+	u32 value;
- 
- 	/* DMA SW reset */
-+	value = readl(ioaddr + DMA_BUS_MODE);
- 	value |= DMA_BUS_MODE_SFT_RESET;
- 	writel(value, ioaddr + DMA_BUS_MODE);
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-index 4f2b5bd6cb31..ed0b534d8d7b 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-@@ -485,10 +485,12 @@ static int loongson_dwmac_acpi_config(struct pci_dev *pdev,
- }
- 
- /* Loongson's DWMAC device may take nearly two seconds to complete DMA reset */
--static int loongson_dwmac_fix_reset(struct stmmac_priv *priv, void __iomem *ioaddr)
-+static int loongson_dwmac_fix_reset(struct stmmac_priv *priv)
- {
--	u32 value = readl(ioaddr + DMA_BUS_MODE);
-+	void __iomem *ioaddr = priv->ioaddr;
-+	u32 value;
- 
-+	value = readl(ioaddr + DMA_BUS_MODE);
- 	if (value & DMA_BUS_MODE_SFT_RESET) {
- 		netdev_err(priv->dev, "the PHY clock is missing\n");
- 		return -EINVAL;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.c b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-index 014f7cd79a3c..7e69ff4b9a98 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-@@ -109,7 +109,7 @@ int stmmac_reset(struct stmmac_priv *priv)
- 	void __iomem *ioaddr = priv->ioaddr;
- 
- 	if (plat && plat->fix_soc_reset)
--		return plat->fix_soc_reset(priv, ioaddr);
-+		return plat->fix_soc_reset(priv);
- 
- 	return stmmac_do_callback(priv, dma, reset, ioaddr);
- }
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index e308c98c7bd3..5199451dd0bc 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -257,7 +257,7 @@ struct plat_stmmacenet_data {
- 	int (*set_clk_tx_rate)(void *priv, struct clk *clk_tx_i,
- 			       phy_interface_t interface, int speed);
- 	void (*fix_mac_speed)(void *priv, int speed, unsigned int mode);
--	int (*fix_soc_reset)(struct stmmac_priv *priv, void __iomem *ioaddr);
-+	int (*fix_soc_reset)(struct stmmac_priv *priv);
- 	int (*serdes_powerup)(struct net_device *ndev, void *priv);
- 	void (*serdes_powerdown)(struct net_device *ndev, void *priv);
- 	int (*mac_finish)(struct net_device *ndev,
--- 
-2.47.3
+But now, when you asked, I started to think it is not needed,
+the requirement for backward compatibility is managed inside the driver
+and yaml shall describe the hardware not used configuration.
+
+Is it my understanding right? Should I provide v4 with minimum = 11?
+
+BR.
+/Jan
 
