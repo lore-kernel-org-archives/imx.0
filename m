@@ -1,103 +1,115 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92FB33F378
-	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 15:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B61933E352;
+	Mon, 26 Jan 2026 15:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769440975; cv=none; b=qg2LCoHr2LIca9RwP07B+5SrbT+73Eu+vblIM+eYv4Va1pe4270dBRnH5RH/A0Tn1KAK0BvXTS1PzKLuVGQ5KImxS+mrEpMTz8QPcCuB1oiq0pdvb/fiVPFVRDyCUHuGYHESMN31rgiJ0MpKp+MCuvQEsmbMTnIhjAVGvmmBsMc=
+	t=1769441183; cv=none; b=YaITRDi1smBgbLP5rhIcQRirM2XTR7ZTcXvisRgS1KHwNXlimDvLtpljE8zOqAUvWiAjpJlEKOt4kwNbkpRROJUJAmeqAl9UR/Q4Igv5Tl/W8hEAnBVoiMh5Bmhjs44dg1MLyTF7h8RMggnvHNIqKK3wopIUi678wEKME7wXwcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769440975; c=relaxed/simple;
-	bh=oehPzj1NcxPq0b6ZJi4vCnPjGp40ojSxR9AeiNKzfv0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=m16hHRFC4W5kZyWGJcHVMUW7zpwXw7cxEJyS/vEMeELZnVMyLLuUzwnd+0PpROC8JKb/lqtgmgrtVDMUOGBi+VbkPtFdvA/hIB1cxnMu5yJDxoFp1rlt13v0A9BhGb5VoLAc5yvrjObhzUq0GPVl7NIlxcv2GhDLcOu/sdMhecA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KtOsgf5o; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769441183; c=relaxed/simple;
+	bh=SRqS+y38YIXOhs6ehnUotQdiVYwta8kYRuUNmf2OMmU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RNyU5008rNg3P/ce1JjCgXd95NJFGZ/AG5AgBAw2JJ806oDXTRjsXkND/8tfbIm7dSOz8S9MffB2wTKLqUCuaoKVTvQAoQlk8RAFXfi+3kCD9/OGOXZC/KblU3byfob4RdIwq5TjeXrZ0oBMerZKpob3PkOghfjjBAyIT9uX0b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uFnm4LGp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KtOsgf5o"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-435a517be33so2832264f8f.0
-        for <imx@lists.linux.dev>; Mon, 26 Jan 2026 07:22:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769440972; x=1770045772; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=oehPzj1NcxPq0b6ZJi4vCnPjGp40ojSxR9AeiNKzfv0=;
-        b=KtOsgf5oAvsh9CQ/lMWMXHHjrHpgII6CPRLE1GipwlIe4EVPo12yVAJy5A8T/mEQlO
-         QC5eD2QB6sRXaX+69aimznk1xhgAyTs1v0rduNFZ0mffQkFQBFjz9+IeSrtQydmTfjgZ
-         6XhOdyZBIp2zvxTg3JjWyCJVB7XTp1uqkP2BzizcQ/zLNKP6KvC7z2SQ8EyJS5ZdsYWB
-         TELC8R6TJD5n6m6tvJO1jxVMFDVaBU9bm8Czaxs/BFK7v5FA3N8qevzpN5ookYx9MGaC
-         PXhloyOJVTwPZbrLIlkvcmgCrp1+QpIWPmW7kDc106RG6hgR6s1smmFN4mUuKKXx/N4y
-         /S+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769440972; x=1770045772;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oehPzj1NcxPq0b6ZJi4vCnPjGp40ojSxR9AeiNKzfv0=;
-        b=AbZ4oFnfo6WMATbk+57CNNOBkGomPTyxSDjxzA8XnDgD4RvKB46Rn4GPguU5/VNVgJ
-         YFiS9dyhA1URL9V+BVNHCjlHJY2wEP2N26hOx4SnQWfLpLtyC4WlKrkbJoLZqo3iCHJA
-         /n0KPCRergZTSdEqYPs4dk8DCjPRN1cT2XZ/UB2A5zpfwg86GfQMrHSfAOX9kujCoFuq
-         EJIe9GqKmDq8gC5Hz+zfu+7NFg6rOWpqZs5U1RJA5P0DJVuU2GcOg1QAEWTQfjKamd2O
-         Nybc+S9Mjx/NqtKZkqRi6eTiYdTPI6t/9y0MhjI52ts8WqWcVSQIZOCApYGDHZY9+DXJ
-         WbKw==
-X-Forwarded-Encrypted: i=1; AJvYcCXWJbRxY2ny7C2JcXiRDxxZf4gILVICpNvJjm9o+hCL/LNKCZ7dzwyJDH/afwRTKk5c3FY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwmkelCkq5MXd1oNepLD60OL9GoeMQYMoiBZ/8qKGSuJd/4cW1u
-	CnJo8e1sSdgFr6AV59ITWuKFc7T8lltXcFhBfdN/QuxurqhgKN1Ud9+s
-X-Gm-Gg: AZuq6aIQlZY/Uw5oKGg8NG16q7FKq6k2Swu48PGhqHqemp1lHqBdgd3K0JhRRDkmH/X
-	BH44vI/1V651FWBhK/MsZFJBbwm0b5o9n1o/PHLsxvsniZNWEtX2STPwp6a0K1Y6vx096LbBHal
-	oVrmKNYLa3gutUd8Mc3t2x9t8X6OKbH9zGo3RAmw8b5Hh/e+HBvINbft4VMz8pTJDZxe5u5kWrf
-	/jVi5SI9P/7bp3jNvyuU2atyQDgeA02m1CstTI4qeJaZF32MMDMwhCLlFRG0aexR7WyIFvsn5NM
-	uI4zpImkQDntUh1gubUG7WB9wWdtOtpR5SJy6rCnob5UX81WMVEV3aFr8D43UQG1fGGiVFdi9iy
-	M67Wo0ckg5gxppIuqqtK5iD1YjZkA5L6654D95wm3NNXDH+b9S5AK9tnuOq+Gox9HGvM1t3D2U1
-	A7mP+3bhPw9opoUW5zgryiNcWT2PyLY0kOvCN2t0DqO3o=
-X-Received: by 2002:a05:6000:2912:b0:430:f742:fbc7 with SMTP id ffacd0b85a97d-435ca0ecea4mr7122413f8f.14.1769440972075;
-        Mon, 26 Jan 2026 07:22:52 -0800 (PST)
-Received: from [10.25.211.45] ([128.77.115.158])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1c24a6fsm31149882f8f.16.2026.01.26.07.22.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 07:22:51 -0800 (PST)
-Message-ID: <b7c2a2b8-000e-4bf8-89cf-19e4e21e78a7@gmail.com>
-Date: Mon, 26 Jan 2026 07:22:54 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uFnm4LGp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41F6C116C6;
+	Mon, 26 Jan 2026 15:26:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769441182;
+	bh=SRqS+y38YIXOhs6ehnUotQdiVYwta8kYRuUNmf2OMmU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uFnm4LGpkWz+9rGWqbjbTkYhQlIVZdBW/EwyRtekVDrdQ1caR9uQeZXFYebihiuw4
+	 vuDoe8RjTmdTy83+0hhR7SGWq2uhBFceEsM3x6LmeusdsI1lV/opnKHQt2OZ0iGZIz
+	 DkEbKRbdj07Bno5AJp5maVzQenSlEkStldiC1lP9cN/t5AW4i8xNTxf75aFGzTDG7Q
+	 hkpyFTm2JsgOYbRctdhgBdHNZi6VO1hYJyIINWKIFJoqRNFORhn7/M6voK4B/0Cwnh
+	 +wcllBCvVA3LuTz9Qcm+huRUXFUoc1zTvuYWPHFg+m7J0+ABAAxcmE5ajVaqH9Xrv3
+	 4VxmMxAekA34Q==
+From: Simon Horman <horms@kernel.org>
+To: dan.carpenter@linaro.org
+Cc: Simon Horman <horms@kernel.org>,
+	robh@kernel.org,
+	kuba@kernel.org,
+	festevam@gmail.com,
+	ghennadi.procopciuc@oss.nxp.com,
+	alexandre.torgue@foss.st.com,
+	linux-kernel@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	shawnguo@kernel.org,
+	mbrugger@suse.com,
+	mcoquelin.stm32@gmail.com,
+	linaro-s32@linaro.org,
+	davem@davemloft.net,
+	s.hauer@pengutronix.de,
+	edumazet@google.com,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	conor+dt@kernel.org,
+	krzk+dt@kernel.org,
+	devicetree@vger.kernel.org,
+	Frank.li@nxp.com,
+	chester62515@gmail.com,
+	netdev@vger.kernel.org,
+	kernel@pengutronix.de,
+	pabeni@redhat.com,
+	jan.petrous@oss.nxp.com,
+	linux-stm32@st-md-mailman.stormreply.com,
+	s32@nxp.com
+Subject: Re: [v4,1/3] net: stmmac: s32: use a syscon for S32_PHY_INTF_SEL_RGMII
+Date: Mon, 26 Jan 2026 15:24:30 +0000
+Message-ID: <20260126152430.1390514-1-horms@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <8f2139e8adf02b485a4c84d558fc23f78cf04add.1769195864.git.dan.carpenter@linaro.org>
+References: <8f2139e8adf02b485a4c84d558fc23f78cf04add.1769195864.git.dan.carpenter@linaro.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] bus: imx-aipstz: set default value for opacr registers
-To: Shengjiu Wang <shengjiu.wang@nxp.com>, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- laurentiu.mihalcea@nxp.com, daniel.baluta@nxp.com, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- shengjiu.wang@gmail.com
-References: <20260126091156.951052-1-shengjiu.wang@nxp.com>
-Content-Language: en-US
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <20260126091156.951052-1-shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-On 1/26/2026 1:11 AM, Shengjiu Wang wrote:
-> The sdma script app_2_mcu needs the permission to access the peripheral
-> devices:
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+    net: stmmac: s32: use a syscon for S32_PHY_INTF_SEL_RGMII
+
+This commit adds syscon/regmap support for accessing the GMAC_0_CTRL_STS
+register on s32 chipsets, while maintaining backwards compatibility with
+the existing direct MMIO approach for older device trees.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> index 5a485ee98fa7..2e6bb41f49e1 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+
+[ ... ]
+
+> @@ -40,7 +44,10 @@ struct s32_priv_data {
 >
-> 1) SDMA2 transactions are set to user-mode in this particular case.
-> 2) This type of script doesn't use the peripheral interface (connected
-> directly to SPBA), but it uses the peripheral DMA interface, then the
-> SDMA2-issued transactions are subjected to AIPSTZ5's security-related
-> checks.
+>  static int s32_gmac_write_phy_intf_select(struct s32_priv_data *gmac)
+>  {
+> -	writel(S32_PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
+> +	if (gmac->ctrl_sts)
+> +		writel(S32_PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
+> +	else
+> +		regmap_write(gmac->sts_regmap, gmac->sts_offset, S32_PHY_INTF_SEL_RGMII);
+
+Should the regmap_write() return value be checked here? The function
+returns int and the caller s32_gmac_init() checks the return value
+expecting errors to be propagated. For comparison, dwmac-sun55i.c in
+sun55i_gmac200_set_syscon() does check regmap_write() return value:
+
+    ret = regmap_write(regmap, SYSCON_REG, reg);
+    if (ret < 0)
+        return dev_err_probe(dev, ret, "Failed to write to syscon\n");
+
 >
-> So need to clear the Supervisor Protect bit of SPBA2, otherwise the sdma
-> script can't work. As the imx-aipstz is a common driver for all aips bus,
-> so set default value (zero) for all opacr registers.
+>  	dev_dbg(gmac->dev, "PHY mode set to %s\n", phy_modes(*gmac->intf_mode));
 >
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+>  	return 0;
 
-
-Reviewed-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
-
+[ ... ]
