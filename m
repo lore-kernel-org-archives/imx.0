@@ -1,78 +1,98 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AD633B979;
-	Mon, 26 Jan 2026 14:13:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0704233D516;
+	Mon, 26 Jan 2026 14:16:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769436826; cv=none; b=E4MLb5JfgKlWqUOoHlCSw/zQd4j7r+zafO5mvAO8AJ7rYuIsMvYw1VdX/NFITo1BavbaZoQzt8ZGqBFOxLOEU3Dhc0SmFEdvM1O/UQ9/AFTp87PTHmyldEHnKVXJbZo5vo/aTTyn0NKvuetIkYP6D+qFeR54x2KUKJufLpnZKxM=
+	t=1769436977; cv=none; b=dVSkRcf/rhRCYdTEby4LVFb9ZWX5EoUdsGxsCf4I69OcBRpN8uQX7yWTJjc/NVUQppQ/CNICYAzEoA3s75YIptQSV5lrwegKSUnhPAEWkHo8pv1cHqbC1Xaf8O2GZJaaRRfmqcdW1QBCxenZMgMjMQ1R7rmC1Pb4+W226Esl7fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769436826; c=relaxed/simple;
-	bh=c8wHS1GSDT/p7+BB9QJ+uPyVPlyARHIFJQOIjLEpzsM=;
+	s=arc-20240116; t=1769436977; c=relaxed/simple;
+	bh=NrBeDM+ppcoHiPudl8UfdzdUe82B0RRwN1UsSSpRbHM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wqd+uhzBskQbPHb1t6kLqJ7NR16VP8WaRg8LBgwZFCWA8vsVXGxcIe//WVihQpzgha3gjhqC1tkYCxIBxrkZLKvfyGk35/rM/A4ctNEw9kg8WHFssjFSoEpvepCK+aID7oq3qoYZTtYZqm9xcZTn6qml4Tq6JZI5uBPhowtVRwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qy/ZK3AK; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lo4RTXJLxsn73e5AhALEBP6kcQnq8rBWH7Q1O3Z2S2yFs5daYmJud35N0YGmwBr4AgSQqdSD0P0HJQNAvwJIIewPY2bPU1srjvRqYIKvwRZZvSfaDAV8qDd8mIB+kMOJ/6A5HutOZUvB/Amob2d2aVmBBxvBSUs16CwaINJUDuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dZ28naFq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qy/ZK3AK"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Si7F027L4MHkHl6W8g2C1ydhbQv99XYtueMfjkYDZqk=; b=qy/ZK3AKQMpij9zi3RjCOr/C4F
-	ALnwB/uPmNV13sdSWjpXYuEuOjkJUKcoLtkGqVsyQIj674vpmj/Qg+WMGqh3QBruCfD3BWcu7ioSy
-	eHQ4rEpC/+cHxLMpSSyknH8fCuSFUqBzimbvOvADBdqDB4tTOeKTDQ1k6zcLflyMPdtI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vkNLK-004nBB-B5; Mon, 26 Jan 2026 15:13:26 +0100
-Date: Mon, 26 Jan 2026 15:13:26 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	florian.fainelli@broadcom.com, xiaolei.wang@windriver.com,
-	maxime.chevallier@bootlin.com, quic_abchauha@quicinc.com,
-	quic_sarohasa@quicinc.com, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: phy: add device link between MAC device and
- MDIO device
-Message-ID: <2344001a-08c4-42f9-b4e6-116e39fbf1a3@lunn.ch>
-References: <20260126104409.1070403-1-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dZ28naFq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538E8C116C6;
+	Mon, 26 Jan 2026 14:16:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769436976;
+	bh=NrBeDM+ppcoHiPudl8UfdzdUe82B0RRwN1UsSSpRbHM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dZ28naFqf6Fb0vnJXI0iOMnLYrxLxIMuzzmpyiURmwgvXagyhT8gmCwuSBvEZz1h3
+	 Xpke0mY4b8zxOrfDRyx7wyLrsbtn9R7kbAhFBapU0nQiDa+h9q4Ysa16z/tlehsIXK
+	 VcTArGSh2VPqg5fw45cOJif+nSTbJde3ZRWlibnZ6lbeSNOcA5ee1+HdeVuYjwyvRw
+	 e2ZjNtEQLmDLgFU+sJ1SEQs2aNqBn8n5yYZwHvmqjNZ7McX1rc7Hi+V85KR8NeJK+5
+	 inDzVP3ser9rIqXbXB0GpzprNzg9I+VsGFEdFTMt7GWO1HYKDJV14vt8OCTHIDYPkD
+	 x0grCAfM3kiRg==
+Date: Mon, 26 Jan 2026 14:16:10 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Chancel Liu <chancel.liu@nxp.com>, linux-sound@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH 1/2] ASoC: dt-bindings: fsl,mqs: make gpr optional for
+ SM-based SoCs
+Message-ID: <3d98306c-0e13-4bd9-9cfd-0a2ddcadef3e@sirena.org.uk>
+References: <20260120150329.1486-1-laurentiumihalcea111@gmail.com>
+ <20260120150329.1486-2-laurentiumihalcea111@gmail.com>
+ <aW+q4lrdYJEciNS/@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="s592SMWyYy/L1ikc"
+Content-Disposition: inline
+In-Reply-To: <aW+q4lrdYJEciNS/@lizhi-Precision-Tower-5810>
+X-Cookie: Haste makes waste.
+
+
+--s592SMWyYy/L1ikc
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260126104409.1070403-1-wei.fang@nxp.com>
+Content-Transfer-Encoding: quoted-printable
 
-> The commit bc66fa87d4fd ("net: phy: Add link between phy dev and mac
-> dev") has created a device link between the MAC and the PHY if the MAC
-> uses a shared MDIO bus (The MDIO and the MAC are two separate devices).
+On Tue, Jan 20, 2026 at 11:18:42AM -0500, Frank Li wrote:
+> On Tue, Jan 20, 2026 at 07:03:28AM -0800, Laurentiu Mihalcea wrote:
+> > From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+> >
+> > For SM-based SoCs (i.e. MX95, MX943), GPR configuration is performed by
+> > the SM coprocessor. Thus, the programming model needs no handle to the
+> > GPR node. Make it optional.
+>=20
+> "programming model" look like software configuration.
+>=20
+> Thus, GPR is transparent to software and does not need to be described in=
+ the
+> device tree. Make it optional.
 
-> Sarosh Hasan tried to change the DL_FLAG_STATELESS flag to
-> DL_FLAG_AUTOREMOVE_SUPPLIER to fix the issue [1]. However, the solution
-> does not take into account the hot-swappable PHY devices (such as SFP).
-> so when the PHY device is unplugged, the MAC driver will automatically
-> be removed, which is not the expected behavior.
-> 
-> Therefore, to solve this issue of the shared MDIO bus, we create the
-> device link between the MAC device and the MDIO device, rather than
-> between the MAC device and the PHY device. And when the shared MDIO bus
-> is removed, all MAC drivers that depend on it will also be removed.
+I was expecting a new version of this with Frank's comments rolled in.
 
-Shouldn't there be a full chain here? MAC->MDIO->PHY?
+--s592SMWyYy/L1ikc
+Content-Type: application/pgp-signature; name="signature.asc"
 
-For the case of the SFP, maybe it should be
+-----BEGIN PGP SIGNATURE-----
 
-MAC->SFP Cage and I2C MDIO->PHY
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAml3dykACgkQJNaLcl1U
+h9DqHwf/W0vKTs+cwDArItwrD1Pg0wAd6A1I28PNegyipqSgXGweCyLNwcoaTH+k
+1BcuFESVQFofoSRYbirsMze6LvUrJc6GfcDfQTu0QvHb30xhBPSCBBfNIlZqL0dk
+SZm7EZIDmQl5HEJHs5m/sGRLy5LwlW2MDGPGUwSP4kEcoFOc3is5dNEtGKAKqYRq
+UuOkeS5jCYp7idd76Nh6au1HzTV9v0GPzkIRywTJnF5AWpVXTY001TLVf8+InwAu
+Yxez+C/UfZ3emSmA+yAiX5mZ9NLFX0iALUvUerax17akjOmgTAHOEr/1WEhRpzLD
+Q70Q3FIlKsSfVeFfzrVtY8W0C2fvpg==
+=UreY
+-----END PGP SIGNATURE-----
 
-So if the PHY inside an SFP disappears, the I2C MDIO bus is
-removed. But there is no link upwards from that, so the SFP cage and
-the MAC are left alone?
-
-    Andrew
+--s592SMWyYy/L1ikc--
