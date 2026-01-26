@@ -1,288 +1,130 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013058.outbound.protection.outlook.com [52.101.83.58])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC8032AAA2
-	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 10:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769424272; cv=fail; b=n0ChIlPgWcW4XZYQg+5eF1R3wlKPlnNpjfpS2o/WhtgfSnazLykArdMXEQahBA7yYzhbG6zS/mjN0f185J7oZiWeoFFhFkyKdCj3Gdngeuz7Npjmdaje3jwYpJzYYFObAjlgOnCk+7w/tKpWOVIP4JQZ2ebi/q6xR+Uxd+W7VpU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769424272; c=relaxed/simple;
-	bh=VW2YTpwSm9T0dHT4VhaZ+JoCuC1k+H8ykVWR0k6XtoU=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=u/nA0pj5SfnId6pghbjWMKt5BE+rrZbZ3fVsdkAgcfjcjo3IPE9lsAobwk9+dLjoxMnZV3+ZqARqlKbFcsqCtP81rYfbiMXVik7XEIl+m2sRh80ZEt7mgiQTfH/hTCedETG9EhaUWjcf6eotGE9GsYMitvqWDqcb6q4JWameRAM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=dx/bLkE6; arc=fail smtp.client-ip=52.101.83.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B747033372E
+	for <imx@lists.linux.dev>; Mon, 26 Jan 2026 11:54:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769428449; cv=none; b=XESSpcNZfGsuUBrbaXgjiaFkgkrpB1FEHfNOh7MS5cHLy189hWDj1tNuzwrgMhBBxkGHcIoeX72CDvUlofYVzx0NeOaY76YTJoFFF9oAXZJYmcCZRy+eO6Q1yXS1w3ssF2Gj3F+6eqNLY5cwJL5UrIdzM9khTtuJCeV3/1efVtY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769428449; c=relaxed/simple;
+	bh=3LeOfdhz2qS68sxy8AG8wn3ZCZij7tSSfux2RUi0WNc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=K0p1xvNRea6JDS8LIT+RLIs0sv/U/cRWBdHsTFC5/7/BQZAFWePzuaJjj+mIRPn/24TypC2nE0yGbpQ9rFFraNwVImzdxiGhilB5+GTm5PYwZhpy7JFOd5zcHs35TQepII9tjmERXuKw9IER6BdF8ECQgCtw+TeyczXP6CUtRX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=gYCSFBey; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="dx/bLkE6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SUQcNtuYFnqwf9HD4s5IxyANWF1Gp4FwG9NJ4sIY0pybRA8nknlADQu1+FO32for5tUzzLtQ0b+INW3ugLAnu2DdNuBcdJYPRARBYZx1oDXuRtw/k71Vswz/asDa1NTHkFVVeCkSkaXNF2mzm5jIeA9dKllW0rhrdzUH32wv6WAlR8/4XqhaGsmKWig212pGSc6RhWGAavSC/JS+tsvscW8LixAgv/b7oJwcZyKmmTMmeOTvo/5pI4POihURy08NLAUpr/kPCHDqjBDME2E5HMGhQVY4HP4eRjkfUhLIeSTmtIfTW35kcWyoAFP9MuaVCqiWvqAhJjmlfpDYW87bXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yotWFwVWW//JYJPv/bTJNwe9C/H2dGKY5l3crG14zd0=;
- b=k2F+XGTZ5Q0W/urT55f0OySdVNQVWnlZUvoswl+Z0v5WfC5ZcOSJc66Kd93UY5mZcp8YZnxb+gIZx0hQxrgR+fWsLZuII2PrirZOwFa/tizcOB6tH+soUzOZk584qCeVIM8t+YsExfhnY5wHmgvaV2Y11kGez0d1eGP8maPirp1MrVCCqns+Xg5OJDvXB4Lbs11ZHemykCT/DuxBIEu1ospMFBRiT6zqrFLKX3MODUjZadsDUMyaCQj46h0Vf3NatU2Ycml0AVlurndZi7d/NG1870WacRrMSyzvv9r1YZ0A+Zge/7mT1LaTfqa7eoggc0Ae5Pr7nBJTwJstTDiQSg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yotWFwVWW//JYJPv/bTJNwe9C/H2dGKY5l3crG14zd0=;
- b=dx/bLkE69b7k29oR1VRCXxVHgpbF81Un+/0YefJSUFDZx/TAcUGc56X8GZB68y80pKBZZL0nxAU1GyS5TGByKZlIITixhy5ZlzZg1rvqAUdIfxodkpHiH5PdxnwKDrOCjzofUzCCO9nVXmW8WT5ceytq1k/m85fbddGfdpxTgYEtup5EAHC3r/2yZKvFPXxtqpYAuetez9jK+ouCgwAo5wwJR7zquQKxowRPlXNXpL0jrmjYEeeAiJXwIkcTE2YJfvNwlZMDAQSMNMQAgjX4joGQ6dWZ3WsgL1idqNQTLRDP+8WzhYWqfOu+yiC19K3ynKZpL1gr742zTAKxWnkJyg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by VI1PR04MB6910.eurprd04.prod.outlook.com (2603:10a6:803:135::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Mon, 26 Jan
- 2026 10:44:26 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9499.001; Mon, 26 Jan 2026
- 10:44:24 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	florian.fainelli@broadcom.com,
-	xiaolei.wang@windriver.com,
-	maxime.chevallier@bootlin.com,
-	quic_abchauha@quicinc.com,
-	quic_sarohasa@quicinc.com
-Cc: imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: phy: add device link between MAC device and MDIO device
-Date: Mon, 26 Jan 2026 18:44:09 +0800
-Message-Id: <20260126104409.1070403-1-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR06CA0193.apcprd06.prod.outlook.com (2603:1096:4:1::25)
- To PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="gYCSFBey"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B61A910944B;
+	Mon, 26 Jan 2026 12:54:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1769428444; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=fzOWakw0ilbmP5m8MK9KCUTv8ewD8g8OYShpYckpwEU=;
+	b=gYCSFBeyw+MOiw+PaWgpouqbTEtvrYYVD9jUkk9UjUTcGfbJWmRqN1nBV1enpMVc7YpJsD
+	syrup/rfvVj09p3FwRCDHcQmot22lUJym8YrBO9z4vEVzFTDD3OWB2r2+VdsxckQCCTXMY
+	rvpdKpZKI2572mYhoRPOqmfRYkXZ+9KSexaZOHsDF9P5EhNkY5H8yyo+G67fikyz9wmH88
+	QJv/VF2j98LLD8JLq3CRh3uEkcJJL2eaXk3v3vzdpynKswUh7PtzUmv2mx0vI0mZTeC7Qw
+	b0Y8IsBWdDREPXCttG1u5uZ9e6YbQyUGKCkW4HuRW7jzwVMcyabqXKlRbDmkvg==
+From: Lukasz Majewski <lukma@nabladev.com>
+To: Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Cc: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Lukasz Majewski <lukma@denx.de>,
+	Lukasz Majewski <lukma@nabladev.com>
+Subject: [PATCH v2] clk: vf610: Add support for the Ethernet switch clocks
+Date: Mon, 26 Jan 2026 12:53:49 +0100
+Message-Id: <20260126115349.1750578-1-lukma@nabladev.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|VI1PR04MB6910:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4a11b52e-f029-4ab0-fffc-08de5cc7df12
-X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|19092799006|1800799024|376014|7416014|52116014|366016|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
- =?us-ascii?Q?GJIZB7gpEvTSV7ZbclVDjmyaXuGupM9e7526qpf0pGLITB4AhN6u19EFI5B9?=
- =?us-ascii?Q?Tl/UA8uWF0eckl9oCp+OGwfxs4diG2jH8fH8aobif0PGkG6ZAjNLsPo4AvXq?=
- =?us-ascii?Q?EehuEl2Lsok14qdAFViIcHRCCodlnRelkT2AvK2WC1t5arpzgFFkJzc+mKBz?=
- =?us-ascii?Q?EHi85KTDQ9ogTWoA+SHL0dvQ7Xpo5xDfZMBqJvUnXeYhHq5IskKQhvCqN72z?=
- =?us-ascii?Q?9clXKhAGjbbT1e6N+bUI4xCBqrW8KDQj+FVMvZPw6q2b+EReE0W7zmHuvAxB?=
- =?us-ascii?Q?lsKZJyKyobybxM58PMwByREAlTI2b4ReEo0hd6QVMPbiFwKSU3D5SxgaenD1?=
- =?us-ascii?Q?Y+Vi61grieaKG2ZUmZumbqsjQtgqQk6i2NvoK4VDBu4feTR7BFoRJUgqrwsP?=
- =?us-ascii?Q?ZcRPThpZrBGd1Rb08Mz3681Spq6zVfCw3jBDyY5HQGw9BuBIX1LQJrWqEAqj?=
- =?us-ascii?Q?yE7+Le5A4qFsWmgB4iYjDtIsS8LyP+cWuzwf2aKAw7h2JXxRkSO9eozhibmA?=
- =?us-ascii?Q?WmnWxSIRY6bocYeSfwgyfQS/Ahz8GIEDxOS+E1haqT4kHvQQNoe/5hCMqG8i?=
- =?us-ascii?Q?Wmj/FN2BuPyOkTETK0qKLqMU8mrJJLYrLvDl+07wVBNACx7oTIvsfo2E8CtZ?=
- =?us-ascii?Q?QHIXoKocnbL+VfxgI3WLDU2NtleNfTgmK5fZyjO+MoWS0oFUTp/7pTqK4/Vd?=
- =?us-ascii?Q?g0Gf8jpliWOwdsRO9Urr/QvSZ2EJOg9+NnhPS44dubYFoPOdWbdNn+Ak7OrD?=
- =?us-ascii?Q?VxJqNTbOsEOrKUGSBpeh4EI5OFlVvzEWd7y935JmStDJ4e+D4RTM1gbWaXzy?=
- =?us-ascii?Q?omXFojnJl4itFKRTlR5quQs4H4NZUT10TxB5bT9wL5Ec2VtW67vqH+Jx+yBm?=
- =?us-ascii?Q?XMdOwdVPMJh10/aXLUesRCHXrYzfSC1MpR6sEE0YwRSX40ROYqhQuiERLoqM?=
- =?us-ascii?Q?icPO66RPlWiKkHksZ499OG6rnDQOpFLMJzuwj5N2pS1M3nbBqDm3qilGwv/a?=
- =?us-ascii?Q?kwIOCgchBz/Tq/x1bbkO18/iQRiBu95yrZvo2vq6omUceOPusO6QBF0HGAWP?=
- =?us-ascii?Q?FemHU4YZVsu292tH9KE1pVFbYdpPI5Pokbq1k8PzaoFI52+aAIltwMf6/aa6?=
- =?us-ascii?Q?gNgrPiOJQZHb5Z6ePBKCD+736CLOqykcUnaHk4kp2hRX487xxzEzD5SElOek?=
- =?us-ascii?Q?N1A+FBvytpsbiRvToqIHs8WclCq0E3+/OpFtG31K5xJxT20ODEx+Uviuy3bx?=
- =?us-ascii?Q?xIiFHrZN4sb4lQpPDHn570LH78aexWVkrDgYUKCYtRMuIguU+GTFzD3hpOGt?=
- =?us-ascii?Q?kv3yfkVtvFof48PqT1lrVo/HMZeHaX0nqCshammbxo7O1tNzTI/Kzb3J4lj2?=
- =?us-ascii?Q?YoWYZ6DbDxcQsl/IROuCPf3Z6htp7p3jJQW4BG7E8kLPdmODzYc1cRDiSCHt?=
- =?us-ascii?Q?cJZuopN9487mu0uxcFWh2btqZuMhy7VrydA175QKMtQPE65NeNj/eE2n0VZo?=
- =?us-ascii?Q?16NqaKqYEhRbkEitq85bFDrHzSFcIb6ZENS1CSL9AW39ctFSZ+ZLldrNBdbu?=
- =?us-ascii?Q?YNOksK3YcyBv3iTm7KlKYGUsUU1Mixjl/VcDT/h98TIpEIYQ/fBvE6whC0Ax?=
- =?us-ascii?Q?putbUUG1DuvkvO6Ofm9f0/DKfqQbYAQMQgwtGYrp+gkL?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(7416014)(52116014)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?8texZdPbmzx0+InznwzgU9f6gKBKXiDT8xBL/Y6VDYMHBg3qEPmGVOsEV0+A?=
- =?us-ascii?Q?eQEQHm0oK8fCC2bRwAcWCVvdL6kdFQblhEmjqAa9t7gptIB4iB4tChsDSdVW?=
- =?us-ascii?Q?csuFWvML7/j7Q84BVY5jtuKqZ4O6Jdc0tsKgOn1h7vy+7vgAJ32a0MLZ1hSo?=
- =?us-ascii?Q?MwfiBNV0GCJH+a9QSzPpvLbJ/0CTe95jBsq29aTQWfebm4zqchywDDQQ8K53?=
- =?us-ascii?Q?p10JcEE7lhZh9ANXkj7YG2uSG6VxLfgK2n+d54xreRsCoRr9UySYbGFsG49U?=
- =?us-ascii?Q?IyTcaxkWIVXBwW4T6juKkvkiVBjjp+6j84P/sFtTAvzuyV/mlLNuQiCcL2za?=
- =?us-ascii?Q?bEG54enokyyK2xcYp3QPkwV3qmWi7nvtiYEoheVIv81Gdsgp1R7qL+osjkdc?=
- =?us-ascii?Q?vr2WkPGMaIsJgEDKigaCPiww4FGdl06ouoednIkQ/Gulb80/tY1o1sMoEiYY?=
- =?us-ascii?Q?jbfPVxaLcrkpTjgRIXniMdkzi6bAkgOzxghuaNWP0HVILJ9DqbKZ9MTdI7K9?=
- =?us-ascii?Q?h/SYJxOYEqITpJZ+qpIjakc+yhIWFQqA6DNsZmjT/HwoJIikTRtVbMKpZ+rv?=
- =?us-ascii?Q?WIRgQyTLsdyEPGIXPoaqWwzxgFxlWTG0wY5AOaaGGVnFIWUY0rjKw7XnwXzL?=
- =?us-ascii?Q?845t+F3uIEFQhfpqcdK5ScWS1SPaNmDG0kwdByzsKXd1pJmh8cEwQe12frUW?=
- =?us-ascii?Q?XQ1DnjPk2+LpSNM+5nb8Py38qI71+9AN2L+M5GUW7xLJNgkaBCuAx7OjAOJp?=
- =?us-ascii?Q?+3yFxk9NV2a2tPw1FLFnk02X0Dxr5LZJ7KSqHKXFrGCSRwXks0pyTVLEvH6i?=
- =?us-ascii?Q?8+z8lhk9I7YGirt9dsnWTSeKgjqr6vG+vm4IK+wtRcMnJveFQS9hSk2KprTZ?=
- =?us-ascii?Q?wcD+ErNPQ9N4d1b9ZQGOn6IzPwqWRyCFyN532IFo8Ra3XGX1SU1O/MX4SMSl?=
- =?us-ascii?Q?+/IJ7e0W8GjNEN0Zs503ICG4sTXycKKZ0WB35hi1FMHuUhclq1KnsD763FuH?=
- =?us-ascii?Q?EFexA2UsxA+JYrRYo99QC0DDGYYbxLVWWczxtWbcDEJWnWCTrHBuX6KjTkFW?=
- =?us-ascii?Q?AZeCtFTRtXb28x3HKwF+JZpILRZGcXxJWOB/XR1k/byyPaudSylsYwMirKgt?=
- =?us-ascii?Q?M6XD+WIm9GrVNs25GbQJ//2dcrEz/0HSwAqeaxLRytXpQi4SFRf35dE8u7g7?=
- =?us-ascii?Q?621hGWeHC/JrRlw517qCrWRNUPE5E7dYBKgjqZaGUliNh+J5pgmRya32YqOk?=
- =?us-ascii?Q?9JJ3na9RgsefMszidpQk616lms0MNisP/HvrDV7wtZobiTNf34nTxBb8dVA4?=
- =?us-ascii?Q?hDYaN2BTBJoypCr1u09szbUnVs+kcjV+fnKx7Tfz+VNbyceX+D/mjQ2h/8yC?=
- =?us-ascii?Q?nekH/G5kHZtSjlgtokBGc963TzIe7NchZuiOnnTXUCMp02FP3vYU5Tw9NeFw?=
- =?us-ascii?Q?VHN5lE59Be2XCxb4Z0K01r2ARyHWoEcIw/uXX0XoJ7MRR/xRE67f26JBB2nj?=
- =?us-ascii?Q?vAG3y1+4R7dNcvdpJkwLvwRjP5TOQiIFfirurHLbAQrFTTetP21m0dOBCjdI?=
- =?us-ascii?Q?D+ybQo01QwpvLNLJA10B5yrYbJ54nPgY9zmlbNGjSNENZoBQgGB4S3i2x5N9?=
- =?us-ascii?Q?sUPdjNEwWNlC+2NqeTJaUfCocodLb3lGntaqa6IgVBhrcH7b4fPDR63gIHoz?=
- =?us-ascii?Q?0c754Sgb8RDcPegn/Cm5iFlWhdyf+kFJNjKjA4LUhJSC0gAS?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4a11b52e-f029-4ab0-fffc-08de5cc7df12
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2026 10:44:24.6323
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CLufMdcMZpEVIwM7lJHu8eRJBu4WIPrg7cQsOXzsnzh8bWYANtRXKqn0uvzxrxulxUzR3gNIaLGhs65/RGQ4Dw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6910
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-For the shared MDIO bus use case, multiple MACs will share the same MDIO
-bus. Therefore, these MACs all depend on this MDIO bus, however, current
-PHY driver does not create this dependency relationship between the MACs
-and the shared MDIO devices. If this shared MDIO bus is removed, it could
-potentially cause a crash. For example, the i.MX6ULL platform has two FEC
-ports (fec1 and fec2) and uses phylib interfaces to manage the external
-PHY. And fec1 uses the MDIO bus shared by fec2. When the fec2 driver is
-removed, users can see the following warning log.
+From: Lukasz Majewski <lukma@denx.de>
 
-$ echo 20b4000.ethernet > /sys/bus/platform/drivers/fec/unbind
-WARNING: drivers/net/phy/phy.c:1352 at _phy_state_machine+0xe8/0x38c, CPU#0: kworker/0:6/35
-phy_check_link_status+0x0/0xf8: returned: -13
-Call trace:
- unwind_backtrace from show_stack+0x10/0x14
- show_stack from dump_stack_lvl+0x54/0x68
- dump_stack_lvl from __warn+0x84/0xf4
- __warn from warn_slowpath_fmt+0x1a8/0x1bc
- warn_slowpath_fmt from _phy_state_machine+0xe8/0x38c
- _phy_state_machine from phy_state_machine+0x20/0x50
- phy_state_machine from process_one_work+0x168/0x2f4
+The vf610 device has built in the MoreThanIP L2 switch. For proper
+operation it is required to enable ESW and MAC table lookup clocks.
 
-Another example is the i.MX95-15x15 platform which has two ENETC ports
-and uses the phylink interfaces to manage the exteranl PHY. All the
-external PHYs can be accessed the EMDIO, it is a different device from
-ENETC. When the EMDIO driver is removed, users can see the below crash
-log and the console is hanged.
+The MAC table spans from 0x400E_C000 for 0x4000 and it is necessary
+to provide clocks for each AIPS1-"slot", which size is 0x1000
+(hence four separate entries).
 
-$ echo 0002:01:00.0 > /sys/bus/pci/drivers/fsl_enetc_mdio/unbind
-$ ifconfig eth0 down
-Unable to handle kernel NULL pointer dereference at virtual address 00000000000001b8
-pc : _phy_state_machine+0x230/0x36c
-lr : _phy_state_machine+0x2b4/0x36c
-Call trace:
- _phy_state_machine+0x230/0x36c (P)
- phy_stop+0x74/0x190
- phylink_stop+0x28/0xb8
- enetc_close+0x28/0x8c
- netif_change_flags+0x24/0x6c
- dev_change_flags+0x48/0x7c
- devinet_ioctl+0x328/0x604
- inet_ioctl+0x204/0x220
+Those can be enabled via clock gating CCM_CCGR10 register (0x4006_B068).
 
-The commit bc66fa87d4fd ("net: phy: Add link between phy dev and mac
-dev") has created a device link between the MAC and the PHY if the MAC
-uses a shared MDIO bus (The MDIO and the MAC are two separate devices).
-Sarosh Hasan tried to change the DL_FLAG_STATELESS flag to
-DL_FLAG_AUTOREMOVE_SUPPLIER to fix the issue [1]. However, the solution
-does not take into account the hot-swappable PHY devices (such as SFP).
-so when the PHY device is unplugged, the MAC driver will automatically
-be removed, which is not the expected behavior.
+This patch also adds VF610_CLK_ESW and VF610_CLK_ESW_MAC_TAB{0123}
+macros definitions for L2 switch.
 
-Therefore, to solve this issue of the shared MDIO bus, we create the
-device link between the MAC device and the MDIO device, rather than
-between the MAC device and the PHY device. And when the shared MDIO bus
-is removed, all MAC drivers that depend on it will also be removed.
+The VF610_CLK_END has been removed as its number had to be increased
+when MTIP L2 switch clocks were added.
 
-Reported-by: Abhishek Chauhan (ABC) <quic_abchauha@quicinc.com>
-Closes: https://lore.kernel.org/all/d696a426-40bb-4c1a-b42d-990fb690de5e@quicinc.com/
-Link: https://lore.kernel.org/imx/20250703090041.23137-1-quic_sarohasa@quicinc.com/ # [1]
-Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Signed-off-by: Lukasz Majewski <lukma@nabladev.com>
 ---
- drivers/net/phy/phy_device.c | 24 ++++++++++++++----------
- include/linux/phy.h          |  4 ----
- 2 files changed, 14 insertions(+), 14 deletions(-)
+Changes for v2:
+- Squash clock DT bindings to this single patch
+- Replace VF610_CLK_END with VF610_CLK_ESW_MAC_TAB3 + 1
+---
+ drivers/clk/imx/clk-vf610.c             | 7 ++++++-
+ include/dt-bindings/clock/vf610-clock.h | 6 +++++-
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 81984d4ebb7c..d5ac7506fe39 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1768,12 +1768,21 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+diff --git a/drivers/clk/imx/clk-vf610.c b/drivers/clk/imx/clk-vf610.c
+index 9e11f1c7c397..e074442c12fd 100644
+--- a/drivers/clk/imx/clk-vf610.c
++++ b/drivers/clk/imx/clk-vf610.c
+@@ -110,7 +110,7 @@ static const struct clk_div_table pll4_audio_div_table[] = {
+ 	{ }
+ };
  
- 	/**
- 	 * If the external phy used by current mac interface is managed by
--	 * another mac interface, so we should create a device link between
--	 * phy dev and mac dev.
-+	 * another MDIO controller, which means that the MAC and MDIO are
-+	 * separated devices, then we should create a device link between
-+	 * the MAC device and the MDIO device.
- 	 */
--	if (dev && phydev->mdio.bus->parent && dev->dev.parent != phydev->mdio.bus->parent)
--		phydev->devlink = device_link_add(dev->dev.parent, &phydev->mdio.dev,
--						  DL_FLAG_PM_RUNTIME | DL_FLAG_STATELESS);
-+	if (dev && phydev->mdio.bus->parent &&
-+	    dev->dev.parent != phydev->mdio.bus->parent) {
-+		if (!device_link_add(dev->dev.parent, phydev->mdio.bus->parent,
-+				     DL_FLAG_PM_RUNTIME |
-+				     DL_FLAG_AUTOREMOVE_SUPPLIER)) {
-+			phydev_err(phydev,
-+				   "Failed to add devlink between MAC and MDIO\n");
-+			err = -EINVAL;
-+			goto error;
-+		}
-+	}
+-static struct clk *clk[VF610_CLK_END];
++static struct clk *clk[VF610_CLK_ESW_MAC_TAB3 + 1];
+ static struct clk_onecell_data clk_data;
  
- 	return err;
+ static u32 cscmr1;
+@@ -309,6 +309,11 @@ static void __init vf610_clocks_init(struct device_node *ccm_node)
+ 	clk[VF610_CLK_ENET_TS] = imx_clk_gate("enet_ts", "enet_ts_sel", CCM_CSCDR1, 23);
+ 	clk[VF610_CLK_ENET0] = imx_clk_gate2("enet0", "ipg_bus", CCM_CCGR9, CCM_CCGRx_CGn(0));
+ 	clk[VF610_CLK_ENET1] = imx_clk_gate2("enet1", "ipg_bus", CCM_CCGR9, CCM_CCGRx_CGn(1));
++	clk[VF610_CLK_ESW] = imx_clk_gate2("esw", "ipg_bus", CCM_CCGR10, CCM_CCGRx_CGn(8));
++	clk[VF610_CLK_ESW_MAC_TAB0] = imx_clk_gate2("esw_tab0", "ipg_bus", CCM_CCGR10, CCM_CCGRx_CGn(12));
++	clk[VF610_CLK_ESW_MAC_TAB1] = imx_clk_gate2("esw_tab1", "ipg_bus", CCM_CCGR10, CCM_CCGRx_CGn(13));
++	clk[VF610_CLK_ESW_MAC_TAB2] = imx_clk_gate2("esw_tab2", "ipg_bus", CCM_CCGR10, CCM_CCGRx_CGn(14));
++	clk[VF610_CLK_ESW_MAC_TAB3] = imx_clk_gate2("esw_tab3", "ipg_bus", CCM_CCGR10, CCM_CCGRx_CGn(15));
  
-@@ -1845,11 +1854,6 @@ void phy_detach(struct phy_device *phydev)
- 	struct module *ndev_owner = NULL;
- 	struct mii_bus *bus;
+ 	clk[VF610_CLK_PIT] = imx_clk_gate2("pit", "ipg_bus", CCM_CCGR1, CCM_CCGRx_CGn(7));
  
--	if (phydev->devlink) {
--		device_link_del(phydev->devlink);
--		phydev->devlink = NULL;
--	}
--
- 	if (phydev->sysfs_links) {
- 		if (dev)
- 			sysfs_remove_link(&dev->dev.kobj, "phydev");
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index fbbe028cc4b7..d6f2039a63d3 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -559,8 +559,6 @@ struct phy_oatc14_sqi_capability {
-  *
-  * @mdio: MDIO bus this PHY is on
-  * @drv: Pointer to the driver for this PHY instance
-- * @devlink: Create a link between phy dev and mac dev, if the external phy
-- *           used by current mac interface is managed by another mac interface.
-  * @phyindex: Unique id across the phy's parent tree of phys to address the PHY
-  *	      from userspace, similar to ifindex. A zero index means the PHY
-  *	      wasn't assigned an id yet.
-@@ -666,8 +664,6 @@ struct phy_device {
- 	/* And management functions */
- 	const struct phy_driver *drv;
+diff --git a/include/dt-bindings/clock/vf610-clock.h b/include/dt-bindings/clock/vf610-clock.h
+index 373644e46747..5d94bd561a2e 100644
+--- a/include/dt-bindings/clock/vf610-clock.h
++++ b/include/dt-bindings/clock/vf610-clock.h
+@@ -197,6 +197,10 @@
+ #define VF610_CLK_TCON1			188
+ #define VF610_CLK_CAAM			189
+ #define VF610_CLK_CRC			190
+-#define VF610_CLK_END			191
++#define VF610_CLK_ESW			191
++#define VF610_CLK_ESW_MAC_TAB0		192
++#define VF610_CLK_ESW_MAC_TAB1		193
++#define VF610_CLK_ESW_MAC_TAB2		194
++#define VF610_CLK_ESW_MAC_TAB3		195
  
--	struct device_link *devlink;
--
- 	u32 phyindex;
- 	u32 phy_id;
- 
+ #endif /* __DT_BINDINGS_CLOCK_VF610_H */
 -- 
-2.34.1
+2.39.5
 
