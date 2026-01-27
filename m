@@ -1,114 +1,116 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356C334D4FE
-	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 12:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292873559CE
+	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 12:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769516546; cv=none; b=cuidkmqy10C4m4tFD5oZzabxl1Oj2Dy2I0Smvk3koGVazMVXxI0nmR3YX7yGsSdhI+03bXaoyBVi0SxeOQ9GTGBcV7Nag9GrSDiZtf+X8wUbD9D8cejeTA6JBNvuvS1RQ7JpNtbqEfnjA3NbQOtQrd/YI7qdfICd1YMn/1W0xHw=
+	t=1769518326; cv=none; b=m8tAt5fZtpe3gRF5/gC4dFlLMAgkFAHvtIfKd+dOXTlTEAClCRJ0DuTSx1oyQLMP2kPhKGjepq2PLj5XF0I4MMRV6gHTgmee7wuw2sioB2xzBPP6H7UK55ngCUJ2qk1WXSixJvwOZ1gifGOo3JzKe7lce6o1I/EdSgaSC6bi5q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769516546; c=relaxed/simple;
-	bh=+ilUKbu2ArLEGVUyAuSkij7jhAzxKx/xV6YfmxWnTAs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=trzbQovDWvyPGXy5hBZS3QVGtnUiigA77q5VyETIIMp6E6fj/+XcsXtKV29ipMZkOIK+JgEJgTOu8ONEQyUsLQB9p7+CV4bmokVnh14f9kf1vrEyfYKSj6EHQPCZI7bHwSIReGpturAUdkkeIJMZxSM8VjrAAu9L+hZSjDtioG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D4i2Q6hV; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D4i2Q6hV"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-432d2670932so5141328f8f.2
-        for <imx@lists.linux.dev>; Tue, 27 Jan 2026 04:22:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769516543; x=1770121343; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0MBhjNvO9uP33cA1otmnLsn1T/YWSSVCvR/7qKxO/MI=;
-        b=D4i2Q6hVKAqtV0lsuc5gBpESFlR5gp8Q4ObMOhiqFB7uL5482QDeg7Mcduix0CtA4Z
-         OwY5/ed3AYJqzg/VDTWTRflPZqxRUO7b8cfTbdldY6YEn3Urdg1VlNaWFXZ1kR77f1Ky
-         757s3ABTL0uRSsMbUpwk2lasDCELuxRuujkvXSf7iS0Kl38vFVVp5WuhQhXZPgjb+oC+
-         bc/U6My5B7bKZj8Zc/1/b86yqCTcJyhxNimA7W7YZacHuc0yVwgLqNUg5GsRtPvJB+Q9
-         MpuHdd5EsVBI6wBaN98tRfi/lfHND/n0XRJ9wR/DaEXJYsw4WkJH7OZwoOORknl6Ce3z
-         i26A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769516543; x=1770121343;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0MBhjNvO9uP33cA1otmnLsn1T/YWSSVCvR/7qKxO/MI=;
-        b=rXcKhfOX9OtC9N4TtmjPuujOjuUPwA1EvJcL/tkoBb2fg4b0gEN8IeKcCitZd1Ubbo
-         LgjT6MpE/VR/do70uZdsP2vjUe6LUjT5Sq0MI6PWQSJzU6I6UamHbYutfPoS/2VsKHo/
-         2p8DJ0rWq4rT1JcBMu7y94PZzsEvrV/6KYABEYgg7pOKLE8k5NVITFEK7xGYO5uRQA1/
-         b+n7c1H369qS2uSC1wQsIxDXJ9CMK14g4E28yDcSM+yiwiktPsBT6RoLRYo6/Bub1Ggl
-         W74EIANYPLiCRn0rzXgS0o8/FA+t9H7ryJ/S5Vzhbco7c4fEMyk9/yd4lOw+0jxnxSUN
-         6joQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUCNeLWw/xTV1hG5ZIwwpVfZRZFRy+S+UmsIgSNhQzhuVt6mamIhiuRuOufkzGpOsBwQdQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyYZEUeJ0XomnsagQMUPL0kHPTbJ5+Cv4RuDnQeLf6at7Dbp9vg
-	sA3/wHNjFWAetILvcEWcHyvslEMRTpmBgTvMalERJ4fcCcF+AbBDRFlc
-X-Gm-Gg: AZuq6aJBOI3mzOHtQIJWvwlous0wgNtzswnWpDrE6zVPB3YL5msEhN7wXboQKwxiXQE
-	jW0ySDxVgf9l9dni0HqBlr1bLJKmBZ/Nzj1gxQ9tRiAHOAc1EK1OOzJtv3fWJHeiuL2h0X5D+sH
-	o5Ae+y97PBIf0UMBX+Kc8Q+pV8eOH20mN8VuUzbYJn+SqWoYfn/No0ooFTlHejRqtYG/+3X5Ccu
-	5pfeYI5Cz/ALsp6A4a9iQcFJWU05VqKqhcBuAK5pMWWz6g0RPJ8eNP2m4MbE4noGULPvzF427yN
-	1xIw2ZKeGLE5jHRhtNprGBAgHLIY6nsfYjFpOhHxgqx1SYNUbb6HIO73jRw+nB18XhAGb2VxDU2
-	QWXXOaiax/gsvs0lO+1z7/RN5W/c6n705lpfLuHuPtP0/n6BebJMfzNqA4AZRqe9seWa6MGcd2Q
-	NyxmWDGYh+ql16XFhaigOLXa35XW1296jY4+hXAaaDwec=
-X-Received: by 2002:a05:6000:178a:b0:432:84ef:7160 with SMTP id ffacd0b85a97d-435dd022574mr2376326f8f.12.1769516542309;
-        Tue, 27 Jan 2026 04:22:22 -0800 (PST)
-Received: from [10.25.216.67] ([128.77.115.158])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1e71503sm41885074f8f.25.2026.01.27.04.22.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 04:22:21 -0800 (PST)
-Message-ID: <c4f4a6cf-8511-44ac-8648-d8c4093e24d0@gmail.com>
-Date: Tue, 27 Jan 2026 04:22:19 -0800
+	s=arc-20240116; t=1769518326; c=relaxed/simple;
+	bh=CPjTTaJBx9OQhXhmS7tOoshwFrxUYmb+rPvV/z7zl10=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gQBwiCZ4TqmKfS526ysS2Vb0FSGwn7WSJfhzXUwNCQgatFywvz6u+NiMeJdVEp5y+/xw37SkNeP5uyB1t3+AZSXe9neNTlHcaSPbT5awX7C11937LEK9xYo4vRGt8dCBCmdKCBUQHWTM2/D3IwwIynDT26L1nD6yj3ASHVvfGjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 582862015BF;
+	Tue, 27 Jan 2026 13:51:58 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 372B72015BB;
+	Tue, 27 Jan 2026 13:51:58 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 7C9FF20383;
+	Tue, 27 Jan 2026 13:51:57 +0100 (CET)
+Date: Tue, 27 Jan 2026 13:51:58 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 2/4] dt-bindings: net: nxp,s32-dwmac: Declare
+ per-queue interrupts
+Message-ID: <aXi07hPBrl7EYezi@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20260123-dwmac_multi_irq-v3-0-cc53f2be8961@oss.nxp.com>
+ <20260123-dwmac_multi_irq-v3-2-cc53f2be8961@oss.nxp.com>
+ <20260123-dinner-aloft-e57deb6c546a@spud>
+ <aXdiNb92B4HH+ZFt@lsv051416.swis.nl-cdc01.nxp.com>
+ <20260126-blinker-secluding-a745f60caccb@spud>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] arm64: dts: imx95-15x15-frdm: support AONMIX MQS
-To: Frank Li <Frank.li@nxp.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Chancel Liu <chancel.liu@nxp.com>,
- linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org,
- Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20260126145537.2301-1-laurentiumihalcea111@gmail.com>
- <20260126145537.2301-3-laurentiumihalcea111@gmail.com>
- <aXeY44T+5rvCqBs8@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-In-Reply-To: <aXeY44T+5rvCqBs8@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260126-blinker-secluding-a745f60caccb@spud>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
+On Mon, Jan 26, 2026 at 08:00:33PM +0000, Conor Dooley wrote:
+> On Mon, Jan 26, 2026 at 01:46:45PM +0100, Jan Petrous wrote:
+> > On Fri, Jan 23, 2026 at 05:13:03PM +0000, Conor Dooley wrote:
+> > > On Fri, Jan 23, 2026 at 11:09:55AM +0100, Jan Petrous via B4 Relay wrote:
+> > > > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> > > > 
+> > > > The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lines,
+> > > > set them to allow using Multi-IRQ mode when supported.
+> > > 
+> > > The binding only supports s32{g,r} devices, why is the existing minimum
+> > > retained? What devices are going to not have all 11 interrupts
+> > > connected?
+> > > 
+> > 
+> > The original idea was to support backward compatibility, as older DTs
+> > didn't contain queue-based interrupt lines described.
+> > 
+> > But now, when you asked, I started to think it is not needed,
+> > the requirement for backward compatibility is managed inside the driver
+> > and yaml shall describe the hardware not used configuration.
+> 
+> Just to be clear, cos the last portion of that "yaml shall..." isn't to
+> me, you mean that the driver will support 1 or 11 interrupts but you
+> will make the binding only allow 11? That would be fine.
+> Just note in the commit message that all of these devices have the 11
+> interrupts.
+> 
 
-On 1/26/2026 8:40 AM, Frank Li wrote:
-> On Mon, Jan 26, 2026 at 06:55:37AM -0800, Laurentiu Mihalcea wrote:
->> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->>
->> Add support for AONMIX MQS (i.e. MQS1).
->>
->> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
->> ---
->>  .../boot/dts/freescale/imx95-15x15-frdm.dts   | 73 +++++++++++++++++++
->>  arch/arm64/boot/dts/freescale/imx95.dtsi      |  5 ++
-> Chip's dtsi and board dts should be two patches.
->
-> Frank
+Well, all those supported devices have 11 interrupts connected (1x MAC),
+then 5x RX (queue0..queue4) and  5x TX (queue0..queue4).
 
+Until now, the driver was using on MAC IRQ, so the only one shared line.
+Now, we are enabling support for per-queue interrupts, what means for
+supported SoCs up to 11 IRQs as the DWMAC IP on S32G/R has 5 queues.
 
-What's the rationale for this? Is this "rule" documented anywhere?
+The driver can still opearate on this one shared IRQ mode, but
+if the DT node configuration describes all IRQs, then the driver switch
+to multi-IRQ mode. What allows better distribution of processor core
+load.
 
-IMO, the DTSI-related changes are small enough that it doesn't justify
+So the 11 IRQs are the maximum value, in the case when all queues are
+used. But I can imagine some other use-cases, when not all queues
+are enabled, ie. only queue0 and quque1. In that case, the driver will
+use some subset of all IRQs.
+That means that DT can contain only lesser interrupt list then maximum.
 
-the split into different patches. The split would've made more sense
+I feel like having "minItems: 1" shall cover such use-case.
 
-if we were touching more than 1 board.
+BR.
+/Jan
 
