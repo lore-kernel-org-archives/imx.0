@@ -1,54 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C13355811;
-	Tue, 27 Jan 2026 12:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7E334F275
+	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 13:08:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769518652; cv=none; b=ezLSO05OcVub8BseEkaIKdtSRE38+b/3M9OjiA90Zd7qfQGYW8u0AMzZg41DjxKtz6CrWe5ifHAuu0KZSpEzfILtycgTxcUOYiUYr6ZkM8IZnrqU+xjRTc9mAdQBsOOMmMPVGiWKGmpwdq63tpjKOFfeJbbGmd67ChgkhSVifbs=
+	t=1769519296; cv=none; b=juB/27xJkn7M8jEzbp5Mx81+KJOo32UfgXdjv3fK1fKysbrNPzSj9Syd8GKV3HMTQd8H1XwHKOtZAbw/vq2YoZq8WWF3P82k5AIpR6XceX2aKFX2AMI0TDrDJ4xovC7OqwjDQDuJHR2s0+E0+WgWeTlr/NU9WNzcFCloz6NIh8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769518652; c=relaxed/simple;
-	bh=Uksvj+xXNbVKjMG5czjlohyQ4d21ktvK52mNzFdDWSE=;
+	s=arc-20240116; t=1769519296; c=relaxed/simple;
+	bh=N1l7Xcdsy/WX2cxiwgs6A67+VXpNHf9W2RVpoBOfJeo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a0kG3SDk2ld1oELQLPgdHe+Mfod7qsCIvdOKvQ0TaHg6VRtYy5Mg4EcleqFhY4HpZnTCX7VWUxq3jsPW7V7OUzTneV+WRbOUMzVGhANihRiG4mPoUy9HNDOF9k10H5K4yS/XLjHXMj19xQBJoXwTJfCdnH/oSQPdMHvU0onVQpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I2titWda; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I2titWda"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6540C116C6;
-	Tue, 27 Jan 2026 12:57:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769518652;
-	bh=Uksvj+xXNbVKjMG5czjlohyQ4d21ktvK52mNzFdDWSE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I2titWdaXnkx9/wH5ayXFTvKiWmyHCAO8bcKIHk4uZrSAs2NX+pxPZdkVMuOoshFa
-	 z2f89ClcaabsmFC5zc8BHWMsac5YaecrFYqEIMVJF5gyjpgMYX45Ml1DqTTMb+0l/6
-	 xJrX6e7Xd8xG/rY9QA25VZjGqvXckuXAbh/doJWcC4YULkXmQy/iv5AiTRvp+L0lto
-	 KGkm4paaRX+qB+0cSzTnY6aDlLbwOPoUC9fb3EzM4pJC5Vs97KC/bFwzz8pzWYvEZ4
-	 ZOnuCJ4wpITzFDsJ8YBiKUcOOA9i9p32TSXh8efo4+bfc5P4Vv6wWlTuTcLYs1UUOu
-	 8xZUI4lq6HPEA==
-Date: Tue, 27 Jan 2026 12:57:24 +0000
-From: Simon Horman <horms@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, robh@kernel.org,
-	kuba@kernel.org, festevam@gmail.com,
-	ghennadi.procopciuc@oss.nxp.com, alexandre.torgue@foss.st.com,
-	linux-kernel@vger.kernel.org, andrew+netdev@lunn.ch,
-	shawnguo@kernel.org, mbrugger@suse.com, mcoquelin.stm32@gmail.com,
-	linaro-s32@linaro.org, davem@davemloft.net, s.hauer@pengutronix.de,
-	edumazet@google.com, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, conor+dt@kernel.org, krzk+dt@kernel.org,
-	devicetree@vger.kernel.org, Frank.li@nxp.com,
-	chester62515@gmail.com, netdev@vger.kernel.org,
-	kernel@pengutronix.de, pabeni@redhat.com, jan.petrous@oss.nxp.com,
-	linux-stm32@st-md-mailman.stormreply.com, s32@nxp.com
-Subject: Re: [v4,1/3] net: stmmac: s32: use a syscon for
- S32_PHY_INTF_SEL_RGMII
-Message-ID: <aXi2NJcwM4-mrgrj@horms.kernel.org>
-References: <8f2139e8adf02b485a4c84d558fc23f78cf04add.1769195864.git.dan.carpenter@linaro.org>
- <20260126152430.1390514-1-horms@kernel.org>
- <aXeJYo-0iiNuXVGH@shell.armlinux.org.uk>
- <aXeP1y7cK0XRx3Wo@horms.kernel.org>
- <aXh9lcfw6D6KouI_@stanley.mountain>
+	 Content-Type:Content-Disposition:In-Reply-To; b=HAFYf1hcJSSCHnQB/zf+zc3FSA6w5g9aBzNCjk0aC7vnGQO6LqLHDqNp06Y1l+d1hFzXc00k9DTvQThAMaA84+RmbdxuUs0Uri5xF8HPFY/O/PUWyBf1nclWKarNZ8qZKLKsZArgDBnQIup//luODPpw7nMv5+VogcvTYv24byw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 76A9020295F;
+	Tue, 27 Jan 2026 14:08:13 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 5C3EA20295E;
+	Tue, 27 Jan 2026 14:08:13 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id A168D20405;
+	Tue, 27 Jan 2026 14:08:12 +0100 (CET)
+Date: Tue, 27 Jan 2026 14:08:13 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: robh@kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	conor+dt@kernel.org, devicetree@vger.kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de,
+	mcoquelin.stm32@gmail.com, kernel@pengutronix.de, pabeni@redhat.com,
+	edumazet@google.com, andrew+netdev@lunn.ch, chester62515@gmail.com,
+	s32@nxp.com, linux-kernel@vger.kernel.org,
+	ghennadi.procopciuc@oss.nxp.com, festevam@gmail.com,
+	alexandre.torgue@foss.st.com, davem@davemloft.net,
+	krzk+dt@kernel.org, mbrugger@suse.com, netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [v3,4/4] stmmac: s32: enable support for Multi-IRQ mode
+Message-ID: <aXi4vRvcCa+8LSKt@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20260123-dwmac_multi_irq-v3-4-cc53f2be8961@oss.nxp.com>
+ <20260125221405.3395497-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -57,21 +48,52 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aXh9lcfw6D6KouI_@stanley.mountain>
+In-Reply-To: <20260125221405.3395497-1-kuba@kernel.org>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Tue, Jan 27, 2026 at 11:55:49AM +0300, Dan Carpenter wrote:
-> On Mon, Jan 26, 2026 at 04:01:27PM +0000, Simon Horman wrote:
-> > But at any rate, I think the key question is should the case
-> > where regmap_write() returns an error be handled in
-> > s32_gmac_write_phy_intf_select() (by some means)?
+On Sun, Jan 25, 2026 at 02:14:05PM -0800, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
 > 
-> Generally if register read/writes fail then there is nothing you
-> can do a the software level, you need to buy a new computer.  However,
-> in this case we may eventually put the registers behind an SCMI
-> interface so probably checking is a good idea.
+> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+> ---
+> stmmac: s32: enable support for Multi-IRQ mode
 > 
-> Could I leave the error message out?  The callers has an error
-> message and if you ever see the error message, and even with SCMI,
-> the fix is probably still to buy a new computer.
+> This patch enables Multi-IRQ mode for the S32 DWMAC driver when both
+> multi-queue and per-queue IRQs are configured. The driver now selects
+> between Multi-IRQ and MAC IRQ modes based on device tree configuration.
+> 
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> > index 5a485ee98fa7..342091045714 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> 
+> [ ... ]
+> 
+> > @@ -149,6 +149,16 @@ static int s32_dwmac_probe(struct platform_device *pdev)
+> >  	plat->core_type = DWMAC_CORE_GMAC4;
+> >  	plat->pmt = 1;
+> >  	plat->flags |= STMMAC_FLAG_SPH_DISABLE;
+> > +
+> > +	/* Check for multi-IRQ config. Assumption: symetrical rx/tx queues */
+> > +	if (plat->rx_queues_to_use > 1 &&
+> > +	    (res.rx_irq[0] >= 0 || res.tx_irq[0] >= 0)) {
+>                         ^^^^            ^^^^
+> 
+> Should these checks be "> 0" instead of ">= 0"?
+> 
+> stmmac_get_platform_resources() initializes the res structure with
+> memset(0), then only writes positive IRQ values when per-queue IRQs are
+> found in the device tree. If no "rx-queue-0" or "tx-queue-0" interrupt
+> names are defined, rx_irq[0] and tx_irq[0] remain 0 from the memset.
 
-FWIIW, that seems reasonable to me.
+The AI is wrong on this statesment. The loop reading IRQs from DT
+in stmmac_get_platform_resources() returns also negative value
+for missed queue IRQ line. And this is used as flag if multi-IRQ
+can be enabled or not.
+
+But I must agree that the comparition shall not include 0 as valid
+value for IRQ, so I will fix it in v4.
+
+Thanks.
+/Jan
