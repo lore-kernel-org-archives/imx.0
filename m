@@ -1,55 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299953321DC
-	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 09:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D16C331A45
+	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 09:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769505219; cv=none; b=PPz9AlkbqfFgNheccUwjRdatw/kMIvaEFtXxf2VVqKCrMrEQ0ES2TbsRDda+qPEXB8mpx+SwBnPUoJSk2V7ytXuF6YID0+25hgBdpDxz6QG++vlniwUcaabmd1xG5DJ+JPdNdUC0C89AE8fV4OzVDHXPQUmlcdYMm0BgLiIGW+A=
+	t=1769505298; cv=none; b=XevHbjPnw0OkLWEtm58wp1XYdOhSNayNUS3MxB6ov6Fu83qMeC/euG2E6BjuSte5jp4R7w0lu+Lj2eVWGNm4PgY6RiZw/2b1duUWM8OmffQyhE0Lr8BjKR7lEdOZmoWOfXNGtGd2z8iR5OVgUv4KbYOO7X0swESaCiO0M7OIjGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769505219; c=relaxed/simple;
-	bh=41rVnxvkISTHwRblA2rsSFI+6MXia1K7fzxYtKEjBpk=;
+	s=arc-20240116; t=1769505298; c=relaxed/simple;
+	bh=PetnM39e0LL4mZ/BY+88U8MSS+1uyIPhCOjYoVl/9eg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q/OPB6X8WE2EPHt2oii0VEE7+KlQmwBTY9WKUry1IQGJoj3QE7QD3UylkovvPihSJHSZhg21RRU/Fgi/SYOKVStoe8KuU62sBpUkfc6Lnoc+DE0DCV76MZdrpdb5DPvwwqj4OJ0hYRjgXkRLKestiTBrG+UJuAfWRQdn1+cHrgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cg+Zfq80; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=Rpq7/gsObylRnb24S4EZvetAZg5JcVLbCEK47sTjrPSw4NBlh16ew29b2ZyhGYzaNnIyO0aWSzwZ+rmEVLr+NWTS1Oiec2pX56m+lFmw2qWRLeups/xsQI3AOLteEiNbCyAJayTZkhk2HnIZGHmUYVelmST+EmfjsV9qChxQS6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NerVTX5c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cg+Zfq80"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEF7C16AAE
-	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 09:13:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NerVTX5c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65613C2BCB1
+	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 09:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769505218;
-	bh=41rVnxvkISTHwRblA2rsSFI+6MXia1K7fzxYtKEjBpk=;
+	s=k20201202; t=1769505298;
+	bh=PetnM39e0LL4mZ/BY+88U8MSS+1uyIPhCOjYoVl/9eg=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=cg+Zfq80YxqDJwmWUOvVfZJ8B1vThvWexE6XEXrvgzbX5fikki8WILdGo52Yfa7qd
-	 eQIn/Z+Sh6J8q4qQRhHvXXrvljT1wN8PDk5JtNONKg3AXK6H+ZZvKpCepdrS40BhHR
-	 jltc9iBTRIiX43FXe0KjUPqARfvAYEUACzcV4pEqnalRc48TpY/1AhOfXYJ7a8POtN
-	 TCgVoc4tH2zMGu3h/n+0uebNggG4C1W9O7SEGRjusyzetzBYpJBqwj0VomTYd4vFCW
-	 TCvrgKFa/4GDqg2nsM8UJizAqhIEupeS17DuPiEe/Y6y/Ca5h1btZiq21raM02w+Fj
-	 s9lSyvP0qdKpg==
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-6495d592c10so4317734d50.1
-        for <imx@lists.linux.dev>; Tue, 27 Jan 2026 01:13:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXhidJq0J49aGGdhWAPA3n62UkU1CojuFRTnsN0I+Jg6AKB8S5bQkQ56h1M1c/OmPiwdtQ=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxVDV2uqkQIoh+d/dA1/JJ9XutQfLXZp0AoCVuj2lE43YEIiTWZ
-	Fi5U+IbucbZueLNo1zAdtE6Dosga7ElD7dY1NJMaktgS1JWGFrXn533JWu2V3EOoptv4MI5ET/I
-	RyJojP7FHr2MaH0PZGGk9/oBLQvfhXwQ=
-X-Received: by 2002:a05:690e:12c2:b0:649:6ae3:59f0 with SMTP id
- 956f58d0204a3-6498fc3b237mr547352d50.50.1769505218201; Tue, 27 Jan 2026
- 01:13:38 -0800 (PST)
+	b=NerVTX5cLC7ok0CGMkPxR2psYo5CcDWkmRe0kjDrqH7jF0+VXXxi3ktv5eqrSwRN3
+	 WmhsFxynKOi5iM9ngE5MtCHdY7jFmWCaQxD1PK3+tjv2Vg9jfChOh5+Xy9JMEvpS1M
+	 bE+0jrVSM+ya6qEZVMHN7nFwcZoT5DpEqG3o0yDEEM+eNY/blCGKDNmgrJC7Aki283
+	 BwzINsEcFUplqEQP07KKGmlQeEwD+s8b4jnSQ9BgNpXB537XlSinfG3mHXbCdVxgqE
+	 YIGSS8oR9FdZUDXV77A/ZzGcHCBIQrAGZHiwGYAOdMuIgjKauCjU5bxUWirjcDXgKP
+	 +JnPLSPBPmw1w==
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-78f89501423so58089317b3.1
+        for <imx@lists.linux.dev>; Tue, 27 Jan 2026 01:14:58 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUbeHW5PUcn8kRhH7yARPNEYgbgYYYfcBPSavRKpSxn+ryvi+k+XEyIOh+8qvUENIeT7Zs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxhsEbpOgXWTWURABw2MlT8lV+YdtLkjKXOt/EqzkquAssKVDaI
+	5aeML3PCjq93FfXEyrhWrpeZs+qns26ygGBAum2278JQXSOrb8IWFxdqjsSfZKUd+WFUYM7D5RE
+	0RBYiB6PwOenRtT5WuiW23gEI7aDTOR0=
+X-Received: by 2002:a05:690e:169b:b0:63e:34ed:a137 with SMTP id
+ 956f58d0204a3-6498fb11309mr617884d50.27.1769505297687; Tue, 27 Jan 2026
+ 01:14:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com> <20260120115923.3463866-4-khristineandreea.barbulescu@oss.nxp.com>
-In-Reply-To: <20260120115923.3463866-4-khristineandreea.barbulescu@oss.nxp.com>
+References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com> <20260120115923.3463866-8-khristineandreea.barbulescu@oss.nxp.com>
+In-Reply-To: <20260120115923.3463866-8-khristineandreea.barbulescu@oss.nxp.com>
 From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 27 Jan 2026 10:13:27 +0100
-X-Gmail-Original-Message-ID: <CAD++jLkJCoSWM+cy2OTyF9BigRcP-4iF1oGxGzEX8_53YWhArg@mail.gmail.com>
-X-Gm-Features: AZwV_QgSaniB8mBIbI3QW613Tst6pG7m7pLrw8AiZD8eyiExQaEqOjZBG8ImutQ
-Message-ID: <CAD++jLkJCoSWM+cy2OTyF9BigRcP-4iF1oGxGzEX8_53YWhArg@mail.gmail.com>
-Subject: Re: [PATCH v8 03/10] arm64: dts: s32g: change pinctrl node into the
- new mfd node
+Date: Tue, 27 Jan 2026 10:14:46 +0100
+X-Gmail-Original-Message-ID: <CAD++jLmC8YJFz9wzPUqEGq2FW_B3U7LvdSpHMEV5ovAqc4WcWA@mail.gmail.com>
+X-Gm-Features: AZwV_QhQbgY6YvrIiO44oapfn9_eWa0H_41WHPqnhCEB-EYr7dzC31pzMR8W__M
+Message-ID: <CAD++jLmC8YJFz9wzPUqEGq2FW_B3U7LvdSpHMEV5ovAqc4WcWA@mail.gmail.com>
+Subject: Re: [PATCH v8 07/10] pinctrl: s32cc: skip syscon child nodes when
+ parsing funcs and groups
 To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
 Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
 	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -68,44 +68,18 @@ Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Khristine,
-
-On Tue, Jan 20, 2026 at 12:59=E2=80=AFPM Khristine Andreea Barbulescu
+On Tue, Jan 20, 2026 at 1:01=E2=80=AFPM Khristine Andreea Barbulescu
 <khristineandreea.barbulescu@oss.nxp.com> wrote:
 
-> From: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+> The SIUL2 node contains child nodes for syscon
+> instances (SIUL2_0 and SIUL2_1) to expose register
+> ranges for SoC information. These nodes are not
+> part of the pinctrl configuration and should not
+> be treated as pinctrl functions or groups.
 >
-> This commit will switch to the new mfd node for representing the SIUL2
-> hardware. The old pinctrl binding for SIUL2 will be deprecated in a
-> later commit since it doesn't correctly represent the hardware.
->
-> SIUL2 is now represented as an mfd device. Move the pinctrl related
-> properties inside the new "nxp-siul2" node. The latter one is now used
-> to represent the mfd device.
->
-> This change came as a result of upstream review in the following series:
-> https://lore.kernel.org/linux-gpio/a924bbb6-96ec-40be-9d82-a76b2ab73afd@o=
-ss.nxp.com/
-> https://lore.kernel.org/all/20240926143122.1385658-3-andrei.stefanescu@os=
-s.nxp.com/
->
-> The SIUL2 module has multiple capabilities. It has support for reading
-> SoC information, pinctrl and GPIO. All of this functionality is part of
-> the same register space. The initial pinctrl driver treated the pinctrl
-> functionality as separate from the GPIO one. However, they do rely on
-> common registers and a long, detailed and specific register range list
-> would be required for pinctrl&GPIO (carving out the necessary memory
-> for each function). Moreover, in some cases this wouldn't be enough. For
-> example reading a GPIO's direction would require a read of the MSCR
-> register corresponding to that pin. This would not be possible in the
-> GPIO driver because all of the MSCR registers are referenced by the
-> pinctrl driver.
->
-> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
 > Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@=
 oss.nxp.com>
 
-OK this makes sense.
 Acked-by: Linus Walleij <linusw@kernel.org>
 
 Yours,
