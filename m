@@ -1,120 +1,117 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ms.puri.sm (ms.puri.sm [135.181.196.210])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220D2299943
-	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 23:41:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769557284; cv=pass; b=VSLZWrLnT9xijxp64orrYr3EccB9VGZzNiF5VicOPOwFME2Lg1fYzChSOiZBUjTv+DqggupvM0i/F9SFVV8v3T+1IC1upEw+Bbcn0fC4yG4FRnlEOBFwr/6Lr6ZhcWgDk1jEVqJiwG0gxliiSJHQduoA1DSNuIRxJrvOaKlgXRc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769557284; c=relaxed/simple;
-	bh=7kmKAF87tQ+DKHman6EfaO9KsoR3gG9HljeNjO/MlME=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HjYj4J/yiW/uHCG7UanGmXjjkwNqB9TOZL+Iq9JW7E8F6fcb3YSQLgIpQiWIQpwZxAZxlo5LIDJyQ9nyBlz7gohPZwIboDilIHtdvsVicFG2aeXl87p1pSvMyAjmovXtGPpJHPyeGvfavQnC5KJn1CqrNTHXYSo1fTYRt37Zhqc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hpq8dCd6; arc=pass smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D7E2E7BB6
+	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 23:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=135.181.196.210
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769557660; cv=none; b=rODDc4w1KypZqgE4n0VU428YfvDNvM1O4mNRMKo8Vvr5nUHL06ApsujO+XcXouftNSao5sfXxh/z1/Jo85OLK9ADkkfoB8tmz+Wsqv/IO59C6UmaPGfJZikfqR2pFjH7D/58Dv3NANWURP5qTmaEXCQa7TGdorQukeWdogNAWqI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769557660; c=relaxed/simple;
+	bh=q/u/XvKL68HmLo5r1RpDGCfqD4LAY62ICsaF9xos+gw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YNwyOWZ8gC1HvGYhwvOLUgo+uyCpceY+HHybrsVmw6qRMPF2GPEmR1urNIPs/rZrVlpelnmvs4gyU0Y9D6cJO2PH603j4QOx23FEWSMYdnAu0CV5WjCSx4BndIKn5uXq8h7dSrnd8qdVScEa9UbHg3zuZ8BuLK8nop2FWNuE4i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=puri.sm; spf=pass smtp.mailfrom=puri.sm; dkim=pass (2048-bit key) header.d=puri.sm header.i=@puri.sm header.b=fXXKijDg; arc=none smtp.client-ip=135.181.196.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=puri.sm
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=puri.sm
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hpq8dCd6"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-382fa66fa9dso51696141fa.0
-        for <imx@lists.linux.dev>; Tue, 27 Jan 2026 15:41:22 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769557281; cv=none;
-        d=google.com; s=arc-20240605;
-        b=TJC52LZPCziwhIm08LPF15MUhE0CkTBmV5bcLs6NUw5R11jCz+u/eBn3RdlnE2e472
-         4kD8FedfhF0H3RijC6B0rwaflGcBOYpgbsGhBcmvvfXJohWuvDididwGVZ8/wDoGREA9
-         /H1mhef1wU6S5DH4szZNDtTQibcOkH5ROmoam5/qoVqxRPJJNuFdFGW8p3hEtdbmdJ3A
-         5YzZQSNF21U30HYwXe+wTxUYBQr/F3pDqdcGwu0y1t7ELkew6FWK/vug5GNO9GTNld21
-         E5fzKgGwCFTkToxIZOWgJ88lRVEAEJKigm9p8irGxQWsa+SX/D8emjLwyMZIesN7oNwV
-         dhUw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7kmKAF87tQ+DKHman6EfaO9KsoR3gG9HljeNjO/MlME=;
-        fh=VFKoNa2inHpMWgWSUqH2Ni4aepXO8hGFyKWx/UtWNiU=;
-        b=eTvpiRemgIMcoV2Ug7Db7m77U4G2Kf+7PuW4MEVfhQ7K5YLrvDxIsAq3rnwFn/FlbA
-         TcDwRbbc/ZwywYcu74ujGG5lkgml36WuvR6v/VCK6L2x72LuxBW33UCdK6HEKDhiPN7C
-         FkFQWNGnnbByGmiwt1UEzfk6T38cjEKDBHeov8XMEJ25pt/iNZqfEByQpdh0d7N/8wPS
-         ZqZTvOFqoxeK8mPM1OogNZNZzXYZeNtfajCUAbcL9q9/+FHtjLHKztt1IUidPqTZxbrm
-         0RKNSnL4wqWsOwL/qwbXCvj6+jkGktP0rnB+ReBPPMuTUhyG6Jhnpy6LCAa2f333xtZf
-         qOaQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769557281; x=1770162081; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7kmKAF87tQ+DKHman6EfaO9KsoR3gG9HljeNjO/MlME=;
-        b=Hpq8dCd6luPZk3j0uAhymxC54/6C7MZp7Mpf5GtxmK6eO0kS+dC2FVcW4BQGavTdQD
-         zHqrjZ0RmHKsvgRV0U7lykk8lq2VchZyTTppieDbqQPgi6xCRuLhSE7CFzifuZUfMzXS
-         KD7kOAb5OUZ07ev4/fqjfHoVcftC2aH1zH7BxZsH1n4MnQwJ0YOAyVb8mnd993ENUdLQ
-         hm2vj0JfPI2SZ5a0AaJUJ7L7ko2pCCfBus8oUFBYIHeocV5M0qByMmh2lvH0fgsIoT5q
-         E4OUK/POYaBjcxVQNondF8kpqxrgyvyrXAJ+9hLBWwWB0BoV2SPUrv2UKPWpW9b1dULm
-         S6kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769557281; x=1770162081;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7kmKAF87tQ+DKHman6EfaO9KsoR3gG9HljeNjO/MlME=;
-        b=qRbWI11SRv9XZv2QK8peoxSwGQZOdo8tmVRSRqMAjKmi25kjyE9dDHuTFmqeW1c1uz
-         v1/PZWvzrSs8nzZLZZ7rNDmHCxUGwzyckSi0QI6wIJBDp0BPRyQ9/zfGYfhGdjzmo/Vh
-         fVYyQudjszbJTendb6Z+xFlDHofHpirewsAryhWhfiugtPdIOvlL9ipgqPupgZlpr4vA
-         P8VHUFLiaY/bRhVzHPEP27Gw2NOa0Fj74qnEoFgEdD/R+CxWKowREJxEDlKAfrjF6nsK
-         G2OKlplzqnVeoOSNAo1MKyTwckG+IUPgbQ1CbzcKPxRTFtgHjU65ayr2fdANoCzIfVWP
-         RxwA==
-X-Forwarded-Encrypted: i=1; AJvYcCWCe0tpG3oylseFuspBiZj6AnrjIP71fv/aMqMiGDwT+QcsX207U+g0uKJ38Ri0dkFLIVU=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzP/2iAU1V22LqnYMRMKZILsLFudfc0OKQBEUaHv808DtWnxe9M
-	H0zQxTyIJzNE+ROnPSaQ+yUydTsNfKMxoCaIWn40gl39q8IXIZF8Erziruuf5R9jOILZX3jL56o
-	olziBr7JoyA2YYspi/eWO4giO9b7mBh8=
-X-Gm-Gg: AZuq6aKkCw1ygY6yiN51l769cp7WtyocyBtpfzz/tCQECm7LPR9v3J3BCi491A4Qg0s
-	w34pVTwoKp3frs8/TyHDuRe8mvDkLpRn+0GJpOPx7kybKDn8h/6rHXx1vjmA9n1z7bfj1TU0A66
-	9iCgGIKDUwqXw2nBNPjppRWU/9PbVL4VesIEvxKMn1CoTurLIijoI64tCf0Lzna5QYW+xaly+Ap
-	aU8Bone03mvB/3s8skzCE9fS4gE5WvkX90Qm/q7MicPGbfa0qUJ8p4voIWy7FnGmKqKUqru4HOJ
-	JWovluMSNYsmgRL9PxiayLkwrXA=
-X-Received: by 2002:a05:6512:23a3:b0:59e:71f:cc1c with SMTP id
- 2adb3069b0e04-59e071fcc42mr546862e87.1.1769557279804; Tue, 27 Jan 2026
- 15:41:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=puri.sm header.i=@puri.sm header.b="fXXKijDg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=smtp2;
+	t=1769557657; bh=q/u/XvKL68HmLo5r1RpDGCfqD4LAY62ICsaF9xos+gw=;
+	h=From:Date:Subject:To:Cc;
+	b=fXXKijDgKK18ydT0YumguA+J5t7LNz5e4baaNkn0fJgBJjhU44jUapTvlxtP4Vs/a
+	 2/lUf8UgBpEY/2J7NFkl/Th/Op7JPy56CychATWLl91oWX/T2z6gmCEpvsiUCQMZPy
+	 WD9SIAqvfTgBqlv9wlPBZXBz4R720vEqgW8hzFupUdZ+H9+5Wet7+pIlMnPWrOX2Xx
+	 VgUuvedmX8cjhFCzqj0vVO/v5RSM1/9oArHq4yvSRR83hLBJp+mDF9hUbAV2BZN532
+	 pnOZvMjqon+rKBkqcFRgT7UnZ4H1nKwkbRiWUdptC4pFbEuz6NSrTfQgbsdNKd6lG7
+	 8ITM/hBjE3aCQ==
+Received: from pliszka.localdomain (79.184.64.12.ipv4.supernova.orange.pl [79.184.64.12])
+	by ms.puri.sm (Postfix) with ESMTPSA id 69A4F1FA50;
+	Tue, 27 Jan 2026 15:47:35 -0800 (PST)
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Date: Wed, 28 Jan 2026 00:47:21 +0100
+Subject: [PATCH] clk: imx8mq: Correct the CSI PHY sels
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260128-imx8mq-gpu-ahb-clock-v2-1-f32548d46188@puri.sm>
-In-Reply-To: <20260128-imx8mq-gpu-ahb-clock-v2-1-f32548d46188@puri.sm>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 27 Jan 2026 20:41:08 -0300
-X-Gm-Features: AZwV_QirB8xtJhi5kl9yJ2qWiZEFsvTE9M5XNO8kGqz4pRn84DhojBOVsgWwGyE
-Message-ID: <CAOMZO5A64Qy+3n7ZX2QG3FfXEwEX6KfMZaMhCi+5jFhWfBn=qw@mail.gmail.com>
-Subject: Re: [PATCH v2] arm64: dts: imx8mq: Set the correct gpu_ahb clock frequency
-To: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	kernel@puri.sm, Frank Li <Frank.Li@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260128-imx8mq-csi-clk-v1-1-ac028ed26e8c@puri.sm>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MwQ6CMAyA4VchPdu4LQSJr2I8lK1II5vaqiEhv
+ LuT43f4/xWMVdjg3Kyg/BWTR6nwhwbiROXGKKkaggud86FHyUufXxhNMM53DIlcbE+t59RBjZ7
+ Koyz78HKtHsgYB6USp/9mlvKxYyZ7s8K2/QDoX+YSfwAAAA==
+X-Change-ID: 20260128-imx8mq-csi-clk-2da0c4741ed6
+To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, 
+ Anson Huang <anson.huang@nxp.com>
+Cc: Bai Ping <ping.bai@nxp.com>, linux-clk@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, kernel@puri.sm, 
+ Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2342;
+ i=sebastian.krzyszkowiak@puri.sm; h=from:subject:message-id;
+ bh=q/u/XvKL68HmLo5r1RpDGCfqD4LAY62ICsaF9xos+gw=;
+ b=owEBbQKS/ZANAwAKAejyNc8728P/AcsmYgBpeU6WtyTpjZs6uJHcey9jsZGEaddvA6jQcQpof
+ ncHAeKVEImJAjMEAAEKAB0WIQQi3Z+uAGoRQ1g2YXzo8jXPO9vD/wUCaXlOlgAKCRDo8jXPO9vD
+ /0p5EACJkHOwOGYB1sSTxHb2HgBICPP52RNTWB/yqyURlIj1TXcMDJm8RWld679wa7i3zt7N3LE
+ G5pp2nZ3S4K51i79jluWMjGPbwjv22TTsXryMAdumb/+dn72QtlEBoJwu6bzIdA9tbLmDr/3eCh
+ 4+4sZdYK59LiPvykinFGU0hqeQkp1S7QMtHY7b108/kVRWrwC7JUkAsQPWcU5Il69Merh4uI/Qm
+ 6ER6/ktB0XyNA9f9bv0NLCIbv5bVQ1bm98h7IqV/7kNdcHnCM0R/DC5dldPCoBwMEkP1h9XsMNn
+ MaxQ3eteKuGQAav83/tNKPJy0avIJJwqqDT1dYl/IIDnkWvu+MLTNzzxuAmAwcDDKxrVHppAPg4
+ /GrMvGBljLuYdM+/+D1+Xfd9yUbgwSPrKAIJEZevoeFXYBn6t8u9rr7kQaA0W7zKnnIX3i4+l0u
+ Q4fu7GRdi0xKSpFhVLLl28dIb02nYrmy1ZyLKVLMTV/hMp5NXlRNhyr9NNoHnumgCgsYgpVqrpD
+ 6hiczHO2NAyEVXKbI71RTyr/9c2KbZK1vHnSy5WG9ziSrJIJn4mwlPunzZszhTLx9sYY3gZL0rS
+ b4Exnmu5aU4MFBeLJXi1ooCezBG/tEYxGHlYaziJVhNoaYzj5BtRaCmae4uOEaUd6tDUfs/nZIC
+ CQix4jkVejlP5eQ==
+X-Developer-Key: i=sebastian.krzyszkowiak@puri.sm; a=openpgp;
+ fpr=22DD9FAE006A11435836617CE8F235CF3BDBC3FF
 
-Hi Sebastian,
+According to i.MX 8M Quad Reference Manual (Section 5.1.2 Table 5-1)
+MIPI_CSI1_PHY_REF_CLK_ROOT and MIPI_CSI2_PHY_REF_CLK_ROOT have
+SYSTEM_PLL2_DIV3 available as their second source, which corresponds
+to sys2_pll_333m rather than sys2_pll_125m.
 
-On Tue, Jan 27, 2026 at 8:28=E2=80=AFPM Sebastian Krzyszkowiak
-<sebastian.krzyszkowiak@puri.sm> wrote:
->
-> According to i.MX 8M Quad Reference Manual, GPU_AHB_CLK_ROOT's maximum
-> frequency is 400MHz.
->
-> Fixes: 45d2c84eb3a2 ("arm64: dts: imx8mq: add GPU node")
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-> ---
-> Changes in v2:
-> - added Fixes trailer as suggested by Fabio Estevam
-> - Link to v1: https://lore.kernel.org/r/20260124-imx8mq-gpu-ahb-clock-v1-=
-1-11c2e7c857b7@puri.sm
+Fixes: b80522040cd3 ("clk: imx: Add clock driver for i.MX8MQ CCM")
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+---
+ drivers/clk/imx/clk-imx8mq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
+diff --git a/drivers/clk/imx/clk-imx8mq.c b/drivers/clk/imx/clk-imx8mq.c
+index f70ed231b92d..cedc8a02aa1f 100644
+--- a/drivers/clk/imx/clk-imx8mq.c
++++ b/drivers/clk/imx/clk-imx8mq.c
+@@ -237,7 +237,7 @@ static const char * const imx8mq_dsi_esc_sels[] = {"osc_25m", "sys2_pll_100m", "
+ static const char * const imx8mq_csi1_core_sels[] = {"osc_25m", "sys1_pll_266m", "sys2_pll_250m", "sys1_pll_800m",
+ 					      "sys2_pll_1000m", "sys3_pll_out", "audio_pll2_out", "video_pll1_out", };
+ 
+-static const char * const imx8mq_csi1_phy_sels[] = {"osc_25m", "sys2_pll_125m", "sys2_pll_100m", "sys1_pll_800m",
++static const char * const imx8mq_csi1_phy_sels[] = {"osc_25m", "sys2_pll_333m", "sys2_pll_100m", "sys1_pll_800m",
+ 					     "sys2_pll_1000m", "clk_ext2", "audio_pll2_out", "video_pll1_out", };
+ 
+ static const char * const imx8mq_csi1_esc_sels[] = {"osc_25m", "sys2_pll_100m", "sys1_pll_80m", "sys1_pll_800m",
+@@ -246,7 +246,7 @@ static const char * const imx8mq_csi1_esc_sels[] = {"osc_25m", "sys2_pll_100m",
+ static const char * const imx8mq_csi2_core_sels[] = {"osc_25m", "sys1_pll_266m", "sys2_pll_250m", "sys1_pll_800m",
+ 					      "sys2_pll_1000m", "sys3_pll_out", "audio_pll2_out", "video_pll1_out", };
+ 
+-static const char * const imx8mq_csi2_phy_sels[] = {"osc_25m", "sys2_pll_125m", "sys2_pll_100m", "sys1_pll_800m",
++static const char * const imx8mq_csi2_phy_sels[] = {"osc_25m", "sys2_pll_333m", "sys2_pll_100m", "sys1_pll_800m",
+ 					     "sys2_pll_1000m", "clk_ext2", "audio_pll2_out", "video_pll1_out", };
+ 
+ static const char * const imx8mq_csi2_esc_sels[] = {"osc_25m", "sys2_pll_100m", "sys1_pll_80m", "sys1_pll_800m",
 
-Thanks
+---
+base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
+change-id: 20260128-imx8mq-csi-clk-2da0c4741ed6
+
+Best regards,
+-- 
+Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+
