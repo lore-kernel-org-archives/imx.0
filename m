@@ -1,196 +1,389 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013001.outbound.protection.outlook.com [52.101.83.1])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011033.outbound.protection.outlook.com [52.101.65.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348BB218827
-	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 03:01:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA2BC8F0
+	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 03:53:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.33
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769482908; cv=fail; b=jXdYwMcuUyW/T43YWn5pROEtDtkNOnQAJLpVQo9pHuEyMor3hxs9SAUI09TcuKZfAjS7NnLwq73KeSPyYQ0epXam9Dc4+XM1zt3yRzKu7K64AluiBATVhXuKkLhg/3XP3+kkgl2YyJPubPirT73NvwEK62kEBS0IhaZ85gsUBQY=
+	t=1769485997; cv=fail; b=VAe24J8D/LFxfLHnRvaJCRe6ZLE0t+mA8/Td3+PMFQBaQFsKl+KQiMAkvAwJ2QTHwzqlImTjvL979/cW/4f+eabBj34Vu9lbP6pUMXD3w+Bf6ujm2pQrjXM7/KluhggaFW9Xq4nVmqEnpP8bXmLHnHcYg4UAZVhg4tWbENG7ivQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769482908; c=relaxed/simple;
-	bh=227HhpIzeZ5iBg3EZJF9I+x4B5hx6nlDchPF/EQ5IyE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gtQpkOumgAJpkKfUX7dYtcWLnVR0GLbh3ISVY1aO7cwER4Na+EtAdrsIwemG/oQxqIrobiL5FyckoKs64EI9QSv0NePbV+NyuFyAaX/PPgFplQIxogzguzMZnfakzctqUfEZqy/PorHURvLb8hMoQWlExS846Ahtl0AI3GYKRRk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KK/pMKta; arc=fail smtp.client-ip=52.101.83.1
+	s=arc-20240116; t=1769485997; c=relaxed/simple;
+	bh=yB9yUBuo+6moJO9O4IqS+ohQ0pN0VYKYlm1jS8TtCEA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=MThZxFY3dFJHR+43Ftm9X3X7fUOYuPjmOQTju0llwToQ4axrw393ctsBCUMKKd0lV8hWnGiLFCqbcbTqY9/iOzuTN0QCMmndt8koqBn93TrRF42ngGyUYNhiw6bOKKXxlloH/9thgPTp1O0tTB9yit6qxDP0cTOloIsPZKm4GGc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BfH6xCA4; arc=fail smtp.client-ip=52.101.65.33
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KK/pMKta"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BfH6xCA4"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JCfxinNrXUHmvDlX6L+ZYAh5JRcxkF551SbWtwmTh9Dkt997JSMLBEQ80JtR9spMccjvnWEcjatEmIrSnmAZSmjF9VBgpXtB/cwuF7QnDX6D38hFWg4dhkYuBDiuyr+DA9ma9VgwnftCGx/+vqSpC4NAN5vQEcTh/VYCUVpsTuzwoLksqNiyvGVdywGNcxiNOnOL8f+siw5uP7ER20hTZlXxLTr2bIGDe1/iRT4LdkL5rUpbyZKIdXJvlLt8hfyDb6yroBEuVHmzFjdzWZT1AteWn07LMlLhg1wgjrkZgr5ru/XTZ9ADVnuQMe3LuStPqnAxImMO7dXwYaV7NhjOaw==
+ b=e494ba3neqgXjhicfxTZfabi7l0oZJN/KY3EMNwtsrZze6g+i3byDDQ2zcEiOTR7NgU2No80NstOWJndiA+pMOnHMXj6SXn4dm3k2BfLjcCT9lDbR0J7oO7OZWkpx7Bzy1+67NS/oEm6le8vp/eZXGTrixXrtUXYUYMpvFPjbqlC1u7AhKElck1E6j75smi3B1pQas8QJW3pJ7ReiAfb2Xk1b1H/FYevbCNCzEMc0J5v9Ut9AUROfZBI4laB2DVyvOx1fuMj1zRp6tz2I326okbd4UwfsTE6POA+CHmojR2HVuDYMyDRSEdUBv7DLFOgeC/r4RpiSdTiN4UzjC/c/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=227HhpIzeZ5iBg3EZJF9I+x4B5hx6nlDchPF/EQ5IyE=;
- b=HTcpFmIOTRi+hAiodqQiUNfPYyYJ398IE5TjHOMN8qLFHAZnjzCKuNd8dQODU9AyWVRxiSCSPHR+5Ptb4oWzs3K6vUZ7iknhlhEKCEe2zJ/ijVa89DgDwd5Qv0c+enHww0ItrKXG1XVhJGugBwW1u6RCCAVlJlIiahb2QqVo/kLU50zu+jyTORtMwU31jSoHPc3ebrp07f7We8ml8VuRfRfmpIU5Rg1s40K0WfvTmzN0Ctp7+yn4R21OFEhBQBiArgn1FlE5tAkYsY65DgepJxJFjjZW7wKX8TtTP0Av/4QWx+Z8Pv++jx4aFq33sF/r+MIDTZd+PZb/eDJMFGI9Iw==
+ bh=cSAtq3IkSsu4R02L86S8dkC/d00q0NAE5uZ3XeXaAZk=;
+ b=p+0GPLVAlODyeECM5GEOxz8GJc3MGN4/x7o+3iM0of2MAAb79IvsnnxJwg8d8ecuPk41cibRnh6HouX36BgYDU1LiLffeZTAPvjRcCY8qT/pvRLHxrsbCc3AXNUaG8xj7YikykckaytxBme/penINY9boukBro5CBgRwZbBCyzuMCd3Q1qTpEaaJxqJjnxkGD99wBS/SWzrJAAdIX5KVWQhBzRhi6/WvuudW2mYH+/69E2KYmDQFEP0NvxiJJYax1l0gpflfSrZQPXduOi5CIOVtPcK9qzd6hRLH9rdipJzr3e8bGKnrr7m4Bbz4daaw4+PPYTCPXMzaVSzvs4SJSQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=227HhpIzeZ5iBg3EZJF9I+x4B5hx6nlDchPF/EQ5IyE=;
- b=KK/pMKtaf1VVeV6NuFe+HO6V9yEY4TqmIrRg9lkuN/eYRFWKSELc9lWMC9n8FjtF8goa1GgSuAp9OQneXnMuUwl4ZB792yeklkRP1teJfujx5qoxdDUVYh7VWikGzAI6aPkwEMF2JwAocJ+E5ssaTSorcOeAhJ3t7DVpZ/AI9xiglDGaQjUZhyoPpkwMyTU7cyQPcV0nUrtcxPSz5CljQewaiqpMgGQwpkBjEpw91qZdF36sysH8hitsP09y8JupQofbANkxSZQAggYbSlvKtC5td1rJ3TVkl6VNDf2njtR+8UDSAj7r8bJWoD1Gbg4JeYLgtEOm4hzVUW+fySpCuA==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by PA4PR04MB8000.eurprd04.prod.outlook.com (2603:10a6:102:c1::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Tue, 27 Jan
- 2026 03:01:44 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%4]) with mapi id 15.20.9499.001; Tue, 27 Jan 2026
- 03:01:43 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "linux@armlinux.org.uk"
-	<linux@armlinux.org.uk>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"florian.fainelli@broadcom.com" <florian.fainelli@broadcom.com>, xiaolei.wang
-	<xiaolei.wang@windriver.com>, "maxime.chevallier@bootlin.com"
-	<maxime.chevallier@bootlin.com>, "quic_abchauha@quicinc.com"
-	<quic_abchauha@quicinc.com>, "quic_sarohasa@quicinc.com"
-	<quic_sarohasa@quicinc.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH net] net: phy: add device link between MAC device and MDIO
- device
-Thread-Topic: [PATCH net] net: phy: add device link between MAC device and
- MDIO device
-Thread-Index: AQHcjrC8X7fZpJnZe024lfTnDwQHCbVkfn4AgADLAYA=
-Date: Tue, 27 Jan 2026 03:01:43 +0000
-Message-ID:
- <PAXPR04MB851096811F2CEC62BEDA67898890A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20260126104409.1070403-1-wei.fang@nxp.com>
- <2344001a-08c4-42f9-b4e6-116e39fbf1a3@lunn.ch>
-In-Reply-To: <2344001a-08c4-42f9-b4e6-116e39fbf1a3@lunn.ch>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
+ bh=cSAtq3IkSsu4R02L86S8dkC/d00q0NAE5uZ3XeXaAZk=;
+ b=BfH6xCA4jeWYeUA/aiIjodqV3hqZOLWr0aiAGG7G6WZYQzpWSEnQH53OJdo+0hOtDV9WmRscjvIUmrgz0FZnhHLaesErzYJkK2S8HYCVY89hGWxRrpiyrPBaFs02Thoj3/0fr1upB5PDxeQbZfkzun/Mk9D9ZEYDQL27U09S5Dxbh2AuvLL88dJN5A2YSpKUY43gVjzwFOzMMuHb7ZzIiZ/mf9uzhLGoDd8Lzd/5lPyKY/w97ZdcdFIdsv0YcLWqXugPnTeQ9NXE97FA9nkUSgSJ9pC5kfsFfRa/hnMx6YJ3VYvOlD2kHF536eHzzX/mrZY2UazFQoxt0r568XrWEA==
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|PA4PR04MB8000:EE_
-x-ms-office365-filtering-correlation-id: 3cb315e9-b4f8-4e64-5d5b-08de5d5066e9
-x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|7416014|19092799006|366016|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?e3whp0sN5hBk2yMSyCdafFrlC+e1FAIxQnmTXZ+hw0LNgW0CJiaMuAUFeM75?=
- =?us-ascii?Q?7KVXla472r/m7Bmi/YTot9JDjv1tTzgLnwnnUZoGMw0FUxoyw+rjqCu0W27T?=
- =?us-ascii?Q?6MjMel4paT9QXOsRKXexORBMSht/RZ2qO7LOomqlqymqTwl3432yyJyi7Fet?=
- =?us-ascii?Q?StnMdlRhauTLemc6wibjsvhq99eoClZ2Q4sVEN2SjBTCYJVPAR1ewk/GaOfa?=
- =?us-ascii?Q?WOWgOuCFskFwP7xeC6ai0zA3btHRYKmYi+RK231ZOcdL0QQU6x1jZagCkxW1?=
- =?us-ascii?Q?O+j9XHnbSQXqnaR2uqWxT74eynL2t1ffMMbIMyM7WVf41r6+rOzd211ZxDb/?=
- =?us-ascii?Q?+MwNSaq4PBUpop5QFbL9N9pUcgNShobwuuJXj4mE8FK0zjCwTQnkBUd+byLO?=
- =?us-ascii?Q?g+fhp8mHmnupDjX8PHZ0nk+zh/MTXPqC/ROiQnDChb2I9S4VzAG61M7g0S0Y?=
- =?us-ascii?Q?Gego0PJbtVAys97GKnLYcotf6YJ1pz4/qPU4V3+9NIBXgzBotcRs2ixxbeTf?=
- =?us-ascii?Q?vShBiix5AMgj31a4dNcog9sChmUfMiacbNuHisEvuhm3TG/zK9r5c0uZgu4z?=
- =?us-ascii?Q?oJBZ19mCo4SV0mqhJQsJb2pHR56r9jns0zRlo7UhjjpPKlNpk7uMNKwf71QD?=
- =?us-ascii?Q?RDKyO9ZUFj23JugTWZdtf7lW9NSBVtflsk8pm5hplfYzwdYzOeFVKea93Pbz?=
- =?us-ascii?Q?FIsLkcHvNDtcpICUfLKPYFjzTGJ6NyAahczSqJYQ0UnkBofdsNoqkB8JlXHS?=
- =?us-ascii?Q?VvxZyNW1f6X02WCAJEuPShNPqEJdAwzBbkTDrD9PcRxag51to2nSTEOL0P58?=
- =?us-ascii?Q?VIMnqQshOQiWRGjT7060rbGUS7Uo8vz1uPHYQO5ks3sF8XlG3xk8KJsBDpTO?=
- =?us-ascii?Q?H//RELrxu4N2w4QI5bsOJxylwrykhBqnC1c8G+HZmYE4GJKEljKfVg8nAUUt?=
- =?us-ascii?Q?pXZ9CHGHfgfIR43vhSF/Gem99lZwX/wHURBNSVE/CHbI1TKaMbr2ZsD3L8yd?=
- =?us-ascii?Q?dmk8c2Wh1jE5GDF3UQATJ1sucYDIKjku0pX5WTvneEVEVjofcVQHAqH6bdWO?=
- =?us-ascii?Q?0YZ5BO9EtuoyvtZyq4ZfwhanLg/vzfhhtqXZi/CN78qeTO94Hmz3WhFE/euk?=
- =?us-ascii?Q?GKQvs40wjkpjAaHPi3r3Vvi0uyyJZ1ZxfmoV4mLM9SnQE+2921nq76XP9+Ix?=
- =?us-ascii?Q?V5+d3egu8oxvnK621O8OOX+sTj5ppem0my5Sfq3vimqSPksOD8S5014AOI07?=
- =?us-ascii?Q?ZD1zOW5QEeLwsnv1MYPLDlvYJ11QzXSwNZm6IDPvnxfHFIE7GLSpq9BG88SA?=
- =?us-ascii?Q?mHYNBdwav6aGkEoTJLoW8WMcVy9OM5pkgWa9kr+VM3wxkrsLDejja8n/MbBT?=
- =?us-ascii?Q?bsMrqKfR42H80uQ9jY9+sswmEJcqmemGrP6Gq1FYaxoiv4qwrIPSOLtXpqzG?=
- =?us-ascii?Q?0XovAXgTcK9SgKpImf75hqYQlvt+x0eLkpj7nFRXxQPQHU8vpfXNn5ljZyBv?=
- =?us-ascii?Q?r3h+f4GE+zWoH+EcHwzh0vKsJCErha3MacJO/vZN1AwId9CpKHqOEGg4G2Ck?=
- =?us-ascii?Q?h6+ZVgAMMIZUoNINb4zbMnFgzk+7O9Dc7Jcea1ZdxXAotsSoCQy2bFrYj1De?=
- =?us-ascii?Q?fMwxhxknA8dDVn6b04Hl240=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(19092799006)(366016)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?r5UlgGeEkDBz2uk5JNn2NSA+gzGQxlx35xxx5gMAkagnbvZ8e3a4kCgeyhFy?=
- =?us-ascii?Q?sZYhZKJdSNS48ko49vzDCp9IMG6QsnzEMeNdXgaIWofiLK9TVe/f1GuFq0js?=
- =?us-ascii?Q?lkozCgOaegol31hpAWcSLsCvhLzQBTpx5eL9sgrTlL72mlXr7Wp+Z7hepGXZ?=
- =?us-ascii?Q?9MFNCvZjiOPfa02aCHPcjOBLp4b14AdPOtABk9kXEzkYXEXonY18T95QaDmq?=
- =?us-ascii?Q?gmpdcidCCjjFwN+T/SqxQJv/jCsyNOb90XRoAEihvjx989KYNjWJni9CV+4r?=
- =?us-ascii?Q?vLjV4HCjMbF2APHie4CQooVqiaKZc/oUqvtISL9ZKbiK6YVz0TCzWnA5Y9bf?=
- =?us-ascii?Q?Z0o64udAXsMyBBDKN5AVeJfG750EZpsJ25jofRPl9bOI+YpWVxO2WDt9tiKh?=
- =?us-ascii?Q?3G0KQQlYOaHGiP9rzuGDOkHvlu22d6W0TQOnFWV10YTOJnQI4EehPzjx/S/T?=
- =?us-ascii?Q?vDtzxXewJYlMd11iMfcQTPYsHO+K7as717XWSGiMJm/nMMpBcxCwwEnmqyq2?=
- =?us-ascii?Q?Fdf+nilXd6MPPvQPDHXFjran8ZZt6LfItBtHOw5CK39I2jRZ1R9Aha3kf3Sv?=
- =?us-ascii?Q?Of31Qh72J3ve38NyJ9OldTobLL95MAqxKg9HJ1Mi9UmDcrsbStWH3lvTZtY/?=
- =?us-ascii?Q?UowbgYS+aERLeYqKem/iKbM7xqCoViM3P67jdUl2YHEtdertZPbSLaDcIfYc?=
- =?us-ascii?Q?bMdDYq7NdN5yGV3YDWPHvJK57BKPFBNj8eWN5MvzTrR+6Vyw791A7bb0d52p?=
- =?us-ascii?Q?VKhm8pZBbeKtFSExqDtBgxz6jfJLoILabtQngAVYpeoE4TXX28dVsOb54fEn?=
- =?us-ascii?Q?th0MZ4oixax1D2GG3ni/5yeksej0OzChDoGGHoeCyJpvZZpL9ZlHFTiG8wG0?=
- =?us-ascii?Q?Q0IHnqS6PJupSCvHl2y0uBPYHYLAbmaE+8+FVR/5KP/3psc5qwBT0JYBVRW4?=
- =?us-ascii?Q?inwfCTbHuKrizIWrpLXwZbWLloaKD77ntnGahBohrmWltL+nuajTkKs8u/Mb?=
- =?us-ascii?Q?bABZXVz0TPFEur/egapqyhOg/SqXH3PrBFAQifr8S21JVBxmPwTKhwWvuIon?=
- =?us-ascii?Q?6cxe245S/mVa+TKVVpuRugKL4e1W5/FMYptW6LVgK+HavjP5DSqFoCYe+48V?=
- =?us-ascii?Q?WCHBbKlmMvpwwY+YCgkpeb9JRIMv/FrkWLh5Wc6tyehht6HUE8pbRpswc3MO?=
- =?us-ascii?Q?wK76eVSV0TvBH3Lzl6nMtozdxg56lggYYuCVQHbX1/Ntf44IYe9ntDXy2hhp?=
- =?us-ascii?Q?4a0Q95pzL9IR3N0BLEl39jBPmOuOuGfljqAsA6u4QoM2w4gZtGbHIwR4WQjB?=
- =?us-ascii?Q?DhHLfKvV01BB6q9MHZZ9H7F9d1PxOqoaQ2n0kj1cGhEec+qshWHYfyWbEPw5?=
- =?us-ascii?Q?XF5cu0dgyg0R+6C2kzyDKSUD1FXJI0xW4cSbTCykTaWt1pP5rz1KctKkAKdl?=
- =?us-ascii?Q?Vm2ZCyoKi2/KUEur+4noruRl33L7NLQMs5S+TTI0JaVCUbUzZr5e/B+nq5j3?=
- =?us-ascii?Q?KgW6GSW7R7JODylEZ9QIFF0qo/yUPk7UP2wTbQWNW1IPoqoUZifwRCFBVR/y?=
- =?us-ascii?Q?QIEvD1CDTOeOlOJXkmuMtq/MueZ25WaRtamc9xHBNlpOr5Ls/0Thonvf2ZMj?=
- =?us-ascii?Q?823r6WXoVqC+7CH1uLcxPhwbJAw3S9JMURdrSnSRWwX3ZyoxYLddYpP7r/LR?=
- =?us-ascii?Q?l9QoCfCX0EVfDH1JIn5CwY2LrMwCCkLOiKP+LQxvsLahmVsg?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by VI2PR04MB10786.eurprd04.prod.outlook.com (2603:10a6:800:274::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.16; Tue, 27 Jan
+ 2026 03:53:11 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64%4]) with mapi id 15.20.9542.015; Tue, 27 Jan 2026
+ 03:53:10 +0000
+Message-ID: <efeb3583-dd0c-4e91-bbfc-54b04644f2c2@nxp.com>
+Date: Tue, 27 Jan 2026 11:54:00 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/4] drm/bridge: imx8qxp-pixel-link: get/put the next
+ bridge
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-v4-0-a62b4399a6bf@bootlin.com>
+ <20260107-drm-bridge-alloc-getput-drm_of_find_bridge-v4-4-a62b4399a6bf@bootlin.com>
+ <e2536229-f8d9-4d65-8211-cf445677bef2@nxp.com>
+ <DFYQ7TS25SQT.2F7NBYOP8P5R4@bootlin.com>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <DFYQ7TS25SQT.2F7NBYOP8P5R4@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+X-ClientProxiedBy: SGAP274CA0014.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b6::26)
+ To AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|VI2PR04MB10786:EE_
+X-MS-Office365-Filtering-Correlation-Id: b366e9e2-94fc-43c5-d92d-08de5d5796cf
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|376014|7416014|19092799006|1800799024|921020|7053199007;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?WHI5Z29uWEs1QnM1NHhnRU1MZVNGdGpnMyttZU53d0JXY1ZGYmZoSHdqeE5E?=
+ =?utf-8?B?N1Z0QU5NbVNqcVVsUUJ3ZnBwckpLTDQySXdyaFBaTE04WHFyeXhFTC9BU3ZR?=
+ =?utf-8?B?ek4veGVYYlREOHNKdVA2WndwYyswNGVKL0dyaUQwL05LYjM5RkRvc0JoUEFo?=
+ =?utf-8?B?ZU1QRWtOaUR2ZjM3S0pBNVBWWEVOd0NTUlVhQ1dEMjE0emllOUkvRkc5bnht?=
+ =?utf-8?B?ZW5LVnRnNE9WRS9rZ01rdU5XZ2RWaG1IdmUyT3dSOVhmb2MxREphcnY3Y0p0?=
+ =?utf-8?B?bW5EekxOZ0VCdDlYbnN6OFpySG5nRzFQRlZaazVtZ0s3S0U3SXBSYU1VUTNy?=
+ =?utf-8?B?ZnE1a0VCYXZJbzdVQzg1ZTA5VHRpNkZnbkRUWVdmWjJNZ0V2MWtmNDZvRUFT?=
+ =?utf-8?B?SVl1Vy96Ly9vUEM3Y3A2WDQzZnB3ZHVmOVB6LzU1V1YvTFZJWWhKbzJwZ25G?=
+ =?utf-8?B?T1N1WGQ3b3lWUDR1eFEwbWVteVdocHQremZsQkpucXV0NXY1V2J6bW4wZ0Np?=
+ =?utf-8?B?OVd0OGN4RGhlb1d5Y3BFcUtWVUI3Q2xXM1R4OTFsalVCYkZYN2ltYUhRWnJX?=
+ =?utf-8?B?UDhiSXFIUlJHMm1ZNk8xQkpBdjJEU3VJd3JLcENoNWhhT05MZ1VKeXRBTTlK?=
+ =?utf-8?B?cFhYSE4rZ3YrTFNpWTZpZFdaOVU5bjBGbVdHNWZJY2k5VlZ5bmRlWkJsRTlY?=
+ =?utf-8?B?NVdFRDloc1kxNUpSTHUxSWcza0doeU1IVFNPcXRRKzI1ZVVlbVBsa0Y5Zjli?=
+ =?utf-8?B?VmJmMSsxTkkzdU16dzNmNkhrOEV0bWFDanA0bGNMOXBMTk9iWXFhZDlUamtq?=
+ =?utf-8?B?aTNySXlaLytHblMzbE5JSnVNaW5XV3oyaWRiKzVibHA3S0hzTHh4aGlrQnBS?=
+ =?utf-8?B?bURkbWVwNmpKMDM5WlV5ck5qTEhYU2ZpaGFJdlI0cURoSkxBdk5uSG1mN2dn?=
+ =?utf-8?B?b05NcWxkUmMrVGNEdkhRc0RJU1lCQzRiWDRxREtsNnowcTk3NUtlUnk4RW04?=
+ =?utf-8?B?U200SElhUmVZcXNkRnlNaXZPRzFkL3NIWG9YRG1zdzNFdTg1SS9uUkVnRFlm?=
+ =?utf-8?B?NHEvVDkzQ2x0NmtFdUJrN2k3ZFlzUUlEMkFsM2dCNkNkWWxBTS82YzhQL29I?=
+ =?utf-8?B?NlhGVUJCUFJBbFdGMTV6K21uZjNUTG9qQm5leVdwcnpXQjFjV0xFYlF3Yzly?=
+ =?utf-8?B?Tk01ZjB2OVdVT2kyb3hVM2EzMVpGWnNVYzBaOHBqMW1vQ05XYll1ZDVTU29R?=
+ =?utf-8?B?WXY4SFgxeHJVU1BVMXI3VnRySUlPcW84YWxKMEhHNVZTeXVSRmdNc3FraG5T?=
+ =?utf-8?B?WUVxZmIwbkdvWVhvVE9kZjRVQW81Y04wOHRqc1YzamRMa1V2djBOUjIvYXZk?=
+ =?utf-8?B?eGNoTWdheUZGa3Fwa1I4aG4zWVMyRnp3SVZXeW1QR0hQNFF2Yy9LY3JOY2ZL?=
+ =?utf-8?B?MmtGdnJldzBUT2dEaXZ1Q1BpY2pZOXA4QWZldzgyWGx1T3JIOUx5Ymt1ZkhK?=
+ =?utf-8?B?SWhwNkJWc3hvU2pIZ2dMNkU4OUIzTENnWi9kM2FoUzBxUzVRMUY2NmhXaTRi?=
+ =?utf-8?B?Zk9IK1F1RVgwUGQ3SzVVaWhKZEZVVlREaGI3UW92dEdmTVVFbUVrUHJ6L1hO?=
+ =?utf-8?B?N1BiRHBCYWZQZ3ZOam9vT01WVFN5K0Y3eWJudHlwdWVJTGNOazNIRUh1RnZz?=
+ =?utf-8?B?MlBGY2RLQjdDR2pTejlYaDNGTU9mUzU1SG9ON0h4NTExTk1Rc2M3QTFla3ZE?=
+ =?utf-8?B?L3VsMmE0NGhNelpFdnNGZmFrUWVDS1JEVmhUWkNGK2V2SHJURU96NTZUQ3dt?=
+ =?utf-8?B?TmdHVnY5TDNIRUZVcVFoaGd6b0Zsa2pDb1k5N3lNUXlRWTVDS0pld3ZRMXR0?=
+ =?utf-8?B?UTZGM0ZHTWZ6WGkwZDZzRTB4anRnYUFkb3NvOEVvV3Q3emFGMlZyUEJOQzVR?=
+ =?utf-8?B?MElNSUFwRGI3dlFQQy9RNUFxWWM3eTEvbk5Hay9WOWc0WEIzOUpWL09LWXBn?=
+ =?utf-8?B?VVdKUEVsZGJESTVKdG1ZZU5YQ1NrLzBKU2Jvd1VpMndmYjJmN1JycldSNUl6?=
+ =?utf-8?B?S1ZITytkK25vWmluVmIxUXBGRUlqTmNpaXRtVHB1bVVYbkhRVmdRby94YUFx?=
+ =?utf-8?Q?kyvU=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(19092799006)(1800799024)(921020)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?WlRhQzdlb29PcUFnY09tR2RqTmxIbnBmU1lqc2Naa1BYOUIwTlpkclhzc2hv?=
+ =?utf-8?B?elU1MHpDZUNiY1M4TVZCVGZrdnA3MTQ2aEVFeVRudG1mUlJaa21GbW1GckR2?=
+ =?utf-8?B?dk9rZDJSbDVWYnpwYkJueE5jWkdBK2NFUzdETk8xNlQ2MkFKZ3pGY3haaG1w?=
+ =?utf-8?B?TTlFcUVic2tLemJnWFBHaWhBWXA3MXFkWFdrMVNqdEJTQ0NKRHh0SG1xRm9H?=
+ =?utf-8?B?RzB6anF4RytUZzJoZnI2VVNJZmxMSExPRnNMMkY3T0lZS3lIK1lMaG0vQWJr?=
+ =?utf-8?B?ZHZKa28yZkYyUXI0ZTF5d0RlbnpaalpjSlV6WWh6cCszMVNDWXI1b1Z1QVVV?=
+ =?utf-8?B?N3dLeno0VDA1cmhERU5HR1pFQ1g2ZE1UYU0vTEhhOG4wdDEwOGx5SGJhanVS?=
+ =?utf-8?B?K1d5ZllacTR5Q3JJU2orbXZjcHR0bCtneG5JbHczRVkwQ2J0ajlhNkpxcEJj?=
+ =?utf-8?B?bFhtQllpdiszMENlOWZ2VEI1dHZGcHBmZm9ud1NpYmQxVkU0aDhHVUxCTUdB?=
+ =?utf-8?B?MVpROVhTTTIrdUVhRWlEaWZFMUxhL3ltK2lUS2tYdmFSSWpWZlpsSmVQZzBF?=
+ =?utf-8?B?TE9ONVhqdmRPZkcyay9YT3d0blBUdGFSaVBNUmR0bTMzM1dLbVNlM1ZCK2sv?=
+ =?utf-8?B?MXBaSlZvWTQzTTJTcDNtVTcvOHMzNXdtL3NZL21uUFRFQkx1RDlSa1lpWUJa?=
+ =?utf-8?B?eWJIUlBRRHQxK0ZJVTRpNkVJazcxTDVjZ2VMVGY4MTBuWExHMjkzOC91Mk5z?=
+ =?utf-8?B?QkVjc0JycTlaUlNLZjdUVlF5YTNQZ0YyZFRVZ3RwVVYxS0Y2R2lORnl6TzdE?=
+ =?utf-8?B?MWZXM1FaTG9ISEJNa1d5dzlzalVHQ3kvWFRKVFc5VmhiZTNkNVdYeDZNbUNh?=
+ =?utf-8?B?VnBSaGhIb05hZDQ3S1ZUeHdqd2xMMzBjZWczQ291akxmOTU5anZJUVpPcVdq?=
+ =?utf-8?B?RFovbXBsd3JpL2Z0YTdxVHFRd1FYcDhDL1VMT3lNYXlESkNMdWJxMkZ4cVFk?=
+ =?utf-8?B?MXNHUzlmK1FrL1k1dHlZSUc4MXd0ODJIK2tqcysraXFnalNGK3phS2hiQnp1?=
+ =?utf-8?B?OVZhd05KSjBaeUswMUNaYm5ZQlFNZzlQMjVWOE00MTl4MzVQTDh5TEIwMnB6?=
+ =?utf-8?B?TUIzalBvaXN4YjRSK3Y1anZIb1VBUTdRNmt5WmFaWjc0MzJ1bmJIemdWWmlw?=
+ =?utf-8?B?UXdoM1hhV1FtckM0QUgzR013WU9acnBWSG5zc1hwbEp3MlQvWmJ3SkhvK3Rk?=
+ =?utf-8?B?UENTbnhSQ1B6TlpGbTNNcjNnTmlJY3BGaS9jVDVIWG9KZkJJSmhkTDZINnBS?=
+ =?utf-8?B?Z0xvYzR5SnN1eGQ5TGlWNm90QkFFQnlzNjVMdUFCQlJzMHhaaXNiVHQ1N05j?=
+ =?utf-8?B?Rm5vQ2lWR0Z0TjFiMDgrT1RXcDNaNzdoQW1nalhrTXhrdE82VmtIU0EyZFY1?=
+ =?utf-8?B?aVdnNVhjMlJSWDhnVzIxZm12cFF5TjRhUjdTc0VZNFFaaXBpdUFWQXRpdFB5?=
+ =?utf-8?B?MEs2aDV5VUFJY0FTOGIxbFBuRnY1UjNBSm95VlpBdE5pbW9sWnRTakZRY0ps?=
+ =?utf-8?B?b2dHU2tjdk9vblI5UXRjL0lXdlFybllyTWpuQUsxS2laWEJFSktudVJab0dJ?=
+ =?utf-8?B?SmtNbldQQWg1d0ZsNGhubmJpK3NMVEZiZEpINDBTOTE0VW92eklvWTZaVWVh?=
+ =?utf-8?B?OHQwNzBFQjRIU1BzSWdJeXJYVlBtVTVwQnUxSmVBamozVFlvU0sxK0VmcUQ0?=
+ =?utf-8?B?VmlOVExTZFRUQUpqSDNPUTcyR1FYbk5pc1FkNXUyTFlXQWZuMWhyRWpaNXh6?=
+ =?utf-8?B?a2w2SXQ1RFVjQ3JwQStXeGlNNGxDNUdxU1VOVHVBZ2g4VnNlM1VUNGEwZWhw?=
+ =?utf-8?B?c1V5NVVtZ05MWk5iMTF5RDNEakNoR0J4M3U2SFhBZVBTRU5tYXpMTWhxV0Zu?=
+ =?utf-8?B?bE4xYms5S0dJaUV5Wkh5dkYyd205V1oxby9iWTZ0dWFZbnpyc0lGckdqOHlt?=
+ =?utf-8?B?SEF0QU9uQ1A1NEZOM2xXcDBpbjM0SEJObHd0ZFZOZHg1T2t5M2NKVXNlbkk2?=
+ =?utf-8?B?cVlORXlqdkZjcENha09aWkt6Vm5XcFFpaXBqbmhlNk44V1loN0hCa1RvdjJC?=
+ =?utf-8?B?SExFemlLUUl6UWRFeTVQN1FZa1NETVVCcUsvaW02UXRYNUdmSmtzR05HaDhx?=
+ =?utf-8?B?U2hrMmE1M2pPaUxZTVVtL2tuQ0NsYlRJUGlJdUVvZlNkOE5hamFja3N0VnFJ?=
+ =?utf-8?B?Y2FYQXdXMXJ0KzhiZkpNalJTVkF5VTFPdklYTDgyTmpGR1VMWkt5cExaK2Ji?=
+ =?utf-8?B?V3pYTzROVUtHcmtEdmgrWWNwYlF2QmREWkprNCtjWFlwb1d5M1BoUT09?=
 X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b366e9e2-94fc-43c5-d92d-08de5d5796cf
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3cb315e9-b4f8-4e64-5d5b-08de5d5066e9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jan 2026 03:01:43.8191
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jan 2026 03:53:10.8371
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: JwndOPvL1GNIFZOI+DpXE5yp6aui3E++Q2P9lOzgqWpkm4l8cjCDcolON++FWjldYwUaKuMlLjZ9qfOT0ZWpyA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB8000
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: a8dUAaFptjb7DOwu5m1nb79779by7HuWnQf+uD485oJ3ZZ0qJNYfRziLOrVLSWOyy9PhnJyHBQ+HoF6boniblg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10786
 
-> > The commit bc66fa87d4fd ("net: phy: Add link between phy dev and mac
-> > dev") has created a device link between the MAC and the PHY if the MAC
-> > uses a shared MDIO bus (The MDIO and the MAC are two separate devices).
->=20
-> > Sarosh Hasan tried to change the DL_FLAG_STATELESS flag to
-> > DL_FLAG_AUTOREMOVE_SUPPLIER to fix the issue [1]. However, the solution
-> > does not take into account the hot-swappable PHY devices (such as SFP).
-> > so when the PHY device is unplugged, the MAC driver will automatically
-> > be removed, which is not the expected behavior.
-> >
-> > Therefore, to solve this issue of the shared MDIO bus, we create the
-> > device link between the MAC device and the MDIO device, rather than
-> > between the MAC device and the PHY device. And when the shared MDIO bus
-> > is removed, all MAC drivers that depend on it will also be removed.
->=20
-> Shouldn't there be a full chain here? MAC->MDIO->PHY?
+On Mon, Jan 26, 2026 at 07:18:47PM +0100, Luca Ceresoli wrote:
+> Hello Liu,
 
-The PHY is already a child of the MDIO bus device, so the MDIO->PHY
-relationship is already represented.
+Hello Luca,
 
->=20
-> For the case of the SFP, maybe it should be
->=20
-> MAC->SFP Cage and I2C MDIO->PHY
->=20
-> So if the PHY inside an SFP disappears, the I2C MDIO bus is
-> removed. But there is no link upwards from that, so the SFP cage and
-> the MAC are left alone?
->=20
+> 
+> On Mon Jan 26, 2026 at 9:06 AM CET, Liu Ying wrote:
+>> Hi Luca,
+>>
+>> On Wed, Jan 07, 2026 at 10:56:29AM +0100, Luca Ceresoli wrote:
+>>> This driver obtains a bridge pointer from of_drm_find_bridge() in the probe
+>>> function and stores it until driver removal. of_drm_find_bridge() is
+>>> deprecated. Move to of_drm_find_and_get_bridge() for the bridge to be
+>>> refcounted and use bridge->next_bridge to put the reference on
+>>> deallocation.
+>>>
+>>> This needs to be handled in various steps:
+>>>
+>>>  * the bridge returned of_drm_get_bridge() is stored in the local temporary
+>>>    variable next_bridge whose scope is the for loop, so a cleanup action is
+>>>    enough
+>>>  * the value of next_bridge is copied into selected_bridge, potentially
+>>>    more than once, so a cleanup action at function scope plus a
+>>>    drm_bridge_put() in case of reassignment are enough
+>>>  * on successful return selected_bridge is stored in bridge->next_bridge,
+>>>    which ensures it is put when the bridge is deallocated
+>>>
+>>> Reviewed-by: Maxime Ripard <mripard@kernel.org>
+>>> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> 
+> Thanks for having found the time to go into the details and provide a
+> careful review of this series!
+> 
+>>> --- a/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
+>>> +++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
+>>> @@ -23,7 +23,6 @@
+>>>
+>>>  struct imx8qxp_pixel_link {
+>>>  	struct drm_bridge bridge;
+>>> -	struct drm_bridge *next_bridge;
+>>>  	struct device *dev;
+>>>  	struct imx_sc_ipc *ipc_handle;
+>>>  	u8 stream_id;
+>>> @@ -140,7 +139,7 @@ static int imx8qxp_pixel_link_bridge_attach(struct drm_bridge *bridge,
+>>>  	}
+>>>
+>>>  	return drm_bridge_attach(encoder,
+>>> -				 pl->next_bridge, bridge,
+>>> +				 pl->bridge.next_bridge, bridge,
+>>>  				 DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+>>>  }
+>>>
+>>> @@ -260,7 +259,7 @@ static int imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
+>>>  {
+>>>  	struct device_node *np = pl->dev->of_node;
+>>>  	struct device_node *port;
+>>> -	struct drm_bridge *selected_bridge = NULL;
+>>> +	struct drm_bridge *selected_bridge __free(drm_bridge_put) = NULL;
+>>>  	u32 port_id;
+>>>  	bool found_port = false;
+>>>  	int reg;
+>>> @@ -297,7 +296,8 @@ static int imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
+>>>  			continue;
+>>>  		}
+>>>
+>>> -		struct drm_bridge *next_bridge = of_drm_find_bridge(remote);
+>>> +		struct drm_bridge *next_bridge __free(drm_bridge_put) =
+>>> +			of_drm_find_and_get_bridge(remote);
+>>>  		if (!next_bridge)
+>>>  			return -EPROBE_DEFER;
+>>>
+>>> @@ -305,12 +305,14 @@ static int imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
+>>>  		 * Select the next bridge with companion PXL2DPI if
+>>>  		 * present, otherwise default to the first bridge
+>>>  		 */
+>>> -		if (!selected_bridge || of_property_present(remote, "fsl,companion-pxl2dpi"))
+>>> -			selected_bridge = next_bridge;
+>>> +		if (!selected_bridge || of_property_present(remote, "fsl,companion-pxl2dpi")) {
+>>> +			drm_bridge_put(selected_bridge);
+>>> +			selected_bridge = drm_bridge_get(next_bridge);
+>>
+>> Considering selecting the first bridge without the companion pxl2dpi,
+>> there would be a superfluous refcount for the selected bridge:
+>>
+>> 1) of_drm_find_and_get_bridge: refcount = 1
+>> 2) drm_bridge_put: noop, since selected_bridge is NULL, refcount = 1
+>> 3) drm_bridge_get: refcount = 2
+>> 4) drm_bridge_put(__free): refcount = 1
+>> 5) drm_bridge_get: for the pl->bridge.next_bridge, refcount = 2
+> 
+> Here you are missing one put. There are two drm_bridge_put(__free), one for
+> next_bridge and one for selected_bridge. So your list should rather be:
+> 
+> 1) next_bridge = of_drm_find_and_get_bridge: refcount = 1
+> 2) drm_bridge_put(selected_bridge): noop, since selected_bridge is NULL, refcount = 1
+> 3) selected_bridge = drm_bridge_get: refcount = 2
+> 4) drm_bridge_put(next_bridge) [__free at loop scope end]: refcount = 1
+> 5) pl->bridge.next_bridge = drm_bridge_get(), refcount = 2
+> 6) drm_bridge_put(selected_bridge) [__free at function scope end]: refcount = 1
 
-Sorry, I have no experience with SPF module, but from Russell's reply,
-it seems unlikely that the MDIO bus would be removed when removing
-the PHY. I also modified Sarosh's patch based on this premise (the MDIO
-bus will not be removed due to the removal of the PHY).
+Ah, right, I did miss this last put because selected_bridge is declared with
+__free a bit far away from the loop at the very beginning of
+imx8qxp_pixel_link_find_next_bridge() - that's my problem I guess, but I'm
+not even sure if I'll fall into this same pitfall again after a while, which
+makes the driver difficult to maintain.
 
+Also, it seems that the refcount dance(back and forth bewteen 1 and 2) is not
+something straightforward for driver readers to follow.
+
+> 
+> The idea is that for each pointer (which is a reference) we get a reference
+> (refcount++) when the pointer is set and put the reference when that same
+> pointer goes out of scope or is reset to NULL. "the pointer is set" can be
+> either of_drm_find_and_get_bridge() or an assignment, as each of these
+> operations creates another reference (pointer) to the same bridge.
+> 
+> Does it look correct?
+
+Lol, I guess I need more coffee to read your logic of refcount get/put.
+
+> 
+>> I think the below snippet would be the right thing to do:
+>> -8<-
+>> {
+>> 	...
+>>
+>> 	struct drm_bridge *next_bridge __free(drm_bridge_put) =
+>> 		of_drm_find_and_get_bridge(remote);
+>>   		if (!next_bridge)
+>>   			return -EPROBE_DEFER;
+>>
+>> 	/*
+>> 	 * Select the next bridge with companion PXL2DPI if
+>> 	 * present, otherwise default to the first bridge
+>> 	 */
+>> 	if (!selected_bridge)
+>> 		selected_bridge = drm_bridge_get(next_bridge);
+>>
+>> 	if (of_property_present(remote, "fsl,companion-pxl2dpi")) {
+>> 		if (selected_bridge)
+>> 			drm_bridge_put(selected_bridge);
+>>
+>> 		selected_bridge = drm_bridge_get(next_bridge);
+>> 	}
+>> }
+> 
+> Your version of the code looks OK as well so far, but totally equivalent to
+> what my patch proposes.
+> 
+> Do you think splitting the if() into two if()s is clearer? Would you like
+> me to change this?
+
+Yes, please.  Two if()s are easier for me to read.  Also I think the
+"if (selected_bridge)" before "drm_bridge_put(selected_bridge)" improves
+readability, though I know drm_bridge_put() checks input parameter bridge
+for now.
+
+> 
+>> ...
+>> pl->bridge.next_bridge = selected_bridge;
+> 
+> Based on the logic above the drm_bridge_get() is still needed here (both
+> with the single if() or the split if()s) because at function exit the
+> selected_bridge reference will be put.
+
+Can the refcount dance be simplified a bit by dropping the put at
+function exit?  This snippet is what I'd propose if not too scary:
+
+-8<-
+	struct drm_bridge *selected_bridge = NULL;
+	...
+
+	{
+		...
+
+		struct drm_bridge *next_bridge __free(drm_bridge_put) =
+			of_drm_find_and_get_bridge(remote);
+			if (!next_bridge)
+				return -EPROBE_DEFER;
+
+		/*
+		 * Select the next bridge with companion PXL2DPI if
+		 * present, otherwise default to the first bridge
+		 */
+		if (!selected_bridge)
+			selected_bridge = drm_bridge_get(next_bridge);
+
+		if (of_property_present(remote, "fsl,companion-pxl2dpi")) {
+			if (selected_bridge)
+				drm_bridge_put(selected_bridge);
+
+			selected_bridge = drm_bridge_get(next_bridge);
+		}
+	}
+
+	...
+	pl->bridge.next_bridge = selected_bridge;
+-8<-
+
+> 
+> Luca
+> 
+> --
+> Luca Ceresoli, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com/
+
+-- 
+Regards,
+Liu Ying
