@@ -1,107 +1,112 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC697E0E4
-	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 08:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299953321DC
+	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 09:13:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769504160; cv=none; b=pWc8qqjQM8rivMdTdg3owmOJ+NbdUvKHTbyUgyr6Gcg2W5bt/QrnIswUNs2/729qXPILM4HZwYU8OcbbkhEvAT34Pen2YcGevWlMX+em/FBbLQVZSwSyeE6+Mc6zFJ8Snw7Am6nUwIsp6ggKEfGKpSMpL4MFlukY5Tkr08MhvF8=
+	t=1769505219; cv=none; b=PPz9AlkbqfFgNheccUwjRdatw/kMIvaEFtXxf2VVqKCrMrEQ0ES2TbsRDda+qPEXB8mpx+SwBnPUoJSk2V7ytXuF6YID0+25hgBdpDxz6QG++vlniwUcaabmd1xG5DJ+JPdNdUC0C89AE8fV4OzVDHXPQUmlcdYMm0BgLiIGW+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769504160; c=relaxed/simple;
-	bh=uMKblArHl5A9jcSFlaLTAYlOk8eq3QqLeD+7zdgmwRM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V57MdJJ845rEg85hwhgK+AZhhReOg6Czt5hE0uUGWAM2awMG+gKglcEJk8xPx2hc1PkVVtGYO9Ihw0SJmmZFsa5oliTcJCWTbLOUY8DHyFFmDwnnLCXyN8SeG/URbHBJWbvj38ZXVgPh7hcsHYE/WY9HuWekfbq8czFtrMQ48Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rHDGH2Ds; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1769505219; c=relaxed/simple;
+	bh=41rVnxvkISTHwRblA2rsSFI+6MXia1K7fzxYtKEjBpk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q/OPB6X8WE2EPHt2oii0VEE7+KlQmwBTY9WKUry1IQGJoj3QE7QD3UylkovvPihSJHSZhg21RRU/Fgi/SYOKVStoe8KuU62sBpUkfc6Lnoc+DE0DCV76MZdrpdb5DPvwwqj4OJ0hYRjgXkRLKestiTBrG+UJuAfWRQdn1+cHrgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cg+Zfq80; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rHDGH2Ds"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47ff94b46afso46892725e9.1
-        for <imx@lists.linux.dev>; Tue, 27 Jan 2026 00:55:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1769504157; x=1770108957; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J6gcw78eDfCGKXCKZBLgnF/iPeG+D4+74BvG9CfzhIA=;
-        b=rHDGH2Ds5R07pDpLo+hG3A8qoCK497WMiOS+lARYXQsLKjk09mQbT+JtHuxRq+Y05y
-         +Tf1140p+jSNTmRkTn6/44JSRto1uwoKdyCAKKCCXvzlQXjyqjfrak/pdmBzqNRQHAXv
-         AvBZokM3UYFmywhAKi/YluGnYvrgLbf+kH5LgHl6J+DC8MbeDvw2z9bprOTEd7rya5W9
-         nMKZWfJ65jxYhzCyiXfp/YixYUOHg7rCBWd7fjTarMCC+8+6am5ETrCr238n58DMKhoH
-         uvIAeHh5tC5O4NNRg1ZWMVrENz7gzdHRtpHzA6i5rIAVH1/o94sFtjxi5JlLvEmW5zcB
-         0jDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769504157; x=1770108957;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J6gcw78eDfCGKXCKZBLgnF/iPeG+D4+74BvG9CfzhIA=;
-        b=pfrUdZAvrJiR9u4d7Xisqm8+qoyh3CZC9gpvJVM94zkKNdadqEOF2U8Za/BgSVXy4J
-         NGSphQ/ttm0re/S2qePmO1BH42Mz6wmP98CL9XWzX9MuWNbZLbFx/3XC3yyXYWzghABE
-         BNa29hZukLRU6Ff9ozIx2aK4WnaKqxZXMDZX9vXsXocgXZwog7/A/jwbwcwbqBIrfd7d
-         zdpdmcwfioMhCMYT9pGjUBGYNw1nMIRdvRqgIo1nfyvmYt6XlG+Cn0sJemoJX3BFsGH/
-         AdRWAI47AH80ppnIDO13pe0bNr+wwkI/9Iht17rDKJpC+lQbUe4zD33Lytf23e1pos6b
-         l07Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUuM1VxkUB39Is9MA4M5j8BwdRgHqkWq/dn0tnkA/HXYbWClz9iwoTa2JeBKfLSNAqNjT0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzlZ7LHf6ozNlTl30MWLf4cVE89wVBCaW8WAp7MJAapfwRwr1Nz
-	hjE3TjSB/7p1UkisUt3D/4sgLrT6Vig2bgPpethbtN1zVrwfqTs1DqMeAD4o05fs9G8=
-X-Gm-Gg: AZuq6aIShvGdjboRsDhi4of+R4wkQuM1rsJ8ts3fwGpWXIp4ZIgtim0CJOmzjiMPKDz
-	WHNAYeYJdAob4sYotRrl0iUkd8bu5+FS0kW9uIHr90jodKvZ5765HAonei55VfRO+CfM0OjrxRh
-	E968bNWhY3gdqYTxfnWKYoxQ8aSnKk0huIHunRJ1Imp8D7dnoF5YUAB3tnJyVK6e4oEiiaaDFwn
-	syvmjWgC4rZfGOejs0iT6xdfD/yFgUNvsgHOEgMdK1G4vF/N7mf8vr6eVk0Dd5rBO9LCvQwnep0
-	mLozSLQYeY+2jwBP0q86SBIl0qADb6eaPQI18XMYKyBd/ba/lXnp0Op4ZxOcsFzJtjo8Vc7/6YE
-	gAvwdAMGwvr7m624WbxpULN5JzO6XRxaOaGv/H5FDlaayqzwxMxAu1ZujLrnyfTqAEG6hmT6eKL
-	HoIV4UST+C6hAz9PE=
-X-Received: by 2002:a05:600c:33a6:b0:47d:52ef:c572 with SMTP id 5b1f17b1804b1-48069e0fd24mr6300105e9.1.1769504156658;
-        Tue, 27 Jan 2026 00:55:56 -0800 (PST)
-Received: from localhost ([41.210.143.248])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066c42895sm50695725e9.14.2026.01.27.00.55.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 00:55:56 -0800 (PST)
-Date: Tue, 27 Jan 2026 11:55:49 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Simon Horman <horms@kernel.org>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, robh@kernel.org,
-	kuba@kernel.org, festevam@gmail.com,
-	ghennadi.procopciuc@oss.nxp.com, alexandre.torgue@foss.st.com,
-	linux-kernel@vger.kernel.org, andrew+netdev@lunn.ch,
-	shawnguo@kernel.org, mbrugger@suse.com, mcoquelin.stm32@gmail.com,
-	linaro-s32@linaro.org, davem@davemloft.net, s.hauer@pengutronix.de,
-	edumazet@google.com, linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev, conor+dt@kernel.org, krzk+dt@kernel.org,
-	devicetree@vger.kernel.org, Frank.li@nxp.com,
-	chester62515@gmail.com, netdev@vger.kernel.org,
-	kernel@pengutronix.de, pabeni@redhat.com, jan.petrous@oss.nxp.com,
-	linux-stm32@st-md-mailman.stormreply.com, s32@nxp.com
-Subject: Re: [v4,1/3] net: stmmac: s32: use a syscon for
- S32_PHY_INTF_SEL_RGMII
-Message-ID: <aXh9lcfw6D6KouI_@stanley.mountain>
-References: <8f2139e8adf02b485a4c84d558fc23f78cf04add.1769195864.git.dan.carpenter@linaro.org>
- <20260126152430.1390514-1-horms@kernel.org>
- <aXeJYo-0iiNuXVGH@shell.armlinux.org.uk>
- <aXeP1y7cK0XRx3Wo@horms.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cg+Zfq80"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEF7C16AAE
+	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 09:13:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769505218;
+	bh=41rVnxvkISTHwRblA2rsSFI+6MXia1K7fzxYtKEjBpk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=cg+Zfq80YxqDJwmWUOvVfZJ8B1vThvWexE6XEXrvgzbX5fikki8WILdGo52Yfa7qd
+	 eQIn/Z+Sh6J8q4qQRhHvXXrvljT1wN8PDk5JtNONKg3AXK6H+ZZvKpCepdrS40BhHR
+	 jltc9iBTRIiX43FXe0KjUPqARfvAYEUACzcV4pEqnalRc48TpY/1AhOfXYJ7a8POtN
+	 TCgVoc4tH2zMGu3h/n+0uebNggG4C1W9O7SEGRjusyzetzBYpJBqwj0VomTYd4vFCW
+	 TCvrgKFa/4GDqg2nsM8UJizAqhIEupeS17DuPiEe/Y6y/Ca5h1btZiq21raM02w+Fj
+	 s9lSyvP0qdKpg==
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-6495d592c10so4317734d50.1
+        for <imx@lists.linux.dev>; Tue, 27 Jan 2026 01:13:38 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXhidJq0J49aGGdhWAPA3n62UkU1CojuFRTnsN0I+Jg6AKB8S5bQkQ56h1M1c/OmPiwdtQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxVDV2uqkQIoh+d/dA1/JJ9XutQfLXZp0AoCVuj2lE43YEIiTWZ
+	Fi5U+IbucbZueLNo1zAdtE6Dosga7ElD7dY1NJMaktgS1JWGFrXn533JWu2V3EOoptv4MI5ET/I
+	RyJojP7FHr2MaH0PZGGk9/oBLQvfhXwQ=
+X-Received: by 2002:a05:690e:12c2:b0:649:6ae3:59f0 with SMTP id
+ 956f58d0204a3-6498fc3b237mr547352d50.50.1769505218201; Tue, 27 Jan 2026
+ 01:13:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aXeP1y7cK0XRx3Wo@horms.kernel.org>
+References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com> <20260120115923.3463866-4-khristineandreea.barbulescu@oss.nxp.com>
+In-Reply-To: <20260120115923.3463866-4-khristineandreea.barbulescu@oss.nxp.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 27 Jan 2026 10:13:27 +0100
+X-Gmail-Original-Message-ID: <CAD++jLkJCoSWM+cy2OTyF9BigRcP-4iF1oGxGzEX8_53YWhArg@mail.gmail.com>
+X-Gm-Features: AZwV_QgSaniB8mBIbI3QW613Tst6pG7m7pLrw8AiZD8eyiExQaEqOjZBG8ImutQ
+Message-ID: <CAD++jLkJCoSWM+cy2OTyF9BigRcP-4iF1oGxGzEX8_53YWhArg@mail.gmail.com>
+Subject: Re: [PATCH v8 03/10] arm64: dts: s32g: change pinctrl node into the
+ new mfd node
+To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>, Larisa Grigore <larisa.grigore@nxp.com>, 
+	Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Dong Aisheng <aisheng.dong@nxp.com>, Jacky Bai <ping.bai@nxp.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>, devicetree@vger.kernel.org, 
+	Enric Balletbo <eballetb@redhat.com>, Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	"Vincent Guittot devicetree @ vger . kernel . org" <vincent.guittot@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 26, 2026 at 04:01:27PM +0000, Simon Horman wrote:
-> But at any rate, I think the key question is should the case
-> where regmap_write() returns an error be handled in
-> s32_gmac_write_phy_intf_select() (by some means)?
+Hi Khristine,
 
-Generally if register read/writes fail then there is nothing you
-can do a the software level, you need to buy a new computer.  However,
-in this case we may eventually put the registers behind an SCMI
-interface so probably checking is a good idea.
+On Tue, Jan 20, 2026 at 12:59=E2=80=AFPM Khristine Andreea Barbulescu
+<khristineandreea.barbulescu@oss.nxp.com> wrote:
 
-Could I leave the error message out?  The callers has an error
-message and if you ever see the error message, and even with SCMI,
-the fix is probably still to buy a new computer.
+> From: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+>
+> This commit will switch to the new mfd node for representing the SIUL2
+> hardware. The old pinctrl binding for SIUL2 will be deprecated in a
+> later commit since it doesn't correctly represent the hardware.
+>
+> SIUL2 is now represented as an mfd device. Move the pinctrl related
+> properties inside the new "nxp-siul2" node. The latter one is now used
+> to represent the mfd device.
+>
+> This change came as a result of upstream review in the following series:
+> https://lore.kernel.org/linux-gpio/a924bbb6-96ec-40be-9d82-a76b2ab73afd@o=
+ss.nxp.com/
+> https://lore.kernel.org/all/20240926143122.1385658-3-andrei.stefanescu@os=
+s.nxp.com/
+>
+> The SIUL2 module has multiple capabilities. It has support for reading
+> SoC information, pinctrl and GPIO. All of this functionality is part of
+> the same register space. The initial pinctrl driver treated the pinctrl
+> functionality as separate from the GPIO one. However, they do rely on
+> common registers and a long, detailed and specific register range list
+> would be required for pinctrl&GPIO (carving out the necessary memory
+> for each function). Moreover, in some cases this wouldn't be enough. For
+> example reading a GPIO's direction would require a read of the MSCR
+> register corresponding to that pin. This would not be possible in the
+> GPIO driver because all of the MSCR registers are referenced by the
+> pinctrl driver.
+>
+> Signed-off-by: Andrei Stefanescu <andrei.stefanescu@oss.nxp.com>
+> Signed-off-by: Khristine Andreea Barbulescu <khristineandreea.barbulescu@=
+oss.nxp.com>
 
-regards,
-dan carpenter
+OK this makes sense.
+Acked-by: Linus Walleij <linusw@kernel.org>
+
+Yours,
+Linus Walleij
