@@ -1,131 +1,107 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60468229B2A
-	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 08:52:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC697E0E4
+	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 08:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769503942; cv=none; b=bax0+il/1x55nBjyAo434Y/RRseD7h+frLm/1TTTqFbet0t74HrSx2buOFfju2OUbWKOj5iDqK2XioCYnYMWPjpvlugbK3HvlMZXO8tymsLnLFkQ6IG67igEMBm8+jSjZfPK3oo645LH9NvsoMFUm2brydqdXuBknr+zUabwVbk=
+	t=1769504160; cv=none; b=pWc8qqjQM8rivMdTdg3owmOJ+NbdUvKHTbyUgyr6Gcg2W5bt/QrnIswUNs2/729qXPILM4HZwYU8OcbbkhEvAT34Pen2YcGevWlMX+em/FBbLQVZSwSyeE6+Mc6zFJ8Snw7Am6nUwIsp6ggKEfGKpSMpL4MFlukY5Tkr08MhvF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769503942; c=relaxed/simple;
-	bh=2ea+F2HgYspw3KxUmdCxvMhQZTw7GnkmsekWDoaP1NA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NNZFftuxLyFhYvzoDxeOqHZtpv83a81roOm3HatkK+PHHr4L3/j9pkRf/h6K6ogaRjX1ZYctX0tc8F9/7/LwBoSuCIwepy1uoDsCOY7nzW/J6KCs3t43JMlccW/e0xqY4VjAJxStzETBtCQUal4RWoqzSeA6h2KoEb69ymaYTHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=HGyqJwHO; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1769504160; c=relaxed/simple;
+	bh=uMKblArHl5A9jcSFlaLTAYlOk8eq3QqLeD+7zdgmwRM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V57MdJJ845rEg85hwhgK+AZhhReOg6Czt5hE0uUGWAM2awMG+gKglcEJk8xPx2hc1PkVVtGYO9Ihw0SJmmZFsa5oliTcJCWTbLOUY8DHyFFmDwnnLCXyN8SeG/URbHBJWbvj38ZXVgPh7hcsHYE/WY9HuWekfbq8czFtrMQ48Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rHDGH2Ds; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="HGyqJwHO"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CD25210E85E;
-	Tue, 27 Jan 2026 09:52:10 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1769503933; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=f89ewW6tpVskll2Ea+OWCGnSGwJ/WSvnGk6eazoxSU8=;
-	b=HGyqJwHOfVd3/DyRJPn30XO56GQ1LSuNETmXNtjrkWzcJLgzFa2Z03tMWqY8H3sKjLT+3D
-	bIOiGFqxgHeyRd0GUQfrixLP3kATurTJyobQH6JIJ7M51QYnPpjlulRZBu1QskMfyP/cgy
-	UeyGAEmLoPemsloA/1vaasZlqfiLFVkrK2Fi7if5e8Gy/iu8Rnz87zHO78n0Az9xr4kVU4
-	xyH4BOVhYW4FBrCzcj3boH316GCEFwmNKkXjP+NzpiwojGMbhPJWG0gKGTcmBllNC5hQF/
-	SXkdu+23wvG+42xbi46ChZOqGC+c9OOfVPL/lsVF39Qj5DHy8e8qpxHk04RC7Q==
-From: Lukasz Majewski <lukma@nabladev.com>
-To: Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	linux-clk@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Lukasz Majewski <lukma@nabladev.com>
-Subject: [PATCH v3] clk: vf610: Add support for the Ethernet switch clocks
-Date: Tue, 27 Jan 2026 09:51:50 +0100
-Message-Id: <20260127085150.3040586-1-lukma@nabladev.com>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rHDGH2Ds"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-47ff94b46afso46892725e9.1
+        for <imx@lists.linux.dev>; Tue, 27 Jan 2026 00:55:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1769504157; x=1770108957; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=J6gcw78eDfCGKXCKZBLgnF/iPeG+D4+74BvG9CfzhIA=;
+        b=rHDGH2Ds5R07pDpLo+hG3A8qoCK497WMiOS+lARYXQsLKjk09mQbT+JtHuxRq+Y05y
+         +Tf1140p+jSNTmRkTn6/44JSRto1uwoKdyCAKKCCXvzlQXjyqjfrak/pdmBzqNRQHAXv
+         AvBZokM3UYFmywhAKi/YluGnYvrgLbf+kH5LgHl6J+DC8MbeDvw2z9bprOTEd7rya5W9
+         nMKZWfJ65jxYhzCyiXfp/YixYUOHg7rCBWd7fjTarMCC+8+6am5ETrCr238n58DMKhoH
+         uvIAeHh5tC5O4NNRg1ZWMVrENz7gzdHRtpHzA6i5rIAVH1/o94sFtjxi5JlLvEmW5zcB
+         0jDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769504157; x=1770108957;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=J6gcw78eDfCGKXCKZBLgnF/iPeG+D4+74BvG9CfzhIA=;
+        b=pfrUdZAvrJiR9u4d7Xisqm8+qoyh3CZC9gpvJVM94zkKNdadqEOF2U8Za/BgSVXy4J
+         NGSphQ/ttm0re/S2qePmO1BH42Mz6wmP98CL9XWzX9MuWNbZLbFx/3XC3yyXYWzghABE
+         BNa29hZukLRU6Ff9ozIx2aK4WnaKqxZXMDZX9vXsXocgXZwog7/A/jwbwcwbqBIrfd7d
+         zdpdmcwfioMhCMYT9pGjUBGYNw1nMIRdvRqgIo1nfyvmYt6XlG+Cn0sJemoJX3BFsGH/
+         AdRWAI47AH80ppnIDO13pe0bNr+wwkI/9Iht17rDKJpC+lQbUe4zD33Lytf23e1pos6b
+         l07Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUuM1VxkUB39Is9MA4M5j8BwdRgHqkWq/dn0tnkA/HXYbWClz9iwoTa2JeBKfLSNAqNjT0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzlZ7LHf6ozNlTl30MWLf4cVE89wVBCaW8WAp7MJAapfwRwr1Nz
+	hjE3TjSB/7p1UkisUt3D/4sgLrT6Vig2bgPpethbtN1zVrwfqTs1DqMeAD4o05fs9G8=
+X-Gm-Gg: AZuq6aIShvGdjboRsDhi4of+R4wkQuM1rsJ8ts3fwGpWXIp4ZIgtim0CJOmzjiMPKDz
+	WHNAYeYJdAob4sYotRrl0iUkd8bu5+FS0kW9uIHr90jodKvZ5765HAonei55VfRO+CfM0OjrxRh
+	E968bNWhY3gdqYTxfnWKYoxQ8aSnKk0huIHunRJ1Imp8D7dnoF5YUAB3tnJyVK6e4oEiiaaDFwn
+	syvmjWgC4rZfGOejs0iT6xdfD/yFgUNvsgHOEgMdK1G4vF/N7mf8vr6eVk0Dd5rBO9LCvQwnep0
+	mLozSLQYeY+2jwBP0q86SBIl0qADb6eaPQI18XMYKyBd/ba/lXnp0Op4ZxOcsFzJtjo8Vc7/6YE
+	gAvwdAMGwvr7m624WbxpULN5JzO6XRxaOaGv/H5FDlaayqzwxMxAu1ZujLrnyfTqAEG6hmT6eKL
+	HoIV4UST+C6hAz9PE=
+X-Received: by 2002:a05:600c:33a6:b0:47d:52ef:c572 with SMTP id 5b1f17b1804b1-48069e0fd24mr6300105e9.1.1769504156658;
+        Tue, 27 Jan 2026 00:55:56 -0800 (PST)
+Received: from localhost ([41.210.143.248])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066c42895sm50695725e9.14.2026.01.27.00.55.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jan 2026 00:55:56 -0800 (PST)
+Date: Tue, 27 Jan 2026 11:55:49 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Simon Horman <horms@kernel.org>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, robh@kernel.org,
+	kuba@kernel.org, festevam@gmail.com,
+	ghennadi.procopciuc@oss.nxp.com, alexandre.torgue@foss.st.com,
+	linux-kernel@vger.kernel.org, andrew+netdev@lunn.ch,
+	shawnguo@kernel.org, mbrugger@suse.com, mcoquelin.stm32@gmail.com,
+	linaro-s32@linaro.org, davem@davemloft.net, s.hauer@pengutronix.de,
+	edumazet@google.com, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, conor+dt@kernel.org, krzk+dt@kernel.org,
+	devicetree@vger.kernel.org, Frank.li@nxp.com,
+	chester62515@gmail.com, netdev@vger.kernel.org,
+	kernel@pengutronix.de, pabeni@redhat.com, jan.petrous@oss.nxp.com,
+	linux-stm32@st-md-mailman.stormreply.com, s32@nxp.com
+Subject: Re: [v4,1/3] net: stmmac: s32: use a syscon for
+ S32_PHY_INTF_SEL_RGMII
+Message-ID: <aXh9lcfw6D6KouI_@stanley.mountain>
+References: <8f2139e8adf02b485a4c84d558fc23f78cf04add.1769195864.git.dan.carpenter@linaro.org>
+ <20260126152430.1390514-1-horms@kernel.org>
+ <aXeJYo-0iiNuXVGH@shell.armlinux.org.uk>
+ <aXeP1y7cK0XRx3Wo@horms.kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXeP1y7cK0XRx3Wo@horms.kernel.org>
 
-The vf610 device has built in the MoreThanIP L2 switch. For proper
-operation it is required to enable ESW and MAC table lookup clocks.
+On Mon, Jan 26, 2026 at 04:01:27PM +0000, Simon Horman wrote:
+> But at any rate, I think the key question is should the case
+> where regmap_write() returns an error be handled in
+> s32_gmac_write_phy_intf_select() (by some means)?
 
-The MAC table spans from 0x400E_C000 for 0x4000 and it is necessary
-to provide clocks for each AIPS1-"slot", which size is 0x1000
-(hence four separate entries).
+Generally if register read/writes fail then there is nothing you
+can do a the software level, you need to buy a new computer.  However,
+in this case we may eventually put the registers behind an SCMI
+interface so probably checking is a good idea.
 
-Those can be enabled via clock gating CCM_CCGR10 register (0x4006_B068).
+Could I leave the error message out?  The callers has an error
+message and if you ever see the error message, and even with SCMI,
+the fix is probably still to buy a new computer.
 
-This patch also adds VF610_CLK_ESW and VF610_CLK_ESW_MAC_TAB{0123}
-macros definitions for L2 switch.
-
-The VF610_CLK_END has been removed from dt-bindings, as its number had to
-be increased when MTIP L2 switch clocks were added, and defined locally
-in clk-vf610.c driver.
-
-Signed-off-by: Lukasz Majewski <lukma@nabladev.com>
----
-Changes for v2:
-- Squash clock DT bindings to this single patch
-- Replace VF610_CLK_END with VF610_CLK_ESW_MAC_TAB3 + 1
-
-Changes for v3:
-- Re-define VF610_CLK_END and move it to clk-vf610.c file
----
- drivers/clk/imx/clk-vf610.c             | 7 +++++++
- include/dt-bindings/clock/vf610-clock.h | 6 +++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/clk/imx/clk-vf610.c b/drivers/clk/imx/clk-vf610.c
-index 41eb38552a9c..84a6f907e213 100644
---- a/drivers/clk/imx/clk-vf610.c
-+++ b/drivers/clk/imx/clk-vf610.c
-@@ -11,6 +11,8 @@
- 
- #include "clk.h"
- 
-+#define VF610_CLK_END 196
-+
- #define CCM_CCR			(ccm_base + 0x00)
- #define CCM_CSR			(ccm_base + 0x04)
- #define CCM_CCSR		(ccm_base + 0x08)
-@@ -313,6 +315,11 @@ static void __init vf610_clocks_init(struct device_node *ccm_node)
- 	clk[VF610_CLK_ENET_TS] = imx_clk_gate("enet_ts", "enet_ts_sel", CCM_CSCDR1, 23);
- 	clk[VF610_CLK_ENET0] = imx_clk_gate2("enet0", "ipg_bus", CCM_CCGR9, CCM_CCGRx_CGn(0));
- 	clk[VF610_CLK_ENET1] = imx_clk_gate2("enet1", "ipg_bus", CCM_CCGR9, CCM_CCGRx_CGn(1));
-+	clk[VF610_CLK_ESW] = imx_clk_gate2("esw", "ipg_bus", CCM_CCGR10, CCM_CCGRx_CGn(8));
-+	clk[VF610_CLK_ESW_MAC_TAB0] = imx_clk_gate2("esw_tab0", "ipg_bus", CCM_CCGR10, CCM_CCGRx_CGn(12));
-+	clk[VF610_CLK_ESW_MAC_TAB1] = imx_clk_gate2("esw_tab1", "ipg_bus", CCM_CCGR10, CCM_CCGRx_CGn(13));
-+	clk[VF610_CLK_ESW_MAC_TAB2] = imx_clk_gate2("esw_tab2", "ipg_bus", CCM_CCGR10, CCM_CCGRx_CGn(14));
-+	clk[VF610_CLK_ESW_MAC_TAB3] = imx_clk_gate2("esw_tab3", "ipg_bus", CCM_CCGR10, CCM_CCGRx_CGn(15));
- 
- 	clk[VF610_CLK_PIT] = imx_clk_gate2("pit", "ipg_bus", CCM_CCGR1, CCM_CCGRx_CGn(7));
- 
-diff --git a/include/dt-bindings/clock/vf610-clock.h b/include/dt-bindings/clock/vf610-clock.h
-index 373644e46747..5d94bd561a2e 100644
---- a/include/dt-bindings/clock/vf610-clock.h
-+++ b/include/dt-bindings/clock/vf610-clock.h
-@@ -197,6 +197,10 @@
- #define VF610_CLK_TCON1			188
- #define VF610_CLK_CAAM			189
- #define VF610_CLK_CRC			190
--#define VF610_CLK_END			191
-+#define VF610_CLK_ESW			191
-+#define VF610_CLK_ESW_MAC_TAB0		192
-+#define VF610_CLK_ESW_MAC_TAB1		193
-+#define VF610_CLK_ESW_MAC_TAB2		194
-+#define VF610_CLK_ESW_MAC_TAB3		195
- 
- #endif /* __DT_BINDINGS_CLOCK_VF610_H */
--- 
-2.39.5
-
+regards,
+dan carpenter
