@@ -1,109 +1,148 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240A9325729
-	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 18:27:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769538444; cv=pass; b=ujdBUJ8x8gmwWm7NZvZOO7Jt9YxASEvWMf9FY0uIc39oFbl0qHCRE2mumqQZMaCMYx0DnffyicGwOzCllZpuuSh+yx41cn+4iM+KEWSWl7oy0BFH6edHQFkdO1OmVtlFFZ8jo0QfmJPoZj2fdNplwGFyzkwyotPEesLDNwtHI/o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769538444; c=relaxed/simple;
-	bh=z4CGyKcCnMa/ZHAIbj4nSTz1dbC/e5JXE8bFaVOZ6yE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DPclQGyZVadK3MCM4qvwm4M0z+DgZtIp++BOSyQS0TlKkCTz5+F4iYhSePXXdPRjJgGL1LEhlq3YDEdlVY9Q18Pvo9N4Hn+qPXxsvRAxFP4XS0HtGkk93iBMXTFIqx1fS0tR/0vCQNFGjgkJEFGomP4VQbiW3Tbhwdz6NewV740=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fyZTlwG6; arc=pass smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF83836CDE9;
+	Tue, 27 Jan 2026 19:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769542375; cv=none; b=fhhf6Y4aGHj/G536GzAkBOEX8ODhztqtXTbGYC4Qtr2U+M5mEnrD3O4qTRHx7Bngs49SlcCM8QxXV0+Aap2WqqzFgTS9wNt+XDuJBryEyL/oIfd/dAtwB3ldUEzPPOp0RakPJPUAxSW24pnfqJhwNpmVCmBFKk5sFWYyIbT3CFQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769542375; c=relaxed/simple;
+	bh=c8lDWX4D3RavtMw9/plTwOleLSxCRDavxuXHfl8Y4Is=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C7qlAJLGfN7DQjcd6m0+z4cKae/MNcVWO92oxosYRwVM6UNPks4nQegT77kkECOZjtOghDBb7ddHe9KZF71yeMuTg6PE6pAU9v/Dpxkl1yOEb3JKS7IeflU/PtbrM6/jJN/6Pck43D1tUkB1PAUgl6XGzumVW778hqY+R0I9Y40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Us1RXAi/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fyZTlwG6"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-59de8155501so4578189e87.3
-        for <imx@lists.linux.dev>; Tue, 27 Jan 2026 10:27:22 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769538441; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GiVr941+YptL++kXc7eP+AQdnRGh6Ind8lTPiq+ceVc5JzcivOK62eJ19U1gyH2yJr
-         t0/OlSpTpLaDc7q99vpSjQXxbYWbtUqfusx1CEHzUdEtBxkPcUOBRamk5DWhDqCmGOGg
-         gorM3IMv1HAqHXZxeS6O4jMJAWGgBCH4ONH9ndXNLVFxr9FX+hzYLrIKaxW7P8pT+0Rc
-         XBpStCaHJ6MoqZDYgtih0JDFYrnb2RbB/qM4N1WnbZsC1mmlj5ZJvHCNtfjmfdsA8WcD
-         28WrFEcZene2QadjSYmJDxKvgBIF9e956/Coq+jThOMTrXGPwb5aN22AmxFzGHrfneqT
-         lL1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=z4CGyKcCnMa/ZHAIbj4nSTz1dbC/e5JXE8bFaVOZ6yE=;
-        fh=tLM8EV/kDVl+jbtV3ZShBmItnYhLeQb0eZ0SRBx+o8g=;
-        b=JbpJNOupUwTxM/LkQKE1tZqvnoIn9qOrT1D/f1QgMbZ8lOFynUYE91SeMG98lAAd1V
-         cOjGflq/boZbXZWST2dE2ujFd+W2Mwl42YiBa7NKxuz79Ht/sbKLCTQDpwXhB/B0pHJi
-         J3JQuzym4pbzvN8ZyHTvRK6G4JVg8cJEGgnEDsMSjWQDTc29gtIgvMsummT/8ZbMyBDi
-         S5uhNCM8W6B44Uw09VS6nEERClY/PtEQdnUdhIzKby6LHzT3/p/rUa4/2e7rHLyu/2as
-         qV2sSWqbZsi9nwhPSY6N/M5K7eOTSsDIXYS9sDMr+YyeYqzTvm2t5yG+yEwX3kiKVtq4
-         bHVQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769538441; x=1770143241; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z4CGyKcCnMa/ZHAIbj4nSTz1dbC/e5JXE8bFaVOZ6yE=;
-        b=fyZTlwG64cgriafiW7GSpeyhAfutr4ZWGYSeySRWQZWAy8t63WGCTZPJTAC7dozrwr
-         Gup7r9KveUApltG9hADAYo0qrNq0KtA8TrzDaCe6y77oPEbFM1oe1yYvQv73rcrtTJ9d
-         Ojlh6CryDU6TNhv8WO8e4D7eGIqaAdoodd/3xwjLDNY3u4zCGU5zQ0Ie+x1H3qjI9seY
-         yRBep+v5L4mxpKtRaIv4ar32QruVdAILqI3OXMY4EhROjBRR27NFqb2WaNArL54YLcpx
-         agdVP9N0tAWkd2j9/RUQiE3kdfjjF/Mn5GPOLk5n8/BIfYEH8PNl7qPL+cV9ZAfFOczU
-         wypQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769538441; x=1770143241;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=z4CGyKcCnMa/ZHAIbj4nSTz1dbC/e5JXE8bFaVOZ6yE=;
-        b=rGqNQuyTs7ymwUyGH4fb3GpT+Sc3B2Y2JcQkXgbGaf3oRafq9RF3LZFMIMkSG5rmqM
-         1mkN+n3cXSRCgv0qkLSbCmKg7OB315+zF40Tii/P4Ozd/LC1aXBwicc1Yl6nSWUFd7tx
-         gMJnJabRxy3I47crBTK5JW1Jt3lZg9NSTG5bY8I0sDt2zE09Qz63VajD2GPmKLu2j5vO
-         oSTRihAJYq3pu/LXfml/Ehl/kF+cxZbkWSUaB6QcanatPIpPZqXIe8kGKoMEv8t1/EV4
-         jNLLgs0KgfbwFr9fLzwyGGdoJswDp9gD3dB1QxW46Wx3Y1zA8j9IXd1Iai+rrTl2jqEc
-         WEFg==
-X-Forwarded-Encrypted: i=1; AJvYcCVQqzGNMAwHriZQhxulI+8Lt/bxEl3tXmnO6QgBJbzgIpudHkEo1rL+iWpaQsnuF4dbFXY=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy0Jusrq7acAkZBi6b7FTE5iiM3zwyD6hKOsOotLACXu8h8Tysh
-	kJdQ0KaUMHCK7yWqBhN7M2PHPb06ihvNQEGfVT5WecacMATH5zD99ecclssJcjTlYEUf1raqGVt
-	ypAW+DvnhprroYYNy3VyQ+UYjOa6trZ4=
-X-Gm-Gg: AZuq6aIN4H37rpCEjW3GbRcj8TcMFGTVdAWxQM6Qv2KAVIU9PW9oPDCwAKMQel2BIoA
-	v1Q3KgWf/pNq/Vm4AWzn9eVQwbPDQukZWfFX33QbEnk4K9zRAxpnZkogn9BfuMJ9twl//t5gEXe
-	a8OVXwDwjZoaNjfdB3CIQAvsi2uLKXvuVSIj0V7ocTb1XD/jk1kER1/6kztFT9rDpgd0RDnuncZ
-	BSeZ9O45uGb9BpXaaV9Oz7QCGFuH22JHdVvUrKYTnHkU6OeQTviuHzgPWvRITr0YTUCc/QWwUSd
-	KVGfxdhE9MKpJ1U0iDheKPyCfo4=
-X-Received: by 2002:a05:6512:612:20b0:59e:417:2805 with SMTP id
- 2adb3069b0e04-59e041728eemr897795e87.16.1769538441058; Tue, 27 Jan 2026
- 10:27:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Us1RXAi/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E238BC116C6;
+	Tue, 27 Jan 2026 19:32:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769542375;
+	bh=c8lDWX4D3RavtMw9/plTwOleLSxCRDavxuXHfl8Y4Is=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Us1RXAi/IEvWuS9/cJUHqRKGTDB/ch+lkjjBuCKN1HTYGwxxBh3UH14PJFLIbcRrS
+	 5yIV+yXpYK/FKWIm2D2hKKrJ+Wh61IO55bd+rVTgZeX+UE3M2ppjvB1zFE3OjN8RIM
+	 12qYoEfhc9J69L5n4UBuT8O7n98rkvpaNhSgwtIH11ToI6Esj7DjGBgJp7l2y75BWx
+	 mKuNhCLTWN5CJaCnvtH6/QnXZnJ8BjBnPS7hzd2jK1FGTYEAGMzacgILU8XhUKwOuj
+	 +H4kW9QMyvDcJBcC407wtZQOEd7822/MUB6jZBNsO6GFmJ9MobEMcbzsvv8bv3ENEo
+	 4VPeO1aqPngUg==
+Date: Tue, 27 Jan 2026 19:32:48 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Jan Petrous <jan.petrous@oss.nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 2/4] dt-bindings: net: nxp,s32-dwmac: Declare
+ per-queue interrupts
+Message-ID: <20260127-crock-catty-e62e4f699f5a@spud>
+References: <20260123-dwmac_multi_irq-v3-0-cc53f2be8961@oss.nxp.com>
+ <20260123-dwmac_multi_irq-v3-2-cc53f2be8961@oss.nxp.com>
+ <20260123-dinner-aloft-e57deb6c546a@spud>
+ <aXdiNb92B4HH+ZFt@lsv051416.swis.nl-cdc01.nxp.com>
+ <20260126-blinker-secluding-a745f60caccb@spud>
+ <aXi07hPBrl7EYezi@lsv051416.swis.nl-cdc01.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260124-imx8mq-gpu-ahb-clock-v1-1-11c2e7c857b7@puri.sm>
-In-Reply-To: <20260124-imx8mq-gpu-ahb-clock-v1-1-11c2e7c857b7@puri.sm>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Tue, 27 Jan 2026 15:27:09 -0300
-X-Gm-Features: AZwV_QhK3eFl5bcR1K336qjRBbT8hoZ1p4zrhgHgCXGLTwM9-xA5aPP55CBui9s
-Message-ID: <CAOMZO5DAk3oZcQyqUEBiGhZPaX846q-zypyz3=chSNY1o_kBpA@mail.gmail.com>
-Subject: Re: [PATCH] arm64: dts: imx8mq: Set the correct gpu_ahb clock frequency
-To: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	kernel@puri.sm
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="WkvxyB8JqVtHXRO6"
+Content-Disposition: inline
+In-Reply-To: <aXi07hPBrl7EYezi@lsv051416.swis.nl-cdc01.nxp.com>
+
+
+--WkvxyB8JqVtHXRO6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jan 24, 2026 at 10:56=E2=80=AFAM Sebastian Krzyszkowiak
-<sebastian.krzyszkowiak@puri.sm> wrote:
->
-> According to i.MX 8M Quad Reference Manual, GPU_AHB_CLK_ROOT's maximum
-> frequency is 400MHz.
->
-> Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+On Tue, Jan 27, 2026 at 01:51:58PM +0100, Jan Petrous wrote:
+> On Mon, Jan 26, 2026 at 08:00:33PM +0000, Conor Dooley wrote:
+> > On Mon, Jan 26, 2026 at 01:46:45PM +0100, Jan Petrous wrote:
+> > > On Fri, Jan 23, 2026 at 05:13:03PM +0000, Conor Dooley wrote:
+> > > > On Fri, Jan 23, 2026 at 11:09:55AM +0100, Jan Petrous via B4 Relay =
+wrote:
+> > > > > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> > > > >=20
+> > > > > The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lin=
+es,
+> > > > > set them to allow using Multi-IRQ mode when supported.
+> > > >=20
+> > > > The binding only supports s32{g,r} devices, why is the existing min=
+imum
+> > > > retained? What devices are going to not have all 11 interrupts
+> > > > connected?
+> > > >=20
+> > >=20
+> > > The original idea was to support backward compatibility, as older DTs
+> > > didn't contain queue-based interrupt lines described.
+> > >=20
+> > > But now, when you asked, I started to think it is not needed,
+> > > the requirement for backward compatibility is managed inside the driv=
+er
+> > > and yaml shall describe the hardware not used configuration.
+> >=20
+> > Just to be clear, cos the last portion of that "yaml shall..." isn't to
+> > me, you mean that the driver will support 1 or 11 interrupts but you
+> > will make the binding only allow 11? That would be fine.
+> > Just note in the commit message that all of these devices have the 11
+> > interrupts.
+> >=20
+>=20
+> Well, all those supported devices have 11 interrupts connected (1x MAC),
+> then 5x RX (queue0..queue4) and  5x TX (queue0..queue4).
+>=20
+> Until now, the driver was using on MAC IRQ, so the only one shared line.
+> Now, we are enabling support for per-queue interrupts, what means for
+> supported SoCs up to 11 IRQs as the DWMAC IP on S32G/R has 5 queues.
+>=20
+> The driver can still opearate on this one shared IRQ mode, but
+> if the DT node configuration describes all IRQs, then the driver switch
+> to multi-IRQ mode. What allows better distribution of processor core
+> load.
 
-Shouldn't this have a Fixes tag?
+> So the 11 IRQs are the maximum value, in the case when all queues are
+> used. But I can imagine some other use-cases, when not all queues
+> are enabled, ie. only queue0 and quque1. In that case, the driver will
+
+Since all of the devices have 11 interrupts, this would be software
+configuration and the devicetree should contain all 11 even if shared
+mode is desired, to reflect how the hardware is configured. I think
+minItems should be changed to 11, unless another device gets added later
+that does not have all 11 connected.
+
+> use some subset of all IRQs.
+> That means that DT can contain only lesser interrupt list then maximum.
+>=20
+> I feel like having "minItems: 1" shall cover such use-case.
+
+
+--WkvxyB8JqVtHXRO6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaXkS3QAKCRB4tDGHoIJi
+0jI2AP0WP0sgcNZESXVAvwbBqgu4z6UoHTvYjGRucW4qVxBD2AD+LhuETgd5tQxm
+i4Feuiwe6K3mZ5APrN+lkwC0B8lkkg4=
+=nLqP
+-----END PGP SIGNATURE-----
+
+--WkvxyB8JqVtHXRO6--
