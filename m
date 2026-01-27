@@ -1,119 +1,114 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D320B29E0E7
-	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 07:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B3323B61E
+	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 07:23:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769498422; cv=pass; b=ilpRAEmhDWKzTTwXFiQa4DI24rLfxf8jZWqbZFUoZD0OtRqq/3L8y9kCU6gKEE1fA9ljaaA1UwN60Yet+75n2iEDbfy6d6ZpFgdinLI8v+ncZCuNvDh/zgIZ4d2OTp16wC69SqRuHMMu3SUEHUlbpGTvpSkVzCA2ixepasotzCY=
+	t=1769498582; cv=pass; b=QbrMdREzw2k7V6iu9RHIQrnT2ZK6joXGc3BgwSZm+JXwNUYe37GVNvsHJuXwvkV5eVl9fnFrVkeNCSlT8NdInuJTaZpxFKMQnZk38Q/2bERsGWZCZ97zcSquJI5lhZ/Dbf+bnpDwOa+fexIS7VtI9iIRKoMMN5nTq8Eov30Qe4w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769498422; c=relaxed/simple;
-	bh=YMG4tPCm2wVq+It4Oh6OZkpOwTIQOkPleIu2cazCjO0=;
+	s=arc-20240116; t=1769498582; c=relaxed/simple;
+	bh=8nZkdslqCA+f/H665Ckh/urjA7uqIfjns3j5MmGELb4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b17a6Msja+bYOwNYTlOtpzKHD9gpo6FOkgqFCVhoWHq6enGU14232M7sgTNnRywD+JlSZTfJclPxawaIysd0GXzsDTLA/k1wqUvOqMKK+c7YR7Rz6VfHXvGCpa44OHWqyi4Up2vTOStFA7qvhTfyxSEP/bkOY2mY+Q/NkUCTdYw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fwK/x8Bm; arc=pass smtp.client-ip=74.125.82.41
+	 To:Cc:Content-Type; b=hjqYTSkkhvE/Oio2lX/XOtcOP9WruNce+qPyqLuR3Lm0pnNWWUiYa92ULV3p2IvpQMPhbNrpvdPLwwwPiEe7YzkV8ZQIzPTMoSVuRIPD08hB7dqMpn+Mw07VIYWby3AiRdey3sXhgFy4FuJo/tA80A5DLbiIhaxLbzh5dQ2aOcY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UarORzIp; arc=pass smtp.client-ip=74.125.82.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fwK/x8Bm"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-1249b9f5703so1422085c88.0
-        for <imx@lists.linux.dev>; Mon, 26 Jan 2026 23:20:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769498420; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UarORzIp"
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-1233c155a42so7516308c88.1
+        for <imx@lists.linux.dev>; Mon, 26 Jan 2026 23:23:01 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769498581; cv=none;
         d=google.com; s=arc-20240605;
-        b=bJeaqiXcGMPqerlriX3nWr4NTYsdNwp57TzBjGR+Ac+bFqahBL9ehqdC7YxXJ+INXc
-         dGa/cYVh2d1RDHxRRULmclh0EnqgopyNVRRTh1I14w0A9Lsiyo5reFQPn5Q21HVC9Kec
-         V11IPPhu6Tl86iFFZKoWUeZRlyrPTOwCk/7ff3+g1onGg79N2rgSi9esFqIG4u6c9/fc
-         L90NtgeK3pZSUvykckFuG1Ks8a1CR10BStXk4Hp+O04FPgLEE/ce9wm3kXs2pMNOfjy5
-         SZLKgHlnwHI0IWaBnYR8HcWcxgDYAzGlqG/QROv32PYjmskeB1iFCMCj+ioe5aVYAy3u
-         aYMg==
+        b=CK29WHaQe7qjVLyhq7P0NVhZ6m86+t1Wlf7VVaPBI0aAa4CzEKnZmCaHda6gfUwMjG
+         oSv0TVFjOLTpzLgKTXny3dSwSgt4cfr4lNtPZJK6SBF+WK0YQQBPjPpmu7mz6jtHJKHE
+         BwEmZiOJJcuuSteLdE55G4CGvILXhbfdCTwET8gtMP/xQshsD5aHjnlnj8Wh9yTpTz3N
+         LBD0XBsV+ppUXqPOyPz9YQ994576GUrlcC3i5JxlfkQnR3o2gU3AqrlGQNviBg2KzlqN
+         1RlXd/5GmV7nC7sbUeobyQ9vVp+ME1p55TBnI0iHJSTJ+WXsRCJ+z9Crem+DX1bkNwP0
+         nyhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=UP+mUbp/HODYFS6sc6VTtIV7GbMmQ0JMHLMxJM8aRDw=;
-        fh=4jiXJBw8G0Mov/D/cUBl3/l0pDwO2Zb+GJwvodFvMxU=;
-        b=hUiFhDb7nFZTbpQ5op5L87+oqeJOr5qSS8NWiuU5mHoiNa/WeU1CCJUQIc+F0hHGnL
-         Uu3fPRqKZWf1Ki0ZV1OaHveRvZ2sxICzwhrlQNQCmdvaDqXhXa0U1PoL26eTBu9zd6ct
-         OQRru8wchyQ6kWMBzZVfJUhidP7E2Pn0XkJeYgSi2psN2174Y/bBlISLmnGzKirzvAnZ
-         GGvrQ9RSsk1Kt3n+KAANR71NNPKFk7qz+PPrld87oqtdZoh90WadVZd5ob76C2vdBOmF
-         4wAnxF6tU3khGKu037AJNdgbD0m4JarfxHDNui047Aqd0iphFXoEKmnZlAPNhN/anI9w
-         isWw==;
+        bh=8nZkdslqCA+f/H665Ckh/urjA7uqIfjns3j5MmGELb4=;
+        fh=49PNptSzojwHycyq6YVO4jfChJZO4WJ8ucMzHbahH3o=;
+        b=bVU4CoI7vFd3wGlWmWEixHgRcgV23+ChfhF4I24XPZ+hm9LszXXKd/pfeAptk787vu
+         JsFVrg9UHFbQEd8EHjVGlJ/QesJ1kkOgDoNtPA7Wf7+kTCgBvm6hcdDBB2Y+TrmpuMo2
+         dahzfSiJ0al9Zywox14K9lGEjYV5Hc7byCTgdqxvXvouxvAhcO1U1QvgbqugW7ZGKqH7
+         9cQOqEPnu0Bijk6lMMtAFsJUKmvdFD7vyJOJ2TFSkhJg3uLPVHFHjVA13wtyeIm9GQIl
+         4/kK1c+99TK6OPNfCQPHh3nGsFN3FIb+yTq+qq42OCOKFPMmyIXXX9BwmRrel/+y+cZi
+         jxdQ==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769498420; x=1770103220; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1769498581; x=1770103381; darn=lists.linux.dev;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UP+mUbp/HODYFS6sc6VTtIV7GbMmQ0JMHLMxJM8aRDw=;
-        b=fwK/x8Bmv2Ip25kN2q1rfkcQe56tJ+iZn6f2w9gTWNkjvDpf1lSEyAbiA0S4/sF9BX
-         pnmiQr9CqjhvWD96EjYWAPbREn772IV+eBTQ5OFupAq0/ZNHAWlocpO0zvcq9+E6VI4d
-         eh6FYzOxmH6lnrex/B/3uVA6ZUhBPXgLY+2MGhhRT3d7MRu3/BKtuMPHiCASOdHHpx48
-         tUdMlo+60I+7Qyaln3oVA+5Fzn/kHasZlYHSGMX8xe3udK9j1Z2sX0XfbeRU7r6ZRzkD
-         xLCbB1R1bZfzaqaM3hSDnnrs12U4FBgSK9mn1xDW1m/h2uD/ziYYEAHbF0aAhcPHUqWe
-         7jDg==
+        bh=8nZkdslqCA+f/H665Ckh/urjA7uqIfjns3j5MmGELb4=;
+        b=UarORzIpwuZEJpdS1jBzh1K8h72W0kBLPJGzf4+FdYKpychXjDkxBGGXcu+ot4MNiy
+         /lNxNLtBYeibbIYVTKr5gEkGjREkvPMeCCp6nrjVKVBbNR7Ps9qYVXkwC7u0CtWI0r86
+         7Zv5m10ECEMNbjtdCWaSbE+8TqVJs0uNao/YSYqI0Pxoe/IuGDv2k6kK7Lhe4krhXUrT
+         5i/Lp/nxfeh6zqCO34AhKu3GAnO3wVwAMuhimgA3cPoELfK23pEhF3oPbIu9y74NUUiP
+         UgbZxvY3mIgYB6yXxz4Oaq7keoHX3hkj/gGxs30Xx9MY5vE9Sfudbwr2a6itg1kGeJTP
+         B0Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769498420; x=1770103220;
+        d=1e100.net; s=20230601; t=1769498581; x=1770103381;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=UP+mUbp/HODYFS6sc6VTtIV7GbMmQ0JMHLMxJM8aRDw=;
-        b=GvKpAV1moJRz0waxS7TTJlR+Hvwll6X4Z/azrur3fPvMvXXmAhEubSzAfi4I2548JS
-         xtNvH3x0gk7yIsB/ShOqAe6QUFERQruVB0VEYPfhqJvg6nfShrzvVx0YP/y2is+gZZyY
-         FqvuBCcq/III6IOJGGvICfvCT7+H02UTR+0uMXH5mxmwqZkEdb7sf7py2nfYrWwqGe/v
-         HmAc/1oRLpukXlfNipYvNZcjtVxWMHcNNErVEq+x1FAWwSrGMqrbkoCfq6P/f9MkaUkt
-         dh+J5nDhLQyGzIOm/9ggKJ6dGiB4yTJuIXBNkgw0IO6k4l9ez89VI7cVC3yaYOIrKhie
-         TC8g==
-X-Forwarded-Encrypted: i=1; AJvYcCXTmjY14WsiQh0ldoMpId6Kpua0z48Hs9bnryCnCAlAtAkMRoZ44VEp45WK2LQXY4kl6Kc=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz7xr72RxCiPXlHozorvsjLorIMJwkf8SFgyHGw+RTRCJEJlWiB
-	Gzldom894+VzOrGrsqDmx1wkGKxajXJ58ejElTNF5CWbmeKlji/JnisK+cHxkoeyMMAmA1UY5Yw
-	XxlU3x9S9G1pKORU21+bbk1EW5c/iD+Q=
-X-Gm-Gg: AZuq6aLBd6pAOnmU/GZgA8QDcxlUb4B48A242aP0AqXnmgBLGAhdZwIF5oTpWRfDGEp
-	GClrdnKu761fGptJcAzHhooib9NzaG1D+JL8bzsdopk/bod79sJ6rOYtIXEMgeiDKcuzPWcwaFS
-	PmeOmUFTSUNcUWuUQKNMi+MvE5T2KFFtWMsMTM9iM2SkfzuYPhb53UqWudRq5WGWRjDOOANIkrD
-	IBW0Kpld37zUahk54rvmsEbH0Fr8gGnbe1zC6DD6CR9MN7S7a928qQYKAXyzTsZ3aL4ZvWBJhwk
-	Kuf2S8bWdJD9kSz3B7ocpHsfvHvIroGin2y2N+qx8KMSB9WZpUy8IM9annhi5YOXO0Pi4rDk1+K
-	R5f3V1qTJcudZaA==
-X-Received: by 2002:a05:7022:608e:b0:11b:9386:8265 with SMTP id
- a92af1059eb24-124a00e4ef2mr592857c88.42.1769498419874; Mon, 26 Jan 2026
- 23:20:19 -0800 (PST)
+        bh=8nZkdslqCA+f/H665Ckh/urjA7uqIfjns3j5MmGELb4=;
+        b=sHWdhtzBdjZbPc9C1/XTWaH07mLuN6Y2pIhP1RsHnlKBro1mihjvaiYyEBBxlNp6oc
+         gU0lupRUrjjkso1Qb7Lg+AoLWIMDynRl87jd7YlF/a2Bjoqp1vOOkzSSSuFf+u6TFkOa
+         gWymwiTyehoLZHQ+9mFX8ufyNOOEqYwEHtAdAracUJY2pxGEoffj2OkG2otqGLVKdUZy
+         yebbP81vRea4/BsLOO0zuGkgZ76yAyqC4lEtiEqXjRh0Xoj6cdZ7W+iAZ14qeixe4ugL
+         FPWcHTz3yC7K1AgB3QvpyjtWwAD69SN1ONQOvJnP8UkhR25xEIj4YJQywh95ph+va6wB
+         S35w==
+X-Forwarded-Encrypted: i=1; AJvYcCUdK2OROQZ2eIfcv3E7or9yMziRuuk7janMWKrIkyeZEVZATUJQgVGs1ALDXNGDcCjSKtE=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx34iZSzE5eAxqSp3b4KocnjvX4lPbN1eIiwHOupOwAzZtFyGl7
+	ucUQollMXUgIGkmRcFk7ts1JRPIOzcSJ3/rrV9jRtzD8K5YTKn9jgeRkup+Ok+0TUv/dxIDsmHi
+	G7Bjs2ndiLNDNj6whRpr3xDKmlGDT+vM=
+X-Gm-Gg: AZuq6aL/iwfOnPEHkYzXk0Zi9zYI2nlpp2Xt/cH95mt3nsTFL/PgOuoAUYw0ym0tbPL
+	Dsu4JQAjmnBXHFMal5f7oBV6dx1tGbvS67nza1S7yx1x3SCU8ZtYA1l9OTOL7BndLWnPHNLcc7T
+	52mBt9GvJan87XO3OOuj4evWInD7X9urWdnWdvNyoIgj4VSZqj8rygpDmnycc+++6TK95qQoNhP
+	umqiEgRH7cqG4xhBQKKBAWP3CaJqFJVfvJH2BdRxQSnRTuCmKwf48v4jGIBJhfZYhymFhosDzVy
+	V9z7GEtakUFrhRIv6OevHTm+ko0JdPJpwmZYMlYGyzaYooiu/71tMyD5K5MYUC1SiDQX5mdoVoW
+	qKSBi2rJatdwa+Q==
+X-Received: by 2002:a05:7022:321:b0:119:fb9c:4ebb with SMTP id
+ a92af1059eb24-124a00b1ba6mr483038c88.30.1769498580625; Mon, 26 Jan 2026
+ 23:23:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260127025740.2601841-1-onlywig@gmail.com>
-In-Reply-To: <20260127025740.2601841-1-onlywig@gmail.com>
+References: <20260126162203.708-1-laurentiumihalcea111@gmail.com> <20260126162203.708-3-laurentiumihalcea111@gmail.com>
+In-Reply-To: <20260126162203.708-3-laurentiumihalcea111@gmail.com>
 From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 27 Jan 2026 09:23:03 +0200
-X-Gm-Features: AZwV_QjajkSN5Eu31Sb_5L2tR2fgv-siHFOW2oZdIrE_vROYKnR4g6BIl7DjWw4
-Message-ID: <CAEnQRZBmexggNdR78p8yTnpReLKxuDC_LKZqpHvXLzSzkDbfqw@mail.gmail.com>
-Subject: Re: [PATCH] arm64: dts: freescale: add pixpaper display overlay for
- i.MX93 FRDM
-To: Wig Cheng <onlywig@gmail.com>
-Cc: Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	zaq14760@gmail.com, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 27 Jan 2026 09:25:44 +0200
+X-Gm-Features: AZwV_QiWy4qbwZhsK09ISU2gBuNHOmG0-KHSaZiM6EoVfrKve54Js6OaQrgeXNQ
+Message-ID: <CAEnQRZAWxxYJF-Bn0=Hnn1uPys0xgbcG6JDPFFo39Y+szEv1eQ@mail.gmail.com>
+Subject: Re: [PATCH v7 2/4] reset: imx8mp-audiomix: Switch to using regmap API
+To: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Fabio Estevam <festevam@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>, Frank Li <Frank.Li@nxp.com>, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 27, 2026 at 5:02=E2=80=AFAM Wig Cheng <onlywig@gmail.com> wrote=
-:
+On Mon, Jan 26, 2026 at 6:23=E2=80=AFPM Laurentiu Mihalcea
+<laurentiumihalcea111@gmail.com> wrote:
 >
-> Add device tree overlay to support the MayQueen PixPaper e-paper display
-> on the NXP i.MX93 FRDM board. The display is connected via LPSPI3
-> interface and uses GPIO pins for reset, busy and DC control.
+> From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 >
-> The overlay configures:
->     - LPSPI3 pinmux for SPI communication (MOSI, MISO, CLK, CE0)
->     - PixPaper display device with proper GPIO assignments
->     - SPI frequency set to 5MHz for stable operation
+> Switch to using the regmap API to allow performing register operations
+> under the same lock. This is needed for cases such as i.MX8ULP's SIM LPAV
+> where clock gating, reset control and MUX-ing is performed via the same
+> register (i.e. SYSCTRL0) and different subsystem APIs.
 >
-> This enables support for the Open-EP Community pixpaper-213-c module on
-> the NXP i.MX93 platform.
->
-> Signed-off-by: Wig Cheng <onlywig@gmail.com>
+> Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
 Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
