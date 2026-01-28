@@ -1,73 +1,125 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235E8228CA9;
-	Wed, 28 Jan 2026 22:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D87326927
+	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 22:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769637660; cv=none; b=jl7ozk2MU+ixZdsmtP7xzVXqh5F51jOhBi7nmS1ZblLG2IsvthnQNXZK4Ui3CFthE/uOl7IQJRIAke+Fvff6y9a/5gs8DsH41cnSCJkzlYyhieyLCwU2DKeu4JsoQLvj9TachHoXejMHXX/5mSZS55eYNW9VwFQqCoTEBYGyyJk=
+	t=1769638412; cv=none; b=AfBG35PE2sgSXwT99vdiZACesU04ZVcqHK/U9Y7tJGVPtK9Ousx4XDMONh7tEhq2altlxKSO7X/ZQ4XHYcm/P3lunvAdwX57SKk0WvpvnXMTLHVu/g8aQ1Cvo2AR5HMDKfou6HsAkc8yd69MIkCMmmQ2LosBPw3iM3N1RD4K7VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769637660; c=relaxed/simple;
-	bh=Pr9W0TJTxQfkteJORcfkfTT3Vc43LHiOIR8QlDKL4hk=;
+	s=arc-20240116; t=1769638412; c=relaxed/simple;
+	bh=AQitCxQ8sjP4vMXUli2vM6/WRsuXjEFDD2ZDl63WmQ8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VRpitrqZpfl/HwnsQI5dxOGiKcjovk2+TUAbUFzqB4O/OjAbx2N+2Wjo7+pThZqeaNL9WK/LHRF3Ypl3QoS4clrBXKwg1id058kZdCCe6rS+VCO0Pa05SGRj/2o0cNx1fiaKG7TcUz4FqZDYgend3oPuahK7VWl2NS8/RXSa+fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QkKP87rQ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=IN+YumSc/NbnsYHLVMwG0qRIH00j6RnW6w/PXAChueFJ63hFJmx+Ddp2MOFGcd/ydK8WFkriSnX+ejPltQtuiG9GC53rl52JWDr4kWVjI0b1vukqKM8gS3gfLj8I/Q6qUAg9W0HnJHniKWWcAeA19ZUTe0SLzLl7057BUgXBmSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=VybPBeDr; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QkKP87rQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=kL5xR/IwwRggd+tjtkDqeU/lLMEuwjvUemYV4fI7oXs=; b=Qk
-	KP87rQ5pEIGipEENjVa7jpd7nimjSv10d81KWctU1peddGibgGy0hDFtj+JQ96J1yhjQdkuXHBfc8
-	+ktcvBVsd/jddvpo23l8DZXZ1ju7ECMdsxbUVmtkhvAkqQnX9hnYvR9bY/HPuSiGXvOgl/3G6dj65
-	wJAGA0NlL/N8/J4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vlDal-005HgV-JZ; Wed, 28 Jan 2026 23:00:51 +0100
-Date: Wed, 28 Jan 2026 23:00:51 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: =?utf-8?Q?=C5=81ukasz?= Majewski <lukasz.majewski@mailbox.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, festevam@gmail.com,
-	linux-arm-kernel@lists.infradead.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, horms@kernel.org, shawnguo@kernel.org,
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org,
-	conor+dt@kernel.org, devicetree@vger.kernel.org, wahrenst@gmx.net,
-	pabeni@redhat.com, davem@davemloft.net, netdev@vger.kernel.org,
-	richardcochran@gmail.com, edumazet@google.com,
-	andrew+netdev@lunn.ch, robh@kernel.org, krzk+dt@kernel.org
-Subject: Re: [net-next,v20,2/7] net: mtip: The L2 switch driver for imx287
-Message-ID: <ed0e1af1-0210-4461-8939-3e4e35d74dae@lunn.ch>
-References: <20260126103400.1683125-3-lukasz.majewski@mailbox.org>
- <20260128022549.4151341-1-kuba@kernel.org>
- <20260128224125.246bcf41@wsk>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="VybPBeDr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=XqWRoXqt04FoYQB/iClN0Gc0AhfEb0XiuNwfYuRpNQg=; b=VybPBeDr1/2JBC0C5asMKrcF1X
+	nxtyPYwFjpawgOTfb8HNAWAu9bDOk+t/WaOTRIakYIRB6SotdOSLacDanVb0/PVgMUNFIcpCmiNNa
+	Lvjk8BzBH6lf4j9XznluxWkbQORG0ypepWUaQOk+l7pWLFTUhokiLfSKJAGEkYdsDBBYdVTXq8/XH
+	P9BeOEe7KVFVl4d0phS0y/2wrC4PYhVLfhebFpEJluPWvU+xaSmvre2//iydA4YqQVeCzDZTAoJsy
+	k8xg6tD5+1lsOPgGu4xOYUNrGnu4fZAlELlfjNLwe1cdO+5ZTy1vvffEVQSV7EMsNYy/BdcdiHihf
+	iynywZBA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:59576)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vlDmr-000000007wt-0TTc;
+	Wed, 28 Jan 2026 22:13:21 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vlDmo-000000007LX-05sM;
+	Wed, 28 Jan 2026 22:13:18 +0000
+Date: Wed, 28 Jan 2026 22:13:17 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>,
+	Andrew Lunn <andrew@lunn.ch>, Wei Fang <wei.fang@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"open list:FREESCALE IMX / MXC FEC DRIVER" <imx@lists.linux.dev>,
+	"open list:FREESCALE IMX / MXC FEC DRIVER" <netdev@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH] net: phy: integrate reset-after-clock quirk into
+ phy_init_hw
+Message-ID: <aXqJ_TtdBnkvEZ_i@shell.armlinux.org.uk>
+References: <20260128094644.302313-1-michael@amarulasolutions.com>
+ <13d1018c-d9aa-4838-8bb3-35c509cd3e35@lunn.ch>
+ <CAOf5uwm30=AVhqm67yz8Y5TkX9FWdxizTevCGSeaQuJS0KqtNA@mail.gmail.com>
+ <aXoV-U-yqcDJj2vk@shell.armlinux.org.uk>
+ <20260128202634.gqevi76o6wnf5xno@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260128224125.246bcf41@wsk>
+In-Reply-To: <20260128202634.gqevi76o6wnf5xno@pengutronix.de>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Wed, Jan 28, 2026 at 10:41:25PM +0100, Łukasz Majewski wrote:
-> Hi Jakub,
+On Wed, Jan 28, 2026 at 09:26:34PM +0100, Marco Felsch wrote:
+> |   Some PHYs need the refclk to be a continuous clock. Therefore they don't
+> |   allow turning it off and on again during operation. Nonetheless such a
+> |   clock switching is performed by some ETH drivers (namely FEC [1]) for
+> |   power saving reasons. An example for an affected PHY is the
+> |   SMSC/Microchip LAN8720 in "REF_CLK In Mode".
 > 
-> > This is an AI-generated review
-> 
-> AI is going to take the "Maintainer's" job :D
+> This can be achieved with commit
+> bedd8d78aba300860cec3f85d6ff549b3b7f2679 if specified accordingly.
 
-We had a bit of a discussion about this.
+I don't think this is unusual. I've just checked the 88E151x
+documentation, and that also requires: 10ms after power and 10 clock
+cycles on XTAL_IN before deasserting reset. The timing diagram indicates
+that subsequent hardware resets must be 10ms in duration, and show the
+XTAL_IN clock running during the reset.
 
-Our observations so far is that AI finds different sorts of issues,
-which human reviewer often don't spot. It also does get things wrong,
-so we spend some time sanity checking its reports. So overall, it
-might actually increase the workload, but also increase the quality of
-the code which gets committed.
+Looking at AR8035, it is similar - the clock must be running before
+releasing reset and while reset is asserted.
 
-	Andrew
+So, to say that LAN8710 is somehow special seems wrong to me - it isn't
+just these PHYs that have the requirement to be clocked before reset is
+released nor while reset is asserted.
+
+I'm guessing the problem here is that, most cases the clock is provided
+by a crystal, in these cases it's being sourced from the SoC, and that
+puts the responsibility on the SoC parts to guarantee the reset timing
+required for the PHY in some way.
+
+In other words, by sourcing it from the SoC, it's not phylib nor the
+PHY driver's problem (the PHY driver comes along way too late) but the
+responsibility for the boot firmware / DT description / network driver
+to detect this situation and give the PHY what it requires to reset
+properly before registering the MDIO bus.
+
+The boot firmware route is how this is handled with SolidRun i.MX6
+based boards - the PHY reset is a GPIO, but that GPIO is *not* told to
+the kernel except as a hog. u-boot takes care of setting up the 25MHz
+clock for the PHY and releasing its reset - it actually does two
+resets due to running off the ANATOP provided clock. This is an AR8035
+PHY, which as I've mentioned above, requires the clock running before
+releasing reset, just like the LAN8710-like PHY that you're discussing
+here.
+
+Given all the complexity we've had with systems with two FECs, where
+the PHY for one is connected via the MDIO bus on the other FEC, it
+seems to me that pushing the clocking and reset handling into the
+kernel is just asking for lots of pain.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
