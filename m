@@ -1,108 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA74E222565;
-	Wed, 28 Jan 2026 09:58:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401632C21FE
+	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 10:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769594324; cv=none; b=CS6CUSD7FpcRdJPD8hJ/7O9rZlD1aZc2zmdno8J5XJYbV8qwJYvQfdlhY2H8pPwHCEOYWNvIXruFeVNdBCmYGC71TUvZxE/Mo1szZz3QW6hNyPp2B54rRcZlIggI3mgeh8kMmpiseB6DgnCMw19dosvw6PnVamfqSM0lhkziw1M=
+	t=1769594546; cv=none; b=HNm1bqm58jOCQs0WxWlWtA4TklULAYIJ+IaqLjMV7gxCiPuUmDm4pVq0Q/L7AFifCq8HBKsjN5GMe3LCIRSk5vwIe1NwloaIYkb7TdCYh2afkST2cnQB7QNtIbrlVY2C7pYFZA07tiNOjkbIvGWYBeZ0UNrFnmVnAIyBYAfgmuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769594324; c=relaxed/simple;
-	bh=S+kzbsUAv+9ZIJ9gROnXWuYdug3mDJrjsfqbJmx1oyo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BBUfdnHurUXmZJLbSICbPLHMHqWpJR1w7p3TEMg6ao5bsa40ZYTL3twsLZd10dQbnX9nmDXxY1pqsaCSLxFi3OQ2A3txVzCFw4JZc4GibOENIKoHW6T2eK0JTB4uc6oIecNt/DdwaqTljBWhd0aeFqTFkNyn8Jlp5OoEjnTEoeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZgjrPHI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769594546; c=relaxed/simple;
+	bh=F72nBXVKIDY5tpWLPUxBk5sHSnJn/wGfp9bj9IxOdwQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K9zpwOJkuGLJsdX93Hbx1yDNFHdLDzopGm9lRl4uG2YPliA/iol6qdie4L6n6DYR51Hakf99jn3SQrbAb5fphYE3IEbUe7kK9D3X1rizx9bdrR4Yndl2z9h6PGphomcg9ht0G4gLbFaatzPcKZMy7Kv4Rnha/ALPw0h5tjf9p6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=sjd96eby; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZgjrPHI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA03C4CEF1;
-	Wed, 28 Jan 2026 09:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769594324;
-	bh=S+kzbsUAv+9ZIJ9gROnXWuYdug3mDJrjsfqbJmx1oyo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EZgjrPHIvRauCS4zCGzFR/1kiUJjREfmbeFXQIh8TesIeDPKJayOjWs5vEge8LVF+
-	 AZ7vfN10DR3Loc0192AuZzHRoBJiOnyU7LW+isLs+n81+AOjS2cM3+t4npaX3c46RE
-	 7muag92gaobKB7dJQrwUEIG59sgcX4czzchjkHXURZaH/d92/oYCnWivqjm7+NisEA
-	 Q4umbhq3/ujNgDHoUrCccTc15QfZVI5MvSYHGCVBWuXw/REnZAduQP7Lu/HS/3B0yX
-	 f0f1O3hwrF4bNEyTwlTGsVwG3ArXaOQOFEEqpsUTZaouOIRVdCZdHnJlxmIxOKKl6i
-	 0OX+DlyrGosmQ==
-Date: Wed, 28 Jan 2026 10:58:41 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org, 
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2] drm/imx/tve: fix probe device leak
-Message-ID: <20260128-inchworm-of-fascinating-enthusiasm-de5ab2@houat>
-References: <20251030163456.15807-1-johan@kernel.org>
- <aR8TWJurF1a0LLGJ@hovoldconsulting.com>
- <aWd2xizOQAnVRaSs@hovoldconsulting.com>
- <aXjg2C0XeVGEtdDy@hovoldconsulting.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="sjd96eby"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 7A5CC4E422F0;
+	Wed, 28 Jan 2026 10:02:21 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 49F6E6071A;
+	Wed, 28 Jan 2026 10:02:21 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 17E2C119A8805;
+	Wed, 28 Jan 2026 11:02:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769594538; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=jl/qUj03yO9xDW1xqUwBwXsZCnYBNJNRMPOW11zOe6Y=;
+	b=sjd96ebyrvCGdPERJq6YfDm4tCFtKy+a7g8m54wbglfV7iboWOEwY5SJmSfnInyV4QPBlY
+	LzDO5YFZ1j+mGCmYTk8GCQjQy9wpAUCtaXmm2EfayCmHll9JgibdqvDTgkHpGSQQrFLAEO
+	CdvX1tkRhD9D9Zhg56BJ+XIv+QG0dBdqwlApnNO4alZVBO14eCXTwOiZ9FI37MWwCfDwBc
+	hU1eeKF1lmnHZw4ow541st0frBdOYlTx4xsD1wZe2NjwlKoRSebHvWKqYoGARtcvb2PH77
+	wupAyD/u1Edg7tK/FRyQjMJiFOJ/RriyV7US/aExvrfKYduY1o7agjt9LkGX7A==
+Message-ID: <fd4bb158-5138-4fc9-ad1f-d0002ec0fee4@bootlin.com>
+Date: Wed, 28 Jan 2026 11:02:13 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="lpelexmbpijxrpns"
-Content-Disposition: inline
-In-Reply-To: <aXjg2C0XeVGEtdDy@hovoldconsulting.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: phy: micrel: fix clk warning when removing the
+ driver
+To: Wei Fang <wei.fang@nxp.com>, "andrew@lunn.ch" <andrew@lunn.ch>,
+ "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
+ <pabeni@redhat.com>,
+ "florian.fainelli@broadcom.com" <florian.fainelli@broadcom.com>
+Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260126081544.983517-1-wei.fang@nxp.com>
+ <13f1599a-afd7-4350-a395-83c57ab91f18@bootlin.com>
+ <AM9PR04MB8505744A93921B488AD9505C8891A@AM9PR04MB8505.eurprd04.prod.outlook.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <AM9PR04MB8505744A93921B488AD9505C8891A@AM9PR04MB8505.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
 
---lpelexmbpijxrpns
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2] drm/imx/tve: fix probe device leak
-MIME-Version: 1.0
 
-Hi,
+On 28/01/2026 10:36, Wei Fang wrote:
+>> On 26/01/2026 09:15, Wei Fang wrote:
+>>> Since the commit 25c6a5ab151f ("net: phy: micrel: Dynamically control
+>>> external clock of KSZ PHY"), the clock of Micrel PHY has been enabled
+>>> by phy_driver::resume() and disabled by phy_driver::suspend(). However,
+>>> devm_clk_get_optional_enabled() is used in kszphy_probe(), so the clock
+>>> will automatically be disabled when the device is unbound from the bus.
+>>> Therefore, this could cause the clock to be disabled twice, resulting
+>>> in clk driver warnings.
+>>>
+>>> For example, this issue can be reproduced on i.MX6ULL platform, and we
+>>> can see the following logs when removing the FEC MAC drivers.
+>>>
+>>> $ echo 2188000.ethernet > /sys/bus/platform/drivers/fec/unbind
+>>> $ echo 20b4000.ethernet > /sys/bus/platform/drivers/fec/unbind
+>>> [  109.758207] ------------[ cut here ]------------
+>>> [  109.758240] WARNING: drivers/clk/clk.c:1188 at
+>> clk_core_disable+0xb4/0xd0, CPU#0: sh/639
+>>> [  109.771011] enet2_ref already disabled
+>>> [  109.793359] Call trace:
+>>> [  109.822006]  clk_core_disable from clk_disable+0x28/0x34
+>>> [  109.827340]  clk_disable from clk_disable_unprepare+0xc/0x18
+>>> [  109.833029]  clk_disable_unprepare from devm_clk_release+0x1c/0x28
+>>> [  109.839241]  devm_clk_release from devres_release_all+0x98/0x100
+>>> [  109.845278]  devres_release_all from device_unbind_cleanup+0xc/0x70
+>>> [  109.851571]  device_unbind_cleanup from
+>> device_release_driver_internal+0x1a4/0x1f4
+>>> [  109.859170]  device_release_driver_internal from
+>> bus_remove_device+0xbc/0xe4
+>>> [  109.866243]  bus_remove_device from device_del+0x140/0x458
+>>> [  109.871757]  device_del from phy_mdio_device_remove+0xc/0x24
+>>> [  109.877452]  phy_mdio_device_remove from
+>> mdiobus_unregister+0x40/0xac
+>>> [  109.883918]  mdiobus_unregister from
+>> fec_enet_mii_remove+0x40/0x78
+>>> [  109.890125]  fec_enet_mii_remove from fec_drv_remove+0x4c/0x158
+>>> [  109.896076]  fec_drv_remove from
+>> device_release_driver_internal+0x17c/0x1f4
+>>> [  109.962748] WARNING: drivers/clk/clk.c:1047 at
+>> clk_core_unprepare+0xfc/0x13c, CPU#0: sh/639
+>>> [  109.975805] enet2_ref already unprepared
+>>> [  110.002866] Call trace:
+>>> [  110.031758]  clk_core_unprepare from clk_unprepare+0x24/0x2c
+>>> [  110.037440]  clk_unprepare from devm_clk_release+0x1c/0x28
+>>> [  110.042957]  devm_clk_release from devres_release_all+0x98/0x100
+>>> [  110.048989]  devres_release_all from device_unbind_cleanup+0xc/0x70
+>>> [  110.055280]  device_unbind_cleanup from
+>> device_release_driver_internal+0x1a4/0x1f4
+>>> [  110.062877]  device_release_driver_internal from
+>> bus_remove_device+0xbc/0xe4
+>>> [  110.069950]  bus_remove_device from device_del+0x140/0x458
+>>> [  110.075469]  device_del from phy_mdio_device_remove+0xc/0x24
+>>> [  110.081165]  phy_mdio_device_remove from
+>> mdiobus_unregister+0x40/0xac
+>>> [  110.087632]  mdiobus_unregister from
+>> fec_enet_mii_remove+0x40/0x78
+>>> [  110.093836]  fec_enet_mii_remove from fec_drv_remove+0x4c/0x158
+>>> [  110.099782]  fec_drv_remove from
+>> device_release_driver_internal+0x17c/0x1f4
+>>>
+>>> After analyzing the process of removing the FEC driver, as shown below,
+>>> it can be seen that the clock was disabled twice by the PHY driver.
+>>>
+>>> fec_drv_remove()
+>>>   --> fec_enet_close()
+>>>     --> phy_stop()
+>>>       --> phy_suspend()
+>>>         --> kszphy_suspend() #1 The clock is disabled
+>>>   --> fec_enet_mii_remove()
+>>>     --> mdiobus_unregister()
+>>>       --> phy_mdio_device_remove()
+>>>         --> device_del()
+>>>           --> devm_clk_release() #2 The clock is disabled again
+>>>
+>>> Therefore, devm_clk_get_optional() is used to fix the above issue. And
+>>> to avoid the issue mentioned by the commit 985329462723 ("net: phy:
+>>> micrel: use devm_clk_get_optional_enabled for the rmii-ref clock"), the
+>>> clock is enabled by clk_prepare_enable() to get the correct clock rate.
+>>>
+>>> Fixes: 25c6a5ab151f ("net: phy: micrel: Dynamically control external clock of
+>> KSZ PHY")
+>>> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+>>
+>> This should fix the issue indeed. The dance of enabling/disabling then
+>> re-enabling at resume() again feels odd, but at least it's balanced.
+>>
+>> We may be able to avoid that entirely by dealing with the ref_mii_clk
+>> selection only in the .resume() path, as it's also called no long after
+>> config_init(). That would mean reading the clock rate in
+>> kszphy_config_reset(), then performing the kszphy_rmii_clk_sel()
+>> accordingly.
+>>
+> 
+> It seems rather strange to get the clock rate every time the .resume()
+> is called. Otherwise, we would need to add some additional logic to 
+> kszphy_rmii_clk_sel() to ensure that the clock rate is only obtained
+> once. IMO, it would be more reasonable to only get the clock rate in
+> the .probe() during the lifetime of the PHY driver.
+> 
+> Furthermore, this seems to break the previous logic: when the clock
+> rate is incorrect, the .probe() will return an error, meaning the PHY
+> driver will not be loaded.
+> 
 
-On Tue, Jan 27, 2026 at 04:59:20PM +0100, Johan Hovold wrote:
-> On Wed, Jan 14, 2026 at 11:58:14AM +0100, Johan Hovold wrote:
-> > On Thu, Nov 20, 2025 at 02:10:48PM +0100, Johan Hovold wrote:
-> > > On Thu, Oct 30, 2025 at 05:34:56PM +0100, Johan Hovold wrote:
-> > > > Make sure to drop the reference taken to the DDC device during prob=
-e on
-> > > > probe failure (e.g. probe deferral) and on driver unbind.
-> > > >=20
-> > > > Fixes: fcbc51e54d2a ("staging: drm/imx: Add support for Television =
-Encoder (TVEv2)")
-> > > > Cc: stable@vger.kernel.org	# 3.10
-> > > > Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> > > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > > > Signed-off-by: Johan Hovold <johan@kernel.org>
-> > > > ---
-> > > >=20
-> > > > Changes in v2:
-> > > >  - add missing NULL ddc check
-> > >=20
-> > > Can this one be picked up for 6.19?
-> >=20
-> > It's been two more months so sending another reminder.
-> >=20
-> > Can this one be merged now?
->=20
-> Can someone please merge this for 6.20?
-
-I'm not sure what went wrong, but I just applied it. It should end up in
-6.19.
+Makes sense to validate it early indeed :) All in all, this seems ok then.
 
 Maxime
 
---lpelexmbpijxrpns
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaXnd0QAKCRAnX84Zoj2+
-dsV1AX9BFigou9HGowx/ngN6YjSXQ5Rff4NddhPSZcqx3xHqGrrWdRHACfLWnB2l
-Jgv0sXUBfjNJajMrRR/Xk+iEilujyUH/t0vyCgIuBps5wF4bv3JnenqhEhH6FomS
-GvuA1Y2Hvw==
-=rF9r
------END PGP SIGNATURE-----
-
---lpelexmbpijxrpns--
