@@ -1,62 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88EF2BE7BA;
-	Wed, 28 Jan 2026 22:19:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E474721D3C5
+	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 22:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769638788; cv=none; b=uyB3lc0xsZzw4k8gV45po9cM88lzJxxpFYocGUAXRa1big2koei1eI7DkPoSg7A6f/hN9ues6Wmh6UQm4nGKiV2BIHV5AMBYQAvyqABCb2bqeLEQgoGIoA/8YFiCL0/Q2DvZEOb9ee4HYBGEeh7XfIxJnQxHOj4hiQ71PgaDSw8=
+	t=1769640472; cv=none; b=o/XL+i3CrR4NBEV82jgeUfCXazQYcuPSjsU3IIWy4BJ0astCo7KDMeYaTVhUIS3jPts8DvNn7r75BwIwdfxCbHuN7xyjM6OhX8w4z1sZGxp7m3bzL+m9w0pJYRmhkfE+g4aq8ejYV2mK/DJntDpyPJa/oJVKzgK5tO0iyfSCaTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769638788; c=relaxed/simple;
-	bh=t9x66D0KYT9q052pysiu6d/Z2LJzxP385DPcblnwOfY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AokaxfgZrm396DLNqAWTX9pir1rHAZos6T+WnERH4wp3WpO6TTJVxivKXGHxfKxgRjOtuBtGszrDIe61XTsRdWtZTcrtPl1jjPNDKhcYS2nomygbYXtJO9xd/tfYyRzDEl2lWf8QKCIbCbz0WU9Gtbdew6nKzXZxsXNpog2u2Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OXQgTE+R; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769640472; c=relaxed/simple;
+	bh=ialA5TyIBgxp+uDi4ejZ5ByJ3omyVvwj+aptox/jc5U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dFJSCPgEOXW7q7GIoCsKfZOjzUCH79nmRIxZFG3HoxWndnLvhqBfvv1HZNTblyCvF+FSNIilH8OzEXU1fhzPTnNlOE2gJZp0F1w3+X2P4zV5CWjRuHrM0okj6EVZH4MZiT8lm9+v1xBcru5r9Pz0CeNELRQK4uH3+I6TyokAk/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=SyOhNsIE; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OXQgTE+R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5AFAC4CEF1;
-	Wed, 28 Jan 2026 22:19:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769638788;
-	bh=t9x66D0KYT9q052pysiu6d/Z2LJzxP385DPcblnwOfY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OXQgTE+RsdLgh7WtV6Huq2XBZpCYwlg4+YmQ1dQBu3Ue8nig7Hmm6se/v3Zn9O6u+
-	 Vm5lUdGigPM/lwQ4t1mS0/rucFdKEbvuNJrbwWe0mk1JrIcTk0DYMTxZyLWxzVIh8u
-	 j6RDW6rEehF/EyZzXm9pqQuBDXaO0sYLKuWgPZCRKyRG9lHDF0VT4ExBF4clz+ZDO4
-	 GlDtvnDcINxglosGIYXDyl0Gu9oZh60OAyHE3PG41t0psWxxlkebLjFRnFAbak6h82
-	 VxAx0fOFHZDpb5vUsUaj1DcmUvEOSj9/whlJgRG3Zr954LHR92qkUdn3bLvwQt2iFE
-	 bZI/ec7KqHkvQ==
-Date: Wed, 28 Jan 2026 23:19:44 +0100
-From: Andi Shyti <andi.shyti@kernel.org>
-To: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, festevam@gmail.com, linux-i2c@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, bsp-development.geo@leica-geosystems.com
-Subject: Re: [PATCH V3 0/2] i2c: imx: Fix block read handling for invalid
- length
-Message-ID: <aXqLI-tYnaP_P41u@zenone.zhora.eu>
-References: <20260116111906.3413346-1-Qing-wu.Li@leica-geosystems.com.cn>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="SyOhNsIE"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4f1cqQ2Kkhz9tgG;
+	Wed, 28 Jan 2026 23:47:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1769640466;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O4upRbVfTJ07DQH6ODb25K7X4KuRaWDl+UDpNd35zMs=;
+	b=SyOhNsIE+x9Koof+yayV9dROTmHkxZR2tmaXFlmoeW44lqFagrJdNkWousn1cicP7XiTHY
+	DawN7wl5LiqsBW7AI9VDIXQGPfHLD75VGtrYTxK4GHSaIscGr7Oc2u6pL2eHuY5pF9atMn
+	TxO+WldlLcQx6UyyJicNCkghMB3b0GmC0f71pRK72knE8HDQQF1hcFodMBMVwoErd2t1GD
+	4ySioLnGAQcrYpsAfeezykD6ZZykeyhtLymTdatgn3vu2W516EW4EVlmuXZHIBUNLDMwFt
+	A2i27xDC8jmDdSGiW8OyduPz0t+el9ptTDlA2mkwQcHx1amp3Uc3Kwg1jT/lvA==
+Date: Wed, 28 Jan 2026 23:47:36 +0100
+From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Jakub Kicinski <kuba@kernel.org>, festevam@gmail.com,
+ linux-arm-kernel@lists.infradead.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, horms@kernel.org, shawnguo@kernel.org,
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org, conor+dt@kernel.org,
+ devicetree@vger.kernel.org, wahrenst@gmx.net, pabeni@redhat.com,
+ davem@davemloft.net, netdev@vger.kernel.org, richardcochran@gmail.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, robh@kernel.org,
+ krzk+dt@kernel.org
+Subject: Re: [net-next,v20,2/7] net: mtip: The L2 switch driver for imx287
+Message-ID: <20260128234736.49bd70b3@wsk>
+In-Reply-To: <ed0e1af1-0210-4461-8939-3e4e35d74dae@lunn.ch>
+References: <20260126103400.1683125-3-lukasz.majewski@mailbox.org>
+	<20260128022549.4151341-1-kuba@kernel.org>
+	<20260128224125.246bcf41@wsk>
+	<ed0e1af1-0210-4461-8939-3e4e35d74dae@lunn.ch>
+Organization: mailbox.org
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260116111906.3413346-1-Qing-wu.Li@leica-geosystems.com.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-MBO-RS-ID: 686151c5d01e846fd34
+X-MBO-RS-META: 5xys9hdxh1j3adjqtyn71d9ygs5oeaky
 
-Hi Li,
+Hi Andrew,
 
-> LI Qingwu (2):
->   i2c: imx: preserve error state in block data length handler
+> On Wed, Jan 28, 2026 at 10:41:25PM +0100, =C5=81ukasz Majewski wrote:
+> > Hi Jakub,
+> >  =20
+> > > This is an AI-generated review =20
+> >=20
+> > AI is going to take the "Maintainer's" job :D =20
+>=20
+> We had a bit of a discussion about this.
+>=20
+> Our observations so far is that AI finds different sorts of issues,
+> which human reviewer often don't spot. It also does get things wrong,
+> so we spend some time sanity checking its reports. So overall, it
+> might actually increase the workload, but also increase the quality of
+> the code which gets committed.
+>=20
 
-I merged this patch in i2c/i2c-host-fixes.
+Frankly - from the MTIP L2 switch patch set review - the AI review does
+a _really_ good job ...
 
->   i2c: imx: add abort path for invalid block length
+It finds non trivial issues - with very deep insights to function's
+call dependencies.
 
-For this patch I want the review from Oleksij. Oleksij? :-)
+> 	Andrew
 
-Thanks,
-Andi
+
+
+--=20
+Best regards,
+
+=C5=81ukasz Majewski
