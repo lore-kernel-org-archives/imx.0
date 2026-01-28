@@ -1,40 +1,33 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989AE2C325C
-	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 10:03:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D722DC35F;
+	Wed, 28 Jan 2026 10:16:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769594628; cv=none; b=Fz2c7TWUWUzxgX+DVwMaryLZTzR4urePPu20ArIn6zrAS8CRPrhnzFPze52eP+Oohd89OGnNA1BPIhmV+lnQmqq79fZEZMiRLsFuE7eUotm4UAflKsQayg2St7h7rYgPqNy/MV96q/BTtw5ONjKaOrVOgOXUqG5IIK1X65Xu9VM=
+	t=1769595379; cv=none; b=Lyo+qWWRmEtSP54i0+vinNpiMGDORsHXNcz6+S8D0IRDJkiqxU51PMhvjgmjTK03usUm9z9hw/mp/HS2dih6SUS6Y+vpn2dWLm0l+ak+/tL/iHv5IVjA/arq3LU/EI/Og3Yw0ot5b0fkO9vmRSSib5Fy11hmI6tb2pgWKwpax8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769594628; c=relaxed/simple;
-	bh=wHf/q6POZNSNARHurPBSCBRt+/FARjYt64rvsdOIcvo=;
+	s=arc-20240116; t=1769595379; c=relaxed/simple;
+	bh=az6OHhEqj0x3WtC1hkJi6Kf+VtZtDMKobZlfHmsgHCs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FgU9L9kM7SMATwjfCTJrcJmqmfa2xpB+6RYjczrEjxv0a1kYK/ko3OcnYEZZxnKhQ6zXN/GcTXNc8c/jvECBCfUFDCN7rBbEQRhVuIbqSSk4VApsMJbyQpvh/XY7cpW/JhmvNzi+yjQoZdDf2UdiaY1ragtwA+jbUm4jONoDlvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=P3LLbll6; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	 In-Reply-To:Content-Type; b=kHOkLMvnsmm+yt6PnJ8H7etTSeFDESGyjNyTi6PoZggOHnBzxlFez02CU7gUmw+ywvrkzw+uvExe8D77iHFxHpx8dogSq0g8CxbXt7BgrEyajMGEadsOpY5T1fWWA6HhNW5yl0xDlgO76kO65m7IV4ew3HkQ8WsqzDJNkhZvQBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h34Pw9BZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="P3LLbll6"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 3F3591A2ABB;
-	Wed, 28 Jan 2026 10:03:45 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0EE236071A;
-	Wed, 28 Jan 2026 10:03:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C9CE1119A8695;
-	Wed, 28 Jan 2026 11:03:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769594624; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=fW1rz+jrI+rToURQhzvWdjua5v+hNnJ7D6YuU7kHAB8=;
-	b=P3LLbll6pvr6IJdtWr85zlavVdk4hgUKknA4DPbZO34RvxJAQ6r4dk1GTdCT5Gjn2xtS+J
-	biG0/biR7JOhq4yU4GTVuH8rXeS0I4ABXdo4p4oloydL64MecjeisD+ruDC/HXU1DYV4Jz
-	aqsXzkw/F6ZTzPjbxELxCu0V2uTYIZAZwkYvkT0hO95YXDPzUOn9TDyeH9MqbgAhnag3EB
-	LjUFzYGotmlxMF7+lgMUJESfvAymmY+xiWDZJbxS0NIA++Dmpj71BEN0G6r6YQiv0XjxgZ
-	V4u/LLopQGciyelNTkcZm/gq25bVYMZvQCWmf1jzydzXyhKwxffFsK7/YNYhaA==
-Message-ID: <a84cb1e7-0782-49a0-9d61-f4b693788e6b@bootlin.com>
-Date: Wed, 28 Jan 2026 11:03:41 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h34Pw9BZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DABC4CEF1;
+	Wed, 28 Jan 2026 10:16:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769595379;
+	bh=az6OHhEqj0x3WtC1hkJi6Kf+VtZtDMKobZlfHmsgHCs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=h34Pw9BZjRy5q8tBWVy6+B/ir10apTllfPOwNUHNjklV8dM9TY8JZ0W7C6KH5DfNc
+	 qHY89XZdazvpUAtyuT+TWgcCJdSYU/aTsSW+8/SQCHSxjp78T6jXcSYFz6tksEoV1Q
+	 ZaZ0xE5K4pDVxBhdjUqUxEyVgTXRzYYpNV4kppUtBzCl5XDgXh4S68ZCuGH0HXrM+f
+	 44+ni7K2n1kUdkVixIcbS/3mPv6sC+BTmS2c8lpxg2wxl9G8J2GNgoAxg/SPToupzq
+	 gSzHudx2gEBdQb08NlNtjEQD5xBJ1dBO+ljKju12sdFj6H7WnrtnI+TQ4ZHOatpTsg
+	 17QwHCDXk+EeA==
+Message-ID: <37133829-da88-4ea6-a58e-fcb4cc7f7c12@kernel.org>
+Date: Wed, 28 Jan 2026 11:16:13 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,93 +35,179 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: phy: micrel: fix clk warning when removing the
- driver
-To: Wei Fang <wei.fang@nxp.com>, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, florian.fainelli@broadcom.com
-Cc: imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260126081544.983517-1-wei.fang@nxp.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH V2 2/2] arch: arm64: imx93-wevk: Add i.MX93 Wireless EVK
+ board support
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: "robh@kernel.org" <robh@kernel.org>,
+ "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+ "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>, Frank Li <frank.li@nxp.com>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+ "festevam@gmail.com" <festevam@gmail.com>,
+ Daniel Baluta <daniel.baluta@nxp.com>,
+ "dario.binacchi@amarulasolutions.com" <dario.binacchi@amarulasolutions.com>,
+ "alexander.stein@ew.tq-group.com" <alexander.stein@ew.tq-group.com>,
+ "Markus.Niebel@tq-group.com" <Markus.Niebel@tq-group.com>,
+ "matthias.schiffer@tq-group.com" <matthias.schiffer@tq-group.com>,
+ "y.moog@phytec.de" <y.moog@phytec.de>,
+ "josua@solid-run.com" <josua@solid-run.com>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>,
+ "primoz.fiser@norik.com" <primoz.fiser@norik.com>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260123024448.3909345-1-sherry.sun@nxp.com>
+ <20260123024448.3909345-3-sherry.sun@nxp.com>
+ <20260123-gifted-wolverine-from-mars-47b9d4@quoll>
+ <VI0PR04MB12114EDD17C2F37A3AE7D61089293A@VI0PR04MB12114.eurprd04.prod.outlook.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20260126081544.983517-1-wei.fang@nxp.com>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <VI0PR04MB12114EDD17C2F37A3AE7D61089293A@VI0PR04MB12114.eurprd04.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+On 26/01/2026 03:52, Sherry Sun wrote:
+>> Subject: Re: [PATCH V2 2/2] arch: arm64: imx93-wevk: Add i.MX93 Wireless
+>> EVK board support
+>>
+>> On Fri, Jan 23, 2026 at 10:44:48AM +0800, Sherry Sun wrote:
+>>> i.MX93 Wireless SiP is created by integrating i.MX93 and IW610 WLCSP
+>>> (Wi-Fi + BLE + 802.15.4). And i.MX93 Wireless EVK board with the
+>>> i.MX93 Wireless SiP basically reuse the i.MX93 11x11 EVK board, with
+>>> some minor functional and pin connection differences.
+>>>
+>>> Here are the detailed differences between i.MX93 Wireless EVK and
+>>> i.MX93
+>>> 11x11 EVK board.
+>>>
+>>> Function differences:
+>>> Function	i.MX93W EVK			i.MX93 EVK
+>>> WIFI/BT		IW610 in i.MX93W		IW612 M.2 module
+>>> MQS		N				Y
+>>> PDM MIC		N				Y
+>>> M.2		N				Y
+>>> RPi 40-pin HDR	Limited support(pin conflict) 	Y
+>>>
+>>> Pin connection differences:
+>>> Function  Signal name	i.MX93W EVK		i.MX93 EVK
+>>> WIFI/BT	  SPI_FRM	SAI1_TXFS (spi1.PCS0)	GPIO_IO08
+>> (spi3.PCS0)
+>>> 	  SPI_TXD	SAI1_TXC (spi1.SIN)	GPIO_IO09 (spi3.SIN)
+>>> 	  SPI_RXD	SAI1_RXD0 (spi1.SOUT)	GPIO_IO10 (spi3.SOUT)
+>>> 	  SPI_CLK	SAI1_TXD0 (spi1.SCK)	GPIO_IO11 (spi3.SCK)
+>>> 	  SPI_INT	CCM_CLKO1		on-board IO expander
+>>> 	  NB_WAKE_IN	PDM_CLK			on-module IO
+>> expander
+>>> 	  WL_WAKE_IN	PDM_BIT_STREAM0		on-module IO
+>> expander
+>>> 	  IND_RST_WL	PDM_BIT_STREAM1		on-module IO
+>> expander
+>>> 	  IND_RST_NB	GPIO_IO28		on-module IO expander
+>>> 	  PDn		GPIO_IO29		on-module IO expander
+>>> 	  NB_WAKE_OUT	GPIO_IO14		on-board IO
+>> expander
+>>> 	  WL_WAKE_OUT	GPIO_IO15		CCM_CLKO1
+>>> I2C3	  I2C3_SDA	GPIO_IO00		GPIO_IO28
+>>> 	  I2C3_SCL	GPIO_IO01		GPIO_IO29
+>>>
+>>> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+>>> ---
+>>>  arch/arm64/boot/dts/freescale/Makefile       |  1 +
+>>>  arch/arm64/boot/dts/freescale/imx93w-evk.dts | 73
+>>> ++++++++++++++++++++
+>>>  2 files changed, 74 insertions(+)
+>>>  create mode 100644 arch/arm64/boot/dts/freescale/imx93w-evk.dts
+>>>
+>>> diff --git a/arch/arm64/boot/dts/freescale/Makefile
+>>> b/arch/arm64/boot/dts/freescale/Makefile
+>>> index 700bab4d3e60..d0ea746c59b8 100644
+>>> --- a/arch/arm64/boot/dts/freescale/Makefile
+>>> +++ b/arch/arm64/boot/dts/freescale/Makefile
+>>> @@ -418,6 +418,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-9x9-qsb-
+>> i3c.dtb
+>>>  dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk.dtb
+>>>  dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-frdm.dtb
+>>>  dtb-$(CONFIG_ARCH_MXC) += imx93-14x14-evk.dtb
+>>> +dtb-$(CONFIG_ARCH_MXC) += imx93w-evk.dtb
+>>>  dtb-$(CONFIG_ARCH_MXC) += imx93-kontron-bl-osm-s.dtb
+>>>  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash.dtb
+>>>  dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-segin.dtb diff --git
+>>> a/arch/arm64/boot/dts/freescale/imx93w-evk.dts
+>>> b/arch/arm64/boot/dts/freescale/imx93w-evk.dts
+>>> new file mode 100644
+>>> index 000000000000..f09587dc74f6
+>>> --- /dev/null
+>>> +++ b/arch/arm64/boot/dts/freescale/imx93w-evk.dts
+>>> @@ -0,0 +1,73 @@
+>>> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+>>> +/*
+>>> + * Copyright 2026 NXP
+>>> + */
+>>> +
+>>> +#include "imx93-11x11-evk.dts"
+>>> +
+>>> +/ {
+>>> +	model = "NXP i.MX93W EVK board";
+>>> +	compatible = "fsl,imx93-wireless-evk", "fsl,imx93";
+>>> +
+>>> +	/delete-node/ regulator-m2-pwr;
+>>
+>> If you remove nodes then clearly you do not share a common design, thus
+>> you should not include other DTSI... and definitely even more confusing to
+>> include other DTS.
+> 
+> Hi Krzysztof,
+> Ok, it seems I should mark these nodes as disabled instead of delete them, will fix, thanks!
 
-On 26/01/2026 09:15, Wei Fang wrote:
-> Since the commit 25c6a5ab151f ("net: phy: micrel: Dynamically control
-> external clock of KSZ PHY"), the clock of Micrel PHY has been enabled
-> by phy_driver::resume() and disabled by phy_driver::suspend(). However,
-> devm_clk_get_optional_enabled() is used in kszphy_probe(), so the clock
-> will automatically be disabled when the device is unbound from the bus.
-> Therefore, this could cause the clock to be disabled twice, resulting
-> in clk driver warnings.
-> 
-> For example, this issue can be reproduced on i.MX6ULL platform, and we
-> can see the following logs when removing the FEC MAC drivers.
-> 
-> $ echo 2188000.ethernet > /sys/bus/platform/drivers/fec/unbind
-> $ echo 20b4000.ethernet > /sys/bus/platform/drivers/fec/unbind
-> [  109.758207] ------------[ cut here ]------------
-> [  109.758240] WARNING: drivers/clk/clk.c:1188 at clk_core_disable+0xb4/0xd0, CPU#0: sh/639
-> [  109.771011] enet2_ref already disabled
-> [  109.793359] Call trace:
-> [  109.822006]  clk_core_disable from clk_disable+0x28/0x34
-> [  109.827340]  clk_disable from clk_disable_unprepare+0xc/0x18
-> [  109.833029]  clk_disable_unprepare from devm_clk_release+0x1c/0x28
-> [  109.839241]  devm_clk_release from devres_release_all+0x98/0x100
-> [  109.845278]  devres_release_all from device_unbind_cleanup+0xc/0x70
-> [  109.851571]  device_unbind_cleanup from device_release_driver_internal+0x1a4/0x1f4
-> [  109.859170]  device_release_driver_internal from bus_remove_device+0xbc/0xe4
-> [  109.866243]  bus_remove_device from device_del+0x140/0x458
-> [  109.871757]  device_del from phy_mdio_device_remove+0xc/0x24
-> [  109.877452]  phy_mdio_device_remove from mdiobus_unregister+0x40/0xac
-> [  109.883918]  mdiobus_unregister from fec_enet_mii_remove+0x40/0x78
-> [  109.890125]  fec_enet_mii_remove from fec_drv_remove+0x4c/0x158
-> [  109.896076]  fec_drv_remove from device_release_driver_internal+0x17c/0x1f4
-> [  109.962748] WARNING: drivers/clk/clk.c:1047 at clk_core_unprepare+0xfc/0x13c, CPU#0: sh/639
-> [  109.975805] enet2_ref already unprepared
-> [  110.002866] Call trace:
-> [  110.031758]  clk_core_unprepare from clk_unprepare+0x24/0x2c
-> [  110.037440]  clk_unprepare from devm_clk_release+0x1c/0x28
-> [  110.042957]  devm_clk_release from devres_release_all+0x98/0x100
-> [  110.048989]  devres_release_all from device_unbind_cleanup+0xc/0x70
-> [  110.055280]  device_unbind_cleanup from device_release_driver_internal+0x1a4/0x1f4
-> [  110.062877]  device_release_driver_internal from bus_remove_device+0xbc/0xe4
-> [  110.069950]  bus_remove_device from device_del+0x140/0x458
-> [  110.075469]  device_del from phy_mdio_device_remove+0xc/0x24
-> [  110.081165]  phy_mdio_device_remove from mdiobus_unregister+0x40/0xac
-> [  110.087632]  mdiobus_unregister from fec_enet_mii_remove+0x40/0x78
-> [  110.093836]  fec_enet_mii_remove from fec_drv_remove+0x4c/0x158
-> [  110.099782]  fec_drv_remove from device_release_driver_internal+0x17c/0x1f4
-> 
-> After analyzing the process of removing the FEC driver, as shown below,
-> it can be seen that the clock was disabled twice by the PHY driver.
-> 
-> fec_drv_remove()
->   --> fec_enet_close()
->     --> phy_stop()
->       --> phy_suspend()
->         --> kszphy_suspend() #1 The clock is disabled
->   --> fec_enet_mii_remove()
->     --> mdiobus_unregister()
->       --> phy_mdio_device_remove()
->         --> device_del()
->           --> devm_clk_release() #2 The clock is disabled again
-> 
-> Therefore, devm_clk_get_optional() is used to fix the above issue. And
-> to avoid the issue mentioned by the commit 985329462723 ("net: phy:
-> micrel: use devm_clk_get_optional_enabled for the rmii-ref clock"), the
-> clock is enabled by clk_prepare_enable() to get the correct clock rate.
-> 
-> Fixes: 25c6a5ab151f ("net: phy: micrel: Dynamically control external clock of KSZ PHY")
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Still wrong. How component present in the board can be missing in the
+same time? You included other DTS for a reason which means this board
+grows on the previous design.
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
-
-
+Best regards,
+Krzysztof
