@@ -1,86 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D0945038;
-	Wed, 28 Jan 2026 22:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88EF2BE7BA;
+	Wed, 28 Jan 2026 22:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769638742; cv=none; b=XuwMJUF02UEorg4LEOGyzyoGLH02RnMhkwNI+dAcoh1S0QP3nn3+dBSxE0+WwA97t4jhu3kqPk/oyryHIHxao8zxTYdelPPm/nJEjFfq81gkVmSE7Tsp31KhVK9pStkq3MUI6hmu6rSpPYodXJvvMtUiqhciS4IL9IwPF8Vulsk=
+	t=1769638788; cv=none; b=uyB3lc0xsZzw4k8gV45po9cM88lzJxxpFYocGUAXRa1big2koei1eI7DkPoSg7A6f/hN9ues6Wmh6UQm4nGKiV2BIHV5AMBYQAvyqABCb2bqeLEQgoGIoA/8YFiCL0/Q2DvZEOb9ee4HYBGEeh7XfIxJnQxHOj4hiQ71PgaDSw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769638742; c=relaxed/simple;
-	bh=gBT9XbpdFRENZ9OMyR4gcVKqV611QABoR8gHTQ3K7pQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ZVQGlLXt6N64DIKuAm+fhIOdOJNX2aoRKtK+25J90tYZA82kgNzKWCOvcxfbMm4MTbDowve5UfhMj3kLNZWCAUNUkhw04ieSeMg0Bm3eEsSAdtKu/IJFiVoMqFSefaBZcV+WcZK0THG57IWI9taRtL9+nJeiXia5pf7llXdMAmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TMSLhF0l; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769638788; c=relaxed/simple;
+	bh=t9x66D0KYT9q052pysiu6d/Z2LJzxP385DPcblnwOfY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AokaxfgZrm396DLNqAWTX9pir1rHAZos6T+WnERH4wp3WpO6TTJVxivKXGHxfKxgRjOtuBtGszrDIe61XTsRdWtZTcrtPl1jjPNDKhcYS2nomygbYXtJO9xd/tfYyRzDEl2lWf8QKCIbCbz0WU9Gtbdew6nKzXZxsXNpog2u2Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OXQgTE+R; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TMSLhF0l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B567C4CEF1;
-	Wed, 28 Jan 2026 22:19:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OXQgTE+R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5AFAC4CEF1;
+	Wed, 28 Jan 2026 22:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769638741;
-	bh=gBT9XbpdFRENZ9OMyR4gcVKqV611QABoR8gHTQ3K7pQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=TMSLhF0lkCg7C/3SWI9HTo9jnVY+frLEoVQdulBpSmcBQQDz30hzTY9Un+as5JUkQ
-	 cW7135FV1Pw0EjSpUopfau7di5wdx+PRy1wcOJaoYmmSiwG5BONwioNq1TuTC773Wz
-	 ro3E+iVy9eLqGJGnVedHdSLba/Cuzcz9CEQeFOTK5EifsHgoTjBkrmk7AdopJ7zlC3
-	 ozs7wXzICIMOnH7PA0vrm4sS9tVl8taJKvB2M259fBwCAS6vb2OlR0u4QxqqK/eSIF
-	 MmswocJjPanPOafrC0yVyYeUefRpPNf+hQYE4b7teMdO0OcCnY6JiR+U0YT4eQavIi
-	 lM4gq4lWgfAZw==
-From: Mark Brown <broonie@kernel.org>
-To: linux-spi@vger.kernel.org, Marek Vasut <marex@nabladev.com>
-Cc: Fedor Ross <fedor.ross@ifm.com>, Frank Li <Frank.Li@nxp.com>, 
- imx@lists.linux.dev, linux-kernel@vger.kernel.org
-In-Reply-To: <20260127222353.1452003-1-marex@nabladev.com>
-References: <20260127222353.1452003-1-marex@nabladev.com>
-Subject: Re: [PATCH] spi: spi-fsl-lpspi: Handle clock polarity and phase
-Message-Id: <176963874010.3217393.15887158473398999292.b4-ty@kernel.org>
-Date: Wed, 28 Jan 2026 22:19:00 +0000
+	s=k20201202; t=1769638788;
+	bh=t9x66D0KYT9q052pysiu6d/Z2LJzxP385DPcblnwOfY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OXQgTE+RsdLgh7WtV6Huq2XBZpCYwlg4+YmQ1dQBu3Ue8nig7Hmm6se/v3Zn9O6u+
+	 Vm5lUdGigPM/lwQ4t1mS0/rucFdKEbvuNJrbwWe0mk1JrIcTk0DYMTxZyLWxzVIh8u
+	 j6RDW6rEehF/EyZzXm9pqQuBDXaO0sYLKuWgPZCRKyRG9lHDF0VT4ExBF4clz+ZDO4
+	 GlDtvnDcINxglosGIYXDyl0Gu9oZh60OAyHE3PG41t0psWxxlkebLjFRnFAbak6h82
+	 VxAx0fOFHZDpb5vUsUaj1DcmUvEOSj9/whlJgRG3Zr954LHR92qkUdn3bLvwQt2iFE
+	 bZI/ec7KqHkvQ==
+Date: Wed, 28 Jan 2026 23:19:44 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, festevam@gmail.com, linux-i2c@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, bsp-development.geo@leica-geosystems.com
+Subject: Re: [PATCH V3 0/2] i2c: imx: Fix block read handling for invalid
+ length
+Message-ID: <aXqLI-tYnaP_P41u@zenone.zhora.eu>
+References: <20260116111906.3413346-1-Qing-wu.Li@leica-geosystems.com.cn>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260116111906.3413346-1-Qing-wu.Li@leica-geosystems.com.cn>
 
-On Tue, 27 Jan 2026 23:23:22 +0100, Marek Vasut wrote:
-> The LPSPI driver currently does not support setting SPI bus clock
-> polarity and phase, add support for it.
-> 
-> It is important to configure correct initial clock polarity and phase
-> before the GPIO chipselect toggles, otherwise a chip attached to the
-> bus might recognize the first change of clock signal as the first
-> clock cycle and get confused.
-> 
-> [...]
+Hi Li,
 
-Applied to
+> LI Qingwu (2):
+>   i2c: imx: preserve error state in block data length handler
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+I merged this patch in i2c/i2c-host-fixes.
 
-Thanks!
+>   i2c: imx: add abort path for invalid block length
 
-[1/1] spi: spi-fsl-lpspi: Handle clock polarity and phase
-      commit: 7ae4d097b752d77c41dd26068d92ef34e9c66be9
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+For this patch I want the review from Oleksij. Oleksij? :-)
 
 Thanks,
-Mark
-
+Andi
