@@ -1,45 +1,50 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FEB34DB4C
-	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 12:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AE034D909;
+	Wed, 28 Jan 2026 13:25:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769603465; cv=none; b=HkWb0gq6Tq7bkzr7p0ZRzQujNrkOBOrilqYG+QNK3nuAiadQJkBmD9Z7Z5nVVUEVnW4fdxPIVS91ytWGnm2lKDj/fBGljlZcq7nUPuM3xzmzL4nmd+vnjX2xE7bwBCy1eg6Im9SU3u89G1oxnyuwJIWRlaFdt/FKRh+KsQj+dLs=
+	t=1769606733; cv=none; b=uYy9uIRgEFGOqxsnXZ1VfTt6LgFdKpBKdOFQlMMuFQ1PjKRAKLIQTf6/Mumh80OCEDaFY/LalSy29qkt77uh2+cMXTLpxC5F5QyFrqmJuGgPf1w1fThlYSaUBpq1E11y7uZebojcY1X6Lnba37Ltn1mimhJtbuZ72pNOOCKpM58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769603465; c=relaxed/simple;
-	bh=o26NIRifOz86Ls8d6uX3q14Y/0oFbx2QAS8UvO81KgE=;
+	s=arc-20240116; t=1769606733; c=relaxed/simple;
+	bh=+7Vp8kpSi3g2dgjRAKKDnBvk4jqFAapzxdv2VnU4GjY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cZFdU3qhUKl6Vr7KWwDImxEJpvAOyNGCqoc9BosLKc0hsIriCy7sgBDU+lnhs7hijwKlMfXpKwAByhL+zt8bnqh8Fky2fiN6lrby3wO6SBxkcQqE8n65rKVGntmRJllDTjBAYLvDEwjH7WGgCHyd5aCcIzHzi3T7Ed6rX2v8f9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 002151A1B8C;
-	Wed, 28 Jan 2026 13:30:57 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id DD1241A1B7F;
-	Wed, 28 Jan 2026 13:30:56 +0100 (CET)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id BF73520364;
-	Wed, 28 Jan 2026 13:30:55 +0100 (CET)
-Date: Wed, 28 Jan 2026 13:30:56 +0100
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: s32@nxp.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=dv7so/3Z2hkcU8cfwY1bc4RPPyUtxixsetKGt5yABiCkD6Oa1evJ4NLOgKfqrGRPvhn4+N+3Ye0ekmM8ApiZPiCNrKYtLQwYE7Iq9TvC6V4YG3iNVTqA2v25WOEsDaABzEmBkfWZjublUv0uHPYXzsmHEMn06apnPeELSgcDPiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dVJpuq2L; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dVJpuq2L"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=nufC/mh88Y4At9VbH5lBNeb92IFWvb06ShGo/VoQ85A=; b=dVJpuq2LOmmr7xEJ7soMUF63xV
+	eAo9f/Y0Mibara4K6o5xkiOPaHuAyBWLvGQgcJ9J9kyGK263UsVK55TQPIjFCVRxceDMcIube3z14
+	jpCpHAjD8qkFVQZwFYNnwwznqMBOeTnDRmN90cLeqK962dh0y5hC3rJ8DFs+2PsfzrWw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vl5Xu-005BOe-Iw; Wed, 28 Jan 2026 14:25:22 +0100
+Date: Wed, 28 Jan 2026 14:25:22 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Michael Trimarchi <michael@amarulasolutions.com>
+Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linaro-s32@linaro.org, imx@lists.linux.dev
-Subject: Re: [PATCH v5 1/3] net: stmmac: s32: use a syscon for
- S32_PHY_INTF_SEL_RGMII
-Message-ID: <aXoBgO+qRRmB1yVM@lsv051416.swis.nl-cdc01.nxp.com>
-References: <cover.1769592679.git.dan.carpenter@linaro.org>
- <b38f1c628cdac8e87271e5fa4e2b71110c15b42c.1769592679.git.dan.carpenter@linaro.org>
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"open list:FREESCALE IMX / MXC FEC DRIVER" <imx@lists.linux.dev>,
+	"open list:FREESCALE IMX / MXC FEC DRIVER" <netdev@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH] net: phy: integrate reset-after-clock quirk into
+ phy_init_hw
+Message-ID: <13d1018c-d9aa-4838-8bb3-35c509cd3e35@lunn.ch>
+References: <20260128094644.302313-1-michael@amarulasolutions.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -48,103 +53,22 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b38f1c628cdac8e87271e5fa4e2b71110c15b42c.1769592679.git.dan.carpenter@linaro.org>
-X-Virus-Scanned: ClamAV using ClamSMTP
+In-Reply-To: <20260128094644.302313-1-michael@amarulasolutions.com>
 
-On Wed, Jan 28, 2026 at 12:54:01PM +0300, Dan Carpenter wrote:
-> On the s32 chipsets the GMAC_0_CTRL_STS register is in GPR region.
-> Originally, accessing this register was done in a sort of ad-hoc way,
-> but we want to use the syscon interface to do it.
-> 
-> This is a little bit ugly because we have to maintain backwards
-> compatibility to the old device trees so we have to support both ways
-> to access this register.
-> 
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> ---
-> v5: Return an error if regmap_write() fails
-> v4: no change
-> v3: no change
-> v2: Fix forward porting bug.  s/PHY_INTF_SEL_RGMII/S32_PHY_INTF_SEL_RGMII/
-> 
->  .../net/ethernet/stmicro/stmmac/dwmac-s32.c   | 28 +++++++++++++++----
->  1 file changed, 22 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-> index 5a485ee98fa7..af594a096676 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-> @@ -11,12 +11,14 @@
->  #include <linux/device.h>
->  #include <linux/ethtool.h>
->  #include <linux/io.h>
-> +#include <linux/mfd/syscon.h>
->  #include <linux/module.h>
->  #include <linux/of_mdio.h>
->  #include <linux/of_address.h>
->  #include <linux/phy.h>
->  #include <linux/phylink.h>
->  #include <linux/platform_device.h>
-> +#include <linux/regmap.h>
->  #include <linux/stmmac.h>
->  
->  #include "stmmac_platform.h"
-> @@ -32,6 +34,8 @@
->  struct s32_priv_data {
->  	void __iomem *ioaddr;
->  	void __iomem *ctrl_sts;
-> +	struct regmap *sts_regmap;
-> +	unsigned int sts_offset;
->  	struct device *dev;
->  	phy_interface_t *intf_mode;
->  	struct clk *tx_clk;
-> @@ -40,11 +44,17 @@ struct s32_priv_data {
->  
->  static int s32_gmac_write_phy_intf_select(struct s32_priv_data *gmac)
->  {
-> -	writel(S32_PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
-> +	int ret = 0;
-> +
-> +	if (gmac->ctrl_sts)
-> +		writel(S32_PHY_INTF_SEL_RGMII, gmac->ctrl_sts);
-> +	else
-> +		ret = regmap_write(gmac->sts_regmap, gmac->sts_offset,
-> +				   S32_PHY_INTF_SEL_RGMII);
->  
->  	dev_dbg(gmac->dev, "PHY mode set to %s\n", phy_modes(*gmac->intf_mode));
->  
-> -	return 0;
-> +	return ret;
->  }
->  
->  static int s32_gmac_init(struct device *dev, void *priv)
-> @@ -125,10 +135,16 @@ static int s32_dwmac_probe(struct platform_device *pdev)
->  				     "dt configuration failed\n");
->  
->  	/* PHY interface mode control reg */
-> -	gmac->ctrl_sts = devm_platform_get_and_ioremap_resource(pdev, 1, NULL);
-> -	if (IS_ERR(gmac->ctrl_sts))
-> -		return dev_err_probe(dev, PTR_ERR(gmac->ctrl_sts),
-> -				     "S32CC config region is missing\n");
-> +	gmac->sts_regmap = syscon_regmap_lookup_by_phandle_args(dev->of_node,
-> +					"nxp,phy-sel", 1, &gmac->sts_offset);
-> +	if (gmac->sts_regmap == ERR_PTR(-EPROBE_DEFER))
-> +		return PTR_ERR(gmac->sts_regmap);
-> +	if (IS_ERR(gmac->sts_regmap)) {
-> +		gmac->ctrl_sts = devm_platform_get_and_ioremap_resource(pdev, 1, NULL);
-> +		if (IS_ERR(gmac->ctrl_sts))
-> +			return dev_err_probe(dev, PTR_ERR(gmac->ctrl_sts),
-> +					     "S32CC config region is missing\n");
-> +	}
->  
->  	/* tx clock */
->  	gmac->tx_clk = devm_clk_get(&pdev->dev, "tx");
-> -- 
-> 2.51.0
-> 
+On Wed, Jan 28, 2026 at 10:46:41AM +0100, Michael Trimarchi wrote:
+> The current implementation of phy_reset_after_clk_enable requires MAC drivers
+> (like fec_main.c) to manually track PHY probing states and trigger resets
+> at specific points in their clock management flow and was created just for a SoC
+> vendor.
 
-Reviewed-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+We try to keep workarounds for specific SoC vendors out of the core,
+when possible. It just makes the core more complex for an edge case
+which most people don't care about. It is better to hide the
+complexity away in the driver which needs it.
 
-Thanks.
-/Jan
+> This leads to fragile code in the Ethernet driver, involving complex
+> checks to see if the PHY device is bound.
 
+Have you found an actual issue with the code in the driver?
+
+     Andrew
