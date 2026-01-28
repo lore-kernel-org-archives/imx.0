@@ -1,117 +1,84 @@
-Received: from ms.puri.sm (ms.puri.sm [135.181.196.210])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D7E2E7BB6
-	for <imx@lists.linux.dev>; Tue, 27 Jan 2026 23:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=135.181.196.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE8E2505AA;
+	Wed, 28 Jan 2026 01:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769557660; cv=none; b=rODDc4w1KypZqgE4n0VU428YfvDNvM1O4mNRMKo8Vvr5nUHL06ApsujO+XcXouftNSao5sfXxh/z1/Jo85OLK9ADkkfoB8tmz+Wsqv/IO59C6UmaPGfJZikfqR2pFjH7D/58Dv3NANWURP5qTmaEXCQa7TGdorQukeWdogNAWqI=
+	t=1769564431; cv=none; b=YNUwhU28tFkRWKtJYEDG2wp9WcMjpRR7ccRzg3p95FBY5XEvy7OWUYnz9l8qieZT3QxTnPgAKVFvAF0Cqq9UBIyWeQVheeftU4ArO0iXqvxondQQDV4JKwpQoRITOWgFAWr9XFFXpOHMiPU3hTi2XMaPwacA3mEr9/A/IA7lJPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769557660; c=relaxed/simple;
-	bh=q/u/XvKL68HmLo5r1RpDGCfqD4LAY62ICsaF9xos+gw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YNwyOWZ8gC1HvGYhwvOLUgo+uyCpceY+HHybrsVmw6qRMPF2GPEmR1urNIPs/rZrVlpelnmvs4gyU0Y9D6cJO2PH603j4QOx23FEWSMYdnAu0CV5WjCSx4BndIKn5uXq8h7dSrnd8qdVScEa9UbHg3zuZ8BuLK8nop2FWNuE4i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=puri.sm; spf=pass smtp.mailfrom=puri.sm; dkim=pass (2048-bit key) header.d=puri.sm header.i=@puri.sm header.b=fXXKijDg; arc=none smtp.client-ip=135.181.196.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=puri.sm
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=puri.sm
+	s=arc-20240116; t=1769564431; c=relaxed/simple;
+	bh=BRV3NNMHXtFN28QG1LlieA/z4NRLoXX16Hu52ceP2zI=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=SEO0dovSi9kPzalZpkiSE+VSTlMCq4mRCLmClPCAYOEcfRCySmv4whf8/9IKjJ/hP04p3i4wF5ZJp15siIdHM5Tdo4M47RZA2KrAZctBmF1rXInH1nscebZsaezY1rrLj+0O1f393Lo01EM4uZ8a1amSHCiVBl/iCimSgnc+DAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WHjFUmwg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=puri.sm header.i=@puri.sm header.b="fXXKijDg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=smtp2;
-	t=1769557657; bh=q/u/XvKL68HmLo5r1RpDGCfqD4LAY62ICsaF9xos+gw=;
-	h=From:Date:Subject:To:Cc;
-	b=fXXKijDgKK18ydT0YumguA+J5t7LNz5e4baaNkn0fJgBJjhU44jUapTvlxtP4Vs/a
-	 2/lUf8UgBpEY/2J7NFkl/Th/Op7JPy56CychATWLl91oWX/T2z6gmCEpvsiUCQMZPy
-	 WD9SIAqvfTgBqlv9wlPBZXBz4R720vEqgW8hzFupUdZ+H9+5Wet7+pIlMnPWrOX2Xx
-	 VgUuvedmX8cjhFCzqj0vVO/v5RSM1/9oArHq4yvSRR83hLBJp+mDF9hUbAV2BZN532
-	 pnOZvMjqon+rKBkqcFRgT7UnZ4H1nKwkbRiWUdptC4pFbEuz6NSrTfQgbsdNKd6lG7
-	 8ITM/hBjE3aCQ==
-Received: from pliszka.localdomain (79.184.64.12.ipv4.supernova.orange.pl [79.184.64.12])
-	by ms.puri.sm (Postfix) with ESMTPSA id 69A4F1FA50;
-	Tue, 27 Jan 2026 15:47:35 -0800 (PST)
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Date: Wed, 28 Jan 2026 00:47:21 +0100
-Subject: [PATCH] clk: imx8mq: Correct the CSI PHY sels
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WHjFUmwg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F482C116C6;
+	Wed, 28 Jan 2026 01:40:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769564430;
+	bh=BRV3NNMHXtFN28QG1LlieA/z4NRLoXX16Hu52ceP2zI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=WHjFUmwgQPYSpaiLwlRr+oDhcgvtV85LuysWTTawWtHliueaNPchxBbx1YiBDBNA9
+	 79Q3gfNNXtPRsD9ZXv0VfX6hfmkOp6O66cvH58i6U/+ES7Q5sDrfTlLbanjNM9d5AK
+	 i1Td/5w9L7Liq6NVvQAddqRWgUac4gEoJUxUDSr8rnd5OQ4ASoS15zxvBqIhPFNQKR
+	 iPh8w3YSJ2MCQ8+mmPx4Yl/ulwN5SpmbE/knJrbDhwhYeeDOvKAnlh2pX/phIGcHt2
+	 9p4pUWYavRaL3f+I2KocUE7c0Bi4tIcBWt5AWmG1zAlBxeIhO2UtQQktO9DX65oC7w
+	 DG3YrILver3Cg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8BC3C380AA76;
+	Wed, 28 Jan 2026 01:40:25 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-imx8mq-csi-clk-v1-1-ac028ed26e8c@puri.sm>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MwQ6CMAyA4VchPdu4LQSJr2I8lK1II5vaqiEhv
- LuT43f4/xWMVdjg3Kyg/BWTR6nwhwbiROXGKKkaggud86FHyUufXxhNMM53DIlcbE+t59RBjZ7
- Koyz78HKtHsgYB6USp/9mlvKxYyZ7s8K2/QDoX+YSfwAAAA==
-X-Change-ID: 20260128-imx8mq-csi-clk-2da0c4741ed6
-To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, 
- Anson Huang <anson.huang@nxp.com>
-Cc: Bai Ping <ping.bai@nxp.com>, linux-clk@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, kernel@puri.sm, 
- Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2342;
- i=sebastian.krzyszkowiak@puri.sm; h=from:subject:message-id;
- bh=q/u/XvKL68HmLo5r1RpDGCfqD4LAY62ICsaF9xos+gw=;
- b=owEBbQKS/ZANAwAKAejyNc8728P/AcsmYgBpeU6WtyTpjZs6uJHcey9jsZGEaddvA6jQcQpof
- ncHAeKVEImJAjMEAAEKAB0WIQQi3Z+uAGoRQ1g2YXzo8jXPO9vD/wUCaXlOlgAKCRDo8jXPO9vD
- /0p5EACJkHOwOGYB1sSTxHb2HgBICPP52RNTWB/yqyURlIj1TXcMDJm8RWld679wa7i3zt7N3LE
- G5pp2nZ3S4K51i79jluWMjGPbwjv22TTsXryMAdumb/+dn72QtlEBoJwu6bzIdA9tbLmDr/3eCh
- 4+4sZdYK59LiPvykinFGU0hqeQkp1S7QMtHY7b108/kVRWrwC7JUkAsQPWcU5Il69Merh4uI/Qm
- 6ER6/ktB0XyNA9f9bv0NLCIbv5bVQ1bm98h7IqV/7kNdcHnCM0R/DC5dldPCoBwMEkP1h9XsMNn
- MaxQ3eteKuGQAav83/tNKPJy0avIJJwqqDT1dYl/IIDnkWvu+MLTNzzxuAmAwcDDKxrVHppAPg4
- /GrMvGBljLuYdM+/+D1+Xfd9yUbgwSPrKAIJEZevoeFXYBn6t8u9rr7kQaA0W7zKnnIX3i4+l0u
- Q4fu7GRdi0xKSpFhVLLl28dIb02nYrmy1ZyLKVLMTV/hMp5NXlRNhyr9NNoHnumgCgsYgpVqrpD
- 6hiczHO2NAyEVXKbI71RTyr/9c2KbZK1vHnSy5WG9ziSrJIJn4mwlPunzZszhTLx9sYY3gZL0rS
- b4Exnmu5aU4MFBeLJXi1ooCezBG/tEYxGHlYaziJVhNoaYzj5BtRaCmae4uOEaUd6tDUfs/nZIC
- CQix4jkVejlP5eQ==
-X-Developer-Key: i=sebastian.krzyszkowiak@puri.sm; a=openpgp;
- fpr=22DD9FAE006A11435836617CE8F235CF3BDBC3FF
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: stmmac: don't pass ioaddr to
+ fix_soc_reset()
+ method
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176956442434.1470424.17241812328293968709.git-patchwork-notify@kernel.org>
+Date: Wed, 28 Jan 2026 01:40:24 +0000
+References: <E1vkLmM-00000005vE1-0nop@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1vkLmM-00000005vE1-0nop@rmk-PC.armlinux.org.uk>
+To: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: andrew@lunn.ch, alexandre.torgue@foss.st.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, imx@lists.linux.dev,
+ kuba@kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+ pabeni@redhat.com, kernel@pengutronix.de, s.hauer@pengutronix.de,
+ shawnguo@kernel.org
 
-According to i.MX 8M Quad Reference Manual (Section 5.1.2 Table 5-1)
-MIPI_CSI1_PHY_REF_CLK_ROOT and MIPI_CSI2_PHY_REF_CLK_ROOT have
-SYSTEM_PLL2_DIV3 available as their second source, which corresponds
-to sys2_pll_333m rather than sys2_pll_125m.
+Hello:
 
-Fixes: b80522040cd3 ("clk: imx: Add clock driver for i.MX8MQ CCM")
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
----
- drivers/clk/imx/clk-imx8mq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/drivers/clk/imx/clk-imx8mq.c b/drivers/clk/imx/clk-imx8mq.c
-index f70ed231b92d..cedc8a02aa1f 100644
---- a/drivers/clk/imx/clk-imx8mq.c
-+++ b/drivers/clk/imx/clk-imx8mq.c
-@@ -237,7 +237,7 @@ static const char * const imx8mq_dsi_esc_sels[] = {"osc_25m", "sys2_pll_100m", "
- static const char * const imx8mq_csi1_core_sels[] = {"osc_25m", "sys1_pll_266m", "sys2_pll_250m", "sys1_pll_800m",
- 					      "sys2_pll_1000m", "sys3_pll_out", "audio_pll2_out", "video_pll1_out", };
- 
--static const char * const imx8mq_csi1_phy_sels[] = {"osc_25m", "sys2_pll_125m", "sys2_pll_100m", "sys1_pll_800m",
-+static const char * const imx8mq_csi1_phy_sels[] = {"osc_25m", "sys2_pll_333m", "sys2_pll_100m", "sys1_pll_800m",
- 					     "sys2_pll_1000m", "clk_ext2", "audio_pll2_out", "video_pll1_out", };
- 
- static const char * const imx8mq_csi1_esc_sels[] = {"osc_25m", "sys2_pll_100m", "sys1_pll_80m", "sys1_pll_800m",
-@@ -246,7 +246,7 @@ static const char * const imx8mq_csi1_esc_sels[] = {"osc_25m", "sys2_pll_100m",
- static const char * const imx8mq_csi2_core_sels[] = {"osc_25m", "sys1_pll_266m", "sys2_pll_250m", "sys1_pll_800m",
- 					      "sys2_pll_1000m", "sys3_pll_out", "audio_pll2_out", "video_pll1_out", };
- 
--static const char * const imx8mq_csi2_phy_sels[] = {"osc_25m", "sys2_pll_125m", "sys2_pll_100m", "sys1_pll_800m",
-+static const char * const imx8mq_csi2_phy_sels[] = {"osc_25m", "sys2_pll_333m", "sys2_pll_100m", "sys1_pll_800m",
- 					     "sys2_pll_1000m", "clk_ext2", "audio_pll2_out", "video_pll1_out", };
- 
- static const char * const imx8mq_csi2_esc_sels[] = {"osc_25m", "sys2_pll_100m", "sys1_pll_80m", "sys1_pll_800m",
+On Mon, 26 Jan 2026 12:33:14 +0000 you wrote:
+> As the stmmac_priv struct is passed to the fix_soc_reset() method which
+> has the ioaddr, there is no need to pass ioaddr separately. Pass just
+> the stmmac_priv struct. Fix up the glues that use it.
+> 
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c      | 8 +++++---
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 6 ++++--
+>  drivers/net/ethernet/stmicro/stmmac/hwif.c           | 2 +-
+>  include/linux/stmmac.h                               | 2 +-
+>  4 files changed, 11 insertions(+), 7 deletions(-)
 
----
-base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
-change-id: 20260128-imx8mq-csi-clk-2da0c4741ed6
+Here is the summary with links:
+  - [net-next] net: stmmac: don't pass ioaddr to fix_soc_reset() method
+    https://git.kernel.org/netdev/net-next/c/d64f761dbfda
 
-Best regards,
+You are awesome, thank you!
 -- 
-Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
