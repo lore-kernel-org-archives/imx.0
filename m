@@ -1,123 +1,86 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE8D22D7B0
-	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 22:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D0945038;
+	Wed, 28 Jan 2026 22:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769638671; cv=none; b=p0/SSnAVtaEAzw64Qqr1tFmBTMUbbxAgaEWAaJT1oqbiumpRTIsTKwrDFNSpwQ6aFgHQtHSrE9yuKgd52gorbDhVsj1eS9g8JJNFM/dux93/dkx2Cu4kPv89YULVy4vASxOqK3zpRBsBsJX7j4RhyVWMMy1iF6lz2F2DROxQis8=
+	t=1769638742; cv=none; b=XuwMJUF02UEorg4LEOGyzyoGLH02RnMhkwNI+dAcoh1S0QP3nn3+dBSxE0+WwA97t4jhu3kqPk/oyryHIHxao8zxTYdelPPm/nJEjFfq81gkVmSE7Tsp31KhVK9pStkq3MUI6hmu6rSpPYodXJvvMtUiqhciS4IL9IwPF8Vulsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769638671; c=relaxed/simple;
-	bh=gWythbY87SF01rE6BMcocT8lNrdJqmdoc+pmfTB4Th8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mHxDUL2HAZjXntEx6HcJnmC6ycRtObE9b9W8+8ocOYMGx3zpzNXTIJj2iFsWJyco/KyVhAfcB8QQvBWNkinIoHwkiO6N/jcTdwHpKvYND24CMyRDHD0XRW7LoTxdwfjs9mfZu9oca5G6COoHSgdTz5Ch30l/1akiihfypMN//So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=dHc8cigp; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1769638742; c=relaxed/simple;
+	bh=gBT9XbpdFRENZ9OMyR4gcVKqV611QABoR8gHTQ3K7pQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=ZVQGlLXt6N64DIKuAm+fhIOdOJNX2aoRKtK+25J90tYZA82kgNzKWCOvcxfbMm4MTbDowve5UfhMj3kLNZWCAUNUkhw04ieSeMg0Bm3eEsSAdtKu/IJFiVoMqFSefaBZcV+WcZK0THG57IWI9taRtL9+nJeiXia5pf7llXdMAmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TMSLhF0l; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="dHc8cigp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=/49mFnW8EdRgXSubu0DebZpzEOyO6SnO6tydxasgyv0=; b=dHc8cigp821YApbTxEdiazEDJR
-	3ElgX/ajxUHtFOX374pxlYHgeTEFMEJb0JnaUy5v6B634dNoouQuUR/Czi1lU4xuKv9wY5TKnr8bn
-	koKgH5sUmBVCrKMzWropmVJZ2bz2h0uDbkzjNxbRFNW7fr2ZADt47KEMXSVVEqnSg3H8O3E0BucUm
-	raeWkdOfnl2FfnbBTactz4JCjuUrQNEUCA67nylDUuSBSudDQbpL1TRLmusBGfzUZfnfdSqHYwKyh
-	E+888ATOY76Lxg6jWJzlE8/QakV748jiQAlmSSVFLU75OQk+xLYR6Hw/HF3zYTqAuJGYSaBU25QxS
-	sdLNLsig==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58560)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vlDr5-000000007xS-0N2k;
-	Wed, 28 Jan 2026 22:17:43 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vlDr3-000000007Lk-3JEL;
-	Wed, 28 Jan 2026 22:17:41 +0000
-Date: Wed, 28 Jan 2026 22:17:41 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>,
-	Marco Felsch <m.felsch@pengutronix.de>, Wei Fang <wei.fang@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"open list:FREESCALE IMX / MXC FEC DRIVER" <imx@lists.linux.dev>,
-	"open list:FREESCALE IMX / MXC FEC DRIVER" <netdev@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH] net: phy: integrate reset-after-clock quirk into
- phy_init_hw
-Message-ID: <aXqLBXs0fUIVkQg_@shell.armlinux.org.uk>
-References: <20260128094644.302313-1-michael@amarulasolutions.com>
- <13d1018c-d9aa-4838-8bb3-35c509cd3e35@lunn.ch>
- <CAOf5uwm30=AVhqm67yz8Y5TkX9FWdxizTevCGSeaQuJS0KqtNA@mail.gmail.com>
- <aXoV-U-yqcDJj2vk@shell.armlinux.org.uk>
- <20260128202634.gqevi76o6wnf5xno@pengutronix.de>
- <fe9385a5-170f-474c-af8d-24bbfa5eb3ab@lunn.ch>
- <CAOf5uwkr0Rmb_x0U88JAfozCQpkOoFOZ-V7BNteVZfcnNQF-Lw@mail.gmail.com>
- <9f6b520c-203d-48cc-8bef-18959672052c@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TMSLhF0l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B567C4CEF1;
+	Wed, 28 Jan 2026 22:19:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769638741;
+	bh=gBT9XbpdFRENZ9OMyR4gcVKqV611QABoR8gHTQ3K7pQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=TMSLhF0lkCg7C/3SWI9HTo9jnVY+frLEoVQdulBpSmcBQQDz30hzTY9Un+as5JUkQ
+	 cW7135FV1Pw0EjSpUopfau7di5wdx+PRy1wcOJaoYmmSiwG5BONwioNq1TuTC773Wz
+	 ro3E+iVy9eLqGJGnVedHdSLba/Cuzcz9CEQeFOTK5EifsHgoTjBkrmk7AdopJ7zlC3
+	 ozs7wXzICIMOnH7PA0vrm4sS9tVl8taJKvB2M259fBwCAS6vb2OlR0u4QxqqK/eSIF
+	 MmswocJjPanPOafrC0yVyYeUefRpPNf+hQYE4b7teMdO0OcCnY6JiR+U0YT4eQavIi
+	 lM4gq4lWgfAZw==
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, Marek Vasut <marex@nabladev.com>
+Cc: Fedor Ross <fedor.ross@ifm.com>, Frank Li <Frank.Li@nxp.com>, 
+ imx@lists.linux.dev, linux-kernel@vger.kernel.org
+In-Reply-To: <20260127222353.1452003-1-marex@nabladev.com>
+References: <20260127222353.1452003-1-marex@nabladev.com>
+Subject: Re: [PATCH] spi: spi-fsl-lpspi: Handle clock polarity and phase
+Message-Id: <176963874010.3217393.15887158473398999292.b4-ty@kernel.org>
+Date: Wed, 28 Jan 2026 22:19:00 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9f6b520c-203d-48cc-8bef-18959672052c@lunn.ch>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
-On Wed, Jan 28, 2026 at 10:45:32PM +0100, Andrew Lunn wrote:
-> On Wed, Jan 28, 2026 at 10:04:03PM +0100, Michael Nazzareno Trimarchi wrote:
-> > Hi
-> > 
-> > On Wed, Jan 28, 2026 at 9:51 PM Andrew Lunn <andrew@lunn.ch> wrote:
-> > >
-> > > > The issue was with the out-of-band reset coming from the FEC driver
-> > > > which doesn't honor the phy state-machine.
-> > >
-> > > Could you explain this is more details. Is the FEC doing something
-> > > wrong?
-> > 
-> > The fact that the phy should be reset when the clk is provided to it, is not
-> > connected at all with the fec. I think that fec_main does not register itself
-> > as clock provider, You "should" define the phy to have a clock if this is needed
-> > during the restoration and we should not give any "magic" at controller level.
+On Tue, 27 Jan 2026 23:23:22 +0100, Marek Vasut wrote:
+> The LPSPI driver currently does not support setting SPI bus clock
+> polarity and phase, add support for it.
 > 
-> Do we know which clock the PHY is consuming?
+> It is important to configure correct initial clock polarity and phase
+> before the GPIO chipselect toggles, otherwise a chip attached to the
+> bus might recognize the first change of clock signal as the first
+> clock cycle and get confused.
 > 
-> The FEC has code for the clock "enet_out" which it enables and
-> disables. If the PHY is also consuming this clock, we could also make
-> it a consumer. The CCF reference counts enables/disables of clocks, so
-> if the PHY enables it, the MAC won't be able to disable it.
+> [...]
 
-As I've just mentioned earlier in this thread, there seems to be nothing
-special about the LAN8710-like PHYs requiring their XTAL clock to be
-running for reset to be functional. The same is true of AR8035 used
-on i.MX6 SolidRun platforms, and Marvell 88E151x PHYs that I've looked
-at. I would suggest that, in general, _all_ PHYs require their XTAL
-clock to be running.
+Applied to
 
-Therefore, this is not a work of the PHY at all.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-It is a quirk of the board design to provide the PHY's XTAL clock from
-the SoC, and this _seems_ to be common with FEC based systems, probably
-because there's an easy way to get the clock from the FEC, thus saving
-the cost of a crystal.
+Thanks!
 
-I stated how SolidRun handles this quirk entirely in uboot so the kernel
-doesn't have to care about this at all, and the kernel doesn't get to
-even know that the PHY has a reset GPIO.
+[1/1] spi: spi-fsl-lpspi: Handle clock polarity and phase
+      commit: 7ae4d097b752d77c41dd26068d92ef34e9c66be9
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
