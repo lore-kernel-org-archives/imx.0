@@ -1,160 +1,181 @@
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79738359F98
-	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 13:33:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769607226; cv=pass; b=tudv5HJAR1gf14tVz+20hVfcW7+hoqDxWyOyGPEFuwou5Ccuy8lxtc0QWzQJFVc+NOXXJ4GbjKuYpUbkLl01FiK+AZ47+K9YAJvXXKCyn2cOv2JlH8LVuxrHnA0aDt/39YuzlOXPGfjH3gDXxZtyWpi/xAVbx5vHEkH5/lnJrE0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769607226; c=relaxed/simple;
-	bh=Tms/8Efk1qgX7+qJzYnVrMSSHmsH1dYEU1+2Vwk/mSc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sdAjySYphL9vM2TvkXngUwWcZjakQETGLPgM7qsOUwiQwrp7Dc/7COZrhYcT5JB7ilDemchz5tjdIEDkg2QyR9t7TJcF1Ytq1d7kTmc4BOnVflnvdMbC/zwK0deeDl7OiUNo3wbwlX0yX4yuYCwu8PgE84ctGbZe7xv8e+TxOP0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=aJVO21Jc; arc=pass smtp.client-ip=74.125.82.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABAE35EDD2
+	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 13:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769608080; cv=none; b=dvym9+o1uIVQzhMHCv4fvTk+egewW+0nflRuZMkQ5YkWj1B7hMflch8ZYGLOMCwPTMmJJG3PgpYRTHNLPCbEIo6KUcFFNdDxtiJAHmstFjWmAXu9DYonybne9QTzht8EjPGvoWln91YpQYu5ytir7pMgbe2YNX2WWtWifueP+bw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769608080; c=relaxed/simple;
+	bh=/xpe0WZiMxl/GqX7qwhgJXFWRG2PG+0p92lLjw6JC0w=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=M/dpOqaGhJNaVrAVkigwoXiWJHr6NBm/zE834RUND9CCrI80Rik+/bDwXdeNNY2SIIa5dM1ksvlshjEbbas7W7m5Y+wIfPv9mu/xz1kSXWLc51XSzF/YcJiZqTzm5oKdyHdZJQ3S3jBQbj4ETS1NZcP5HIZl8eC65DZjbkXtAwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Q8YXT+Qe; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CaAr8U7W; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="aJVO21Jc"
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2b720e4dcb4so7353108eec.0
-        for <imx@lists.linux.dev>; Wed, 28 Jan 2026 05:33:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769607217; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KggR5gmPJryxXVdzcfGE3K+KHIYvYXp6ZKcgQvEZ5zp1q1gybuncR1UDzDtBK7D/hB
-         JkJLYOWW3isorbVbMBTgyx6lVwgVl2fPLBIhL+LP74AqyU/eIxdpJgatdHrFGNJfjG8M
-         0QDYmtLXP9zYeVzmrpmw44wprLziJkFCCC7Myd67wPMWarb/9tZNpKSaKXRcF9o2A6zb
-         Mw1VNxMGfvj1sSb4vr8eby0k2c1bQeq+W/M3Y71cr/15APStajiawUzyICpDcGWWH1Nw
-         FEjEkVI5rGuFhAHuZwfp/D9Eivw2fEt6cXQAVhl9P6nACW4PMsJaKp/Hr63ty64EMT0a
-         fSYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RA9TE55EWKKZ97sJJnOMdvR9v+h2t26GBU4KXan8Iws=;
-        fh=3Y9O8mv9XUFBSGfQX+E4VO+1stvlUdYBCFAVkiwsdGc=;
-        b=IjQ71mAkbOdSjr3+LVjtZAcnasxQRmtPlJ/3hNZnvvdkBhzQmVNa/1GGHw3WwlyRBx
-         4KtcQwzLM3iTJhkoZnbUTFHHvh7hU64MPsUsHhlGKZP1Mj+g46mTD2bIUkIJTq6GDDjh
-         35LD5crXYYNT3Yk3SWFpx45IMqqXyoVYKgqYSbIwnmV6xUM3/ta3FgkKVcSx2unGuUFk
-         AZaxNuj2tpc03Zct4SdxUNFYmHnM01pZkuBFZKQNDHfYWP5bOJB9H/dZEBgLAzqRYk8C
-         ZSMe1lcCSjEJauer6z6oF7zTJc4gRt3fB/Ib4FJt6CnVbGT0HQMr1TUIEoSpwxl70Hwt
-         9UJA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Q8YXT+Qe";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CaAr8U7W"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60S938JL3247337
+	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 13:47:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	wGMo0m1R2L9wwbTRPxCXUEgVOcQ6/Yw3wU/Y91P03Q8=; b=Q8YXT+QeY4P06cQc
+	N/4uFGZiGouljnPWHr1Fr80N2Kqf0k01NRQuAeasyWrFpvFyzmVTsMc4hfLHsGjS
+	kfY8MdWdpwixcVYhsvoE6Ep5Af5lLrcA1cGYd+LMnvOVUQGEk/czRmf2Q/B0FwRH
+	2/daLG1us83CzfFERdEu+40Ibnf2W50lVoPtqVArBInciktD25oQBR3L95U8pGqm
+	D67ea37JPV3Cmzggkv0n3HQhYkjW+M29AnE5rPZchNY5DUoeHoCdBv8kAO0MZ4CG
+	7mWpd7mI830gRfF4o1taUUhf6H2YBqL4txuVAJKrcCrGFRP5M23b3CiY+Yi08O1e
+	oZCHGA==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bydfk1dwj-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 13:47:58 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2a755a780caso7147935ad.0
+        for <imx@lists.linux.dev>; Wed, 28 Jan 2026 05:47:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1769607217; x=1770212017; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=oss.qualcomm.com; s=google; t=1769608077; x=1770212877; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RA9TE55EWKKZ97sJJnOMdvR9v+h2t26GBU4KXan8Iws=;
-        b=aJVO21Jc2Ti8aMvz088RPOJA5p4g42z20SMywfLDYndxVBPFAu6a813yedtQ9KscqP
-         I59MUVhZlvSsZ/j5XlRFxpvb9A35fyTqHER54Kok8eJ2riq7IZDZLJhv52lvbAxSKFg2
-         7wjzEjBI9nkQ5F+CJ0Awniyn7TYA43yZZ1cbE=
+        bh=wGMo0m1R2L9wwbTRPxCXUEgVOcQ6/Yw3wU/Y91P03Q8=;
+        b=CaAr8U7WPkQz8vMfuCWSirjVOAZ5qmFDxcUzvGhSQvIrawTT0Jo1NqAK90Ms8vyK1h
+         E/2jDMF2nJFt/6uKtBG3qQDywWsCV868/fcT3LlCaFxumrXcs19olpe1yQrmwmJGfwyE
+         OC6eXkUTfEEMGtl8nFNXU+UZspH4tDuh+wwYTKbTECUhThvTfVBMCYCerxZh/Ixyclpf
+         eG6ZbwVoclV4TRM9USg2K/DI1mXegsqg97PZvQ/9ps2SzS6ztsSbp11rE5LSDsN3UDrP
+         pfx8fA3suCQkbwO8UTXm5WX/oEZ9X8VQByThAzSsx0qAZGski7VQMyiV/h+W/MnAtsar
+         uhWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769607217; x=1770212017;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1769608077; x=1770212877;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=RA9TE55EWKKZ97sJJnOMdvR9v+h2t26GBU4KXan8Iws=;
-        b=QlhIJz8W2QhftLaIGMcy0mu25coH5L3X8otZCKu0rYtKBw4WMdKOPz06Nx/6qay+Ey
-         h4+bbB0LCMtlB8ESjwRjJvwjkWNKrlvWITvPC7cuxfkBgrvHujYpF5fvZgvDmN534P0s
-         nGvNXVtIPvv15laYd9QV97wuZ3+8AdBDrUX11ISp6f6XSHyoOenyNvScaiIgsY7KdDXh
-         R7DdraFJFL62Ik/8oU23IHM1pk/6mQaoFezUuHv1YyihPt6NQ8VAUEoMRgX++5yeBAtd
-         Dm5acSdQ26mt3WFzcDrNQtLxTD6EqicTkCaXHu6b+/bOn3picpA0lCvqgt71T0795UvP
-         rUPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW5VFdatCFwGAuBIcWTQNMzQ/WpfdgzcTGEymh62G1VAF3Wr4tu9ORtQXKoWZAihCm+YzM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzPTHEV+ad/uC2U+pCh/tlEsY5N+SU1kS4r1KS8oxCxrXZkXBUW
-	2Bh/tBP3/U+Ay68lYULxccIqWbY/In4upQTyGXHgxkpXsu9WmevQFmo8ZLy+xo3ODgJXWVpjtc4
-	4biN7/1njiptQaNsN3tZtol7DdHjd5oO734c3Y7bg2Q==
-X-Gm-Gg: AZuq6aIB/w8wMrBt7kE0Tw4+H/yQQ8lzI18Kn+3ajQgzAJ5mwqqyxkVz8MKdB6suNL/
-	pPuO8tj/1sqYUnZHVje3rdTmTtMNRw0/AiiVr36h3oxEwwuugpVV5xj4ZteBADitv/EtGHjzqyt
-	rB+zcZrli+Qf62fpV353r09W98WxQWSdJ2WCo0rnNkTcvGlbVpUz37XLLeJcyiVQhxeavM+fIuF
-	TbHJMFZ7iD08ISrb5KiwK63QgXpMMj6h2z9wAHEpj8O7s1C3gQ5+xtKBxSDU+ljlnPtz9kqNXpp
-	dNgz+6mM0ovWIjZk68ZO7n73Ug==
-X-Received: by 2002:a05:7300:2317:b0:2b7:265d:9eb3 with SMTP id
- 5a478bee46e88-2b78da6e6ddmr3049145eec.41.1769607217033; Wed, 28 Jan 2026
- 05:33:37 -0800 (PST)
+        bh=wGMo0m1R2L9wwbTRPxCXUEgVOcQ6/Yw3wU/Y91P03Q8=;
+        b=dlsYrzeVx8kLhY0z0nqAWGTkLJ7pBYVoyRKzUCbLhuWNPbh3NAe+2GOdXyHMfFWVeF
+         caeTEv1Wfm4qN3GFB3GWB+sCWyRYuk1GKe4Rrc+XA48nwKkKazG/IWVItrW47oQhJeUx
+         nDkkR7ctZ748t25P06RLbWsZes9MDjUiiz8aPOpuEII5zNAXpF8Yma2+6PcchajENc4F
+         5TZEx9bkNr8suj5wHEhslhvhpijs2Gzo2K4rXAhk/KZrgL7L4+sEQ7HnjVIkNjQ2YWiz
+         2jglvs1s2UCde4anXoUi8Wk7FYsQ+79PXmUSgTexM2eMPSriaaXoYdT29g6E3JJualgV
+         IT/w==
+X-Forwarded-Encrypted: i=1; AJvYcCVGNskezECDqtXtLZcqfuTSEpkJ8EQ7tNW+R+evHU5OtPl1SSPBWjKgyplaZWHI5PqJzqk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxVLBpJ1W9IMZ40B1lARxQ0vpsBZtRrNh2VkPjIJp4qc55uypuP
+	vBkuQ6V1zjoxdcKWp08LS2xH0KoqRLQ4TdPJCQ6AAMnXwBShAobKbnr3A1WwHs36v0L8vihSze3
+	XY2s+EgD5LEphk+8oGFMLjLRuvTpIH/7tlKkNsHVrtLe6M1c+1VBLwDI=
+X-Gm-Gg: AZuq6aKAoBzCJJj8pxvKMrLgaMJrBj+Hhr8FnPQ/7qEhYpyZtm/Ohdxaho1hvONbCX7
+	05fQnW6+JZixUrWnVq+3ff5qdAokBJVQow+nW8mujgataMiG0m+eQYzGMZ5AIKchcRvlAAHDCLU
+	afxEaF9Ff0ekrJXD4LLYfof0795vJOe9JkX15vp1aoeSMl3khd2qNtsQG7BGVPeK0Ve+oyl3WCT
+	vCWv3Fb/3BlSoF6GvGNaHqXiI7r7pyG1XvZIpgj4R2YrjJhdOKcXXK0mJfVa4/NZ7bXhxrJYdWK
+	M/PAMI/rzNgZ/3akPwQP/cKQNR5dPDfRWJIYM4QduaqJ5E6iZdpPg9rN97wnONjHqSWKvfiZuKV
+	u/zdBcm4=
+X-Received: by 2002:a17:902:f60b:b0:298:45e5:54a4 with SMTP id d9443c01a7336-2a87120f746mr50144085ad.1.1769608076703;
+        Wed, 28 Jan 2026 05:47:56 -0800 (PST)
+X-Received: by 2002:a17:902:f60b:b0:298:45e5:54a4 with SMTP id d9443c01a7336-2a87120f746mr50143365ad.1.1769608076044;
+        Wed, 28 Jan 2026 05:47:56 -0800 (PST)
+Received: from [192.168.1.102] ([120.60.55.34])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b4c45c4sm23790595ad.62.2026.01.28.05.47.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 05:47:55 -0800 (PST)
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+X-Google-Original-From: Manivannan Sadhasivam <mani@kernel.org>
+To: jingoohan1@gmail.com, lpieralisi@kernel.org, kwilczynski@kernel.org,
+        robh@kernel.org, bhelgaas@google.com, cassel@kernel.org,
+        Frank.Li@nxp.com, Koichiro Den <den@valinux.co.jp>
+Cc: vigneshr@ti.com, s-vadapalli@ti.com, hongxing.zhu@nxp.com,
+        l.stach@pengutronix.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+        kernel@pengutronix.de, festevam@gmail.com, minghuan.Lian@nxp.com,
+        mingkai.hu@nxp.com, roy.zang@nxp.com, jesper.nilsson@axis.com,
+        heiko@sntech.de, srikanth.thokala@intel.com,
+        marek.vasut+renesas@gmail.com, yoshihiro.shimoda.uh@renesas.com,
+        geert+renesas@glider.be, magnus.damm@gmail.com,
+        christian.bruel@foss.st.com, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@foss.st.com, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, hayashi.kunihiko@socionext.com,
+        mhiramat@kernel.org, kishon@kernel.org, jirislaby@kernel.org,
+        rongqianfeng@vivo.com, 18255117159@163.com, shawn.lin@rock-chips.com,
+        nicolas.frattaroli@collabora.com, linux.amoon@gmail.com,
+        vidyas@nvidia.com, shuah@kernel.org, linux-omap@vger.kernel.org,
+        linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@axis.com,
+        linux-rockchip@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com, linux-tegra@vger.kernel.org,
+        linux-kselftest@vger.kernel.org
+In-Reply-To: <20260124145012.2794108-1-den@valinux.co.jp>
+References: <20260124145012.2794108-1-den@valinux.co.jp>
+Subject: Re: [PATCH v10 0/8] PCI: endpoint: BAR subrange mapping support
+Message-Id: <176960806032.58847.15614322725355216575.b4-ty@kernel.org>
+Date: Wed, 28 Jan 2026 19:17:40 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260128094644.302313-1-michael@amarulasolutions.com> <13d1018c-d9aa-4838-8bb3-35c509cd3e35@lunn.ch>
-In-Reply-To: <13d1018c-d9aa-4838-8bb3-35c509cd3e35@lunn.ch>
-From: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
-Date: Wed, 28 Jan 2026 14:33:24 +0100
-X-Gm-Features: AZwV_Qjd1qcCWoaexPQigCWo-zva9shEhgNv_ttVzyAO-FctiTwx_WG9daQpEWc
-Message-ID: <CAOf5uwm30=AVhqm67yz8Y5TkX9FWdxizTevCGSeaQuJS0KqtNA@mail.gmail.com>
-Subject: Re: [RFC PATCH] net: phy: integrate reset-after-clock quirk into phy_init_hw
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"open list:FREESCALE IMX / MXC FEC DRIVER" <imx@lists.linux.dev>, 
-	"open list:FREESCALE IMX / MXC FEC DRIVER" <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi Andrew
-
-On Wed, Jan 28, 2026 at 2:25=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Wed, Jan 28, 2026 at 10:46:41AM +0100, Michael Trimarchi wrote:
-> > The current implementation of phy_reset_after_clk_enable requires MAC d=
-rivers
-> > (like fec_main.c) to manually track PHY probing states and trigger rese=
-ts
-> > at specific points in their clock management flow and was created just =
-for a SoC
-> > vendor.
->
-> We try to keep workarounds for specific SoC vendors out of the core,
-> when possible. It just makes the core more complex for an edge case
-> which most people don't care about. It is better to hide the
-> complexity away in the driver which needs it.
-
-We should not merge things in the core that are for one Soc and
-after d65af21842f8a7821fc3b28dc043c2f92b2b312c, I need to anyway to do:
-
-net: phy: smsc: Fix functionality of lan8710 in combination with NXP fec
-
-Revert "net: phy: smsc: LAN8710/20: remove PHY_RST_AFTER_CLK_EN flag"
-d65af21842
-
-The way the reset is sent using phy library is not compatible with
-the phy reset logic. For now we need to revert this patch to all
-the phy to go back working
-
-Change-Id: Ic1b0fde04188c7cbfd8c94f9fa1a26d058e07d1d
-Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
-
->
-> > This leads to fragile code in the Ethernet driver, involving complex
-> > checks to see if the PHY device is bound.
->
-> Have you found an actual issue with the code in the driver?
-
-Yes, and I think that the flag should be used properly in the state
-machine of the phy and not
-in the fec. Is possible that is the only one SoC has this problem?
-
-Michael
-
->
->      Andrew
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI4MDExMyBTYWx0ZWRfX7xSJPOo6shOp
+ pjgo4a7doDQupFge3oTBaVrgCxDq1c2JFy7W6q59rHBDR3I/SW36kFFcqWIRl75VK8b8JDUOAPG
+ Xlzt5lIXuQce9D8X/qMw+t6MuvpTlX9U+7XB9rMOegcTcEWvsXnrQRu3ckbQ9Oqkjock1gBEpz5
+ OKf1Quay25HB0DVYTDTtD66bVDIUiyRL8XArsme2MSIZb6Qq4aI4PqstAhL03dOSajcvix56zxh
+ JsVESqNrqaTrC7bCyeuVOgQgi4lgQ1U/BIF79OcU2q3fghBraSIvKkN4RsBEzmuVSyHjALzocHP
+ wZHEDWq8H20jC7dF9BhrV6T0HCbrvzA1YCoam8k6gTrUFM+SihjCD7xuVfp88Zl30db9QgdQC+x
+ OIrF3AMsxuSSmbGE04suhDp5ox/mSkrOvd13tbRsEpxIEiCUK8/W5zC/P84cVMU6QXbvZVj1YgS
+ QhSo1ixIN+f89ItcOaw==
+X-Authority-Analysis: v=2.4 cv=XfWEDY55 c=1 sm=1 tr=0 ts=697a138e cx=c_pps
+ a=cmESyDAEBpBGqyK7t0alAg==:117 a=F3mjE3T3/ow0zpRzCzjSvA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=Ux4BfgyPd-WidXiTcjQA:9
+ a=QEXdDO2ut3YA:10 a=1OuFwYUASf3TG4hYMiVC:22
+X-Proofpoint-GUID: brgOKKPe0g1sbW_I2WfkL_GtS4M8q0Nq
+X-Proofpoint-ORIG-GUID: brgOKKPe0g1sbW_I2WfkL_GtS4M8q0Nq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-01-28_02,2026-01-28_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1015 impostorscore=0 phishscore=0 priorityscore=1501
+ suspectscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601280113
 
 
+On Sat, 24 Jan 2026 23:50:04 +0900, Koichiro Den wrote:
+> This series proposes support for mapping subranges within a PCIe endpoint
+> BAR and enables controllers to program inbound address translation for
+> those subranges.
+> 
+> Note: This series is a spin-off from a larger RFC series:
+>       https://lore.kernel.org/all/20260118135440.1958279-1-den@valinux.co.jp/
+>       The first user is the pci-endpoint-test, and the real user will
+>       likely be epf-vntb for Remote eDMA-backed NTB transport, demonstrated
+>       in that RFC series.
+> 
+> [...]
 
---=20
-Michael Nazzareno Trimarchi
-Co-Founder & Chief Executive Officer
-M. +39 347 913 2170
-michael@amarulasolutions.com
-__________________________________
+Applied, thanks!
 
-Amarula Solutions BV
-Joop Geesinkweg 125, 1114 AB, Amsterdam, NL
-T. +31 (0)85 111 9172
-info@amarulasolutions.com
-www.amarulasolutions.com
+[1/8] PCI: endpoint: Add dynamic_inbound_mapping EPC feature
+      commit: 06a81c5940e46cc7bddee28f16bdd29a12a76344
+[2/8] PCI: endpoint: Add BAR subrange mapping support
+      commit: 31fb95400451040050361e22ff480476964280f0
+[3/8] PCI: dwc: Advertise dynamic inbound mapping support
+      commit: c0f1506f63546308e894469ceb0f1fadbdf9d2f9
+[4/8] PCI: dwc: ep: Support BAR subrange inbound mapping via Address Match Mode iATU
+      commit: cfbc98dbf44d52738976f592f30c2ca6bb282939
+[5/8] Documentation: PCI: endpoint: Clarify pci_epc_set_bar() usage
+      commit: 7d857a3f517df4591d4c85832c4ce5aeb0ddc038
+[6/8] PCI: endpoint: pci-epf-test: Add BAR subrange mapping test support
+      commit: 530e3701a81b228c369261798ce1b7f63f5d6c08
+[7/8] misc: pci_endpoint_test: Add BAR subrange mapping test case
+      commit: 622e1ad5e49c6949dd8c97d71f609bd17cfb8813
+[8/8] selftests: pci_endpoint: Add BAR subrange mapping test case
+      commit: 0ebf8e7943e01b2c38c199228f51adbb89c02425
+
+Best regards,
+-- 
+Manivannan Sadhasivam <mani@kernel.org>
+
