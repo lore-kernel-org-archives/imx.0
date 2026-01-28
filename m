@@ -1,204 +1,264 @@
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E20332EA5
-	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 21:21:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769635267; cv=pass; b=pfh+tHe6UyAlPS7U4L6YiBoMNC7nXs2P1+rcqQPOYBMkbEDnraVpjDjhWFkGEXt0tL7KZNWRjPZSOaccVxBj65DAWyCltYmUz5lduCBqhdEf6RYSsUtOpMMGIa/Poi3RF0MqiwcoSrb7kCpwo4X/2fBmmpWLn99/Jdm29yDIvpA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769635267; c=relaxed/simple;
-	bh=WQkN8WEZ2ANY9z3rxIK0d6tV7FybPoKAvZYM8kOVJpA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uQ7DAIycpvpGg+65q17QlfvkHYIVd6uVFyOT8Nz//0sTdia59bMpU5QDk1abAi3R2uiOOYoOAtF+I3voBazym34euUa1mspBAgcThTCs+am2+bV9eYWRCJO53wcwnfVO3bRTtnraEflEERZ4IivEl4tLiQV+rQjmIqkolIbmV7w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=L7eE62P2; arc=pass smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83083161A8
+	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 21:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769636503; cv=none; b=UpN3kQ+uEwDJzgm/idtiNhOAicht3dV7nhdHUtH6yE+bi5r5wdb7S3sTSa+Cf+XYb/Blro9NTpNCrTgyP0Foy5wNnhyb3BBNFjPUp0RikeI0DF+uphf1WNnOEct2o+HTcZ0GCc+0qw2FliHKC9yBfUX7x1s+vij61J35/daYuDA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769636503; c=relaxed/simple;
+	bh=hoImD/dtQZQ1KTNyWAO0c7LqLNeONtsEuNoErTU7X+Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GdU+tdFKc71EB6/mY76DB4QQjjX4mxVmAh19C9rDflVIn8naOoB8hLZ60OqW8iZLWrMEpsyaZf/VY4Rl1CbhxjIanvzikaoFAdHPMIssX6EOEfiTgQt9N4dVBsed4cyuV1N5kuYCA8zYuhgbxU+ApgWNcxSa3gSHnJqBcto3l7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=JLCusINL; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="L7eE62P2"
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2b70abe3417so861211eec.0
-        for <imx@lists.linux.dev>; Wed, 28 Jan 2026 13:21:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769635265; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KQNiaj7Ibmax2cCqfA8Npo7DimWE4BsXUvqlZpDXp8wCH+4YF7gHp2LeYByTT9Zf8C
-         nYX1nW3GMeZ8pkI5pf3vYGRQvNvTW5cMjTO1hbvKIR8oL+KTJqyJsGIuDPTf2Shw8raX
-         gLvCLaYHnFB3Pdvp9fAMBkPq/BnH8bMr3GXvSD0WHPfp183PBdKG4i/ry6/isaLD0Cv1
-         oqQeKM8NVyUrkPenVQoA2R85quXqXdlpGmN/89OyjOG92y3xeE7w/AoNnSwRy2E2mNQg
-         LxJf+1yWfMv3DL83iL5MZpMBBjbj8bBci+a9W5x51oZdoHiQlddP2u0ZBO+L0eyd3rCe
-         Niew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=196fYB1ny++ckXPgc6Gd/2GIlKheTEW/DwwNpsiJguo=;
-        fh=qLaL1sOA728WS+4vEOME1u90emDiAVsO7EbfhGn8WjM=;
-        b=aOFKKL2jErJU+Ru80nrImRzMzrKaYfUQ6zKfPWbgCB0RYyJF3k34PEtS/4n9CPHD1+
-         UoCFOK1kXcI4TWyLlWXzvvn4O26yCPONdY781BpqUxUHZSj6j1ryYaUI1pGF/zMpnhcl
-         XeVcF3l5ha5W3W782GSjKC+AfSVlYyoNSoRavM9HxmX8xQDCtsuHHBRb980cH+Qlt5wA
-         aTpZzq2MGNqFjKlaMLM5BLcXeyQDmRsCD7/D9EgnXVvOphjc92B7tUXuH2CwU37s/Lp+
-         xcroXSxS2UShQadDbAIa+EpZlr4DnFRxvCZJ7Dum8aZPvRwZS4SC7/SkBWZa52+1hf0j
-         nmlg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1769635265; x=1770240065; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=196fYB1ny++ckXPgc6Gd/2GIlKheTEW/DwwNpsiJguo=;
-        b=L7eE62P2zq+C7n2VPdL8DlzzGYsx8EKPN6EVB62V7JyqGY/babeFkOBxkCnncTpOob
-         ldSV1zsnXM91KTPLh1lvWNdO+59E6JG6/03kGP8BbHy3MxkJds/5DstZU/K2oWON2bSa
-         NsGluWzxivDVwvRhBm6Ko2Ec204nGXMtEvgug=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769635265; x=1770240065;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=196fYB1ny++ckXPgc6Gd/2GIlKheTEW/DwwNpsiJguo=;
-        b=AznsWZ8kAyYsxem7wFnyNgcKlskj29S29zgSQg7qXVMTf3CzWFDFVbKmMy15iyHoG3
-         iDrO11kJohRgxy6Ng/g2YDFKA4tdBL3qviRK5+KUmxfzclSc9ZJiXKCN0sXChfXJeWDU
-         lAnq/Dk3CknonuflaEYhvyYfetpnB+I+v4ECFnmOFHkJR+00Tvd7cbwigGClku1Ck8QC
-         Z4lnf8lO39yvVLKymUEAPhaNDdGdrovo2B6/mgS6Lc1pqkOY6Xqw5Nzgjvo6D2En/eXF
-         NwOpZiOjXOGEAsdniZ/su/CEb8VLW8c0nfz469y9zUIgolJYYc/VUFDiMD/oYSZ7+2ME
-         FSHg==
-X-Forwarded-Encrypted: i=1; AJvYcCU4L3wi32HfsMVS1UFNTOlfxqaKLIG2Uvz4Pj07mILo/W5J0QJxQh7GzGRqxttPMrpTzM0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwfuxNRNOxHHhs5GzjUwoyBly4ozTn0Pwk+M8HNkwb2Bh3o8jho
-	whhSFRimDY1eVf3KGM3W2WHuMx3ol3NIERwoH+9mMnvxM4tT2O04SFqVhZ+81Bnvi31vpaXGek4
-	RitRPH6lTs0mcGUroyfaLZfGZL91n6ykAhDZXO6fIVw==
-X-Gm-Gg: AZuq6aICOs7blZ8RFb3phlVeYoM9zbdq7Yb8iQOcbB0Sit1X+JMpZ8mH7qM0imVPN4E
-	4fOUVJrW1aFLTB298xL0zbfXT4v2bJMkwzdsliEXCUHR9ux1qJ+KDw6/ui4V7w76ul5O1ALCuLT
-	nUUAjvltknNtjs+A91yIKaf6OYGn+xSsvevePtyXLfr7UV5xty4HRII1exlPfTYSvptmzQV+ODh
-	KGagJLMki/LArUuTjwQn5i5bsDjhMSVHYHPR+ca1/T4fV8rickP3MoOhhBMibRn+JJ0QQimpdsG
-	LmawRAuDKf28H1T1jhZKMfVaOQ==
-X-Received: by 2002:a05:7300:ad09:b0:2b7:3281:6c33 with SMTP id
- 5a478bee46e88-2b78d8d389fmr3828383eec.12.1769635264611; Wed, 28 Jan 2026
- 13:21:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="JLCusINL"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4f1bM53WPdz9tcL;
+	Wed, 28 Jan 2026 22:41:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1769636497;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cDIB0vB7AhOs2BLhO1BR5gGspK/qucCwKMUy1zrKhRM=;
+	b=JLCusINLF0xMJU0r42tPdKk3vsQCkFdrzletJCjCw88aVglZm7fCelyDbJNyWwSXm0xmiU
+	N7vtrt+wh7EV1bAGip9RrOtpBdUNXHmya3efrhFTZnGAPq92HUOOD4mM4m+J+LdF3WaYb+
+	NwlNoYrsTArjSvA9IqjoETarX9+XIixExQsxfJ9UMrCHckrs1h4i/8BhSvUxyvu/7C/b7v
+	734N5c4nm6ZexUE0JXKjKzPwL7TS4TwMGk7XTZ8BTTmf3RETmpf027xO+Jm8aR6J2KcOJr
+	7OnXoa+72psSiZ2mEroGSjuCxAI/eJDooclLpOehAj5jIqYfmmQeD6UGeZ6u0g==
+Date: Wed, 28 Jan 2026 22:41:25 +0100
+From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: festevam@gmail.com, linux-arm-kernel@lists.infradead.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, horms@kernel.org,
+ shawnguo@kernel.org, imx@lists.linux.dev, linux-kernel@vger.kernel.org,
+ conor+dt@kernel.org, devicetree@vger.kernel.org, wahrenst@gmx.net,
+ pabeni@redhat.com, davem@davemloft.net, netdev@vger.kernel.org,
+ richardcochran@gmail.com, edumazet@google.com, andrew+netdev@lunn.ch,
+ robh@kernel.org, krzk+dt@kernel.org, andrew@lunn.ch
+Subject: Re: [net-next,v20,2/7] net: mtip: The L2 switch driver for imx287
+Message-ID: <20260128224125.246bcf41@wsk>
+In-Reply-To: <20260128022549.4151341-1-kuba@kernel.org>
+References: <20260126103400.1683125-3-lukasz.majewski@mailbox.org>
+	<20260128022549.4151341-1-kuba@kernel.org>
+Organization: mailbox.org
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260128094644.302313-1-michael@amarulasolutions.com>
- <13d1018c-d9aa-4838-8bb3-35c509cd3e35@lunn.ch> <CAOf5uwm30=AVhqm67yz8Y5TkX9FWdxizTevCGSeaQuJS0KqtNA@mail.gmail.com>
- <aXoV-U-yqcDJj2vk@shell.armlinux.org.uk> <20260128202634.gqevi76o6wnf5xno@pengutronix.de>
- <fe9385a5-170f-474c-af8d-24bbfa5eb3ab@lunn.ch> <CAOf5uwkr0Rmb_x0U88JAfozCQpkOoFOZ-V7BNteVZfcnNQF-Lw@mail.gmail.com>
-In-Reply-To: <CAOf5uwkr0Rmb_x0U88JAfozCQpkOoFOZ-V7BNteVZfcnNQF-Lw@mail.gmail.com>
-From: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
-Date: Wed, 28 Jan 2026 22:20:53 +0100
-X-Gm-Features: AZwV_QiIFrADFNxzm5F2oW2aYAjM_EJ9TkrxZD9o4caIe8dShn0VnY7xFM5-uBY
-Message-ID: <CAOf5uwmzRfB-8qJPtgoCjV++TTTBawvifhuw_x08f=ehw6Rknw@mail.gmail.com>
-Subject: Re: [RFC PATCH] net: phy: integrate reset-after-clock quirk into phy_init_hw
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Marco Felsch <m.felsch@pengutronix.de>, 
-	"Russell King (Oracle)" <linux@armlinux.org.uk>, Wei Fang <wei.fang@nxp.com>, 
-	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, 
-	"open list:FREESCALE IMX / MXC FEC DRIVER" <imx@lists.linux.dev>, 
-	"open list:FREESCALE IMX / MXC FEC DRIVER" <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-MBO-RS-ID: aaf4d6ce372ae19696f
+X-MBO-RS-META: obpg57tttc6kknksryg9wmtuwgikhh91
 
-Hi
+Hi Jakub,
 
-On Wed, Jan 28, 2026 at 10:04=E2=80=AFPM Michael Nazzareno Trimarchi
-<michael@amarulasolutions.com> wrote:
->
-> Hi
->
-> On Wed, Jan 28, 2026 at 9:51=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrot=
-e:
-> >
-> > > The issue was with the out-of-band reset coming from the FEC driver
-> > > which doesn't honor the phy state-machine.
-> >
-> > Could you explain this is more details. Is the FEC doing something
-> > wrong?
->
-> The fact that the phy should be reset when the clk is provided to it, is =
-not
-> connected at all with the fec. I think that fec_main does not register it=
-self
-> as clock provider, You "should" define the phy to have a clock if this is=
- needed
-> during the restoration and we should not give any "magic" at controller l=
-evel.
->
-> * Marco * Your commit bedd8d78aba300860cec3f85d6ff549b3b7f2679 is clear
-> and I have tried to use it but if I remember the problem is the clock
-> is provided
-> by the ethernet controller.
+> This is an AI-generated review
 
-I have created this patch at that time but not solving it:
+AI is going to take the "Maintainer's" job :D
 
-panicking@panicking:~/work/wandh/distro/linux-wh$ git show
-bfe2e98b653637526213ba06dee92d2cf1f678b4
-commit bfe2e98b653637526213ba06dee92d2cf1f678b4
-Author: Michael Trimarchi <michael@amarulasolutions.com>
-Date:   Sat Aug 23 09:34:22 2025 +0200
+> of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+>=20
+> For local reproduction steps see
+> https://netdev-ai.bots.linux.dev/ai-local.html ---
+> net: mtip: The L2 switch driver for imx287
+>=20
+> This patch adds support for the More Than IP L2 switch embedded in the
+> imx287 SoC. It creates a two-port switch driver that can be used
+> interchangeably with the FEC driver.
+>=20
+> > diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c new file mode
+> > 100644 index 000000000000..03c5163d6508
+> > --- /dev/null
+> > +++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c =20
+>=20
+> [ ... ]
+>=20
+> > +static void mtip_netif_stop_queues(struct switch_enet_private *fep)
+> > +{
+> > +	for (int i =3D 0; i < SWITCH_EPORT_NUMBER; i++)
+> > +		netif_stop_queue(fep->ndev[0]); =20
+>                                       ^^^
+>=20
+> Should this be fep->ndev[i] instead of fep->ndev[0]? The loop iterates
+> with variable i but always uses index 0, so port 1's queue is never
+> stopped.
 
-    ARM: dts: imx6ull-mrmmi: Describe the Ethernet PHY clock
+Ech.... I will fix it.
 
-    From d65af21842f8 ("net: phy: smsc: LAN8710/20: remove
-PHY_RST_AFTER_CLK_EN flag"),
-    the lan phy is not always reset the correct way and let time to time ph=
-y
-    not configured.
+>=20
+> > +}
+> > +
+> > +static void mtip_netif_wake_queues(struct switch_enet_private *fep)
+> > +{
+> > +	for (int i =3D 0; i < SWITCH_EPORT_NUMBER; i++)
+> > +		netif_wake_queue(fep->ndev[0]); =20
+>                                       ^^^
+>=20
+> Same here - should this be fep->ndev[i]?
+>=20
 
-    Change-Id: I21549981bdca7581dc65acf06007136c24be5d56
-    Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+The same here.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-mrmmi.dtsi
-b/arch/arm/boot/dts/nxp/imx/imx6ull-mrmmi.dtsi
-index 03a870e317cd..0a1618ced6aa 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ull-mrmmi.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-mrmmi.dtsi
-@@ -237,6 +237,8 @@ mdio {
-                ethphy0: ethernet-phy@0 {
-                        compatible =3D "ethernet-phy-ieee802.3-c22";
-                        reg =3D <0>;
-+                       clocks =3D <&clks IMX6UL_CLK_ENET_REF>;
-+                       clock-names =3D "rmii-ref";
-                        reset-gpios =3D <&gpio5 9 GPIO_ACTIVE_LOW>;
-                        reset-assert-us =3D <4000>;
-                        reset-deassert-us =3D <4000>;
+> > +} =20
+>=20
+> [ ... ]
+>=20
+> > +static int mtip_mii_probe(struct net_device *dev)
+> > +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	struct phy_device *phy_dev =3D NULL;
+> > +	int port_idx =3D priv->portnum - 1;
+> > +
+> > +	if (fep->phy_np[port_idx]) {
+> > +		phy_dev =3D of_phy_connect(dev,
+> > fep->phy_np[port_idx],
+> > +					 &mtip_adjust_link, 0,
+> > +
+> > fep->phy_interface[port_idx]);
+> > +		if (!phy_dev) {
+> > +			netdev_err(dev, "Unable to connect to
+> > phy\n");
+> > +			return -ENODEV;
+> > +		}
+> > +	}
+> > +
+> > +	phy_set_max_speed(phy_dev, 100); =20
+>                           ^^^^^^^
+>=20
+> If fep->phy_np[port_idx] is NULL (no phy-handle in DT for this port),
+> the if block is skipped and phy_dev remains NULL. Can this cause a
+> NULL pointer dereference in phy_set_max_speed()?
 
-Michael
+No. The mtip_mii_probe() is only called in mtip_open(), which is called
+only when netdevice's DT node is correctly parsed in the
+mtip_sw_probe().
 
->
-> Michael
->
->
-> >
-> >         Andrew
->
->
->
-> --
-> Michael Nazzareno Trimarchi
-> Co-Founder & Chief Executive Officer
-> M. +39 347 913 2170
-> michael@amarulasolutions.com
-> __________________________________
->
-> Amarula Solutions BV
-> Joop Geesinkweg 125, 1114 AB, Amsterdam, NL
-> T. +31 (0)85 111 9172
-> info@amarulasolutions.com
-> www.amarulasolutions.com
+>=20
+> > +	fep->phy_dev[port_idx] =3D phy_dev; =20
+>=20
+> [ ... ]
+>=20
+> > +static int mtip_parse_of(struct switch_enet_private *fep,
+> > +			 struct device_node *np)
+> > +{
+> > +	struct device_node *p;
+> > +	unsigned int port_num;
+> > +	int ret =3D 0;
+> > +
+> > +	p =3D of_get_child_by_name(np, "ethernet-ports");
+> > +
+> > +	for_each_available_child_of_node_scoped(p, port) {
+> > +		if (of_property_read_u32(port, "reg", &port_num))
+> > +			continue;
+> > +
+> > +		if (port_num > SWITCH_EPORT_NUMBER) { =20
+>                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>=20
+> This only validates the upper bound. If the device tree contains
+> reg =3D <0>, would fep->mac[port_num - 1] access fep->mac[-1]? Perhaps
+> the check should also verify port_num is at least 1?
+>=20
 
+In the:
+./Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
 
+one can have only ethernet-ports set to [12].
+
+In the current tree - some switches start numbering from 0, other from
+1.
+
+I would opt for keeping things as they are now...
+
+> > +			dev_err(&fep->pdev->dev,
+> > +				"%s: The switch supports up to %d
+> > ports!\n",
+> > +				__func__, SWITCH_EPORT_NUMBER);
+> > +			goto of_get_err;
+> > +		}
+> > +
+> > +		fep->n_ports =3D port_num;
+> > +		ret =3D of_get_mac_address(port, &fep->mac[port_num
+> > - 1][0]); =20
+>=20
+> [ ... ]
+>=20
+> > +	ret =3D mtip_mii_init(fep, pdev);
+> > +	if (ret) {
+> > +		dev_err(&pdev->dev, "%s: Cannot init phy bus
+> > (%d)!\n", __func__,
+> > +			ret);
+> > +		goto dma_free_coherent_memory;
+> > +	}
+> > +
+> > +	ret =3D mtip_ndev_init(fep, pdev);
+> > +	if (ret) {
+> > +		dev_err(&pdev->dev, "%s: Failed to create virtual
+> > ndev (%d)\n",
+> > +			__func__, ret);
+> > +		goto mdiobus_free_memory;
+> > +	} =20
+>=20
+> [ ... ]
+>=20
+> > + mdiobus_free_memory:
+> > +	mdiobus_free(fep->mii_bus); =20
+>=20
+> mtip_mii_init() calls of_mdiobus_register() which registers the bus.
+> Should mdiobus_unregister() be called here before mdiobus_free()?
+> Compare with mtip_mii_remove() which does call mdiobus_unregister().
+>=20
+
++1
+
+The mdiobus_unregister() is missing.
+
+I will add it.
+
+> > + dma_free_coherent_memory:
+> > +	dma_free_coherent(&fep->pdev->dev, PAGE_SIZE,
+> > fep->rx_bd_base,
+> > +			  fep->bd_dma);
+> > +	fep->rx_bd_base =3D NULL;
+> > +	fep->tx_bd_base =3D NULL;
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static void mtip_sw_remove(struct platform_device *pdev)
+> > +{
+> > +	struct switch_enet_private *fep =3D
+> > platform_get_drvdata(pdev); +
+> > +	mtip_ndev_cleanup(fep);
+> > +
+> > +	mtip_mii_remove(fep);
+> > +
+> > +	timer_delete_sync(&fep->timer_mgnt);
+> > +	platform_set_drvdata(pdev, NULL);
+> > +} =20
+>=20
+> mtip_sw_probe() allocates DMA memory with dma_alloc_coherent() in
+> mtip_switch_dma_init(), but mtip_sw_remove() does not appear to free
+> it. Is this a memory leak on driver removal?
+
+Yes. The dma_free_coherent() is missing.
+
+I will add it for v21.
 
 --=20
-Michael Nazzareno Trimarchi
-Co-Founder & Chief Executive Officer
-M. +39 347 913 2170
-michael@amarulasolutions.com
-__________________________________
+Best regards,
 
-Amarula Solutions BV
-Joop Geesinkweg 125, 1114 AB, Amsterdam, NL
-T. +31 (0)85 111 9172
-info@amarulasolutions.com
-www.amarulasolutions.com
+=C5=81ukasz Majewski
