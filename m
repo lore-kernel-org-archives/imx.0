@@ -1,63 +1,63 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04FF1D86DC
-	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 05:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4AE2874FA
+	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 05:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769576759; cv=none; b=ikkXfOv/lyTZGbXXjDDN3OOmIN++GGKXcJELRLv4VlcfVruYjzatCcPER4Sa2GTMdPkmp7q1vUou19VTNjuWeb41hYFiQdf7LEecv+5LNz/4MtwEdR7Svq3bRZO40d3dZHir+nFm2AlV4CtkTf5ROGsCjP8DNBA9z+PF4PnDucc=
+	t=1769576764; cv=none; b=pwpL5nyHIta89+WeseoZhDt2RhLYzU6PYehi8MghZLs4TMgQ+4/mXc4ATcwNJuSVcbJ9gM76ThcF75vTDDT7xZ1Xw4di+Ihp9Wi4DCBSKFycZCiDxMuXW5DsQ/PQk++9WShFJQhp5Fhdvilr6qk/yCbJ7d/j2yc0y/qTW0mjAlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769576759; c=relaxed/simple;
-	bh=Lzp1fwqvRTTLSnLUD4tRHtiiMaXExdhwpaE3ZrpzMSQ=;
+	s=arc-20240116; t=1769576764; c=relaxed/simple;
+	bh=oVvyqYd4qWPHGv5pGoRjzKPFmVfR/DQ8l8BxnYcGVUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQeaAQ9quKMHfE53On8hDVKr5tSXXBzoNgp0pzixn3BJudeho6rlAcUyNFMMdkwCAlVR39jc9TvVrwr70QvsNUsWTtw91EleA6d8vbRp70v5s2XG47ZWl/Xd8GSfll1L3gtcqeF4QDa7lXo5Ul/BARfZJIrCT3iwRybwHJQIiLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IzwrUMHV; arc=none smtp.client-ip=209.85.214.174
+	 MIME-Version; b=Q1vZS8KeHIMTv7kVkIvxyfqJ9033sC15Tk772Z2ZthTyMpCeZDZECSr1Wf6RWJR2V5GTsKMv4FHcALhYxW3FsN5CJI8M03HiMt7/Ez5dksUMmeH3CeFZMSL42HumC5BZVZhM+CuTRGfta9iur9iMSbcjvXRt5ke2RCM9hbmz124=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VLguAcel; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IzwrUMHV"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a79998d35aso41314925ad.0
-        for <imx@lists.linux.dev>; Tue, 27 Jan 2026 21:05:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VLguAcel"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a871c8b171so9456835ad.3
+        for <imx@lists.linux.dev>; Tue, 27 Jan 2026 21:06:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769576756; x=1770181556; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1769576763; x=1770181563; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pftsMK2Bn1JCcMxWOi9xdDs4s//i9MppnFiwPUF/boY=;
-        b=IzwrUMHVZlDQ2iDthCVBlVqCHf6JiBLQlcfO93cg4/1yYjG80b9rpdiLEWE5e3aGUU
-         zUXhOQmdCcjH/blHTNo1Q/WCUotlnjhMA9jLO4xGEHzBL4I0+jPAqa6+MNj8qW/6dNIq
-         XNf8i3GtW2aTJiEaOAk1m9GaHsBjjCLtjnNujVMItnmrEk/Pw/LH9zhu/6UNFCqT4ZCw
-         t+lDDzNL9D0+1R2O2xFenEl6fZ3bGjZ9puKFXQmUzWbxtLlTf5TchCxqCuJW3w4xwaHV
-         7KKltUaKyBwzbaYaIuBWbzenaC5JCUkhguy/ZbnjF9RmbMerEQ5YIuRRGK6KzHbiL4kd
-         n1wQ==
+        bh=sK4p8AbcNLvlqa+RZXsOEdBM7mQdQ2CRB4EPV5C/zSw=;
+        b=VLguAcelbCFBJaGCEhzb0qhQaOh+PJtBWl6PiuaCorOsS4hEV+Z0KMw6PqMEYE/8+9
+         QgWOPUepizirIZFrVghuhBTUbcB2CA30vQaIjZ6PnqZfZwdUXMBao32Cjs+Q3gkoVHEW
+         6Hgchp8jjPXPpeGJoXr9lgsr02lI1y2twSNgwjgdP062meWZ/w5aGzs10LyxaEVTqdnP
+         sp5FVSAXHB/W1Ey1cP1y/egaCsOeONKU/4HscrZXujFPI80yXhH3meiMs23mKBuyuUdY
+         4Tq7NbAIJnu8Cd/3SbaLVSQbvJz2tmBLV62GO6PGhpI8qhs5LdzjeQa8U88a1zNeBkEw
+         td8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769576756; x=1770181556;
+        d=1e100.net; s=20230601; t=1769576763; x=1770181563;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=pftsMK2Bn1JCcMxWOi9xdDs4s//i9MppnFiwPUF/boY=;
-        b=g8QixHaMYXI21E1r5afQNXiThNYQqfv6v8dQKnxpMygOgGj8U9C6I0eXpg3UPb4sFy
-         x09UOdOHsmfvPlJunXmJqERVTDCzvdDFsSVSZWFJsHrWaAUrY+QWwCblTZJdiA2z4O+E
-         9n70KvxTOP4fUMqFcVKK6tDFvlfsV7YU49rMWgYZf9ufHspgeIqildydDEcPG2JUZ/l7
-         d+ABGy5Ad37nZZzHPNH97l/G2zYVh3iU0xddY7QYqd4qkuqZq6RJp5eNKIoI1DLqTnCM
-         SCIOqrEAFOLGbsQfiCq7gJu2ZmkoH7B5x0c3GwZUjqKR9sokIYm/b9gk/zKYQR2yBnMu
-         M1Aw==
-X-Forwarded-Encrypted: i=1; AJvYcCXBiDv6N/7e31oxlkWSLDPcFa6V1M02Ro93OH4e9u6lNFfSxFjRK00UMz6QLFTcLoxMwoA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyD6TgqomDfiaWpbRiXl08QxNMFS6a2W4U8OPQIOEREVbG13i3C
-	6MNEVEI0xhue6rboxrT5jISht7WQijUUAArzj4hmss9npusPwZ0+LGdz
-X-Gm-Gg: AZuq6aKIOjQKej7iCpHwR+40t/db+Jb2g2IJDnx6uJzK+54Jg2k1sA/4eQnyUlkEyvp
-	26jEYCc9oYOb5D1KEpMjNVLJlRd9xLkaWCuvwo+6qkXhpJuCfMQKI+wOKKoGgBzA0EYEYiWM1Qf
-	aQpSlSvaaDsHHDs7FygtVq23dEU+L84ZWh1RJ0M2pnTijfN99TEIHfTQIkcDTJWt+ifplR3yzS3
-	yeHLmRpyGUAN2999mH3Hs5c3d/nmXsYJhMM1fXnNw7wvENyQTOGoStGP4kUqYGDCKSWDt7TPPwE
-	O0OKnopyepOiAQE91GhCmXSHP/ZJ/fmkenzhseUuwk9tHDCeYPl2RY0zOsR20/DIVG/xWO1zo5e
-	0Iq0i5PwykhGTyirGgeD2AjznaUlmMGLi3xVHttj+C6FsiHaUP3OrON3RXnwFah83BgmY5Eaaps
-	qF0eT07fWi/CNy4SMTeWtHS3npXB7cF5V5bUsXZYqzByVB6Jg04e2huO0=
-X-Received: by 2002:a17:902:d54d:b0:29f:2944:9774 with SMTP id d9443c01a7336-2a870dc6ebfmr39393185ad.33.1769576755960;
-        Tue, 27 Jan 2026 21:05:55 -0800 (PST)
+        bh=sK4p8AbcNLvlqa+RZXsOEdBM7mQdQ2CRB4EPV5C/zSw=;
+        b=In0m9/s/V8lmbTjoX5Kbqla3k6Hv9xFfaflL15gDbYVveX57u3pkw8tmb46oxekdHB
+         JXjDIZOKkuYATaGZiC89/rAMxk2kz4nhuCrpvMxW/c4z//VN2WRdTCj4N52ma1BIry5q
+         H01blrRPAUZfBrk0mFLRBP6fafOYLt8RXewybP4ZhIPklKtOsnRgaAyAf1WesF8hqMTK
+         LFySxDW4wYX/1AN49581Qp/CJtsY/Cxo8BYCgFjxgND+pOyYq74C5ajj1YODkNDyiAU+
+         v0klY2vK7MiGlipnTbld5sRWNJr97J97Z/b6SNkA3QQnjn2uwM8+Jil2+YJDkw42REYl
+         3Iww==
+X-Forwarded-Encrypted: i=1; AJvYcCUAhRXga9zDmSaIh1cotR+BURfbTT0rc+ZKMnYzMr5vn5sZT9k3LUEWsQaA1i79qWZVhsw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzXW3qXUiyRIGLbGOqOGt0n2PsJL1oY3HhVKMBOlFgO/i8bhLEp
+	8kbAsGQtb1wuYtbyICNM1AYrUk0SqLIG4TL3wDId9Yq88XZCipnTlFK9
+X-Gm-Gg: AZuq6aKqMwsJu8KbfT3T5S4BSRlrL5SBsJ0b+96mLsCzhB2mtO/6aRkDieTbfbBi0XO
+	fczM8dl9aCAhq2eth5AAY98jd3PzSc7Jtbbexy6Qrm+L3uFYYiG2vWCz/V1iQjurvR3qRXnDsfE
+	phzf8CUwDG7SwQlhVrYDnP7yAYGy5FwxI8wo5muqyiEtthhYGiM3nUY311I34+lcnISGkazceJD
+	oeL7CZ0fB+p7tUcCS6W4SsKWCS4DL3AdmVDXvVds9UjKDnRujLLFzwU2NdUhWh2kVzU5vZiCJGs
+	G2JzsdXGBAPfNYEEBBJbMCLveVdNoZZn3wxsSjc+n2BN7ESLAiZHG0oX/6H/71rd6537aufZI3T
+	v3/aJHcoom5cStAqkyrWvAyBx7VV+34syg1GRnn9PpsWLZlHNjXYG0kUuLixeZ9CpQKmSUA7p0S
+	bncX8jL2Ho+yYOjaMopnDtFLgOuyRQYKPYWBMwAH846D0kz6049yGgKCg=
+X-Received: by 2002:a17:902:e808:b0:295:24ab:fb06 with SMTP id d9443c01a7336-2a870d645ecmr37710295ad.22.1769576762557;
+        Tue, 27 Jan 2026 21:06:02 -0800 (PST)
 Received: from wig-Precision-3660.. (125-227-154-99.hinet-ip.hinet.net. [125.227.154.99])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b3ee952sm9736025ad.14.2026.01.27.21.05.53
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b3ee952sm9736025ad.14.2026.01.27.21.06.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 21:05:55 -0800 (PST)
+        Tue, 27 Jan 2026 21:06:02 -0800 (PST)
 From: Wig Cheng <onlywig@gmail.com>
 To: shawnguo@kernel.org,
 	robh@kernel.org,
@@ -72,12 +72,13 @@ Cc: s.hauer@pengutronix.de,
 	linux-kernel@vger.kernel.org,
 	zaq14760@gmail.com,
 	Wig Cheng <onlywig@gmail.com>
-Subject: [PATCH v2 0/1] arm64: dts: freescale: add pixpaper display overlay for i.MX93 FRDM
-Date: Wed, 28 Jan 2026 13:05:48 +0800
-Message-ID: <20260128050549.3337279-1-onlywig@gmail.com>
+Subject: [PATCH v2 1/1] arm64: dts: freescale: add pixpaper display overlay for i.MX93 FRDM
+Date: Wed, 28 Jan 2026 13:05:49 +0800
+Message-ID: <20260128050549.3337279-2-onlywig@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260127025740.2601841-1-onlywig@gmail.com>
+In-Reply-To: <20260128050549.3337279-1-onlywig@gmail.com>
 References: <20260127025740.2601841-1-onlywig@gmail.com>
+ <20260128050549.3337279-1-onlywig@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -86,19 +87,87 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Changes in v2:
-  - Fix Makefile alphabetical ordering
-  - Move vendor property before status in device tree
-  - Simplify commit message as suggested by reviewer
+Enable Open-EP Community pixpaper-213-c support on NXP i.MX93.
 
-Wig Cheng (1):
-  arm64: dts: freescale: add pixpaper display overlay for i.MX93 FRDM
-
+Signed-off-by: Wig Cheng <onlywig@gmail.com>
+---
  arch/arm64/boot/dts/freescale/Makefile        |  4 ++
  .../freescale/imx93-11x11-frdm-pixpaper.dtso  | 51 +++++++++++++++++++
  2 files changed, 55 insertions(+)
  create mode 100644 arch/arm64/boot/dts/freescale/imx93-11x11-frdm-pixpaper.dtso
 
+diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
+index ce8f937c2315..c2727f8061e2 100644
+--- a/arch/arm64/boot/dts/freescale/Makefile
++++ b/arch/arm64/boot/dts/freescale/Makefile
+@@ -398,6 +398,10 @@ dtb-$(CONFIG_ARCH_MXC) += imx93-9x9-qsb-i3c.dtb
+ 
+ dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-evk.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-frdm.dtb
++
++imx93-11x11-frdm-pixpaper-dtbs += imx93-11x11-frdm.dtb imx93-11x11-frdm-pixpaper.dtbo
++dtb-$(CONFIG_ARCH_MXC) += imx93-11x11-frdm-pixpaper.dtb
++
+ dtb-$(CONFIG_ARCH_MXC) += imx93-14x14-evk.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-kontron-bl-osm-s.dtb
+ dtb-$(CONFIG_ARCH_MXC) += imx93-phyboard-nash.dtb
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-pixpaper.dtso b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-pixpaper.dtso
+new file mode 100644
+index 000000000000..1111503b08af
+--- /dev/null
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-frdm-pixpaper.dtso
+@@ -0,0 +1,51 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Device Tree Overlay for Mayqueen (Open-EP Community) pixpaper display
++ * support on NXP FRDM i.MX 93 Development Board
++ *
++ * Copyright (C) 2026 Wig Cheng <onlywig@gmail.com>
++ */
++
++#include <dt-bindings/gpio/gpio.h>
++#include "imx93-pinfunc.h"
++
++/dts-v1/;
++/plugin/;
++
++&iomuxc {
++	pinctrl_lpspi3: lpspi3grp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO08__GPIO2_IO08		0x3fe /* SPI3 CE0 */
++			MX93_PAD_GPIO_IO09__LPSPI3_SIN		0x3fe /* SPI3 MISO */
++			MX93_PAD_GPIO_IO10__LPSPI3_SOUT		0x3fe /* SPI3 MOSI */
++			MX93_PAD_GPIO_IO11__LPSPI3_SCK		0x3fe /* SPI3 CLK */
++		>;
++	};
++
++	pinctrl_epd_ctrl: epdctrlgrp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO05__GPIO2_IO05		0x31e /* DC pin */
++			MX93_PAD_GPIO_IO06__GPIO2_IO06		0x31e /* RESET pin */
++			MX93_PAD_GPIO_IO26__GPIO2_IO26		0x31e /* BUSY pin */
++		>;
++	};
++};
++
++&lpspi3 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_lpspi3>, <&pinctrl_epd_ctrl>;
++	cs-gpios = <&gpio2 8 GPIO_ACTIVE_LOW>;
++	fsl,spi-num-chipselects = <1>;
++	status = "okay";
++
++	display@0 {
++		compatible = "mayqueen,pixpaper";
++		reg = <0>;
++		spi-max-frequency = <5000000>;
++		reset-gpios = <&gpio2 6 GPIO_ACTIVE_HIGH>;
++		dc-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;
++		busy-gpios = <&gpio2 26 GPIO_ACTIVE_HIGH>;
++	};
++};
 -- 
 2.43.0
 
