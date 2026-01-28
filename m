@@ -1,113 +1,91 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EAB324B06
-	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 17:27:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769621265; cv=pass; b=adnohcA08NbTUw0eXDaJsBJQV3LQxlqVtO4S5miyfKq1J7DwBBkUxvbF9EqoM0hl3G33nNFnDsSL3cmj9h4xlUV8SnEDn+1RFz5g7WhuaDsh8LZn9B3no7kmFQziyPq181JU1Be5xf5BAudZ+dBWSK5oVK+wHF8lB/jCJsu2DhE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769621265; c=relaxed/simple;
-	bh=5RnEkCjzYpz4k2iW4MASQPKjHVwhosBVIbiwaiUkDW8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OnBdhzOP/Kh95UaFH4DbNiz6lEFqNTy5W9p/Rkwr1R42zltKd+fHPME1YtWrXFF8yHNUF4+bpOwmBS3TqZiM1eanZDVU82tXEm2pbwRzeMLflHUts8VB0qfeoHoIJcUdLpU/FSqyk/QJWNK665hhH494QUo7vNimd6FQfbWPoaE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EmAFOw87; arc=pass smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5609C329E52
+	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 17:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769623004; cv=none; b=q8I+GC5iEoK1WjrfGw2slnOEgqFQa/dOb2Zf7sZw7zcbcQIQl/hB6twNRwDQe8BsBF95nAhgegb7vvRF/nx9LmM2egHdXKChboMU73XNTV6DO/FI4lrOUCfDXxJMAjn6+cL0iuqhaZ8l8GyyMIxo4KUTlUaC1IyIGRtdH4EDT7Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769623004; c=relaxed/simple;
+	bh=fceEZs+f0HtuOOxWKwpZCk1Lj9njmp8LG4rEooJFeFc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=i8fdDG3UN4qaDMojkwmLUFoJOY/JJzCxdMP9VOynTSFmYMeHNSmdGflf3LXkRxglrFDK54SWZsmsh4D6g6NsZqGDWKLW95QX8WhWl1jv9Grq4vDXBx13K+UxKC9S9Bl+ereUtpeosEQ7rLRDGs0edxnSaoduIeiEiRj/1bCmo4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=yN+4QHWX; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EmAFOw87"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-59de8860b94so48062e87.0
-        for <imx@lists.linux.dev>; Wed, 28 Jan 2026 09:27:44 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769621263; cv=none;
-        d=google.com; s=arc-20240605;
-        b=d6P2vmHMtC2JfxmTRDD+lR1WoLtVjNJ3uUh5/I5gPyMIq6b3WLw7Vn6gdHFLdvOYEP
-         YAs1RSTbK6SmFQAELQMFSDPEcbV9oLtoVBhnSnK+KpifyjE/1n7DUpUsjDhCg0srHiEf
-         STemVUbvgPCuVdvuHcbDI4a/htnObQos74BIEeSNWgGCGNpTCm8N2dBCcqoisfy1Fj2e
-         mMUZUMyZGrmyCD+hXkerTy4jHWZYXhQp5S6WV25mPRY2CgdVk3HiQ4DFDSkCbiCEl2Yd
-         aCPkMYurQKItdC22yXNmJBX9QAJoUdvUdEPbrXBc8j48OZta//0CF+5WyjtIBp0L9GJr
-         /OWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=PUaTn5YCYH1aGyPr+judBHKrOAYlextt2AGAL94fdA4=;
-        fh=bF+JXLg3T3mr0CCSTlT7PPs0tNiFm04NMNUHHucHxEM=;
-        b=WrMm0ylR7jLVlRK7OrER1BIY3DaYwV52QVP7aQdVwUbfqR53k3MmtIpN1zcNf3X0mD
-         /HAEBBuNE55osaKsWeOTptHuHKTtUidDuVmlMhqHCDVwFUidHFFk7yumOVuTcLSXBm5F
-         rSs+uFbFcj9EWNoG2LpEw6MYt5YDNKGcFhw02kUgrll/w2vz6j0zznssQCTG6X9mWPF+
-         FqYWAi2MLhij1k+/GNjEN2gjvy0snXlXIywf0PYyBXesG6PAOqi88IeQkVBJ+dgXu2+Y
-         82/OemOZ5mRG+2lfUkDJ2l8rLYCR7FRehzbp2OJceOJBjSqV6/GauEGdtLR3ii+Z7UxN
-         XSOQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769621263; x=1770226063; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PUaTn5YCYH1aGyPr+judBHKrOAYlextt2AGAL94fdA4=;
-        b=EmAFOw87zeZgg7NOBQfgLNVlXVV/RaxNN29M5FuIKw+owJtvr21uuvAkKr+8wVj3w9
-         8m1i4LkCdF1BDqkX1VeJvch10RmlR8NmUsx1i9tUUhopqoMYmMpjlMs1C3BaYStfJXMi
-         ABOZEy8ZOe7RRM9HTzBZnstO4Ea359vtKcBFyjXAZymudWa7P3eeOe9OzGWbPEzwI8Jc
-         raxoGiEUMpzWBL6QJoJ0ktLj5/lsO3V6392lk7CHNAVDldlQ7/vIRHvhEyyhsBaRhh9T
-         d8x/H8A+smYUQ/omwti8vukfpT9uxPVoHXddjB6JEfUTJFuv0MvfBr+6vDC999dz8Ygh
-         +wBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769621263; x=1770226063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PUaTn5YCYH1aGyPr+judBHKrOAYlextt2AGAL94fdA4=;
-        b=ZW65tfLwZqJBuPZSLuQDt8AjLwWRrKBMDTWxfg/Ak+6F83XBaNBgECl+G67AynAfPL
-         RxmWEzT9JYiX0UEM86UAvbYmKTZ/fBp63MZI5u8YIolLGVfN6RZSQp9ALkQuSdbEmn/X
-         GBSFDfMlDjxQV9CmOPT28WNt5oQL3NS1nTvU5uVmffSLQXk0RnL3xf/OtXxwEuD1p7Z4
-         qLoV3i8xTiZ4Wudj+2l3z6C2Zm5cdTI5s3a1FLT/F5NS015eweSGi/pFilByk3rBXFp8
-         WQdaW+Cb5+ZJFjJAcTXxF8oChHurJTXRodMF3OU+Vi+WpnVBueIWaPXanHVTM/i2XZco
-         aZVg==
-X-Forwarded-Encrypted: i=1; AJvYcCX7ByDXRAZZmSqZ34ieGHD3PuLdHYTAKUbzigL9w2mDBunZ7P9n8eEymSqLHDG8SgfxrCM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxHT80S4YhRLqsCcWVwD+MjwkMDTZnXLDf1eqxOFY519QSWfuiP
-	po2+9//DWTgApi9Jf3v8QoHE4jX9OABfR5X2VCEnKXpbNIPkHrzGXEIq5JhTby1t890GjVATdLw
-	dwLx6efQVf40TwJyKRUQnzOvtzfkN+CQ=
-X-Gm-Gg: AZuq6aJhOX7cCuL6hWhJ19edLcdFHavwgTCqvrqbdg+3pd57k0LeXsyH/WOTbJ8tmep
-	mC8MAt7pj/2rRAzfmXVWimb1CxZQ8vTfbzqO1ftmIKLo6ixzrcCV1h6E2wCHk2Z1J1siSMs+/2C
-	iKePy4hyjMIxhtSNcyxgEhcWahFipEt/UW+zMRfQ7rnbJToHJWQYHrz/hW4NH7IYvE2hIM0q+OR
-	k6d+2AJjNtiYFriRsjNGc4fCmyRV5dMpjHLOpo34y/NBz4Pxd28Iyrcpv0Y6RJw/5qgPOD9Sj/x
-	Q080s7LMYQqwyCuIu140Zi8kyJELmhNWq5H70A==
-X-Received: by 2002:a05:6512:3b9f:b0:59d:d32b:1d1e with SMTP id
- 2adb3069b0e04-59e04035516mr2970279e87.51.1769621262284; Wed, 28 Jan 2026
- 09:27:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="yN+4QHWX"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 91FD7C211ED;
+	Wed, 28 Jan 2026 17:56:40 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C8C2F6071F;
+	Wed, 28 Jan 2026 17:56:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C5B70119A8687;
+	Wed, 28 Jan 2026 18:56:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769622996; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=hVKMA1mgA2HarFubchDZxxQcSE3jYQpdUJ9TpOSCc5s=;
+	b=yN+4QHWXe6CnQTP+XwB3m49VFo6G76tnT/zYzEvY0lAX5ySVppGySpmZRZiiSi2ZZE+Vn5
+	CLKx4KldLsoahjIf+rb7Iaceu5zbtk33Lw786p6PjC80o7afcQ/cEJAlxo6CSukA3vd5GL
+	4p9/OSkfM3a5hmXddf/RtJ84O2WXIuEcxUB3GF17hNGvt2RJn1aJfuoZR7yfCztF3Ppyzf
+	pKkcEeX24bfhs3bU6NZINsoxexD7j37xjNt013w/Ml8Jne+jOVCQBqCqWEelIk/R0nzL7q
+	bu7TAZTJ8HTbvwUdmy2Ko2qMCHS0UYp5Cmk69GUp3/mDrwNl6+yjZ2/uQPeakQ==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH for drm-misc-fixes] drm/bridge: imx: A few fixes - backport
+Date: Wed, 28 Jan 2026 18:55:08 +0100
+Message-Id: <20260128-drm-bridge-fix-imx8qxp-pixel-combiner-null-deref-v1-0-2138d0933cf1@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260127025740.2601841-1-onlywig@gmail.com> <20260128155529.3699599-1-onlywig@gmail.com>
- <20260128155529.3699599-2-onlywig@gmail.com>
-In-Reply-To: <20260128155529.3699599-2-onlywig@gmail.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 28 Jan 2026 14:27:31 -0300
-X-Gm-Features: AZwV_QiCWCfgEVaf466qIPBgCbhNFFu_DgTZRC-k1mWUAV0vRzvFYLXs8kt0N7M
-Message-ID: <CAOMZO5BdH3X_efJGFyAjCk-1amLTDA303Lfr9NHLJMpbPxEJcA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/1] arm64: dts: freescale: add pixpaper display
- overlay for i.MX93 FRDM
-To: Wig Cheng <onlywig@gmail.com>
-Cc: shawnguo@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	zaq14760@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHxNemkC/yWN2wrCMBBEfyXsswttqiX6K9IHm2x0ITc3KIHSf
+ zfFxzkznNmgkjBVuKkNhL5cOacexpMC+3qkJyG7nkEPeh5GbdBJxFXY9cZzQ47NvFvBwo0C2hx
+ XTiSYPiGgIyGP3pyvfp4mN100dG3psI+Pyzv4LOowRq4W/3jZ9x9fgUswlgAAAA==
+X-Change-ID: 20260128-drm-bridge-fix-imx8qxp-pixel-combiner-null-deref-f849f633d352
+To: Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.15-dev-5464f
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Jan 28, 2026 at 12:55=E2=80=AFPM Wig Cheng <onlywig@gmail.com> wrot=
-e:
+A series was sent with 3 fixes for drm-misc [0]. Patch 3 of that series
+should be on drm-misc-fixes (the bug is in current master since v6.17) but
+does not apply there due to conflicts.
 
-> +&lpspi3 {
-> +       #address-cells =3D <1>;
-> +       #size-cells =3D <0>;
-> +       pinctrl-names =3D "default";
-> +       pinctrl-0 =3D <&pinctrl_lpspi3>, <&pinctrl_epd_ctrl>;
-> +       cs-gpios =3D <&gpio2 8 GPIO_ACTIVE_LOW>;
-> +       fsl,spi-num-chipselects =3D <1>;
+This 1-patch series has a backport of that fix for drm-misc-fixes, so that
+master can be fixed ASAP.
 
-Drop fsl,spi-num-chipselects. It's not a valid property.
+[0] https://lore.kernel.org/lkml/DG0BSWR9XRZS.29D743F5RWI8N@bootlin.com/
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Luca Ceresoli (1):
+      drm/bridge: imx8qxp-pixel-combiner: Fix bailout for imx8qxp_pc_bridge_probe()
+
+ drivers/gpu/drm/bridge/imx/imx8qxp-pixel-combiner.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+---
+base-commit: e535c23513c63f02f67e3e09e0787907029efeaf
+change-id: 20260128-drm-bridge-fix-imx8qxp-pixel-combiner-null-deref-f849f633d352
+
+Best regards,
+--  
+Luca Ceresoli <luca.ceresoli@bootlin.com>
+
