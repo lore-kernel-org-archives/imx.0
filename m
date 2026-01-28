@@ -1,102 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.mleia.com (mleia.com [178.79.152.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8146255F2C;
-	Wed, 28 Jan 2026 20:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7381C328257
+	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 20:25:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769631435; cv=none; b=JKF6AZUjSWVjWezzgox9u6luoOhOD4LMGSxsVTwUNwZOAV4yyumlQQK5N2cjtueZkZgStBfX/XTAIMRW0SNQnMl29GpPPFYOtGHsN7tekR1u+sVN7w2WuIgPEXwKgLdl0iymBwrnEOxZNS5ZV8cTswTQyN8yNLXoSWi10iSlcbk=
+	t=1769631901; cv=none; b=UqyPvNjfaVOLdfzU81b0kiR9ypBvbztiUHDZKv7RMLKc20qg8MOveSw1H/skC8lZqlmBQqMJCoNHv2voKwxHwrE8yrW2dI0WlQxry+mJaEVg2UkMzmAthBVENHZTzQo2KER3mKJf2psvdcfDkfnAR51D7wHyjkAssPhSjBXa4yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769631435; c=relaxed/simple;
-	bh=7ty/l0/UHtbDkCTzrZ7qeMJvgWuD019xW5A1dHwPrFE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=alKfJ50Ae6BMs8uRZvjYiJaz+YtUH4SaeUws4Z6C/xwD64ZIkwAyb8bcr3jgMGd0JtfGnaGDO39JbLqDh/s14ZMYxbxNfIM7kMVwPtEXgTFeCRiq93sHRfxq4KXJVIOSOSaQKAQrXa+apYk1hzGqp5cfwAnSk4LdhpTSZUR2Fmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q3QNae9T; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769631901; c=relaxed/simple;
+	bh=TLdJZat0NqHxM6cAaIaO03kfgfUH8hhW+XaWOdcNM/I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NB7pJ4sWrfIrZgyI2q3a3NmtbPPkDpXV/byR6T9sBswJZ1DcwwD5gNgdxCud67aes8Q23XIpnzEnqTrBxJQEgiSX86e36b3WF7NapidSBoH5fq3+h4pz1gVCWbSDpIK0XDXioohoBkY1zLQjIEcpsWp6+yoDOpS4v0vfsoiUCzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=QwJqePQn; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=QwJqePQn; arc=none smtp.client-ip=178.79.152.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q3QNae9T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B0DC4CEF1;
-	Wed, 28 Jan 2026 20:17:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769631435;
-	bh=7ty/l0/UHtbDkCTzrZ7qeMJvgWuD019xW5A1dHwPrFE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=q3QNae9TqOju1dGY4tbkW1JSEYmTsNtQ9FGfC6hmGVwy30HrOORRtBIGD/LeAcuFI
-	 fY/R9tTIfue/oqcjfNMtBko3TuNN1qmOcOM9U1QbuRu6O0y+9bRmJ9/lvDyxpg4yVx
-	 HF9eC2BJpVgO30gdQsDkhzfJxV+BK/Ed5xjgNgJoYafFt5XO9kQTPrHVzwHyGvyKNe
-	 YHls3uW3ej+wO0ATKHYGQjqoo8JRdX4yzK8GcxkqL7iQjH7JaIYEHUY0FZMGfz2Ew7
-	 PKukNBSrw0TYWygqP/nAlG8CxuJq5/jGq/aRqoOK9pjMeg0XuiPwM+vPpGJrlwfdDE
-	 vRcOeBhnd3xCg==
-Date: Wed, 28 Jan 2026 20:17:09 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chen-Yu Tsai <wenst@chromium.org>, Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel@collabora.com,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 0/2] Fix a __clk_core_init parental issue
-Message-ID: <a4f87b4b-efce-4c8c-a523-69949935a096@sirena.org.uk>
-References: <20260128-ops-parent-enable-fix-v1-0-ff39cc37f98d@collabora.com>
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="QwJqePQn";
+	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="QwJqePQn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
+	t=1769631892; bh=TLdJZat0NqHxM6cAaIaO03kfgfUH8hhW+XaWOdcNM/I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=QwJqePQnpoyfxiYfPX59X/nUITxCuJRj/q2+l43J8XXedWaeNGSQxMOPb8Xlev59Y
+	 odYQEEo5H5N1Em2cdwyHlkxmPmUCdYYeqw4dm6BQWCXpV0vbAJTJHoCWq9ndEum7my
+	 0QC13Z1wMXA1G7h2YOgVGP7KqmBpePs8Jr2Qpre+roNPTRCJ0+InoBHg3vpiCnWrl1
+	 AlUD+Dw5j84RiVdm69zr+7C8wVkokNqu0cSlYAJD4jYcax0NfCXlPSHbpMbi4H4MiO
+	 r8Ik+9lstFFz0WCYRaYJ7t2x6WBi9gNPylTWUaUcXX68/CHg/VfMmvtdLEZSPlwjWR
+	 0SZE8B+U9BmNQ==
+Received: from mail.mleia.com (localhost [127.0.0.1])
+	by mail.mleia.com (Postfix) with ESMTP id 925903F025D;
+	Wed, 28 Jan 2026 20:24:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
+	t=1769631892; bh=TLdJZat0NqHxM6cAaIaO03kfgfUH8hhW+XaWOdcNM/I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=QwJqePQnpoyfxiYfPX59X/nUITxCuJRj/q2+l43J8XXedWaeNGSQxMOPb8Xlev59Y
+	 odYQEEo5H5N1Em2cdwyHlkxmPmUCdYYeqw4dm6BQWCXpV0vbAJTJHoCWq9ndEum7my
+	 0QC13Z1wMXA1G7h2YOgVGP7KqmBpePs8Jr2Qpre+roNPTRCJ0+InoBHg3vpiCnWrl1
+	 AlUD+Dw5j84RiVdm69zr+7C8wVkokNqu0cSlYAJD4jYcax0NfCXlPSHbpMbi4H4MiO
+	 r8Ik+9lstFFz0WCYRaYJ7t2x6WBi9gNPylTWUaUcXX68/CHg/VfMmvtdLEZSPlwjWR
+	 0SZE8B+U9BmNQ==
+Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi [91.159.24.186])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.mleia.com (Postfix) with ESMTPSA id 0E9A03EF50D;
+	Wed, 28 Jan 2026 20:24:51 +0000 (UTC)
+Message-ID: <f213bdb9-7104-495f-97fe-8190af3ec577@mleia.com>
+Date: Wed, 28 Jan 2026 22:24:50 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="36IGtiXOT6JnWWxy"
-Content-Disposition: inline
-In-Reply-To: <20260128-ops-parent-enable-fix-v1-0-ff39cc37f98d@collabora.com>
-X-Cookie: APL hackers do it in the quad.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND v2 1/1] dt-bindings: arm: lpc: add missed lpc43xx board
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>,
+ "moderated list:ARM/LPC32XX SOC SUPPORT"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+References: <20251015184846.2509016-1-Frank.Li@nxp.com>
+ <b75b30d4-e33e-4620-bc37-56b36612364c@mleia.com>
+ <aXppf+3Nm7zsYaWE@lizhi-Precision-Tower-5810>
+From: Vladimir Zapolskiy <vz@mleia.com>
+In-Reply-To: <aXppf+3Nm7zsYaWE@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
+X-CRM114-CacheID: sfid-20260128_202452_620815_0EA6268C 
+X-CRM114-Status: GOOD (  14.46  )
 
+Hi Frank,
 
---36IGtiXOT6JnWWxy
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 1/28/26 21:54, Frank Li wrote:
+> On Wed, Oct 15, 2025 at 10:48:47PM +0300, Vladimir Zapolskiy wrote:
+>> Hi Frank,
+>>
+>> On 10/15/25 21:48, Frank Li wrote:
+>>> Add missed legancy lpc43xx board compatible string to fix below CHECK_DTB
+>>> warnings:
+>>> arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dtb: /: failed to match any schema with compatible: ['ciaa,lpc4337', 'nxp,lpc4337', 'nxp,lpc4350']
+>>>
+>>> Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+>>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>>
+>> I'll take it for v6.19, thank you.
+>>
+>> If you have any other changes in the queue, please feel free to send them also.
+> 
+> Vladimir Zapolskiy:
+> 
+> 	look like you missed this patch.
+> 
 
-On Wed, Jan 28, 2026 at 07:38:49PM +0100, Nicolas Frattaroli wrote:
-> Mark and Alexander, please test to see if these patches resolve the
-> issues on your boards.
->=20
-> I expect the first patch to completely fix the problem on the Avenger96
-> (STM32MP1) board.
+You are right about it. I consider it's pretty late to send another PR
+including this change, and thus it will be postponed, I'm sorry for it.
 
-This gets further but still fails on Avenger96, looks like we've got
-more clocks need work:
+-- 
+Best wishes,
+Vladimir
 
-[    0.513739] __clk_core_init: enabling parent pll3_q for spi1_k
-[    0.519521] __clk_core_init: disabling parent pll3_q for spi1_k
-[    0.525489] __clk_core_init: enabling parent pll3_q for spi2_k
-[    0.531311] __clk_core_init: disabling parent pll3_q for spi2_k
-[    0.537275] __clk_core_init: enabling parent pll3_q for spi3_k
-[    0.543101] __clk_core_init: disabling parent pll3_q for spi3_k
-[    0.549066] __clk_core_init: enabling parent ck_hsi for spi4_k
-[    0.554894] __clk_core_init: disabling parent ck=EF=BF=BD
-U-Boot SPL 2023.07.02-dh-stm32mp1-dhcor-avenger96-20230727.02 (Jul 11 2023 =
-- 15:20:44 +0000)
+>>> ---
+>>> Resend
+>>> - colloect R-b tags.
+>>>
+>>> change in v2
+>>> - move to nxp lpc32xx.yaml
+>>> - fix ea,lpc4357-developers-kit include lpc4337
+>>> ---
+>>>    .../devicetree/bindings/arm/nxp/lpc32xx.yaml  | 22 +++++++++++++++++++
+>>>    1 file changed, 22 insertions(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml b/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml
+>>> index 6b7f5e6f99cfb..1e290f16a7a50 100644
+>>> --- a/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml
+>>> +++ b/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml
+>>> @@ -22,5 +22,27 @@ properties:
+>>>                  - phytec,phy3250
+>>>              - const: nxp,lpc3250
+>>> +      - items:
+>>> +          - enum:
+>>> +              - ea,lpc4357-developers-kit
+>>> +          - const: nxp,lpc4357
+>>> +          - const: nxp,lpc4350
+>>> +
+>>> +      - items:
+>>> +          - enum:
+>>> +              - ciaa,lpc4337
+>>> +          - const: nxp,lpc4337
+>>> +          - const: nxp,lpc4350
+>>> +
+>>> +      - items:
+>>> +          - enum:
+>>> +              - hitex,lpc4350-eval-board
+>>> +          - const: nxp,lpc4350
+>>> +
+>>> +      - items:
+>>> +          - enum:
+>>> +              - myir,myd-lpc4357
+>>> +          - const: nxp,lpc4357
+>>> +
+>>>    additionalProperties: true
+>>>    ...
+>>
+>> --
+>> Best wishes,
+>> Vladimir
 
-   https://lava.sirena.org.uk/scheduler/job/2413747#L593
-
---36IGtiXOT6JnWWxy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAml6bsQACgkQJNaLcl1U
-h9CUOgf/dHiM/ZBZaiM1Q7Yl82GtKle+lZrbCDyNUDAv/Zex4jr9qaKCetQXiGuE
-RPJ6HXcCUbrMsdlR/zKBmHIAx2K+S0TUoe1cNvJPf5KHDWhQz7+hVjhH6Or9HumM
-597hfh7D/UO8Nf0CFaQy++oI6k5sFZS/0JCzq6bRZCDE/Jje55pll94c8KTieSIh
-6Ca3Kq5OTXhRMR3x3u1mO0yrO0zCB8FMkkfYGf0XWNc1lJ+hQl7FRhn6CaeD74Yr
-sW/lOLKvmLcElitnuP1ZS+MMQenFWkCJWwAXnNGWvrK6pNh+9RI2lDs0ifQMQU38
-2l9E59sHeK3nujrF1cBySJ7KO0yuUg==
-=P6BF
------END PGP SIGNATURE-----
-
---36IGtiXOT6JnWWxy--
