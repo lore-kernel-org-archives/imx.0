@@ -1,154 +1,167 @@
-Received: from mail.mleia.com (mleia.com [178.79.152.223])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7381C328257
-	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 20:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.79.152.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91B732C336
+	for <imx@lists.linux.dev>; Wed, 28 Jan 2026 20:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769631901; cv=none; b=UqyPvNjfaVOLdfzU81b0kiR9ypBvbztiUHDZKv7RMLKc20qg8MOveSw1H/skC8lZqlmBQqMJCoNHv2voKwxHwrE8yrW2dI0WlQxry+mJaEVg2UkMzmAthBVENHZTzQo2KER3mKJf2psvdcfDkfnAR51D7wHyjkAssPhSjBXa4yE=
+	t=1769632011; cv=none; b=POjuNGoNnAEyguvezekmC6NBKkKUJFk5aSLboG7zQLa1Ef/jIf2plxK/WnJP4Sxl08WW/ZQDrlOmwaGBT2AqnwX+CKEcwxKglMtYWpskip3DuE8qH4kMk4OaJn34iIL6Py/pPeY2aR54VlcV5kZnkf7SN03gLdRqu4xIftNsJ2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769631901; c=relaxed/simple;
-	bh=TLdJZat0NqHxM6cAaIaO03kfgfUH8hhW+XaWOdcNM/I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NB7pJ4sWrfIrZgyI2q3a3NmtbPPkDpXV/byR6T9sBswJZ1DcwwD5gNgdxCud67aes8Q23XIpnzEnqTrBxJQEgiSX86e36b3WF7NapidSBoH5fq3+h4pz1gVCWbSDpIK0XDXioohoBkY1zLQjIEcpsWp6+yoDOpS4v0vfsoiUCzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com; spf=none smtp.mailfrom=mleia.com; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=QwJqePQn; dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b=QwJqePQn; arc=none smtp.client-ip=178.79.152.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mleia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mleia.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="QwJqePQn";
-	dkim=pass (2048-bit key) header.d=mleia.com header.i=@mleia.com header.b="QwJqePQn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1769631892; bh=TLdJZat0NqHxM6cAaIaO03kfgfUH8hhW+XaWOdcNM/I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QwJqePQnpoyfxiYfPX59X/nUITxCuJRj/q2+l43J8XXedWaeNGSQxMOPb8Xlev59Y
-	 odYQEEo5H5N1Em2cdwyHlkxmPmUCdYYeqw4dm6BQWCXpV0vbAJTJHoCWq9ndEum7my
-	 0QC13Z1wMXA1G7h2YOgVGP7KqmBpePs8Jr2Qpre+roNPTRCJ0+InoBHg3vpiCnWrl1
-	 AlUD+Dw5j84RiVdm69zr+7C8wVkokNqu0cSlYAJD4jYcax0NfCXlPSHbpMbi4H4MiO
-	 r8Ik+9lstFFz0WCYRaYJ7t2x6WBi9gNPylTWUaUcXX68/CHg/VfMmvtdLEZSPlwjWR
-	 0SZE8B+U9BmNQ==
-Received: from mail.mleia.com (localhost [127.0.0.1])
-	by mail.mleia.com (Postfix) with ESMTP id 925903F025D;
-	Wed, 28 Jan 2026 20:24:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mleia.com; s=mail;
-	t=1769631892; bh=TLdJZat0NqHxM6cAaIaO03kfgfUH8hhW+XaWOdcNM/I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QwJqePQnpoyfxiYfPX59X/nUITxCuJRj/q2+l43J8XXedWaeNGSQxMOPb8Xlev59Y
-	 odYQEEo5H5N1Em2cdwyHlkxmPmUCdYYeqw4dm6BQWCXpV0vbAJTJHoCWq9ndEum7my
-	 0QC13Z1wMXA1G7h2YOgVGP7KqmBpePs8Jr2Qpre+roNPTRCJ0+InoBHg3vpiCnWrl1
-	 AlUD+Dw5j84RiVdm69zr+7C8wVkokNqu0cSlYAJD4jYcax0NfCXlPSHbpMbi4H4MiO
-	 r8Ik+9lstFFz0WCYRaYJ7t2x6WBi9gNPylTWUaUcXX68/CHg/VfMmvtdLEZSPlwjWR
-	 0SZE8B+U9BmNQ==
-Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi [91.159.24.186])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.mleia.com (Postfix) with ESMTPSA id 0E9A03EF50D;
-	Wed, 28 Jan 2026 20:24:51 +0000 (UTC)
-Message-ID: <f213bdb9-7104-495f-97fe-8190af3ec577@mleia.com>
-Date: Wed, 28 Jan 2026 22:24:50 +0200
+	s=arc-20240116; t=1769632011; c=relaxed/simple;
+	bh=HZa5ht60kTuZ5mPivPN4oV1/ntHz7uBm3f9ivO1VrjQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nk4UmzrD0XbC2UBxkoROTkPxxh9K0hxHxL3/x1n2C/5DwguZD7gpvttdb9gu7/y0BIpsJGR2QHSNoKVDhXz+8YYiW8ex1TlIWZKadFNvooNyOYSxRr/1RYJe1+5DqITaqb6O1//fADRcB8ELii3FVpHlSBOYX/QrQno28hUI4PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vlC7Z-0002t1-3M; Wed, 28 Jan 2026 21:26:37 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vlC7X-002yRW-06;
+	Wed, 28 Jan 2026 21:26:34 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vlC7W-002trp-0b;
+	Wed, 28 Jan 2026 21:26:34 +0100
+Date: Wed, 28 Jan 2026 21:26:34 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>,
+	Andrew Lunn <andrew@lunn.ch>, Wei Fang <wei.fang@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"open list:FREESCALE IMX / MXC FEC DRIVER" <imx@lists.linux.dev>,
+	"open list:FREESCALE IMX / MXC FEC DRIVER" <netdev@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH] net: phy: integrate reset-after-clock quirk into
+ phy_init_hw
+Message-ID: <20260128202634.gqevi76o6wnf5xno@pengutronix.de>
+References: <20260128094644.302313-1-michael@amarulasolutions.com>
+ <13d1018c-d9aa-4838-8bb3-35c509cd3e35@lunn.ch>
+ <CAOf5uwm30=AVhqm67yz8Y5TkX9FWdxizTevCGSeaQuJS0KqtNA@mail.gmail.com>
+ <aXoV-U-yqcDJj2vk@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND v2 1/1] dt-bindings: arm: lpc: add missed lpc43xx board
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>,
- "moderated list:ARM/LPC32XX SOC SUPPORT"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-References: <20251015184846.2509016-1-Frank.Li@nxp.com>
- <b75b30d4-e33e-4620-bc37-56b36612364c@mleia.com>
- <aXppf+3Nm7zsYaWE@lizhi-Precision-Tower-5810>
-From: Vladimir Zapolskiy <vz@mleia.com>
-In-Reply-To: <aXppf+3Nm7zsYaWE@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20260128_202452_620815_0EA6268C 
-X-CRM114-Status: GOOD (  14.46  )
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aXoV-U-yqcDJj2vk@shell.armlinux.org.uk>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi Frank,
+On 26-01-28, Russell King (Oracle) wrote:
+> On Wed, Jan 28, 2026 at 02:33:24PM +0100, Michael Nazzareno Trimarchi wrote:
+> > Hi Andrew
+> > 
+> > On Wed, Jan 28, 2026 at 2:25 PM Andrew Lunn <andrew@lunn.ch> wrote:
+> > >
+> > > On Wed, Jan 28, 2026 at 10:46:41AM +0100, Michael Trimarchi wrote:
+> > > > The current implementation of phy_reset_after_clk_enable requires MAC drivers
+> > > > (like fec_main.c) to manually track PHY probing states and trigger resets
+> > > > at specific points in their clock management flow and was created just for a SoC
+> > > > vendor.
+> > >
+> > > We try to keep workarounds for specific SoC vendors out of the core,
+> > > when possible. It just makes the core more complex for an edge case
+> > > which most people don't care about. It is better to hide the
+> > > complexity away in the driver which needs it.
+> > 
+> > We should not merge things in the core that are for one Soc and
+> > after d65af21842f8a7821fc3b28dc043c2f92b2b312c, I need to anyway to do:
+> > 
+> > net: phy: smsc: Fix functionality of lan8710 in combination with NXP fec
+> > 
+> > Revert "net: phy: smsc: LAN8710/20: remove PHY_RST_AFTER_CLK_EN flag"
+> > d65af21842
+> 
+> That commit is an example of a poor commit description. It doesn't
+> describe the problem, nor which hardware this affects, so when we end
+> up with this kind of situation, we're lacking the context behind why
+> the change was made.
 
-On 1/28/26 21:54, Frank Li wrote:
-> On Wed, Oct 15, 2025 at 10:48:47PM +0300, Vladimir Zapolskiy wrote:
->> Hi Frank,
->>
->> On 10/15/25 21:48, Frank Li wrote:
->>> Add missed legancy lpc43xx board compatible string to fix below CHECK_DTB
->>> warnings:
->>> arch/arm/boot/dts/nxp/lpc/lpc4337-ciaa.dtb: /: failed to match any schema with compatible: ['ciaa,lpc4337', 'nxp,lpc4337', 'nxp,lpc4350']
->>>
->>> Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
->>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
->>
->> I'll take it for v6.19, thank you.
->>
->> If you have any other changes in the queue, please feel free to send them also.
-> 
-> Vladimir Zapolskiy:
-> 
-> 	look like you missed this patch.
-> 
+I need to say that this commit lacks a bit of context which is part of
+my previous commit. I thought, that I made that clear with:
 
-You are right about it. I consider it's pretty late to send another PR
-including this change, and thus it will be postponed, I'm sorry for it.
+|   The same behaviour can be archived now by specifying the refclk.
+
+To be honest, I should have made it more clear.
+
+> So, how do we know that reverting that commit is not going to cause a
+> regression for whatever platform the patch was proposed for?
+
+If I get the Michael's patch correct, he tries to move the quirk
+handling into the core. I really don't know why Michael requires the
+speical reset handling at all. The commit adding the
+PHY_RST_AFTER_CLK_EN flag says:
+
+|    phylib: add reset after clk enable support
+|
+|   Some PHYs need the refclk to be a continuous clock. Therefore they don't
+|   allow turning it off and on again during operation. Nonetheless such a
+|   clock switching is performed by some ETH drivers (namely FEC [1]) for
+|   power saving reasons. An example for an affected PHY is the
+|   SMSC/Microchip LAN8720 in "REF_CLK In Mode".
+
+This can be achieved with commit
+bedd8d78aba300860cec3f85d6ff549b3b7f2679 if specified accordingly.
+
+> If you read the preceeding commit (which is referenced by the commit
+> you intend to revert) itgives more information about the problem, and
+> I would expect that reverting it will cause a regression with
+> interrupts.
+
+Yes, my bad I thought this reference is enough.
+
+> Adding Marco to this thread for comment.
+
+Thanks.
+
+The issue was with the out-of-band reset coming from the FEC driver
+which doesn't honor the phy state-machine. It shouldn't cause a
+regression (TM) if it would be part of the state-machine (aka this RFC
+patch) but it needs to be tested!
+
+As said above, I'm not sure why PHY_RST_AFTER_CLK_EN is required in the
+first place.
+
+> Also, maybe you could clearly state what the issue that you are trying
+> to address - why do you need special reset handling for the combination
+> of FEC + this PHY. Consider including that description in the commit
+> message for any proposed solution so that - as is the case here looking
+> back at Macro's commit - we can see _why_ the change is being made.
+
+With the context of the previous commit it should be clear.
+
+Regards,
+  Marco
+
+> 
+> -- 
+> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
 -- 
-Best wishes,
-Vladimir
+#gernperDu 
+#CallMeByMyFirstName
 
->>> ---
->>> Resend
->>> - colloect R-b tags.
->>>
->>> change in v2
->>> - move to nxp lpc32xx.yaml
->>> - fix ea,lpc4357-developers-kit include lpc4337
->>> ---
->>>    .../devicetree/bindings/arm/nxp/lpc32xx.yaml  | 22 +++++++++++++++++++
->>>    1 file changed, 22 insertions(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml b/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml
->>> index 6b7f5e6f99cfb..1e290f16a7a50 100644
->>> --- a/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml
->>> +++ b/Documentation/devicetree/bindings/arm/nxp/lpc32xx.yaml
->>> @@ -22,5 +22,27 @@ properties:
->>>                  - phytec,phy3250
->>>              - const: nxp,lpc3250
->>> +      - items:
->>> +          - enum:
->>> +              - ea,lpc4357-developers-kit
->>> +          - const: nxp,lpc4357
->>> +          - const: nxp,lpc4350
->>> +
->>> +      - items:
->>> +          - enum:
->>> +              - ciaa,lpc4337
->>> +          - const: nxp,lpc4337
->>> +          - const: nxp,lpc4350
->>> +
->>> +      - items:
->>> +          - enum:
->>> +              - hitex,lpc4350-eval-board
->>> +          - const: nxp,lpc4350
->>> +
->>> +      - items:
->>> +          - enum:
->>> +              - myir,myd-lpc4357
->>> +          - const: nxp,lpc4357
->>> +
->>>    additionalProperties: true
->>>    ...
->>
->> --
->> Best wishes,
->> Vladimir
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
