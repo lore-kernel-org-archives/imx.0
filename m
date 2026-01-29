@@ -1,264 +1,289 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010045.outbound.protection.outlook.com [52.101.84.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8626623D7FB;
-	Thu, 29 Jan 2026 17:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769708115; cv=none; b=Sh4l7zQHV6hePFyUL4WvBF1j07kyx9ztAupM/iMqXe8PX6qf919kaQ9rBzDBDNegXBMOZZpVR3GlECWxn3R46Sm+AdlA8ggopCTnU4F+DqNOwqPeRhFzFlc5fOu5WRzBhvMP2oACk8evDJXC0964UrziCzvh67inUnf/YiTGbwk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769708115; c=relaxed/simple;
-	bh=LZLX7bGtrwHwOhYAzCzwWn2KMP5/JcVHZ43OVV++yko=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JLPrj5ZWrBvTj9cyxkPpBOF9LmfD0QFDMdz8R6B6p54TJIDp2u12jvlIOEHSg6y40Vh1Xb2bXlDpAKW1tTwppx/qtxMewodJkxjGm2h7oVexzsHvgHBtBKaDEJYxiwb1qfwRTeskOHRGZ66rEgh2YY8XX9S1x9p+3BeMlqvOHqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ivCxkCuy; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD4E352C52
+	for <imx@lists.linux.dev>; Thu, 29 Jan 2026 17:35:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769708142; cv=fail; b=qaawrG1+vNEXZiHaNGUrKiaCY8weMfLhvikKt4WX9JNu/DkYiRBPO1ZWhYQpkdS/Up9CgfdUaeT42AxyEIuAwMcI031MqmnttTXkfJ/AI4LyAs4+d0EI2717bXbRyJFmJLk3Tm07+q1UC1k4LkC516SfT+n1rgHDLGYZjP0M2c8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769708142; c=relaxed/simple;
+	bh=73Xi9CLOwIk0LNIpUjLlo25h8l+S9SQZOXZMu91+JNU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=L6sJVKMS0FlbUIS50xx8Znf0G1ffx3gWMXOu8LJKKFbrOmc3+hVn3UVe/tzcQGl8O2RnXYrKKTxjoT5WgYSq8rxSSGyJVMOfNqYZ2akMZzWlF8e9KpXeb2Pk22lLt6jA0zBmm/wICfKdave3LP/6wrgozl+fbQVuua/MX7ZergQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=gAFH0Jtt; arc=fail smtp.client-ip=52.101.84.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ivCxkCuy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00624C4CEF7;
-	Thu, 29 Jan 2026 17:35:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769708115;
-	bh=LZLX7bGtrwHwOhYAzCzwWn2KMP5/JcVHZ43OVV++yko=;
-	h=From:Date:Subject:To:Cc:From;
-	b=ivCxkCuyrvgLWutUxOh2SyVaA6+WINxXAYT8QqC11eVthh2rcJLJhDG+TuWu8+XDa
-	 ooSSxS9xk/ZHGU5K1ldwWOTLS4MYV+yErsdK9+z3kdQaDou7UxfL/ILP9hatgiu7oy
-	 /d8n4m38Ou7qxSLBf3PQyy/vsLVhctpKmWBLZlQ4/IT3qMt7hzQpjkuK3xugHPn9uu
-	 sndTXDFk0V/Vg2ZXEqUmvgj7pHZjOdUkRcFp7W59gEceBPc5TjL7HnTlEftG0qnz1f
-	 dNoz/ZOsPwsjkDRJv3iBM3qSWgya0FWopfLAdcFXcZxHozTxjdaw2GR2Ghog2v5jBt
-	 1ydPy6Y5h2GBg==
-From: Simon Horman <horms@kernel.org>
-Date: Thu, 29 Jan 2026 17:35:03 +0000
-Subject: [PATCH net-next] net: stmmac: spelling corrections
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="gAFH0Jtt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LTtuulqumtDioGDDdmXeKgZa19hKYo4d84oH8A16xXP/S5WvEUJh36Rw1EpLQo9BfdiDy46n6uIwCKVYNrkyrydIxz+oQ8RI9hWGsS0t0VCDahjwLS1bMbY5x2YUukHiV0s+Wpvk8bB3QIMKhEAaRN+jvzqghoyLgn6/KdFvTYFEJk3MZvMlRsY/eU6neyWJch4fCq/wbeUAfvIzv4k3lhzCfYmNQ2pdMEXU8T9DuG6AdO9tkc2s8p07PeRAa6bpgI0J1SZIXaU7PJ6l0G6/RsTCbI2MN6Sx9NkwHil6fXvbUYOglzBsv8A54Z97oM2rW37wP5Y9u+KHmrF3C9ZUow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=G5Hm2P2seoKA8wmQPDkHCTmKz8nYwjx1uw96UYZXBg8=;
+ b=Wl56oeXTv+uCfxXEMzF30SeAa5ZVlrFUuHYZr6EEOmHcFjA/htBr7d95NPb6+AR7bD/PiMTe8JN2h50hXtiF2tfcV9Y7osUY9k9x9bmlxCyVrj9I7993OkHJpbAY+H6a/n20pvEhyHph+tQZxVZhf0gWTPSUl8i/nbwHX6c69b0mRAQb//rnoGqlFHXQlLN1TlX3Qp3n5QOGW+hIpkjBnNTQBuvE/PEgWDbOdGFii8IFtBys867buOvquwc0CZAmQ8SSXrVVfqoZLfCzxMpsKTalTvEm01tYk9CBmdIW2j0/ylFKm/NAvOzjcRLTRVZylZ8smvRF+2lkbA0J9qMtyw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=G5Hm2P2seoKA8wmQPDkHCTmKz8nYwjx1uw96UYZXBg8=;
+ b=gAFH0JttQ3NgOXx02WQKFcCIPjDl2DCUWfcfQoXD950fyi+6pkSN0jWNCysv62cvzpDxaRNQEE9VXRVOi7nRbG8Y4RaJbdsl28u0u9qSkQpPl8ZOfEqZhN5ytQaFf+bF9SQ2AxSB9c9O0kOWiUAva3hszhmxJa4Y4+4HgL2PM7xGnMEkEXO3AoKrgkUFV8n90bGKF0E7Uh/+cEH3efZZDErI9Kxf2DiZ5JfrFkPGLfC/TzVPi3MPsAoPuYYvhEaKIv44lBg6WkLkqILz0Sb1ZLAWm3t1Lo4akk5t3MSFzpLVUuUmsgD6XZDl1U91a06w+QdLlbUzIqz4fCk3koXXug==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by VI0PR04MB10783.eurprd04.prod.outlook.com (2603:10a6:800:267::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.16; Thu, 29 Jan
+ 2026 17:35:36 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9520.005; Thu, 29 Jan 2026
+ 17:35:32 +0000
+Date: Thu, 29 Jan 2026 12:35:23 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Sherry Sun <sherry.sun@nxp.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+	daniel.baluta@nxp.com, dario.binacchi@amarulasolutions.com,
+	alexander.stein@ew.tq-group.com, Markus.Niebel@tq-group.com,
+	matthias.schiffer@tq-group.com, y.moog@phytec.de,
+	josua@solid-run.com, francesco.dolcini@toradex.com,
+	primoz.fiser@norik.com, kernel@pengutronix.de,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V4 3/4] arm64: dts: imx93: Add imx93w.dtsi for i.MX93
+ Wireless SiP
+Message-ID: <aXuaW5Wb9YuV68Dh@lizhi-Precision-Tower-5810>
+References: <20260129084249.3079432-1-sherry.sun@nxp.com>
+ <20260129084249.3079432-4-sherry.sun@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260129084249.3079432-4-sherry.sun@nxp.com>
+X-ClientProxiedBy: PH8PR05CA0005.namprd05.prod.outlook.com
+ (2603:10b6:510:2cc::14) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260129-stmmac-spell-v1-1-c7df9a96e482@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAEaae2kC/x3MQQqDMBBG4avIrDuQTLXSXqW4SOPfdkBTyQQRx
- LsbuvwW7+1kyAqjR7NTxqqmv1ThLw3Fb0gfsI7VJE5uzsudrcxziGwLpolf8HJ1Etuu76kmS8Z
- bt//uSQmFE7ZCw3GchHEK3WgAAAA=
-X-Change-ID: 20260129-stmmac-spell-be12302c4577
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Chen-Yu Tsai <wens@kernel.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
- linux-sunxi@lists.linux.dev
-X-Mailer: b4 0.14.2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|VI0PR04MB10783:EE_
+X-MS-Office365-Filtering-Correlation-Id: d969ccd4-14a9-44c1-e82c-08de5f5ccd8c
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|7416014|52116014|19092799006|366016|376014|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+ =?us-ascii?Q?1c+Q7dsvxLcMPI7pYZ06op4vT/veX3NwCgd2AYqpUlJXC+yhE3MTOYXaSdjO?=
+ =?us-ascii?Q?jspKhyhaFIsFzN1i4y5GHFgxcdhQRRfJs+5RwOHY7L7uybDbTFCWTfdaIZkP?=
+ =?us-ascii?Q?Jmw2mtrjVKgO5Jam/7rSohSrvwvoqJaRDgFWA8r93jTbPfkNHOHVXZNWDH4F?=
+ =?us-ascii?Q?9DRpAgtZ62vdN8blAmdc6ZoAj7ZLfXpx7SIpyWjqChQmcfbGkBqIZksYvQQ6?=
+ =?us-ascii?Q?COSv5waKJCCSC1xGYvI1wEVy5oB/B//sWTYamSxltzzSTAP6opy4jchkBnZr?=
+ =?us-ascii?Q?6LlLcIhD7sIFn7sQIBk4ZBLy1yfucWxRiTcGYQL1Fx2ZrPVRGPwXfHIGxnxF?=
+ =?us-ascii?Q?bA3QN+SsZ2zTg9Lr/kvrxp+79fYKg4uu7J1AONN53Shec+GOqjfRFLiUnNFW?=
+ =?us-ascii?Q?2PaU3evNB9dInvXrVJj7qTGK/A/4xwHwt81lVg4S1+VMcSblDjJaE6so91cI?=
+ =?us-ascii?Q?F98APXDcRdfCXJePiFvczfKYOq2Xz1o8CF+n+z0A33PUnzF2Ch2t+ig5GPgg?=
+ =?us-ascii?Q?DnNW0B278byTE97sSmeIBmOXXCquz29hinlgrru9B5QR0ijMfnLmN42cx8sS?=
+ =?us-ascii?Q?G60YDyATnlvZg+xxdmsRuN1k7u8si/oyheQ6g5OQ7uExErg0fE573L54gvW4?=
+ =?us-ascii?Q?d/+MCM0lPpx43hc7kOq/g5HkFoKC5W40vcnKWSlyh9Dy1iExr8rWoBLrviCy?=
+ =?us-ascii?Q?TGwgkv388IZJJ7sndQHdZWN0NYrTubkReD4pExwSefr+aCnFfL5VUdRLoknk?=
+ =?us-ascii?Q?36iLtaYNMOwyWJFXor5TXB24xpaVnldIdAsHE1hfceqn8euxHkpGs84GiNtq?=
+ =?us-ascii?Q?/TMZ3oDwWKu9iKV7Yg9jxur7meRVhoHTwaOjvY3O2noBts/HPwHM3XIOTvHZ?=
+ =?us-ascii?Q?bZ32BUkmAo2PQpvOz6mrUGi1IFamDyjVsyMm3Q5uMA5AdcVqytNG+IACwFqf?=
+ =?us-ascii?Q?fo1yYjGZBu8zWiIbDwKZ8Q5fsdLoATa9rQ8zasOYKZySht676V0qxXjrOW9A?=
+ =?us-ascii?Q?u3XoTwN0BRFUAPfBuBt6uNRjn1K33/FHpFJ+nMrURexo6GAKqVEAMMR6m/Km?=
+ =?us-ascii?Q?TB8Sajwqa6BAEMRUNFzmULVDatAx34bDBPmI/U9hi7qZFeMin/Hggd4gBpxE?=
+ =?us-ascii?Q?ld/9N67j5azgYLXEN/I6x5rMt7QJUN7db9fzTYtIu3WI8atrQghJxkfAtPi6?=
+ =?us-ascii?Q?7F34KUoHCW3jyMXlLNlA6qmomsnR/bSgzF/evSq7Xxt16Rr7WSCpS3ue6IE+?=
+ =?us-ascii?Q?j/pItN7JuM3ciVvkxgiq1cRK9WOwnmUDXWhhdq9gzD642l3AXSBbhljdeSTo?=
+ =?us-ascii?Q?LoRrgUkb/6BauGfr6iRv5yUpjGa9C+mg2PVF/Uf+wnUORyxsGWtPj+VqTpcl?=
+ =?us-ascii?Q?wxWBh8406o8SPtxVyaTJN3ZrqG+CJCx8mjjlLnwt/oRbEkW8oiZ8pazjYUVr?=
+ =?us-ascii?Q?e3SOjvMP2MIBQPIjVXz0P0waj96b8cj/2a0WEPAAs2DNGY2Msot9SFDXyuzf?=
+ =?us-ascii?Q?l6DjMSUsqy6ISY5YcbW0hRyi/zzGjYgVTsILhhfSV5s4Kdv1og1qT3e4UuhO?=
+ =?us-ascii?Q?tC+g4AsbdAMTLlkaIoPLAl9Tdg2bz3evMsrfw6AwdT5nUImYxBnr1TiDyMwN?=
+ =?us-ascii?Q?5wuWQ3sAJmatOH4VqEnOKhY=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(19092799006)(366016)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?3OQBYGKosdvyge1hK6qtGRQ7cN7cG975Q+wW9SBRTnO+bLGO8xLHjJzKms/z?=
+ =?us-ascii?Q?CRnaTEXwqHq0d8nRiIdMlIT1w6f/5DyJubdqA3ZFyGlsiazmOU5p52jjkaIz?=
+ =?us-ascii?Q?xm7yW0jF5YSSrXyZhckCMi8AdNKoTHVX8n2/JgEobG4pGe2c6hyQr0o/QDSz?=
+ =?us-ascii?Q?pQGDVzTqqG1IWWW7Ydbb8L+PJFD1QmEOUc4KqHRZyMXk/7mOH/OwEDhYfEvf?=
+ =?us-ascii?Q?seJRd7ziybp3mv1fRQO2uuGrGMTPuVppYaO4FK8vDaVaB5ewVAkQzEWS+e5f?=
+ =?us-ascii?Q?EmmhsAb0hDYjQZG46Q8rp7tEuEWqxJ848RA6gfI/p7NIQ6EEC3KgeChFiOz8?=
+ =?us-ascii?Q?DIxXcjR6Iy08qZKw77DM6jjlZsO+BraK3c5tcDJ0m/yl6pHikuLS2q6OmEKx?=
+ =?us-ascii?Q?dVvAu6Tp72wjT+Bzdo8OrB3LtDvGOh/61Vybg7IP2uSjp8qUMc3MKHNWXLVk?=
+ =?us-ascii?Q?WJReoOGL9V4co4ahq/tmFoytIcqCdghTnnGYWT0dBkJtYXlbab9/W+oFU2ov?=
+ =?us-ascii?Q?MA5e/03CtGowhtcmvF5/ExH4wSpcfjPUE27n8FUYkYWGdfhtBk4D98J3SqtC?=
+ =?us-ascii?Q?Jj27GlydSmrd3Aw1ynR5awCvMxIxcFQJWmKZKL5fuPq7MHKXk4qQ1oB2vbk1?=
+ =?us-ascii?Q?czMVV9YwriyWWbNQsh+J7JTu7JeXIs1KEOk1egzeLtRV00eU9TmLTmX8HW4V?=
+ =?us-ascii?Q?92wKaeOun8KC0Cw40CHnX0bHShyyIaIILbRllnBEhRA1DHn1eA7axVC9M1oh?=
+ =?us-ascii?Q?Hxdh/C95ffl97mJcWi2m5tzBCTxh2EAfmQ20tPwNakD8G4jZ52bCBimmiS+P?=
+ =?us-ascii?Q?9HU5opEnJLMcSr8XTgzX1o7oZYJungyk3gzraGaiKileOZWqM59b6Y/C69gO?=
+ =?us-ascii?Q?b7xq9tLAMh7j4l6laeMG8Ry81DVpkaGV/0MZc0fOlcNPjyPkpxRDbCJPr2sb?=
+ =?us-ascii?Q?jaqFhl7X6vnpw4QwViLV4/ahjIrHVFdNx5Hy0+bvaIie2Aku03c3ETQQ1RiY?=
+ =?us-ascii?Q?O/nmBVuExUtJ+MJPbrbQ5VpbOXANaDJ3wOHVPb9kY0C9q59+vTvMMaU0aH0a?=
+ =?us-ascii?Q?SxEibWCZSElUPTpPFsMLgvH6M0daDhuhm8eeaS/hgqlSncFnUPPDNvXAdegl?=
+ =?us-ascii?Q?l5gUz0elVaQ3ujcy3WapnP3f1j0myCBHEGoHOKk03k7CB1o8WPA1wQFwxmpg?=
+ =?us-ascii?Q?HNJpYPsghtXK8IYNBEMNV0PfUlDuGKJmjqvMSDmFa7vjqXaRO3jwFUTvwmwm?=
+ =?us-ascii?Q?s5j/g3juScE7ehxRSiPSoIMuUhTQgAsgpwHf8IA+0LB1ccutcDSi/dISu0q5?=
+ =?us-ascii?Q?/Sa2jrW1Mo9mx4XIKn38saA689vQFWb94uCtqQR/Gfml1a3Wi0io4vaWBxev?=
+ =?us-ascii?Q?ghBxLL5W3nzZaL7YRo7JSYIbcq2V2w+TRzs+KqII0Biq5eCX1Z1CozU9f/KL?=
+ =?us-ascii?Q?933Tegooroy0NmHngr8cU8RQ65eN6guyhGvgkQRt4FMmLacobKENVWeicjJX?=
+ =?us-ascii?Q?/Q/ijEArPzm2Gl+xeGi5TJMuKxxkFVCRLP+wpeJfgdc6nes/fZEX2Gn4B953?=
+ =?us-ascii?Q?h359PtL+ZlBqCqvCAxGsaF/AUqpJo3gHNI5rdJy2dQ3b6FfAl0N2guzfwvLF?=
+ =?us-ascii?Q?PP6JTdZjsp1vp1L5+XYSjR2syl9WbhTTSf4IZWNdH1moTAiEIeCkccHwiUFM?=
+ =?us-ascii?Q?RMZd2T4oeaqxzSsSZNWKDQSl47ya7/WYYb3vzjKX+KOSocWtqY6F/mxBNMLl?=
+ =?us-ascii?Q?+YzkO0DSBA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d969ccd4-14a9-44c1-e82c-08de5f5ccd8c
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 17:35:32.4790
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 070OHjU5hTh6KW7kgCcj5MWS2NhartbzmegEbBQ9TeMzF2UWweOGbWP6bL7AsWoRlO/qSJ53akcSNqir5ktPsg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10783
 
-Correct spelling as flagged by codespell.
+On Thu, Jan 29, 2026 at 04:42:48PM +0800, Sherry Sun wrote:
+> Introduce imx93w.dtsi to describe the new NXP i.MX93 Wireless SiP, which
+> integrates the i.MX93 application processor with the NXP IW610 WLCSP
+> (Wi-Fi + Bluetooth LE + 802.15.4) connectivity device.
+>
+> The new imx93w.dtsi is based on imx93.dtsi and adds the pieces required
+> for the internal connection between i.MX93 and IW610 inside the SiP.
+> This includes USDHC3 which is used as the host interface to the IW610
+> and the required GPIO settings(e.g. WL_RST, WL_REG_ON, etc.).
+>
+> These nodes reflect internal SiP wiring and are not board specific, so
+> they are placed in a dedicated imx93w.dtsi file that can be reused by
+> multiple boards adopting the i.MX93 Wireless SiP.
+>
+> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> ---
 
-Signed-off-by: Simon Horman <horms@kernel.org>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c        |  4 ++--
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c      |  4 ++--
- drivers/net/ethernet/stmicro/stmmac/dwmac1000.h        |  2 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac100_core.c    |  2 +-
- drivers/net/ethernet/stmicro/stmmac/enh_desc.c         |  2 +-
- drivers/net/ethernet/stmicro/stmmac/mmc_core.c         |  4 ++--
- drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c  |  2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c      | 10 +++++-----
- drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c      |  2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c |  2 +-
- 10 files changed, 17 insertions(+), 17 deletions(-)
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-index 97de4726208e1bc01e4980da99ace72a3e2e1d54..ecc0c34834235207cd082655cb021da3382cb350 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-@@ -270,9 +270,9 @@ imx_dwmac_parse_dt(struct imx_priv_data *dwmac, struct device *dev)
- 	if (of_machine_is_compatible("fsl,imx8mp") ||
- 	    of_machine_is_compatible("fsl,imx91") ||
- 	    of_machine_is_compatible("fsl,imx93")) {
--		/* Binding doc describes the propety:
-+		/* Binding doc describes the property:
- 		 * is required by i.MX8MP, i.MX91, i.MX93.
--		 * is optinoal for i.MX8DXL.
-+		 * is optional for i.MX8DXL.
- 		 */
- 		dwmac->intf_regmap =
- 			syscon_regmap_lookup_by_phandle_args(np, "intf_mode", 1,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-index 8aa496ac85cce5bc3e2bcec5ceb880ada79e472c..c01b86fd64da1303aa4c905a7c6bb844515d5130 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -746,7 +746,7 @@ static int sun8i_dwmac_reset(struct stmmac_priv *priv)
- 	v = readl(priv->ioaddr + EMAC_BASIC_CTL1);
- 	writel(v | 0x01, priv->ioaddr + EMAC_BASIC_CTL1);
- 
--	/* The timeout was previoulsy set to 10ms, but some board (OrangePI0)
-+	/* The timeout was previously set to 10ms, but some board (OrangePI0)
- 	 * need more if no cable plugged. 100ms seems OK
- 	 */
- 	err = readl_poll_timeout(priv->ioaddr + EMAC_BASIC_CTL1, v,
-@@ -821,7 +821,7 @@ static int sun8i_dwmac_power_internal_phy(struct stmmac_priv *priv)
- 		return ret;
- 	}
- 
--	/* Make sure the EPHY is properly reseted, as U-Boot may leave
-+	/* Make sure the EPHY is properly reset, as U-Boot may leave
- 	 * it at deasserted state, and thus it may fail to reset EMAC.
- 	 *
- 	 * This assumes the driver has exclusive access to the EPHY reset.
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000.h b/drivers/net/ethernet/stmicro/stmmac/dwmac1000.h
-index b3135df0a359cd5ea36db325c4a37075991b6712..9fe639fb06bb3f61179e967b663927cce50ff3ca 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000.h
-@@ -152,7 +152,7 @@ enum inter_frame_gap {
- 
- /*--- DMA BLOCK defines ---*/
- /* DMA Bus Mode register defines */
--/* Programmable burst length (passed thorugh platform)*/
-+/* Programmable burst length (passed through platform)*/
- #define DMA_BUS_MODE_PBL_MASK	GENMASK(13, 8)	/* Programmable Burst Len */
- #define DMA_BUS_MODE_ATDS	0x00000080	/* Alternate Descriptor Size */
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac100_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac100_core.c
-index 4efe4c3ae5dcc53a7b9826f3e2b1bd54f6e256c4..db4fbe64a38afc3142bc2fd4ed9b53230c05031b 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac100_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac100_core.c
-@@ -108,7 +108,7 @@ static void dwmac100_set_filter(struct mac_device_info *hw,
- 		memset(mc_filter, 0, sizeof(mc_filter));
- 		netdev_for_each_mc_addr(ha, dev) {
- 			/* The upper 6 bits of the calculated CRC are used to
--			 * index the contens of the hash table
-+			 * index the contents of the hash table
- 			 */
- 			int bit_nr = ether_crc(ETH_ALEN, ha->addr) >> 26;
- 			/* The most significant bit determines the register to
-diff --git a/drivers/net/ethernet/stmicro/stmmac/enh_desc.c b/drivers/net/ethernet/stmicro/stmmac/enh_desc.c
-index d571241e64dd929536aa3158f352a281d9b1834b..8f6993c8bcae5be7fd064a5b1259901b4f643747 100644
---- a/drivers/net/ethernet/stmicro/stmmac/enh_desc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/enh_desc.c
-@@ -88,7 +88,7 @@ static int enh_desc_coe_rdes0(int ipc_err, int type, int payload_err)
- 
- 	/* bits 5 7 0 | Frame status
- 	 * ----------------------------------------------------------
--	 *      0 0 0 | IEEE 802.3 Type frame (length < 1536 octects)
-+	 *      0 0 0 | IEEE 802.3 Type frame (length < 1536 octets)
- 	 *      1 0 0 | IPv4/6 No CSUM errorS.
- 	 *      1 0 1 | IPv4/6 CSUM PAYLOAD error
- 	 *      1 1 0 | IPv4/6 CSUM IP HR error
-diff --git a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
-index 0fab842902a850022a3be368d4972e4f4e9bcdc9..1b3b114e7bec86971c99e219db213eb11c022ebc 100644
---- a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
-@@ -252,7 +252,7 @@ static void dwmac_mmc_intr_all_mask(void __iomem *mmcaddr)
- 	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_RX_IPC_INTR_MASK);
- }
- 
--/* This reads the MAC core counters (if actaully supported).
-+/* This reads the MAC core counters (if actually supported).
-  * by default the MMC core is programmed to reset each
-  * counter after a read. So all the field of the mmc struct
-  * have to be incremented.
-@@ -420,7 +420,7 @@ static void dwxgmac_read_mmc_reg(void __iomem *addr, u32 reg, u32 *dest)
- 		*dest = *dest + tmp;
- }
- 
--/* This reads the MAC core counters (if actaully supported).
-+/* This reads the MAC core counters (if actually supported).
-  * by default the MMC core is programmed to reset each
-  * counter after a read. So all the field of the mmc struct
-  * have to be incremented.
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-index bb110124f21e2d89493359374a33446178a80496..b9a985fa772c993a7b00c27046f4a9555e60e461 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-@@ -43,7 +43,7 @@ static void config_sub_second_increment(void __iomem *ioaddr,
- 	unsigned long data;
- 	u32 reg_value;
- 
--	/* For GMAC3.x, 4.x versions, in "fine adjustement mode" set sub-second
-+	/* For GMAC3.x, 4.x versions, in "fine adjustment mode" set sub-second
- 	 * increment to twice the number of nanoseconds of a clock cycle.
- 	 * The calculation of the default_addend value by the caller will set it
- 	 * to mid-range = 2^31 when the remainder of this division is zero,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 347a0078f622277a9792cce3ad6f1719d168c040..268289a324f3c3b697f6232353d8a96c65d94f61 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1114,7 +1114,7 @@ static int stmmac_mac_enable_tx_lpi(struct phylink_config *config, u32 timer,
- 	stmmac_set_eee_timer(priv, priv->hw, STMMAC_DEFAULT_LIT_LS,
- 			     STMMAC_DEFAULT_TWT_LS);
- 
--	/* Try to cnfigure the hardware timer. */
-+	/* Try to configure the hardware timer. */
- 	ret = stmmac_set_lpi_mode(priv, priv->hw, STMMAC_LPI_TIMER,
- 				  priv->tx_lpi_clk_stop, priv->tx_lpi_timer);
- 
-@@ -3495,7 +3495,7 @@ static void stmmac_mac_config_rss(struct stmmac_priv *priv)
- /**
-  *  stmmac_mtl_configuration - Configure MTL
-  *  @priv: driver private structure
-- *  Description: It is used for configurring MTL
-+ *  Description: It is used for configuring MTL
-  */
- static void stmmac_mtl_configuration(struct stmmac_priv *priv)
- {
-@@ -4373,7 +4373,7 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- 	/* Always insert VLAN tag to SKB payload for TSO frames.
- 	 *
--	 * Never insert VLAN tag by HW, since segments splited by
-+	 * Never insert VLAN tag by HW, since segments split by
- 	 * TSO engine will be un-tagged by mistake.
- 	 */
- 	if (skb_vlan_tag_present(skb)) {
-@@ -5946,7 +5946,7 @@ static int stmmac_napi_poll_rxtx(struct napi_struct *napi, int budget)
- 		unsigned long flags;
- 
- 		spin_lock_irqsave(&ch->lock, flags);
--		/* Both RX and TX work done are compelte,
-+		/* Both RX and TX work done are complete,
- 		 * so enable both RX & TX IRQs.
- 		 */
- 		stmmac_enable_dma_irq(priv, priv->ioaddr, chan, 1, 1);
-@@ -6278,7 +6278,7 @@ static irqreturn_t stmmac_msi_intr_rx(int irq, void *data)
- /**
-  *  stmmac_ioctl - Entry point for the Ioctl
-  *  @dev: Device pointer.
-- *  @rq: An IOCTL specefic structure, that can contain a pointer to
-+ *  @rq: An IOCTL specific structure, that can contain a pointer to
-  *  a proprietary structure used to pass information to the driver.
-  *  @cmd: IOCTL command
-  *  Description:
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-index 1e82850f2a25c33dffafa2fd3fb77a04852e9ace..a7c2496b39f286699da5395ec7e468ca84feaa62 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-@@ -483,7 +483,7 @@ void stmmac_pcs_clean(struct net_device *ndev)
-  *	If a specific clk_csr value is passed from the platform
-  *	this means that the CSR Clock Range selection cannot be
-  *	changed at run-time and it is fixed (as reported in the driver
-- *	documentation). Viceversa the driver will try to set the MDC
-+ *	documentation). Vice versa the driver will try to set the MDC
-  *	clock dynamically according to the actual clock input.
-  */
- static u32 stmmac_clk_csr_set(struct stmmac_priv *priv)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-index e90a2c469b9a6f576c1b6f99954af08bae69007c..08b60b7d5fd641846ec1c31cca332833771a991c 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-@@ -2000,7 +2000,7 @@ void stmmac_selftest_run(struct net_device *dev,
- 		}
- 
- 		/*
--		 * First tests will always be MAC / PHY loobpack. If any of
-+		 * First tests will always be MAC / PHY loopback. If any of
- 		 * them is not supported we abort earlier.
- 		 */
- 		if (ret) {
-
-
-
+>  arch/arm64/boot/dts/freescale/imx93w.dtsi | 102 ++++++++++++++++++++++
+>  1 file changed, 102 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/freescale/imx93w.dtsi
+>
+> diff --git a/arch/arm64/boot/dts/freescale/imx93w.dtsi b/arch/arm64/boot/dts/freescale/imx93w.dtsi
+> new file mode 100644
+> index 000000000000..30da79685fec
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/freescale/imx93w.dtsi
+> @@ -0,0 +1,102 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +/*
+> + * Copyright 2026 NXP
+> + */
+> +
+> +#include "imx93.dtsi"
+> +
+> +/ {
+> +	reg_usdhc3_vmmc: regulator-usdhc3 {
+> +		compatible = "regulator-fixed";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_reg_usdhc3_vmmc>;
+> +		regulator-name = "WLAN_EN";
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +		gpio = <&gpio2 29 GPIO_ACTIVE_HIGH>;
+> +		enable-active-high;
+> +	};
+> +
+> +	usdhc3_pwrseq: usdhc3_pwrseq {
+> +		compatible = "mmc-pwrseq-simple";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&pinctrl_usdhc3_pwrseq>;
+> +		reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
+> +	};
+> +};
+> +
+> +&usdhc3 {
+> +	pinctrl-names = "default", "state_100mhz", "state_200mhz", "sleep";
+> +	pinctrl-0 = <&pinctrl_usdhc3>;
+> +	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+> +	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
+> +	pinctrl-3 = <&pinctrl_usdhc3_sleep>;
+> +	mmc-pwrseq = <&usdhc3_pwrseq>;
+> +	vmmc-supply = <&reg_usdhc3_vmmc>;
+> +	bus-width = <4>;
+> +	keep-power-in-suspend;
+> +	non-removable;
+> +	wakeup-source;
+> +	status = "okay";
+> +};
+> +
+> +&iomuxc {
+> +	pinctrl_reg_usdhc3_vmmc: regusdhc3vmmcgrp {
+> +		fsl,pins = <
+> +			MX93_PAD_GPIO_IO29__GPIO2_IO29			0x31e
+> +		>;
+> +	};
+> +
+> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+> +	pinctrl_usdhc3: usdhc3grp {
+> +		fsl,pins = <
+> +			MX93_PAD_SD3_CLK__USDHC3_CLK		0x1582
+> +			MX93_PAD_SD3_CMD__USDHC3_CMD		0x40001382
+> +			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x40001382
+> +			MX93_PAD_SD3_DATA1__USDHC3_DATA1	0x40001382
+> +			MX93_PAD_SD3_DATA2__USDHC3_DATA2	0x40001382
+> +			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x40001382
+> +		>;
+> +	};
+> +
+> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+> +	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
+> +		fsl,pins = <
+> +			MX93_PAD_SD3_CLK__USDHC3_CLK		0x158e
+> +			MX93_PAD_SD3_CMD__USDHC3_CMD		0x4000138e
+> +			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x4000138e
+> +			MX93_PAD_SD3_DATA1__USDHC3_DATA1	0x4000138e
+> +			MX93_PAD_SD3_DATA2__USDHC3_DATA2	0x4000138e
+> +			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x4000138e
+> +		>;
+> +	};
+> +
+> +	/* need to config the SION for data and cmd pad, refer to ERR052021 */
+> +	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
+> +		fsl,pins = <
+> +			MX93_PAD_SD3_CLK__USDHC3_CLK		0x15fe
+> +			MX93_PAD_SD3_CMD__USDHC3_CMD		0x400013fe
+> +			MX93_PAD_SD3_DATA0__USDHC3_DATA0	0x400013fe
+> +			MX93_PAD_SD3_DATA1__USDHC3_DATA1	0x400013fe
+> +			MX93_PAD_SD3_DATA2__USDHC3_DATA2	0x400013fe
+> +			MX93_PAD_SD3_DATA3__USDHC3_DATA3	0x400013fe
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc3_sleep: usdhc3grpsleepgrp {
+> +		fsl,pins = <
+> +			MX93_PAD_SD3_CLK__GPIO3_IO20		0x31e
+> +			MX93_PAD_SD3_CMD__GPIO3_IO21		0x31e
+> +			MX93_PAD_SD3_DATA0__GPIO3_IO22		0x31e
+> +			MX93_PAD_SD3_DATA1__GPIO3_IO23		0x31e
+> +			MX93_PAD_SD3_DATA2__GPIO3_IO24		0x31e
+> +			MX93_PAD_SD3_DATA3__GPIO3_IO25		0x31e
+> +		>;
+> +	};
+> +
+> +	pinctrl_usdhc3_pwrseq: usdhc3pwrseqgrp {
+> +		fsl,pins = <
+> +			MX93_PAD_PDM_BIT_STREAM1__GPIO1_IO10		0x31e
+> +		>;
+> +	};
+> +};
+> --
+> 2.37.1
+>
