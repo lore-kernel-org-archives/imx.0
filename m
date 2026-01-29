@@ -1,46 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54EF219F40B;
-	Thu, 29 Jan 2026 18:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1910B28B40E;
+	Thu, 29 Jan 2026 18:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769710275; cv=none; b=ZpVR5KO7w9+rfmor2tdIXPaoiG1zaxYtzkFuDddM1CJ24B26Kyrp1R3E/CUvVlzBV9hxeKjeTasanSy/ucpe4MbKsUy9h19BDvzQspRngU5lpUw20kIIaEWBUTgENqW+r+8CDqSrQ17ZmQgVW4UcO+OY54CzsJmRrB36Ud+O8zU=
+	t=1769710681; cv=none; b=rlEjCzmmIJtULdRUU2bujO14IpAeZ+Dqo02rEmLBSGU/+k39l1oYfcWZPXt9YZyG6YKjWuRIsrqJITkoRtv/HAc4QhRNdsC5/ySmRkSE5kakoopNOaXMhBmBsd2XUE/J81NVK+zR18WbOrNywHgoIdidXTR/Efcd7es1CweX1jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769710275; c=relaxed/simple;
-	bh=3Au9COKP+vRsf+RlNddoz8B4QzP+leArD8miTuKlC1Q=;
+	s=arc-20240116; t=1769710681; c=relaxed/simple;
+	bh=SAcQ/bmpw40uH4VH8bWJdp31ASTq8tWQB6is8ATklbY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EanFh514UfqQgUM9pRu5sUie4va42SCC+TjGBi5F1m+sqS+UeyVN84t/UfD0QXgCo57RmionqSB1jWiV6X14+Py6bj+7wsMydJSYZYV1MYTEoV5W3B5RQkPwWUuuC6kFhd66fz6J4Atjq1SERcAGCn9mQJqAuGQxt7P1HL19TXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gm2MrgTI; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dli430o8HC2b0oO+XpgMULedpOJkPwlTPONv0axTLvr6KrWKpMRS+LREQn6GCMTQHitW5ZeWgR//CmsAfUp9aFGANJGaeuM5D0e+Fkr17p1BoubmO3VJu7qQ7ThcocsVB/YXr/LTa3sP8EeQB+ygwkqQlSeES4SDDedT8hBPct4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pl+b8Bx8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gm2MrgTI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D144CC4CEF7;
-	Thu, 29 Jan 2026 18:11:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pl+b8Bx8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703CCC4CEF7;
+	Thu, 29 Jan 2026 18:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769710275;
-	bh=3Au9COKP+vRsf+RlNddoz8B4QzP+leArD8miTuKlC1Q=;
+	s=k20201202; t=1769710680;
+	bh=SAcQ/bmpw40uH4VH8bWJdp31ASTq8tWQB6is8ATklbY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gm2MrgTISL7NlkFAsK1t2vtt8JUCr14uepW9AgHCbfWVGiTdOZ7INDSBNzJrZKHGN
-	 +5JXllxrpHZBd4m5KLFEQL9gxFceakknubpmtc00iVn1azvi0HVsjqSs17IW9t3f4q
-	 z1adpmfG9ynlgkQqe9Nt5SB33ArDiJZaOf8KEiePWHOFjMqkMVXwo3/rmq86X/+nYt
-	 JSSk4WFTYEBV6I7tI+o1ex5zBOXjfMv6pb73xd/Bk1FFJ6+88Qp6afDuLNxg9lLg5K
-	 Wb//99Lgn2tdGhKVybVdKFaKCcf3PSib+eTeJRKjeizoijP9F+8kQ/smqftFe6IcLg
-	 rVV3a2xELSS3w==
-Date: Thu, 29 Jan 2026 12:11:14 -0600
+	b=Pl+b8Bx85WmBaZE+dMuCA9qa/uWVXY0HAj0BKaWDi9HtemQ+k5udGdtLooX9k0Ghg
+	 OYnIWvnLHw+VCN5kpT2KVaAABUmQbJsLvK2rzI+hWJg634Wu2zdD4wX4ZiRXoJnl+y
+	 hGca/wJFeP1aDWHvJK/XnmENjl60+er+2o8Ilv3d6m5epkOD8649wp3kI8zv9Ev+nP
+	 divV4d1H3lF93um2qG/ByQn3dSDRPayVmKYfqC/QMXKYFl6Y9/y/9aAoHA735FA/ZC
+	 HvDS6DXmdLmykq4czSfgagCPwYVUxUNSUQjSlXpd8uXDbgEUBf2Trmh/anE12lmGkY
+	 zkGFuAjO3i+Lg==
+Date: Thu, 29 Jan 2026 12:17:59 -0600
 From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Sherry Sun <sherry.sun@nxp.com>
-Cc: mani@kernel.org, kwilczynski@kernel.org, shawnguo@kernel.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	hongxing.zhu@nxp.com, linux-pci@vger.kernel.org, festevam@gmail.com,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de, krzk+dt@kernel.org, frank.li@nxp.com,
-	l.stach@pengutronix.de, lpieralisi@kernel.org, conor+dt@kernel.org,
-	bhelgaas@google.com, s.hauer@pengutronix.de
-Subject: Re: [PATCH V2 01/10] dt-bindings: PCI: fsl,imx6q-pcie: Add reset
- GPIO in Root Port node
-Message-ID: <176971027369.1393650.10286669434894758293.robh@kernel.org>
-References: <20260123021445.3782170-1-sherry.sun@nxp.com>
- <20260123021445.3782170-2-sherry.sun@nxp.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Shawn Guo <shawnguo@kernel.org>, linux-kernel@vger.kernel.org,
+	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Frank Li <frank.li@nxp.com>
+Subject: Re: [PATCH v2] dt-bindings: firmware: fsl,scu: Mark multi-channel MU
+ layouts as deprecated
+Message-ID: <176971067833.1454686.17086963865281930203.robh@kernel.org>
+References: <20260127-scu-v2-1-03f3aaa56e1b@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,23 +50,33 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260123021445.3782170-2-sherry.sun@nxp.com>
+In-Reply-To: <20260127-scu-v2-1-03f3aaa56e1b@nxp.com>
 
 
-On Fri, 23 Jan 2026 10:14:36 +0800, Sherry Sun wrote:
-> Update fsl,imx6q-pcie.yaml to include the standard reset-gpios property
-> for the Root Port node.
+On Tue, 27 Jan 2026 07:06:00 +0800, Peng Fan (OSS) wrote:
+> From: Peng Fan <peng.fan@nxp.com>
 > 
-> The reset-gpios property is already defined in pci-bus-common.yaml for
-> PERST#, so use it instead of the local reset-gpio property. Keep the
-> existing reset-gpio property in the bridge node for backward
-> compatibility, but mark it as deprecated.
+> The SCU MU driver has already supported the simple and efficient single-TX
+> and single-RX channel layout since 2021. The older multi-channel MU
+> configurations (tx0..tx3 and rx0..rx3) are less efficient in practice and
+> not needed.
 > 
-> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> Mark these legacy mbox-names and mboxes tuple layouts as deprecated in the
+> binding schema. The driver continues to support them for backward
+> compatibility in case firmware publishes the legacy properties.
+> 
+> The example section is updated accordingly to demonstrate the recommended
+> layout.
+> 
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
->  .../bindings/pci/fsl,imx6q-pcie.yaml          | 32 +++++++++++++++++++
->  1 file changed, 32 insertions(+)
+> Changes in v2:
+> - A minor grammer update in commit log
+> - Link to v1: https://lore.kernel.org/r/20260126-scu-v1-1-b9d31da12860@nxp.com
+> ---
+>  .../devicetree/bindings/firmware/fsl,scu.yaml        | 20 +++++++++++---------
+>  1 file changed, 11 insertions(+), 9 deletions(-)
 > 
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Applied, thanks!
 
