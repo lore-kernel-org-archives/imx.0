@@ -1,105 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx-relay50-hz3.antispameurope.com (mx-relay50-hz3.antispameurope.com [94.100.134.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4A6273D8D;
-	Thu, 29 Jan 2026 05:10:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769663438; cv=none; b=N/Z7lcOSefpq/wAVhno0uSubapQbXNYayF8ifj0z6JjEMA7hDqToEEPtqxsUnNGAHLVeOggEsOyle0thCqp0whAtkCuxOn9RLqrKchwQsPzKwQFrJhc5leDTaSpEbn+UcMJmDOLEZt9tRkRGV6yEiQ9P+qczltjuLIvXcKYasvA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769663438; c=relaxed/simple;
-	bh=/QRvDVT9GAiToi3v8vcF+/vGPRfAWiWi238lSh1gI44=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868A7352923
+	for <imx@lists.linux.dev>; Thu, 29 Jan 2026 07:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.239
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769670906; cv=pass; b=S+T8pd4yTIr2P437Ai4aj3eEntMSRFc6LUom3EjlmVXufNyETGB/PzODlEZfkIZnw0kf2ah6oAadI+I2YoPCjbwvyu9DJLKFQSNYGlNgc4lA6A2BMJwGRPsU4r4OpxXyE2FqjhhBwUX7EkFL0lSR996lI9DXD1n2B3rVteU2tjk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769670906; c=relaxed/simple;
+	bh=krVsIGyFSy81p8naF8azvPw/6lhfe/mjHtmVK3Ej4Fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wc1jVxFcJ0TWTFZQA6IVNlpQ8qCcL3JBy9WvRx7mdQljw2cxPneMiI5TxXDOrpUwxK0hAJoImeiZoWC9E0VwoiWqfyMhjEJ/1gm9SFukXwKuaeNdDxwILqoFoP+3RDqz0ZTzwh8aqo7zrAywKDrU7VTEEj2NoIfYf89AmapwH6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c6V3DB04; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=YVNOHm9cokg41ijqDn3kjKdeeb4uRu1y5qh2v/7+a0P/n+jhUYb0NFmq6cGzmv0YFSHDVfdTdmhZ39e9ni6IYyEvkR5nOsnFucXoADesh0VlRc8Hzdv8qrw14KW9pPQ8x70vZymmsj2pB1L7xryrG/NZLco3x3Hzr2WXOEahVBw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=tHF3tkV6; arc=pass smtp.client-ip=94.100.134.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c6V3DB04"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB9FC116D0;
-	Thu, 29 Jan 2026 05:10:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769663437;
-	bh=/QRvDVT9GAiToi3v8vcF+/vGPRfAWiWi238lSh1gI44=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c6V3DB04Gz6boAr8Vs3t5FEeQjtRG5O84q1Ij/YXCv8c2F0w+MP9w1Tl2kPB0FcD4
-	 Xl/KgTLm0SxwSQJXbGYJ6tfseKUXZ+CFjkOf/nUEoHgjuj7x/FKMxVShY+7j4ttbhZ
-	 5+sfRBkBxbb962nCJs7GbfVtdy768H2Exifqa8Ha+bB7KZvUd4Xo/aKskK81XNQGkw
-	 lnlgJId6jwxkrazRSAnNzK8/QoGifKaPigQScm3ox0Q/GRuIa18M4rZWDdeRxfa2zP
-	 LTWyvIAL7Ydpp1ig4pj/yLFBMNtFHQ+unTB2PyaqFIOEAul1W7rReRwo/4Dg3LnP0r
-	 jlcHsRNYrgHlw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: dan.carpenter@linaro.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	jan.petrous@oss.nxp.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	imx@lists.linux.dev,
-	chester62515@gmail.com,
-	mbrugger@suse.com,
-	netdev@vger.kernel.org,
-	s32@nxp.com,
-	conor+dt@kernel.org,
-	andrew+netdev@lunn.ch,
-	robh@kernel.org,
-	kernel@pengutronix.de,
-	linux-stm32@st-md-mailman.stormreply.com,
-	shawnguo@kernel.org,
-	linux-kernel@vger.kernel.org,
-	ghennadi.procopciuc@oss.nxp.com,
-	linaro-s32@linaro.org,
-	linux-arm-kernel@lists.infradead.org,
-	alexandre.torgue@foss.st.com,
-	krzk+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	festevam@gmail.com,
-	s.hauer@pengutronix.de
-Subject: Re: [v5,2/3] dt-bindings: net: nxp,s32-dwmac: Use the GPR syscon
-Date: Wed, 28 Jan 2026 21:10:35 -0800
-Message-ID: <20260129051035.375905-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <939fdaf94038613486bdbba510a92a1e57e18c71.1769592679.git.dan.carpenter@linaro.org>
-References: <939fdaf94038613486bdbba510a92a1e57e18c71.1769592679.git.dan.carpenter@linaro.org>
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="tHF3tkV6"
+ARC-Authentication-Results: i=1; mx-gate50-hz3.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out02-hz1.hornetsecurity.com;
+ dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=HC5tOqcEOO2h2Sdyxk8M1xH/nqYlQmmp4owBkWQ4MQo=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1769670834;
+ b=ROpX2d3d/LvL78rDSb31Op1vs6InKlUjcJ4TVXZeWvZZtLTmgkiRpI24rVV7synVpHLI2Cd/
+ k//xiNaJDft6abr8mTjFYwNpbYmzIZ02nmK6SmuV5AEl24SnkQPgBMcYxZ6Ht8pSZGEiiDhUMwI
+ NelweKpBJ5uyxhIVSz0dZpLbP7+5RpiJUi6wTCVlzt4u4bL7YQG4dPSRbxKCU+WxE1br+PbSkbh
+ g3awqSg/vog0EzWa3pPNb04ilHkt6ssWG7M6iLeAlZ++0xTSuNTMsO77QqU5uTGZECezEQ39sHA
+ Aw5Jedfjinb7WAYPppya35u9cVm7AV3DtpLWe9A8RzXVQ==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1769670834;
+ b=jYO4GOqxM/OhFi82eYbo9pXK4RIWpK5WpXpH/Aybv5YD6KI/usBbckNQfb8SrL2+caCQpjic
+ 3vOzZGzB1WltlmOwbSe1XmkPsSv108CTyEalno6jUoA5AmavIvt4XGWXCq+VAUvQbBAWf0C7qNP
+ wSjAtNu2h0GGAzs12kuoAawZd8321nAnP5gYyG7n/WFvW3hwyAk3A82RbjeidES4MVikmAHDtq+
+ oshiK366Hl6O8YBh1w/zrA+mAERs5fiy5SEO3Rqm5MXFQKGWPnjfphbE5FL7j9oGL5hBL/9RqP/
+ Rn2q9MQD01vbx2YC+zkrGQYvZct7nR5938imfzFlE8DuQ==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay50-hz3.antispameurope.com;
+ Thu, 29 Jan 2026 08:13:54 +0100
+Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by smtp-out02-hz1.hornetsecurity.com (Postfix) with ESMTPSA id B4DB15A0742;
+	Thu, 29 Jan 2026 08:13:42 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
+ Mark Brown <broonie@kernel.org>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Chen-Yu Tsai <wenst@chromium.org>, Abel Vesa <abelvesa@kernel.org>,
+ Peng Fan <peng.fan@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel@collabora.com, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 0/2] Fix a __clk_core_init parental issue
+Date: Thu, 29 Jan 2026 08:13:06 +0100
+Message-ID: <2257247.irdbgypaU6@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <a4f87b4b-efce-4c8c-a523-69949935a096@sirena.org.uk>
+References:
+ <20260128-ops-parent-enable-fix-v1-0-ff39cc37f98d@collabora.com>
+ <a4f87b4b-efce-4c8c-a523-69949935a096@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay50-hz3.antispameurope.com with 4f1r3C4Tbbz2nHsK
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:b08f8c8389cf73d149848fbafa2d3aef
+X-cloud-security:scantime:2.067
+DKIM-Signature: a=rsa-sha256;
+ bh=HC5tOqcEOO2h2Sdyxk8M1xH/nqYlQmmp4owBkWQ4MQo=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1769670834; v=1;
+ b=tHF3tkV6c/ANBm2UQaq9bXBCCcInh8NGpbWyx8mHruOByEVx+izTYNVdXk0EZ57aBZfRaetZ
+ /Pqd9/SMz56kmWJ1j5aZ5iECJLKbaPy7JbCsYhOEsulekgbftMBddSiUi+HaqSUE6aVDYlMlwia
+ Gqbb6xTv7vhmw0roNFFMiKUH7shHXBCzKg3CQVMexSlsdhgoY4ah/Iwg7I+Yl2YVG14t7y4jHKy
+ cRIH4ZNm7d+BnDyQCN83A8rpehJCYtMZipYP+e61hiBtimG6ICfbE1evWXx4nzv4Bzlq22aGseI
+ aO1joh5cV/8cxgdtHIHCoo7QtZX3s4AnbnQJxuNeV8yLw==
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+Am Mittwoch, 28. Januar 2026, 21:17:09 CET schrieb Mark Brown:
+> On Wed, Jan 28, 2026 at 07:38:49PM +0100, Nicolas Frattaroli wrote:
+> > Mark and Alexander, please test to see if these patches resolve the
+> > issues on your boards.
+> >=20
+> > I expect the first patch to completely fix the problem on the Avenger96
+> > (STM32MP1) board.
+>=20
+> This gets further but still fails on Avenger96, looks like we've got
+> more clocks need work:
+>=20
+> [    0.513739] __clk_core_init: enabling parent pll3_q for spi1_k
+> [    0.519521] __clk_core_init: disabling parent pll3_q for spi1_k
+> [    0.525489] __clk_core_init: enabling parent pll3_q for spi2_k
+> [    0.531311] __clk_core_init: disabling parent pll3_q for spi2_k
+> [    0.537275] __clk_core_init: enabling parent pll3_q for spi3_k
+> [    0.543101] __clk_core_init: disabling parent pll3_q for spi3_k
+> [    0.549066] __clk_core_init: enabling parent ck_hsi for spi4_k
+> [    0.554894] __clk_core_init: disabling parent ck=EF=BF=BD
+> U-Boot SPL 2023.07.02-dh-stm32mp1-dhcor-avenger96-20230727.02 (Jul 11 202=
+3 - 15:20:44 +0000)
+>=20
+>    https://lava.sirena.org.uk/scheduler/job/2413747#L593
+>=20
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-dt-bindings: net: nxp,s32-dwmac: Use the GPR syscon
+I also got more clocks in the list, but it still hangs eventually:
+[    1.453206] __clk_core_init: enabling parent audio_pll1_out for clkout1_=
+sel
+[    1.458095] __clk_core_init: disabling parent audio_pll1_out for clkout1=
+_sel
+[    1.464684] __clk_core_init: enabling parent audio_pll1_out for clkout2_=
+sel
+[    1.472174] __clk_core_init: disabling parent audio_pll1_out for clkout2=
+_sel
+[    1.478784] __clk_core_init: enabling parent sys_pll2_500m for arm_a53_d=
+iv
+[    1.485679] __clk_core_init: disabling parent sys_pll2_500m for arm_a53_=
+div
+[    1.492675] __clk_core_init: enabling parent sys_pll2_200m for m7_core
+[    1.499233] __clk_core_init: disabling parent sys_pll2_200m for m7_core
+[    1.505888] __clk_core_init: enabling parent osc_24m for ml_core
+[    1.511924] __clk_core_init: disabling parent osc_24m for ml_core
+[    1.518050] __clk_core_init: enabling parent osc_24m for gpu3d_core
+[    1.524344] __clk_core_init: disabling parent osc_24m for gpu3d_core
+[    1.530738] __clk_core_init: enabling parent osc_24m for gpu3d_shader_co=
+re
+[    1.537646] __clk_core_init: disabling parent osc_24m for gpu3d_shader_c=
+ore
+[    1.544655] __clk_core_init: enabling parent osc_24m for gpu2d_core
+[    1.550945] __clk_core_init: disabling parent osc_24m for gpu2d_core
+[    1.557341] __clk_core_init: enabling parent osc_24m for audio_axi
+[    1.563551] __clk_core_init: disabling parent osc_24m for audio_axi
+[    1.569863] __clk_core_init: enabling parent sys_pll1_800m for hsio_axi
+[    1.576507] __clk_core_init: disabling parent sys_pll1_800m for hsio_axi
 
-This commit adds the nxp,phy-sel property to the S32 DWMAC binding,
-allowing access to the GMAC_0_CTRL_STS register via a syscon interface
-instead of the previous ad-hoc direct register mapping.
+Best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Germ=
+any
+Amtsgericht M=C3=BCnchen, HRB 105018
+Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan Sch=
+neider
+http://www.tq-group.com/
 
-> diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
-> index 2b8b74c5feec..65633b10e49e 100644
-> --- a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
 
-[ ... ]
-
-> +  nxp,phy-sel:
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    items:
-> +      - items:
-> +          - description: phandle to the GPR syscon node
-> +          - description: offset of PHY selection register
-> +    description:
-> +      This phandle points to the GMAC_0_CTRL_STS register which controls the
-> +      GMAC_0 configuration options.  The register lets you select the PHY
-> +      interface and the PHY mode.  It also controls if the FTM_0 or FTM_1
-> +      FlexTimer Modules connect to GMAC_O.
-                                       ^^^^^^
-
-Should this be GMAC_0 (with a zero) instead of GMAC_O (with a letter O)?
-The rest of the description uses GMAC_0_CTRL_STS and GMAC_0 consistently.
--- 
-pw-bot: cr
