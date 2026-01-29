@@ -1,422 +1,117 @@
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997B433D6D8
-	for <imx@lists.linux.dev>; Thu, 29 Jan 2026 11:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE9B2EAB61
+	for <imx@lists.linux.dev>; Thu, 29 Jan 2026 11:17:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769684940; cv=none; b=OU7nzjWJpuo/4c1az8ZxSd5fkW84aye7Dn3hNZHbw0kx/7E7+JlmBqYuu9ithTdKgirWgUpWBR8hUIyZRbiCELRNNAEKqr3Ajz4wyepUERgP2mETM+7KV0nfoTZxIP2VImPOUIYTZt7U4zsLSMRinaJMEo7xoOVFIgcCMRH2mJk=
+	t=1769685459; cv=none; b=AxSO5ibHrpFzeyZryE7sc6AXZdKYRQajT/WFsv0TA6K8EkqzPIEnxlSYAzVtObnDjvlCswdtuhVK/JJzbUhog6TQvaJ6/VDtpRFGws+6uQWCzNvKd22p1SK7A64tXCSEEupxJ21R/RdiDr+/GNZN630qHmON2d5UFD2aExCrS20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769684940; c=relaxed/simple;
-	bh=5tj3u34P//O1kuWn/qKihi9MofYqfuFCkteoItVPUKo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KxbnekwGSR3oKJUkj6OM/3VBKca0fNMHqAYLbrFYa2gUpTeyfABPOquVSkLIlnRb5BG/TIkNTJxCr5G8+a06dPhuatnimVK4qZTMl1TX9tiiX0rcSmqzdoElw7NqA4zSjDjJkfFUqMP+7uONvYuyXrRawDMZdYOV5lFWww+Wwxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=MBH4lhBY; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=kQLmoqmh; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="MBH4lhBY";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="kQLmoqmh"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4f1x7d4zFwz9tgJ;
-	Thu, 29 Jan 2026 12:02:53 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1769684573;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XyYuyOH5DCFY0dDdeaLsmfuFY6eGZKgIu8P7iVMFgEY=;
-	b=MBH4lhBY8sHjl21usuEo4T2UJohchp6gLNLW5DLnXdjXaOgfexU0hiTzdPGOQXgw7UKgAF
-	/IlxF6WyLapuNWVDFPH8GwXLcvFuTen5MG1tz+sR/hQvxznOy3h2P95n51ZFEHYFzOI1ul
-	J8s3ytUiwlVWuq1tUSuBCY0umaei+wcgXk5IFp8RMoW7i2arwvfAHi7qUJDv6XjJ9b/j0C
-	RW/uyIRbXzwl5E05lwjtd5NeGKvzHJOavPVPmiG8UPTk15IbeGw9AxKEqcttKxazcCwhmO
-	+FQJTkxBGk9w+nidQ9/ftJfvv09mdr6d6/nA4y12jBTSDrA+YlebkIYXN2zqeA==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=kQLmoqmh;
-	spf=pass (outgoing_mbo_mout: domain of lukasz.majewski@mailbox.org designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=lukasz.majewski@mailbox.org
-From: Lukasz Majewski <lukasz.majewski@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1769684571;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XyYuyOH5DCFY0dDdeaLsmfuFY6eGZKgIu8P7iVMFgEY=;
-	b=kQLmoqmhHZGrwObFLxAuMYIzU3zkHta2a4UzGvrTQsWSlOKV6kw4QbgqM5IfA1PWwMDcZt
-	pI3H/Gzw/ra8fK6CSQd8Gl5Vl0DHifN1zAQF+/XjnMEcD2LbesVsFRUI5mrEknrMCMiSdM
-	+GD7+T2bAt6dJuWAlPxCTLgnxWEAkiLiciLfF1/+jutrmJa7bNFaWPrY4ztR1D8JM5HMUR
-	5tcExM1/GoX+yHLFZW8j5VDIXe3QnfmMFiUrCIH3bKARrPOJDY1s55Rp+0/xzLUeqNJtGh
-	Qe0NBz1aqxhn1qiGNEsgSSOwMFXzrkAmkD1jeK/3P6rCEzF+XlrNVEauj5VVYw==
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
+	s=arc-20240116; t=1769685459; c=relaxed/simple;
+	bh=zj84EtgCbu4++Eo7Wq/IxAONMKAi2gpxcTZyU2kKteE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i3ezyebnZbidF+vq8Bne2wh7ziRst2ddLkIjeODC/0iyEftzL+5od9dupMzsq2CmQn7lF4ulklNugr0IltNxfvC4RY61g/xF+yerTa0Actjl6rnO8ntLU6F8pV7lcTmP1PvCEBe35kLfLAPIkt44KjY7MAWrgcmA91S5mgcGL+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vlQ1f-0004Hp-VC; Thu, 29 Jan 2026 12:17:27 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vlQ1e-0034hH-2k;
+	Thu, 29 Jan 2026 12:17:26 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vlQ1e-004f9L-09;
+	Thu, 29 Jan 2026 12:17:26 +0100
+Date: Thu, 29 Jan 2026 12:17:26 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>,
+	Andrew Lunn <andrew@lunn.ch>, Wei Fang <wei.fang@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Simon Horman <horms@kernel.org>,
-	Lukasz Majewski <lukasz.majewski@mailbox.org>
-Subject: [net-next v21 5/7] net: mtip: Add mtip_switch_{rx|tx} functions to the L2 switch driver
-Date: Thu, 29 Jan 2026 12:01:52 +0100
-Message-Id: <20260129110154.1699976-6-lukasz.majewski@mailbox.org>
-In-Reply-To: <20260129110154.1699976-1-lukasz.majewski@mailbox.org>
-References: <20260129110154.1699976-1-lukasz.majewski@mailbox.org>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"open list:FREESCALE IMX / MXC FEC DRIVER" <imx@lists.linux.dev>,
+	"open list:FREESCALE IMX / MXC FEC DRIVER" <netdev@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH] net: phy: integrate reset-after-clock quirk into
+ phy_init_hw
+Message-ID: <20260129111726.jjkcq46dpghuorco@pengutronix.de>
+References: <20260128094644.302313-1-michael@amarulasolutions.com>
+ <13d1018c-d9aa-4838-8bb3-35c509cd3e35@lunn.ch>
+ <CAOf5uwm30=AVhqm67yz8Y5TkX9FWdxizTevCGSeaQuJS0KqtNA@mail.gmail.com>
+ <aXoV-U-yqcDJj2vk@shell.armlinux.org.uk>
+ <20260128202634.gqevi76o6wnf5xno@pengutronix.de>
+ <aXqJ_TtdBnkvEZ_i@shell.armlinux.org.uk>
+ <20260129104123.zir4rtgeiu5qv3i7@pengutronix.de>
+ <aXs8m8UodO4griTY@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: d8b7f907d07e138eebe
-X-MBO-RS-META: xzucjdrsgkoe4qdo5kuc8gtzzmfjnufi
-X-Rspamd-Queue-Id: 4f1x7d4zFwz9tgJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXs8m8UodO4griTY@shell.armlinux.org.uk>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-This patch provides mtip_switch_tx and mtip_switch_rx functions
-code for MTIP L2 switch.
+On 26-01-29, Russell King (Oracle) wrote:
+> On Thu, Jan 29, 2026 at 11:41:23AM +0100, Marco Felsch wrote:
+> > As said, I don't see a problem with the LAN8710. But while checking the
+> > Linux source code, I saw commit
+> > 57ec5a8735dc5dccd1ee68afdb1114956a3fce0d which re-introduced the reset
+> > handling :-/
+> 
+> So now we get to the bottom of it. This is a regression, right? The
+> addition of that patch has caused previously working boards to stop
+> working, correct?
 
-Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
----
-Changes for v13:
-- New patch - created by excluding some code from large (i.e. v12 and
-  earlier) MTIP driver
+The commit is part of 6.17 and the system I've added the support for the
+clk handling is currently running on 6.14. I have to ask a colleague of
+mine to very this.
 
-Changes for v14:
-- Rewrite RX error handling code
-- Remove } else { from if (unlikely(!skb)) { condition in mtip_switch_rx()
-- Remove locking from RX patch (done under NAPI API and similar to fec_main.c
-  driver)
-- Use net_prefetch() instead of prefetch()
+But yes, it seems like a regression.
 
-Changes for v15:
-- Use page_address() instead of __va()
-- Remove the check if data is NOT null, as it cannot be (those values are
-  assured to be allocated earlier for RX path).
+> That means it needs to be reverted.
 
-Changes for v16:
-- Disable RX interrupt when in switch RX function
-- Set offload_fwd_mark when L2 offloading is enabled (fix broadcast flooding)
-- Replace spin_{un}lock() with _bh variant
+Yes.
 
-Changes for v17 - v18:
-- None
+> We also need to get out of our heads the idea that LAN8710A is somehow
+> special in needing this. It isn't. Thus, there should be no special
+> flags to "work around" this "problem".
 
-Changes for v19:
-- Pass the page with data to upper part of the network stack
-- Use new page from page pool for new transfer
-- Remove extra copy of the data
+IMHO this flag should be removed completely because it makes the
+phy-driver mac-driver dependent. Since the FEC is the only driver
+checking this flag.
 
-Changes for v20:
-- Use dev_err_ratelimited() to not spam console
-- Replace dev_consume_skb_irq() with dev_consume_skb_any()
-- Use skb->dev to assign it to tx packet device (avoid assigning to
-  napi->dev)
-- Remove the need to export the port information
-- Do not use fep->skb_dirty (calculate proper 'index' instead)
-- Use information about stopped queues to determine if driver can accept
-  further the packets for TX
+Regards,
+  Marco
 
-Changes for v21:
-- None
----
- .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 257 +++++++++++++++++-
- 1 file changed, 256 insertions(+), 1 deletion(-)
+> 
+> -- 
+> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+> 
 
-diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-index 364ba9010db4..512eb38644d3 100644
---- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-+++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-@@ -246,6 +246,39 @@ struct mtip_port_info *mtip_portinfofifo_read(struct switch_enet_private *fep)
- 	return info;
- }
- 
-+static void mtip_atable_get_entry_port_number(struct switch_enet_private *fep,
-+					      unsigned char *mac_addr, u8 *port)
-+{
-+	int block_index, block_index_end, entry;
-+	u32 mac_addr_lo, mac_addr_hi;
-+	u32 read_lo, read_hi;
-+
-+	mac_addr_lo = (u32)((mac_addr[3] << 24) | (mac_addr[2] << 16) |
-+			    (mac_addr[1] << 8) | mac_addr[0]);
-+	mac_addr_hi = (u32)((mac_addr[5] << 8) | (mac_addr[4]));
-+
-+	block_index = GET_BLOCK_PTR(crc8_calc(mac_addr));
-+	block_index_end = block_index + ATABLE_ENTRY_PER_SLOT;
-+
-+	/* now search all the entries in the selected block */
-+	for (entry = block_index; entry < block_index_end; entry++) {
-+		mtip_read_atable(fep, entry, &read_lo, &read_hi);
-+		*port = MTIP_PORT_FORWARDING_INIT;
-+
-+		if (read_lo == mac_addr_lo &&
-+		    ((read_hi & 0x0000FFFF) ==
-+		     (mac_addr_hi & 0x0000FFFF))) {
-+			/* found the correct address */
-+			if ((read_hi & (1 << 16)) && (!(read_hi & (1 << 17))))
-+				*port = FIELD_GET(AT_PORT_MASK, read_hi);
-+			break;
-+		}
-+	}
-+
-+	dev_dbg(&fep->pdev->dev, "%s: MAC: %pM PORT: 0x%x\n", __func__,
-+		mac_addr, *port);
-+}
-+
- /* Clear complete MAC Look Up Table */
- void mtip_clear_atable(struct switch_enet_private *fep)
- {
-@@ -826,11 +859,233 @@ static irqreturn_t mtip_interrupt(int irq, void *ptr_fep)
- 
- static void mtip_switch_tx(struct switch_enet_private *fep)
- {
-+	struct net_device *dev;
-+	unsigned short status;
-+	struct sk_buff *skb;
-+	struct cbd_t *bdp;
-+	int index;
-+
-+	spin_lock_bh(&fep->hw_lock);
-+	bdp = fep->dirty_tx;
-+
-+	while (((status = bdp->cbd_sc) & BD_ENET_TX_READY) == 0) {
-+		if (bdp == fep->cur_tx &&
-+		    !mtip_netif_queues_stopped(fep))
-+			break;
-+
-+		index = bdp - fep->tx_bd_base;
-+		dma_unmap_single(&fep->pdev->dev, bdp->cbd_bufaddr,
-+				 MTIP_SWITCH_TX_FRSIZE, DMA_TO_DEVICE);
-+		bdp->cbd_bufaddr = 0;
-+		skb = fep->tx_skbuff[index];
-+		dev = skb->dev;
-+		/* Check for errors */
-+		if (status & (BD_ENET_TX_HB | BD_ENET_TX_LC |
-+				   BD_ENET_TX_RL | BD_ENET_TX_UN |
-+				   BD_ENET_TX_CSL)) {
-+			dev->stats.tx_errors++;
-+			if (status & BD_ENET_TX_HB)  /* No heartbeat */
-+				dev->stats.tx_heartbeat_errors++;
-+			if (status & BD_ENET_TX_LC)  /* Late collision */
-+				dev->stats.tx_window_errors++;
-+			if (status & BD_ENET_TX_RL)  /* Retrans limit */
-+				dev->stats.tx_aborted_errors++;
-+			if (status & BD_ENET_TX_UN)  /* Underrun */
-+				dev->stats.tx_fifo_errors++;
-+			if (status & BD_ENET_TX_CSL) /* Carrier lost */
-+				dev->stats.tx_carrier_errors++;
-+		} else {
-+			dev->stats.tx_packets++;
-+		}
-+
-+		if (status & BD_ENET_TX_READY)
-+			dev_err_ratelimited(&fep->pdev->dev,
-+					    "xmit interrupt and TX_READY.\n");
-+
-+		/* Deferred means some collisions occurred during transmit,
-+		 * but we eventually sent the packet OK.
-+		 */
-+		if (status & BD_ENET_TX_DEF)
-+			dev->stats.collisions++;
-+
-+		/* Free the sk buffer associated with this last transmit */
-+		dev_consume_skb_any(skb);
-+		fep->tx_skbuff[index] = NULL;
-+
-+		/* Update pointer to next buffer descriptor to be transmitted */
-+		if (status & BD_ENET_TX_WRAP)
-+			bdp = fep->tx_bd_base;
-+		else
-+			bdp++;
-+
-+		/* Since we have freed up a buffer, the ring is no longer
-+		 * full.
-+		 */
-+		if (fep->dirty_tx == fep->cur_tx &&
-+		    mtip_netif_queues_stopped(fep))
-+			mtip_netif_wake_queues(fep);
-+	}
-+	fep->dirty_tx = bdp;
-+	spin_unlock_bh(&fep->hw_lock);
-+}
-+
-+static int mtip_update_cbd(struct switch_enet_private *fep, struct cbd_t *bdp,
-+			   int index)
-+{
-+	struct page *new_page;
-+
-+	new_page = page_pool_dev_alloc_pages(fep->page_pool);
-+	if (unlikely(!new_page))
-+		return -ENOMEM;
-+
-+	fep->page[index] = new_page;
-+	bdp->cbd_bufaddr = page_pool_get_dma_addr(new_page);
-+
-+	return 0;
- }
- 
-+/* During a receive, the cur_rx points to the current incoming buffer.
-+ * When we update through the ring, if the next incoming buffer has
-+ * not been given to the system, we just set the empty indicator,
-+ * effectively tossing the packet.
-+ */
- static int mtip_switch_rx(struct net_device *dev, int budget)
- {
--	return -ENOMEM;
-+	struct mtip_ndev_priv *priv = netdev_priv(dev);
-+	u8 *data, rx_port = MTIP_PORT_FORWARDING_INIT;
-+	struct switch_enet_private *fep = priv->fep;
-+	unsigned short status, pkt_len;
-+	struct net_device *pndev;
-+	struct ethhdr *eth_hdr;
-+	int pkt_received = 0;
-+	struct sk_buff *skb;
-+	struct cbd_t *bdp;
-+	struct page *page;
-+	int index;
-+
-+	/* First, grab all of the stats for the incoming packet.
-+	 * These get messed up if we get called due to a busy condition.
-+	 */
-+	bdp = fep->cur_rx;
-+
-+	while (!((status = bdp->cbd_sc) & BD_ENET_RX_EMPTY)) {
-+		if (pkt_received >= budget)
-+			break;
-+
-+		pkt_received++;
-+
-+		writel(MCF_ESW_IMR_RXF, fep->hwp + ESW_ISR);
-+		if (!fep->usage_count)
-+			goto rx_processing_done;
-+
-+		status ^= BD_ENET_RX_LAST;
-+		/* Check for errors. */
-+		if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH | BD_ENET_RX_NO |
-+			      BD_ENET_RX_CR | BD_ENET_RX_OV | BD_ENET_RX_LAST |
-+			      BD_ENET_RX_CL)) {
-+			dev->stats.rx_errors++;
-+			if (status & BD_ENET_RX_OV) {
-+				/* FIFO overrun */
-+				dev->stats.rx_fifo_errors++;
-+				goto rx_processing_done;
-+			}
-+			if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH
-+				      | BD_ENET_RX_LAST)) {
-+				/* Frame too long or too short. */
-+				dev->stats.rx_length_errors++;
-+				if (status & BD_ENET_RX_LAST)
-+					netdev_err(dev, "rcv is not +last\n");
-+			}
-+			if (status & BD_ENET_RX_CR)	/* CRC Error */
-+				dev->stats.rx_crc_errors++;
-+
-+			/* Report late collisions as a frame error. */
-+			if (status & (BD_ENET_RX_NO | BD_ENET_RX_CL))
-+				dev->stats.rx_frame_errors++;
-+			goto rx_processing_done;
-+		}
-+
-+		/* Get correct RX page */
-+		index = bdp - fep->rx_bd_base;
-+		page = fep->page[index];
-+		/* Process the incoming frame */
-+		pkt_len = bdp->cbd_datlen;
-+
-+		dma_sync_single_for_cpu(&fep->pdev->dev, bdp->cbd_bufaddr,
-+					pkt_len, DMA_FROM_DEVICE);
-+		net_prefetch(page_address(page));
-+		data = page_address(page);
-+
-+		if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
-+			swap_buffer(data, pkt_len);
-+
-+		eth_hdr = (struct ethhdr *)data;
-+		mtip_atable_get_entry_port_number(fep, eth_hdr->h_source,
-+						  &rx_port);
-+		if (rx_port == MTIP_PORT_FORWARDING_INIT)
-+			mtip_atable_dynamicms_learn_migration(fep,
-+							      mtip_get_time(),
-+							      eth_hdr->h_source,
-+							      &rx_port);
-+
-+		if ((rx_port == 1 || rx_port == 2) && fep->ndev[rx_port - 1])
-+			pndev = fep->ndev[rx_port - 1];
-+		else
-+			pndev = dev;
-+
-+		if (mtip_update_cbd(fep, bdp, index)) {
-+			pndev->stats.rx_dropped++;
-+			goto rx_processing_done;
-+		}
-+
-+		/* The packet length includes FCS, but we don't want to
-+		 * include that when passing upstream as it messes up
-+		 * bridging applications.
-+		 */
-+		skb = build_skb(page_address(page), PAGE_SIZE);
-+		if (unlikely(!skb)) {
-+			page_pool_recycle_direct(fep->page_pool, page);
-+			pndev->stats.rx_dropped++;
-+
-+			netdev_err_once(pndev, "build_skb failed!\n");
-+			goto rx_processing_done;
-+		}
-+
-+		skb_put(skb, pkt_len);      /* Make room */
-+		skb_mark_for_recycle(skb);
-+		skb->protocol = eth_type_trans(skb, pndev);
-+		skb->offload_fwd_mark = fep->br_offload;
-+		napi_gro_receive(&fep->napi, skb);
-+
-+		pndev->stats.rx_packets++;
-+		pndev->stats.rx_bytes += pkt_len;
-+
-+ rx_processing_done:
-+		/* Clear the status flags for this buffer */
-+		status &= ~BD_ENET_RX_STATS;
-+
-+		/* Mark the buffer empty */
-+		status |= BD_ENET_RX_EMPTY;
-+		/* Make sure that updates to the descriptor are performed */
-+		wmb();
-+		bdp->cbd_sc = status;
-+
-+		/* Update BD pointer to next entry */
-+		if (status & BD_ENET_RX_WRAP)
-+			bdp = fep->rx_bd_base;
-+		else
-+			bdp++;
-+
-+		/* Doing this here will keep the FEC running while we process
-+		 * incoming frames.  On a heavily loaded network, we should be
-+		 * able to keep up at the expense of system resources.
-+		 */
-+		writel(MCF_ESW_RDAR_R_DES_ACTIVE, fep->hwp + ESW_RDAR);
-+	} /* while (!((status = bdp->cbd_sc) & BD_ENET_RX_EMPTY)) */
-+
-+	fep->cur_rx = bdp;
-+
-+	return pkt_received;
- }
- 
- static void mtip_adjust_link(struct net_device *dev)
 -- 
-2.39.5
+#gernperDu 
+#CallMeByMyFirstName
 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
