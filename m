@@ -1,125 +1,106 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EB4346A07
-	for <imx@lists.linux.dev>; Thu, 29 Jan 2026 02:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769652461; cv=pass; b=Uz9MZxlZYepPLtBBPWFocv9Nbdn1/+qQVr4yynUPqcnBE3EHNiKXqagFbdKRGtYrsLu6tBVBasj7ji4bgH1aUHqjtY/AtqXDXoG1gHs3ZjWBrQ4urpAskBL4IpZXTudEA2wEskxiDkgyGDMgt1hIUsUCIiuT6+jC6QAmPSCk/Gg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769652461; c=relaxed/simple;
-	bh=oDVuCZ5Gx/glBVCpME6YGkCQ33hbuczk3pr5ShKRnqo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sVTjRr3kSVmkH8XHccdnjpr4cvXIEI35Z9DmMAD0Nl7tr+D7oiMnks+OPi+4O5c0iB8ym6qRQu6bhv1gB7Nmk8j6W4p3axq19aNyt0jzGEPwgyg6LLisGRRb/Ps2Zk0PLwr6YzRgxbi4hGjEs5+j9AsOgleD/XvND56548B4ByY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OHZQ/lXB; arc=pass smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3664333557E
+	for <imx@lists.linux.dev>; Thu, 29 Jan 2026 02:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769653761; cv=none; b=IYsXOU/ZpDwYd0GF7/S9jD/iTp/1m3b4B52YAQj1J6B80isIjfnBrNrc4jFx9ObJ26LzoAPpi+QJ9gp+jHFvtSbqKM0u+pG3zWLM0KY0USwyST8Z8lmxs40EXwwM17fcc2CNXVSbT6+tAqBfvddykhQEt0FpX3iR5Ge1iaJx+gI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769653761; c=relaxed/simple;
+	bh=auWIfql4Eqi/PyW7sBrBqSD2PXEbiclPGF37FC9B/Qc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HpBKDk0dlXadJe5/N2c6ALnph23SNG66xQWd1VLnWzDT1M/BHuojX9nmaC2WQ95puFE/5WFLAJP9iFzMyvYDwbhODlMUNJ6w6jlmgfh0jKOI+ugPfr0Tm7Y27fxINu7mGbJdZpGM2AFeEfVqerKyQ/nbrd/VGjXT5Xotac+AmAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GqWH/rZu; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OHZQ/lXB"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-81e93c5961cso399398b3a.0
-        for <imx@lists.linux.dev>; Wed, 28 Jan 2026 18:07:36 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769652455; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YMsURn7t8qxpgHrIPTREEMDET2u3t3rksVLWjTeioiEoIxPdYPZKnvA6Z54yCJPUhU
-         s3vXxZ1NjlmWgQSiao4IK0GOlFUBUfxBrDqeNvFmtNrIktimY8ShnG9wAmwGa1kRnNku
-         drebdoidZx7ocxM3h3BtZB1LxQOMvut5IfNIwtv9zG//6he+ncLA1ZLVTSLSCz1KeK0i
-         4WtkS4k8T6XxKERaKa/0wDmiVd7kJpSxBkBnfzIlWe0HVck34lzLxoGtkLBMvBvpuDUQ
-         /vOnFLWslEaKMaqs4U/bDueOTpEbrIFUleDk0e3qF87NNHlJFtyHhwsa1PTiaA7ObnoH
-         DOtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/EHsl0dfhwfqP6ryiD+Uuzynxf8kJEamt13Ja96DmZA=;
-        fh=sj4SKib56gq59xpUjQ6WaZwKa+BIYkXC1VMI8bVpr/Q=;
-        b=TmP02F2uB7tix5IgsKmC6KZNbevjy8BB4GP0JTf82thI2lPtO5qQyFUsUIF3BVqpH+
-         TKxWfAlhJ2tLkhfH6V1zV/o6Yu98dq+lbBZKgh1H7qNTzW9eR8d5aP1twQqQuMhqmBV4
-         oCSyUTQmSzLOJVxvI/ATdOUJRA3xP1cxvtEud/Qvd5Def8juSgh+PcGfaXOCjVH9pYHB
-         KGlfGTuGPbw6bxrm89d6z4es3N0j5MYx63E4Ek1FjOTG83EQg9DSlOXNZBwBGjHm1CXf
-         Attu6k8ASuRtf+PA/qvD879Uh06tauDqseJ02IXQQBlHCGSNynzr/Tao1lkAdKoRJhTe
-         VBiQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GqWH/rZu"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34c1d98ba11so336146a91.3
+        for <imx@lists.linux.dev>; Wed, 28 Jan 2026 18:29:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769652455; x=1770257255; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/EHsl0dfhwfqP6ryiD+Uuzynxf8kJEamt13Ja96DmZA=;
-        b=OHZQ/lXBclJDPsbCVlVFWh75/tloiW1G+8vHoXAwxhOmZvMO3n9gFFHcLPTsllqnre
-         9YgZkMzCDb+IjOwOZxIokUryK6UEglZjJEiKIj55fzLz3RHzdgnjqcrzE8wurQS+QGlN
-         PwQFyzdNRG1IGDZzXIR2W6gOVJW7yhs55qK5Vlcxk/39cB3tyxpyshdjRVK3e5p8jf6n
-         PQDDKqaeJExg/369FyoT/EtglEIebK8S0pLYv7dMnm0Qtyx4UMKAljboIDIepFrpFNS2
-         srpGzdI7LVWkiPx6CXmZ2wz4ZKCMPb/0+WbRV9x4yCEUj6jzNGI5JED+Xn8YfgtLJU+J
-         yEKA==
+        d=gmail.com; s=20230601; t=1769653759; x=1770258559; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2hnqyMVnWmWj8jg1bqTVOUz0c/5S35lK3Rmj22NSpoM=;
+        b=GqWH/rZugosLBA5Vvg1pY+bwr60xwrCsb9365AWCowqwgkmsaurc6aBBNN9db+9rdT
+         +AfcfD20XW5qqOhcl/86/stmgOa2Y6Qyqj5ZWet0Mmju4C+bSS+Y0tudBD1Mdve3SxzJ
+         3SKHa8QSUN5Wy3nHUN0mPmzqvcacUOJ8LZB9J+Mf5PBTAPDrdoQ9Vg88wuPWOfHP1iHv
+         nKoTqGRdEyBKD98G2gfy/Ag6XgBDA6d0oEpB86ZCNjtx3c7YQydsKFr51vBeZYYpUft5
+         cIrhPQBH2qx3DJleVCV/aNVq/bJFtnyle54Yyj1pPQEngZTC/Zzmr9VoNyz7enNXwFoE
+         A4KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769652455; x=1770257255;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/EHsl0dfhwfqP6ryiD+Uuzynxf8kJEamt13Ja96DmZA=;
-        b=SkOO3O6ZMR3V/Y3ThUfuWivsQJmGhRhLUz3jd8Izx5ByGxQhBTmv4ABtprDJGfG0xB
-         hiqk7tePinXUZQw+3yUzBoOzF9cXzJ8CtxeK1kqdC2Sn+LNIkqXx3rlVvFI3cuaOTdnQ
-         /0EbW/x7FcRq+OhcRgyJ15z0hmjsWL0NwCyYpUn2DTodfMq9XzRwDLjTFkZ0SY1bORJ3
-         y6yrOwmh1/CKxDaCowtziLyrpbZcBON/fzUouecA/aeYKTBp+1sb9vd3eeJ4xy7N4qEB
-         1TZb61wWlZrnfhcAzmkW9+N2vUmv+kQ5BFUut8v/BIB/3/FLI8DSsRElbgJllHpm6ZNP
-         Op+g==
-X-Forwarded-Encrypted: i=1; AJvYcCXlS/9hBixW9Un66eWMn9TaS3b8VClYETQqoy+MX3GIPDJk6IA9x1woE0XkUV2pc5NdKpw=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxkc/Z4v5Jecz3TnRHN9lV9O3kqM0e+eZuMNbBq8tu4bfA14RVU
-	hUGy3NEfLrVXwYlIMf0UNWCVYedEV2ua4Ce7siAhZ/GLlywyjcF9ZjAdPg4EuTiS+vELmfHdXJR
-	ovNhuHfp7maRPgkB5AKEFLikWDxVpPYg=
-X-Gm-Gg: AZuq6aIx1FUGU6fsi1q9Vec6WXzyZ1hki/ZW8y4Y4v3NBBgmIXh6wr/2oOKIWNLJtFg
-	43p3gsVSHbX+LG3bVD945+TtVd9CfeDcaBGNFT+7se6L3jbCrGxY2/vZnc0/UquXYhuLs2HpzlI
-	z99fTM9tdd/ttTKNHWWcs7K2OXdxoMbENZLYY5RdVDkKG4h615YquOTSLZj0p2Vt265zUWMCIGl
-	Q5hq0LqambRBq/6G1vgNC2s8PBPYAY3coau/FGtVEYjPABcPqf5VRJfwlYIffdk4hG1k+A=
-X-Received: by 2002:a05:6a21:9d8e:b0:38b:ec0d:51ed with SMTP id
- adf61e73a8af0-38ec658522amr7340595637.69.1769652454754; Wed, 28 Jan 2026
- 18:07:34 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769653759; x=1770258559;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2hnqyMVnWmWj8jg1bqTVOUz0c/5S35lK3Rmj22NSpoM=;
+        b=YqJWzVh9Y2tSZPlX/+4rtpujxCgXcRuxGocgq4yOVZAPjch6rFflzJ+KJYWZdkB5Hd
+         846z6o5er4m5g6QdK4sZs73ASPw+OWB0tfUjp95zUcMty8JyrKcD/Pysw5AHaYkC7Dm3
+         wj7JYehKz0bbRAmpy2JRrBvfUuAj3e+sMpEGzm/O67Cytr4HXGnhnqrli23scPX+5MS+
+         4F3r3FSJmBXBNFIGdJy1tU81FlDK1zsX9/URk2h6F3BFK3RQFoK5ETc1Xcjc7OHQDqAx
+         e08LU3AngTbxNMWLscsSGsNx7bG9Df5JV7KrP+2TWr5QeGnpxrs8AXfgOMzoior6eOn7
+         LnBA==
+X-Forwarded-Encrypted: i=1; AJvYcCXFVOyhkIqTJg+mr7mwAisMnwNcm+ylOzIn4HQ58dNx+EagNJqT8IzjWZJlVhEyFhluYlQ=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyoOY3MZv/FrWERefdTMu28Xklz2p1V1MUVYzt5adSIlIhyuSHY
+	xL6BGBSMrANqwBzY0aaiM3q3dvl2LdHXTVshJkVFA+GuPCA9L7YFfj8p
+X-Gm-Gg: AZuq6aKRmo4f/dx+4dtR9OwIhkiv2zC0bHdrcFYkuv5sHllGBRwx0wz0OymWZ430BiG
+	XYnmD3eC8Na8oQ5wmzv+kCHGd+rYlrmGp/NN1OBNB704ooswdChdXy6sJboA4V7jn6X7K9R2koE
+	WKVSPJbH5TQ+wZTquSrPEawCtWTPQulXP6/78sLyRIhVfq7lVUsFhmGoSJn+xyW5jqWO568QVnz
+	UxCLADc53kp3mN4Q3snJnMtkRQYK8F6P2q596oKOrNmNGfEMbLg9sv1VLyaIaU42P/lsAuquk/7
+	VlEixEJBY8918hc4BL88Sa/Ys/ZDjRTEq0WlfwIFXTZOaaxMIRHGgmQVCjB5ocQE9AJ+d/rYHYc
+	5jIn4UtdmiRpvUXiC+xgrL5/tcslPCogryYu3ptYGptuBFUy9fqCnuu1MK5owOX/sclv46n7HxA
+	aBHP8A5zOI8YIz14v1TXM1sAAjd6hJddpQOBL9NVb/X2wyXypUJxPx5oM=
+X-Received: by 2002:a17:90b:1a81:b0:352:c146:dc39 with SMTP id 98e67ed59e1d1-353fed7b21dmr5803708a91.30.1769653759547;
+        Wed, 28 Jan 2026 18:29:19 -0800 (PST)
+Received: from wig-Precision-3660.. (125-227-154-99.hinet-ip.hinet.net. [125.227.154.99])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3540f2f0283sm4380542a91.5.2026.01.28.18.29.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 18:29:19 -0800 (PST)
+From: Wig Cheng <onlywig@gmail.com>
+To: shawnguo@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	zaq14760@gmail.com,
+	Wig Cheng <onlywig@gmail.com>
+Subject: [PATCH v4 0/1] arm64: dts: freescale: add pixpaper display overlay for i.MX93 FRDM
+Date: Thu, 29 Jan 2026 10:29:09 +0800
+Message-ID: <20260129022910.3942028-1-onlywig@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260128071853.2602784-1-shengjiu.wang@nxp.com>
- <20260128071853.2602784-2-shengjiu.wang@nxp.com> <20260128-daft-rabbit-of-abracadabra-fe3274@quoll>
-In-Reply-To: <20260128-daft-rabbit-of-abracadabra-fe3274@quoll>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 29 Jan 2026 10:07:22 +0800
-X-Gm-Features: AZwV_Qg-rrUV06PleoYM6kICczpC4hfgzfJ0lPzEIvMPV1d9IUOkAJEm-OUeTRw
-Message-ID: <CAA+D8AMb-QPuqXfb4RyFo-9WTaH78WrAnCGTaS3DGXBP74DT6Q@mail.gmail.com>
-Subject: Re: [PATCH 1/3] ASoC: dt-bindings: fsl,imx-asrc: Add support for
- i.MX952 platform
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com, broonie@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz, tiwai@suse.com, 
-	linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jan 28, 2026 at 7:46=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
->
-> On Wed, Jan 28, 2026 at 03:18:51PM +0800, Shengjiu Wang wrote:
-> > Add new compatible string 'fsl,imx952-asrc' for i.MX952 platform
->
-> We see this from the diff. Say something useful.
->
-> Also, why power domains are not required?
+Changes in v4:
+- Drop invalid property
 
-Ok, I will add more info.
+Changes in v3:
+- Misunderstood reviewer's feedback in v1, improved commit message description
 
-There is a power domain on i.MX952 for the wakeupmix system that
-ASRC is in. But it is enabled by default,  ASRC device don't need to enable
-it, so it is optional for i.MX952.
+Changes in v2:
+- Fix Makefile alphabetical ordering
+- Move vendor property before status in device tree
+- Simplify commit message as suggested by reviewer
 
-Best regards
-Shengjiu Wang
->
->
-> Best regards,
-> Krzysztof
->
+Wig Cheng (1):
+  arm64: dts: freescale: add pixpaper display overlay for i.MX93 FRDM
+
+ arch/arm64/boot/dts/freescale/Makefile        |  4 ++
+ .../freescale/imx93-11x11-frdm-pixpaper.dtso  | 50 +++++++++++++++++++
+ 2 files changed, 54 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/freescale/imx93-11x11-frdm-pixpaper.dtso
+
+-- 
+2.43.0
+
