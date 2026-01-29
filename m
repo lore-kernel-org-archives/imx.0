@@ -1,88 +1,194 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D42A36F427
-	for <imx@lists.linux.dev>; Thu, 29 Jan 2026 10:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4487B335BC0
+	for <imx@lists.linux.dev>; Thu, 29 Jan 2026 10:18:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769681208; cv=none; b=ocVqcxVhUpiOKZKQpz1gYNFli7k03/8gpuhUJrIGNPhoXfymPCaSu30c0HtnUSGXUHBMnZCXjK8fYHMFKWTssAxkWCfpmByd7cPXsC91YY9zunBD5U1hypHMcJJpgRujmXbO9xY4sU65bqx0JeMrdNQlQLXoubXL6406l0AbkWE=
+	t=1769681911; cv=none; b=fH+qPWQ7JvH3237RmU4RY+2UMQzONIz07iGHaD7rmrKmikFVliMJ9GOOG+GTRe39/bn4PifYefn62B32wCpw8yPEJo1h1be36ibjSKfT7jE4C34gnHvu4UeO8JAAcIPnZAu9gE5+WXtOBccx7LvkaUSpQdNWXTDqd+Zo4WZ4y7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769681208; c=relaxed/simple;
-	bh=cN09YzmR0fzVyRFg4rahUJrUZvvI9rD6MsO1W+gcUNA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hgp3HMhjaoSp9O+ep6A0iCsJ50m+gfyWYsCK/D8DTMWuwkzKu1kY6zNn32YidX+r/0Wv2V26UU8AgCaHcjnpfi4emOkLFYviCDAdzDBNrNyppZ8XBH+agvRABmB0FSgP0nT73qXVyBiVyB3bkPzXmV86X6GOFeBdqkS9jS4NcKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=VekGAvxE; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1769681911; c=relaxed/simple;
+	bh=T3K7BsW/Rl4mSAgzOey2w/umeu5JGQIl3iB/xf9eI40=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=miCsTiFyLCu3mWYd/vmFGX7QzDuKLhYqvW4hJROiDbcs2PhhyAxpCBCr90wKBEU9j82aX9C4DhSiGq/DpOE5VxOXhiDSHkL8k4/LRr3Zg/xQ5LxLl0MTxfCYlcbVDk1sBZADNvwKBoc+12h5dS5V0zQilzsov+FEKMH/BSArYrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=E2x31sOl; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="VekGAvxE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=svkwx0NshCcsO+yR80vd0YBjeoCZtSBX4d8WP0yXRbs=; b=VekGAvxE8Eu1SIZkErp0iZrORG
-	F3kNxW1P6fRlURSmd6uwxm3AP0P5XpcBv3UEisnzywYrxhZiTk8gFSr7c3IkNBCFA6BpCl4kymB33
-	AQmEnQe8tg0mTamgSb2zQtWsDLbNUXYn6dS3OsF5GjjS6dR+39pihL+htKJNHNz3q98DxcIZra0qL
-	ma/AdXOekcnB7OvZqjegN+SVAoF0vMuT5Gkrt4dhiOFr+2Lpx3VoOM8Ww8Y1HtHyHCCERaUXbP6Qi
-	Nsb+RVnLhI/1jpFp8KI7jDfaIvYbUHWRsiTCaK+4hbn2KcZnIvZf/ULr/vgEkpAG5r/krixuXsi77
-	lEKQoNBQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57626)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vlOv5-000000008Ob-08xQ;
-	Thu, 29 Jan 2026 10:06:35 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vlOuz-000000007rA-1giq;
-	Thu, 29 Jan 2026 10:06:29 +0000
-Date: Thu, 29 Jan 2026 10:06:29 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, florian.fainelli@broadcom.com,
-	xiaolei.wang@windriver.com, Wei Fang <wei.fang@nxp.com>,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	maxime.chevallier@bootlin.com, quic_abchauha@quicinc.com,
-	quic_sarohasa@quicinc.com, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: phy: add device link between MAC device and
- MDIO device
-Message-ID: <aXsxJa0D0bohafRs@shell.armlinux.org.uk>
-References: <20260126104409.1070403-1-wei.fang@nxp.com>
- <20260128201501.04bb6e5c@kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="E2x31sOl"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 71A094E42314;
+	Thu, 29 Jan 2026 10:18:26 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 45119606B6;
+	Thu, 29 Jan 2026 10:18:26 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 346DB119A881F;
+	Thu, 29 Jan 2026 11:18:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769681905; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=TbJMEGZwcFNnfaRsspvH0dL23B5b+uOLCsi4lQI3lk4=;
+	b=E2x31sOlP+YaFA2YW+Uhv2SQ0HopGl1KB9INEEV+7v5yeIMI3eQzME/0RPK/Z7+WI4uv0A
+	mvjytgurXu8mBulPntbWyu1ToBEA750Pqh1jsXVVuYM9NATXxpnUEZO890lDA4leTxDYmG
+	Tl8WUK8mkvgfcIxmA6r6OuhYYmGw/wcPlNL2EvJ+ez+3JLcNU9E7425zRO5feDxiCG/Wsk
+	cld5vsBwUHYophiOaY57oHWbZynE4x/C50dUTPPi4KouzK6ZtwN/nCjNYYJkpRjKQsW4LL
+	fFYS0uTHpI7OXoTq1NYvypQRtGFNdCo751+ObGerBT2sWt/njNjBx3YMPrGQdg==
+Message-ID: <7c37c518-fb6d-4f78-8e83-663e2518e5fd@bootlin.com>
+Date: Thu, 29 Jan 2026 11:18:16 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260128201501.04bb6e5c@kernel.org>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: phy: add device link between MAC device and MDIO
+ device
+To: Wei Fang <wei.fang@nxp.com>
+Cc: "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "andrew@lunn.ch" <andrew@lunn.ch>,
+ "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
+ <pabeni@redhat.com>,
+ "florian.fainelli@broadcom.com" <florian.fainelli@broadcom.com>,
+ "xiaolei.wang" <xiaolei.wang@windriver.com>,
+ "quic_abchauha@quicinc.com" <quic_abchauha@quicinc.com>,
+ "quic_sarohasa@quicinc.com" <quic_sarohasa@quicinc.com>
+References: <20260126104409.1070403-1-wei.fang@nxp.com>
+ <7df10272-a06b-4509-ab8a-519d43944424@bootlin.com>
+ <PAXPR04MB85100B7C2C6738CEA80C3C7D889EA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <PAXPR04MB85100B7C2C6738CEA80C3C7D889EA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Jan 28, 2026 at 08:15:01PM -0800, Jakub Kicinski wrote:
-> On Mon, 26 Jan 2026 18:44:09 +0800 Wei Fang wrote:
-> > The commit bc66fa87d4fd ("net: phy: Add link between phy dev and mac
-> > dev") has created a device link between the MAC and the PHY if the MAC
-> > uses a shared MDIO bus (The MDIO and the MAC are two separate devices).
-> > Sarosh Hasan tried to change the DL_FLAG_STATELESS flag to
-> > DL_FLAG_AUTOREMOVE_SUPPLIER to fix the issue [1]. However, the solution
-> > does not take into account the hot-swappable PHY devices (such as SFP).
-> > so when the PHY device is unplugged, the MAC driver will automatically
-> > be removed, which is not the expected behavior.
-> > 
-> > Therefore, to solve this issue of the shared MDIO bus, we create the
-> > device link between the MAC device and the MDIO device, rather than
-> > between the MAC device and the PHY device. And when the shared MDIO bus
-> > is removed, all MAC drivers that depend on it will also be removed.
+
+
+On 29/01/2026 11:00, Wei Fang wrote:
+>>> @@ -1768,12 +1768,21 @@ int phy_attach_direct(struct net_device *dev,
+>> struct phy_device *phydev,
+>>>
+>>>  	/**
+>>>  	 * If the external phy used by current mac interface is managed by
+>>> -	 * another mac interface, so we should create a device link between
+>>> -	 * phy dev and mac dev.
+>>> +	 * another MDIO controller, which means that the MAC and MDIO are
+>>> +	 * separated devices, then we should create a device link between
+>>> +	 * the MAC device and the MDIO device.
+>>>  	 */
+>>
+>> I was confused by the use of the "MDIO device" terminology here, which
+>> refers to a device sitting on an mdio bus, such as a PHY. I think though
+>> that what you actually refer to is the MDIO controller itself, right ?
 > 
-> Anyone willing to venture a review tag?
+> Yes, you are right, I was referring to the MDIO controller.
+> 
+>>
+>>> -	if (dev && phydev->mdio.bus->parent && dev->dev.parent !=
+>> phydev->mdio.bus->parent)
+>>> -		phydev->devlink = device_link_add(dev->dev.parent,
+>> &phydev->mdio.dev,
+>>> -						  DL_FLAG_PM_RUNTIME |
+>> DL_FLAG_STATELESS);
+>>> +	if (dev && phydev->mdio.bus->parent &&
+>>> +	    dev->dev.parent != phydev->mdio.bus->parent) {
+>>> +		if (!device_link_add(dev->dev.parent, phydev->mdio.bus->parent,
+>>> +				     DL_FLAG_PM_RUNTIME |
+>>> +				     DL_FLAG_AUTOREMOVE_SUPPLIER)) {
+>>
+>> Don't we have the same problem with SFP ? The struct mii_bus for SFP
+>> PHYs also completely disappears when you remove the module.
+> 
+> Sorry, I'm not familiar with SFP and I do not have a board with SPF
+> module. So I'm not sure whether the MDIO bus will be removed if
+> the SFP module is unplugged. But if the multiple SPF modules share
+> the same MDIO controller, unplugging one SFP module will cause the
+> MDIO bus to be removed. Won't this cause the other SFP modules to
+> stop working?
 
-No, I don't agrew with the patch.
+For SFP, it's not a physical mdiobus that connects to the SFP module, but
+rather an i2c bus. When the module is inserted, we create an mdiobus that
+will perform the mdio transfers over i2c :
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+https://elixir.bootlin.com/linux/v6.19-rc5/source/drivers/net/mdio/mdio-i2c.c#L461
+
+The mdio bus is created when the SFP module is inserted, and we found a
+PHY device in it :
+
+https://elixir.bootlin.com/linux/v6.19-rc5/source/drivers/net/phy/sfp.c#L791
+
+It is dynamically created and destroyed, its lifetime isn't correlated to
+the netdevice.
+
+> 
+>>
+>> That being said, I ran some tests with SFP and this patch, and the
+>> netdev actually didn't dissapear under my feet.
+>>
+>> I'm a total noob with fw_devlink, but I can see there seems to already
+>> be a link between MAC devices and the associated SFP bus :
+>>
+>> on cyclone V :
+>>
+>> # ls /sys/class/devlink
+>>  [...]
+>> platform:sfp--platform:ff702000.ethernet
+>>
+>> on macchiatobin :
+>>
+>> # ls /sys/class/devlink
+>>  [...]
+>> platform:sfp-eth3--platform:f4000000.ethernet
+>>
+>> So I guess this is what's preventing the netdev from going away.
+>>
+>> Now, these seems to be automagically populated based on DT, but I don't
+>> know if it also works with non-DT platforms. If this is DT-specific,
+>> then I guess we still can't use DL_FLAG_AUTOREMOVE_SUPPLIER.
+>>
+> 
+> Previously, when Sorash attempted to add
+> DL_FLAG_AUTOREMOVE_SUPPLIER to the devlink between the MAC
+> controller and the PHY, you reported that unplugging the PHY would
+> cause the MAC to be removed as well, resulting in system hangs.
+> 
+> https://lore.kernel.org/imx/20250704142138.3f1a4ec1@fedora.home/
+> 
+> If your guess is correct, removing the SPF module will cause the
+> MDIO bus to be removed, then I think the MAC driver should also
+> be removed. Therefore, based on this patch, you should be able
+> to reproduce the same problem caused by the Sorash's patch.
+> However, your current results seem different from before. Perhaps
+> the MDIO bus was not removed along with the SFP module.
+> 
+It is removed :
+
+https://elixir.bootlin.com/linux/v6.19-rc5/source/drivers/net/phy/sfp.c#L2648
+
+This line above is called when we unplug the SFP module.
+
+What I am seeing is that there are other devlink links that apply to
+the net_device, unrelated to the MDIO bus, at least on the devices I am 
+testing this on, and they prevent the net_device from going away.
+
+One of these devlinks is a link between the sfp cage (compatible "sff,sfp") and
+the netdev. This devlink seems to be automatically populated when OF is
+parsed.
+
+To solve this, I think we need something more granular that this approach,
+and make a distinction between when it's OK for a phy_device to dissapear
+when attached to a MAC (SFP phys), and when it's not (PHYs hardwired to
+the MAC).
+
+Adding this devlink in phy_attach_direct() is too generic IMO. It's likely
+that this link should be populated by phylink then.
+
+Maxime
+
