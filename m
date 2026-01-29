@@ -1,32 +1,32 @@
 Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D19437F0F0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD672F4A05
 	for <imx@lists.linux.dev>; Thu, 29 Jan 2026 10:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769680952; cv=none; b=t73KXBNYipgisgfdnmu+VE4Clk34koJsijj8g0LqBGWsb006CtX2UPQKWQ76vyLsqW1Lu2o92sd6Fhl5q8xDQIhFoYc0XgiGj4uUWNTCV2jBrJA8oI+poKJJXtiGS7z/I8Gha4K1tQMhfZqunvqVcyzNDpGi3eX3MQ7uKTMLsNM=
+	t=1769680952; cv=none; b=gjO6E11eezTc6Sn3sKzd5/DjxTgY4lM6uGhOdYEXL/ZG2p7/YgGzIlpq7Z1H9P0KCLnedhdcfZkREA0qzZ5QwJWOjYm9rNcWrKga1JrvdfXAqZ/+D0qz0gcaiKwqWYsOLY+gbcVJSAMroddfiUCWiUpSLo9HUG9hv0LfhGsoXKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769680952; c=relaxed/simple;
-	bh=nmykiSQjlORtjP50XPTEnb6X4mH8tc4PmDU2XkTECS0=;
+	bh=F9jhq02S/WkA1AOX8d+Bitd7ryXfzf+yzTo6wqwXnt0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BmojVxLXPUkSo89GKr7GKMU1d68iTl/Zdtvp/ghhc/8JMf6m97EBWufmJJV0i/1rNh+yHM636341mQCJQXCpuvv1cy2ADobMuPAZ74XaKAzFeLOCeH2NR4rr/i3s9WmkIYwO4EdayF86DncCNJoFElszhI1taqWie1q17ytW47s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=JCuUXI5L; arc=none smtp.client-ip=178.251.229.89
+	 MIME-Version; b=GIipTFuDcuTC8h3xruveJILKQCiCACmyZuzYc84YJXJlpydzkF0tEWO8nH2jJT9avNLXIFfL+5Aq/qkii3iTQIpOu+EqpZkuKn1rhbSGGF1ZGKaE4riB1leAM4fH6k2es02Cg5XxxZjzJFkS8J+xVUWD0HVtURRloxz7RV2gSkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=etKeGBIJ; arc=none smtp.client-ip=178.251.229.89
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="JCuUXI5L"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 627CC10E738;
-	Thu, 29 Jan 2026 10:55:01 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="etKeGBIJ"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BA7A010F7AC;
+	Thu, 29 Jan 2026 10:55:02 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1769680502; h=from:subject:date:message-id:to:cc:mime-version:
+	s=dkim; t=1769680503; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=v3pgM6avLqsCtrGK80NsdaWmYzCzxVsls3CgWCMhqdM=;
-	b=JCuUXI5LhJvz3XA3QtFZ92Wk2jd4+yJtK2ZWn+UWPC95107rElRbberBdr1cvRzOJCv/N7
-	odMfZ5VGzRCynomjSyRoW70z/oi0kVj5aQt/8nUtUL6SwpEWtPge/GSeXotmrUqDnlMfru
-	OkoQUc5w7MchZkwrZIkiJRGUuV19vCea5wCamBszOxwGl357E2aEIHoS4uoUhY7QO6l1kn
-	zXm/KuPg2wSaxWkCyTnZ77SwpmQIq07goAvvnHJS8VAwcqE6qav3VdZFc4dI+zsMgtqAjn
-	JQBOf5CsKGOTIXud6lwzw2VgdmJYwJZGg/TSk6QINYOdO1FHS3epjspblXOYjg==
+	bh=XTRog+IwmrYHyO0U4dmJGbr+cuA3smR5bAwagjLcAnk=;
+	b=etKeGBIJbhp3ZjkAy6wEW2Thn0m6ovXAVqJzCVf9HwqlS/mhE3vRB98jlJbYbQXo6iqyZt
+	33670e1EEYC+j1ZboLTfZL2yP0G8nMIAh9Uw+nYwmS9rHU0dQgNPDyX7s9TcwE8rG0mqc4
+	IZNgUPccMjGMVXdlNYBdgZfKgdeUTERLpus4QoND4bBlkEdUkScBjI87gwWfZfmvoIob5M
+	ISuI+UPYVfdCkIxBxeNJJMyqULct/YPX5+9nQitUcPzibSqfrmSM51843NOeFD5WbMksgg
+	9wkrd5k7dXljYESulF3dTqSWAPTPvZhKv2HTculnfqwS288pgbgRzg/thiKEXg==
 From: Lukasz Majewski <lukma@nabladev.com>
 To: Abel Vesa <abelvesa@kernel.org>,
 	Peng Fan <peng.fan@nxp.com>,
@@ -45,9 +45,9 @@ Cc: Rob Herring <robh@kernel.org>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	Lukasz Majewski <lukma@nabladev.com>
-Subject: [PATCH v4 1/4] clk: vf610: Move VF610_CLK_END define to clk-vf610 driver
-Date: Thu, 29 Jan 2026 10:54:39 +0100
-Message-Id: <20260129095442.1646748-2-lukma@nabladev.com>
+Subject: [PATCH v4 2/4] dt-bindings: clock: vf610: Drop VF610_CLK_END define
+Date: Thu, 29 Jan 2026 10:54:40 +0100
+Message-Id: <20260129095442.1646748-3-lukma@nabladev.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260129095442.1646748-1-lukma@nabladev.com>
 References: <20260129095442.1646748-1-lukma@nabladev.com>
@@ -60,42 +60,27 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The VF610_CLK_END was previously defined in vf610-clock.h to indicate
-the number of clocks.
-
-It is solely used in the clk driver to allocate proper size of the clk
-table.
-
-Moreover, when new clocks (like e.g. ones for MTIP L2 switch) are defined
-its value also changes, so it shall be locally adjusted.
+The VF610_CLK_END should be dropped as it is not part of the ABI.
 
 Signed-off-by: Lukasz Majewski <lukma@nabladev.com>
 ---
 Changes for v4:
-- Separate patch
-- Add comment regarding value of VF610_CLK_END
+- New, separate patch
 ---
- drivers/clk/imx/clk-vf610.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/dt-bindings/clock/vf610-clock.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-vf610.c b/drivers/clk/imx/clk-vf610.c
-index 9e11f1c7c397..457156944c67 100644
---- a/drivers/clk/imx/clk-vf610.c
-+++ b/drivers/clk/imx/clk-vf610.c
-@@ -11,6 +11,13 @@
+diff --git a/include/dt-bindings/clock/vf610-clock.h b/include/dt-bindings/clock/vf610-clock.h
+index 373644e46747..c91fb86fa9a1 100644
+--- a/include/dt-bindings/clock/vf610-clock.h
++++ b/include/dt-bindings/clock/vf610-clock.h
+@@ -197,6 +197,5 @@
+ #define VF610_CLK_TCON1			188
+ #define VF610_CLK_CAAM			189
+ #define VF610_CLK_CRC			190
+-#define VF610_CLK_END			191
  
- #include "clk.h"
- 
-+/*
-+ * The VF610_CLK_END corresponds to ones defined in
-+ * include/dt-bindings/clock/vf610-clock.h
-+ * It shall be the value of the last defined clock +1
-+ */
-+#define VF610_CLK_END 191
-+
- #define CCM_CCR			(ccm_base + 0x00)
- #define CCM_CSR			(ccm_base + 0x04)
- #define CCM_CCSR		(ccm_base + 0x08)
+ #endif /* __DT_BINDINGS_CLOCK_VF610_H */
 -- 
 2.39.5
 
