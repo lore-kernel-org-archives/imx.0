@@ -1,44 +1,44 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3296B385EF8
-	for <imx@lists.linux.dev>; Thu, 29 Jan 2026 13:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A981DE3B5
+	for <imx@lists.linux.dev>; Thu, 29 Jan 2026 13:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769692375; cv=none; b=ojE6HI8D85Z99JhgrS+LLIy0eG0Tl8I+2JbDNnw/VTcZp4L43+nZ3vctStt+auGKfrvEZ2TExWEadQ0sHFx262McjZ7wMxJulJSV2SfOfxoDbcDIhWFTO7Ux3hGQkQmDjzkaHgTe/ZXIc1kNkQw2Br0OWLMGEl6DedqUjQywMIc=
+	t=1769692779; cv=none; b=qQ/jBDyLZdO7kYpYFoiFYPgy3kbctHK6NAjSKVfZkwOQ5CQpIk/CgvZ8lrx/En0hZyxPwA4hPrTy0J2RxiOWku4smgWkmhjZ5dEUWTXfQTk/h6naHuPoIvd9FlLs4yKHKT1iqGkr/ETxy4jVMcRpZib7nlkuxEIRWvd8EGN1+rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769692375; c=relaxed/simple;
-	bh=1dOx9+jLhDVGcSqsXOiDo4uOTThVRzHqpIE7pWewHFI=;
+	s=arc-20240116; t=1769692779; c=relaxed/simple;
+	bh=E2uMmgiv8SXGd/De7T+FDhdr2ix6kp+Q1oN/jBcOCYE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y/XrVsxBW6jb9Jw/7W5tVLSP5eCLz2uUOH6CT67DQXXxs1soLaMlUkrHNXQDxXJpYJUX3TnwcpQKZIPQhlp3Z1Sm66W5V69JxkA4iJUWUpMhJ+u9mtecPORulvTNS9xDV2xAC0NpEgTLpL+mrtvqmVWG9fJO+Xz9SDt20G9DhNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=panKYiyF; arc=none smtp.client-ip=78.32.30.218
+	 Content-Type:Content-Disposition:In-Reply-To; b=ei/OyPjMuDtzoJHrjOLsYDXofdpUH+nJHdHlOacpLs9P2j9QALz3FTsLWZvsUCTPKLejHJZreCbkJEy83BxQBEZvdq8wLnjUKaiNPNErAEwrO1oEM9NjSEoZtzzAh/aso1F5dECO7ZkfK6qOKTHEXkSSAGsiM4ksXaKJzZpCzOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=TrPIEcx+; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="panKYiyF"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="TrPIEcx+"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ohKyf4TmGx8r7L6ANC4iUvAA5KyUbb3nqfmngkQM1WU=; b=panKYiyFMhOJ17u10FQs2i8yyT
-	bF6MELsnpH9hYtuWjZQhw4tswj2ZQmMrYueYotonVO6gLx5YB1bYPUuaZS7iwsSx2QFb7erRx1Ekb
-	oP0a0TCTyG8DPPvV16sS/skrjv6cekXunsBvPsn0aL12qo3M63tC4oLUzr6L0LonDLpr/u5YgwNvt
-	QEfLqxlDxK0+ywKESi3QBq63S9TRUXCkfBCyoowCY947bcf5+spGZjY2pDEwyNBq7fW6fvVUEIZcg
-	owsq3payyQvn4rf3PXTdazxXlXYaqvqusnxX0nSEbwKtEDtYmQoerX5w8uBkWyNKMaP2G9+sKyanb
-	bsyek4sQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:46246)
+	bh=35RcmUOfMYcS5hqrNe+DIOwfSJkxRE1Iu6eQEiQMdMo=; b=TrPIEcx+Y1pqZdIOsV2XjEUn35
+	v6929udjMSbly9nPU9+mtcdo6HMKgrBinvgI/lYFrtHALtC46txAmvmozGz0Iwlwzct7LZEsYl6AW
+	nbUQYSaQNe1PgaxlSCiUcsBOASDsSQ+uuyDcDUUy9G9irz1ONciaGmCojjcUM+ACEYN6OMFPbufdq
+	Zaf3x7Zp+F/+va2mqOpNQnnCsFFFSEJBaZ0CGzdHQttrNWHHpsBZ1IQscCtXUqKawuzctpq3g+/UG
+	T2r46S9b5Jvstz6WcEJOOQrsMbMMsMWI8/7+tW/BNNJ16RO2nAdaKIjfQRkYWsMc3askZu47IoTI0
+	/NYB+1NQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43902)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <linux@armlinux.org.uk>)
-	id 1vlRpE-0000000005y-1Zxv;
-	Thu, 29 Jan 2026 13:12:44 +0000
+	id 1vlRvl-0000000006U-3bPv;
+	Thu, 29 Jan 2026 13:19:29 +0000
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vlRpB-0000000080R-1D5t;
-	Thu, 29 Jan 2026 13:12:41 +0000
-Date: Thu, 29 Jan 2026 13:12:41 +0000
+	id 1vlRvk-0000000080g-0XMi;
+	Thu, 29 Jan 2026 13:19:28 +0000
+Date: Thu, 29 Jan 2026 13:19:27 +0000
 From: "Russell King (Oracle)" <linux@armlinux.org.uk>
 To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>,
@@ -55,7 +55,7 @@ Cc: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>,
 	open list <linux-kernel@vger.kernel.org>
 Subject: Re: [RFC PATCH] net: phy: integrate reset-after-clock quirk into
  phy_init_hw
-Message-ID: <aXtcydbhclLAxDWZ@shell.armlinux.org.uk>
+Message-ID: <aXteX2YyH3LyDXq-@shell.armlinux.org.uk>
 References: <20260128094644.302313-1-michael@amarulasolutions.com>
  <13d1018c-d9aa-4838-8bb3-35c509cd3e35@lunn.ch>
  <CAOf5uwm30=AVhqm67yz8Y5TkX9FWdxizTevCGSeaQuJS0KqtNA@mail.gmail.com>
@@ -65,6 +65,7 @@ References: <20260128094644.302313-1-michael@amarulasolutions.com>
  <20260129104123.zir4rtgeiu5qv3i7@pengutronix.de>
  <aXs8m8UodO4griTY@shell.armlinux.org.uk>
  <20260129111726.jjkcq46dpghuorco@pengutronix.de>
+ <aXtcydbhclLAxDWZ@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -73,45 +74,38 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260129111726.jjkcq46dpghuorco@pengutronix.de>
+In-Reply-To: <aXtcydbhclLAxDWZ@shell.armlinux.org.uk>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, Jan 29, 2026 at 12:17:26PM +0100, Marco Felsch wrote:
-> IMHO this flag should be removed completely because it makes the
-> phy-driver mac-driver dependent. Since the FEC is the only driver
-> checking this flag.
+On Thu, Jan 29, 2026 at 01:12:41PM +0000, Russell King (Oracle) wrote:
+> Another possible solution beyond those I've already stated, given that
+> this only afflicts the FEC driver, ould be for the FEC MDIO driver to
+> walk the child nodes, checking to see whether they require any clocks,
+> and ensuring that those are properly initialised before registering the
+> MDIO bus.
+> 
+> Since the MDIO bus layer can release the PHY reset just before probing
+> the driver, this seems to me to be the only way to guarantee that,
+> where boot firmware does not deal with this, the PHY manufacturers
+> specification for the initial release of reset can be met while keeping
+> this FEC specific behaviour out of the core MDIO/phylib layers.
 
-From what I can see, the _only_ caller of phy_reset_after_clk_enable()
-is the FEC driver. However, we seem to have DP83848C, DP83848C,
-DP83620, TLK10X, LAN8710, LAN8720, LAN8740, and LAN8742 all needing
-this flag. As also pointed out, other PHYs also require their XTAL
-based clock to be running before reset is released.
+I'll also add... as kernel developers, we're not very good at insisting
+on generic names for things like clocks (see the mess that is stmmac,
+where the dwmac's various clock signals are named differently in the
+many platform glues.)
 
-This reconfirms my statements that this is *not* a PHY issue, but an
-issue that afflicts FEC based systems because, on these systems, there
-seems to be a tendency for hardware designers to omit the PHY's crystal
-and source the PHY clock from the SoC.
+So, I guess that FEC MDIO may need to have a list of clock names to
+look for when inspecting the PHY nodes if the clock is even specified
+there. If it isn't, then some other way of discovering that the PHY
+needs a clock (looking at the pinctrl configuration to see whether
+the pin is configured to output a clock to the PHY?) would need to be
+added.
 
-My guess is that this doesn't happen anywhere else (since no workaround
-is necessary.)
-
-So, this backs up my stance that "this PHY requires a special reset
-sequence" is incorrect.
-
-Hence, I think PHY_RST_AFTER_CLK_EN + phy_reset_after_clk_enable()
-should be entirely removed.
-
-Another possible solution beyond those I've already stated, given that
-this only afflicts the FEC driver, ould be for the FEC MDIO driver to
-walk the child nodes, checking to see whether they require any clocks,
-and ensuring that those are properly initialised before registering the
-MDIO bus.
-
-Since the MDIO bus layer can release the PHY reset just before probing
-the driver, this seems to me to be the only way to guarantee that,
-where boot firmware does not deal with this, the PHY manufacturers
-specification for the initial release of reset can be met while keeping
-this FEC specific behaviour out of the core MDIO/phylib layers.
+However, care needs to be taken in the case where the PHY has already
+been setup by boot firmware, that the clock signal is not disturbed,
+as interrupting it could provoke PHY problems - especially if the
+platform doesn't have the PHY reset specified in DT.
 
 -- 
 RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
