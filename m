@@ -1,119 +1,232 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010071.outbound.protection.outlook.com [52.101.69.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C98B321420
-	for <imx@lists.linux.dev>; Fri, 30 Jan 2026 14:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769782254; cv=none; b=VUdXEkz7uLo5+Q9kKWTb4ygp/xHgpJc+tKKY5N6TWIujhVXTiXLZWT9275OVJzZHwn08GhI5pSExwf4rnbzyzb6iFlwvs7Abv7W7B/gqsoL3Pj/Tw/Q1pRusQnXvWyDrNKQlpZE13mOJNau/FHSzI17UNp76heXc5e9uaawGep4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769782254; c=relaxed/simple;
-	bh=1YPPUWQxs5uySAkIkFuVYtnkZqL6uv7puXvg1S0nnsQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kvNRO16Avh4oN8RCL5s2qOMiQ2AdLMUFkBCzlpXnIdSXQlNc/bynkcsrqVRjAWXrHyFlWFrAufsX2v3HQifLGkJPVhHJpwk1jsBUMsvrvi3owlO2ZIe7cvchVidzGXBH9qFvDfZF6LvR0kfGF5sE2LYiw9E0h33w1wqQg+kWDQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 8FD0720070B;
-	Fri, 30 Jan 2026 15:10:41 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 81DED2006CD;
-	Fri, 30 Jan 2026 15:10:41 +0100 (CET)
-Received: from lsv15141.swis.ro-buh01.nxp.com (lsv15141.swis.ro-buh01.nxp.com [10.162.246.138])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 2EEEE20263;
-	Fri, 30 Jan 2026 15:10:40 +0100 (CET)
-From: Claudiu Manoil <claudiu.manoil@nxp.com>
-To: vladimir.oltean@nxp.com,
-	wei.fang@nxp.com,
-	xiaoning.wang@nxp.com,
-	Frank.Li@nxp.com
-Cc: kuba@kernel.org,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	pabeni@redhat.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FBC354AD4
+	for <imx@lists.linux.dev>; Fri, 30 Jan 2026 14:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769783902; cv=fail; b=gcjed9tAKbW8361KXY4X3CNmwKneWvrjCyyGvoUYJZkjOUZwhGNhThokibMXwXedOPpEeH+PvslS79+kOytjb9Rodn+4WLEQNrwU7DqKHt1J66cWBirZebHbAgR/N9w/7krwp8ct+LQyZKkFb4TIky3xWIRFfgqUARLrndtOYZI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769783902; c=relaxed/simple;
+	bh=r2Orm+Gd3jsS2hF5LFX/T/n1jR/0/ApxkJ5IDtnSACU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=ZdkAHW6dF1mqFLG+ymnrcq2j6KvuX1EH6mgJT7jajLjE59hEU7IATwKIrmPaJxFiT1F335wznO0Ma/SGH+n/DqPpsr8EOuApCi/W7cqImsL6h90lDUcYEOknI0wp9Y7o8x47qEEZDk0oq+LykOgnwT8LNI/E0JbGsJ6NZDjJ7OE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ETZxcdMf; arc=fail smtp.client-ip=52.101.69.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ETZxcdMf"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZbXBbA2TdIrS5NHL21GfHV9yyAc2pfhCnYzbvSL5YD3Lj4nTBvXOogFUgACV68WwS/gA2yyDdzyE5bRl3ys/WDUxzD3fA16+bCo5hjIFqyi86Ok2URZ7LYUdDL0iXaQquSNAoRNshEhYiWZasUxN26i8f9Z//ejExY4xydXZBWl/NtX6ckTG1ZYTrYQNmGoe3enhYFA62cMMxcCZ87j01BhwS9WeWGSX2fkV9r1fQy/6Pk/aWuz+zAjBONlN2gvfizzHhFcHOhXHXEIRELtyaeFd74LMcpuwpMNk55JU80vmMfb1ILlRqHGOq3Rfw8ydRSO8pVgN/A1wV5I2D1zYng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MB4QD/6of8gOS7vFQIOLgVqgYUZMkTloRw9ra+Btw64=;
+ b=DLoUI3SfMsOVxbJxT9cOM2SFIganoi0++dvBw86HRN7brNuznrVGL0IqcVEbOS9bTZ5tf14svKq1Ca63D5VrdgSzy36z53c0b4P2rv/1fTRFuegYdrTIktmB1Lk+KemtMxMZGQfQ2yLnoL0uGJ1v+RDfGex7ENG8BNQzM1ntvtBRiuu52p9P6ClywV3lozCpKHV+wjLhZbcXfC5MJXcHnEk3dK5lrC1RxJsU9czFcdQSyCr5ByItdbfx2d2pNDMEbDIv3t1m6B3KR/SPQ8Ivg1SA82tqGaoQ/hpDq7IVtsZeBvBCI8YHimjWR6y45qlVg55j4QLMdUiNXUTxJYEaXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MB4QD/6of8gOS7vFQIOLgVqgYUZMkTloRw9ra+Btw64=;
+ b=ETZxcdMfwbf6hzpW5e9NezXDMTmJJ5DntDKWJV0VPG1ypA1KTLjlflRP/aRn0AmoqFaBVTw/FngZAEHhDZS7VyVepzEiss7nMp3AZOG8tPhheSgQAzpqHUkVSIMHFckp67umlScvFUsxN6U369PDrxSPvlaQdvwUWizIxdNfhYzitgutIEB7PgNkP8F78FVoMr1Y9O0mzpMqJwUlc8yh3Lzu2MWaxqYWJrdUkQTZOKC/gT/etJE2bqb1nPuGShbfvmI+e3oD9WWZj7xaSJZvW0j0vkg60h1mGbDafjUBxOtErCX1jnNoIbKuLZy2TKP7dGRf6Af0epfHTIUrfJty5g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM6PR04MB5112.eurprd04.prod.outlook.com (2603:10a6:20b:10::30)
+ by GV2PR04MB11740.eurprd04.prod.outlook.com (2603:10a6:150:2cd::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.11; Fri, 30 Jan
+ 2026 14:38:14 +0000
+Received: from AM6PR04MB5112.eurprd04.prod.outlook.com
+ ([fe80::a348:65cc:67d4:1fd7]) by AM6PR04MB5112.eurprd04.prod.outlook.com
+ ([fe80::a348:65cc:67d4:1fd7%6]) with mapi id 15.20.9542.010; Fri, 30 Jan 2026
+ 14:38:14 +0000
+From: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>
+To: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux-pwm@vger.kernel.org,
 	imx@lists.linux.dev,
-	netdev@vger.kernel.org
-Subject: [PATCH net 4/4] net: enetc: Convert 16-bit register reads to 32-bit for ENETC v4
-Date: Fri, 30 Jan 2026 16:10:35 +0200
-Message-Id: <20260130141035.272471-5-claudiu.manoil@nxp.com>
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Viorel Suman <viorel.suman@oss.nxp.com>
+Subject: [PATCH] pwm: imx-tpm: keep channel state instead of counting
+Date: Fri, 30 Jan 2026 16:37:20 +0200
+Message-Id: <20260130143720.778514-1-viorel.suman@oss.nxp.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260130141035.272471-1-claudiu.manoil@nxp.com>
-References: <20260130141035.272471-1-claudiu.manoil@nxp.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AS4PR10CA0020.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d8::10) To AM6PR04MB5112.eurprd04.prod.outlook.com
+ (2603:10a6:20b:10::30)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM6PR04MB5112:EE_|GV2PR04MB11740:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ddf1526-115d-4c52-d384-08de600d3347
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|52116014|366016|19092799006|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?WRfkCoJRVr2NmcKGarR0Y5AUgVnOMXgwlkmKhMf2KPYE0S4z47iK8X/yln?=
+ =?iso-8859-1?Q?RdCRtd6AC9/6/YC+3fQFke4ibaHpzFIZAQWc6vrz+JG9pyyv48/dGqcYQu?=
+ =?iso-8859-1?Q?N4O4RsMLmr6zlYYvigt98IXmli+gZkpSW+5xRLLqzEA8r5gAKfgHqmCJ0P?=
+ =?iso-8859-1?Q?ExgES2a7/F6yYhAUTu9CSiLZaWOVwnylMDuVq9aqMOMtuTmxtafw1hZrYO?=
+ =?iso-8859-1?Q?crDbsFEQEyQuqjZaLKAE8uRP2ViCUpTMsODriD3cxkmthQlyG4uirUWtHh?=
+ =?iso-8859-1?Q?xBEA7pJ6uSjTr8IiKe6C0NYfoKeVB1f9zDMBo7podNbq2L2/3210KUvC/g?=
+ =?iso-8859-1?Q?IUPl7dyjcVnNPQeepKiqibbsRtVEd6srExAq/hPsV4QKNpY9ocSjyekb2S?=
+ =?iso-8859-1?Q?0u+oqzWgW+65lVvAUyTW1wieTtYjPxotvFvboNlz9Be21fEKZzWjY1whR8?=
+ =?iso-8859-1?Q?xy4hleC2+GjFSZKHU1uwF/7RAW86XAaoQL7ImoW3DRyAXTQBebNQY0KrnB?=
+ =?iso-8859-1?Q?DiQMcAPTbHF7y2aKGL42UGhW983LU5n0TxFyc//2jntSRkIXmnAREDgIa7?=
+ =?iso-8859-1?Q?343uYvq7AeiC+iFopleANNPOanAOAXupVAZw8erF1zkUSDBrR+Y5qY8geK?=
+ =?iso-8859-1?Q?cxYE5n/iYrKCv9bBcuIyzeiS0sALpO9vtPXQBvVKsQNsipUjqsdej4w5Zx?=
+ =?iso-8859-1?Q?nWrqA/EjlnmP/cReFg6HpivBHxbSFYc41T00Wv5Qe8hEEk5ekm5OBkn3hw?=
+ =?iso-8859-1?Q?TTEBQBXxSQPJEXCOFibARQj0IKIaaMCuxwV9hooiLZueMOAsmwN/XLxMNn?=
+ =?iso-8859-1?Q?AnzEj27zlEAjMLsF2ID7ibQkLIg9yXtLbaaij5hDy1a3CxlUFAUfgSFlwT?=
+ =?iso-8859-1?Q?vvx/jTL8dI2Z1DxwtBVf3/DQ/6/sqptxRkO4fabVPtCQLuMB4NHbKuaNc7?=
+ =?iso-8859-1?Q?wbgPGgPVJ3u6NImw+cZFjWIEiNVgzKbzl4mb2gTKGIoWjHbOuR98YU3AN6?=
+ =?iso-8859-1?Q?HYXAFPJNSN4JcNlntwhJVkzwZOdW/nifl1/qYt1r7ARbdFx5G+0laJjDjv?=
+ =?iso-8859-1?Q?EC3I/j7o/cfKJ2LdN3ZBEKrWWzT+EznUgLlSFfkI17Ur/Y6ob/nUnCtdrP?=
+ =?iso-8859-1?Q?XXvQ1sJ6Kl3IpUix0wldef+VxdIAdXla6rf0+TJoIuJd6PTyUzmP0ltDhl?=
+ =?iso-8859-1?Q?7VH8JtUPpkrkfBKiQsJcLaW7TCLnjrHXpG9zQaVvM3XIV7TK7NY1VJKqSu?=
+ =?iso-8859-1?Q?liLVhWuW4PhYPK1WLDdQnWkdCmII62qjGLHkCh0r02RFZLVvsid++xXREz?=
+ =?iso-8859-1?Q?4yGDJQwOiQO7weZLT2zMGd2n+r72VpLdVcU8zl3PhKUA/kW/NUDeKzY6tE?=
+ =?iso-8859-1?Q?UamHA2IDlM5RFRunR5aKm6ZWMZd+X+0WBMMVwb7jWnZXDYo4kOhgj11gWI?=
+ =?iso-8859-1?Q?DGiN2HudPJU0hzUAZTpdxNELazKwIRoREr+VGL8+Q1bt7kCvN9lj8yM0LI?=
+ =?iso-8859-1?Q?d0D0Z7tyysYmoskRjriwybhVJBJiX92VDgRV2UcoOsvvZldeRddl9IA1ap?=
+ =?iso-8859-1?Q?7fH/CfwnTIJ0Tejrp6hA915SnCfV5aR0k1CwDN7MGMpvL9vJ+F9CbEgS9o?=
+ =?iso-8859-1?Q?yp5zBYR5cyjV7cNEknLFob/+SsrqtZ18bJawSgkb2qvffEKytWUcS4S0EP?=
+ =?iso-8859-1?Q?DOS6X8RRjTQZgvhXMsY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR04MB5112.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(52116014)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?Moh9Oyww3OQe/dQ/hs91HwkIrB8KimiwDXtw1Hshv93DpmZi3rSiZtCONl?=
+ =?iso-8859-1?Q?8WOlCBsTYM432rAG9k2ColOl4o89DXzsheq1SjkscxCEVFQZzjk/0GE5+u?=
+ =?iso-8859-1?Q?yFMgp1p9WVmXj1udZqnm20Tbrdf8ueAANF/JLEzNIgJp09Krg+ksZnCiTJ?=
+ =?iso-8859-1?Q?SYWFEcOvefwSz4FNEV0DIdOfteq6uH+TmYJOqg+HlPlYCSvTHS3ctBb6ze?=
+ =?iso-8859-1?Q?vmvA3A8G1VhGXA0evKXbvnpphdL1Ah+YG5qdMvKAELcYLK0EZzqezZnsKy?=
+ =?iso-8859-1?Q?SEyQm2Bd3fyMou5BgPXgfhZS276suKvxShWxvHiFvUTSOOJNwYmqZchUr2?=
+ =?iso-8859-1?Q?BzSdnZqS+G/SraCAqnZLcj+CJytksb9wGRcaAl6QwOyGWHKIZdWSs5TjSg?=
+ =?iso-8859-1?Q?0bmTd9nQuwIDQ/KlZXeUnIAM0toQaV91jNUmIpONTfqItGq3sSb2ZT4hJd?=
+ =?iso-8859-1?Q?iAoADomwSSAFP9QlN82Egem/j+K+Prm0NRjigIDUhKtqHueWRlEcx4LYaN?=
+ =?iso-8859-1?Q?bhmUqP//9cfsMOAUzblANh8owANNLq4JDk2ZYCwRTL/HKFlSZRuBUhsZfZ?=
+ =?iso-8859-1?Q?oUG7xywfLsgo/dB2igTGSLv0pRcccV3xCUDQ8CGKOlcvN6YtTWZrTOYC1K?=
+ =?iso-8859-1?Q?ftGTvm1exirT+J3vqu0RNNuaqSf3acw+bc5kziL9ilIWNA0/jgSOAzwruo?=
+ =?iso-8859-1?Q?VLXKtJkbKjMbIq2mr+oGRGYdZMpwMIXdAr3SOLxEM2H2zaZme+65YRCyEC?=
+ =?iso-8859-1?Q?XTwtzXBOzL7dvC22rjhEvxOy/UlSPn0FXEDxvEPYopJzMZo23uNvni/0yk?=
+ =?iso-8859-1?Q?bVyxNYS9ODgRE3V7t82xJf8Gwu3GIjFLDKS+VF1PKIJxCbuC6FOVodZDop?=
+ =?iso-8859-1?Q?YoCgXkCENB5zy5pR1vEjgyH1iq4u2q1aQdhpyItCJF547PnlHH0iWpWTvt?=
+ =?iso-8859-1?Q?g/sAi+WR2HQH64tQGlYrdUoryVcltTjYXiaiLn4dqxOTyO2sxAVIL8+UJq?=
+ =?iso-8859-1?Q?gWES+cpsi8f1LMxu8SA78MysLoud7/OYujGpdnOEVQZZGV8BxeteWzY1L9?=
+ =?iso-8859-1?Q?A3HFJvqPHlFM5QdcVAc0aa6j0yqx8Mb2iijDhnSwJYjmjvqDJispqVjC3O?=
+ =?iso-8859-1?Q?F3PlbNpoEPrTXiHJ6VwNPUL77CDu0uf+shltLvrOtdOiYpTQsLbOfHkP01?=
+ =?iso-8859-1?Q?gHCtMl7Bh+oX96daRm3ZRQlS78jiB5BLjbbysFU+lh15TFXxKToWJHBOYr?=
+ =?iso-8859-1?Q?nPbUP75UAeJX7XnfiTWHmXbLwPuJmmzLTsUHroJMI+Y7tHvAJneCv3MSZC?=
+ =?iso-8859-1?Q?EMVX+NMnBa3rcwYIRjc/KT9B2mSKQvv/lQX2JkLOdmPHDyx9pDAwO3eIe5?=
+ =?iso-8859-1?Q?zD/8V38idv4qHyBtssa1conZBSfLLqaT4BcMiE9SPOf1S1/wujGLyMtr1k?=
+ =?iso-8859-1?Q?qXyOqMZWxS1QLJFkXcWGaQvZGQBvhi/0qfh2IthPBVNvuTPN3Y3mH64+Rc?=
+ =?iso-8859-1?Q?vDVUr7rWnB0+8IncFoMvhMcxLgULCPKVyq7dscpZ+pxynSDSgnFXXLB9U/?=
+ =?iso-8859-1?Q?pHOmug/wzpQE+WOR5gu0kBSc4JwuoRSEU0Huu/h5uMmwyWL3Fb3W2inJfd?=
+ =?iso-8859-1?Q?l75T4Uzp7dol2IGWTfzrwPNFFFYWO5QzQQZ9UGTHC47EREZjGdu2FPiwTa?=
+ =?iso-8859-1?Q?pcqF18fhXY3dlboKUcAi2E73LlDPyjhpU25svh0PqDBn7ATYybIvE+cmZv?=
+ =?iso-8859-1?Q?Vn7VOWrCMxU71RHTjrhv/VOLbRd0GBdK5CFKDdggz5i7XEDdNKmaorYnEf?=
+ =?iso-8859-1?Q?W0KEW2SPow=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ddf1526-115d-4c52-d384-08de600d3347
+X-MS-Exchange-CrossTenant-AuthSource: AM6PR04MB5112.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 14:38:14.6005
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8WVnmUQaeC3c++AKFgV59Ft/UHta3PfJeLh9xyPX0AJoMYtgLyTN6LYSvWovRsEeKRaNrS7Ew49liy9bKx1Zvw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11740
 
-It is not recommended to access the 32‑bit registers of this hardware IP
-using lower‑width accessors (i.e. 16‑bit), and the only exception to
-this rule was introduced in the initial ENETC v1 driver for the PMAR1
-register, which holds the lower 16 bits of the primary MAC address of
-an SI. Meanwhile, this exception has been replicated in the v4 driver
-code as well.
+On a soft reset TPM PWM IP may preserve its internal state from
+previous runtime, therefore on a subsequent OS boot and driver
+probe "enable_count" value and TPM PWM IP internal channels
+"enabled" states may get unaligned. In consequence on a suspend/resume
+cycle the call "if (--tpm->enable_count == 0)" may lead to
+"enable_count" overflow the system being blocked from entering
+suspend due to:
 
-Since LS1028 (the only SoC with ENETC v1) is not affected by this issue,
-the current patch converts the 16‑bit reads from PMAR1 starting with
-ENETC v4.
+   if (tpm->enable_count > 0)
+       return -EBUSY;
 
-Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENETC PF")
-Signed-off-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+Fix this problem by replacing counting logic with per-channel state handling.
+
+Signed-off-by: Viorel Suman (OSS) <viorel.suman@oss.nxp.com>
 ---
- .../net/ethernet/freescale/enetc/enetc4_pf.c    |  2 +-
- drivers/net/ethernet/freescale/enetc/enetc_hw.h | 17 ++++++++++++++---
- 2 files changed, 15 insertions(+), 4 deletions(-)
+ drivers/pwm/pwm-imx-tpm.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-index c0859d200a2c..5850540634b0 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-@@ -73,7 +73,7 @@ static void enetc4_pf_get_si_primary_mac(struct enetc_hw *hw, int si,
- 	u16 lower;
+diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c
+index 5b399de16d60..0f8643f4a70b 100644
+--- a/drivers/pwm/pwm-imx-tpm.c
++++ b/drivers/pwm/pwm-imx-tpm.c
+@@ -62,7 +62,7 @@ struct imx_tpm_pwm_chip {
+ 	void __iomem *base;
+ 	struct mutex lock;
+ 	u32 user_count;
+-	u32 enable_count;
++	u32 enabled_channels;
+ 	u32 real_period;
+ };
  
- 	upper = __raw_readl(hw->port + ENETC4_PSIPMAR0(si));
--	lower = __raw_readw(hw->port + ENETC4_PSIPMAR1(si));
-+	lower = __raw_readl(hw->port + ENETC4_PSIPMAR1(si));
+@@ -166,6 +166,10 @@ static int pwm_imx_tpm_get_state(struct pwm_chip *chip,
  
- 	put_unaligned_le32(upper, addr);
- 	put_unaligned_le16(lower, addr + 4);
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_hw.h b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-index 7b882b8921fe..662e4fbafb74 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_hw.h
-@@ -708,13 +708,24 @@ struct enetc_cmd_rfse {
- #define ENETC_RFSE_EN	BIT(15)
- #define ENETC_RFSE_MODE_BD	2
+ 	/* get channel status */
+ 	state->enabled = FIELD_GET(PWM_IMX_TPM_CnSC_ELS, val) ? true : false;
++	if (state->enabled)
++		tpm->enabled_channels |= BIT(pwm->hwpwm);
++	else
++		tpm->enabled_channels &= ~BIT(pwm->hwpwm);
  
-+static inline void enetc_get_primary_mac_addr(struct enetc_hw *hw, u8 *addr)
-+{
-+	u32 upper;
-+	u16 lower;
-+
-+	upper = __raw_readl(hw->reg + ENETC_SIPMAR0);
-+	lower = __raw_readl(hw->reg + ENETC_SIPMAR1);
-+
-+	put_unaligned_le32(upper, addr);
-+	put_unaligned_le16(lower, addr + 4);
-+}
-+
- static inline void enetc_load_primary_mac_addr(struct enetc_hw *hw,
- 					       struct net_device *ndev)
- {
--	u8 addr[ETH_ALEN] __aligned(4);
-+	u8 addr[ETH_ALEN];
- 
--	*(u32 *)addr = __raw_readl(hw->reg + ENETC_SIPMAR0);
--	*(u16 *)(addr + 4) = __raw_readw(hw->reg + ENETC_SIPMAR1);
-+	enetc_get_primary_mac_addr(hw, addr);
- 	eth_hw_addr_set(ndev, addr);
+ 	return 0;
  }
+@@ -282,15 +286,19 @@ static int pwm_imx_tpm_apply_hw(struct pwm_chip *chip,
+ 	}
+ 	writel(val, tpm->base + PWM_IMX_TPM_CnSC(pwm->hwpwm));
  
+-	/* control the counter status */
++	/* control the channel state */
+ 	if (state->enabled != c.enabled) {
+ 		val = readl(tpm->base + PWM_IMX_TPM_SC);
+ 		if (state->enabled) {
+-			if (++tpm->enable_count == 1)
++			if (tpm->enabled_channels == 0) {
+ 				val |= PWM_IMX_TPM_SC_CMOD_INC_EVERY_CLK;
++			}
++			tpm->enabled_channels |= BIT(pwm->hwpwm);
+ 		} else {
+-			if (--tpm->enable_count == 0)
++			tpm->enabled_channels &= ~BIT(pwm->hwpwm);
++			if (tpm->enabled_channels == 0) {
+ 				val &= ~PWM_IMX_TPM_SC_CMOD;
++			}
+ 		}
+ 		writel(val, tpm->base + PWM_IMX_TPM_SC);
+ 	}
+@@ -394,7 +402,7 @@ static int pwm_imx_tpm_suspend(struct device *dev)
+ 	struct imx_tpm_pwm_chip *tpm = dev_get_drvdata(dev);
+ 	int ret;
+ 
+-	if (tpm->enable_count > 0)
++	if (tpm->enabled_channels > 0)
+ 		return -EBUSY;
+ 
+ 	/*
 -- 
 2.34.1
 
