@@ -1,129 +1,137 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62404353EFA
-	for <imx@lists.linux.dev>; Fri, 30 Jan 2026 08:24:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769761499; cv=pass; b=pG3hM3LV0CCpKYfmpSt4ludOe3UGeaDTcvy0Xqyd60rp0LMz/W0o4vlF3d/MY9XOuSvRy7E8BetXTGiXPbCNsGWTEv4PJKqGjtTpW1UUPN4lQ9fZOE/o/dP9Bx7wkdSpi9P6Q39eOv3VKBpyuODfjjIjkfQG51o0VXCb1e/v0Ic=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769761499; c=relaxed/simple;
-	bh=ZC+fuQk21hYzdagNdpY7ch+QY0LHmxNvBoMUa+2kaN8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lO2xm4wLnoNHt6wIlKAFfwb1Fn3nDc+kK7jYPAXZiWXPVBqTY3eY1zIFog1A8gJKvh/JWzr5KrlF2MhD3+nA3u4h1ojWL6WaFvXZhaf0raWVM5vVrh7AJbjyMkWfvZQDoyUymoW4WBLWZy/FNE7HByz4Aq3ymmdFZzFUiOhADNw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EXEhLOQr; arc=pass smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7867350D50
+	for <imx@lists.linux.dev>; Fri, 30 Jan 2026 08:29:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769761788; cv=none; b=URHuUQYtKTGy3o3gEFqduV6qDnoXDZ9T9YhZ3++zYJSHMb/AXRjmOnUDKsQz0uIausIxd8/0rpGYpu9NEmQI7EFb8gXlqG25k2OnQkqJsHCnBs8UZaSsvkRhUbZn/8CtYRmPZeN7r5vn6gHfrY/Oob0doRijyWFqlgxIvgUmbjA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769761788; c=relaxed/simple;
+	bh=5MEahWuCJP0dPLEmBTsIeIFENKo3FnCUwr1Mmh+9BQc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uCA7HE0tuTKYBPGKnKLZHgT4E1Jl9hg6nimgrJIAVGQo+5JNpK5unXOL2suNCj9M68pQFnfHOEQMbzrNU5VHX5LdGXbyBHyxCOdXxLPDLwTpYaZmOZGwc+exM8fxBEl/ds7lnpPvs5yiVLUR6Xj/Vqz4GXl9OeWTsCrewGfH/gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Lua0s3l+; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EXEhLOQr"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-34f2a0c4574so1612293a91.1
-        for <imx@lists.linux.dev>; Fri, 30 Jan 2026 00:24:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769761496; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KY9CBEjdjUSZYUFVl82QhFPDFGQn2XMicH9nn+F2telTqgIEiPGxPdw1tnbUWcP2Cd
-         KwstylaQ0pi1hR1ffbvqRuPNIqR63siHBfjpp7OzDfG9MKOd0Zybjcjkldw9VnvsL6gC
-         Fc+kEvedmaR/xwG+Tl+b1TUNN+hsE0Po6RcfOxEg8qN5S3jWE0EtXnTwxupz6PFghlw3
-         MObRXMVzETUdfM5EmiUJeIE0sxRIpELaUBHkcmKmABXkiFdK6HQJ8hiK/Zk/ggmPZ5zW
-         H3XNz+riJawkqja/mc9LJM9jvWJAO11NtXCojJ6RIJXegHmxTONvJVS30CxcmoehSwLs
-         CpDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qIF2oyc7jSMJyV9MJXutUw0TkKSVy7Ny/HYiVWp/mcQ=;
-        fh=/VomLVsnouob7HVVxN/2m5rXLbjZK/gHAwjayNGkuto=;
-        b=dGU1A4HAyY3KgztMGckKZyYFVrDoqR4Q4WGOPtzapMCVo9e5NhSJyt7wHxl6+8PKr8
-         FCtZdGjpQ5ntKqKarqNB013zGEUsEWrmKh4qzVcqUxXdgQQFmp6htfDJ1LpHsO4yK9pp
-         vCyoKSLl0MN48k734lea0kzsh0rn346yfqGPMu+wrV6VD+3ln9RM022TapCvSZ86iXqv
-         RN53m4+oaVqjom5/bf9EvDZhdEqA/QBHVAEP9LXM4dsuSox08II7jntuyPVuQrjHReBh
-         JJQJ0OQZGV1ov5cd4yqZzdOg8KUoo+virf1HbUVap4aFInREumZ6fffFzQ7JgMQmjBEK
-         LdcQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769761496; x=1770366296; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qIF2oyc7jSMJyV9MJXutUw0TkKSVy7Ny/HYiVWp/mcQ=;
-        b=EXEhLOQrf9HDwY50Y4LZVheFhukcCoIRK8EPRvm8lU8xcXKs/N8Ozk0pwiyPsITmsJ
-         zC0uL7SojPHB38L7QtQAqjpy6zgi9X1uo+zlm4PHUUOTca1q6L+w3yxiHEplocWTfS/W
-         xfDko7iXWQd3N1GPKjpQzW5nI6oCUypLtKC4twTklgdsNwsKUDCxKTBTdSUhvAOS6vl3
-         7JWoiPX714nGPSiz617eywP9k5sOQGx/1LFuk/9Uk3hvrG71uLgCeg0IOlm6MFRcNHoz
-         gdfNk59bCa0oyhIZb8q0JSpN6tBFlkCoU9ozjFB8Nkjqkyz0bR+M64OgIHeqf28HTopn
-         sxYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769761496; x=1770366296;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qIF2oyc7jSMJyV9MJXutUw0TkKSVy7Ny/HYiVWp/mcQ=;
-        b=B22RVHuDBs/W+ndh1ges0/hiSWfYK2GklR0ZyxxK/Wt1Mx4sNWI6+zbvzsdcZ7LLvJ
-         nwztVCtiymX5Fk4Rd8yrQ1LrgGz4R5g8C8B4Pv+FKvwEPPaFy0bg2auS7zjFeyxfmn2Y
-         gZZt71EM2vla/gBG2HEFmPBaJpWeUDygH91hYPd+5g5tf7MBKsZzfJi4K51OE0PTA/Nf
-         3t9g0qJqdIjlQCb33rLMLgmytknqCMxXavS42o2oyHHMAJ0HDWbDEIeQLkWgUuG6asth
-         u6bHcRvag/ptrDKS4RrxJJcWsKljM2SVWvy4su0Zqm8Pfidv0HlKSHfNDs/1DPw7qlvS
-         52FA==
-X-Forwarded-Encrypted: i=1; AJvYcCVZRR9RfV1ueo3D6m+LjSryR3mAt1uFiH6IvYQ77bQvOWxly9cnJiFlpvXMb0SuPB2rvkM=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxsPWgRDvw9gH5kDKlqRdlkM5FMmEfEgQHsBfJZ0xz6f/X9Bm98
-	ZXlIknCHSRRPrQA+7ii8ygDdIeyFYZBzgaNFR3ykXZKYdIuwCOTatXAONKS9bo4tlqWbIQtaVuQ
-	bYNP2Nj1ZNj5o2OM+HnADTgH4xFza4do=
-X-Gm-Gg: AZuq6aLrt0ULkEZBn5Z7Y4eVgjVgnoJ5A2+k+EkW02jFtFo7d1V3SwKtIPlYSwyGAS6
-	IAYSANXTp+1uzvtpMO5U0lHUbNsO6406NWLBKDOuSyb6XjI0F9bGvSJmagBYJwnizng/q44WND8
-	isgg94ZDfF9UG4Gzw2tThxP1EI4nol1ae0HqVbS2dZPNTa3JMvmY4fPuyxYoHcOzRv+eGAPpqOp
-	9vcpsaDrsyykjFbDk98sqS+eJFJvd+QVWUUZN5uL2nJqXRgIKPLiu+wQKjqPYCMDGCpz0k=
-X-Received: by 2002:a17:90b:35cf:b0:353:e91:9b2f with SMTP id
- 98e67ed59e1d1-3543b3c648emr2292966a91.37.1769761496076; Fri, 30 Jan 2026
- 00:24:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Lua0s3l+"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 1D3424E4233B;
+	Fri, 30 Jan 2026 08:29:45 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E06AB6075A;
+	Fri, 30 Jan 2026 08:29:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 94A3D119A885C;
+	Fri, 30 Jan 2026 09:29:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769761784; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=/vKn9EEQHyKCNGgNOLS9lAAVgDA2xlkQZrymT9LUk4A=;
+	b=Lua0s3l+UZuM4nHOP7UHhBh2KmaT7OYmaPFGeF3fPSrOYmJxLSqrJutiWd3qECpWBtm35p
+	/zGCIVZ7cJYfw+6mwhKTwWXc6HU0QIjrYOaKjlRCJND9LWfDb4vdCC2gdILG9sajvFGVYv
+	Y9Pvo3Km2luVhWmyF+Y2voc+PbWLxWEWLSaMudYLJzqo66xwaOOPdN9zHwPzzhy7mDIjTe
+	alBkuWD/wHpqO4m43YucrAJzumYXEOzLlTUSYSgVmkqcB/GrStBcUw4e79BypD8/H9jBC3
+	S5GDiIee6AMOHy5IMZbdiOJMSqdU9cRfvRP4YhB+W7novRZN/ZjeZcNpqyqp2A==
+Message-ID: <cb94b647-c2a4-468d-ac1c-c5f18f0734f2@bootlin.com>
+Date: Fri, 30 Jan 2026 09:29:38 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260130054330.3462544-1-shengjiu.wang@nxp.com>
- <20260130054330.3462544-3-shengjiu.wang@nxp.com> <CAEnQRZC_6xRRi6y2t0MGe8udTPYWg9XEBFrxhFCbKYBCCD=OeA@mail.gmail.com>
-In-Reply-To: <CAEnQRZC_6xRRi6y2t0MGe8udTPYWg9XEBFrxhFCbKYBCCD=OeA@mail.gmail.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 30 Jan 2026 16:24:42 +0800
-X-Gm-Features: AZwV_Qh3nyHcIbEYDDCvGcF70iBOk8SCVrc7tCSz-T6YiK9YuuynA5ywxyM9ma4
-Message-ID: <CAA+D8AMkaTkHL03fi8THxK-a8xBR1Cu4BcNC5XfeZvzvwJ=rTw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] ASoC: fsl_asrc: Add support for i.MX952 platform
-To: Daniel Baluta <daniel.baluta@gmail.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com, broonie@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz, tiwai@suse.com, 
-	linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: phy: add device link between MAC device and MDIO
+ device
+To: Wei Fang <wei.fang@nxp.com>, Russell King <linux@armlinux.org.uk>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: "andrew@lunn.ch" <andrew@lunn.ch>,
+ "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+ "florian.fainelli@broadcom.com" <florian.fainelli@broadcom.com>,
+ "xiaolei.wang" <xiaolei.wang@windriver.com>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "pabeni@redhat.com" <pabeni@redhat.com>,
+ "quic_abchauha@quicinc.com" <quic_abchauha@quicinc.com>,
+ "quic_sarohasa@quicinc.com" <quic_sarohasa@quicinc.com>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260126104409.1070403-1-wei.fang@nxp.com>
+ <20260128201501.04bb6e5c@kernel.org> <aXsxJa0D0bohafRs@shell.armlinux.org.uk>
+ <PAXPR04MB85106B63AF43DE0830B4C362889FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <PAXPR04MB85106B63AF43DE0830B4C362889FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Jan 30, 2026 at 3:27=E2=80=AFPM Daniel Baluta <daniel.baluta@gmail.=
-com> wrote:
->
-> On Fri, Jan 30, 2026 at 7:44=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp.=
-com> wrote:
-> >
-> > Add a compatible string and clock mapping table to support ASRC on the
-> > i.MX952 platform.
-> >
-> > The clock mapping table is to map the clock sources on i.MX952 to the
-> > clock ids in the driver, the clock ids are for all the clock sources on
-> > all supported platforms.
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
->
-> At this point imx952 has the issue with dma request not cleared you fix
-> in patch 3/4.
->
-> So in order to avoid this you need to swap patches 2 and 3.  And in the
-> newly patch 3 you will fill fsl_asrc_imx952_data with correct value
-> for start_before_dma.
->
-> Thus we also keep everything working for bisection.
+Hi,
 
-Good catch. I will swap them.
+On 30/01/2026 04:41, Wei Fang wrote:
+>> On Wed, Jan 28, 2026 at 08:15:01PM -0800, Jakub Kicinski wrote:
+>>> On Mon, 26 Jan 2026 18:44:09 +0800 Wei Fang wrote:
+>>>> The commit bc66fa87d4fd ("net: phy: Add link between phy dev and mac
+>>>> dev") has created a device link between the MAC and the PHY if the
+>>>> MAC uses a shared MDIO bus (The MDIO and the MAC are two separate
+>> devices).
+>>>> Sarosh Hasan tried to change the DL_FLAG_STATELESS flag to
+>>>> DL_FLAG_AUTOREMOVE_SUPPLIER to fix the issue [1]. However, the
+>>>> solution does not take into account the hot-swappable PHY devices (such as
+>> SFP).
+>>>> so when the PHY device is unplugged, the MAC driver will
+>>>> automatically be removed, which is not the expected behavior.
+>>>>
+>>>> Therefore, to solve this issue of the shared MDIO bus, we create the
+>>>> device link between the MAC device and the MDIO device, rather than
+>>>> between the MAC device and the PHY device. And when the shared MDIO
+>>>> bus is removed, all MAC drivers that depend on it will also be removed.
+>>>
+>>> Anyone willing to venture a review tag?
+>>
+>> No, I don't agrew with the patch.
+>>
+> 
+> Is it because of SFP? If so, would the following modification be more
+> reasonable, while SFP still follows the previous logic? I'm not sure if
+> phydev->sfp_bus_attached can be used to distinguish between SFP
+> PHYs and non-SFP PHYs.
 
-best regards
-Shengjiu Wang
+If you want to know if the PHY is in an SFP module, you should use
+phy_on_sfp() instead :
+
+https://elixir.bootlin.com/linux/v6.18.6/source/include/linux/phy.h#L1766
+
+It's set for this kind of setups :
+
+
+               SFP module
++-----+      +-----------+
+| MAC | ---- | PHY       |
++-----+      +--\--------+
+                 \
+                  \_ phy_on_sfp(phydev) == true
+
+
+phydev->sfp_bus_attached is for the media converter user-case :
+
+                            SFP Module
++-----+      +-----+      +------------+
+| MAC | ---- | PHY | ---- |   ???      |
++-----+      +--\--+      +------------+
+                 \
+                  \_ phydev->sfp_bus_attached == true
+> 
+> Anyway, this problem has existed for a long time, and I think we should
+> find a way to solve it in upstream. If there's a better approach, I can help
+> verify it.
+
+Sorry I wasn't available for most part of yesterday for that discussion.
+
+I'll give a try to this patch today, with the above change and let you know
+how this goes.
+
+Maxime
+
