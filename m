@@ -1,457 +1,287 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012041.outbound.protection.outlook.com [52.101.66.41])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011007.outbound.protection.outlook.com [40.107.130.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D0925B662
-	for <imx@lists.linux.dev>; Fri, 30 Jan 2026 06:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F2D28D8F1
+	for <imx@lists.linux.dev>; Fri, 30 Jan 2026 06:48:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769754209; cv=fail; b=u/djw50SW7pF8ht7ykDEGy3p7vXzIXEGCGBduzbAOKSc1opQgXNFdPoH+DWCgnOUqrff61sn1bDFE2hdVPmJMbnr0OreomGlvNJe9/zGtAgih6N24hC1VeQRMR8xtW+MYH94oxQEmdT3gacOWakY2j5zGf6dGG4+4FJQVvoOdkQ=
+	t=1769755733; cv=fail; b=gHJ/Oy+4L9G6sb1J+4q/TcJyfpHopU1am8eyIMH306g0FwV3wzc8eygZACzv5wXtIUjCDwJnWxlFbxeZVlxvbenDkP/eifBV5SjUYEOY/gGAEqD5cU5edplzhVjFB6vPXA/SKeQPg/JJmXFL8gO8uk4GJf1i7k+G0ZQayHbrUlE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769754209; c=relaxed/simple;
-	bh=2ImF4FmCHzyNR5WOMkLRZLCAxBM4QCFzGg2FEW7ct0Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=RY35Cdh0+czlMurQb3GJQijjBS0pF4RMmiChjCNl9cKSmZ+azKH/1eWA5uo0LuazRuts+j4mCGDpDgDeMfNf5B5KIFZGKRM7pGJMYd7kchUauIYySC6cNck/h3Vx+OgI3AbxZ+mtmmfJErPf3UpU/5Ddg33mGgUCbArcwgZ6zHQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=AJEsgjTt; arc=fail smtp.client-ip=52.101.66.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1769755733; c=relaxed/simple;
+	bh=8YOLbV6VEmPrCZvoJd58tRUD+ao/aG6JboGflDCV2LA=;
+	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=gDqz803aUF/p4ZRWeIvesQY3qR/i6EmxsP6K6jBjV6sTGw3L9MfhKIVj6BD6X0t+9GvS8BJsI2xmDPtJ24QORDQH/MeCL6Sge/JZI02OIktMpeTOgJRsvNDQsIlLpOnC9hWIxxDaGDppTUZg7JngMw1y7oBLC9MSvn9ynDAiAD4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Map0Z9U6; arc=fail smtp.client-ip=40.107.130.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="AJEsgjTt"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Map0Z9U6"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ei4+p/nt9S+/mOKArsqS645onjDRh04aOHFwn9qp65zmDf6BsUgOgq+R1fu2QMGZh2ZuFL7BFt4mPdXB5oB/i34MfsQja92FUsoW9DA/1e+5V4U2n8a9B5APeu7T8MS8IhD1sq4LZ3tvAouw3OmgsGPO030LvrGRCOtYGKWWlx551STouTPSaeeIgvjIPGOJL2H5fo8bfWT+5Oi5/D/gl0ow92sNpjCyVC0AMeHQPxkq6K7vfDTpHeiXC10d21oQSgv4Ml4Y89ni4/RV1BvcBNKOCwuLhHyoT5PRvO4LzD53ztgTKjB653uCbxy+YsWhA0r2ViltNSBVpn9zM1mn+A==
+ b=AEo9fUGRkxQzMsAW/AiZAGHWj/h0rW8bc7pQOaF1awV2bBrdH6iKTpCZQrCu9G9bRTlIhWU/J7LkBJjeqSGHwEwm1rAaqq7AfPBIRtRQKYDt2Su9LLzgwYgASuQMVLSrZave3/A4gRZ+QP6ikugpXkMlU7DB7VJmmNAEJ4N9I7dTfGzhIhYGjnkP0OiSGdeHx14+52EmHXl0MWlLxGRwsE+7jx0CqmAKocVIUHC9dyuJ9OJ7ThCHAkaFQX/JKAJ1swdFsbnx6hFWjQudgHtjDUKuePmYsovfKO9g0LgvkfugRBdvDeQw9X1BLc5Y0RdL8AU63nPtEhEzna4Sk6X0CQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ascH0nPqAI/wWocq/r3sIqaLDcqVNJ2mxTJigFs6VUs=;
- b=KbFSmAOnqRHbRsB53ror82XlbQFIeuorGslCmTsGYX+YCSgaF5DP90OGFfHf/qKrpEFGuFoxcQNYOdJzU6bNLBVbDTXDEk9dUoFX57xIprw3lOlBYcga9STXYuDRd84DLW3o87bJRoS6mVTJmZ4tG8z+BIgLwxj8DrsNLinNScZ/MX3AiztJ3QIpsaDKZ8UvKbCrF6MjVkpvWHTRR/nMOiLe5X8Ia0dx4D5K9OzMw6ne7MfUiZJLOebiCehcZOjIi9HXA+RI5n6t+KT9/GrXv+n0UFycsHEl9al61+bQpRo3DPAAPvt+WdCupjT92nv3iX0PwYHEM2gmht2IbF2Qgw==
+ bh=bsL7ihbVNHxteSnIrmWt6+96eSizv04RtoQWjSToSqQ=;
+ b=ikwvsUfV5aKJyhvt15JQ27YHRNilJLkW4+iIBf998ND+BlR9Cvl/YOa/fDqW5yvJlmWOqeRagT4J2WbMWNhved9sgtUjRsqCqNHu62E5Tg1vg2o2SACBBS9LKpV5R5odXBhVa2SFVhOEZbbtQuvoHTo6TRAC89tiSVqIDN+ccUnaRezlQxdV56EbRTfxJl0EE/kPawn1fGi3p5ZQw3wXGgoSwP+itzNsLRYMl1kQgGzNfb3TS5FrdVEw4uguDfN2ZCEeVrVd3tYrga65hIMvxdUJHymwUmSdnlectNxszCQAsrdkFFYuL0EU/SDesQgyo9AvBiaTmVO0JF4papoC2A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ascH0nPqAI/wWocq/r3sIqaLDcqVNJ2mxTJigFs6VUs=;
- b=AJEsgjTtJpner16aIgI1s4MYjYGMmrou4JP4N/AqwHfVa7t4ABhXbvAhVssnO6EHf5fIbgJS9KQvNLLa7NgQ8C0fl/pHHSNVl3LrDtATrHy0l3aYC54yieFi6OEV/lDCue/VOuQHy7AfxknNgmxrEmIb9ng9iMNCLTejGQSVyO4WnbhFmG0xJKCHj92Tv+SHBuXT8e/raEmq+Tnb/pOuQDJDanCQI/zBDb+R/m7hBlkpJ3xyzEvFY3X0sYwWpG82ljs2T2v0NKEVt3jkZPnMFgi8uAOu2NCAg8B/AIO6GS0uwhbXdFyh7cwOn3P/XkFr4Ndrh4775miaxlGx7xHZQA==
+ bh=bsL7ihbVNHxteSnIrmWt6+96eSizv04RtoQWjSToSqQ=;
+ b=Map0Z9U605wb97slMbgST++hPsIFcaZF7XPKh31VmFgwd4XFTkXW1WHOPB/7acFTNUxixtOfAfgAOPWfswxMaMdNnFecqbSw55XVuU6OOPz7ecEqZkQWtYRyWJ8upeKjlv1KuWpUBpGbS+tyXxnDkCgKikBhQZbnJBfSqEhfim/pS6jR68KNEFMyu32z48S1W7J9sT/PY64c9jFlDwFaFQaV8/pzJsw6IN0lvNkK5sD6q4QMXUE3ysJioq0XKJZkYnhytbCm2R0MghlDsRmLuCCpUWWsFpIo5TWuWDrvqsyYq0LsUjQja4VBxT6hsgKwWd4RvU2sJALbvaU8UPZG2A==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
- by PA1PR04MB10282.eurprd04.prod.outlook.com (2603:10a6:102:464::15) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by DU4PR04MB10387.eurprd04.prod.outlook.com (2603:10a6:10:568::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Fri, 30 Jan
- 2026 06:23:24 +0000
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::2755:55ac:5d6f:4f87%4]) with mapi id 15.20.9564.006; Fri, 30 Jan 2026
- 06:23:24 +0000
-From: ming.qian@oss.nxp.com
-To: mchehab@kernel.org,
-	hverkuil-cisco@xs4all.nl,
-	mirela.rabulea@oss.nxp.com
-Cc: nicolas@ndufresne.ca,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	xiahong.bao@nxp.com,
-	eagle.zhou@nxp.com,
-	linux-imx@nxp.com,
-	Frank.li@nxp.com,
-	imx@lists.linux.dev,
-	linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2] media: imx-jpeg: Add support for encoder v1 descriptor configuration
-Date: Fri, 30 Jan 2026 14:22:33 +0800
-Message-ID: <20260130062236.2109-1-ming.qian@oss.nxp.com>
-X-Mailer: git-send-email 2.48.1.windows.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0045.apcprd02.prod.outlook.com
- (2603:1096:4:1f6::16) To PAXPR04MB8254.eurprd04.prod.outlook.com
- (2603:10a6:102:1cd::24)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Fri, 30 Jan
+ 2026 06:48:48 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64%4]) with mapi id 15.20.9564.006; Fri, 30 Jan 2026
+ 06:48:48 +0000
+Message-ID: <cec25a41-cc6a-4b03-833e-5c7da5727e85@nxp.com>
+Date: Fri, 30 Jan 2026 14:49:38 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/bridge: imx: imx8mp-hdmi-pai: enable pm runtime
+To: Shengjiu Wang <shengjiu.wang@nxp.com>, andrzej.hajda@intel.com,
+ neil.armstrong@linaro.org, rfoss@kernel.org,
+ Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260130055508.3462700-1-shengjiu.wang@nxp.com>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <20260130055508.3462700-1-shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SG2PR04CA0215.apcprd04.prod.outlook.com
+ (2603:1096:4:187::14) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|PA1PR04MB10282:EE_
-X-MS-Office365-Filtering-Correlation-Id: a86d3590-92d2-40ff-7265-08de5fc8128e
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|DU4PR04MB10387:EE_
+X-MS-Office365-Filtering-Correlation-Id: 25d9c18b-537e-4345-7e5a-08de5fcb9e97
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|7416014|19092799006|376014|366016|38350700014;
+ BCL:0;ARA:13230040|366016|19092799006|7416014|376014|1800799024|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ZgLEwZzV1C2po9g7Wu8H2XsCa4UKjAPQQJNlReXRrVK0epxA9/YwvdRJZQ72?=
- =?us-ascii?Q?1iKy5buGf+t2ct3iLEati5F7u4Yhf+uL5IqJO08jMt2w7kvcotTtPoZBYNb1?=
- =?us-ascii?Q?C+ayE8xMEYThOgTHCuxcNe577czoH1IwjlYEieYymGvqFq/yZhZUNzT0lLmU?=
- =?us-ascii?Q?+jfcw4YTDUwPV17L1hypnO7xDKkxFPqxe357VujfVPsfqCNvftSQEMuPgywC?=
- =?us-ascii?Q?QoAdCUWvS2Uq34ePJfCcA6koxcFePkm7WyfXQ7CEz2g2+7JAzrgSMWdZ1gwo?=
- =?us-ascii?Q?4wiShP2E9eAh5ZZ3wkg4irA67qH4/ikCP1jLsGqHcBph/P7Jknu08gvWOUqF?=
- =?us-ascii?Q?t5+uaHNg9+4uQQ3rYTQEmlE2p2I+AYtDhCea+eiwl7E6DXfglqr9i6hLW+bR?=
- =?us-ascii?Q?zg7kjnB0ZP5T2hmdA1qYHIRabjXCcXo1S7/WLQUwadJq24Yzc9CWG503kO2H?=
- =?us-ascii?Q?Uu34PhPYLSfds9kX3hlrk1beHfR9XujHVCILu6ifVbywk2GH+xI8pPanC29M?=
- =?us-ascii?Q?PmkApLEJ6rTsjtb4LT4JEXd/u2oe5mK4yRx/HXpLyouTlQzZ5RLhI3FsMoXk?=
- =?us-ascii?Q?0UcH/RIJrayWfA+NcRqUZA+/hqxb7ZuFDnPKw1IucVs28HZ0BQBWlpl8RJXx?=
- =?us-ascii?Q?9HTKCSz9LovuGGTob+owDFjB5H0/icgwx6AE9qkdkhMGr3WunodvZ2wtyzdh?=
- =?us-ascii?Q?+26TnMOqyZkwjQCTFalEZEbAXzVzcLD46lo68QYw77VzKRBvRDn7NedcKmIX?=
- =?us-ascii?Q?XW7lw9jkN4H6jYNTef2TVF9R4LR2ZtFO79FYAv8qkSPIEmMxxYN4MtDgbL7F?=
- =?us-ascii?Q?8Uz9tr0f14OeeacnWonSrT3oNRwx3Ahit2hGAst+Ia+ufhWq3bc5pUnqV/fq?=
- =?us-ascii?Q?0T5NG0l1ZbKBWjfCDiRqoqRegk5ZbpHl3cM51+dr9wL/sN0Lsw6UefS14LuH?=
- =?us-ascii?Q?9Gjcv/aaEX2VHx85wxwvEi/BjsbBKGF//Ak//s1Hl1vVCucRHiazRsGPCbmN?=
- =?us-ascii?Q?F12G7n8nlC89F1KRwPybjWzIHk5LGUPUsP8MTklXcpEu7mysjYerHslPTVh8?=
- =?us-ascii?Q?vTINC4RkrASkqDKSOOGE9YLkWyBQ7CZ5j5i2+pPUimPZ64BDT2MoShm/21gR?=
- =?us-ascii?Q?GNozky6TPH/2sfwwzogpZppTK+K5Zj3SFPQBkuw+6YlzrNAwStGW6mksFfd2?=
- =?us-ascii?Q?zpDrBsDpmp36RDcrG/NNyS3nMX+5xZr3DD2FLmW6vmcdd9kLZ3lB3LB4dCCS?=
- =?us-ascii?Q?+0+fj20vn5JRGW/XpPzfpH3ogc2Il84h6jSDDyDYUJWiNvLx9WREbASSqY7T?=
- =?us-ascii?Q?3oKjABl+LfUKVLFvronPgmOTSGsanLn2TJ0iWqYbfEvO9k+0CkkN5jqbM4QK?=
- =?us-ascii?Q?Sa56DBVqWDhskxZ4LX90VtPt0IiUwReV4s6ua/mcxQSAtC25Mi4+Msfu2DyJ?=
- =?us-ascii?Q?Xyj6xrz2FezU4vRguS4i2JYNJiO92MavAHFe9AnCGjBRa9JkGGWYS1jBAmQM?=
- =?us-ascii?Q?9QvltkWzGDPlmePFQUdSLETrhz3qFyyuBu2QX26zKwwzepe+3uwP/y2g+6hk?=
- =?us-ascii?Q?txVxxrqWQ5+8r+o9n3CSWWDxTi7IclgYaw74kdNxVPqMfGtvX262deMODQI9?=
- =?us-ascii?Q?uk7es3jBl+hhnKWyTJvd2iI=3D?=
+ =?utf-8?B?MUlhNUk3YXdhQTVTdjRTWW9qMWRNbEtYMktFcktXcTZZcjlWOEx0V25OdFhX?=
+ =?utf-8?B?eGxweEFER0RRd0xDeGNwOGFyVGRsSWM5aTVaWkdxbGFCRjczKzhFN2RSWnpo?=
+ =?utf-8?B?blRBT0JjV3NJOVZIOGpzaHFsYy94Y2NLVHQwTnpBcU9ibFV5c2lYdFovK1Nm?=
+ =?utf-8?B?RGVUM1JMM2pqczhnYlJLRVBDMlQ2alBVOXZaYitlZGVSMTV1Yi84WmxlRENs?=
+ =?utf-8?B?T0NkZ0k4WHRhTDYyTTZRR2U5N01PWXUyMXlhbGNWcmtCS0I2cGlwSDYwdnNF?=
+ =?utf-8?B?MjU1Q0FWay9TeHBPUjFrRWJrbDI3R0hYaFdHZzhFQ3Q1MjIrYjEwQTFjcGJq?=
+ =?utf-8?B?WFpHTXAzK2hMZ1VRRkg5ZCtSblVaVFZuRW9wbkd0ejZxOXZVOTN0QkdvdWNO?=
+ =?utf-8?B?TndTcklJM20zSGJuZHl5eEZybnc4YlJsWTg2UDNuM0V2c2VBd01nTUd1Ykkv?=
+ =?utf-8?B?OWVqYjVBYVhSZ0xyTCtlYVRjYlZlbkZBRnAxS0tiL0hhS2g2Qmt4WFovSnkx?=
+ =?utf-8?B?MjU1VXdIdjhwRytVTFoxRVNjQUpjdjdaSjVDbGt1Uk9VcHg2K09uL3hMVlRp?=
+ =?utf-8?B?TDZ2QldVY0RkOHdQbnNNK28wYmFYVmViR0FqVGFhMDdhWXNncWFGd0RpbGVl?=
+ =?utf-8?B?L0FsYjlJb2QwQ3pYSEFJL1lCMTNKenR1TFNqaENyNnErSy9vcUV4UVNNUkVz?=
+ =?utf-8?B?WTBINkUzTXB4OC8rbm9rRzNxSFpFVEtEczVEc3Y2by81eHpMcWRqbklUckFi?=
+ =?utf-8?B?THFZb2pCTm5kNVhpQ3VScFlScUhJdkp0clRxTHJ4TzJ2a05nRWJKTko2VkJs?=
+ =?utf-8?B?TllZK0IrTm9NbjBLM0hvOFowbG53WE9kRWhzMDFhRkFZMzFwdzhTODBLNnpp?=
+ =?utf-8?B?Rys2amNPTkdMYzNNWW0rMGMySDVGckJUdlZ5Q0JYVkh3RElOK0VWb3l5dHpX?=
+ =?utf-8?B?VWxmZi94b2tGZTBEb1pXUzVNUWQ4WThKMjB3Z1ZrMzV5bUw5TU5iWXE4ZFh5?=
+ =?utf-8?B?T2ZlNTljcHpncDhodmhWcWIzemxFdFQxOXBKSFkxMzNtQm1SWXB3aFhkUmU2?=
+ =?utf-8?B?b1lLcXhsa1p6VkUvZ0d0WXl0SkFrVzJMWFdrT082N0p5VHowRDJ6Q1NYT1BF?=
+ =?utf-8?B?S0hnQlRWMEhWcUJyeFZuZ3hhbjBMa0tWbXFMZkVoTWxiV1F0emdBdCt1dWty?=
+ =?utf-8?B?MVlxZ3M1dXQ4YWwveE9hMFJQaWtPSmxWeVRLSklhczBJdnVoZGRKNW1vRmZR?=
+ =?utf-8?B?blYyQmJKTjhoRCtSZ1NSYlkvWVlZUVQzdWE2bVVyNmdxdlJ2eEVrVWpnaktN?=
+ =?utf-8?B?a3pLNTFLY2VpSE84cFhVSGxQS2RQOWhmOTMvTDZaOTl5VmxMMURtdWQ2cERn?=
+ =?utf-8?B?eWpHb0hHcmZ0V2RJS2lWNkIwQ3d6U0xmQmtUVlMxNlhOVTdLTUR0aVRPWEZi?=
+ =?utf-8?B?OHNLTDBkUFhiZTFWM3Nzd0Jycmd6OUZ6QW00MTlwbjd1Z1RDWVVOeDZWMlV6?=
+ =?utf-8?B?TGNGNDVxa09XU0FHY1ovZWY0MVR3MCtYNTVqOVJFZzNSU0VNb3FHSTlPa1o4?=
+ =?utf-8?B?UUNHQ1k2ZS8vWWZvZmxReW1SS0JOcFBRVlp2a1c0QW41OW95K3pYM2o4TWxI?=
+ =?utf-8?B?bzhoT1ZQeksvN2V3TnFvSGdtemVZa3BCNmJyOXJjYVhpdGdlaWNQSU9pb3Y4?=
+ =?utf-8?B?ZHF0V3VENmZseDhtei84SDN0VVIyUGlBb1FncS9rL2xSOUxWU2xqVCtLZ0xG?=
+ =?utf-8?B?bGRITkVtaUYraE10L1dlbFUvL1pLd2NOZlhBcjJoRjl2UmFoQ1NHU1M0YXFz?=
+ =?utf-8?B?ODZzWUU3bDdRMUdQN1cvU1RTZ1JhL3YzWmh6L0RoTFV5VnFHNWdxYlNpeG0w?=
+ =?utf-8?B?OTI0YnBOU3N0ZWgrRjNpTUtKb1R6cEFqNGlDY2pIN0hwdGk4NkJWbjdLL2tV?=
+ =?utf-8?B?SS9lVjZIeUZEWlFPWkM5ZEJ1ZHJLRkVSUHZGVk9UbzVnSlVaeUlaQjl2K0Jz?=
+ =?utf-8?B?elprbWpVKzF6d1I5NGtudlcwL1JTYnh5TldvN0VTVmdMaWVvQWdtMmdGMUxB?=
+ =?utf-8?B?RkFOdzMyQXhsWk9OL3RwNjI5UERaT2ZSczh0QW9mSkYraWwrcVZzNlZINnZa?=
+ =?utf-8?B?UVNzaitSSVgxKy9KOXR2TkE5TUd6RWVZRmgyd0V3cnZjN1dTMndmUHNvQ0tq?=
+ =?utf-8?B?NVE9PQ==?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(7416014)(19092799006)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(376014)(1800799024)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?oxy6kssVQTv4HVsslWKZRmvu4jpCpznH9my0Dk6CwqnvavL1FyyZmiAqc/kH?=
- =?us-ascii?Q?EkEWwGszgILDaVPy1jZjGFJgb+FFMU1vCl9KAktpgXe+zD2elN5QkqXjq31B?=
- =?us-ascii?Q?fFQeCcPmYtyo3ln2qsDTBE2doyMKYdRzDs7QQUx+mtxzVwY7r13hS2Eus4Fq?=
- =?us-ascii?Q?Y979vC6kVccdjd9BxJ10PYZ+zyJdTBOaM4gT99MYhY0TZTF71AnAwBhgPkvQ?=
- =?us-ascii?Q?6OeQsqMKsvfWlKki5NkxBeGUCZFp6S1ohwHfHMOtySGQWgpQUPBwt03oS8IX?=
- =?us-ascii?Q?4pkF7lTsmHO0Khn3nvaV5J0NnDlcR+gZeuJwyYR7LymuordacWjrHGERajKV?=
- =?us-ascii?Q?CZb1tu7SXXXnBRhmgntJ77ZLyxjwx2MrVS7Oo1ogi6C3EpFChyWBPmqLw2n6?=
- =?us-ascii?Q?dc+TWm6lc/Z8bxxogkLYzjW8xJIPBVo2UlArTUnfIZ5OVmIahcoHuShiaOY3?=
- =?us-ascii?Q?wQYiYbOJpDHZMYbBaJa/ydyMc3dfkD63rMtKNrNv0LGB07FrPBHSHGVA8sPf?=
- =?us-ascii?Q?GXp3s3GCsns+aY9TdYDSnyYSkGggpbn8cjW7uH/5Hr3YGR22MDB2/pRxaNDW?=
- =?us-ascii?Q?mmWVhy5iKkZT8UCM+4LqJT9xx9FtAt2ooUtXz74BQjlYWpLS+7lL3a/NuY4y?=
- =?us-ascii?Q?3KsqrhffHQv+CKT9lRmMFgkpK4kDcfvx9R2u4dlZPC3UcCj1wx1CjRmj7aFK?=
- =?us-ascii?Q?mWKdgM19LAvw4zTfF/E6VAvXh841lBhQAlOt2XoCGg+Xfj7jndRkaaVArvcw?=
- =?us-ascii?Q?4NSeL6Jg/6elxWf3oIKAderd+S7jz1RLFzZWYo0YluT0pZd1CUbzZpqskN8S?=
- =?us-ascii?Q?WJNITKySmqbTEkDbg14u89VOyIeClXZPWhLRbMXNkMWZfTmZfEiCHb49YCDS?=
- =?us-ascii?Q?QbqdYDVtfdjVc/yj7qfVR9LYBbb+sjJ5lYCpPOXFU8FgmT2oTJMpUMPLyDIL?=
- =?us-ascii?Q?LW8AyvildRgBPdezw2R9V2hRvilWWPuydxArPDkuHzMwXc8wUX522JERPfOv?=
- =?us-ascii?Q?yYrYrR+cq+OGs3ou5DcsUch1Egp+K8a3AK0pbwao8S6yjIclmnPa8tZiMnIX?=
- =?us-ascii?Q?hgAJpzmKIpiSfZyPUhPSi/2zt/qtEdJeTLIThJ3eAW/xCuIkZSdkgbhTQJPf?=
- =?us-ascii?Q?av3OmixuLIaP5oNm2wZvj7E1pob/zfCxI04eoFiBtycZbiFX6zshn8P4+yGe?=
- =?us-ascii?Q?d8hnYhUUqC6IWiWpuXgd+J3+SSjTX4sOWoR2ucdPNaxFvyAZS3R4rwAGjKgl?=
- =?us-ascii?Q?HaVUB2anwuL9oHLjS1mJNlF1uZhijREe1zDjr4Dk3uuJ1UE19oEJucQxPvMT?=
- =?us-ascii?Q?iXevCBas4kSDaGy+58/P58eZzMdoWtkIsYHIIAuPrKExDI2+jY3Ga7aP3mPX?=
- =?us-ascii?Q?pGRnPq7UQ0acTv6SybW2zkKN47RkwRFfRkOdAbOwGHky9TDNyvsbFggwdtLd?=
- =?us-ascii?Q?cy4wKHu6P3WUYJDOhqhH1ruRW3xmFJUfrB30YcZSQ30TDvo/R5sq/5fSQT7n?=
- =?us-ascii?Q?0zxEvMtKppRvtgc0B5bRnzWg3NSLB/XsQkMyhiyS9CcdEUDOP3EeQNRQ4Oj+?=
- =?us-ascii?Q?Y5E1qyiG5f9pNPQqykmNPIGAGYs4S4J6bUuxB6Vga3OU/2imXVb63c/ItCLG?=
- =?us-ascii?Q?ph1JrxNGTs9Rq3lHgInWZZyLe5p1a9mmtvaxPfde1az+81Zj2VuPFqkTwIw0?=
- =?us-ascii?Q?3r3X/s3/ndq7uFgLrBjVAZJcB7ydjSCVdmCU7UFFARn3r3C31h2mf/n/7EWy?=
- =?us-ascii?Q?3Oow/uxeSQ=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a86d3590-92d2-40ff-7265-08de5fc8128e
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
+ =?utf-8?B?Kys5aHV3VHRIdkhsVVJybXRhMlU3Zk5xQ015SXo1RUcyS2VIakJFOGhlamZu?=
+ =?utf-8?B?MU1yaExnbU5DYWF4cGc1Tk5VUThoZmt0NkdSWTM5R1AvSHJkRXdSOHVxWjJo?=
+ =?utf-8?B?WWRNUkhqQVdndDZMM2hTdmp0QW9DRXo3ZXJrdjFaTEN0bmU3YlRJRlZjZFk1?=
+ =?utf-8?B?ekNpa1I0Ni9KWmtWL2MvcU1zS2VqcUU0VStNcHE0ZkFRb2ZnSklPbi9WRVd2?=
+ =?utf-8?B?S3hFSVdjRFc2bXE5WW9iTWlzdzBWMXcrRklsb3RGRUx6VXRZblQrUWtnalNG?=
+ =?utf-8?B?bWRPcnNGMnUxMExQUTBHbmkxK2o3UURUVXZma2htQlhYSzNsdUlpQXZaM2Qv?=
+ =?utf-8?B?ODJnenVGRUpLRS9CSklZL1J5djEvdzVxdFlpanJ4dzJvUFUyd2FPdjVlZXhI?=
+ =?utf-8?B?WTB0Y0V4RzFWamF4Z2MyU0RjN0RVR01tQ1JoMSs0Mms5RW5PTi9LUkxlZWlz?=
+ =?utf-8?B?M3IvbjF3cWlGVjNOTFplTG1aZ3p5clNRQVpWck10RXdTSFA5YXZGWVQ5SlVK?=
+ =?utf-8?B?ZFlpcDhpWldtSjRqOTJqWnZ3aThlNEJIaW1EUkhzSVRML2huSzVvMWFmaFF4?=
+ =?utf-8?B?N282NnVzK0UzWHVZT1N2dHVzU0dUQVJad0xvdlV4QTdxdUJpL21oZU8xSEJN?=
+ =?utf-8?B?Y2NMNUxtbCtnRnZJdVhYdjV3NG5QNEdSZlZHVDhWVGxDUnJNRkI3bWsrcWg4?=
+ =?utf-8?B?WGlDTE4zZ0xyTkpaS1V5S1MvVkFybHE5Qkh3cnBMZVFOMW1lRHF4UUptQ3VG?=
+ =?utf-8?B?anJsU2U2eHQvRkJhSklZVWtzVTM0Nm42VHU3SHkvNkYzbWRLRmdqMUc4OWFa?=
+ =?utf-8?B?SVJaQ29IbDFhM3lPTTZ4L1RIRlJDakZQRFpGZVUrVThtbkhrRjZXazdsVTF3?=
+ =?utf-8?B?UmlNSlNYb3JJcGwzazN1VUppeWJNSWJNdUZwbFJ4RmhkMHUzSVVvSUVyWEQx?=
+ =?utf-8?B?aTh4QTd3WkpDNDhUdGxIc05RYjM3SDJsSnRpN2h4eVBWKzRxSmNyN1pMRDE1?=
+ =?utf-8?B?NXl6NVdkRUYvMEJ1S3VNcHNsT1E5YlFTcGkvNG4vZkpEN3VOcDBvQmpjM3ZJ?=
+ =?utf-8?B?K3ZPWDk5czgzSlNoM1JwM0wvelk2SW9mM1RBSENpZW1kZEdxWGFQTXF5M0FP?=
+ =?utf-8?B?NW5BTkl6RlZKcHRWdUFTelkvQ2lUVzdUTDR6cVJmV0p5amsvcUxkblFUU3hY?=
+ =?utf-8?B?S3M2bHBKUTVydzh4WGxkdml6d3p3aVBvK0J6cVVzZmdWNFZXNkFrV0N4cC9j?=
+ =?utf-8?B?OHV6OXVsVE83bEt6VDdTY09EWFc2Y0duM3R2a3pHTWUzWm5RUDJnVmwvZm0w?=
+ =?utf-8?B?MEp0bWkrT0x3RmhyaHc2VDFVSTZ2ellEdmRSSENCYWRscnU1eGNoNmNYV3d4?=
+ =?utf-8?B?YkppUXBrYW1KTFA0UHhZNjh2L3RTNlA2R1pVVTBwZ0RncTFEcFlUM3Zncklt?=
+ =?utf-8?B?NTZNdU1BSWFsUTVkdi9sTEgrWW9TZ3Brc0xzVzJ1LzMrdTc3K2h4ekFxY040?=
+ =?utf-8?B?TnhPTTRJY3B2aVFETWdRNzhvdEo1aVhOWUxCSFhQdzNMSmlqZDJneHpJUEU0?=
+ =?utf-8?B?NnpHV2dNRzNEaFE2UkowN3hncE9tRnpYQUdIU1RHcW1LbFp0SjNZcGo3NDZY?=
+ =?utf-8?B?NWFyWmozelA1QU0rSkFmV0RxZlFyNy9XV3hRelZNT2h4QkdqdHoyWGRsME10?=
+ =?utf-8?B?Rno2QmFrWDRYTkIzV2ZnOWFESU4xTWVnZ1pmSDEwR3N0SlNWaEs0VXpTcjhX?=
+ =?utf-8?B?WHh5TUw0eTFOek9ZMTd5UThGSzVaUlFGYWg4djY5OHJibGFXVk1KbUpaTjBR?=
+ =?utf-8?B?TkpvZDhMTVRkTnZMQUhjSlFYTG9rc2ovVkllR3NmTnNkRVZLVHNoV0xva0c4?=
+ =?utf-8?B?dU1MaWY0a0hVdWljS0pZUWVPd0hXVnJKdGZNR3FzOVY2b1FZMWs3REk1ZVlh?=
+ =?utf-8?B?Ymk3dVRFUzNKU0R5UEZaN2svTVh2ck12Nko0SUJoM0t6OFJXSlk4RzNUZ0JU?=
+ =?utf-8?B?NmtXR0VhcU9rVjZBSFFZdUNEMkFTaTVTWUEvR2VFeER4MXo1QkRDUVNDZkZT?=
+ =?utf-8?B?YWp1SkMwMnZHSkpQM2V3VHV2UjlBSjhxVlBEUG5RYTZwTXhCbUQ5eUxiZTZx?=
+ =?utf-8?B?Q1VNS244M05kdk5mbTJsbk1SNThnc1VtQW1VMmhsVDE3Q3hxcDh1MU8xOC9S?=
+ =?utf-8?B?VE1wTVFGZjg2NUxhdTRsalY0RXFwTWp6RVFYZ3ZtbXNrbnVBZEhCOFpmYkdK?=
+ =?utf-8?B?YVFtcnMvbGNNUEtFQmE4Z2xvSXJJNHhId3hHTUdMeFBhUHRpZ0dFRnI4YUNo?=
+ =?utf-8?B?UUVrT1IrVEsxTlNQVENETldlQnRvek1JNEF5aFlXRWVaVFlzTG5zQT09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25d9c18b-537e-4345-7e5a-08de5fcb9e97
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 06:23:24.4628
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 06:48:48.0208
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JZlIlwzFUGmFrYXXrJhHoBODHTakobc8Ll7hMelt8zR5qcKlFN0+UML4s3jJ/zKUaPa1vtm3s6IeVYV3GLKsSQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10282
+X-MS-Exchange-CrossTenant-UserPrincipalName: PNwAB6o82zclcP/AmUJBxLFzdvoUIeek4R7gO3PHRRgxKS6VOUzQN04+3E5fcM0qbd/uEji9FJ2xgZTPP29pbg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB10387
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+Hi Shengjiu,
 
-Support the upgraded JPEG encoder v1 found on i.MX952 SoC.
+On Fri, Jan 30, 2026 at 01:55:08PM +0800, Shengjiu Wang wrote:
+> There is an audio channel shift issue with multi channel case, first run
+> the channel order is correct, but second run the channel order is shifted.
 
-Detect the encoder hardware version via the version register.
+Nit: I'd rephrase "There is an audio channel shift issue with multi channel
+case - the channel order is correct for the first run, but the channel order
+is shifted for the second run.".
 
-The v1 encoder uses an expanded descriptor format that allows all
-encoding parameters, including JPEG quality, to be configured directly
-in the descriptor.
+> The recovery method is to reset the pai interface.
 
-This removes the manual register-based configuration step required by v0
-and reduces the interrupt count from two to one per frame.
+s/pai/PAI/
 
-V0 encoding flow:
-  1. Write quality to registers -> trigger config interrupt
-  2. Start encoding -> trigger completion interrupt
+Can the channel order shift issue be fully fixed instead of implementing
+a "recovery method"?  I presume that this patch implements a recovery
+mechanism.  If it can't, any chip ERRATA?
 
-V1 encoding flow:
-  1. Configure descriptor with all parameters including quality
-  2. Start encoding -> trigger completion interrupt
+> 
+> The reset can be handled by pm runtime, so add the pm runtime function.
 
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Nit: s/pm/PM/
 
----
-v2
-- Improve commit message
-- Use GENMASK_U32
-- make mxc_jpeg_get_version() static
-- Check version in probe()
-- Remove noise that update copyright years
----
- .../media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h |   1 +
- .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 104 +++++++++++++++---
- .../media/platform/nxp/imx-jpeg/mxc-jpeg.h    |  22 ++++
- 3 files changed, 113 insertions(+), 14 deletions(-)
+s/add the pm runtime function/enable PM runtime/
 
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-index adb93e977be9..0d78443cb270 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-@@ -73,6 +73,7 @@
- #define GLB_CTRL_DEC_GO					(0x1 << 2)
- #define GLB_CTRL_L_ENDIAN(le)				((le) << 3)
- #define GLB_CTRL_SLOT_EN(slot)				(0x1 << ((slot) + 4))
-+#define GLB_CTRL_CUR_VERSION(r)				FIELD_GET(GENMASK_U32(19, 16), r)
- 
- /* COM_STAUS fields */
- #define COM_STATUS_DEC_ONGOING(r)		(((r) & (1 << 31)) >> 31)
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-index b558700d1d96..71f4a1d292ac 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -64,6 +64,12 @@
- #include "mxc-jpeg-hw.h"
- #include "mxc-jpeg.h"
- 
-+#define call_void_jpeg_enc_ops(jpeg, op, args...)			\
-+	do {								\
-+		if ((jpeg)->enc_cfg_ops && (jpeg)->enc_cfg_ops->op)	\
-+			(jpeg)->enc_cfg_ops->op(args);			\
-+	} while (0)
-+
- static const struct mxc_jpeg_fmt mxc_formats[] = {
- 	{
- 		.name		= "JPEG",
-@@ -1030,11 +1036,7 @@ static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
- 
- 	if (jpeg->mode == MXC_JPEG_ENCODE &&
- 	    ctx->enc_state == MXC_JPEG_ENC_CONF) {
--		q_data = mxc_jpeg_get_q_data(ctx, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
--		ctx->enc_state = MXC_JPEG_ENCODING;
--		dev_dbg(dev, "Encoder config finished. Start encoding...\n");
--		mxc_jpeg_enc_set_quality(dev, reg, ctx->jpeg_quality);
--		mxc_jpeg_enc_mode_go(dev, reg, mxc_jpeg_is_extended_sequential(q_data->fmt));
-+		call_void_jpeg_enc_ops(jpeg, exit_config_mode, ctx);
- 		goto job_unlock;
- 	}
- 	if (jpeg->mode == MXC_JPEG_DECODE && jpeg_src_buf->dht_needed &&
-@@ -1272,6 +1274,7 @@ static void mxc_jpeg_config_dec_desc(struct vb2_buffer *out_buf,
- 
- 	jpeg_src_buf = vb2_to_mxc_buf(src_buf);
- 
-+	ctx->extseq = mxc_jpeg_is_extended_sequential(jpeg_src_buf->fmt);
- 	/* setup the decoding descriptor */
- 	desc->next_descpt_ptr = 0; /* end of chain */
- 	q_data_cap = mxc_jpeg_get_q_data(ctx, cap_type);
-@@ -1335,9 +1338,15 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
- 	struct mxc_jpeg_q_data *q_data;
- 	enum mxc_jpeg_image_format img_fmt;
- 	int w, h;
-+	bool extseq;
- 
- 	q_data = mxc_jpeg_get_q_data(ctx, src_buf->vb2_queue->type);
-+	extseq = mxc_jpeg_is_extended_sequential(q_data->fmt);
-+
-+	ctx->extseq = extseq;
- 
-+	memset(desc, 0, sizeof(struct mxc_jpeg_desc));
-+	memset(cfg_desc, 0, sizeof(struct mxc_jpeg_desc));
- 	jpeg->slot_data.cfg_stream_size =
- 			mxc_jpeg_setup_cfg_stream(cfg_stream_vaddr,
- 						  q_data->fmt->fourcc,
-@@ -1348,11 +1357,6 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
- 	cfg_desc->next_descpt_ptr = desc_handle | MXC_NXT_DESCPT_EN;
- 
- 	cfg_desc->buf_base0 = jpeg->slot_data.cfg_stream_handle;
--	cfg_desc->buf_base1 = 0;
--	cfg_desc->line_pitch = 0;
--	cfg_desc->stm_bufbase = 0; /* no output expected */
--	cfg_desc->stm_bufsize = 0x0;
--	cfg_desc->imgsize = 0;
- 	cfg_desc->stm_ctrl = STM_CTRL_CONFIG_MOD(1);
- 	cfg_desc->stm_ctrl |= STM_CTRL_BITBUF_PTR_CLR(1);
- 
-@@ -1372,11 +1376,14 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
- 	desc->stm_ctrl = STM_CTRL_CONFIG_MOD(0) |
- 			 STM_CTRL_IMAGE_FORMAT(img_fmt);
- 	desc->stm_ctrl |= STM_CTRL_BITBUF_PTR_CLR(1);
--	if (mxc_jpeg_is_extended_sequential(q_data->fmt))
-+	if (extseq)
- 		desc->stm_ctrl |= STM_CTRL_PIXEL_PRECISION;
- 	else
- 		desc->stm_ctrl &= ~STM_CTRL_PIXEL_PRECISION;
- 	mxc_jpeg_addrs(desc, src_buf, dst_buf, 0);
-+
-+	call_void_jpeg_enc_ops(jpeg, setup_desc, ctx);
-+
- 	dev_dbg(jpeg->dev, "cfg_desc:\n");
- 	print_descriptor_info(jpeg->dev, cfg_desc);
- 	dev_dbg(jpeg->dev, "enc desc:\n");
-@@ -1388,6 +1395,54 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
- 	mxc_jpeg_set_desc(cfg_desc_handle, reg, slot);
- }
- 
-+static void mxc_jpeg_enc_start_config_manually(struct mxc_jpeg_ctx *ctx)
-+{
-+	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
-+	void __iomem *reg = jpeg->base_reg;
-+	struct device *dev = jpeg->dev;
-+
-+	ctx->enc_state = MXC_JPEG_ENC_CONF;
-+	mxc_jpeg_enc_mode_conf(dev, reg, ctx->extseq);
-+}
-+
-+static void mxc_jpeg_enc_finish_config_manually(struct mxc_jpeg_ctx *ctx)
-+{
-+	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
-+	void __iomem *reg = jpeg->base_reg;
-+	struct device *dev = jpeg->dev;
-+
-+	ctx->enc_state = MXC_JPEG_ENCODING;
-+	dev_dbg(dev, "Encoder config finished. Start encoding...\n");
-+	mxc_jpeg_enc_set_quality(dev, reg, ctx->jpeg_quality);
-+	mxc_jpeg_enc_mode_go(dev, reg, ctx->extseq);
-+}
-+
-+static void mxc_jpeg_enc_configure_desc(struct mxc_jpeg_ctx *ctx)
-+{
-+	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
-+	struct mxc_jpeg_desc *desc = jpeg->slot_data.desc;
-+	struct mxc_jpeg_desc *cfg_desc = jpeg->slot_data.cfg_desc;
-+
-+	ctx->enc_state = MXC_JPEG_ENCODING;
-+	cfg_desc->mode = (ctx->extseq) ? 0xb0 : 0xa0;
-+	cfg_desc->cfg_mode = 0x3ff;
-+
-+	desc->mode = (ctx->extseq) ? 0x150 : 0x140;
-+	desc->cfg_mode = 0x3ff;
-+	desc->quality = ctx->jpeg_quality;
-+	desc->lumth = 0xffff;
-+	desc->chrth = 0xffff;
-+}
-+
-+static const struct mxc_jpeg_enc_ops mxc_jpeg_enc_cfg_ops_v0 = {
-+	.enter_config_mode = mxc_jpeg_enc_start_config_manually,
-+	.exit_config_mode = mxc_jpeg_enc_finish_config_manually
-+};
-+
-+static const struct mxc_jpeg_enc_ops mxc_jpeg_enc_cfg_ops_v1 = {
-+	.setup_desc = mxc_jpeg_enc_configure_desc
-+};
-+
- static const struct mxc_jpeg_fmt *mxc_jpeg_get_sibling_format(const struct mxc_jpeg_fmt *fmt)
- {
- 	int i;
-@@ -1593,12 +1648,10 @@ static void mxc_jpeg_device_run(void *priv)
- 
- 	if (jpeg->mode == MXC_JPEG_ENCODE) {
- 		dev_dbg(dev, "Encoding on slot %d\n", ctx->slot);
--		ctx->enc_state = MXC_JPEG_ENC_CONF;
- 		mxc_jpeg_config_enc_desc(&dst_buf->vb2_buf, ctx,
- 					 &src_buf->vb2_buf, &dst_buf->vb2_buf);
- 		/* start config phase */
--		mxc_jpeg_enc_mode_conf(dev, reg,
--				       mxc_jpeg_is_extended_sequential(q_data_out->fmt));
-+		call_void_jpeg_enc_ops(jpeg, enter_config_mode, ctx);
- 	} else {
- 		dev_dbg(dev, "Decoding on slot %d\n", ctx->slot);
- 		print_mxc_buf(jpeg, &src_buf->vb2_buf, 0);
-@@ -2842,6 +2895,14 @@ static int mxc_jpeg_attach_pm_domains(struct mxc_jpeg_dev *jpeg)
- 	return ret;
- }
- 
-+static int mxc_jpeg_get_version(void __iomem *reg)
-+{
-+	u32 regval;
-+
-+	regval = readl(reg + GLB_CTRL);
-+	return GLB_CTRL_CUR_VERSION(regval);
-+}
-+
- static int mxc_jpeg_probe(struct platform_device *pdev)
- {
- 	struct mxc_jpeg_dev *jpeg;
-@@ -2976,8 +3037,23 @@ static int mxc_jpeg_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, jpeg);
- 	pm_runtime_enable(dev);
- 
-+	if (mode == MXC_JPEG_ENCODE) {
-+		ret = pm_runtime_resume_and_get(dev);
-+		if (ret < 0)
-+			goto err_check_version;
-+
-+		if (mxc_jpeg_get_version(jpeg->base_reg) == 0)
-+			jpeg->enc_cfg_ops = &mxc_jpeg_enc_cfg_ops_v0;
-+		else
-+			jpeg->enc_cfg_ops = &mxc_jpeg_enc_cfg_ops_v1;
-+
-+		pm_runtime_put_sync(dev);
-+	}
-+
- 	return 0;
- 
-+err_check_version:
-+	pm_runtime_disable(&pdev->dev);
- err_vdev_register:
- 	video_device_release(jpeg->dec_vdev);
- 
-diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
-index 9c5b4f053ded..c00c13549746 100644
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
-@@ -81,6 +81,17 @@ struct mxc_jpeg_desc {
- 	u32 stm_bufsize;
- 	u32 imgsize;
- 	u32 stm_ctrl;
-+	/* below parameters are valid for v1 */
-+	u32 mode;
-+	u32 cfg_mode;
-+	u32 quality;
-+	u32 rc_regs_sel;
-+	u32 lumth;
-+	u32 chrth;
-+	u32 nomfrsize_lo;
-+	u32 nomfrsize_hi;
-+	u32 ofbsize_lo;
-+	u32 ofbsize_hi;
- } __packed;
- 
- struct mxc_jpeg_q_data {
-@@ -105,6 +116,7 @@ struct mxc_jpeg_ctx {
- 	unsigned int			source_change;
- 	bool				need_initial_source_change_evt;
- 	bool				header_parsed;
-+	bool				extseq;
- 	struct v4l2_ctrl_handler	ctrl_handler;
- 	u8				jpeg_quality;
- 	struct delayed_work		task_timer;
-@@ -125,6 +137,15 @@ struct mxc_jpeg_slot_data {
- 	dma_addr_t cfg_dec_daddr;
- };
- 
-+struct mxc_jpeg_enc_ops {
-+	/* Manual configuration (v0 hardware) - two-phase process */
-+	void (*enter_config_mode)(struct mxc_jpeg_ctx *ctx);
-+	void (*exit_config_mode)(struct mxc_jpeg_ctx *ctx);
-+
-+	/* Descriptor-based configuration (v1 hardware) - single-phase */
-+	void (*setup_desc)(struct mxc_jpeg_ctx *ctx);
-+};
-+
- struct mxc_jpeg_dev {
- 	spinlock_t			hw_lock; /* hardware access lock */
- 	unsigned int			mode;
-@@ -142,6 +163,7 @@ struct mxc_jpeg_dev {
- 	struct device			**pd_dev;
- 	struct device_link		**pd_link;
- 	struct gen_pool			*sram_pool;
-+	const struct mxc_jpeg_enc_ops	*enc_cfg_ops;
- };
- 
- /**
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
+>  drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
 
-base-commit: c824345288d11e269ce41b36c105715bc2286050
-prerequisite-patch-id: 0000000000000000000000000000000000000000
+Subject prefix should be "drm/bridge: imx8mp-hdmi-pai:".
+Refer to what previous commits for i.MX bridge drivers use.
+
+> 
+> diff --git a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c
+> index 8d13a35b206a..1afc729da9b9 100644
+> --- a/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c
+> +++ b/drivers/gpu/drm/bridge/imx/imx8mp-hdmi-pai.c
+> @@ -8,6 +8,7 @@
+>  #include <linux/module.h>
+>  #include <linux/of_platform.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/pm_runtime.h>
+>  #include <linux/regmap.h>
+>  #include <drm/bridge/dw_hdmi.h>
+>  #include <sound/asoundef.h>
+> @@ -33,6 +34,7 @@
+>  
+>  struct imx8mp_hdmi_pai {
+>  	struct regmap	*regmap;
+> +	struct device	*dev;
+>  };
+>  
+>  static void imx8mp_hdmi_pai_enable(struct dw_hdmi *dw_hdmi, int channel,
+> @@ -43,6 +45,9 @@ static void imx8mp_hdmi_pai_enable(struct dw_hdmi *dw_hdmi, int channel,
+>  	struct imx8mp_hdmi_pai *hdmi_pai = pdata->priv_audio;
+>  	int val;
+>  
+> +	if (pm_runtime_get_sync(hdmi_pai->dev) < 0)
+
+Use pm_runtime_resume_and_get instead.
+
+-8<-
+  `int pm_runtime_get_sync(struct device *dev);`
+    - increment the device's usage counter, run pm_runtime_resume(dev) and
+      return its result;
+      note that it does not drop the device's usage counter on errors, so
+      consider using pm_runtime_resume_and_get() instead of it, especially
+      if its return value is checked by the caller, as this is likely to
+      result in cleaner code.
+-8<-
+
+> +		return;
+> +
+>  	/* PAI set control extended */
+>  	val =  WTMK_HIGH(3) | WTMK_LOW(3);
+>  	val |= NUM_CH(channel);
+> @@ -85,6 +90,8 @@ static void imx8mp_hdmi_pai_disable(struct dw_hdmi *dw_hdmi)
+>  
+>  	/* Stop PAI */
+>  	regmap_write(hdmi_pai->regmap, HTX_PAI_CTRL, 0);
+> +
+> +	pm_runtime_put_sync(hdmi_pai->dev);
+>  }
+>  
+>  static const struct regmap_config imx8mp_hdmi_pai_regmap_config = {
+> @@ -101,6 +108,7 @@ static int imx8mp_hdmi_pai_bind(struct device *dev, struct device *master, void
+>  	struct imx8mp_hdmi_pai *hdmi_pai;
+>  	struct resource *res;
+>  	void __iomem *base;
+> +	int ret;
+>  
+>  	hdmi_pai = devm_kzalloc(dev, sizeof(*hdmi_pai), GFP_KERNEL);
+>  	if (!hdmi_pai)
+> @@ -121,6 +129,13 @@ static int imx8mp_hdmi_pai_bind(struct device *dev, struct device *master, void
+>  	plat_data->disable_audio = imx8mp_hdmi_pai_disable;
+>  	plat_data->priv_audio = hdmi_pai;
+>  
+> +	hdmi_pai->dev = dev;
+> +	ret = devm_pm_runtime_enable(dev);
+> +	if (ret < 0) {
+> +		dev_err(dev, "failed to enable pm runtime: %d\n", ret);
+
+s/pm/PM/
+
+> +		return ret;
+> +	}
+> +
+>  	return 0;
+>  }
+>  
+
 -- 
-2.52.0
-
+Regards,
+Liu Ying
