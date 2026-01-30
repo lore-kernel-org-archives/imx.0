@@ -1,64 +1,74 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011067.outbound.protection.outlook.com [40.107.130.67])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013070.outbound.protection.outlook.com [52.101.72.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFB6322C6D
-	for <imx@lists.linux.dev>; Fri, 30 Jan 2026 14:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE25D31A051
+	for <imx@lists.linux.dev>; Fri, 30 Jan 2026 15:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.70
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769784748; cv=fail; b=LwMYOXj/EyFn0cxGAS6kng1doqGLsNVbPDtwwvDV8tPGG1Er4wla4JauIW9HLckB1MC3GRgfohUrkyF8bfah+0FQ2BR5OsGgmkDdpsH72Svq6PywpP6ROlBDsccoJoR33qgnb31idNDFHwpt0GC7qV3HMGcZq88x08eT4O4CpuY=
+	t=1769786499; cv=fail; b=TyWmA0q986Yew8U3LbZuvrMZnvXqb73pfHdo3TRT1yT/pQMcO5U3Y3XkWaDdWhEQMQgz/mtQjFtLE+/HVWItKPefMu2RRzy7O8ReKA4hqiAK3ErTTCy+Q57ZaIOhgvHf1agNw55Zc9wGPcGV8k1IYwTi+jR3r0ypewMwAmtJg58=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769784748; c=relaxed/simple;
-	bh=WIVZ+4Jx3EjDWkvAnQfmEW7JWaX1NAE3yF9JwCOhYME=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=tEGqzqcXgpG2tD1P8MJKANeebv1nBMb0MvhO/qbuusiM59ITdu51cDHnabe26ASATjQhIONwN47UxOlEw9tiSH/RgzPFNDzdu2WIREPKDHrZtRxFYt7U9KhgWRMP+fh7KNeJ+Sd7qPVWyIiqoWrUQOcN0U4wKZFL4vRpJa30N3E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FexnwjJ0; arc=fail smtp.client-ip=40.107.130.67
+	s=arc-20240116; t=1769786499; c=relaxed/simple;
+	bh=zhRKPBjThAPZrIPC2UK44Y80ql/gs88JqoFmen6sN84=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=bWuZH6q915V1GSqqhDCpUB6DGGCombCOMXGy11z5SGch2LIdQtpPDETmzTjkzpbonuX6tPZUlhgv1FWLYZ9p4v6sQmab183/Wrkg1aC1Ar8mrT/8WeHRzkfV2MOySWUrkp61MYiybPHt/87Vl6gKoP3VdkpEBh6vw72mPOmH+7c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=P+mSVkNl; arc=fail smtp.client-ip=52.101.72.70
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FexnwjJ0"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="P+mSVkNl"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TB5S47XwN++1OxgaXKRLmNdIwGQJ7isIMHyAXfWDtm0EZJr5E1U6WfAZlLAxS/gnKYIrZCme236xzCWWM8qATSnd9digM4YQ4k+vJEW90uaceN2YMj/I43J3JW/OXDapc3jAArmAkluMjvQq7sObitbq5tpzlerxQVypkjYf9yOL/dbke2VhgjU7hvVoWLYcr8ztz0+bh5NxFrpKwhjgWx2PnUfeZhp/sknGVduMjts9L62eLHSxbCGiXAMuoCPsH2Ht+CaQvgneAgblWpbHayE70avOHttxKxRfinQLKZph4NLlhxVhQlaoumiASZmljAGEZ0SXzCPtyNKxHxa/ew==
+ b=kPYcptY3gvnnDyWwRjmAYeFx+3x6Tj81liD6L4DzKye2YNkCyonqveNzwp/M98KEjjWS+8gPTSYvdQOp0UBYdutCiDOECadvC+B/xp9Nfdg9/txJtOV74cGN4oAAV5LA7xhO0lDfgi4kem/+d68AK0gqEAYt6DpYnBJXAuy2Npbd1/wzNwiqqtlssyoglnWHhYp15RGLtQv8RpSSV6jufWOBqB1F/51dDNA7IJ6FiLqOBZJp91Kh3JfbtQl9lK6nB31c6nWB3/6HVlicbRnY712OVAGoHtUhqXKZ2HPMRGMfQiyaVVYLRp6WKIREbhLgRiDbkhnUqRpq7YLQwsv37A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qdQTzSQk7dl6enUrAIrrKuZlJtYg+4K/+Y/fJCrb1Yo=;
- b=WzE/tpAMIAdjUzZXueY74vOGG7ST11QOCSCdDxaDUr10jnxQjUl4a71JjVhDzPus1e9RSeOeP/vKbEpL1SlRFzSga+CTniidyBUmlnr4keq75A4H/KSmDaMwAY8CppcjYXGkzGkXrOFsHzvYM7MQZ8vh3ly1DNmMSIRe79Dy6Ygb+qIY592VRdmqlNL4DNq3KsF9U7MhU3QrI2TYbq77cEbumfuIBSblaH5rne7yOYvE1W43dB//p9CxFg9CmkZpDaPo66mlbb7StNpmtNffiH2WEcyaaWs39VplELYnDrDYPfZRGMbYXkxXQ4yOS3MFGI+idoNDW98c6y7KCnmekQ==
+ bh=SInvc7NnrslviwxHhMFxQqoPVuPamlzE4CS0b97d+2I=;
+ b=KPywghAEHQ0L6oU5AUWvob4GBSyFvRRnlAt79FkC4qLDc0YH4DilGL7Am6MeqfXgUDs8cN1GL+993Mmw/XLNAQGVHgM5tXfv2ti9atcvTfVIeTKk77hLG3jCGp7XxYKSpGfxBntUAjJzLl9zr/1bAGexENbW0yGQJAcIrA1sO+kxfvRPUlduJK7kIVNDnW5klUUkUZrTatY7g9n5ANNPYojNJg05MIXj5tiPRCRzq+Uu7EE3I67Dm8yWPH+VS46cdSnMxM/cE5bRZ4y4oWbejrWzv38OyMq1fzHjVqd3C0XL1JTPh+BBpIIfCCc2AQ028vZyScH6+ZRJhvVpHAZFxw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qdQTzSQk7dl6enUrAIrrKuZlJtYg+4K/+Y/fJCrb1Yo=;
- b=FexnwjJ0+K/Y9+Vdl1CI4Oav9/qA2fnunVmuaYp2zS3He4ww9Sicunc7+NtOergMUlEaokaspd4VgfLa6P6mrjJCcHOxTvMAlTkjMeTGeiV42NPIYlqJ5W/C86zLNau/OPteHHBII9IIdDsy8QPuqBwMxXKB5hAJhaExU7lhxkiGOyuYJFeTjxebPspUxLzg+uGCPjR/Glo/6EYZitcNNUb1sSrv5tt937dH3kODM5J2sSDC0psSo+4rJTXdjQIBX+XmKe9U4XU9YaIP110NAqRYg3YVfpdSIbfxCIxeJUOYyskfOABhKdmkhmTVT38rr8pxA67AxXEMpJo57qQCtQ==
+ bh=SInvc7NnrslviwxHhMFxQqoPVuPamlzE4CS0b97d+2I=;
+ b=P+mSVkNl8L+4hdyTQsuqToKwNI4LFv7kEZTlsg+7LWr0Y7J11DxnJ4662yUVWU2zxRvsk0aGfOw7GqGnTyz3VrJMK8COWAAQFEyKw5swnbeh61CG3uIvbmo8cxA+L6ykHCSYDuFNjVPhFneBvSRanQaR5Z8yGWZnb1wT/7/DZASCq9WmNuSFL7bZVc7GbO/Ko/zD7xwDFap/0Kc7U5baYkycMEFVui1YizZGoew1a2CKQ/5Hc7o/hpVCzyDqZfEhwyyRyJWYGokUpRDHQw0Hk/ke6VPJw6PP7IbVJatpTJa30+ZmSJq74l/fKlEZsdx0OHXWRm7idJBNhy77b2cidA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by AS8PR04MB7880.eurprd04.prod.outlook.com (2603:10a6:20b:2a5::21) with
+ by AM8PR04MB7795.eurprd04.prod.outlook.com (2603:10a6:20b:24f::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.9; Fri, 30 Jan
- 2026 14:52:23 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Fri, 30 Jan
+ 2026 15:21:31 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9564.010; Fri, 30 Jan 2026
- 14:52:23 +0000
-Date: Fri, 30 Jan 2026 09:52:13 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: ming.qian@oss.nxp.com
-Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
-	mirela.rabulea@oss.nxp.com, nicolas@ndufresne.ca,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, xiahong.bao@nxp.com, eagle.zhou@nxp.com,
-	linux-imx@nxp.com, imx@lists.linux.dev, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2] media: imx-jpeg: Add support for encoder v1
- descriptor configuration
-Message-ID: <aXzFnXmvZIcqWxZ4@lizhi-Precision-Tower-5810>
-References: <20260130062236.2109-1-ming.qian@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260130062236.2109-1-ming.qian@oss.nxp.com>
-X-ClientProxiedBy: SJ0PR13CA0233.namprd13.prod.outlook.com
- (2603:10b6:a03:2c1::28) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ 15:21:31 +0000
+From: Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 0/2] dmaengine: add helper macro dmaengine_prep_submit()
+Date: Fri, 30 Jan 2026 10:21:13 -0500
+Message-Id: <20260130-dma_prep_submit-v1-0-2198f9e848fa@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGnMfGkC/x2MWwqAIBAAryL7naAWFV0lQnxstR+ZaEUQ3T3pc
+ xhmHsiYCDMM7IGEF2XaQwFZMXCrCQty8oVBCdUKWQvuN6NjwqjzaTc6uLNoXNcoj00PpSpupvs
+ /jtP7frvTtTphAAAA
+X-Change-ID: 20260130-dma_prep_submit-cbeac742de48
+To: Vinod Koul <vkoul@kernel.org>, Dong Aisheng <aisheng.dong@nxp.com>, 
+ Andi Shyti <andi.shyti@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, carlos.song@nxp.com, 
+ Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769786487; l=3034;
+ i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
+ bh=zhRKPBjThAPZrIPC2UK44Y80ql/gs88JqoFmen6sN84=;
+ b=Q45sRkUjWsLKutBe4n+8GzcDvLRdLMcq8qeXlFyp1GbNCgjzmyuEMwcQTltZMrx5CmougcXv6
+ BbO+9bwH9i4ABChJWR1DdrZGYl3mhsG9VhVCGBRg+o3hDkU2c0D5wJk
+X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
+ pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
+X-ClientProxiedBy: BY5PR17CA0063.namprd17.prod.outlook.com
+ (2603:10b6:a03:167::40) To PA4PR04MB9366.eurprd04.prod.outlook.com
  (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -67,395 +77,182 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AS8PR04MB7880:EE_
-X-MS-Office365-Filtering-Correlation-Id: 73eee756-0804-4f1f-ea30-08de600f2cd6
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AM8PR04MB7795:EE_
+X-MS-Office365-Filtering-Correlation-Id: 35f3a9d6-130e-49c0-41e7-08de60133ee6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|7416014|52116014|376014|366016|1800799024|38350700014;
+	BCL:0;ARA:13230040|376014|7416014|52116014|1800799024|366016|19092799006|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?iMeaRm+YBHx2wyqVfLWIvcCvLHumaRwdXg7Hyw7pOh+1fIHBpNqZMu3p5MJo?=
- =?us-ascii?Q?Ww4kAKEiP8tXTrm3K0CRdiuaaYZq2q9Ki8prMpHe0S0k099php8DF/262uyg?=
- =?us-ascii?Q?3uO/eH9sZAV1AYv2gDZtwajVm5Oms+SPUuEPNTtie1Fqaj4lt47ymqN23Wv2?=
- =?us-ascii?Q?YGmOCO73l8eS9GZfsunoWvI5yWMiOMVD4DfshgvnPmhq6x07hyKCpvYbjA/c?=
- =?us-ascii?Q?HQbbs8YZ+nIQY7nvHsVjmAq5nHtKB2tGP5lEDQsfp0dffxe5BJSRp7RgtRJt?=
- =?us-ascii?Q?RQAC/40d+HTqIHWEJ2Ndnf6kA91WvZEX19v8NNr4jD1jEjV5K5+46Xt4Q+2a?=
- =?us-ascii?Q?IIc79JOdblFmXTZVvKl6CiEzhk5htC6k44X5FM/X+c3uowcNIbS0uEfiOh1I?=
- =?us-ascii?Q?mimw1cBySB7kShha+cso4YmunhErEa89iVu+0Ot0FGsA4CAnTX55Re3QO1q8?=
- =?us-ascii?Q?FvqfggxqvIU6ByR6ienPdYoV2DGtL8RMhWNa5vRZSi15yOSWCZlc7HuIZ+RG?=
- =?us-ascii?Q?P91fhEeWS/fdJR1ToBC5Bif+njzdURiPBuzn0qsXz22ZbEs2mS6qTR7SKMhD?=
- =?us-ascii?Q?Jy7p5/OO5EyUzaNbexk5m5rrrwEPSXEO5IJShH19BEQSiir4tTGdQnEVe/Bm?=
- =?us-ascii?Q?kmijrcn/dQ8YQsC4by8Bh885rk7UH8xTWTab1xwoyVWa948lnHAFcbUX9AbD?=
- =?us-ascii?Q?piQH8q8YVuE23RwguqBQMhdP3DPaPNMYpNhHh0Lgpcs6ABth5oCVn3A0sosa?=
- =?us-ascii?Q?VFeMKLNPGUID/2vYRL8I7tt0Bk4ei5DUn9QTTUDj5g901mvVpYrkF/2gcZJC?=
- =?us-ascii?Q?IGd2cM6Iw+vycTJEk7II5jdmCDd1hdsBRgeJRvteoHpSSQroT+N21MRK0nPC?=
- =?us-ascii?Q?YfCL6kIZaFc0mk7mqHgauaiOYpaUHcHw8ClRCotqIruC9uHVbGGf1l63G22z?=
- =?us-ascii?Q?WT+hSz8ARdlovEHQZVKyFMrTCfxIk5cXYIU7SJ5DjM6dxx3jfZXoT8gQD73w?=
- =?us-ascii?Q?6HWTcDzVafshxSCTerAldp9St7aPGCssj2MxNX80Ck5UCOEpjPDBHymRBXsX?=
- =?us-ascii?Q?CJg9W0kgylBQngASSIoJXkvwjyOR6zLEl4tOeRMAdSEqN3FyZ766jQ8KimEA?=
- =?us-ascii?Q?rgBYdzCEw0zkGxhiKHWguPBdXpckv2mi3SS9CxV+0OIYRX5c1x6azKUKDLDM?=
- =?us-ascii?Q?SISCeQ3XiDZqxGVlUwsg8c8NuLIliQ1mxMbEMt0LS4YvhQuu/68QKIoG0ngV?=
- =?us-ascii?Q?/Kfbm7avwMEp9GiICcmhSTUaowgemnqCuiceKkl9RYS4dr0V6e5/We4MJFmK?=
- =?us-ascii?Q?yPnGvYcoOg6wxdR1C5dfOcKIOp/+X9uDd8IsTZVgq9biJ2H+kAK92ijGajij?=
- =?us-ascii?Q?TM4gNnnWLzSfkqqyEz6Z6lSBH43laKY/Gvrvn3qyKx302kM8RL/qxwbM+GOJ?=
- =?us-ascii?Q?jplORqn+kr0Qcc9FObxW/Jm8sf2EIPWUUBbo+/EGvYtq5/1tPrWV3Xu9tODp?=
- =?us-ascii?Q?3GsByn0JDhv8SP9pqMRyt9hPTFV4Uem6C2Mw947GABXiC0rFBq4HYhz6W+ns?=
- =?us-ascii?Q?o8nhHtJZrvu6Z5Bw4s9+604+1919GKY/feBjszFdzygucmQPEV+Wv7gnECqY?=
- =?us-ascii?Q?SJp7YBVKsrMffJ+DdP062SA=3D?=
+	=?utf-8?B?MlYvenVxRDZkTi9ZVWN4UFNnWjFLcENUVmpiZEJweGN0ZUwreHNyT3hSOHdQ?=
+ =?utf-8?B?WEVYdUV1Z3g5TzlkbHRIcDQ5SU1CaEhvb3l2TFg2U0VVRlljb3hsYVNobFVO?=
+ =?utf-8?B?RHNLNHY0MGJBZzB3U1BpVy9XTUNiVW1zWHVjQW1RZDJtZjd2Z2hwMEpGWlRI?=
+ =?utf-8?B?M2VYcnFlSmlPeU1sSG1oL0gxam5rdkxIZGErNlY5MElhRnJQQVNOWHpUdDE1?=
+ =?utf-8?B?ZUwxZDI3OEhwRXRmYjhBRGVEcGJPN1NWQ3VlSndEK01zUzNKOFRUcW96VFVw?=
+ =?utf-8?B?MlZlNWlpUWNROFZkdmk3RkVpVUQ1MnpFM21IMkxlWmU5YzVNRSt0d3FTMFVC?=
+ =?utf-8?B?TXdVNWxoVm82d2pRbmRJcDZKUkhlOVY1MkZXemNkODlEbGtiSlFWd1dKd1M4?=
+ =?utf-8?B?UWpEUVEvWEdRUFhFNE91NlBKRTZRKzhGZFpnNFN6Z2FkNDRrbzV4RlZTcnBC?=
+ =?utf-8?B?bU5MTGVNMklmMHdvYWhaTHEwdDNObmNVbXNkdUx0RzRhbk4yM3JIbFk0T3Fz?=
+ =?utf-8?B?bURIeGZYcmV2WFJmK2IzWDB6b3NCVEV2NHhrYytFYzdGbEdJcGo5dStxenRF?=
+ =?utf-8?B?ZVo2SmpmYlYvMkxUM1ViNzZwenc4bGJRUmFqbDlzSk8yK3dSdVNlYXdLNHg3?=
+ =?utf-8?B?Qkx1ZXNDUEg0bFNOZDVoWWdSekpZWERKUWNON3NEbzFLVVFqajFBa283Z25L?=
+ =?utf-8?B?WTJpUFlJZ1BBR1BBUDJudUxlYkFxeUc2aFJGNkk4aVBYb3J2ZU5IM2dzaHZq?=
+ =?utf-8?B?ck1ISGYxVEV4cGgwTmRLSXBmL0R3cjBYZVo5dHlBMkh4WlNITGdBMGcycytF?=
+ =?utf-8?B?eERBclhhdVRJbm5DUmJUWHdLQkY2cGQvYU4ycW9jL1NVWVJnQjZNcDFXOGVl?=
+ =?utf-8?B?b1NNTTlINHhWUUJSR3FmeGFqbStxKzlOQ0Z4TCtCSmNxRTVzbEZJeUVwc3U5?=
+ =?utf-8?B?TE1LWjRVZDhXWjVSWHFpcTJ2dGZQdEtXUUFXMDgwWnJ2TjZQYmYwbjZ3L1VE?=
+ =?utf-8?B?T2VFZXhMRkdETmZZalp0UDUvVGdiME1malAyOFZFdGpoc1FUdUNvTkQ1VExJ?=
+ =?utf-8?B?WFd5bGZ6WmZxQTBUWWg0NzZVTFpxeUNFcENNN0YzYm04K2RqK3NNWW03V21m?=
+ =?utf-8?B?WTRqMUtQTGN2SXRXV0k5b0NleDlXU1NLd1BJY3JMSTZ3RWpJVXRWNk1YZ1Zi?=
+ =?utf-8?B?YlBHNWo2Z2JaKzhBUTNqYlI2RkpURStydVluVlN0SVE1ZVc0QjhZMForUW9k?=
+ =?utf-8?B?ZFdiR0xibDhuKytLL2g2aVR2ZWhNU3hZVWJtUEdJK1p0VVNEZEZtUCsvODE1?=
+ =?utf-8?B?eFVXK2FpTEdUWEs3NE93MkE0eDhJaW1HQ2tSZm90dExPTWVlZHRJMWs3WGwz?=
+ =?utf-8?B?WVdiemU2OFliZ3JZb3pHYTN2WHFQYjVjK2RSYlZEVUxheTZXTWNaMnV4UFlr?=
+ =?utf-8?B?eXBDYVppeXpXMXNrbytWTzlGS05hSnY1M2RrU3ByTSthVnd5TVlYUVd2cUFU?=
+ =?utf-8?B?Q0JCZlBpYzczd2xwUWN1SzhGUWNiekpsaHdTcURCbXhEQ21GNmg2QUVaeXY5?=
+ =?utf-8?B?V3RIYnd6SXlSUG1CMnlKcTYzVnpSZnpRdzZsNUxPYUZVbDNHelhOblZOYXNz?=
+ =?utf-8?B?WXdOK0I2UW5Wdk1oTmhnTllCKzFTOGh2T0czSi84bGo5bkdjY3dHL1E5NVJl?=
+ =?utf-8?B?T3FlVFE3eW5Gb2hlTkc4UFJYcDlsYkttOHZLa0JObE4zTi9MZVB3RjVMSmZR?=
+ =?utf-8?B?WTk4WnN0cnBWd2NXdUc5UHp0bGFEblI2RHJ4TkZOdG9IOXpaNnc4dHNPczIv?=
+ =?utf-8?B?TjFDOE9qcklvWXhZN3JoSzNxZkt4S1pIWXNBVDN5Y2hONTQ1QlkxNHMrVnVM?=
+ =?utf-8?B?M2FOQzZRWFVCWUxVTk1UVlFZR3kwZUVRR0x3OWx5THUybVFYMTVvVTF3eWJY?=
+ =?utf-8?B?Uk5sdi8vdVRLQmFxbUl5OWloUnNNUldXUjdyQldZaFNSRHhDNkd3OURJM2Na?=
+ =?utf-8?B?SFdJbm5FN2ZPTWp4K1hBMld1eTdCNDc1SEw1aDJrWFZBR1lOcytWUCtOS1JB?=
+ =?utf-8?B?R3pqUDN4OUFIMVB1NjdHWS9rREF5dHozL3RyV1BvemRDWnNxWjdwRFdXNHI2?=
+ =?utf-8?B?eHVkSU9sVWZOWDlhZ1d3ek95MnhIaHQwSEFlWXRSc1hhN2huUlY4TThiSFgz?=
+ =?utf-8?Q?l9iDvM2xt0Cc75FufVMMJvw=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(52116014)(376014)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(1800799024)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?OCf8PNZcjxauk23GpJF3wPkzwtFSCeTDBFpz3XlgKjLhy0uHAzdDHib3Gcg1?=
- =?us-ascii?Q?vbVT+NtoNZh2loYvsfA7agtGTl9M2zdo8PygyxKDJQZmvQG7E2e4t7XEY7ue?=
- =?us-ascii?Q?CjL4hVi6Xy1zmrtDGud4T/DLWJDRXiEK5bWW7EWo7lI6bFqvsBd3e5nERTXX?=
- =?us-ascii?Q?beB5HMT0/XYXsOuXAw0MZHw0Gw0D7WOeSF8/3kC2imC3RJqucpU2qo2FVDlQ?=
- =?us-ascii?Q?l3kEp0rJWQRG7Xv+qBOgZuyNy8fM13AjI+Irxl11PpArqYejXiPCaUeXE5lf?=
- =?us-ascii?Q?hsujvsDkYt1ChHNqLal7xVbhNsE2ZKzSLCyCDCktSWd9Qzuzi3DdhldLX0bR?=
- =?us-ascii?Q?/LtNkJBbaqDXrvLdOViGQl1KOGjEj8wpHn7EwTgnkxG10Pelz0prW9GTlrvP?=
- =?us-ascii?Q?a/BhYANPAIb3+CG+I0N+XoWNmsh/6LqKCIiNQl4d6k3tPIVOCsEx7kG6T6Ux?=
- =?us-ascii?Q?AWBuL/vHW1078nGpWtVItzMNaq0to8hABgbGB5K6qjth2g8aZFCSDaCMnlyP?=
- =?us-ascii?Q?iAhu5kx37v/a1wMM4atzopLTNER8dztuKPqk2BFT3nflQq665+me/9zaqmMB?=
- =?us-ascii?Q?yWMYAEerYu+D2i1tZMSsWQ3zQ208daNV8VQLQ7McG/khu6Qoi4vJ3L+8+nNH?=
- =?us-ascii?Q?C8R614L/6Lo1wh3Sf1uQgKdwNUgO9cXuiZFRiEfhhKreWDpYxuLBa2pKPjpU?=
- =?us-ascii?Q?iEZH+kUbs8EzwrzYGt/nZSDzBzP3Up+hvKkPh0gKUAEHNhrCgmrzvlPLWmcH?=
- =?us-ascii?Q?MVLXmdkxWrXGZonh2yFvW7yM2DjqTEELlZTPgf9N5g+7UQ1Ym8mqdCE2tUay?=
- =?us-ascii?Q?RqsNwjT9kBPjHn1h2Z6YPWIal6hdp8IU5Wj8lIuNRQLaQINIfQtTYGbgo3Z9?=
- =?us-ascii?Q?7y2wHyVMCA6/EvN47cRw3ZgrDSbEAG2gI7qeqhs094QZcH0g3lZtUUhLF0a3?=
- =?us-ascii?Q?6++D8PF/rVrcYjrfe/iFHvUfYbJ0xaN5W62ip1rSldGIGPfLEwEgksadotoj?=
- =?us-ascii?Q?t3iS4z3HXb1N6XoiaCkF1kSY3JgTbXF0OI5GYVTq2HS4I6Lyb+A8ssJpHWyy?=
- =?us-ascii?Q?sjV+3ses8BDYQd3MybxZREV0YvTG5KRFqlNcTqrZ3ZHAII7pTWUBRDgn8zxt?=
- =?us-ascii?Q?7RVvEPqQL+i1trljexpQb4KXcfGHTPfoJuE5frb2YL/EpN4aLuoENG6OXYer?=
- =?us-ascii?Q?FmiDFC9OiaVFvNhe0IFs1gRMuTo7ks0io6Sj8l6PCNFRTKwpWvuU+hm+gU8W?=
- =?us-ascii?Q?XoXGcF4sSN9TLuKo157Sy0gnAC0gbrqAuixsbK7D4KMswoXzxMqIhZ3RhLnH?=
- =?us-ascii?Q?yvfpUxvB5DjlDwEZ8AjMPSQRaCC9W4dLpdVPw0hJc3FMjhaJ2DIqqz8isNzn?=
- =?us-ascii?Q?we275oyY9zOV7b4340uOnfU4gCJ59lLDu2Mw2Jf2XMRJaCf2ANG1xl9b0W0J?=
- =?us-ascii?Q?fff3k7993kkcLfsuPQb7HP3QHLxuqhQMkbuLJo8aVxbsbwIOrLUMTBZdYWfZ?=
- =?us-ascii?Q?SOoRsaC+GkLMQ577T7HBdaL107MNOzJeNig7p7Lrw+NtZfT/qpmLgCNEKvPX?=
- =?us-ascii?Q?DiavPIMastXVEmbO8/VqxbTehIq+wwHZQZTi/dJ0zwn8DjaVISEY5M7iTjbh?=
- =?us-ascii?Q?MIjxhseVQZY8nNn++8kznzCaKGlHai47OxCDb4b370JmjJ/KOlisWkvC4h1p?=
- =?us-ascii?Q?aQkXUd7K32uMALGKrgPJvfFpXXc8iThTEetpUej5XnOVbQHs?=
+	=?utf-8?B?TjdEdTBnYVIvamc0cTZSdk5lVVFVUTlyeGcyS3VZdWxmRFJYRzNSYXRLdHAz?=
+ =?utf-8?B?WndvcEZ0UDVrVWIyTTdIQ2taRFJoYTgrRlVJTlQrRXVZaGozNHd1am5sRFJD?=
+ =?utf-8?B?VnliS0ZvZllFTTBQTWtjV3VVQ1ZHZVQxVkVodTg5SGtFNUJ2OGlhLzQ2ZjB6?=
+ =?utf-8?B?WW9VZlhIQ1k2NnpYb3Ntd3VwWGMzYXVJRkdoSWNIT2lEWldwMHFzU3J1UlBj?=
+ =?utf-8?B?ZHIxOFB2eWZhU2kwcG1BL01uam9zMktwbTRyQUt1UzdjWExhb2k3ZHIzMk5r?=
+ =?utf-8?B?cHJTUUZiU0o1M1YzaGtpUjVxeUlrSVh0dmtjUmhBait1eFFBQnVJSDBhdmtM?=
+ =?utf-8?B?Q2ZXOHFNaXh4ekNQQjBmOU9EKzAySHFsc1lYeHlWYlB4czljenEwcFVGT1dN?=
+ =?utf-8?B?YlpzT2xWdjVOTVdsZEp3TkFsRXBkWnJtS0ZWb3FIWGJ0VmwzODE1K0pKbkx3?=
+ =?utf-8?B?eGhyYXdNTEw1cE5sM2ZONDJUYmpaT2hzTmpWdjArdmVNeE5TV3ppQkdlVDVY?=
+ =?utf-8?B?Z0ZtUVVIL2dYWXZ3ZHVFTkp5S2VRclBBaDE1VHVueFhlOHJSVzJCRW4xVVEw?=
+ =?utf-8?B?b3pJSzVZS3dlVUNQU3BGZkxBdkNiN1BEMWJpamk4RlFGeSsyNm9SUkFRSG5n?=
+ =?utf-8?B?UURzeC9nQVEzNTRtNDZwYUQvci85R3lUUnRJRlNVWmhqckVBWWZVckRmbXBX?=
+ =?utf-8?B?TnNBbFNuNFp2V2o4Z2hNVHhuQmpac2Z5TlRObGZWeW8zK1J1WmFCTGt2U3Mz?=
+ =?utf-8?B?d1dKWC82Y0Q3VWQycDBlbWJqd1o0RVVIREJUUnJId0xUWWRTWkJ4eG1Dc251?=
+ =?utf-8?B?b1g0K21nV0tYQWRuR1RtUU9UeXVFanQyQ3h5aHc3L1FpNG1vWlpBd2N3RG4y?=
+ =?utf-8?B?c0tzZGQrd3VFSFdZNFRQZVNMVm1QRG5OTmdQdGc0ejJ5YW9WOXZYUDN0a045?=
+ =?utf-8?B?RlNxektRUDVOSS9KdGdIQXpkTi9FYmVpMm1iSnJLUXRKOHNlOUJyV1ZxWXZI?=
+ =?utf-8?B?TmhuQ2VhbzlUT1d2dEU5cjRlajhjTG5icjNFV0E4aHU1L3pXTlVkWkZQV0Ry?=
+ =?utf-8?B?alY4YjRiUXBzRW42MmRuWkFQeHhBWUZQV21GalBNR0FjRlFHQmhHTVlDUDRT?=
+ =?utf-8?B?N0FYTFJGS1dmQW82ZDAyRWJsZjNMYzVCRVpsQWt4aGhLa1ZBb3d4Ym9KTjNZ?=
+ =?utf-8?B?K3lxQmgxYnptbmpoT2xJQVJMbTNEVGNPcXk2ai8wYTBRcEp0ajB3aTYzTEg4?=
+ =?utf-8?B?MXBGVUswa1BCQngvSGcxZENmbEQ5dXJWVSttNC9qWUVQbGdFWGZKcFkza1BO?=
+ =?utf-8?B?dWhkbjBoMVB0S1piNzdjeVNIc2R3NzZYd0x3OTFDY01pSFNIWEVQSWpnMjVO?=
+ =?utf-8?B?bWEwWUtrdEZzSUorQXdLaWRkNzcyeHp0ZmlKbVdFU0l2K2dZNzZ3dkYwTVl1?=
+ =?utf-8?B?bGE0OUJidi9mYWs0bVRsaUp5UGxlSEhpVnlDUVhhV2RnZmVRVkVBZjRVT3l2?=
+ =?utf-8?B?cnprTFhsQ3VWYmttb3lFdGlXWkhWaGdmck82eXpNcEEwZlRXc1YzR2c0YU9P?=
+ =?utf-8?B?OFB2Rk5yV3VpU2JKK2NlR2o2bFBmNS9xeDlhUjRaWDZCYUdGcmVHUWdhMEhk?=
+ =?utf-8?B?OXhxd1lqd2thZ2IrOGIyYjRxWmEvQjBUelB5anloVE4xb0JpZUlCRHpUWmNj?=
+ =?utf-8?B?cGgwYUNXZG1VNjZHYlA2VnlhWG1EeTFleDhyMjdjK3U4bXdHeHoyTDVxUE5B?=
+ =?utf-8?B?dU1acjlpcjVIOUlWdzNJR1pjWHd6ZnZObG5IdjJoVEVSZWd6OGZrWHZLbTBT?=
+ =?utf-8?B?YXBWYTJFd1hwMGt0OU5NcDE5ZzNuZ25ib0V6UUN3QlM1Z1FNTzhocjFLWHdH?=
+ =?utf-8?B?VnhuNTYrUDFET1l0UmNkMUkyUjRnNGFzS0VOYjlNYU1RaUY4RVg2Y0J0Yitm?=
+ =?utf-8?B?L1NxZE5mRmxZMGZLVDN6Uzg2LzAzTUF2UXlkcFBsdWxCQnVuYjNodzlGRVNm?=
+ =?utf-8?B?bDl5bUQwV3M5OXhRaGRsL05PeDVMQmtycHRBczhzNkY5YjJhbXBNbnFRbmZS?=
+ =?utf-8?B?aFlVSXBBVjJQemx4aDkyMThlRDQzWnV2eGk3ZHNpWGE5Y2g1TVdJNjY2RFVk?=
+ =?utf-8?B?RTlvZ2U1SXBSMTBWejdYRjhkZ3BqRlJoZEZZVlFSanFNSUdSRC9DZGNqdTBt?=
+ =?utf-8?B?cnRiaTVUeXI3L09NSm83dldUaFhsY2phdnNnSnc1elBWUk9PSjBjdWxGYUNh?=
+ =?utf-8?B?WkphN08wY00yMVBRTE05R0xWcXBOd3NKRHgrWElKb0NrRmZRVlBUcUNoMEt0?=
+ =?utf-8?B?Z3ZnUTBlT25ZRElpNmxQTk1GdmR0Mk1UMUVVMzBlQ2M5OHV1N2JaUT09?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73eee756-0804-4f1f-ea30-08de600f2cd6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 35f3a9d6-130e-49c0-41e7-08de60133ee6
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 14:52:23.2303
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 15:21:31.1646
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yDVkQM9EXJ/5NrbcdtQ3v4fQ889VRDsx19YqagOdM2xohg+lczk+FEPMlFhDoIq+910yur+t7tUZa/x5sHStZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7880
+X-MS-Exchange-CrossTenant-UserPrincipalName: od1kaA6PRdaUJbflOaSRLkLU4mb9xJVutIrR2xYfWxSSQhMUiQSudW+HJhwzMmq+Ovg2S9vJnup3beyLGwwSGA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7795
 
-On Fri, Jan 30, 2026 at 02:22:33PM +0800, ming.qian@oss.nxp.com wrote:
-> From: Ming Qian <ming.qian@oss.nxp.com>
->
-> Support the upgraded JPEG encoder v1 found on i.MX952 SoC.
->
-> Detect the encoder hardware version via the version register.
->
-> The v1 encoder uses an expanded descriptor format that allows all
-> encoding parameters, including JPEG quality, to be configured directly
-> in the descriptor.
->
-> This removes the manual register-based configuration step required by v0
-> and reduces the interrupt count from two to one per frame.
->
-> V0 encoding flow:
->   1. Write quality to registers -> trigger config interrupt
->   2. Start encoding -> trigger completion interrupt
->
-> V1 encoding flow:
->   1. Configure descriptor with all parameters including quality
->   2. Start encoding -> trigger completion interrupt
->
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
->
-> ---
-> v2
-> - Improve commit message
-> - Use GENMASK_U32
-> - make mxc_jpeg_get_version() static
-> - Check version in probe()
-> - Remove noise that update copyright years
-> ---
->  .../media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h |   1 +
->  .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 104 +++++++++++++++---
->  .../media/platform/nxp/imx-jpeg/mxc-jpeg.h    |  22 ++++
->  3 files changed, 113 insertions(+), 14 deletions(-)
->
-> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-> index adb93e977be9..0d78443cb270 100644
-> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-> @@ -73,6 +73,7 @@
->  #define GLB_CTRL_DEC_GO					(0x1 << 2)
->  #define GLB_CTRL_L_ENDIAN(le)				((le) << 3)
->  #define GLB_CTRL_SLOT_EN(slot)				(0x1 << ((slot) + 4))
-> +#define GLB_CTRL_CUR_VERSION(r)				FIELD_GET(GENMASK_U32(19, 16), r)
->
->  /* COM_STAUS fields */
->  #define COM_STATUS_DEC_ONGOING(r)		(((r) & (1 << 31)) >> 31)
-> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> index b558700d1d96..71f4a1d292ac 100644
-> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> @@ -64,6 +64,12 @@
->  #include "mxc-jpeg-hw.h"
->  #include "mxc-jpeg.h"
->
-> +#define call_void_jpeg_enc_ops(jpeg, op, args...)			\
-> +	do {								\
-> +		if ((jpeg)->enc_cfg_ops && (jpeg)->enc_cfg_ops->op)	\
-> +			(jpeg)->enc_cfg_ops->op(args);			\
-> +	} while (0)
-> +
->  static const struct mxc_jpeg_fmt mxc_formats[] = {
->  	{
->  		.name		= "JPEG",
-> @@ -1030,11 +1036,7 @@ static irqreturn_t mxc_jpeg_dec_irq(int irq, void *priv)
->
->  	if (jpeg->mode == MXC_JPEG_ENCODE &&
->  	    ctx->enc_state == MXC_JPEG_ENC_CONF) {
-> -		q_data = mxc_jpeg_get_q_data(ctx, V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE);
-> -		ctx->enc_state = MXC_JPEG_ENCODING;
-> -		dev_dbg(dev, "Encoder config finished. Start encoding...\n");
-> -		mxc_jpeg_enc_set_quality(dev, reg, ctx->jpeg_quality);
-> -		mxc_jpeg_enc_mode_go(dev, reg, mxc_jpeg_is_extended_sequential(q_data->fmt));
-> +		call_void_jpeg_enc_ops(jpeg, exit_config_mode, ctx);
->  		goto job_unlock;
->  	}
->  	if (jpeg->mode == MXC_JPEG_DECODE && jpeg_src_buf->dht_needed &&
-> @@ -1272,6 +1274,7 @@ static void mxc_jpeg_config_dec_desc(struct vb2_buffer *out_buf,
->
->  	jpeg_src_buf = vb2_to_mxc_buf(src_buf);
->
-> +	ctx->extseq = mxc_jpeg_is_extended_sequential(jpeg_src_buf->fmt);
->  	/* setup the decoding descriptor */
->  	desc->next_descpt_ptr = 0; /* end of chain */
->  	q_data_cap = mxc_jpeg_get_q_data(ctx, cap_type);
-> @@ -1335,9 +1338,15 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
->  	struct mxc_jpeg_q_data *q_data;
->  	enum mxc_jpeg_image_format img_fmt;
->  	int w, h;
-> +	bool extseq;
->
->  	q_data = mxc_jpeg_get_q_data(ctx, src_buf->vb2_queue->type);
-> +	extseq = mxc_jpeg_is_extended_sequential(q_data->fmt);
-> +
-> +	ctx->extseq = extseq;
->
-> +	memset(desc, 0, sizeof(struct mxc_jpeg_desc));
-> +	memset(cfg_desc, 0, sizeof(struct mxc_jpeg_desc));
->  	jpeg->slot_data.cfg_stream_size =
->  			mxc_jpeg_setup_cfg_stream(cfg_stream_vaddr,
->  						  q_data->fmt->fourcc,
-> @@ -1348,11 +1357,6 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
->  	cfg_desc->next_descpt_ptr = desc_handle | MXC_NXT_DESCPT_EN;
->
->  	cfg_desc->buf_base0 = jpeg->slot_data.cfg_stream_handle;
-> -	cfg_desc->buf_base1 = 0;
-> -	cfg_desc->line_pitch = 0;
-> -	cfg_desc->stm_bufbase = 0; /* no output expected */
-> -	cfg_desc->stm_bufsize = 0x0;
-> -	cfg_desc->imgsize = 0;
+Add helper macro dmaengine_prep_submit() to combine prep and submit to
+one call.
 
-this change and memset belong code cleanup, it'd better use seperate patch.
+Pervious try to use cleanup
+https://lore.kernel.org/dmaengine/20251002-dma_chan_free-v1-0-4dbf116c2b19@nxp.com/
 
->  	cfg_desc->stm_ctrl = STM_CTRL_CONFIG_MOD(1);
->  	cfg_desc->stm_ctrl |= STM_CTRL_BITBUF_PTR_CLR(1);
->
-> @@ -1372,11 +1376,14 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
->  	desc->stm_ctrl = STM_CTRL_CONFIG_MOD(0) |
->  			 STM_CTRL_IMAGE_FORMAT(img_fmt);
->  	desc->stm_ctrl |= STM_CTRL_BITBUF_PTR_CLR(1);
-> -	if (mxc_jpeg_is_extended_sequential(q_data->fmt))
-> +	if (extseq)
->  		desc->stm_ctrl |= STM_CTRL_PIXEL_PRECISION;
->  	else
->  		desc->stm_ctrl &= ~STM_CTRL_PIXEL_PRECISION;
->  	mxc_jpeg_addrs(desc, src_buf, dst_buf, 0);
-> +
-> +	call_void_jpeg_enc_ops(jpeg, setup_desc, ctx);
-> +
->  	dev_dbg(jpeg->dev, "cfg_desc:\n");
->  	print_descriptor_info(jpeg->dev, cfg_desc);
->  	dev_dbg(jpeg->dev, "enc desc:\n");
-> @@ -1388,6 +1395,54 @@ static void mxc_jpeg_config_enc_desc(struct vb2_buffer *out_buf,
->  	mxc_jpeg_set_desc(cfg_desc_handle, reg, slot);
->  }
->
-> +static void mxc_jpeg_enc_start_config_manually(struct mxc_jpeg_ctx *ctx)
-> +{
-> +	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
-> +	void __iomem *reg = jpeg->base_reg;
-> +	struct device *dev = jpeg->dev;
-> +
-> +	ctx->enc_state = MXC_JPEG_ENC_CONF;
-> +	mxc_jpeg_enc_mode_conf(dev, reg, ctx->extseq);
-> +}
-> +
-> +static void mxc_jpeg_enc_finish_config_manually(struct mxc_jpeg_ctx *ctx)
-> +{
-> +	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
-> +	void __iomem *reg = jpeg->base_reg;
-> +	struct device *dev = jpeg->dev;
-> +
-> +	ctx->enc_state = MXC_JPEG_ENCODING;
-> +	dev_dbg(dev, "Encoder config finished. Start encoding...\n");
-> +	mxc_jpeg_enc_set_quality(dev, reg, ctx->jpeg_quality);
-> +	mxc_jpeg_enc_mode_go(dev, reg, ctx->extseq);
-> +}
+It is not simple enough and easy missing retain_and_null_ptr() at success
+path.
 
-If I do this, I prefer mxc_jpeg_enc_start_config_manually() and
-mxc_jpeg_enc_finish_config_manually() as patch, just do code re-org.
+struct dma_async_tx_descriptor *rx_cmd_desc __free(dma_async_tx_descriptor) = NULL;
+        ...
+        cookie = dmaengine_submit(rx_cmd_desc);
+        if (dma_submit_error(cookie))
+                return dma_submit_error(cookie);
+        ...
+        retain_and_null_ptr(rx_cmd_desc);
+}
 
-Then base that, add mxc_jpeg_enc_configure_desc() will straight forward.
+So create help macro to combine prep and submit by one call.
+patch 2.
 
-Some maintainer accept this if change is not bigger.  The squash patches
-is trivials by maintainers.
+ static int lpi2c_dma_rx_cmd_submit(struct lpi2c_imx_struct *lpi2c_imx)
+ {
+-       struct dma_async_tx_descriptor *rx_cmd_desc;
+        struct lpi2c_imx_dma *dma = lpi2c_imx->dma;
+        struct dma_chan *txchan = dma->chan_tx;
+        dma_cookie_t cookie;
+@@ -761,15 +760,10 @@ static int lpi2c_dma_rx_cmd_submit(struct lpi2c_imx_struct *lpi2c_imx)
+                return -EINVAL;
+        }
 
-Frank
-> +
-> +static void mxc_jpeg_enc_configure_desc(struct mxc_jpeg_ctx *ctx)
-> +{
-> +	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
-> +	struct mxc_jpeg_desc *desc = jpeg->slot_data.desc;
-> +	struct mxc_jpeg_desc *cfg_desc = jpeg->slot_data.cfg_desc;
-> +
-> +	ctx->enc_state = MXC_JPEG_ENCODING;
-> +	cfg_desc->mode = (ctx->extseq) ? 0xb0 : 0xa0;
-> +	cfg_desc->cfg_mode = 0x3ff;
-> +
-> +	desc->mode = (ctx->extseq) ? 0x150 : 0x140;
-> +	desc->cfg_mode = 0x3ff;
-> +	desc->quality = ctx->jpeg_quality;
-> +	desc->lumth = 0xffff;
-> +	desc->chrth = 0xffff;
-> +}
-> +
-> +static const struct mxc_jpeg_enc_ops mxc_jpeg_enc_cfg_ops_v0 = {
-> +	.enter_config_mode = mxc_jpeg_enc_start_config_manually,
-> +	.exit_config_mode = mxc_jpeg_enc_finish_config_manually
-> +};
-> +
-> +static const struct mxc_jpeg_enc_ops mxc_jpeg_enc_cfg_ops_v1 = {
-> +	.setup_desc = mxc_jpeg_enc_configure_desc
-> +};
-> +
->  static const struct mxc_jpeg_fmt *mxc_jpeg_get_sibling_format(const struct mxc_jpeg_fmt *fmt)
->  {
->  	int i;
-> @@ -1593,12 +1648,10 @@ static void mxc_jpeg_device_run(void *priv)
->
->  	if (jpeg->mode == MXC_JPEG_ENCODE) {
->  		dev_dbg(dev, "Encoding on slot %d\n", ctx->slot);
-> -		ctx->enc_state = MXC_JPEG_ENC_CONF;
->  		mxc_jpeg_config_enc_desc(&dst_buf->vb2_buf, ctx,
->  					 &src_buf->vb2_buf, &dst_buf->vb2_buf);
->  		/* start config phase */
-> -		mxc_jpeg_enc_mode_conf(dev, reg,
-> -				       mxc_jpeg_is_extended_sequential(q_data_out->fmt));
-> +		call_void_jpeg_enc_ops(jpeg, enter_config_mode, ctx);
->  	} else {
->  		dev_dbg(dev, "Decoding on slot %d\n", ctx->slot);
->  		print_mxc_buf(jpeg, &src_buf->vb2_buf, 0);
-> @@ -2842,6 +2895,14 @@ static int mxc_jpeg_attach_pm_domains(struct mxc_jpeg_dev *jpeg)
->  	return ret;
->  }
->
-> +static int mxc_jpeg_get_version(void __iomem *reg)
-> +{
-> +	u32 regval;
-> +
-> +	regval = readl(reg + GLB_CTRL);
-> +	return GLB_CTRL_CUR_VERSION(regval);
-> +}
-> +
->  static int mxc_jpeg_probe(struct platform_device *pdev)
->  {
->  	struct mxc_jpeg_dev *jpeg;
-> @@ -2976,8 +3037,23 @@ static int mxc_jpeg_probe(struct platform_device *pdev)
->  	platform_set_drvdata(pdev, jpeg);
->  	pm_runtime_enable(dev);
->
-> +	if (mode == MXC_JPEG_ENCODE) {
-> +		ret = pm_runtime_resume_and_get(dev);
-> +		if (ret < 0)
-> +			goto err_check_version;
-> +
-> +		if (mxc_jpeg_get_version(jpeg->base_reg) == 0)
-> +			jpeg->enc_cfg_ops = &mxc_jpeg_enc_cfg_ops_v0;
-> +		else
-> +			jpeg->enc_cfg_ops = &mxc_jpeg_enc_cfg_ops_v1;
-> +
-> +		pm_runtime_put_sync(dev);
-> +	}
-> +
->  	return 0;
->
-> +err_check_version:
-> +	pm_runtime_disable(&pdev->dev);
->  err_vdev_register:
->  	video_device_release(jpeg->dec_vdev);
->
-> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
-> index 9c5b4f053ded..c00c13549746 100644
-> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
-> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
-> @@ -81,6 +81,17 @@ struct mxc_jpeg_desc {
->  	u32 stm_bufsize;
->  	u32 imgsize;
->  	u32 stm_ctrl;
-> +	/* below parameters are valid for v1 */
-> +	u32 mode;
-> +	u32 cfg_mode;
-> +	u32 quality;
-> +	u32 rc_regs_sel;
-> +	u32 lumth;
-> +	u32 chrth;
-> +	u32 nomfrsize_lo;
-> +	u32 nomfrsize_hi;
-> +	u32 ofbsize_lo;
-> +	u32 ofbsize_hi;
->  } __packed;
->
->  struct mxc_jpeg_q_data {
-> @@ -105,6 +116,7 @@ struct mxc_jpeg_ctx {
->  	unsigned int			source_change;
->  	bool				need_initial_source_change_evt;
->  	bool				header_parsed;
-> +	bool				extseq;
->  	struct v4l2_ctrl_handler	ctrl_handler;
->  	u8				jpeg_quality;
->  	struct delayed_work		task_timer;
-> @@ -125,6 +137,15 @@ struct mxc_jpeg_slot_data {
->  	dma_addr_t cfg_dec_daddr;
->  };
->
-> +struct mxc_jpeg_enc_ops {
-> +	/* Manual configuration (v0 hardware) - two-phase process */
-> +	void (*enter_config_mode)(struct mxc_jpeg_ctx *ctx);
-> +	void (*exit_config_mode)(struct mxc_jpeg_ctx *ctx);
-> +
-> +	/* Descriptor-based configuration (v1 hardware) - single-phase */
-> +	void (*setup_desc)(struct mxc_jpeg_ctx *ctx);
-> +};
-> +
->  struct mxc_jpeg_dev {
->  	spinlock_t			hw_lock; /* hardware access lock */
->  	unsigned int			mode;
-> @@ -142,6 +163,7 @@ struct mxc_jpeg_dev {
->  	struct device			**pd_dev;
->  	struct device_link		**pd_link;
->  	struct gen_pool			*sram_pool;
-> +	const struct mxc_jpeg_enc_ops	*enc_cfg_ops;
->  };
->
->  /**
->
-> base-commit: c824345288d11e269ce41b36c105715bc2286050
-> prerequisite-patch-id: 0000000000000000000000000000000000000000
-> --
-> 2.52.0
->
+-       rx_cmd_desc = dmaengine_prep_slave_single(txchan, dma->dma_tx_addr,
+-                                                 dma->rx_cmd_buf_len, DMA_MEM_TO_DEV,
+-                                                 DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+-       if (!rx_cmd_desc) {
+-               dev_err(&lpi2c_imx->adapter.dev, "DMA prep slave sg failed, use pio\n");
+-               goto desc_prepare_err_exit;
+-       }
+-
+-       cookie = dmaengine_submit(rx_cmd_desc);
++       cookie = dmaengine_prep_submit(txchan, NULL, NULL, slave_single,
++                                      dma->dma_tx_addr,
++                                      dma->rx_cmd_buf_len, DMA_MEM_TO_DEV,
++                                      DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+        if (dma_submit_error(cookie)) {
+                dev_err(&lpi2c_imx->adapter.dev, "submitting DMA failed, use pio\n");
+                goto submit_err_exit;
+@@ -779,15 +773,9 @@ static int lpi2c_dma_rx_cmd_submit(struct lpi2c_imx_struct *lpi2c_imx)
+
+        return 0;
+
+-desc_prepare_err_exit:
+-       dma_unmap_single(txchan->device->dev, dma->dma_tx_addr,
+-                        dma->rx_cmd_buf_len, DMA_TO_DEVICE);
+-       return -EINVAL;
+-
+ submit_err_exit:
+        dma_unmap_single(txchan->device->dev, dma->dma_tx_addr,
+                         dma->rx_cmd_buf_len, DMA_TO_DEVICE);
+-       dmaengine_desc_free(rx_cmd_desc);
+        return -EINVAL;
+ }
+
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Frank Li (2):
+      dmaengine: Add helper macro dmaengine_prep_submit()
+      i2c: imx-lpi2c: use dmaengine_prep_submit() to simple code
+
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 20 ++++----------------
+ include/linux/dmaengine.h          | 16 ++++++++++++++++
+ 2 files changed, 20 insertions(+), 16 deletions(-)
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20260130-dma_prep_submit-cbeac742de48
+
+Best regards,
+--
+Frank Li <Frank.Li@nxp.com>
+
