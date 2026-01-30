@@ -1,162 +1,117 @@
-Received: from mx-relay36-hz2.antispameurope.com (mx-relay36-hz2.antispameurope.com [94.100.136.236])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E71E34EF1E
-	for <imx@lists.linux.dev>; Fri, 30 Jan 2026 09:12:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.236
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769764329; cv=pass; b=EuhCGDKkHyBTEFbNdNKXNP+ZQ3uV1l6wOVx37FBrBuqGuqafJG+WeVAUSzbQfG0zXIlriWXirrGl+gORGwGkqVx+B3X2wXLpyWUEXgYB+dHxMqcsyp/vM+5IqqUFEIabVxyZwuCsM4Qo0r9DqHQPsmlaYmsUEz6cK9iQixLA/Uo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769764329; c=relaxed/simple;
-	bh=JJ6ZgfjzIHBLd6Y+kOxT96PhgvFLGLY3oKWCw1HaN/Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S9EIBq85dMQ/YJELa7NZTm2KapNdgdvo47l7NnMl0raUb6E0amR/VM9TkoShlH+7Oe6taJTgnp+8bN4B9Nn2vh4oTCxkDYkvd1n5hRHNRrzcxnioJHG09MFn9pVmWRoiNPF4y7S9QsZY19X0Axv2Ym2wwQIwV+4H2MQoruDq5uY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=J6FHxA04; arc=pass smtp.client-ip=94.100.136.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CD22D948A
+	for <imx@lists.linux.dev>; Fri, 30 Jan 2026 09:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769764373; cv=none; b=n55JUMB9VIkdoRO5Ufuv01K+N8aDOR3viM1rAcp/1X0SDP4BRkl/w+Ss8otjLLLPUzJqqvfWOPUFfv2x7l2PV9NELgkpnyO8Ci1M+xxVIyuE0aCytjz2Zm/gkvsXSxTpTHAjYV5lXOQEJ9d9a2m+IL+tPXugdlAACoPPDmqFND0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769764373; c=relaxed/simple;
+	bh=o4qpJAfiNyeL6Fj9BGIqCCcCv4uIJ4uVIS/X4VFGV64=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eJEMa0cmvbiv5jYAZGGmDHafY9hg5tb7W1Q874DmQYvzCiWyrQvBesCyE/sicR1XOWVXjTTgLqeURImAIWXeB2eCvAYWfFujUzvJNoA1S30FpYorsx6NGTjlB3sELBsMOSnELxyYlmCAqumTPo5+MCYdjWxddnbJK0/IOuUMfws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kZ65059O; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="J6FHxA04"
-ARC-Authentication-Results: i=1; mx-gate36-hz2.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out01-hz1.hornetsecurity.com;
- dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=OlaaAEdyH/nGPP2TYnuTAVW6ys1F2ggjuG22tntgfjs=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1769764241;
- b=pnX8huHdNxX7XdY2uneAcuTkXkupok7YqJKgVgUPFh/o4qTKbpEOHaQj+LS8oDNZ3deBwfOQ
- XP8TNT+Q9o2AU4NiaE5SrM+DszmP5JGNDFyodEh9nnc8GijFsuPe75cnZLqyxgE6GoHDzj6Vf5S
- 1tFfETn1oJ2MYaN5WsUEKEWF3+LMCmIfm4iXYPZvxNeP01ks2VZGvQM5I2f4A/0r06IVqlQESd5
- c0bW6HL9t6qOTgevDjFlOFUYGK5u0Dzt5oz9QY+zvUqyRS48ytWdGYfDocj16NhdqoC2/qynhQR
- IkQ1FFF1ItP2+rRTEMaCPTHp0eemcfWnxZDD9e59JZR+g==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1769764241;
- b=Bgu2JkhCRdtSYoWCyUTDX7SB+tuIrR7jE6l9J9E8wTZGPc8KPdL1jds2EKRk+BVPhwd4Ihji
- 00E7OS2bq/mbSvkXElYqTQe0ZPLOUB+/kg2aH0Fiec5jU06u5yFjnCBExGjndaHuNmg9+1OEvZn
- aVUw+6Q8I1SljsGpY6JuKvLPBgQcexL603Aad70s8HkPhsHTVkUtkNbpalRmYzPUdtIMVJxpaYn
- HAdcr2NJ+UxkeEdD/afAzSnCuQ4vLyBexvGdmtzFWz/8XoY+BWnmTsSY3FEkS+fe2B3cjL4dCEz
- VUVcfqGbFRNMsJdd3O1C4r44NUe7FNFSoBmj/TqXbl+Lw==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay36-hz2.antispameurope.com;
- Fri, 30 Jan 2026 10:10:41 +0100
-Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by smtp-out01-hz1.hornetsecurity.com (Postfix) with ESMTPSA id DEE09A40EF0;
-	Fri, 30 Jan 2026 10:10:22 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, nicolas@ndufresne.ca,
- benjamin.gaignard@collabora.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, p.zabel@pengutronix.de, sebastian.fricke@collabora.com,
- shawnguo@kernel.org, ulf.hansson@linaro.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
- l.stach@pengutronix.de, Frank.li@nxp.com, peng.fan@nxp.com,
- eagle.zhou@nxp.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, ming.qian@oss.nxp.com
-Subject:
- Re: [PATCH] arm64: dts: imx8mq: Restore VPU G2 clock to 600MHz for 4K60fps
- decoding
-Date: Fri, 30 Jan 2026 10:09:46 +0100
-Message-ID: <5476502.mvXUDI8C0e@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <20260130084133.2159-1-ming.qian@oss.nxp.com>
-References: <20260130084133.2159-1-ming.qian@oss.nxp.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kZ65059O"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id ED276C22F5B;
+	Fri, 30 Jan 2026 09:12:52 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 944CF6075A;
+	Fri, 30 Jan 2026 09:12:49 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B8D95119A8884;
+	Fri, 30 Jan 2026 10:12:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769764368; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=7Z16KRUuvvver/+C25LTNG/C+Q38nHHdfZUCB5foSSU=;
+	b=kZ65059O4gt6+PeWcYsv5PEpVuCXbD6Re1yntra0/GSQDtgvYup9hlwb9WZK/KoU9vIOWq
+	MoTWngAqbmZFpyhy26iQ9HhTmHBMVfV5nJwvXvub12qnez4O/zScYiVND5UybdaxfJW4ab
+	v75QCHZqML3qCqA1XFz6p7g1K9UrLLOu2meH+g/NM0V9FX0fvDqBRsc9JoVL0cVXEDkLAv
+	NZvxrjMZNfjUi4dpca/8l2/iW/TDZv892cbWt8pdJt6s8fxzPnSUEiAf9QvvccYqQuaK2A
+	NUZ9gHvNmtkWNvxJA0h+A4s4XC4sab4jg9vRbEZGafdY+zZ4zUjh6Y6gO6Ak8A==
+Message-ID: <7fc065e8-c85b-4faf-9104-1b6b54327a02@bootlin.com>
+Date: Fri, 30 Jan 2026 10:12:40 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay36-hz2.antispameurope.com with 4f2VbN1GXyz1S63D
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:f72694e440bb7dafe036a5498634db5d
-X-cloud-security:scantime:2.180
-DKIM-Signature: a=rsa-sha256;
- bh=OlaaAEdyH/nGPP2TYnuTAVW6ys1F2ggjuG22tntgfjs=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1769764240; v=1;
- b=J6FHxA04mEnSbNoUgOeWxXdAm5W1pOMTB+BM+w9+Nmio9eB/4JLvmS1HBCnA1UOjyK5O8CTh
- QTX8Qrxdxg5o3Bvw06nG71TaYJsSuPTuM1/4WeKnVUynb+VHmlg52xQknNnhiADrJUulVXpXQfG
- 07iwEKyqwrPwwtcbcyxKLqJYCL5tgu9QulSKwkf8znqVEuOpzf97Gj/N2yYEcSJqsoupWdDVJL5
- mvmh/XanULn0rXUc5SIYc7i02Sq9Sqy9q52b+ZvwIVd4oUb1hJzWOzyN6Y7eOpOG8qCteBMN2vm
- k2Jd4A2bE/C2XzDpNA39fBrqTLUOXucSSA7Ho6bre5V+Q==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: phy: add device link between MAC device and MDIO
+ device
+To: Wei Fang <wei.fang@nxp.com>, Russell King <linux@armlinux.org.uk>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: "andrew@lunn.ch" <andrew@lunn.ch>,
+ "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+ "florian.fainelli@broadcom.com" <florian.fainelli@broadcom.com>,
+ "xiaolei.wang" <xiaolei.wang@windriver.com>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "pabeni@redhat.com" <pabeni@redhat.com>,
+ "quic_abchauha@quicinc.com" <quic_abchauha@quicinc.com>,
+ "quic_sarohasa@quicinc.com" <quic_sarohasa@quicinc.com>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260126104409.1070403-1-wei.fang@nxp.com>
+ <20260128201501.04bb6e5c@kernel.org> <aXsxJa0D0bohafRs@shell.armlinux.org.uk>
+ <PAXPR04MB85106B63AF43DE0830B4C362889FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <PAXPR04MB85106B63AF43DE0830B4C362889FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Am Freitag, 30. Januar 2026, 09:41:31 CET schrieb ming.qian@oss.nxp.com:
-> From: Ming Qian <ming.qian@oss.nxp.com>
-> 
-> The VPU G2 clock was reduced from 600MHz to 300MHz in commit
-> b27bfc5103c7 ("arm64: dts: freescale: Fix VPU G2 clock") to address
-> pixel errors with high-resolution HEVC postprocessor output.
-> 
-> However, testing shows the 300MHz clock rate is insufficient for
-> 4K60fps decoding and the original pixel errors no longer occur at
-> 600MHz with current drivers.
-> 
-> Test results with 3840x2160@60fps HEVC stream decoded to NV12
-> (the same scenario that exhibited pixel errors previously):
-> 
-> 300MHz performance:
-> - Severe frame dropping throughout playback
-> - Only 336 frames rendered in 11:53 (0.471 fps)
-> - Continuous "A lot of buffers are being dropped" warnings
-> - Completely unusable for 4K video
-> 
-> 600MHz performance:
-> - Smooth playback with only 1 frame dropped at startup
-> - 37981 frames rendered in 10:34 (59.857 fps)
-> - Achieves target 60fps performance
-> - No pixel errors or artifacts observed
-> 
-> Restore the clock to 600MHz to enable proper 4K60fps decoding
-> capability while maintaining stability.
-> 
-> Test pipeline:
->   gst-launch-1.0 filesrc location=<4K60_HEVC.mkv> ! \
->     video/x-matroska ! aiurdemux ! h265parse ! \
->     v4l2slh265dec ! video/x-raw,format=NV12 ! \
->     queue ! waylandsink
-> 
-> Fixes: b27bfc5103c7 ("arm64: dts: freescale: Fix VPU G2 clock")
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> ---
->  arch/arm64/boot/dts/freescale/imx8mq.dtsi | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-> index 607962f807be..731142176625 100644
-> --- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-> +++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-> @@ -960,7 +960,7 @@ pgc_vpu: power-domain@6 {
->  									 <&clk IMX8MQ_SYS1_PLL_800M>,
->  									 <&clk IMX8MQ_VPU_PLL>;
->  						assigned-clock-rates = <600000000>,
-> -								       <300000000>,
-> +								       <600000000>,
+Hi again,
 
-If I read the Datasheet correctly 600 MHz is only supported by overdrive
-mode (also depending on the VDD_VPU).
-Is this frequency really correct?
-
-Best regards,
-Alexander
-
->  								       <800000000>,
->  								       <0>;
->  					};
+On 30/01/2026 04:41, Wei Fang wrote:
+[...]
 > 
-> base-commit: c824345288d11e269ce41b36c105715bc2286050
-> prerequisite-patch-id: 0000000000000000000000000000000000000000
-> 
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index 81984d4ebb7c..c48335bfc7b6 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+> @@ -1771,9 +1771,17 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+>          * another mac interface, so we should create a device link between
+>          * phy dev and mac dev.
+>          */
+> -       if (dev && phydev->mdio.bus->parent && dev->dev.parent != phydev->mdio.bus->parent)
+> -               phydev->devlink = device_link_add(dev->dev.parent, &phydev->mdio.dev,
+> -                                                 DL_FLAG_PM_RUNTIME | DL_FLAG_STATELESS);
+> +       if (dev && bus->parent && dev->dev.parent != bus->parent) {
+> +               if (phydev->sfp_bus_attached)
+                      ^ assuming we replace with phy_on_sfp()
+> +                       phydev->devlink = device_link_add(dev->dev.parent,
+> +                                                         bus->parent,
+> +                                                         DL_FLAG_PM_RUNTIME |
+> +                                                         DL_FLAG_STATELESS);
+> +               else
+> +                       device_link_add(dev->dev.parent, bus->parent,
+> +                                       DL_FLAG_PM_RUNTIME |
+> +                                       DL_FLAG_AUTOREMOVE_SUPPLIER);
+> +       }
 
+I think we should let the phy_on_sfp() case alone for now. The lifetime
+of the SFP phydev and the MAC are completely independent here, the PHY
+can be probed/removed without the MAC being there, and vice versa.
+
+The MDIO bus that controls that SFP PHY's lifetime is the same as the
+PHY itself, the mdio bus in that case exists solely to drive that single
+PHY, and in can't be shared between multiple PHYs even if we have
+multiple SFP ports in the entire system.
+
+The logical thing to do IMO is not to tie the MAC and the MDIO Bus
+itself, but rather the MAC and the PHY as was done before. As you state,
+we couldn't set DL_FLAG_AUTOREMOVE_SUPPLIER because of SFP PHYs, but
+if we add the check on "phy_on_sfp()", it should now be fine.
+
+Maxime
 
 
 
