@@ -1,209 +1,184 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011005.outbound.protection.outlook.com [52.101.70.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB4131619D
-	for <imx@lists.linux.dev>; Fri, 30 Jan 2026 01:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B3A30F7E8
+	for <imx@lists.linux.dev>; Fri, 30 Jan 2026 02:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.5
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769737960; cv=pass; b=HCQjCO4/frH86IyPNoYNW6OdaL8yGYxK++LAOo5CALqBOdQwpKWDrcUD4KIwHyybEZPM6F0xjlF+qIcFRCAS7tkzAcAMR9zRny1ZbOii485zviFqJbi5J7J7E0PlIXtSEDRNT82AacUZS2zB9ZudfJe5Kg04gZllvJREsjl1wY8=
+	t=1769739921; cv=fail; b=n2ny+oRmUo4PC15/M7zIbqmHqf53XLgScBLTcAi9xnbPH+tVAXDkC7sFQxw3mTYE/BQvTvsn8A77x1hMcqrGrtvXEpdoar7A0+AxMpev44SqYEd22hM/Hw2OPZvUk/jgwnbinXshad+gfWiqwXDf2nkKN0AVDbFMmPHJE56vtfs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769737960; c=relaxed/simple;
-	bh=fMWES3pEV3esIMGppPpcAB+xXRHTjsaan83wbju+n2U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IMddp4OTa2sy4mhP1va+RcC0H5VOlJqCqglnteqlm0tXjuysCNd75BtqqXH17VN+0/PCENytJ1IQc0Eqtj4U55uwHe5VftPx4z1/0NEJLaKEfLpLYHvgSq+4w4olMb1U7lbaLNQ/I5fp5PrErCANc77F1F40SliUI/bhCo4FxdM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EJoW4ptq; arc=pass smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769739921; c=relaxed/simple;
+	bh=hChrxOrU1PaI/VmTo9LFrnePbeTw24+f6ARWLciP3k0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=q+uzsNChmZ1x3RrGoom0bz+7XwLBNTXz71AraVx5VUZnwmoo/uyWcnDTX+UAWOeAZDPhnFKV9+3Y2ACgdArxwLKuJrQVBgQMnBs74fDaRMcD2HhWtZyRjnY9j34JN/JYo2x7LEoVyejrC8vwStj+iNtZbYwiWj/E7xlmP4GNaFQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=CSO4NP8+; arc=fail smtp.client-ip=52.101.70.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EJoW4ptq"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-34c93e0269cso1658738a91.1
-        for <imx@lists.linux.dev>; Thu, 29 Jan 2026 17:52:38 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769737958; cv=none;
-        d=google.com; s=arc-20240605;
-        b=U9iWUAPx9uBzkC40GjUreCC6T2HZxq1e5b2UscDEpMabz8KcQB5IDZMo0V/WpS2Y0n
-         1ay0BQs5Xf7ZyOP189Qma9GMNTDZ40P2eodRoA+kydkuq08mLFwwIASsFHYHMDossw6J
-         5bYHmJaJobb4YPPrVQdQNk0vWlPBlSLVej9jftm1ijVoionnITyys2i/Gqq4/DtwD+jr
-         UUadzwyuanHoHA31jMS7k2cj6u6DVCJPSa/G7ewRnOo1W1B4RYgDFsmQitmR/Dp9zS0h
-         PDo9RlFfffuCrgIAG5LFqztdAk3c1RIvZ9C52hubn3N224akg4QdfEqdyRlFc0tzpzR7
-         4dTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AYrclzb/DI20ULzMRT5C3zx7BcemIpx5wfq90vBWrJQ=;
-        fh=YZzNdlerJOxSk5ef2BvdUhU7S4sBscOYNkmQ4wlwZIA=;
-        b=BD7U2MNQygTb7BMXdmQcjmPdH41KYFyHlLJPVKClEhhbwB9qt69dJC4RVhlNW9oEH3
-         y8FqTQiaUACy8IqULHcJX99zKqm2C36NoLyq42FmUODxB8VZbDvgLut3nDqROHLKhmF4
-         1+7akbFUPjscSbpwc/QgXjqcg+cJvS4VqJ/lR4io+JpBUB6KVp2olPHCV58yYMv40f+k
-         jZzOXkveRjJm4EtjXC6suEegduhGu7KCt3KhvD7GISHQ1+kZcNEd3XT3PTgVCXJ0x2H7
-         c6kbA4QUQxh0EDHEO3u7GGQlPHwdq4oJgLnZJMsGfYkL0fTMZxGa97pkE7ldna8zZ0I8
-         NPKQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769737958; x=1770342758; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AYrclzb/DI20ULzMRT5C3zx7BcemIpx5wfq90vBWrJQ=;
-        b=EJoW4ptqlKRE/bzynH6spKEIJGvjsyCG2FDtjIFNau/xtaQeIOHj1hM2FY+PLnLZYk
-         BsrWeGm62pdTgibGn24SM1s2C46Z0yzGuGe4UEDTgQhZuZf9zlJ/ux+nxrOBIOnNrEth
-         UVq/LZLV2MjxR8u1E0bhCT+QZfJ3mx1TOpAXxeXUl8z2EqK1VCtK5AUe81b8qAS5lQNe
-         Ryqc0E8J1wi1hzkxEm4P3Fsy5VYuzZgcXk2A7JI28wTR9lvdb1PWmPdVkOOGrPy2vIa6
-         E6//hVahcMvSiha0+R1/KKIYKPjwpwi+m0lnzwKBe1aYkRlbq7wNxj0gO+XIaN1ViSnD
-         t4OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769737958; x=1770342758;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AYrclzb/DI20ULzMRT5C3zx7BcemIpx5wfq90vBWrJQ=;
-        b=D6GoVKiTPN4wjYb6UL31FpqCVOCZ2CWcQijAANrftzNuCSsfnRPneLSLsY4D0lbvKW
-         FLoCXYYze6+cyKIO+QBHtNSjefaomJC/a354xQDaQ6/iM5xzM5VRRtNQRlct9n/10CMc
-         3dGnLgfraYbgdNGnnL2TGda6f50NHfSl+m3ijUCk0MLATFDeeusTEmfp/10gaaF3zSVs
-         fJRXfQCGY3wnIFj6zWhYxfwkK8K4fKB8t1VYtEF0t6miZDCQ265aMllq+WDnCA9Cu3CS
-         dGBypuE/1ztA8TZncFdPSnV1HPV3SuqgPPAm97lKNKv4e5MAoiL45TFN+vCTHnY4BXLH
-         U/vw==
-X-Forwarded-Encrypted: i=1; AJvYcCV/WNUb1rawm6M79OKfEXdqGvJAbfzzS92++LWVeJP9+5mo7hkGBkUO9tiSo/GU//HPuH8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yzvzb1vebDyehQuizpghkw7N2PI1sMSA6mm06WswpWruoVtVovK
-	JmdJQxgR9emQATI6+ZmTo+0b9YMyp8ioV0HPA2yylV+AP88ExXmAUCEvzfk7McbsZghn9fyJLYf
-	zxlk+syZ+EwWw1ThWWLR25FQSf6GQbxg=
-X-Gm-Gg: AZuq6aJmXnWvaE5j7G9OwrUSqgwonSoMYf+mWXIrxJDizta6ekRUqP8O6yIQldr/mfb
-	qB2QzJkfRaXhU9fTeUfrkMyUp9eQ8zkqsle/PXzo4YPMU99GYWYpUDH16xr8+ma4+W4Si0P8GYY
-	heuKkBWIM+vwhLCxMC9YKuRvC/v8png30Uurvw3PxsV64QmWHaqmEVkQfRQwANuDFFhG6JcFvyz
-	LRXMmNKSJIjuxbbcI2vU/QaXDaB8uPIAAJv9x8al2x/5Ie6mZnc5rqTN8xnuHy7uXIjxNQ=
-X-Received: by 2002:a17:90b:1c0e:b0:340:8d99:49d4 with SMTP id
- 98e67ed59e1d1-354299f24a8mr4236387a91.1.1769737957855; Thu, 29 Jan 2026
- 17:52:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="CSO4NP8+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qcN7Jp8SdjWepPdJ1eaiVWnKrmY+z8uf4735rxyUrsTkqWS4bEJl6m93a5qitFpEAOcQ/i1+Ffjq7c9K+XFkp1erqmcM4q95BdrEQ3z8kFGb3qKp60HeqPS3PtXJ9K4131yj2NZ7AkMCPmUduYaV7cFEGUmtgRImG92sk4KSQgRU/HTAzHZOQ3bMEGRVpa8+ddP2LbBWL38oseKwIbZeRCBGWdLQbcN6iw5eqdGtuZuyRVqoSy4kB5cfL8/gMMq9TwKIjp7slQ83Ik/IJRHzTDvGU/eEYbGlCcKIX1aHtV6SDUdnNw4euWkWr/QVN8NOFG9o1cdMBazWHBmGTfZ9ig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hChrxOrU1PaI/VmTo9LFrnePbeTw24+f6ARWLciP3k0=;
+ b=TXGUqGttW+JGF5XChPSBKrSmsV8PGUNHTHIqNVyrkGpLcGrLjDVWMiUrlfuXFLyAIopZH002GScYmCxg+bEnwS0GT6jR+G7kyrZePAACX0U2K/+CB+Yx7UAF6lG1WB8TuYSN98p3Navh2dgXpc2cAjUyMCqK/KXWF61gJCQdVVm1NUOF7mtGLBvdsyVghCMZ4i61rCzOgD/YXnJVgFnDOHUOvZ/H9SG0AFTE4S9WP0IzMYaDiAI1l7PeKn4IDeGjWcGq8q+Zk5tvytHH1YYR4iiHQ+cZGrrZO99oRrLRR1KX5/mzvHkqwaBFn6iLtrrXy/sMPrR+chvE/R4j2cftnA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hChrxOrU1PaI/VmTo9LFrnePbeTw24+f6ARWLciP3k0=;
+ b=CSO4NP8+dXNGswVPTb0Obf+QJN5zzCeCwS2pe39lpvZKTZ3omzKru2a6ZVvXe34XQ1ekoNKAYxzGIIGG6rNkIQevpA7nFL4ethzUBJMJ4Yg6nABmY1rbEoYU5hBgFBlwG6mr+8Y0KKIcdGg15KhrBxZ2UvqmqMz31QLkNKo8LMGVNGfd5gkTEXkGi8EDiKEEHh0sevEJaxQcTm6VkIQRIV47UyvKM+SkcP/7hlFXruS+rdu7EL90qVmHR/a9nGEbwsj+KRD2ymifQJ5HT7/rQSN4TJs4MavQge7tkO6Wk3YB0/NJ64Y2L26JT8An6hcpmFnfZ1T21VbH4Rhc7wSuow==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DU4PR04MB12026.eurprd04.prod.outlook.com (2603:10a6:10:643::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.11; Fri, 30 Jan
+ 2026 02:25:16 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9564.008; Fri, 30 Jan 2026
+ 02:25:16 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Michael Trimarchi <michael@amarulasolutions.com>
+CC: "open list:FREESCALE IMX / MXC FEC DRIVER" <imx@lists.linux.dev>, "open
+ list:FREESCALE IMX / MXC FEC DRIVER" <netdev@vger.kernel.org>, open list
+	<linux-kernel@vger.kernel.org>, Shenwei Wang <shenwei.wang@nxp.com>, Clark
+ Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Heiner Kallweit
+	<hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "open
+ list:FREESCALE IMX / MXC FEC DRIVER" <imx@lists.linux.dev>, "open
+ list:FREESCALE IMX / MXC FEC DRIVER" <netdev@vger.kernel.org>, open list
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [RFC PATCH] net: phy: integrate reset-after-clock quirk into
+ phy_init_hw
+Thread-Topic: [RFC PATCH] net: phy: integrate reset-after-clock quirk into
+ phy_init_hw
+Thread-Index: AQHckDsKb6XN63S+BU2zpU+5sv8m0bVp+9HA
+Date: Fri, 30 Jan 2026 02:25:16 +0000
+Message-ID:
+ <PAXPR04MB8510831BD69AA3BE71E03472889FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20260128094644.302313-1-michael@amarulasolutions.com>
+In-Reply-To: <20260128094644.302313-1-michael@amarulasolutions.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DU4PR04MB12026:EE_
+x-ms-office365-filtering-correlation-id: 49d67486-c16a-443c-9a0c-08de5fa6ce46
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|19092799006|366016|7416014|376014|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?ECjTcCwZRHEgVcuBvlE3+iyoXTOmAdTlYjJvP66KvFSROo8sNfJ23cPN8cAl?=
+ =?us-ascii?Q?zyv16+ny8FqsybLTdT38r+dSJNHnmAm6w/PZF/T37Qm7bqgdsMMwI8Q4cg7+?=
+ =?us-ascii?Q?rtCKkvzucHRVTLvDiyHA3Q+N+hoSA6M2PCILHox5fY30toUSCkFLRIsOMpR6?=
+ =?us-ascii?Q?01iupmG5wGkiqZpaUDV21WrlaO0OmGzuvGe/d5cOxSED9WosSXLvTZeN8MF8?=
+ =?us-ascii?Q?45dsWkkc5iCOD9gDFuiDKjq3X5A/KvRYZ//cLB4NrUsJHq6rZ0YdeErFYHAY?=
+ =?us-ascii?Q?wIjHnFCTlX73D0EwnZ+CtI4GpizUxeOaDTC8c5GvBWbdf72IIj6Vl/MU8rMD?=
+ =?us-ascii?Q?U8EdRAujwuaJh8gCyjRQ9ECl6xwMNIt86o4FpOaz41kyNoYc/RT8S6RJ7Fle?=
+ =?us-ascii?Q?eyeAzLGFkmhK7Lrkr4fjxswChixwC8YT9IpVBX8QTJ1Mwe5lg3cX0tWKdkbr?=
+ =?us-ascii?Q?gw2mkw4axB/DbbEW4Yx9egieQuVHZKjUEN2/1t89ddgsELX/JzIghmOlKswm?=
+ =?us-ascii?Q?ZsKa2je7+POYTkEHN7kb6/rHOtToCjTt8WpTBkAA0ig/8DwiRbO2M0Tj67NN?=
+ =?us-ascii?Q?F0RKNlaPSJX7GWZHoNRv04IFtYATydxMmGDvCnfp1tF6wdfEdRsFoAICbixk?=
+ =?us-ascii?Q?xJm8NaVIYY4ScAb5At5FM7OlsBAGxoKLZvqewokbDMfbMVsRt4c4jVa1NXch?=
+ =?us-ascii?Q?4MLe0UFKZ85EejN6diqbV9HrlnyJaCkyI+y8i4NcZtWZbyNvCL+ibfg8xUeg?=
+ =?us-ascii?Q?lemsUy8sjQjkN1qEQC4DVxVKCGfrEAtLnK7vRrjDTHVUQIkoa7AfRP0Xis6w?=
+ =?us-ascii?Q?irWKOc7MzvBnLtXeUYWGxlGgYjeiX2NiXuBdoNVD1i4LNByqatBsl2tRTR6a?=
+ =?us-ascii?Q?vhEEkLIJiFMrBt+HP6ESrrnU2u4SK9wUbgTUQPDGFdHcGNB9IZkHukn6kU4D?=
+ =?us-ascii?Q?lk5d4HtOQqtvZrjWXfukqiC6YaPswI9LEw25Sk30F7y8DP26ZuSDQkvJou5q?=
+ =?us-ascii?Q?bxmKy7aCnV747xXJamb/sF+My1R2rHij4XmaqrIYBctwp4mpxkfpKs4HQMdK?=
+ =?us-ascii?Q?c0CcTSGq97zUP+WdUhBUVv3ey4EkcWv1XG/ZzDLkl4PgZORDmfsszetcwtzh?=
+ =?us-ascii?Q?OhvDnF9kLgk1gAuZcWscCu6I+BXvkK/WuPu7gA0Ty132osRtM9auFNIAnmOd?=
+ =?us-ascii?Q?eEogObRff8kcqNaQ6Tn2xz2NC1wb1780gZanrYlSgwHRKMeQChDX3PImbyJc?=
+ =?us-ascii?Q?Vuz0oMadkLQ2MuhIJiOTDhSh5/X5Q53LCQpuCZoTcPLE9+agQNo/yXZMd+zZ?=
+ =?us-ascii?Q?42q19swwzmJqMhZZIY4ITBpeed6PRS8Lj4Cw5l1Se27q09IJuHF6jNGlRE39?=
+ =?us-ascii?Q?6N2L066LUgMpMSxB5y8nw+cZ0L/I6CTul7LlKuCE62hpOW+BxOW/eM80H219?=
+ =?us-ascii?Q?LMsSn+/ZdTYdsj+jWrnD64y9w1LJFLB0kM4lZgppstydxKPksafHKPv9pRf8?=
+ =?us-ascii?Q?OvOH82HiOz5eoa8iFJwwe96fntFJUU/OlVh9giI0tiuftmnPhii8e61AwZN6?=
+ =?us-ascii?Q?Xz0rr0tVXC1/AJ6zh3v8AcI0A/n5GMRyjUB/08AYFtzLVenwRUSPF0DtVtcd?=
+ =?us-ascii?Q?OYVq9btfxANd17r6IYOng4E=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(366016)(7416014)(376014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?DLmt5D1Mv4U0/Py4SVg1IJcrzYCkRmpBlajTOzNM/+bBeeJVDnx4rP1GhFzP?=
+ =?us-ascii?Q?gB46xs5dk6ocyoavyK0W0G+eylALUle2T5hVxyfKPr37iQdB4FvTkxbjKntG?=
+ =?us-ascii?Q?f6r+9D9VSksYci8kaZnS7VkAviHI+pRBQmk86YpW0Ek4kn4776P7wbKbD0JY?=
+ =?us-ascii?Q?+7S28D6ysEbSvup2EqoAYGztVHyOvm5LdcEibErnPkfrl5EeFrCg2Vn67m5n?=
+ =?us-ascii?Q?hfgkB9zAfLoE+OqsQIF5rXrqiic4RBd5ptUKtmSqCzG6DKTL7wM06+OhBqQw?=
+ =?us-ascii?Q?9b4HO1OV3jh1B3panVxx19yzxhcqVzRchwDLNbNkdUrp89bxMNNBSABcUcK1?=
+ =?us-ascii?Q?xuj0oqKq9LD+UXZhVde5w2044Q6JQvxWVA0SopjNKje0wIvRJj2NvrzF/3fH?=
+ =?us-ascii?Q?FKMOF6Uel3xgxrVuL2xNVTOT+XUp86+jrTNyKoWhPIgIKNB+s4xKIjYkVncS?=
+ =?us-ascii?Q?OJQQ96bN8sdP7b0D8sfLTcZEwsKxxvudeFg8oFzMoFnL5bGqsJ5tOoO4LirD?=
+ =?us-ascii?Q?aSLv4QqdPXzqwHWtBrAhF6aXPM/IY13F9BDj5d54d6FcBoXVx48xkIq7YfQJ?=
+ =?us-ascii?Q?gGV1FLwEL6uEueyyGG6FLxZBWNrSm2qbRVnK1FITCPsbwSNyHn23lfTdFGPY?=
+ =?us-ascii?Q?T4ny4vSLRCfYYNihAVNe58/PAOY+aEsBpxdeoMnCKDz3vRYkeashfQcR6VFV?=
+ =?us-ascii?Q?hLW5VyQyk+u2Vee3lVRV3RWdi/S9lGBt2US7HkxfFePID1GxR+td3mFDrJyu?=
+ =?us-ascii?Q?ZHrrNB86FkZl3b8JFpQ4wWQ4ppIsPJblKMRo6MgeRw/Qisouj/14Go/M7Jl+?=
+ =?us-ascii?Q?YEGipAsSK0GDXnN1olU+4IwjFJTOVXdw28k2YVkdzKIhyR1m+Dmzlj/TH5mm?=
+ =?us-ascii?Q?MG3+RJF7KZrNO2sb6+HD09cseWBV5KH9BHJXdNW33ElOYPBGkGqZNhi7Qnt/?=
+ =?us-ascii?Q?hT9WJYZFAiDRHuD8AKJIIpB+ybrJT7frX2r4p2ihIAvwqOhcF2aw4EykMv9E?=
+ =?us-ascii?Q?XbygySMLyTDSBvAYNyP/UdXpdFuxMJvn+lBldYIfrQyY32N8vvY5byycmEiG?=
+ =?us-ascii?Q?HpVzV4WskEM+tYjlCJWUXNt9r5Z4RPgk1rVJ/x8Tdb70Kd8cGixHIoc1adcb?=
+ =?us-ascii?Q?axevQlPNVpUySDCh7CFOlNjDwAokfZfrz/q/3S3/fb4l2X4t/shGq3ErDf1t?=
+ =?us-ascii?Q?jmtiwMYPCUMyALQE/MtpqaThkPxxiDOy2jH+0dKTFGiyoLMdkdF6TEvujK9j?=
+ =?us-ascii?Q?FhCNZ2Kestz8dDtY7+493NETvXAnQ3TBlyP+rmsxVbGW7uDNn8r9mV2HQYjt?=
+ =?us-ascii?Q?6zl9d/Cu+elrKd5GqjEP2wuq9G2iMItwECmVtFL8f0uzqoshKkl563Eif0K2?=
+ =?us-ascii?Q?c9B1vN47TcOItt2PZxybXTp/wpIJUkiQWtt9BCepdLdvMKqNGYBbBGkixobf?=
+ =?us-ascii?Q?N9JuKUzzASq9xa7nNcMLTxCCDB/cscykYqg/W42xw+rUsuxEMmQ+VJc7h8Ud?=
+ =?us-ascii?Q?1hGAAskB76RRRRQ9nrZclR3T92Icf6e2JK4BoU8SzFEleQkewGgXyAxAdoh7?=
+ =?us-ascii?Q?5VrckV1YHwQgK0NTIjSyK9UVfPcSfIJFrq2+Tk1Y/md7ttC2bVBY+yoRsW6g?=
+ =?us-ascii?Q?2L0m25Csckc8pRHVJlC1oIOX/co4DeRnXLHQ3wFPj4AgmS9hqq628Gad/4hc?=
+ =?us-ascii?Q?KZI4qGkF0GDH/TgtxPpzCK1JbP57gsATJqi+2UbHO3WhZyCI?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260128071853.2602784-1-shengjiu.wang@nxp.com>
- <20260128071853.2602784-4-shengjiu.wang@nxp.com> <aXuUSnPSCa8YYfgd@lizhi-Precision-Tower-5810>
-In-Reply-To: <aXuUSnPSCa8YYfgd@lizhi-Precision-Tower-5810>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Fri, 30 Jan 2026 09:52:26 +0800
-X-Gm-Features: AZwV_QiF2cDrLfRKNnjCIo-qh5cZKFulc8s1nwm3YFRDiF2SntZx7QwlcKkdk5I
-Message-ID: <CAA+D8AM2d8m2eZnenH7gqOEUO1dLifFSNgizRRXwOiLX2vVdTA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] ASoC: fsl_asrc_dma: allocate memory from dma device
-To: Frank Li <Frank.li@nxp.com>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, lgirdwood@gmail.com, broonie@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz, tiwai@suse.com, 
-	linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 49d67486-c16a-443c-9a0c-08de5fa6ce46
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jan 2026 02:25:16.2836
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: oVXYAYl+T2RrNS3rf/ncmqdmDgzpaKDLFNZYMXKlQ+Kj3YzFzYwyzFoeE6RnxHG0SLY6MZh6dl+3YqlzEx85IA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB12026
 
-On Fri, Jan 30, 2026 at 1:09=E2=80=AFAM Frank Li <Frank.li@nxp.com> wrote:
->
-> On Wed, Jan 28, 2026 at 03:18:53PM +0800, Shengjiu Wang wrote:
-> > As the dma device may support dma-coherent property on the i.MX952,
-> > allocate memory from dma device to make asrc driver to be compatible wi=
-th
-> > such a case.
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  sound/soc/fsl/fsl_asrc_dma.c | 48 ++++++++++++++++++++++++++++++------
-> >  1 file changed, 41 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.=
-c
-> > index 7dacc06b2f02..b8fe242d53db 100644
-> > --- a/sound/soc/fsl/fsl_asrc_dma.c
-> > +++ b/sound/soc/fsl/fsl_asrc_dma.c
-> > @@ -449,18 +449,52 @@ fsl_asrc_dma_pcm_pointer(struct snd_soc_component=
- *component,
-> >  static int fsl_asrc_dma_pcm_new(struct snd_soc_component *component,
-> >                               struct snd_soc_pcm_runtime *rtd)
-> >  {
-> > -     struct snd_card *card =3D rtd->card->snd_card;
-> > +     struct device *dev =3D component->dev;
-> > +     struct fsl_asrc *asrc =3D dev_get_drvdata(dev);
-> > +     struct fsl_asrc_pair *pair;
-> >       struct snd_pcm *pcm =3D rtd->pcm;
-> > +     struct dma_chan *chan;
-> >       int ret;
-> >
-> > -     ret =3D dma_coerce_mask_and_coherent(card->dev, DMA_BIT_MASK(32))=
-;
-> > -     if (ret) {
-> > -             dev_err(card->dev, "failed to set DMA mask\n");
-> > -             return ret;
-> > +     pair =3D kzalloc(sizeof(*pair) + asrc->pair_priv_size, GFP_KERNEL=
-);
->
-> prefer use size_add(sizeof(*pair), asrc->pair_priv_size), which did
-> overflow check.
+> The current implementation of phy_reset_after_clk_enable requires MAC
+> drivers
+> (like fec_main.c) to manually track PHY probing states and trigger resets
+> at specific points in their clock management flow and was created just fo=
+r a SoC
+> vendor. This leads to fragile code in the Ethernet driver, involving comp=
+lex
+> checks to see if the PHY device is bound.
+>=20
+> This patch proposes moving the handling of the PHY_RST_AFTER_CLK_EN flag
+> directly
+> into the generic phy_init_hw() function.
+>=20
+> Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+> ---
+>=20
+> I need to test better some boards that need this reset, but
+> I need to confirm if the general approach is ok
 
-Ok, will update it.
+This patch looks good to me, it is more generic than the previous
+solution. I do not have a board that uses SMSC LAN8710/LAN8720
+or other PHYs, so I can not help verify the solution, but I think it
+should fix the issue that reported on the i.MX platform. Thanks.
 
->
-> > +     if (!pair)
-> > +             return -ENOMEM;
-> > +
-> > +     pair->asrc =3D asrc;
-> > +     pair->private =3D (void *)pair + sizeof(struct fsl_asrc_pair);
-> > +
-> > +     /* Request a dummy pair, which will be released later.
-> > +      * Request pair function needs channel num as input, for this
-> > +      * dummy pair, we just request "1" channel temporarily.
-> > +      */
-> > +     ret =3D asrc->request_pair(1, pair);
-> > +     if (ret < 0) {
-> > +             dev_err(dev, "failed to request asrc pair\n");
-> > +             goto req_pair_err;
-> >       }
-> >
-> > -     return snd_pcm_set_fixed_buffer_all(pcm, SNDRV_DMA_TYPE_DEV,
-> > -                                         card->dev, FSL_ASRC_DMABUF_SI=
-ZE);
-> > +     /* Request a dummy dma channel, which will be released later. */
-> > +     chan =3D asrc->get_dma_channel(pair, IN);
->
-> Is it possible get real dma chan from fsl_asrc?
+Acked-by: Wei Fang <wei.fang@nxp.com>
 
-This is real dma chan, may be I should remove "dummy".
-
->
-> > +     if (!chan) {
-> > +             dev_err(dev, "failed to get dma channel\n");
-> > +             ret =3D -EINVAL;
-> > +             goto dma_chan_err;
-> > +     }
-> > +
-> > +     ret =3D snd_pcm_set_fixed_buffer_all(pcm,
-> > +                                        SNDRV_DMA_TYPE_DEV,
-> > +                                        chan->device->dev,
-> > +                                        FSL_ASRC_DMABUF_SIZE);
->
-> Here you assume chan->device->dev never change when it did DMA transfer.
-
-Yes, this refers to the generic code in ALSA.
-
-best regards
-Shengjiu Wang
-
->
-> Frank
-> > +
-> > +     dma_release_channel(chan);
-> > +
-> > +dma_chan_err:
-> > +     asrc->release_pair(pair);
-> > +
-> > +req_pair_err:
-> > +     kfree(pair);
-> > +
-> > +     return ret;
-> >  }
-> >
-> >  struct snd_soc_component_driver fsl_asrc_component =3D {
-> > --
-> > 2.34.1
-> >
