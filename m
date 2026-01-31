@@ -1,142 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5352C35CB64;
-	Fri, 30 Jan 2026 23:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B919317715;
+	Sat, 31 Jan 2026 01:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769814005; cv=none; b=ndMD6aZkUdUVcuu6ODUXvOzwzLtdelCZkJhPjmbDwrt4FFvGbVCs92JtmfU7S8+EzsHbevYL2qfxdMLRnTDXbBs/0hOTqFBi9PVpyS9wNoDToGXl0lEV8L8YM5Dtc8AO8fPQ/rbSb4K8yKJLc0s4DVSYnVz5dEcjfNldgjVEaYg=
+	t=1769824215; cv=none; b=NfQ1kROxZwR0DBOY+dhZokktqrgLRn04Ak7LyVpNLSNvbgpzx8CuF0VBchG2WW6KoAIKYV31K0N8IUyo9wYPbLYeVmEaHm8Ud7TnsFVVbHxlEZWlFDnktgY0HmkGcgiNlfjeXv7lKAuLVS+vqFTPQR5YhoMpJkoAS48jt2qCq2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769814005; c=relaxed/simple;
-	bh=GBzpXsnsK2Cyxpu5Z14dtX7F4paagl1xkilH19uLH+0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tbv/ByFYzztCUgE6pY0u+tUd6F6yYp2oAFxVwnpEnXkAidR2DGTC6RJXpXIg+WX58d5h3cBzsHJHPBo7UaTgxxaMk7anNg64Vwy6qVfCvLG33e262eTEUStkQR+nVWYWPcWxoHmZu+ViVRr6ufh4+jDTAF5xqYnq2+fmUF2VXqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nyXhbl4V; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769824215; c=relaxed/simple;
+	bh=KveGONG7UJdElvqV315bWlMz8AD27Y9PZLI+Vh0KgjU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=IwMNSVtzOOZJDbpjIFcgN/jv5st10i6Us3Zg62OKmzFIxqTMnkJjTDAuV+RTKXGFRfjQw9Ua8AvD9QNODyabcPHc9talUqGpiMDF7A6UpaleNHw8+GPyyZj6gbtElQ1uIIzV3eIZYxEwKKPZ5eMS8v/7j7vMVDh2Ip+umwFvMzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GX4SYWdy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nyXhbl4V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7EBC4CEF7;
-	Fri, 30 Jan 2026 23:00:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GX4SYWdy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249B2C116D0;
+	Sat, 31 Jan 2026 01:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769814005;
-	bh=GBzpXsnsK2Cyxpu5Z14dtX7F4paagl1xkilH19uLH+0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nyXhbl4VXI1lm1QPv0+uz/7kz0F7sLvf7W5tMuWj/CH/lcUlXBOoGgoiKI/aV3vbw
-	 rRwtbiud1B17Rg5m7GwSHMqBCPAmm7GPl6iL2QFt+qarYysv0ktSXfIbXC1mimMdhu
-	 NuuhgHVfUNAYpxjU3VqkyYQmBWqchZIJAk5RXefKDjjPEsX63Uw8ITRZbdrUvecXJ7
-	 8pmjBROil7CQtTIrhOEd6LxF9eOlDBjVcMaHQxLgZZ7GNnr5unNIAVpE+fyulFkrvU
-	 u4dwz6HexOHK/SmRIvlQKL48sa8YKl//9jnjE8Rt9mzLDcqMMeWIxvxAi+E0VrRCU4
-	 UDkyrvMKiuhYg==
-Date: Sat, 31 Jan 2026 00:00:02 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: "Viorel Suman (OSS)" <viorel.suman@oss.nxp.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, linux-pwm@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] pwm: imx-tpm: keep channel state instead of counting
-Message-ID: <sqpcohdky6m2kz5o7izoclr7k4wi2s72mi4ojrdhr2kbogtfbt@v6y5raizg2n5>
-References: <20260130143720.778514-1-viorel.suman@oss.nxp.com>
+	s=k20201202; t=1769824215;
+	bh=KveGONG7UJdElvqV315bWlMz8AD27Y9PZLI+Vh0KgjU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=GX4SYWdycMxo+2vTLOeR/ZBoTMWGL8AgvbwdETbXxJVMdby1l6Dl/yDEby0l+bAq9
+	 9c6Q3Ki4B+bTUnQbsrudX3kJlBk7gdDK6na9gXWgC1zrDWUW1D8AI/xuaO62XKAHNz
+	 7KBl252hzYi7jCPIyLfasU49uL767ZC6Z4XMBFGqjlwJeCKovdwCkF4QZXfgLvw6ZD
+	 D/mcX2MYw6EilRtyq7BbVr626UBsoRRvZTRjwOMFTTTQq0bay74A5d7p/9ms1wP+5m
+	 xCmKiBfwRLNb5F0zTpAInNgI6E6+gWD86d68SAQ6+GF/qJ1X8ABgRJC3WNeCF52EYt
+	 aYEQDXnTXp2bg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8BC98380CFFB;
+	Sat, 31 Jan 2026 01:50:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7xvp3kdixsnpt4an"
-Content-Disposition: inline
-In-Reply-To: <20260130143720.778514-1-viorel.suman@oss.nxp.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: stmmac: spelling corrections
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176982420710.3961929.13739265763800349219.git-patchwork-notify@kernel.org>
+Date: Sat, 31 Jan 2026 01:50:07 +0000
+References: <20260129-stmmac-spell-v1-1-c7df9a96e482@kernel.org>
+In-Reply-To: <20260129-stmmac-spell-v1-1-c7df9a96e482@kernel.org>
+To: Simon Horman <horms@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, wens@kernel.org,
+ jernej.skrabec@gmail.com, samuel@sholland.org, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-sunxi@lists.linux.dev
+
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 29 Jan 2026 17:35:03 +0000 you wrote:
+> Correct spelling as flagged by codespell.
+> 
+> Signed-off-by: Simon Horman <horms@kernel.org>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c        |  4 ++--
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c      |  4 ++--
+>  drivers/net/ethernet/stmicro/stmmac/dwmac1000.h        |  2 +-
+>  drivers/net/ethernet/stmicro/stmmac/dwmac100_core.c    |  2 +-
+>  drivers/net/ethernet/stmicro/stmmac/enh_desc.c         |  2 +-
+>  drivers/net/ethernet/stmicro/stmmac/mmc_core.c         |  4 ++--
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c  |  2 +-
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c      | 10 +++++-----
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c      |  2 +-
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c |  2 +-
+>  10 files changed, 17 insertions(+), 17 deletions(-)
+
+Here is the summary with links:
+  - [net-next] net: stmmac: spelling corrections
+    https://git.kernel.org/netdev/net-next/c/96e1c895b5ec
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
---7xvp3kdixsnpt4an
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] pwm: imx-tpm: keep channel state instead of counting
-MIME-Version: 1.0
-
-Hello,
-
-On Fri, Jan 30, 2026 at 04:37:20PM +0200, Viorel Suman (OSS) wrote:
-> diff --git a/drivers/pwm/pwm-imx-tpm.c b/drivers/pwm/pwm-imx-tpm.c
-> index 5b399de16d60..0f8643f4a70b 100644
-> --- a/drivers/pwm/pwm-imx-tpm.c
-> +++ b/drivers/pwm/pwm-imx-tpm.c
-> @@ -62,7 +62,7 @@ struct imx_tpm_pwm_chip {
->  	void __iomem *base;
->  	struct mutex lock;
->  	u32 user_count;
-> -	u32 enable_count;
-> +	u32 enabled_channels;
->  	u32 real_period;
->  };
-> =20
-> @@ -166,6 +166,10 @@ static int pwm_imx_tpm_get_state(struct pwm_chip *ch=
-ip,
-> =20
->  	/* get channel status */
->  	state->enabled =3D FIELD_GET(PWM_IMX_TPM_CnSC_ELS, val) ? true : false;
-> +	if (state->enabled)
-> +		tpm->enabled_channels |=3D BIT(pwm->hwpwm);
-> +	else
-> +		tpm->enabled_channels &=3D ~BIT(pwm->hwpwm);
-
-I'm not sure about this being the right approach, feels like the driver
-sells the pwm core down the river resulting in something the might work
-now but isn't robust.
-
-If I understand it right, keeping the enable count balanced depends on
-=2Eget_state() being called.
-
-The usual and robust approach is that .probe() checks the device state
-and initializes enable counts and the like accordingly.
-=20
->  	return 0;
->  }
-> @@ -282,15 +286,19 @@ static int pwm_imx_tpm_apply_hw(struct pwm_chip *ch=
-ip,
->  	}
->  	writel(val, tpm->base + PWM_IMX_TPM_CnSC(pwm->hwpwm));
-> =20
-> -	/* control the counter status */
-> +	/* control the channel state */
->  	if (state->enabled !=3D c.enabled) {
->  		val =3D readl(tpm->base + PWM_IMX_TPM_SC);
->  		if (state->enabled) {
-> -			if (++tpm->enable_count =3D=3D 1)
-> +			if (tpm->enabled_channels =3D=3D 0) {
->  				val |=3D PWM_IMX_TPM_SC_CMOD_INC_EVERY_CLK;
-> +			}
-
-No { } for one line blocks please.
-
-> +			tpm->enabled_channels |=3D BIT(pwm->hwpwm);
->  		} else {
-> -			if (--tpm->enable_count =3D=3D 0)
-> +			tpm->enabled_channels &=3D ~BIT(pwm->hwpwm);
-> +			if (tpm->enabled_channels =3D=3D 0) {
->  				val &=3D ~PWM_IMX_TPM_SC_CMOD;
-> +			}
->  		}
->  		writel(val, tpm->base + PWM_IMX_TPM_SC);
->  	}
-
-Best regards
-Uwe
-
---7xvp3kdixsnpt4an
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAml9N+8ACgkQj4D7WH0S
-/k76nAgAn8xLKTNmCc/Rl13FIw2HubBJdNbWuOQ7ASbK49bL/CHl69Q6rhlTDiHH
-7XQD0ngk8c4+NRVnTx7uetLD71ZmWh8daSGg1n80MlRjlQxU1oR/II01FwMGj9tt
-P1tobD+As9HklTNatNg0cKyLKFsCEpB30Lew/KcsBcyu1nchbxUnGJJ9Gp5hP659
-wH4icYh4Y828hfuw8ckuoAXZkGe3wYiS8WFel0xEKmEhIex/EuJAyQuzIAJez+Qe
-LtIL2XTiCQd+DhctVGqo5/aRi+Rd9X0xXEymrh0RwTPIn9CMbbFoxhthLC30/8Er
-OOpYm6Vo+WNti3tgEx3Xx5VuwFNUUQ==
-=eAkP
------END PGP SIGNATURE-----
-
---7xvp3kdixsnpt4an--
