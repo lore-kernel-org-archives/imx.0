@@ -1,67 +1,67 @@
-Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FA519ABD8
-	for <imx@lists.linux.dev>; Sat, 31 Jan 2026 08:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F015326D50
+	for <imx@lists.linux.dev>; Sat, 31 Jan 2026 08:11:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769847108; cv=none; b=ruCxILTtnvMWiYAmXvOdSPDz0itMPFDqAHEDYKZaXUx2SLZAN4C1Xi2WkMQp4ZlhZN0ZBvebmpGD8k2HVbd9V7QOgJsEH7ZDuKkb8Z+b6f6ZAY0NR6NJ6hP+sEbsiSVMorV1V+OSGDImszGWmezyAouHT7ue1h7mOtl8Hv2B7fE=
+	t=1769847112; cv=none; b=sL/I/2lwNY6C6KZYz4Y25Oj7oPAa/T547MvAMsBVKWLd/zuqGZFGVvjIwyuSjmUdxssI8cKC8NPdXkbp3wVsQX7ZGSUVvkMrUhjX/hEO5+Z5SSeuLttHnNF0HXhgcFgs+/xZfgJset1Qipf2iE/wx7Qnei8jxwqGGpBPwkgUQmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769847108; c=relaxed/simple;
-	bh=9OAQjhZI4G9NDVTt9f0prwiTo7Qoj04+zj9JpK/zoHA=;
+	s=arc-20240116; t=1769847112; c=relaxed/simple;
+	bh=8z6Jwe22roU0IcUq5EjPKimwprqUXrkhxOXSXzExrCg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TxjUprMWamdPUolljaBvQgpm0tcNAlNk+LzHl07dYcKTLUUCMppOgkOuHWnCqHIEpPa+YSB51JcmZtZ4UglMIKu79M6B1BYBJL4DyVo8xPAGWJPuXyRf9grxswkuQauPos0QSQAHB6+SEklH2B5Hd63T4PnC+pYsV2oZM2SvV2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lkbpsrlf; arc=none smtp.client-ip=209.85.214.195
+	 In-Reply-To:To:Cc; b=Djg4hTej3tabpSXaygepJdgCNORKPd01JOv8A8Vad6uKv6+jmL4q47t3GcrjIVjsRbaN+A0hP4Mm7B4tlYpJ/Z0nDPrktzSFMWSUMhAzzvfNC1Y7nUzHvUIKDE7Fq6v1TPpUrQ/p4NLeA/bxP97o2PDZvckORxvyiewzuX6X7/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NmkzTpnc; arc=none smtp.client-ip=209.85.214.193
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lkbpsrlf"
-Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-2a09757004cso23094605ad.3
-        for <imx@lists.linux.dev>; Sat, 31 Jan 2026 00:11:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NmkzTpnc"
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-2a1022dda33so18589465ad.2
+        for <imx@lists.linux.dev>; Sat, 31 Jan 2026 00:11:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769847106; x=1770451906; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1769847111; x=1770451911; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=E79QyFHl6v9hrcpW7a0gJg/ST+Ia1jTsFgjOY9hJneE=;
-        b=Lkbpsrlf7Q52dZV+L5NzPUbPPL1aTroldQoiNSmS3p47KbtTAwOZ0DcuTAovIKCuC2
-         qqAKiptKl4ffzpdbn8rbPzmkIFRDWcgfOn2kfqSn2h0vBOCIKAyxC3firdTyFJzuSBg+
-         sa1kFLv4o9V6ubLipKeQTI3hViZ2sI5eSbpRbjiNCYTookie0lhoYVzb3uQBNGoT6veA
-         FHuF+OZFiy3uWQdpDXZkgVcVtQ0wdlOc1/aFy1hVGegjvQ1XPEjeznh/4HeHaaXYPane
-         GOGAnp6oLa8SBcVrIeLY7QKIZ6RCSxW+mZ+ndKswsoK3iAdDjBiXy+bJfZb2jS7ykA7S
-         HJYQ==
+        bh=FjfAJsvyjCO/vjM7jBeWQxefgcvpbHgFUQ72gcagyLo=;
+        b=NmkzTpnclo21WOtz1Nb3xIqHtgMDgp0au2BkU5csObEzplTVOWRZF9SAL/3TTj0QxA
+         4N/aTC0duumZrRsrQ3m9VigUmfzIu0GfgoJjAbWPY/WPjqfgUihkuEEkpVEgQUPYCDO0
+         TTq8ZTs7fOkJIrMYr6b1o/GSpXVxhUTEzQl1WPtWAikoXE59ZDOE1Xw17vPnLlDZIntR
+         FBAbImT/2lLP9wbqI4vJg2xD817meiH5bnevupWhx6WZuaGmrEX8KsFRmuGpMO8CjDXr
+         Y7nwlJL7M3ISwbkEIcHPPT6ChnrU/KTb2/F6YCQh3KBvLghBEGvcukuAa1HzQJksJF2X
+         6cSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769847106; x=1770451906;
+        d=1e100.net; s=20230601; t=1769847111; x=1770451911;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=E79QyFHl6v9hrcpW7a0gJg/ST+Ia1jTsFgjOY9hJneE=;
-        b=fmpb5apjwyoezwKR1RZmmuqLUye+pgCoNysKzFiOOuRPmfomoPgXY3RPCF/B+vMPH6
-         VjwDBDQmj87/nfvaGT1iYbHQHQniEip77tIVUywcHCbDxcVAE6EQ1aNajSz1S1JOjm96
-         L3X3dnqgAQezwpIJ1FUCKxSaDTBKxH4ckNC9uZSouGpNQBgYht6jxy+EBvasW+kKTpb3
-         x1hTDh2y3dtiGN5LdoQaJl+EQL3ZPxDZ/x4eQsCfCnVkGkPRQswkgVX6SPqFM2n4yQOl
-         /sXKXCQu4TvIarw7LAhOVU+CjSlKDRwt1fgw3ot/LQq9P9MSmCxs4AbGhtofh8Cf7Vgo
-         5tCw==
-X-Forwarded-Encrypted: i=1; AJvYcCVvBh34p4BV7gKG+fl95t7gCG347sfriM2kHSQq4xstPTf3Y9tjpCdt++nDoMqoleXw8Bo=@lists.linux.dev
-X-Gm-Message-State: AOJu0Ywrpc/gVsTcr0QzIv1DjJqXaF5FQYhZS3yK+KWgBQE4/9rp4RGg
-	6NCqbR/29hgXf7xYuAIz3SElMslnmO16tIXo7KoZsdIeykXnIQV/a6SP
-X-Gm-Gg: AZuq6aJFvIu1xYDEmVA6onC30ihJgHWxrC+kHlG20xuv36c49DpoiSAlNwSjTQIim+3
-	Ne0lGHaHFVs282A3qV8FGjFYcHIj6mVliG3jpnVjjdEeS4WY9BpS0lUUKKyXwRoW749QxhoLSMh
-	UWRh1YPrM0k2AA3gP7gIu6LHO9EKgyTR2CCe5rx4orWOVXm3CtOdvdewIFqgBz+W+0LuKzpR+6t
-	KnQmxzr+IAgq/uxr0cah0AjGNn75InI1bwvYRLym14jIgWX4FSf++O1Gq89HG5sW2QabbBGSinD
-	b4q5htedxwhcjv9WKfGpCgLjMpLmraLI+0x2QwSETx+hgUQATbEW5BWIKq5ESR1rHzfFogBtZgn
-	llWvm+5f7yR+j76mOwWuzd202atdnbma1DhLYPMiymLuTZVnQG9zPr/ws0x7SLadRCokSnEebhU
-	6vTCCGZvk=
-X-Received: by 2002:a17:902:8218:b0:2a7:7c72:42b6 with SMTP id d9443c01a7336-2a8d96a221fmr44250135ad.18.1769847105996;
-        Sat, 31 Jan 2026 00:11:45 -0800 (PST)
+        bh=FjfAJsvyjCO/vjM7jBeWQxefgcvpbHgFUQ72gcagyLo=;
+        b=RgLh+FZeoc5NcuqtSVszeqZsD50Hkv6QpkLHcmHFFRWwIzX6y0OkQf3KVYYOw7IkZh
+         Vh6Jg5DdDK2c0UzEPMI9oeallBWRwZa5mQPKvqhHRSpuOCJ/hHNK58TUo+M0l3Vo4mIp
+         uMpkqo7QCBodtrOgGLqZecRTqy6RXRVJtfz3fFjbzsZ6jYENyE8I73gSa4dksdtaC2xn
+         /XWbNgEipPCwbZ4NAA3ht2XjIuIgoOit8JITpOfIwzc11aATzCh8o+4TxNOIUinR0jdd
+         tjEJJ8/uMAT2CalU+BhDTaOgRroYoKukTKTynqjJFfuzJJ5Km+4/JnG9NjrcUo+LvSbK
+         TfIA==
+X-Forwarded-Encrypted: i=1; AJvYcCVsYR1sSN0z0C+mOF52aW+FOtPjpgjDCAITXbH6us78JZTg8AICvJRtmrmVXlzc17sWAyY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxpeQP26yaZoyGB/7ZYC6z8vlktmIkZVLx5SkF63oMuV0NHvZ/m
+	zkNqOORJL6k0/yah/nf0w/vnTbFBvQFkgPCo8VEPIsVH1fzUxBZJL0U/
+X-Gm-Gg: AZuq6aKMsHZVPpaUKwTwiavryFoBBKJ1M5UcmdmwCJ29PrE72MDDZhgGdNKQBVnB5ZN
+	u6Z7Hy6bJXOftfpnQ9gqmp52TlmLHvohczxr+kTRNDZJoYAwVFVzSc27+pFqIwNtp4YE6U0FdU1
+	tJdaEA6blXicn74uKPPXZXKrpj9u0Bjg5iPZ93sHH3fYZ0WZtadsA+0c/t0h3JawDdzD+Z7G0f4
+	zldaWaWRrQTQDb6+PdszdIXE0jjqzXjxVC4Dwt2gBywXJLSRnL4UaeTq6cgaN8EvcDMLTzlgTWk
+	EC5fdmvH4LieVUPyf30gILTKBCkJ3D1TTEJHK96l2GjWa4WTJCmN3M1NJ0WD8PAdhm+NkrT1w6Q
+	Y+n1ABro6jgy/d9BA+nWagQMcnYGStXwHeWKZQTFFyzgO21vovTeIbIcfX76gD4E816iRxZlxGj
+	Xy6wPFcUs=
+X-Received: by 2002:a17:902:f544:b0:2a0:fb1c:143d with SMTP id d9443c01a7336-2a8d9592938mr50396115ad.1.1769847110853;
+        Sat, 31 Jan 2026 00:11:50 -0800 (PST)
 Received: from junjungu-PC.localdomain ([2408:820c:9008:ba52::3a87])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b5d92a9sm92115125ad.69.2026.01.31.00.11.41
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b5d92a9sm92115125ad.69.2026.01.31.00.11.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Jan 2026 00:11:45 -0800 (PST)
+        Sat, 31 Jan 2026 00:11:50 -0800 (PST)
 From: Felix Gu <ustc.gu@gmail.com>
-Date: Sat, 31 Jan 2026 16:11:34 +0800
-Subject: [PATCH v2 1/2] clk: imx: imx6q: Fix device node reference leak in
- pll6_bypassed()
+Date: Sat, 31 Jan 2026 16:11:35 +0800
+Subject: [PATCH v2 2/2] clk: imx: imx6q: Fix device node reference leak in
+ of_assigned_ldb_sels()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260131-clk-imx6q-v2-1-70471ddc99e0@gmail.com>
+Message-Id: <20260131-clk-imx6q-v2-2-70471ddc99e0@gmail.com>
 References: <20260131-clk-imx6q-v2-0-70471ddc99e0@gmail.com>
 In-Reply-To: <20260131-clk-imx6q-v2-0-70471ddc99e0@gmail.com>
 To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
@@ -87,51 +87,54 @@ Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Felix Gu <ustc.gu@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769847097; l=1258;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769847097; l=1463;
  i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=9OAQjhZI4G9NDVTt9f0prwiTo7Qoj04+zj9JpK/zoHA=;
- b=Amf+HD1p3lcCeTT2eWu8v7JUo6k/cHzSXe1AmMAfSN8hyokQgHe/dh6dj/P7sHbmDWKqueAlg
- HSqNr6tFh10C/GLl9mZ/HUETAF9ASs8izJZ1BX+ZQlQJkLbXzj1mf8y
+ bh=8z6Jwe22roU0IcUq5EjPKimwprqUXrkhxOXSXzExrCg=;
+ b=oiRk1okIysEjvHlGj/5wAp4PFaBltdhhMRDvFAiXGskFVm57xO67i5mEoNGJaNojLeDz5+wu+
+ WdOTQp1dMycC//jtDtoXsQb3Te+V7M8qOzaj4IqkCVqdZ0e5zHzDORo
 X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
  pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-The function pll6_bypassed() calls of_parse_phandle_with_args()
-but never calls of_node_put() to release the reference, causing
-a memory leak.
+The function of_assigned_ldb_sels() calls of_parse_phandle_with_args()
+but never calls of_node_put() to release the reference, causing a memory
+leak.
 
 Fix this by adding proper cleanup calls on all exit paths.
 
-Fixes: 3cc48976e9763 ("clk: imx6q: handle ENET PLL bypass")
+Fixes: 5d283b083800 ("clk: imx6: Fix procedure to switch the parent of LDB_DI_CLK")
 Signed-off-by: Felix Gu <ustc.gu@gmail.com>
 ---
- drivers/clk/imx/clk-imx6q.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/clk/imx/clk-imx6q.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/clk/imx/clk-imx6q.c b/drivers/clk/imx/clk-imx6q.c
-index bf4c1d9c9928..1d8e8f0891a3 100644
+index 1d8e8f0891a3..58882dbc3a11 100644
 --- a/drivers/clk/imx/clk-imx6q.c
 +++ b/drivers/clk/imx/clk-imx6q.c
-@@ -238,8 +238,11 @@ static bool pll6_bypassed(struct device_node *node)
- 			return false;
- 
- 		if (clkspec.np == node &&
--		    clkspec.args[0] == IMX6QDL_PLL6_BYPASS)
-+		    clkspec.args[0] == IMX6QDL_PLL6_BYPASS) {
+@@ -188,9 +188,11 @@ static void of_assigned_ldb_sels(struct device_node *node,
+ 		}
+ 		if (clkspec.np != node || clkspec.args[0] >= IMX6QDL_CLK_END) {
+ 			pr_err("ccm: parent clock %d not in ccm\n", index);
 +			of_node_put(clkspec.np);
- 			break;
-+		}
+ 			return;
+ 		}
+ 		parent = clkspec.args[0];
 +		of_node_put(clkspec.np);
- 	}
  
- 	/* PLL6 bypass is not part of the assigned clock list */
-@@ -249,6 +252,7 @@ static bool pll6_bypassed(struct device_node *node)
- 	ret = of_parse_phandle_with_args(node, "assigned-clock-parents",
- 					 "#clock-cells", index, &clkspec);
+ 		rc = of_parse_phandle_with_args(node, "assigned-clocks",
+ 				"#clock-cells", index, &clkspec);
+@@ -198,9 +200,11 @@ static void of_assigned_ldb_sels(struct device_node *node,
+ 			return;
+ 		if (clkspec.np != node || clkspec.args[0] >= IMX6QDL_CLK_END) {
+ 			pr_err("ccm: child clock %d not in ccm\n", index);
++			of_node_put(clkspec.np);
+ 			return;
+ 		}
+ 		child = clkspec.args[0];
++		of_node_put(clkspec.np);
  
-+	of_node_put(clkspec.np);
- 	if (clkspec.args[0] != IMX6QDL_CLK_PLL6)
- 		return true;
- 
+ 		if (child != IMX6QDL_CLK_LDB_DI0_SEL &&
+ 		    child != IMX6QDL_CLK_LDB_DI1_SEL)
 
 -- 
 2.43.0
