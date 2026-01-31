@@ -1,35 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B919317715;
-	Sat, 31 Jan 2026 01:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA10321434;
+	Sat, 31 Jan 2026 01:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769824215; cv=none; b=NfQ1kROxZwR0DBOY+dhZokktqrgLRn04Ak7LyVpNLSNvbgpzx8CuF0VBchG2WW6KoAIKYV31K0N8IUyo9wYPbLYeVmEaHm8Ud7TnsFVVbHxlEZWlFDnktgY0HmkGcgiNlfjeXv7lKAuLVS+vqFTPQR5YhoMpJkoAS48jt2qCq2w=
+	t=1769824476; cv=none; b=UPPm9/6f67aTAX50Y8X8PvLGoSHEj6x77RA1EQoVys6Xh+v8lEjQZ+s3i1gR3loJZgJ4N8tWDa9170W+c69njkPAl1Kuy3E25NQJoRC236DIptsrwKXBUWlsqsdHuMkUJs4aymbbzfz3xAYxoNg8P1jlccwTjzcXI6avDRegZF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769824215; c=relaxed/simple;
-	bh=KveGONG7UJdElvqV315bWlMz8AD27Y9PZLI+Vh0KgjU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IwMNSVtzOOZJDbpjIFcgN/jv5st10i6Us3Zg62OKmzFIxqTMnkJjTDAuV+RTKXGFRfjQw9Ua8AvD9QNODyabcPHc9talUqGpiMDF7A6UpaleNHw8+GPyyZj6gbtElQ1uIIzV3eIZYxEwKKPZ5eMS8v/7j7vMVDh2Ip+umwFvMzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GX4SYWdy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769824476; c=relaxed/simple;
+	bh=7tL9q9XKleen5Up+Wt+oyqqMgj2ZPmG6LNTIPku7R04=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OPnBQcsiMOj2gR9WMzVCzWC1WXQBbL/5DWR69yxUjABWE/pGf1FfrS7tbxJYDT2gpRubUj5rIYChdCibfX+kxRInuFe3OGIxFuQdv4z4M5ovZrQjZeBmzjUGCMXA2glcZ8dQ3URq/IaP8rP2gXowhYndMcaY24UkQYhcHAjfIhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qfUWlX/W; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GX4SYWdy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249B2C116D0;
-	Sat, 31 Jan 2026 01:50:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qfUWlX/W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE728C4CEF7;
+	Sat, 31 Jan 2026 01:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769824215;
-	bh=KveGONG7UJdElvqV315bWlMz8AD27Y9PZLI+Vh0KgjU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=GX4SYWdycMxo+2vTLOeR/ZBoTMWGL8AgvbwdETbXxJVMdby1l6Dl/yDEby0l+bAq9
-	 9c6Q3Ki4B+bTUnQbsrudX3kJlBk7gdDK6na9gXWgC1zrDWUW1D8AI/xuaO62XKAHNz
-	 7KBl252hzYi7jCPIyLfasU49uL767ZC6Z4XMBFGqjlwJeCKovdwCkF4QZXfgLvw6ZD
-	 D/mcX2MYw6EilRtyq7BbVr626UBsoRRvZTRjwOMFTTTQq0bay74A5d7p/9ms1wP+5m
-	 xCmKiBfwRLNb5F0zTpAInNgI6E6+gWD86d68SAQ6+GF/qJ1X8ABgRJC3WNeCF52EYt
-	 aYEQDXnTXp2bg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8BC98380CFFB;
-	Sat, 31 Jan 2026 01:50:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1769824475;
+	bh=7tL9q9XKleen5Up+Wt+oyqqMgj2ZPmG6LNTIPku7R04=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qfUWlX/W8vsQ9Rp4Mg0R0DastRitiVLxPKfoYmAnRuLm8TJRoCo7SE/th3F992qDw
+	 irU13ZKqJ8fNgT6BTlZ8ZFL40IH64qCvTJZfUPkWY8K9s96tncqVChLF2nF9pG0QPp
+	 j4+vZfeTSLAOGUCh9XW1vIDeU3d4pf+xpyTfwmlEH7ugdpMCOrHwAOWZW7rIflnY/+
+	 n1Fw9g8rN6gHQDC8Bs5MG4MZv6yf+Kvg3ncwUtp9AJpRTXX+cYiBxNsUkLWquPzy0q
+	 LQPu3LjL1MIvIb9UPmT2j7mikYQHAnb1ObHq0i5aZKs8zHMgr3wKiqxWl83EhVHiUr
+	 oOM65obkeZ/+w==
+From: Jakub Kicinski <kuba@kernel.org>
+To: lukasz.majewski@mailbox.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	devicetree@vger.kernel.org,
+	horms@kernel.org,
+	krzk+dt@kernel.org,
+	s.hauer@pengutronix.de,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de,
+	richardcochran@gmail.com,
+	shawnguo@kernel.org,
+	edumazet@google.com,
+	linux-arm-kernel@lists.infradead.org,
+	andrew+netdev@lunn.ch,
+	pabeni@redhat.com,
+	wahrenst@gmx.net,
+	davem@davemloft.net,
+	festevam@gmail.com,
+	conor+dt@kernel.org,
+	imx@lists.linux.dev,
+	andrew@lunn.ch,
+	robh@kernel.org
+Subject: Re: [net-next,v21,2/7] net: mtip: The L2 switch driver for imx287
+Date: Fri, 30 Jan 2026 17:54:33 -0800
+Message-ID: <20260131015433.972337-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260129110154.1699976-3-lukasz.majewski@mailbox.org>
+References: <20260129110154.1699976-3-lukasz.majewski@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,52 +62,72 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: stmmac: spelling corrections
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176982420710.3961929.13739265763800349219.git-patchwork-notify@kernel.org>
-Date: Sat, 31 Jan 2026 01:50:07 +0000
-References: <20260129-stmmac-spell-v1-1-c7df9a96e482@kernel.org>
-In-Reply-To: <20260129-stmmac-spell-v1-1-c7df9a96e482@kernel.org>
-To: Simon Horman <horms@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, wens@kernel.org,
- jernej.skrabec@gmail.com, samuel@sholland.org, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-sunxi@lists.linux.dev
 
-Hello:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+net: mtip: The L2 switch driver for imx287
 
-On Thu, 29 Jan 2026 17:35:03 +0000 you wrote:
-> Correct spelling as flagged by codespell.
-> 
-> Signed-off-by: Simon Horman <horms@kernel.org>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c        |  4 ++--
->  drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c      |  4 ++--
->  drivers/net/ethernet/stmicro/stmmac/dwmac1000.h        |  2 +-
->  drivers/net/ethernet/stmicro/stmmac/dwmac100_core.c    |  2 +-
->  drivers/net/ethernet/stmicro/stmmac/enh_desc.c         |  2 +-
->  drivers/net/ethernet/stmicro/stmmac/mmc_core.c         |  4 ++--
->  drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c  |  2 +-
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c      | 10 +++++-----
->  drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c      |  2 +-
->  drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c |  2 +-
->  10 files changed, 17 insertions(+), 17 deletions(-)
+This patch introduces support for the MTIP L2 switch embedded in the
+imx287 SoC. It provides the core driver infrastructure including DMA
+initialization, PHY/MDIO handling, and net device operations.
 
-Here is the summary with links:
-  - [net-next] net: stmmac: spelling corrections
-    https://git.kernel.org/netdev/net-next/c/96e1c895b5ec
+> diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> new file mode 100644
+> index 000000000000..7b61ba9642e3
+> --- /dev/null
+> +++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
 
-You are awesome, thank you!
+[ ... ]
+
+> +static int mtip_mii_probe(struct net_device *dev)
+> +{
+> +	struct mtip_ndev_priv *priv = netdev_priv(dev);
+> +	struct switch_enet_private *fep = priv->fep;
+> +	struct phy_device *phy_dev = NULL;
+> +	int port_idx = priv->portnum - 1;
+> +
+> +	if (fep->phy_np[port_idx]) {
+> +		phy_dev = of_phy_connect(dev, fep->phy_np[port_idx],
+> +					 &mtip_adjust_link, 0,
+> +					 fep->phy_interface[port_idx]);
+> +		if (!phy_dev) {
+> +			netdev_err(dev, "Unable to connect to phy\n");
+> +			return -ENODEV;
+> +		}
+> +	}
+> +
+> +	phy_set_max_speed(phy_dev, 100);
+
+If fep->phy_np[port_idx] is NULL (no phy-handle in device tree), the
+if block is skipped entirely. In that case phy_dev remains NULL from
+initialization, and phy_set_max_speed() is called with a NULL pointer.
+
+phy_set_max_speed() dereferences phydev->supported via __set_phy_supported(),
+which would cause a NULL pointer dereference crash when the interface
+is opened.
+
+Should phy_set_max_speed() and the subsequent accesses to
+fep->phy_dev[port_idx] be moved inside the if block, or should the
+function return an error when phy_np is NULL?
+
+> +	fep->phy_dev[port_idx] = phy_dev;
+> +	fep->link[port_idx] = 0;
+> +	fep->full_duplex[port_idx] = 0;
+> +
+> +	dev_dbg(&dev->dev,
+> +		"MTIP PHY driver [%s] (mii_bus:phy_addr=%s, irq=%d)\n",
+> +		fep->phy_dev[port_idx]->drv->name,
+
+This debug print also dereferences fep->phy_dev[port_idx]->drv->name,
+which would crash if phy_dev is NULL.
+
+> +		phydev_name(fep->phy_dev[port_idx]),
+> +		fep->phy_dev[port_idx]->irq);
+> +
+> +	return 0;
+> +}
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
