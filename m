@@ -1,156 +1,183 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E23A367F4C
-	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 13:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770039442; cv=none; b=svq+Du0Ce3TWXDRYe8/hc9BX75beTEoStXWAwjMDU0/HXZl1iiWCT6TpAhVnTPrrzpCL9u64LWzTdmRR9lxE4d0D7OMBMXwGy6YGmnMN4az19hkfTaCFLy+bQQYUt8bUTaQ1BRbEScNZIM/tL2tbtlGxfFc0TQ4jQORNWAXn4GU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770039442; c=relaxed/simple;
-	bh=V6Tfoe3HRWqS64lmo1MNdCN5YwtOZQCUr/ZQi4ndplk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uvrq5/8x4AS4w/bD6252RmuDDKr0uYjkwhAN/b8ScwOKYFcHpzDV355l+ppEIdo8z+K77hqdt3X08QZQYQLhALM2sBnWM2NpTAvHroKWfWbptWyfEbsLuNz/TovYmMO1P5qKJTthzgSn4oTFK6AWF1RMrccyBIlB3Sf5ZqPywZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zZcbxpG4; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A2836C0CD
+	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 14:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770041843; cv=pass; b=GmgDwtzgaQBuXn71q9wwakCO0hyWL8RwQANNIZNVc49Hy+a14dqd/jmbfhT5V1NnpFvmkP665pxUpik0NAh168ggBZtvsi2L3y9mnXhflGmHxsHmfDorXlR9hrK6irB4AQv2KJaJVVB2xNjW2uqr9BrSGF9kyYaF6PI2aC2onjw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770041843; c=relaxed/simple;
+	bh=8kTR9QPGFqxQjrlyBR2RFv6GOSbe116yVA/R+TPaP8c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rdQyWmE+bEI4K3TTkZkeFJgn2WZ4rOYvLuzwxZ8EwO2/Mw1A49waTEz/tCxinXVgiWZjY89fkHSkuoYqFpBJShW6SGATqdg45DIpVD9+rL03MR+lgq1lbCcwPzcFwaO7k0ZGwTsjkXAZndBCzsqSa0sR7fnXLy6zScDs9Y3OBBE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PoIqgiHm; arc=pass smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zZcbxpG4"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-42fbc305914so3993926f8f.0
-        for <imx@lists.linux.dev>; Mon, 02 Feb 2026 05:37:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PoIqgiHm"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c2dd0c24e5cso1726972a12.3
+        for <imx@lists.linux.dev>; Mon, 02 Feb 2026 06:17:22 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770041842; cv=none;
+        d=google.com; s=arc-20240605;
+        b=a6Cd/u3n9m05Hu/batFsiLPAydnClyspOrY8FnJLQD10IpShGyUQtZXy9cA1s7ex9w
+         +V5+usbKA+OwvoufRHhU/CSzu9s04HfKwLM6KOsG5gjykcj0QuijKd8Gmm3Txte+KZr9
+         vo52XOZ16GVv8I4n4ROMW8oyfNcJZsAxjZ5HaxjR5Ul4N3rMtkyMq+9wobqj8k/xmDaF
+         BxzkJfNYvrSaH8Ky349Jh/r86scEXrWGtHaRRbx22uakXaA7kEoVL/eMbn1OIBsL1sUU
+         oqqPB8MYgV7r1pMNA7cKNuZ9fxNsCW+wluAi1kSB56SSgoycqM276gBM3AaGSviZly5r
+         LIOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6DwlNJWcSSWiB1RJVuYLclaV0gPVuBf1c2xRk/9v2KU=;
+        fh=2YNrARgzM8jDyOXHzNSGS3TIYQmYwC6VhoydTPQLxx4=;
+        b=C7+xMKL/rBVbs/67WtAeROzzpno5pfxVqGScUq3bPWDTBiFg8GZCLaygWKCA9bd66A
+         Ioe7aypkKpW5nH8OGnfQ93w8hoBquSACL5tqxoA0TXM17ZvKHPDn8pv263jOzESfiCIJ
+         1v77LH0Mwa5P2lL17R+TNK9yyc9I3NYJSrlxWJO3QGLnAyDCaaX9/8PlunaTLYwVAxlj
+         ub/kbqhlXSchql+FYQPv1nP6/zQGm5tQIdH+JRDBHZjmB1LrfDKawrrC3Zbd4m+cL/lA
+         i2jlb4JMuMxPtnDlJK/trPsWeklDctZIe6D55OqAKKynLDUtek0egt+5nEXlNTT0Aupm
+         o/ww==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1770039439; x=1770644239; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=sMtwM17CKX/8W2nz2qFNN/9+egceBVoLznQr83mTsDY=;
-        b=zZcbxpG4j1pm+SDVFsWY0AVJijF5cqtZ6ZEL4VudJglee089f2MjK22z2Mdw+hWEyv
-         0iJaXGqZmvlZCRYEAbOK1o9wzCRh69zph3jBee2ct2S1fwdBTIjhBYx8+vK+ohwMjRBp
-         /dIMh0eAKFEZMRJ/Wl3aqw7pAP5FL0kOkDC0ygrmMnDuc3nNOg3WCE5cliGFlnt/iBDB
-         Dls2D9SjpG/hr2Zgz+CjcbydP04rG081A3oJd4wjZAsvxtD6CWkDPyiacDRseE5H6uuU
-         NBdlx9j4wJZxhvwZ0NlYw5wo0i7YG+J3rviDZ458KClCFUHUvCCHX5uuRa9Maj4V6edH
-         VB+A==
+        d=gmail.com; s=20230601; t=1770041842; x=1770646642; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6DwlNJWcSSWiB1RJVuYLclaV0gPVuBf1c2xRk/9v2KU=;
+        b=PoIqgiHm76QnggUGJ1TM6WyJqGFp2dAsTTVmSYJ3pwKO6GP9bsKkwUYI1tWOxP5df+
+         Hts7Jh//muasDXfu7UpTZm9YNhBuEO4Jdp/giNE+EGiQtUoNowTtk0JEL+t5df7e8mLy
+         IMaNa8FLITg2olvV4mlT5/HT7yw2DrU2p4cdnIdSTCFC4Uk2l7av5DluheZ9YKKjiWiB
+         j+weuKEPLFCgc9zO8Df7GiZZ5iX8V/wIxtLcQFb9Ha1/SD1W4LENCuKsZcJ4VZbXHe2G
+         ZBj8ZrV1JNHiPzLgLGMh947PtHxX/oIByBT15RefTVkoZviu2slXt+JuvYwCSLwEcKPZ
+         baDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770039439; x=1770644239;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sMtwM17CKX/8W2nz2qFNN/9+egceBVoLznQr83mTsDY=;
-        b=AZnqzY5BBn5EZ1dpWUtz3xOrG2zxX7Qld+zrT2uF1btD/nT07uvthKTIeefVURd/8I
-         nPcQZTMKwU2Z/nlfhnk/KtYQk24KSBasxD7PVdJ8OmxDnWX4MsRT1ewb+lUmy8EVO660
-         Zuyb7g0H5WmFRBMnhZZeCfxElN95VdD+2L9HRWGPbJaHzRV1JbDvH6JEwQiKzgyejhLl
-         Tb0RAyACaA89V6wcktlAdq/kNIJLSmILaQ7zO1KE5q+4vL9355X63LNerft5AaS1bIA4
-         9sG7Kg7+9U8MPkOU6vSuMgKIHijwPfLgzClKf+W2UWc60wQsayyiOshxpgeREpZvXuNW
-         OOtw==
-X-Forwarded-Encrypted: i=1; AJvYcCUILG7OS28uutwzf6sbih29HOidsW3nm4Bsl9Z/ev6xx+voON/j6scAYlX/c8lMK2+HM3I=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxvZ71eqI1YRmuLxuamWvPX+qCK4FchXyvoQSndL66xp0ZJ8HMP
-	zPe8HZpMVynEt6pVDaYlcu/MGZjjEeI7YphsYk8DssqpVFO1PqUIwUOVcPOqlrBUJ5E=
-X-Gm-Gg: AZuq6aJd9NAaP1GlNq183nk9+TUMCzRTfh8AMbH9igEPgTjsbHgLJ3JO6Hd4y1PGCy5
-	2cf4KhPxW9zYaVXg1ks7a6u/u8UQ2RqVyhh+Y25rvRdI07BFAVs9UdNA953rZX0Ax83dwIAPqsm
-	pW+KxlAnOBULZIipp2DaBvdO0qrNLBAJYjJI+yWgsy+IWZDTtEES+PgCrqhCrq/GL7YSxurauoA
-	CuoxsKPrpfkJrzxgiWm6tJcbAImg4SpQH9C9OyF5sr4VkCM1VOB9MsYbQ6SvTKIuRuobatzWoqW
-	yGvpmeCvvs2MxqFjc5BrSPQWwfYg5LyIXAEi53eGwBzLJ+iHWXetA8TJS5whc5qwkDA1IiG8NeJ
-	GsrZ5t5a/EGypPbDPm0exRgCtzyc+8JaO1+0ga/Jvr0HX/OaEz87qjUkL4/sK8ttg18oMvTb7xH
-	ZrUKRHVZzTLVS9XQ==
-X-Received: by 2002:a5d:5850:0:b0:435:dbe3:c6b1 with SMTP id ffacd0b85a97d-435f3a92b77mr17179529f8f.25.1770039439418;
-        Mon, 02 Feb 2026 05:37:19 -0800 (PST)
-Received: from vingu-cube ([2a01:e0a:f:6020:7cf3:628:f0e:cd4d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e131ce93sm43065097f8f.24.2026.02.02.05.37.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 05:37:15 -0800 (PST)
-Date: Mon, 2 Feb 2026 14:37:14 +0100
-From: Vincent Guittot <vincent.guittot@linaro.org>
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: ciprianmarian.costea@oss.nxp.com, s32@nxp.com, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, robh@kernel.org, bhelgaas@google.com,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] PCI: s32g: Fix ports parsing
-Message-ID: <aYCoiulppKnvvOpp@vingu-cube>
-References: <20260202130756.1421488-1-vincent.guittot@linaro.org>
- <scnf5gh3h5pwvnbe4bwtztdlgcpvvtse4fg64bto2jgyotfpwl@sle4k4ky3gtu>
- <CAKfTPtBZCLiq0E-a2QA5X_Bix2PxXiCyuCira1V_wBWZORUS6A@mail.gmail.com>
- <howlzhze3axqiguqvxslssc2tr7ocaa7l2obr4623n3piw5xee@ujnyo5bieril>
+        d=1e100.net; s=20230601; t=1770041842; x=1770646642;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6DwlNJWcSSWiB1RJVuYLclaV0gPVuBf1c2xRk/9v2KU=;
+        b=ua/quOT/+7IQy1V96LvVkyWg/EAeZNcVwMvgsEuGgULASm8n9WSUe89xUydvsCAk5O
+         7w0pikhzN2Yu7QF6gv/6sCsnAjY913DQxOXtuxld7TKNdXOFAkuXGQ4D96Oc+cM/7pVO
+         AMC0C7AK1OfpRizHtaSRQhUcZu8Iwez4NfLcltJ4Kn/oNiD5t9d6BcADcJ98m1QE41rH
+         2fIVbnyqD+5/AKFnYWsuImNzrO4MVboAuujQOiw9Ow5aAaXOraW6FJMlH61yDXQQNu/K
+         B9upx53nni7zb8UGXDzd8fju4jFD3TCmd8sbn28o3B37EVXkrYcDhDc6tjHA2LlA+UbQ
+         n0Gw==
+X-Forwarded-Encrypted: i=1; AJvYcCX8nL/CgWx+ET/PhY5a/dhkVLKQrsc//6Ck8HCKT6kGq8UW9LgTYjaVQZCAxilgFJGXKYs=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz9c9777kA/rypWgzXjnEzDVU98Ff50F3Ywy2WKmFTMwAm+uIFA
+	kW819FSU8nQaj5IiC9nz+wsowJ9XLTSVeuQvTCChzX46vmwVHHO7q9TXPtOhllLDualYry/rsYb
+	v4rVPmofOq20xmMiJj7H7OuZKQ4tVMZw=
+X-Gm-Gg: AZuq6aI1XGBHbshOH8LTwPa5uSzHcyFG1aMA2fetmgzHDjbTViwzdTOl4H3n2hrLLHo
+	QZtO83K0JUteGNToFIpDACbbtTUDbWNGSttJMpSATjMocdpkDpFLExxfW4QyILlxfbfeNDwSV4K
+	HMh7zvs80DfChfckCRDaX9xNREFCuhu5GXilqyn77u3sFFsXSMcynNMVs+cBP5XqmyFf+C30o74
+	RBJRWDrbB0bqBtDU98F9wDnjbJiC6n5O7zKU5e5ZPArYY1MA/CIfAWJt9WgyKy56WJdnKuCZVdv
+	nnw=
+X-Received: by 2002:a17:90b:5145:b0:34a:9d9a:3f67 with SMTP id
+ 98e67ed59e1d1-3543b3eff19mr11142088a91.33.1770041841526; Mon, 02 Feb 2026
+ 06:17:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <howlzhze3axqiguqvxslssc2tr7ocaa7l2obr4623n3piw5xee@ujnyo5bieril>
+References: <20260131-clk-imx6q-v2-0-70471ddc99e0@gmail.com>
+ <20260131-clk-imx6q-v2-1-70471ddc99e0@gmail.com> <aX4q+W3Sjx5SRHrC@lizhi-Precision-Tower-5810>
+ <aYAGMAE7ppXP/lbR@shlinux89>
+In-Reply-To: <aYAGMAE7ppXP/lbR@shlinux89>
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Mon, 2 Feb 2026 22:17:11 +0800
+X-Gm-Features: AZwV_QhoCxlCzLAcnWkBO4ogn0VW2M6mcHRnmBpiFBphn4q3UInMNacf8_hKx4Q
+Message-ID: <CAN4SLj3AaM8qiS=DefEWT=EZKQJ6MVa2zEFhU4vgpJZzDBFq7g@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] clk: imx: imx6q: Fix device node reference leak in pll6_bypassed()
+To: Peng Fan <peng.fan@oss.nxp.com>
+Cc: Frank Li <Frank.li@nxp.com>, Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Akshay Bhat <akshay.bhat@timesys.com>, 
+	Ranjani Vaidyanathan <Ranjani.Vaidyanathan@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+	linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Le lundi 02 févr. 2026 à 18:58:34 (+0530), Manivannan Sadhasivam a écrit :
-> On Mon, Feb 02, 2026 at 02:23:52PM +0100, Vincent Guittot wrote:
-> > On Mon, 2 Feb 2026 at 14:18, Manivannan Sadhasivam <mani@kernel.org> wrote:
-> > >
-> > > On Mon, Feb 02, 2026 at 02:07:56PM +0100, Vincent Guittot wrote:
-> > > > No error return is missing after the loop resulting in removing the
-> > > > ports from the list.
-> > > >
-> > > > Fixes: 5cbc7d3e316e ("PCI: s32g: Add NXP S32G PCIe controller driver (RC)")
-> > > > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-> > > > ---
-> > > >  drivers/pci/controller/dwc/pcie-nxp-s32g.c | 2 ++
-> > > >  1 file changed, 2 insertions(+)
-> > > >
-> > > > diff --git a/drivers/pci/controller/dwc/pcie-nxp-s32g.c b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
-> > > > index 47745749f75c..767f5a622441 100644
-> > > > --- a/drivers/pci/controller/dwc/pcie-nxp-s32g.c
-> > > > +++ b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
-> > > > @@ -285,6 +285,8 @@ static int s32g_pcie_parse_ports(struct device *dev, struct s32g_pcie *s32g_pp)
-> > > >                       goto err_port;
-> > > >       }
-> > > >
-> > > > +     return 0;
-> > > > +
-> > >
-> > > Hmm. So the initial 'ret = -ENOENT' will become redundant and you'll return
-> > > success even if there are no Root Ports in DT.
-> > 
-> > good point.
-> > 
-> > >
-> > > You should do:
-> > >
-> > >         if (!of_get_available_child_count(dev->of_node))
-> > >                 return -ENOENT;
-> > 
-> > or maybe
-> > 
-> > +       if (!ret)
-> > +               return 0;
-> > 
-> 
-> That'll work too. For some reason, I initially thought it would be ugly, but it
-> doesn't :)
+On Mon, Feb 2, 2026 at 10:03=E2=80=AFAM Peng Fan <peng.fan@oss.nxp.com> wro=
+te:
+>
+> On Sat, Jan 31, 2026 at 11:16:57AM -0500, Frank Li wrote:
+> >On Sat, Jan 31, 2026 at 04:11:34PM +0800, Felix Gu wrote:
+> >> The function pll6_bypassed() calls of_parse_phandle_with_args()
+> >> but never calls of_node_put() to release the reference, causing
+> >> a memory leak.
+> >>
+> >> Fix this by adding proper cleanup calls on all exit paths.
+> >>
+> >> Fixes: 3cc48976e9763 ("clk: imx6q: handle ENET PLL bypass")
+> >> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+> >> ---
+> >>  drivers/clk/imx/clk-imx6q.c | 6 +++++-
+> >>  1 file changed, 5 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/clk/imx/clk-imx6q.c b/drivers/clk/imx/clk-imx6q.c
+> >> index bf4c1d9c9928..1d8e8f0891a3 100644
+> >> --- a/drivers/clk/imx/clk-imx6q.c
+> >> +++ b/drivers/clk/imx/clk-imx6q.c
+> >> @@ -238,8 +238,11 @@ static bool pll6_bypassed(struct device_node *nod=
+e)
+> >>                      return false;
+> >>
+>
+> One more comment:
+> Put one line here, "of_node_put", no need duplicate it in below.
+Hi Peng,
+Thanks for your review.
+Frank also mentioned this in V1, but I think it may not be good to use
+clkspec.np after calling of_node_put().
 
-In fact this enables more changes and I end up with:
-
-@@ -282,12 +282,12 @@ static int s32g_pcie_parse_ports(struct device *dev, struct s32g_pcie *s32g_pp)
- 
- 		ret = s32g_pcie_parse_port(s32g_pp, of_port);
- 		if (ret)
--			goto err_port;
-+			break;
- 	}
- 
--err_port:
--	list_for_each_entry_safe(port, tmp, &s32g_pp->ports, list)
--		list_del(&port->list);
-+	if (ret)
-+		list_for_each_entry_safe(port, tmp, &s32g_pp->ports, list)
-+			list_del(&port->list);
- 
- 	return ret;
- }
--- 
-
-
-> 
-> - Mani
-> 
-> -- 
-> மணிவண்ணன் சதாசிவம்
+Best regards,
+Felix Gu
+>
+> >>              if (clkspec.np =3D=3D node &&
+> >> -                clkspec.args[0] =3D=3D IMX6QDL_PLL6_BYPASS)
+> >> +                clkspec.args[0] =3D=3D IMX6QDL_PLL6_BYPASS) {
+> >> +                    of_node_put(clkspec.np);
+>
+> Drop this change
+>
+> >>                      break;
+> >> +            }
+> >> +            of_node_put(clkspec.np);
+>
+> Ditto.
+>
+> Regards,
+> Peng
+>
+> >>      }
+> >>
+> >>      /* PLL6 bypass is not part of the assigned clock list */
+> >> @@ -249,6 +252,7 @@ static bool pll6_bypassed(struct device_node *node=
+)
+> >>      ret =3D of_parse_phandle_with_args(node, "assigned-clock-parents"=
+,
+> >>                                       "#clock-cells", index, &clkspec)=
+;
+> >>
+> >
+> >If ret is err, clkspec will not touched. So clkspec.np keep old value,
+> >of_node_put(clkspec.np) will put twice for previous np.
+> >
+> >So need add if (ret) check here. Or use difference variable clkspec with
+> >init 0.
+> >
+> >Frank
+> >
+> >> +    of_node_put(clkspec.np);
+> >>      if (clkspec.args[0] !=3D IMX6QDL_CLK_PLL6)
+> >>              return true;
+> >>
+> >>
+> >> --
+> >> 2.43.0
+> >>
