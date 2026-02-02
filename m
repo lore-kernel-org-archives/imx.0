@@ -1,205 +1,177 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011042.outbound.protection.outlook.com [40.107.130.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623CF2C21EA
-	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 20:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770063928; cv=none; b=tRP+/XRiluKrktOagoki1zx6JbQT2ysy/bfOKQG1lh1frMgZwJzBGtg2dBTSj1p4T73tRJqvieb1cjTjYrwaZfKks+An+PjERNQAIUQF1lCyyx977vW+R34u0eyqqm6DkTQK/I11DQAS3UBR1VXwjLTh+UeYPsNARL0E0d0eA08=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770063928; c=relaxed/simple;
-	bh=CxDKue/QwhEnlG+wJswifFJfqAtRqJfZjvjccCJpzJk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lDNUeY1f6ivWQ5H/ssXKZ+Bh4w99svdxu+gKFqEHOV7Bxxcs2uCqNfUIeZ2SrzY6n2nImevC2FNmx1RaT5GuEI+VW2l0PESX8lRyI7IAJfqr1LHTqVJv6dDOzt0HOnmh6XWgVCDqwCtlbOKgIlHT4+TL6U3gx/UnCck9CTz9w1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JBi5izYg; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B382BF3DB
+	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 20:58:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770065902; cv=fail; b=B97sxHGFDB0slYVBTXksoV7G54Ibu9Ke/z6DNvjKiTzEEm8YDCLTzVT2jaIYxgf8G0ggHzItspusgsZnYVySGL+5LO8REjPdosYbuCWEbCBoz23MXuzNSd7Jjwo5p8JFK6OhvvWMRHxnkiYg+UXkijF1HmtdATYvHgqLLlgm9ew=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770065902; c=relaxed/simple;
+	bh=/V0wLd3xz6CwIKC6waCuHvYtq+ilN7rc4w123O5nHzw=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=gyOA/3I+KRkPbESD6ElHgiU6XzIGfEPw4bF8M3Xt+d2zgESuU5eHP4yPmLVHu7x4a2WFHs9O6+fFtJK97FWdYWLP7MWqXaL9vPfbjBfTCVjp26Ipd9uj+zXIF8f6Y05berejXRHuFK12lTQv8PYH39JU5dn3zBagzHUXM5aYA8k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ku8si33k; arc=fail smtp.client-ip=40.107.130.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JBi5izYg"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-658b9e95990so9364791a12.1
-        for <imx@lists.linux.dev>; Mon, 02 Feb 2026 12:25:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770063925; x=1770668725; darn=lists.linux.dev;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MjBpuLkcLUaCRKPdP4eX6OjLAhe9FJoKGb09vlloYBU=;
-        b=JBi5izYgyJRRTfQ/FoZSF+/nkgjiTZSQ1LmsfGhwcMX2QyeOPP9euMAP2uXkf6DEjy
-         r8c6DIMq+b12oR5xlu4y6jv0af1T29hc0Nadno1PxOKzwWCYZS+31FMl9W915IhXoKev
-         Vhf/LV7E8/cW7AV5l34rLGsBGqx/1Jukpgp7TANcexAEA4qfCOZ+/rdQy0fHaFQveFNa
-         gMPkjCm9GiEFE5+dwn6DGEeLsSP84WP2iSzY6xJj7hMkpdKINb8BeyqgUd2gQAd/6XbK
-         jfWwiGN0aODvFyzBRI//0ftun8jmpjK6pFeBxkbbquJFhxyaDBL2TaD7jCW9PWIfCQYZ
-         0ktQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770063925; x=1770668725;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MjBpuLkcLUaCRKPdP4eX6OjLAhe9FJoKGb09vlloYBU=;
-        b=AkWIhJx4T5u7n9sRcVXC6oGfv2Dp5k5dgkDQPyQ73MgDZ2zUfzNsuaBiDDni4zij9v
-         cHySCTa5toCxRklbkdDXBTE0vdAYPpcAUQmuida+zA0HgCpEdcGFysaGJt8a6u4Cr/Rj
-         7S+kZgqP5ZSVdxGOP2f1FpaB4pF6aAYOL3ST7e8c9HnUxg9jbE0RVQwmmCOPDrIPvuW2
-         Dn3UgC40erOrJyNMIgw4/5PLzIwRJUXTE3Bh18kcPfKnbDJkuMgLE8ojb6SAmgiZt333
-         fGZSsfDfXHo1QTny2FphWzAyxpe5n4KoXeLjMXjpyXVpVGVjlUiokwx7uyNVNnP7Iu0k
-         Nv8w==
-X-Forwarded-Encrypted: i=1; AJvYcCWEWFo1tgNBGcP4EZhVSZqPqR0jTav7oyMlu8vBOozcQ1lDZyronZ+fDMoWyVON19lgSCI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwUXDFfWw+p8cRrpBmOuSE0iOp3aFuLOZqnvMWj7xCP+yUihCO1
-	Wl6BJAihzuicpuy52TOahEDCoBe6Nnt83MkfrHY2zILD2SiQf312NUREjG8R5g==
-X-Gm-Gg: AZuq6aJev04KcBJfCZkZz3ohTCyXEUCT4TssQjqPxeQoVgfu8y2G9ZOU8qfuLmMdHg2
-	DFmYAsjGvo7dmck4fu/O1NtQnAuW9GIQ9V6BnMwpfZHWHuU+U+kF/OQC8KkU/rQ2INyDXQbOB50
-	/dfLj2FGy67uWHN8z6UXUjN25xP4X97uyMsmeG61TA5zfp8PtmywiHAPI9Og68LowfrP0QSZofP
-	IX9EHSVTBH7ov5Au4tmprF8/MazACWWI1NzKGFPrapb6YhA4NbEy8LDgW5hW4kw2/4QuFLAsvFq
-	s0CaNvYuZsRr1QNunVRuj716o6p0qzGm160VsopoluOZm2Qa8+N2wjFwEjdj8c3A3svoUhY0toC
-	UTGcw1nUCvP/hG2/bQuwB8W4F4FuZhxdDqlQC8fKnmECocCFi4e+kc14fElb8uQXlWkefi4N4md
-	gL5xWx5mKyqlAZ+sNpdHHik7TKZl+nKZe6ixQ=
-X-Received: by 2002:a05:600c:1385:b0:47e:dc64:f1c6 with SMTP id 5b1f17b1804b1-482db493eb4mr189595615e9.6.1770058495160;
-        Mon, 02 Feb 2026 10:54:55 -0800 (PST)
-Received: from [192.168.0.7] ([86.124.200.187])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-482db623407sm125687055e9.0.2026.02.02.10.54.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Feb 2026 10:54:54 -0800 (PST)
-Message-ID: <f95f73b9-d024-4697-bca1-02fb8bc044af@gmail.com>
-Date: Mon, 2 Feb 2026 20:54:52 +0200
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ku8si33k"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MLLHsgF6l34duNXRr+jVtJbbxgJGZwY9bE6/h4kjQnPNz/VoPyy54RnazPL/ljur6DSFGk59EWbKmpliJzmR41AI7Am5VeAfix+TApqdYD8c3t4ZniFHsyd/FPeVo1Mk2h6GoWxE7+0exj/kjt705JetOwTBAJLWfV43pEVzWHNPckdsdHT6HGLjbJzfN3DBsYEEvSv1AdhpSwz4/H3ml4tu0vz80T6vRnONNEyXHmVeMHOaWf3JVWbUpLvAisPQjl8hNlOsSeTwlMZD+f+xojLew8ykFeebgx5DRJ0V1tV6Y7JhSzXSqVNvNZfpFeSqIB9tJPcxN9/vW/9THnhf7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kzTtylWhTKI7S/s7a7tXBFKUKRoiGWRMKlhFuDzvao8=;
+ b=P5bRtvI1bYBtvlQaJkPBP+ouvWKuq1Txj5FGBLyFAYurQNn5Wjqi4CH3JDkmwLqe7SxBjGz0O8H7/Etlx0hRp1zaMZCGTW5ZbhxyW4a7oXIyUeB+UHu/2uGuE0zmVVibNvfaaLqHgH6tfpK5sHf3l7A3ObaKBHIfXOrlBAcdkbu0l1btVGU7jab5TZMf7dyzo7dhtwCTQ8D+pXYaR/fZXP6H6qxGYQVLDQEArKd6N5IP15u3WjxPPTRpj+qViuFvC43Vh4Df2aS/dFvd8DKSUyXeKKpzUGElD+vlkDcoQN22NA4Cii4JjS8727jpuPwMN6sZtnyircSEYUpTJPM08Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kzTtylWhTKI7S/s7a7tXBFKUKRoiGWRMKlhFuDzvao8=;
+ b=Ku8si33kUiuYJaiSEDEoB0hckKmDlf44wYE9TcTZXXL1ec0n3/l2Ol6mj8wYQXNac3zNeD6K9Ngb+/d9wp90BupoAfdq2D53bLXdh15wsNomJOk4XFkqX4COdl+iGMtEvaBL3EM7HrUB+HAcII5G13uFURO0PfBpDN7GaDSILtKe1VbH1FK/iIqxCtypt6u7f8W1Lx8M4Xfhab6FpS4dRgBNBD3F0H0io3lVnrNUY5hvwzX+lxJVlw9k9NWliBaEkUx3bn+VcZA5C8+05XX75GgeH7RG7ftilpIt/L8YdwasLU3rhTzhzLQaem1vQJd3WuZG7Smaw8+No89UcY2bEg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by VI1PR04MB9737.eurprd04.prod.outlook.com (2603:10a6:800:1dc::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Mon, 2 Feb
+ 2026 20:58:17 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9564.016; Mon, 2 Feb 2026
+ 20:58:17 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Shenghao Ding <shenghao-ding@ti.com>,
+	Kevin Lu <kevin-lu@ti.com>,
+	Baojun Xu <baojun.xu@ti.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jai Luthra <jai.luthra@linux.dev>,
+	linux-sound@vger.kernel.org (open list:TEXAS INSTRUMENTS AUDIO (ASoC/HDA) DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] ASoC: dt-bindings: ti,tlv320aic3x: Add compatible string ti,tlv320aic23
+Date: Mon,  2 Feb 2026 15:57:57 -0500
+Message-Id: <20260202205758.3044617-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR21CA0002.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::12) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC net-next] net: stmmac: provide flag to disable EEE
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Clark Wang <xiaoning.wang@nxp.com>,
- Daniel Scally <dan.scally@ideasonboard.com>,
- "David S. Miller" <davem@davemloft.net>,
- Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
- Eric Dumazet <edumazet@google.com>, Fabio Estevam <festevam@gmail.com>,
- Heiner Kallweit <hkallweit1@gmail.com>, imx@lists.linux.dev,
- Jakub Kicinski <kuba@kernel.org>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
- Oleksij Rempel <o.rempel@pengutronix.de>, Paolo Abeni <pabeni@redhat.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Shawn Guo <shawnguo@kernel.org>, Stefan Klug <stefan.klug@ideasonboard.com>,
- Wei Fang <wei.fang@nxp.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-References: <E1vNUjC-0000000FhjR-0h6P@rmk-PC.armlinux.org.uk>
-Content-Language: en-US
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-In-Reply-To: <E1vNUjC-0000000FhjR-0h6P@rmk-PC.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|VI1PR04MB9737:EE_
+X-MS-Office365-Filtering-Correlation-Id: ba72c29f-e892-401f-d4e8-08de629dc9c5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|52116014|1800799024|366016|19092799006|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?t/xzRUxKqJdpjVYDhI7rI8PHtZ84GAMdu5j1L/f1bR/UGjbh1iA6k4FHQPUU?=
+ =?us-ascii?Q?sTOWVlBaIw/2wS6mnQRxYbsblOgrb+BvZQZCuyJlaGqzrau1Y35D5S27/DYw?=
+ =?us-ascii?Q?VB2+HCwG7wgD+HJ+290z6gxCKtZXe/OLImyakJ8wER70/vWGfzZVfCwON+Ut?=
+ =?us-ascii?Q?uV7pPvYljMU/up0zVhRP8mfrYgXrKASfVOVwr6AWg3tuqesx5wSx2k2Hr8C3?=
+ =?us-ascii?Q?f/oc2SmJFpZa1t7OmVze/aodAlvMSO3ZLir1toAk3p3EJAKu+l0k2GVPKPx3?=
+ =?us-ascii?Q?3HGZSNqMA0HHmfsiRtEfnaxOnDNLvOXR50gSrOt7w/Ot0dsomF2PROvDggg/?=
+ =?us-ascii?Q?NAhYUQGb6EeqQMPQWgddc3EK6aZAPRDXiS+PUWaJHtxEdnueEjDnff2siR6w?=
+ =?us-ascii?Q?xw0+sGFHWC6GCJH/MMt4LoJfFClsTWGupsYrSnVYa2ZrZJgJmgEmJm4R9eIV?=
+ =?us-ascii?Q?+TnMDarRe4Oh7xywXPxaoBvm5GDBshR/zCfj6elgMSjDCrbByTmfYWkYqaqB?=
+ =?us-ascii?Q?f7PUQLzOBzQT+AL53z8dOQqrwabbVZUrnxPdIzxZzbtTwgf2ivSzZhgxYymq?=
+ =?us-ascii?Q?lfG61M0AZ5a6HKFeX1rcTXdLzGm1UxYm7+c/h3Tf5+WBaOkaQFhW8u7vMDD9?=
+ =?us-ascii?Q?0BfN+xpDdbhI7NTtt3vV4/016I44nCU/krmWc0pMo8EWZjGJ9dPL0m1U3PPS?=
+ =?us-ascii?Q?b+ohR68Le785yfWmZakpPVOXV+GxOndTlvnmBpfB8/qGffp9aDsMq2kxsAv8?=
+ =?us-ascii?Q?QErTLLmO1OaLkdLWbJ80krukOG6d0m2ulBB831d5/x2QkD9dYOd64U97MBzE?=
+ =?us-ascii?Q?D/UPtvy1ShUbR78U3HO6HsqLSopey1iNisXtlo5y59Ff7D9Z2HK8WQr2sHf7?=
+ =?us-ascii?Q?MKup2XVk4UvPI65ZfUj2ajDeIxhVT7UZHqfFnf5obn6HYdp437PdAqdcGaJA?=
+ =?us-ascii?Q?mQGHev2oM8WHDKMn1Yv+N808FtHrfy8VXN0oY+vt8eIVx+9Gx1rIaZfzpvn8?=
+ =?us-ascii?Q?FUCkKoG8hE0kYcoBZqGfi8mjcEXjcXFVSkbNQzsSnFTv+bTnjKgkhHA5F21l?=
+ =?us-ascii?Q?QxX2jhv//dm4q4tagsp8Z+1PqHT5q8BqDJHvh3LZyLMtRObAINB0hzmWa6mu?=
+ =?us-ascii?Q?+m3aERWtmBizozcq71m0Yi+QCQPPVU5BVu8a552SUw0g1cCFbU6CdS2gS9ZM?=
+ =?us-ascii?Q?hsVZdi5oCucU6RX5VBlM6jFl4jfTJ2y5OcJV25Z0OpRG9pcZ6WXGrgcgpqhR?=
+ =?us-ascii?Q?UNHX+bSF/mm8edPHBUc4NPYT78Cafs3SN7FAezYZh9UAh5D2aM1n0qy7Vui5?=
+ =?us-ascii?Q?+nHvcGA5dZuBl6AVLBqkwUqrWgoGG5J4MvG3RwRDgClW7nNCHMtMaP1cIEED?=
+ =?us-ascii?Q?uh2s8CBJy/S/fXEzpbVzMR9hsShSRqNEO5fN8PWAGEzqS0q5E+JIRZb2vLYl?=
+ =?us-ascii?Q?uQx1vbZTuSwMOFxqo61bdWZtMVQN1zOsm7tS2Xsc1h6fEKtRja05fruuvo2k?=
+ =?us-ascii?Q?lIU7bw2b2nCTMOeBn7WblKuIvxR0BK7JFe/1I2TkC0ChwrjMlBckb6lAyMHA?=
+ =?us-ascii?Q?VLwu6rb/KkdKsOXJdAsPNCRMtffz5XO9G48TlF3499lYOam3RIlw/pqq00Fz?=
+ =?us-ascii?Q?1PsCpN7M8GCDM/4ozy5F7VLh4MAvgSHA12lCQQl3F2Zk?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(1800799024)(366016)(19092799006)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+p5fayuTK/q9AOxz+4vUAzqf7IHPxe7ExrALbuuu5Gt4FIZ8MKvUM5q7tVaA?=
+ =?us-ascii?Q?Qdk6phZr/LIx47OxBfga7osxSzZ10flVuKebKb8phV5NCrdzi0lBL73FNTzy?=
+ =?us-ascii?Q?x0a5rtr2cjbf/+NhyZvt/bZtLC3MHdgMY3JpnAa3AYwwnt23NNptps6kmVz6?=
+ =?us-ascii?Q?PxnPv6toHrBA/XeEMoIyp5laxtGnGZ7yQSzHrlF3vZ/NlVCWUmRZGbzoWm2X?=
+ =?us-ascii?Q?dKa4/2T4hJIg6mG5xEXtNSlHzIDkCnUNaXWl043KV4Er/tz9e4HT4zaPkLWw?=
+ =?us-ascii?Q?qQMIIe1lWXshQW/Z13admhUT//sScaybXrnsHCexoqLmtAKd2/3pL7rgNU2v?=
+ =?us-ascii?Q?E1AwZ0r+0Ef8r8UUqT7NentSu6IO8ru6W0zkcXOO2CX9g0VugFlzD1k2nu4J?=
+ =?us-ascii?Q?PHm0e+PvcCxOh6dM0GtvggV/Jvb6uMRL031EHeID8e6iX+Fu9m+RjvFN7fxE?=
+ =?us-ascii?Q?1Noyic1W+a225vas5JG2JqqQdqRljSvuWJD9YAbk8m/Dw8HTnH+v7yH6gkKw?=
+ =?us-ascii?Q?Sf3da3k4xqP6CX2G/1v+U5BlIf77M9K2chRS5zZVC5RgM7mUnI7bMcKrdeNh?=
+ =?us-ascii?Q?//ygTm9F2UAyfsidc/54PI9auVK6Zd+R0pyK8X6dIYVejZVNafFvzJuSAgA/?=
+ =?us-ascii?Q?gLm7vc6ZZNuw+gJVSCT26uw5hwmd2CUU+i4bFGXZgmjcutAQBiUkVmUlO6EE?=
+ =?us-ascii?Q?BWPVGoOgmNODlwajstx18kiJblqswwV3tFnQB+DvmaIl/s8aX6hGBcdj3glf?=
+ =?us-ascii?Q?wF0RvC8vDEV/RFGSU3Pf57DFyXMYpwG7PWj/VY6pJWWIXrrNtZ6D5liCD6pM?=
+ =?us-ascii?Q?L2HdtzChA3TPSPCKzco0PfJVBlf0BDdhKAHk/texzBQHO1PHEucfl5J69D+h?=
+ =?us-ascii?Q?5HUSMQes4K7XJsY75jMKuKIsA6HC0LyEKWLZvcPfWld6mWL0lO2wtLoalKw2?=
+ =?us-ascii?Q?w3UxkBkB42wZlfUJr0QmwxLf66h+L9y/DGUPMhKwuT+jv1n/M9/FJ+QnSdDO?=
+ =?us-ascii?Q?BBVlV4HprAhXCfZtb1VAaZtObndUkxIqNWKknNbkIhosg/6BBSbePvJVAiR1?=
+ =?us-ascii?Q?YJl2JJGP/mA9fUJg5htrj4Oc0/LhrGfcm96TsAluRIzuSqg++RCeDya2GpY0?=
+ =?us-ascii?Q?GEb7rCp8FvmKLPf85Z+18UDXY2uxJZNRZpWPReuebibBkagLRaPP5gqTzbY3?=
+ =?us-ascii?Q?+QigcRplcJlu6uOVH6P9+oLSC+8bmPn/Z1Zs1Eur9lZLj4FnTqkuZowSbUU1?=
+ =?us-ascii?Q?N+RyB3/zSCrv9tSvN8L4eBQQKxpr+Hx41rqFywBTrDOA/3bC3kpSCXERtfQU?=
+ =?us-ascii?Q?SO+9b7eRwKb2wGxawH9+zLPKf6NCW5h9hLY9Vz7ZkY779Z/0iHfAe9ik5QsM?=
+ =?us-ascii?Q?lpY1STqZjQeMTqCQVRZdiRtiaD8MUmWSwpd539qAg4iiLih2tKGTkxhfTTWT?=
+ =?us-ascii?Q?QclF0g8nD4jBzNPWSpYzzGv+/Ze4ldxshGQwpZAGc/0JFL0i7x47ERYpKEKZ?=
+ =?us-ascii?Q?3CJ7/C/ES2ETb5jdNYYiGmOj20CLJrdHnymfVMkbUd2qWZrY8ifOlEDUhlXO?=
+ =?us-ascii?Q?8dA+cosYb0KD12X7/geCemUv0jkEiwrlItTU62MRUZ0/H+Ia8mAT7ZYvbFMt?=
+ =?us-ascii?Q?Im8QHYKA93haSx1qxLp8aqWeDG6tTUlk/vACFgxROb2WfPRRMKG8YjpTv4DE?=
+ =?us-ascii?Q?VxHHl7T4Fn9pJZC65fQY7Xi1Ohx575ejKIpjdfImsJcPuF15XHCnCowO0+zc?=
+ =?us-ascii?Q?f8XTYM/hoQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ba72c29f-e892-401f-d4e8-08de629dc9c5
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 20:58:17.1928
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: w1RcR8ajI/RzEBNv/AM6FdKVqoVUEbUoAn4UD8uCwtmVluxQ533SoXUPsSCgt0WnpYIbIOpA+OISv4g6dORE7w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9737
 
+Add compatible string ti,tlv320aic23 to fix below CHECK_DTB warning:
+arch/arm/boot/dts/nxp/imx/imx35-eukrea-mbimxsd35-baseboard.dtb:
+    /soc/bus@43f00000/i2c@43f80000/codec@1a: failed to match any schema with compatible: ['ti,tlv320aic23']
 
-Hi Russell,
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ Documentation/devicetree/bindings/sound/ti,tlv320aic3x.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-On 11/24/25 1:27 PM, Russell King (Oracle) wrote:
-> Some platforms have problems when EEE is enabled, and thus need a way
-> to disable stmmac EEE support. Add a flag before the other LPI related
-> flags which tells stmmac to avoid populating the phylink LPI
-> capabilities, which causes phylink to call phy_disable_eee() for any
-> PHY that is attached to the affected phylink instance.
-> 
-> iMX8MP is an example - the lpi_intr_o signal is wired to an OR gate
-> along with the main dwmac interrupts. Since lpi_intr_o is synchronous
-> to the receive clock domain, and takes four clock cycles to clear, this
-> leads to interrupt storms as the interrupt remains asserted for some
-> time after the LPI control and status register is read.
-> 
-> This problem becomes worse when the receive clock from the PHY stops
-> when the receive path enters LPI state - which means that lpi_intr_o
-> can not deassert until the clock restarts. Since the LPI state of the
-> receive path depends on the link partner, this is out of our control.
-> We could disable RX clock stop at the PHY, but that doesn't get around
-> the slow-to-deassert lpi_intr_o mentioned in the above paragraph.
-> 
-> Previously, iMX8MP worked around this by disabling gigabit EEE, but
-> this is insufficient - the problem is also visible at 100M speeds,
-> where the receive clock is slower.
-> 
-> There is extensive discussion and investigation in the thread linked
-> below, the result of which is summarised in this commit message.
-> 
-
-We are seeing the same lpi_intr_o interrupt storm on the Renesas RZ/V2H
-EVK (dwmac-renesas-gbeth.c). On this platform, lpi_intr_o is routed as a
-separate, dedicated interrupt line to the CPU rather than being OR'd
-with the main DWMAC interrupt as on iMX8MP. This corresponds to the
-"eth_lpi" interrupt in the stmmac bindings:
-"""
-- description: The interrupt that occurs when Rx exits the LPI state
-const: eth_lpi
-"""
-
-Looking through the other glue drivers/device-trees, it looks to me that
-every platform that defines a separate "eth_lpi" irq might have the
-interrupt storm problem.
-
-To fix this issue on these platforms, rather than disabling EEE
-altogether, would it be possible to just not request the eth_lpi
-interrupt and let EEE continue to work? Perhaps a new flag could let
-each platform decide.
-
-If not, maybe this patch could be merged to add the flag that disables
-EEE and I will just send a patch to disable EEE on our platforms as well.
-
-Thanks,
-Ovidiu
-
-
-> Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Link: https://lore.kernel.org/r/20251026122905.29028-1-laurent.pinchart@ideasonboard.com
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> ---
-> For Laurent to add to a patch series appropriately adding
-> STMMAC_FLAG_EEE_DISABLE to dwmac-imx.c
-> 
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++++++-
->  include/linux/stmmac.h                            | 9 +++++----
->  2 files changed, 11 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 6cacedb2c9b3..ca0eee58a8a8 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -1324,7 +1324,12 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
->  				 config->supported_interfaces,
->  				 pcs->supported_interfaces);
->  
-> -	if (priv->dma_cap.eee) {
-> +	/* Some platforms, e.g. iMX8MP, wire lpi_intr_o to the same interrupt
-> +	 * used for stmmac's main interrupts, which leads to interrupt storms.
-> +	 * STMMAC_FLAG_EEE_DISABLE allows EEE to be disabled on such platforms.
-> +	 */
-> +	if (priv->dma_cap.eee &&
-> +	    !(priv->plat->flags & STMMAC_FLAG_EEE_DISABLE)) {
->  		/* Assume all supported interfaces also support LPI */
->  		memcpy(config->lpi_interfaces, config->supported_interfaces,
->  		       sizeof(config->lpi_interfaces));
-> diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-> index f1054b9c2d8a..5ed49d5363ee 100644
-> --- a/include/linux/stmmac.h
-> +++ b/include/linux/stmmac.h
-> @@ -187,10 +187,11 @@ enum dwmac_core_type {
->  #define STMMAC_FLAG_MULTI_MSI_EN		BIT(7)
->  #define STMMAC_FLAG_EXT_SNAPSHOT_EN		BIT(8)
->  #define STMMAC_FLAG_INT_SNAPSHOT_EN		BIT(9)
-> -#define STMMAC_FLAG_RX_CLK_RUNS_IN_LPI		BIT(10)
-> -#define STMMAC_FLAG_EN_TX_LPI_CLOCKGATING	BIT(11)
-> -#define STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP	BIT(12)
-> -#define STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY	BIT(13)
-> +#define STMMAC_FLAG_EEE_DISABLE			BIT(10)
-> +#define STMMAC_FLAG_RX_CLK_RUNS_IN_LPI		BIT(11)
-> +#define STMMAC_FLAG_EN_TX_LPI_CLOCKGATING	BIT(12)
-> +#define STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP	BIT(13)
-> +#define STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY	BIT(14)
->  
->  struct mac_device_info;
->  
+diff --git a/Documentation/devicetree/bindings/sound/ti,tlv320aic3x.yaml b/Documentation/devicetree/bindings/sound/ti,tlv320aic3x.yaml
+index 206f6d61e362e..50088698adac9 100644
+--- a/Documentation/devicetree/bindings/sound/ti,tlv320aic3x.yaml
++++ b/Documentation/devicetree/bindings/sound/ti,tlv320aic3x.yaml
+@@ -46,6 +46,7 @@ maintainers:
+ properties:
+   compatible:
+     enum:
++      - ti,tlv320aic23
+       - ti,tlv320aic3x
+       - ti,tlv320aic33
+       - ti,tlv320aic3007
+-- 
+2.34.1
 
