@@ -1,299 +1,165 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010015.outbound.protection.outlook.com [52.101.84.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C9421C9E5
-	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 15:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770047759; cv=fail; b=otCu2qjDYbSnCM/FA4LU+nO5yqoan84uTXwvI83Ut0IwUnmiB+GcId3LVNJWXywuSzgXGnCEN7C06JWDDKU14KZu438iEpenSp5eDwpQ65N4HZL0jirL7SPL08g/OOrvXHbncH1xj9YwwCTKS/SGPnfEHRDgQ21dYS5DycxhBsI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770047759; c=relaxed/simple;
-	bh=C90RXZ0cVBx1oYezUBdy+3P+N9zY8pPB+y94grlmQ14=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=frkwq5dm+P7mQ/XXViGkdtyhD5WUdArTRtxn0hxLeGXJLRBvFtVgngCaE04JBtmJr9vKmZFwsUuKPsstTdMSA0G/qqD4rAcRRwMsCXQgFrf+0AJWty0tNsFGsmJc1Cd7ba5tjU/ugAUbT8wIp0CcwimXqcIqR776HPwZGFF5KGs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=cFoBABlq; arc=fail smtp.client-ip=52.101.84.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2279267B89
+	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 16:16:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770049007; cv=none; b=Uv01m+tauYBoN0yGFT8JmuXqyc44gYf419MqY6pPS9Tqhgd2OZOjM38bmclzt2I7mKlMZTjMjt3gG3up1dcbGkmPWB1wH+OOdL96W3zS1cnFj2bKPre9ZSZOR/V07YEQOCaT9jKilrkRprLM7fU2Uvv3wTosqUmj36om2JMGlvA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770049007; c=relaxed/simple;
+	bh=PMp4djD8pRzTfzCwrEWdLRidXLy0AL6hraTfCK1hKTI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gTI+o4jkcgOCKzU/aA0i7yqVvBFBZytdy6LiSZw9cv0GBqNtlxdt+seMXL4qgqSy6l4LcXClcWukNmo7ExgpFs5341w3GvKTFVAaxbxkStMmvV8Q/DglO2CmXcoX5SbyiD0EQx2ESS8Dbr+3+h4/afKKCeCn6oFn0F0YD5i0vPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=poUPVHqc; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="cFoBABlq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rdeDKZuDrLXeL9JvNuxmn1F2JZAyi96il4VyoVk5E1A6D6wcdeCwjIKlX6wNL0Xr0OpfJAf4AeMcLfXVLbalewAXrjykePWIY5I6ued5bYtiD6fLOayLkRkV1N8NrwngOf7OKqVCSH94IIAeeEXhIDgMcXFl0PZWLzcl3vDVg4W2U4maoID4ddiTAIpBoSreLirMp3tbPrg60Ra7ijwP9a+IMkZ13v92Qdan1r473sqpVpp35fpr2tOn+47LvCX4m8axtxfe0tI/0gbOxljb5oRj0rrlhq1gT7XzjOGYe8w2+MwWPB0GKx6PkKPihMmR3IcVQrs2PJxRy/X8y82pFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xdBE48o/ZSbgzboT5zn2KtP8XKJcrPXc2jmspz+5+yo=;
- b=qM6cH3Ofav1/iraIlwG7AQ3N/ZFki8HLlsj0wZ54vq0BBUW1jAB1K9L5fCzpPbSRJ0bPM7GwtI5hN25x0YwT//FZOXlXR0nb/yIGy+V8LxOOD67vLYcNrBTcrAeG0TtRh0KymI2Bi/VeBewnO2SrQIsxBy1SA0KgBEhWtQoxqFnxURq6JdGRi5EMglrw6LJvy2nvOoJzuiDgcOcK47jYWCUwIq32qfqVDhPSUzCHUgMPJ4LWmUVSdFd0ZV5QgDcA+e54pXXs0mIBh7WtD3FBJ6yiF8r5q9Puwqyr3Wb5dmakngboYc1syHjqcpssQ036KGLex8cEVb0CqLfVxlcXoQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xdBE48o/ZSbgzboT5zn2KtP8XKJcrPXc2jmspz+5+yo=;
- b=cFoBABlqaUlXY80kbMormT6gfsevXPHRjX8rXYY4Id0z7TRBL66tD0jSwUJDW+yvXbYu6qm7Wz8wyXnisWSf/xWpUpdr8nwAa9SKznkpcHUFShDwA5MXU0Hky9j7YrFYMHhq2ZHh+CrQ4oqCRrjkKnzosvN2L2wz+97czl5cF/SZQAIzZOLfOD3vsIVDhU4HI48jDZsbrd3RMSksE7C+E3auksZR3Fu5OOPvMxHOTR7Qgt6y4/CK2Th5eGKmgBeHV/per9vG6/qbTNkLEshV/zYeBzBGJaCIoBlSwuAMx+jWu/5Y8B9LI8Cy4YOkl1COIkYd31LaTxRLASc6dVGYUQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by VI0PR04MB10318.eurprd04.prod.outlook.com (2603:10a6:800:21c::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Mon, 2 Feb
- 2026 15:55:54 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9564.016; Mon, 2 Feb 2026
- 15:55:54 +0000
-Date: Mon, 2 Feb 2026 10:55:45 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: ming.qian@oss.nxp.com
-Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
-	mirela.rabulea@oss.nxp.com, nicolas@ndufresne.ca,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, xiahong.bao@nxp.com, eagle.zhou@nxp.com,
-	linux-imx@nxp.com, imx@lists.linux.dev, linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 3/3] media: mxc-jpeg: Add support for encoder v1
- descriptor configuration
-Message-ID: <aYDJAeJZ4f7u+yks@lizhi-Precision-Tower-5810>
-References: <20260202095843.1030-1-ming.qian@oss.nxp.com>
- <20260202095843.1030-4-ming.qian@oss.nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260202095843.1030-4-ming.qian@oss.nxp.com>
-X-ClientProxiedBy: SJ0PR05CA0066.namprd05.prod.outlook.com
- (2603:10b6:a03:332::11) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="poUPVHqc"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c63555db09fso1476422a12.1
+        for <imx@lists.linux.dev>; Mon, 02 Feb 2026 08:16:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1770049005; x=1770653805; darn=lists.linux.dev;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=yDIwIvjoA0KVZj8266aGVsS4EvreJW/WICQfNeIuAso=;
+        b=poUPVHqcs+MhcJmJFNMRY9hOAwxSa31oXJNmMtRz5ZgmsGE1fIY0L1gFBz1Fnq9bx9
+         dF409b3S7JTbfLb7ul4rFxnXy9tXEuEsZIJcNV8p3Vlv3EIhbYAi3nrdkI5TU91fpqpg
+         rghVO0a50zesJ+vubtRyFzs1s6Zn/R2mGS4KULG2/VQoZiOIilTyR/7Smxfhsno1e46q
+         X4mTuVzKbQ1mI1IwICDY27IADFPv+HdZKlJIrIBvg/UZRX+ZBe8QyaVQLgADp/g9c1hJ
+         qVv+7Bukpr3FbVEG1hjymLgSWZaWh9/86YNkvrJMypDh7Q3ftea7Yh6CX/vaGbiVrH6+
+         mQ5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770049005; x=1770653805;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yDIwIvjoA0KVZj8266aGVsS4EvreJW/WICQfNeIuAso=;
+        b=Ofh1DLk92fVaT2hixwgz49FyUsNP3hj1sP9qgpA1FehcmVn83Bkq5lGK5iUc+98F8e
+         I725H94oL5B1oY6GaCv/rff40rH07StzyuNSAse0Kdv+wogZVxZawYpn0eD6rPOgGL/K
+         MDi70tCtUlvK4CIh6QSkMtMnFMS+YfYUdo+ZaebnzfxrWQK4b7vaUdaqZzCQzMJMyEo1
+         ZAdQeEteNsCejxSATXHY5SORBw8vfPno8kPoeaklJpa/nMHnRzPp3ml2Q4QIs7KZb7L4
+         Xa8j4lstq7K4NfcamOHJ8jiZ7z90o+3cPEFdKsKrjfYaoNZXD4qAUZ0RHQjKwCLDOJGx
+         drWA==
+X-Forwarded-Encrypted: i=1; AJvYcCWbmV3j6nhzIALqFTSt4cLHIPuo2if7ZU6FvSUaHivPJeuTvw6fmcOzzucuVlp4cgukVoI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwputXabmTBqRzJFKz5oldpPPmocbtjG0hiLzfe1RbrAXmWS+Sd
+	sGZlQYfo61X6mbCaLhSTlSwcjTbQ2sOVmgD04WHVrmrXl5m9iXWQSA1xWWG9fDwe6Fc=
+X-Gm-Gg: AZuq6aJ5HEoNxWd05aPRI0L9Nr0BI6Ulo3qCeanVudqpw8Nl4pgbnXTbqfu8qSJJAYP
+	gicWild0Y6QYSVQTJF/Wn5RvxRoKFp68nTwJK+rb1cqSGl75+2Az9A8uxalPSVrnWFBOUbeAnfH
+	i+NMX6UVWeZkmL9yeljDB07azy3K4Ag5Rdas/iAyGzE9De4D7R/6IbNI3djmYJ9JVTQ+pDJPOZT
+	qPIJNt5aXMzgfpYL4YUhoLf6Zfwx3LAPhHAz8saqmIrWIB+jyOeAXo716Z5n6KVPXO0lXNYQYJB
+	crIM8LHjBkZ4QCBUL5zBy/TdipV43o7vHMd716MFgqRS/Rv9h50bKdoELZfvta7V8zqwbawqwd2
+	KC1oU8gkgj+15M+df+9OJwCGHtBbiGEPMB0zi8b/EifP0lRbEHCoSbwrhmbOJTxm//F8lVGLNNs
+	S3qQu4h7LYPv8bbstqFycFjcwp
+X-Received: by 2002:a17:902:e749:b0:2a7:5f26:aaf9 with SMTP id d9443c01a7336-2a8bd4c6f2cmr162675685ad.14.1770049004918;
+        Mon, 02 Feb 2026 08:16:44 -0800 (PST)
+Received: from p14s ([2604:3d09:148c:c800:ef20:b488:c934:4d5f])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b4154fcsm147962315ad.36.2026.02.02.08.16.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 08:16:44 -0800 (PST)
+Date: Mon, 2 Feb 2026 09:16:41 -0700
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+To: Daniel Baluta <daniel.baluta@gmail.com>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Iuliana Prodan <iuliana.prodan@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>, Frank Li <frank.li@nxp.com>,
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Peng Fan <peng.fan@nxp.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3] remoteproc: imx: Fix invalid loaded resource table
+ detection
+Message-ID: <aYDN6X0WVT9nV8fg@p14s>
+References: <20260129-imx-rproc-fix-v3-1-fc4e41e6e750@nxp.com>
+ <CAEnQRZA-nMai9-CEdMqnr2drqBRXXPOKE3a+_3j4S_=x-bM0pQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|VI0PR04MB10318:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8acb9052-f879-41f1-2f7d-08de62738bc9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|376014|52116014|7416014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?B3PhrIrjBhBE2n4F0nQoSb3s4q+fRU5I+jfrOWM2fTy6CrSQOzoUugH7kVvD?=
- =?us-ascii?Q?JaOeAjSxEiV41q5Xsa/0A4IttI223igWQaAkRt83CfyiXzon/1T5khdXnM7y?=
- =?us-ascii?Q?Y+Ewfa42rUavzcEqMHM/IbjFzqi9Z0V9mddFULEW5i1/+hWoDmGrSErkv4xC?=
- =?us-ascii?Q?oFMMI59liA27VakQnUWN0PgQQBVLXGPbI935eWBmVvduTBuG5Hou2+PgqN64?=
- =?us-ascii?Q?e0KpGKJXVEqchE+JhTn8IKBYps5jFNxkP5HSXHSyWEF7z5MoZyCmZ/UIiOg6?=
- =?us-ascii?Q?CGTKtuRMQkmLmcbLSQcTY301DqyMeM4RtvfPWvctMBMfQ9UI4o7QBHrbmnSb?=
- =?us-ascii?Q?v5qMstIBHDSkS3dcxDl+cUe2503wJ25sgB8Cg1k9LVSHsmyDrW9dH/mdZ3Tb?=
- =?us-ascii?Q?wfXWdYTRQ2r8vMCfmk+jhiETRqUMNHaGUmnLuzS3tcd76Y7MZz1AZw3qSTxr?=
- =?us-ascii?Q?pdzfbikaoC3OVbjh2RZpV5pAm4j6nDyYxJfOlv71ObbTXDXD65YjTnYVhAbk?=
- =?us-ascii?Q?78P9J+GmR+/6yIlV4LQiVMxcEFzz77BxWOCY/a+1tx2A1k/VJXFYh4lkeQ+O?=
- =?us-ascii?Q?UpwriCTYP664OxXdtbgiiS9SeraPe7bRBkEkiSezTN4BSLlz3Zv3De+KjYoj?=
- =?us-ascii?Q?sGUDPQAuAvFV7DCSPFdxWHvg8MyruXIOX+hG1rcdtOl+QMBgx7XAXCUFuvbY?=
- =?us-ascii?Q?iffBQBc1dZHGBM1JOen/IQUi75kKJVitWqxPDCAQQowtVw5/R0XjMYFM53ND?=
- =?us-ascii?Q?nUILfyjfXGhiZUDoK6FKxS43Wlm7adOSTD/12OQQZpyq4q4EFPxWFRVD8IiO?=
- =?us-ascii?Q?JQxzrX8r/+/1THqgopQWNygOQvmGu6dRkfMBKdlchgthdjVEi622WQpDklhf?=
- =?us-ascii?Q?u+jBbiIDOA0MKiG8qF/RyFfN9JKGZX4gEKu8RLxmUxlGJu+Dedy0yesaPvwe?=
- =?us-ascii?Q?H4iqOITjXRNiD5cc8b5wXzsPlXudbChVEqAZp3NZa4J6fm+0BHxYaQi/VrnJ?=
- =?us-ascii?Q?rmks/0f/yPfpRTQvPoFM8diTIcqZaEftTSgg1ssakZ6KZrTTIKsi5pU340Xy?=
- =?us-ascii?Q?1AsG6j+8i607w6PobFzkUVn1L8c+NISJfR0q7PnkiJZdUOMZScKY72LJeagl?=
- =?us-ascii?Q?gTK9EefU3hjsXbBC5Zimn2lgC4jXRv5CezDgqaQvue9/5J80VzTjkP9zBmCA?=
- =?us-ascii?Q?rYD8dz6DkuRwnGQy4OVVM0SkDI/BvhiWt6OPuiN/6dth38qk9swBa7TMCJX5?=
- =?us-ascii?Q?1NR1v4163DZJcZb575A/yCbNbc+ndywzrTZwV913k6RFQjnSCDx4d9NYEMzd?=
- =?us-ascii?Q?eZ3jhEfI75ywATkglbMUdSljcrVD/aG226iWjiMdgXkEimvt3KECYHbhGVF7?=
- =?us-ascii?Q?qbNv/d1wGx+OxXygoBu0WPrbzUajtKE9d+5bultaFYVR94Vvt8tfTNv7+wFq?=
- =?us-ascii?Q?+ZANgB70oc4tQ7wN9/GgxYKBKpti7dE6tyO7iV5uOWhBJ1gAZJR6v0+k31ml?=
- =?us-ascii?Q?9bXGT/CIFnpEBdESyW3DpQrWPIvb8hevEzGhDWgSXTncWkq4Mu9yLvORA59o?=
- =?us-ascii?Q?P5GSCyuKc7HFgAQ0R7n0h72zyMUJPfPGZNS3ITl9SxRsr3NEQO7zMIImZBzS?=
- =?us-ascii?Q?2iKJ4Mrfg2HeHP+U+Cax3a8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gJQyJ5Nhous2EHbfkhfVJVx/rm4SMcyHtAktgw9KjqouWUENwgmAT/Lcy2y1?=
- =?us-ascii?Q?SLHETv7IJDwm2zEPjAAp9LWnn2l5cT9ZgpSFbUFgm6PcbuN4uWzWdrhvU4mW?=
- =?us-ascii?Q?X/nUiz6wg6WLuYFBNwRO06ja9D6oz0rSO7yOtLzo1jQPECkVVqUaFerewdkn?=
- =?us-ascii?Q?/fU1WtA2hqhiwUAN1jU0Tiv91qJ8RLg94tD3VsG/uCAJKWzq74YoG2vpiOJu?=
- =?us-ascii?Q?Ilfm7sq9e6NYO//wz9NX0ZgWrS6nGJTyVjgau1W3cnNYkWmjQfK/2SWC14NP?=
- =?us-ascii?Q?BPn2oJe86Gd9AryWOVOnxIwJYJLlgtgk4sysp+XQ83/3YGBkvi7u3hr0vA1S?=
- =?us-ascii?Q?B3PaEQ7EpMEmkOw28V134MKH6I43nwE64IhE4+eb9hvPjOHjgCFa5dJWUacP?=
- =?us-ascii?Q?6cmtHbtNl6M3MtYB0RzmL7y0pT4FJNsIoGGf6TRQSD0JAh0wsfCcVfALOqYn?=
- =?us-ascii?Q?o8PtrU4e/V/l8D6sEEhpwPuSINVslF6yPWNAwt+QeJ7NsEatANAF0nJEBMzX?=
- =?us-ascii?Q?0KcImOKLYFM16LA+1CeBHA4E0cg6n1Pojc5QHpF//LV7x4hbfSwHW8zIj/tH?=
- =?us-ascii?Q?Wgmnz8tN490GRvw1naoArf/mZZZ1o0XxloC/w8Iy09MAog3dkLqRgMMCX2k4?=
- =?us-ascii?Q?IqF9v5Dunh/sEGzJuqU8bbOu67q7jWNDN8A4r0evqQZGNYkkddezhnl9NYlf?=
- =?us-ascii?Q?FzUQo5gYbwPZ06P/IqpEmov1jmwlRxL6ZW+soE7n5iQ+QssRTmF6snXdridM?=
- =?us-ascii?Q?iRxNq8eUuJ3H873QHz3KlwsNerNp8Ief7YDzcNwCV2f8LJZ5ByusACjnBAIB?=
- =?us-ascii?Q?2CVe5voV2fPaYvA7GX2Uuzp3gOFWyn27S89w/Rzc+jTBSpHPp5TE01ZYr9Fw?=
- =?us-ascii?Q?UZAm8GlNRSd4XXW2tmorR8U1ZPJFy3GL/NO9J6bya1N65jBhGTjnPW6SKT2w?=
- =?us-ascii?Q?58EcfP1+yqsYozrqpivH9lo9gk6Ml9xLM/ByAIz/zp1NA4zKJ1KzwD7sywNx?=
- =?us-ascii?Q?EJQZmbXheF8TP9WtIGJioPNOcsJAognfv6Ws5FFr6X1VxoNve1K8I5Px3Fac?=
- =?us-ascii?Q?6GiOZ/2IAbi33fQDzNxSdcbMve1gZDH5TndeIGFa/mUvCnv6yk9z5hJveCQr?=
- =?us-ascii?Q?8j6C+W6vBxeriG6vRZb9X8KuUTcHvhBsap/LwTRXQ6jJ2M8nad97YpJ/4onv?=
- =?us-ascii?Q?UJbfE/WzXr1pxn/kAH+xNES7kHN+GbIWYCo0pGVuMuM6haaPmlISn3YDDfV2?=
- =?us-ascii?Q?8RcKSgJ2jWaFMve75ruwb9BUVvuhsEULPJes4s7eJU4nT3vdRsX3m6Ng1Scx?=
- =?us-ascii?Q?2yIrmWidioNUwVCzDucR7jYkjm6juzUb5sNccvFQEfx7ovp3lVZt4g4ORJ7w?=
- =?us-ascii?Q?OuFquoQSc79ZaBNxJvwbhtz9NYcs3yINw0EuYVKG2Kl0K4cQgphF9Ihf1fUL?=
- =?us-ascii?Q?RHfmykAUiuzAmEwLHUFX+Y67eT5/1ghKv9aLKMBfAwFgjqBEZB5MwvoH/LX5?=
- =?us-ascii?Q?zWGkwaB3U6jnd76plf1j+RAukxqpWKgqQWzv44icElpUTDSyZ00N24P6NNWN?=
- =?us-ascii?Q?TshujqolTEzaZj0BqfuHUEj2PKYvNNjIQJuoeMXng9hjhW92MYlFadb30bDH?=
- =?us-ascii?Q?V365L1rkYQbRkBtWIsf7PgQBOniMG+8KqH9V4+rmLwE4Mhe3/5QVqU/cge7Y?=
- =?us-ascii?Q?yaN3dGvivPmObp/jMrOcELPc4rhiHpbe4v3jnGrGMIUD5MA6?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8acb9052-f879-41f1-2f7d-08de62738bc9
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 15:55:54.0895
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LgnwnELFxsHmnB9LcO4f1OdN8hCMALGoDyFI3ykaid6tRwr7I3/XEWGqxxSY8WPgLzuo6SqFL8uMvGhPOclG5A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10318
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAEnQRZA-nMai9-CEdMqnr2drqBRXXPOKE3a+_3j4S_=x-bM0pQ@mail.gmail.com>
 
-On Mon, Feb 02, 2026 at 05:58:36PM +0800, ming.qian@oss.nxp.com wrote:
-> From: Ming Qian <ming.qian@oss.nxp.com>
->
-> Support the upgraded JPEG encoder v1 found on i.MX952 SoC.
->
-> Detect the encoder hardware version via the version register.
->
-> The v1 encoder uses an expanded descriptor format that allows all
-> encoding parameters, including JPEG quality, to be configured directly
-> in the descriptor.
->
-> This removes the manual register-based configuration step required by v0
-> and reduces the interrupt count from two to one per frame.
->
-> V0 encoding flow:
->   1. Write quality to registers -> trigger config interrupt
->   2. Start encoding -> trigger completion interrupt
->
-> V1 encoding flow:
->   1. Configure descriptor with all parameters including quality
->   2. Start encoding -> trigger completion interrupt
->
-> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> ---
->  .../media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h |  1 +
->  .../media/platform/nxp/imx-jpeg/mxc-jpeg.c    | 45 ++++++++++++++++++-
->  .../media/platform/nxp/imx-jpeg/mxc-jpeg.h    | 11 +++++
->  3 files changed, 55 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-> index adb93e977be9..0d78443cb270 100644
-> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg-hw.h
-> @@ -73,6 +73,7 @@
->  #define GLB_CTRL_DEC_GO					(0x1 << 2)
->  #define GLB_CTRL_L_ENDIAN(le)				((le) << 3)
->  #define GLB_CTRL_SLOT_EN(slot)				(0x1 << ((slot) + 4))
-> +#define GLB_CTRL_CUR_VERSION(r)				FIELD_GET(GENMASK_U32(19, 16), r)
->
->  /* COM_STAUS fields */
->  #define COM_STATUS_DEC_ONGOING(r)		(((r) & (1 << 31)) >> 31)
-> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> index ede422364f9b..71f4a1d292ac 100644
-> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-> @@ -1417,11 +1417,32 @@ static void mxc_jpeg_enc_finish_config_manually(struct mxc_jpeg_ctx *ctx)
->  	mxc_jpeg_enc_mode_go(dev, reg, ctx->extseq);
->  }
->
-> +static void mxc_jpeg_enc_configure_desc(struct mxc_jpeg_ctx *ctx)
-> +{
-> +	struct mxc_jpeg_dev *jpeg = ctx->mxc_jpeg;
-> +	struct mxc_jpeg_desc *desc = jpeg->slot_data.desc;
-> +	struct mxc_jpeg_desc *cfg_desc = jpeg->slot_data.cfg_desc;
-> +
-> +	ctx->enc_state = MXC_JPEG_ENCODING;
-> +	cfg_desc->mode = (ctx->extseq) ? 0xb0 : 0xa0;
-> +	cfg_desc->cfg_mode = 0x3ff;
-> +
-> +	desc->mode = (ctx->extseq) ? 0x150 : 0x140;
-> +	desc->cfg_mode = 0x3ff;
-> +	desc->quality = ctx->jpeg_quality;
-> +	desc->lumth = 0xffff;
-> +	desc->chrth = 0xffff;
-> +}
-> +
->  static const struct mxc_jpeg_enc_ops mxc_jpeg_enc_cfg_ops_v0 = {
->  	.enter_config_mode = mxc_jpeg_enc_start_config_manually,
->  	.exit_config_mode = mxc_jpeg_enc_finish_config_manually
->  };
->
-> +static const struct mxc_jpeg_enc_ops mxc_jpeg_enc_cfg_ops_v1 = {
-> +	.setup_desc = mxc_jpeg_enc_configure_desc
-> +};
-> +
->  static const struct mxc_jpeg_fmt *mxc_jpeg_get_sibling_format(const struct mxc_jpeg_fmt *fmt)
->  {
->  	int i;
-> @@ -2874,6 +2895,14 @@ static int mxc_jpeg_attach_pm_domains(struct mxc_jpeg_dev *jpeg)
->  	return ret;
->  }
->
-> +static int mxc_jpeg_get_version(void __iomem *reg)
-> +{
-> +	u32 regval;
-> +
-> +	regval = readl(reg + GLB_CTRL);
-> +	return GLB_CTRL_CUR_VERSION(regval);
-> +}
-> +
->  static int mxc_jpeg_probe(struct platform_device *pdev)
->  {
->  	struct mxc_jpeg_dev *jpeg;
-> @@ -3008,11 +3037,23 @@ static int mxc_jpeg_probe(struct platform_device *pdev)
->  	platform_set_drvdata(pdev, jpeg);
->  	pm_runtime_enable(dev);
+On Thu, Jan 29, 2026 at 06:02:21PM +0200, Daniel Baluta wrote:
+> On Thu, Jan 29, 2026 at 3:45 AM Peng Fan (OSS) <peng.fan@oss.nxp.com> wrote:
+> >
+> > From: Peng Fan <peng.fan@nxp.com>
+> >
+> > imx_rproc_elf_find_loaded_rsc_table() may incorrectly report a loaded
+> > resource table even when the current firmware does not provide one.
+> >
+> > When the device tree contains a "rsc-table" entry, priv->rsc_table is
+> > non-NULL and denotes where a resource table would be located if one is
+> > present in memory. However, when the current firmware has no resource
+> > table, rproc->table_ptr is NULL. The function still returns
+> > priv->rsc_table, and the remoteproc core interprets this as a valid loaded
+> > resource table.
+> >
+> > Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table() when
+> > there is no resource table for the current firmware (i.e. when
+> > rproc->table_ptr is NULL). This aligns the function's semantics with the
+> > remoteproc core: a loaded resource table is only reported when a valid
+> > table_ptr exists.
+> >
+> > With this change, starting firmware without a resource table no longer
+> > triggers a crash.
+> >
+> > Fixes: e954a1bd1610 ("remoteproc: imx_rproc: Use imx specific hook for find_loaded_rsc_table")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> 
+> Changes looks good to  me >
+> 
+> > --- a/drivers/remoteproc/imx_rproc.c
+> > +++ b/drivers/remoteproc/imx_rproc.c
+> > @@ -729,6 +729,10 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *
+> >  {
+> >         struct imx_rproc *priv = rproc->priv;
+> >
+> > +       /* No resource table in the firmware */
+> > +       if (!rproc->table_ptr)
+> > +               return NULL;
+> 
+> I wonder if we can make this change generic because it should happen
+> on other platforms also.
+> 
+> Maybe something like this:
+> 
+> remoteproc: core: Only copy loaded table when valid
+> 
+> Copy resource table in memory only when:
+> * the current loaded firmware provides one
+> AND
+> * there is an explicit request to have the rsc table copied in memory
+> via rsc-table
+> 
+> --- a/drivers/remoteproc/remoteproc_core.c
+> +++ b/drivers/remoteproc/remoteproc_core.c
+> @@ -1281,7 +1281,7 @@ static int rproc_start(struct rproc *rproc,
+> const struct firmware *fw)
+>          * that any subsequent changes will be applied to the loaded version.
+>          */
+>         loaded_table = rproc_find_loaded_rsc_table(rproc, fw);
+> -       if (loaded_table) {
+> +       if (rproc->cached_table && loaded_table) {
 
-Not related this patch. If have time, you change pm_runtime_enable() to
-devm_pm_runtime_enable().
+But we would be doing the check for rproc->table_ptr twice (->table_ptr and
+->cached_table should be the same).  The way it is currently writting forces
+vendor specific implementation of rproc_elf_find_loaded_rsc_table() to do the
+right thing.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
->
-> -	if (mode == MXC_JPEG_ENCODE)
-> -		jpeg->enc_cfg_ops = &mxc_jpeg_enc_cfg_ops_v0;
-> +	if (mode == MXC_JPEG_ENCODE) {
-> +		ret = pm_runtime_resume_and_get(dev);
-> +		if (ret < 0)
-> +			goto err_check_version;
-> +
-> +		if (mxc_jpeg_get_version(jpeg->base_reg) == 0)
-> +			jpeg->enc_cfg_ops = &mxc_jpeg_enc_cfg_ops_v0;
-> +		else
-> +			jpeg->enc_cfg_ops = &mxc_jpeg_enc_cfg_ops_v1;
-> +
-> +		pm_runtime_put_sync(dev);
-> +	}
->
->  	return 0;
->
-> +err_check_version:
-> +	pm_runtime_disable(&pdev->dev);
->  err_vdev_register:
->  	video_device_release(jpeg->dec_vdev);
->
-> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
-> index cdfefb68346a..c00c13549746 100644
-> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
-> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.h
-> @@ -81,6 +81,17 @@ struct mxc_jpeg_desc {
->  	u32 stm_bufsize;
->  	u32 imgsize;
->  	u32 stm_ctrl;
-> +	/* below parameters are valid for v1 */
-> +	u32 mode;
-> +	u32 cfg_mode;
-> +	u32 quality;
-> +	u32 rc_regs_sel;
-> +	u32 lumth;
-> +	u32 chrth;
-> +	u32 nomfrsize_lo;
-> +	u32 nomfrsize_hi;
-> +	u32 ofbsize_lo;
-> +	u32 ofbsize_hi;
->  } __packed;
->
->  struct mxc_jpeg_q_data {
-> --
-> 2.52.0
->
+The merge window has been pushed by a week, giving me an opportunity to merge
+this patch.  Should I do that or should we continue discussing the best
+approach?
+
+>                 memcpy(loaded_table, rproc->cached_table, rproc->table_sz);
+>                 rproc->table_ptr = loaded_table;
+>         }
