@@ -1,179 +1,317 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8612F0C45
-	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 18:37:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3352F361E
+	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 18:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770057476; cv=none; b=sQEuI+QW31PcrUmcOmqhut+70/ne1tvfU2w68LtxoLbHtnENF9Fg5GA/rhZX7P69nVbP6jcngOMR001XrwuvIF+fPu/35gpRIyBcUm/Js/5QYD6LgD9bk/6GV2P8wLU9t7DGhf8LukRlSO9BnFUVxaqwAHb94iv4jQVmfK2uLFk=
+	t=1770057874; cv=none; b=TzlFv8Z5esDylUrMRNAKqEflHEN2BRICHCQCHiUfLO3Cy0/ntlAvkZatb6ZZwt/xXQXEGOE1mGDWnz2lzFtNeDwb76ZXBdD5VayPwC/7VDcD1jj9dxd4fbjYE15wf3b94mSXbIGI/cuKriVbXRtTvGpXCNxGhxsfakoBRlWJAAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770057476; c=relaxed/simple;
-	bh=ekZpOKT6rD5qeoreWpnGpMFWoNUspjVXL5ILH7VBnZQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iNMapOQt3aGv1v100bBXL279flqcHvZPyEHZo8h+FubI60N1RF5Pk5t5IfS96RhAnqbiMWN6OaviGQQCVqJp938BiCqZ+3f1FeebdDW6uw3vWy5aP9FVVgRMXE+MmrmeUbhNjJthMGqHKt6Oroe1KNA0E2jAVCk0XWvjKT+n1Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LYfEHo2X; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1770057874; c=relaxed/simple;
+	bh=WYQiIExxKDX0cCt2DTvo3Yevcg7P9+CnoNuVKvWhxaw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=S/H8irmZC//qZQwPrf4Ke1FLAz0CR0azgxVp9npxe8CnYYhjy6X3lQSCBYjY2rWkm1D7SViD7/xgtmYmkZDoR9EZ5mK+S0a0TiJ7LnFoWqoN3u7pOzgeboYOqzNwxfk6yyB/wD8FXGnKdlY/exIqz0LCO+4QXfPBLrgk0FbVKeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=nlXjGJgu; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LYfEHo2X"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id BC64EC237F5;
-	Mon,  2 Feb 2026 18:37:56 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D3C7E60767;
-	Mon,  2 Feb 2026 18:37:51 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9F0FD119A8888;
-	Mon,  2 Feb 2026 19:37:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1770057471; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=SPJx0ZSmiFokBNhe/wghGa2/qrNwaHx0ZAZCmQ4u/oQ=;
-	b=LYfEHo2XZ4oJofesUePVp4KqImR8/VS2LU0y1R1+XAR8sh/JptQRfYgr/4XDTiLFnQULWw
-	4Sl5j4Ja99OszFkT6dY6yLvTOtXIuTY5WoXzfU2hO82ShakjUgFGNjHiPmyJsnbGIz9nSz
-	hmDopT2+6dzpbJL0V90+vx1otFTs3mg8pMDCPGTrNOrCrIPrUTwfKDr60Wd7zNDQH8dS6/
-	20VpaaUGxwJulmsYz+nLQNGP7ugnE0jWVF/nJl2wZ7Ia7EDa8KbuMsbGx9mRSkDQHDy5ZN
-	tJG8i9azCJJCaxjgLtyqecBYLbU0SBzKttT7TvmaETEeqBDU0umOBpCvoGbrJA==
-Message-ID: <5527e953-2225-46e7-9619-5f346c1af9c0@bootlin.com>
-Date: Mon, 2 Feb 2026 19:37:42 +0100
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="nlXjGJgu"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8947e6ffd20so62990006d6.1
+        for <imx@lists.linux.dev>; Mon, 02 Feb 2026 10:44:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1770057871; x=1770662671; darn=lists.linux.dev;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=fXE7ald5tcjEzZ48f0b2jZkl5LlJhCx6n0+to2+iB3E=;
+        b=nlXjGJguqjNqcXNlci3eu8ThLlWj69kOE8XrCCe0B3KJJzTBiDVXChM4U3+VVUzWU8
+         9lgFAABtVr36zScJH52112/fsALImS79pXFfPtZDF5slo7H92FOLZvx9SD8yeaxrJJQ7
+         KggEBsRz7x8S36zApbxyQsjKkaDjYladyoPdKid3QPbGvo64VJcuaHMy1J8J8Gn5zV/N
+         EOGqLPZPxn1aookkadPYs1lX7yx18Wv04RnE32uRCpgBGNxI2t40cNA06Ps8HxQH6t8B
+         rkRu/HgwOm7NMmYIq5BH4fkET4DrtkglSLXWE/zJ3lzV92aSIAtK/f/CyQZu9Yo1IeSt
+         vBuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770057871; x=1770662671;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fXE7ald5tcjEzZ48f0b2jZkl5LlJhCx6n0+to2+iB3E=;
+        b=doehgnYHBYefSmB2+CbuSht2FjVlutRFzNmGnVWb5DiaB6qo5kLsi84ApgvxN/2hED
+         VKTM6e0FMbzX+KiQ63VG1PUu87hoc/uVUPV6PBAZTOVvULYD5URgRnHFyL3MbWKgrY5i
+         xvO+MCEnGcWHyPyrVwGbBjqcI5MkLfUe1nTdquEo6ikh+AtftkJ+uWHeNHKtKDfuejFu
+         bvU/z5I+o2WoIsCguu0W8wj6/HdoX5sTPqAH/nCB9ct4QW2zrfsu5j51VbCEj+Duma08
+         XurXHiKn3mTWknxuiTTB1mmEpYi9DCCv5+5dZj3L/j+SunrkUx0m3muI54d+0coEL1WQ
+         r8VQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXoccu9tuF383evqRcWLxG2UZd3oCXiNxK2Vr/bPmgdE3ktpckr45d1EMPQpKMzqm90Xq8=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yx1uoK9PYKODLHg7+JhNxCavWasxtJ+7pi3azMX2hrsVmuAKf8E
+	sDXJ3g+NumqsXDPzr15jiTZKmhqhjIfKn5GzkJ/n+teClSz+JnBZClF/zpc/xjMgHKQ=
+X-Gm-Gg: AZuq6aI1RCXFnb1vvPv3AyjBucUJMCPNNJ8G46SXwkGf71+KYnFKbqs06i/AsmnqwHS
+	17ERY29RR8MgvJ4kUk7rLrckCq9h9QPZliK4xvmrARM5tSmz81SdEbcrjYsfimRrhg5E9DxlQE/
+	dWNXtGinP8BmS1Viu112rx4FEJex9rK89Cg+5ug3xBzgii0V5G7SSl98bh6PNHRKq+oyAOLqcGm
+	ZoZdrtjAr0RGyNGr4z4ywpYIv95YsVkRprytrmWwiOgczW6M1OzJkJ8vv0ih09Ed/yq8SVmawXD
+	Lh8YfvL9soE/+ysxcXB5ua8JL4VHsB4BIjsay9iKxW/G/R7ewlLyloJSA61dcxGIMf7pQPUVmIO
+	q1Grdc6ABOGp/N9vCOpswxUcOEypVmnF/CzQ5v0945IxvuEwgAFDVBqF784iUOenbDEQV9V5Mtv
+	fm1whRLAFHArkTopej
+X-Received: by 2002:a05:6214:c42:b0:894:46d9:53f7 with SMTP id 6a1803df08f44-894e9f27762mr178804396d6.12.1770057871331;
+        Mon, 02 Feb 2026 10:44:31 -0800 (PST)
+Received: from ?IPv6:2606:6d00:15:210e::5ac? ([2606:6d00:15:210e::5ac])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-894d3740e62sm119882596d6.26.2026.02.02.10.44.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 10:44:30 -0800 (PST)
+Message-ID: <169eba79e8e1f906b1a0b59e22a531dfc7e57a1f.camel@ndufresne.ca>
+Subject: Re: [PATCH] arm64: dts: imx8mq: Restore VPU G2 clock to 600MHz for
+ 4K60fps decoding
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>, linux-media@vger.kernel.org
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, 
+	benjamin.gaignard@collabora.com, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, p.zabel@pengutronix.de,
+ sebastian.fricke@collabora.com, 	shawnguo@kernel.org,
+ ulf.hansson@linaro.org, s.hauer@pengutronix.de, 	kernel@pengutronix.de,
+ festevam@gmail.com, linux-imx@nxp.com, 	l.stach@pengutronix.de,
+ Frank.li@nxp.com, peng.fan@nxp.com, eagle.zhou@nxp.com, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Date: Mon, 02 Feb 2026 13:44:28 -0500
+In-Reply-To: <0b24716b-438c-4185-8a93-3a3879147c24@oss.nxp.com>
+References: <20260130084133.2159-1-ming.qian@oss.nxp.com>
+	 <df8d5d5f28870752e77ec74f34fea7ceb6e97286.camel@ndufresne.ca>
+	 <0b24716b-438c-4185-8a93-3a3879147c24@oss.nxp.com>
+Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-VlA8ZcxnzX2eUS2/dkES"
+User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net] net: phy: change devlink flag to
- AUTOREMOVE_SUPPLIER for non-SFP PHYs
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Wei Fang <wei.fang@nxp.com>, andrew@lunn.ch, hkallweit1@gmail.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, florian.fainelli@broadcom.com,
- xiaolei.wang@windriver.com, quic_abchauha@quicinc.com,
- quic_sarohasa@quicinc.com, imx@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260202054533.539883-1-wei.fang@nxp.com>
- <267c78c1-4ad2-4f06-be63-0fb506c5134d@bootlin.com>
- <aYCzxVTTZvok9_d1@shell.armlinux.org.uk>
- <0689a2ab-352a-4275-9662-0c45daf8a0b2@bootlin.com>
- <aYDmPUN5Z-eRWW2K@shell.armlinux.org.uk>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <aYDmPUN5Z-eRWW2K@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
 
+--=-VlA8ZcxnzX2eUS2/dkES
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 02/02/2026 19:00, Russell King (Oracle) wrote:
-> On Mon, Feb 02, 2026 at 06:38:48PM +0100, Maxime Chevallier wrote:
->>
->>
->> On 02/02/2026 15:25, Russell King (Oracle) wrote:
->>> On Mon, Feb 02, 2026 at 12:10:41PM +0100, Maxime Chevallier wrote:
->>>> Hi Wei,
->>>>
->>>> On 02/02/2026 06:45, Wei Fang wrote:
->>>>> For the shared MDIO bus use case, multiple MACs will share the same MDIO
->>>>> bus. Therefore, these MACs all depend on this MDIO bus. If this shared
->>>>> MDIO bus is removed, all the PHY devices attached to this MDIO bus will
->>>>> also be removed. Consequently, the MAC driver should not access the PHY
->>>>> device, otherwise, it will lead to some potential crashes. Because the
->>>>> corresponding phydev and the mii_bus have been freed, some pointers have
->>>>> become invalid.
->>>>>
->>>>> For example. Abhishek reported a crash issue that occurred if the MDIO
->>>>> bus driver was removed first, followed by the MAC driver. The crash log
->>>>> is as below.
->>>>>
->>>>> Call trace:
->>>>>  __list_del_entry_valid_or_report+0xa8/0xe0
->>>>>  __device_link_del+0x40/0xf0
->>>>>  device_link_put_kref+0xb4/0xc8
->>>>>  device_link_del+0x38/0x58
->>>>>  phy_detach+0x2c/0x170
->>>>>  phy_disconnect+0x4c/0x70
->>>>>  phylink_disconnect_phy+0x6c/0xc0 [phylink]
->>>>>  stmmac_release+0x60/0x358 [stmmac]
->>>>>
->>>>> Another example is the i.MX95-15x15 platform which has two ENETC ports.
->>>>> When all the external PHYs are managed the EMDIO (the MDIO controller),
->>>>> if the enetc driver is removed after the EMDIO driver. Users will see
->>>>> the below crash log and the console is hanged.
->>>>>
->>>>> Call trace:
->>>>>  _phy_state_machine+0x230/0x36c (P)
->>>>>  phy_stop+0x74/0x190
->>>>>  phylink_stop+0x28/0xb8
->>>>>  enetc_close+0x28/0x8c
->>>>>  __dev_close_many+0xb4/0x1d8
->>>>>  netif_close_many+0x8c/0x13c
->>>>>  enetc4_pf_remove+0x2c/0x84
->>>>>  pci_device_remove+0x44/0xe8
->>>>>
->>>>> To address this issue, Sarosh Hasan tried to change the devlink flag to
->>>>> DL_FLAG_AUTOREMOVE_SUPPLIER [1], so that the MAC driver will be removed
->>>>> along with the PHY driver. However, the solution does not take into
->>>>> account the hot-swappable PHY devices (SFP PHYs), so when the PHY device
->>>>> is unplugged, the MAC driver will automatically be removed, which is not
->>>>> the expected behavior. This issue should not exist for SFP PHYs, so based
->>>>> on the Sarosh's patch, the flag is changed to DL_FLAG_AUTOREMOVE_SUPPLIER
->>>>> for non-SFP PHYs.
->>>>>
->>>>> Reported-by: Abhishek Chauhan (ABC) <quic_abchauha@quicinc.com>
->>>>> Closes: https://lore.kernel.org/all/d696a426-40bb-4c1a-b42d-990fb690de5e@quicinc.com/
->>>>> Link: https://lore.kernel.org/imx/20250703090041.23137-1-quic_sarohasa@quicinc.com/ # [1]
->>>>> Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
->>>>> Suggested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
->>>>> Signed-off-by: Wei Fang <wei.fang@nxp.com>
->>>>
->>>> I gave that patch a test, with the following cases :
->>>>
->>>>  - On Macchiatobin (we have PHYs that share an mdiobus).
->>>> When unbinding a PHY, the MAC dissapears as well :
->>>
->>> Correct, this is why these band-aids are harmful. One "device" can
->>> correspond with *multiple* network interfaces, and the loss of one
->>> PHY can have a *very* detrimental effect.
->>>
->>> Consider the case where root-NFS is being used, and removing a PHY
->>> on another interface takes out the interface that root-NFS is
->>> using. Your machine is now dead in the water.
->>
->> That's what I've been seeing. I unbound one PHY, it took out 3 netdevs
->> and I don't have log regarding "why". I guess there's devlink debug
->> knobs for that, but not enabled by default it seems.
-> 
-> See what I said above. "One "device" can correspond with *multiple*
-> network interfaces".
-> 
-> On Armada 8040, one network "device" has multiple ports - they all
-> share the same packet infrastructure. Each port is a separate
-> interface in the kernel.
-> 
-> Consequently, the "struct device" is common across all ports on one
-> of the CP110 dies (there are two dies.) If one triggers an unbind
-> of that struct device, then you lose *all* ports on that CP110 die
-> whether or not the others _could_ remain functional.
-> 
-> Consider a DSA switch, which has external PHYs connected. Should
-> unbinding one port's PHYs take out the entire switch - and in the
-> case of multiple switches, cause the entire switch tree to be taken
-> out?
+Le lundi 02 f=C3=A9vrier 2026 =C3=A0 15:44 +0800, Ming Qian(OSS) a =C3=A9cr=
+it=C2=A0:
+> Hi Nicolas,
+>=20
+> On 1/30/2026 10:47 PM, Nicolas Dufresne wrote:
+> > Hi,
+> >=20
+> > Le vendredi 30 janvier 2026 =C3=A0 16:41 +0800, ming.qian@oss.nxp.com=
+=C2=A0a =C3=A9crit :
+> > > From: Ming Qian <ming.qian@oss.nxp.com>
+> > >=20
+> > > The VPU G2 clock was reduced from 600MHz to 300MHz in commit
+> > > b27bfc5103c7 ("arm64: dts: freescale: Fix VPU G2 clock") to address
+> > > pixel errors with high-resolution HEVC postprocessor output.
+> > >=20
+> > > However, testing shows the 300MHz clock rate is insufficient for
+> > > 4K60fps decoding and the original pixel errors no longer occur at
+> > > 600MHz with current drivers.
+> >=20
+> > Tested on EVK, with the downstream DCSS driver, and this change trigger=
+s DCSS
+> > underrun (which is related to the DRAM QoS erratas on this SoC). It als=
+o
+> > sometimes trigger the "not all macroblock decoded" warning I added rece=
+ntly, and
+> > we can empty IRQs, but these are handled now.
+> >=20
+>=20
+> This doesn't sound like just a VPU issue; it's related to the display or=
+=20
+> DDR.
+> If not displayed, do the fluster test cases yield different results at=
+=20
+> 600MHz and 300MHz?
 
-Don't get me wrong, I completely agree with you on that, it's pretty bad
-to lose all these interfaces in one go, and the debugging experience to
-figure this out on an unknown system doesn't sound great.
+Didn't you run these tests before sending ? I can try again, but in my inte=
+rnal
+notes, I wrote:
 
-> This is why devlinks is a bad idea. It's too heavy handed for cases
-> beyond the simple "one network device per struct device" model that
-> doesn't exist everywhere. For simple cases, yes, maybe, but not
-> where it means that taking out one minor part of the system destroys
-> the entire system because it chose to unbind a multi-interface device.
-> 
-Fair, fair.
+  > Tested that, and everything becomes unstable
 
-I think you gave enough pointers on a way forward then.
+That was before I figure-out the IRQ handler didn't handle exception bits t=
+hat
+didn't stop the decoder (or dry IRQ, which strangely is common from the G2)=
+.
 
-Maxime
+>=20
+> > >=20
+> > > Test results with 3840x2160@60fps HEVC stream decoded to NV12
+> > > (the same scenario that exhibited pixel errors previously):
+> > >=20
+> > > 300MHz performance:
+> > > - Severe frame dropping throughout playback
+> > > - Only 336 frames rendered in 11:53 (0.471 fps)
+> > > - Continuous "A lot of buffers are being dropped" warnings
+> > > - Completely unusable for 4K video
+> > >=20
+> > > 600MHz performance:
+> > > - Smooth playback with only 1 frame dropped at startup
+> > > - 37981 frames rendered in 10:34 (59.857 fps)
+> > > - Achieves target 60fps performance
+> > > - No pixel errors or artifacts observed
+> >=20
+> > That probably only true with the upstream DCSS + a small resolution emb=
+edded
+> > panel ? Can you clarify this setup, because the display drivers mainlin=
+e are
+> > very minimal. Would be nice to show you average DDR read/write bandwidt=
+h
+> > utilization during this run for comparision.
+>=20
+> My display is hdmi, I'll try the DCSS.
+> And the DDR bandwidth results measured by perf are as follows:
+>=20
+> =C2=A0 Performance counter stats for 'system wide':
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 113303664278=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 imx8_ddr0/read-cycles/
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 82457075530=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 imx8_ddr0/write-cycles/
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 634.892101865 seconds time elapsed
+>=20
+> >=20
+> > Another information that bugs me, in the BSP code, the G2 voltage is in=
+creased
+> > too, which you didn't do here. They also use the thermal 2 zone to kick=
+ it down
+> > to 300 until it cools down.
+> >=20
+>=20
+> In our internal code, whenever the frequency of either g1 or g2 reaches
+> 600MHz, the voltage is adjusted to 1.0V. Since g1 is already set to 600
+> MHz in the upstream DTS, I believe the default version is already 1.0v.
+>=20
+> And do you mean vpu-thermal? But it doesn't define the cooling-map, I'm
+> not sure how it works.
+>=20
+> 		vpu-thermal {
+> 			polling-delay-passive =3D <250>;
+> 			polling-delay =3D <2000>;
+> 			thermal-sensors =3D <&tmu 2>;
+>=20
+> 			trips {
+> 				vpu-crit {
+> 					temperature =3D <90000>;
+> 					hysteresis =3D <2000>;
+> 					type =3D "critical";
+> 				};
+> 			};
+> 		};
 
+Its not:
+
+ $> cat /sys/kernel/debug/regulator/regulator_summary | grep SW1C
+ SW1C                             1    1      0 unknown   900mV     0mA   8=
+25mV  1100
+
+
+Before I gave up on 60Hz on this SoC, I did test raising it to 1v with this
+patch (hopefully there is a way to do that in DT, would be more elegant):
+
+
+diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
+index 4b828d74a606..2f2b85ca6fd2 100644
+--- a/drivers/pmdomain/imx/gpcv2.c
++++ b/drivers/pmdomain/imx/gpcv2.c
+@@ -639,6 +639,7 @@ static const struct imx_pgc_domain imx8m_pgc_domains[] =
+=3D {
+ 		},
+ 		.pgc   =3D BIT(IMX8M_PGC_VPU),
+ 		.keep_clocks =3D true,
++		.voltage   =3D 1000000,
+ 	},
+=20
+ 	[IMX8M_POWER_DOMAIN_DISP] =3D {
+
+I would also like to remind you your own erratas, in the errata document yo=
+u
+state that DRAM QoS is broken, and all transactions are treated with the sa=
+me
+priority. If you overload the bandwidth, it becomes fatal for the display
+controller. We tried to workaround with changing the NoC configuration, but=
+ it
+did not work. It feels like that NoC granularity is not enough to prevent
+underrun of the display controller (where the QoS would work, since its don=
+e at
+transaction level, not by measuring bandwidth).
+
+Nicolas
+
+>=20
+> Regards,
+> Ming
+>=20
+> > Nicolas
+> >=20
+> > >=20
+> > > Restore the clock to 600MHz to enable proper 4K60fps decoding
+> > > capability while maintaining stability.
+> > >=20
+> > > Test pipeline:
+> > > =C2=A0=C2=A0 gst-launch-1.0 filesrc location=3D<4K60_HEVC.mkv> ! \
+> > > =C2=A0=C2=A0=C2=A0=C2=A0 video/x-matroska ! aiurdemux ! h265parse ! \
+> > > =C2=A0=C2=A0=C2=A0=C2=A0 v4l2slh265dec ! video/x-raw,format=3DNV12 ! =
+\
+> > > =C2=A0=C2=A0=C2=A0=C2=A0 queue ! waylandsink
+> > >=20
+> > > Fixes: b27bfc5103c7 ("arm64: dts: freescale: Fix VPU G2 clock")
+> > > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+> > > ---
+> > > =C2=A0 arch/arm64/boot/dts/freescale/imx8mq.dtsi | 2 +-
+> > > =C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)
+> > >=20
+> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+> > > b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+> > > index 607962f807be..731142176625 100644
+> > > --- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+> > > +++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+> > > @@ -960,7 +960,7 @@ pgc_vpu: power-domain@6 {
+> > > =C2=A0=C2=A0								=09
+> > > <&clk IMX8MQ_SYS1_PLL_800M>,
+> > > =C2=A0=C2=A0								=09
+> > > <&clk IMX8MQ_VPU_PLL>;
+> > > =C2=A0=C2=A0						assigned-clock-rates =3D
+> > > <600000000>,
+> > > -							=09
+> > > <300000000>,
+> > > +							=09
+> > > <600000000>,
+> > > =C2=A0=C2=A0							=09
+> > > <800000000>,
+> > > =C2=A0=C2=A0								=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 <0>;
+> > > =C2=A0=C2=A0					};
+> > >=20
+> > > base-commit: c824345288d11e269ce41b36c105715bc2286050
+> > > prerequisite-patch-id: 0000000000000000000000000000000000000000
+
+--=-VlA8ZcxnzX2eUS2/dkES
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaYDwjAAKCRDZQZRRKWBy
+9M0iAQCQ+75+dFwxPBtQI6SItaSuQV1acKtDid/mlGDfjCw4EQD/Xw6NrgBGFWtL
+nBi1uvDvRI2awNqQROZ2r40kipfvpwc=
+=PVw+
+-----END PGP SIGNATURE-----
+
+--=-VlA8ZcxnzX2eUS2/dkES--
