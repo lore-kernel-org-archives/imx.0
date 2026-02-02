@@ -1,183 +1,163 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A2836C0CD
-	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 14:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770041843; cv=pass; b=GmgDwtzgaQBuXn71q9wwakCO0hyWL8RwQANNIZNVc49Hy+a14dqd/jmbfhT5V1NnpFvmkP665pxUpik0NAh168ggBZtvsi2L3y9mnXhflGmHxsHmfDorXlR9hrK6irB4AQv2KJaJVVB2xNjW2uqr9BrSGF9kyYaF6PI2aC2onjw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770041843; c=relaxed/simple;
-	bh=8kTR9QPGFqxQjrlyBR2RFv6GOSbe116yVA/R+TPaP8c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rdQyWmE+bEI4K3TTkZkeFJgn2WZ4rOYvLuzwxZ8EwO2/Mw1A49waTEz/tCxinXVgiWZjY89fkHSkuoYqFpBJShW6SGATqdg45DIpVD9+rL03MR+lgq1lbCcwPzcFwaO7k0ZGwTsjkXAZndBCzsqSa0sR7fnXLy6zScDs9Y3OBBE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PoIqgiHm; arc=pass smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4120366553
+	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 14:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770042335; cv=none; b=ZdQq14NRinxJXGXTXHXjDjzZx4YZgwei/pZFq5h7yIOLdXDjGna9mW0gAMfxYCGieFlM5cZ6jLuQUnecbOaZNSqY3N2J/V0KYBgx+/yBYzGoYkjS7PpWXtWLWhdhIMbb+pYJG73zm0crQe7HRN/aFb/E/roY05TqjWwdJPjcBSo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770042335; c=relaxed/simple;
+	bh=GGdDwTUpk5EUeNzmFSrWkTf1lB4XJJ1VZLtzjfdQSuk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VRqj+ndLMzHCQxzDmLYCLOvWKR3OxagYX6iAX56qAxeY4PrE/hXTBpqsSSwIHF9hTRZvmDKKlDZz5CrVtjdC8OtD7bastoq0TyVG/JQ4yrZWBfS+CPVN0IqdvAGKcJM+jhKTk+7j7sM+s6UBhPNypiFsto5ZS3soT51nDEqgqDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=13AE52ga; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PoIqgiHm"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c2dd0c24e5cso1726972a12.3
-        for <imx@lists.linux.dev>; Mon, 02 Feb 2026 06:17:22 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770041842; cv=none;
-        d=google.com; s=arc-20240605;
-        b=a6Cd/u3n9m05Hu/batFsiLPAydnClyspOrY8FnJLQD10IpShGyUQtZXy9cA1s7ex9w
-         +V5+usbKA+OwvoufRHhU/CSzu9s04HfKwLM6KOsG5gjykcj0QuijKd8Gmm3Txte+KZr9
-         vo52XOZ16GVv8I4n4ROMW8oyfNcJZsAxjZ5HaxjR5Ul4N3rMtkyMq+9wobqj8k/xmDaF
-         BxzkJfNYvrSaH8Ky349Jh/r86scEXrWGtHaRRbx22uakXaA7kEoVL/eMbn1OIBsL1sUU
-         oqqPB8MYgV7r1pMNA7cKNuZ9fxNsCW+wluAi1kSB56SSgoycqM276gBM3AaGSviZly5r
-         LIOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6DwlNJWcSSWiB1RJVuYLclaV0gPVuBf1c2xRk/9v2KU=;
-        fh=2YNrARgzM8jDyOXHzNSGS3TIYQmYwC6VhoydTPQLxx4=;
-        b=C7+xMKL/rBVbs/67WtAeROzzpno5pfxVqGScUq3bPWDTBiFg8GZCLaygWKCA9bd66A
-         Ioe7aypkKpW5nH8OGnfQ93w8hoBquSACL5tqxoA0TXM17ZvKHPDn8pv263jOzESfiCIJ
-         1v77LH0Mwa5P2lL17R+TNK9yyc9I3NYJSrlxWJO3QGLnAyDCaaX9/8PlunaTLYwVAxlj
-         ub/kbqhlXSchql+FYQPv1nP6/zQGm5tQIdH+JRDBHZjmB1LrfDKawrrC3Zbd4m+cL/lA
-         i2jlb4JMuMxPtnDlJK/trPsWeklDctZIe6D55OqAKKynLDUtek0egt+5nEXlNTT0Aupm
-         o/ww==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770041842; x=1770646642; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6DwlNJWcSSWiB1RJVuYLclaV0gPVuBf1c2xRk/9v2KU=;
-        b=PoIqgiHm76QnggUGJ1TM6WyJqGFp2dAsTTVmSYJ3pwKO6GP9bsKkwUYI1tWOxP5df+
-         Hts7Jh//muasDXfu7UpTZm9YNhBuEO4Jdp/giNE+EGiQtUoNowTtk0JEL+t5df7e8mLy
-         IMaNa8FLITg2olvV4mlT5/HT7yw2DrU2p4cdnIdSTCFC4Uk2l7av5DluheZ9YKKjiWiB
-         j+weuKEPLFCgc9zO8Df7GiZZ5iX8V/wIxtLcQFb9Ha1/SD1W4LENCuKsZcJ4VZbXHe2G
-         ZBj8ZrV1JNHiPzLgLGMh947PtHxX/oIByBT15RefTVkoZviu2slXt+JuvYwCSLwEcKPZ
-         baDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770041842; x=1770646642;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6DwlNJWcSSWiB1RJVuYLclaV0gPVuBf1c2xRk/9v2KU=;
-        b=ua/quOT/+7IQy1V96LvVkyWg/EAeZNcVwMvgsEuGgULASm8n9WSUe89xUydvsCAk5O
-         7w0pikhzN2Yu7QF6gv/6sCsnAjY913DQxOXtuxld7TKNdXOFAkuXGQ4D96Oc+cM/7pVO
-         AMC0C7AK1OfpRizHtaSRQhUcZu8Iwez4NfLcltJ4Kn/oNiD5t9d6BcADcJ98m1QE41rH
-         2fIVbnyqD+5/AKFnYWsuImNzrO4MVboAuujQOiw9Ow5aAaXOraW6FJMlH61yDXQQNu/K
-         B9upx53nni7zb8UGXDzd8fju4jFD3TCmd8sbn28o3B37EVXkrYcDhDc6tjHA2LlA+UbQ
-         n0Gw==
-X-Forwarded-Encrypted: i=1; AJvYcCX8nL/CgWx+ET/PhY5a/dhkVLKQrsc//6Ck8HCKT6kGq8UW9LgTYjaVQZCAxilgFJGXKYs=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz9c9777kA/rypWgzXjnEzDVU98Ff50F3Ywy2WKmFTMwAm+uIFA
-	kW819FSU8nQaj5IiC9nz+wsowJ9XLTSVeuQvTCChzX46vmwVHHO7q9TXPtOhllLDualYry/rsYb
-	v4rVPmofOq20xmMiJj7H7OuZKQ4tVMZw=
-X-Gm-Gg: AZuq6aI1XGBHbshOH8LTwPa5uSzHcyFG1aMA2fetmgzHDjbTViwzdTOl4H3n2hrLLHo
-	QZtO83K0JUteGNToFIpDACbbtTUDbWNGSttJMpSATjMocdpkDpFLExxfW4QyILlxfbfeNDwSV4K
-	HMh7zvs80DfChfckCRDaX9xNREFCuhu5GXilqyn77u3sFFsXSMcynNMVs+cBP5XqmyFf+C30o74
-	RBJRWDrbB0bqBtDU98F9wDnjbJiC6n5O7zKU5e5ZPArYY1MA/CIfAWJt9WgyKy56WJdnKuCZVdv
-	nnw=
-X-Received: by 2002:a17:90b:5145:b0:34a:9d9a:3f67 with SMTP id
- 98e67ed59e1d1-3543b3eff19mr11142088a91.33.1770041841526; Mon, 02 Feb 2026
- 06:17:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="13AE52ga"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=rhBN/4CEHrHWFvjQolbwtIzJ8rg0Id6dJ4/fTSIzWQg=; b=13AE52galpTNyjipvDVESbKnoi
+	UaXvLNM/NjMJsIhewAJZBBaX05Bk1R3bO3S6OK7W3T9RrxTN5/ESCBgrUvBjeoedIgqhqWMz7b25t
+	evfwsiY+UVOMZAJ6Lxh9CJEzkso4rQUnTcbl5ZVNmwHQJpMlRJ2/HfO+Qt4nZerDkoWSPex9tZ3qj
+	FJKbL9XgcmBZOx0CDZFQoR9k6DvCNPIysBa2dnJ7ajDe7LPxfK7J7H/2edJlxC/1uVjmEw3i7sdpO
+	fI7fA8KPw0Aur7E82XilZTeb/vt7c46Haof66U7S1b2M7Tyhu4BQ0l132yu9xJpbSHsKr1W3I8zZF
+	6aHw2dBg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41688)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vmurb-0000000045o-3qFZ;
+	Mon, 02 Feb 2026 14:25:15 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vmurV-000000003T2-190d;
+	Mon, 02 Feb 2026 14:25:09 +0000
+Date: Mon, 2 Feb 2026 14:25:09 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Wei Fang <wei.fang@nxp.com>, andrew@lunn.ch, hkallweit1@gmail.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, florian.fainelli@broadcom.com,
+	xiaolei.wang@windriver.com, quic_abchauha@quicinc.com,
+	quic_sarohasa@quicinc.com, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 net] net: phy: change devlink flag to
+ AUTOREMOVE_SUPPLIER for non-SFP PHYs
+Message-ID: <aYCzxVTTZvok9_d1@shell.armlinux.org.uk>
+References: <20260202054533.539883-1-wei.fang@nxp.com>
+ <267c78c1-4ad2-4f06-be63-0fb506c5134d@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260131-clk-imx6q-v2-0-70471ddc99e0@gmail.com>
- <20260131-clk-imx6q-v2-1-70471ddc99e0@gmail.com> <aX4q+W3Sjx5SRHrC@lizhi-Precision-Tower-5810>
- <aYAGMAE7ppXP/lbR@shlinux89>
-In-Reply-To: <aYAGMAE7ppXP/lbR@shlinux89>
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Mon, 2 Feb 2026 22:17:11 +0800
-X-Gm-Features: AZwV_QhoCxlCzLAcnWkBO4ogn0VW2M6mcHRnmBpiFBphn4q3UInMNacf8_hKx4Q
-Message-ID: <CAN4SLj3AaM8qiS=DefEWT=EZKQJ6MVa2zEFhU4vgpJZzDBFq7g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] clk: imx: imx6q: Fix device node reference leak in pll6_bypassed()
-To: Peng Fan <peng.fan@oss.nxp.com>
-Cc: Frank Li <Frank.li@nxp.com>, Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	Philipp Zabel <p.zabel@pengutronix.de>, Akshay Bhat <akshay.bhat@timesys.com>, 
-	Ranjani Vaidyanathan <Ranjani.Vaidyanathan@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
-	linux-clk@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <267c78c1-4ad2-4f06-be63-0fb506c5134d@bootlin.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Mon, Feb 2, 2026 at 10:03=E2=80=AFAM Peng Fan <peng.fan@oss.nxp.com> wro=
-te:
->
-> On Sat, Jan 31, 2026 at 11:16:57AM -0500, Frank Li wrote:
-> >On Sat, Jan 31, 2026 at 04:11:34PM +0800, Felix Gu wrote:
-> >> The function pll6_bypassed() calls of_parse_phandle_with_args()
-> >> but never calls of_node_put() to release the reference, causing
-> >> a memory leak.
-> >>
-> >> Fix this by adding proper cleanup calls on all exit paths.
-> >>
-> >> Fixes: 3cc48976e9763 ("clk: imx6q: handle ENET PLL bypass")
-> >> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-> >> ---
-> >>  drivers/clk/imx/clk-imx6q.c | 6 +++++-
-> >>  1 file changed, 5 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/clk/imx/clk-imx6q.c b/drivers/clk/imx/clk-imx6q.c
-> >> index bf4c1d9c9928..1d8e8f0891a3 100644
-> >> --- a/drivers/clk/imx/clk-imx6q.c
-> >> +++ b/drivers/clk/imx/clk-imx6q.c
-> >> @@ -238,8 +238,11 @@ static bool pll6_bypassed(struct device_node *nod=
-e)
-> >>                      return false;
-> >>
->
-> One more comment:
-> Put one line here, "of_node_put", no need duplicate it in below.
-Hi Peng,
-Thanks for your review.
-Frank also mentioned this in V1, but I think it may not be good to use
-clkspec.np after calling of_node_put().
+On Mon, Feb 02, 2026 at 12:10:41PM +0100, Maxime Chevallier wrote:
+> Hi Wei,
+> 
+> On 02/02/2026 06:45, Wei Fang wrote:
+> > For the shared MDIO bus use case, multiple MACs will share the same MDIO
+> > bus. Therefore, these MACs all depend on this MDIO bus. If this shared
+> > MDIO bus is removed, all the PHY devices attached to this MDIO bus will
+> > also be removed. Consequently, the MAC driver should not access the PHY
+> > device, otherwise, it will lead to some potential crashes. Because the
+> > corresponding phydev and the mii_bus have been freed, some pointers have
+> > become invalid.
+> > 
+> > For example. Abhishek reported a crash issue that occurred if the MDIO
+> > bus driver was removed first, followed by the MAC driver. The crash log
+> > is as below.
+> > 
+> > Call trace:
+> >  __list_del_entry_valid_or_report+0xa8/0xe0
+> >  __device_link_del+0x40/0xf0
+> >  device_link_put_kref+0xb4/0xc8
+> >  device_link_del+0x38/0x58
+> >  phy_detach+0x2c/0x170
+> >  phy_disconnect+0x4c/0x70
+> >  phylink_disconnect_phy+0x6c/0xc0 [phylink]
+> >  stmmac_release+0x60/0x358 [stmmac]
+> > 
+> > Another example is the i.MX95-15x15 platform which has two ENETC ports.
+> > When all the external PHYs are managed the EMDIO (the MDIO controller),
+> > if the enetc driver is removed after the EMDIO driver. Users will see
+> > the below crash log and the console is hanged.
+> > 
+> > Call trace:
+> >  _phy_state_machine+0x230/0x36c (P)
+> >  phy_stop+0x74/0x190
+> >  phylink_stop+0x28/0xb8
+> >  enetc_close+0x28/0x8c
+> >  __dev_close_many+0xb4/0x1d8
+> >  netif_close_many+0x8c/0x13c
+> >  enetc4_pf_remove+0x2c/0x84
+> >  pci_device_remove+0x44/0xe8
+> > 
+> > To address this issue, Sarosh Hasan tried to change the devlink flag to
+> > DL_FLAG_AUTOREMOVE_SUPPLIER [1], so that the MAC driver will be removed
+> > along with the PHY driver. However, the solution does not take into
+> > account the hot-swappable PHY devices (SFP PHYs), so when the PHY device
+> > is unplugged, the MAC driver will automatically be removed, which is not
+> > the expected behavior. This issue should not exist for SFP PHYs, so based
+> > on the Sarosh's patch, the flag is changed to DL_FLAG_AUTOREMOVE_SUPPLIER
+> > for non-SFP PHYs.
+> > 
+> > Reported-by: Abhishek Chauhan (ABC) <quic_abchauha@quicinc.com>
+> > Closes: https://lore.kernel.org/all/d696a426-40bb-4c1a-b42d-990fb690de5e@quicinc.com/
+> > Link: https://lore.kernel.org/imx/20250703090041.23137-1-quic_sarohasa@quicinc.com/ # [1]
+> > Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
+> > Suggested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> 
+> I gave that patch a test, with the following cases :
+> 
+>  - On Macchiatobin (we have PHYs that share an mdiobus).
+> When unbinding a PHY, the MAC dissapears as well :
 
-Best regards,
-Felix Gu
->
-> >>              if (clkspec.np =3D=3D node &&
-> >> -                clkspec.args[0] =3D=3D IMX6QDL_PLL6_BYPASS)
-> >> +                clkspec.args[0] =3D=3D IMX6QDL_PLL6_BYPASS) {
-> >> +                    of_node_put(clkspec.np);
->
-> Drop this change
->
-> >>                      break;
-> >> +            }
-> >> +            of_node_put(clkspec.np);
->
-> Ditto.
->
-> Regards,
-> Peng
->
-> >>      }
-> >>
-> >>      /* PLL6 bypass is not part of the assigned clock list */
-> >> @@ -249,6 +252,7 @@ static bool pll6_bypassed(struct device_node *node=
-)
-> >>      ret =3D of_parse_phandle_with_args(node, "assigned-clock-parents"=
-,
-> >>                                       "#clock-cells", index, &clkspec)=
-;
-> >>
-> >
-> >If ret is err, clkspec will not touched. So clkspec.np keep old value,
-> >of_node_put(clkspec.np) will put twice for previous np.
-> >
-> >So need add if (ret) check here. Or use difference variable clkspec with
-> >init 0.
-> >
-> >Frank
-> >
-> >> +    of_node_put(clkspec.np);
-> >>      if (clkspec.args[0] !=3D IMX6QDL_CLK_PLL6)
-> >>              return true;
-> >>
-> >>
-> >> --
-> >> 2.43.0
-> >>
+Correct, this is why these band-aids are harmful. One "device" can
+correspond with *multiple* network interfaces, and the loss of one
+PHY can have a *very* detrimental effect.
+
+Consider the case where root-NFS is being used, and removing a PHY
+on another interface takes out the interface that root-NFS is
+using. Your machine is now dead in the water.
+
+In my opinion, we should be concentrating more on the issue behind
+the oops.
+
+Given that this problem is because of the bus being removed, one
+thing that would help would be for the MDIO bus to be properly
+refcounted, and when the bus is unbound, to replace the bus ops
+with versions that return -ENXIO or similar under the MII bus
+lock. This would be easier of the MDIO bus ops were a separate struct
+to struct mii_bus.
+
+Similar with the PHY itself - if the PHY is in-use, it should be
+refcounted to stop the struct phy_device from going away, and
+should we have the situation where the PHY driver is unbound,
+phydev->drv should be set to a set of dummy ops (under the phydev
+mutex and probably rtnl.)
+
+It seems to me that throwing devlinks at this problem is giving us
+more problems than it's solving.
+
+A graceful way to handle a MAC losing its PHY is for phylib to
+indicate that the PHY has gone down, rather than removing the
+network interface (and potentially a whole host of other network
+interfaces in the case of one struct device being associated
+with many interfaces.)
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
