@@ -1,138 +1,304 @@
-Received: from mail-m15571.qiye.163.com (mail-m15571.qiye.163.com [101.71.155.71])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010003.outbound.protection.outlook.com [52.101.84.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA5E21B905
-	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 07:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.71
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770016568; cv=none; b=biJwamsKHLuxA6n1Y+pJVbNgH7eDN/2jbNLlciZOzlktzHG9Zf59UcU7lmf1fTgVVDOOeoGtDjAdTvS9A2BZZs9czws8FyT26OrdW6XqdomrwoCjxDNEBi0f3iZL41wsniabvgnJBuzpS/6e2f+WY9x9jkGIrQcESgarqF/cK3w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770016568; c=relaxed/simple;
-	bh=zU1w86wjIDSbPbjL9XsqSjCXWt1aifcQlM6vWGeDy/0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AZ40NpeWiiCQsPusku/NB7+keqxBD7wZ0Ye1iANXXj5NQcdNBPiwucx24F3DGEXBT5F2yPEWql77jIRxV7WF8qjSgQCbCmvFnpsUI1oG37nlzSASn/ELTM7kfPaXOmAMXuLGlk06PrXTc+7QajN4pRNSN9stHmIOYy6rsUDBegU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=KJRnNBIV; arc=none smtp.client-ip=101.71.155.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E892629BDBA
+	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 07:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.3
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770018305; cv=fail; b=kWJ2zFDatgXqLg8+alICfLpZTS6tXkHCDuCRnlDppgJl8NldWt4qrVj5el/fMB92cDZm91emBF0FJDheXiZMun9xwkzJe4GS7fKhCiocJv4ZsUdLq8ZviCwhxrgmFZDh6DcCY7tOr+AA/g2Lkn9E7HidobxTaIIo9c2cKMlowhk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770018305; c=relaxed/simple;
+	bh=xjPlb7EGS524xf5+nr2PrB1NAdi/Z9uitkCFAPYo7Ok=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=epQBQY6BKgiCgLa/tv73ql9a3X9UajEb7jkdP5kn7S6oUfWIHvbEqctMsXaX2XpFzcrqLpG3jPRV/aIy5SaxHymgikdqughU4slntpDmKJaw+fA04ZllESMNmRjU25UGLRvYMOE9F55VD0+iTvLAYoUSU+GB1cRvvyu5i3EqPJs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=dT3xEu1G; arc=fail smtp.client-ip=52.101.84.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="KJRnNBIV"
-Received: from [172.16.12.43] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 32baf1fcb;
-	Mon, 2 Feb 2026 09:33:02 +0800 (GMT+08:00)
-Message-ID: <c7d2c401-068c-456f-a641-71d9aec9a4cd@rock-chips.com>
-Date: Mon, 2 Feb 2026 09:33:02 +0800
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="dT3xEu1G"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nlhsCwpfg5VQfNOaP8FqPbhxEFRE8VsAQjF1JoqbLMQuVAm218Vl7rwPEaEjpRkqfqkIiZmfoxuAeDC4R+vk6DbGakAaaTMal/UgMlQJ0wCEjNCUmQf80dbqVyqg8pocZi1yBe0Ym+AHkAp6PRznoQpITA/4I36NxbwHktoZ/W1bOznE5HhTY3N28eY+lrKc/WdRYFOpZDNb10LAxr0vRxqF7ofF94qmb1PQZjp5KnEHHcNhDXLrpDtNkxhDVir8jFYqah1nJEoGGceCDYV5qf/UC58QpGtSTmZXXJNAfgZzcLDUFwlBMm+H6PQ7XzjhphDm4SZ1fTePf9NYW2i11Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UJbnhqm4CGcP9+8zPEKBC7QT0hs4WBAgEd5rVaVoJIY=;
+ b=XnfQld7Jxt/wHw9O05miMKvdVIAcxMK0RWZH6I0zGnG8f/5eEB9yZL46A0mVM9ZJyLFn4w7X4SLjmiR61bDq1d2aXoNRkQ0D6ds+aGO/hiTAxh1Q7Vdm12VzA3dV1U1Ot6wwnsuT/24M9CouA99wXrmd1y5Uxic25029e6d8kgDQs/7xcp2eHpo25uKc5TDO2F/YdKE5KiGU57PqOR8T/XqNKK8+4q+2n7QSJe9x42OHNoPTr0+/jdh5Lz4d/6Uec6oCzIfAlTsiqFmZmYMaXfsbxq0ejJe+fUi0qzB0oNJNrwvRvF3hMg6aB+NPod0hBj4tGCj8tlMWtTZs0BCrQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UJbnhqm4CGcP9+8zPEKBC7QT0hs4WBAgEd5rVaVoJIY=;
+ b=dT3xEu1GJSdXb/qT9f9wjD1bZCfp5Z80Gn/uvS6Dym7GmDSaW6awQX8lVjnvvh5YqUXnz8iztEGE+UocuSYy0ga4mOTUmsV0WJj9wDGJMa+6B+Tymh7Pirtb5xKbzBgef034SH16pOhbgoX9fB8/WGkt8RYzWnnmDIv5rMvPCbsmUzuOgjcZ4mCVuNwAU834tISiKMWMRK9lbTXR9+ZzqsslA8X9YsYhRgiEd0WuRYYZIUKinaxmfjel4nG4NbQmvOBXmcCgTio2Vp/KFjq/AFm2vPtA4JHkHCsjIHTY5NgAZGR0kq/DWgYlY6M+qi9qD9f5pRxD8IqD5u7pnlI8eQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
+ by AM9PR04MB8700.eurprd04.prod.outlook.com (2603:10a6:20b:43f::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Mon, 2 Feb
+ 2026 07:44:59 +0000
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87]) by PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::2755:55ac:5d6f:4f87%4]) with mapi id 15.20.9564.016; Mon, 2 Feb 2026
+ 07:44:59 +0000
+Message-ID: <0b24716b-438c-4185-8a93-3a3879147c24@oss.nxp.com>
+Date: Mon, 2 Feb 2026 15:44:37 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: imx8mq: Restore VPU G2 clock to 600MHz for
+ 4K60fps decoding
+To: Nicolas Dufresne <nicolas@ndufresne.ca>, linux-media@vger.kernel.org
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
+ benjamin.gaignard@collabora.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, p.zabel@pengutronix.de, sebastian.fricke@collabora.com,
+ shawnguo@kernel.org, ulf.hansson@linaro.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+ l.stach@pengutronix.de, Frank.li@nxp.com, peng.fan@nxp.com,
+ eagle.zhou@nxp.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20260130084133.2159-1-ming.qian@oss.nxp.com>
+ <df8d5d5f28870752e77ec74f34fea7ceb6e97286.camel@ndufresne.ca>
+From: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
+In-Reply-To: <df8d5d5f28870752e77ec74f34fea7ceb6e97286.camel@ndufresne.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SI2PR06CA0005.apcprd06.prod.outlook.com
+ (2603:1096:4:186::12) To PAXPR04MB8254.eurprd04.prod.outlook.com
+ (2603:10a6:102:1cd::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 00/18] Apply drm_bridge_connector and panel_bridge
- helper for the Analogix DP driver
-To: =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org
-Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
- kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
- jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
- andy.yan@rock-chips.com, dmitry.baryshkov@oss.qualcomm.com,
- dianders@chromium.org, m.szyprowski@samsung.com, luca.ceresoli@bootlin.com,
- jani.nikula@intel.com, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
- linux-rockchip@lists.infradead.org
-References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
- <6571983.R56niFO833@diego>
-Content-Language: en-US
-From: Damon Ding <damon.ding@rock-chips.com>
-In-Reply-To: <6571983.R56niFO833@diego>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9c1bfb576803a3kunm5c7836bd5d1df6
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGhpLGFYaShpPGBpIGU1OT0tWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=KJRnNBIV/6A1cPIx6R+QeecYKPdcQaVXPI9zSXurB2PQuRHbCF1u3Yw+TzPWeVSFCkEdJGtjimeudD/Z6PL00I+5Z0uRt4EpwXdIHIewgGCVt7qgU/oUuAuQEp4smDrYdLlvtySYHY3PnK5GDx13Xcrtyi0y1KhKlDrw3nk26JE=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=3vJEwBZpP35hbXCKhhIcCEaHgMGxx7jXQ1r49X/tjUs=;
-	h=date:mime-version:subject:message-id:from;
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|AM9PR04MB8700:EE_
+X-MS-Office365-Filtering-Correlation-Id: d71ce319-43c4-4c83-645b-08de622ef122
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|19092799006|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NHlGeHZlaUF0UkNKajZKV1o0R1hjNXpDeG1Wb3VPNUtTL3RvelBjOUlSbmpu?=
+ =?utf-8?B?OGovb291OXJtRDAzckdBMUxramZ6YmRKUUdyTUZTTnZSZzYwb3JWTXdrSElB?=
+ =?utf-8?B?alFBWWgrL1l4bmpYbVNHVUtlV1A0YlJRckZ1THBMdzRnWUUyWlFWUmNacmRm?=
+ =?utf-8?B?WkNzb0JHUEFJUUJtV0d1cVo5K1QraXc1QjFxTU0xRGZEcVUwVHBOQ1cxeERB?=
+ =?utf-8?B?TFVUMXhrdUFjM05LNytOQ2gwQnNia2Y1ekJZeUthbGNHODgrUDc2OG5jSFVE?=
+ =?utf-8?B?Q1R4VUtsUUtJSnpwSkhKemlqcVR2RVZqUmY5d04rRWU2M1Q2cGNKU0RvL281?=
+ =?utf-8?B?YnhtbENrOWJGTlV4OS9UNVlYUkdleHI5SHBjOVVXRkxhbXNIbGtOam1PQ0Nq?=
+ =?utf-8?B?aStMUmxEMExnOHRETm1pS0w5L3BNeWRWTkpRZ3ZjdzZuOWRmNlhUTmsyOVVN?=
+ =?utf-8?B?ajgwM0lEaHBHRjhrNTFCdUZqcVplUkd4TE80ZDd0ZkZQYU9qUWN0SnE3VFA1?=
+ =?utf-8?B?MDFVcTJDbmp2YTFpUXQzaFljdFJaSm53VHVmaDBnTzcwT0ErRzA1eEJ2VGx1?=
+ =?utf-8?B?SXhXQkg3K0RLN3B3WmpITWdEaVh0TDh0dVdJMXg5N0NaQ2pHT3RDU3J5UjhG?=
+ =?utf-8?B?WU1qdTFnQUFoUzM4bmZlSTUxa1FvQi9HSU5WaW52TmpxdGhNUmZibFJwVEFw?=
+ =?utf-8?B?QlNFUmRJWEd5ZlI2Zml5dHR6R3Q1TU5CWVp4amRDUHhTRG5iYU45NFhWV28x?=
+ =?utf-8?B?TUFCMHJTSnJvaUhNVEpFcHFYb1N2K0JwMmxvaG1uaHpPdEdOb2h3M0lML0d3?=
+ =?utf-8?B?dHhuL2FENUxLa2tadWRybEFVL0phMElrdWZqSWZibDJ5MjRML2J3MitTKzIy?=
+ =?utf-8?B?dHZCOGlDTVpLeEpDZ2pzM2VPYVJaQUUzczVMTzdCRURNWjNKMjN1UHBMT2Vu?=
+ =?utf-8?B?ZUlyZHNaSlg0V2YzZEdUeTJjam5uMi9kZDhoMUhnemdPR1AwenJWZGI4Q2lu?=
+ =?utf-8?B?MXVwYXdnbldEdTRpV3pVU0VFS2VXVUFURUdHRUkwTnI5d0dJZ0twOUdjZDhC?=
+ =?utf-8?B?Z0N3ZnU2cnc4M1lsTUwyMXR1SStnNlhNVkkyS3RUaVZ5d3I5V09RZXF4U1Fw?=
+ =?utf-8?B?QUM5VmdEdHFWRUVGaW1SeHV1YmIzcmxQV2JZMEpsU3lmaEF3ZU50eDNGS1Fl?=
+ =?utf-8?B?TmFDOUhZaWRXSkVnN09kRnRhN3JpUE1vRmJFYlkraDRDb0dYK2FkNEIvNHV5?=
+ =?utf-8?B?b2tmaFdscmtGNmp0Wlh2cUgyZ01jZEIweE8yTGNnSW01MktkU01oZ1FFK3NM?=
+ =?utf-8?B?WXJPaU0xZXFvaFVCZzBRSi9nT1kyU203UmlWQTBoUXdnTy9hT2lWUmRvLytJ?=
+ =?utf-8?B?cW9qR2xnSGc0SXR5K0xxSVdLbjNldHVFem5abGtCbnNaQkpHS0VRdlBVTDdv?=
+ =?utf-8?B?eWNETUZLeGR3b0l4b0dVVFJOUmovYUhGeU02Tzl5L3pXdUNnZkNtcW1KV3Fq?=
+ =?utf-8?B?TFNMSFZnckdvZGtXWHYxR2hub1ROa2RCa1dCTEZHdUw5UklxRWE1alhWU1Zt?=
+ =?utf-8?B?c0lJSDdNLzBzOWRLcDVUSFVIbzNLcC9iWXMreEx2a2I4MDkxaWovaE01ZE1m?=
+ =?utf-8?B?Smp6ZnI5V0kxc2FSeUZsZWE1dmpMdDVkZlN4REFBUFhXUmxLMjcvQlYrZ0Va?=
+ =?utf-8?B?OFBadXRIMGVNdjNEU2pLYWx0YjBDUmFaak55cENHZVgvMEdiK1pGVUdLeC8w?=
+ =?utf-8?B?ZTVld0QxMzlScGlPK1hEUkc0Z3BQK3FzWkk0STM2Vm13WGxJRnlFeDg1QWgw?=
+ =?utf-8?B?WWV3dFJzb25WN2JmdjVGRmhkWVhUVkN5aTk3Si9Da2FCU0ZrT0NlNGdMNjMr?=
+ =?utf-8?B?U1EwT0lWTUZiMk01QWV6d2NZQUovZkZVTks0bUNaTTFUQUJnMDBlbTFjNk9Y?=
+ =?utf-8?B?TjIrQzBlSHRRMHIrOGxNQS9pbHI3RHNsZXNnODRTNFRWVy9FMFgwVUxiQVRM?=
+ =?utf-8?B?RmNBMmtDRlhMbjNtd2RMZ2tZMXV3MnZ1Y3cwdjhCd3VtbHFleGJCdHMya1J4?=
+ =?utf-8?B?TVorWldjOTJXRCtRQm1yNUN6ZkhDRm5ER3BMZU9GRzNhMmZpUGp4TjdLU2hJ?=
+ =?utf-8?Q?n/nc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(19092799006)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bUg1TnBUTXE3dkxMTEticlRRSXZBSkIrNE9WOVFnanhkRVRlMzg0ZmJSQjFu?=
+ =?utf-8?B?RGdKUDdrVXlzai8xNGhmZTkvQ2xJT21lR2h1WmJVM25yNHRVcHhCU1ZMaVpn?=
+ =?utf-8?B?dHNjbUtBbk5EQnlvUXQ1V1ZHU1dPcTFGZXJuelZaVm5LYndzS0lUOEE2RDl6?=
+ =?utf-8?B?bWtMQnh2WGs2RVFSck9wUDRTQk11bUR5QnlKR0ZWRlFRU3hQMWpKenVNZi8w?=
+ =?utf-8?B?bGZJVmVFejhVR2dnb2ZwNXBiSTdiSy9SRXBySjZHS21DWDRrTlNoRnhIRVQy?=
+ =?utf-8?B?REtKSnFObTk5dWRjQWZORi9UOGRyT1BxamdFOTBHRitaZUhJTU4wcS9YenAw?=
+ =?utf-8?B?N1hMYzVjNnVTa2dLQW9PaUtvRVcvV1RjSy9JN0RVMHNTRUM4amRkM1VnTmxn?=
+ =?utf-8?B?RWx2ZStZR3JRa01tTVN4VzlMSTlVeXZ4WWFVc25tMFphcVNwLzR1U05XaUYw?=
+ =?utf-8?B?RXNjZnUydTNZK1V5QVMyaG9TT0xoQjZ4UmhEZW1tc2RuRHl6VDFhbzZGWGx6?=
+ =?utf-8?B?MCttaG5FbWxUeHRtYzNmWmJzWktIL1ZwU2crQ1E3V3E5WGhCSzJJNXlSV2Zw?=
+ =?utf-8?B?dm9OVEFNeWJYcmJIeXJBUGxMUjU3RFB4M2hkUWJPNFlBQUIrS09LeUFVVUNW?=
+ =?utf-8?B?c2ZRSG1vYnFGcEtnbFpqZVVyc3NoVmQzQkF2SlVndWRHckU5Sm5iSjl3blBX?=
+ =?utf-8?B?QUM5aDIxbEJHTFNuZC9yK0FsbGRPd0FRZzhBUmNNVFFBb3RQS2dMMkU4RGE3?=
+ =?utf-8?B?ejd1dlB4azRoUFRxL0M4OElMQVYzdU82dUFXVk9QL3BRMjc1Zitoa1Z6ZXBJ?=
+ =?utf-8?B?ZXhyeXNtMGFxbmhuZmVrclQvMlNteXBwSXNVYVFuenRxa1l2ZjZnd09Qei93?=
+ =?utf-8?B?SGJtVnJPbUZXU3NNNzlta0tjQ21JY2pLdUpRSjY2SjN6bjJ4UFJlN2JsMjZi?=
+ =?utf-8?B?VkI0UXRRRUp2QUxVQUc0ZDl5Y05JRWdVMDVYWjJNL3ljZHFQSlZKekl5bzZq?=
+ =?utf-8?B?VmVKc1F0cjgvQUtMUlh3WnFNK3h1Mk5RaWdNTVFNQ0d4b2pISHNFdFFBUUJX?=
+ =?utf-8?B?K29TRXVrTkh3MVVVN0pTUzF0bEFabncrSHh4T1JIa0JPSlplTVRpajRCZ2JH?=
+ =?utf-8?B?SitwYkE5L3FEdHB1dEN3cnZtVEEwMnlHMkZ3WnVjTlo2Ky9sd3c2eWQ0Q0Rj?=
+ =?utf-8?B?SmZ5N1NuRHRVdjhuSy9TUTdhWFVqN0Y2Y2xxQWtaZ1FUOUNGWTFuOVh0Ri9S?=
+ =?utf-8?B?Z2ZEbDRIclJ5eVk0Q0lUaGRHNGdVUjVROGZxQzVWOGJpaUMybVZnOFdJZXJU?=
+ =?utf-8?B?eWlaR3hyaWMrRVFGRWZzb3ByS2ZOUithOGJyR0NpY2UzUzFITmZ6RzhuY2xl?=
+ =?utf-8?B?QS9Cd0xQS21HcDJ0V3pQN0lvY3B0c0wrTjg2UVFaK1pTcTJiK0RlZFZQYUkw?=
+ =?utf-8?B?ZWFOYUY5T3F0L3JtZGdLRkU0VkdsREtkcElVWmpxaEpVNW93OHY4Mng3dit5?=
+ =?utf-8?B?c2lOU0dibXhUU0pGTk1YTC9UY05INnBSeElnOUZNZmdZenBMRGRISTFRR3hY?=
+ =?utf-8?B?bE9LQXFEUU4zd1l6OG11cmoxdU91ckpFdHFGckpzZys1ekViWDhDQWMvT0Rz?=
+ =?utf-8?B?NTRDbldZdTlXUS9oQVk4eEdhMjZyZFN2djg2bDlKdW9ucTNjVGxzOGFyamll?=
+ =?utf-8?B?c3JPOU5BVS9BODNzS0pwbmtWMldkQ3kyZDI4T1JibFAyZnlETFZNSXR6NmRt?=
+ =?utf-8?B?ejdPSDZLVG9GSkhKdzB0dDJ1ZVFISGVVVm4rd1Z6TXpWTFJjbHFrR0hSVEYw?=
+ =?utf-8?B?RUlmeWFJUWRoUnVQbWJUMWlBN0NjRVhLR1VTT3U2Z0VucUVPZFloenExQ1lq?=
+ =?utf-8?B?N2RyenJjMFNuNUZWeTRybkE4MVQ0VGdTZVFxaVJhM1AzeEsxUTgxaTZBV0Jh?=
+ =?utf-8?B?a2Fnb2VMdXNGUUxrc3dmTzhhNHAySEpSMTVCdzVTYTZudElnWm1GbUlXRjdN?=
+ =?utf-8?B?UkI0WHBJRlkwQ1IyY21LbEtiekxTMkcwdTVHc3RIUXpsSWFISE5rL3k4dWtu?=
+ =?utf-8?B?aFRTMVNEMUdyTTZmN3JWOXFzVGJodWZYRXZQNnNncFFhQnZ3dHpYdEJob2lY?=
+ =?utf-8?B?aFM1cGEyOFpGbTBBOU5SSkVXZWl2L0w5aVJXWkU5ZDBsY2ZLZ24vSk1RUTBH?=
+ =?utf-8?B?dEdzaThQU1BDUUhPWDFnUEdFa1RuWGE0aU9lQzYvdTZwWWc0ZkVINjQrZzk5?=
+ =?utf-8?B?cWRmdWhiTGR3SGpNSWNtMVUyRThSR2FLd1ZWZ0xoaTVRbkpkRnJieU92UzJ4?=
+ =?utf-8?B?UU4wTFZ5YUd3eDRQUGg2QmZSU1RiVUZhSkFvNzk5S2ZQWFEyWUF6Zz09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d71ce319-43c4-4c83-645b-08de622ef122
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 07:44:58.8114
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: I7GQ5hYW7jl84BaeQbP+E/hzPhwi/NHjHux4hUID1NPQ2uqdxvqh+R9bYVTtz2NPXdLN4xucSUI2uQxs7r1fdA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8700
 
-Hi Heiko,
+Hi Nicolas,
 
-On 1/20/2026 12:06 AM, Heiko Stübner wrote:
-> Hi Damon,
+On 1/30/2026 10:47 PM, Nicolas Dufresne wrote:
+> Hi,
 > 
-> Am Mittwoch, 17. Dezember 2025, 10:33:03 Mitteleuropäische Normalzeit schrieb Damon Ding:
->> PATCH 1 is to ensure the last bridge declares OP_EDID or OP_MODES or both.
->> PATCH 2 is a small format optimization for struct analogid_dp_device.
->> PATCH 3 is to perform mode setting in &drm_bridge_funcs.atomic_enable.
->> PATCH 4 is to add a new parameter to store the point of next bridge.
->> PATCH 5 is to make legacy bridge driver more universal.
->> PATCH 6-11 are preparations for apply drm_bridge_connector helper.
->> PATCH 12 is to apply the drm_bridge_connector helper.
->> PATCH 13-15 are to move the panel/bridge parsing to the Analogix side.
->> PATCH 16 is to attach the next bridge on Analogix side uniformly.
->> PATCH 17-18 are to apply the panel_bridge helper.
+> Le vendredi 30 janvier 2026 à 16:41 +0800, ming.qian@oss.nxp.com a écrit :
+>> From: Ming Qian <ming.qian@oss.nxp.com>
+>>
+>> The VPU G2 clock was reduced from 600MHz to 300MHz in commit
+>> b27bfc5103c7 ("arm64: dts: freescale: Fix VPU G2 clock") to address
+>> pixel errors with high-resolution HEVC postprocessor output.
+>>
+>> However, testing shows the 300MHz clock rate is insufficient for
+>> 4K60fps decoding and the original pixel errors no longer occur at
+>> 600MHz with current drivers.
 > 
-> On top of all the recent bridge-related commits, this series still works
-> on my rk3588-eDP board - when the display is plugged in on boot.
-> 
-> As that is the current state we also had before, this series:
-> Tested-by: Heiko Stuebner <heiko@sntech.de> on rk3588
-> 
-> 
-> ======
-> !!! The following should not hold up this series though, because the
-> analogix-dp not handling hotplug, is also the current state already!!!
-> ======
-> 
-> However, actually hotplugging the device does not seem to work.
-> 
-> With the hpd-gpio inside a dp-connector node.
-> 
-> 
-> (1) When booting connected and unplugging the display I get:
-> 
-> [   42.725888] rockchip-dp fdec0000.edp: Rx Max Link Rate is abnormal :0 !
-> [   42.733325] rockchip-dp fdec0000.edp: Rx Max Lane count is abnormal :0 !
-> [   42.764853] rockchip-dp fdec0000.edp: LT link start failed!
-> [   42.771105] rockchip-dp fdec0000.edp: eDP link training failed (-110)
-> [   42.778329] rockchip-dp fdec0000.edp: unable to do link train, ret=-110
-> [   42.785747] [drm:analogix_dp_bridge_atomic_enable] *ERROR* dp commit error, ret = -110
-> ( ... repeasts a bunch of times ... )
-> [   43.284897] rockchip-dp fdec0000.edp: failed to set bridge, retry: 4
-> [   43.292045] rockchip-dp fdec0000.edp: too many times retry set bridge, give it up
-> 
-> plugging the eDP back in reenables the display successfully though.
-> 
-> (2) Booting with the display unplugged
-> 
-> Same messages as above, but plugging the display in for the first time
-> does not create an output.
-> 
-> I'll try to dig more, but if you have an idea, what I should look at, I'd,
-> be really grateful.
+> Tested on EVK, with the downstream DCSS driver, and this change triggers DCSS
+> underrun (which is related to the DRAM QoS erratas on this SoC). It also
+> sometimes trigger the "not all macroblock decoded" warning I added recently, and
+> we can empty IRQs, but these are handled now.
 > 
 
-Sorry for the late reply. I've been heavily occupied with the downstream 
-work recently.
+This doesn't sound like just a VPU issue; it's related to the display or 
+DDR.
+If not displayed, do the fluster test cases yield different results at 
+600MHz and 300MHz?
 
-I can reproduce the same issue on my RK3576 IOTEST board, which is 
-equipped with a standard DP receptacle for eDP interface.
+>>
+>> Test results with 3840x2160@60fps HEVC stream decoded to NV12
+>> (the same scenario that exhibited pixel errors previously):
+>>
+>> 300MHz performance:
+>> - Severe frame dropping throughout playback
+>> - Only 336 frames rendered in 11:53 (0.471 fps)
+>> - Continuous "A lot of buffers are being dropped" warnings
+>> - Completely unusable for 4K video
+>>
+>> 600MHz performance:
+>> - Smooth playback with only 1 frame dropped at startup
+>> - 37981 frames rendered in 10:34 (59.857 fps)
+>> - Achieves target 60fps performance
+>> - No pixel errors or artifacts observed
+> 
+> That probably only true with the upstream DCSS + a small resolution embedded
+> panel ? Can you clarify this setup, because the display drivers mainline are
+> very minimal. Would be nice to show you average DDR read/write bandwidth
+> utilization during this run for comparision.
 
-(BTW: The RK3576 Analogix DP functions properly with a set of targeted 
-changes, and I plan to upstream these modifications later. :-))
+My display is hdmi, I'll try the DCSS.
+And the DDR bandwidth results measured by perf are as follows:
 
-Regarding the eDP HPD exception, several functional patches for HPD 
-handling have not yet been synced to the upstream. I will verify these 
-changes and submit them when time permits.
+  Performance counter stats for 'system wide':
 
-Best regards,
-Damon
+       113303664278      imx8_ddr0/read-cycles/
+        82457075530      imx8_ddr0/write-cycles/
 
+      634.892101865 seconds time elapsed
+
+> 
+> Another information that bugs me, in the BSP code, the G2 voltage is increased
+> too, which you didn't do here. They also use the thermal 2 zone to kick it down
+> to 300 until it cools down.
+> 
+
+In our internal code, whenever the frequency of either g1 or g2 reaches
+600MHz, the voltage is adjusted to 1.0V. Since g1 is already set to 600
+MHz in the upstream DTS, I believe the default version is already 1.0v.
+
+And do you mean vpu-thermal? But it doesn't define the cooling-map, I'm
+not sure how it works.
+
+		vpu-thermal {
+			polling-delay-passive = <250>;
+			polling-delay = <2000>;
+			thermal-sensors = <&tmu 2>;
+
+			trips {
+				vpu-crit {
+					temperature = <90000>;
+					hysteresis = <2000>;
+					type = "critical";
+				};
+			};
+		};
+
+Regards,
+Ming
+
+> Nicolas
+> 
+>>
+>> Restore the clock to 600MHz to enable proper 4K60fps decoding
+>> capability while maintaining stability.
+>>
+>> Test pipeline:
+>>    gst-launch-1.0 filesrc location=<4K60_HEVC.mkv> ! \
+>>      video/x-matroska ! aiurdemux ! h265parse ! \
+>>      v4l2slh265dec ! video/x-raw,format=NV12 ! \
+>>      queue ! waylandsink
+>>
+>> Fixes: b27bfc5103c7 ("arm64: dts: freescale: Fix VPU G2 clock")
+>> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+>> ---
+>>   arch/arm64/boot/dts/freescale/imx8mq.dtsi | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+>> b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+>> index 607962f807be..731142176625 100644
+>> --- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+>> +++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+>> @@ -960,7 +960,7 @@ pgc_vpu: power-domain@6 {
+>>   									
+>> <&clk IMX8MQ_SYS1_PLL_800M>,
+>>   									
+>> <&clk IMX8MQ_VPU_PLL>;
+>>   						assigned-clock-rates =
+>> <600000000>,
+>> -								
+>> <300000000>,
+>> +								
+>> <600000000>,
+>>   								
+>> <800000000>,
+>>   								       <0>;
+>>   					};
+>>
+>> base-commit: c824345288d11e269ce41b36c105715bc2286050
+>> prerequisite-patch-id: 0000000000000000000000000000000000000000
