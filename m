@@ -1,63 +1,63 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3352F361E
-	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 18:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E392F12C3
+	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 19:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770057874; cv=none; b=TzlFv8Z5esDylUrMRNAKqEflHEN2BRICHCQCHiUfLO3Cy0/ntlAvkZatb6ZZwt/xXQXEGOE1mGDWnz2lzFtNeDwb76ZXBdD5VayPwC/7VDcD1jj9dxd4fbjYE15wf3b94mSXbIGI/cuKriVbXRtTvGpXCNxGhxsfakoBRlWJAAo=
+	t=1770059580; cv=none; b=nStBC4V3CrLAse4Y+PbxTg+osksTSaPZtXkmVwJp1HnmQ8qgMJY0+2CGAfe0SqIwS9dxgVOhxJL202InfBU9PmWv5TX/YJvEANir5KHHIzW+kiBq4gZO5aOFqE12da+rLOKd1ftG7iOSwGRkyMqjSPQirlpPVWXc2hZ5HqhoB5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770057874; c=relaxed/simple;
-	bh=WYQiIExxKDX0cCt2DTvo3Yevcg7P9+CnoNuVKvWhxaw=;
+	s=arc-20240116; t=1770059580; c=relaxed/simple;
+	bh=jyjqmYf+LsGP41c2GAP0D20VhnppouPXYV8u5gTUsfM=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=S/H8irmZC//qZQwPrf4Ke1FLAz0CR0azgxVp9npxe8CnYYhjy6X3lQSCBYjY2rWkm1D7SViD7/xgtmYmkZDoR9EZ5mK+S0a0TiJ7LnFoWqoN3u7pOzgeboYOqzNwxfk6yyB/wD8FXGnKdlY/exIqz0LCO+4QXfPBLrgk0FbVKeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=nlXjGJgu; arc=none smtp.client-ip=209.85.219.50
+	 Content-Type:MIME-Version; b=BeLfvuJNQeAmc9T5xxlVppLtEYLpeYpMgRp/ctzL72xMh0NU396lSPVzixX5V1Hl8nG4ydAMhkv2ulb3Vud7mmjAkycUBceCv1zAOdVmnxOdhomHnIDWpbF4hfCVRxldc3/Lvr6HqoGpJ9rcSwzY/Z1k7P53hN9SWdLpnT167Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=lu1dLrxH; arc=none smtp.client-ip=209.85.160.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="nlXjGJgu"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8947e6ffd20so62990006d6.1
-        for <imx@lists.linux.dev>; Mon, 02 Feb 2026 10:44:32 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="lu1dLrxH"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-502a4e3e611so685961cf.0
+        for <imx@lists.linux.dev>; Mon, 02 Feb 2026 11:12:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1770057871; x=1770662671; darn=lists.linux.dev;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1770059578; x=1770664378; darn=lists.linux.dev;
         h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
          :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=fXE7ald5tcjEzZ48f0b2jZkl5LlJhCx6n0+to2+iB3E=;
-        b=nlXjGJguqjNqcXNlci3eu8ThLlWj69kOE8XrCCe0B3KJJzTBiDVXChM4U3+VVUzWU8
-         9lgFAABtVr36zScJH52112/fsALImS79pXFfPtZDF5slo7H92FOLZvx9SD8yeaxrJJQ7
-         KggEBsRz7x8S36zApbxyQsjKkaDjYladyoPdKid3QPbGvo64VJcuaHMy1J8J8Gn5zV/N
-         EOGqLPZPxn1aookkadPYs1lX7yx18Wv04RnE32uRCpgBGNxI2t40cNA06Ps8HxQH6t8B
-         rkRu/HgwOm7NMmYIq5BH4fkET4DrtkglSLXWE/zJ3lzV92aSIAtK/f/CyQZu9Yo1IeSt
-         vBuQ==
+        bh=7uEx9VgfdjgwYROqUMQFza98mDrih8nCYBKA+muYRBQ=;
+        b=lu1dLrxHrY5FUMxoZxM0OIBUbtla6eCFyYmx/l9prGLFJVq6hymb50Wz7KGYORB8Hq
+         dd49UQP/qiTAcOGeKmOmcs4bu/n7kEr1YMJvnYWfdYuhPeBWBBoHixIEd79Y806if1y2
+         WiV2JIEAtOqQNt0RP4zvbaDH2RTx6NyQxogvFQaQdQIeXgZuUpGO0gIK7MxnE3S0QSxw
+         nhvIESQVD35Sc3RTtcpI1asWBR/pt0IkhkV6P7kPuUH8aioDE1KGWP4t6Lk78AzgmQ4w
+         Vmpr7G1jbZRCI8JKHmGyZw/HgprvmcE4c6b/ZSXTA+111QheUWO1lCJSk6sackKBO2he
+         rYrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770057871; x=1770662671;
+        d=1e100.net; s=20230601; t=1770059578; x=1770664378;
         h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
          :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fXE7ald5tcjEzZ48f0b2jZkl5LlJhCx6n0+to2+iB3E=;
-        b=doehgnYHBYefSmB2+CbuSht2FjVlutRFzNmGnVWb5DiaB6qo5kLsi84ApgvxN/2hED
-         VKTM6e0FMbzX+KiQ63VG1PUu87hoc/uVUPV6PBAZTOVvULYD5URgRnHFyL3MbWKgrY5i
-         xvO+MCEnGcWHyPyrVwGbBjqcI5MkLfUe1nTdquEo6ikh+AtftkJ+uWHeNHKtKDfuejFu
-         bvU/z5I+o2WoIsCguu0W8wj6/HdoX5sTPqAH/nCB9ct4QW2zrfsu5j51VbCEj+Duma08
-         XurXHiKn3mTWknxuiTTB1mmEpYi9DCCv5+5dZj3L/j+SunrkUx0m3muI54d+0coEL1WQ
-         r8VQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXoccu9tuF383evqRcWLxG2UZd3oCXiNxK2Vr/bPmgdE3ktpckr45d1EMPQpKMzqm90Xq8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yx1uoK9PYKODLHg7+JhNxCavWasxtJ+7pi3azMX2hrsVmuAKf8E
-	sDXJ3g+NumqsXDPzr15jiTZKmhqhjIfKn5GzkJ/n+teClSz+JnBZClF/zpc/xjMgHKQ=
-X-Gm-Gg: AZuq6aI1RCXFnb1vvPv3AyjBucUJMCPNNJ8G46SXwkGf71+KYnFKbqs06i/AsmnqwHS
-	17ERY29RR8MgvJ4kUk7rLrckCq9h9QPZliK4xvmrARM5tSmz81SdEbcrjYsfimRrhg5E9DxlQE/
-	dWNXtGinP8BmS1Viu112rx4FEJex9rK89Cg+5ug3xBzgii0V5G7SSl98bh6PNHRKq+oyAOLqcGm
-	ZoZdrtjAr0RGyNGr4z4ywpYIv95YsVkRprytrmWwiOgczW6M1OzJkJ8vv0ih09Ed/yq8SVmawXD
-	Lh8YfvL9soE/+ysxcXB5ua8JL4VHsB4BIjsay9iKxW/G/R7ewlLyloJSA61dcxGIMf7pQPUVmIO
-	q1Grdc6ABOGp/N9vCOpswxUcOEypVmnF/CzQ5v0945IxvuEwgAFDVBqF784iUOenbDEQV9V5Mtv
-	fm1whRLAFHArkTopej
-X-Received: by 2002:a05:6214:c42:b0:894:46d9:53f7 with SMTP id 6a1803df08f44-894e9f27762mr178804396d6.12.1770057871331;
-        Mon, 02 Feb 2026 10:44:31 -0800 (PST)
+        bh=7uEx9VgfdjgwYROqUMQFza98mDrih8nCYBKA+muYRBQ=;
+        b=M0qd2eBEqN1/kO/kZ4Z4IXHBmwOpPOw5e3CtkhViHnBBUMnuIvUrkLCWVdBj0qM8Ie
+         Xm6XsmZzRB6GgYS4t6ZxCtulqUjRPLBMPEG9o+6mj/jPOCTZVaiXIPtkE+Eypd9jjBBL
+         oa+M7tW/gmnfGp8k0IxfOaTVuW4LNvjXwAVeCvKUP/9mFNPC9cBaRCJWVvdk6edlnYjS
+         5AjlXjJeACpdzI7G2qt0kSjVd610ZvwKO5doJKPwded8LKg5qMx+2Y9183509cZxojRc
+         ySpjzx8hNsoFAgtC2gARJmdcagFeba1f5VweX9kxcbhmiYEgoN28MihPAsJUyVoWq8vY
+         Pfdg==
+X-Forwarded-Encrypted: i=1; AJvYcCVkAn6KZloBCqPwCY72S5eehzyLha7/EiKbzXW2YMbGrEViQchNaNPnIQ6sqAPICcZGcf8=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yzxs79NcvWGjVVNas9G/CxxrUoCPb8KOnfLutU1bYcePqcqjMRn
+	8DXRcro5QH+UPGnJa01z2wRIgMjod7mHK5mfggTn0XKVhdxMeuTFy3nJQRO+BtIUQsk=
+X-Gm-Gg: AZuq6aKWpuG/AeIZxLFZFfOVM+4KRRUFwY+AlP8utGxrU9tz0hXFq5ykdqS6XhharO8
+	hTD+iERbHVRE3lnXHtFUQcr9rmitLfga5JrtR61ayZ75KO3m5XuOnR5OmV0a/l2rdzB1K4Ja0XX
+	Pw3qaYauUbF+bZXn1t/wGek9FXsGN33LB1dUIusGkgE+plXg/RxBZTG0siTJWh/tqZdro++4C+g
+	mGE1m+bhBOfLQ1et3HoIZrnnsbCtUBFTSQwUYLlXWYJKdktkH0sgLyphd+F5usby4dpD8S151M1
+	lv9a3Uk7BRMJMzyQ258dpfM2BZbKPz+ZCkIV0NqbPfUF7caBQ5VMr/sKYs5I0fLusJ3Hp8XJjdr
+	P75zLypOpKLBnun3TIYo3yXofr+qXpQspnVU5PKY6/TNcqiWjGmCjKDdlp9Jd1eKRNBjv7FpCgs
+	UB9+f+amg4K/A6xZmW
+X-Received: by 2002:ac8:5fd6:0:b0:4ed:70d7:aa5a with SMTP id d75a77b69052e-506092c7e40mr6181511cf.25.1770059578134;
+        Mon, 02 Feb 2026 11:12:58 -0800 (PST)
 Received: from ?IPv6:2606:6d00:15:210e::5ac? ([2606:6d00:15:210e::5ac])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-894d3740e62sm119882596d6.26.2026.02.02.10.44.29
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50337ba3997sm110411631cf.17.2026.02.02.11.12.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 10:44:30 -0800 (PST)
-Message-ID: <169eba79e8e1f906b1a0b59e22a531dfc7e57a1f.camel@ndufresne.ca>
+        Mon, 02 Feb 2026 11:12:56 -0800 (PST)
+Message-ID: <5e3431c69da07557edb20a252c4759be8c857f08.camel@ndufresne.ca>
 Subject: Re: [PATCH] arm64: dts: imx8mq: Restore VPU G2 clock to 600MHz for
  4K60fps decoding
 From: Nicolas Dufresne <nicolas@ndufresne.ca>
@@ -71,11 +71,12 @@ Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
  Frank.li@nxp.com, peng.fan@nxp.com, eagle.zhou@nxp.com, 
 	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-pm@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Date: Mon, 02 Feb 2026 13:44:28 -0500
-In-Reply-To: <0b24716b-438c-4185-8a93-3a3879147c24@oss.nxp.com>
+Date: Mon, 02 Feb 2026 14:12:54 -0500
+In-Reply-To: <169eba79e8e1f906b1a0b59e22a531dfc7e57a1f.camel@ndufresne.ca>
 References: <20260130084133.2159-1-ming.qian@oss.nxp.com>
-	 <df8d5d5f28870752e77ec74f34fea7ceb6e97286.camel@ndufresne.ca>
-	 <0b24716b-438c-4185-8a93-3a3879147c24@oss.nxp.com>
+		 <df8d5d5f28870752e77ec74f34fea7ceb6e97286.camel@ndufresne.ca>
+		 <0b24716b-438c-4185-8a93-3a3879147c24@oss.nxp.com>
+	 <169eba79e8e1f906b1a0b59e22a531dfc7e57a1f.camel@ndufresne.ca>
 Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
  keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
  /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
@@ -90,7 +91,7 @@ Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
  ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
  bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-VlA8ZcxnzX2eUS2/dkES"
+	protocol="application/pgp-signature"; boundary="=-LAOjFPzcyPbpnKVdmA5V"
 User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -100,218 +101,77 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 
 
---=-VlA8ZcxnzX2eUS2/dkES
+--=-LAOjFPzcyPbpnKVdmA5V
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Le lundi 02 f=C3=A9vrier 2026 =C3=A0 15:44 +0800, Ming Qian(OSS) a =C3=A9cr=
-it=C2=A0:
-> Hi Nicolas,
->=20
-> On 1/30/2026 10:47 PM, Nicolas Dufresne wrote:
-> > Hi,
-> >=20
-> > Le vendredi 30 janvier 2026 =C3=A0 16:41 +0800, ming.qian@oss.nxp.com=
-=C2=A0a =C3=A9crit :
-> > > From: Ming Qian <ming.qian@oss.nxp.com>
-> > >=20
-> > > The VPU G2 clock was reduced from 600MHz to 300MHz in commit
-> > > b27bfc5103c7 ("arm64: dts: freescale: Fix VPU G2 clock") to address
-> > > pixel errors with high-resolution HEVC postprocessor output.
-> > >=20
-> > > However, testing shows the 300MHz clock rate is insufficient for
-> > > 4K60fps decoding and the original pixel errors no longer occur at
-> > > 600MHz with current drivers.
-> >=20
-> > Tested on EVK, with the downstream DCSS driver, and this change trigger=
-s DCSS
-> > underrun (which is related to the DRAM QoS erratas on this SoC). It als=
-o
-> > sometimes trigger the "not all macroblock decoded" warning I added rece=
-ntly, and
-> > we can empty IRQs, but these are handled now.
-> >=20
->=20
-> This doesn't sound like just a VPU issue; it's related to the display or=
+Hi,
+
+Le lundi 02 f=C3=A9vrier 2026 =C3=A0 13:44 -0500, Nicolas Dufresne a =C3=A9=
+crit=C2=A0:
+> > This doesn't sound like just a VPU issue; it's related to the display o=
+r=20
+> > DDR.
+> > If not displayed, do the fluster test cases yield different results at=
 =20
-> DDR.
-> If not displayed, do the fluster test cases yield different results at=
-=20
-> 600MHz and 300MHz?
-
-Didn't you run these tests before sending ? I can try again, but in my inte=
-rnal
-notes, I wrote:
-
-  > Tested that, and everything becomes unstable
-
-That was before I figure-out the IRQ handler didn't handle exception bits t=
-hat
-didn't stop the decoder (or dry IRQ, which strangely is common from the G2)=
-.
-
+> > 600MHz and 300MHz?
 >=20
-> > >=20
-> > > Test results with 3840x2160@60fps HEVC stream decoded to NV12
-> > > (the same scenario that exhibited pixel errors previously):
-> > >=20
-> > > 300MHz performance:
-> > > - Severe frame dropping throughout playback
-> > > - Only 336 frames rendered in 11:53 (0.471 fps)
-> > > - Continuous "A lot of buffers are being dropped" warnings
-> > > - Completely unusable for 4K video
-> > >=20
-> > > 600MHz performance:
-> > > - Smooth playback with only 1 frame dropped at startup
-> > > - 37981 frames rendered in 10:34 (59.857 fps)
-> > > - Achieves target 60fps performance
-> > > - No pixel errors or artifacts observed
-> >=20
-> > That probably only true with the upstream DCSS + a small resolution emb=
-edded
-> > panel ? Can you clarify this setup, because the display drivers mainlin=
-e are
-> > very minimal. Would be nice to show you average DDR read/write bandwidt=
-h
-> > utilization during this run for comparision.
+> Didn't you run these tests before sending ? I can try again, but in my
+> internal
+> notes, I wrote:
 >=20
-> My display is hdmi, I'll try the DCSS.
-> And the DDR bandwidth results measured by perf are as follows:
+> =C2=A0 > Tested that, and everything becomes unstable
 >=20
-> =C2=A0 Performance counter stats for 'system wide':
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 113303664278=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 imx8_ddr0/read-cycles/
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 82457075530=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 imx8_ddr0/write-cycles/
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 634.892101865 seconds time elapsed
->=20
-> >=20
-> > Another information that bugs me, in the BSP code, the G2 voltage is in=
-creased
-> > too, which you didn't do here. They also use the thermal 2 zone to kick=
- it down
-> > to 300 until it cools down.
-> >=20
->=20
-> In our internal code, whenever the frequency of either g1 or g2 reaches
-> 600MHz, the voltage is adjusted to 1.0V. Since g1 is already set to 600
-> MHz in the upstream DTS, I believe the default version is already 1.0v.
->=20
-> And do you mean vpu-thermal? But it doesn't define the cooling-map, I'm
-> not sure how it works.
->=20
-> 		vpu-thermal {
-> 			polling-delay-passive =3D <250>;
-> 			polling-delay =3D <2000>;
-> 			thermal-sensors =3D <&tmu 2>;
->=20
-> 			trips {
-> 				vpu-crit {
-> 					temperature =3D <90000>;
-> 					hysteresis =3D <2000>;
-> 					type =3D "critical";
-> 				};
-> 			};
-> 		};
+> That was before I figure-out the IRQ handler didn't handle exception bits=
+ that
+> didn't stop the decoder (or dry IRQ, which strangely is common from the G=
+2).
 
-Its not:
+Ran some fluster tests now. With this patch the results is not consistent
+anymore. Then I ran it with weston being started, and in the middle of the =
+test
+the display turned black. Matches my past observation. We did reproduce thi=
+s on
+BSP kernel too. When the display goes black, the recent hantro drivers repo=
+rts:
 
- $> cat /sys/kernel/debug/regulator/regulator_summary | grep SW1C
- SW1C                             1    1      0 unknown   900mV     0mA   8=
-25mV  1100
+[  827.581586] hantro-vpu 38310000.video-codec: frame decode timed out.
+[  827.720201] hantro-vpu 38310000.video-codec: not all macroblocks were
+decoded.
 
 
-Before I gave up on 60Hz on this SoC, I did test raising it to 1v with this
-patch (hopefully there is a way to do that in DT, would be more elegant):
+I have local patches to reduce the cascade of errors, so it likely survived
+longer then last time. I will send these patches soon. The "not all macrobl=
+ocks
+were decoded." is triggered by a bit in the status register that is not
+documented in NXP TRM. I found that bit in some VC8000D documentation (the
+sucessor of G2). I concluded it was the same meaning after looking at the f=
+ailed
+buffer visually, it is indeed missing couple of macroblocks near th end. Ea=
+ch
+time we see this error, the DCSS gives up and turn either black, or sometim=
+es
+other color. The second case has been tracked to a DCSS Scaler underrun, th=
+e
+first we don't know.
 
+Fluster command ran (two threads, never completes):
 
-diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
-index 4b828d74a606..2f2b85ca6fd2 100644
---- a/drivers/pmdomain/imx/gpcv2.c
-+++ b/drivers/pmdomain/imx/gpcv2.c
-@@ -639,6 +639,7 @@ static const struct imx_pgc_domain imx8m_pgc_domains[] =
-=3D {
- 		},
- 		.pgc   =3D BIT(IMX8M_PGC_VPU),
- 		.keep_clocks =3D true,
-+		.voltage   =3D 1000000,
- 	},
-=20
- 	[IMX8M_POWER_DOMAIN_DISP] =3D {
-
-I would also like to remind you your own erratas, in the errata document yo=
-u
-state that DRAM QoS is broken, and all transactions are treated with the sa=
-me
-priority. If you overload the bandwidth, it becomes fatal for the display
-controller. We tried to workaround with changing the NoC configuration, but=
- it
-did not work. It feels like that NoC granularity is not enough to prevent
-underrun of the display controller (where the QoS would work, since its don=
-e at
-transaction level, not by measuring bandwidth).
+./fluster.py run -d GStreamer-H.265-V4L2SL-Gst1.0 -ts JCT-VC-HEVC_V1 -j2 -t=
+90
 
 Nicolas
 
->=20
-> Regards,
-> Ming
->=20
-> > Nicolas
-> >=20
-> > >=20
-> > > Restore the clock to 600MHz to enable proper 4K60fps decoding
-> > > capability while maintaining stability.
-> > >=20
-> > > Test pipeline:
-> > > =C2=A0=C2=A0 gst-launch-1.0 filesrc location=3D<4K60_HEVC.mkv> ! \
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 video/x-matroska ! aiurdemux ! h265parse ! \
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 v4l2slh265dec ! video/x-raw,format=3DNV12 ! =
-\
-> > > =C2=A0=C2=A0=C2=A0=C2=A0 queue ! waylandsink
-> > >=20
-> > > Fixes: b27bfc5103c7 ("arm64: dts: freescale: Fix VPU G2 clock")
-> > > Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-> > > ---
-> > > =C2=A0 arch/arm64/boot/dts/freescale/imx8mq.dtsi | 2 +-
-> > > =C2=A0 1 file changed, 1 insertion(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-> > > b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-> > > index 607962f807be..731142176625 100644
-> > > --- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-> > > +++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-> > > @@ -960,7 +960,7 @@ pgc_vpu: power-domain@6 {
-> > > =C2=A0=C2=A0								=09
-> > > <&clk IMX8MQ_SYS1_PLL_800M>,
-> > > =C2=A0=C2=A0								=09
-> > > <&clk IMX8MQ_VPU_PLL>;
-> > > =C2=A0=C2=A0						assigned-clock-rates =3D
-> > > <600000000>,
-> > > -							=09
-> > > <300000000>,
-> > > +							=09
-> > > <600000000>,
-> > > =C2=A0=C2=A0							=09
-> > > <800000000>,
-> > > =C2=A0=C2=A0								=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 <0>;
-> > > =C2=A0=C2=A0					};
-> > >=20
-> > > base-commit: c824345288d11e269ce41b36c105715bc2286050
-> > > prerequisite-patch-id: 0000000000000000000000000000000000000000
-
---=-VlA8ZcxnzX2eUS2/dkES
+--=-LAOjFPzcyPbpnKVdmA5V
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaYDwjAAKCRDZQZRRKWBy
-9M0iAQCQ+75+dFwxPBtQI6SItaSuQV1acKtDid/mlGDfjCw4EQD/Xw6NrgBGFWtL
-nBi1uvDvRI2awNqQROZ2r40kipfvpwc=
-=PVw+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaYD3NgAKCRDZQZRRKWBy
+9IfHAP4rQUDUDbBIhNcS34h3qHt/x8THSc1WpgWBmUlwFmTckgEAs9XuoGSBAa2w
+7zD1Mvo6hkReZD5SmiJWAnGAjRbhvQ4=
+=BWBL
 -----END PGP SIGNATURE-----
 
---=-VlA8ZcxnzX2eUS2/dkES--
+--=-LAOjFPzcyPbpnKVdmA5V--
