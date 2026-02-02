@@ -1,177 +1,108 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A9035971B
-	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 11:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8927635EDB3
+	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 13:08:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770030656; cv=none; b=B66kOJQPvlOkGryzf3iuSSocdQ/1iaHlJ/4jYnHvALLqK0AwdFnmVRuVRj/s2BUndf4Aogx6WXZM6N+phfye3x/Zxznr0+Iu7JktO1zBY70H9BdoaDuUgKESTumHyZtM9AO0kN/QEWGM1YmpQdCgjLTSt/s+x9eVWw0p29TfrLc=
+	t=1770037692; cv=none; b=QIpw2ZxcHBWWI9hLDNHONGzKZtRiKy+IcSbHZbDViQi7g9saXjq7kFPFHjIo0VSaM03dH4tU71s3Ymlp/cYD6YlDs5gq5xiFZOgCCRaNbC+t6Q0twVQq9tHI5+i5WQlRnldP69Yh7IltStI5kMDzl2jI8KY1sna76N2uwU0PmTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770030656; c=relaxed/simple;
-	bh=PvdW6zG91BlRsSnm3kf8E4G23DzcGIWEN4ztyTbjX7M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PV3N2W7qxE747kXbp3spGJOrMK4GCmRum0SMcfAKm9VRh/O680KnPhKxxEXV8FASRP+3/5IJ48+lTW+enUzhTUNq0ugd0kMuu4Zi4d29wprHfdvuiGckewYUOrOWvnjNPRCOEJO8/I0JT36EAuqGrHCQGSsOXFILT+mejQpmLUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DaC2urIg; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1770037692; c=relaxed/simple;
+	bh=zt9DR77wzlilHy+G4PnOiXCK9LPBeXZsCAt1vj+ySS4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CnXQ5a40HkU1eFd1wLQheqVowC2i+3u2MV5UqYtH6JQgVJXCfLJn04YiqFZOKfSJAT6EZE1fCahnP7hIYV27piXpnAxR8nHscir0GRRa5haXjmemnTrNR7RhWKBGZjQ+dEvcv7OZofPfo7of04YVc3svwfbI0X4+BwNbPcNP0oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TAukYfgY; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DaC2urIg"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id C833F4E423B8;
-	Mon,  2 Feb 2026 11:10:51 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9999860767;
-	Mon,  2 Feb 2026 11:10:51 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EC61E119A8888;
-	Mon,  2 Feb 2026 12:10:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1770030650; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=w6LZrRliaeVEnX1T81VpVKJXHHMQ0PUjevq9rlbhokU=;
-	b=DaC2urIgkC2Sad99jrVTCWmvC8OCZU0nmSMTCvXw0TwpaG9OezbkzNQlqLcItEMcYdlHil
-	RIC8kKls6NjLJ91dWtar4TyRN23Zr+PxbeJ3pP59xS76ugAooB273+UyzHO+++uzLpIuc6
-	bU+nY3xAo6grAj0VO3UPXvms4ipaKvzRYLSAoXxZaUkB9gO03v+3XDD1vTyALsvuG6OoEp
-	wNt+aAzx4w7vXXA2PcSfAZRdxCHDDPVgH9GCa49W40UkPQlHYsPGeXzulKLx8+CVFvkjzx
-	ENWYT+i+7++svmdRbcqO8PAnO7G1Lf7UegGpS/zm/Lsp2mBd8FvGicJFYXoAtQ==
-Message-ID: <267c78c1-4ad2-4f06-be63-0fb506c5134d@bootlin.com>
-Date: Mon, 2 Feb 2026 12:10:41 +0100
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TAukYfgY"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-47edd6111b4so47200975e9.1
+        for <imx@lists.linux.dev>; Mon, 02 Feb 2026 05:08:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1770037689; x=1770642489; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=us8rkbaDqiFPo9bSgIdnDClrOWuVChIefeA+LRaKMx4=;
+        b=TAukYfgYELnT6tCwzMJEWo0/f/k1TKdtDbssAB6fQa5R0zZNS6oZTvEqkw1O0rTIO+
+         vrTDDK1wvXhF4wpQGj19tAPLiHttjBNFLTUNsU+BmIYjr02KJDU3qVgXVD6Wf4k0EHuH
+         p7r4g84/Q3n9jFwQSpGWX8JCfx6iDylhdvPFr1XN/jRbpiXrB0MZ3XW16WUPWHRtKWD8
+         lQTs1Jl41u1gOhruZjouvNHKC6LG3tOTWQtFFR6H6Z3le0ob4BHcRW49A2fjuJL1JcxV
+         QK5Gl9VRAIYz0R8mNX61cVZwvKcSQCNQ/n13vmu4H38sGNkeRxGKAhdUxA7alTs/YgMk
+         j40A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770037689; x=1770642489;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=us8rkbaDqiFPo9bSgIdnDClrOWuVChIefeA+LRaKMx4=;
+        b=B/l65Sw45GJF9VEpi8mtGhT+0R7QYfC03Wpg1ps0PqiW1ufJeZvA5q2NG+vk1lXZOc
+         sTH/J5EN+bfjdZK/J68hlSV7dI0dPUf5+yhFRh9RXSAGDEF8CuK89ipmV84SCi3dGYKl
+         F+dIP6OeWh1t26xXujulUmt+4i+CBVO+buMy1ojz7Ne79H3z7R1HurlBgZtMdQ0RJ+13
+         D5t3NkRt8Fl9z9E5FGLf+qaGXRGPykyp1hXpX2I48YA1BfHkbyThfhFm2lpWB9bw2J/8
+         ahyVNUcbavVNFRkpaQjoYdHb2vcWXbUtkewbYnQ+EchUMa9rt9QPkOt36pKuZ1TczOJN
+         kz8w==
+X-Forwarded-Encrypted: i=1; AJvYcCXN2OCEXwzl2hF0r6RGDZK9A24FmspNwGhwnZkug+MJMRNyAGOdLU3Dd0AyIBM8Al3ucCY=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwQIQbA/QA9pc8xo4ryH8k6p3h/XPXgJ2JAMTBzBoAXYPHgZo2c
+	690SYyVHHT2xor086FJTVudifWJ6+ar9U/oLjDjP3EYRQFqTTUIHLSp8YPSGPgbaA3A=
+X-Gm-Gg: AZuq6aKa8hgxFIOhDx5F1eXd0msc813qMw0iAMhrWmEEYjkuXdEHZ7NORo4YczUD5hF
+	kSoZdYMaaUPoz8qCexNJ+Bb97DmiI5sL0KduRqGY5oRdAlHLuKmxmYvlXje6NfZEtOn1Ai9Dg00
+	yyFnJPTAg0AQ158/IGBnmwmUUuJl/lN2vUVwukxwzxfvZOvHWDW7GvOD1GK3fKSywawQfLmmBAj
+	18NT6wAvoBsWQvMbO7wGrrhgnEBM0uyn/c4v/8l5H35dc90YcPvCl8BSA9rdm49+c+vjKrjxsQY
+	e3YL1cuMUCNJyimghLWmqTsKb4ehApv1lYRyXf+rz5Lq4dN3V4eQhxD47jXjJ5zu9YFDpf4zuYM
+	/p1vw6D0XjAQU7+o9smuvR2YRIkxHWVzC+hgm1ZEukeGWF+25Lox/z/UJdzWZORS6pkMy4dJPTb
+	UWfl8wsvp8x5iqdUqhmZckroDBpPRVXQ==
+X-Received: by 2002:a05:600c:310f:b0:480:3a72:5238 with SMTP id 5b1f17b1804b1-482db49243dmr160135245e9.30.1770037688901;
+        Mon, 02 Feb 2026 05:08:08 -0800 (PST)
+Received: from vingu-cube.. ([2a01:e0a:f:6020:fad5:23a2:cd9e:d80e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066aaf235sm438299775e9.0.2026.02.02.05.08.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 05:08:08 -0800 (PST)
+From: Vincent Guittot <vincent.guittot@linaro.org>
+To: ciprianmarian.costea@oss.nxp.com,
+	s32@nxp.com,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	robh@kernel.org,
+	bhelgaas@google.com,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Subject: [PATCH] PCI: s32g: Fix ports parsing
+Date: Mon,  2 Feb 2026 14:07:56 +0100
+Message-ID: <20260202130756.1421488-1-vincent.guittot@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net] net: phy: change devlink flag to
- AUTOREMOVE_SUPPLIER for non-SFP PHYs
-To: Wei Fang <wei.fang@nxp.com>, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, florian.fainelli@broadcom.com,
- xiaolei.wang@windriver.com, quic_abchauha@quicinc.com,
- quic_sarohasa@quicinc.com
-Cc: imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260202054533.539883-1-wei.fang@nxp.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260202054533.539883-1-wei.fang@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi Wei,
+No error return is missing after the loop resulting in removing the
+ports from the list.
 
-On 02/02/2026 06:45, Wei Fang wrote:
-> For the shared MDIO bus use case, multiple MACs will share the same MDIO
-> bus. Therefore, these MACs all depend on this MDIO bus. If this shared
-> MDIO bus is removed, all the PHY devices attached to this MDIO bus will
-> also be removed. Consequently, the MAC driver should not access the PHY
-> device, otherwise, it will lead to some potential crashes. Because the
-> corresponding phydev and the mii_bus have been freed, some pointers have
-> become invalid.
-> 
-> For example. Abhishek reported a crash issue that occurred if the MDIO
-> bus driver was removed first, followed by the MAC driver. The crash log
-> is as below.
-> 
-> Call trace:
->  __list_del_entry_valid_or_report+0xa8/0xe0
->  __device_link_del+0x40/0xf0
->  device_link_put_kref+0xb4/0xc8
->  device_link_del+0x38/0x58
->  phy_detach+0x2c/0x170
->  phy_disconnect+0x4c/0x70
->  phylink_disconnect_phy+0x6c/0xc0 [phylink]
->  stmmac_release+0x60/0x358 [stmmac]
-> 
-> Another example is the i.MX95-15x15 platform which has two ENETC ports.
-> When all the external PHYs are managed the EMDIO (the MDIO controller),
-> if the enetc driver is removed after the EMDIO driver. Users will see
-> the below crash log and the console is hanged.
-> 
-> Call trace:
->  _phy_state_machine+0x230/0x36c (P)
->  phy_stop+0x74/0x190
->  phylink_stop+0x28/0xb8
->  enetc_close+0x28/0x8c
->  __dev_close_many+0xb4/0x1d8
->  netif_close_many+0x8c/0x13c
->  enetc4_pf_remove+0x2c/0x84
->  pci_device_remove+0x44/0xe8
-> 
-> To address this issue, Sarosh Hasan tried to change the devlink flag to
-> DL_FLAG_AUTOREMOVE_SUPPLIER [1], so that the MAC driver will be removed
-> along with the PHY driver. However, the solution does not take into
-> account the hot-swappable PHY devices (SFP PHYs), so when the PHY device
-> is unplugged, the MAC driver will automatically be removed, which is not
-> the expected behavior. This issue should not exist for SFP PHYs, so based
-> on the Sarosh's patch, the flag is changed to DL_FLAG_AUTOREMOVE_SUPPLIER
-> for non-SFP PHYs.
-> 
-> Reported-by: Abhishek Chauhan (ABC) <quic_abchauha@quicinc.com>
-> Closes: https://lore.kernel.org/all/d696a426-40bb-4c1a-b42d-990fb690de5e@quicinc.com/
-> Link: https://lore.kernel.org/imx/20250703090041.23137-1-quic_sarohasa@quicinc.com/ # [1]
-> Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
-> Suggested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Fixes: 5cbc7d3e316e ("PCI: s32g: Add NXP S32G PCIe controller driver (RC)")
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+---
+ drivers/pci/controller/dwc/pcie-nxp-s32g.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I gave that patch a test, with the following cases :
-
- - On Macchiatobin (we have PHYs that share an mdiobus).
-When unbinding a PHY, the MAC dissapears as well :
-
-#before :
-
-# ip a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 2048
-    link/ether 00:51:82:42:42:00 brd ff:ff:ff:ff:ff:ff
-3: eth1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN group default qlen 2048
-    link/ether 00:51:82:42:42:01 brd ff:ff:ff:ff:ff:ff
-4: eth2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 2048
-    link/ether 00:51:82:42:42:02 brd ff:ff:ff:ff:ff:ff
-5: eth3: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc mq state DOWN group default qlen 2048
-    link/ether 00:51:82:42:42:03 brd ff:ff:ff:ff:ff:ff
-
-echo f212a600.mdio-mii:08 > /sys/devices/platform/cp0-bus/cp0-bus:bus@f2000000/f212a600.mdio/mdio_bus/f212a600.mdio-mii/f212a600.mdio-mii:08/driver/unbind
-
-The MAC interface correctly disappears, but for some reason a lot of
-other interfaces dissapeared as well (only eth0 is left, where I used to
-have 4 different interfaces)
-
-# after :
-
-# ip a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
-       valid_lft forever preferred_lft forever
-2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 2048
-    link/ether 00:51:82:42:42:00 brd ff:ff:ff:ff:ff:ff
-
-
-
-- I also tested the SFP PHY setup on a Cyclone V platform,
-and it worked as expected (i.e. MAC didn't disappear under my
-feet when removing a Copper SFP, but the devlink was still created when
-the module was present) :
-
-# ls /sys/class/devlink/ 
-mdio_bus:i2c:sfp:16--platform:ff702000.ethernet
-
-I don't have time to investigate why my interfaces are dissapearing
-on mcbin, but OTHO  unbinding the devices manually isn't
-something I do very often... It may or may not be related to this patch.
-
-I'll let Russell and Andrew comment more on that as I may
-still miss other cases, but as far as I can tell, this looks
-OK.
-
-Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
-
+diff --git a/drivers/pci/controller/dwc/pcie-nxp-s32g.c b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
+index 47745749f75c..767f5a622441 100644
+--- a/drivers/pci/controller/dwc/pcie-nxp-s32g.c
++++ b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
+@@ -285,6 +285,8 @@ static int s32g_pcie_parse_ports(struct device *dev, struct s32g_pcie *s32g_pp)
+ 			goto err_port;
+ 	}
+ 
++	return 0;
++
+ err_port:
+ 	list_for_each_entry_safe(port, tmp, &s32g_pp->ports, list)
+ 		list_del(&port->list);
+-- 
+2.43.0
 
