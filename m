@@ -1,121 +1,274 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013005.outbound.protection.outlook.com [52.101.72.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FE137757D
-	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 15:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770045060; cv=none; b=D/7DL1Wn5KmAxoB1q/oj6IU89eQNTbjHPkKaH0IYgm1HqwdqsNcFHhVtWwcCRm37TG6ga0eo6tqj1t9cjliYdyUokEId+1GhuGpiLPJIeaffYg+vIEYlXnEt2a+85XGfADFiNbAVIpslYxfpXdp0AyrtglWBf5y+YlLb4IP3lUs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770045060; c=relaxed/simple;
-	bh=btc952EXnNWwdQlMg+H9RbtOd9pcgav+Aeu0irDTT9A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LushL1UpiT3Q+f1ZSIZZ91Ujs4Hi4pE5ZOQH5Y/wy3XRNj9BJOsWotY46nktkOdHD8VJGj0y5kk1OXpzjmtcMalGfHxVzvvBuxEjVGZ5aABluU5h/RC8brHRG89YFoKeKQJfrvuc+lNnwoTOtXrGeyVPWWLawixCNa6IIi01KUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ardud0C4; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE395D8F0
+	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 15:36:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770046593; cv=fail; b=dmKcdXPWtybdwtIsmpYU0HhTVeHQ6TAjdaYqSr9eSLIx5Xc23bHDzb/TAcvT2J3MPaQQGJrvn7sLpsmR6qwRN131YZDYHy0NYJ7JlLzG36S3dz3JrX46zcqCEbl/jDEPfckHV03qdbazLd094th+0jp2RncrZ5RjCS8Z8i6IaeE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770046593; c=relaxed/simple;
+	bh=rHldvwfmCP0RqZcUAtQWoyA/HFkg2/zdzX1+kbPACgY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=sB6lgM1RCDqvFq6bCH2R3lprvpEIkd1Sdoa6up4VXTO7wzul2KkRXpQrhDxmgSxx+28XDvNyMIrBiuh/GPkQpYgOElEx6rTMKciDThLkbsIkU48qY0yculBc8usuFhcIgo4I99Z09HhgQWny41Np3tqUMiY+wUfjYq1ov9N13rM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=AaduWTnD; arc=fail smtp.client-ip=52.101.72.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ardud0C4"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-432d2670932so4209624f8f.2
-        for <imx@lists.linux.dev>; Mon, 02 Feb 2026 07:10:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1770045057; x=1770649857; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QLQJlIi1xp3GOgxJrSuyTGl+kKtHgLV5lTV9J+BYkDY=;
-        b=Ardud0C48Ml1k45lVZOQO+63njtKHvzPIvEfFiHROTJxnAhV90zLA53xbNK/EfjEcK
-         0Jf88d4S2rqWGgwsgq+TjhdrkrH4LNGSgQygA1oCwl1sRScOk0o02FZFGIRG96m725rx
-         n3M+ro0/LpqaOY6jyuaKn2kygb8DnC+agshgjJ8b8qoIE3DZWdG71++vFk8kE92ke6KG
-         qU1MUsEx5/NndtjIyKeyVD0DF+nKsUqCvY0XWbjShHIRtU7t82Yglb1JQ6oBey66UuCc
-         NdqH4d3K2eUnWfeBNM85TkIe7sGE54F81lPxk8GerOgb6m8PqglCEPSNze7x9TZG0jWL
-         2Pkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770045057; x=1770649857;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QLQJlIi1xp3GOgxJrSuyTGl+kKtHgLV5lTV9J+BYkDY=;
-        b=ps9HT9GVgz76WdtEIzT6FxCghyzPFvUF1v6OSASkSbWO50TIXbvQgSUFRCoMALPby8
-         5MZ+AqW7o/C3ppqA/FB/4hkREiP/4X6xOuUaH4BFD6A70GpFlBiP+m8wkVynDOlc00R3
-         CoJzxOLvmZTRuh37gNAx17OYKjEyXwEn05wm85oOHQnqQdi70iTKig7gyQmBzaRSC+6C
-         T4C9KEyFwNYBBVKPIxNQajS+JqjPrwA1w3IJv25ALgPo01RfO+RkfUH5Wo41fUcMPWMi
-         1rOSShTNKgDXkBgcuM8v54Kxv0VAbM+tfhkh+4xuNzWT0w19VnNKVdVVPbOKyOGmmAyr
-         04ag==
-X-Forwarded-Encrypted: i=1; AJvYcCUbB0XOncETZCUjPkHllyUdlQDNAJLyNHJJ4+OmmWDvpx2GyzOVdQ1brTGTqk1X+dD3ZuI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzLqo65yp8RHqMvU93JG9A+0l38uoxKN5CChco9djHuHHQNMmbC
-	NFyGy/q8NAuSxGShWCNS2JBtpwMc1LlniZBFXIT5/BL2Z51zzaUt0RXUusf+1oTpLBWNNKaqSl8
-	09Scx
-X-Gm-Gg: AZuq6aIEkENWG69TbFlig9Zi+mTygG9mtCNunY/g1ASK+p8E1hEt3gT3T34TdgYGo6N
-	RqJfw68OjuqdTZ3disynDXSuA4JIZXz0DLUhzQNKGuh8Ot4iXukEivWDaAhheLQLFjPDhYCQn59
-	ybBWPlyLoxePtztOZ5lb8RiFxn1/7RcsqgS5Ee+UvfrEt7XZ+t8bKGdSLoedOx0AWZ5jvAths/w
-	dqcCcOf3MkFhVAk/0ITaxxx9bb1/aczA5Ztpuud78sGWIA8MZjx5uKzBEjELC2td77QSJHM2btE
-	IpmtXXPIRkHbEKZH9WfdL2qh3/kFzR9TosbHz3rRQhfrE6Mbke9nLuj63HdBqbrEBjY+UC0kADm
-	fKNuvcztXU8MacGn03kbdTL7XB9koa9A3EWfTMCy3gfLPg7f7BpffabwsmhZY7xDuMuAQIggiU+
-	9YwmOnKgvjk3DeIF80fSRO7AZpnCo=
-X-Received: by 2002:a5d:64e6:0:b0:435:982d:97ee with SMTP id ffacd0b85a97d-435f3ab9a44mr19652025f8f.57.1770045055569;
-        Mon, 02 Feb 2026 07:10:55 -0800 (PST)
-Received: from vingu-cube.. ([2a01:e0a:f:6020:7cf3:628:f0e:cd4d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e10edfccsm42845021f8f.17.2026.02.02.07.10.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 07:10:54 -0800 (PST)
-From: Vincent Guittot <vincent.guittot@linaro.org>
-To: ciprianmarian.costea@oss.nxp.com,
-	s32@nxp.com,
-	lpieralisi@kernel.org,
-	kwilczynski@kernel.org,
-	mani@kernel.org,
-	robh@kernel.org,
-	bhelgaas@google.com,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Subject: [PATCH v2] PCI: s32g: Fix ports parsing
-Date: Mon,  2 Feb 2026 16:10:50 +0100
-Message-ID: <20260202151050.1446165-1-vincent.guittot@linaro.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="AaduWTnD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dl4qhMZcMxe0P6kKh5k/VWC4Gq8jEkI7rT4wF8GWxSHquLvXrxddg5H4ei9QxzOiVQEeTvU43naaXtH4CnA4z8QYYuKOpJSZIXmGPtR/ncwebeLNuNX4QSjIp/CvsecSfQrsaqiY9WGwnznLD7N/uRLXy+RO9XSEvV7dEo9hS/qd4w+Wcbp0AmRjhTuTQT9u0OleYIy5EQ6DzEOUs7tOOs0B/QHFVs72PCMsvb7EIfuGgeH/ZMc6zrQWlGLzEl4EaunONbWfKwhfNPFON1lSs7HjkvRC4h+xyLvJqDp7QxrqP5UvWuDCScVJX2BPjTIOSTO4Un1RnF0WbO6D9EZglw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F3btKMzYNY8reGB0o5YYU7Q4u9OcynSkz40hrjzFuI4=;
+ b=MFSoOoWIWWPaFVCM1vtULD5TVbk1JUHcVfRFUylU/5Pnvu2z3ksdlJnIjis1zkoV9/hAtPyk0NoWAKvVbisrqjgGtLN2R+61aVDiLzERWbzIjTVCY8RHQEAigYwfK7tp1cAaz0xMTXPya5+D/V4thwFrfMmHvNPR/MCnxL34/sRW3iNoFns1O1K8QhQKSO2Kbizm7+nNp0G5hJIoMHNsKH65SFkX/l7Yit7eVpSDF078Qa2X77VKFs/oeEAB9Klw/hXv6W/gFCArO6sQ5sLyA9T4GlGVGUNMOrL7Q71AeeJKvMLmzCCjnIEy7mNoJdy+gPF4y9Dgh5fxpceZv+MlaA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F3btKMzYNY8reGB0o5YYU7Q4u9OcynSkz40hrjzFuI4=;
+ b=AaduWTnDnjAdTJmNR0gYwdcXkajc6fB189DTU02uS1+09MFjO7U3v+uUCTA7i7h4s7uuSizE+UNZXIuMcyclfOCxY1m1CeRI+gJq2g/qcqfEcQ3m78DROXA26iTNnSn4+0tRq0MUd0RwNBSCNPegplAGRgDaucftQoYqOmYIYXnfkt45dMN55O5D+Y8yEOZuxeH1z3pJ1SSs0xL4Wg4bmwEvNe/2HCxLMxT6Zqc1m1Ekz/osh5vzlj8VgkS4nOlz66angapv3aHwKBXhDWInMICBr9iXGjiX4j4GYd6rVptDn7EB9Yk1c9J0EIbRFQVlWODt2QmBzXIf3+eVlgPPZA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by PAWPR04MB11569.eurprd04.prod.outlook.com (2603:10a6:102:50a::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Mon, 2 Feb
+ 2026 15:36:27 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9564.016; Mon, 2 Feb 2026
+ 15:36:26 +0000
+Date: Mon, 2 Feb 2026 10:36:15 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Li Jun <jun.li@nxp.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>, linux-usb@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] usb: dwc3: add may_lose_power flag
+Message-ID: <aYDEb+nZe2efehEr@lizhi-Precision-Tower-5810>
+References: <20260202-add-flatten-dts-based-dwc3-imx-driver-v1-0-c44a5e919380@nxp.com>
+ <20260202-add-flatten-dts-based-dwc3-imx-driver-v1-2-c44a5e919380@nxp.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260202-add-flatten-dts-based-dwc3-imx-driver-v1-2-c44a5e919380@nxp.com>
+X-ClientProxiedBy: SJ0PR05CA0209.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::34) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PAWPR04MB11569:EE_
+X-MS-Office365-Filtering-Correlation-Id: ec8517f3-70f9-4936-574e-08de6270d3d0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|52116014|19092799006|366016|1800799024|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RnRnRUN6YTl4Rkk3MmpIbFByam5hQy9XcXo3TTlaZVVJWk5yWXZHOXVlLzBr?=
+ =?utf-8?B?M3VGaUhOWjNabStDUDJVTlRLK2ZWL28vajVjWERQd0V3VHJZbTFmZDUwYnNq?=
+ =?utf-8?B?enl3NFdRdmlBUzQ2bllkd1d5aHRoZUtjaUlRSjdjbittY3Jtb1VCRTduZzE1?=
+ =?utf-8?B?ZDZOTnBlZm15bFhxdy9PSWJ0SXQrTlhZaklLcXdnaDVhekQ0L1BJbWpCd1pW?=
+ =?utf-8?B?bXFRUnVPRWZEdjRTSnMxM0I1T0JaeUcvZDV4TVVMVDJWem5ZK3NWclhDb254?=
+ =?utf-8?B?TEdrY2I2Q1VqdERKK1BUdndUZTkzVWM5UTNobXQ0Z2E1WHJsWTR1YW9SQ1Ba?=
+ =?utf-8?B?VTlmbTc2Z1UwNHMrenY2T1JHZWtwQWdCb3BURHNYU3hLM2x4dEdZT3ZabjFl?=
+ =?utf-8?B?ZjNEVDdZNTN4Tkk0MHgydFlPWlgyMkllZ0hSdFo0UC95YkIybGYzK3pjY04z?=
+ =?utf-8?B?K0pFTk5jbTJCMnVtRjJGbzI3MFVqUGZMQTlnaXlFZWhWWGFPckJqV0d1RE9j?=
+ =?utf-8?B?V1YweDJRUmcwMzRoZllSK1hGdmU0ZFRpb1drRytxS3RCWk1idHNkdm5Uc1Iv?=
+ =?utf-8?B?RnB1MTJnN3ovN0UwclZiK2FEQ1pTRENub2tMYWhlbm8yVFo1ai9Ma3htRnhy?=
+ =?utf-8?B?b0ZjZWQ2U25ITTZiVUNqRmdaOGFDc3JSM0l3bUhNaGw4R0F3UnpyVGo3REs4?=
+ =?utf-8?B?bEVDNGpQVWxtV3E2Nko4OXNKUmo1UHEzZi81bmlUZU01a1BLaDRGVlNXOG1h?=
+ =?utf-8?B?bHVhMDEwZnpWamFHUzVLcFNQakowZE1KaVB4UGdnWXdOVlh4d29WRUowT1Q4?=
+ =?utf-8?B?emV3ajNIVU53MG51b2J6ZG5PWkxJeUV4STdNejJIVnNpY2VDL3NIZEVaRFZm?=
+ =?utf-8?B?SDBzMDd0WG5VcThzcjZ3WisvdzhrcmVNb1FudXgrL2FGL25ubERHenB0dWFt?=
+ =?utf-8?B?SlZyYkNiZjNyRmdKUHBVU3BiL085MHpLenlnVCs2b2c4UHRpY1dCOFM5QmR0?=
+ =?utf-8?B?TElSa3diTi84NU8wM250WU1XWXQyaitCWUJoUVRQQkgvVkpvTkw1cUZ6My9n?=
+ =?utf-8?B?aDd6dG5sa1Z3Nm94c3FlOHBkL2RMaktNRVpOWjJVUHNyQWRoT3JYYlVpRHYx?=
+ =?utf-8?B?OGxncG5OeVhEbzhadFVkNS95dWtFSFdDQ2VQZ2RJdXVOUzB0SElWUk9aWjd0?=
+ =?utf-8?B?a3BoaHI2S1VaNDVjWjladDlZeHZZb2FZVnNjZlhsVW9FYTZNODJEMmM2OUhK?=
+ =?utf-8?B?TUZHWGhSMzRxemRmYmlJOG5aUnRTaUFiRUkvUU1EQWR3M3JXS21kL0l6c1h6?=
+ =?utf-8?B?UmJtYVRoek1iOHE3c3ZCNFJsZWNQeFBsVnF4bnZEcjZxdXV2bzQrRUgvak9Z?=
+ =?utf-8?B?R1BIWS8xM3E0Sy9WdW1nSld4RFdjbS9xNnoybnkvWlZrSXVSdnEvUjQwUXha?=
+ =?utf-8?B?T2JkRFRNRVJ2d1VoY2JDbHdJT2ZOYk5kc3ZNTU5QQVNzeFgyaUdtQmNBM1pC?=
+ =?utf-8?B?eElpem9UQ0FITGR6aFJUZC9rQ3VjQkNLM20rcHRGa1JPMk5qNmZmU0JYa1No?=
+ =?utf-8?B?ckpVbnQweDBCUDRiTVlDSEl4U2dVK3ZQVHVFOTEwcCtUMkk4WEV1VGlCRkxY?=
+ =?utf-8?B?MUZiaXpqbHRrYTd0UjVwcjNDeGE5Z1ErQVI0VXlyN004dzh2ODVJU1c3NDRs?=
+ =?utf-8?B?clVmSFozQlpkeE15Q3Ryd2I0MWNPcGZ4d3FlTVBMQ1V1QVRydXlLZmYwVERB?=
+ =?utf-8?B?WGdQa2lMRmhpeGQ2TTVISWo0dTBoelplYmF3dndRVmVBS1pRQ0pxY0Rsdmt1?=
+ =?utf-8?B?VU5sUGhHaWJZVG15VHV5OVp6b1JWbFNaK2FFR3pBSGxtQ0taUkFRVUozcU5E?=
+ =?utf-8?B?MHFZWGpLUzRGSGQwMWwwb0FQeUsvR3FUQmJqK09ad2RlNXRFQjd6SlJXRklE?=
+ =?utf-8?B?VWMvRmtsVWZkZFhRT2VjeG45L1g1WVJGbEtKTDlJQ1drSm1Hdng4UmJUNGVR?=
+ =?utf-8?B?QXhVMkdKMHdpZEhkTlJNNTVUNFUzVmNlSHR5a2dsZUZtSGZPN0FldjVvelBT?=
+ =?utf-8?B?Yi8wRkY3VGhpYXg5Z0VCQ1h2dG0wS3docms3akl5V05GZmd1TUROSzhxWnRv?=
+ =?utf-8?B?N2pzK3lteCsxOTNHUjllS1J3a3F4YlpYWXh5NUR5TnlLQUc0YUVGek5IaUsz?=
+ =?utf-8?Q?XpKpEz5Z2gPkjRk+44PbVwo=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(52116014)(19092799006)(366016)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UzNmNXpWYUJCSDd4dnNrb3BsUlJTanRXRHR3TzltUkdUQ2JaYTQxK1dxUW1M?=
+ =?utf-8?B?WnRoWHdsUDBLNlpZWUhZbWVWUXQ1TmFnaHdmZ1REVWdCKzRtSnp5M0hTTkV2?=
+ =?utf-8?B?c0EvRmw2a25sNmNyb1d3T1VPQndCOGFkZFZZS2VmQlBqNStrbi9FS2xvTFhF?=
+ =?utf-8?B?SjJ4bXV2MUpWdURzUlh1TGFVTkFUd3pXUEFRRW8rRXFGSDlobGFQR05yRW9Z?=
+ =?utf-8?B?a2pSR2liUHRNV1ZHR3VmUks3L0krVmZWbUJaL3ByeG1nYjF1eGY5UFdjTk9o?=
+ =?utf-8?B?WVRuSmVWRkVwV1VReXRYU29VYXRRZk5VMjlDOFZWdHNNc0JrVEVKV2FuaklE?=
+ =?utf-8?B?YlFPME80N21NZGYrKzBoaFRvWFBGV2hQaDhpdjJiSTArdmdvbFdmSnVRYXht?=
+ =?utf-8?B?WWZyNDNVMWZtVUlia0tzNjk5MHBmY0ljQzNtZk80Wklmb2lMNmx1Z2RJUEt1?=
+ =?utf-8?B?ZkpvRWdmTmFVVWNHc2IzeE9BWGtnYmMzcWZ0NEdyUDQzMkJCV3ZvNndWR2Zn?=
+ =?utf-8?B?UTRXNzRhZVlvNjA1SFRXUTFOeVFuRm5wVEJBaHBGRnhXMUhPb1grOXNoc3li?=
+ =?utf-8?B?V0hWekpSazZxZUUzWDV1ZWx2NmpzY2pjSzgxZE5XRmQxZWkyTmVoL2t0MGJT?=
+ =?utf-8?B?VlNXNXhUdXRCNWxoSThBQnhJRUFkK3Y2TFJWTEk0a0NaYmZOTjlpcWhQbHU1?=
+ =?utf-8?B?NEhSdEhIaWhYb0dtQ0h0Q1hNN1NJUjVxMEFHY2Q4bHJUdUZHS1gwTkwvVGlo?=
+ =?utf-8?B?cFpsQUhMR1FXSkhSWjlrZVJCQ05HRFNpbkV2NzZqNThJYXpHcmpmVXc3b0pw?=
+ =?utf-8?B?Y0Q3Y05yeEpCUXVSKzFOa0pORW1xNm1xMXRuNjlHbVBMK1dJU3BEdTJVeHFt?=
+ =?utf-8?B?eDY0enQ1SkVFV3draHZhY3l6ZzVjWS91SWw3N1BSbm9JcDY5K1RsRENtYXox?=
+ =?utf-8?B?NHZmdTMxdGZnc2pMYTJTcGRSY2ZTcjZoakJzL3FwR2ZKOXpCRURUR1dORHJ2?=
+ =?utf-8?B?NmxkWHpJZ0xSckJndThTUjhvK3NFenpyekJ1aU9XeWVpbGhpc0FDQzF4TXYz?=
+ =?utf-8?B?ZkNSMEh5eENzRDcyL2QreUdLSUFsMzdQa0Rra2hyZHlzeFNMSUpmdEJOa0lB?=
+ =?utf-8?B?Y0lNYXArcW9tbUFNSGRLejAwbG1PZ2VvS2ZKeWFSMDh6SGpYZjhHWkVEWkZk?=
+ =?utf-8?B?Y2N3cnl5SlZPQVI1RTY5TVQwQWlCaXZFTWpWWXN0Q2t4c1FocW5UOUQ2Y1Zr?=
+ =?utf-8?B?bVo0WjN3ZWFweTMrOFg4V2p0SWZmY1o1bXJ3VVo0Um1zMlB1WGt3MUozenpM?=
+ =?utf-8?B?Rloxb1puLzY3RnVpbkxyR1dSRmdpekFvd2pEZFhySm94d3lGZnJHZWxSYm0v?=
+ =?utf-8?B?ZmN4OTBIZjRBdW10LzBMMHNEajRqME1nd0cxbG5MOThpSUJ4WlZJc2FrWlVO?=
+ =?utf-8?B?ZTlTdU81d0hUY3Nsb2IrRVRSOEo1WllkR1JOeEdFMllJMENoZ1ZlbzFINHU4?=
+ =?utf-8?B?bVVQWFRoME9UOXpCMGxuQWxDYi9MYWhmREVpeCtQTmQrMnQ3Mm80c2lsODZD?=
+ =?utf-8?B?b3BzT1VLeVA1QnZTb2RDR2JyTTVIb1Y1VDdWY2JUbmlSWFZiNlBvZHFlbGZs?=
+ =?utf-8?B?YkFzUmtaSEVMenRKSWtVZDVIckpHUDRUQUJyMWpaRkdBQzg5bkRlUE9McnVh?=
+ =?utf-8?B?SXNudzFhNGRJMFpmNGRYTUNCa2JydkYrc1liUVVhZUIyQ3lKT05wTTg5SjZt?=
+ =?utf-8?B?eVhFMFZRVHB6dGo1ZWZpSU81UmhKUmhJT1lGcTN1MERBWFkwYXRXbGowakl4?=
+ =?utf-8?B?ZHpTL3FFR01nbzU5V0szVlpxWUV2VUI1c2sxTURtMm1xZXFxbFU3TVlqLzln?=
+ =?utf-8?B?Mm5BbFlYU2ZPOHc2RTY3V3JTWFpySXR2SFR6R0hFOTFkWW1RTm5zS3Z5Z3Vw?=
+ =?utf-8?B?RUlFMHFqNGFPSjk3MTFMTjh0V2VUNEhyVGUwVjNnNmp3ZDBhNHN2c3NLQmNq?=
+ =?utf-8?B?SHdKY25nTm5uWFBsRUt1MlJ6d08zdXEvUEd1Uy9FTCt5TGhVYm0yTDdlbXhF?=
+ =?utf-8?B?REVzQ3ZJbVNFdGlLY1dCSXR1OVc1NFRaYlF0c0VpRWw2di9Od1AwT0RveVMw?=
+ =?utf-8?B?YmwyVVNUelhTd0N3bmpLdlpVZThJQjNRSDQ3dXVneTl5N3VHS0N2UkVYcW1r?=
+ =?utf-8?B?ZDdsdkZWd05GdTNTODg5SWFydmx4Z0RmalBBNnk0ZjV3ZVJUSmdTWkxkQXhB?=
+ =?utf-8?B?ZU8zSURaNEN2TmFvOUhlelFLSHZUUmk0dk1oZm5PRTUzUEIyajE2S2xGUk5z?=
+ =?utf-8?Q?ir5RLQmf737cwT9WdQ?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec8517f3-70f9-4936-574e-08de6270d3d0
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 15:36:26.6444
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hhjdfob0PVZeRXeEWTeEA+YQ+iUjhkKTrr1E+QL/zFkTpmMktbY5Yfw+wdb+VaiKstBH0tCWdQM9QdmWImU1Ag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB11569
 
-No error return is missing after the loop resulting in removing the
-ports from the list.
+On Mon, Feb 02, 2026 at 06:27:46PM +0800, Xu Yang wrote:
+> The current design assumes that the controller remains powered
+> when wakeup is enabled. However, some SoCs provide wakeup
+> capability even when the controller itself is powered down, using
+> separate dedicated wakeup logic. This allows additional power
+> savings, but requires the controller to be fully re‑initialized
+> after system resume.
+>
+> To support these SoCs, introduce a flag to track the controller’s
+> power state and use it throughout the suspend/resume flow.
 
-Fixes: 5cbc7d3e316e ("PCI: s32g: Add NXP S32G PCIe controller driver (RC)")
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
----
+Nit: next time, wrap at pos 75 to reduce some lines.
 
-Change since v1:
-- handle correctly the case when there is no child port
-
- drivers/pci/controller/dwc/pcie-nxp-s32g.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/pci/controller/dwc/pcie-nxp-s32g.c b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
-index 47745749f75c..b3ec38099fa3 100644
---- a/drivers/pci/controller/dwc/pcie-nxp-s32g.c
-+++ b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
-@@ -282,12 +282,12 @@ static int s32g_pcie_parse_ports(struct device *dev, struct s32g_pcie *s32g_pp)
- 
- 		ret = s32g_pcie_parse_port(s32g_pp, of_port);
- 		if (ret)
--			goto err_port;
-+			break;
- 	}
- 
--err_port:
--	list_for_each_entry_safe(port, tmp, &s32g_pp->ports, list)
--		list_del(&port->list);
-+	if (ret)
-+		list_for_each_entry_safe(port, tmp, &s32g_pp->ports, list)
-+			list_del(&port->list);
- 
- 	return ret;
- }
--- 
-2.43.0
-
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> ---
+>  drivers/usb/dwc3/core.c | 9 +++++++--
+>  drivers/usb/dwc3/core.h | 2 ++
+>  drivers/usb/dwc3/glue.h | 3 +++
+>  3 files changed, 12 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+> index c07ffe82c85049364c38c7ba152aab0ff764d95e..9d4326da5ec7669fa714707fb24556723cab51b8 100644
+> --- a/drivers/usb/dwc3/core.c
+> +++ b/drivers/usb/dwc3/core.c
+> @@ -2314,6 +2314,9 @@ int dwc3_core_probe(const struct dwc3_probe_data *data)
+>  			goto err_exit_debugfs;
+>  	}
+>
+> +	if (data->core_may_lose_power)
+> +		dwc->may_lose_power = true;
+> +
+>  	pm_runtime_put(dev);
+>
+>  	dma_set_max_seg_size(dev, UINT_MAX);
+> @@ -2462,7 +2465,8 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+>  		dwc3_core_exit(dwc);
+>  		break;
+>  	case DWC3_GCTL_PRTCAP_HOST:
+> -		if (!PMSG_IS_AUTO(msg) && !device_may_wakeup(dwc->dev)) {
+> +		if (!PMSG_IS_AUTO(msg) &&
+> +		    (!device_may_wakeup(dwc->dev) || dwc->may_lose_power)) {
+>  			dwc3_core_exit(dwc);
+>  			break;
+>  		}
+> @@ -2525,7 +2529,8 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
+>  		dwc3_gadget_resume(dwc);
+>  		break;
+>  	case DWC3_GCTL_PRTCAP_HOST:
+> -		if (!PMSG_IS_AUTO(msg) && !device_may_wakeup(dwc->dev)) {
+> +		if (!PMSG_IS_AUTO(msg) &&
+> +		    (!device_may_wakeup(dwc->dev) || dwc->may_lose_power)) {
+>  			ret = dwc3_core_init_for_resume(dwc);
+>  			if (ret)
+>  				return ret;
+> diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+> index 08cc6f2b5c23631a752c77fd7394e5876c929f0a..5b1358f36490a001bc9e68139224f7be70a57995 100644
+> --- a/drivers/usb/dwc3/core.h
+> +++ b/drivers/usb/dwc3/core.h
+> @@ -1117,6 +1117,7 @@ struct dwc3_glue_ops {
+>   * @usb3_lpm_capable: set if hadrware supports Link Power Management
+>   * @usb2_lpm_disable: set to disable usb2 lpm for host
+>   * @usb2_gadget_lpm_disable: set to disable usb2 lpm for gadget
+> + * @may_lose_power: set to indicate the core may lose power during pm suspend
+>   * @disable_scramble_quirk: set if we enable the disable scramble quirk
+>   * @u2exit_lfps_quirk: set if we enable u2exit lfps quirk
+>   * @u2ss_inp3_quirk: set if we enable P3 OK for U2/SS Inactive quirk
+> @@ -1369,6 +1370,7 @@ struct dwc3 {
+>  	unsigned		usb3_lpm_capable:1;
+>  	unsigned		usb2_lpm_disable:1;
+>  	unsigned		usb2_gadget_lpm_disable:1;
+> +	unsigned		may_lose_power:1;
+>
+>  	unsigned		disable_scramble_quirk:1;
+>  	unsigned		u2exit_lfps_quirk:1;
+> diff --git a/drivers/usb/dwc3/glue.h b/drivers/usb/dwc3/glue.h
+> index df86e14cb706ca509206677f644da2a7225b1b26..b428a9f4a32625e7331f8492a408f7c20c915825 100644
+> --- a/drivers/usb/dwc3/glue.h
+> +++ b/drivers/usb/dwc3/glue.h
+> @@ -29,6 +29,8 @@ struct dwc3_properties {
+>   *		be ignored by the DWC3 core, as they are managed by the glue
+>   * @skip_core_init_mode: Skip the finial initialization of the target mode, as
+>   *		it must be managed by the glue
+> + * @core_may_lose_power: indicate the controller may not remain power during
+> + *		system suspend/resume
+>   * @properties: dwc3 software manage properties
+>   */
+>  struct dwc3_probe_data {
+> @@ -36,6 +38,7 @@ struct dwc3_probe_data {
+>  	struct resource *res;
+>  	bool ignore_clocks_and_resets;
+>  	bool skip_core_init_mode;
+> +	bool core_may_lose_power;
+>  	struct dwc3_properties properties;
+>  };
+>
+>
+> --
+> 2.34.1
+>
