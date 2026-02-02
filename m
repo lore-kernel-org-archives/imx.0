@@ -1,206 +1,205 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013001.outbound.protection.outlook.com [40.107.162.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC8B218AAD
-	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 19:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770061579; cv=fail; b=X+jWn4SDQvc+JXfvEVpZYOPUNK/3I95u8TKGoysBQISvjoK6phpPnxH0wZRtRZS0KPztX13Hbpnubz8PCtt58V1x1fVGnddDbTrSThc55y8D72dq75R+YNLkY7vrZbiQGl1A6MEd9/NO5ntkrtCEyVdc8AdjmzbCht62iAoQJic=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770061579; c=relaxed/simple;
-	bh=5w7p9pgAsxvwl4Z3dJNPX/Grd6EXgIwPQG3MR6ldgNY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=aAfh6K5BwTRtSYocoMIiJjChk2cV7bWr48MN4NIh2mHpd+xFxUq485YDAwB2AWupdO/hAvHLEI0zPT60ES8MPC/4QODSX0nsyjGv+q7MxkyJKyDI+rqy3246UsMk3lAqQlZABNyqbNxel8TxRwVC0eizz4c4ANMfiZ9HgPNl37Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BWWTGbZF; arc=fail smtp.client-ip=40.107.162.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623CF2C21EA
+	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 20:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770063928; cv=none; b=tRP+/XRiluKrktOagoki1zx6JbQT2ysy/bfOKQG1lh1frMgZwJzBGtg2dBTSj1p4T73tRJqvieb1cjTjYrwaZfKks+An+PjERNQAIUQF1lCyyx977vW+R34u0eyqqm6DkTQK/I11DQAS3UBR1VXwjLTh+UeYPsNARL0E0d0eA08=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770063928; c=relaxed/simple;
+	bh=CxDKue/QwhEnlG+wJswifFJfqAtRqJfZjvjccCJpzJk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lDNUeY1f6ivWQ5H/ssXKZ+Bh4w99svdxu+gKFqEHOV7Bxxcs2uCqNfUIeZ2SrzY6n2nImevC2FNmx1RaT5GuEI+VW2l0PESX8lRyI7IAJfqr1LHTqVJv6dDOzt0HOnmh6XWgVCDqwCtlbOKgIlHT4+TL6U3gx/UnCck9CTz9w1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JBi5izYg; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BWWTGbZF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D+QltG9SjhnKjTJT4Xqc/Re726nHf84j9RbncOxYgB1SSbnkZasCAVFDp5/9F3SQMDNQi33kkOOuXHX88RswGYiC8TwgTnfzMWSKZ30Z8g0snZ1SZVktca6CYa6aOQadLZlcK/3vpVUVU1o39VpiQ1qbKIUxGq8xkujsuHa2VcoGgF9HOQJvrOq/6N46Fg0qgu1TuxcAGFqacG6Fkx4jac6xjOQOeZk7LPP16N8VQtyVHYeapyac5zZ4LyEXfTDp6a75Cr/hp1xQAhkzVPR9RumzN+788N8oDNyu6VXCzxpc5AnDzeaCCdPaPsMHdx7HxWniRLcWTwdCPixWL3YCJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zbS7/PkeHHh5XYRztVTzgx+wTaQ6MglpyrnOgzQABA4=;
- b=h8ZOfs5x80gSXj0kj8mFkW7hROGLS7F8hvXRdSre/dsHysytvJExZs/eW6sY6+x6F5TV4xp1Y4qsR4CjbiBK10+zRfdCoZNkUuuIoa0m1QN1yMPCkYJXhakAYm01o2wc7k+bDloNonzHvrd0MdWIUvEZG0JJqqvDEyLDWna/WtwfbhJm59+r7M4abV50Pdg4qjTzKt8cJ9lCYdjL+Guwxae0SCNJJ3kZALguJ5ZN66YFDHs+Icd4nMHn5FjZdWqtWdW+TdxYx7CMP1tTp+i5n9FG3UxIxfuKeXzPo21Z6ZHb4wcSJwPo5SLfuytgbazKQUsDGGv6/clZQUEpX0eTtg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zbS7/PkeHHh5XYRztVTzgx+wTaQ6MglpyrnOgzQABA4=;
- b=BWWTGbZFCvdU63h15Xy3R04qtV79Ly0oO8BtCMyao0vmmaehd2krctCLkGQOl0j5LjHzqwpF7uEWUpI9V0YaSKyAwAS4UGvSGHYyEwZHCsNA1PFYa7m09CwklseQGOPV/SyN9szfIo4o9OWuaGJZn6uhnxy2Xzc7c2PR+IEJVn0GWGanR4i+cQ02BBgcturJviYnAeLha9plJyL/imP/8edec6/SnE+hM0s1ax/yp7uLp+2TtULE3ZptbOtRG9ALKoZiICoxAWbqzSzLvIgHr+fqugtwCGNGFAh/CWVu5zEQcGcJCM2U6CCry/V/hhs4mLGXV0i1KB+ya8rMXKS6nw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by AM9PR04MB8667.eurprd04.prod.outlook.com (2603:10a6:20b:43e::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Mon, 2 Feb
- 2026 19:46:15 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9564.016; Mon, 2 Feb 2026
- 19:46:15 +0000
-Date: Mon, 2 Feb 2026 14:46:06 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: ciprianmarian.costea@oss.nxp.com, s32@nxp.com, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
-	bhelgaas@google.com, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] PCI: s32g: Fix ports parsing
-Message-ID: <aYD+/iTSF8ikTLIY@lizhi-Precision-Tower-5810>
-References: <20260202151050.1446165-1-vincent.guittot@linaro.org>
- <aYDiFpGT5hEDDFhV@lizhi-Precision-Tower-5810>
- <CAKfTPtDjad7aowTQ3UJPi5Qqgzf3q8J=kASa-t3YM4zfjUv3-w@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKfTPtDjad7aowTQ3UJPi5Qqgzf3q8J=kASa-t3YM4zfjUv3-w@mail.gmail.com>
-X-ClientProxiedBy: SJ0PR03CA0187.namprd03.prod.outlook.com
- (2603:10b6:a03:2ef::12) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JBi5izYg"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-658b9e95990so9364791a12.1
+        for <imx@lists.linux.dev>; Mon, 02 Feb 2026 12:25:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770063925; x=1770668725; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MjBpuLkcLUaCRKPdP4eX6OjLAhe9FJoKGb09vlloYBU=;
+        b=JBi5izYgyJRRTfQ/FoZSF+/nkgjiTZSQ1LmsfGhwcMX2QyeOPP9euMAP2uXkf6DEjy
+         r8c6DIMq+b12oR5xlu4y6jv0af1T29hc0Nadno1PxOKzwWCYZS+31FMl9W915IhXoKev
+         Vhf/LV7E8/cW7AV5l34rLGsBGqx/1Jukpgp7TANcexAEA4qfCOZ+/rdQy0fHaFQveFNa
+         gMPkjCm9GiEFE5+dwn6DGEeLsSP84WP2iSzY6xJj7hMkpdKINb8BeyqgUd2gQAd/6XbK
+         jfWwiGN0aODvFyzBRI//0ftun8jmpjK6pFeBxkbbquJFhxyaDBL2TaD7jCW9PWIfCQYZ
+         0ktQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770063925; x=1770668725;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MjBpuLkcLUaCRKPdP4eX6OjLAhe9FJoKGb09vlloYBU=;
+        b=AkWIhJx4T5u7n9sRcVXC6oGfv2Dp5k5dgkDQPyQ73MgDZ2zUfzNsuaBiDDni4zij9v
+         cHySCTa5toCxRklbkdDXBTE0vdAYPpcAUQmuida+zA0HgCpEdcGFysaGJt8a6u4Cr/Rj
+         7S+kZgqP5ZSVdxGOP2f1FpaB4pF6aAYOL3ST7e8c9HnUxg9jbE0RVQwmmCOPDrIPvuW2
+         Dn3UgC40erOrJyNMIgw4/5PLzIwRJUXTE3Bh18kcPfKnbDJkuMgLE8ojb6SAmgiZt333
+         fGZSsfDfXHo1QTny2FphWzAyxpe5n4KoXeLjMXjpyXVpVGVjlUiokwx7uyNVNnP7Iu0k
+         Nv8w==
+X-Forwarded-Encrypted: i=1; AJvYcCWEWFo1tgNBGcP4EZhVSZqPqR0jTav7oyMlu8vBOozcQ1lDZyronZ+fDMoWyVON19lgSCI=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwUXDFfWw+p8cRrpBmOuSE0iOp3aFuLOZqnvMWj7xCP+yUihCO1
+	Wl6BJAihzuicpuy52TOahEDCoBe6Nnt83MkfrHY2zILD2SiQf312NUREjG8R5g==
+X-Gm-Gg: AZuq6aJev04KcBJfCZkZz3ohTCyXEUCT4TssQjqPxeQoVgfu8y2G9ZOU8qfuLmMdHg2
+	DFmYAsjGvo7dmck4fu/O1NtQnAuW9GIQ9V6BnMwpfZHWHuU+U+kF/OQC8KkU/rQ2INyDXQbOB50
+	/dfLj2FGy67uWHN8z6UXUjN25xP4X97uyMsmeG61TA5zfp8PtmywiHAPI9Og68LowfrP0QSZofP
+	IX9EHSVTBH7ov5Au4tmprF8/MazACWWI1NzKGFPrapb6YhA4NbEy8LDgW5hW4kw2/4QuFLAsvFq
+	s0CaNvYuZsRr1QNunVRuj716o6p0qzGm160VsopoluOZm2Qa8+N2wjFwEjdj8c3A3svoUhY0toC
+	UTGcw1nUCvP/hG2/bQuwB8W4F4FuZhxdDqlQC8fKnmECocCFi4e+kc14fElb8uQXlWkefi4N4md
+	gL5xWx5mKyqlAZ+sNpdHHik7TKZl+nKZe6ixQ=
+X-Received: by 2002:a05:600c:1385:b0:47e:dc64:f1c6 with SMTP id 5b1f17b1804b1-482db493eb4mr189595615e9.6.1770058495160;
+        Mon, 02 Feb 2026 10:54:55 -0800 (PST)
+Received: from [192.168.0.7] ([86.124.200.187])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-482db623407sm125687055e9.0.2026.02.02.10.54.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Feb 2026 10:54:54 -0800 (PST)
+Message-ID: <f95f73b9-d024-4697-bca1-02fb8bc044af@gmail.com>
+Date: Mon, 2 Feb 2026 20:54:52 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|AM9PR04MB8667:EE_
-X-MS-Office365-Filtering-Correlation-Id: a6365920-8fd0-4746-b2e8-08de6293b9b0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|19092799006|1800799024|366016|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bIi2lfgEUjB5x5yFZig32dV2JaGzLplb2Ik3dt290vYcPkZkD6v9eZp3S+Zd?=
- =?us-ascii?Q?0dcCZSEd84c5HqxBsIJnCKdTY3vXbd1uD/tvOaZ+n3qWghejyVMImH30BedS?=
- =?us-ascii?Q?y9ZFFoYwJPc/26Puz5XKPyykYK7erSa/avJKsp5nYEMlocWO6H0p2AV8n4v3?=
- =?us-ascii?Q?YrOJ/dOR4sHbTeSGViSIaYSeYRpsFcxJ8OwmskK9ss4NvAkt2f230roiI8y+?=
- =?us-ascii?Q?wK38/+DW2kDrc6izrWZTIaeRhEdhB38CICIfaxFGEjV6Y8IjgsYVH10Wz4aQ?=
- =?us-ascii?Q?dnsOg3c3v0qslgtR23/6+SqwbPbuqZ7CQ+QxzC5OLW/Tdt7jSG1IQqkQNhGd?=
- =?us-ascii?Q?4j2YhKUvD6W6XC8gHiHjEdpWTx/S4xLHdVzDpBzEBSDNLsWG6Nt2WwlsjoN3?=
- =?us-ascii?Q?sJIgYIwQeJAHookuL3pfApUNhtWT9OkTzgjNw9wMQHoOFY+LRqpOZ7bFs5oA?=
- =?us-ascii?Q?alzlHyPMTFfVpRu9qlI0ssFOzyGZhjmEjZo2jgaRfyQKcpKnAui3kP6xDF9c?=
- =?us-ascii?Q?Py6/Jqj8R6zUFYnfq7jrSjBzZr3qKYiUHYqVowYcO1CvQAo0TThv3mMZgjtH?=
- =?us-ascii?Q?w6d27s2qocpvr2L5OFyYiV8urbssnx00JLvcK7lON5aXfVYevF39NJ7tb9bf?=
- =?us-ascii?Q?8IYkNZOqBFFFII7TGyRfOoTy5ugAJGJwO/qZw1rnlKP46M89BLTEEGAbxZ+8?=
- =?us-ascii?Q?SplEjOfXFz7feSHaeZnRVwHXLNT3s5Su3CQT5/qVpecicIhng/dPI3mET9Hz?=
- =?us-ascii?Q?Mf9HEMp1XyGZJc1PJFMiGinfjcN438GwJtXDkyZ2j9MUsqM520jAMQCQ5RpZ?=
- =?us-ascii?Q?ek0miCqB0zO+km2HA+s2RoViRXidMw+fsnPaEfN9158vBU2bcIcD7hq8lQzY?=
- =?us-ascii?Q?BHU2ExciNF21i7sKuVfK1KX39GvwucRS6secyst/OiRC5UyfYs7wzWRODCEl?=
- =?us-ascii?Q?hFBHiUR5x4UW2oXMlHJ/P8OzDli2w81LN1a++86RKti/XQ9dao/WDy6yFOM1?=
- =?us-ascii?Q?jktGkrTgimY6mBGQ7LygiA+k4JCFDjJ/E+4AqqgfjJCy5/DfN3aJHs4WD5FP?=
- =?us-ascii?Q?AfGnXhiugkbMi6sgjGm26v/QRmInDJrc/duym1XbSMkmEW9Um4yz1Dmpvmub?=
- =?us-ascii?Q?eumJu0VK+PyCHqNT5NH5O59YpZLxqg0PlP54QuXnTX84LQBugpUxu4xrYxA0?=
- =?us-ascii?Q?rA1Js9/Kvu4XaqUozypouoZuFJTycv5cpH+bdNcd78FXzVDs9VkqEvI3qbEw?=
- =?us-ascii?Q?3O9DOCbaYlS84fpZryCqIZHexOhYKbVN0f9sF6s+q8T4LWyWol0Bmz2c8qXI?=
- =?us-ascii?Q?7hBo7PrAINGV0SSz57uu0WgtyHKbdzsk8cd3j+ZoW56kwCzhBmFFCb8DhqrU?=
- =?us-ascii?Q?iwfuuFwCfMS3LY1cpT+BoNESoE8rhIhQEssAyeY3u2Z/FKjnpEch/MzlCoPK?=
- =?us-ascii?Q?JdHncLXkTK75Pm7vB1lcT98WyBxLbVj4z7RYSbs6aKNvaPP4rzD3JwggAXzN?=
- =?us-ascii?Q?ur+jZ65MiLaykUsS54k+sioeZkChIxA4jiOkTlNSA9HdSUSc4KfNh6YZlJIb?=
- =?us-ascii?Q?6rR4OOoF9o6bfl+dSAK/uaK8s0SZqh5hV1N/eyUzf+OI7pmdaLwaFoVJEdQ0?=
- =?us-ascii?Q?B0bFPbazA1Mg1ystrVH3x8g=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(19092799006)(1800799024)(366016)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?NDzzEZnaVxrsqx0mNoNTNfeaD05ydAIDCgY4CKqYU9ZCSo4BwG+oOALrcIPU?=
- =?us-ascii?Q?j14o9pC2sQlMwFuGWYKAuVaWH5I9PIJZyaPA3W01InecNCwEQjxACeZkVOF6?=
- =?us-ascii?Q?LftIaieYyg0hFgVOEV+16C4WVD2E4kuSUaS6sVLYUktDwlE1tUHjSbq6iInU?=
- =?us-ascii?Q?sp8vnXdddpMEKdGXkQ1JxCdcDufJLcWMQ3f7AExoCFYDD4omuf9as9PIEZym?=
- =?us-ascii?Q?fRuonnr5cK51WXsxXDg9bCbZ9OKfCyji5DhdVKXBqgAhDCe9w1t/2F2kt9sI?=
- =?us-ascii?Q?JTTcgxKxbsrbIPWkMdDcxKqEW2Shaf6Ow7cjBMROHpTsQsELOskpsTrPGiVj?=
- =?us-ascii?Q?L8V5w89p73oQsn2AfV3J7uzJgPIO7i2t0VVW0tzc7kgo2ZH6HlYGotfSwzt9?=
- =?us-ascii?Q?PMd4LfGni6XDRzCmfIauphpf2VsGx0GZLHtMvBi6zF+ufeTIMnzM3aMJmEtH?=
- =?us-ascii?Q?xuGWLvDtcILkQ0UAPSwIRhZhImYOl/AFPzfwVj2yG+vlG6Z6ydUqd27Bmd7+?=
- =?us-ascii?Q?+acyvoADLs1O8FKgya8bmgKQMVeTQQwK5EnHosoXcZQ46mwkEie6LMSoMo0e?=
- =?us-ascii?Q?9aH9gVLVuq1PZWn9lzpFzs28vIg1B5w9T9aH3eI1BfFQAWQ418CkYoYV29oY?=
- =?us-ascii?Q?zvThJXcieODwCliDaADEogDZtJVoOd19vUUqpsRN/HsdRANDNzp03lZ+r4aQ?=
- =?us-ascii?Q?RMV0XxCMx3jDMr4n0rQzKVQiSwNfybffNGITicKrGtIIVTPfy7ZBgikluZvI?=
- =?us-ascii?Q?c/hXLiDVqWMbi8J8Gc5hfCBQeNDKg2RzFA7hSeqUBgpzEJwPMNEIQEpsnRs7?=
- =?us-ascii?Q?rfEj7Vhupxy4TJ+aaA2BzGuVzYZIGq2ezFpY30aBR7R6SMcrfv6Rh8hplJPM?=
- =?us-ascii?Q?sGCnHzyv3i5dHmG/vKcDM8vpL0fNrz/8YDEAJGZHcrkb+wc/g97bwt+HUuHN?=
- =?us-ascii?Q?3MCkgLBZmmJNBddZBvvtu5u2MWdmttL422QIJZip+2iXx4h2Fk1L7EwD6dxs?=
- =?us-ascii?Q?/w5KkldEjMmJUnihtvF0WRcbd+GwZb3TpZShzCGE5IXdz613cYRUOEZBJ+ZX?=
- =?us-ascii?Q?1VNaz2wIrEM6GqI+kCFZ+c9Fqcj3H0niVABVq+yldX4M3eFx23JrsLw8ce7m?=
- =?us-ascii?Q?y3a+m5WsexPDUQR17DTjHwCE1NIhNS01ZS7SfV4bEsg09V1Tok+h0l9veYQm?=
- =?us-ascii?Q?ZMF73Selh3cSfzVd+T7237suh2vqz0balTQBYMqi2ib/l3xJNRkOZelclcwj?=
- =?us-ascii?Q?zTbxSn8Qq1NOD4p0rbrbP8uZtX7ysDxDFyj10iYcejT8kH1YkUiFLBU7KIiD?=
- =?us-ascii?Q?yJptTCjqezoxmwd+vU9aZOZbbfHGGl7Rr/KWnTxbzz5jQVPyRqxz0dF9bqtC?=
- =?us-ascii?Q?JihQE638HWQXb1rLrkJ6m39DNIEM42U/RjOrRJvFaM7KDipe2OtsNnbd1jXZ?=
- =?us-ascii?Q?bacmKSj5awlKNfsuTRj9fAEStFoEJAlyhMP6x75W/Y5fJHrkTUr3E5LnTT8/?=
- =?us-ascii?Q?beEMoKhnUDKmuCdTBVWrgrqajvPGBs+JmmsTYgqEeXBpoK17tkg6WN4mYmgP?=
- =?us-ascii?Q?f40tMCHaHDB+xCqCMGvyeTtDkA/lk3tPrccmFGf54rE7yZEMsFmm9MNMNuiZ?=
- =?us-ascii?Q?9/zuWkagFkUNzQZkWD45ao6JP2JgCuaiybrS7XJ0UMJ91UzBvPkltcjRHnBP?=
- =?us-ascii?Q?y6SElYCqe+1dI0ci6FgU5taKE6ZoIek0+SwAVu5Dc2wathyes/nzch0N2gLC?=
- =?us-ascii?Q?GObe3m1hYg=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6365920-8fd0-4746-b2e8-08de6293b9b0
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 19:46:15.1378
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pq43ILuAuxEBt7t3zaP3LzHRHf12GfaesTFBZQJkxrtSLY6UxW0rPnU/wIDzAWXqyEWVPyk6/wjq1io52lTX+A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8667
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC net-next] net: stmmac: provide flag to disable EEE
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Clark Wang <xiaoning.wang@nxp.com>,
+ Daniel Scally <dan.scally@ideasonboard.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
+ Eric Dumazet <edumazet@google.com>, Fabio Estevam <festevam@gmail.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, imx@lists.linux.dev,
+ Jakub Kicinski <kuba@kernel.org>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+ Oleksij Rempel <o.rempel@pengutronix.de>, Paolo Abeni <pabeni@redhat.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Stefan Klug <stefan.klug@ideasonboard.com>,
+ Wei Fang <wei.fang@nxp.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+References: <E1vNUjC-0000000FhjR-0h6P@rmk-PC.armlinux.org.uk>
+Content-Language: en-US
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+In-Reply-To: <E1vNUjC-0000000FhjR-0h6P@rmk-PC.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 02, 2026 at 08:23:30PM +0100, Vincent Guittot wrote:
-> On Mon, 2 Feb 2026 at 18:42, Frank Li <Frank.li@nxp.com> wrote:
-> >
-> > On Mon, Feb 02, 2026 at 04:10:50PM +0100, Vincent Guittot wrote:
-> > > No error return is missing after the loop resulting in removing the
-> > > ports from the list.
-> > >
-> > > Fixes: 5cbc7d3e316e ("PCI: s32g: Add NXP S32G PCIe controller driver (RC)")
-> > > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-> > > ---
-> > >
-> > > Change since v1:
-> > > - handle correctly the case when there is no child port
-> > >
-> > >  drivers/pci/controller/dwc/pcie-nxp-s32g.c | 8 ++++----
-> > >  1 file changed, 4 insertions(+), 4 deletions(-)
-> > >
-> > > diff --git a/drivers/pci/controller/dwc/pcie-nxp-s32g.c b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
-> > > index 47745749f75c..b3ec38099fa3 100644
-> > > --- a/drivers/pci/controller/dwc/pcie-nxp-s32g.c
-> > > +++ b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
-> > > @@ -282,12 +282,12 @@ static int s32g_pcie_parse_ports(struct device *dev, struct s32g_pcie *s32g_pp)
-> > >
-> > >               ret = s32g_pcie_parse_port(s32g_pp, of_port);
-> > >               if (ret)
-> > > -                     goto err_port;
-> > > +                     break;
-> > >       }
-> > >
-> > > -err_port:
-> > > -     list_for_each_entry_safe(port, tmp, &s32g_pp->ports, list)
-> > > -             list_del(&port->list);
-> >
-> > break and goto is logical equal here. So only need below if (ret).
->
-> Yes it's similar that why I removed it, the goto becomes useless and
-> make code less readable
 
-But don't suggest change in this fixes patch, which should focus on the
-key part.
+Hi Russell,
 
-Frank
+On 11/24/25 1:27 PM, Russell King (Oracle) wrote:
+> Some platforms have problems when EEE is enabled, and thus need a way
+> to disable stmmac EEE support. Add a flag before the other LPI related
+> flags which tells stmmac to avoid populating the phylink LPI
+> capabilities, which causes phylink to call phy_disable_eee() for any
+> PHY that is attached to the affected phylink instance.
+> 
+> iMX8MP is an example - the lpi_intr_o signal is wired to an OR gate
+> along with the main dwmac interrupts. Since lpi_intr_o is synchronous
+> to the receive clock domain, and takes four clock cycles to clear, this
+> leads to interrupt storms as the interrupt remains asserted for some
+> time after the LPI control and status register is read.
+> 
+> This problem becomes worse when the receive clock from the PHY stops
+> when the receive path enters LPI state - which means that lpi_intr_o
+> can not deassert until the clock restarts. Since the LPI state of the
+> receive path depends on the link partner, this is out of our control.
+> We could disable RX clock stop at the PHY, but that doesn't get around
+> the slow-to-deassert lpi_intr_o mentioned in the above paragraph.
+> 
+> Previously, iMX8MP worked around this by disabling gigabit EEE, but
+> this is insufficient - the problem is also visible at 100M speeds,
+> where the receive clock is slower.
+> 
+> There is extensive discussion and investigation in the thread linked
+> below, the result of which is summarised in this commit message.
+> 
 
->
-> >
-> > Frank
-> >
-> > > +     if (ret)
-> > > +             list_for_each_entry_safe(port, tmp, &s32g_pp->ports, list)
-> > > +                     list_del(&port->list);
-> > >
-> > >       return ret;
-> > >  }
-> > > --
-> > > 2.43.0
-> > >
+We are seeing the same lpi_intr_o interrupt storm on the Renesas RZ/V2H
+EVK (dwmac-renesas-gbeth.c). On this platform, lpi_intr_o is routed as a
+separate, dedicated interrupt line to the CPU rather than being OR'd
+with the main DWMAC interrupt as on iMX8MP. This corresponds to the
+"eth_lpi" interrupt in the stmmac bindings:
+"""
+- description: The interrupt that occurs when Rx exits the LPI state
+const: eth_lpi
+"""
+
+Looking through the other glue drivers/device-trees, it looks to me that
+every platform that defines a separate "eth_lpi" irq might have the
+interrupt storm problem.
+
+To fix this issue on these platforms, rather than disabling EEE
+altogether, would it be possible to just not request the eth_lpi
+interrupt and let EEE continue to work? Perhaps a new flag could let
+each platform decide.
+
+If not, maybe this patch could be merged to add the flag that disables
+EEE and I will just send a patch to disable EEE on our platforms as well.
+
+Thanks,
+Ovidiu
+
+
+> Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Link: https://lore.kernel.org/r/20251026122905.29028-1-laurent.pinchart@ideasonboard.com
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> ---
+> For Laurent to add to a patch series appropriately adding
+> STMMAC_FLAG_EEE_DISABLE to dwmac-imx.c
+> 
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++++++-
+>  include/linux/stmmac.h                            | 9 +++++----
+>  2 files changed, 11 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 6cacedb2c9b3..ca0eee58a8a8 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -1324,7 +1324,12 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
+>  				 config->supported_interfaces,
+>  				 pcs->supported_interfaces);
+>  
+> -	if (priv->dma_cap.eee) {
+> +	/* Some platforms, e.g. iMX8MP, wire lpi_intr_o to the same interrupt
+> +	 * used for stmmac's main interrupts, which leads to interrupt storms.
+> +	 * STMMAC_FLAG_EEE_DISABLE allows EEE to be disabled on such platforms.
+> +	 */
+> +	if (priv->dma_cap.eee &&
+> +	    !(priv->plat->flags & STMMAC_FLAG_EEE_DISABLE)) {
+>  		/* Assume all supported interfaces also support LPI */
+>  		memcpy(config->lpi_interfaces, config->supported_interfaces,
+>  		       sizeof(config->lpi_interfaces));
+> diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+> index f1054b9c2d8a..5ed49d5363ee 100644
+> --- a/include/linux/stmmac.h
+> +++ b/include/linux/stmmac.h
+> @@ -187,10 +187,11 @@ enum dwmac_core_type {
+>  #define STMMAC_FLAG_MULTI_MSI_EN		BIT(7)
+>  #define STMMAC_FLAG_EXT_SNAPSHOT_EN		BIT(8)
+>  #define STMMAC_FLAG_INT_SNAPSHOT_EN		BIT(9)
+> -#define STMMAC_FLAG_RX_CLK_RUNS_IN_LPI		BIT(10)
+> -#define STMMAC_FLAG_EN_TX_LPI_CLOCKGATING	BIT(11)
+> -#define STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP	BIT(12)
+> -#define STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY	BIT(13)
+> +#define STMMAC_FLAG_EEE_DISABLE			BIT(10)
+> +#define STMMAC_FLAG_RX_CLK_RUNS_IN_LPI		BIT(11)
+> +#define STMMAC_FLAG_EN_TX_LPI_CLOCKGATING	BIT(12)
+> +#define STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP	BIT(13)
+> +#define STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY	BIT(14)
+>  
+>  struct mac_device_info;
+>  
+
