@@ -1,165 +1,184 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2279267B89
-	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 16:16:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9811136164E
+	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 17:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770049007; cv=none; b=Uv01m+tauYBoN0yGFT8JmuXqyc44gYf419MqY6pPS9Tqhgd2OZOjM38bmclzt2I7mKlMZTjMjt3gG3up1dcbGkmPWB1wH+OOdL96W3zS1cnFj2bKPre9ZSZOR/V07YEQOCaT9jKilrkRprLM7fU2Uvv3wTosqUmj36om2JMGlvA=
+	t=1770053950; cv=none; b=C7E4Rr1Y/tyjhiZDun4QVD1KEQjZFNlpM3aidUaTwDVIzMs7fK1I9pPFOfLR7wOQsS6I6LCQDwa54fzlfeDpMVcYPlw3H9BaUoDTU9kQUfalcL+wM11AHTy0Fx6uandUlazMdJhcinVXyxzfWoMYh7YRA83FevIMHlPs2oZLHag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770049007; c=relaxed/simple;
-	bh=PMp4djD8pRzTfzCwrEWdLRidXLy0AL6hraTfCK1hKTI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gTI+o4jkcgOCKzU/aA0i7yqVvBFBZytdy6LiSZw9cv0GBqNtlxdt+seMXL4qgqSy6l4LcXClcWukNmo7ExgpFs5341w3GvKTFVAaxbxkStMmvV8Q/DglO2CmXcoX5SbyiD0EQx2ESS8Dbr+3+h4/afKKCeCn6oFn0F0YD5i0vPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=poUPVHqc; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1770053950; c=relaxed/simple;
+	bh=H8ge6u2G9ETLaUdtm8m9+HEAAf7jKP2YUXl5JQrlHeE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WfKpCUR2l6bXumTdz+khVWuFCHkUUPIYNCCLuSZ95DF91F+SEzk/WgaBgeA27DhVQRazDod9APQMA1Y3LSuXexRSurmgge1H/otB6N7v1S3ky12/MN+LPKpnRfVDksBnzz31Zdn1etGDXlcGZsMozbL+QFHea7xB38HQqxrFwZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=aO7KJbS8; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="poUPVHqc"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c63555db09fso1476422a12.1
-        for <imx@lists.linux.dev>; Mon, 02 Feb 2026 08:16:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1770049005; x=1770653805; darn=lists.linux.dev;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=yDIwIvjoA0KVZj8266aGVsS4EvreJW/WICQfNeIuAso=;
-        b=poUPVHqcs+MhcJmJFNMRY9hOAwxSa31oXJNmMtRz5ZgmsGE1fIY0L1gFBz1Fnq9bx9
-         dF409b3S7JTbfLb7ul4rFxnXy9tXEuEsZIJcNV8p3Vlv3EIhbYAi3nrdkI5TU91fpqpg
-         rghVO0a50zesJ+vubtRyFzs1s6Zn/R2mGS4KULG2/VQoZiOIilTyR/7Smxfhsno1e46q
-         X4mTuVzKbQ1mI1IwICDY27IADFPv+HdZKlJIrIBvg/UZRX+ZBe8QyaVQLgADp/g9c1hJ
-         qVv+7Bukpr3FbVEG1hjymLgSWZaWh9/86YNkvrJMypDh7Q3ftea7Yh6CX/vaGbiVrH6+
-         mQ5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770049005; x=1770653805;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yDIwIvjoA0KVZj8266aGVsS4EvreJW/WICQfNeIuAso=;
-        b=Ofh1DLk92fVaT2hixwgz49FyUsNP3hj1sP9qgpA1FehcmVn83Bkq5lGK5iUc+98F8e
-         I725H94oL5B1oY6GaCv/rff40rH07StzyuNSAse0Kdv+wogZVxZawYpn0eD6rPOgGL/K
-         MDi70tCtUlvK4CIh6QSkMtMnFMS+YfYUdo+ZaebnzfxrWQK4b7vaUdaqZzCQzMJMyEo1
-         ZAdQeEteNsCejxSATXHY5SORBw8vfPno8kPoeaklJpa/nMHnRzPp3ml2Q4QIs7KZb7L4
-         Xa8j4lstq7K4NfcamOHJ8jiZ7z90o+3cPEFdKsKrjfYaoNZXD4qAUZ0RHQjKwCLDOJGx
-         drWA==
-X-Forwarded-Encrypted: i=1; AJvYcCWbmV3j6nhzIALqFTSt4cLHIPuo2if7ZU6FvSUaHivPJeuTvw6fmcOzzucuVlp4cgukVoI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwputXabmTBqRzJFKz5oldpPPmocbtjG0hiLzfe1RbrAXmWS+Sd
-	sGZlQYfo61X6mbCaLhSTlSwcjTbQ2sOVmgD04WHVrmrXl5m9iXWQSA1xWWG9fDwe6Fc=
-X-Gm-Gg: AZuq6aJ5HEoNxWd05aPRI0L9Nr0BI6Ulo3qCeanVudqpw8Nl4pgbnXTbqfu8qSJJAYP
-	gicWild0Y6QYSVQTJF/Wn5RvxRoKFp68nTwJK+rb1cqSGl75+2Az9A8uxalPSVrnWFBOUbeAnfH
-	i+NMX6UVWeZkmL9yeljDB07azy3K4Ag5Rdas/iAyGzE9De4D7R/6IbNI3djmYJ9JVTQ+pDJPOZT
-	qPIJNt5aXMzgfpYL4YUhoLf6Zfwx3LAPhHAz8saqmIrWIB+jyOeAXo716Z5n6KVPXO0lXNYQYJB
-	crIM8LHjBkZ4QCBUL5zBy/TdipV43o7vHMd716MFgqRS/Rv9h50bKdoELZfvta7V8zqwbawqwd2
-	KC1oU8gkgj+15M+df+9OJwCGHtBbiGEPMB0zi8b/EifP0lRbEHCoSbwrhmbOJTxm//F8lVGLNNs
-	S3qQu4h7LYPv8bbstqFycFjcwp
-X-Received: by 2002:a17:902:e749:b0:2a7:5f26:aaf9 with SMTP id d9443c01a7336-2a8bd4c6f2cmr162675685ad.14.1770049004918;
-        Mon, 02 Feb 2026 08:16:44 -0800 (PST)
-Received: from p14s ([2604:3d09:148c:c800:ef20:b488:c934:4d5f])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b4154fcsm147962315ad.36.2026.02.02.08.16.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 08:16:44 -0800 (PST)
-Date: Mon, 2 Feb 2026 09:16:41 -0700
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Daniel Baluta <daniel.baluta@gmail.com>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>, Frank Li <frank.li@nxp.com>,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3] remoteproc: imx: Fix invalid loaded resource table
- detection
-Message-ID: <aYDN6X0WVT9nV8fg@p14s>
-References: <20260129-imx-rproc-fix-v3-1-fc4e41e6e750@nxp.com>
- <CAEnQRZA-nMai9-CEdMqnr2drqBRXXPOKE3a+_3j4S_=x-bM0pQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="aO7KJbS8"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id ED1CD4E423C1;
+	Mon,  2 Feb 2026 17:39:06 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id BA5E960767;
+	Mon,  2 Feb 2026 17:39:06 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 414E2119A8888;
+	Mon,  2 Feb 2026 18:38:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1770053945; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=c1h4euVzUgrsm8tkmQ9pvrCo/Vv3M9QxABZPkbxAwm0=;
+	b=aO7KJbS8NSpYo5S5oDL+njQYcE85HvoejlfbW7DXcpX0YdfdYWwC2xLyt46gLO8V0vHOz3
+	U8J1Q527/uqJlqqf4Mm4bVaiqa4mpq5iqTa57VKuaxes//OwtF6MxpvigOY+4oZN+mkJ7k
+	rzwlPLFwR++P/bDRcAiM4sR/U/ATwOMtlFKhTBcNK4zcw/2Kh+1kWS+TqT04YogK6mHREY
+	0G3T3BfscbdveB6+yUvMh0bt4XGzkAxkss7zRc6CkCyqAoTTnJWeb0HsjkrkwWOXtAdcJZ
+	tKXg5qZvg1AhDQWZdK1o68pdDrWPHpGaNrnbffADy5n37aM1LQt2jTfmMuc0ew==
+Message-ID: <0689a2ab-352a-4275-9662-0c45daf8a0b2@bootlin.com>
+Date: Mon, 2 Feb 2026 18:38:48 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEnQRZA-nMai9-CEdMqnr2drqBRXXPOKE3a+_3j4S_=x-bM0pQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net] net: phy: change devlink flag to
+ AUTOREMOVE_SUPPLIER for non-SFP PHYs
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Wei Fang <wei.fang@nxp.com>, andrew@lunn.ch, hkallweit1@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, florian.fainelli@broadcom.com,
+ xiaolei.wang@windriver.com, quic_abchauha@quicinc.com,
+ quic_sarohasa@quicinc.com, imx@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260202054533.539883-1-wei.fang@nxp.com>
+ <267c78c1-4ad2-4f06-be63-0fb506c5134d@bootlin.com>
+ <aYCzxVTTZvok9_d1@shell.armlinux.org.uk>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <aYCzxVTTZvok9_d1@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, Jan 29, 2026 at 06:02:21PM +0200, Daniel Baluta wrote:
-> On Thu, Jan 29, 2026 at 3:45 AM Peng Fan (OSS) <peng.fan@oss.nxp.com> wrote:
-> >
-> > From: Peng Fan <peng.fan@nxp.com>
-> >
-> > imx_rproc_elf_find_loaded_rsc_table() may incorrectly report a loaded
-> > resource table even when the current firmware does not provide one.
-> >
-> > When the device tree contains a "rsc-table" entry, priv->rsc_table is
-> > non-NULL and denotes where a resource table would be located if one is
-> > present in memory. However, when the current firmware has no resource
-> > table, rproc->table_ptr is NULL. The function still returns
-> > priv->rsc_table, and the remoteproc core interprets this as a valid loaded
-> > resource table.
-> >
-> > Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table() when
-> > there is no resource table for the current firmware (i.e. when
-> > rproc->table_ptr is NULL). This aligns the function's semantics with the
-> > remoteproc core: a loaded resource table is only reported when a valid
-> > table_ptr exists.
-> >
-> > With this change, starting firmware without a resource table no longer
-> > triggers a crash.
-> >
-> > Fixes: e954a1bd1610 ("remoteproc: imx_rproc: Use imx specific hook for find_loaded_rsc_table")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> 
-> Changes looks good to  me >
-> 
-> > --- a/drivers/remoteproc/imx_rproc.c
-> > +++ b/drivers/remoteproc/imx_rproc.c
-> > @@ -729,6 +729,10 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *
-> >  {
-> >         struct imx_rproc *priv = rproc->priv;
-> >
-> > +       /* No resource table in the firmware */
-> > +       if (!rproc->table_ptr)
-> > +               return NULL;
-> 
-> I wonder if we can make this change generic because it should happen
-> on other platforms also.
-> 
-> Maybe something like this:
-> 
-> remoteproc: core: Only copy loaded table when valid
-> 
-> Copy resource table in memory only when:
-> * the current loaded firmware provides one
-> AND
-> * there is an explicit request to have the rsc table copied in memory
-> via rsc-table
-> 
-> --- a/drivers/remoteproc/remoteproc_core.c
-> +++ b/drivers/remoteproc/remoteproc_core.c
-> @@ -1281,7 +1281,7 @@ static int rproc_start(struct rproc *rproc,
-> const struct firmware *fw)
->          * that any subsequent changes will be applied to the loaded version.
->          */
->         loaded_table = rproc_find_loaded_rsc_table(rproc, fw);
-> -       if (loaded_table) {
-> +       if (rproc->cached_table && loaded_table) {
 
-But we would be doing the check for rproc->table_ptr twice (->table_ptr and
-->cached_table should be the same).  The way it is currently writting forces
-vendor specific implementation of rproc_elf_find_loaded_rsc_table() to do the
-right thing.
 
-The merge window has been pushed by a week, giving me an opportunity to merge
-this patch.  Should I do that or should we continue discussing the best
-approach?
+On 02/02/2026 15:25, Russell King (Oracle) wrote:
+> On Mon, Feb 02, 2026 at 12:10:41PM +0100, Maxime Chevallier wrote:
+>> Hi Wei,
+>>
+>> On 02/02/2026 06:45, Wei Fang wrote:
+>>> For the shared MDIO bus use case, multiple MACs will share the same MDIO
+>>> bus. Therefore, these MACs all depend on this MDIO bus. If this shared
+>>> MDIO bus is removed, all the PHY devices attached to this MDIO bus will
+>>> also be removed. Consequently, the MAC driver should not access the PHY
+>>> device, otherwise, it will lead to some potential crashes. Because the
+>>> corresponding phydev and the mii_bus have been freed, some pointers have
+>>> become invalid.
+>>>
+>>> For example. Abhishek reported a crash issue that occurred if the MDIO
+>>> bus driver was removed first, followed by the MAC driver. The crash log
+>>> is as below.
+>>>
+>>> Call trace:
+>>>  __list_del_entry_valid_or_report+0xa8/0xe0
+>>>  __device_link_del+0x40/0xf0
+>>>  device_link_put_kref+0xb4/0xc8
+>>>  device_link_del+0x38/0x58
+>>>  phy_detach+0x2c/0x170
+>>>  phy_disconnect+0x4c/0x70
+>>>  phylink_disconnect_phy+0x6c/0xc0 [phylink]
+>>>  stmmac_release+0x60/0x358 [stmmac]
+>>>
+>>> Another example is the i.MX95-15x15 platform which has two ENETC ports.
+>>> When all the external PHYs are managed the EMDIO (the MDIO controller),
+>>> if the enetc driver is removed after the EMDIO driver. Users will see
+>>> the below crash log and the console is hanged.
+>>>
+>>> Call trace:
+>>>  _phy_state_machine+0x230/0x36c (P)
+>>>  phy_stop+0x74/0x190
+>>>  phylink_stop+0x28/0xb8
+>>>  enetc_close+0x28/0x8c
+>>>  __dev_close_many+0xb4/0x1d8
+>>>  netif_close_many+0x8c/0x13c
+>>>  enetc4_pf_remove+0x2c/0x84
+>>>  pci_device_remove+0x44/0xe8
+>>>
+>>> To address this issue, Sarosh Hasan tried to change the devlink flag to
+>>> DL_FLAG_AUTOREMOVE_SUPPLIER [1], so that the MAC driver will be removed
+>>> along with the PHY driver. However, the solution does not take into
+>>> account the hot-swappable PHY devices (SFP PHYs), so when the PHY device
+>>> is unplugged, the MAC driver will automatically be removed, which is not
+>>> the expected behavior. This issue should not exist for SFP PHYs, so based
+>>> on the Sarosh's patch, the flag is changed to DL_FLAG_AUTOREMOVE_SUPPLIER
+>>> for non-SFP PHYs.
+>>>
+>>> Reported-by: Abhishek Chauhan (ABC) <quic_abchauha@quicinc.com>
+>>> Closes: https://lore.kernel.org/all/d696a426-40bb-4c1a-b42d-990fb690de5e@quicinc.com/
+>>> Link: https://lore.kernel.org/imx/20250703090041.23137-1-quic_sarohasa@quicinc.com/ # [1]
+>>> Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
+>>> Suggested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+>>> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+>>
+>> I gave that patch a test, with the following cases :
+>>
+>>  - On Macchiatobin (we have PHYs that share an mdiobus).
+>> When unbinding a PHY, the MAC dissapears as well :
+> 
+> Correct, this is why these band-aids are harmful. One "device" can
+> correspond with *multiple* network interfaces, and the loss of one
+> PHY can have a *very* detrimental effect.
+> 
+> Consider the case where root-NFS is being used, and removing a PHY
+> on another interface takes out the interface that root-NFS is
+> using. Your machine is now dead in the water.
 
->                 memcpy(loaded_table, rproc->cached_table, rproc->table_sz);
->                 rproc->table_ptr = loaded_table;
->         }
+That's what I've been seeing. I unbound one PHY, it took out 3 netdevs
+and I don't have log regarding "why". I guess there's devlink debug
+knobs for that, but not enabled by default it seems.
+
+However, we seem to have the issue even without this patch.
+
+On MCBin, if I unbind eth1 for example, all 3 interfaces that are on CP1
+are gone :
+
+cd /sys/class/net/eth1/device/driver
+echo f4000000.ethernet > unbind
+
+only eth0 is now left. This is on net-next/main :(
+
+For Wei's case where unbinding netdev 1 brings the mdio bus down, used
+by PHY on netdev 2, we'd be also dead in the water as well no matter
+what as well no ?
+
+> In my opinion, we should be concentrating more on the issue behind
+> the oops.
+> 
+> Given that this problem is because of the bus being removed, one
+> thing that would help would be for the MDIO bus to be properly
+> refcounted, and when the bus is unbound, to replace the bus ops
+> with versions that return -ENXIO or similar under the MII bus
+> lock. This would be easier of the MDIO bus ops were a separate struct
+> to struct mii_bus.
+> 
+> Similar with the PHY itself - if the PHY is in-use, it should be
+> refcounted to stop the struct phy_device from going away, and
+> should we have the situation where the PHY driver is unbound,
+> phydev->drv should be set to a set of dummy ops (under the phydev
+> mutex and probably rtnl.)
+> 
+> It seems to me that throwing devlinks at this problem is giving us
+> more problems than it's solving.
+> 
+> A graceful way to handle a MAC losing its PHY is for phylib to
+> indicate that the PHY has gone down, rather than removing the
+> network interface (and potentially a whole host of other network
+> interfaces in the case of one struct device being associated
+> with many interfaces.)
+> 
+
+Agreed, that's quite the can of worms though I suspect :(
+
+Maxime
+
