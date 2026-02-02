@@ -1,177 +1,365 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011042.outbound.protection.outlook.com [40.107.130.42])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B382BF3DB
-	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 20:58:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770065902; cv=fail; b=B97sxHGFDB0slYVBTXksoV7G54Ibu9Ke/z6DNvjKiTzEEm8YDCLTzVT2jaIYxgf8G0ggHzItspusgsZnYVySGL+5LO8REjPdosYbuCWEbCBoz23MXuzNSd7Jjwo5p8JFK6OhvvWMRHxnkiYg+UXkijF1HmtdATYvHgqLLlgm9ew=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770065902; c=relaxed/simple;
-	bh=/V0wLd3xz6CwIKC6waCuHvYtq+ilN7rc4w123O5nHzw=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=gyOA/3I+KRkPbESD6ElHgiU6XzIGfEPw4bF8M3Xt+d2zgESuU5eHP4yPmLVHu7x4a2WFHs9O6+fFtJK97FWdYWLP7MWqXaL9vPfbjBfTCVjp26Ipd9uj+zXIF8f6Y05berejXRHuFK12lTQv8PYH39JU5dn3zBagzHUXM5aYA8k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ku8si33k; arc=fail smtp.client-ip=40.107.130.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57C8335097
+	for <imx@lists.linux.dev>; Mon,  2 Feb 2026 22:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770071042; cv=none; b=fwSLnxIbFdTHo9IAbMtJLFKIDPAvTU/i/1YQdgIBfT3nziixKc2o/cKgYdsR5H3szQXW84sIcRK8cd9v76bicFGqEE82eCsvyaFr80AXTvilGLrfP4vPv2m/QLCssW0+N15292v28LBb/H6xNVIo4EJoa3pPO9ORh9cG4DAbW8g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770071042; c=relaxed/simple;
+	bh=AetDwO46ZhBMfZ4oEXPf1L25ctycj5Dsf+H2VEBztxE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aZbEiaA92Jr2JBXjexO7zEkc+DZxlXTyhaEdJgfTsc6cYqeoMrZpmcxSZCN2d1QU1WM3UuG+qC7AXOty/CTVji8hulK9VmfLJVzL0hx14t/GFIOlZd5dRdTpoqdIGAQROOURmiSCiCVkNLewrPFOgLbz/bTN6sd88nMFQ98dfwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=r4v/UGtL; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ku8si33k"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MLLHsgF6l34duNXRr+jVtJbbxgJGZwY9bE6/h4kjQnPNz/VoPyy54RnazPL/ljur6DSFGk59EWbKmpliJzmR41AI7Am5VeAfix+TApqdYD8c3t4ZniFHsyd/FPeVo1Mk2h6GoWxE7+0exj/kjt705JetOwTBAJLWfV43pEVzWHNPckdsdHT6HGLjbJzfN3DBsYEEvSv1AdhpSwz4/H3ml4tu0vz80T6vRnONNEyXHmVeMHOaWf3JVWbUpLvAisPQjl8hNlOsSeTwlMZD+f+xojLew8ykFeebgx5DRJ0V1tV6Y7JhSzXSqVNvNZfpFeSqIB9tJPcxN9/vW/9THnhf7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kzTtylWhTKI7S/s7a7tXBFKUKRoiGWRMKlhFuDzvao8=;
- b=P5bRtvI1bYBtvlQaJkPBP+ouvWKuq1Txj5FGBLyFAYurQNn5Wjqi4CH3JDkmwLqe7SxBjGz0O8H7/Etlx0hRp1zaMZCGTW5ZbhxyW4a7oXIyUeB+UHu/2uGuE0zmVVibNvfaaLqHgH6tfpK5sHf3l7A3ObaKBHIfXOrlBAcdkbu0l1btVGU7jab5TZMf7dyzo7dhtwCTQ8D+pXYaR/fZXP6H6qxGYQVLDQEArKd6N5IP15u3WjxPPTRpj+qViuFvC43Vh4Df2aS/dFvd8DKSUyXeKKpzUGElD+vlkDcoQN22NA4Cii4JjS8727jpuPwMN6sZtnyircSEYUpTJPM08Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kzTtylWhTKI7S/s7a7tXBFKUKRoiGWRMKlhFuDzvao8=;
- b=Ku8si33kUiuYJaiSEDEoB0hckKmDlf44wYE9TcTZXXL1ec0n3/l2Ol6mj8wYQXNac3zNeD6K9Ngb+/d9wp90BupoAfdq2D53bLXdh15wsNomJOk4XFkqX4COdl+iGMtEvaBL3EM7HrUB+HAcII5G13uFURO0PfBpDN7GaDSILtKe1VbH1FK/iIqxCtypt6u7f8W1Lx8M4Xfhab6FpS4dRgBNBD3F0H0io3lVnrNUY5hvwzX+lxJVlw9k9NWliBaEkUx3bn+VcZA5C8+05XX75GgeH7RG7ftilpIt/L8YdwasLU3rhTzhzLQaem1vQJd3WuZG7Smaw8+No89UcY2bEg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by VI1PR04MB9737.eurprd04.prod.outlook.com (2603:10a6:800:1dc::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Mon, 2 Feb
- 2026 20:58:17 +0000
-Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
- ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9564.016; Mon, 2 Feb 2026
- 20:58:17 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Shenghao Ding <shenghao-ding@ti.com>,
-	Kevin Lu <kevin-lu@ti.com>,
-	Baojun Xu <baojun.xu@ti.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="r4v/UGtL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=R07+WFKsROkJ/0bkPSwXlUMloUzMBmhxbjZDo50qUpU=; b=r4v/UGtLlmi422VxNfwr9D06dV
+	f4vDNxMe4Sm6QyIr1fbAIFeiUGHdAl68eE6eYbzQ67Gglvu3Qd0uRIj0NmH+gSjQmZ9mipbF4qyk5
+	Qz04iQfl+P6EidVLaTNY0qe1WNq8mhS0EH+jYsJUo2lpZ/CrXfsK7k/71Ecww+x0+2t+RGZWChWEX
+	595yVAy84LQFGT1K6HKXaxoKmX7PJTnnAsPCv7ARWExThspuvLQUYLft2kREwN0cLEzOVET+GPVNF
+	emRG9E/9s+ASwSJyL2n3pyE5+G0yYd4TJ7EFIKQKuTBD47lLbeF0DmTSffB06+TnbVAaZxJ50bQAP
+	NlbskKUg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57944)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vn2Kk-000000004RO-3H5x;
+	Mon, 02 Feb 2026 22:23:50 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vn2Kg-000000003lb-0IMd;
+	Mon, 02 Feb 2026 22:23:46 +0000
+Date: Mon, 2 Feb 2026 22:23:45 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Daniel Scally <dan.scally@ideasonboard.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>, imx@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jai Luthra <jai.luthra@linux.dev>,
-	linux-sound@vger.kernel.org (open list:TEXAS INSTRUMENTS AUDIO (ASoC/HDA) DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [PATCH 1/1] ASoC: dt-bindings: ti,tlv320aic3x: Add compatible string ti,tlv320aic23
-Date: Mon,  2 Feb 2026 15:57:57 -0500
-Message-Id: <20260202205758.3044617-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR21CA0002.namprd21.prod.outlook.com
- (2603:10b6:a03:114::12) To PA4PR04MB9366.eurprd04.prod.outlook.com
- (2603:10a6:102:2a9::8)
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: Re: [PATCH RFC net-next] net: stmmac: provide flag to disable EEE
+Message-ID: <aYEj8VM5AfvcDHrl@shell.armlinux.org.uk>
+References: <E1vNUjC-0000000FhjR-0h6P@rmk-PC.armlinux.org.uk>
+ <f95f73b9-d024-4697-bca1-02fb8bc044af@gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|VI1PR04MB9737:EE_
-X-MS-Office365-Filtering-Correlation-Id: ba72c29f-e892-401f-d4e8-08de629dc9c5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|52116014|1800799024|366016|19092799006|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?t/xzRUxKqJdpjVYDhI7rI8PHtZ84GAMdu5j1L/f1bR/UGjbh1iA6k4FHQPUU?=
- =?us-ascii?Q?sTOWVlBaIw/2wS6mnQRxYbsblOgrb+BvZQZCuyJlaGqzrau1Y35D5S27/DYw?=
- =?us-ascii?Q?VB2+HCwG7wgD+HJ+290z6gxCKtZXe/OLImyakJ8wER70/vWGfzZVfCwON+Ut?=
- =?us-ascii?Q?uV7pPvYljMU/up0zVhRP8mfrYgXrKASfVOVwr6AWg3tuqesx5wSx2k2Hr8C3?=
- =?us-ascii?Q?f/oc2SmJFpZa1t7OmVze/aodAlvMSO3ZLir1toAk3p3EJAKu+l0k2GVPKPx3?=
- =?us-ascii?Q?3HGZSNqMA0HHmfsiRtEfnaxOnDNLvOXR50gSrOt7w/Ot0dsomF2PROvDggg/?=
- =?us-ascii?Q?NAhYUQGb6EeqQMPQWgddc3EK6aZAPRDXiS+PUWaJHtxEdnueEjDnff2siR6w?=
- =?us-ascii?Q?xw0+sGFHWC6GCJH/MMt4LoJfFClsTWGupsYrSnVYa2ZrZJgJmgEmJm4R9eIV?=
- =?us-ascii?Q?+TnMDarRe4Oh7xywXPxaoBvm5GDBshR/zCfj6elgMSjDCrbByTmfYWkYqaqB?=
- =?us-ascii?Q?f7PUQLzOBzQT+AL53z8dOQqrwabbVZUrnxPdIzxZzbtTwgf2ivSzZhgxYymq?=
- =?us-ascii?Q?lfG61M0AZ5a6HKFeX1rcTXdLzGm1UxYm7+c/h3Tf5+WBaOkaQFhW8u7vMDD9?=
- =?us-ascii?Q?0BfN+xpDdbhI7NTtt3vV4/016I44nCU/krmWc0pMo8EWZjGJ9dPL0m1U3PPS?=
- =?us-ascii?Q?b+ohR68Le785yfWmZakpPVOXV+GxOndTlvnmBpfB8/qGffp9aDsMq2kxsAv8?=
- =?us-ascii?Q?QErTLLmO1OaLkdLWbJ80krukOG6d0m2ulBB831d5/x2QkD9dYOd64U97MBzE?=
- =?us-ascii?Q?D/UPtvy1ShUbR78U3HO6HsqLSopey1iNisXtlo5y59Ff7D9Z2HK8WQr2sHf7?=
- =?us-ascii?Q?MKup2XVk4UvPI65ZfUj2ajDeIxhVT7UZHqfFnf5obn6HYdp437PdAqdcGaJA?=
- =?us-ascii?Q?mQGHev2oM8WHDKMn1Yv+N808FtHrfy8VXN0oY+vt8eIVx+9Gx1rIaZfzpvn8?=
- =?us-ascii?Q?FUCkKoG8hE0kYcoBZqGfi8mjcEXjcXFVSkbNQzsSnFTv+bTnjKgkhHA5F21l?=
- =?us-ascii?Q?QxX2jhv//dm4q4tagsp8Z+1PqHT5q8BqDJHvh3LZyLMtRObAINB0hzmWa6mu?=
- =?us-ascii?Q?+m3aERWtmBizozcq71m0Yi+QCQPPVU5BVu8a552SUw0g1cCFbU6CdS2gS9ZM?=
- =?us-ascii?Q?hsVZdi5oCucU6RX5VBlM6jFl4jfTJ2y5OcJV25Z0OpRG9pcZ6WXGrgcgpqhR?=
- =?us-ascii?Q?UNHX+bSF/mm8edPHBUc4NPYT78Cafs3SN7FAezYZh9UAh5D2aM1n0qy7Vui5?=
- =?us-ascii?Q?+nHvcGA5dZuBl6AVLBqkwUqrWgoGG5J4MvG3RwRDgClW7nNCHMtMaP1cIEED?=
- =?us-ascii?Q?uh2s8CBJy/S/fXEzpbVzMR9hsShSRqNEO5fN8PWAGEzqS0q5E+JIRZb2vLYl?=
- =?us-ascii?Q?uQx1vbZTuSwMOFxqo61bdWZtMVQN1zOsm7tS2Xsc1h6fEKtRja05fruuvo2k?=
- =?us-ascii?Q?lIU7bw2b2nCTMOeBn7WblKuIvxR0BK7JFe/1I2TkC0ChwrjMlBckb6lAyMHA?=
- =?us-ascii?Q?VLwu6rb/KkdKsOXJdAsPNCRMtffz5XO9G48TlF3499lYOam3RIlw/pqq00Fz?=
- =?us-ascii?Q?1PsCpN7M8GCDM/4ozy5F7VLh4MAvgSHA12lCQQl3F2Zk?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(1800799024)(366016)(19092799006)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+p5fayuTK/q9AOxz+4vUAzqf7IHPxe7ExrALbuuu5Gt4FIZ8MKvUM5q7tVaA?=
- =?us-ascii?Q?Qdk6phZr/LIx47OxBfga7osxSzZ10flVuKebKb8phV5NCrdzi0lBL73FNTzy?=
- =?us-ascii?Q?x0a5rtr2cjbf/+NhyZvt/bZtLC3MHdgMY3JpnAa3AYwwnt23NNptps6kmVz6?=
- =?us-ascii?Q?PxnPv6toHrBA/XeEMoIyp5laxtGnGZ7yQSzHrlF3vZ/NlVCWUmRZGbzoWm2X?=
- =?us-ascii?Q?dKa4/2T4hJIg6mG5xEXtNSlHzIDkCnUNaXWl043KV4Er/tz9e4HT4zaPkLWw?=
- =?us-ascii?Q?qQMIIe1lWXshQW/Z13admhUT//sScaybXrnsHCexoqLmtAKd2/3pL7rgNU2v?=
- =?us-ascii?Q?E1AwZ0r+0Ef8r8UUqT7NentSu6IO8ru6W0zkcXOO2CX9g0VugFlzD1k2nu4J?=
- =?us-ascii?Q?PHm0e+PvcCxOh6dM0GtvggV/Jvb6uMRL031EHeID8e6iX+Fu9m+RjvFN7fxE?=
- =?us-ascii?Q?1Noyic1W+a225vas5JG2JqqQdqRljSvuWJD9YAbk8m/Dw8HTnH+v7yH6gkKw?=
- =?us-ascii?Q?Sf3da3k4xqP6CX2G/1v+U5BlIf77M9K2chRS5zZVC5RgM7mUnI7bMcKrdeNh?=
- =?us-ascii?Q?//ygTm9F2UAyfsidc/54PI9auVK6Zd+R0pyK8X6dIYVejZVNafFvzJuSAgA/?=
- =?us-ascii?Q?gLm7vc6ZZNuw+gJVSCT26uw5hwmd2CUU+i4bFGXZgmjcutAQBiUkVmUlO6EE?=
- =?us-ascii?Q?BWPVGoOgmNODlwajstx18kiJblqswwV3tFnQB+DvmaIl/s8aX6hGBcdj3glf?=
- =?us-ascii?Q?wF0RvC8vDEV/RFGSU3Pf57DFyXMYpwG7PWj/VY6pJWWIXrrNtZ6D5liCD6pM?=
- =?us-ascii?Q?L2HdtzChA3TPSPCKzco0PfJVBlf0BDdhKAHk/texzBQHO1PHEucfl5J69D+h?=
- =?us-ascii?Q?5HUSMQes4K7XJsY75jMKuKIsA6HC0LyEKWLZvcPfWld6mWL0lO2wtLoalKw2?=
- =?us-ascii?Q?w3UxkBkB42wZlfUJr0QmwxLf66h+L9y/DGUPMhKwuT+jv1n/M9/FJ+QnSdDO?=
- =?us-ascii?Q?BBVlV4HprAhXCfZtb1VAaZtObndUkxIqNWKknNbkIhosg/6BBSbePvJVAiR1?=
- =?us-ascii?Q?YJl2JJGP/mA9fUJg5htrj4Oc0/LhrGfcm96TsAluRIzuSqg++RCeDya2GpY0?=
- =?us-ascii?Q?GEb7rCp8FvmKLPf85Z+18UDXY2uxJZNRZpWPReuebibBkagLRaPP5gqTzbY3?=
- =?us-ascii?Q?+QigcRplcJlu6uOVH6P9+oLSC+8bmPn/Z1Zs1Eur9lZLj4FnTqkuZowSbUU1?=
- =?us-ascii?Q?N+RyB3/zSCrv9tSvN8L4eBQQKxpr+Hx41rqFywBTrDOA/3bC3kpSCXERtfQU?=
- =?us-ascii?Q?SO+9b7eRwKb2wGxawH9+zLPKf6NCW5h9hLY9Vz7ZkY779Z/0iHfAe9ik5QsM?=
- =?us-ascii?Q?lpY1STqZjQeMTqCQVRZdiRtiaD8MUmWSwpd539qAg4iiLih2tKGTkxhfTTWT?=
- =?us-ascii?Q?QclF0g8nD4jBzNPWSpYzzGv+/Ze4ldxshGQwpZAGc/0JFL0i7x47ERYpKEKZ?=
- =?us-ascii?Q?3CJ7/C/ES2ETb5jdNYYiGmOj20CLJrdHnymfVMkbUd2qWZrY8ifOlEDUhlXO?=
- =?us-ascii?Q?8dA+cosYb0KD12X7/geCemUv0jkEiwrlItTU62MRUZ0/H+Ia8mAT7ZYvbFMt?=
- =?us-ascii?Q?Im8QHYKA93haSx1qxLp8aqWeDG6tTUlk/vACFgxROb2WfPRRMKG8YjpTv4DE?=
- =?us-ascii?Q?VxHHl7T4Fn9pJZC65fQY7Xi1Ohx575ejKIpjdfImsJcPuF15XHCnCowO0+zc?=
- =?us-ascii?Q?f8XTYM/hoQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ba72c29f-e892-401f-d4e8-08de629dc9c5
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 20:58:17.1928
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: w1RcR8ajI/RzEBNv/AM6FdKVqoVUEbUoAn4UD8uCwtmVluxQ533SoXUPsSCgt0WnpYIbIOpA+OISv4g6dORE7w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9737
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f95f73b9-d024-4697-bca1-02fb8bc044af@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Add compatible string ti,tlv320aic23 to fix below CHECK_DTB warning:
-arch/arm/boot/dts/nxp/imx/imx35-eukrea-mbimxsd35-baseboard.dtb:
-    /soc/bus@43f00000/i2c@43f80000/codec@1a: failed to match any schema with compatible: ['ti,tlv320aic23']
+On Mon, Feb 02, 2026 at 08:54:52PM +0200, Ovidiu Panait wrote:
+> 
+> Hi Russell,
+> 
+> On 11/24/25 1:27 PM, Russell King (Oracle) wrote:
+> > Some platforms have problems when EEE is enabled, and thus need a way
+> > to disable stmmac EEE support. Add a flag before the other LPI related
+> > flags which tells stmmac to avoid populating the phylink LPI
+> > capabilities, which causes phylink to call phy_disable_eee() for any
+> > PHY that is attached to the affected phylink instance.
+> > 
+> > iMX8MP is an example - the lpi_intr_o signal is wired to an OR gate
+> > along with the main dwmac interrupts. Since lpi_intr_o is synchronous
+> > to the receive clock domain, and takes four clock cycles to clear, this
+> > leads to interrupt storms as the interrupt remains asserted for some
+> > time after the LPI control and status register is read.
+> > 
+> > This problem becomes worse when the receive clock from the PHY stops
+> > when the receive path enters LPI state - which means that lpi_intr_o
+> > can not deassert until the clock restarts. Since the LPI state of the
+> > receive path depends on the link partner, this is out of our control.
+> > We could disable RX clock stop at the PHY, but that doesn't get around
+> > the slow-to-deassert lpi_intr_o mentioned in the above paragraph.
+> > 
+> > Previously, iMX8MP worked around this by disabling gigabit EEE, but
+> > this is insufficient - the problem is also visible at 100M speeds,
+> > where the receive clock is slower.
+> > 
+> > There is extensive discussion and investigation in the thread linked
+> > below, the result of which is summarised in this commit message.
+> > 
+> 
+> We are seeing the same lpi_intr_o interrupt storm on the Renesas RZ/V2H
+> EVK (dwmac-renesas-gbeth.c). On this platform, lpi_intr_o is routed as a
+> separate, dedicated interrupt line to the CPU rather than being OR'd
+> with the main DWMAC interrupt as on iMX8MP. This corresponds to the
+> "eth_lpi" interrupt in the stmmac bindings:
+> """
+> - description: The interrupt that occurs when Rx exits the LPI state
+> const: eth_lpi
+> """
+> 
+> Looking through the other glue drivers/device-trees, it looks to me that
+> every platform that defines a separate "eth_lpi" irq might have the
+> interrupt storm problem.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+That is highly likely.
+
+> To fix this issue on these platforms, rather than disabling EEE
+> altogether, would it be possible to just not request the eth_lpi
+> interrupt and let EEE continue to work? Perhaps a new flag could let
+> each platform decide.
+
+Yes, because lpi_intr_o serves no purpose from a software point of
+view - see the commit message below for the details. I do like
+removing code from stmmac :)
+
+> If not, maybe this patch could be merged to add the flag that disables
+> EEE and I will just send a patch to disable EEE on our platforms as well.
+
+We still need the flag to disable EEE for platforms where lpi_intr_o is
+logically OR'd with the other interrupts, so there's no way to ignore
+its persistent assertion.
+
+8<===
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH net-next] net: stmmac: remove support for lpi_intr_o
+
+The dwmac databook for v3.74a states that lpi_intr_o is a sideband
+signal which should be used to ungate the application clock, and this
+signal is synchronous to the receive clock. The receive clock can run
+at 2.5, 25 or 125MHz depending on the media speed, and can stop under
+the control of the link partner. This means that the time it takes to
+clear is dependent on the negotiated media speed, and thus can be 8,
+40, or 400ns after reading the LPI control and status register.
+
+It has been observed with some aggressive link partners, this clock
+can stop while lpi_intr_o is still asserted, meaning that the signal
+remains asserted for an indefinite period that the local system has
+no direct control over.
+
+The LPI interrupts will still be signalled through the main interrupt
+path in any case, and this path is not dependent on the receive clock.
+
+This, since we do not gate the application clock, and the chances of
+adding clock gating in the future are slim due to the clocks being
+ill-defined, lpi_intr_o serves no useful purpose. Remove the code which
+requests the interrupt, and all associated code.
+
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- Documentation/devicetree/bindings/sound/ti,tlv320aic3x.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/stmicro/stmmac/common.h  |  1 -
+ .../net/ethernet/stmicro/stmmac/dwmac-intel.c |  4 ---
+ .../ethernet/stmicro/stmmac/dwmac-loongson.c  |  7 ----
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h  |  2 --
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 36 -------------------
+ .../ethernet/stmicro/stmmac/stmmac_platform.c |  8 -----
+ include/linux/stmmac.h                        |  1 -
+ 7 files changed, 59 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/sound/ti,tlv320aic3x.yaml b/Documentation/devicetree/bindings/sound/ti,tlv320aic3x.yaml
-index 206f6d61e362e..50088698adac9 100644
---- a/Documentation/devicetree/bindings/sound/ti,tlv320aic3x.yaml
-+++ b/Documentation/devicetree/bindings/sound/ti,tlv320aic3x.yaml
-@@ -46,6 +46,7 @@ maintainers:
- properties:
-   compatible:
-     enum:
-+      - ti,tlv320aic23
-       - ti,tlv320aic3x
-       - ti,tlv320aic33
-       - ti,tlv320aic3007
+diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+index 1c5a4af85b58..d26e8a063022 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -394,7 +394,6 @@ enum request_irq_err {
+ 	REQ_IRQ_ERR_SFTY,
+ 	REQ_IRQ_ERR_SFTY_UE,
+ 	REQ_IRQ_ERR_SFTY_CE,
+-	REQ_IRQ_ERR_LPI,
+ 	REQ_IRQ_ERR_WOL,
+ 	REQ_IRQ_ERR_MAC,
+ 	REQ_IRQ_ERR_NO,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+index aad1be1ec4c1..92d77b0c2f54 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+@@ -719,7 +719,6 @@ static int intel_mgbe_common_data(struct pci_dev *pdev,
+ 
+ 	/* Setup MSI vector offset specific to Intel mGbE controller */
+ 	plat->msi_mac_vec = 29;
+-	plat->msi_lpi_vec = 28;
+ 	plat->msi_sfty_ce_vec = 27;
+ 	plat->msi_sfty_ue_vec = 26;
+ 	plat->msi_rx_base_vec = 0;
+@@ -1177,8 +1176,6 @@ static int stmmac_config_multi_msi(struct pci_dev *pdev,
+ 		res->irq = pci_irq_vector(pdev, plat->msi_mac_vec);
+ 	if (plat->msi_wol_vec < STMMAC_MSI_VEC_MAX)
+ 		res->wol_irq = pci_irq_vector(pdev, plat->msi_wol_vec);
+-	if (plat->msi_lpi_vec < STMMAC_MSI_VEC_MAX)
+-		res->lpi_irq = pci_irq_vector(pdev, plat->msi_lpi_vec);
+ 	if (plat->msi_sfty_ce_vec < STMMAC_MSI_VEC_MAX)
+ 		res->sfty_ce_irq = pci_irq_vector(pdev, plat->msi_sfty_ce_vec);
+ 	if (plat->msi_sfty_ue_vec < STMMAC_MSI_VEC_MAX)
+@@ -1294,7 +1291,6 @@ static int intel_eth_pci_probe(struct pci_dev *pdev,
+ 	 */
+ 	plat->msi_mac_vec = STMMAC_MSI_VEC_MAX;
+ 	plat->msi_wol_vec = STMMAC_MSI_VEC_MAX;
+-	plat->msi_lpi_vec = STMMAC_MSI_VEC_MAX;
+ 	plat->msi_sfty_ce_vec = STMMAC_MSI_VEC_MAX;
+ 	plat->msi_sfty_ue_vec = STMMAC_MSI_VEC_MAX;
+ 	plat->msi_rx_base_vec = STMMAC_MSI_VEC_MAX;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index ed0b534d8d7b..d66ae6ea4df5 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -442,13 +442,6 @@ static int loongson_dwmac_dt_config(struct pci_dev *pdev,
+ 		res->wol_irq = res->irq;
+ 	}
+ 
+-	res->lpi_irq = of_irq_get_byname(np, "eth_lpi");
+-	if (res->lpi_irq < 0) {
+-		dev_err(&pdev->dev, "IRQ eth_lpi not found\n");
+-		ret = -ENODEV;
+-		goto err_put_node;
+-	}
+-
+ 	ret = device_get_phy_mode(&pdev->dev);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "phy_mode not found\n");
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+index 012b0a477255..aafd8c39be63 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+@@ -31,7 +31,6 @@ struct stmmac_resources {
+ 	void __iomem *addr;
+ 	u8 mac[ETH_ALEN];
+ 	int wol_irq;
+-	int lpi_irq;
+ 	int irq;
+ 	int sfty_irq;
+ 	int sfty_ce_irq;
+@@ -297,7 +296,6 @@ struct stmmac_priv {
+ 	int wol_irq;
+ 	u32 gmii_address_bus_config;
+ 	struct timer_list eee_ctrl_timer;
+-	int lpi_irq;
+ 	u32 tx_lpi_timer;
+ 	bool tx_lpi_clk_stop;
+ 	bool eee_enabled;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 7a451ae19f50..7925575fb348 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3734,10 +3734,6 @@ static void stmmac_free_irq(struct net_device *dev,
+ 			free_irq(priv->sfty_ce_irq, dev);
+ 		fallthrough;
+ 	case REQ_IRQ_ERR_SFTY_CE:
+-		if (priv->lpi_irq > 0 && priv->lpi_irq != dev->irq)
+-			free_irq(priv->lpi_irq, dev);
+-		fallthrough;
+-	case REQ_IRQ_ERR_LPI:
+ 		if (priv->wol_irq > 0 && priv->wol_irq != dev->irq)
+ 			free_irq(priv->wol_irq, dev);
+ 		fallthrough;
+@@ -3795,24 +3791,6 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 		}
+ 	}
+ 
+-	/* Request the LPI IRQ in case of another line
+-	 * is used for LPI
+-	 */
+-	if (priv->lpi_irq > 0 && priv->lpi_irq != dev->irq) {
+-		int_name = priv->int_name_lpi;
+-		sprintf(int_name, "%s:%s", dev->name, "lpi");
+-		ret = request_irq(priv->lpi_irq,
+-				  stmmac_mac_interrupt,
+-				  0, int_name, dev);
+-		if (unlikely(ret < 0)) {
+-			netdev_err(priv->dev,
+-				   "%s: alloc lpi MSI %d (error: %d)\n",
+-				   __func__, priv->lpi_irq, ret);
+-			irq_err = REQ_IRQ_ERR_LPI;
+-			goto irq_error;
+-		}
+-	}
+-
+ 	/* Request the common Safety Feature Correctible/Uncorrectible
+ 	 * Error line in case of another line is used
+ 	 */
+@@ -3952,19 +3930,6 @@ static int stmmac_request_irq_single(struct net_device *dev)
+ 		}
+ 	}
+ 
+-	/* Request the IRQ lines */
+-	if (priv->lpi_irq > 0 && priv->lpi_irq != dev->irq) {
+-		ret = request_irq(priv->lpi_irq, stmmac_interrupt,
+-				  IRQF_SHARED, dev->name, dev);
+-		if (unlikely(ret < 0)) {
+-			netdev_err(priv->dev,
+-				   "%s: ERROR: allocating the LPI IRQ %d (%d)\n",
+-				   __func__, priv->lpi_irq, ret);
+-			irq_err = REQ_IRQ_ERR_LPI;
+-			goto irq_error;
+-		}
+-	}
+-
+ 	/* Request the common Safety Feature Correctible/Uncorrectible
+ 	 * Error line in case of another line is used
+ 	 */
+@@ -7752,7 +7717,6 @@ static int __stmmac_dvr_probe(struct device *device,
+ 
+ 	priv->dev->irq = res->irq;
+ 	priv->wol_irq = res->wol_irq;
+-	priv->lpi_irq = res->lpi_irq;
+ 	priv->sfty_irq = res->sfty_irq;
+ 	priv->sfty_ce_irq = res->sfty_ce_irq;
+ 	priv->sfty_ue_irq = res->sfty_ue_irq;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index 8979a50b5507..5c9fd91a1db9 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -725,14 +725,6 @@ int stmmac_get_platform_resources(struct platform_device *pdev,
+ 		stmmac_res->wol_irq = stmmac_res->irq;
+ 	}
+ 
+-	stmmac_res->lpi_irq =
+-		platform_get_irq_byname_optional(pdev, "eth_lpi");
+-	if (stmmac_res->lpi_irq < 0) {
+-		if (stmmac_res->lpi_irq == -EPROBE_DEFER)
+-			return -EPROBE_DEFER;
+-		dev_info(&pdev->dev, "IRQ eth_lpi not found\n");
+-	}
+-
+ 	stmmac_res->sfty_irq =
+ 		platform_get_irq_byname_optional(pdev, "sfty");
+ 	if (stmmac_res->sfty_irq < 0) {
+diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+index 5199451dd0bc..2620f0217f88 100644
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -300,7 +300,6 @@ struct plat_stmmacenet_data {
+ 	int int_snapshot_num;
+ 	int msi_mac_vec;
+ 	int msi_wol_vec;
+-	int msi_lpi_vec;
+ 	int msi_sfty_ce_vec;
+ 	int msi_sfty_ue_vec;
+ 	int msi_rx_base_vec;
 -- 
-2.34.1
+2.47.3
 
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
