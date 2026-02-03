@@ -1,137 +1,143 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6E03A1A34
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 13:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770126981; cv=pass; b=Dtw+cHlj3Vs1pUsguKw+xTAwR29OX9Rre3FJ+T5TpsPvs7tXO9c/8SaunISuod/bCmCGgFIFBVRrAuxgdUEB9DO5W4BqRqxTAsArsywIJRI7lOVdSIdjxLPzcUrA4fvXxGOsJX0X1YXRV4z5d0DI80A6/QmBQYZPkwfASBzE2EA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770126981; c=relaxed/simple;
-	bh=2kJc0/oJx9J66cb6iheE4k1eLdyJmqswDf8bzyH50wo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Icdeb7JjvCuqsAltZfSXDnY+JzgCbRy2V5UQ+yDwDNIsZ7GbwL+T65LY1b/2T//5sNbaFEqC4TQzNoSFbaxUidUVocw5d1lK4+a7GHUX75WZ2CtV+K5Pa30DF/bRB2OfkIsDVQndD0KcCn1ZFwaukt9x4r2JqnYUK/hbaGKzMlM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ahKs1MHo; arc=pass smtp.client-ip=74.125.82.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18D730EF84
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 14:08:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770127699; cv=none; b=scHdGnC6nIvsCueclm33bYNrfiKHYoInVpQ30MhU8ZGyf/5rsOPcbuCffon6k6KWo4+xsSCCuoLZ8LgiXWTNHvYJL5b4pYpPk2taUyw06pUBdAnLB5u6zPRgN+x9QPlqV8R2or+k9igSld04TF9sd5uc1BsM/um9O9tGUQlOPrE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770127699; c=relaxed/simple;
+	bh=WD9h0fFVKsfX86DefFgHgmW9sLJVVxtbAMFvxApruCc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=WnFbuftDimkG2sHgPCeRSIbhQGRd7NQ8jyaahFsdpOHRmKbx2orv9C3gMA2DeaTxuxjPn6dzuj/oXaOxzm7Usb+McUr1pwhgJWiwpIsZ5lEPtJaNz3q5kvjlRrr0RuMf+hj5ljOjT0uBrwH+FyrA5xONgzApqVRBwfrZw5ZtwQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M1iVSpn3; arc=none smtp.client-ip=209.85.210.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ahKs1MHo"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-124899ee9d3so680362c88.0
-        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 05:56:19 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770126979; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZAy2OeWocw+y+i4Jop8oSdOBRxHuyhJQ0Jx9DFERLxoJk9TY0cO4IVpkW3tLCRAN+C
-         v1xzIdgYJjgwuCWtz/LhYXNRJiOSNa7npQ1xEfD/4pD6NLGtzkPAooUq2NuKSBzKTBUH
-         r1JfkLHi7a6Me9zxXNr5NZuJ47MoDl5NrAh6HLusX5l2dCVAk3398EVyCig6tJAGMIv1
-         8pv56NElDWtFNG/IIGbm8pHA89MTqnT39DJORf2weu0PADul8gqnunjZw/sF54gvKocF
-         Lrl3EzcI7DvJrkvQug7lKyydeYFRyqUQuhcHsm6ohdSXY0BLiNZmmmE53lR7xtryUdUo
-         Ph5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oiDNEn6LPf3NNMPn5SjpOYR+1H1anFvHfyh9Q60C1l0=;
-        fh=cdIz26noyPo+xArcSOTtLs6EFDStF8vAM511FD7ybYU=;
-        b=Jm9/Ma3FI4s7l9rIDRc10TrYBmGPYSsEGaO42yMmzepS45AzDuofQsk5cg7HA9Hxwe
-         168FzncC3EfoEE1oiXZU5ORJpJ/c5+vpDJyC6XItj4+BZuVF4zDRGV/ncjWlvtpg9nN3
-         OISf0BRekdEHKHq5v8VRXNQj0Q4Ekt2k7DaGoo5NYAS+f30vqB+2ZOp6CScoh/DU1hB5
-         gJfAwodLysZcjG49sOiez0+1Of5lr7I2iQgAzs2mr78/OdclPmL3tlOf0NhxYhtGJqix
-         f7l3bi0UG2A4266AnQgB/1JnXtrTlH4rt4+rPtax3ubgAi1vSbR1LIhvGKcK9/CYR+h9
-         qk7g==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M1iVSpn3"
+Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-81e8b1bdf0cso3593545b3a.3
+        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 06:08:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770126979; x=1770731779; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oiDNEn6LPf3NNMPn5SjpOYR+1H1anFvHfyh9Q60C1l0=;
-        b=ahKs1MHosK5QS6PTKvF5RqCGvWT4l0xHK7KLBK6i9L84Y5RftB9OMW7l5LY7zl4QPz
-         lZndGrfc7vipTteWLf8DGlduv0h8LY4a66S0Xi/NHETg8JpuHqmLsG+k9B7h+US3i0fr
-         +morZWHJJZ7Mpe7CfkDxhZcqYbdQwmjicpGT3kDritLAvFsv5WnUIOweXLq5cTbVpLaw
-         kokA4j42la1W4bxG8ZFBb6IeeCQIoOz2dnuDHExBdo2ZQiC6aX2vjvZK8mzzhLf1R6Yo
-         nHCgAzgF3pklvGnGihdizID9hl74mowzM+bRtdEcxNVRz6rYn276MBGws7DTkafYDOXa
-         ulgw==
+        d=gmail.com; s=20230601; t=1770127696; x=1770732496; darn=lists.linux.dev;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uEVDyNGIeHf4pNw+X2bXrhjpf8wdFUs1OWtMdxxb5PU=;
+        b=M1iVSpn3iTFgL3Y8vqia+vm+YK5fZxFS6KGj9s5jA4V60/xd7u1owD/Wvv95Yq3Q7F
+         eBQ5uqYjdg/FKnNOeMX0FVKcYqp6Vdy5/ULlk9IXUaDTN3fEmk6aMxz3fVrFThmJjfKE
+         sqxBAGMPtemDxzYi/Sk7sLHrDs5UCteuqi+d20ODzZGK4VcbMZr3KaTL8F6fv5jQYJ2K
+         Q1LN1kqP8saetPMh9tn/jjBqb0qyuCpvgCFaVpj5TfCM21UIg9Z/ebq2V/LwFS19M8y0
+         4sbLRPkLiuf1mcaAQtSXj6/Q5xxHhi0Y9NzGCTBS4wLAWMlzkNT5hm4dTnUnCB6+5jgK
+         4d+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770126979; x=1770731779;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=oiDNEn6LPf3NNMPn5SjpOYR+1H1anFvHfyh9Q60C1l0=;
-        b=B4M3qQ+ueFyjiBEzJIDpUkdrT7iw0bAmj8Cvi8c08nMVYbIl1Y41ZYpP+V7K+phjy/
-         MiOGYWT0KYWpcGNavcT5l1gft1NSNRBrxG0q0p0D5FuBXVdB2L5Bavc/xSqNHofXY7tf
-         mxdjTrDaswitTjNmZUgmyAp1PcWpuEtjK422M0QpBZoXkUritXEwfd6RVf9YQzWJIsY5
-         yfX0uETVPWcDmcbSrC5mwSMJ0ppSfEqsW5hQXJ7QtVmdhZ/nd07J/ST3LoUfAIC0TmKE
-         SCHcNKRYp9Upo/nJvand0HGu6ZGcAF+82Lomgj9fIEuTGFzO7GRT7ZnaW4GRX4GPCV9z
-         pOaA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxHm+8Qn7CPilFoHMpZWo7rV5wslkP8UlBSRVn6IQvl/hipM+Fk+ueuaAs7TMehRpFjpI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzXhoYG/tRjGeN/ZFsG5pFcJM5ySVF3oyfXUt3JpMX641Bjjv4h
-	iDOSfV1Cw9Xrc3QGNFXtbp8yUAfKd1eeAboWXIU/k11PlgT0C7vc20+92d+RiVAuW46+l+Kg5EZ
-	35NgkgEWhN28477NbD1S2JM6HIkU/SY8=
-X-Gm-Gg: AZuq6aIraLXKOMk4iOIvClUBKZ3wn9dIA5wPZsmC3W3ihFFl0504rgy8ioNKTdLJdIe
-	7XmSF5NFHUJT8wH8GwHTMEGWQye03R3COcnipezA6w/Cc04E+3na5lA2XgARAhSRUSPAyaGaM8T
-	IHPjTeM79iCnSi117RSMgxdIp9pprAN6EfV2CLgjPphlVoCAPsozUcyrVN7uyG1yGFGsEDtwj3e
-	5leQ6knSqc7lQ6MMo0wMcrJBMOwRvQBYoFVKMFSpgN6pAD0rq/RAMDmSyrW0VAk5UX22Yyr3ox0
-	cDOlfImsRCFTMOqToA3zLIYfwa7R/yDfPNetMKbbvqH87jyLOkCkT3cTTyywVOUDcfG7ScF6Vp0
-	9POacYkkouQ==
-X-Received: by 2002:a05:7022:90c:b0:121:d898:edae with SMTP id
- a92af1059eb24-126ea91f3e4mr1123936c88.24.1770126979199; Tue, 03 Feb 2026
- 05:56:19 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770127696; x=1770732496;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=uEVDyNGIeHf4pNw+X2bXrhjpf8wdFUs1OWtMdxxb5PU=;
+        b=U7l6v3Dl1RxqyENZeEq+wguG6JEM0CZOZ3lsDuk7w2vL3QYCXQ1Jjhup50NT5wriW2
+         ADPUNfD2oKk6QTKk6ztT45+myxVQD/GkrwizbhvXXAM0IdbtUpZH8uEm+rTrO9DVli01
+         kHti227rkoO6D/NrfO9oQqt28zM8b82A1bnpFus+jTtOeavMlTyLY4peAyeml/vrzida
+         F+VSSUzlVSJD2wFaUPzk/TiKdFIiPSbNI+mBFA+WSUxcVurul7wDd7qV6efmG2EnQtZp
+         75Rz8m8nmdxBbv7my9qrR0IoAxNHZ6g+7jl8Vob23eF+0gdTg2JoeUO97J2WVTOJhK+o
+         zuHA==
+X-Forwarded-Encrypted: i=1; AJvYcCXtJxafVXhYiihawJZ+yYfw5LykjQD5DCipvleGL8+g6glPjwjpRE+RK3SlSAXVysqrgQc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxt/ltA9NcMtRkwnjZTcQC+Qh8A+M/CwF1bQQ6ipTOtDWqARHPv
+	Vq+LCH2ByWNdoH5wgFxiqUpsG/DiEO0g+WyueMEmUYZB7dXHJwhxmX+4
+X-Gm-Gg: AZuq6aKVFsNlvcDQaFKQWgrBp8QqBzAMGaQclhBG61z724FSrILXCGm8VUuTqi9DuAR
+	UB/99Hvpd0szgRsu8ofRoxRcpjqim/HsHvEzD5ER4oe0SzpfM5rgj4MdWQ7p1dbLMenMMOdWlvU
+	Sp+ctWPm3ktoJnoeBiCTYaA7TwEOHxsTYXyRrodt1JJA/Gbuv1VeYyyO+Vml9iQFBk3HDt3iWle
+	SDmRD1HTuoBclk91M7UyuqE+YNcbFSexQz/YL7sY+dLgs5EuAbbu2jTNku74VcrV9tJ4+GTqzr/
+	KMrrCfDCoVpxEBF6iYW875iFnXjVFIAVQBKu1JaYoAxK73xRh7cVqE/BPnyOME3q44d5dTzneFq
+	9+nxjlfazPwHHuV2zgvvP+FgapqUrjfM5OAe2IPaeuZvd3Y9u4qikXHwBiuH+irfFNikiuNjLUf
+	a8zVD/GFNPNo3T5CTea6O9/ca+uw==
+X-Received: by 2002:a05:6a21:8888:b0:392:e81f:6711 with SMTP id adf61e73a8af0-392e81f696bmr11458034637.8.1770127695989;
+        Tue, 03 Feb 2026 06:08:15 -0800 (PST)
+Received: from junjungu-PC.localdomain ([2408:820c:9008:ba52:f091:7dff:927e:f788])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3543d52c396sm7694684a91.4.2026.02.03.06.08.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Feb 2026 06:08:15 -0800 (PST)
+From: Felix Gu <ustc.gu@gmail.com>
+Date: Tue, 03 Feb 2026 22:07:57 +0800
+Subject: [PATCH v3 1/2] clk: imx: imx6q: Fix device node reference leak in
+ pll6_bypassed()
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260202-imx31_dts_warning-v1-0-434dd2643c3b@nxp.com> <20260202-imx31_dts_warning-v1-5-434dd2643c3b@nxp.com>
-In-Reply-To: <20260202-imx31_dts_warning-v1-5-434dd2643c3b@nxp.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 3 Feb 2026 15:59:04 +0200
-X-Gm-Features: AZwV_Qju5F7xT8vnmaZowdmwJ5PbMdVnDwBoeT5wIv_XHgkftgb91IXvaA8NXhI
-Message-ID: <CAEnQRZCWcWaDGSFVvV0AT3rp7pO+iPXNnXW+4Dum9PwOFy3nQA@mail.gmail.com>
-Subject: Re: [PATCH 05/10] ARM: dts: imx51-babbage: rename at45db321d@1 to flash@1
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260203-clk-imx6q-v3-1-6cd2696bb371@gmail.com>
+References: <20260203-clk-imx6q-v3-0-6cd2696bb371@gmail.com>
+In-Reply-To: <20260203-clk-imx6q-v3-0-6cd2696bb371@gmail.com>
+To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Akshay Bhat <akshay.bhat@timesys.com>, 
+ Ranjani Vaidyanathan <Ranjani.Vaidyanathan@nxp.com>, 
+ Shawn Guo <shawnguo@kernel.org>
+Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Felix Gu <ustc.gu@gmail.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770127681; l=1359;
+ i=ustc.gu@gmail.com; h=from:subject:message-id;
+ bh=WD9h0fFVKsfX86DefFgHgmW9sLJVVxtbAMFvxApruCc=;
+ b=wXAWXX5AmnINy0EhIfleVbe6g2DbP1E2ngkrqcfESd6zIOLTsamfvNCQ5N2/Z0tXObOxAKayW
+ 41Nf1MuQstPCrduCmw3LSegnipFmeLm3NxmMflgZk4fI7MuO3mnAE0h
+X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
+ pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
 
-On Mon, Feb 2, 2026 at 9:45=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
->
-> Rename at45db321d@1 to flash@1 to fix below CHECK_DTBS warnings:
-> at45db321d@1 (atmel,at45db321d): $nodename:0: 'at45db321d@1' does not mat=
-ch '^(flash|.*sram|nand)(@.*)?$'
->         from schema $id: http://devicetree.org/schemas/mtd/atmel,dataflas=
-h.yaml
->
+The function pll6_bypassed() calls of_parse_phandle_with_args()
+but never calls of_node_put() to release the reference, causing
+a memory leak.
 
-The commit message should say *why* the commit is needed and not
-focus on fixing the warnings from a tool.
+Fix this by adding proper cleanup calls on all exit paths.
 
-e.g:
+Fixes: 3cc48976e9763 ("clk: imx6q: handle ENET PLL bypass")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+---
+v3 changes:
+- Fix Frank's comment, add check before calling of_node_put().
+---
+ drivers/clk/imx/clk-imx6q.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-ARM: dts: imx51-babbage: Use generic name for flash node
+diff --git a/drivers/clk/imx/clk-imx6q.c b/drivers/clk/imx/clk-imx6q.c
+index bf4c1d9c9928..ba696cf34fe3 100644
+--- a/drivers/clk/imx/clk-imx6q.c
++++ b/drivers/clk/imx/clk-imx6q.c
+@@ -238,8 +238,11 @@ static bool pll6_bypassed(struct device_node *node)
+ 			return false;
+ 
+ 		if (clkspec.np == node &&
+-		    clkspec.args[0] == IMX6QDL_PLL6_BYPASS)
++		    clkspec.args[0] == IMX6QDL_PLL6_BYPASS) {
++			of_node_put(clkspec.np);
+ 			break;
++		}
++		of_node_put(clkspec.np);
+ 	}
+ 
+ 	/* PLL6 bypass is not part of the assigned clock list */
+@@ -249,6 +252,9 @@ static bool pll6_bypassed(struct device_node *node)
+ 	ret = of_parse_phandle_with_args(node, "assigned-clock-parents",
+ 					 "#clock-cells", index, &clkspec);
+ 
++	if (!ret)
++		of_node_put(clkspec.np);
++
+ 	if (clkspec.args[0] != IMX6QDL_CLK_PLL6)
+ 		return true;
+ 
 
-Prefer generic node name 'flash' over the existing specific one to reflect
-the function of the device.
+-- 
+2.43.0
 
-This fixes below CHECK_DTBS warning:
- at45db321d@1 (atmel,at45db321d): $nodename:0: 'at45db321d@1' does not
-match '^(flash|.*sram|nand)(@.*)?$'
-         from schema $id: http://devicetree.org/schemas/mtd/atmel,dataflash=
-.yaml
-
-<snip>
-
-> -       flash: at45db321d@1 {
-> +       flash: flash@1 {
->                 #address-cells =3D <1>;
->                 #size-cells =3D <1>;
->                 compatible =3D "atmel,at45db321d", "atmel,at45", "atmel,d=
-ataflash";
->
-
-Thanks,
-Daniel.
