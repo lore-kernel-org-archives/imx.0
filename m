@@ -1,304 +1,195 @@
-Received: from mx-relay49-hz3.antispameurope.com (mx-relay49-hz3.antispameurope.com [94.100.134.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE162FE05C
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 07:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB7B392836
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 07:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770103197; cv=pass; b=TIIg2fomGEs/vfy5o5ILGNqnfDnNL+Syt2POFCy20ql6vO5lHqYadSiAFMvGMKiK6C5m8Sjn/ElNaQxAc4lE64tRi8PUphkXuBTe1eaGNDPCCEG2/oTIfWwTHRaA+JSq4V1l8nPcgg6X5eivRB58vaNf9U5aNaLwlIQh5DGv/Zg=
+	t=1770105058; cv=pass; b=d19fmir82gNTBs7IjScQuPqCVxfi5sxCGLpeVNAgsh223ox+ZwSw98Xu+Kh+7Qq/rAa+ZasCBqgQVCeIslA+nOAQyn5IZmPjfTrMFYBGndk6cz4eniNagKGM0N01sac8PEpue7WAeq6B5PpaaYczaqjn8+YUC/RBVN2s4akW/So=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770103197; c=relaxed/simple;
-	bh=F1EYsNIFPWWyyxdg6FY67rvu4jrkAqdIv5FfPKOhgOk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cBD4l4T/KwcY38+NWU0gL1P3AnjLKasrBUzGhBz42hYghhBKVTznvguselH5n9l/5womJpxdeipCAgqE4LqTq8Lopb2HaE+PqQe8c8i4H4bMUYU/GKHMYwQayLNQg84AmZZtq0U1E4JOF8rpkt3EauQtZ+SzVJ1O34DVTmvFD0o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=VnhSXCrd; arc=pass smtp.client-ip=94.100.134.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1770105058; c=relaxed/simple;
+	bh=z3uO4wDS4x6z936FnI7cggR5KRAC0BgutNuhO1txo6g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CGvYvwB1+JCd9AqKu6aAIUKcjnxdlLJ2IpctRcuvMm6xsGNyKdSSqTO42z7wej9O6IH2a0DFz110NQxgvbp1FyBDbLaoWLJ79oj/38zFDXxdkZYAlkvyCPArnsfQYiEiHCA4bfQCrUcxRdWdaNFgbwRjO+kAnI0ycnbBK/Vbow0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AI+QyNXi; arc=pass smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="VnhSXCrd"
-ARC-Authentication-Results: i=1; mx-gate49-hz3.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out01-hz1.hornetsecurity.com;
- dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=QNR5RxTwzTtZsop8+J+WBmJB6mqTYo7/2/cKx2YLwz8=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1770103167;
- b=iqaCJ2LYBoAdMLyIdFx5m/3TGh4Lc+NdXSKhCdHPfXgNiuv/TXtqQYDiX9ViSqxEFsK+a7iv
- SvNBEHxo9c7pzZHUX6ycrD4iqmIp4qTSO49dPHltOP5VxXjRWfpINCUefcp2jwb87k+6AgqELrM
- ByqYp0zESBj90yUMiORsC87jo3FAXnAZhmisy7zVXaN9V82Iz1B9j3zyIqpaaD3pchHD46yfpYi
- TfVRTciIjgbVY3LyZyVGeyUEEPw6YvqJwWpqPH7My7Lldli5nOFFvYRqR/R/F+xvp2HUJPXJ1W0
- zDv2EeYSDmbuQilOLQRh898TqbZdFrKdgP5x2irctcZCw==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1770103167;
- b=AsV2cNe4g2HgIv74Mt9hfy88sKAbcEMa0eccH+m77xhGzL75m3B4hLozp85Jk5X3++BWid/D
- mRKVGSc01ql0n7MK+Cq7yfcJteS2IE7O3GSoHK2XvnSbg3P7NHaoA+EsCvmULddBBvmLz3vpZv7
- izSsyqlnEUdooKVWtIDxeW1NCTn+bZMEAKdFTFz54DdeHTbBuBMdhcEUEKNgM9i/xA3bO/lX8Yv
- tZC7GrJQd7SJV6YPqRqm50uHQAGbiv3OObKFlcB2wfaR8PSjUD0SVTFJCobEV8ARiiUQu4vXmE4
- Zshud04q9llTFS8is2qZGiB2aV2yGBGYwPPHQd17jR/NA==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay49-hz3.antispameurope.com;
- Tue, 03 Feb 2026 08:19:27 +0100
-Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by smtp-out01-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 36261A41052;
-	Tue,  3 Feb 2026 08:19:14 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
- Li Jun <jun.li@nxp.com>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
- Xu Yang <xu.yang_2@nxp.com>
-Cc: linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Xu Yang <xu.yang_2@nxp.com>
-Subject: Re: [PATCH 1/3] dt-bindings: usb: introduce fsl,imx-dwc3
-Date: Tue, 03 Feb 2026 08:19:13 +0100
-Message-ID: <2820312.mvXUDI8C0e@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To:
- <20260202-add-flatten-dts-based-dwc3-imx-driver-v1-1-c44a5e919380@nxp.com>
-References:
- <20260202-add-flatten-dts-based-dwc3-imx-driver-v1-0-c44a5e919380@nxp.com>
- <20260202-add-flatten-dts-based-dwc3-imx-driver-v1-1-c44a5e919380@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AI+QyNXi"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-12460a7caa2so8078376c88.1
+        for <imx@lists.linux.dev>; Mon, 02 Feb 2026 23:50:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770105056; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fnmIUbQz9IBGu1HwoEshVid7B4Jh93Kdsrp6wasRzDfn2FLryZc4OgTb4+OXI4IhLA
+         q/krCLfitop9hVuwInnBlhIJn97UW93iV8Qmq02PfEt9WT9RF7AJ7yYNVko3jueP96hk
+         Qk//mollsHEE368pGFHfXbK9Xcmj1a1Gj8f+mqMEq7sjp2NEJBJIho6/MC6nuHyNrgCh
+         pi1IU1XNaEQlrh5EKQziMfTegeWi/BYNcmETNzOlfeL8x2pQXdzC3ATN0MGqvCShof80
+         7JwZGg1LWNfBULLQzNoQIIXPtv1M1a5mfUv8loIx2xUBaDhwtrsFQERlnK59DnauDlNk
+         nq0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=dzMuEZYMn/hj9SYdAXLTnPBjRskZLNxUP6ZIZEqwunk=;
+        fh=ke5A7ssMF4Q4lLzVfNB6/fnulQDv4IPd+fSc+9fmwKI=;
+        b=UtNvvAVHZrHTM8AG1BfjIpwRXHvmUB3+YTsBlOD1a7fLHkcmXbpjawte4tUpSESdFE
+         88jnkaNI57ufbiJbp3U2F9EgebsQTo+3H+XojoakJMRCETwpZ5SZV5CBLC0suk0htwq+
+         ev8MIsVtZ9njL4f239TsluWFmmYAidLzHQCynM9dvtDkry32GQKiVmZJ0mtVrt6NDilU
+         UE08Ob7YKuX4jVzZCrgijIolNvn0aUogalPpRruwYC2MKxU40C9++4SkRIJkxlA0yeBQ
+         fVtEjFjjfrj1ZA9SvzhQjSLwhgoq9RyWAygYk+J56HvsGqihzrelbgOT4Bt/QILe6c77
+         JVxg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770105056; x=1770709856; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dzMuEZYMn/hj9SYdAXLTnPBjRskZLNxUP6ZIZEqwunk=;
+        b=AI+QyNXi5QWtq09Ic7WN221+GvU7wGKVpyEACdz8Xbb7vlGlkKKprIuR3mtRt2mbtY
+         RoIdgeCsi6lDlZSINX6Dnbllo77F1ees4EcR4TA5XIkH0rrxL2BSOfrkCHd0nAsKqfC0
+         BfpaxiGS24UyX+DxtvhCnePoM+7xNJ+RAQpw0R1V8CfFEdknT0cOqoUD99jumgcy+BNh
+         4LFjMg8bFqfjELLLrVLZooyL3zYnV+G1FzSUQ6BPhbqxgDjy0gcDDgFLGHVK48B7i0Nd
+         h4PU2RUiqB0Zjd6qrQ/qIfW1shStuFodx4m86bcM9haJ7bWO0zGzAYbNYmS/JNaQ774B
+         w/zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770105056; x=1770709856;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dzMuEZYMn/hj9SYdAXLTnPBjRskZLNxUP6ZIZEqwunk=;
+        b=IAMrm9rmREbbPNXOESsJ4/wWpJfqYqQwh8Bfvpg1oMn3MUtiFnbMiC6FXNJRvpUOyn
+         MWSWnlgw0hlRgvEe9zJqxX506v2ekdlz7EICIQU/4Nv8zorvaLMLLCX6uFygdqa+2n/m
+         TRHBj8f4N0nxQSIrALdWMoQckPyGs5qDCe0a0yNX0bT0GSeL918Z3KxYQ3/2Ga7WzI4W
+         CyaYaoNr0D4sX0zEZs+ftyaxW4xnIL969e5X3siPbztxsPDmOHqiYdJePtadas8XXJrl
+         R44daV8OrD6Ir8ImVVXhQ186EtXy8VoETwX3VRS7gBWSA/dDPgQyJ/JHJOUPydo2Xy1F
+         782A==
+X-Forwarded-Encrypted: i=1; AJvYcCV2HWaSPJCGu5qMLDuPbRWJmyoPFDW0tF47trS+gB2EVdSM76z9wOSYdNhETMZLiNdFCo0=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzHRpe10OBRl/oSiKqfz9JBZbmT7S3NNwa0Fm7SQrA/eOCemMtc
+	TDenJWT76Y5XLd8dmVKHdLYeH7a+7h/FSwGBdMjlwm879U4Q8swsO2to8Ju13PaVduy2QFwo79r
+	iBTckt0V5RFcHbLfYyUOisnTYVxqpdCU=
+X-Gm-Gg: AZuq6aKxc2t+LX/dP+Kigf4oF0AFHPVrg/ScedapWT3qvDCRpZKMbXWSkDl8lM0CyXP
+	cS9HaXMax5bD2HIWfR4489GczFzZhjab2v9Y7z6nfeAqw0UymYMZT8Vi4HIQrJz1qLwCXWvKXTF
+	nlj1kc0rbfSQTZ9b5JkTxkIalGvYuuVeBJd6JmbTvRZL7QI5TrvqiGLKLnl6s5LAe2SiXRAdAQ0
+	zgvhbEkWBxzDhh7S/YO6bRzE68PKwp4smRyvWMqCTRrWgy1+7J9KBBYJZbAaDKEGExL46mrhgUm
+	xFY6y/CJv5qOMIeAI8TK0oZ0qUTGTuzBylJ8RoHl+1003hC9oDnVBLoOd0woKR61S7QKWAYpc6F
+	UkfBN+isRGA==
+X-Received: by 2002:a05:7022:41e:b0:124:9e46:82fb with SMTP id
+ a92af1059eb24-125c1010d65mr5955626c88.38.1770105056409; Mon, 02 Feb 2026
+ 23:50:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+References: <20260129-imx-rproc-fix-v3-1-fc4e41e6e750@nxp.com>
+ <CAEnQRZA-nMai9-CEdMqnr2drqBRXXPOKE3a+_3j4S_=x-bM0pQ@mail.gmail.com> <aYDN6X0WVT9nV8fg@p14s>
+In-Reply-To: <aYDN6X0WVT9nV8fg@p14s>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Tue, 3 Feb 2026 09:53:38 +0200
+X-Gm-Features: AZwV_Qi4gqYVwTTFEPdJsETuT6WyCitJtTK7rW3QVszmKRnozagvutFj3QflZ74
+Message-ID: <CAEnQRZBVhijvq0VRTKXpW7va2Dxprzz-cnvvj=z90FPXRK+TSA@mail.gmail.com>
+Subject: Re: [PATCH v3] remoteproc: imx: Fix invalid loaded resource table detection
+To: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Iuliana Prodan <iuliana.prodan@nxp.com>, Daniel Baluta <daniel.baluta@nxp.com>, 
+	Frank Li <frank.li@nxp.com>, linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Peng Fan <peng.fan@nxp.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay49-hz3.antispameurope.com with 4f4vxH13xBz3ybHd
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:b6b042cd698d2248267929566eccc0fd
-X-cloud-security:scantime:2.015
-DKIM-Signature: a=rsa-sha256;
- bh=QNR5RxTwzTtZsop8+J+WBmJB6mqTYo7/2/cKx2YLwz8=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1770103167; v=1;
- b=VnhSXCrdWe0Qoht+vf8ReWu8+Pp415ZEnAQDj8hMZ9h/epoQQK+1DM2gd3TwLJLwy1VaGcQ9
- MlklC8yOOo7Ek5U0DMkI5WoiLOg1InBjUL8CUYzzv2rtqTRQhrf87Ur3gZ+yMah417cnnjJDZIY
- M9Cxc2U5BuI2NB+UcrMPxz4aJSjkQa8c8HrWSmiaDUuYKdkz205ccrUhmvLXvVFG6Posjojxc/M
- i6tUuvyZyjKGawC/sKuyBvz+HPSNRlpurAPQFb4isD8JLQRL0qL5dCkzXf4VtsLISscKGRZez3G
- LqhEddfvh4G3ULGJ4FVMq3ndC9/DxHP4B8US5vR4Y6phQ==
 
-Am Montag, 2. Februar 2026, 11:27:45 CET schrieb Xu Yang:
-> The i.MX USB glue and DWC3 core are closely coupled. Describe the i.MX
-> USB block in a single block will bring more benefits than a parent-
-> child relation. The new binding is a copy of fsl,imx8mp-dwc3.yaml with
-> the needed modifications.
->=20
-> Add the common compatible string "fsl,imx-dwc3" to indicate that the
-> flattened module should be selected. This compatible is also used by
-> "select" to inform the DeviceTree validator to apply this binding.
->=20
-> To avoid redefining all the platform-specific compatibles, "select" is
-> used to tell the DeviceTree validator which binding to use solely on the
-> generic compatible.
->=20
-> Mark fsl,imx8mp-dwc3 deprecated, to favor expressing future platforms
-> using the new combined binding.
->=20
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> ---
->  .../devicetree/bindings/usb/fsl,imx-dwc3.yaml      | 131 +++++++++++++++=
-++++++
->  .../devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml   |  13 ++
->  2 files changed, 144 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/usb/fsl,imx-dwc3.yaml b/Do=
-cumentation/devicetree/bindings/usb/fsl,imx-dwc3.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..bc6b9743396e8f6b698706caa=
-e71241b0512ce8b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/usb/fsl,imx-dwc3.yaml
-> @@ -0,0 +1,131 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +# Copyright 2026 NXP
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/usb/fsl,imx-dwc3.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: NXP i.MX Soc USB Controller
-> +
-> +maintainers:
-> +  - Xu Yang <xu.yang_2@nxp.com>
-> +
-> +select:
-> +  properties:
-> +    compatible:
-> +      contains:
-> +        const: fsl,imx-dwc3
-> +  required:
-> +    - compatible
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - fsl,imx95-dwc3
-> +          - fsl,imx943-dwc3
-> +          - fsl,imx8mp-dwc3
+On Mon, Feb 2, 2026 at 6:16=E2=80=AFPM Mathieu Poirier
+<mathieu.poirier@linaro.org> wrote:
+>
+> On Thu, Jan 29, 2026 at 06:02:21PM +0200, Daniel Baluta wrote:
+> > On Thu, Jan 29, 2026 at 3:45=E2=80=AFAM Peng Fan (OSS) <peng.fan@oss.nx=
+p.com> wrote:
+> > >
+> > > From: Peng Fan <peng.fan@nxp.com>
+> > >
+> > > imx_rproc_elf_find_loaded_rsc_table() may incorrectly report a loaded
+> > > resource table even when the current firmware does not provide one.
+> > >
+> > > When the device tree contains a "rsc-table" entry, priv->rsc_table is
+> > > non-NULL and denotes where a resource table would be located if one i=
+s
+> > > present in memory. However, when the current firmware has no resource
+> > > table, rproc->table_ptr is NULL. The function still returns
+> > > priv->rsc_table, and the remoteproc core interprets this as a valid l=
+oaded
+> > > resource table.
+> > >
+> > > Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table()=
+ when
+> > > there is no resource table for the current firmware (i.e. when
+> > > rproc->table_ptr is NULL). This aligns the function's semantics with =
+the
+> > > remoteproc core: a loaded resource table is only reported when a vali=
+d
+> > > table_ptr exists.
+> > >
+> > > With this change, starting firmware without a resource table no longe=
+r
+> > > triggers a crash.
+> > >
+> > > Fixes: e954a1bd1610 ("remoteproc: imx_rproc: Use imx specific hook fo=
+r find_loaded_rsc_table")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> >
+> > Changes looks good to  me >
+> >
+> > > --- a/drivers/remoteproc/imx_rproc.c
+> > > +++ b/drivers/remoteproc/imx_rproc.c
+> > > @@ -729,6 +729,10 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc=
+ *rproc, const struct firmware *
+> > >  {
+> > >         struct imx_rproc *priv =3D rproc->priv;
+> > >
+> > > +       /* No resource table in the firmware */
+> > > +       if (!rproc->table_ptr)
+> > > +               return NULL;
+> >
+> > I wonder if we can make this change generic because it should happen
+> > on other platforms also.
+> >
+> > Maybe something like this:
+> >
+> > remoteproc: core: Only copy loaded table when valid
+> >
+> > Copy resource table in memory only when:
+> > * the current loaded firmware provides one
+> > AND
+> > * there is an explicit request to have the rsc table copied in memory
+> > via rsc-table
+> >
+> > --- a/drivers/remoteproc/remoteproc_core.c
+> > +++ b/drivers/remoteproc/remoteproc_core.c
+> > @@ -1281,7 +1281,7 @@ static int rproc_start(struct rproc *rproc,
+> > const struct firmware *fw)
+> >          * that any subsequent changes will be applied to the loaded ve=
+rsion.
+> >          */
+> >         loaded_table =3D rproc_find_loaded_rsc_table(rproc, fw);
+> > -       if (loaded_table) {
+> > +       if (rproc->cached_table && loaded_table) {
+>
+> But we would be doing the check for rproc->table_ptr twice (->table_ptr a=
+nd
+> ->cached_table should be the same).  The way it is currently writting for=
+ces
+> vendor specific implementation of rproc_elf_find_loaded_rsc_table() to do=
+ the
+> right thing.
+>
+> The merge window has been pushed by a week, giving me an opportunity to m=
+erge
+> this patch.  Should I do that or should we continue discussing the best
+> approach?
 
-Can you please sort this? I would have expected the exact reverse ordering.
+Let's go with Peng's approach:
 
-> +      - const: fsl,imx-dwc3
-> +
-> +  reg:
-> +    items:
-> +      - description: DWC3 core registers.
-> +      - description: HSIO Block Control registers.
-> +      - description: Wrapper registers of dwc3 core.
-> +
-> +  reg-names:
-> +    items:
-> +      - const: core
-> +      - const: blkctl
-> +      - const: glue
-> +
-> +  interrupts:
-> +    items:
-> +      - description: DWC3 controller interrupt.
-> +      - description: Wakeup interrupt from glue logic.
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: dwc_usb3
-> +      - const: wakeup
-> +
-> +  iommus:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    items:
-> +      - description: System hsio root clock
-> +      - description: SoC Bus Clock for AHB/AXI/Native
-> +      - description: Reference clock for generating ITP when UTMI/ULPI P=
-HY is suspended
-> +      - description: Suspend clock used for usb wakeup logic.
-> +
-> +  clock-names:
-> +    items:
-> +      - const: hsio
-> +      - const: bus_early
-> +      - const: ref
-> +      - const: suspend
-> +
-> +  fsl,permanently-attached:
-> +    type: boolean
-> +    description:
-> +      Indicates if the device attached to a downstream port is
-> +      permanently attached.
-> +
-> +  fsl,disable-port-power-control:
-> +    type: boolean
-> +    description:
-> +      Indicates whether the host controller implementation includes port
-> +      power control. Defines Bit 3 in capability register (HCCPARAMS).
-> +
-> +  fsl,over-current-active-low:
-> +    type: boolean
-> +    description:
-> +      Over current signal polarity is active low.
-> +
-> +  fsl,power-active-low:
-> +    type: boolean
-> +    description:
-> +      Power pad (PWR) polarity is active low.
-> +
-> +  power-domains:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +  - interrupts
-> +  - power-domains
-> +
-> +allOf:
-> +  - $ref: snps,dwc3-common.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> +
-> +    usb@4c100000 {
-> +      compatible =3D "fsl,imx943-dwc3", "fsl,imx-dwc3";
-> +      reg =3D <0x4c100000 0x10000>,
-> +            <0x4c010010 0x04>,
-> +            <0x4c1f0000 0x20>;
-> +      reg-names =3D "core", "blkctl", "glue";
-> +      clocks =3D <&scmi_clk 74>,    //IMX94_CLK_HSIO
-> +               <&scmi_clk 74>,    //IMX94_CLK_HSIO
-> +               <&scmi_clk 2>,     //IMX94_CLK_24M
-> +               <&scmi_clk 1>;     //IMX94_CLK_32K
-> +      clock-names =3D "hsio", "bus_early", "ref", "suspend";
-> +      interrupts =3D <GIC_SPI 180 IRQ_TYPE_LEVEL_HIGH>,
-> +                   <GIC_SPI 386 IRQ_TYPE_LEVEL_HIGH>;
-> +      interrupt-names =3D "dwc_usb3", "wakeup";
-> +      power-domains =3D <&scmi_devpd 13>;   //IMX94_PD_HSIO_TOP
-> +      phys =3D <&usb3_phy>, <&usb3_phy>;
-> +      phy-names =3D "usb2-phy", "usb3-phy";
-> +      snps,gfladj-refclk-lpm-sel-quirk;
-> +      snps,parkmode-disable-ss-quirk;
-> +      status =3D "disabled";
-> +    };
-> diff --git a/Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml b=
-/Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml
-> index 73e7a60a0060dee6417b9469251e121704b7a148..fd23c345149e0dba1ed3919a2=
-5195edf247cfc08 100644
-> --- a/Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml
-> +++ b/Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml
-> @@ -10,6 +10,19 @@ title: NXP iMX8MP Soc USB Controller
->  maintainers:
->    - Li Jun <jun.li@nxp.com>
-> =20
-> +deprecated: true
-> +
-> +select:
-> +  properties:
-> +    compatible:
-> +      oneOf:
-> +        - items:
-> +            - const: fsl,imx95-dwc3
-> +            - const: fsl,imx8mp-dwc3
-
-Same here.
-
-Best regards,
-Alexander
-
-> +        - const: fsl,imx8mp-dwc3
-> +  required:
-> +    - compatible
-> +
->  properties:
->    compatible:
->      oneOf:
->=20
->=20
-
-
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+Acked-by: Daniel Baluta <daniel.baluta@nxp.com>
