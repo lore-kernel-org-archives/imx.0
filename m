@@ -1,220 +1,391 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011033.outbound.protection.outlook.com [52.101.70.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0BD3ACF1D
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 15:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.33
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770133285; cv=fail; b=J+SOLEsqo1fvyfO736HIbm3XtTYqG5fJc3uvJh98TOdBqTBnkWtG9HyfrBk/gyRdypKfVNtBvisJtVICoC+MGUd7Czm8hoJcQnlZSXlszJbYXZ0MFv/0zkBYmJfJvV4SkTNSm/WGfcsivSX7iCDbUFvgOt4Y1KyyxUbJqBQqqfA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770133285; c=relaxed/simple;
-	bh=sn3wGI5izxb2Ln/Km3NUd1NEuVe/Hj3QS1+si8MiqBo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=EQrH15wjiMuYvZzecUNuGZU7Fu8HIh30k4r7wAf+U2GPZkfFSKKYgylwjeirX3M/hHR7DdW3SlN7qzf0MwwJijy8y8E3zSpBz5QdffwaH+4wIYsZRJsgmVtAri3aQo9/L4dkgsejr3MOhR8cTtU5CFI5NpvPAWAYbCCgNuPhuJA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eT7EZS1o; arc=fail smtp.client-ip=52.101.70.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641D8317709
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 15:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770133334; cv=none; b=j4DtWKdjjTKGjLllTcYs2yfvGfgVICoTDt42yeQRHIdb19XSG0BMrODxR8ky9x5OHw2OuDaCGuK8J0/0Gr1TG9fzhQ4LQMYdenzCsNFJ0VgTvD7aLitQkextEtjuIp8OIyJfXL70mtw/a0IYeYE3T4GT+7zKKczK3r6fdqJDT/s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770133334; c=relaxed/simple;
+	bh=Qzc6XlD+IcLE+qx7WW74mIng+TY9esDEoy6PaE14NPQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uvTXkVVj0XgoLWd1TSCGO/euQ66YtNhXwsKMDJczKVz1aqkSyhjTncARf47y6LgADcEwhMes1hS/he6PCnyS8DiBBG9ZXsvQCcIzS0vyUztVnGVd2J9+PZK+KPmpki7cYIHTZ+IQ8xj02rZtg2qtWbQF1CbMe8wdi5RIyjPCXRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O1+BRMGb; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eT7EZS1o"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B3822qZNXRbJmeKttjd09dhDzo8H5dyjwm79hb+pbXRgoQ3y0BICqCLmdy3Dg3g66wBwHthpzvjpubDpbgkEqbdKrTMR0CFrVd8xUNw8qCf2E52nNiBGUnW+bhavN9V2c32mayfqsAUq6Yddov3L1WvtLVIMaRrakq7ETKjKJLUZLfrdL3UfpLNJ7OGGhns1c43AehYwq8FnOlYJHtk01sqE5vnj9yzR4rZ7OrCvzska+CBPu0Gqqsg+IQOebrsTTsQymiFe7NrRrKSuJBqjd/0EFldSsVoWzbiSobFvR9ibHjxoqVnajW035iai3ZghhWaYVCzGahyHzh3Wp932IA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MPr3/K2IA7B+Psb1GDUE9EqV/EGskCr88s3zkU61kl0=;
- b=naZlnP4/ywMd6YJwvCDaOXznWruxNsXdDuYnncYM8KErqoqLF/MX9SWTUwqJWrYdXJhX5bSnspziv3rWBPiHcX6Ep+XRWxckI2hlJl3O1ooV4WQXtwX4IhEYwU/Dd2gDFjkob2JDPFbjIJv4Y5e7kY6/LUH18LbtQD2x2NMSpMf5zeGJg8CnrR/jv9kYfS3VGdefrynatAjpgt8vuABbupSBamtYgQoz0iDCbL7GbcWrfm/ypdElKls9Jpue6SzIKuHUFoCYKgYkO4iB8jx5MuK9D2PNVFu1k1uuUkjfoBXNGem0UKcPyJN5y2m/JakWqfbVBQvyKULY96aPCTNfGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MPr3/K2IA7B+Psb1GDUE9EqV/EGskCr88s3zkU61kl0=;
- b=eT7EZS1o7iVFPse0+3Ez8Uy1lCSrRFtGeKXb+P7uCuzazSeDvB/MQ0FCLpi7c61d9dxpcQWSglyIZNEklAVFHO5bMXlyCWKepidlfqi7qLNzK+9Bo+td1vZHZN9srkKcFqYJ4qBWB96cSL3wnF8Ov+LW/hFpukQhyi/scmN/h5s3gG039CYD1J08VTaruaXp6zHHaSKoPfm55v9rVsO6lGyhTPto3xoeq+z/7gUExct9boyiIqh8CyqaGFJPllHiH3ONGE3QSISs0TsHEpt9qyF/vVojnEU2G04BLnqEc7ZDG6JVRA77F1TGTqfawUa4as1rKBT3MWA1v9KA+RaLxw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU0PR04MB9372.eurprd04.prod.outlook.com (2603:10a6:10:35b::7)
- by AS8PR04MB7974.eurprd04.prod.outlook.com (2603:10a6:20b:2a1::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Tue, 3 Feb
- 2026 15:41:21 +0000
-Received: from DU0PR04MB9372.eurprd04.prod.outlook.com
- ([fe80::4f6:1e57:c3b9:62b4]) by DU0PR04MB9372.eurprd04.prod.outlook.com
- ([fe80::4f6:1e57:c3b9:62b4%4]) with mapi id 15.20.9564.016; Tue, 3 Feb 2026
- 15:41:21 +0000
-Date: Tue, 3 Feb 2026 10:41:11 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: ciprianmarian.costea@oss.nxp.com, s32@nxp.com, lpieralisi@kernel.org,
-	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
-	bhelgaas@google.com, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] PCI: s32g: Fix ports parsing
-Message-ID: <aYIXFzOoQXq8Xtyv@lizhi-Precision-Tower-5810>
-References: <20260202151050.1446165-1-vincent.guittot@linaro.org>
- <aYDiFpGT5hEDDFhV@lizhi-Precision-Tower-5810>
- <CAKfTPtDjad7aowTQ3UJPi5Qqgzf3q8J=kASa-t3YM4zfjUv3-w@mail.gmail.com>
- <aYD+/iTSF8ikTLIY@lizhi-Precision-Tower-5810>
- <CAKfTPtDcKw0qc3o70AT9_n2omejNrh9fnkwS5NWKQpqjaCnBdg@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKfTPtDcKw0qc3o70AT9_n2omejNrh9fnkwS5NWKQpqjaCnBdg@mail.gmail.com>
-X-ClientProxiedBy: BY3PR05CA0021.namprd05.prod.outlook.com
- (2603:10b6:a03:254::26) To DU0PR04MB9372.eurprd04.prod.outlook.com
- (2603:10a6:10:35b::7)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O1+BRMGb"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4359249bbacso630775f8f.0
+        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 07:42:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770133331; x=1770738131; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8mRvLOCNLqjVmjiKjh0H9exGu/p/pcpVAXu1Cdl+14Q=;
+        b=O1+BRMGb4Qza44Q+CpEkvfGmzt5YluSlBIEDbWnlI4P+5cPbH9D9tnEUE7zfZ8RwqF
+         lii64kJTSjsJrxXJOgY9ICX4tx/bzAWpEEwC/0Aouullf3y0kFSB8y9Ys5m0EHFDe3xd
+         Qx4WxDnzeDeuNWR+mB8FqfkP3AWPsithpjxhyWJB/yOoZrZhaJ+xpYJ63plmOrYFtW3S
+         y8td1udfb88Ws5QFb1rMtMoQWoNiYoN8VaRztwxmZB1ogUI+nq0Bg805DngI5MPBo8IU
+         VLRI07Bey3LbhUE1thh4T91xL/Os/OUKBIAYZq8qtWrdDWriCJCSWjxueApq5J8vbSVi
+         j0SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770133331; x=1770738131;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8mRvLOCNLqjVmjiKjh0H9exGu/p/pcpVAXu1Cdl+14Q=;
+        b=JTBqX4Tzv68O18pl2UkzlD68yati8Ypf4EL5e+C9EZmWZ+n/0TXoFZDo5XrDnI4xEU
+         wqgVBsbIG+vJR9SkUMvXzENP6QsRzAp4UmgkvCJnTUgo4OX/x6iQTyTJloAqUk+Cf2zg
+         V5ULX/Lu7VtiCbOE/ZgkwlhpSsGllPvUaT0FL2RUIpMu0nA+srD6q92ODbsSrgIQLJx4
+         DnZeHNSmxQPJ5VOPIe7QLoJRr44sBCzS6dxmSn8vrrNFoWZwE78xcZGmjaGKUp6/Hjva
+         DPlPpYgPlZAvE0FavqxMC5WQ4rBmPQi9P8h9dhLj7WiZ8QH2mUGCWoRs2756op6eTQYz
+         bQQw==
+X-Forwarded-Encrypted: i=1; AJvYcCUupv3r5GhXj6Kih/KvuGhSXKLrB3T1lim4WAXEMgIIu9eZo6nl8lK/qcxB1HX/jgPyfKg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzgpunCNkpmOz9rnvRN0UXr+7oM59RwSXKvsw0dxHXpk63O77Vw
+	DS8x4E74oWlL7rZfzCt5dkvGWDbbfBzV7B/QtpD4DTIZvF6lJBGcMExa
+X-Gm-Gg: AZuq6aKTfGafI8agYSbpOGKSAFYR9IQUVIbCK6lSpEoPaTTBnmPH05I++dHv4oxKEpT
+	nYOt5963vn1Gw/vUcau82bMr75x07d7mjeuLEWG9eIOP/2MXBnEFFfNzzjXq9MpZm30HQuKeuWT
+	jxpYce00uVaXa9HW+cO7tNPXXebH9Kyvmd2if2e7qpcZWh2ioriXTx8N4bb2fq7O//sFN9LoGwP
+	zn72VnXs2ooIrxf5jGISNR3KGfCNwkWx1KViTemhOsRYhlz7zzgXhDTj27/XHEymc5UZpliCfy5
+	3H8aTXfvtO/78WWk9i0AeqwEs5ZD66YbWSwXKzxGzf2S/EsW4QtwiZ4Ani9GDeeRUedNCeXbN+x
+	BOvwe8NAXQhhnNoIWDj7fnHstEWNpq3pqiHs0SBanP+olbW0JC8idQTpARhWWW04FmduC0/ohXw
+	KpKZ7NfwSFqDQs0t70d5qwgLQX
+X-Received: by 2002:a05:6000:2dc5:b0:435:bcbd:cb29 with SMTP id ffacd0b85a97d-436113099b6mr5919152f8f.2.1770133330387;
+        Tue, 03 Feb 2026 07:42:10 -0800 (PST)
+Received: from [192.168.0.7] ([86.124.200.187])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e10e4757sm54954039f8f.5.2026.02.03.07.42.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Feb 2026 07:42:10 -0800 (PST)
+Message-ID: <ea2434e6-d1db-4ea2-90f4-0a77961b7918@gmail.com>
+Date: Tue, 3 Feb 2026 17:42:07 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR04MB9372:EE_|AS8PR04MB7974:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7d0ca6b9-1366-4e70-3106-08de633aadc9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|7416014|366016|52116014|376014|1800799024|7053199007|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bKnKLkLIr3bsv2JfbG9rRIoTHHdszuuIZSfDvbg04wgLTJqxvn4i6npc7JXb?=
- =?us-ascii?Q?PT5K1U+iRM7PAhwrc4L7dJ7JAh/nbTF0UiRYefittsI85mx+8XtCz6v2nLsf?=
- =?us-ascii?Q?mR1pZPZ2I1AUSJW/dBy0TSwu4uaWoQxQgp131EnEPzIq1MAkneGvvgE3P157?=
- =?us-ascii?Q?W4AMUrldiavkgxStM5Wfhsndwh399EPE83Bw1utynaZO+0+rHTnWcGPW7Jvt?=
- =?us-ascii?Q?4qFGju3WiYaGPEtjlxVWI3iXWs87N/tChhjwL5sJDgT8Knib7mkeXLRt3Iwz?=
- =?us-ascii?Q?TeeU5R/RJhX/BA3UqsLyJ5Ulh7R6g1bF/xOknY6G7Xbrho2OsC6K4GdEYdPo?=
- =?us-ascii?Q?nvWRFwYHwk/99fq/HQDt5G+iwi96Zwz0BPeSOFzkiV7iyR01pxhPQgZgFWnx?=
- =?us-ascii?Q?r4x2WzjN6wpP6nGLPHt0oDtqBQFiu3UMub/gBYWapXeZeHrFbxmKvaeVU1sq?=
- =?us-ascii?Q?G16GDsC2/63qQKgjxxujNNFv+Mt/JH+P6JA05jAt1FUvh7mn4Qojxk+7exJO?=
- =?us-ascii?Q?mEU3dyGfbWVtbkCxX2X6/hwx8oFZuIIUYiTZtCrm7+hFniXoPD359vopnsEL?=
- =?us-ascii?Q?UzL7/TVjfp9qTgRwA4vAkK23Tt8B7ehQFJFFsV0wHD0cjxTmjPr5PRHBxALd?=
- =?us-ascii?Q?tnom9lhi44COyaTpMIPwVCIIjgQr1v1ayOqE6t4PjLfDjKqDptE+aAkXw2DI?=
- =?us-ascii?Q?ZFqpo18dnuuCxOETRaOA0RegYqHsb/mqn7KppA6YqgMO+8pt+xjW6YwJN+F1?=
- =?us-ascii?Q?VWszY/4LBmrMOq/rd39uTfpuany0TRIykIQJwpRCQS2HteOTJnJee6L4BP/2?=
- =?us-ascii?Q?9neCNIxoV+losCgVPaZrlYo8656jMWA5wtSqLVp2W8zw3PaJ83pboK7W0eeC?=
- =?us-ascii?Q?zt5PBSFWW5ZmHzDoX50I098TJeWErf49zucwB/4pbwA3I6lbNGuVXHTFYEDi?=
- =?us-ascii?Q?CTVQLlOUhb6TASuA8JZDwaXyx4iijgskajMtFlvdL9YDHkSCqdLLKrDZnmRg?=
- =?us-ascii?Q?TVIt4Y3R2X1cAfuj/h8DyVgODuCH/OJZQrtaO+BwtfgXYQagVWtw4ONEWTXH?=
- =?us-ascii?Q?3sQtjMotju05CHXFeVnXY5++hJM8Lcy3kgeqc4lboCM9Lx7XDgBbpCZTv9EL?=
- =?us-ascii?Q?iiGTs/thLyM2kINi+ysZ7c3qZgi0acum8HunoDfn0REsntVcRkuHpFNgxB8G?=
- =?us-ascii?Q?AOcye8iXfpX7oglqOh9k2HeMkhqzov86Uc0lKIm4qeNsO5MDvDhsDBEZ6NNM?=
- =?us-ascii?Q?d0k7nR61ep/R2gMoaQsrFXUoh0PI3G0tSoF8mIT+IZEjcTJIZS7KcOxj5T3L?=
- =?us-ascii?Q?p45v+YUJlYxEvZLTeikvR+6aGxhZK8zcFmIBB/UsnAY2M5LSi8sM6KJBOicq?=
- =?us-ascii?Q?o10zV5xDRxToHyFYYdLlDLpDIicu0jSLNGXE0kaJyjEfEd/ZlUFnLBgAVGZJ?=
- =?us-ascii?Q?ZLU5FexM06UtQoX1tM3ZT6C15v6TWOW8oJgZ5mF+HW0xJj3LEn3/o5CiIAhA?=
- =?us-ascii?Q?V4PI0ZwwDgXy0Q5SEMzZuJjPatkvbg2ut3yK5gAv/OsZTe8Bx/YoWZClko+9?=
- =?us-ascii?Q?EZZjeE1Hpbw1OFZT+logcB1fLW177cb7KxU0qxxa9VkXeWL3rcJkURuxsdl2?=
- =?us-ascii?Q?U4u61bcitgnRjgzBe7CTsV0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9372.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(366016)(52116014)(376014)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GnNKI8fxANwkikGxHgVK7oN0mzgNj5pZRYgGZ3/oQT6iHG636DuffCX9Yzgo?=
- =?us-ascii?Q?oriAvxNLziTWDCSpkOZRTYNUmwoqkGRgBNq65E5eW9tAoErNnhDGUDuGDlgK?=
- =?us-ascii?Q?Klr0DA3P1nM+Qq1p+2Fe+/HSJ56WXMqTRh/n2qOP3+lgVz1jropyioklwsbI?=
- =?us-ascii?Q?wZSknftdn38tQrZbEq44NrhD9joNhgWWIyM7fMIh8yeTGHJYM00oqnnl33Pl?=
- =?us-ascii?Q?d2w6NbTNfu2Egb1atkgSyuqbT6JZOJpvJbNInYtD3ktBpskRobVGVgoGUWeP?=
- =?us-ascii?Q?+TjnXHS5k6/1WHKjIVIX6Bw1kFf7Dwnk0n6Sh/OBaWTUoeLMB0m7popIqgry?=
- =?us-ascii?Q?XqQdCBwUa9FrSOsOQVt2qmonRYxhJWAtytrxZ0ouWFJm6qiSx85xBqBwv9wq?=
- =?us-ascii?Q?BSdde/9MgG39GoIx5SzV8BDYrVPhLlrhAdBkQkr3q5TJh8Efc+GPaAt0CSLr?=
- =?us-ascii?Q?I/pez+E0O8L4oNMimNiU0cNDFyBi6mai4fDxEoMVYC9GMKUGfvdnOE/sLVn5?=
- =?us-ascii?Q?yTZ+aF6IsX8tiqD+h+PzP8V/n5TowuFQeNpz+OV5dtWKgW5HsfCX2r8ggjKn?=
- =?us-ascii?Q?hY6Jh8d6R9fytnNreZq0Fm9sMvldgmT9tuevLgVQ/n2BYG2RgjPbVxmDYhlK?=
- =?us-ascii?Q?i9+mDjUm5yFLkIUDQbx4f3AWYYavErzMB3SbG2Zh+Pae308hECUQN6OD6cXr?=
- =?us-ascii?Q?2I42raI283uTbMRoe9JrsUJ/BgH9BlbLd5fG3Y9rLFPXJUVX1R25xJrz5bw8?=
- =?us-ascii?Q?83+kv8zEf6I3p5T1S+6mGgXxdfx9MU7W5OwRdd1i30pvlv8ohg7j3XH/uG7T?=
- =?us-ascii?Q?oPFA/GTqeOpPRDqOcT4L+/kV1AuvnhbS57VRZZ24pdZOiI1eQPdXV6I90YYT?=
- =?us-ascii?Q?h6+lWkLHIHcWq31/GfJWOhJg30H3mP6hRQKr2uhJrgh7jxg2wLtcSrE5tqd2?=
- =?us-ascii?Q?yjdcVZBcIBTSlyeJ75osh09z+xWadQsTwkJ3zmZf6+LiS3ysbx7ECpUCQxBY?=
- =?us-ascii?Q?z+rJTrJXqgPotGrPhx5711U8oEp+hraFvE3LXXZFeQ9K9yCvUNJnnTTmjSB+?=
- =?us-ascii?Q?EIH/IoFqIlV7/po7xMKror8C8SGL+aCLTo6NmOxwPA5vA9S3BQJcTPfzr730?=
- =?us-ascii?Q?GHUh7Y51WbgLIIZBLkdbgdQeMXnfIU2U16bU7sGygYj7yqtQxoqAHMevyp1m?=
- =?us-ascii?Q?e6Oh+1gG4xI3A+UV03SouAkeq7tnBQTmz5jvHE9dz5pvr6WKLrBzTn7tjaQc?=
- =?us-ascii?Q?4YMN5DsGGxfmAusXjP3ASQrm5wr+XnaACazd1Gke36SvSvxkoutXx2LlXeRC?=
- =?us-ascii?Q?xCUKbZdUFzLNpTcXKCc2N3ZgAO9vfiNFE9hckah5ukQbxuVXusauK+2+LfsJ?=
- =?us-ascii?Q?+uG7IbqxG3q3gT3576CSveEjHpDEf2iWJzRI0cmEG5/5+teYw72bBwDrkgGw?=
- =?us-ascii?Q?nSwRKf3/ZuQYMDQwhwM8I2cSpQ+nYGi18WYjN8WCmgryiE37qDhJqolI6oJB?=
- =?us-ascii?Q?oDO/bbkwIKYIU9PTPNvkmT5AdVngjdq6GQi3A0iLpZ5r0whqnhjoTgzERS3b?=
- =?us-ascii?Q?D+sbWDoQRhHuMW4j77vztHRysiuhS1SFR0jhk+Uk07Y+sxqZX6z+nFFiG+pa?=
- =?us-ascii?Q?Nu2GdL8Qi/dGQFe823IctaBqYQZmh4w+fbNpTfAot/F1t6/CmbWEbiCeW96+?=
- =?us-ascii?Q?Ea9ffet2ygA1MHpm3v3jZMPHVBL/ZJxeSFllHPsooVKiQBwS/8lpx45XdMIY?=
- =?us-ascii?Q?HrtP//Ynvg=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7d0ca6b9-1366-4e70-3106-08de633aadc9
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9372.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 15:41:20.9645
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kgQDrcF+vm0z1Ut+uCJgPnqNds7DhLOugfPYrEcNRRrvBoUydltrJcx3EyXqCprRrUdOrMCyWbx3Mzh1JXTnzg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7974
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC net-next] net: stmmac: provide flag to disable EEE
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Clark Wang <xiaoning.wang@nxp.com>,
+ Daniel Scally <dan.scally@ideasonboard.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
+ Eric Dumazet <edumazet@google.com>, Fabio Estevam <festevam@gmail.com>,
+ Heiner Kallweit <hkallweit1@gmail.com>, imx@lists.linux.dev,
+ Jakub Kicinski <kuba@kernel.org>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+ Oleksij Rempel <o.rempel@pengutronix.de>, Paolo Abeni <pabeni@redhat.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Rob Herring <robh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shawn Guo <shawnguo@kernel.org>, Stefan Klug <stefan.klug@ideasonboard.com>,
+ Wei Fang <wei.fang@nxp.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+References: <E1vNUjC-0000000FhjR-0h6P@rmk-PC.armlinux.org.uk>
+ <f95f73b9-d024-4697-bca1-02fb8bc044af@gmail.com>
+ <aYEj8VM5AfvcDHrl@shell.armlinux.org.uk>
+Content-Language: en-US
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+In-Reply-To: <aYEj8VM5AfvcDHrl@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 03, 2026 at 07:56:23AM +0100, Vincent Guittot wrote:
-> On Mon, 2 Feb 2026 at 20:46, Frank Li <Frank.li@nxp.com> wrote:
-> >
-> > On Mon, Feb 02, 2026 at 08:23:30PM +0100, Vincent Guittot wrote:
-> > > On Mon, 2 Feb 2026 at 18:42, Frank Li <Frank.li@nxp.com> wrote:
-> > > >
-> > > > On Mon, Feb 02, 2026 at 04:10:50PM +0100, Vincent Guittot wrote:
-> > > > > No error return is missing after the loop resulting in removing the
-> > > > > ports from the list.
-> > > > >
-> > > > > Fixes: 5cbc7d3e316e ("PCI: s32g: Add NXP S32G PCIe controller driver (RC)")
-> > > > > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-> > > > > ---
-> > > > >
-> > > > > Change since v1:
-> > > > > - handle correctly the case when there is no child port
-> > > > >
-> > > > >  drivers/pci/controller/dwc/pcie-nxp-s32g.c | 8 ++++----
-> > > > >  1 file changed, 4 insertions(+), 4 deletions(-)
-> > > > >
-> > > > > diff --git a/drivers/pci/controller/dwc/pcie-nxp-s32g.c b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
-> > > > > index 47745749f75c..b3ec38099fa3 100644
-> > > > > --- a/drivers/pci/controller/dwc/pcie-nxp-s32g.c
-> > > > > +++ b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
-> > > > > @@ -282,12 +282,12 @@ static int s32g_pcie_parse_ports(struct device *dev, struct s32g_pcie *s32g_pp)
-> > > > >
-> > > > >               ret = s32g_pcie_parse_port(s32g_pp, of_port);
-> > > > >               if (ret)
-> > > > > -                     goto err_port;
-> > > > > +                     break;
-> > > > >       }
-> > > > >
-> > > > > -err_port:
-> > > > > -     list_for_each_entry_safe(port, tmp, &s32g_pp->ports, list)
-> > > > > -             list_del(&port->list);
-> > > >
-> > > > break and goto is logical equal here. So only need below if (ret).
-> > >
-> > > Yes it's similar that why I removed it, the goto becomes useless and
-> > > make code less readable
-> >
-> > But don't suggest change in this fixes patch, which should focus on the
-> > key part.
->
-> It's not a suggested change, it's the fix. err_port is now wrong
-> because it's the path for all cases.
 
-But "goto" is the same as orginal "break". Really fix is below "if (ret)".
+Hi Russell,
 
-Frank
+On 2/3/26 12:23 AM, Russell King (Oracle) wrote:
+> On Mon, Feb 02, 2026 at 08:54:52PM +0200, Ovidiu Panait wrote:
+>>
+>> Hi Russell,
+>>
+>> On 11/24/25 1:27 PM, Russell King (Oracle) wrote:
+>>> Some platforms have problems when EEE is enabled, and thus need a way
+>>> to disable stmmac EEE support. Add a flag before the other LPI related
+>>> flags which tells stmmac to avoid populating the phylink LPI
+>>> capabilities, which causes phylink to call phy_disable_eee() for any
+>>> PHY that is attached to the affected phylink instance.
+>>>
+>>> iMX8MP is an example - the lpi_intr_o signal is wired to an OR gate
+>>> along with the main dwmac interrupts. Since lpi_intr_o is synchronous
+>>> to the receive clock domain, and takes four clock cycles to clear, this
+>>> leads to interrupt storms as the interrupt remains asserted for some
+>>> time after the LPI control and status register is read.
+>>>
+>>> This problem becomes worse when the receive clock from the PHY stops
+>>> when the receive path enters LPI state - which means that lpi_intr_o
+>>> can not deassert until the clock restarts. Since the LPI state of the
+>>> receive path depends on the link partner, this is out of our control.
+>>> We could disable RX clock stop at the PHY, but that doesn't get around
+>>> the slow-to-deassert lpi_intr_o mentioned in the above paragraph.
+>>>
+>>> Previously, iMX8MP worked around this by disabling gigabit EEE, but
+>>> this is insufficient - the problem is also visible at 100M speeds,
+>>> where the receive clock is slower.
+>>>
+>>> There is extensive discussion and investigation in the thread linked
+>>> below, the result of which is summarised in this commit message.
+>>>
+>>
+>> We are seeing the same lpi_intr_o interrupt storm on the Renesas RZ/V2H
+>> EVK (dwmac-renesas-gbeth.c). On this platform, lpi_intr_o is routed as a
+>> separate, dedicated interrupt line to the CPU rather than being OR'd
+>> with the main DWMAC interrupt as on iMX8MP. This corresponds to the
+>> "eth_lpi" interrupt in the stmmac bindings:
+>> """
+>> - description: The interrupt that occurs when Rx exits the LPI state
+>> const: eth_lpi
+>> """
+>>
+>> Looking through the other glue drivers/device-trees, it looks to me that
+>> every platform that defines a separate "eth_lpi" irq might have the
+>> interrupt storm problem.
+> 
+> That is highly likely.
+> 
+>> To fix this issue on these platforms, rather than disabling EEE
+>> altogether, would it be possible to just not request the eth_lpi
+>> interrupt and let EEE continue to work? Perhaps a new flag could let
+>> each platform decide.
+> 
+> Yes, because lpi_intr_o serves no purpose from a software point of
+> view - see the commit message below for the details. I do like
+> removing code from stmmac :)
+> 
+>> If not, maybe this patch could be merged to add the flag that disables
+>> EEE and I will just send a patch to disable EEE on our platforms as well.
+> 
+> We still need the flag to disable EEE for platforms where lpi_intr_o is
+> logically OR'd with the other interrupts, so there's no way to ignore
+> its persistent assertion.
+> 
+> 8<===
+> From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+> Subject: [PATCH net-next] net: stmmac: remove support for lpi_intr_o
+> 
+> The dwmac databook for v3.74a states that lpi_intr_o is a sideband
+> signal which should be used to ungate the application clock, and this
+> signal is synchronous to the receive clock. The receive clock can run
+> at 2.5, 25 or 125MHz depending on the media speed, and can stop under
+> the control of the link partner. This means that the time it takes to
+> clear is dependent on the negotiated media speed, and thus can be 8,
+> 40, or 400ns after reading the LPI control and status register.
+> 
+> It has been observed with some aggressive link partners, this clock
+> can stop while lpi_intr_o is still asserted, meaning that the signal
+> remains asserted for an indefinite period that the local system has
+> no direct control over.
+> 
+> The LPI interrupts will still be signalled through the main interrupt
+> path in any case, and this path is not dependent on the receive clock.
+> 
+> This, since we do not gate the application clock, and the chances of
+> adding clock gating in the future are slim due to the clocks being
+> ill-defined, lpi_intr_o serves no useful purpose. Remove the code which
+> requests the interrupt, and all associated code.
+> 
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
->
-> >
-> > Frank
-> >
-> > >
-> > > >
-> > > > Frank
-> > > >
-> > > > > +     if (ret)
-> > > > > +             list_for_each_entry_safe(port, tmp, &s32g_pp->ports, list)
-> > > > > +                     list_del(&port->list);
-> > > > >
-> > > > >       return ret;
-> > > > >  }
-> > > > > --
-> > > > > 2.43.0
-> > > > >
+Thanks for fixing this. I did some testing on the Renesas RZ/V2H board
+with this patch and didn't see any issues:
+
+Tested-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+
+Ovidiu
+
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/common.h  |  1 -
+>  .../net/ethernet/stmicro/stmmac/dwmac-intel.c |  4 ---
+>  .../ethernet/stmicro/stmmac/dwmac-loongson.c  |  7 ----
+>  drivers/net/ethernet/stmicro/stmmac/stmmac.h  |  2 --
+>  .../net/ethernet/stmicro/stmmac/stmmac_main.c | 36 -------------------
+>  .../ethernet/stmicro/stmmac/stmmac_platform.c |  8 -----
+>  include/linux/stmmac.h                        |  1 -
+>  7 files changed, 59 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+> index 1c5a4af85b58..d26e8a063022 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/common.h
+> +++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+> @@ -394,7 +394,6 @@ enum request_irq_err {
+>  	REQ_IRQ_ERR_SFTY,
+>  	REQ_IRQ_ERR_SFTY_UE,
+>  	REQ_IRQ_ERR_SFTY_CE,
+> -	REQ_IRQ_ERR_LPI,
+>  	REQ_IRQ_ERR_WOL,
+>  	REQ_IRQ_ERR_MAC,
+>  	REQ_IRQ_ERR_NO,
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+> index aad1be1ec4c1..92d77b0c2f54 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+> @@ -719,7 +719,6 @@ static int intel_mgbe_common_data(struct pci_dev *pdev,
+>  
+>  	/* Setup MSI vector offset specific to Intel mGbE controller */
+>  	plat->msi_mac_vec = 29;
+> -	plat->msi_lpi_vec = 28;
+>  	plat->msi_sfty_ce_vec = 27;
+>  	plat->msi_sfty_ue_vec = 26;
+>  	plat->msi_rx_base_vec = 0;
+> @@ -1177,8 +1176,6 @@ static int stmmac_config_multi_msi(struct pci_dev *pdev,
+>  		res->irq = pci_irq_vector(pdev, plat->msi_mac_vec);
+>  	if (plat->msi_wol_vec < STMMAC_MSI_VEC_MAX)
+>  		res->wol_irq = pci_irq_vector(pdev, plat->msi_wol_vec);
+> -	if (plat->msi_lpi_vec < STMMAC_MSI_VEC_MAX)
+> -		res->lpi_irq = pci_irq_vector(pdev, plat->msi_lpi_vec);
+>  	if (plat->msi_sfty_ce_vec < STMMAC_MSI_VEC_MAX)
+>  		res->sfty_ce_irq = pci_irq_vector(pdev, plat->msi_sfty_ce_vec);
+>  	if (plat->msi_sfty_ue_vec < STMMAC_MSI_VEC_MAX)
+> @@ -1294,7 +1291,6 @@ static int intel_eth_pci_probe(struct pci_dev *pdev,
+>  	 */
+>  	plat->msi_mac_vec = STMMAC_MSI_VEC_MAX;
+>  	plat->msi_wol_vec = STMMAC_MSI_VEC_MAX;
+> -	plat->msi_lpi_vec = STMMAC_MSI_VEC_MAX;
+>  	plat->msi_sfty_ce_vec = STMMAC_MSI_VEC_MAX;
+>  	plat->msi_sfty_ue_vec = STMMAC_MSI_VEC_MAX;
+>  	plat->msi_rx_base_vec = STMMAC_MSI_VEC_MAX;
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> index ed0b534d8d7b..d66ae6ea4df5 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+> @@ -442,13 +442,6 @@ static int loongson_dwmac_dt_config(struct pci_dev *pdev,
+>  		res->wol_irq = res->irq;
+>  	}
+>  
+> -	res->lpi_irq = of_irq_get_byname(np, "eth_lpi");
+> -	if (res->lpi_irq < 0) {
+> -		dev_err(&pdev->dev, "IRQ eth_lpi not found\n");
+> -		ret = -ENODEV;
+> -		goto err_put_node;
+> -	}
+> -
+>  	ret = device_get_phy_mode(&pdev->dev);
+>  	if (ret < 0) {
+>  		dev_err(&pdev->dev, "phy_mode not found\n");
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+> index 012b0a477255..aafd8c39be63 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+> @@ -31,7 +31,6 @@ struct stmmac_resources {
+>  	void __iomem *addr;
+>  	u8 mac[ETH_ALEN];
+>  	int wol_irq;
+> -	int lpi_irq;
+>  	int irq;
+>  	int sfty_irq;
+>  	int sfty_ce_irq;
+> @@ -297,7 +296,6 @@ struct stmmac_priv {
+>  	int wol_irq;
+>  	u32 gmii_address_bus_config;
+>  	struct timer_list eee_ctrl_timer;
+> -	int lpi_irq;
+>  	u32 tx_lpi_timer;
+>  	bool tx_lpi_clk_stop;
+>  	bool eee_enabled;
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 7a451ae19f50..7925575fb348 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -3734,10 +3734,6 @@ static void stmmac_free_irq(struct net_device *dev,
+>  			free_irq(priv->sfty_ce_irq, dev);
+>  		fallthrough;
+>  	case REQ_IRQ_ERR_SFTY_CE:
+> -		if (priv->lpi_irq > 0 && priv->lpi_irq != dev->irq)
+> -			free_irq(priv->lpi_irq, dev);
+> -		fallthrough;
+> -	case REQ_IRQ_ERR_LPI:
+>  		if (priv->wol_irq > 0 && priv->wol_irq != dev->irq)
+>  			free_irq(priv->wol_irq, dev);
+>  		fallthrough;
+> @@ -3795,24 +3791,6 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+>  		}
+>  	}
+>  
+> -	/* Request the LPI IRQ in case of another line
+> -	 * is used for LPI
+> -	 */
+> -	if (priv->lpi_irq > 0 && priv->lpi_irq != dev->irq) {
+> -		int_name = priv->int_name_lpi;
+> -		sprintf(int_name, "%s:%s", dev->name, "lpi");
+> -		ret = request_irq(priv->lpi_irq,
+> -				  stmmac_mac_interrupt,
+> -				  0, int_name, dev);
+> -		if (unlikely(ret < 0)) {
+> -			netdev_err(priv->dev,
+> -				   "%s: alloc lpi MSI %d (error: %d)\n",
+> -				   __func__, priv->lpi_irq, ret);
+> -			irq_err = REQ_IRQ_ERR_LPI;
+> -			goto irq_error;
+> -		}
+> -	}
+> -
+>  	/* Request the common Safety Feature Correctible/Uncorrectible
+>  	 * Error line in case of another line is used
+>  	 */
+> @@ -3952,19 +3930,6 @@ static int stmmac_request_irq_single(struct net_device *dev)
+>  		}
+>  	}
+>  
+> -	/* Request the IRQ lines */
+> -	if (priv->lpi_irq > 0 && priv->lpi_irq != dev->irq) {
+> -		ret = request_irq(priv->lpi_irq, stmmac_interrupt,
+> -				  IRQF_SHARED, dev->name, dev);
+> -		if (unlikely(ret < 0)) {
+> -			netdev_err(priv->dev,
+> -				   "%s: ERROR: allocating the LPI IRQ %d (%d)\n",
+> -				   __func__, priv->lpi_irq, ret);
+> -			irq_err = REQ_IRQ_ERR_LPI;
+> -			goto irq_error;
+> -		}
+> -	}
+> -
+>  	/* Request the common Safety Feature Correctible/Uncorrectible
+>  	 * Error line in case of another line is used
+>  	 */
+> @@ -7752,7 +7717,6 @@ static int __stmmac_dvr_probe(struct device *device,
+>  
+>  	priv->dev->irq = res->irq;
+>  	priv->wol_irq = res->wol_irq;
+> -	priv->lpi_irq = res->lpi_irq;
+>  	priv->sfty_irq = res->sfty_irq;
+>  	priv->sfty_ce_irq = res->sfty_ce_irq;
+>  	priv->sfty_ue_irq = res->sfty_ue_irq;
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> index 8979a50b5507..5c9fd91a1db9 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> @@ -725,14 +725,6 @@ int stmmac_get_platform_resources(struct platform_device *pdev,
+>  		stmmac_res->wol_irq = stmmac_res->irq;
+>  	}
+>  
+> -	stmmac_res->lpi_irq =
+> -		platform_get_irq_byname_optional(pdev, "eth_lpi");
+> -	if (stmmac_res->lpi_irq < 0) {
+> -		if (stmmac_res->lpi_irq == -EPROBE_DEFER)
+> -			return -EPROBE_DEFER;
+> -		dev_info(&pdev->dev, "IRQ eth_lpi not found\n");
+> -	}
+> -
+>  	stmmac_res->sfty_irq =
+>  		platform_get_irq_byname_optional(pdev, "sfty");
+>  	if (stmmac_res->sfty_irq < 0) {
+> diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+> index 5199451dd0bc..2620f0217f88 100644
+> --- a/include/linux/stmmac.h
+> +++ b/include/linux/stmmac.h
+> @@ -300,7 +300,6 @@ struct plat_stmmacenet_data {
+>  	int int_snapshot_num;
+>  	int msi_mac_vec;
+>  	int msi_wol_vec;
+> -	int msi_lpi_vec;
+>  	int msi_sfty_ce_vec;
+>  	int msi_sfty_ue_vec;
+>  	int msi_rx_base_vec;
+
