@@ -1,102 +1,84 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736B83D332A
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 16:51:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA07C3168EA
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 16:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770137488; cv=none; b=QcEp+EtscAK9VZkUqUaDOB8r98yrORzAXgGzIuP5fiCZ3PDkAVU/Lr1/lHkJ3R80Rr9K9fz8ygFpOEyreXUL6KLI7coR380HtfI5sg6wWnmRVFV4pxN0PldJGdI3JuVC3GPUzPQ5iOwHLqdIQKAD40xy9xktzM1BIbHsdgtpDMU=
+	t=1770137609; cv=none; b=ZhyF+5t7YE4+B/PmQglHXMlAKUahlpc1FARm0m8qH1sOm2DJ05Z7hlpS985KeZymN6MJsJTbiUnyxJc3opwSBykC/08lxJedjBVg4/H5Vh+44DvzJfw/X3zN/6rJfaEFQJsEkRR/hh1OVyQGFkE/taQrHFgWFTKo/SFQeYk2n1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770137488; c=relaxed/simple;
-	bh=R0GTNs2UMggS3g/NX5TJTmrurKNLgkXAtx+xnv3O2b4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YkeBgNMqqvDJYhi7phRJDUHh3uoMqPXVx1xciKjgTsqlu+5EJWmd67jWFGQTxkl7SSX3rKylQREX98kK266VYlRM18luhJVubpUrM/DE5ZQ/UsN7vLUSTob4+gwY1cwPLJQj25VWrtjiLWKJHtyqz0amjFDlWIwgQbPwwsFYM+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=vVtm7rCa; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1770137609; c=relaxed/simple;
+	bh=jf1FMIBv5ITp4zwoevYSs11wKzKBjh5m7lCT367GV2M=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=d37KSZ1V+fFkvhKSJdPM0SC8hALJ3a90NgEijUg1Xm4HM//0Fr87WdGoxCZnM/BE44ZsmkKeWhGoBQTsDnwd3cByqqvuicVjSNOHMgfcxAh5+jpn43OLNZlGEjy1d3QfnRJ5JPWQaEllZ/BQR5OF3zvLoqLr6f272kCJELc29dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ngK5+YA8; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="vVtm7rCa"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=tO4MCHIfI13sBng9YukPUeiTeKdsgXUfkhfeAw3ZIYU=; b=vVtm7rCa/w3TlowDnkEtK0gDAD
-	YBqCD5mXeS9JHvwaXbl42RbPXE86tuamam67zsu8h611FE7lXDkbPJfsKhbi+PINu5J/EeegOSrKa
-	w7RoAaEDgwvrllqwFMMwRmF4qjtI9JZt7ICPjzblWEM96iwuSNsZnFCSWDfAz/wnWbN5f1ocXkqsV
-	hXPVtlbEad+K9kCdWUqwGSxdfbi/WNi1WpAodwG9ftNm1gdnwUrEWBaGHDP+mCAXDrvmFSQJcD4iZ
-	wYJQyTyKoqrVeilb0PLh6YGIpUYFZKvZ0e4wrPn26fw53fLbH6TjJbb8yG1ga3llmJxAgg3W+hxYw
-	4F52w/3g==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58266)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vnJcY-000000005KU-09NM;
-	Tue, 03 Feb 2026 16:51:22 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vnJcT-000000004X5-467z;
-	Tue, 03 Feb 2026 16:51:18 +0000
-Date: Tue, 3 Feb 2026 16:51:17 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>, imx@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH RFC net-next] net: stmmac: provide flag to disable EEE
-Message-ID: <aYInheFgxBXh-bp1@shell.armlinux.org.uk>
-References: <E1vNUjC-0000000FhjR-0h6P@rmk-PC.armlinux.org.uk>
- <f95f73b9-d024-4697-bca1-02fb8bc044af@gmail.com>
- <aYEj8VM5AfvcDHrl@shell.armlinux.org.uk>
- <ea2434e6-d1db-4ea2-90f4-0a77961b7918@gmail.com>
- <aYIXmsIG_ZJO-cg4@shell.armlinux.org.uk>
- <434bff80-0b89-4fe5-beb2-4b70a4b600d8@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ngK5+YA8"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2D9331A2BC2;
+	Tue,  3 Feb 2026 16:53:25 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E421360728;
+	Tue,  3 Feb 2026 16:53:24 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4C51D119A8888;
+	Tue,  3 Feb 2026 17:53:17 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1770137604; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ibDtmuQVA6j42GniTwjElTySRXx2PReTUkYFO0TEtzU=;
+	b=ngK5+YA89MEKf5Lyg9woI6zPXYK9jjhjeZMvfbGl3WkeDkJoKZn+MQsoOBUBLX3nGbPaPJ
+	0ZuOnvRYmiH/E0y0mLOUrs1zcE8NQKeT4fEn7E8OYOMtf0amDNRuU/WNJoGWYxNRnzgXpp
+	B8GD9ZGDIA4PleR9M3jPMfUnIfH6LrYDQPt4A1wQLvWAi7yhnyyOpnhJ9aUOHgrGqX+P9M
+	zCT8cMcPOK8i3EBk2JeWQrGkdgobXxUsbTxsanIa9dI6EIClTz/6xlGkG7qHBdD4reiC0+
+	ddP8UeAQ1v7TZ5K/stnV0oGgeG1ukjAlHqqd6lXftbS6farrYxI6Ofk5JqVavA==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Liu Ying <victor.liu@nxp.com>
+Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260123-imx8qxp-drm-bridge-fixes-v1-0-8bb85ada5866@nxp.com>
+References: <20260123-imx8qxp-drm-bridge-fixes-v1-0-8bb85ada5866@nxp.com>
+Subject: Re: [PATCH 0/3] drm/bridge: imx: A few fixes
+Message-Id: <177013759713.1993107.17429169659147772176.b4-ty@bootlin.com>
+Date: Tue, 03 Feb 2026 17:53:17 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <434bff80-0b89-4fe5-beb2-4b70a4b600d8@gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Feb 03, 2026 at 06:28:45PM +0200, Ovidiu Panait wrote:
-> >> Thanks for fixing this. I did some testing on the Renesas RZ/V2H board
-> >> with this patch and didn't see any issues:
-> >>
-> >> Tested-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-> > 
-> > Would you say this is a regression or a new problem?
+
+On Fri, 23 Jan 2026 17:22:14 +0800, Liu Ying wrote:
+> This patch series contains 3 bug fixes for i.MX8QXP DRM bridges.
+> Each patch fixes a NULL pointer dereference issue and stands alone.
 > 
-> I don't think it is a regression per se. AFAICT this behavior was always
-> present as long as EEE is enabled, but I only noticed it after I changed
-> the network switch the board was connected to.
+> 
 
-Thanks, I've just sent the patch for net-next, as you would have seen.
+Applied, thanks!
 
+[1/3] drm/bridge: imx8qxp-ldb: Fix NULL pointer dereference in imx8qxp_ldb_bridge_destroy()
+      (no commit info)
+[2/3] drm/bridge: imx8qxp-pxl2dpi: Fix NULL pointer dereference in imx8qxp_pxl2dpi_bridge_destroy()
+      (no commit info)
+[3/3] drm/bridge: imx8qxp-pixel-combiner: Fix bailout for imx8qxp_pc_bridge_probe()
+      commit: fe6d29b082d49df336ebb92226a3c004ae9e3222
+
+Best regards,
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Luca Ceresoli <luca.ceresoli@bootlin.com>
+
