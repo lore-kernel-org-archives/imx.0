@@ -1,165 +1,233 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B0A33A9D2
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 11:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770119757; cv=pass; b=UKEvm43nHcQKFc4fbXUbYiaBxuqKcIuAKxA/QFGE5IKqRjqXDNlgkt4xZv2/rCr4iMbIHZHqDniQGCzaAx7jy9J98iETgHnleBp8KAtdq4mpYJEZFccjuV9v8qbF6ftGZlWcb039DGmHnXf90kkTijIwopdOT9odnXLvJ2lnCeI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770119757; c=relaxed/simple;
-	bh=7Pxv2L8BpJWyfUqSmlz7ojW9DgUGKLJAcrIJ+nffUVs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oRw422i/O86mZYzx4t+858EEldxovdGw6lMqU3PAPxHrikbvcYu3AlQ4A1OUnSw1lBOPr0RzlaVwMnPAN9m8c00VWdoQiINZ7KWpznCtuo7TYuHYSv4hiH7Yll5CeVbHe7G9JGQsk7JCz8VWXpNkoU0dccSEz/aF+Q1jsJPbD+8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=w3CC9BYq; arc=pass smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E82340A6C
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 12:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770121588; cv=none; b=ubqH1u1aIclZhnjduMUaEW5mzn9NLdaJWB2DrAHSlCYPaJ8yAIgkEdluIXWRL4rDenHXsaRzRrJJIWVRFeiRRAMblv4E4MrnnhumGGjNS4R2vmgsT1dxkbnC12WWX5K5uFy7nzdnuj54+l49OVG2SJsBy4w5xkY1hGjEqYlJZ+U=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770121588; c=relaxed/simple;
+	bh=VlQ6QmeoeBPSKxhfzXXw9dER5v/izF/WUHbx/Mi+EL8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Ci7M5YkADiNPLWHUwKIAf9F88HXRCjrL9eu8p6ASCXBXZ4hy6XaG2axOt/9sCsc5vz69svvmWAMOAtCaTyymQrAy3PwfDcX96JD1yf/mBBqCHcPIXbxjgO6U5C7jMmOY/6XPo5Dr4g8Y2tL76Myc8hupkqtnKFy0dY85Y4TO2MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S0HKx1HB; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="w3CC9BYq"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-59b9fee282dso5300059e87.3
-        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 03:55:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770119753; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kgfwY/wnxyb0o25tL7NsLV9khsC8uBVnXoSHi3x3IaeNG3xBmTRSS7Mvikbj0pLCT7
-         5iWvYMhkYfQ62dgV/7HCv/89LZSI0X8K1fHpiHqWRtIsmecIUJKOBxIEJiEisSbRDaOm
-         NQbk+0kmsRNVtu9Y67RtwsibiI6xTYluILm2/u18lufFk/Bio9IKEFvtKh88Ox3u0vSf
-         Jh37DwxcnPDvw42eKmUUojMtd6A/GB4VrOpq9XgGulB31d1TzhRTCBPJgvikMc8LZwB8
-         qROhzcuwxtlgj7wP6IgsBUNm8uImokE7gNowHiPMuSj5DE/7utibZsXJUHFBvtCu6ASY
-         eyLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=MDE0sCrdONDLnFFACkETJtEg6lOLX5zuUsL6oiXslhA=;
-        fh=RXyqRsgvGaJ6tkDnyYCXYS/jJsHMJUQP2qcxLZK+vkM=;
-        b=P+G7rxf9oUvZV/I11UzjiwRmpT9pcaKoWMCx9o6kb5r3e6Lj3f/ZnvGjcCKCdvXMK0
-         JuR7tldm9UMWZ/CjFNzgSmgYiKZOgO5u+KYTQqn3v3uXqdzCgf+qSMe4mV13UCmbN3Xs
-         4EPWX1/6shd4nxu6F/GB7sGfcfgNCeid4Ew9hj2nMuCsOpxU255WdPCATd8E0+N66CzT
-         OsnPbTXww6a0tsXIFCMcVcUlVuIy0tqIXxp4aPv9tTUBzj80dnI1nh6MfJ48RamMlJqW
-         Cn9IBYmhtkmYOM2pO9TnJMDF7+FpsDqJJgfqAnY+/gFrT3ift2yOhkjpM81R1myknXOf
-         JRAg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1770119753; x=1770724553; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=MDE0sCrdONDLnFFACkETJtEg6lOLX5zuUsL6oiXslhA=;
-        b=w3CC9BYqXQM8ptDqcKyZr+/EVh6KJGtVI1CpqxwqwMy2TKQESh+rwXePwpo5iwCUgv
-         JLG6dLqxiCYYcKcU+uA1jGFtVMvMiik00PRITStT7lHfDocI155bZkT4voP5jB24niep
-         EuXz0cx5MHzjWo1qWp4JzZn6Tifaoqou3bbxAkLCzdrvxYXLSsCF1c6b5SPxwX7xviXS
-         J7LOqiQoa+3Cf2YHYDAvbEFbpJMLkUWlzQcbiex+67C/ULY4j2ZihpDs7iEXNK69Kk2r
-         hKIx50rQHJccoKA6c7h24j09icXtVqfQk2ROQ76OxcyPmWBTVdascbqo34xjEfmYsgIc
-         /gpw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S0HKx1HB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770121586;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VEfxefoU+z14b9IbVO/wML9s1Vu2K5sykD4MO79bNCw=;
+	b=S0HKx1HBUqDzucFqowWF0gawW/UOQgYiYK0pbyMVgpezTzvozJVwM/MIWaXqr8/3zyM3z1
+	vblFvOtoXihxTFywQfGN9MVasb6d85ZjKUjNVsHV69V25WQrwFDrqN/x4m6GqWHlIxs6q5
+	9iY9uApl6AVwjjIvN69Yry8OZqgMSjY=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-531-_09oIsWoNX2A1IaoOitW5w-1; Tue, 03 Feb 2026 07:26:24 -0500
+X-MC-Unique: _09oIsWoNX2A1IaoOitW5w-1
+X-Mimecast-MFC-AGG-ID: _09oIsWoNX2A1IaoOitW5w_1770121584
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-b8839f45c3aso321140066b.1
+        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 04:26:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770119753; x=1770724553;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MDE0sCrdONDLnFFACkETJtEg6lOLX5zuUsL6oiXslhA=;
-        b=ePoLJeLCCZubwc3jtIQYRhEyCFtorMzUMdT7PatSG0uvB7+4Rv/JRRU7PidCtmIIs7
-         38rmBfte2++a8Pp+6ME+nOBZyAaCkta+UNe9Ol9o0Nt2oTEshOPSJNE2Xfk3qtrvZhBD
-         Q0iT8y7VtVykC0mGQFwqziGmxrMrxkC+uF4L/QpprPZ5fc7zapIqwuB17ofRNo/zIjaH
-         BDaNdG/LBBq8mRRg+Oy5JRFTXQebCG1LAOHYXQQk/D5e8xQ519TQyNjWvYXuxfduBaYm
-         ejL8yaKH+9YXmUVqWE1q6ZlzB5jAWe2hxaLISpJ/zWAujzwNutJSnbeRP+fUr8xucZIk
-         s9iQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV9uVuEWNqGHFimGIu6qK+tWc1rxyB06tbnU1EKEgZJ81y28+T9JLW17+d36YHLsWPeMjo=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw+KNCRwcy3ekxKa9KV6VEs28NmWmNB3DEHTBqebp6FU0Qf5uUI
-	llG0/xKeBfHXjdHFm+7nHBvElp6RkTWvCk162jPV6nEVddhSdZ3B0YaRImKBY90CH2TFjcmQ1ep
-	IFKBjYeVxjc6lh4tViX8XI5ndVMsv5Fy/bbUtdnEumA==
-X-Gm-Gg: AZuq6aKJjq+c538g8vq1s/B5SeaTgs6NCQ2cWIm/3p+WLxzF5WHNnGCsKM1Ebw1Tyd4
-	bSmWRAgYzqP5qKCsZeSTM5eGju115jnIDgep699U81nZBMqr6IN3iojmuz6l9AATTgyz7G2JBaX
-	WjTnOhQxnRJyWlIX0ZrZ70K/IM0SizBypAft9zP/bfVzmg/mC8EgF8E9PgTXQDFv2VzckgembQq
-	H9K49ZAuuiMSguRXBleu7MVjYVD5oYDA0denujajxfIVfE2fP2ywUfmtR/5b9l+9I9+1tOSBEfd
-	C+jNV3M=
-X-Received: by 2002:a05:6512:3f25:b0:59e:17b:f4ce with SMTP id
- 2adb3069b0e04-59e1644a0f1mr5248014e87.50.1770119753362; Tue, 03 Feb 2026
- 03:55:53 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770121584; x=1770726384;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VEfxefoU+z14b9IbVO/wML9s1Vu2K5sykD4MO79bNCw=;
+        b=IGHLzjoEDYeH06wKH0hIqxYCmOAYXVKZB8uQyqTmqYvdPpiu9eZ3DCLFFpNwjS/AAR
+         2L5NeP5ILV+OK0hHUkdD9fFVUS2qifVB9TcxxkUEndfShZOZ1p6pl2amqBt5KShp0F38
+         asqN75/2I62pEe7wQ21PmG4fxOhWpr78ptMh+NbxKyCMkElTTRgLPacwFp3bp4kKpop2
+         hvVNzDDM6UqMI5mmmoW8Z72n6vih/7kprrLcOcP/BvjoLYVdhipS64E7tq18+9KoA41l
+         0sZMDecm8jsHI69yDehf6/Sc9mS9WNs484i6Tc9muy/qBlXJhW3F5szaQ8I2baR1x5rI
+         atpA==
+X-Forwarded-Encrypted: i=1; AJvYcCU6WHRPaNRcJWNwtKicjmuv9GjBO2GMVzVqKNTtPv/l5KY/AkEJbtTNd3UQcmcZzhhGMAk=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwkUIOlJftdSS/dkgX06JEPul+8D6LBV96rKHg30Pwe+BLDsxcY
+	oKAzEkFT4ecmCwJGC+fe3Jam2nPzAZ1ZD9JtMd2HZK1gY/T2B4pO3q0Ycs6MfbOOmKmAz6evXi6
+	RFZMyDxtqVhmoyIUaNeHED6dTvPSf8eb2Fjrvf6pe3EKAIIobhxoFXw==
+X-Gm-Gg: AZuq6aLklD4QQmTXz+Ph87ToYl2zaP2/YMj9xtRtxUI927zVOX7w+pQ3VgQ8m3e7bJh
+	u6hYCvFBHPLb/Zqqna4sxY2RfhUpgl6OgIiFZz2aj2GAMwoZUSmYU2qCTFYoh1FaTYjDQ8aOBAV
+	IRLgW+YjsUKxQvM6REGDQfPvJOn5Ni2zaYwKdgTGZvuZlCy+FPnmB29KtDn/x9zgxLTDC4ke8Oq
+	t+Ed1FCstU8Nudu2Xoou8z8B49kNqJH3voMLEdyf9y7DCbKcH55jRvDyX+iSI4SQmQBbX+xiERI
+	7UvJlFcNRRBRB25WGfpWYUmBKwZNt8DJp7ApqykQcp9xjaHNEN5bGPTGifpG6p3muxUxz5h9N2u
+	/ZlZrnZvwideDV0WbpZJDMlKZx6b4pyml0g==
+X-Received: by 2002:a17:907:3e8d:b0:b87:7485:b4bf with SMTP id a640c23a62f3a-b8dff23c35dmr970635866b.0.1770121583406;
+        Tue, 03 Feb 2026 04:26:23 -0800 (PST)
+X-Received: by 2002:a17:907:3e8d:b0:b87:7485:b4bf with SMTP id a640c23a62f3a-b8dff23c35dmr970632766b.0.1770121582825;
+        Tue, 03 Feb 2026 04:26:22 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8dbf2ed500sm1044753466b.63.2026.02.03.04.26.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Feb 2026 04:26:22 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 89F7C4D0E1A; Tue, 03 Feb 2026 13:26:21 +0100 (CET)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Larysa Zaremba <larysa.zaremba@intel.com>, bpf@vger.kernel.org
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>, Clark Wang
+ <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Tony Nguyen
+ <anthony.l.nguyen@intel.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer
+ <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Stanislav
+ Fomichev <sdf@fomichev.me>, Andrii Nakryiko <andrii@kernel.org>, Martin
+ KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, KP
+ Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, Jiri Olsa
+ <jolsa@kernel.org>, Simon Horman <horms@kernel.org>, Shuah Khan
+ <shuah@kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, "Bastien Curutchet
+ (eBPF Foundation)" <bastien.curutchet@bootlin.com>, Larysa Zaremba
+ <larysa.zaremba@intel.com>, Tushar Vyavahare <tushar.vyavahare@intel.com>,
+ Jason Xing <kernelxing@tencent.com>, =?utf-8?Q?Ricardo_B=2E_Marli=C3=A8re?=
+ <rbm@suse.com>,
+ Eelco Chaudron <echaudro@redhat.com>, Lorenzo Bianconi
+ <lorenzo@kernel.org>, imx@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+ linux-kselftest@vger.kernel.org, Aleksandr Loktionov
+ <aleksandr.loktionov@intel.com>
+Subject: Re: [PATCH bpf 1/6] xdp: produce a warning when calculated tailroom
+ is negative
+In-Reply-To: <20260203105417.2302672-2-larysa.zaremba@intel.com>
+References: <20260203105417.2302672-1-larysa.zaremba@intel.com>
+ <20260203105417.2302672-2-larysa.zaremba@intel.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Tue, 03 Feb 2026 13:26:21 +0100
+Message-ID: <87zf5q109e.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260203102903.2953660-1-ziniu.wang_1@nxp.com> <20260203102903.2953660-2-ziniu.wang_1@nxp.com>
-In-Reply-To: <20260203102903.2953660-2-ziniu.wang_1@nxp.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 3 Feb 2026 12:55:17 +0100
-X-Gm-Features: AZwV_Qhy5FVK3X1zDmepaoff3JHzpQHSqhwDgipwjkDYIj5M4Whz8OPbSR5lqkA
-Message-ID: <CAPDyKFpu6BEqJCg+=E3VDH1DutEy0C-bobtvEXucRBd6JvRbVg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] block: decouple secure erase size limit from
- discard size limit
-To: ziniu.wang_1@nxp.com
-Cc: axboe@kernel.dk, hch@infradead.org, linux-block@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: DuK4oGs4AHbtKlk2A3mUv38w5mGbDlZqB_ijY7IpDp4_1770121584
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
 
-On Tue, 3 Feb 2026 at 11:27, <ziniu.wang_1@nxp.com> wrote:
+Larysa Zaremba <larysa.zaremba@intel.com> writes:
+
+> Many ethernet drivers report xdp Rx queue frag size as being the same as
+> DMA write size. However, the only user of this field, namely
+> bpf_xdp_frags_increase_tail(), clearly expects a truesize.
 >
-> From: Luke Wang <ziniu.wang_1@nxp.com>
+> Such difference leads to unspecific memory corruption issues under certain
+> circumstances, e.g. in ixgbevf maximum DMA write size is 3 KB, so when
+> running xskxceiver's XDP_ADJUST_TAIL_GROW_MULTI_BUFF, 6K packet fully uses
+> all DMA-writable space in 2 buffers. This would be fine, if only
+> rxq->frag_size was properly set to 4K, but value of 3K results in a
+> negative tailroom, because there is a non-zero page offset.
 >
-> Secure erase should use max_secure_erase_sectors instead of being limited
-> by max_discard_sectors. Separate the handling of REQ_OP_SECURE_ERASE from
-> REQ_OP_DISCARD to allow each operation to use its own size limit.
-
-I don't know this code well enough, but is this change really sufficient?
-
-Don't we need to adjust blk_queue_get_max_sectors() as well?
-
-Kind regards
-Uffe
-
+> We could return -EINVAL and be done with it in such case, but due to
+> tailroom being stored as an unsigned int, it is reported to be somewhere
+> near UINT_MAX, resulting in a tail being grown, even if the requested
+> offset is too much (it is around 2K in the abovementioned test). This later
+> leads to all kinds of unspecific calltraces.
 >
-> Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+> [ 7340.337579] xskxceiver[1440]: segfault at 1da718 ip 00007f4161aeac9d sp 00007f41615a6a00 error 6
+> [ 7340.338040] xskxceiver[1441]: segfault at 7f410000000b ip 00000000004042b5 sp 00007f415bffecf0 error 4
+> [ 7340.338179]  in libc.so.6[61c9d,7f4161aaf000+160000]
+> [ 7340.339230]  in xskxceiver[42b5,400000+69000]
+> [ 7340.340300]  likely on CPU 6 (core 0, socket 6)
+> [ 7340.340302] Code: ff ff 01 e9 f4 fe ff ff 0f 1f 44 00 00 4c 39 f0 74 73 31 c0 ba 01 00 00 00 f0 0f b1 17 0f 85 ba 00 00 00 49 8b 87 88 00 00 00 <4c> 89 70 08 eb cc 0f 1f 44 00 00 48 8d bd f0 fe ff ff 89 85 ec fe
+> [ 7340.340888]  likely on CPU 3 (core 0, socket 3)
+> [ 7340.345088] Code: 00 00 00 ba 00 00 00 00 be 00 00 00 00 89 c7 e8 31 ca ff ff 89 45 ec 8b 45 ec 85 c0 78 07 b8 00 00 00 00 eb 46 e8 0b c8 ff ff <8b> 00 83 f8 69 74 24 e8 ff c7 ff ff 8b 00 83 f8 0b 74 18 e8 f3 c7
+> [ 7340.404334] Oops: general protection fault, probably for non-canonical address 0x6d255010bdffc: 0000 [#1] SMP NOPTI
+> [ 7340.405972] CPU: 7 UID: 0 PID: 1439 Comm: xskxceiver Not tainted 6.19.0-rc1+ #21 PREEMPT(lazy)
+> [ 7340.408006] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-5.fc42 04/01/2014
+> [ 7340.409716] RIP: 0010:lookup_swap_cgroup_id+0x44/0x80
+> [ 7340.410455] Code: 83 f8 1c 73 39 48 ba ff ff ff ff ff ff ff 03 48 8b 04 c5 20 55 fa bd 48 21 d1 48 89 ca 83 e1 01 48 d1 ea c1 e1 04 48 8d 04 90 <8b> 00 48 83 c4 10 d3 e8 c3 cc cc cc cc 31 c0 e9 98 b7 dd 00 48 89
+> [ 7340.412787] RSP: 0018:ffffcc5c04f7f6d0 EFLAGS: 00010202
+> [ 7340.413494] RAX: 0006d255010bdffc RBX: ffff891f477895a8 RCX: 0000000000000010
+> [ 7340.414431] RDX: 0001c17e3fffffff RSI: 00fa070000000000 RDI: 000382fc7fffffff
+> [ 7340.415354] RBP: 00fa070000000000 R08: ffffcc5c04f7f8f8 R09: ffffcc5c04f7f7d0
+> [ 7340.416283] R10: ffff891f4c1a7000 R11: ffffcc5c04f7f9c8 R12: ffffcc5c04f7f7d0
+> [ 7340.417218] R13: 03ffffffffffffff R14: 00fa06fffffffe00 R15: ffff891f47789500
+> [ 7340.418229] FS:  0000000000000000(0000) GS:ffff891ffdfaa000(0000) knlGS:0000000000000000
+> [ 7340.419489] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [ 7340.420286] CR2: 00007f415bfffd58 CR3: 0000000103f03002 CR4: 0000000000772ef0
+> [ 7340.421237] PKRU: 55555554
+> [ 7340.421623] Call Trace:
+> [ 7340.421987]  <TASK>
+> [ 7340.422309]  ? softleaf_from_pte+0x77/0xa0
+> [ 7340.422855]  swap_pte_batch+0xa7/0x290
+> [ 7340.423363]  zap_nonpresent_ptes.constprop.0.isra.0+0xd1/0x270
+> [ 7340.424102]  zap_pte_range+0x281/0x580
+> [ 7340.424607]  zap_pmd_range.isra.0+0xc9/0x240
+> [ 7340.425177]  unmap_page_range+0x24d/0x420
+> [ 7340.425714]  unmap_vmas+0xa1/0x180
+> [ 7340.426185]  exit_mmap+0xe1/0x3b0
+> [ 7340.426644]  __mmput+0x41/0x150
+> [ 7340.427098]  exit_mm+0xb1/0x110
+> [ 7340.427539]  do_exit+0x1b2/0x460
+> [ 7340.427992]  do_group_exit+0x2d/0xc0
+> [ 7340.428477]  get_signal+0x79d/0x7e0
+> [ 7340.428957]  arch_do_signal_or_restart+0x34/0x100
+> [ 7340.429571]  exit_to_user_mode_loop+0x8e/0x4c0
+> [ 7340.430159]  do_syscall_64+0x188/0x6b0
+> [ 7340.430672]  ? __do_sys_clone3+0xd9/0x120
+> [ 7340.431212]  ? switch_fpu_return+0x4e/0xd0
+> [ 7340.431761]  ? arch_exit_to_user_mode_prepare.isra.0+0xa1/0xc0
+> [ 7340.432498]  ? do_syscall_64+0xbb/0x6b0
+> [ 7340.433015]  ? __handle_mm_fault+0x445/0x690
+> [ 7340.433582]  ? count_memcg_events+0xd6/0x210
+> [ 7340.434151]  ? handle_mm_fault+0x212/0x340
+> [ 7340.434697]  ? do_user_addr_fault+0x2b4/0x7b0
+> [ 7340.435271]  ? clear_bhb_loop+0x30/0x80
+> [ 7340.435788]  ? clear_bhb_loop+0x30/0x80
+> [ 7340.436299]  ? clear_bhb_loop+0x30/0x80
+> [ 7340.436812]  ? clear_bhb_loop+0x30/0x80
+> [ 7340.437323]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [ 7340.437973] RIP: 0033:0x7f4161b14169
+> [ 7340.438468] Code: Unable to access opcode bytes at 0x7f4161b1413f.
+> [ 7340.439242] RSP: 002b:00007ffc6ebfa770 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+> [ 7340.440173] RAX: fffffffffffffe00 RBX: 00000000000005a1 RCX: 00007f4161b14169
+> [ 7340.441061] RDX: 00000000000005a1 RSI: 0000000000000109 RDI: 00007f415bfff990
+> [ 7340.441943] RBP: 00007ffc6ebfa7a0 R08: 0000000000000000 R09: 00000000ffffffff
+> [ 7340.442824] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> [ 7340.443707] R13: 0000000000000000 R14: 00007f415bfff990 R15: 00007f415bfff6c0
+> [ 7340.444586]  </TASK>
+> [ 7340.444922] Modules linked in: rfkill intel_rapl_msr intel_rapl_common intel_uncore_frequency_common skx_edac_common nfit libnvdimm kvm_intel vfat fat kvm snd_pcm irqbypass rapl iTCO_wdt snd_timer intel_pmc_bxt iTCO_vendor_support snd ixgbevf virtio_net soundcore i2c_i801 pcspkr libeth_xdp net_failover i2c_smbus lpc_ich failover libeth virtio_balloon joydev 9p fuse loop zram lz4hc_compress lz4_compress 9pnet_virtio 9pnet netfs ghash_clmulni_intel serio_raw qemu_fw_cfg
+> [ 7340.449650] ---[ end trace 0000000000000000 ]---
+>
+> The issue can be fixed in all in-tree drivers, but we cannot just trust OOT
+> drivers to not do this. Therefore, make tailroom a signed int and produce a
+> warning when it is negative to prevent such mistakes in the future.
+>
+> Fixes: bf25146a5595 ("bpf: add frags support to the bpf_xdp_adjust_tail() API")
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
 > ---
->  block/blk-merge.c | 21 +++++++++++++++++----
->  1 file changed, 17 insertions(+), 4 deletions(-)
+>  net/core/filter.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/block/blk-merge.c b/block/blk-merge.c
-> index 0eb0aef97197..fcf09325b22e 100644
-> --- a/block/blk-merge.c
-> +++ b/block/blk-merge.c
-> @@ -158,8 +158,9 @@ static struct bio *bio_submit_split(struct bio *bio, int split_sectors)
->         return bio;
->  }
->
-> -struct bio *bio_split_discard(struct bio *bio, const struct queue_limits *lim,
-> -               unsigned *nsegs)
-> +static struct bio *__bio_split_discard(struct bio *bio,
-> +               const struct queue_limits *lim, unsigned *nsegs,
-> +               unsigned int max_sectors)
->  {
->         unsigned int max_discard_sectors, granularity;
->         sector_t tmp;
-> @@ -169,8 +170,7 @@ struct bio *bio_split_discard(struct bio *bio, const struct queue_limits *lim,
->
->         granularity = max(lim->discard_granularity >> 9, 1U);
->
-> -       max_discard_sectors =
-> -               min(lim->max_discard_sectors, bio_allowed_max_sectors(lim));
-> +       max_discard_sectors = min(max_sectors, bio_allowed_max_sectors(lim));
->         max_discard_sectors -= max_discard_sectors % granularity;
->         if (unlikely(!max_discard_sectors))
->                 return bio;
-> @@ -194,6 +194,19 @@ struct bio *bio_split_discard(struct bio *bio, const struct queue_limits *lim,
->         return bio_submit_split(bio, split_sectors);
->  }
->
-> +struct bio *bio_split_discard(struct bio *bio, const struct queue_limits *lim,
-> +               unsigned *nsegs)
-> +{
-> +       unsigned int max_sectors;
-> +
-> +       if (bio_op(bio) == REQ_OP_SECURE_ERASE)
-> +               max_sectors = lim->max_secure_erase_sectors;
-> +       else
-> +               max_sectors = lim->max_discard_sectors;
-> +
-> +       return __bio_split_discard(bio, lim, nsegs, max_sectors);
-> +}
-> +
->  static inline unsigned int blk_boundary_sectors(const struct queue_limits *lim,
->                                                 bool is_atomic)
->  {
-> --
-> 2.34.1
->
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 616e0520a0bb..9715d957e3c5 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -4149,12 +4149,13 @@ static int bpf_xdp_frags_increase_tail(struct xdp_buff *xdp, int offset)
+>  	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
+>  	skb_frag_t *frag = &sinfo->frags[sinfo->nr_frags - 1];
+>  	struct xdp_rxq_info *rxq = xdp->rxq;
+> -	unsigned int tailroom;
+> +	int tailroom;
+>  
+>  	if (!rxq->frag_size || rxq->frag_size > xdp->frame_sz)
+>  		return -EOPNOTSUPP;
+>  
+>  	tailroom = rxq->frag_size - skb_frag_size(frag) - skb_frag_off(frag);
+> +	WARN_ON_ONCE(tailroom < 0);
+>  	if (unlikely(offset > tailroom))
+>  		return -EINVAL;
+>  
+
+Why can't we do both? I.e., WARN_ON_ONCE() *and* return -EINVAL?
+
+-Toke
+
