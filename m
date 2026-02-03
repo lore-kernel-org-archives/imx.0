@@ -1,129 +1,170 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C79430C614
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 10:10:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770113444; cv=pass; b=YEHzCq9RtL+zH9aC0bcSYTIBFB6VFBlODA5hTrq+/qGhyElge1CUuglYSV2Ks9ENO2c7BYGuyAXaKawVrQzUL+9XMc4OoD2LmMRMHtaSUwd5BHsZ/O+YQ//tZPeOpwkMC+PeYwikcRhYs4Nqb47vrilZSi3Yl7E56gzJP8/dqH4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770113444; c=relaxed/simple;
-	bh=xejb0j9EkHwaVU0Gjzt6hJh1Gjvft9+wJcQ8Wyd6gvs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KzKNYH6G71W8t8h9lg7XHBjQMh4r23c82Z45Y9th8WGGxwUUaH7ck5bWtZS/zXWNTcx+0eHjVstOrjTu3ULVT8DZxk1vXx7szU+NcxANULFFtbayQuESB4x8jjAG4iOXoGqY/M5+Y3o02NRqkhsRMUOqWSnG32quJVkDWqMf7QU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KxooHrkb; arc=pass smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F72396D18
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 10:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770113527; cv=none; b=W6FOuqe68SzBHsWE+wnVbu4glhGcZY3Sqdn5i2Elg1mySeS+yf7z3RrHz++O4ml8/pM+/Ia+G3VAZHIW53XID5B1qaFqsTJYTOc+aH2XsaI/mwnqdnoVBDZgaxWU9Okhw0JC4WlTDCUm7u6Nf7HwNSciEchoPYICshBvOiI2x9M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770113527; c=relaxed/simple;
+	bh=kaxurYH+pSZiT55rBegAYaKI+3y+ZBTAe+5LlaGS5Qc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=GdGJxIckw0QZriZ1PPTYS81qgNUTRVdqAbizKTrQAPkLXfQxDu+pH1NILIuPmkWRkeBcM1ShGEzShzyCqLfh8TDh00eOzzsWMHnfhZsoxibGt5J+BQmWN7rwonyWIUHzVO38Nh3/jJOgU4TVeRYq23M7q64/LKfErGz+w8f5K3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=soDBBG2b; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KxooHrkb"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-124a95e592fso7924107c88.0
-        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 02:10:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770113442; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LK097AZPz3XDEjgE6kIppHcIrzxM4jJkKqqcbWb6Z9jmSGK08GLTMclV4CmyuhqCQH
-         9FpMizK2s//EHdKNRQ9IkXDuTTZcig2oZPCX7agh4w3dT8G4n9Yh4D/T8AwpHXEN73Dv
-         J7h7CJb4PKdK61NGqewfGZybozHUUUe540daERYiUiYexyivSRoC4qMVgN2T3Tkvnsd+
-         4NcIirRdiqZR5O9TV1J9kGjqhJZnsz4rBfyoaBW9qcH56kySjekV6N6l+e8znAPB3g4x
-         txCGdYVUSEs+5HObgn+R9uKC/83cAXcUKVA8DWON4+k+wK9gF4t6Q47nWpOfw3YMu8wS
-         mrcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xejb0j9EkHwaVU0Gjzt6hJh1Gjvft9+wJcQ8Wyd6gvs=;
-        fh=1LK7NqZbJiNURhq2FZBI2shbi7DoQBqzXAR2Msyt/pI=;
-        b=C6/zzvsbOUUcnGjROp6NcwxK/MI4yLNkhJiukjcSpkFtYvQC7+7t3izbdAwd1zBK0z
-         8vhqceWA/KDw4lkiV/hj5mc3M5fxsST6nnCMjEYQXC+wsRtWR3WALpbzyl0Pg91Ye0CV
-         ZlWeCZgxm3MaZlESGYSVMkpsHFMAk/8BBS5YtVkECYhkw4xIG9scE+uWjiYqcKbH6j93
-         8qmMkyHwYgZLhLVxzyHnQhjEzRPm6FTKJ4ovFHSeUwMRXcsznUnb5aJkdnSnu/XfWmKa
-         kQ9Py0MTPCRnLRmyoCwo879qe3ZVnET/Og1SC4vQCuZU+TZMdtpzJ+KutFnWERuMmuoU
-         O7mg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770113442; x=1770718242; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xejb0j9EkHwaVU0Gjzt6hJh1Gjvft9+wJcQ8Wyd6gvs=;
-        b=KxooHrkbvdm4gySwx486qaLsggZNvmWvqnoxphVFHAvnz6rXD1w7RXJ11W2rv/IUGP
-         dxXtrGCWagMClOZ9NgF0zZY2o00TDs4dauuggLvPYedOiC9lg5c1nQevR/zUP9iQWyj/
-         G2AaJUBGdMmeD/kELkaF0+yvnrQ0iFxiH+hv9La7Aa4RLlGpZFysn6cwkXih3oOAl/R/
-         qWJbeHfNe4gusOK420TrUgojQD1HL+QuoWEbT+kldQtXxi0vw4FFcJPyoczpgcpXP4oI
-         voTEdGaRsUEJMFl93H9QbVuh7cD6HBEiquxj4uOrXL4orteU08GoVM+X4R5uDf5LBdEl
-         NIag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770113442; x=1770718242;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xejb0j9EkHwaVU0Gjzt6hJh1Gjvft9+wJcQ8Wyd6gvs=;
-        b=aPk1GOL3TFpATIrk9Nh3U8GeoQg+UiNIp70Z/XCIzulvyL6EdhRWlThhiwclEdagIA
-         QBNthLjh4l6I9D37G60puzz/5d3ofirgoB4qby8jLZCUtel0G0E7f4PJuWbHIlcRt05N
-         bRr+ps08ocaMBQD9j5Tr8Q3ptUsOfClDdjui6nOBIeIaCYoe3v7UF0JvEXYbW2XnosjK
-         GtWq78yuZKTttJtLmBmkbFwerAwSbjE/e9AXnw6CwjrW1YTEUkqs4YYAxW2HWJJ0u5CG
-         A7sBLf1tM7FW8jI95V108DK2GCo+5UH1KiuvINCFeBddydj4KzX5h8VjhguYMl+1OFK2
-         juZw==
-X-Forwarded-Encrypted: i=1; AJvYcCWI+XaL++OlBtZA92Maggp0e0krUr1ZLf1Jslum8IVzWVOTcB+oZ6QRsenGkTl+Py5r0Qc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwFV3ejYc6v8q1y5Oh/QgJAXoRhUgbVGCJW9Yu8K/pHjqWrdc27
-	tS3OueUktdFmj6jlRb7MF/8N6oUgZnNlhed0SAa9Eis47F2BIDt8B4bLRO6mhwIZWcklbfOBFus
-	7Fu67QwoPUYpDwmfuBtO9PTATl7t3pqY=
-X-Gm-Gg: AZuq6aIQfiToQtlgXskVjEOeJzK/3DqDfIlJ4MYETxvH3GRvgnC63kSB0tHx0WE/1zo
-	jX8BAGhzEViMkBbzfUCYKdenMwfSnQUcdBEZrNvHQ27kmh20IodMfGF0+iVaVDO0zeEoOaGqjt4
-	fRfYZ66YAYRdNgYZvomPYRGftstzj7CDR09vdZyoJcXXdhRW9DsUpfxE995OLiITzGVuYPV6EZO
-	doM9ifpgdS8s3G6P4g2jABf+ovkI1Q9pokVlXpeeBj3/xpLdQ8QYkNs8OLrn2bHpMa9CTYpzVIF
-	3dIYJLh1NHWb1JyIQKDP927yITb+DCuAeiSdo4qevX/a2nN8nP9s21s+qRwYxTLzBQobskvsACg
-	R57mfS16efA==
-X-Received: by 2002:a05:7022:6707:b0:11b:9386:a3ce with SMTP id
- a92af1059eb24-125c101ef89mr7226621c88.47.1770113441581; Tue, 03 Feb 2026
- 02:10:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="soDBBG2b"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 381854E423E2;
+	Tue,  3 Feb 2026 10:12:03 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0765E60728;
+	Tue,  3 Feb 2026 10:12:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7C634119A8888;
+	Tue,  3 Feb 2026 11:11:51 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1770113521; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=kaxurYH+pSZiT55rBegAYaKI+3y+ZBTAe+5LlaGS5Qc=;
+	b=soDBBG2bgMR8f2LbgIrwrYZOZzYJcpbUWVYRItBu2O1PQqna30rioLkNHxmoqkhNvMoty+
+	if15F8cH7NZWu28bObiIMmjSXkf/cYBNUhfuBPoO76QtFqb1UQUMLfLDYevJwW/p1Kl7Lu
+	+I3G0dxG+J6RhTJVOFeRfdIz+h/B9NG/cjr+thEijncqEHuyHKZUwYUANoWLQg294fKT8y
+	TDLWlGQamhmukciHP6cONfNmeBtpmJaloA59+nUyzJxHvdVhD6JznC5KaF3u+dPqNNeDk7
+	seesqobwi6ZjgtZhhsyn/aWw21kF+XuG5pXLFvYh5MYavI/tXRZlfn3DYpa2Fg==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20260128-ops-parent-enable-fix-v1-0-ff39cc37f98d@collabora.com> <20260128-ops-parent-enable-fix-v1-1-ff39cc37f98d@collabora.com>
-In-Reply-To: <20260128-ops-parent-enable-fix-v1-1-ff39cc37f98d@collabora.com>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Tue, 3 Feb 2026 12:13:22 +0200
-X-Gm-Features: AZwV_QioJ69dZ07wlDN2xKHoYGFZyQ3lUnsqEy_ZM2pB4A9WwAjMHzHhAGnPGyA
-Message-ID: <CAEnQRZABuXQsJ4-5u9uP8VM63of8EpiV1LcUxv_vSBuGT1uEBA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] clk: Disable CLK_OPS_PARENT_ENABLED parent only after
- CRITICAL check
-To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-Cc: Mark Brown <broonie@kernel.org>, Alexander Stein <alexander.stein@ew.tq-group.com>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Chen-Yu Tsai <wenst@chromium.org>, 
-	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel@collabora.com, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 03 Feb 2026 11:11:50 +0100
+Message-Id: <DG58VCQ54OZA.2QHGR8JFIATY2@bootlin.com>
+Subject: Re: [PATCH v8 05/18] drm/bridge: Move legacy bridge driver out of
+ imx directory for multi-platform use
+Cc: <Laurent.pinchart@ideasonboard.com>, <jonas@kwiboo.se>,
+ <jernej.skrabec@gmail.com>, <maarten.lankhorst@linux.intel.com>,
+ <mripard@kernel.org>, <tzimmermann@suse.de>, <airlied@gmail.com>,
+ <simona@ffwll.ch>, <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
+ <kernel@pengutronix.de>, <festevam@gmail.com>, <inki.dae@samsung.com>,
+ <sw0312.kim@samsung.com>, <kyungmin.park@samsung.com>, <krzk@kernel.org>,
+ <alim.akhtar@samsung.com>, <jingoohan1@gmail.com>,
+ <p.zabel@pengutronix.de>, <hjc@rock-chips.com>, <heiko@sntech.de>,
+ <andy.yan@rock-chips.com>, <dianders@chromium.org>,
+ <m.szyprowski@samsung.com>, <jani.nikula@intel.com>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-samsung-soc@vger.kernel.org>, <linux-rockchip@lists.infradead.org>
+To: "Damon Ding" <damon.ding@rock-chips.com>, <andrzej.hajda@intel.com>,
+ <neil.armstrong@linaro.org>, <rfoss@kernel.org>,
+ <dmitry.baryshkov@oss.qualcomm.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+X-Mailer: aerc 0.20.1
+References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
+ <20251217093321.3108939-6-damon.ding@rock-chips.com>
+ <DG2S064XPGXL.1MQDAKWZEK50K@bootlin.com>
+ <7256ecf9-b10b-428c-a1a6-e35e80a686ed@rock-chips.com>
+ <9e1da672-a52d-4ec3-a20a-fe6f8ca15496@rock-chips.com>
+In-Reply-To: <9e1da672-a52d-4ec3-a20a-fe6f8ca15496@rock-chips.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Jan 28, 2026 at 8:39=E2=80=AFPM Nicolas Frattaroli
-<nicolas.frattaroli@collabora.com> wrote:
->
-> The call to clk_core_enable_lock done by __clk_core_init after checking
-> the clock flags for CLK_IS_CRITICAL enables the parent clock.
->
-> In Commit 669917676e93 ("clk: Respect CLK_OPS_PARENT_ENABLE during
-> recalc"), the parent gets disabled before this check, if the flag
-> CLK_OPS_PARENT_ENABLED is set on the clock. This results in a situation
-> where critical clocks have their parent briefly disabled, which kills
-> the system.
->
-> Fix this by moving the balancing operation to after the CLK_IS_CRITICAL
-> check, which should resolve the problem.
->
-> Fixes: 669917676e93 ("clk: Respect CLK_OPS_PARENT_ENABLE during recalc")
-> Reported-by: Mark Brown <broonie@kernel.org>
-> Closes: https://lore.kernel.org/r/036da7ce-6487-4a6e-9b15-97c6d3bcdcec@si=
-rena.org.uk/
-> Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Hello Damon,
 
-Hi Nicolas,
+On Tue Feb 3, 2026 at 2:31 AM CET, Damon Ding wrote:
+> Hi,
+>
+> On 2/2/2026 10:54 AM, Damon Ding wrote:
+>> Hi Luca,
+>>
+>> On 1/31/2026 8:33 PM, Luca Ceresoli wrote:
+>>> Hello Damon, Dmitry,
+>>>
+>>> On Wed Dec 17, 2025 at 10:33 AM CET, Damon Ding wrote:
+>>>> As suggested by Dmitry, the DRM legacy bridge driver can be pulled
+>>>> out of imx/ subdir for multi-platform use. The driver is also renamed
+>>>> to make it more generic and suitable for platforms other than i.MX.
+>>>>
+>>>> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+>>>> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+>>>> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+>>>>
+>>>> ---
+>>>>
+>>>> Changes in v7:
+>>>> - Rename legacy-bridge to of-display-mode-bridge.
+>>>> - Remove unnecessary API drm_bridge_is_legacy().
+>>>
+>>> ...
+>>>
+>>>> --- a/drivers/gpu/drm/bridge/Kconfig
+>>>> +++ b/drivers/gpu/drm/bridge/Kconfig
+>>>> @@ -244,6 +244,16 @@ config DRM_NXP_PTN3460
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 help
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 NXP PTN3460 eDP-LVDS bridge=
+ chip driver.
+>>>>
+>>>> +config DRM_OF_DISPLAY_MODE_BRIDGE
+>>>> +=C2=A0=C2=A0=C2=A0 tristate
+>>>> +=C2=A0=C2=A0=C2=A0 depends on DRM_BRIDGE && OF
+>>>> +=C2=A0=C2=A0=C2=A0 help
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 This is a DRM bridge implementation th=
+at uses
+>>>> of_get_drm_display_mode
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 to acquire display mode.
+>>>> +
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Newer designs should not use this brid=
+ge and should use proper
+>>>> panel
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 driver instead.
+>>>
+>>> "Newer designs should not use this bridge", but in patch 8 you are
+>>> introducing a new use ot devm_drm_of_display_mode_bridge(). Shouldn't y=
+ou
+>>> instead "use proper panel driver instead" in patch 8?
+>>>
+>>> Can you point to the conversation where the converstaion where Dmitry
+>>> suggested this change? Maybe it already contains the answer to my
+>>> qustion. Also adding a link to that conversation in the commit message
+>>> woule be useful.
+>>>
+>>
+>> First of all, thanks for your reviews on this patch series.
+>>
+>> link: https://lore.kernel.org/all/
+>> xwenycscalzdlpuxytorbiyvej3k7pv3lhxwtadilxq65ipwsv@x5rxm53w5e22/
+>>
+>> I think it may be a misleading issue caused by directly copying the
+>> previous Kconfig description. Now that the new
+>> devm_drm_of_display_mode_bridge() helper has been added, drivers using
+>> the panel-bridge framework can rely on it to maintain compatibility with
+>> legacy display mode parsing.
 
-Would you consider please reverting faulty patch above as i.MX8mp is
-still broken?
+Ah, I think I got the point: the mode description in device tree is legacy,
+but the driver itself is not legacy and will be current until we need to
+support legacy device tree. Correct?
+
+If that's correct, this patch looks OK to me with a new Kconfig help text.
+
+>> It would be better to update the comment as follows:
+>>
+>> This is a DRM bridge implementation that uses of_get_drm_display_mode to
+>> acquire display mode.
+>>
+>> It exists for compatibility with legacy display mode parsing, in order
+>> to conform to the panel-bridge framework.
+>>
+>
+> Dmitry, what's you take on this?
+
+Dmitry's opinion would be much more relevant than mine. I don't know much
+myself about this driver.
+
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
