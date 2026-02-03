@@ -1,170 +1,175 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F72396D18
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 10:12:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B56236A024
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 10:13:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770113527; cv=none; b=W6FOuqe68SzBHsWE+wnVbu4glhGcZY3Sqdn5i2Elg1mySeS+yf7z3RrHz++O4ml8/pM+/Ia+G3VAZHIW53XID5B1qaFqsTJYTOc+aH2XsaI/mwnqdnoVBDZgaxWU9Okhw0JC4WlTDCUm7u6Nf7HwNSciEchoPYICshBvOiI2x9M=
+	t=1770113589; cv=none; b=KPyZlin16r07LKLATAe3qhTS9dSMb7EU14201It8o+ITixkzx9S0mUnfO4V8TrBFiGiGlmsEI4L6mZm3NJDuVcfzsHVlmh+93XSacSZp0GA7yC5dVl7kftlzeLB1Nl8jKoFr4jzZrU7oNWY4DbfRKsmYrz2XcAmUkDLZaGwoqVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770113527; c=relaxed/simple;
-	bh=kaxurYH+pSZiT55rBegAYaKI+3y+ZBTAe+5LlaGS5Qc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=GdGJxIckw0QZriZ1PPTYS81qgNUTRVdqAbizKTrQAPkLXfQxDu+pH1NILIuPmkWRkeBcM1ShGEzShzyCqLfh8TDh00eOzzsWMHnfhZsoxibGt5J+BQmWN7rwonyWIUHzVO38Nh3/jJOgU4TVeRYq23M7q64/LKfErGz+w8f5K3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=soDBBG2b; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1770113589; c=relaxed/simple;
+	bh=pJ0goWwKS6MP4ur7vxzRvhXTxeUm60Sw2ceZqjxHz+o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=B4/hXHHHxvJAaqwhAWC7MKaTLv9yHF5Oeu6QfA3jOzta/gJ7xapufGgX1uI1+tIUnQxQPZv1dkk3bvt6k0BFsnzd2/kHb3cI5njo75H5YQeXevSgfMv6Ymxh4/mWzgXwPbqaZ6xQDYJI1AorB4e+77IYipq6dTJO35npEXet/pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=kIGWXhrH; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="soDBBG2b"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 381854E423E2;
-	Tue,  3 Feb 2026 10:12:03 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0765E60728;
-	Tue,  3 Feb 2026 10:12:03 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7C634119A8888;
-	Tue,  3 Feb 2026 11:11:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1770113521; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=kaxurYH+pSZiT55rBegAYaKI+3y+ZBTAe+5LlaGS5Qc=;
-	b=soDBBG2bgMR8f2LbgIrwrYZOZzYJcpbUWVYRItBu2O1PQqna30rioLkNHxmoqkhNvMoty+
-	if15F8cH7NZWu28bObiIMmjSXkf/cYBNUhfuBPoO76QtFqb1UQUMLfLDYevJwW/p1Kl7Lu
-	+I3G0dxG+J6RhTJVOFeRfdIz+h/B9NG/cjr+thEijncqEHuyHKZUwYUANoWLQg294fKT8y
-	TDLWlGQamhmukciHP6cONfNmeBtpmJaloA59+nUyzJxHvdVhD6JznC5KaF3u+dPqNNeDk7
-	seesqobwi6ZjgtZhhsyn/aWw21kF+XuG5pXLFvYh5MYavI/tXRZlfn3DYpa2Fg==
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="kIGWXhrH"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4f4zbH658Rz9thY;
+	Tue,  3 Feb 2026 11:03:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1770113036;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I/WLesTWjIpwef38SdQ4JX0gdMp0IJsjyMkm8xAgFWc=;
+	b=kIGWXhrH/fv5Z6UEAwBwiKWnU1HgR++qoAwUtaSjL0r2h36xtP6PXwALTo9+2xHpHvNDpX
+	7zzG/igQFe7TZlu/681yxRxR8YlgD6kHLF6QuhXJseIxd0hRuJkjd7lHXb4skFBFEXqdzh
+	jgCyWStCK5A94b3tELO/6fl8zgCGCNMb/s3//jcJUMlZV/K5Pr/H1HM+uH6cHsMNb0K0+p
+	dqlec2zoPzHAwiMB28GejqjFcDd7uK3S7/EQdz1XjIryuXQq9Qs4emeM15JzfeIKdplYVO
+	6p1jwz37A7xjGvN5mW8FZ4tYdhEKjcGECe2yHgo5PKxvwsyUKjSv9jnrfNM/XA==
+Date: Tue, 3 Feb 2026 11:03:41 +0100
+From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: andrew@lunn.ch, shawnguo@kernel.org, krzk+dt@kernel.org,
+ linux-kernel@vger.kernel.org, edumazet@google.com, netdev@vger.kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ conor+dt@kernel.org, horms@kernel.org, richardcochran@gmail.com,
+ robh@kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, wahrenst@gmx.net, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com
+Subject: Re: [net-next,v22,4/7] net: mtip: Add net_device_ops functions to
+ the L2 switch driver
+Message-ID: <20260203110341.1ce21455@wsk>
+In-Reply-To: <20260203014247.824561-2-kuba@kernel.org>
+References: <20260131233459.1625279-5-lukasz.majewski@mailbox.org>
+	<20260203014247.824561-2-kuba@kernel.org>
+Organization: mailbox.org
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 03 Feb 2026 11:11:50 +0100
-Message-Id: <DG58VCQ54OZA.2QHGR8JFIATY2@bootlin.com>
-Subject: Re: [PATCH v8 05/18] drm/bridge: Move legacy bridge driver out of
- imx directory for multi-platform use
-Cc: <Laurent.pinchart@ideasonboard.com>, <jonas@kwiboo.se>,
- <jernej.skrabec@gmail.com>, <maarten.lankhorst@linux.intel.com>,
- <mripard@kernel.org>, <tzimmermann@suse.de>, <airlied@gmail.com>,
- <simona@ffwll.ch>, <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
- <kernel@pengutronix.de>, <festevam@gmail.com>, <inki.dae@samsung.com>,
- <sw0312.kim@samsung.com>, <kyungmin.park@samsung.com>, <krzk@kernel.org>,
- <alim.akhtar@samsung.com>, <jingoohan1@gmail.com>,
- <p.zabel@pengutronix.de>, <hjc@rock-chips.com>, <heiko@sntech.de>,
- <andy.yan@rock-chips.com>, <dianders@chromium.org>,
- <m.szyprowski@samsung.com>, <jani.nikula@intel.com>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <linux-samsung-soc@vger.kernel.org>, <linux-rockchip@lists.infradead.org>
-To: "Damon Ding" <damon.ding@rock-chips.com>, <andrzej.hajda@intel.com>,
- <neil.armstrong@linaro.org>, <rfoss@kernel.org>,
- <dmitry.baryshkov@oss.qualcomm.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.20.1
-References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
- <20251217093321.3108939-6-damon.ding@rock-chips.com>
- <DG2S064XPGXL.1MQDAKWZEK50K@bootlin.com>
- <7256ecf9-b10b-428c-a1a6-e35e80a686ed@rock-chips.com>
- <9e1da672-a52d-4ec3-a20a-fe6f8ca15496@rock-chips.com>
-In-Reply-To: <9e1da672-a52d-4ec3-a20a-fe6f8ca15496@rock-chips.com>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
+X-MBO-RS-ID: fe9904b47499ae8f7ea
+X-MBO-RS-META: zwqoyhezb5rx5qmpyzoc4ik3614jqbee
 
-Hello Damon,
+Hi Jakub,
 
-On Tue Feb 3, 2026 at 2:31 AM CET, Damon Ding wrote:
-> Hi,
->
-> On 2/2/2026 10:54 AM, Damon Ding wrote:
->> Hi Luca,
->>
->> On 1/31/2026 8:33 PM, Luca Ceresoli wrote:
->>> Hello Damon, Dmitry,
->>>
->>> On Wed Dec 17, 2025 at 10:33 AM CET, Damon Ding wrote:
->>>> As suggested by Dmitry, the DRM legacy bridge driver can be pulled
->>>> out of imx/ subdir for multi-platform use. The driver is also renamed
->>>> to make it more generic and suitable for platforms other than i.MX.
->>>>
->>>> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
->>>> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->>>> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
->>>>
->>>> ---
->>>>
->>>> Changes in v7:
->>>> - Rename legacy-bridge to of-display-mode-bridge.
->>>> - Remove unnecessary API drm_bridge_is_legacy().
->>>
->>> ...
->>>
->>>> --- a/drivers/gpu/drm/bridge/Kconfig
->>>> +++ b/drivers/gpu/drm/bridge/Kconfig
->>>> @@ -244,6 +244,16 @@ config DRM_NXP_PTN3460
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 help
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 NXP PTN3460 eDP-LVDS bridge=
- chip driver.
->>>>
->>>> +config DRM_OF_DISPLAY_MODE_BRIDGE
->>>> +=C2=A0=C2=A0=C2=A0 tristate
->>>> +=C2=A0=C2=A0=C2=A0 depends on DRM_BRIDGE && OF
->>>> +=C2=A0=C2=A0=C2=A0 help
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 This is a DRM bridge implementation th=
-at uses
->>>> of_get_drm_display_mode
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 to acquire display mode.
->>>> +
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Newer designs should not use this brid=
-ge and should use proper
->>>> panel
->>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 driver instead.
->>>
->>> "Newer designs should not use this bridge", but in patch 8 you are
->>> introducing a new use ot devm_drm_of_display_mode_bridge(). Shouldn't y=
-ou
->>> instead "use proper panel driver instead" in patch 8?
->>>
->>> Can you point to the conversation where the converstaion where Dmitry
->>> suggested this change? Maybe it already contains the answer to my
->>> qustion. Also adding a link to that conversation in the commit message
->>> woule be useful.
->>>
->>
->> First of all, thanks for your reviews on this patch series.
->>
->> link: https://lore.kernel.org/all/
->> xwenycscalzdlpuxytorbiyvej3k7pv3lhxwtadilxq65ipwsv@x5rxm53w5e22/
->>
->> I think it may be a misleading issue caused by directly copying the
->> previous Kconfig description. Now that the new
->> devm_drm_of_display_mode_bridge() helper has been added, drivers using
->> the panel-bridge framework can rely on it to maintain compatibility with
->> legacy display mode parsing.
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+>=20
+> For local reproduction steps see
+> https://netdev-ai.bots.linux.dev/ai-local.html ---
+> net: mtip: Add net_device_ops functions to the L2 switch driver
+>=20
+> This patch adds net_device_ops callbacks for the MTIP L2 switch
+> driver, including transmit, multicast configuration, MAC address
+> handling, and timeout recovery functions.
+>=20
+> > diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c ---
+> > a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c +++
+> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c =20
+>=20
+> [ ... ]
+>=20
+> > +static netdev_tx_t mtip_start_xmit_port(struct sk_buff *skb,
+> > +					struct net_device *dev,
+> > int port) +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	unsigned short status;
+> > +	unsigned int index;
+> > +	struct cbd_t *bdp;
+> > +	void *bufaddr;
+> > +
+> > +	spin_lock_bh(&fep->hw_lock); =20
+>=20
+> [ ... ]
+>=20
+> > +	/* Save skb pointer. */
+> > +	fep->tx_skbuff[index] =3D skb; =20
+>=20
+> mtip_start_xmit_port() stores sk_buffs in fep->tx_skbuff[index] and
+> creates DMA mappings, but mtip_switch_tx() which should complete TX
+> operations is empty:
+>=20
+> static void mtip_switch_tx(struct switch_enet_private *fep)
+> {
+> }
+>=20
+> The NAPI poll handler mtip_rx_napi() calls mtip_switch_tx() to reclaim
+> transmitted buffers. Since it does nothing, won't every transmitted
+> packet leak the skb and DMA mapping? Also, dirty_tx is never
+> advanced, so the TX ring will fill (cur_tx =3D=3D dirty_tx) and stop
+> accepting packets.
+>=20
+> jakub: maybe add a TODO comment transiently here, since later patch
+> implements the cleanup?
 
-Ah, I think I got the point: the mode description in device tree is legacy,
-but the driver itself is not legacy and will be current until we need to
-support legacy device tree. Correct?
+The mtip_switch_tx() is empty as we have agreed, that I will divide
+this driver to several patches to ease the review.
 
-If that's correct, this patch looks OK to me with a new Kconfig help text.
+Adding TODO seems to only make AI review happy, as:
 
->> It would be better to update the comment as follows:
->>
->> This is a DRM bridge implementation that uses of_get_drm_display_mode to
->> acquire display mode.
->>
->> It exists for compatibility with legacy display mode parsing, in order
->> to conform to the panel-bridge framework.
->>
->
-> Dmitry, what's you take on this?
+- The patch which adds support for FEC_MTIP_L2SW in Kconfig will be
+  sent after the driver is accepted to net-next
 
-Dmitry's opinion would be much more relevant than mine. I don't know much
-myself about this driver.
+- Those commits are even now bisectable when FEC_MTIP_L2SW is
+  enabled (when I test the setup).
 
-Luca
+Anyway, if you still would like to have the TODO comment, then please
+give me a hint how it shall be written to make the AI happy...
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+
+
+And maybe a few my thoughts:
+
+1. AI review seems to bring each time different issues - even the
+"grammatic" ones were not provided with the first AI generated review.
+
+2. I have tried to setup claudie> to run the patch set through it -
+however, it requires a paid account on a cloud/AI vendor (and I guess
+that different vendors' AI engines produce different output for the same
+"AI prompt")?
+
+
+Anyway, I do appreciate the AI review - it provides very deep insights
+through the code.
+
+>=20
+> > +static void mtip_timeout(struct net_device *dev, unsigned int
+> > txqueue) +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +
+> > +	dev->stats.tx_errors++; =20
+>=20
+> Jakub Kicinski noted in v16 review that tx_errors are already counted
+> by the network stack, and the statistic is exposed per-queue in
+> sysfs. Does incrementing tx_errors here double-count timeout events?
+>=20
+> https://lore.kernel.org/all/20250725151618.0bc84bdb@kernel.org/
+>=20
+
+Yes, this shall been removed.
+
+> > +	DO_ONCE(mtip_print_hw_state, dev);
+> > +
+> > +	schedule_work(&priv->tx_timeout_work);
+> > +} =20
+
+
+
+--=20
+Best regards,
+
+=C5=81ukasz Majewski
