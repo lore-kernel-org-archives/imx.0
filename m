@@ -1,238 +1,160 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013047.outbound.protection.outlook.com [52.101.72.47])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260D131AA96
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 10:27:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770114431; cv=fail; b=tm7tG2FzEKCw198f7e/kEBd0PH4JfY+Broa0F2qNLhgqMVOFs959PICDGjPO+vibRoAd5xfdpYqwmBtcW9/olL36rhZzqP8uymeZAPcTVOjhzVjWJEm5DRenhsbdyjHwLMWmuoIaBodqF4Rwe+Ac8Vi1l0flVUSmvBBhTBSxa98=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770114431; c=relaxed/simple;
-	bh=IxcaP8LEVNRRP1lUX2sxnK8oxQ60GH196Kx99TDIUvs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Qdzh3JAup0cvyTlXgqt1jZZlAEeGBECTBYBbwy+UgGVH5bjEsgINHXsWnQsT1f0J8uTulbXffYjlFldg9PDitn48mlfbTQR7DBKpwp94RP4+DjJd9PUnH1ea6ydCB64EEG6KLjTaAwjgbD11Qk9LOM4ZLzTz5p7z+lMvoyxlfII=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=cYjhTQkt; arc=fail smtp.client-ip=52.101.72.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A97B2F39C2
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 10:35:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770114945; cv=none; b=Kx0sRNJ8YfaaeFIr/1UQa57E+G8ahSqB6UDmP/ouTTtadJ7RTeUD1ecGAAa5Z/F8iFhBvblvvbaoco7QT8keYd+CS6fDRdrP6KLwKAtxC2P5ko64MxcUvg/9dFJ06w6ZJ6+M3LrJjlaqlDxIGXN07KH/H6CoaJPxllYYIz7i19o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770114945; c=relaxed/simple;
+	bh=V/TFnWBnaq0QUbJ4rlu1/nT8pMIJRhCmFowvUBFqT5Y=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YHRe7g/LrbCUtdQvKQHALspdnEw7J6281nv98yblugN4GZJav8ScjAws8xYXAU9g6IXmRH71FD4thr9muT29fvPbFJ2JNB1Hil7mpdgXkVUlwIr5MjDaULXqMMYCG/2btth9DVjlmfEABZH6n8LGh2q6NrtVNuxalQoIRJxiiew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CHWLALww; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="cYjhTQkt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UNKPtqdw0cl8JR1KgOPdtrrxUNr8HfZYsIX/FlxBAdKfQZ119lKByzXdhbcV3DmlAQhL0wHqY6WLmtxqmEL/EmPUDx+S1zvWhb5OajvisDGXvquB3DV4c46jvrOENXg21ANgNfbgNYy638fc8/7xOkmR1W8PPhbV/F8hLvJ+cau8sl1bAvqtdAh1jLVmtfGc3cjQmP2jDN0j7XHWu42yG+SRsvbdK6mcYFGz/RnEbIkeCJaW+VJW41p9w/1nLCdGWf5dh+5EmkCdWgIJ+eXF37+R6gFRceHGWvdyG8rXh63eXPVf1jn6m+k7aOy92IrfnOAwrL85XDCTg7UGlngN0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wLa0IjxI1yM3LLdIxlkka7kLwtJeh/h0xCIjf724uvw=;
- b=KKxjo23nUeEOCo+AIYHvKnJYQ/euoBXJcwnMM/uysfif+axex2mWu3Y7aQs4XyrWyPrtuO9MYR0yXmZx3u7bPPvkwNG1QUGMobGaSz1INFb+ZjVSA01RnNqHFoX3s0bParyIDX0m5NQZO+EaRbZTJDL8RExwqs7Y3kzjZoogzrT7gCNR2YmRjQbqKd+i+t3SQ++jMJdi0YoPgv9z9oeoemXCP3oajITBREHqrrZp2rvFMzxVsXVyWqY5cLZ1UyyjGtx7DkvnZFaAby2StcKmNcL2/LMt7vkf3R5DEyfSOnzyxfgkRFbOAv58sJtVKWTcg8ZhBVyPWZdRk0HdRJSLmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wLa0IjxI1yM3LLdIxlkka7kLwtJeh/h0xCIjf724uvw=;
- b=cYjhTQktGEa6m8Ts7Qv4M0K9yZD4Rs/v8PPYv0xY/+5edijJ2VutA41PJD8EzbGAdNcnnfQjaK9tZDKqF2623NSK/XmTDoA8kIy+XtFgYirEUbfRXF7ASeXSy7xB4l2uFmXjiBkfudw8yXQ4TNnz8JfgBJutVqDFhP9wBFUHZMkm830U6nfzYn60brTG4eshL415pt+6+HrZ0s3BwROK9WAzH08pWvMuCletZ1pANszOinWrDSsWoJbvOgeUiOJd+qhLt5GVJM6WWUoMsN2QMw4BxOK2GLhD5RQ0vDpYW5h5VMOfWQi5sJ2LqKJGpKqPtGXpNafi+lMqPo1Xte8yTA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DU2PR04MB8567.eurprd04.prod.outlook.com (2603:10a6:10:2d6::21)
- by PAXPR04MB8720.eurprd04.prod.outlook.com (2603:10a6:102:21f::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.12; Tue, 3 Feb
- 2026 10:27:04 +0000
-Received: from DU2PR04MB8567.eurprd04.prod.outlook.com
- ([fe80::32c4:a8a7:1724:b754]) by DU2PR04MB8567.eurprd04.prod.outlook.com
- ([fe80::32c4:a8a7:1724:b754%2]) with mapi id 15.20.9542.008; Tue, 3 Feb 2026
- 10:27:04 +0000
-From: ziniu.wang_1@nxp.com
-To: axboe@kernel.dk,
-	ulf.hansson@linaro.org,
-	hch@infradead.org
-Cc: linux-block@vger.kernel.org,
-	linux-mmc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH v3 2/2] mmc: add quirk to optimize certain Kingston eMMC secure erase/trim performance
-Date: Tue,  3 Feb 2026 18:29:03 +0800
-Message-Id: <20260203102903.2953660-3-ziniu.wang_1@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260203102903.2953660-1-ziniu.wang_1@nxp.com>
-References: <20260203102903.2953660-1-ziniu.wang_1@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2P153CA0011.APCP153.PROD.OUTLOOK.COM (2603:1096::21) To
- DU2PR04MB8567.eurprd04.prod.outlook.com (2603:10a6:10:2d6::21)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="CHWLALww"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E68F71A2BB6;
+	Tue,  3 Feb 2026 10:35:40 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B938F60728;
+	Tue,  3 Feb 2026 10:35:40 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5C0E0119A8888;
+	Tue,  3 Feb 2026 11:35:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1770114939; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=bRfBR2ihr1Hvugw6vtHQLI0Ym/lkBNhBRCmAfREIyxE=;
+	b=CHWLALwwA2F5W2UxPktS6mEnQMxcVu4RX39BagTkuj/jK2nchiKFQjS810l9U+vr0iGF1L
+	tDlprtqF4vq0anoK7Kxkddos5DULV1Y5b85Vu3FYHVOx7jeYMcIYYY1lB3G9pcmIU8McDp
+	iglo5d+8XB1svWRBGcUOlm3OR10eOzNZVObDG7scU2pnAcyzGsNSB/B8Nh2Tu0Vbz7c3E2
+	lga4RG/kd+j4rlEUQ/TBHWopnMeSijDwNbT+KxOFknzC9ld+Mhx1PitjJtm/HgIJiI61I3
+	zLGRi5AyHLJA8/HIuh4D4roTAPwX2ZN6KPXAsffCfrC56+X55j9AMdt0/e/9cQ==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH v5] drm/bridge: add of_drm_find_and_get_bridge() and a
+ managed *next_bridge, deprecate of_drm_find_bridge()
+Date: Tue, 03 Feb 2026 11:35:24 +0100
+Message-Id: <20260203-drm-bridge-alloc-getput-drm_of_find_bridge-v5-0-66bda8d617b4@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8567:EE_|PAXPR04MB8720:EE_
-X-MS-Office365-Filtering-Correlation-Id: f19da5b4-b510-4062-836d-08de630ec62b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|1800799024|376014|366016|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7EBAE8j7Spwg7KUDQGFTBQrLeH/ZPh5GwZ0jO+Re7vOHn7y5Z9M4Ep54O6EK?=
- =?us-ascii?Q?uMw5sLK+52/hKxRgN2hH8oTLYAyJWyf4KbM8K4jMjADHSYyfZBujASZlQXwI?=
- =?us-ascii?Q?uff6fLtaX0uHa0ejHWK7x0xgD54kCMl79BE/HsFmFmGgpdSm3FSuQjKY68Vl?=
- =?us-ascii?Q?cQfsp4uDyqpUkzs6CDFyzZ8RP/F0IbhZ+CROLpLPgXGTUfLO03WR/6jq6YFm?=
- =?us-ascii?Q?k8vx7sKqkT75I1wzPEh7C8vvxNoOGyMdfn3A0zLK5LjDP4pdNtJswJdt0JDf?=
- =?us-ascii?Q?Fr8VBB8FyA2r5yE9Tn2mc+Y+TRH2DAeDhlQR3FCZ6LsEhM8wF+jN5mdDveLp?=
- =?us-ascii?Q?oHz0/FMgPqrOHEtxk9/IeqRXc5xOwa18k2qGOSfOgsE+k8MMH9U3UtgcuuOF?=
- =?us-ascii?Q?wh+LbiCPyNIrbRx78kpDRxNg7/j2PqKeBiTVh46UEIGUYtogMoF3LfuW4+Gm?=
- =?us-ascii?Q?5VWESjhAmTTgTh5hhtEkBXv6ux95JzEok6/jhr3u3YIU6gOQ9iuCteXxgmJw?=
- =?us-ascii?Q?+++/DOsX7V046BRDnLN15/2XNKSQMdYvLj6J0OFtXgflS5PP7y9lMz/AAWZ6?=
- =?us-ascii?Q?ZlnV1Hfv0XN7XdbLpfl7l1UepAnNZBfnLQRTRHz6W0hTqOoegU4ekGg6ciWf?=
- =?us-ascii?Q?BnZv4OTfPezJlIUE/xZRXHdyUHwQkrE6mTVJ7j7taY7fN5CENQUfvnLV5ZIZ?=
- =?us-ascii?Q?yqaZvtNL1gEFOUsc4mUuQRI2JqDlWjtU3/yOgn/jWlUqH0gHaW5KH5gEXV10?=
- =?us-ascii?Q?hQ+olojQOCKhElMQv3vAYGEALmH3AATkHmPZ4y7MrTHG1pL7q74QhK+BJ+hK?=
- =?us-ascii?Q?ERVUlRA7HyGdHbmPlyMZm0Pc0dk4q31QQj3W4YFvWjhQCTSRM/t4NORp7jfL?=
- =?us-ascii?Q?aMrczKQK7DghWFRZ+GPMsuiZ1yyv8AqLqdj6hKysrBpYoMwlJO+v5K1Ej3oa?=
- =?us-ascii?Q?RK+HZStZ0Zeul1MnW8vm6AeXK0jaJ9GKu+zirz0UtIB2D6pjIMbH/dFNrmQe?=
- =?us-ascii?Q?Uynkf1eGLwyrFNR7TJ3wPDcrohFQYh4mIs/K38chotR6V8bjuPTou/wVx3Vj?=
- =?us-ascii?Q?b022WNxo6OMhWN1lzIUo8nv8Crvrp0fEywy34WjDo3fgMk7Evtj5EbM4fHl4?=
- =?us-ascii?Q?1wdDtPV7jIzcZbW9PnCwm68FnzYeSf1ZRW9jHjjTJcMaZMgUiAdyzLfdIclr?=
- =?us-ascii?Q?OxV05e5xgPHM9rXseJ+RCe5cCxXgCpmWwyVnrXerZGn9JOn9NanLHz8GyFNj?=
- =?us-ascii?Q?2ZQYHPC/5sbhk4frtPA8NAyoNjub+VpWyl69+CNYjpIzhOAGN5F9GAuCGtIZ?=
- =?us-ascii?Q?GSN//gY9l199SHFdKYN8TTvEy4iZW7OYzIoFLOyU5JXt2PwMz1UAUlQ2Kg8t?=
- =?us-ascii?Q?0gkVOjJjtC0mtRgu2jzgFmZErxTaHDY2HSMk7Qjm5fLzwmPFAMSi6SRNXYvv?=
- =?us-ascii?Q?+qfvBB7SfXF0NIwPVSu7NfW75ggVk4C1TG1uXLdS/fVIQBWAs4uiwse7y7Eg?=
- =?us-ascii?Q?vMk9OK8p6HdHmi7O/4HyOEYSRoFT//pUI6WBhzM84XyzNx/67ktW28r3a/wP?=
- =?us-ascii?Q?sJUWl9ztB0LOi7EwWsS4u89SrvT9HV83yOhnDKvsgsw8LsjPq19T7p6TbXda?=
- =?us-ascii?Q?hI9dcRo/iRVMbTRip3aZHWM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8567.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(1800799024)(376014)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vMpMUzmJO6mf/B6cVHlt4vwP0m0GH/thbCebHgclSfFY4VWebNUeBXKO1CLz?=
- =?us-ascii?Q?yAT5zYRSjFkPSZpAcuSe8u5PL8GkGq5laWKJmHiVIjgs9Yo/gDZgCrjD82ul?=
- =?us-ascii?Q?8x0AtsFBJtRa0I+FruTcZQsgqJs+S84z/y9yRbpRfcgTO6xF+iKL9qsRMBqB?=
- =?us-ascii?Q?Dg9QEBmW2BXG/RjAiaGUI2pVOpA6h19UWZWxEbCypGuHJJzEyJ77SbhI5dER?=
- =?us-ascii?Q?SUDvrdQi92HCNRQZc224rBdHDd/mLjbIsfVl2tfnS75PrNpycvKmsO8B9Wp0?=
- =?us-ascii?Q?pPlxHJvZdFyL3SVm6EBzSmiJYzFugNE1Msg2nHq0DKUDS1Vqj9LQJ0EHzgLO?=
- =?us-ascii?Q?Lvm61hp0rGkqTGFeBwVH1DorQ6w2jRNOiCQ9p1FKOVp+lZdRrX8cZ2MCybxT?=
- =?us-ascii?Q?QRD5djE+GdHfeWmAmlWWtnibPILkSUdnDtfIah+lcdekw7Z6mWtNUY94HHbT?=
- =?us-ascii?Q?YnZbORRqv/Y/Z9DdPUaYooOOFDg9nr/or8aE4lFX9hWgYai5FSPqsH1lJewW?=
- =?us-ascii?Q?Rb4+23rN+OLzmOVO8bhMeT93SflZWEizWd60sfUOtbO635Tui5HwjiuMhELo?=
- =?us-ascii?Q?wtjtmNGcrlARrvVG0izG09ICSNNnMNCf6KUb51487cqAU2rzqo9Qwm7Zw4n9?=
- =?us-ascii?Q?dWEMLSzM6lqIWVRCQp1PlYNk78cVqwSApFYyzPDb00xN86M62n7P+snzTFT3?=
- =?us-ascii?Q?skiInAOJmTfse5GLJpYqgxmqaPbmunnyISW6uSq67kqs+jZb3rEb6FAm3Qry?=
- =?us-ascii?Q?q/2w5ya+hjKsJNBlFk+zE4/yIWFqpckjBvR29XLUKDYN2wm97Wom2f9k86IP?=
- =?us-ascii?Q?uP1ZYSm9bbCaS52RjbDt+QrQCUDDEO0oBxj75bgsrrnBOOoXHyEq9u2q85Jj?=
- =?us-ascii?Q?jNM+5Cvd+tspFv508eEBo0uCzRrxc5nENAhdIS9SVMvwNev2CIWc2ihgOYug?=
- =?us-ascii?Q?K4V8Pq+upRUhqaqOMR3kFkuwY+gIXjhcRxKn5nVwJaZXi2ioJ/Vr95v5kUUw?=
- =?us-ascii?Q?nxXapIan4KVMj0IIhYITE/58ubA+jkGf0/rqODCJ9gzioK1pl7l3v+RgUkVT?=
- =?us-ascii?Q?8pPE0kUGfqCn47ttENjQuk2Sb3I16Zgt0nzQtK9OvSDjkyr5sOHdbjnN8tQM?=
- =?us-ascii?Q?NZfgwcD3akfTuiXN4HJKanmeBGzB0ojPp24k+cRL6rRn+Bx/zYwF/x0b6xHm?=
- =?us-ascii?Q?YVJcQbYLWEa/YgxXZsabliiE+LD9ecrJMiddZmA2y9zGglYhK7IW7btSBCwy?=
- =?us-ascii?Q?bYcL+kW+zVAKH2B+/G6BpnNwvLVplLDdbTdCJl5hvrO2ukCJobTaTXsEO4En?=
- =?us-ascii?Q?/fQnToiMxCZ2Bs4uKcQFsWg2efZAJO91W5GRnATtx2l22fx0UpHWsUVsxloi?=
- =?us-ascii?Q?j/sOByyt3MzMZNFcivKuOJZiV+4uEROJGW5vKC0IaR71KX5hPZlmzJ5G7XLT?=
- =?us-ascii?Q?oDwK9PpIdLXy9gzkZLz1B5Nqz9P8x7EB2zCxu6F6fZEKEvsdAg7LNR2pU7FZ?=
- =?us-ascii?Q?X0zfo1cdoZB9lKY59a5NpEESFxsjRtV8aAdm6H5lK+vuEEgciKLVz94zqyKT?=
- =?us-ascii?Q?gBb9HYz2/tY4UJsmvW6TLIHMgiJmFGT2LzNYSvVfTYw3Qr+PqyU/K36zAoAJ?=
- =?us-ascii?Q?IWFzZf0qn7lbStYprSd6L8K6QKenn3q0RMNvdCzfQ5Ek21oBHWBl9sba5fYl?=
- =?us-ascii?Q?5ee0fIJS2X0MWmAMWByZKJIDOB2np+DgOuHqw16bGzo7/ioON+J8WK6fvale?=
- =?us-ascii?Q?lcF3dC+IOw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f19da5b4-b510-4062-836d-08de630ec62b
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8567.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 10:27:04.0952
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: i0h1W6ygDX5Ht8SZribz7ktdC+J6YygV5olRdLvRciTDOAgOMKzZOfzDl39hKj+90bOQYDkBqneia7ye0CfKZw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8720
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAGzPgWkC/5XOy2rDMBAF0F8JWldF70dX/Y9SjGRJyYBjBdk1L
+ cH/3nFoaEtWXt47cO5cyZQb5Im8HK6k5QUmqCMG/XQg/SmMx0whYSaCCc05tzS1M40NEl7CMNS
+ eHvN8+Zi3vqulKzCm7udulWdSGquUSwTBS8sFPm9jb++YTzDNtX3dthe+tfcZv2dm4ZRRlqJ3w
+ ZasrHqNtc4DjM99PZNtaBF/cOF24QJx54oLnNncB/GIy19ccLMLl4hHzY0uITqm3SOu7rhh+MA
+ uXCEejIhKeh9MLP/xdV2/ASz84Rj9AQAA
+X-Change-ID: 20251117-drm-bridge-alloc-getput-drm_of_find_bridge-74903367448d
+To: Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.15-dev-5464f
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Luke Wang <ziniu.wang_1@nxp.com>
+This v4 contains the leftovers of the v3 series that deprecated
+of_drm_find_bridge(), added a replacement which handles bridge refcounting,
+and converted some of the direct users. All patches have been applied
+except the imx8qxp-pixel-link ones, which still need a review for the first
+patch.
 
-Kingston eMMC IY2964 and IB2932 takes a fixed ~2 seconds for each secure
-erase/trim operation regardless of size - that is, a single secure
-erase/trim operation of 1MB takes the same time as 1GB. With default
-calculated 3.5MB max discard size, secure erase 1GB requires ~300 separate
-operations taking ~10 minutes total.
+@Liu, patch 1 is waiting for a review and it's non-trivial, it would be
+nice if you could have a look at that one at least.
 
-Add MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME quirk to set maximum secure
-erase size for those devices. This allows 1GB secure erase to complete
-in a single operation, reducing time from 10 minutes to just 2 seconds.
+This is part of the work to support hotplug of DRM bridges. The grand plan
+was discussed in [0].
 
-Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+Here's the work breakdown (➜ marks the current series):
+
+ 1. ➜ add refcounting to DRM bridges struct drm_bridge,
+      based on devm_drm_bridge_alloc()
+    A. ✔ add new alloc API and refcounting (v6.16)
+    B. ✔ convert all bridge drivers to new API (v6.17)
+    C. ✔ kunit tests (v6.17)
+    D. ✔ add get/put to drm_bridge_add/remove() + attach/detach()
+         and warn on old allocation pattern (v6.17)
+    E. ➜ add get/put on drm_bridge accessors
+       1. ✔ drm_bridge_chain_get_first_bridge(), add cleanup action (v6.18)
+       2. ✔ drm_bridge_get_prev_bridge() (v6.18)
+       3. ✔ drm_bridge_get_next_bridge() (v6.19)
+       4. ✔ drm_for_each_bridge_in_chain() (v6.19)
+       5. ✔ drm_bridge_connector_init (v6.19)
+       6. … protect encoder bridge chain with a mutex
+       7. ➜ of_drm_find_bridge()
+          a. ➜✔… add of_drm_get_bridge(), convert basic direct users
+	         (v6.20?, one driver still pending)
+	  b. convert other direct users
+	  c. convert bridge-only drm_of_find_panel_or_bridge() users
+       8. drm_of_find_panel_or_bridge, *_of_get_bridge
+       9. ✔ enforce drm_bridge_add before drm_bridge_attach (v6.19)
+    F. ✔ debugfs improvements
+       1. ✔ add top-level 'bridges' file (v6.16)
+       2. ✔ show refcount and list lingering bridges (v6.19)
+ 2. … handle gracefully atomic updates during bridge removal
+    A. ✔ Add drm_dev_enter/exit() to protect device resources (v6.20?)
+    B. … protect private_obj removal from list
+ 3. … DSI host-device driver interaction
+ 4. ✔ removing the need for the "always-disconnected" connector
+ 5. finish the hotplug bridge work, moving code to the core and potentially
+    removing the hotplug-bridge itself (this needs to be clarified as
+    points 1-3 are developed)
+
+[0] https://lore.kernel.org/lkml/20250206-hotplug-drm-bridge-v6-0-9d6f2c9c3058@bootlin.com/#t
+
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- drivers/mmc/core/card.h   | 5 +++++
- drivers/mmc/core/queue.c  | 9 +++++++--
- drivers/mmc/core/quirks.h | 9 +++++++++
- include/linux/mmc/card.h  | 1 +
- 4 files changed, 22 insertions(+), 2 deletions(-)
+Changes in v5:
+- Changed the only remaining patch after Liu Ying's requests for code
+  readability
+- Link to v4: https://lore.kernel.org/r/20260107-drm-bridge-alloc-getput-drm_of_find_bridge-v4-0-a62b4399a6bf@bootlin.com
 
-diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
-index a9619dd45270..a7c364d0030a 100644
---- a/drivers/mmc/core/card.h
-+++ b/drivers/mmc/core/card.h
-@@ -311,4 +311,9 @@ static inline int mmc_card_broken_mdt(const struct mmc_card *c)
- 	return c->quirks & MMC_QUIRK_BROKEN_MDT;
- }
- 
-+static inline int mmc_card_fixed_secure_erase_trim_time(const struct mmc_card *c)
-+{
-+	return c->quirks & MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME;
-+}
-+
- #endif
-diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
-index 284856c8f655..eb1053d8cae7 100644
---- a/drivers/mmc/core/queue.c
-+++ b/drivers/mmc/core/queue.c
-@@ -184,8 +184,13 @@ static void mmc_queue_setup_discard(struct mmc_card *card,
- 		return;
- 
- 	lim->max_hw_discard_sectors = max_discard;
--	if (mmc_card_can_secure_erase_trim(card))
--		lim->max_secure_erase_sectors = max_discard;
-+	if (mmc_card_can_secure_erase_trim(card)) {
-+		if (mmc_card_fixed_secure_erase_trim_time(card))
-+			lim->max_secure_erase_sectors = UINT_MAX >> card->erase_shift;
-+		else
-+			lim->max_secure_erase_sectors = max_discard;
-+	}
-+
- 	if (mmc_card_can_trim(card) && card->erased_byte == 0)
- 		lim->max_write_zeroes_sectors = max_discard;
- 
-diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-index f5e8a0f6d11b..6f727b4a60a5 100644
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -153,6 +153,15 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
- 	MMC_FIXUP("M62704", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
- 		  MMC_QUIRK_TRIM_BROKEN),
- 
-+	/*
-+	 * On Some Kingston eMMCs, secure erase/trim time is independent
-+	 * of erase size, fixed at approximately 2 seconds.
-+	 */
-+	MMC_FIXUP("IY2964", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
-+		  MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME),
-+	MMC_FIXUP("IB2932", CID_MANFID_KINGSTON, 0x0100, add_quirk_mmc,
-+		  MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME),
-+
- 	END_FIXUP
- };
- 
-diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-index 4722dd7e46ce..9dc4750296af 100644
---- a/include/linux/mmc/card.h
-+++ b/include/linux/mmc/card.h
-@@ -330,6 +330,7 @@ struct mmc_card {
- #define MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY	(1<<17) /* Disable broken SD poweroff notify support */
- #define MMC_QUIRK_NO_UHS_DDR50_TUNING	(1<<18) /* Disable DDR50 tuning */
- #define MMC_QUIRK_BROKEN_MDT    (1<<19) /* Wrong manufacturing year */
-+#define MMC_QUIRK_FIXED_SECURE_ERASE_TRIM_TIME	(1<<20) /* Secure erase/trim time is fixed regardless of size */
- 
- 	bool			written_flag;	/* Indicates eMMC has been written since power on */
- 	bool			reenable_cmdq;	/* Re-enable Command Queue */
--- 
-2.34.1
+Changes in v4:
+- Added review trailers
+- Link to v3: https://lore.kernel.org/r/20251216-drm-bridge-alloc-getput-drm_of_find_bridge-v3-0-b5165fab8058@bootlin.com
+
+Changes in v3:
+- Completely rewrote using the __drm_bridge_free() idea to prevent
+  use-after-free of the next_bridge for the common cases
+- Added needed cleanups to the imx8qxp-pixel-link and imx8qxp-pxl2dpi
+  drivers
+- Removed various patches converting simple cases, to reduce the number of
+  e-mails sent; will be moved to the follow-up series
+- Link to v2: https://lore.kernel.org/r/20251128-drm-bridge-alloc-getput-drm_of_find_bridge-v2-0-88f8a107eca2@bootlin.com
+
+Changes in v2:
+- All patches: renamed drm_of_find_bridge() -> of_drm_get_bridge()
+- Various fixes and improvements to patches 1-6, see individual patches
+  changelog
+- Removed bouncing recipient: Edmund Dea <edmund.j.dea@intel.com>
+- Link to v1: https://lore.kernel.org/r/20251119-drm-bridge-alloc-getput-drm_of_find_bridge-v1-0-0db98a7fe474@bootlin.com
+
+---
+Luca Ceresoli (1):
+      drm/bridge: imx8qxp-pixel-link: get/put the next bridge
+
+ drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
+---
+base-commit: 4a0f7d0f51c0965a8a394a8c5d65be2d24e362df
+change-id: 20251117-drm-bridge-alloc-getput-drm_of_find_bridge-74903367448d
+
+Best regards,
+--  
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
