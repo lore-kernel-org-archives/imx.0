@@ -1,141 +1,159 @@
-Received: from mail-pg1-f195.google.com (mail-pg1-f195.google.com [209.85.215.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0500F3A4F58
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 14:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B333A63E7
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 14:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770127706; cv=none; b=EtOg4pBqtX9ux0TkQYrfUdGB0h0XMTUFjH1qmB0Z/S/0ymaY888Ucb8PWSECOfLiccZpvxRx87MJ1daRqONLFq1dfvejeITI+hqtbgCAqz4hBvmA5HP5h1I59IybK/bUnrUoSAjSEfZnZKZuPkEhbKhwYmvzpfBjzU7nciOYIDo=
+	t=1770127790; cv=none; b=Qv0jBMFZ/hx1JiSBMXVzjVGeREPdY3KoNxsEwdX0RWJFTxZTZRK9ELyNFp5xoSIPF+7pEnoME9hVCM8vwdGA/bMJMQ5y7RDNxY8Yuz3sB4a+Rz1wJsY+4eKe1sshR7kT0DeIQl5wuShGjZJkTRe5c8nlcoHrKSdMr0Be2eGqg7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770127706; c=relaxed/simple;
-	bh=7ZLF4iCQxbFTodP5/N08fEkFkgqaaRd3959nJlVr5Rw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=l71Wkuod8ALT5pBV/KRXAezQbRcU59RCgU+FNTvtMOJhJPJbSxMnH+2EibK+ZLt7A+TRc2KlyCv640x2J9ixQ6Bk9vI6PLXjXgR5PZdPcETOODV7olWlR4QlsisbbqT3cI2QZVykc/WeAWD/JpMg0Y9IOPqcXFsWaY1V+Px/yXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eQT+JoVx; arc=none smtp.client-ip=209.85.215.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770127790; c=relaxed/simple;
+	bh=Rv0gnZrGTVnHq8ksG/uGGrkDZi1zIa4ztL46UEkonLU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nch1cDThLyIO2ZVtBFxpxBA/p023mWXM6ptaqViglKWIRDa04niJ0lKyje2CYw5G0PhDFxmGNDcILfWOiei0z48HG5i2h3vSstHWOUYJWfU3fT9BUHkTFtyzpxDL00mY4o/EHv+Jj2toVRCudpAwdp/6mo8Xl3Mqqz9NbP6zhVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=QP1vaF/q; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eQT+JoVx"
-Received: by mail-pg1-f195.google.com with SMTP id 41be03b00d2f7-c613161b489so2411010a12.0
-        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 06:08:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770127704; x=1770732504; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vggTaQ/1IglRgZCrC6069BZ56pr4AJ+trFVQZHc37RM=;
-        b=eQT+JoVxX3e6fpko+BMBm0RskADlgQDejZA2RxsYUWGf3DyAClvELz/lmDG4V5G7Rt
-         Ta+tYx1v+jtuNg9F/cbozZkKzRyIbhhCOkubB+B0m6MNonA3MHbnS3nK+jCPZXiKYKk5
-         rkX8hz2JiwxzDqL1qqIxJxTBvUb0FHvizIm5AiFvZjit+CD4Jll3Qg7vCXuapqT8K4It
-         VAzRxN/lKFOxlXJpP3w/Cwb+XWpavFBymzYg+InVqvqq2r1DbiVkJUzAe1xnMJ7iuAEc
-         yPchKeUuvLi9dSdl/NAOHlstwKKUuP02q7oLd5uFRpR/dF/YjY6wb7XQ7y8wRBc4FLQD
-         Q9jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770127704; x=1770732504;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vggTaQ/1IglRgZCrC6069BZ56pr4AJ+trFVQZHc37RM=;
-        b=M1v3D9uSn3w2S7QXtheckyC/JAXH7a0wazLlJXpEVI5DvMkMV4WFz9ir02O6l5d8Fo
-         EweUTdxak20VtxO/pEs0AYBw7JJunYGnbICWg2DqqpvsoSsmBZRbzimIMHf1M8hi1WPD
-         J6mHdzs0c4kA3bbXT5dwlrEP5MyFEj4+82jq4dvAkqbD2SjKbJZnKcL4wJ8NI9fvy5VQ
-         8yV5rji1agbzlo2yZjFQqXvx0FwhaoxcOlv39qOF1mkEkTPexAJSottPuvicDEp7eDYL
-         O3+Aw+lgqFYsuWuYAnz8NShilclPCFLku3wMxu0xUDLaxCtV1yFV3vcM1xlQw1ZMQTTt
-         M2GA==
-X-Forwarded-Encrypted: i=1; AJvYcCUXKBRhpK8gTsHZGBEQiXHBkgJ83bQHokt0k3AimmJgosGEWe2S5IYz8ID75vKZuj7lrw0=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwvEEACD822ANERbYf2iwE46N4CmkaI3zlHKZIidWwVq2mhgLe3
-	5SrZgj6yqvEVar6DWD5kJtG3HmOPT4VlTcYtrtKmsCwGm9G8oTyxnh7D
-X-Gm-Gg: AZuq6aJjCoazQi5j1FV7typ158rUvsGbP5R3j13m3RwIKSl6EDV3VT4N35dUcB2O5py
-	QxKmqpr4myJWbz7TKMo8PU9BiUKgyFSx0utpP2kfQxxybR4MZ7MeY9DHBVm49TFslh2rxXE9bTA
-	N8G02Gc6d2+LW8h7RhDZfJeCXNMzG4ynju2C5rXgo10gYoc3XZ3DlUEk4n6FfzhlkjBVoLebHSu
-	T9ttkrnCQDPG0BFgowwSqVFCEa0lSE8qeUdtUH5JkUK9zyb8weDYlB7B7DQxM0MM+GITP8Elhpv
-	eLJZAo9L9EaQa39DjWHJdTKj5rzXs/4VFlxG2mWRyRrd7oj2HjsF/RIzFk01FkL76fjGF/vmr2k
-	GqK4IhNp1+egyVn/PlqviU4ecB/mkSOkpJpTWciiNsQITNxnv1/xDXwwVwlSpSxTG1/DczTg4gZ
-	WH0aM2tw7iJuj1PuaKuMcgqzmC+PtPW9pg/Ubm
-X-Received: by 2002:a17:90b:3b82:b0:34f:454f:69a9 with SMTP id 98e67ed59e1d1-3543b3b04bfmr13811322a91.28.1770127704120;
-        Tue, 03 Feb 2026 06:08:24 -0800 (PST)
-Received: from junjungu-PC.localdomain ([2408:820c:9008:ba52:f091:7dff:927e:f788])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3543d52c396sm7694684a91.4.2026.02.03.06.08.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 06:08:23 -0800 (PST)
-From: Felix Gu <ustc.gu@gmail.com>
-Date: Tue, 03 Feb 2026 22:07:58 +0800
-Subject: [PATCH v3 2/2] clk: imx: imx6q: Fix device node reference leak in
- of_assigned_ldb_sels()
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="QP1vaF/q"
+Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id AA6CA5B2;
+	Tue,  3 Feb 2026 15:09:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1770127745;
+	bh=Rv0gnZrGTVnHq8ksG/uGGrkDZi1zIa4ztL46UEkonLU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QP1vaF/qoOoTBXHPASYDi3HJe2FmO+pobt2RlBUxJF0hAgilkmQ+sAxpCisOQR058
+	 rAIBf/hU7mmVDZi2gn8Ik0+Yc/jrD75aLWjNNQRrF1W6XRBxbiGTYTsI4HjC/LdrFE
+	 s/P/zP/t+p4sFm/xjtW23cZZu9j6yFOfaUuQzi/0=
+Date: Tue, 3 Feb 2026 16:09:45 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Cc: Damon Ding <damon.ding@rock-chips.com>, andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org, rfoss@kernel.org,
+	dmitry.baryshkov@oss.qualcomm.com, jonas@kwiboo.se,
+	jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+	simona@ffwll.ch, shawnguo@kernel.org, s.hauer@pengutronix.de,
+	kernel@pengutronix.de, festevam@gmail.com, inki.dae@samsung.com,
+	sw0312.kim@samsung.com, kyungmin.park@samsung.com, krzk@kernel.org,
+	alim.akhtar@samsung.com, jingoohan1@gmail.com,
+	p.zabel@pengutronix.de, hjc@rock-chips.com, heiko@sntech.de,
+	andy.yan@rock-chips.com, dianders@chromium.org,
+	m.szyprowski@samsung.com, jani.nikula@intel.com,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org
+Subject: Re: [PATCH v8 05/18] drm/bridge: Move legacy bridge driver out of
+ imx directory for multi-platform use
+Message-ID: <20260203140945.GC12013@killaraus>
+References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
+ <20251217093321.3108939-6-damon.ding@rock-chips.com>
+ <DG2S064XPGXL.1MQDAKWZEK50K@bootlin.com>
+ <7256ecf9-b10b-428c-a1a6-e35e80a686ed@rock-chips.com>
+ <9e1da672-a52d-4ec3-a20a-fe6f8ca15496@rock-chips.com>
+ <DG58VCQ54OZA.2QHGR8JFIATY2@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260203-clk-imx6q-v3-2-6cd2696bb371@gmail.com>
-References: <20260203-clk-imx6q-v3-0-6cd2696bb371@gmail.com>
-In-Reply-To: <20260203-clk-imx6q-v3-0-6cd2696bb371@gmail.com>
-To: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Akshay Bhat <akshay.bhat@timesys.com>, 
- Ranjani Vaidyanathan <Ranjani.Vaidyanathan@nxp.com>, 
- Shawn Guo <shawnguo@kernel.org>
-Cc: linux-clk@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Felix Gu <ustc.gu@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770127681; l=1463;
- i=ustc.gu@gmail.com; h=from:subject:message-id;
- bh=7ZLF4iCQxbFTodP5/N08fEkFkgqaaRd3959nJlVr5Rw=;
- b=DCfqaRTuO/c9AWvt1I0DC0keOeLbELpHdMjClHQL8bIs/5szqeMTmhgfJZppc9gcC1f2quZJL
- unhYgZsD3wQAt48+SEMgmJH6spLmHlOQqnVc6AWYJIlz4uL3VkUO4WY
-X-Developer-Key: i=ustc.gu@gmail.com; a=ed25519;
- pk=fjUXwmjchVN7Ja6KGP55IXOzFeCl9edaHoQIEUA+/hw=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DG58VCQ54OZA.2QHGR8JFIATY2@bootlin.com>
 
-The function of_assigned_ldb_sels() calls of_parse_phandle_with_args()
-but never calls of_node_put() to release the reference, causing a memory
-leak.
+On Tue, Feb 03, 2026 at 11:11:50AM +0100, Luca Ceresoli wrote:
+> On Tue Feb 3, 2026 at 2:31 AM CET, Damon Ding wrote:
+> > On 2/2/2026 10:54 AM, Damon Ding wrote:
+> >> On 1/31/2026 8:33 PM, Luca Ceresoli wrote:
+> >>> On Wed Dec 17, 2025 at 10:33 AM CET, Damon Ding wrote:
+> >>>> As suggested by Dmitry, the DRM legacy bridge driver can be pulled
+> >>>> out of imx/ subdir for multi-platform use. The driver is also renamed
+> >>>> to make it more generic and suitable for platforms other than i.MX.
+> >>>>
+> >>>> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+> >>>> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> >>>> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> >>>>
+> >>>> ---
+> >>>>
+> >>>> Changes in v7:
+> >>>> - Rename legacy-bridge to of-display-mode-bridge.
+> >>>> - Remove unnecessary API drm_bridge_is_legacy().
+> >>>
+> >>> ...
+> >>>
+> >>>> --- a/drivers/gpu/drm/bridge/Kconfig
+> >>>> +++ b/drivers/gpu/drm/bridge/Kconfig
+> >>>> @@ -244,6 +244,16 @@ config DRM_NXP_PTN3460
+> >>>>       help
+> >>>>         NXP PTN3460 eDP-LVDS bridge chip driver.
+> >>>>
+> >>>> +config DRM_OF_DISPLAY_MODE_BRIDGE
+> >>>> +    tristate
+> >>>> +    depends on DRM_BRIDGE && OF
+> >>>> +    help
+> >>>> +      This is a DRM bridge implementation that uses
+> >>>> of_get_drm_display_mode
+> >>>> +      to acquire display mode.
+> >>>> +
+> >>>> +      Newer designs should not use this bridge and should use proper
+> >>>> panel
+> >>>> +      driver instead.
+> >>>
+> >>> "Newer designs should not use this bridge", but in patch 8 you are
+> >>> introducing a new use ot devm_drm_of_display_mode_bridge(). Shouldn't you
+> >>> instead "use proper panel driver instead" in patch 8?
+> >>>
+> >>> Can you point to the conversation where the converstaion where Dmitry
+> >>> suggested this change? Maybe it already contains the answer to my
+> >>> qustion. Also adding a link to that conversation in the commit message
+> >>> woule be useful.
+> >>>
+> >>
+> >> First of all, thanks for your reviews on this patch series.
+> >>
+> >> link: https://lore.kernel.org/all/
+> >> xwenycscalzdlpuxytorbiyvej3k7pv3lhxwtadilxq65ipwsv@x5rxm53w5e22/
+> >>
+> >> I think it may be a misleading issue caused by directly copying the
+> >> previous Kconfig description. Now that the new
+> >> devm_drm_of_display_mode_bridge() helper has been added, drivers using
+> >> the panel-bridge framework can rely on it to maintain compatibility with
+> >> legacy display mode parsing.
+> 
+> Ah, I think I got the point: the mode description in device tree is legacy,
+> but the driver itself is not legacy and will be current until we need to
+> support legacy device tree. Correct?
+> 
+> If that's correct, this patch looks OK to me with a new Kconfig help text.
 
-Fix this by adding proper cleanup calls on all exit paths.
+The devm_drm_of_display_mode_bridge() function needs documentation
+though, with a warning that tells it must not be used in new drivers.
+Catching new users in checkpatch.pl (or somewhere else) would be ideal.
 
-Fixes: 5d283b083800 ("clk: imx6: Fix procedure to switch the parent of LDB_DI_CLK")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
----
- drivers/clk/imx/clk-imx6q.c | 4 ++++
- 1 file changed, 4 insertions(+)
+I would also not create a separate module for this and move the function
+to drm_bridge.c, but I don't mind that much if the consensus is that a
+separate module is better.
 
-diff --git a/drivers/clk/imx/clk-imx6q.c b/drivers/clk/imx/clk-imx6q.c
-index ba696cf34fe3..048e2ddba490 100644
---- a/drivers/clk/imx/clk-imx6q.c
-+++ b/drivers/clk/imx/clk-imx6q.c
-@@ -188,9 +188,11 @@ static void of_assigned_ldb_sels(struct device_node *node,
- 		}
- 		if (clkspec.np != node || clkspec.args[0] >= IMX6QDL_CLK_END) {
- 			pr_err("ccm: parent clock %d not in ccm\n", index);
-+			of_node_put(clkspec.np);
- 			return;
- 		}
- 		parent = clkspec.args[0];
-+		of_node_put(clkspec.np);
- 
- 		rc = of_parse_phandle_with_args(node, "assigned-clocks",
- 				"#clock-cells", index, &clkspec);
-@@ -198,9 +200,11 @@ static void of_assigned_ldb_sels(struct device_node *node,
- 			return;
- 		if (clkspec.np != node || clkspec.args[0] >= IMX6QDL_CLK_END) {
- 			pr_err("ccm: child clock %d not in ccm\n", index);
-+			of_node_put(clkspec.np);
- 			return;
- 		}
- 		child = clkspec.args[0];
-+		of_node_put(clkspec.np);
- 
- 		if (child != IMX6QDL_CLK_LDB_DI0_SEL &&
- 		    child != IMX6QDL_CLK_LDB_DI1_SEL)
+> >> It would be better to update the comment as follows:
+> >>
+> >> This is a DRM bridge implementation that uses of_get_drm_display_mode to
+> >> acquire display mode.
+> >>
+> >> It exists for compatibility with legacy display mode parsing, in order
+> >> to conform to the panel-bridge framework.
+> >>
+> >
+> > Dmitry, what's you take on this?
+> 
+> Dmitry's opinion would be much more relevant than mine. I don't know much
+> myself about this driver.
 
 -- 
-2.43.0
+Regards,
 
+Laurent Pinchart
