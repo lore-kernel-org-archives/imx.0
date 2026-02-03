@@ -1,63 +1,63 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847F539C62F
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 10:04:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D7939A812
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 10:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770113096; cv=none; b=IAmcLSkCNkQL9PVM+w0ffAXEAvPazjHbpaYhJP0WMaJJKIgeI+0mMX37TAq2oX0I5Lt3pSgMMVHoP6XvwuSa7xJOiHFr0aZWkwIBBa9lkeBZsuReg/VPH6KfK81T0CREwVFmPNAk11e1tIQN8G5m34c7AjWABNjIKBeBQ90UQyw=
+	t=1770113099; cv=none; b=jXxr5E+UA66/Tf8HpKddsj5FBb2uNVYd+EwagT9KcW9OpkUWeSYWAeatF7d9R6wZFtvBsTQ01ZFOmY44Vm5iJE31GV05fzWUmsSQAuSiIUrpIEuDjyytnC3jUdeIDwhH2IBuiWN1jBCnk2NwpMKGKCozgWKconLs1YlvS6vsdpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770113096; c=relaxed/simple;
-	bh=LTDt9fi4JHMSnHlrIwfIAx5d5MWGZYp0pTmhyqg8FnY=;
+	s=arc-20240116; t=1770113099; c=relaxed/simple;
+	bh=Hik5asmTwUamyL0nKO98yWSe3Rq6gzjjcbyeQGAYfqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ib0f5QAsd9OhtujQesvTDeXBnDmudV1k0LWpAtcnh0uvo+4pUvR1Yg4y0StS2cdCvHeF0GrsKP9V9jQGkC4rArrWILJdwWC72H0sC4VVptMZ5TjnBZ+885G1x+va2lvJhqMQy6z7MtC33rcQOPQoRYWa7UrB8NPRabANP6sQ3fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ilWNSxxY; arc=none smtp.client-ip=209.85.128.53
+	 MIME-Version; b=WTee1uKwHECF2NlTwWkAjxS62y7yNj3GEtQTOf+0S/CiPjQxR0twU04hQjacf18J+PEwNqlc9IFPxcI8mTtXvQ9EU2j49JgKY52G+cjWr8qQnAJyxRLK9nyAoemAIqkJxSP2yIptefoxF20oUufR294a+7JBLRG3pZ+7ZhXVK2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sn7HoM3r; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ilWNSxxY"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4805ef35864so46462965e9.0
-        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 02:04:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sn7HoM3r"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4806e0f6b69so39597705e9.3
+        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 02:04:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770113093; x=1770717893; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1770113096; x=1770717896; darn=lists.linux.dev;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=p3UlFA0+6h5s1DkPOfyU17WjXdqB8dUR/b6rqqbq2XU=;
-        b=ilWNSxxYABsJxGaDptZWB91gXyb3SdnHLZV602dDCUcZFux4t4jYzCkzFJlph1D4c4
-         WMdJLiOguVgPoE0+wYwz8CZnuAvqocJWjhlRibK9sFcpz64npzBJyHMAwW/ZrCq9XXIl
-         uOYoyPlcQjG41PMJZKXHX/Nh8N8TeDMQe5G0lq0DjZNlVpTU5NM0kWF9T67vMmDIBU8G
-         WvdZau2s/Q+yhdk17jgA/fcRho5HjwFfN+Tvo3atRVsA/N9lAE5VcZ6khKzyEr08AXme
-         Gv/uia7uloJJLkmSjCbvm0FWFeZhHr2r2AVXBTx8IVTrH+7oNL1Dvy+0fHAftKwHRFTo
-         dO5Q==
+        bh=z51/LSwxyVQQCwJzOsYDCUnfNLjjWuW1smeCgpUaBns=;
+        b=Sn7HoM3rvXqBIVStaDTs6gchmQfVWddJOYmF9U3KHgfu6EzFn5Zu0nPBNNp8vbrwJM
+         76XC+swI1dM2wZNRnQGfPxTu57Nb8QRQqh3fbPYFt2oiXk3vNdHnrNHFCH/JFdNohsTr
+         UGulpkgB6SLA52J+JsDoSt1fFTa0tL7z7hWOFnl1RtYGIk2ZNGXchH8sYosdAU/6f2Km
+         2XH/AbWxS5C7MMxz5woqeMsUuEYBn1XmyLX9bv1Chp+B6ydYtFGnGMW7/o5agFljxoyc
+         FJnfmQLYtFpavTRFH1QmL4378S3jaeI01AVADBbcJOSvqv1sXM8M96Rxoaae0Aj58iRw
+         tzng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770113093; x=1770717893;
+        d=1e100.net; s=20230601; t=1770113096; x=1770717896;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=p3UlFA0+6h5s1DkPOfyU17WjXdqB8dUR/b6rqqbq2XU=;
-        b=DX7RyvoTejzm2pJysJ8uBfNG0Tyfk7ym19xXAjfNHc/sblQHNBy4Ba1WGHukb0dJ0+
-         p9lHsWYQJTSBugCwhNdX2lrPDqSAfoOLmJ26rT23SeDk9cdZtRWeU7O+UulkADp84fak
-         7mx8jCmGwqKtIxXzPeIRLeqc9cBPa1aVJCoBYDhAv4QjbT+GcGuvIt7ingYVAS7GqnMs
-         cY16WcxZ4FTxB25311del7MADRkoV24FCZHhveHU3lxFFVljQvHqLvsyPqJcjkVG6Inv
-         DVJXJEKFHzodT4EWiAdVXcT7vgj8V/a1XMBnRfwa2pGrZ9z7tagDArtiern0guUWAZK3
-         TNzg==
-X-Forwarded-Encrypted: i=1; AJvYcCXHgQ+pIze8FAN0X9S6H8L0F8UyverjF9A2jT3o6MROODWs8U8pIPyBgo/J6m29PuX8kOc=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyPEr5zJpi031lsHJyOrsAEYzXv7WJV8/ECP3mjhUeJT/+kiQ/X
-	edzYQP/UfJ5mzRw6WQrii1tSJVS+mM96lzlTtGXjc6FqaJfQ1UQu12bReo4/VA==
-X-Gm-Gg: AZuq6aKRXoUYFoB2+d9/+b7AM8AMN7C9TejVGMTpFR5ZdtHdJ6A0EwB3OKuw0ZHexcD
-	rtF2aY8Jyqz7ketatZ2f3hQS9QmJNThzU/PCV0NhDpGVAah6HC0PeK0MMd6IM6a+OiaIoLbe9CY
-	BGH6uPmnrJ1J5DREXtkTWPCwAnb9ZvMDzTrhndDPBjXtL97GYhw20XcQEPEq6sGhjRMcFO2dkPJ
-	K3Euq38BT3Nb3+39r9pj3duo0FdGANEQERdmNRR3zcPvnhagNmZ9UdeczX6K7m1PX1x3WosAiGz
-	x/v8sMC0RySPUp1UJNLEj6QdzLqlLVN4i4DsRAkNvlNjzrpgydZRw8AFpUEQqZsC63sUAG4KRrt
-	Xkk0gkfjpXspuRodF/eX0fVVp+NhBsoqOMwGN6ZHXztTDtbzJ+8iCh/JpJtTZi4QqyO7lSgi0d3
-	awrGkkj+edkbcOJ2KZ9EvETEVsl1Yi28eIAYDIJA==
-X-Received: by 2002:a05:600c:6088:b0:47e:e20e:bb9c with SMTP id 5b1f17b1804b1-482db447950mr171113855e9.8.1770113092893;
-        Tue, 03 Feb 2026 02:04:52 -0800 (PST)
+        bh=z51/LSwxyVQQCwJzOsYDCUnfNLjjWuW1smeCgpUaBns=;
+        b=NIZ555S5QdSJQhb4+SPjLHKedR5O7lKDoc+81eYlazBaqGUkfY8mvqZ7CR2NkfkLTv
+         VYqkOF6OaAXkoDkgL17rxSGvXcKk0CTv/kel69QcyIuj0lAYRLNIRWkFsWUwhVXyDZI4
+         fXX/J3qMybhHEdFHtIsBKLV/1Qe70RkFzgecfKjBecHe5y+8AxX+BXCGg9XYFc61ZaZO
+         3v/xMJDTvS9h4iDPQQldVzX+F0RmvTSbIH6CTs9OmTsURK+i4yq6C6kr3MG2/vY/hXU/
+         JKkhLo9Nw9mhY972UaQFPPAylthu1hG7u6bbw3vVzEzOWOCN6/bJH6WCcpCvqPB6XQiK
+         JLpw==
+X-Forwarded-Encrypted: i=1; AJvYcCXhgHCIRaLEFB7YE1X/Hp/VgbJrUfgafNJwlopiNt0/i2DxiyciqafXxFfY69FHZlX4xww=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzJENONZViHB59WiW9EV0eSjDUiVPP7L1jQYEJVJuKYmx+sc5ky
+	6WWy3Fyfjl6cUCb9kgaXcfz/ItCOK04jN2VSAF1/uA7a6zixHdr6WDET
+X-Gm-Gg: AZuq6aKR4zAdmuCYtI1yU8QiVbFtZJ+Ve7lWExoIPDyntgBQy5qFTdF6TPVsmq2YJh5
+	/dzpTq1Zaf5d6ft78PxYey7eN7KFNsBwsZEXPcOK1FZ6l5Hj/qajRWyVFpyWOU2DaN+HKzVVyNg
+	AI4RAb9ob/4ZX6//CxO/se4tnAFRII1UF4YSL6VSjEUkpzSlCOWwq0ktD2XOK/OEj7N0Yp3Yckf
+	qQLayPNfz8MD8mglUYLE3Ou8JmzeGXAQcJtnZUfOz6akW+m6ScBm5cmqMZ9hlqglYGcUvHqiGfd
+	qatB1plHmqMAmD2+Os6nmWj1cvoX0VABkl9uFkqYMshrHoLsZ6luXwEkAQYLmAOoVpoCpC7ox7r
+	ajpFpPWlHnvc2knRRQnuK+OS/ueIj+OczB+Nm+E5sWVQuy+26jsUJnfyiFRJQaWJdSyHR8l4X0x
+	DSpRGj3bjKsV4a2Zk66p/PfjmVoxMYKQq26AreLw==
+X-Received: by 2002:a05:600c:34c4:b0:480:52fd:d2e4 with SMTP id 5b1f17b1804b1-482db012dd7mr201253775e9.0.1770113096399;
+        Tue, 03 Feb 2026 02:04:56 -0800 (PST)
 Received: from SMW024614.wbi.nxp.com ([128.77.115.158])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-482dffd47c2sm115534365e9.0.2026.02.03.02.04.51
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-482dffd47c2sm115534365e9.0.2026.02.03.02.04.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 02:04:52 -0800 (PST)
+        Tue, 03 Feb 2026 02:04:55 -0800 (PST)
 From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -72,9 +72,9 @@ Cc: devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	imx@lists.linux.dev,
 	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH v3 1/2] arm64: dts: imx95: add AONMIX MQS node
-Date: Tue,  3 Feb 2026 02:03:31 -0800
-Message-ID: <20260203100332.915-2-laurentiumihalcea111@gmail.com>
+Subject: [PATCH v3 2/2] arm64: dts: imx95-15x15-frdm: support AONMIX MQS
+Date: Tue,  3 Feb 2026 02:03:32 -0800
+Message-ID: <20260203100332.915-3-laurentiumihalcea111@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260203100332.915-1-laurentiumihalcea111@gmail.com>
 References: <20260203100332.915-1-laurentiumihalcea111@gmail.com>
@@ -88,29 +88,120 @@ Content-Transfer-Encoding: 8bit
 
 From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 
-Add DT node for AONMIX MQS (i.e. MQS1).
+Add support for AONMIX MQS (i.e. MQS1).
 
+Reviewed-by: Chancel Liu <chancel.liu@nxp.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
 ---
- arch/arm64/boot/dts/freescale/imx95.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+ .../boot/dts/freescale/imx95-15x15-frdm.dts   | 73 +++++++++++++++++++
+ 1 file changed, 73 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx95.dtsi b/arch/arm64/boot/dts/freescale/imx95.dtsi
-index 55e2da094c88..0c55861d673c 100644
---- a/arch/arm64/boot/dts/freescale/imx95.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx95.dtsi
-@@ -391,6 +391,11 @@ scmi_misc: protocol@84 {
+diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
+index ca1c4966c867..0f43e3be7058 100644
+--- a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
++++ b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
+@@ -243,6 +243,12 @@ codec {
  		};
  	};
  
-+	mqs1: mqs-1 {
-+		compatible = "fsl,imx95-aonmix-mqs";
-+		status = "disabled";
++	sound-mqs {
++		compatible = "audio-graph-card2";
++		links = <&sai1_port1>;
++		label = "mqs-audio";
 +	};
 +
- 	pmu {
- 		compatible = "arm,cortex-a55-pmu";
- 		interrupts = <GIC_PPI 7 (GIC_CPU_MASK_SIMPLE(6) | IRQ_TYPE_LEVEL_HIGH)>;
+ 	usdhc3_pwrseq: usdhc3-pwrseq {
+ 		compatible = "mmc-pwrseq-simple";
+ 		reset-gpios = <&pcal6524 8 GPIO_ACTIVE_LOW>;
+@@ -473,6 +479,21 @@ &mu7 {
+ 	status = "okay";
+ };
+ 
++&mqs1 {
++	clocks = <&scmi_clk IMX95_CLK_SAI1>;
++	clock-names = "mclk";
++	pinctrl-0 = <&pinctrl_mqs1>;
++	pinctrl-names = "default";
++	status = "okay";
++
++	mqs1_port: port {
++		mqs1_ep: endpoint {
++			dai-format = "left_j";
++			remote-endpoint = <&sai1_port1_ep>;
++		};
++	};
++};
++
+ &netc_blk_ctrl {
+ 	status = "okay";
+ };
+@@ -534,6 +555,51 @@ &pcie0 {
+ 	status = "okay";
+ };
+ 
++&sai1 {
++	clocks = <&scmi_clk IMX95_CLK_BUSAON>, <&dummy>,
++		 <&scmi_clk IMX95_CLK_SAI1>, <&dummy>,
++		 <&dummy>, <&scmi_clk IMX95_CLK_AUDIOPLL1>,
++		 <&scmi_clk IMX95_CLK_AUDIOPLL2>;
++	clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3", "pll8k", "pll11k";
++	assigned-clocks = <&scmi_clk IMX95_CLK_AUDIOPLL1_VCO>,
++			  <&scmi_clk IMX95_CLK_AUDIOPLL2_VCO>,
++			  <&scmi_clk IMX95_CLK_AUDIOPLL1>,
++			  <&scmi_clk IMX95_CLK_AUDIOPLL2>,
++			  <&scmi_clk IMX95_CLK_SAI1>;
++	assigned-clock-parents = <0>, <0>, <0>, <0>, <&scmi_clk IMX95_CLK_AUDIOPLL1>;
++	assigned-clock-rates = <3932160000>, <3612672000>,
++			       <393216000>, <361267200>,
++			       <24576000>;
++	fsl,sai-mclk-direction-output;
++	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		/* leave unconnected - no RX in the context of MQS */
++		port@0 {
++			reg = <0>;
++
++			endpoint {
++			};
++		};
++
++		sai1_port1: port@1 {
++			reg = <1>;
++			mclk-fs = <512>;
++
++			sai1_port1_ep: endpoint {
++				dai-format = "left_j";
++				system-clock-direction-out;
++				bitclock-master;
++				frame-master;
++				remote-endpoint = <&mqs1_ep>;
++			};
++		};
++	};
++};
++
+ &scmi_iomuxc {
+ 	pinctrl_emdio: emdiogrp {
+ 		fsl,pins = <
+@@ -618,6 +684,13 @@ IMX95_PAD_GPIO_IO31__LPI2C4_SCL				0x40000b9e
+ 		>;
+ 	};
+ 
++	pinctrl_mqs1: mqs1grp {
++		fsl,pins = <
++			IMX95_PAD_SAI1_TXFS__AONMIX_TOP_MQS1_LEFT		0x31e
++			IMX95_PAD_SAI1_RXD0__AONMIX_TOP_MQS1_RIGHT		0x31e
++		>;
++	};
++
+ 	pinctrl_pcal6524: pcal6524grp {
+ 		fsl,pins = <
+ 			IMX95_PAD_GPIO_IO34__GPIO5_IO_BIT14			0x31e
 -- 
 2.43.0
 
