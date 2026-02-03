@@ -1,475 +1,488 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012064.outbound.protection.outlook.com [52.101.66.64])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB063242D7D
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 01:37:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.64
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770082641; cv=fail; b=DWAtQKvkRe+3RcCac9IIRI2lbEMX8s0VpgbiOjIHk0YCiAYMLyXM+KD8grDCFeqOyxpHz1MVUZSi8c1rI1wSK8u7qeG/kLPvv6Qyg2BMgzXhsNFU/SgVD3xZillzbaW9sbzJTkXsoc6ZFbrs5cWODpAJNOKOpbkbAE2O5NKU+mM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770082641; c=relaxed/simple;
-	bh=K0UkqH62AxpwVh0trkctijAxN1FPqJ2kJwBi2RLW8GA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Io12wp84vMrDzKp2eB9rjgD3kh02KgGgSe91rDsfbuYhiKm1rb1bnNbMzH8eREfk79bPatP4YmmaHF0HJbgT8sENiYkAUujZ+UdWjEicdpwOU6lPE4jSzFWQ/TdDR1wJINL9VPn5i4K1zZoh9HeHDiekFdMEInDcMwrp7z6MaEU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Gc9Eq4jF; arc=fail smtp.client-ip=52.101.66.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3994221770A;
+	Tue,  3 Feb 2026 01:42:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770082967; cv=none; b=e1qfFRFuOM7HlYeOMJPHLGmoPeDTRS2eazBRcQ4QCYQjw2kExy3JeJLNtkQwJZJrDskep/piPrKwG1s0eMk7phzMbEkl58a0cUPe3LcjKC+iFvO6XL7odggzCgpRam9CBKXx3QSSSXjuR3NXkz5ZcCBTgVkOvqx1vlBXnH3mjc0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770082967; c=relaxed/simple;
+	bh=M6dfXGmTDI2qS11FVYcguptyp9yxuSb1Ycd1hUZco3Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jh9SWAkKSlLEYgTQcwlcgPVicTbWg/tFrgnYsi/0TK4o4z7BBLkeswm7ToPnK82M7WEXc1pXQMDv6h9reb4AGv1gpApvAWTNsBKf11vAS8gRuimgn/zjRFRaumR6PeoW+DB3r+WSIZTVpMS8SWhn3d9uZWkXDX18OLkLOf82bEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qkMqDTml; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Gc9Eq4jF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eoZE7nBRjM+PaxZQE4fVsh5szxG5szvdNmqyGxI3mbNYtfHURUwkbPT1jbIJkkeuwQlfKm99D2x3DsfVIvHbnyyayMOEInGQMS9JbkQRNddQDLBAs3QZFPx4opifxtAx2y4wek2aivB7I55fqZZPUyeLP6Ce54fHgqWt/QUJdmL1aCsOi6m3NyHCaoyhCGU4jXhOrYGLLCA1Yaz27LfmeRbxC1OeSLGrW58A1LSblzdi828gia++O49k9BCc4aOtL/ywSVQWumKHykqwGBioIbQ5lOFj6OY0Rv4fXpIWb8rK2wL9a7MCgi4vYTcBGVQM7Jrxknge3nsZCEriIJm03Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hZrrasEg9UpesT1EeJV1oSHPJgfi8I4Ndb/hy9RR1RE=;
- b=wUfVC8DAL3hReFoq6BKZR9qzK8vi4MQ3STmS2WuenaiO9vcFxRk89ba+Y6xEd/oCs1QnmVr8a3TM0HN6gOZfd2iXiI+NsowXs1Yc+Co08/UllCqUYuWPnukp305273WptJwMeaypQFgXY+UE6+wNQPknE9zOtG1W/X+OiAbz514gMrKmTJwxzoTVetb4+xN11430IJP8AfwRZ8IbrZtB01BUvD8ZmDvZWYrEUUZAMMv2PKS2RnFVQerOYcfwoYGs0DnE33mAFpjZa8ciGC4/ccrAh19xHjwJbgL8Um84GjkSESdpgBCPnTBd5qEVwn6gqomel35Gqu4FT8EhPQCNTw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hZrrasEg9UpesT1EeJV1oSHPJgfi8I4Ndb/hy9RR1RE=;
- b=Gc9Eq4jFtKnj9MfascpBE9F6UtdyXbHd/mxR2zMyJAKRtl8PIvez0jCWdmXdn4kDQepzyeQl495OFJL0uW3G4DCGXdK6C7mL8Cj9MvFx4NwmhYaag8eO7KWmgKy59BrhKBCAi906VPayfqOQmOHELrOQw/pKMgFynsV77scNZcOJGd2GzWgDL6/jTURxb72pEJ0Td2pKyFreP3MIUIryrkFoKuful5kWwrIgfIuheKXss2A/rqTlpwvq+SCej4Q1Gx/MF2O7vhEAMiPW3swmHveg/xeMz6QzaNsXXLRQw25BhBNSvMykq5KzVy8zS3N9fjSiYb1Ay/53cClcJBDC0g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by DU4PR04MB11053.eurprd04.prod.outlook.com (2603:10a6:10:589::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Tue, 3 Feb
- 2026 01:37:16 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::4972:7eaa:b9f6:7b5e]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::4972:7eaa:b9f6:7b5e%5]) with mapi id 15.20.9564.006; Tue, 3 Feb 2026
- 01:37:16 +0000
-Date: Tue, 3 Feb 2026 09:38:54 +0800
-From: Peng Fan <peng.fan@oss.nxp.com>
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>,
-	Li Jun <jun.li@nxp.com>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] usb: dwc3: introduce flatten model driver of i.MX Soc
-Message-ID: <aYFRrguYW8Ps8Nth@shlinux89>
-References: <20260202-add-flatten-dts-based-dwc3-imx-driver-v1-0-c44a5e919380@nxp.com>
- <20260202-add-flatten-dts-based-dwc3-imx-driver-v1-3-c44a5e919380@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260202-add-flatten-dts-based-dwc3-imx-driver-v1-3-c44a5e919380@nxp.com>
-X-ClientProxiedBy: SI2PR02CA0017.apcprd02.prod.outlook.com
- (2603:1096:4:194::17) To PAXPR04MB8459.eurprd04.prod.outlook.com
- (2603:10a6:102:1da::15)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qkMqDTml"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED73CC116C6;
+	Tue,  3 Feb 2026 01:42:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770082966;
+	bh=M6dfXGmTDI2qS11FVYcguptyp9yxuSb1Ycd1hUZco3Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qkMqDTmlAEHtjakKThZ2kq5d/smQHELd0Of7144U3zmrdJt4Thaozo5aCUNnR1UtT
+	 UBWP03nNSWSSLTqt6e3vIPdP2a6IdT+Nj8pMoNm/XU+lyvFwiJsUAf36Pgr81nhzI2
+	 /ZifN8mKpIE+z+RACve0isqL2iBFmy12cMaUk4vvwHLSTKQkhQyTLPitkQxXHysc01
+	 anS+lT0Ynh8OdiI3MIevvNdVE/7A4vkF383rRhjs1q7+5Go3XflVkuwAseVyhOqQ1c
+	 5LbMpNqJoKGEdSD5xvST7QN99JR9XiX7vUkTMoKORnu8fz0TW4hTGN+/6GllOu6QiJ
+	 oL+m6PhEWSVvg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: lukasz.majewski@mailbox.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	andrew@lunn.ch,
+	shawnguo@kernel.org,
+	krzk+dt@kernel.org,
+	linux-kernel@vger.kernel.org,
+	edumazet@google.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	conor+dt@kernel.org,
+	horms@kernel.org,
+	richardcochran@gmail.com,
+	robh@kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	wahrenst@gmx.net,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com
+Subject: Re: [net-next,v22,2/7] net: mtip: The L2 switch driver for imx287
+Date: Mon,  2 Feb 2026 17:39:10 -0800
+Message-ID: <20260203013909.822898-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260131233459.1625279-3-lukasz.majewski@mailbox.org>
+References: <20260131233459.1625279-3-lukasz.majewski@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8459:EE_|DU4PR04MB11053:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52c3e636-88ce-45f8-5901-08de62c4c318
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|19092799006|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?PfJq3L9fe2V26pOEDC4XO8MqBvqOBNTTb4dxCZ06Ab8jmJGOGXDJqJakgvfj?=
- =?us-ascii?Q?S6nC3GazNLSYMkLBRxACTqEWyxWxSPCIo+FYLkov/wX5uwxP0P0eBEdTXkQR?=
- =?us-ascii?Q?GIAxY2ejLaMNT8CDKv81pO7OhKLsqwYxH0lNHfo3j0YUhm4yczek9ADa/1V3?=
- =?us-ascii?Q?/Z3ISUdLcrgZeEHQvVt0JfF2YAq6fBjspY0xoTAXV5UAaYh7T9KGWe7VVS8N?=
- =?us-ascii?Q?6F+3/Cx/VzVH0GRofcnIShRp/GD2l8jh3L9zS/aAxdCcAmug2y4jDWXFG3LD?=
- =?us-ascii?Q?sSgWZoyf3hTgnaVHGBCKx8zOpsVbtxd2yHk4XAbHrjEq0rE5JABFT4TidWzh?=
- =?us-ascii?Q?boN9vaDsyamqKo8VC6KeDTaf3y64q+HOuQgGc+wKYlK4T9PM5KaYW9UjkLkv?=
- =?us-ascii?Q?Yt/f/af/1az1EAm4IdFUJfpN4Nh+TbqexDpORkbCbDDE9/aXAHYKYyoq0/rT?=
- =?us-ascii?Q?8l7hrmKOIvsqNG7AkaGrSLPxntOi4pSCBM7CG5sw0/yKzzq1Kfk0xSAwbiyl?=
- =?us-ascii?Q?mZrVyKXz+3cRepV/YrA0yprzKn3iRog2qlA6HICW44IJRUn9BJ4wVZYJRXho?=
- =?us-ascii?Q?nqrWKy2/4OlVtQGB1tPDX+d5A6wrWnUMSnJ4F4fDxuoLEe2Ys9qFmQ2gXcke?=
- =?us-ascii?Q?OsqGQGHH7rR7HgMLifo5ZS/yuy6uz+NHy2xTZMkLFto7gz8v73U1hZlmxPLO?=
- =?us-ascii?Q?FTAD0grsPYeLsmxrqaw3i/5TvdQGW4BnXoEGRoSS/w3QJ0wqlaAUU+Q+W/Ak?=
- =?us-ascii?Q?xDRnhhefVBuNAY8FHacvCC6upx+0GM6sK578wBqXnZ1IhCDbercY1kL/sYGL?=
- =?us-ascii?Q?VBqdN7onoWcNkhlFTh6mkIOclaapALbsRNFH0KCqwJ6BEHER/JSkh90Y4sh/?=
- =?us-ascii?Q?/SnJQUGIyA77pT/0AlmWkSW7P5yrb/FHjjpIzCeYgxWcBTo/KKQnJe5+hXjl?=
- =?us-ascii?Q?z4IeUU2SQDvC1F/fgzpnAB+2UDd/Tph66OJq6MFZVHePXJAUk75g0zyQRVmx?=
- =?us-ascii?Q?XI1fSgX3C9S1d8ohcexE+yJBOO0KMPMUigdV3iHL2HAbocRP3LBWUfjOgf9F?=
- =?us-ascii?Q?slLqfav0vPSMYGahsJ2VTD5PB/HUw6qFatkDnZBurCU6Ry/bsorFqpoeePMb?=
- =?us-ascii?Q?DWYmJIB7waOkMKv/zb7V3a0s3D7yDFu9a7LAT8UzFBZmmAoc9ZFfXir39Dr0?=
- =?us-ascii?Q?CLYPrVbnqR+DyuU494XyITydKG3jgExZK1vkGsA/ohAGWUymk0h1eTCE9gyS?=
- =?us-ascii?Q?tot4+U38IycpsQdW4uzJay4ZCBJFxALxIpBaDWVOkF2hZzM6+2/sSQJhKBns?=
- =?us-ascii?Q?kkTgaGr3zubmfyX5GAnjysl/AEHQ52DOaRjqIHDV/qzNgSvXmyDKfR2q9dSa?=
- =?us-ascii?Q?wPxBNU63gAxziVZck1n6M22Yfj2xSzI2jFRmWksz0lubqCX+bYYe9eSgfNRY?=
- =?us-ascii?Q?t++G1UE7BDaazI2Vz72UZNneX6PLIDXl4V6ZMqTKN6MaPYrB1DRZGyhHS//F?=
- =?us-ascii?Q?TPO0CNfrxUYuff7nQvSVuScw5s5t8yRbZPpaJEsieoTHe+Eh3crGG1m8VWxB?=
- =?us-ascii?Q?R4DZ76E8jcxAGPlW/vcp/h7Zh3uQqdUeZeLHv/hvkmmB8eEVTyhFd2MWfdVC?=
- =?us-ascii?Q?zfmVPRkAktVG6WVRAD8/YEk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(19092799006)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zsJVuTGYbp15RiUQM6rZ+Rpem3pP/uehJdKYmpWd0GxJiXdh89EdweGL58Zk?=
- =?us-ascii?Q?zpSJ+6Df6rw87vNEj5ZyXPsXmBztG8cuLfKIrFlaQCa/fExWfh3VY3+9Hty5?=
- =?us-ascii?Q?A7fsf0gGqLtlPY0GqvL4fRlHBP5lJMx0sx7Fd9FNZqs8SBuTD5m32QLVVd9c?=
- =?us-ascii?Q?751t0Q+oPEKCy+3y7GSQV74MtGO9VYge6YucZjZ2tp70Hy7nCdxJ2zvktydf?=
- =?us-ascii?Q?Oi9AP2GCFYjmxIQeDBPz4PodN59t5KC4mqsznmqppQ9CvfbAtTQqyIyeP0o7?=
- =?us-ascii?Q?rBKbvTHAu0tiw0GIhTLJBS1jhh63k1SGoAvTx2OzzzOOp1ZUM/zLmYT241+x?=
- =?us-ascii?Q?vl+RUGu7yNCSmvVnmc+IDGnpgyDPng3LifxXheC9pKf/kVuifY8J9RWhhzqD?=
- =?us-ascii?Q?19eYaTP24lQpiwH1Cpr2CxlJ1Ycb7oL3w6UhkjVtHrDN0KKwFzg43sXIL4+C?=
- =?us-ascii?Q?4d6BxTVga+nvX+lFx6aCH+KFcVpZ1y9n29kmOpA6rssT58w/c/t2z5NjaIKq?=
- =?us-ascii?Q?ESOpj3+NxyXzr8I7ITBxF9zcSqHPpPPLJmVK8K5+mIF5l1xFINNUKTVbkOXy?=
- =?us-ascii?Q?VHO9Y7b16xVQaQPRN+SHxndN2DdGNB12e2o/Bj3HuOqskj922VQuj3icIrGE?=
- =?us-ascii?Q?B8XHUkDmBTr13KIO2JUJ3MkLa72gYybf0JmIb9YybIRWAF9YGrJr6iQ8WO1A?=
- =?us-ascii?Q?NJxWT/X3ujgCIb+v0L0TE4T467RV6Hq2rwb84U4NKaaX4cyd04xlZXg5f9N2?=
- =?us-ascii?Q?acG4CsCUO9fZDC/HAlAIWHcj1kgAm8c9L9zm5KF2coAkcK2pe39A5/sBj4aT?=
- =?us-ascii?Q?tauGYG9hNtX9HHd0X5kTZC7wBeX5/UGz95MxXg3Ud5FhfYXSCUSG6Ko22JFi?=
- =?us-ascii?Q?YjpXZVKDL+NGsGT1wDW5ARsRGyDc6MfBWc6mxS1HwScDd75KcomuE2Q0KN6Y?=
- =?us-ascii?Q?c6pf6X1kwRnBK8qJS49BmTPGVTkYfpecUvOT1em5dEpPrbY0s2JLx928ZgcN?=
- =?us-ascii?Q?qcQ6Vx71c03JJBI+8QI7hfQACBtz1HqHaSMb+QJDDBs/EM6iMvQVbg660ofm?=
- =?us-ascii?Q?wszTlnSjE4+H7BJquXDkJSBcr7KYJizEOSw1Q6uxM9tsarfIgElhCY/Zd9/5?=
- =?us-ascii?Q?hszbBzm/1QkyktZ7dMzkdE1BHJKHX2P+AflGX8IFMB4vjvKmLWWDjf3G7nSe?=
- =?us-ascii?Q?PkE3E0+cRtDGQr45TMtDR3Y3a1POd6Yni0NBX5C2tGMwrv8rSuP5jowtkIY8?=
- =?us-ascii?Q?C/YSpzkJHx3Qd08TnThZrz7hrAsNZVwMa+xosuAYWqBsWA1zxewWDkUj7YNs?=
- =?us-ascii?Q?bh2kwxnUz2xZOcpeSpJ6234DVnPspYehzlrQGauIdJbB5TRmliUUH1BoEMGm?=
- =?us-ascii?Q?6arN2GHtZ/d5EDLUiKot0BAFQWyOQrMrmoRrGzmhT7Fu1P4Y/sApHetuQbNl?=
- =?us-ascii?Q?K353zoLP5bygsMw8/P/XvcBV4xUsIG7FOEtCorsjdarohOKhrH87Aw1xyJVV?=
- =?us-ascii?Q?bbQE9/tR+/T8cFcKtJNHWYNEX3pMD5MVzJ5Uqfxuo6HuO8YR/nRLjFoRvA9l?=
- =?us-ascii?Q?Vcj4/dwp1rWwuLPKm+MDGfA5A5jhrkEd5UVfRlHeYU5am+hgXVA5Q6FSXmp2?=
- =?us-ascii?Q?0BowKFfcIvfLf/XIdmLbNY0e0XgOXfhaKu8pQIKBrzKk2WrvnnwB2i+nqIWu?=
- =?us-ascii?Q?hOiZXWrcOFOCmNBZd31HLIUNKu4Wvz+CXigOW7aV1O/fTupc4EiugeKAULNI?=
- =?us-ascii?Q?I6Lm9lwtUg=3D=3D?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52c3e636-88ce-45f8-5901-08de62c4c318
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 01:37:16.2267
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CS1GvWV9xts+oOu7qv8aK2rsz59iGPosMyR5n7WDSXuPjsxQEUwmR5ykfpsgGvlfwyErSxSWsRej9rKtvyGPcw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB11053
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 02, 2026 at 06:27:47PM +0800, Xu Yang wrote:
->To support flatten dwc3 devicetree model, introduce a new driver.
->
->Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
->---
-> drivers/usb/dwc3/Kconfig    |  12 ++
-> drivers/usb/dwc3/Makefile   |   1 +
-> drivers/usb/dwc3/dwc3-imx.c | 428 ++++++++++++++++++++++++++++++++++++++++++++
-...
->diff --git a/drivers/usb/dwc3/dwc3-imx.c b/drivers/usb/dwc3/dwc3-imx.c
->new file mode 100644
->index 0000000000000000000000000000000000000000..57b175e929d7e163df5af7e2265ab7117fa1dc9a
->--- /dev/null
->+++ b/drivers/usb/dwc3/dwc3-imx.c
->@@ -0,0 +1,428 @@
->+// SPDX-License-Identifier: GPL-2.0
->+/*
->+ * dwc3-imx.c - NXP i.MX Soc USB3 Specific Glue layer
->+ *
->+ * Copyright 2026 NXP
->+ */
->+
->+#include <linux/clk.h>
->+#include <linux/interrupt.h>
->+#include <linux/io.h>
->+#include <linux/kernel.h>
->+#include <linux/module.h>
->+#include <linux/of_platform.h>
->+#include <linux/platform_device.h>
->+#include <linux/pm_runtime.h>
->+
->+#include "core.h"
->+#include "glue.h"
->+
->+/* USB wakeup registers */
->+#define USB_WAKEUP_CTRL			0x00
->+
->+/* Global wakeup interrupt enable, also used to clear interrupt */
->+#define USB_WAKEUP_EN			BIT(31)
->+/* Wakeup from connect or disconnect, only for superspeed */
->+#define USB_WAKEUP_SS_CONN		BIT(5)
->+/* 0 select vbus_valid, 1 select sessvld */
->+#define USB_WAKEUP_VBUS_SRC_SESS_VAL	BIT(4)
->+/* Enable signal for wake up from u3 state */
->+#define USB_WAKEUP_U3_EN		BIT(3)
->+/* Enable signal for wake up from id change */
->+#define USB_WAKEUP_ID_EN		BIT(2)
->+/* Enable signal for wake up from vbus change */
->+#define	USB_WAKEUP_VBUS_EN		BIT(1)
->+/* Enable signal for wake up from dp/dm change */
->+#define USB_WAKEUP_DPDM_EN		BIT(0)
->+
->+#define USB_WAKEUP_EN_MASK		GENMASK(5, 0)
->+
->+/* USB glue registers */
->+#define USB_CTRL0		0x00
->+#define USB_CTRL1		0x04
->+
->+#define USB_CTRL0_PORTPWR_EN	BIT(12) /* 1 - PPC enabled (default) */
->+#define USB_CTRL0_USB3_FIXED	BIT(22) /* 1 - USB3 permanent attached */
->+#define USB_CTRL0_USB2_FIXED	BIT(23) /* 1 - USB2 permanent attached */
->+
->+#define USB_CTRL1_OC_POLARITY	BIT(16) /* 0 - HIGH / 1 - LOW */
->+#define USB_CTRL1_PWR_POLARITY	BIT(17) /* 0 - HIGH / 1 - LOW */
->+
->+struct dwc3_imx {
->+	struct dwc3	dwc;
->+	struct device	*dev;
->+	void __iomem	*blkctl_base;
->+	void __iomem	*glue_base;
->+	struct clk	*hsio_clk;
->+	struct clk	*suspend_clk;
->+	int		irq;
->+	bool		pm_suspended;
->+	bool		wakeup_pending;
->+};
->+
->+#define to_dwc3_imx(d) container_of((d), struct dwc3_imx, dwc)
->+
->+static void dwc3_imx_configure_glue(struct dwc3_imx *dwc_imx)
->+{
->+	struct device *dev = dwc_imx->dev;
->+	u32 value;
->+
->+	if (!dwc_imx->glue_base)
->+		return;
->+
->+	value = readl(dwc_imx->glue_base + USB_CTRL0);
->+
->+	if (device_property_read_bool(dev, "fsl,permanently-attached"))
->+		value |= (USB_CTRL0_USB2_FIXED | USB_CTRL0_USB3_FIXED);
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-No need parentheses.
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+net: mtip: The L2 switch driver for imx287
 
->+	else
->+		value &= ~(USB_CTRL0_USB2_FIXED | USB_CTRL0_USB3_FIXED);
->+
->+	if (device_property_read_bool(dev, "fsl,disable-port-power-control"))
->+		value &= ~(USB_CTRL0_PORTPWR_EN);
+This patch adds support for the More Than IP L2 switch embedded in the
+imx287 SoC. This is a two-port switch placed between uDMA and MAC-NET
+blocks, which can be used for offloading network traffic.
 
-Ditto.
+> diff --git a/drivers/net/ethernet/freescale/mtipsw/Kconfig b/drivers/net/ethernet/freescale/mtipsw/Kconfig
+> new file mode 100644
+> index 000000000000..a6fbdb59854f
+> --- /dev/null
+> +++ b/drivers/net/ethernet/freescale/mtipsw/Kconfig
+> @@ -0,0 +1,13 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +config FEC_MTIP_L2SW
+> +	tristate "MoreThanIP L2 switch support to FEC driver"
+> +	depends on OF
+> +	depends on NET_SWITCHDEV
+> +	depends on BRIDGE
+> +	depends on SOC_IMX28 || COMPILE_TEST
+> +	help
+> +	  This enables support for the MoreThan IP L2 switch on i.MX
+> +	  SoCs (e.g. iMX287). It offloads bridging to this IP block's
+> +	  hardware and allows switch management with standard Linux tools.
+> +	  This switch driver can be used interchangeable with the already
+                                                  ^^^^^^^^^^^
 
->+	else
->+		value |= USB_CTRL0_PORTPWR_EN;
->+
->+	writel(value, dwc_imx->glue_base + USB_CTRL0);
->+
->+	value = readl(dwc_imx->glue_base + USB_CTRL1);
->+	if (device_property_read_bool(dev, "fsl,over-current-active-low"))
->+		value |= USB_CTRL1_OC_POLARITY;
->+	else
->+		value &= ~USB_CTRL1_OC_POLARITY;
->+
->+	if (device_property_read_bool(dev, "fsl,power-active-low"))
->+		value |= USB_CTRL1_PWR_POLARITY;
->+	else
->+		value &= ~USB_CTRL1_PWR_POLARITY;
->+
->+	writel(value, dwc_imx->glue_base + USB_CTRL1);
->+}
->+
->+static void dwc3_imx_wakeup_enable(struct dwc3_imx *dwc_imx, pm_message_t msg)
->+{
->+	struct dwc3	*dwc = &dwc_imx->dwc;
->+	u32		val;
+This isn't a bug, but there's a grammar error: "can be used interchangeable
+with" should be "can be used interchangeably with" (adverb, not adjective).
 
-In dwc3_imx_configure_glue, space is used. while here, tab is used.
+> +	  available FEC driver, depending on the use case's requirements.
 
->+
->+	val = readl(dwc_imx->blkctl_base + USB_WAKEUP_CTRL);
->+
->+	if ((dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST) && dwc->xhci) {
->+		val |= USB_WAKEUP_EN | USB_WAKEUP_DPDM_EN;
->+		if (PMSG_IS_AUTO(msg))
->+			val |= USB_WAKEUP_SS_CONN | USB_WAKEUP_U3_EN;
->+	} else {
->+		val |= USB_WAKEUP_EN | USB_WAKEUP_VBUS_EN |
->+		       USB_WAKEUP_VBUS_SRC_SESS_VAL;
->+	}
->+
->+	writel(val, dwc_imx->blkctl_base + USB_WAKEUP_CTRL);
->+}
->+
->+static void dwc3_imx_wakeup_disable(struct dwc3_imx *dwc_imx)
->+{
->+	u32	val;
+[ ... ]
 
-Ditto.
+> diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> new file mode 100644
+> index 000000000000..45a7dfd253de
+> --- /dev/null
+> +++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
 
->+
->+	val = readl(dwc_imx->blkctl_base + USB_WAKEUP_CTRL);
->+	val &= ~(USB_WAKEUP_EN | USB_WAKEUP_EN_MASK);
->+	writel(val, dwc_imx->blkctl_base + USB_WAKEUP_CTRL);
->+}
->+
->+static irqreturn_t dwc3_imx_interrupt(int irq, void *data)
->+{
->+	struct dwc3_imx		*dwc_imx = data;
->+	struct dwc3		*dwc = &dwc_imx->dwc;
+[ ... ]
 
-Ditto.
+> +static void mtip_read_atable(struct switch_enet_private *fep, int index,
+> +			     u32 *read_lo, u32 *read_hi)
+> +{
+> +	struct addr_table64b_entry __iomem *atable_base =
+> +		fep->hwentry->mtip_table64b_entry;
+> +
+> +	*read_lo = readl(&atable_base[index].lo);
+> +	*read_hi = readl(&atable_base[index].hi);
+> +}
+> +
+> +static void mtip_write_atable(struct switch_enet_private *fep, int index,
+> +			      u32 write_lo, u32 write_hi)
+> +{
+> +	struct addr_table64b_entry __iomem *atable_base =
+> +		fep->hwentry->mtip_table64b_entry;
+> +
+> +	writel(write_lo, &atable_base[index].lo);
+> +	writel(write_hi, &atable_base[index].hi);
+> +}
 
->+
->+	if (!dwc_imx->pm_suspended)
->+		return IRQ_HANDLED;
->+
->+	disable_irq_nosync(dwc_imx->irq);
->+	dwc_imx->wakeup_pending = true;
->+
->+	if ((dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST) && dwc->xhci)
->+		pm_runtime_resume(&dwc->xhci->dev);
->+	else if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_DEVICE)
->+		pm_runtime_get(dwc->dev);
->+
->+	return IRQ_HANDLED;
->+}
->+
->+static void dwc3_imx_pre_set_role(struct dwc3 *dwc, enum usb_role role)
->+{
->+	if (role == USB_ROLE_HOST)
->+		/*
->+		 * For xhci host, we need disable dwc core auto
->+		 * suspend, because during this auto suspend delay(5s),
->+		 * xhci host RUN_STOP is cleared and wakeup is not
->+		 * enabled, if device is inserted, xhci host can't
->+		 * response the connection.
->+		 */
->+		pm_runtime_dont_use_autosuspend(dwc->dev);
->+	else
->+		pm_runtime_use_autosuspend(dwc->dev);
->+}
->+
->+static struct dwc3_glue_ops dwc3_imx_glue_ops = {
->+	.pre_set_role   = dwc3_imx_pre_set_role,
->+};
->+
->+static const struct property_entry dwc3_imx_properties[] = {
->+	PROPERTY_ENTRY_BOOL("xhci-missing-cas-quirk"),
->+	PROPERTY_ENTRY_BOOL("xhci-skip-phy-init-quirk"),
->+	{},
->+};
->+
->+static const struct software_node dwc3_imx_swnode = {
->+	.properties = dwc3_imx_properties,
->+};
->+
->+static int dwc3_imx_probe(struct platform_device *pdev)
->+{
->+	struct device		*dev = &pdev->dev;
->+	struct dwc3_imx		*dwc_imx;
->+	struct dwc3		*dwc;
->+	struct resource		*res;
->+	const char		*irq_name;
->+	struct dwc3_probe_data	probe_data = {};
->+	int			ret, irq;
+Can these functions race with concurrent access? Looking at the callers,
+mtip_write_atable is called from two different paths:
 
-As written above, unify the format.
+1. Static entry updates: mtip_config_switch -> esw_mac_addr_static ->
+   mtip_update_atable_static -> mtip_write_atable (no lock held)
 
->+
->+	dwc_imx = devm_kzalloc(dev, sizeof(*dwc_imx), GFP_KERNEL);
->+	if (!dwc_imx)
->+		return -ENOMEM;
->+
->+	platform_set_drvdata(pdev, dwc_imx);
->+	dwc_imx->dev = dev;
->+
->+	dwc_imx->blkctl_base = devm_platform_ioremap_resource_byname(pdev, "blkctl");
->+	if (IS_ERR(dwc_imx->blkctl_base))
->+		return PTR_ERR(dwc_imx->blkctl_base);
->+
->+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "glue");
->+	if (!res) {
->+		dev_warn(dev, "Base address for glue layer missing\n");
->+	} else {
->+		dwc_imx->glue_base = devm_ioremap_resource(dev, res);
->+		if (IS_ERR(dwc_imx->glue_base))
->+			return PTR_ERR(dwc_imx->glue_base);
->+	}
->+
->+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "core");
->+	if (!res)
->+		return dev_err_probe(dev, -ENODEV, "missing core memory resource\n");
+2. Dynamic entry updates: timer callback -> mtip_mgnt_timer ->
+   mtip_atable_dynamicms_learn_migration -> mtip_update_atable_dynamic1 ->
+   mtip_write_atable (learn_lock held)
 
--ENOENT should be better.
+The learn_lock only protects the dynamic entry path. The static entry path
+runs during link changes (mtip_switch_restart called from mtip_adjust_link)
+without lock protection.
 
->+
->+	dwc_imx->hsio_clk = devm_clk_get_enabled(dev, "hsio");
->+	if (IS_ERR(dwc_imx->hsio_clk))
->+		return dev_err_probe(dev, PTR_ERR(dwc_imx->hsio_clk),
->+				     "Failed to get hsio clk\n");
->+
->+	dwc_imx->suspend_clk = devm_clk_get_enabled(dev, "suspend");
->+	if (IS_ERR(dwc_imx->suspend_clk))
->+		return dev_err_probe(dev, PTR_ERR(dwc_imx->suspend_clk),
->+				     "Failed to get suspend clk\n");
->+
->+	irq = platform_get_irq_byname(pdev, "wakeup");
->+	if (irq < 0)
->+		return irq;
->+	dwc_imx->irq = irq;
->+
->+	irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s:wakeup", dev_name(dev));
->+	if (!irq_name)
->+		return dev_err_probe(dev, -ENOMEM, "failed to create irq_name\n");
->+
->+	ret = devm_request_threaded_irq(dev, irq, NULL, dwc3_imx_interrupt,
->+					IRQF_ONESHOT, irq_name, dwc_imx);
->+	if (ret)
->+		return dev_err_probe(dev, ret, "failed to request IRQ #%d\n", irq);
+Both paths can access the same hash block in the address table (determined
+by GET_BLOCK_PTR(hash)). If the timer fires during a link change callback,
+both can concurrently access the table, potentially causing torn reads
+(reading .lo from one entry version and .hi from another) or torn writes
+(the entry is in an inconsistent state between the two writel calls).
 
-Should this be moved to end after all are initialized?
+Would extending learn_lock to protect all address table access work, or is
+a separate hw_lock needed for hardware register access?
 
->+
->+	ret = device_add_software_node(dev, &dwc3_imx_swnode);
->+	if (ret)
->+		return dev_err_probe(dev, ret, "failed to add software node\n");
->+
->+	dwc = &dwc_imx->dwc;
->+	dwc->dev = dev;
->+	dwc->glue_ops = &dwc3_imx_glue_ops;
->+
->+	probe_data.res = res;
->+	probe_data.dwc = dwc;
->+	probe_data.core_may_lose_power = true;
->+
->+	ret = dwc3_core_probe(&probe_data);
->+	if (ret) {
->+		device_remove_software_node(dev);
->+		return ret;
->+	}
->+
->+	device_set_wakeup_capable(dev, true);
->+	return 0;
->+}
->+
->+static void dwc3_imx_remove(struct platform_device *pdev)
->+{
->+	struct device	*dev = &pdev->dev;
->+	struct dwc3	*dwc = dev_get_drvdata(dev);
->+
->+	if (pm_runtime_resume_and_get(dev) < 0)
+> +static bool mtip_update_atable_dynamic1(u32 write_lo, u32 write_hi,
+> +					int block_index, unsigned int port,
+> +					unsigned int curr_time,
+> +					struct switch_enet_private *fep)
+> +{
 
-print a error message.
+[ ... ]
 
-when this fail return, there is no chance to probe success again I think,
-because resource not freed.
+> +	/* No more entry available in block overwrite oldest */
+> +	timeold = 0;
+> +	indexold = 0;
+                 ^^
 
->+		return;
->+
->+	dwc3_core_remove(dwc);
->+	device_remove_software_node(dev);
->+	pm_runtime_put_noidle(dev);
->+}
->+
+Does this initialization cause the wrong entry to be overwritten? The
+function searches for the oldest entry within a specific hash block (from
+block_index to index_end). When all 8 slots in the block are full, it
+finds the oldest entry to overwrite.
 
-Regards
-Peng
+If all entries in the block have timestamps equal to curr_time (meaning
+they were all updated in the current time interval), the condition at
+time > timeold is never true, and indexold never gets updated from 0.
+
+This causes the write to go to entry 0 in the global address table, which
+may be in a completely different hash block than the intended block_index.
+For example, if block_index is 8 (second block), but all entries have the
+same timestamp, the code will incorrectly write to entry 0 (first block)
+instead of entry 8.
+
+Should indexold be initialized to block_index instead of 0?
+
+> +	for (entry = block_index; entry < index_end; entry++) {
+> +		mtip_read_atable(fep, entry, &read_lo, &read_hi);
+> +		time = FIELD_GET(AT_TIMESTAMP_MASK, read_hi);
+> +		dev_dbg(&fep->pdev->dev, "%s : time %x currtime %x\n",
+> +			__func__, time, curr_time);
+> +		time = mtip_timedelta(curr_time, time);
+> +		if (time > timeold) {
+> +			/* is it older ? */
+> +			timeold = time;
+> +			indexold = entry;
+> +		}
+> +	}
+> +
+> +	mtip_write_atable(fep, indexold, write_lo, conf);
+> +
+> +	/* Statistics (do it inbetween writing to .lo and .hi */
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This isn't a bug, but the comment doesn't match the code. The comment says
+"do it inbetween writing to .lo and .hi" but the statistics increment
+happens after mtip_write_atable completes. Looking at mtip_write_atable,
+it writes both .lo and .hi registers in sequence before returning, so the
+statistics are updated after both register writes complete, not between
+them.
+
+> +	fep->at_block_overflows++;
+> +	dev_err(&fep->pdev->dev, "%s update time, at_block_overflows %x\n",
+> +		__func__, fep->at_block_overflows);
+> +	/* newly inserted */
+> +	return true;
+> +}
+
+[ ... ]
+
+> +static void mtip_mgnt_timer(struct timer_list *t)
+> +{
+> +	struct switch_enet_private *fep = timer_container_of(fep, t,
+                                              ^^^^^^^^^^^^^^^^^^
+
+Is timer_container_of the correct kernel API? The standard kernel API for
+timer callbacks is from_timer, not timer_container_of. This will likely
+cause compilation errors or undefined behavior depending on how
+timer_container_of is defined.
+
+The correct usage should be:
+    struct switch_enet_private *fep = from_timer(fep, t, timer_mgnt);
+
+> +							     timer_mgnt);
+> +
+> +	mtip_atable_dynamicms_learn_migration(fep, mtip_get_time(),
+> +					      NULL, NULL);
+> +	mod_timer(&fep->timer_mgnt,
+> +		  jiffies + msecs_to_jiffies(LEARNING_AGING_INTERVAL));
+> +}
+
+[ ... ]
+
+> +static int mtip_mii_init(struct switch_enet_private *fep,
+> +			 struct platform_device *pdev)
+> +{
+> +	struct device_node *node;
+> +	int err = -ENXIO;
+
+[ ... ]
+
+> +	node = of_get_child_by_name(pdev->dev.of_node, "mdio");
+> +	if (node)
+> +		dev_err(&fep->pdev->dev, "%s: PHY name: %s\n",
+                ^^^^^^^^
+
+This isn't a bug, but is dev_err the right log level here? Finding the
+MDIO node is expected normal behavior during probe, not an error. Using
+dev_err will cause unnecessary error-level log messages during normal
+operation. Should this be dev_dbg instead?
+
+> +			__func__, node->name);
+> +
+> +	err = of_mdiobus_register(fep->mii_bus, node);
+
+> +static void mtip_ndev_cleanup(struct switch_enet_private *fep)
+> +{
+> +	struct mtip_ndev_priv *priv;
+> +	int i;
+> +
+> +	for (i = 0; i < SWITCH_EPORT_NUMBER; i++) {
+> +		if (fep->ndev[i]) {
+> +			priv = netdev_priv(fep->ndev[i]);
+> +			cancel_work_sync(&priv->tx_timeout_work);
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Is this work queue ever initialized? Looking through the code,
+tx_timeout_work is never initialized with INIT_WORK or similar. Calling
+cancel_work_sync on an uninitialized work structure will operate on
+garbage memory and cause undefined behavior or crashes.
+
+Should tx_timeout_work be initialized in mtip_ndev_init, or should this
+cancel_work_sync call be removed if the work queue is not actually used?
+
+> +
+> +			unregister_netdev(fep->ndev[i]);
+> +			free_netdev(fep->ndev[i]);
+> +			fep->ndev[i] = NULL;
+> +		}
+> +	}
+> +}
+
+[ ... ]
+
+> +static int mtip_ndev_init(struct switch_enet_private *fep,
+> +			  struct platform_device *pdev)
+> +{
+> +	struct mtip_ndev_priv *priv;
+> +	int i, ret = 0;
+> +
+> +	for (i = 0; i < SWITCH_EPORT_NUMBER; i++) {
+> +		fep->ndev[i] = alloc_netdev(sizeof(struct mtip_ndev_priv),
+> +					    fep->ndev_name[i], NET_NAME_USER,
+> +					    ether_setup);
+> +		if (!fep->ndev[i]) {
+> +			ret = -ENOMEM;
+> +			goto cleanup_created_ndev;
+> +		}
+> +
+> +		fep->ndev[i]->ethtool_ops = &mtip_ethtool_ops;
+> +		fep->ndev[i]->netdev_ops = &mtip_netdev_ops;
+> +		SET_NETDEV_DEV(fep->ndev[i], &pdev->dev);
+> +
+> +		priv = netdev_priv(fep->ndev[i]);
+> +		priv->dev = fep->ndev[i];
+> +		priv->fep = fep;
+> +		priv->portnum = i + 1;
+> +		fep->ndev[i]->irq = fep->irq;
+> +
+> +		mtip_setup_mac(fep->ndev[i]);
+> +
+> +		ret = register_netdev(fep->ndev[i]);
+> +		if (ret) {
+> +			dev_err(&fep->ndev[i]->dev,
+> +				"%s: ndev %s register err: %d\n", __func__,
+> +				fep->ndev[i]->name, ret);
+> +			free_netdev(fep->ndev[i]);
+> +			fep->ndev[i] = NULL;
+> +			goto cleanup_created_ndev;
+> +		}
+> +
+> +		dev_dbg(&fep->ndev[i]->dev, "%s: MTIP eth L2 switch %pM\n",
+> +			fep->ndev[i]->name, fep->ndev[i]->dev_addr);
+> +	}
+> +
+> +	return 0;
+> +
+> + cleanup_created_ndev:
+> +	if (i == SWITCH_EPORT_NUMBER - 1)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Does this condition cause a resource leak? The cleanup code only calls
+mtip_ndev_cleanup if the failure occurs when processing the last device
+(i==1 for 2 devices). If the failure occurs on device 0 (i==0), the
+condition is false and mtip_ndev_cleanup is not called, leaking the
+successfully created network device.
+
+For example, if device 0 is successfully created and registered, but device
+1 fails during alloc_netdev, then i=1 and the condition (1 == 1) is true,
+so cleanup happens. But if register_netdev fails for device 0, we free that
+device and set fep->ndev[0]=NULL, then goto cleanup with i=0, and the
+condition (0 == 1) is false, so no cleanup happens for any other
+successfully created devices before the failure point.
+
+Should mtip_ndev_cleanup be called unconditionally, or should the cleanup
+logic track which devices need cleanup?
+
+jakub: not sure there's a bug here, but AI is right that this is an odd pattern
+
+> +		mtip_ndev_cleanup(fep);
+> +
+> +	return ret;
+> +}
+
+[ ... ]
+
+> +static int mtip_parse_of(struct switch_enet_private *fep,
+> +			 struct device_node *np)
+> +{
+> +	struct device_node *p;
+> +	unsigned int port_num;
+> +	int ret = 0;
+> +
+> +	p = of_get_child_by_name(np, "ethernet-ports");
+> +
+> +	for_each_available_child_of_node_scoped(p, port) {
+> +		if (of_property_read_u32(port, "reg", &port_num))
+> +			continue;
+> +
+> +		if (!(port_num == 1 || port_num == 2)) {
+> +			dev_err(&fep->pdev->dev,
+> +				"%s: The switch supports up to %d ports!\n",
+> +				__func__, SWITCH_EPORT_NUMBER);
+> +			goto of_get_err;
+> +		}
+> +
+> +		fep->n_ports = port_num;
+> +		ret = of_get_mac_address(port, &fep->mac[port_num - 1][0]);
+> +		if (ret)
+> +			dev_dbg(&fep->pdev->dev,
+> +				"of_get_mac_address(%pOF) failed (%d)!\n",
+> +				port, ret);
+> +
+> +		ret = of_property_read_string(port, "label",
+> +					      &fep->ndev_name[port_num - 1]);
+> +		if (ret < 0) {
+> +			dev_err(&fep->pdev->dev,
+> +				"%s: Cannot get ethernet port name (%d)!\n",
+> +				__func__, ret);
+> +			goto of_get_err;
+> +		}
+> +
+> +		ret = of_get_phy_mode(port, &fep->phy_interface[port_num - 1]);
+> +		if (ret < 0) {
+> +			dev_err(&fep->pdev->dev,
+> +				"%s: Cannot get PHY mode (%d)!\n", __func__,
+> +				ret);
+> +			goto of_get_err;
+> +		}
+> +
+> +		fep->phy_np[port_num - 1] = of_parse_phandle(port,
+> +							     "phy-handle", 0);
+                                                             ^^^^^^^^^^^^^^^^^^
+
+Can these device_node references leak on probe failure? The function
+acquires references via of_parse_phandle and stores them in fep->phy_np.
+If the function fails after successfully obtaining one or more references,
+or if a later function in mtip_sw_probe fails, these references are never
+released.
+
+The references are only released in mtip_mii_remove which is called from
+mtip_sw_remove. However, if probe fails, remove is never called.
+
+For example:
+1. mtip_parse_of successfully calls of_parse_phandle for port 0, storing
+   reference in fep->phy_np[0]
+2. Either mtip_parse_of fails on port 1, or mtip_parse_of succeeds but a
+   later step in mtip_sw_probe fails (e.g., mtip_switch_dma_init,
+   mtip_mii_init, or mtip_ndev_init)
+3. mtip_sw_probe returns error
+4. Device probe fails, so mtip_sw_remove is never called
+5. mtip_mii_remove is never called, so fep->phy_np[0] reference is never
+   released with of_node_put
+
+Should proper cleanup of phy_np references be added in mtip_parse_of error
+path and/or in mtip_sw_probe error paths?
+
+> +		if (!fep->phy_np[port_num - 1]) {
+> +			dev_err(&fep->pdev->dev,
+> +				"%s: PHY handle not defined!\n", __func__);
+> +			ret = -ENODEV;
+> +			goto of_get_err;
+> +		}
+> +	}
+> +
+> + of_get_err:
+> +	of_node_put(p);
+> +
+> +	return ret;
+> +}
+
+[ ... ]
+
+> +static void mtip_sw_remove(struct platform_device *pdev)
+> +{
+> +	struct switch_enet_private *fep = platform_get_drvdata(pdev);
+> +
+> +	mtip_ndev_cleanup(fep);
+> +
+> +	mtip_mii_remove(fep);
+> +
+> +	dma_free_coherent(&fep->pdev->dev, PAGE_SIZE, fep->rx_bd_base,
+> +			  fep->bd_dma);
+> +	fep->rx_bd_base = NULL;
+> +	fep->tx_bd_base = NULL;
+> +
+> +	timer_delete_sync(&fep->timer_mgnt);
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Does the timer get deleted too late in the cleanup sequence? The timer
+callback mtip_mgnt_timer accesses fep->hwp, fep->hwentry, and
+fep->pdev->dev. However, timer_delete_sync is called after
+mtip_ndev_cleanup, mtip_mii_remove, and dma_free_coherent.
+
+If the timer fires between these cleanup operations and timer_delete_sync,
+it will access freed or cleaned resources, causing use-after-free and
+potential crashes.
+
+Should the timer be deleted first before any other cleanup operations?
+
+Correct order would be:
+1. timer_delete_sync(&fep->timer_mgnt);
+2. mtip_ndev_cleanup(fep);
+3. mtip_mii_remove(fep);
+4. dma_free_coherent(...);
+
+> +	platform_set_drvdata(pdev, NULL);
+> +}
+-- 
+pw-bot: cr
