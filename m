@@ -1,91 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB985274B3A;
-	Tue,  3 Feb 2026 11:44:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC7033A704
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 11:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770119068; cv=none; b=pMFOWOfYwmqyQ23rSO4oCSh0aEZB3dpfcJ2B5b8eqDePIPxxj6CGTb3nDnNsgEEV7oE7Gm7YGgZVLUNpyOCcTXs12W6j+eC3mzWhnUbb26Y9U1Q+BSriBO/sZbfFM9wuhQJDWG6sTTJ8Woe1si8H4NGDHFySLL+roRzotdWesSw=
+	t=1770119621; cv=none; b=Cvc/psZdpgFM4CjFMqjQf4jn/y01N6laimvg5q9vLxHu165gWcOI8Df/a34nfYezC/+BSXD+POIDIPoTdUUVnMm1VZLkcu1Z8X/eAzKjtL3n86Wb4jIPGrhzrHa0vtrF3f2UP8Ir0gLvvERonunY6YOEcQ+TiqBpOemKtCpbO/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770119068; c=relaxed/simple;
-	bh=ti6GPfXzNrGebiZu8scvVNHPqQoAoCsZtWggvYnGPHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=egP76iGPUJ9B3EZYyV6g1nIghqbX23aOyh/svQ3Vafwoovovo8ImDrU6C6d/FfjfahYR07vy3ZpZH5k3c7hK0DWF5Vra5AnhQGfAjtTY0XcAJSgsAFsDySk1egc/QhN7HbJu75yMYYzM7IWP5aouHxfvwGOWUHKk53pqLfsGlO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dFhuPE9H; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770119621; c=relaxed/simple;
+	bh=I12JpYU8SFoYG9LY5HYJxv0gaZoRlGInnne5CRnqgZE=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=bPeslU5u7m9NpAsHvbagOpNHxM1QkmdJ3Wv0ye0uh3OEBqycz5xhPhAPSqj3ysY8Qo0I+loxFqtBpqEe64Oqb8xu5Es+UodXkBXrugAUxHRGAKPdYDW+67qPxK3UK0kR188uLcwyZ+3uTQh6F6T54FGR3BiVsJBeA/PBn1/t5Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pGLrDq0F; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dFhuPE9H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3997DC19421;
-	Tue,  3 Feb 2026 11:44:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770119068;
-	bh=ti6GPfXzNrGebiZu8scvVNHPqQoAoCsZtWggvYnGPHY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dFhuPE9HDwbP/PkMm1QWhsjsU7JLn5zWS/AJ4F23F5pHWZf8gC2UR+aKK26fXoy61
-	 BLF40m1IMUuQ+F1UpKqxE2JkfDBIiNe/2WnZDJJ5/cxs5JHgQuWZUbQ5GFLcgXLE39
-	 eevqhb5BM2X8TxSDhvxfIUrQND9I/h8NDWOdjh/aQsMWgQRslbKH/45m6atMIGbE/M
-	 EKOU35iN5hUif/Ews03PVJJcJ2+UZFlOlE4rWXk19TEYauOxkHD9o/i2PzHPSHxvaT
-	 X3SQZdn2fi3K66EzloiTBgQHt9Fbr9WBdxfKTOFUVYqQZgDpy/wscSrZfcb+JpJZ/T
-	 HjU8d86BUu6Pg==
-Date: Tue, 3 Feb 2026 11:44:22 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Daniel Baluta <daniel.baluta@gmail.com>
-Cc: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chen-Yu Tsai <wenst@chromium.org>, Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel@collabora.com,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/2] clk: Disable CLK_OPS_PARENT_ENABLED parent only
- after CRITICAL check
-Message-ID: <0cc467a6-2121-4a79-9143-71cce088bcc7@sirena.org.uk>
-References: <20260128-ops-parent-enable-fix-v1-0-ff39cc37f98d@collabora.com>
- <20260128-ops-parent-enable-fix-v1-1-ff39cc37f98d@collabora.com>
- <CAEnQRZABuXQsJ4-5u9uP8VM63of8EpiV1LcUxv_vSBuGT1uEBA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pGLrDq0F"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 4B3024E423DB;
+	Tue,  3 Feb 2026 11:53:38 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EED3760728;
+	Tue,  3 Feb 2026 11:53:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 42835119A8888;
+	Tue,  3 Feb 2026 12:53:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1770119615; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=czGxAqtWlC7CiVBQnNcTBd7QV+mqCq2IlCe+hizwtH0=;
+	b=pGLrDq0FDlC6TZPzDwz+Q/LbCPms3wDALSsrNFAGRXrrJUMWn/+VlSWQN2QR1wDRN5t7R/
+	4dzoNl826W3u5sMZpiUnAdxPkKb84cPrxTMxNDLahXGpiwPNmn9eS5238/Jp+bC+ex8+vX
+	vbDhkjVeUStK9q7btu0T2fx76OX81Ua0754MhEjiyODMlnM/R7O8S56hvlNuX01P0qZM+G
+	nlwC3jJMJKjoHhH2sq8CMgGpUNdNEwPZhhN6u26MXXTEcHuZ+OoKdCgPnRYERLalsXIgXs
+	ne+a7qepIg13lOceMckrlU+BJr2gXQ4vfi5Pi4HuB/tssJGozFElfoz4tOiY2A==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org, 
+ Damon Ding <damon.ding@rock-chips.com>
+Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se, 
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com, 
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, 
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+ festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com, 
+ kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com, 
+ jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com, 
+ heiko@sntech.de, andy.yan@rock-chips.com, dmitry.baryshkov@oss.qualcomm.com, 
+ dianders@chromium.org, m.szyprowski@samsung.com, jani.nikula@intel.com, 
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
+In-Reply-To: <20251217093321.3108939-1-damon.ding@rock-chips.com>
+References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
+Subject: Re: (subset) [PATCH v8 00/18] Apply drm_bridge_connector and
+ panel_bridge helper for the Analogix DP driver
+Message-Id: <177011960346.1855144.4866699055858398856.b4-ty@bootlin.com>
+Date: Tue, 03 Feb 2026 12:53:23 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0shkWHVSS9MR5KUA"
-Content-Disposition: inline
-In-Reply-To: <CAEnQRZABuXQsJ4-5u9uP8VM63of8EpiV1LcUxv_vSBuGT1uEBA@mail.gmail.com>
-X-Cookie: Do you know Montana?
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
 
---0shkWHVSS9MR5KUA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Wed, 17 Dec 2025 17:33:03 +0800, Damon Ding wrote:
+> PATCH 1 is to ensure the last bridge declares OP_EDID or OP_MODES or both.
+> PATCH 2 is a small format optimization for struct analogid_dp_device.
+> PATCH 3 is to perform mode setting in &drm_bridge_funcs.atomic_enable.
+> PATCH 4 is to add a new parameter to store the point of next bridge.
+> PATCH 5 is to make legacy bridge driver more universal.
+> PATCH 6-11 are preparations for apply drm_bridge_connector helper.
+> PATCH 12 is to apply the drm_bridge_connector helper.
+> PATCH 13-15 are to move the panel/bridge parsing to the Analogix side.
+> PATCH 16 is to attach the next bridge on Analogix side uniformly.
+> PATCH 17-18 are to apply the panel_bridge helper.
+> 
+> [...]
 
-On Tue, Feb 03, 2026 at 12:13:22PM +0200, Daniel Baluta wrote:
+Applied, thanks!
 
-> Would you consider please reverting faulty patch above as i.MX8mp is
-> still broken?
+[01/18] drm/display: bridge_connector: Ensure last bridge determines EDID/modes detection capabilities
+        commit: 3c05e956b85e70cbd5042e03f615b23ca4635385
+[02/18] drm/bridge: analogix_dp: Formalize the struct analogix_dp_device
+        commit: 10a2694fde68ba214eca7d24229094fc2427fddd
+[03/18] drm/bridge: analogix_dp: Move &drm_bridge_funcs.mode_set to &drm_bridge_funcs.atomic_enable
+        commit: cff3f89ffbdd4b6c43a117c01aaf5b290ff80803
 
-Stephen posted a revert yesterday:
+Best regards,
+-- 
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-   https://lore.kernel.org/r/20260203002439.1223213-1-sboyd@kernel.org
-
---0shkWHVSS9MR5KUA
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmB35UACgkQJNaLcl1U
-h9A4Vgf/Uvyj2AFwDKOzAlFFnP32o0XeoeZeQhAYu73zomn39yZ5TAhVi2zdEG+k
-+jbtloMu8oyjExk7NhheXUVhNgO1CGBDCtNp+JpCSw0kryE+HTXQnCgVS6cbQvar
-A3uLI1QEvKw7m+QXLuHu05MQb8Kzzogo8BuY3l5pOTJXWt7pUKitzxIImoIdibjI
-kDw77odABT2YgZhcVgLsWbiQhwcViOBdkIHNOIRFUhMG5RHHNWyCdy+OASgcVPmn
-ifVPRUNXJ46vrhNnUYwEu+ziRTg0IrLbAq4ddsUMgb7CW08QIJYaRfInOPr9znkJ
-izQGTgOS+AsikNGt+yoQiclJSnf17A==
-=H2I7
------END PGP SIGNATURE-----
-
---0shkWHVSS9MR5KUA--
