@@ -1,139 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DC3212554;
-	Tue,  3 Feb 2026 13:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770124156; cv=none; b=SfIONM0gawxSH6xwQg4UZsU9F/rIw+nY2L8fcmjalnJkPYXBwHwz8CkctsnEGTTFobIvghM01uhNk8FHhECCvJ7+T4nqLprbO26agd/HyeqB0mP7CjbmA2UXrJ5yDdKOzL5DhryvQHDdDUkwdJjkOIRrGHbHakSDBkNKnHlLejU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770124156; c=relaxed/simple;
-	bh=MSFiS/LmupV3YopiS8HKbsx3Kh/IjnAnq0VI5uK+094=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HbttwuPXNeNwKIe9FUDH598U/D0aT1a2oX9eefzZfUo9J5LXlpQIRLnlsEGqjlsvu4sacWn6WCrJm/br0U8ZKtJCGthGS0JWYlXEUpo9nv9BgZoJYDJ06RSUwbvJa9LBF3FDwXzT6hM2jwdeUxcQ1+ssDs+VXTxao99BXmjPH44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hpl4q72C; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F183933D4FA
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 13:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770125097; cv=pass; b=TnKdWVW9XW0cYhg1cnXJ6mUG/1Tr+Mwezfs6KdCaoVKsOJ+U9qrwn4pGhJWRl6wjKPAokpjGwu4F1bgfz7mR/mYmuMpRmYwII4Sdl9q2NXcedq+zNssiTvGtfY/x6TmxhF/hJdyMqYoQ5L0lxP5tXOMMNi6NklAYrqm1rDCMLTg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770125097; c=relaxed/simple;
+	bh=ebaYgffeHYn7gzwVrIV2yDgbyv8PU9o4IV7Dp2Fxs/c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RIJpJ7PqmuhD3Vu1t1C760utpnsau6rIeKeR+aQBZIeG/ZjjGO3H3Jt8gj80H/cb+4V7vfpyXRJ36RXfw2NO5mUSVlsf7DkiH8rW8oV7WOmGgbR1HY2TG9OqzpLRE9JJey8fVOosxUwzyv2mWba546Q/72XN1FqsYWDvJZfcFVU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jYUQlbB1; arc=pass smtp.client-ip=74.125.82.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hpl4q72C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1A9C116D0;
-	Tue,  3 Feb 2026 13:09:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770124156;
-	bh=MSFiS/LmupV3YopiS8HKbsx3Kh/IjnAnq0VI5uK+094=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hpl4q72CKM72QleOVs/y4d6Jr3g8fwYGdg8pMbFc5YKO0fDoWLxXx6xvuUpGWALjk
-	 L6rYCMUN5y8sSyPqmfCBk3A5KhvI2afw1pNQYi9jBPeQ76WEQroLPdn3nQRdHqgcEP
-	 Dbj5cdomtSt8ORq1W75qZaGhpYjiMBurxv/+I927aFbT08VSgL5aTVMmKpzaONSgE+
-	 nFGdckTuwKGKIWLkxYdd70reXJ9izP7Z0O4iySe7c2kBQylg/b8LRh/CcW3RtPzNgM
-	 n4oaxsZ0zTtRHXHzfmUYSrzUklSaARJK+fahiTYUurqjLK8OQXnMcHxPEOIgjGFrfL
-	 MF0pYABAi2j3A==
-Date: Tue, 3 Feb 2026 18:39:06 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Sherry Sun <sherry.sun@nxp.com>
-Cc: hongxing.zhu@nxp.com, l.stach@pengutronix.de, Frank.Li@nxp.com, 
-	bhelgaas@google.com, lpieralisi@kernel.org, kwilczynski@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com, 
-	imx@lists.linux.dev, kernel@pengutronix.de, linux-pci@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V3 03/10] arm: dts: imx6qdl: Add Root Port node and PERST
- property
-Message-ID: <mp25jwvoimpesfwtpmyeltdpbu7aznahxvkcn6jxg5jqzxck4i@pium66rnpdd3>
-References: <20260203015614.2957479-1-sherry.sun@nxp.com>
- <20260203015614.2957479-4-sherry.sun@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jYUQlbB1"
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-126ea4e9694so2831300c88.1
+        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 05:24:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770125093; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bhsxk8ctg3wjkW2/fXWHNrtYHMhdj9a/FS8wk6mMa0Qcvye/c9R3BN14E2jmYP7ypl
+         YPclFkY2RKJMea6oSB1BrVoEn2UMozUs5+X1uWTlKQA7v7MRo4vNBPwkqrR9+sQ4Gni6
+         UDlsk2/TXlfoSPPhaHxaaddydIr5Sg7+aZLSevGf5s8jkHMPVw+WM+caMwZbWSF526fA
+         tW/WrNFQidr3ga2q0ZU2+BpSB97U4b/ZOVZ7zfpoB1sHbZX62SS9nIz5Jm1IfMEx3Gm3
+         amL98aKMKh0p+nAXW/1ILAuNSAJUGVXXSCEDWHLNmMNRAjBGT9RNpAsGqPvO+ZUu49eC
+         ZKHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/hci2sdsPCD9iRXbhf00hUDFJW8K56ypEr3d1bbtrDk=;
+        fh=4L29a72v+sIDJmiLc6WX1ChHUknkcbd4Wnkk7RLYU2E=;
+        b=at7xaXoKflENzzTjP0wuPC45taiwWHAQJADk13He4u809SzCLNdxlY3v6MtCQ/YX+N
+         QeHTFDNrPfblMxgLnzu+fjKkU2q+3i/2LJzg1osMnXIEBWlkseS1qpvaGo5P6UWLDOcI
+         zq98SSQndJIypJl/+YB7ZAAFn8zcirTkQpjhIvaF+jZ5NYWHYKOhdYbcYmGVcJFZyKhj
+         7xj/BW3iCb4Gkz1oDCOv7StuMlkx8JTP7u1azVExj97ix3LTSZeqQCWlzmGJSqZNkXZ2
+         VX920SvKld+8aBGnxovTmCRxnVKQ7M4RlkYV6Qjn6QFwBVVJ/TDIsxYgZDCwNoAvrK5l
+         2rIA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770125093; x=1770729893; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/hci2sdsPCD9iRXbhf00hUDFJW8K56ypEr3d1bbtrDk=;
+        b=jYUQlbB18ERLmiLVRa7sFzfmv8ykpfXHIaj4eKQU9Z1Tjrujpe63p+cOMLx5Gv4RhM
+         5XEmQ84Jt9nc18ZCcmsnBDVUvmvFzOmjlR6oImazRbToJZgtBSNsYi64cpUh4BMmU0NL
+         b5WSr4gwD0jdrKDNF15jvOsdRgmJAROgfoSdfayN5iL9Fs/uvjxbROqPYqrS8q0f6ha1
+         3hG4ZKEwUYGHX5BNFGyHJVEtmXOjWb7KPtTI4Te0yPc761/0VSgyTf0jAmp21ZcCLPAr
+         aoDIdR+rF4GD67fwU+AAF1p25IYup59uBxqACSnXIBLAgzhDJ/tSabsdHaRqa5wM7TW8
+         dOTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770125093; x=1770729893;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/hci2sdsPCD9iRXbhf00hUDFJW8K56ypEr3d1bbtrDk=;
+        b=Ypq4fsw4ZF543F9IkEi+8R6YsepgH14G7s/9NTwJ+bzsjlt71p1gGOJ+MFYxb+UzAB
+         HJtYmcBBMdGxyr7gd07E8xxy47/FZLF5fNRkOJG6h7stMIzYKci9FRnwuuNkQ1FnJgwZ
+         JTxGjMFztKvPslccJg9vmGwD5oq3PhFCOkIipj9+5xxyog+X49B55e/at0BzeGY0YKrs
+         2TxehAjF+8tInGOR2c6sZPBa/UjeB7JFLEAAmJwfZ24Txlvthg0Vnvzvq9cIrKGLyg3W
+         IxECQBQchJfMMYnJq/fr0TfGyOKkLIpLRrh+oTgsX9arathK/YEc7IhJm7E7QBqMF+Bt
+         Sh1w==
+X-Forwarded-Encrypted: i=1; AJvYcCX3s5fHzQUw9+vSf7B/GvvqmdOe5Y5B4UrFWThkPHVh4KhKuOQYyzAUfV65GgY6fp7oG1s=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yxi/6mjGYilnU77+iqFradTR8lPgIbDm1jmuWLY4fDzO3jVzzMq
+	X4XK68PGh+fcAyJxCPjjN4PVfdKRiiA13Il7RcoOnmE4KKt7Q6pVuzfaKMwtvNoL+7d2AW84egu
+	1+SCU7ypHDn2ZWDCPETYB6lBUJZr1U+o=
+X-Gm-Gg: AZuq6aKp6xbQWLiKYzauqyKc3gBUaPRoeZD0WSC3ujtZITvVhvFj68U+SEf3HIVivsP
+	1B1PiFDaP1QToNpwEKGbmzSZxqRhxLnSYCv5PU5fTod1025TQ9GjDjisdISgTD0wSQmqQHg67WS
+	ovy3wgtQami35sNFR9CPxIypAJxDes6AWmU3fMoTz74CrMqRCc/8qoqvQ8B4wnWzfdfxzFmc+8T
+	IS8U4yuah+n4YNdNt0QQzkw8w4wAIgvlS52ZC4ffywciIznM4EQXL2bXJtU+uuTQjLmRpWWzpWF
+	FTXrrMhHcEl81Uiex5rQKo+mT8gVqfe93Q139ynY9vHoejSE8SwBYR2EwWnze5Xk5oH+L9oOEs1
+	XGp50+AgjMQ==
+X-Received: by 2002:a05:7022:6b99:b0:11f:3483:bbb0 with SMTP id
+ a92af1059eb24-125c0f984d6mr7727526c88.19.1770125093214; Tue, 03 Feb 2026
+ 05:24:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260203015614.2957479-4-sherry.sun@nxp.com>
+References: <20260202205758.3044617-1-Frank.Li@nxp.com>
+In-Reply-To: <20260202205758.3044617-1-Frank.Li@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Tue, 3 Feb 2026 15:27:39 +0200
+X-Gm-Features: AZwV_Qj2z7qbutwvB-NPA1F-KcZIWGH03UnT5CBo6gdKULcm6QEzcKu28K1kX_8
+Message-ID: <CAEnQRZCrCEa9TixELqZGngXL=TrWO1i=m7dqgLtcx_pN+wEaWg@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ASoC: dt-bindings: ti,tlv320aic3x: Add compatible
+ string ti,tlv320aic23
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jai Luthra <jai.luthra@linux.dev>, 
+	"open list:TEXAS INSTRUMENTS AUDIO (ASoC/HDA) DRIVERS" <linux-sound@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 03, 2026 at 09:56:07AM +0800, Sherry Sun wrote:
-> Since describing the PCIe PERST# property under Host Bridge node is now
-> deprecated, it is recommended to add it to the Root Port node, so
-> creating the Root Port node and add the reset-gpios property in Root
-> Port.
-> 
-> Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-> ---
->  arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi |  5 +++++
->  arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi         | 11 +++++++++++
->  arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts |  5 +++++
->  3 files changed, 21 insertions(+)
-> 
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi
-> index ba29720e3f72..fe9046c03ddd 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi
-> @@ -754,11 +754,16 @@ lvds0_out: endpoint {
->  &pcie {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_pcie>;
-> +	/* This property is deprecated, use reset-gpios from the Root Port node. */
->  	reset-gpio = <&gpio7 12 GPIO_ACTIVE_LOW>;
+On Mon, Feb 2, 2026 at 10:59=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+>
+> Add compatible string ti,tlv320aic23 to fix below CHECK_DTB warning:
+> arch/arm/boot/dts/nxp/imx/imx35-eukrea-mbimxsd35-baseboard.dtb:
+>     /soc/bus@43f00000/i2c@43f80000/codec@1a: failed to match any schema w=
+ith compatible: ['ti,tlv320aic23']
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-You should just remove this property.
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 
-- Mani
+For the next patches I wouldn't focus on explaining that the patch "fixes
+a warning" but instead on adding an undocumented compatible string.
 
->  	vpcie-supply = <&reg_pcie>;
->  	status = "okay";
->  };
->  
-> +&pcie_port0 {
-> +	reset-gpios = <&gpio7 12 GPIO_ACTIVE_LOW>;
-> +};
-> +
->  &pwm1 {
->  	pinctrl-names = "default";
->  	pinctrl-0 = <&pinctrl_pwm1>;
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-> index 76e6043e1f91..eeb376193398 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-> @@ -289,6 +289,17 @@ pcie: pcie@1ffc000 {
->  				 <&clks IMX6QDL_CLK_PCIE_REF_125M>;
->  			clock-names = "pcie", "pcie_bus", "pcie_phy";
->  			status = "disabled";
-> +
-> +			pcie_port0: pcie@0 {
-> +				compatible = "pciclass,0604";
-> +				device_type = "pci";
-> +				reg = <0x0 0x0 0x0 0x0 0x0>;
-> +				bus-range = <0x01 0xff>;
-> +
-> +				#address-cells = <3>;
-> +				#size-cells = <2>;
-> +				ranges;
-> +			};
->  		};
->  
->  		aips1: bus@2000000 { /* AIPS1 */
-> diff --git a/arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts b/arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts
-> index c5b220aeaefd..6b12cab7175f 100644
-> --- a/arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts
-> +++ b/arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts
-> @@ -45,10 +45,15 @@ MX6QDL_PAD_GPIO_6__ENET_IRQ		0x000b1
->  };
->  
->  &pcie {
-> +	/* This property is deprecated, use reset-gpios from the Root Port node. */
->  	reset-gpio = <&max7310_c 5 GPIO_ACTIVE_LOW>;
->  	status = "okay";
->  };
->  
-> +&pcie_port0 {
-> +	reset-gpios = <&max7310_c 5 GPIO_ACTIVE_LOW>;
-> +};
-> +
->  &sata {
->  	status = "okay";
->  };
-> -- 
-> 2.37.1
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
+The CHECK_DTB is just a tool that reports the issue which you can
+mention at the end.
