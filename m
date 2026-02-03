@@ -1,380 +1,220 @@
-Received: from mail-qk1-f196.google.com (mail-qk1-f196.google.com [209.85.222.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011033.outbound.protection.outlook.com [52.101.70.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D12A317709
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 15:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.196
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770133259; cv=none; b=BWsko62Lak899O83eYLM6Nb4ZR+UOhfynp9BMTiDH+u2hSAULaaSLhjPTMujZYXudmF2qdC+a5WGW+1ma0b/hFKHIEktKxesL8JrjOeN3R4cLa+8IviE0Q6JcM0NSbeEzhivJps8rjHccMZ0Yy435jJik+uR5IayOeLjFR6UjqE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770133259; c=relaxed/simple;
-	bh=2GolLxBI7M4FrQQ01gPdYp9MHSke1dJvpw9m0JW/AlM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MxxEy1WFVjwjfegym1KVyBUfwpJqC2F7LyL+FcHDAv4FSfdF+AuCVjhOPbDMYER165BGp2dIs3mdE++CDEEcC4tAV8NfYIXzbk8p3/eR4J8jCFZVbFgFmTCBvoOAo04WVOkQU44WVmQc5QF2mbO+RhNt7mbx3bsO1mhyL+WduDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=uI57AqPP; arc=none smtp.client-ip=209.85.222.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0BD3ACF1D
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 15:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770133285; cv=fail; b=J+SOLEsqo1fvyfO736HIbm3XtTYqG5fJc3uvJh98TOdBqTBnkWtG9HyfrBk/gyRdypKfVNtBvisJtVICoC+MGUd7Czm8hoJcQnlZSXlszJbYXZ0MFv/0zkBYmJfJvV4SkTNSm/WGfcsivSX7iCDbUFvgOt4Y1KyyxUbJqBQqqfA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770133285; c=relaxed/simple;
+	bh=sn3wGI5izxb2Ln/Km3NUd1NEuVe/Hj3QS1+si8MiqBo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=EQrH15wjiMuYvZzecUNuGZU7Fu8HIh30k4r7wAf+U2GPZkfFSKKYgylwjeirX3M/hHR7DdW3SlN7qzf0MwwJijy8y8E3zSpBz5QdffwaH+4wIYsZRJsgmVtAri3aQo9/L4dkgsejr3MOhR8cTtU5CFI5NpvPAWAYbCCgNuPhuJA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=eT7EZS1o; arc=fail smtp.client-ip=52.101.70.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="uI57AqPP"
-Received: by mail-qk1-f196.google.com with SMTP id af79cd13be357-8c5320536bfso601597285a.1
-        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 07:40:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1770133256; x=1770738056; darn=lists.linux.dev;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=2GolLxBI7M4FrQQ01gPdYp9MHSke1dJvpw9m0JW/AlM=;
-        b=uI57AqPPhKKafJft2iPbjbYWy0RYLn94xkMfCy41FZyygQlz+PSkVPaH3pIQ5jBPxt
-         /Dq2cHJhp+bGvRKlkATp4R7F3RWZMiFdg77ChEboKGhLawXJEMP0kqKZFomnEAbCS1ue
-         MNLSnroMPFlWTI7Df7E3lEAmqavWC4v1a1EnqUroQkbbxtl5+Arpjfx11iMZnBQfQUSN
-         bFYbkhzh0C53rVKdGSq/Jy1gsvrqJvzH/tB++71C9fpHXLLVXW22ftwvAZJEJ0RY1SmU
-         ENqLOoCQTGQ3O0C5ua6zM2QGzsG94x/rbVPVAEvgSWWRP/6uecOCl6IjLAlNawueYezX
-         c6aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770133256; x=1770738056;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2GolLxBI7M4FrQQ01gPdYp9MHSke1dJvpw9m0JW/AlM=;
-        b=iZ3YysCOdc1hw9EGf0L/VuzMRaMfvbFkSXp2srLGNVKPBYC6IiwdM0JOBVrz9Vv/vM
-         W+L4LV/hHEbnp/IOhxmDuNuF+4bva0Bc8fgiDAPO+Xaez78b/1+AQvIMXe9wANKhcItK
-         X4y3NyD/nb6ikJKwfZ1ohr6tZQCqTUBlV/0IALpeFG7pGhdJzeli4ERc7YUbgp+glQiq
-         Q+cyEeqVBOXxXKv6U48IbcL8k5gIFAgKq+397M7m/N0uwkrX9wvJ72Fvy/A0wOqDJUZj
-         Ut9FMozhQrLs2nEOaHx0xhv/86kb91lf+UL9ShNb6OjchPL5lC1YrTO8msYty0Z5kfwq
-         2gjw==
-X-Forwarded-Encrypted: i=1; AJvYcCXPNx2DtlYg3Rj3D+Oawt7ZR9B8K52m4LnKhb7brACS2KgOD1TQqPEgZmbZ/fQrxZrm+/Q=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxxpqfA4LPcyaWACJW31mYJGHgDzJAkJGJJQ/DnA08Yiq7JlGad
-	4JVVKhRrru4gI49eOtC+fUe54IQkCsEeBt3GeUASu4KhXYPfz6T/P/bhtLAfSWpA3NQ=
-X-Gm-Gg: AZuq6aKE/lozzioYM2gnduWZkv2gMA6D+RMhZBUon9lMjngXqe15zG9MxMAwCBsny4a
-	Z+5U9MSYlVE10Sthf0GCjXHxOuLFOyN9la0Ev81YRkDga1u47yJYSTQE8tsk/AjbmEtJxml/LH2
-	cjJIRDqN4/auJa8l7gwZfAp1sfX4k2TUi5JODBDge1+cZNq1NJzV4lafPGb/e0JyMBT9FxiZIoC
-	/kq2MH0GIziBRsohVjCpQlwDgowuphNw24sHa/aGO9kcUSfMcVtIT2VDE1ChV76VvNI167GzC1n
-	dNm5jBcd9EIw2sP/AONwyG7ujNpE57j6T+oCHQxdS6BHBlmujxpNLV2YaBju1RhiXMdSXX1fDGn
-	o1s5CyHv3sTnX4Ux7Ff72o+DmdwN98oKvFtcl9wxZ8ayRhwF6Ae+gO8drP1yuLfOeOfxESk0hOd
-	zT1AMKUwaYEPn1jd7XwzzGsJdB550=
-X-Received: by 2002:a05:620a:7105:b0:8c6:d2ca:1d0e with SMTP id af79cd13be357-8c9eb2584c3mr2033310985a.11.1770133256006;
-        Tue, 03 Feb 2026 07:40:56 -0800 (PST)
-Received: from ?IPv6:2606:6d00:15:210e::5ac? ([2606:6d00:15:210e::5ac])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c711ba6c58sm1610151685a.23.2026.02.03.07.40.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 07:40:55 -0800 (PST)
-Message-ID: <db9016a39f612cc93ee070c1eba4e4471a89a5cd.camel@ndufresne.ca>
-Subject: Re: [PATCH] arm64: dts: imx8mq: Restore VPU G2 clock to 600MHz for
- 4K60fps decoding
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>, Marco Felsch
-	 <m.felsch@pengutronix.de>
-Cc: linux-media@vger.kernel.org, imx@lists.linux.dev,
- ulf.hansson@linaro.org, 	Frank.li@nxp.com, peng.fan@nxp.com,
- festevam@gmail.com, robh@kernel.org, 	benjamin.gaignard@collabora.com,
- sebastian.fricke@collabora.com, 	linux-imx@nxp.com,
- devicetree@vger.kernel.org, conor+dt@kernel.org, 	p.zabel@pengutronix.de,
- linux-pm@vger.kernel.org, s.hauer@pengutronix.de, 	mchehab@kernel.org,
- linux-arm-kernel@lists.infradead.org, eagle.zhou@nxp.com, 
-	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
- hverkuil-cisco@xs4all.nl, 	krzk+dt@kernel.org, shawnguo@kernel.org,
- l.stach@pengutronix.de
-Date: Tue, 03 Feb 2026 10:40:52 -0500
-In-Reply-To: <cd07dc6e-1f19-4a59-8ee5-81a36d51bf1c@oss.nxp.com>
-References: <20260130084133.2159-1-ming.qian@oss.nxp.com>
-	 <df8d5d5f28870752e77ec74f34fea7ceb6e97286.camel@ndufresne.ca>
-	 <0b24716b-438c-4185-8a93-3a3879147c24@oss.nxp.com>
-	 <169eba79e8e1f906b1a0b59e22a531dfc7e57a1f.camel@ndufresne.ca>
-	 <5e3431c69da07557edb20a252c4759be8c857f08.camel@ndufresne.ca>
-	 <ca3a8042-1394-4925-9c61-dbfcbf4cf7d9@oss.nxp.com>
-	 <20260203083110.woan3gmc3qdh7nmm@pengutronix.de>
-	 <cd07dc6e-1f19-4a59-8ee5-81a36d51bf1c@oss.nxp.com>
-Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-okkgKqsgZ+IV64MKbOhB"
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="eT7EZS1o"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=B3822qZNXRbJmeKttjd09dhDzo8H5dyjwm79hb+pbXRgoQ3y0BICqCLmdy3Dg3g66wBwHthpzvjpubDpbgkEqbdKrTMR0CFrVd8xUNw8qCf2E52nNiBGUnW+bhavN9V2c32mayfqsAUq6Yddov3L1WvtLVIMaRrakq7ETKjKJLUZLfrdL3UfpLNJ7OGGhns1c43AehYwq8FnOlYJHtk01sqE5vnj9yzR4rZ7OrCvzska+CBPu0Gqqsg+IQOebrsTTsQymiFe7NrRrKSuJBqjd/0EFldSsVoWzbiSobFvR9ibHjxoqVnajW035iai3ZghhWaYVCzGahyHzh3Wp932IA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MPr3/K2IA7B+Psb1GDUE9EqV/EGskCr88s3zkU61kl0=;
+ b=naZlnP4/ywMd6YJwvCDaOXznWruxNsXdDuYnncYM8KErqoqLF/MX9SWTUwqJWrYdXJhX5bSnspziv3rWBPiHcX6Ep+XRWxckI2hlJl3O1ooV4WQXtwX4IhEYwU/Dd2gDFjkob2JDPFbjIJv4Y5e7kY6/LUH18LbtQD2x2NMSpMf5zeGJg8CnrR/jv9kYfS3VGdefrynatAjpgt8vuABbupSBamtYgQoz0iDCbL7GbcWrfm/ypdElKls9Jpue6SzIKuHUFoCYKgYkO4iB8jx5MuK9D2PNVFu1k1uuUkjfoBXNGem0UKcPyJN5y2m/JakWqfbVBQvyKULY96aPCTNfGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MPr3/K2IA7B+Psb1GDUE9EqV/EGskCr88s3zkU61kl0=;
+ b=eT7EZS1o7iVFPse0+3Ez8Uy1lCSrRFtGeKXb+P7uCuzazSeDvB/MQ0FCLpi7c61d9dxpcQWSglyIZNEklAVFHO5bMXlyCWKepidlfqi7qLNzK+9Bo+td1vZHZN9srkKcFqYJ4qBWB96cSL3wnF8Ov+LW/hFpukQhyi/scmN/h5s3gG039CYD1J08VTaruaXp6zHHaSKoPfm55v9rVsO6lGyhTPto3xoeq+z/7gUExct9boyiIqh8CyqaGFJPllHiH3ONGE3QSISs0TsHEpt9qyF/vVojnEU2G04BLnqEc7ZDG6JVRA77F1TGTqfawUa4as1rKBT3MWA1v9KA+RaLxw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from DU0PR04MB9372.eurprd04.prod.outlook.com (2603:10a6:10:35b::7)
+ by AS8PR04MB7974.eurprd04.prod.outlook.com (2603:10a6:20b:2a1::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Tue, 3 Feb
+ 2026 15:41:21 +0000
+Received: from DU0PR04MB9372.eurprd04.prod.outlook.com
+ ([fe80::4f6:1e57:c3b9:62b4]) by DU0PR04MB9372.eurprd04.prod.outlook.com
+ ([fe80::4f6:1e57:c3b9:62b4%4]) with mapi id 15.20.9564.016; Tue, 3 Feb 2026
+ 15:41:21 +0000
+Date: Tue, 3 Feb 2026 10:41:11 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: ciprianmarian.costea@oss.nxp.com, s32@nxp.com, lpieralisi@kernel.org,
+	kwilczynski@kernel.org, mani@kernel.org, robh@kernel.org,
+	bhelgaas@google.com, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] PCI: s32g: Fix ports parsing
+Message-ID: <aYIXFzOoQXq8Xtyv@lizhi-Precision-Tower-5810>
+References: <20260202151050.1446165-1-vincent.guittot@linaro.org>
+ <aYDiFpGT5hEDDFhV@lizhi-Precision-Tower-5810>
+ <CAKfTPtDjad7aowTQ3UJPi5Qqgzf3q8J=kASa-t3YM4zfjUv3-w@mail.gmail.com>
+ <aYD+/iTSF8ikTLIY@lizhi-Precision-Tower-5810>
+ <CAKfTPtDcKw0qc3o70AT9_n2omejNrh9fnkwS5NWKQpqjaCnBdg@mail.gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKfTPtDcKw0qc3o70AT9_n2omejNrh9fnkwS5NWKQpqjaCnBdg@mail.gmail.com>
+X-ClientProxiedBy: BY3PR05CA0021.namprd05.prod.outlook.com
+ (2603:10b6:a03:254::26) To DU0PR04MB9372.eurprd04.prod.outlook.com
+ (2603:10a6:10:35b::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR04MB9372:EE_|AS8PR04MB7974:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7d0ca6b9-1366-4e70-3106-08de633aadc9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|7416014|366016|52116014|376014|1800799024|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?bKnKLkLIr3bsv2JfbG9rRIoTHHdszuuIZSfDvbg04wgLTJqxvn4i6npc7JXb?=
+ =?us-ascii?Q?PT5K1U+iRM7PAhwrc4L7dJ7JAh/nbTF0UiRYefittsI85mx+8XtCz6v2nLsf?=
+ =?us-ascii?Q?mR1pZPZ2I1AUSJW/dBy0TSwu4uaWoQxQgp131EnEPzIq1MAkneGvvgE3P157?=
+ =?us-ascii?Q?W4AMUrldiavkgxStM5Wfhsndwh399EPE83Bw1utynaZO+0+rHTnWcGPW7Jvt?=
+ =?us-ascii?Q?4qFGju3WiYaGPEtjlxVWI3iXWs87N/tChhjwL5sJDgT8Knib7mkeXLRt3Iwz?=
+ =?us-ascii?Q?TeeU5R/RJhX/BA3UqsLyJ5Ulh7R6g1bF/xOknY6G7Xbrho2OsC6K4GdEYdPo?=
+ =?us-ascii?Q?nvWRFwYHwk/99fq/HQDt5G+iwi96Zwz0BPeSOFzkiV7iyR01pxhPQgZgFWnx?=
+ =?us-ascii?Q?r4x2WzjN6wpP6nGLPHt0oDtqBQFiu3UMub/gBYWapXeZeHrFbxmKvaeVU1sq?=
+ =?us-ascii?Q?G16GDsC2/63qQKgjxxujNNFv+Mt/JH+P6JA05jAt1FUvh7mn4Qojxk+7exJO?=
+ =?us-ascii?Q?mEU3dyGfbWVtbkCxX2X6/hwx8oFZuIIUYiTZtCrm7+hFniXoPD359vopnsEL?=
+ =?us-ascii?Q?UzL7/TVjfp9qTgRwA4vAkK23Tt8B7ehQFJFFsV0wHD0cjxTmjPr5PRHBxALd?=
+ =?us-ascii?Q?tnom9lhi44COyaTpMIPwVCIIjgQr1v1ayOqE6t4PjLfDjKqDptE+aAkXw2DI?=
+ =?us-ascii?Q?ZFqpo18dnuuCxOETRaOA0RegYqHsb/mqn7KppA6YqgMO+8pt+xjW6YwJN+F1?=
+ =?us-ascii?Q?VWszY/4LBmrMOq/rd39uTfpuany0TRIykIQJwpRCQS2HteOTJnJee6L4BP/2?=
+ =?us-ascii?Q?9neCNIxoV+losCgVPaZrlYo8656jMWA5wtSqLVp2W8zw3PaJ83pboK7W0eeC?=
+ =?us-ascii?Q?zt5PBSFWW5ZmHzDoX50I098TJeWErf49zucwB/4pbwA3I6lbNGuVXHTFYEDi?=
+ =?us-ascii?Q?CTVQLlOUhb6TASuA8JZDwaXyx4iijgskajMtFlvdL9YDHkSCqdLLKrDZnmRg?=
+ =?us-ascii?Q?TVIt4Y3R2X1cAfuj/h8DyVgODuCH/OJZQrtaO+BwtfgXYQagVWtw4ONEWTXH?=
+ =?us-ascii?Q?3sQtjMotju05CHXFeVnXY5++hJM8Lcy3kgeqc4lboCM9Lx7XDgBbpCZTv9EL?=
+ =?us-ascii?Q?iiGTs/thLyM2kINi+ysZ7c3qZgi0acum8HunoDfn0REsntVcRkuHpFNgxB8G?=
+ =?us-ascii?Q?AOcye8iXfpX7oglqOh9k2HeMkhqzov86Uc0lKIm4qeNsO5MDvDhsDBEZ6NNM?=
+ =?us-ascii?Q?d0k7nR61ep/R2gMoaQsrFXUoh0PI3G0tSoF8mIT+IZEjcTJIZS7KcOxj5T3L?=
+ =?us-ascii?Q?p45v+YUJlYxEvZLTeikvR+6aGxhZK8zcFmIBB/UsnAY2M5LSi8sM6KJBOicq?=
+ =?us-ascii?Q?o10zV5xDRxToHyFYYdLlDLpDIicu0jSLNGXE0kaJyjEfEd/ZlUFnLBgAVGZJ?=
+ =?us-ascii?Q?ZLU5FexM06UtQoX1tM3ZT6C15v6TWOW8oJgZ5mF+HW0xJj3LEn3/o5CiIAhA?=
+ =?us-ascii?Q?V4PI0ZwwDgXy0Q5SEMzZuJjPatkvbg2ut3yK5gAv/OsZTe8Bx/YoWZClko+9?=
+ =?us-ascii?Q?EZZjeE1Hpbw1OFZT+logcB1fLW177cb7KxU0qxxa9VkXeWL3rcJkURuxsdl2?=
+ =?us-ascii?Q?U4u61bcitgnRjgzBe7CTsV0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9372.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(366016)(52116014)(376014)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?GnNKI8fxANwkikGxHgVK7oN0mzgNj5pZRYgGZ3/oQT6iHG636DuffCX9Yzgo?=
+ =?us-ascii?Q?oriAvxNLziTWDCSpkOZRTYNUmwoqkGRgBNq65E5eW9tAoErNnhDGUDuGDlgK?=
+ =?us-ascii?Q?Klr0DA3P1nM+Qq1p+2Fe+/HSJ56WXMqTRh/n2qOP3+lgVz1jropyioklwsbI?=
+ =?us-ascii?Q?wZSknftdn38tQrZbEq44NrhD9joNhgWWIyM7fMIh8yeTGHJYM00oqnnl33Pl?=
+ =?us-ascii?Q?d2w6NbTNfu2Egb1atkgSyuqbT6JZOJpvJbNInYtD3ktBpskRobVGVgoGUWeP?=
+ =?us-ascii?Q?+TjnXHS5k6/1WHKjIVIX6Bw1kFf7Dwnk0n6Sh/OBaWTUoeLMB0m7popIqgry?=
+ =?us-ascii?Q?XqQdCBwUa9FrSOsOQVt2qmonRYxhJWAtytrxZ0ouWFJm6qiSx85xBqBwv9wq?=
+ =?us-ascii?Q?BSdde/9MgG39GoIx5SzV8BDYrVPhLlrhAdBkQkr3q5TJh8Efc+GPaAt0CSLr?=
+ =?us-ascii?Q?I/pez+E0O8L4oNMimNiU0cNDFyBi6mai4fDxEoMVYC9GMKUGfvdnOE/sLVn5?=
+ =?us-ascii?Q?yTZ+aF6IsX8tiqD+h+PzP8V/n5TowuFQeNpz+OV5dtWKgW5HsfCX2r8ggjKn?=
+ =?us-ascii?Q?hY6Jh8d6R9fytnNreZq0Fm9sMvldgmT9tuevLgVQ/n2BYG2RgjPbVxmDYhlK?=
+ =?us-ascii?Q?i9+mDjUm5yFLkIUDQbx4f3AWYYavErzMB3SbG2Zh+Pae308hECUQN6OD6cXr?=
+ =?us-ascii?Q?2I42raI283uTbMRoe9JrsUJ/BgH9BlbLd5fG3Y9rLFPXJUVX1R25xJrz5bw8?=
+ =?us-ascii?Q?83+kv8zEf6I3p5T1S+6mGgXxdfx9MU7W5OwRdd1i30pvlv8ohg7j3XH/uG7T?=
+ =?us-ascii?Q?oPFA/GTqeOpPRDqOcT4L+/kV1AuvnhbS57VRZZ24pdZOiI1eQPdXV6I90YYT?=
+ =?us-ascii?Q?h6+lWkLHIHcWq31/GfJWOhJg30H3mP6hRQKr2uhJrgh7jxg2wLtcSrE5tqd2?=
+ =?us-ascii?Q?yjdcVZBcIBTSlyeJ75osh09z+xWadQsTwkJ3zmZf6+LiS3ysbx7ECpUCQxBY?=
+ =?us-ascii?Q?z+rJTrJXqgPotGrPhx5711U8oEp+hraFvE3LXXZFeQ9K9yCvUNJnnTTmjSB+?=
+ =?us-ascii?Q?EIH/IoFqIlV7/po7xMKror8C8SGL+aCLTo6NmOxwPA5vA9S3BQJcTPfzr730?=
+ =?us-ascii?Q?GHUh7Y51WbgLIIZBLkdbgdQeMXnfIU2U16bU7sGygYj7yqtQxoqAHMevyp1m?=
+ =?us-ascii?Q?e6Oh+1gG4xI3A+UV03SouAkeq7tnBQTmz5jvHE9dz5pvr6WKLrBzTn7tjaQc?=
+ =?us-ascii?Q?4YMN5DsGGxfmAusXjP3ASQrm5wr+XnaACazd1Gke36SvSvxkoutXx2LlXeRC?=
+ =?us-ascii?Q?xCUKbZdUFzLNpTcXKCc2N3ZgAO9vfiNFE9hckah5ukQbxuVXusauK+2+LfsJ?=
+ =?us-ascii?Q?+uG7IbqxG3q3gT3576CSveEjHpDEf2iWJzRI0cmEG5/5+teYw72bBwDrkgGw?=
+ =?us-ascii?Q?nSwRKf3/ZuQYMDQwhwM8I2cSpQ+nYGi18WYjN8WCmgryiE37qDhJqolI6oJB?=
+ =?us-ascii?Q?oDO/bbkwIKYIU9PTPNvkmT5AdVngjdq6GQi3A0iLpZ5r0whqnhjoTgzERS3b?=
+ =?us-ascii?Q?D+sbWDoQRhHuMW4j77vztHRysiuhS1SFR0jhk+Uk07Y+sxqZX6z+nFFiG+pa?=
+ =?us-ascii?Q?Nu2GdL8Qi/dGQFe823IctaBqYQZmh4w+fbNpTfAot/F1t6/CmbWEbiCeW96+?=
+ =?us-ascii?Q?Ea9ffet2ygA1MHpm3v3jZMPHVBL/ZJxeSFllHPsooVKiQBwS/8lpx45XdMIY?=
+ =?us-ascii?Q?HrtP//Ynvg=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7d0ca6b9-1366-4e70-3106-08de633aadc9
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9372.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 15:41:20.9645
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kgQDrcF+vm0z1Ut+uCJgPnqNds7DhLOugfPYrEcNRRrvBoUydltrJcx3EyXqCprRrUdOrMCyWbx3Mzh1JXTnzg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7974
 
+On Tue, Feb 03, 2026 at 07:56:23AM +0100, Vincent Guittot wrote:
+> On Mon, 2 Feb 2026 at 20:46, Frank Li <Frank.li@nxp.com> wrote:
+> >
+> > On Mon, Feb 02, 2026 at 08:23:30PM +0100, Vincent Guittot wrote:
+> > > On Mon, 2 Feb 2026 at 18:42, Frank Li <Frank.li@nxp.com> wrote:
+> > > >
+> > > > On Mon, Feb 02, 2026 at 04:10:50PM +0100, Vincent Guittot wrote:
+> > > > > No error return is missing after the loop resulting in removing the
+> > > > > ports from the list.
+> > > > >
+> > > > > Fixes: 5cbc7d3e316e ("PCI: s32g: Add NXP S32G PCIe controller driver (RC)")
+> > > > > Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+> > > > > ---
+> > > > >
+> > > > > Change since v1:
+> > > > > - handle correctly the case when there is no child port
+> > > > >
+> > > > >  drivers/pci/controller/dwc/pcie-nxp-s32g.c | 8 ++++----
+> > > > >  1 file changed, 4 insertions(+), 4 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/pci/controller/dwc/pcie-nxp-s32g.c b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
+> > > > > index 47745749f75c..b3ec38099fa3 100644
+> > > > > --- a/drivers/pci/controller/dwc/pcie-nxp-s32g.c
+> > > > > +++ b/drivers/pci/controller/dwc/pcie-nxp-s32g.c
+> > > > > @@ -282,12 +282,12 @@ static int s32g_pcie_parse_ports(struct device *dev, struct s32g_pcie *s32g_pp)
+> > > > >
+> > > > >               ret = s32g_pcie_parse_port(s32g_pp, of_port);
+> > > > >               if (ret)
+> > > > > -                     goto err_port;
+> > > > > +                     break;
+> > > > >       }
+> > > > >
+> > > > > -err_port:
+> > > > > -     list_for_each_entry_safe(port, tmp, &s32g_pp->ports, list)
+> > > > > -             list_del(&port->list);
+> > > >
+> > > > break and goto is logical equal here. So only need below if (ret).
+> > >
+> > > Yes it's similar that why I removed it, the goto becomes useless and
+> > > make code less readable
+> >
+> > But don't suggest change in this fixes patch, which should focus on the
+> > key part.
+>
+> It's not a suggested change, it's the fix. err_port is now wrong
+> because it's the path for all cases.
 
---=-okkgKqsgZ+IV64MKbOhB
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+But "goto" is the same as orginal "break". Really fix is below "if (ret)".
 
-Le mardi 03 f=C3=A9vrier 2026 =C3=A0 16:53 +0800, Ming Qian(OSS) a =C3=A9cr=
-it=C2=A0:
-> Hi Marco,
->=20
-> On 2/3/2026 4:31 PM, Marco Felsch wrote:
-> > [You don't often get email from m.felsch@pengutronix.de. Learn why this=
- is important at https://aka.ms/LearnAboutSenderIdentification=C2=A0]
-> >=20
-> > Hi,
-> >=20
-> > sorry for jumping in.
-> >=20
-> > On 26-02-03, Ming Qian(OSS) wrote:
-> > > Hi Nicolas,
-> > >=20
-> > > On 2/3/2026 3:12 AM, Nicolas Dufresne wrote:
-> > > > Hi,
-> > > >=20
-> > > > Le lundi 02 f=C3=A9vrier 2026 =C3=A0 13:44 -0500, Nicolas Dufresne =
-a =C3=A9crit :
-> > > > > > This doesn't sound like just a VPU issue; it's related to the d=
-isplay or
-> > > > > > DDR.
-> > > > > > If not displayed, do the fluster test cases yield different res=
-ults at
-> > > > > > 600MHz and 300MHz?
-> > > > >=20
-> > > > > Didn't you run these tests before sending ? I can try again, but =
-in my
-> > > > > internal
-> > > > > notes, I wrote:
-> > > > >=20
-> > > > > =C2=A0=C2=A0=C2=A0 > Tested that, and everything becomes unstable
-> > > > >=20
-> > > > > That was before I figure-out the IRQ handler didn't handle except=
-ion bits that
-> > > > > didn't stop the decoder (or dry IRQ, which strangely is common fr=
-om the G2).
-> > > >=20
-> > > > Ran some fluster tests now. With this patch the results is not cons=
-istent
-> > > > anymore. Then I ran it with weston being started, and in the middle=
- of the test
-> > > > the display turned black. Matches my past observation. We did repro=
-duce this on
-> > > > BSP kernel too. When the display goes black, the recent hantro driv=
-ers reports:
-> > > >=20
-> > > > [=C2=A0 827.581586] hantro-vpu 38310000.video-codec: frame decode t=
-imed out.
-> > > > [=C2=A0 827.720201] hantro-vpu 38310000.video-codec: not all macrob=
-locks were
-> > > > decoded.
-> > > >=20
-> > > >=20
-> > > > I have local patches to reduce the cascade of errors, so it likely =
-survived
-> > > > longer then last time. I will send these patches soon. The "not all=
- macroblocks
-> > > > were decoded." is triggered by a bit in the status register that is=
- not
-> > > > documented in NXP TRM. I found that bit in some VC8000D documentati=
-on (the
-> > > > sucessor of G2). I concluded it was the same meaning after looking =
-at the failed
-> > > > buffer visually, it is indeed missing couple of macroblocks near th=
- end. Each
-> > > > time we see this error, the DCSS gives up and turn either black, or=
- sometimes
-> > > > other color. The second case has been tracked to a DCSS Scaler unde=
-rrun, the
-> > > > first we don't know.
-> > > >=20
-> > > > Fluster command ran (two threads, never completes):
-> > > >=20
-> > > > ./fluster.py run -d GStreamer-H.265-V4L2SL-Gst1.0 -ts JCT-VC-HEVC_V=
-1 -j2 -t90
-> > > >=20
-> > > > Nicolas
-> > >=20
-> > > My test results for fluster differ from yours.
-> > > On my end, the results for JCT-VC-HEVC_V1 are consistent at both 300M=
-Hz and
-> > > 600MHz.
-> > > And results remained unchanged after multiple tests.
+Frank
 
-After more testing, the fluster test is stable for NV12/NV15 tiled output f=
-or me
-too. I'm running the tests with linear NV12/P010, which imply an extra set =
-of
-buffer. I will check if I can give you a easy way to test the linear format=
-s. I
-also have couple of streams that systematically breaks at specific spot (hi=
-gh
-complexity scenes) with the provided patch. As most licensed content, this =
-is
-not sharable as-is. I will try and see if I can find a way to share somethi=
-ng.
-
-> > >=20
-> > > I'm not sure what caused the differences between us.
-> >=20
-> > Once it comes to system stability, you need to ensure that your
-> > bootstack is aligned e.g. same TF-A version and sometimes same
-> > bootloader since there might be workarounds/erratum applied by the boot
-> > firmware.
-> >=20
-> > Regards,
-> > =C2=A0=C2=A0 Marco
-> >=20
->=20
-> Thanks for the reminder, and I agree.
-> I think we need to align our board environment first.
-
-I do likely have slightly different bootchain, and of course all the HDMI
-component are downstream, but I can't really isolate the dramatic issue of =
-this
-overclock without a display component of some sort. Its a huge differentiat=
-or in
-the bandwidth consumption which is the main challenge on this SoC so far. 1=
-0bit
-videos makes things a lot worse fwiw.
-
-We did review latest IMX vendor firmware package and can confirm we are run=
-ning
-the latest memory training blob and HDMI firmware.
-
-Nicolas
-
-> Regards,
-> Ming
->=20
-> > >=20
-> > > Below are my test results:
-> > >=20
-> > > 600Mhz, 0.9v
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cat /sys/kernel/debug/regulator/=
-regulator_summary=C2=A0 |grep SW1C
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 SW1C=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-=C2=A0=C2=A0=C2=A0 1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0 unknown=C2=A0=C2=A0 90=
-0mV=C2=A0=C2=A0=C2=A0=C2=A0 0mA
-> > > 825mV=C2=A0 1100mV
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cat /sys/kernel/debug/clk/vpu_g2=
-/clk_rate
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 600000000
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ./fluster.py run -ts JCT-VC-HEVC=
-_V1 -d GStreamer-H.265-V4L2SL-Gst1.0 -j2 -t
-> > > 90
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ********************************=
-********************************************************************
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Running test suite JCT-VC-HEVC_V=
-1 with decoder
-> > > GStreamer-H.265-V4L2SL-Gst1.0
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Using 2 parallel job(s)
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ********************************=
-********************************************************************
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Ran 139/147 tests successfully=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 in 505.434 secs
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Ran 139/147 tests successfully=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 in 505.350 secs
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Ran 139/147 tests successfully=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 in 507.540 secs
-> > >=20
-> > > 600Mhz, 1.0v
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cat /sys/kernel/debug/regulator/=
-regulator_summary=C2=A0 |grep SW1C
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 SW1C=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-=C2=A0=C2=A0=C2=A0 1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0 unknown=C2=A0 1000mV=
-=C2=A0=C2=A0=C2=A0=C2=A0 0mA
-> > > 825mV=C2=A0 1100mV
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cat /sys/kernel/debug/clk/vpu_g2=
-/clk_rate
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 600000000
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ./fluster.py run -ts JCT-VC-HEVC=
-_V1 -d GStreamer-H.265-V4L2SL-Gst1.0 -j2 -t
-> > > 90
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Ran 139/147 tests successfully=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 in 506.901 secs
-> > >=20
-> > > 300Mhz, 0.9v
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cat /sys/kernel/debug/regulator/=
-regulator_summary=C2=A0 |grep SW1C
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 SW1C=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-=C2=A0=C2=A0=C2=A0 1=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0 unknown=C2=A0=C2=A0 90=
-0mV=C2=A0=C2=A0=C2=A0=C2=A0 0mA
-> > > 825mV=C2=A0 1100mV
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cat /sys/kernel/debug/clk/vpu_g2=
-/clk_rate
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 300000000
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ./fluster.py run -ts JCT-VC-HEVC=
-_V1 -d GStreamer-H.265-V4L2SL-Gst1.0 -j2 -t
-> > > 90
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Ran 139/147 tests successfully=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 in 506.063 secs
-> > >=20
-> > > Downstream v4l2 driver
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cat /sys/kernel/debug/regulator/=
-regulator_summary=C2=A0 |grep SW1C
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 SW1C=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0=
-=C2=A0=C2=A0=C2=A0 2=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0 unknown=C2=A0 1000mV=
-=C2=A0=C2=A0=C2=A0=C2=A0 0mA
-> > > 825mV=C2=A0 1100mV
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cat /sys/kernel/debug/clk/vpu_g2=
-/clk_rate
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 600000000
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ./fluster.py run -ts JCT-VC-HEVC=
-_V1 -d GStreamer-H.265-V4L2-Gst1.0 -j2 -t
-> > > 90
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Ran 136/147 tests successfully=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 in 460.435 secs
-> > >=20
-> > > Regards,
-> > > Ming
-> > >=20
-> > >=20
-> >=20
-> > --
-> > #gernperDu
-> > #CallMeByMyFirstName
-> >=20
-> > Pengutronix e.K.=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |
-> > Steuerwalder Str. 21=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 | https://www.pengutronix.de/=C2=A0|
-> > 31137 Hildesheim, Germany=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | Phone: +49-5121=
--206917-0=C2=A0=C2=A0=C2=A0 |
-> > Amtsgericht Hildesheim, HRA 2686=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 | Fax:=C2=A0=C2=A0 +49-5121-206917-9=C2=A0=C2=A0=C2=
-=A0 |
-
---=-okkgKqsgZ+IV64MKbOhB
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaYIXBQAKCRDZQZRRKWBy
-9BdEAP91RCuQpeIs8WIAVqMpbGlTfJSJeLeq5HmQ5J1hZGuwXwD/WVhjnKNga4Pq
-kYR1FIhai0zcA1k4q9wESua75qp+hQM=
-=GTde
------END PGP SIGNATURE-----
-
---=-okkgKqsgZ+IV64MKbOhB--
+>
+> >
+> > Frank
+> >
+> > >
+> > > >
+> > > > Frank
+> > > >
+> > > > > +     if (ret)
+> > > > > +             list_for_each_entry_safe(port, tmp, &s32g_pp->ports, list)
+> > > > > +                     list_del(&port->list);
+> > > > >
+> > > > >       return ret;
+> > > > >  }
+> > > > > --
+> > > > > 2.43.0
+> > > > >
