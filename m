@@ -1,207 +1,129 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D7939A812
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 10:04:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770113099; cv=none; b=jXxr5E+UA66/Tf8HpKddsj5FBb2uNVYd+EwagT9KcW9OpkUWeSYWAeatF7d9R6wZFtvBsTQ01ZFOmY44Vm5iJE31GV05fzWUmsSQAuSiIUrpIEuDjyytnC3jUdeIDwhH2IBuiWN1jBCnk2NwpMKGKCozgWKconLs1YlvS6vsdpo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770113099; c=relaxed/simple;
-	bh=Hik5asmTwUamyL0nKO98yWSe3Rq6gzjjcbyeQGAYfqU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WTee1uKwHECF2NlTwWkAjxS62y7yNj3GEtQTOf+0S/CiPjQxR0twU04hQjacf18J+PEwNqlc9IFPxcI8mTtXvQ9EU2j49JgKY52G+cjWr8qQnAJyxRLK9nyAoemAIqkJxSP2yIptefoxF20oUufR294a+7JBLRG3pZ+7ZhXVK2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sn7HoM3r; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C79430C614
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 10:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770113444; cv=pass; b=YEHzCq9RtL+zH9aC0bcSYTIBFB6VFBlODA5hTrq+/qGhyElge1CUuglYSV2Ks9ENO2c7BYGuyAXaKawVrQzUL+9XMc4OoD2LmMRMHtaSUwd5BHsZ/O+YQ//tZPeOpwkMC+PeYwikcRhYs4Nqb47vrilZSi3Yl7E56gzJP8/dqH4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770113444; c=relaxed/simple;
+	bh=xejb0j9EkHwaVU0Gjzt6hJh1Gjvft9+wJcQ8Wyd6gvs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KzKNYH6G71W8t8h9lg7XHBjQMh4r23c82Z45Y9th8WGGxwUUaH7ck5bWtZS/zXWNTcx+0eHjVstOrjTu3ULVT8DZxk1vXx7szU+NcxANULFFtbayQuESB4x8jjAG4iOXoGqY/M5+Y3o02NRqkhsRMUOqWSnG32quJVkDWqMf7QU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KxooHrkb; arc=pass smtp.client-ip=74.125.82.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sn7HoM3r"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4806e0f6b69so39597705e9.3
-        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 02:04:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KxooHrkb"
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-124a95e592fso7924107c88.0
+        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 02:10:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770113442; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LK097AZPz3XDEjgE6kIppHcIrzxM4jJkKqqcbWb6Z9jmSGK08GLTMclV4CmyuhqCQH
+         9FpMizK2s//EHdKNRQ9IkXDuTTZcig2oZPCX7agh4w3dT8G4n9Yh4D/T8AwpHXEN73Dv
+         J7h7CJb4PKdK61NGqewfGZybozHUUUe540daERYiUiYexyivSRoC4qMVgN2T3Tkvnsd+
+         4NcIirRdiqZR5O9TV1J9kGjqhJZnsz4rBfyoaBW9qcH56kySjekV6N6l+e8znAPB3g4x
+         txCGdYVUSEs+5HObgn+R9uKC/83cAXcUKVA8DWON4+k+wK9gF4t6Q47nWpOfw3YMu8wS
+         mrcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xejb0j9EkHwaVU0Gjzt6hJh1Gjvft9+wJcQ8Wyd6gvs=;
+        fh=1LK7NqZbJiNURhq2FZBI2shbi7DoQBqzXAR2Msyt/pI=;
+        b=C6/zzvsbOUUcnGjROp6NcwxK/MI4yLNkhJiukjcSpkFtYvQC7+7t3izbdAwd1zBK0z
+         8vhqceWA/KDw4lkiV/hj5mc3M5fxsST6nnCMjEYQXC+wsRtWR3WALpbzyl0Pg91Ye0CV
+         ZlWeCZgxm3MaZlESGYSVMkpsHFMAk/8BBS5YtVkECYhkw4xIG9scE+uWjiYqcKbH6j93
+         8qmMkyHwYgZLhLVxzyHnQhjEzRPm6FTKJ4ovFHSeUwMRXcsznUnb5aJkdnSnu/XfWmKa
+         kQ9Py0MTPCRnLRmyoCwo879qe3ZVnET/Og1SC4vQCuZU+TZMdtpzJ+KutFnWERuMmuoU
+         O7mg==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770113096; x=1770717896; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1770113442; x=1770718242; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z51/LSwxyVQQCwJzOsYDCUnfNLjjWuW1smeCgpUaBns=;
-        b=Sn7HoM3rvXqBIVStaDTs6gchmQfVWddJOYmF9U3KHgfu6EzFn5Zu0nPBNNp8vbrwJM
-         76XC+swI1dM2wZNRnQGfPxTu57Nb8QRQqh3fbPYFt2oiXk3vNdHnrNHFCH/JFdNohsTr
-         UGulpkgB6SLA52J+JsDoSt1fFTa0tL7z7hWOFnl1RtYGIk2ZNGXchH8sYosdAU/6f2Km
-         2XH/AbWxS5C7MMxz5woqeMsUuEYBn1XmyLX9bv1Chp+B6ydYtFGnGMW7/o5agFljxoyc
-         FJnfmQLYtFpavTRFH1QmL4378S3jaeI01AVADBbcJOSvqv1sXM8M96Rxoaae0Aj58iRw
-         tzng==
+        bh=xejb0j9EkHwaVU0Gjzt6hJh1Gjvft9+wJcQ8Wyd6gvs=;
+        b=KxooHrkbvdm4gySwx486qaLsggZNvmWvqnoxphVFHAvnz6rXD1w7RXJ11W2rv/IUGP
+         dxXtrGCWagMClOZ9NgF0zZY2o00TDs4dauuggLvPYedOiC9lg5c1nQevR/zUP9iQWyj/
+         G2AaJUBGdMmeD/kELkaF0+yvnrQ0iFxiH+hv9La7Aa4RLlGpZFysn6cwkXih3oOAl/R/
+         qWJbeHfNe4gusOK420TrUgojQD1HL+QuoWEbT+kldQtXxi0vw4FFcJPyoczpgcpXP4oI
+         voTEdGaRsUEJMFl93H9QbVuh7cD6HBEiquxj4uOrXL4orteU08GoVM+X4R5uDf5LBdEl
+         NIag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770113096; x=1770717896;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1770113442; x=1770718242;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=z51/LSwxyVQQCwJzOsYDCUnfNLjjWuW1smeCgpUaBns=;
-        b=NIZ555S5QdSJQhb4+SPjLHKedR5O7lKDoc+81eYlazBaqGUkfY8mvqZ7CR2NkfkLTv
-         VYqkOF6OaAXkoDkgL17rxSGvXcKk0CTv/kel69QcyIuj0lAYRLNIRWkFsWUwhVXyDZI4
-         fXX/J3qMybhHEdFHtIsBKLV/1Qe70RkFzgecfKjBecHe5y+8AxX+BXCGg9XYFc61ZaZO
-         3v/xMJDTvS9h4iDPQQldVzX+F0RmvTSbIH6CTs9OmTsURK+i4yq6C6kr3MG2/vY/hXU/
-         JKkhLo9Nw9mhY972UaQFPPAylthu1hG7u6bbw3vVzEzOWOCN6/bJH6WCcpCvqPB6XQiK
-         JLpw==
-X-Forwarded-Encrypted: i=1; AJvYcCXhgHCIRaLEFB7YE1X/Hp/VgbJrUfgafNJwlopiNt0/i2DxiyciqafXxFfY69FHZlX4xww=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzJENONZViHB59WiW9EV0eSjDUiVPP7L1jQYEJVJuKYmx+sc5ky
-	6WWy3Fyfjl6cUCb9kgaXcfz/ItCOK04jN2VSAF1/uA7a6zixHdr6WDET
-X-Gm-Gg: AZuq6aKR4zAdmuCYtI1yU8QiVbFtZJ+Ve7lWExoIPDyntgBQy5qFTdF6TPVsmq2YJh5
-	/dzpTq1Zaf5d6ft78PxYey7eN7KFNsBwsZEXPcOK1FZ6l5Hj/qajRWyVFpyWOU2DaN+HKzVVyNg
-	AI4RAb9ob/4ZX6//CxO/se4tnAFRII1UF4YSL6VSjEUkpzSlCOWwq0ktD2XOK/OEj7N0Yp3Yckf
-	qQLayPNfz8MD8mglUYLE3Ou8JmzeGXAQcJtnZUfOz6akW+m6ScBm5cmqMZ9hlqglYGcUvHqiGfd
-	qatB1plHmqMAmD2+Os6nmWj1cvoX0VABkl9uFkqYMshrHoLsZ6luXwEkAQYLmAOoVpoCpC7ox7r
-	ajpFpPWlHnvc2knRRQnuK+OS/ueIj+OczB+Nm+E5sWVQuy+26jsUJnfyiFRJQaWJdSyHR8l4X0x
-	DSpRGj3bjKsV4a2Zk66p/PfjmVoxMYKQq26AreLw==
-X-Received: by 2002:a05:600c:34c4:b0:480:52fd:d2e4 with SMTP id 5b1f17b1804b1-482db012dd7mr201253775e9.0.1770113096399;
-        Tue, 03 Feb 2026 02:04:56 -0800 (PST)
-Received: from SMW024614.wbi.nxp.com ([128.77.115.158])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-482dffd47c2sm115534365e9.0.2026.02.03.02.04.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 02:04:55 -0800 (PST)
-From: Laurentiu Mihalcea <laurentiumihalcea111@gmail.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Chancel Liu <chancel.liu@nxp.com>
-Cc: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH v3 2/2] arm64: dts: imx95-15x15-frdm: support AONMIX MQS
-Date: Tue,  3 Feb 2026 02:03:32 -0800
-Message-ID: <20260203100332.915-3-laurentiumihalcea111@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260203100332.915-1-laurentiumihalcea111@gmail.com>
-References: <20260203100332.915-1-laurentiumihalcea111@gmail.com>
+        bh=xejb0j9EkHwaVU0Gjzt6hJh1Gjvft9+wJcQ8Wyd6gvs=;
+        b=aPk1GOL3TFpATIrk9Nh3U8GeoQg+UiNIp70Z/XCIzulvyL6EdhRWlThhiwclEdagIA
+         QBNthLjh4l6I9D37G60puzz/5d3ofirgoB4qby8jLZCUtel0G0E7f4PJuWbHIlcRt05N
+         bRr+ps08ocaMBQD9j5Tr8Q3ptUsOfClDdjui6nOBIeIaCYoe3v7UF0JvEXYbW2XnosjK
+         GtWq78yuZKTttJtLmBmkbFwerAwSbjE/e9AXnw6CwjrW1YTEUkqs4YYAxW2HWJJ0u5CG
+         A7sBLf1tM7FW8jI95V108DK2GCo+5UH1KiuvINCFeBddydj4KzX5h8VjhguYMl+1OFK2
+         juZw==
+X-Forwarded-Encrypted: i=1; AJvYcCWI+XaL++OlBtZA92Maggp0e0krUr1ZLf1Jslum8IVzWVOTcB+oZ6QRsenGkTl+Py5r0Qc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwFV3ejYc6v8q1y5Oh/QgJAXoRhUgbVGCJW9Yu8K/pHjqWrdc27
+	tS3OueUktdFmj6jlRb7MF/8N6oUgZnNlhed0SAa9Eis47F2BIDt8B4bLRO6mhwIZWcklbfOBFus
+	7Fu67QwoPUYpDwmfuBtO9PTATl7t3pqY=
+X-Gm-Gg: AZuq6aIQfiToQtlgXskVjEOeJzK/3DqDfIlJ4MYETxvH3GRvgnC63kSB0tHx0WE/1zo
+	jX8BAGhzEViMkBbzfUCYKdenMwfSnQUcdBEZrNvHQ27kmh20IodMfGF0+iVaVDO0zeEoOaGqjt4
+	fRfYZ66YAYRdNgYZvomPYRGftstzj7CDR09vdZyoJcXXdhRW9DsUpfxE995OLiITzGVuYPV6EZO
+	doM9ifpgdS8s3G6P4g2jABf+ovkI1Q9pokVlXpeeBj3/xpLdQ8QYkNs8OLrn2bHpMa9CTYpzVIF
+	3dIYJLh1NHWb1JyIQKDP927yITb+DCuAeiSdo4qevX/a2nN8nP9s21s+qRwYxTLzBQobskvsACg
+	R57mfS16efA==
+X-Received: by 2002:a05:7022:6707:b0:11b:9386:a3ce with SMTP id
+ a92af1059eb24-125c101ef89mr7226621c88.47.1770113441581; Tue, 03 Feb 2026
+ 02:10:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260128-ops-parent-enable-fix-v1-0-ff39cc37f98d@collabora.com> <20260128-ops-parent-enable-fix-v1-1-ff39cc37f98d@collabora.com>
+In-Reply-To: <20260128-ops-parent-enable-fix-v1-1-ff39cc37f98d@collabora.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Tue, 3 Feb 2026 12:13:22 +0200
+X-Gm-Features: AZwV_QioJ69dZ07wlDN2xKHoYGFZyQ3lUnsqEy_ZM2pB4A9WwAjMHzHhAGnPGyA
+Message-ID: <CAEnQRZABuXQsJ4-5u9uP8VM63of8EpiV1LcUxv_vSBuGT1uEBA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] clk: Disable CLK_OPS_PARENT_ENABLED parent only after
+ CRITICAL check
+To: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+Cc: Mark Brown <broonie@kernel.org>, Alexander Stein <alexander.stein@ew.tq-group.com>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Chen-Yu Tsai <wenst@chromium.org>, 
+	Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kernel@collabora.com, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
+On Wed, Jan 28, 2026 at 8:39=E2=80=AFPM Nicolas Frattaroli
+<nicolas.frattaroli@collabora.com> wrote:
+>
+> The call to clk_core_enable_lock done by __clk_core_init after checking
+> the clock flags for CLK_IS_CRITICAL enables the parent clock.
+>
+> In Commit 669917676e93 ("clk: Respect CLK_OPS_PARENT_ENABLE during
+> recalc"), the parent gets disabled before this check, if the flag
+> CLK_OPS_PARENT_ENABLED is set on the clock. This results in a situation
+> where critical clocks have their parent briefly disabled, which kills
+> the system.
+>
+> Fix this by moving the balancing operation to after the CLK_IS_CRITICAL
+> check, which should resolve the problem.
+>
+> Fixes: 669917676e93 ("clk: Respect CLK_OPS_PARENT_ENABLE during recalc")
+> Reported-by: Mark Brown <broonie@kernel.org>
+> Closes: https://lore.kernel.org/r/036da7ce-6487-4a6e-9b15-97c6d3bcdcec@si=
+rena.org.uk/
+> Signed-off-by: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
 
-Add support for AONMIX MQS (i.e. MQS1).
+Hi Nicolas,
 
-Reviewed-by: Chancel Liu <chancel.liu@nxp.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Signed-off-by: Laurentiu Mihalcea <laurentiu.mihalcea@nxp.com>
----
- .../boot/dts/freescale/imx95-15x15-frdm.dts   | 73 +++++++++++++++++++
- 1 file changed, 73 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
-index ca1c4966c867..0f43e3be7058 100644
---- a/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
-+++ b/arch/arm64/boot/dts/freescale/imx95-15x15-frdm.dts
-@@ -243,6 +243,12 @@ codec {
- 		};
- 	};
- 
-+	sound-mqs {
-+		compatible = "audio-graph-card2";
-+		links = <&sai1_port1>;
-+		label = "mqs-audio";
-+	};
-+
- 	usdhc3_pwrseq: usdhc3-pwrseq {
- 		compatible = "mmc-pwrseq-simple";
- 		reset-gpios = <&pcal6524 8 GPIO_ACTIVE_LOW>;
-@@ -473,6 +479,21 @@ &mu7 {
- 	status = "okay";
- };
- 
-+&mqs1 {
-+	clocks = <&scmi_clk IMX95_CLK_SAI1>;
-+	clock-names = "mclk";
-+	pinctrl-0 = <&pinctrl_mqs1>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+
-+	mqs1_port: port {
-+		mqs1_ep: endpoint {
-+			dai-format = "left_j";
-+			remote-endpoint = <&sai1_port1_ep>;
-+		};
-+	};
-+};
-+
- &netc_blk_ctrl {
- 	status = "okay";
- };
-@@ -534,6 +555,51 @@ &pcie0 {
- 	status = "okay";
- };
- 
-+&sai1 {
-+	clocks = <&scmi_clk IMX95_CLK_BUSAON>, <&dummy>,
-+		 <&scmi_clk IMX95_CLK_SAI1>, <&dummy>,
-+		 <&dummy>, <&scmi_clk IMX95_CLK_AUDIOPLL1>,
-+		 <&scmi_clk IMX95_CLK_AUDIOPLL2>;
-+	clock-names = "bus", "mclk0", "mclk1", "mclk2", "mclk3", "pll8k", "pll11k";
-+	assigned-clocks = <&scmi_clk IMX95_CLK_AUDIOPLL1_VCO>,
-+			  <&scmi_clk IMX95_CLK_AUDIOPLL2_VCO>,
-+			  <&scmi_clk IMX95_CLK_AUDIOPLL1>,
-+			  <&scmi_clk IMX95_CLK_AUDIOPLL2>,
-+			  <&scmi_clk IMX95_CLK_SAI1>;
-+	assigned-clock-parents = <0>, <0>, <0>, <0>, <&scmi_clk IMX95_CLK_AUDIOPLL1>;
-+	assigned-clock-rates = <3932160000>, <3612672000>,
-+			       <393216000>, <361267200>,
-+			       <24576000>;
-+	fsl,sai-mclk-direction-output;
-+	status = "okay";
-+
-+	ports {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		/* leave unconnected - no RX in the context of MQS */
-+		port@0 {
-+			reg = <0>;
-+
-+			endpoint {
-+			};
-+		};
-+
-+		sai1_port1: port@1 {
-+			reg = <1>;
-+			mclk-fs = <512>;
-+
-+			sai1_port1_ep: endpoint {
-+				dai-format = "left_j";
-+				system-clock-direction-out;
-+				bitclock-master;
-+				frame-master;
-+				remote-endpoint = <&mqs1_ep>;
-+			};
-+		};
-+	};
-+};
-+
- &scmi_iomuxc {
- 	pinctrl_emdio: emdiogrp {
- 		fsl,pins = <
-@@ -618,6 +684,13 @@ IMX95_PAD_GPIO_IO31__LPI2C4_SCL				0x40000b9e
- 		>;
- 	};
- 
-+	pinctrl_mqs1: mqs1grp {
-+		fsl,pins = <
-+			IMX95_PAD_SAI1_TXFS__AONMIX_TOP_MQS1_LEFT		0x31e
-+			IMX95_PAD_SAI1_RXD0__AONMIX_TOP_MQS1_RIGHT		0x31e
-+		>;
-+	};
-+
- 	pinctrl_pcal6524: pcal6524grp {
- 		fsl,pins = <
- 			IMX95_PAD_GPIO_IO34__GPIO5_IO_BIT14			0x31e
--- 
-2.43.0
-
+Would you consider please reverting faulty patch above as i.MX8mp is
+still broken?
