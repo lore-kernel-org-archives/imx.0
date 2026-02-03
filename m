@@ -1,98 +1,307 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DDF17A31E;
-	Tue,  3 Feb 2026 13:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB3239E18E
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 13:38:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770125573; cv=none; b=oCes1obbPCZcU4U1BhSfBq873P/fNBX3cAgallmjCOrILqQ9X/lcqGNpaJ0Efqzkqt6MbNxcVOp/rhjvNlOcsWOWiC23R3c3y/nn9rijLmtSQ/xA52BTKAnq35VoNPI/HN89UkGyG20tGD0a7+clrssQ5lvaUqRFH2QEj/+srTo=
+	t=1770125883; cv=none; b=KcSq2gBV7tWHr3fExZjaYVC/G7xkYVbRunU+kLwXO78bDT/1hQYMShSCGdAbn7jt2c3LDRhL9YJFkD6pdD27uvKsCAe9fcEhJnll5ppjuGj6EQjd0JGi4Kw+dsjV42gFFOCn3zVvGbQhAUINqAYnA/sC6dgrmRpFBLKwn2OWwhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770125573; c=relaxed/simple;
-	bh=qm4YUTuDw+jWrgfNNkyliipxvN94JoXrfQZAS3LoZec=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HOU3knruEz1MfCpQpiR/W0uFv4+f9LIWkdUpVzlk9pzguBX21PAqBDuR/LmE0GvMRCO6bhx60cNt3WgOpBZYep3e4V5zZneBJ0Yc56WTy0bl+I0S+dzdg5ZTJk4gl1QrcVKJnMiCtTpkZDmSjuhc4ORbPR8eebBPoDwaNAQn4KE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=hn35khLI; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1770125883; c=relaxed/simple;
+	bh=eVRDFuMlcDgtAuHUPUwYMkakkxdlLoy6Fpaf0m9CkFE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=cf1YWdWoXDUyVcbgTjvmFFr240Q9xSpSoF4OODUJpR4koX+vqk31sf0LOJY88EDjxi1JaoGCU3XGajMvlK/3i8v+eABKypjO/db0Y2zqCeLSb8AT0pjWp4TpqlqFoLRsiNfqfu7EBEqzkS9k6uv5bUaBSsjyQOP/O+Yg0waGjF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aWjWTvSh; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="hn35khLI"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=SWGKlBRXsvslJKCJ791DxTaky6mRbtocoIFvmRiqDpg=; b=hn35khLI9F+pQXZndNVLk9eWGu
-	e5pdDrsNjn9640vLGnMmqtEN7pXRuPz7UuKOZVZ5F50nJ6Vfu/ONU0pb1BLR52+DJDct1m9VTZC3p
-	AO4CTi/+XgjtGceZY6FNAS8lBwAdPdeRQ3iaDfeziTQUN4Le+n+LTZDHrkTNyomjqNus=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vnGW2-005wva-Bx; Tue, 03 Feb 2026 14:32:26 +0100
-Date: Tue, 3 Feb 2026 14:32:26 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: =?utf-8?Q?=C5=81ukasz?= Majewski <lukasz.majewski@mailbox.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, shawnguo@kernel.org,
-	krzk+dt@kernel.org, linux-kernel@vger.kernel.org,
-	edumazet@google.com, netdev@vger.kernel.org, pabeni@redhat.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, conor+dt@kernel.org,
-	horms@kernel.org, richardcochran@gmail.com, robh@kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, wahrenst@gmx.net,
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com
-Subject: Re: [net-next,v22,4/7] net: mtip: Add net_device_ops functions to
- the L2 switch driver
-Message-ID: <3632215c-24cc-42a3-b565-c2e48be5bdf7@lunn.ch>
-References: <20260131233459.1625279-5-lukasz.majewski@mailbox.org>
- <20260203014247.824561-2-kuba@kernel.org>
- <20260203110341.1ce21455@wsk>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aWjWTvSh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770125880;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iOS7tpo+UZQJEwdA3wxEe6jwUqGIqBiJfHv1ZGaOoVI=;
+	b=aWjWTvShIlNSOtrzAeHhRgq7KDQw71/SrHRrAtp9VHa1E4fEG/Kv60SnxFLHcojp0RgdX/
+	fMV3Ig5nRPfPX7G3Ky6CgK5k0yVH13B6gx82PwZoyiZz52SkLnDT/bWi4+OkgcyRIs5QnJ
+	88O7J8cNV4fyd9yk3nR/gp4ZJeAnHGU=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-640-g2vXG3pVPZubRZumdQl_vQ-1; Tue, 03 Feb 2026 08:37:57 -0500
+X-MC-Unique: g2vXG3pVPZubRZumdQl_vQ-1
+X-Mimecast-MFC-AGG-ID: g2vXG3pVPZubRZumdQl_vQ_1770125877
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-6593d768a99so788281a12.0
+        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 05:37:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770125876; x=1770730676;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ZtmJ0MecevVOkqmQ0sbIYbbzUt1IRFmbl82qHWlUp74=;
+        b=Peb0UNIHYYyN5xobIO1YoAQPmz1tG5RGiU2CZkS2l27o6g/oQWoIff/2k5NGE6Ehii
+         o8Mwx7+WxLTpZRCcLcaWIjigmPfpNdnOAG1TiEyfKqJM2IEwcJsIu4dGQDDHwXAMp11z
+         WBKuGk/go6t24+wP+Etu65u44gbOHS/9GyyViLAd8I9yRh4If2xjkY5AFy6pua8m7bNU
+         IP3Up85gj8qQnaB6E/H93L+MUDsprKGb6pRKzqtk2wHXUH99ZAimVILRZvOhAlrwpDpu
+         sBlGe3t7e9uWhTzS8KaRQesDFfCiqoueQjZRo+dmpzK3M/26bn4sAuxTdN4X3ko1NTH7
+         n9hw==
+X-Forwarded-Encrypted: i=1; AJvYcCXvk+sQ1u1SJLImi6UMgrG+XpIZOPrdGHk94un0+MyEugvcjNOAQggxzHxqEdoWh+K4To4=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyB4hXR2oJvx7pZK8ap8H7MMrpq92NosQwQXp0zFlfeVlXWUh2S
+	mBl1g/WScn53dLZD5AbGc84MKRQ2hU0qWtdcxPvcuEsbDdSM4iCODcx1BpJwEEZcAzgkVqsrGbu
+	cpVmtxoG69NqRSRTMWVjkCObroiXVWpAP3ylrCTft9NbxUKgWnT7z5A==
+X-Gm-Gg: AZuq6aJT6ZWs2CR6CYYdO3YH2UG6a2y/PFQ/pqCoYxqBD5y+RfKyAJ67iripXZrMjr6
+	u0RC38yIG1tLlWK3M92VHrkoM8k+pwnaZ7Cj4dTRQ9mycBuCH4c4sIB6u29fXqrw+bn0QCJvBcD
+	YwoB9/OvNbJ81QAAX+gVH+kS3OVqFRzY8+bDsHWdWb/8wegceQXrW6XmAERXFow763kfEjyPPct
+	V2VXAmbrTHwth+/6f2695+Ht9edFbVqG4Zm1XALXB7/P8lBY8JRcUZ68C3XFPfURsqOCyxrNMQ5
+	mI4yALc+azH1vR5B86f8wOpm1zyCB1lgIRv9hgfVGQoc5bpv56Zaioo2LW/I0rXYgVMjo4HUkbk
+	GrEZ8iO/l4J+iO9eETkgrnoNqEbhL1Qtjkg==
+X-Received: by 2002:a05:6402:520b:b0:64b:416a:cb48 with SMTP id 4fb4d7f45d1cf-658de5ac5b8mr9740688a12.19.1770125876465;
+        Tue, 03 Feb 2026 05:37:56 -0800 (PST)
+X-Received: by 2002:a05:6402:520b:b0:64b:416a:cb48 with SMTP id 4fb4d7f45d1cf-658de5ac5b8mr9740648a12.19.1770125875931;
+        Tue, 03 Feb 2026 05:37:55 -0800 (PST)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-658b4691d0asm9527874a12.18.2026.02.03.05.37.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Feb 2026 05:37:55 -0800 (PST)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id B21574D0E3A; Tue, 03 Feb 2026 14:37:54 +0100 (CET)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Larysa Zaremba <larysa.zaremba@intel.com>
+Cc: bpf@vger.kernel.org, Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir
+ Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>, Clark Wang
+ <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Tony Nguyen
+ <anthony.l.nguyen@intel.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer
+ <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Stanislav
+ Fomichev <sdf@fomichev.me>, Andrii Nakryiko <andrii@kernel.org>, Martin
+ KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, KP
+ Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, Jiri Olsa
+ <jolsa@kernel.org>, Simon Horman <horms@kernel.org>, Shuah Khan
+ <shuah@kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, "Bastien Curutchet
+ (eBPF Foundation)" <bastien.curutchet@bootlin.com>, Tushar Vyavahare
+ <tushar.vyavahare@intel.com>, Jason Xing <kernelxing@tencent.com>,
+ =?utf-8?Q?Ricardo_B=2E_Marli=C3=A8re?= <rbm@suse.com>, Eelco Chaudron
+ <echaudro@redhat.com>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, linux-kselftest@vger.kernel.org,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: Re: [PATCH bpf 1/6] xdp: produce a warning when calculated tailroom
+ is negative
+In-Reply-To: <aYHwDlDwN0ZniMev@soc-5CG4396X81.clients.intel.com>
+References: <20260203105417.2302672-1-larysa.zaremba@intel.com>
+ <20260203105417.2302672-2-larysa.zaremba@intel.com>
+ <87zf5q109e.fsf@toke.dk>
+ <aYHqtxtg3uNXO668@soc-5CG4396X81.clients.intel.com>
+ <87o6m60zoo.fsf@toke.dk>
+ <aYHwDlDwN0ZniMev@soc-5CG4396X81.clients.intel.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Tue, 03 Feb 2026 14:37:54 +0100
+Message-ID: <87fr7i0wy5.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260203110341.1ce21455@wsk>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: i4q6v5iU7-4RE9gf86zDCRv3HoGMvEbkBQk2-v369Ow_1770125877
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> > jakub: maybe add a TODO comment transiently here, since later patch
-> > implements the cleanup?
-> 
-> The mtip_switch_tx() is empty as we have agreed, that I will divide
-> this driver to several patches to ease the review.
-> 
-> Adding TODO seems to only make AI review happy, as:
-> 
-> - The patch which adds support for FEC_MTIP_L2SW in Kconfig will be
->   sent after the driver is accepted to net-next
-> 
-> - Those commits are even now bisectable when FEC_MTIP_L2SW is
->   enabled (when I test the setup).
-> 
-> Anyway, if you still would like to have the TODO comment, then please
-> give me a hint how it shall be written to make the AI happy...
+Larysa Zaremba <larysa.zaremba@intel.com> writes:
 
-I would not make too much effort in keeping the AI happy, for
-something we understand is transient. It is currently not a gate for
-acceptance.
+> On Tue, Feb 03, 2026 at 01:38:47PM +0100, Toke H=C3=B8iland-J=C3=B8rgense=
+n wrote:
+>> Larysa Zaremba <larysa.zaremba@intel.com> writes:
+>>=20
+>> > On Tue, Feb 03, 2026 at 01:26:21PM +0100, Toke H=C3=B8iland-J=C3=B8rge=
+nsen wrote:
+>> >> Larysa Zaremba <larysa.zaremba@intel.com> writes:
+>> >>=20
+>> >> > Many ethernet drivers report xdp Rx queue frag size as being the sa=
+me as
+>> >> > DMA write size. However, the only user of this field, namely
+>> >> > bpf_xdp_frags_increase_tail(), clearly expects a truesize.
+>> >> >
+>> >> > Such difference leads to unspecific memory corruption issues under =
+certain
+>> >> > circumstances, e.g. in ixgbevf maximum DMA write size is 3 KB, so w=
+hen
+>> >> > running xskxceiver's XDP_ADJUST_TAIL_GROW_MULTI_BUFF, 6K packet ful=
+ly uses
+>> >> > all DMA-writable space in 2 buffers. This would be fine, if only
+>> >> > rxq->frag_size was properly set to 4K, but value of 3K results in a
+>> >> > negative tailroom, because there is a non-zero page offset.
+>> >> >
+>> >> > We could return -EINVAL and be done with it in such case, but due t=
+o
+>> >> > tailroom being stored as an unsigned int, it is reported to be some=
+where
+>> >> > near UINT_MAX, resulting in a tail being grown, even if the request=
+ed
+>> >> > offset is too much (it is around 2K in the abovementioned test). Th=
+is later
+>> >> > leads to all kinds of unspecific calltraces.
+>> >> >
+>> >> > [ 7340.337579] xskxceiver[1440]: segfault at 1da718 ip 00007f4161ae=
+ac9d sp 00007f41615a6a00 error 6
+>> >> > [ 7340.338040] xskxceiver[1441]: segfault at 7f410000000b ip 000000=
+00004042b5 sp 00007f415bffecf0 error 4
+>> >> > [ 7340.338179]  in libc.so.6[61c9d,7f4161aaf000+160000]
+>> >> > [ 7340.339230]  in xskxceiver[42b5,400000+69000]
+>> >> > [ 7340.340300]  likely on CPU 6 (core 0, socket 6)
+>> >> > [ 7340.340302] Code: ff ff 01 e9 f4 fe ff ff 0f 1f 44 00 00 4c 39 f=
+0 74 73 31 c0 ba 01 00 00 00 f0 0f b1 17 0f 85 ba 00 00 00 49 8b 87 88 00 0=
+0 00 <4c> 89 70 08 eb cc 0f 1f 44 00 00 48 8d bd f0 fe ff ff 89 85 ec fe
+>> >> > [ 7340.340888]  likely on CPU 3 (core 0, socket 3)
+>> >> > [ 7340.345088] Code: 00 00 00 ba 00 00 00 00 be 00 00 00 00 89 c7 e=
+8 31 ca ff ff 89 45 ec 8b 45 ec 85 c0 78 07 b8 00 00 00 00 eb 46 e8 0b c8 f=
+f ff <8b> 00 83 f8 69 74 24 e8 ff c7 ff ff 8b 00 83 f8 0b 74 18 e8 f3 c7
+>> >> > [ 7340.404334] Oops: general protection fault, probably for non-can=
+onical address 0x6d255010bdffc: 0000 [#1] SMP NOPTI
+>> >> > [ 7340.405972] CPU: 7 UID: 0 PID: 1439 Comm: xskxceiver Not tainted=
+ 6.19.0-rc1+ #21 PREEMPT(lazy)
+>> >> > [ 7340.408006] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), =
+BIOS 1.17.0-5.fc42 04/01/2014
+>> >> > [ 7340.409716] RIP: 0010:lookup_swap_cgroup_id+0x44/0x80
+>> >> > [ 7340.410455] Code: 83 f8 1c 73 39 48 ba ff ff ff ff ff ff ff 03 4=
+8 8b 04 c5 20 55 fa bd 48 21 d1 48 89 ca 83 e1 01 48 d1 ea c1 e1 04 48 8d 0=
+4 90 <8b> 00 48 83 c4 10 d3 e8 c3 cc cc cc cc 31 c0 e9 98 b7 dd 00 48 89
+>> >> > [ 7340.412787] RSP: 0018:ffffcc5c04f7f6d0 EFLAGS: 00010202
+>> >> > [ 7340.413494] RAX: 0006d255010bdffc RBX: ffff891f477895a8 RCX: 000=
+0000000000010
+>> >> > [ 7340.414431] RDX: 0001c17e3fffffff RSI: 00fa070000000000 RDI: 000=
+382fc7fffffff
+>> >> > [ 7340.415354] RBP: 00fa070000000000 R08: ffffcc5c04f7f8f8 R09: fff=
+fcc5c04f7f7d0
+>> >> > [ 7340.416283] R10: ffff891f4c1a7000 R11: ffffcc5c04f7f9c8 R12: fff=
+fcc5c04f7f7d0
+>> >> > [ 7340.417218] R13: 03ffffffffffffff R14: 00fa06fffffffe00 R15: fff=
+f891f47789500
+>> >> > [ 7340.418229] FS:  0000000000000000(0000) GS:ffff891ffdfaa000(0000=
+) knlGS:0000000000000000
+>> >> > [ 7340.419489] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> >> > [ 7340.420286] CR2: 00007f415bfffd58 CR3: 0000000103f03002 CR4: 000=
+0000000772ef0
+>> >> > [ 7340.421237] PKRU: 55555554
+>> >> > [ 7340.421623] Call Trace:
+>> >> > [ 7340.421987]  <TASK>
+>> >> > [ 7340.422309]  ? softleaf_from_pte+0x77/0xa0
+>> >> > [ 7340.422855]  swap_pte_batch+0xa7/0x290
+>> >> > [ 7340.423363]  zap_nonpresent_ptes.constprop.0.isra.0+0xd1/0x270
+>> >> > [ 7340.424102]  zap_pte_range+0x281/0x580
+>> >> > [ 7340.424607]  zap_pmd_range.isra.0+0xc9/0x240
+>> >> > [ 7340.425177]  unmap_page_range+0x24d/0x420
+>> >> > [ 7340.425714]  unmap_vmas+0xa1/0x180
+>> >> > [ 7340.426185]  exit_mmap+0xe1/0x3b0
+>> >> > [ 7340.426644]  __mmput+0x41/0x150
+>> >> > [ 7340.427098]  exit_mm+0xb1/0x110
+>> >> > [ 7340.427539]  do_exit+0x1b2/0x460
+>> >> > [ 7340.427992]  do_group_exit+0x2d/0xc0
+>> >> > [ 7340.428477]  get_signal+0x79d/0x7e0
+>> >> > [ 7340.428957]  arch_do_signal_or_restart+0x34/0x100
+>> >> > [ 7340.429571]  exit_to_user_mode_loop+0x8e/0x4c0
+>> >> > [ 7340.430159]  do_syscall_64+0x188/0x6b0
+>> >> > [ 7340.430672]  ? __do_sys_clone3+0xd9/0x120
+>> >> > [ 7340.431212]  ? switch_fpu_return+0x4e/0xd0
+>> >> > [ 7340.431761]  ? arch_exit_to_user_mode_prepare.isra.0+0xa1/0xc0
+>> >> > [ 7340.432498]  ? do_syscall_64+0xbb/0x6b0
+>> >> > [ 7340.433015]  ? __handle_mm_fault+0x445/0x690
+>> >> > [ 7340.433582]  ? count_memcg_events+0xd6/0x210
+>> >> > [ 7340.434151]  ? handle_mm_fault+0x212/0x340
+>> >> > [ 7340.434697]  ? do_user_addr_fault+0x2b4/0x7b0
+>> >> > [ 7340.435271]  ? clear_bhb_loop+0x30/0x80
+>> >> > [ 7340.435788]  ? clear_bhb_loop+0x30/0x80
+>> >> > [ 7340.436299]  ? clear_bhb_loop+0x30/0x80
+>> >> > [ 7340.436812]  ? clear_bhb_loop+0x30/0x80
+>> >> > [ 7340.437323]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>> >> > [ 7340.437973] RIP: 0033:0x7f4161b14169
+>> >> > [ 7340.438468] Code: Unable to access opcode bytes at 0x7f4161b1413=
+f.
+>> >> > [ 7340.439242] RSP: 002b:00007ffc6ebfa770 EFLAGS: 00000246 ORIG_RAX=
+: 00000000000000ca
+>> >> > [ 7340.440173] RAX: fffffffffffffe00 RBX: 00000000000005a1 RCX: 000=
+07f4161b14169
+>> >> > [ 7340.441061] RDX: 00000000000005a1 RSI: 0000000000000109 RDI: 000=
+07f415bfff990
+>> >> > [ 7340.441943] RBP: 00007ffc6ebfa7a0 R08: 0000000000000000 R09: 000=
+00000ffffffff
+>> >> > [ 7340.442824] R10: 0000000000000000 R11: 0000000000000246 R12: 000=
+0000000000000
+>> >> > [ 7340.443707] R13: 0000000000000000 R14: 00007f415bfff990 R15: 000=
+07f415bfff6c0
+>> >> > [ 7340.444586]  </TASK>
+>> >> > [ 7340.444922] Modules linked in: rfkill intel_rapl_msr intel_rapl_=
+common intel_uncore_frequency_common skx_edac_common nfit libnvdimm kvm_int=
+el vfat fat kvm snd_pcm irqbypass rapl iTCO_wdt snd_timer intel_pmc_bxt iTC=
+O_vendor_support snd ixgbevf virtio_net soundcore i2c_i801 pcspkr libeth_xd=
+p net_failover i2c_smbus lpc_ich failover libeth virtio_balloon joydev 9p f=
+use loop zram lz4hc_compress lz4_compress 9pnet_virtio 9pnet netfs ghash_cl=
+mulni_intel serio_raw qemu_fw_cfg
+>> >> > [ 7340.449650] ---[ end trace 0000000000000000 ]---
+>> >> >
+>> >> > The issue can be fixed in all in-tree drivers, but we cannot just t=
+rust OOT
+>> >> > drivers to not do this. Therefore, make tailroom a signed int and p=
+roduce a
+>> >> > warning when it is negative to prevent such mistakes in the future.
+>> >> >
+>> >> > Fixes: bf25146a5595 ("bpf: add frags support to the bpf_xdp_adjust_=
+tail() API")
+>> >> > Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+>> >> > Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+>> >> > ---
+>> >> >  net/core/filter.c | 3 ++-
+>> >> >  1 file changed, 2 insertions(+), 1 deletion(-)
+>> >> >
+>> >> > diff --git a/net/core/filter.c b/net/core/filter.c
+>> >> > index 616e0520a0bb..9715d957e3c5 100644
+>> >> > --- a/net/core/filter.c
+>> >> > +++ b/net/core/filter.c
+>> >> > @@ -4149,12 +4149,13 @@ static int bpf_xdp_frags_increase_tail(stru=
+ct xdp_buff *xdp, int offset)
+>> >> >  =09struct skb_shared_info *sinfo =3D xdp_get_shared_info_from_buff=
+(xdp);
+>> >> >  =09skb_frag_t *frag =3D &sinfo->frags[sinfo->nr_frags - 1];
+>> >> >  =09struct xdp_rxq_info *rxq =3D xdp->rxq;
+>> >> > -=09unsigned int tailroom;
+>> >> > +=09int tailroom;
+>> >> > =20
+>> >> >  =09if (!rxq->frag_size || rxq->frag_size > xdp->frame_sz)
+>> >> >  =09=09return -EOPNOTSUPP;
+>> >> > =20
+>> >> >  =09tailroom =3D rxq->frag_size - skb_frag_size(frag) - skb_frag_of=
+f(frag);
+>> >> > +=09WARN_ON_ONCE(tailroom < 0);
+>> >> >  =09if (unlikely(offset > tailroom))
+>> >> >  =09=09return -EINVAL;
+>> >> > =20
+>> >>=20
+>> >> Why can't we do both? I.e., WARN_ON_ONCE() *and* return -EINVAL?
+>> >>=20
+>> >> -Toke
+>> >>=20
+>> >
+>> > It would be redundant, offset is always >=3D 0 here, so with tailroom =
+now being a=20
+>> > signed int, offset is always bigger and -EINVAL is returned.
+>>=20
+>> Oh, I see. OK, may be worth calling out; I read this paragraph in your
+>> commit message to mean "we don't bother returning EINVAL in this case,
+>> we just warn":
+>
+> Worth changing 'could' to 'are supposed to', if there will be v2.
 
-> And maybe a few my thoughts:
-> 
-> 1. AI review seems to bring each time different issues - even the
-> "grammatic" ones were not provided with the first AI generated review.
+Yeah, that would be better, thanks!
 
-The rules are being tweaked as we gain experience with it, so i would
-not expect it to produce the same output every time. Even if it was
-stable, it is not clear to me if it is reproducible.
- 
-> 2. I have tried to setup claudie> to run the patch set through it -
-> however, it requires a paid account on a cloud/AI vendor (and I guess
-> that different vendors' AI engines produce different output for the same
-> "AI prompt")?
+Other than that,
 
-I expect so. It is clearly not checkpatch.pl and the like were you can
-run it 100 times and get the same answer every time. But i think that
-is understood. So long as there has been a discussion about its
-output, patches should get merged even if there are still AI
-comments. It is just another tool used in the review conversations.
+Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 
-	Andrew
