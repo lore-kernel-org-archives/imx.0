@@ -1,168 +1,174 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96CE30C35E
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 10:35:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770114952; cv=none; b=bsbe6kbdzkMr1LPAvMwO4nb/Zh3gQIm8BkOUN0nth5r3FmVXCYSJbfngqxDxCJyrQWUdDOHff0o6uGC9OChKzvDmm66Tz3XfYArSAIzFDIo0zUHzDdcLB1sHQPn9dS91qUPmmhFPOvMsNm82c2GxqdMcifwOdCNibF3u9wKCcNA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770114952; c=relaxed/simple;
-	bh=D26jPsJTNPT829k201KptmbfiAqK4RS58WCGHZkP7yk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fxhEFuew9g4h+BS9i8uHRFLLoo8Mt5KSD990qtu7p9nw1G05nyULY+o2UzS7Wdts92QGaTNPm//QhB/Sd0BO43O3XQrtBkLWaO6u3DWpXrDzdiheUNoIj/lJcoEP2qz5zAzdhLPhLafqVxX3Hx/dbeMmcR6RTXy//41Cy89JngM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cdvSpR4+; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D9832D7F1
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 11:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770116828; cv=pass; b=GglUqbEo4ui6lYsF8GKPZvz9uvSiyYdMnsM0ho7nqSiwrRwydW3AtF8uTeWum5wga4gXEJ06+4pe2+ReWr086a3C5t1WDbUtZkrgpISS5DR6ECI2OXRKT4zN33B73MxlLVv0TNI3krEgQk5hq05PRESomTDTYLZAb5KIw8wTsfs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770116828; c=relaxed/simple;
+	bh=OH7+HSlnA2x81hRfL4m4AByJ0bZZKFk99H50SaARSyc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QYslYaN5QRrIwWGF1HqbXC4IejWFBC/kmj0lK2YWh8ofR3+pgd9WzXf5ACP9yvwTWILQ9+u5X982eQcNztaa/ELqwBfcw492lyuGSJOda9+FdojEEk52Ahp2uG8ilx2x6IZ+/LNa+MLUYhHPetjHeRIXFX+xkXdDXXpJeV3Li4Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PAw68MVk; arc=pass smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cdvSpR4+"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 27D6D4E423E3;
-	Tue,  3 Feb 2026 10:35:44 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id F053F60728;
-	Tue,  3 Feb 2026 10:35:43 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 099B0119A8891;
-	Tue,  3 Feb 2026 11:35:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1770114942; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=0J7QwrnMLj6IPv/b8J6urH3umx5hdgFgh5QfijNSOt0=;
-	b=cdvSpR4+XLR7dOJEi7ksbitsY6hcG+EvmqrKfy9qgPMzUk7PCFQlm2q9UgVtdt3/ZoMlhc
-	/vfqDOJ/qaBi+Vnhd9X2cdkkpVL0n3q9veQsO5+XBKvBLmykj8jAW8N8dLQ7trnTIjdpjU
-	N2tjDhYnx86jbjSFtSGqBwn+wjX0uE+uTeMXXAXlckOwmpf4hUis/9qoruEttgrz8npNUU
-	YkOZQVlNQxo01RdZHao7yqUL3LzX8xkmuPvz93A5PfrFfEOakRYUoa06yP9NRSo0ucKLiL
-	aISI1rbH4WK9QKS6165kRf7a1l71IYlBOUKgh25tvIfauyYj2LIL0f2FhjFrBg==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Tue, 03 Feb 2026 11:35:25 +0100
-Subject: [PATCH v5] drm/bridge: imx8qxp-pixel-link: get/put the next bridge
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PAw68MVk"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-59dd4bec4ecso6220742e87.0
+        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 03:07:06 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770116825; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cLoitj/xq0k9yR96W60bySqarV3gnyrY60/+q0UCSfpqlHl9IAKpSB0HCngh6CgZM7
+         WU8Cb9IDnIkJtAODQPP7Jby41BwjTYmz8CK4Tr/7zrsbPgK9m7qarK03nNVbrdlrNjBp
+         UXzpLDkkFMfJL4Z60K0C2wNuRrFsddBH/MuSFy6ORsIr7WfUfnnqAMbIwk7oxrb/bdni
+         WSkNS5AFnkj/qdV558bSmKrmznHkP1UHUN7ks7JIXVzxQjpwDdxDqTOZktBQDTjli7k5
+         dC26ZlW3W/5rTytopfBGFvJhQSkk+KpcHY5tFjCS8yTi0O/OxYXMySjOQuuDau474Q67
+         ruJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=mpau5hvO+i/E0AiXJ5P3htmR+ezocch+kVwOVkTz9TQ=;
+        fh=nbSEHr8czRamHlIWqSe7h7fkYe5hOX6fVyOft6+OCgk=;
+        b=dHlqgRFJDqgW88eWAEmwyY18j7ED8VKOIgGf3QxLU3dEgrstffVPx64MoXuwPXVku2
+         zv2Vkbpfqe98d3FGbo4tAzNKbq6jlBauhxql/x3y9PU/s/Oc0h7HN21Ex11wOlisulhY
+         Yddok3+KuuZ3NRe98MFix9dyZTzJRisG8bHhlVUlK1et3JjVxeM9EPNZ79j+JW791uYz
+         epWfPhEWT+r6mOx2Qe6DZx7uQ4Dlx7BLYTeAYNac8RqnknF2RD781MpuOWswfASZSSUC
+         L9skhC5lng3ic2B+Yrzs5VEz5tIYOiajyULYUh9v8FlLuAgVHh8SN18O+RDW3kBy0Hy+
+         OBwA==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1770116825; x=1770721625; darn=lists.linux.dev;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=mpau5hvO+i/E0AiXJ5P3htmR+ezocch+kVwOVkTz9TQ=;
+        b=PAw68MVk2SfkT44QKeFkWpy1/ia62gwxxSuwyTySPqk3MvyoVu/gNIr2hQodyYjBXA
+         eKa2Vh3eX3aK/jTOXRf6HZfpVwQH7yNSaUhQ45IFlfn8oPKlrzChwezoRgrnfOh7glSv
+         4VRXd6CervWK5elOYIkyzHHiqwZkZVIava8Vcu5aXpRR6Nf/tz+PvZSfD+T+P2r1/C3I
+         qd0xOGUFR5fJK/Q/axcbi/iQPxkKSJLpokoutusVlUF6FTDLY9L7bcuTFN8DnDW+ovvQ
+         WGs46PrR2bv0xccIfuuSaokSQNQsaMpLxeXd6Yfa2KE5vr/ZUS1RyIleR4aEm/j/keIa
+         fehg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770116825; x=1770721625;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mpau5hvO+i/E0AiXJ5P3htmR+ezocch+kVwOVkTz9TQ=;
+        b=hTwMHpYu5iB1MRWkqrLE3yO8z0Y9v8rPVR0YTItKhyYY/uLYJ3kah+IQRgDIynWPMx
+         azVsD4m6F8w8+qWJKoK8HZuQUo//kX735BsdXrik8bksjU5qNPdUmTbM1ocx5CkerNTW
+         /zahtzIaKE9Zi+isEDiIeH7S+QfyYI3NtTGISCTz8uGmiq2ZxSsn5Oc5VTlduvRqN3lK
+         cLxa8ld5H1Cx1D08ocrigT7G336lhksyT26cnYf/e1oa6wVUiDpg6/e6/RsewVRlSxs2
+         JIte1ZO8/00sWKlrnTkLwwIoN0hvFV+UwHrCipHuMZORNrggDNOVUVovtNYHakiTSyvA
+         9dmg==
+X-Forwarded-Encrypted: i=1; AJvYcCWI9xJdorxODky/v+/fzLOuhDWSZjnrbgnI61CLlfP/0wCHi+ZdJ1YI745KOdhLRqZCUGs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzrF2CBVUrvUu+UVjJ1PZ6ht/LYZE7nntBB4Eqyq8IaEvTjgOwz
+	l9bVkVLIJ8MAb68kb1fi29XsWdh5wIJPyEiam+w66wqNTRRpRAFSstjd2h3ZA5ewjygtfSqDukD
+	IqQrOiZy+NVUo900iyKq69pZha/j1/85XYtwZtlF6Aw==
+X-Gm-Gg: AZuq6aISiTXUI6411G8ZRnZQBcQIfLYIts7ZiMt5MPH/MXzwMV1ET57RsBqeIlzikd5
+	T5khft4Sae8hzBmxcYkcADQTd7ZuqubEGHKb8sq5RbnNHfj4w8Ysxj0zvgFtpkqZUFiLF5ozB47
+	FQHtz9rKofqTmvTxmKC14L05hVthzWj+Q1p6309UwXuyNl6PAbboDTMoYnn8QAuhYNrqrobb1P5
+	RxACOVyG7LKxETpOrqWSJcR4ieWJEP3JEc5ZLYFtH9hk/ub4Y0HhpEY+ZPi/Bqd4iKuvNRH
+X-Received: by 2002:a05:6512:10c2:b0:59d:a4ed:1aee with SMTP id
+ 2adb3069b0e04-59e16424bf4mr4915624e87.40.1770116824273; Tue, 03 Feb 2026
+ 03:07:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260203-drm-bridge-alloc-getput-drm_of_find_bridge-v5-1-66bda8d617b4@bootlin.com>
-References: <20260203-drm-bridge-alloc-getput-drm_of_find_bridge-v5-0-66bda8d617b4@bootlin.com>
-In-Reply-To: <20260203-drm-bridge-alloc-getput-drm_of_find_bridge-v5-0-66bda8d617b4@bootlin.com>
-To: Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-X-Mailer: b4 0.15-dev-5464f
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260202074730.738760-1-xu.yang_2@nxp.com>
+In-Reply-To: <20260202074730.738760-1-xu.yang_2@nxp.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 3 Feb 2026 12:06:28 +0100
+X-Gm-Features: AZwV_Qh2hAOTL2iZXhJf4HtRUDzm3SZegUCoMSRIOsgW54neZTtXwIBhuC9chV8
+Message-ID: <CAPDyKFpqfo1R8Qkq284L9DTURjZnvm_n8W3a6KQTomg7A-M_Ug@mail.gmail.com>
+Subject: Re: [PATCH 1/2] pmdomain: imx8mp-blk-ctrl: set awake path for
+ power_dev if attached device needs wakeup
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, peng.fan@nxp.com, jun.li@nxp.com, 
+	rafael.j.wysocki@intel.com, a.fatoum@pengutronix.de, ping.bai@nxp.com, 
+	shawnguo@kernel.org, l.stach@pengutronix.de, linux-pm@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-This driver obtains a bridge pointer from of_drm_find_bridge() in the probe
-function and stores it until driver removal. of_drm_find_bridge() is
-deprecated. Move to of_drm_find_and_get_bridge() for the bridge to be
-refcounted and use bridge->next_bridge to put the reference on
-deallocation.
+On Mon, 2 Feb 2026 at 08:46, Xu Yang <xu.yang_2@nxp.com> wrote:
+>
+> Current design will power off all dependent GPC power domains in
+> imx8mp_blk_ctrl_suspend(), even though the user device has enabled
+> wakeup capability. The result is that wakeup function never works
+> for such device.
+>
+> An example will be USB wakeup on i.MX8MP. PHY device '382f0040.usb-phy'
+> is attached to power domain 'hsioblk-usb-phy2' which is spawned by hsio
+> block control. A virtual power domain device 'genpd:3:32f10000.blk-ctrl'
+> is created to build connection with 'hsioblk-usb-phy2' and it depends on
+> GPC power domain 'usb-otg2'. If device '382f0040.usb-phy' enable wakeup,
+> only power domain 'hsioblk-usb-phy2' keeps on during system suspend,
+> power domain 'usb-otg2' is off all the time. So the wakeup event can't
+> happen.
+>
+> Let's propagate wakeup path to virtual power domain device so the wakeup
+> event can happen properly.
+>
+> Fixes: 556f5cf9568a ("soc: imx: add i.MX8MP HSIO blk-ctrl")
+> Cc: stable@kernel.org
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+> ---
+>  drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
+> index 34576be606e3..f3bfd6d22722 100644
+> --- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
+> +++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
+> @@ -804,12 +804,20 @@ static int imx8mp_blk_ctrl_suspend(struct device *dev)
+>
+>         for (i = 0; i < bc->onecell_data.num_domains; i++) {
+>                 struct imx8mp_blk_ctrl_domain *domain = &bc->domains[i];
+> +               struct pm_domain_data *pdd;
+>
+>                 ret = pm_runtime_get_sync(domain->power_dev);
+>                 if (ret < 0) {
+>                         pm_runtime_put_noidle(domain->power_dev);
+>                         goto out_fail;
+>                 }
+> +
+> +               list_for_each_entry(pdd, &domain->genpd.dev_list, list_node) {
+> +                       if (device_awake_path(pdd->dev)) {
+> +                               device_set_awake_path(domain->power_dev);
+> +                               break;
+> +                       }
+> +               }
 
-To keep the code as simple and reliable as possible, get a reference for
-each pointer that stores a drm_bridge address when it is stored and release
-it when the pointer is overwritten or goes out of scope. Also remove the
-intermediate selected_bridge variable to reduce the refcounted variables in
-the function. The involved pointers are:
+This is really messy in my opinion. Ideally the above should not be
+used by a genpd provider as it's internal data structures are managed
+by genpd itself.
 
- * next_bridge loop-local variable:
-   - get reference by of_drm_find_and_get_bridge()
-   - put reference at the end of the loop iteration (__free)
+If I understand correctly, this problem boils down to the fact that we
+should have tried harder to model child/parent domains, rather than
+using runtime PM to manage the parent domains. I understand there are
+problems with that, due to specific power on/off sequences we have for
+imx power-domains, but I wonder if those could be managed better by
+using genpd on/off notifiers?
 
- * pl->bridge.next_bridge, tied to struct imx8qxp_pixel_link lifetime:
-   - get reference when assigned (by copy from next_bridge)
-   - put reference before reassignment if reassignment happens
-   - put reference when the struct imx8qxp_pixel_link embedding the
-     struct drm_bridge is destroyed (struct drm_bridge::next_bridge)
+Anyway, that said. Rather than walking through the list of devices as
+above, I suggest that you use the ->power_off() callback for the
+corresponding genpd(s) to dev in combination with a genpd power on/off
+notifier for the corresponding genpd that the power_dev is attached
+to.
 
-Additionally, split the somewhat complex if() for readability.
+More precisely, if the "child domain(s)" that corresponds to "dev" has
+not been powered-off (because device_awake_path() is set for some
+device) during system suspend, the power-off notifier should return
+NOTIFY_BAD to prevent the "parent domain" that corresponds to
+power_dev from being powered-off.
 
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Would that work, you think?
 
----
-
-Changes in v5:
-- rewrite commit message after Liu's review to clarify the per-pointer
-  get/put idea
-- split the if()s involved in selcting the bridge
-- remove intermediate selected_bridge pointer
-- removed Maxime's R-by, patch changed
----
- drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
-index 91e4f4d55469..e29e099b893a 100644
---- a/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
-+++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
-@@ -23,7 +23,6 @@
- 
- struct imx8qxp_pixel_link {
- 	struct drm_bridge bridge;
--	struct drm_bridge *next_bridge;
- 	struct device *dev;
- 	struct imx_sc_ipc *ipc_handle;
- 	u8 stream_id;
-@@ -140,7 +139,7 @@ static int imx8qxp_pixel_link_bridge_attach(struct drm_bridge *bridge,
- 	}
- 
- 	return drm_bridge_attach(encoder,
--				 pl->next_bridge, bridge,
-+				 pl->bridge.next_bridge, bridge,
- 				 DRM_BRIDGE_ATTACH_NO_CONNECTOR);
- }
- 
-@@ -260,7 +259,6 @@ static int imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
- {
- 	struct device_node *np = pl->dev->of_node;
- 	struct device_node *port;
--	struct drm_bridge *selected_bridge = NULL;
- 	u32 port_id;
- 	bool found_port = false;
- 	int reg;
-@@ -297,7 +295,8 @@ static int imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
- 			continue;
- 		}
- 
--		struct drm_bridge *next_bridge = of_drm_find_bridge(remote);
-+		struct drm_bridge *next_bridge __free(drm_bridge_put) =
-+			of_drm_find_and_get_bridge(remote);
- 		if (!next_bridge)
- 			return -EPROBE_DEFER;
- 
-@@ -305,12 +304,16 @@ static int imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
- 		 * Select the next bridge with companion PXL2DPI if
- 		 * present, otherwise default to the first bridge
- 		 */
--		if (!selected_bridge || of_property_present(remote, "fsl,companion-pxl2dpi"))
--			selected_bridge = next_bridge;
-+		if (!pl->bridge.next_bridge)
-+			pl->bridge.next_bridge = drm_bridge_get(next_bridge);
-+
-+		if (of_property_present(remote, "fsl,companion-pxl2dpi")) {
-+			drm_bridge_put(pl->bridge.next_bridge);
-+			pl->bridge.next_bridge = drm_bridge_get(next_bridge);
-+		}
- 	}
- 
- 	pl->mst_addr = port_id - 1;
--	pl->next_bridge = selected_bridge;
- 
- 	return 0;
- }
-
--- 
-2.52.0
-
+Kind regards
+Uffe
