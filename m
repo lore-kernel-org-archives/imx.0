@@ -1,174 +1,111 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D9832D7F1
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 11:07:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770116828; cv=pass; b=GglUqbEo4ui6lYsF8GKPZvz9uvSiyYdMnsM0ho7nqSiwrRwydW3AtF8uTeWum5wga4gXEJ06+4pe2+ReWr086a3C5t1WDbUtZkrgpISS5DR6ECI2OXRKT4zN33B73MxlLVv0TNI3krEgQk5hq05PRESomTDTYLZAb5KIw8wTsfs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770116828; c=relaxed/simple;
-	bh=OH7+HSlnA2x81hRfL4m4AByJ0bZZKFk99H50SaARSyc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QYslYaN5QRrIwWGF1HqbXC4IejWFBC/kmj0lK2YWh8ofR3+pgd9WzXf5ACP9yvwTWILQ9+u5X982eQcNztaa/ELqwBfcw492lyuGSJOda9+FdojEEk52Ahp2uG8ilx2x6IZ+/LNa+MLUYhHPetjHeRIXFX+xkXdDXXpJeV3Li4Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PAw68MVk; arc=pass smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EDE2BE620
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 11:12:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770117131; cv=none; b=NgiJsKOQomx5g0O8AWgXnEbk7CDwPgNQtDEB+1wUy/CHX5mj96pWncet5lgCt3py6NfKBKyhmdmbnTRTPMwiJNxJqS4kFp8ScT1s2tdMZiw1+lduAXUSKgnF6PlGxu9dSehElgEIacqH0hYLigJJSOWLZ2mksPIXaQ5cv7BAFjk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770117131; c=relaxed/simple;
+	bh=ntEqjZ4vPtV9eWcEMUAr5LrB5oLRPrI5bgg2M4/Hgg4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=QGGuDT9+H0TQI0g0UFYud5NFOnwryQOFGc+aMbmCw+XO27JvmbYKB0fYiIRbHKqNxBuuGSuNM2Iu9OGhXFxr1G12X/TdijjAXIwBaCCbdKbbgldrdnFTjTULmttjD+NTQ2abGOEeTCOXY8PCGiLT/Xccz75D+Hcu1Qs0Hi7kl0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DPoX7rqx; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PAw68MVk"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-59dd4bec4ecso6220742e87.0
-        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 03:07:06 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770116825; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cLoitj/xq0k9yR96W60bySqarV3gnyrY60/+q0UCSfpqlHl9IAKpSB0HCngh6CgZM7
-         WU8Cb9IDnIkJtAODQPP7Jby41BwjTYmz8CK4Tr/7zrsbPgK9m7qarK03nNVbrdlrNjBp
-         UXzpLDkkFMfJL4Z60K0C2wNuRrFsddBH/MuSFy6ORsIr7WfUfnnqAMbIwk7oxrb/bdni
-         WSkNS5AFnkj/qdV558bSmKrmznHkP1UHUN7ks7JIXVzxQjpwDdxDqTOZktBQDTjli7k5
-         dC26ZlW3W/5rTytopfBGFvJhQSkk+KpcHY5tFjCS8yTi0O/OxYXMySjOQuuDau474Q67
-         ruJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=mpau5hvO+i/E0AiXJ5P3htmR+ezocch+kVwOVkTz9TQ=;
-        fh=nbSEHr8czRamHlIWqSe7h7fkYe5hOX6fVyOft6+OCgk=;
-        b=dHlqgRFJDqgW88eWAEmwyY18j7ED8VKOIgGf3QxLU3dEgrstffVPx64MoXuwPXVku2
-         zv2Vkbpfqe98d3FGbo4tAzNKbq6jlBauhxql/x3y9PU/s/Oc0h7HN21Ex11wOlisulhY
-         Yddok3+KuuZ3NRe98MFix9dyZTzJRisG8bHhlVUlK1et3JjVxeM9EPNZ79j+JW791uYz
-         epWfPhEWT+r6mOx2Qe6DZx7uQ4Dlx7BLYTeAYNac8RqnknF2RD781MpuOWswfASZSSUC
-         L9skhC5lng3ic2B+Yrzs5VEz5tIYOiajyULYUh9v8FlLuAgVHh8SN18O+RDW3kBy0Hy+
-         OBwA==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1770116825; x=1770721625; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mpau5hvO+i/E0AiXJ5P3htmR+ezocch+kVwOVkTz9TQ=;
-        b=PAw68MVk2SfkT44QKeFkWpy1/ia62gwxxSuwyTySPqk3MvyoVu/gNIr2hQodyYjBXA
-         eKa2Vh3eX3aK/jTOXRf6HZfpVwQH7yNSaUhQ45IFlfn8oPKlrzChwezoRgrnfOh7glSv
-         4VRXd6CervWK5elOYIkyzHHiqwZkZVIava8Vcu5aXpRR6Nf/tz+PvZSfD+T+P2r1/C3I
-         qd0xOGUFR5fJK/Q/axcbi/iQPxkKSJLpokoutusVlUF6FTDLY9L7bcuTFN8DnDW+ovvQ
-         WGs46PrR2bv0xccIfuuSaokSQNQsaMpLxeXd6Yfa2KE5vr/ZUS1RyIleR4aEm/j/keIa
-         fehg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770116825; x=1770721625;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mpau5hvO+i/E0AiXJ5P3htmR+ezocch+kVwOVkTz9TQ=;
-        b=hTwMHpYu5iB1MRWkqrLE3yO8z0Y9v8rPVR0YTItKhyYY/uLYJ3kah+IQRgDIynWPMx
-         azVsD4m6F8w8+qWJKoK8HZuQUo//kX735BsdXrik8bksjU5qNPdUmTbM1ocx5CkerNTW
-         /zahtzIaKE9Zi+isEDiIeH7S+QfyYI3NtTGISCTz8uGmiq2ZxSsn5Oc5VTlduvRqN3lK
-         cLxa8ld5H1Cx1D08ocrigT7G336lhksyT26cnYf/e1oa6wVUiDpg6/e6/RsewVRlSxs2
-         JIte1ZO8/00sWKlrnTkLwwIoN0hvFV+UwHrCipHuMZORNrggDNOVUVovtNYHakiTSyvA
-         9dmg==
-X-Forwarded-Encrypted: i=1; AJvYcCWI9xJdorxODky/v+/fzLOuhDWSZjnrbgnI61CLlfP/0wCHi+ZdJ1YI745KOdhLRqZCUGs=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzrF2CBVUrvUu+UVjJ1PZ6ht/LYZE7nntBB4Eqyq8IaEvTjgOwz
-	l9bVkVLIJ8MAb68kb1fi29XsWdh5wIJPyEiam+w66wqNTRRpRAFSstjd2h3ZA5ewjygtfSqDukD
-	IqQrOiZy+NVUo900iyKq69pZha/j1/85XYtwZtlF6Aw==
-X-Gm-Gg: AZuq6aISiTXUI6411G8ZRnZQBcQIfLYIts7ZiMt5MPH/MXzwMV1ET57RsBqeIlzikd5
-	T5khft4Sae8hzBmxcYkcADQTd7ZuqubEGHKb8sq5RbnNHfj4w8Ysxj0zvgFtpkqZUFiLF5ozB47
-	FQHtz9rKofqTmvTxmKC14L05hVthzWj+Q1p6309UwXuyNl6PAbboDTMoYnn8QAuhYNrqrobb1P5
-	RxACOVyG7LKxETpOrqWSJcR4ieWJEP3JEc5ZLYFtH9hk/ub4Y0HhpEY+ZPi/Bqd4iKuvNRH
-X-Received: by 2002:a05:6512:10c2:b0:59d:a4ed:1aee with SMTP id
- 2adb3069b0e04-59e16424bf4mr4915624e87.40.1770116824273; Tue, 03 Feb 2026
- 03:07:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DPoX7rqx"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 7CD581A2BBE;
+	Tue,  3 Feb 2026 11:12:07 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4351F60728;
+	Tue,  3 Feb 2026 11:12:07 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 49DDD119A8888;
+	Tue,  3 Feb 2026 12:11:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1770117125; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=szFGRLlVCEwZRRovS/jad1iKZfVKQX8FqT/CwFCFTuw=;
+	b=DPoX7rqxJKZUDYyaRDR7/S+6t9BTtJqy8WOm0KmHCdu7fbDoA48IJeL5CmMiKa5CyLOhPX
+	1m04Tm1xnpB+4RqSBdn7YL51+pYU3mHNquNAHCkDuVG/s86TDceDYJ9NzVKwqMLOP+ckgr
+	l5IyZPCe6xDcieA1XnO/XkU+hCgZUUoC71wA9QWyEwKGBoUn6jkxFv+oPWNTwgiVXpO+3X
+	zROF2ReXs0saPeDrmiua4EgvrIFBe8Jc+tbqSIiRARGUc+JofQISJrkPs/wocHLOBMIBdh
+	sPveengo3QMRO55rX/CBQjMu9HRt0XLeznsH2BnuNRYnSdvxUSFDSepExnD74A==
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-MIME-Version: 1.0
-References: <20260202074730.738760-1-xu.yang_2@nxp.com>
-In-Reply-To: <20260202074730.738760-1-xu.yang_2@nxp.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 3 Feb 2026 12:06:28 +0100
-X-Gm-Features: AZwV_Qh2hAOTL2iZXhJf4HtRUDzm3SZegUCoMSRIOsgW54neZTtXwIBhuC9chV8
-Message-ID: <CAPDyKFpqfo1R8Qkq284L9DTURjZnvm_n8W3a6KQTomg7A-M_Ug@mail.gmail.com>
-Subject: Re: [PATCH 1/2] pmdomain: imx8mp-blk-ctrl: set awake path for
- power_dev if attached device needs wakeup
-To: Xu Yang <xu.yang_2@nxp.com>
-Cc: Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
-	festevam@gmail.com, peng.fan@nxp.com, jun.li@nxp.com, 
-	rafael.j.wysocki@intel.com, a.fatoum@pengutronix.de, ping.bai@nxp.com, 
-	shawnguo@kernel.org, l.stach@pengutronix.de, linux-pm@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 03 Feb 2026 12:11:53 +0100
+Message-Id: <DG5A5BNULPQX.HRWTJLN9UQ2W@bootlin.com>
+To: =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ <andrzej.hajda@intel.com>, <neil.armstrong@linaro.org>, <rfoss@kernel.org>,
+ "Damon Ding" <damon.ding@rock-chips.com>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v8 00/18] Apply drm_bridge_connector and panel_bridge
+ helper for the Analogix DP driver
+Cc: <Laurent.pinchart@ideasonboard.com>, <jonas@kwiboo.se>,
+ <jernej.skrabec@gmail.com>, <maarten.lankhorst@linux.intel.com>,
+ <mripard@kernel.org>, <tzimmermann@suse.de>, <airlied@gmail.com>,
+ <simona@ffwll.ch>, <shawnguo@kernel.org>, <s.hauer@pengutronix.de>,
+ <kernel@pengutronix.de>, <festevam@gmail.com>, <inki.dae@samsung.com>,
+ <sw0312.kim@samsung.com>, <kyungmin.park@samsung.com>, <krzk@kernel.org>,
+ <alim.akhtar@samsung.com>, <jingoohan1@gmail.com>,
+ <p.zabel@pengutronix.de>, <hjc@rock-chips.com>, <andy.yan@rock-chips.com>,
+ <dmitry.baryshkov@oss.qualcomm.com>, <dianders@chromium.org>,
+ <m.szyprowski@samsung.com>, <jani.nikula@intel.com>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-samsung-soc@vger.kernel.org>, <linux-rockchip@lists.infradead.org>
+X-Mailer: aerc 0.20.1
+References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
+ <6571983.R56niFO833@diego>
+In-Reply-To: <6571983.R56niFO833@diego>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, 2 Feb 2026 at 08:46, Xu Yang <xu.yang_2@nxp.com> wrote:
->
-> Current design will power off all dependent GPC power domains in
-> imx8mp_blk_ctrl_suspend(), even though the user device has enabled
-> wakeup capability. The result is that wakeup function never works
-> for such device.
->
-> An example will be USB wakeup on i.MX8MP. PHY device '382f0040.usb-phy'
-> is attached to power domain 'hsioblk-usb-phy2' which is spawned by hsio
-> block control. A virtual power domain device 'genpd:3:32f10000.blk-ctrl'
-> is created to build connection with 'hsioblk-usb-phy2' and it depends on
-> GPC power domain 'usb-otg2'. If device '382f0040.usb-phy' enable wakeup,
-> only power domain 'hsioblk-usb-phy2' keeps on during system suspend,
-> power domain 'usb-otg2' is off all the time. So the wakeup event can't
-> happen.
->
-> Let's propagate wakeup path to virtual power domain device so the wakeup
-> event can happen properly.
->
-> Fixes: 556f5cf9568a ("soc: imx: add i.MX8MP HSIO blk-ctrl")
-> Cc: stable@kernel.org
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> ---
->  drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> index 34576be606e3..f3bfd6d22722 100644
-> --- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> +++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
-> @@ -804,12 +804,20 @@ static int imx8mp_blk_ctrl_suspend(struct device *dev)
->
->         for (i = 0; i < bc->onecell_data.num_domains; i++) {
->                 struct imx8mp_blk_ctrl_domain *domain = &bc->domains[i];
-> +               struct pm_domain_data *pdd;
->
->                 ret = pm_runtime_get_sync(domain->power_dev);
->                 if (ret < 0) {
->                         pm_runtime_put_noidle(domain->power_dev);
->                         goto out_fail;
->                 }
-> +
-> +               list_for_each_entry(pdd, &domain->genpd.dev_list, list_node) {
-> +                       if (device_awake_path(pdd->dev)) {
-> +                               device_set_awake_path(domain->power_dev);
-> +                               break;
-> +                       }
-> +               }
+Hello Heiko, Damon,
 
-This is really messy in my opinion. Ideally the above should not be
-used by a genpd provider as it's internal data structures are managed
-by genpd itself.
+On Mon Jan 19, 2026 at 5:06 PM CET, Heiko St=C3=BCbner wrote:
+> Hi Damon,
+>
+> Am Mittwoch, 17. Dezember 2025, 10:33:03 Mitteleurop=C3=A4ische Normalzei=
+t schrieb Damon Ding:
+>> PATCH 1 is to ensure the last bridge declares OP_EDID or OP_MODES or bot=
+h.
+>> PATCH 2 is a small format optimization for struct analogid_dp_device.
+>> PATCH 3 is to perform mode setting in &drm_bridge_funcs.atomic_enable.
+>> PATCH 4 is to add a new parameter to store the point of next bridge.
+>> PATCH 5 is to make legacy bridge driver more universal.
+>> PATCH 6-11 are preparations for apply drm_bridge_connector helper.
+>> PATCH 12 is to apply the drm_bridge_connector helper.
+>> PATCH 13-15 are to move the panel/bridge parsing to the Analogix side.
+>> PATCH 16 is to attach the next bridge on Analogix side uniformly.
+>> PATCH 17-18 are to apply the panel_bridge helper.
+>
+> On top of all the recent bridge-related commits, this series still works
+> on my rk3588-eDP board - when the display is plugged in on boot.
+>
+> As that is the current state we also had before, this series:
+> Tested-by: Heiko Stuebner <heiko@sntech.de> on rk3588
 
-If I understand correctly, this problem boils down to the fact that we
-should have tried harder to model child/parent domains, rather than
-using runtime PM to manage the parent domains. I understand there are
-problems with that, due to specific power on/off sequences we have for
-imx power-domains, but I wonder if those could be managed better by
-using genpd on/off notifiers?
+I'm appplying patches 1-3 and got a checkpatch warning for each patch:
 
-Anyway, that said. Rather than walking through the list of devices as
-above, I suggest that you use the ->power_off() callback for the
-corresponding genpd(s) to dev in combination with a genpd power on/off
-notifier for the corresponding genpd that the power_dev is attached
-to.
+  WARNING: Unexpected content after email: 'Heiko Stuebner <heiko@sntech.de=
+> on rk3588', should be: 'Heiko Stuebner <heiko@sntech.de> (on rk3588)'
 
-More precisely, if the "child domain(s)" that corresponds to "dev" has
-not been powered-off (because device_awake_path() is set for some
-device) during system suspend, the power-off notifier should return
-NOTIFY_BAD to prevent the "parent domain" that corresponds to
-power_dev from being powered-off.
+I'm fixing it while applying those 3 patches.
 
-Would that work, you think?
+Damon, can you fix that for the remaining patches before sending a new
+iteration?
 
-Kind regards
-Uffe
+Luca
+
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
