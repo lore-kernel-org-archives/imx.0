@@ -1,203 +1,123 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8E42D9ECA
-	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 08:31:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770107480; cv=none; b=h1ROtTPaLKD+skObHoF0KDXxb4CmHAjbRWM0JbF/+jM0gZ9OVjw6AcTnDG6fi8IPi7yuw1v3enzFF9vH5F765czzjndEbCmGWqL/ikZ/X8D31pCbquwTqcBJdappPvpybb7uitxrHEJInxi3UaBK88hMYaUoXOvOIhtjCz3xQPE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770107480; c=relaxed/simple;
-	bh=x1NDGYyjVNVexG5Ob0VyhhbXb1lkIoaJMjvDlD6Yprk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qI/UCKEdSosDJEk2+BRRCDthg1SA5I+q6KBEQTHRZTibI0OpBRbM/edz4X73GxD2m+PX5yVXC2Li7G4NXHDeF7j1Tqx3jo3JN6nUO2wEQircv1iA6+KlvLqkR4dOm52EBcc3hbCNaDWnBR8//mlkl5Rum1Vh677m1k8KwnH03nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vnBoW-000544-4N; Tue, 03 Feb 2026 09:31:12 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vnBoU-003sBH-31;
-	Tue, 03 Feb 2026 09:31:10 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vnBoU-00E0iN-0J;
-	Tue, 03 Feb 2026 09:31:10 +0100
-Date: Tue, 3 Feb 2026 09:31:10 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
-Cc: Nicolas Dufresne <nicolas@ndufresne.ca>, linux-media@vger.kernel.org,
-	imx@lists.linux.dev, ulf.hansson@linaro.org, Frank.li@nxp.com,
-	peng.fan@nxp.com, festevam@gmail.com, robh@kernel.org,
-	benjamin.gaignard@collabora.com, sebastian.fricke@collabora.com,
-	linux-imx@nxp.com, devicetree@vger.kernel.org, conor+dt@kernel.org,
-	p.zabel@pengutronix.de, linux-pm@vger.kernel.org,
-	s.hauer@pengutronix.de, mchehab@kernel.org,
-	linux-arm-kernel@lists.infradead.org, eagle.zhou@nxp.com,
-	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
-	hverkuil-cisco@xs4all.nl, krzk+dt@kernel.org, shawnguo@kernel.org,
-	l.stach@pengutronix.de
-Subject: Re: [PATCH] arm64: dts: imx8mq: Restore VPU G2 clock to 600MHz for
- 4K60fps decoding
-Message-ID: <20260203083110.woan3gmc3qdh7nmm@pengutronix.de>
-References: <20260130084133.2159-1-ming.qian@oss.nxp.com>
- <df8d5d5f28870752e77ec74f34fea7ceb6e97286.camel@ndufresne.ca>
- <0b24716b-438c-4185-8a93-3a3879147c24@oss.nxp.com>
- <169eba79e8e1f906b1a0b59e22a531dfc7e57a1f.camel@ndufresne.ca>
- <5e3431c69da07557edb20a252c4759be8c857f08.camel@ndufresne.ca>
- <ca3a8042-1394-4925-9c61-dbfcbf4cf7d9@oss.nxp.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39ED5309EF7
+	for <imx@lists.linux.dev>; Tue,  3 Feb 2026 08:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770107570; cv=pass; b=hC5xmKqdELtgq2PoCRSW/028z74MeEIr/jxVmqB0xZaZXlHtv6Zt4YjMeK+WE8aZtnVB5toj+4wj2Biv02Si7w/LQCyk16SGsDwmkP5ifhNk+glGmoSSj6KAhOz373sdeHRyyfm0ATlBaQFbW0CfsSE1D6tADLSCgRLPhsBcYqM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770107570; c=relaxed/simple;
+	bh=ry0FHVTHq/pJe0PrqW5meMtNFTvAS6/0OqoEfkOx9WI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oWuxQ3sT2+FJgbWn3cXTfQ7T5paXSaA3CZkiJciGLAlnAoK6dui4GLusvKrigE8JP3UZnvN8mbtZLhNZ+uxHBitj56j+C2Zpas4t1+DzR28MV4s7biT/OAIH3kjtcDaHzXMLk0NBOT8N17yfrT1q+ogTkYTlxLZhzx3EiPfODRg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=idmDQQKI; arc=pass smtp.client-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="idmDQQKI"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-12460a7caa2so8127395c88.1
+        for <imx@lists.linux.dev>; Tue, 03 Feb 2026 00:32:47 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770107566; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Qqd7xVusv9uce4Ued3WFScfzRM4qNr+DTA72oFP2A9zz5yerkHpTNz+z2rxfphpRqo
+         VsgC7nad2Oyddz+BkKLbxoZd8G6YztpMkEJo1wfCrVOSmlhVv3z7Xrd+69tFZTwpn/wf
+         RcajRCH9tZubj/l6KOhD8ttJIvZLO0zcuNtQ31NJXU2mf+Yfpjhfrt/dl+gvxWvHsy2o
+         Z5LGBBPwaJg6NN61PjT9heyGxfJNxKV/EtKt5jMDd1BYfBR8PhUawylomwN558Mlrh2E
+         qD2ofbDnPnbWvOpihlOPrCswyM/oneWyjFH5iE6YjPZ22sqV/Y3jZLokYShKUkNIgwx+
+         l9ow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ry0FHVTHq/pJe0PrqW5meMtNFTvAS6/0OqoEfkOx9WI=;
+        fh=iyTTZqOLtDHwxfT6wb1wRLieKzZFbxxxwZCR1qDjcxg=;
+        b=QWcUQqy0kj8R1wimNsIj+V/3RnLmfqmRiAA+69OSPKurStsZ/Gs3Efg1GbiI6E8XUF
+         JNJI5khFUKW+mqJ6PBip6uV60gfdum9qqYxCBgIfFR1+M70mF2euvWL2Rcj/YAHAvDxZ
+         lmHtEo6jzZcxweFu+pie2IHYZ9Du/SpQPhpCtDhp1nP6n6a2Hje7DNLyNvpWwrLBTGHP
+         SXA/2AM2hWfDxAMadWvShqw5EfIU6beUoJaHurK3LVA3eMydJuiQmBBLIuekYNC93KD3
+         W58adzPDf+S9KWqn8xnAMvAxe1XR2O9p0UTVmATf/XU67L9lt1eaQWnVhTVRmiv72JQ0
+         3Gqw==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770107566; x=1770712366; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ry0FHVTHq/pJe0PrqW5meMtNFTvAS6/0OqoEfkOx9WI=;
+        b=idmDQQKI5uSaWMqqTWZJU0JWpT80Y3mEinlx3las3ZQksF3DMdc1cW4UVoPsa9l9kw
+         TQE26HRqH/yn04IW1i73e6+vXtM0swBLPwfY880sc0rlsO4KPz78KCryQ9k/WMfgejnE
+         04baIrYFL3q4ZQRDIX3k/xxeU7urxLNeZhTyWICrLuq8Oq1xGpeDu198HTB0v9JPmgnQ
+         VrUgRBQ6CG0qWooFZbK5KtNRMNJEGTRk9VxbASvCB4vZQpTe6CdhoBkmNY0tgXkOL1RE
+         d0FtXAVT7cIqhbdei7Os/sz2y/Wrv1+Z4CUuBNVv2zPrXYe+pyXhyWZiYbhPdD7TbUHP
+         z/SA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770107566; x=1770712366;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ry0FHVTHq/pJe0PrqW5meMtNFTvAS6/0OqoEfkOx9WI=;
+        b=D3EGKr5J/9UhQ4KSgJkCP+WVPP3Zf+yEMzuxWNqOnYDqnKQAKw/POuwsAh5Btp1xl4
+         tBYwD5my90YYJjdCX6YLQtw26jFtpVgNeqNoGAhYWb9RswzHQC2RB7sp57OQg13fi3+w
+         LmLv89sLI1bsoZKWPpsSOlzDjot535KRqGZdG3XkFT4XHrQAEr0L8RA5FzzAxbKGBcTc
+         +9TJdAhqzu37WMQrLcjCR+qME8t0XpU91IQeqRrsEUsGZAqOij3MrRX7kB41j3Jd26rJ
+         mBsDhf0kQg3ixSyswrYnVFH9QbVvDke2SQAj8bEMSscUUj7heHHL7gp/iBIa6ICDwB3S
+         +TmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWJmdn10OQorcBIUSIyWPnCM0jfw4iEgnJl2QMUrUtRV2E6KV3RSb0BBXQt2ppfv4tGLcw=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz18wgQHjd1jxEgvfP5rcxeCvSE+KLbyL/TS/ah5oOZDsmab3el
+	Ejk4LymFpNIGAyAL+AzogFt9TR4UcoNGyfdcZ54VPy1QR80OIWVcuJfhDkmEQbsa3q/R5oN9Uxe
+	gG42SHo3ec73b8FL056c25NhHV8QR1ds=
+X-Gm-Gg: AZuq6aKpBkhiDiEYjMKyUTIG7XUvT+gFl35cPQxEGqrAhtZ8+PbHtIr8qTwCGUulOJ7
+	AlROFNVQXbUsbLiXlQD5bjYoyyR5KGAca2CvFgKp/PZut30RKyOxyRcdTijMYr65YyzfhQdqehS
+	WvAAXkZc20hqmPQuubzt5+9Kiz7kJrfpVrDrTeXnxsi4aWca6U4bfdWW4pi6QorbkoAtw6W469J
+	sSxbpkoN/+mD/b6wCozfm2Ixe7A0uNqIC9xNxFRDN0DTzzllBOptmmntMf4SklaXRcbwk8g+3eN
+	ba/um34iYV3VG9n5CjqEnn52pK5VFM5wpe5jGr1tYRVHNcsQgmlD/Yr3MJUrb8P/C2YpHim6yld
+	11uB/pvGdQQ==
+X-Received: by 2002:a05:7022:160b:b0:119:e569:f60d with SMTP id
+ a92af1059eb24-125c0f8c302mr7264388c88.6.1770107566507; Tue, 03 Feb 2026
+ 00:32:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ca3a8042-1394-4925-9c61-dbfcbf4cf7d9@oss.nxp.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+References: <20260203031345.3850533-1-shengjiu.wang@nxp.com> <20260203031345.3850533-3-shengjiu.wang@nxp.com>
+In-Reply-To: <20260203031345.3850533-3-shengjiu.wang@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Tue, 3 Feb 2026 10:35:27 +0200
+X-Gm-Features: AZwV_Qgw24M2z0kseZy1hei1NjvsOXkgK0vaXVyKxBbNrRS-X0jSjdoVh3qv9-s
+Message-ID: <CAEnQRZAgjyKYZEJ9FVqRsCfzLOqwbRZXahqMMNdJpP54NAQ1PQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] ASoC: fsl_asrc_m2m: Add option to start ASRC
+ before DMA device for M2M
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: lgirdwood@gmail.com, broonie@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	linux-sound@vger.kernel.org, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, 
+	perex@perex.cz, tiwai@suse.com, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, Feb 3, 2026 at 5:13=E2=80=AFAM Shengjiu Wang <shengjiu.wang@nxp.com=
+> wrote:
+>
+> There is a limitation on i.MX952 that dma request is not cleared at the
+> end of conversion with dma slave mode. Which causes sample is dropped
+> from the input fifo on the second time if dma is triggered before the
+> client device and EDMA may copy wrong data from output fifo as the output
+> fifo is not ready in the beginning.
+>
+> The solution is to trigger asrc before dma on i.MX952, and add delay to
+> wait output data is generated then start the EDMA for output, otherwise
+> the m2m function has noise issues.
+>
+> So add an option to start ASRC first for M2M before ASRC is enabled on
+> i.MX952.
+>
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-sorry for jumping in.
 
-On 26-02-03, Ming Qian(OSS) wrote:
-> Hi Nicolas,
-> 
-> On 2/3/2026 3:12 AM, Nicolas Dufresne wrote:
-> > Hi,
-> > 
-> > Le lundi 02 février 2026 à 13:44 -0500, Nicolas Dufresne a écrit :
-> > > > This doesn't sound like just a VPU issue; it's related to the display or
-> > > > DDR.
-> > > > If not displayed, do the fluster test cases yield different results at
-> > > > 600MHz and 300MHz?
-> > > 
-> > > Didn't you run these tests before sending ? I can try again, but in my
-> > > internal
-> > > notes, I wrote:
-> > > 
-> > >    > Tested that, and everything becomes unstable
-> > > 
-> > > That was before I figure-out the IRQ handler didn't handle exception bits that
-> > > didn't stop the decoder (or dry IRQ, which strangely is common from the G2).
-> > 
-> > Ran some fluster tests now. With this patch the results is not consistent
-> > anymore. Then I ran it with weston being started, and in the middle of the test
-> > the display turned black. Matches my past observation. We did reproduce this on
-> > BSP kernel too. When the display goes black, the recent hantro drivers reports:
-> > 
-> > [  827.581586] hantro-vpu 38310000.video-codec: frame decode timed out.
-> > [  827.720201] hantro-vpu 38310000.video-codec: not all macroblocks were
-> > decoded.
-> > 
-> > 
-> > I have local patches to reduce the cascade of errors, so it likely survived
-> > longer then last time. I will send these patches soon. The "not all macroblocks
-> > were decoded." is triggered by a bit in the status register that is not
-> > documented in NXP TRM. I found that bit in some VC8000D documentation (the
-> > sucessor of G2). I concluded it was the same meaning after looking at the failed
-> > buffer visually, it is indeed missing couple of macroblocks near th end. Each
-> > time we see this error, the DCSS gives up and turn either black, or sometimes
-> > other color. The second case has been tracked to a DCSS Scaler underrun, the
-> > first we don't know.
-> > 
-> > Fluster command ran (two threads, never completes):
-> > 
-> > ./fluster.py run -d GStreamer-H.265-V4L2SL-Gst1.0 -ts JCT-VC-HEVC_V1 -j2 -t90
-> > 
-> > Nicolas
-> 
-> My test results for fluster differ from yours.
-> On my end, the results for JCT-VC-HEVC_V1 are consistent at both 300MHz and
-> 600MHz.
-> And results remained unchanged after multiple tests.
-> 
-> I'm not sure what caused the differences between us.
-
-Once it comes to system stability, you need to ensure that your
-bootstack is aligned e.g. same TF-A version and sometimes same
-bootloader since there might be workarounds/erratum applied by the boot
-firmware.
-
-Regards,
-  Marco
-
-> 
-> Below are my test results:
-> 
-> 600Mhz, 0.9v
-> 	cat /sys/kernel/debug/regulator/regulator_summary  |grep SW1C
-> 	 SW1C                             0    1      0 unknown   900mV     0mA
-> 825mV  1100mV
-> 	cat /sys/kernel/debug/clk/vpu_g2/clk_rate
-> 	600000000
-> 
-> 	./fluster.py run -ts JCT-VC-HEVC_V1 -d GStreamer-H.265-V4L2SL-Gst1.0 -j2 -t
-> 90
-> 	****************************************************************************************************
-> 	Running test suite JCT-VC-HEVC_V1 with decoder
-> GStreamer-H.265-V4L2SL-Gst1.0
-> 	Using 2 parallel job(s)
-> 	****************************************************************************************************
-> 
-> 	Ran 139/147 tests successfully               in 505.434 secs
-> 	Ran 139/147 tests successfully               in 505.350 secs
-> 	Ran 139/147 tests successfully               in 507.540 secs
-> 
-> 600Mhz, 1.0v
-> 	cat /sys/kernel/debug/regulator/regulator_summary  |grep SW1C
-> 	 SW1C                             0    1      0 unknown  1000mV     0mA
-> 825mV  1100mV
-> 	cat /sys/kernel/debug/clk/vpu_g2/clk_rate
-> 	600000000
-> 
-> 	./fluster.py run -ts JCT-VC-HEVC_V1 -d GStreamer-H.265-V4L2SL-Gst1.0 -j2 -t
-> 90
-> 	Ran 139/147 tests successfully               in 506.901 secs
-> 
-> 300Mhz, 0.9v
-> 	cat /sys/kernel/debug/regulator/regulator_summary  |grep SW1C
-> 	 SW1C                             0    1      0 unknown   900mV     0mA
-> 825mV  1100mV
-> 	cat /sys/kernel/debug/clk/vpu_g2/clk_rate
-> 	300000000
-> 
-> 	./fluster.py run -ts JCT-VC-HEVC_V1 -d GStreamer-H.265-V4L2SL-Gst1.0 -j2 -t
-> 90
-> 	Ran 139/147 tests successfully               in 506.063 secs
-> 
-> Downstream v4l2 driver
-> 	cat /sys/kernel/debug/regulator/regulator_summary  |grep SW1C
-> 	 SW1C                             0    2      0 unknown  1000mV     0mA
-> 825mV  1100mV
-> 	cat /sys/kernel/debug/clk/vpu_g2/clk_rate
-> 	600000000
-> 
-> 	./fluster.py run -ts JCT-VC-HEVC_V1 -d GStreamer-H.265-V4L2-Gst1.0 -j2 -t
-> 90
-> 	Ran 136/147 tests successfully               in 460.435 secs
-> 
-> Regards,
-> Ming
-> 
-> 
-
--- 
-#gernperDu 
-#CallMeByMyFirstName
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
