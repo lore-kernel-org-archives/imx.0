@@ -1,87 +1,272 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF87F3D3CF8;
-	Wed,  4 Feb 2026 13:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D342594BD
+	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 13:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770210185; cv=none; b=n2yGTrM4ctUSKDXx290pistXJjhhGFFnySGQh64iJFQU/oid7TKIXhzgeAYM6ZRx+7mRV65Y9vlMLNAqwrmTYPer96emwKI2NXnDmYHuQ6OU5Ii/oChqWfa15qkKx8EptEzuBlD/xHDAZoeSw4lO+UwzbWPA8zu88j3DIDYUYOc=
+	t=1770212785; cv=none; b=LoA5BvS+QQ0nvOkbaFG9D1XN6gxIYLJ1qwV6U4qJlHBdJfB/LAZgDWykBJib672VnajQS+YpAhJhmXH2b3AI4ilvTTAZ8S3cDCVm1qiIvYpeXu2kYCX1136b1JtSUw5q+6+QrsRAX6VjQo6jHnThk5HqlumIY41YwhF33LT8K9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770210185; c=relaxed/simple;
-	bh=3QItHXqUoMzeyKXRZJNCFPiV1VMKX3sZfql7qazHHg0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=CsDfWxhL+EhtEADfJpixcn4BPXZH1gp5aiZpjc+S65p5bQdlZUxchWierM2CaIMKvij+911pULWHX0OlcvT7hgNbDdVC5Thu7Df0ew1PA4pVTzeh/IEiO8mDYFZM2JN9948tHlU/evb/LsIiHPw7sR1FwWRBaIWwTF490Kz+ac4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QQV8esa3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770212785; c=relaxed/simple;
+	bh=FeNff6zrjmWciUFlh0FSiM0w5E8BMY8phPcL5rje6kU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mJb0YdzWBYjziz5M3uBHJZADV+3AdU/ndd4n8j/5B2QoOfCzrd6nuhyYI2XcRm0eA443uEnJfjUpgChT4DVp+BlNHDwvqnbjGaAAeltq5FyMSwi2fFBWvEFiClBjiemd48hSC+Jk6VFwN3/I8BRSfgXSxkd6XZSo38Te9kbgY/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BN55b8y8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QQV8esa3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DCDC4CEF7;
-	Wed,  4 Feb 2026 13:03:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BN55b8y8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B380C2BC9E
+	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 13:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770210185;
-	bh=3QItHXqUoMzeyKXRZJNCFPiV1VMKX3sZfql7qazHHg0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=QQV8esa3dwBSlM95uObtmKPh31g2dEvhcqWLG4q3SlEDTc3vReOpuxdXmeTsxvOTu
-	 9Rc1pnuydsFzOQXNS+VC6Ucdb7ICCURP8D0WqbJ0NNJbK3hSO0qBatOCpl/2ZYwUU3
-	 3XD0LhpCJNXebMmXE+vEKx4mgZ6lm2VMz+MXkm+hCa9muXHBgl3h8XFZDh0vLbb3Jz
-	 7N71WHWAp3aVPKhXnC6w2AHS4b3a2D0DVvYNX/xn0c5CtWJSyTdYP3FzNyB3Ziwkk3
-	 I5h+72qsNvCGcL72A91pUBGgm9pwz102oBwoJZVuDLYedAso5bzR3Gw+QKYIxRLDRQ
-	 Syo796qICsyPA==
-From: Mark Brown <broonie@kernel.org>
-To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, 
- Baojun Xu <baojun.xu@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jai Luthra <jai.luthra@linux.dev>, 
- linux-sound@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
-Cc: imx@lists.linux.dev
-In-Reply-To: <20260202205758.3044617-1-Frank.Li@nxp.com>
-References: <20260202205758.3044617-1-Frank.Li@nxp.com>
-Subject: Re: [PATCH 1/1] ASoC: dt-bindings: ti,tlv320aic3x: Add compatible
- string ti,tlv320aic23
-Message-Id: <177021018303.97050.14618898724597505877.b4-ty@kernel.org>
-Date: Wed, 04 Feb 2026 13:03:03 +0000
+	s=k20201202; t=1770212785;
+	bh=FeNff6zrjmWciUFlh0FSiM0w5E8BMY8phPcL5rje6kU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=BN55b8y8vF/yHrrykpQ43Zn0LHvDzf2+bGJNgcy6WXsqL4Kpv1QojF89LlTyE93bE
+	 njQmmPFPEuUm2wamRAPJCprkjdqXLHEev03w5hsMDeYoOdk2ebeDC41AhsuOOSJ+Bq
+	 ffj/zE1iT4/bd9826iLY+1XyCs4BXnpptBMJaeUQC0pfDLL3CSQ1+AuxBx4oay0Uxl
+	 GH3CHfp0B0M1rGxCZMrwc0XlmfO0KyDX3WfKw61mVghM/QZMe+xMkZrNqPZ0Rpf8O5
+	 0tjqJpkOxRcyKY1bvpBVOk852tpdUVo8d8aVCLmsvM2/dkHkg/TQ8W5GKGvMqvyh0f
+	 W3YlP0Bfbn4Tg==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b885e8c6727so188461566b.1
+        for <imx@lists.linux.dev>; Wed, 04 Feb 2026 05:46:24 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU1BXL5wJvx57tCR5uBdJJr7vIOQGL3E5zM4oHBuP3U7cvEpyCKIJhPp/BMMN+y1y/+yb8=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw5QIhg2oQPbc9/ua1YZyWvXWmHZEO5GwnODfXbfI6ObY2RqoHA
+	B/+REYXdGeShxFtQsRC3nTBjJTZuJslvSg2M5OeCa+8Z4UGzgWIlcqfheRduoKx/MMaYoNwQ1Fu
+	m6XJOOq6NS7moIomqUACBKrRblOSWcQ==
+X-Received: by 2002:a17:907:7ba1:b0:b88:440b:65c4 with SMTP id
+ a640c23a62f3a-b8e838d36e3mr446539666b.25.1770212783590; Wed, 04 Feb 2026
+ 05:46:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
+References: <20260204-add-flatten-dts-based-dwc3-imx-driver-v2-0-d2c9b5a58c01@nxp.com>
+ <20260204-add-flatten-dts-based-dwc3-imx-driver-v2-1-d2c9b5a58c01@nxp.com>
+In-Reply-To: <20260204-add-flatten-dts-based-dwc3-imx-driver-v2-1-d2c9b5a58c01@nxp.com>
+From: Rob Herring <robh@kernel.org>
+Date: Wed, 4 Feb 2026 07:46:11 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLcqSKgNjx2nejwjSsNPwqAmEsRHX-6YwE-8r_32C4=ZQ@mail.gmail.com>
+X-Gm-Features: AZwV_QjSgm66I4Qb-FM5KDeDvEBpAt3nGOL-hi0EvlGrPlxaGX84UJJRpnPN54o
+Message-ID: <CAL_JsqLcqSKgNjx2nejwjSsNPwqAmEsRHX-6YwE-8r_32C4=ZQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] dt-bindings: usb: introduce fsl,imx-dwc3
+To: Xu Yang <xu.yang_2@nxp.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, Li Jun <jun.li@nxp.com>, 
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>, linux-usb@vger.kernel.org, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 02 Feb 2026 15:57:57 -0500, Frank Li wrote:
-> Add compatible string ti,tlv320aic23 to fix below CHECK_DTB warning:
-> arch/arm/boot/dts/nxp/imx/imx35-eukrea-mbimxsd35-baseboard.dtb:
->     /soc/bus@43f00000/i2c@43f80000/codec@1a: failed to match any schema with compatible: ['ti,tlv320aic23']
-> 
-> 
+On Wed, Feb 4, 2026 at 5:05=E2=80=AFAM Xu Yang <xu.yang_2@nxp.com> wrote:
+>
+> The i.MX USB glue and DWC3 core are closely coupled. Describe the i.MX
+> USB block in a single block will bring more benefits than a parent-
+> child relation. The new binding is a copy of fsl,imx8mp-dwc3.yaml with
+> the needed modifications.
+>
+> Add the common compatible string "fsl,imx-dwc3" to indicate that the
+> flattened module should be selected. This compatible is also used by
+> "select" to inform the DeviceTree validator to apply this binding.
+>
+> To avoid redefining all the platform-specific compatibles, "select" is
+> used to tell the DeviceTree validator which binding to use solely on the
+> generic compatible.
+>
+> Mark fsl,imx8mp-dwc3 deprecated, to favor expressing future platforms
+> using the new combined binding.
+>
+> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+>
+> ---
+> Changes in v2:
+>  - reorder compatible property
+> ---
+>  .../devicetree/bindings/usb/fsl,imx-dwc3.yaml      | 131 +++++++++++++++=
+++++++
+>  .../devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml   |  13 ++
+>  2 files changed, 144 insertions(+)
+>
+> diff --git a/Documentation/devicetree/bindings/usb/fsl,imx-dwc3.yaml b/Do=
+cumentation/devicetree/bindings/usb/fsl,imx-dwc3.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..6932804516948bc0f8457553e=
+ee7e5ee704237f0
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/usb/fsl,imx-dwc3.yaml
+> @@ -0,0 +1,131 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +# Copyright 2026 NXP
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/usb/fsl,imx-dwc3.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP i.MX Soc USB Controller
+> +
+> +maintainers:
+> +  - Xu Yang <xu.yang_2@nxp.com>
+> +
+> +select:
+> +  properties:
+> +    compatible:
+> +      contains:
+> +        const: fsl,imx-dwc3
+> +  required:
+> +    - compatible
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - enum:
+> +          - fsl,imx8mp-dwc3
 
-Applied to
+You can't reuse the same compatible for a new binding.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+> +          - fsl,imx94-dwc3
+> +          - fsl,imx95-dwc3
+> +      - const: fsl,imx-dwc3
 
-Thanks!
+Drop. If you want a fallback, use the 1st SoC's compatible.
 
-[1/1] ASoC: dt-bindings: ti,tlv320aic3x: Add compatible string ti,tlv320aic23
-      commit: 85352e59de4ce09de8322b2591a26f515fbde9c0
+> +
+> +  reg:
+> +    items:
+> +      - description: DWC3 core registers
+> +      - description: HSIO Block Control registers
+> +      - description: Wrapper registers of dwc3 core
+> +
+> +  reg-names:
+> +    items:
+> +      - const: core
+> +      - const: blkctl
+> +      - const: glue
+> +
+> +  interrupts:
+> +    items:
+> +      - description: DWC3 controller interrupt
+> +      - description: Wakeup interrupt from glue logic
+> +
+> +  interrupt-names:
+> +    items:
+> +      - const: dwc_usb3
+> +      - const: wakeup
+> +
+> +  iommus:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    items:
+> +      - description: System hsio root clock
+> +      - description: SoC Bus Clock for AHB/AXI/Native
+> +      - description: Reference clock for generating ITP when UTMI/ULPI P=
+HY is suspended
+> +      - description: Suspend clock used for usb wakeup logic
+> +
+> +  clock-names:
+> +    items:
+> +      - const: hsio
+> +      - const: bus_early
+> +      - const: ref
+> +      - const: suspend
+> +
+> +  fsl,permanently-attached:
+> +    type: boolean
+> +    description:
+> +      Indicates if the device attached to a downstream port is
+> +      permanently attached
+> +
+> +  fsl,disable-port-power-control:
+> +    type: boolean
+> +    description:
+> +      Indicates whether the host controller implementation includes port
+> +      power control. Defines Bit 3 in capability register (HCCPARAMS)
+> +
+> +  fsl,over-current-active-low:
+> +    type: boolean
+> +    description:
+> +      Over current signal polarity is active low
+> +
+> +  fsl,power-active-low:
+> +    type: boolean
+> +    description:
+> +      Power pad (PWR) polarity is active low
+> +
+> +  power-domains:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - interrupts
+> +  - power-domains
+> +
+> +allOf:
+> +  - $ref: snps,dwc3-common.yaml#
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +
+> +    usb@4c100000 {
+> +      compatible =3D "fsl,imx943-dwc3", "fsl,imx-dwc3";
+> +      reg =3D <0x4c100000 0x10000>,
+> +            <0x4c010010 0x04>,
+> +            <0x4c1f0000 0x20>;
+> +      reg-names =3D "core", "blkctl", "glue";
+> +      clocks =3D <&scmi_clk 74>,    //IMX94_CLK_HSIO
+> +               <&scmi_clk 74>,    //IMX94_CLK_HSIO
+> +               <&scmi_clk 2>,     //IMX94_CLK_24M
+> +               <&scmi_clk 1>;     //IMX94_CLK_32K
+> +      clock-names =3D "hsio", "bus_early", "ref", "suspend";
+> +      interrupts =3D <GIC_SPI 180 IRQ_TYPE_LEVEL_HIGH>,
+> +                   <GIC_SPI 386 IRQ_TYPE_LEVEL_HIGH>;
+> +      interrupt-names =3D "dwc_usb3", "wakeup";
+> +      power-domains =3D <&scmi_devpd 13>;   //IMX94_PD_HSIO_TOP
+> +      phys =3D <&usb3_phy>, <&usb3_phy>;
+> +      phy-names =3D "usb2-phy", "usb3-phy";
+> +      snps,gfladj-refclk-lpm-sel-quirk;
+> +      snps,parkmode-disable-ss-quirk;
+> +      status =3D "disabled";
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Examples should be enabled.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+> +    };
+> diff --git a/Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml b=
+/Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml
+> index 73e7a60a0060dee6417b9469251e121704b7a148..fd23c345149e0dba1ed3919a2=
+5195edf247cfc08 100644
+> --- a/Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml
+> +++ b/Documentation/devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml
+> @@ -10,6 +10,19 @@ title: NXP iMX8MP Soc USB Controller
+>  maintainers:
+>    - Li Jun <jun.li@nxp.com>
+>
+> +deprecated: true
+> +
+> +select:
+> +  properties:
+> +    compatible:
+> +      oneOf:
+> +        - items:
+> +            - const: fsl,imx95-dwc3
+> +            - const: fsl,imx8mp-dwc3
+> +        - const: fsl,imx8mp-dwc3
+> +  required:
+> +    - compatible
+> +
+>  properties:
+>    compatible:
+>      oneOf:
+>
+> --
+> 2.34.1
+>
+>
