@@ -1,97 +1,139 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C742F2914
-	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 09:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B413E3644CE
+	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 09:25:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770196080; cv=none; b=ctHmYz+V1/9L4zcdUBVXJnliqt76c9j+TlQ0XVCKyZX+3UC6S6arkZuBz40tmD6rFboIHTlEKki6UT5b401p7InZTdbYYJmdMTd/WYJsxZVpVM8L3omenBFGpE9WpcJz6/XLOM+TyR+p/+wjQRCcVJqEV49B38M1sD8R2cSwAPA=
+	t=1770197106; cv=none; b=C7jXDoWHuXbP8Pk9fijadbjjVkWuEqCJACwAHw//NAIf0Bnn7Bv0sT4KXmHkTf4kXbaV1f4/IU202cj30d0Y0s2G7o/jy+Ap3JpiwwZ7vf2fUrYslBkO2SBS9vGc3Wkls5KPlzhKuc6cB+lQH9Q7PWVvXX1Rx3pkJja93vKDE88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770196080; c=relaxed/simple;
-	bh=FZTLP1KYKmcvJ0xf9LwZAFgwjJpgsCxJb+hTRIWwSzM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MA4/5MsfEbb+bbGYeBUtOtcuOJww08dZu/0vK/+ddCwYCZ9ZiAvXQbI+zENWAPkfO59ucNpSp3fTcVUIZBpTNhQxmfgsBU1d/lRmECoUgPvbNvmaZ+guYpSlqGa6DGnqDopSs/z3veXNe7pAv8l+p5HUcLTGo1VYKsiDQXEsVnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost (unknown [124.16.138.129])
-	by APP-01 (Coremail) with SMTP id qwCowABnD2tjDINpCwsgBw--.19519S2;
-	Wed, 04 Feb 2026 17:07:47 +0800 (CST)
-From: Chen Ni <nichen@iscas.ac.cn>
-To: p.zabel@pengutronix.de,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	luca.ceresoli@bootlin.com,
-	louis.chauvet@bootlin.com
-Cc: dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Chen Ni <nichen@iscas.ac.cn>
-Subject: [PATCH] drm/imx: parallel-display: check return value of devm_drm_bridge_add() in imx_pd_probe()
-Date: Wed,  4 Feb 2026 17:06:29 +0800
-Message-Id: <20260204090629.2209542-1-nichen@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1770197106; c=relaxed/simple;
+	bh=vc2yGibGO/7S61xBjDTD6pcJ+5GAGFalUXGaw7PivYg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ox1o2MpwcL8lBZJv9iyGuQZM4oVpKDUVQ/EbA1dQPxk/vyXQtF2k4N3LBXV7yk6xPHJav9eVZH2PrXIlRf9lsUq+bpIkCdDPWg3Zq33ggWhlWG2KALFltduUz4WxhpAJuX7h1eE/aSA94DLv0imSxOeIqN8J4vUHtp3HeZ71SjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=HYMbVBcX; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="HYMbVBcX"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4f5Zgx6QSkz9vDh;
+	Wed,  4 Feb 2026 10:25:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1770197101;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RxOlQodzm6R/baEVz+4rB5Qqmmbl46tAihAFv68RzaQ=;
+	b=HYMbVBcXXbeEQ4H++CWAHqOs5ataMLQ2PTg3Bvi+vNroVt18LkGQWRAqhNmZMEC+krl4J3
+	U0RMxaPMVa3AE39/jfcM0Ei6W4MGVDm8vxdVosxYjahgWXGjR+ucKapetnuAhMcjZvbhzJ
+	NBQ26z9ZTnAc8T90PLs0jkcUrGVB5nMfnaRS4c2pDA98Eiw2YtY0gmHUIf+oNl/nSIsnXx
+	RfNcWTfwfHhjCgHw2ZQYcCtSR7oejxTE/rKd4PmPMHrh0Xu47rdqn0w0myyCvEr49G4k16
+	h1xsGhgjY5b1mRpFyAlLM1yLncdvx1dBpZ9w6t07QD4ZOpLCOkggJoR4flaTow==
+Date: Wed, 4 Feb 2026 10:24:52 +0100
+From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: andrew@lunn.ch, shawnguo@kernel.org, krzk+dt@kernel.org,
+ linux-kernel@vger.kernel.org, edumazet@google.com, netdev@vger.kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ conor+dt@kernel.org, horms@kernel.org, richardcochran@gmail.com,
+ robh@kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, wahrenst@gmx.net, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com
+Subject: Re: [net-next,v22,2/7] net: mtip: The L2 switch driver for imx287
+Message-ID: <20260204102452.180eb416@wsk>
+In-Reply-To: <20260203174714.79388301@kernel.org>
+References: <20260131233459.1625279-3-lukasz.majewski@mailbox.org>
+	<20260203013909.822898-2-kuba@kernel.org>
+	<20260203211955.23ef4355@wsk>
+	<20260203174714.79388301@kernel.org>
+Organization: mailbox.org
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABnD2tjDINpCwsgBw--.19519S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKF1UJFy3tF1DWF43Aw45trb_yoWkWrX_uF
-	1j9F1rXFy5CFnFgr17Gw4fAryvvwn8uFWxAFn0gwsIqry5Aw43X39FvryDZrWxAw12yry5
-	Gw1UGF47AFnrCjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbTkFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-	Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r4a6rW5MxkIecxEwVAFwVW8uwCF04k20xvY0x0EwIxGrw
-	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
-	14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
-	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
-	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI
-	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRrsqAUUUUU=
-X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-MBO-RS-ID: a37455c1274356fa2fd
+X-MBO-RS-META: 9srgwun7amh3ixsdai6ym39433cis3wc
 
-Return the value of devm_drm_bridge_add() in order to propagate the
-error properly, if it fails due to resource allocation failure or bridge
-registration failure.
+Hi Jakub,
 
-This ensures that the probe function fails safely rather than proceeding
-with a potentially incomplete bridge setup.
+> On Tue, 3 Feb 2026 21:19:55 +0100 =C5=81ukasz Majewski wrote:
+> > > > +static void mtip_write_atable(struct switch_enet_private *fep,
+> > > > int index,
+> > > > +			      u32 write_lo, u32 write_hi)
+> > > > +{
+> > > > +	struct addr_table64b_entry __iomem *atable_base =3D
+> > > > +		fep->hwentry->mtip_table64b_entry;
+> > > > +
+> > > > +	writel(write_lo, &atable_base[index].lo);
+> > > > +	writel(write_hi, &atable_base[index].hi);
+> > > > +}     =20
+> > >=20
+> > > Can these functions race with concurrent access? Looking at the
+> > > callers, mtip_write_atable is called from two different paths:
+> > >=20
+> > > 1. Static entry updates: mtip_config_switch ->
+> > > esw_mac_addr_static -> mtip_update_atable_static ->
+> > > mtip_write_atable (no lock held)
+> > >=20
+> > > 2. Dynamic entry updates: timer callback -> mtip_mgnt_timer ->
+> > >    mtip_atable_dynamicms_learn_migration ->
+> > > mtip_update_atable_dynamic1 -> mtip_write_atable (learn_lock held)
+> > >=20
+> > > The learn_lock only protects the dynamic entry path. The static
+> > > entry path runs during link changes (mtip_switch_restart called
+> > > from mtip_adjust_link) without lock protection.
+> > >=20
+> > > Both paths can access the same hash block in the address table
+> > > (determined by GET_BLOCK_PTR(hash)). If the timer fires during a
+> > > link change callback, both can concurrently access the table,
+> > > potentially causing torn reads (reading .lo from one entry
+> > > version and .hi from another) or torn writes (the entry is in an
+> > > inconsistent state between the two writel calls).
+> > >=20
+> > > Would extending learn_lock to protect all address table access
+> > > work, or is a separate hw_lock needed for hardware register
+> > > access?=20
+> >=20
+> > This is handled in another way:
+> >=20
+> > 1. Partial write is not possible as this IP block handles it in
+> > order (with some kind of 'latch' registers):
+> >=20
+> > "VFxxx Controller Reference Manual, Rev. 0, 10/2016"
+> > 11.5.4 MAC address lookup table
+> >=20
+> > "Each entry must be written or read with the low address accessed
+> > first followed by the high address"
+> >=20
+> > 2. The code for dynamic IP writing will not "touch" the entries for
+> > "static" MAC addresses - Figure 11-70 - bit 49 is "Record Type":
+> > 	1 - static entry
+> > 	0 - dynamic entry
+> >=20
+> > IMHO, we are "safe" here. =20
+>=20
+> My reading of the AI's comment was that there is no lock in SW so two
+> SW threads can write:
+>=20
+>    Thread A   Thread B
+>    write_lo
+>               write_lo
+>               write_hi
+>    write_hi
 
-Fixes: bf7e97910b9f ("drm/imx: parallel-display: add the bridge before attaching it")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
----
- drivers/gpu/drm/imx/ipuv3/parallel-display.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Ok. Then I can add "atable_access" spin lock to prevent from this
+situation.
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/parallel-display.c b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-index 6fbf505d2801..590120a33fa0 100644
---- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-+++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-@@ -256,7 +256,9 @@ static int imx_pd_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, imxpd);
- 
--	devm_drm_bridge_add(dev, &imxpd->bridge);
-+	ret = devm_drm_bridge_add(dev, &imxpd->bridge);
-+	if (ret)
-+		return ret;
- 
- 	return component_add(dev, &imx_pd_ops);
- }
--- 
-2.25.1
+--=20
+Best regards,
 
+=C5=81ukasz Majewski
