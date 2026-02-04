@@ -1,90 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E533D524D
-	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 10:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6452F3A7855
+	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 10:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770200547; cv=none; b=NCvP0qnadT5zyzCOm7tYOdyP/uMAl5mfwBeowdyPRdd67H4cWW8oUwozLiMZazj5FS2fDTpC181iaw/hR+w+nwqLxlhHPX1ul2GjXKpg/RSiZ5zHTi8/3CK60rpOheFvVOHcMJgypf5lZhJjDrZPh6dSGT4eEfeSbqFNwcQDkBU=
+	t=1770201486; cv=none; b=Y9MmMgZMne4QonysGTN2862GD+JLObe05dhtVn2UjQ+iCf2ft2KaV+WJEcnGEfSCWuzFsEZ4bAD77XkShGxrhXfFnonjdrRI4iclTTF2UpFpBiwMEVr/LOXV+xTinkGMFCozYrxlnnD1xnoqhwTVUdks6qZ9/cU/cobsxkURft4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770200547; c=relaxed/simple;
-	bh=0XATEAMeBs1Zx9E6NM3rF6bKiyOXGWYkJI4E2lACtlM=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CSleS+sq0j8jiYXuNLJYUUFxgpXNrhfvWuTKPBjO9eqaxE8ys4Y8HgiVdMADMydK/UX4Lfo2jg5LCuVleZUwUyHh0FbdnIfKmdwSZ/QNYvdKGcjtLeOGU5KN4SVd4Eu6bcS41N+gSySIMziUhy/7FxHH1xXik1YMo9l0RviUmCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BnG4lkqE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770201486; c=relaxed/simple;
+	bh=7NsKgj4oO9DEQlj7JSZm1oRVn5uZiWnpF/DaUeIZH/A=;
+	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
+	 Message-Id:Date; b=Cll/e1fSJf3Pw+vd6VBhwCAMvhpxbCz9xQFbpMR9SIq9HE0zU2MmsZM4a6p04I+w1M9omlWtKeACZDpQu8iHwNioJf2Irplm2E94blTQgh0Mz2lHlLfw45fqHlAXNLRw13319qv5qc6HdU4Lx0oyufNvYgqZb/DJs05ZrdTLVAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=hfQ2YHQG; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BnG4lkqE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A16C2BCB7
-	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 10:22:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770200547;
-	bh=0XATEAMeBs1Zx9E6NM3rF6bKiyOXGWYkJI4E2lACtlM=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
-	b=BnG4lkqEu9ed95d/Iqb3Nrs2IS6pjVNwtvK3qgeFjCTSmrcs5EZgnuRF9r1qhiLUC
-	 OczPvUWzUlPHiy2qRX4Z0nJqrLstH/rlFHjjd8PEHgrDE3Ymu4xQsDn4ic+Zc9gi4n
-	 4uZ3nkyJXVNvozNQXz1nDpgDB7tn45GHVzjx1AeT1hwfiCX+MwC7+jV3+lloAgwXiV
-	 Qs/BgKG/Vmeh6Vi/DNBVfX4MJZhSjHIb/kt3ou1lyTY51OrHPGysYHw6QWMESh6Wub
-	 KyrAnWjb2M8I1XcOdOr+AHPO59ROoTMLVtqkC4SpscCLEOcKNaCOY81SQtzVo918rL
-	 vecauk9B2LD9A==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-59e17afd2d5so6370199e87.3
-        for <imx@lists.linux.dev>; Wed, 04 Feb 2026 02:22:27 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWLH7Y+Yeg2Jdhv9qdjfC7lTM6jGg+0xnuArLx7a3EVUQc0zxypOL3xaipJqnsP7eYhtoA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzecWZ71vAwUVV1pMYr7esFrXjl3fmT3QuOgdF9TqPZgo2V9dkt
-	q32MSAdCkeHFnRk2jX4oCw46wxeKVe8goRvyoaC1q1INZGeFXXbBagPHI77EEar0DgbqaSC+jko
-	WKPab9lxImoMSjmLNjItapnTgSxvwJBwyNACVI/kAiw==
-X-Received: by 2002:a05:6512:3991:b0:59d:fe49:7f6d with SMTP id
- 2adb3069b0e04-59e38c023cbmr1138987e87.5.1770200545799; Wed, 04 Feb 2026
- 02:22:25 -0800 (PST)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 4 Feb 2026 05:22:24 -0500
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 4 Feb 2026 05:22:24 -0500
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260203-dev-b4-aaeon-mcu-driver-v3-4-0a19432076ac@bootlin.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="hfQ2YHQG"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=cmBXQFWwMJpNA6HYvHV+pn0Z7Isl9C8hhe8elfOnPD4=; b=hfQ2YHQGZIQm0RQasJiJholAJ4
+	W8EaKCsaNrbAclFFje09t0ZJg3V9Fysk4jo/8059NJOFCFZgN/uWmgEX9nf9F51qmlixOhJoIZcXS
+	zRvFZQUduZdslxT/ACRO61vDTzJXkSkV2TMbzk1elI+uJMF90wlldW4LupYMH1q3o5AuFSP3X6+Uu
+	tMms6oQxwtYvFBotgzcJrjThgJPJRxAsb7B5FfliZBocxzscxeM1A2FssY7mqQoTe4Q7TJ/jaYv0W
+	P8QVYnPm25HlblUSdiFXh71VdJFlp+zxJ2XxTyFo/jjzy7k4Wf+3dXsT02dIA3tacRcz8tOS0MXkc
+	b4/hjrgw==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:53300 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1vnaGl-000000006DG-3gVg;
+	Wed, 04 Feb 2026 10:37:59 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1vnaGl-00000007i9f-0ZMw;
+	Wed, 04 Feb 2026 10:37:59 +0000
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	imx@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH net-next] net: stmmac: imx: fix iMX93 register definitions
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260203-dev-b4-aaeon-mcu-driver-v3-0-0a19432076ac@bootlin.com> <20260203-dev-b4-aaeon-mcu-driver-v3-4-0a19432076ac@bootlin.com>
-Date: Wed, 4 Feb 2026 05:22:24 -0500
-X-Gmail-Original-Message-ID: <CAMRc=Me5WfdQPhW8MSMTRZ=6wm+hKAKEOr_aPLyf=PAKA6_0Qw@mail.gmail.com>
-X-Gm-Features: AZwV_QjA-Mb0Chvn876wYAP45YJOzVMz5MdgG_VnrHm1s9EwIRwKYyInNCPAbPM
-Message-ID: <CAMRc=Me5WfdQPhW8MSMTRZ=6wm+hKAKEOr_aPLyf=PAKA6_0Qw@mail.gmail.com>
-Subject: Re: [PATCH v3 4/5] gpio: aaeon: Add GPIO driver for SRG-IMX8P MCU
-To: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, 
-	=?UTF-8?B?SsOpcsOpbWllIERhdXRoZXJpYmVz?= <jeremie.dautheribes@bootlin.com>, 
-	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1vnaGl-00000007i9f-0ZMw@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Wed, 04 Feb 2026 10:37:59 +0000
 
-On Tue, 3 Feb 2026 17:21:13 +0100, "Thomas Perrot (Schneider
-Electric)" <thomas.perrot@bootlin.com> said:
-> Add GPIO driver for the Aaeon SRG-IMX8P embedded controller. This
-> driver supports 7 GPO (General Purpose Output) pins and 12 GPIO pins
-> that can be configured as inputs or outputs.
->
-> The driver implements proper state management for GPO pins (which are
-> output-only) and full direction control for GPIO pins. During probe,
-> all pins are reset to a known state (GPOs low, GPIOs as inputs) to
-> prevent undefined behavior across system reboots, as the MCU does not
-> reset GPIO states on soft reboot.
->
-> Co-developed-by: J=C3=A9r=C3=A9mie Dautheribes (Schneider Electric) <jere=
-mie.dautheribes@bootlin.com>
-> Signed-off-by: J=C3=A9r=C3=A9mie Dautheribes (Schneider Electric) <jeremi=
-e.dautheribes@bootlin.com>
-> Signed-off-by: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.=
-com>
-> ---
+When looking at the iMX93 documentation, the definitions in the driver
+do not correspond with the documentation, which makes the driver
+confusing.
 
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+The driver, for example, re-uses a definition for bit 0 for two
+different registers, where this bit have completely different purposes.
+
+Fix this by renaming the second register, and adding a definition that
+reflects the true purpose of bit 0 in the first register (EQOS enable.)
+
+Replace MX93_GPR_ENET_QOS_INTF_MODE_MASK with MX93_GPR_ENET_QOS_ENABLE
+and MX93_GPR_ENET_QOS_INTF_SEL_MASK as MX93_GPR_ENET_QOS_INTF_MODE_MASK
+is not a register field.
+
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ .../net/ethernet/stmicro/stmmac/dwmac-imx.c   | 25 +++++++++++--------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+index ecc0c3483423..c4e85197629d 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+@@ -28,11 +28,11 @@
+ #define GPR_ENET_QOS_CLK_TX_CLK_SEL	(0x1 << 20)
+ #define GPR_ENET_QOS_RGMII_EN		(0x1 << 21)
+ 
+-#define MX93_GPR_ENET_QOS_INTF_MODE_MASK	GENMASK(3, 0)
+ #define MX93_GPR_ENET_QOS_INTF_SEL_MASK		GENMASK(3, 1)
+-#define MX93_GPR_ENET_QOS_CLK_GEN_EN		(0x1 << 0)
+-#define MX93_GPR_ENET_QOS_CLK_SEL_MASK		BIT_MASK(0)
+-#define MX93_GPR_CLK_SEL_OFFSET			(4)
++#define MX93_GPR_ENET_QOS_ENABLE		BIT(0)
++
++#define MX93_ENET_CLK_SEL_OFFSET		(4)
++#define MX93_ENET_QOS_CLK_TX_SEL_MASK		BIT_MASK(0)
+ 
+ #define DMA_BUS_MODE			0x00001000
+ #define DMA_BUS_MODE_SFT_RESET		(0x1 << 0)
+@@ -95,17 +95,18 @@ static int imx93_set_intf_mode(struct imx_priv_data *dwmac, u8 phy_intf_sel)
+ 	if (phy_intf_sel == PHY_INTF_SEL_RMII && dwmac->rmii_refclk_ext) {
+ 		ret = regmap_clear_bits(dwmac->intf_regmap,
+ 					dwmac->intf_reg_off +
+-					MX93_GPR_CLK_SEL_OFFSET,
+-					MX93_GPR_ENET_QOS_CLK_SEL_MASK);
++					MX93_ENET_CLK_SEL_OFFSET,
++					MX93_ENET_QOS_CLK_TX_SEL_MASK);
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
+ 	val = FIELD_PREP(MX93_GPR_ENET_QOS_INTF_SEL_MASK, phy_intf_sel) |
+-	      MX93_GPR_ENET_QOS_CLK_GEN_EN;
++	      MX93_GPR_ENET_QOS_ENABLE;
+ 
+ 	return regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
+-				  MX93_GPR_ENET_QOS_INTF_MODE_MASK, val);
++				  MX93_GPR_ENET_QOS_INTF_SEL_MASK |
++				  MX93_GPR_ENET_QOS_ENABLE, val);
+ };
+ 
+ static int imx_dwmac_clks_config(void *priv, bool enabled)
+@@ -205,7 +206,8 @@ static void imx93_dwmac_fix_speed(void *priv, int speed, unsigned int mode)
+ 	old_ctrl = readl(dwmac->base_addr + MAC_CTRL_REG);
+ 	ctrl = old_ctrl & ~CTRL_SPEED_MASK;
+ 	regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
+-			   MX93_GPR_ENET_QOS_INTF_MODE_MASK, 0);
++			   MX93_GPR_ENET_QOS_INTF_SEL_MASK |
++			   MX93_GPR_ENET_QOS_ENABLE, 0);
+ 	writel(ctrl, dwmac->base_addr + MAC_CTRL_REG);
+ 
+ 	 /* Ensure the settings for CTRL are applied. */
+@@ -213,9 +215,10 @@ static void imx93_dwmac_fix_speed(void *priv, int speed, unsigned int mode)
+ 
+ 	usleep_range(10, 20);
+ 	iface &= MX93_GPR_ENET_QOS_INTF_SEL_MASK;
+-	iface |= MX93_GPR_ENET_QOS_CLK_GEN_EN;
++	iface |= MX93_GPR_ENET_QOS_ENABLE;
+ 	regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
+-			   MX93_GPR_ENET_QOS_INTF_MODE_MASK, iface);
++			   MX93_GPR_ENET_QOS_INTF_SEL_MASK |
++			   MX93_GPR_ENET_QOS_ENABLE, iface);
+ 
+ 	writel(old_ctrl, dwmac->base_addr + MAC_CTRL_REG);
+ }
+-- 
+2.47.3
+
