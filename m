@@ -1,171 +1,252 @@
-Received: from mail-m49224.qiye.163.com (mail-m49224.qiye.163.com [45.254.49.224])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012048.outbound.protection.outlook.com [52.101.66.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8C5185B48
-	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 01:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.224
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770167423; cv=none; b=J5/P3BznVmQcbsptsViXpjkL/E2G89L94wHGhRcNOvF9+XUkidlXlMIZVLLKHoy7SYb8F9UyQb2LX0aiG9QkfnWd//jGnbW7eZkjcYLxsmeiVAoBceG5tJ02uXGx0FuWhJVc4hJU/byLiwMuYNytfyygHZm+1PGuHt7PPsDgx+0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770167423; c=relaxed/simple;
-	bh=N07gY89EuSEYf36dEC4Rpxftlpaz3On9AMbxSIwK9gY=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=dJrxwzzSjQvEs13rWSqUlBRmcszYv7XqICmA7Ldn5DeT5odfSzCn25QNi0y/lgQfwmCxd+NaLEkhimWlmAmS2Iq0d8QdRFw3KyaixtlPXj1+5BPeiYXWxy5+8tmw4+Ko8hE8nKY4TjZfXkkTJqiMLj9yxi9ttThowVRJ/0l+Q7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=PdtvcqXr; arc=none smtp.client-ip=45.254.49.224
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400A054723
+	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 01:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770168980; cv=fail; b=ZM0uPpwihuS8GQEw+2xu/axdXQ7YozHGlO8FAwPz3I8qE+TTSelXPgsbQUWkChTno6UVDZvE8+XYAl4vk7EuJc3F0qHd3lsJZN8zIe/A+Ru/vkQW2goNras43DV2kLCireYpZLHRgJkqXh6as4dSpupqOkmbM3uWAeJs1FyV/dk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770168980; c=relaxed/simple;
+	bh=0Fg2QtaSVymgHkvQAYCaiHTU0guuN+Wqjei1yOdr9lQ=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=MWw7TnJK4wHFyIOYcthkBgw6zaW/mNgaRJxruXDCZwa/iLACx6hhAfJYy2g6LYTLNrV3osoagFMcEo1UPWL9zOD5iwSvG0OUkcaKvEV0SEFH9SH64IduYjgsuRgdvOt00snbLFH5J7MIAmQF6qeZ1EzsK8BTyI1WaK3nywBaXLU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=igbVXPuI; arc=fail smtp.client-ip=52.101.66.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="PdtvcqXr"
-Received: from [172.16.12.43] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 330509a94;
-	Wed, 4 Feb 2026 09:10:05 +0800 (GMT+08:00)
-Message-ID: <8c305f74-7fa7-4798-b1b3-e96544d962a1@rock-chips.com>
-Date: Wed, 4 Feb 2026 09:09:07 +0800
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="igbVXPuI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=g89iE1lK7ZK8MipclWKhdnIrKaSeddIWwp5BEjFea68uXm0Om5XjlU1vxqbLpke6PcF5hCNjY5DyXab74GuMrTdIf+19ZFFjD2Bpp8nylIZQTI4miTTjLLQoUwKXbkhKHMSWEazcY22xYn4/FdM3hgXwToukSFnRjjJAlrz8udyobez7wRjLyaGL7MFwcf7VlQIHuAJeF7aWmYJG03WrRAvWytDnzGxq2QR6lyYhx0kBKuiBDEzk2Xv66fjhmvG8JK20+JXsvjebd9AV4Aj32WCv4D8gVpKk7LFuX/nj5vS3VaB/o4ZM5XGnj/X/I85++0pq01aZDrBvsa9XhAy77Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UdamR9BfOVCKiajvmKSqLX/Z0fXBZdyI2KP7bSVMqsg=;
+ b=bspTVgs4dsOc98GlE8GCfQtPwxv2tbJdLiO3sjjJgwp798TSb3ETw90WwoegkEFi0AgBSJsGxnESHRQpEC9CThj4fX8jQdLa4qmGrnTYDmpGS3+4bNGg5z4cVkj+3n9EsnSKOUGcpS9Zf0wvEqLSuu2x9d0AXs9HrxKLOzKIwlGzeLAkaT3ri82P+QnGwfmFCAZpzkNsdZf3FifNGlgg9mlLizyVoH1/DE5Vv6nC+KwhJgg5fNWCQPgdXmQz75aPFLKMo8udR6uqxyZ57dxlD2in+o6xQWeqxYns0xFTEMkGQNTYe1/2d1OcYTmGi3RLMknlUqaJtGDB8e3Dc1PqIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UdamR9BfOVCKiajvmKSqLX/Z0fXBZdyI2KP7bSVMqsg=;
+ b=igbVXPuILDkbqCEn370G7Lg2281HvzPjVrrkMfkCznjGRiPp6L92AiX0BqdIsm9jKBl7UwZgYeMUue0PEjQME/r9Phbxnhk7tQTqSgv1IAUTCLSe4IOeNmQTiu4f3OCQ1TrNkxvKfAl5Vo3AbKwdx5ijZD1P2kHdgxDDY9FmZLs1BskTEYvcBFLoipmXDefHzAl6b6FBzijbeU3vmrsZIUE4prFr8oNyz9DUSHrTl+9NFGBokaPTHZiiauOmKXZOu38D07mkRuzlwid9IdysZcBFwzmynWmyMhCqx8ah5Dz7owadtXrXjUqXi3+e8LKtjqHAuIMvM5MDDJPkIk9rCA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
+ by AM9PR04MB7651.eurprd04.prod.outlook.com (2603:10a6:20b:280::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.12; Wed, 4 Feb
+ 2026 01:36:15 +0000
+Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::20db:4017:28ea:911b]) by PAXPR04MB8254.eurprd04.prod.outlook.com
+ ([fe80::20db:4017:28ea:911b%4]) with mapi id 15.20.9587.010; Wed, 4 Feb 2026
+ 01:36:15 +0000
+Message-ID: <0f2cc5d0-9abe-47c6-abdc-42ebe5fb5b35@oss.nxp.com>
+Date: Wed, 4 Feb 2026 09:36:06 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/4] media: imx-jpeg: Use devm_pm_runtime_enable()
+ helper
+To: Frank Li <Frank.li@nxp.com>
+Cc: mchehab@kernel.org, hverkuil-cisco@xs4all.nl, mirela.rabulea@oss.nxp.com,
+ nicolas@ndufresne.ca, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, xiahong.bao@nxp.com,
+ eagle.zhou@nxp.com, linux-imx@nxp.com, imx@lists.linux.dev,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20260203082349.1082-1-ming.qian@oss.nxp.com>
+ <20260203082349.1082-3-ming.qian@oss.nxp.com>
+ <aYIopWM4U9YQB2SF@lizhi-Precision-Tower-5810>
+From: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
+In-Reply-To: <aYIopWM4U9YQB2SF@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SI2PR06CA0007.apcprd06.prod.outlook.com
+ (2603:1096:4:186::9) To PAXPR04MB8254.eurprd04.prod.outlook.com
+ (2603:10a6:102:1cd::24)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Damon Ding <damon.ding@rock-chips.com>
-Subject: Re: [PATCH v8 05/18] drm/bridge: Move legacy bridge driver out of imx
- directory for multi-platform use
-To: Luca Ceresoli <luca.ceresoli@bootlin.com>, andrzej.hajda@intel.com,
- neil.armstrong@linaro.org, rfoss@kernel.org,
- dmitry.baryshkov@oss.qualcomm.com
-Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
- jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
- shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
- festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
- kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
- jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
- heiko@sntech.de, andy.yan@rock-chips.com, dianders@chromium.org,
- m.szyprowski@samsung.com, jani.nikula@intel.com,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
-References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
- <20251217093321.3108939-6-damon.ding@rock-chips.com>
- <DG2S064XPGXL.1MQDAKWZEK50K@bootlin.com>
- <7256ecf9-b10b-428c-a1a6-e35e80a686ed@rock-chips.com>
- <9e1da672-a52d-4ec3-a20a-fe6f8ca15496@rock-chips.com>
- <DG58VCQ54OZA.2QHGR8JFIATY2@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <DG58VCQ54OZA.2QHGR8JFIATY2@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9c26330b5c03a3kunme492eb66731d02
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGU1KQlYdTB0aGRgfSRlIHU1WFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=PdtvcqXrIboBxzk6mrQxMh8OFknDSWkG8VsQx3P2oelUvZoMue4STcE+QfhITy/PiSZqtgQYee4sBfRWs14gKK0t47AQ3BXE7Nr3wCtaOHKY9WaYy5G//B0ZE4uGhgQl/TKkSj0hcrsxCsAcdXg1gNWy7TRdCUVD4w3MwfbcuEU=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=ro6VqhMxsjofyYNi+p5gticfSsMMFPfjQqGDTGdq+b8=;
-	h=date:mime-version:subject:message-id:from;
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|AM9PR04MB7651:EE_
+X-MS-Office365-Filtering-Correlation-Id: aaa0cb31-3cd5-47c9-4f4b-08de638dc90c
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|19092799006;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Yld0NEt4MVJjNmduaDNzejczZ1RLTHhYVFJhcXgwakFmZGVrRGdKWEJZZ1JF?=
+ =?utf-8?B?U0o4YmtiWmVvTjZ6L1BmTmQ0OWl4RFgwL1J0SWpEZkN4L1VhQ3VPSldUK1lR?=
+ =?utf-8?B?YVJxNm5YQm1IbHBGcCtNY3RSTnZZOGJHa1ZIQ3BsRVhtUHgrTHFXL01pSmU5?=
+ =?utf-8?B?bWJVK1UvY0VtYi9PMzNkSTBpNFhaWWF1ckVJcWlLQU1TdnBLUHZZUFlVVnNG?=
+ =?utf-8?B?ZHRRbkhZYWUxUyt6VEt4NDQ3MWVmWjVaYkg5eDcxNFh0c1JGN1VUblBDamV0?=
+ =?utf-8?B?UVJVL1ZsRG5laUc3cXlZZVpQZ3daTWgrSEI4bG9jU0Rha1ZmdGcxdEFVeGY0?=
+ =?utf-8?B?YW1ZYm1IUS9EVEJZOHdZdHlUZ1lpeDViejJRVFlER2hISi9RKzRwVFE2cGNp?=
+ =?utf-8?B?bUVSMTlqU0FPT0tTNGV4ZnhETDNZQmE5QXdaUFQxeENyMEg5RWhUOFR0NjFJ?=
+ =?utf-8?B?bjNWTUFCa3VidE9UQXNnWGgzNm15QWw0dWpMZFB0SUp3d2hVSzd4ai94dG83?=
+ =?utf-8?B?MUFQdXU3bVFsTFJXYk9ERkdvakYrcHZPV3hHdGNaYXBlNXRnajBsY0NWVXJ0?=
+ =?utf-8?B?VmxXUkJwYVZGU2R3NzFCRmU5akhlRzhBR1lzWjdkTzh6cVRhVDlRQ2pLS0xj?=
+ =?utf-8?B?K1VsblVwZWNVMGFEQUJETGRTbGREMU9CR1Q3Z2thZytoYUNxc3FkNWpjMDBD?=
+ =?utf-8?B?MExjZEwxQ0x6a1MvVXFjZm5FVWt1U21kM2wyWFhXMkFGUE41NGNOY2duMERB?=
+ =?utf-8?B?LzVOSlRGUjAxcU54aU91MjNhRzg0ZXBHLytaOHlicDVSdnpMbXhhaWtzRjBX?=
+ =?utf-8?B?MklYai9MQmdid3pURjdBcVhBaHVWS09VQjVHU0tHTWV4cGZEYlBVMFJUWWtF?=
+ =?utf-8?B?TU9hSG5yS3ExdWQ3SW5FK1RnOWJrak5MOVgzRy85MGQ4SS9tYUkvZGpNZFQr?=
+ =?utf-8?B?ZXgrUUNJQWhQU3RxOGI3Ymg1UzVNNG5mc2g2MFFGMERFbkpaY1hmVnFGTlhl?=
+ =?utf-8?B?VzRSS1dCN3VaY29oK1UxVmJRQ0FQajNscUlidTVKdXhYUWdndWdWbjkvM1A4?=
+ =?utf-8?B?cXBtVWx6RE5hc0tjTUVPNlg2OEpxbFJxN1NZVytCMWxYZXdRTldSM1ljeEoz?=
+ =?utf-8?B?cnVySnh6amlDbXd2Ymc4dFRaNWJVWTMvWHF2QzIwVGdnN1pLdUd1L005cnMw?=
+ =?utf-8?B?dnJVN1VDOFNMdG9QMXdBakU1RWYyQ2EwSXN3SWw3UGpxZnY0TDI4WVpYM2cx?=
+ =?utf-8?B?WTZYemZ6a001bDNIM1E5WUVjZUtWTFMzempab2FxTExFQXRzQWZBWkpkd2g5?=
+ =?utf-8?B?S3VDY0ZwdFBkWHlYTVpUOUE4TTY0SnRldTFJYkZ4R0UrSFBkZklCWllwQito?=
+ =?utf-8?B?UzlKWmMvTXJHQ3BDaURibXpTdkVaYk5UZU9BcWtESmpCZ1JTYVhyZWVHZ21y?=
+ =?utf-8?B?bXpWdHZhWnQ0RGlJMnpmcjh3dHlKclFIVVhIQm1kWFo4REE2MDlBNWY2NG14?=
+ =?utf-8?B?T04rQU5YdEZVNG9FcW1jMVNMV211TjBxOG5STWpiT1hRVWMxTW0zRG1yOWp6?=
+ =?utf-8?B?d3hoam5kckdpSlBNNFpCOGZaUDNIbFVBclJNQzhtdGpGU1VwMjNDMzQyV3Uw?=
+ =?utf-8?B?ekJVRXFtZE5iaFZhcFd0bGYxK1h4RlpLOUJ5Z2kyZkFMRldHWGs1aktHZnQ2?=
+ =?utf-8?B?andUbFZFdXhoak8xUHFlSWFFQ1lIem5NWmE0REpaVmZRNURvdElZc0M0QVZD?=
+ =?utf-8?B?R05SeitOTEM3T0ZreGdsZ3pTenhrVGVVOTZWU2wrczlrMWp3Z3M2WXlCRnNS?=
+ =?utf-8?B?VlM1UU5VdGw3VHRtNkNwMTBIem1ZVjNpbVJFdTBZZHNGdEx3WExXb3U5R2hn?=
+ =?utf-8?B?dFNwWFVrdWt5Q3A3SS83SGFhenhsK0taZ2l0SVZXTUg1TjJUY0RkY0NIekNE?=
+ =?utf-8?B?UTArdnNOLytRUUd5VmJUMUdTSENuOHVVWGh5Q2tqNzN2eXRNeFpGY3hpM2pz?=
+ =?utf-8?B?SFFMUUN0Ry9taEZNZDVWRkdQSENlT1Z4akMybURIcTg0bno2MzBwZ0dUb0w5?=
+ =?utf-8?B?aENKR0p5NHVOOTFWQ0FqMUk4L0Z0SWFwc2Nya3F6NXJxTEVIUmRVN2Ezblph?=
+ =?utf-8?Q?Z6eU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(19092799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZjVaRFgyVTlLZmptTlg3Sk55T3RHU1hRdlZ1Q1VDQjBoWVhWSGNUK1h6c3kx?=
+ =?utf-8?B?c0x5OGhOdlNCSnFhWVlLR1Q2T0k4Rm9WUEF1T1dWSFFlTThPVjlabC85UEUx?=
+ =?utf-8?B?VGxFZG5qMFVHcjhCY0locUZGOWNKN1Z2bk1uZW90M0pMaUNhVzJZN203V2g1?=
+ =?utf-8?B?aDRWWTFDUExnOVl1STExM2ljTmtYUDd4ZlZLMmhmWHVGMW5lNHRQNE9LdkdQ?=
+ =?utf-8?B?U20yWFdNaTE3b1pUa2E1b3NCSStDOFdkNkZCVlVHTDNxTFlSRUI4UnkycmZp?=
+ =?utf-8?B?Tnp0RTh6S1NzS0daREZQN1hoalo4WU9oYWhBcG9EQ0tEcEp5WmlHZG5EaURY?=
+ =?utf-8?B?dXVIQmVoYWl3U0pKazFYOHdVNTdlNE13a091KzVNdXhkbXFtckNob29lNmFr?=
+ =?utf-8?B?ejZieWNwVHV5dEN3MlE1NWxydTB1V1lNZWc0L0dHcGZUK3lNVFN0aEwwYU1x?=
+ =?utf-8?B?bGhKTzI3M1dUWVNLUG1TS2V6b1c5c2gwOVJnMWhFQ3dCbWlpVXJEbXdxQ3Jw?=
+ =?utf-8?B?Z3owOWFrSW9wRUlRVEkrcjJnZEJqRGdweTltZGtKZE5IVkpJWkNEQSt5SkJD?=
+ =?utf-8?B?YzRaVGdTbEViOVQ4L3YrbkVYUnNqM0dQZmxsUS9TTGQwT3d5NFRvdkg2VS9i?=
+ =?utf-8?B?aGFzcm5OOENuSzlwYlZnakNQWDRuOG9haHMrdk1maERCQkJxT0p6anpzZHpt?=
+ =?utf-8?B?Ymo4T1pWSnMwOEFhNGthdzdqQzBzZDJ5ekFKTTMrdG9pcmJXUnRLUWJxUm85?=
+ =?utf-8?B?OTlYTGlNbXJLdkFKQjgxODhzckRQMXpGa05sdDZYNmVmZVlydGU4czJ3S0RZ?=
+ =?utf-8?B?LzBXYXdTNEdGVFJqdDNORUdJc3EzWGhzTzZYdmQ2cER0Yld3Qm5yTStIN2d4?=
+ =?utf-8?B?ZUYzUUxqS01RVlhRa1p0TjhRRmRFR0ltdmlzQkZjdjZWK0lxOGJQSXVNc0My?=
+ =?utf-8?B?bEVnaVI3eHJsNG9DNkFQbG9WRjFNd3dDdXg3dnR2Q1R3Tk1jVERMM0FVMUZn?=
+ =?utf-8?B?WE1kTWhDcW9NS0FsREhGcmNiYkYwUEtlWEY2OUM5bTNtcDVxMmdiejY0Nyt6?=
+ =?utf-8?B?MlMyMTQvU3d6SFpyOFlBaWE5YmFONG5NeWpiVHVPeXRPcHF5emlrcHY1eFZK?=
+ =?utf-8?B?SzVPZ3hFenlDWFFtQ2ZmSExvVzVkMzZaMXlGclhEQ0EwWUh4Q2RWYjdSUnY0?=
+ =?utf-8?B?dVNoNHcxa2FrQ2RwOWNaT2U0LzRiN1VOV2xGK0dZeCtGUmdOT1RUSDN0Rngr?=
+ =?utf-8?B?aHRjWWJERGxZbG1lTVFOQmh1TkNjYVgxRHphWWJKckNxdE53ZFlDQ3MwUnJO?=
+ =?utf-8?B?QzQwc3VQU0NXaVFvUklUS29FeHdnUDVYeDV4NEh5dmtzOEpzMjlCS1FYcWJs?=
+ =?utf-8?B?ZnV4bzJ6NmsyMzJUcGJRSEp4Z0RHU2h1ODlCV09RSm54UEtweWJlTEFGcFA0?=
+ =?utf-8?B?K2hsSDFJVmptWmdSUVRuWlhQWXQ5dEwxK3J4Tyt3V3BPU2NKUzZkalc4RzVv?=
+ =?utf-8?B?Lzd4d3JsWTFnV3JpbXVYRE1lQTduTG9aU3VpVW9qUUNIcjRITnYzOGtsYndi?=
+ =?utf-8?B?dmpxTTU2bU1hdm5VS2piSGVLWjUvL3JkUHpmODZWR05KZ2JrY1RTVHp2VXgv?=
+ =?utf-8?B?S00zejN3TEV2b0NxM1U3NWtNQVdzemFrY250dmlwK24rbmQrMGJBSUZLUGdP?=
+ =?utf-8?B?RVNBekwvRHNIdFkwRlhPKzZxOFZ5YXZqbk9tT2RiLzd6MGVnUFJ1S2xjVHYy?=
+ =?utf-8?B?WEg4akZOSEZkb2hXenY5OGkvY3ZYZFA3TWdKcVA4YXQrWDFMNGlpYjljOFpq?=
+ =?utf-8?B?MzY4WWhENXdnM1NSY0pSaUlWdzN0MUo2R01GeVRxM29rYWM3bFlndU5jemRh?=
+ =?utf-8?B?MzRnL04zUmlMTEVlVklHSVNPb1Qxa1JGYnRSRDhFQmZHb1dzaU1aL28rcW9q?=
+ =?utf-8?B?b29FZkhwSlFzcUhTKzNWbVMvY2ZBa09NVlh5MnNrdnNOSzVlMXRzTW9XZ2Nu?=
+ =?utf-8?B?T3ptcmlWNUl4T3AyQjFuY1U1QXVUNWJ4TG5RZU9mbFZDSnRCZ3ZqWkYvVzZ5?=
+ =?utf-8?B?QmxaUzJxRzY1RSt2cWJib29abS9xZmJ5RXloTHE5NlVBVFY4S21LWmFVYUVw?=
+ =?utf-8?B?ZFQ5MnhZQURROFUzaXc2V2RuNVBmWnJXdFFzVjRUTFltczYyY3VTODRKUU9t?=
+ =?utf-8?B?WHZFZGw4YmJZMGh5VnNQdkpiUlNCd3preHZjV1c4THo1Mlp5Z0dOdEFCSCta?=
+ =?utf-8?B?QmhFK2cvWVNFelQ2WCtQMS9nMlFCWDhCQ2c5N2NGREIzN2k5dUFGajJLa0Zo?=
+ =?utf-8?B?clNQUEN0a1hiQURnem9NclZmQzdhT2V1eHdZTHAzTDhKZlZtOXI4Zz09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: aaa0cb31-3cd5-47c9-4f4b-08de638dc90c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2026 01:36:15.3436
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Smr8CoG6+zFxPn9rRP3X7cGM292oIf2IuHsMy+G+UWT65b2eUaIqs0+Y5QQB12ZqPPlu2X95dkkIpQu1DUhc6w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7651
 
-Hi Luca,
+Hi Frank,
 
-On 2/3/2026 6:11 PM, Luca Ceresoli wrote:
-> Hello Damon,
-> 
-> On Tue Feb 3, 2026 at 2:31 AM CET, Damon Ding wrote:
->> Hi,
+On 2/4/2026 12:56 AM, Frank Li wrote:
+> On Tue, Feb 03, 2026 at 04:23:39PM +0800, ming.qian@oss.nxp.com wrote:
+>> From: Ming Qian <ming.qian@oss.nxp.com>
 >>
->> On 2/2/2026 10:54 AM, Damon Ding wrote:
->>> Hi Luca,
->>>
->>> On 1/31/2026 8:33 PM, Luca Ceresoli wrote:
->>>> Hello Damon, Dmitry,
->>>>
->>>> On Wed Dec 17, 2025 at 10:33 AM CET, Damon Ding wrote:
->>>>> As suggested by Dmitry, the DRM legacy bridge driver can be pulled
->>>>> out of imx/ subdir for multi-platform use. The driver is also renamed
->>>>> to make it more generic and suitable for platforms other than i.MX.
->>>>>
->>>>> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
->>>>> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
->>>>> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
->>>>>
->>>>> ---
->>>>>
->>>>> Changes in v7:
->>>>> - Rename legacy-bridge to of-display-mode-bridge.
->>>>> - Remove unnecessary API drm_bridge_is_legacy().
->>>>
->>>> ...
->>>>
->>>>> --- a/drivers/gpu/drm/bridge/Kconfig
->>>>> +++ b/drivers/gpu/drm/bridge/Kconfig
->>>>> @@ -244,6 +244,16 @@ config DRM_NXP_PTN3460
->>>>>        help
->>>>>          NXP PTN3460 eDP-LVDS bridge chip driver.
->>>>>
->>>>> +config DRM_OF_DISPLAY_MODE_BRIDGE
->>>>> +    tristate
->>>>> +    depends on DRM_BRIDGE && OF
->>>>> +    help
->>>>> +      This is a DRM bridge implementation that uses
->>>>> of_get_drm_display_mode
->>>>> +      to acquire display mode.
->>>>> +
->>>>> +      Newer designs should not use this bridge and should use proper
->>>>> panel
->>>>> +      driver instead.
->>>>
->>>> "Newer designs should not use this bridge", but in patch 8 you are
->>>> introducing a new use ot devm_drm_of_display_mode_bridge(). Shouldn't you
->>>> instead "use proper panel driver instead" in patch 8?
->>>>
->>>> Can you point to the conversation where the converstaion where Dmitry
->>>> suggested this change? Maybe it already contains the answer to my
->>>> qustion. Also adding a link to that conversation in the commit message
->>>> woule be useful.
->>>>
->>>
->>> First of all, thanks for your reviews on this patch series.
->>>
->>> link: https://lore.kernel.org/all/
->>> xwenycscalzdlpuxytorbiyvej3k7pv3lhxwtadilxq65ipwsv@x5rxm53w5e22/
->>>
->>> I think it may be a misleading issue caused by directly copying the
->>> previous Kconfig description. Now that the new
->>> devm_drm_of_display_mode_bridge() helper has been added, drivers using
->>> the panel-bridge framework can rely on it to maintain compatibility with
->>> legacy display mode parsing.
-> 
-> Ah, I think I got the point: the mode description in device tree is legacy,
-> but the driver itself is not legacy and will be current until we need to
-> support legacy device tree. Correct?
-> 
-> If that's correct, this patch looks OK to me with a new Kconfig help text.
-
-Right. I want to apply the advanced panel-bridge framework for Exynos DP 
-driver, and this newly added API helps handle the legacy device tree 
-that it supports.
-
-The v9 will come soon.
-
-> 
->>> It would be better to update the comment as follows:
->>>
->>> This is a DRM bridge implementation that uses of_get_drm_display_mode to
->>> acquire display mode.
->>>
->>> It exists for compatibility with legacy display mode parsing, in order
->>> to conform to the panel-bridge framework.
->>>
+>> Use devm_pm_runtime_enable() to simplify probe and exit paths.
 >>
->> Dmitry, what's you take on this?
+>> No functional change.
+>>
+>> Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+>> ---
+>>   drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c | 15 ++++++++++++---
+>>   1 file changed, 12 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+>> index 39022c1bf36d..877e6c4f7406 100644
+>> --- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+>> +++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+>> @@ -2971,12 +2971,22 @@ static int mxc_jpeg_probe(struct platform_device *pdev)
+>>   			  jpeg->dec_vdev->minor);
+>>
+>>   	platform_set_drvdata(pdev, jpeg);
+>> -	pm_runtime_enable(dev);
+>> +	ret = devm_pm_runtime_enable(dev);
+>> +	if (ret) {
+>> +		dev_err(dev, "Failed to enable runtime PM: %d\n", ret);
+>> +		goto err_pm;
+>> +	}
+>>
+>>   	return 0;
+>>
+>> +err_pm:
+>> +	video_unregister_device(jpeg->dec_vdev);
+>> +	/* set NULL to prevent double-free */
+>> +	jpeg->dec_vdev = NULL;
 > 
-> Dmitry's opinion would be much more relevant than mine. I don't know much
-> myself about this driver.
+> code have not simplied, you add addtional goto label. You can use
+> devm_add_action_or_reset().
+> 
+> Frank
 > 
 
-Best regards,
-Damon
+I don't quite understand the difference compared to directly using
+devm_pm_runtime_enable.
 
+int devm_pm_runtime_enable(struct device *dev)
+{
+	pm_runtime_enable(dev);
 
+	return devm_add_action_or_reset(dev, pm_runtime_disable_action, dev);
+}
+
+We still need to check the return value of devm_add_action_or_reset and
+perform the corresponding error handling.
+We may still add the goto label.
+
+Regards,
+Ming
+
+>>   err_vdev_register:
+>> -	video_device_release(jpeg->dec_vdev);
+>> +	/* Only release if allocation succeeded but registration failed */
+>> +	if (jpeg->dec_vdev)
+>> +		video_device_release(jpeg->dec_vdev);
+>>
+>>   err_vdev_alloc:
+>>   	v4l2_m2m_release(jpeg->m2m_dev);
+>> @@ -3047,7 +3057,6 @@ static void mxc_jpeg_remove(struct platform_device *pdev)
+>>
+>>   	mxc_jpeg_free_slot_data(jpeg);
+>>
+>> -	pm_runtime_disable(&pdev->dev);
+>>   	video_unregister_device(jpeg->dec_vdev);
+>>   	v4l2_m2m_release(jpeg->m2m_dev);
+>>   	v4l2_device_unregister(&jpeg->v4l2_dev);
+>> --
+>> 2.52.0
+>>
