@@ -1,262 +1,171 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013006.outbound.protection.outlook.com [40.107.162.6])
+Received: from mail-m49224.qiye.163.com (mail-m49224.qiye.163.com [45.254.49.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B85A2040B6
-	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 00:35:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.6
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770165307; cv=fail; b=bujAg8UwBcMmLB1RWHuj5KvN86AlPBHaYhZhgFkOsnBiLzXaNP1Y0NKs3n9FQRkpFN7ExWgaRBuiwJD+H5lQRwpDCZieEHDEJS1hnfeyw3eM7CKaQxJ/1sFx5caXmei0x7VzIIGtRQswidPnt9eb5E462PQVR2YlQkpHcNN29K4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770165307; c=relaxed/simple;
-	bh=j2QKbZOpl4HWYkpSC7XlXxUSKDEqpGJeryKaJwVMewU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=MeNSUcA+v9g2ckhz11BbvzRFwj8Bf5rENHMQxk8AONWHxBvg8F5jaY6BZyKtzHdaBQU9GQJSIlMyPqz9eeTx8+Ac4x7iEmTzQaqiXxS7T2BWnb/cOUv8r0nYh/e+cfnf5ZmrfG59/s1LRoHzKygm65On3za91PhuOwCW2+d6NY4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=N0MMIHuC; arc=fail smtp.client-ip=40.107.162.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8C5185B48
+	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 01:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.224
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770167423; cv=none; b=J5/P3BznVmQcbsptsViXpjkL/E2G89L94wHGhRcNOvF9+XUkidlXlMIZVLLKHoy7SYb8F9UyQb2LX0aiG9QkfnWd//jGnbW7eZkjcYLxsmeiVAoBceG5tJ02uXGx0FuWhJVc4hJU/byLiwMuYNytfyygHZm+1PGuHt7PPsDgx+0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770167423; c=relaxed/simple;
+	bh=N07gY89EuSEYf36dEC4Rpxftlpaz3On9AMbxSIwK9gY=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=dJrxwzzSjQvEs13rWSqUlBRmcszYv7XqICmA7Ldn5DeT5odfSzCn25QNi0y/lgQfwmCxd+NaLEkhimWlmAmS2Iq0d8QdRFw3KyaixtlPXj1+5BPeiYXWxy5+8tmw4+Ko8hE8nKY4TjZfXkkTJqiMLj9yxi9ttThowVRJ/0l+Q7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=PdtvcqXr; arc=none smtp.client-ip=45.254.49.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="N0MMIHuC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ahgrPKv6KyLqVCRHTvf66AOp/W8IyMmo1kxqDVbjiFgjmyX/rPBKD2gL1AWk8CgfvmJNWBFm04nQezlCFMKe65enUT1N7dbONrFvUygbFO0cMg+aLb1aJ8dNLLs4S/avzH6/CJkagAegISB13Zb+1LxStru4otrBDQwgUlj6Uef1/kTnze6aqDMztMqEm41BZTak81oiUOetACQNWlaJ0HgRWCfbjD5/xo0d2UJWR8dWyje+8A9prfuOkHobkllPup5xIKsVM26Amkp+a4cCg7DPihWkuMyf6YVP7Y+hPIXeqUA7jPDqY+gGvyiygAhv2CVBAMJk773zKYjxEjQj2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BB6Zg8zvsrzX38TTz+JjiA3VMCPEK8sYYdAXUFK7a10=;
- b=cJjdSzwn94eFvelJl/hk9t+pSoU5UFSnDQiFL5fl3MKbA3wVTjk6RjD4IFZrvhWlY8gtpKnlkfEIQ+p2p1a7XAvtnV6N1zkF6mO8sw8QnMKK3my4M7g6hknA8bhGbp4ubnLJCEpZKne+Nky7mpZG9/hGMwXYcQSt+EVB8t7QhEMhUgitJVwqdn0xz86TYO6FIuckDw5upKJkZUUsACqgBrOnvYgHKuXSFGaFHn54SvhpnQeipX6CSV1arjtvwP8bCwDIDyAYe7l6ZhAUhc+8XXyk9FYBqH/BDzkk5XcwPsb4nNs5+UDTXimuPgiO1xKeUbmiwRsr/WXcFpKB21BCVw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BB6Zg8zvsrzX38TTz+JjiA3VMCPEK8sYYdAXUFK7a10=;
- b=N0MMIHuCvJPO9Ct9TluoC6+61wKWSiOMxS1JLZKWGcOIN4airBlbyPTB01Y9zLlTUP3HuBeexSjBzcC1E3kH/5asf5tNtEkw38OgRr09aJswVPEEks3EitJkCr8eOnoVNs3E/KmohCRZu/1wgBIUE+wlMAcYnjU3rosW/gcA3/PV/P8nsVnmFBFEGFqs7ApLwzK22b/RxEWClmurgEb/1HDryRSfakfTe2EqLPGLS0Xa60KHlsiJJPFXkHprfAagpoleCVDSRyn+GCUDa8WDorz1pHo1Xc/rt6w6dctSBrXqb4iGsfpDNCLN+JemWPe430GzgwBXlw11E6T5qsynEA==
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com (2603:10a6:102:1da::15)
- by PAXPR04MB8976.eurprd04.prod.outlook.com (2603:10a6:102:20f::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.13; Wed, 4 Feb
- 2026 00:35:01 +0000
-Received: from PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::4972:7eaa:b9f6:7b5e]) by PAXPR04MB8459.eurprd04.prod.outlook.com
- ([fe80::4972:7eaa:b9f6:7b5e%5]) with mapi id 15.20.9564.006; Wed, 4 Feb 2026
- 00:35:01 +0000
-From: Peng Fan <peng.fan@nxp.com>
-To: Frank Li <frank.li@nxp.com>, "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-CC: Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck
-	<linux@roeck-us.net>, Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
- Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	"linux-watchdog@vger.kernel.org" <linux-watchdog@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Ranjani Vaidyanathan
-	<ranjani.vaidyanathan@nxp.com>
-Subject: RE: [PATCH] watchdog: imx7ulp_wdt: Keep WDOG running until A55 enters
- WFI on i.MX94
-Thread-Topic: [PATCH] watchdog: imx7ulp_wdt: Keep WDOG running until A55
- enters WFI on i.MX94
-Thread-Index: AQHclOO6ma5frXFoyEWg+u1pGIzsl7VxQ8aAgABuXQA=
-Date: Wed, 4 Feb 2026 00:35:01 +0000
-Message-ID:
- <PAXPR04MB8459E30457A6451C622290768898A@PAXPR04MB8459.eurprd04.prod.outlook.com>
-References: <20260203-imx94-wdog-v1-1-7deb76dbe350@nxp.com>
- <aYI3ZYYSfI1Gt1RT@lizhi-Precision-Tower-5810>
-In-Reply-To: <aYI3ZYYSfI1Gt1RT@lizhi-Precision-Tower-5810>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8459:EE_|PAXPR04MB8976:EE_
-x-ms-office365-filtering-correlation-id: 5eb5afeb-a42e-469c-5957-08de63853b9f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|19092799006|1800799024|366016|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?E/ZeKakMh4L1QRXF38aybd4WjsMFKPbi7FWqohxKc8xcL92HyRpNYgXe4P2v?=
- =?us-ascii?Q?r9iIrt9NA7ATeTU/Du2DWCx/BeqnePOPo5NycvFpYPmqqz6A72UDM6bht3bR?=
- =?us-ascii?Q?UA7qwXF2viJXeF6+kgnCR8+TvqnaU1+gSucSZXxK8wb6KgHf2HsCrrm2JtR4?=
- =?us-ascii?Q?d+J6B/aQbOw4wISUlA54UuoRw3YjKCFJrXkzUI4xgkdkivHreqfJVdlBS72h?=
- =?us-ascii?Q?PrrNTbHIOxYEw0Zo/8aNl7iq0e39un7G2l2QNseyJI0JeeqKDSu2lIJaYQYI?=
- =?us-ascii?Q?F1TnlbMORbNPArt3bYq34CIx/C2UTBANu4FuXfFCwNXhQ4S7mJ6DDR/Xb+cg?=
- =?us-ascii?Q?cH8+1Y0TnSrWTot6JLG7faWm2qcMktM1sBTwfaSpu/VT89k74yiMi5Zo4OiF?=
- =?us-ascii?Q?jYbtfonqWfnzr1vxQcqJDk/EZkJPJ1wqAzMU/fjvyCzHh8dNJ5JLCX17JLpJ?=
- =?us-ascii?Q?4/t4L4nMQXtqtsSSL+FwvTWgcQIlsXT21RFJIySKByWZ7w6+qapN0I3R/kA+?=
- =?us-ascii?Q?LUHTL8rSQuqvsMHKKTu79NjPzjo/seZxwrQHaWpzUbl3VrkAb/GFOUSX0+FN?=
- =?us-ascii?Q?1CBP8PViYVuOrKC/owLG6ooBRX7XcaRgeAID27T9ODYsW+wbY22XIFfhgAS1?=
- =?us-ascii?Q?ZIOYLn/dpQP2s6VkoQLnPBFDeVC5LKEALqhTeV80lwnYlMACc4EJerF7V+GY?=
- =?us-ascii?Q?g8AX88lrenkzfAKM/wZkWN+bXCW4xGugdcfdSKVyCx1r/HM4+xZDCGPvreo3?=
- =?us-ascii?Q?PXQqUAmsb0CI3NVidcEfh9enFdcf8WMAPt6BOckEyY7f4DuEvf8oT5Vy+iM2?=
- =?us-ascii?Q?SnXy666FbH3xHHIpEej+YkEUZ33bIUevteggDa8uuP/TS/9ZROojH2wKXGAv?=
- =?us-ascii?Q?z5TJsR36GX99tgPRz+0Ls3dlUIE3ukRXkOwZJvAVivnSsc1eL5TOvd5PimIZ?=
- =?us-ascii?Q?bhfDZlv3d6X/23YPz0Hxhz2Ql4QybXmt+LZkd8aEOMD9gpzaBQCpZlCCZht0?=
- =?us-ascii?Q?tGyDfK68utL5qvn3bhmNFMy8SJxdqKzGSzI9xybr1Nn0/NFpvIuieGrYiCsA?=
- =?us-ascii?Q?zjhh+EW7CWgSLrQb8HPnP3dpsyNUBda3tSEEOEsDQrk0x0nKMnrdov9HcKv5?=
- =?us-ascii?Q?u4rk60LRagm03nkgvVV7cSqEH0xVjWjVcvJEhCAKssUytO9MnbnJiTLVR1eL?=
- =?us-ascii?Q?VhVXEjGnXqzexlvPZ1kFmfPQYhr5rCOx8ehUxi8S9kQcOBX0xjRofYNHmR3k?=
- =?us-ascii?Q?axpAtsMbQJ8Wz0DKuj2wrygZBTpEmaHntuePJHZxxkrLvCBT3Syq5ItDzjWM?=
- =?us-ascii?Q?91xpz9//8stCYZbGR4zLckJgRzTKlZEgpEtizXSiyrEy5eGFRNmeW1DVS6+q?=
- =?us-ascii?Q?g/F0xuqWIi2MJ7FUECpyH+DFcq6H0uVEc1nvzjAzSBwKfNrWuz1f2o6wrbZn?=
- =?us-ascii?Q?HZ9n9Xuq5OwIPgWyurrHmw3WIwRRUx1HwsKGqLKqFiBi5rHRW1aBR2b6cvZ/?=
- =?us-ascii?Q?/EcZVapX5/7wg5Srqbhu34BL7GlVYJi+e1oYqAnAdxgKNdYuFVWfHYcQERSp?=
- =?us-ascii?Q?eCNi3ZkFa7no8aIrXsqcuYWNp5bWl8iiOXy6L9Cvj9PY/PsSKv9MfbSR65yN?=
- =?us-ascii?Q?SBfJKpNjvRfoDzK6xJLz0zg=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8459.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(19092799006)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?QhRIfXcMz7+EcNtDatnRy2fJwK4cF7335qCkR4TkTEGv2T8QIBoUgUKxTQdO?=
- =?us-ascii?Q?t8Jw0TR7pEB+iFZA8ccypsxfshVPo8g1d5Etn6H7Q8B6xIn2CE3M53CBKdOE?=
- =?us-ascii?Q?2lqck8yQ7IfwqsEKeR6OKCEOQIhw+/CbN3pp0J4CJBDTkx1Tk+lqH0uILZvX?=
- =?us-ascii?Q?bMubiOBwoR2+IZursHCmqF+uAQG/kQKZacQKRba3mFQXuF7/YISP/eepQiRu?=
- =?us-ascii?Q?By44hQ0pX4tD8iqsyhpudvYMfq13paLfK5Z2wAct1+SZFFN6zp/9bgKWZMYI?=
- =?us-ascii?Q?NlRfJkS/WyYp4idSRcCpwGgTezX0hlW2L0fJy6nGI6KNKAu6ipFXJNwIkIKp?=
- =?us-ascii?Q?pPVAXbQhZht9v5unvoij0N9XaQI83bPebgVfgFjPGjzF5iV/40B0qXfemrBB?=
- =?us-ascii?Q?4ENGmExuUq4ZAcGtJbK8j92OumEi+Z+8i7IkoCgNsdUrg9oUDSIauUFbU5Y/?=
- =?us-ascii?Q?vNX3p7z0EMhG9QK2TR6/d33Kn2CMk2a8UDANX6QyHdN1ZkYxC+zgfU1HohZD?=
- =?us-ascii?Q?2aKVuv9be5sOULHqeFPnFK+QAf1D9Cj1aWTiQrxXsGv5Pg5w427uoVLRmTHs?=
- =?us-ascii?Q?B8D/1kFt/eE4DwDOazh3l5LEqnyg7GUx6mnlI82o7E0MuZk6v/qTFXhGVWBz?=
- =?us-ascii?Q?EIoOlu9ECCqOT+zVNez9ghffTHYtxlzzKCyJzZWEyAdGENzHI+tACJfv/FrT?=
- =?us-ascii?Q?gmNchLDMRdX4CHxjWEV8UkZO3zFBAa4/pPmwGDu09hj5tLaco5RAFaBEqffS?=
- =?us-ascii?Q?obz+frjLWQa7YE1wP+of3BjdfXAX4oqPL2mmyCvDdBG66L+/8fHQXMuqCp2r?=
- =?us-ascii?Q?Bcsb3JAsX7aJJneNhMumNi2vtiOBayihe23yrtDS8y5zvk81aSNi2R+Ius8c?=
- =?us-ascii?Q?IPOBH612DDyaZQqBZPAzfY+HD42JqIwFo1iB2svMj4zuuv9M8ZI5WR0MctIU?=
- =?us-ascii?Q?NYCbf6fl0Jg6xdYdZJq0WBuZeoN76jI5Gc7baltUv0rl+jQCtDfSMR9g4TkW?=
- =?us-ascii?Q?0IQIBQM+kCgVvxmoWIGVJEcWEVz20jivWlBkzCPyMIpr1Ha5iv8koPaYE01N?=
- =?us-ascii?Q?LK8stFhP8h0SlbcQRBWl920iE+Tg7+FEg/eDProa3fMoiElWuQy33Han1ayP?=
- =?us-ascii?Q?x5Lxlc1hKF9+9eUL+EkZfigaZEsraALU2tnGLq57jHJbZ28GPy3c2Ev22DvZ?=
- =?us-ascii?Q?gWlLncMrFDocq3BK+xMvZO5lgONCboOLMgCE+AEBbc/3Pmn/3nBzmfRqbj37?=
- =?us-ascii?Q?dAZbRyDBWYpK4hlNZGtbYPDUWCw8pbWuBHTC/kcw563VX/xrV9v2KvQ/XXW3?=
- =?us-ascii?Q?rDD5bTZx6tfaV2FIuBAhVIDgbWvEqe0ocp/5ZUD2m28VU+AkUPDSMGf25mrZ?=
- =?us-ascii?Q?yWP1WqoulkYW3PXZKep+ZdHulf56VlZmG0XEIo9vMLt4uIJqZ2YhDysWn4G3?=
- =?us-ascii?Q?T7mZ8d9QddztXfYU0iYEfxBVsVWZtXKlnHoPXxEdUzjTX9mryyIMmz4inV0D?=
- =?us-ascii?Q?sisoXEhGCvg0I9vb2OVdnAsRj8SNbtB1Obe/kO+Nvz083pYB2WLh69SkW2Cx?=
- =?us-ascii?Q?qc/BtAJ5fad0DxhtuF3ZGwsC+VWQwTF6V/CqtZeG7B66urIzBPbNJM0f0V9v?=
- =?us-ascii?Q?yTLXaKcU52lXdLYBNnAOBF/0xSZtbuT6QvluqP94jH13cAIjdNj44bMXroRD?=
- =?us-ascii?Q?9U0fOGxPdY0VL+fpseD3X+ifZDrzYD7FnqWqnm0W5SW7zVS3?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="PdtvcqXr"
+Received: from [172.16.12.43] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 330509a94;
+	Wed, 4 Feb 2026 09:10:05 +0800 (GMT+08:00)
+Message-ID: <8c305f74-7fa7-4798-b1b3-e96544d962a1@rock-chips.com>
+Date: Wed, 4 Feb 2026 09:09:07 +0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8459.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5eb5afeb-a42e-469c-5957-08de63853b9f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Feb 2026 00:35:01.4687
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: h9e0VdTzg25DD5pQfKxx7gOnNeGvuaiDVxsu5wEVQuNnAmg4CjLHopQquGgVLlsKT1kJWlkXcOMSS3A8fC//Pg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8976
+User-Agent: Mozilla Thunderbird
+From: Damon Ding <damon.ding@rock-chips.com>
+Subject: Re: [PATCH v8 05/18] drm/bridge: Move legacy bridge driver out of imx
+ directory for multi-platform use
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>, andrzej.hajda@intel.com,
+ neil.armstrong@linaro.org, rfoss@kernel.org,
+ dmitry.baryshkov@oss.qualcomm.com
+Cc: Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+ jernej.skrabec@gmail.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ festevam@gmail.com, inki.dae@samsung.com, sw0312.kim@samsung.com,
+ kyungmin.park@samsung.com, krzk@kernel.org, alim.akhtar@samsung.com,
+ jingoohan1@gmail.com, p.zabel@pengutronix.de, hjc@rock-chips.com,
+ heiko@sntech.de, andy.yan@rock-chips.com, dianders@chromium.org,
+ m.szyprowski@samsung.com, jani.nikula@intel.com,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
+References: <20251217093321.3108939-1-damon.ding@rock-chips.com>
+ <20251217093321.3108939-6-damon.ding@rock-chips.com>
+ <DG2S064XPGXL.1MQDAKWZEK50K@bootlin.com>
+ <7256ecf9-b10b-428c-a1a6-e35e80a686ed@rock-chips.com>
+ <9e1da672-a52d-4ec3-a20a-fe6f8ca15496@rock-chips.com>
+ <DG58VCQ54OZA.2QHGR8JFIATY2@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <DG58VCQ54OZA.2QHGR8JFIATY2@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9c26330b5c03a3kunme492eb66731d02
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGU1KQlYdTB0aGRgfSRlIHU1WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=PdtvcqXrIboBxzk6mrQxMh8OFknDSWkG8VsQx3P2oelUvZoMue4STcE+QfhITy/PiSZqtgQYee4sBfRWs14gKK0t47AQ3BXE7Nr3wCtaOHKY9WaYy5G//B0ZE4uGhgQl/TKkSj0hcrsxCsAcdXg1gNWy7TRdCUVD4w3MwfbcuEU=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=ro6VqhMxsjofyYNi+p5gticfSsMMFPfjQqGDTGdq+b8=;
+	h=date:mime-version:subject:message-id:from;
 
-> Subject: Re: [PATCH] watchdog: imx7ulp_wdt: Keep WDOG running
-> until A55 enters WFI on i.MX94
->=20
-> On Tue, Feb 03, 2026 at 04:05:47PM +0800, Peng Fan (OSS) wrote:
-> > From: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>
-> >
-> > On i.MX94, watchdog sources clock from bus clock that will be
-> always
-> > on during the lifecycle of Linux. There is a Low Power Clock
-> > Gating(LPCG) between the bus clock and watchdog, but the LPCG is
-> not
-> > exported for software to control, it is hardware automatically
-> > controlled. When
-> > Cortex-A55 executes WFI during suspend flow, the LPCG will
-> > automatically gate off the clock stop watchdog.
-> >
-> > So watchdog could always be alive to protect Linux, until WFI is
-> executed.
->=20
-> suppose only after suspend's WFI? suppose CPUIDLE's WFI doesn't
-> affect it?
+Hi Luca,
 
-Only suspend WFI.=20
+On 2/3/2026 6:11 PM, Luca Ceresoli wrote:
+> Hello Damon,
+> 
+> On Tue Feb 3, 2026 at 2:31 AM CET, Damon Ding wrote:
+>> Hi,
+>>
+>> On 2/2/2026 10:54 AM, Damon Ding wrote:
+>>> Hi Luca,
+>>>
+>>> On 1/31/2026 8:33 PM, Luca Ceresoli wrote:
+>>>> Hello Damon, Dmitry,
+>>>>
+>>>> On Wed Dec 17, 2025 at 10:33 AM CET, Damon Ding wrote:
+>>>>> As suggested by Dmitry, the DRM legacy bridge driver can be pulled
+>>>>> out of imx/ subdir for multi-platform use. The driver is also renamed
+>>>>> to make it more generic and suitable for platforms other than i.MX.
+>>>>>
+>>>>> Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+>>>>> Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+>>>>> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+>>>>>
+>>>>> ---
+>>>>>
+>>>>> Changes in v7:
+>>>>> - Rename legacy-bridge to of-display-mode-bridge.
+>>>>> - Remove unnecessary API drm_bridge_is_legacy().
+>>>>
+>>>> ...
+>>>>
+>>>>> --- a/drivers/gpu/drm/bridge/Kconfig
+>>>>> +++ b/drivers/gpu/drm/bridge/Kconfig
+>>>>> @@ -244,6 +244,16 @@ config DRM_NXP_PTN3460
+>>>>>        help
+>>>>>          NXP PTN3460 eDP-LVDS bridge chip driver.
+>>>>>
+>>>>> +config DRM_OF_DISPLAY_MODE_BRIDGE
+>>>>> +    tristate
+>>>>> +    depends on DRM_BRIDGE && OF
+>>>>> +    help
+>>>>> +      This is a DRM bridge implementation that uses
+>>>>> of_get_drm_display_mode
+>>>>> +      to acquire display mode.
+>>>>> +
+>>>>> +      Newer designs should not use this bridge and should use proper
+>>>>> panel
+>>>>> +      driver instead.
+>>>>
+>>>> "Newer designs should not use this bridge", but in patch 8 you are
+>>>> introducing a new use ot devm_drm_of_display_mode_bridge(). Shouldn't you
+>>>> instead "use proper panel driver instead" in patch 8?
+>>>>
+>>>> Can you point to the conversation where the converstaion where Dmitry
+>>>> suggested this change? Maybe it already contains the answer to my
+>>>> qustion. Also adding a link to that conversation in the commit message
+>>>> woule be useful.
+>>>>
+>>>
+>>> First of all, thanks for your reviews on this patch series.
+>>>
+>>> link: https://lore.kernel.org/all/
+>>> xwenycscalzdlpuxytorbiyvej3k7pv3lhxwtadilxq65ipwsv@x5rxm53w5e22/
+>>>
+>>> I think it may be a misleading issue caused by directly copying the
+>>> previous Kconfig description. Now that the new
+>>> devm_drm_of_display_mode_bridge() helper has been added, drivers using
+>>> the panel-bridge framework can rely on it to maintain compatibility with
+>>> legacy display mode parsing.
+> 
+> Ah, I think I got the point: the mode description in device tree is legacy,
+> but the driver itself is not legacy and will be current until we need to
+> support legacy device tree. Correct?
+> 
+> If that's correct, this patch looks OK to me with a new Kconfig help text.
 
-Regards
-Peng.
+Right. I want to apply the advanced panel-bridge framework for Exynos DP 
+driver, and this newly added API helps handle the legacy device tree 
+that it supports.
 
->=20
-> Frank
-> >
-> > Introduce a new hardware feature flag to indicate CPU low-power-
-> mode
-> > auto clock gating support, and use it to avoid stopping the watchdog
-> > during suspend when LPCG can safely keep it running.
-> >
-> > Add i.MX94-specific watchdog hardware data and DT compatible
-> entry to
-> > enable this behavior.
-> >
-> > Signed-off-by: Ranjani Vaidyanathan
-> <ranjani.vaidyanathan@nxp.com>
-> > [peng.fan@nxp.com: rewrite commit log for clarity]
-> > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > ---
-> >  drivers/watchdog/imx7ulp_wdt.c | 11 ++++++++++-
-> >  1 file changed, 10 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/watchdog/imx7ulp_wdt.c
-> > b/drivers/watchdog/imx7ulp_wdt.c index
-> >
-> 03479110453ce78a6a89ce8d351ba9ece2f5e2c5..0ae4c0c00138e8985
-> 4f14edca0fd
-> > 5fa84591c2d2 100644
-> > --- a/drivers/watchdog/imx7ulp_wdt.c
-> > +++ b/drivers/watchdog/imx7ulp_wdt.c
-> > @@ -56,6 +56,7 @@ MODULE_PARM_DESC(nowayout, "Watchdog
-> cannot be stopped once started (default=3D"
-> >  struct imx_wdt_hw_feature {
-> >  	bool prescaler_enable;
-> >  	bool post_rcs_wait;
-> > +	bool cpu_lpm_auto_cg;
-> >  	u32 wdog_clock_rate;
-> >  };
-> >
-> > @@ -360,7 +361,8 @@ static int __maybe_unused
-> > imx7ulp_wdt_suspend_noirq(struct device *dev)  {
-> >  	struct imx7ulp_wdt_device *imx7ulp_wdt =3D
-> dev_get_drvdata(dev);
-> >
-> > -	if (watchdog_active(&imx7ulp_wdt->wdd))
-> > +
-> > +	if (watchdog_active(&imx7ulp_wdt->wdd) &&
-> > +!imx7ulp_wdt->hw->cpu_lpm_auto_cg)
-> >  		imx7ulp_wdt_stop(&imx7ulp_wdt->wdd);
-> >
-> >  	clk_disable_unprepare(imx7ulp_wdt->clk);
-> > @@ -408,10 +410,17 @@ static const struct imx_wdt_hw_feature
-> imx93_wdt_hw =3D {
-> >  	.wdog_clock_rate =3D 125,
-> >  };
-> >
-> > +static const struct imx_wdt_hw_feature imx94_wdt_hw =3D {
-> > +	.prescaler_enable =3D true,
-> > +	.wdog_clock_rate =3D 125,
-> > +	.cpu_lpm_auto_cg =3D true,
-> > +};
-> > +
-> >  static const struct of_device_id imx7ulp_wdt_dt_ids[] =3D {
-> >  	{ .compatible =3D "fsl,imx7ulp-wdt", .data =3D &imx7ulp_wdt_hw, },
-> >  	{ .compatible =3D "fsl,imx8ulp-wdt", .data =3D &imx8ulp_wdt_hw, },
-> >  	{ .compatible =3D "fsl,imx93-wdt", .data =3D &imx93_wdt_hw, },
-> > +	{ .compatible =3D "fsl,imx94-wdt", .data =3D &imx94_wdt_hw, },
-> >  	{ /* sentinel */ }
-> >  };
-> >  MODULE_DEVICE_TABLE(of, imx7ulp_wdt_dt_ids);
-> >
-> > ---
-> > base-commit: 193579fe01389bc21aff0051d13f24e8ea95b47d
-> > change-id: 20260203-imx94-wdog-1e0aa14d661b
-> >
-> > Best regards,
-> > --
-> > Peng Fan <peng.fan@nxp.com>
-> >
+The v9 will come soon.
+
+> 
+>>> It would be better to update the comment as follows:
+>>>
+>>> This is a DRM bridge implementation that uses of_get_drm_display_mode to
+>>> acquire display mode.
+>>>
+>>> It exists for compatibility with legacy display mode parsing, in order
+>>> to conform to the panel-bridge framework.
+>>>
+>>
+>> Dmitry, what's you take on this?
+> 
+> Dmitry's opinion would be much more relevant than mine. I don't know much
+> myself about this driver.
+> 
+
+Best regards,
+Damon
+
+
