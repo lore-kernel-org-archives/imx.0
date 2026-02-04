@@ -1,192 +1,153 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010051.outbound.protection.outlook.com [52.101.84.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6602F3ACEF4
-	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 12:28:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770208114; cv=fail; b=DJxF9IfhbkUaxfDezPdCmVsRMb9Ww2bjOfxDhId9zsB49TYepZJjdCJGlENLZGdjF6bFJZ+gzFkuZW7l8r/I2/mtKUclahc9c9f+2utsDNRMSr4Vnh0xqd7Ubq4m07utrEyye3A65ECGL+iumjl4mw2o95GogDcvLWVFZ+dxEAk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770208114; c=relaxed/simple;
-	bh=48e0RV9XSciPUjUw27+VIwFjH2cq14UniD46kwOnHP8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=kDNTCG4O0cJigJ1tMTrXth8Qy9vk0pneRvobxTRcSbEw8vm5o9c3B+E3I7P0qea5UbhO3CoP9Od3e0Y+PQ2bamIPFHH2ohMg5e/MBaPLSE3QKobBmzuS+oPYZzsFOxDBpktKbZS4MuwmPt8G/4cnQgcy5JmVApgC2IcuEbNDsso=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ECr5ONsN; arc=fail smtp.client-ip=52.101.84.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27438332EB3;
+	Wed,  4 Feb 2026 12:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770208128; cv=none; b=WTTwVFVd5rDerEbXF8UMJ6cF/ymIRDBn4XPyKN9YVvDIJx2VqvJpIYO9eIuAtUeNiW9GZFFXeVoHIeeKBA8BODLH9k0mc9olRXFbxUG+B3jeTxzRQxwvwyGEs2cKBwsUhYT3EvR2oa5tH5drr4ODUmPtoUtGuNPAnGFWEp+biic=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770208128; c=relaxed/simple;
+	bh=RcxuMNydRwnBZEetRsA8DvTAUR6hxBAIYq+a3sQjOiE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R/nnGEelU/lTq0I0ur7zfgKBN4zoU8l7sA+Zr9X0O2NhRRyXwsbl8ukZqzbmzwBvGqT2XYEhxR91bbhAlubFmIqjEofMtyqvKB0iKMwBlRyrgf5Jqe0pGrh4YbDqg7hmoAOj/F0g53d4N/9uW+17ghiwk6CGho+CdJPctAFSyYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQDrf5Cm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ECr5ONsN"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GSbHoXWA1rwK/Q2L2KrthA/uY8+u/gY7xgcwD3kz6wfMaFSFgh5Nh4/+1BEffhfMogFN5e/+QMOqCLTCDMMXTq52+xhXv4TJjHikwbFVfxUz/SGafp9kbSRIMRiwbNbtwDReL5zUa/LZn54wjyvkchYBqz6GHhZL9Q+kaRZE22KahU2DIw2gS2Gb9ndO7S8C4eUJjjTdedOe8TBTSa/DS5BW6smPjl/YXd+b+yA7nBZEgm0TdRDygQId9jG5ZTOCFoB41Ug8X2S6xjvoCYbUOcuuQ402ulyOtEyVPCrVVDPCvxxTDeGF1MUWo2nOqCjTKMtMu7sHLIm5AsDCAKCMtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MQL8eioVm4JQOoopAp35c66ByPDWxnXcGTZpSje17ZY=;
- b=f4stqJQt7VZUJ1VfmrtLkJSGfjIPs5EzrOlPEaDWqsXjJbHCPLhYunnhf+CtGwNhqwhxvyL4bSQKsMK7C7kFBKKvY8WJxQLsT4xihq2LCVx2N0lYBjCxdUSlZgTm/RNaO/3qrOlqONNUXm65OdF6QAJkjK0h858htPqh/VpP2QWibMi2Dy96CCR+wlQtvcHvnqI2i4J80p4r5eTXoiwDU3nfj8OvQiZxHNp+fQPJcuy179kcSw9+SypuZ2XgRLS5ZP7MyUTc3x4ljrEqFRkkSG8mzdEq8tt2BgaIy2gilUioofuowV3LshMUW6/Bok/rgkFj5yPmGmF8YJLo67qodA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MQL8eioVm4JQOoopAp35c66ByPDWxnXcGTZpSje17ZY=;
- b=ECr5ONsN6wlX5Ls8Q5t13ox7N4jeZynnTTnkvG7ZP0ySLJ665TUjq2PrE3WdaCoKbbVmvZFMYII4leQvqBcFTYWkJPIZ02ixVJanWsWC6J/PoXP1oZGSyP0BB/nD0PjPirpO8cUUyem4oRcB78BDP4So+/oNfYMy6tlZvYKy6xqpYyYLadLOcrYEM6BXkvCWSUMUu5Ue/q02XGTa8rli8Liq/7I8lT8ooUlIcOeo9WjMqyNf1DxPYzhkTM5/F8e4L6jQG/Zzy0eZ39sNXG5cdMzgEEzI6KrANl6IyqAONu8I9/oS6qz2gTjlWjBwsMtpLl6O4mNbDvj0WqrCiEcPMA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::13)
- by VI1PR04MB6847.eurprd04.prod.outlook.com (2603:10a6:803:134::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.12; Wed, 4 Feb
- 2026 12:28:25 +0000
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::e99:f504:ce75:9bed]) by AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::e99:f504:ce75:9bed%3]) with mapi id 15.20.9564.016; Wed, 4 Feb 2026
- 12:28:25 +0000
-Message-ID: <4cdba05c-f4aa-4ec1-9a73-2c0983c1aa73@oss.nxp.com>
-Date: Wed, 4 Feb 2026 14:31:20 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/5] mfd: aaeon: Add SRG-IMX8P MCU driver
-To: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>,
- Bartosz Golaszewski <brgl@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- =?UTF-8?B?SsOpcsOpbWllIERhdXRoZXJpYmVz?= <jeremie.dautheribes@bootlin.com>,
- Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck
- <linux@roeck-us.net>, Lee Jones <lee@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20260203-dev-b4-aaeon-mcu-driver-v3-0-0a19432076ac@bootlin.com>
- <20260203-dev-b4-aaeon-mcu-driver-v3-3-0a19432076ac@bootlin.com>
-Content-Language: en-US
-From: Daniel Baluta <daniel.baluta@oss.nxp.com>
-In-Reply-To: <20260203-dev-b4-aaeon-mcu-driver-v3-3-0a19432076ac@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: AM4PR0302CA0027.eurprd03.prod.outlook.com
- (2603:10a6:205:2::40) To AS8PR04MB8247.eurprd04.prod.outlook.com
- (2603:10a6:20b:3f2::13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQDrf5Cm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69192C2BC86;
+	Wed,  4 Feb 2026 12:28:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770208127;
+	bh=RcxuMNydRwnBZEetRsA8DvTAUR6hxBAIYq+a3sQjOiE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bQDrf5CmjRLnGWLvPkWyW4K4Ex+0mvXERAZXS6FhgrJQquc1RL7R3rGdOL+nsQnUN
+	 nflOm5SC/zDlGW1TvEbAfvWC5K7lSeJFT9Z3JC/iOThjGA/b16Zfmboti/kHWoHWQ4
+	 F7QFOHnneK+m7fvsVREwhYiDxCxd0zMaPDiQqo1AaZnqcy8kBaQogCT8/BMEgmgf5x
+	 AN6C6UopvsjlVQv+Rb8m2PLbLD3KqNTCsr3LFyQcXInYTnLJlqi6God1c68dOSWAUd
+	 ZwOKkrgEUuC4TJG4y1GXljllbZkc4MW94d7EnjXn4o65uj6zUNUAHsCVX02iEJP0IQ
+	 kDa66WcSKktAA==
+Date: Wed, 4 Feb 2026 17:58:33 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Sherry Sun <sherry.sun@nxp.com>, hongxing.zhu@nxp.com, 
+	l.stach@pengutronix.de, bhelgaas@google.com, lpieralisi@kernel.org, 
+	kwilczynski@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	s.hauer@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de, 
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3 02/10] PCI: imx6: Add support for parsing the reset
+ property in new Root Port binding
+Message-ID: <pz5zmte5dbb23ccwvc2xkl4grptr35bmcwd6ohlzo2arjopgkw@t3euzojtsoyf>
+References: <20260203015614.2957479-1-sherry.sun@nxp.com>
+ <20260203015614.2957479-3-sherry.sun@nxp.com>
+ <nekxn5osukwkumqfh4qabj6okhtv4tdwrnthza4x54psrhauyf@p3lhia4mkhb4>
+ <aYIztYs/07WBLsAq@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8247:EE_|VI1PR04MB6847:EE_
-X-MS-Office365-Filtering-Correlation-Id: 173a876f-5939-4d16-41e9-08de63e8e456
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|19092799006|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bzZoZ3ZNd0R3Slh6a0xlcUN2d2xVeHE3Tkl3R0c1eVZGc0lQYVNmZ0hjMnl6?=
- =?utf-8?B?RklWRUxtTDRpci9LcU9IWVJUS0taMENFTDhVQ2tpQ0p1RUlocUNsdEQ3VXBW?=
- =?utf-8?B?WExQNGh6UFEzakZ2ZTZUMVl3M2tnNFhTWVpUUm5ZcFZDTEZQUWdJUUtKOXIv?=
- =?utf-8?B?Z1pRVHFHbUwwOTAxTkZ0VjhwYnVYZWR3bTB5QUFPV2hCY1F4bEU4Smc4Qk9x?=
- =?utf-8?B?b0lUMmo1V3YzcVJaQVU4QUs2V2VjL0pRTlZGT2dURS9ZemJxbXB1SDZNbFlh?=
- =?utf-8?B?aC93WGIwWlBSemdxMnNKQjdOTnhpMUtrMjVDYS9vakNtY2V5VkpQWk9vSUh3?=
- =?utf-8?B?dWQ1QmhJaEVJcENoUXN3ZU5PZkFsdUNkaitUdWVLUnhHT1pFQUE3d0VyTXo1?=
- =?utf-8?B?bFhtT3hmeUY1TzBvM3hQWFNxT2VEMnB2V2JvRSt6RmVsSjlCbG5NZUdnVGZB?=
- =?utf-8?B?Y095dUx4aG1xb1NCZkF4SGJMTXltc3ZTQ21VeVduT2NLMC9iYWEvajRTVE9D?=
- =?utf-8?B?QU1TK282MWJGc3E1czcrRFhOWGZ5ZENuMng4U1ZVVWtSRzFja2RBSTZVWG1k?=
- =?utf-8?B?UUV2Y2EyMy9oK24wWE5qelBHelIrQ05Ka0JNVUhrUjNVUDB0WWZ5eS9XdVVs?=
- =?utf-8?B?bTluam1mUXVGZ0JhZEpxTDJRZW9PckoreUNjS0JWVFFNSzJEQ3JxbG1mbDZE?=
- =?utf-8?B?VUYrVUpaUjVkeVFkN3UrK1d6bFFUdlYrSW8yM09ORWRZU1ZUKzlVYm45WlNo?=
- =?utf-8?B?Q0lZZkNac0tVYUZYeGxlWHlCVzZJY2xDV2hyTExUT1VCbUNEdVhaL0lsclFr?=
- =?utf-8?B?S2M4OUE1RGIyMkNwRXBBZXFTa0NyNkhIUDhZeFg4RzZYaTZhWDBRZi9zK2F4?=
- =?utf-8?B?SXZEeEVOTHBrWkIrMXM0K1NMYVZ4VUVqRUJhNjJkdjVmekF2NkdyQUhvMHkr?=
- =?utf-8?B?ZTRJTjZXM2NsOVROMlZ1WnFZK1QxODY3OXJNeGZwN001NWoySlRUaGVwWVZa?=
- =?utf-8?B?NFUvTHBBTXZxR0cwZzkxdEwyRkhGRzJOaEpyc2xNVmMvbGVxb1lSWlFFbW9I?=
- =?utf-8?B?L210YjJIazl1NDBNdHNIeVF4Mk9tb09tR3lYQkw3alhIMWIvSmp1SVB0dGcr?=
- =?utf-8?B?MDR2RFlBcnRBYlJlTWR0VVJIYUJnTjZBbUMwS3R4RU56dVpVWWR4WGUvbnB1?=
- =?utf-8?B?SWZVZHEvT20wSkJ6SjFucExLOU5ONWN2cFBlenpOam9hQ3VPVWJGUDNsbkdw?=
- =?utf-8?B?anhlamVYWWNkVTRBWDM1V3V2M1ZNc2RtTnJKOGxFOUdpS0hKWVp1Y2l3ZWRy?=
- =?utf-8?B?bTJmMWVMbUhIeTJicHBYTXZ4MnFGVlhYL21WTnNocTRZQzlNQ1BPRkZLMTdM?=
- =?utf-8?B?MTBjazFpN2JFRVNEU0JCdE5CVzg3Z2RiMWgyZHBzZ2NCc2Z6QnV1V0tZckdR?=
- =?utf-8?B?eEhacXl6QjltWmVZRFovTTduQUxyTEVrVjgxN0UxQy9OSmRHNGlmRFgyZEQ2?=
- =?utf-8?B?V3Z0aWI4MzBoaUVhcUxDNzJGWmlxTEdEWVRaT0JhQXB6ZWFUVXZOMHVSb3ds?=
- =?utf-8?B?V2JtWnNtYUdiaXJWendCdC9mOFJ0Y0V4MnVZbnhqR04rbkNjWkQyRDJZSm40?=
- =?utf-8?B?emdYN1ZjaGF2NHZlSVlicVN0MEZjeG5jdm9GTVhtMHREbytPeVpOZlFQQnls?=
- =?utf-8?B?eWRTbHorWStTQWo5d0E3QkZ2R1ZKNSszbXlVOFBZd2hXYS9YakI5VzNrQ05n?=
- =?utf-8?B?dVJlU0pucGFFTTYraTd6bENQWE1Hd2JEcWFVNnVOS1UrNm1tTElmbG52S0ZQ?=
- =?utf-8?B?QkYzK25oL2JnZnlOdE5JeE5kcDgvWDJ6NHN4bWtxZWxVMG01cE1Ha3lQaTEv?=
- =?utf-8?B?aENjb2tYVmJpcDAvcW04Z2ZqeTFXblRMaGwrQ3MwRC9vOFlMZUxjZlo0enFY?=
- =?utf-8?B?dTJVSzd2a095TlB5WFFRNng0c0Q0MVBiQ3gwaGdlN3EyNENUbkFLMVBKYk8y?=
- =?utf-8?B?SUR4SkVsakRKT1hnekhOS2lUd3lWMXQ1czlDMkJQRlViRUVhczE1dWI3K1Vp?=
- =?utf-8?B?aXAvNkZRQVdUeUlTblY2MGlVb3dIWEEreGk3S0NuSjlvb0tYOEpBSzZ4SmpC?=
- =?utf-8?B?Z01Ic2FEaDhlZ3dsMmROL2NXV1puUFgzdkluMHNMVHhnR0JnaUJTQS9tWjAx?=
- =?utf-8?B?aGc9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8247.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(19092799006)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RjZ6SkxsUmVlZ2RmTXhNdHhFMHJiQkVnckltVURPaElCSk42UVdjbmJubTdW?=
- =?utf-8?B?TEdJbjZHcVVXYmh0NU9IUnVUYldVeUd0ank0VG9vZGRIVWpkK2wxNmFtSGdZ?=
- =?utf-8?B?Snc5WWZGcnVuUzlUcTV3Y0h3R0FtREJ0QTBEU0ZoSURWWkVyTElDZUI3N2hp?=
- =?utf-8?B?aStHQWk2Z0Y3RHNBSE9Pb1pWMUxQaVJLWUtqTmZqcjRULzNDLzdLdExCbG9G?=
- =?utf-8?B?Z01rNmk1TmNQL0Eybm1JVFBWV1p3ZVVGTDlsNDFOL25rOFRFQjBFdUNUbTdT?=
- =?utf-8?B?K045N05hVXZuNEZ4MnpmRHY1bFlNVXhpZ1UrMDJnYm5taUFvdmN1bXhZK293?=
- =?utf-8?B?NEk1Uk1kbmNSYlBOTi9SVWNCL3paU2NDbVlJWVRIZ09DQXNpcDlBa1FncHJM?=
- =?utf-8?B?VTh4SGFjc3IvME1LTGxkQWszbFFMRzdQNnZIQ0VybEIwQlVTZGRTbm1kVU9z?=
- =?utf-8?B?d2xRNkY5SFNwYmF6NlZuLytBbjFmS2tMNDZIcVQvZjZyUTM4NUoyZkQ2dW54?=
- =?utf-8?B?MzgzOXE5RzFseFV3bzVyclVBMll6RXFUTitKdmpvSEhuY1E2ZG9TZkFmSHhN?=
- =?utf-8?B?V1VFcmF5QjdlM0xsYk9mMjd0b0ZOajRCMjVWaUE3dGlMb1hSMnVrZk9nQkIx?=
- =?utf-8?B?V0V2V3VuUk9EVWRwT3pRckVIbzl5ekxEQlBBbEdvaWY4YkgwQTdlMFRyOWo2?=
- =?utf-8?B?R1Npdm40OVhycE1XNGtDNmIraXFuN2Vuc1RoaEUxSnJaa0lBbVViVWxwMVU0?=
- =?utf-8?B?VVFtNDBnTlVhcGV0VjNWRitXYTIxYk4vbmMydm5qYSt6THZJTUUzL1JCWkRD?=
- =?utf-8?B?SHlUSm1WWGlGK1NPVktsZXc1VER3RjVpempqVmltTHVyMmdXOHY0V3prLy9L?=
- =?utf-8?B?d0RLUjYwd3gvc3EvZUF2dStSdU1yMWRxK0lOS1pQOXV3UlJheEJ2eHprWVhL?=
- =?utf-8?B?V242bWhaS0VsY3dlc0NSM0lvc2lEK0ZibzhSdzU0Wm00RE9tWFlscXV2dnkx?=
- =?utf-8?B?RGZ3WE95MUxuVDlGSUJSTXRCWEtwQlhvTE51OXJ2M3BlNjBlb1hsdE0zUUox?=
- =?utf-8?B?QzdVNndlejBhemV3MFdDZzhDTklZUDR6QWxkQUpvcnJvSGhmdUlJd0VRUzRy?=
- =?utf-8?B?OTBtNzJPa05VbHJUdlZ2VUkzblZnVEdQQkdZMjhBSy9JWU9hR1huTkdLckho?=
- =?utf-8?B?QkFYWlVxMEpuMnhuYjBNQ3pyelhEeXp2NmhoNVRqdkUrd3dOOWdobVhSUGNn?=
- =?utf-8?B?Y3FKTkk5dTlVTjRFcDhYalphLzNrRmQxWmwxTEN1WHlzeFo0NjdpampwWlMz?=
- =?utf-8?B?MTBOaEpmc3Y3VVJuYjNoZzYzNFRXZ1hCVk8xazVNckhWbXZ6eFdqdGloQlYr?=
- =?utf-8?B?UXFBcVpDcmcxWFFvM3d4bFV1SmJLVDd4S3NTSlVVZ1VZc1V0TVEvYm1zKzcy?=
- =?utf-8?B?enpORWQ0N3F4UG5hNzI2aEU0VlM3czkyYmFHR1BDcndkVjZjSmNFNGYvOEhX?=
- =?utf-8?B?VGhRTFRGcE1LaFNLWlh1ZFVxM2Z5b01jZm1RNE5MLys5Ly9KTVZnYld6NzRv?=
- =?utf-8?B?VFVuUHF5WGRDSkRFRGxvcnEySGxXREhqUlgxbU9Bd0Y2RGttV1YxMWgrMVow?=
- =?utf-8?B?NzF3OWpIbWgrL1NKYXNDS000NWF0UkRNTHNOTmhVNHZNVVRzZWEvNW9Rd3Er?=
- =?utf-8?B?WG9BdEtveHNjazVabThvc1BsMmtkeVIwSVR1MkVDeVhCaUZOdnU4ZTBncGd5?=
- =?utf-8?B?TUFndUo0Z0dWckNpS2tiODFDeHp3bjJ6Wm9qOEdTeUlQYWFjaDg4c1ppTVdC?=
- =?utf-8?B?cXlZVXVyWkg2UHp2dFFPT3Ira29wUW8vZnR5NjEzM0VBUzNwQzJlekpEajAx?=
- =?utf-8?B?aE81RVBOVW5ET0pHaXFKNjdYZ0p1K0VMNDNnYkJLUkxjalBJQzVqU1d0ekYz?=
- =?utf-8?B?Q1J4bDhiNW1EY0FtY09WZkxCNEFmMVFyUmdvSTJoY3ZiTVNyMFRZbkErZlBi?=
- =?utf-8?B?MjRWU0tOR0tsUFJoMFZ2eVpBTW94QXlWRHh1MWFNeGJUN0NMbHpxZFF0alNl?=
- =?utf-8?B?Wnd6VnlIWk1XVlpmZjVoZ0hTeVBmekJWUjRadlZDcVZNcWFlR0xoVTJaNUQ0?=
- =?utf-8?B?THRVVlZLSWNJcGJPTDF4RWEybVN5akpYUXdCY3lCT0dhZWlqUW16KzM3VlFN?=
- =?utf-8?B?RzRkc25rbEpNMUxKQnNhK2ZkTlBHVDRZZWYwRy9aRDNBWlh4VTIzZUxkNE9Q?=
- =?utf-8?B?ZW5LYi8xajlGTXJsR3RZWTREUndnbENRbHhPd1cycFY4U2xWbzk5dnlML0Zz?=
- =?utf-8?B?S09oNi8xMGZVL0YzSjlNNjZhS1Bka2YweE1RMHlKaDdhaCtvQzE4Zz09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 173a876f-5939-4d16-41e9-08de63e8e456
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8247.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2026 12:28:24.9417
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YZrPhc4NnvXPqfTeGp+yKiD6k2U7IT7l2eFVy5vfJNglPqGYSq9Zgu3/UA6UyD2ZXVTgvACAIA8DMuq4v0J0ww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6847
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aYIztYs/07WBLsAq@lizhi-Precision-Tower-5810>
 
-On 2/3/26 18:21, Thomas Perrot (Schneider Electric) wrote:
-> @@ -304,3 +304,5 @@ obj-$(CONFIG_MFD_RSMU_SPI)	+= rsmu_spi.o rsmu_core.o
->  obj-$(CONFIG_MFD_UPBOARD_FPGA)	+= upboard-fpga.o
->  
->  obj-$(CONFIG_MFD_LOONGSON_SE)	+= loongson-se.o
-> +
-> +obj-$(CONFIG_MFD_AAEON_MCU)	+= aaeon-mcu.o
+On Tue, Feb 03, 2026 at 12:43:17PM -0500, Frank Li wrote:
+> On Tue, Feb 03, 2026 at 06:38:18PM +0530, Manivannan Sadhasivam wrote:
+> > On Tue, Feb 03, 2026 at 09:56:06AM +0800, Sherry Sun wrote:
+> > > DT binding allows specifying 'reset' property in both host bridge and
+> > > Root Port nodes, but specifying in the host bridge node is marked as
+> > > deprecated. So add support for parsing the new binding that uses
+> > > 'reset-gpios' property for PERST#.
+> > >
+> > > The initial idea is to add the PCIe M.2 KeyE connector support and PCI
+> > > power control framework to the pcie-imx6 driver. Since the new
+> > > M.2/pwrctrl model is implemented based on Root Ports and requires the
+> > > pwrctrl driver to bind to a Root Port device, we need to introduce a
+> > > Root Port child node on i.MX boards that provide an M.2 connector.
+> > >
+> > > To follow a more standardized DT structure, it also makes sense to move
+> > > the reset-gpios and wake-gpios properties into the Root Port node. These
+> > > signals logically belong to the Root Port rather than the host bridge,
+> > > and placing them there aligns with the new M.2/pwrctrl model.
+> > >
+> > > To maintain DT backwards compatibility, fallback to the legacy method of
+> > > parsing the host bridge node if the reset property is not present in the
+> > > Root Port node.
+> > >
+> > > Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+> > > ---
+> > >  drivers/pci/controller/dwc/pci-imx6.c | 123 +++++++++++++++++++++++---
+> > >  1 file changed, 109 insertions(+), 14 deletions(-)
+> > >
+> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> > > index a5b8d0b71677..e3ba68976bee 100644
+> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
+> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> > > @@ -148,10 +148,15 @@ struct imx_lut_data {
+> > >  	u32 data2;
+> > >  };
+> > >
+> > > +struct imx_pcie_port {
+> > > +	struct list_head	list;
+> > > +	struct gpio_desc	*reset;
+> > > +};
+> > > +
+> >
+> > I'd love to abstract the Root Port properties in a generic struct so that we can
+> > introduce generic APIs to parse the ports. But I'm not asking you to implement
+> > it :)
+> >
+> 
+> good idea, where is good place to put it?
+> 
 
-Looks like this lines are sorted and your new addition should be around:
+drivers/pci/controller/pci-host-common.c
 
-obj-$(CONFIG_MFD_ACT8945A)»     += act8945a.o
+> > >
+> > > @@ -1688,12 +1771,24 @@ static int imx_pcie_probe(struct platform_device *pdev)
+> > >  			return PTR_ERR(imx_pcie->phy_base);
+> > >  	}
+> > >
+> > > -	/* Fetch GPIOs */
+> > > -	imx_pcie->reset_gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+> > > -	if (IS_ERR(imx_pcie->reset_gpiod))
+> > > -		return dev_err_probe(dev, PTR_ERR(imx_pcie->reset_gpiod),
+> > > -				     "unable to get reset gpio\n");
+> > > -	gpiod_set_consumer_name(imx_pcie->reset_gpiod, "PCIe reset");
+> > > +	ret = imx_pcie_parse_ports(imx_pcie);
+> > > +	if (ret) {
+> > > +		if (ret != -ENOENT)
+> > > +			return dev_err_probe(dev, ret, "Failed to parse Root Port: %d\n", ret);
+> > > +
+> > > +		/*
+> > > +		 * In the case of properties not populated in Root Port node,
+> > > +		 * fallback to the legacy method of parsing the Host Bridge
+> > > +		 * node. This is to maintain DT backwards compatibility.
+> > > +		 */
+> > > +		ret = imx_pcie_parse_legacy_binding(imx_pcie);
+> > > +		if (ret)
+> > > +			return dev_err_probe(dev, ret, "Unable to get reset gpio: %d\n", ret);
+> > > +	}
+> > > +
+> > > +	ret = devm_add_action_or_reset(dev, imx_pcie_delete_ports, imx_pcie);
+> > > +	if (ret)
+> > > +		return ret;
+> >
+> > I'd prefer to do it in err labels.
+> 
+> we just removed err label and module remove.
+> 
 
+This driver is always built-in. So the only way 'struct dev' will get freed is
+when probe fails. The usual pattern within the host controller drivers is to use
+err label to do the cleanup not devm_add_action_or_reset() (there are some
+exceptions though).
+
+It just helps us to keep uniformity across the drivers.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
