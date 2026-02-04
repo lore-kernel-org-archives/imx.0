@@ -1,364 +1,265 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010059.outbound.protection.outlook.com [52.101.69.59])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011039.outbound.protection.outlook.com [52.101.65.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DB42566E9
-	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 02:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.59
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035D5286897
+	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 02:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.39
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770171204; cv=fail; b=qEb1Kd01elcjAYc8k6sT6Yh6LL6fFCDhOxvZSwOZJ4RWM+S0U0Jd6yU+Ke6vhnIcFg7x2z0F17RNdhzQAgshA+SlpzeGyhRY3bgwsdxb6dbqJrIur1K8LcQp9IleeapBfCDPum9QI1x5pXXfBf56mNb/vjqTM1ayIJQog2CKvHk=
+	t=1770171719; cv=fail; b=GicHUW6+UvJMlaS9ebABYibYiQV3nNkFRHjAuceZ36+rKJ6ewr0m3n7gbtawH+lDAIxT7xhXRO6MAQz/GOqjwKVCXiUUc9wczUyQXTXSdBs3soEt66+6aZfdWIKjDp+88RQcbaP4PhlNsep49VqIrEe6iqFRX2bCaLhbamMFieY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770171204; c=relaxed/simple;
-	bh=y9Z3NL/ddPRooA2cTs391cpH3W3em7+fnHC5hvHVoFk=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Lje15LgaVx0Fq5AqKY7fdlbVBc0Vl0PILmaKsMVW8qqOAg8WxwCGlM1ECabCn2QWY44EkVeEbg8pI5AoJnPsqNd43lc7ubV2vrX7GF76tWZgd+YUptQtth5eJL3MEDa9zel5oAon4rDfaPZ61WqIwJaWARbCUbq/aKW9dXiLZbE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=ZZAZhg4H; arc=fail smtp.client-ip=52.101.69.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	s=arc-20240116; t=1770171719; c=relaxed/simple;
+	bh=EdGLq9MG7AhVHEIq0Mj1S5KcArbg6XHVEC2Xw8BcgRQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=YGLdB+j3Rxt+ySomQWwN9B4jWzqA2geawq2F7LewKDH9jbn2MCpyKTmGz6eo9BXCd8Man6U0eVv7Zom1pOEmN6C+7jynvfy6QwwG308FoowwXAsXaTjOHtLTLNX10CNm2LVYq7i3rtKCrEiusH3VOHkM/61U/6etRo2unvQLI0o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oQ4qF9OX; arc=fail smtp.client-ip=52.101.65.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="ZZAZhg4H"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oQ4qF9OX"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yTL+2X7fIPe6E3ZMynZk7OWmHuEECZE1+JZurjcZkNDOCNP8xDe8JQzaVZpzMxTTIzKrXjoibRotGaesnSXI6hEOR+sM3CsbwUxLbZzSkTR2Q5b/tdEa+OSO07A09DjSj8dX1tTCoE5GklPdmxBJ8HYnob0N2rckHP1e6B4uahH2JApR5tmLhvKT7ettQE5aUGgvyUc1ssam6hgzo2eUGECpzPeNpsP9xauIRx92H6Jb8sSRPFBtwpgikJVwjGuaUGXf+pZ1ZyBrlSTaxwovyk/xt2K8FXhR9wkBXw7AbtFe5kNcGBKYnp7O5gZ6xIhwbAE8gilwrO1flkyH8fip6Q==
+ b=CinY4BrrrDx3Wp0f0ZOZB4KQ4UKo+6fqJA8MXgzezdugzlryYl1Ds3vQjTnnExRJrequjAGwD+1Y5a+3FFrK0d4nNQoJubpOU9ZsUxZ5Ci2EXLA+s7ukWluaAyTGVZEpo9KR1sJmazfnlyNQLT+7Jq2Qr1JHsGgA/wo2ro3eQu61HzVWswnIxfZgVctk8PJbQUJSKdJVBFBiMFcCTch5BtndxZZTKAlAlIV2A5xGapUnU2waWPWZqz6lOtJVjlQLiFzWZFX7pDueSBX4uRODNDX0NT++IEdFeqpXk4Yot3auQn1w5DHghSjzMn6zmFYeTC//CogZIJ7MAAlp9HQF9A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ke+i0dbehpY4i2aJOJj10LXom+LcE4OeXSswKJtLlW4=;
- b=yAFQdr++D6pHoVifD3UTMFVr6UprWd+b1h5bGjVx3rTFBTQLRJmMecSQCP/oIdRd+GiOTBkBKGe+DOGhFYDxZ3ATINdzkd2Yz9ylq+iJHT6E/hOsRO8fDTcmKsBxwb5W3xAqCwDc+G1FlcRRMK4In2HjOkhABrsGniHS2uWjvyTnkXu7cltGbXqypf532LBSzBJhUJ2NeW5fbVUhZrnnruNNQoMZE1nol1oUY309416qUm6lzl0gHHgbN+ajv06+AJPXcQS8DlN1komSDsyYgU62EF8vImJk0N4UkRWor+4cf9717eqBKT0Rfz5n3volu1zje1lUmVcvk8vogmi65g==
+ bh=9cOS8E3b2inM+2biw2aNpALJoTstj951bh8c23IuWSA=;
+ b=j5eRaCfr2XVlHE1lhUwmyTb8rPVCpgwe29VScRtj1ovtpzk0mfIYRLAlXh07UbgRR83CUSsPC9t4nItzdQuaWAIFGPhwcqhpwzfwR//s5RbZ03y9nn0FkiPhc/LyQJMGkyDK2YTadvlIkCXYr/ZVaMKopTAUp/dwwp1O16hK929JnHvTKo+Yb02YwAeJ99IHXk0m4VKMr5K9+Zh6Em8qJT8lA4ish5e81MrcSi5Pyg+m/dPAdGEp0rHeWCFgTMz/ZvSO9ccq01AghZ+nFdSI69lvC54msJKm4+IRdxfpOvX0N/dE1wDQKWx5mqmQAl8UsP/cBMRg/kPvx3HFMBA5EQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ke+i0dbehpY4i2aJOJj10LXom+LcE4OeXSswKJtLlW4=;
- b=ZZAZhg4HgEbi5+U/K6zgLqJ4N/vmz08j1yZ/R6kthqo1rG9SEewTms9gFkSHzIrzgi0Ij+6G1smap29R8M7WgjhrBNGy35wsBntbpcZHkZBt2Fwgh7IiUEponpl62DYaet6mwcLuayriz3DJ8EK2bLUG0RDG5HxxVMUJptvuNvuQq3OZLv8ufoPREG5c5Qf+n/0dsbLXC5oSt9RvOARK8pfMG03MjsUaDtjvWtl8ErLke3xHpEms/Wir640mZK99bAvInk18YR2V9a5qHJVpiWP1s0XcNIAhVe//hWP0TcE8+AxS6RUdlFBWv5SHDRR0UaU40mSFGh6VG18xuVP3vg==
+ bh=9cOS8E3b2inM+2biw2aNpALJoTstj951bh8c23IuWSA=;
+ b=oQ4qF9OX8rXeoLjL/DbspPzeMRXDLzSw1/plb3+LkqW+n8kq65JuIwRlwkANl0ouxbo6/FilJ/sKpj2Udh97q+cLpHqsnES4XnAygirWsLL7noDfkkO+/Y+15ogyk2n1JppTuOcR9TGfN1SWt0HfYm7tfVHYjlA/yss/Q8Kt+gc2J9P96A81kkqem6T5piYFISdKXrFRlwYwqovhcD5QBeo+7tEc9NIU/mlkjKn1UHg7+fLOlaEYrwiFp9bVORs42w8PRTBh+PT3uYCjnam5U2ymWziXiHRTQOd2DoetXLTZk6yiSNhaNXi4latH+wfB+FGEtPcIOpctso7qTHhJkQ==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
- by AM7PR04MB6822.eurprd04.prod.outlook.com (2603:10a6:20b:108::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Wed, 4 Feb
- 2026 02:13:19 +0000
-Received: from PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::20db:4017:28ea:911b]) by PAXPR04MB8254.eurprd04.prod.outlook.com
- ([fe80::20db:4017:28ea:911b%4]) with mapi id 15.20.9587.010; Wed, 4 Feb 2026
- 02:13:19 +0000
-Message-ID: <39e9729c-c4c2-48cd-9795-79ecb31b8560@oss.nxp.com>
-Date: Wed, 4 Feb 2026 10:13:07 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: imx8mq: Restore VPU G2 clock to 600MHz for
- 4K60fps decoding
-To: Nicolas Dufresne <nicolas@ndufresne.ca>,
- Marco Felsch <m.felsch@pengutronix.de>
-Cc: linux-media@vger.kernel.org, imx@lists.linux.dev, ulf.hansson@linaro.org,
- Frank.li@nxp.com, peng.fan@nxp.com, festevam@gmail.com, robh@kernel.org,
- benjamin.gaignard@collabora.com, sebastian.fricke@collabora.com,
- linux-imx@nxp.com, devicetree@vger.kernel.org, conor+dt@kernel.org,
- p.zabel@pengutronix.de, linux-pm@vger.kernel.org, s.hauer@pengutronix.de,
- mchehab@kernel.org, linux-arm-kernel@lists.infradead.org,
- eagle.zhou@nxp.com, linux-kernel@vger.kernel.org, kernel@pengutronix.de,
- hverkuil-cisco@xs4all.nl, krzk+dt@kernel.org, shawnguo@kernel.org,
- l.stach@pengutronix.de
-References: <20260130084133.2159-1-ming.qian@oss.nxp.com>
- <df8d5d5f28870752e77ec74f34fea7ceb6e97286.camel@ndufresne.ca>
- <0b24716b-438c-4185-8a93-3a3879147c24@oss.nxp.com>
- <169eba79e8e1f906b1a0b59e22a531dfc7e57a1f.camel@ndufresne.ca>
- <5e3431c69da07557edb20a252c4759be8c857f08.camel@ndufresne.ca>
- <ca3a8042-1394-4925-9c61-dbfcbf4cf7d9@oss.nxp.com>
- <20260203083110.woan3gmc3qdh7nmm@pengutronix.de>
- <cd07dc6e-1f19-4a59-8ee5-81a36d51bf1c@oss.nxp.com>
- <db9016a39f612cc93ee070c1eba4e4471a89a5cd.camel@ndufresne.ca>
-From: "Ming Qian(OSS)" <ming.qian@oss.nxp.com>
-In-Reply-To: <db9016a39f612cc93ee070c1eba4e4471a89a5cd.camel@ndufresne.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
+ (2603:10a6:800:315::13) by GV2PR04MB11833.eurprd04.prod.outlook.com
+ (2603:10a6:150:2fc::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.12; Wed, 4 Feb
+ 2026 02:21:52 +0000
+Received: from VI0PR04MB12114.eurprd04.prod.outlook.com
+ ([fe80::feda:fd0e:147f:f994]) by VI0PR04MB12114.eurprd04.prod.outlook.com
+ ([fe80::feda:fd0e:147f:f994%5]) with mapi id 15.20.9587.010; Wed, 4 Feb 2026
+ 02:21:52 +0000
+From: Sherry Sun <sherry.sun@nxp.com>
+To: robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	Frank.Li@nxp.com,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com
+Cc: imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH V2] arm64: dts: imx943-evk: add usdhc3 for SDIO WiFi support
+Date: Wed,  4 Feb 2026 10:23:06 +0800
+Message-Id: <20260204022306.2372889-1-sherry.sun@nxp.com>
+X-Mailer: git-send-email 2.37.1
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SGBP274CA0018.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::30)
- To PAXPR04MB8254.eurprd04.prod.outlook.com (2603:10a6:102:1cd::24)
+Content-Type: text/plain
+X-ClientProxiedBy: SI2P153CA0011.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:140::14) To VI0PR04MB12114.eurprd04.prod.outlook.com
+ (2603:10a6:800:315::13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8254:EE_|AM7PR04MB6822:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91a75d5d-eb65-45e6-e75c-08de6392f675
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-TrafficTypeDiagnostic: VI0PR04MB12114:EE_|GV2PR04MB11833:EE_
+X-MS-Office365-Filtering-Correlation-Id: e7cb1785-be83-419d-d572-08de639428e2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|19092799006;
+	BCL:0;ARA:13230040|366016|52116014|7416014|376014|19092799006|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?czNXSm9PNnhtdnVYZ3pYRVNGbm5oOGNLSUdvTUlnaDBEL0RtdDBVVVM0Z3Ri?=
- =?utf-8?B?dXVGVEswUVEvU05UK2FCK0hnSFNBWlFxdDl2YTRZcXdmUDJIZ2VuNHppNjNw?=
- =?utf-8?B?bTlwYXllKzd5SCs4WFBYQVlhWFVNMDZEOFRoU0R0UXBrSkpoUXhzRUtiVHpt?=
- =?utf-8?B?SHNNUDJFVndsUFowN0VtR2xqSTIyNGVkN1A4SG93MzB5NFBicnZMbDlmS3pO?=
- =?utf-8?B?V0JmbDFTNExDM2pEL1FJWG9QZkU1WlJhd0NaeS84cjFsdVcrN05WcFB6cVVu?=
- =?utf-8?B?czNVM1UzUnZNYk5sWk14a1YyMXI2QzFGRVhvbEVhQWRjTDJnNVpCL3dQOWZD?=
- =?utf-8?B?b0JiMWg2djA3ckhEVy9sSXRaNi91TEZjRThaT1hxQ0hYSU5OdTlMRFpBOEtO?=
- =?utf-8?B?cnJXOUNBbFErTWtHVURWdVpNTjlaZ0hjMEtkK0ZqN2J0MXpSKzRWN2RsNTdj?=
- =?utf-8?B?Q0ZXUkt0TWwveUFVWEpacTFmNzcvaDY3UDczYVVUVThWV0JSMlJDNm9iczdN?=
- =?utf-8?B?d1NuSGd6NUQvYjJWQXJ3MytDYmlQR2ppRm1FK0VmU2NHM0NQZkJFcGp6Nmpj?=
- =?utf-8?B?bk83akxwbTJ6OHhtQmVJaGVwdVNjYnpLUVBhcXU4S296ZUF6b1M0WVlDZzBr?=
- =?utf-8?B?L3pkdXdDNVorWm5OTWdYelBERzhFUUhDWk1OVkVadlg4ZkUxWGVVU2Qwc0Zw?=
- =?utf-8?B?L25JMWJYd25CaUQ0UERSWjI0OEZsY256Qy83NzRsWkdnOTUyZTllOXNzcnlv?=
- =?utf-8?B?aG8yL2Z1SkljRUhyMGhqVG1JMUhpRy8vMGZEK3hFdjFNS015YjZ4M0l1M1hs?=
- =?utf-8?B?NzVlazdVbGpHdWo5QUtDdE56dnY1WmNzeFJ4MXFFdDYyUkxPZFNHR1hMcCs2?=
- =?utf-8?B?K0NwL09GL1FsUHJmUWprazVvUy9RY01iYnY1bkI0RnVYbGZDOEZ2Q1Z6Wm9t?=
- =?utf-8?B?TkVLN1RuZklGdmV1dzlxbUk5enZnQ2hUYTdpUXN0dDNLbWU2bUxSc2lHWDRh?=
- =?utf-8?B?cEp1ODY4WStLWjhmNlZ5cm1UU0R5VzVxTk9tTXhJb3ZiaHhwOEU2YVduVzBN?=
- =?utf-8?B?NkNuZnNnaU5DQ1d5NFpZRUZKZnRLeG1ybm9vbkhZZVJKYzcwVzd6eHBVTmNX?=
- =?utf-8?B?T0RHdVpUMGJOM0lhWUE4RXZ5Z2lNMFplMnVhWTFYVy8vMnVSY3hiZEhZc0Vh?=
- =?utf-8?B?ZFBNcmdrUzdweXZHVXc0TlV3dVNBY2RvVjVkMHlRS1pibGw2VFNHbW5Ncjhm?=
- =?utf-8?B?VjJmYkloekNaLzNIVUJYTGhWZHNnT24xZUE5VjBVTllyMDROTFpHc2FtazdC?=
- =?utf-8?B?c1NQa1ZrMjFpMGNRcVI3VGY5OWxwRzJaQjdoNlhZdVBUMDhrQVgybk8zOXVY?=
- =?utf-8?B?UXB2UTZycnJzNW5QYzBpTDNkSXRWQ0h5ZHNCTy94RUc4QkQyVytmU2x6ZFJv?=
- =?utf-8?B?U1FMMzk5YTlBTEF6bk5vL3B2OVpRa2VWRXdoNnduSlhlZklwN292K1E0R0xU?=
- =?utf-8?B?VzkwbEFLN0VyWWZqWDNwcEJZVDR0L2t6a0VscVRvYmdSR1BIZ2h1cmlCM1Zm?=
- =?utf-8?B?UHV5MFFnTVpPT3hMY0lWYUFPd0IwVzBkZWQvSHJucFNaa05kWnU0MjRsbHJ3?=
- =?utf-8?B?SkhpUXlRSG1VUlVCVCtnaFVEZEZNSk10SDEySXpDejJ6UVlnZWdoUWF4WVlI?=
- =?utf-8?B?SFZTdnlKSnF3UFduaGZmR3B3MUhORWpabkxXVkordWtRQ2V4NmtuSFFrK0tQ?=
- =?utf-8?B?RDJ2dlY5NTVsOUdjTk4rdnpkR3JwVVJkTEhSQWRwSjc3SUd4VS9MTUdNVXg1?=
- =?utf-8?B?NlZrNXNxRmJxNVhXRlhlSjh2dHFmZ1BjZ0JHRDJTeVhXNzFYcU5zZjJmc2RK?=
- =?utf-8?B?VkVnYWU4RlZqNUVod2gwamJIR3dlYmZHY2ZjbVhzZktIZWxlVk96bGhlUFha?=
- =?utf-8?B?SWszY0U1a3U4VXNXSDdGWFhheE0yMG41SWhmdzFZcXE1WGU4ZUdxM0RCeFVr?=
- =?utf-8?B?bitoRW9Pa2xrL2hURm9wQzBOYlU2YW9aMFZuQXBXNkFRZndodE9BUDZKYlBS?=
- =?utf-8?Q?MNgN0B?=
+	=?us-ascii?Q?EvOkObW2SDnn/H+8DLemPcKKjYw1Z1kj5I7LAF807MROk1WNo1oEN+tU0hIj?=
+ =?us-ascii?Q?sf8ZOKGTYf9I1/qJBB7r72c4H9oz2fyQSqMxnyestai95akTCI+ET74qW5uL?=
+ =?us-ascii?Q?EqXK+XrYYXvvHKMUqu7tg858LJAvdmcHF9KNYQQkgWoWSliJNdu/Mgg4S3bO?=
+ =?us-ascii?Q?kf6zf1h4B/HaX4wTmlPPQgOxGKka4UsztKx3x0JFxAuxkOlGRLse/j0RlopS?=
+ =?us-ascii?Q?8WXxAP4FGVUAz1D/UHhjcscrwPR5y06W8Tt1z5S6ZlMCqC6xwNP3OfxQzIox?=
+ =?us-ascii?Q?SAMaS4NFiibkIdiNOwNm3pBlSMYNS24pZOZq6uPmzw+aDbRG74N4SpUAPgNK?=
+ =?us-ascii?Q?52nU21UGp1Q4OkGuPHuTU8154UFgfSNA9Pae6U/qxNhNVFEfLWvcAZCDjmr6?=
+ =?us-ascii?Q?19oTx6Agh6j18+E9UQ6lW5gCgeZ+z5Y4kLHsZL7WXOMFK3EE1prpY5RO1ttl?=
+ =?us-ascii?Q?T7KxviFcVqCeF33sk/KTJ9x1OpTNmh6xEcVCgHgkI3rrb/Xprt8jwll36X9m?=
+ =?us-ascii?Q?Nf+m282rZepjKvC+uc3blyQPjD/Go2K/byMwbYRF28yJGL3XxmfGlYKN9F/A?=
+ =?us-ascii?Q?94TKVA0asQjNpjwn2h3U0QuqVDvOolS7CnRgJAtGrCR3CxxNfgMeSMPWQHrZ?=
+ =?us-ascii?Q?rfeMeHMMz+eZQ6Hcxqzoj3wAoCxco2UHP0XaXgyUgiAL+Yv4RD4/Yr9URPDO?=
+ =?us-ascii?Q?LdLJMhZQ+PKxG8QqTVc0ZXkgx/0yoiIGv3o5M4E3Ie6q2lKYXYnMJUek0MzQ?=
+ =?us-ascii?Q?ru1RvDxSJFt7o0+Q2r2ZFzviBYKSSmCT3Z5voJZQZH7l4865e07ufM9doh4E?=
+ =?us-ascii?Q?rUGcwgSe6YzN4h17z1eGJ1TPUkK0+duPpCeSZ6rhHJho90syGaqYWa1ao5QK?=
+ =?us-ascii?Q?EA/Fft8F9BWwVch+yhYsyC4bkibEkjlMygKRO0iVKX/jsv4eex4lVb0vFFZo?=
+ =?us-ascii?Q?c8FAZke1KL7DimyTStQx7MUaMCarvdmEQcjjBJLfR+DCpK336iRYLn7aiR50?=
+ =?us-ascii?Q?KcFK852vptxqLxDPUvcHy1rRy9b1shd401BpUBDpXgpzcZ7IkCnr28ZaHg0U?=
+ =?us-ascii?Q?eWCuJJ1pZPSMn6eQFiZxMQheLPaCfgIM5C0IYeut78k9ow4PFdCO24fFnwEG?=
+ =?us-ascii?Q?M6Hn6SEHPiL8gchiVcUbyYcwoAsDrgzJAaYfb3zRnAzUVNHFrqA1/mLkXPHc?=
+ =?us-ascii?Q?WJIJx0K1k7AqVy0W5kiZrmArw3tJA7VePl8cyItvuluPBp4Xz81xEapPu6Z+?=
+ =?us-ascii?Q?nK7BSVlNgGUU9t/FJGYHUdCZbxLIXb6Cbf4fgL2JYSmz32KJCb291tLP6JnK?=
+ =?us-ascii?Q?q1la96QaTe6NHLtUacbZrTcrCibqHNhvT2CJY2OcAPXaGFvoPjgl81FB/ywA?=
+ =?us-ascii?Q?Cz5Muaxo0sy8XXWujfuG9wjUMrUWjki3ksFjgRJEG1t0sBzvegUQCthI2qEN?=
+ =?us-ascii?Q?llv3AINZUqcO0GQ+SDUdFcxYc9/tUt+/yYk+Wc+pCsKbXfVaTS8X1xZc3quC?=
+ =?us-ascii?Q?Z7Cc2WUVc/Ex0s4TdLv3a6R2RL97JIyBd7s/67D4WaJPCOATSPCzzR9GrSD1?=
+ =?us-ascii?Q?jk9l43IWi08LN7jqOSrSqo9w1lXBdqO8IOnLd4G7WOSsxgtaSMrFFpu4Ys5c?=
+ =?us-ascii?Q?KEJCFW9fd5cT3/WE4UQ4F/c=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8254.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(19092799006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR04MB12114.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(7416014)(376014)(19092799006)(1800799024)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WWlSOHRPSnozN2ZQODgwTHRPM0xJdlZCVk0wMmxraDJCc3I5Mjh3cG1DQmhs?=
- =?utf-8?B?U2dLNGQxbDhEczd4MnpuTXZUWTEwZU51Vk5MYUkwcW1qR3Eyc08raG5pQUJz?=
- =?utf-8?B?NHNxK1dlQldITDloUVRnbTgydUhuZitROFBzSkUxRlRURGx3YzloTlMxQ3BI?=
- =?utf-8?B?a1dqRGFrbEFJd25OQlp4dkttNjBVM3V5VVVhNndkay9aY0JreGprSlZsV3hh?=
- =?utf-8?B?S3lDaVFZMWFaano2RjR5MzRmRmpHYmRPR2Q5ZjhmVmJxQ1pzQStDOFZYMmVJ?=
- =?utf-8?B?azR3azB2WEcxL1ZTWnBoN2NkVzdXejFPL0pjc3E5anhNZngxc2h0NXZDbFhT?=
- =?utf-8?B?d0RlbkVhU0JmK0VCemFZWHpCZTg2N09EejROTzk5MUkzcFpMMGsySk11Q3h3?=
- =?utf-8?B?cVVqVGZMbTBtOWdTQ3M4TFFtQ1pLWkhKQnRlbTl6K0I1TGloNk1BYjBGb01t?=
- =?utf-8?B?OXZuZk5CUGxPZS9Sd3RvU3pudE5wRzAwaGFxVldKSlFaczh4QWpJTERySDF5?=
- =?utf-8?B?VDFoOHdONXQyQ2FibUFOb0VoMERXRFdZTERaVXZXM0R0QzVUZURDMGtWRWdE?=
- =?utf-8?B?MzBGaUxzaVp3cDhNMnUrY2tlakd0anhkMGJOQzFUVmZxaXZ6d0Mwc1JxdWVV?=
- =?utf-8?B?STREVHhaZXFEZVVOZlRvTFcrcFRzRXVJQW0rWmc4WFRqQndKQStVMTRXRmdW?=
- =?utf-8?B?MjlTT2pCSzFRSkt0ZkdZTVhEb3NUanhtcC9mQy9NcVJXOE5YMEVJNjZoNlpO?=
- =?utf-8?B?N3Z0WlI4ai9QQlJ5Qk9wZEM3Q1E3L2R1eUtOOHN2SjI3NGF4WVQ1U1h5WFo4?=
- =?utf-8?B?b3VLRW9Db1V0ZW8xbHpWR2huL3NhMUprQURHTmtwR0pndHl4c2NUMS9rQjdM?=
- =?utf-8?B?OUVIK1Mvd0o1MUxCanh6SGNXbkptakdSeXJSVU02bjZEZUQwZCtwbW9lckxh?=
- =?utf-8?B?ZDhoeTN1SXEwZEZUWFM5T2dnOFozUU4xRCt6ZWlnUENtTmFGUW01dEp3R2Zi?=
- =?utf-8?B?VmQyTFlRQ2pwZnZWVk5XbEtKRmdQeUpoT0ZGOGxxQVNFeXNQZlN1L2dnR3JB?=
- =?utf-8?B?VUluT1gzRnlUSE82MmptK3lEYmtRdlJwd1ErVVZGQjRhZ0ZUcENweFlFNXBZ?=
- =?utf-8?B?UnJuMXFEdW0wTW1ncnFvQjd6ajNUS3pzcC9VMFNGZFpNejRHQ2NNOVRuYW9l?=
- =?utf-8?B?OFllUnh4R0tzZkNRaUdKTU9Va1greTFsSjYrQzhFUkxWVStXL3E0UUtSRkYy?=
- =?utf-8?B?MkhqVnU4R3NXTkNlMVRtNnA0bk14OSs5U2RCRUZxUWx0alNUVEFIbEU4N1NT?=
- =?utf-8?B?Mk9Hbi95aTVsc2t3dmZSaTRFV1lZRE5ueFFmTVRvaUY2TGtCUFBJQnI4Vm55?=
- =?utf-8?B?VEMrQnVLQWdZVjJuNGRIdndtYWxxeU0wWjJjVzR4ZklQei9mb3J3dDVEeEpV?=
- =?utf-8?B?UTNVdW1TTmtnYnhxNjdCd1cwcStpVUFvbDdRVjBxR1hGQnFQNENHTnhJbWpz?=
- =?utf-8?B?RTZJQmZlZWdOL3pOZ2pIVXlJeWVybXk1STJBNy9tYVFXMVdlL2UvdU56NVZ0?=
- =?utf-8?B?WVJIeTdBWVhCMGp6cTBxVEJ0ekFkWnE4RTU4bGxjL3dPcEJ5TTZwelIrTi9o?=
- =?utf-8?B?clNYbVAzMU8rY1lUNUQ2djJGdjk3WDRBUHdBcC96OVNZQWJTY0pJYS96YnV2?=
- =?utf-8?B?dGJZYXJHUmRTUVhMTkhJUmtXck51aUt6ME5CcGgrZUdlbGhldVJpV2E0YUFo?=
- =?utf-8?B?aUlzVk5DYlN3emxNMFBwZ3dnNmtoR0tHTjUzdGpWTXhYdm5xV0FDVVlOM1ZM?=
- =?utf-8?B?R0pPNnlUOExoYmlOenJsb1Q2SHhCcXRqNTMzMUR4Y1RzVEFMSHlNbDgzbXFo?=
- =?utf-8?B?aUtzb2t4bE54bTNIOVQwSEJ6QnQ5SzNySFZuTEx6Y0xJcVZIRGF6cUpGQVND?=
- =?utf-8?B?MTEvMWlNcmIwWU5zQnhpWklkUzhvK0ZPN1Q0K1FsMmswdXhJUVVCVzNiQUNP?=
- =?utf-8?B?THpHTFl1UXI1QnJBWWovaTg1L1RVNktKL0cwTHV4TTd6S0d4MG1YZUdTR2xS?=
- =?utf-8?B?VHVwcXMwTHJFWFNTVkR6bWlDUFQ2Qks5cnBXc1NoSEVhaEdvUG5vOGxhUDNk?=
- =?utf-8?B?eUh2ZWViZEVTYXBxRUxaZzJ4eko1WThzdjc0aDU0TllLM0Rac0E4SVVHQ0dH?=
- =?utf-8?B?N2pYanV1ZkFRc0QraFFMbFduMWRPRitIdGVDMkpaM045OXo0QnN6NEpNa3Ay?=
- =?utf-8?B?cDNvQmNVVkFZY1hCanREY3NOSGIxZHNJRmUxck40WUhnWEU3QVdBcnI4SjFm?=
- =?utf-8?B?TkFMVUpjR0pYUkhwaDVIY0oyNExHTUJjTkdiTCtUL3FGSUJjTXg3Zz09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91a75d5d-eb65-45e6-e75c-08de6392f675
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8254.eurprd04.prod.outlook.com
+	=?us-ascii?Q?uRsAvMRLYWw8Z8cwcsXS/iHh6+kWqWe+QQ5ic1k7Y6Kp580h2hd+pOpnqKzb?=
+ =?us-ascii?Q?DyrBvbTjSjGbNtCbvrqGH1FTFWFzWmJQPyZ6ubLXTKp/0eqE2Di1V80hiw71?=
+ =?us-ascii?Q?x1gLkxb8M5pmgrFlbqKyl3eyHhlyX75gPtmfPFOod2Hk7+IM4kiob5GecSD/?=
+ =?us-ascii?Q?oRdS+HUJO2ZsBojY4qugm7VLVW3y6nnB+5KNKFRiFyt1BAC/jonvnc1c0a77?=
+ =?us-ascii?Q?X9Kvc7g4BnBMjzLAJ78bZF+2XIgG4c6JlYTLUMYoWthr8sb+qOS+/dOiyrKx?=
+ =?us-ascii?Q?I+br3dWOlPsddb8nks4qWdsJvOcaNBbst9S+5BrBS6mkLy9jAiq3u0648g7G?=
+ =?us-ascii?Q?C2kQFFA42FwzEogKg81AFJK5qKpef1sxptJe50liVDYeJW+8fJSClugrh+Qa?=
+ =?us-ascii?Q?Z12z/5uwJReDNhq1ncblKNa6yevXYPP0PwtQ3h8lcJQ0Nc8bFugL2YDCEtAv?=
+ =?us-ascii?Q?dE2KFtkKSYkh0fCROnCidRYwhvhkck7Uwc/19IDjD/Hwu0Pjae3v97FMYQRr?=
+ =?us-ascii?Q?RJEN3HQDR6/w9rp/Ta+TCexkphj2/m7I8a1xCz2sFAQtyJvs7zuJ70wxbEfl?=
+ =?us-ascii?Q?HjkgSLlhwMqbeuwYzJOMQ2qOlycGTigQA46qNAzVkzO35h1vOqtbI1vj3BSV?=
+ =?us-ascii?Q?icU83czyQz7ZRjf388Ui1uTYXuJj/CazKtmufQRHa+zemc8pKSHbZW4hRoqI?=
+ =?us-ascii?Q?SzMgvfA5KrOFQvZe1Pe6k6hh/acVKNdKxseWaDI8IgHnSFKwPDlCjGmDoghe?=
+ =?us-ascii?Q?03hGqVYsgHQtSPbE1bW6/Twv5Dp9p9l/WLrxMHXFS21DqD9+0ak64EsGhD29?=
+ =?us-ascii?Q?aAk1Ts+3FoCDN+QpJy9jQ3XiZBdwPqNU5Vx65XBGGHeqGP2u9uXyo7oIP+l7?=
+ =?us-ascii?Q?Fa2pXNMScqnPMDGqCTMmd6Vyye7BIfCgXu0aBkvrhZpX81cyRq95dU8OlPmg?=
+ =?us-ascii?Q?r9l4VKogKgyW02tgu1IMNM/Amh0A+8b3icBEbHSINoYLQ1QdiXS64tm1UL1g?=
+ =?us-ascii?Q?jCo5Y2nA2TFd0+9Gs0EegF5M81SGxtELfh7mmsFFspeDPZ/cCxRqB47whsfG?=
+ =?us-ascii?Q?rXg1MtksH0lMS6HURSGpKkVA5q9yQAkRhpggN+e3PhEL6b3SivJ2MMyEIZP2?=
+ =?us-ascii?Q?4wmet9n4EvHO5DlmmxVRpPW6xvjX9xp9xD2+tjgquRlXTbFhu8PNMKhrROXM?=
+ =?us-ascii?Q?y8fA9WQym339QbYESpnzZK3fth9xv/mIU5EhffRnlrA18y+5ZnYuUcKF1IDQ?=
+ =?us-ascii?Q?xKCw/NF+qfY3LXmxhSlYHWiOW4lZcEJkcC1iT5SLeVmWqRgsdsRTgAxZ7YPL?=
+ =?us-ascii?Q?9R7mWoRM3Y42jpDGi3QBAiaWk4m8fwgpKDv2O/PrVn66Gd/mbQ8LKUgSPHWO?=
+ =?us-ascii?Q?j5JxaEuNUsW8IPqjKu9onPoJQ4pY7F0FphvtZusdfDr+Qpg3if7e31GZyY4D?=
+ =?us-ascii?Q?ILh812PL5tXRFvevO+Tr6JKAzdXqVLjjFilfoHlGWwpL9rbf1EV6IWy8n0b+?=
+ =?us-ascii?Q?pJ+3l7DNidKgYEBA8tySCd3m6SfZVDx4PbnOg2Ft6MaVnGFDZE8vLIebln7c?=
+ =?us-ascii?Q?opgTCQzLnoC6W1boLl/mt9JcW2bZlLPBPvj8enMlQZX3O83YKCLM0sDd9TJJ?=
+ =?us-ascii?Q?nnqoVnAiAo+wAzM77OfnwzC/MN7TCdh/PlPJGWz2YqWlaDMuvU2ARSPO6+oV?=
+ =?us-ascii?Q?BnqyvPDxFIM4hbi8AfEH8HZWVdCBsTRo5hjvXp879tVb8C9uCj3WThv4wkJl?=
+ =?us-ascii?Q?iP1l/X35mg=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7cb1785-be83-419d-d572-08de639428e2
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR04MB12114.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2026 02:13:18.9589
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2026 02:21:52.7872
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MUQt49XgV2hAfL3qY35QmxtVxmBs50snTPGhkwgmHvzqP9veYob/zaHkVOVugIGctF3mgEgfvvsuF8I6JsYORg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6822
+X-MS-Exchange-CrossTenant-UserPrincipalName: bJ/slGcAqJGT7JsrNw+EJMn+ODlC66sWuP3t0HcVh+wTUWHop1rrkHX7BrcAbIpWT+cukF3JmnsyCp7dZdC5vQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11833
 
-Hi Nicolas,
+Add usdhc3 to support M.2 SDIO WiFi on i.MX943 EVK board.
 
-On 2/3/2026 11:40 PM, Nicolas Dufresne wrote:
-> Le mardi 03 février 2026 à 16:53 +0800, Ming Qian(OSS) a écrit :
->> Hi Marco,
->>
->> On 2/3/2026 4:31 PM, Marco Felsch wrote:
->>> [You don't often get email from m.felsch@pengutronix.de. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
->>>
->>> Hi,
->>>
->>> sorry for jumping in.
->>>
->>> On 26-02-03, Ming Qian(OSS) wrote:
->>>> Hi Nicolas,
->>>>
->>>> On 2/3/2026 3:12 AM, Nicolas Dufresne wrote:
->>>>> Hi,
->>>>>
->>>>> Le lundi 02 février 2026 à 13:44 -0500, Nicolas Dufresne a écrit :
->>>>>>> This doesn't sound like just a VPU issue; it's related to the display or
->>>>>>> DDR.
->>>>>>> If not displayed, do the fluster test cases yield different results at
->>>>>>> 600MHz and 300MHz?
->>>>>>
->>>>>> Didn't you run these tests before sending ? I can try again, but in my
->>>>>> internal
->>>>>> notes, I wrote:
->>>>>>
->>>>>>      > Tested that, and everything becomes unstable
->>>>>>
->>>>>> That was before I figure-out the IRQ handler didn't handle exception bits that
->>>>>> didn't stop the decoder (or dry IRQ, which strangely is common from the G2).
->>>>>
->>>>> Ran some fluster tests now. With this patch the results is not consistent
->>>>> anymore. Then I ran it with weston being started, and in the middle of the test
->>>>> the display turned black. Matches my past observation. We did reproduce this on
->>>>> BSP kernel too. When the display goes black, the recent hantro drivers reports:
->>>>>
->>>>> [  827.581586] hantro-vpu 38310000.video-codec: frame decode timed out.
->>>>> [  827.720201] hantro-vpu 38310000.video-codec: not all macroblocks were
->>>>> decoded.
->>>>>
->>>>>
->>>>> I have local patches to reduce the cascade of errors, so it likely survived
->>>>> longer then last time. I will send these patches soon. The "not all macroblocks
->>>>> were decoded." is triggered by a bit in the status register that is not
->>>>> documented in NXP TRM. I found that bit in some VC8000D documentation (the
->>>>> sucessor of G2). I concluded it was the same meaning after looking at the failed
->>>>> buffer visually, it is indeed missing couple of macroblocks near th end. Each
->>>>> time we see this error, the DCSS gives up and turn either black, or sometimes
->>>>> other color. The second case has been tracked to a DCSS Scaler underrun, the
->>>>> first we don't know.
->>>>>
->>>>> Fluster command ran (two threads, never completes):
->>>>>
->>>>> ./fluster.py run -d GStreamer-H.265-V4L2SL-Gst1.0 -ts JCT-VC-HEVC_V1 -j2 -t90
->>>>>
->>>>> Nicolas
->>>>
->>>> My test results for fluster differ from yours.
->>>> On my end, the results for JCT-VC-HEVC_V1 are consistent at both 300MHz and
->>>> 600MHz.
->>>> And results remained unchanged after multiple tests.
-> 
-> After more testing, the fluster test is stable for NV12/NV15 tiled output for me
-> too. I'm running the tests with linear NV12/P010, which imply an extra set of
-> buffer. I will check if I can give you a easy way to test the linear formats. I
-> also have couple of streams that systematically breaks at specific spot (high
-> complexity scenes) with the provided patch. As most licensed content, this is
-> not sharable as-is. I will try and see if I can find a way to share something.
-> 
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+---
+Changes in V2:
+1. Move the usdhc3_pwrseq node before memory@80000000 node.
+2. Remove redundant blank lines.
+---
+ arch/arm64/boot/dts/freescale/imx943-evk.dts | 61 ++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
 
-That would be very helpful. Thank you very much.
+diff --git a/arch/arm64/boot/dts/freescale/imx943-evk.dts b/arch/arm64/boot/dts/freescale/imx943-evk.dts
+index f54404c9bfc9..c8ceabe3d923 100644
+--- a/arch/arm64/boot/dts/freescale/imx943-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx943-evk.dts
+@@ -20,6 +20,7 @@ aliases {
+ 		i2c5 = &lpi2c6;
+ 		mmc0 = &usdhc1;
+ 		mmc1 = &usdhc2;
++		mmc2 = &usdhc3;
+ 		serial0 = &lpuart1;
+ 		serial5 = &lpuart6;
+ 	};
+@@ -54,6 +55,32 @@ dmic: dmic {
+ 		#sound-dai-cells = <0>;
+ 	};
+ 
++	reg_m2_pwr: regulator-m2-pwr {
++		compatible = "regulator-fixed";
++		regulator-name = "M.2-power";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&pcal6416_i2c3_u46 2 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++		/*
++		 * M.2 device only can be enabled(W_DISABLE1#) after all Power
++		 * Rails reach their minimum operating voltage (PCI Express M.2
++		 * Specification r5.1 3.1.4 Power-up Timing).
++		 * Set a delay equal to the max value of Tsettle here.
++		 */
++		startup-delay-us = <5000>;
++	};
++
++	reg_m2_wlan: regulator-wlan {
++		compatible = "regulator-fixed";
++		regulator-name = "WLAN_EN";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		vin-supply = <&reg_m2_pwr>;
++		gpio = <&pcal6416_i2c3_u46 5 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
++
+ 	reg_usdhc2_vmmc: regulator-usdhc2 {
+ 		compatible = "regulator-fixed";
+ 		off-on-delay-us = <12000>;
+@@ -141,6 +168,11 @@ sound-wm8962 {
+ 		model = "wm8962-audio";
+ 	};
+ 
++	usdhc3_pwrseq: usdhc3_pwrseq {
++		compatible = "mmc-pwrseq-simple";
++		reset-gpios = <&pcal6416_i2c3_u46 4 GPIO_ACTIVE_LOW>;
++	};
++
+ 	memory@80000000 {
+ 		reg = <0x0 0x80000000 0x0 0x80000000>;
+ 		device_type = "memory";
+@@ -760,6 +792,18 @@ IMX94_PAD_SD2_RESET_B__GPIO4_IO27	0x31e
+ 		>;
+ 	};
+ 
++	pinctrl_usdhc3: usdhc3grp {
++		fsl,pins = <
++			IMX94_PAD_GPIO_IO48__USDHC3_CLK		0x158e
++			/* Need to config the SION for CMD pad, refer to ERR053138 */
++			IMX94_PAD_GPIO_IO49__USDHC3_CMD		0x4000138e
++			IMX94_PAD_GPIO_IO50__USDHC3_DATA0	0x138e
++			IMX94_PAD_GPIO_IO51__USDHC3_DATA1	0x138e
++			IMX94_PAD_GPIO_IO52__USDHC3_DATA2	0x138e
++			IMX94_PAD_GPIO_IO53__USDHC3_DATA3	0x138e
++		>;
++	};
++
+ 	pinctrl_xspi1: xspi1grp {
+ 		fsl,pins = <
+ 			IMX94_PAD_XSPI1_SCLK__XSPI1_A_SCLK	0x3fe
+@@ -802,6 +846,23 @@ &usdhc2 {
+ 	status = "okay";
+ };
+ 
++&usdhc3 {
++	/*
++	 * Only enable SDIO2.0 mode as the corresponding GPIO pads are 3.3V, the
++	 * max frequency is 50MHz.
++	 */
++	pinctrl-0 = <&pinctrl_usdhc3>;
++	pinctrl-1 = <&pinctrl_usdhc3>;
++	pinctrl-names = "default", "sleep";
++	bus-width = <4>;
++	vmmc-supply = <&reg_m2_wlan>;
++	mmc-pwrseq = <&usdhc3_pwrseq>;
++	keep-power-in-suspend;
++	non-removable;
++	wakeup-source;
++	status = "okay";
++};
++
+ &wdog3 {
+ 	fsl,ext-reset-output;
+ 	status = "okay";
+-- 
+2.37.1
 
->>>>
->>>> I'm not sure what caused the differences between us.
->>>
->>> Once it comes to system stability, you need to ensure that your
->>> bootstack is aligned e.g. same TF-A version and sometimes same
->>> bootloader since there might be workarounds/erratum applied by the boot
->>> firmware.
->>>
->>> Regards,
->>>     Marco
->>>
->>
->> Thanks for the reminder, and I agree.
->> I think we need to align our board environment first.
-> 
-> I do likely have slightly different bootchain, and of course all the HDMI
-> component are downstream, but I can't really isolate the dramatic issue of this
-> overclock without a display component of some sort. Its a huge differentiator in
-> the bandwidth consumption which is the main challenge on this SoC so far. 10bit
-> videos makes things a lot worse fwiw.
-> 
-> We did review latest IMX vendor firmware package and can confirm we are running
-> the latest memory training blob and HDMI firmware.
-> 
-> Nicolas
-
-Since the datasheet clearly states that the VPU G2 requires a voltage
-increase to 1.0V to run at 600MHz, (I thought it was already like this,
-but it actually wasn't.)
-I think we can align our test conditions to this.
-
-I will increase the G2 voltage in V2.
-
-Regards,
-Ming
-
-> 
->> Regards,
->> Ming
->>
->>>>
->>>> Below are my test results:
->>>>
->>>> 600Mhz, 0.9v
->>>>         cat /sys/kernel/debug/regulator/regulator_summary  |grep SW1C
->>>>          SW1C                             0    1      0 unknown   900mV     0mA
->>>> 825mV  1100mV
->>>>         cat /sys/kernel/debug/clk/vpu_g2/clk_rate
->>>>         600000000
->>>>
->>>>         ./fluster.py run -ts JCT-VC-HEVC_V1 -d GStreamer-H.265-V4L2SL-Gst1.0 -j2 -t
->>>> 90
->>>>         ****************************************************************************************************
->>>>         Running test suite JCT-VC-HEVC_V1 with decoder
->>>> GStreamer-H.265-V4L2SL-Gst1.0
->>>>         Using 2 parallel job(s)
->>>>         ****************************************************************************************************
->>>>
->>>>         Ran 139/147 tests successfully               in 505.434 secs
->>>>         Ran 139/147 tests successfully               in 505.350 secs
->>>>         Ran 139/147 tests successfully               in 507.540 secs
->>>>
->>>> 600Mhz, 1.0v
->>>>         cat /sys/kernel/debug/regulator/regulator_summary  |grep SW1C
->>>>          SW1C                             0    1      0 unknown  1000mV     0mA
->>>> 825mV  1100mV
->>>>         cat /sys/kernel/debug/clk/vpu_g2/clk_rate
->>>>         600000000
->>>>
->>>>         ./fluster.py run -ts JCT-VC-HEVC_V1 -d GStreamer-H.265-V4L2SL-Gst1.0 -j2 -t
->>>> 90
->>>>         Ran 139/147 tests successfully               in 506.901 secs
->>>>
->>>> 300Mhz, 0.9v
->>>>         cat /sys/kernel/debug/regulator/regulator_summary  |grep SW1C
->>>>          SW1C                             0    1      0 unknown   900mV     0mA
->>>> 825mV  1100mV
->>>>         cat /sys/kernel/debug/clk/vpu_g2/clk_rate
->>>>         300000000
->>>>
->>>>         ./fluster.py run -ts JCT-VC-HEVC_V1 -d GStreamer-H.265-V4L2SL-Gst1.0 -j2 -t
->>>> 90
->>>>         Ran 139/147 tests successfully               in 506.063 secs
->>>>
->>>> Downstream v4l2 driver
->>>>         cat /sys/kernel/debug/regulator/regulator_summary  |grep SW1C
->>>>          SW1C                             0    2      0 unknown  1000mV     0mA
->>>> 825mV  1100mV
->>>>         cat /sys/kernel/debug/clk/vpu_g2/clk_rate
->>>>         600000000
->>>>
->>>>         ./fluster.py run -ts JCT-VC-HEVC_V1 -d GStreamer-H.265-V4L2-Gst1.0 -j2 -t
->>>> 90
->>>>         Ran 136/147 tests successfully               in 460.435 secs
->>>>
->>>> Regards,
->>>> Ming
->>>>
->>>>
->>>
->>> --
->>> #gernperDu
->>> #CallMeByMyFirstName
->>>
->>> Pengutronix e.K.                           |                             |
->>> Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
->>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
