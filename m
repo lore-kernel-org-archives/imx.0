@@ -1,43 +1,39 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D504A3385A2;
-	Wed,  4 Feb 2026 17:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CB0340A46;
+	Wed,  4 Feb 2026 17:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770225150; cv=none; b=h+qvp+YSa5iBYcHsP7/DrkQ2bofqdmSfmc2PN/tgWp8F5J+eiRFyLPKzth/IRI386KNoGrQeqy0DcQnIE5Of2LKjPBykKVtCiVS62Ut1zDJtRx7DsUJzJhLXMYo4061Sw6mkfvLuV5zxJN1hpodhY6Jd7V/wDFgOKM+yrRgfac4=
+	t=1770225155; cv=none; b=g1o7s56xwqTs1lBXtjYuoNENub9slP0AFuRTX3dg5irtzMeF4MGfD1QkGpoiqABGVYVagvYWR8B3SQP447IlES/vkeDB3lZR9Z5NGi/l7lzjA1jIdyJ88dc55td/OBthge0Q0tv2q6nEAQ2sdxegifyAIeXm5fJkGeQnQbPXQCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770225150; c=relaxed/simple;
-	bh=TlFOCl5RoEeH2a2JYjkJuYQhNfV7w/aKiTljvj/cgS0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=jwkKo9hqDR8u8pvm/HGEKTYJCFxyGEtUDU+UHbeHfh9nGyR9lLmNGzI4qlvsK+FKD0oVkMWPZc7Ouarvu52aelXcROLyureOKnM5cKOJSCJC4qkLegK+WivEYvRQ8lNWgaVzEMjbhQ+8gf4KyRDxXTV1KKhXxI6nSuHKZsyCWi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JwI4fukI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770225155; c=relaxed/simple;
+	bh=78nod0bpS+X1wsIloC1zq5e7XtIjx240tkk0+Y7zA8A=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=d7VdjdENEp2CI+jx2ueBj6M/+c0j6t05MXLURoymp1WUs0kLGq3QdsV9sE0UD9i3B/lcUAseOlYEn4y2jVzz9JfewAeCDp4/Hy1ewx67hsOimDPDGeQSiYOyKVXUjLti1b2omIOqyBJyNAbMiue5i2OfBmZSAK26BehksTTjyUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=afKbTclh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JwI4fukI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4983CC4CEF7;
-	Wed,  4 Feb 2026 17:12:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="afKbTclh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18495C4CEF7;
+	Wed,  4 Feb 2026 17:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770225150;
-	bh=TlFOCl5RoEeH2a2JYjkJuYQhNfV7w/aKiTljvj/cgS0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=JwI4fukIlzGuDIQ1RwqfKI5v42KKoJnT64/ghGDWEeoAMzAmjqfIvVXFB9jj+fQN0
-	 vUBRLulQOBpzDuyU6WBkgAx5eUzy9AH4JtR+MIw+h2sTtXjjv1AaUwSx5x8S72mqAt
-	 GuzldhYl5LTKQ91Ek+kVe+nVQOazphCWY1iH2jzTZer5hauPhCRFX2uc7+Uikt7F/O
-	 1B9oW/tx/1OomSzu83D69p/5OTllHtnhwTNL2p3Z/PNAp0X9CjFCuktISZOSFsbpOP
-	 JOpVfWSMTbdcyZGuDsHVxsTdu0NuwTGFaV+XjSTMQPCW7Aw/H20Mj1sWuxQ9g/cVy4
-	 crOo4OeUeomWg==
+	s=k20201202; t=1770225155;
+	bh=78nod0bpS+X1wsIloC1zq5e7XtIjx240tkk0+Y7zA8A=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=afKbTclhiV1E3eWIDCNNU4HEEQs4gyTS18lttuVnwQVVqAuRoWsdZJ3/uz/BRn6Qu
+	 Lfa40s0hTIsMt/aSGobKesmgtKrXkWzvuWKiaUxRu9EempiQG7uFBzKkFmqcf+aeY+
+	 6UnY3j0OldO1P263/pgyvbNcd3/FWSekOWMe68gl4n9ViXXejcnGsK9ja+bgANosY5
+	 WIjxjQJD/QXQBtTyzm/4QxdxCTuNq29hSj7Cba6shu+G512q3/zxPyTqX8GjuKZexn
+	 Ip9R2DJVIfxNBJ4SNZe+hm76sZ8lWiQ9Ey+3sccfRW9vok6QwUsbxkadbsDqZILqS4
+	 MHeZQxMM7sUsw==
 From: Vinod Koul <vkoul@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>, Alison Wang <b18965@freescale.com>, 
- Arnd Bergmann <arnd@arndb.de>, Jingchang Lu <b35083@freescale.com>, 
- Jared Kangas <jkangas@redhat.com>
-Cc: imx@lists.linux.dev, dmaengine@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260113-fsl-edma-clock-removal-v1-1-2025b49e7bcc@redhat.com>
-References: <20260113-fsl-edma-clock-removal-v1-1-2025b49e7bcc@redhat.com>
-Subject: Re: [PATCH] dmaengine: fsl-edma: don't explicitly disable clocks
- in .remove()
-Message-Id: <177022514793.153503.544087297189278214.b4-ty@kernel.org>
-Date: Wed, 04 Feb 2026 22:42:27 +0530
+To: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+In-Reply-To: <20260130042039.1842939-1-Frank.Li@nxp.com>
+References: <20260130042039.1842939-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/1] dmaengine: add Frank Li as reviewer
+Message-Id: <177022515373.153503.5735983873582302736.b4-ty@kernel.org>
+Date: Wed, 04 Feb 2026 22:42:33 +0530
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,37 +45,16 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.13.0
 
 
-On Tue, 13 Jan 2026 11:46:50 -0800, Jared Kangas wrote:
-> The clocks in fsl_edma_engine::muxclk are allocated and enabled with
-> devm_clk_get_enabled(), which automatically cleans these resources up,
-> but these clocks are also manually disabled in fsl_edma_remove(). This
-> causes warnings on driver removal for each clock:
+On Thu, 29 Jan 2026 23:20:39 -0500, Frank Li wrote:
+> Frank Li maintains the Freescale eDMA driver, has worked on DW eDMA
+> improvements, and actively helps review DMA-related code.
 > 
->         edma_module already disabled
->         WARNING: CPU: 0 PID: 418 at drivers/clk/clk.c:1200 clk_core_disable+0x198/0x1c8
->         [...]
->         Call trace:
->          clk_core_disable+0x198/0x1c8 (P)
->          clk_disable+0x34/0x58
->          fsl_edma_remove+0x74/0xe8 [fsl_edma]
->          [...]
->         ---[ end trace 0000000000000000 ]---
->         edma_module already unprepared
->         WARNING: CPU: 0 PID: 418 at drivers/clk/clk.c:1059 clk_core_unprepare+0x1f8/0x220
->         [...]
->         Call trace:
->          clk_core_unprepare+0x1f8/0x220 (P)
->          clk_unprepare+0x34/0x58
->          fsl_edma_remove+0x7c/0xe8 [fsl_edma]
->          [...]
->         ---[ end trace 0000000000000000 ]---
 > 
-> [...]
 
 Applied, thanks!
 
-[1/1] dmaengine: fsl-edma: don't explicitly disable clocks in .remove()
-      commit: 666c53e94c1d0bf0bdf14c49505ece9ddbe725bc
+[1/1] dmaengine: add Frank Li as reviewer
+      commit: ab736ed52e3409b58a4888715e4425b6e8ac444f
 
 Best regards,
 -- 
