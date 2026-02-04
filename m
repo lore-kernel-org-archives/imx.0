@@ -1,139 +1,346 @@
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B413E3644CE
-	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 09:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176093D413D
+	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 10:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770197106; cv=none; b=C7jXDoWHuXbP8Pk9fijadbjjVkWuEqCJACwAHw//NAIf0Bnn7Bv0sT4KXmHkTf4kXbaV1f4/IU202cj30d0Y0s2G7o/jy+Ap3JpiwwZ7vf2fUrYslBkO2SBS9vGc3Wkls5KPlzhKuc6cB+lQH9Q7PWVvXX1Rx3pkJja93vKDE88=
+	t=1770200466; cv=none; b=KwDbZhbSEga0y8+0T733aqyvCCjQCbGPYcoZKinIb8hmiH0yfA7nvTt+olFzWaXP5FJneILx4GWeDBY8BTjSI6yDncOzNpyhSmMfiQLR8JyKkMHfLAXhJ30PD+UgmmZLbDkMASpQ1b/M0mYB6s28fU1MABTWDofOyX4PlbDT3kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770197106; c=relaxed/simple;
-	bh=vc2yGibGO/7S61xBjDTD6pcJ+5GAGFalUXGaw7PivYg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ox1o2MpwcL8lBZJv9iyGuQZM4oVpKDUVQ/EbA1dQPxk/vyXQtF2k4N3LBXV7yk6xPHJav9eVZH2PrXIlRf9lsUq+bpIkCdDPWg3Zq33ggWhlWG2KALFltduUz4WxhpAJuX7h1eE/aSA94DLv0imSxOeIqN8J4vUHtp3HeZ71SjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=HYMbVBcX; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1770200466; c=relaxed/simple;
+	bh=Hj7x3CQjfXXL9ZenZPjtTI8pLd5bZeX0sDzqTErLSIc=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oOnQUr/GrwdNslzP2szhEh8jbdcUXJPKkRCB+yA08ZvR/JFWxjp8gAX1cWa2BoLj5CC6d4DYm+QdP0K166UxBLdeJA1DTxCw4Tq6cEL5K1nZRyU9xQJrCJ14Xw2C95LV/77v2SE/Sh5FBSPwv4HqEmsJ7UlMCvE16X9gtp4e/tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OCHL0Dg5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="HYMbVBcX"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4f5Zgx6QSkz9vDh;
-	Wed,  4 Feb 2026 10:25:01 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1770197101;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RxOlQodzm6R/baEVz+4rB5Qqmmbl46tAihAFv68RzaQ=;
-	b=HYMbVBcXXbeEQ4H++CWAHqOs5ataMLQ2PTg3Bvi+vNroVt18LkGQWRAqhNmZMEC+krl4J3
-	U0RMxaPMVa3AE39/jfcM0Ei6W4MGVDm8vxdVosxYjahgWXGjR+ucKapetnuAhMcjZvbhzJ
-	NBQ26z9ZTnAc8T90PLs0jkcUrGVB5nMfnaRS4c2pDA98Eiw2YtY0gmHUIf+oNl/nSIsnXx
-	RfNcWTfwfHhjCgHw2ZQYcCtSR7oejxTE/rKd4PmPMHrh0Xu47rdqn0w0myyCvEr49G4k16
-	h1xsGhgjY5b1mRpFyAlLM1yLncdvx1dBpZ9w6t07QD4ZOpLCOkggJoR4flaTow==
-Date: Wed, 4 Feb 2026 10:24:52 +0100
-From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: andrew@lunn.ch, shawnguo@kernel.org, krzk+dt@kernel.org,
- linux-kernel@vger.kernel.org, edumazet@google.com, netdev@vger.kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- conor+dt@kernel.org, horms@kernel.org, richardcochran@gmail.com,
- robh@kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, wahrenst@gmx.net, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com
-Subject: Re: [net-next,v22,2/7] net: mtip: The L2 switch driver for imx287
-Message-ID: <20260204102452.180eb416@wsk>
-In-Reply-To: <20260203174714.79388301@kernel.org>
-References: <20260131233459.1625279-3-lukasz.majewski@mailbox.org>
-	<20260203013909.822898-2-kuba@kernel.org>
-	<20260203211955.23ef4355@wsk>
-	<20260203174714.79388301@kernel.org>
-Organization: mailbox.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OCHL0Dg5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4CFEC2BCB4
+	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 10:21:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770200465;
+	bh=Hj7x3CQjfXXL9ZenZPjtTI8pLd5bZeX0sDzqTErLSIc=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
+	b=OCHL0Dg57GkVCGYR9qxO3dPsPvwFgifBaPbu9AnWVsi3KemLy2RLmImf437IQzjRZ
+	 nw1fY497U5qJCOKpk0B9B17xyzqt1BumJC9qwg7zHPDQ03kwUHwt0XobKk2U3XnG6I
+	 gnVU7BGvLrr9lbTLCnIx8NlNzE51l4JtteRaSswEyh8NW94o8Z8lvpD3Pcq4p0Aa8U
+	 nchLmhs4muCLwNcdOVmCfV4A0cz/7CC7axDxG6JU7jByJTb+i/ZywP7XxuRqza9A8i
+	 kOAQZsCzCS4+y/UKwJ6q1Wdac8GFSvOMpAxOyh2N/E3yEsL5nZ1fYQWRoCP3C6jnyd
+	 zmidxj1HYcgTA==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-385bdc72422so55211971fa.1
+        for <imx@lists.linux.dev>; Wed, 04 Feb 2026 02:21:05 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXtvMgdLrUkIfEuIeUaOKwW1ZePXHcdtxdIX6993y50tj1isL4CJ9HGp5HNnk/NSOBGCf8=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxBlXkespnpZnf/c1qxU2d1reOqON3HQKSgwILFGSBTdB99SZVM
+	j/Mij5dPAkJ7WxZCyukplWZDZk31dCvbxCEwZj0Rd4hRTNBWNxReU49J0hPJRG0zlp6F2J2jDSl
+	DFt6zAJAJptyZUrB5H+zvbxlVvGKr4oI+Ev8gc+5XAw==
+X-Received: by 2002:a05:651c:41d6:b0:383:1232:379a with SMTP id
+ 38308e7fff4ca-38691c5dea5mr11058671fa.2.1770200464304; Wed, 04 Feb 2026
+ 02:21:04 -0800 (PST)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 4 Feb 2026 05:21:02 -0500
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 4 Feb 2026 05:21:02 -0500
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260203-dev-b4-aaeon-mcu-driver-v3-3-0a19432076ac@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20260203-dev-b4-aaeon-mcu-driver-v3-0-0a19432076ac@bootlin.com> <20260203-dev-b4-aaeon-mcu-driver-v3-3-0a19432076ac@bootlin.com>
+Date: Wed, 4 Feb 2026 05:21:02 -0500
+X-Gmail-Original-Message-ID: <CAMRc=MeJ+WdsYXpwW2dRVXYQGoXfHw1EQ4TqbHJph6-H6zy-uA@mail.gmail.com>
+X-Gm-Features: AZwV_QilL0KBTJiJFRhGwOT3AJqFCpnUraNwgkBHTK4L_FTOjWvtlMKtC9O-nuQ
+Message-ID: <CAMRc=MeJ+WdsYXpwW2dRVXYQGoXfHw1EQ4TqbHJph6-H6zy-uA@mail.gmail.com>
+Subject: Re: [PATCH v3 3/5] mfd: aaeon: Add SRG-IMX8P MCU driver
+To: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, 
+	=?UTF-8?B?SsOpcsOpbWllIERhdXRoZXJpYmVz?= <jeremie.dautheribes@bootlin.com>, 
+	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-watchdog@vger.kernel.org, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-MBO-RS-ID: a37455c1274356fa2fd
-X-MBO-RS-META: 9srgwun7amh3ixsdai6ym39433cis3wc
 
-Hi Jakub,
+On Tue, 3 Feb 2026 17:21:12 +0100, "Thomas Perrot (Schneider
+Electric)" <thomas.perrot@bootlin.com> said:
+> Add Multi-Function Device (MFD) driver for the Aaeon SRG-IMX8P
+> embedded controller. This driver provides the core I2C communication
+> interface and registers child devices (GPIO and watchdog controllers).
+>
+> The MCU firmware version is queried during probe and logged for
+> diagnostic purposes. All I2C transactions are serialized using a mutex
+> to ensure proper communication with the microcontroller.
+>
+> Co-developed-by: J=C3=A9r=C3=A9mie Dautheribes (Schneider Electric) <jere=
+mie.dautheribes@bootlin.com>
+> Signed-off-by: J=C3=A9r=C3=A9mie Dautheribes (Schneider Electric) <jeremi=
+e.dautheribes@bootlin.com>
+> Signed-off-by: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.=
+com>
+> ---
+>  MAINTAINERS                   |   2 +
+>  drivers/mfd/Kconfig           |  10 +++
+>  drivers/mfd/Makefile          |   2 +
+>  drivers/mfd/aaeon-mcu.c       | 137 ++++++++++++++++++++++++++++++++++++=
+++++++
+>  include/linux/mfd/aaeon-mcu.h |  20 ++++++
+>  5 files changed, 171 insertions(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index ea9d55f76f3509c7f6ba6d1bc86ca2e2e71aa954..f91b6a1826d04bef8a0f88221=
+f6c8e8a3652cd77 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -191,6 +191,8 @@ M:	Thomas Perrot <thomas.perrot@bootlin.com>
+>  R:	J=C3=A9r=C3=A9mie Dautheribes <jeremie.dautheribes@bootlin.com>
+>  S:	Maintained
+>  F:	Documentation/devicetree/bindings/mfd/aaeon,srg-imx8p-mcu.yaml
+> +F:	drivers/mfd/aaeon-mcu.c
+> +F:	include/linux/mfd/aaeon-mcu.h
+>
+>  AAEON UPBOARD FPGA MFD DRIVER
+>  M:	Thomas Richard <thomas.richard@bootlin.com>
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> index aace5766b38aa5e46e32a8a7b42eea238159fbcf..7a1ceedece899faad7a03a1fe=
+7b1c91b72253c05 100644
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -1574,6 +1574,16 @@ config AB8500_CORE
+>  	  the irq_chip parts for handling the Mixed Signal chip events.
+>  	  This chip embeds various other multimedia functionalities as well.
+>
+> +config MFD_AAEON_MCU
+> +	tristate "Aaeon SRG-IMX8P MCU Driver"
+> +	depends on I2C || COMPILE_TEST
+> +	select MFD_CORE
+> +	help
+> +	  Select this option to enable support for the Aaeon SRG-IMX8P
+> +	  onboard microcontroller (MCU). This driver provides the core
+> +	  functionality to communicate with the MCU over I2C. The MCU
+> +	  provides GPIO and watchdog functionality.
+> +
+>  config MFD_DB8500_PRCMU
+>  	bool "ST-Ericsson DB8500 Power Reset Control Management Unit"
+>  	depends on UX500_SOC_DB8500
+> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+> index e75e8045c28afae975ac61d282b3b85af5440119..0bc3a10c787c55730131224fc=
+1053fe35657dd71 100644
+> --- a/drivers/mfd/Makefile
+> +++ b/drivers/mfd/Makefile
+> @@ -304,3 +304,5 @@ obj-$(CONFIG_MFD_RSMU_SPI)	+=3D rsmu_spi.o rsmu_core.=
+o
+>  obj-$(CONFIG_MFD_UPBOARD_FPGA)	+=3D upboard-fpga.o
+>
+>  obj-$(CONFIG_MFD_LOONGSON_SE)	+=3D loongson-se.o
+> +
+> +obj-$(CONFIG_MFD_AAEON_MCU)	+=3D aaeon-mcu.o
+> diff --git a/drivers/mfd/aaeon-mcu.c b/drivers/mfd/aaeon-mcu.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..4f2420668106453549ab42888=
+bbfd50363bdfc45
+> --- /dev/null
+> +++ b/drivers/mfd/aaeon-mcu.c
+> @@ -0,0 +1,137 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Aaeon MCU driver
+> + *
+> + * Copyright (C) 2025 Bootlin
+> + * Author: J=C3=A9r=C3=A9mie Dautheribes <jeremie.dautheribes@bootlin.co=
+m>
+> + * Author: Thomas Perrot <thomas.perrot@bootlin.com>
+> + */
+> +
+> +#include <linux/cleanup.h>
+> +#include <linux/err.h>
+> +#include <linux/i2c.h>
+> +#include <linux/mfd/aaeon-mcu.h>
+> +#include <linux/mfd/core.h>
+> +#include <linux/mutex.h>
+> +#include <linux/platform_device.h>
+> +
+> +#define AAEON_MCU_FW_VERSION	0x76
+> +
+> +/**
+> + * struct aaeon_mcu_dev - Internal representation of the Aaeon MCU
+> + * @dev: Pointer to kernel device structure
+> + * @i2c_lock: Mutex to serialize I2C bus access
+> + */
+> +struct aaeon_mcu_dev {
+> +	struct device *dev;
+> +	struct mutex i2c_lock;
 
-> On Tue, 3 Feb 2026 21:19:55 +0100 =C5=81ukasz Majewski wrote:
-> > > > +static void mtip_write_atable(struct switch_enet_private *fep,
-> > > > int index,
-> > > > +			      u32 write_lo, u32 write_hi)
-> > > > +{
-> > > > +	struct addr_table64b_entry __iomem *atable_base =3D
-> > > > +		fep->hwentry->mtip_table64b_entry;
-> > > > +
-> > > > +	writel(write_lo, &atable_base[index].lo);
-> > > > +	writel(write_hi, &atable_base[index].hi);
-> > > > +}     =20
-> > >=20
-> > > Can these functions race with concurrent access? Looking at the
-> > > callers, mtip_write_atable is called from two different paths:
-> > >=20
-> > > 1. Static entry updates: mtip_config_switch ->
-> > > esw_mac_addr_static -> mtip_update_atable_static ->
-> > > mtip_write_atable (no lock held)
-> > >=20
-> > > 2. Dynamic entry updates: timer callback -> mtip_mgnt_timer ->
-> > >    mtip_atable_dynamicms_learn_migration ->
-> > > mtip_update_atable_dynamic1 -> mtip_write_atable (learn_lock held)
-> > >=20
-> > > The learn_lock only protects the dynamic entry path. The static
-> > > entry path runs during link changes (mtip_switch_restart called
-> > > from mtip_adjust_link) without lock protection.
-> > >=20
-> > > Both paths can access the same hash block in the address table
-> > > (determined by GET_BLOCK_PTR(hash)). If the timer fires during a
-> > > link change callback, both can concurrently access the table,
-> > > potentially causing torn reads (reading .lo from one entry
-> > > version and .hi from another) or torn writes (the entry is in an
-> > > inconsistent state between the two writel calls).
-> > >=20
-> > > Would extending learn_lock to protect all address table access
-> > > work, or is a separate hw_lock needed for hardware register
-> > > access?=20
-> >=20
-> > This is handled in another way:
-> >=20
-> > 1. Partial write is not possible as this IP block handles it in
-> > order (with some kind of 'latch' registers):
-> >=20
-> > "VFxxx Controller Reference Manual, Rev. 0, 10/2016"
-> > 11.5.4 MAC address lookup table
-> >=20
-> > "Each entry must be written or read with the low address accessed
-> > first followed by the high address"
-> >=20
-> > 2. The code for dynamic IP writing will not "touch" the entries for
-> > "static" MAC addresses - Figure 11-70 - bit 49 is "Record Type":
-> > 	1 - static entry
-> > 	0 - dynamic entry
-> >=20
-> > IMHO, we are "safe" here. =20
->=20
-> My reading of the AI's comment was that there is no lock in SW so two
-> SW threads can write:
->=20
->    Thread A   Thread B
->    write_lo
->               write_lo
->               write_hi
->    write_hi
+If you wrapped your client in an i2c regmap, you could drop this mutex and
+subsequently the entire structure making your driver even smaller.
 
-Ok. Then I can add "atable_access" spin lock to prevent from this
-situation.
+> +};
+> +
+> +static const struct mfd_cell aaeon_mcu_devs[] =3D {
+> +	{
+> +		.name =3D "aaeon-mcu-wdt",
+> +	},
+> +	{
+> +		.name =3D "aaeon-mcu-gpio",
+> +	},
+> +};
+> +
+> +static int aaeon_mcu_read_version(struct device *dev, u8 index, u8 *vers=
+ion)
+> +{
+> +	u8 cmd[3] =3D { AAEON_MCU_FW_VERSION, index, 0x00 };
+> +
+> +	return aaeon_mcu_i2c_xfer(dev, cmd, sizeof(cmd), version, sizeof(*versi=
+on));
+> +}
+> +
+> +static int aaeon_mcu_print_fw_version(struct i2c_client *client)
+> +{
+> +	struct device *dev =3D &client->dev;
+> +	u8 major, minor;
+> +	int ret;
+> +
+> +	ret =3D aaeon_mcu_read_version(dev, 0x00, &major);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D aaeon_mcu_read_version(dev, 0x01, &minor);
+> +	if (ret)
+> +		return ret;
+> +
+> +	dev_dbg(dev, "firmware version: v%d.%d\n", major, minor);
+> +
 
---=20
-Best regards,
+Do we *really* need this? If you'd at least used this to change the behavio=
+r
+of the driver or check if the version is supported, but you just read it an=
+d
+never use it. I'd drop this and aaeon_mcu_read_version() above. That would =
+make
+the driver even smallerer.
 
-=C5=81ukasz Majewski
+> +	return 0;
+> +}
+> +
+> +int aaeon_mcu_i2c_xfer(struct device *dev,
+> +		       const u8 *cmd, int cmd_len,
+> +		       u8 *rsp, int rsp_len)
+> +{
+> +	struct i2c_client *client =3D to_i2c_client(dev);
+> +	struct aaeon_mcu_dev *mcu =3D i2c_get_clientdata(client);
+> +	int ret;
+> +
+> +	guard(mutex)(&mcu->i2c_lock);
+> +
+> +	ret =3D i2c_master_send(client, cmd, cmd_len);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret =3D i2c_master_recv(client, rsp, rsp_len);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	if (ret !=3D rsp_len) {
+> +		dev_err(dev,
+> +			"i2c recv count error (expected: %d, actual: %d)\n",
+> +			rsp_len, ret);
+> +		return -EIO;
+> +	}
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(aaeon_mcu_i2c_xfer);
+> +
+> +static int aaeon_mcu_probe(struct i2c_client *client)
+> +{
+> +	struct aaeon_mcu_dev *mcu;
+> +	int ret;
+> +
+> +	mcu =3D devm_kzalloc(&client->dev, sizeof(*mcu), GFP_KERNEL);
+> +	if (!mcu)
+> +		return -ENOMEM;
+> +
+> +	i2c_set_clientdata(client, mcu);
+> +	mcu->dev =3D &client->dev;
+> +
+> +	ret =3D devm_mutex_init(&client->dev, &mcu->i2c_lock);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret =3D aaeon_mcu_print_fw_version(client);
+> +	if (ret) {
+> +		dev_err(&client->dev, "unable to read firmware version\n");
+> +		return ret;
+> +	}
+> +
+> +	return devm_mfd_add_devices(mcu->dev, PLATFORM_DEVID_NONE, aaeon_mcu_de=
+vs,
+> +				    ARRAY_SIZE(aaeon_mcu_devs), NULL, 0, NULL);
+> +}
+> +
+> +static const struct of_device_id aaeon_mcu_of_match[] =3D {
+> +	{ .compatible =3D "aaeon,srg-imx8p-mcu" },
+> +	{},
+> +};
+> +MODULE_DEVICE_TABLE(of, aaeon_mcu_of_match);
+> +
+> +static struct i2c_driver aaeon_mcu_driver =3D {
+> +	.driver =3D {
+> +		.name =3D "aaeon_mcu",
+> +		.of_match_table =3D aaeon_mcu_of_match,
+> +	},
+> +	.probe =3D aaeon_mcu_probe,
+> +};
+> +module_i2c_driver(aaeon_mcu_driver);
+> +
+> +MODULE_DESCRIPTION("Aaeon MCU Driver");
+> +MODULE_AUTHOR("J=C3=A9r=C3=A9mie Dautheribes <jeremie.dautheribes@bootli=
+n.com>");
+> +MODULE_LICENSE("GPL");
+> diff --git a/include/linux/mfd/aaeon-mcu.h b/include/linux/mfd/aaeon-mcu.=
+h
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..2e9f5f316f33b70c732faa850=
+576cee596455dab
+> --- /dev/null
+> +++ b/include/linux/mfd/aaeon-mcu.h
+> @@ -0,0 +1,20 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * Aaeon MCU driver definitions
+> + *
+> + * Copyright (C) 2025 Bootlin
+> + * Author: J=C3=A9r=C3=A9mie Dautheribes <jeremie.dautheribes@bootlin.co=
+m>
+> + * Author: Thomas Perrot <thomas.perrot@bootlin.com>
+> + */
+> +
+> +#ifndef __LINUX_MFD_AAEON_MCU_H
+> +#define __LINUX_MFD_AAEON_MCU_H
+> +
+> +#include <linux/device.h>
+
+Don't pull this in if you don't need to know the layout of the structure. J=
+ust
+use a forward declaration for struct device.
+
+> +#include <linux/types.h>
+> +
+> +int aaeon_mcu_i2c_xfer(struct device *dev,
+> +		       const u8 *cmd, int cmd_len,
+> +		       u8 *rsp, int rsp_len);
+> +
+> +#endif /*  __LINUX_MFD_AAEON_MCU_H */
+>
+> --
+> 2.52.0
+>
+>
+
+Bartosz
