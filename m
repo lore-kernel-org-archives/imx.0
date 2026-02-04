@@ -1,79 +1,70 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012042.outbound.protection.outlook.com [52.101.66.42])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013065.outbound.protection.outlook.com [52.101.72.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A19C284B37
-	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 15:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB5541B37C
+	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 15:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770218522; cv=fail; b=ZCg/jEmPDRoWFpKdyWsYjmaUYCDdUhA80LMWo1ONJNjux/ha208zgsw+2YKXhMYtviPVuU3UBTQ12xBSnnMPNtWpi0PBo4+6Yapnq68WEDANjh+FgO0TsyWRikN3tTTdDKlBAe7Zhq3lBFr0iePgYHsBj4dTCcniSg8wFxaffeQ=
+	t=1770218742; cv=fail; b=JTk/gFmxWQEwz4v56ynbAwWIlb34DCFllMIASAcTS+zYGMVUR3xkD6Faj/AbC3RJ001s7tuI+s85txlpQlDaK4g/NxGzEiLXxNVF6yrYScnNs6UnDsRePh2DYga938VDZA8f13FsFrBhZ5eamAYWfY2xEzWlcJMtRsfr4YCIf3k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770218522; c=relaxed/simple;
-	bh=oimnGzK6cv8S+TcYiQgswRsNJiTu1JR8RwHO6K9AV8c=;
+	s=arc-20240116; t=1770218742; c=relaxed/simple;
+	bh=eyC8Y7cQrojoe3J7+4WxLnfcQEFyMPXe52IClhHzsys=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=NBD31hPV3RgvnyJ+PmIdK9yvw5/H4d2D02kvMXObwf6yaVs1PVBHe7NywgNs4ALGYKH0jTK+4SKyweV8Q4Zge0xxAldw8oa0Gf4uXPq2mwiQiIFEMzo/c4eci+e7TM/Cm39JyX+2jG5Ev5guXG/Yh+eKSzsDiVPWFgTDhS4UuzU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=aGe+jbFH; arc=fail smtp.client-ip=52.101.66.42
+	 Content-Disposition:In-Reply-To:MIME-Version; b=HZcLz1Y/KxwWszyyyKXMu5qRt4JTdjv/RRNXQLuiGGRQxOsFn670PkrTSEE6XBkrlvIKkOwpf7MaMg4TpvJbqYSyqp6uJV/EPRWCRILd9G2ckhzMpNvSBBrAJihaVDV/T8+AwJkiGjAro+WZmLDVtJbDSsSWbZUQwaWRuRaNWto=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Hr1zxp62; arc=fail smtp.client-ip=52.101.72.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="aGe+jbFH"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Hr1zxp62"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fePaNWNonyVRyc7cO8Mci+EqIGOZZHThyAT7zTaLspCslgULwvK6W6VM7GBCyL/GJj3MjYKyxcgPQn9TdZ+uVClXGhLLY02EFqbo8JyK+DEadsleGrMIyVcCSk5Gaw1XzMFDtfutxJZv0CYjecX8HQyeQWGGj89bVGonkVwZ7ARmBqhKRTVOEEtGIMjk04OCSV0SC5oSIdhwzGZhTB6+TRUSg9Pw8shYsYFbFlHaa+u5AHazfZnGCCg/gvUs8sxSsP9gRRaYO+PQvH87TVqt/02iyofTgQ1rzmr/zql7u268kYEJsP28aRH9WOHqLI+R+YUjhWtBkGNzfEgN68yiOg==
+ b=iNT6u0ipFlB61HWrkPWq71wCPNrPwMQRZcvK2D/VjRPe+D+j6OlgasSzf5gCMDV4igSbRgbv/GY95HO5S4Ik2Y2rsdaZv9c8s076S2w2T4CHujXv3RWUa73keJtdfXHwdXoSAwjqHz0II5iDAGkj/Q+damdLch41xmASIR3B6HVMBXUnNq8HaNdiyR2Fgt/FAW/dfn2h0pZJI11FTfX2an4L6DBWny7ZB6VDzopbYJXO/XYhRnqX+165VfRAqsKGHMABgJkRqVhnHW8tgAAZYPb507yAeQ882RjYXcMERKHYvwGkN07J2TsBOsPFZ3jITJKzh2RCPycxOD5BG042ZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hl+n1VEGOwEM/CJHL5Gwp2tLbvtbOu4mt2Ts8rYYs44=;
- b=fsuDanXpS5uRj9vHB0sU+AOnIiIMBEHWwLOP+Jz/O1bsmtgLGVviNwftTJ05UcPgm3/IHV0xSwJP2kLPZv2+8Uac7b57EadC48L2xK360wkoIYTwTn/vrC1dMGxFUdBVdOPbg3aPxLG6Z8B/jexxo5ECv50gL1GOONYfcl2dlpyxViemzKy7Dx6se9XkqFuFgCikke/WwJuiJ5GBYk1iKCZxhrJgxAX25y585b3ds98TxoAxLAqgSvZdSGOxFM9uF3U8loY4oAE2YOs4m00zLNkfZardQcAoKT0WKvfHv/kLXvTHgS2IuhA9Z1UJL+g6/EIAIAuULLj/ina0NgIPWA==
+ bh=hLYwSRQInMKmP3Ve6Ub6WqonkNQ+X6hrgVfEqO/VVwI=;
+ b=h41Ph5sxMRs4+pEs20Hwe3EvYTjbdDJZuIDumNBdJZvud93rNbBzWot3z96wKs7ZsiSWx6c+hVdp4v1OsmAbsJLUIubj3GrjEB+ORhD9Y7iAnIKqdiSbh117PECELcNIL+ozBX0C+EfcekAeXZD7fcdZQg0us23zElHoDwwnWj3aFw9yupdQx1Ain+WWB3DJcR521dvcKXr7LxupN0j0DlbWsEx3aTNfYYceOkuKGwKb9x37bKgQVLqncE7oCnv0ponL1u3gMYMsh1HQ0bQh6N7AQKM9CBiAzf3gCRa8zeXSM5GcOshsfsf5m8x9Y5T6C+UH2d3AO7en0yVfOi+NMg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hl+n1VEGOwEM/CJHL5Gwp2tLbvtbOu4mt2Ts8rYYs44=;
- b=aGe+jbFHIrHX//Ihv9a01VNMwLqgD97BLRZnM9SEoUzbtOLpj7ZGCmDD4ZuYikc+56XFtSVEd21S1Ynx/CvG66X9zjOfohm+aR/BmOLBpnQLiohvszFLT3YKBQcfV3p9g9CE5wIzWQUNuQSYbfZRBCoA4tM2gEV9VSCnH4wKUtLWOW0nuu1G98WNzV6n62U+fNQOJ5I9KQ3bieKiegDNEsoLSmJ+HBa31oZpvFAPloOzILJoI9MSoiP4cA/Hq4ouV5JNhOhRB365YcU1PnbBYJop3H0zZh27iyqqfm26MMTmRTZltwAQJnw8NADN/PFSwP0jFu7XqKEJpt5LDfmYpA==
+ bh=hLYwSRQInMKmP3Ve6Ub6WqonkNQ+X6hrgVfEqO/VVwI=;
+ b=Hr1zxp622ttT0+J0Db6U9pfPjSOqJhnK0/r4Gpj/y+8oOeuJJLRGd0kMSw4cGJ9XJ58n1OymuI1LakiG8rJmTM3QQOtmg6JSyw8fMYLmpGHDyhyEpD5kSsGJsoDQ2/VuyN8fsTU0PFxEfdw698HWO02ZZYtvcA7HjTdlEnvmJ8e17g0jYTueHebBIfkSdUem8iLtMDvITszh1yHKoWyQxRzxKQNXsn0rt1TK/ae4fWoQdXXXaGquvj7IEi+Y1IGhuRobz9gaXL/cU21Xsymg/QunGfqS8nA4L3XjFMz3/h7rdyx+iCuBqTMxx6O5+j8OX2xGJrTdLc7yD7nMI7x6AA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
- by DB9PR04MB8202.eurprd04.prod.outlook.com (2603:10a6:10:24f::11) with
+ by DBAPR04MB7224.eurprd04.prod.outlook.com (2603:10a6:10:1a8::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.12; Wed, 4 Feb
- 2026 15:21:58 +0000
+ 2026 15:25:37 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9587.010; Wed, 4 Feb 2026
- 15:21:58 +0000
-Date: Wed, 4 Feb 2026 10:21:49 -0500
+ 15:25:37 +0000
+Date: Wed, 4 Feb 2026 10:25:28 -0500
 From: Frank Li <Frank.li@nxp.com>
 To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Sherry Sun <sherry.sun@nxp.com>, Hongxing Zhu <hongxing.zhu@nxp.com>,
-	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH V3 03/10] arm: dts: imx6qdl: Add Root Port node and PERST
- property
-Message-ID: <aYNkDWt89b26wJWf@lizhi-Precision-Tower-5810>
+Cc: Sherry Sun <sherry.sun@nxp.com>, hongxing.zhu@nxp.com,
+	l.stach@pengutronix.de, bhelgaas@google.com, lpieralisi@kernel.org,
+	kwilczynski@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
+	imx@lists.linux.dev, kernel@pengutronix.de,
+	linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3 02/10] PCI: imx6: Add support for parsing the reset
+ property in new Root Port binding
+Message-ID: <aYNk6C_W_oSFVqbH@lizhi-Precision-Tower-5810>
 References: <20260203015614.2957479-1-sherry.sun@nxp.com>
- <20260203015614.2957479-4-sherry.sun@nxp.com>
- <mp25jwvoimpesfwtpmyeltdpbu7aznahxvkcn6jxg5jqzxck4i@pium66rnpdd3>
- <VI0PR04MB12114DBBE58AB89BEEDC28C019298A@VI0PR04MB12114.eurprd04.prod.outlook.com>
- <gshz5zc7qkfkqkla2mkpu7jjf3sctrqf5jo5vszzgxzpegxzni@yhdqkykyn2ar>
+ <20260203015614.2957479-3-sherry.sun@nxp.com>
+ <nekxn5osukwkumqfh4qabj6okhtv4tdwrnthza4x54psrhauyf@p3lhia4mkhb4>
+ <aYIztYs/07WBLsAq@lizhi-Precision-Tower-5810>
+ <pz5zmte5dbb23ccwvc2xkl4grptr35bmcwd6ohlzo2arjopgkw@t3euzojtsoyf>
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <gshz5zc7qkfkqkla2mkpu7jjf3sctrqf5jo5vszzgxzpegxzni@yhdqkykyn2ar>
-X-ClientProxiedBy: SJ0PR03CA0388.namprd03.prod.outlook.com
- (2603:10b6:a03:3a1::33) To PA4PR04MB9366.eurprd04.prod.outlook.com
+In-Reply-To: <pz5zmte5dbb23ccwvc2xkl4grptr35bmcwd6ohlzo2arjopgkw@t3euzojtsoyf>
+X-ClientProxiedBy: PH7P220CA0131.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:327::33) To PA4PR04MB9366.eurprd04.prod.outlook.com
  (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -82,220 +73,208 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DB9PR04MB8202:EE_
-X-MS-Office365-Filtering-Correlation-Id: a6ebfd20-9e10-4448-72b5-08de64012314
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DBAPR04MB7224:EE_
+X-MS-Office365-Filtering-Correlation-Id: 806789f3-6c11-4c49-ec33-08de6401a5aa
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|1800799024|376014|7416014|52116014|38350700014;
+	BCL:0;ARA:13230040|52116014|376014|7416014|366016|1800799024|19092799006|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NG5aajY3aHNQM1ZuREhBMU9ZQ3JESUdlVHJxM0htU09FZkFuMGRWTzV3dHRZ?=
- =?utf-8?B?SGF1WWxGOTJ1NjFwcTZMMld4NTFvZFBDNXNjM2Q5RXpLc29rUFplMjVpVWVB?=
- =?utf-8?B?eWtqQXBEM21pWGVvaktkM1JMcXRxY1RLRlp6OTBMWHUySm4wWFZKMm8yYXVh?=
- =?utf-8?B?NUxzNlpCV21CWXgvN3RNcU8zWlhhUGNsMkZESFF4bmJCY1picWhDcS9wcmpM?=
- =?utf-8?B?cjhURG9BNEd5SmlIQzloQ0Q0eENPOUVPZDlDMWFzTjEyeGc4aWl0ang3c1dQ?=
- =?utf-8?B?d2FUU3JhU3hFRHVqSlFMK3pmTVkwNlJ5aUl5Vm52cnUreEdhb3hLZ2dPYkpH?=
- =?utf-8?B?VGZZcFdSMHYyeG5CbDN3VVJJUmpCcy9rL2tvWVZWa0ZnT3NLMDNoVTlpOWRZ?=
- =?utf-8?B?NThyMmxEWFhucWI1aWV6cjllazFFRmNDNDhDTnRjOHNkVjNRTkZqakh0NDFV?=
- =?utf-8?B?cFZiY2JqV3BsUEZOcGFsQTYyb0xuSTNESWRMY3Bqa2xvYis1SnNqTEw2MDRR?=
- =?utf-8?B?Z1hUdnh1UzJNc3J2d0xBdnZoZWRneUd0ZXNJcWE3aDlYSElFZU9BK0luMFhz?=
- =?utf-8?B?TTlic2NnT2tnMmxWaUlZY1hMSzRDbk5rVTRQMjNhSW00UXBNMmZmNFE5MFZs?=
- =?utf-8?B?Rmkvb1U3YmI1bDRwZ0J3RFE3YVZVSlU1U29qZ0lPWURLTHVValh3Uzl4cmNz?=
- =?utf-8?B?ejZlcTNzQUhEYU5zSS9ZdGtpWmFGMGtNc1N0TU44S1IwMklqeUdGKzQwM3Nj?=
- =?utf-8?B?dCt6bUpERVp3NnJmczRSdzJzbENDSUJPZk9MY01CdmZDa3IrVlVJdmp5cEts?=
- =?utf-8?B?WHZvZWlRZ2NEbWk5aENUZU9MNnR3Ykd6RFN1TGxCT1UwRHY2NzZIT09Nc1N4?=
- =?utf-8?B?OWgwZ3hvSVNRSDIyWTRoL0pLajA4QmhZUjdIdkhXNHllSUFpb042STgzakRU?=
- =?utf-8?B?RzBIcWd3OFdxZGlYL3lwS1dldTFrV1VVSWxRS20zU2RaSE1EWTh5VHAxQlBm?=
- =?utf-8?B?OENsVXdHSm9YNDc3aHNHRWh0bHdyb2Z4V3NBWHZST0ZJbEFhMXZFeTk3UGZ4?=
- =?utf-8?B?NDNtMHNqZW56S2QxK2VUV3liNlV4VVhNUzBkQ0d4ZVJ4amlzbzkxM0JqL3Rq?=
- =?utf-8?B?cXRva2t2NzE3b1Y0NldUZmUvclVKMTJSZSt2VWd1Y1IyU2tWMlcycmtlMlY4?=
- =?utf-8?B?UnlLTi9yelZaS0t0c2lUcDB6bzMxSndqUSsvQSs5MHVYbTV1Wktucmthc2d4?=
- =?utf-8?B?eGJPeXR4MjhkNlBpeXFLK01pTWduc1JZQkJSQllEKzNCNlJQUEJuZ0VzQmtC?=
- =?utf-8?B?d2lreDU5eVRPenBJd1lvbUo4TlZxN1hvRDBhVlQramhZeXk5ZlJ1OHhRMmMr?=
- =?utf-8?B?SEpqK0JKbnE4cUFWSUE4VlJaUEY0NGo5RWlKK2NLSG41aE5IR2RCd0M2d3ND?=
- =?utf-8?B?YitEQTNIZy9oY2ZqMUJ2SDluYzRjUTkvd1ovUmVmZTFtMlRGUVlrOUJOR096?=
- =?utf-8?B?aVVJalhLUXp5WS9TWGhualpnME1HbFlYVCtTTlpGWG1UZTIrSDJ2NThxOUFQ?=
- =?utf-8?B?SDFjM2NZamd4dGs0ek1KWGtrOHFiNTh0aHNnT043Y2UyNG9vR3BnOE9vVG83?=
- =?utf-8?B?M0hhVklrVnJuWFRTTHkrajh4aHpjU2JuSytOYkMyenAyM0VhRTFabGREUmVG?=
- =?utf-8?B?V21JMkNiUTNsT3lMQjI1L2ZPbnpJSFkweXZuZnR3K0JYb2VzQmU0T05OTWlx?=
- =?utf-8?B?Ym5ydXYzV0ZiZUcrNFh5NkxzaGFZMitkTC9vZGpVNzF2dDJna1hYWTJXS2p3?=
- =?utf-8?B?WW9QOVJ3UXpCT2gvamNVUVE3MGF1TFBuWDhDRXQxS241SkZDaWZrQStUUHJF?=
- =?utf-8?B?dTk2TzJ0cmxCNWFXeEhzeVRHdG8rMDY3UzBsK3o1NW9HalU1alVwd3V0Q3dV?=
- =?utf-8?B?SzVtdGZVRFBQckplWVRBenNkOG5hRWxsT2lodmlkVzdPYnBpSlA2Mzh4Q21E?=
- =?utf-8?B?bTRmbmVMdVQ1eTlsczYzSHgyaXlGWDA4Q2FlQlBiNkpWWjNqQ3RRTG9GUTNi?=
- =?utf-8?B?QlZqVlI2cFk0VkZhYW9LZ1lGQUJnR0t1TTBkdGFqa0NsTjBabU5RbEV3enB3?=
- =?utf-8?B?cS95S2h0QU96MHNhRkZUZjcwWmh4OVR5VXhHMkd6d3VxQWZEdGo2dHRvRGx4?=
- =?utf-8?Q?Ga6CPOVRWQDi3eK372Plai8=3D?=
+	=?utf-8?B?anZEaGJTNVVBaUZyREN2RWlwNVlzVHJCRWlHempHV0VIMmRmZWFPRGVOSG56?=
+ =?utf-8?B?aUVnMVFlZXo0NXRSZFFHOEVUVU0vbnZCdW1qVXlTeDhQMDhkRWh3eEQyQ3Z0?=
+ =?utf-8?B?ekRhN1R3bzNNSnFLc1F0dFBHQ2lmS09WS1pOTmtRbFBNYnBINjE2b2hjWCtT?=
+ =?utf-8?B?cngzaFFjWHlDM3ZKWDVNSDFjc3pmVjd5a3hpOGkzS2ovbC9TbWg5emVmSzdr?=
+ =?utf-8?B?Y1BLUnNzQVBmb3p3cnhnWkFmZnJOYU8vK0JtMjBtRUc4YVZhSjFPMmZ4VmVK?=
+ =?utf-8?B?dUZDcGI0NnVnMW43bWExVjhIMXpEdHlzRXgwK1drTllDVnNib1dKaUo1TXpM?=
+ =?utf-8?B?d2NUK0Zqd1A3ZFdoZ3A5MTVoY0V3VXZ2UDQreFYra2JYUE1vVXNheVJ0bXMz?=
+ =?utf-8?B?OUlJS0haR1BGNUo1NDJ5VTdybmhNaFZDZkdkeTU0bVlidEJWV1dsVmFENDBV?=
+ =?utf-8?B?Y1ZlWlNlVkFtYXdiZS9GdjZsQ3d2eDR2VFp5cGs1WllFbGI3ZFFRckFObHFq?=
+ =?utf-8?B?ZUFnUlBMRVpXR0N6RDNiakJXTDN0cXBzL0ZyeTFuMk1KNzBSb1Y2NmJKL1hV?=
+ =?utf-8?B?NS9vZUQ5dTR4eUZUSjJMNE1sVlBDcVFKcUJCOE1UbEUzQ1ROSzdtTmJjV2s1?=
+ =?utf-8?B?MU03NE84T0NqTnJpamRvb0ZpK2p2NDNCR1hnSk5zZmNFNDcvVi81Z0ZJL0tx?=
+ =?utf-8?B?UWlNK1ZwMFVQZ1lCU05BY2RjaXJwRzZGYTJydWdqMVE0L0ptOHowc2VoQkJw?=
+ =?utf-8?B?djJPQUlFaVV2aEVpUHd3UmdRVFNVcEo2UDI1d3BnQ0kvd3NyN0wwem1XZkJj?=
+ =?utf-8?B?NnpzVkpRZlE3cXQyM3N1OXZ5SlV5UExiRmo4czhaRUpXTVJaeXpnZnlGcjRB?=
+ =?utf-8?B?R1RZMklrdExhaXUxbzJxMjNDeTJhbnRnTGlIWVlUT1llUko3QUU1SEt6NVVi?=
+ =?utf-8?B?K0o5ZDFQRHIzSlJoVnVDbHlJcnZvNTVRcjRCcEJJdTdKRTY3RXF5TDNCNFNB?=
+ =?utf-8?B?YmdsQ2JYcnloeE9LdW42RDdjWHBxNS9vbzUzZ0xkQVZqUGVsZUZOdUdkaS9o?=
+ =?utf-8?B?SjBXa08rTW1SSDR1SjBVOFliYUd6NENmRjRZOHF0d1YyVXVQejNPZEJmTldS?=
+ =?utf-8?B?S21zeFVpR25CK0F0cXU2TS9scm5xYjVKYXRVZ1ZlUzdVQm5nQloxc0t3bXd5?=
+ =?utf-8?B?b3lRdG5JYzJPN2dUWUJYeGYzb0sramRzakx4bEVIaFIyV1pnb3k1WVd5bUJ1?=
+ =?utf-8?B?R242dHFiNzFJWmh5QkwwdG9mR2JySEJWQk5iazdjNE1EcTRVTDhpd3V1QXhY?=
+ =?utf-8?B?Zm9KYWVGendOVFNmK3dzV29hV0JUcjcwNDMrQk4rcHJtaFNYT20rZWp2ZjYy?=
+ =?utf-8?B?Rk9HcEhaOXFMcis4K0tFV09YWnpmQWM3TklsOFJPSFA1SHN2N1dkK3hDbGkz?=
+ =?utf-8?B?QTZaQVpKSFgvdVI5RjQyRU5BeStWWTFGd3hZTVRGU1lZaG9uTDBoN3o3TStt?=
+ =?utf-8?B?Um5GV3h3SUhINWM1cnFtcU8wRC96VXpMSFhWU2NLN0RQMlhmZGg3YWtwcDV0?=
+ =?utf-8?B?NCtrTTJyRUFIZkZOMEd1dzdNVUdza2o5TWJPRnk2NENzNWtpRDlVbUtIUThW?=
+ =?utf-8?B?ZnFNUkVWb3FlTlZOVk10ckdtbkJ1a1ROeUM1QjB3dXA5UCt5dmhBSXZTcWhF?=
+ =?utf-8?B?RWlOUERxSjdSQ2VuK1VVVU1iT280T1NjRHdNQkFaZUkweStFVEhiUjN2a0Ni?=
+ =?utf-8?B?a3JTdEdkZGZFbDFuTjByMGpUTG5QVzhqVUQyMnJPQmlEdGZIS0pqU1ZaWUhC?=
+ =?utf-8?B?NmJiMkJmT2dLc0pHQ3h4b0MwLytkaVBsNW0wTWU3S0RsQ2pqdUhCMzY4WGtv?=
+ =?utf-8?B?YTVENGFsVy9ra1dYNDlFenB4NVI5Ty9uV0cyV3NjWWdyTEdTejl5eUE1bWR6?=
+ =?utf-8?B?MFJlMnQzNGFzYWxzdFhxVmhSUDZ0QitXSnJkTVNUTjBYTjNzS1dyM3QweVhV?=
+ =?utf-8?B?d1poOHdvRklhakk4UjBIbWx6QWxtcXd4SXUySzNCcVB2bjVNdFZkRG5RaEVK?=
+ =?utf-8?B?dmVIOVpYbTBoWE94YW1waGhZNHp6ZCsyL1R6Q1Y3Wm1SZ2c2OE5Sczh0bkVV?=
+ =?utf-8?B?T1lmVmFRMkV6dXVwRE81SlkyVER1cisybVNxblBqYmo4dUVINFhNcndTY3ll?=
+ =?utf-8?Q?s/P6tCAQd22U8asCh91G5/k=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(1800799024)(376014)(7416014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(366016)(1800799024)(19092799006)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?L0UrbGhGTGdSYW5tU1NmUjgyVnpxREQxL2pPOXlIblRFR2Q1NXZzdHpEWllm?=
- =?utf-8?B?WjBoUW4vc05kcFZjSGJYVWw2TmZUUGZMMlROejR1NGZLSHJXdFZid0RKSEVt?=
- =?utf-8?B?bmRJaGJSdjNNV1pqZzBPWjZCMVBTUk9PUjY5dDFIYTdkMkJDc1FNNDUyRkMr?=
- =?utf-8?B?WXc1Sk55OGVvZ1ZmRHlkWWVweGZ4U3M5aVE1MTkySVdxMUxmOUROdlhFREV5?=
- =?utf-8?B?RStkOUc3RjB1aW56SXhQQXNRWEdJRjgrVzRCb0hiR2plT3BrbGZ1MEJYZTdZ?=
- =?utf-8?B?Wkw3c0VqUEYzbnUrcWFMV1hWcWJlQVA1UzAzNlVvYjcxSkdXTmpEakpLZzlW?=
- =?utf-8?B?Ulh2cTdEMDlKNXVvTXY0U1FpYm04blpIQWFuTkxQbUttT1RIYlA4K2hCTG5Q?=
- =?utf-8?B?cjNlQVh5NW12RUE5bm1zRmlnWitZOG85b2VvTys3ZVZPMGtoeks0Qk1aU1Ro?=
- =?utf-8?B?dnJ0RHZwbEoxTWNOcWJHaDZONkJPWVNrL1NwWkFrZGV5RnRBSHBBT3ZpQ0ZK?=
- =?utf-8?B?S0FPdmlxU3Brdm85K3lQbGZyTnpSSms0RFJSODk4UTZZOGtHL3FaNFNRZkQ0?=
- =?utf-8?B?WTNqTzRZQS8yckFPNUU5NWpMaFh5c2o5ZFozN2xLeUYwaUFwOCsyZ1ZUSSs1?=
- =?utf-8?B?a00xU0lyUkNIN0xmb0k2bnp4c1JRSkEvRDRzOFhWS1kzUnBFUDJoSDFndlpR?=
- =?utf-8?B?WXozQkVtYXhDUjZ6eGQwSk5HcW5CWi9JZWtDTlpWTTBHRGtmMnA5cHdoQUVD?=
- =?utf-8?B?bEUySGtwMGFKNE40RHVHQXYxd0lyWkZYams5OWtOWDlpU3ZSMHRiZzY3K1F2?=
- =?utf-8?B?K3R3Qys3WWZuL0NzSm5SMlk3QmNqa2NrUnh2SlAzUkViK0hVWlB0T0dQeEY3?=
- =?utf-8?B?OTY4N3YxL09ubGZVc2VuVmIxenFSQ1NMS25EQUpmeUhjVFBOT1BUY1VWMG56?=
- =?utf-8?B?eVgwVXgyVTYydTBRWm83WUZKbmxCb3VFeUtsa1hJUnJ1YSt2c0FCUk5md3A0?=
- =?utf-8?B?VjhEbjFKbVZKckJQUlJWKzVsMzE1Rk5uUGxPbndzcGt4U3V1eFRhS0gwU1pu?=
- =?utf-8?B?VHlrS3RYdCtPbVo0dGgwL2V4eHMvM2VOSnhzYklhSFRuM0dzZi92Y3lUazQ4?=
- =?utf-8?B?bEtBVHdlWU5ObDBIOXJtZVp4SU1URnV5NUhxVExkbkVSV0FNbmxjd2YyeEVa?=
- =?utf-8?B?NEU3bjFkT2gyMzFYaFJPdHh5M2Q2Y2gvUjMyUFhuKyszMlZsUVNDU3RkUkM2?=
- =?utf-8?B?TEt3dmRBb2VmV1R6cWx4eEEwa1VERVlLRjdaUTcvUE5CcmpQZHE0Ky9GVWZi?=
- =?utf-8?B?aGxnZVl5WWxjSFRscWFUcnpiZWZCeWhHOFhRRUxMalRjSVh6cTNJTUFXeVFT?=
- =?utf-8?B?cjExcXljYWwyTHlrTStNeWpVK0RMaE5tRk54UVlBc2ROeWc5eVl4VVFUL1hG?=
- =?utf-8?B?M3B4WUtnTXV4c0NTT0t4QzRqMWdweWYxbXJZVFI2bkJ5dTRGRlV3OXN5UmFn?=
- =?utf-8?B?cFlsYmpCOEwvYWs0cDF0aWN4NHJ6SmsycThicVFiK1pZdjZpQmVlOElCcmVK?=
- =?utf-8?B?cWJkOHJQZWtzdUgvQStwV3BmeVordHJkcGl0RWhWK0MvcFdJK3Q4Vi90S2p1?=
- =?utf-8?B?YWM2eHUwS2hDeFJ6N3pCMzVpWDcyT0dOaDRvZVlsb09PNmR2ZGt3ek8rSmRi?=
- =?utf-8?B?UmoyRlN2eStNSlUxNVQyTXN5VENDSmRyaGNrRSszaXVEUzhPUy9qUUFieDZa?=
- =?utf-8?B?bkg0dUJxMWFkVEdqSXRac09HZE1rU3lEL2Ywd3BvWHFrMzRKWllVbDRHQnhK?=
- =?utf-8?B?UEV0d0JnQWtVYXJnbTJTeHFyNHczMDZQSldObkd5ODdSMDI1VzFNNDlJaUQr?=
- =?utf-8?B?ektjYmpzcW1XQmpWc01JVnVjN3k3M2ZxZVZWeTEzZ1o2N3ExbmI4K2Jnci8w?=
- =?utf-8?B?ZXk2YXM1V0xza2FkdExmODN4M2NoMjFyZm4ybmE2MUpPSUVzdkN4Ukh4RHBw?=
- =?utf-8?B?ODBpbGF1cGJUcFJObTMvY25GZGJjTEttSjJYZVROR2k5T2dQWDU2Rm8wSlBy?=
- =?utf-8?B?b3pRdmRvYUJaSHJpaTNOZjlseGRnUXdVZEdod3lyUnpSVzV1MDdLUXR0cGFY?=
- =?utf-8?B?d0xEaHRQNy9hQzJTem5lVW1TclF2cnh6blNuekpYeVdkOWM3NlRVYkx1TnlX?=
- =?utf-8?B?OGlRaTNUSE40UGpMVzl0YTBQL3p6RHc4Q0JaZzc0S1pGeTNoREg2UWdQN0gz?=
- =?utf-8?B?TGRSVGpsdWt0QVVLRU9BSnVmSWg2YmxrblNsUWZGZk8xTm5tSkpvM1JPZ05Q?=
- =?utf-8?Q?aVGcRify3z7cGFf3UO?=
+	=?utf-8?B?UmlLOTUrWk1tRTc3TVZGYU94ZUFsWThIZVRrTGxUem16SW9oRVZNZ24rUjVy?=
+ =?utf-8?B?QXJxM0NlcDNwME1Lc3FzWlMwd0tUQWxOS2pVY3BmT3Ntc0wzcWQvQ3lKMEhi?=
+ =?utf-8?B?Y0kyZHFGSHQ2ZnZxSGQwcGhnUW9mNkNTcDhQMU5IWGpUQ01PYmtkVTNLTEs1?=
+ =?utf-8?B?S1NCSjZxWUZmVExvcW0rM3FvNmZESmpMNkZwUE53YmhFb3RTSXRjd0NqU0Jn?=
+ =?utf-8?B?WHoxWkduUnFIUzJtU3FGdENlNVVocktabHR0aFJ3V2N0RWQ4RXZBTloxTWVl?=
+ =?utf-8?B?MGJBd3dTRkg0MDNsZllsV3FidzNXRUhFbmtxejBDckJ4czJIeGJkSGcxaFMx?=
+ =?utf-8?B?SmpNaGpmU3lrNmp5d3p6dFBSMHVzcUh2UEZKbUdKQTZSeENKVkZ4N3cyZ29O?=
+ =?utf-8?B?ZzRaU2xvR1N2dnVmcnUrODdtMFdUSm5IZC9xZGxGYUdXUC9OR01zWmJVMld2?=
+ =?utf-8?B?WFYxL1Q4WHpydzltckNZZnBXRCtVYnVVS1lrZGgyYzMzeHMrZ3hsbkpZK05D?=
+ =?utf-8?B?UVZ5YlE5bUNmSHNaTHhQMjBCRVptTmptVFlvdVM0N1kwc0hyWFNhcTdnajFT?=
+ =?utf-8?B?RjBqOEV5SS92WGpkbWEwQmZaekdDZXVSTVVWS2ZNdDJJZm12emhzenlDYnpB?=
+ =?utf-8?B?cHl4YmZJVEd3bTV4b0IzN240SEltRlR1NS8vN1RaSTYvQ3BoLzlRZ3JpSEVv?=
+ =?utf-8?B?ZEN0U0ljb1pnK0gzSzcrN3JKZWZwQ09SV1A1NURobEg4ZkdRSWQ2Qk5aYWxy?=
+ =?utf-8?B?TlRkUzN4WGxPZUIxdVJlQWMwaUc2em8wcnFkTmdDNXRGMHF1OHRXZnZqVWNl?=
+ =?utf-8?B?aW5RWGNVQ0VtSTZJR1hZV3pUMkFJZVV6cGprdjZUeTBEcExqR1diZXZMVG1C?=
+ =?utf-8?B?L3oxazBTNXR5dnB4WTNESVZLNW5iSlRLQ1NJTzdNVkRFTGpVV2xXdDBqZS9T?=
+ =?utf-8?B?TlVxdHprSUI2RjAwbUU5QU5LMEh4WUxReFU0c0RsM1BXVzk3SjNEcS9xWDBL?=
+ =?utf-8?B?WU9rckxqVXBKaDB1Sk4rNDFsOVp0cDlrc2h0SnczanhKZFRaYkI3VU5GZWU4?=
+ =?utf-8?B?cERyYzVKR2RLNVZYYzB3cTFEdG5XOVhJMkI1Q1crVjhvQWFvZGREcWVseVlR?=
+ =?utf-8?B?L3RCc0JvSFNTVndZSDFLTWpHNStoekwxUzM2K2dyTTVXRGxWSXdzd29ZRkc2?=
+ =?utf-8?B?Q0Z0RnZLTENKRVJ3TzgwZVhncVZMeHRLVjNEYXVDRm1qV21qMFRhaHBVY01Q?=
+ =?utf-8?B?YTh4MHVjY0RvN0FEdDJSczhINkR2bXNKL01WbzdxZEFtTENIbVZ3UE5zT01t?=
+ =?utf-8?B?YUVhUTR6Z2ZxN1lUcHV4dVhWSzYvb3E0Z0ZTL2dPQkRvZG5hYXE4RUc1SmZy?=
+ =?utf-8?B?WTVJSGNyWXFYTkxRMjM3YzBqNXc0eXlQemI5QVVHVUNJbTNkNlFZaDl3SElm?=
+ =?utf-8?B?bE5YTDZ1TWdnenpnSUIySkl6VmZ1MEYva0VLQTIxVThERzNjbTQzZlJremZr?=
+ =?utf-8?B?OUEzQ1dFNnRING4yc0pKaHFzMitHWlZOZFpNeG9FTEUxczBYYmxua1hrUXBj?=
+ =?utf-8?B?aGxoajl1c2hiWUttSjNrNi9ENlpLVGkxcW5lU2tQMlFkK2M0U0laODlQRTgw?=
+ =?utf-8?B?WnlBOHE4N0VWS0pDdkgva1dROW4vRnFjenFXZ0ZLVkMyUEwwNVcvZDh1WEZt?=
+ =?utf-8?B?NkE2bUdGS0wwSVNoTGN4NkU3VGNZUmtXaXc5Z3NFQWFSVGdlbENZS0NpUHRX?=
+ =?utf-8?B?Y1FPeVV1OVVRQVJlaEdORGNxaWt2WlBTR25zL3ljMFlkSWJuZWJlZGllSE4v?=
+ =?utf-8?B?TVdTZDhqNzJRb01Rb0JCSmxPaDVubCtRampqdW15dldGcWd4ckIzYVROSWlw?=
+ =?utf-8?B?KzMyZkhXTXR6S3hTU1ZmMkdqd1FrRzF1eUV4cEV0ZWZZV2RTR1BqUDkxTXZp?=
+ =?utf-8?B?WHdoK0gzdERtbGU4S1k1Y3g1K0ZVOFVKNlFtN3ZDemlLSTdrWlBiV0ZUSEFi?=
+ =?utf-8?B?M3dFUmZDcm95OFljU1IwYitQTGVYWTdxM2NvMXFJQVBFdWtiVkxDeG4wMzBY?=
+ =?utf-8?B?Z3U1ajNYWmdDajZKMGpQZmVLUFpEVDZXUk1LNUh1WDBpdHE1LzNsQjhWQ293?=
+ =?utf-8?B?VitLT3dCVkVwM2hsWWtnUC9tVFl3MW5YcUFQV01TaFp1bzc2RlpQWDNFUEl3?=
+ =?utf-8?B?YU43NmpBN2JLNVh5cGdoZFV4REZGWXA4ZTE2Z3N2YmRHZFprdWl1S2xsM0RN?=
+ =?utf-8?B?V2QwaHlsc0dWSk5tU0lqby9IQUx2alp2QkxwYTZyTFU0dGhqKzhWRTlaZmcr?=
+ =?utf-8?B?alhBWjAwcHFzRkZzWTdkSGUrUzhINkpaTWUvTmJzTUlsRUJDWFdZUT09?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6ebfd20-9e10-4448-72b5-08de64012314
+X-MS-Exchange-CrossTenant-Network-Message-Id: 806789f3-6c11-4c49-ec33-08de6401a5aa
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2026 15:21:58.2216
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2026 15:25:37.2238
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iPvfRVZWZV820JdbVB7cK1OWCFYW8yZX3KPGN/TOAvbJ+WBdE7ruLYYsIMKU3t3mx7cIIQQ+zkKc207HHN/99A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8202
+X-MS-Exchange-CrossTenant-UserPrincipalName: ykvdBugiHgvr/n0bqsCtZj+WZIKuuPFJi5xSQVlQ5Ka1X+/MX2KQqA0Swv9/rVSxvRpONeHlo2oIdSJO+HHIqQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7224
 
-On Wed, Feb 04, 2026 at 06:03:55PM +0530, Manivannan Sadhasivam wrote:
-> On Wed, Feb 04, 2026 at 06:44:07AM +0000, Sherry Sun wrote:
-> > > On Tue, Feb 03, 2026 at 09:56:07AM +0800, Sherry Sun wrote:
-> > > > Since describing the PCIe PERST# property under Host Bridge node is
-> > > > now deprecated, it is recommended to add it to the Root Port node, so
-> > > > creating the Root Port node and add the reset-gpios property in Root
-> > > > Port.
+On Wed, Feb 04, 2026 at 05:58:33PM +0530, Manivannan Sadhasivam wrote:
+> On Tue, Feb 03, 2026 at 12:43:17PM -0500, Frank Li wrote:
+> > On Tue, Feb 03, 2026 at 06:38:18PM +0530, Manivannan Sadhasivam wrote:
+> > > On Tue, Feb 03, 2026 at 09:56:06AM +0800, Sherry Sun wrote:
+> > > > DT binding allows specifying 'reset' property in both host bridge and
+> > > > Root Port nodes, but specifying in the host bridge node is marked as
+> > > > deprecated. So add support for parsing the new binding that uses
+> > > > 'reset-gpios' property for PERST#.
+> > > >
+> > > > The initial idea is to add the PCIe M.2 KeyE connector support and PCI
+> > > > power control framework to the pcie-imx6 driver. Since the new
+> > > > M.2/pwrctrl model is implemented based on Root Ports and requires the
+> > > > pwrctrl driver to bind to a Root Port device, we need to introduce a
+> > > > Root Port child node on i.MX boards that provide an M.2 connector.
+> > > >
+> > > > To follow a more standardized DT structure, it also makes sense to move
+> > > > the reset-gpios and wake-gpios properties into the Root Port node. These
+> > > > signals logically belong to the Root Port rather than the host bridge,
+> > > > and placing them there aligns with the new M.2/pwrctrl model.
+> > > >
+> > > > To maintain DT backwards compatibility, fallback to the legacy method of
+> > > > parsing the host bridge node if the reset property is not present in the
+> > > > Root Port node.
 > > > >
 > > > > Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
 > > > > ---
-> > > >  arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi |  5 +++++
-> > > >  arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi         | 11 +++++++++++
-> > > >  arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts |  5 +++++
-> > > >  3 files changed, 21 insertions(+)
+> > > >  drivers/pci/controller/dwc/pci-imx6.c | 123 +++++++++++++++++++++++---
+> > > >  1 file changed, 109 insertions(+), 14 deletions(-)
 > > > >
-> > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi
-> > > > b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi
-> > > > index ba29720e3f72..fe9046c03ddd 100644
-> > > > --- a/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi
-> > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-sabresd.dtsi
-> > > > @@ -754,11 +754,16 @@ lvds0_out: endpoint {  &pcie {
-> > > >  	pinctrl-names = "default";
-> > > >  	pinctrl-0 = <&pinctrl_pcie>;
-> > > > +	/* This property is deprecated, use reset-gpios from the Root Port
-> > > > +node. */
-> > > >  	reset-gpio = <&gpio7 12 GPIO_ACTIVE_LOW>;
+> > > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
+> > > > index a5b8d0b71677..e3ba68976bee 100644
+> > > > --- a/drivers/pci/controller/dwc/pci-imx6.c
+> > > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> > > > @@ -148,10 +148,15 @@ struct imx_lut_data {
+> > > >  	u32 data2;
+> > > >  };
+> > > >
+> > > > +struct imx_pcie_port {
+> > > > +	struct list_head	list;
+> > > > +	struct gpio_desc	*reset;
+> > > > +};
+> > > > +
 > > >
-> > > You should just remove this property.
+> > > I'd love to abstract the Root Port properties in a generic struct so that we can
+> > > introduce generic APIs to parse the ports. But I'm not asking you to implement
+> > > it :)
+> > >
 > >
-> > Hi Manivannan,
-> >
-> > Actually I have discussed with Frank about this in V1, Frank suggested add
-> > comments here instead of removing the old property, just in case the dts
-> > used by old kernel to avoid function break. Or maybe we can at least keep it
-> > for some kernel release, then remove it later.
+> > good idea, where is good place to put it?
 > >
 >
-> If the new DT breaks the old kernel, then the kernel needs to be upgraded. But
-> typically, one would update both kernel + DT or just the kernel, not just DT.
+> drivers/pci/controller/pci-host-common.c
+>
+> > > >
+> > > > @@ -1688,12 +1771,24 @@ static int imx_pcie_probe(struct platform_device *pdev)
+> > > >  			return PTR_ERR(imx_pcie->phy_base);
+> > > >  	}
+> > > >
+> > > > -	/* Fetch GPIOs */
+> > > > -	imx_pcie->reset_gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
+> > > > -	if (IS_ERR(imx_pcie->reset_gpiod))
+> > > > -		return dev_err_probe(dev, PTR_ERR(imx_pcie->reset_gpiod),
+> > > > -				     "unable to get reset gpio\n");
+> > > > -	gpiod_set_consumer_name(imx_pcie->reset_gpiod, "PCIe reset");
+> > > > +	ret = imx_pcie_parse_ports(imx_pcie);
+> > > > +	if (ret) {
+> > > > +		if (ret != -ENOENT)
+> > > > +			return dev_err_probe(dev, ret, "Failed to parse Root Port: %d\n", ret);
+> > > > +
+> > > > +		/*
+> > > > +		 * In the case of properties not populated in Root Port node,
+> > > > +		 * fallback to the legacy method of parsing the Host Bridge
+> > > > +		 * node. This is to maintain DT backwards compatibility.
+> > > > +		 */
+> > > > +		ret = imx_pcie_parse_legacy_binding(imx_pcie);
+> > > > +		if (ret)
+> > > > +			return dev_err_probe(dev, ret, "Unable to get reset gpio: %d\n", ret);
+> > > > +	}
+> > > > +
+> > > > +	ret = devm_add_action_or_reset(dev, imx_pcie_delete_ports, imx_pcie);
+> > > > +	if (ret)
+> > > > +		return ret;
+> > >
+> > > I'd prefer to do it in err labels.
+> >
+> > we just removed err label and module remove.
+> >
+>
+> This driver is always built-in. So the only way 'struct dev' will get freed is
+> when probe fails. The usual pattern within the host controller drivers is to use
+> err label to do the cleanup not devm_add_action_or_reset() (there are some
+> exceptions though).
+>
+> It just helps us to keep uniformity across the drivers.
 
-But it should not impact bisect. Driver and dts is not in branch. If driver
-applied ahead of dts patch, it should be fine to remove it. But default
-linux-next can't guaratee the merge order.
-
-To avoid merge complex, keep it for a whole, then clean up it later.
+Thanks, but err label is quite easy to make mistake. More and more function
+support devm_*. I think if well design common API at pci-host-common.c,
+goto can be avoid.
 
 Frank
 
 >
 > - Mani
->
-> > Best Regards
-> > Sherry
-> > >
-> > > >  	vpcie-supply = <&reg_pcie>;
-> > > >  	status = "okay";
-> > > >  };
-> > > >
-> > > > +&pcie_port0 {
-> > > > +	reset-gpios = <&gpio7 12 GPIO_ACTIVE_LOW>; };
-> > > > +
-> > > >  &pwm1 {
-> > > >  	pinctrl-names = "default";
-> > > >  	pinctrl-0 = <&pinctrl_pwm1>;
-> > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-> > > > b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-> > > > index 76e6043e1f91..eeb376193398 100644
-> > > > --- a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-> > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-> > > > @@ -289,6 +289,17 @@ pcie: pcie@1ffc000 {
-> > > >  				 <&clks IMX6QDL_CLK_PCIE_REF_125M>;
-> > > >  			clock-names = "pcie", "pcie_bus", "pcie_phy";
-> > > >  			status = "disabled";
-> > > > +
-> > > > +			pcie_port0: pcie@0 {
-> > > > +				compatible = "pciclass,0604";
-> > > > +				device_type = "pci";
-> > > > +				reg = <0x0 0x0 0x0 0x0 0x0>;
-> > > > +				bus-range = <0x01 0xff>;
-> > > > +
-> > > > +				#address-cells = <3>;
-> > > > +				#size-cells = <2>;
-> > > > +				ranges;
-> > > > +			};
-> > > >  		};
-> > > >
-> > > >  		aips1: bus@2000000 { /* AIPS1 */
-> > > > diff --git a/arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts
-> > > > b/arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts
-> > > > index c5b220aeaefd..6b12cab7175f 100644
-> > > > --- a/arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts
-> > > > +++ b/arch/arm/boot/dts/nxp/imx/imx6qp-sabreauto.dts
-> > > > @@ -45,10 +45,15 @@ MX6QDL_PAD_GPIO_6__ENET_IRQ
-> > > 	0x000b1
-> > > >  };
-> > > >
-> > > >  &pcie {
-> > > > +	/* This property is deprecated, use reset-gpios from the Root Port
-> > > > +node. */
-> > > >  	reset-gpio = <&max7310_c 5 GPIO_ACTIVE_LOW>;
-> > > >  	status = "okay";
-> > > >  };
-> > > >
-> > > > +&pcie_port0 {
-> > > > +	reset-gpios = <&max7310_c 5 GPIO_ACTIVE_LOW>; };
-> > > > +
-> > > >  &sata {
-> > > >  	status = "okay";
-> > > >  };
-> > > > --
-> > > > 2.37.1
-> > > >
-> > >
-> > > --
-> > > மணிவண்ணன் சதாசிவம்
 >
 > --
 > மணிவண்ணன் சதாசிவம்
