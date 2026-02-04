@@ -1,116 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DEC5C613;
-	Wed,  4 Feb 2026 01:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66512566F7;
+	Wed,  4 Feb 2026 01:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770169636; cv=none; b=XktQwURWEJ6dPRueLcDbRei6JcYMEoE7kWO54WgxdcxOWyskClrLswfNbI5Iq35WLaEH3mgBRaPFnhApo97MwtTQDd+VFtKazKVaI2e3hSYHwJg2POFOC5vIZ7tc3JclcMXb/zxWYOz7anJw6rAfDwTTCJ+fKch/iNeUk/OvcAM=
+	t=1770170138; cv=none; b=jBGTqPozc6PfUiRvpkLjKNMs4MQwV10PGDT9nq4TP+1rBdoAsbV5CDEph811IaAZP0ns4zbS6ZDl+kERhaAALRrp8fxeCerq5NBY7g/lV/NefsZrk5hMcpPJBVpQWmPpVY4Io2fJmXPy2rsLHuLKdNiclbdmZwZNBm5Ph2qM5dU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770169636; c=relaxed/simple;
-	bh=EtMmNO0INyqsoTPYTVYPBU1hfHnKquGk52ClsNNa3xA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nGjflMo0WHXfUyORd9BuWa44AldxIIbTBqaV17Zeu/pzibef6Du9mrWTBtyxyx0PWQtXhK3ffOBZXIYTJP1o++EhnnoBY1QcysfZjQ0gWURweXyJ9P+K3XVVM9X3n5B7htMe/DesVTbw5o2tOBA7tGrxM0gd427Hd8IVxqDZtro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FupUAjoY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770170138; c=relaxed/simple;
+	bh=YKGDqmLZhf/kCrPdxoYx13Bcpad2AS7aHfIuOUnnoRE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WJDTy21lXUiDxmE5vcl/b8xAug32wq/8qLC/czowBt3js6cqzQsckmddO/CMUNjYjYU93gJ+8WWcHAKGW6lk9mwzZ74ixdSyli+ZY9WgSNoJfBUs44uCKquerIm5CA8Adl2sy0RUX6ZZHqOakpzNKvbg6x/ODs3GoGhzLqEYH/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pbyatxe8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FupUAjoY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2907C116D0;
-	Wed,  4 Feb 2026 01:47:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pbyatxe8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13756C16AAE;
+	Wed,  4 Feb 2026 01:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770169635;
-	bh=EtMmNO0INyqsoTPYTVYPBU1hfHnKquGk52ClsNNa3xA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FupUAjoYyJSFprj0Sql3B8gqvRQF6RVKpaWm99ti+8tf64Kq4mtfH6anuNPVkDymQ
-	 fGlEdN7QWSRUACrO77juDSxaqKr5zNTf7UGpYQLcg2QnS1hLISuMqjdA4+3ZHLgY77
-	 CrDlVJqw0lJD5aRLJHOBYmWbBBDJ7NHkxRLNc08IKF65tAxGMmJvOVoRSUWIiWBHxA
-	 6w0sEzP1pHKVb2zVpC0Abe8/gaVAj8kAX21srQol/NeFVAoIXDugUDwPR5AVMjIfuN
-	 TsikZ+OnwcKCw4oq0jNGFu7OtULbQ7mfTfpSKCwxldgkOHKtNvFH+PJs6Bw2Uyv5ES
-	 bq3cCzlFuaXwA==
-Date: Tue, 3 Feb 2026 17:47:14 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
-Cc: andrew@lunn.ch, shawnguo@kernel.org, krzk+dt@kernel.org,
- linux-kernel@vger.kernel.org, edumazet@google.com, netdev@vger.kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- conor+dt@kernel.org, horms@kernel.org, richardcochran@gmail.com,
- robh@kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, wahrenst@gmx.net, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com
-Subject: Re: [net-next,v22,2/7] net: mtip: The L2 switch driver for imx287
-Message-ID: <20260203174714.79388301@kernel.org>
-In-Reply-To: <20260203211955.23ef4355@wsk>
-References: <20260131233459.1625279-3-lukasz.majewski@mailbox.org>
-	<20260203013909.822898-2-kuba@kernel.org>
-	<20260203211955.23ef4355@wsk>
+	s=k20201202; t=1770170138;
+	bh=YKGDqmLZhf/kCrPdxoYx13Bcpad2AS7aHfIuOUnnoRE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pbyatxe8/YIUqUwYOAABmXzYqbSEdeyoJU+o5S3WDFX3jcH1DtoNInyWL1VHROBlU
+	 g557kokTpPQ+mAcH5uxwtMsd2Eo2UdSpxCvbnYzelmad0RpteHpHM/FGV/rUeIM1AM
+	 hb7fnRVByWWIJ4kHNST+1oOtiBnPvvmbS9NAhvRuxxG+ChSOwbuP7+iTnH1jPUY4Gt
+	 walTwphkUrVOdYCuBH0bNDdGiwHhptNyZ4Ef+ICQ8slYF+qB+O8qJtppetc4wyfl1T
+	 8i1QjzBUprrbasEPuYWmyzM0Q+AOYmBJB5Aer/jwtehLj+/dhLIAR0I+vt3DQcfXON
+	 4bRXCstTYS3aw==
+Date: Wed, 4 Feb 2026 02:55:34 +0100
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Carlos Song <carlos.song@nxp.com>
+Cc: aisheng.dong@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, pandy.gao@nxp.com, vz@mleia.com, wsa@kernel.org, 
+	B38611@freescale.com, linux-i2c@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+Subject: Re: [Patch V4] i2c: imx-lpi2c: fix SMBus block read NACK after byte
+ count
+Message-ID: <aYKnAfQTvSrjJLhE@zenone.zhora.eu>
+References: <20260123105459.3448822-1-carlos.song@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260123105459.3448822-1-carlos.song@nxp.com>
 
-On Tue, 3 Feb 2026 21:19:55 +0100 =C5=81ukasz Majewski wrote:
-> > > +static void mtip_write_atable(struct switch_enet_private *fep, int
-> > > index,
-> > > +			      u32 write_lo, u32 write_hi)
-> > > +{
-> > > +	struct addr_table64b_entry __iomem *atable_base =3D
-> > > +		fep->hwentry->mtip_table64b_entry;
-> > > +
-> > > +	writel(write_lo, &atable_base[index].lo);
-> > > +	writel(write_hi, &atable_base[index].hi);
-> > > +}   =20
-> >=20
-> > Can these functions race with concurrent access? Looking at the
-> > callers, mtip_write_atable is called from two different paths:
-> >=20
-> > 1. Static entry updates: mtip_config_switch -> esw_mac_addr_static ->
-> >    mtip_update_atable_static -> mtip_write_atable (no lock held)
-> >=20
-> > 2. Dynamic entry updates: timer callback -> mtip_mgnt_timer ->
-> >    mtip_atable_dynamicms_learn_migration ->
-> > mtip_update_atable_dynamic1 -> mtip_write_atable (learn_lock held)
-> >=20
-> > The learn_lock only protects the dynamic entry path. The static entry
-> > path runs during link changes (mtip_switch_restart called from
-> > mtip_adjust_link) without lock protection.
-> >=20
-> > Both paths can access the same hash block in the address table
-> > (determined by GET_BLOCK_PTR(hash)). If the timer fires during a link
-> > change callback, both can concurrently access the table, potentially
-> > causing torn reads (reading .lo from one entry version and .hi from
-> > another) or torn writes (the entry is in an inconsistent state
-> > between the two writel calls).
-> >=20
-> > Would extending learn_lock to protect all address table access work,
-> > or is a separate hw_lock needed for hardware register access?
-> >  =20
->=20
-> This is handled in another way:
->=20
-> 1. Partial write is not possible as this IP block handles it in order
-> (with some kind of 'latch' registers):
->=20
-> "VFxxx Controller Reference Manual, Rev. 0, 10/2016"
-> 11.5.4 MAC address lookup table
->=20
-> "Each entry must be written or read with the low address accessed first
-> followed by the high address"
->=20
-> 2. The code for dynamic IP writing will not "touch" the entries for
-> "static" MAC addresses - Figure 11-70 - bit 49 is "Record Type":
-> 	1 - static entry
-> 	0 - dynamic entry
->=20
-> IMHO, we are "safe" here.
+Hi Carlos,
 
-My reading of the AI's comment was that there is no lock in SW so two
-SW threads can write:
+On Fri, Jan 23, 2026 at 06:54:58PM +0800, Carlos Song wrote:
+> The LPI2C controller sends a NACK at the end of a receive command
+> unless another receive command is already queued in MTDR. During
+> SMBus block reads, this causes the controller to NACK immediately
+> after receiving the block length byte, aborting the transfer before
+> the data bytes are read.
+> 
+> Fix this by queueing a second receive command as soon as the block
+> length byte is received, keeping MTDR non-empty and ensuring
+> continuous ACKs. The initial receive command reads the block length,
+> and the subsequent command reads the remaining data bytes according
+> to the reported length.
+> 
+> Fixes: a55fa9d0e42e ("i2c: imx-lpi2c: add low power i2c bus driver")
+> Signed-off-by: Carlos Song <carlos.song@nxp.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-   Thread A   Thread B
-   write_lo
-              write_lo
-              write_hi
-   write_hi
+merged to i2c/i2c-host-fixes.
+
+Thanks,
+Andi
