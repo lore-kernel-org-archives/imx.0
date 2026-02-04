@@ -1,90 +1,216 @@
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB79322B81
-	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 22:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0123D395D92
+	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 23:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770245848; cv=none; b=aBLgyLKPGNIFxrIatzK8X2HR6iNg2Q5fF40FWVspruvhmB6OBB0SHfNpNZFYCumT/f7iCe7seDBC6bt8t8Omcj3hWmiuzqjMEPlJxtAKUtTB/+ee4nQf2jgpP9A1FWltk0aCFuopHy9R8Y6hcWFbSNwvhBoLJa5g3IFY+hM7Lok=
+	t=1770247331; cv=none; b=IatSOXx1nSk+Pv/VwESOYpknt/SbYs79mkV073fHGaoO/Be3vwQGdTLqZRI93a/uZ5yzWAS1tCB/PD10hjKjI72fEZy+JtFB/fxJl2LBdZRcMGBzZgaVn4JsZfjmOXO6rh1lgDFW7NgKecWwdlwIBJ+KBM3l6NcywvJYBe68J9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770245848; c=relaxed/simple;
-	bh=NHd1asEpRG5L+/D4uyhSxZD5zxGYxW7LuIhpPgZMFGQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZW1zgsXXADlMweD+2y9/DoCKbQZAnU1xc37dqgTTAP7A88eFHvJXsAhqtbBBrQDxRMaz/B7CCJLM5ih8EvK+3nNcd5uHIKKo13ZOOIxE03W6j7P3X46HXZrGkql84oY0UvaMYF+kTqi8RBOE+X/hfkhLyu55OSEq++0AuRDIfOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HK44WUzM; arc=none smtp.client-ip=95.215.58.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1770247331; c=relaxed/simple;
+	bh=ES8gXinlTHhZRpU9iV91xxLNxi1do/y+GyihrwEvBGI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=J1LNO2in6QYP6d5r4lm3Yc8zfhyHeffepq/5KrtAx4lU+A0LtDZSSTq+4RYhdtfLkmPhS8shhQ5t01KLZ5o9G43nrXrBq0Oi4wo65DTACVRnpriUdbGUEyj+cuhXuxCIx5ICO36idXomGu1/f4CXAoe5+SB7A2fqOQfeiY1pxYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=nx5hGD84; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Naz589/k; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HK44WUzM"
-Message-ID: <e7d4ff92-232c-4683-b235-aa1d75374be1@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770245845;
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="nx5hGD84";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Naz589/k"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4f5xFr5FHNz9th0;
+	Thu,  5 Feb 2026 00:22:08 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1770247328;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qBt8lt8bM7kV+Zu3BUC89Q+Zy75+2GMxIq581jsCjw8=;
-	b=HK44WUzMaWM8Rka/qoHOX77lnm8HDdtPBUdxnIbURLPeP2r0edD3WlO/hdKyb1NXjirVyV
-	pTe9xU5s/rVYN8o8hce9VmqHqNZjTP4UW8FX/adILp4kA6iRHmrjC83/cHcmr0FmdMzX9u
-	i7Yk3SOnv+meqKNARN6qxrWNqJ2IvVU=
-Date: Wed, 4 Feb 2026 14:57:13 -0800
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jUPYl25/I/xaiQSwfhlSBNd7Hf3mIc4vRgkGcNTxP+o=;
+	b=nx5hGD84YpwLQE5ISYb8EhFYHYd55Ava0d/82Uq/1kYQHBAHBHW9Hoc2znL9bqtq2AP/vW
+	nfudTgcJIA0EVWIPzX20A3KVwcOLRd2yXTkmG7ttec1W+RxXsvMF3wTUI8/gDua+meyr+j
+	wdjTDx5O79ZmWv++gAq/KZiltx1TvQXllui60O4XQmluA5Txt5LxVbDmIRZPUhDwMps/i6
+	emIdJ6LmMbYwoUAd/XnZvNeneD2TP2rboFMKB7irda79mZDBlch+mHEiffkjCawZ5+olVb
+	yRWDFjSkUQuSXN1mVAxhN1c8k6EwXY5NE5FDiSifBtbA8INjlPU2652HxzNRxQ==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b="Naz589/k";
+	spf=pass (outgoing_mbo_mout: domain of lukasz.majewski@mailbox.org designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=lukasz.majewski@mailbox.org
+From: Lukasz Majewski <lukasz.majewski@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1770247326;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=jUPYl25/I/xaiQSwfhlSBNd7Hf3mIc4vRgkGcNTxP+o=;
+	b=Naz589/kaMWyIosGEF/Rd/gURaV0AXT1/yfFZnKXKqGf7zkRO9hMewjOZRj7er1cuEh0EF
+	oGJcdXeoKsdTFpcF7UZpkbDClV2HEo9YhVUpI1XtKrmKmzEFoYgtcLIqib2sRZlbMyHckO
+	R0SaFbubQnFXffvxQfenf/Afglxu1s8Hc1bklMg2UP9nIGBqxTlKzKN+quxMnQ4LV8Q4A6
+	zgkoW+tAXymgPguoWIUBKIAGDvX5CfYQWLoyJbmzdpbJC5vlcuisWN7+dZ9adKZdmD7TVf
+	stVI4TZBTCYVOG3eA1AZOoNYTe5eQUoYHe9EBussQyab/y62RXbYg71B2In0ew==
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Lukasz Majewski <lukasz.majewski@mailbox.org>
+Subject: [net-next v23 0/7] net: mtip: Add support for MTIP imx287 L2 switch driver
+Date: Thu,  5 Feb 2026 00:21:28 +0100
+Message-Id: <20260204232135.1024665-1-lukasz.majewski@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf 0/6] Address XDP frags having negative tailroom
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: bpf@vger.kernel.org, Larysa Zaremba <larysa.zaremba@intel.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
- Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
- Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- "Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>,
- Tushar Vyavahare <tushar.vyavahare@intel.com>,
- Jason Xing <kernelxing@tencent.com>, =?UTF-8?Q?Ricardo_B=2E_Marli=C3=A8re?=
- <rbm@suse.com>, Eelco Chaudron <echaudro@redhat.com>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Toke Hoiland-Jorgensen <toke@redhat.com>, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, linux-kselftest@vger.kernel.org,
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-References: <20260203105417.2302672-1-larysa.zaremba@intel.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <20260203105417.2302672-1-larysa.zaremba@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: 1a65e745695a95c5e45
+X-MBO-RS-META: ackt1q4t6kc7djdtdctky69jssasp49z
+X-Rspamd-Queue-Id: 4f5xFr5FHNz9th0
 
-On 2/3/26 2:53 AM, Larysa Zaremba wrote:
-> Larysa Zaremba (6):
->    xdp: produce a warning when calculated tailroom is negative
->    ice: fix rxq info registering in mbuf packets
->    ice: change XDP RxQ frag_size from DMA write length to truesize
->    i40e: use truesize as XDP RxQ info frag_size
->    idpf: use truesize as XDP RxQ info frag_size
->    net: enetc: use truesize as XDP RxQ info frag_size
-> 
->   drivers/net/ethernet/freescale/enetc/enetc.c |  2 +-
->   drivers/net/ethernet/intel/i40e/i40e_main.c  |  5 ++--
->   drivers/net/ethernet/intel/ice/ice_base.c    | 26 ++++++--------------
->   drivers/net/ethernet/intel/ice/ice_xsk.c     |  3 +++
->   drivers/net/ethernet/intel/idpf/xdp.c        |  2 +-
->   net/core/filter.c                            |  3 ++-
+This patch series adds support for More Than IP's L2 switch driver embedded
+in some NXP's SoCs. This one has been tested on imx287, but is also available
+in the vf610.
 
-Jakub, can you help to take it to the net tree? Thanks.
+In the past there has been performed some attempts to upstream this driver:
+
+1. The 4.19-cip based one [1]
+2. DSA based one for 5.12 [2] - i.e. the switch itself was treat as a DSA switch
+   with NO tag appended.
+3. The extension for FEC driver for 5.12 [3] - the trick here was to fully reuse
+   FEC when the in-HW switching is disabled. When bridge offloading is enabled,
+   the driver uses already configured MAC and PHY to also configure PHY.
+
+All three approaches were not accepted as eligible for upstreaming.
+
+The driver from this series has following features:
+
+1. It is fully separated from fec_main - i.e. can be used interchangeable
+   with it. To be more specific - one can build them as modules and
+   if required switch between them when e.g. bridge offloading is required.
+
+   To be more specific:
+        - Use FEC_MAIN: When one needs support for two ETH ports with separate
+          uDMAs used for both and bridging can be realized in SW.
+
+        - Use MTIPL2SW: When it is enough to support two ports with only uDMA0
+          attached to switch and bridging shall be offloaded to HW. 
+
+2. This driver uses MTIP's L2 switch internal VLAN feature to provide port
+   separation at boot time. Port separation is disabled when bridging is
+   required.
+
+3. Example usage:
+        Configuration:
+        ip link set lan0 up; sleep 1;
+        ip link set lan1 up; sleep 1;
+        ip link add name br0 type bridge;
+        ip link set br0 up; sleep 1;
+        ip link set lan0 master br0;
+        ip link set lan1 master br0;
+        bridge link;
+        ip addr add 192.168.2.17/24 dev br0;
+        ping -c 5 192.168.2.222
+
+        Removal:
+        ip link set br0 down;
+        ip link delete br0 type bridge;
+        ip link set dev lan1 down
+        ip link set dev lan0 down
+
+4. Limitations:
+        - Driver enables and disables switch operation with learning and ageing.
+        - Missing is the advanced configuration (e.g. adding entries to FBD). This is
+          on purpose, as up till now we didn't had consensus about how the driver
+          shall be added to Linux.
+          However, on top of this patch set the code with SWITCHDEV support (v6.6.
+          PREEMPT_RT enabled) has been implemented in [4].
+
+5. Clang build:
+	make LLVM_SUFFIX=-19 LLVM=1 mrproper
+	cp ./arch/arm/configs/mxs_defconfig .config
+	make ARCH=arm LLVM_SUFFIX=-19 LLVM=1 W=1 menuconfig
+	make ARCH=arm LLVM_SUFFIX=-19 LLVM=1 W=1 -j8 LOADADDR=0x40008000 uImage dtbs
+
+        make LLVM_SUFFIX=-19 LLVM=1 mrproper
+        make LLVM_SUFFIX=-19 LLVM=1 allmodconfig
+        make LLVM_SUFFIX=-19 LLVM=1 W=1 drivers/net/ethernet/freescale/mtipsw/ | tee llvm_build.log
+        make LLVM_SUFFIX=-19 LLVM=1 W=1 -j8 | tee llvm_build.log
+
+6. Kernel compliance checks:
+	make coccicheck MODE=report J=4 M=drivers/net/ethernet/freescale/mtipsw/
+        make allmodconfig; ~/work/src/smatch/smatch_scripts/kchecker drivers/net/ethernet/freescale/mtipsw/
+
+7. GCC:
+        make mrproper
+        make allmodconfig
+        make W=1 drivers/net/ethernet/freescale/mtipsw/
+
+        
+        [source OE/Yocto SDK build environment]
+        CROSS_COMPILE=arm-poky-linux-gnueabi- ARCH=arm make mrproper
+        cp ./arch/arm/configs/mxs_defconfig .config
+        CROSS_COMPILE=arm-poky-linux-gnueabi- ARCH=arm make menuconfig
+        CROSS_COMPILE=arm-poky-linux-gnueabi- ARCH=arm make -j8 LOADADDR=0x40008000 uImage dtbs
+
+8. DT_SCHEMA checks:
+        source ~/.venv/bin/activate
+        source /opt/poky/3.1.31/environment-setup-armv5e-poky-linux-gnueabi
+        make dt_binding_check DT_SCHEMA_FILES=nxp,imx28-mtip-switch.yaml
+        make CHECK_DTBS=y DT_SCHEMA_FILES=nxp,imx28-mtip-switch.yaml nxp/mxs/imx28-xea.dtb
+
+
+Links:
+[1] - https://github.com/lmajewski/linux-imx28-l2switch/commits/master
+[2] - https://github.com/lmajewski/linux-imx28-l2switch/tree/imx28-v5.12-L2-upstream-RFC_v1
+[3] - https://source.denx.de/linux/linux-imx28-l2switch/-/tree/imx28-v5.12-L2-upstream-switchdev-RFC_v1?ref_type=heads
+[4] - https://github.com/lmajewski/linux-imx28-l2switch/commits/vf610-linux-6.6.y-mtipl2sw
+
+
+Lukasz Majewski (7):
+  dt-bindings: net: Add MTIP L2 switch description
+  net: mtip: The L2 switch driver for imx287
+  net: mtip: Add buffers management functions to the L2 switch driver
+  net: mtip: Add net_device_ops functions to the L2 switch driver
+  net: mtip: Add mtip_switch_{rx|tx} functions to the L2 switch driver
+  net: mtip: Extend the L2 switch driver with management operations
+  net: mtip: Extend the L2 switch driver for imx287 with bridge
+    operations
+
+ .../bindings/net/nxp,imx28-mtip-switch.yaml   |  150 ++
+ MAINTAINERS                                   |    7 +
+ drivers/net/ethernet/freescale/Kconfig        |    1 +
+ drivers/net/ethernet/freescale/Makefile       |    1 +
+ drivers/net/ethernet/freescale/mtipsw/Kconfig |   13 +
+ .../net/ethernet/freescale/mtipsw/Makefile    |    4 +
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 2032 +++++++++++++++++
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |  648 ++++++
+ .../ethernet/freescale/mtipsw/mtipl2sw_br.c   |  138 ++
+ .../ethernet/freescale/mtipsw/mtipl2sw_mgnt.c |  442 ++++
+ 10 files changed, 3436 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Kconfig
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/Makefile
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
+ create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_mgnt.c
+
+-- 
+2.39.5
+
