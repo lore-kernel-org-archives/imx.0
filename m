@@ -1,157 +1,227 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011044.outbound.protection.outlook.com [52.101.65.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6452F3A7855
-	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 10:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770201486; cv=none; b=Y9MmMgZMne4QonysGTN2862GD+JLObe05dhtVn2UjQ+iCf2ft2KaV+WJEcnGEfSCWuzFsEZ4bAD77XkShGxrhXfFnonjdrRI4iclTTF2UpFpBiwMEVr/LOXV+xTinkGMFCozYrxlnnD1xnoqhwTVUdks6qZ9/cU/cobsxkURft4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770201486; c=relaxed/simple;
-	bh=7NsKgj4oO9DEQlj7JSZm1oRVn5uZiWnpF/DaUeIZH/A=;
-	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
-	 Message-Id:Date; b=Cll/e1fSJf3Pw+vd6VBhwCAMvhpxbCz9xQFbpMR9SIq9HE0zU2MmsZM4a6p04I+w1M9omlWtKeACZDpQu8iHwNioJf2Irplm2E94blTQgh0Mz2lHlLfw45fqHlAXNLRw13319qv5qc6HdU4Lx0oyufNvYgqZb/DJs05ZrdTLVAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=hfQ2YHQG; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A333E8C66
+	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 11:05:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770203110; cv=fail; b=ohwjuwNidkF6mDEp4rieBij14FFG997cbEwDlZh0wXEx98c0pAg7La2omiVYwaawzrS85ExPZ0X+7y2BkQE3fd3OwwGmOA5+kolv0DYCNWI/rP6GFkG3OMlkYB4AnYDixXEiTQO1JhjQqsuhbVqJJcCVwsrgK3+MC1HZewdS2iE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770203110; c=relaxed/simple;
+	bh=HzjA1hcZjarDnU88hnqAELecdLaolYzmU2dy5wCzbL8=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=L03PpI35RoNux6IdwWgBztEswWqkDKxpKEnx5dZZd9jjg3dFH2t8nlq/fomgng1blZRyE0OD6ujOO97XKmxE8PHDQk/aXvwZTMWhFN1zBD6w+afTHrJNQEN0MisCZ9ZISMd9hzbFCLqihsOv5AHacntpR0VmIkjq8dLsz8AA4FY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=HRRKkWt/; arc=fail smtp.client-ip=52.101.65.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="hfQ2YHQG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
-	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
-	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=cmBXQFWwMJpNA6HYvHV+pn0Z7Isl9C8hhe8elfOnPD4=; b=hfQ2YHQGZIQm0RQasJiJholAJ4
-	W8EaKCsaNrbAclFFje09t0ZJg3V9Fysk4jo/8059NJOFCFZgN/uWmgEX9nf9F51qmlixOhJoIZcXS
-	zRvFZQUduZdslxT/ACRO61vDTzJXkSkV2TMbzk1elI+uJMF90wlldW4LupYMH1q3o5AuFSP3X6+Uu
-	tMms6oQxwtYvFBotgzcJrjThgJPJRxAsb7B5FfliZBocxzscxeM1A2FssY7mqQoTe4Q7TJ/jaYv0W
-	P8QVYnPm25HlblUSdiFXh71VdJFlp+zxJ2XxTyFo/jjzy7k4Wf+3dXsT02dIA3tacRcz8tOS0MXkc
-	b4/hjrgw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:53300 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vnaGl-000000006DG-3gVg;
-	Wed, 04 Feb 2026 10:37:59 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vnaGl-00000007i9f-0ZMw;
-	Wed, 04 Feb 2026 10:37:59 +0000
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	imx@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH net-next] net: stmmac: imx: fix iMX93 register definitions
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="HRRKkWt/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JiQ9GoWbc5UxzX28Fj+InJwnSD3ce7vun8ti83FsJJsYOVKVJoE7H5TdZvnZmHka14IqpjMh9qcspui/zwVMyXO/9igGVXB00PPgE+btXXHkuv71Spxgd7u/MJEXV3ZXe9lhDfMVtXiQ9jiSIqxLaJED6U810QiAxfSWVl6yiksfNxa6n318HqZ9r5GEIs9CEQk9+b+gaWnp3HBRmzF4HSr169HHbvuLaRbWQhJL/YYiYmr3wJaQQjPD5Sl+LFotKhZnoYKfZPCOyznLFR0H1vWo/wpOagjb+S1Y9ekkfLU2W/5QleBYgDcTtkWZassk9HReKAzBf8qMbZc9YiES4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+cf4oLWAvo5Jmfml0JEEbsOUKZ3OEtR5FFYNHt5g/b0=;
+ b=iB9VSzdatUUsgO2A78GvrtENrVXf6qm22WWvfBConnduIS38OcZjB9HRtbQyFT41wV2FgBEiZma+SQkBECaoqHUheiBm3rt3+skFMs51RiGgy83pnbFZfOoFoO+22ESxtEGLNWEl6siJBzFgT0Bb7SnJ+PesmhwFSlKWlj1tuWI59ufudii0UIcRfBtRPl9qYzACrzn0YH98I+k6bfgYC5AhnL/tfXTh3+GPXi9pRgeNzKyw3hIA4prftIJ0Y+uAzENp+MW/88vxgzdPuxTooEmFcmwp14EVMyTwriZjkXc6O+jvadL1xufEILpSj6sYRpYGSzH9h2Qi6KD5xQeekw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+cf4oLWAvo5Jmfml0JEEbsOUKZ3OEtR5FFYNHt5g/b0=;
+ b=HRRKkWt/yiMdByZOV0Oa92xX2ZPzD1+QaPB4a3FHU2skaZM4UCdSV1bMxsHNN5OjwxyIKy/T2CabCbI6eDKPofK8dWRHxhoPMZ668v6J+4V9xFNg9qcDpqc7XDia3L6TTTZWWZOlK40eHSRTRggwaOG7d4bS/K74I/xBLWV27F2z3EOKayItsg0fS4DV2piWhysonXUj3pMXU+3vh6vXKC0RBMDK1Pt7j7sq0BkZnB0Hzi4UmumclEi7lSIGp5Z8tO1Gpnqz9uBLarzMaND74XRT6ORJIKepL8xsLuZ6osvom1/TmjsvdM1/OJlvRdUvpk89u07ccr6qsSbJKmANUw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8829.eurprd04.prod.outlook.com (2603:10a6:102:20c::17)
+ by GV2PR04MB11303.eurprd04.prod.outlook.com (2603:10a6:150:2a3::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Wed, 4 Feb
+ 2026 11:05:05 +0000
+Received: from PAXPR04MB8829.eurprd04.prod.outlook.com
+ ([fe80::52de:f9c9:8c2e:7dd5]) by PAXPR04MB8829.eurprd04.prod.outlook.com
+ ([fe80::52de:f9c9:8c2e:7dd5%5]) with mapi id 15.20.9587.010; Wed, 4 Feb 2026
+ 11:05:04 +0000
+From: Xu Yang <xu.yang_2@nxp.com>
+Subject: [PATCH v2 0/3] add DWC3 i.MX driver based on flatten devicetree
+Date: Wed, 04 Feb 2026 19:06:15 +0800
+Message-Id: <20260204-add-flatten-dts-based-dwc3-imx-driver-v2-0-d2c9b5a58c01@nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACcog2kC/5WNQQ6CMBBFr0K6dkyBgpaV9zAsxnaQSaSQtqkYw
+ t2t3MDNT95fvLeJQJ4piK7YhKfEgWeXoToVwozongRsM4tKVq3MA2gtDC+MkRzYGOCBgSzYt6m
+ BpxWs50QedEsKFQ66uUiRXYungdejc+8zjxzi7D9HNpW/999CKkGCUQob0qWur/Lm1uVs5kn0+
+ 75/AYxEskLYAAAA
+X-Change-ID: 20260202-add-flatten-dts-based-dwc3-imx-driver-96e4a4af9570
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
+ Li Jun <jun.li@nxp.com>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: linux-usb@vger.kernel.org, devicetree@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Xu Yang <xu.yang_2@nxp.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770203208; l=1943;
+ i=xu.yang_2@nxp.com; s=20250815; h=from:subject:message-id;
+ bh=HzjA1hcZjarDnU88hnqAELecdLaolYzmU2dy5wCzbL8=;
+ b=6nvXH2KZkv/RdCxF+JtuuKFbGUaPziCMTv9dOko5nEJ56KWHXitdnUY4tOVH9eLxV5Z6GMmML
+ aZNynKFf++WC4SQgD0cCwkb0+PYRaP9h2nOR9veCgXeCR9CX6nkM3p2
+X-Developer-Key: i=xu.yang_2@nxp.com; a=ed25519;
+ pk=5c2HwftfKxFlMJboUe40+xawMtfnp5F8iEiv5CiKS+4=
+X-ClientProxiedBy: SG2P153CA0030.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c7::17)
+ To PAXPR04MB8829.eurprd04.prod.outlook.com (2603:10a6:102:20c::17)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vnaGl-00000007i9f-0ZMw@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 04 Feb 2026 10:37:59 +0000
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8829:EE_|GV2PR04MB11303:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf623f9b-4e2f-4055-a4e1-08de63dd3ffe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|19092799006|366016|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WnVqN0ZCQThNZy9zbFJabGxsQWUzdUpzaDJxRHg4aHZiSHFxaVZmUlBHRTA5?=
+ =?utf-8?B?TEd5TCtkU0tqMnprUVg1aVRQY0VQbDd3eHhNR2QzMlNndnlEMXNoVlRCd3lB?=
+ =?utf-8?B?RFJpVUJORk00OU1HQ1RkMm5qWlh2WFBxTGtNcVp3d0Q1K0srR0JuMHJlT1BZ?=
+ =?utf-8?B?QmsyRHRPQTluN2N4YUd5VFBJZjBYMGpqb0NaZGFEV3lkaWg1WWZsU21DR0Fp?=
+ =?utf-8?B?aXg5OTR2VFZscFQ0Z2tCSk1aMGF0U3FYclMxMDJHM3c4SUIxN2NkMGErT3dI?=
+ =?utf-8?B?T1U2UWk5b05ibko5OVNteXdNNXErTml0cCtPWVp4WngvSUYrd1ZNVTlOWXJD?=
+ =?utf-8?B?Mk51bDRZYnM2RXRiMW5XKzNjcHpOcjRpZGFoOWc5V1hnRXQzUnYvREFpeU80?=
+ =?utf-8?B?YWxETy9ndGFDWmN0eHQ0MS9SOGE3OGpzeDR2NEJoMzJ1VTlaRkV1T2c1UU16?=
+ =?utf-8?B?SGc5S0tjdlFER3RiOUNvbjNNZWpLU0ZxMmNseWloak12SDFqV0dNbU5BU2Jl?=
+ =?utf-8?B?czZmRDRMRVc5UkN3Y25SbkFyeGY5enlxWmlYdDcxN3RuTmlmYUpaWmsxeHZX?=
+ =?utf-8?B?aThtaTBvT1RzTC82NTRXdjRrNmdhOThFZ3ZnQ1BKNTRxKzZkSU9mSENqQzZN?=
+ =?utf-8?B?SUVvTUFQS3JBUm5zNGs0MDVreUtoeUt2aTVFSHhpQ1R5Qno2aUZibnduenJu?=
+ =?utf-8?B?dEwzN096eG5pK1MzS1J3cENvbnhoZ3REdnFjWWpmckJ2MDBWN1NyTjI1UGVl?=
+ =?utf-8?B?L2pSTDUyYVJ3MHBSS3NvaU9zODNEZU5XSHRzbTdReHZwUW13cFNUUXNnYlBR?=
+ =?utf-8?B?clVoQ0NFZXF0cEIzQWVKSVFKSnpZQ0N4bWNTWGNMc2N2YXNxUG9LaVFudFBO?=
+ =?utf-8?B?aklzR0dyc2xWcC9yS255dk1JS1NPNm8rYmpGNldSTnZ3REdVODEvY1QwbkdP?=
+ =?utf-8?B?OEFsKzFOWWprRkVIcUVqemI0bWs5eW40d0RBYWd2SFhOOU1oN1VrUzA2TzJ1?=
+ =?utf-8?B?M1VoSVpoS1pNcDU3c0N3Snl0STFjSkdPTWhQUGlBSXJFVWFHMzVCN1ovR0JC?=
+ =?utf-8?B?NUpteFhDT2ptS3Q4aFhraXREbFNwMExkWFlTQTA1L1dLZkFVLytRbGRGY21w?=
+ =?utf-8?B?d0JYeEs0UkNFR2xrY0t5aXNKN1N4dElxZUpsM3grUURZck1DZ0JhbE96ckN0?=
+ =?utf-8?B?Ti9RQlB3Wk1lU2lJQnJTZUNJY201eldaY2lrV2tzNmUzMEY5SjZmcXFMZDkr?=
+ =?utf-8?B?ZFdxR2lJUExYbnZleGpHV1FmYjUzSTc2UURTK3RGK1RWek5LR1JvVlVXMkI0?=
+ =?utf-8?B?QTdEOW9yZUFBdkVxcktHNkd4Zm1SZy9QcVNrVVhEMmxmRmRpbE1WZXBrejFG?=
+ =?utf-8?B?NEpncGUzZkZUU0lqTjNCaHRKemt3cHFXOWI2dEg2MGEvQkJObStPUmhqY3Vo?=
+ =?utf-8?B?d0tWd1dRQ00vUlVkUjczL2gySlJTa2xMMXNwMzVFbkFrRlo1TmdyKzZXOHNV?=
+ =?utf-8?B?bTdPalZoMGVUUEVQV3NhUUY4RndndWFPR1dYV0NKWUxreitRc0QrWkdkRk1B?=
+ =?utf-8?B?Y0R2cHVmeVozTWNsVWlCT3BjVzJGcXArR0t2dzhFYWI5c0tNWktLc1QranU1?=
+ =?utf-8?B?NUJ0Z3VNelNGaEh1V3VmMWdpeFdqdGZRRWRYTlVLa0FjVFdQWlhwSkJ0Q2N4?=
+ =?utf-8?B?ZFNXRmZWNkp5QnR0OE5rM2FMT0VnR2IzdWEyV28rUTNhUDJQWS9Sb0czTzNs?=
+ =?utf-8?B?TDBXQVZ6UWF1V3FKTDVaMktyOEwzcitWT1BvTXM3YUpNL21mYUt5U1plTXpY?=
+ =?utf-8?B?WnlUWkJvT3A2SEhsL3hWMUxiVmhLdTB2OGhzbVFJTVBVMHJRTUY1WVJaWnpT?=
+ =?utf-8?B?R3ZJbTNERWVlRHYrRHR2L3MwZXVXT0dwdHg3NlR2OUxtZjUxeHhPYTJOS2pW?=
+ =?utf-8?B?eDB1YzVQbXQwd2p6bElkRkpzNnczS05MUmlUV3ZTZ1JiLzZMZlc1cjN4am1r?=
+ =?utf-8?B?WmhRek9PV2t0cmVsTmpRSlNXY3lEb0RhaC81d2d4M3FnbXlqQVl4WER0Q1lk?=
+ =?utf-8?B?L3NaM0FGSDdabFlOMXNnMThWTkluaUpmR3dBY2llQWE0UFp4Y3l5OWVZdllC?=
+ =?utf-8?B?bmsrNk5PdE9qZ05pbWZWZXFzbDVmUGpDcFVHaUIybTZreFlwdGp2QWd1N2N4?=
+ =?utf-8?Q?lzcwvibFEKtL1C4yKwVPua7B5ZlZRv9NALuTBNWefQxK?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8829.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(19092799006)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZDNRYWR1K29Kb3N6NHdGSjlYS0dLYVhtaTl6TFRlZURiZVdOelF3YWVESzNT?=
+ =?utf-8?B?cWZrbnNONG5Md0hUeGhLSERmeTd0QmMwS0E3NDIwTWN6RFAxTEE4K2FLRUNq?=
+ =?utf-8?B?RUJ5TUxsWkZDWlpmT0RUdStGNDFlRGJ0VjFkUTgxVW9xVnBrMFZaczQya0J3?=
+ =?utf-8?B?dkRuT1BiSFZ5VnV1RW02KzRBcWFHd0JJZVB4NjUzOGNiYXZkOTFiZG0rcTRR?=
+ =?utf-8?B?VGpDL2tIVnJXU0xRMEdRelNvQUc4RUZOc3dlWnVUZUtEdkQxRjE2ajl6UWhW?=
+ =?utf-8?B?ZzRUbTNIWVc1YXp3WXJnZ1h3U0VtMkpnQzBlc3N4TE9UZXBJd21IZ1l3cS9v?=
+ =?utf-8?B?MTVhL0tBa3lPY0wxczRIVjdsYThPSTA0RXJxdlZDSzh4M3Y0NnZEcmdTWlEv?=
+ =?utf-8?B?Q1BYTjY3NnBMZkZlR1dMY0FBMkNJcWZuZVN2NlJTbVZmdGljNTVVVHd3WER6?=
+ =?utf-8?B?VDlyODNydFdtbnYxOCt0aWllYVI2d3dZYlF3K2V0ajR6TXlFQXo4ZE5QQ00v?=
+ =?utf-8?B?TDU4VjZYMUhBS1ZyaGMvdy8rYkJHN0pHYkZtQXNtSGgrc1NYRGgxdXBjQ05U?=
+ =?utf-8?B?Mno0cHdUOER2S2ZaUU9Mcmw3R0R4dkJSaFJsamd5bFYwRGo0RXZmbVk5T3la?=
+ =?utf-8?B?TVBqS2lHM3VEU3J6QWxIMVFlRnhZS0VUdFJwMnRNVTdJcXYrcWxLem83YVo5?=
+ =?utf-8?B?R2w2ZU1UN29UcHhxUWZ3a3U2US9pUzhubXhPeXcrSFJHbUlSNnpTczY3MXU1?=
+ =?utf-8?B?WE5NZ3Nlb3NSWmFHVGJ1bzdod1BrUFlkMUJZR3YvOSs0QndFVkFyaXM0T0xZ?=
+ =?utf-8?B?dDdhL09lcjhodXpoNFBrb2xKWkRZSDNDUmtCN0FjKzBZWFNUOWxkQmcxMXQv?=
+ =?utf-8?B?djVVSjFkdGdNQXNObzdyczBPcVpFNEorSFRBOHMxdnk3c1ZsZ2t6VnBmK0o4?=
+ =?utf-8?B?UjJHaHFPRE80QjdvdTZTM3A1cVBGT2QxcFN4VzFvVDg3blVxMW5najBNbGFl?=
+ =?utf-8?B?Um9oYjBqYnU3OE5qTGd0dHBMdytrc0ZkcFBQaW84MUtuYmlRNVByTHNXWnIz?=
+ =?utf-8?B?czBhQXRESzVGb1N3K2F2THd1T3FLWDRjYnY1Z2VuZnpzSVlKQVYyd0NERzMr?=
+ =?utf-8?B?RE4ydmpkeWFQcTEzS3E0aUpXdzVIdU8zMVFQTEFTK1c1dkh2Q0F5bmtzVi9z?=
+ =?utf-8?B?bXZENXdHUWplYjZOaGxsa1BGNjExSjNrMkltWVluMDNvMDEwRytKTmxIQ1Vj?=
+ =?utf-8?B?MmdydjF0VURsa0pkUmlsaytBM0pITTFzMkZtR2dOMHlZTjhrMlFjV1FUc0Zj?=
+ =?utf-8?B?dFVvSWI4VzJzb0RmT0NRS1dWVk4vbWxnTzFZaGZGTW1tVG9sWWlVNVg1ajls?=
+ =?utf-8?B?WlpLRW0rb2k0a2VKSFpuZk5KWFJ2YUFKN2VFN1pCSW51bkxNWG1zM0lWYTBu?=
+ =?utf-8?B?c3J2M3RpZDdmeFhjcG5EV1lEVzhCTCtORVE0S2tvTzYvNkVadjdWQTltN1dn?=
+ =?utf-8?B?bzhNS0VBbkJjY2U5UHltL2hUUjliU2ZLSE9QQTZhbHNaNllibGg4ajR1Y0VD?=
+ =?utf-8?B?MDBrVVJqOFN1QUE2elQ3T095dDFDMkpmSUZZdlJZQUVtQ2lJeFk5QzR6bGFE?=
+ =?utf-8?B?RGY1djl4Kzg1L2xXVXJURkMrSnIvSkd0SzYvcjJXbHpkQzNiNXZHbTJXSG9Q?=
+ =?utf-8?B?eGZhZkFsaFZhMnlWQjZMeXBzSkIzOFR0M3E3ejhLa3hDaUxBS0lLZGlDT3dk?=
+ =?utf-8?B?UmlYN1JEWHM4Qi9GZlBFU29sNHZsMkpwT2VDU2NMamFsUk1qS2NuYVJlVzVn?=
+ =?utf-8?B?cjlwckN5NWhzVTVDQTdIY0E2WjhYR0NaR1Z5Rlg3aFh1QnRXRi9PKzNGZGls?=
+ =?utf-8?B?U2RCN091RktzNjBDa0dzZkM5MjVvcHZ0U2htN1JPbTF1RUxRaE93NDdyajcw?=
+ =?utf-8?B?bEw2MTNpZ09paDgrQ20xMnd3UTdjODVrVndyWi8vRm1jNVF3aFVxVzZ0TE9w?=
+ =?utf-8?B?K2pueE9JSkIvL2M5eTN5dWd6Mi9ZbEp4ak1kVlBOUTNLd21jWEZMOUdYNVFu?=
+ =?utf-8?B?ODBVbVpHOEsxbUpOYVZoTVNDVjlmR1RrTE9XMUxVaE5XYmxhZ2hZOWwxTlhV?=
+ =?utf-8?B?WmV6QmtjVjFDMlVSalZMSE5Vb1FoQ0ZNQzcxRnJ3RjVoLzJnNWpUVUpUL3FU?=
+ =?utf-8?B?dUNtdlpwNFU0ZHZ2cktEYW11ZUdiRHFzdzN2eUxsWHp1WWNNTGF4QzgrUUNz?=
+ =?utf-8?B?dy9LczJKY0k5cG9ZTlM3K3ZCcEE3cWxSQ1pqS3lOeXJXbHJjTWZ0Tkt0MHVN?=
+ =?utf-8?B?aW5aUDdPa1liT0ZoZG12UFFiM1J2ekI2NVJhVlo5dDNVbll5c29GZz09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf623f9b-4e2f-4055-a4e1-08de63dd3ffe
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8829.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2026 11:05:04.8010
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: L5KqTiUFZLAT28cct1b4Ybd5BK/HqcBDeRANvni7ed0JFSQEL+5UkNoxC5soLWDP1L+Y+Zm46v6dYHvbpOT2kQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR04MB11303
 
-When looking at the iMX93 documentation, the definitions in the driver
-do not correspond with the documentation, which makes the driver
-confusing.
+The i.MX USB glue and DWC3 core are closely coupled. Describe the i.MX
+USB block in a single block will bring more benefits than a parent-
+child relation.
 
-The driver, for example, re-uses a definition for bit 0 for two
-different registers, where this bit have completely different purposes.
+Now DWC3 USB common driver already support to do more key jobs in glue
+driver, such as power management and core initialization. Now let's
+make a step and add a flatten devicetree based driver.
 
-Fix this by renaming the second register, and adding a definition that
-reflects the true purpose of bit 0 in the first register (EQOS enable.)
+The first one add a new "fsl,imx-dwc3" binding to describe all i.MX
+related USB controller.
 
-Replace MX93_GPR_ENET_QOS_INTF_MODE_MASK with MX93_GPR_ENET_QOS_ENABLE
-and MX93_GPR_ENET_QOS_INTF_SEL_MASK as MX93_GPR_ENET_QOS_INTF_MODE_MASK
-is not a register field.
+Then, to support wakeup capability even when controller experienced
+power lost, a fix patch is added to make controller work after system
+resume back.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- .../net/ethernet/stmicro/stmmac/dwmac-imx.c   | 25 +++++++++++--------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+Changes in v2:
+- reorder compatible property
+- rename may_lose_power to needs_full_reinit
+- remove Frank review by tag due to some changes
+- fix code style in dwc3-imx.c
+- disable wakeup irq when register interrupt by default
+- remove runtime PM operations in dwc3_imx_remove()
+- Link to v1: https://lore.kernel.org/r/20260202-add-flatten-dts-based-dwc3-imx-driver-v1-0-c44a5e919380@nxp.com
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-index ecc0c3483423..c4e85197629d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
-@@ -28,11 +28,11 @@
- #define GPR_ENET_QOS_CLK_TX_CLK_SEL	(0x1 << 20)
- #define GPR_ENET_QOS_RGMII_EN		(0x1 << 21)
- 
--#define MX93_GPR_ENET_QOS_INTF_MODE_MASK	GENMASK(3, 0)
- #define MX93_GPR_ENET_QOS_INTF_SEL_MASK		GENMASK(3, 1)
--#define MX93_GPR_ENET_QOS_CLK_GEN_EN		(0x1 << 0)
--#define MX93_GPR_ENET_QOS_CLK_SEL_MASK		BIT_MASK(0)
--#define MX93_GPR_CLK_SEL_OFFSET			(4)
-+#define MX93_GPR_ENET_QOS_ENABLE		BIT(0)
-+
-+#define MX93_ENET_CLK_SEL_OFFSET		(4)
-+#define MX93_ENET_QOS_CLK_TX_SEL_MASK		BIT_MASK(0)
- 
- #define DMA_BUS_MODE			0x00001000
- #define DMA_BUS_MODE_SFT_RESET		(0x1 << 0)
-@@ -95,17 +95,18 @@ static int imx93_set_intf_mode(struct imx_priv_data *dwmac, u8 phy_intf_sel)
- 	if (phy_intf_sel == PHY_INTF_SEL_RMII && dwmac->rmii_refclk_ext) {
- 		ret = regmap_clear_bits(dwmac->intf_regmap,
- 					dwmac->intf_reg_off +
--					MX93_GPR_CLK_SEL_OFFSET,
--					MX93_GPR_ENET_QOS_CLK_SEL_MASK);
-+					MX93_ENET_CLK_SEL_OFFSET,
-+					MX93_ENET_QOS_CLK_TX_SEL_MASK);
- 		if (ret)
- 			return ret;
- 	}
- 
- 	val = FIELD_PREP(MX93_GPR_ENET_QOS_INTF_SEL_MASK, phy_intf_sel) |
--	      MX93_GPR_ENET_QOS_CLK_GEN_EN;
-+	      MX93_GPR_ENET_QOS_ENABLE;
- 
- 	return regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
--				  MX93_GPR_ENET_QOS_INTF_MODE_MASK, val);
-+				  MX93_GPR_ENET_QOS_INTF_SEL_MASK |
-+				  MX93_GPR_ENET_QOS_ENABLE, val);
- };
- 
- static int imx_dwmac_clks_config(void *priv, bool enabled)
-@@ -205,7 +206,8 @@ static void imx93_dwmac_fix_speed(void *priv, int speed, unsigned int mode)
- 	old_ctrl = readl(dwmac->base_addr + MAC_CTRL_REG);
- 	ctrl = old_ctrl & ~CTRL_SPEED_MASK;
- 	regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
--			   MX93_GPR_ENET_QOS_INTF_MODE_MASK, 0);
-+			   MX93_GPR_ENET_QOS_INTF_SEL_MASK |
-+			   MX93_GPR_ENET_QOS_ENABLE, 0);
- 	writel(ctrl, dwmac->base_addr + MAC_CTRL_REG);
- 
- 	 /* Ensure the settings for CTRL are applied. */
-@@ -213,9 +215,10 @@ static void imx93_dwmac_fix_speed(void *priv, int speed, unsigned int mode)
- 
- 	usleep_range(10, 20);
- 	iface &= MX93_GPR_ENET_QOS_INTF_SEL_MASK;
--	iface |= MX93_GPR_ENET_QOS_CLK_GEN_EN;
-+	iface |= MX93_GPR_ENET_QOS_ENABLE;
- 	regmap_update_bits(dwmac->intf_regmap, dwmac->intf_reg_off,
--			   MX93_GPR_ENET_QOS_INTF_MODE_MASK, iface);
-+			   MX93_GPR_ENET_QOS_INTF_SEL_MASK |
-+			   MX93_GPR_ENET_QOS_ENABLE, iface);
- 
- 	writel(old_ctrl, dwmac->base_addr + MAC_CTRL_REG);
- }
+---
+Xu Yang (3):
+      dt-bindings: usb: introduce fsl,imx-dwc3
+      usb: dwc3: add needs_full_reinit flag
+      usb: dwc3: introduce flatten model driver of i.MX Soc
+
+ .../devicetree/bindings/usb/fsl,imx-dwc3.yaml      | 131 +++++++
+ .../devicetree/bindings/usb/fsl,imx8mp-dwc3.yaml   |  13 +
+ drivers/usb/dwc3/Kconfig                           |  12 +
+ drivers/usb/dwc3/Makefile                          |   1 +
+ drivers/usb/dwc3/core.c                            |   9 +-
+ drivers/usb/dwc3/core.h                            |   3 +
+ drivers/usb/dwc3/dwc3-imx.c                        | 430 +++++++++++++++++++++
+ drivers/usb/dwc3/glue.h                            |   3 +
+ 8 files changed, 600 insertions(+), 2 deletions(-)
+---
+base-commit: 0a06917432a762d6233f88963c0b53e48dbac6b4
+change-id: 20260202-add-flatten-dts-based-dwc3-imx-driver-96e4a4af9570
+
+Best regards,
 -- 
-2.47.3
+Xu Yang <xu.yang_2@nxp.com>
 
