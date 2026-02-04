@@ -1,193 +1,108 @@
-Received: from finn.localdomain (finn.gateworks.com [108.161.129.64])
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A85938F23B;
-	Wed,  4 Feb 2026 22:50:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=108.161.129.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC5A318ED3
+	for <imx@lists.linux.dev>; Wed,  4 Feb 2026 22:52:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770245439; cv=none; b=hLbggzUX2Fk7+2VuUMCBLANEpiNcdYiFnMcjMdfpUY36m/EvxKmNfuqLjTGT0pcaBfmg07zHOzUHhawVVPTe2njk8T+nr7BqzofkQjJEvPmBM6y8UdtfmdPyjruEj6CG461KFZeJTu53ukD/h7JTVAOzUNu4nCzwcnroWwoZFK8=
+	t=1770245554; cv=none; b=CHJcm1zRHTFVnoBIxel+/OqggzG4k/Lq8eQB3rTn0BoA7DnIQtpeWR7twacAzAgWOXQRpUPDFnkH8an3npapwol+CYTty3O70V/RyuFt5qcjkb/StHs2vDT4/I0GcwxtUtQ0W5aSD9Zxk0bKn6WtgEFEvhavn3nDHdvuSNieGsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770245439; c=relaxed/simple;
-	bh=AR+h1jJVfACBpTkai2Y0cV2KOlBs/KVUu7hDpXyUK6Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UgpTCIYEQXj/fWsF2m3onCPCRndh8scAyo8LN5TZuJrq7eQWWjbOPgqw4hk2UljEiXaGitFNBCM8SyUKQVB7l1/iHn9J1cUHwRGRl7ptLr+D7XvbhWrcxFHOvVka9UwRFiwvgwkmiOUJGelevMm97uHiRU7CYPRuY2tzdCcrbgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; arc=none smtp.client-ip=108.161.129.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
-Received: from syn-068-189-091-139.biz.spectrum.com ([68.189.91.139] helo=tharvey.pdc.gateworks.com)
-	by finn.localdomain with esmtp (Exim 4.95)
-	(envelope-from <tharvey@gateworks.com>)
-	id 1vnlhX-00EvLM-C7;
-	Wed, 04 Feb 2026 22:50:23 +0000
-From: Tim Harvey <tharvey@gateworks.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Tim Harvey <tharvey@gateworks.com>
-Subject: [PATCH v2 2/2] arm64: dts: imx: Add i.mx8mm Gateworks GW7906 dts support
-Date: Wed,  4 Feb 2026 14:50:20 -0800
-Message-Id: <20260204225020.2039367-2-tharvey@gateworks.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260204225020.2039367-1-tharvey@gateworks.com>
-References: <20260204225020.2039367-1-tharvey@gateworks.com>
+	s=arc-20240116; t=1770245554; c=relaxed/simple;
+	bh=HE8DiP1b+MmSQURxZZ2M7HpPAYG2a/CLXNu90nk5iN4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bDuGJikT91qMQlCuijODRyn/hYgd6R4Ub2Rgb3PDFaJfDflshyuzQy5ZwBpGM3SwgVeCE/YLYLRQkxdFF8MddSMO/XFnWnytgD16UPoD3DLh76+c0I2le/++NW/IK+Z8NOuJZJr1ERkpSdC44MH7yt4tVoboFuT634yMIEQ0cFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HtDRI+Qz; arc=none smtp.client-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HtDRI+Qz"
+Message-ID: <3df436d9-5671-410c-ad0d-67d9fa540330@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770245551;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EJoZknlyXtAyOLBNPLzRyCmW6dHCkdD5Zvl96QPeKQE=;
+	b=HtDRI+Qz+/WPhHk0OHCPF1aB7QuWSOfsCq2Bf7mxIuipnkr7S2QqYvlCBTNUb0iu+hoHUt
+	/rat+5i/6Wcn6GPCTJXfdG4OWi8GiroFMZUBIyqZVEzvhDncDL+YFzwW54xpdXPJ7W6loT
+	VyERfVRddW5EmiuIN3/tBwu/wn6JOGk=
+Date: Wed, 4 Feb 2026 14:52:19 -0800
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH bpf 1/6] xdp: produce a warning when calculated tailroom
+ is negative
+To: Larysa Zaremba <larysa.zaremba@intel.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>,
+ Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
+ Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+ "Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>,
+ Tushar Vyavahare <tushar.vyavahare@intel.com>,
+ Jason Xing <kernelxing@tencent.com>, =?UTF-8?Q?Ricardo_B=2E_Marli=C3=A8re?=
+ <rbm@suse.com>, Eelco Chaudron <echaudro@redhat.com>,
+ Lorenzo Bianconi <lorenzo@kernel.org>,
+ Toke Hoiland-Jorgensen <toke@redhat.com>, imx@lists.linux.dev,
+ bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, linux-kselftest@vger.kernel.org,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+References: <20260203105417.2302672-1-larysa.zaremba@intel.com>
+ <20260203105417.2302672-2-larysa.zaremba@intel.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+In-Reply-To: <20260203105417.2302672-2-larysa.zaremba@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-The GW7906 is based on the i.MX8M Mini SoC featuring:
- - LPDDR4 DRAM
- - eMMC FLASH
- - microSD connector with UHS support
- - LIS2DE12 3-axis accelerometer
- - Gateworks System Controller
- - IMX8M FEC
- - software selectable RS232/RS485/RS422 serial transceiver
- - PMIC
- - 1x isolated RS232 UART
- - 1x off-board bi-directional opto-isolated digital I/O
- - 1x M.2 A-E Key Socket and 1x MiniPCIe socket with USB2.0 and PCIe
-   (resistor loading to route PCIe/USB2 between M.2 and MiniPCIe socket)
 
-The GW7906 has much in common with the GW7903 so it is used as a base.
-Differences include:
- - different GbE PHY
- - a couple of new GPIO's added
- - removal of uart1
- - removal of io-expander
+On 2/3/26 2:53 AM, Larysa Zaremba wrote:
+> The issue can be fixed in all in-tree drivers, but we cannot just trust OOT
+> drivers to not do this. Therefore, make tailroom a signed int and produce a
+> warning when it is negative to prevent such mistakes in the future.
+> 
+> Fixes: bf25146a5595 ("bpf: add frags support to the bpf_xdp_adjust_tail() API")
+> Reviewed-by: Aleksandr Loktionov<aleksandr.loktionov@intel.com>
+> Signed-off-by: Larysa Zaremba<larysa.zaremba@intel.com>
+> ---
+>   net/core/filter.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 616e0520a0bb..9715d957e3c5 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -4149,12 +4149,13 @@ static int bpf_xdp_frags_increase_tail(struct xdp_buff *xdp, int offset)
+>   	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
+>   	skb_frag_t *frag = &sinfo->frags[sinfo->nr_frags - 1];
+>   	struct xdp_rxq_info *rxq = xdp->rxq;
+> -	unsigned int tailroom;
+> +	int tailroom;
+>   
+>   	if (!rxq->frag_size || rxq->frag_size > xdp->frame_sz)
+>   		return -EOPNOTSUPP;
+>   
+>   	tailroom = rxq->frag_size - skb_frag_size(frag) - skb_frag_off(frag);
+> +	WARN_ON_ONCE(tailroom < 0);
+>   	if (unlikely(offset > tailroom))
+>   		return -EINVAL;
 
-Signed-off-by: Tim Harvey <tharvey@gateworks.com>
----
-v2:
- - ran through dt-format
- - use gw7903 as a base due to little difference in boards
----
- arch/arm64/boot/dts/freescale/Makefile        |  1 +
- .../dts/freescale/imx8mm-venice-gw7906.dts    | 92 +++++++++++++++++++
- 2 files changed, 93 insertions(+)
- create mode 100644 arch/arm64/boot/dts/freescale/imx8mm-venice-gw7906.dts
-
-diff --git a/arch/arm64/boot/dts/freescale/Makefile b/arch/arm64/boot/dts/freescale/Makefile
-index 700bab4d3e60..83fc7faf81d8 100644
---- a/arch/arm64/boot/dts/freescale/Makefile
-+++ b/arch/arm64/boot/dts/freescale/Makefile
-@@ -167,6 +167,7 @@ dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw7901.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw7902.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw7903.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw7904.dtb
-+dtb-$(CONFIG_ARCH_MXC) += imx8mm-venice-gw7906.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-nonwifi-dahlia.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-nonwifi-dev.dtb
- dtb-$(CONFIG_ARCH_MXC) += imx8mm-verdin-nonwifi-ivy.dtb
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7906.dts b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7906.dts
-new file mode 100644
-index 000000000000..c4d0610e34ab
---- /dev/null
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-venice-gw7906.dts
-@@ -0,0 +1,92 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright 2026 Gateworks Corporation
-+ */
-+
-+/dts-v1/;
-+
-+#include <dt-bindings/net/ti-dp83867.h>
-+
-+#include "imx8mm-venice-gw7903.dts"
-+
-+/ {
-+	compatible = "gateworks,imx8mm-gw7906", "fsl,imx8mm";
-+	model = "Gateworks Venice GW7906 i.MX8MM board";
-+};
-+
-+&fec1 {
-+	mdio {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ethphy0: ethernet-phy@0 {
-+			compatible = "ethernet-phy-ieee802.3-c22";
-+			reg = <0>;
-+			rx-fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
-+			tx-fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
-+			ti,clk-output-sel = <DP83867_CLK_O_SEL_OFF>;
-+			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
-+			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_00_NS>;
-+
-+			leds {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				led@1 {
-+					reg = <1>;
-+					color = <LED_COLOR_ID_AMBER>;
-+					default-state = "keep";
-+					function = LED_FUNCTION_LAN;
-+				};
-+
-+				led@2 {
-+					reg = <2>;
-+					color = <LED_COLOR_ID_GREEN>;
-+					default-state = "keep";
-+					function = LED_FUNCTION_LAN;
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&gpio2 {
-+	gpio-line-names = "", "", "", "", "", "", "dig1_ctl", "",
-+		"dig1_out#", "dig1_in", "", "", "", "", "", "",
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "", "", "", "", "";
-+};
-+
-+&gpio5 {
-+	gpio-line-names = "iob", "ioa", "", "", "", "", "", "",
-+		"", "", "", "", "pci_wdis#", "", "", "",
-+		"", "", "", "", "", "", "", "",
-+		"", "", "", "", "", "", "", "";
-+};
-+
-+&i2c1 {
-+	/delete-node/ gpio@27;
-+};
-+
-+&iomuxc {
-+	pinctrl-0 = <&pinctrl_hog>;
-+	pinctrl-names = "default";
-+
-+	pinctrl_hog: hoggrp {
-+		fsl,pins = <
-+			MX8MM_IOMUXC_GPIO1_IO10_GPIO1_IO10	0x40000041 /* RS422# */
-+			MX8MM_IOMUXC_GPIO1_IO11_GPIO1_IO11	0x40000041 /* RS485# */
-+			MX8MM_IOMUXC_GPIO1_IO12_GPIO1_IO12	0x40000041 /* RS232# */
-+			MX8MM_IOMUXC_SD1_DATA7_GPIO2_IO9	0x40000041 /* DIG1_IN */
-+			MX8MM_IOMUXC_SD1_DATA6_GPIO2_IO8	0x40000041 /* DIG1_OUT */
-+			MX8MM_IOMUXC_SD1_DATA4_GPIO2_IO6	0x40000041 /* DIG1_CTL */
-+			MX8MM_IOMUXC_ECSPI2_MISO_GPIO5_IO12	0x40000041 /* PCI_WDIS# */
-+			MX8MM_IOMUXC_SAI3_TXD_GPIO5_IO1		0x40000041 /* IOA */
-+			MX8MM_IOMUXC_SAI3_TXC_GPIO5_IO0		0x40000041 /* IOB */
-+		>;
-+	};
-+};
-+
-+&uart1 {
-+	status = "disabled";
-+};
--- 
-2.25.1
-
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
