@@ -1,49 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FEDE428465;
-	Wed,  4 Feb 2026 18:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D302DFA4A;
+	Wed,  4 Feb 2026 18:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770228333; cv=none; b=kBJnukgow6gOwcIJ+cTijw8slSDH4FULoc6LD7WqlL1jGm1TUBWdoNiqpctkWk3JcxzAhYdcs4bfvSX1LN8oUdNJVdX1brm3pq+N5W0enMYr2xIBYb6CjL7ysy4A7PKr1xM+YhmZS4efTzWVWaLsZ4zJExTSXY2y3p+YUW7HHvs=
+	t=1770228711; cv=none; b=bapQVyF6vvaHgXOeJh1mCRHcX5g0dYJxk/V7EJAcjH680fTbgSkopnhl/X7XqYAt4xCrgwDio0PkqBF/adqd1kQioSp9l/kJvUtd8hYXPKFgBUUL9HLm7/K9017fyIcLaZD9KimHmu84TQotrTS2PvoNZSSPjafgKY4kP7uoHTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770228333; c=relaxed/simple;
-	bh=D53HBMSb8J3Sayv18SrM/DE9F0UmWk5h0fESWtISmGk=;
+	s=arc-20240116; t=1770228711; c=relaxed/simple;
+	bh=qCuNCw5IkJNixUvOBqrReN5HqNAq3KCu5sG7c619BoA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b7oYrYOuN2+vy2p6+SDcmH4i614k6ggaGzO0w3CGv49f/NdUcBYIcIil/0Ocaj6e25qHUVuPJ13vKUQOrvt7/r6cVwEuseZn7/h2ilyNxz76UC5VDXZIy9e8bMXju8ghQhRSRGAADlx/dwD270ka5nWQ4Co50mN3Zou3Ot4zcr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pOQQAbpb; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=AAQcJgN+/T13xIJSwa07AUmhK/Rm46wviO8Klyb66bOWpoa1iWfqyatm23VEp/eo46fR+NIfXilYUy3Hpqgxyi8v+9AaJw0zyDFJlgWRVy4qVhl0dbXJOCaZJ6TwzsaB9TwOPDrhlgZLbOuh9omUVxKVwtA16K/0DmW6z/CF/YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DBQayiqj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pOQQAbpb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEEA5C4CEF7;
-	Wed,  4 Feb 2026 18:05:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DBQayiqj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF901C4CEF7;
+	Wed,  4 Feb 2026 18:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770228332;
-	bh=D53HBMSb8J3Sayv18SrM/DE9F0UmWk5h0fESWtISmGk=;
+	s=k20201202; t=1770228710;
+	bh=qCuNCw5IkJNixUvOBqrReN5HqNAq3KCu5sG7c619BoA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pOQQAbpbHHN5f/fj4I01Akhm1tnXd7hZcHsy+xPUcBhQqM9gyqJno5/f+Vhk2gQMj
-	 hkrzVva5m7ye/mH8zCnMexlu3qedsbvICbo2Mt80cZPJfwE3F3K0HQjqoQTrfe6Lt2
-	 iUuCctyQrJrcA0D8jpOe0qil8snJgwmCTHPTwcXfXZLupK4wzGvRnkTF70aLdUuwqe
-	 kMrPR9X9H7XWn1h4YqPBSnrEwKvcaOzZazS0D3fjBo9FdqRq3BeNw8+djTogiDDobK
-	 W0sBcL4I4R6Wo75++wYUT4ZyjbjAaaBaUC0LDEvm8qsCGsA0L5cjypWpFgmb7IH/fh
-	 DG8vULMHH+5KQ==
-Date: Wed, 4 Feb 2026 18:05:26 +0000
+	b=DBQayiqjrTOR6s+iPhx0yVASon0LRlZgSCzxydu5vTbotYR8Oc+yeHSv9sCh8BQWm
+	 Ye53SZFibKIuXdefnyTN5bJJnMmAHIrjnAehj7I130jis5FTKJIaLro273Yr2nXf74
+	 VX7JJTAkkNrR7+oxxLTgW7FMYHU04LASVyDGr/6K8YKnq8dNSxm//z5YKTG6Vid5W2
+	 7DG/LwE6w7Y1/eK8wuND7aOeOwtJFTYVLjjD30uIoYUfQ1KjYmzlOevtFn9osFdOUF
+	 1nSSRSfqY7iyYE3VcWQoOm6gWYWaKS1yjWk4zOIAQ+tHeng3hgOsT7VaEgyvzm4j8w
+	 24py92m7Age6Q==
+Date: Wed, 4 Feb 2026 18:11:44 +0000
 From: Conor Dooley <conor@kernel.org>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: "Thomas Perrot (Schneider Electric)" <thomas.perrot@bootlin.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, kernel@pengutronix.de,
-	festevam@gmail.com, alexander.stein@ew.tq-group.com,
-	dario.binacchi@amarulasolutions.com, primoz.fiser@norik.com,
-	Markus.Niebel@tq-group.com, y.moog@phytec.de, josua@solid-run.com,
-	francesco.dolcini@toradex.com, maudspierings@gocontroll.com,
-	Stefano Radaelli <stefano.r@variscite.com>
-Subject: Re: [PATCH v1 1/3] dt-bindings: arm: fsl: add Variscite DART-MX91
- Boards
-Message-ID: <20260204-brute-daydream-871c0be53454@spud>
-References: <20260204170356.35169-1-stefano.r@variscite.com>
- <20260204170356.35169-2-stefano.r@variscite.com>
+	Conor Dooley <conor+dt@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	=?iso-8859-1?Q?J=E9r=E9mie?= Dautheribes <jeremie.dautheribes@bootlin.com>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, Lee Jones <lee@kernel.org>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-gpio@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-watchdog@vger.kernel.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v3 2/5] dt-bindings: mfd: Add AAEON embedded controller
+Message-ID: <20260204-feminize-agility-60c8463b849f@spud>
+References: <20260203-dev-b4-aaeon-mcu-driver-v3-0-0a19432076ac@bootlin.com>
+ <20260203-dev-b4-aaeon-mcu-driver-v3-2-0a19432076ac@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -51,27 +56,113 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0sR0klTatUnpUM59"
+	protocol="application/pgp-signature"; boundary="HXLOdRZlhDXypzvT"
 Content-Disposition: inline
-In-Reply-To: <20260204170356.35169-2-stefano.r@variscite.com>
+In-Reply-To: <20260203-dev-b4-aaeon-mcu-driver-v3-2-0a19432076ac@bootlin.com>
 
 
---0sR0klTatUnpUM59
-Content-Type: text/plain; charset=us-ascii
+--HXLOdRZlhDXypzvT
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+On Tue, Feb 03, 2026 at 05:21:11PM +0100, Thomas Perrot (Schneider Electric=
+) wrote:
+> Add device tree binding documentation for the AAEON embedded controller
+> (MCU). This microcontroller is found on AAEON embedded boards, it is
+> connected via I2C and  and provides a GPIO control and watchdog timer.
+>=20
+> Signed-off-by: Thomas Perrot (Schneider Electric) <thomas.perrot@bootlin.=
+com>
+> ---
+>  .../bindings/mfd/aaeon,srg-imx8p-mcu.yaml          | 67 ++++++++++++++++=
+++++++
+>  MAINTAINERS                                        |  6 ++
+>  2 files changed, 73 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/mfd/aaeon,srg-imx8p-mcu.ya=
+ml b/Documentation/devicetree/bindings/mfd/aaeon,srg-imx8p-mcu.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..9d109fb0d53cb2a859f5a908a=
+35611394eb87807
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/aaeon,srg-imx8p-mcu.yaml
+> @@ -0,0 +1,67 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mfd/aaeon,srg-imx8p-mcu.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: AAEON Embedded Controller
+> +
+> +maintainers:
+> +  - J=E9r=E9mie Dautheribes <jeremie.dautheribes@bootlin.com>
+> +  - Thomas Perrot <thomas.perrot@bootlin.com>
+> +
+> +description:
+> +  AAEON embeds a microcontroller on Standard RISC Gateway with ARM i.MX8=
+M Plus
+> +  Quad-Core boards providing GPIO control and watchdog timer.
+> +
+> +  This MCU is connected via I2C bus.
+> +
+> +  Its GPIO controller provides 7 GPOs and 12 GPIOs.
+> +
+> +  Its watchdog has a fixed maximum hardware heartbeat of 25 seconds and =
+supports
+> +  a timeout of 240 seconds through automatic pinging.
+> +  The timeout is not programmable and cannot be changed via device tree =
+properties.
+> +
+> +properties:
+> +  compatible:
+> +    const: aaeon,srg-imx8p-mcu
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  gpio-controller: true
+> +
+> +  "#gpio-cells":
+> +    const: 2
+> +
+> +  gpio-line-names:
+> +    minItems: 1
+> +    maxItems: 19
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - gpio-controller
+> +  - "#gpio-cells"
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +      #address-cells =3D <1>;
+> +      #size-cells =3D <0>;
+> +
+> +      aaeon_mcu: embedded-controller@62 {
+
+Drop the label here if you respin,
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 pw-bot: not-applicable
 
---0sR0klTatUnpUM59
+Cheers,
+Conor.
+
+--HXLOdRZlhDXypzvT
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaYOKZgAKCRB4tDGHoIJi
-0qetAQCq2VcboFqXT/rCNQlQcHVzPO2WoYqZa/iOZzp1ZmH/MQD/XUYg+z8frbj7
-i+WGA6DX7wrdlLaJ7mRO90s8yYiYeAY=
-=RrWE
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaYOL4AAKCRB4tDGHoIJi
+0me5AP0Q4Vynal5/kaTGfbXrTSrgT5VjBcR+EW/KnfBt6y4CjgEA6Q3hjEEHMGbs
+fKUHq0HWTVrOfpWRRc0bmTyLQLv51wk=
+=0QQX
 -----END PGP SIGNATURE-----
 
---0sR0klTatUnpUM59--
+--HXLOdRZlhDXypzvT--
