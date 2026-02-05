@@ -1,156 +1,303 @@
-Received: from mout.web.de (mout.web.de [212.227.17.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201A53D5246
-	for <imx@lists.linux.dev>; Thu,  5 Feb 2026 13:04:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770296696; cv=none; b=ZjWpTstwrkk406egMASkErhL7WtIqti8/XGCjx7bv15+wXasLiL9dEr+nQs69M2CFdj1LUM9VYDLAIrWLD67V8LoN+OOZQvmzqNUtt678N6Yn7QQajAaSaNpqxxPeAQHEmUQjpOKXDDpJ620NYxxroIBVrPPb/34Z76jIU2vKCQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770296696; c=relaxed/simple;
-	bh=3ZSSyV/H1dQ9DRtbUntRm6Hyt24XBfiWGBlDsjMA188=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=r+3D9wT/AnQ0ltH/TkkGhv6Fd4/PmzVKECEQXfKpZ09hPYki9WbsznDEiIdlSXzjBBMVAq8oVPKvodGL3CTpmUze2PwjSxY53ra5LfdbDWbKXVyzrrBNdECgAkI2KiqQGGHimBpZ81EEnTYtA1RuI7oQIGTMPYdFyNSpucmxcKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=DO0KrEb1; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8B03D668B
+	for <imx@lists.linux.dev>; Thu,  5 Feb 2026 13:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770297814; cv=fail; b=bO8Tedl0/bGl5D1KscAoCYinMQJ0dTlQpCytlkcfF2H2oX1I4wnsTMptoWRjglEA4B9EdrrgUkyZOZXqT0bHJWMBUmWFZitO8Xzds1J26IZrxsOvXG+/Ny3zDnLNtcTbLaJRxavbNSxSvhQtSMfQodB26ITHOTOTdlNFuLsQ0HM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770297814; c=relaxed/simple;
+	bh=m6S9Ue8dNFm6DzrWiddytObovDjo2gjOdZgp0LOFU9U=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=isdcGRslaDVirv3wa0q9niKxB2EesOrJtUscn87P9CrIMRrHkOD579C2OjNFfLgfYIHmJQdekidVEFkcDHEqjzWNqcDuyaE9jdBjKsGnGz/3irg7V0pdYdAslbVcYxCHNETOH4AuNOkI57CL3/QeHPY2wx6cto3DPTIlX056Usk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RgTz4RRY; arc=fail smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="DO0KrEb1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1770296660; x=1770901460; i=markus.elfring@web.de;
-	bh=jKh2vBusx+1Xm9OJQlBX5U+A0LddTbyzBzCEznqBUgA=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=DO0KrEb1FamMcrsGWGSqnVrOzTAH7KDgXH7MrE+hs2UNWfeSHYc+91083yIAhRdc
-	 b9dBH+5Yh7aw7YMtJjTd+GwpecQwzsSh0LYMVzmm43w54qGiug3UsFcbeYvXbzmwB
-	 q7i8RQcNYJ76cEWIAjgXSqkAjjVCZws4DlEcgtuaIk4stBnaseXfUhyaABq9veAh9
-	 r6v+wuakUjUNT+9gtSLdXsir8WwIzQMQq678de1wDmHV8oCeh4cMebvUSW3bSTeUd
-	 CeLWKLCiM8jJJxgTJStjBac3rJLCPEa+VQM0KcW98hi3kplU+/VI98aEGSY/HpCi9
-	 sYRd6rRJWM27t3oNuQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.69.222]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1M7Nmo-1vtTCq2LWO-00DKWj; Thu, 05
- Feb 2026 14:04:20 +0100
-Message-ID: <25f6072e-3d3e-4032-a87f-4fea5dbc4570@web.de>
-Date: Thu, 5 Feb 2026 14:04:17 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RgTz4RRY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770297814; x=1801833814;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=m6S9Ue8dNFm6DzrWiddytObovDjo2gjOdZgp0LOFU9U=;
+  b=RgTz4RRYMIocQjtFBLj0xnLeUS1Tsb2BmRiS24HKUOYE1vdF6Bo44Lxh
+   Qq6hDBsEGLACUc6glY6DHKu0u1F+8Y0J6P968TsP+Th1V8UflVHk2WIPw
+   lGkuxcDe3YXXzwUnyNK35eY698v7RgA3M176WnpGjzy/1d3epbbWURDcG
+   gVmw4gRrLNNsWSSTI/TrKr0Mod+vNWIg4p+9hDx90xTp/lT/iuXy1vvd7
+   kfqQgMx5CdBgy+ZKlp1iz8NA9z8tNAB31CRj3Iki7rxruHw2pyniGbHsb
+   6Km6ViJTEx63HZJjRPTMYm5IKxFMt2rCvsyjER0CPC0NPkccoBNXkt7kN
+   A==;
+X-CSE-ConnectionGUID: 5f+p14SdS4iQNrZgHyPW+w==
+X-CSE-MsgGUID: X6nMDoeQQ021keuOABJF6A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="74096070"
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
+   d="scan'208";a="74096070"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 05:23:32 -0800
+X-CSE-ConnectionGUID: HTN/bUj1QLqwkIHcHZZEeg==
+X-CSE-MsgGUID: BhlQbaYgQb2zTS2tiCW0/Q==
+X-ExtLoop1: 1
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 05:23:30 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Thu, 5 Feb 2026 05:23:32 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Thu, 5 Feb 2026 05:23:32 -0800
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.50) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Thu, 5 Feb 2026 05:23:31 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yMCespKyyO0+IHvSzlq0rqii2a8V5P58s+angYdTV46dr/cwl7ioMvduXN/F6PjkyZrLrgMTTh79n3tkls85YXfcBw2UV4RUXuyFUZWxMpIHdleUSeBWv51lssOpdQD3hDPcPT4Ydv3CobYswC9Oh/UPVdzFvZz6QblZ71oIiJsVq0D9JIUhRNMyPYm+DVwxH5HgLYO55bE6BAnmxV0IomI6z64vZVvRSZvdtfxOeD1LVLJfwddzIJAj1Ca5aJ+mSOdA1mTfxZEvzr2lnx1bGx3onM7pHTXgdxefsRNe7FmUT5SrK8vQ2aahEVG+Gowp7BOvx7XhPL2dyBkQweQraA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zvM4ml8HBjw4sQj6EZh9CZkVOn/uKR6EZFs7m7+g35I=;
+ b=pPyhHYqvM9vdEjg426skXLIGQPOMOULdWDgyx5CN28gFf4vRQOr14Ld8qD5as8B2lfivZo0kveEAwXjYZwOEGxJwu9IyygjNO+J7sy+l1QwZCBZXIZv6VbnXxPV1LqKxc/iCHmZIWTXQPQd075Nl39zGdxfcHDm8HIwQie5YRU/v6EHh2J2omUTUTGgHbphucA/EblyWYrSh0TOrrdgRUt42QmBOPRN/9zT9lDdiaXXt+gEGAHt7RyypjCC8o2kscOtBmFMOcTOdGjvcZi6afK4Y48xbLWVYJrxX/WJDTpCLpSbxuhzluveUY8jSSzTeYQx+p1z6CIibFO/G+shlnw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SN7PR11MB7540.namprd11.prod.outlook.com (2603:10b6:806:340::7)
+ by PH0PR11MB7586.namprd11.prod.outlook.com (2603:10b6:510:26e::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Thu, 5 Feb
+ 2026 13:23:29 +0000
+Received: from SN7PR11MB7540.namprd11.prod.outlook.com
+ ([fe80::2edd:5c6d:169c:389b]) by SN7PR11MB7540.namprd11.prod.outlook.com
+ ([fe80::2edd:5c6d:169c:389b%4]) with mapi id 15.20.9564.016; Thu, 5 Feb 2026
+ 13:23:28 +0000
+Date: Thu, 5 Feb 2026 14:23:15 +0100
+From: Larysa Zaremba <larysa.zaremba@intel.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>, Jakub Kicinski
+	<kuba@kernel.org>
+CC: <bpf@vger.kernel.org>, Claudiu Manoil <claudiu.manoil@nxp.com>, Wei Fang
+	<wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Tony Nguyen
+	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
+	<john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, "Andrii
+ Nakryiko" <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>,
+	"Eduard Zingerman" <eddyz87@gmail.com>, Song Liu <song@kernel.org>, Yonghong
+ Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, Hao Luo
+	<haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, Simon Horman
+	<horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Alexander Lobakin
+	<aleksander.lobakin@intel.com>, Maciej Fijalkowski
+	<maciej.fijalkowski@intel.com>, "Bastien Curutchet (eBPF Foundation)"
+	<bastien.curutchet@bootlin.com>, Tushar Vyavahare
+	<tushar.vyavahare@intel.com>, Jason Xing <kernelxing@tencent.com>, Ricardo
+ =?utf-8?B?Qi4gTWFybGniiJrCrnJl?= <rbm@suse.com>, Eelco Chaudron
+	<echaudro@redhat.com>, Lorenzo Bianconi <lorenzo@kernel.org>, "Toke
+ Hoiland-Jorgensen" <toke@redhat.com>, <imx@lists.linux.dev>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<intel-wired-lan@lists.osuosl.org>, <linux-kselftest@vger.kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: Re: [PATCH bpf 6/6] net: enetc: use truesize as XDP RxQ info
+ frag_size
+Message-ID: <aYSZw4wbd-nvLTuD@soc-5CG4396X81.clients.intel.com>
+References: <20260203105417.2302672-1-larysa.zaremba@intel.com>
+ <20260203105417.2302672-7-larysa.zaremba@intel.com>
+ <20260205005901.gnju3zmqimtgeu2b@skbuf>
+ <20260204173401.282899d0@kernel.org>
+ <20260205122953.lscemcctayrvszdu@skbuf>
+ <aYSP344FT-JlylwY@soc-5CG4396X81.clients.intel.com>
+ <20260205124638.hxzvjiocephzlrk3@skbuf>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260205124638.hxzvjiocephzlrk3@skbuf>
+X-ClientProxiedBy: VI1PR02CA0073.eurprd02.prod.outlook.com
+ (2603:10a6:802:14::44) To SN7PR11MB7540.namprd11.prod.outlook.com
+ (2603:10b6:806:340::7)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Chen Ni <nichen@iscas.ac.cn>, imx@lists.linux.dev,
- dri-devel@lists.freedesktop.org, kernel@pengutronix.de,
- linux-arm-kernel@lists.infradead.org, David Airlie <airlied@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
- Louis Chauvet <louis.chauvet@bootlin.com>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, Simona Vetter <simona@ffwll.ch>,
- Thomas Zimmermann <tzimmermann@suse.de>
-Cc: LKML <linux-kernel@vger.kernel.org>
-References: <20260204090629.2209542-1-nichen@iscas.ac.cn>
-Subject: Re: [PATCH] drm/imx: parallel-display: check return value of
- devm_drm_bridge_add() in imx_pd_probe()
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20260204090629.2209542-1-nichen@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ud2wSVcy20aQJjydqr4TUnHm7GiXoLxshjfaZytS4ZHtBSznu0L
- ZTxqnGXoOHiafrty2WQssiWpYgqTy1cvN8RjtJpXHOFqIv0ya5WaWMPQuesOgWRw2I7kpfE
- g/kTzn+ytJPf9HMoRCtbvJX+LCiR/oyUk2fm3N8ivQiHKCVyeg5+wzAOE7YEJyFmgfRjC0R
- Z4QWjYCGT9HiFZpef/JEg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:HqR7addawYU=;K2d5DM65T7JsgyhEusGD9iwKeIH
- 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
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR11MB7540:EE_|PH0PR11MB7586:EE_
+X-MS-Office365-Filtering-Correlation-Id: 35afce3c-a2e6-4918-d364-08de64b9bffa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|10070799003;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?IyiB5SZNhrJC6S8kadwWyBqC3RUYgWrtYufaWVMLo4gVx8Vu3qLWw4rx6PbE?=
+ =?us-ascii?Q?wqDyMz+pRd7TYupLSlz/MAIuBi7qQMem3SGSc6qhPYHcJUTl8yzKjt0CvjFh?=
+ =?us-ascii?Q?YWblVNq1tcWVdYGT069tQ48o/C0CXK3BSYV7eBCWlqTTZkh9/DBR/oBxusQO?=
+ =?us-ascii?Q?+WTgCYrzEoGkYUT2KgLlia8WcN3zpsGtd3i5WE2nOgvdv75a/EYCl1JZyFFS?=
+ =?us-ascii?Q?WoguB5tNmnzOZ0PHGYrZD+wwOMj7Z32M4kmuXfjdhaH5rDg7tNrYJ4c3/o1f?=
+ =?us-ascii?Q?r+Yoyg/NC3nId/k1xHETAuxxzWWh0v9EjjI5tVc435JOVj7+F2rR3vfr7R92?=
+ =?us-ascii?Q?wv7gBbhHt7VKWMMef8o44+huEUu33af9ZZBXKdzdsqIgDYMQpGn7G2MeOMy0?=
+ =?us-ascii?Q?MIM1DPBpQqxE4rs2/mw0CojPzM+Sfc/oMMMxO3//LTzBSTWTc2/4Td552g/O?=
+ =?us-ascii?Q?86MFT5D2ojo+AK11x4TQfkQZ79uvEnVa38X76lnI/nguMSbx104F4SIwWmYg?=
+ =?us-ascii?Q?DyJ1qYxDzCCUHEl+ARzDANRXZMLkk/WWnCV4DSv8sGNdwmg8LERFJG9KoFXf?=
+ =?us-ascii?Q?XQaSKyxIsjKaVdVrYOWSHA0zzso4S/diIGnLj/+b+w2bddMx9FwB4msO+glk?=
+ =?us-ascii?Q?CsM6HqZSBcfamwgQWyHylZ6TN7VpjWinRb64tCDaHiF8H+u1Z5OcNEBa8l/7?=
+ =?us-ascii?Q?nECS96w43PbOzLlM0QNj/65Yru/1ftPJ7zSrvETZ3qiftbV0kqp4ehSET5BR?=
+ =?us-ascii?Q?8qIMhEop6qfNyq1KCZwFVOq1KXa1y0COiHopSab+7JsWsGuIsK9UYh8yP3wb?=
+ =?us-ascii?Q?saFboIGxdfuNQika31vtcc9HTfMpCmbtF7j2xLMhFnk2Uo8o7SC83ZJ0QYPL?=
+ =?us-ascii?Q?iuO3SS8/9zCh3HcgXxbZzcKDyRAyopyK9RL/q/SrPYVS7YcifFx7pl/RV0XA?=
+ =?us-ascii?Q?GfyIAzVwYPJV1c//evI8yqDCvE/jFmzifbyG9tHd2oaECQrNl/iG0z8MoGk2?=
+ =?us-ascii?Q?DriwRt3G5l6Vqe3IrUNSJqdq9XXIHWdveKC4kUw2798kU+3FfMMWdEwruczw?=
+ =?us-ascii?Q?e1tLNJ+zOXtYQKPORBNK3bIv7Ica9niNEWIElep5b27DZkSwidUi9lhjVP8i?=
+ =?us-ascii?Q?LHdiE0sZUrGIDJriiLx6D4ejmhTcIMZq4Rxvr2YErAGMdE86MviENxHrR+Ev?=
+ =?us-ascii?Q?P6qUYjSybPZ3utVJ3ePHnb9XZgjlX4VPQCYfog6hZUr8v8neP/jJ14b9vJh0?=
+ =?us-ascii?Q?AfxdHbIqO6TT4jvYqfAo/2XCH1tfgWHAf5/WyzJPRthHQTPAmJ/ikmFH3KOp?=
+ =?us-ascii?Q?9ecvb5szOxBkrA2wIJ7+1FFNkHtjlg0wqcGHUUPS8CYqUPMtpWTarWwMF/iE?=
+ =?us-ascii?Q?PchbjYCT481EVQsbUd8MrBmOPeqKFRzURn7H1glRaTomzXpC5t/N5ja2xQHz?=
+ =?us-ascii?Q?8wfXxxpj2DiChIRmD3+lg+50WmQ6+AHhbZelpteRRHYsdNrlCpsxDz8+7GbY?=
+ =?us-ascii?Q?4SrQJYM3tLUTpAYcn9PcY1xtrpu5DQDiFqkq4jpLsfluq6C35R6tfle1a1ub?=
+ =?us-ascii?Q?POK+y+wphuKQMLQ7jf0=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB7540.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?2lw0SlnUEg4RmHybd2IsNNNa6xI/0r3E0yGuvt5meajIfw2wKmPiagrbDIoq?=
+ =?us-ascii?Q?f/wUdSleqV3gFUeHWkj+z+OvV9Sq8jT5lIURzZSOf1kdKU6pdrixr2H2GfnH?=
+ =?us-ascii?Q?A8FiJVBZArd8YsYu7T2vSFDBuQPvneTmGuYa+uAg3HfIi2arCeRjnb2rBPkO?=
+ =?us-ascii?Q?sA7Huc2ETmIoVN93uwh4VBBbGWejXCV6x6BJfa/tCAXtZ1ro9Nc3+iWuoz2n?=
+ =?us-ascii?Q?rdjx/V8IWZBSR1LF0EsXpjZP16O2/e3BNebGvzqmpUaaSOGyMse9OMAYGPhn?=
+ =?us-ascii?Q?wBtSqCsSpr/3l/gFytb35FzNorI9nN+c5PUOv3/k/+uMh2geIdsNNyJQpJ2d?=
+ =?us-ascii?Q?gV3q9sidGtoiJfzoiZvY5fVys32tZFwGPBg8GZMqeFM5up0X/FDwMERIPFDe?=
+ =?us-ascii?Q?SdUNhCIL2iH/QbB5hFoYXZF+PyAzUslu7I0ca+pbDZ9O0dz+gT0+m+14YbQq?=
+ =?us-ascii?Q?9NB3n62vqCPArhNee1F3PsVANdKvSam5VdGkVb9iZrj5MPO79TO5QdElvRki?=
+ =?us-ascii?Q?9XrgwfSQXr7o2xsaMRPdsuXzVGSylWkxtBJ4uyI3GrHlVdhztviBDd+1c9pH?=
+ =?us-ascii?Q?hvhmfUf4UaBBMxEH3N1mSsdBthfBHklvBUFR9I3qyVYamogQUDXVzRgkYY4h?=
+ =?us-ascii?Q?6A7cH0GJy3wOJlDDTy5nSDohi60TfJOmXv0tJ1dj+3P3cBOvK0s2dSBEewZw?=
+ =?us-ascii?Q?jJLcN3oqzdbManPKtbEDQ1aCQHjsTvg0kGNXJLVZyr54Irm6Ihvo/ZS13a4S?=
+ =?us-ascii?Q?5ANLgY83KfNFyV1wf0WE/hu+x2OrtZ3O+ZgCLLopK6SEVeWxUIhf33qiirnM?=
+ =?us-ascii?Q?9TZuXmq0urflB3u3dAl0MG9Pkpz+tVpHhvHFdHDtwNwOgegA6p4XzUQU/IOo?=
+ =?us-ascii?Q?NneRom+lU/VwZKnG0WxTg//70hthotnD/fNMM06dM/MbTJ4wUowccLaE7iUe?=
+ =?us-ascii?Q?62ZQKMaldtMkbOwKbB7VF3mkv/vyk2EQCylmY2T9/LOdW3JHVhazdL5tDAhb?=
+ =?us-ascii?Q?cu3R3ylJXkAAK423z1VGAhTCkUp6KIT39i3vx8bzH1H544LHmwhMbUEPijFn?=
+ =?us-ascii?Q?8vyBVRwTtmm4dWQ6axCC/SIxcEKRCve08tfIuN9mS21S8yC3uA6zKHI+IAZI?=
+ =?us-ascii?Q?5+o/GHjry2zUZD6T6pqxzecAmflYcDS7utu2kwjr1p45VdvOK1APUwbj21Y4?=
+ =?us-ascii?Q?FwoSz5ZueJOvDrKk5+CrgFxXKLfxedjYc8dDj/l+MXxGLkvkhRDr2a0PrtqT?=
+ =?us-ascii?Q?+f9j35L+oMhniicvG0pem4CgMvAOtByaequC7eRYm13oKvnBNN33DfS3p6ea?=
+ =?us-ascii?Q?D2K7dvd0J4NN34ohLKTUStEwzTUrk0ZUwgEyQbT3CY291pVXgZ7HZalU8WHJ?=
+ =?us-ascii?Q?SMHuwrHAmzmfT24qeqIHXeC/UFuR2qex9zpuxCnBD/xG9HVtALaWIrGNh3r3?=
+ =?us-ascii?Q?zh8a3ze7QSIb7XKsrXRKvwdhjwfN883up3asD0+Rt7utyoCqcPdvjXu+jKHr?=
+ =?us-ascii?Q?9AO2IZWWAQOE1eg+gX9m9NRKZeO3L5/3vkc454tvKaPopBITfr7eFqcrcrXm?=
+ =?us-ascii?Q?cso18wL9AELG7OCFO17S+un9uQmqWX4d13rWhBWXgd4+xRURmFCxls6jtz/2?=
+ =?us-ascii?Q?4PYg632sMUZCEKUy3QX1IIdJR1wLwQHZtZO9Vo1/dHpogaixbAfF8TbM5j27?=
+ =?us-ascii?Q?0b5uMBKrAEJXM+pGt4cPP0Y3GGadRiD3lYg8a/hYV7nJB1Ab8V1Op71g3FKu?=
+ =?us-ascii?Q?xW0clinX8YjgQiifrj/blXdffut9kOqLWTkZV7avAYRIsSk2QahKagNMZmjm?=
+X-MS-Exchange-AntiSpam-MessageData-1: VpzxRz4QSi9ayZSxXFvIf3ixp+sO8+pPBHg=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 35afce3c-a2e6-4918-d364-08de64b9bffa
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB7540.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 13:23:28.8481
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mGhuwnZvafQwX3J7tGx7ovFdPI6V9gJtzJLfYQKl/4I9WDNSw9ScHXIv0XePnzZbY1wCgt6Z0qE8L8YD9c23QiGOQuhN5kW8MZPe7JoQZuE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7586
+X-OriginatorOrg: intel.com
 
-> Return the value of devm_drm_bridge_add() in order to propagate the
-> error properly, if it fails due to resource allocation failure or bridge
-> registration failure.
-=E2=80=A6
+On Thu, Feb 05, 2026 at 02:46:38PM +0200, Vladimir Oltean wrote:
+> On Thu, Feb 05, 2026 at 01:41:03PM +0100, Larysa Zaremba wrote:
+> > On Thu, Feb 05, 2026 at 02:29:53PM +0200, Vladimir Oltean wrote:
+> > > On Wed, Feb 04, 2026 at 05:34:01PM -0800, Jakub Kicinski wrote:
+> > > > On Thu, 5 Feb 2026 02:59:01 +0200 Vladimir Oltean wrote:
+> > > > > Thanks! This is an extremely subtle corner case. I appreciate the patch
+> > > > > and explanation.
+> > > > > 
+> > > > > I did run tests on the blamed commit (which I still have), but to catch
+> > > > > a real issue in a meaningful way it would have been required to have a
+> > > > > program which calls bpf_xdp_adjust_tail() with a very large offset.
+> > > > > I'm noting that I'm seeing the WARN_ON() much easier after your fix, but
+> > > > > before, it was mostly inconsequential for practical cases.
+> > > > > 
+> > > > > Namely, the ENETC truesize is 2048, and XDP_PACKET_HEADROOM is 256.
+> > > > > First buffers also contain the skb_shared_info (320 bytes), while
+> > > > > subsequent buffers don't.
+> > > > 
+> > > > I can't wrap my head around this series, hope you can tell me where I'm
+> > > > going wrong. AFAICT enetc splits the page into two halves for small MTU.
+> > > > 
+> > > > So we have 
+> > > > 
+> > > >  |                 2k          |             2k              |
+> > > >   ----------------------------- ----------------------------- 
+> > > >  | hroom | data | troom/shinfo | hroom | data | troom/shinfo |
+> > > >   ----------------------------- ----------------------------- 
+> > > > 
+> > > > If we attach the second chunk as frag well have:
+> > > >   offset = 2k + hroom
+> > > >   size = data.len
+> > > > But we use
+> > > >   truesize / frag_size = 2k
+> > > > so
+> > > >   tailroom = rxq->frag_size - skb_frag_size(frag) - skb_frag_off(frag);
+> > > >   tailroom = 2k - data.len - 2k
+> > > >   tailroom = -data.len
+> > > >   WARN(tailroom < 0) -> yes
+> > > > 
+> > > > The frag_size thing is unusable for any driver that doesn't hand out
+> > > > full pages to frags?
+> > > 
+> > > This is an excellent question.
+> > > 
+> > > Yes, you're right, bpf_xdp_frags_increase_tail() only has a 50% chance
+> > > of working - the paged data has to be in the first half of the page,
+> > > otherwise the tailroom calculations are not correct due to rxq->frag_size,
+> > > and the WARN_ON() will trigger.
+> > > 
+> > > The reason why I didn't notice this during my testing is stupid. I was
+> > > attaching the BPF program to the interface and then detaching it after
+> > > each test, and each test was sending less than the RX ring size (2048)
+> > > worth of packets. So all multi-buffer frames were using buffers which
+> > > were fresh out of enetc_setup_rxbdr() -> ... -> enetc_new_page() (first
+> > > halves) and never out of flipped pages (enetc_bulk_flip_buff()).
+> > > 
+> > > This seems to be a good reason to convert this driver to use page pool,
+> > > which I can look into. I'm not sure that there's anything that can be
+> > > done to make the rxq->frag_size mechanism compatible with the current
+> > > buffer allocation scheme.
+> > 
+> > I was just about to send an answer.
+> > 
+> > Seems like my mistake here. I actually think adjusting the tail should work, if 
+> > we set rxq->frag_size to PAGE_SIZE in enetc and i40e_rx_pg_size() in i40e, and 
+> > not to (PAGE_SIZE / 2), as I did at first, but in such case naming this 
+> > frag_size is just utterly wrong. Glad Jakub has pointed this out.
+> 
+> I mean, it should "work" given the caveat that calling bpf_xdp_adjust_tail()
+> on a first-half page buffer with a large offset risks leaking into the
+> second half, which may also be in use, and this will go undetected, right?
+> Although the practical chances of that happening are low, the requested
+> offset needs to be in the order of hundreds still.
 
-* Were any source code analysis tools involved here?
+Oh, I did get carried away there...
+Well, one thing is shared page memory model in enetc and i40e, another thing is
+xsk_buff_pool, where chunk size can be between 2K and PAGE_SIZE. What about
 
-* See also once more:
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/stable-kernel-rules.rst?h=3Dv6.19-rc8#n34
+tailroom = rxq->frag_size - skb_frag_size(frag) -
+           (skb_frag_off(frag) % rxq->frag_size);
 
+When frag_size is set to 2K, headroom is let's say 256, so aligned DMA write
+size is 1420.
+last frag at the start of the page: offset=256, size<=1420
+    tailroom >= 2K - 1420 - 256 = 372
+last frag in the middle of the page: offset=256+2K, size<=1420
+    tailroom >= 2K - 1420 - ((256 + 2K) % 2K) = 372
 
-Regards,
-Markus
+And for drivers that do not fragment pages for multi-buffer packets, nothing
+changes, since offset is always less than rxq->frag_size.
+
+This brings us back to rxq->frag_size being half of a page for enetc and i40e,
+and seems like in ZC mode it should be pool->chunk_size to work properly.
+
+> 
+> > ice and idpf are fine, since they use libeth for Rx buffers, so mbuf packets
+> > always reside in 3K+ buffers. But for xsk_buff_pool seems like all drivers 
+> > should have PAGE_SIZE as frag_size? I will let the discussion go on for at least
+> > a day and then will send v2 with patches reordered and those sizes corrected, 
+> > maybe add ZC fixes on top.
