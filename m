@@ -1,95 +1,104 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B25C2D4B40
-	for <imx@lists.linux.dev>; Thu,  5 Feb 2026 03:42:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87672D8393
+	for <imx@lists.linux.dev>; Thu,  5 Feb 2026 03:42:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770262966; cv=none; b=aLXgc04VEeNIT0xKeoYnMNVQtvS0UFL0BFcr8yzEGTLvO7v4I9ErTFelAwC/OdpQufOwcs3RN3LrAbWEB0JvLEAHHyE0WeULlMWR99uis6VUff5LnqnfZV0ngUabA8nKS66iBUB6SPI8NvSfl2uuy+4mzLZfmQ3WDpGYvHP/nqA=
+	t=1770262971; cv=none; b=HAD5ELNUpHnb3708z1seLRqxUxVUb/96zQeRD2lKDZ6GbO6jEJ8gBlAe+S9QGTOw8IX8SZ+GDCBQB7GyTszqcHzeTobX5jd1gwNjGFzVsRxAZOD8l4g9TuYdoIsm81v8YtamNg9Rx5vSp+pf9kadL8bm0ocqkymr8BQJltFh4RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770262966; c=relaxed/simple;
-	bh=V1FGHpcBiMuhuQ8wUSU5P2jVvBudCcWzGbVg7MsYDDs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Xz7QqJcNwfFmDvlCwOA2NE5wmZUi0BHG4eBlepeWEOCT/FZUyRFGtbcWKSIfvT7k4ymLjRvWYuD3bre6p4nUCFcvQHT1XMR6gnwouccM+Hr3sFy03ZJXafG7/jX5uaTMMeOJ1EkUboVj5h61BhZI0TDAny7UIKwHJEJmRqYwT5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost (unknown [124.16.138.129])
-	by APP-01 (Coremail) with SMTP id qwCowADnjWmsEYRppiAsBw--.11100S2;
-	Thu, 05 Feb 2026 11:42:36 +0800 (CST)
-From: Chen Ni <nichen@iscas.ac.cn>
-To: p.zabel@pengutronix.de,
-	Frank.Li@nxp.com,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com
-Cc: imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Chen Ni <nichen@iscas.ac.cn>
-Subject: [PATCH] reset: imx7: Check return value of regmap_attach_dev() in imx7_reset_probe()
-Date: Thu,  5 Feb 2026 11:42:19 +0800
-Message-Id: <20260205034219.2531280-1-nichen@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1770262971; c=relaxed/simple;
+	bh=yTIiCoPaf2axh3yw/BOxlWdHS8hPHmnROAwOuIuJHy0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=YSxkOF4KPhrRgd9k49cw3h8RKDxJD4RFMmO7DVDhaxFWIKsWQzb7G2EA8fHeB1lht31KVFoyDsJNgUYCJqSaG9XRViB0SRA3JIssv/aZv44g+B25eQKdo6wdC7dMmESmzI3FEF9xb/1SGiKTuaiSnhi8aL6Kq9iLfAmGtvgp6xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=kv8gukxP; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="kv8gukxP"
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7cfca52ac2dso340052a34.0
+        for <imx@lists.linux.dev>; Wed, 04 Feb 2026 19:42:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1770262969; x=1770867769; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p8odmZP3AsmwWLVEEIesC2LXuxYRFDXqGBxQCRutSXw=;
+        b=kv8gukxPeOcyx6hVtFTPl5rnRn/1t6NnsSgt5jOHtFqOUI5TJjf+MzM5lyrnPkW5UQ
+         DdzAly3WR3xwuTixTw8x2hqld6Xw829QB6Zl1t5d1NfQ2LcCGZQ0ipKVtldmBpVDM8tY
+         WbPtx5sxjLr0IZFwwvRkBMPaLvMDduzLt6LXQq2SUi7OqV6s+eWjy2mnt8SrQEfD5ren
+         qUw59jqT6eZM5cmU11N+XPwfSGJ3XlAdemVgDT14RAQMPRkYUd+cn3Kb2qJ7lJsQgBXK
+         DKjTHyCI8wPU3A36DGPmveV1NUb+oQbqjZI7ikBxrvs7jK38CYK0/JpR0BZgvgWXQhIa
+         duNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770262969; x=1770867769;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=p8odmZP3AsmwWLVEEIesC2LXuxYRFDXqGBxQCRutSXw=;
+        b=NtGGkSZKiJase4zIGCBFBNlXjWDAApEFJk2PzF45FfaLzpwHzaV8yUqnYSbussejR+
+         OXUZFq8IFihv8eNO+/yGfrK1nxwAWfZ5Thu2Ts7Zq5q1f3rTmEDVl9izuwiWreM6bakP
+         CcbCvmh8yIJ6sxBJdMds3zsvpVufM7VzjdeNX/7i5l497bOY0AIBftwh3WI9IJTq66tR
+         06f+PP+0PkyLk9swKzrbssckmNznIsFdW5q3sBgpJzvZ8wLCHk/mXzXJ+g4cU7oXnzjN
+         +sJzvzGV4ial3PU9dvZJ8RIH1ti68e1s7dnFIAY8yfcDlZ8ZBL3HAGyOpuNpy/tmyyTP
+         HQVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVNligXjRJ2j4pHBEegtKCH5c0WgiaJ8QPN8w4FYIiXLxVjbfllNrtSY3ibHnQHADGqnQw=@lists.linux.dev
+X-Gm-Message-State: AOJu0YxMy4Y8mM3EQe4THXNDqQYZSPUDXrZD4fTvQ3hCIOPKZ52QKMD5
+	k/plJT1fla2Ol9zv4Kw2HKgbGhPX8TdpmknELrcWJU3rKScXkwbDFImTjAEUqaBW5x4=
+X-Gm-Gg: AZuq6aKvgtulZ/vqw+67RALFdlxJ1qsk4IVkzY7Pvuo7PlczdLDIEGdzlrR41vCwUPF
+	V/LtQTPu/gSxM2ytDUJ0zH3jz4xTYgA2qHUSzNO/peq4FJyvMQmNasNIbQucSyJIireUNnsD4RE
+	ZJ2+FutoJFDsX9Ep6cZdbVl33aDguKx77e9rGna5kkNr00EhYu+Ax54RtABYbW4gGycML706lYb
+	fgsZ2ArdWKj/k4JFsvxO9nYY383wADt4hY/OHH3u4LtgFrmubFtVPMhm8A3vFUBerbba2owmG1u
+	x3hw24Jq/zbtvkWLKr72HeuQ8q53GPtC24OoJ2j/wul9beuBVVsLIe9VZx5h4KuY/XqOR32p3H/
+	gDIXbr57bAeraywswOytZxyApQQHzmz/nufvpUjJpTE6b//tK1/rNcqWN6afATvbXOYx8vpJIIM
+	jLatrcSzs9h36mJ58ObJGaNzo7ZoSbU2icLuMn+ScGiGCbDDUpzJsWARlGOuH/WzuzU2hmYlk2T
+	bI=
+X-Received: by 2002:a05:6830:3901:b0:7d1:4d71:95c7 with SMTP id 46e09a7af769-7d448abb460mr3043741a34.26.1770262969619;
+        Wed, 04 Feb 2026 19:42:49 -0800 (PST)
+Received: from [127.0.0.1] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d4490f35b7sm2812181a34.1.2026.02.04.19.42.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Feb 2026 19:42:49 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: ulf.hansson@linaro.org, hch@infradead.org, ziniu.wang_1@nxp.com
+Cc: linux-block@vger.kernel.org, linux-mmc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev
+In-Reply-To: <20260204034003.2961402-1-ziniu.wang_1@nxp.com>
+References: <20260204034003.2961402-1-ziniu.wang_1@nxp.com>
+Subject: Re: (subset) [PATCH v4 0/2] Optimize secure erase performance for
+ certain Kingston eMMC devices
+Message-Id: <177026296860.37701.668895586539274878.b4-ty@kernel.dk>
+Date: Wed, 04 Feb 2026 20:42:48 -0700
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowADnjWmsEYRppiAsBw--.11100S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJrW8Cw17JrW3CryDJryxZrb_yoW8GrWkpF
-	s8uF1jkw13X3yfWws2q3ykZF17tw1fKa13CrW8Xws3Zan8tryDtFW3tFW7AF95JFy5WayY
-	qa4kWay8ZF47tw7anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvv14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	Jw0_GFylc2xSY4AK67AK6r48MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-	67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
-	x0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
-	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73Uj
-	IFyTuYvjfUYb10UUUUU
-X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 
-Add error checking for regmap_attach_dev() call in imx7_reset_probe()
-function to ensure proper error propagation.
 
-Return the value of regmap_attach_dev() if it fails to prevent
-proceeding with an incomplete regmap setup.
+On Wed, 04 Feb 2026 11:40:01 +0800, ziniu.wang_1@nxp.com wrote:
+> This patch series optimize secure erase performance for certain Kingston
+> eMMC devices (IY2964 and IB2932) that take a fixed ~2 seconds per secure
+> erase operation regardless of size.
+> 
+> Currently, a 1GB secure erase requires ~300 operations (limited by max
+> discard size), taking ~10 minutes. With these changes, the same secure
+> erase completes in a single operation, reducing time to just 2 seconds.
+> 
+> [...]
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
----
- drivers/reset/reset-imx7.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Applied, thanks!
 
-diff --git a/drivers/reset/reset-imx7.c b/drivers/reset/reset-imx7.c
-index dd01fe11c5cb..59d0435302bb 100644
---- a/drivers/reset/reset-imx7.c
-+++ b/drivers/reset/reset-imx7.c
-@@ -364,6 +364,7 @@ static int imx7_reset_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct regmap_config config = { .name = "src" };
- 	const struct imx7_src_variant *variant = of_device_get_match_data(dev);
-+	int ret;
- 
- 	imx7src = devm_kzalloc(dev, sizeof(*imx7src), GFP_KERNEL);
- 	if (!imx7src)
-@@ -375,7 +376,9 @@ static int imx7_reset_probe(struct platform_device *pdev)
- 		dev_err(dev, "Unable to get imx7-src regmap");
- 		return PTR_ERR(imx7src->regmap);
- 	}
--	regmap_attach_dev(dev, imx7src->regmap, &config);
-+	ret = regmap_attach_dev(dev, imx7src->regmap, &config);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "regmap attach failed\n");
- 
- 	imx7src->rcdev.owner     = THIS_MODULE;
- 	imx7src->rcdev.nr_resets = variant->signals_num;
+[1/2] block: decouple secure erase size limit from discard size limit
+      commit: ee81212f74a57c5d2b56cf504f40d528dac6faaf
+
+Best regards,
 -- 
-2.25.1
+Jens Axboe
+
+
 
