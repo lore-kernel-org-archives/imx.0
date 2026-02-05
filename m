@@ -1,78 +1,331 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013037.outbound.protection.outlook.com [52.101.72.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9769E3612E4
-	for <imx@lists.linux.dev>; Thu,  5 Feb 2026 09:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770282940; cv=none; b=CLMHV6wtsWemR/FI6VdeoWW5PpVuxkvrxoTkonTCFe5oZONNpXLbc7sEUSfdo65oxqpCzZ+sh8kaVOLeLxLCbga9ND2GSElKCTAQqk31h21OTTr3LBcZyqx3Nt8fd1qXjqO4vmdPGmu36MGs5A3tr1lJCTcuCfMhtFq1NMMffVE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770282940; c=relaxed/simple;
-	bh=IhnniDnleOJRYD4v165EXk4k3ynNf9KHvznFDNU0nvA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=qQz3RQPb+HtM+bTsky6NZ8Eikk+nObY8OfY+AwDPnua65InER89A6OYmmsq2HJd7DJcOH4w3mdlFkMK48ftOQmaw/2PzKRhj0NJTg2TVZCaebJOJPqL61uZlxG9zF7xNpRv0wAVFWZ4NLCIA3qtHtREeWy7+CaPNQc4X3omjynM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qyMfgDWd; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13C730216D
+	for <imx@lists.linux.dev>; Thu,  5 Feb 2026 09:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770283561; cv=fail; b=W3LBbt3z3y7G/pO2vNW333fpA2gCS6FRVSFjrQvsivTfNCGcS/+eKwnREhdQcHs919u4iP0wVEUxeUuDMfmCrsp3hSyIFkPvNjddejDgtE7POmea1JWmIHwy9rieHelmxhVC+QG36jjsFnfbKAivKJN74p53JfGkfAy0vdUQlAI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770283561; c=relaxed/simple;
+	bh=XMSWWIQ1wWYMVmbMenpiGwU1iW1M2Z/7ve/loeRmIgw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=iSEXJAdJWC7HgTi6po4LIFEqfLxB1eLDXoYBz4U1i4TjxL3s1RxPwe1iuipI5HmpKacBdrQe2A3aveWCERqmcbhpkwek04d7pJCsknvIWHGRnLa1HNZVFaai06QLhpTlJApecN50K+EXO2coQ+D2GGaBtknV9eeypneb9togD+U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=NqlM+eTS; arc=fail smtp.client-ip=52.101.72.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qyMfgDWd"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 18C254E4240D;
-	Thu,  5 Feb 2026 09:15:38 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D84C2606FD;
-	Thu,  5 Feb 2026 09:15:37 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8FC30119A88F8;
-	Thu,  5 Feb 2026 10:15:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1770282937; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=IhnniDnleOJRYD4v165EXk4k3ynNf9KHvznFDNU0nvA=;
-	b=qyMfgDWdUTQb39ZA2e1rwvq040Mn39QlnEq8ButdLERRRFFrDldcetAZz+hJupSCvCKMSs
-	3og3PxJEbJRAyHmGx4MLBlkufiTOxvW2QYvBFnt8UO0i8jCimxuR2GjbKG2D7YwV+5okuQ
-	rMW9UwhQF5csUeyDCNqbcTiOIuqNnaFNRPKj3zf0QYteZ5rfgKHxAiiyy+ut2KXZIs7bZU
-	5C19+DI9/j2CckJoiR48hRSQoqChpmlXeiChe6pVVD5StioCCW8iqm9MV/pYha+/sYkroQ
-	kt3lCj+TGNCKjsuZt36p5XGAlFgknB1bKdmWdZnLorC3NiHf+6vvyyVFUdUvxw==
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="NqlM+eTS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XjXAxTsYcWZWgengS0UC1SPgOvZ12rn5dlARURV0dGBJuaJlLT0mAb3asWlsuslgSr7wfSmE4Ua0H4JtjNO2stQlYda5izV1Z/0FitLFSFOhjhFJeSqN2UF0j5kEjDPx0qDJ8kloylIQzb2DmtWQ9se2jcHktxu0wAAxjx3yX/gZo5OC3g1s+nkv1+0d/oU4SIbYj05+WZ0c/s3LIJZmizIG0d8HngQlA0eJbvTR/wKRrRB1IOyh9IIoLRRU1a2mm9oPtiBJIdp3YekJHYuiudULxunwF+UAKrFQiOXBtm/AuQJ0sLEsOGzFd2m/7Xva+Y6fG6AbXouuiwLlroq5gg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=obJ+wh5w4Zro2iUxvXMj+wuEnl8mLF5vODvJjX33U/o=;
+ b=Qbv1zxVE3wWyI8+34ynwMcZ/q++uGCgHYsk0648XbDFeTEM12NPvyufsKnpGzF8tdDr7TdCwum28SoXtOVcfQb9mnLUBT19pmaStPTg+5sNYb9eaBtjEZvLFuzdNL8P8SCexV3OutpdgA9FERHwisCqypYgk5k/ekabq2ntxennLVlVm1N7au5aSAnk3QNLAQakOdtaUgGeI1e2N0KJJ5q0OuI/9bI4GnfMYY0o4rkXHIurkhTubgt4yZ5Ugq3fHPoBNGcgtsOiidS7oV8xYn+JvB5NG8wnTkvCOTJFbRkkuajHuS+EVTZPOdTUGGIYB1Kb7Wu0upHWftWmo3UVBAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=obJ+wh5w4Zro2iUxvXMj+wuEnl8mLF5vODvJjX33U/o=;
+ b=NqlM+eTSsos0WVR6U9Md60ev/eU/s1ptwSZYLhosFVOuq4prt+AkM4a2a9TxPJnQ49g9SS0490dod+AVsD2IFY3SPNVD/z7JKn2aLKJzfuzJF1Dli7ssgMIT+cTXoa5oxrx6YpBEUhnTxjtX3X29ss/t/MlCv/gqNDDv+iI0z/OxLt53588Q+X8p2sY7QSErvgf2NhtW7icAp5oMmPmAZIJpbznXLebAdLlHWGheFuAVX0RVc3Qv03zhH/iBDN0488NQPcy3kvJD+ONaZ4YFeByBuE7AblJ7HVdVmWIN3hh8Z0OAlUlMyJIdqjyQU+mm1vA4jbXo1n9WUErUXaik9Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com (2603:10a6:20b:113::22)
+ by DBAPR04MB7222.eurprd04.prod.outlook.com (2603:10a6:10:1af::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.12; Thu, 5 Feb
+ 2026 09:25:51 +0000
+Received: from AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64]) by AM7PR04MB7046.eurprd04.prod.outlook.com
+ ([fe80::4609:64af:8a4b:fd64%4]) with mapi id 15.20.9564.014; Thu, 5 Feb 2026
+ 09:25:51 +0000
+Message-ID: <910325b6-2a0a-40ae-82c2-656fcbb0d060@nxp.com>
+Date: Thu, 5 Feb 2026 17:26:45 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] drm/bridge: imx8qxp-pixel-link: get/put the next
+ bridge
+To: Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: Hui Pu <Hui.Pu@gehealthcare.com>, Ian Ray <ian.ray@gehealthcare.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260203-drm-bridge-alloc-getput-drm_of_find_bridge-v5-0-66bda8d617b4@bootlin.com>
+ <20260203-drm-bridge-alloc-getput-drm_of_find_bridge-v5-1-66bda8d617b4@bootlin.com>
+ <8d8e678b-bd3f-441e-9496-e1461a1289ea@nxp.com>
+ <DG6WFD0WCCMQ.2AT7S8YHVLH7@bootlin.com>
+From: Liu Ying <victor.liu@nxp.com>
+Content-Language: en-US
+In-Reply-To: <DG6WFD0WCCMQ.2AT7S8YHVLH7@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
+X-ClientProxiedBy: SI2PR01CA0021.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:192::19) To AM7PR04MB7046.eurprd04.prod.outlook.com
+ (2603:10a6:20b:113::22)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 05 Feb 2026 10:15:31 +0100
-Message-Id: <DG6WXBLE7CZ0.27X527V71HZ7N@bootlin.com>
-Subject: Re: [PATCH] drm/imx: parallel-display: check return value of
- devm_drm_bridge_add() in imx_pd_probe()
-Cc: <dri-devel@lists.freedesktop.org>, <imx@lists.linux.dev>,
- <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-To: "Chen Ni" <nichen@iscas.ac.cn>, <p.zabel@pengutronix.de>,
- <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
- <tzimmermann@suse.de>, <airlied@gmail.com>, <simona@ffwll.ch>,
- <Frank.Li@nxp.com>, <s.hauer@pengutronix.de>, <kernel@pengutronix.de>,
- <festevam@gmail.com>, <louis.chauvet@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-X-Mailer: aerc 0.20.1
-References: <20260204090629.2209542-1-nichen@iscas.ac.cn>
-In-Reply-To: <20260204090629.2209542-1-nichen@iscas.ac.cn>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7046:EE_|DBAPR04MB7222:EE_
+X-MS-Office365-Filtering-Correlation-Id: 462a0781-35cd-4bde-58a2-08de64988dfa
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|366016|19092799006|376014|7416014|1800799024|7053199007|921020;
+X-Microsoft-Antispam-Message-Info:
+ =?utf-8?B?OFBocWU5SjZKYlUza1hwc1YxcmlkVmh0Tk5hdnBzM09sTnNpTU92Z0YrZys4?=
+ =?utf-8?B?WnIzcWdZQmZCK1BLbklIYkhhNGxvVmVubnV3dm5NZmdaSytZUGU1RTY1KzVy?=
+ =?utf-8?B?d1pwc1JzSm01SERQeWoydDBpSXh2ZFN1SC9ITVRGd0IwdjRYYzg4WHFJYytN?=
+ =?utf-8?B?SWg2RmhoclJDektzeEJIaU9UVkJXTjZkdkJFalBsWmJOaU5zNXh3b0JjZGtn?=
+ =?utf-8?B?QkRjRW9jbWFKcWpwRGJyRVJrL0hkZ2tBU2FtVnc5akJYK05hYkp2VThMTEFn?=
+ =?utf-8?B?NWFMUjl1ZnZGb1NyTldyRmROVkJJMnBNa0swL1RpRGFnaU0rYThXZi9rQmtS?=
+ =?utf-8?B?VGlXcG5WN0RZL2YyOWZEVXp6WjIwTWdLT1cvbTVvY083cEU2MDJmU1pXN2t1?=
+ =?utf-8?B?bVVtNUFtUHVnUlF3VGUyQ1UyUVdaN3BZMEV0enhRdE9WMHVvc1VaaXFDQUJX?=
+ =?utf-8?B?eURPTHFwYkd2ZGRETEZRckR2SThrczE2OER6aW4zdEN3VjZNSjE0Smo4bU9Y?=
+ =?utf-8?B?Y0xjem5hQk9xSW1wY1FwdE1TRHNkYlBtZHo1SzdITStpS05JbDdVTGZtN1dV?=
+ =?utf-8?B?VEM3NFlOazZLSzNBZ2NVak9reDZiRFVHdy9qdUFYc1A4eWwwZ3AzS3R5Mmkw?=
+ =?utf-8?B?NTI0dlY2bTBoellqekhVVEhqblJHNUtuaWxhSmV3ZzR5NVd0R1BmRjl6Z1I2?=
+ =?utf-8?B?aVU4L3lOeG1rMWVISENQK09JSGppYlhRREJYbExFTnI2RXpXNEMwTlV0ak10?=
+ =?utf-8?B?SEYyeTdXQTZZdnlqSXlDSXV4eFBodEdjeDBaQzFZNm53cnVVUTIwbDRUUGFL?=
+ =?utf-8?B?VTRtMzVGMjdCZEwzWkV4cE4rdEdCcTlyMi9zbzV5ckkwTmRzQlFtVFNNenRI?=
+ =?utf-8?B?bDJSbFlvb3Boa3lENG9aL3JzVm1VUTJQRmd3Sm9mcnRQY0lDcDhtcncvU3Zj?=
+ =?utf-8?B?bmY2MTRXZkM1Wi9ucEN6UW1IN01xYUNYZituRm9vTkJWSDJYOUh0ZXNFeUhw?=
+ =?utf-8?B?TWVIZ0dJdEU4eFNoT0Q0b1hxQzZPcjE4ZktNOERIWkhRM2lBMndIY0dHVVda?=
+ =?utf-8?B?Y09RN0M3UFkyWHZSbDNBU25yMXZqWG1HTkRyNlJjN0NXS05RVnMwMUpBU2I1?=
+ =?utf-8?B?bGlFTzk3aTBSTDNtZWlaY0JlL3NQOGhDbkRlMnVHTzluUmJmam5pbnZubG4x?=
+ =?utf-8?B?LzFKUDgyY2QxZ1dvV3gzeHh6OHd4UG8xTnI3aEJGK1RUL3E2Mkdua2hIRjN1?=
+ =?utf-8?B?RVd5YndRVTRsdkl3eUV1UnZNU2FiS3c3V2RhNHJqSUsvTWFwMUM5REpyUy96?=
+ =?utf-8?B?clI3by9NNlRJQ3JodTFNSEp5SHlnaURrSTJNUGRWWk1HV0UyZUw4aGVBMVRF?=
+ =?utf-8?B?VWpRaW9VTU1tN3JQNm03K1p2TFAxZ09qWXd2OGVueVJuVzlXRVdSTEFlWkpa?=
+ =?utf-8?B?WXVqOFkzMnVlbFBKTDRyQzR3dzliOHF0dE9YZXdKeWJHZVlHRnpKelJzMFBN?=
+ =?utf-8?B?Y1pwV3dLT3VLbnU4cUUvMXlUak5yUzlyVXRKVWF3ZzFRTlIzZGluOWZ4Znpn?=
+ =?utf-8?B?aHpSZU5iTkNZbjJCVDN6SUppODU1VXFMWjVFVWJtd1dNa250VHZuSnNjV1h5?=
+ =?utf-8?B?bmJwVy9GUGt3M00zMGEweURuWE10T1pGd3FBMzB3SG04MC8yaUNPY3BJd0lE?=
+ =?utf-8?B?TVRTYWEzZWVFT0EzQzBHbWRWcUQ5N3dibDc1OThWMnpuRElkNFJpbmhmT3l2?=
+ =?utf-8?B?SjVOSlpxWkxxVW9tcVBjZ0dQTk1xNTc2UURYUzZ6WFBnUTVsWVRqNlJqNFNk?=
+ =?utf-8?B?U1FnV3B5cGVhQlMzcUVTMmgrK2RGaDROb1VIOForMnNoT3pQM1Fxb05CNDNr?=
+ =?utf-8?B?eWdqNEpSMXZnNnR2VmxmSlVVMjEzMUIxb3Q2U3dLNm0xSy9ocDFQS0c0R3N1?=
+ =?utf-8?B?QXF4eDc0Zk1XeWNSQlNTY1AwUmMyeEk1U0h6dDZTNi90RU1saEJRY3Z2MitJ?=
+ =?utf-8?B?SDVtMkdzRE4wRXJLYVJEZE9UWmc1VlpCTmdSZW1VMUpCSUx0dlphWFU2ZGg3?=
+ =?utf-8?B?RXRzQThWLytjenV2QUJ1djBoWHg2NGZsYnlsSVB4WEp0LzgzSi9tSFl5eXJ4?=
+ =?utf-8?Q?x+zc=3D?=
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7PR04MB7046.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(376014)(7416014)(1800799024)(7053199007)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?NllBRHpsTlBqYllHcUFPTlhxOU1OS3JIKytoMjRPR3J1QUpTeTNqZWFhUGc4?=
+ =?utf-8?B?VjhhQkpEaTNFWUw4QkFEcGFnVnVQNzNzOW44UEZJMmROK1VwZWFoT2xFZEkr?=
+ =?utf-8?B?SThXdlpFdExWSjNtRmlQUTRmUloyZ05rOHVTa3haRkIwYVFrNVZ6VXYzNno5?=
+ =?utf-8?B?KzBITGdDOTVUSHhNUDdMcmFjNlpDOU00SWo4MlgyalNRSGluU0RNWGpxWUsz?=
+ =?utf-8?B?RUxxWTRkdTVoYUc1cDgxMnJuWDlRUC9FVEZOZ1Y5ekpkQXFEVElQSTdjcEJF?=
+ =?utf-8?B?NDlwMk9LNlZNaFltVUJtRlpGWC9pWDkwV3JNd2plbzNrNzBBZnhVMHRjOWxG?=
+ =?utf-8?B?Rm5KUnpaZFVvYVRGVXF3R1J0KzRyRUhtZUxleHpsZzhFUVh2VHc5ZmtNRXdZ?=
+ =?utf-8?B?YitRMzJZOTJmdWcvTi9EYVY0a2JpWXFKQTBkcFplT2EydDV3SjJMVWFUNVBO?=
+ =?utf-8?B?QXc4bEZoSm4vMWMyUEljY3pKbnVjMjVQcFFRd2NlYUJjOE5QZzVodEE4MnRt?=
+ =?utf-8?B?SHREVm9VTkZxK3o3WDNCbkx5VXQyY3RFaE5LMjk1RXlVdG0ra01lYXBJbnda?=
+ =?utf-8?B?ZDNPZFJ5QVl2djBpdE52MzZ6aXhTWHNtNGFkSmx1aFg2cTNUWEo1L1FDbGJZ?=
+ =?utf-8?B?cWljei9mQXp0dVVQaWpiNFJaa0gzY09aT2o4R0FPaE56dFFSUTV0MDZVNEpN?=
+ =?utf-8?B?N0tHaEpTbXlSZkpCVkVtakl5OUE1d1RVeWFVZ3phb1dWSGdkTW80STNSMkNj?=
+ =?utf-8?B?ajg4NStMRWNJZTErWkJ5NitNNVdvc09TOVBqYWtoTW45NmZ5eElMdUdxQlFh?=
+ =?utf-8?B?ZmdaYU8xS2c2Q1NFQkFiQlRXM2xVd3VLdDJ6emtScyticzhWeGM5VVpISmpT?=
+ =?utf-8?B?Q0k2dGwxSUk0cjZaaE9FZmJHR2pqSW52aW9TMWNvTE1KcnNmbjBuQktKQUFM?=
+ =?utf-8?B?K05Mb0hzL05tSWdrQjBaKzNRNG1xQytQaEhIUjVQU0VpVHdhOWZ0ampYMnFQ?=
+ =?utf-8?B?SW5IU3NZR0xjcnUzWW1tUXpMTzFjL1VUQktsT1VlZGRxeHZpZXBDcmdCMkpm?=
+ =?utf-8?B?WFhQNTRpZzFtbnRlMThydTBVT1dycW0wRDRENDFUTWlRZnFVV3lkMncybCtW?=
+ =?utf-8?B?SndmbmVUTTRoOWdlV3BsOENPaUcwbURkckNzaWdKa0t2UzBvYlJFQmxpcHN6?=
+ =?utf-8?B?MDllQmlLZHV0c09hYW8xZElWREU0WDNIZWNITzZsRGplTmx5ZERTUTdUZ21B?=
+ =?utf-8?B?dC9iYUdEUHROM2lkSjhEbzE1c0cxMVNCL3JkbGxXQmpTYkVEMTNaU096dnFP?=
+ =?utf-8?B?dms3bjJHbFRKb3BJbHN6UkZtSmUzZ2VuWWZ6MVE3Q0lVeTUrR2tIYjlUTDVX?=
+ =?utf-8?B?M1lWMkV2dFFUSm9rTFV2SGxIblQ4d0JKeDdoTFE2a2o0cFNwUHkwenBSMFdX?=
+ =?utf-8?B?dENEcW81ZEphakh2T3Z1dERpK1ljRWJ0Q0RzbEpiNFpzS1pRd1Blcm9aL2kv?=
+ =?utf-8?B?VlhYUy9iNVhSUkRvdUJWdFVmUTAzK2grM2lIcTV3NDQ0NWxJbXVtbUU2QlF0?=
+ =?utf-8?B?VmdLYnE0azliWnEwbFJtdjI5dXFRUjRHRkZVelEyWFl1OURaZlRIVXhlMC9a?=
+ =?utf-8?B?TXJZRlB1WURuSjIyamVDMmtoK1lQTG53Nk9aRElMUVZmaW5QL3lxUHdJZGsy?=
+ =?utf-8?B?Z2VvSzZMY01lbWFpWkttOU5Uc0w1dEN3WWo4ajJjeDlBbDJ3VmJjMGNSbTNi?=
+ =?utf-8?B?RHBSc0o4SVllenNQaS9qUTJ2QmRUVThIWTFxTEM1YlF6akpiS0VQcHhZbFB1?=
+ =?utf-8?B?dDgwOWxFWGw5bmRBdXlxc2VYcnJMMVhONG5KWXFJWmhwa2NyMlhPOGwxM3JI?=
+ =?utf-8?B?VEtOMmFqbDBBMkxZQkRHcFljelNwSEFyTTNrZnBpbTI5Yzl0Ulh4cWs1Q2xY?=
+ =?utf-8?B?WVRGQm9WYWFqUk1WOXhTYkozTjBEd0pWRzhSK0d0Tk51K0dERGdtRlhwMy9P?=
+ =?utf-8?B?SjJIaVdZWVprenU3SXlyemwyUW9PTGdaZHZkWkhmdXN0RE8wWktnS3R6TkZS?=
+ =?utf-8?B?anRPNkVtemJ6bVlvaUFTcFJDRDQwM2pvbUVocnQ3NHhJK0xiZWlCbWxkbWgr?=
+ =?utf-8?B?NzVyMDEwMGVlcnowdGJoK1FMVzg4V0V2dzNMQjE2L0VFMjE4cGtsSzBTd2xx?=
+ =?utf-8?B?OEFtR0ZkVDFBVFJZREZ4UmQzRFJ4S2NHVkx2a3ZaTVNnV2RvQ1hGdEp4ODNi?=
+ =?utf-8?B?Y3RzNWRGOWx0U05pSkN4UHluOEQ3VWZBZHp4aERKMmlGaTA3ZTlNdHRiUk1V?=
+ =?utf-8?B?NWZlWWtYUjZWVnMwem5JUDkxWTBocTlDdm1jTjhnR3VXNmRoT21Mdz09?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 462a0781-35cd-4bde-58a2-08de64988dfa
+X-MS-Exchange-CrossTenant-AuthSource: AM7PR04MB7046.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 09:25:51.5811
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AQRp8EEvYE+QODxXjhpw71x8zGfWaoyg+hB87G2m8tDGpj4FaFbfN0HsY9a3zW18WA6dVlwFgf9k0xT5/mdv1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7222
 
-On Wed Feb 4, 2026 at 10:06 AM CET, Chen Ni wrote:
-> Return the value of devm_drm_bridge_add() in order to propagate the
-> error properly, if it fails due to resource allocation failure or bridge
-> registration failure.
->
-> This ensures that the probe function fails safely rather than proceeding
-> with a potentially incomplete bridge setup.
->
-> Fixes: bf7e97910b9f ("drm/imx: parallel-display: add the bridge before at=
-taching it")
-> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+On Thu, Feb 05, 2026 at 09:52:04AM +0100, Luca Ceresoli wrote:
+> Hello Liu,
 
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Hello Luca,
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+> 
+> On Wed Feb 4, 2026 at 7:27 AM CET, Liu Ying wrote:
+>> Hi Luca,
+>>
+>> On Tue, Feb 03, 2026 at 11:35:25AM +0100, Luca Ceresoli wrote:
+>>> This driver obtains a bridge pointer from of_drm_find_bridge() in the probe
+>>> function and stores it until driver removal. of_drm_find_bridge() is
+>>> deprecated. Move to of_drm_find_and_get_bridge() for the bridge to be
+>>> refcounted and use bridge->next_bridge to put the reference on
+>>> deallocation.
+>>>
+>>> To keep the code as simple and reliable as possible, get a reference for
+>>> each pointer that stores a drm_bridge address when it is stored and release
+>>> it when the pointer is overwritten or goes out of scope. Also remove the
+>>> intermediate selected_bridge variable to reduce the refcounted variables in
+>>> the function. The involved pointers are:
+>>>
+>>>  * next_bridge loop-local variable:
+>>>    - get reference by of_drm_find_and_get_bridge()
+>>>    - put reference at the end of the loop iteration (__free)
+>>>
+>>>  * pl->bridge.next_bridge, tied to struct imx8qxp_pixel_link lifetime:
+>>>    - get reference when assigned (by copy from next_bridge)
+>>>    - put reference before reassignment if reassignment happens
+>>>    - put reference when the struct imx8qxp_pixel_link embedding the
+>>>      struct drm_bridge is destroyed (struct drm_bridge::next_bridge)
+>>>
+>>> Additionally, split the somewhat complex if() for readability.
+>>>
+>>> Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+>>>
+>>> ---
+>>>
+>>> Changes in v5:
+>>> - rewrite commit message after Liu's review to clarify the per-pointer
+>>>   get/put idea
+>>> - split the if()s involved in selcting the bridge
+>>> - remove intermediate selected_bridge pointer
+>>> - removed Maxime's R-by, patch changed
+>>> ---
+>>>  drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c | 17 ++++++++++-------
+>>>  1 file changed, 10 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
+>>> index 91e4f4d55469..e29e099b893a 100644
+>>> --- a/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
+>>> +++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pixel-link.c
+>>> @@ -23,7 +23,6 @@
+>>>
+>>>  struct imx8qxp_pixel_link {
+>>>  	struct drm_bridge bridge;
+>>> -	struct drm_bridge *next_bridge;
+>>>  	struct device *dev;
+>>>  	struct imx_sc_ipc *ipc_handle;
+>>>  	u8 stream_id;
+>>> @@ -140,7 +139,7 @@ static int imx8qxp_pixel_link_bridge_attach(struct drm_bridge *bridge,
+>>>  	}
+>>>
+>>>  	return drm_bridge_attach(encoder,
+>>> -				 pl->next_bridge, bridge,
+>>> +				 pl->bridge.next_bridge, bridge,
+>>>  				 DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+>>>  }
+>>>
+>>> @@ -260,7 +259,6 @@ static int imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
+>>>  {
+>>>  	struct device_node *np = pl->dev->of_node;
+>>>  	struct device_node *port;
+>>> -	struct drm_bridge *selected_bridge = NULL;
+>>>  	u32 port_id;
+>>>  	bool found_port = false;
+>>>  	int reg;
+>>> @@ -297,7 +295,8 @@ static int imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
+>>>  			continue;
+>>>  		}
+>>>
+>>> -		struct drm_bridge *next_bridge = of_drm_find_bridge(remote);
+>>> +		struct drm_bridge *next_bridge __free(drm_bridge_put) =
+>>> +			of_drm_find_and_get_bridge(remote);
+>>>  		if (!next_bridge)
+>>>  			return -EPROBE_DEFER;
+>>>
+>>> @@ -305,12 +304,16 @@ static int imx8qxp_pixel_link_find_next_bridge(struct imx8qxp_pixel_link *pl)
+>>>  		 * Select the next bridge with companion PXL2DPI if
+>>>  		 * present, otherwise default to the first bridge
+>>>  		 */
+>>> -		if (!selected_bridge || of_property_present(remote, "fsl,companion-pxl2dpi"))
+>>> -			selected_bridge = next_bridge;
+>>> +		if (!pl->bridge.next_bridge)
+>>> +			pl->bridge.next_bridge = drm_bridge_get(next_bridge);
+>>> +
+>>> +		if (of_property_present(remote, "fsl,companion-pxl2dpi")) {
+>>> +			drm_bridge_put(pl->bridge.next_bridge);
+>>> +			pl->bridge.next_bridge = drm_bridge_get(next_bridge);
+>>> +		}
+>>
+>> Can you drop the intermediate next_bridge variable to simplify the code?
+>>
+>> -8<-
+>> if (!pl->bridge.next_bridge) {
+>>         pl->bridge.next_bridge = of_drm_find_and_get_bridge(remote);
+>>         if (!pl->bridge.next_bridge)
+>>                 return -EPROBE_DEFER;
+>> }
+>>
+>> if (of_property_present(remote, "fsl,companion-pxl2dpi")) {
+>>         drm_bridge_put(pl->bridge.next_bridge);
+>>         pl->bridge.next_bridge = of_drm_find_and_get_bridge(remote);
+>>         if (!pl->bridge.next_bridge)
+>>                 return -EPROBE_DEFER;
+>> }
+>> -8<-
+> 
+> Potentially calling of_drm_find_and_get_bridge() twice on the same node,
+> with a put in the middle, looks poorly readable to me, even though it still
+> looks correct code.
+> 
+> However I think we can do even better with an 'else if':
+> 
+>   if (!pl->bridge.next_bridge) {
+>          pl->bridge.next_bridge = of_drm_find_and_get_bridge(remote);
+>          if (!pl->bridge.next_bridge)
+>                  return -EPROBE_DEFER;
+>   } else if (of_property_present(remote, "fsl,companion-pxl2dpi")) {   <===
+>          drm_bridge_put(pl->bridge.next_bridge);
+>          pl->bridge.next_bridge = of_drm_find_and_get_bridge(remote);
+>          if (!pl->bridge.next_bridge)
+>                  return -EPROBE_DEFER;
+>   }
+> 
+> Looks OK?
+
+Both are fine to me.  TBH, I feel my version with two 'if's is a bit easier
+to read.  But, I'd say up to you.
+
+> 
+> Luca
+> 
+> --
+> Luca Ceresoli, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com/
+
+-- 
+Regards,
+Liu Ying
