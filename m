@@ -1,83 +1,57 @@
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594BE31A81F
-	for <imx@lists.linux.dev>; Thu,  5 Feb 2026 05:24:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9AC1F471F;
+	Thu,  5 Feb 2026 05:28:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770269073; cv=none; b=bJmxTHL1qb86i3KFIMmxStn7qujE7bJdibqFmabsk/wmD/lmKC0YVZC2/XtKwz2OfLCRe2cP+b6EBt3D+RUuofKdMWSwyE3bJTOBgkxCZBQsDeURUolEUL+MRsw8jb7wwGwv9qvbAEv793+wadfoFQW1L5AH/IDs7ddJgle1cUc=
+	t=1770269320; cv=none; b=UAgtf3t83Qyfcs7j3SpJc91HXUgMP17aEu0xLSmcqw/ICYAVm4NU1+YmTWSvEeLalu23cyIR1Ed6kRPMgBlJyiPhQvzvgEWSmjdxdu3S2rU5u6+6vyT+PwsjdIMUtb4N0DQhCfwSbudf9YrueyhvLhmEXIN9bBLEu8J2XyYN3vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770269073; c=relaxed/simple;
-	bh=PpFoTrEob6zmU8S7w2lrzqtIJeJYrJEyv/fehN/5IOQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LZkEQ/rK7r+V5tLDJZk2Ug3cFqjlMVmpvS0OomPeldnGiH/heM4xqmf0nKETmc79G0m9uLHo1NHS5NcKVz3Wo3eXdT5ETMrmoYl3XbjYuLbwgTvTfl/BfJJRJA0NiBgiLckEqkBqXSzp++fV313FPaVCfDdOeUE6Sw+CdkI2duw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu; spf=pass smtp.mailfrom=u.northwestern.edu; dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b=Si2xnvMA; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=u.northwestern.edu
+	s=arc-20240116; t=1770269320; c=relaxed/simple;
+	bh=BBfLCDc2/uDCwmTSk1Ji6KmW/FlEp2r0PF0c3zsmOBE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FF3dby1bFjSIe3Rmo03D1E4dFoQ53maxcHxTaLtwAkz7fu0chHOl33RSAA5CdR37xpaGX3WH5e3iNbmGTZCpsv+YKgNBKBpSeBClVsKqvxNid4F2JVdYtza2YjN8Yca9r/cuW70vIDTl06nmh+07+uYPduEAbiLox0+3yoC1Ulc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K3KkRD3m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b="Si2xnvMA"
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7cfdf0c8908so360703a34.0
-        for <imx@lists.linux.dev>; Wed, 04 Feb 2026 21:24:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=u-northwestern-edu.20230601.gappssmtp.com; s=20230601; t=1770269072; x=1770873872; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q36RarQ5zuLWjYNX7YesQ+nnj2Oub0jdvj6mHXnRkNk=;
-        b=Si2xnvMAkSmvZjZotZns3Uhp1zKvetzs3zTeRmEi6uEiTNI+iNODioqow1eBGWEKWd
-         Mlw1BFrixQnqIaARqAAp0U3YOukDSneQzqXr3LcO2i/3vS1CV50UPQUUb9rluMj0r4p1
-         bfKK1sPOuz9AcOH7hdDWOT7i3AbojCbIrvMl6NRtPQMBYIIUFbgOsPJrxXdIuFzTrsTy
-         KxTR3+j90D8TT0Uq6Rx9hjE33ptRNYMN5v2nphFCrGIJyboOoAJGkq/5xgeVCFVK0Jqx
-         aYZNgNDcl1sfPAt7hXquRtLWy92IRInsOamFTW6UicjoYmDZuW0PwYFGIWLAGIcEVXfl
-         7ufg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770269072; x=1770873872;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q36RarQ5zuLWjYNX7YesQ+nnj2Oub0jdvj6mHXnRkNk=;
-        b=SvsE6zTC1SJyhUCvQAx4ZQ8rHbuleNt76xSYEvZBFKA6bE3h+5yBdP9yDxt1KOuGO9
-         JiEb94hoy6e2tG5fmnY03zfUzBBlx+43nCQme1jKIoX6dSxZZ94CeVC+SwTbmgnUAPOb
-         k3f8jDf1yWEUs7CIx4it2IcJCXV1BH+qfsSlOvj1iKcNsM7BOKux0LHNqpfZSotiCL1U
-         bE+CCIBiETHrrNvLfuBkc+cfo+fIFLm+nwJJ+QNIjtOfiMn5I1jDAKeE8OW7xh5gWr8R
-         GqhFusnqBd72v9FQngm6TJEtraYmtV+jqTPxE+um0H+nioBXSTPWgTmiOj9QFaNbOBqv
-         MYGg==
-X-Forwarded-Encrypted: i=1; AJvYcCUbPaUF2gybONwNm7egsE/4qbSnT0DRmBgbIAA3ut2HtyFE+UDYIz3W2tSlsmMW0b2aS1g=@lists.linux.dev
-X-Gm-Message-State: AOJu0YworFzAQN4+atgm+Vzwy++bzyTyaQBDrOyAeIGMfxaevBE+b+84
-	L6pbCb7YffFL0Ia5VN/FcKhXCuOuWIw8dAkv8CUyAAonO2RcygK/uxDrwbf04ah0is8=
-X-Gm-Gg: AZuq6aK7ys/gDHchxH4jbSbY4QzCbGhCUaGvrA8h+jPoKq46W+h3UnjUW3PbYlPfNWo
-	oWuTVFJ0UMVX48xLkvdXElAbZMNnDPqNLZGcBIG6bX7+D0KWCy0g4m1RXS6v5P15FPo3kfZ6jfz
-	+zHpoiLHKE/Zs5nFs3KBGYWjA5Fyd5UPSuMLXom/PfyOQ2asni3/7wKJUdsLCfjo2ZT0esJe60s
-	ytiIYquX+u3ayTqQr0hvt+ctn470dxhCrx1+S4H2blLqZ7Iy7r2wa3ICDWpdj0eZJir6ZfU5zLA
-	FYJsBpkrg6N+KsDiPCfgqExVJaFqwkX0rNcFtYX/xR0KimlWg5Xxd3rUBr/huC9wwvN9iq+BLY+
-	gDp42xVh4Ntr2GI9MF8zuok4PqknJudhTQcet9lOWG1fiFsFJmjr+5HgEVVVCb8VYL9kLblCXKY
-	zT5ATZarRM44ERyoAWv7NW32td/juMTQ7RVIxc0Z3JZN2u3ULJMBq4whkMhGBODK0qL7eyv3pU7
-	EAFNrT91xnCreYt8XrZnRm4rIYSiYw=
-X-Received: by 2002:a05:6830:2649:b0:7d1:87ef:2b01 with SMTP id 46e09a7af769-7d44899c6a7mr2655061a34.10.1770269072338;
-        Wed, 04 Feb 2026 21:24:32 -0800 (PST)
-Received: from security.cs.northwestern.edu (security.cs.northwestern.edu. [165.124.184.136])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d45bd28d81sm98644a34.6.2026.02.04.21.24.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 21:24:31 -0800 (PST)
-From: Ziyi Guo <n7l8m4@u.northwestern.edu>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>
-Cc: Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	kernel@pengutronix.de,
-	linux-sound@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K3KkRD3m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFEA1C4CEF7;
+	Thu,  5 Feb 2026 05:28:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770269319;
+	bh=BBfLCDc2/uDCwmTSk1Ji6KmW/FlEp2r0PF0c3zsmOBE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=K3KkRD3mQgYJ18W/8bq3mA9yT+cLveQshHPaHZd/DN3UlCTZleACxtx6uOo3beHjz
+	 8f092D0wOVbKWAoux3EeXpEjPY8KfOgasazv3ekJOfBkCYGi+x4AirUJd/IDEejDGs
+	 LtJfnlarGj17U15Bwie62MofkMQUeRDkEHolXQ3HbiN5CFIvP3L17AWrQQfDgb7Q6V
+	 i711FpbmU/dAZ38ynZr0K044E8kaCF08RKl4pCzeBG9Hm2fWCZOBvbniJO4qB9cupN
+	 GbwdSsJJue9ANOavzpc41UZZkxfnv0j95xK1lBRag9WDpH+3NK8mNl6RsJDj0SGpV7
+	 RYSUnyJQ6W4Sw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: wei.fang@nxp.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	ast@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	xiaoning.wang@nxp.com,
+	john.fastabend@gmail.com,
+	daniel@iogearbox.net,
+	sdf@fomichev.me,
+	frank.li@nxp.com,
 	linux-kernel@vger.kernel.org,
-	Ziyi Guo <n7l8m4@u.northwestern.edu>
-Subject: [PATCH] ASoC: fsl: imx-rpmsg: use snd_soc_find_dai_with_mutex() in probe
-Date: Thu,  5 Feb 2026 05:24:29 +0000
-Message-Id: <20260205052429.4046903-1-n7l8m4@u.northwestern.edu>
-X-Mailer: git-send-email 2.34.1
+	hawk@kernel.org,
+	horms@kernel.org,
+	bpf@vger.kernel.org,
+	edumazet@google.com,
+	netdev@vger.kernel.org,
+	imx@lists.linux.dev,
+	shenwei.wang@nxp.com
+Subject: Re: [v6,net-next,06/15] net: fec: add fec_enet_rx_queue_xdp() for XDP path
+Date: Wed,  4 Feb 2026 21:28:37 -0800
+Message-ID: <20260205052837.2449389-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260203052329.1085444-7-wei.fang@nxp.com>
+References: <20260203052329.1085444-7-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -86,35 +60,130 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-imx_rpmsg_probe() calls snd_soc_find_dai() without holding client_mutex.
-However, snd_soc_find_dai() has lockdep_assert_held(&client_mutex)
-indicating callers must hold this lock, as the function iterates over the
-global component list.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-All other callers of snd_soc_find_dai() either hold client_mutex via the
-snd_soc_bind_card() path or use the snd_soc_find_dai_with_mutex() wrapper.
-
-Use snd_soc_find_dai_with_mutex() instead to fix the missing lock
-protection.
-
-Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
- sound/soc/fsl/imx-rpmsg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+net: fec: add fec_enet_rx_queue_xdp() for XDP path
 
-diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
-index 53f04d1f3280..76a8e68c1b62 100644
---- a/sound/soc/fsl/imx-rpmsg.c
-+++ b/sound/soc/fsl/imx-rpmsg.c
-@@ -145,7 +145,7 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
- 	data->dai.ignore_pmdown_time = 1;
- 
- 	data->dai.cpus->dai_name = pdev->dev.platform_data;
--	cpu_dai = snd_soc_find_dai(data->dai.cpus);
-+	cpu_dai = snd_soc_find_dai_with_mutex(data->dai.cpus);
- 	if (!cpu_dai) {
- 		ret = -EPROBE_DEFER;
- 		goto fail;
+This commit separates XDP path packet processing from fec_enet_rx_queue()
+into a new function fec_enet_rx_queue_xdp() to optimize XDP performance.
+Performance testing on iMX93 shows improvements across all xdp-bench tests.
+
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -1666,71 +1666,6 @@ static int fec_enet_update_cbd(struct fec_enet_priv_rx_q *rxq,
+>  	return 0;
+>  }
+>
+> -static u32
+> -fec_enet_run_xdp(struct fec_enet_private *fep, struct bpf_prog *prog,
+> -		 struct xdp_buff *xdp, struct fec_enet_priv_rx_q *rxq, int cpu)
+> -{
+
+[ ... ]
+
+> -	default:
+> -		bpf_warn_invalid_xdp_action(fep->netdev, prog, act);
+> -		fallthrough;
+> -
+> -	case XDP_ABORTED:
+> -		fallthrough;    /* handle aborts by dropping packet */
+> -
+> -	case XDP_DROP:
+> -		rxq->stats[RX_XDP_DROP]++;
+> -xdp_err:
+> -		ret = FEC_ENET_XDP_CONSUMED;
+> -		page = virt_to_head_page(xdp->data);
+> -		page_pool_put_page(rxq->page_pool, page, sync, true);
+> -		if (act != XDP_DROP)
+> -			trace_xdp_exception(fep->netdev, prog, act);
+> -		break;
+> -	}
+> -
+> -	return ret;
+> -}
+> -
+
+[ ... ]
+
+> @@ -1962,7 +1879,167 @@
+
+[ ... ]
+
+> +static int fec_enet_rx_queue_xdp(struct fec_enet_private *fep, int queue,
+> +				 int budget, struct bpf_prog *prog)
+> +{
+
+[ ... ]
+
+> +		switch (act) {
+> +		case XDP_PASS:
+> +			rxq->stats[RX_XDP_PASS]++;
+> +			/* The packet length includes FCS, but we don't want to
+> +			 * include that when passing upstream as it messes up
+> +			 * bridging applications.
+> +			 */
+> +			skb = fec_build_skb(fep, rxq, bdp, page, pkt_len);
+> +			if (!skb)
+> +				trace_xdp_exception(ndev, prog, XDP_PASS);
+> +			else
+> +				napi_gro_receive(&fep->napi, skb);
+> +
+> +			break;
+> +		case XDP_REDIRECT:
+> +			rxq->stats[RX_XDP_REDIRECT]++;
+> +			err = xdp_do_redirect(ndev, &xdp, prog);
+> +			if (unlikely(err)) {
+> +				fec_xdp_drop(rxq, &xdp, sync);
+> +				trace_xdp_exception(ndev, prog, XDP_REDIRECT);
+> +			} else {
+> +				xdp_res |= FEC_ENET_XDP_REDIR;
+> +			}
+> +			break;
+> +		case XDP_TX:
+> +			rxq->stats[RX_XDP_TX]++;
+> +			err = fec_enet_xdp_tx_xmit(fep, cpu, &xdp, sync);
+> +			if (unlikely(err)) {
+> +				rxq->stats[RX_XDP_TX_ERRORS]++;
+> +				fec_xdp_drop(rxq, &xdp, sync);
+> +				trace_xdp_exception(ndev, prog, XDP_TX);
+> +			}
+> +			break;
+> +		default:
+> +			bpf_warn_invalid_xdp_action(ndev, prog, act);
+> +			fallthrough;
+> +		case XDP_ABORTED:
+> +			/* handle aborts by dropping packet */
+> +			fallthrough;
+> +		case XDP_DROP:
+> +			rxq->stats[RX_XDP_DROP]++;
+> +			fec_xdp_drop(rxq, &xdp, sync);
+> +			break;
+
+Are XDP_ABORTED and invalid XDP actions being traced properly? In the
+deleted fec_enet_run_xdp() function, the error path included this check:
+
+    if (act != XDP_DROP)
+        trace_xdp_exception(fep->netdev, prog, act);
+
+This would trace both XDP_ABORTED and invalid actions (after calling
+bpf_warn_invalid_xdp_action). The new code in fec_enet_rx_queue_xdp()
+calls trace_xdp_exception() for XDP_PASS failures, XDP_REDIRECT failures,
+and XDP_TX failures, but not for XDP_ABORTED or invalid actions.
+
+This trace information is useful for debugging XDP program issues and
+monitoring abnormal XDP behavior.
+
+> +		}
+> +
+> +rx_processing_done:
+
+[ ... ]
+
+> +	return pkt_received;
+> +}
 -- 
-2.34.1
-
+pw-bot: cr
