@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F041B3D7D66;
-	Thu,  5 Feb 2026 13:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083F43D7D67;
+	Thu,  5 Feb 2026 13:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770299317; cv=none; b=G1o8Th4/5fMphWaqz/SNXFJkzav/1lI/EzFhRMTDSHglA9QVJhpy52OTuXikxqaW3URsKoKLYDSXmgqKJZbcFZZ5gfxwaaUSd3ZLd1CQT6t+SE9UHb9HcBHqD8zYffBysJpmj+0xDVqBNfUHDpl8vrgjqtiuA2lekla9ePYbIL4=
+	t=1770299317; cv=none; b=sYVEnKGKEoEHa9fqgZnQElW3l+YN8I6rNM+Y7fIwDo9FDw6e1i4W4SDFqfN9wUSixB+Rcr6pdn46xKXueAb8sqUzhyyxgILXYw0xQa0fSSm42hJnBc5b8D57lgaGEvlQfRU1g9cv98S/01WZaU0ABJjX0T4BrKpr2OzMBZnHuGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770299317; c=relaxed/simple;
-	bh=Cn/EAtedZedYK0uwF8Wq9LrAwIhhurB1Z5r8jOfkbbY=;
+	bh=tLpExwpEhurY6voXzq0qndE7d/dtoLm/tbWhcRdS4og=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FwzW5oiaUjQCeppHwOGBtDoZWT+LxAYKonmODJ+H7lE3RMBtUJo6Udf+Ykdk8+5v545S1VJn7DAd/+dqDCslc+JfdWRYVy0dX08yw38ZfTPH86YuSWozi0CCew2u00qGPjO3WVOxsSdumdBIpiGXhxxJREFfLBgmNhic2gMVsao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XqzVgEzN; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=YBOvNI52EblzyeqnUJGvOqrhqt0g98zaWWET0M1DBqvFDqjjQ/kb6QpWP+GxyEV7ROBF9yZYyEAdG1wkXXhlyhN4uRqbptVOHrBcE67pbdGQsKjcBQ+qEvpq9WlgwattZX2YuHmSoXat8q0WUUrWP9qppKxwxq/cFvzw27EYb4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LkXAW9gN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XqzVgEzN"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CAE98C16AAE;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LkXAW9gN"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DD10BC19423;
 	Thu,  5 Feb 2026 13:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1770299316;
-	bh=Cn/EAtedZedYK0uwF8Wq9LrAwIhhurB1Z5r8jOfkbbY=;
+	bh=tLpExwpEhurY6voXzq0qndE7d/dtoLm/tbWhcRdS4og=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=XqzVgEzNjyHwC5ZCkCixwqYrm1jLIJILBWKaECAC+ucgA2qhE11aY5hgQmSTB0xbi
-	 qKRV4M3RBUuzD1AQN9qfS1adfG94ELk6qTPZP0TjGxM9tNZT61xabJ2yQTLNX0Fe1V
-	 c+hjelofT3yqMVLmecXvawhr2Ib28wrE3mfwZmbyFXXot+gmZ9ctUEGq+Hg2nJYZ4w
-	 TGmgMQS33qqeRY+HBam5MSpEPZ5IzmtaaCWvD+Wa6DCQrNmSKuL8IrVpN4nkFuCxtr
-	 bcvUW/rdaC04dASR8QjkV4PeO+nXoGFbdhowWVt+IDeEDJYJRJsUeH2WfvemXBi6Kc
-	 ziGlqxkVYTt1g==
+	b=LkXAW9gN+ai+A5jeLkY8eikmFp9Ka2JNmdhzPBjlaZWpFetvDceUIuNcDF2vJh0P5
+	 e/o2nxSGclaTGPd++2tbARaWNLXzl2VAI4UgI9c1ugwCaBEc3ItxAZ/TXBqNNX3PDo
+	 jaHVGBLrLGZkDRhCAwwRQFIeQk92gVX9KA9nKvpr9hws/U7ziN0Y8rIAUKIWWJuSTf
+	 J/XeaCEu7kFa499wohWg44C5t3WmWe+UkClGQnK/4BRfYwRHmyplMfZW8pQP+kCzUr
+	 o+C4ZS4W+ECcU0rv06d8VZ80ji3oTYybQAuHY5VjJXIrv7TKKALbJCKdkbhbBQlDGl
+	 PgznnculQqK9w==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2128EC1EB9;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C85CCEC1EB2;
 	Thu,  5 Feb 2026 13:48:36 +0000 (UTC)
 From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Thu, 05 Feb 2026 14:48:25 +0100
-Subject: [PATCH v6 1/5] dt-bindings: arm: fsl: Add GOcontroll Moduline
- IV/Mini
+Date: Thu, 05 Feb 2026 14:48:26 +0100
+Subject: [PATCH v6 2/5] arm64: dts: imx8mm: Add pinctrl config definitions
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -41,7 +40,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260205-mini_iv-v6-1-f7cdd8f88144@gocontroll.com>
+Message-Id: <20260205-mini_iv-v6-2-f7cdd8f88144@gocontroll.com>
 References: <20260205-mini_iv-v6-0-f7cdd8f88144@gocontroll.com>
 In-Reply-To: <20260205-mini_iv-v6-0-f7cdd8f88144@gocontroll.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -53,14 +52,13 @@ To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Maud Spierings <maudspierings@gocontroll.com>, 
- Conor Dooley <conor.dooley@microchip.com>
+ Maud Spierings <maudspierings@gocontroll.com>, Frank Li <Frank.Li@nxp.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770299315; l=1193;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770299315; l=1797;
  i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=algPq/arrGx+pf1g3Tkp7Enc4ftUcdmvQiHVariAEtA=;
- b=c4+YM52B9c2HTNxpMVCWvx0euSMVsO0pWdEoTxuvfBUW2pf9LVaJF8GyBtqlRr49CiIRXuBse
- A4+BTgKNksjDzS+1ndtl8V+2pHmoHq02trvOttLwT81o3g4lMQXC6Jt
+ bh=lvUqpRh7n9YkRtJZVSUOA/YxY3527H7NJn4HwdOrJFg=;
+ b=zeOU0uBfHC+bJyofYcWz1oD6Kio36/Hko37XPia8nKbamsKCBArL9WW+a0DUdYJ6wwTSV+vna
+ Pee2HDfEnydAUTY21CqlTruT0C5LizoGxzPXz2LDBQdGIUdyAnxqJNW
 X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
  pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
 X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
@@ -70,35 +68,61 @@ Reply-To: maudspierings@gocontroll.com
 
 From: Maud Spierings <maudspierings@gocontroll.com>
 
-Document the compatible strings for the Moduline IV and Mini.
-Also add a compatible for the Ka-Ro Electronics TX8M-1610 SoM that they
-are based on.
+Currently to configure each IOMUXC_SW_PAD_CTL_PAD the raw value of this
+register is written in the dts, these values are not obvious. Add defines
+which describe the fields of this register which can be or-ed together to
+produce readable settings.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 ---
- Documentation/devicetree/bindings/arm/fsl.yaml | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h | 33 ++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
-index 5716d701292c..c76c1731b4f7 100644
---- a/Documentation/devicetree/bindings/arm/fsl.yaml
-+++ b/Documentation/devicetree/bindings/arm/fsl.yaml
-@@ -996,6 +996,14 @@ properties:
-           - const: engicam,icore-mx8mm             # i.MX8MM Engicam i.Core MX8M Mini SoM
-           - const: fsl,imx8mm
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h b/arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h
+index b1f11098d248..31557b7b9ccc 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h
++++ b/arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h
+@@ -6,6 +6,39 @@
+ #ifndef __DTS_IMX8MM_PINFUNC_H
+ #define __DTS_IMX8MM_PINFUNC_H
  
-+      - description: Ka-Ro Electronics TX8M-1610 based boards
-+        items:
-+          - enum:
-+              - gocontroll,moduline-iv-306-d
-+              - gocontroll,moduline-mini-111
-+          - const: karo,imx8mm-tx8m-1610
-+          - const: fsl,imx8mm
++/* Drive Strength */
++#define MX8MM_DSE_X1		0x0
++#define MX8MM_DSE_X2		0x4
++#define MX8MM_DSE_X4		0x2
++#define MX8MM_DSE_X6		0x6
 +
-       - description: Kontron BL i.MX8MM (N801X S) Board
-         items:
-           - const: kontron,imx8mm-bl
++/* Slew Rate */
++#define MX8MM_FSEL_FAST		0x10
++#define MX8MM_FSEL_SLOW		0x0
++
++/* Open Drain */
++#define MX8MM_ODE_ENABLE	0x20
++#define MX8MM_ODE_DISABLE	0x0
++
++#define MX8MM_PULL_DOWN		0x0
++#define MX8MM_PULL_UP		0x40
++
++/* Hysteresis */
++#define MX8MM_HYS_CMOS		0x0
++#define MX8MM_HYS_SCHMITT	0x80
++
++#define MX8MM_PULL_ENABLE	0x100
++#define MX8MM_PULL_DISABLE	0x0
++
++/* SION force input mode */
++#define MX8MM_SION		0x40000000
++
++/* long defaults */
++#define MX8MM_USDHC_DATA_DEFAULT (MX8MM_FSEL_FAST | MX8MM_PULL_UP | \
++				  MX8MM_HYS_SCHMITT | MX8MM_PULL_ENABLE)
++#define MX8MM_I2C_DEFAULT (MX8MM_DSE_X6 | MX8MM_PULL_UP | MX8MM_HYS_SCHMITT | \
++			   MX8MM_PULL_ENABLE | MX8MM_SION)
++
+ /*
+  * The pin function ID is a tuple of
+  * <mux_reg conf_reg input_reg mux_mode input_val>
 
 -- 
 2.53.0
