@@ -1,281 +1,106 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013016.outbound.protection.outlook.com [52.101.83.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE3921773D
-	for <imx@lists.linux.dev>; Thu,  5 Feb 2026 13:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770298859; cv=fail; b=mTXCkVI+u0ya36x9sg19X7W1TmGJZf5GWh653kbUTxGCHQvvsnxLRtwcUns7AtMpgKuFZfMmD0sGwb+Pcc7hiDq+D5cDNvkacJpoYFU9VGUWM6Woji/5/9fl76NAgVf16u/k5raJNpewA91/4S+2EFe9c23AHu4W/ZzTxoy6FMY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770298859; c=relaxed/simple;
-	bh=iHWGAsYaLYqjpce37sqXkjLoeCmTayaUpI6zF/MA2ys=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=OkGHxp73cd4L3BKOwbK1UkkiDjaLaqxuSK80pj0KuOxE/iJLAzHi/24y1lLh3+R3jOn7s3uVd1Qm/67UID8r1H+4SQIsS8oowke3siTnxanndAnDSDf6SL026krcSDrtxNwMOmsvSINE0Qx6eSB2R75rxwEcSKMJNDteV59VecM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=C9m4c5Ow; arc=fail smtp.client-ip=52.101.83.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F041B3D7D66;
+	Thu,  5 Feb 2026 13:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770299317; cv=none; b=G1o8Th4/5fMphWaqz/SNXFJkzav/1lI/EzFhRMTDSHglA9QVJhpy52OTuXikxqaW3URsKoKLYDSXmgqKJZbcFZZ5gfxwaaUSd3ZLd1CQT6t+SE9UHb9HcBHqD8zYffBysJpmj+0xDVqBNfUHDpl8vrgjqtiuA2lekla9ePYbIL4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770299317; c=relaxed/simple;
+	bh=Cn/EAtedZedYK0uwF8Wq9LrAwIhhurB1Z5r8jOfkbbY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=FwzW5oiaUjQCeppHwOGBtDoZWT+LxAYKonmODJ+H7lE3RMBtUJo6Udf+Ykdk8+5v545S1VJn7DAd/+dqDCslc+JfdWRYVy0dX08yw38ZfTPH86YuSWozi0CCew2u00qGPjO3WVOxsSdumdBIpiGXhxxJREFfLBgmNhic2gMVsao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XqzVgEzN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="C9m4c5Ow"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SNR2JHLeQKTq70PivarG3+TEA3Tbnnf3TX0qhlKeL+0/3nPxKa4PUHX5x4tpxTnEDbiZd6ifD6tKMZvrb26uRfvKx1nU5hGzWrBUL6as2MRLUMAJ4ZGdxJPkA8oHmSbXfnQzVsmgeIwrJIO+kTDZ/KhNBbj1P5j+1H81Xb60s/gu8YJAFHSV8yC3nc6i4mWRVLkvhUmvl6Sf0eUkHOJ4MiQnaftZAlinypQHLXH8aLY4Vqlz/+OZHNtQMqi7bJGNk05fCFRprJgeUhWjYOfpDxgTbDZguVYBqGiqy2Ekr98CBOScCm+9X+3ByGpfHtHAWRhF4zxebbSNqcQo8JXIOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iMNzhGghf6eVc8eDGWAkHCnxgiSU3RzkEqHzYFdDEm0=;
- b=MdW9UV4aAAT49fcK30Up0VOjQS2Le9wFgAzomX9/Wd1jcii9GL/v44+ETa02CbdLIkpnzcS55jDzRYOqysZxmgMbSLcVMtDEFykHg3S5BsvW98oAh2dlbT6FbMo9pkluG5SFmY5efc6johaMv3MAsWYhUzKyKtcRM0XHlacXVl/ckMFkTTe0H24FELH+AUNxs+nrbuTnEMBNSxaJDI32+DmxXyrsViVyKOEi2pZ+ckecnskMukszbDcsfXiYc68QzucM0+L4YeddW+yA1quw8qOvaQ5CWvRL+h3Cq5mRrNYszLYXhc1aZpCRksK5wFhDKamRR2YelPLgPDI+B8mkqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iMNzhGghf6eVc8eDGWAkHCnxgiSU3RzkEqHzYFdDEm0=;
- b=C9m4c5OwrWqUqi7sXqaHJnQt+VtoOIzet3swHNbptU8gbJQENapGUHUqrmjCAttBpaAeQ2vn2S6gT2F0+7xr4Lkc8RY9GrjlbzSgfHRJ6/F0gbvRyuLVFio0LUiKX5D+zoQBEvKwu3OPZal0PmINnuYn7LV2cH2gP9a0jcS3shsjAvdtcn9BCFXiClMBtWILW7PJ754jderJGhv51421dXdpB24F7f5q1Rc1yJMQ0+bM8cmjbIh65TlPxQfRjH3K64KTF5u4IrytDGQ2hDw/ZXcn5Ka7zqieTzIjg2KUhmVPCtrd0of2C56yC8lkNdr9fAiO/N9GbNJUmsQ4M2i/+Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
- by GV1PR04MB10478.eurprd04.prod.outlook.com (2603:10a6:150:1d2::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Thu, 5 Feb
- 2026 13:40:52 +0000
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4]) by AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4%4]) with mapi id 15.20.9564.016; Thu, 5 Feb 2026
- 13:40:51 +0000
-Date: Thu, 5 Feb 2026 15:40:46 +0200
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Larysa Zaremba <larysa.zaremba@intel.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, bpf@vger.kernel.org,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>, Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	"Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>,
-	Tushar Vyavahare <tushar.vyavahare@intel.com>,
-	Jason Xing <kernelxing@tencent.com>,
-	Ricardo =?utf-8?B?Qi4gTWFybGniiJrCrnJl?= <rbm@suse.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Toke Hoiland-Jorgensen <toke@redhat.com>, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org, linux-kselftest@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: Re: [PATCH bpf 6/6] net: enetc: use truesize as XDP RxQ info
- frag_size
-Message-ID: <20260205134046.pggwyosutj7ggi4i@skbuf>
-References: <20260203105417.2302672-1-larysa.zaremba@intel.com>
- <20260203105417.2302672-7-larysa.zaremba@intel.com>
- <20260205005901.gnju3zmqimtgeu2b@skbuf>
- <20260204173401.282899d0@kernel.org>
- <20260205122953.lscemcctayrvszdu@skbuf>
- <aYSP344FT-JlylwY@soc-5CG4396X81.clients.intel.com>
- <20260205124638.hxzvjiocephzlrk3@skbuf>
- <aYSZw4wbd-nvLTuD@soc-5CG4396X81.clients.intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aYSZw4wbd-nvLTuD@soc-5CG4396X81.clients.intel.com>
-X-ClientProxiedBy: VI1PR08CA0239.eurprd08.prod.outlook.com
- (2603:10a6:802:15::48) To AM9PR04MB8585.eurprd04.prod.outlook.com
- (2603:10a6:20b:438::13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XqzVgEzN"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id CAE98C16AAE;
+	Thu,  5 Feb 2026 13:48:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770299316;
+	bh=Cn/EAtedZedYK0uwF8Wq9LrAwIhhurB1Z5r8jOfkbbY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=XqzVgEzNjyHwC5ZCkCixwqYrm1jLIJILBWKaECAC+ucgA2qhE11aY5hgQmSTB0xbi
+	 qKRV4M3RBUuzD1AQN9qfS1adfG94ELk6qTPZP0TjGxM9tNZT61xabJ2yQTLNX0Fe1V
+	 c+hjelofT3yqMVLmecXvawhr2Ib28wrE3mfwZmbyFXXot+gmZ9ctUEGq+Hg2nJYZ4w
+	 TGmgMQS33qqeRY+HBam5MSpEPZ5IzmtaaCWvD+Wa6DCQrNmSKuL8IrVpN4nkFuCxtr
+	 bcvUW/rdaC04dASR8QjkV4PeO+nXoGFbdhowWVt+IDeEDJYJRJsUeH2WfvemXBi6Kc
+	 ziGlqxkVYTt1g==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2128EC1EB9;
+	Thu,  5 Feb 2026 13:48:36 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
+Date: Thu, 05 Feb 2026 14:48:25 +0100
+Subject: [PATCH v6 1/5] dt-bindings: arm: fsl: Add GOcontroll Moduline
+ IV/Mini
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|GV1PR04MB10478:EE_
-X-MS-Office365-Filtering-Correlation-Id: 27692714-31ed-4984-4629-08de64bc2d2a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|19092799006|1800799024|366016|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?OcpjA/lGwKtmXTgaOGJGDELocES41U2Pu5YfbQwbuKVA7Z19PhG/GSE/h2AC?=
- =?us-ascii?Q?TEy700yZahgNBKC/7DgauIMVThrezhg8AqINXtVtv7GNcLUA5QxBWHSAhKMN?=
- =?us-ascii?Q?Vv5pU8doKv8NK+cGDwB8HXsuhn+4NPPZOmzw9bHecI2fDDlKNzHjtyl0F0Jy?=
- =?us-ascii?Q?Y5K0pEDkzRmQlbqOoGRSh1KF8tlTZ1t1gDjNCqqd1DiBS6dm5tQF1mRK/E5Q?=
- =?us-ascii?Q?uYWje7HzHCbwSu/+iEDMP8JubcDynprayUcsGbj7XKGR5kELXd4K1pShF+jJ?=
- =?us-ascii?Q?IiOLwXn2SxpON0XB0lHrZQUnTvJ/Jgrva1zmRuJQn8N90FItHbg61GK5mm9h?=
- =?us-ascii?Q?0W6lC5mleJCXN+KRbJJlGTwPSG3FguuyIWSeS//DX6Q84OmFOYxegE9NldQN?=
- =?us-ascii?Q?p1XRckOVJTpf37X70mTXkZCekybXcyqZERVar0SaNRa+fX8ZIjaYXtFFt6Zp?=
- =?us-ascii?Q?+5TuXregQK+d5GZ6tAAMuXlYoUH/LS27qq6cIZHcwboU/1i+Qgw7Mm1W0zWL?=
- =?us-ascii?Q?NXteNB4zIrZHZW+/Ij0lqV6HSxt8uoEBWYFs7cx5rOyqBCJ9VPGUkkRvcONk?=
- =?us-ascii?Q?n6a9fJiqQUH+pcnPxsS76aGtXiyM5oEuBJAhAE7dQPmf2xT18PG8v5QWJJV8?=
- =?us-ascii?Q?WxcjeVHMq9Pz6HnFknNA5MQpdlJj3/mBcnck9RjFyO/ow8j7cnMGqPOYbX9/?=
- =?us-ascii?Q?TjIU5DjCNu5oWV2ewMrTgQ+rLgsOC/B+TPHosX9r4aXL2Nf+Ewjt4ksE4N1d?=
- =?us-ascii?Q?IvgpGKkOZ+uI4qCc7dlHhmvhwBIRA/SHj9mYIFbInV53LmpdskxQNy6QRdEA?=
- =?us-ascii?Q?eNSCstiX/mBfoznT6h5QMzNvo3H17aPPf4wjUJYtFyEmuD0UQih5acuDOMqh?=
- =?us-ascii?Q?a61+4uPudPOOlJ8WHZAZWw5NIZNqO3KRShFqj+lFRl6al1DyJiYzf0zCkqS6?=
- =?us-ascii?Q?z7xb0vXneY59Yp/mLyux65zBKm/Odqp/uyM0ZU4xwIbb8HPHhlDJnAzeqd6w?=
- =?us-ascii?Q?prRleESOZ26sTETj+0Hn8jZjD8A/KFWTZOIIOzxahnFxHceB0QeZP8j2e93K?=
- =?us-ascii?Q?fRsg5RHdDxAgEU+D+RHXo6qR1ypXdbmJhiNZoHHx+COKgRulBlR9hmtZHVZd?=
- =?us-ascii?Q?AOD2OQeDmD0KAzyewjZ6+6Co0AjU+7rs12MHcqCK0i+8Aiwvbi6nsx04GX3d?=
- =?us-ascii?Q?w9JaUx4s1xL6Qzg/uhrbSwWHze7NRuAFjVAEzWOis+sdHX2JC9bERyfEIDF6?=
- =?us-ascii?Q?rVpVIhxHCrQcxUhoPVASh3DLcFxO3IGUuycldNBrhl+sNCsw+wjOmeqc/lSK?=
- =?us-ascii?Q?aT2rRFOxScvubIpIQKz2mF1aUsHZRoSinHbOJQ2u7MXsqCOYsAJXye0Wv+ph?=
- =?us-ascii?Q?0WREKn3RWHHUzUllJ3ecK4hKO3wXH79oyGKQV221M9rbDVASxBvhwIL/sbu3?=
- =?us-ascii?Q?Ca7uPuPoY1j79j1uCES3NvUN3m8BIUr8bSSl3fJVqNnwzDR1DPK96KffSG4q?=
- =?us-ascii?Q?UVzUUM8ZUb4+fLjbLIGoy3v29oxaD8E3D0HnNGCfvgiKxlqOCWgfKJ6TOsD6?=
- =?us-ascii?Q?wyL0KbPmQLSXTGnOAhE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(19092799006)(1800799024)(366016)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?owbVyTug8VyosgvjIMJQyrLaYFfrZw6YeCjflw9QeySndAktFp6kNaYH+1df?=
- =?us-ascii?Q?7u69o3PK3fw5JXTvXiNldjwujkY75ZsIzcZPxS8k7ytYjUP+EBYg+pW+ite4?=
- =?us-ascii?Q?BOnOQFoJF50sT5NrL0eydEqD2vdGiF23EoDNO6JPAJcHvHwABjWlv1lIDxau?=
- =?us-ascii?Q?Zc7OM+Od4fMNs03e1vKRdyuK/58NWwX4IpbYornz5WV71EAAVSmAEMWc12Lv?=
- =?us-ascii?Q?WFt2auzTizXb9iaEp2EVuuGyE5yWL+IxvbEGA4c5eClORIKZjuRDSfUHzB0S?=
- =?us-ascii?Q?7366bJ+xFz8WvqWLMjaYyVG5O7No86dquLQcLe24C74Vny/xdDQDETu6uOLB?=
- =?us-ascii?Q?GsauCuYkgKNzJDxv1mAZ1fOVznp0e2u+m4jx4bGXDrjNgMbx4b2kt5bGqlzK?=
- =?us-ascii?Q?kW4a2zELqpSwLV6vzWHl4Bs9LA1sajjAWrAEG7ZqGmNa4qtT9QA/Wk4M2TA3?=
- =?us-ascii?Q?oMZPqatRVN8wvZ4hWhlbDV5Cf6i5j0A2IUifPJrJNEChkbdua/uXD+Rxwtdl?=
- =?us-ascii?Q?kjpIvAyfHQ6jaMwQOTRc+wGD5F5L+X/jdJGagaJcDvtnfAHUj0Y9QS87Gmpz?=
- =?us-ascii?Q?OQjwpd9bvNWpNDOlG5DyeqO2x/TfpRY2rbRmW2DkCJoqUdlP84j9hPf5PHJz?=
- =?us-ascii?Q?LbrAMXAu2dDrrtEsjI++ZEa+sc9iaI+QTuOV3Lt7zLAwy12c97QTKOrqCitK?=
- =?us-ascii?Q?/D1iG5gaIPXOc8AHpe2FNOgopse9e3pE+jGsjVQItv39vrPuoXMOyGQhccWj?=
- =?us-ascii?Q?mrym1VnJrmPBOt1bu9pRxOHAspIZmTUWAay6DEtY4s/kaRjxaVAOl4cKT37k?=
- =?us-ascii?Q?wG4b5Om6fcvcz7SfCUXpfX8TI+UXbhE0D4/Rip5F1jzfOOT6pMbdWugh0fY0?=
- =?us-ascii?Q?RnaUveSh1/+0345kyzTEXBmaFD2foi0wPHOuDKA/jfznHdKd/YoTFjNNpd3f?=
- =?us-ascii?Q?DG17Zuz/sIxcTpilH/UA+fo8v2XPgJhn/y1OWxPRCDfhJOaWuCnS+A7UjYWs?=
- =?us-ascii?Q?bK+dW2xQyeyRRe4y1p06EBukr0p+QpZkAmbc99jrr635OKz2iUIsAVpLoV1o?=
- =?us-ascii?Q?SYtX6h/HghA/OATZ+45jzUETXPp9Si5cJQtFWMTmw7j43IOwvnb1tdxtXcNk?=
- =?us-ascii?Q?rC8hULqgwFR6CYzvIA3Vlb7YyUWyI4UeH0XQyaJgPsjJ+d+LBi/k+vbtcNmd?=
- =?us-ascii?Q?ionLaiDuMHbRZB4Vty7IMyAimW9eekFIeq/JDf8r3FtpnOFWKOB15jVRSeAX?=
- =?us-ascii?Q?K7LGJ3QqqbSi3hg7ZqmOFBByiYA2d7+miDBScwR2I+6nzzqfUvuwH4tDbj5O?=
- =?us-ascii?Q?qGtoqz6m/oLY35Vi4a1Du2vt8p9obVGEzeLsgcc2/PXsE7bdqEZ73acMwQ1e?=
- =?us-ascii?Q?ZI99/pooQNPzQoduRP4eNJc3+06Po5awq9l5sc5X4eD4tw5oeuYPJtYGTcMW?=
- =?us-ascii?Q?y4Vp/XR+orm08jFDkkQF16w6fvEHr296o+yBdaLwX+EAhDsjQFNYVVjnOdnY?=
- =?us-ascii?Q?tFH3D8eZgfaiEgGCHDOhRXRx0aLKrknPxCud0sTvzxk2wPLni3KvWUmY0BcW?=
- =?us-ascii?Q?wT/dxvWgyLsWaD3SFYRs7Ht0cBSgiKVX46KRAFbTvwSAkfZLAcyINUuXfXB3?=
- =?us-ascii?Q?J72l2DO7ZePE7bqzr48OpyG3BKnSoniVRTzpPf1exR64oijPOXv1ckdWzIvd?=
- =?us-ascii?Q?MY7brz0SrUxcxwtnuC44Q/tNnM+axnTzj+16MXDiHEpJPYIk3PwLgLvd1p7c?=
- =?us-ascii?Q?j9flgr0WN29UsvG6sIWwol5wWUb6c7uh8cSrrIMCv8P4DK0FPamV4fz3fBFr?=
-X-MS-Exchange-AntiSpam-MessageData-1: R70149CyZNn8z/Q9ExY+mlua9c7GChNe88o=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 27692714-31ed-4984-4629-08de64bc2d2a
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 13:40:50.9954
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NyKYHxXyaxGsdh5rzLWG2XbvBVgDEr4BosE/6r/isdUmgAzFPX77CBDYBekDp+mO/s5zrXaeA8N4lvCYvj/Gfg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10478
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260205-mini_iv-v6-1-f7cdd8f88144@gocontroll.com>
+References: <20260205-mini_iv-v6-0-f7cdd8f88144@gocontroll.com>
+In-Reply-To: <20260205-mini_iv-v6-0-f7cdd8f88144@gocontroll.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Matti Vaittinen <mazziesaccount@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Maud Spierings <maudspierings@gocontroll.com>, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770299315; l=1193;
+ i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
+ bh=algPq/arrGx+pf1g3Tkp7Enc4ftUcdmvQiHVariAEtA=;
+ b=c4+YM52B9c2HTNxpMVCWvx0euSMVsO0pWdEoTxuvfBUW2pf9LVaJF8GyBtqlRr49CiIRXuBse
+ A4+BTgKNksjDzS+1ndtl8V+2pHmoHq02trvOttLwT81o3g4lMQXC6Jt
+X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
+ pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
+X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
+ with auth_id=341
+X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+Reply-To: maudspierings@gocontroll.com
 
-On Thu, Feb 05, 2026 at 02:23:15PM +0100, Larysa Zaremba wrote:
-> On Thu, Feb 05, 2026 at 02:46:38PM +0200, Vladimir Oltean wrote:
-> > On Thu, Feb 05, 2026 at 01:41:03PM +0100, Larysa Zaremba wrote:
-> > > On Thu, Feb 05, 2026 at 02:29:53PM +0200, Vladimir Oltean wrote:
-> > > > On Wed, Feb 04, 2026 at 05:34:01PM -0800, Jakub Kicinski wrote:
-> > > > > On Thu, 5 Feb 2026 02:59:01 +0200 Vladimir Oltean wrote:
-> > > > > > Thanks! This is an extremely subtle corner case. I appreciate the patch
-> > > > > > and explanation.
-> > > > > > 
-> > > > > > I did run tests on the blamed commit (which I still have), but to catch
-> > > > > > a real issue in a meaningful way it would have been required to have a
-> > > > > > program which calls bpf_xdp_adjust_tail() with a very large offset.
-> > > > > > I'm noting that I'm seeing the WARN_ON() much easier after your fix, but
-> > > > > > before, it was mostly inconsequential for practical cases.
-> > > > > > 
-> > > > > > Namely, the ENETC truesize is 2048, and XDP_PACKET_HEADROOM is 256.
-> > > > > > First buffers also contain the skb_shared_info (320 bytes), while
-> > > > > > subsequent buffers don't.
-> > > > > 
-> > > > > I can't wrap my head around this series, hope you can tell me where I'm
-> > > > > going wrong. AFAICT enetc splits the page into two halves for small MTU.
-> > > > > 
-> > > > > So we have 
-> > > > > 
-> > > > >  |                 2k          |             2k              |
-> > > > >   ----------------------------- ----------------------------- 
-> > > > >  | hroom | data | troom/shinfo | hroom | data | troom/shinfo |
-> > > > >   ----------------------------- ----------------------------- 
-> > > > > 
-> > > > > If we attach the second chunk as frag well have:
-> > > > >   offset = 2k + hroom
-> > > > >   size = data.len
-> > > > > But we use
-> > > > >   truesize / frag_size = 2k
-> > > > > so
-> > > > >   tailroom = rxq->frag_size - skb_frag_size(frag) - skb_frag_off(frag);
-> > > > >   tailroom = 2k - data.len - 2k
-> > > > >   tailroom = -data.len
-> > > > >   WARN(tailroom < 0) -> yes
-> > > > > 
-> > > > > The frag_size thing is unusable for any driver that doesn't hand out
-> > > > > full pages to frags?
-> > > > 
-> > > > This is an excellent question.
-> > > > 
-> > > > Yes, you're right, bpf_xdp_frags_increase_tail() only has a 50% chance
-> > > > of working - the paged data has to be in the first half of the page,
-> > > > otherwise the tailroom calculations are not correct due to rxq->frag_size,
-> > > > and the WARN_ON() will trigger.
-> > > > 
-> > > > The reason why I didn't notice this during my testing is stupid. I was
-> > > > attaching the BPF program to the interface and then detaching it after
-> > > > each test, and each test was sending less than the RX ring size (2048)
-> > > > worth of packets. So all multi-buffer frames were using buffers which
-> > > > were fresh out of enetc_setup_rxbdr() -> ... -> enetc_new_page() (first
-> > > > halves) and never out of flipped pages (enetc_bulk_flip_buff()).
-> > > > 
-> > > > This seems to be a good reason to convert this driver to use page pool,
-> > > > which I can look into. I'm not sure that there's anything that can be
-> > > > done to make the rxq->frag_size mechanism compatible with the current
-> > > > buffer allocation scheme.
-> > > 
-> > > I was just about to send an answer.
-> > > 
-> > > Seems like my mistake here. I actually think adjusting the tail should work, if 
-> > > we set rxq->frag_size to PAGE_SIZE in enetc and i40e_rx_pg_size() in i40e, and 
-> > > not to (PAGE_SIZE / 2), as I did at first, but in such case naming this 
-> > > frag_size is just utterly wrong. Glad Jakub has pointed this out.
-> > 
-> > I mean, it should "work" given the caveat that calling bpf_xdp_adjust_tail()
-> > on a first-half page buffer with a large offset risks leaking into the
-> > second half, which may also be in use, and this will go undetected, right?
-> > Although the practical chances of that happening are low, the requested
-> > offset needs to be in the order of hundreds still.
-> 
-> Oh, I did get carried away there...
-> Well, one thing is shared page memory model in enetc and i40e, another thing is
-> xsk_buff_pool, where chunk size can be between 2K and PAGE_SIZE. What about
-> 
-> tailroom = rxq->frag_size - skb_frag_size(frag) -
->            (skb_frag_off(frag) % rxq->frag_size);
-> 
-> When frag_size is set to 2K, headroom is let's say 256, so aligned DMA write
-> size is 1420.
-> last frag at the start of the page: offset=256, size<=1420
->     tailroom >= 2K - 1420 - 256 = 372
-> last frag in the middle of the page: offset=256+2K, size<=1420
->     tailroom >= 2K - 1420 - ((256 + 2K) % 2K) = 372
-> 
-> And for drivers that do not fragment pages for multi-buffer packets, nothing
-> changes, since offset is always less than rxq->frag_size.
-> 
-> This brings us back to rxq->frag_size being half of a page for enetc and i40e,
-> and seems like in ZC mode it should be pool->chunk_size to work properly.
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-With skb_frag_off() taken into account modulo 2K for the tailroom
-calculation, I can confirm bpf_xdp_frags_increase_tail() works well for
-ENETC. I haven't fully considered the side effects, though.
+Document the compatible strings for the Moduline IV and Mini.
+Also add a compatible for the Ka-Ro Electronics TX8M-1610 SoM that they
+are based on.
+
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
+---
+ Documentation/devicetree/bindings/arm/fsl.yaml | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/fsl.yaml b/Documentation/devicetree/bindings/arm/fsl.yaml
+index 5716d701292c..c76c1731b4f7 100644
+--- a/Documentation/devicetree/bindings/arm/fsl.yaml
++++ b/Documentation/devicetree/bindings/arm/fsl.yaml
+@@ -996,6 +996,14 @@ properties:
+           - const: engicam,icore-mx8mm             # i.MX8MM Engicam i.Core MX8M Mini SoM
+           - const: fsl,imx8mm
+ 
++      - description: Ka-Ro Electronics TX8M-1610 based boards
++        items:
++          - enum:
++              - gocontroll,moduline-iv-306-d
++              - gocontroll,moduline-mini-111
++          - const: karo,imx8mm-tx8m-1610
++          - const: fsl,imx8mm
++
+       - description: Kontron BL i.MX8MM (N801X S) Board
+         items:
+           - const: kontron,imx8mm-bl
+
+-- 
+2.53.0
+
+
