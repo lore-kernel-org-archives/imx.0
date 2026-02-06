@@ -1,141 +1,204 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3369A30C619
-	for <imx@lists.linux.dev>; Fri,  6 Feb 2026 16:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F823242BA
+	for <imx@lists.linux.dev>; Fri,  6 Feb 2026 16:25:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770394215; cv=none; b=PmMYmqd7hNRKVRs3y8lUDJzeExYzMmcqWUZuD6UqZzpRD+O627dHrbwZrOkWYxeLuOXOhbEgIl0xwEj1hbob77LgSWba5l6TzU/M1/xnP8EukIuRyhtHmYHBz/uew9lYuC4GVCxdeKro3AKU/I/HwWxrt15V412eefL3p+WwMIQ=
+	t=1770395152; cv=none; b=C0TQ09G4rph+zKfLj6DDAt+wGqyGczoUSb5RseoZegcgPbbAqVR07Y7HBaoGCuRUvTXndNdVM/E/Tsd+Sdiuv7dlkR5oVGAtzLhA8ujTAAjOclSTFRHorpW3kMIUc4T/GqKKDt++0n34Crk+DiXnllfwxoPiYGRP3GOuWyjanAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770394215; c=relaxed/simple;
-	bh=xoUbFm5BTkRiUAzdIjH86j8+cd5U0ieA8XUJf+QV+oY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j+q/3YcDrhBE2fGfwt2W5pLmKEwyA3mMovcecLVkQfUWJ2mL751FA1HSkXot0FLkdfFJFlrMg8JdAOhYdlN2Rs9MUVpWjvpjDtUMCbut5ulipOBpv4f1h8fgUUaeqLOTOf5etWzNigK6kZCAjLvP7OK++ye0bbENBPBojgrzeKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Wk0XMxHr; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1770395152; c=relaxed/simple;
+	bh=kkIsEzWW3sArWoc9saj9rYNsVs8MtIvVRU0xQyiN1e0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tSDDXsr0VyZaV50yi7f+TP7KR5hzIOMUsARxWveMMVs9pTAzCdR6jMAlzW6vIZ2zsd7bshPXxfpwi7Pk/7dXOLw197EGNNX0xyE/MIznktKKwnYPyuB+X02VV3pCT2CwPpb5Ox5EpgQQjFMMUq8DK86GRMZc6R6yvtL3GENWrhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jkxnRysk; arc=none smtp.client-ip=209.85.208.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Wk0XMxHr"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a0c20ee83dso19423015ad.2
-        for <imx@lists.linux.dev>; Fri, 06 Feb 2026 08:10:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jkxnRysk"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-385d5f10c7aso1113271fa.2
+        for <imx@lists.linux.dev>; Fri, 06 Feb 2026 08:25:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1770394214; x=1770999014; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HOEJZRVPudm8f+CgXHv89P8iLoQHtMeP5j8jQ4S4oiM=;
-        b=Wk0XMxHrfKFnE6gu7ElCiq+P5wp56+ilLd82J3LiIGOsKrPM1WK5F3Xo5SKLVZ2DiJ
-         sWdEOkxON+LTqwhWHQc1m4cNFbr1sfjQKVG1Y9VguPsNecnRWoHJG9G1gLtdQenaz6Rx
-         Agln6h+E0jzFrHvIFZI6lzTuJeZcYD0yCcd/3UTR6CXCTBTIgETXwwh1LXZ4wCpn3NA4
-         5O+E1t580xS3xRL5qqOkEoaZ4YRcYQTX9RGdRGZJwVRkWjyAH3b4/1/2+gIrw34pMWSt
-         7j/mnoFl794+P3EELTngNtcXQazuF8W3iyCvzEeCQ6yl3oGZeVAvrrq2LxcaUFEfTgEL
-         o8oQ==
+        d=linaro.org; s=google; t=1770395150; x=1770999950; darn=lists.linux.dev;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fLftybbN8ivPeyXwk8NLfhAbzG7sAr9RazdOdi/8IEo=;
+        b=jkxnRyskDbTym/Z80J09DfPY/nwUFXiBLMfbJqHkO2rZbB5fQrwgU5TNEghEl/Xn+B
+         mwaS9ougyu6+hpQ0hcrIyzSPzCOJIzkCd1FeGT8dxhcl0KKvVtoEAdhY9PEOBP+VZrpO
+         i26yidFdvfEqZ3tgCgTSqAwEt2JTl0o9gkxBv8KRWvH82ho5a8jrv6pUDF3qz+CU0ZTG
+         c67MRgFNkpdDKGQvCM0GWPZ5VoyYL2PzePAkhn2V2yOT5bQsA7GfcNhgiBbaNnIWCG5J
+         vPyDWRXQdUFRs0y9bThjN5Y2v05UFkbi1jgV4RrbRSguT+rg4fhtLrlYNfINQhZ2Dzgb
+         JkDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770394214; x=1770999014;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HOEJZRVPudm8f+CgXHv89P8iLoQHtMeP5j8jQ4S4oiM=;
-        b=KQyapR2pkAeItLPipTYqv4iPFuaEincxWOcFgsskngH0wzyTwS6hoZGzzGVapYgUpQ
-         rLiHsWi0ISaNO7dPHY1iyapY9Lh+J3f+V2k+sKsINBuXhFq0UmSx3/lPDtHCIosFi7aV
-         McbCelCDlq5lV7LfNJeNO8QXjo9utELGorsCpZ2x526aulRubtMJRTb9VhyIRafhLScT
-         VyD0DpClxOw2HPrtUfpasfIDmNRc6tRFKiFKM9yI4hmUoVG2toT+Iv0Ilt4Uq7yU9aFG
-         pA0s2mkcFUpdwDwBELcHD7+7byofb83jsuUjOPRmVjwsZ5JEqDGL0s56eJkwqVDeTcMC
-         qrIA==
-X-Forwarded-Encrypted: i=1; AJvYcCUEQYd588mcvYzXgchrjgWEbla92T/+eQHWOF/2iHXQckJZk46IxBPnDNivfr+vFJ3KFms=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxb92GxoAcW9viTy/4AhBhGv9m3TfqeDyssdQeFdxoaGq0tTn/x
-	SZ9UIzKCxa7DjfanuxocuosEv3yjn4qCvH9hjsSSYAhwSLMGyXzU2g+Fxdhz5ogeMDs=
-X-Gm-Gg: AZuq6aIysHrMAhfNbRC8iuuGfFVz5BYhPN84zkD1dDYOp8+S0a3zpEz2+m24oe8EC2i
-	kUce5t38jD85rrMlQIoVLfk8k9ne6zQ4jzj1gjC3iqVySdIlX38Elz8NNNM9FXmD1MxceyXYq0u
-	IQVbXnA5Lg5Ozg02DkSzuEQoKHmGZSP77i44kLWS6vwFh+g31PMtL7UdQcMyA4FeZB3DkCjbzuV
-	rTOXLTkQ4k8ChvOYMtD4+B5ULa5yH/+wjpLa1KISHj11pOwchI3CgV/1/FrstlhnCeTW6U8ru3M
-	rVobVxkUZn/pQpzr0kRVXmqBTtnsw0CXwxJcyw1iQwxxjkOIxkA3dZJj+XWT5PzHlaF55USI+tf
-	P0ufKErwdvPgppvHCDuOJ2clj9YQ3EAq4bgTWiv5yyAOSqcErbVK0cjiaGjPHMhno6iqD6DWZ13
-	03j+t2OlOL/F36
-X-Received: by 2002:a17:902:e5ca:b0:2a7:757b:35ad with SMTP id d9443c01a7336-2a95170b352mr36939965ad.42.1770394214292;
-        Fri, 06 Feb 2026 08:10:14 -0800 (PST)
-Received: from p14s ([2604:3d09:148c:c800:fa3:e3b4:3597:587a])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a951c722c3sm26045635ad.23.2026.02.06.08.10.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Feb 2026 08:10:13 -0800 (PST)
-Date: Fri, 6 Feb 2026 09:10:11 -0700
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Chen Ni <nichen@iscas.ac.cn>,
-	"andersson@kernel.org" <andersson@kernel.org>,
-	Frank Li <frank.li@nxp.com>,
-	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"festevam@gmail.com" <festevam@gmail.com>,
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] remoteproc: imx_rproc: Check return value of
- regmap_attach_dev() in imx_rproc_mmio_detect_mode()
-Message-ID: <aYYSY3Rn3702zk3S@p14s>
-References: <20260205050905.3031134-1-nichen@iscas.ac.cn>
- <PAXPR04MB8459ABF483274720F6BB23188866A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+        d=1e100.net; s=20230601; t=1770395150; x=1770999950;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fLftybbN8ivPeyXwk8NLfhAbzG7sAr9RazdOdi/8IEo=;
+        b=Hx0lieG8ct7xeacXZdgPBCJGUl6BOz8GLVaKewc8KC95DzSUIY+gJ9g+f4r8qpukAb
+         bkHyxaZXn3HxUleeiHcKTfd7SY/PCVS3OsAqidOv/hHH11umXF9hmY4jefQ5HR9hQnXe
+         Ee6XCkxBwBsOEnwj+ZVLK9ny73AtxiNSHAQHP3naPPYMYqBoKU+Vbp+MaJsE4QcoD7ag
+         GQa6BKeNeDJ588JkaHE1wSyrCW0lapIRIfswFvJ+SZ36nsjM1jsmO1QNkk4Bl6Pposcu
+         BA+x2FFV3cM7TJcmZt93UYNUml1IObJwfDp8nd1QNt0P9iUJmYw+mQTBh5SiURQbE8ux
+         O/Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCWm25xMum89RDSCTAOB5rO4oe/+TbcNoFu4b4HgEs/JUI63OoESnKvMzNGYj7Ux1XowlGg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzMHYg/YTWpopBXgYBuJGy45et+nByzmfEuncnXYGwBR6Zu1cqY
+	dGF3cmJalrMSBx2EU8OyieBebJYM0o6lGuBP0Yr5BbTdTEEzA0anHkBtVIxRZgWefOA=
+X-Gm-Gg: AZuq6aJX9uq0S5L3cd+wNTNwAQdneGtOZCRtBOl0HAFHjHLM9zAZhFLHU2V1SoWNYiU
+	O6s87hqDLtuAC7Qd+j3801uqzC+pfRhX6Pjiu1ItIZyrnTubRMp8MTY18M9arUmsmD9jYMU5wvG
+	AelbTTA3Vb8dIY2v2Hl2C2wjkYlGSwp/jqWPUxT0PoGpFDfF3ecUlmHgv/ajrfXFkkPePDowukd
+	6+Zti16Gw6aIlRZUtRzpSfsg8CtWzIU8+pGZ7U9VI3OpTfbmXwHEjAwXMKOngo60fqVoPUq8UzR
+	Fks3xcviq3E61SEMiMm+p6iYqMRFLANZQN+ONIO+I77Kws3q8xZLy5zgT8MqiUqjcuLnYkGKznc
+	NLRSxEuW7CmwO4yw+YuSN33D049cvW2QuxwDHl8X98q2UW7EVPlLIqqku5+y+Z+1nwabMpQuKF/
+	1qb2uRj+4fjRTPVi90nKbDWbx1ve+4AX9votej3RflwLRrbCNU3+d7UswSEGL78fqS+w==
+X-Received: by 2002:a05:651c:154c:b0:37a:7a9c:5c0f with SMTP id 38308e7fff4ca-386b51d93cemr7758311fa.3.1770395150443;
+        Fri, 06 Feb 2026 08:25:50 -0800 (PST)
+Received: from [192.168.1.100] (91-159-24-186.elisa-laajakaista.fi. [91.159.24.186])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-386b623668asm6346741fa.3.2026.02.06.08.25.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Feb 2026 08:25:49 -0800 (PST)
+Message-ID: <e0969b37-8a7b-416a-9789-8662ce7f3307@linaro.org>
+Date: Fri, 6 Feb 2026 18:25:48 +0200
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB8459ABF483274720F6BB23188866A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 5/5] arm64: dts: qcom: talos-evk-camera: Add DT overlay
+To: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>,
+ Loic Poulain <loic.poulain@oss.qualcomm.com>,
+ Andi Shyti <andi.shyti@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>,
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+References: <20260122-sm6150_evk-v5-0-039b170450a3@oss.qualcomm.com>
+ <20260122-sm6150_evk-v5-5-039b170450a3@oss.qualcomm.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+In-Reply-To: <20260122-sm6150_evk-v5-5-039b170450a3@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 06, 2026 at 03:34:41AM +0000, Peng Fan wrote:
-> > Subject: [PATCH] remoteproc: imx_rproc: Check return value of
-> > regmap_attach_dev() in imx_rproc_mmio_detect_mode()
-> > 
-> > Add error checking for regmap_attach_dev() call in
-> > imx_rproc_mmio_detect_mode() function to ensure proper error
-> > propagation.
-> > 
-> > Return the value of regmap_attach_dev() if it fails to prevent
-> > proceeding with an incomplete regmap setup.
-> > 
-> > Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-> > ---
-> >  drivers/remoteproc/imx_rproc.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/remoteproc/imx_rproc.c
-> > b/drivers/remoteproc/imx_rproc.c index f5f916d67905..0e23f519c247
-> > 100644
-> > --- a/drivers/remoteproc/imx_rproc.c
-> > +++ b/drivers/remoteproc/imx_rproc.c
-> > @@ -1007,7 +1007,9 @@ static int
-> > imx_rproc_mmio_detect_mode(struct rproc *rproc)
-> >  	}
-> > 
-> >  	priv->regmap = regmap;
-> > -	regmap_attach_dev(dev, regmap, &config);
-> > +	ret = regmap_attach_dev(dev, regmap, &config);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret, "regmap attach
-> > failed\n");
-> 
-> 
-> In the main probe, there is already dev_err_probe for
-> detect_mode. So I would use below style as other error
-> return in imx_rproc_mmio_detect_mode():
-> dev_err("regmap attach failed\n");
-> return ret;
-> 
-> Let's wait Mathieu's view.
->
+On 1/22/26 12:48, Wenmeng Liu wrote:
+> Enable IMX577 via CCI on Taloss EVK Core Kit.
 
-I agreew with Peng's assessment.
- 
-> Regards
-> Peng.
+Typo, s/Taloss/Talos/
+
 > 
-> > 
-> >  	if (priv->gpr) {
-> >  		ret = regmap_read(priv->gpr, dcfg->gpr_reg, &val);
-> > --
-> > 2.25.1
-> > 
+> The Talos EVK board does not include a camera sensor
+> by default, this DTSO has enabled the Arducam 12.3MP
+> IMX577 Mini Camera Module on the CSI-1 interface.
 > 
+> Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+> Signed-off-by: Wenmeng Liu <wenmeng.liu@oss.qualcomm.com>
+> ---
+>   arch/arm64/boot/dts/qcom/Makefile                  |  3 ++
+>   .../boot/dts/qcom/talos-evk-camera-imx577.dtso     | 63 ++++++++++++++++++++++
+>   2 files changed, 66 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+> index a2e48b58323c10735c8b98996cee6669e4f918e7..b505b5b1aa2feaaae691977b35a2d872751c4a46 100644
+> --- a/arch/arm64/boot/dts/qcom/Makefile
+> +++ b/arch/arm64/boot/dts/qcom/Makefile
+> @@ -349,8 +349,11 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm8650-qrd.dtb
+>   dtb-$(CONFIG_ARCH_QCOM)	+= sm8750-mtp.dtb
+>   dtb-$(CONFIG_ARCH_QCOM)	+= sm8750-qrd.dtb
+>   dtb-$(CONFIG_ARCH_QCOM)	+= talos-evk.dtb
+> +dtb-$(CONFIG_ARCH_QCOM)	+= talos-evk-camera-imx577.dtbo
+> +talos-evk-camera-imx577-dtbs	:= talos-evk.dtb talos-evk-camera-imx577.dtbo
+>   talos-evk-lvds-auo,g133han01-dtbs	:= \
+>   	talos-evk.dtb talos-evk-lvds-auo,g133han01.dtbo
+> +dtb-$(CONFIG_ARCH_QCOM)	+= talos-evk-camera-imx577.dtb
+>   dtb-$(CONFIG_ARCH_QCOM)	+= talos-evk-lvds-auo,g133han01.dtb
+>   x1e001de-devkit-el2-dtbs	:= x1e001de-devkit.dtb x1-el2.dtbo
+>   dtb-$(CONFIG_ARCH_QCOM)	+= x1e001de-devkit.dtb x1e001de-devkit-el2.dtb
+> diff --git a/arch/arm64/boot/dts/qcom/talos-evk-camera-imx577.dtso b/arch/arm64/boot/dts/qcom/talos-evk-camera-imx577.dtso
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..53006a861878f9112673b9a0ad954bed7a5fdca5
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/talos-evk-camera-imx577.dtso
+> @@ -0,0 +1,63 @@
+> +// SPDX-License-Identifier: BSD-3-Clause
+> +/*
+> + * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+> + */
+> +
+> +/dts-v1/;
+> +/plugin/;
+> +
+> +#include <dt-bindings/clock/qcom,qcs615-camcc.h>
+> +#include <dt-bindings/gpio/gpio.h>
+> +
+> +&camss {
+> +	vdd-csiphy-1p2-supply = <&vreg_l11a>;
+> +	vdd-csiphy-1p8-supply = <&vreg_l12a>;
+> +
+> +	status = "okay";
+> +
+> +	ports {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		port@1 {
+> +			reg = <1>;
+> +
+> +			csiphy1_ep: endpoint {
+> +				data-lanes = <0 1 2 3>;
+> +				remote-endpoint = <&imx577_ep1>;
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&cci {
+> +	status = "okay";
+> +};
+> +
+> +&cci_i2c1 {
+> +	#address-cells = <1>;
+> +	#size-cells = <0>;
+> +
+> +	camera@1a {
+> +		compatible = "sony,imx577";
+> +		reg = <0x1a>;
+> +
+> +		reset-gpios = <&tlmm 29 GPIO_ACTIVE_LOW>;
+> +		pinctrl-0 = <&cam2_default>;
+> +		pinctrl-names = "default";
+> +
+> +		clocks = <&camcc CAM_CC_MCLK2_CLK>;
+> +		assigned-clocks = <&camcc CAM_CC_MCLK2_CLK>;
+> +		assigned-clock-rates = <24000000>;
+> +
+> +		avdd-supply = <&vreg_s4a>;
+> +
+> +		port {
+> +			imx577_ep1: endpoint {
+
+I'd suggest to rename "imx577_ep1" label by dropping the '1' at the end,
+it brings more confusion than meaning, at least in 'csiphy1_ep' name it
+means the CSIPHY id, but here "imx577_ep" would be better.
+
+> +				link-frequencies = /bits/ 64 <600000000>;
+> +				data-lanes = <1 2 3 4>;
+> +				remote-endpoint = <&csiphy1_ep>;
+> +			};
+> +		};
+> +	};
+> +};
+> 
+
+-- 
+Best wishes,
+Vladimir
