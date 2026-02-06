@@ -1,67 +1,67 @@
-Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013057.outbound.protection.outlook.com [40.107.159.57])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013020.outbound.protection.outlook.com [40.107.159.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECAF32D42D
-	for <imx@lists.linux.dev>; Fri,  6 Feb 2026 16:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B3432D0DC
+	for <imx@lists.linux.dev>; Fri,  6 Feb 2026 16:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.20
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770396144; cv=fail; b=f8QRuOuvQKd469g8NNelPPB5KlQevsO0AMcu43qzRYXUBWWzEFfv797XRCYql//QCFEECfWx9gcs3tFrCc4AiERQyNdzSHXSJL5Uu0x4yYYJAj8FT3TxAonayRxm1tUAulkg8E0zOIWsTluhheJxPkQnY+kElsUq29rXF9gh1gc=
+	t=1770396240; cv=fail; b=ry8CJZyNvyJHFvUdn5Acjs+k0/ni55fHTQy9Fg7Zne3MlD4MsFsXhTkSXhBzPKXf5MLZUCOJ/IpAoDcZCI/0SMjsq/5NZGzJYUKsX0scyo52Wl+kv/dQeMyuvjqgcfZ6KsDNQh1lBYD0SOql9OOlRSClIEwVoe346wCYfFos0gE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770396144; c=relaxed/simple;
-	bh=Y2PbCh5He3SWguiuMVfYK0Is0q3dgvy8rpsvmJEumfg=;
+	s=arc-20240116; t=1770396240; c=relaxed/simple;
+	bh=VdOteclqLhcEJ0CUiEmc/ch2OKeUVcPGHqjCqBnEKgE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Fe7/dUr0G6YhO8MkMtjiEReOFzDB/+EsismahSU5HGRj6hnCnqn824SvQxf4sm2SQb+0Mpgc5aYhwuID+KuZXBZAZXjYTnzLt80Wej9ru91WAi9TVBKJUiSBOjuhm96b/e2TDShag7DSfVtQ3Ox4s/YctyoGePuZd+ICzQnLVy4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=LSFTaGhG; arc=fail smtp.client-ip=40.107.159.57
+	 Content-Disposition:In-Reply-To:MIME-Version; b=qPa2m/KqD5v9ZBFTbcWjQuTgB5Jt6p0mOHpyz87i+OUMIVOnhY/h50OjIlPYQmdn7xxRViYNR4p+N11FMOFuKt5VAmQp2q60SaUlHtasS56uZWdrfAO6POtzqHJNdnyFugMJ3GVzzCBOM7Z8QS0SzKxqQulXbBSSh4/dYt8DCqk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=jsDRl2uo; arc=fail smtp.client-ip=40.107.159.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="LSFTaGhG"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="jsDRl2uo"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W4yEOPhB8+cwLk5iL3GpEYGfF8SRgkvo7tCtrGq0YT4V8dPSJ8dY6UmGc9wQBRmUWD7Eli1yVvAxutUfrnl/e+Vvpm3H8YwM9aNBYO3rzwkjs36Tjg965QKVtyX+vbvpt4FHteawat4VBTo4kCodG7fFlop54qvz8erf49jOG7rEds/jRjKbvJVA/VSe9HtLyrRMl6rKXLtpW5m1KPoSY0N4buefkojc4b86Tc0W4tFWPIHzhiZM2p4O15byZWAcFBwXEi4E5ya+A7/icxQ7RukmFlByV+2kUQlbBGa96xYv8LNp6jsnIsY5CUy4KWInSYkusWqbxi2cxMpMR1823A==
+ b=TTbExGVlYS78Q2yudSYWCfBhXIqbqINxxRtQgdh72EBAw6yNL8bVbl9we7A7heYnmpLwZ/akQSaG8iS2rfoL2sMacKA80rbfvV0p92F6ODqnxLe2hxu0M/ASn2KixQOG/8T9NnZmnm9AyRzRBMFwkcgcfRVbGklFprG7dTTo+22RaHLu5+L11VYwkMbIjNhIdUNVn2OsW6JwXiqsZ1jRCctXAXXcbpvZtj2MoxFBak0Pyho07BhvrM+7nKJdeT4+pFseWFIkNPqiUhVaWfwFJ/C/CAFaWc4oJX0RzlgK5Zymu7dRMF5qHKaiOdnpB39xwibTJfOOL8mk2aRQ9JDq0Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+Mlox/sFQ/wpSFEMCh671FMBqCXIgRSd8Fm/Mfenl9k=;
- b=SgAGP5canwMgvtspf8q6ZSoAkmeo/uqauY+/B6CUuODVhfUpfo0TmuWM4ChPPCbLZ2tlm8VGGlUexJJ+76ZLhPSSw9ipsqdE8e2rZAEteNdrr7KdjJGNNPVfrEITB8eZW3zuZxrWrmXWANQDFAOXi/IUrd+sXh0QMt2+kYvihf5v9iOzUptn0uLZ+paohIiMwgAGy1lduzj0eo5XTLZRu3YtES2McCI+sD6SMADoHye5T5WCiyKqrsD4K9l+xa+ZnplP5lQJqoO4c+R+PA4L0p7hJKlMP6KWO+yBtDniot4/d4vQZt4OPFzEP9//7CDgWmoIvCbjvVRVsPvErkx4OA==
+ bh=nFLaBjjK09rniIiVhCXK3VZjRMWijSK6xBMP31roE4M=;
+ b=pg9aCTDhFEmiQf6qQ+NvWKDGmYFGNcQQdSoAu/hLNYkSD9rnYH30tSyO8kAqIHS4i7JL6iaMXxDbJtcnNu0j09DpdmS4C+9op1pYlldnmcGp6W93Gs7M174y3kb5toz/Te5KYRRiPgNImhtR548mTIFHhdRHWWqHwO20hwmHgDZPHbnzKIBSJQsOSr51HDAD5XAVkkoEBgtIee2BJrGNe8stDo4VnJjc4HV2kzupTBgXdXjn1hHyeC0cF8PvuKihCOPeATim2vJ0zgFnNde17wIbwh+v0LBjxZpglDHN6eEsmCFNj7h4wH7qCYhM2jG/4m1AceVHNHWp/2xoasjxNw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+Mlox/sFQ/wpSFEMCh671FMBqCXIgRSd8Fm/Mfenl9k=;
- b=LSFTaGhG1ddbxwZNczs8SdYTGRqdCGBMwk9Gw+Acr4dg/K2LOymPgtyFik7BDIj7CLPdHqsfLCl36OS+X6YV7K9KR//CxPI4gGC64EjdqAiRy0x28mV1Pz33XT+N3WIYvv29WZVPKfWLOr7nWAFStTyG9CIRISpOm3nBO0ciQzHpIBVWRpjVMhCK1KnhDhMe7rcZcBcwkCp6Kfwv4UJGXKoYzdFN2Wzyf+gEJN6marn/O6HwmKe1LXCoddK2Z9yrqm3eVoz1D6P0k3AsHkYN6qkGr5YeQN+B/qpWxYNUqeiC9RcB6d6z7AYArVJKuMYqvjP6cVjadv2v8xlDjvZlEg==
+ bh=nFLaBjjK09rniIiVhCXK3VZjRMWijSK6xBMP31roE4M=;
+ b=jsDRl2uoL35Go1NzcUPfUIA1h3syfiY6pnrb9Y6PTyPz6PV6x4xCkZkmBLntvZ7x4Gnc8k1/ox/slut43oTmZcxi0FISMZqPPRYkLzi7FHF4aqHW14x7RBrFrskx3Mn6ctDxGlvs5lMASyA7LL09mK8Pq/5/A4tUrlSpXkEyMKPenZXBJPuph02hBDHU49h6ucJOlvs6nk7ar0Xew/0ZZTjGwTjFHuseWeuwrs4qewroB7RnhaLKn5zBPVRhzqmVoHvXB5Kqv497DE5C7GF4QSHOErB+lm8S1AJLr1I3t3I8AOnLhPCzIVrJNztw9lwOY/5KG5z+p4FAvWLcY1lYnw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
  by DB9PR04MB9844.eurprd04.prod.outlook.com (2603:10a6:10:4c4::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.13; Fri, 6 Feb
- 2026 16:42:20 +0000
+ 2026 16:43:56 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9587.010; Fri, 6 Feb 2026
- 16:42:20 +0000
-Date: Fri, 6 Feb 2026 11:42:12 -0500
+ 16:43:55 +0000
+Date: Fri, 6 Feb 2026 11:43:46 -0500
 From: Frank Li <Frank.li@nxp.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, linux-watchdog@vger.kernel.org,
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: lgirdwood@gmail.com, broonie@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	linux-sound@vger.kernel.org, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH v2] watchdog: imx7ulp_wdt: Keep WDOG running until A55
- enters WFI on i.MX94
-Message-ID: <aYYZ5ByxOsJ9SjY9@lizhi-Precision-Tower-5810>
-References: <20260206-imx94-wdog-v2-1-4dd725faec1f@nxp.com>
+	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, perex@perex.cz,
+	tiwai@suse.com, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v4 2/4] ASoC: fsl_asrc_m2m: Add option to start ASRC
+ before DMA device for M2M
+Message-ID: <aYYaQtF46oDTR-Mi@lizhi-Precision-Tower-5810>
+References: <20260206014805.3897764-1-shengjiu.wang@nxp.com>
+ <20260206014805.3897764-3-shengjiu.wang@nxp.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260206-imx94-wdog-v2-1-4dd725faec1f@nxp.com>
-X-ClientProxiedBy: BY1P220CA0002.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59d::6) To PA4PR04MB9366.eurprd04.prod.outlook.com
+In-Reply-To: <20260206014805.3897764-3-shengjiu.wang@nxp.com>
+X-ClientProxiedBy: PH7P220CA0064.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:32c::8) To PA4PR04MB9366.eurprd04.prod.outlook.com
  (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -71,164 +71,246 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DB9PR04MB9844:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4924728-a773-4b44-97da-08de659eb240
+X-MS-Office365-Filtering-Correlation-Id: 62647d6c-c46c-42e5-9785-08de659eea84
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|1800799024|366016|52116014|376014|38350700014;
+	BCL:0;ARA:13230040|19092799006|7416014|1800799024|366016|52116014|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2LEz00PVYT2AxjMMk9vmP7f81YmpCKmMPEUeB86gEPzlDVl3Pda8AL+35lM8?=
- =?us-ascii?Q?W2PaaButwwK3mWgWSiSCpTm4umVwIfcZvMOIAo0dLP07UcfTCWsRhdbX3sKA?=
- =?us-ascii?Q?jFPqD6KwYqrRVQR/Ta6fv+Nd7BWubX4D7sjI7wTpOhcCLIh0rKOM5KAroy7p?=
- =?us-ascii?Q?pFB4XENnqTq+y+Z80GEfM2H4ZKsL9Mq9qsbCPw/w4uuLnlAmBvK4m0H+r/r8?=
- =?us-ascii?Q?QYqEB5Niru02PZFLPCj012vU9TjT9gqIFNs5RELUIRbiKVcMdIBuMTbGUbVp?=
- =?us-ascii?Q?TmKG+yYndqqFRQCR54zzwgxrBPp2ZkQC5BQUOVf8M8st/BPuqxPD2BmPDu2U?=
- =?us-ascii?Q?NCyVkHs1ZD1bFFwPOmPEL1fPMKqXQbgB5KJONpu42IiC0DWyLJMBfT8nXuC2?=
- =?us-ascii?Q?Y8PO6xg+EmJI46wbMXzLyrk6wKSJWaWlGfb29qs0rzQZQ1gOYK3KhwQ49IRH?=
- =?us-ascii?Q?rADIONZX9dQ8bhoQHrmQvu9G9fctcvWApveS9FHm9BRTf5wBxvNVAmNafLn5?=
- =?us-ascii?Q?dpvsqk7fg1r86e9Tz0bN/FYnULTR53bfOOJxFgVNfkgJmlkw/mkRoCrZyxi3?=
- =?us-ascii?Q?wuyvUN8P8xEU91oLlpzm/kE24ZjcHRBbeh3k5RsVOru2iQ+4AO2SWQ8DFxyo?=
- =?us-ascii?Q?QzdNxmzn+ftWM2YqqLRFAxS+4V9SkPX2950gt03ZlJwSO3OUUFURTTqjc2nT?=
- =?us-ascii?Q?W0RLByg+ytOqFonPfyQfl5y3pCbZBdyTVRL9P9IxNR2jBFgyqp0OIJNjb3Pg?=
- =?us-ascii?Q?+48EG+byCOr20hV7pXJiaF+B4BBzcDDQx9ojyqmMhAIhTiHY4gDcvuPGdgBO?=
- =?us-ascii?Q?2S9GeDHZqawvS7FZqbPM0HPpRu+WX6rXLOJkwnMraXuvmJIhdfHG9+HusKtp?=
- =?us-ascii?Q?zEjqnn9DTSeT2Ykj/8CX4F6UTvj8LqKFq7O1FEXmUnuG8Noq/QlXVbyR6Bpg?=
- =?us-ascii?Q?W+r7ZvBYxb+39X7Nv8UQen7joWhJfCWQhYvY72RmI9NU2RrA/C1L534jD3Fl?=
- =?us-ascii?Q?J/hCrUMzbsG1aspWkaS16PYIKJ+Y0j+WVVuWZXYbu+sFoL76BsXK2O+MgLUO?=
- =?us-ascii?Q?Uw9poLZUGA1VUEfoix859v28lLsRwpVn8wkfh4ok2sKpEyAsLxfO5JtFqGAp?=
- =?us-ascii?Q?FYmiMfILHF3f4Cxqyi32xE2CTRlWU1UI7+DaJvmyYIjwMhypweOSEEFkJK1s?=
- =?us-ascii?Q?Xa4X5G5ckdQHM+86gB2o7UA4QUI0A0I185m1q0ztZVzMp8ez/dp4AFYOnOIJ?=
- =?us-ascii?Q?bALzEbP1h8kGmUIiZxM/rVnJ1HPxx320UbxEENm2hxqqWYJKkuWihDLV/onu?=
- =?us-ascii?Q?cfp8pCmPw3itDeI4rTDQJrP36ov+1uRbOOoCmcOqWDDV4JmrY70PAV0SSwX9?=
- =?us-ascii?Q?/Z4jC4p7B7GHK6D8poBVVIGVlwYNaoN7mjeNI9F2Y5ma57suTHPRUWSGaPVM?=
- =?us-ascii?Q?PZikLkvlQ6Aauj6B499HHGBqyV72F15snMQSXQ/5ahJ5uSPg2jXon7vCqL26?=
- =?us-ascii?Q?ncXyGQkRvm/BXCxh0v6CzWhlMEFEmiM0oV8OPlGabXIiU0NIk6VihSLqG6bt?=
- =?us-ascii?Q?jJYptbd+3yPjL3MBScVld7fTkEeQX+J62XRoj1TNhvq8cR5xb1bGUjvCnbmN?=
- =?us-ascii?Q?pKzvgJdqOTsyBmfe9hoEZmo=3D?=
+	=?us-ascii?Q?k4/+y/DhfxsaUyqK1UBcAVF3to3gDxCu6GEZl3j5rRRDwwwQTf7cMii+5KaW?=
+ =?us-ascii?Q?BvkEY1rF9dhMEKzc5UQ4Tz5Jjto/FX+NF8BB5jQn6eJXWnhp3YqgFa+cUeZp?=
+ =?us-ascii?Q?bfK5LczKf4nsa7nOL+cjOhUGbwpQxQMcjQH6C4oRVN+e+eXl6HqeVambAXiJ?=
+ =?us-ascii?Q?eUfu+Gn9RvaCVJIVMUbOPVjjA45scFhDUfU9B/fc+GjT5ZdgABEMRMebNCLd?=
+ =?us-ascii?Q?yTkKRVw05z4dHCrgch9TF6EmYK6bakMzVnSOXhXiWRrweNSKlOsYfI1EbQx/?=
+ =?us-ascii?Q?klKSB+oUGOtrHK2TyfVGGsF019XGnYlVUHqo4s+AjtBzGV3IT6l9mnzbp6Eu?=
+ =?us-ascii?Q?nH96hUWbqiPV3NLv0j830PfYzdM0wLQwiTWqD2WUOR/BX0TUcIMU9WY9RpxW?=
+ =?us-ascii?Q?epGa/zZrZKizxWc9S13QkX7UqDihdh/50uzuXFn7gYovpUCsWlhIglF2k49l?=
+ =?us-ascii?Q?3QVEpwG49njMuorSshC/Kw5eRvg3Xu7x4aXPcwYIkse/vAvxNA+XTxmynDkh?=
+ =?us-ascii?Q?F7x18pUb7pG18icOsJiX3tXvFYREO9x0V647ufischTCrLLN9TyMF1txVgWO?=
+ =?us-ascii?Q?v5KXTpzqJUY5V8UeDYYNPBC8v9qnDu/IwVITtLW8eweeLlFKKDnv8cRCQBWV?=
+ =?us-ascii?Q?WGpxzPzb45eu/qThZpq1mzeg0LcEus/klfMWDV1EPD42ezDzv7r3B6LODVMc?=
+ =?us-ascii?Q?Kzwq0ypsLzcJIlzHLfqGBTABjvbPvPJaEPQJUYuRgVHcu5IQllMBxo1KVgNm?=
+ =?us-ascii?Q?V559xQqp1f8CiQwz3FDwiARFIhbnweaIxzAXVKXfRgVGAuWr0dYbjSppjjUr?=
+ =?us-ascii?Q?zpmwvc2qLPLqLPjg5s1B0tF0EtPlgDeBxPY3atrq59dkqQDOikuoLrjqe0IV?=
+ =?us-ascii?Q?ei231/C52uquDz7q4yE/AFVUPYihP5eUANgHzujFi3Yh0zpzHgXBd9Ekgp02?=
+ =?us-ascii?Q?chX9wbpeE2ro+hpqUJAFKd+4OCtoroW+dqqX/Lz7o7XYEdS9CDS4GoYGnobd?=
+ =?us-ascii?Q?HVf2E2kO4LWhDxg8Uv1xkSXXCbJjF2EQ56F1iAdwRxHUCrjt3S65md+O6RNQ?=
+ =?us-ascii?Q?x6i6mDSX5uVL7s3z8NpA2RqGPTqWMHttgrRv/qXd45pYnXh38aUZGS2dpbf5?=
+ =?us-ascii?Q?01PtFXlEgxH35AYBHKOsWi+zrkVYygEn/q8RKHwXV+WAI8M/+RlSWi/rk17v?=
+ =?us-ascii?Q?3v6t2VcFMbKqWd1cGGblB9Fu/l4hc2qPqzminnNjIbCbyYjX9ufejWjNLPsD?=
+ =?us-ascii?Q?jNbTUQsHsJ4DkvGquH+hI1PU5gkOaE/3A5s1NZOL1q3LV2lULPC3BkhQwyGs?=
+ =?us-ascii?Q?XkPeomMoc8ItqzIkX1XX3Hybek+tcAj6qwN2Iw/RFHG88nTgjSdY1cAwNJI7?=
+ =?us-ascii?Q?Wa1iTJhv59J6SGAwUoiNDC7/5ZSek79JeZfENB4tZmMQs3polKn0FZkP4QGN?=
+ =?us-ascii?Q?+M8S8SXAsnI3bJjg3C3lZsCZvtLJ2ewx9X7U1w4+yf3m7IyD72bM94GJ+bFW?=
+ =?us-ascii?Q?w9GL0E0Mh7jjE3fnoxlAQzdj/TxsreHAfPhRLBckMT9Af4YlXiMrQgzCov3k?=
+ =?us-ascii?Q?bDwyrKIf/j6kkB1brMZylgc3NjXRY0QnRFlDFHaQkzWUsroxVl1ObxEmnHj2?=
+ =?us-ascii?Q?KbCV3xZZvnLETREmvYxgn5A=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(7416014)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?pmhAiPTKTEaZar3dNAdqfR1CYFeKIEm5obBEHFa8hJekLSmPkiianxubWyMX?=
- =?us-ascii?Q?32Wm1BX8jLiBld+wrB9Vtsw1F+0yH8PaeFGaie7jdg6SHRIbvVzm9Q34VdBq?=
- =?us-ascii?Q?hTnXROaOSnc8GHzmp5unpggJAIlPL+/V2xrD+24bcnQF7GOwm0SjRn42E2K0?=
- =?us-ascii?Q?EdZywbeSFMV5T6p7Rvc1xsPWC5FT41klLmMerTT9lsWagi/mPhBqNaf4QYlx?=
- =?us-ascii?Q?L/UhTwyYco4v2jo5tyvKRWvvf7K2Pa6us+F389M4z8Y89LZr3RD/3vI5lJcf?=
- =?us-ascii?Q?UR8v4Abbnt1XUVkCj6afKGNl0MewXe4oy1rMtDWpueSNyYZ9nyUsSexxc5iH?=
- =?us-ascii?Q?V6p8GxQbOAC1aPjp/pBsYY2XVs8Mvz45Bg6Q/K+qBiJxSruCVZl/CZd3FV87?=
- =?us-ascii?Q?PoFjnb4Jg/ibrIeleoJPZG0tSMl5a85LeYKnVGnsOnjUylsIizWrLCvONbPC?=
- =?us-ascii?Q?WXFMBJ7CL6MDgAp3vKIWMaozQPoLfttu5vmSNlTPryNZLY1fUcCZNDROtpYt?=
- =?us-ascii?Q?KAy78PqufRmb4d2pWBtQ9NbH9iUb2cpoFKfe7zrE4lxm+zXNwV4Z6RBbnYLN?=
- =?us-ascii?Q?M0QSfpOaz92NWkEIdFcg3sBPKHisNPvDw9ZgJJdLQQmEHItPorCwVm8NSgRq?=
- =?us-ascii?Q?RggXzfl5XuJCnkSDJAqyW3QCQ72oh0bP7pVTSzufDeYpPOlw3S3PZYyhORWn?=
- =?us-ascii?Q?7tmaeMgpAu8AfJTJf2use5e9JxOwInI/yl7aM84c5oai9jKelHt+BmfUQwDs?=
- =?us-ascii?Q?RaSSHSe+B6slHKT0TFVEPtaNY7fNMlNYIzhmkejbm6Uu64n8TcFPlGl/L2bY?=
- =?us-ascii?Q?wWm65ymkxSQUX7Hl4yTtKySZAVeWdxl9ilScq7KAP7U5NB5CFSUtNEkCxXyV?=
- =?us-ascii?Q?mRS4fBzifucDs9fVvpS0pYwpBzYdOTrqE3Xp8Z4vTp6gR9bmisz3DGb23+WU?=
- =?us-ascii?Q?zvTuLCcJJj7j58qu5hJW8iQ57991uwePxu40MfvkvepK/S8NEvDh6qVhiSad?=
- =?us-ascii?Q?GRlsUXAH3lexS3dVrEUDvYeOncq5PhEC5ZlopNcRypcQopOWiPs4AmKny3/R?=
- =?us-ascii?Q?hPD96pcKJmka3BXiIUJPu9gXhWYzRcBFhJqzAaWaf4hgbvsz7i0JfP4s0cw0?=
- =?us-ascii?Q?1xX1FC9qL46KLY99tRgdnyQpnpdjN7HXu9CtEiCdyFIbh5wZ7r26zFEyePWd?=
- =?us-ascii?Q?cSJp21SchIodDZg8RzBfg5fEz6wOP6gfIZlDFt6UPdnKxBtBVJddVdyf6uYS?=
- =?us-ascii?Q?WOq9YNJ8H5o5daD4s37LaEnmzLMERHK3UHtJURb52SMYvs4zHKZjB+XMpeOz?=
- =?us-ascii?Q?cfrWSduYYICDEDVJ1lchDuuZMU2ZxKqMZUSTTY4z5vqeRjgmstH/nei54uCI?=
- =?us-ascii?Q?3xQ+fA4si5neOLVOt2sdIh4VykTWJEr5N+kccXIs/Ri0E98GnmMj0wTg9l7+?=
- =?us-ascii?Q?9KaT62r3ZtPPrz/UKFzRly2EBoUOjr52n2/aNVF4xa4drvHJh1MFNME2fdza?=
- =?us-ascii?Q?2vBeiUUChrJg+gThlnIxDVTB07CJsyKwTRDPD0zhZYOn48GaEHURyzen3CT6?=
- =?us-ascii?Q?mtrhnLfiYxza7+/uEUZq3Nx35l9HgX8S8kUSz10K8iaZxGgSsFqFoUTgS2XI?=
- =?us-ascii?Q?yQQ0u6Zm7lWaNpUg93wcYrsOcICzkwf9dO/8E49zJ8ZVF8kN7G+O4RCQII2x?=
- =?us-ascii?Q?f6LhVl96rl2BD4J9whRej5zqUsZWbYAHPoCoKQF7zjZNcW/u?=
+	=?us-ascii?Q?CgmLadXGnmZK8lbzveZDpS2+GGqPjtw+5PccBgtX2r9NcpShWThyRy4HhlQ1?=
+ =?us-ascii?Q?C0FT4MWBKQwGiYQ5fHZR+weGUWpA3JNJOEdstFroGBjAgynCt7J5iIxTkQO/?=
+ =?us-ascii?Q?3ZDS+boS2SQl+9JXDcbnovu6irkD+TXy6b8tymk15KHQpI4NGbcRb+fFsp6S?=
+ =?us-ascii?Q?9onA5bWpeamQz+hLbUTBS3nqieMBwdwRIUD+7BhKb8mq3A7hidT65bCifi3S?=
+ =?us-ascii?Q?fKwxtOJf9bpdAWNjc0PSFSjRHLUmgGkjYI5AWHWNH3K8SZ30IWNrDx2xSqYa?=
+ =?us-ascii?Q?zzQFZ+AbBxH5H5cu6IJeEpIZ0GN42WvudnBEzxqZNqpishHzpcGPFwPDH5iB?=
+ =?us-ascii?Q?wvH7sqGSQa1ZGsuljZJcJT3B6TMkP6w34alHkC/EqblHAue2sSEYWHjp1fh9?=
+ =?us-ascii?Q?wzDG6aml7KXoxhS9pX4SRNDsbpayfPkXwopgiB3pXcNyAIZ7isvGJSfFEU00?=
+ =?us-ascii?Q?YRdRsHvDgkNsRFvxWggW6HBe9kLFV03wJIgmVq3/EP7zhaBLxQ/amkoP8xvR?=
+ =?us-ascii?Q?OL59+8Zb5uhOZiuEeb/Fl+la6cFhZxq5tWxQGBX0+W8k8Rt3SxVV1bF0CRHK?=
+ =?us-ascii?Q?dD6Ia0lct1CC4u02FZ/nRsHuxpRSpC6fmiAO8/PnE1q/kGPsKYRmcrcsQP1f?=
+ =?us-ascii?Q?MfmrHhmQ1TJPz+oOzj00hiMiBt2J43Gex2znH+orsNxqLLezMPMc7NVJ7cJb?=
+ =?us-ascii?Q?SqAzespW/LvtuYYjFStB5i9EEEzDI6SdrFv9GTnXqe9Qo/A+PFHtY1Blno/9?=
+ =?us-ascii?Q?T0/yDrKhAB11uEDgBwxnkh+MpTXDp7kUV7bfTusKKJvTEe+BYMeTWp1Ny7bI?=
+ =?us-ascii?Q?vyrREblAHYwQMVw5Wuw+zOOnhIeBUMH4gOSvP0nfZqXQCaSnKkWsRjuOQX+V?=
+ =?us-ascii?Q?GbpoXPvByAN2/MHW19JWvE0erdOTxldnaqsxnMOH9FaJ49gLWF2RIj62H5sD?=
+ =?us-ascii?Q?oATBiPl+YYokcQNoCWkIbJeP3CcrWv2ewPVgnFC0uaLpO8XojflNjNDPcUPg?=
+ =?us-ascii?Q?Q69+UDtJ7XGLCCmbHr5X6L0vAFsYq/4U6A1GBHToAD0dlwI3lM5hAdxkciHN?=
+ =?us-ascii?Q?2CUz7tdCgsgNYQI3FQKTzsm4lnE68CjfYZI6G3wNtHERMS1mUNxd+2tAXR6n?=
+ =?us-ascii?Q?/YUpdS05LbIWBdzjNCEBrfswkrFd90BgGFA4g2oP/c7DS5cUszuBDmMkjM2q?=
+ =?us-ascii?Q?2EW2RZPMgVrp6piS8h6deSzkvokmQHGyftEL5SycMFcjgGp4mrA9fLE23NJL?=
+ =?us-ascii?Q?1bnE343+2Rlp7zXnog3G2hXzwU6AP8sI/3KFyIA3C7QbHofoxinRjq16Uzza?=
+ =?us-ascii?Q?2UpaUVVMV236iPGwTcM9dnttmsnz+LaCv9zdPHGSUPb+KixT7r+yhaXSd8PM?=
+ =?us-ascii?Q?hEh5e0TWcUN0hK8hPNHF8PdW+cOOT2b9h3DUgkXnDgAdHCb+PeVcYUvDdOzs?=
+ =?us-ascii?Q?Dtz2bk4yYGIYh4DT5AhW78S2z6Ugi+RSx+eRrZVfOOSsBXxSRQbBSShl0Yig?=
+ =?us-ascii?Q?nqRjWakIZaPD8UU00dtatuTEtYijjifntJGFqpN9sEvzHj8g/CMPHgjm8xq/?=
+ =?us-ascii?Q?Sgvq7qxAQGgPBZcZOqSgpZgxOifidKkPg8dBAXZpca133YdhYIvb9gb4kymP?=
+ =?us-ascii?Q?dE9M6jYkolGNfK7BBBWZ/jtkboJFBJUfAgcCuyNtW4VU7FDSzeNp6ge1unZr?=
+ =?us-ascii?Q?7UL3KqzJZr6K59MgsLMuZXAszz9KQIbZzl0HlhLZcrY1EoBn?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4924728-a773-4b44-97da-08de659eb240
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62647d6c-c46c-42e5-9785-08de659eea84
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 16:42:20.5424
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 16:43:54.9399
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kuNoYmaaIluzJtB7Npw+Qb9bKvL5pozcmTtz1q2L+8onSxndpdgrcfanhmzwdt+7P/8xfq2+ewplmHZ+TTv4fQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3vhyf4uNPP0Noe269heaO1U/WUUq/mV+NBBV9FHCKUDSnoeygM9cxHjo2zo/kC5Xz6xr09zQ5krNR+4OWEH16Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9844
 
-On Fri, Feb 06, 2026 at 08:23:32AM +0800, Peng Fan (OSS) wrote:
-> From: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>
+On Fri, Feb 06, 2026 at 09:48:03AM +0800, Shengjiu Wang wrote:
+> There is a limitation on i.MX952 that dma request is not cleared at the
+> end of conversion with dma slave mode. Which causes sample is dropped
+> from the input fifo on the second time if dma is triggered before the
+> client device and EDMA may copy wrong data from output fifo as the output
+> fifo is not ready in the beginning.
 >
-> On i.MX94, watchdog sources clock from bus clock that will be always on
-> during the lifecycle of Linux. There is a Low Power Clock Gating(LPCG)
-> between the bus clock and watchdog, but the LPCG is not exported for
-> software to control, it is hardware automatically controlled. When
-> Cortex-A55 executes WFI during suspend flow, the LPCG will automatically
-> gate off the clock to stop watchdog and resume clock when Cortex-A55 is
-> woke up.
+> The solution is to trigger asrc before dma on i.MX952, and add delay to
+> wait output data is generated then start the EDMA for output, otherwise
+> the m2m function has noise issues.
 >
-> So watchdog could always be alive to protect Linux, except Cortex-A
-> platform WFI is executed in Linux suspend flow.
+> So add an option to start ASRC first for M2M before ASRC is enabled on
+> i.MX952.
 >
-> Introduce a new hardware feature flag to indicate CPU low-power-mode
-> auto clock gating support, and use it to avoid stopping the watchdog
-> during suspend when LPCG can safely keep it running.
->
-> Add i.MX94-specific watchdog hardware data and DT compatible entry to
-> enable this behavior.
->
-> Signed-off-by: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>
-> [peng.fan@nxp.com: rewrite commit log for clarity]
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 > ---
+
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Changes in v2:
-> - Update commit log for clarity
-> - Link to v1: https://lore.kernel.org/r/20260203-imx94-wdog-v1-1-7deb76dbe350@nxp.com
-> ---
->  drivers/watchdog/imx7ulp_wdt.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
+>  sound/soc/fsl/fsl_asrc.c        | 22 ++++++++++++++++++++++
+>  sound/soc/fsl/fsl_asrc.h        |  4 ++++
+>  sound/soc/fsl/fsl_asrc_common.h |  4 ++++
+>  sound/soc/fsl/fsl_asrc_m2m.c    |  8 +++++++-
+>  4 files changed, 37 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/watchdog/imx7ulp_wdt.c b/drivers/watchdog/imx7ulp_wdt.c
-> index 03479110453ce78a6a89ce8d351ba9ece2f5e2c5..0ae4c0c00138e89854f14edca0fd5fa84591c2d2 100644
-> --- a/drivers/watchdog/imx7ulp_wdt.c
-> +++ b/drivers/watchdog/imx7ulp_wdt.c
-> @@ -56,6 +56,7 @@ MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started (default="
->  struct imx_wdt_hw_feature {
->  	bool prescaler_enable;
->  	bool post_rcs_wait;
-> +	bool cpu_lpm_auto_cg;
->  	u32 wdog_clock_rate;
->  };
+> diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+> index 92fb16f7be45..2fe25667c888 100644
+> --- a/sound/soc/fsl/fsl_asrc.c
+> +++ b/sound/soc/fsl/fsl_asrc.c
+> @@ -1078,6 +1078,26 @@ static unsigned int fsl_asrc_get_output_fifo_size(struct fsl_asrc_pair *pair)
+>  	return val >> ASRFSTi_OUTPUT_FIFO_SHIFT;
+>  }
 >
-> @@ -360,7 +361,8 @@ static int __maybe_unused imx7ulp_wdt_suspend_noirq(struct device *dev)
+> +static bool fsl_asrc_m2m_output_ready(struct fsl_asrc_pair *pair)
+> +{
+> +	struct fsl_asrc *asrc = pair->asrc;
+> +	enum asrc_pair_index index = pair->index;
+> +	u32 val;
+> +	int ret;
+> +
+> +	/* Check output fifo status if it exceeds the watermark. */
+> +	ret = regmap_read_poll_timeout(asrc->regmap, REG_ASRFST(index), val,
+> +				       (ASRFSTi_OUTPUT_FIFO_FILL(val) >= ASRC_M2M_OUTPUTFIFO_WML),
+> +				       1, 1000);
+> +
+> +	if (ret) {
+> +		pair_warn("output is not ready\n");
+> +		return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+>  static int fsl_asrc_m2m_prepare(struct fsl_asrc_pair *pair)
 >  {
->  	struct imx7ulp_wdt_device *imx7ulp_wdt = dev_get_drvdata(dev);
+>  	struct fsl_asrc_pair_priv *pair_priv = pair->private;
+> @@ -1275,6 +1295,7 @@ static int fsl_asrc_probe(struct platform_device *pdev)
 >
-> -	if (watchdog_active(&imx7ulp_wdt->wdd))
-> +
-> +	if (watchdog_active(&imx7ulp_wdt->wdd) && !imx7ulp_wdt->hw->cpu_lpm_auto_cg)
->  		imx7ulp_wdt_stop(&imx7ulp_wdt->wdd);
+>  	asrc_priv->soc = of_device_get_match_data(&pdev->dev);
+>  	asrc->use_edma = asrc_priv->soc->use_edma;
+> +	asrc->start_before_dma = asrc_priv->soc->start_before_dma;
+>  	asrc->get_dma_channel = fsl_asrc_get_dma_channel;
+>  	asrc->request_pair = fsl_asrc_request_pair;
+>  	asrc->release_pair = fsl_asrc_release_pair;
+> @@ -1289,6 +1310,7 @@ static int fsl_asrc_probe(struct platform_device *pdev)
+>  	asrc->m2m_get_maxburst = fsl_asrc_m2m_get_maxburst;
+>  	asrc->m2m_pair_resume = fsl_asrc_m2m_pair_resume;
+>  	asrc->m2m_get_cap = fsl_asrc_m2m_get_cap;
+> +	asrc->m2m_output_ready = fsl_asrc_m2m_output_ready;
 >
->  	clk_disable_unprepare(imx7ulp_wdt->clk);
-> @@ -408,10 +410,17 @@ static const struct imx_wdt_hw_feature imx93_wdt_hw = {
->  	.wdog_clock_rate = 125,
+>  	if (of_device_is_compatible(np, "fsl,imx35-asrc")) {
+>  		asrc_priv->clk_map[IN] = input_clk_map_imx35;
+> diff --git a/sound/soc/fsl/fsl_asrc.h b/sound/soc/fsl/fsl_asrc.h
+> index 1c492eb237f5..60b6865ca952 100644
+> --- a/sound/soc/fsl/fsl_asrc.h
+> +++ b/sound/soc/fsl/fsl_asrc.h
+> @@ -257,6 +257,8 @@
+>  #define ASRFSTi_OUTPUT_FIFO_WIDTH	7
+>  #define ASRFSTi_OUTPUT_FIFO_SHIFT	12
+>  #define ASRFSTi_OUTPUT_FIFO_MASK	(((1 << ASRFSTi_OUTPUT_FIFO_WIDTH) - 1) << ASRFSTi_OUTPUT_FIFO_SHIFT)
+> +#define ASRFSTi_OUTPUT_FIFO_FILL(v)	\
+> +	(((v) & ASRFSTi_OUTPUT_FIFO_MASK) >> ASRFSTi_OUTPUT_FIFO_SHIFT)
+>  #define ASRFSTi_IAEi_SHIFT		11
+>  #define ASRFSTi_IAEi_MASK		(1 << ASRFSTi_IAEi_SHIFT)
+>  #define ASRFSTi_IAEi			(1 << ASRFSTi_IAEi_SHIFT)
+> @@ -432,10 +434,12 @@ struct dma_block {
+>   *
+>   * @use_edma: using edma as dma device or not
+>   * @channel_bits: width of ASRCNCR register for each pair
+> + * @start_before_dma: start asrc before dma
+>   */
+>  struct fsl_asrc_soc_data {
+>  	bool use_edma;
+>  	unsigned int channel_bits;
+> +	bool start_before_dma;
 >  };
 >
-> +static const struct imx_wdt_hw_feature imx94_wdt_hw = {
-> +	.prescaler_enable = true,
-> +	.wdog_clock_rate = 125,
-> +	.cpu_lpm_auto_cg = true,
-> +};
+>  /**
+> diff --git a/sound/soc/fsl/fsl_asrc_common.h b/sound/soc/fsl/fsl_asrc_common.h
+> index 0cd595b0f629..c8a1a2b5915d 100644
+> --- a/sound/soc/fsl/fsl_asrc_common.h
+> +++ b/sound/soc/fsl/fsl_asrc_common.h
+> @@ -107,6 +107,7 @@ struct fsl_asrc_pair {
+>   * @asrc_rate: default sample rate for ASoC Back-Ends
+>   * @asrc_format: default sample format for ASoC Back-Ends
+>   * @use_edma: edma is used
+> + * @start_before_dma: start asrc before dma
+>   * @get_dma_channel: function pointer
+>   * @request_pair: function pointer
+>   * @release_pair: function pointer
+> @@ -116,6 +117,7 @@ struct fsl_asrc_pair {
+>   * @m2m_start: function pointer
+>   * @m2m_unprepare: function pointer
+>   * @m2m_stop: function pointer
+> + * @m2m_output_ready: function pointer, check output fifo ready or not
+>   * @m2m_calc_out_len: function pointer
+>   * @m2m_get_maxburst: function pointer
+>   * @m2m_pair_suspend: function pointer
+> @@ -143,6 +145,7 @@ struct fsl_asrc {
+>  	int asrc_rate;
+>  	snd_pcm_format_t asrc_format;
+>  	bool use_edma;
+> +	bool start_before_dma;
+>
+>  	struct dma_chan *(*get_dma_channel)(struct fsl_asrc_pair *pair, bool dir);
+>  	int (*request_pair)(int channels, struct fsl_asrc_pair *pair);
+> @@ -154,6 +157,7 @@ struct fsl_asrc {
+>  	int (*m2m_start)(struct fsl_asrc_pair *pair);
+>  	int (*m2m_unprepare)(struct fsl_asrc_pair *pair);
+>  	int (*m2m_stop)(struct fsl_asrc_pair *pair);
+> +	bool (*m2m_output_ready)(struct fsl_asrc_pair *pair);
+>
+>  	int (*m2m_calc_out_len)(struct fsl_asrc_pair *pair, int input_buffer_length);
+>  	int (*m2m_get_maxburst)(u8 dir, struct fsl_asrc_pair *pair);
+> diff --git a/sound/soc/fsl/fsl_asrc_m2m.c b/sound/soc/fsl/fsl_asrc_m2m.c
+> index f46881f71e43..77999526dd9e 100644
+> --- a/sound/soc/fsl/fsl_asrc_m2m.c
+> +++ b/sound/soc/fsl/fsl_asrc_m2m.c
+> @@ -253,15 +253,21 @@ static int asrc_m2m_device_run(struct fsl_asrc_pair *pair, struct snd_compr_task
+>  	reinit_completion(&pair->complete[IN]);
+>  	reinit_completion(&pair->complete[OUT]);
+>
+> +	if (asrc->start_before_dma)
+> +		asrc->m2m_start(pair);
 > +
->  static const struct of_device_id imx7ulp_wdt_dt_ids[] = {
->  	{ .compatible = "fsl,imx7ulp-wdt", .data = &imx7ulp_wdt_hw, },
->  	{ .compatible = "fsl,imx8ulp-wdt", .data = &imx8ulp_wdt_hw, },
->  	{ .compatible = "fsl,imx93-wdt", .data = &imx93_wdt_hw, },
-> +	{ .compatible = "fsl,imx94-wdt", .data = &imx94_wdt_hw, },
->  	{ /* sentinel */ }
->  };
->  MODULE_DEVICE_TABLE(of, imx7ulp_wdt_dt_ids);
+>  	/* Submit DMA request */
+>  	dmaengine_submit(pair->desc[IN]);
+>  	dma_async_issue_pending(pair->desc[IN]->chan);
+>  	if (out_dma_len > 0) {
+> +		if (asrc->start_before_dma && asrc->m2m_output_ready)
+> +			asrc->m2m_output_ready(pair);
+>  		dmaengine_submit(pair->desc[OUT]);
+>  		dma_async_issue_pending(pair->desc[OUT]->chan);
+>  	}
 >
-> ---
-> base-commit: 193579fe01389bc21aff0051d13f24e8ea95b47d
-> change-id: 20260203-imx94-wdog-1e0aa14d661b
+> -	asrc->m2m_start(pair);
+> +	if (!asrc->start_before_dma)
+> +		asrc->m2m_start(pair);
 >
-> Best regards,
+>  	if (!wait_for_completion_interruptible_timeout(&pair->complete[IN], 10 * HZ)) {
+>  		dev_err(dev, "out DMA task timeout\n");
 > --
-> Peng Fan <peng.fan@nxp.com>
+> 2.34.1
 >
