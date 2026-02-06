@@ -1,120 +1,232 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2827822068A;
-	Fri,  6 Feb 2026 01:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AEC25FA29;
+	Fri,  6 Feb 2026 02:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770342851; cv=none; b=V7yybiSfSntVw+jsI5VL90i7UMhBmO2ftTz1N7O6wXeL68wipXnlUkcUph+f9N4yJIgxyuBTGxad0iyZwaKF+QljgTzeTmo8P07VLhUD9OkkMllhTEcWvxy7C7jJFpjlKk8itutyKv51+hikXBwHCeThaYuw7mNSkdGwM/mB6Ew=
+	t=1770344803; cv=none; b=jPzktJqId46AZlyWclNWRI/3GUsMeOnU+FMacqllgCINESpVpuiwfBSoojxyz3lsW4u1kAPApsW8ABy22fL486+tC7Y3knwZmRT93OHnJG/CX1uMytRwZVto3iEaLsFvxs1xWyiI4gsrIj1fCab1oTIL30Z6TAR5JovGfqTkeZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770342851; c=relaxed/simple;
-	bh=5J3kMshGAuQBNb43c32R/D42M6M9n/bqmLxIbWEwyAg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LfDOZMRpbX3ZqVENGd9cy26Qxz3hiDN19EtJHNwJb27s8d05pxpfLMOtQXcCV5wEIW3mAv/xVu8B5RCRInPfCZyv9mCOj3IJPcrwGZ7TIJEwFMhMcrGkZd1DjjSO451UOXcCBEPROgu2Xokq+Vhh8rqp7qbEntyE2PvGWZQeUWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JuOxFJ+4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770344803; c=relaxed/simple;
+	bh=BGxa4AkQjOf9KjNL+3M9JW6M3qf5DIia81SBTdQjZEs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ie1XvUaaPhE5yxDVJ8HF2ymbuG9F7mjpADSEu/4RRUCZqdKeCJ25x9CrcWOiwwSwevhggabA6Ng0AaJWIdBzl4VxJeP8Ml2vddGyW/3prl2p3oiUgnxVxACS36csQs7PYp3LVQ5odOD6CrH6AW4UeUyrHprm35fQKF691pGp2lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sfpNsewM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JuOxFJ+4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1E8C4CEF7;
-	Fri,  6 Feb 2026 01:54:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sfpNsewM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9857C4CEF7;
+	Fri,  6 Feb 2026 02:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770342851;
-	bh=5J3kMshGAuQBNb43c32R/D42M6M9n/bqmLxIbWEwyAg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JuOxFJ+4wxUl1w911PrccY2p3Vmohj2BvL9fBMt1cWe/0L4OK4QPqbUd3fy94/Mcf
-	 6V43l4m0aLTlQSxxUxPf4hj17JW7JZD9P1/iHdt5D7QkKC1BGyK9z65SH09Z3oTCDa
-	 ljqWhIuXiDyG8kEJ3beU5HL6/T2d5rVuFWHTe1BLMi1zBxYS1LkEggFv9V4VuzlXnQ
-	 5t161dfkh7E3JuMKyLaOredWzSUQTmlQR2/7C1kgO0oycAUgZmLy1xr4hNfP8f7DWg
-	 haIZ33cCUoa8VVXPp6gxDSZhasWB8pxbjqzmfd+Irqyx6BD/kOUM6nRYyEwXYUqsHw
-	 xw2DRGYeSIzKA==
-Date: Thu, 5 Feb 2026 17:54:08 -0800
+	s=k20201202; t=1770344802;
+	bh=BGxa4AkQjOf9KjNL+3M9JW6M3qf5DIia81SBTdQjZEs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sfpNsewMoN7NeiErvzWr4YM0gimRQzHAzsFtl0FtyddxtbpHaim1GNN+9lzxfabgW
+	 GyfINDqZa20XmUVpjvxy+B2XGeXYvWa4xJwyRh0WcINTGu6De1eHKpd6ZjA/mYYpWL
+	 w2/cVjD9V9/WJ9MFQbofhTr+k+U+CrU9y8GAhAuENocSvKY8qIR0SdD/7sUbMAZhxl
+	 xRfpM9OYyf/8vmxBvGm6c8eKQ4RTRl2xLn3JYct2jlOJ53ZAc/nTzW5UBdwoEt3s1Q
+	 dhsQd8qtVu9VwwBU7l7nW5dLXLOItnJx5RsTiR6Yq/I59aoJKJYuPCOKPDfVEY3ipN
+	 k1KLv2n5GtU1w==
 From: Jakub Kicinski <kuba@kernel.org>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>, Larysa Zaremba
- <larysa.zaremba@intel.com>
-Cc: bpf@vger.kernel.org, Claudiu Manoil <claudiu.manoil@nxp.com>, Wei Fang
- <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Tony Nguyen
- <anthony.l.nguyen@intel.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev
- <sdf@fomichev.me>, Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
- <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu
- <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, KP Singh
- <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, Jiri Olsa
- <jolsa@kernel.org>, Simon Horman <horms@kernel.org>, Shuah Khan
- <shuah@kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>, "Bastien Curutchet (eBPF
- Foundation)" <bastien.curutchet@bootlin.com>, Tushar Vyavahare
- <tushar.vyavahare@intel.com>, Jason Xing <kernelxing@tencent.com>, "Ricardo
- B. =?UTF-8?B?TWFybGniiJrCrnJl?=" <rbm@suse.com>, Eelco Chaudron
- <echaudro@redhat.com>, Lorenzo Bianconi <lorenzo@kernel.org>, Toke
- Hoiland-Jorgensen <toke@redhat.com>, imx@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, linux-kselftest@vger.kernel.org,
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: Re: [PATCH bpf 6/6] net: enetc: use truesize as XDP RxQ info
- frag_size
-Message-ID: <20260205175408.30ab72a1@kernel.org>
-In-Reply-To: <20260205134046.pggwyosutj7ggi4i@skbuf>
-References: <20260203105417.2302672-1-larysa.zaremba@intel.com>
-	<20260203105417.2302672-7-larysa.zaremba@intel.com>
-	<20260205005901.gnju3zmqimtgeu2b@skbuf>
-	<20260204173401.282899d0@kernel.org>
-	<20260205122953.lscemcctayrvszdu@skbuf>
-	<aYSP344FT-JlylwY@soc-5CG4396X81.clients.intel.com>
-	<20260205124638.hxzvjiocephzlrk3@skbuf>
-	<aYSZw4wbd-nvLTuD@soc-5CG4396X81.clients.intel.com>
-	<20260205134046.pggwyosutj7ggi4i@skbuf>
+To: lukasz.majewski@mailbox.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	imx@lists.linux.dev,
+	andrew+netdev@lunn.ch,
+	linux-kernel@vger.kernel.org,
+	krzk+dt@kernel.org,
+	davem@davemloft.net,
+	kernel@pengutronix.de,
+	devicetree@vger.kernel.org,
+	horms@kernel.org,
+	festevam@gmail.com,
+	andrew@lunn.ch,
+	conor+dt@kernel.org,
+	pabeni@redhat.com,
+	shawnguo@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	wahrenst@gmx.net,
+	richardcochran@gmail.com,
+	s.hauer@pengutronix.de,
+	netdev@vger.kernel.org,
+	edumazet@google.com,
+	robh@kernel.org
+Subject: Re: [net-next,v23,2/7] net: mtip: The L2 switch driver for imx287
+Date: Thu,  5 Feb 2026 18:26:40 -0800
+Message-ID: <20260206022640.3197138-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260204232135.1024665-3-lukasz.majewski@mailbox.org>
+References: <20260204232135.1024665-3-lukasz.majewski@mailbox.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 5 Feb 2026 15:40:46 +0200 Vladimir Oltean wrote:
-> > > I mean, it should "work" given the caveat that calling bpf_xdp_adjust_tail()
-> > > on a first-half page buffer with a large offset risks leaking into the
-> > > second half, which may also be in use, and this will go undetected, right?
-> > > Although the practical chances of that happening are low, the requested
-> > > offset needs to be in the order of hundreds still.  
-> > 
-> > Oh, I did get carried away there...
-> > Well, one thing is shared page memory model in enetc and i40e, another thing is
-> > xsk_buff_pool, where chunk size can be between 2K and PAGE_SIZE. What about
-> > 
-> > tailroom = rxq->frag_size - skb_frag_size(frag) -
-> >            (skb_frag_off(frag) % rxq->frag_size);
-> > 
-> > When frag_size is set to 2K, headroom is let's say 256, so aligned DMA write
-> > size is 1420.
-> > last frag at the start of the page: offset=256, size<=1420
-> >     tailroom >= 2K - 1420 - 256 = 372
-> > last frag in the middle of the page: offset=256+2K, size<=1420
-> >     tailroom >= 2K - 1420 - ((256 + 2K) % 2K) = 372
-> > 
-> > And for drivers that do not fragment pages for multi-buffer packets, nothing
-> > changes, since offset is always less than rxq->frag_size.
-> > 
-> > This brings us back to rxq->frag_size being half of a page for enetc and i40e,
-> > and seems like in ZC mode it should be pool->chunk_size to work properly.  
-> 
-> With skb_frag_off() taken into account modulo 2K for the tailroom
-> calculation, I can confirm bpf_xdp_frags_increase_tail() works well for
-> ENETC. I haven't fully considered the side effects, though.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-+1, also seems to me like it would work tho I haven't thought thru all 
-the cases. We do need to document and name things well, tho, 'cause
-subtleties are piling up ;) Maybe it's time for an ASCII art
-for xdp layout?
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+net: mtip: The L2 switch driver for imx287
 
-FWIW my feeling is that instead of nickel and diming leftover space 
-in the frags if someone actually cared about growing mbufs we should
-have the helper allocate a new page from the PP and append it to the
-shinfo. Much simpler, "infinite space", and works regardless of the
-driver. I don't mean that to suggest you implement it, purely to point
-out that I think nobody really uses positive offsets.. So we can as
-well switch more complicated drivers back to xdp_rxq_info_reg().
+This patch provides support for More Than IP L2 switch embedded in the
+imx287 SoC, a two port switch placed between uDMA[01] and MAC-NET[01]
+for offloading network traffic.
+
+> diff --git a/drivers/net/ethernet/freescale/mtipsw/Kconfig b/drivers/net/ethernet/freescale/mtipsw/Kconfig
+> new file mode 100644
+> index 000000000000..7767bd7c707b
+> --- /dev/null
+> +++ b/drivers/net/ethernet/freescale/mtipsw/Kconfig
+> @@ -0,0 +1,13 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +config FEC_MTIP_L2SW
+> +	tristate "MoreThanIP L2 switch support to FEC driver"
+
+This isn't a bug, but the vendor name formatting is inconsistent between
+the description line ("MoreThanIP") and the help text below ("MoreThan
+IP"). The vendor should be consistently named throughout the file.
+
+> +	depends on OF
+> +	depends on NET_SWITCHDEV
+> +	depends on BRIDGE
+> +	depends on SOC_IMX28 || COMPILE_TEST
+> +	help
+> +	  This enables support for the MoreThan IP L2 switch on i.MX
+> +	  SoCs (e.g. iMX287). It offloads bridging to this IP block's
+
+The SoC name "iMX287" should be "i.MX287" to match NXP's standard naming
+convention used throughout the kernel for i.MX SoCs.
+
+> diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> new file mode 100644
+> index 000000000000..0a193a12e160
+> --- /dev/null
+> +++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+
+[ ... ]
+
+> +static void mtip_mgnt_timer(struct timer_list *t)
+> +{
+> +	struct switch_enet_private *fep = timer_container_of(fep, t,
+> +							     timer_mgnt);
+
+Does this code cause undefined behavior? The timer_container_of macro
+expands to container_of(t, typeof(*fep), timer_mgnt), which dereferences
+the uninitialized 'fep' variable in the typeof() expression. This is the
+first statement in the function where 'fep' is being declared and assigned
+simultaneously.
+
+Looking at how other timer callbacks use this macro, shouldn't this be:
+
+	struct switch_enet_private *fep = container_of(t,
+		struct switch_enet_private, timer_mgnt);
+
+This will cause a crash when the timer fires at the mod_timer() call site
+in mtip_config_switch().
+
+[ ... ]
+
+> +static void mtip_switch_tx(struct switch_enet_private *fep)
+> +{
+> +}
+> +
+> +static int mtip_switch_rx(struct net_device *dev, int budget)
+> +{
+> +	return -ENOMEM;
+> +}
+
+Can the driver actually send or receive packets with these implementations?
+
+Looking at the call chain:
+  mtip_interrupt() schedules NAPI on RX interrupt ->
+  mtip_rx_napi() calls mtip_switch_rx() ->
+  mtip_switch_rx() always returns -ENOMEM
+
+This means all receive interrupts are treated as out-of-memory conditions
+and no packets are ever delivered to the network stack. Similarly,
+mtip_switch_tx() is an empty stub that does nothing.
+
+The commit message states "It can be used interchangeably with current
+FEC driver" which suggests a functional driver, but the network interface
+cannot actually send or receive packets. Should the commit message clarify
+this is an incomplete implementation, or are these functions missing their
+implementation?
+
+[ ... ]
+
+> +static int mtip_parse_of(struct switch_enet_private *fep,
+> +			 struct device_node *np)
+> +{
+> +	struct device_node *p;
+> +	unsigned int port_num;
+> +	int ret = 0;
+> +
+> +	p = of_get_child_by_name(np, "ethernet-ports");
+> +
+> +	for_each_available_child_of_node_scoped(p, port) {
+> +		if (of_property_read_u32(port, "reg", &port_num))
+> +			continue;
+> +
+> +		if (!(port_num == 1 || port_num == 2)) {
+> +			dev_err(&fep->pdev->dev,
+> +				"%s: The switch supports up to %d ports!\n",
+> +				__func__, SWITCH_EPORT_NUMBER);
+> +			goto of_get_err;
+> +		}
+> +
+> +		fep->n_ports = port_num;
+> +		ret = of_get_mac_address(port, &fep->mac[port_num - 1][0]);
+> +		if (ret)
+> +			dev_dbg(&fep->pdev->dev,
+> +				"of_get_mac_address(%pOF) failed (%d)!\n",
+> +				port, ret);
+> +
+> +		ret = of_property_read_string(port, "label",
+> +					      &fep->ndev_name[port_num - 1]);
+> +		if (ret < 0) {
+> +			dev_err(&fep->pdev->dev,
+> +				"%s: Cannot get ethernet port name (%d)!\n",
+> +				__func__, ret);
+> +			goto of_get_err;
+> +		}
+> +
+> +		ret = of_get_phy_mode(port, &fep->phy_interface[port_num - 1]);
+> +		if (ret < 0) {
+> +			dev_err(&fep->pdev->dev,
+> +				"%s: Cannot get PHY mode (%d)!\n", __func__,
+> +				ret);
+> +			goto of_get_err;
+> +		}
+> +
+> +		fep->phy_np[port_num - 1] = of_parse_phandle(port,
+> +							     "phy-handle", 0);
+
+Can this code leak OF node references?
+
+If the first port (port_num=1) successfully obtains its PHY handle via
+of_parse_phandle() and stores the reference in phy_np[0], but a
+subsequent port fails during of_property_read_string() for the 'label'
+property or of_get_phy_mode(), the error path jumps to of_get_err which
+only releases the parent node 'p'. The PHY handle reference obtained for
+the first port is never released.
+
+The error path returns to mtip_sw_probe() which returns error without
+calling mtip_parse_of_cleanup(), leaking the phy_np[0] reference. Note
+that line 1191 correctly calls mtip_parse_of_cleanup(fep) before goto,
+showing the cleanup is needed for these earlier error paths too.
+
+> +		if (!fep->phy_np[port_num - 1]) {
+> +			mtip_parse_of_cleanup(fep);
+> +			dev_err(&fep->pdev->dev,
+> +				"%s: PHY handle not defined!\n", __func__);
+> +			ret = -ENODEV;
+> +			goto of_get_err;
+> +		}
+> +	}
+> +
+> + of_get_err:
+> +	of_node_put(p);
+-- 
+pw-bot: cr
