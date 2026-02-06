@@ -1,110 +1,71 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA91534C83C
-	for <imx@lists.linux.dev>; Fri,  6 Feb 2026 10:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53C336BCF6
+	for <imx@lists.linux.dev>; Fri,  6 Feb 2026 13:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770373509; cv=none; b=G2kCvvVRzFpdF76fIxWk1XHCETy37qU0lUQZsFxBVMs89EnGe/KOlqn/dczmvAqkYx0WAAWuKivl8NE9xRQPc4Ts6palj6ObfzfRLn/I0KR4UOTAPQcfFJL1fqCeiurbwik0MFZ6/lRQsqzi0eJDJbKZfji8wJqsvGZUByTqg7Y=
+	t=1770384165; cv=none; b=aJoWP5dV6Lx68KkNZ459dhx3vJ+X8BHgjFbNLjJ4fKl37ORHgQcw02kAAEUD4Cu0njnVcPGGhHwoopbWbtXPfu+PuAH4IploiunpnudCXU+fzaEfS76NZvYEC9pza08w6QerQUMN86qjfjBV0YH6OzyqTeSbdodW/7pYsIdKlVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770373509; c=relaxed/simple;
-	bh=/MrCMk1XqmJv4v+raVshn8mmcHW5OWo2dw/7KEjMkUI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TIq4IftngT5K6Adhe4JnKlL2WycORKjQVb0Ed8tjIU+wdGIiAEP+nviG0fu+O/u10hGXfLw6Kfk21M/yaVaaTBXmw8azQ5COey7KjnDDRg/0IabJxLdXa8sMlTd+1KWosJokzY9gBNVnSuohFeZM67ooe+0tCxEDoirOGows8FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Q+guTtEN; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Q+guTtEN"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4f6qwK2Bl2z9tp0;
-	Fri,  6 Feb 2026 11:25:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1770373505;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MOfHMKbNXy3MxrUvKuYFlc2euBi7oH7iiv3EqWTkTe0=;
-	b=Q+guTtENwgC5TbwQgdx1Frin7BHRBTLNH+jgV8zl/vj7XoqV/IVMLIGrfcA1N7f0zodGNf
-	f1SOpF8U8TqIwqcLPhN7MwDaaV3nLmuYFalA5LwH9nG5QgWkaGr8ibG1uiM49PAJCo1FRc
-	1UebMpyjMe0IkZjc9VhNpLJTyl4VKbpL82p+GkYxXoqUvLBd9Y7sBAxfusunf+U4aJM7ih
-	6imcTswZXvX/En7KJXYxP7bH01uL3d516agiwxtsNvHrNtmZJZmcsdQ7Y34BAwHL8svGUB
-	CHxNTfBJVKnmMQr0txQQe9v5OJCpX5gX88MCrPhurOeHz9X3aNhrRmcLVSYsXA==
-Date: Fri, 6 Feb 2026 11:24:54 +0100
-From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Richard Cochran
- <richardcochran@gmail.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
- <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
- <andrew@lunn.ch>
-Subject: Re: [net-next v23 2/7] net: mtip: The L2 switch driver for imx287
-Message-ID: <20260206112454.2e9a686f@wsk>
-In-Reply-To: <20260205182805.196fd832@kernel.org>
-References: <20260204232135.1024665-1-lukasz.majewski@mailbox.org>
-	<20260204232135.1024665-3-lukasz.majewski@mailbox.org>
-	<20260205182805.196fd832@kernel.org>
-Organization: mailbox.org
+	s=arc-20240116; t=1770384165; c=relaxed/simple;
+	bh=tyNERdnhwcJsB4+IZJTjocTy/p1a2PIJI9XlyIeVAK0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=K0hVF2+lVTI5ZyRxvIfMmEnswnqVhVjY8uY0Emmw0riko9gq2WiNqCssEjGwAM04sVDckBN0Y2H+Z/+SpndCfOc6FDARFER84BFZBXMu6oobcKDyxXzbHsedFMRzjDOEIbwEhhg0VxakwcN0d+uejLNk4adSf5ZR8uRw4tN8t9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1voLn9-0001ty-3f; Fri, 06 Feb 2026 14:22:35 +0100
+Received: from lupine.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::4e] helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1voLn8-004Pax-2n;
+	Fri, 06 Feb 2026 14:22:34 +0100
+Received: from pza by lupine with local (Exim 4.98.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1voLn8-000000006G1-0Vpa;
+	Fri, 06 Feb 2026 14:22:34 +0100
+Message-ID: <f88fc05d521800c95d281111fa7cf54219089258.camel@pengutronix.de>
+Subject: Re: [PATCH v2] reset: imx7: Check return value of
+ regmap_attach_dev() in imx7_reset_probe()
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Chen Ni <nichen@iscas.ac.cn>, Frank.Li@nxp.com, s.hauer@pengutronix.de, 
+	kernel@pengutronix.de, festevam@gmail.com
+Cc: imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Date: Fri, 06 Feb 2026 14:22:33 +0100
+In-Reply-To: <20260206050109.119348-1-nichen@iscas.ac.cn>
+References: <20260206050109.119348-1-nichen@iscas.ac.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-MBO-RS-ID: db1cc35f512114a3232
-X-MBO-RS-META: w9x5nk7bybc1tfbnhh3ap1diw3eq7r7n
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi Jakub,
-
-> On Thu,  5 Feb 2026 00:21:30 +0100 Lukasz Majewski wrote:
-> > This patch series provides support for More Than IP L2 switch
-> > embedded in the imx287 SoC.
-> >=20
-> > This is a two port switch (placed between uDMA[01] and MAC-NET[01]),
-> > which can be used for offloading the network traffic.
-> >=20
-> > It can be used interchangeably with current FEC driver - to be more
-> > specific: one can use either of it, depending on the requirements.
-> >=20
-> > The biggest difference is the usage of DMA - when FEC is used,
-> > separate DMAs are available for each ENET-MAC block.
-> > However, with switch enabled - only the DMA0 is used to
-> > send/receive data to/form switch (and then switch sends them to
-> > respecitive ports).
-> >=20
-> > Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
-> > Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-> > Reviewed-by: Andrew Lunn <andrew@lunn.ch> =20
+On Fr, 2026-02-06 at 13:01 +0800, Chen Ni wrote:
+> Add error checking for regmap_attach_dev() call in imx7_reset_probe()
+> function to ensure proper error propagation.
 >=20
-> Transient build failure here:
+> Return the value of regmap_attach_dev() if it fails to prevent
+> proceeding with an incomplete regmap setup.
 >=20
-> drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c:1072:32: warning:
-> variable =E2=80=98priv=E2=80=99 set but not used [-Wunused-but-set-variab=
-le] 1072 |
->       struct mtip_ndev_priv *priv; |
-> ^~~~
->=20
-> I sent out the AI code reviews while at it, without looking at them.
-> So please approach them with caution..
+> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
 
-IMHO, issues pointed with AI review have been at discussed and
-(to my best knowledge) addressed.
+Thank you,
 
-Shall I prepare next version of this patch set?
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
 
---=20
-Best regards,
-
-=C5=81ukasz Majewski
+regards
+Philipp
