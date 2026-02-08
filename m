@@ -1,97 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BBD346E7A;
-	Sun,  8 Feb 2026 21:21:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A081A9F8D
+	for <imx@lists.linux.dev>; Sun,  8 Feb 2026 23:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770585693; cv=none; b=DYt8RJI6cKBVHOEdE0Vij88kgO/9es/7Byxprcg8cFC3cNcRHZEp9XvVZuolzAQILcXHFZ6ti7EFuEEdb170qGhxhV53OC48iZQWly8itU+wGnepJnerkLWy2U+dp1mqgj0yz0I9cYjsEVUH3fbhDmNTumpn5l31lsEDR0pi57s=
+	t=1770593382; cv=none; b=DGPKEB7zAH7Gxo38I2dyT+lFYBw1Wor12lwo+5J4dU3amoOcorhQHGy5Vd8Vioh8PuqkybJlQRnlDSWssQC/dw61rph0RGQUSchtWEhUY2PK0Mpv2VLW8cEU1K/6z+WrnS4E88TpoB8eoPlLoTnwd6CqQyWErsUG8lLLnrLq/r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770585693; c=relaxed/simple;
-	bh=WniId9rylPyWCg6DYb8OFQ8yG1Mf1fld/+NjW0lsf8k=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=OiozTt6rC/ypISXz58bbNVtfLzUzj1i73KUoSlHjvkz20+NAyNjpoDrtlCKGLQ6MkLFQDGp1eoLfRG0wPFmNFBwGozqF66uj/jNNKW7jGDdjH1TJyGnVJfolFzTk9Un1w8dnKTXXrLVkgqbLOLcILlEDOQaAtBb87BLsmgPwank=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OL0cmPMG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770593382; c=relaxed/simple;
+	bh=mH6fkBrVmk8s3YSlBo4EGed5ZVvJQ4dDHwcKBDH+cTY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Kq7H81cTGABrlFHIOKAb1cBAUm89wJ03lb6ZoPC8Ben5kbntu3RvDTIrqOUaekJ3cVylTa4d1Lxzgd7bcNb9PQ1wewC9iQhmFLD8R8ypkk4mbPBC5axcK7JOYSqTbnZoIhRXAdxfBRipkOkkYei0elup+cULOkagyUPy5Yu05t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=DjfzPj3R; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OL0cmPMG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A8BC4CEF7;
-	Sun,  8 Feb 2026 21:21:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770585692;
-	bh=WniId9rylPyWCg6DYb8OFQ8yG1Mf1fld/+NjW0lsf8k=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=OL0cmPMGq5hb4ML2UnBGJ7XL+Cd2QuvbF2LHCwzNxbt2D5NdVfL1HUi1K2BJFm7qe
-	 FO6ErvhzO/VPNdM00QJdKkXJThRqPgNp7pgtPAQo/is0wG00tWKu3YsT/8AmKsB/1W
-	 Zi1lF6Y52pNAoJeqjcGO58ozFPqmmkB78ZPpN5gF7Rm4ov7vZt63BXQhH90d9GhH+x
-	 H91figU7ZpSIpGrvLTiHduM/rwS4K7YyONIs7mDupxe+jsBe89IhoDPyt9tfHYoH1B
-	 st2sf9XgeYYZK0mZpaXpkvQ6oZ9d6j8K+a05oJGBzVFy/Pwc3s2M24i/5M6I0M6eHX
-	 rdhZtuE3oXrrg==
-From: Mark Brown <broonie@kernel.org>
-To: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org, 
- conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
- kernel@pengutronix.de, festevam@gmail.com, linux-sound@vger.kernel.org, 
- devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, 
- perex@perex.cz, tiwai@suse.com, linuxppc-dev@lists.ozlabs.org, 
- Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <20260206014805.3897764-1-shengjiu.wang@nxp.com>
-References: <20260206014805.3897764-1-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v4 0/4] ASoC: fsl_asrc: support the i.MX952 platform
-Message-Id: <177058568882.654564.1085917355716546232.b4-ty@kernel.org>
-Date: Sun, 08 Feb 2026 21:21:28 +0000
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="DjfzPj3R"
+Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 78BF482A;
+	Mon,  9 Feb 2026 00:28:47 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1770593327;
+	bh=mH6fkBrVmk8s3YSlBo4EGed5ZVvJQ4dDHwcKBDH+cTY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DjfzPj3RcpnvkaE3H7PfYwTUxl7U9SB0YeIuKIMRUpzUretVgaKmFum2GTRwjDJ8F
+	 H1aQZlHmt0KH4hZaaNtwOt+oi5xt08Vruu9+q5AMk7u2mixW3zVPrcHUd1zLZl8Whv
+	 l3HhJ0wpInMqfQbHkJb2Rj41J3LAnhehEb1mUUs0=
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: netdev@vger.kernel.org,
+	imx@lists.linux.dev
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Heiko Schocher <hs@denx.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Joakim Zhang <qiangqing.zhang@nxp.com>,
+	Joy Zou <joy.zou@nxp.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Martyn Welch <martyn.welch@collabora.com>,
+	Mathieu Othacehe <othacehe@gnu.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Richard Hu <richard.hu@technexion.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Stefano Radaelli <stefano.radaelli21@gmail.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] net: stmmac: imx: Disable EEE
+Date: Mon,  9 Feb 2026 01:29:31 +0200
+Message-ID: <20260208232931.2272237-1-laurent.pinchart@ideasonboard.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
+Content-Transfer-Encoding: 8bit
 
-On Fri, 06 Feb 2026 09:48:01 +0800, Shengjiu Wang wrote:
-> Update dt binding document and update driver to suppot ASRC on i.MX952.
-> 
-> Changes in v4:
-> - add Reviewed-by from Daniel in patch 2/4, 3/4
-> - add Reviewed-by from Frank in patch 4/4
-> - update the commit message for patch 4/4
-> - remove 'retry' in patch 2/4, reduce the threshold for timeout.
-> 
-> [...]
+The i.MX8MP suffers from an interrupt storm related to the stmmac and
+EEE. A long and tedious analysis ([1]) concluded that the SoC wires the
+stmmac lpi_intr_o signal to an OR gate along with the main dwmac
+interrupts, which causes an interrupt storm for two reasons.
 
-Applied to
+First, there's a race condition due to the interrupt deassertion being
+synchronous to the RX clock domain:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+- When the PHY exits LPI mode, it restarts generating the RX clock
+  (clk_rx_i input signal to the GMAC).
+- The MAC detects exit from LPI, and asserts lpi_intr_o. This triggers
+  the ENET_EQOS interrupt.
+- Before the CPU has time to process the interrupt, the PHY enters LPI
+  mode again, and stops generating the RX clock.
+- The CPU processes the interrupt and reads the GMAC4_LPI_CTRL_STATUS
+  registers. This does not clear lpi_intr_o as there's no clk_rx_i.
 
-Thanks!
+An attempt was made to fixing the issue by not stopping RX_CLK in Rx LPI
+state ([2]). This alleviates the symptoms but doesn't fix the issue.
+Since lpi_intr_o takes four RX_CLK cycles to clear, an interrupt storm
+can still occur during that window. In 1000T mode this is harder to
+notice, but slower receive clocks cause hundreds to thousands of
+spurious interrupts.
 
-[1/4] ASoC: dt-bindings: fsl,imx-asrc: Add support for i.MX952 platform
-      commit: 37bb773b4a5a5107b92beda3447a7c6c0cfc1237
-[2/4] ASoC: fsl_asrc_m2m: Add option to start ASRC before DMA device for M2M
-      commit: 83447a38ba9abac52bc110566d3e117753899f69
-[3/4] ASoC: fsl_asrc: Add support for i.MX952 platform
-      commit: 6a8c6f5587337eceb387812b6f47bc16c125b883
-[4/4] ASoC: fsl_asrc_dma: allocate memory from dma device
-      commit: b010c782341b79edbeb80706360b772db908daa6
+Fix the issue by disabling EEE completely on i.MX8MP.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+[1] https://lore.kernel.org/all/20251026122905.29028-1-laurent.pinchart@ideasonboard.com/
+[2] https://lore.kernel.org/all/20251123053518.8478-1-laurent.pinchart@ideasonboard.com/
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+---
+This patch depends on https://lore.kernel.org/r/20251026122905.29028-1-laurent.pinchart@ideasonboard.com
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+index db288fbd5a4d..e8e6f325d92d 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c
+@@ -317,8 +317,7 @@ static int imx_dwmac_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
+-	if (data->flags & STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY)
+-		plat_dat->flags |= STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY;
++	plat_dat->flags |= data->flags;
+ 
+ 	/* Default TX Q0 to use TSO and rest TXQ for TBS */
+ 	for (int i = 1; i < plat_dat->tx_queues_to_use; i++)
+@@ -355,7 +354,8 @@ static struct imx_dwmac_ops imx8mp_dwmac_data = {
+ 	.addr_width = 34,
+ 	.mac_rgmii_txclk_auto_adj = false,
+ 	.set_intf_mode = imx8mp_set_intf_mode,
+-	.flags = STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY,
++	.flags = STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY
++	       | STMMAC_FLAG_EEE_DISABLE,
+ };
+ 
+ static struct imx_dwmac_ops imx8dxl_dwmac_data = {
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+base-commit: 18f7fcd5e69a04df57b563360b88be72471d6b62
+prerequisite-patch-id: a3c3f8b08fd66ee3ccce632aad3f4a3c21c92718
+-- 
+Regards,
 
-Thanks,
-Mark
+Laurent Pinchart
 
