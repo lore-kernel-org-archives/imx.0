@@ -1,210 +1,97 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013028.outbound.protection.outlook.com [52.101.83.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077D622156C
-	for <imx@lists.linux.dev>; Sun,  8 Feb 2026 12:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770555584; cv=fail; b=BXsoscATeEYWghrSY9Cf4NEeiuO/pI+hyh0VEBgXj60xax4z7qdm22I+nKzCy3QgMUptbjMlEb1n6S5l0wWjU6R63Z4XexygtwFEt/bGLmXG2PrxSEe05ezPyGQZL83c3lcljb4Kp1VzsNmZMAkz98Q104s5WKO/J1vGMqKRm5g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770555584; c=relaxed/simple;
-	bh=rIkNgHv3jka08RRZ70QXEEIF98/sidj5RNIPXJz2OX0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=lx2nAMBtbeqOsSqc6PJ+6RQ+/JVIGBQfoRXddPEg4IEL9lRNOSJDme+KqCeZAkgvLkgr5GKDF9qrpmlHR5MAHtOKCB4EAw+HtZouLetsiTZvmz8MJQYXMJsKUOFIiiThCH+Paaif/SZqQEzO0ZMbFqB9ait6kIsciMU+y4YfUhI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kDEuVQYU; arc=fail smtp.client-ip=52.101.83.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BBD346E7A;
+	Sun,  8 Feb 2026 21:21:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770585693; cv=none; b=DYt8RJI6cKBVHOEdE0Vij88kgO/9es/7Byxprcg8cFC3cNcRHZEp9XvVZuolzAQILcXHFZ6ti7EFuEEdb170qGhxhV53OC48iZQWly8itU+wGnepJnerkLWy2U+dp1mqgj0yz0I9cYjsEVUH3fbhDmNTumpn5l31lsEDR0pi57s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770585693; c=relaxed/simple;
+	bh=WniId9rylPyWCg6DYb8OFQ8yG1Mf1fld/+NjW0lsf8k=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=OiozTt6rC/ypISXz58bbNVtfLzUzj1i73KUoSlHjvkz20+NAyNjpoDrtlCKGLQ6MkLFQDGp1eoLfRG0wPFmNFBwGozqF66uj/jNNKW7jGDdjH1TJyGnVJfolFzTk9Un1w8dnKTXXrLVkgqbLOLcILlEDOQaAtBb87BLsmgPwank=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OL0cmPMG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kDEuVQYU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z7218mSPAu+UuVMaPMzOeXK6AQaixBBL/uD0Wj5CHKm+wyFngzYKdQXLMSnqRt3srINqKAHE/8JTQa6xuTzIgiNehH3yAlM6Jv4UdH71qmHToRaodbnnLX44g1F0Gi3ZFj0QpnYca+Y5xwc0IEo7MWVPNRAeuUfPUj55etCQZIdvVlh6r4IBCRIYHk/5H3wkwShVJEPvGxbELyqQRGSIPdJaMS1bsgL4JskT1ub9HWOF6tSMEtHDyFmvV4xQeYgYDonhjBJuy+w6bFuKzGcHMUt6VVZIPf3XhFE4akwp0GEXgjRGOk0fWdGHkZA+nEgYa96LHmjyzwq3lYZM8P1htg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rr/XIC2d6FGoYwy7L7vsitxwYPjosV0yjsxLuIsaA0k=;
- b=T9VsBko9WpliLS4mA/PdHRApX7biUQRrfsTSe8goADtRSr8UKKHvX6JzPK8ekM+JnxtCeqyapm96ZZ0VijsKbnNTSnlHTFy1DUOh6GRsAPDuwuUt7SQ0un8bvgXJN0CLqooV6SBVKBf3KSFJ7H31aMCChENL92V4B5CBBwIxBvL3NOIY1zJKETUHZoaMaUKiE2hkp9W2GewrRIx+6O6NkU739A2lPNZx89kHKBVqEgHTGUf7R5YC8vA2ah3rgZbV1oFWrxU3qtljQAre7n53+bHR9fUJQswfl1lQ/e+J8xNtZVFA6QMSherIj6E6h1wVri7n2Q1GNs1/QGhGzVHm5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rr/XIC2d6FGoYwy7L7vsitxwYPjosV0yjsxLuIsaA0k=;
- b=kDEuVQYU2LKFyOglhtQJpGPY97muxxMdWxRK82T2WFQ7MmxNRldrdB/snTmi9GA4I2VGfvHwFMkII73VksGIfSC4YKKwuI0K/pPc1XtMM3ZQt3O8cZsq7ClGk+ti2lLvLpSvL/6N2ZuFvfLVCSHh4rOaC4daHfHYcVtiO7Ggsy62Gf4eY8ZvFkeZDNbyXuHKyBGHxt5vq9x5hfGTJ1ZNyrNYJPWM1oaHPzdwyyUFKxk3H3eaZFEga+bJrMAfV8w1pKKkEhRwB7l3R6jMYBLK4FDqLYKJKoMbnwLOs9JguUXhqhmuSFcJ/m9m48bp+e/qOU4wlz6KLTR6dezTnLU44g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com (2603:10a6:20b:438::13)
- by DB9PR04MB8106.eurprd04.prod.outlook.com (2603:10a6:10:24b::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.18; Sun, 8 Feb
- 2026 12:59:40 +0000
-Received: from AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4]) by AM9PR04MB8585.eurprd04.prod.outlook.com
- ([fe80::f010:fca8:7ef:62f4%4]) with mapi id 15.20.9587.010; Sun, 8 Feb 2026
- 12:59:39 +0000
-Date: Sun, 8 Feb 2026 14:59:34 +0200
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Larysa Zaremba <larysa.zaremba@intel.com>, bpf@vger.kernel.org,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>, Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	"Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>,
-	Tushar Vyavahare <tushar.vyavahare@intel.com>,
-	Jason Xing <kernelxing@tencent.com>,
-	Ricardo =?utf-8?B?Qi4gTWFybGniiJrCrnJl?= <rbm@suse.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Toke Hoiland-Jorgensen <toke@redhat.com>, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org, linux-kselftest@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: Re: [PATCH bpf 6/6] net: enetc: use truesize as XDP RxQ info
- frag_size
-Message-ID: <20260208125934.f4n5mri2pit6s6gn@skbuf>
-References: <20260203105417.2302672-1-larysa.zaremba@intel.com>
- <20260203105417.2302672-7-larysa.zaremba@intel.com>
- <20260205005901.gnju3zmqimtgeu2b@skbuf>
- <20260204173401.282899d0@kernel.org>
- <20260205122953.lscemcctayrvszdu@skbuf>
- <aYSP344FT-JlylwY@soc-5CG4396X81.clients.intel.com>
- <20260205124638.hxzvjiocephzlrk3@skbuf>
- <aYSZw4wbd-nvLTuD@soc-5CG4396X81.clients.intel.com>
- <20260205134046.pggwyosutj7ggi4i@skbuf>
- <20260205175408.30ab72a1@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260205175408.30ab72a1@kernel.org>
-X-ClientProxiedBy: VI1PR0102CA0104.eurprd01.prod.exchangelabs.com
- (2603:10a6:803:15::45) To AM9PR04MB8585.eurprd04.prod.outlook.com
- (2603:10a6:20b:438::13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OL0cmPMG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A8BC4CEF7;
+	Sun,  8 Feb 2026 21:21:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770585692;
+	bh=WniId9rylPyWCg6DYb8OFQ8yG1Mf1fld/+NjW0lsf8k=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=OL0cmPMGq5hb4ML2UnBGJ7XL+Cd2QuvbF2LHCwzNxbt2D5NdVfL1HUi1K2BJFm7qe
+	 FO6ErvhzO/VPNdM00QJdKkXJThRqPgNp7pgtPAQo/is0wG00tWKu3YsT/8AmKsB/1W
+	 Zi1lF6Y52pNAoJeqjcGO58ozFPqmmkB78ZPpN5gF7Rm4ov7vZt63BXQhH90d9GhH+x
+	 H91figU7ZpSIpGrvLTiHduM/rwS4K7YyONIs7mDupxe+jsBe89IhoDPyt9tfHYoH1B
+	 st2sf9XgeYYZK0mZpaXpkvQ6oZ9d6j8K+a05oJGBzVFy/Pwc3s2M24i/5M6I0M6eHX
+	 rdhZtuE3oXrrg==
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, robh@kernel.org, krzk+dt@kernel.org, 
+ conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, 
+ kernel@pengutronix.de, festevam@gmail.com, linux-sound@vger.kernel.org, 
+ devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, 
+ perex@perex.cz, tiwai@suse.com, linuxppc-dev@lists.ozlabs.org, 
+ Shengjiu Wang <shengjiu.wang@nxp.com>
+In-Reply-To: <20260206014805.3897764-1-shengjiu.wang@nxp.com>
+References: <20260206014805.3897764-1-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v4 0/4] ASoC: fsl_asrc: support the i.MX952 platform
+Message-Id: <177058568882.654564.1085917355716546232.b4-ty@kernel.org>
+Date: Sun, 08 Feb 2026 21:21:28 +0000
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8585:EE_|DB9PR04MB8106:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5f87fcb2-3396-4b0f-c469-08de6711eaea
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|19092799006|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2968HSiAeGXhzrc7hbhRzB9MjbsSFesdzBOBL32LzSAcuUNpnBJuSAV4MtNQ?=
- =?us-ascii?Q?+DGuEAQyPio8kSwYXUfzD+NLEsWyEfj89XTqjQhY0qltU+grlT50BWaJrtIv?=
- =?us-ascii?Q?7ARhJT0R6SYwPtgjnpm73UkSAfZZx/179b/1QPBLn24KxuHPoUglvYRlj4KB?=
- =?us-ascii?Q?TARGXUeM71BIJSfzPce1iwm+C9N8rq7A2T0TtwmbTIkuLJLDEZefl6GdA6Wa?=
- =?us-ascii?Q?O6jYdfz2GPX9RAImBhoN/Yi+6W6I1vexl3xBRBdQg0cpRQSG0GURTc2UVAAa?=
- =?us-ascii?Q?iwKmJ6i4pbjeS8HTVAZC+h0JcWqxXZkKt+b0QJsOXJawlYSv5kw1cEBjNifS?=
- =?us-ascii?Q?uLM65O3C5WoOknHsSxvF3B6LuNQmhOSMc3ev5hWuLtV9VjQxx02guuLfTsVy?=
- =?us-ascii?Q?l7nD70aY7SxgMJIrvy7FUU/goYRZoQ5XAA13OghJU6Epj7o5BVSOvjhWgoNK?=
- =?us-ascii?Q?FE+wRWO7aJbzAG3aVrJ3xbV8SKdTPRFY+y2o3uFyIBD46d9DcFw2/LG3ClOx?=
- =?us-ascii?Q?jNPa3TXRNKcMrKVKqSlXJ9vqIwqgWN4FfB+hgiOT9xMmkrjvR+7acTMfvxrf?=
- =?us-ascii?Q?gqVjH4CIBgH5m3LWJ57upewrLhDiN8HQFLT/I2ekVBloC2j2nowZ9obRqwsk?=
- =?us-ascii?Q?zr5rHccm+9ahwdRcnYpjMrtmsBr7jZPWLWJT4EFO5ZONIOLHVW4vqoRiRJU+?=
- =?us-ascii?Q?IoA4Ielch/pn7JoONqpChVh/7zY0dMJ3u45XJBWEdO93ezPdDV7B9XsEgw7C?=
- =?us-ascii?Q?OOOqlyJ2RgJLLS4ZiFvxGp07nFSWPZqeGzL36Ry2XU8OmJOVZ5o3WGQV4EJe?=
- =?us-ascii?Q?HXmeQlHEsp9irkXEFsdAPoITZPG1UKU0uLniqoz1jHuii43Rj/4p2fGUCVlO?=
- =?us-ascii?Q?Lgh8YvUma6V8z8UIZbcHrUmN2EtB3lzplfd19ExsBZou49CpewQKe8JS75hu?=
- =?us-ascii?Q?Plhb0gUh/Cpls7upcp6TKXRw18Xn9fw4ygukakClJnUlrHUeGrY/ePZNkRCn?=
- =?us-ascii?Q?x54zn9/8XenucwqE/rVPbRfYxwXW76YmiPx6hEuYxyVwmWiW4xxTRSWunIBS?=
- =?us-ascii?Q?6ff+YkIB/HKc1rEbbmjmN/oBOEpTK9dx96/2auRFp08IEqpfiLL25ie6eUB1?=
- =?us-ascii?Q?UgM/s46feo47mglAt+V+pIxM4zvrNaLJEKfkbUNvD3WborVTfULKxaODdqzZ?=
- =?us-ascii?Q?TZSg2KIPS6fuGn0tfvmmdXB4ogcYNU5wLOdW+AczJtv0b+y47Xkc0fisBO+I?=
- =?us-ascii?Q?3eOyyALSeyZ38XrEqXnVlkq5nb510bD7+axkc39E3nfeThSLV8wp9M3eCp+z?=
- =?us-ascii?Q?W67Rq4BP+PHafKWTzEbcLIepkfPpQiZM813I+EY6fdIGo8i1qJp/ZaRivWoe?=
- =?us-ascii?Q?eqXQWcumPbHgEgR62VW12KI7khhl7lETMxqkciSRk5J0UJrtXhUXuh+LILSK?=
- =?us-ascii?Q?zl6n9I6IsGHbB7+BnEm3584dybqaemHjq/whxnT2Xid0Wpeg7Ly+wdz0py+a?=
- =?us-ascii?Q?E1yof72cfuR9veiTPcps6F1ySc0843YX4TNaCFSK/2mPk+MivsQzop8YlRhg?=
- =?us-ascii?Q?hdIvVQRe8w+9opeomPc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8585.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(19092799006)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?efqqSRQPcEpckUSyfJtq/zS2v9/81RnU+m6th5sZTgHiJzhY0e5X8tv/faCh?=
- =?us-ascii?Q?65CP7KtGsMGbRNVyFJHfUfCK3b3KCJ9AtTPi5og6EAl9gpxuSaPn8AENywte?=
- =?us-ascii?Q?k0sv8SZEeFO9brjE7wXl7IHW3+SWzoR+k89MFF0+0OYfv5ZubZZhn90bLEOf?=
- =?us-ascii?Q?wOQkN8GIf9SShHIkHoWDYaYnYpGNIrY5QPw/E38xsY8qwN9Pb5HiIXAsW4Tu?=
- =?us-ascii?Q?fb5JQtH9BWq+JYLt4uTUglI5o6Sx5aYuPGY239GkTTsrIpJEHYPfOBo66NwT?=
- =?us-ascii?Q?fRCT8I43eT5f/aH2yvF5n5Yljrw91KIW1rQnBl/LWZV2CyAfGSELNZOp1FrK?=
- =?us-ascii?Q?snvyiGo3sv2PDLBKEDdnYqKybSCCvGSyU4aaA/IsIRc/VSQeYMv/Al3DZq+G?=
- =?us-ascii?Q?yxi36UPq2DDcvYMmqXJV/704XN6pqtifHDZw+2huWFalc0hSOgG8tnXEJOQ3?=
- =?us-ascii?Q?RL4C+JPixXWH6tA3Zs89bsj4LGp9dsnhPUl69aJA8iID28ascs7qEmDS0qtS?=
- =?us-ascii?Q?lMKwLZaRR+E/4jJLlH9n9brJAA4UuQR90aO3xcTA0pS0nBs5dCDOX+vghIBV?=
- =?us-ascii?Q?t9c6W7jl5T8fn73FPK+yn1A8g7uFxDg1SnkvuHDTgQlFiUzIk1jb4DrVp6L1?=
- =?us-ascii?Q?1JEs0ekYVCxz0smQV2PNGVgG1hMUrzvlyn7PZORebnhviFJ0EhY5uDjghZwu?=
- =?us-ascii?Q?Ts89bMHdghJzPyov5R5BugfvHjYSA4xUeagap0hcTz7LurEyFjv2uo/DWGsl?=
- =?us-ascii?Q?yQMB2yhfm3MjHIkoJBOPAzfH5vwgJHvbEy4Tlf0+wFYyBrsX5gl94WaEdvld?=
- =?us-ascii?Q?G5nexlZh0Zzgrgr/bJfiinPh7TXgbnVdSrxSV0cFvyOszwUBOgHRTqbAI783?=
- =?us-ascii?Q?wxPm24w1DfGerLON0myLeeL8dnyKMYT1hVgcioGv45m4y6MgUuDTssgXa3cz?=
- =?us-ascii?Q?CEAsE66ONVD63OR/sLqiNz45Av0ZrkCcU+pTv2oARJJLxJDNuG+p1WEdsLob?=
- =?us-ascii?Q?kB7kTy9AwaKV5d0jWy+1d8NsRvbdf2xjjeblom79VtVfLYlHtQ+ayOb7May5?=
- =?us-ascii?Q?DcXnzCo5VYB/8R+6MK9/4aiFmXZrtbHURzv/Rkb5ItADtTrk1DruGaHLvFoc?=
- =?us-ascii?Q?gFF8aIVi7YB0L8l0kz59YJPnKCwMhDOifHV/NCzDh8RLY32tz6uwt9tLTBM7?=
- =?us-ascii?Q?ooojYxp5SNSR8MLKNYGFU0QqRu4c+VchK4pt/i7OeZs1WbelncQsKwYtyQCO?=
- =?us-ascii?Q?3+1wvIaNdWbnzWDgUaOgB/g2d/2Euoc6LnxNURTHT7X2xtYtJgD1SSbsFSMf?=
- =?us-ascii?Q?+dSxFjF3ug5xH7G6T/gLRjcj1w+XcelLzQRYaccZtpXFWShsfEmHhQl9XVwo?=
- =?us-ascii?Q?8H4em7JWkQqiBbfN/XwH5s6NxT52Ib2lFlO3nR6z3M8Oypj+5TL2zz25NVCI?=
- =?us-ascii?Q?yaPn4pmKfXCWyaZzYZszP8DGbgFBvI5e7zj4scUALB9o6z4TJ/KSLMNJDSMt?=
- =?us-ascii?Q?2wD5PoRDEUFiLnKqIHxNijxz6waiGTSpQeMguKENa3iJTqraSER1+2gNQSa8?=
- =?us-ascii?Q?BvTbtviPD3ORODbW81ZHHOuvcJ8EWe266W29aTo1juq8XBa0LXc+RcDxDqe/?=
- =?us-ascii?Q?ffNG+CHN1zxgXtM7SzptoLZ8sD1Ey8/pooH0RaX62oUWL3X+AxAykH1RwCvO?=
- =?us-ascii?Q?qircJ176UAz0waLScMvQsnYj75ehBqBrMiPcMbwfPh0bxRYQbamcNb4xDYUM?=
- =?us-ascii?Q?LNhMPNHaeh5zewA8OUuNSyR+huvtX38yh4OVbwslgbGEHNz/V8/HfCKyA9A1?=
-X-MS-Exchange-AntiSpam-MessageData-1: MAATTmjWMPcIPKFTlkpcBs4+ha7YVLbSZ14=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5f87fcb2-3396-4b0f-c469-08de6711eaea
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8585.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Feb 2026 12:59:39.8414
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eW9b9Zp8zGViC8jU7UXVDyupvl/WPHoZuTizgbM2ujFz+4eIEGlaZHoTtYwwjMJSMw3PRLd820gOBaTJmL2uMg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8106
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-47773
 
-On Thu, Feb 05, 2026 at 05:54:08PM -0800, Jakub Kicinski wrote:
-> FWIW my feeling is that instead of nickel and diming leftover space 
-> in the frags if someone actually cared about growing mbufs we should
-> have the helper allocate a new page from the PP and append it to the
-> shinfo. Much simpler, "infinite space", and works regardless of the
-> driver. I don't mean that to suggest you implement it, purely to point
-> out that I think nobody really uses positive offsets.. So we can as
-> well switch more complicated drivers back to xdp_rxq_info_reg().
+On Fri, 06 Feb 2026 09:48:01 +0800, Shengjiu Wang wrote:
+> Update dt binding document and update driver to suppot ASRC on i.MX952.
+> 
+> Changes in v4:
+> - add Reviewed-by from Daniel in patch 2/4, 3/4
+> - add Reviewed-by from Frank in patch 4/4
+> - update the commit message for patch 4/4
+> - remove 'retry' in patch 2/4, reduce the threshold for timeout.
+> 
+> [...]
 
-FWIW, I do have a use case at least in the theoretical sense for
-bpf_xdp_adjust_tail() with positive offsets, although it's still under
-development.
+Applied to
 
-I'm working on a DSA data path library for XDP, and one of the features
-it supports is redirecting from one user port to another, with in-place
-tag modification.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-If the path to the egress port goes through a tail-tagging switch but
-the path from the ingress port didn't, bpf_xdp_adjust_tail() with a
-positive offset will be called to make space for the tail tags.
+Thanks!
 
-I'm not sure about the "regardless of the driver" part of your comment.
-Is it possible to mix and match allocation models and still keep track
-of how each individual page needs to be freed? AFAICS in xdp_return_frame(),
-the mem_type is assumed to be the same for the entire xdp_frame.
+[1/4] ASoC: dt-bindings: fsl,imx-asrc: Add support for i.MX952 platform
+      commit: 37bb773b4a5a5107b92beda3447a7c6c0cfc1237
+[2/4] ASoC: fsl_asrc_m2m: Add option to start ASRC before DMA device for M2M
+      commit: 83447a38ba9abac52bc110566d3e117753899f69
+[3/4] ASoC: fsl_asrc: Add support for i.MX952 platform
+      commit: 6a8c6f5587337eceb387812b6f47bc16c125b883
+[4/4] ASoC: fsl_asrc_dma: allocate memory from dma device
+      commit: b010c782341b79edbeb80706360b772db908daa6
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
