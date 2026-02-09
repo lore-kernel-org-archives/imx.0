@@ -1,88 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1A73644C6;
-	Mon,  9 Feb 2026 10:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C48372B38
+	for <imx@lists.linux.dev>; Mon,  9 Feb 2026 13:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770631501; cv=none; b=XajY61Y2Fbd7RVfNVtOeutf3ZRv8F/Td485bUGV9EDTFAvxK62NBXY8L42XbNEr/12oJ1q+FsUTlaQJn1ffDvfb47W3ikjB2rXxyiKZIhOcohmyfhzzh7bmYz86vwJ+ZpChy+8x17jGQ7+9Zy4uPQ7ta8q2Tic05kJx2CMS1US8=
+	t=1770642755; cv=none; b=OYcccw7f/sDzYyXONdBpbWIImJI4ooKFHxfciz9omJGEMU3zQ6ZfyQ91oLTkkpMUJ3sJ8iBqClxCyKPS9KGcGqMnviCI7JFwydE1IDm0RbyIFax6QFEI3QStNBq6WESzImfbQbvYqXjLtTkMD+ics0zETYB6sb/cCVix4L1PsJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770631501; c=relaxed/simple;
-	bh=HWKJIQNONMVQSZ4SSnN2RacPR7HLBIc33yAACZJdKz0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:From:To:
-	 References:In-Reply-To; b=aph7xFA2d13Q35pFr9I1o23zdX6VKOVZTBv+q+oK2QdUtqtxmzqdeW2i6MvvkzRnU38B1Z16OPZKpUz073vN49uqrEev2peL8y9DqfzQgCjJ5EKrbcYXOVT9SMAyxIg5k6I7MW2jTGdmIW7l373MClwc8hl+/7heMiwrgy/nnaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f1fn5+pj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770642755; c=relaxed/simple;
+	bh=GFMb8bPonvF6vYQtz0rN99DE19IvCSvh1hZleDN2lWM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PkaG7sIAZZC/KLKMpe34iqy9grX31RiGE7cbI28csheY40lAa64kA1bAmLhOx3Qebz7KSPxkzv5FjXtaYXvkPPqkv+tZ7mAcQ0PecTQc0Hd7FtvT84XNQn5NnvxXR8gd81q0rMcCfHUhnBodHaAJ+3RYQ76qGr7nq6hLNEDvX4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=CyPJK8Vr; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f1fn5+pj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14559C116C6;
-	Mon,  9 Feb 2026 10:05:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770631501;
-	bh=HWKJIQNONMVQSZ4SSnN2RacPR7HLBIc33yAACZJdKz0=;
-	h=Date:Subject:Cc:From:To:References:In-Reply-To:From;
-	b=f1fn5+pj4ITHRHHkNblo7H2WXpzkCo+/DzDlxL7FmJtxlsv6yqOKShGFCPbomxUEv
-	 4BXxWvLJfM16FPKdItEfenlgWxuzWZb2fm6oqeUTepDzJGKt2mpnwf/T5SwwgVKls7
-	 c8FCtV5qxr7mSS+jn36NGGRVRyVMsptDQBqiLBvhqTgo2t2o8rWnh3olVawVy5lRhO
-	 9gWERGs8+x4+C7Kwx+j+moooorCRMJTJQrGq1ghoVgeTRLP+ES6ZAA+bRo8/t0Q6lL
-	 Sm5FF+CrIvVo2FgGtBPID7SNlr+7/d2KhpX0vS2C573ph4gbkCep8HIXGfqYFFYUCF
-	 4hRuMTd/5dedA==
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="CyPJK8Vr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=6/Bhdanj6O08thw4wV1ges687d1OPsjCQBMVncgJuLY=; b=CyPJK8Vr26ROn4aWjw4xu1m28i
+	d9JZu6nJ0LZKt2PXB5K8uAQzFiq4gOrOiOP9OQMzvWQ9tmyksBUxUdhxybwAKG4uom8vJLbj8k3Pa
+	ZitDjBPPb/y1PzmwywrBPVD7cwiXACkOIq0Hbzuj0CUTNWCZD3Ohi9VNxwLrgtv758boEFNE4It6p
+	ews14KhFv9oW3lGurtaQCv5EPtLN+4uXH+jiXo8ggqnYHTJRre+dQrXVuf+FrVgq31Iuon2b/Lrpy
+	30tQQUMW78ab2oWaHd/vc0f8hxdMtkPIE74R56kaisUai67PKbNE8fuN3f3faX7qFsJHvKlhlFsJs
+	BOWy/aXw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:38542)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vpR42-000000001Zf-09zB;
+	Mon, 09 Feb 2026 13:12:30 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vpR3x-000000001oO-376d;
+	Mon, 09 Feb 2026 13:12:25 +0000
+Date: Mon, 9 Feb 2026 13:12:25 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: netdev@vger.kernel.org, imx@lists.linux.dev,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>, Heiko Schocher <hs@denx.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Joakim Zhang <qiangqing.zhang@nxp.com>, Joy Zou <joy.zou@nxp.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Martyn Welch <martyn.welch@collabora.com>,
+	Mathieu Othacehe <othacehe@gnu.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Richard Hu <richard.hu@technexion.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Stefano Radaelli <stefano.radaelli21@gmail.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH] net: stmmac: imx: Disable EEE
+Message-ID: <aYndOVkz7AOQK7qr@shell.armlinux.org.uk>
+References: <20260208232931.2272237-1-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
-Mime-Version: 1.0
-Content-Type: multipart/signed;
- boundary=96026a0e31e1c8ea8b7c7b82368b053a9042163358dd4836ab796c2f20bd;
- micalg=pgp-sha384; protocol="application/pgp-signature"
-Date: Mon, 09 Feb 2026 11:04:57 +0100
-Message-Id: <DGACHCLD50YM.14CAK78PEJ6O3@kernel.org>
-Subject: Re: [PATCH v3] mtd: spi-nor: micron-st: add SNOR_CMD_PP_8_8_8_DTR
- sfdp fixup for mt35xu512aba
-Cc: <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <imx@lists.linux.dev>, <han.xu@nxp.com>
-From: "Michael Walle" <mwalle@kernel.org>
-To: "Haibo Chen" <haibo.chen@nxp.com>, "Tudor Ambarus"
- <tudor.ambarus@linaro.org>, "Pratyush Yadav" <pratyush@kernel.org>, "Miquel
- Raynal" <miquel.raynal@bootlin.com>, "Richard Weinberger" <richard@nod.at>,
- "Vignesh Raghavendra" <vigneshr@ti.com>
-X-Mailer: aerc 0.20.0
-References: <20251223-nor-v3-1-09e26797a8b5@nxp.com>
-In-Reply-To: <20251223-nor-v3-1-09e26797a8b5@nxp.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260208232931.2272237-1-laurent.pinchart@ideasonboard.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
---96026a0e31e1c8ea8b7c7b82368b053a9042163358dd4836ab796c2f20bd
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
+On Mon, Feb 09, 2026 at 01:29:31AM +0200, Laurent Pinchart wrote:
+...
+> Fix the issue by disabling EEE completely on i.MX8MP.
+> 
+> [1] https://lore.kernel.org/all/20251026122905.29028-1-laurent.pinchart@ideasonboard.com/
+> [2] https://lore.kernel.org/all/20251123053518.8478-1-laurent.pinchart@ideasonboard.com/
+> 
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> ---
+> This patch depends on https://lore.kernel.org/r/20251026122905.29028-1-laurent.pinchart@ideasonboard.com
 
-On Tue Dec 23, 2025 at 4:01 AM CET, Haibo Chen wrote:
-> Find two batches mt35xu512aba has different SFDP but with same
-> jedec ID. The batch which use the new version of SFDP contain
-> all the necessary information to support OCT DTR mode. The batch
-> with old version do not contain the OCT DTR command information,
-> but in fact it did support OCT DTR mode.
->
-> Current mt35xu512aba_post_sfdp_fixup() add some setting including
-> SNOR_CMD_READ_8_8_8_DTR, but still lack SNOR_CMD_PP_8_8_8_DTR. Meet
-> issue on the batch mt35xu512aba with old SFDP version. Because no
-> SNOR_CMD_PP_8_8_8_DTR, micron_st_nor_octal_dtr_en() will not be
-> called, then use SNOR_CMD_READ_8_8_8_DTR will meet issue.
->
-> Fixes: 44dd635cd632 ("mtd: spi-nor: micron-st: use SFDP of mt35xu512aba")
-> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-> Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Are you sure? That's the one adding the DT property, not my patch that
+adds the flag you need for this.
 
-Reviewed-by: Michael Walle <mwalle@kernel.org>
+> @@ -355,7 +354,8 @@ static struct imx_dwmac_ops imx8mp_dwmac_data = {
+>  	.addr_width = 34,
+>  	.mac_rgmii_txclk_auto_adj = false,
+>  	.set_intf_mode = imx8mp_set_intf_mode,
+> -	.flags = STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY,
+> +	.flags = STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY
+> +	       | STMMAC_FLAG_EEE_DISABLE,
 
---96026a0e31e1c8ea8b7c7b82368b053a9042163358dd4836ab796c2f20bd
-Content-Type: application/pgp-signature; name="signature.asc"
+I thought we had a coding style comment about wrapping like this
+(operators should be trailing on the previous line, not at the
+beginning of the following line) but I can find nothing in
+Documentation/process/coding-style.rst  Confused. Maybe it's
+somewhere else in the re-organised documentation.
 
------BEGIN PGP SIGNATURE-----
+Thanks!
 
-iKgEABMJADAWIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCaYmxSRIcbXdhbGxlQGtl
-cm5lbC5vcmcACgkQEic87j4CH/iCewF/VSY38d3rTvpLro4TmcOw0yK8cmKoLAm4
-bJ2MOYpPmdS5hWjK5OJnXqCT9ur7qtLgAXsHJpY3Ck9DzjtgsRtJRnXY74pnT7JO
-9YYdBz9Da8f/M8trY6b36LNnS90qyaPGMik=
-=GaJr
------END PGP SIGNATURE-----
-
---96026a0e31e1c8ea8b7c7b82368b053a9042163358dd4836ab796c2f20bd--
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
