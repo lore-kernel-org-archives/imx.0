@@ -1,115 +1,194 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mx-relay186-hz1.antispameurope.com (mx-relay186-hz1.antispameurope.com [94.100.133.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61158377542
-	for <imx@lists.linux.dev>; Mon,  9 Feb 2026 13:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770643302; cv=none; b=ki1tgGEbAFYmAkIP1R1kxw/urTQ31lpkHFcY3i5dDT2SdjYPsxMzEPKY7Txyre3nonWDA/FspaGAzBsNcWI0vv85UOsJ/HXbSjV/vKUa0jIM4e2T9tTfl5VDukyShrDargz4HFkbDX6IkpgGsV2Qee44KhXaQDgtpM+nN4Rb1/Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770643302; c=relaxed/simple;
-	bh=7ovSodLbOpn2W27nDVgvF+GU2exE6mG03PG81HU6Tok=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bQNzf8v0rED2pGiYa59lrLpa2KWKmbG+kCw66bmJnD4o5bydaZi1u2Tv26KPFswMUYRLQ+Gspk6ObK/cEVU1NX9QpYrjAgbDRANCPRtGiGyZZdmuF0jlEqBkFWERbCsoTJaGRNpwn18knGEXrkuB6KpozVjkrJLzW7W2VeGNq0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=ogqu1sL8; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8D03793BF
+	for <imx@lists.linux.dev>; Mon,  9 Feb 2026 14:37:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.75
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770647825; cv=pass; b=uXQKV3B6QVOcU/iMGZy5QhX8x3s1qoZz7Fkl4JPLtTYvV4A6usKFX9vbLaT9u13dAvkva1tbH9RbKTf01jKazq1dxWih9Tb1xZHAOmZi0p8Nzy5BxfOne/Cf/Ws33hsVbVaAKK12dysjAuJypUA1Y/x3tp5+zZFgcJrC5Do+O6M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770647825; c=relaxed/simple;
+	bh=zSCFwLG7ul6NOSki73bwKNNrOcsAYXLywsqttLdzIyc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i+NhLn6CD6ZiRY3ay1td5YcDfpRlmzGrlDLxHntW/CZqZ7SxG49RqCfzNHdC/5Ku4LTPltjCSR0GGKy5MYZ6l/GvnABlmLIjSu/12DKf1lFJPhueinxBMJJiLooegk6OnUdvbjKhRV8B3wZC9sQoWCc4NjG4tbcK85/K1c09pNs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=gUZkIzv5; arc=pass smtp.client-ip=94.100.133.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="ogqu1sL8"
-Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id F0DDB454;
-	Mon,  9 Feb 2026 14:20:53 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1770643254;
-	bh=7ovSodLbOpn2W27nDVgvF+GU2exE6mG03PG81HU6Tok=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ogqu1sL8zkEDDFjyCVDcTsVWUQk2mNJ+aATnmwhyu5XSrwbGmYqwzi/Byk7b6g/qY
-	 WbnYgly/qwg8VKu7YgS3AQwulcYhNlyIRgxNR85c44I3bjWOW+aVxEjlgqqxX35z4d
-	 +sx/rXQCCwIGjM0wFrZBHnGyM7YNDlE1t4tTV3G0=
-Date: Mon, 9 Feb 2026 15:21:38 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, imx@lists.linux.dev,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@denx.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>, Heiko Schocher <hs@denx.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Joakim Zhang <qiangqing.zhang@nxp.com>, Joy Zou <joy.zou@nxp.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Martyn Welch <martyn.welch@collabora.com>,
-	Mathieu Othacehe <othacehe@gnu.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Richard Hu <richard.hu@technexion.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="gUZkIzv5"
+ARC-Authentication-Results: i=1; mx-gate186-hz1.hornetsecurity.com 1;
+ spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=bW8kBX1s+EXbf2lLP1wP7V5qCWYSVmt/hNU3H0N9lZA=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1770647778;
+ b=BkmCdzRAw11lJZ8xok276VG0mETnRJzSXXI9dsNRAc259yinZpLwFD4Bo4SrQkHzAFcdtVZm
+ yjDNHfYo6eD2w5rDDxbBibUMgHntbQrXZXCserm9S/ze6R6mdOZuiHbHh8M152+FqFys1WyyKX4
+ IYhm9sciT0rt8FjBO3ZPH8S94sEOXjrNGkU+5xf2fmaG88Myn5ZKGhHfXVNpIeC3UX3MgYsbqmk
+ 6Y1zQdyAdYNI7TYLT0sZSkbDAktDAhJjAs62KLLqSXAQdguphpHF8E4GUxUHy8RBtgwmiAszy/b
+ 8CV4tOhRawk1vPsbwq9q08mGzdtilPGmZLFzVUm2Hbe8g==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1770647778;
+ b=ewuVVg2Wckc3Ndmi0mFIg67dDGgWn7HH02S/hh3dQTkqZVruZ+qniYpinOlam7Plfs4rsfjs
+ yCFvKNYulI4YEL31ncxz8JnAXWvQoD7r5ATYq3/wFZiknItptriocHi3UX4gk/v/LpcXDNeOSyA
+ QnQjG/LxrgwIKICQg9UC2/0wdbkdKPrX2FeYSiACZXOMezonOLEW3dfMitF8U+zxq3QSO5eyBo0
+ JjpMSxEQ2Ig4BmtGSSZ4/t63ekLlEzoO17PcmtFRAlg+O3GvAqcXk1Zzn6RlAl5w/eyQzoCkdRC
+ xVzjWvJWar7ho8q3ocq8KAmAD8A/1PbGr9Kjz3Z8lBz2Q==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay186-hz1.antispameurope.com;
+ Mon, 09 Feb 2026 15:36:17 +0100
+Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 18416220D21;
+	Mon,  9 Feb 2026 15:36:05 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Shawn Guo <shawnguo@kernel.org>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Stefano Radaelli <stefano.radaelli21@gmail.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] net: stmmac: imx: Disable EEE
-Message-ID: <20260209132138.GF2302514@killaraus.ideasonboard.com>
-References: <20260208232931.2272237-1-laurent.pinchart@ideasonboard.com>
- <aYndOVkz7AOQK7qr@shell.armlinux.org.uk>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] arm64: dts: tqma8mpql-mba8mpxl: Configure multiple queues on eqos
+Date: Mon,  9 Feb 2026 15:35:52 +0100
+Message-ID: <20260209143555.202042-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aYndOVkz7AOQK7qr@shell.armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay186-hz1.antispameurope.com with 4f8nLY5s0Hz3xgwN
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:405bf8049cad9f07363be847723c878f
+X-cloud-security:scantime:1.927
+DKIM-Signature: a=rsa-sha256;
+ bh=bW8kBX1s+EXbf2lLP1wP7V5qCWYSVmt/hNU3H0N9lZA=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1770647777; v=1;
+ b=gUZkIzv5lqNt81+L+SWIhyzjw1yV+UCNhuCeag2v0M/2nJprZOxXpRDbCXC2SuypbebYPaQv
+ ne7JhSFeW9pWwE3zf2F5ZQasFeWGymHxfJwC+nX05CfzuTgkWQaSH61h/IyJjzyJnEV5mZvPY23
+ 1pZWrOBE7zOPqeacxy+SCej29Ur9knCqwiQDqO4yW1ZCJwiqWuLjD7U4+DpBXbHfGaREKUuzuYp
+ aiSaYRA//VXqzq9i+4v5nGo5KPHHq7J7f8TfBpeSLMuX0X6OmWGWeG48vS84E3/sKF5lY1PgUZD
+ daq8bUu93Bt4taKHx5sXqXvYbxGXsq+waHln15xTxpx2Q==
 
-On Mon, Feb 09, 2026 at 01:12:25PM +0000, Russell King (Oracle) wrote:
-> On Mon, Feb 09, 2026 at 01:29:31AM +0200, Laurent Pinchart wrote:
-> ...
-> > Fix the issue by disabling EEE completely on i.MX8MP.
-> > 
-> > [1] https://lore.kernel.org/all/20251026122905.29028-1-laurent.pinchart@ideasonboard.com/
-> > [2] https://lore.kernel.org/all/20251123053518.8478-1-laurent.pinchart@ideasonboard.com/
-> > 
-> > Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> > ---
-> > This patch depends on https://lore.kernel.org/r/20251026122905.29028-1-laurent.pinchart@ideasonboard.com
-> 
-> Are you sure? That's the one adding the DT property, not my patch that
-> adds the flag you need for this.
+The MBa8MPxL mainboard has an integrated PHY connected to the EQOS
+ethernet controller which can support up to five queues. Configure
+these queues in the same manor as done on the imx8mp-evk.
+Setting DMA to threas mode is necessary to prevent FIFO overflows, see
+commit 0bc3e333a0c82 ("arm64: dts: imx8mp-evk: configure multiple queues
+on eqos")
 
-Oops, wrong link. I meant
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+Changes in v2:
+* Rebased to correct branch
 
-https://lore.kernel.org/all/E1vNUjC-0000000FhjR-0h6P@rmk-PC.armlinux.org.uk/
+ .../freescale/imx8mp-tqma8mpql-mba8mpxl.dts   | 67 +++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
-> > @@ -355,7 +354,8 @@ static struct imx_dwmac_ops imx8mp_dwmac_data = {
-> >  	.addr_width = 34,
-> >  	.mac_rgmii_txclk_auto_adj = false,
-> >  	.set_intf_mode = imx8mp_set_intf_mode,
-> > -	.flags = STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY,
-> > +	.flags = STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY
-> > +	       | STMMAC_FLAG_EEE_DISABLE,
-> 
-> I thought we had a coding style comment about wrapping like this
-> (operators should be trailing on the previous line, not at the
-> beginning of the following line) but I can find nothing in
-> Documentation/process/coding-style.rst  Confused. Maybe it's
-> somewhere else in the re-organised documentation.
-
-I'll move it at the end of the line, no problem. It's one of those
-pieces of coding style where different driver authors and subsystems
-have different opinion so I'm never quite sure what to do when
-submitting patches for areas of the kernel I don't usually touch. I
-should have looked at the rest of the file, sorry about missing it.
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+index ad49bf85a04d3..890d1e525a489 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+@@ -336,6 +336,9 @@ &eqos {
+ 	pinctrl-0 = <&pinctrl_eqos>, <&pinctrl_eqos_phy>;
+ 	phy-mode = "rgmii-id";
+ 	phy-handle = <&ethphy3>;
++	snps,force_thresh_dma_mode;
++	snps,mtl-tx-config = <&mtl_tx_setup>;
++	snps,mtl-rx-config = <&mtl_rx_setup>;
+ 	status = "okay";
+ 
+ 	mdio {
+@@ -359,6 +362,70 @@ ethphy3: ethernet-phy@3 {
+ 			interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
+ 		};
+ 	};
++
++	mtl_tx_setup: tx-queues-config {
++		snps,tx-queues-to-use = <5>;
++
++		queue0 {
++			snps,dcb-algorithm;
++			snps,priority = <0x1>;
++		};
++
++		queue1 {
++			snps,dcb-algorithm;
++			snps,priority = <0x2>;
++		};
++
++		queue2 {
++			snps,dcb-algorithm;
++			snps,priority = <0x4>;
++		};
++
++		queue3 {
++			snps,dcb-algorithm;
++			snps,priority = <0x8>;
++		};
++
++		queue4 {
++			snps,dcb-algorithm;
++			snps,priority = <0xf0>;
++		};
++	};
++
++	mtl_rx_setup: rx-queues-config {
++		snps,rx-queues-to-use = <5>;
++		snps,rx-sched-sp;
++
++		queue0 {
++			snps,dcb-algorithm;
++			snps,priority = <0x1>;
++			snps,map-to-dma-channel = <0>;
++		};
++
++		queue1 {
++			snps,dcb-algorithm;
++			snps,priority = <0x2>;
++			snps,map-to-dma-channel = <1>;
++		};
++
++		queue2 {
++			snps,dcb-algorithm;
++			snps,priority = <0x4>;
++			snps,map-to-dma-channel = <2>;
++		};
++
++		queue3 {
++			snps,dcb-algorithm;
++			snps,priority = <0x8>;
++			snps,map-to-dma-channel = <3>;
++		};
++
++		queue4 {
++			snps,dcb-algorithm;
++			snps,priority = <0xf0>;
++			snps,map-to-dma-channel = <4>;
++		};
++	};
+ };
+ 
+ &fec {
 -- 
-Regards,
+2.43.0
 
-Laurent Pinchart
