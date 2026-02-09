@@ -1,151 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013035.outbound.protection.outlook.com [40.107.159.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C40B37E2F1;
-	Mon,  9 Feb 2026 15:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770651620; cv=none; b=t8ipfRNmTOeLhKea6BwvHSDR2wUfN7Mc3TpjjmbhudDSmpgt3gF/pgBnQEjEZAO1BzXbjDpPCm9gpfWxDIoTNJx/CbJJzVXeS87Mo/x6TIHHDZOByRBhYYSmtqFBo6ZmC0LRNz1juww7Eruxht4HE5EsXVLMin6q5eSxFJhbR9c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770651620; c=relaxed/simple;
-	bh=5DRu3dMpaADpDKLopx8dO5LEkVz+35Fl6LlXv05MFMY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xd8sG7S6t7IWV/SNaOy9whrrQaDcq2LnzpPaEXkdJa9d1AcjApbyBrmC6V7KAhWNvLx/V81yWCfkyQXX6kkXR43a9Aq5BloxhNu8Wr2nQm6ujEvww6PHXGRgFnCaBPAeDfe5S401Z3jWCqRg+WJRsCPeGBeNiEihVm6tTeso2mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E3giKneR; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A913E36BCDC
+	for <imx@lists.linux.dev>; Mon,  9 Feb 2026 15:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770652197; cv=fail; b=QEK6KZ8y/QeRtpWhALBboSRfYtxEx8XulQ/hn9V0FxbZI1jFH1JVHvsuHG2wcWQOAc5e+zaXsd90J//QEaX2JIh/fS57uriNVuwcFCJbzezRDGtWIj/pt9xcY6H5bpLInYdwO9qp7uZXQGxthePEBONNH9bX4K5zmx6q+zVj190=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770652197; c=relaxed/simple;
+	bh=vKzHYI5vMbjHA/3rwxZHIg3Fy+jwlFjsmBZEe4LPaK8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Ej36QOKk754ZTVzV1EPdQQviD9lxWRvP8KlnFiafsxwvRkKhb0m7QkTkZjbmS0EMLLWJTvDS4xZtp5bampjZ0V3u81C5S82kcyPEl+CeOvT57+nrZjAtILL1iI9fWS9FAKwKmaOwr7AId5ZLVTMNHHBi7ymmS2TOeGNj/Z9PtJ4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Lmb5tCij; arc=fail smtp.client-ip=40.107.159.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E3giKneR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3742C116C6;
-	Mon,  9 Feb 2026 15:40:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770651620;
-	bh=5DRu3dMpaADpDKLopx8dO5LEkVz+35Fl6LlXv05MFMY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E3giKneRdTIS8o5HAfKsCgyA3Vk576TJHuj27G++WpF4bVwo8cqDkL6Qmv+VYPGZ8
-	 cuixX8S9UWdGdgfLNEhjWW+EobdUEmwbMpxPsUxHYKe2KuU+agUKPUb/oWYn35b27L
-	 +GtecYO4Men19p1sVRPAWK38hPds7C0lkC1Rq2OvR9enQA/5TK2AbLY7olteRNqLCq
-	 xJz0El8ZBaNm7AuLJLQxUx/LZGECtS+u6RnXBYid20/LgnxlvkWnspo+l0HdqD8tw6
-	 cj29zBhNWE9FTbRHQQ2HoCrzcD3K5DGDHNgsfMuP9tHFWAvFpfgDJ/z1ciUy6p6Lr2
-	 MqqCGfPCz2Nig==
-Date: Mon, 9 Feb 2026 09:40:15 -0600
-From: Bjorn Andersson <andersson@kernel.org>
-To: Douglas Anderson <dianders@chromium.org>
-Cc: jassisinghbrar@gmail.com, Frank.Li@nxp.com, arm-scmi@vger.kernel.org, 
-	cristian.marussi@arm.com, festevam@gmail.com, imx@lists.linux.dev, 
-	jay.buddhabhatti@amd.com, jonathanh@nvidia.com, kernel@pengutronix.de, 
-	konradybcio@kernel.org, krzk@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, linux-tegra@vger.kernel.org, mathieu.poirier@linaro.org, 
-	michal.simek@amd.com, nm@ti.com, rafael@kernel.org, robh@kernel.org, 
-	s.hauer@pengutronix.de, shawn.guo@linaro.org, ssantosh@kernel.org, 
-	sudeep.holla@kernel.org, tglx@kernel.org, thierry.reding@gmail.com
-Subject: Re: [PATCH v2 01/15] mailbox: Deprecate NULL mbox messages;
- Introduce mbox_ring_doorbell()
-Message-ID: <yotr3aia3gra4jmlykqadqwi45lphhdyx7tt4n5cdwcungfpbd@gns6bb6m3vmz>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Lmb5tCij"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MedymG7HbuX4TzBRWYg0dIJcsv7+9LNOuwVgUovzL0uILL4H8RuPoyTJAGWjf485v1Vjdv/3+edynOyFeIZg0SZlGP5UAEsHiT87NG4BPvMbuSteoGlkaCan1UPMd/kHN6vp6Ypi+Xqcn6fsCuB2j1brwtKo2Uaw1cQtPXv2NriaCum74/TKHGNtKJgEfLE21r8b1RMNZsFSFP60+0TA1SCJhPQBivMon7laizQzmTx8NHYsBfmoIp4yB8Fj0WcIbBy1fK8sIMYpXOUYma8EjUnTNz1L/aLEFauzRTs6V9V85SD37HJd5N2+PeZio3oqrRU2C6vXbrHA12WGG4dUxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vKzHYI5vMbjHA/3rwxZHIg3Fy+jwlFjsmBZEe4LPaK8=;
+ b=zGFDIxGdUKKxlrDo4gxw1l7wTqn9Xv8HH85NgWsq9FkO6s5ImsGaZnuZHpmiHPO9zXqDRfow/+dpqVrRW0U3qlo9L5gejcVCIhK1v2u8VpsMKKvFCi/Cu5WpV7BmmZgI2AyrNBrp6SKHjIi+dR4y3hZ+j2SdabLNBEB79OjCOzfoqvgGa9yAui/GhFed0gESohFTFxT9QeTGZy7oTKllg3yBYq+kUT1wxEXqu/0SPl+2+UiY9gRmv5OV1gB5+M2IpW6Ne63N+4uDyRyOsJ8RYjf5CTkIwKJPMJtQ3WU0CGeGts7dIBhcyyHXUkzMhveeW9sVhf1rALoJc/DteFKBIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vKzHYI5vMbjHA/3rwxZHIg3Fy+jwlFjsmBZEe4LPaK8=;
+ b=Lmb5tCijWtroZL2nM6EH+MNC6F7vft65FUw0E0UrlXe/imsIYhnioJIXIj6xCDAoZN2zYW++VM3WChuzADJk7ZP2NfjdfqiEJ7fIC6nCRozvOXsAqyvHrN1366fZET6UmgsK5N9oT+PHtpiJEh/kgGG9aeFK4asBqlC2EIU0sCMLwR0Ci+XZdRTC6KV1t7O10s3Tm1J85Bna5F26CESYNCgFs3PZZ7pKyBjqstwrimcd8K6zO8wL3DX+RL3deuXw8vOX5QsBDD67+RgafVxKUg8RbaclYlwPiK9itJjAjZcJSpWPiFIto/b1SZCrZZNzbSfYPur9HcaEyMvMMS4y0w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS8PR04MB8247.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::13)
+ by DU4PR04MB12083.eurprd04.prod.outlook.com (2603:10a6:10:63d::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.17; Mon, 9 Feb
+ 2026 15:49:54 +0000
+Received: from AS8PR04MB8247.eurprd04.prod.outlook.com
+ ([fe80::e99:f504:ce75:9bed]) by AS8PR04MB8247.eurprd04.prod.outlook.com
+ ([fe80::e99:f504:ce75:9bed%3]) with mapi id 15.20.9587.010; Mon, 9 Feb 2026
+ 15:49:54 +0000
+Message-ID: <0cb344b1-2840-48ea-a36b-24dc8a0f1205@oss.nxp.com>
+Date: Mon, 9 Feb 2026 17:52:48 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 04/15] firmware: imx-dsp: Use mbox_ring_doorbell()
+ instead of NULL message
+To: Douglas Anderson <dianders@chromium.org>, jassisinghbrar@gmail.com
+Cc: Frank.Li@nxp.com, Sascha Hauer <s.hauer@pengutronix.de>,
+ festevam@gmail.com, imx@lists.linux.dev, kernel@pengutronix.de,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 References: <20260208040240.1971442-1-dianders@chromium.org>
- <20260207200128.v2.1.I600d04c0553f5c5ba39c2f92201da313aedfe746@changeid>
+ <20260207200128.v2.4.I4a571bdd344dfe8e819cfcba37ccd0ec29284e49@changeid>
+Content-Language: en-US
+From: Daniel Baluta <daniel.baluta@oss.nxp.com>
+In-Reply-To: <20260207200128.v2.4.I4a571bdd344dfe8e819cfcba37ccd0ec29284e49@changeid>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AM0PR10CA0041.EURPRD10.PROD.OUTLOOK.COM
+ (2603:10a6:20b:150::21) To AS8PR04MB8247.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3f2::13)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260207200128.v2.1.I600d04c0553f5c5ba39c2f92201da313aedfe746@changeid>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8247:EE_|DU4PR04MB12083:EE_
+X-MS-Office365-Filtering-Correlation-Id: b9e9d8cb-d012-4036-1639-08de67f2ddfc
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|19092799006|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TFN1b3NjcmVrZklleHJmeWcrMjFyeGdRd0g2eGoyM0NKdjJMUmhLay9XSFBD?=
+ =?utf-8?B?MlYwSmJCODgyZklpcytBVU9xOTJwRTNTTUIxM1NvVWI4YjZJOGQ5Q3prRUZz?=
+ =?utf-8?B?SXJ2NW5uTUhtblNmUGJxb0xNWmJaRHh2K0QrTmRVM0MvNXZjZ29uSU1mVnJG?=
+ =?utf-8?B?Zkp3SjBsR2RPUEh0aUNMWS9KSHhNU0JPUndMNmdDc1JBOFNJV3NjQ2k4dWxH?=
+ =?utf-8?B?eEZkUFVkdDVZQnV4WUpTVjBHbHlST2Y4TUdPVmdwWGtGWmlpKy8vU1dYUlpK?=
+ =?utf-8?B?NC9pOHZMeWc3d3dtVEhOME4yWmEzcUZmV21lWDVBVEhJM0FOT2FmcDE2NlJJ?=
+ =?utf-8?B?MURkRlVjWjVvRUdEWGZ0bmsyQk1XS0cyeTdJWExWZS9JYTlqOG1UNlVZUUtq?=
+ =?utf-8?B?d21KTUVITnVWYUlpWHJCaTdjNmtJYmxMR0ZjVWFodzhiYjJTNC9lNHNFSGNY?=
+ =?utf-8?B?T2tkRVAwUENDZmdCZ2UzK0RaVEJyakVpZ0p0dHA4d0FtYmFNK3pXcnNHNTlU?=
+ =?utf-8?B?dEJMY1B2QzRHZFlQTXpKWHdFd2h5cUs0RjhXWEt5QmlkWkRJZVBRdEllUE1r?=
+ =?utf-8?B?Q25Td201Q1ROS0tNamlvYkJuUk9yVzNRbnJ1anZUQ1NWRUhvb0RqZEQxQkd2?=
+ =?utf-8?B?ZFZNY01FTG5OUWlGUTA4NW5ETS9yNW9GMFp1QmErTmtJbGdLbnR5aGdBQ1FB?=
+ =?utf-8?B?RENsV2I5RTVXdnNURkF0MnVkcGsvb3Zkeng2ZThwQzM1aml4Qm0wY2VMUDEv?=
+ =?utf-8?B?bXhPWHZmUkNXdjh2T2FaWDhtSFNDa05HdmdHOXdjMmNsY3VhbTAwSzFhcEZQ?=
+ =?utf-8?B?NUtvMEM0R3FCbEpRQUdTV0ltTXU1dW1LM1p4eFJsclpaZFI4YjNxaDFKMDBt?=
+ =?utf-8?B?bktyY1RKL1hkSFZjMWpYbDE5YTkvYXY0N0owT0ZORlRtdEhIalZXVWFNcC9x?=
+ =?utf-8?B?U2Y2c3R2TzNuTUpLbWJnSmV4ZkZRb0ZFSWRvQnYyaUx1Q2Z0T1VWWFlvbldO?=
+ =?utf-8?B?UE0vNU1SUDRScm5HTmthRWlOb21qOTloMGtYZnFKOHRPQkp5YjNSNkVZekw3?=
+ =?utf-8?B?Y0IvNUMvcUh3NlVyNWN6UTBVVC96dWxuTUtnMTlxK2tsVFVZV3RTQXhpVHBZ?=
+ =?utf-8?B?ZFpWaWdXL2M4OElZYURTdjA1bm15TGd5QUlNQ2huSmFDVzZlTk00MFgvejB1?=
+ =?utf-8?B?MjZZb3FEdEFkek1zTlZnNXhHTU9GMUNRbWtSYWM4NDdjQjlYdHVxVVZQaVhT?=
+ =?utf-8?B?dDRFcGJpOXkreXFITVdjYWpIU2dPS3VFSHg3cmJ4M0IzNngxN1A5YmpKOW5P?=
+ =?utf-8?B?V2gxcGlGbDQ0VHJoY2ZacXhFNG5QNUVIWFBVT3NqdWNzR3lQMmJsdUt5VGlh?=
+ =?utf-8?B?eUxNTHhNOHJ0TFhDOTBGRFIrU1lzQU1GcjAzM2tRV0NNVXU5d0JsdkdVekUz?=
+ =?utf-8?B?bHJBSVFnN0ppYS9HMVFQb0xpdU1qZVVGMDFJNXhUYzNyc2tyRmc4a2Z5b09j?=
+ =?utf-8?B?Z2lGRnhuZHJJNTdHWkx5WWRnQ1I5OXR1NFZTTENxMDVwanhoVjZUelJMem9r?=
+ =?utf-8?B?Mmhvb1prSVdUTHRxRklBYWR5cGM5RUYybmU3RG91blVMSmYyT25qSStWaXYx?=
+ =?utf-8?B?U1NUQWswcnh1a0t5ZjZmUXZyZks4WFRMdzFTenR2d3dRdU5mQTlNYU9Ib3ZD?=
+ =?utf-8?B?SS80M3JGZ2VrQ1BuSFY5YVN1aitmZ05WOFg1bEpRNGxmc3lrbWVlWkloVENv?=
+ =?utf-8?B?T1dEbitqZmdSVGt0OFAwWTY2L2d3VmtWaUxkOUszMjA2eFNpYmxFbkQ5Tm1x?=
+ =?utf-8?B?V2lmYWNtWjJzcVo3allCZ3NsRk82WHRJaC94TDRkQnNZNlB2a2UxRDJiVkYy?=
+ =?utf-8?B?ckQ2eHhTVzVjWGY5ZS93WWV4R1VPSWwxYkVBZ1NSRE5rY1VCRkRXRi9lakFR?=
+ =?utf-8?B?a2FVZVB6em9qMFMrdFZjaC9DRThOR2d2WXhYWkFjcTRSTmh2SEI0WXYzeDdm?=
+ =?utf-8?B?NkpXdnFJQTA1cWhLVllIV2svU1NOSHNqWFA4cFlQN2NvMktZQmJlSFMvd1cz?=
+ =?utf-8?B?ZWNoSU5FUlRpbGZTbmJka1FnUEYyR3kwbWJPYStnbkdoR0FZTEhVb1lFdW5x?=
+ =?utf-8?Q?qS4o=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8247.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(19092799006)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K0N5YXJ5ODJMeStMSXBCUXo0YTBiMEh2c0k4VnJXMDBHSUxOSlcyMEtkbEpW?=
+ =?utf-8?B?ZVdCdUE0cWl5SHhubFI3L2ZYdkVwcmhONngzK0NxM3dpakgwbXgzamtIQjIz?=
+ =?utf-8?B?ZHdkKzFiRG1sV3Q0ekVFTEtnMzRsUWhKaExxL2hCOVBhOWtPTG9hbGJiQVVN?=
+ =?utf-8?B?WENMT2tLQmc0S1lCWjUreHIyaWp4c29RWGphVkZBQUtKUXRwWjlpUE4xRUJL?=
+ =?utf-8?B?WXdpam9zRi9BTEVUSEVwN1IxVUZ4VE9ieTUxaXUvS2dLRUVCbk0wUFd6Zklq?=
+ =?utf-8?B?WGF3enZmdG9jWTFuakduSG1NdmhJWVUzVnJSRHZ0ZGp1UmJlMEVDdUlUaVdT?=
+ =?utf-8?B?VDhCMytPQWZpbEtCRFZxdXRIMWtyaiszVW9QWW9YRk9DTy93OXR3VWhxR09S?=
+ =?utf-8?B?bjBPcjJLZG5JS0lHZzgyakNxK1F3U0krbGxJR0ZvdmxXajg4bzBBZDRoNkEz?=
+ =?utf-8?B?clpqR1NqWU01UmttQ2ttQ0xTcWxnMTRHbnkrclZTbEVxSmpiRDhpR2x1Zi9a?=
+ =?utf-8?B?NU5iOHpJcWdOd01LbVZTWkFPRWJIVThVMXRVWE40VkhqdHo0VkVlTmthditw?=
+ =?utf-8?B?Sjh0dHBPYWJVeTI2WGpCbEM4VkJMa0syYko0eEYrMjV5Yi9hMnNaWnNublBs?=
+ =?utf-8?B?MkhETnlxUUpDdkhXWElCZGF4Q1d4K3QwdndWcHNYNUZZK2FOWXozMnFjbjA0?=
+ =?utf-8?B?L2wrNDBVU2hBejAwYkNBbml6a0ZZOTN6NFpUTnN3blNVNkU3WWV3b25WL1Vq?=
+ =?utf-8?B?T253bnp1VVU3SkJtMVpWekxzNUgyT25wMUVabmtSNzZWY3g0NThtcEZlSzlK?=
+ =?utf-8?B?bTBaRzM1ZmhUbmxhMDZVY0dxejNGTC9hYU0zaG9Lb210NmZyNytsNEErenhu?=
+ =?utf-8?B?cVE1QVBnbklIdUlyellnYVlkQ2xDa3B2TkU3Z2ZRNUQyaG8yNGdRcTJxT0JZ?=
+ =?utf-8?B?UktaTU1zN2F2MXpzQjFHWXo0Q0NZWmxPSjllSlBjOTkwSkR4WXlEUkdiVEI3?=
+ =?utf-8?B?SWFOQ0QzMWszY0orS3dEYndQRGVxQUhxcTN4MzNjWTZvNXJPODhvekovcWZa?=
+ =?utf-8?B?a2ovZ29TM293dm9NbUhPQkZlSjdFditQWVJCcXVaZDh6MmhwUFhSVVpzWC83?=
+ =?utf-8?B?U253WjFHb0dxLzE2K3ZVR0hYTC9LdTdRdndHdVBMMjlETE1iR05ZVEErR0FY?=
+ =?utf-8?B?YXEvNDlxTGl5d1FyUHB1QlN0NzVSYzdHRHIzRlhhV05aMThGSnN0V3BqVzUr?=
+ =?utf-8?B?R29xb3lRVHVuT29jMGoxcmNBWFFscHhHb211NWFtT2pWWGJSTU9uWWZqSUta?=
+ =?utf-8?B?WGJtbHBia1RKTGJkQjhpendTWGxBcE0rL0kvVU94ZDloMUZrVGhwZjVpK3pP?=
+ =?utf-8?B?ZmpYR3p3R05qNHYyYi8vWSs5S0tsS3FNaWF1TjFCOEpQU282U3RWL3NKdjVq?=
+ =?utf-8?B?VDlGdTZjaDFraSt1VnVIZjJtaWsxdHI3aU5qMkYxRUxISXNzMC95eC9PU0Zp?=
+ =?utf-8?B?U0NackZEVEdnQ1BLbnpkckRpNjRuS0lDWjhZcWF0Um83ZmFwcmVaTWlDbjVO?=
+ =?utf-8?B?b0ZqWWdmUWV6TUlGeTBzYmVkMkxVZmRQK3kxVXF4SkVJTjFIczFlUGx4dGQ1?=
+ =?utf-8?B?a3dwdlpkdmIzZ2JPOWhXVDhPL3pLdzIrVFdNblM0djVkaFBHQzJ3NVhocWJS?=
+ =?utf-8?B?VHI1dVBVUzB3RmgxRlB5c3RsNFlsckVMVWpNZ3hYQnFEbDZuakZCSWZ3aGR1?=
+ =?utf-8?B?bFA4bXZyMGFqc0JSN3pYazJRTnVIRlhJZzlCZ09pcW80UGpmcFdhT2pPNVoy?=
+ =?utf-8?B?OGEzWUVRb1dLNnVXMUxjRy9rbFY1WXRhSlR5Y2U3UCsrWXkyY2lwZUc5V1Jt?=
+ =?utf-8?B?N1cxT0hseE9RNitaSWxYMW9CKzEyNW5QSytHTWhtNUtUT0YwOHZTR2VnVGZ3?=
+ =?utf-8?B?aXk4MjljMW5QbHZrT1ppY00rdHRIYkxISGsrN0RnbWQvNG1sem9MUldBL3Ix?=
+ =?utf-8?B?a2M4Q1o5KzBSdEpmQ29yeit6cmlYRFkxVklaemNJZHFiemVWYzFkbEk5b3FH?=
+ =?utf-8?B?UVBRcWdLcHl3MEtDSWF0T1h5eFV0SVFjZlRacmVOR2FZdFhwZ2NVZ0s4Y29Z?=
+ =?utf-8?B?RzJUSmYwZUdqMUNXRll3eXRRakc2L29CSWJZMmkvZnF5Tlhwcis4cVR5NWRZ?=
+ =?utf-8?B?MHg4NzVvNXJiNVNSNXpoNlM3eUI4VnF4VDdMajRMcWlvRlFnMVJTc3R6NHhK?=
+ =?utf-8?B?MHQxaDRMTWV6Tml5aVRLdzdLREFoNHBmTGpsZGZNb2tDdS9RcjdxcWU5aEFr?=
+ =?utf-8?B?anZ4NmovWXFsVm9jQWllVXhqaENyZThlUndzU3AyMzV2UXB3OUFRdz09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9e9d8cb-d012-4036-1639-08de67f2ddfc
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8247.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 15:49:53.9662
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: w/PId8+113CXsmvd8MvdrG6wHKhJVAvtTZmscRDf6rYd36ZdUNYsSf835O1AY1UGnuaMQ5j469976wm6VC1PWA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB12083
 
-On Sat, Feb 07, 2026 at 08:01:23PM -0800, Douglas Anderson wrote:
-> The way the mailbox core behaves when you pass a NULL `mssg` parameter
-> to mbox_send_message() is a little questionable. Specifically, the
-> mailbox core stores the currently active message directly in its
-> `active_req` field. In at least two places it decides that if this
-> field is `NULL` then there is no active request. That means if `mssg`
-> is ever NULL it will cause the mailbox core to think is no active
-> request. The two places where it does this are:
-> 
-> 1. When a client calls mbox_send_message(), if `active_req` is NULL
->    then it will call the mailbox controller to send the new message
->    even if the mailbox controller hasn't yet called mbox_chan_txdone()
->    on the previous (NULL) message.
-> 2. The mailbox core will never call the client's `tx_done()` callback
->    with a NULL message because `tx_tick()` returns early whenever the
->    message is NULL.
-> 
-> Though the above doesn't look like it was a conscious design choice,
-> it does have the benefit of providing a simple way to assert an
-> edge-triggered interrupt to the remote processor on the other side of
-> the mailbox. Specifically:
-> 
-> 1. Like a normal edge-triggered interrupt, if multiple edges arrive
->    before the interrupt is Acked they are coalesced.
-> 2. Like a normal edge-triggered interrupt, as long as the receiver
->    (the remote processor in this case) "Ack"s the interrupt _before_
->    checking for work and the sender (the mailbox client in this case)
->    posts the interrupt _after_ adding new work then we can always be
->    certain that new work will be noticed. This assumes that the
->    mailbox client and remote processor have some out-of-band way to
->    communicate work and the mailbox is just being used as an
->    interrupt.
-> 
-> Doing a `git grep -A1 mbox_send_message | grep NULL` shows 14 hits in
-> mainline today, but it's not 100% clear if all of those users are
-> relying on the benefits/quirks of the existing behavior.
-> 
-> Since the current NULL `mssg` behavior is a bit questionable but has
-> some benefits, let's:
-> 
-> 1. Deprecate the NULL behavior and print a warning.
-> 2. Add a new mbox_ring_doorbell() function that is very similar to the
->    existing NULL `mssg` case but a tad bit cleaner.
-> 
-> The design of the new mbox_ring_doorbell() will be to maximize
-> compatibility with the old NULL `mssg` behavior. Specifically:
-> 
-> * We'll still pass NULL to the mailbox controller to indicate a
->   doorbell.
-> * Doorbells will not be queued and won't have txdone.
-> * We'll call immediately into the mailbox controller when a doorbell
->   is posted.
-> 
-> With the above, any mailbox clients that don't mix doorbells and
-> normal messages are intended to see no change in behavior when
-> switching to the new API. Using the new API, which officiall documents
-> that mbox_client_txdone() shouldn't be called for doorbells, does
-> allow us to remove those calls.
-> 
-> There are two differences in behavior between the old sending a NULL
-> message and the new mbox_ring_doorbell():
-> 
-> 1. If the mailbox controller returned an error when trying to send a
->    NULL message, the old NULL message could have ended up being queued
->    up in the core's FIFO. Now we will just return the error.
-> 2. If a client rings a doorbell while a non-doorbell message is in
->    progress, previously NULL messages would have been "queued" in that
->    case and now doorbells will be immediately posted.
-> 
-> I'm hoping that nobody was relying on either of the two differences.
-> In general holding NULL messages in the mailbox core's queue has odd
-> behavior and is hard to reason about. Hopefully it's reasonable to
-> assume nobody was doing this.
-> 
-> As mentioned above, it should be noted that it's now documented that
-> "txdone" shouldn't be called (by both mailbox drivers and clients) for
-> doorbells. That being said, in most cases it won't hurt since the
-> mailbox core will ignore the bogus "txdone". The only case where it's
-> critical for a mailbox controller not to call "txdone" for a doorbell
-> is when a mailbox channel mixes normal messages and doorbells and
-> cares about the txdone callback. Specifically, when you ring a
-> doorbell and immediately send a normal message, if the controller
-> calls "txdone" for the doorbell it could look as if the normal message
-> finished before it should have. This issue also would have happened
-> with the old NULL `mssg`, though.
-> 
+On 2/8/26 06:01, Douglas Anderson wrote:
+> [You don't often get email from dianders@chromium.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+>
+> As per the patch ("mailbox: Deprecate NULL mbox messages; Introduce
+> mbox_ring_doorbell()"), we want to switch all users of NULL mailbox
+> messages to use mbox_ring_doorbell().
+>
+> This client only ever sent NULL messages, so the transition is
+> straightforward.
+>
 > Signed-off-by: Douglas Anderson <dianders@chromium.org>
 
-I like how this cleans up the logic hacks, but perhaps even more so how
-it takes a step towards cleaning up the mailbox API when it comes to
-expectations between client and provider implementations.
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-
-Regards,
-Bjorn
