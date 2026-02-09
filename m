@@ -1,107 +1,97 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CCF30103F
-	for <imx@lists.linux.dev>; Sun,  8 Feb 2026 23:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758112D8767
+	for <imx@lists.linux.dev>; Mon,  9 Feb 2026 05:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770593457; cv=none; b=BorBcwmta6kFoyIBIYGkf/YRSl/JKSdESuT2+zewcrt+BGs7OQhTRkWuUGijmfPOLdpSmGDNr5wjsf+sDVPUtyjlv7vubCuL0bQjvMrwYmB2yg21S2PKqvu7rSrLuhHTmbX2lwIWEodN6yO7qFPmO7Yhm9gC7QR+IkF2B72Bzz4=
+	t=1770614331; cv=none; b=NNLwRtaD7oQETy/Q5+y4akct+ymobl6vO8PtKAR7WM146ozw7yJBoxc5HJ4RQXaBmwhsYm7TplqdKfl7mdteWFfzjA9ffE7kompPwNR9K2SWlfGV4f1/zoGnxjR4juL+3BCkAJePYZAuaHjltATwI4mG07xlJagVf2HlT+eHL9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770593457; c=relaxed/simple;
-	bh=BqBwXlW1DYlKifkNzuD8EgN86/kfJHvciyDW4WXpDPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oWznp4jtlS7nye931k1CXRXSqZPu1r/VwYXufcMQkugsFotTFNwcXzcG4DS55plMmYIIS5EtJTOGKud8MxTWBcafoTMfbCXeD6XnlEd5D2YKlVnByWdxAWtwzZ3PDpuDzB8ZibQhHIvUYEPqZKuN4x3o8tK0bAYq6XYt1l7h0Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=a/R3LPSp; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="a/R3LPSp"
-Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
-	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 4B5B582A;
-	Mon,  9 Feb 2026 00:30:10 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1770593410;
-	bh=BqBwXlW1DYlKifkNzuD8EgN86/kfJHvciyDW4WXpDPg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a/R3LPSpkb93wFdSWlOX+/jeCfLOWluI9DhYaiJ+yJSYViQVHcpq2vU/8sQbNM8KW
-	 OzgvhCQDj4C29gAhRIz/QUtDJkAZwZ1B0An2C4xXoRtexqrXdGpW4BkrBAeKi/GBLD
-	 X7uukJHcWOKAMAPGF88XW8kAiir3KJ3mnbQTR9/M=
-Date: Mon, 9 Feb 2026 01:30:54 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>, imx@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	s=arc-20240116; t=1770614331; c=relaxed/simple;
+	bh=ryvxP56BpEYWQ/bV/GwhxtChmLT6+SueJYNn+SC2l4M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=U8OAUhB55M2ErT9wgIHAQauMgqFP5lh79T+eEiXWhhZBybYmxPfpDA0LPcGkDRULrInHJ6jbWWcHWLA/fouJ0J2seQ5w9pXyGaLWuxXSwGK9Jc/7qNujtNZ1GqqPh33hLzt6QNOtBENSmUdc4G8GymKCmJVyuTxeZ5jcT3cMhwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost (unknown [124.16.138.129])
+	by APP-01 (Coremail) with SMTP id qwCowADnjGgtbolp6gaCBw--.8544S2;
+	Mon, 09 Feb 2026 13:18:37 +0800 (CST)
+From: Chen Ni <nichen@iscas.ac.cn>
+To: peng.fan@nxp.com
+Cc: andersson@kernel.org,
+	festevam@gmail.com,
+	frank.li@nxp.com,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
 	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Wei Fang <wei.fang@nxp.com>
-Subject: Re: [PATCH RFC net-next] net: stmmac: provide flag to disable EEE
-Message-ID: <20260208233054.GA1987960@killaraus.ideasonboard.com>
-References: <E1vNUjC-0000000FhjR-0h6P@rmk-PC.armlinux.org.uk>
- <f95f73b9-d024-4697-bca1-02fb8bc044af@gmail.com>
- <aYEj8VM5AfvcDHrl@shell.armlinux.org.uk>
- <aYE-gvuZdv7ezm7X@shell.armlinux.org.uk>
- <20260203231832.GB133801@killaraus>
+	linux-kernel@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	mathieu.poirier@linaro.org,
+	s.hauer@pengutronix.de,
+	Chen Ni <nichen@iscas.ac.cn>
+Subject: [PATCH v2] remoteproc: imx_rproc: Check return value of regmap_attach_dev() in imx_rproc_mmio_detect_mode()
+Date: Mon,  9 Feb 2026 13:14:07 +0800
+Message-Id: <20260209051407.1467660-1-nichen@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260203231832.GB133801@killaraus>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADnjGgtbolp6gaCBw--.8544S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Xw4fKFWkCFykWF4DJry3XFb_yoWkJFg_Ca
+	4akrW8X3W0vrW5C3WDZr4rAFWUtFy8ZF9Y9F4UtFZxJwn7XrnrAFWDZrnrZa1fXryqyr90
+	k34Svr47AFnrujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbTkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8WwCF04k20xvY0x0EwIxGrw
+	CFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE
+	14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2
+	IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxK
+	x2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI
+	0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUBuWLUUUUU=
+X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
 
-On Wed, Feb 04, 2026 at 01:18:33AM +0200, Laurent Pinchart wrote:
-> On Tue, Feb 03, 2026 at 12:17:06AM +0000, Russell King (Oracle) wrote:
-> > On Mon, Feb 02, 2026 at 10:23:45PM +0000, Russell King (Oracle) wrote:
-> > > On Mon, Feb 02, 2026 at 08:54:52PM +0200, Ovidiu Panait wrote:
-> > > > If not, maybe this patch could be merged to add the flag that disables
-> > > > EEE and I will just send a patch to disable EEE on our platforms as well.
-> > > 
-> > > We still need the flag to disable EEE for platforms where lpi_intr_o is
-> > > logically OR'd with the other interrupts, so there's no way to ignore
-> > > its persistent assertion.
-> > 
-> > I'll also state that we need both patches, but there's no point pushing
-> > my original patch (to allow EEE to be disabled) unless Laurent is going
-> > to also submit a patch to make use of the flag - the EEE disable and
-> > Laurent's patch needs to be part of a series. We don't merge stuff that
-> > adds facilities that have no users, because that's been proven time and
-> > time again to be a recipe for accumulating cruft.
-> 
-> Sorry for having dropped the ball on this. Your patch arrived just when
-> I travelled to Japan for a month, and then it got burried in my inbox.
-> Now that it has resurfaced, and that an issue that prevented i.MX8MP
-> from booting with v6.19-rc has been fixed, I'll rebase my kernel and
-> finally fix that problem.
+Add error checking for regmap_attach_dev() call in
+imx_rproc_mmio_detect_mode() function to ensure proper error
+propagation.
 
-Done. https://lore.kernel.org/r/20260208232931.2272237-1-laurent.pinchart@ideasonboard.com
+Return the value of regmap_attach_dev() if it fails to prevent
+proceeding with an incomplete regmap setup.
 
-> Once again, thank you for all your help with this issue, you have been
-> extremely helpful and I'm very grateful.
-> 
-> > So, at the moment, "net: stmmac: provide flag to disable EEE" ain't
-> > going anywhere until there's a patch that makes use of the new flag.
+Suggested-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+---
+Changes in v2:
+- Use dev_err() + return ret instead of dev_err_probe()
+---
+ drivers/remoteproc/imx_rproc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index f5f916d67905..75baf905988b 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -1007,7 +1007,11 @@ static int imx_rproc_mmio_detect_mode(struct rproc *rproc)
+ 	}
+ 
+ 	priv->regmap = regmap;
+-	regmap_attach_dev(dev, regmap, &config);
++	ret = regmap_attach_dev(dev, regmap, &config);
++	if (ret) {
++		dev_err(dev, "regmap attach failed\n");
++		return ret;
++	}
+ 
+ 	if (priv->gpr) {
+ 		ret = regmap_read(priv->gpr, dcfg->gpr_reg, &val);
 -- 
-Regards,
+2.25.1
 
-Laurent Pinchart
