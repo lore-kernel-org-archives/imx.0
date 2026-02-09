@@ -1,196 +1,151 @@
-Received: from mx-relay164-hz1.antispameurope.com (mx-relay164-hz1.antispameurope.com [94.100.133.57])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3452276028
-	for <imx@lists.linux.dev>; Mon,  9 Feb 2026 14:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770647825; cv=pass; b=Guih5NBj14ycjQK7b3FtsqyiK3JfsT+zh33BNI4kKNDtGN8nClT+ALihZ9Xu+riSrdUuSeSFYTWfwS6nDcBRA1uvIfEUSpG0RM5KyN219qhC/6Itv00Xx8ictbLh4peAmiLRF9FMYO/Dp62kiXHpSMRxJg2zoTagBShm5KRYn8E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770647825; c=relaxed/simple;
-	bh=p+F91ljW0bVfglBbCAx0nM0MlEOrZXBD3ZOKdCkZLbk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZa5/U4clKcH0VQjkkJPQNQtzCNJDECqDtL1rdVG2kwnalcheuNu94tco2J8BmlHKUZAu+NWpmTcnG5jDMixbx2CqINDlBJBtm3GGh1GSeoZlZH3wz3HNTtSauGnMcayvUGUjUHKpa6lDB1dZxssHNUH1VJg9e/Z5EF14JkQEfw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=jNjy3Q6D; arc=pass smtp.client-ip=94.100.133.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C40B37E2F1;
+	Mon,  9 Feb 2026 15:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770651620; cv=none; b=t8ipfRNmTOeLhKea6BwvHSDR2wUfN7Mc3TpjjmbhudDSmpgt3gF/pgBnQEjEZAO1BzXbjDpPCm9gpfWxDIoTNJx/CbJJzVXeS87Mo/x6TIHHDZOByRBhYYSmtqFBo6ZmC0LRNz1juww7Eruxht4HE5EsXVLMin6q5eSxFJhbR9c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770651620; c=relaxed/simple;
+	bh=5DRu3dMpaADpDKLopx8dO5LEkVz+35Fl6LlXv05MFMY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xd8sG7S6t7IWV/SNaOy9whrrQaDcq2LnzpPaEXkdJa9d1AcjApbyBrmC6V7KAhWNvLx/V81yWCfkyQXX6kkXR43a9Aq5BloxhNu8Wr2nQm6ujEvww6PHXGRgFnCaBPAeDfe5S401Z3jWCqRg+WJRsCPeGBeNiEihVm6tTeso2mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E3giKneR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="jNjy3Q6D"
-ARC-Authentication-Results: i=1; mx-gate164-hz1.hornetsecurity.com 1;
- spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com
- smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
- header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=nNqZ4azVDWNnIZl+k4NcxK2btx7/ux4KOp+IkAVL6dM=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1770647779;
- b=IkuwVgYrLqb+ZAEU6k6dVGvmzwR149us3v7wifCpeywsown/lqzbudjSWB7Nb9HGSqByVbt4
- O4ETlqYlv6r3fr2AH8vagT1fXVKcIXq2gYoFDWByYPYI7svAnSgtkAll4afcGOrti7xZxX+keBh
- Pvl4iDO6jGmd479gTujEDvzq6dHTWxzm4kBtk0+EG1KZWHwJAUYW15doblYBcOorSvkcpuRZGpi
- OpA1bmUmyw2DWIuItQSuB31lAfSvEq4Y4n8KSRd5PFcJLPgXSd9ZE6ONM67tD6qWGypdIsMWdXg
- Dy+lFBUEaw3eoaf6YLaowz24XHnMGz0ljhf48kMB5kwdw==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1770647779;
- b=TdrYerO/4JOgshHWNDTO9JEnAnXCIsEjxYTx0NWVyCtk9QG28wxuScaMuznZArzgW7HEcSS/
- XBQzSlOFdUPxMLTBfPqUIE6yOIq+PqPOX7WW2CXnjlLk2JOsL8LgOD3sX6Z/2IFe7RucbGheIw3
- F3b0Ct6kW1O8AenpXygfYRlJ9STbdjlqaQuXBjt2/PwQqhdGF2b5DKpaPZDFF4PA8VnpWavIiQD
- NlKSmiM8TwR0pRUZj95+BrAKlpjlPlVHOXjAXNyIlW+p2LcgbVuHiwq4+WfKnfRMV6YkP57TwIl
- GSsZCknqU2NOPxV6M0sT4FKwUAh3AxI2U6DxYw9NGsC/Q==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay164-hz1.antispameurope.com;
- Mon, 09 Feb 2026 15:36:19 +0100
-Received: from steina-w.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 41716220DA4;
-	Mon,  9 Feb 2026 15:36:06 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] arm64: dts: tqma8mpql-mba8mp-ras314: Configure multiple queues on eqos
-Date: Mon,  9 Feb 2026 15:35:53 +0100
-Message-ID: <20260209143555.202042-2-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260209143555.202042-1-alexander.stein@ew.tq-group.com>
-References: <20260209143555.202042-1-alexander.stein@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E3giKneR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3742C116C6;
+	Mon,  9 Feb 2026 15:40:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770651620;
+	bh=5DRu3dMpaADpDKLopx8dO5LEkVz+35Fl6LlXv05MFMY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E3giKneRdTIS8o5HAfKsCgyA3Vk576TJHuj27G++WpF4bVwo8cqDkL6Qmv+VYPGZ8
+	 cuixX8S9UWdGdgfLNEhjWW+EobdUEmwbMpxPsUxHYKe2KuU+agUKPUb/oWYn35b27L
+	 +GtecYO4Men19p1sVRPAWK38hPds7C0lkC1Rq2OvR9enQA/5TK2AbLY7olteRNqLCq
+	 xJz0El8ZBaNm7AuLJLQxUx/LZGECtS+u6RnXBYid20/LgnxlvkWnspo+l0HdqD8tw6
+	 cj29zBhNWE9FTbRHQQ2HoCrzcD3K5DGDHNgsfMuP9tHFWAvFpfgDJ/z1ciUy6p6Lr2
+	 MqqCGfPCz2Nig==
+Date: Mon, 9 Feb 2026 09:40:15 -0600
+From: Bjorn Andersson <andersson@kernel.org>
+To: Douglas Anderson <dianders@chromium.org>
+Cc: jassisinghbrar@gmail.com, Frank.Li@nxp.com, arm-scmi@vger.kernel.org, 
+	cristian.marussi@arm.com, festevam@gmail.com, imx@lists.linux.dev, 
+	jay.buddhabhatti@amd.com, jonathanh@nvidia.com, kernel@pengutronix.de, 
+	konradybcio@kernel.org, krzk@kernel.org, lenb@kernel.org, linux-acpi@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-remoteproc@vger.kernel.org, linux-tegra@vger.kernel.org, mathieu.poirier@linaro.org, 
+	michal.simek@amd.com, nm@ti.com, rafael@kernel.org, robh@kernel.org, 
+	s.hauer@pengutronix.de, shawn.guo@linaro.org, ssantosh@kernel.org, 
+	sudeep.holla@kernel.org, tglx@kernel.org, thierry.reding@gmail.com
+Subject: Re: [PATCH v2 01/15] mailbox: Deprecate NULL mbox messages;
+ Introduce mbox_ring_doorbell()
+Message-ID: <yotr3aia3gra4jmlykqadqwi45lphhdyx7tt4n5cdwcungfpbd@gns6bb6m3vmz>
+References: <20260208040240.1971442-1-dianders@chromium.org>
+ <20260207200128.v2.1.I600d04c0553f5c5ba39c2f92201da313aedfe746@changeid>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay164-hz1.antispameurope.com with 4f8nLZ6kgdz3xc54
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:489f5f296e1f10bc703973de13f918e5
-X-cloud-security:scantime:2.157
-DKIM-Signature: a=rsa-sha256;
- bh=nNqZ4azVDWNnIZl+k4NcxK2btx7/ux4KOp+IkAVL6dM=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1770647778; v=1;
- b=jNjy3Q6Dp+E7ZsVU2+7CacOfIjdXOAIBmFCA1GL6NGB0LWbP+44FOdFl90ZXUMyDz8pSF8+Y
- cle+2Al3CWpNHco544xFQSc1eJ8qql64AavJ8QQtXAq7UUHFotG8o9nUEZiqbkJ0ie0QE0CdlkC
- LSd04lFrEoKSUSpUx0p7LnRw0JrqHBuhOLF8a78lrQ2wzVqwwM4XZstUTElropGwuPM2H3vNoQx
- yiRDRh9dW6Yvf/cWxQtYRaPIwe0ynUgjEbeU5mNu7yR7iC94Z/pk/pTJ/K84tuW5fkyHIy18BwG
- O6Yg9akd0oGtXoUDZWSOWK0f4de0n5JXBwClFG66zferQ==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260207200128.v2.1.I600d04c0553f5c5ba39c2f92201da313aedfe746@changeid>
 
-The MBa8MP-RAS314 mainboard has an integrated PHY connected to the EQOS
-ethernet controller which can support up to five queues. Configure
-these queues in the same manor as done on the imx8mp-evk.
-Setting DMA to threas mode is necessary to prevent FIFO overflows, see
-commit 0bc3e333a0c82 ("arm64: dts: imx8mp-evk: configure multiple queues
-on eqos")
+On Sat, Feb 07, 2026 at 08:01:23PM -0800, Douglas Anderson wrote:
+> The way the mailbox core behaves when you pass a NULL `mssg` parameter
+> to mbox_send_message() is a little questionable. Specifically, the
+> mailbox core stores the currently active message directly in its
+> `active_req` field. In at least two places it decides that if this
+> field is `NULL` then there is no active request. That means if `mssg`
+> is ever NULL it will cause the mailbox core to think is no active
+> request. The two places where it does this are:
+> 
+> 1. When a client calls mbox_send_message(), if `active_req` is NULL
+>    then it will call the mailbox controller to send the new message
+>    even if the mailbox controller hasn't yet called mbox_chan_txdone()
+>    on the previous (NULL) message.
+> 2. The mailbox core will never call the client's `tx_done()` callback
+>    with a NULL message because `tx_tick()` returns early whenever the
+>    message is NULL.
+> 
+> Though the above doesn't look like it was a conscious design choice,
+> it does have the benefit of providing a simple way to assert an
+> edge-triggered interrupt to the remote processor on the other side of
+> the mailbox. Specifically:
+> 
+> 1. Like a normal edge-triggered interrupt, if multiple edges arrive
+>    before the interrupt is Acked they are coalesced.
+> 2. Like a normal edge-triggered interrupt, as long as the receiver
+>    (the remote processor in this case) "Ack"s the interrupt _before_
+>    checking for work and the sender (the mailbox client in this case)
+>    posts the interrupt _after_ adding new work then we can always be
+>    certain that new work will be noticed. This assumes that the
+>    mailbox client and remote processor have some out-of-band way to
+>    communicate work and the mailbox is just being used as an
+>    interrupt.
+> 
+> Doing a `git grep -A1 mbox_send_message | grep NULL` shows 14 hits in
+> mainline today, but it's not 100% clear if all of those users are
+> relying on the benefits/quirks of the existing behavior.
+> 
+> Since the current NULL `mssg` behavior is a bit questionable but has
+> some benefits, let's:
+> 
+> 1. Deprecate the NULL behavior and print a warning.
+> 2. Add a new mbox_ring_doorbell() function that is very similar to the
+>    existing NULL `mssg` case but a tad bit cleaner.
+> 
+> The design of the new mbox_ring_doorbell() will be to maximize
+> compatibility with the old NULL `mssg` behavior. Specifically:
+> 
+> * We'll still pass NULL to the mailbox controller to indicate a
+>   doorbell.
+> * Doorbells will not be queued and won't have txdone.
+> * We'll call immediately into the mailbox controller when a doorbell
+>   is posted.
+> 
+> With the above, any mailbox clients that don't mix doorbells and
+> normal messages are intended to see no change in behavior when
+> switching to the new API. Using the new API, which officiall documents
+> that mbox_client_txdone() shouldn't be called for doorbells, does
+> allow us to remove those calls.
+> 
+> There are two differences in behavior between the old sending a NULL
+> message and the new mbox_ring_doorbell():
+> 
+> 1. If the mailbox controller returned an error when trying to send a
+>    NULL message, the old NULL message could have ended up being queued
+>    up in the core's FIFO. Now we will just return the error.
+> 2. If a client rings a doorbell while a non-doorbell message is in
+>    progress, previously NULL messages would have been "queued" in that
+>    case and now doorbells will be immediately posted.
+> 
+> I'm hoping that nobody was relying on either of the two differences.
+> In general holding NULL messages in the mailbox core's queue has odd
+> behavior and is hard to reason about. Hopefully it's reasonable to
+> assume nobody was doing this.
+> 
+> As mentioned above, it should be noted that it's now documented that
+> "txdone" shouldn't be called (by both mailbox drivers and clients) for
+> doorbells. That being said, in most cases it won't hurt since the
+> mailbox core will ignore the bogus "txdone". The only case where it's
+> critical for a mailbox controller not to call "txdone" for a doorbell
+> is when a mailbox channel mixes normal messages and doorbells and
+> cares about the txdone callback. Specifically, when you ring a
+> doorbell and immediately send a normal message, if the controller
+> calls "txdone" for the doorbell it could look as if the normal message
+> finished before it should have. This issue also would have happened
+> with the old NULL `mssg`, though.
+> 
+> Signed-off-by: Douglas Anderson <dianders@chromium.org>
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
-Changes in v2: None
+I like how this cleans up the logic hacks, but perhaps even more so how
+it takes a step towards cleaning up the mailbox API when it comes to
+expectations between client and provider implementations.
 
- .../imx8mp-tqma8mpql-mba8mp-ras314.dts        | 67 +++++++++++++++++++
- 1 file changed, 67 insertions(+)
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-index b7f69c92b7748..04f4c2fdf2992 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mp-ras314.dts
-@@ -184,6 +184,9 @@ &eqos {
- 	pinctrl-0 = <&pinctrl_eqos>;
- 	phy-mode = "rgmii-id";
- 	phy-handle = <&ethphy3>;
-+	snps,force_thresh_dma_mode;
-+	snps,mtl-tx-config = <&mtl_tx_setup>;
-+	snps,mtl-rx-config = <&mtl_rx_setup>;
- 	status = "okay";
- 
- 	mdio {
-@@ -209,6 +212,70 @@ ethphy3: ethernet-phy@3 {
- 			ti,clk-output-sel = <DP83867_CLK_O_SEL_OFF>;
- 		};
- 	};
-+
-+	mtl_tx_setup: tx-queues-config {
-+		snps,tx-queues-to-use = <5>;
-+
-+		queue0 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x1>;
-+		};
-+
-+		queue1 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x2>;
-+		};
-+
-+		queue2 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x4>;
-+		};
-+
-+		queue3 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x8>;
-+		};
-+
-+		queue4 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0xf0>;
-+		};
-+	};
-+
-+	mtl_rx_setup: rx-queues-config {
-+		snps,rx-queues-to-use = <5>;
-+		snps,rx-sched-sp;
-+
-+		queue0 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x1>;
-+			snps,map-to-dma-channel = <0>;
-+		};
-+
-+		queue1 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x2>;
-+			snps,map-to-dma-channel = <1>;
-+		};
-+
-+		queue2 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x4>;
-+			snps,map-to-dma-channel = <2>;
-+		};
-+
-+		queue3 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0x8>;
-+			snps,map-to-dma-channel = <3>;
-+		};
-+
-+		queue4 {
-+			snps,dcb-algorithm;
-+			snps,priority = <0xf0>;
-+			snps,map-to-dma-channel = <4>;
-+		};
-+	};
- };
- 
- &fec {
--- 
-2.43.0
-
+Regards,
+Bjorn
