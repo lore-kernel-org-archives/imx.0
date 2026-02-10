@@ -1,44 +1,74 @@
-Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A305F31B80D
-	for <imx@lists.linux.dev>; Tue, 10 Feb 2026 11:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89C7329361
+	for <imx@lists.linux.dev>; Tue, 10 Feb 2026 12:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770724101; cv=none; b=fB7F/CRjeN4uv44TX8u+MiTsJvfnAfQox+eK+ZMGFOZOHmYgs+0cIOKgcLxFXG66jKO7Cbz++AmuB0DgE1nZlmIxV7OFkvXlJk39KnGtzO5NOy28vLOlKVxNC4buWHxiP/qM63hwH4ywUJztmTVhMac3HZwxC+2KYXLa1gIlDuo=
+	t=1770726389; cv=none; b=QuhO/8VW5M08FlJjrCF8ALC41Qgti14N8e99BDBq75D1EwxBWSoXX3tVZEWHh8CCfBAksXUsaUTe7BZfLCZ4VwE+CWs6eZpAMd6oFv88A9W22c3WHSXWAVP5BNkryAKCKOQ5twzxMJbfG+GkekdQoGHD93LsgWicY1mOcLn9kvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770724101; c=relaxed/simple;
-	bh=+uwvkWK5NfdQs0iII+G4Sfhi8vF2thlIU995AoX+814=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Lpn30Fo7rMIKoSMCx9TVRl/vW7RobbjTG/ub0E4s4f41UlD1zy46qA8EIHv1SDEL0UWUidmuTPNuNr+CaimaMoYc6XhzDkhV10AiXDuYQZix2fGNwojYhpiup5Pk+p2lE2+EMhmHu753mdkm4yZ9rfIeQj/X4fmB6MorqnEBd7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=Egu39vtF; arc=none smtp.client-ip=217.92.40.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
+	s=arc-20240116; t=1770726389; c=relaxed/simple;
+	bh=+qM7MdOe2Y5+jA2loXINHPjzHRtXdwX5qkJFdvu6Zxw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T51PUHwnHXcuhEJsYNvvvJKsHupFRQkpbANlHHqmgSi8xQjRE3awTu18yrpF1tzcMZZzlSDTcdYnXO9rGYK231HrJg+BYrEiGH7z0nAan8LMThpqiZ8LHWm+7wlIAev55QNsglUDgMkLfm9xFQSm5UrivPsb8RVK5xwvIF32RS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=wR0EDoHK; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="Egu39vtF"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 96DEA1480214;
-	Tue, 10 Feb 2026 12:48:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
-	t=1770724097; h=from:subject:date:message-id:to:cc:mime-version:content-type;
-	bh=4KhYmKsCBYrTSyS7CCAiq0B/cytaIy8zlbS1/jfm5Uk=;
-	b=Egu39vtFNsOSiUiHQmU09Wnihsw1RKE33faVf9rSvFW+UhTK22mzyj0CHIW6Lqd4n5GAU4
-	AYDrrFhcULlPKgLs0sj9kI9dSEXSJotAmhUE5Py5tLn/xgpv6FmLGXIsy7xJZtNEm1xdkg
-	8ddcIdohds0MR0xK95Gpjh8jfSpZonD9zPA1UvO7K6RZNAGfIlca119J2EA3DZKouDiibw
-	RLnEwuNYT0ZU8Mg+UVy3rcWecqGPC9DoM4dY2EXYqd6SACjI24wrwFVKX9iPc1q8rJxiyX
-	AHJCIHApuHXmhShlkAEHb3kvoCLSdYD6imDfNqUNSjsMbo42Yy6Lt24v5ancFg==
-Date: Tue, 10 Feb 2026 12:48:05 +0100
-From: Alexander Dahl <ada@thorsis.com>
-To: imx@lists.linux.dev
-Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Roelf-Erik Carsjens <rca@thorsis.com>,
-	Josua Mayer <josua@solid-run.com>
-Subject: rts-gpios support in fsl_lpuart driver?
-Message-ID: <20260210-rearview-hungrily-536a95fc3385@thorsis.com>
-Mail-Followup-To: imx@lists.linux.dev, linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Roelf-Erik Carsjens <rca@thorsis.com>,
-	Josua Mayer <josua@solid-run.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="wR0EDoHK"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=uCvUw7/lCEGBlYKLIRMIa5KgRRKn+Acso8mw+XapQ0g=; b=wR0EDoHK8mRIH8uMaABT5/zC3s
+	HO8R1f7x+9M/R36KD14yKssCKQQtSEP1wKrrajvtnRxorwaUWTbWf5/mk4qRZW0SoCcz3dZqNa7sM
+	LGkvMLebYcdEDRiCSlnomHQvHqu3jbBPMNua/6kZOBa24d9kMwL8oeT3NZVdVYkZd6sLoSu4ysUhp
+	vOT1sZL8XH6rQMBiji06An2fs5pTRhtCpSU+S3VDblGJrbECGY61XczTAhpV7i+FBf4WIVZloCG6C
+	3xc+s1ehMzwFChtKgm5k91c1WegbnvuE72YAhjZBo+KuwrNQGfI7LpKGxYQb0mHkXDqBopZK2yN8U
+	JBUBCU6g==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:40790)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vpmoq-000000002XV-22Ce;
+	Tue, 10 Feb 2026 12:26:16 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vpmom-000000002m2-25N6;
+	Tue, 10 Feb 2026 12:26:12 +0000
+Date: Tue, 10 Feb 2026 12:26:12 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: netdev@vger.kernel.org, imx@lists.linux.dev,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>, Heiko Schocher <hs@denx.de>,
+	Jakub Kicinski <kuba@kernel.org>, Joy Zou <joy.zou@nxp.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Martyn Welch <martyn.welch@collabora.com>,
+	Mathieu Othacehe <othacehe@gnu.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Richard Hu <richard.hu@technexion.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Stefano Radaelli <stefano.radaelli21@gmail.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2] net: stmmac: imx: Disable EEE
+Message-ID: <aYsj5IayQd3NRflL@shell.armlinux.org.uk>
+References: <20260209202155.2388099-1-laurent.pinchart@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,44 +77,76 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/2.2.13 (2024-03-09)
-X-Last-TLS-Session-Version: TLSv1.3
+In-Reply-To: <20260209202155.2388099-1-laurent.pinchart@ideasonboard.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hello everyone,
+On Mon, Feb 09, 2026 at 10:21:55PM +0200, Laurent Pinchart wrote:
+> The i.MX8MP suffers from an interrupt storm related to the stmmac and
+> EEE. A long and tedious analysis ([1]) concluded that the SoC wires the
+> stmmac lpi_intr_o signal to an OR gate along with the main dwmac
+> interrupts, which causes an interrupt storm for two reasons.
+> 
+> First, there's a race condition due to the interrupt deassertion being
+> synchronous to the RX clock domain:
+> 
+> - When the PHY exits LPI mode, it restarts generating the RX clock
+>   (clk_rx_i input signal to the GMAC).
+> - The MAC detects exit from LPI, and asserts lpi_intr_o. This triggers
+>   the ENET_EQOS interrupt.
+> - Before the CPU has time to process the interrupt, the PHY enters LPI
+>   mode again, and stops generating the RX clock.
+> - The CPU processes the interrupt and reads the GMAC4_LPI_CTRL_STATUS
+>   registers. This does not clear lpi_intr_o as there's no clk_rx_i.
+> 
+> An attempt was made to fixing the issue by not stopping RX_CLK in Rx LPI
+> state ([2]). This alleviates the symptoms but doesn't fix the issue.
+> Since lpi_intr_o takes four RX_CLK cycles to clear, an interrupt storm
+> can still occur during that window. In 1000T mode this is harder to
+> notice, but slower receive clocks cause hundreds to thousands of
+> spurious interrupts.
+> 
+> Fix the issue by disabling EEE completely on i.MX8MP.
+> 
+> [1] https://lore.kernel.org/all/20251026122905.29028-1-laurent.pinchart@ideasonboard.com/
+> [2] https://lore.kernel.org/all/20251123053518.8478-1-laurent.pinchart@ideasonboard.com/
+> 
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> ---
+> This patch depends on https://lore.kernel.org/all/E1vNUjC-0000000FhjR-0h6P@rmk-PC.armlinux.org.uk/
 
-we are currently experimenting with the SolidRun 8XLite SoM featuring
-an i.MX 8XLite SoC on a custom base board.  Due to how our peripheral
-hardware is connected we need to use rs485 with uart3, which has no
-native soc controlled rts line.  On different SoCs you just use
-'rts-gpios' in devicetree then, letting the kernel switch this line
-through gpio.  Alas it does not work on this SoC, the RTS line is not
-switched at all. :-/
+... and a few other patches as well. There is also a conflicting change
+in net-next:
 
-According to my analysis the i.MX8 family has different variants using
-different uarts with different drivers.  For the variants using the
-imx.c driver, you find dts files using rts-gpios, but for variants
-using the fsl_lpuart.c driver you find none.
+commit dc6597fab3e3d291da9e0b4c6f7da01a5a863e80
+Author: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Date:   Tue Jan 20 21:30:04 2026 +0100
 
-The rts-gpios property is evaluated by the serial core in
-`mctrl_gpio_init()` right?  And the actual switching is also done
-through that mctrl_gpio interface, right?  As far as I understand the
-source code, the serial core calls the .set_mctrl function pointer,
-and then it is up to the driver what to do?  Some (like atmel_serial.c
-and imx.c) call mctrl_gpio_set() in the function mapped to that
-pointer, some (like fsl_lpuart.c) don't.  Correct so far?
+    net: stmmac: dwmac-imx: keep preamble before sfd on i.MX8MP
 
-Up to this point I'm somewhat confused this is no generic feature in
-the core which works for any uart, but there's probably a reason for
-that?  Maybe interaction with the actual uart registers in some way?
+> base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
 
-If it is like described, I'd say the fsl_lpuart driver currently just
-does not support this usecase?  Is it possible to implement the
-necessary things?  Is anybody already working on that?  I looked in my
-mailing list archive and in the imx downstream kernel, but could not
-find any hints.
+This is v6.19
 
-Any advice welcome. :-)
+> prerequisite-patch-id: 9229185bf29c206923075a0450e763664af050bb
+> prerequisite-patch-id: e17c3f8a7cb2b18fc0c3c6250773a9680bdabdba
+> prerequisite-patch-id: a3c3f8b08fd66ee3ccce632aad3f4a3c21c92718
 
-Greets
-Alex
+I have no idea what these are. These don't exist in Linus', net, nor
+net-next trees. I'm not sure what generates these, but they are useless
+unless they also indicate the summary line for the commit in question,
+so that one can have some clue what change they're referring to.
 
+While this is a fix, I think you previously suggested that this isn't
+a regression, which suggests it should be merged in net-next (currently
+closed due to the merge window) rather than net.
+
+Also, referring to another patch doesn't get it applied - netdev
+workflow uses patchwork, and patches to be applied need to be there.
+If patches depend on each other, they need to be submitted as a
+series. So either I need to pick up your patch and send it along
+with mine, or you need to pick up my patch and send it with yours.
+We need to come to agreement on who is submitting it.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
