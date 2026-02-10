@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C3233D6C9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CB433DEC7;
 	Tue, 10 Feb 2026 08:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770713145; cv=none; b=AyoZ/OYZpKsb3aA/wxjaMzMtuNto39pCfDfIUr8Ezc/O070xuvVDsfrX66CTwLPONpdPFPIaDFy/63yoUEVwiDoUEV2IztYAEPEZ0AGJKzHxsluG6n2OvQwHrJTnDoRTENz+tw2/HrfO45xr5OHd5LDshbu8gmkfwYbvEQetVxQ=
+	t=1770713145; cv=none; b=sTqM8TMuZNZy6UyQF0bul9km/BcaTxKiSOQPElf+rgJM1HJvPF8kvHjphqs94AhIJS7rMwlzoBX2fDksc8PNi55zxpoC34MxuePn2ooK7n/zjU/Kgm8B79q3gR7RfCFm45P9AhPTdS4gPpft2qPcK4z0hBKepuK/KCNAENcxKxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770713145; c=relaxed/simple;
-	bh=tLpExwpEhurY6voXzq0qndE7d/dtoLm/tbWhcRdS4og=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=edplbEn+tavGQmjTnOzWMnxnhTBNYct4n2l1/MZumiwLUJc+5xfeH6El+M5+dGMhzkCOdjQNGtlRwaw4nkT2C8k+a+34HZw5mbGJPbpjRNeBMOawmnLHLPY+5KxxCreFMfaOU8FGO+LlIF80fLiBR5vuEkeZy5iJNoWkJE+xfG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUVpZaE7; arc=none smtp.client-ip=10.30.226.201
+	bh=TMkuw8+FgAZt93jTnnuCx3oBKloJogHnbWHJWDepE0I=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lKOnR9HeIZMCu3e+DKDVAmPqdxJHxFKFLUQ22qh00UcuHkLZ0kiKp/wYI4dE+LJFRPnyTMqIDxhRiRMXncVWByqMW8cPjRp80cRhhFygmXHAODA8WFjoHoOd0tWLcfdmdhegGtKUCZWlxHda+XBIWBVgin34qbWmAcIG0WV5Uuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LSXJBP8Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUVpZaE7"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C3B75C2BCB0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LSXJBP8Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9DAE1C19425;
 	Tue, 10 Feb 2026 08:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1770713144;
-	bh=tLpExwpEhurY6voXzq0qndE7d/dtoLm/tbWhcRdS4og=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=BUVpZaE7x58iVxp516OAjGTTxMO+aLIjy6VDCY32HMyCgQm4gdcMv93TqEn/J4hS+
-	 qdCxkJFMkRQvBUJ0DIlXTMrPVX+4qQxmSxGZw6adyqomndCcS6SpsTfc0i62TAYW+q
-	 0ZOMKHGqql31xY9RvMiqMCEqVOxMq710IMqoz34L73pVjc8Bxse+GU+wXc0NVR2j9u
-	 phbD1bHcXyUcYmGmGWi+AcVh4cdJD+HZogc9nqMONEeOLrzJjRh5Ftq1vRZ257II2P
-	 ApG8rgHYKThZWpmB2g2+ueFZ2n+EWPV4cSlI+1FoPv+gw+7myRy0iveF15taYNgVL9
-	 HIqwF9ETYmKJA==
+	bh=TMkuw8+FgAZt93jTnnuCx3oBKloJogHnbWHJWDepE0I=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=LSXJBP8Qxnld7FR41Af9FUW3NUxsNuaUyAaouHPvM4q6PWFlstNDVzWIIHAOJwJGQ
+	 Mz6GcoPanza+X2Eq5XQcdACLm5AnAt3+qkFp3k7vkBbryFKgs+RKdK6S7/dz15/Mzn
+	 Jw76FAbtdsBYLI2gZUwML5fv8G2pEvQE0KmUkNTql+xGgUTvTG/CA+x2Q3EBaJQyFi
+	 3PyeKnWRPAF6itK4Wr1pnqoXx6KrxYh53iujwpMkJznzYGJFqXvNhymVGbmWkWCYtW
+	 //pTfvISYrwBnIocZh8wRnI9REBh8tQIfOqZqGrXtCRyaqcVrsxilLu9ugqnXngZf9
+	 EEBUYL72jAw6A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B52B6EA3F2B;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A16CEA3F15;
 	Tue, 10 Feb 2026 08:45:44 +0000 (UTC)
 From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
-Date: Tue, 10 Feb 2026 09:45:40 +0100
-Subject: [PATCH v7 2/5] arm64: dts: imx8mm: Add pinctrl config definitions
+Subject: [PATCH v7 0/5] arm64: dts: freescale: add support for the
+ GOcontroll Moduline IV/Mini
+Date: Tue, 10 Feb 2026 09:45:38 +0100
+Message-Id: <20260210-mini_iv-v7-0-a3ad8e7ddf0d@gocontroll.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -40,9 +41,12 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260210-mini_iv-v7-2-a3ad8e7ddf0d@gocontroll.com>
-References: <20260210-mini_iv-v7-0-a3ad8e7ddf0d@gocontroll.com>
-In-Reply-To: <20260210-mini_iv-v7-0-a3ad8e7ddf0d@gocontroll.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23Q3WoDIRAF4FcJXtcyM/6s5qrvUUKxriZCshY3S
+ EPYd68bKAayl2fwO4xzZ3MoKcxsv7uzEmqaU55aGN52zJ/cdAw8jS0zAlIIYPklTekrVe5ABeX
+ JI5Fg7fVPCTH9Ppo+Dy2f0nzN5fYorrhOXzsqcuBRGGO9tCTV8HHMPk/Xks/nd58vbC2q9ISJO
+ qaGCVw00TrnUW5i8YQFdCwaDlFpL0cbCe0mlh0jDh3LhpVzWhhBUaHbxOofa0ASHat1bfsdIki
+ IJPQm1h0TqI71erDBj6OJxqB8/fOyLH87uL0J1AEAAA==
+X-Change-ID: 20251009-mini_iv-a05e5c2c1223
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -52,13 +56,14 @@ To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Maud Spierings <maudspierings@gocontroll.com>, Frank Li <Frank.Li@nxp.com>
+ Maud Spierings <maudspierings@gocontroll.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, Frank Li <Frank.Li@nxp.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770713143; l=1797;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770713143; l=2891;
  i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
- bh=lvUqpRh7n9YkRtJZVSUOA/YxY3527H7NJn4HwdOrJFg=;
- b=APRpif8J8ASdJITa96V9YCY67fdIDSH/9lqI7hUvoYMWg3s7Olfh0iQKiBvE2Km0iuBL70Rf9
- qnWB5fX17T9A8i9I2XT7Agj8+C826ZrdT/4hqGk6beiHpjdLedhEgBM
+ bh=TMkuw8+FgAZt93jTnnuCx3oBKloJogHnbWHJWDepE0I=;
+ b=pPKd1nrf00l+IxB1KFxO/9GJJc5zKSZt7iG9eoooIudyMddq4AuFRhEOLUrrS+Y12p/Cb/g2f
+ En9udq7n8KWCbOsqAr+Hwm31DbT6rAqCi/NMLZ/M7zBy10ANQDswvbt
 X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
  pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
 X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
@@ -66,65 +71,75 @@ X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
 X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
 Reply-To: maudspierings@gocontroll.com
 
-From: Maud Spierings <maudspierings@gocontroll.com>
+Add initial support for the Moduline IV and Moduline Mini embedded
+controllers.
 
-Currently to configure each IOMUXC_SW_PAD_CTL_PAD the raw value of this
-register is written in the dts, these values are not obvious. Add defines
-which describe the fields of this register which can be or-ed together to
-produce readable settings.
+These systems are powered by the Ka-Ro Electronics tx8m-1610 COM, which
+features an imx8mm SoC.
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h | 33 ++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+Changes in v7:
+- Fix order in Makefile (Frank)
+- Link to v6: https://lore.kernel.org/r/20260205-mini_iv-v6-0-f7cdd8f88144@gocontroll.com
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h b/arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h
-index b1f11098d248..31557b7b9ccc 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h
-@@ -6,6 +6,39 @@
- #ifndef __DTS_IMX8MM_PINFUNC_H
- #define __DTS_IMX8MM_PINFUNC_H
- 
-+/* Drive Strength */
-+#define MX8MM_DSE_X1		0x0
-+#define MX8MM_DSE_X2		0x4
-+#define MX8MM_DSE_X4		0x2
-+#define MX8MM_DSE_X6		0x6
-+
-+/* Slew Rate */
-+#define MX8MM_FSEL_FAST		0x10
-+#define MX8MM_FSEL_SLOW		0x0
-+
-+/* Open Drain */
-+#define MX8MM_ODE_ENABLE	0x20
-+#define MX8MM_ODE_DISABLE	0x0
-+
-+#define MX8MM_PULL_DOWN		0x0
-+#define MX8MM_PULL_UP		0x40
-+
-+/* Hysteresis */
-+#define MX8MM_HYS_CMOS		0x0
-+#define MX8MM_HYS_SCHMITT	0x80
-+
-+#define MX8MM_PULL_ENABLE	0x100
-+#define MX8MM_PULL_DISABLE	0x0
-+
-+/* SION force input mode */
-+#define MX8MM_SION		0x40000000
-+
-+/* long defaults */
-+#define MX8MM_USDHC_DATA_DEFAULT (MX8MM_FSEL_FAST | MX8MM_PULL_UP | \
-+				  MX8MM_HYS_SCHMITT | MX8MM_PULL_ENABLE)
-+#define MX8MM_I2C_DEFAULT (MX8MM_DSE_X6 | MX8MM_PULL_UP | MX8MM_HYS_SCHMITT | \
-+			   MX8MM_PULL_ENABLE | MX8MM_SION)
-+
- /*
-  * The pin function ID is a tuple of
-  * <mux_reg conf_reg input_reg mux_mode input_val>
+Changes in v6:
+- Update trailers
+- Fix includes in the mini/iv dts patches (Frank)
+- Rebased on latest next
+- Link to v5: https://lore.kernel.org/r/20260123-mini_iv-v5-0-29bef040f236@gocontroll.com
 
+Changes in v5:
+- Fixup aliases (remove usb ones) (Shawn)
+- Link to v4: https://lore.kernel.org/r/20251117-mini_iv-v4-0-5aa63832f51a@gocontroll.com
+
+Changes in v4:
+- Fix BUCK6 property order
+- Change the BUCK6 min/max voltage to match the dram specs (Lothar)
+- Make it clear that the two systems are based on a SoM in commit
+  message of the dt-bindings (Conor)
+- Drop merged PMIC fix (Matti, Mark)
+- Link to v3: https://lore.kernel.org/r/20251030-mini_iv-v3-0-ef56c4d9f219@gocontroll.com
+
+Changes in v3:
+- Add patch fixing the pmic driver
+- Use the proper feedback properties for BUCK6
+- Slightly rework the compatibles, acked by conor dropped
+- Add missing CAN interface supplies, remove the leftover comment
+- Add missing vled-supply
+- Add missing ethernet phy interrupt (doesn't work)
+- Fix the cs-gpios properties in all spi interfaces
+- Fix the order of properties in all spi interfaces
+- Remove unused labels for regulators of the PMIC
+- Link to v2: https://lore.kernel.org/r/20251022-mini_iv-v2-0-20af8f9aac14@gocontroll.com
+
+Changes in v2:
+- Fix allignment issue in imx8mm-tx8m-1610.dtsi (fec1)
+- Move phy-reset into fec (works better in barebox)
+- Make the gpio-line-names groups of four on every line
+- Link to v1: https://lore.kernel.org/r/20251009-mini_iv-v1-0-f3889c492457@gocontroll.com
+
+---
+Maud Spierings (5):
+      dt-bindings: arm: fsl: Add GOcontroll Moduline IV/Mini
+      arm64: dts: imx8mm: Add pinctrl config definitions
+      arm64: dts: freescale: add Ka-Ro Electronics tx8m-1610 COM
+      arm64: dts: freescale: Add the GOcontroll Moduline IV
+      arm64: dts: freescale: Add the GOcontroll Moduline Mini
+
+ Documentation/devicetree/bindings/arm/fsl.yaml     |   8 +
+ arch/arm64/boot/dts/freescale/Makefile             |   2 +
+ arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h     |  33 +
+ .../imx8mm-tx8m-1610-moduline-iv-306-d.dts         | 799 +++++++++++++++++++++
+ .../imx8mm-tx8m-1610-moduline-mini-111.dts         | 687 ++++++++++++++++++
+ .../arm64/boot/dts/freescale/imx8mm-tx8m-1610.dtsi | 444 ++++++++++++
+ 6 files changed, 1973 insertions(+)
+---
+base-commit: 0f8a890c4524d6e4013ff225e70de2aed7e6d726
+change-id: 20251009-mini_iv-a05e5c2c1223
+
+Best regards,
 -- 
-2.53.0
+Maud Spierings <maudspierings@gocontroll.com>
 
 
