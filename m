@@ -1,68 +1,35 @@
-Received: from mail-m49214.qiye.163.com (mail-m49214.qiye.163.com [45.254.49.214])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552D6340D86
-	for <imx@lists.linux.dev>; Tue, 10 Feb 2026 09:35:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.214
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BB734A786;
+	Tue, 10 Feb 2026 10:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770716115; cv=none; b=dXAq02m0dUKC8ob0jViL+Yr+K8RbRxPjIt2GE8qILvI1ICNYo2mdQfjSlxCAadtRxu4DLjSbeUYCv8szjdEvMjv1ZYKN7dLlSzDG0yb9EuZMUVtPx4/1YNntUijQEwKhdLn6LI7kDbeXBJFEEay8zdMjQZEkIV8Bq0HDrKlGlGY=
+	t=1770718229; cv=none; b=gW4ZXj33Iq0gHJ0rGuKDr0ChsAg+SxRxrYN0Q21WJntyh7NTqG0KFJNt/Q3AYEPwtGTPcpY+Vmbq88vgG15WMw5SK2l8aVCZA4duW8YphmOeBF+kBaiCMHJYS26iMWvClHAxhmC73g3gs+YsJrlR3qqKH9nE+4nMWkg9h8tinLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770716115; c=relaxed/simple;
-	bh=yVlKiHcaRs4I5vgaxZMyvoqwS5TOpj16JX1AoSpevUw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HX45nS0mzryBoHJJ6GCpQymm65v8fAxK1pnsc4ePSCzEw7nPLW2Wt+5OQqp9HrIGc1zDbNISB2wKgN0rAfBkRhIM6pvPfi2QB/nlHowuIUqd+FyyBzoGrP7ZiEpR2pPML6MsSoHVDn16eDJtNX27W+UhoCO4N9CLRfYGDIJR0gE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=Fop36RiJ; arc=none smtp.client-ip=45.254.49.214
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1770718229; c=relaxed/simple;
+	bh=FMBaXuFQeBrt8fJEzPTuhWQ23fYLV56pEAMm2NMWTtQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=UQJSmwmQG3sOB/swwAszxsuZiZfkTtsKHz8Z/DTv8DEYAC64y3QDODd7VZw+3qq2vmkS927H0dUWC7mVbiLqKW9CqX/A8jYxaIWAQhUDf5UNAJZ/eGx26kxqtul5RJqSeNklrnSZDePWZpUS5Kw8FGOLRUObJi/rePZLo5X1UE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A72yDi4o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="Fop36RiJ"
-Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 33b514a04;
-	Tue, 10 Feb 2026 15:12:43 +0800 (GMT+08:00)
-From: Damon Ding <damon.ding@rock-chips.com>
-To: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org
-Cc: Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	inki.dae@samsung.com,
-	sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com,
-	krzk@kernel.org,
-	alim.akhtar@samsung.com,
-	jingoohan1@gmail.com,
-	p.zabel@pengutronix.de,
-	hjc@rock-chips.com,
-	heiko@sntech.de,
-	andy.yan@rock-chips.com,
-	dmitry.baryshkov@oss.qualcomm.com,
-	dianders@chromium.org,
-	m.szyprowski@samsung.com,
-	luca.ceresoli@bootlin.com,
-	jani.nikula@intel.com,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Damon Ding <damon.ding@rock-chips.com>
-Subject: [PATCH v9 03/15] drm/exynos: exynos_dp: Remove &exynos_dp_device.ptn_bridge
-Date: Tue, 10 Feb 2026 15:12:13 +0800
-Message-Id: <20260210071225.2566099-4-damon.ding@rock-chips.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260210071225.2566099-1-damon.ding@rock-chips.com>
-References: <20260210071225.2566099-1-damon.ding@rock-chips.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A72yDi4o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538BCC116C6;
+	Tue, 10 Feb 2026 10:10:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770718229;
+	bh=FMBaXuFQeBrt8fJEzPTuhWQ23fYLV56pEAMm2NMWTtQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=A72yDi4oURF59QiUNMNV3Z8GAHqR3gkQXkmFNvKfqrddYbwrPNFWpRLnnvaEvZ5Lt
+	 C2INGLJbgw9d6fh+eaf6qjLRPMqMuWkGZCTBbInRygDUQi0JBIuLRcDLwy63qaREYi
+	 xEJeijZUg9UB33h0SlOzSANe3FsuwEIIfBMziqY4A2HWQtWhERKJDbKtrnN1wYO98W
+	 RlaqZLFncHyvgjkC89LMBkXs13d4N1ULT3bx0Woi+fcuKP3XjIOwaf+nvF0pi3LasH
+	 Ck9roETDe7R6bST8f5olV4P/9aWO8aIyCwihbMusOWKf7qlkLs6b9g71JjTlNGoHVS
+	 j2ZTF81B1RKWw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0B08439B167A;
+	Tue, 10 Feb 2026 10:10:26 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -70,90 +37,74 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9c466535c203a3kunm1f53a888aef96c
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGU9DHlYdQkpDH0kZGB4YGEhWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=Fop36RiJtSo8SwfUG8xXQkWAb/fIP99dcRRo1X+9VI5fIOdpm2d9vE4dWE2FVzCw8CqNgZMm3TzRuCxL58mAuu0ajZ91eLTSW+PUkgomAJtDBiZrEhU12V/XfBk5ZI4+dWd5w62i63ksblrwP6Hb9F6kzSW7BTMB0um/4Kqm9HA=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=d5GS5vfwTVfAl23/CtmQinQG9E3Zp0oDflrp1gqCYsc=;
-	h=date:mime-version:subject:message-id:from;
+Subject: Re: [PATCH v7 net-next 00/15] net: fec: improve XDP copy mode and add
+ AF_XDP zero-copy support
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177071822482.3446472.4693550669604123129.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Feb 2026 10:10:24 +0000
+References: <20260205085742.2685134-1-wei.fang@nxp.com>
+In-Reply-To: <20260205085742.2685134-1-wei.fang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: shenwei.wang@nxp.com, xiaoning.wang@nxp.com, frank.li@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
+ hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ bpf@vger.kernel.org
 
-Use &analogix_dp_plat_data.bridge instead of &exynos_dp_device.ptn_bridge
-directly.
+Hello:
 
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-------
+On Thu,  5 Feb 2026 16:57:27 +0800 you wrote:
+> This patch set optimizes the XDP copy mode logic as follows.
+> 
+> 1. Separate the processing of RX XDP frames from fec_enet_rx_queue(),
+> and adds a separate function fec_enet_rx_queue_xdp() for handling XDP
+> frames.
+> 
+> 2. For TX XDP packets, using the batch sending method to avoid frequent
+> MMIO writes.
+> 
+> [...]
 
-Changes in v3:
-- Fix the typographical error for &dp->plat_data.bridge.
+Here is the summary with links:
+  - [v7,net-next,01/15] net: fec: add fec_txq_trigger_xmit() helper
+    https://git.kernel.org/netdev/net-next/c/c8d4ad91765c
+  - [v7,net-next,02/15] net: fec: add fec_rx_error_check() to check RX errors
+    https://git.kernel.org/netdev/net-next/c/ff306e9a1963
+  - [v7,net-next,03/15] net: fec: add rx_shift to indicate the extra bytes padded in front of RX frame
+    https://git.kernel.org/netdev/net-next/c/385d19b56761
+  - [v7,net-next,04/15] net: fec: add fec_build_skb() to build a skb
+    https://git.kernel.org/netdev/net-next/c/54a6e86ba4ff
+  - [v7,net-next,05/15] net: fec: improve fec_enet_rx_queue()
+    https://git.kernel.org/netdev/net-next/c/bc609f97b140
+  - [v7,net-next,06/15] net: fec: add fec_enet_rx_queue_xdp() for XDP path
+    https://git.kernel.org/netdev/net-next/c/5ff3d3ddcdbe
+  - [v7,net-next,07/15] net: fec: add tx_qid parameter to fec_enet_xdp_tx_xmit()
+    https://git.kernel.org/netdev/net-next/c/8a3344bb734f
+  - [v7,net-next,08/15] net: fec: transmit XDP frames in bulk
+    https://git.kernel.org/netdev/net-next/c/2ff7a7d3928b
+  - [v7,net-next,09/15] net: fec: remove unnecessary NULL pointer check when clearing TX BD ring
+    https://git.kernel.org/netdev/net-next/c/2dcc93475559
+  - [v7,net-next,10/15] net: fec: use switch statement to check the type of tx_buf
+    https://git.kernel.org/netdev/net-next/c/8492e4f1959c
+  - [v7,net-next,11/15] net: fec: remove the size parameter from fec_enet_create_page_pool()
+    https://git.kernel.org/netdev/net-next/c/6729b24c1c2f
+  - [v7,net-next,12/15] net: fec: move xdp_rxq_info* APIs out of fec_enet_create_page_pool()
+    https://git.kernel.org/netdev/net-next/c/edd393153ef0
+  - [v7,net-next,13/15] net: fec: add fec_alloc_rxq_buffers_pp() to allocate buffers from page pool
+    https://git.kernel.org/netdev/net-next/c/a2ae70c0efe4
+  - [v7,net-next,14/15] net: fec: improve fec_enet_tx_queue()
+    https://git.kernel.org/netdev/net-next/c/fee723a48cbe
+  - [v7,net-next,15/15] net: fec: add AF_XDP zero-copy support
+    https://git.kernel.org/netdev/net-next/c/25eb3058eb70
 
-Changes in v4:
-- Rename the &analogix_dp_plat_data.bridge to
-  &analogix_dp_plat_data.next_bridge.
-
-Changes in v9:
-- Add Reviewed-by and Tested-by tags.
----
- drivers/gpu/drm/exynos/exynos_dp.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/exynos_dp.c
-index 5bcf41e0bd04..f469ac5b3c2a 100644
---- a/drivers/gpu/drm/exynos/exynos_dp.c
-+++ b/drivers/gpu/drm/exynos/exynos_dp.c
-@@ -36,7 +36,6 @@
- struct exynos_dp_device {
- 	struct drm_encoder         encoder;
- 	struct drm_connector       *connector;
--	struct drm_bridge          *ptn_bridge;
- 	struct drm_device          *drm_dev;
- 	struct device              *dev;
- 
-@@ -106,8 +105,8 @@ static int exynos_dp_bridge_attach(struct analogix_dp_plat_data *plat_data,
- 	dp->connector = connector;
- 
- 	/* Pre-empt DP connector creation if there's a bridge */
--	if (dp->ptn_bridge) {
--		ret = drm_bridge_attach(&dp->encoder, dp->ptn_bridge, bridge,
-+	if (plat_data->next_bridge) {
-+		ret = drm_bridge_attach(&dp->encoder, plat_data->next_bridge, bridge,
- 					0);
- 		if (ret)
- 			return ret;
-@@ -155,7 +154,7 @@ static int exynos_dp_bind(struct device *dev, struct device *master, void *data)
- 
- 	dp->drm_dev = drm_dev;
- 
--	if (!dp->plat_data.panel && !dp->ptn_bridge) {
-+	if (!dp->plat_data.panel && !dp->plat_data.next_bridge) {
- 		ret = exynos_dp_dt_parse_panel(dp);
- 		if (ret)
- 			return ret;
-@@ -232,6 +231,7 @@ static int exynos_dp_probe(struct platform_device *pdev)
- 
- 	/* The remote port can be either a panel or a bridge */
- 	dp->plat_data.panel = panel;
-+	dp->plat_data.next_bridge = bridge;
- 	dp->plat_data.dev_type = EXYNOS_DP;
- 	dp->plat_data.power_on = exynos_dp_poweron;
- 	dp->plat_data.power_off = exynos_dp_poweroff;
-@@ -239,8 +239,6 @@ static int exynos_dp_probe(struct platform_device *pdev)
- 	dp->plat_data.get_modes = exynos_dp_get_modes;
- 	dp->plat_data.skip_connector = !!bridge;
- 
--	dp->ptn_bridge = bridge;
--
- out:
- 	dp->adp = analogix_dp_probe(dev, &dp->plat_data);
- 	if (IS_ERR(dp->adp))
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
