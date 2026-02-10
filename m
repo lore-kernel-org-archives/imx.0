@@ -1,177 +1,130 @@
-Received: from mail-m19731101.qiye.163.com (mail-m19731101.qiye.163.com [220.197.31.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797A933D4E2
-	for <imx@lists.linux.dev>; Tue, 10 Feb 2026 08:28:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C3233D6C9;
+	Tue, 10 Feb 2026 08:45:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770712133; cv=none; b=gKMm5qrC75+am0NMIXulCtWHpE9KW8g4pw7ijOtQnr4Q6gkLvBHezaXazkqYOZEKJaHxhAsuNvR8ITOqWKYxTDVAPGFZosdLPI+ncBWWWr2T3Nj1wHxALzfE/YA+Nj8y/A/gG/i+zriTy8VHEsKgXy0qPLYenwPT69m0X1j8Shk=
+	t=1770713145; cv=none; b=AyoZ/OYZpKsb3aA/wxjaMzMtuNto39pCfDfIUr8Ezc/O070xuvVDsfrX66CTwLPONpdPFPIaDFy/63yoUEVwiDoUEV2IztYAEPEZ0AGJKzHxsluG6n2OvQwHrJTnDoRTENz+tw2/HrfO45xr5OHd5LDshbu8gmkfwYbvEQetVxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770712133; c=relaxed/simple;
-	bh=Ky8294JXeWrB7zoELdYP2raLQxTzeCgkrxT1Mzhu6ns=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bimAqEPrEejdiK0QGWpSKhhzRYTaSfJs86hoX4/8Crz+bJJHehv68LJsnU95BJssAl43wFmdiWyO1BLUzlcJRkSZnhE7sAA9V4IGEw8z2GCf3dBsOPx/gbGYn7sykA1njwPMj5SxHehdpmhCMjbQBsq62GwYhf5E7NB3rLi2Wpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=EclEo2y7; arc=none smtp.client-ip=220.197.31.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1770713145; c=relaxed/simple;
+	bh=tLpExwpEhurY6voXzq0qndE7d/dtoLm/tbWhcRdS4og=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=edplbEn+tavGQmjTnOzWMnxnhTBNYct4n2l1/MZumiwLUJc+5xfeH6El+M5+dGMhzkCOdjQNGtlRwaw4nkT2C8k+a+34HZw5mbGJPbpjRNeBMOawmnLHLPY+5KxxCreFMfaOU8FGO+LlIF80fLiBR5vuEkeZy5iJNoWkJE+xfG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUVpZaE7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="EclEo2y7"
-Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 33b530bce;
-	Tue, 10 Feb 2026 15:13:08 +0800 (GMT+08:00)
-From: Damon Ding <damon.ding@rock-chips.com>
-To: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org
-Cc: Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	inki.dae@samsung.com,
-	sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com,
-	krzk@kernel.org,
-	alim.akhtar@samsung.com,
-	jingoohan1@gmail.com,
-	p.zabel@pengutronix.de,
-	hjc@rock-chips.com,
-	heiko@sntech.de,
-	andy.yan@rock-chips.com,
-	dmitry.baryshkov@oss.qualcomm.com,
-	dianders@chromium.org,
-	m.szyprowski@samsung.com,
-	luca.ceresoli@bootlin.com,
-	jani.nikula@intel.com,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Damon Ding <damon.ding@rock-chips.com>
-Subject: [PATCH v9 13/15] drm/bridge: analogix_dp: Attach the next bridge in analogix_dp_bridge_attach()
-Date: Tue, 10 Feb 2026 15:12:23 +0800
-Message-Id: <20260210071225.2566099-14-damon.ding@rock-chips.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260210071225.2566099-1-damon.ding@rock-chips.com>
-References: <20260210071225.2566099-1-damon.ding@rock-chips.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUVpZaE7"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C3B75C2BCB0;
+	Tue, 10 Feb 2026 08:45:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770713144;
+	bh=tLpExwpEhurY6voXzq0qndE7d/dtoLm/tbWhcRdS4og=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=BUVpZaE7x58iVxp516OAjGTTxMO+aLIjy6VDCY32HMyCgQm4gdcMv93TqEn/J4hS+
+	 qdCxkJFMkRQvBUJ0DIlXTMrPVX+4qQxmSxGZw6adyqomndCcS6SpsTfc0i62TAYW+q
+	 0ZOMKHGqql31xY9RvMiqMCEqVOxMq710IMqoz34L73pVjc8Bxse+GU+wXc0NVR2j9u
+	 phbD1bHcXyUcYmGmGWi+AcVh4cdJD+HZogc9nqMONEeOLrzJjRh5Ftq1vRZ257II2P
+	 ApG8rgHYKThZWpmB2g2+ueFZ2n+EWPV4cSlI+1FoPv+gw+7myRy0iveF15taYNgVL9
+	 HIqwF9ETYmKJA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B52B6EA3F2B;
+	Tue, 10 Feb 2026 08:45:44 +0000 (UTC)
+From: Maud Spierings via B4 Relay <devnull+maudspierings.gocontroll.com@kernel.org>
+Date: Tue, 10 Feb 2026 09:45:40 +0100
+Subject: [PATCH v7 2/5] arm64: dts: imx8mm: Add pinctrl config definitions
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9c466594fc03a3kunm1f53a888aefabb
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQxpMQlZOTk5JHhkdSxlJQktWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
-	1VSktLVUpCWQY+
-DKIM-Signature: a=rsa-sha256;
-	b=EclEo2y74XGqlN6A+fdjR/YK2FVMMCeH8KFE4aMUE/maUi5jYDbMaB3Nu7M+wpYvFnVdBKytXY+Y5EdEOwQBd0OsSsQYMNWGfJqWjvGM1UHmws+a62KyUUNko4/akKrfUDzz5QRlbYhNWmbo14bbXfuUgRzP5Tr2gnI3RHDZkLw=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=T0KlNYyqUubH/0N39BJghe8vq1lbkdg01jB78NvFgVw=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260210-mini_iv-v7-2-a3ad8e7ddf0d@gocontroll.com>
+References: <20260210-mini_iv-v7-0-a3ad8e7ddf0d@gocontroll.com>
+In-Reply-To: <20260210-mini_iv-v7-0-a3ad8e7ddf0d@gocontroll.com>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Matti Vaittinen <mazziesaccount@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ Maud Spierings <maudspierings@gocontroll.com>, Frank Li <Frank.Li@nxp.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770713143; l=1797;
+ i=maudspierings@gocontroll.com; s=20250214; h=from:subject:message-id;
+ bh=lvUqpRh7n9YkRtJZVSUOA/YxY3527H7NJn4HwdOrJFg=;
+ b=APRpif8J8ASdJITa96V9YCY67fdIDSH/9lqI7hUvoYMWg3s7Olfh0iQKiBvE2Km0iuBL70Rf9
+ qnWB5fX17T9A8i9I2XT7Agj8+C826ZrdT/4hqGk6beiHpjdLedhEgBM
+X-Developer-Key: i=maudspierings@gocontroll.com; a=ed25519;
+ pk=7chUb8XpaTQDvWhzTdHC0YPMkTDloELEC7q94tOUyPg=
+X-Endpoint-Received: by B4 Relay for maudspierings@gocontroll.com/20250214
+ with auth_id=341
+X-Original-From: Maud Spierings <maudspierings@gocontroll.com>
+Reply-To: maudspierings@gocontroll.com
 
-Uniformly, move the next bridge attachment to the Analogix side
-rather than scattered on Rockchip and Exynos sides. It can also
-help get rid of the callback &analogix_dp_plat_data.attach() and
-make codes more concise.
+From: Maud Spierings <maudspierings@gocontroll.com>
 
-Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
+Currently to configure each IOMUXC_SW_PAD_CTL_PAD the raw value of this
+register is written in the dts, these values are not obvious. Add defines
+which describe the fields of this register which can be or-ed together to
+produce readable settings.
 
-------
-
-Changes in v6:
-- Move the next bridge attachment to the Analogix side rather than
-  scattered on Rockchip and Exynos sides.
-
-Changes in v9:
-- Add Tested-by tag.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Maud Spierings <maudspierings@gocontroll.com>
 ---
- .../gpu/drm/bridge/analogix/analogix_dp_core.c |  7 ++++---
- drivers/gpu/drm/exynos/exynos_dp.c             | 18 ------------------
- include/drm/bridge/analogix_dp.h               |  1 -
- 3 files changed, 4 insertions(+), 22 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h | 33 ++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-index 933f1843777f..a6c5601e16ff 100644
---- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-+++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
-@@ -930,10 +930,11 @@ static int analogix_dp_bridge_attach(struct drm_bridge *bridge,
- 		return -EINVAL;
- 	}
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h b/arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h
+index b1f11098d248..31557b7b9ccc 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h
++++ b/arch/arm64/boot/dts/freescale/imx8mm-pinfunc.h
+@@ -6,6 +6,39 @@
+ #ifndef __DTS_IMX8MM_PINFUNC_H
+ #define __DTS_IMX8MM_PINFUNC_H
  
--	if (dp->plat_data->attach) {
--		ret = dp->plat_data->attach(dp->plat_data, bridge);
-+	if (dp->plat_data->next_bridge) {
-+		ret = drm_bridge_attach(dp->encoder, dp->plat_data->next_bridge, bridge,
-+					DRM_BRIDGE_ATTACH_NO_CONNECTOR);
- 		if (ret) {
--			DRM_ERROR("Failed at platform attach func\n");
-+			dev_err(dp->dev, "failed to attach following panel or bridge (%d)\n", ret);
- 			return ret;
- 		}
- 	}
-diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/exynos_dp.c
-index 6126820aad3b..6884ea6d04eb 100644
---- a/drivers/gpu/drm/exynos/exynos_dp.c
-+++ b/drivers/gpu/drm/exynos/exynos_dp.c
-@@ -68,23 +68,6 @@ static int exynos_dp_poweroff(struct analogix_dp_plat_data *plat_data)
- 	return exynos_dp_crtc_clock_enable(plat_data, false);
- }
- 
--static int exynos_dp_bridge_attach(struct analogix_dp_plat_data *plat_data,
--				   struct drm_bridge *bridge)
--{
--	struct exynos_dp_device *dp = to_dp(plat_data);
--	int ret;
--
--	/* Pre-empt DP connector creation if there's a bridge */
--	if (plat_data->next_bridge) {
--		ret = drm_bridge_attach(&dp->encoder, plat_data->next_bridge, bridge,
--					DRM_BRIDGE_ATTACH_NO_CONNECTOR);
--		if (ret)
--			return ret;
--	}
--
--	return 0;
--}
--
- static void exynos_dp_mode_set(struct drm_encoder *encoder,
- 			       struct drm_display_mode *mode,
- 			       struct drm_display_mode *adjusted_mode)
-@@ -195,7 +178,6 @@ static int exynos_dp_probe(struct platform_device *pdev)
- 	dp->plat_data.dev_type = EXYNOS_DP;
- 	dp->plat_data.power_on = exynos_dp_poweron;
- 	dp->plat_data.power_off = exynos_dp_poweroff;
--	dp->plat_data.attach = exynos_dp_bridge_attach;
- 	dp->plat_data.ops = &exynos_dp_ops;
- 
- out:
-diff --git a/include/drm/bridge/analogix_dp.h b/include/drm/bridge/analogix_dp.h
-index bae969dec63a..854af692229b 100644
---- a/include/drm/bridge/analogix_dp.h
-+++ b/include/drm/bridge/analogix_dp.h
-@@ -34,7 +34,6 @@ struct analogix_dp_plat_data {
- 
- 	int (*power_on)(struct analogix_dp_plat_data *);
- 	int (*power_off)(struct analogix_dp_plat_data *);
--	int (*attach)(struct analogix_dp_plat_data *, struct drm_bridge *);
- };
- 
- int analogix_dp_resume(struct analogix_dp_device *dp);
++/* Drive Strength */
++#define MX8MM_DSE_X1		0x0
++#define MX8MM_DSE_X2		0x4
++#define MX8MM_DSE_X4		0x2
++#define MX8MM_DSE_X6		0x6
++
++/* Slew Rate */
++#define MX8MM_FSEL_FAST		0x10
++#define MX8MM_FSEL_SLOW		0x0
++
++/* Open Drain */
++#define MX8MM_ODE_ENABLE	0x20
++#define MX8MM_ODE_DISABLE	0x0
++
++#define MX8MM_PULL_DOWN		0x0
++#define MX8MM_PULL_UP		0x40
++
++/* Hysteresis */
++#define MX8MM_HYS_CMOS		0x0
++#define MX8MM_HYS_SCHMITT	0x80
++
++#define MX8MM_PULL_ENABLE	0x100
++#define MX8MM_PULL_DISABLE	0x0
++
++/* SION force input mode */
++#define MX8MM_SION		0x40000000
++
++/* long defaults */
++#define MX8MM_USDHC_DATA_DEFAULT (MX8MM_FSEL_FAST | MX8MM_PULL_UP | \
++				  MX8MM_HYS_SCHMITT | MX8MM_PULL_ENABLE)
++#define MX8MM_I2C_DEFAULT (MX8MM_DSE_X6 | MX8MM_PULL_UP | MX8MM_HYS_SCHMITT | \
++			   MX8MM_PULL_ENABLE | MX8MM_SION)
++
+ /*
+  * The pin function ID is a tuple of
+  * <mux_reg conf_reg input_reg mux_mode input_val>
+
 -- 
-2.34.1
+2.53.0
+
 
