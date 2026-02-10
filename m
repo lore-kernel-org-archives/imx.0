@@ -1,141 +1,155 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED8F1A9FA4
-	for <imx@lists.linux.dev>; Tue, 10 Feb 2026 22:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7F53043D5
+	for <imx@lists.linux.dev>; Tue, 10 Feb 2026 22:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770760963; cv=pass; b=pwenzjbiEK+bvFbMihVzCx+gRtUSLNxY5nyO2v+/wMQjkORS6vnruwc+JDosDvNNUMKZG+bLtC+OKMfTdn3J1eJjgtZVJDfothIyv4A5i0kJXKrEwU02qIiUEEiSbRUpp0HxTcANssq4C91b8DkZIuNonV45DQ/pP8m6tM2vPdc=
+	t=1770761012; cv=pass; b=WuhD4+0Z2/FxO3/D2P6yPT5bgv/NKwsdplGc0tvoloi12Aph8sHgrOmG0tvtbJgnOcQPzTWvGUta5trsuPkwjgVdVRmNffv3GyEeaiutU9LnCpgvXSNLaM1GjJTVpIfrfbXvYC0yrpFbAQ/36LCPe71lrD4GNcvL0CV7a4FPgH0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770760963; c=relaxed/simple;
-	bh=Xoj4olL+YiTWgW9zmEIfi+/bzgXNCnIyAh7tU7+vqu8=;
+	s=arc-20240116; t=1770761012; c=relaxed/simple;
+	bh=t2JsmQ7gHl2ZvmEVuEnjm9WXT9Hm/NM7NXsCAyMrWmw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VUXBKjrVTXJKdXpXPPs2+YilpVcxNuGjT5qBEpxAyv1RcC1T3e0cbqUMy76/bu/Zp8qN3JuqM/Ra2iesQWKQq3KIXk01YrqGQrmFfSb+ppDsjEzLRgELcDIqnCjkp2RZBJnvsQ7qd4D01fii9WnWULe5uuVOEoAsb4/mMDUhXms=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xagQVYe5; arc=pass smtp.client-ip=209.85.208.51
+	 To:Cc:Content-Type; b=Gcp73xebfimbcOxKuySOW4G+XcFyxDTKDHOYAmXSE05WMh5mRXhHg279lZtN/IaPBA3YCgsImhNO9bTlEPNdmCPw1rPR8bLxXvptgsrrrcSTIIhsgumPOEFTVzpgsGxcVEt4s6izOlWur9/7hUeHKonPru+TsWG1UPO67Rb5GQU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Tq3siMJ7; arc=pass smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xagQVYe5"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-65a26c220b6so1077590a12.0
-        for <imx@lists.linux.dev>; Tue, 10 Feb 2026 14:02:41 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770760960; cv=none;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Tq3siMJ7"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b886fc047d5so1109418166b.3
+        for <imx@lists.linux.dev>; Tue, 10 Feb 2026 14:03:30 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770761009; cv=none;
         d=google.com; s=arc-20240605;
-        b=R4E11QwHrQXAxsI/FbtiTbM7vsrMp6OXI7VmiVtnMCvvrEZm1BFBK80uVotff2AJPg
-         /ahX5rgRgkh2FS+BevTpx7+eEEIKbtVkFPqS7Rl6+z/Qt9IU9GCARtQXRLhorp/r+45k
-         TwJYkr7377QKisQqvRDY3Pz+8wOgJ0j5LTplQRNfci5H2Wg2Xhw5oS7XplDZGNBd51zB
-         4An53MdCE19PG+CdYFVoIejewm9/dGkI/vjJRu/3G+AdKKYzCbcGw7V6XCRmOudd/DmJ
-         MiAoldvcGaGfiDC4zXumdDoJ5PSWLg7WeiYZalg7KgWFFQpTBdA0uAAlry/9E3C/gbG9
-         9zRg==
+        b=j3/JOkyRFi9Lus0WFc3umuYm6rK4Zh24ndB6dkKXV+M5D66oF3wpB7wb0l/UDEUk7n
+         b3NaNlSnagOYpbp4EQr0ti53+6dk3lW6NR+maGMfnCLlpUBBbsLIrc/J0qkZAjXuI5is
+         2gegWQBkDP53+EfikY75MhOjWLPQmgdHlyl0MTOunxuFB5/bSA3y09R1iSde60tn1TBu
+         xPWRuoyz2HrcQWnabvOfS4XvHzvdqibzmccZMEuB+X6/XDOOU5D+ze7w5rz5rEAcjnRI
+         1X48nvKfF62zd9oQwuHlDZnxG4QchcuQOmWk0pbLeg3q+DRGZ8TZz2+IzdJIBYC66ky6
+         Ff0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=qA7Wxab5lDTDoenQekoOhdDsgl7K+To9SZa88kVTQKs=;
-        fh=TeL0k6C+3lSaaI1UIE5C1DUDaxUyKx9VPC2WFQnCMU4=;
-        b=BbKLTeL/lZ3NjVigrPv3WCqT8N6f043SbrkE7GHP0/TdxBZcvrZ10s4k5he3si16ms
-         Ii7si8veFHgw0dAbEuM792k2Q9B8Kjpj0RsqsvXsjnf01dSaPrPd/RiiHamtVoISNB3O
-         zPQRN0AZ7uOnSAnzGwUAXZk0u3JoxSYnMKADIX8FYUP2LPYrr0E+36+oPPg038vqO9Au
-         6kUMVtKvwBb8/HeT4UC4bALhYo8ScGlvIDO5rGEhU0rBc/YI3BzqEdPSmhdXQUfhiS4m
-         rLS/dhS6MCwGHBjRvFCDsgcKdny6iIKUI2SykOCIYLKMqmJPapOzyMB0E1jPt5cXUgNk
-         pRlg==;
+        bh=UliAcKlqQ0Ffn7IelNMZvQRaXYOmOwslWVLsu673AlY=;
+        fh=WeFwF+jEcz6LoSzihnJGrY95zj+5oSOEjL+a7f1c8Z4=;
+        b=a/4t1caNbYWhFGTDKYlkkleSunzLYk/765sUesBNBMnjvmVfuEMUqOZjoFhCnNA040
+         ItptGWIWtYngiHXtMd9cVt5kNQQP3dgYhOL0lJ7D6QMPP3q9tRSGY3rScAkEK/Vh3nGK
+         f1meZ9S4zqVrbfDSrljKDzFEvJ9K1It5O/ntOVhz/0KuMuaVrCjT45xg7q57Zg2o8fPD
+         ct0KFtt7RAphc4xc5qR/tHmueLh8Cy6SEQCCekD/zZQVs27Im9P9djN3x1dj9xuucJuK
+         cudN/DpQleAEbBTd9MVLKTBN1QtKWlKZ0java3UN2HcWvpOwu1ADeyin75TN2eeh1AG3
+         aZEg==;
         darn=lists.linux.dev
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1770760960; x=1771365760; darn=lists.linux.dev;
+        d=linaro.org; s=google; t=1770761009; x=1771365809; darn=lists.linux.dev;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=qA7Wxab5lDTDoenQekoOhdDsgl7K+To9SZa88kVTQKs=;
-        b=xagQVYe5Hmwxg9v3Dr3Cr2sjb918JCAYJz733Qpg5AnvVwN1QbbSfHbupgbhlLAt+Z
-         MGgOt89CItWucbrIcbPMMX9NpQMmLAGwU8WIZZTW02//IMz2JWKKAMvJwr/GwDwZumfp
-         tFp9LQ7dgkXThInyQD+gIrJikdxVxybQbkSM6ge+T9+e8e+80WZlTdeJiuU5+aqAJIg3
-         0B2tQOx8ELEQw+INaHrB+wamCAzR11GxiKPuw5U3tVpqLSNIEQ4ryNYJK8yBEvP6kH9P
-         1JF3n7PISfZa6NuKHrEEF2vZwfKkYkS09B8XnvenhHPwPtSOIasSSzBBIaadh33AF3Bk
-         T1YA==
+        bh=UliAcKlqQ0Ffn7IelNMZvQRaXYOmOwslWVLsu673AlY=;
+        b=Tq3siMJ7wTtHkfNRlP7K/IP73SAhEPQWb1phY99l/ac/4kviap0CLzbTe2gLUrIMxl
+         z1nGaVHeN7KRT6882THTlBkbZB5xtJn3ZRMi8AdEJE9+J/h+fVBU44Egr81vUi8l+Xtn
+         Ytz7HJZ1Pn+SA8ShHjv9h0hJMSoARBF2MiAZj3fx3+iTMeVGR/fX1CsFoeykzpvkV/z/
+         B+Kum2UIMDKfU1Uq9u2AuJASTPJ4LvyIpQhpm32tWsIKtyRrFOPh73lkb5opfIdSCkHF
+         0lRa9aDr1GMz2d1GP67I7GSzXQOO0HZbQTqLh1gF7sIs2T434k4vg3Ii4ZRThFHSUjAu
+         Stig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770760960; x=1771365760;
+        d=1e100.net; s=20230601; t=1770761009; x=1771365809;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qA7Wxab5lDTDoenQekoOhdDsgl7K+To9SZa88kVTQKs=;
-        b=r6nnlLLiq0PDzjZrvZQPSOMjsMVyV416JjeJKqQbSLac+XYpbE+T2ckmm/kKTTMFyb
-         9+ZQ2HmnJs29e5c2xSbPJbjFIj/d0T67W6ZGpX5SovWb/YEX/enRIkTDRz5y0lonXF2B
-         aqjwkY9KgXbeTxrpv+W5y4FIrj2JibmUmDvCWeSCVSzYDY4b2yWP6dJcrevyy+ong1tf
-         JMy22geOgv0/esT6ekIE02ExUjf7le3RKyrKR67x1BL7sfFvJ6Bf0JwEljmfqMkIsbt/
-         KHjbbWmUfswYMt9b98Uu+aseH1znsHf5B1RdIGbnsswbvyICxnx1UnMJtiav/sA3vgXm
-         MYOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuLIs4mXMKJrO7zNkYKclov6HC3xUrmtFGBaC0qxjbrY3IBgYr6tDJOZ2jDxTYX33cxME=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwrJLg2F1JD8F9yKuQa8RjnZ9iRXYJGkYb9Bk6khFW0UfMThIa5
-	4xHi1r65zODXBdG0Yx+vb1UJJLE5WuiykB5V5Dsms5JkbSST16uRv2ObYDhfOarUbrgQYhHbl80
-	IGEd+82M8VpBVp/7LDWNvr2VbDVzX1SYT26KYYnkynA==
-X-Gm-Gg: AZuq6aJx9tt/f2bBnzpHOid0ZVhAfyKlN86tbN4aoh04AkpdWG8NZd/SiRF2z6agiv0
-	tuL9TmHDqPMF9JpjuZdFCH/hAtnlSnbKWRL3MCcyVQgD6R4vyRMdk8fpDUR5VXS7EB48XQ3633Z
-	3Fw8/ACI5u+eKOOWESOq1mJyTLcoHEwa5jbYZDZvoKIoS/xhmqFwuqlU1GUOwiwTWmfv92kD1T+
-	LbO53LQTf4onjyBKFbgKItQcDLmvjhIsnCHjmNR29xdN3QslNxWWR0nb1p8Y6dVDG6EieFMkoxz
-	k2V5JzbKzGjTALahE8wBQDpMghTSqPHnUefoCjt6+g==
-X-Received: by 2002:a05:6402:2747:b0:659:428f:a6c0 with SMTP id
- 4fb4d7f45d1cf-65984195a6dmr8461697a12.20.1770760960108; Tue, 10 Feb 2026
- 14:02:40 -0800 (PST)
+        bh=UliAcKlqQ0Ffn7IelNMZvQRaXYOmOwslWVLsu673AlY=;
+        b=nBpHcopaInjo7DjeT7owm7SRAzwLwrbJSjBUYb7fBxdcyHcUwQYxjb1Q1l8yNb7jW0
+         7oykQDyrmtrUaGP3Pu5R3jllVui6QJTn+ugf4xq+ylCEr9WEHeky+tceD2oLLrwJnFTN
+         LHzYas/vzK9EKkyM+jrBLdLRwoHqaCcE+SPkK8rBDlM3G3hBpmmsXWm70bAcNbRjfSo3
+         UZ0sQFOl4csfHHFXW+BdnT9GV8is5C240FLFHNz5WUfdfl2JrYqJkEFGnUkr+Fa/uhDj
+         0yOe4I81bz3TcMPkMe7OnJjrBSvchg8oBaXY5bCUwqO0V726px9cBOKL3DGmRWCBh65z
+         SQOw==
+X-Forwarded-Encrypted: i=1; AJvYcCWPBxgLbqee0l88LUWsG7prpNXPDlTU4Y6K2wzEIfkGk17n4eKN/OgIwmweCKxMY40J7QU=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwPg0gHWrXPliZ3EWWgC1kmtf61//78ca/af+lLuMQoxFJyGgIX
+	CRdhiWHbnv+DUi06cRnEZzsHPpHuE4aBbDF3HY60k8DVwn1ApQBIvI/OVM5mMFog+thkczi9t4x
+	CJiqeL4Wvz9E4hfeNrjlW8nAKyIw1VMg+bXztviOsPw==
+X-Gm-Gg: AZuq6aJ3KFc8WptxKI2iDSB3YzfdtLRxq4zcT4WcHN3tDo34GsbjcCI9+ZuoAIQQr7F
+	RRxW0is4lVEsfgwVeQZovIQbm3x3QOh6dl5swnL9rmKOTjJd26tDqMCiGU9U6TuVRWwyzoP3eha
+	D0qOL5EHv2PeJaZ9g8LzuZxZ7eTK52oOUrrx9BKve9diQ/H/682KjG4yl16QB4m0bmqiySiWlvl
+	/r6lU7GNu1PzU1uAvBIqRqWe5KEfUSZJHlTK4uI7P3+ir+WmcyOcbh019hsFvQhE2uheMRRsVOQ
+	kCU1b78xUBHK05F77kjK+eY2PGNNiEnjOfStk9eaHg==
+X-Received: by 2002:a17:907:9618:b0:b8d:be68:bc21 with SMTP id
+ a640c23a62f3a-b8f6eec8fe7mr6747966b.21.1770761008993; Tue, 10 Feb 2026
+ 14:03:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260209051407.1467660-1-nichen@iscas.ac.cn>
-In-Reply-To: <20260209051407.1467660-1-nichen@iscas.ac.cn>
+References: <20260208-imx-rproc-fix-v1-1-ad74555eb9a4@nxp.com>
+In-Reply-To: <20260208-imx-rproc-fix-v1-1-ad74555eb9a4@nxp.com>
 From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Tue, 10 Feb 2026 15:02:29 -0700
-X-Gm-Features: AZwV_QiEwWqMd-kvx6163w8_DnjRXZIR5SwPqJy6RBJlGaVXXNh7W1JAS9Kje6M
-Message-ID: <CANLsYkwVL76mt1BcKb8OkMBCH5UzrO_rp9ctuGoN1uo7QmYcgg@mail.gmail.com>
-Subject: Re: [PATCH v2] remoteproc: imx_rproc: Check return value of
- regmap_attach_dev() in imx_rproc_mmio_detect_mode()
-To: Chen Ni <nichen@iscas.ac.cn>
-Cc: peng.fan@nxp.com, andersson@kernel.org, festevam@gmail.com, 
-	frank.li@nxp.com, imx@lists.linux.dev, kernel@pengutronix.de, 
+Date: Tue, 10 Feb 2026 15:03:17 -0700
+X-Gm-Features: AZwV_Qgdm6kPXS9NZM-j5COa-F6f74PqWhNBvMsMK65d02PCcMWV4eo058PVXss
+Message-ID: <CANLsYky0HEkzL86XZ5K1NwJ3Gh9DcQKwu=WwiozMmus8UJQDPQ@mail.gmail.com>
+Subject: Re: [PATCH] remoteproc: imx_rproc: Fix unreachable platform prepare_ops
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Daniel Baluta <daniel.baluta@nxp.com>, 
+	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, s.hauer@pengutronix.de
+	Peng Fan <peng.fan@nxp.com>, Dan Carpenter <dan.carpenter@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 8 Feb 2026 at 22:18, Chen Ni <nichen@iscas.ac.cn> wrote:
+On Sun, 8 Feb 2026 at 04:29, Peng Fan (OSS) <peng.fan@oss.nxp.com> wrote:
 >
-> Add error checking for regmap_attach_dev() call in
-> imx_rproc_mmio_detect_mode() function to ensure proper error
-> propagation.
+> From: Peng Fan <peng.fan@nxp.com>
 >
-> Return the value of regmap_attach_dev() if it fails to prevent
-> proceeding with an incomplete regmap setup.
+> Smatch reports unreachable code in imx_rproc_prepare(), where an early
+> return inside the reserved-memory parsing loop prevents platform
+> prepare_ops from being executed.
 >
-> Suggested-by: Peng Fan <peng.fan@nxp.com>
-> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+> When of_reserved_mem_region_to_resource() fails, imx_rproc_prepare()
+> returns immediately, so the platform-specific prepare callback is never
+> called. As a result, prepare_ops such as imx_rproc_sm_lmm_prepare() on
+> i.MX95 have no chance to run.
+>
+> This is problematic when Linux controls the M7 Logical Machine and is
+> responsible for preparing resources such as TCM. Without running the
+> platform prepare callback, loading the M7 ELF into TCM may fail if the
+> bootloader did not power up and initialize TCM.
+>
+> Fix this by breaking out of the reserved-memory loop instead of
+> returning, allowing the platform prepare_ops to be executed as intended.
+>
+> Fixes: edd2a9956055 ("remoteproc: imx_rproc: Introduce prepare ops for imx_rproc_dcfg")
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/linux-remoteproc/aYYXAa2Fj36XG4yQ@p14s/T/#t
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
 > ---
-> Changes in v2:
-> - Use dev_err() + return ret instead of dev_err_probe()
-> ---
->  drivers/remoteproc/imx_rproc.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  drivers/remoteproc/imx_rproc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
 > diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index f5f916d67905..75baf905988b 100644
+> index f5f916d6790519360f446f063e09d018c5654953..8c8ddbf995a46b01627d15a2eb3da0b72eee6285 100644
 > --- a/drivers/remoteproc/imx_rproc.c
 > +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -1007,7 +1007,11 @@ static int imx_rproc_mmio_detect_mode(struct rproc *rproc)
->         }
+> @@ -617,7 +617,7 @@ static int imx_rproc_prepare(struct rproc *rproc)
 >
->         priv->regmap = regmap;
-> -       regmap_attach_dev(dev, regmap, &config);
-> +       ret = regmap_attach_dev(dev, regmap, &config);
-> +       if (ret) {
-> +               dev_err(dev, "regmap attach failed\n");
-> +               return ret;
-> +       }
+>                 err = of_reserved_mem_region_to_resource(np, i++, &res);
+>                 if (err)
+> -                       return 0;
+> +                       break;
 >
 
-I will add this to my tree when the next cycle starts.
+I will pick this up for the next cycle.
 
 Thanks,
 Mathieu
 
->         if (priv->gpr) {
->                 ret = regmap_read(priv->gpr, dcfg->gpr_reg, &val);
+>                 /*
+>                  * Ignore the first memory region which will be used vdev buffer.
+>
+> ---
+> base-commit: 9845cf73f7db6094c0d8419d6adb848028f4a921
+> change-id: 20260208-imx-rproc-fix-843dd1031b5b
+>
+> Best regards,
 > --
-> 2.25.1
+> Peng Fan <peng.fan@nxp.com>
 >
