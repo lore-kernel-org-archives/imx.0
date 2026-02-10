@@ -1,45 +1,46 @@
 Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013061.outbound.protection.outlook.com [52.101.83.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E87327BFB
-	for <imx@lists.linux.dev>; Tue, 10 Feb 2026 17:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC65374180
+	for <imx@lists.linux.dev>; Tue, 10 Feb 2026 17:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770743375; cv=fail; b=gx3sh2bJ6KyqGO8umlupA4ALo3Vnt3YO4dZ8nsQMFA+b556gysVm3GrKvM7RS8ORBPbnkyfycA3Q6P0sy+pGVmIQ9DDm6yHUct+Wf9YpfhqwdasAY3f9mw+8A4PPD2Oy6bPXhh61NXBgKL61j3Q3Ji469cl45egvu3A8og5A/DA=
+	t=1770743377; cv=fail; b=Or5Rmns+DmqksQGphEO58l5Z2zRBCUv+IK3snYDSlEvVwKbCIXYM5MYgGBOnvWPpeESsyvNVBCjuq6336DXVGnjFgvLLRYIbnaCSiL3yzWNmdlLjDdP82E6fHI0XVGz7IGXIa8NnrvbxRozY8hupHJHt5pur/eZpSkpvNe8VPho=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770743375; c=relaxed/simple;
-	bh=bSxKG/pQ0BH8w86eztxt6YUa1tdwWgAkGYE1VdFdG0c=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=iGX307u8C5rgQ5CJC2EkuFL7+AaFBVe9I6KvTpZ9I8FZHchWx8rF1r8+p3RX+mdrWn4tiG84Bm3Gmxwn767bNmZ0F/hZPYnG5Nzk4ZWy4PUVn7L2CDz+Gu8ghKl9VaGHiPd+h1J6zZFQlBkG7fA3fHbUNZxnXyWJoa+mIVjY3aM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=XvvcXT+M; arc=fail smtp.client-ip=52.101.83.61
+	s=arc-20240116; t=1770743377; c=relaxed/simple;
+	bh=N38VAq6Arjr2X538y88r8z8OjYp8hHe1fL026vSh6Gw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=h8xH65A9YYBiUKgwq1Bwz748EusSMzuxH5Fk5t+8Dv4wd9ktBo6FqA8Au51DYXYZvvg9gMoxekl0T4cUcaYjRWKxzC0+xYI452f9P2nBGfkqxUwnsumcQAOz7nvOiGBRXrLQTB9HX9cbSLjMMEBPKzf1mTD+lvwb4U9VBtMV5c0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=V2aSihEm; arc=fail smtp.client-ip=52.101.83.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="XvvcXT+M"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="V2aSihEm"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FwO66ZsBloYja/NkD5i5zSGAiXJ/OzTCrIgXGr5Nl3bqTSZgahFeJxVcQBzVIRnrGGE8EFzPtTvKJ/s1btDED7exriB8g6cZaaNpWzBQTZf4a9sTqGnQGntQCyOrS6Ck74H6x37RY4QQDnw/ZiD4wCnHE6/gF80Z6i20cNdmagpzoas/rbE1S5POVo4hyrZUtNGVju5VDbY4dunGly6xCiqdI5ZlJbNyUBned6U2u1dK1sK/Q9jay2gLBw9bnAL55rzKSCtFExfnvBkDKnPNKUVbptVVaq+knGsDqurhDFRcHJUltFjuItL/hr41wzEahB3mnagdY0iRmawoTkK14g==
+ b=YKR8pk3GTrNMy5X+/uzlbfwBZ/xlW65O/vNaqmiAcQnZkHENjb/pcQpp3iQkAukTGByVIe62RYvzKYbysmK2824dnIn+V3KI3j6s95jhmtqrPoGWNwyHIqBd/yUs+q2KbmiherCdTSaaR6Th2BfA+tPGQSpq7APrfRkOBgK/xel4Wj3Hwt8zDuayAawk/QyAIiuldOfH7WL8ppZ2LgLhaDsjzhm+IlT0cjFIhnEddfC4EiWwCrzustKhQRwoYYSIyEMQG1JBuxT3S2YJL7mTXBSRGTf1jfQ3wbM3YEjt2SYD1ijo/9OWbsgBWki2wtFcjghrZlWl9lVzV+6ziXxeqg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wtbFpYrTdulEgD2DiQFMOvshLaHY6WPXpa/V5WFFW2w=;
- b=TGz9Oi2xA7+mOsuaRKOEBvRtbN85zReISs4HO+nq38Ckd9g7IDWCPFbRNWYk7Sm7QdXKBtbaHbuXmzuBX1KxfjrbETdoncmh0fgUx8iC80G0Q0DaMb6uvGGfht8l7fP85lXAl63mdehXH3jbycVmibZkdI95ouB3aqOx5KKjRjo+WppTlb35+2PvXzgX2NaRObwZFEN7vFVKEG3Cuf3l6BGD5X99hf0qeMGjLEw2xEkHHs96EirqGO50mDZVesc7waAs23i5JltoG4kQEFUABuFGeS3WzLTIth3rW/bKVGPMirNdR7Xfii6Kd5eEY99MOF+UWHz6Y50aNgb6W+jjpQ==
+ bh=zTr8k7wuw+cdbwhFl/Ngv2Gor4tOSzMKlKWMPISzeYs=;
+ b=WC4qmGilgnsx4zlOT6L2NXGijj1QtFzgDPM/KhTD0sqFo2odtdotTWEtJCXvIaaIvGCCaTdrNNrpWZQg54S1ywz6EvdXil31Kv+6H38LIpI5AYanVT6JxL5cTmCvotTuWa7BWb4w+ii+E+UCIsY2rVpNOkiugcxhmBVcMU1v3NCwPhqxxuHzWus3kBlJWPFiKupZqC9EDbbMSkCgrN2nywJAMg/3zEoUVOwkP49U54nppaIpeJDws9mFNUzstW5OV27I20SgCzFLPfCNnnE+mGsXmy3x4zab5ekFYk+HzndYsi6PWaIVFjP9X8TI2wjPVtSvVv5ke5R0FOQB7diOTA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wtbFpYrTdulEgD2DiQFMOvshLaHY6WPXpa/V5WFFW2w=;
- b=XvvcXT+MGW0+go/hv/sgOszmx8gPd1KBvo62doDP+AtGvWsHipp+8EBHK4RicsWvAOtPf13roYIcCkmMWadvZwSEFiZ3aUtSSvF4kmlunyVpZDmSP6a0C7E5MsPOvN73lvkB7DrY7J4KmKEQsjRmrosD5TgeA9oIDBFVmbf0FAqZ5uwr71b8SC5XlDjPS0q5y5O3r+M1IkbszgJY6qa85tOpKIxu0EtBoK1D18aMELVBevcowEAXv/zZYz8szACxndPf/1dZ4oTRZAR7JE7iBh4lNE1aMd7Dg7ntcT06IZROQqCmJxD7PGzCl1LfdLiVjnRg1W1eTGLSfL+1dVij2A==
+ bh=zTr8k7wuw+cdbwhFl/Ngv2Gor4tOSzMKlKWMPISzeYs=;
+ b=V2aSihEmHUaGkpciOri1E7pt02OKw34jLMEzwia/aZ2rcIMcvg5ITMKmKUW0bRDYkZ14kJ5JvvgRcb/kA47MYX6zMZmzEUQDTTYh7k9GIJ4OnWDi8QaTdVFjDOXknYkmYY/l0x676eVkYQdewMNIcEcySfqCtGiT2m6XTQnfQ4R9wrU0xEws6ooS82aGKcE7ZVQdAlys+dfQO+mizEhZw3/OMCBkV/JIz+YekfHN9e730uSzqYRqzjrphywDDgygj12SlmUfnGpnuJUnoMW/7dLDNEneXWMlW1wpv21jVTZTmNy6aIVhOS0OVcT23JmuXb6pNJ7iuInSUFWnn/B+6w==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
  by FRWPR04MB11284.eurprd04.prod.outlook.com (2603:10a6:d10:19e::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.8; Tue, 10 Feb
- 2026 17:08:34 +0000
+ 2026 17:08:45 +0000
 Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::b4c0:6119:2228:2ceb]) by PAXPR04MB9185.eurprd04.prod.outlook.com
  ([fe80::b4c0:6119:2228:2ceb%4]) with mapi id 15.20.9611.006; Tue, 10 Feb 2026
- 17:08:34 +0000
+ 17:08:45 +0000
 From: Shenwei Wang <shenwei.wang@nxp.com>
 To: Linus Walleij <linusw@kernel.org>,
 	Bartosz Golaszewski <brgl@kernel.org>,
@@ -64,14 +65,16 @@ Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
 	linux-doc@vger.kernel.org,
 	linux-imx@nxp.com,
 	arnaud.pouliquen@foss.st.com
-Subject: [PATCH v7 0/4] Enable Remote GPIO over RPMSG on i.MX Platform
-Date: Tue, 10 Feb 2026 11:08:10 -0600
-Message-ID: <20260210170814.406883-1-shenwei.wang@nxp.com>
+Subject: [PATCH v7 2/4] docs: driver-api: gpio: rpmsg gpio driver over rpmsg bus
+Date: Tue, 10 Feb 2026 11:08:12 -0600
+Message-ID: <20260210170814.406883-3-shenwei.wang@nxp.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260210170814.406883-1-shenwei.wang@nxp.com>
+References: <20260210170814.406883-1-shenwei.wang@nxp.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0089.namprd05.prod.outlook.com
- (2603:10b6:a03:332::34) To PAXPR04MB9185.eurprd04.prod.outlook.com
+X-ClientProxiedBy: SJ0PR03CA0007.namprd03.prod.outlook.com
+ (2603:10b6:a03:33a::12) To PAXPR04MB9185.eurprd04.prod.outlook.com
  (2603:10a6:102:231::11)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -81,149 +84,350 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXPR04MB9185:EE_|FRWPR04MB11284:EE_
-X-MS-Office365-Filtering-Correlation-Id: 68d30834-817c-4d24-abc4-08de68c70619
+X-MS-Office365-Filtering-Correlation-Id: df9b8049-9679-4f71-c042-08de68c70c81
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|52116014|376014|7416014|1800799024|19092799006|366016|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?b2Y9qtNvT1aCI+eFRJDuzhhD5MCgsm4jugLgwT5KGJJ6V1sQEY/S2BN/WvmL?=
- =?us-ascii?Q?NsWioAwBgR2Sf3l0CPOYee6CNr5SwTaf4cguPzo+3wdCX2Qb1AZFcEC0wMrq?=
- =?us-ascii?Q?yQWjdg5ujMCVYdB3T6SqMY4d5Y4w5pl4eFSqkvAsJaQbfq8px/dLp8YZ9doA?=
- =?us-ascii?Q?d4EFYZceHbwoVlMz/8SzREc4bCM93D/PLS5X1YVq4nePwW7F6NkMNcKr7oba?=
- =?us-ascii?Q?uLcS7cbG5cNfxMtet/Z/HHEBVf1DrSxxPfvx+tGalYhoY2DNqDQoweS99R0j?=
- =?us-ascii?Q?KMKAaSFeB9LUJJD01rHJ13xW+9AzCylUyOcpDiOwBnGjPC5VrdBzeRtcAB6K?=
- =?us-ascii?Q?VmR1KIcduvr3SPjZ4urCjjs5d3tY/+MNKQssGTzoRJB/wGyuLxq3Dh6NBRFk?=
- =?us-ascii?Q?KhaJ+KJhdfc3J0muAivmRdxXrND+Zk4RBWmYnDCCxHTuTEWRjM3Iin+NRNGa?=
- =?us-ascii?Q?H1Rn+a8Jmvp21EIfyUAdRFvgMqiGr85pTjv4PQXdf6EwzC8K3AgrzKifDjUz?=
- =?us-ascii?Q?AUp1EcYKo09MbBqXxi+ZoqWdNP4jX4Z2MKLGLYoxDAzPGF5vQ/mUFTlijjs0?=
- =?us-ascii?Q?kkJ/OTlohqQTAXiTc+Yu8FOJBIl06yuTQWQj0NwT0PeVn8S+npjnqX/PCyCJ?=
- =?us-ascii?Q?G1AY4mre52Ly4TNdlCNKRej4h/fYJv03m/2vhDwDQiAyiy3ZhsS18Y1x7yYI?=
- =?us-ascii?Q?O4s9s/6J5isIwj2TGtXV/DChp5gnT4v/+jRhtqbOkIO1hT9mbPuSLAvB2vnl?=
- =?us-ascii?Q?g+CMEL1tNaW4tp3fEPRMxBidvZxhzGzISXfrnGt0B4UemHUD+njZ/yq3aoQ/?=
- =?us-ascii?Q?+iNAi134QSbOGPgbgLQsa0u86TEOSB4K/faODkjGy12STlZ4lC6Fwi8RUVzD?=
- =?us-ascii?Q?roBS3eMLKAWiPRXQOZUSaOmvwHfoOlI2fz3//TEdaYnby9ylzaJo/GJPM5lW?=
- =?us-ascii?Q?icHCfMXYR8N/ULMAdz+pRBG2yfHushd4HWfNed0zz5uzf0snMLTg7WY98cVo?=
- =?us-ascii?Q?5CH5AJWDLrtDiB2uRQ97jPxHkHRIWZOQPFxoB4x03tl/jotRTkVn3HU7z0cj?=
- =?us-ascii?Q?rDeo+tKFnQTezSQLeja0KGaiteIOUWbZO3qdcCKwASRUboeNeow/nUh8vb2i?=
- =?us-ascii?Q?0YZt78iBB29y2IXeePW8AIyms9NFUt8ik25HZxQIV3pMRq36dFueTzgmsH4r?=
- =?us-ascii?Q?S+7MdrvAm1gsQ8wGui+74XlnLNaqdJEPkhvavdjiNTbwlYdWOe3qDbOkQPY1?=
- =?us-ascii?Q?35OyOtjO0pyUlMd7cHRp2619Agau2dk70j63Zv+uC956i4t4anffC6ssXxqr?=
- =?us-ascii?Q?4pwjhJ2OVSukKna4Z37Aj8PoKEQeLNwoCBZ+87u/WCjs+aVPbZsMAHjW2jsP?=
- =?us-ascii?Q?iCXfxVeAzPd3+AbYTreU5T/UjbMROhQmjMZwoqFUBRbmaHOlrZks2gK8mWsy?=
- =?us-ascii?Q?S1XzEAbrS15eFKC17zgmgyXLynbqJsUvnJh8RBRH4eWm8aBqajxtP1R0+ri/?=
- =?us-ascii?Q?YQ4L8O+/EhPg4oHv63FMjakOofe6oYUbUESNIpUy1hw9R+R3ckRlH8LXyUpS?=
- =?us-ascii?Q?hnXKfUHnVngygGLC7VDQBtLk6seWNISJSE2XCaiyToY8B1kxZnF9A+GPLsbx?=
- =?us-ascii?Q?OKZLG6nmHDA5MBCjmZ3PP//xb4FR6eACHKuFzVR8rXDw?=
+	=?us-ascii?Q?eIVOo8ORPy+0qp2DgJqS6UMMNfyXBPFlfaSKjUzrfIPL3jeqF4MUYtR6BfLn?=
+ =?us-ascii?Q?WXQIRBiiwoTj9Gpf9j899TM8KOrktq+EmlCa/tJ+p5NYSKxJRp67ETWx8yAS?=
+ =?us-ascii?Q?cJkeNlBllwY+s/t4FzkcGRcWv2qvtwrwbGlxnXafhz8dnyVh17tf3n8wXT3J?=
+ =?us-ascii?Q?Ge8mxzya58a4B/HImIq1UEtFV5F4Zsx4kSg0TMh1v9nFIdx7FPHa8VJt7hwK?=
+ =?us-ascii?Q?0/aznbmpJ5Kh2K4qYFkyRveXXkpKSzNmtsg8k5ZCWDWsarorqu2hS6Lju/Ra?=
+ =?us-ascii?Q?Xaroobxfq45xyzF1+j2qdlbJgKIXLyC5T+ELs3Tc1H7TKSce7HSSfPbN/DBY?=
+ =?us-ascii?Q?i+HZOLhs0egOreO3vLbrcQMb9pTC/4TVINIlnqPFHooP4XANBVnildzLIP1f?=
+ =?us-ascii?Q?fbfvvRnWKizjRawt0t2XR/tGdHDgp7CAjUi8nRomVQTHPwy9ZvzMuvURz1Wk?=
+ =?us-ascii?Q?ffWl6P19CdKbBwFslz6zhjqMQnQJui/ODF6/Ov0yGVWJbY7mn1QT8mjl7atS?=
+ =?us-ascii?Q?bXk4siQK4CzkacGl5IMVQ21yg8oaA3YNgEzR2QSWiCatE5+O+kTA9pSsoltE?=
+ =?us-ascii?Q?QjSQSqjyxjK+OnfRbKPGvCWS1GrKVifGPj4sDO3jlq5HITS3nFx27v8OB9OF?=
+ =?us-ascii?Q?L9LloQEdIZBNi0bEdq3gBL8uCtNhSvaK7fR/LcC86n9uyLHpnwQATpplT4aU?=
+ =?us-ascii?Q?VTYb3+RShw6DokPpUXfp491Hqfm98oNXLtiKoxUEBaVGgmCSe9DRzGnpTJhs?=
+ =?us-ascii?Q?3q9y+rTjLCBuH0K+keM6sA1vN/MlzgDv3oDaoP04qfG2S5FG+AKmgJLlqOB3?=
+ =?us-ascii?Q?1Do++hRsawKD+H75ei9WVauzxRfhfBYBI6i0fd3djEFxAvEoxuEJPJG15WJ9?=
+ =?us-ascii?Q?fM1cfIKEY9nInPq/sHFh1lB1G0lSk9pWU3XC/YnahJG93Ym4iOuVKYDnxsAn?=
+ =?us-ascii?Q?7IYBYyTub1jvBkdSRArYu0Mw41K+GX8Rw4gSNcS2n3n+0SvUbS+RK8sSxIO0?=
+ =?us-ascii?Q?t9+hzMRDvKrx9t0xZN+BHkLfmeYf/8Yx1dR47ztSqW9hDXKkpI9petjbsv5e?=
+ =?us-ascii?Q?gdBUDUR2YMNyOJrGEjzj12MTVm+dD+oZQ76ypX8P5IEXzzwsu0ejmojwxBQl?=
+ =?us-ascii?Q?O7wICJP1tFxdpYU6IaJVsJBVTb7qA6zRJZbEr13Cav3M1Wrmne+lc89XdAG8?=
+ =?us-ascii?Q?bGlGYFyxUfCJ2wMR16TH13aHl+tsUIkBanw0idsRDG8oVcimpF/aBJi2UlVf?=
+ =?us-ascii?Q?SM22VaD4DIqqPw5LWrP7nom7Py6xLnt8Rd03nePruaFgkG9IhMgp8FF+pWhX?=
+ =?us-ascii?Q?FFrQz0NWM91ziKASAw50F/Xf2rn5lI2uvSo/KVORiYn/EoF26hVfv0s8Yz5s?=
+ =?us-ascii?Q?d3P1urQXU/pgfKy55bp2ShTsiVe6gH/eLf18YDMLJMd737YDYq8HrRQVrMM0?=
+ =?us-ascii?Q?x2/6DFgDoxnuQj1zAKp9nwwBOVTffaCqYV7YnJKqeztE66uvjWazapKccApo?=
+ =?us-ascii?Q?vpuNSlcx9bq0l832s6RnZdpXIaa2Tqgp4MAaYTgdZrZmV99D3Le8n0IXmZww?=
+ =?us-ascii?Q?c9SDszGniBQ+IXQLsaAQ7IIDApFjTVVwr3g+pZetzGbvCMsu5CfrJZSjw92R?=
+ =?us-ascii?Q?3v4vP0pGrMMCf0C49tuxKMLpaMPhTdZTA7EQms2bUoWi?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(7416014)(1800799024)(19092799006)(366016)(38350700014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?e+j9zFTiD3w0oS6xtHuHmOJlO+CAhg/lfCdRIGK4kNVFl2PNaonQofWLqw0B?=
- =?us-ascii?Q?o50qlyltwSmnz5O5SdvIBF4HgjoF2MBci+AjSak+awNfPF5kENYxC+Tv68+g?=
- =?us-ascii?Q?gM3RgpR36tKY73h/ZBKL9QbA4STP1qrGj754tfw/KMMDPnMoej5seOLEWRfF?=
- =?us-ascii?Q?xCT7ucmGJptL4hrkG4XoRF90LJN9SZfBycX6IzgDzyums4HUrdFz83c94e9N?=
- =?us-ascii?Q?SAgwA0dbwBWlnk/A8vdvvtVXhyBhFbvjbztnt5AI2KgqT8SGg1ljxU1hDeCR?=
- =?us-ascii?Q?k7eo3CNkZYJVJskosseCCAHXdMV4v4xISSjFT9xtE5BQFJoT0DO+DYdmM9rE?=
- =?us-ascii?Q?OJFhRMoMHnYlgoLgEWf9Ni0ooAPtIFUOGIwxXPSqzV3D9VGHIxRb4FjPNk6O?=
- =?us-ascii?Q?SNzA9zccHUUpgvzSXrW5phatTGmKPI5qMSudleO+BZpnqzC/4B5j72STk6j8?=
- =?us-ascii?Q?36hXRp2JDzcJ7IydTytyecMLWtDrgRQeLJNMgBbvDqk4JZp8anECfxDjidm6?=
- =?us-ascii?Q?q/BxaTkTn8u6Tk8cFcch96SDkdqEZt5t0LMREW3BpeYefNOfwDzq7bZ1LbSk?=
- =?us-ascii?Q?hs6yJiwkLp0BJAKoVbE9A8nwdnDoyQ9iTs1RBAP/4GErZ7sGZ0NvF4Cd0yEA?=
- =?us-ascii?Q?U5Z8Q3iJ5D4mlcY8dnOImMgn1DCJRQt0KXxCsVI1UDFDViyeLuyfrynpzXBg?=
- =?us-ascii?Q?xlvo2dA2u9asAghplG5VfN9Wn+mmaTWgUlhdvyp/ob/OyOaiO49mnf7C29O3?=
- =?us-ascii?Q?Zlh4xln5opcA+HenFjbKXjXThmP0ZGyUg6cqI2NufqCYed2KXgY4QDzsMMnS?=
- =?us-ascii?Q?g2zjcZt3P3bF06QAKFEiiwF7AzUgGxZJQmWbSoWCz+bPIOTxeRoURf0K6hCD?=
- =?us-ascii?Q?MJ/Qx+eqXZBq5KmKWcEF65rpFeodQRGzSjDLZRUdg7YTpA9KvczNUtw5gqLc?=
- =?us-ascii?Q?s4m3U52Llwydy0i4bTmwfdqbTVfVEXy9b5cGnEutZKy1rZ+LTpti4mQMd7X7?=
- =?us-ascii?Q?b8x0IUYD53Eis8f+gkI5iVGp4X56yl5NUQsxcoZZ0wqYdENlj8FBllt8c4wS?=
- =?us-ascii?Q?ma4yRYGa3DhHOseLMtstlhkwzNFTMQYf/Uxn0sNJKzMzrLPC7n4bde9eVOVg?=
- =?us-ascii?Q?cXvZ/ORAPnytokU9D68vTJYOw5EOzliCB5bmgLaPSMQzQHYaB9ZAFE7TmO6o?=
- =?us-ascii?Q?W74Psp1qsJXsNjtbAUxLyyvUxA34mQ9ah1T/GBXAsysdORNiPmJaHgn+5jN7?=
- =?us-ascii?Q?Bw3lNjl6A1qLxwsABJi5w9ncQf+0N2e3UysbTPMBv0/dJEbGx3u6DSxNTgK1?=
- =?us-ascii?Q?RY5F67McHLX4cc2zmCmhFMKu9VZqlP0+ioEpZ6uxiulsNcoSnt09OcCIsBno?=
- =?us-ascii?Q?x5K3hxRuxRhpc77Ctd7mgLtaht0uRJkJj/m6V0xh3Xq9Vu0I30r83OZHzTh0?=
- =?us-ascii?Q?C8Hv5Vn9+989GjqP557mHM91gVQmd9Yz3kYp9tW/IcSfm4Fp82pjkOQCtYqi?=
- =?us-ascii?Q?WhwboQzyXeveILbxD/UqdZeiKCieP3xL6sJVT4DKkYNpAGyWhM2nm9wt8GEv?=
- =?us-ascii?Q?LkSaDbG8dzI/WQIqpphokZ2dNQ7Oy0jelJn3cIChJyMaWnlvwd5e4DHacmk0?=
- =?us-ascii?Q?SJWDxBhJNw+ASy7GURnjhGT1yxSgZW8jWFB4K/LpBpNUYK0qsuMi3UAkbEkt?=
- =?us-ascii?Q?NXZIyIBdT92yDAJwnGcAJDm/bv25HWTJfcaHOC/78Yd7ktLbSediRP4mClaf?=
- =?us-ascii?Q?0mTSY/flBg=3D=3D?=
+	=?us-ascii?Q?U6xm5nE9e9hCd2PvGXEkAjPWY/LCHNaD2zFc9tMSvl+0YCBHIr1gHhD8O4Xd?=
+ =?us-ascii?Q?oMQaMsVaCZWUN6YvS9cN2QkTTNgihlTWJrdB/nvEv/Kh0kcZdiAyKsj9A6Ns?=
+ =?us-ascii?Q?Rbw9eeEHGLyIaehlxAsdnOfdkHScWYZldG0ZG6pI2Pk9bs+fFHhd6BhGRJko?=
+ =?us-ascii?Q?M8wV+2eOWkB7mg8alAI0DE4vYjKREOQ/n+c8SRTpk+E6jo7i6ILvnRB8sYSS?=
+ =?us-ascii?Q?A5bWjf0xpLnmDKBzQxeQFHKSfNIWnibSpdk9JC8Tz22e3ueuas0hF0aagJ3d?=
+ =?us-ascii?Q?0jw/Pp41kioedaZ/U+w09Cu/eUHPwIvkq1S4B1dTKvbN8MLopzRy2NzjyG18?=
+ =?us-ascii?Q?jdq7M8Wee12EHDn26nDXX0toTGWIyDmtCp2qlGe/j3pUjdDHYfAxORc9IcNE?=
+ =?us-ascii?Q?+rMYnOS3FoJv4Ns3JfHmoJyDCTkuTJOTUPCULXExbCtWNqmeFpAPCbSbRj3w?=
+ =?us-ascii?Q?ksU/+qR610fIhi9QcOU+qcboX4uBLHBm4k32WuxGcT7oG94Pj28Ct4em2hN3?=
+ =?us-ascii?Q?kOQ5l9teEsQhExRX+mW4ZTp4SbLpp1jCFQ85Ig/eskOjGiTX8h679LDVM0gc?=
+ =?us-ascii?Q?EwMo7JHcf92cU9kQTv3EI5FxzeA1uPqKkUojuQsUvCyF7YYoXySW7bAFndBg?=
+ =?us-ascii?Q?8OdGply9QkurNv5xxvSBZ4KEeKFevi3BlDEQM8AlazYwgerO3hkw7brp3fao?=
+ =?us-ascii?Q?IKB4fqsAZV/q+R82VRTBxWdjWRPXsafHDxFkMdenDCS5gJR4BdYOEG5x7Sdh?=
+ =?us-ascii?Q?5K7lFaJyNIi/0dvlasKOY5/+qKDTOvscwV8uKQVhKIBFXCnj4Y2mANq11GyA?=
+ =?us-ascii?Q?xirahs17OK8rOtN3pJR2k+cmtoauqVCAnwGD+t4iNQkjV63yb9JvM/uThmoL?=
+ =?us-ascii?Q?gn3DiNWz9ltl4xgMsg4Q7byRO62cdDR346unnRFm5DN65DueharQVsgPQ1B+?=
+ =?us-ascii?Q?MHHLikW5hhUZSdHYNbRg8CLiEUaakx6famW4144jxxQ7PLUrIe2wmpY7EX5X?=
+ =?us-ascii?Q?wfpwLYLqHMtXPBN8mqXF5aBZ7+12ehMYlzQstbOWLkl2tUdlxoow0JbBb9VQ?=
+ =?us-ascii?Q?NBerUV6JeIqlti9FUC3XVUaPKWUN9iP0lkupZ7SZqiNMnYbqfKXNOmYPQyEQ?=
+ =?us-ascii?Q?qSSPs9Cnr24I/qVAUAl/s8KkVS34xvecmxlyAkjK2tXQwPnmMMNflgL2h5aY?=
+ =?us-ascii?Q?iIm6Zgs1cB/y2qxoU/RK2aZMsyOxL4YyNCxy+hj2pGG8s0xfK/Hr9I/0clMR?=
+ =?us-ascii?Q?zQfz0RdAEajLQLJpRiiYDiw7FoHRvnic718d/qUHmlj6ICHR4Q2il9C4I3+X?=
+ =?us-ascii?Q?XSLQlaeV07arkl+ewLVdgaccz3iMkcoI5RF+3W+Y+CFd4hOcdexMWdi01qq4?=
+ =?us-ascii?Q?dcmEHoFp7qc4x6/GLd9/nxOmCf8Oo/iuNkVws9fKll7jrh7xgCOKnGRAAl6S?=
+ =?us-ascii?Q?7oVA67zkvju2ERAmJVR1aauuXbxVri4MloLoHlle/zUN3yECwQDZVOEb8FX0?=
+ =?us-ascii?Q?ySINMIcRSVNu3MlG6a/PgQPTP1tsvcRxOYbYnw8pOW0yR1Qe96MFzSGu46Bd?=
+ =?us-ascii?Q?5TID0aWYIi9mtn8KiaTbPNmFXAHR3vzwPysXE8kd5YpU9o5tOXis9n7sZbYH?=
+ =?us-ascii?Q?+Ib7mGh3Un+7HYFXzVJNrmsSCqBVbB+lBdZePHkSN/4pBcKUL85CZCqNSoHT?=
+ =?us-ascii?Q?9Vr2T4dXXchZrPJnwqkXEjoW0q7jEcts2q0qic5jYg1kHUiFfBP4BxAjvMNd?=
+ =?us-ascii?Q?TNdpRUCiPg=3D=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 68d30834-817c-4d24-abc4-08de68c70619
+X-MS-Exchange-CrossTenant-Network-Message-Id: df9b8049-9679-4f71-c042-08de68c70c81
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 17:08:34.5103
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 17:08:45.2256
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OLGiQDTWJX1taUoOf1EEvxyzEODLfMMvtP2nnZj+GibjjADbA9qn5wO9cVMVfQEcW9+77rlSmj97IJYgOAvYHg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: rSSsaP3mYXLEF4aLDN+xoR1m6ulAUr9bMXw7qaDu1xcFaxiuMgrAppXBlyxNZJANRShia3+GFYpVyG2VpDOC1w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRWPR04MB11284
 
-Support the remote devices on the remote processor via the RPMSG bus on
-i.MX platform.
+Describes the gpio rpmsg transport protocol over the rpmsg bus between
+the remote system and Linux.
 
-Changes in v7:
- - Reworked the driver to use the rpmsg_driver framework instead of
-   platform_driver, based on feedback from Bjorn and Arnaud.
- - Updated gpio-rpmsg.yaml and imx_rproc.yaml according to comments from
-   Rob and Arnaud.
- - Further refinements to gpio-rpmsg.yaml per Arnaud's feedback.
-
-Changes in v6:
- - make the driver more generic with the actions below:
-     rename the driver file to gpio-rpmsg.c
-     remove the imx related info in the function and variable names
-     rename the imx_rpmsg.h to rpdev_info.h
-     create a gpio-rpmsg.yaml and refer it in imx_rproc.yaml
- - update the gpio-rpmsg.rst according to the feedback from Andrew and
-   move the source file to driver-api/gpio
- - fix the bug reported by Zhongqiu Han
- - remove the I2C related info
-
-Changes in v5:
- - move the gpio-rpmsg.rst from admin-guide to staging directory after
-   discussion with Randy Dunlap.
- - add include files with some code improvements per Bartosz's comments.
-
-Changes in v4:
- - add a documentation to describe the transport protocol per Andrew's
-   comments.
- - add a new handler to get the gpio direction.
-
-Changes in v3:
- - fix various format issue and return value check per Peng 's review
-   comments.
- - add the logic to also populate the subnodes which are not in the
-   device map per Arnaud's request. (in imx_rproc.c)
- - update the yaml per Frank's review comments.
-
-Changes in v2:
- - re-implemented the gpio driver per Linus Walleij's feedback by using
-   GPIOLIB_IRQCHIP helper library.
- - fix various format issue per Mathieu/Peng 's review comments.
- - update the yaml doc per Rob's feedback
-
-Shenwei Wang (4):
-  dt-bindings: remoteproc: imx_rproc: Add "rpmsg" subnode support
-  docs: driver-api: gpio: rpmsg gpio driver over rpmsg bus
-  gpio: rpmsg: add generic rpmsg GPIO driver
-  arm64: dts: imx8ulp: Add rpmsg node under imx_rproc
-
- .../devicetree/bindings/gpio/gpio-rpmsg.yaml  |  55 ++
- .../bindings/remoteproc/fsl,imx-rproc.yaml    |  53 ++
- Documentation/driver-api/gpio/gpio-rpmsg.rst  | 236 +++++++
- Documentation/driver-api/gpio/index.rst       |   1 +
- arch/arm64/boot/dts/freescale/imx8ulp.dtsi    |  27 +
- drivers/gpio/Kconfig                          |  16 +
- drivers/gpio/Makefile                         |   1 +
- drivers/gpio/gpio-rpmsg.c                     | 583 ++++++++++++++++++
- 8 files changed, 972 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/gpio/gpio-rpmsg.yaml
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+---
+ Documentation/driver-api/gpio/gpio-rpmsg.rst | 236 +++++++++++++++++++
+ Documentation/driver-api/gpio/index.rst      |   1 +
+ 2 files changed, 237 insertions(+)
  create mode 100644 Documentation/driver-api/gpio/gpio-rpmsg.rst
- create mode 100644 drivers/gpio/gpio-rpmsg.c
 
---
+diff --git a/Documentation/driver-api/gpio/gpio-rpmsg.rst b/Documentation/driver-api/gpio/gpio-rpmsg.rst
+new file mode 100644
+index 000000000000..6964de309471
+--- /dev/null
++++ b/Documentation/driver-api/gpio/gpio-rpmsg.rst
+@@ -0,0 +1,236 @@
++.. SPDX-License-Identifier: GPL-2.0-or-later
++
++GPIO RPMSG Protocol
++===================
++
++The GPIO RPMSG transport protocol is used for communication and interaction
++with GPIO controllers located on remote cores on the RPMSG bus.
++
++Message Format
++--------------
++
++The RPMSG message consists of a 14-byte packet with the following layout:
++
++.. code-block:: none
++
++   +-----+-------+--------+-----+-----+------------+-----+-----+-----+----+
++   |0x00 |0x01   |0x02    |0x03 |0x04 |0x05..0x09  |0x0A |0x0B |0x0C |0x0D|
++   | ID  |vendor |version |type |cmd  |reserved[5] |line |port |  data    |
++   +-----+-------+--------+-----+-----+------------+-----+-----+-----+----+
++
++- **ID (Message Identification Code)**: Must be 0x5. Indicates the GPIO message.
++
++- **Vendor**: Vendor ID number.
++  - 0: Reserved
++  - 1: NXP
++
++- **Version**: Vendor-specific version number (such as software release).
++
++- **Type (Message Type)**: The message type can be one of:
++
++  - 0: GPIO_RPMSG_SETUP
++  - 1: GPIO_RPMSG_REPLY
++  - 2: GPIO_RPMSG_NOTIFY
++
++- **Cmd**: Command code, used for GPIO_RPMSG_SETUP messages.
++
++- **reserved[5]**: Reserved bytes. Should always be 0.
++
++- **line**: The GPIO line(pin) index of the port.
++
++- **port**: The GPIO port(bank) index.
++
++- **data**: See details in the command description below.
++
++GPIO Commands
++-------------
++
++Commands are specified in the **Cmd** field for **GPIO_RPMSG_SETUP** (Type=0) messages.
++
++The SETUP message is always sent from Linux to the remote firmware. Each
++SETUP corresponds to a single REPLY message. The GPIO driver should
++serialize messages and determine whether a REPLY message is required. If a
++REPLY message is expected but not received within the specified timeout
++period (currently 1 second in the Linux driver), the driver should return
++-ETIMEOUT.
++
++GPIO_RPMSG_INPUT_INIT (Cmd=0)
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++**Request:**
++
++.. code-block:: none
++
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05..0x09 |0x0A |0x0B |0x0C |0x0D|
++   | 5   | 1   | 0   | 0   | 0   |  0        |line |port | val | wk |
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++
++- **val**: Interrupt trigger type.
++
++  - 0: Interrupt disabled
++  - 1: Rising edge trigger
++  - 2: Falling edge trigger
++  - 3: Both edge trigger
++  - 4: Low level trigger
++  - 5: High level trigger
++
++- **wk**: Wakeup enable.
++
++  The remote system should always aim to stay in a power-efficient state by
++  shutting down or clock-gating the GPIO blocks that aren't in use. Since
++  the remoteproc driver is responsible for managing the power states of the
++  remote firmware, the GPIO driver does not require to know the firmware's
++  running states.
++
++  When the wakeup bit is set, the remote firmware should configure the line
++  as a wakeup source. The firmware should send the notification message to
++  Linux after it is woken from the GPIO line.
++
++  - 0: Disable wakeup from GPIO
++  - 1: Enable wakeup from GPIO
++
++**Reply:**
++
++.. code-block:: none
++
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05..0x09 |0x0A |0x0B |0x0C |0x0D|
++   | 5   | 1   | 0   | 1   | 1   |  0        |line |port | err | 0  |
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++
++- **err**: Error code from the remote core.
++
++  - 0: Success
++  - 1: General error (Early remote software only returns this unclassified error)
++  - 2: Not supported (A command is not supported by the remote firmware)
++  - 3: Resource not available (The resource is not allocated to Linux)
++  - 4: Resource busy (The resource is already in use)
++  - 5: Parameter error
++
++GPIO_RPMSG_OUTPUT_INIT (Cmd=1)
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++**Request:**
++
++.. code-block:: none
++
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05..0x09 |0x0A |0x0B |0x0C |0x0D|
++   | 5   | 1   | 0   | 0   | 1   |  0        |line |port | val | 0  |
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++
++- **val**: Output level.
++
++  - 0: Low
++  - 1: High
++
++**Reply:**
++
++.. code-block:: none
++
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05..0x09 |0x0A |0x0B |0x0C |0x0D|
++   | 5   | 1   | 0   | 1   | 1   |  0        |line |port | err | 0  |
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++
++- **err**: See above for definitions.
++
++GPIO_RPMSG_INPUT_GET (Cmd=2)
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++**Request:**
++
++.. code-block:: none
++
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05..0x09 |0x0A |0x0B |0x0C |0x0D|
++   | 5   | 1   | 0   | 0   | 2   |  0        |line |port | 0   | 0  |
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++
++**Reply:**
++
++.. code-block:: none
++
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+-----+
++   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05..0x09 |0x0A |0x0B |0x0C |0x0D |
++   | 5   | 1   | 0   | 1   | 2   |  0        |line |port | err |level|
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+-----+
++
++- **err**: See above for definitions.
++
++- **level**: Input level.
++
++  - 0: Low
++  - 1: High
++
++GPIO_RPMSG_GET_DIRECTION (Cmd=3)
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++**Request:**
++
++.. code-block:: none
++
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05..0x09 |0x0A |0x0B |0x0C |0x0D|
++   | 5   | 1   | 0   | 0   | 3   |  0        |line |port | 0   | 0  |
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++
++**Reply:**
++
++.. code-block:: none
++
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+-----+
++   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05..0x09 |0x0A |0x0B |0x0C |0x0D |
++   | 5   | 1   | 0   | 1   | 3   |  0        |line |port | err | dir |
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+-----+
++
++- **err**: See above for definitions.
++
++- **dir**: Direction.
++
++  - 0: Output
++  - 1: Input
++
++GPIO_RPMSG_NOTIFY_REPLY (Cmd=4)
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++The reply message for the notification is optional. The remote firmware can
++implement it to simulate the interrupt acknowledgment behavior.
++
++**Request:**
++
++.. code-block:: none
++
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05..0x09 |0x0A |0x0B |0x0C |0x0D|
++   | 5   | 1   | 0   | 0   | 4   |  0        |line |port |level| 0  |
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++
++- **line**: The GPIO line(pin) index of the port.
++- **port**: The GPIO port(bank) index.
++
++Notification Message
++--------------------
++
++Notifications are sent with **Type=2 (GPIO_RPMSG_NOTIFY)**:
++
++When a GPIO line asserts an interrupt on the remote processor, the firmware
++should immediately mask the corresponding interrupt source and send a
++notification message to the Linux. Upon completion of the interrupt
++handling on the Linux side, the driver should issue a
++**GPIO_RPMSG_INPUT_INIT** command to the firmware to unmask the interrupt.
++
++A Notification message can arrive between a SETUP and its REPLY message,
++and the driver is expected to handle this scenario.
++
++.. code-block:: none
++
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++   |0x00 |0x01 |0x02 |0x03 |0x04 |0x05..0x09 |0x0A |0x0B |0x0C |0x0D|
++   | 5   | 1   | 0   | 2   | 0   |  0        |line |port |type | 0  |
++   +-----+-----+-----+-----+-----+-----------+-----+-----+-----+----+
++
++- **line**: The GPIO line(pin) index of the port.
++- **port**: The GPIO port(bank) index.
++- **type**: Optional pamameter to indicate the trigger event type.
++
+diff --git a/Documentation/driver-api/gpio/index.rst b/Documentation/driver-api/gpio/index.rst
+index bee58f709b9a..e5eb1f82f01f 100644
+--- a/Documentation/driver-api/gpio/index.rst
++++ b/Documentation/driver-api/gpio/index.rst
+@@ -16,6 +16,7 @@ Contents:
+    drivers-on-gpio
+    bt8xxgpio
+    pca953x
++   gpio-rpmsg
+ 
+ Core
+ ====
+-- 
 2.43.0
 
