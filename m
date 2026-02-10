@@ -1,179 +1,123 @@
-Received: from mx-relay36-hz1.antispameurope.com (mx-relay36-hz1.antispameurope.com [94.100.133.212])
+Received: from mail-m49214.qiye.163.com (mail-m49214.qiye.163.com [45.254.49.214])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D46F32E15F
-	for <imx@lists.linux.dev>; Tue, 10 Feb 2026 06:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.212
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770705847; cv=pass; b=k65A0NPe2k3qYZQYUTQKQEn/P88fW983N63v3r4EATw+75xg6vvxVResWEqPn96uvBhGdMtLydhFKEtR4ad/pb9Z0dSsXZ0LftjUQU0+S26dKqUB469/XWxZZeMMVjjTCh5fZY0CQeLcnQI1M6XZtzyJ40wM4iyf+GlBnFclbPw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770705847; c=relaxed/simple;
-	bh=NWfPGNpiqRcWQ8BQoJ8ZIJ8pcwpimpdiDR2t2aXA+wI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pnGBk6CqN9tHOUaHw8riJnrhA81MThX8HV6FpdWmGOs+bUWWF/d+XkquZHrBNT3IrrB40/LUz/SiHuAUhLNqjzLQtOAnCZ7wqgAMsyEXUQK/4hgSabBlE+ZvP19+rdURyR6oh8D4a7p+QQzVgTLxTO1IJ0hpFJPL8A7DnYFPMig=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=XbqOQU8g; arc=pass smtp.client-ip=94.100.133.212
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E09E28934F
+	for <imx@lists.linux.dev>; Tue, 10 Feb 2026 07:12:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.214
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770707571; cv=none; b=mcaLOhPQ+sL1q+DxU4ESLXRdCAnQYrdazKJRQDiho1hL11EPRZIqvJLRDeyOHXeVdV5JxSseo/Gu5M6bYK4wOV8+wQFrrS1Dd8d5IUjA6U+5fLjagwQ0dFOlbcA4DYXUw1QGvxN4SurDsaFKWdufk7KXxZC2GPcBJuV7OGI9vw8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770707571; c=relaxed/simple;
+	bh=O7RzHCzDaB7q7ZccfTgUrHJSSd1farFQEKVuGjb3swg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=UD8HjV7MQNkdPuXXEaX13UG5QKvO3WpVSHfk3S/iS+WEQPihKkCwDvt+ttL8COjWyiipjjfI+DWdqprKZx0GS4tR+MVxMd8nyri7e3QgMHlpTgqhVyjnR//HMMZz2Gbvr6f2XArpo1VoQFl8WkWcLt+wHSBPdJHb8BwL1SrtVww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=B/CUGfIo; arc=none smtp.client-ip=45.254.49.214
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="XbqOQU8g"
-ARC-Authentication-Results: i=1; mx-gate36-hz1.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out02-hz1.hornetsecurity.com;
- dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=b56rULzaQmeMuoYAaEU4xGBS2qJkvIqeuKLdirVgvFA=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1770705796;
- b=IyVwtXVunScNNRHVycAsslWNkADBSgQDt/pwrHpc3D/LkVS2pCWKjA2W48D4i3G/8Rx+FIVB
- XsLVhxAQzmo8tKL+3Baooo9Td1JfzdyARJ5hwxw9Mg1BMQpHmA5QvTJ2mm5wmdDXtslFoaCT/iS
- 1V2E5FFQjVUJ9gJtYS/LKMc4nYuQj49mVe1byz4aXxFQ7QPe4LuBqLzVtnaCv8XZOeCMzhnuar7
- zrIO6ItEsdWUHAOANLjzR/7vAPkt0YsVQNxOqHws2ag6ZkaKgD13GmRVGIWkmWzK+daVZ01oklo
- sfpraD9seCgyX4KjCEMMcb1mbVwFoTUJEgqFqCJuoUiVw==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1770705796;
- b=saYQu+DaR6s1h4uQ0ydeTCgrbQX9kHNK5cNdB2aAJ0YZYoxjy+EPoTqM3Ek9CQRPT+We0R6h
- Cr8BOBID6+kC6hINAN2tWnhRrRD5V+QQfPxA7wfoo/qVJM4454g7V4YJjCWw3zEkgjUjp2VSNY4
- FDk82JnFHyzrqX626Mx92aA82fqOYD/eKP/nYMq6Hki6dTskFWLJFz4k/b0JCxb1nYi/ziqzADC
- SWXYpLvB4CUunWs0snsbUQi6jOydbbEdG09/d4BHVlqJpGwaCdbCc2OGAnPDY5+ZaUYIc+A8C1x
- Xjb748dcV+4KTrGLHFadijCYHI9G42P0MZ7WXR8EYUBzA==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay36-hz1.antispameurope.com;
- Tue, 10 Feb 2026 07:43:16 +0100
-Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: alexander.stein@ew.tq-group.com)
-	by smtp-out02-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 907185A3005;
-	Tue, 10 Feb 2026 07:43:05 +0100 (CET)
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- Markus Niebel <Markus.Niebel@ew.tq-group.com>,
- Shawn Guo <shawnguo@kernel.org>, linux@ew.tq-group.com,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH 2/2] arm64: dts: imx93-tqma9352: improve eMMC pad configuration
-Date: Tue, 10 Feb 2026 07:43:05 +0100
-Message-ID: <5085410.31r3eYUQgx@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <aYozeOpdHo21D8v8@lizhi-Precision-Tower-5810>
-References:
- <20260209155015.267008-1-alexander.stein@ew.tq-group.com>
- <20260209155015.267008-2-alexander.stein@ew.tq-group.com>
- <aYozeOpdHo21D8v8@lizhi-Precision-Tower-5810>
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="B/CUGfIo"
+Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 33b5149e6;
+	Tue, 10 Feb 2026 15:12:39 +0800 (GMT+08:00)
+From: Damon Ding <damon.ding@rock-chips.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org
+Cc: Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	inki.dae@samsung.com,
+	sw0312.kim@samsung.com,
+	kyungmin.park@samsung.com,
+	krzk@kernel.org,
+	alim.akhtar@samsung.com,
+	jingoohan1@gmail.com,
+	p.zabel@pengutronix.de,
+	hjc@rock-chips.com,
+	heiko@sntech.de,
+	andy.yan@rock-chips.com,
+	dmitry.baryshkov@oss.qualcomm.com,
+	dianders@chromium.org,
+	m.szyprowski@samsung.com,
+	luca.ceresoli@bootlin.com,
+	jani.nikula@intel.com,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Damon Ding <damon.ding@rock-chips.com>
+Subject: [PATCH v9 01/15] drm/bridge: analogix_dp: Add &analogix_dp_plat_data.next_bridge
+Date: Tue, 10 Feb 2026 15:12:11 +0800
+Message-Id: <20260210071225.2566099-2-damon.ding@rock-chips.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260210071225.2566099-1-damon.ding@rock-chips.com>
+References: <20260210071225.2566099-1-damon.ding@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-cloud-security-sender:alexander.stein@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay36-hz1.antispameurope.com with 4f9BpL2LgXz2HYn9
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:99e422220242feeb3b158eff7f537415
-X-cloud-security:scantime:2.145
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9c466522c803a3kunm1f53a888aef929
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ0lMTFYaHk9MQ0gfGUxIQ0pWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
 DKIM-Signature: a=rsa-sha256;
- bh=b56rULzaQmeMuoYAaEU4xGBS2qJkvIqeuKLdirVgvFA=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1770705795; v=1;
- b=XbqOQU8gXG6nkkVYlTgZF04Z2L2ClzJELL1tA8s1NlWq5iC1FCsPWWfS+WLV5dZaoDbpZauT
- CRQcRjez4AfIgMXCP49jioMGmDNdMhwGXOEDDxdPLTpLIO3/7fbrrbUd3dfAzRdWH5E//6wx54D
- KnWebiELuGPERSNI/Y0PW+yHVDzYhaQ6QQBC7NJ96c+G/KaYVNZFs47oKXOFNFUkJTNrfdSybif
- S7AyMdZeJJ1Ki3zmvuvuMnemAKNs/E+fyD2dTYxjAQ4N7YMMSFMTOdzIU2b96lF39A0zigLSFho
- 8OzryRKrGpae8OHxAIuHXRZvXwjlhd1uKo2wOPTcfKyiw==
+	b=B/CUGfIosIkoONgayFHQlhRneg+UbQHd/Ms7jCuLQ7O4SWgujkzdkrENNnBrT6nzHCHvao0ilFK6Y0hyJ2BfC/vt/Ha6CVxwWbsLicvM2gRBgzCi8eyhJaXVGmzGt4Z5Ine3ZcEJCnO4TYGm15DD62vhb1ODtMTqilCzH9+cQuY=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=1qcQ7gNd/FYZLVi0CLYQ36BgxuUYuY4ez1oRTlI1iEA=;
+	h=date:mime-version:subject:message-id:from;
 
-Hi Frank,
+In order to move the panel/bridge parsing and attachmenet to the
+Analogix side, add component struct drm_bridge *next_bridge to
+platform data struct analogix_dp_plat_data.
 
-Am Montag, 9. Februar 2026, 20:20:24 CET schrieb Frank Li:
-> On Mon, Feb 09, 2026 at 04:50:14PM +0100, Alexander Stein wrote:
-> > From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-> >
-> > Use DSE x4 an PullUp for CMD an DAT, DSE x4 and PullDown for CLK.
-> > This improves stability and detection at low temperatures under -25=B0C.
->=20
-> Nit:
->=20
-> Use DSE x4 an PullUp for CMD an DAT, DSE x4 and PullDown for CLK to impro=
-ve
-> stability and detection at low temperatures under -25=B0C.
->=20
-> If you think it is okay, I can update it when apply it.
->=20
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+The movement makes sense because the panel/bridge should logically
+be positioned behind the Analogix bridge in the display pipeline.
 
-Thanks, this sounds even better. Feel free to amend it when applying.
+Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
 
-Best regards,
-Alexander
+---
 
-> >
-> > Fixes: 0b5fdfaa8e45 ("arm64: dts: freescale: imx93-tqma9352: set SION f=
-or cmd and data pad of USDHC")
-> > Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > ---
-> >  .../boot/dts/freescale/imx93-tqma9352.dtsi    | 26 +++++++++----------
-> >  1 file changed, 13 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi b/arch/a=
-rm64/boot/dts/freescale/imx93-tqma9352.dtsi
-> > index 3a23e2eb9febe..ce34a296495c4 100644
-> > --- a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
-> > +++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
-> > @@ -271,21 +271,21 @@ MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x106
-> >  	/* enable SION for data and cmd pad due to ERR052021 */
-> >  	pinctrl_usdhc1: usdhc1grp {
-> >  		fsl,pins =3D <
-> > -			/* PD | FSEL 3 | DSE X5 */
-> > -			MX93_PAD_SD1_CLK__USDHC1_CLK		0x5be
-> > +			/* PD | FSEL 3 | DSE X4 */
-> > +			MX93_PAD_SD1_CLK__USDHC1_CLK		0x59e
-> >  			/* HYS | FSEL 0 | no drive */
-> >  			MX93_PAD_SD1_STROBE__USDHC1_STROBE	0x1000
-> > -			/* HYS | FSEL 3 | X5 */
-> > -			MX93_PAD_SD1_CMD__USDHC1_CMD		0x400011be
-> > -			/* HYS | FSEL 3 | X4 */
-> > -			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x4000119e
-> > -			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x4000119e
-> > -			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x4000119e
-> > -			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x4000119e
-> > -			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x4000119e
-> > -			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x4000119e
-> > -			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x4000119e
-> > -			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x4000119e
-> > +			/* HYS | PU | FSEL 3 | DSE X4 */
-> > +			MX93_PAD_SD1_CMD__USDHC1_CMD		0x4000139e
-> > +			/* HYS | PU | FSEL 3 | DSE X4 */
-> > +			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x4000139e
-> > +			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x4000139e
-> > +			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x4000139e
-> > +			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x4000139e
-> > +			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x4000139e
-> > +			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x4000139e
-> > +			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x4000139e
-> > +			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x4000139e
-> >  		>;
-> >  	};
-> >
-> > --
-> > 2.43.0
-> >
->=20
+Changes in v4:
+- Rename the &analogix_dp_plat_data.bridge to
+  &analogix_dp_plat_data.next_bridge
 
+Changes in v9:
+- Add Reviewed-by and Tested-by tags.
+---
+ include/drm/bridge/analogix_dp.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
+diff --git a/include/drm/bridge/analogix_dp.h b/include/drm/bridge/analogix_dp.h
+index cf17646c1310..582357c20640 100644
+--- a/include/drm/bridge/analogix_dp.h
++++ b/include/drm/bridge/analogix_dp.h
+@@ -27,6 +27,7 @@ static inline bool is_rockchip(enum analogix_dp_devtype type)
+ struct analogix_dp_plat_data {
+ 	enum analogix_dp_devtype dev_type;
+ 	struct drm_panel *panel;
++	struct drm_bridge *next_bridge;
+ 	struct drm_encoder *encoder;
+ 	struct drm_connector *connector;
+ 	bool skip_connector;
+-- 
+2.34.1
 
