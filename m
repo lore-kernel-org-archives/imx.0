@@ -1,35 +1,69 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m32121.qiye.163.com (mail-m32121.qiye.163.com [220.197.32.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BB734A786;
-	Tue, 10 Feb 2026 10:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811D1340D86
+	for <imx@lists.linux.dev>; Tue, 10 Feb 2026 10:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770718229; cv=none; b=gW4ZXj33Iq0gHJ0rGuKDr0ChsAg+SxRxrYN0Q21WJntyh7NTqG0KFJNt/Q3AYEPwtGTPcpY+Vmbq88vgG15WMw5SK2l8aVCZA4duW8YphmOeBF+kBaiCMHJYS26iMWvClHAxhmC73g3gs+YsJrlR3qqKH9nE+4nMWkg9h8tinLo=
+	t=1770719176; cv=none; b=YsPMdIe8qVaua+e+eXWEG69iAPPp8jHsdg8VPkg5RXjPL36wveQCtkFhgtj2UAvOUa0NgJkD7l/9bAH4KGR36qKYIVZoUl1HC1xTVWIgStrCpGyW6h9a+XYdk3YcFt791HqQoRtzqNt5II1cW2MzI48eUFihRDlP1xkGf143Ut0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770718229; c=relaxed/simple;
-	bh=FMBaXuFQeBrt8fJEzPTuhWQ23fYLV56pEAMm2NMWTtQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=UQJSmwmQG3sOB/swwAszxsuZiZfkTtsKHz8Z/DTv8DEYAC64y3QDODd7VZw+3qq2vmkS927H0dUWC7mVbiLqKW9CqX/A8jYxaIWAQhUDf5UNAJZ/eGx26kxqtul5RJqSeNklrnSZDePWZpUS5Kw8FGOLRUObJi/rePZLo5X1UE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A72yDi4o; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770719176; c=relaxed/simple;
+	bh=IvvJ0Bu68Qsxc9dYIyXwyu+C3LuGFlJYnL8ifqm1jSk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Bgfhhac83ZnHW7yKTRrfwqlD8bmC10LytW4iPjfm15TgB9LEyzH9TL7WimzmVLwu7Ue9K9cA0yh7AW3x5jCfMKhjcxbFYYPdf5P7YD2XTiqxZ5VU5HL93aNfCzsiKQtD/A4xpFXzEJUuZ2OABZPBpmpXULK+iJgvhFtQK1AODGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=OKtvtFXs; arc=none smtp.client-ip=220.197.32.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A72yDi4o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538BCC116C6;
-	Tue, 10 Feb 2026 10:10:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770718229;
-	bh=FMBaXuFQeBrt8fJEzPTuhWQ23fYLV56pEAMm2NMWTtQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=A72yDi4oURF59QiUNMNV3Z8GAHqR3gkQXkmFNvKfqrddYbwrPNFWpRLnnvaEvZ5Lt
-	 C2INGLJbgw9d6fh+eaf6qjLRPMqMuWkGZCTBbInRygDUQi0JBIuLRcDLwy63qaREYi
-	 xEJeijZUg9UB33h0SlOzSANe3FsuwEIIfBMziqY4A2HWQtWhERKJDbKtrnN1wYO98W
-	 RlaqZLFncHyvgjkC89LMBkXs13d4N1ULT3bx0Woi+fcuKP3XjIOwaf+nvF0pi3LasH
-	 Ck9roETDe7R6bST8f5olV4P/9aWO8aIyCwihbMusOWKf7qlkLs6b9g71JjTlNGoHVS
-	 j2ZTF81B1RKWw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0B08439B167A;
-	Tue, 10 Feb 2026 10:10:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="OKtvtFXs"
+Received: from zyb-HP-ProDesk-680-G2-MT.. (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 33b982511;
+	Tue, 10 Feb 2026 17:10:34 +0800 (GMT+08:00)
+From: Damon Ding <damon.ding@rock-chips.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org
+Cc: Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	inki.dae@samsung.com,
+	sw0312.kim@samsung.com,
+	kyungmin.park@samsung.com,
+	krzk@kernel.org,
+	alim.akhtar@samsung.com,
+	jingoohan1@gmail.com,
+	p.zabel@pengutronix.de,
+	hjc@rock-chips.com,
+	heiko@sntech.de,
+	andy.yan@rock-chips.com,
+	dmitry.baryshkov@oss.qualcomm.com,
+	dianders@chromium.org,
+	m.szyprowski@samsung.com,
+	luca.ceresoli@bootlin.com,
+	jani.nikula@intel.com,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Damon Ding <damon.ding@rock-chips.com>
+Subject: [PATCH v9 15/15] drm/bridge: analogix_dp: Apply panel_bridge helper
+Date: Tue, 10 Feb 2026 17:10:24 +0800
+Message-Id: <20260210091024.2732369-2-damon.ding@rock-chips.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260210091024.2732369-1-damon.ding@rock-chips.com>
+References: <20260210071225.2566099-1-damon.ding@rock-chips.com>
+ <20260210091024.2732369-1-damon.ding@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -37,74 +71,170 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v7 net-next 00/15] net: fec: improve XDP copy mode and add
- AF_XDP zero-copy support
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177071822482.3446472.4693550669604123129.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Feb 2026 10:10:24 +0000
-References: <20260205085742.2685134-1-wei.fang@nxp.com>
-In-Reply-To: <20260205085742.2685134-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: shenwei.wang@nxp.com, xiaoning.wang@nxp.com, frank.li@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- bpf@vger.kernel.org
+X-HM-Tid: 0a9c46d119c903a3kunm0d7fbd00b0728b
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ0pMTFZMTk0eSh4dS0JISRhWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEpKQk
+	1VSktLVUpCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=OKtvtFXsqWlBYecb/9qXzGeTAlxfcIbetsEaqAvwUeNlTH8nh24vkAf5xgVZF4+NvYmI3FCgjs4U07oBIFB7GnvMsKqJMYqkNsOP8ck14wO6RAry0kQJ3joV/JF1pvLjM3wbNtnA/Kh4jGHCPBrWeIzRt0x9yL6FU/u20PCbqqM=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=T+bGd3ua6CM30Mg2VXtf08LWh5BH559jUH485cw6AnM=;
+	h=date:mime-version:subject:message-id:from;
 
-Hello:
+In order to unify the handling of the panel and bridge, apply
+panel_bridge helpers for Analogix DP driver. With this patch, the
+bridge support will also become available.
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+The following changes have ben made:
+- Apply plane_bridge helper to wrap the panel as the bridge.
+- Remove the explicit panel APIs calls, which can be replaced with
+  the automic bridge APIs calls wrapped by the panel.
+- Remove the unnecessary analogix_dp_bridge_get_modes().
 
-On Thu,  5 Feb 2026 16:57:27 +0800 you wrote:
-> This patch set optimizes the XDP copy mode logic as follows.
-> 
-> 1. Separate the processing of RX XDP frames from fec_enet_rx_queue(),
-> and adds a separate function fec_enet_rx_queue_xdp() for handling XDP
-> frames.
-> 
-> 2. For TX XDP packets, using the batch sending method to avoid frequent
-> MMIO writes.
-> 
-> [...]
+Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Tested-by: Heiko Stuebner <heiko@sntech.de> (on rk3588)
 
-Here is the summary with links:
-  - [v7,net-next,01/15] net: fec: add fec_txq_trigger_xmit() helper
-    https://git.kernel.org/netdev/net-next/c/c8d4ad91765c
-  - [v7,net-next,02/15] net: fec: add fec_rx_error_check() to check RX errors
-    https://git.kernel.org/netdev/net-next/c/ff306e9a1963
-  - [v7,net-next,03/15] net: fec: add rx_shift to indicate the extra bytes padded in front of RX frame
-    https://git.kernel.org/netdev/net-next/c/385d19b56761
-  - [v7,net-next,04/15] net: fec: add fec_build_skb() to build a skb
-    https://git.kernel.org/netdev/net-next/c/54a6e86ba4ff
-  - [v7,net-next,05/15] net: fec: improve fec_enet_rx_queue()
-    https://git.kernel.org/netdev/net-next/c/bc609f97b140
-  - [v7,net-next,06/15] net: fec: add fec_enet_rx_queue_xdp() for XDP path
-    https://git.kernel.org/netdev/net-next/c/5ff3d3ddcdbe
-  - [v7,net-next,07/15] net: fec: add tx_qid parameter to fec_enet_xdp_tx_xmit()
-    https://git.kernel.org/netdev/net-next/c/8a3344bb734f
-  - [v7,net-next,08/15] net: fec: transmit XDP frames in bulk
-    https://git.kernel.org/netdev/net-next/c/2ff7a7d3928b
-  - [v7,net-next,09/15] net: fec: remove unnecessary NULL pointer check when clearing TX BD ring
-    https://git.kernel.org/netdev/net-next/c/2dcc93475559
-  - [v7,net-next,10/15] net: fec: use switch statement to check the type of tx_buf
-    https://git.kernel.org/netdev/net-next/c/8492e4f1959c
-  - [v7,net-next,11/15] net: fec: remove the size parameter from fec_enet_create_page_pool()
-    https://git.kernel.org/netdev/net-next/c/6729b24c1c2f
-  - [v7,net-next,12/15] net: fec: move xdp_rxq_info* APIs out of fec_enet_create_page_pool()
-    https://git.kernel.org/netdev/net-next/c/edd393153ef0
-  - [v7,net-next,13/15] net: fec: add fec_alloc_rxq_buffers_pp() to allocate buffers from page pool
-    https://git.kernel.org/netdev/net-next/c/a2ae70c0efe4
-  - [v7,net-next,14/15] net: fec: improve fec_enet_tx_queue()
-    https://git.kernel.org/netdev/net-next/c/fee723a48cbe
-  - [v7,net-next,15/15] net: fec: add AF_XDP zero-copy support
-    https://git.kernel.org/netdev/net-next/c/25eb3058eb70
+---
 
-You are awesome, thank you!
+Changes in v4:
+- Rename the &analogix_dp_plat_data.bridge to
+  &analogix_dp_plat_data.next_bridge.
+
+Changes in v5:
+- Move panel_bridge addition a little forward.
+- Move next_bridge attachment from Analogix side to Rockchip/Exynos
+  side.
+
+Changes in v6
+- Remove the unnecessary analogix_dp_bridge_get_modes().
+- Not to set DRM_BRIDGE_OP_MODES if the next is a panel.
+- Squash [PATCH v5 15/17]drm/bridge: analogix_dp: Remove panel
+  disabling and enabling in analogix_dp_set_bridge() into this
+  commit.
+- Fix the &drm_bridge->ops to DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT.
+
+Changes in v9:
+- Add Tested-by tag.
+---
+ .../drm/bridge/analogix/analogix_dp_core.c    | 41 +++++--------------
+ 1 file changed, 11 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+index 7e3e9d4f4ea2..d2ea93e1c9a3 100644
+--- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
++++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+@@ -749,9 +749,6 @@ static int analogix_dp_commit(struct analogix_dp_device *dp)
+ {
+ 	int ret;
+ 
+-	/* Keep the panel disabled while we configure video */
+-	drm_panel_disable(dp->plat_data->panel);
+-
+ 	ret = analogix_dp_train_link(dp);
+ 	if (ret) {
+ 		dev_err(dp->dev, "unable to do link train, ret=%d\n", ret);
+@@ -771,9 +768,6 @@ static int analogix_dp_commit(struct analogix_dp_device *dp)
+ 		return ret;
+ 	}
+ 
+-	/* Safe to enable the panel now */
+-	drm_panel_enable(dp->plat_data->panel);
+-
+ 	/* Check whether panel supports fast training */
+ 	ret = analogix_dp_fast_link_train_detection(dp);
+ 	if (ret)
+@@ -858,17 +852,6 @@ static int analogix_dp_disable_psr(struct analogix_dp_device *dp)
+ 	return analogix_dp_send_psr_spd(dp, &psr_vsc, true);
+ }
+ 
+-static int analogix_dp_bridge_get_modes(struct drm_bridge *bridge, struct drm_connector *connector)
+-{
+-	struct analogix_dp_device *dp = to_dp(bridge);
+-	int num_modes = 0;
+-
+-	if (dp->plat_data->panel)
+-		num_modes += drm_panel_get_modes(dp->plat_data->panel, connector);
+-
+-	return num_modes;
+-}
+-
+ static const struct drm_edid *analogix_dp_bridge_edid_read(struct drm_bridge *bridge,
+ 							   struct drm_connector *connector)
+ {
+@@ -909,7 +892,7 @@ analogix_dp_bridge_detect(struct drm_bridge *bridge, struct drm_connector *conne
+ 	struct analogix_dp_device *dp = to_dp(bridge);
+ 	enum drm_connector_status status = connector_status_disconnected;
+ 
+-	if (dp->plat_data->panel || dp->plat_data->next_bridge)
++	if (dp->plat_data->next_bridge)
+ 		return connector_status_connected;
+ 
+ 	if (!analogix_dp_detect_hpd(dp))
+@@ -995,8 +978,6 @@ static void analogix_dp_bridge_atomic_pre_enable(struct drm_bridge *bridge,
+ 	/* Don't touch the panel if we're coming back from PSR */
+ 	if (old_crtc_state && old_crtc_state->self_refresh_active)
+ 		return;
+-
+-	drm_panel_prepare(dp->plat_data->panel);
+ }
+ 
+ static int analogix_dp_set_bridge(struct analogix_dp_device *dp)
+@@ -1168,16 +1149,12 @@ static void analogix_dp_bridge_disable(struct drm_bridge *bridge)
+ 	if (dp->dpms_mode != DRM_MODE_DPMS_ON)
+ 		return;
+ 
+-	drm_panel_disable(dp->plat_data->panel);
+-
+ 	disable_irq(dp->irq);
+ 
+ 	analogix_dp_set_analog_power_down(dp, POWER_ALL, 1);
+ 
+ 	pm_runtime_put_sync(dp->dev);
+ 
+-	drm_panel_unprepare(dp->plat_data->panel);
+-
+ 	dp->fast_train_enable = false;
+ 	dp->psr_supported = false;
+ 	dp->dpms_mode = DRM_MODE_DPMS_OFF;
+@@ -1252,7 +1229,6 @@ static const struct drm_bridge_funcs analogix_dp_bridge_funcs = {
+ 	.atomic_post_disable = analogix_dp_bridge_atomic_post_disable,
+ 	.atomic_check = analogix_dp_bridge_atomic_check,
+ 	.attach = analogix_dp_bridge_attach,
+-	.get_modes = analogix_dp_bridge_get_modes,
+ 	.edid_read = analogix_dp_bridge_edid_read,
+ 	.detect = analogix_dp_bridge_detect,
+ };
+@@ -1498,17 +1474,22 @@ int analogix_dp_bind(struct analogix_dp_device *dp, struct drm_device *drm_dev)
+ 		return ret;
+ 	}
+ 
+-	if (dp->plat_data->panel)
+-		bridge->ops = DRM_BRIDGE_OP_MODES | DRM_BRIDGE_OP_DETECT;
+-	else
+-		bridge->ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT;
+-
++	bridge->ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT;
+ 	bridge->of_node = dp->dev->of_node;
+ 	bridge->type = DRM_MODE_CONNECTOR_eDP;
+ 	ret = devm_drm_bridge_add(dp->dev, &dp->bridge);
+ 	if (ret)
+ 		goto err_unregister_aux;
+ 
++	if (dp->plat_data->panel) {
++		dp->plat_data->next_bridge = devm_drm_panel_bridge_add(dp->dev,
++								       dp->plat_data->panel);
++		if (IS_ERR(dp->plat_data->next_bridge)) {
++			ret = PTR_ERR(bridge);
++			goto err_unregister_aux;
++		}
++	}
++
+ 	ret = drm_bridge_attach(dp->encoder, bridge, NULL, DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+ 	if (ret) {
+ 		DRM_ERROR("failed to create bridge (%d)\n", ret);
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
