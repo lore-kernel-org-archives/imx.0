@@ -1,121 +1,108 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4609432BF42
-	for <imx@lists.linux.dev>; Wed, 11 Feb 2026 12:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83959313E3F
+	for <imx@lists.linux.dev>; Wed, 11 Feb 2026 12:54:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770813839; cv=none; b=LpKX5ir3I1MoLRwC+IGyuvCIF5jqa7ZAjbcEpoWlsOanXtMsxUJuhl+CZazN49nnGToCxB6pvTkIRxX5Nf0qNs+eLP9Q8UpWrb+/iPUV1gN+Pnusb9Z6JR+LYn4DMhfSrVPrENgAs2iVLpsZ+RsAYCNBdbEfLJE6N630OdsPsNA=
+	t=1770814450; cv=none; b=huYzUlBWLfvVCzr0qXHUzbitIvBfZ+T0ddpETWcmrSxOSYISqQCDF9WI/BTgcg+l4yqKc3cWSYc//vGEPc0siVoyTBRXdx69phNlmLg6dtD9iwxm2Ec43gYe5eZcOOLUgf3PQvIiYx/CV0bNQNmQKHjJZ38P0MV/12yYanX6uLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770813839; c=relaxed/simple;
-	bh=Yrh/t/cTEKmV/IDOiH9nMLMPHm8bXxTrNsV5Qyd+Piw=;
+	s=arc-20240116; t=1770814450; c=relaxed/simple;
+	bh=71alNqPQhjkDxyzZP2X+P+wm37/l9hxA7WGUZeFgi1w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=THhZxDhXPRhjFJuJuoLA8tgdeTXQxpN1DW/anoCxmgPje37mx6gmuJLEMHZR2VpJt1uDHluN10d0Fl5J9wNSxYAG5MyMeIowEOaT3txtcKefNUH3dsHnSqX3+O8fRK7Af9h4o2QFiCktEbqQ16YyoqHnMmgLpoE3hZ+y4w4yv/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vq9Yu-0001Lh-0u; Wed, 11 Feb 2026 13:43:20 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vq9Yr-000FHh-06;
-	Wed, 11 Feb 2026 13:43:18 +0100
-Received: from pengutronix.de (p54b15bf8.dip0.t-ipconnect.de [84.177.91.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id E5CB54E67D3;
-	Wed, 11 Feb 2026 12:43:17 +0000 (UTC)
-Date: Wed, 11 Feb 2026 13:43:17 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Peter Chen <peter.chen@kernel.org>, 
-	Pawel Laszczak <pawell@cadence.com>, Roger Quadros <rogerq@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Magnus Damm <magnus.damm@gmail.com>, Marek Vasut <marex@denx.de>, 
-	Frank Li <Frank.Li@nxp.com>, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux@ew.tq-group.com
-Subject: Re: [PATCH v2 4/5] arm64: dts: freescale: add initial device tree
- for TQMa8x
-Message-ID: <20260211-futuristic-venomous-poodle-3b2708-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <20260211123436.1077513-1-alexander.stein@ew.tq-group.com>
- <20260211123436.1077513-5-alexander.stein@ew.tq-group.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=hI0sSGqaiYkCWExWwqUz9JFxSEJcE8HEUwmz4PHLxalJBWPpPTL7kSJv8iY4FpON8xuC35ouhsVQCBNzgc54byVlgM2gzbeWf1xnFbr4Pq8BlyoYQgC1xSOznhLH6cS8H2IZ0wIbxCBrTmnLRr/zTG8tsRnLJ9cyZhUUlo27izk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=ORW8Igia; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="ORW8Igia"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=U/Neu0hfsRUexXQo24Z6HShCyIt/OEPA5N5gMOQo0YA=; b=ORW8IgiayHO4HEXJA0qBnHnOZC
+	H1uTsTLK2U03+XH/wmxxTPF7soTPcmBREWW3gcYx8XO6gzS0l+GE/cSYHMchXPFytVtouF07Ht8A0
+	EoAup+kG8IPNoAAPjkWejjVqD5O9fSVau2kmDHCGiBfcI4HI6H7Yaeky+6GGC0x5Hz06XQpcUq3UQ
+	ydRQFPSzfx8TCBopbDrB/L+ysEJD/9X9ZqH2V/2vFcMvgv/iNBHKCRHxRPd8a8mDIXLw5gJZZW9iT
+	qg0lM1yLAny43dx3WCBrwzvuXA3FwccwSrRPCqbjM0rxTceQ2afmHfNf17T8RT8/yXAQF08bqhIOA
+	hVNuKRbw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:52936)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vq9jA-000000003QW-2HU1;
+	Wed, 11 Feb 2026 12:53:56 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vq9j6-000000003ma-0e94;
+	Wed, 11 Feb 2026 12:53:52 +0000
+Date: Wed, 11 Feb 2026 12:53:51 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: netdev@vger.kernel.org, imx@lists.linux.dev,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>, Heiko Schocher <hs@denx.de>,
+	Jakub Kicinski <kuba@kernel.org>, Joy Zou <joy.zou@nxp.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Martyn Welch <martyn.welch@collabora.com>,
+	Mathieu Othacehe <othacehe@gnu.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Richard Hu <richard.hu@technexion.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Stefan Klug <stefan.klug@ideasonboard.com>,
+	Stefano Radaelli <stefano.radaelli21@gmail.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2] net: stmmac: imx: Disable EEE
+Message-ID: <aYx73z0VTAGFAjlp@shell.armlinux.org.uk>
+References: <20260209202155.2388099-1-laurent.pinchart@ideasonboard.com>
+ <aYsj5IayQd3NRflL@shell.armlinux.org.uk>
+ <20260210143157.GM2405149@killaraus.ideasonboard.com>
+ <20260210163310.GO2405149@killaraus.ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7t2tirsdzj62jtz2"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260211123436.1077513-5-alexander.stein@ew.tq-group.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+In-Reply-To: <20260210163310.GO2405149@killaraus.ideasonboard.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
+On Tue, Feb 10, 2026 at 06:33:10PM +0200, Laurent Pinchart wrote:
+> > I'm happy to submit a series with both, rebased on top of net-next to
+> > handle the conflict you pointed out. Is that fine with you ?
+> 
+> If you would like me to submit a series with both patches, should I
+> resolve the conflict with "net: stmmac: dwmac-imx: keep preamble before
+> sfd on i.MX8MP" by inserting the STMMAC_FLAG_EEE_DISABLE flag as BIT(10)
+> and change the value of subsequent flags as you did, or add it at the
+> end (BIT(15)) ?
 
---7t2tirsdzj62jtz2
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 4/5] arm64: dts: freescale: add initial device tree
- for TQMa8x
-MIME-Version: 1.0
+I would prefer to keep similar flags together rather than just appending
+to the end of the list.
 
-On 11.02.2026 13:34:31, Alexander Stein wrote:
-> +&flexcan1 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_flexcan1>;
-> +	xceiver-supply =3D <&reg_mba8x_v3v3>;
-        ^^^^^^^^^^^^^^
-> +	status =3D "okay";
-> +};
-> +
-> +&flexcan2 {
-> +	pinctrl-names =3D "default";
-> +	pinctrl-0 =3D <&pinctrl_flexcan2>;
-> +	xceiver-supply =3D <&reg_mba8x_v3v3>;
-        ^^^^^^^^^^^^^^
-> +	status =3D "okay";
-> +};
+> I'm also happy if you take my patch and submit a series with both.
 
-Can you use the PHY binding instead, see:
+I think it would make sense if you submit it once net-next reopens after
+the merge window.
 
-| https://elixir.bootlin.com/linux/v6.18.6/source/arch/arm64/boot/dts/frees=
-cale/imx8mp-tx8p-ml81-moduline-display-106.dts#L180
+Thanks.
 
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---7t2tirsdzj62jtz2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCaYx5YwAKCRDMOmT6rpmt
-0uZYAP9Mh/MD1BAbuW2LulGwhNS/BuC/0SSTPHlADyPndPoH1QEA7NcziSmdiwYc
-clEEmCglt6MpfnzULfQqm+Pydj7PGAM=
-=amdT
------END PGP SIGNATURE-----
-
---7t2tirsdzj62jtz2--
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
