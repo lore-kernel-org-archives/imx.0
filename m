@@ -1,147 +1,70 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA3C22301;
-	Wed, 11 Feb 2026 05:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E8A2DFA25;
+	Wed, 11 Feb 2026 06:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770789443; cv=none; b=iIecoP+iZD7io9omIely8ZMCFOOX9LYO0qTfVeqo7QY3M7GVDlUrS9bBsKHRklXHdD3H4+wCrJ80+C+5qB71gRTKXRPzGtQcxrXbxhX/YPIxb9dVTrMtgtdsPeQpsbRQ231aH10Ur4C5Mr0hSl4mJULmQ4g7wcBhF2EE5t3jADI=
+	t=1770792438; cv=none; b=T/i+/awE5n6ycIk9oMKEeWipHDU4ZV9xlBKvKYfQ/g9DML1pkfU+wwEcXPQtcSZLTOdi96qTZ3V1e7M4kmm+bdakNkbl2+z51csGB450SBi7R8Pj2ic4p50yqO6Drn+vRFeL54WKlFYsf7I9vGw6t3kT4GWHa9N1qWaoZpjo+cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770789443; c=relaxed/simple;
-	bh=WnpB/MHUvOu0MxaG9qXi+XunVyvMIMGcsZJjH30GK1s=;
+	s=arc-20240116; t=1770792438; c=relaxed/simple;
+	bh=D39DBVuYgmIqcUJ5WRCSy4xXOe9xyGcoG2v7vm14CAA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nMVk7aV3ZQzQU9mVTph3JjoOH3X9RV39Wbm3sAvgF3sd6MTZUBfxGeJomRJ4gUsXKP4YCkId38EJkPsADLA3BBQ5GcitKKsCZD0uVQwg5Zqbh5cHQ22QpXmjzu+mD5WnjV/d6ihQPCrsQpWu+0WMlEOs8IyX3AJReoChI8w+wRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kIrq/DxR; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=bv4HpdR1EaA7gw+zQiVhL6pRDAnIF1wcpmcnG5yAp82vYLMUAwjLrioEZBw/aseHmYFZHX86sjVVxb/SAemLCMQ4m5PHsO4pRCVv/hdn5N2lwHm0zj9bA6bT5pPg9ruMwOn5f57XYuN2AoOeA4kqLq7kZr7tiXcdwz6fmdCF20Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cKotFZSc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kIrq/DxR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770789441; x=1802325441;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WnpB/MHUvOu0MxaG9qXi+XunVyvMIMGcsZJjH30GK1s=;
-  b=kIrq/DxRr+GY5EV6VGXQKIYcYBkEm7upbEVkYQn4JZ39944veSfOYcDq
-   1YHpSWHRtfAyazG+6/rlrjJ07yaZ/gr1hWqS977AfzvIAVthpl6bFTemR
-   Am101J5ppaj5oEGSA+0LLtElb2hAYmjT2D0l5ayE1Eb+MHqRSoH2L/ePw
-   zFW//kB6H6oKU6sbHyImSU8DPdxP2IyQ+dQloTEZkrJe/aFe91lQ/OnVo
-   YpsDgAfepElN1dPbggUw70t5hPsmGeqPA5fp269f0Q+po26o9CJggTaQo
-   FCmzzsDxc/kPXrX2GXsMkjSPJpPpx/rqrmhusq+OgLpO2tFuXD0JrAhUd
-   Q==;
-X-CSE-ConnectionGUID: 8uQh0eD3RluGTi9WjNlafA==
-X-CSE-MsgGUID: byhl3pBDTwS2x4Stj5KQvg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="94569679"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="94569679"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 21:57:21 -0800
-X-CSE-ConnectionGUID: Cp3x9V8wSLW7rubOh6WZ5A==
-X-CSE-MsgGUID: H3wgMnd3QcCarV66oRkcfg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="212176563"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 10 Feb 2026 21:57:15 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vq3Ds-00000000piq-4C4o;
-	Wed, 11 Feb 2026 05:57:13 +0000
-Date: Wed, 11 Feb 2026 13:56:41 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shenwei Wang <shenwei.wang@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>, Peng Fan <peng.fan@nxp.com>,
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-imx@nxp.com,
-	arnaud.pouliquen@foss.st.com, Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH v7 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
-Message-ID: <202602111320.C3eHRtNV-lkp@intel.com>
-References: <20260210170814.406883-4-shenwei.wang@nxp.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cKotFZSc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBAF5C4CEF7;
+	Wed, 11 Feb 2026 06:47:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770792438;
+	bh=D39DBVuYgmIqcUJ5WRCSy4xXOe9xyGcoG2v7vm14CAA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cKotFZScyMprPsBLEJTJD4lj3XdUBAZuOt4X13Iwha2YeV7f/pWZ0yuPc+JGGQc+Q
+	 maQUwcmbsTrwvpO7qBBOhEZ4Z4sH3xemDzfigZ8nxdO2mRQABtVMj4U25zYJNC95uO
+	 OMoRFCiHxYXzxcoQFK61Nf+DFQhxZ9M/0cb6Q2Aae6FtgNFaCX8iellA1cB/XIxtxo
+	 g1R6CGsl96a80EV48V58qtDlKl90vavUmEEqF/pwgpfTPssXHaOSf1McXnUAET6Xog
+	 0hS+hQPnk2N2ohDdb0GpGYfgr2RySSFxA1Aw29E+UBHtrvEi6baFjpK0rupG6lSkn+
+	 /DHGQLhVtEDHw==
+Date: Wed, 11 Feb 2026 07:47:15 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Michael Riesch <michael.riesch@collabora.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Philipp Zabel <p.zabel@pengutronix.de>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, Guoniu Zhou <guoniu.zhou@oss.nxp.com>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, imx@lists.linux.dev
+Subject: Re: [PATCH 5/6] media: dt-bindings: add NXP i.MX93 compatible string
+Message-ID: <20260211-notorious-crow-of-lightning-627b63@quoll>
+References: <20260210-imx93-dw-csi2-v1-0-69667bb86bfa@nxp.com>
+ <20260210-imx93-dw-csi2-v1-5-69667bb86bfa@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260210170814.406883-4-shenwei.wang@nxp.com>
+In-Reply-To: <20260210-imx93-dw-csi2-v1-5-69667bb86bfa@nxp.com>
 
-Hi Shenwei,
+On Tue, Feb 10, 2026 at 12:11:12PM -0500, Frank Li wrote:
+> The i.MX93 uses the DW CSI-2 RX controller, which is similar to the
+> Rockchip RK3568 implementation.
+> 
+> The i.MX93 variant provides one IRQ, two clocks, and no resets. Add the
+> "fsl,imx93-mipi-csi2" compatible string and keep the same constraints for
+> rk3568.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../bindings/media/rockchip,rk3568-mipi-csi2.yaml  | 47 +++++++++++++++++++++-
+>  1 file changed, 45 insertions(+), 2 deletions(-)
 
-kernel test robot noticed the following build errors:
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-[auto build test ERROR on brgl/gpio/for-next]
-[also build test ERROR on robh/for-next remoteproc/rproc-next linus/master v6.19 next-20260210]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Best regards,
+Krzysztof
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Shenwei-Wang/dt-bindings-remoteproc-imx_rproc-Add-rpmsg-subnode-support/20260211-011505
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/brgl/linux.git gpio/for-next
-patch link:    https://lore.kernel.org/r/20260210170814.406883-4-shenwei.wang%40nxp.com
-patch subject: [PATCH v7 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
-config: nios2-randconfig-r054-20260211 (https://download.01.org/0day-ci/archive/20260211/202602111320.C3eHRtNV-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 9.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260211/202602111320.C3eHRtNV-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602111320.C3eHRtNV-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   nios2-linux-ld: drivers/gpio/gpio-rpmsg.o: in function `rpmsg_get_channel_ofnode':
->> drivers/gpio/gpio-rpmsg.c:473: undefined reference to `rproc_get_by_child'
->> drivers/gpio/gpio-rpmsg.c:473:(.text+0x454): relocation truncated to fit: R_NIOS2_CALL26 against `rproc_get_by_child'
-   nios2-linux-ld: drivers/gpio/gpio-rpmsg.o: in function `rpmsg_get_rproc_node_name':
-   drivers/gpio/gpio-rpmsg.c:450: undefined reference to `rproc_get_by_child'
-   drivers/gpio/gpio-rpmsg.c:450:(.text+0x4e0): relocation truncated to fit: R_NIOS2_CALL26 against `rproc_get_by_child'
-
-
-vim +473 drivers/gpio/gpio-rpmsg.c
-
-   466	
-   467	static struct device_node *
-   468	rpmsg_get_channel_ofnode(struct rpmsg_device *rpdev, char *chan_name)
-   469	{
-   470		struct device_node *np_chan = NULL, *np;
-   471		struct rproc *rproc;
-   472	
- > 473		rproc = rproc_get_by_child(&rpdev->dev);
-   474		if (!rproc)
-   475			return NULL;
-   476	
-   477		np = of_node_get(rproc->dev.of_node);
-   478		if (!np && rproc->dev.parent)
-   479			np = of_node_get(rproc->dev.parent->of_node);
-   480	
-   481		if (np) {
-   482			/* Balance the of_node_put() performed by of_find_node_by_name(). */
-   483			of_node_get(np);
-   484			np_chan = of_find_node_by_name(np, chan_name);
-   485			of_node_put(np);
-   486		}
-   487	
-   488		return np_chan;
-   489	}
-   490	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
