@@ -1,108 +1,139 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mx-relay49-hz3.antispameurope.com (mx-relay49-hz3.antispameurope.com [94.100.134.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83959313E3F
-	for <imx@lists.linux.dev>; Wed, 11 Feb 2026 12:54:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770814450; cv=none; b=huYzUlBWLfvVCzr0qXHUzbitIvBfZ+T0ddpETWcmrSxOSYISqQCDF9WI/BTgcg+l4yqKc3cWSYc//vGEPc0siVoyTBRXdx69phNlmLg6dtD9iwxm2Ec43gYe5eZcOOLUgf3PQvIiYx/CV0bNQNmQKHjJZ38P0MV/12yYanX6uLw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770814450; c=relaxed/simple;
-	bh=71alNqPQhjkDxyzZP2X+P+wm37/l9hxA7WGUZeFgi1w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hI0sSGqaiYkCWExWwqUz9JFxSEJcE8HEUwmz4PHLxalJBWPpPTL7kSJv8iY4FpON8xuC35ouhsVQCBNzgc54byVlgM2gzbeWf1xnFbr4Pq8BlyoYQgC1xSOznhLH6cS8H2IZ0wIbxCBrTmnLRr/zTG8tsRnLJ9cyZhUUlo27izk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=ORW8Igia; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798C431354F
+	for <imx@lists.linux.dev>; Wed, 11 Feb 2026 13:07:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770815259; cv=pass; b=DADRK6f0jz3vqOxzEsRqGTGAWXLYS6C5oNoegKfoXhsbkx47F8DQlIIXMp+IowKnCjJJ/I6aYpgWZ/Vmj5iPHX2jLhyR602+zicyiJoBmh/1HNx7uijd15NbAakZ4KWIM4Ipkbe0Zz1rzNCo3cyaXn7JZZS4c3zk+/v6UVFSDOM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770815259; c=relaxed/simple;
+	bh=3u7qEwIxFefCD9RIT8ZzGZntXAn+E3x5kO1a/WDdBuk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=l7tbuRLNBEv2VNIGHQXr9Ir47/RqmWGRg0ccNaxrCFkZLWbCYiNtAZN5j+kSYoXsXz9soCz/QYm3JrXDsN0JU9/EHnlP9EQzRBIGmBZKIux3D4Bw4PqttO8WCE+rkVo4UIH7qKGl1kjhBIf2S/s1AWeF3yBqHFENFUa0j6t7c1k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=EkBkqv8I; arc=pass smtp.client-ip=94.100.134.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="ORW8Igia"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=U/Neu0hfsRUexXQo24Z6HShCyIt/OEPA5N5gMOQo0YA=; b=ORW8IgiayHO4HEXJA0qBnHnOZC
-	H1uTsTLK2U03+XH/wmxxTPF7soTPcmBREWW3gcYx8XO6gzS0l+GE/cSYHMchXPFytVtouF07Ht8A0
-	EoAup+kG8IPNoAAPjkWejjVqD5O9fSVau2kmDHCGiBfcI4HI6H7Yaeky+6GGC0x5Hz06XQpcUq3UQ
-	ydRQFPSzfx8TCBopbDrB/L+ysEJD/9X9ZqH2V/2vFcMvgv/iNBHKCRHxRPd8a8mDIXLw5gJZZW9iT
-	qg0lM1yLAny43dx3WCBrwzvuXA3FwccwSrRPCqbjM0rxTceQ2afmHfNf17T8RT8/yXAQF08bqhIOA
-	hVNuKRbw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:52936)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vq9jA-000000003QW-2HU1;
-	Wed, 11 Feb 2026 12:53:56 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vq9j6-000000003ma-0e94;
-	Wed, 11 Feb 2026 12:53:52 +0000
-Date: Wed, 11 Feb 2026 12:53:51 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: netdev@vger.kernel.org, imx@lists.linux.dev,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@denx.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>, Heiko Schocher <hs@denx.de>,
-	Jakub Kicinski <kuba@kernel.org>, Joy Zou <joy.zou@nxp.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Martyn Welch <martyn.welch@collabora.com>,
-	Mathieu Othacehe <othacehe@gnu.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Richard Hu <richard.hu@technexion.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Stefano Radaelli <stefano.radaelli21@gmail.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2] net: stmmac: imx: Disable EEE
-Message-ID: <aYx73z0VTAGFAjlp@shell.armlinux.org.uk>
-References: <20260209202155.2388099-1-laurent.pinchart@ideasonboard.com>
- <aYsj5IayQd3NRflL@shell.armlinux.org.uk>
- <20260210143157.GM2405149@killaraus.ideasonboard.com>
- <20260210163310.GO2405149@killaraus.ideasonboard.com>
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="EkBkqv8I"
+ARC-Authentication-Results: i=1; mx-gate49-hz3.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=e3x2+YwwuhZsQSW5fmO01fXaVVeUQQTpRkaPQngxDXs=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1770815217;
+ b=l2gxhEZ0uqQumA+hyoJo1HHANbVdMybdSYvZcqkQYPxL6BpV2e+bsuCeOSpXlQJWqvstmFTP
+ 68KB1NnYCiGmAG1rSxIA0HsAFGth6f5zP8dDUqj8XHGKl6Mj1w/Dfwtq6xu44xW9amUj8DRkGJP
+ f2ALdoVH0J4kInfiPts/09SV3uohExConwUql3ZQP8/e4Z4Tz+2LOBNhR739CM2sPnWYbM8ah8m
+ R/pzPKY2A8TgavF7iOqAK42mC6IMbks091ijHVz1WvLsuYVyRKFlBLHFwyCtVCDb7wNvKVWmCkl
+ 30GnWwOXwgr83VllloJTBMhV+5DFjMWZr6HwgCHPqlWDw==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1770815217;
+ b=EzVBAA3Ma7b3Vnwg+fYoxiN3Z5o7TCUep1Ove8ZavqROFseCzlABmPPhuKb3lxZNoqNlfjH3
+ dfIGgT16Bd6E+XgzZRaiUryP4c4r0J/XMQ1cZk36WZKQpK+Admso/HIRBaOk5ik4m7nzAieKzrP
+ k3T3bfWiQ9kuDirb/W+VTihLiqyGLA+caR7KRFW2eU7CNK3/sKZ+6rNs9zhDI3W1z0sCaWIyCDq
+ v1yeupopgFNWbfE/iqjudkkeds3qdu85EGXZ1E6VFOAzXlBdw0ZMJJJ/GzGPXcfLl/zQ+OIltQh
+ TWo4Jex7YUrkgTSJ/i3h7U9X6eWgF8UFtdp+KGbsE0NfQ==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay49-hz3.antispameurope.com;
+ Wed, 11 Feb 2026 14:06:57 +0100
+Received: from steina-w.localnet (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.stein@ew.tq-group.com)
+	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 6C818CC0D37;
+	Wed, 11 Feb 2026 14:06:42 +0100 (CET)
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
+ Peter Chen <peter.chen@kernel.org>, Pawel Laszczak <pawell@cadence.com>,
+ Roger Quadros <rogerq@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Magnus Damm <magnus.damm@gmail.com>,
+ Marek Vasut <marex@denx.de>, Frank Li <Frank.Li@nxp.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux@ew.tq-group.com
+Subject:
+ Re: [PATCH v2 4/5] arm64: dts: freescale: add initial device tree for TQMa8x
+Date: Wed, 11 Feb 2026 14:06:42 +0100
+Message-ID: <3404121.aeNJFYEL58@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20260211-futuristic-venomous-poodle-3b2708-mkl@pengutronix.de>
+References:
+ <20260211123436.1077513-1-alexander.stein@ew.tq-group.com>
+ <20260211123436.1077513-5-alexander.stein@ew.tq-group.com>
+ <20260211-futuristic-venomous-poodle-3b2708-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260210163310.GO2405149@killaraus.ideasonboard.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-cloud-security-sender:alexander.stein@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.stein@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay49-hz3.antispameurope.com with 4f9zGW4Rtgz3ycCd
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:6e6ea929ed061832352f734018e4b891
+X-cloud-security:scantime:1.997
+DKIM-Signature: a=rsa-sha256;
+ bh=e3x2+YwwuhZsQSW5fmO01fXaVVeUQQTpRkaPQngxDXs=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1770815217; v=1;
+ b=EkBkqv8IAy6eZiJJGcW4CVStp6xoWAkeji0iU96xed2Q9pUZVIb8o2KsrvsBjdsSbkOaOXnj
+ 3BjasnuwwZp0NG/VLobLOrMEES1mD03XueNZv6qeVYHY4kfcjCQWuYbA6EAMZdkqoU7u2huefAz
+ +0IAS6rk8rc59HqF1AyXNc/du5sCC34qaBm/qbxf4+V7hO9PwzTp+/QhuPKjjxaVp2HEw8oaeF/
+ oygAfgnaCClbFeS9Baow0gSTSrk0NkBd3mCTJarPoAUxXlxhSQF9v3PjxVG2m2JHPDhTezya8cB
+ iklnOi8k7ddGeu4Og10O4RSf7AUOfNbHVVjWXLqJjSu3Q==
 
-On Tue, Feb 10, 2026 at 06:33:10PM +0200, Laurent Pinchart wrote:
-> > I'm happy to submit a series with both, rebased on top of net-next to
-> > handle the conflict you pointed out. Is that fine with you ?
-> 
-> If you would like me to submit a series with both patches, should I
-> resolve the conflict with "net: stmmac: dwmac-imx: keep preamble before
-> sfd on i.MX8MP" by inserting the STMMAC_FLAG_EEE_DISABLE flag as BIT(10)
-> and change the value of subsequent flags as you did, or add it at the
-> end (BIT(15)) ?
+Am Mittwoch, 11. Februar 2026, 13:43:17 CET schrieb Marc Kleine-Budde:
+> On 11.02.2026 13:34:31, Alexander Stein wrote:
+> > +&flexcan1 {
+> > +	pinctrl-names =3D "default";
+> > +	pinctrl-0 =3D <&pinctrl_flexcan1>;
+> > +	xceiver-supply =3D <&reg_mba8x_v3v3>;
+>         ^^^^^^^^^^^^^^
+> > +	status =3D "okay";
+> > +};
+> > +
+> > +&flexcan2 {
+> > +	pinctrl-names =3D "default";
+> > +	pinctrl-0 =3D <&pinctrl_flexcan2>;
+> > +	xceiver-supply =3D <&reg_mba8x_v3v3>;
+>         ^^^^^^^^^^^^^^
+> > +	status =3D "okay";
+> > +};
+>=20
+> Can you use the PHY binding instead, see:
+>=20
+> | https://elixir.bootlin.com/linux/v6.18.6/source/arch/arm64/boot/dts/fre=
+escale/imx8mp-tx8p-ml81-moduline-display-106.dts#L180
 
-I would prefer to keep similar flags together rather than just appending
-to the end of the list.
+Mh, this doesn't seem to be necessary at all. It's an allways-on fixed
+regulator anyway. I guess this is carried over all the time to silence
+a warning regarding dummy regulator.
 
-> I'm also happy if you take my patch and submit a series with both.
+Will drop in v3.
 
-I think it would make sense if you submit it once net-next reopens after
-the merge window.
+Thanks and best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-Thanks.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
