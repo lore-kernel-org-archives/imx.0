@@ -1,52 +1,53 @@
 Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013071.outbound.protection.outlook.com [52.101.83.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25872F3609
-	for <imx@lists.linux.dev>; Thu, 12 Feb 2026 16:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7499654774
+	for <imx@lists.linux.dev>; Thu, 12 Feb 2026 16:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770913229; cv=fail; b=Ga1nFn1JgTuwOi7XsNjhLPR1UFhzrQotEv4gCgY9UGPNgjIol+WHrjMiszfTnJIeCHRx/9dQ+Nnh1ZDtx9cVHlRUM4BtNRqfmsBox17beRvXaklULXY0BDItxjlbK3vEMeA32++Abbi65KSFRxUyx+UCmMYE3QmiSrnWRzrEPYE=
+	t=1770913233; cv=fail; b=JwQgjmSXQJY94RfAewjrsFviCbZhf/RreY9xNeSkAnLY1sbKv80GDuANE/AAgmQGCAlCulmKMQ2y5VkqnZM41NpdJIgaw9No5d+mbs3WLqzPBq6IN30BsNB1cyTI9p2sd4bkdYrXCZ1mlVwftqagFqE0b8Cbi6vAVZUWFfOvoeo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770913229; c=relaxed/simple;
-	bh=s+fszz8GYI/wi05SOZi8BeyIQpnwivsb35gb3XEozYk=;
+	s=arc-20240116; t=1770913233; c=relaxed/simple;
+	bh=SxKTw6Fay18xWblZFsJRVzd2iC7UXA1lv1zAsC8eJrE=;
 	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=Ay3hpaM3K1eft+DhBSP1+rEJ3xAlAF2Ielemg/FpauO0NjtglsURaYqM9SzYcSeFctQnjFnATVr+MozNvYPmz3ZmEnl5Jr9qiNwKRWsEuOYn0Zti+gzH5a1qkLBTdZBzS/pJ23JRlX2CcJaCGiufLoNjCQ4j3G3fIyVxjsxtoQk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=feJgjzFC; arc=fail smtp.client-ip=52.101.83.71
+	 To:Cc:MIME-Version; b=ckf+s2LtAX3fHT3MKt3UBIAnIsfFLZZyk0gsWmI+wm6I/ZxOTlmZjyYqiObzN4vv8hvDQtonNt005m9MnZmsGwEOGwtugFo3zY0RvO43s2uE7JOo1mjMxGQl40fDO02Zoa65IeiI5yolwkN+dQHJX2OwvaSoga9mSzqu0dGUD/8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PiymY9Z0; arc=fail smtp.client-ip=52.101.83.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="feJgjzFC"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PiymY9Z0"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MkNVhfcMAPqUNeL7HB35l5CpZFmQXbPp0rKbOcXJOhtDao6SEnXiOLjxtparz0nGtyQ/Ie/0M7fC1/Xbq7OlDv+paVG+ZOoA61OCKTg60fmoan3/8SP9xHVFo3bD9QCDLhqJECP2gebueqZBRgTGpu73tpFqJLNfyol6E5xb0HL6XGpyShQj41uUtuBkT+XMghfhGpmQKvSQ4SzKBQw6MAhStwfV7oxbj1AiHGZvIfoc1PyZiuHBSNXOlATbFzoz3Qcc7+O2p8CshkAqWT+7KnRZjOqs9jMilGxRmqbfbMzPMK42jA6sx07T4TPa8NWCb0MhTj0KnXfCaUmm+NDevw==
+ b=j0DRc70Lj/zBmRcUEV6mIC++gyslanAH8N+DCsHj15i+HNKcOeodjdfW5KpXgnUZlVhrq8eae83+93XNe+GdJlh6AifUqwO8jB8tOuElYAsaaqCTCLc3mD1pDTWENn18SeospIMQ10WV8aXubMOh3D5n5ihmybFbTO3iD53cdSKbNAwBxbbsPe2/wgGUm+i5nsP7coyIG/hXZfsn5bMyiyDUBymbwGUZ6M1Cdim270SBWuv802m0uu3UomVavZanQV8Rw9ktxUkrTCVkqJodUDHcUNLBAiNITNNS707TCYzRSakyNUmbW5u1RxW9iSHILo+BYk9T1BO5zSGhag3v5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tyKQtk1PhmiKRN5go2I9S1bv4dHKrKODNvNazlG+Cks=;
- b=u0r3W8Uqvxg3ACOszDZEAubjd3R7Fjf5ebEiM9BS84EYaGqAFlGzj+SCMpl7OY3mBgpgXQtLkYXTH5aM//20YipWBeF/HVewUWoKBJ7D4OWHw/cKBY/AionSSqBt+N984YYwSt3rMYCpRRMelsgXlPD9S0nTf1kXnhSxhJyQf+D2SM6qwRyRX52Vqbi7C4GHhoKpTcSUrxRrL1JNUNdrwCoaAAZTcug5mJy9bCxguI3PtNPLym7YImcxlEhjJ2gPSrsfFMXPl4ovKCXA94Kbz6JcKk6GE0Ee6bsts8kOTrvZnT+U/oST0P1NaEmmY77rQs8iVZ4JpIde9ZcF5iJWEg==
+ bh=KTVhun3VL4i0VqUFEa1sxgRXFGKRiCn+QdX1NstRjfc=;
+ b=vps6RCcA/hyxN6+dRfuea7qb8XwHLl77zkR6dJWq9+wA+MyHWP4chOmkAj5qmmFCX7VxYOfSX8WqLp7TnwWsezMezO11rfKD90V8AYt3M597NQElODxJsRZHP0hGSQMqK4M4AIQXDzJPdc3gvUeg/JIlWXKjZl5nYB6oAeYvJNELREfnfXU4ZDeH9mCmZVUvhzWXKE/MhQHQzrNTjP4vZxdDSCLHzE33Q9/t7tV53tY3RBDsYFQekUwYkzVL7GMT3tEOwOzE8ipxbymo8+Wj7dVAwKtkwCfFANsdkC4iBa3HEPHicjttDhgveyhnpFwLvpICK0iUHyxiTRR3E9oNuw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tyKQtk1PhmiKRN5go2I9S1bv4dHKrKODNvNazlG+Cks=;
- b=feJgjzFCta+lmKHcwpAzSPzXIEcRW8YDwpd/8MV7Ca83aaYoh/A//pEii+J1wOprLcuPkhpgFT4huGS8d1k3V/pne4owfjffttrqWaw16S+I39lsW7dZpCnm2+W/tgQOdUsMANqmFPtZvDITU0j9Ev2Df5s6lnkSpZGvEk9uyPELIAJs8c+8isuA8cVvWHpxl2/cX+BpGeY1AWm/+u9fPefcoY1A7VqINMh1P/jiCbgSAX4OyYOJGsh2htXe7tcApL1Nls/nLe819AjMFCguxh0g/I0q+4pc8WcpF0D/L4sW0LgjSvXLtluOtu2uTCyc43fogBWsu32ycVc4bbJOCg==
+ bh=KTVhun3VL4i0VqUFEa1sxgRXFGKRiCn+QdX1NstRjfc=;
+ b=PiymY9Z0s5ovLM1oxSAvjM9qKtDFk4H66jiThpbNJR3hq+Dw1657at3EN/zCXhJLQLhuie6Kqwgt41852YR0D25yQsc1ZtNYiptjZrc1tg6V5SnGdoBMNsKMv/Uxa7TxtJsvD30SLb/6UpWw+3U0r+yFDYwIl0gSXy0NRwyiX+OItG3gQRh35a4dAPqmcoJXCS4IJFmph8DxXKvhgY3GGCpbQIjgCq5kGzw5zcztOkiS14pRLZnFS23v4pnYmcpOKR+tBowPni47kz33+WzYagKkciL1Ea88HPcATx0SkdFgskd2nIQKVE2lA6J7EVRindaCiDMjIbCjWbEvTTjIRg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
  by DB9PR04MB9704.eurprd04.prod.outlook.com (2603:10a6:10:303::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Thu, 12 Feb
- 2026 16:20:15 +0000
+ 2026 16:20:17 +0000
 Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
  ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9587.010; Thu, 12 Feb 2026
- 16:20:15 +0000
+ 16:20:17 +0000
 From: Frank Li <Frank.Li@nxp.com>
-Date: Thu, 12 Feb 2026 11:19:46 -0500
-Subject: [PATCH 4/8] ARM: dts: imx23/28: add "led-" prefix to LED subnodes
+Date: Thu, 12 Feb 2026 11:19:47 -0500
+Subject: [PATCH 5/8] ARM: dts: imx28: rename gpios-reset to reset-gpios of
+ hx8357
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260212-imx28_dtb_warning-v1-4-696bcf1a992a@nxp.com>
+Message-Id: <20260212-imx28_dtb_warning-v1-5-696bcf1a992a@nxp.com>
 References: <20260212-imx28_dtb_warning-v1-0-696bcf1a992a@nxp.com>
 In-Reply-To: <20260212-imx28_dtb_warning-v1-0-696bcf1a992a@nxp.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -57,11 +58,11 @@ Cc: devicetree@vger.kernel.org, imx@lists.linux.dev,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
  Frank Li <Frank.Li@nxp.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770913203; l=7848;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770913203; l=2046;
  i=Frank.Li@nxp.com; s=20240130; h=from:subject:message-id;
- bh=s+fszz8GYI/wi05SOZi8BeyIQpnwivsb35gb3XEozYk=;
- b=M72+xWfLYi2Z95Oy6yAAGoxF+M8A4r5XbA9jMoDE9KtSss2gqNazqwzQ4OzWfW7dPb1rvBDhv
- LhqZ7s50Tr1BpBJ7bduM8CQHW6n7dLxH+BgFpDm5uMDplcZ9tW65Ncp
+ bh=SxKTw6Fay18xWblZFsJRVzd2iC7UXA1lv1zAsC8eJrE=;
+ b=IDDHXSydu3jp+3BDLcJrX9+lIZokZvGq+tz3T8GWJnLtifWlSAkB9Ee8rLssVLsuMNdQPX6fI
+ DOSLnpkkkCsBE4WXiWnNcSsiCKweYPUACFaSL+FXiK1oDRbSdi5UI1i
 X-Developer-Key: i=Frank.Li@nxp.com; a=ed25519;
  pk=I0L1sDUfPxpAkRvPKy7MdauTuSENRq+DnA+G4qcS94Q=
 X-ClientProxiedBy: SN6PR2101CA0011.namprd21.prod.outlook.com
@@ -75,306 +76,154 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|DB9PR04MB9704:EE_
-X-MS-Office365-Filtering-Correlation-Id: c564f8bd-dc0b-411a-2e30-08de6a529af2
+X-MS-Office365-Filtering-Correlation-Id: 9c58f765-50dd-450e-a474-08de6a529c69
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|19092799006|7416014|376014|52116014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TTNPZUVJQ3pXM0NEeGkxL3lVVW94RXg2RmFyc1Z2MkszblJtMHcrd0c2S1ZV?=
- =?utf-8?B?MUFLVlF0OUIvY3o3UUxIbHI3NVJXelovT1RlMVRXcnpyM1VGU0NJWi9OMHBO?=
- =?utf-8?B?UHRkY1FFMkRLWU43cCsvY1UxVC8zR3h6cFhGNGZ5YmVVRTY1SUFnRStVczFi?=
- =?utf-8?B?TjhXSlR2bjQwSVN1aUIvdmRDUHp5cThJMThtWFRkT0lRdFFwQXVTcERYNEdt?=
- =?utf-8?B?eWl1cjV5UTFqQVJrTmlxWDNYeDgzVnE5NXJLcUFSVWNLKzJpOGlhWEZYUHAx?=
- =?utf-8?B?WGNBOWhYRGg5dDNHVXdtSENXVmpMb2xGdXJUYjBWaERyek9CK1N0WmFCQTlS?=
- =?utf-8?B?RHZBRlBCbjdFVGdVaUpEZGRpY05tVDE3dnhac0JwajhGK0RlUzV5ay9lbDVI?=
- =?utf-8?B?VDM3dEdIRG4rYjdwUXNHTUovZ0lTQUlMMHAwTlRoclN6T1o5MzZiWlRzZW5R?=
- =?utf-8?B?QTRsZDRTdDZBWElDcHVXYzk1MTN2cmwxSlFyVEtEZ1o0cnlYR2lwbkZGenNK?=
- =?utf-8?B?RzJqTWdSdFU3cVBaUk9EQzFTQi8zNEZMb1N3U2MxV2krdU02ZXJyVVVzRzRM?=
- =?utf-8?B?ZnlLdWhOQXJveEhOS2dUWjBkRkJNczNEUVQ2WGFpWDBlL1RVdWZXbmZGNG5r?=
- =?utf-8?B?K0RHK1plckR5bnhraHZnYkdoNG1RczBoRnJUejRXUXRSdC90UHczbGdudnpn?=
- =?utf-8?B?YkpwZStQNzNvSjZwUFk4SDVPdjMrVUYwYWxwNXFqMTNqMThUSjduTHo0MUFQ?=
- =?utf-8?B?d1AySFA4bm0wWEY1YmliMGszQVdVamRnV2ROY243SDI2WU9MS3U0amxMTUNx?=
- =?utf-8?B?a1NFLzIzSDlsMkNNQXpQbk83UE1vNkRTSkJjQjRkUG9pN2JaRHEwWXNTdDYz?=
- =?utf-8?B?VUVhZmNlYkJSRytwS2V4ZDR2cm1GUS9PcUZiZW9yUHMzMTlJclUzV1ZqNElD?=
- =?utf-8?B?eUtaeUR6THJva1ZqS1lFaGdNQ0tvbVZDMzFkcFpKWjBSQ3AramNrY2JHUngr?=
- =?utf-8?B?dFVnUWxySXZVbE9McUcrbWJvNERJRTdvUXg0eHlFMUQ3VDRyQ09IVEhQSXR4?=
- =?utf-8?B?NTRYbEFZaGZRN2RmKy9Bem14NlVudG9oQm5DOFpCZ3JPLzlmbVpWSGVWY0Q0?=
- =?utf-8?B?bGVWVTJMbWRHU1M5eXc1N01rNmx6TUg2TWVoaW1BR1Q3MUNJaUNxTzhUWmw5?=
- =?utf-8?B?YWh3WkgzeitmL2IwZklNMWhPN3hxMFYzRXJia3lTSWxpN3RrZTlaY3RXQVZn?=
- =?utf-8?B?MVNzZ0gxangrZ3R4ZzBzb0x2QmV4S1paeXZlTTh2Y0Q5Q3UrVHpIWVF6SjRW?=
- =?utf-8?B?SG53TlRIMGoydDVyWXQva3JQMmI3azVwdHl3bkgzamlEckFyTHU3VG5vRGJK?=
- =?utf-8?B?MGJzRWFhaXYzN3YwMGY4OTRGS3pUSHJGTGhRUzB6UmJlY0EwSkRsUE1reTJD?=
- =?utf-8?B?dDVZUFd3Vnh0NmFOU3F6VTl2TFc0KzVNbTF4RFo3REZsQ05hdzVFOHRhQWlk?=
- =?utf-8?B?VU92ek41aWtITDVEb081MXl1c1VycnBCeG1HWloxQzEwUmRaTlRSUjBKWFpF?=
- =?utf-8?B?Wldyd2pvZG9tZmxZbU8ySGdUREJLaVBiTnNzQ2MwRDl0dW9VZTFHaWxGSGd5?=
- =?utf-8?B?TVVnZzZqMnZUNTlCazhaWVBiMmZPdlFzbWo1SHJsL0VnL3lQU2NvRjBsVVlS?=
- =?utf-8?B?RHNEaVZ1TjN2aStmN3g1SmVaaU5sd2laMU1JbzUrZTFoSEltbUJaVStXbWE5?=
- =?utf-8?B?OUxhUWt0dXh3S2RQNytGRWQyZjY4ZUhxNE83c2l0bWNCU2dBYkNCWENuMHQ4?=
- =?utf-8?B?WTg4L1pwUE9SUHNIY0NJWWNnMnNadGg3bFdEc2xkZWRtMTFTM2lVdlFRb1px?=
- =?utf-8?B?K2tZZ3g5RDMvNVY2Y1pxTjFXUnRPL2pWOTlDZHFaTzRobTRCTDhRMVhqQWM4?=
- =?utf-8?B?K2pucWJIN000VHIxdDQ0Y254TmsrMXFySVkvSWdLWE16TndERExtSjY0UHpi?=
- =?utf-8?B?UHBuYXRzL3JYMnZQV2VyRXFrZWo0SFpkdFVISjRmWGh2MUpzblA4WCt6SGJs?=
- =?utf-8?B?NXRwbWJHZS9TVEFlQ0lRcmJPZEplNVdZRVQ3cGROU29kSWZpT1d1RnE1Ukt3?=
- =?utf-8?B?Z3Zyb2s0M1lmVzlteTFGYjlMNGdtbTAwMTNzdXpackg1dzNJUG1CQ0xteitT?=
- =?utf-8?Q?wajTG4rVcI1+SChevSc9Za8=3D?=
+	=?utf-8?B?aUNMZFZSN2s3R1JqY25KeGladVlXWTFYd3c5d21Xb3hWT1RGbDdpNnQxeDRC?=
+ =?utf-8?B?SUdsbjNnVm94UUx2TjJWcGtFMW1nM3dPVlhHUnVacmRicTMvT2p6RjZ1THVh?=
+ =?utf-8?B?RWkycEkwQkxNOGoxMHl1eWJvQXZZYThtMHRZM04rQVBCZmkvZk5Fa043Q2FS?=
+ =?utf-8?B?aW1QNFN4eFpudUpYOU1vNXJmTThMQ1ZGeit4MnNUczJ6YnY5eDgwenFPRGs1?=
+ =?utf-8?B?THZLUldzMHY0T0QvVmxmNDZoVjlqeEJKYm1pRGp3U0VwblpicDUyUjJQRVlS?=
+ =?utf-8?B?cW4xekhTK2JrTVBYdDNveU42ckNIVnowcS9GRTVvMnlvLzJVWk1FWDRmN0NR?=
+ =?utf-8?B?TUJLNTgwTmR2a0hoTldmYXNSeThLR2dxNlZSOXhkaEdUSTZOdDdVekdZbk5z?=
+ =?utf-8?B?c3pLcC9GaDRRdFBCeWhkdVIrU01rUzI3eTZ2eWE4emwxWDVZdTU1U2RPMUpV?=
+ =?utf-8?B?NkVtUFBCbDIvcE1KYkhvVGdxa1JIcVhDelRlLzFGUFhVcFRwcVd1bGFlWjFF?=
+ =?utf-8?B?TGh3WmoxemdnT2YvNVlYUzZnOFhDbC83cnZiUklIUHpqQzFzVU9LUDdCbVdY?=
+ =?utf-8?B?WkowcHlaV1lnU2xIMXZOZ1FpUTlCaVhqem1UdXZyNHRZVWRlRWFoSGZBZFRo?=
+ =?utf-8?B?dnJ6eFp4K3piUHg3MVAwWDliRzBqTzc2SlRDSEtzRlNPK0ZJMTloWjZsd2l4?=
+ =?utf-8?B?NGtsMFVsNE5yRmUwelAvVW96d1IxaHdhV25RRG51ZFN6RmtGUllvWWFNQjda?=
+ =?utf-8?B?UGx0OThNYVI0L2J1ZmllTEZuNXlUMjNqaWJOZC9OejlyNzhiRTR4a1RVMENy?=
+ =?utf-8?B?V1VrTWxUYTBzbGEwUkF3dyswWjA5U2xqRHlkckY1N3BOcEV5UFY2dnZhQkN4?=
+ =?utf-8?B?S1ExV0ZEUXVncVZpMTRIUEZTbDBWN3JFTjBqWWF6NzJIZ2FER0IvWnFOQUx6?=
+ =?utf-8?B?TjZxclNOVjhGZUNzRmlnZnVmZm9SYi9tTGhNTXVESG9FaDVYSW1ZVzdINEIz?=
+ =?utf-8?B?QVhmTGFETC8wMlp0UmJsU1NiR2dVVmkySE1wNHo5VGMyRUUreFRwUlNhNHhX?=
+ =?utf-8?B?U3cvTFNJdU4yd2FoZGJuand1a1dob2toeXFudkgvdDR3cTMzSWRkU1ZTemtK?=
+ =?utf-8?B?US9WOWJnQzJVUTVhVWcxU0t5T2I1dzdLa3hVa2dmeTZ5RGo5ZEFGOGVmY1hP?=
+ =?utf-8?B?WHJNZ2NYL1k0dXRUdktjMGtOc2dlQ1BDWTRQNUJwMVhqRlE1eFlHKysxc2Ft?=
+ =?utf-8?B?dVZYK0V3ZHk4dFFUZy9LUEE4UzJYNVFtOVBodWdhNXdvSnBmRHphS3QyampU?=
+ =?utf-8?B?QVR5NE1rQUdOdll3bm5qMUpQN094NHRlbk5vSERVNGc1RmhxUVVhQ0FkVHRF?=
+ =?utf-8?B?TjF3OTRxK01DNlpldGE0MHR1eXJxT3kveUxmVllVYmxjWXNhNmc2ay93Vzdy?=
+ =?utf-8?B?bkNPZC9WMjdDV2lnNkM1dmRhZDhOVHNFOVc1RjJselJBVzcwZUM5VVhjcUpF?=
+ =?utf-8?B?OUNadk1zQ3dtZ3JSeDMzalZhTmNia1BRRzFhczdzK3AzOU9EbytZN0xZUXhr?=
+ =?utf-8?B?WWpSbDIrd3RtWDlwY3l4cmtVbGFFQytBVzJyOHFSU2prazNycEFYVjJaRkhJ?=
+ =?utf-8?B?S3ovRmdlc0N2TjBEQWFUMkhJZzZTNWttVVFsYU5vVTdpUDl4NVdFQlhrQmhu?=
+ =?utf-8?B?VEVKOXEzWkZjVUhGZG94ZHVGNDFKNXdKcHM2MlNzVXJzb1ZiOWxLMG5KK3lx?=
+ =?utf-8?B?OEtMekxYU1AyWU8rSGE3MjZZemlKUjRnaGVLWC9vOW9jYjJ5TWo4czdEbmRV?=
+ =?utf-8?B?R3A3OXpnM2pqclZqU1pEQXNSbG5vSUMvZjMxZEZQbVhialhHVkVGUTNBQ00v?=
+ =?utf-8?B?L1JZQmFNRVM5dTZkaTQ1Ty9qbVZ3MjFyeURBZjY2aHlGOUsydjZhU1c5eFNy?=
+ =?utf-8?B?TEFsSUJCL1BjZkVobW9VSXI0Y040blo4WFdKamNGdXBtTEphMWdDbng3TjZv?=
+ =?utf-8?B?ZitEOWJGbW5jYWVhQS9iM2NlZlo5MEZUd1UwNldvTGJ6YkVFV0FyelR1YVJU?=
+ =?utf-8?B?TVFINzQzTUMwUDgxKzlMRldOMnAxQWhuWlN2aXN6ZXZveE5Wc1MvUXpPMklt?=
+ =?utf-8?B?emxGcnI1dzg0ZWFWZGpsRjRZaGtVUmpoUjJFMm9FaE9oZWNZWWoyaGFkY3h3?=
+ =?utf-8?Q?9bvuzL0QwJVch4/C/+l+878=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(19092799006)(7416014)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RmRHeVczeWVNaC9qSE56YXRXNlBTZVBLcGpoZVJsR0dZeC8rR0J2dHYzbjkx?=
- =?utf-8?B?MTlXUHpiajU2S093YXpwK3ZNYzlWRlFXdXlKOGozT3BGYXhSMTZoMWFPWE50?=
- =?utf-8?B?aEF5T0pDN1hBKzRKT3YxTW1KRGpQOUNhM0k5ZGRyN3cxNmcvcXRnU3Boc0xh?=
- =?utf-8?B?RlltQWVmcjVGd09JMFF6RUZQRHA0ZG1MVWh2Tmh1c3Y2TExNK3VMSmE1TUpE?=
- =?utf-8?B?QStqODN5VUhoRm1xR3VQL2d0NFRiT1VUN3lxcEtTN1dOUmlmTmtQSTBydE9l?=
- =?utf-8?B?bGN1SmVJN2ROZDR0UlRhVHZUcmtxa2NiNExUVWprbDJZZGxKRG5LYkc3b1J6?=
- =?utf-8?B?Tkw3RVhvcWtLdkNLWFJEMkt5cENWZytJWU5mYjdaMnp4VjE2Z01nc2x1Sjcz?=
- =?utf-8?B?QzlmMHRmM1hLWUFVZEpNcE1BVCttbzhWMkt5NEZtYTUvNmJ6QlBhVTRCNUlG?=
- =?utf-8?B?YWZZUXp3MUEzZEVPTjNxY1Q1VlZRMkxVd0pPeHFxd3FpcDA3RzMzRmFxcGpw?=
- =?utf-8?B?SkgrUHVzek5peXAyYzRwdyt6T2NqVXNHNWdaT0M2TWVORGF6Z3d4RTNXNGtz?=
- =?utf-8?B?b21MWDFSTGhDNW9oYkd2bGdOMjB2d2RVZTVEL2pINTBvdHVEd1ZuTWxtNTE1?=
- =?utf-8?B?RDRocjdScmhMaVRqd0tqVHdZU1BucUVGWFk0UmhNc2xkSWUwR2g3Y2xIODA0?=
- =?utf-8?B?QUtwZUpFUGtUa1VPSUtCejZ5eVIxc3VRaVNrZUphSjVkMmYwa2FCQmloYWlj?=
- =?utf-8?B?UUhNNzhuMUFlaTluWVFCd3MrM3N5ODVob0pIaGFTTHpTWlN6RnpUNkV6ZE1Y?=
- =?utf-8?B?dWN1ZHRYUDlVNTgrQ200Wk1uSWJEd0ptNWcyNndLVVpRS0JUZk1SVmJmS1VI?=
- =?utf-8?B?R2NqbnErT0VWdHpxVHY4Zi9kamNFZnJUUjhJMmsyQjRvNGhwcXpIN01KdTZv?=
- =?utf-8?B?SHA2dElvNTNiYzZYdnJoZGNrdE1pQTF0dC8rV0RrTERzYnVxYWJ2VUxKS0lK?=
- =?utf-8?B?UTdReUwyNUJDQ0xhc0Rjby90VHRVSnRkU1lFemlzbEllek0xVzdUZk5kNklQ?=
- =?utf-8?B?QnN6bXM5TDNOakRyRytUVUl3c3Yxc2QzSDJONEQ4S1MyQ1cxcUIwRUhFVHYr?=
- =?utf-8?B?MW0zaWxkR1RqSysyVlZhNGZqNHZtSXJ5RC9MeUZqS3A4TkNQYkk1THNnQ2Uz?=
- =?utf-8?B?OFhOSTcvVERYKy9DWXNldDRKRVhTbmtOemNISnArZ2JCMmVmRzhOZnhzYTZo?=
- =?utf-8?B?aGZXSWFRMzRMcXpia25PclBsbDNOMGhNQzJjMHBOM0lDKzdYa2NlQi9xVkda?=
- =?utf-8?B?OUxLVUhTdDZLNFJEZXhvUzZGQW9QSXFoOXIyb2JYczRxYlZMc1dzOFZrVXV4?=
- =?utf-8?B?NWJYS0FjdEhHL1BtckU4cVpmMFluUVdTbjVsRDdxZnBsSjg5VkorWjhVd0xM?=
- =?utf-8?B?MHI0WklDQkdyd0swNW5vZHJEWDF4WW1MRy95bUJJNGFtbWJuQnl1eXpBUUZo?=
- =?utf-8?B?N3AwNkNSVjhjNmVEWjlJZnBGUlJ1MnJBU0h6Ky8rMmIrb1lQZ1JIMk5CRUpm?=
- =?utf-8?B?dzhaZVM5cmlvdGh3WnVydlJnV3FsMVZjY0htaUNwcjRXU3ZMUjJnK0hRUzRt?=
- =?utf-8?B?TkJnM3FTYTZTT3Fjcm94K2dBS0dBOGE2N1pkUVdkT04rZGNhbkJHWnAyazE0?=
- =?utf-8?B?Y2JNN3d1Yy90eStzSzBudGRMenhXS2xKb2dwT2xpRmZRT014N2RqYzFySy9R?=
- =?utf-8?B?VHNqQVgrMEFLbzBRa1grVVgwK1I0RVZWaDBYd1hUMnpOQUtuSGN0TjZieHp0?=
- =?utf-8?B?NXlOWkp6S0VOelIyMjRscmxmdzBRQTNRaCtLMGhkZ0N6M3F4QVBqSmxJVUJr?=
- =?utf-8?B?enRBWktOclJRYWZRejF3alNubkdzaERUSmtBcU9ROUp4dnFCb1R2d3RGa05t?=
- =?utf-8?B?VzI0SCtJYmprNVFHQUpERU9lMGdFb1hHenVGY0paTyt2VVFZNzJ2bEQ3WFN6?=
- =?utf-8?B?SndYWDV0SDFyaEdPckJHZ21iejMvWGJhN3dncXp1NTFNbXJwSXhaRyt3M2dn?=
- =?utf-8?B?c1A5QTNIV2dCeFBrbVd6NEVRRnk1R0FMaXBOOFh0OWhPVEJkbW5nK2pBc0Zy?=
- =?utf-8?B?Wmx2d1l2VmFLc3hYamxQaVI3YUNSOVVMY2JPeGtwby80MmgxdVBnZ0h3OGZs?=
- =?utf-8?B?NXRQRWhvdk5WbXhCMnNESG1mNUgxbkZZMDVlZWllY1ZUaU5CNzN5YVVQWCtt?=
- =?utf-8?B?U1krTVo1Sk95aTVteEpncDdPZEMzWmpaVDVPVGpranNmcTltc0owZU96YWY2?=
- =?utf-8?Q?zQ45h1ooL0aSdIYNvI?=
+	=?utf-8?B?dHRMQURvckJPVXltZkF5c1U0Uk5JbUxYYmI4MElxRDFQWE1OclNMYXRiN21t?=
+ =?utf-8?B?MU1YNlpYVWkxZXg2R0ttZmFqU3BZNnI4S29zbHpyeDFSTGFYbWtEVXhPdGt2?=
+ =?utf-8?B?QmpaaHpabG1MakkxblF4OUVDYlhuUEZ2S3hNdkg0aDN2VlcvWllMS0g4cG03?=
+ =?utf-8?B?RW1BMm9yQWhacm9WeVlSeUVMWHhCNUpxbnFublJLS2FsN1dSemtMd1pLTHR6?=
+ =?utf-8?B?WmlTNVUxemJudWwvQjZLbHkwRjlYdnBzdzlhTk5pUzZSa3FKSVFuUFlzcXFY?=
+ =?utf-8?B?VDZhUndjOEs2YkUrTzF0UDJzVzNJUitFOEhHajZ2czJWejByRXJzS2xQV3Jp?=
+ =?utf-8?B?VWM2blhJMmZkaXpvTVBqM2pWKytZK0hpNWVGcUI0S0xseGlOQVVsbmxhK3dk?=
+ =?utf-8?B?RGdaUmpKbkM0dkFFeE1ZNzNLN0FEaDMrcVVnMi9ERENoajNwbzF0bitKVDEx?=
+ =?utf-8?B?RnVVV2dqOHFkWGd1YklHalR4U0RNTzdJY0UwQVRiSkdLWWVUczJjS2tVRlhU?=
+ =?utf-8?B?c3VIUURMa0FoZXdVNWlaeDJ4MlhRdGR0T25YMHBNQUhYemNWZmFlWWFMR093?=
+ =?utf-8?B?Ylk0ZmMwdXYwWFdoSzlmakFLbkZ5Y1pIVm9XMnNQNGtiRDVUcVJzL29mY3Fn?=
+ =?utf-8?B?QlNjRVBhWkdCOGMyMC9BMTI1WWhkeERCR0U5QUlkNGtHbklJRkFVa3pFSTZ1?=
+ =?utf-8?B?WWJEQ1pzMXlTQTlkdExlTjlCRE1XQlJaTndkOGhWK2NvaHQ5c0E5ZGk0WVVo?=
+ =?utf-8?B?WGdON2Z0VjNnM1pRN29qR1V3QTdyRlJpSElzKzZXcCt4U0E2d2hnR0lqZ2py?=
+ =?utf-8?B?TWUzdmNlZHR5QVBaSlhENkZxM3FJMHArYzVyU0dJbFoxcTlSS0VYNGUzMFg3?=
+ =?utf-8?B?RUdiYmZXbWlKVDlrSVgyT3IweHlPQUg2U3h3R0JRRXE2c2ZoZGFSN2haeTRx?=
+ =?utf-8?B?NUlHcFZlZFUzUzFuMXB5WVgwM01CU3ZOemw3MkNxdE40T3U0V1FwL1JIVEVK?=
+ =?utf-8?B?WTBaMnRIaUM2NHdyT3p0enFsZy9GZ2JZMnArWWRiNzBQZWZqQncydHovV1BF?=
+ =?utf-8?B?WkthazJWQWJvdngrNHNoelJzQXE5UGF3bktwNFprZUVLT092S1IxWnUwSFhh?=
+ =?utf-8?B?WVBLaW1DYlZOSHpIU0J5V2IwZVBFajFhQTkyMitjWEZIaXBrZE1KRTcvWENr?=
+ =?utf-8?B?ZUYwdTJNckk0NWlZd2tjRzJkaXBuMjcva2tXdVFKWFJPTEdJRTVHTnlUaVJV?=
+ =?utf-8?B?cnBHRHRuNE5QWFMxSm9EMnZKWlM1Z1BMN3g4T0NJeUM5MWNpMm5qSFRCOHJ2?=
+ =?utf-8?B?WnNYaStLQ0R5cVNIZ053ZGdaSzNaZDU1UFBTc3V2cVI0dDlpQVBwM0RLNmd3?=
+ =?utf-8?B?N0N4NVhtU1NjeTZjbFVJTFR2M2JLYlpuaXVRNkVIcVdjSU9IK2UzSHA2VzJF?=
+ =?utf-8?B?aFBlSFA4U2h1a0JhVVZFdlQrQmNvUW9CVmtEOFpDMDdNRG1HS0loSld3WkZt?=
+ =?utf-8?B?RjFqK0hkYlcxaFNKSXpBRkRSbEY2TnJ0WkRzUWxOMXVnT2hLdHozeEFNMzls?=
+ =?utf-8?B?Zmljb0JVdURrYTFvaEpoZURuTHBWOUVJZ3FuZTM1cXR6TlFOUDEwYnJRVnRU?=
+ =?utf-8?B?TG12bGRlTUxQSEl2OGMwUUh4OUg1cGxkSlNKT0l6b0lubCswc3p1OEV2a2JC?=
+ =?utf-8?B?K3R3bE0wZG11YUYyelRGT2o3d0FETUhYb1RSblpSRWdvcWpnWXJyMWpBWGtk?=
+ =?utf-8?B?MzVIVVJEUENwUVAxYnFPck1nUVZ4cUM3NVdiYU5vV1NHdC9xVEJyVUMySldn?=
+ =?utf-8?B?dlRVOUhaMmF1U0VyZUVsNXo5ODlQSzdPak9zZXZldXdMTXlBYkJkM2k5NTVx?=
+ =?utf-8?B?ei9qL1FGcmNVd1RZZmhLWnJxb0lBcWV5ei8yOVNtUWpQR3Q2ZTNubzZwTEpv?=
+ =?utf-8?B?M1IxcE0yYTFHZ3dYbjBScVlZQ1U1UUNXQ2w5Z05KWW94dTNCREkvcUJQQmpn?=
+ =?utf-8?B?bDMwNkpvRVBpMUdnS3YvbzVFTXk5cmt5RW9Pb0x0NCs1K1FQREN3MWtMaXNx?=
+ =?utf-8?B?SHNkYkZDYXlzQW1ld2ZENCsxRFZBUUJQRkY3N1Rzb21Da205VEYvdUE5Vzgx?=
+ =?utf-8?B?S1UzTkRORWsyc0daMFpjTUMrVUZtTUw2dzQydWdQYzJTMHdoVUl6NmhQVi91?=
+ =?utf-8?B?VkhBa1UwdUM2Ulc0aUl4WFVKUEdjbDQzY3drRE0xUHVnMHFkVCtkdW9RcGRO?=
+ =?utf-8?B?K0lwSjh2TXRuNWU4ZE1YMHVJemdlR01aTXdSN1VSY0V2OWF0Mi9lZVUvRXZ5?=
+ =?utf-8?Q?MK3diNOOPYHAQmNC34?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c564f8bd-dc0b-411a-2e30-08de6a529af2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c58f765-50dd-450e-a474-08de6a529c69
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2026 16:20:15.3642
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2026 16:20:17.8676
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OzMGMbQVnvxxcg+Aic0+L9fXgkXDk4xJi2NTRwqhC4z4YP+V0ScpbTdSWLS50gIuq7b3vgsWQbOhvMves1M9vA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: sz4ac6QmilquD7PCeyDZ8FEpRR9T+fBT623jMvZ1lhBZlOgJNEOuzmM9bXxLjE0dM6OtlinkfnpBf7L5OPHohQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9704
 
-Add the "led-" prefix to LED subnodes to fix the below CHECK_DTBS warnings:
-
-arch/arm/boot/dts/nxp/mxs/imx23-olinuxino.dtb: leds (gpio-leds): 'user' does not match any of the regexes: '(^led-[0-9a-f]$|led)', '^pinctrl-[0-9]+$'
-        from schema $id: http://devicetree.org/schemas/leds/leds-gpio.yaml
+Rename gpios-reset to reset-gpios of hx8357 node to fix below CHECK_DTBS
+warnings:
+  arch/arm/boot/dts/nxp/mxs/imx28-cfa10055.dtb: hx8357@0 (himax,hx8357b): Unevaluated properties are not allowed ('gpios-reset' was unexpected)
 
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 ---
- arch/arm/boot/dts/nxp/mxs/imx23-olinuxino.dts          | 2 +-
- arch/arm/boot/dts/nxp/mxs/imx28-apf28dev.dts           | 2 +-
- arch/arm/boot/dts/nxp/mxs/imx28-apx4devkit.dts         | 2 +-
- arch/arm/boot/dts/nxp/mxs/imx28-cfa10036.dts           | 2 +-
- arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2-485.dts     | 4 ++--
- arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2-enocean.dts | 6 +++---
- arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2.dts         | 4 ++--
- arch/arm/boot/dts/nxp/mxs/imx28-duckbill.dts           | 4 ++--
- arch/arm/boot/dts/nxp/mxs/imx28-evk.dts                | 2 +-
- arch/arm/boot/dts/nxp/mxs/imx28-m28cu3.dts             | 4 ++--
- arch/arm/boot/dts/nxp/mxs/imx28-tx28.dts               | 2 +-
- 11 files changed, 17 insertions(+), 17 deletions(-)
+ arch/arm/boot/dts/nxp/mxs/imx28-cfa10049.dts | 2 +-
+ arch/arm/boot/dts/nxp/mxs/imx28-cfa10055.dts | 2 +-
+ arch/arm/boot/dts/nxp/mxs/imx28-cfa10056.dts | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx23-olinuxino.dts b/arch/arm/boot/dts/nxp/mxs/imx23-olinuxino.dts
-index e372e9327a475e6cb895053fd0c7e3e420d51d94..38be7dfabcc09da1a3f54b48d4b4d931e6aca0cf 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx23-olinuxino.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx23-olinuxino.dts
-@@ -116,7 +116,7 @@ leds {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&led_pin_gpio2_1>;
- 
--		user {
-+		led-user {
- 			label = "green";
- 			gpios = <&gpio2 1 GPIO_ACTIVE_HIGH>;
+diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-cfa10049.dts b/arch/arm/boot/dts/nxp/mxs/imx28-cfa10049.dts
+index f0ce897b9d5c4327170a5e40c75a85d1d6528256..dfe3f08426ac6c507249c66cce48520b88698a61 100644
+--- a/arch/arm/boot/dts/nxp/mxs/imx28-cfa10049.dts
++++ b/arch/arm/boot/dts/nxp/mxs/imx28-cfa10049.dts
+@@ -107,7 +107,7 @@ hx8357: hx8357@0 {
+ 			spi-max-frequency = <100000>;
+ 			spi-cpol;
+ 			spi-cpha;
+-			gpios-reset = <&gpio3 30 0>;
++			reset-gpios = <&gpio3 30 0>;
+ 			im-gpios = <&gpio5 4 0 &gpio5 5 0 &gpio5 6 0>;
  		};
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-apf28dev.dts b/arch/arm/boot/dts/nxp/mxs/imx28-apf28dev.dts
-index 6c87266eb13530685e3ffc23db6b8b294d3ca106..63bbaa15c54d94d4c5bad97a44386dee1cd9c231 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28-apf28dev.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-apf28dev.dts
-@@ -29,7 +29,7 @@ reg_can0_vcc: regulator-1 {
- 	leds {
- 		compatible = "gpio-leds";
- 
--		user {
-+		led-user {
- 			label = "Heartbeat";
- 			gpios = <&gpio0 21 0>;
- 			linux,default-trigger = "heartbeat";
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-apx4devkit.dts b/arch/arm/boot/dts/nxp/mxs/imx28-apx4devkit.dts
-index 0d845ca81e8996edf4b07a798dac16fcce19215b..774eb49cfbc0f1426c6bde2a724db78000f1447e 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28-apx4devkit.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-apx4devkit.dts
-@@ -31,7 +31,7 @@ sound {
- 	leds {
- 		compatible = "gpio-leds";
- 
--		user {
-+		led-user {
- 			label = "Heartbeat";
- 			gpios = <&gpio3 28 0>;
- 			linux,default-trigger = "heartbeat";
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-cfa10036.dts b/arch/arm/boot/dts/nxp/mxs/imx28-cfa10036.dts
-index f170df37b3f887d931c3b59562e698c1fccdc226..f4485334e9f8352ee6d78a0d50bf894d707557f4 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28-cfa10036.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-cfa10036.dts
-@@ -21,7 +21,7 @@ leds {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&led_pins_cfa10036>;
- 
--		power {
-+		led-power {
- 			gpios = <&gpio3 4 1>;
- 			default-state = "on";
+ 	};
+diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-cfa10055.dts b/arch/arm/boot/dts/nxp/mxs/imx28-cfa10055.dts
+index cb68edd6101bc827a3f60746dbe6022e47b78860..aeac1d29058d1a32017f8da36710d5a32ccf24a3 100644
+--- a/arch/arm/boot/dts/nxp/mxs/imx28-cfa10055.dts
++++ b/arch/arm/boot/dts/nxp/mxs/imx28-cfa10055.dts
+@@ -33,7 +33,7 @@ hx8357: hx8357@0 {
+ 			spi-max-frequency = <100000>;
+ 			spi-cpol;
+ 			spi-cpha;
+-			gpios-reset = <&gpio3 30 0>;
++			reset-gpios = <&gpio3 30 0>;
  		};
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2-485.dts b/arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2-485.dts
-index b73020ff1053d4511296a8c4c739a1ad384fff6f..5e3f09109605a439db57709c6c39d28071a043a9 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2-485.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2-485.dts
-@@ -12,12 +12,12 @@ / {
- 	compatible = "i2se,duckbill-2-485", "i2se,duckbill-2", "fsl,imx28";
+ 	};
  
- 	leds {
--		rs485-red {
-+		led-rs485-red {
- 			label = "duckbill:red:rs485";
- 			gpios = <&gpio3 24 GPIO_ACTIVE_LOW>;
+diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-cfa10056.dts b/arch/arm/boot/dts/nxp/mxs/imx28-cfa10056.dts
+index bc2d6fcad12f917e0123e64f3b9279a1d37cd99c..add6a23728e7d84803dbe70b732f35d87b310ad9 100644
+--- a/arch/arm/boot/dts/nxp/mxs/imx28-cfa10056.dts
++++ b/arch/arm/boot/dts/nxp/mxs/imx28-cfa10056.dts
+@@ -32,7 +32,7 @@ hx8369: hx8369@0 {
+ 			spi-max-frequency = <100000>;
+ 			spi-cpol;
+ 			spi-cpha;
+-			gpios-reset = <&gpio3 30 0>;
++			reset-gpios = <&gpio3 30 0>;
  		};
- 
--		rs485-green {
-+		led-rs485-green {
- 			label = "duckbill:green:rs485";
- 			gpios = <&gpio3 25 GPIO_ACTIVE_LOW>;
- 		};
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2-enocean.dts b/arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2-enocean.dts
-index 473d99b9b42f539eb717c839b3b97a254a117f9b..2168a59a33b34d4f5031dcbbf38eb96c167a8d9d 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2-enocean.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2-enocean.dts
-@@ -13,17 +13,17 @@ / {
- 	compatible = "i2se,duckbill-2-enocean", "i2se,duckbill-2", "fsl,imx28";
- 
- 	leds {
--		enocean-blue {
-+		led-enocean-blue {
- 			label = "duckbill:blue:enocean";
- 			gpios = <&gpio3 24 GPIO_ACTIVE_LOW>;
- 		};
- 
--		enocean-red {
-+		led-enocean-red {
- 			label = "duckbill:red:enocean";
- 			gpios = <&gpio3 25 GPIO_ACTIVE_LOW>;
- 		};
- 
--		enocean-green {
-+		led-enocean-green {
- 			label = "duckbill:green:enocean";
- 			gpios = <&gpio3 2 GPIO_ACTIVE_LOW>;
- 		};
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2.dts b/arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2.dts
-index 4e28212e9626067ef2bec2d00f3e9afbb9745c61..9bc703e7b2bc4cae9f9234452735fd7aa20fea6d 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-duckbill-2.dts
-@@ -31,13 +31,13 @@ leds {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&led_pins>;
- 
--		status-red {
-+		led-status-red {
- 			label = "duckbill:red:status";
- 			gpios = <&gpio3 21 GPIO_ACTIVE_HIGH>;
- 			linux,default-trigger = "default-on";
- 		};
- 
--		status-green {
-+		led-status-green {
- 			label = "duckbill:green:status";
- 			gpios = <&gpio3 20 GPIO_ACTIVE_HIGH>;
- 			linux,default-trigger = "heartbeat";
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-duckbill.dts b/arch/arm/boot/dts/nxp/mxs/imx28-duckbill.dts
-index 13ffd533fdea780c98da27e5de80a73a3ee7c321..d5a1983f92890cc20930eb41516853f34f4e5be0 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28-duckbill.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-duckbill.dts
-@@ -30,13 +30,13 @@ leds {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&led_pins>;
- 
--		status-red {
-+		led-status-red {
- 			label = "duckbill:red:status";
- 			gpios = <&gpio3 4 GPIO_ACTIVE_HIGH>;
- 			linux,default-trigger = "default-on";
- 		};
- 
--		status-green {
-+		led-status-green {
- 			label = "duckbill:green:status";
- 			gpios = <&gpio3 5 GPIO_ACTIVE_HIGH>;
- 			linux,default-trigger = "heartbeat";
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-evk.dts b/arch/arm/boot/dts/nxp/mxs/imx28-evk.dts
-index 330d3aff6b6c26e75d06376884b66c5ae5e14f89..d1ff001b4037920fe36784bd5ce062686a780637 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28-evk.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-evk.dts
-@@ -108,7 +108,7 @@ leds {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&led_pin_gpio3_5>;
- 
--		user {
-+		led-user {
- 			label = "Heartbeat";
- 			gpios = <&gpio3 5 0>;
- 			linux,default-trigger = "heartbeat";
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-m28cu3.dts b/arch/arm/boot/dts/nxp/mxs/imx28-m28cu3.dts
-index 24bacc9ba10bf42671426d37d35c25055261e27c..9dc970ce7dd0546252fdb1e1e4ef66a2672abc87 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28-m28cu3.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-m28cu3.dts
-@@ -27,13 +27,13 @@ leds {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&led_pins_gpio>;
- 
--		user1 {
-+		led-user1 {
- 			label = "sd0-led";
- 			gpios = <&gpio2 26 0>;
- 			linux,default-trigger = "mmc0";
- 		};
- 
--		user2 {
-+		led-user2 {
- 			label = "sd1-led";
- 			gpios = <&gpio2 24 0>;
- 			linux,default-trigger = "mmc2";
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-tx28.dts b/arch/arm/boot/dts/nxp/mxs/imx28-tx28.dts
-index 07c098ea2e154ebc9ef9c792f6b9351e1a74e67f..ff2cd1db5fe5f5618ed0f260cfcff6b05de26521 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28-tx28.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-tx28.dts
-@@ -122,7 +122,7 @@ sound {
- 	leds {
- 		compatible = "gpio-leds";
- 
--		user_led: user {
-+		user_led: led-user {
- 			label = "Heartbeat";
- 			gpios = <&gpio4 10 GPIO_ACTIVE_HIGH>;
- 			linux,default-trigger = "heartbeat";
+ 	};
+ };
 
 -- 
 2.43.0
