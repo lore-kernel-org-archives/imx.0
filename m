@@ -1,115 +1,107 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE34A192B7D
-	for <imx@lists.linux.dev>; Thu, 12 Feb 2026 00:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC7521C9FD
+	for <imx@lists.linux.dev>; Thu, 12 Feb 2026 02:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770855529; cv=none; b=ZE2UVQ2niCZOFQVrFxMa5+G3s0NezlThiLhl1OdE8+zDYS6AtuglgGBq3GtXKb5gh3E8tMsimKLlkLFD3HtOdZ6Zr0ML8MAGMXwD4Fcc4vYbDIrcOA3WVsc70DDpZrQ2wET0ZjMl22lTcfZFi7tfnH+NtDKO3SP/Hsyus3rU4rU=
+	t=1770861613; cv=none; b=ZWuI19twznSY7qvNru3gjeksfQsloSirluj/rIrUtWw+dxorkM+3hRc4miS/DSwngyaqdqAC8HZB+Iz9/7jIoyvfsf58K52T8q0gtGg671gQx0ilrUF1jBz4EtYYd4Tq1Y4YQIRK6cduK91H06BrXP8C23E1k0KYcLNVEUnyb9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770855529; c=relaxed/simple;
-	bh=9OODUR48P7s70ANoxxX+st9/5LE47BCK5cXc1LOs2qU=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=ZDoLbxAirGht4p/aeoXDdUlwue0+pKksaD5n7/GkbI9Kk+1Lth7DGXRjg2Jw7nWzXXqWdNcc6qg0G+3pDf6y0A+Cc1jf9pQdP657lm1b3/yElfdikp1Mf687zO/EAdJXqWgJJ0FiSb+oLLFb75B2upZgRHil0C2oQSmtpR/RlCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=GGmoLjNj; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="GGmoLjNj"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=g/dPLm7I5UAJCKjfkGzkcsxjUOFy/EJP1DLfT6d1RYo=; b=GGmoLjNjNPkCYfDu+72tKCarmF
-	mdz9BFjz1zpTPw7dSqyBdSL4bpg2r4QzDo+TDODbsQNSW+/levMLEZHYvKhqh/sCB9kK4EPjlwPeS
-	I+FvewPZLZ9lAPJsTLzs2QvUeqHxLyUighJgeTkRsTErS7j37IAHjxJyTyN/9ozcDkOEWXO02OBHB
-	ngeTK+Grjpn7tA7+/zbCWKxLUcDwdVhQ2OfvTBqTB757PHfnv7MKbiCYHvL5gUJoDyf5uUhS7FBKz
-	ypORCaBXnLkGtg+nqN/qpln6Rlnqe4Bnj5LQ91cDPoa3wULz/Knm52fqtxAJql8JteDxo31abNS/F
-	s5rhLkqA==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:51176 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vqKPf-000000003qp-3XI5;
-	Thu, 12 Feb 2026 00:18:32 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vqKPb-000000093mx-00Jj;
-	Thu, 12 Feb 2026 00:18:27 +0000
-In-Reply-To: <aY0aJppQWUC52OUq@shell.armlinux.org.uk>
-References: <aY0aJppQWUC52OUq@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	imx@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	s=arc-20240116; t=1770861613; c=relaxed/simple;
+	bh=9Hfuc/vKvRrkThn7QkY+ItxYwq9nRWDErBATEx9hJG0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IHIYB56hTBVVxLiYRZY1KHddBt7JOQdQJ6QyMnkfsHLI+3uqcxgr59fj+1ZJUOjB7hnqP9EIxk223pjkTFD86k78SG2NTOVVfm37N8acVVRjnMCaE+7Lka/Y6WXBSotDWhwf2E44xa/spe2f/d3a8bVWFsYIkWR/PYjSscneAeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id F04C2202EB3;
+	Thu, 12 Feb 2026 03:00:03 +0100 (CET)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id C0C4A202EAF;
+	Thu, 12 Feb 2026 03:00:03 +0100 (CET)
+Received: from lsvm11u0000554.swis.ap-northeast-2.aws.nxp.com (lsvm11u0000554.swis.ap-northeast-2.aws.nxp.com [10.52.9.11])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 7BAF0180007B;
+	Thu, 12 Feb 2026 10:00:01 +0800 (+08)
+Date: Thu, 12 Feb 2026 11:00:00 +0900
+From: Yanan Yang <yanan.yang@nxp.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Joseph Guo <qijian.guo@nxp.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH RFC net-next 9/9] net: stmmac: qcom-ethqos: move SerDes speed
- configuration
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, justin.jiang@nxp.com,
+	Lei Xu <lei.xu@nxp.com>, Xiaofeng Wei <xiaofeng.wei@nxp.com>
+Subject: Re: [PATCH v5 2/2] arm64: dts: freescale: add NXP FRDM-IMX91S board
+ support
+Message-ID: <aY00IISQGY8LmYOe@lsvm11u0000554.swis.ap-northeast-2.aws.nxp.com>
+References: <20260210-imx91s-frdm-v5-0-b3e9a67d2285@nxp.com>
+ <20260210-imx91s-frdm-v5-2-b3e9a67d2285@nxp.com>
+ <aYtT9vOAYTYuTsC6@lizhi-Precision-Tower-5810>
+ <9b223407-9218-4382-9968-6541cf485b9d@nxp.com>
+ <aYygOtB1d3XYi_EB@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vqKPb-000000093mx-00Jj@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Thu, 12 Feb 2026 00:18:27 +0000
+In-Reply-To: <aYygOtB1d3XYi_EB@lizhi-Precision-Tower-5810>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-Move the SerDes speed configuration to phylink's .mac_finish() stage
-so that the SerDes is appropriately configured for the interface mode
-prior to the link coming up.
+On Wed, Feb 11, 2026 at 10:28:58AM -0500, Frank Li wrote:
+> On Wed, Feb 11, 2026 at 09:54:52AM +0800, Joseph Guo wrote:
+> > On 2/10/2026 11:51 PM, Frank Li wrote:
+> > > On Tue, Feb 10, 2026 at 07:47:55PM +0900, Yanan Yang wrote:
+> > >> Add DeviceTree support for the NXP FRDM-IMX91S development board based
+> > >> on the i.MX91 SoC. FRDM-IMX91S is a cost-optimized variant of FRDM-IMX91
+> > >> and differs in memory, storage, Ethernet, and PMIC configuration:
+> > >>
+> > >> - 512MB LPDDR4 (FRDM-IMX91 uses 1GB)
+> > >> - 256MB FlexSPI-NAND (FRDM-IMX91 uses 8GB eMMC)
+> > >> - Single GbE port (FRDM-IMX91 has dual GbE)
+> > >> - PMIC PF9453 (FRDM-IMX91 uses PCA9451A)
+> > >
+> > > Look like it is very similar with imx91-11x11-frdm boards.
+> > >
+> > > Can you create common dtsi for both boards
+> > >
+> > > imx91-11x11-fdrm-common.dtsi
+> > >
+> > > then imx91-11x11-fdrm-s.dts and imx91-11x11-frdm.dts included
+> > > imx91-11x11-fdrm-common.dtsi.
+> > >
+> > > You can refer below method
+> > > https://lore.kernel.org/imx/20260204083551.2867263-1-sherry.sun@nxp.com/
+> > >
+> > > Frank
+> >
+> > Hi Frank,
+> >
+> > I think the two boards are totally different.
+> > They have different PMIC, no EMMC for FRDM-IMX91S and totally different pin assignment.
+> > So if we create a common dtsi, there will be not much duplicate code can put in.
+> 
+> Okay. It will be good if diff imx91-11x11-fdrm-s.dts and imx91-11x11-frdm.dts
+> to show what's percentage change.
+> 
+> Frank
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- .../net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Hi Frank,
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index cd6d1660bdb2..153f6abc77cd 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -629,11 +629,6 @@ static void ethqos_configure_sgmii(struct qcom_ethqos *ethqos,
- 		break;
- 	}
- 
--	if (interface == PHY_INTERFACE_MODE_SGMII)
--		ethqos_set_serdes_speed(ethqos, SPEED_1000);
--	else
--		ethqos_set_serdes_speed(ethqos, SPEED_2500);
--
- 	ethqos_pcs_set_inband(priv, interface == PHY_INTERFACE_MODE_SGMII);
- }
- 
-@@ -692,6 +687,11 @@ static int ethqos_mac_finish_serdes(struct net_device *ndev, void *priv,
- 
- 	qcom_ethqos_set_sgmii_loopback(ethqos, false);
- 
-+	if (interface == PHY_INTERFACE_MODE_SGMII)
-+		ethqos_set_serdes_speed(ethqos, SPEED_1000);
-+	else if (interface == PHY_INTERFACE_MODE_2500BASEX)
-+		ethqos_set_serdes_speed(ethqos, SPEED_2500);
-+
- 	return 0;
- }
- 
--- 
-2.47.3
+Although both boards are FRDM platforms, they have significant
+difference in hardware configuration of most peripherals, including
+FlexCAN, GPIO Keys, memory capacity, Ethernet interface, FlexSPI, IOMUX
+configuration, LPI2C and PMIC. Therefore, it is better to maintain
+seperate DTS files for them. 
 
+Yanan
+
+> >
+> > Regards,
+> > Joseph
