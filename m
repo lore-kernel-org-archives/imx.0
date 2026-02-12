@@ -1,169 +1,174 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010002.outbound.protection.outlook.com [52.101.84.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A7827FD59
-	for <imx@lists.linux.dev>; Thu, 12 Feb 2026 10:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E382DE6F3
+	for <imx@lists.linux.dev>; Thu, 12 Feb 2026 10:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770892096; cv=fail; b=qmYfLN4dYnNHgQ/353LT7+cj6p6eajz2zleeUbNsyAYDMuQGuPlP74IOrg0gLwlF6escYEfq8eKjLp/0zqcZDqVzeWBY+B57RJVCtY9bdmCn6eMSiX5o2y34tlzsSIa8saqPfqAdMwcR97y2FqpM8p55wzEW/2d76pPSnJqx8BI=
+	t=1770892191; cv=pass; b=TYfWtJNltkJ8Si4qWvrerriWfaO5Eb6QYfQNmMtXHaN0uFpL53BOVBgI2eV4VRJr+dqxxuYvqnSPuQhyQFM5vaBzzbqMe3jYVTCcaPmYImsInaeHBUqNzeGknuJh/GRIjjFKe2eIVMh6ZYzYyzn4e9h1U3IAmpAF5/l0+z7yxF0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770892096; c=relaxed/simple;
-	bh=7LrI8WNPr5AhFbIJ1TkWBdlNbgjk9fHwqrIUXds4nYc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HUdf/cFK7G06jaxEeHehYYLrbhTvZ3FkxBc7S2i06JTbvAZC5293cVBg7iMfviqjZkClXssWYZ/7N5VCbmvncTmOobLFRstNKKKJOLTf19hP3w7MpJzHHqsKl0jGnmcsOvn0PYlEQ2F23djJtm0BM2mh9PhE+ZArO6mcoubMP3s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kGUa0h3g; arc=fail smtp.client-ip=52.101.84.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	s=arc-20240116; t=1770892191; c=relaxed/simple;
+	bh=2a4Le73LBQr/hZI/otLXD8JXTTU+ceipXIWhUtHl5Rk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VhSatRCEwavrQcSMG3oxWHeol8Mf8wvbhA5mZJ1zZhQqhHplQg6x83iMBUrpB9DfEtW6MtEdtCwl+ttpXM48xT1ls9cyDNvQ53Og8Dgu1MvAChzIje1bMx4pSde3Kbmm8dPqLcB5Qm7k4/a31HUolH1XgtZjs8I5QbRdwJThRsg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ARfnhb1M; arc=pass smtp.client-ip=74.125.82.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kGUa0h3g"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cr7KvnhmMbMw7e20kt7PCOXBdg9Gm17LURf1SFd1Ljdp7f56pXVqc8KDNwXSarMi1eh4FQgySrIYyznYyBBeFD6ZgD06+V7UKRjdU8AxfZawMUhBiczR1pjh+G6xn+V2c4L7OsENVPRMHnGxO5wNrwIgtmzSLJxH2+JTARJnGnNsQbKnQ1xDF8YsyzNaHrdvIBiB9NI/zUW2ZXtS/pwgPJD/cv/SAv2GHjNJy/T87um+ckGFypuWYdrDpZfe0iZvtlNNX455FNDJnklJIHEv7sNeHIbgiAWoFcMUQx/Gb0/dqECH78MXffkjS689eo44/YgazyzpY+2Jaqv5nQV6Uw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ekn2Qoq8DRtzBcIZxTOHPgDSmsOc92hWZsrlwbS63pM=;
- b=NfjzcpZfjlhWQ/5MY0XGM+lYSJnjpgD16ZjewSr9djxXxx+P6XgAWmaBZH3MMnuD2kloK0IlTykHYR4Z6Pp7Mf2qBvWtZaBh1N6ruRQEowt38ctrH8bz6bD7YyrmMSsT+K4aEhyRyNFQuSHMDnY5q6D0CzjVLddmPtcO91MzZXJWj2207424DV/Dohps74W8cOLAD4m2W+vOu2POccGmAuFk2w+r+eTW/2xlDdHBeSC4SxICxhkDBt9Uw+5hCVK9WoQFMjuhjCKNTmNux0Llxr45JkdrxkIp5hrbczUSuzj6ZRl/Cfrf0lnFzOFo+lJk/F6tNjvHYfV6lSDLOLzcBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ekn2Qoq8DRtzBcIZxTOHPgDSmsOc92hWZsrlwbS63pM=;
- b=kGUa0h3geI/GBAtEhSFdUFHCMTuPjBMNYiQev9NlQk+aTblLJQw1YnMy2eXKgnhQw9xm02as5FGd6y34HusFz9BObLCHyFpewACu+lbVnZcZRX9LaACCAnaAC4fvIOeBdpOxxhzvk8+VmfwVz8N52JdcZkCUTwgHsc1o35pTfYaMYUYLZTPmq5uXM6MGBGZfYTtjB22LUCxKYzc1KSOvE+R9GhsYbEXWpUNWLXR1qPrCgWYruzGglTG7Dg+KEj9/++rLrTbhVwfkned11m/5p/QO3nuVnWGnd/JQbqKXhD5G3xJXGD/JUH/ioUldXgQT+Tu8TvzcqdCqAUWc8oPJTw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8829.eurprd04.prod.outlook.com (2603:10a6:102:20c::17)
- by MRWPR04MB12257.eurprd04.prod.outlook.com (2603:10a6:501:81::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Thu, 12 Feb
- 2026 10:28:12 +0000
-Received: from PAXPR04MB8829.eurprd04.prod.outlook.com
- ([fe80::52de:f9c9:8c2e:7dd5]) by PAXPR04MB8829.eurprd04.prod.outlook.com
- ([fe80::52de:f9c9:8c2e:7dd5%5]) with mapi id 15.20.9611.008; Thu, 12 Feb 2026
- 10:28:12 +0000
-Date: Thu, 12 Feb 2026 18:20:40 +0800
-From: Xu Yang <xu.yang_2@nxp.com>
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: gregkh@linuxfoundation.org, m.grzeschik@pengutronix.de, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev, 
-	jun.li@nxp.com
-Subject: Re: [PATCH] usb: port: add delay after usb_hub_set_port_power()
-Message-ID: <skn2mqgvxcc36rctjrcbmh6hp6g467ktdpjpus53stnmcatikx@5icjdgjgptku>
-References: <20260211103628.3265850-1-xu.yang_2@nxp.com>
- <1be3ca8a-032d-487e-92f4-67b2070be213@rowland.harvard.edu>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1be3ca8a-032d-487e-92f4-67b2070be213@rowland.harvard.edu>
-X-ClientProxiedBy: SG2PR06CA0209.apcprd06.prod.outlook.com
- (2603:1096:4:68::17) To PAXPR04MB8829.eurprd04.prod.outlook.com
- (2603:10a6:102:20c::17)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ARfnhb1M"
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-126ea4b77adso8808885c88.1
+        for <imx@lists.linux.dev>; Thu, 12 Feb 2026 02:29:49 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770892189; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SuohDTllvcVJZs7MHCf24WUump0vJaXyWNBGxOCy3361w06kSW8XW0UQ4EgilrA9Ud
+         QRY95jNDdN1+jjPSszYcfn/+6HNLDg7ZoEBvdxaE6Ke9TuHldCSSF9KXxI3AV1f8s/yW
+         y/qHCgWReOI5Bxta1fqRC2pjO8hla2aRjhe2AckToM4acwwkfNQsaSO4ZlsHjFs2OH96
+         M/mJmN+Vn9C3/3++vN+XhhQZmFaf1VGrwpypG+NLkTC7NzDRR40j1r6xtXMSlZwHfISN
+         DfXZAK5Y3fEIRGc6ztxLNxoNc4yhUEk1wVSGU40tOg0/GDfowRgyuSRmaUEyWQJMIARy
+         fEow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2WNwAh7MqNpr3gNRm798l0GPzFsj9dN4fIN0L2pm3tc=;
+        fh=YZ+NIUwq+ElgQ61L/DXkpRExYrei1efjpA/hzuwEG5c=;
+        b=KYlfl2JRXQWmGn15Egn/3V56ZqxUsqhXrqW4fl4LGGnlSp+Bl8gEOr+ZLWLmxgLeYx
+         vp2+HR/8K1YY9cHWbN0qNpVrXSaVNff1itqlca8Uo9y41Ya8pBmkf0Hn+0qwLtr/qzHn
+         jVUWn40T/DE2yzqU4if2Z+70j8Lbac1CAumJ8N86l9C4Gd+BS2Afche1Yx/9bGA+EnTs
+         pk6dtsvOmTgmQH50t6YpUBV3tPPedOr4XOKjmvgIeONLwDdb8FDhX69Q6T3pluBQHxxb
+         lAS3CM0k4x5roaX/4Xb2s6dKJv6HD+GoQCyO9CzWlXzQiALy0gln8rj77AgRbd69l56W
+         0T1Q==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770892189; x=1771496989; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2WNwAh7MqNpr3gNRm798l0GPzFsj9dN4fIN0L2pm3tc=;
+        b=ARfnhb1MEvk11OvBaf+Mqv/n227ShrY2UHAAQVtZ/ENO+wN1Lnp2gSkRuzXWycIHRG
+         XcrRQR82N44+5G2+jMuWNfvjsImsK6bzgBs3tyyXZQTP9D7MG4O/ln+BDL5+N1/vNkg3
+         WikeQBCkXjAXGLlJue6R5b7cx7YYkHNzzdbQoE5faN0Ej05OkPq/+CYNhOXO+4GfNguK
+         Znf/umAXTqYXUQAifI6IXC75mnMS0FqSCIO/kLofbxwRKdO7rIkHJDyd2ClzUA2NV6g7
+         dmGY93Ks8gnLUxkTrKpEK/QkJvYkJKmzG6I6J2zVhRkmiJQPtiVBIonSft+myvVQ1x2Z
+         txCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770892189; x=1771496989;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2WNwAh7MqNpr3gNRm798l0GPzFsj9dN4fIN0L2pm3tc=;
+        b=AH9oHwbuWoMd7hShVeBz1+6hyEFFF6OBe6Kk/UDAQN8e2AbKY2IAq1mNZeo2uYXs4a
+         Fryxr9cwxS9Uya/mFGxL2H1EhomXSDJuvQyz7y6aaIJjoitPI//e+O4eRnW/wssqczSM
+         n6WiA4xc5E6dGtoNa0q+5nUy5/DfM4Bx9cVYv+CE8HQnVosIhko6s/R95KAtf3q8OACr
+         y2GlD8Q2WS4b5kLSlGA9wzcx9pS9CYhbxCo9tydRpU2ge7gfnk9pxIoh19Vqy2g/SMDu
+         n7Ch3crDBXiP79SMGj6JOc6zqqYk9JH9x0cjvrMMO6HOCE5XGYdvwcO5pKXbgtGw3Q4t
+         KZ5g==
+X-Forwarded-Encrypted: i=1; AJvYcCWohAu3cSergGUKRyBoF8ZMuFlkee+roD78ERnu7PSSQPWJQDjGCiACfyrToWRuEfMm5qA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yy9lrZ2zl876vYIZwtcft1mRRXvAYcD5oc/LY9gSUPpFroLptWF
+	ewWcYHu3RyOqoqd/JJn2xXl+Tw9K+M3yO25sQi8mI/RPH0LdMKWWW7HrRFvGrbwJFKbT79+k09u
+	JoDs9C0JIH2Y4IeL4rbtW6ZQN9WdzCKQ=
+X-Gm-Gg: AZuq6aIKUiuAhn2K902af1gakHFJ2jtXcTnJ+IQUhY4hPTFKqYadBbbyKGLsCO//odH
+	Y8GSC7RPeGvp/SFT2TVSVa3eeEmD/rIP7AckiU648OXONVxf5hlZs3NSCMXefrlmNS5S3pu3UYu
+	D3ppUY3JrSe/4BvS7msy/vVe2PSwBWqwL1t/JBvSCzv2elki6BQjmIetOMFLquueCGhEv5S6TWl
+	dNYjN0WZ5ulDezz09mEzihqeo9IKIhZKo9K/w9zqwQjt7BoE0P5pYG735lzZcoE5Wge+koi8PxM
+	58e+3C4dgqmploqWDxihZ9ayvOw5rodbhHf7PP0x2/2Pf8SU6YhXFUaGTTN5SJT9dx1sdMXCR9z
+	eaA/hoj41PGiNtXzeQmiulw==
+X-Received: by 2002:a05:7022:e12:b0:11e:3e9:3ea2 with SMTP id
+ a92af1059eb24-1272f7b0683mr1034840c88.49.1770892188893; Thu, 12 Feb 2026
+ 02:29:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8829:EE_|MRWPR04MB12257:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9eb3c10-c94f-4d5c-4cc2-08de6a216c0e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|1800799024|366016|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?arrYJjkYqwyWRTlrfFsrjAWBVzUI5KxU2dPm8cb2aiOc6Fj8ObpQb5/9sOrg?=
- =?us-ascii?Q?iBE1DcEWL+lfIGfukhdKyqD2f0WAvk6T6zKmy9Fy7+hQudxaIN91GhUP97VW?=
- =?us-ascii?Q?81kIy2J5yO18h8lIw5jV0meFHCVjWk988EqsmGqUck49ofXS2fkg6jJQh/n9?=
- =?us-ascii?Q?9fyJ/cAJXLDaCAiFgoyWLoB3i1FLD/DD85ZKDkAxXhoGrCw6XqZkqnQzc8bq?=
- =?us-ascii?Q?4LYC24FDh1nMTP+TKHyjtO0SQWzu9sWztI6HgXtRIvvgoyuD8QeKe1fss8OJ?=
- =?us-ascii?Q?BCsNZCIu/AivJ3PhJlje2eghGgPxGMOoMzDNMXsWtqqq+eflZue+u95nRjJw?=
- =?us-ascii?Q?mccFE1ITZlJQjZcFZeDy/+RKloHk8v6JKjQYQiHQm1xbgQwYAyz7FMR5s6uR?=
- =?us-ascii?Q?y19ji2KXyeTE7NnGxPLnZL5HQXqtttBz5YxK3E2EPMqlC6GjhpL3oAvBDxc0?=
- =?us-ascii?Q?Zn36HjT5s8lFVLzWOpt5RD7aky0Zt8avbvBK13DrOSLB7/eQN0yIksvpok7+?=
- =?us-ascii?Q?9XpAil4IKKfJbGubsfFifLCz6BaaqjrSVxB3qXkgiZ8xuaTKhbq13eYZjCZK?=
- =?us-ascii?Q?kN/yDd0KQc1auFBdXqlg0ashKve1qUpYsWedXcH8xPU1sblcv6FhILKzIMfB?=
- =?us-ascii?Q?5Rt0UDyGw31fD3hSt/1xSjoLJPbwzsLZwCWf9r0DDZ+/8R+Q9H0VQUK95bfz?=
- =?us-ascii?Q?F3bZazmC5GN1k5Zz1w5B2gyGIwAfKgcAO4EiwTlOFSb/y+8MbGL5GMKgYEgc?=
- =?us-ascii?Q?nOybzOXTV5aWBNrLHu0oq7eIhx7pykux6jSDX8puAGTFBioctjqLg5l2OXow?=
- =?us-ascii?Q?NyuTIRuAYzTLm7UkRgw/YSzj1EzKx1C6mx6xkIBRbI//GzV5n4b9amS4W/Iz?=
- =?us-ascii?Q?lP4Csl/sV5lI+DnXrqV8RgPgRELJc4l1P9YJ/6H0AL2Gtz8BYYP9YVge02gg?=
- =?us-ascii?Q?ua7qjpyL0r2ZK6jAesTekmYmYQmdZfxi3tBcQvIcJn6BLtGLK/bCtwc99QoT?=
- =?us-ascii?Q?4u/SJFaTr52cWO7qqnwbkH92McueiBobHPo8oWwHZRp0KAU2X6vcyDTsbviB?=
- =?us-ascii?Q?PPAdNhEc1ApTVrlmJHzElm8THdho8vJ4pw2O2tvCK7tLPwrASSgUoKGbPk8r?=
- =?us-ascii?Q?55PwOQF+G6z0uHpMEg4slQQHoiI8lAHuu/uyHyZ27XcoNyJVl1AAFrTLf6vl?=
- =?us-ascii?Q?r6y+Gglt0Rr7hK4XWGG++kAD1nHjcf5l5/3Y2skQfEyRF+lQ0IOWsdMmINYA?=
- =?us-ascii?Q?1iAefPQnDl6o3otyh9Flkqv2IQfwh/k3l/VixZJ5vz3xXDcKbYIYdPA+/hlW?=
- =?us-ascii?Q?YSV2MhlcQc834JzlFfjxVplapoed49G9KiGeQw4qYF/R3WJQ+i7q0TRxpbID?=
- =?us-ascii?Q?/qKEpR5jkYWSwsKVJ/ca+WFuAamWGeDHeW9SrCPFEYGPkGclwlrB7/Lt9yzR?=
- =?us-ascii?Q?FDdMVFjBzUXqKRbAbVSn6Fe/jvKOBV/T4gqurreG+PhAaK58tX2FyJqTpwrq?=
- =?us-ascii?Q?Q5MhtMUscLLr1WgnuiyUGHvA9FXJKofqu4UEReKCSbuXNhJ4DGovyr/K8P1c?=
- =?us-ascii?Q?a0MZ/JvgXCjo5oTOq1zKJ0sYZUMKUnyH+c72UVQ97YChtP8iqBcYhbo/EGDD?=
- =?us-ascii?Q?eaYauAyTGSZ4EP4qfkHw/mI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8829.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(366016)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?AVcgUjn1q4PdzRjCETSTTV1FSpRyTNmRvXfPdRLWQX2auUTVDJ0JdI76DwvE?=
- =?us-ascii?Q?MrliYdo5OK1m+u4vwelVoewwcDP5pNtlwqBDbFmCYI8GSFjGgg5tXOrIMSCl?=
- =?us-ascii?Q?rkQUg6QsJz0T9pdsBUzWktjgWasv83kpzNeMrQtXjxtFf/Lve+39o6HagrdF?=
- =?us-ascii?Q?V59Rp0N0iGjr0GABvWb9CBViYsF+R/5ReV47Ra7Dw4ONeAg+brCf1YLL3Cbn?=
- =?us-ascii?Q?u8daYjy2cBVrqx0lb8M9rEUmgflTr3qBZaQFYDJKla20hdQfKAXcV2jSHz+A?=
- =?us-ascii?Q?iUcVYuoaBXF6s1VrnIwpv0FVmE2gH7xUyEm8ssptauXlPAYRKjsFV8zXITA8?=
- =?us-ascii?Q?mwFUpm/fsM9p6EXji5ED1244rg9IrMUYkqC6wCDkYxK4WDNdwiFSqlLAmFvv?=
- =?us-ascii?Q?oycQGr58R5KOpKmrzuT9mByJLJIfHTUQnMFPj/WLtHuMSdFisHh4HQnn0ZW3?=
- =?us-ascii?Q?PlLNt5SrcXtBGQzZiVZ8ZYIn5ruCs9h+aPQ1wfN4JB+z6w/WZ0d5Ol1QweW9?=
- =?us-ascii?Q?YCSik702QriM3bduUxXawCUITCOBLXW9XxZS5SLss674aiWPL/KS3MEYSF2r?=
- =?us-ascii?Q?N55IMGC04Z9dEhF7Al2qGjYm5Th8xPOOhj0072BDnB3RGi0YjKV2ahiWpBJa?=
- =?us-ascii?Q?mXkIMJBBUh/NVuECmiEJVC48Cg87HSiqou4LyV3tK90lZi1nQ5NtJ3w1wHEp?=
- =?us-ascii?Q?y60Q7cRBiB1nVPZWH4EuHb70Kw4VCOgj685h/fcSlR6C3nQm8TZFAFhugHhM?=
- =?us-ascii?Q?yspBdnbx6NiQkN0qVVEEar8xQpFtWL4VmXs6Uw/4lr6HryrUKV2BdpWjV1fZ?=
- =?us-ascii?Q?csMnuKB7ePQPzvlQI4kRIVVqGP/lakfV9ivFs/ZApbIJDQoj11m2FziFQDsf?=
- =?us-ascii?Q?isvY1R90H1tRNqun+PRxiClRnon49q1zndtHl+ruOewzrTRWpRMWsucJVr4K?=
- =?us-ascii?Q?5Mh9eRGGZ/ID3hhaWC87ctC2PisR2MjEXPWPXKWT2REetS6UDoRPqSDk7caE?=
- =?us-ascii?Q?cveERaRkXLV2Bi5GAclWQpNVFL/o/g6QL5iFWd8yDRoh5xxEVOGsCFYbLwbl?=
- =?us-ascii?Q?LIjuyc8VzS2jQZZ/2IVxH8Tn/eh6qi+YFXvVeyUFKxILmltwrhfyPvwLsF3b?=
- =?us-ascii?Q?+8oDqvxUhiM5IAJg5vHDmvmrM4EhxJ6t4FWTEqduXUU832CZKZprlF07fE79?=
- =?us-ascii?Q?KCPMqyzFN6r1KR0BsT+gbvWGmuhC/twibrUKwnl+As/nGoDq1hfZ98ovrJ1h?=
- =?us-ascii?Q?7nQeNHnA6gaYarbOfeGdf9jsqAjJN9yvqsAAVCaUIRHvHpC+qprATVnoIFMm?=
- =?us-ascii?Q?4UBQXwhKLAda06Uee6ue7gkL8xK9pILFN7Q9rN7jaydBE5VjAThewFq5debr?=
- =?us-ascii?Q?7SLjESmrwbngITlp5koOuRVfeJ5SnyVyfynt35TGYY0kMiWQCt9D9vA3P28/?=
- =?us-ascii?Q?ob4q5H7CByvGY3msSgkjxeZpBuY3twwfIzrYI+MQAKCyXjK84qjFBHe1lSaG?=
- =?us-ascii?Q?oTou7hAdWUHMJlX0Fs9La9RPZogtEuEOimE75uxhMjztWLXQKJ/shfUczMvT?=
- =?us-ascii?Q?FJa6QTrmiEn7PxOYJ/fID1JMIa5+cxcgc66WXlGrxAalqT9zY8CZV+K3PSbz?=
- =?us-ascii?Q?55dQAjqtIk+48TuZAFQx68YP7m0qz057so9w0qzCCScTT0jY91P1G9Sh5r1O?=
- =?us-ascii?Q?lxy4b0Ksg26oWW6WsrnfSZVZmjX0KlpDS5J5Q/QW8YshM2Lf1ENZwmRocre4?=
- =?us-ascii?Q?OojmeLabIQ=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9eb3c10-c94f-4d5c-4cc2-08de6a216c0e
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8829.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2026 10:28:11.9551
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8n7+1aFfWghyIjgDPbIXfQPiYu+r5OpW3FHxY5NBeaomsdeSwJDaC8gY2SQOeTeXlquRI6ackhxxGarNIqVqsw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB12257
+References: <20260211214646.3700533-1-Frank.Li@nxp.com>
+In-Reply-To: <20260211214646.3700533-1-Frank.Li@nxp.com>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Thu, 12 Feb 2026 12:32:32 +0200
+X-Gm-Features: AZwV_QhhFT0cn79ldAjeoBPb3aybubF9rpuw8kM-MYNYPOpdFzKmXW-eCrt9Hks
+Message-ID: <CAEnQRZACes8EptdEgg0i0vzdcxgUJwZAfQHU0DEhMnXtA-g01Q@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ASoC: dt-bindings: Convert eukrea-tlv320.txt to yaml
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	"open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM..." <linux-sound@vger.kernel.org>, 
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	imx@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 11, 2026 at 10:04:32AM -0500, Alan Stern wrote:
-> On Wed, Feb 11, 2026 at 06:36:28PM +0800, Xu Yang wrote:
-> > When disable the root hub port, somehow the device is disconnected and
-> > re-connected again. This happens because usb_clear_port_feature() does not
-> > clear a truly happened port change. That says, in fact, port change event
-> > may happen after usb_clear_port_feature() is called. Then the subsequent
-> > port change event will have impact on usb device suspend routine.
-> 
-> This is not a very good description of the problem.  Here's a better 
-> one:
-> 
-> When a port is disabled, an attached device will be disconnected.  This 
-> causes a port-status-change event, which will race with hub autosuspend 
-> (if the disabled port was the only connected port on its hub), causing 
-> an immediate resume and a second autosuspend.  Both of these can be 
-> avoided by adding a short delay after the call to 
-> usb_hub_set_port_power().
+On Wed, Feb 11, 2026 at 11:49=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
+>
+> Convert eukrea-tlv320.txt to yaml format.
+>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../bindings/sound/eukrea,asoc-tlv320.yaml    | 53 +++++++++++++++++++
+>  .../bindings/sound/eukrea-tlv320.txt          | 26 ---------
+>  2 files changed, 53 insertions(+), 26 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/sound/eukrea,asoc-t=
+lv320.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/sound/eukrea-tlv320=
+.txt
+>
+> diff --git a/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.y=
+aml b/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
+> new file mode 100644
+> index 0000000000000..483507fa77937
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/sound/eukrea,asoc-tlv320.yaml
+> @@ -0,0 +1,53 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/sound/eukrea,asoc-tlv320.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Audio complex for Eukrea boards with tlv320aic23 codec.
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: eukrea,asoc-tlv320
+> +
+> +  eukrea,model:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    description:
+> +      The user-visible name of this sound complex.
+> +
+> +  ssi-controller:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description:
+> +      The phandle of the SSI controller.
+> +
+> +  fsl,mux-int-port:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      The internal port of the i.MX audio muxer (AUDMUX).
 
-Thank you for providing a better one!
+Same comment about port numbering applies also for mux-int-port. So
+better add it here too.
 
-Thanks,
-Xu Yang
+
+> +
+> +  fsl,mux-ext-port:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: |
+> +      The external port of the i.MX audio muxer.
+> +      Note: The AUDMUX port numbering should start at 1, which is consis=
+tent with
+> +      hardware manual.
+> +
+> +required:
+> +  - compatible
+> +  - eukrea,model
+> +  - ssi-controller
+> +
+> +additionalProperties: false
+
+The driver sound/soc/fsl/eukrea-tlv320.c allows an optional property
+named codec-handle
+so I'm not sure additionalProperties: false is correct here.
