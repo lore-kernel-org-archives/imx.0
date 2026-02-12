@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170D335028E;
-	Thu, 12 Feb 2026 11:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462C01FF1AE;
+	Thu, 12 Feb 2026 12:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770897588; cv=none; b=szUmyEfj8D9kxLX7lVXwl/emPz8CJ6X5MroqYCjoedhQGlDbhUhzGS2iSzIjPb0/bZq7oeEmN6vJN73WSIIFKDqYiPWisgncApAfMUyX5w3jwdc5taJ5lc/X5+cl7+couFzT42WC3lGjtHus3uGRz3lTcMrE75IFkhdRyIeRcrg=
+	t=1770897760; cv=none; b=ENfU8cQhkeuvEcN4vI2XdQvlsHaRoqeOy/xWz13WMZB2HGKQqCJqdqavf6jrfqMwx50vQylc6zQx4ExHh7lgr4WatYHfcJIS5C01np3pWaTj1sktRGg4NT4UdTo9FniXHcNOy1yNAXMUA/sKaj+MQd731zYx18i656HzTZOeEAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770897588; c=relaxed/simple;
-	bh=R71KCEJDUZuGn7kGA07hXLI6qMBz9BJ/iU0RPei12o8=;
+	s=arc-20240116; t=1770897760; c=relaxed/simple;
+	bh=QN+y41JEJ8Hdm3J4p6xmXaQjbXH+tj35FLd+7s+Aob0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jeZBMwlCURO2lctklWeOARdH92kSmId5WS0psY/ykiFHcpCSQr2qhwl2sZVI7BvBvQQxO38Y2qBCz21kqno2VKsHl80489hvjlPDX8/ERw7gf0rvZWgzmuezwI8yZeG7ENB5CbOhNUCdYa19CgoXjMpYzGYXpCnZNE/UtZG+VpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LFPz8nfZ; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=eptI3Hz4QLBPPGozyFebx5C9327RxfC7NwB4zAAOZmR/ADxBmMov+Hzm0RPgumLkAHQk4JZu+xsGCGNAMymRoRmKU1piopT8tThegYlDe2rryNvLgxX1b2XoM8Gq+lDyWxzModrQluh8NZFHO34ZFbmmAZggLuuk/Abt0qbMvmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SjAxqzD7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LFPz8nfZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E6BC4CEF7;
-	Thu, 12 Feb 2026 11:59:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SjAxqzD7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FEC4C4CEF7;
+	Thu, 12 Feb 2026 12:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770897587;
-	bh=R71KCEJDUZuGn7kGA07hXLI6qMBz9BJ/iU0RPei12o8=;
+	s=k20201202; t=1770897759;
+	bh=QN+y41JEJ8Hdm3J4p6xmXaQjbXH+tj35FLd+7s+Aob0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LFPz8nfZZN79zdBVmChBfVoLXPyes+319N9HsVQO3+ItKp+ooqpCet44o818vz9w3
-	 NDHRrBjmmCPc4i414hL+KC2T8Ct2UEE+wCSkXf6b5yIycprfKO9EQybXtj4KJDdaE9
-	 ov4juPepYoz10EhF2AKxg2Ykt3Fv+VaX4OxMrVxYJ5kRy/tRMX46ACiXJcr9+YPKA4
-	 iwgjdZDqU8cfNdW7aatCG+3cXYH4b173j3zV6M/V/SDfQU7AQqXVRAwjwpFMd3kuRb
-	 CMjcAUAs7BsFd+Z3sLGMzx03T0O0C2EKkebshNWgnPmTgV9owgOL8dYMbPIHDJgmbf
-	 j1PQUiEgRmd4g==
-Date: Thu, 12 Feb 2026 12:59:45 +0100
+	b=SjAxqzD7U7YfawpCA3dHQlrvfsUQQ+Ni/vl6KzpH0q50Zm9f24e/W6789dXFbzvdh
+	 yaincLOpex+uRKludyIxKrDJgc2lYRaXMCE/0thy7t8JvD3bgtA9QO5WHDncGFBsmI
+	 QcAYcXDwQnEvaZ9SbxobVios1BbOBjHCSLf8m6bBg6jEP7Volhi5fFeNzqBXnMm1Xb
+	 WdspHk0B4k7DzK0tTrg1mG8YMQojW7XDaDDGf48E9J274w3TkMFoag/k8wS61PXohT
+	 lOiBFoLeCSKj/0ZhdlifyjSnSd+FRLV45sKyah0jCdtCB05mo4xR4pkARG2nyW+z2r
+	 WyhZ57RpeHteg==
+Date: Thu, 12 Feb 2026 13:02:37 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, 
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>, 
+	Vincent Mailhol <mailhol@kernel.org>, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Shawn Guo <shawnguo@kernel.org>, 
+	Wolfgang Grandegger <wg@grandegger.com>, "open list:CAN NETWORK DRIVERS" <linux-can@vger.kernel.org>, 
 	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: soc: imx: add fsl,aipi-bus and
- fsl,emi-bus
-Message-ID: <20260212-divergent-gazelle-of-patience-0dd85c@quoll>
-References: <20260211221937.3752048-1-Frank.Li@nxp.com>
+Subject: Re: [PATCH 1/1] dt-bindings: net: can: nxp,sja1000: add reference to
+ fsl,imx-weim-peripherals.yaml
+Message-ID: <20260212-peach-pudu-of-mastery-b09bf5@quoll>
+References: <20260211230705.3824184-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -45,48 +46,24 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260211221937.3752048-1-Frank.Li@nxp.com>
+In-Reply-To: <20260211230705.3824184-1-Frank.Li@nxp.com>
 
-On Wed, Feb 11, 2026 at 05:19:35PM -0500, Frank Li wrote:
-> Add fsl,aipi-bus and fsl,emi-bus for i.MX1, i.MX2*.
+On Wed, Feb 11, 2026 at 06:07:05PM -0500, Frank Li wrote:
+> Add a reference to fsl,imx-weim-peripherals.yaml to allow vendor-specific
+> properties for memory access timings.
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  Documentation/devicetree/bindings/bus/fsl,spba-bus.yaml | 4 ++++
->  1 file changed, 4 insertions(+)
+> Memory-mapped devices are less common today, with most peripherals using
+> SPI or I2C. Since there is no generic YAML schema for memory-mapped
+> peripherals, reference the i.MX WEIM schema here.
+
+Theer is - mc-peripheral-props.yaml - and should be used, unless this
+device cannot be used on any other SoCs.
+
 > 
-> diff --git a/Documentation/devicetree/bindings/bus/fsl,spba-bus.yaml b/Documentation/devicetree/bindings/bus/fsl,spba-bus.yaml
-> index 00bbde203f598..4808065fc9115 100644
-> --- a/Documentation/devicetree/bindings/bus/fsl,spba-bus.yaml
-> +++ b/Documentation/devicetree/bindings/bus/fsl,spba-bus.yaml
-> @@ -26,8 +26,10 @@ select:
->      compatible:
->        contains:
->          enum:
-> +          - fsl,aipi-bus
->            - fsl,aips
->            - fsl,emi
-> +          - fsl,emi-bus
->            - fsl,spba-bus
->    required:
->      - compatible
-> @@ -39,8 +41,10 @@ properties:
->    compatible:
->      items:
->        - enum:
-> +          - fsl,aipi-bus
->            - fsl,aips
->            - fsl,emi
-> +          - fsl,emi-bus
+> Fix below CHECK_DTBS warings:
+> arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dtb: can@4,0 (nxp,sja1000): Unevaluated properties are not allowed ('fsl,weim-cs-timing' was unexpected)
+>         from schema $id: http://devicetree.org/schemas/net/can/nxp,sja1000.yaml
 
-Why exactly? There is already emi, although not in my next, so don't do
-it per one compatible.
+Best regards,
+Krzysztof
 
-https://lore.kernel.org/all/20260201011913.2419626-1-Frank.Li@nxp.com/
-
->            - fsl,spba-bus
->        - const: simple-bus
->  
-> -- 
-> 2.43.0
-> 
