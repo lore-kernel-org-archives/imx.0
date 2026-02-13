@@ -1,40 +1,40 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58574349B11
-	for <imx@lists.linux.dev>; Fri, 13 Feb 2026 09:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4862834A3A7
+	for <imx@lists.linux.dev>; Fri, 13 Feb 2026 09:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770974734; cv=none; b=cAxAZqPjmvb6p7iJ//F/N2fpRc0QqvFA8hvrla5PltgaFwUqqGl/B+XQuWbhAnYiVLdcmwOBg+G/wrDLUpv+qHloJZyLJJnMf7H8/9HD2Q2K6HxRL/pe1WmefRmbTXLotHlU8ZaJOnltkgkK0S18YFtKe9R0l3g6QOqlU+UD0RI=
+	t=1770975321; cv=none; b=jVoiv2hTd0TGyPN10GGml8FVx73aR/ne8fLpF+gtmBjAebqSSFygDt+pkDOM9S6uL43bntcmWT4bNBfbNqzm7NsrEf8i6Z64oFhQumF5ERRR7t6naGtHTNNZ68FIFFlsnDouWbWhosRLT1PstmZl+iMtg2qir2uitFtqnp7SZa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770974734; c=relaxed/simple;
-	bh=G5uVfiHvpJL7gGWEE69leLa5qM6BlavB/hM9VB1DZnM=;
+	s=arc-20240116; t=1770975321; c=relaxed/simple;
+	bh=f9czAYBnY4F1mb2qB92X9nU6lRz+eaOYt/gVPcytyK4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J6njQ6/3MPyHTg4cNkjsydzgxrPWhpbR614J05c6g8T02ygmGohkiwYnt3Hd1/GM4Lj2vuHLmRPhd2Rd4bTJZTXg+Z3RpdMd2KWGPBCD6lZlxgkEtUab6aWSe28fho64/aQyPC6tuIm+8J6E9SwVdLpSEifo9pfSH7AeaK9G2mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=VTOkrQjJ; arc=none smtp.client-ip=148.251.105.195
+	 In-Reply-To:Content-Type; b=tyX4zgKvhiyKM+GHmPdrL/DFzP3qIvtRa45aHjgE19RbJRybpv0/XVYB+9W/+MY4DBwlpOdgCVi6jw4HsUTvIx3FRlJ3GTEXOfmU/dBJwhGj6zONNNZncgnPOoSDXOS4OOi3MsKSAEv9uoQTdOFrMQVFG+FgPhB/T/EW0g6HkVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=WF6UIG1L; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="VTOkrQjJ"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="WF6UIG1L"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1770974731;
-	bh=G5uVfiHvpJL7gGWEE69leLa5qM6BlavB/hM9VB1DZnM=;
+	s=mail; t=1770975318;
+	bh=f9czAYBnY4F1mb2qB92X9nU6lRz+eaOYt/gVPcytyK4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VTOkrQjJfHt53FBmeh4TZceysttLfR6T/agUdUWq8bavGxs1gHSKaS5OamqBMHmAy
-	 UQ+JnnfJVwJDdLYdmdfKn4loOzu8y1oNVDqrjZimuck2GrCFSLYnhW1Ig6lR2gxM58
-	 c387nPyYx+gFMcBvfRh3AuXJwFTQQb3NZjcl5Y1+2onXga3PBQcdew4wVb9gttu5vg
-	 bOws3sNAXwv138v3CGWVu7J+vip9ZOQbBP8o0MBH3Sj+Dqb588T3FADYS8YXg2zCdo
-	 xxRet0yJJ1yEGYBdxDc4bMJN6k8VS43OO/KINDkchQw9P8E6mBeo62UC/1lSMhc+co
-	 0Yfyc3kobPuzw==
+	b=WF6UIG1L/DlR4lhHsHYVWBoyIIbWGoqF7Za+PgATHTvvIW7tKTp5QLlfltd4S0alo
+	 8yYP9PCnSjAjrbpuP/8PWMnSCOCNLqRresRVB2pO8Ac4I+qo92a5czKysIEBmAnRh6
+	 qGqVUPNYVcvE8YrLf4Cumf4MqgQL7i2ki6ZHOFna+ETtfye5KfEamjqH9VeVunrJUi
+	 rOsqxyFxPzE00DR0b7DzFJ5CsAWc4yZMDEMhxDduR9CbSF8CLVAe2dtA8MNh+4gbfv
+	 J/gkLKVBtwgEJSKNKu7iW3ZM1SwmKWjLmU9R3OrPH/zs7TrnrNaMiph0OUx4HaKvj9
+	 M4XzZzruB0zRw==
 Received: from [10.40.0.100] (185-67-175-126.lampert.tv [185.67.175.126])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(No client certificate requested)
 	(Authenticated sender: mriesch)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0D2DA17E12C6;
-	Fri, 13 Feb 2026 10:25:31 +0100 (CET)
-Message-ID: <1de39897-7e7b-4c49-963b-9fed48dacc81@collabora.com>
-Date: Fri, 13 Feb 2026 10:25:30 +0100
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 019B217E00AC;
+	Fri, 13 Feb 2026 10:35:17 +0100 (CET)
+Message-ID: <c58b5662-6785-4605-9832-f7c4704c33ba@collabora.com>
+Date: Fri, 13 Feb 2026 10:35:17 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -42,8 +42,8 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] media: synopsys: use
- devm_reset_control_get_optional_exclusive()
+Subject: Re: [PATCH 2/6] media: synopsys: only check errors from
+ devm_clk_bulk_get_all()
 To: Frank Li <Frank.Li@nxp.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
  Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
@@ -53,28 +53,43 @@ Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-rockchip@lists.infradead.org, Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
  Laurent Pinchart <laurent.pinchart@ideasonboard.com>, imx@lists.linux.dev
 References: <20260210-imx93-dw-csi2-v1-0-69667bb86bfa@nxp.com>
- <20260210-imx93-dw-csi2-v1-1-69667bb86bfa@nxp.com>
+ <20260210-imx93-dw-csi2-v1-2-69667bb86bfa@nxp.com>
 Content-Language: en-US
 From: Michael Riesch <michael.riesch@collabora.com>
-In-Reply-To: <20260210-imx93-dw-csi2-v1-1-69667bb86bfa@nxp.com>
+In-Reply-To: <20260210-imx93-dw-csi2-v1-2-69667bb86bfa@nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Frank,
 
-Thanks for the patch series.
+Thanks for your patch.
 
-Could you use "media: synopsys: csi2rx: " as prefix for your commit
-messages?
+The remark w.r.t. the "media: synopsys: csi2rx: " prefix holds for this
+and all the other patches in this series as well, of course.
 
 On 2/10/26 18:11, Frank Li wrote:
-> The DW MIPI CSI-2 RX is used on different SoCs, not all of which provide a
-> reset controller. Switch to devm_reset_control_get_optional_exclusive()
-> to support such platforms.
+> devm_clk_bulk_get_all() returns all clocks described in the DT, which are
+> already validated by the binding. Do not need enforce an expected clock
+> count.
 > 
-> Reset presence and numbering are validated by the DT binding.
+> Only check for error returns (< 0) to support more SoCs.
 > 
 > Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  drivers/media/platform/synopsys/dw-mipi-csi2rx.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> index 0cc892f4a1b3c6ce575a5d4fca7acf7057f7b7f7..61cd7f491b3d5b8a37707b23ca03ce709b40a79f 100644
+> --- a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> +++ b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
+> @@ -630,7 +630,7 @@ static int dw_mipi_csi2rx_probe(struct platform_device *pdev)
+>  		return PTR_ERR(csi2->base_addr);
+>  
+>  	ret = devm_clk_bulk_get_all(dev, &csi2->clks);
+> -	if (ret != DW_MIPI_CSI2RX_CLKS_MAX)
+
+DW_MIPI_CSI2RX_CLKS_MAX is not used anymore, please remove.
 
 With that change,
 
@@ -83,22 +98,10 @@ Reviewed-by: Michael Riesch <michael.riesch@collabora.com>
 Best regards,
 Michael
 
-> ---
->  drivers/media/platform/synopsys/dw-mipi-csi2rx.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> index 170346ae1a599e43bba9d19476ee4d65124303bd..0cc892f4a1b3c6ce575a5d4fca7acf7057f7b7f7 100644
-> --- a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> +++ b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> @@ -639,7 +639,7 @@ static int dw_mipi_csi2rx_probe(struct platform_device *pdev)
->  		return dev_err_probe(dev, PTR_ERR(csi2->phy),
->  				     "failed to get MIPI CSI-2 PHY\n");
+
+> +	if (ret < 0)
+>  		return dev_err_probe(dev, -ENODEV, "failed to get clocks\n");
+>  	csi2->clks_num = ret;
 >  
-> -	csi2->reset = devm_reset_control_get_exclusive(dev, NULL);
-> +	csi2->reset = devm_reset_control_get_optional_exclusive(dev, NULL);
->  	if (IS_ERR(csi2->reset))
->  		return dev_err_probe(dev, PTR_ERR(csi2->reset),
->  				     "failed to get reset\n");
 > 
 
