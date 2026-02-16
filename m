@@ -1,69 +1,68 @@
 Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119B22C326C
-	for <imx@lists.linux.dev>; Mon, 16 Feb 2026 18:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A182DC34E
+	for <imx@lists.linux.dev>; Mon, 16 Feb 2026 18:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771265483; cv=none; b=cmzv3ND9z0oJZDH3GGNXDoRjbveGhk59W7FvpU3jjbSiCazeoprvOGdOxEuFRtvg1B/tPLZe4UltGKiTElczbMQlWB+gpwZgz61Um+jQQfg84A7UpVblJkrxkl21dB3BS4ysIswwQlRihr2z5r3HolZ3+18wXLUp6T4Av1HGN7E=
+	t=1771265486; cv=none; b=HPgPQRQMjZ3b2az/zIXu7d6EQvt+UDa6WwwOcg/YJaabTmrVyJrzcaLvzfWNHho2T9c5uyGdPihFnybXs4dRq/NtWRVRrJ8jVckWrfKR/Gf1gxcca0znxVWCeDMwQWS5VovKXekk2iT6WeHRBEi/AuvUYjTXplHN+K/D6OhBSKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771265483; c=relaxed/simple;
-	bh=cSCEF3PytEUhtrqx1ZL9yZAsXNXSd/VJdHuArUNHrik=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iItUKWd8P+7wN9sCtzGXHpj6RIJ14sKcM9Rvf+pDU5xqPkjHvfUU1UC7kJkaT6187H3eQA520JGfurfCLIEysxfk7myzD+R2SzMltAq2m9yWyugPJ/dUQNPAwliKxX7YMIMWuS9h/AQo0tvu+3ACOVxvTUNwJ2+RXvjlUhfPaZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=iJYG9Xdy; arc=none smtp.client-ip=74.125.82.54
+	s=arc-20240116; t=1771265486; c=relaxed/simple;
+	bh=9gHrAWMXeIwAu7HR6q7xW82kIG86uNEriVYuVqaTKOI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=R3+E1uUWVj0YW83A53Oz5nsM4FGPEPLPr2r39FUHj1Tc0eDi7QdqYLiNeBOdRi2L/DNopbaC4HCNpXGQWVtV1gFoCvSuUgbDDlPLieXL/8z+yIuDa+3N4uf1ohx9VbX63VLfd05fd5XMis3pSK5JxceAEQXoo0JO3BTNW4MiBnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Xtn/cwoZ; arc=none smtp.client-ip=74.125.82.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="iJYG9Xdy"
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-124afd03fd1so5024747c88.0
-        for <imx@lists.linux.dev>; Mon, 16 Feb 2026 10:11:21 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Xtn/cwoZ"
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-12721cd256bso4209923c88.1
+        for <imx@lists.linux.dev>; Mon, 16 Feb 2026 10:11:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1771265481; x=1771870281; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7qPeoOZLMpDPHLvXRZ2UOWF72e8RnmNaQnfGaf4d8jU=;
-        b=iJYG9XdydIsCsguXqa4m540LqZbozYOXNXsbcTSWFy3x+YBwoHvqhx93vfFl06TRqf
-         pHt1QmqRdrLGBnEAvfgm9QTWNGyYJEv8AQLdwoaYgQt+T042bmsJBcuTAj38u2R6s5bn
-         gi/HIt2fIppGdcJ6ajUlPBPd3RrI8sakHwNHI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771265481; x=1771870281;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1771265484; x=1771870284; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7qPeoOZLMpDPHLvXRZ2UOWF72e8RnmNaQnfGaf4d8jU=;
-        b=rGlHW+vAISc1Fu5TpXcMdfSlPOVO+JCOwJq9vUwjYjH7nGT4NLSlZooPrUr7NoDD8J
-         CTzSl3zrtDia6upuBtLW9t8EAS8Np2cWBuaCdFAAKLJHclFO/zg8xIPRVe0iO3n7QpeZ
-         95cMYuwet7qYWuG6BnYRAcyzl5F6x0ma6ve+e29Z1DGi6gyeleyF56rMCH+CWFxCvytf
-         uoLMnNmwEUlzsUzpjK6HdrVtSsr3NILiQJz86dCNzo24Er5oM3sBH5E4HJ+vnbkWwoSa
-         sCy9NssTVrxRxHQmvK6/66umw/W+dQKo+TWFqiZke/CEBRskGy/obKKAKRpglACKAFSK
-         vVeA==
-X-Forwarded-Encrypted: i=1; AJvYcCWjHAUcITJsNIyZXZjoS9++2aTk0m+4ARwxY2yMq4oJYO2CZWMwlADXtf4jVkoD8eIzDp8=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyBnE3qF0wzNMMT2eLq1/UfbT0GgB+RwSOYI/TNZjQMpJGxon4u
-	PQYVCVloiOjD/U9SkYPDbo2FKZ2XIGpq2K6XoA5EJ1jKHkDFIt+B13EQGi3Mhi2C0A==
-X-Gm-Gg: AZuq6aKopd65J6rNCOG4NjSM+IcRPvNFDZYX4r5RbAY5iZReQ7x4425Spl7wnihAJAt
-	8WewVJSdw+PYh4DZxbFOYcNqhCSlvXC/XecNEHylEWo9x00GMHckgzhDPyNwGKh4Y6i3Di8MghA
-	pH+s0Ca8PbRcbDCdbiS+hbCMbDKH/HMJ146pxhzP0sEp/V1QMPgYzebpaxZGOxBP979i5hx3Rho
-	Ud3Qh7H1KI3oZVkGceA6OE/xWMcpJeBFARhArG08+3FYKXSbSNNi/YiBas1Q6UGl/qxtajavl3t
-	NQmgmn+2ya4TxuotfdeRzIiND4Z+WBYoF4E9qFeUESrVlv5Ui+aHPqWTArDVQb8gRVfixsiN7ur
-	HbpFQ53HZ69k337AMliIXxAxnlfOpd0LbZ/Z6hXR5hmqBAn7VRnRr29j8dr4rWfkih6pbYUWCsI
-	G3Z8ztjVBSJb/DZbuM037rmY68FjxyiW6P3p4E7VeGtGoDhKRGPVl/7WhD2ngaKHF3KZBCZ7lte
-	8vQauix4d0=
-X-Received: by 2002:a05:7022:aa1:b0:119:e56b:91f6 with SMTP id a92af1059eb24-12741bd1202mr3136852c88.39.1771265481071;
-        Mon, 16 Feb 2026 10:11:21 -0800 (PST)
+        bh=HozxlB7OIQjXsWbfNoWQpOfXTqwiFdT3084VZX2m49U=;
+        b=Xtn/cwoZKBQTY541sQyL2aS9RME+OS4LmUZ2iM9HAsDUAab3dU3VpDKoauAyPB1iHQ
+         OIf1mn3lSyEg5YK+0mA9kWKvNDDvZKPuYfOxVvYj9hJ1PUl4yfr6dutUVLsNnNwQwETk
+         3m8ttiv0hBfc5XNxNVoF/gUAWXUBjjne+5PBM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771265484; x=1771870284;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HozxlB7OIQjXsWbfNoWQpOfXTqwiFdT3084VZX2m49U=;
+        b=G+Iz2m3dkamW2cjNA+/RBvJpHgmWGvK8A/6dm/SaJWGznF/Jqk+GNHlWWRcSpu8mun
+         jkVK3WVqMSECdFzl0gsXEc43ZU+hJni34EOM2PgK/tH0OvHG2aaqwj0W0Xq8L1Q+Lw3f
+         LLIo1YCayp3J0RpGsIYusTq04wexo26LhthR1meLcIxj07ilale/+au1NM8+mze792x5
+         bHYnO8OF6sHE3bOVFIJv3IHL9bWJ1bmxeaOZS4R+V7BfBEF33o7kNQCfV6nRRxIxtOpB
+         A4dOoJSWpDIwk7rJNsWSpkxUq3pq+GjALC6FpvYaR6vkWsr3+bL4GKrC+Wul8nTdU/cz
+         PPDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUWVIVf1LG6Q1MY+MlivEMwJNZ9Up4fBY6mz17pT5gYMkukeZpIHVEkc9VIZHyrZylZUKg=@lists.linux.dev
+X-Gm-Message-State: AOJu0YwFdf00GJyh9+Sho9hRmkW9zDid/7GgeoviLBdIBXalKH8lvt87
+	fB25HJt28WpN44G97o82i2XCJVaGBwPnODRix/vCdqozlQGFFyI8qvzLoVpoxTaLTg==
+X-Gm-Gg: AZuq6aLKYllzJ/F66Dwfe1bJvFWDmIRWGTU7A7cvjtJd6vGs4X+D1CzF3k67+hu+JNz
+	DxA0bZ/9UArsahDoEqrrk9donycZu5qCseUFm0rkNVI2qder/JodTGrXioumb6NMpB+KnIF1by2
+	6JAQ6wW9nWId0PfYX3u++BBCxkrcKia4Pn+lXa82GsC1lo2/LecNwy2pmngCi1RGd2SGB/nutwE
+	Wx8xlq7D9HiwucHVlHBdZbolbLQXmDMrUCXe2sNUb4AxmVvOXTg8kss8sUx5/ezOlmwMocWV4Qv
+	gmslTp7SHpymvhfP77kDcqd8LirDPMpHEzeshfZS19PBKUzqa+Id+eiSv0Q6B3/oH+Af9DL8YGj
+	Z/C1hATeau2BQcsVq6z75Xrj42g2VKCm+XeK1wxcEBttrj7wCOqcGZQwdWbxMhqFL/ADim/Qi+I
+	CD2eoJSJONjssAO4z1J7XCoX9vVFyvZ6uUP7RGQMwEiWA1U4LSSbqPaCLv74ONl8kVL04+QoR3w
+	yho7gcDXZo=
+X-Received: by 2002:a05:7022:aa1:b0:119:e569:f611 with SMTP id a92af1059eb24-12741b5e377mr3311557c88.10.1771265483574;
+        Mon, 16 Feb 2026 10:11:23 -0800 (PST)
 Received: from dianders.sjc.corp.google.com ([2a00:79e0:2e7c:8:2953:dae1:1e39:73b3])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12742c64282sm13724326c88.5.2026.02.16.10.11.19
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12742c64282sm13724326c88.5.2026.02.16.10.11.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Feb 2026 10:11:20 -0800 (PST)
+        Mon, 16 Feb 2026 10:11:22 -0800 (PST)
 From: Douglas Anderson <dianders@chromium.org>
 To: jassisinghbrar@gmail.com
 Cc: Douglas Anderson <dianders@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Frank.Li@nxp.com,
-	Santosh Shilimkar <ssantosh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	andersson@kernel.org,
 	arm-scmi@vger.kernel.org,
 	cristian.marussi@arm.com,
-	daniel.baluta@nxp.com,
 	festevam@gmail.com,
 	imx@lists.linux.dev,
 	jay.buddhabhatti@amd.com,
@@ -79,20 +78,23 @@ Cc: Douglas Anderson <dianders@chromium.org>,
 	linux-remoteproc@vger.kernel.org,
 	linux-tegra@vger.kernel.org,
 	lucaswei@google.com,
-	marco.crivellari@suse.com,
 	mathieu.poirier@linaro.org,
 	michal.simek@amd.com,
 	nm@ti.com,
 	rafael@kernel.org,
 	robh@kernel.org,
+	s.hauer@pengutronix.de,
 	shawn.guo@linaro.org,
+	ssantosh@kernel.org,
 	sudeep.holla@kernel.org,
 	tglx@kernel.org,
 	thierry.reding@gmail.com
-Subject: [PATCH v3 00/15] mailbox: Stop sending NULL mailbox messages
-Date: Mon, 16 Feb 2026 10:09:37 -0800
-Message-ID: <20260216181002.3475421-1-dianders@chromium.org>
+Subject: [PATCH v3 01/15] mailbox: Deprecate NULL mbox messages; Introduce mbox_ring_doorbell()
+Date: Mon, 16 Feb 2026 10:09:38 -0800
+Message-ID: <20260216100943.v3.1.I600d04c0553f5c5ba39c2f92201da313aedfe746@changeid>
 X-Mailer: git-send-email 2.53.0.273.g2a3d683680-goog
+In-Reply-To: <20260216181002.3475421-1-dianders@chromium.org>
+References: <20260216181002.3475421-1-dianders@chromium.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -101,78 +103,254 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-As talked about in the first patch in this series, passing NULL as the
-'mssg' argument to mbox_send_message() ends up causing confusion and
-quirky behavior inside the mailbox core. Despite this, there are a
-number of drivers that pass NULL.
+The way the mailbox core behaves when you pass a NULL `mssg` parameter
+to mbox_send_message() is a little questionable. Specifically, the
+mailbox core stores the currently active message directly in its
+`active_req` field. In at least two places it decides that if this
+field is `NULL` then there is no active request. That means if `mssg`
+is ever NULL it will cause the mailbox core to think is no active
+request. The two places where it does this are:
 
-It is plausible that some of the drivers passing NULL may have been
-taking advantage of the quirks of the mailbox core. Specifically, they
-may have been taking advantage that calling "tx_done" wasn't truly
-necessary for NULL messages (it was a noop) or that NULL messages were
-passed onto the mailbox controller right away without queuing.
+1. When a client calls mbox_send_message(), if `active_req` is NULL
+   then it will call the mailbox controller to send the new message
+   even if the mailbox controller hasn't yet called mbox_chan_txdone()
+   on the previous (NULL) message.
+2. The mailbox core will never call the client's `tx_done()` callback
+   with a NULL message because `tx_tick()` returns early whenever the
+   message is NULL.
 
-This series introduces a new API call: mbox_ring_doorbell(). The new
-API call tries to mimic the specific quirks that were helpful in the
-old behavior and it's expected to be a nearly drop-in replacement.
+Though the above doesn't look like it was a conscious design choice,
+it does have the benefit of providing a simple way to assert an
+edge-triggered interrupt to the remote processor on the other side of
+the mailbox. Specifically:
 
-There are some subtle differences between the new call and the old
-behavior, but it's expected that all of these differences are only for
-cases where the old behavior made little sense. The description of the
-first patch details these differences.
+1. Like a normal edge-triggered interrupt, if multiple edges arrive
+   before the interrupt is Acked they are coalesced.
+2. Like a normal edge-triggered interrupt, as long as the receiver
+   (the remote processor in this case) "Ack"s the interrupt _before_
+   checking for work and the sender (the mailbox client in this case)
+   posts the interrupt _after_ adding new work then we can always be
+   certain that new work will be noticed. This assumes that the
+   mailbox client and remote processor have some out-of-band way to
+   communicate work and the mailbox is just being used as an
+   interrupt.
 
-The series attempts to convert all in-tree users to stop passing NULL
-for mssg. As per above, there are some slight differences in behavior.
-If any of the patches are causing problems, they can safely be
-reverted while debugging the problems. Eventually, all code should be
-converted over to stop passing NULL mssg.
+Doing a `git grep -A1 mbox_send_message | grep NULL` shows 14 hits in
+mainline today, but it's not 100% clear if all of those users are
+relying on the benefits/quirks of the existing behavior.
+
+Since the current NULL `mssg` behavior is a bit questionable but has
+some benefits, let's:
+
+1. Deprecate the NULL behavior and print a warning.
+2. Add a new mbox_ring_doorbell() function that is very similar to the
+   existing NULL `mssg` case but a tad bit cleaner.
+
+The design of the new mbox_ring_doorbell() will be to maximize
+compatibility with the old NULL `mssg` behavior. Specifically:
+
+* We'll still pass NULL to the mailbox controller to indicate a
+  doorbell.
+* Doorbells will not be queued and won't have txdone.
+* We'll call immediately into the mailbox controller when a doorbell
+  is posted.
+
+With the above, any mailbox clients that don't mix doorbells and
+normal messages are intended to see no change in behavior when
+switching to the new API. Using the new API, which officiall documents
+that mbox_client_txdone() shouldn't be called for doorbells, does
+allow us to remove those calls.
+
+There are two differences in behavior between the old sending a NULL
+message and the new mbox_ring_doorbell():
+
+1. If the mailbox controller returned an error when trying to send a
+   NULL message, the old NULL message could have ended up being queued
+   up in the core's FIFO. Now we will just return the error.
+2. If a client rings a doorbell while a non-doorbell message is in
+   progress, previously NULL messages would have been "queued" in that
+   case and now doorbells will be immediately posted.
+
+I'm hoping that nobody was relying on either of the two differences.
+In general holding NULL messages in the mailbox core's queue has odd
+behavior and is hard to reason about. Hopefully it's reasonable to
+assume nobody was doing this.
+
+As mentioned above, it should be noted that it's now documented that
+"txdone" shouldn't be called (by both mailbox drivers and clients) for
+doorbells. That being said, in most cases it won't hurt since the
+mailbox core will ignore the bogus "txdone". The only case where it's
+critical for a mailbox controller not to call "txdone" for a doorbell
+is when a mailbox channel mixes normal messages and doorbells and
+cares about the txdone callback. Specifically, when you ring a
+doorbell and immediately send a normal message, if the controller
+calls "txdone" for the doorbell it could look as if the normal message
+finished before it should have. This issue also would have happened
+with the old NULL `mssg`, though.
+
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+---
 
 Changes in v3:
 - Suggest mbox_ring_doorbell in the warning message
-- Updated patch description based on Cristian's response.
 
 Changes in v2:
 - Instead of just documenting NULL, introduce a new function
 
-Douglas Anderson (15):
-  mailbox: Deprecate NULL mbox messages; Introduce mbox_ring_doorbell()
-  ACPI: PCC: Use mbox_ring_doorbell() instead of NULL message
-  firmware: arm_scmi: Use mbox_ring_doorbell() instead of NULL message
-  firmware: imx-dsp: Use mbox_ring_doorbell() instead of NULL message
-  firmware: tegra: bpmp: Use mbox_ring_doorbell() instead of NULL
-    message
-  irqchip/qcom-mpm: Use mbox_ring_doorbell() instead of NULL message
-  remoteproc: xlnx: Use mbox_ring_doorbell() instead of NULL message
-  rpmsg: qcom_glink_rpm: Use mbox_ring_doorbell() instead of NULL
-    message
-  rpmsg: glink: smem: Use mbox_ring_doorbell() instead of NULL message
-  rpmsg: qcom_smd: Use mbox_ring_doorbell() instead of NULL message
-  soc: qcom: aoss: Use mbox_ring_doorbell() instead of NULL message
-  soc: qcom: smp2p: Use mbox_ring_doorbell() instead of NULL message
-  soc: qcom: smsm: Use mbox_ring_doorbell() instead of NULL message
-  soc: ti: wkup_m3_ipc: Use mbox_ring_doorbell() instead of NULL message
-  drivers: firmware: xilinx: Use mbox_ring_doorbell() instead of NULL
-    message
+ drivers/mailbox/mailbox.c          | 82 +++++++++++++++++++++++++++++-
+ include/linux/mailbox_client.h     |  1 +
+ include/linux/mailbox_controller.h |  4 +-
+ 3 files changed, 85 insertions(+), 2 deletions(-)
 
- drivers/acpi/acpi_pcc.c                       |  4 +-
- .../firmware/arm_scmi/transports/mailbox.c    |  8 +-
- drivers/firmware/imx/imx-dsp.c                |  2 +-
- drivers/firmware/tegra/bpmp-tegra186.c        |  4 +-
- drivers/irqchip/irq-qcom-mpm.c                |  2 +-
- drivers/mailbox/mailbox.c                     | 82 ++++++++++++++++++-
- drivers/remoteproc/xlnx_r5_remoteproc.c       |  2 +-
- drivers/rpmsg/qcom_glink_rpm.c                |  3 +-
- drivers/rpmsg/qcom_glink_smem.c               |  3 +-
- drivers/rpmsg/qcom_smd.c                      | 13 +--
- drivers/soc/qcom/qcom_aoss.c                  |  3 +-
- drivers/soc/qcom/smp2p.c                      |  8 +-
- drivers/soc/qcom/smsm.c                       |  8 +-
- drivers/soc/ti/wkup_m3_ipc.c                  | 10 +--
- drivers/soc/xilinx/zynqmp_power.c             |  2 +-
- include/linux/mailbox_client.h                |  1 +
- include/linux/mailbox_controller.h            |  4 +-
- 17 files changed, 108 insertions(+), 51 deletions(-)
-
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index 617ba505691d..fe3f2f75e734 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -161,6 +161,9 @@ EXPORT_SYMBOL_GPL(mbox_chan_received_data);
+  * The controller that has IRQ for TX ACK calls this atomic API
+  * to tick the TX state machine. It works only if txdone_irq
+  * is set by the controller.
++ *
++ * Should not be called for "doorbell" messages (any time the message
++ * sent was NULL).
+  */
+ void mbox_chan_txdone(struct mbox_chan *chan, int r)
+ {
+@@ -182,6 +185,9 @@ EXPORT_SYMBOL_GPL(mbox_chan_txdone);
+  * The client/protocol had received some 'ACK' packet and it notifies
+  * the API that the last packet was sent successfully. This only works
+  * if the controller can't sense TX-Done.
++ *
++ * Should not be called for "doorbell" messages (any time the message
++ * sent was NULL).
+  */
+ void mbox_client_txdone(struct mbox_chan *chan, int r)
+ {
+@@ -222,7 +228,7 @@ EXPORT_SYMBOL_GPL(mbox_client_peek_data);
+  * mbox_send_message -	For client to submit a message to be
+  *				sent to the remote.
+  * @chan: Mailbox channel assigned to this client.
+- * @mssg: Client specific message typecasted.
++ * @mssg: Client specific message typecasted. Should not be NULL.
+  *
+  * For client to submit data to the controller destined for a remote
+  * processor. If the client had set 'tx_block', the call will return
+@@ -249,6 +255,28 @@ int mbox_send_message(struct mbox_chan *chan, void *mssg)
+ 	if (!chan || !chan->cl)
+ 		return -EINVAL;
+ 
++	/*
++	 * The mailbox core gets confused when mbox_send_message() is called
++	 * with NULL messages since the code directly stores messages in
++	 * `active_req` and assumes that a NULL `active_req` means no request
++	 * is active. This causes the core to call the mailbox controller a
++	 * second time even if the previous message hasn't finished and also
++	 * means the client's tx_done() callback will never be called. However,
++	 * clients historically passed NULL anyway. Deprecate passing NULL
++	 * here by adding a warning.
++	 *
++	 * Clients who don't have a message should switch to using
++	 * mbox_ring_doorbell(), which explicitly documents the immediate
++	 * sending of doorbells, the lack of txdone, and what happens if you
++	 * mix doorbells and normal messages.
++	 *
++	 * TODO: when it's certain that all clients have transitioned, consider
++	 * changing this to return -EINVAL.
++	 */
++	if (!mssg)
++		dev_warn_once(chan->mbox->dev,
++			      "NULL mbox messages are deprecated; use mbox_ring_doorbell\n");
++
+ 	t = add_to_rbuf(chan, mssg);
+ 	if (t < 0) {
+ 		dev_err(chan->mbox->dev, "Try increasing MBOX_TX_QUEUE_LEN\n");
+@@ -277,6 +305,58 @@ int mbox_send_message(struct mbox_chan *chan, void *mssg)
+ }
+ EXPORT_SYMBOL_GPL(mbox_send_message);
+ 
++/**
++ * mbox_ring_doorbell - Client function to ring the doorbell with no message.
++ * @chan: Mailbox channel assigned to this client.
++ *
++ * Send a notification to the remote side of the mailbox but don't actually
++ * send any data. This is typically used when the client and the remote side
++ * of the mailbox have some other (non-mailbox) way to communicate and the
++ * mailbox is simply used as an "interrupt" to notify the remote side.
++ *
++ * This function has a few important differences from mbox_send_message():
++ * - There is no concept of "txdone" for mbox_ring_doorbell(), even if the
++ *   controller itself would be able to tell when the remote CPU saw or Acked
++ *   the doorbell.
++ * - Because there is no concept of "txdone", there is no need to wait for
++ *   previous doorbells to "finish" before notifying the controller of another
++ *   doorbell.
++ * - Because we never wait to notify a controller of a doorbell, there is no
++ *   queue for doorbells.
++ *
++ * The above properties mean that calling mbox_ring_doorbell() is the equivalent
++ * of re-asserting an edge triggered interrupt to the remote side. If the remote
++ * side hasn't yet "cleared" the interrupt this is a no-op. If the remote side
++ * has cleared the interrupt, it will be re-asserted. Expected usage:
++ *
++ * This CPU:
++ * - Update out-of-band (OOB) memory shared between this CPU and remote CPU.
++ * - Ring doorbell.
++ * Remote CPU:
++ * - Clear doorbell.
++ * - Read OOB shared memory and act on it.
++ *
++ * The remote CPU will always be guaranteed to notice changes, even if this CPU
++ * updates / rings multiple times before the remote CPU has a chance to run.
++ *
++ * Mixing calls of mbox_ring_doorbell() and mbox_send_message() on the same
++ * mailbox channel is allowed, assuming the mailbox controller correctly avoids
++ * calling mbox_chan_txdone() for doorbells.
++ *
++ * NOTE: For compatibility reasons, doorbells are sent to the mailbox
++ *	 controller driver by passing NULL to the mailbox controller's
++ *	 send_data() callback.
++ *
++ * Return: Negative error code upon failure.
++ */
++int mbox_ring_doorbell(struct mbox_chan *chan)
++{
++	guard(spinlock_irqsave)(&chan->lock);
++
++	return chan->mbox->ops->send_data(chan, NULL);
++}
++EXPORT_SYMBOL_GPL(mbox_ring_doorbell);
++
+ /**
+  * mbox_flush - flush a mailbox channel
+  * @chan: mailbox channel to flush
+diff --git a/include/linux/mailbox_client.h b/include/linux/mailbox_client.h
+index c6eea9afb943..e3fc11e42c58 100644
+--- a/include/linux/mailbox_client.h
++++ b/include/linux/mailbox_client.h
+@@ -42,6 +42,7 @@ struct mbox_chan *mbox_request_channel_byname(struct mbox_client *cl,
+ 					      const char *name);
+ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index);
+ int mbox_send_message(struct mbox_chan *chan, void *mssg);
++int mbox_ring_doorbell(struct mbox_chan *chan);
+ int mbox_flush(struct mbox_chan *chan, unsigned long timeout);
+ void mbox_client_txdone(struct mbox_chan *chan, int r); /* atomic */
+ bool mbox_client_peek_data(struct mbox_chan *chan); /* atomic */
+diff --git a/include/linux/mailbox_controller.h b/include/linux/mailbox_controller.h
+index 80a427c7ca29..36648fa7b6f3 100644
+--- a/include/linux/mailbox_controller.h
++++ b/include/linux/mailbox_controller.h
+@@ -19,7 +19,9 @@ struct mbox_chan;
+  *		if the remote hasn't yet read the last data sent. Actual
+  *		transmission of data is reported by the controller via
+  *		mbox_chan_txdone (if it has some TX ACK irq). It must not
+- *		sleep.
++ *		sleep. Will be passed NULL data for doorbell-only messages.
++ *		Note that doorbell messages are always sent immediately with
++ *		no queuing. mbox_chan_txdone() shouldn't be called on doorbells.
+  * @flush:	Called when a client requests transmissions to be blocking but
+  *		the context doesn't allow sleeping. Typically the controller
+  *		will implement a busy loop waiting for the data to flush out.
 -- 
 2.53.0.273.g2a3d683680-goog
 
