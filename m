@@ -1,175 +1,66 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC1A75801
-	for <imx@lists.linux.dev>; Mon, 16 Feb 2026 08:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C411A9F88
+	for <imx@lists.linux.dev>; Mon, 16 Feb 2026 08:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771230719; cv=none; b=QGWZWA2ZN4KfvyLJLJcpxOomUFfpjR6Zcnxd8vMlBKZQDXa2gcbMOuxHguOeMP6H1LoLU91mNFxAu0Kw3cfN1HKUUYKGJdbqQS9TDyjoGIFWBVdMZcjNCKKCGqSvFF3/di+sQYlmwwggSG6o3mrnHVLFI0+uD0iy+rdhA0Q2StI=
+	t=1771231208; cv=none; b=Dw40O8HdkYtGbMI9QkyyuKt9j0r8B2rKN6m6jG2qauvq4tI96e2UH/U89NRVpvvph7xXkVAP3GDOZ5eI2+NqomS74DgrNg0wC841dlgQR8xQqWY7LAuQmbqVjKcdM3OgcEAt0eiFtmh7JMJDlZkGDbS19IF/+SytyyEJfN1urrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771230719; c=relaxed/simple;
-	bh=zvPq4jlfh3VNCROQ2VkniA1/03qI9AL0DJJ2/xDeY50=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JnckG9k3WgGPHxPsP4QeJlfl/Ll57t7LP+Uxw8QVAud2JYlYEmlFUMXAamDQ7rslbcNpW7KKh3mTAYbRcq2YfTyOWEQ0x6c4+EcBbWRFulqsh3N3LFr72/XhNUcJTe89pfhA3btqtfTa79jVJlzITCMKcU5DAlPywfc8SF0M9XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ak0S/KE8; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1771231208; c=relaxed/simple;
+	bh=ltBVPeOt5z5WjOiMiEGSl1Ql4XC8MVcQkC545gvTXVk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=MNXGYph6So+yV9ORIMg5Ery1QSDdFoprhoM0z6/5DL4ixVilUA7oziuXKLg1T6U2zIIlAY9i3tZFTBjBGl+kmSC/QzIvej4CN2X4PawpULatfFGdbAlGmejSDgXuUOaouZ+LoJ2YwpoG3bf8K4PkKePZIeOirPlVAV++TjdTdLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=g560gdWG; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ak0S/KE8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1771230716;
-	bh=zvPq4jlfh3VNCROQ2VkniA1/03qI9AL0DJJ2/xDeY50=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ak0S/KE8SKgSWfXRVBAO0+gmG/XzwbvM2br9aBpk9SbT3N7XtZ21hmMXRlbs3a2KM
-	 pl+eAW7Z/mX2Na9bKf09R2ztSczSHTgzpxYgcbZBsCV4CKug8GTSKbnaGVyg/irOOk
-	 jfGjbdgUhwn5LpKpyKzqVz1m++x2Vr5PBX0uOLdOaxSz3qsakQQlgSOnTIkiLh4QNf
-	 oDZveDImKviSAxGL+S/NlLBrkHJsS3L4bW060LLFEv3LP26HqeynFcrWZ8YkA3qPkg
-	 HF5pwkbptjO/93nT4VsRFMeu9FVWZgbb3U3xEYnLssfpTifyMqqIzH6y3EqzD8r3f4
-	 gyPAAFRLrhycQ==
-Received: from [10.40.0.100] (185-67-175-126.lampert.tv [185.67.175.126])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: mriesch)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 3301017E00A3;
-	Mon, 16 Feb 2026 09:31:56 +0100 (CET)
-Message-ID: <50a82e17-1666-4ef6-ab6e-c0be3c780a0d@collabora.com>
-Date: Mon, 16 Feb 2026 09:31:55 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="g560gdWG"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 45F654E40E59;
+	Mon, 16 Feb 2026 08:33:05 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1BD37606CF;
+	Mon, 16 Feb 2026 08:33:05 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 508F61036908F;
+	Mon, 16 Feb 2026 09:33:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1771230784; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=ltBVPeOt5z5WjOiMiEGSl1Ql4XC8MVcQkC545gvTXVk=;
+	b=g560gdWGk4NtlGEUXeJFKWHrZ1g2J52Y+CRGS/+n2lX1ipT3FoS49uOllNUJBvtfLxCvxN
+	RTI4QWX03NAby1de74jQoE8TiLNlTlPOcjfzj41JyprO9UAtiyJZ2cyO6aT+9KyY7UKMNZ
+	5eLR9jv3K91FZTGUZiV/RjERoDMGS3AJX3oLOySkJ5YDPApC1+PVuPS1R4pGZRD9nkzrRF
+	TaaGc9WCyLqaj+hkLKJ8kcONKeaji02yJrHJunN3xt4yxm2VPMEvomx6cobqgfns9OpBAk
+	Iwh0Z8sqoBkjP2Qc7X/Z4WA9CTj2Z6AJS3dbZSDH3hWhSgRUzc5qb2Rs3mynBg==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kernel@vger.kernel.org,  Frank Li <Frank.Li@nxp.com>,  Alexandre
+ Belloni <alexandre.belloni@bootlin.com>,  linux-i3c@lists.infradead.org,
+  imx@lists.linux.dev
+Subject: Re: [PATCH] i3c: master: svc: spelling corrections
+In-Reply-To: <20260216061755.2801697-1-rdunlap@infradead.org> (Randy Dunlap's
+	message of "Sun, 15 Feb 2026 22:17:55 -0800")
+References: <20260216061755.2801697-1-rdunlap@infradead.org>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Mon, 16 Feb 2026 09:33:02 +0100
+Message-ID: <87zf59ulz5.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] media: dt-bindings: add NXP i.MX93 compatible
- string
-To: Frank Li <Frank.Li@nxp.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, imx@lists.linux.dev,
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-References: <20260213-imx93-dw-csi2-v2-0-8be6039f44c6@nxp.com>
- <20260213-imx93-dw-csi2-v2-5-8be6039f44c6@nxp.com>
-Content-Language: en-US
-From: Michael Riesch <michael.riesch@collabora.com>
-In-Reply-To: <20260213-imx93-dw-csi2-v2-5-8be6039f44c6@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Frank,
+On 15/02/2026 at 22:17:55 -08, Randy Dunlap <rdunlap@infradead.org> wrote:
 
-On 2/13/26 21:25, Frank Li wrote:
-> The i.MX93 uses the DW CSI-2 RX controller, which is similar to the
-> Rockchip RK3568 implementation.
-> 
-> The i.MX93 variant provides one IRQ, two clocks, and no resets. Add the
-> "fsl,imx93-mipi-csi2" compatible string and keep the same constraints for
-> rk3568.
+> Correct spelling for 3 words as identified by codespell:
+>
+> svc-i3c-master.c:340: tigger ==> trigger
+> svc-i3c-master.c:532: reamins ==> remains
+> svc-i3c-master.c:734: filetered ==> filtered
+>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 
-RK3568.
-
-> 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-
-With that cosmetic fix,
-
-Acked-by: Michael Riesch <michael.riesch@collabora.com>
-
-Best regards,
-Michael
-
-
-> ---
->  .../bindings/media/rockchip,rk3568-mipi-csi2.yaml  | 47 +++++++++++++++++++++-
->  1 file changed, 45 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/media/rockchip,rk3568-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/rockchip,rk3568-mipi-csi2.yaml
-> index 2c2bd87582eb8bfdd13720edd62a5f00dda958ba..4ac4a3b6f406408b9524c795e6cdeb117d3353da 100644
-> --- a/Documentation/devicetree/bindings/media/rockchip,rk3568-mipi-csi2.yaml
-> +++ b/Documentation/devicetree/bindings/media/rockchip,rk3568-mipi-csi2.yaml
-> @@ -17,6 +17,7 @@ description:
->  properties:
->    compatible:
->      enum:
-> +      - fsl,imx93-mipi-csi2
->        - rockchip,rk3568-mipi-csi2
->  
->    reg:
-> @@ -26,14 +27,23 @@ properties:
->      items:
->        - description: Interrupt that signals changes in CSI2HOST_ERR1.
->        - description: Interrupt that signals changes in CSI2HOST_ERR2.
-> +    minItems: 1
->  
->    interrupt-names:
->      items:
->        - const: err1
->        - const: err2
-> +    minItems: 1
->  
->    clocks:
-> -    maxItems: 1
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  clock-names:
-> +    items:
-> +      - const: per
-> +      - const: pixel
-> +    minItems: 1
->  
->    phys:
->      maxItems: 1
-> @@ -88,10 +98,43 @@ required:
->    - phys
->    - ports
->    - power-domains
-> -  - resets
->  
->  additionalProperties: false
->  
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: rockchip,rk3568-mipi-csi2
-> +    then:
-> +      properties:
-> +        interrupts:
-> +          minItems: 2
-> +        interrupt-names:
-> +          minItems: 2
-> +        clocks:
-> +          maxItems: 1
-> +        clock-names:
-> +          maxItems: 1
-> +      required:
-> +        - resets
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: fsl,imx93-mipi-csi2
-> +    then:
-> +      properties:
-> +        interrupts:
-> +          maxItems: 1
-> +        interrupt-names: false
-> +        clocks:
-> +          minItems: 2
-> +        clock-names:
-> +          minItems: 2
-> +
->  examples:
->    - |
->      #include <dt-bindings/clock/rk3568-cru.h>
-> 
-
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
