@@ -1,149 +1,198 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D38632549E;
-	Mon, 16 Feb 2026 15:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D0B325730
+	for <imx@lists.linux.dev>; Mon, 16 Feb 2026 15:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771255335; cv=none; b=V0mF8SoGHaaueXTuJH0k8DjkbWZ2b8FNXZBHik4Uu9tOXdoyWbVMyvGOK9pm8bKbgQcKR7lZIHtG8EpTBNfMk11Kv/anoqc+B0FNMR8/rLC1iQNnBmbr7Xd2JZIUqoMF8MZx1F9C41gWHwH8MsWM7+ubwSigp2BO62tPx2CEjfU=
+	t=1771255337; cv=none; b=YZ9Vo3rZuv09kHwfwsZuQrYCxaddp2fR6jEIIJe8dfypHAZ+LJYY17tsR10yyZnhi8FtgD9m25mbj2/Ggqp2x/xR3cCu4ZI6N8hYV2DaMUmy53mWam8RH1XM9XYqwHfdd3r+M0bLghT2VGeTjYHarcZ85fWLM/OVTb9ghebh4nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771255335; c=relaxed/simple;
-	bh=+AXEKgqENXU9fJ8gY4Qy3D4BbMROQCeB1cT+WULKFsE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MQfEJpr1qM0mevO7CbsEVhs0dVnktzMSnTMTQkOGdWqh+U9JM7M5fmgUlhvj2ByzTaJGXSxJqE22ndpv5j3/kwcf+LvQBkwBHUWzKsN8N+RGu+KTibkPUghhUL9vSXClfHHG/CzM3Q6y/fPnVEAvkkLXowtrg942XIs/LGszitE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bVke98TK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771255337; c=relaxed/simple;
+	bh=rO5pvMpoFmL8Fx9NoSnLv4h+94kVFJV6QpMLCSMKBYY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Vaw3tKJpzu28WHRhbErQp0vJCbqBq9zwhbk4bZNC593aw3KwuzDJ8TrlyDBDLx8TDsgh4Cm0HrcESyKnzYi91x+PuiED8SuT7NH5yrL2fYASZQ/gUi0ZqHJNmw/mwaaTzeBgwknyZ3tO5tAI8XUeqvYtiPxiQg1dj9qICSIbB6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=VGp0ddLi; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bVke98TK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B5FC116C6;
-	Mon, 16 Feb 2026 15:22:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771255335;
-	bh=+AXEKgqENXU9fJ8gY4Qy3D4BbMROQCeB1cT+WULKFsE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bVke98TKQHCmPp7aYCSq+FzJJwd1N7cDuLhGNulVsi3kDISO5a7AJFBm3a7kNw1Zs
-	 5Iw5iKyil96Yjb2kaa996XtcP99USdiZnGFwboQyf93SxLti2oOp6RGusQa6tt0bF4
-	 0vFtMznN3MpwWhSDzdS8LxrL4xOzXYaj2wJ8GWUrAJQmsxB/Oz7vODRYewD2J5wMOt
-	 n/r6PbRevelbv2CgDMGB0hBJqf0/kttTTaqCaKmPDvRwbv46S7eNobKjhJZnoznYuD
-	 xBCbX73IzTj1XGCShRVaUjJ2yNu4RTgdTUiUhws1iLJYbGP9PhfuNu3gDI2EgmCiUz
-	 8W3J0k0Pz4V9A==
-Date: Mon, 16 Feb 2026 20:51:51 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Sumit Kumar <sumit.kumar@oss.qualcomm.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Jingoo Han <jingoohan1@gmail.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Richard Zhu <hongxing.zhu@nxp.com>, 
-	Lucas Stach <l.stach@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Yue Wang <yue.wang@amlogic.com>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Greentime Hu <greentime.hu@sifive.com>, 
-	Samuel Holland <samuel.holland@sifive.com>, Chuanhua Lei <lchuanhua@maxlinear.com>, 
-	Marek Vasut <marek.vasut+renesas@gmail.com>, Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Pratyush Anand <pratyush.anand@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, imx@lists.linux.dev, 
-	linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-tegra@vger.kernel.org, linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 1/2] PCI: API changes for multi-port controller support
-Message-ID: <qoz2odrfe5w47ibjskg2fa3bkgtqd3ctkqqeua446sfjrc2e2m@tg4vynyonu3r>
-References: <20260105-dt-parser-v1-0-b11c63cb5e2c@oss.qualcomm.com>
- <20260105-dt-parser-v1-1-b11c63cb5e2c@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="VGp0ddLi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1771255334;
+	bh=rO5pvMpoFmL8Fx9NoSnLv4h+94kVFJV6QpMLCSMKBYY=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=VGp0ddLiK3M75iH7slbP42Pf/2drvgeo7I2GaYWx/+Myyou9z+e7TCwWnvR7CzAGf
+	 EY51OJSso1SO642glioZJgYN+GTdR4PtW+OvdpHVPJecniKapCxvtZRDSYbS/RJLLU
+	 WZmPL0Wx37NdMhvuN0EU17NMgPGG0DypPlvmZtQSP3FI6q4EUVvjwfinuOvE3MLpSV
+	 5eLPr6my7g1iyVfEeuTmtgH+9hVOOFGLQREN+6S21DwbVGbjKQZ0R5B9J3FGZB67yM
+	 S76+lNXDz2EGmNuGCdt1yWO1C7zFamE414YxxtoMy0ySguT8eQjunWNWALdtQCCdHh
+	 MVfgifyFu4OYQ==
+Received: from [10.40.0.100] (185-67-175-126.lampert.tv [185.67.175.126])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: mriesch)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id DADEB17E01E7;
+	Mon, 16 Feb 2026 16:22:13 +0100 (CET)
+Message-ID: <e06feb9d-47cd-40e6-8c43-b24ff8a3e800@collabora.com>
+Date: Mon, 16 Feb 2026 16:22:13 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260105-dt-parser-v1-1-b11c63cb5e2c@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/6] media: dt-bindings: add NXP i.MX93 compatible
+ string
+From: Michael Riesch <michael.riesch@collabora.com>
+To: Frank Li <Frank.Li@nxp.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, imx@lists.linux.dev,
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+References: <20260213-imx93-dw-csi2-v2-0-8be6039f44c6@nxp.com>
+ <20260213-imx93-dw-csi2-v2-5-8be6039f44c6@nxp.com>
+ <50a82e17-1666-4ef6-ab6e-c0be3c780a0d@collabora.com>
+Content-Language: en-US
+In-Reply-To: <50a82e17-1666-4ef6-ab6e-c0be3c780a0d@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 05, 2026 at 05:57:54PM +0530, Sumit Kumar wrote:
-> For multi-port controllers, equalization preset properties should be
-> specified in individual root port nodes rather than the controller node,
+Hi Frank,
 
-s/root port/Root Port
+On 2/16/26 09:31, Michael Riesch wrote:
+> Hi Frank,
+> 
+> On 2/13/26 21:25, Frank Li wrote:
+>> The i.MX93 uses the DW CSI-2 RX controller, which is similar to the
+>> Rockchip RK3568 implementation.
+>>
+>> The i.MX93 variant provides one IRQ, two clocks, and no resets. Add the
+>> "fsl,imx93-mipi-csi2" compatible string and keep the same constraints for
+>> rk3568.
+> 
+> RK3568.
+> 
+>>
+>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> 
+> With that cosmetic fix,
+> 
+> Acked-by: Michael Riesch <michael.riesch@collabora.com>
 
-- Mani
+I just recalled a conversation with Heiko we had off-list a while ago,
+and back then we kind of decided against a snps binding document and
+compatible, since the integration in the respective SoC (family) varies.
+Thus, we went for a Rockchip document (which shall be extended with the
+RK3588 variant of this block, for example) and thought that any other
+variant (e.g., the one of the imx93) could be documented in a separate
+document fsl,somethingsomething.
 
-> allowing each port to have its own configuration.
+Seeing that interrupts, clocks, and resets are different, I would
+recommend that you add a new fsl,... document.
+
+What do you think?
+
+Best regards,
+Michael
+
+
 > 
-> Change of_pci_get_equalization_presets() to accept a device_node pointer.
-> This allows parsing equalization presets from any device tree node,
-> which is needed for multi-port PCIe controllers.
+> Best regards,
+> Michael
 > 
-> Signed-off-by: Sumit Kumar <sumit.kumar@oss.qualcomm.com>
-> ---
->  drivers/pci/of.c  | 6 ++++--
->  drivers/pci/pci.h | 2 ++
->  2 files changed, 6 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-> index 3579265f119845637e163d9051437c89662762f8..d09eff40b523c920c9ca3eaa64f784765b3c5bf8 100644
-> --- a/drivers/pci/of.c
-> +++ b/drivers/pci/of.c
-> @@ -971,6 +971,7 @@ EXPORT_SYMBOL_GPL(of_pci_get_slot_power_limit);
->   * of_pci_get_equalization_presets - Parses the "eq-presets-Ngts" property.
->   *
->   * @dev: Device containing the properties.
-> + * @node: Device tree node containing the properties.
->   * @presets: Pointer to store the parsed data.
->   * @num_lanes: Maximum number of lanes supported.
->   *
-> @@ -981,6 +982,7 @@ EXPORT_SYMBOL_GPL(of_pci_get_slot_power_limit);
->   * errno otherwise.
->   */
->  int of_pci_get_equalization_presets(struct device *dev,
-> +				    struct device_node *node,
->  				    struct pci_eq_presets *presets,
->  				    int num_lanes)
->  {
-> @@ -988,7 +990,7 @@ int of_pci_get_equalization_presets(struct device *dev,
->  	int ret;
->  
->  	presets->eq_presets_8gts[0] = PCI_EQ_RESV;
-> -	ret = of_property_read_u16_array(dev->of_node, "eq-presets-8gts",
-> +	ret = of_property_read_u16_array(node, "eq-presets-8gts",
->  					 presets->eq_presets_8gts, num_lanes);
->  	if (ret && ret != -EINVAL) {
->  		dev_err(dev, "Error reading eq-presets-8gts: %d\n", ret);
-> @@ -998,7 +1000,7 @@ int of_pci_get_equalization_presets(struct device *dev,
->  	for (int i = 0; i < EQ_PRESET_TYPE_MAX - 1; i++) {
->  		presets->eq_presets_Ngts[i][0] = PCI_EQ_RESV;
->  		snprintf(name, sizeof(name), "eq-presets-%dgts", 8 << (i + 1));
-> -		ret = of_property_read_u8_array(dev->of_node, name,
-> +		ret = of_property_read_u8_array(node, name,
->  						presets->eq_presets_Ngts[i],
->  						num_lanes);
->  		if (ret && ret != -EINVAL) {
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index 34f65d69662e9f61f0c489ec58de2ce17d21c0c6..72fa6db95b8a75f6e69b8019d1eb2262b6a46c13 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -965,6 +965,7 @@ void pci_release_bus_of_node(struct pci_bus *bus);
->  int devm_of_pci_bridge_init(struct device *dev, struct pci_host_bridge *bridge);
->  bool of_pci_supply_present(struct device_node *np);
->  int of_pci_get_equalization_presets(struct device *dev,
-> +				    struct device_node *node,
->  				    struct pci_eq_presets *presets,
->  				    int num_lanes);
->  #else
-> @@ -1013,6 +1014,7 @@ static inline bool of_pci_supply_present(struct device_node *np)
->  }
->  
->  static inline int of_pci_get_equalization_presets(struct device *dev,
-> +						  struct device_node *node,
->  						  struct pci_eq_presets *presets,
->  						  int num_lanes)
->  {
-> 
-> -- 
-> 2.34.1
+>> ---
+>>  .../bindings/media/rockchip,rk3568-mipi-csi2.yaml  | 47 +++++++++++++++++++++-
+>>  1 file changed, 45 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/media/rockchip,rk3568-mipi-csi2.yaml b/Documentation/devicetree/bindings/media/rockchip,rk3568-mipi-csi2.yaml
+>> index 2c2bd87582eb8bfdd13720edd62a5f00dda958ba..4ac4a3b6f406408b9524c795e6cdeb117d3353da 100644
+>> --- a/Documentation/devicetree/bindings/media/rockchip,rk3568-mipi-csi2.yaml
+>> +++ b/Documentation/devicetree/bindings/media/rockchip,rk3568-mipi-csi2.yaml
+>> @@ -17,6 +17,7 @@ description:
+>>  properties:
+>>    compatible:
+>>      enum:
+>> +      - fsl,imx93-mipi-csi2
+>>        - rockchip,rk3568-mipi-csi2
+>>  
+>>    reg:
+>> @@ -26,14 +27,23 @@ properties:
+>>      items:
+>>        - description: Interrupt that signals changes in CSI2HOST_ERR1.
+>>        - description: Interrupt that signals changes in CSI2HOST_ERR2.
+>> +    minItems: 1
+>>  
+>>    interrupt-names:
+>>      items:
+>>        - const: err1
+>>        - const: err2
+>> +    minItems: 1
+>>  
+>>    clocks:
+>> -    maxItems: 1
+>> +    minItems: 1
+>> +    maxItems: 2
+>> +
+>> +  clock-names:
+>> +    items:
+>> +      - const: per
+>> +      - const: pixel
+>> +    minItems: 1
+>>  
+>>    phys:
+>>      maxItems: 1
+>> @@ -88,10 +98,43 @@ required:
+>>    - phys
+>>    - ports
+>>    - power-domains
+>> -  - resets
+>>  
+>>  additionalProperties: false
+>>  
+>> +allOf:
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            const: rockchip,rk3568-mipi-csi2
+>> +    then:
+>> +      properties:
+>> +        interrupts:
+>> +          minItems: 2
+>> +        interrupt-names:
+>> +          minItems: 2
+>> +        clocks:
+>> +          maxItems: 1
+>> +        clock-names:
+>> +          maxItems: 1
+>> +      required:
+>> +        - resets
+>> +
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            const: fsl,imx93-mipi-csi2
+>> +    then:
+>> +      properties:
+>> +        interrupts:
+>> +          maxItems: 1
+>> +        interrupt-names: false
+>> +        clocks:
+>> +          minItems: 2
+>> +        clock-names:
+>> +          minItems: 2
+>> +
+>>  examples:
+>>    - |
+>>      #include <dt-bindings/clock/rk3568-cru.h>
+>>
 > 
 
--- 
-மணிவண்ணன் சதாசிவம்
