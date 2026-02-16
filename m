@@ -1,47 +1,47 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010058.outbound.protection.outlook.com [52.101.84.58])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013018.outbound.protection.outlook.com [52.101.83.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DAE328B42
-	for <imx@lists.linux.dev>; Mon, 16 Feb 2026 15:02:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE3428DB46
+	for <imx@lists.linux.dev>; Mon, 16 Feb 2026 15:03:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.18
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771254169; cv=fail; b=tPQNr15kqnV3bpJT1R4E561Cz5Sr1OMAp9dvoQuNSlyxgf+U5ys2/EQ5mlhCtf9Er81r9flTcMMi322fwRYMyK0l/L0WFx3yQ01KIzoU0XgGIjmcCGZLg2V3dLvOXF/SO0YMFx2gPh5irWCgG3NPoM3tscHZ6xKmKMbm6HKPAMk=
+	t=1771254219; cv=fail; b=ooJbLvz0d99IdCVE1Y5WRFJL8IrhiJ2aTnPNI/nRdJQYVLKcYyX4WxO5UQH5h8UNOOAovrrQcFaZwAh/qGL2XbdhZj/obb6eizd9rkCl4WTWDrjyTefkYk4aiR74onEVVdTpTlp/dweWFPo2MK+wcAzAKmDYT66V1nGOgzhiD9Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771254169; c=relaxed/simple;
-	bh=YiArEPWxMYeBElPZEHZaxtA+x6hib9gg+2nJFuplUq4=;
+	s=arc-20240116; t=1771254219; c=relaxed/simple;
+	bh=q1US+b8TDuJkBDNrK2yGj9orf0/besPENnYgvS+zfQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NRyEAW5ZIw3jnIzPA1rO80+sPksylcNAbc/ivMwE9jcMjdnLtD33ATfktf/GFSSjcSRLKJp0O3Vi8oA3drhV2DjLRpgWA/1AXTDjtFT6mATVEfbW0dhPTYGD2ZHR7fI3tzNXJVyDgo39ktKmqjWWFzY2Spf00WhEU9lOM8WU4PA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=Ar4Q0rDT; arc=fail smtp.client-ip=52.101.84.58
+	 Content-Type:MIME-Version; b=F1keF9NziKtHa3qNJlKgZGjkDmoz/G+/LwBA4vvnRpGKyCjOzXBVUVIm+mgbqx8CKBjaqK2jwAdmP9lQSNFV8FOTXgMXZed6EU2dq4dUOfiv3ciZ9E+4+v0BE7ilRpAvFRyHimwWM82L1W+xjpSJtRTr/Syuq/3LSp+bIEeQQYU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=HI2L+sYi; arc=fail smtp.client-ip=52.101.83.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="Ar4Q0rDT"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="HI2L+sYi"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B9OpqAScS/nvCHB2+Ay14mHbvaPOCws0leo1AhT2gVu2X2gO/GXa7i1UTnikxZ+HLLhiVoKF+DX17rlbYtvxeFXHMB8hViFG5FnD2Bo36UX1ExEHjFI8AW8RxOD9nMcnZ+vOG+4S+KdkeaDlxoGGVsALomSC9lliRWfLzINP8NVhdaMY/C9Y/g+8qX7j2OpWD6746s5PGWF0/+IIp9O9sotcjmwmubdGeYBL9k8zztRRxq+/I6wiQPi2IRpDkzpOSY/0o/fWXU3ou2UKIb4fmk9U5OM+IA+RbftMU2+po17lSbjE/quVicnjsoBh+yJGvjl19J6JvwcTwMSg9JH6Nw==
+ b=WfL2x4nx2ZtyqCVJD1oifiZLMnJU+jIzVvy4HDqTLxh8FEAVRXaaJVm4BispcE3pHupuNvffrnefeg9bmC3LtkwVOKkGVpAoofb5SLsLXg7B2JjGmRGKNxBnXp7cVQrjeR/2Yo4a5SSh81rP3Gchy3dBFoguwNxAsB1jn+zc1N2U1wCNbZB40lYWMuxwnZRMS6sbK9SzBm0sfcS6RW0LSXiDIKVzLpqjTQhx5hYZAPB1cEQigCaFiRZc28+GOhnid5q2Rd8rRcQ9VMhELUBKNuQt9Nu5NRcsPe7B2wa98jvWujwU5LZbhHQbrR0N3vMsT2VUF/hz1pkPfCCfJb0wAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KmX5oU8/dmKxwsz/rnUDA4IdPqZitxkBszm0hKYibNc=;
- b=yYOuCVzKzeHSxLHXXMOOCQs0okBsoH0vckT59Nt0hNUwn0ZqF6dw6v6nZ5IX8Mz34Tt9bQh6BtGR6uNjXqBgGtD9MQENrSIABXM2d/eYy5I3smrNwKg12+oX9f57eJEBla4dY8l/1WWqG9LEFcKzT9VoeyNfonKr/1QVagaFFyYZwOzp+kJYIqjpHeyKUXs6JpPfXH3FpNbNveovkmnltIHufuxUSlMv0aKedDmJ3tKuUn53d4Dr2qDpvXoPEoSYx8JOkDl++iQbzYPiThwMLBg7dXZiTI8p8Sf6W1I0DT2N5Y0FsVVHLjki7trTA68Y9HZIi7cTvjxK1gGKjh/9tw==
+ bh=I8QsxCnbpw/JkbLFAphYXrNvxW3IlBmlOx4mSHyDMOw=;
+ b=DScoCwfS+ZxVdSyJKaFAKNBecToeRsSZkhsOC2OjIVd6nFADg0EreAdwI8j1bDxiiSCmPDtCqiwAqUns39gsnSQbGrkdnLCqrBzKwcvfayHqLQc8PrSkUDPgXN9ENCWr7G0Nv+zmdpvRn7pV1oatw/g0XcV+67KJbHdTuJ3p5HfYxFoSKf2Goi2XeTJacXw2xPS5FZMZVa9zGneDr0J8oInAK8OiJt5gdLAhArAFepqvORVtJ3mA5zOo6FQ0Ctmh8vVVKacMzmViufeh3O1eyRSwLo5aPcekUpSfZLaz3GYJ35ujdlTgo9Dp3YIyGD5R8p+5q38UH8AIRrC0pKpkNw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KmX5oU8/dmKxwsz/rnUDA4IdPqZitxkBszm0hKYibNc=;
- b=Ar4Q0rDTPZZLttTHbM9qdTAC0Lxy/87004V+M57wBo/iceDjT2m5PZyEbnlrIFdniMVnRqqN/n6CENhfWn8OUN5WB9PkgCCcq0hqSJt73HNMB2vMSYBDl/SCeYvk+eOUcj8pPadF87+8PwpSyPd+D4sSSUVecdR7cb+NGq//Vf2jzmwuzCrCu+Tou9p6UUIBwPxs77m2C0ptpObKrm62vQ6gzPKTWsZ3pzercOav4W+fdBuunJgVmGTuKMVEsyNJ5d8wHCW1RQjEpTHO1D6MtSDfZPKbHrBhkUvUrXYlmaMlY9MkwRj5dhsQXq6hYkxXpynJ1Da/1MYqPktGc0Atnw==
+ bh=I8QsxCnbpw/JkbLFAphYXrNvxW3IlBmlOx4mSHyDMOw=;
+ b=HI2L+sYiN2ZLtfZg+BC/nTB1BokVjglfb+Pv7vIDdM76vLycIF7INlW+3/lJRlZn/NEywO9yyD/xlYzd5KlDKRLMr3ArCy5AQ08dpVUW4RliU9cQOkqYI2P0Db6dAHLh+Nuba657vkQcUSi+ZvsVmDEBgzdkOEiOU8H4KB7vS/qMSOfKwGNZY+6e7WEHgdwMS0VB1lhhNYUklI+WOMU4Yq1uXq4v5Yty4uhuHNJ5KzxA11509Orgd+f5avwlazdt4NojWDL9aF5IjYf8e+ScTDnXExkXa5AiyvOxzPFSqOE4r1jnrD3HMIb0RpohCykFte1qY+ZDeT5VJyCXLQ1Xgg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from PA4PR04MB9224.eurprd04.prod.outlook.com (2603:10a6:102:2a3::5)
- by DU4PR04MB12026.eurprd04.prod.outlook.com (2603:10a6:10:643::14) with
+ by MRWPR04MB12380.eurprd04.prod.outlook.com (2603:10a6:501:83::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.16; Mon, 16 Feb
- 2026 15:02:41 +0000
+ 2026 15:02:23 +0000
 Received: from PA4PR04MB9224.eurprd04.prod.outlook.com
  ([fe80::8e54:4d38:df79:fd63]) by PA4PR04MB9224.eurprd04.prod.outlook.com
  ([fe80::8e54:4d38:df79:fd63%7]) with mapi id 15.20.9587.017; Mon, 16 Feb 2026
- 15:02:41 +0000
+ 15:02:23 +0000
 From: Larisa Grigore <larisa.grigore@oss.nxp.com>
 To: gregkh@linuxfoundation.org,
 	jirislaby@kernel.org,
@@ -68,18 +68,17 @@ Cc: linux-kernel@vger.kernel.org,
 	eballetb@redhat.com,
 	echanude@redhat.com,
 	jkangas@redhat.com,
-	Radu Pirea <radu-nicolae.pirea@nxp.com>,
 	Larisa Grigore <larisa.grigore@oss.nxp.com>
-Subject: [PATCH 13/13] serial: linflexuart: Avoid stopping DMA during receive operations
-Date: Mon, 16 Feb 2026 16:02:05 +0100
-Message-ID: <20260216150205.212318-14-larisa.grigore@oss.nxp.com>
+Subject: [PATCH 05/13] serial: linflexuart: Update RXEN/TXEN outside INITM mode
+Date: Mon, 16 Feb 2026 16:01:57 +0100
+Message-ID: <20260216150205.212318-6-larisa.grigore@oss.nxp.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260216150205.212318-1-larisa.grigore@oss.nxp.com>
 References: <20260216150205.212318-1-larisa.grigore@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0171.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b7::18) To PA4PR04MB9224.eurprd04.prod.outlook.com
+X-ClientProxiedBy: AS4P250CA0002.EURP250.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5df::20) To PA4PR04MB9224.eurprd04.prod.outlook.com
  (2603:10a6:102:2a3::5)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
@@ -89,347 +88,142 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9224:EE_|DU4PR04MB12026:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1d4636d3-d615-45d3-fa77-08de6d6c6e86
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9224:EE_|MRWPR04MB12380:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e972d0c-7762-4914-13ec-08de6d6c6361
 X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|19092799006|1800799024|7416014|921020;
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|19092799006|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?N1NIMkpXK0F6TmdjN09mTmVoZ29WeVR6SGw4ZW9SZ211MkZsSUFBd2dpeGRC?=
- =?utf-8?B?RXY1bi9MVmhsditvY2d2TjJUTUhhNVZpR2JBZStGdEZMbi9JclVEQnRXS0lN?=
- =?utf-8?B?Njh2bXcyTEcwa21aY3F1RlNTSFhtT3RycWNJMFRRQmpubTRiOW5kZ1l3TWl0?=
- =?utf-8?B?UUJKU29oR01UblJkY3NqZlE5bGJIYVdlM1hBam5ZTEhzRnJNS25seDlQd1c0?=
- =?utf-8?B?ckExZmtDdkV0WDA2U1JwQzY4cFNOdEViOTJ1dFl6T2xLUEhxVU5kZTQzN0FC?=
- =?utf-8?B?ZHFuYUxrWStEaG90VUhlOU4yWFVCVUVwRGhHTTBuOHhoYUxOQUtsZ0VvdzQw?=
- =?utf-8?B?YnFHc3hMWm9OcW5pbzU2SEpQeTJIUnowUEZqS3lqTXVvNkJYNVdVQ09PU3dn?=
- =?utf-8?B?eXdacDNFbEVESXJ6Qit5ZWVSVWRxZXJIbk9SdlA3cEdzNytBSlFXOVpCM3Ns?=
- =?utf-8?B?UkVVTGtOYmxOSk40MFN3K3I2WldMNDlucjl0MVZJREd1TTh1NUVWWGdlNVUw?=
- =?utf-8?B?bktqellOMy96VTNEYXhxdEJCQmJrT085QTNsK1dQTmpMUkd3U2VhRTVUZ05z?=
- =?utf-8?B?My9Idnlab3plUVY2MXhiTHJvQlhQLzNQUU5vdjNoY1hnbm5lcDg0dlk1bGNB?=
- =?utf-8?B?cFgxbVdFMVI4NTJRUXFuZFdjMXROekV6RjZIYzhGdmZGY3YvUGRyNWlmZk9N?=
- =?utf-8?B?Q1pPR1o5SE5LOWV5ejRFcEV4bzB2Tis0dDlQOHY3SHJQMkRIRHluTmdmdGV4?=
- =?utf-8?B?aXVGMzQ1VGN1TlE2R29vY3NDZHg3Z0d3cG1vbnQwbi85T1BXU3MrV1FmQXlv?=
- =?utf-8?B?YmpIUTZyemZWbHBRQWFsdUx3aG1zanNCck9MeXFSUy9UaldjYkg1eUE5M0ZL?=
- =?utf-8?B?M3pqcGxMdTFITWllOTZ6MTVjVEozbEFEVlNTUytHMWZJcVo0UFNvTWtNSUJE?=
- =?utf-8?B?S3paZ2t5TTY0YVdocytLOXBuT0JCQ1NpUitTT29ZcThueTRpTzNyWlFRMHlC?=
- =?utf-8?B?N09hdnl1Y3A3SC9TTTdacTNiOWpKSnEweGcrQWZJZXB3NzdLWWVaMms1a1cw?=
- =?utf-8?B?Q1IwYlh5Ykg5c0hENXhrbTR4c1RXMUg1cFZjbUJVUWYwVlZuVXdHYW5mdFM5?=
- =?utf-8?B?OStLT3hyZC9VbWs5cTJQZmlIWWZpMnZXMkNJUGc1aytSSEcxZml0MFNVTStP?=
- =?utf-8?B?NFlnRlhjamlVVEczaDZNVUNTTFRyMFhJRk5JbFZET1JucGt2ZTFUc0FTRG1E?=
- =?utf-8?B?ckc3WFJGVTVSWnpROGYxZCtrUStKMnhpZzczTEt6UVgvc2tRRGp6VzlSR3hq?=
- =?utf-8?B?bUVRbkRGT2psR21Bc2puZng2dU41d3Q5VW5GSSt5K2ZidUh6czJlQ0cwZXJz?=
- =?utf-8?B?NGV2UzhXbXJxWUswSy9uMFdyOFNxVktlemh3ZDRvem9weWxpQzBnN0hyRVlT?=
- =?utf-8?B?V3VFZXNySnBQZkJ3QmJSeW8rVDVqOTFIczBNS1krbndQaW9RVmdxQlFrSE8x?=
- =?utf-8?B?V3hZa1dMUkI0MllPdHY2Vnd4dlFjREExQkNISGVVMzgzc2llT3ROSmszNTBO?=
- =?utf-8?B?V1hvU011WTd5OEVocnYvdkFxZ0xmNFpJSXdJaEhLQ25YRmFZR3dURlU2RkhI?=
- =?utf-8?B?L011WHdad2g3bUlYTXc0cGdqVTJlR25TVWF5dlh1RHovbzBQUFZyRS9MQ2hh?=
- =?utf-8?B?ck15ZURnV0ZrczlRc2trSFJJbjN6VEpvbjM1eG1ITUI0NWJ1ME1TS3oxaUVu?=
- =?utf-8?B?TG5BOWtlSTBZbk05cGNnRTVBYzA3dzh5RWp3TnVEVDRnS3hRdHNJTFkvL2Rh?=
- =?utf-8?B?Y3JrYWw0M1dtR3BjeXhsV2o2SDVkT1V6RVV3Y043OWhxUW02SThvcU5HeEhW?=
- =?utf-8?B?OEV3b1Y4NjdzTnFiN0gyVE8vVHF0dElIM2l4Ylc4YlRidThCdmpmK1g0Nmxz?=
- =?utf-8?B?NnRDNlhRVE9uc1pxWkN6Qy84VWgvTzFoN05Iek5VaEFnQ200R01abWwyU3Rl?=
- =?utf-8?B?Q0xYUUh5cVB0MnJSbUhqT1B0S0lrUVpOZ1BMdWlsekFhOWc2alIrU0dXQ2NL?=
- =?utf-8?B?TmdneFRPSHc1QnZLVWthMjdtbmkvVkZKTnRvVHRaUkZpYWlzcFdVazhEMGZx?=
- =?utf-8?B?Q3A1NnBEUHgvclBBQmNhWXZCd3V1RWFUcXhLVUhyd1R4eVJHWmp5bURkS3VI?=
- =?utf-8?B?ZEE9PQ==?=
+	=?utf-8?B?cDBNbmFkWFViWmR0SzMydkxPSmpZUk9tTC8xS0FWTTI2WFhuUFVVdkp4VjN0?=
+ =?utf-8?B?ck40cWNacGNOb25QZmcrWnhuWkQzYjZpdkpHQkJEVVNFZ28wdHh4WG1XVU1R?=
+ =?utf-8?B?cXBPK1hsYUJXMXBIWGNLS0IwNVJCSnZRRUxwTDBlVkJGSVVaQjhacUR4Q2lX?=
+ =?utf-8?B?UTdwcGtBVUJEZDZEZXJIWDA2VGtLMUVjSGhmejlpbkFoNVlxOFIyWG1tcHUz?=
+ =?utf-8?B?NlZIcS9ueVVvSWhHWUJqMldIS202VUluZEcyZDNOcXZIdGUwbWhFVUVIMmxG?=
+ =?utf-8?B?K1N2Qmg4VDA5VWZhUjRjdUU2eWwrSUt5Wm9kVHVzbzJaWUJVcGpzWkFVYkNY?=
+ =?utf-8?B?TVEya0xaSEpOMEV1a055V1E5cDNMTGJVcHgyQmFKVm1ZdnZtcEFiMmxxNTFt?=
+ =?utf-8?B?aUxiSUIrNEdkMnBtWDdiWDA1d0JjTkxHYUY4amhOWlBTeDBCaTlpM2Zqbkk0?=
+ =?utf-8?B?K2hOQmsvQjlIekxJOFlCTVJEUFRhMDRYZ2l6L1RoZ2lCOFplRkcwdFdzS29T?=
+ =?utf-8?B?emM1M3Y1SnNPaldMWVVWMkltdmFxL1NQS0xULzMwU0RWeUM5WDZTWlo3YmZt?=
+ =?utf-8?B?SnpYUnBSUi85YzZyTkJXZGZpaXlNTXI0NGxNc0RnejFqcExseDQwR2k4aVcw?=
+ =?utf-8?B?WFd1L0cxdjV3V0FuNHhQYUdWWGFCbXBxUTBocWJRM29nRDRpREovVkJ4Z2dS?=
+ =?utf-8?B?VW40N0UrbjdYUGg4TlNxMHV4aklyNmdNMnNqaFlNOWJqNjhDa1FyWlFjdG1s?=
+ =?utf-8?B?N3FoVms3c1p0V3lxNHliVFo1dklCVFNrRkQ5SmpNZ0p6am1YTGZRNHd4bkRo?=
+ =?utf-8?B?ZXVXNVdFODVWSnU0MjBpOGpqdXBKc2NTK2czQjVMbFFpcTBsL3cyL0MyQXpB?=
+ =?utf-8?B?UktNZ2s5QklTWTNrdHhpVlVHWDRxN1ZCcDdsbG9TNW0zUTVRVnZDRnVEVGtG?=
+ =?utf-8?B?aUVFNkhZUk56VXdCdXk2SlFsZnkycVkvSjI3cnJYRzdUVlFVUnNoWWJ5STVD?=
+ =?utf-8?B?WDZSeG1CdHNyWHltZVQ0L2V0ZHU3MVgzdmxDelJ4VVc5TStVUm05Z3ZtSGRo?=
+ =?utf-8?B?Y29BQzJZWDE4VWhXb0xVMWhnd3VmYmlZU3pnM3VtM2NEMWs3eE9vUzM3bnpI?=
+ =?utf-8?B?WGlkNFRiT1lwUnFZNDE2TGpjc1NRYmZ1Uy8wb3V5b04xS3owMlI5Z2JyL21M?=
+ =?utf-8?B?YXlXbU5hVWp0RWFCK2RpR0haR1dZMkhnY1lpa2FObXlNMFI5dnJ2SThaMnVp?=
+ =?utf-8?B?aWpMMFhxZW45eEdqZHRhM2QrT05RQ1k0OWlUc3pycWFSaVlzVGxKVUF5UWQx?=
+ =?utf-8?B?bWxWV1hLNVBWYXMyM0Rha09CbU9tTFUrU2creklWbld5dnVPZnkzZ3RTM2N0?=
+ =?utf-8?B?QUJCT0JudlhDOTArdHdSdVRCZkwvWjVKSVU3Qlp6djhpZVBGSFNtTHY2ak0x?=
+ =?utf-8?B?R0tUbzBycEV4cXRjZEtaQW42NFl5elZmNFJCVUpCR0IzajRwWU5ySVFrM3V1?=
+ =?utf-8?B?Rmo3d080ZVFObExEUUVLOHo2TFJ6YWZSZktYY1FPQzFTZXpLUEF6Zm5CM1NP?=
+ =?utf-8?B?cEVnZDRvMTFSTExGNGtvSUMxVEk1d2Z0NW1MWDJacEFpc3p0SUlZYXM4MTJq?=
+ =?utf-8?B?L0VHRitIT1NzZzc0NXlkMjdEa2RZUFkxeWtWWnhaNms0dVNuYmszU3JJSWVR?=
+ =?utf-8?B?bnhLM1BXclk3OVJsS1pKWU5QNGJwVy9hdUVtbk9sOG9qRlhhblJoellab0dK?=
+ =?utf-8?B?a2U4UnhOY2p5bWJIMm9EVW5vVDdzN2ZhUmg5UEpkY2VMYU14czJhQnVRVFRn?=
+ =?utf-8?B?L3lGZUtwYlRuYmJudk9jd2d5d1VvaXZyT3lRaU5iUzI5TzkyN21UMkwydkZG?=
+ =?utf-8?B?TlcxMzM0dTlSaWdYaEdEdGVXTUMxb2JDS0ZzbHIxR1JPcDBzN3R6TkpicG5j?=
+ =?utf-8?B?cU5LWis4RVJKSDd5MmVrZThNNkl3am0rdXJrMXA4WFJ1T3BPYlRFRTdkQlZo?=
+ =?utf-8?B?dUtQcFMwTDNYNDltMTJhck95TkhINVNYQTJVTlUySlMvbnVkb0pCRkRIR2FE?=
+ =?utf-8?B?UG5Vb1RkMHp4VTdTYTVxaFQ4Y0pHekF2SXI3UkJhR0MwQUt2eWxwanBBYW53?=
+ =?utf-8?B?SHpuM0xNTlk3Qm00aHRHWjFLcDBORXQ2d21wMVpJNXVrRnJPdVliOXNkZU1i?=
+ =?utf-8?B?aHc9PQ==?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9224.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(19092799006)(1800799024)(7416014)(921020);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9224.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(19092799006)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VWZVa2xrSFM1QUMxZSs0cExkOXZUQUE4T3dEdU10WGgyWWZ0RVRGbGd2OUhv?=
- =?utf-8?B?a3J1TitZUWJGMWF4d09RYzZwSENHWnNVU0UzdHFrRUtDMmVTMHVCWEZrSExv?=
- =?utf-8?B?SnlyNGxZWE9XczZEbUJDdGxCVUMxRE9pM1ZmYlpUMk53VFJWNktLSnRjR0VB?=
- =?utf-8?B?VytVQlpOVmJGRmhXejlwWWJXVCsvc2VvQ0lsZDNQdFppeGM0OGNwZWZRd3dF?=
- =?utf-8?B?WXV0cVpMYlBJcVdqclBIM2pMR2dsVStXc256aHBxMWNiRXNZWVlrbHQ2cWRR?=
- =?utf-8?B?anZpeHZ2NmNLTWpJdVB6SzcrRDNxQ1BVc2ZpS0RrQ1JRek53S2thb3BoSVp1?=
- =?utf-8?B?LzllWTFxcTVucEM5ckJiWFRlM2pnZldRaDV4SW8rSXpPcmN2NWcvamlYVjY2?=
- =?utf-8?B?end1bHYvVHAwZlpybWdPdi82RWYyL29MNDJ1TE5wRGhONnNhUWRxZXhheDlE?=
- =?utf-8?B?VHZSd0R2ZXhsRXozNUZzeXFuQlo1UHlIcTY3WDArM3VydEV5UXErVjk5ZzFO?=
- =?utf-8?B?SjlyUWpoSyt0cDBSRk4yVE1sV2FqNXlCU09WbkRUWGJXcHdGNDRLbU1lM3pX?=
- =?utf-8?B?a1FCM2piZW1ESDdERDZ5a0RYb0t2ekxNb212SmozdTZHUjI5Wnd5UlZaSzJZ?=
- =?utf-8?B?RnV6R3cvVUlMZFdLdjBHMGdBM1pkTDNYeHhib2xFMG1TZkUvcFVmRDhQMUhL?=
- =?utf-8?B?ZEYwOTM4K1cwRFJGdVNoZnNpd0pBQUJVUGIrdC9BaUhFLzAyVURQb3ZWWjUy?=
- =?utf-8?B?eGxtMHpxQ0JkZFViSGY3amtIRGdvRlB5NUMzL2hOVVJvaDhabFJlVDhKcngw?=
- =?utf-8?B?Z1V2ZGtZK0lObjZ2YUljVTVRYy9RTzFHdXk0UkE0S2crV1RtcHo3eE4xMk9t?=
- =?utf-8?B?VG9IaCtkRUM0dEE1aXIrS1ZqZjVMcGo1QWx4dkI3em04Tm05d2ZlRXhHSEk5?=
- =?utf-8?B?ZkVYT0NMcVFMdDdZK0poTHRxbmNSZ1NPWlk2cVNtRkFzVzRyeDRJRmVzRHRE?=
- =?utf-8?B?RVVhNHl6Uk8xVlBlNjArWHh5bmhpRnUwdnNZZFlraW9yT2FZTW1vdzRqeWJ0?=
- =?utf-8?B?Y3FiSDBTMkpvekhObjFFakdtRnhWSlFjRlVDb1d6bXhSOFBmb1NyRkROM281?=
- =?utf-8?B?R1lGc3pNV3NnakxwcjVmelVWK2o1TjJxVWpHbXFUTlZPdUpyK3l1c0xOekFH?=
- =?utf-8?B?dmhqczl0Ky9YY0hORGV2bXJMZEZ6SWdVZUVzWDAySTFjcmFMOTZOU1FiQ09P?=
- =?utf-8?B?akpZRlo2ZnVnYyt1K2RtQUtUS1pKY2xaZkowZXUzUkVCK3ovQmN3S3c5UUZn?=
- =?utf-8?B?RWJTTXBBRkpoVElXK05kWitBLzlSMXdkSFEvMm9IR1MxcUdWY2JnTEc1OGVa?=
- =?utf-8?B?b1FJUXBRYys0L1k5a29Ic1E1QngvYlk5djlyM0NxRTQvZHo0cWpVUDg4bXhx?=
- =?utf-8?B?VEd4dUhRc1hiUnM5dXRLY1RxWklYVXh5Mlh5eGNMOUlCWWVNSFdJenlBamNC?=
- =?utf-8?B?UjRQM1NRMXorMkx2bzBYaU5JMlk2dGNyMndmdmFpTjlrZ2ZGTFhtYS9talBa?=
- =?utf-8?B?TXJ0MGlLSlZMeHdxK2oxNExjYVkwQitXSSs1eFZoZFRuaUQrdXpTT1ppQXZW?=
- =?utf-8?B?b2xUc0RWWnZUcjV0Z0Jhdm5XSFpiNWtnVGVQdW9iTXVkMnhHWHh2Z1krTFhq?=
- =?utf-8?B?ZTU1cHQzeW94QndMMjNkb3hjS0p1UWJWMDIrZjV0ODc4VnRSNk81T1pEVitX?=
- =?utf-8?B?Q1RrbnJGUitsU0xjeGJDTzMxT2JDZlA0Z25rWXBMa2pWc25vTjc5WHl3WStt?=
- =?utf-8?B?UVVqaEZNYmlwVm9xLzdlRzR1c3BOc0NGRVBxOFBtNTFPSXZUdEJhM0IwcGhs?=
- =?utf-8?B?S2FRZjFIRmhoT3NBYm9aTDFtRlRlNTV4RnE5MW9TV2F2SC9obW90UGdWbi9M?=
- =?utf-8?B?bi84Tk9TK3BSUml4YTE0alFGbklyRThVbFJUdWpVKzFiZmQvRmRLbEljUG1Q?=
- =?utf-8?B?ZUJuZlVCQTVsN1BXYlhMTG92Tkxub2dBbW93QXJJRDJSb0xDejlGWHRsRTBh?=
- =?utf-8?B?bW92a1F1Qm1MRWx0RTZ3Q2toREZIY0tTL3l1eHRCdWc0eW1zUStyTit2bVU5?=
- =?utf-8?B?dTE0a1BDZEt2VUdCY2JSUVRrS3d3WDdPMUVzamVzeUl6NFVoZklKZEYxTmJO?=
- =?utf-8?B?UkdUbm9jMXg2VU1oakwxMEdtWjRVcGp4OUIrYmdlOWZrR3Qzc2I3R3hoZFJo?=
- =?utf-8?B?T09CR2hQM1ZXdm9BdTk4NGFrWlJmekVVM1dybmNYTGsrQWpoSm9PekpBcUtt?=
- =?utf-8?B?R3lvaGhkNHJwWFdxd2RTR3hIbndmdnFtM2Y0ZnQ3bnJ2U21xbnhHeCtYMXBE?=
- =?utf-8?Q?7RnBK52+9W6GcMZk=3D?=
+	=?utf-8?B?VlpzRktrRGZHYmxNRGRrTWR0eFRJUVlFaVZET0VpcEFnYy81M1E3T3dWT0hC?=
+ =?utf-8?B?VEZjbkcvOHBYazVqQTRDV2hoZHZSUC9kdGYrM2RUd1BTa3Bvbkxxc3MxUzIz?=
+ =?utf-8?B?ZnJXUElTcVNDcTl2Zjlhcng1dlIrNFVmUEhNdEUySm94aDFOZTZHWVFXOHJV?=
+ =?utf-8?B?K09oSEttemd6WG5URUt5UG92SVFjVGVjWXRxYk1mSzA5RExlcklkVXp0UHZi?=
+ =?utf-8?B?TUpNa1VRNkpXK3ExTjU0cHl3YWxHbURpMDZ5Z1JJREt6QlFVMFpDaHJadVRS?=
+ =?utf-8?B?T2hCdDBCazdjVHZZc3p4ckNjUDQ3bUMweHFYakZNMFFlV0tJSmk5UXVRSDAz?=
+ =?utf-8?B?QUNPRitIWG03L204cDBuV1dvRGtVWjZTOUIxRUg2R2tqSW9uQUhONmFVTnkz?=
+ =?utf-8?B?Wnh2a0RpWDZXT2U1ZzFoYm1vVEhtdlpETWQ3ZC9oekx1MURFQ2RiQXIyM1Ns?=
+ =?utf-8?B?anFzTjZLZW5yeTUxN3kzVis5QnhsREk1RElWalpWT1krNFlPbEVic2NKUXla?=
+ =?utf-8?B?UUtJdDlycXR3NnZQYWRRaC9WUHlGdDNZdUJ3OXpKa1pXZVhZZUVZczkreE5n?=
+ =?utf-8?B?RTNpVnFFTW9MN0k5Y0wxaEFQY3E5SEtHTjNZNUN6T0dzUndwSmNxV1huRnBL?=
+ =?utf-8?B?NzNDSnM1bmpKdXErRTQxcE1JUy8wVk9TUExmSzRZZHdzOTFWSkdGdGU0RUg4?=
+ =?utf-8?B?OS8va3dNTHgvb1VzUlNIQk1jQS9JbHdtQVhraXVNdnBscVlPQzhwVkFCamw0?=
+ =?utf-8?B?VGVJT2p0aFBEWWxmZVpKbWhEZU1TeGYreGNBdDVONk9FbGpUdjA1V2RXVmtR?=
+ =?utf-8?B?bjFwQWM0S3Q2WUJFL0dMWTlNMTM0R1RjekIwZlBUMmhvZm44NkRQNGM1UUVK?=
+ =?utf-8?B?NUVKRXBvbFAzVGwrUlF6T2F1cGRKUGpMb2lGOStlZ1lScUswdjFnREV6N2dL?=
+ =?utf-8?B?bFJDUW1vczUvNVFiQklYMTlSY3RYYnZRZXhXQytwQ3E1M09TdjB0Mi9jaVky?=
+ =?utf-8?B?R3pwdG5uSmpGVzgwTXQvWlNJRmczckpOeng4aFI5Ym92b3h1d0RzcEVJcnFu?=
+ =?utf-8?B?YjhDSEx4OXZtanJ6ckRiaXRZTVpQazhuUW1CUnpiR2NVZEVZbTdZcVJKS0tQ?=
+ =?utf-8?B?WlFWVFlwM0FFaTN5UDBhNW16N2wrV0JIQlhoUkF1SkQ1UWxHK2xvVmJ1OEJR?=
+ =?utf-8?B?ajZ5eElWU1U4LzdrbnRrRnNVQ1VydWQ1Y2VhcmVxQlA4UmNQdGhxMUF3Y21y?=
+ =?utf-8?B?bVR6M2kxcTRpR0d3QWpCSEovRExZVUxVSU5FTzh5S3hWTTBVU25maEFkZng2?=
+ =?utf-8?B?a0kwZHJjVU9RZzUyV3lkU0Z1U1UzazdxdzQ1cWR5YU5SaTZMblZ5RkZqV0ww?=
+ =?utf-8?B?RXRvZDZsUTJvVFR4cjJ5OUpYZkgzdFZLTUhtZ0hCMUVRKzNJM1R4Umg0TGxt?=
+ =?utf-8?B?d3ZwTDJOM1BnN0lueHIzT2VxeVp6Rng0dnA0NG1BN29lczZXeEMzOG9mQ3FV?=
+ =?utf-8?B?L0xiN2l2MkxFZkUvR3VWenV1QVd4S3p6NUt3ait0THdmNGp5K1l3RFJOSGJ4?=
+ =?utf-8?B?TytseWN0SWpHWnpMWUxDMm5iVW1ZRUtlcUtKbkthT3g4ZFRnVUwvQ0g4ZVQy?=
+ =?utf-8?B?aElTb1dRc2lKRHJWUzR4UFVZSVl5UGVaT3Q5TEtnM3gwa3hFMkN4S0NZUnhj?=
+ =?utf-8?B?Z1M0aGVqS3VFZnhTT0FEUjM5S0d1WWFkcEI5Wk5FbitBdnNzT1NQMjlBRWE1?=
+ =?utf-8?B?UU1YT0FEdmdraTBUT0hKSjIxZVVXd0lUYlJaRHhxU3FibnFYZEpMZUlNVXp6?=
+ =?utf-8?B?K0VGVW5hNVZqekJhKzZZQ0FWQmdjd0pzRGJ0TzJEUzdWeHA4djRjUzNkSi9l?=
+ =?utf-8?B?TmtocXI3ZFJPenA3NzNhVG1xdXVBZ3dIOGI5NWd6TXh3N1IvSTJPU01PK0VK?=
+ =?utf-8?B?QVJTWWlidmNwb1ZKVGdHUVNqWEozb1UrL3BoSHVEWmdoNzgrTlZaMmxTNnU5?=
+ =?utf-8?B?TE1yTTQ1UkJrOUxHQkdiRndVVGkvdmJWOWRKWXdHV28rMW9QaG5OQ0xaUlQv?=
+ =?utf-8?B?dEZraGlmWHVZbjEzV3hCY0crMVNzNXRDNlpEVjd3UlcxT1dBV051bU1KSzk3?=
+ =?utf-8?B?U2svd1d1VjVXNG5xL3d6UU1yeDA3NHNWNXpIZ0tQWktzdXZWREFTZVVzRG5E?=
+ =?utf-8?B?Vkl2M0ZUTm9nT0x5RU5IeXcxWlRkU09DQlpmYWM5WXIzWjhOdFVXV1pGK2E1?=
+ =?utf-8?B?a2ZhVEF0T09SRnF5N1Y4Rmh6YXVRSllYaGJWRWF2b2xMSit6RXkzbHVuQUla?=
+ =?utf-8?B?VjNSaWlXUWdlT2RPZksrcFNpNHVJSU1DNk83YjZSUkpuZ2hjY0dJYnppTXNs?=
+ =?utf-8?Q?LXBvSPU6dBz5iLgw=3D?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d4636d3-d615-45d3-fa77-08de6d6c6e86
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e972d0c-7762-4914-13ec-08de6d6c6361
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9224.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2026 15:02:41.3107
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Feb 2026 15:02:23.5045
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SU1V07VkUQKopWg6u0wMheJpClYNbBmpP4Z478RkVeKtnacZ8RrHcjqa955PhLetvjR/qYQJE1cPaBWP38vMyA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4PR04MB12026
+X-MS-Exchange-CrossTenant-UserPrincipalName: qHxFOoMR17+lCkZHKQ+LvI6AaTH4xIedDhXhAbHWFM8ja5/r+plJ6fqNzwYtnhfF/R09vW60I/lyPylgviT76Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRWPR04MB12380
 
-From: Radu Pirea <radu-nicolae.pirea@nxp.com>
+Reception and transmission should not be enabled or disabled while in
+INITM mode.
+Although the manual does not explicitly forbid modifying RXEN/TXEN
+during INITM, this mode is intended for other types of settings.
 
-Replace DMA single transactions with DMA cyclic transactions. Characters
-may be lost between two single DMA transactions if the CPU is running at
-lower frequencies.
-
-Signed-off-by: Radu Pirea <radu-nicolae.pirea@nxp.com>
-Co-developed-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
+Fixes: 09864c1cdf5c ("tty: serial: Add linflexuart driver for S32V234")
 Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
 ---
- drivers/tty/serial/fsl_linflexuart.c | 119 +++++++++++++++------------
- 1 file changed, 68 insertions(+), 51 deletions(-)
+ drivers/tty/serial/fsl_linflexuart.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/tty/serial/fsl_linflexuart.c b/drivers/tty/serial/fsl_linflexuart.c
-index dff37c68cff0..4598c7ff669e 100644
+index a48240b0a5f2..768b3c67a614 100644
 --- a/drivers/tty/serial/fsl_linflexuart.c
 +++ b/drivers/tty/serial/fsl_linflexuart.c
-@@ -6,6 +6,7 @@
-  * Copyright 2017-2019, 2021-2022, 2025 NXP
-  */
+@@ -350,8 +350,7 @@ static void linflex_setup_watermark(struct uart_port *sport)
+ 	/* set UART bit to allow writing other bits */
+ 	writel(LINFLEXD_UARTCR_UART, sport->membase + UARTCR);
  
-+#include <linux/circ_buf.h>
- #include <linux/clk.h>
- #include <linux/console.h>
- #include <linux/dma-mapping.h>
-@@ -180,7 +181,7 @@ struct linflex_port {
- 	dma_addr_t		dma_rx_buf_bus;
- 	dma_cookie_t		dma_tx_cookie;
- 	dma_cookie_t		dma_rx_cookie;
--	unsigned char		*dma_rx_buf_virt;
-+	struct circ_buf		dma_rx_ring_buf;
- 	unsigned int		dma_tx_bytes;
- 	int			dma_tx_in_progress;
- 	int			dma_rx_in_progress;
-@@ -210,28 +211,63 @@ to_linflex_port(struct uart_port *uart)
- 	return container_of(uart, struct linflex_port, port);
- }
+-	cr = (LINFLEXD_UARTCR_RXEN | LINFLEXD_UARTCR_TXEN |
+-	      LINFLEXD_UARTCR_WL0 | LINFLEXD_UARTCR_UART);
++	cr = (LINFLEXD_UARTCR_WL0 | LINFLEXD_UARTCR_UART);
  
--static void linflex_copy_rx_to_tty(struct linflex_port *lfport,
--				   struct tty_port *tty, int count)
-+static void linflex_copy_rx_to_tty(struct linflex_port *lfport)
- {
--	size_t copied;
--
--	lfport->port.icount.rx += count;
-+	struct circ_buf *ring_buf = &lfport->dma_rx_ring_buf;
-+	struct tty_port *port = &lfport->port.state->port;
-+	size_t count, received = 0, copied = 0;
-+	struct dma_tx_state state;
-+	enum dma_status dmastat;
-+	int new_head;
+ 	writel(cr, sport->membase + UARTCR);
  
--	if (!tty) {
-+	if (!port) {
- 		dev_err(lfport->port.dev, "No tty port\n");
- 		return;
- 	}
+@@ -359,6 +358,9 @@ static void linflex_setup_watermark(struct uart_port *sport)
  
-+	dmastat = dmaengine_tx_status(lfport->dma_rx_chan, lfport->dma_rx_cookie, &state);
-+	if (dmastat == DMA_ERROR) {
-+		dev_err(lfport->port.dev, "Rx DMA transfer failed!\n");
-+		return;
-+	}
+ 	writel(cr1, sport->membase + LINCR1);
+ 
++	cr |= (LINFLEXD_UARTCR_RXEN | LINFLEXD_UARTCR_TXEN);
++	writel(cr, sport->membase + UARTCR);
 +
-+	new_head = FSL_UART_RX_DMA_BUFFER_SIZE - state.residue;
-+	if (ring_buf->head == new_head)
-+		return;
-+
-+	ring_buf->head = new_head;
- 	dma_sync_single_for_cpu(lfport->port.dev, lfport->dma_rx_buf_bus,
- 				FSL_UART_RX_DMA_BUFFER_SIZE, DMA_FROM_DEVICE);
--	copied = tty_insert_flip_string(tty,
--					((unsigned char *)(lfport->dma_rx_buf_virt)),
--					count);
- 
--	if (copied != count) {
--		WARN_ON(1);
--		dev_err(lfport->port.dev, "RxData copy to tty layer failed\n");
-+	if (ring_buf->head > FSL_UART_RX_DMA_BUFFER_SIZE)
-+		dev_err_once(lfport->port.dev,
-+			     "Circular buffer head bigger than the buffer size\n");
-+
-+	if (ring_buf->head < ring_buf->tail) {
-+		count = FSL_UART_RX_DMA_BUFFER_SIZE - ring_buf->tail;
-+		received += count;
-+		copied += tty_insert_flip_string(port, ring_buf->buf + ring_buf->tail, count);
-+		ring_buf->tail = 0;
-+		lfport->port.icount.rx += count;
- 	}
-+
-+	if (ring_buf->head > ring_buf->tail) {
-+		count = ring_buf->head - ring_buf->tail;
-+		received += count;
-+		copied += tty_insert_flip_string(port, ring_buf->buf + ring_buf->tail, count);
-+		if (ring_buf->head >= FSL_UART_RX_DMA_BUFFER_SIZE)
-+			ring_buf->head = 0;
-+		ring_buf->tail = ring_buf->head;
-+		lfport->port.icount.rx += count;
-+	}
-+
-+	if (copied != received)
-+		dev_err_once(lfport->port.dev, "RxData copy to tty layer failed\n");
-+
-+	dma_sync_single_for_device(lfport->port.dev, lfport->dma_rx_buf_bus,
-+				   FSL_UART_RX_DMA_BUFFER_SIZE,
-+				   DMA_FROM_DEVICE);
-+	tty_flip_buffer_push(port);
- }
- 
- static void linflex_enable_dma_rx(struct uart_port *port)
-@@ -348,8 +384,6 @@ static void _linflex_stop_rx(struct uart_port *port)
- static void linflex_stop_rx(struct uart_port *port)
- {
- 	struct linflex_port *lfport = to_linflex_port(port);
--	struct dma_tx_state state;
--	unsigned int count;
- 
- 	_linflex_stop_rx(port);
- 
-@@ -357,14 +391,12 @@ static void linflex_stop_rx(struct uart_port *port)
- 		return;
- 
- 	dmaengine_pause(lfport->dma_rx_chan);
--	dmaengine_tx_status(lfport->dma_rx_chan,
--			    lfport->dma_rx_cookie, &state);
-+	linflex_copy_rx_to_tty(lfport);
-+	lfport->dma_rx_ring_buf.head = 0;
-+	lfport->dma_rx_ring_buf.tail = 0;
- 	dmaengine_terminate_all(lfport->dma_rx_chan);
--	count = FSL_UART_RX_DMA_BUFFER_SIZE - state.residue;
- 
- 	lfport->dma_rx_in_progress = 0;
--	linflex_copy_rx_to_tty(lfport, &port->state->port, count);
--	tty_flip_buffer_push(&port->state->port);
- }
- 
- static void linflex_put_char(struct uart_port *sport, unsigned char c)
-@@ -501,11 +533,12 @@ static int linflex_dma_rx(struct linflex_port *lfport)
- 	dma_sync_single_for_device(lfport->port.dev, lfport->dma_rx_buf_bus,
- 				   FSL_UART_RX_DMA_BUFFER_SIZE,
- 				   DMA_FROM_DEVICE);
--	lfport->dma_rx_desc = dmaengine_prep_slave_single(lfport->dma_rx_chan,
--							  lfport->dma_rx_buf_bus,
--							  FSL_UART_RX_DMA_BUFFER_SIZE,
--							  DMA_DEV_TO_MEM, DMA_PREP_INTERRUPT |
--							  DMA_CTRL_ACK);
-+	lfport->dma_rx_desc =
-+		dmaengine_prep_dma_cyclic(lfport->dma_rx_chan,
-+					  lfport->dma_rx_buf_bus,
-+					  FSL_UART_RX_DMA_BUFFER_SIZE,
-+					  FSL_UART_RX_DMA_BUFFER_SIZE / 2,
-+					  DMA_DEV_TO_MEM, DMA_PREP_INTERRUPT);
- 
- 	if (!lfport->dma_rx_desc) {
- 		dev_err(lfport->port.dev, "Not able to get desc for rx\n");
-@@ -525,11 +558,8 @@ static int linflex_dma_rx(struct linflex_port *lfport)
- static void linflex_dma_rx_complete(void *arg)
- {
- 	struct linflex_port *lfport = arg;
--	struct tty_port *port = &lfport->port.state->port;
- 	unsigned long flags;
- 
--	timer_delete_sync(&lfport->timer);
--
- 	uart_port_lock_irqsave(&lfport->port, &flags);
- 
- 	/* stopped before? */
-@@ -538,34 +568,17 @@ static void linflex_dma_rx_complete(void *arg)
- 		return;
- 	}
- 
--	lfport->dma_rx_in_progress = 0;
--	linflex_copy_rx_to_tty(lfport, port, FSL_UART_RX_DMA_BUFFER_SIZE);
--	tty_flip_buffer_push(port);
--	linflex_dma_rx(lfport);
-+	linflex_copy_rx_to_tty(lfport);
- 
- 	uart_port_unlock_irqrestore(&lfport->port, flags);
--
- 	mod_timer(&lfport->timer, jiffies + lfport->dma_rx_timeout);
- }
- 
- static void linflex_timer_func(struct timer_list *t)
- {
- 	struct linflex_port *lfport = timer_container_of(lfport, t, timer);
--	unsigned long flags;
--
--	uart_port_lock_irqsave(&lfport->port, &flags);
- 
--	/* stopped before? */
--	if (!lfport->dma_rx_in_progress) {
--		uart_port_unlock_irqrestore(&lfport->port, flags);
--		return;
--	}
--
--	linflex_stop_rx(&lfport->port);
--	linflex_dma_rx(lfport);
--
--	uart_port_unlock_irqrestore(&lfport->port, flags);
--	mod_timer(&lfport->timer, jiffies + lfport->dma_rx_timeout);
-+	linflex_dma_rx_complete(lfport);
- }
- 
- static void _linflex_start_tx(struct uart_port *port)
-@@ -827,8 +840,8 @@ static int linflex_dma_rx_request(struct uart_port *port)
- {
- 	struct linflex_port *lfport = to_linflex_port(port);
- 	struct dma_slave_config dma_rx_sconfig;
--	unsigned char *dma_buf;
- 	dma_addr_t dma_bus;
-+	char *dma_buf;
- 	int ret;
- 
- 	dma_buf = devm_kmalloc(port->dev, FSL_UART_RX_DMA_BUFFER_SIZE,
-@@ -860,7 +873,9 @@ static int linflex_dma_rx_request(struct uart_port *port)
- 		return ret;
- 	}
- 
--	lfport->dma_rx_buf_virt = dma_buf;
-+	lfport->dma_rx_ring_buf.buf = dma_buf;
-+	lfport->dma_rx_ring_buf.head = 0;
-+	lfport->dma_rx_ring_buf.tail = 0;
- 	lfport->dma_rx_buf_bus = dma_bus;
- 	lfport->dma_rx_in_progress = 0;
- 
-@@ -883,10 +898,12 @@ static void linflex_dma_rx_free(struct uart_port *port)
- 
- 	dma_unmap_single(lfport->port.dev, lfport->dma_rx_buf_bus,
- 			 FSL_UART_RX_DMA_BUFFER_SIZE, DMA_FROM_DEVICE);
--	devm_kfree(lfport->port.dev, lfport->dma_rx_buf_virt);
-+	devm_kfree(lfport->port.dev, lfport->dma_rx_ring_buf.buf);
- 
- 	lfport->dma_rx_buf_bus = 0;
--	lfport->dma_rx_buf_virt = NULL;
-+	lfport->dma_rx_ring_buf.buf = NULL;
-+	lfport->dma_rx_ring_buf.head = 0;
-+	lfport->dma_rx_ring_buf.tail = 0;
- }
- 
- static int linflex_startup(struct uart_port *port)
+ 	ier = readl(sport->membase + LINIER);
+ 	ier |= LINFLEXD_LINIER_DRIE;
+ 	ier |= LINFLEXD_LINIER_DTIE;
 -- 
 2.47.0
 
