@@ -1,207 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0088E2F39B5;
-	Sun, 15 Feb 2026 17:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277A42744F;
+	Mon, 16 Feb 2026 06:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771177287; cv=none; b=oXOF2gtTLxlPVEvrt/TleuYfoDv/HYGK3f08TUZtsASfh6iiJLr4yDwQHJgNFZFg1Shy5iBx7joyjv6mfRAtPzohsVXsj2WIGyD9EqPEnQpqxY//Drwy6TUxSYolM59h5VtZEjVMx/K18Whg15F0kAtmXDz4h7WjiNt/9XYllOM=
+	t=1771222678; cv=none; b=W8xPnfIZ+Rs5Bh6y8o5LCYXWPhSPaI/tCd9CxM3ZjRgtujtIma/6KYPdKJ2SuygVdP4A4tqBLZQQaFKr37loQnyMF0eHDI9/uqg/eJlXlz9VQegFwhTert4+pZOqzWxjSsCudlQygpw8ozLSWl/0VQnp9Hk3mT9waN9gRlAz/sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771177287; c=relaxed/simple;
-	bh=Onj3uK0+DVYfeYgAG9nSvweyD5qgloOkVKT5YJbRa88=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HYFUEACcddGfQClPPQfuPLzjZyFHDLrC0PoMUK3QZL7TLkZWLmpZpccuF5H3J7sHS81+Khq78VReWFUX+JVKmrB39OD6nlyeF9U5g8kQec0F9XxRGwNFuZ7n6D8ATl+lvnSrcqrlwpw+JVIHj/QCdqqk7LpzufV/SP1jUi+i5w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PaCVE5xq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771222678; c=relaxed/simple;
+	bh=NK5LUjbfC0BVzjhcuYYDpuRoBEyVNMqfzIGQv6x7rLQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X3UpQjbW0RDOgZ6RtFOXVM6Jc9+N2oQW/FyBLvVEuraSV3wX2G5QwSWqe931siKvxUFk3f1fCRJIE/ov3hRiyPr4ZAKCdCA9rZ8PxcYx8NYUnN2HJ6Jg6+u0u4eaK+YAUQxbTogLDI9KMjUiFqa+eQxIF98PNtH5DzGFjRdEpbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=0E3OGHJq; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PaCVE5xq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B274AC4CEF7;
-	Sun, 15 Feb 2026 17:41:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771177286;
-	bh=Onj3uK0+DVYfeYgAG9nSvweyD5qgloOkVKT5YJbRa88=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PaCVE5xq+92K01+7EwCkIRF+/yWgvGM0mI3lN3csy2e+BVpuIg0Rz6V+CIBohWFNX
-	 1N69IBrN+cgcPcjLKEPj0/sv2IWsNNYoMT/Akz228fze4o5HCAtqSpPlHi+mFo64Hk
-	 uCpGITm3IsQ3Ko01DonmGKiSbVrnen1hPYToU1VBLdZnmUI1W3Bse8nG6KpM15wUBP
-	 sLbV+ri1twVD/goNf3gd8X8KfieW6AxvRv2qNODjuWjvUaRsQib6aIRlK8E+lFBSL4
-	 reqtbCNSWL6Dpp4xPQ1HZ9wEhQICRZlaJUWDG9WInRBn5Yn2WCEq6RHeC7o7VjcjRb
-	 u2KgBz301B98w==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Jacky Bai <ping.bai@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Frank.Li@nxp.com,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.19-6.1] mailbox: imx: Skip the suspend flag for i.MX7ULP
-Date: Sun, 15 Feb 2026 12:41:12 -0500
-Message-ID: <20260215174120.2390402-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260215174120.2390402-1-sashal@kernel.org>
-References: <20260215174120.2390402-1-sashal@kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="0E3OGHJq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=Eujn8FiH7OE1KhwJl5b99W69u8s9g+bZu/FLxdOyUL0=; b=0E3OGHJqcwj8n70RCnWoahPESO
+	eHVE2Bq1bozN2rNOaU81peL+fjGjpAWbikMxPnZNh/+UVn1QSnB/pbKsy/Yg171EOwlp8oVfXBX6E
+	AeGZEuiXW2rdxf7AdkfHfsCLgcaxHI9TCZjzpjoNbkhpAknabOc8/i2OmA5av23Mtvv3wIJy60G1H
+	SpzOcLjyJX4qUOLBXfVYUauQVB1+TdKNHnEGoz7PJFR04h4I9Po5IGUtHAv6C+IlfOieNXjN1KJTI
+	1vA9tZeYUyumyLT23S9qJQMd0Bz6l+ijqxBDjL5QGstAdlnyHsWCgED5mJCmBrT/UCt1VPDpBDMNy
+	cwe+WwGw==;
+Received: from [50.53.43.113] (helo=bombadil.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vrrvg-000000061cq-07n4;
+	Mon, 16 Feb 2026 06:17:56 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	linux-i3c@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: [PATCH] i3c: master: svc: spelling corrections
+Date: Sun, 15 Feb 2026 22:17:55 -0800
+Message-ID: <20260216061755.2801697-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Jacky Bai <ping.bai@nxp.com>
+Correct spelling for 3 words as identified by codespell:
 
-[ Upstream commit 673b570825ace0dcb2ac0c676080559d505c6f40 ]
+svc-i3c-master.c:340: tigger ==> trigger
+svc-i3c-master.c:532: reamins ==> remains
+svc-i3c-master.c:734: filetered ==> filtered
 
-In current imx-mailbox driver, the MU IRQ is configured with
-'IRQF_NO_SUSPEND' flag set. So during linux suspend/resume flow,
-the MU IRQ is always enabled. With commit 892cb524ae8a ("mailbox: imx:
-fix wakeup failure from freeze mode"), if the MU IRQ is triggered after
-the priv->suspended flag has been set, the system suspend will be
-aborted.
-
-On i.MX7ULP platform, certain drivers that depend on rpmsg may need
-to send rpmsg request and receive an acknowledgment from the remote
-core during the late_suspend stage. Early suspend abort is not
-expected, and the i.MX7ULP already has additional hardware and
-software to make sure the system can be wakeup from freeze mode
-correctly when MU IRQ is trigger.
-
-Skip the 'suspend' flag handling logic on i.MX7ULP to avoid the
-early abort when doing suspend.
-
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 ---
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Frank Li <Frank.Li@nxp.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: linux-i3c@lists.infradead.org
+Cc: imx@lists.linux.dev
+---
+ drivers/i3c/master/svc-i3c-master.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-LLM Generated explanations, may be completely bogus:
-
-Now I understand the full picture:
-
-1. Commit 892cb524ae8a added `priv->suspend` flag and
-   `pm_system_wakeup()` call in the ISR to handle freeze mode wakeup.
-2. `pm_system_wakeup()` aborts the ongoing suspend process.
-3. On i.MX7ULP, during `late_suspend`, drivers send rpmsg to the remote
-   core and expect a response. This triggers the MU IRQ, which in turn
-   calls `pm_system_wakeup()` and aborts suspend — an undesirable
-   behavior on this platform.
-4. The fix adds a per-platform flag `skip_suspend_flag` to skip the
-   suspend flag logic for i.MX7ULP, which has its own hardware
-   mechanisms for handling wakeup.
-
-### Stable Kernel Assessment
-
-**Bug severity**: This is a **suspend failure** on i.MX7ULP — the system
-cannot properly enter suspend/freeze mode. This is a significant
-functional regression for i.MX7ULP users caused by commit 892cb524ae8a.
-
-**Fix quality**:
-- Small, contained (adds 1 bool field + 1 config line + 2 conditional
-  checks)
-- Platform-specific — only affects i.MX7ULP; all other platforms are
-  unchanged
-- Low regression risk — it simply disables a feature that was causing
-  problems on this specific platform
-- Reviewed by Peng Fan (NXP maintainer)
-
-**Fits stable criteria**:
-- Fixes a real bug (suspend failure)
-- Small and contained
-- Obviously correct
-- Platform-specific quirk/workaround — this falls squarely in the
-  "hardware quirk" category
-
-**Dependencies**: Requires commit 892cb524ae8a ("mailbox: imx: fix
-wakeup failure from freeze mode") to be present. That commit is in
-v5.18+, so applicable stable trees (6.1.y, 6.6.y, 6.12.y) all have it.
-
-**Risk**: Very low. The change only affects the i.MX7ULP platform and
-simply skips suspend flag logic that was causing problems. If the bool
-field is false (default for all other platforms), behavior is completely
-unchanged.
-
-### Verification
-
-- **git show 892cb524ae8a**: Verified that commit introduced the
-  `priv->suspend` flag and `pm_system_wakeup()` call in `imx_mu_isr()`,
-  confirming the mechanism described in the commit message.
-- **git tag --contains 892cb524ae8a**: Confirmed the prerequisite commit
-  is in v5.18+, so all active LTS trees (6.1.y, 6.6.y, 6.12.y) contain
-  it.
-- **git tag --contains 673b570825ace**: Confirmed the commit under
-  review is post-v6.19 (in development tree).
-- **Grep for `priv->suspend`**: Verified the ISR check at line 564 —
-  when suspend flag is set and MU IRQ fires, `pm_system_wakeup()` is
-  called, which aborts suspend.
-- **Code review of diff**: Verified only i.MX7ULP config gets
-  `skip_suspend_flag = true`; all other platform configs default to
-  false (zero-initialized), so behavior is unchanged for non-i.MX7ULP
-  platforms.
-- **Unverified**: Cannot directly verify user reports of suspend failure
-  on i.MX7ULP, but the commit message clearly describes the mechanism
-  and the author is from NXP (the SoC vendor).
-
-### Conclusion
-
-This is a platform-specific hardware workaround that fixes suspend
-failure on i.MX7ULP. It's small, well-scoped, reviewed by the subsystem
-maintainer, and has essentially zero regression risk for other
-platforms. It fits the "hardware quirk" exception category for stable
-backports. The prerequisite commit exists in all active LTS trees.
-
-**YES**
-
- drivers/mailbox/imx-mailbox.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
-index 6778afc64a048..003f9236c35e0 100644
---- a/drivers/mailbox/imx-mailbox.c
-+++ b/drivers/mailbox/imx-mailbox.c
-@@ -122,6 +122,7 @@ struct imx_mu_dcfg {
- 	u32	xRR;		/* Receive Register0 */
- 	u32	xSR[IMX_MU_xSR_MAX];	/* Status Registers */
- 	u32	xCR[IMX_MU_xCR_MAX];	/* Control Registers */
-+	bool	skip_suspend_flag;
- };
+--- linux-next-20251210.orig/drivers/i3c/master/svc-i3c-master.c
++++ linux-next-20251210/drivers/i3c/master/svc-i3c-master.c
+@@ -344,7 +344,7 @@ static void svc_i3c_master_reset_fifo_tr
+ {
+ 	u32 reg;
  
- #define IMX_MU_xSR_GIPn(type, x) (type & IMX_MU_V2 ? BIT(x) : BIT(28 + (3 - (x))))
-@@ -988,6 +989,7 @@ static const struct imx_mu_dcfg imx_mu_cfg_imx7ulp = {
- 	.xRR	= 0x40,
- 	.xSR	= {0x60, 0x60, 0x60, 0x60},
- 	.xCR	= {0x64, 0x64, 0x64, 0x64, 0x64},
-+	.skip_suspend_flag = true,
- };
+-	/* Set RX and TX tigger levels, flush FIFOs */
++	/* Set RX and TX trigger levels, flush FIFOs */
+ 	reg = SVC_I3C_MDATACTRL_FLUSHTB |
+ 	      SVC_I3C_MDATACTRL_FLUSHRB |
+ 	      SVC_I3C_MDATACTRL_UNLOCK_TRIG |
+@@ -572,7 +572,7 @@ static void svc_i3c_master_ibi_isr(struc
+ 	 * 3. IBI isr writes an AutoIBI request.
+ 	 * 4. The controller will not start AutoIBI process because SDA is not low.
+ 	 * 5. IBIWON polling times out.
+-	 * 6. Controller reamins in AutoIBI state and doesn't accept EmitStop request.
++	 * 6. Controller remains in AutoIBI state and doesn't accept EmitStop request.
+ 	 */
+ 	writel(SVC_I3C_MCTRL_REQUEST_START_ADDR |
+ 	       SVC_I3C_MCTRL_TYPE_I3C |
+@@ -774,7 +774,7 @@ static int svc_i3c_master_bus_init(struc
  
- static const struct imx_mu_dcfg imx_mu_cfg_imx8ulp = {
-@@ -1071,7 +1073,8 @@ static int __maybe_unused imx_mu_suspend_noirq(struct device *dev)
- 			priv->xcr[i] = imx_mu_read(priv, priv->dcfg->xCR[i]);
- 	}
- 
--	priv->suspend = true;
-+	if (!priv->dcfg->skip_suspend_flag)
-+		priv->suspend = true;
- 
- 	return 0;
- }
-@@ -1094,7 +1097,8 @@ static int __maybe_unused imx_mu_resume_noirq(struct device *dev)
- 			imx_mu_write(priv, priv->xcr[i], priv->dcfg->xCR[i]);
- 	}
- 
--	priv->suspend = false;
-+	if (!priv->dcfg->skip_suspend_flag)
-+		priv->suspend = false;
- 
- 	return 0;
- }
--- 
-2.51.0
-
+ 	/*
+ 	 * Using I3C Open-Drain mode, target is 4.17MHz/240ns with a
+-	 * duty-cycle tuned so that high levels are filetered out by
++	 * duty-cycle tuned so that high levels are filtered out by
+ 	 * the 50ns filter (target being 40ns).
+ 	 */
+ 	odhpp = 1;
