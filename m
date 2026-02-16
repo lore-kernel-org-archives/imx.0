@@ -1,121 +1,173 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D2632A3F3;
-	Mon, 16 Feb 2026 20:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C0D20C490
+	for <imx@lists.linux.dev>; Mon, 16 Feb 2026 21:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771274980; cv=none; b=VYMKslEP/ECqJe5OzAGjOFYttuZpqQvkMAMFa7jPyNuc7LDwO6Uu5gS7RmiHc1x6jt/mtlfviAwGkfs+BZjYQ2F0F2dOvSfwS5M8HVcEliu0sEbtlxp8Pq6OFZqimirSY3nxouGJaTWY5a5FTiKNgQVVdwVDmo4Ud+OPTb/uwzk=
+	t=1771278601; cv=none; b=lpntt/+wyN71RvM3RPycfW+4QYR2wyqTu8GIT7N/JKuU2iafvSoZJV1ltgau5CIQ4JC7N7TAw9DNW+AnRCpaMD2RYqpgTjkUYrgeTxrnz5motBAx3ePgC9fFS+bmd2Xj9nwn/LWLdYKu22O5j1ysbmg8oZ4BVZovlmdu2plCCbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771274980; c=relaxed/simple;
-	bh=kLdYIq6SYQsYCiukpbRLt9V5tJH5I16KOa7znlZAcK4=;
+	s=arc-20240116; t=1771278601; c=relaxed/simple;
+	bh=X7iyLA+sAb/MtqhemZwlRUFvcpysyG0I01LLdMoI5To=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lfm2v1tkrso1uOHJki534H6ExYeO0mu3OZKpekHFJib1ZVAFEDUnOOJpZWicXOJDZv+/QtBvQm3+AAXVLMYsMeiw5//gltJFfDd3TloA4j+03tqCWSydfPEMpj3Lol2fkVeNVy7UgGUHS0mvdVBL7nLtrSjzEbM/6XK2t4Q08qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mcc2se07; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mcc2se07"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771274979; x=1802810979;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kLdYIq6SYQsYCiukpbRLt9V5tJH5I16KOa7znlZAcK4=;
-  b=mcc2se077cPMsZ3HMSKLmIQrXrm/GoKZ2WJYAQxMct9QhNsBzokTBiUl
-   cctKPu37Aq2oWW8Zl4A6jPLAdVOKGb0lEhaVfVgC9iRmDFU9ObR9OTVlq
-   v6twpLtrAmoyb0126L+VEOI0oCIlmYKMhy8DK7fjh9g3B3ux4scITSkGZ
-   STHbCn3KL0XseDy6Yd//eD65opgmZZaNh0afPuhsWMSzwyqlSuby3LAMU
-   lz72tx2gOZPTWHa/XUQkXIs+iMDonrUeB+4yWSKQfh2UnO5J2SCnQVRAf
-   hP8TBfBQhG/3GCGIxyuK7hA7s6FFMXi2mwtFGp2UBlfOdzSyPFuwO1qQP
-   A==;
-X-CSE-ConnectionGUID: N5Z+9SYiTNGkwq8f6jtr8Q==
-X-CSE-MsgGUID: /KHC48IxRcuC8aOaBVg6RA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="72399697"
-X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; 
-   d="scan'208";a="72399697"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2026 12:49:38 -0800
-X-CSE-ConnectionGUID: nahu5ToeTQ2eopx+iuUz6g==
-X-CSE-MsgGUID: ogXU4/T0T/uV3GV2X23/Xw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,294,1763452800"; 
-   d="scan'208";a="218232127"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 16 Feb 2026 12:49:32 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vs5X8-000000010H2-0ZIN;
-	Mon, 16 Feb 2026 20:49:30 +0000
-Date: Tue, 17 Feb 2026 04:48:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: Larisa Grigore <larisa.grigore@oss.nxp.com>, gregkh@linuxfoundation.org,
-	jirislaby@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, sumit.semwal@linaro.org,
-	christian.koenig@amd.com, chester62515@gmail.com,
-	cosmin.stoica@nxp.com, adrian.nitu@freescale.com,
-	stefan-gabriel.mirea@nxp.com, Mihaela.Martinas@freescale.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, s32@nxp.com, imx@lists.linux.dev,
-	clizzi@redhat.com, aruizrui@redhat.com, eballetb@redhat.com,
-	echanude@redhat.com, jkangas@redhat.com,
-	Larisa Grigore <larisa.grigore@oss.nxp.com>,
-	Radu Pirea <radu-nicolae.pirea@nxp.com>,
-	Phu Luu An <phu.luuan@nxp.com>, Js Ha <js.ha@nxp.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
-Subject: Re: [PATCH 12/13] serial: linflexuart: Add DMA support
-Message-ID: <202602170428.SOCWu0Wb-lkp@intel.com>
-References: <20260216150205.212318-13-larisa.grigore@oss.nxp.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=r6LhMxDq6mUE9HwZUmGBirRJDRU0ThL/I23dX/opbw46wk50+md+E9gmFqeFaq56qsREUA6yYTBT0qEzo7WWmEiqmGlkvhmbxvCCdBBJYd7lAxDd0czcX+DvWu9EbOgPbZmE6k42t64Nb0zadmDjrOE0wNDvTqmhx/cKZorW3wI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vs6TQ-00034A-LG; Mon, 16 Feb 2026 22:49:44 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vs6TO-0018BD-0n;
+	Mon, 16 Feb 2026 22:49:43 +0100
+Received: from pengutronix.de (p54b15bf8.dip0.t-ipconnect.de [84.177.91.248])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 4494D4EA95C;
+	Mon, 16 Feb 2026 21:49:43 +0000 (UTC)
+Date: Mon, 16 Feb 2026 22:49:42 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>, 
+	Jingoo Han <jingoohan1@gmail.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] PCI: layerscape: Allow to compile as module
+Message-ID: <20260216-mahogany-caterpillar-of-certainty-38b0bc-mkl@pengutronix.de>
+X-AI: stop_reason: "refusal"
+References: <20260112-v6-19-topic-layerscape-pcie-v1-1-1cd863fce50e@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="acibql3y7ovkmvyd"
 Content-Disposition: inline
-In-Reply-To: <20260216150205.212318-13-larisa.grigore@oss.nxp.com>
-
-Hi Larisa,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on tty/tty-testing]
-[also build test WARNING on tty/tty-next tty/tty-linus usb/usb-testing usb/usb-next usb/usb-linus robh/for-next linus/master v6.19 next-20260216]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Larisa-Grigore/serial-linflexuart-Fix-locking-in-set_termios/20260216-231403
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git tty-testing
-patch link:    https://lore.kernel.org/r/20260216150205.212318-13-larisa.grigore%40oss.nxp.com
-patch subject: [PATCH 12/13] serial: linflexuart: Add DMA support
-config: parisc-randconfig-001-20260217 (https://download.01.org/0day-ci/archive/20260217/202602170428.SOCWu0Wb-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260217/202602170428.SOCWu0Wb-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602170428.SOCWu0Wb-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/tty/serial/fsl_linflexuart.c:205:13: warning: 'linflex_console_putchar' declared 'static' but never defined [-Wunused-function]
-     205 | static void linflex_console_putchar(struct uart_port *port, unsigned char ch);
-         |             ^~~~~~~~~~~~~~~~~~~~~~~
+In-Reply-To: <20260112-v6-19-topic-layerscape-pcie-v1-1-1cd863fce50e@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
 
-vim +205 drivers/tty/serial/fsl_linflexuart.c
+--acibql3y7ovkmvyd
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] PCI: layerscape: Allow to compile as module
+MIME-Version: 1.0
 
-   202	
-   203	static void linflex_dma_tx_complete(void *arg);
-   204	static void linflex_dma_rx_complete(void *arg);
- > 205	static void linflex_console_putchar(struct uart_port *port, unsigned char ch);
-   206	
+Hello,
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Bjorn can you take this patch?
+
+On 12.01.2026 20:17:11, Steffen Trumtrar wrote:
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+>
+> The layerscape pcie host controller could also be compiled as module.
+> Add the necessary infrastructure to allow building as module instead of
+> only as builtin driver.
+>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  drivers/pci/controller/dwc/Kconfig          |  2 +-
+>  drivers/pci/controller/dwc/pci-layerscape.c | 16 +++++++++++++++-
+>  2 files changed, 16 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/pci/controller/dwc/Kconfig b/drivers/pci/controller/=
+dwc/Kconfig
+> index 519b59422b479..abfa4a6e62c25 100644
+> --- a/drivers/pci/controller/dwc/Kconfig
+> +++ b/drivers/pci/controller/dwc/Kconfig
+> @@ -121,7 +121,7 @@ config PCI_IMX6_EP
+>  	  DesignWare core functions to implement the driver.
+>
+>  config PCI_LAYERSCAPE
+> -	bool "Freescale Layerscape PCIe controller (host mode)"
+> +	tristate "Freescale Layerscape PCIe controller (host mode)"
+>  	depends on OF && (ARM || ARCH_LAYERSCAPE || COMPILE_TEST)
+>  	depends on PCI_MSI
+>  	select PCIE_DW_HOST
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/co=
+ntroller/dwc/pci-layerscape.c
+> index a44b5c256d6e2..14d6ac4fc53fd 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape.c
+> @@ -13,6 +13,7 @@
+>  #include <linux/interrupt.h>
+>  #include <linux/init.h>
+>  #include <linux/iopoll.h>
+> +#include <linux/module.h>
+>  #include <linux/of_pci.h>
+>  #include <linux/of_platform.h>
+>  #include <linux/of_address.h>
+> @@ -403,8 +404,16 @@ static const struct dev_pm_ops ls_pcie_pm_ops =3D {
+>  	NOIRQ_SYSTEM_SLEEP_PM_OPS(ls_pcie_suspend_noirq, ls_pcie_resume_noirq)
+>  };
+>
+> +static void ls_pcie_remove(struct platform_device *pdev)
+> +{
+> +	struct ls_pcie *pcie =3D platform_get_drvdata(pdev);
+> +
+> +	dw_pcie_host_deinit(&pcie->pci->pp);
+> +}
+> +
+>  static struct platform_driver ls_pcie_driver =3D {
+>  	.probe =3D ls_pcie_probe,
+> +	.remove =3D ls_pcie_remove,
+>  	.driver =3D {
+>  		.name =3D "layerscape-pcie",
+>  		.of_match_table =3D ls_pcie_of_match,
+> @@ -412,4 +421,9 @@ static struct platform_driver ls_pcie_driver =3D {
+>  		.pm =3D &ls_pcie_pm_ops,
+>  	},
+>  };
+> -builtin_platform_driver(ls_pcie_driver);
+> +module_platform_driver(ls_pcie_driver);
+> +
+> +MODULE_AUTHOR("Minghuan Lian <Minghuan.Lian@freescale.com>");
+> +MODULE_DESCRIPTION("Layerscape PCIe host controller driver");
+> +MODULE_LICENSE("GPL");
+> +MODULE_DEVICE_TABLE(of, ls_pcie_of_match);
+>
+> ---
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> change-id: 20260112-v6-19-topic-layerscape-pcie-9d10b6542139
+>
+> Best regards,
+> --
+> Steffen Trumtrar <s.trumtrar@pengutronix.de>
+>
+>
+
+--
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--acibql3y7ovkmvyd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCaZOQ9AAKCRDMOmT6rpmt
+0tf7AQDXPoIYzicQeUoeqqXVPMOTQI08mSHXaelfkvE716R56wD/VkqipmoUM5T7
+7U7qJt9nMZfyJSOd/p5RdeiJ92XG2AI=
+=hliI
+-----END PGP SIGNATURE-----
+
+--acibql3y7ovkmvyd--
