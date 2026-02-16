@@ -1,140 +1,88 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DABD2550D7
-	for <imx@lists.linux.dev>; Mon, 16 Feb 2026 09:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87661279355
+	for <imx@lists.linux.dev>; Mon, 16 Feb 2026 09:15:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771232633; cv=none; b=EGjf2KeKD8s7J2xsEJWe79o7LE6xq+IEedjNcxq2IcYy9kb0a2AyoSvgKwKa652r/n68a1K51yrYfBOSV1TeDEwQEctLehDgl6sYi2dq2NSPAgZNr8+dpUp+YPywFOvPtN0pPgZKPnL0buxbLKnotmh9D5pLBvQMbxfFREgsEqM=
+	t=1771233355; cv=none; b=dehiSNGVl1D/v06HgrsmMvz78Lxpp5QlZWXLTK2tM/ZDFlU1GBj1aRzjB416ZPjMWLtLCR93sl8Z0qJ9TymhSn6DJ14I3x2VVLVj5ODErgN01RfelF4xr1zXtsTFCwg9icBG6Qqr5eeVuXdj/nHyJGEcbZ4tqUe6gKdLBvQKtjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771232633; c=relaxed/simple;
-	bh=egyZNlVxOKps8c+uu05c+5nto53qJQKuDG16P33A490=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bwdj5wsfmZfV0OP9Smzohw9UsZm4BI5LpyAZrb1UswYMWZ4qGyBfMpjahOWYm/ZSMvG6qIiIFk5xSgtcn7vHs5QI/mV0uA0TtB3VHFj/YDm1wM3ZX2GpB/iN/wLZKlEygPoHINCQOoAWDMpzIfSnd7mBl9cPMukL3aQvPD1N954=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=PxqPN+nj; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1771233355; c=relaxed/simple;
+	bh=ED2YUrgR3fUpKS5N5MTTY/5C1z/L+l27tJt652Ptmzw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IfFSnlHe9IPLJyRLmlWjtDCNAcx74fuuIuXTGyFfNru/e6Nt1RGzIE09m9RQN8IP8lAyIEn5EkotbDXFZHLQXS4EiyD1Nt/5HbgBjLCFJ+4ZEe9M3Ww3Wu9Qz5Grsuh6gG1B/s6oRhSZYNE0EmoD8Bqxm087ONgxh+ZAm0YhxIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=RtTkEGuj; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="PxqPN+nj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1771232630;
-	bh=egyZNlVxOKps8c+uu05c+5nto53qJQKuDG16P33A490=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PxqPN+nj4/xel63axAnL+UABpl+Xy88tyLF+48q1YvuE0TXc+PQjjdnay1cPPdYqY
-	 XTLhup0YYmEnJtlUWYS8IweQuB16PAAGl1tR0HAhPoYEQlmU3C48xpUpt0aMa4eHNN
-	 bWYLMV9Jdf/tk56we0+mJVDhn8zMt/f1z5jMCdRCfOsU+BD1/+OtXN2uCfwZd3y52A
-	 4xiwjrNMvfiziZLcfoNDbGWbq8CpMOkhJ+wJVXejKBjiX20RYc5+T4PNkvJhKJqxLI
-	 +KRR8Kp5tchL5SO5PMhfPoRbbZwSYgdenbCxtWRqzOqUceNNjeyNhImTI6mY7LwD2A
-	 OYKJHXuvfkL6A==
-Received: from [10.40.0.100] (185-67-175-126.lampert.tv [185.67.175.126])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: mriesch)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id B5D7717E137B;
-	Mon, 16 Feb 2026 10:03:49 +0100 (CET)
-Message-ID: <75abd9eb-6141-46cc-b2d7-0c4d112e2ca5@collabora.com>
-Date: Mon, 16 Feb 2026 10:03:49 +0100
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="RtTkEGuj"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A803710F92A;
+	Mon, 16 Feb 2026 10:15:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1771233345;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=g4AIIiBe36X2z3LOIRK+Vwb+RbLMX+Bv8FiLhmH2gBE=;
+	b=RtTkEGuj30T2QAkNRjGj9G7748vaxxo69xLc4S1ERGfxnReWhdk3K/DBX0dgR/+5IFfD3a
+	iqW5q4osY0GiMk4/4oEtRxqZxRiBz2E1Ew0BhD1DOl8rACqCPwFuX/IGWlX1Cz2/7eVZ0K
+	psliEc0uS3aS5ROgcy6F/3IFUKutW+2aZKhBLVPKKavsrPApDIg3XHVQIoSAfGOHBCOgGR
+	hTeSM1qT5AaaH+fYQJMKuLWNplROtfFtNa1vBTPrTpZeWUpM3HHB65xwYtk49KS3pcKlZ7
+	QmVrGy954drflHE+A3j5cNlZy5phFEJPlKgdGZEMaMMgQLKFuo00keSYRa3Yuw==
+Date: Mon, 16 Feb 2026 10:15:38 +0100
+From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukma@nabladev.com>
+To: Peng Fan <peng.fan@oss.nxp.com>, Abel Vesa <abelvesa@kernel.org>
+Cc: Peng Fan <peng.fan@nxp.com>, Michael Turquette
+ <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v4 0/4] clk: vf610: Add clocks to support MTIP L2 switch
+Message-ID: <20260216101538.0aeae484@wsk>
+In-Reply-To: <aYAEM8pcuumly+hc@shlinux89>
+References: <20260129095442.1646748-1-lukma@nabladev.com>
+	<aYAEM8pcuumly+hc@shlinux89>
+Organization: Nabla
+X-Mailer: Claws Mail 3.19.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/6] media: synopsys: csi2rx: implement
- .get_frame_desc() callback
-To: Frank Li <Frank.Li@nxp.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, imx@lists.linux.dev
-References: <20260213-imx93-dw-csi2-v2-0-8be6039f44c6@nxp.com>
- <20260213-imx93-dw-csi2-v2-3-8be6039f44c6@nxp.com>
-Content-Language: en-US
-From: Michael Riesch <michael.riesch@collabora.com>
-In-Reply-To: <20260213-imx93-dw-csi2-v2-3-8be6039f44c6@nxp.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Frank,
+Dear all,
 
-On 2/13/26 21:25, Frank Li wrote:
-> Implement the .get_frame_desc() callback to fetch information from the
-> remote endpoint.
+> On Thu, Jan 29, 2026 at 10:54:38AM +0100, Lukasz Majewski wrote:
+> >This patch series:
+> >- cleans up clocks' setup on vf610 by moving VF610_CLK_END define
+> >  to driver code
+> >- introduces support for several clocks required by MTIP switch IP
+> >block
+> >
+> >Lukasz Majewski (4):
+> >  clk: vf610: Move VF610_CLK_END define to clk-vf610 driver
+> >  dt-bindings: clock: vf610: Drop VF610_CLK_END define
+> >  dt-bindings: clock: vf610: Add definitions for MTIP L2 switch
+> >  clk: vf610: Add support for the Ethernet switch clocks  
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> change in v2
-> - add csi2rx in subject
-> ---
->  drivers/media/platform/synopsys/dw-mipi-csi2rx.c | 25 ++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
-> 
-> diff --git a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> index f03fe01280013bf9a832433c6b06dab691bf8f4c..a6d251ca5ad14c5138a6fd0202a970460e64c68f 100644
-> --- a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> +++ b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> @@ -68,6 +68,8 @@ struct dw_mipi_csi2rx_device {
->  	struct v4l2_async_notifier notifier;
->  	struct v4l2_subdev sd;
->  
-> +	struct v4l2_subdev *remote_source;
-> +
->  	enum v4l2_mbus_type bus_type;
->  	u32 lanes_num;
->  };
-> @@ -429,10 +431,31 @@ static int dw_mipi_csi2rx_disable_streams(struct v4l2_subdev *sd,
->  	return ret;
->  }
->  
-> +static int
-> +dw_mipi_csi2rx_get_frame_desc(struct v4l2_subdev *sd, unsigned int pad,
-> +			      struct v4l2_mbus_frame_desc *fd)
-> +{
-> +	struct dw_mipi_csi2rx_device *csi2 = to_csi2(sd);
-> +	struct media_pad *remote_pad;
-> +
-> +	if (!csi2->remote_source)
-> +		return -ENODEV;
-> +
-> +	remote_pad = media_pad_remote_pad_unique(&csi2->pads[DW_MIPI_CSI2RX_PAD_SINK]);
-> +	if (IS_ERR(remote_pad)) {
-> +		dev_err(csi2->dev, "can't get source pad of %s (%pe)\n",
-> +			csi2->remote_source->name, remote_pad);
-> +		return PTR_ERR(remote_pad);
-> +	}
+> Reviewed-by: Peng Fan <peng.fan@nxp.com>
 
-You can get the remote subdevice with
-	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
-instead of storing it in the device data.
+Gentle ping regarding this patch set...
 
+-- 
 Best regards,
-Michael
 
-> +	return v4l2_subdev_call(csi2->remote_source, pad, get_frame_desc,
-> +				remote_pad->index, fd);
-> +}
-> +
->  static const struct v4l2_subdev_pad_ops dw_mipi_csi2rx_pad_ops = {
->  	.enum_mbus_code = dw_mipi_csi2rx_enum_mbus_code,
->  	.get_fmt = v4l2_subdev_get_fmt,
->  	.set_fmt = dw_mipi_csi2rx_set_fmt,
-> +	.get_frame_desc = dw_mipi_csi2rx_get_frame_desc,
->  	.set_routing = dw_mipi_csi2rx_set_routing,
->  	.enable_streams = dw_mipi_csi2rx_enable_streams,
->  	.disable_streams = dw_mipi_csi2rx_disable_streams,
-> @@ -485,6 +508,8 @@ static int dw_mipi_csi2rx_notifier_bound(struct v4l2_async_notifier *notifier,
->  		return ret;
->  	}
->  
-> +	csi2->remote_source = sd;
-> +
->  	return 0;
->  }
->  
-> 
+Lukasz Majewski
 
+--
+Nabla Software Engineering GmbH
+HRB 40522 Augsburg
+Phone: +49 821 45592596
+E-Mail: office@nabladev.com
+Managing Director : Stefano Babic
