@@ -1,101 +1,186 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0130320CD9;
-	Tue, 17 Feb 2026 20:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30612271450;
+	Tue, 17 Feb 2026 21:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771361002; cv=none; b=l7x+Ysf+SWzDXfNxiKT+wQ4lOfaSjiHqcJxjamcyaMP3V7qIg0uuNFHGLwuOra6yCn7Si8CELfQiog33E/akj46jyjWhNTDVyDdP3y+N239zGmkngiL1TFmCWtAE0kOryKbvKP27YDZ+dj5H9GuiBgMrvmfq9MMd2Z9oTRZQ+R0=
+	t=1771363660; cv=none; b=mQPTpkrlOSZi2zuVGFa8PcDCLUSYtv9aDitTCAPuCqb1CRKlOexhCgrZDK1bFSbLzssSaw7apvwhatIUwnIorZpSDn7qRbBowABC0X+RXUOJINu4es3lH+tEsFDtQluKPOZe+xxYh86rUDQ/O3g+WcjU2snVapZeJ6gSfU0NBFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771361002; c=relaxed/simple;
-	bh=xaNCkDVtXSVSu+DM8ddQ+7wjR8XHf3WU4okD6GFRVsQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RA/Cjt6fbWzC3C3UAM+f2T26bQ6fjTMPo2nS2ZfGT/6mDUTzBblAo80lxF9Z9dWG+Vo1yIqAuovs47CTQdF/76OrQ7X88WMwRiJAJkb6uDpEh6ny2HYQZ0j+cHH8/eb7VyaNyBalqysSbD8oRyYojxgf/fRSrqCsPGrLjnPsK5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=i+51ALd7; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1771363660; c=relaxed/simple;
+	bh=qNdMPHb96ahPcc/FeBg2GRFGtCGsjvYyDufUCB6E5Ho=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mUlmMdEoq5LZf8EtJS16x30JIQyljvqDeFFX4I/I8OjpeNQJWLHdurtuVo7t5zD/6qe4T8mRRKVW6Ncp61+J5ptMs2hl9AROASv8KBVnhQe5p+w36BbZQh6/VVNi61NQMW0rGr78X7qAU4KrCr4ANgt7soTLOCUKH94ZFvXTbRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZ+UvMiP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="i+51ALd7"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Wlg17Kj/wYC+KcEPPN4TByd+mHs/UERfyc2emJHo0cc=; b=i+51ALd7gisJbAn50Bu8vXVC2/
-	6y0UR/QhvSBWqdN5tqTwjnWh5VLwllXxHc1VMKEV2+7QaixWChmNc11D8uLCRe3d5pnlvoktWIiBO
-	Bhjo6abQHteJe+8zpmGcNFYmWALs3T6RDzSXKCs80cQ5wTIbAq3kp/DdZl3Uqx00rfu8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vsRue-007geQ-Nf; Tue, 17 Feb 2026 21:43:16 +0100
-Date: Tue, 17 Feb 2026 21:43:16 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Stefano Radaelli <stefano.r@variscite.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZ+UvMiP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434F1C19425;
+	Tue, 17 Feb 2026 21:27:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771363659;
+	bh=qNdMPHb96ahPcc/FeBg2GRFGtCGsjvYyDufUCB6E5Ho=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HZ+UvMiPz7y6Wfbsg5SRIDmn+CDWDBq3WDUKPIFYPfrmgDfHjQ7tHHZYvBxWMJPsB
+	 c/PD0XktfttvuKxs+WJlENDTRUP8uJUYdvpCSgzgXvAFzPfb1B0rOK7s3NAuWfL7OM
+	 PDp3ZyEtU/CFNB0WzAkeTuWX12cuXeEN250jg2mphb4+0a1UOP9URjezN/AWag41Q0
+	 roA2SWQuJbNqVoB7NWp23sapC1Dm1S393B1Qqcg98UxhXC9rBuSiwP8ArfAEkppYLo
+	 6sj4h5uEjhL1y9XxP5IphJD17zDcGD3gK+k+4gZR6DYzXHK6BRPDR/D2adYfFq7DLA
+	 JcoQPGf6g5NxA==
+From: Niklas Cassel <cassel@kernel.org>
+To: Manivannan Sadhasivam <mani@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
 	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH v1 03/11] arm64: dts: freescale: imx8mm-var-som: Update
- FEC support with MaxLinear PHY
-Message-ID: <fceeda41-66cc-4bb2-ab53-d4b1ec25348a@lunn.ch>
-References: <cover.1771353301.git.stefano.r@variscite.com>
- <3b984b93a43a07bc9c4f6414a08a3a0f45daaaa8.1771353301.git.stefano.r@variscite.com>
- <31f30651-7c99-42cb-9e27-e4806529d137@lunn.ch>
- <aZTCGH1rKWdvYg5-@Lord-Beerus.station>
+	Fabio Estevam <festevam@gmail.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>,
+	Roy Zang <roy.zang@nxp.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Jingoo Han <jingoohan1@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Srikanth Thokala <srikanth.thokala@intel.com>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Christian Bruel <christian.bruel@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Manikanta Maddireddy <mmaddireddy@nvidia.com>,
+	Koichiro Den <den@valinux.co.jp>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	linux-pci@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@axis.com,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-tegra@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 0/9] PCI: endpoint differentiate between disabled and reserved BARs
+Date: Tue, 17 Feb 2026 22:27:06 +0100
+Message-ID: <20260217212707.2450423-11-cassel@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZTCGH1rKWdvYg5-@Lord-Beerus.station>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4061; i=cassel@kernel.org; h=from:subject; bh=qNdMPHb96ahPcc/FeBg2GRFGtCGsjvYyDufUCB6E5Ho=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGDKn3NV+yyX95M1+T1HDqxGLE9Ks+cRk7p+2exh8+ZCxj pjCijkGHaUsDGJcDLJiiiy+P1z2F3e7TzmueMcGZg4rE8gQBi5OAZhI+E5GhguPHi2/Xb/y3DHB AIf6hAuN+VPmNN0usdy7vDq+avG27bYM/5S3MBlKbLy8vGB/jfcrobctfIebJrjrnqw9slP/atc TAw4A
+X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 17, 2026 at 08:31:36PM +0100, Stefano Radaelli wrote:
-> Hi Andrew!
-> > 
-> > I don't think you say this explicitly anywhere, so i will ask. The PHY
-> > is on the SOM? The carrier just has magnetics and the RJ45?
-> 
-> Yes, the Ethernet PHY (MXL86110) is physically mounted on the VAR-SOM.
+Hello all,
 
-O.K. so far.
+This series is written in response to the patch series from
+Manikanta Maddireddy that was posted here:
+https://lore.kernel.org/linux-pci/291dab65-3fa6-4fc8-90a2-4ad608ca015c@nvidia.com/T/#t
 
-> All RGMII signals, MDIO and the LED outputs are routed to the SOM
-> board-to-board connector. The carrier board only provides the magnetics
-> and the RJ45 connector.
+The reasons why I decided to post this a new series was because the series
+above:
 
-And here you loose me. RGMII is between the MAC and the PHY. The PHY
-is on the SOM, so there is no need for RGMII to leave the SOM.
+1) Adds PCI device and vendor specific code to
+drivers/misc/pci_endpoint_test.c. We've worked hard to make sure that
+device specific quirks/limitations are communicated via the Capabilities
+register, so let's do the same for reserved BARs.
 
-MDIO is can understand going to the carrier, because there can be
-other devices on the bus, such as an Ethernet switch.
+2) My review comment which suggested to convert all uses of BAR_RESERVED
+to BAR_DISABLED (except for pci-keystone.c) was ignored.
 
-You say the LEDs are not on the SOM. So they should not be listed in
-the .dtsi file for the SOM. It could be the RJ45 is a cheap one,
-without LEDs. The colours will depend on the RJ45 socket. It could be
-a single LED is connected to the front panel, which is typical of STB
-etc. So the LEDs are a board property, not a SOM property.
+3) Koichiro has posted a series that allows an EPC driver to define exactly
+which hardware backed resources are provided in a BAR_RESERVED BAR. Yet,
+this nice improvement was not incorporated. (While Mankata was part of the
+discussion, he was not CC:d on the patches that actually implemented this.)
 
-> > >   Two LEDs are defined to match the VAR-SOM carrier design:
-> > >     * LED@0: Yellow, netdev trigger.
-> > >     * LED@1: Green, netdev trigger.
-> > 
-> > Where are the LEDs? You say "carrier design", so are they on the
-> > carrier? The DT properties should then be in the .dts file for the
-> > carrier.
-> >
-> 
-> The LED signals are driven directly by the PHY and originate on the SOM.
-> They are exposed on the SOM connector and are typically routed straight
-> to the RJ45 integrated LEDs on the carrier.
+4) The selftests should return skip instead of silent success for a
+reserved BAR.
 
-The problem here is 'typically', not absolutely required, otherwise
-the magic smoke will escape making the box useless.
+5) As Mankata points out, but did not address, BAR_RESERVED is quite
+ambiguous, so it is better to introduce a new BAR_64BIT_UPPER to more
+clearly mark the upper part of a 64-bit BAR as this, rather than reuse
+BAR_RESERVED.
 
-	Andrew
+6) It is possible to remove all the dw_pcie_ep_reset_bar() calls in the
+DWC based glue drivers and move it to DWC common code.
+
+
+Because of all of the above, I thought it was just easier to post a series
+with all of the above addressed, as it seemed easier to just show what I
+meant rather than to try to explain things with words.
+
+The thing that is missing is to add a patch for pcie-tegra194.c which
+converts the BARs to BAR_RESERVED.
+Please see patch "PCI: dw-rockchip: Describe RK3588 BAR4 DMA ctrl window"
+and do something similar to pcie-tegra194.c.
+
+If we are missing some resources (right now we only have
+PCI_EPC_BAR_RSVD_DMA_CTRL_MMIO), then I think we should simple add that
+(e.g. PCI_EPC_BAR_RSVD_MSIX).
+
+Mankata, it would be nice if you could test this series, and if you could
+provide a pcie-tegra194.c patch that adds the sizes of the eDMA regs +
+MSI-X table in BAR_2 and BAR_4.
+
+
+Kind regards,
+Niklas
+
+
+Koichiro Den (2):
+  PCI: endpoint: Describe reserved subregions within BARs
+  PCI: dw-rockchip: Describe RK3588 BAR4 DMA ctrl window
+
+Niklas Cassel (7):
+  PCI: endpoint: Introduce pci_epc_bar_type BAR_64BIT_UPPER
+  PCI: endpoint: Introduce pci_epc_bar_type BAR_DISABLED
+  PCI: dwc: Replace BAR_RESERVED with BAR_DISABLED in glue drivers
+  PCI: dwc: Disable BARs in common code instead of in each glue driver
+  PCI: endpoint: pci-epf-test: Advertise reserved BARs
+  misc: pci_endpoint_test: Give reserved BARs a distinct error code
+  selftests: pci_endpoint: Skip reserved BARs
+
+ drivers/misc/pci_endpoint_test.c              | 32 ++++++++++++-
+ drivers/pci/controller/dwc/pci-dra7xx.c       |  4 --
+ drivers/pci/controller/dwc/pci-imx6.c         | 22 +++------
+ .../pci/controller/dwc/pci-layerscape-ep.c    |  8 +---
+ drivers/pci/controller/dwc/pcie-artpec6.c     |  4 --
+ .../pci/controller/dwc/pcie-designware-ep.c   | 24 ++++++++++
+ .../pci/controller/dwc/pcie-designware-plat.c | 10 -----
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c | 19 +++++---
+ drivers/pci/controller/dwc/pcie-keembay.c     |  6 +--
+ drivers/pci/controller/dwc/pcie-qcom-ep.c     | 14 +-----
+ drivers/pci/controller/dwc/pcie-rcar-gen4.c   | 16 ++-----
+ drivers/pci/controller/dwc/pcie-stm32-ep.c    | 10 -----
+ drivers/pci/controller/dwc/pcie-tegra194.c    | 20 +++------
+ drivers/pci/controller/dwc/pcie-uniphier-ep.c | 24 +++-------
+ drivers/pci/controller/pcie-rcar-ep.c         |  6 +--
+ drivers/pci/endpoint/functions/pci-epf-test.c | 24 ++++++++++
+ drivers/pci/endpoint/pci-epc-core.c           |  6 ++-
+ include/linux/pci-epc.h                       | 45 +++++++++++++++++--
+ .../pci_endpoint/pci_endpoint_test.c          |  4 ++
+ 19 files changed, 173 insertions(+), 125 deletions(-)
+
+-- 
+2.53.0
+
