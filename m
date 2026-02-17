@@ -1,66 +1,35 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E042637648D
-	for <imx@lists.linux.dev>; Tue, 17 Feb 2026 19:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0130320CD9;
+	Tue, 17 Feb 2026 20:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771357345; cv=none; b=IKjtkzMyuJ9xqBGagJdEKn5ud0qndjmuTqc4cqcbmvqvbdsFVckW8Y9u4NuSqq+qaDnL/GrJJWEYHeYdujlMn2DF+KVgNYUFNjJ56lM9Gkc9/m02FCCYSUpgIWbcG2N7QeoUKhWtNQRI4Ep/AOooNpGiHrtSdo2/JcFLQBhT6Hw=
+	t=1771361002; cv=none; b=l7x+Ysf+SWzDXfNxiKT+wQ4lOfaSjiHqcJxjamcyaMP3V7qIg0uuNFHGLwuOra6yCn7Si8CELfQiog33E/akj46jyjWhNTDVyDdP3y+N239zGmkngiL1TFmCWtAE0kOryKbvKP27YDZ+dj5H9GuiBgMrvmfq9MMd2Z9oTRZQ+R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771357345; c=relaxed/simple;
-	bh=IOYrMdtCWt/Op0E8/4vt5NFeKKiy+7VItgEUcwnuASw=;
+	s=arc-20240116; t=1771361002; c=relaxed/simple;
+	bh=xaNCkDVtXSVSu+DM8ddQ+7wjR8XHf3WU4okD6GFRVsQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r0K+DFna4KFJMunXdi5FSczhRZ8wgpYo+QiAGrUsGAkCbMqvLp7bC/tP/KuKTfWQzJpzwzyYhPbdoBeIn42FuPhPTcvtx+xVsMNXaAikLtFiIHP0qpj5ok39PlU1Er6i6/h3Pyhrr8lySCqnUnH03mlGci1bYiAHY81tj/2UaXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TLlpJBPv; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=RA/Cjt6fbWzC3C3UAM+f2T26bQ6fjTMPo2nS2ZfGT/6mDUTzBblAo80lxF9Z9dWG+Vo1yIqAuovs47CTQdF/76OrQ7X88WMwRiJAJkb6uDpEh6ny2HYQZ0j+cHH8/eb7VyaNyBalqysSbD8oRyYojxgf/fRSrqCsPGrLjnPsK5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=i+51ALd7; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TLlpJBPv"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-481188b7760so38843705e9.0
-        for <imx@lists.linux.dev>; Tue, 17 Feb 2026 11:42:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771357342; x=1771962142; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YUeQvtbcJRcoGuHYQKHXUnAyTG1dJFRZwd94Z/kLSnc=;
-        b=TLlpJBPvd6EJowdAnDeP40ZCHsUJK+Q6Hhp+uKbHXzak2jXO+nGaF+3JnDzUzC1zUk
-         fT/RKc5Q4xgCsbOXk3bzFliPT4gNtAuNimlPWI6OJHzZ3v0W336w4P/j1MIrDgD8GyXr
-         1Un0rZfsIu9xbdp4xg7PdyRzii6g3JN39aAMcza8DH3iJTBEBJAG/u6k2/2ttb8MdBAn
-         EDmX4KvH7FMKlaOAWudWnIEGxoikoB9zulmm7+at9xcU3qw9rCWOenYbzIx5jQPpINLs
-         MT1+6TAxKbF3NE/72GwVOdqRWiXibKTlptLFCdXbZf1au+Y01h26nwY6lJps2MMY+IbU
-         QGmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771357342; x=1771962142;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YUeQvtbcJRcoGuHYQKHXUnAyTG1dJFRZwd94Z/kLSnc=;
-        b=UjAM5rt1+gYwvqCPCg2ezLqQEnEU827Bol+7jLZaapFO9dedPGOB4DB1TWdfnYXRJC
-         /g5P0stFx9GYQM6Qz4KxnjhO3RyRnhtXEvCdHwB0s/MD8UAA7LZcojP+xJKUILuGyZwU
-         kYL0X1q898dRYKUkiwnyTde2S14ZxWqPENjr2WiEZ2RQ0hfjyVIAOHp6fYIitWfezNhS
-         X1oQPb0awal9GP2hv6XdSvv2BK4cARbLSoERu/7paPH0kRApmtLHXf4E8riDS6z9dgWh
-         D77j7iMWAO8/7uNdtUCKHtDmQgOs+LUAJBlun+PYC/K1s26ikk5omMyKpo8CDyNCVM50
-         nvwg==
-X-Forwarded-Encrypted: i=1; AJvYcCW8aDvLU/Swjc8Z4yTrCyPXozRWQvJlr7gW3+pvvsdN42CdJkhgUIy0GOo0+tFUsjQdwUA=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yyyr5Gt34BpmQRxzzPgqkf/utuXZjrbInKMZ/OqGk3BnGajxgHz
-	Df5DxEikHmhiBNN7Wziu++Z1Oo88psZQABrogVc3ADiyPCNpfajOgEXe
-X-Gm-Gg: AZuq6aIEdEynYFVAwpSOxrKZ/VPUDDGOUv9fOcv3YIq5OUGacrIx8jmCTjEtiFukUjF
-	F978n5+mNbxmCY4cBXikvBEiPOiLHQeeNsQp/T0VEwvzb69mC1VpnO+85iI+gCYM73PxKqoBSm5
-	RbAM8LXYi2JMJ+wA+bzhc3QXry3wjDaU8ngNXknnwOPyioETiRUMVY6Nvm9zRve1QC5fY/KYCLu
-	rro5VB+XJjbbM9grSxRymMnPEVBMM/BNiFWOVfwvdieXfdcN95XCoLpwpjYBLxxg9Bj2RpEEuKa
-	RUVckxJe+LNx9alo28ZtPs8/IVq7MOjSDpaOffOxmZiZFhNcvtvU0LtfN5MFESMT6C+i2sRL+CO
-	Hk/vkDbTde0/2Ok1viLtpKBs1tM3dISfg3z2g3DbqlU32LgvM0XvKVco/b5fq0DyD+WMd0EwB6/
-	uuX/uzRxgdg9rBJDv0C3bgefCtNNfuayt7Xd67VLxFRJhpPcRBv2l+xOa13i5nj2kxU9rFyXY1a
-	NTbL92do8N5JttvV0OwZcvp2MebkJ2JQfg/kWi9ChYCxiY=
-X-Received: by 2002:a05:6000:2586:b0:432:dc1f:6982 with SMTP id ffacd0b85a97d-437978cd85emr24996379f8f.16.1771357342109;
-        Tue, 17 Feb 2026 11:42:22 -0800 (PST)
-Received: from Lord-Beerus.station (net-188-152-100-94.cust.vodafonedsl.it. [188.152.100.94])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796acf5b9sm34488531f8f.34.2026.02.17.11.42.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Feb 2026 11:42:21 -0800 (PST)
-Date: Tue, 17 Feb 2026 20:42:19 +0100
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: Fabio Estevam <festevam@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="i+51ALd7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Wlg17Kj/wYC+KcEPPN4TByd+mHs/UERfyc2emJHo0cc=; b=i+51ALd7gisJbAn50Bu8vXVC2/
+	6y0UR/QhvSBWqdN5tqTwjnWh5VLwllXxHc1VMKEV2+7QaixWChmNc11D8uLCRe3d5pnlvoktWIiBO
+	Bhjo6abQHteJe+8zpmGcNFYmWALs3T6RDzSXKCs80cQ5wTIbAq3kp/DdZl3Uqx00rfu8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vsRue-007geQ-Nf; Tue, 17 Feb 2026 21:43:16 +0100
+Date: Tue, 17 Feb 2026 21:43:16 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Stefano Radaelli <stefano.radaelli21@gmail.com>
 Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	Stefano Radaelli <stefano.r@variscite.com>,
@@ -68,13 +37,15 @@ Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: Re: [PATCH v1 06/11] arm64: dts: freescale: imx8mm-var-som: Update
- WiFi/BT configuration
-Message-ID: <aZTEm8nUUVcKZH0v@Lord-Beerus.station>
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Subject: Re: [PATCH v1 03/11] arm64: dts: freescale: imx8mm-var-som: Update
+ FEC support with MaxLinear PHY
+Message-ID: <fceeda41-66cc-4bb2-ab53-d4b1ec25348a@lunn.ch>
 References: <cover.1771353301.git.stefano.r@variscite.com>
- <3e79c4d806b8b8024b71bc99c36b09a2fbb90a65.1771353301.git.stefano.r@variscite.com>
- <CAOMZO5CAb8738HdH49WcY-JPTzQ90n4Bnmyn96_3jfw47mxOug@mail.gmail.com>
+ <3b984b93a43a07bc9c4f6414a08a3a0f45daaaa8.1771353301.git.stefano.r@variscite.com>
+ <31f30651-7c99-42cb-9e27-e4806529d137@lunn.ch>
+ <aZTCGH1rKWdvYg5-@Lord-Beerus.station>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -83,32 +54,48 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAOMZO5CAb8738HdH49WcY-JPTzQ90n4Bnmyn96_3jfw47mxOug@mail.gmail.com>
+In-Reply-To: <aZTCGH1rKWdvYg5-@Lord-Beerus.station>
 
-Hi Fabio!
-
-On Tue, Feb 17, 2026 at 03:59:33PM -0300, Fabio Estevam wrote:
+On Tue, Feb 17, 2026 at 08:31:36PM +0100, Stefano Radaelli wrote:
+> Hi Andrew!
+> > 
+> > I don't think you say this explicitly anywhere, so i will ask. The PHY
+> > is on the SOM? The carrier just has magnetics and the RJ45?
 > 
-> What about users who still have boards with the Broadcom Wi-Fi chip?
+> Yes, the Ethernet PHY (MXL86110) is physically mounted on the VAR-SOM.
+
+O.K. so far.
+
+> All RGMII signals, MDIO and the LED outputs are routed to the SOM
+> board-to-board connector. The carrier board only provides the magnetics
+> and the RJ45 connector.
+
+And here you loose me. RGMII is between the MAC and the PHY. The PHY
+is on the SOM, so there is no need for RGMII to leave the SOM.
+
+MDIO is can understand going to the carrier, because there can be
+other devices on the bus, such as an Ethernet switch.
+
+You say the LEDs are not on the SOM. So they should not be listed in
+the .dtsi file for the SOM. It could be the RJ45 is a cheap one,
+without LEDs. The colours will depend on the RJ45 socket. It could be
+a single LED is connected to the front panel, which is typical of STB
+etc. So the LEDs are a board property, not a SOM property.
+
+> > >   Two LEDs are defined to match the VAR-SOM carrier design:
+> > >     * LED@0: Yellow, netdev trigger.
+> > >     * LED@1: Green, netdev trigger.
+> > 
+> > Where are the LEDs? You say "carrier design", so are they on the
+> > carrier? The DT properties should then be in the .dts file for the
+> > carrier.
+> >
 > 
-> Will Wifi on the old boards stop working?
+> The LED signals are driven directly by the PHY and originate on the SOM.
+> They are exposed on the SOM connector and are typically routed straight
+> to the RJ45 integrated LEDs on the carrier.
 
-The Broadcom-based WiFi module was used on earlier revisions of the
-VAR-SOM-MX8MM. That hardware revision is no longer in production and
-is not available for new orders. All currently manufactured and shipped
-VAR-SOM-MX8MM modules integrate the NXP IW61x instead.
+The problem here is 'typically', not absolutely required, otherwise
+the magic smoke will escape making the box useless.
 
-Since the wireless module is soldered on the SOM and not selectable via
-the carrier board, the device tree must reflect the hardware that is
-actually present on the module. This series aligns mainline with the
-current production revision of the SOM.
-
-Customers using older hardware revisions still have access to the
-corresponding device tree descriptions in earlier kernel versions.
-Upstream support is being aligned with the actively produced hardware.
-
-The same applies to the Ethernet PHY update included in this series,
-which reflects the PHY used on the current (and future) SOM revision.
-
-Best regards,
-Stefano
+	Andrew
