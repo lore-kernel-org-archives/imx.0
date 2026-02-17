@@ -1,51 +1,51 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7BE36C0DC
-	for <imx@lists.linux.dev>; Tue, 17 Feb 2026 13:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AA236B079
+	for <imx@lists.linux.dev>; Tue, 17 Feb 2026 13:54:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771336479; cv=none; b=MnyI1psuK2lxamaZwXQPMAAzmaPExEPCytNA+I16QUPys8+n3EAfhbnCsIgK95BZzsTvl1SuVoT0tF9t6LP9jVGhurKf08+VHgk8J8t7U3rPxGFAoSFa+pCHYyXXmuXWtch9lqqMNAjHk70YPPg5UtE5DTmh9BYe2qihEH1bZnI=
+	t=1771336485; cv=none; b=KIqfMs74YxJxyMiF89iqSJL1ANtYoNhjL13AueWxPrEvp1To9esaImxGqwyu2o/2DXHJL0y46jOioPIqH6DfAGLM/t3DtjgMA0DnpTdvKWq6aVveKrJHMalqMoetWogqcRUFjnp7Zq2qAozhxOSsHBaV7qi96HRZKXh15oIUc5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771336479; c=relaxed/simple;
-	bh=Pr5awygYQuh7iIYR86mN2Hg8u0umXUaK380MImSUGhc=;
+	s=arc-20240116; t=1771336485; c=relaxed/simple;
+	bh=2d5txlEQAOFqOdUpFD2V/T7FiaZwo8ubtwK2yRi/b6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZVvdjgTisQXlzIPmgNlSEN2NoLPw8TsKXHaqyF3VLhS5Z/Xv4aZ+z+WNgGhaWJoKlpNRe22MygHNzUWIV8Is52hClb7zzrbiVCVN/y+lGBS1ehHLjM0FJ4Q9GOUsTQbTHA8iQTmKkHeQXlx0EbZ2g1EwJgG9YCTQHw3Z/UHkdiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kP9XGTI4; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=QTu4WaXKGpCIQ/OQ6UDZGisdKI2tDO1jxt0hNzh4rMBKng/XtR+L+xHbuRcW3GBDJgSZfSbZxdbpIknivDm8UsGpI0UE+yROUpp5kT9DWGZwDjpSkjmyT3Ag11WpILrcCdxktFLWlMxkTPDdQgRjf1sXfjSuCwggcFDo2xwJ1YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gb8ZRwvg; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kP9XGTI4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gb8ZRwvg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771336478; x=1802872478;
+  t=1771336483; x=1802872483;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Pr5awygYQuh7iIYR86mN2Hg8u0umXUaK380MImSUGhc=;
-  b=kP9XGTI4CxG2JBD9WHjlIoXo2vWgpTd5fwa9n07oYnY8DVU784sHtSwp
-   g0xKAuxKj+MuHny9q+zAuNBmHFnjYTUqoBcTX3U7K/AnffwW8edt2Chkp
-   cKUv6EtQLYOhVsAw/j3af7Zon49nWzTUxsp9i+7I9RbfoL8POM9+s+7k1
-   Kp+JGqH0nHyoGmvKoPUmwSFD2HhPTSP826jR64wLRDQgs0P0NhItrTeqr
-   +YNDl0GLvNCA3kf4jXYyQL2u6aALPqEXz6BYR40tukCVJkYMBEq6bykLq
-   onjbEmu/kwJC8u2w4721UXwTHdERVAIQ7Yrc089h4UciiBue1+GeAH0dD
-   A==;
-X-CSE-ConnectionGUID: d+QB4zD6Tyi4LVlAEk07dQ==
-X-CSE-MsgGUID: AzctY7ISRTeVpqe2FzjuyQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="72292098"
+  bh=2d5txlEQAOFqOdUpFD2V/T7FiaZwo8ubtwK2yRi/b6A=;
+  b=gb8ZRwvg66PRXNIFbd5D00g2r56TPGhPIt/i5mnXPgjww950uRuYyoYF
+   hojzdZnefRxLO5wc1wOmEuc8yHVhk6etHrnguFqgIw7sUfK5smZj+m8e4
+   mSHR3pGnJaKjyKOdcsoTF/LKNP12NyGPFc1rVeAZmTtG659TNjiF1FTZQ
+   qvECA3XN65coogHK+S1g3cGpnkm7Vy6HUnWkIVRvuSj7eMTFZhxdfqSCT
+   XQbOnqimNsg7QcL98yTRUGzMWDcWJW5mNLAEFkeUDwKKtuQEqgUU6gCRN
+   gHvbptMwyWscbrk32Ik+sJOTvvvaBFFH01q0whnCg+86WdYVu3lF4L2f7
+   Q==;
+X-CSE-ConnectionGUID: xPhAiLaBQuOavC8tBkL0dw==
+X-CSE-MsgGUID: 84yaDzzKRoC4SJjIDuOQeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="72470397"
 X-IronPort-AV: E=Sophos;i="6.21,296,1763452800"; 
-   d="scan'208";a="72292098"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 05:54:38 -0800
-X-CSE-ConnectionGUID: QvCnT4lATxuWcPafI9z0ng==
-X-CSE-MsgGUID: RsN5tqERQBCTRUqxEnvzHA==
+   d="scan'208";a="72470397"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 05:54:43 -0800
+X-CSE-ConnectionGUID: 7jK9LTbDQAiS33Lvxj6GIw==
+X-CSE-MsgGUID: EO9s9ieDT9eSHMx5SL8p1w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,296,1763452800"; 
-   d="scan'208";a="218421153"
+   d="scan'208";a="213904603"
 Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa005.fm.intel.com with ESMTP; 17 Feb 2026 05:54:30 -0800
+  by orviesa008.jf.intel.com with ESMTP; 17 Feb 2026 05:54:34 -0800
 Received: from lincoln.igk.intel.com (lincoln.igk.intel.com [10.102.21.235])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 7127B28795;
-	Tue, 17 Feb 2026 13:54:27 +0000 (GMT)
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 173E128791;
+	Tue, 17 Feb 2026 13:54:31 +0000 (GMT)
 From: Larysa Zaremba <larysa.zaremba@intel.com>
 To: bpf@vger.kernel.org
 Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
@@ -91,9 +91,9 @@ Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
 	linux-kselftest@vger.kernel.org,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Dragos Tatulea <dtatulea@nvidia.com>
-Subject: [PATCH bpf v3 2/9] xsk: introduce helper to determine rxq->frag_size
-Date: Tue, 17 Feb 2026 14:24:40 +0100
-Message-ID: <20260217132450.1936200-3-larysa.zaremba@intel.com>
+Subject: [PATCH bpf v3 3/9] ice: fix rxq info registering in mbuf packets
+Date: Tue, 17 Feb 2026 14:24:41 +0100
+Message-ID: <20260217132450.1936200-4-larysa.zaremba@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260217132450.1936200-1-larysa.zaremba@intel.com>
 References: <20260217132450.1936200-1-larysa.zaremba@intel.com>
@@ -105,46 +105,101 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-rxq->frag_size is basically a step between consecutive strictly aligned
-frames. In ZC mode, chunk size fits exactly, but if chunks are unaligned,
-there is no safe way to determine accessible space to grow tailroom.
+XDP RxQ info contains frag_size, which depends on the MTU. This makes the
+old way of registering RxQ info before calculating new buffer sizes
+invalid. Currently, it leads to frag_size being outdated, making it
+sometimes impossible to grow tailroom in a mbuf packet. E.g. fragments are
+actually 3K+, but frag size is still as if MTU was 1500.
 
-Report frag_size to be zero, if chunks are unaligned, chunk_size otherwise.
+Always register new XDP RxQ info after reconfiguring memory pools.
 
-Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
+Fixes: 93f53db9f9dc ("ice: switch to Page Pool")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
 ---
- include/net/xdp_sock_drv.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_base.c | 26 ++++++-----------------
+ drivers/net/ethernet/intel/ice/ice_txrx.c |  3 ++-
+ drivers/net/ethernet/intel/ice/ice_xsk.c  |  3 +++
+ 3 files changed, 12 insertions(+), 20 deletions(-)
 
-diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
-index 242e34f771cc..09d972f4bd60 100644
---- a/include/net/xdp_sock_drv.h
-+++ b/include/net/xdp_sock_drv.h
-@@ -51,6 +51,11 @@ static inline u32 xsk_pool_get_rx_frame_size(struct xsk_buff_pool *pool)
- 	return xsk_pool_get_chunk_size(pool) - xsk_pool_get_headroom(pool);
- }
+diff --git a/drivers/net/ethernet/intel/ice/ice_base.c b/drivers/net/ethernet/intel/ice/ice_base.c
+index eadb1e3d12b3..511d803cf0a4 100644
+--- a/drivers/net/ethernet/intel/ice/ice_base.c
++++ b/drivers/net/ethernet/intel/ice/ice_base.c
+@@ -663,23 +663,12 @@ static int ice_vsi_cfg_rxq(struct ice_rx_ring *ring)
+ 	int err;
  
-+static inline u32 xsk_pool_get_rx_frag_step(struct xsk_buff_pool *pool)
-+{
-+	return pool->unaligned ? 0 : xsk_pool_get_chunk_size(pool);
-+}
-+
- static inline void xsk_pool_set_rxq_info(struct xsk_buff_pool *pool,
- 					 struct xdp_rxq_info *rxq)
- {
-@@ -337,6 +342,11 @@ static inline u32 xsk_pool_get_rx_frame_size(struct xsk_buff_pool *pool)
- 	return 0;
- }
+ 	if (ring->vsi->type == ICE_VSI_PF || ring->vsi->type == ICE_VSI_SF) {
+-		if (!xdp_rxq_info_is_reg(&ring->xdp_rxq)) {
+-			err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
+-						 ring->q_index,
+-						 ring->q_vector->napi.napi_id,
+-						 ring->rx_buf_len);
+-			if (err)
+-				return err;
+-		}
+-
+ 		ice_rx_xsk_pool(ring);
+ 		err = ice_realloc_rx_xdp_bufs(ring, ring->xsk_pool);
+ 		if (err)
+ 			return err;
  
-+static inline u32 xsk_pool_get_rx_frag_step(struct xsk_buff_pool *pool)
-+{
-+	return 0;
-+}
+ 		if (ring->xsk_pool) {
+-			xdp_rxq_info_unreg(&ring->xdp_rxq);
+-
+ 			rx_buf_len =
+ 				xsk_pool_get_rx_frame_size(ring->xsk_pool);
+ 			err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
+@@ -702,14 +691,13 @@ static int ice_vsi_cfg_rxq(struct ice_rx_ring *ring)
+ 			if (err)
+ 				return err;
+ 
+-			if (!xdp_rxq_info_is_reg(&ring->xdp_rxq)) {
+-				err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
+-							 ring->q_index,
+-							 ring->q_vector->napi.napi_id,
+-							 ring->rx_buf_len);
+-				if (err)
+-					goto err_destroy_fq;
+-			}
++			err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
++						 ring->q_index,
++						 ring->q_vector->napi.napi_id,
++						 ring->rx_buf_len);
++			if (err)
++				goto err_destroy_fq;
 +
- static inline void xsk_pool_set_rxq_info(struct xsk_buff_pool *pool,
- 					 struct xdp_rxq_info *rxq)
- {
+ 			xdp_rxq_info_attach_page_pool(&ring->xdp_rxq,
+ 						      ring->pp);
+ 		}
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index ad76768a4232..4c294ab7df30 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -560,7 +560,8 @@ void ice_clean_rx_ring(struct ice_rx_ring *rx_ring)
+ 			i = 0;
+ 	}
+ 
+-	if (rx_ring->vsi->type == ICE_VSI_PF &&
++	if ((rx_ring->vsi->type == ICE_VSI_PF ||
++	     rx_ring->vsi->type == ICE_VSI_SF) &&
+ 	    xdp_rxq_info_is_reg(&rx_ring->xdp_rxq)) {
+ 		xdp_rxq_info_detach_mem_model(&rx_ring->xdp_rxq);
+ 		xdp_rxq_info_unreg(&rx_ring->xdp_rxq);
+diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
+index 989ff1fd9110..102631398af3 100644
+--- a/drivers/net/ethernet/intel/ice/ice_xsk.c
++++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
+@@ -900,6 +900,9 @@ void ice_xsk_clean_rx_ring(struct ice_rx_ring *rx_ring)
+ 	u16 ntc = rx_ring->next_to_clean;
+ 	u16 ntu = rx_ring->next_to_use;
+ 
++	if (xdp_rxq_info_is_reg(&rx_ring->xdp_rxq))
++		xdp_rxq_info_unreg(&rx_ring->xdp_rxq);
++
+ 	while (ntc != ntu) {
+ 		struct xdp_buff *xdp = *ice_xdp_buf(rx_ring, ntc);
+ 
 -- 
 2.52.0
 
