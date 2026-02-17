@@ -1,62 +1,64 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18B2280A29
-	for <imx@lists.linux.dev>; Tue, 17 Feb 2026 18:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C470F280A29
+	for <imx@lists.linux.dev>; Tue, 17 Feb 2026 18:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771353790; cv=none; b=Cs3IcON+QK5qfPyNP5VHC5+v6GT0UFhZFCxT0PE9CxaOL7hsZeKx2wif4AQsh7jfWHIyPyPb+HxWROgRAcR7oyr1i65jF8ByQ2SnwiiczthcXMSeInMDj7hHlt/RdykIp7oWc26GlEpbVXoXWSOde/77a9fIlp9S4fLkAeoA1JM=
+	t=1771353798; cv=none; b=Kdos6dZJifBJKtFYJhjJ3bIWGqMUtILmzS9eczcMQ086yzZl9DHkf0r/3+q9WzOYHY+yuNVYBms9tREKaOBZ6sha7AX0mI2Dd2R7sZ4Z+2umsrWfMOcnHAvHr1i9EDnwiL1s/2+YY2GJcyC/zSYgdAhNc06CiUObyHzvLOBamIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771353790; c=relaxed/simple;
-	bh=a9/Bv9gPGrnch3FbaQtYnf60T9suaENPANAWBPUwioA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MVuogNbA4s3gIW35eJXCzzo9xr1u/54mu+rjF5EJNihnjsXPbeb9p8j9cSYak/LA7p8kZytTuvYkyljYkoSPefwxTPg2nRvk7c1CEX04uuVtlOlcNMFF8rPwnLBvBAOljIc36qsgBgGomvrESr87+WEDd6UqBPOtrrKth+h7Va0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XhN6RT51; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1771353798; c=relaxed/simple;
+	bh=tbhuD1aUMxOGf9FSw16T/Sjkh7LYSFUT2z4kZfsbikQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CzXvb2oZUoYT4o4Ck5sL0YdXmDJwd7NZEwWtmEsWKuW/zyf4ccGbnMoC3RWK38Qp6B6CCLjGE+xcIqWotNg/CwNlO2cYVI06G1p8qw3rwl6lFtkFK7wwcPmAXrx1Y0S2zGsXGqTzqhLIHq0ickykReeyEHMmq7fZL+zre/TwBKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pkh25DGv; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XhN6RT51"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48069a48629so42754595e9.0
-        for <imx@lists.linux.dev>; Tue, 17 Feb 2026 10:43:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pkh25DGv"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4836f363ad2so50844945e9.1
+        for <imx@lists.linux.dev>; Tue, 17 Feb 2026 10:43:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771353787; x=1771958587; darn=lists.linux.dev;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bS7q9PPDCy2sDXPZ247pIc5Aq5NHhY6a0if5OF26uog=;
-        b=XhN6RT51zdmoPyVlcbL0wJV5Pact7lAzNnm3D0YpcNdGYFSKVTKVq3DkelaNM0emEU
-         KqkVMJNX7xM+n3ovQWrah6g5mUEnddWjN0J3lbAtWF4Fs2dxfu8LvM6SZGoE62GNopui
-         WUJAh7uqGxsxqjmcuH0KDFrQ4GXz0nycTa+EoAkkjM1HJFIZtyM81ubxmIcWzC1MJ6AZ
-         e5iMiaKK9g0VXJO6rQCJxZ7gTVZo5vRuZtkKJ07QVr0g+RcVhzHwmsbNQQ66moXOQCRY
-         q+hXnybIMBjEMXz4KwNWYJjikD9PA8FoS98cSOFDNT3VQgem7Cws/oPR+oEmhyW1sQgg
-         lUIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771353787; x=1771958587;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1771353795; x=1771958595; darn=lists.linux.dev;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bS7q9PPDCy2sDXPZ247pIc5Aq5NHhY6a0if5OF26uog=;
-        b=slfnRCD/CWXyEA9DdmU8lbPByi2XWt4j2DLNtwXkDSRnXGZZgXpjJf7Yt2wyLBE6N9
-         NBfNpN/cs41WWpvkxptwv/2lIkk+G27E+ES+5m3zcFDr/frXxZ44Nxc41DrZK2VQ+SWL
-         Jn0DPa8lRbU/Wjxvvw+lxWCrFvho4bhFjL5/9/rbODBH0AkPw5cHzo82h5xE9PevEuAD
-         6Jx1v26hZy5wTTfADaMd/4sKqUjGZD8XKVeKO4AAUO5RamQ9tta8i6IrAsnYNFkqcP14
-         TWqnCGAgwxeY8KOFoMBnL3HJYZN6Zgpjz8nMWB5v5OcHYBSKksW+VwrG3sdw7aEBIB2J
-         63cQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWola6FTflQWoUsHE0tqF2MQm9dkAbbTXzP5bvR8/Jn36n0BUKcuS91H/zIsY/PhReWknU=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw7D691nXHpnGDNyzpZeqQJiZAKD+phZoXjI/Gm6+7W3VhI9x3x
-	jF93p0gxIF6cFM3ILAaj+ap/lb1laIj5WXJLg8f4O33ugko9T+Ac2vcH
-X-Gm-Gg: AZuq6aJUy1FbprgTaaPrB7KtEd/ZTRl4VgXdIqcBHxRh6BL3DbCrSlX7fN5pLuYuWyr
-	rYH9962fVimRsLF759z6sw1r4YJTDy0mcwxnzvEtuSVm9fMSqX/s5P53cFLaXOLsp+1sxCxhkj+
-	z01te50nnoVWoB2QuYtmsIOK0Eg/5me3ApWvYU0wz9fdPZ0X2RsNgoXIt9quZkTtYnFWfXBhfsA
-	fM41yNIF3D12B6rUFQfn3rVfGFj07Fwf1FSNebH3B+LfIQSOuyq1XePVo46oK3sIoN2OckSk7Lr
-	P35y3vGwoxwjgfuKD2J4Au0iJDaxO1v6VQlZz7dW9lNWcsf8Fm7lnVc7Igu7biRq9eLlopkVP1C
-	M1/jucfitprbNIiyhcXMmvDrGVQtG/LJrgGKhiI4Hen08Lu9IWE6/YiTZZyKihko8Pd/E/Wb7Tu
-	WXx84/thU4PRHJW3q0Qa8rcGV7yg7Zsc90KfJtfJeZIGD/pjeCqpnDE2oB7mzpzWp7QSYdDdRWn
-	zYNL1xmPB+egRt8FOE1DUN7eCdlFTLwzyiKVnAc
-X-Received: by 2002:a05:600c:1986:b0:483:71f9:37f3 with SMTP id 5b1f17b1804b1-483739ff8cdmr266953675e9.1.1771353786638;
-        Tue, 17 Feb 2026 10:43:06 -0800 (PST)
+        bh=X8l290N01INdEGDV46RV1qE15ZPFcOjbnuocE2MfqwE=;
+        b=Pkh25DGvGqciFfgeU0n6HEY0F3WsGJ6GiHXrAvopeLo5Jj/gG3JNglak21hXkgZ7c4
+         YVjW9YF6PKJCBC8gMiB/RwP6FJpxgT8YAqwenlKz+D6qquMayWfU98Zzh31QXvCbOOMd
+         w+R0I56t0ujCa9IiBLcFXhbT6nYLJpeItkuseRcou8k0Dou4Xen+yZii51LFm7EacE3Z
+         xYR6MZeY6NG+1ijxSTHWqtIAOH7YliZd6+BTVcqn+/1UP01hcf/5bsKdL2AX0antlr2q
+         icaMwX+FitBRidmA1eZ1TwAMH6iN5K4HncBav8XnFiWaDpbKxoqCGcSxbxk/j2sVn2wf
+         vgFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771353795; x=1771958595;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=X8l290N01INdEGDV46RV1qE15ZPFcOjbnuocE2MfqwE=;
+        b=fRO99UYD9hEvOtqmRnlZjsppx6PpqZtyxKO2CUII/mENu9cEUsdflb8GRSyq8NanSh
+         eAvrzSiTrntTGO+maUUBzttMXNOqX0pAc/19kwtqszeOeKkGnblcghPKVPALMu6fWJCa
+         grIHTUETwnASBLvgPCL6MGpt4V8XOfUGyo7jXaDOof3cqnv7Ja6Y8Kr3uOP1rslGsZsp
+         8AH7TLOOf07E8Pou6tL8T17i6MSKvbo6k1ls4XOXg7BMuvvxSrznIx5yiJao+XvNwesl
+         Zeyzfi2e6zfdc5FPlFBa7x+5dW6CTgc3r2MtMc5yAstqG72dY0VdOoSHf0gqDEC5Liad
+         w2fw==
+X-Forwarded-Encrypted: i=1; AJvYcCW4zbs8GfdHP9YSNHsoR/DdCM3cB6SQTrglOOmzw8lvUnTONcDSIYYxy0kBbdvhMnhWimM=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yznuxtin3bvItS8nlOFCxnHPgfCIYkCtV7BqyTwaxlE9iub9QFm
+	p0V7UcUO6eXNy9SOquXKaoIzyfBqBzPU3hQvnWxnp+WD8D4/lufnf7yz
+X-Gm-Gg: AZuq6aIJncn/4M9CHUF3N4rrQRjrEXWPKYaR3HaWWb8Kvy4nONzzgvbzgKWdIlOnNc0
+	v/DB1a8JuV3xK4fRm/pVYdCG7vVqLagzgJWJqaZ85ynolCfxJuHkIabhZY+GEDjOkzDz9yal9C0
+	lG2/OZ2UsHlgAXiR03sN9RMNdA/aSSGWa4todO6ZAwEeD8bDk3AFl1p05wUD3w2vyXQnjwkEt1L
+	CyiTfVcAmkDw0loizxwmkouUu7dMIJed5tbeZ81WSWQfiEWBpHaH4TULx3Ah7UbqtTzBZ+Ei/FA
+	4XognkZWdaJ/P0flUIpd+mxulZBG2IZ9RQxKWY1AJsSgMBdGAD8P5CJWvwfBlDooEUFTduGgg/B
+	iG3JWm90nbe7YJsp5cxyvGwDZSA50WIjc3GMiWtae5yg/pfi7pfdCggFdQCacaF1EcB4Or8dk2g
+	d+s2cjQXbYTbVq0cxNyIeVGkPRB+G0kgi6OaEhg3t+/a+bmBSEFB7RDeuDvxIkcvnqwTzBI+VSY
+	4x/hBLmxQt7nJsSE7BW51e3JOcxYSozsj7oRoJUTwoAI1M7C0Q=
+X-Received: by 2002:a05:600c:3f0c:b0:47d:5e02:14e5 with SMTP id 5b1f17b1804b1-483739ffa1emr277408295e9.5.1771353794807;
+        Tue, 17 Feb 2026 10:43:14 -0800 (PST)
 Received: from Lord-Beerus.station (net-188-152-100-94.cust.vodafonedsl.it. [188.152.100.94])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4839731d7c3sm1096185e9.18.2026.02.17.10.43.05
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4839731d7c3sm1096185e9.18.2026.02.17.10.43.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Feb 2026 10:43:06 -0800 (PST)
+        Tue, 17 Feb 2026 10:43:14 -0800 (PST)
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 X-Google-Original-From: Stefano Radaelli <stefano.r@variscite.com>
 To: linux-kernel@vger.kernel.org,
@@ -71,10 +73,12 @@ Cc: Stefano Radaelli <stefano.r@variscite.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH v1 00/11] arm64: dts: freescale: imx8mm-var-som: Align SOM and Symphony DTSs
-Date: Tue, 17 Feb 2026 19:42:34 +0100
-Message-ID: <cover.1771353301.git.stefano.r@variscite.com>
+Subject: [PATCH v1 01/11] arm64: dts: imx8mm-var-som: Move UART4 description to Symphony carrier
+Date: Tue, 17 Feb 2026 19:42:35 +0100
+Message-ID: <0ccc14794f4c77dc10b1d900597374061cd65919.1771353301.git.stefano.r@variscite.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1771353301.git.stefano.r@variscite.com>
+References: <cover.1771353301.git.stefano.r@variscite.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -83,38 +87,106 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series aligns the i.MX8MM VAR-SOM and VAR-SOM Symphony device
-trees with the latest hardware revisions.
+From: Stefano Radaelli <stefano.r@variscite.com>
 
-The update consolidates the device tree descriptions to better reflect
-the actual hardware partitioning between the SOM and the carrier board.
-Nodes describing peripherals physically present on the SOM are kept in
-the SOM dtsi, while carrier-specific components are described in the
-corresponding carrier dts.
+The VAR-SOM-MX8MM module does not provide an onboard debug console.
+UART4 is routed and exposed only on the Symphony carrier board, while
+custom carrier designs may choose to expose a different UART.
 
-The changes were tested on the latest VAR-SOM and Symphony hardware
-revision.
+Move the UART4 node from the SOM device tree to the
+imx8mm-var-som-symphony.dts, keeping the SOM dtsi limited to hardware
+present on the module itself.
 
-Stefano Radaelli (11):
-  arm64: dts: imx8mm-var-som: Move UART4 description to Symphony carrier
-  arm64: dts: freescale: imx8mm-var-som: Align fsl,pins tables
-  arm64: dts: freescale: imx8mm-var-som: Update FEC support with
-    MaxLinear PHY
-  arm64: dts: imx8mm-var-som: Add support for WM8904 audio codec
-  arm64: dts: freescale: imx8mm-var-som: Add MCP251xFD CAN controller
-  arm64: dts: freescale: imx8mm-var-som: Update WiFi/BT configuration
-  arm64: dts: imx8mm-var-som-symphony: Move USB configuration from SOM
-  arm64: dts: imx8mm-var-som-symphony: Enable uSD on USDHC2
-  arm64: dts: imx8mm-var-som-symphony: Add TPM2 support
-  arm64: dts: freescale: imx8mm-var-som-symphony: Enable I2C4
-  arm64: dts: imx8mm-var-som-symphony: Enable PCIe
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+---
+ .../dts/freescale/imx8mm-var-som-symphony.dts  | 18 ++++++++++++++++++
+ .../boot/dts/freescale/imx8mm-var-som.dtsi     | 18 ------------------
+ 2 files changed, 18 insertions(+), 18 deletions(-)
 
- .../dts/freescale/imx8mm-var-som-symphony.dts | 206 ++++++++-
- .../boot/dts/freescale/imx8mm-var-som.dtsi    | 420 ++++++++++++------
- 2 files changed, 474 insertions(+), 152 deletions(-)
-
-
-base-commit: 37a93dd5c49b5fda807fd204edf2547c3493319c
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
+index affbc67c2ef6..819707e6f3bf 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som-symphony.dts
+@@ -11,6 +11,10 @@ / {
+ 	model = "Variscite VAR-SOM-MX8MM Symphony evaluation board";
+ 	compatible = "variscite,var-som-mx8mm-symphony", "variscite,var-som-mx8mm", "fsl,imx8mm";
+ 
++	chosen {
++		stdout-path = &uart4;
++	};
++
+ 	reg_usdhc2_vmmc: regulator-usdhc2-vmmc {
+ 		compatible = "regulator-fixed";
+ 		pinctrl-names = "default";
+@@ -156,6 +160,13 @@ &uart3 {
+ 	status = "okay";
+ };
+ 
++/* Console */
++&uart4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart4>;
++	status = "okay";
++};
++
+ &usbotg1 {
+ 	disable-over-current;
+ 	extcon = <&extcon_usbotg1>, <&extcon_usbotg1>;
+@@ -251,4 +262,11 @@ MX8MM_IOMUXC_UART3_RXD_UART3_DCE_RX	0x140
+ 			MX8MM_IOMUXC_UART3_TXD_UART3_DCE_TX	0x140
+ 		>;
+ 	};
++
++	pinctrl_uart4: uart4grp {
++		fsl,pins = <
++			MX8MM_IOMUXC_UART4_RXD_UART4_DCE_RX	0x140
++			MX8MM_IOMUXC_UART4_TXD_UART4_DCE_TX	0x140
++		>;
++	};
+ };
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
+index 190bde4edcd7..b6560c03639e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-var-som.dtsi
+@@ -9,10 +9,6 @@
+ / {
+ 	model = "Variscite VAR-SOM-MX8MM module";
+ 
+-	chosen {
+-		stdout-path = &uart4;
+-	};
+-
+ 	memory@40000000 {
+ 		device_type = "memory";
+ 		reg = <0x0 0x40000000 0 0x80000000>;
+@@ -274,13 +270,6 @@ &uart2 {
+ 	status = "okay";
+ };
+ 
+-/* Console */
+-&uart4 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart4>;
+-	status = "okay";
+-};
+-
+ &usbotg1 {
+ 	dr_mode = "otg";
+ 	usb-role-switch;
+@@ -418,13 +407,6 @@ MX8MM_IOMUXC_SAI3_RXD_UART2_DCE_RTS_B	0x140
+ 		>;
+ 	};
+ 
+-	pinctrl_uart4: uart4grp {
+-		fsl,pins = <
+-			MX8MM_IOMUXC_UART4_RXD_UART4_DCE_RX	0x140
+-			MX8MM_IOMUXC_UART4_TXD_UART4_DCE_TX	0x140
+-		>;
+-	};
+-
+ 	pinctrl_usdhc1: usdhc1grp {
+ 		fsl,pins = <
+ 			MX8MM_IOMUXC_SD1_CLK_USDHC1_CLK		0x190
 -- 
 2.47.3
 
