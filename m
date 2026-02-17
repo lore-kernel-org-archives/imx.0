@@ -1,228 +1,164 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011026.outbound.protection.outlook.com [40.107.208.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2400D36BCE6
-	for <imx@lists.linux.dev>; Tue, 17 Feb 2026 13:55:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771336506; cv=none; b=EBiWxRR02HQk9nYkFHA2JsXnDTrjwuFgZmmy7sZIlm7LXfBncFilVUKtgjlsiy3JyqwG+49bgCVq9nghDB4+2KcvPfgvlNh1A1laAIJBZwZjlyOciBBuG8ncL73d3amyOJL05GaouCsu7tsfjfgkh5o/nutlwIjXRbS2i+Hm3Y4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771336506; c=relaxed/simple;
-	bh=ge7gIG8IIRQWGUGHw6qwZgqeXDldxXzM/a5Ov/Y7Rr4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cGhuNfQZbeiYuHYnKrzV5yyzYXZska36IRkHIIFMarKUSPwvF4ktDPCdTs9dtDDqh4z8Y5TOPXEJkDr4Fg8NGOIidrudPeawrVyCSe5FuZvWIHyHv38WWixGPrQMYJsqSZjrcW2qsqTOpL19vWF7AO+ZSiYfM9QojN0D3G15pRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hnq6G/at; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBD936C0AB
+	for <imx@lists.linux.dev>; Tue, 17 Feb 2026 13:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.26
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771336532; cv=fail; b=aNDacezyFfxo3xVrqn+6wyUMYBosxoCatmNU8kMwGeN8jLnzkHqLK1AlvEpUN6KixQUCZL0/VkE/iNPaD6VPZOvMxS1QrO67kmsPppgFPJQLdspVMeez45Ok2gmiuBxiI+/UKxvSLtO1H4C5+JoFScwPdNpgg4bOJ71hlKnYkEQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771336532; c=relaxed/simple;
+	bh=MYQ6uZ/TjWD2Wz260KBvWi8Uq5/n3V1Hpicp2zr3BZA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ubAEXiXvf5+ZmMecXbY9uGUWpF4UkhgeDOx//QS6wQVQxIDFFzO3Ocg5ZAb81WC46u5SRWEKPL53jSBlJEo/+u8lJ6B+Ax05b+50pFv8BSkvlEkN8x8WJI3A6i4E4b8fVNx1gxTMyCKm4zMgOT8DrXWpI5dtS1j9U0QHVlXkMC8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gehealthcare.com; spf=pass smtp.mailfrom=gehealthcare.com; dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b=KHHV64Iq; arc=fail smtp.client-ip=40.107.208.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gehealthcare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gehealthcare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hnq6G/at"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771336505; x=1802872505;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ge7gIG8IIRQWGUGHw6qwZgqeXDldxXzM/a5Ov/Y7Rr4=;
-  b=hnq6G/atGtiM6c1fMbUGlLITGNsCsU9GK/hQNc+5JVFy+SyrVYf/2BpV
-   NWELOknCKwREUAsL6wTiTd2iFdBF7k/ZxB4BAVacZogYVlq28jomtryXW
-   bvoFopkgeJhfuX6oULfV0K5sHxaP3ieA5KyfHqe3705N+nsSdqcC5F47u
-   bJWvPa2R1h5yyy+bAriNjhUt+xhFm9Q1xZ6e7SNy4QrMAFnjGwCCPJ79R
-   dxbzRgnUamQYNOYZTX32bKshRlLPb1rZp6BZxV+oRIwB+JNnNy4WDHIzm
-   j2Z80LPX3nuHcB0/uElBujqJlTOiIlyhPVoDrVCmBbZ2FyXXkGHUFOmAx
-   g==;
-X-CSE-ConnectionGUID: 9fRsmvILQVK1oC6js4Ceqw==
-X-CSE-MsgGUID: 5SeFhhaCSUSwDLBbmC++xA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="72470551"
-X-IronPort-AV: E=Sophos;i="6.21,296,1763452800"; 
-   d="scan'208";a="72470551"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 05:55:05 -0800
-X-CSE-ConnectionGUID: McvEJOwdRVyWWokjnxn1vA==
-X-CSE-MsgGUID: GnTaJH0OS/WfbqRKhldZQg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,296,1763452800"; 
-   d="scan'208";a="213904726"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by orviesa008.jf.intel.com with ESMTP; 17 Feb 2026 05:54:56 -0800
-Received: from lincoln.igk.intel.com (lincoln.igk.intel.com [10.102.21.235])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id E2F5128795;
-	Tue, 17 Feb 2026 13:54:52 +0000 (GMT)
-From: Larysa Zaremba <larysa.zaremba@intel.com>
-To: bpf@vger.kernel.org
-Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	"Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>,
-	Tushar Vyavahare <tushar.vyavahare@intel.com>,
-	Jason Xing <kernelxing@tencent.com>,
-	=?UTF-8?q?Ricardo=20B=2E=20Marli=C3=A8re?= <rbm@suse.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Toke Hoiland-Jorgensen <toke@redhat.com>,
+	dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b="KHHV64Iq"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XZWUF3U71QsCT8vLnF8Ax8c0Ms6PmI/C0g2INHYPR++ss8aMRfGdxxwz4h4K6+MthJjfeEiq2LdIGrrsGYzvDU1aUsk0CrleJuTW1f7ugNyVQ8d2WCiOCkkdGToGNC4JZvacClC1YOT3cd544JMjjDGQQV/bjxQrM1hLt5GsfdIUXYLlVHxdfoK5DeioJDXFHhe4vmCw0ELmBGKQzIKY+0uMaCY2hCzJNCcu6RYRKiNQEk1ffuG/EZ+oozfpae7kSyJCBnH1PuS5tCgvGpId5wRWyYX3KutH0AHjLFqTW5oIOCxOvParP0vPWpwNF20EpNty29DF+08xdBaeQvRwzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+A++JfBe8vXG4S/9R2JRv4Dun9P+yhFOqjiFmM7cf2o=;
+ b=VwOE+aOJWPKl/ZGoP/sHbOV4W0ArbtnRPAvZqkfhj3NPXfoZAKJoDkgdtENWZhsf3T7C5rhL8zsuAb9qYwflqB20EIeCTblUuCY6X8AWQBUUdlbH2VLShWkSCxo1eNY8fuBKTJ6Dm3/9YsLg4upunFk0vjG1LAB4VCSWnMTsQmQTnXGjk12tFmwgj0ZnEJNqPJOp9SylZB56QNQHhb/xHv6EYWocH3eUbIF8h4B7H9qZvvxONht8/7YDQ0YQAYWQ0Psh73cl8Of0BBAV3dzrs9e4gqy/ht34cBoC8aLrwlRzax0Cy2+n3W+EESrbq+jh+fhnd2I3YWvKASgMOhRupg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 165.85.157.49) smtp.rcpttodomain=lists.linux.dev
+ smtp.mailfrom=gehealthcare.com; dmarc=fail (p=quarantine sp=quarantine
+ pct=100) action=quarantine header.from=gehealthcare.com; dkim=none (message
+ not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gehealthcare.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+A++JfBe8vXG4S/9R2JRv4Dun9P+yhFOqjiFmM7cf2o=;
+ b=KHHV64IqX9PHLGn27NEi+6hgtirRM2tFpLeH6J1uIUQnQnOnv75/EvjKMHUTu11zBt6hAFkLmLBDtPsAtWET41Jjpqgbh0mUgvue5iGTrTr8Cfm+OheHELgAztqhpPt3Z1ruX2f0dVDEczGRxuhV1LeTGkgORPxzOB7W22SCpBKDAHZm996CyoTBf6uDrsQRGXFSU1E+tDYrL4UGksH4HuaXNkbOO9BW/f+G4UzHKY7WEnxFBdLVxFimBMrw7fkT8hHNvwRDVL1zKXJ2vUyvGfi6KOj8tXIhOSkAUY/8kLCBeDaSp7v3MoMyCjxxtRLXyRB/uz9qejeYKBS/k8YTfQ==
+Received: from SJ0PR13CA0067.namprd13.prod.outlook.com (2603:10b6:a03:2c4::12)
+ by SJ0PR22MB3065.namprd22.prod.outlook.com (2603:10b6:a03:428::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.16; Tue, 17 Feb
+ 2026 13:55:29 +0000
+Received: from MWH0EPF000971E9.namprd02.prod.outlook.com
+ (2603:10b6:a03:2c4:cafe::91) by SJ0PR13CA0067.outlook.office365.com
+ (2603:10b6:a03:2c4::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.13 via Frontend Transport; Tue,
+ 17 Feb 2026 13:55:03 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 165.85.157.49)
+ smtp.mailfrom=gehealthcare.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=quarantine header.from=gehealthcare.com;
+Received-SPF: Fail (protection.outlook.com: domain of gehealthcare.com does
+ not designate 165.85.157.49 as permitted sender)
+ receiver=protection.outlook.com; client-ip=165.85.157.49;
+ helo=mkerelay1.compute.ge-healthcare.net;
+Received: from mkerelay1.compute.ge-healthcare.net (165.85.157.49) by
+ MWH0EPF000971E9.mail.protection.outlook.com (10.167.243.71) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9632.12 via Frontend Transport; Tue, 17 Feb 2026 13:55:28 +0000
+Received: from zeus.fihel.lab.ge-healthcare.net (zoo13.fihel.lab.ge-healthcare.net [10.168.174.111])
+	by builder1.fihel.lab.ge-healthcare.net (Postfix) with ESMTP id 90085E8F41;
+	Tue, 17 Feb 2026 15:55:23 +0200 (EET)
+From: Ian Ray <ian.ray@gehealthcare.com>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>
+Cc: Ian Ray <ian.ray@gehealthcare.com>,
+	devicetree@vger.kernel.org,
 	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	linux-kselftest@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>
-Subject: [PATCH bpf v3 9/9] xdp: produce a warning when calculated tailroom is negative
-Date: Tue, 17 Feb 2026 14:24:47 +0100
-Message-ID: <20260217132450.1936200-10-larysa.zaremba@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260217132450.1936200-1-larysa.zaremba@intel.com>
-References: <20260217132450.1936200-1-larysa.zaremba@intel.com>
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH V2 0/5] ARM: dts: imx: {bx50v3,b850v3}: Update device trees
+Date: Tue, 17 Feb 2026 15:55:15 +0200
+Message-ID: <20260217135521.65742-1-ian.ray@gehealthcare.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000971E9:EE_|SJ0PR22MB3065:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: c024c802-18cb-4810-16fd-08de6e2c3559
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?/rKf753TPAlBEX9f+cy4O/YERG2H/25l/ogFhIAI4p+bEQO5l9ugqMPcVwTN?=
+ =?us-ascii?Q?jz9T37PZB8TPWQzNwYDwYUw6fd+OMFNJCrcIYxU7rE0TsR/EpJOw3L4QFNC0?=
+ =?us-ascii?Q?sr4AZr9CqFXSKKjYy/ssIKny5JP+q7vSUMPh+yEiwxHpH2Q4JguJlfu0YQ+c?=
+ =?us-ascii?Q?S0WOdh18Z1ZUuAWHQl1euuo6Uxwm+kaM6UHemwomf+A+iz/tSYMTrgNuZ4cN?=
+ =?us-ascii?Q?zHXKX296Yny8MVpNm74C0+VYj95mvB0v9Cm7TGYZlV8V2IFUf7kBO5WznWd1?=
+ =?us-ascii?Q?Ehqa33uI89DY+Qw8xN4enAlNmovjUp99/VtF8zdrLno+EKPNoedZf1+rtq3/?=
+ =?us-ascii?Q?H2ZoCzqwP96+ZhiPmTF86XXejijfqpSntRE+Oa1LqLMidtomu183dggae7Kt?=
+ =?us-ascii?Q?qkP6RO1Vl14ubqaKe8Mdd8aJT4MTMFPEFJOmvI64JzpifQVsULDA2yH+tPnW?=
+ =?us-ascii?Q?TmaNp3f5Xmn1iBus4TLZ4MKedbIFohzzSRJ/JjSBp9PG2VM8QRq4tRWB35Sg?=
+ =?us-ascii?Q?wg43zfvHzNoN9I1ipLwKWui4aHltbcp2yO8buAZ/RJaCe4uL39g0I0b8+RZE?=
+ =?us-ascii?Q?1MDkZiCl7QIvck68IGq3mBwXtLHeHjqJAJaltdLRe8cqVWN6KfnZIKaff8l/?=
+ =?us-ascii?Q?XevyQgHYwW3qLyKqc4ZH0GJ0ec6nqBgwZ8lbRRSSYM9TYsEjJRzfngPsIKk1?=
+ =?us-ascii?Q?CAkFNQRh8b48SrdA2He6IWBSsdiHmA3dF9n59eI7CZLuYwkndD04xzgJxgJq?=
+ =?us-ascii?Q?T/N0fMQv5BeY6rm9D/TblLZ7rqNqnJk+8WWwAtwhIyjtbSjLl/NFStRhOuEn?=
+ =?us-ascii?Q?Dq9QnIrAUD8XR5rREii1kpEBVzmO2NwQVChhpMddEcYJ01AXPQvanRA21HyD?=
+ =?us-ascii?Q?hajmThouPYomOCAdJeKYcn0KU3XtHoZf60s2JrVKd1TRIlKemcLrFZcGEBxn?=
+ =?us-ascii?Q?q2t/Tk0awFJnR8OKoEhn4XtMq9zSBFgpfeI14IPsd01MbuggDKDbY8qiyfnv?=
+ =?us-ascii?Q?JIcs7mI3JUCzgXEPCWAiBnnKwI4PoFb+nB1UqFjJv6+h49xSi3e4cIjQ4wcl?=
+ =?us-ascii?Q?PCmyr4UlIIXyz/IguEnkZoAQFc2YvU906HxOLq0eUf11xafMt9tVyb3RymEr?=
+ =?us-ascii?Q?KJA0rgT1Fe/zMkOilYxDgjRjGe/FvgYYbQHT6ehu/z/LpZyIoELtXUbamD2Q?=
+ =?us-ascii?Q?LTBjnq9jMpSH8nJsDitCX4bNrjH9ih4yt0WsvThH9rWOrmad4wnWNDfjrZYu?=
+ =?us-ascii?Q?oRd3zZMjNKWSkEcUPmrLlgQiOlXkV/n+fpWve+lvL1UyIBBNQKcaQFrmDMFP?=
+ =?us-ascii?Q?57CuJNBC3VP7baGVR5109U7cPQAyosALk6rfq1DOnFBssDHJIO1e8AwO8jew?=
+ =?us-ascii?Q?NOWVvaB1+mXGyGeDZ+lUXOo6b/eWwdL0QeDOuKTxkQIO/G5mEc1pTB4srKxh?=
+ =?us-ascii?Q?xb7pVd3GlOupXXXnc8E87o3edozf5eVun5AUv3srZM53xZcC/bTPk/niGeir?=
+ =?us-ascii?Q?PT6c/2pIZtxcz/EoA3Vcgm0hBXG969utWqUHp/0N72AT7bSER01X4fq7grM7?=
+ =?us-ascii?Q?DyFsUQn3dBzjZ07Qk3Lf6jS3IR09lhT84kW6Rwo0Moth0rEjW61r4X1u+8XP?=
+ =?us-ascii?Q?rzTLwiunej5W5e4NbDmn15DeJSbKo13/p7ehsAomAs7gevlzzcnpD6wTaCzh?=
+ =?us-ascii?Q?nghKMA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.85.157.49;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mkerelay1.compute.ge-healthcare.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700013);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	lP9zyRP1I2gztLQM5CyawQwK3SFeC9OHUqhKrLSc+OMxPoDqWp7372KbFrMOjuwpeZ7TJKvUjw31DSSCdlVpG4UT0DS2DqUMc4saxzkxVnCxmE5Jhi4r7hG509vnzF9m+dbBakTZtXnj2nK3hSIFcQwjhZTRpQQjf1ki76H4jxSQJTM17Au2PAD4e+V4alib8W6xuKlMCxOOyjE5njmYkuZavndI/GmSz6Ymhdwh2jFU9k+O+V6g/YZSilyG0c3WDZ+xbGlkqJMwgS/kPkefcKlupx/iYLkUIujROrOGtkG0O1Sv2koqCTFU9WlqeXrZ+xVE9iybxOdMRAQeT9UHf1WrHiwRlwxuHaU3T8WGE4H+PYgBTXhFHVWjkKnDJ41CGU1SdMEUgjXuLGDGVU9lOpQB7s94tD3pLMb6Q/6aphJZwYypHFXlvtuy3tnpzHQ2
+X-OriginatorOrg: gehealthcare.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2026 13:55:28.3407
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c024c802-18cb-4810-16fd-08de6e2c3559
+X-MS-Exchange-CrossTenant-Id: 9a309606-d6ec-4188-a28a-298812b4bbbf
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=9a309606-d6ec-4188-a28a-298812b4bbbf;Ip=[165.85.157.49];Helo=[mkerelay1.compute.ge-healthcare.net]
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-MWH0EPF000971E9.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR22MB3065
 
-Many ethernet drivers report xdp Rx queue frag size as being the same as
-DMA write size. However, the only user of this field, namely
-bpf_xdp_frags_increase_tail(), clearly expects a truesize.
+Configure PHY speed and mode.
+Configure b850v3 gpio4 line name.
+Disable b850v3 usdhc4 interface.
 
-Such difference leads to unspecific memory corruption issues under certain
-circumstances, e.g. in ixgbevf maximum DMA write size is 3 KB, so when
-running xskxceiver's XDP_ADJUST_TAIL_GROW_MULTI_BUFF, 6K packet fully uses
-all DMA-writable space in 2 buffers. This would be fine, if only
-rxq->frag_size was properly set to 4K, but value of 3K results in a
-negative tailroom, because there is a non-zero page offset.
+Changes since v1:
+- Clarify the exact warning message in patch 2
+- Add patch 3 to order reference modififcations correctly
+- Correct the ordering of reference modification in patch 4
 
-We are supposed to return -EINVAL and be done with it in such case, but due
-to tailroom being stored as an unsigned int, it is reported to be somewhere
-near UINT_MAX, resulting in a tail being grown, even if the requested
-offset is too much (it is around 2K in the abovementioned test). This later
-leads to all kinds of unspecific calltraces.
-
-[ 7340.337579] xskxceiver[1440]: segfault at 1da718 ip 00007f4161aeac9d sp 00007f41615a6a00 error 6
-[ 7340.338040] xskxceiver[1441]: segfault at 7f410000000b ip 00000000004042b5 sp 00007f415bffecf0 error 4
-[ 7340.338179]  in libc.so.6[61c9d,7f4161aaf000+160000]
-[ 7340.339230]  in xskxceiver[42b5,400000+69000]
-[ 7340.340300]  likely on CPU 6 (core 0, socket 6)
-[ 7340.340302] Code: ff ff 01 e9 f4 fe ff ff 0f 1f 44 00 00 4c 39 f0 74 73 31 c0 ba 01 00 00 00 f0 0f b1 17 0f 85 ba 00 00 00 49 8b 87 88 00 00 00 <4c> 89 70 08 eb cc 0f 1f 44 00 00 48 8d bd f0 fe ff ff 89 85 ec fe
-[ 7340.340888]  likely on CPU 3 (core 0, socket 3)
-[ 7340.345088] Code: 00 00 00 ba 00 00 00 00 be 00 00 00 00 89 c7 e8 31 ca ff ff 89 45 ec 8b 45 ec 85 c0 78 07 b8 00 00 00 00 eb 46 e8 0b c8 ff ff <8b> 00 83 f8 69 74 24 e8 ff c7 ff ff 8b 00 83 f8 0b 74 18 e8 f3 c7
-[ 7340.404334] Oops: general protection fault, probably for non-canonical address 0x6d255010bdffc: 0000 [#1] SMP NOPTI
-[ 7340.405972] CPU: 7 UID: 0 PID: 1439 Comm: xskxceiver Not tainted 6.19.0-rc1+ #21 PREEMPT(lazy)
-[ 7340.408006] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-5.fc42 04/01/2014
-[ 7340.409716] RIP: 0010:lookup_swap_cgroup_id+0x44/0x80
-[ 7340.410455] Code: 83 f8 1c 73 39 48 ba ff ff ff ff ff ff ff 03 48 8b 04 c5 20 55 fa bd 48 21 d1 48 89 ca 83 e1 01 48 d1 ea c1 e1 04 48 8d 04 90 <8b> 00 48 83 c4 10 d3 e8 c3 cc cc cc cc 31 c0 e9 98 b7 dd 00 48 89
-[ 7340.412787] RSP: 0018:ffffcc5c04f7f6d0 EFLAGS: 00010202
-[ 7340.413494] RAX: 0006d255010bdffc RBX: ffff891f477895a8 RCX: 0000000000000010
-[ 7340.414431] RDX: 0001c17e3fffffff RSI: 00fa070000000000 RDI: 000382fc7fffffff
-[ 7340.415354] RBP: 00fa070000000000 R08: ffffcc5c04f7f8f8 R09: ffffcc5c04f7f7d0
-[ 7340.416283] R10: ffff891f4c1a7000 R11: ffffcc5c04f7f9c8 R12: ffffcc5c04f7f7d0
-[ 7340.417218] R13: 03ffffffffffffff R14: 00fa06fffffffe00 R15: ffff891f47789500
-[ 7340.418229] FS:  0000000000000000(0000) GS:ffff891ffdfaa000(0000) knlGS:0000000000000000
-[ 7340.419489] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 7340.420286] CR2: 00007f415bfffd58 CR3: 0000000103f03002 CR4: 0000000000772ef0
-[ 7340.421237] PKRU: 55555554
-[ 7340.421623] Call Trace:
-[ 7340.421987]  <TASK>
-[ 7340.422309]  ? softleaf_from_pte+0x77/0xa0
-[ 7340.422855]  swap_pte_batch+0xa7/0x290
-[ 7340.423363]  zap_nonpresent_ptes.constprop.0.isra.0+0xd1/0x270
-[ 7340.424102]  zap_pte_range+0x281/0x580
-[ 7340.424607]  zap_pmd_range.isra.0+0xc9/0x240
-[ 7340.425177]  unmap_page_range+0x24d/0x420
-[ 7340.425714]  unmap_vmas+0xa1/0x180
-[ 7340.426185]  exit_mmap+0xe1/0x3b0
-[ 7340.426644]  __mmput+0x41/0x150
-[ 7340.427098]  exit_mm+0xb1/0x110
-[ 7340.427539]  do_exit+0x1b2/0x460
-[ 7340.427992]  do_group_exit+0x2d/0xc0
-[ 7340.428477]  get_signal+0x79d/0x7e0
-[ 7340.428957]  arch_do_signal_or_restart+0x34/0x100
-[ 7340.429571]  exit_to_user_mode_loop+0x8e/0x4c0
-[ 7340.430159]  do_syscall_64+0x188/0x6b0
-[ 7340.430672]  ? __do_sys_clone3+0xd9/0x120
-[ 7340.431212]  ? switch_fpu_return+0x4e/0xd0
-[ 7340.431761]  ? arch_exit_to_user_mode_prepare.isra.0+0xa1/0xc0
-[ 7340.432498]  ? do_syscall_64+0xbb/0x6b0
-[ 7340.433015]  ? __handle_mm_fault+0x445/0x690
-[ 7340.433582]  ? count_memcg_events+0xd6/0x210
-[ 7340.434151]  ? handle_mm_fault+0x212/0x340
-[ 7340.434697]  ? do_user_addr_fault+0x2b4/0x7b0
-[ 7340.435271]  ? clear_bhb_loop+0x30/0x80
-[ 7340.435788]  ? clear_bhb_loop+0x30/0x80
-[ 7340.436299]  ? clear_bhb_loop+0x30/0x80
-[ 7340.436812]  ? clear_bhb_loop+0x30/0x80
-[ 7340.437323]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[ 7340.437973] RIP: 0033:0x7f4161b14169
-[ 7340.438468] Code: Unable to access opcode bytes at 0x7f4161b1413f.
-[ 7340.439242] RSP: 002b:00007ffc6ebfa770 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
-[ 7340.440173] RAX: fffffffffffffe00 RBX: 00000000000005a1 RCX: 00007f4161b14169
-[ 7340.441061] RDX: 00000000000005a1 RSI: 0000000000000109 RDI: 00007f415bfff990
-[ 7340.441943] RBP: 00007ffc6ebfa7a0 R08: 0000000000000000 R09: 00000000ffffffff
-[ 7340.442824] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-[ 7340.443707] R13: 0000000000000000 R14: 00007f415bfff990 R15: 00007f415bfff6c0
-[ 7340.444586]  </TASK>
-[ 7340.444922] Modules linked in: rfkill intel_rapl_msr intel_rapl_common intel_uncore_frequency_common skx_edac_common nfit libnvdimm kvm_intel vfat fat kvm snd_pcm irqbypass rapl iTCO_wdt snd_timer intel_pmc_bxt iTCO_vendor_support snd ixgbevf virtio_net soundcore i2c_i801 pcspkr libeth_xdp net_failover i2c_smbus lpc_ich failover libeth virtio_balloon joydev 9p fuse loop zram lz4hc_compress lz4_compress 9pnet_virtio 9pnet netfs ghash_clmulni_intel serio_raw qemu_fw_cfg
-[ 7340.449650] ---[ end trace 0000000000000000 ]---
-
-The issue can be fixed in all in-tree drivers, but we cannot just trust OOT
-drivers to not do this. Therefore, make tailroom a signed int and produce a
-warning when it is negative to prevent such mistakes in the future.
-
-Fixes: bf25146a5595 ("bpf: add frags support to the bpf_xdp_adjust_tail() API")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
 ---
- net/core/filter.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Ian Ray (5):
+  ARM: dts: imx: bx50v3: Configure switch PHY max-speed
+  ARM: dts: imx: bx50v3: Configure phy-mode
+  ARM: dts: imx: b850v3: Use alphabetical sorting
+  ARM: dts: imx: b850v3: Define GPIO line names
+  ARM: dts: imx: b850v3: Disable usdhc4
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 5f5489665c58..e93d9dc0471a 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -4151,13 +4151,14 @@ static int bpf_xdp_frags_increase_tail(struct xdp_buff *xdp, int offset)
- 	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
- 	skb_frag_t *frag = &sinfo->frags[sinfo->nr_frags - 1];
- 	struct xdp_rxq_info *rxq = xdp->rxq;
--	unsigned int tailroom;
-+	int tailroom;
- 
- 	if (!rxq->frag_size || rxq->frag_size > xdp->frame_sz)
- 		return -EOPNOTSUPP;
- 
- 	tailroom = rxq->frag_size - skb_frag_size(frag) -
- 		   skb_frag_off(frag) % rxq->frag_size;
-+	WARN_ON_ONCE(tailroom < 0);
- 	if (unlikely(offset > tailroom))
- 		return -EINVAL;
- 
+ arch/arm/boot/dts/nxp/imx/imx6q-b450v3.dts  |  1 +
+ arch/arm/boot/dts/nxp/imx/imx6q-b650v3.dts  |  1 +
+ arch/arm/boot/dts/nxp/imx/imx6q-b850v3.dts  | 53 ++++++++++++++-------
+ arch/arm/boot/dts/nxp/imx/imx6q-bx50v3.dtsi |  4 ++
+ 4 files changed, 41 insertions(+), 18 deletions(-)
+
 -- 
-2.52.0
+2.49.0
 
