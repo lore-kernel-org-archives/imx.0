@@ -1,125 +1,90 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB592D7392
-	for <imx@lists.linux.dev>; Tue, 17 Feb 2026 07:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572EC2DB7AA;
+	Tue, 17 Feb 2026 08:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771314493; cv=none; b=cuiStN2iwG1W08JJX8qBvQHLEE9NVRcCEyD7nH6ZHovp4105dD8rJ2eaGB21GF86uFl/f9wy1ZPyYGzVHEWN2JgyfgjNWzIngeNmoYcm4g27akXpcwoRtcLeLxnTJa/ter86cyOoe+jNzo5XWSlKPLlA/4iXxZhC8o+3+Z1ql+E=
+	t=1771315812; cv=none; b=UEO+FX0d5J7vzyEBEQRGesBagfJ00rKDp21RwUwVYRsWK5W8q4mG2vGhny7uxbdj7vxLKofJBhgRkAL2ORBUChDDk0jJETbdmtb5MmEqQZeH2r571sRe/FfvOMyAYimO8G9R0GNnPDWAZVlRwzNWgOXwC5n/uldxdzxRUygZ9T0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771314493; c=relaxed/simple;
-	bh=hV2LXUFRvp3gGdAS+sOIikPEF9/2c/sgwXOC2d/azYE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gQcSJBv3WVT76MFNrJtD+P57VO6fjiNo5gm4tH+EtH8Omk/lm5rik888PBUjn5ktMC2TWql8iAOr7aOslMd6X3GOqrXOo84ksedMaA3Op/2Qvh1zxTH7k2+KhYgMLSypYqRsk/tHrlEmxqzACZ4AzlnhrwKY+BwhksXW3nlCt04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=X2Zlmpzj; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1771315812; c=relaxed/simple;
+	bh=JES+IBXkN/OopuNkWeM8rDx8cY1hL5qNmn2SSvSLDww=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MmZanL0Mwmyi9jpPRQ57nr7VaTtdGUEyC7xzM4Fe0fRt78ugMQvTepTrlRzcL+hbKCFFithbLQ2/e2BGy3CoUGPTy6UAM1gkXEMLabuxM0yA/kecvr12RYpatn2qs2huWPd86zH+PnCrmwfUP21+KxMVjV9pcHIyoYOS0d9DdQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5VdzwvW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="X2Zlmpzj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1771314483;
-	bh=hV2LXUFRvp3gGdAS+sOIikPEF9/2c/sgwXOC2d/azYE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=X2ZlmpzjoC1o4Lr2vL4mNberYUWTbWNcNWOzF7fPy9rS4rztiPfQWulvVccX/qOwJ
-	 rhB3Qgw3tPDe8X9VtMy0Qv1iS9ULe5oRYV7dxT3tLszOuLfpiLWL1CFkqQq+Ps6HrB
-	 Nx99Fu68lVfUQmLl81wvvcV0BwC3ZUroShPvloIEN0V/YSzopp2UGiwZdAKpMfySrG
-	 7JAxdKkPRGLiBqrAGrnHs3H0L3obTapJTwPMdu3AwB3ZCpQ+ROQOByKoFsCBtUr+jy
-	 VWbCVqjaTr1AcCn/4oJYOKlTAJ4ndfeQls3MrmPJiewc8VG4sEC11cKBek9T44hoOl
-	 WgYWLHIQnHR7Q==
-Received: from [10.40.0.100] (185-67-175-126.lampert.tv [185.67.175.126])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: mriesch)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 4812417E114C;
-	Tue, 17 Feb 2026 08:48:03 +0100 (CET)
-Message-ID: <2c3f5c57-9ecc-4a99-9f8b-e1b09a98539b@collabora.com>
-Date: Tue, 17 Feb 2026 08:48:02 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P5VdzwvW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FC4C19424;
+	Tue, 17 Feb 2026 08:10:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771315811;
+	bh=JES+IBXkN/OopuNkWeM8rDx8cY1hL5qNmn2SSvSLDww=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=P5VdzwvWLXGyzf38GdKR0DP1zmbtvU7hfd3hlDwwRkW80X4l1SWwX85/mwayZB4/i
+	 SNrxQLgJxPOUitED/rP9uOf0WeWZdIRg7+iV/SVR3Vaujf3JtmftZDR0u4ab1nywlH
+	 ElR11J92kF75uTgTLkjvF1p5qCJu+TSTTDpKcp5z3WMKkTCYKnViNy96BWo6fuWxX1
+	 KScScxH49TMGFhxMjUldGPC/sdm2/Mg5ywYdAAmJ7nC+vLcfzIZHfEP+MhH6bP86jL
+	 VR7Xml8I39h3w+kxZt/yxdzWvOXuSPJn5BEs/4AyFYkPXjExqMUg+U7GeCux68/TX6
+	 nGfyp/ia8y6gg==
+Date: Tue, 17 Feb 2026 09:10:09 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Daniel Baluta <daniel.baluta@oss.nxp.com>
+Cc: Larisa Grigore <larisa.grigore@oss.nxp.com>, 
+	gregkh@linuxfoundation.org, jirislaby@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, sumit.semwal@linaro.org, christian.koenig@amd.com, 
+	chester62515@gmail.com, cosmin.stoica@nxp.com, adrian.nitu@freescale.com, 
+	stefan-gabriel.mirea@nxp.com, Mihaela.Martinas@freescale.com, linux-kernel@vger.kernel.org, 
+	linux-serial@vger.kernel.org, devicetree@vger.kernel.org, linux-media@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, s32@nxp.com, imx@lists.linux.dev, 
+	clizzi@redhat.com, aruizrui@redhat.com, eballetb@redhat.com, echanude@redhat.com, 
+	jkangas@redhat.com, Radu Pirea <radu-nicolae.pirea@nxp.com>
+Subject: Re: [PATCH 09/13] dt-bindings: serial: fsl-linflexuart: add dma
+ properties
+Message-ID: <20260217-stirring-warping-partridge-dd9531@quoll>
+References: <20260216150205.212318-1-larisa.grigore@oss.nxp.com>
+ <20260216150205.212318-10-larisa.grigore@oss.nxp.com>
+ <5c0251b6-5228-4077-a21f-4da179949b90@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/6] media: synopsys: csi2rx: implement
- .get_frame_desc() callback
-To: Frank Li <Frank.Li@nxp.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- Philipp Zabel <p.zabel@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, Guoniu Zhou <guoniu.zhou@oss.nxp.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, imx@lists.linux.dev
-References: <20260216-imx93-dw-csi2-v3-0-aabafee10923@nxp.com>
- <20260216-imx93-dw-csi2-v3-3-aabafee10923@nxp.com>
-Content-Language: en-US
-From: Michael Riesch <michael.riesch@collabora.com>
-In-Reply-To: <20260216-imx93-dw-csi2-v3-3-aabafee10923@nxp.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <5c0251b6-5228-4077-a21f-4da179949b90@oss.nxp.com>
 
-Hi Frank,
-
-Thanks for the patch.
-
-On 2/16/26 20:18, Frank Li wrote:
-> Implement the .get_frame_desc() callback to fetch information from the
-> remote endpoint.
+On Mon, Feb 16, 2026 at 05:29:57PM +0200, Daniel Baluta wrote:
 > 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> On 2/16/26 17:02, Larisa Grigore wrote:
+> > [You don't often get email from larisa.grigore@oss.nxp.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> >
+> > From: Radu Pirea <radu-nicolae.pirea@nxp.com>
+> >
+> > Add 'dmas' and 'dma-names' properties to describe optional DMA support
+> > for RX and TX channels in the LINFlexD UART controller.
+> >
+> > This allows the device tree to specify DMA channels used for UART data
+> > transfers. If not specified, the driver will fall to interrupt-based
+> > operations.
+> >
+> > Signed-off-by: Radu Pirea <radu-nicolae.pirea@nxp.com>
+> > Co-developed-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
+> > Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
+> 
+> If both of you worked on this patch then the last lines must read:
+> 
+> Co-developed-by: Radu Pirea <radu-nicolae.pirea@nxp.com>
+> 
+> Signed-off-by: Radu Pirea <radu-nicolae.pirea@nxp.com>
+> 
+> Co-developed-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
+> 
+> Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
 
-Reviewed-by: Michael Riesch <michael.riesch@collabora.com>
+No, the DCO with this authorship is correct if they both worked. Nothing
+has to be changed here.
 
 Best regards,
-Michael
-
-> ---
-> change in v3
-> - use media_entity_to_v4l2_subdev()
-> 
-> change in v2
-> - add csi2rx in subject
-> ---
->  drivers/media/platform/synopsys/dw-mipi-csi2rx.c | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> index f03fe01280013bf9a832433c6b06dab691bf8f4c..bcbf109a0bfd040c568c0652e28752c94a1bc30d 100644
-> --- a/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> +++ b/drivers/media/platform/synopsys/dw-mipi-csi2rx.c
-> @@ -429,10 +429,31 @@ static int dw_mipi_csi2rx_disable_streams(struct v4l2_subdev *sd,
->  	return ret;
->  }
->  
-> +static int
-> +dw_mipi_csi2rx_get_frame_desc(struct v4l2_subdev *sd, unsigned int pad,
-> +			      struct v4l2_mbus_frame_desc *fd)
-> +{
-> +	struct dw_mipi_csi2rx_device *csi2 = to_csi2(sd);
-> +	struct v4l2_subdev *remote_sd;
-> +	struct media_pad *remote_pad;
-> +
-> +	remote_pad = media_pad_remote_pad_unique(&csi2->pads[DW_MIPI_CSI2RX_PAD_SINK]);
-> +	if (IS_ERR(remote_pad)) {
-> +		dev_err(csi2->dev, "can't get remote source pad\n");
-> +		return PTR_ERR(remote_pad);
-> +	}
-> +
-> +	remote_sd = media_entity_to_v4l2_subdev(remote_pad->entity);
-> +
-> +	return v4l2_subdev_call(remote_sd, pad, get_frame_desc,
-> +				remote_pad->index, fd);
-> +}
-> +
->  static const struct v4l2_subdev_pad_ops dw_mipi_csi2rx_pad_ops = {
->  	.enum_mbus_code = dw_mipi_csi2rx_enum_mbus_code,
->  	.get_fmt = v4l2_subdev_get_fmt,
->  	.set_fmt = dw_mipi_csi2rx_set_fmt,
-> +	.get_frame_desc = dw_mipi_csi2rx_get_frame_desc,
->  	.set_routing = dw_mipi_csi2rx_set_routing,
->  	.enable_streams = dw_mipi_csi2rx_enable_streams,
->  	.disable_streams = dw_mipi_csi2rx_disable_streams,
-> 
+Krzysztof
 
