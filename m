@@ -1,102 +1,90 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA54731A57C
-	for <imx@lists.linux.dev>; Tue, 17 Feb 2026 09:55:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3672877E8;
+	Tue, 17 Feb 2026 10:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771322115; cv=none; b=EesasdfDaVxKwkJ3KDCDbMP6Qw2IrJ9x+oEy6zQtxszFCvTZGDrndp/lqUfzj0wKL7NnNU/q6uoCQGUVxuntZy+PpCYq0i5kjGCzmtW/FalDcDb5eQGl8Ac5VARmdggqZXjEmSp9cIDO68IbIDjgmvkmkVaDIGUaYp3EhgEicx4=
+	t=1771323679; cv=none; b=mO9NE0L5LbA93LX64P95Emh68ie8/iViulc4xBzbzNCdx44SIoI8SfpAMowX/iHWWqwHtUtC2R6Dd7ByMzQ2E+R8fTxQqFmN+ZxY3JtcIyjJo2TOtqsxxCjGCZOKQYtrVdvBRdJ4G5M5mjnVCQ1FVIWvQ0w6Rqc/xG9onOW82MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771322115; c=relaxed/simple;
-	bh=REVLzExhtQah2WMy6jJLDAGKfvvxas7NSqRHuI2XzCU=;
+	s=arc-20240116; t=1771323679; c=relaxed/simple;
+	bh=nMYlB6mUz5sDcuGpH56QRUMJMtqJhSaGockFEPLWdMQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gQstO7j+VQk5ZzYW4XhRl+gXaPLKx4y6ODW9z1r+2CfhTFPKUU02JWvaLX9VkQcLUnOQzcsAL7Gi+jt6lXuV7XOaG9EjDZtvepFFsw2tzadFiY7n6kl5DvEdSGqQalaI9vr6oJgWL3Yw1LY4UCkzvkUa4mN/flCi2583YLKJW7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vsHn7-0007Wp-SS; Tue, 17 Feb 2026 10:54:49 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vsHn6-001DDS-0B;
-	Tue, 17 Feb 2026 10:54:49 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vsHn7-00000007fIL-1EgV;
-	Tue, 17 Feb 2026 10:54:49 +0100
-Date: Tue, 17 Feb 2026 10:54:49 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ian Ray <ian.ray@gehealthcare.com>
-Cc: Abel Vesa <abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, linux-clk@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] clk: imx: pll14xx: Add 756 MHz entry for PLL1443x
-Message-ID: <rvz22m6k4g62gopbghfssyuwz43raxzoxeohfn7hpvbou3htoi@de2ajdoeybm5>
-References: <20260217094152.19958-1-ian.ray@gehealthcare.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ba4IyE+J4uec83FovpacBFGCbAB6d4sljLeVGZ+fPp/NATm3WY8wUQE8oHPqXTrcY/iZ4cPxWZ3APCcYZmg+Ja3sIxjP9czKWZRFeZ1IBdjwGbUum6REGLvjfIInTEQtGDfLeJxfmoMJ2zFOEggXnSiJYT1oLNfOeQg2LSNKeA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fkoE9j9K; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fkoE9j9K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901A1C4CEF7;
+	Tue, 17 Feb 2026 10:21:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771323679;
+	bh=nMYlB6mUz5sDcuGpH56QRUMJMtqJhSaGockFEPLWdMQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fkoE9j9KHbNrGTrndFzyjoJvaPqvLr0OZT62+8iL4EAvfV5M3qkF4fnCubvw9ggpD
+	 Cw5m4WeuIiQfAqt8V67QEQl1CzjpDZK5Oo/Af0wbKoe6o4zSzM+0w2RxwOeRw2Jlb8
+	 uOgS4NRrqxZQEMuZojmApE+FV3H+FLDjLnzE4jRiIreaqoBahmQvEaU7fSKi1yJEtc
+	 lV85cvpvWyIme+Hx6p/jQZaIYH+YOuNJ77Ey1v/bUnNm6X6LSU5zPmwZfpcYOSoGNA
+	 YCfrp67I/2i784MMV+kALIVyYx3DpqKUVNINDHgn+zSPE3t10PWv6MvNw+yoO2rZ3c
+	 2bhQlM0JNuR5g==
+Date: Tue, 17 Feb 2026 15:51:15 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Frank Li <Frank.Li@nxp.com>,
+	imx@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH RFC net-next 0/9] net: stmmac: qcom-ethqos: cleanups and
+ re-organise SerDes handling
+Message-ID: <aZRBG0h0HHSjc7tE@vaman>
+References: <aY0aJppQWUC52OUq@shell.armlinux.org.uk>
+ <aY95qbcG2BLGVzHy@oss.qualcomm.com>
+ <aZM60XiDOrgxHqeA@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260217094152.19958-1-ian.ray@gehealthcare.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: imx@lists.linux.dev
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aZM60XiDOrgxHqeA@shell.armlinux.org.uk>
 
-Hi Ian,
-
-On 26-02-17, Ian Ray wrote:
-> The PLL1443x is used to implement VIDEO_PLL1 on i.MX8MP and can be used
-> for dual-channel LVDS displays.  Add new rate 756 MHz, which divides by
-> 7 to provide 108 MHz LVDS pixel clock, and by 2 for 378 MHz LDB clock.
-
-the on-demand rate calculation doe for the PLL1443X PLLs is not
-sufficient for you?
-
-Regards,
-  Marco
-
-
+On 16-02-26, 15:42, Russell King (Oracle) wrote:
+> Hi,
 > 
-> Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-> ---
->  drivers/clk/imx/clk-pll14xx.c | 1 +
->  1 file changed, 1 insertion(+)
+> On Sat, Feb 14, 2026 at 12:51:13AM +0530, Mohd Ayaan Anwar wrote:
+> > Hello Russell,
+> > 
+> > Things look pretty stable on the QCS9100 Ride R3 board (with the AQR115C
+> > PHY). I would like to test a bit more and should be happy to provide a
+> > Tested-by once that's complete.
+> > 
+> > I may also get access to a board with an RGMII PHY on Monday, so I’m
+> > hoping to verify the changes to ethqos_rgmii_macro_init as well as your
+> > patch from the previous series (“net: stmmac: qcom-ethqos: convert to
+> > set_clk_tx_rate() method”) soon.
 > 
-> diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
-> index 36d0e80b55b8..84279cf9f12b 100644
-> --- a/drivers/clk/imx/clk-pll14xx.c
-> +++ b/drivers/clk/imx/clk-pll14xx.c
-> @@ -63,6 +63,7 @@ static const struct imx_pll14xx_rate_table imx_pll1416x_tbl[] = {
->  
->  static const struct imx_pll14xx_rate_table imx_pll1443x_tbl[] = {
->  	PLL_1443X_RATE(1039500000U, 173, 2, 1, 16384),
-> +	PLL_1443X_RATE(756000000U, 252, 2, 2, 0),
->  	PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
->  	PLL_1443X_RATE(594000000U, 198, 2, 2, 0),
->  	PLL_1443X_RATE(519750000U, 173, 2, 2, 16384),
-> -- 
-> 2.49.0
+> Looking forward to hearing the results, thanks!
 > 
+> As you seem to be fairly active with the qcom-ethqos stuff, please
+> consider adding yourself to the "QUALCOMM ETHQOS ETHERNET DRIVER"
+> maintainers entry. Thanks.
 > 
-> 
+> Vinod, are you still actively involved with this, and if not,
+> should Mohd remove you from the entry for the dwmac-qcom-ethqos
+> driver?
 
+Yeah I am not doing anything in this area, pls do drop me from this
+
+Thanks
 -- 
-#gernperDu 
-#CallMeByMyFirstName
-
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+~Vinod
