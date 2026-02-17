@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B628635502F;
-	Tue, 17 Feb 2026 14:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF27329395;
+	Tue, 17 Feb 2026 14:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771340000; cv=none; b=tDl5AhiXb9+LbCS0eW+ewZ2ggFLeeSCt7U1CG1FaB9ZErQ3TF5uCuVMnrtTDTM/cjO9yUnL0GAAZ/M178IvmFt58hFIr8r2/Hhesd5jGCILf8hoFMS3Tm2zbbHPvJ5X6e/+1mb/0CGTCg9JYrQrw+7zwW5eXYiT69EytsOx7CnU=
+	t=1771340331; cv=none; b=rOWZM6wQpU2IVczJPfb5NxT7D0fLOCM4EiyssYBSHA0LUShzYeo9z31IuFUK1vTNgVVSqGmFpkj+RbVukdUAhl92yqjtunfL8LWAM0tNL8VBUbXUBXnDQcaYtepn8IZMdiwC9fdYqqZM0FWyNGo0V04Hi6OoFtKho3frf4OuOJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771340000; c=relaxed/simple;
-	bh=of7fP2gkYPecNan7Os7HTGIRiGclwxHTsW+Nqw8qLnw=;
+	s=arc-20240116; t=1771340331; c=relaxed/simple;
+	bh=2ofuTKKEQLpK8QNYF9SDuill/+IokH97rgFuVahJFbM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u1ylQ13CWPIG4aQbmX3G7Fro/hSrcy2ZDE/ED4lV5cPVxp80+/0T8y88ZpnH7BJunTBfmrIjrtmJk3eXp5gFTymNz4U5h2T5waP06fkBl8EA+owrzhiMKJs2LRevYqEsWwZ6+h6QYMtu1LNhtftgDO0KXNRkG+U5G8rT8R8arwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ahjoqDGR; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=MrMGzFm68haHvfQEPsqXpEY/dQrAgS8I7GQLD88WXn5iHNYx4kHtd1jcqBGr3O6N3ikddkYSBWDLKYO3hc7huskNRsE20MUywW2kaqP/pLmV64h7REW2tDKcPvaL/jUuZ8J9oajNCmB2zWYSWqjllme3qNeGqfDLCBouNxLtduo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=OEN1E4TO; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ahjoqDGR"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="OEN1E4TO"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=noah+ahWLsLbjMlCHgxT7YuEr4pbD0Lx5cvHqvNKHn0=; b=ahjoqDGR3dg6s6pXBpNrSOh2En
-	AHtLeFFglpmBgoJ/oeuG49oOkw9EYh90FYlkrJtpiOcUOBd0+u7LXhUbMjRVJeYB5kBXd9Ig3XdKE
-	fDSVhX/zBw/SZF+z4qpN5FgVCUAeS5wDProFMTC5iEkK+uAuFeapI7UO/a+FVDauSOA4=;
+	bh=TgrYGzki/8CDchUbygE9S9HTRcJ+spBEW5xPJhmGL2M=; b=OEN1E4TOBXzDVAmqkxj1FpwVUx
+	FszW/y92aT5KnFHR4qT6qgA0GxHMbPOmr5yQsBDGK01GPzWgRn4zWfBArExyhrV7KQcF9B2qN+MaY
+	xkOFffE0LxZvBujfuI6hw5ZFnGL4hjR4Io9ViKOuh14RiFYV6957jiAB0PjQr7Hmc/Pw=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1vsMRo-007een-4Q; Tue, 17 Feb 2026 15:53:08 +0100
-Date: Tue, 17 Feb 2026 15:53:08 +0100
+	id 1vsMXC-007eik-1q; Tue, 17 Feb 2026 15:58:42 +0100
+Date: Tue, 17 Feb 2026 15:58:42 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Ian Ray <ian.ray@gehealthcare.com>
 Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -37,10 +37,10 @@ Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] ARM: dts: imx: bx50v3: Configure switch PHY max-speed
-Message-ID: <6dc304c8-2e65-4090-85b2-4b69a5751823@lunn.ch>
+Subject: Re: [PATCH 2/4] ARM: dts: imx: bx50v3: Configure phy-mode
+Message-ID: <fa3805bd-d242-4399-8175-4b8dcd0f84b6@lunn.ch>
 References: <20260217125952.53997-1-ian.ray@gehealthcare.com>
- <20260217125952.53997-2-ian.ray@gehealthcare.com>
+ <20260217125952.53997-3-ian.ray@gehealthcare.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -49,18 +49,38 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260217125952.53997-2-ian.ray@gehealthcare.com>
+In-Reply-To: <20260217125952.53997-3-ian.ray@gehealthcare.com>
 
-On Tue, Feb 17, 2026 at 02:59:48PM +0200, Ian Ray wrote:
-> Configure maximum speed for the switch PHYs according to the electrical
-> connections from PHY to RJ45 connector.
+On Tue, Feb 17, 2026 at 02:59:49PM +0200, Ian Ray wrote:
+> Set `phy-mode' on network switch CPU ports to eliminate a warning.
+> 
+> Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+> ---
+>  arch/arm/boot/dts/nxp/imx/imx6q-b450v3.dts | 1 +
+>  arch/arm/boot/dts/nxp/imx/imx6q-b650v3.dts | 1 +
+>  arch/arm/boot/dts/nxp/imx/imx6q-b850v3.dts | 1 +
+>  3 files changed, 3 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-b450v3.dts b/arch/arm/boot/dts/nxp/imx/imx6q-b450v3.dts
+> index d994b32ad825..7326b8ad08cb 100644
+> --- a/arch/arm/boot/dts/nxp/imx/imx6q-b450v3.dts
+> +++ b/arch/arm/boot/dts/nxp/imx/imx6q-b450v3.dts
+> @@ -140,6 +140,7 @@ port@3 {
+>  	port@4 {
+>  		reg = <4>;
+>  		label = "cpu";
+> +		phy-mode = "gmii";
 
-Are you saying only 2 of the 4 pairs are connected to the RJ45
-connector? And i assume you are using a 1G capable PHY?
+Are the PHYs external to the switch?
 
-> +					max-speed = <100>; /* only 100Mbit/s lanes are routed */
+>  	port@4 {
+>  		reg = <4>;
+>  		label = "cpu";
+> +		phy-mode = "gmii";
+>  		ethernet = <&switch_nic>;
+>  		phy-handle = <&switchphy4>;
 
-lanes generally refer to SERDES interfaces. For twisted pairs we use
-pairs.
+You have back to back PHYs on the CPU port? This is not wrong, but
+unusual.
 
 	Andrew
