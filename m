@@ -1,66 +1,66 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483AF26B0A9
-	for <imx@lists.linux.dev>; Tue, 17 Feb 2026 19:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E042637648D
+	for <imx@lists.linux.dev>; Tue, 17 Feb 2026 19:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771356702; cv=none; b=ssr+G5BC9WUvfUQ6NdOzwb8xZzT6JJZpVeU8OLbIGphHkm9ZwyAa/l911WxRtDRpGEICeQ7ChuaRb2xHci702L6zuXOWEkQQuOfvTTwVwd/SVs8UXoaq3zbUILI3ecTbNGA98zxGvv2zgYCkeIZavYHyeeLVfhleaO9x68b/81A=
+	t=1771357345; cv=none; b=IKjtkzMyuJ9xqBGagJdEKn5ud0qndjmuTqc4cqcbmvqvbdsFVckW8Y9u4NuSqq+qaDnL/GrJJWEYHeYdujlMn2DF+KVgNYUFNjJ56lM9Gkc9/m02FCCYSUpgIWbcG2N7QeoUKhWtNQRI4Ep/AOooNpGiHrtSdo2/JcFLQBhT6Hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771356702; c=relaxed/simple;
-	bh=lJvDpTHJVNBn3MgGbOS1Jg31wusVoMPQ1a05J0GJwgk=;
+	s=arc-20240116; t=1771357345; c=relaxed/simple;
+	bh=IOYrMdtCWt/Op0E8/4vt5NFeKKiy+7VItgEUcwnuASw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iJ0sHUEGuRV7TCaw19vkLdl03jCtywM0gmQApMxi/2GIyBIcHgoL7iymlLbNijOQYlMxmKSJfGCoRUbTxax/w1adKGJghF6GEqeqgjD0h/QKxuhZTUNMnqcS4zgGqVV0XVSjHJOtOWdTcLwRLv+TsM4zLN1CZ0uS0olh+zPz+Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J8Xq6PaP; arc=none smtp.client-ip=209.85.128.54
+	 Content-Type:Content-Disposition:In-Reply-To; b=r0K+DFna4KFJMunXdi5FSczhRZ8wgpYo+QiAGrUsGAkCbMqvLp7bC/tP/KuKTfWQzJpzwzyYhPbdoBeIn42FuPhPTcvtx+xVsMNXaAikLtFiIHP0qpj5ok39PlU1Er6i6/h3Pyhrr8lySCqnUnH03mlGci1bYiAHY81tj/2UaXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TLlpJBPv; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J8Xq6PaP"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-480706554beso44747075e9.1
-        for <imx@lists.linux.dev>; Tue, 17 Feb 2026 11:31:41 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TLlpJBPv"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-481188b7760so38843705e9.0
+        for <imx@lists.linux.dev>; Tue, 17 Feb 2026 11:42:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771356700; x=1771961500; darn=lists.linux.dev;
+        d=gmail.com; s=20230601; t=1771357342; x=1771962142; darn=lists.linux.dev;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xEvfYLLw3IiT9UwT6PYubkbnZroYjQk8ROv2tQqe9bc=;
-        b=J8Xq6PaP9T7ynKEZrH0jOZ89aWNU5J6sTvukz9W44jwEFVYRMRJOl6GdoVsS/A96Us
-         1R243kx2J6FuCCWtp+kDNnu+cGlLqnlrADKXIPpBCu9ZU7o90Y2h//XQePoVHGIErjXz
-         YjQjslBS4AsedMAKrGqpZZeiPywYCXtQQyGj5ej4iHjeB2K/R2ffICIANZXlEQhCri1b
-         K8yn7+M23jWjUk1KGhp2GTcmAGVaFsvVTtjynr2kBT0oJCKnJ3WOUyXR0WL8RPxiqaFE
-         /+cQB0O1PHnzDvXDDmdqQJwjobwYQy1gaEbchfRt1K4TVQeJLcUrm2wYMIxSAw3BbF1B
-         WKow==
+        bh=YUeQvtbcJRcoGuHYQKHXUnAyTG1dJFRZwd94Z/kLSnc=;
+        b=TLlpJBPvd6EJowdAnDeP40ZCHsUJK+Q6Hhp+uKbHXzak2jXO+nGaF+3JnDzUzC1zUk
+         fT/RKc5Q4xgCsbOXk3bzFliPT4gNtAuNimlPWI6OJHzZ3v0W336w4P/j1MIrDgD8GyXr
+         1Un0rZfsIu9xbdp4xg7PdyRzii6g3JN39aAMcza8DH3iJTBEBJAG/u6k2/2ttb8MdBAn
+         EDmX4KvH7FMKlaOAWudWnIEGxoikoB9zulmm7+at9xcU3qw9rCWOenYbzIx5jQPpINLs
+         MT1+6TAxKbF3NE/72GwVOdqRWiXibKTlptLFCdXbZf1au+Y01h26nwY6lJps2MMY+IbU
+         QGmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771356700; x=1771961500;
+        d=1e100.net; s=20230601; t=1771357342; x=1771962142;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xEvfYLLw3IiT9UwT6PYubkbnZroYjQk8ROv2tQqe9bc=;
-        b=qOREg9QAcwkGnSXV32TWa294v+ujIaCKl6Pm/Q2UuYQJwgflAigy48ujBk7uM7O+so
-         FMjfzwa/P4lgqtws5a+09E9UEsJGQaTe0ciTO/TpdUUSAtnHOTdUuqviSv6lRcHQDrWi
-         tZnnFCkSJ0IpHCBGmxD0btcg6vPBY4hvnGAGYNLZFxrp67ollpf7V9yp8Ag9SKZvZorS
-         WjhYrFz+snGq2R7NBkr48fWDVV7DycmhHGWg9Py/zy0uG//PoCgvV2/YO8PV18U0aCFH
-         s+7QPpzKj1JrV0xpDx/iauvv2iKEQ+RhlKRIhrFhJBhYZYuz+2OUJbxvq9OeM1Am/OX9
-         /Glw==
-X-Forwarded-Encrypted: i=1; AJvYcCXxFEdQiwJAbO9Nd3FD4x7ZhnVE8gh+0GQuH5oaCBvFJHilRMKjGltIfH0zzTNXwWb82LY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyM5zu5dHAbV1/0Oa9TMxtpBP+OSXXWRmUnvufkHr+FhcxmvVxQ
-	9mlziPDn/EGgUzirvoVybgyuBZujVsw/3Rb/69+ozwpDIgbzbgrHyYnv
-X-Gm-Gg: AZuq6aLPzHlgXxpryhcF1RO23hv7nHkrT91Ys8RXIzwhQ1Oa3sZlNW84L+aNpLqlfyO
-	P3lKRNQQnVEwRsE0jaLbyBZqKab9Nr1P6Wg44VzPJ4hHJNygQLhy3yuRqgMaaIBG2Y8A26QeWfT
-	TOjUS32H8ygGVaxvXVRljDoI3Wx9pgi5IcOG3j6JH6bbwG/DNUQSlF7zgO304kONsW+2eSQ536A
-	M/5qgH5/k3eL9xDhdg/BHCzsD7AujBCY/mbPhSTbwi+whgb/+6LJbRV5tdMj2Qja5tkvOFERyR1
-	1aS78W2c9eac6kDsM6Fg8HZviYxVlU8GeNOwTQrgGFbqANkBoODQPYoKTfusHnwGxOIBROZgtRY
-	Xe2SkySj9RbKh+488TdLe0ss790KPEcVYhtDGsbQWeIg/cufTzIlKc0FHrN+2/NvseemCzIOa3H
-	/VjZIe66DFwmkTJRBsTwUvLift1zzfCJR8C7vE0Pf8chWGr2Fo/cnJvlpGPKYoQchDD0qRtIQfo
-	iH3LW8umtGvAPEuRLniaCUIAq9wahgutJMWg7b20K1I1u0=
-X-Received: by 2002:a05:600c:1c19:b0:483:5310:dc67 with SMTP id 5b1f17b1804b1-48379be817cmr234399105e9.20.1771356699475;
-        Tue, 17 Feb 2026 11:31:39 -0800 (PST)
+        bh=YUeQvtbcJRcoGuHYQKHXUnAyTG1dJFRZwd94Z/kLSnc=;
+        b=UjAM5rt1+gYwvqCPCg2ezLqQEnEU827Bol+7jLZaapFO9dedPGOB4DB1TWdfnYXRJC
+         /g5P0stFx9GYQM6Qz4KxnjhO3RyRnhtXEvCdHwB0s/MD8UAA7LZcojP+xJKUILuGyZwU
+         kYL0X1q898dRYKUkiwnyTde2S14ZxWqPENjr2WiEZ2RQ0hfjyVIAOHp6fYIitWfezNhS
+         X1oQPb0awal9GP2hv6XdSvv2BK4cARbLSoERu/7paPH0kRApmtLHXf4E8riDS6z9dgWh
+         D77j7iMWAO8/7uNdtUCKHtDmQgOs+LUAJBlun+PYC/K1s26ikk5omMyKpo8CDyNCVM50
+         nvwg==
+X-Forwarded-Encrypted: i=1; AJvYcCW8aDvLU/Swjc8Z4yTrCyPXozRWQvJlr7gW3+pvvsdN42CdJkhgUIy0GOo0+tFUsjQdwUA=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yyyr5Gt34BpmQRxzzPgqkf/utuXZjrbInKMZ/OqGk3BnGajxgHz
+	Df5DxEikHmhiBNN7Wziu++Z1Oo88psZQABrogVc3ADiyPCNpfajOgEXe
+X-Gm-Gg: AZuq6aIEdEynYFVAwpSOxrKZ/VPUDDGOUv9fOcv3YIq5OUGacrIx8jmCTjEtiFukUjF
+	F978n5+mNbxmCY4cBXikvBEiPOiLHQeeNsQp/T0VEwvzb69mC1VpnO+85iI+gCYM73PxKqoBSm5
+	RbAM8LXYi2JMJ+wA+bzhc3QXry3wjDaU8ngNXknnwOPyioETiRUMVY6Nvm9zRve1QC5fY/KYCLu
+	rro5VB+XJjbbM9grSxRymMnPEVBMM/BNiFWOVfwvdieXfdcN95XCoLpwpjYBLxxg9Bj2RpEEuKa
+	RUVckxJe+LNx9alo28ZtPs8/IVq7MOjSDpaOffOxmZiZFhNcvtvU0LtfN5MFESMT6C+i2sRL+CO
+	Hk/vkDbTde0/2Ok1viLtpKBs1tM3dISfg3z2g3DbqlU32LgvM0XvKVco/b5fq0DyD+WMd0EwB6/
+	uuX/uzRxgdg9rBJDv0C3bgefCtNNfuayt7Xd67VLxFRJhpPcRBv2l+xOa13i5nj2kxU9rFyXY1a
+	NTbL92do8N5JttvV0OwZcvp2MebkJ2JQfg/kWi9ChYCxiY=
+X-Received: by 2002:a05:6000:2586:b0:432:dc1f:6982 with SMTP id ffacd0b85a97d-437978cd85emr24996379f8f.16.1771357342109;
+        Tue, 17 Feb 2026 11:42:22 -0800 (PST)
 Received: from Lord-Beerus.station (net-188-152-100-94.cust.vodafonedsl.it. [188.152.100.94])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48397317e84sm1751885e9.5.2026.02.17.11.31.38
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796acf5b9sm34488531f8f.34.2026.02.17.11.42.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Feb 2026 11:31:39 -0800 (PST)
-Date: Tue, 17 Feb 2026 20:31:36 +0100
+        Tue, 17 Feb 2026 11:42:21 -0800 (PST)
+Date: Tue, 17 Feb 2026 20:42:19 +0100
 From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
+To: Fabio Estevam <festevam@gmail.com>
 Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
 	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
 	Stefano Radaelli <stefano.r@variscite.com>,
@@ -68,14 +68,13 @@ Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH v1 03/11] arm64: dts: freescale: imx8mm-var-som: Update
- FEC support with MaxLinear PHY
-Message-ID: <aZTCGH1rKWdvYg5-@Lord-Beerus.station>
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH v1 06/11] arm64: dts: freescale: imx8mm-var-som: Update
+ WiFi/BT configuration
+Message-ID: <aZTEm8nUUVcKZH0v@Lord-Beerus.station>
 References: <cover.1771353301.git.stefano.r@variscite.com>
- <3b984b93a43a07bc9c4f6414a08a3a0f45daaaa8.1771353301.git.stefano.r@variscite.com>
- <31f30651-7c99-42cb-9e27-e4806529d137@lunn.ch>
+ <3e79c4d806b8b8024b71bc99c36b09a2fbb90a65.1771353301.git.stefano.r@variscite.com>
+ <CAOMZO5CAb8738HdH49WcY-JPTzQ90n4Bnmyn96_3jfw47mxOug@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -84,41 +83,32 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <31f30651-7c99-42cb-9e27-e4806529d137@lunn.ch>
+In-Reply-To: <CAOMZO5CAb8738HdH49WcY-JPTzQ90n4Bnmyn96_3jfw47mxOug@mail.gmail.com>
 
-Hi Andrew!
+Hi Fabio!
+
+On Tue, Feb 17, 2026 at 03:59:33PM -0300, Fabio Estevam wrote:
 > 
-> I don't think you say this explicitly anywhere, so i will ask. The PHY
-> is on the SOM? The carrier just has magnetics and the RJ45?
-
-Yes, the Ethernet PHY (MXL86110) is physically mounted on the VAR-SOM.
-All RGMII signals, MDIO and the LED outputs are routed to the SOM
-board-to-board connector. The carrier board only provides the magnetics
-and the RJ45 connector.
-
+> What about users who still have boards with the Broadcom Wi-Fi chip?
 > 
-> >   Two LEDs are defined to match the VAR-SOM carrier design:
-> >     * LED@0: Yellow, netdev trigger.
-> >     * LED@1: Green, netdev trigger.
-> 
-> Where are the LEDs? You say "carrier design", so are they on the
-> carrier? The DT properties should then be in the .dts file for the
-> carrier.
->
+> Will Wifi on the old boards stop working?
 
-The LED signals are driven directly by the PHY and originate on the SOM.
-They are exposed on the SOM connector and are typically routed straight
-to the RJ45 integrated LEDs on the carrier. For this reason, the LED
-configuration belongs in the SOM .dtsi rather than the carrier .dts.
+The Broadcom-based WiFi module was used on earlier revisions of the
+VAR-SOM-MX8MM. That hardware revision is no longer in production and
+is not available for new orders. All currently manufactured and shipped
+VAR-SOM-MX8MM modules integrate the NXP IW61x instead.
 
-That said, you are right that describing them as "Yellow" and "Green"
-ties the description to a specific carrier implementation.
-I will drop the `color` property and keep only the LED function and trigger
-so that carrier designs can reflect the actual LED implementation if needed.
+Since the wireless module is soldered on the SOM and not selectable via
+the carrier board, the device tree must reflect the hardware that is
+actually present on the module. This series aligns mainline with the
+current production revision of the SOM.
 
-Does that approach sound acceptable?
+Customers using older hardware revisions still have access to the
+corresponding device tree descriptions in earlier kernel versions.
+Upstream support is being aligned with the actively produced hardware.
 
-As always, thank you for your review.
+The same applies to the Ethernet PHY update included in this series,
+which reflects the PHY used on the current (and future) SOM revision.
 
 Best regards,
 Stefano
