@@ -1,151 +1,66 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3AF359FB0;
-	Tue, 17 Feb 2026 14:00:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B628635502F;
+	Tue, 17 Feb 2026 14:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771336832; cv=none; b=B3UZftSkJvBpy2Y7jO661aroevPAceaHAQ6KRGA8RmCzwhDVHKz9RP/2zUxA4w/gpjMDUf32sT/nm9toS/GNoWBhZycbcoNyZFJagZ0nouVoufi4ekzwtIeWlXbQy7SECdPRnl8a+KQVPlvo+g7qARqNIGJwJdl5KmcxIhH1yHY=
+	t=1771340000; cv=none; b=tDl5AhiXb9+LbCS0eW+ewZ2ggFLeeSCt7U1CG1FaB9ZErQ3TF5uCuVMnrtTDTM/cjO9yUnL0GAAZ/M178IvmFt58hFIr8r2/Hhesd5jGCILf8hoFMS3Tm2zbbHPvJ5X6e/+1mb/0CGTCg9JYrQrw+7zwW5eXYiT69EytsOx7CnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771336832; c=relaxed/simple;
-	bh=yZ7EZjJ35vE1okONnm6nlL8GwNn4qtBojbitFN7sh+s=;
+	s=arc-20240116; t=1771340000; c=relaxed/simple;
+	bh=of7fP2gkYPecNan7Os7HTGIRiGclwxHTsW+Nqw8qLnw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FjFDFr8pRiZjttzxF5i0Wg2YrtpKzo+D2pBfg5MTFrJvgfuwb5ceMtlJVhZfMDZIxntUx4D+XIsxCaLDjH8cJHKkccJj/KbT3ZSKcRGeNe3ozHuzWURbVIlxKMUAUG2/VrUL6S381ysx5wZITFLFVeRn1D19M/mGrPCRQYisa1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jmH4cT3S; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=u1ylQ13CWPIG4aQbmX3G7Fro/hSrcy2ZDE/ED4lV5cPVxp80+/0T8y88ZpnH7BJunTBfmrIjrtmJk3eXp5gFTymNz4U5h2T5waP06fkBl8EA+owrzhiMKJs2LRevYqEsWwZ6+h6QYMtu1LNhtftgDO0KXNRkG+U5G8rT8R8arwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ahjoqDGR; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jmH4cT3S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC8CC19423;
-	Tue, 17 Feb 2026 14:00:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771336831;
-	bh=yZ7EZjJ35vE1okONnm6nlL8GwNn4qtBojbitFN7sh+s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jmH4cT3Sx9zCRZQH9kFVGIW5ensgdZJTn4zf48NZ0YIB5BBUVYe/yZsiM/TYW6vwC
-	 HZm8v8gds4F9qE+hm3rVhCNougf376hLCEhkLbD1loeG8gWj+hsahepoTD8lB6MGD1
-	 cigUXjIg3vvTFDAWpna9VMH2+QrdThxiCuV8wmRPZF+XyKxszSrJVtH3ueDgsyIcTu
-	 gseHHGa6vH4aNL2TPSu/iyflRGBzXaabqwa15SbYUlgbezZLNONS9JEXFNYzuLpxTZ
-	 ghIWeLYGiXKqgfRTTjKwTr0bdfxQIqmCcAd5wTOHC5HWJrTT7hUgnHGZZHlwbyRPi7
-	 pnZxxaNiP6jBA==
-Date: Tue, 17 Feb 2026 19:30:24 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>, 
-	Jingoo Han <jingoohan1@gmail.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
-	Sascha Hauer <s.hauer@pengutronix.de>
-Subject: Re: [PATCH] PCI: layerscape: Allow to compile as module
-Message-ID: <a3fn5vt73n6ggnr6euuba7gbmv7uhx4c6wdelxwtkcdzn2dn7e@btqsm5glgffr>
-References: <20260112-v6-19-topic-layerscape-pcie-v1-1-1cd863fce50e@pengutronix.de>
- <20260216-mahogany-caterpillar-of-certainty-38b0bc-mkl@pengutronix.de>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ahjoqDGR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=noah+ahWLsLbjMlCHgxT7YuEr4pbD0Lx5cvHqvNKHn0=; b=ahjoqDGR3dg6s6pXBpNrSOh2En
+	AHtLeFFglpmBgoJ/oeuG49oOkw9EYh90FYlkrJtpiOcUOBd0+u7LXhUbMjRVJeYB5kBXd9Ig3XdKE
+	fDSVhX/zBw/SZF+z4qpN5FgVCUAeS5wDProFMTC5iEkK+uAuFeapI7UO/a+FVDauSOA4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vsMRo-007een-4Q; Tue, 17 Feb 2026 15:53:08 +0100
+Date: Tue, 17 Feb 2026 15:53:08 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Ian Ray <ian.ray@gehealthcare.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] ARM: dts: imx: bx50v3: Configure switch PHY max-speed
+Message-ID: <6dc304c8-2e65-4090-85b2-4b69a5751823@lunn.ch>
+References: <20260217125952.53997-1-ian.ray@gehealthcare.com>
+ <20260217125952.53997-2-ian.ray@gehealthcare.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260216-mahogany-caterpillar-of-certainty-38b0bc-mkl@pengutronix.de>
+In-Reply-To: <20260217125952.53997-2-ian.ray@gehealthcare.com>
 
-On Mon, Feb 16, 2026 at 10:49:42PM +0100, Marc Kleine-Budde wrote:
-> Hello,
-> 
-> Bjorn can you take this patch?
-> 
+On Tue, Feb 17, 2026 at 02:59:48PM +0200, Ian Ray wrote:
+> Configure maximum speed for the switch PHYs according to the electrical
+> connections from PHY to RJ45 connector.
 
-Will do once -rc1 is out.
+Are you saying only 2 of the 4 pairs are connected to the RJ45
+connector? And i assume you are using a 1G capable PHY?
 
-- Mani
+> +					max-speed = <100>; /* only 100Mbit/s lanes are routed */
 
-> On 12.01.2026 20:17:11, Steffen Trumtrar wrote:
-> > From: Sascha Hauer <s.hauer@pengutronix.de>
-> >
-> > The layerscape pcie host controller could also be compiled as module.
-> > Add the necessary infrastructure to allow building as module instead of
-> > only as builtin driver.
-> >
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > ---
-> >  drivers/pci/controller/dwc/Kconfig          |  2 +-
-> >  drivers/pci/controller/dwc/pci-layerscape.c | 16 +++++++++++++++-
-> >  2 files changed, 16 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/pci/controller/dwc/Kconfig b/drivers/pci/controller/dwc/Kconfig
-> > index 519b59422b479..abfa4a6e62c25 100644
-> > --- a/drivers/pci/controller/dwc/Kconfig
-> > +++ b/drivers/pci/controller/dwc/Kconfig
-> > @@ -121,7 +121,7 @@ config PCI_IMX6_EP
-> >  	  DesignWare core functions to implement the driver.
-> >
-> >  config PCI_LAYERSCAPE
-> > -	bool "Freescale Layerscape PCIe controller (host mode)"
-> > +	tristate "Freescale Layerscape PCIe controller (host mode)"
-> >  	depends on OF && (ARM || ARCH_LAYERSCAPE || COMPILE_TEST)
-> >  	depends on PCI_MSI
-> >  	select PCIE_DW_HOST
-> > diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
-> > index a44b5c256d6e2..14d6ac4fc53fd 100644
-> > --- a/drivers/pci/controller/dwc/pci-layerscape.c
-> > +++ b/drivers/pci/controller/dwc/pci-layerscape.c
-> > @@ -13,6 +13,7 @@
-> >  #include <linux/interrupt.h>
-> >  #include <linux/init.h>
-> >  #include <linux/iopoll.h>
-> > +#include <linux/module.h>
-> >  #include <linux/of_pci.h>
-> >  #include <linux/of_platform.h>
-> >  #include <linux/of_address.h>
-> > @@ -403,8 +404,16 @@ static const struct dev_pm_ops ls_pcie_pm_ops = {
-> >  	NOIRQ_SYSTEM_SLEEP_PM_OPS(ls_pcie_suspend_noirq, ls_pcie_resume_noirq)
-> >  };
-> >
-> > +static void ls_pcie_remove(struct platform_device *pdev)
-> > +{
-> > +	struct ls_pcie *pcie = platform_get_drvdata(pdev);
-> > +
-> > +	dw_pcie_host_deinit(&pcie->pci->pp);
-> > +}
-> > +
-> >  static struct platform_driver ls_pcie_driver = {
-> >  	.probe = ls_pcie_probe,
-> > +	.remove = ls_pcie_remove,
-> >  	.driver = {
-> >  		.name = "layerscape-pcie",
-> >  		.of_match_table = ls_pcie_of_match,
-> > @@ -412,4 +421,9 @@ static struct platform_driver ls_pcie_driver = {
-> >  		.pm = &ls_pcie_pm_ops,
-> >  	},
-> >  };
-> > -builtin_platform_driver(ls_pcie_driver);
-> > +module_platform_driver(ls_pcie_driver);
-> > +
-> > +MODULE_AUTHOR("Minghuan Lian <Minghuan.Lian@freescale.com>");
-> > +MODULE_DESCRIPTION("Layerscape PCIe host controller driver");
-> > +MODULE_LICENSE("GPL");
-> > +MODULE_DEVICE_TABLE(of, ls_pcie_of_match);
-> >
-> > ---
-> > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> > change-id: 20260112-v6-19-topic-layerscape-pcie-9d10b6542139
-> >
-> > Best regards,
-> > --
-> > Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> >
-> >
-> 
-> --
-> Pengutronix e.K.                 | Marc Kleine-Budde          |
-> Embedded Linux                   | https://www.pengutronix.de |
-> Vertretung Nürnberg              | Phone: +49-5121-206917-129 |
-> Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+lanes generally refer to SERDES interfaces. For twisted pairs we use
+pairs.
 
-
-
--- 
-மணிவண்ணன் சதாசிவம்
+	Andrew
