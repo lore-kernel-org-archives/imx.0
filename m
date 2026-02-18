@@ -1,47 +1,47 @@
-Received: from mx-relay48-hz3.antispameurope.com (mx-relay48-hz3.antispameurope.com [94.100.134.237])
+Received: from mx-relay99-hz2.antispameurope.com (mx-relay99-hz2.antispameurope.com [94.100.136.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63082C1586
-	for <imx@lists.linux.dev>; Wed, 18 Feb 2026 13:25:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.237
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9A02D23A6
+	for <imx@lists.linux.dev>; Wed, 18 Feb 2026 13:25:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.199
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771421104; cv=pass; b=pgQEmT+BLdfs7vIWaPrHz09AFTJ/cfCQiaofnszAXZjpAscueXzIqs2PRUWyj2JCICXq98Dqd/VD1zc3s1SRpwXFpzaCZaOzp0m0l+a7pDhXcCb/bI9Se/gsTreeLLZkZMKwvtPXwO0x7Zr6IRVjJUqfXFeToLgOekjHCMVE4Ac=
+	t=1771421105; cv=pass; b=NemoO9WN5FnjtBhdxBf+Yy2ea+akzDkFyNEfJUS5d8cASycphJvLyxPZbgReBx/oyCR3ecf2++y2Azn8xzAqM1yoeIilKRFBf43lk1F38Cy8st5Umiy0qBXjq6kBwX/52D3g6S7GVua2Q3g3rEqLR9SwjHdRl/4ZR65PNbEFD6U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771421104; c=relaxed/simple;
-	bh=xfXwqwBueJTPOc+EBrMOGueLlKYVIP+u+Q5hEbBwUhs=;
+	s=arc-20240116; t=1771421105; c=relaxed/simple;
+	bh=+VRdDjYGjOAQQR44GAINSO0rtHT3czjpLLS9e/uiIMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0YVeSXkhPUm6KJk7jmGldPtnZJl13rtKlOpj9AvU0Z0ELFlIG1UJ/7wkgkoOzyTJZtf3qbuu/pF8pMp2/aE87rHDJ0dxFdyGszp6jhFDoZBd2x7GYPcODHuRPWmy1MbsojqhsMThtjvdJShGLOxH9+t4t9MnWE6c8VZxVEcBhY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=UbGihXHn; arc=pass smtp.client-ip=94.100.134.237
+	 MIME-Version; b=NJTR2yS3UJ7YZOGrvhmz+KPf47EQPob0CwpTb77S49x4sJFXjYa0dQXMyMIZP5TEHKq97vi5TREpLQ52sv2a6hgIAEWXTbkA4b3pZFaFiLQYm8q+mwXPgWDM/lhselHm7yqPE5Zt43ueygMQFS3QptjcA3QciYJfOuF+eJYi6gk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=AmrRFCjJ; arc=pass smtp.client-ip=94.100.136.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="UbGihXHn"
-ARC-Authentication-Results: i=1; mx-gate48-hz3.hornetsecurity.com 1; spf=pass
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="AmrRFCjJ"
+ARC-Authentication-Results: i=1; mx-gate99-hz2.hornetsecurity.com 1; spf=pass
  reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
  smtp.mailfrom=ew.tq-group.com
  smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
  header.from=ew.tq-group.com orig.disposition=pass
 ARC-Message-Signature: a=rsa-sha256;
- bh=RDEB7Al8C9dMaYAoYH02KGoF+Zms3cmMuP6jo0DNw98=; c=relaxed/relaxed;
+ bh=MoTbc/oD0OyhhEGqv2giwAcUy2p9JS4wITvmke3ZLCc=; c=relaxed/relaxed;
  d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1771421035;
- b=nYAzN06pV9KXShbXtA1NUCh/PbV9cXB9hBzhtbhIeMn/9L4yBv+4TX1KkGdsSIHBtWJ8qppc
- vgTBfIV/AYUnV8I5/6mMk0PCU0NDH9IapnjM0PpdwQfOHPvXyXjq7R7nEXAx6cidwWMS/nTc65D
- /80mthJWCd4VxKh89P0O4EUR9Ma9E2+wr7moaRuFTXNdozRvV+A4LKpFPnPMP6cv46qMhkIDuK0
- glkQuEOZvjVhfA3cGT8u4xlLDGsktxuFVuLK1LvYsnVpu0/wdzF4BlwB9/2A/PPbsEdilGPYEpQ
- HseDmFlbxb5JPFTMdNNwdG7fc+0WLsY85vIj0YeE+GVyw==
+ t=1771421036;
+ b=gsNpSQF44ZDpSjqrKINk15Iew9IOoCfiRjZtZ9FO886OETe9CK2bzR1bfx2K/0hhrSePE9NH
+ xiYYeSQc5RNalkI0j4TP6AL1RXf5gsZTZ/Aqa/JeiF57Xhnlm29talNCKy1TwWKiOpxjq6U9bP1
+ cgWkD66q4vD6Bl6aLAzs12pLP5r55JKYhbF5T3k9WMpMo2i0juh9m/WP4p/Ncd6Om6eLuS6b1vb
+ DcYH0CPP4wR8chwMfFCii1UH1rK7EUA4zBnwmZVhFlHoNTobsUxQqK21ryXS8GHawJ7oD2x8F8P
+ z7u1xUsMdQA24x3kDksLWsAaN9wXZMjdGhlEX1OAJspdg==
 ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1771421035;
- b=SCZjgpE7IPJgE4cfC/DnrJpgBVz4M2DVuvANstpoqbBezSWwmdNvMR+58D5V1TRqpwa1T2Y0
- MccZUMHjHUwR+8jl2GIKvAld8ZwuvZUFq9mWPRWsS1pf6RXdkXcu+TCDLQNE7mnCId6zuFePEm0
- Pd+UQgOcQEkR+vvcpORghAL1Ttj/CuzhHcEt4MuZH1RG3mRTNJSFtxrEBSUzXig6oM7t6a6SWYo
- TBydiuJYroH3x6NJ8qjHhLx8D3RKFhWI3edatNY5KZPyv7n9+25ARkAzsGXMfqpnwzK3Ap4MipN
- qzAAO1JshkOF6E+AbiJsJVbZ2lIUAyxl7JmSCjHwDlO5g==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay48-hz3.antispameurope.com;
- Wed, 18 Feb 2026 14:23:55 +0100
+ t=1771421036;
+ b=EG+V5cyoXMRE3Ts/BPGbdgQ/wQd9NcgJ8J13clUh6PNfnFZEgxEMBRNtTo/CJf/kqh4tTKGy
+ 2EjdJSpSlix/BVi6UDqjKV+u14391DBWF/cDKe8MwgKtkRmtjY+gGbckHbBUMWK3x/xSUTwsrb/
+ VpHGb6PDyVyn5Zvf4+CtevUtOVrHwsAJCoWt1/yXvI9MQswpk0ICmGCVhT50qsOua7mcbVU1KLf
+ vZ3iLwXZa09k6aQhrlBzkKUIwBK6jQzp66VwLlKuH2l9IrLS8yPQc08DoRM/LKdW+JUvrvVPLBi
+ Nd9eICsQY8KEwzB3MC9Zu61X1mOCH4XMFz8zGLzDnk9/Q==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay99-hz2.antispameurope.com;
+ Wed, 18 Feb 2026 14:23:56 +0100
 Received: from merchelm-W2.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
 	(Authenticated sender: max.merchel@ew.tq-group.com)
-	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 3242B2205F0;
+	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id D5AFB220714;
 	Wed, 18 Feb 2026 14:23:44 +0100 (CET)
 From: Max Merchel <Max.Merchel@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
@@ -57,9 +57,9 @@ Cc: Max Merchel <Max.Merchel@ew.tq-group.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/4] ARM: dts: imx6ul[l]-tqma6ul[l]: add boot phase properties
-Date: Wed, 18 Feb 2026 14:23:35 +0100
-Message-ID: <20260218132339.32157-3-Max.Merchel@ew.tq-group.com>
+Subject: [PATCH 3/4] ARM: dts: mba6ulx: add boot phase properties
+Date: Wed, 18 Feb 2026 14:23:36 +0100
+Message-ID: <20260218132339.32157-4-Max.Merchel@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260218132339.32157-1-Max.Merchel@ew.tq-group.com>
 References: <20260218132339.32157-1-Max.Merchel@ew.tq-group.com>
@@ -76,162 +76,80 @@ X-cloud-security-crypt: load encryption module
 X-cloud-security-Mailarchiv: E-Mail archived for: max.merchel@ew.tq-group.com
 X-cloud-security-Mailarchivtype:outbound
 X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay48-hz3.antispameurope.com with 4fGHJw6VYjz1kPGCB
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay99-hz2.antispameurope.com with 4fGHJx4N4Fz28mW9
 X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:24d8cc4ecc148cb0df8ddce9d33b9577
-X-cloud-security:scantime:1.977
+X-cloud-security-Digest:bfaa624291ef2e7c54e646dbcffdbd37
+X-cloud-security:scantime:2.078
 DKIM-Signature: a=rsa-sha256;
- bh=RDEB7Al8C9dMaYAoYH02KGoF+Zms3cmMuP6jo0DNw98=; c=relaxed/relaxed;
+ bh=MoTbc/oD0OyhhEGqv2giwAcUy2p9JS4wITvmke3ZLCc=; c=relaxed/relaxed;
  d=ew.tq-group.com;
  h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1771421035; v=1;
- b=UbGihXHnc3jtHYeRmoxXrUCm1Z/AzDjAi/JiGIU7F2lBGyOI7VNy5wAoYJyn2Jeu+VPaNJ6i
- nRlfUHPCBN1/9Yr/bWpptuycyhfk+q6OcZh3rT8Kttst9daFJ+YQjG+dYVHoL7gPQbdqd3rlzx+
- Ma4KYtSRN+C0y5GZAkHlzKpvWCJMt3lkGk8jmQuhKjbt7SjEOdTaaZ4pqw2gUWsEnmOXhbqjyUt
- 0KNUMZeV8aFLjr9GkZxIJ1laUZky4Yljs6INAIc45SRuJVFFN+V7IiMZocm5tek5P7D73WsQibD
- KhGbc8s8zcc59Qzo+W4svqN2np0u+/r6QV9tZ7oVS3fUg==
+ t=1771421036; v=1;
+ b=AmrRFCjJUfzVIaFvebxLkuIHX0L08YneMG9vEyKRCr+iMq1oBL5/ZEiboWMR3ZYUumqzyqF3
+ FbzVdEWUMJD2j9dQbrqxvFrrd8gdhFLawN9SqqSH3sA07bH6749Rtbc6x8+AjIy9QCdcxKLFTsV
+ K5jfXPdNHDrKy8Etm9URjkTqDI+S+/OOCmZn5qAGtOC4JBPWCHsMyEu5uFS+o5CZbt+iSyNtqWY
+ 61/YujXNKmBorP+l8nMWY7SGLI0x7pESB/fYps0SwJp5N65vxSkm7oBsAq7SCvibvWDWRz/dqz/
+ E+sqXo8dJ2Izl8VmaLjG/PcPb1ZkSF5NF+62Sv3IhRb7g==
 
-Add boot phase properties for TQMa6UL[L] device tree.
+Add boot phase properties to MBa6ULx device tree.
 
 Signed-off-by: Max Merchel <Max.Merchel@ew.tq-group.com>
 ---
- arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi   | 10 ++++++++++
- arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul2.dtsi         |  1 +
- arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul2l.dtsi        |  1 +
- arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulx-common.dtsi  |  1 +
- arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulxl-common.dtsi |  1 +
- arch/arm/boot/dts/nxp/imx/imx6ull-tqma6ull2.dtsi       |  1 +
- arch/arm/boot/dts/nxp/imx/imx6ull-tqma6ull2l.dtsi      |  1 +
- 7 files changed, 16 insertions(+)
+ arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi
-index 2dd635a615cb..4fa98e6a66d7 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul-common.dtsi
-@@ -26,6 +26,7 @@ &i2c4 {
- 	pinctrl-1 = <&pinctrl_i2c4_recovery>;
- 	scl-gpios = <&gpio1 20 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 	sda-gpios = <&gpio1 21 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+diff --git a/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi b/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
+index 65fde4f52587..1fda60d62ffe 100644
+--- a/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/mba6ulx.dtsi
+@@ -95,6 +95,7 @@ reg_mba6ul_3v3: regulator-mba6ul-3v3 {
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+ 		regulator-always-on;
++		bootph-pre-ram;
+ 	};
+ 
+ 	reg_mba6ul_5v0: regulator-mba6ul-5v0 {
+@@ -336,6 +337,7 @@ &sai1 {
+ &uart1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_uart1>;
 +	bootph-pre-ram;
  	status = "okay";
- 
- 	pfuze3000: pmic@8 {
-@@ -140,9 +141,14 @@ rtc0: rtc@68 {
- 	};
  };
  
-+&gpio1 {
-+	bootph-pre-ram;
-+};
-+
- &gpio4 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_pmic>;
-+	bootph-pre-ram;
- 
- 	/*
- 	 * PMIC & temperature sensor IRQ
-@@ -159,6 +165,7 @@ pmic-int-hog {
- &qspi {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_qspi>;
-+	bootph-pre-ram;
- 	status = "okay";
- 
- 	flash0: flash@0 {
-@@ -168,6 +175,7 @@ flash0: flash@0 {
- 		spi-rx-bus-width = <4>;
- 		spi-tx-bus-width = <1>;
- 		vcc-supply = <&reg_vldo4>;
-+		bootph-pre-ram;
- 
- 		partitions {
- 			compatible = "fixed-partitions";
-@@ -189,6 +197,7 @@ &usdhc2 {
- 	non-removable;
+@@ -392,6 +394,7 @@ &usdhc1 {
+ 	no-1-8-v;
+ 	no-mmc;
  	no-sdio;
- 	no-sd;
 +	bootph-all;
  	status = "okay";
  };
  
-@@ -212,5 +221,6 @@ pinctrl_pmic: pmicgrp {
- 			/* PMIC irq */
- 			MX6UL_PAD_CSI_DATA03__GPIO4_IO24	0x1b099
+@@ -399,6 +402,7 @@ &wdog1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_wdog1>;
+ 	fsl,ext-reset-output;
++	bootph-pre-ram;
+ 	status = "okay";
+ };
+ 
+@@ -494,6 +498,7 @@ pinctrl_uart1: uart1grp {
+ 			MX6UL_PAD_UART1_TX_DATA__UART1_DCE_TX	0x1b0b1
+ 			MX6UL_PAD_UART1_RX_DATA__UART1_DCE_RX	0x1b0b1
  		>;
 +		bootph-pre-ram;
  	};
- };
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul2.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul2.dtsi
-index e2e95dd92263..f81cd09fe0c7 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul2.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul2.dtsi
-@@ -33,6 +33,7 @@ MX6UL_PAD_NAND_DATA07__USDHC2_DATA7	0x00017051
- 			/* rst */
- 			MX6UL_PAD_NAND_ALE__GPIO4_IO10		0x0001b051
+ 
+ 	pinctrl_uart3: uart3grp {
+@@ -542,6 +547,7 @@ MX6UL_PAD_UART1_CTS_B__GPIO1_IO18	0x0001b099
+ 			/* CD */
+ 			MX6UL_PAD_UART1_RTS_B__GPIO1_IO19	0x0001b099
  		>;
 +		bootph-all;
  	};
  
- 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul2l.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul2l.dtsi
-index 4b87e2dc70dc..11c8f1af4173 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul2l.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ul2l.dtsi
-@@ -33,6 +33,7 @@ MX6UL_PAD_NAND_DATA07__USDHC2_DATA7	0x00017051
- 			/* rst */
- 			MX6UL_PAD_NAND_ALE__GPIO4_IO10		0x0001b051
- 		>;
-+		bootph-all;
- 	};
- 
- 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulx-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulx-common.dtsi
-index 5afb9046c202..5c90d0a3ee2e 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulx-common.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulx-common.dtsi
-@@ -39,5 +39,6 @@ MX6UL_PAD_NAND_CE1_B__QSPI_A_DATA02   0x70b9
- 			MX6UL_PAD_NAND_CLE__QSPI_A_DATA03     0x70b9
- 			MX6UL_PAD_NAND_DQS__QSPI_A_SS0_B      0x70a1
- 		>;
-+		bootph-pre-ram;
- 	};
- };
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulxl-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulxl-common.dtsi
-index ba84a4f70ebd..133961ee7283 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulxl-common.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-tqma6ulxl-common.dtsi
-@@ -44,5 +44,6 @@ MX6UL_PAD_NAND_CE1_B__QSPI_A_DATA02   0x70a9
- 			MX6UL_PAD_NAND_CLE__QSPI_A_DATA03     0x70a9
- 			MX6UL_PAD_NAND_DQS__QSPI_A_SS0_B      0x70a1
- 		>;
-+		bootph-pre-ram;
- 	};
- };
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-tqma6ull2.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-tqma6ull2.dtsi
-index 8541cb3f3b3e..1224ef132439 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ull-tqma6ull2.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-tqma6ull2.dtsi
-@@ -38,6 +38,7 @@ MX6UL_PAD_NAND_DATA07__USDHC2_DATA7	0x00017039
- 			/* rst */
- 			MX6UL_PAD_NAND_ALE__GPIO4_IO10		0x0001b051
- 		>;
-+		bootph-all;
- 	};
- 
- 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-tqma6ull2l.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-tqma6ull2l.dtsi
-index be593d47e3b1..6dd1b359e086 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ull-tqma6ull2l.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ull-tqma6ull2l.dtsi
-@@ -38,6 +38,7 @@ MX6UL_PAD_NAND_DATA07__USDHC2_DATA7	0x00017039
- 			/* rst */
- 			MX6UL_PAD_NAND_ALE__GPIO4_IO10		0x0001b051
- 		>;
-+		bootph-all;
- 	};
- 
- 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+ 	pinctrl_usdhc1_100mhz: usdhc1-100mhz-grp {
 -- 
 2.43.0
 
