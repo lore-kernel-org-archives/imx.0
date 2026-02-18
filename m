@@ -1,146 +1,301 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293F8332EDA
-	for <imx@lists.linux.dev>; Wed, 18 Feb 2026 08:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868EE2FDC40
+	for <imx@lists.linux.dev>; Wed, 18 Feb 2026 10:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771405177; cv=none; b=tFg5Vzau2A4jDwLicyZGYrGnBWmjQgBVCSPTJOO+F1Y9m6dmW30wdfQ/YghybNxn2Sxn1cSb4P80CpqP44q/IbPxtct3vSdYhw6mBBmdE05ugcNKAu2BoRezMHKZxrctrb/B013ZXwO+20tpiBVaeQeRzohr80A9cFmYw1DZgXA=
+	t=1771410014; cv=none; b=C/74LstzVBR4MZKTC5W/bgySDG1lA8MBXf5bQnwgpdppCCGwx9xAbhyHBk0VYhL5TRv3NHEdPYJsduD7a0C5HBqgPcCu6uiK2mmi2HsLLA7vfIvUwKoa8dOKqSdOOiMbvRr/1hEkhUXrNwuAcT0UqiWM9U6oZZJ2WTA+2yswKk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771405177; c=relaxed/simple;
-	bh=bp0SGlOFbs7qaFo3i1X5NVk+cXHP+qamjp/rZmnb9Kc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MvH59dunxsmYdCIcJccEUdsqHtXfI/GZFwUTHzhocBdh4wPJHbev1/l4P5CuWxx7/YFHX28Q4+53QadNILGyJkSKIKfG+5djRtfgRhfaKA9+WhwYZ9lgajai0kRKLqILCCcQJ+152bObnA2U+gA59XuNl5QdctabFQfqJPAL9/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M7kqUO9T; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1771410014; c=relaxed/simple;
+	bh=KMRhh6W9t1S/zQ6NhQbrvFLYqyEEu7IaIcL7BGCP9Fc=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kE7K4uCTSaO0Yd/W3fdl0vJa9vRBoHhTCABvjLy4KdeaoH4sagxdbtt2U5Fz0CWIY6IApTRmD+rbD12OoknlE+lhbJl5GJ0MB6hLcOTe4gSE51X2ryyG5i6z5UUH94LNXRLtZUFvtzt1ksnLzHa8KF7lUWR1bc4Ss0t876m5vkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=piRPMPq1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M7kqUO9T"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-436317c80f7so387980f8f.1
-        for <imx@lists.linux.dev>; Wed, 18 Feb 2026 00:59:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771405174; x=1772009974; darn=lists.linux.dev;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=s4xtdZq7ZOIcHdSeKfZqgNu8Mz/fkUqSTcDWpnIDA68=;
-        b=M7kqUO9TbmnYl+XTrbN8HJ0Zd7g5JhWu9eOBVEeaZFA3spZQoVEKgMmZJe8KJMrNcr
-         rqMbRQtPj4JtiUS629nudDCfh4sfwmyl4hjnXkARevJ4J29ysBsOoxkX+fw1rCY4ZIMt
-         6I5swwU91xQNMP9kpmwcsJE8md1pfubYTgOs+Sfi8VyeeDJlxEMst4i/lvcqtzdAf7Ve
-         fXNi7/Fn2yPuT2dzE4DyKWPCC3H7LrkljuCdPVCJ1k7CQw77Us8Fx3p8FFZhEiByypxW
-         dWKahUs3FPdTBSoE2ePQ/rUXv10dNV/3rhNQdE3GpTF9NxmwkqkDeIqhCNBqUtIlgSaS
-         fTcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771405174; x=1772009974;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s4xtdZq7ZOIcHdSeKfZqgNu8Mz/fkUqSTcDWpnIDA68=;
-        b=Jcjd0NLf6C2Q8g5Aj6LQa73SbW5RvbCiKkoorwxU4GHuku7ojaArHfK2vhVsvRnuUM
-         kfblehQJvFujmjL+kNYCRVAyNAnT6keYOHY05bgYBo4IDOTqvPl1ifYYyM9R8G+sp5Jm
-         w55w9BKacxFNLiS3iO7SbEo0c41kExS+86xkjkqtDC7TOWdoZG2pykxyh5QFVEtosKhA
-         v/AU/uOiRFGzpALUS0wYw5ArvUc/zAldBy6DorwXPzfKxjvcccB0WLtc25W2kLcTTqQJ
-         Xlw7iUd38WEU/gI2fzabGMevRS5D9J/7KVPmDDaAlEknptJbDvimj/oKssRb329C4yXd
-         MqRw==
-X-Forwarded-Encrypted: i=1; AJvYcCU7zJqlV59EwXd19tK544/iJKTM2jJQN8v1N6epmYlA/m+2yz2b+mFhaVE2PcmHMSugsHI=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyAWcExqitsELJe/pTeggl48hO/Ob6bV2N4CHmIJiHkzqjgyEOX
-	MKS1ZP3SXm1DKGt5oiKPSiy691dvaalfwm33wh6woNL1nhchMh/ccg9U
-X-Gm-Gg: AZuq6aKtCFguYr1Xp3nJmR/Mzf/n9zoqRSHjstYBhP8TL6yHs0piN3ZFNQwITrfp8kq
-	c7w3UsOthwchPsI37xAho/Yo0dJTGkcqageVjUtGZF6sE4ttsmLEOItuTwOwAgNKzTPDMAlL4Nt
-	Axb8SAo37vA5I5210pYg0gFc/eM2cLAEugNjVEqd985oqHDsfSHaEn4sEjFkogMxVvXXRroBWTC
-	2zaFaRmx+OojFK3R1lRiSpnDrhMhgdekIWpjA7tlJ+VhGdiXHi7BXJ3Y/fKSHwD+yFBHlKb2K+I
-	/aFddiSbSx+VXwKAx6MrnRlGI21lugioG4DJc0aL80M+4ch8H9BbsKtQAyAM0CsvhBr55ZcdvfM
-	VH3trjzdBul9lEygbWpuvlnwwAh1XVKXcnAP4OOtFvSsmfr70mOuUR71GDTX7crcVWw3xSh6u8i
-	526439aQznsgVE5yDAhIQMqVn3QPiW+k4N0NdIx/8mQY9QGwWOZUQv//YSSbmxny0RiEZwAmmQy
-	yI9+RKygBqKuq2yQDpunJkESIMfIGfflXO6SD24cYG+ZXU=
-X-Received: by 2002:a05:6000:2410:b0:437:6b6e:d108 with SMTP id ffacd0b85a97d-43958bfe6a7mr1881588f8f.8.1771405174240;
-        Wed, 18 Feb 2026 00:59:34 -0800 (PST)
-Received: from Lord-Beerus.station (net-188-152-100-94.cust.vodafonedsl.it. [188.152.100.94])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796abc85csm39968574f8f.22.2026.02.18.00.59.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Feb 2026 00:59:33 -0800 (PST)
-Date: Wed, 18 Feb 2026 09:59:31 +0100
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: Re: [PATCH v1 03/11] arm64: dts: freescale: imx8mm-var-som: Update
- FEC support with MaxLinear PHY
-Message-ID: <aZV_c0lmBwjOI_Ep@Lord-Beerus.station>
-References: <cover.1771353301.git.stefano.r@variscite.com>
- <3b984b93a43a07bc9c4f6414a08a3a0f45daaaa8.1771353301.git.stefano.r@variscite.com>
- <31f30651-7c99-42cb-9e27-e4806529d137@lunn.ch>
- <aZTCGH1rKWdvYg5-@Lord-Beerus.station>
- <fceeda41-66cc-4bb2-ab53-d4b1ec25348a@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="piRPMPq1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1CEC2BCB5
+	for <imx@lists.linux.dev>; Wed, 18 Feb 2026 10:20:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771410014;
+	bh=KMRhh6W9t1S/zQ6NhQbrvFLYqyEEu7IaIcL7BGCP9Fc=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
+	b=piRPMPq1JdjrH5xmr6Qs/V+e9vEf3hRMW+F2zhIxb+JEaCgt21TeynmqDUItYAqvj
+	 zYyoLeS+gb7ygloju8kp4NxNqF5TQ3NMLMRk/t0fqkqldGDQ7m0vqHWi+6IFfcWiAv
+	 X86dUvgMK4t/Zsqb6VwdbgZXtPuDAZDoAvup3XmWtdD/3lSXBQkzPwWr0Z6xjV7Ssu
+	 oj23Io1n0JHIuuduhHCevY/zSElk6DjImynbCNHYHZocQSD61gxjy3CyGv0NgADguI
+	 N6sUEZ2A9/5ktY7u5fr9UPqBlOYH0sB2xuhgr0y2Wp+ZrcbJ6CdfdOJfFndlq/Csu1
+	 WnOreDr8/ltUQ==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59dd54b1073so5817864e87.0
+        for <imx@lists.linux.dev>; Wed, 18 Feb 2026 02:20:14 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUietaVBaOKzNS5oG3S9kjfdj0q/4hnyXQm6QtN2WmBMAyVLpRnHVLHnTBR7kAon6PaEcc=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw52G56qxgMWCE5lm2Nj/y18GjlGz0g8Z1oFTKROdtVCJYxA53r
+	hUmvMvlnn8CQ+viTsL6LT7zpFkDlUYt9i+bMMQux0z4ttHTKfyYtWAgRXIbs/rVlIEnxd9RRVkA
+	Hot65pclrCCHdXoHQmpfgXWkxcFQAoPifVULERMAlaQ==
+X-Received: by 2002:a05:6512:685:b0:59e:38e2:7b60 with SMTP id
+ 2adb3069b0e04-59f6d485901mr4374992e87.53.1771410012913; Wed, 18 Feb 2026
+ 02:20:12 -0800 (PST)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 18 Feb 2026 04:20:11 -0600
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 18 Feb 2026 04:20:11 -0600
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260212213656.662437-4-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fceeda41-66cc-4bb2-ab53-d4b1ec25348a@lunn.ch>
+References: <20260212213656.662437-1-shenwei.wang@nxp.com> <20260212213656.662437-4-shenwei.wang@nxp.com>
+Date: Wed, 18 Feb 2026 04:20:11 -0600
+X-Gmail-Original-Message-ID: <CAMRc=MfM7Wc6ae+thPnqBdJUKhLVkrgZYYD_9EjAzxbE5mtSgg@mail.gmail.com>
+X-Gm-Features: AaiRm50s4fsP3Hfe2L_u48xMA8NYIISGBNrR-9MdGdJEdOmmMFh9mEr9DdPOsIQ
+Message-ID: <CAMRc=MfM7Wc6ae+thPnqBdJUKhLVkrgZYYD_9EjAzxbE5mtSgg@mail.gmail.com>
+Subject: Re: [PATCH v8 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Shuah Khan <skhan@linuxfoundation.org>, linux-gpio@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com, 
+	arnaud.pouliquen@foss.st.com, Bartosz Golaszewski <brgl@bgdev.pl>, Andrew Lunn <andrew@lunn.ch>, 
+	Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Andrew,
+On Thu, 12 Feb 2026 22:36:55 +0100, Shenwei Wang <shenwei.wang@nxp.com> said:
+> On an AMP platform, the system may include two processors:
+> 	- An MCU running an RTOS
+> 	- An MPU running Linux
+>
+> These processors communicate via the RPMSG protocol.
+> The driver implements the standard GPIO interface, allowing
+> the Linux side to control GPIO controllers which reside in
+> the remote processor via RPMSG protocol.
+>
+> Cc: Bartosz Golaszewski <brgl@bgdev.pl>
+> Cc: Andrew Lunn <andrew@lunn.ch>
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> ---
+>  drivers/gpio/Kconfig      |  17 ++
+>  drivers/gpio/Makefile     |   1 +
+>  drivers/gpio/gpio-rpmsg.c | 588 ++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 606 insertions(+)
+>  create mode 100644 drivers/gpio/gpio-rpmsg.c
+>
+> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+> index b45fb799e36c..3179a54f0634 100644
+> --- a/drivers/gpio/Kconfig
+> +++ b/drivers/gpio/Kconfig
+> @@ -1892,6 +1892,23 @@ config GPIO_SODAVILLE
+>
+>  endmenu
+>
+> +menu "RPMSG GPIO drivers"
+> +	depends on RPMSG
+> +
+> +config GPIO_RPMSG
+> +	tristate "Generic RPMSG GPIO support"
+> +	depends on REMOTEPROC
+> +	select GPIOLIB_IRQCHIP
+> +	default REMOTEPROC
 
-On Tue, Feb 17, 2026 at 09:43:16PM +0100, Andrew Lunn wrote:
-> 
-> And here you loose me. RGMII is between the MAC and the PHY. The PHY
-> is on the SOM, so there is no need for RGMII to leave the SOM.
-> 
-> MDIO is can understand going to the carrier, because there can be
-> other devices on the bus, such as an Ethernet switch.
-> 
-> You say the LEDs are not on the SOM. So they should not be listed in
-> the .dtsi file for the SOM. It could be the RJ45 is a cheap one,
-> without LEDs. The colours will depend on the RJ45 socket. It could be
-> a single LED is connected to the front panel, which is typical of STB
-> etc. So the LEDs are a board property, not a SOM property.
-> 
-> > > >   Two LEDs are defined to match the VAR-SOM carrier design:
-> > > >     * LED@0: Yellow, netdev trigger.
-> > > >     * LED@1: Green, netdev trigger.
-> > > 
-> > > Where are the LEDs? You say "carrier design", so are they on the
-> > > carrier? The DT properties should then be in the .dts file for the
-> > > carrier.
-> > >
-> > 
-> > The LED signals are driven directly by the PHY and originate on the SOM.
-> > They are exposed on the SOM connector and are typically routed straight
-> > to the RJ45 integrated LEDs on the carrier.
-> 
-> The problem here is 'typically', not absolutely required, otherwise
-> the magic smoke will escape making the box useless.
-> 
+You're using a lot of OF-centric APIs here, don't you need to depend on OF?
+Alternatively, it seems that only rpmsg_get_channel_ofnode() really requires
+OF-nodes and everything else could just use firmware node API.
 
-You are right sorry for the confusion: RGMII is internal between the MAC
-and the PHY and does not leave the SOM. What is exposed on the SOM
-connector are the MDI pairs towards the magnetics/RJ45 and the PHY LED
-output signals.
+> +	help
+> +	  Say yes here to support the generic GPIO functions over the RPMSG
+> +	  bus. Currently supported devices: i.MX7ULP, i.MX8ULP, i.MX8x, and
+> +	  i.MX9x.
+> +
+> +	  If unsure, say N.
+> +
+> +endmenu
+> +
+>  menu "SPI GPIO expanders"
+>  	depends on SPI_MASTER
+>
+> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
+> index c05f7d795c43..501aba56ad68 100644
+> --- a/drivers/gpio/Makefile
+> +++ b/drivers/gpio/Makefile
+> @@ -158,6 +158,7 @@ obj-$(CONFIG_GPIO_RDC321X)		+= gpio-rdc321x.o
+>  obj-$(CONFIG_GPIO_REALTEK_OTTO)		+= gpio-realtek-otto.o
+>  obj-$(CONFIG_GPIO_REG)			+= gpio-reg.o
+>  obj-$(CONFIG_GPIO_ROCKCHIP)	+= gpio-rockchip.o
+> +obj-$(CONFIG_GPIO_RPMSG)		+= gpio-rpmsg.o
+>  obj-$(CONFIG_GPIO_RTD)			+= gpio-rtd.o
+>  obj-$(CONFIG_ARCH_SA1100)		+= gpio-sa1100.o
+>  obj-$(CONFIG_GPIO_SAMA5D2_PIOBU)	+= gpio-sama5d2-piobu.o
+> diff --git a/drivers/gpio/gpio-rpmsg.c b/drivers/gpio/gpio-rpmsg.c
+> new file mode 100644
+> index 000000000000..163f51fd45b5
+> --- /dev/null
+> +++ b/drivers/gpio/gpio-rpmsg.c
+> @@ -0,0 +1,588 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright 2026 NXP
+> + *
+> + * The driver exports a standard gpiochip interface to control
+> + * the GPIO controllers via RPMSG on a remote processor.
+> + */
 
-Given that the actual LEDs are implemented on the carrier side (RJ45
-with integrated LEDs, pull-ups and LED supply), would you prefer that
-the LED description is moved out of the SOM .dtsi and into the carrier
-.dts?
+Add newline here.
 
-My idea would be to keep the Ethernet controller/PHY node fully
-described in the SOM .dtsi (since the PHY is on-module), and add only
-the LED subnode/definition in the carrier .dts where the LEDs are
-actually present.
+[snip]
 
-If this is the right approach, I will apply the same pattern to the
-other Variscite SOMs where we currently describe PHY LEDs at the SOM
-level (e.g. imx8mp-var-som, imx93-var-som).
+> +
+> +static struct device_node *
+> +rpmsg_get_channel_ofnode(struct rpmsg_device *rpdev, char *chan_name)
+> +{
+> +	struct device_node *np_chan = NULL, *np;
+> +	struct rproc *rproc;
+> +
+> +	rproc = rproc_get_by_child(&rpdev->dev);
+> +	if (!rproc)
+> +		return NULL;
+> +
+> +	np = of_node_get(rproc->dev.of_node);
+> +	if (!np && rproc->dev.parent)
+> +		np = of_node_get(rproc->dev.parent->of_node);
+> +
+> +	if (np) {
+> +		/* Balance the of_node_put() performed by of_find_node_by_name(). */
+> +		of_node_get(np);
+> +		np_chan = of_find_node_by_name(np, chan_name);
+> +		of_node_put(np);
 
-Thanks again for the review.
+If you put np here, why even bother with "balancing". If you don't do
+of_node_get() before calling of_find_node_by_name(), you'll be in the
+same place, no?
 
-Best regards,
-Stefano
+> +	}
+> +
+> +	return np_chan;
+> +}
+> +
+> +static int
+> +rpmsg_gpio_channel_callback(struct rpmsg_device *rpdev, void *data,
+> +			    int len, void *priv, u32 src)
+> +{
+> +	struct gpio_rpmsg_packet *msg = data;
+> +	struct rpmsg_gpio_port *port = NULL;
+> +	struct rpdev_drvdata *drvdata;
+> +
+> +	drvdata = dev_get_drvdata(&rpdev->dev);
+> +	if (drvdata && msg && msg->port_idx < MAX_PORT_PER_CHANNEL)
+> +		port = drvdata->channel_devices[msg->port_idx];
+> +
+> +	if (!port)
+> +		return -ENODEV;
+> +
+> +	if (msg->header.type == GPIO_RPMSG_REPLY) {
+> +		*port->info.reply_msg = *msg;
+> +		complete(&port->info.cmd_complete);
+> +	} else if (msg->header.type == GPIO_RPMSG_NOTIFY) {
+> +		generic_handle_domain_irq_safe(port->gc.irq.domain, msg->pin_idx);
+> +	} else
+> +		dev_err(&rpdev->dev, "wrong command type!\n");
+> +
+> +	return 0;
+> +}
+> +
+> +static int rpmsg_gpio_channel_probe(struct rpmsg_device *rpdev)
+> +{
+> +	struct device *dev = &rpdev->dev;
+> +	struct rpdev_drvdata *drvdata;
+> +	struct device_node *np;
+> +	int ret;
+> +
+> +	if (!dev->of_node) {
+> +		np = rpmsg_get_channel_ofnode(rpdev, rpdev->id.name);
+> +		if (np) {
+> +			dev->of_node = np;
+> +			set_primary_fwnode(dev, of_fwnode_handle(np));
+> +		}
+> +		return -EPROBE_DEFER;
+> +	}
+> +
+> +	drvdata = devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
+> +	if (!drvdata)
+> +		return -ENOMEM;
+> +
+> +	drvdata->rproc_name = rpmsg_get_rproc_node_name(rpdev);
+> +	dev_set_drvdata(dev, drvdata);
+> +
+> +	for_each_child_of_node_scoped(dev->of_node, child) {
+
+Like mentioned above: this could be:
+
+device_for_each_child_node() {
+	fwnode_device_is_available();
+	...
+}
+
+> +		if (!of_device_is_available(child))
+> +			continue;
+> +
+> +		if (!of_match_node(dev->driver->of_match_table, child))
+> +			continue;
+> +
+> +		ret = rpmsg_gpiochip_register(rpdev, child);
+> +		if (ret < 0)
+> +			dev_err(dev, "Failed to register: %pOF\n", child);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void rpmsg_gpio_channel_remove(struct rpmsg_device *rpdev)
+> +{
+> +	dev_info(&rpdev->dev, "rpmsg gpio channel driver is removed\n");
+> +}
+
+Please drop this, no need to log it,
+
+> +
+> +static const struct of_device_id rpmsg_gpio_dt_ids[] = {
+> +	{ .compatible = "rpmsg-gpio" },
+> +	{ /* sentinel */ }
+> +};
+> +
+> +static struct rpmsg_device_id rpmsg_gpio_channel_id_table[] = {
+> +	{ .name	= "rpmsg-io-channel" },
+> +	{ },
+> +};
+> +MODULE_DEVICE_TABLE(rpmsg, rpmsg_gpio_channel_id_table);
+> +
+> +static struct rpmsg_driver rpmsg_gpio_channel_client = {
+> +	.drv.name	= KBUILD_MODNAME,
+> +	.drv.of_match_table = rpmsg_gpio_dt_ids,
+
+Can you please do:
+
+	.drv = {
+		.name = "open-coded-name",
+		.of_match_table = ...
+	};
+
+?
+
+Bartosz
+
+> +	.id_table	= rpmsg_gpio_channel_id_table,
+> +	.probe		= rpmsg_gpio_channel_probe,
+> +	.callback	= rpmsg_gpio_channel_callback,
+> +	.remove		= rpmsg_gpio_channel_remove,
+> +};
+> +module_rpmsg_driver(rpmsg_gpio_channel_client);
+> +
+> +MODULE_AUTHOR("Shenwei Wang <shenwei.wang@nxp.com>");
+> +MODULE_DESCRIPTION("generic rpmsg gpio driver");
+> +MODULE_LICENSE("GPL");
+> --
+> 2.43.0
+>
+>
