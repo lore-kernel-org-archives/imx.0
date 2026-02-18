@@ -1,114 +1,71 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF3018DB0D
-	for <imx@lists.linux.dev>; Wed, 18 Feb 2026 18:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771438497; cv=pass; b=TinzERYt0Hh5aCTDYMDe1DSheat1Ib9QGVemeK/vBneRNgQMU6xja2KMN+bGC6ztIj/EG4g3kwxsMVq4/WBDN9WpL49KmMOwp0rrSsAOO/bPe5E0R4jXI+n7m/w+Qr/tEdAza3zy4eJQFMVBPfqMus4Uhvx9DBg1Aa2tPEmufus=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771438497; c=relaxed/simple;
-	bh=YviV1LJUtPqR1ffjnWUweO4RqwvYdHYZDmBnJ4iJYEk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PwU+muHsvNh0vzi/wT9z/qB0uktGl8ZlT+B2+E4j9WucXEFff4Vk/uPWpbZL37ZOo1EhyXpqeU0H3oi/BTYo9LUoyC1UoYf3A7k5OkgI9RxO6O98jk2/hszSC6xdbdETMhLlh8XXtQAOei+gs19HV42O4wIKIsYSIoCQzKolmJA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bA3yCNXg; arc=pass smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E7B346E45;
+	Wed, 18 Feb 2026 18:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771439946; cv=none; b=ngDyYFgabts7pPWxLshT/OUmWa8oeZ5bcFJVGDEi3eQAP+l8Us8bFDCQVE8tDrDWUZBSAQpos3YCknZ5iQj89rPHRYTuo1TF3U8I2S+pIKYdj0RYe5O6PbfTsIYLcrLwW4KB3hfEozSZPbhSae9+fu7TQ2/1QfqJbqEFMiFMByY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771439946; c=relaxed/simple;
+	bh=MU38ojQtO5E1uk6qyEB+YcDaosdVNcaLAaFz0GYcRdo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FfepfOEKbY9v22cGnyIGCz7Im5lYzsHn/ivaoEdmZXNp1o2ZS/QGYaku9dGVhuAKMpu4HeUDsRNXBRJ+Q/K4braY2tWq1K88xWrSm/uVVyOQh1l/tFEQj9P4PsA55lhQSMw/wHB8ujMUqpBFzUy1X0/0P3ff5opiN50L/xnbWXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N9P4A5Z7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bA3yCNXg"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-38708180241so1371721fa.1
-        for <imx@lists.linux.dev>; Wed, 18 Feb 2026 10:14:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771438494; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GsyNCWDRsFXt9oL/dBCCHsuPta/Xs9j4mKDxuONyTC5mLFPGIZF6yuCiwSCB7zbGx6
-         MrjkROb0DZ96Po7HfAigmHoN3YA+79qAYxqb9YGIIdDK3JINI7C7xwGh2QP9rIEDMUFX
-         RKFYKNkvgS48LhOrBE5glzB2KjdNe9FtP8gAdfJSudPBjRhCanfXPEAYe6WxYPxnmQg/
-         T2A/Z4fk16nleggr0GlW9aouMmpJ0nUpD0q9F2KzCpu2LO7X7uIhWA9Inz3joASNiGTu
-         zB6TRQa4SAdI7Jh4a98tQbVhO0VoO6tf8Q+E8MSIPTQ4qv9q7KxfHhKLFVB7P2M8I184
-         qJgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YviV1LJUtPqR1ffjnWUweO4RqwvYdHYZDmBnJ4iJYEk=;
-        fh=NA3asxqvxU1qCUdc/wFRt2s2xDILauxAl3Yr7tyWcAw=;
-        b=KlduQu+dJpmr96CR6Gp/rWlNWelg/0z3SdmfoqTgv6uLBXgQ3FHlDyHZ9MQnVffJH3
-         JkUILXxNHvKBijB4AvNdDHgVi+aBmJ2XI2M2aduJUVpfa0kyNl/zkU4kupr0NHsE8eyB
-         xlLi6Qdx7JkmeppATiBxjU4tFWJYNpL1KUUH+hg+7RIqsyv+35HvY53zq/Fm1WP69xmm
-         bQaKKYEe40Ty4i4DZYpmnVo00cS7OK7efr6Rhx//Ddv82zGUoe6CfWetMnQ26G/lZLUo
-         mbQRNo24oBNj2Rhci4InoYgJpD125Yt3oNpH2u2D2r7jo1Fysq3YTy5slRN+EbUkPhaH
-         3Zbg==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771438494; x=1772043294; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YviV1LJUtPqR1ffjnWUweO4RqwvYdHYZDmBnJ4iJYEk=;
-        b=bA3yCNXgO7hMk/uVDmcD1drGrCzCls/YkEIMm1D9GHvOtHN/ZsMIK/Ww8w+pYBHsy5
-         f8sJkqhrQbgQhgA7acDEgX9GN1RKowjkCPiQ334NdLvA2a+BUTAtUl1Mf+au7oiG94yg
-         JnuJrQLFtkTc+X73rPqOWziTuE1sTh75JDwUaO8Niz6NYExN3tNXU0ZRLUWiHzrcOpQb
-         nDMtL1x3kSgsoPnNaMfGbHKMI7MPgPjLVdGpCihDCtrQfc8WkvEx4g1G/a44vO+3qnIT
-         vNzAgseRjMJ8NUAHBYWeYyC/Wm2fijj2dgODvp7QDTg/cgucuHfznXbD5/2Qt0LpgiTr
-         xhBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771438494; x=1772043294;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YviV1LJUtPqR1ffjnWUweO4RqwvYdHYZDmBnJ4iJYEk=;
-        b=toA3Kh43vPcMH04YlIzpoYMoFQ78Nh82FBwqNJZjSEssl0EXkbvSlAjy+yQJmi/+Xa
-         lRiDwEBlWTUKd6AuvVTUDG+jbuCEMf7wAXA0WEgql/R7yCs2ECM55E9YUyUQli+sQIm/
-         z0r0jFSaiGsWZhIjYPuqQyPbOT3mTBaMlIUV9otbCxptxZ1hDtTMr+DYkl1DAlrLr6+X
-         wr9Tg5HmrfVyMBM2kALftb7SVtruUVhX90ELHcQZyp0mTnko5sFxDmMsS6eP4r7QMwE4
-         QNkgj8krwn53ATLF0/k+iObz6518dnac+sxs0v0pnauTYaG85w/KGzI2nfQ6pbXcslJh
-         W7Pg==
-X-Forwarded-Encrypted: i=1; AJvYcCWVxZfPqWBA2YVgTjwrr68xWX6evGVj5BQuRQStAPkPATSlsGiXVASWge0Ps1ueHLpybM8=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yy8/YFc0QFVnf25txUE1PiqVM94sCr1jYcbia8OQqSGQ/H+Olff
-	cyu3QJETk3tISqI2AUCs+fSX8yQxozblpJP35iR7BuCyC3b9bs+frPRoAk9pjWoNgp8jHrTc+Eu
-	33vpmI2Spxjb7HRHG5WwH+Ph96DLkO1c=
-X-Gm-Gg: AZuq6aImiesyg43wF77J5pZ+3nn/YAbJgC6ZPK1e4XX2n+iAncEJF8hAZnu5xaH7AtM
-	cXCHmzfu3aIA4dsM2GxDwJ2DkvX0FuC+50TibvyUgSKJyVaXjcNXCk8LJMz3wsty7I8GHF3H37/
-	q1BGKFlxSH2UgIjb96H57P0VdMq8PxRaQJW0JfKAtRhiXZ0cqUrwcC+sJKtpH6rC+gAoI0GE1B8
-	HO0stYjsOB5v0gLDTKh3wqy9NR7HOEZX1LnfFasDDvkS0yFCR0IhvSXty0d0nZYHTy+X823gLh8
-	931/N3jvrAvNdPypwEEMOH1wYMIphRYPpHZa682j8mHvVEtfJX53O5nLJc5FPTgl7728r68=
-X-Received: by 2002:a05:651c:1505:b0:37a:34e2:88e7 with SMTP id
- 38308e7fff4ca-38846ded488mr8325581fa.22.1771438494066; Wed, 18 Feb 2026
- 10:14:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N9P4A5Z7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA1FC116D0;
+	Wed, 18 Feb 2026 18:39:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771439945;
+	bh=MU38ojQtO5E1uk6qyEB+YcDaosdVNcaLAaFz0GYcRdo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=N9P4A5Z7UsNKxy2bGtUdJv8kjCwMCMQXCyCFpNgjeEcaH1MF2VZmFL4z/pUSDv0QV
+	 8pD2EmpA83r7rRDYgUHYLZTs1bs22Yyf3WxDT6YqMwEkNnfW0OIsapycYKk0cAWJ5i
+	 qXgsUIG1Vh0r4IVhLd0jOv38RWFCrTspgLmLVsPYynKl1ds8KpYILcdiPafSDDQqPc
+	 qhpnV1JDUNRl7xlf0m236fzMPEJKfCwFaVXi8s2qNbr4+1gLo1l7/Iu7UGnXK0La/d
+	 MPPSK0okTzUTX6sDpPLMvh/SfXRocmuGqzopPR/pmWM/x5nJYCZNca7bbkjn8bw8Fg
+	 fwqkwfdWhdvaQ==
+Date: Wed, 18 Feb 2026 12:39:03 -0600
+From: Rob Herring <robh@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] dt-bindings: pinctrl: convert fsl,imx27-pinctrl.txt
+ to YAML
+Message-ID: <20260218183903.GA472024-robh@kernel.org>
+References: <20260211-imx2_iomux_warning-v1-0-1c5233771b32@nxp.com>
+ <20260211-imx2_iomux_warning-v1-1-1c5233771b32@nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260218132339.32157-1-Max.Merchel@ew.tq-group.com> <20260218132339.32157-2-Max.Merchel@ew.tq-group.com>
-In-Reply-To: <20260218132339.32157-2-Max.Merchel@ew.tq-group.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 18 Feb 2026 15:14:42 -0300
-X-Gm-Features: AaiRm53RLXHEYghXfgNRCuxfYIbnDQ70cmKmTheE3k1c4d-bmc6cBGsAlV-rhj8
-Message-ID: <CAOMZO5B5k_i_q4cd7SMNAkicF4WfEYNVUSrg8AamQHNpGys5mA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] ARM: dts: imx6ul/imx6ull: add boot phase properties
-To: Max Merchel <Max.Merchel@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, linux@ew.tq-group.com, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260211-imx2_iomux_warning-v1-1-1c5233771b32@nxp.com>
 
-Hi Max,
+On Wed, Feb 11, 2026 at 04:00:00PM -0500, Frank Li wrote:
+> Convert fsl,imx27-pinctrl.txt to YAML format.
+> 
+> Additional changes:
+> - Add the compatible string "fsl,imx1-iomuxc".
+> - Add gpio@... child nodes.
+> - Add ranges property.
+> - Remove the redundant intermediate node between pinmux and group nodes.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../bindings/pinctrl/fsl,imx27-iomuxc.yaml         | 126 +++++++++++++++++++++
+>  .../bindings/pinctrl/fsl,imx27-pinctrl.txt         | 121 --------------------
+>  2 files changed, 126 insertions(+), 121 deletions(-)
 
-On Wed, Feb 18, 2026 at 10:24=E2=80=AFAM Max Merchel
-<Max.Merchel@ew.tq-group.com> wrote:
->
-> Add boot phase properties from U-Boot device tree.
-
-The commit logs of this series could be improved. Please take a look
-at these examples:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-h=3Dv6.19&id=3D256feb5be482315a91c1bd1a1808276f57ef76dd
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-h=3Dv6.19&id=3D2285ea3f8065f47a6a1b62e6fcfa85105c8c261b
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
