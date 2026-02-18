@@ -1,121 +1,139 @@
-Received: from mx-relay129-hz1.antispameurope.com (mx-relay129-hz1.antispameurope.com [94.100.132.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E74622083
-	for <imx@lists.linux.dev>; Wed, 18 Feb 2026 17:18:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.132.195
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771435086; cv=pass; b=Sgt00tk8CxWj7vTBV5UC1rYEpx4IryD7K+J/747dewb8zJ4RBQsRhLU9uTK1P7B+iUUU7fTdy9aHC9+iSxM0ijRwS0QCxbue/C8iU1yyvol/RSC8PmgA1ucibi6Qo9E/GCtWaoBx4wV1irDU66ZsW6Up8RAHBDe0Xke/n39j5UY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771435086; c=relaxed/simple;
-	bh=V5JXvkgPes+hEMu1PWoguk//7xNtXcWgtFp+Z8moPEY=;
-	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
-	 Message-ID:Subject; b=b3KgpkvW98MSX8gk0/NoDmqxGGTpLD3StJJYWc7Ltb56DUNisyFmVLaaoDZuvVE2AuX0GeDSui3kUU6Jf9NzYY+EFylWZ5GUizV9vPENWwHkQS0hallwA3qNjnPTJ4LK8hzDN6K8w3msVmjQrZzgE4Jzg0dT84TbBrXmbGtcsJE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=rQDwdpGp; arc=pass smtp.client-ip=94.100.132.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F552FD697
+	for <imx@lists.linux.dev>; Wed, 18 Feb 2026 17:18:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771435104; cv=none; b=CcBtgba3rs+9SJB9BvGVWMVqJsP4q/jXBbIWsfjjGZxopUfTYVcH0PWgJpLxIonTNwsboXurfznSmknkrMlor2CMINO5vCBLncR0W4UQlaO/fk20DPLxQSmYREo/IMq7FMaHjpOlFKinIDtDXAa6QevHPm7luu80gpH/WDHjMdQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771435104; c=relaxed/simple;
+	bh=szlnzjR28V+AV/VL45WXLE0et4t0WODgRR+kZ4Kcqa8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZbVdvMlOH0EnYlNrWM+kW/bNU8S3xH6bqBPpgRiq/uNYi26Om7g+6Y408FfK+Da1VEZv9wst3p/O9A3VQG2P8ka0cddC1WgCt+5p79dmndiNd46xWOCDlHANXsiIfTL/Rkq3dJ2skqkA4jv4TENYVulOLzyEViCmT6DwjsFEzbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y9a2AnoM; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="rQDwdpGp"
-ARC-Authentication-Results: i=1; mx-gate129-hz1.hornetsecurity.com 1;
- spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com
- smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
- header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=H2vVKZ6E3yqlSTMvSj3TrmKQh+r9SzJHEpVVUrZRg/A=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1771435051;
- b=mhRvLidDjjJmXZCQTkrb8mtL/S1FrSPMwLc/w6j9bsBKcP39Qoj7CkJTHXnbFlMxAL4IwV9O
- nbiAbK+JVNFiaoAneul1Y2spBFYFnJ5D3OrZopsUjK/9kO5lny3FMVzP0zT57XWwXX4sCY18c9p
- UTBAf7OMBky33oDjHp39iiV4jipcEkSxO2tJ4UhpnVaUd1vqbqUYEWbjSHsNK0qRcGK4SECCUZF
- NsuWWoDDOE5A7vscpBntTIf/nImRbgMl7L3qi9z0zw9y3mHznJYXzcW9uOZX6Jba0k8RcYN6+zE
- hM7zy62rsrWwInShCwVzK0xMIY2BGp/XuediceznVxu2A==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1771435051;
- b=RJra0ET1gE4tL++Cs1GWzplFXJ3WZ8mK3FH5OmzHqpKDIwrfxDavtSPuLgETfEAUZ7uUXoZA
- cEJAdgazJK2ScIUSTF8VgZIH8Y7ncCV2GEQMgzQzqHAJ6GHjq3dAv6kvJ5B5N9JkqpJ+qERsZ9M
- zvbNBN7jRue9EB5Bt9/EMeMoOCIgXiJLRb1KSloCHfxZHGzrzxRCdiVqUFUj+mHF9zo5kVKMU5V
- sWAgVnGox3DNiZ3OOYuJu1KP6KA6/7+0Gww28cVbunthkb7OriSzUc2i4UsukpCNSDP8k99FuAT
- 2E3J08ZNpqBi9RahEJ5aYxdxXzAt1qv3JlADh54h5jxEQ==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay129-hz1.antispameurope.com;
- Wed, 18 Feb 2026 18:17:31 +0100
-Received: from 10.1.31.92 (unknown [10.1.31.92])
-	(Authenticated sender: alexander.feilke@ew.tq-group.com)
-	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 4E951CC0CC3;
-	Wed, 18 Feb 2026 18:17:19 +0100 (CET)
-From: =?utf-8?q?alexander=2Efeilke=40ew=2Etq-group=2Ecom?= <alexander.feilke@ew.tq-group.com>
-In-Reply-To: <20260218135415.204974-4-Alexander.Feilke@ew.tq-group.com>
-Content-Type: text/plain; charset="utf-8"
-X-Forward: 127.0.0.1
-References: <20260218135415.204974-1-Alexander.Feilke@ew.tq-group.com> <20260218135415.204974-4-Alexander.Feilke@ew.tq-group.com>
-Date: Wed, 18 Feb 2026 18:17:19 +0100
-Cc: "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Frank Li" <Frank.Li@nxp.com>, "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team" <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, linux@ew.tq-group.com, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: "Alexander Feilke" <Alexander.Feilke@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y9a2AnoM"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-59e5ea93a1aso84714e87.1
+        for <imx@lists.linux.dev>; Wed, 18 Feb 2026 09:18:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771435101; x=1772039901; darn=lists.linux.dev;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DCcdS7x3lDtrIEUvGJcyqRB9D89Wp2xuvJCS6WrEmgQ=;
+        b=Y9a2AnoMvzBYaHlLksKY+SSCQh1rXjsCz+wAPh9Xoe18HyVTbeB7YMLvvf3cXZCJNP
+         SU/WRSNddtA/gyKZcxh2S9lrBeK78CMz0aCqTvsAVwqaD7YA6rNtJNP7oKzYQSGeO/j1
+         xwUtDILYW0TohsEZ3voGzQCmjLJv/aQs0WZtJ4f88uuRjgNERrZbzYMb9kI4jPG1M7Ry
+         dcqxCniPw7cCh8S9enoND7pqbR2qccVqy/NJJQ70ta5va372vATSUiFycd08FeE4LAxB
+         olhrX/N3Kyf0fVfpANp7vNNvbwrPPB6jefpW+iaJvzBzZAQ3jCkSuv+5dTpibCVCeLtc
+         /shA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771435101; x=1772039901;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DCcdS7x3lDtrIEUvGJcyqRB9D89Wp2xuvJCS6WrEmgQ=;
+        b=b13gdBJPTQTBCyI1+T/7Zf2D9THErnPfzDOPbKqrEDPxFG0BC2CUhBiJGMscUAFc1l
+         zhFa150aCiTmRjgf+N+fIt/GmL/jH1gq0sElevTRynx4+Cu6UJoeSseHSqrLf1z0z7sp
+         /BaeaETMwrF0/PcxMZaa+n0aWbT5DVoFs1CREZ6a8ynZ55ZpURL6f4yBTtrKhH/jMu04
+         r+OauhbWMB2tuerWZTkxkcQHTi9oFoT/DR3fxwnn3xD7ItfxijTaglxVEzGn7/39MXdf
+         DdXWQA6b+burA7g9gNao6/IDf4Qn0W/uUnUo3u+ZMypE3X0TsuYMI+eB3zt1W5WADOqG
+         sCbg==
+X-Forwarded-Encrypted: i=1; AJvYcCWoKv9m/+yUwZjeS/YHnd1AsYHsd9LMyOmAkAWpb+Kf8BEmlOARVwzUm88aNbCxIccTm8w=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yw2mhxS15yT6x/2H4kEFkE+Izx0E6sejzh2ACVTvDsaK2z/P792
+	wZqGeK5HBzfbQr1dbwyl/rnubRdJEJ8+F7eWUFgY/t6grD2N5ctFPHuN
+X-Gm-Gg: AZuq6aK8s2pbaslrCsqOy013RBGbeAcIJjSWgxGvBu/e8ESC+y5ABM9NvQh8rOPuTsH
+	prCnDL0rsqwq9XaQa5cvY7+RaQsYXaFY6bjQfjlD6iYPomg8T7Ymj9hzrZK0hfr0F+PMt+FNPTu
+	o7AXzPv9OWuCVQ/YLBet4HsfxWsqoSERUkhBt+lpSKhZNc9IVgoG2Zbc2viQSnKOt1h6Fnki5VH
+	tLQLlF7sbjEYxrl4Sz1MPfIrC9JKKLY9wRwL4HD0OoVVhOT1a1IK3v+ayEalJz9Qau1AN4BCcGt
+	fG7Fy/Z1L/5FDawX4+Lu+LYDc4HhN5DMrCW8ODI9aF3AnnVCadRSlG7F7rZK+SHYA2Q4FLQSnjk
+	mLn0F61bpTqq3GNYgfQpThgjUko/0chDrcmou6ipaK/tlHA7zZV0pfjrSiYl+G43Cfd+No1eerK
+	6KIbwik3S9L/FZhFInlTNG+xOQPpKG7NJCH0u6ZLtCpQd7e1FQ8b0SwEsKbluvSo/1dbaqAe0ru
+	BecZ5125GQbYSy6qaRderoJifqubFPyUWhInNTSzrb9oHLXzRQh60sa
+X-Received: by 2002:a05:6512:32c7:b0:59f:6947:7e7c with SMTP id 2adb3069b0e04-59f6d34d001mr4165286e87.9.1771435101026;
+        Wed, 18 Feb 2026 09:18:21 -0800 (PST)
+Received: from Lord-Beerus.station (net-188-152-100-94.cust.dsl.teletu.it. [188.152.100.94])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59e5f568d95sm4644958e87.30.2026.02.18.09.18.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Feb 2026 09:18:20 -0800 (PST)
+Date: Wed, 18 Feb 2026 18:18:16 +0100
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Fabio Estevam <festevam@gmail.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: Re: [PATCH v1 06/11] arm64: dts: freescale: imx8mm-var-som: Update
+ WiFi/BT configuration
+Message-ID: <aZX0WB_6qPoCYVvC@Lord-Beerus.station>
+References: <cover.1771353301.git.stefano.r@variscite.com>
+ <3e79c4d806b8b8024b71bc99c36b09a2fbb90a65.1771353301.git.stefano.r@variscite.com>
+ <CAOMZO5CAb8738HdH49WcY-JPTzQ90n4Bnmyn96_3jfw47mxOug@mail.gmail.com>
+ <aZTEm8nUUVcKZH0v@Lord-Beerus.station>
+ <aZXqSz_OsCC64P7i@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Message-ID: <19fdaa-6995f400-39-279b5680@147531990>
-Subject: =?utf-8?q?Re=3A?= [PATCH 3/3 v2] =?utf-8?q?ARM=3A?==?utf-8?q?_dts=3A?=
- =?utf-8?q?_imx7-mba7=3A?= separate =?utf-8?q?BOOT=5FCFG?= circuits after 
- boot
-User-Agent: SOGoMail 5.12.1
-Content-Transfer-Encoding: quoted-printable
-X-cloud-security-sender:alexander.feilke@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: alexander.feilke@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay129-hz1.antispameurope.com with 4fGNVR4dr8z4FgGF
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:2d2b41fe47441c95072726fa908a7ece
-X-cloud-security:scantime:2.174
-DKIM-Signature: a=rsa-sha256;
- bh=H2vVKZ6E3yqlSTMvSj3TrmKQh+r9SzJHEpVVUrZRg/A=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1771435051; v=1;
- b=rQDwdpGpHRCfPblMZrW8a9YktGkdzO231GCC4UiAN3vHD5NW57sXQLgojP+A3SXsD+j70RYQ
- 20Za0QvmfRPGSI+P1EhJfI7w6iRNr9xj7nxzVJ5lqMCHZUJIeh7ppev4RDPgtmG0iSoOrm/fxrV
- kMi0/QsskAWrLpm0TPx6MkkY8qFk4RHcXOLBrP06TAZBSJQkZwTjV9gaBgWIUuQWNfU+l6nZnWX
- xVFhlhAB11c1NfrEiB6Xj5SKO7Fuge7QuTevzPeiCjiZf4g0c8OdZqkNCyeVtSavEP4nM7Tgb4M
- vyzpgq5xhJbtUJMv5Wno/eTUs+kPE7lnGuAx1RQEp0/HQ==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZXqSz_OsCC64P7i@lizhi-Precision-Tower-5810>
 
-Deassert BOOT=5FEN after boot to separate BOOT=5FCFG
-circuits from LCD signals.
+Hi Frank,
 
-Signed-off-by: Alexander Feilke <Alexander.Feilke@ew.tq-group.com>
----
-V1 -> V2: Updated Commit Message
+On Wed, Feb 18, 2026 at 11:35:23AM -0500, Frank Li wrote:
+> On Tue, Feb 17, 2026 at 08:42:19PM +0100, Stefano Radaelli wrote:
+> > Hi Fabio!
+> >
+> > On Tue, Feb 17, 2026 at 03:59:33PM -0300, Fabio Estevam wrote:
+> > >
+> > > What about users who still have boards with the Broadcom Wi-Fi chip?
+> > >
+> > > Will Wifi on the old boards stop working?
+> >
+> > The Broadcom-based WiFi module was used on earlier revisions of the
+> > VAR-SOM-MX8MM. That hardware revision is no longer in production and
+> > is not available for new orders. All currently manufactured and shipped
+> > VAR-SOM-MX8MM modules integrate the NXP IW61x instead.
+> 
+> This common problem, we met similar case. After replace new compenent, it
+> should be new boards, or new revision.
+> 
+> I don't suggest directly replace it to broken old one. You can create dt
+> overlay files for new boards.
+> 
+> Krzysztof Kozlowski:
+> 	how about other vendor handle similar case? Any guide line for
+> that?
+> 
+> Frank
+> 
 
- arch/arm/boot/dts/nxp/imx/imx7-mba7.dtsi | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Thanks for the feedback!
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7-mba7.dtsi b/arch/arm/boot/d=
-ts/nxp/imx/imx7-mba7.dtsi
-index 03f2f2cbdfbc..4192adb27223 100644
---- a/arch/arm/boot/dts/nxp/imx/imx7-mba7.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx7-mba7.dtsi
-@@ -287,6 +287,15 @@ &flexcan2 {
- 	status =3D "okay";
- };
-=20
-+&gpio4 {
-+	/* Deassert BOOT=5FEN after boot to separate BOOT=5FCFG circuits from=
- LCD signals */
-+	boot-en-hog {
-+		gpio-hog;
-+		gpios =3D <3 GPIO=5FACTIVE=5FLOW>;
-+		output-low;
-+	};
-+};
-+
- &i2c1 {
- 	lm75: temperature-sensor@49 {
- 		compatible =3D "national,lm75a";
---=20
-2.43.0
+We understand the concern about potential regressions on older SOM
+revisions. However, since the wireless module is soldered on the SOM
+and not configurable, we are aligning the upstream device tree with
+the hardware revision that is currently in production.
 
+This change also aligns the i.MX8MM VAR-SOM with other VAR-SOM
+platforms already present in mainline (e.g. i.MX8MP, i.MX93), which
+use the IW61x wireless module as well. The intention is to keep the
+VAR-SOM family consistent in mainline with the hardware that is
+actively produced.
+
+If there is a strong requirement to preserve an explicit description
+of the older Broadcom-based revision in mainline, we can evaluate
+adding a separate description.
+
+Best regards,
+Stefano
