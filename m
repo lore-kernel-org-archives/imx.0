@@ -1,71 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E7B346E45;
-	Wed, 18 Feb 2026 18:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70FE34405F;
+	Wed, 18 Feb 2026 19:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771439946; cv=none; b=ngDyYFgabts7pPWxLshT/OUmWa8oeZ5bcFJVGDEi3eQAP+l8Us8bFDCQVE8tDrDWUZBSAQpos3YCknZ5iQj89rPHRYTuo1TF3U8I2S+pIKYdj0RYe5O6PbfTsIYLcrLwW4KB3hfEozSZPbhSae9+fu7TQ2/1QfqJbqEFMiFMByY=
+	t=1771443768; cv=none; b=OEVvUkk7X6Ls4zyYcU0p8LQK1VDbWwC4Axuj8tSGjbCJ1te4npKPHBrBJcE1h/QNJrKNmkqn//Ytgth2DcEixbCqWF/w4mr1TYCLcV0DGOqOe4pq322kpJH07rextR6jZSfo92UYXXqGK11Vg9JbGJHd+pLZxWdSHM41oeUF2JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771439946; c=relaxed/simple;
-	bh=MU38ojQtO5E1uk6qyEB+YcDaosdVNcaLAaFz0GYcRdo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FfepfOEKbY9v22cGnyIGCz7Im5lYzsHn/ivaoEdmZXNp1o2ZS/QGYaku9dGVhuAKMpu4HeUDsRNXBRJ+Q/K4braY2tWq1K88xWrSm/uVVyOQh1l/tFEQj9P4PsA55lhQSMw/wHB8ujMUqpBFzUy1X0/0P3ff5opiN50L/xnbWXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N9P4A5Z7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771443768; c=relaxed/simple;
+	bh=6EXR7CnctWgAhaEQQY9rwHergJ8wPPKWrPygc4TLEe0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gHdA6Knbk/4ARak3wrRAfnHB6kGoLBarhr91cSFWe56SEgTwCsZvnTF2MLIF3GebvcZgxrp7QYl19XJ3fyPQk3xplbBoIGDVWiA1/E45j4pNKCtkSbebZfEelAjfBmcLhSuyXGeNVmHhMf3IcPGPLu/+7wVlpnGiaN7LfiLMMNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HB3DS3IX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N9P4A5Z7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA1FC116D0;
-	Wed, 18 Feb 2026 18:39:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HB3DS3IX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26A0C116D0;
+	Wed, 18 Feb 2026 19:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771439945;
-	bh=MU38ojQtO5E1uk6qyEB+YcDaosdVNcaLAaFz0GYcRdo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N9P4A5Z7UsNKxy2bGtUdJv8kjCwMCMQXCyCFpNgjeEcaH1MF2VZmFL4z/pUSDv0QV
-	 8pD2EmpA83r7rRDYgUHYLZTs1bs22Yyf3WxDT6YqMwEkNnfW0OIsapycYKk0cAWJ5i
-	 qXgsUIG1Vh0r4IVhLd0jOv38RWFCrTspgLmLVsPYynKl1ds8KpYILcdiPafSDDQqPc
-	 qhpnV1JDUNRl7xlf0m236fzMPEJKfCwFaVXi8s2qNbr4+1gLo1l7/Iu7UGnXK0La/d
-	 MPPSK0okTzUTX6sDpPLMvh/SfXRocmuGqzopPR/pmWM/x5nJYCZNca7bbkjn8bw8Fg
-	 fwqkwfdWhdvaQ==
-Date: Wed, 18 Feb 2026 12:39:03 -0600
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Dong Aisheng <aisheng.dong@nxp.com>, Fabio Estevam <festevam@gmail.com>,
-	Jacky Bai <ping.bai@nxp.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	NXP S32 Linux Team <s32@nxp.com>, Linus Walleij <linusw@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] dt-bindings: pinctrl: convert fsl,imx27-pinctrl.txt
- to YAML
-Message-ID: <20260218183903.GA472024-robh@kernel.org>
-References: <20260211-imx2_iomux_warning-v1-0-1c5233771b32@nxp.com>
- <20260211-imx2_iomux_warning-v1-1-1c5233771b32@nxp.com>
+	s=k20201202; t=1771443768;
+	bh=6EXR7CnctWgAhaEQQY9rwHergJ8wPPKWrPygc4TLEe0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HB3DS3IXZIBSM7czFyCFsqUYxeHIUK3mSkLSGDK1mbuh9y4vfzkajRtzfA8fqhJcx
+	 3D1VFRWEC3gHdZkZccVZfDggPraK2RKivyA6U3jqItlxfznUZPRTs1dcHQYjHE78XU
+	 vyWJkIfASMxnCPyBtsF26Cc4JssGLMmVX9IPThBPj+iWlPGAhzX3gxIiuATp5hwR0L
+	 9nR2KQYoNpvaUEKeO1N5AvXAJmoKYQAgnCYGERO35XgQ9HSFJv7InjonYNyJllH4Wu
+	 qJPLUq7UOaJPZsjjhcDvok4B1VeLxHrTXL2PlU8Z+zFMQ02cKkN0nNrm5wfDSEX3f2
+	 wdjFP+Ghp2nSg==
+Message-ID: <0d6e728f-4677-4267-9dff-8d089d2dc187@kernel.org>
+Date: Wed, 18 Feb 2026 20:42:43 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260211-imx2_iomux_warning-v1-1-1c5233771b32@nxp.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] ARM: dts: imx6qdl-tqma6: add missing labels
+To: Max Merchel <Max.Merchel@ew.tq-group.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>
+Cc: linux@ew.tq-group.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260218132228.32056-1-Max.Merchel@ew.tq-group.com>
+ <20260218132228.32056-2-Max.Merchel@ew.tq-group.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260218132228.32056-2-Max.Merchel@ew.tq-group.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 11, 2026 at 04:00:00PM -0500, Frank Li wrote:
-> Convert fsl,imx27-pinctrl.txt to YAML format.
-> 
-> Additional changes:
-> - Add the compatible string "fsl,imx1-iomuxc".
-> - Add gpio@... child nodes.
-> - Add ranges property.
-> - Remove the redundant intermediate node between pinmux and group nodes.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
->  .../bindings/pinctrl/fsl,imx27-iomuxc.yaml         | 126 +++++++++++++++++++++
->  .../bindings/pinctrl/fsl,imx27-pinctrl.txt         | 121 --------------------
->  2 files changed, 126 insertions(+), 121 deletions(-)
+On 18/02/2026 14:22, Max Merchel wrote:
+> Add the missing labels for the temperature sensor and the EEPROM.
+> In SoM variants A and B, the components are connected to different
+> I2C buses. These labels are needed to reference them in subsequent
+> device trees.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+That's not a change on its own. It makes no impact, no effect and is
+confusing because unused labels shall be removed.
+
+So you apply this patch and immediately revert it because these labels
+are unused.
+
+No, squash it instead with the USER of the label.
+
+Best regards,
+Krzysztof
