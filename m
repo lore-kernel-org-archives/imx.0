@@ -1,32 +1,34 @@
 Received: from mail2.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6DB31282E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD47F2C08A2
 	for <imx@lists.linux.dev>; Wed, 18 Feb 2026 13:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771421468; cv=none; b=i5NRp8yCS00++g4L18TYb/cA+/A5Y+uRfrXiuPbkhqjFTmcHM9Ei00648vzpTSqxqLPodKUsiT47V7aw3zd3aakzqVWUL4y34A5RkCwZKWHE9h/WlxQB5Q7MLc5ZFZOLr/1a/+Loe2taSx40dr0C8PFHVzyAwMGMdu18ZFY7JuA=
+	t=1771421468; cv=none; b=qc7ASWPpQ6aLhxDcbvKaRp7pbbCEbN11XWwycBBBg80bNYiD8R8vPYcI234IL+aTY+nOk2IorsN9mFech0daXo+lzLGg4OUwGiI+bW1t/zMG8I16e/vnCLECnn5DUPW2RlByLArYu6yGYtO+k+AldvkijzkJZXwaWfHL0QhNBUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771421468; c=relaxed/simple;
-	bh=VqfdmbS/NowLoUF6IELM+UUM8aCTyUTi6eLEIqQdY8I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=irQY6PwwYlEa9LXjZMPU+LDUot9+5lH/yJ1q+xfZdBBgFCLI7xrUHpEGbQH3BzGWWtOvy2PxMAW3rf/SiWMGxXa5sM0sfGYlErzM8WiNO3DWLP57c7TF3iiZvEt2w1TTpBofIkSd/Yi0o118WcI6VBFIesjeVgnAeq8NNFtUp2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=MHXeV1uN; arc=none smtp.client-ip=116.203.77.234
+	bh=wLp8Vx2xDX3zudNkp8Sd58yem/MLCzlw3B6cs7yvBuQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MHpXnqk9eZqgktRhXcE38EGbxblZCMo9DFe4vf84C36+gWaFaM7en3iR+JbbpOwfvbzqKkF7S2TGvaWlIEuXxhafTDsWYNaxwIRzuvEj1mVjatJQXDwVCoO4iVAb3knvegkHe34peWWdJ7508L1nBNZzlPNY5dI9NL/KxKcZV50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=A9BtxREd; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="MHXeV1uN"
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="A9BtxREd"
 From: Frieder Schrempf <frieder@fris.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
-	t=1771421123;
+	t=1771421125;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=W5XQvr67ppKEv7j8lI1OxJ8VB1al1Zi7HovSXR/21hA=;
-	b=MHXeV1uNtdW1YLFHFyT66YlUJwbKIAtBas9rb3Uge3Y2URC+dVIXW5xcVXxUdgUl3IlpD2
-	nKFfaPO9Wroqyi7wqUB4ec/m3Nn0w1ZaeZSk3WAtbYR5LBp2Ac+rzMLv9S2jCgTgbydWab
-	rMJCxqcq++eXq04ZPs34TtExr99uQMGpuxI5c1RKl9kRlwqFQfiZ1XVzfddFNuMx2MPs2n
-	lSn8S0oUNDNwp2VQEMH8/HCREEpOSqZtUO8Jn/YE4d5zpluIuLtWWySgipvpWPwTYS3ZoV
-	udpNQ9I0LACTlMsP3wRN8XnOf/FN+SOFqkSNAVSXRAX1tbnQISdib2n3wQRNkQ==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OkuqcMPgMhOvktAdO4R0HEr+0KhxRtMn3MM65yMphGE=;
+	b=A9BtxREd6FMLfp7RNjEc2V3SW2Q/lX2PmWk1ZcrmL5SS9WRR/JrmkZ1Ni+as3fUyufn6lZ
+	YLpJ3UgJhTvRACai4t//8PGHf3iJ0+QnQ7eqI9aCpSD2s/Vwcies8SfjZ5hyv6tVWKO+jw
+	XdD777G9VAm+BSZOMaIIAebvMHQDieprpwFyreAdJcYdTbuXrcNnGK8D8S6Z6+TkZ+ulbG
+	W2hxdUa1Za+LRFIt3XjOrE9Gh/WT1gXsc2vUsy35KpGO+N0/62uhUhRqLTlz6siFHfRfrt
+	fcyN22mecKB7AhPv3wsE8Mj9T81K28+BHKYzUv/Kcm5XLOvXn4bYYMuSlV5+Ag==
 To: Conor Dooley <conor+dt@kernel.org>,
 	devicetree@vger.kernel.org,
 	Frank Li <Frank.Li@nxp.com>,
@@ -38,12 +40,13 @@ To: Conor Dooley <conor+dt@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>
-Cc: Annette Kobou <annette.kobou@kontron.de>,
-	Fabio Estevam <festevam@gmail.com>,
+Cc: Fabio Estevam <festevam@gmail.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH 0/4] Kontron i.MX8MP OSM Devicetree Fixups
-Date: Wed, 18 Feb 2026 14:25:04 +0100
-Message-ID: <20260218132519.74570-1-frieder@fris.de>
+Subject: [PATCH 2/4] arm64: dts: imx8mp-kontron: Fix SD card supply on SMARC eval carrier
+Date: Wed, 18 Feb 2026 14:25:06 +0100
+Message-ID: <20260218132519.74570-3-frieder@fris.de>
+In-Reply-To: <20260218132519.74570-1-frieder@fris.de>
+References: <20260218132519.74570-1-frieder@fris.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -54,23 +57,29 @@ Content-Transfer-Encoding: 8bit
 
 From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-This contains three fixes and one cosmetic change for
-the Kontron i.MX8MP OSM devices.
+The SMARC eval carrier has a power switch for the SD card compliant
+to the OSM standard definition. To use this as already specified in
+the OSM base devicetree, stop overriding it in the board tree.
 
-Annette Kobou (1):
-  arm64: dts: imx8mp-kontron: Fix boot order for PMIC and RTC
+This fixes the power-supply for the SC card.
 
-Frieder Schrempf (3):
-  arm64: dts: imx8mp-kontron: Fix touch reset configuration on DL
-    devices
-  arm64: dts: imx8mp-kontron: Fix SD card supply on SMARC eval carrier
-  arm64: dts: imx8mp-kontron: Use GPIO/IRQ defines in DL devicetree
+Fixes: 6fe1ced5ccab7 ("arm64: dts: Add support for Kontron i.MX8MP SMARC module and eval carrier")
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+---
+ .../boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts     | 1 -
+ 1 file changed, 1 deletion(-)
 
- .../boot/dts/freescale/imx8mp-kontron-dl.dtso | 26 ++++++++++++++++---
- .../dts/freescale/imx8mp-kontron-osm-s.dtsi   |  6 +++++
- .../imx8mp-kontron-smarc-eval-carrier.dts     |  1 -
- 3 files changed, 29 insertions(+), 4 deletions(-)
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts b/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts
+index 2173a36ff6917..74d620dd06b7b 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-smarc-eval-carrier.dts
+@@ -249,6 +249,5 @@ &usb3_phy1 {
+ };
+ 
+ &usdhc2 {
+-	vmmc-supply = <&reg_vdd_3v3>;
+ 	status = "okay";
+ };
 -- 
 2.52.0
 
