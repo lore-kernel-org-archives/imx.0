@@ -1,204 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail2.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0121031A548;
-	Wed, 18 Feb 2026 13:30:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5AC302741
+	for <imx@lists.linux.dev>; Wed, 18 Feb 2026 13:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771421402; cv=none; b=nCCSeLU3vWCc4QYb6Uad64uQNIY5sGnRdv7HRdIYUjyBDLY6soPJkRm5c+wtniDTnsUx90NYNdkSXDDr4qLtdkQV7T/oPn7gkLo/UvZLfE8E8HQPsD+l8H+XPZ93aGxoJ7oWnD9YUbwKNllwTMFRV5fkmaNIDJHpDqVLmHAreuM=
+	t=1771421467; cv=none; b=kmBdlQqAgA0nu+64yOeRFnNMDhAN4zvw6vquW+DnCnzx7BM8yxbBlbvMH/NdWRszFHza2wlI3IF+e+f5pUDEsE59mPBLnSTECnd90NdVCiYq0s0559LoHT/j0f6tRXjWS9TU8dD0L64Ob+F1Qj74YszJAF4+r53N37s3S2F5FLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771421402; c=relaxed/simple;
-	bh=gN2cljJea4XLY82kVunjPVPH2WX7LYqJDp0lJ1rpnJE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d6miHnjLTFrjgd4p42d+jbnhvmBbKvvSW5iHq2LyuavhfHOXLhX1bKCZAkMFy2UVmuB3pGFBnuVqPrcVthPliTx9GZ4z9JO83H55myrJ9uRyE8yBh60Pc4m478LWWE2ZKAbuqBIc/aoris6JCRE5bL9LqR6uWv7cdqibVWQm174=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hQXgmrs1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771421467; c=relaxed/simple;
+	bh=cuQvL8BI8iOkp/0NVSsyyYOrJzK1E4le2JhX4MjuvdA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nJ+5pMeMzDhues8S434fWZzLCOnmir0s88GTcgUxa3u3prdD8/L0zEkHBNclfC/BYWhvqdgs57aYYTNC8WAb8rZON1nvkGb0v4L0tFCH/AWXSfGUgLY4+e3/Nlnux0aJoJtsbJ8Symyz6H/N7dSTkDhG5cfd/CYcpA1F9lFC/lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=Ud6sNglD; arc=none smtp.client-ip=116.203.77.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hQXgmrs1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D00EC19424;
-	Wed, 18 Feb 2026 13:29:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771421401;
-	bh=gN2cljJea4XLY82kVunjPVPH2WX7LYqJDp0lJ1rpnJE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hQXgmrs1Qlib2Iq+e1k/vkhWvMgVnJzznWpXjKLKlL/k+U6Tv2xdc10MIVg/SeCDM
-	 A66aqE5wdPpuA5lTlGH60KZ0ZkszhElLCWKFSjtPvfAQkVmYcuhim3wEn+6JjbOJ3S
-	 CgqItgBO+/0Zz/5xyOfURJ6rhOX58rpT2RyVXY3PV2l6/m1wkzMcN1gHGt8Wq2oyAk
-	 LggaivlXv0p5S8ianw7fhxrVvurLmiSsCQt0MqR7ibOzj5kmVXiosLSTUrFIiv1ULe
-	 1h69+BXZAAztSjkxDEOWwl00dfgmEHtRvKxwHhRS6tpZNfNtp4CcSEavVs/fKwledH
-	 OtF7zRlwkP7mQ==
-Message-ID: <b7adddfc-db7a-466d-a2e8-72bc6a87ae81@kernel.org>
-Date: Wed, 18 Feb 2026 14:29:54 +0100
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="Ud6sNglD"
+From: Frieder Schrempf <frieder@fris.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
+	t=1771421127;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WOmq4oIh50CVOlYgICncz5bv3GLxzZaAhwh07HpubHg=;
+	b=Ud6sNglDE/M4quzvkVUl9ctLNQQRyC3b0bqyX1JCEJ5NbvOUOehiskILyFIUaOWIQ3TZTg
+	GUjlqfdQicx5qhIkCpfvzTqtw6wlkPNae2hUYzPKCufT6q2xTN/IyWzQOrRYdKZ7EdlDPF
+	m8lhc/VASPWqlC5ArDnvPus7ZjXEk+zCr029tGYn9DEj2cJ2mgH7GivDq+l9fc9zJUAqzi
+	kUSQ4h7ITbfUAG6/o39r9rA2a8XvF8EZwNroagMVM0SR+jvjzdBKTJpRdgZmkfIk4aqs0y
+	2WoVxLn8D6kFyMgtgRblRQngADzf8sM9JbfvP3HkC5uT1wX7ZwgAj7o3XgoAzg==
+To: Conor Dooley <conor+dt@kernel.org>,
+	devicetree@vger.kernel.org,
+	Frank Li <Frank.Li@nxp.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	imx@lists.linux.dev,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Annette Kobou <annette.kobou@kontron.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>
+Subject: [PATCH 3/4] arm64: dts: imx8mp-kontron: Fix boot order for PMIC and RTC
+Date: Wed, 18 Feb 2026 14:25:07 +0100
+Message-ID: <20260218132519.74570-4-frieder@fris.de>
+In-Reply-To: <20260218132519.74570-1-frieder@fris.de>
+References: <20260218132519.74570-1-frieder@fris.de>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/13] dt-bindings: serial: fsl-linflexuart: add clock
- input properties
-To: Larisa Ileana Grigore <larisa.grigore@oss.nxp.com>,
- gregkh@linuxfoundation.org, jirislaby@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, sumit.semwal@linaro.org,
- christian.koenig@amd.com, chester62515@gmail.com, cosmin.stoica@nxp.com,
- adrian.nitu@freescale.com, stefan-gabriel.mirea@nxp.com,
- Mihaela.Martinas@freescale.com
-Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
- devicetree@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- s32@nxp.com, imx@lists.linux.dev, clizzi@redhat.com, aruizrui@redhat.com,
- eballetb@redhat.com, echanude@redhat.com, jkangas@redhat.com,
- Radu Pirea <radu-nicolae.pirea@nxp.com>
-References: <20260216150205.212318-1-larisa.grigore@oss.nxp.com>
- <20260216150205.212318-9-larisa.grigore@oss.nxp.com>
- <24443e02-886e-48e2-911e-e4093d251155@kernel.org>
- <e9c214be-840a-43fe-b24d-610fe90269b2@oss.nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <e9c214be-840a-43fe-b24d-610fe90269b2@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Spam: Yes
 
-On 18/02/2026 14:26, Larisa Ileana Grigore wrote:
-> On 2/16/2026 5:10 PM, Krzysztof Kozlowski wrote:
->> On 16/02/2026 16:02, Larisa Grigore wrote:
->>> From: Radu Pirea <radu-nicolae.pirea@nxp.com>
->>>
->>> Add optional support for the two clock inputs used by the LINFlexD UART
->>> controller:
->>> - "lin": LIN_BAUD_CLK
->>> - "ipg": LINFLEXD_CLK
->>>
->>> The clock inputs are kept optional to maintain compatibility with the
->>> S32V234 platform.
->>
->> Does S32V234 have the clocks? I don't understand the "maintain
->> compatibility" in this context. Either you have or you have not clocks,
->> which should be expressed in schema (: false, see example schema).
->>
-> Hello Krzysztof,
-> 
-> Thanks for pointing this out! I will update both the schema and the 
-> commit description.
-> S32V234 does not expose these clocks in its device tree—on this platform 
-> the LINFlexD clocks are set up and enabled by U‑Boot, so they are not 
-> available to the kernel.
+From: Annette Kobou <annette.kobou@kontron.de>
 
-So there are clocks. DTS is being used by bootloader, so how bootloader
-is going to set up clocks for S32V234 if no one provides them?
+The PMIC provides a level-shifter for the I2C lines to the RTC.
+As the level shifter needs to be enabled before the RTC can be
+accessed, we need to make sure that the PMIC driver is probed
+first.
 
-This looks like buggy/incomplete approach, although I understand that
-the original binding had the issue.
+As the PMIC also provides the supply voltage for the RTC through
+the 3.3V regulator, we can simply express this in the DT to
+create the required dependency.
 
+This fixes sporadic boot hangs that occurred when the RTC was
+accessed before the level-shifter was enabled.
 
-> The changes in this patch are intended specifically for S32G2/G3, where 
-> the clocks are provided in the DT and required by the driver.
-> 
->>>
->>> Signed-off-by: Radu Pirea <radu-nicolae.pirea@nxp.com>
->>> Co-developed-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
->>> Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
->>> ---
->>>   .../bindings/serial/fsl,s32-linflexuart.yaml   | 18 ++++++++++++++++++
->>>   1 file changed, 18 insertions(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/serial/fsl,s32-linflexuart.yaml b/Documentation/devicetree/bindings/serial/fsl,s32-linflexuart.yaml
->>> index 4171f524a928..885f0b1b3492 100644
->>> --- a/Documentation/devicetree/bindings/serial/fsl,s32-linflexuart.yaml
->>> +++ b/Documentation/devicetree/bindings/serial/fsl,s32-linflexuart.yaml
->>> @@ -34,6 +34,14 @@ properties:
->>>     interrupts:
->>>       maxItems: 1
->>>   
->>> +  clocks:
->>> +    maxItems: 2
->>> +
->>> +  clock-names:
->>> +    items:
->>> +      - const: lin
->>> +      - const: ipg
->>> +
->>>   required:
->>>     - compatible
->>>     - reg
->>> @@ -48,3 +56,13 @@ examples:
->>>           reg = <0x40053000 0x1000>;
->>>           interrupts = <0 59 4>;
->>>       };
->>> +
->>> +  - |
->>> +    serial@401c8000 {
->>> +        compatible = "nxp,s32g2-linflexuart",
->>> +                     "fsl,s32v234-linflexuart";
->>> +        reg = <0x401C8000 0x3000>;
->>> +        interrupts = <0 82 1>;
->>> +        clocks = <&clks 14>, <&clks 13>;
->>> +        clock-names = "lin", "ipg";
->>
->> Just add the clocks to existing example. No need for new example for
->> each new property.
->>
->>> +    };
-> 
-> The existing node refers to S32V234 which does not expose any clock 
-> properties in its device tree. Because of this, I couldn’t extend that 
+Fixes: 946ab10e3f40f ("arm64: dts: Add support for Kontron OSM-S i.MX8MP SoM and BL carrier board")
+Signed-off-by: Annette Kobou <annette.kobou@kontron.de>
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+---
+ arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-You just said S32V234 has clocks...
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
+index b97bfeb1c30f8..bc1a261bb000e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-osm-s.dtsi
+@@ -330,6 +330,12 @@ rv3028: rtc@52 {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_rtc>;
+ 		interrupts-extended = <&gpio3 24 IRQ_TYPE_LEVEL_LOW>;
++		/*
++		 * While specifying the vdd-supply is normally not strictly necessary,
++		 * here it also makes sure that the PMIC driver enables the level-
++		 * shifter for the RTC before the RTC is probed.
++		 */
++		vdd-supply = <&reg_vdd_3v3>;
+ 	};
+ };
+ 
+-- 
+2.52.0
 
-> example with clocks and clock-names. The additional example is there 
-> only to illustrate the S32G2 case, where the clocks are required and 
-> actually present in the device tree. Should I remove it?
-> 
-> Best regards,
-> Larisa
->>
->> Best regards,
->> Krzysztof
-> 
-
-
-Best regards,
-Krzysztof
