@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51567347FED;
-	Wed, 18 Feb 2026 19:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EE721FF2E;
+	Wed, 18 Feb 2026 19:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771443862; cv=none; b=tBaSEC6t1E4M+mutEepit3FFSf3MS4W337CQbUl++oKrsO7uSmVt5cYaNlkh/n4ZWrwS48LiuAgCdoEFKMsHk4ivMNF5BsYrZioH3wkkkct54Wt+XKGH0X6rmVULG9kUMhys7mm1EmSg5i72yKqz/phd/JHIGkAsZvhWNZvdDVM=
+	t=1771444132; cv=none; b=XnFuDlm8wvLi4BEEPTCfQjmq9kKOWcJx002rJIXkmQijws/nI9CBRCsGTBmVAMtQkjCrVF7Acs0M0yVmyJ3aHAzyYern/gFdGUUdDaYV8RpH4BDj6rOcAYBmBdMICFB8Q2DnKZAENW3LQ1b2jbH8qFFfXVKE3HmfukAlCyc1zF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771443862; c=relaxed/simple;
-	bh=Nxc51OZFvWQ7CJax0Y4YjDs1seO2jYaYlzojY84ULhA=;
+	s=arc-20240116; t=1771444132; c=relaxed/simple;
+	bh=Ayatm5KsyQmPxgzMzQ34taloQEfuU8tOmIF4DDu2FkA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TzcvskXQz46xNhhIUOCPvKXmhFXQ8WdmYZ6MWNhcntLZAB9cUUAPFd0xoUH6yDOoFDiSWlObf/q47WGBkyTf1xe5gk/FO0r5ZVEm3ORMbIu88AXSFwU9EyZBMjkIHeECS1U+87ngLUbz5g6Cgt3vBWXaW593Fj7GMWf81mk9axI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SwGdG5AT; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=XgXqvxGvo3DcHiYZlEg558qvsTm2n5s+/zw54EGltnrSsIuGoYkHJaH4jRMG6ojoh67irKvaeDKq4sJt0tor2fafRCZ6hB6yyJ50qgOxHNeQMXJUTbqt9erBKYNGK6jROHWx+CwlAl9rUUfwdTb1IJssOMwUPE7FMrnyrurqavU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BEZij971; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SwGdG5AT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A52C116D0;
-	Wed, 18 Feb 2026 19:44:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BEZij971"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99622C116D0;
+	Wed, 18 Feb 2026 19:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771443861;
-	bh=Nxc51OZFvWQ7CJax0Y4YjDs1seO2jYaYlzojY84ULhA=;
+	s=k20201202; t=1771444132;
+	bh=Ayatm5KsyQmPxgzMzQ34taloQEfuU8tOmIF4DDu2FkA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SwGdG5ATkMTZ8yEB5LkURONG5rkpF2XO+ansffQI49leAQLTFNHA42G5doEeNDxYi
-	 /eKWr1RoVOqfAx1y/jt0ptaK+YDyZIAEyNHg/XU+MZwmrypNmF+v5w1cQWVmvcC2Ho
-	 SQyRfkQVudR46fBMg7g7JJfxJ+WV72+M4IboF7QR/Ss4APRh+k5CX2FtTM1rRwkVrN
-	 tcvHJWgYr/9HheM4Gk2cQvd551cxna/9B6EbNwSS3+xYrS5vut/vgn9lWopN1Adyr9
-	 sFfGOtZMa7snHI1LCNdrG7y9G8aJZX7SdibOGhiFcnq6FCRXi01mzT1LI73pHc7Y9f
-	 7dos+tdwiY8rg==
-Message-ID: <6c001865-c8e3-4133-bf10-46384fdaf511@kernel.org>
-Date: Wed, 18 Feb 2026 20:44:17 +0100
+	b=BEZij971PNdAg5YhHOT9+/G9SfOJ2XGwhlLjR2EIkCYm/XLOpT7lluMwc0et4qnoJ
+	 AW1SETTE8f0Xg+NMnnTAsktTZDMl9WQIrdTfASq7mbYVAG3fokUAvW9J8Gp4tofA9e
+	 F9SKW1gz25NjtbQmHzdvpr2c8wnhpnLJepQl4sCC+kHPVIpCR7RQDYky8nQmpbxbLm
+	 yET+DsXWhGLXKvpDx2eyqoFlqQH1jIi+69duWLba1taJ1q3QA7XxjOOy1KCvZyJ5BS
+	 e2bgwmmUZ5vO+qEedLboQ1iw1rCRNK2CbjcUolkQOhO08yyedviqijiPR53C4hkjLa
+	 DfnAGwE1Hyy3Q==
+Message-ID: <1ac72f09-f079-4b43-9728-74c49f2e8bf1@kernel.org>
+Date: Wed, 18 Feb 2026 20:48:44 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -35,16 +35,26 @@ List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] ARM: dts: TQMa6UL: modify for use in bootloaders
-To: Frank Li <Frank.li@nxp.com>, Max Merchel <Max.Merchel@ew.tq-group.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux@ew.tq-group.com,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260218132339.32157-1-Max.Merchel@ew.tq-group.com>
- <aZXw76CuH9u8csFk@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH 08/13] dt-bindings: serial: fsl-linflexuart: add clock
+ input properties
+To: Larisa Ileana Grigore <larisa.grigore@oss.nxp.com>,
+ gregkh@linuxfoundation.org, jirislaby@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, sumit.semwal@linaro.org,
+ christian.koenig@amd.com, chester62515@gmail.com, cosmin.stoica@nxp.com,
+ adrian.nitu@freescale.com, stefan-gabriel.mirea@nxp.com,
+ Mihaela.Martinas@freescale.com
+Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+ s32@nxp.com, imx@lists.linux.dev, clizzi@redhat.com, aruizrui@redhat.com,
+ eballetb@redhat.com, echanude@redhat.com, jkangas@redhat.com,
+ Radu Pirea <radu-nicolae.pirea@nxp.com>
+References: <20260216150205.212318-1-larisa.grigore@oss.nxp.com>
+ <20260216150205.212318-9-larisa.grigore@oss.nxp.com>
+ <24443e02-886e-48e2-911e-e4093d251155@kernel.org>
+ <e9c214be-840a-43fe-b24d-610fe90269b2@oss.nxp.com>
+ <b7adddfc-db7a-466d-a2e8-72bc6a87ae81@kernel.org>
+ <69fafe15-a539-4429-ad15-3ec44babab28@oss.nxp.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -90,21 +100,61 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <aZXw76CuH9u8csFk@lizhi-Precision-Tower-5810>
+In-Reply-To: <69fafe15-a539-4429-ad15-3ec44babab28@oss.nxp.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 18/02/2026 18:03, Frank Li wrote:
-> On Wed, Feb 18, 2026 at 02:23:33PM +0100, Max Merchel wrote:
->> This series contains modifications for using Linux device trees
->> in bootloaders. Changes from U-Boot bootloader are incorporated
->> directly into the Linux device trees.
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+On 18/02/2026 14:57, Larisa Ileana Grigore wrote:
+> On 2/18/2026 3:29 PM, Krzysztof Kozlowski wrote:
+>> On 18/02/2026 14:26, Larisa Ileana Grigore wrote:
+>>> On 2/16/2026 5:10 PM, Krzysztof Kozlowski wrote:
+>>>> On 16/02/2026 16:02, Larisa Grigore wrote:
+>>>>> From: Radu Pirea <radu-nicolae.pirea@nxp.com>
+>>>>>
+>>>>> Add optional support for the two clock inputs used by the LINFlexD UART
+>>>>> controller:
+>>>>> - "lin": LIN_BAUD_CLK
+>>>>> - "ipg": LINFLEXD_CLK
+>>>>>
+>>>>> The clock inputs are kept optional to maintain compatibility with the
+>>>>> S32V234 platform.
+>>>>
+>>>> Does S32V234 have the clocks? I don't understand the "maintain
+>>>> compatibility" in this context. Either you have or you have not clocks,
+>>>> which should be expressed in schema (: false, see example schema).
+>>>>
+>>> Hello Krzysztof,
+>>>
+>>> Thanks for pointing this out! I will update both the schema and the
+>>> commit description.
+>>> S32V234 does not expose these clocks in its device tree—on this platform
+>>> the LINFlexD clocks are set up and enabled by U‑Boot, so they are not
+>>> available to the kernel.
+>>
+>> So there are clocks. DTS is being used by bootloader, so how bootloader
+>> is going to set up clocks for S32V234 if no one provides them?
+>>
+>> This looks like buggy/incomplete approach, although I understand that
+>> the original binding had the issue.
+>>
+> Indeed, I also believe the binding is not fully accurate on S32V234. As 
+> I mentioned earlier, the LINFlexD clocks are not managed by Linux on 
+> this platform. They, along with several other clocks, are usually 
+> initialized by U‑Boot, and Linux does not handle them. That is likely 
+> the reason they were omitted from the S32V234 binding.
+> I’m willing to correct this for the S32V234 compatible by making that 
+> property optional, so we don’t break compatibility.
+> For S32G, I would prefer to avoid repeating the same oversight we had on 
+> S32V234 and make the property required, since the IP, as you correctly 
+> pointed out, does have dedicated clock inputs.
+> 
+> How would you approach this?
 
-Hi Frank,
+So the new device should require clocks, which can be left optional for
+the old one with explanation in the commit msg. Linux is not the only
+consumer of bindings and DTS.
 
-Why are you giving review tags instead of applying the patches? Aren't
-you the maintainer which handles the patches for IMX?
+
 
 Best regards,
 Krzysztof
