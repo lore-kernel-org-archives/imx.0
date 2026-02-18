@@ -1,48 +1,47 @@
-Received: from mx-relay13-hz2.antispameurope.com (mx-relay13-hz2.antispameurope.com [83.246.65.99])
+Received: from mx-relay154-hz1.antispameurope.com (mx-relay154-hz1.antispameurope.com [94.100.133.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738712C3259
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C512D0C9D
 	for <imx@lists.linux.dev>; Wed, 18 Feb 2026 13:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=83.246.65.99
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.133.195
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771421045; cv=pass; b=iLwMhTq7Ic2JSWMS4GFAJBtoLBNRQaECK5IHy50XQNUqDmnxnACZBgK8mF7SjuClu2gvkUJd+LcQEMPMUUzthiNsd+lWclbH1jJgUEmZ+Iu5P+SHojA+rLCU6ezScvaw3HG2BimV98LEjikzm97UBTvbFysrEOrr+jaNeq7iF/8=
+	t=1771421045; cv=pass; b=jI5HEbCdhWeVrAiV9e7zRLkGSy1fyBDL1hh/1fk/nA3EnLSvzAquKvxSwhIVqL99Xx887Lfz9PpYPJfZeVfRQbsPq6J9Kni5lFXAIh6RkpP89hNOQ/vcfkDGptguQEKCUxI2aRk8iVjto/9bbOmALGbi7nEgE+yXNClB2PSCjHA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771421045; c=relaxed/simple;
-	bh=Lqa+W/InJiMsJcFaCqPhqA0VqCeAVMN/8wOxNHkZJ0I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDGpYshAcUUy7UBWQLNRDrysyKjOHW7+2TM5P/Hvvfd7F3AtZXZci6hTUBZBPLQEeun4b7SYfkM4EkB4TgoccMOZFjis5WQ1D0yhDLX9YfWPshxNGAOpGdMFOhS5SHWhRwYOUu5m7Lux7RUddZhEqMkI92CcQPrVVT9OrKn39rs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=osC03EMP; arc=pass smtp.client-ip=83.246.65.99
+	bh=UlU8u45N+iRUHhs+x+q8Eg58og+sPs+uhkmSpDxADd0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=syVJFK3Eqr4e55uNugXM31U4uAKXBG4VHzuPEpq5XqHIWzOWAg+rg1bUXv6oJoE/QF9wMC9PGJ2jxypVjUg2kv2zX//sCPQqsKxYGAq+bADgmunLwkYyXAwkqzfCWy1Em7+acnGKjlgIlzl3dMJlwsg1YOls+FZ5e8zhRqaEXB4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=o0UBXd+n; arc=pass smtp.client-ip=94.100.133.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="osC03EMP"
-ARC-Authentication-Results: i=1; mx-gate13-hz2.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="o0UBXd+n"
+ARC-Authentication-Results: i=1; mx-gate154-hz1.hornetsecurity.com 1;
+ spf=pass reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
  smtp.mailfrom=ew.tq-group.com
  smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
  header.from=ew.tq-group.com orig.disposition=pass
 ARC-Message-Signature: a=rsa-sha256;
- bh=3X41+/DDb79VlrAXhpveO5mOonDaOzhaJoIuv+461r4=; c=relaxed/relaxed;
+ bh=Xp6NT0DBPlQZavb5HOX3AnM891/YuQXLWauhDrKKecs=; c=relaxed/relaxed;
  d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1771421004;
- b=Oc1pFsdJtRWvqgLVAqJnQOLJvMA5qT2twQ7CnbTX2/cOqtIWsrpjhs4+vGvtY3fB/7p5Zjcl
- lhrpYPB3KPvG4DoitMTxHNWh76XqnAJ4j+sXZ+Rur0NLsGKUDBE3TpV4rZESFqkJvpI8gRsHVxO
- zdgZXyPyiKCQJ5pGZ3r4rIUpXJA2ss25J6HIl34uArZThXkcAyYqCG4oa3kh7LETolYt0sF72pV
- PfNzjHqpDtpcRY2kKjfA2+ixFQI28NrIItziw6WbMnNjJrydI9qwJyENYFHCDPYN6d0NkopyJgz
- Uq1oHgw8kIqZzj9lluSZbGv6JaTh9SXnc+/sLVV7Y10Lw==
+ t=1771421003;
+ b=GARNRs1huRxsY4KwxLlr0uHE27b8yYFc9f0bKjnrHk622KufN4LIvwnmw3VA2UUOi/Y/kCQ/
+ 7KhOpPzL3OTydhAkMgErSQX/gszG3y3ZEd+mt+O8IDv7obcaHGH0plMKyGqDQnslDIyDG62PyZW
+ yMZTgmVk6tbyKPY0DIHAyoyerJyF+rdM5twKPekVFnUqIVtz6jr/yJXGcQ5Ibml3uXKAmHEKkF8
+ ZkAWCFbZ8XypSDCkkfs0nutAUDDJlOlmpc+RA1Wdq7l3ZBlnxaz9sR2h8CiyOAHwMaV3qUNLrRT
+ wwVxzXSfi4Kuj4EymL+P14c25Pui63vzc38DXwpo83xXg==
 ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1771421004;
- b=Vnguwe7vflsGsHWH9AeH6rXA9VJyTv7eK22NEPflIu+xAfyCkI5138/+SG/pA26WpIrvy8r/
- RbeSx0V7KqVpfT3QXt53ea8r5L/7c7Q/rOvie8wPgJnPRIfAjlD+QcCYt7arZDHYi7lJ3GZOlqD
- STmnr9mgvufRSbD4TYdGSBCpZdbglWxZrdcqGPO6BZWwVrG5pfGMr5n46TdshS+J8ZGr/THZURI
- G97yLgi27BqjBAmM3cYsWCCqoUO67P+A5GPFLBObUplrrOv9aI9pE5V0itSSaHiNcgSiy3VzC1K
- 7T3aeaU0FMMaJTh9XdUS7zqDTJ0YSFGS7eAA8xUi3vCVw==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay13-hz2.antispameurope.com;
- Wed, 18 Feb 2026 14:23:23 +0100
+ t=1771421003;
+ b=Q+Lfs3uLTPBec5K0FywTQn0i8ywp/MAOZzVprLQA3JoMRwg1g5N/96FIidB36ldQTjxolA6u
+ nVcMVMxJjSLgTuf28vTDkPNl70gtVuAb2MUxb7JcPb03NN4wPly2Z12htgxVf1j28msyX81hvYq
+ nzHWPYbYLYyCqvZxp+Or2j+yz8jcSfLvWS5LQOs5sstYvOWTusVGDb1sIMk9ALCAl7uz/l0vY9r
+ dOuh3+2Ax4TmBbh8d2xKsqScqYK7buqp8j77rlBxAYzSURLJYMo/x/zVjXA/91xw0Nl9PFt6qWH
+ ZyxEVrJubTXm3f0hCSyobDO6oaOSrqIr21AL3cnSxq45g==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay154-hz1.antispameurope.com;
+ Wed, 18 Feb 2026 14:23:22 +0100
 Received: from merchelm-W2.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
 	(Authenticated sender: max.merchel@ew.tq-group.com)
-	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 89519CC0CC2;
-	Wed, 18 Feb 2026 14:23:12 +0100 (CET)
+	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 1A25FCC0CB7;
+	Wed, 18 Feb 2026 14:23:11 +0100 (CET)
 From: Max Merchel <Max.Merchel@ew.tq-group.com>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -57,12 +56,10 @@ Cc: Max Merchel <Max.Merchel@ew.tq-group.com>,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/4] ARM: dts: imx6qdl: add boot phase properties
-Date: Wed, 18 Feb 2026 14:22:23 +0100
-Message-ID: <20260218132228.32056-3-Max.Merchel@ew.tq-group.com>
+Subject: [PATCH 0/4] ARM: dts: TQMa6: modify for use in bootloaders
+Date: Wed, 18 Feb 2026 14:22:21 +0100
+Message-ID: <20260218132228.32056-1-Max.Merchel@ew.tq-group.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260218132228.32056-1-Max.Merchel@ew.tq-group.com>
-References: <20260218132228.32056-1-Max.Merchel@ew.tq-group.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -76,80 +73,38 @@ X-cloud-security-crypt: load encryption module
 X-cloud-security-Mailarchiv: E-Mail archived for: max.merchel@ew.tq-group.com
 X-cloud-security-Mailarchivtype:outbound
 X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay13-hz2.antispameurope.com with 4fGHJK21JZz3skYp
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay154-hz1.antispameurope.com with 4fGHJH68KVz3K5Dn
 X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:6bfe6034a05854dbc69e031af52159fd
-X-cloud-security:scantime:1.909
+X-cloud-security-Digest:c9bad0062c84e180e2c681c5257030e8
+X-cloud-security:scantime:2.185
 DKIM-Signature: a=rsa-sha256;
- bh=3X41+/DDb79VlrAXhpveO5mOonDaOzhaJoIuv+461r4=; c=relaxed/relaxed;
+ bh=Xp6NT0DBPlQZavb5HOX3AnM891/YuQXLWauhDrKKecs=; c=relaxed/relaxed;
  d=ew.tq-group.com;
  h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1771421003; v=1;
- b=osC03EMPthfXa0hnHmhGmPjbE1HQjiEHhD7rsRGLE0sCIIKU0T3eN9oywPZ2+GoZTW5pUZbI
- Ov5d+X3m8QGXLTbDNcqKSO05c2vFsahBwwzKrdr95V4hZfkAWj6Cqvll44VTr3gyG67vm/7/H9X
- onqpXFw4H2Cu1i2for4oL78tSEN7MO+mnVVxLPEIifbIIj1+LSsCEFW6Q1D4iF0ib5T6u40eCYA
- /MYTpCT5T9oQR/pqnTV4SqaF4/DJY/qyJ9GzV+yTvcfFuSbx/GF/bfke2V2TklXCvVnOTa7L2er
- k4eX/w63YphkzPcFoGR/xA1gIEN/KYsqasyMBL3vepZ/Q==
+ t=1771421002; v=1;
+ b=o0UBXd+ni+DF2AdmK+ndhVUzEV9wLrTpM3HIvufs98PvA08iGOkV3FDYm9P8vIceIUfjbyGh
+ kFR3GLFV0t8uaT5svwG8YVP4Uwlmb2Jpk0xq0VAIuEvGIs/7x2ch72Dkbh2w9zcRkEhVI4I/CCP
+ A9IdY28m6rPXxtaOMZweJQaLnfXsnNnTtDY/3E+J2LFXKqhls04/7vv2rBsj88KHzmwF1Vvb4Jj
+ u7HukyO4ky9UkIUTKJH13G4/zb9q7VJVc6KgS7HyIc8yjHWk+WzHdg+uodwUsCH+W9pTTe4Y+nt
+ jq+BE3AxXNu53BZOwSlRxPu72ZQ0soc/9t4On5+1DDFYQ==
 
-Add boot phase properties from U-Boot device tree.
+This series contains modifications for using Linux device trees
+in bootloaders. Changes from U-Boot bootloader are incorporated
+directly into the Linux device trees.
 
-Signed-off-by: Max Merchel <Max.Merchel@ew.tq-group.com>
----
- arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+Max Merchel (4):
+  ARM: dts: imx6qdl-tqma6: add missing labels
+  ARM: dts: imx6qdl: add boot phase properties
+  ARM: dts: imx6qdl-tqma6: add boot phase properties
+  ARM: dts: imx6qdl-mba6: add boot phase properties
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-index 76e6043e1f91..1fcfe0751327 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi
-@@ -149,6 +149,7 @@ soc: soc {
- 		compatible = "simple-bus";
- 		interrupt-parent = <&gpc>;
- 		ranges;
-+		bootph-all;
- 
- 		dma_apbh: dma-controller@110000 {
- 			compatible = "fsl,imx6q-dma-apbh", "fsl,imx28-dma-apbh";
-@@ -297,6 +298,7 @@ aips1: bus@2000000 { /* AIPS1 */
- 			#size-cells = <1>;
- 			reg = <0x02000000 0x100000>;
- 			ranges;
-+			bootph-pre-ram;
- 
- 			spba-bus@2000000 {
- 				compatible = "fsl,spba-bus", "simple-bus";
-@@ -304,6 +306,7 @@ spba-bus@2000000 {
- 				#size-cells = <1>;
- 				reg = <0x02000000 0x40000>;
- 				ranges;
-+				bootph-pre-ram;
- 
- 				spdif: spdif@2004000 {
- 					compatible = "fsl,imx35-spdif";
-@@ -920,6 +923,7 @@ mux: mux-controller {
- 			iomuxc: pinctrl@20e0000 {
- 				compatible = "fsl,imx6dl-iomuxc", "fsl,imx6q-iomuxc";
- 				reg = <0x20e0000 0x4000>;
-+				bootph-pre-ram;
- 			};
- 
- 			dcic1: dcic@20e4000 {
-@@ -950,6 +954,7 @@ aips2: bus@2100000 { /* AIPS2 */
- 			#size-cells = <1>;
- 			reg = <0x02100000 0x100000>;
- 			ranges;
-+			bootph-pre-ram;
- 
- 			crypto: crypto@2100000 {
- 				compatible = "fsl,sec-v4.0";
-@@ -1320,6 +1325,7 @@ ipu1: ipu@2400000 {
- 				 <&clks IMX6QDL_CLK_IPU1_DI1>;
- 			clock-names = "bus", "di0", "di1";
- 			resets = <&src 2>;
-+			bootph-all;
- 
- 			ipu1_csi0: port@0 {
- 				reg = <0>;
+ arch/arm/boot/dts/nxp/imx/imx6qdl-mba6.dtsi   | 12 ++++++++++++
+ arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6.dtsi  | 11 +++++++++++
+ arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6a.dtsi |  5 +++--
+ arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6b.dtsi |  6 ++++--
+ arch/arm/boot/dts/nxp/imx/imx6qdl.dtsi        |  6 ++++++
+ 5 files changed, 36 insertions(+), 4 deletions(-)
+
 -- 
 2.43.0
 
