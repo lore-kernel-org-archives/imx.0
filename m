@@ -1,301 +1,235 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011022.outbound.protection.outlook.com [52.101.70.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868EE2FDC40
-	for <imx@lists.linux.dev>; Wed, 18 Feb 2026 10:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771410014; cv=none; b=C/74LstzVBR4MZKTC5W/bgySDG1lA8MBXf5bQnwgpdppCCGwx9xAbhyHBk0VYhL5TRv3NHEdPYJsduD7a0C5HBqgPcCu6uiK2mmi2HsLLA7vfIvUwKoa8dOKqSdOOiMbvRr/1hEkhUXrNwuAcT0UqiWM9U6oZZJ2WTA+2yswKk4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771410014; c=relaxed/simple;
-	bh=KMRhh6W9t1S/zQ6NhQbrvFLYqyEEu7IaIcL7BGCP9Fc=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kE7K4uCTSaO0Yd/W3fdl0vJa9vRBoHhTCABvjLy4KdeaoH4sagxdbtt2U5Fz0CWIY6IApTRmD+rbD12OoknlE+lhbJl5GJ0MB6hLcOTe4gSE51X2ryyG5i6z5UUH94LNXRLtZUFvtzt1ksnLzHa8KF7lUWR1bc4Ss0t876m5vkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=piRPMPq1; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EF030DD1D
+	for <imx@lists.linux.dev>; Wed, 18 Feb 2026 11:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771415953; cv=fail; b=glxnzcymv3kAv640o2RyUl3l2Z80YuWTEpxXQKvXPQwLuXwn1HnGADFZ3LCNw39SXG9Ypd3QVTQaMLE0TUIZsLGKGPVhLoHx5nBl0663ELeyzOa9UDTjyfisEYyVKxdZ4xpEzRb8YO8+aLrdCtGfi4LDw0nnC0vBPXlU8b2g2S8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771415953; c=relaxed/simple;
+	bh=g4ufXPwGpw9XC6v5KSIOHsMAyJ/OnKcVqNIfbAHc5L4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=UgTHpBpBrdZfqFo6fbuP/MUu0D10Za5WDzLIOlBf8x4zDgrQRFBmV9dXNTdNlrPFblgF1W0WgxXNFlChmqLwbeBXe4Dx/8VWruXlt65D4ZW0CBxP/dKXl86MfRpIlrdU19w14jBu0eZs4aZ8hXbO4fSsl+x/HGfQ4B481e/foYw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=OlSgX/mL; arc=fail smtp.client-ip=52.101.70.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="piRPMPq1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1CEC2BCB5
-	for <imx@lists.linux.dev>; Wed, 18 Feb 2026 10:20:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771410014;
-	bh=KMRhh6W9t1S/zQ6NhQbrvFLYqyEEu7IaIcL7BGCP9Fc=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
-	b=piRPMPq1JdjrH5xmr6Qs/V+e9vEf3hRMW+F2zhIxb+JEaCgt21TeynmqDUItYAqvj
-	 zYyoLeS+gb7ygloju8kp4NxNqF5TQ3NMLMRk/t0fqkqldGDQ7m0vqHWi+6IFfcWiAv
-	 X86dUvgMK4t/Zsqb6VwdbgZXtPuDAZDoAvup3XmWtdD/3lSXBQkzPwWr0Z6xjV7Ssu
-	 oj23Io1n0JHIuuduhHCevY/zSElk6DjImynbCNHYHZocQSD61gxjy3CyGv0NgADguI
-	 N6sUEZ2A9/5ktY7u5fr9UPqBlOYH0sB2xuhgr0y2Wp+ZrcbJ6CdfdOJfFndlq/Csu1
-	 WnOreDr8/ltUQ==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59dd54b1073so5817864e87.0
-        for <imx@lists.linux.dev>; Wed, 18 Feb 2026 02:20:14 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUietaVBaOKzNS5oG3S9kjfdj0q/4hnyXQm6QtN2WmBMAyVLpRnHVLHnTBR7kAon6PaEcc=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw52G56qxgMWCE5lm2Nj/y18GjlGz0g8Z1oFTKROdtVCJYxA53r
-	hUmvMvlnn8CQ+viTsL6LT7zpFkDlUYt9i+bMMQux0z4ttHTKfyYtWAgRXIbs/rVlIEnxd9RRVkA
-	Hot65pclrCCHdXoHQmpfgXWkxcFQAoPifVULERMAlaQ==
-X-Received: by 2002:a05:6512:685:b0:59e:38e2:7b60 with SMTP id
- 2adb3069b0e04-59f6d485901mr4374992e87.53.1771410012913; Wed, 18 Feb 2026
- 02:20:12 -0800 (PST)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 18 Feb 2026 04:20:11 -0600
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 18 Feb 2026 04:20:11 -0600
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260212213656.662437-4-shenwei.wang@nxp.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="OlSgX/mL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KcnRY61oF7go2I4ihLiIT5d6V2oQYZfjYXS41ewVP13s6jAVPLld6BMWepBJuwH4GUeZ3peQ2Ske2jPQbdd5yQY7UIf716gJMRoAycfGN/tsYk5SLEWazVA1/ERs1sERvMbEpSPC8QHc8bQFXduBli7tXN9wCUTqXKS6aVoxtu7wfIdka9ZyGM+Cx9hJhQdoLqXKRJbxsQ/SK7DUuZ/TSo9NujolRL1Q5sDQt+EADseC4QCphHM7iI1byBeecIMOstVokIhRZl1ZKrf7syjeNrnhy+UalGtMKEPf4pTKf415Q0qTrYKGFpxn2ltI7Vav3HwmgLuo0KiZlTzBR4jcBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=M7X/MJKp8/PIf82tpGKdqdN3yg6js2Df5FS4DxXoRgs=;
+ b=rS9pRE78X2O62LkEJy53StEl+jOgPnoye//XuqAbMCIJ1mW/vUcrtEOGgjF9o8LiG+4WEf4qIegFR2+nl6OGGjznx5eBvR1A0TsWxB30fvtHiQqz1rZZOKz0AM8wadi3DqzdY2kP7G1S6aqtAEjUeY4fhnv7y2EgPx86EuFQXIH7b6GXcNasurzRhnMK0QJ4lyjH88cuN6hGq6tXGGj7Ax77nN0x8iJopI6za/u6u2kjvb9aaHRifFuTCqKDFZ4N3u/7CCy1W1zdjSGsGFkHX7zEcjPm+n3U/TKbppDITa+C/2hHS+bxV7B2X1ICB8ffAFld/02KhB0RR1CPBNVrZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=M7X/MJKp8/PIf82tpGKdqdN3yg6js2Df5FS4DxXoRgs=;
+ b=OlSgX/mL/kIq+Jd1x5XegL/5a8LHqMQiMB+c6T9GpjqJmGpSMEtlf1/18VU2SuCPUGYgz9jLJTye1O/uQU0mN715HKJ58MAu8QxyU7xKgohsYmQeclRtbkr5yqKJOrkxViM8kHybUudjf0bcnngFwNqYUX1KMrPnCLx7tm6IgwU1it/02G4O5hasFYjqf33V3v/jqwPLGmpLMk39xlbGtIiq2FlSf7A/McetEv4H65/Fbaxzuuusgr8tqEZJ58MFlNwAYfFIyk34V8cEFTc5SL1D87acJcikgmmHa2Obx1IMOXtW8407kScFTyXmF4F/ZH4wAhz0/VNoi3iA7dgLFw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PA4PR04MB9224.eurprd04.prod.outlook.com (2603:10a6:102:2a3::5)
+ by AS8PR04MB8181.eurprd04.prod.outlook.com (2603:10a6:20b:3f5::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.13; Wed, 18 Feb
+ 2026 11:59:07 +0000
+Received: from PA4PR04MB9224.eurprd04.prod.outlook.com
+ ([fe80::8e54:4d38:df79:fd63]) by PA4PR04MB9224.eurprd04.prod.outlook.com
+ ([fe80::8e54:4d38:df79:fd63%7]) with mapi id 15.20.9632.010; Wed, 18 Feb 2026
+ 11:59:07 +0000
+Message-ID: <0c02809d-2108-4261-ae36-c68cc7a169e1@oss.nxp.com>
+Date: Wed, 18 Feb 2026 13:58:58 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/13] serial: linflexuart: Fix locking in set_termios
+To: Frank Li <Frank.li@nxp.com>
+Cc: gregkh@linuxfoundation.org, jirislaby@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, sumit.semwal@linaro.org,
+ christian.koenig@amd.com, chester62515@gmail.com, cosmin.stoica@nxp.com,
+ adrian.nitu@freescale.com, stefan-gabriel.mirea@nxp.com,
+ Mihaela.Martinas@freescale.com, linux-kernel@vger.kernel.org,
+ linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, s32@nxp.com, imx@lists.linux.dev,
+ clizzi@redhat.com, aruizrui@redhat.com, eballetb@redhat.com,
+ echanude@redhat.com, jkangas@redhat.com,
+ Radu Pirea <radu-nicolae.pirea@nxp.com>
+References: <20260216150205.212318-1-larisa.grigore@oss.nxp.com>
+ <20260216150205.212318-2-larisa.grigore@oss.nxp.com>
+ <aZN7Hx_aK4ta1ksL@lizhi-Precision-Tower-5810>
+Content-Language: en-US
+From: Larisa Ileana Grigore <larisa.grigore@oss.nxp.com>
+In-Reply-To: <aZN7Hx_aK4ta1ksL@lizhi-Precision-Tower-5810>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS4P189CA0045.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5dd::17) To PA4PR04MB9224.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a3::5)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260212213656.662437-1-shenwei.wang@nxp.com> <20260212213656.662437-4-shenwei.wang@nxp.com>
-Date: Wed, 18 Feb 2026 04:20:11 -0600
-X-Gmail-Original-Message-ID: <CAMRc=MfM7Wc6ae+thPnqBdJUKhLVkrgZYYD_9EjAzxbE5mtSgg@mail.gmail.com>
-X-Gm-Features: AaiRm50s4fsP3Hfe2L_u48xMA8NYIISGBNrR-9MdGdJEdOmmMFh9mEr9DdPOsIQ
-Message-ID: <CAMRc=MfM7Wc6ae+thPnqBdJUKhLVkrgZYYD_9EjAzxbE5mtSgg@mail.gmail.com>
-Subject: Re: [PATCH v8 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Shuah Khan <skhan@linuxfoundation.org>, linux-gpio@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
-	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com, 
-	arnaud.pouliquen@foss.st.com, Bartosz Golaszewski <brgl@bgdev.pl>, Andrew Lunn <andrew@lunn.ch>, 
-	Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9224:EE_|AS8PR04MB8181:EE_
+X-MS-Office365-Filtering-Correlation-Id: 995bfb67-9f64-47c2-e9ec-08de6ee51eb7
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|366016|19092799006;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UTVrVkVaUm9JZngvL3lPZytYdU11RnFsM2tXaHoxY3lVMGRZT3QrS3N5ZjNr?=
+ =?utf-8?B?a0drakZXUnNVa3Y5Mnlvc1NyWm5INEpWRURHdFNDa2JoVDV5UVBwZzZSNzdi?=
+ =?utf-8?B?YkFvTWNhWWxSMFBEWWJpSXYyRVpVODliLzJ5OVczN0RXREg0SlJsN1Z6UVVJ?=
+ =?utf-8?B?ZXYyandNT2JrNUZhRWxTcFhNYkJibVEvR0VyNFZwbnpNeUJjOW80Y3RzQUxi?=
+ =?utf-8?B?VzkxTnB4eXo1eHA2OTFzYmJZQVhtckVja0I1a2dCK2crVXZONjluYWxJY1li?=
+ =?utf-8?B?K0J1ejE0WFBtaFUvVStnT1ZuSXYySy9adE1MQTdTTUtieDd1WUhmS0phNlNT?=
+ =?utf-8?B?VldXYURsQ1IvNUx3bXZ1SU5Bek5UV05GS3NuNEJTVDRTcVZyU2l3UkdyNDRs?=
+ =?utf-8?B?LzEyVjdTSzJVRnNvTWMyUzg3dHBYVVhlYmxHMTdqT25FYXNoMWJYQ3UvcjNa?=
+ =?utf-8?B?a3U4TEpYU1o3cTZab1FJZTcyeHlnTitzMHJoRkJEZjRwTEJabkRaaW94T0Qx?=
+ =?utf-8?B?NFlDVXFsaGZWck1QNTluUUVqTDFXMy9VczFlSkV3UDd4L1lzT1NkZ1BQbTRl?=
+ =?utf-8?B?N0F5OWc3V2k0WVMwbUNnVzRpNWhiNDkrSVd3LzhTMzY4TU5scVZIZG51L1d1?=
+ =?utf-8?B?aDN5Q1pOaWhGaVlPczZ5dTB2QjNjRUh0WldMVUVGY3lkQ2V3U1ZSaDVBb2pD?=
+ =?utf-8?B?M3dsY0toUTZzamxtZWpaT2hkK1FkaWtFLzUrcHc4UnROWmg4NHVtYVVqZXJX?=
+ =?utf-8?B?dWJnamI1ajY5blljOTJXbDZjUTRqOXBlbHR5aGNaOG9vNXVrMkRaMThKcW9v?=
+ =?utf-8?B?QXN0ZkdYTHhPUUZ5RisxV0JEU1Q3aHc0cFEzTFBGNDJGZUR2dFZMdnptTEJO?=
+ =?utf-8?B?RjNNSDdPZkJzVDdPbTFMYWRoa2E1OEFTWmh3SGRLWXlPT1FsbHF2TlA0VEhh?=
+ =?utf-8?B?N0hzZ1gwZEt2M1I3emYySTFGMW1wSEVLQytqM3YvdXRWOEN6NDhjTkdsM0Fy?=
+ =?utf-8?B?VmxUVFkvL1pSbnJLNmNmTW5WL1IxVGNQRFdweFhNMjQ1ZVE2Ynk5amkxVU1i?=
+ =?utf-8?B?UVlRZ0NOYkFRdU5hL2hUWUhmVG4rRnFYb2NtNk4zQnE1dmFWclA4RHlLcFhl?=
+ =?utf-8?B?bGExUkE1R0xyOGpWMHZhVVVFdlBwUUZTL1N4eXE3NktTdUNaekptdXEyYlRr?=
+ =?utf-8?B?NFdjbk1pZVFseXhpbDNBT1doa3J3NXcwSVoweWtSVnFxajd2NS9jR3hRRThZ?=
+ =?utf-8?B?dE42Uy8ySkJDc2JpOG5EZHpHdHY2ZnpOWFZ5Nkw3eTlreFFQMmp4UFZlWWNl?=
+ =?utf-8?B?bHo2bUt1blhra005NzdLUWphYXZPTFZ6MndXSm1XMXpudGJ5M1REQisxdTBl?=
+ =?utf-8?B?bk54SnAzbjY4WWJlbUFQYkw1NVUxNUJhTFY5ZXZtNHlWQUVUeUkzMzJwTTMz?=
+ =?utf-8?B?TE5OZU1kVldJeTZlUnhwbmN0M3ZlU2kxTDNRNWNGSWFHdUZpOWxYaVFYdTJN?=
+ =?utf-8?B?VDlZWTZQcVR5TGR3dFh0ZlBJTlBoZjJoTW1OZzF5RFE2MGpCeXdGUVZ4QXd3?=
+ =?utf-8?B?VzNtbFE1QzVPQzBFSEU1cmZqT2ZvYWNwVVI4UzB4VXMwL1ZqTndtMEpET2U0?=
+ =?utf-8?B?OWYybTZrQWNLQkRPSkh5QVF0RDRSeWJ6blAyZkhqZTgrR1hyS2lnNVVleE5q?=
+ =?utf-8?B?emQ0UVN4ZStqQmpyRjMxcjlZdGZlVlJJSm15citJZlZTMFZoQ2xuQWs0Tnpt?=
+ =?utf-8?B?U3NHMWF3VDQ5TUlBaG5neXFKbzVrbm5ERmtnend3YWwrVVN5d3lKK2RuMjVo?=
+ =?utf-8?B?amN3QkRkRWZnRWpaL0x0Qkpkd29jY2lZOHlMK1JJWDJjTW90Y1AyczlIZU1J?=
+ =?utf-8?B?UWFXbTJXcms4bHlIOElwa21EVVBsbFJFWWhqckdocGw0dmpNcHIrc1RYU2dm?=
+ =?utf-8?B?ZnVFQnB4b3lycFFyTTFidzFubkx3WlFTT2pJbkk4RW1NTXRjVVBvaTZPL3E0?=
+ =?utf-8?B?UnEydlpWU2FyUW9KTC81VG9IYXdtaE1UVEUvMkEzdnN5aCtzdjEzNExtdTUx?=
+ =?utf-8?B?eDdselNtbG4wczhNa0tYY1ZQWlRkTmNacnpyVlZEdXltM1N6ZDNnUDZRTVhQ?=
+ =?utf-8?Q?81+M=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9224.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(19092799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WkNsNzZXU1pPaTBVd041NE4yS1A1c3FWTUdaaVlyY2l6TVg1VnJwd2w2WlZu?=
+ =?utf-8?B?Sm1DU0tHc2huL1pGMzhabVArN25Kd0RmZGlxQkZGRURtbGd2Y0cxRmdmWEts?=
+ =?utf-8?B?Y2ltVFh3eG95Q0g5VG55Z2RMZTE3S25jMzJvWmZpU0hqWU85ZTNSa2J4VUlB?=
+ =?utf-8?B?NmVBQmpMTlUrZ1lrKzd1NHJWR1dHcEQ0c0ZHVmZGMVRKNnpyQ2RmbXM0UFRl?=
+ =?utf-8?B?SE92TDRNbGtYeWVYbHNPQXBCWHNGckpXY05NZXo4L3doYjJjQlFxVkQySllK?=
+ =?utf-8?B?MVJWSEJ6YXZZdlhQOWp1UEdLUlNjcXRZSnN0WjRPRUJPc0I2eEZEUVJKcmdp?=
+ =?utf-8?B?UExWSDdaTzgvVDRsNzNyQUlLLy84V2wvVVNPQXpvVG5ML3NpRjc3N1BrLy9T?=
+ =?utf-8?B?aitwdFVRczRHTUpNVVdHdUx4WVFlWGtodW50WmJ2dGVPTzFnMytmQTFRSnlS?=
+ =?utf-8?B?a1lkb1U5eC82WHFsZ3Z2Mktkc0EyQ0M4RkgrZ1dWTSsxY3VWWjllandvVUtp?=
+ =?utf-8?B?VzdaNkNkeW5sZE5jamVOcGljS1JDSC9nTkh1Z2RCOEJsZXZNNnJwSmhIYlNB?=
+ =?utf-8?B?TndFV3FaVnM0NEZvQ09rSEJRUnVja1p0M2htY3d3Q2RGckh4WlBneU50SGI3?=
+ =?utf-8?B?RkVrbit3cHRhZ2hnL2V6Szc3bnI5RzRDWDlpbFdNL1ZMTlZ5ZldraWRuYmk0?=
+ =?utf-8?B?Q2IrMzZ5Ylo3b2xNVUIxRGRyZ015aEx4UVdMWnZLK2RSTGVUNi9tVnZ5bXhN?=
+ =?utf-8?B?cGlTL1ZoVFdpL3Z6TjJlOGtQOGd0VmhJdk0rZjA0ZVZaMklIWTZpZ09PdVFh?=
+ =?utf-8?B?WmdTeFNka2RYRzB5a0JhVmxaNnVWSGllSkYzRjU0bE9RQXlFVnYyUmRyMWlR?=
+ =?utf-8?B?U2JJak5iK0ZvekNObHh2bTNVOHV5Nk9VUWFPZ1g4UWJ4a2VScFUxeGYrR2FZ?=
+ =?utf-8?B?T1FUUlBiN2hHVUo4azRHS0NNck45dWJVYVlvdExaMWRxbzJ4dStBb1NQdjRt?=
+ =?utf-8?B?VHZvYnpvMGltYVo1WXZXVjlaOFcvVlpMNEVpZEtnM25RYlBSWldWUWdXb0JF?=
+ =?utf-8?B?QURYQUYvdUZVNm5jUzlYZTJ1aHJJb1BiYWo1TUZiRFowZEZMdnhjMVVnbGY0?=
+ =?utf-8?B?MlJMTkRmNXNiTXoyNUx4ODNmdVBMVmZtODk1aC8rQlkzaWswVGRIb0tzYVVS?=
+ =?utf-8?B?WCt1MmJuTzc4VDVPQndPSHkzRTJndjNOYk9RTlJxRlQzcWh3Z1RXSU9hYk5v?=
+ =?utf-8?B?Q3VBbDVJSVRac0Q2djNUSWlZZDZRajJ1OTFRMXNQU1ZORy8rM1RDd3ZqN1ll?=
+ =?utf-8?B?WTROMXM2NHJLcnRzVTlQM0RZR2phMHl1Rlk5N29KYUFVbU1laWgxcHFaKzli?=
+ =?utf-8?B?SHhQZDVTdHJQR2hyeXdoU2VyR0thUmZrY0orMjVweGg0aWs5Z1pnS3RlUzd5?=
+ =?utf-8?B?TloxanVUcmZmQVRDY1hoN285RGpaWVlzbE9YSi8weW94QjVwN0dLK3kzUHd5?=
+ =?utf-8?B?SFpoV1cySjBKaGs2cHBRQjlQSWhVMEFPNTFoM3A4VWdaWnRGU2N6WUNudVJ5?=
+ =?utf-8?B?SVJRNFJhbGVtcU1LcmtZZDNLdFZtd1ErU1hrNkhmWGxGTEtCRnNLOEVibHFy?=
+ =?utf-8?B?bHQvY0R5eVFUaGVmdFN2RXVvVHdpbFU4UEQ3SHZwS2M4eXlxSjBKWVVtSlFG?=
+ =?utf-8?B?dDZCTEw4WjJ2Sk9BRHRza1ZDNmRJZWpIYzdiaXA4SWp2dDA1eWRWNnpiY3ps?=
+ =?utf-8?B?NXBwN1F0VkZtRWZ5ekY3eVI5YW1vcVF0T0RjUjN0RFUrUkJpTjRIVzBPWnZk?=
+ =?utf-8?B?dzZhMy9CQi9qVXgrbU9leW5TZUdzVmFWTXBDNUYrY0lZQWFiemM5VVd3MHV5?=
+ =?utf-8?B?SkZER1Z0eTJCa1FpOUVGYkFjQzFCWkJjRU1wdWxvQ0dGRVMyUzVGaktFS296?=
+ =?utf-8?B?ZFZaWEZNSk81ZmR0blBxQmhWZG1CdmNqODdXejIvNUl6Z1dINmtHZ1g0ditt?=
+ =?utf-8?B?aEFZZDdhSFI2cytKR1o1Rk5CT1lYRTFWcXVLeUl1d0pMR0o2d0J4V1RTYWQ1?=
+ =?utf-8?B?aEk4M0NOUTVobXk3dnBFSm50TUpZOVI0N3c0OUk0eHp6U3EzdnN3T01IQ3k1?=
+ =?utf-8?B?KzNENFBFMVkwckltU0ViUjZ4elhMM2o2dlF6WnI5TUtEaW5vMWF1cXYwOWM0?=
+ =?utf-8?B?bjhKdVZ1MFRLQ1ovc3QwRlQwaEJ1QWhTR1JuVXlUTWRiS1NISHhCbHoza090?=
+ =?utf-8?B?S1Z2WmJzRGlURnA1ekpRdGVoSFR1d2NLZGd1MVVZeFdFWjQxMXlmaHBhRjh0?=
+ =?utf-8?B?V0NuU1lBTnFEZDNCbm9wR0s3RU9QVXp2WWFaQTc5NXRkQ1FNeEtoUT09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 995bfb67-9f64-47c2-e9ec-08de6ee51eb7
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9224.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2026 11:59:07.8486
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zJ1DWgTE8AeMuf0jD+Jserr0C7ainTTYSU8ljoEk21o3aZOqwaeBwfUBerrY7KPBWPirIZ40yzzvP6ftxstDTQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8181
 
-On Thu, 12 Feb 2026 22:36:55 +0100, Shenwei Wang <shenwei.wang@nxp.com> said:
-> On an AMP platform, the system may include two processors:
-> 	- An MCU running an RTOS
-> 	- An MPU running Linux
->
-> These processors communicate via the RPMSG protocol.
-> The driver implements the standard GPIO interface, allowing
-> the Linux side to control GPIO controllers which reside in
-> the remote processor via RPMSG protocol.
->
-> Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-> Cc: Andrew Lunn <andrew@lunn.ch>
-> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-> ---
->  drivers/gpio/Kconfig      |  17 ++
->  drivers/gpio/Makefile     |   1 +
->  drivers/gpio/gpio-rpmsg.c | 588 ++++++++++++++++++++++++++++++++++++++
->  3 files changed, 606 insertions(+)
->  create mode 100644 drivers/gpio/gpio-rpmsg.c
->
-> diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-> index b45fb799e36c..3179a54f0634 100644
-> --- a/drivers/gpio/Kconfig
-> +++ b/drivers/gpio/Kconfig
-> @@ -1892,6 +1892,23 @@ config GPIO_SODAVILLE
->
->  endmenu
->
-> +menu "RPMSG GPIO drivers"
-> +	depends on RPMSG
-> +
-> +config GPIO_RPMSG
-> +	tristate "Generic RPMSG GPIO support"
-> +	depends on REMOTEPROC
-> +	select GPIOLIB_IRQCHIP
-> +	default REMOTEPROC
+On 2/16/2026 10:16 PM, Frank Li wrote:
+> On Mon, Feb 16, 2026 at 04:01:53PM +0100, Larisa Grigore wrote:
+>> From: Radu Pirea <radu-nicolae.pirea@nxp.com>
+>>
+>> Take the port->lock when set_termios is called, otherwise if characters
+>> are sent while IP is in init mode, the IP will hang in an uncertain
+>> state.
+> 
+> According to patch, you move it before read(UARTCR). can explain why hang?
+> 
+> Frank
 
-You're using a lot of OF-centric APIs here, don't you need to depend on OF?
-Alternatively, it seems that only rpmsg_get_channel_ofnode() really requires
-OF-nodes and everything else could just use firmware node API.
+Hello Frank,
 
-> +	help
-> +	  Say yes here to support the generic GPIO functions over the RPMSG
-> +	  bus. Currently supported devices: i.MX7ULP, i.MX8ULP, i.MX8x, and
-> +	  i.MX9x.
-> +
-> +	  If unsure, say N.
-> +
-> +endmenu
-> +
->  menu "SPI GPIO expanders"
->  	depends on SPI_MASTER
->
-> diff --git a/drivers/gpio/Makefile b/drivers/gpio/Makefile
-> index c05f7d795c43..501aba56ad68 100644
-> --- a/drivers/gpio/Makefile
-> +++ b/drivers/gpio/Makefile
-> @@ -158,6 +158,7 @@ obj-$(CONFIG_GPIO_RDC321X)		+= gpio-rdc321x.o
->  obj-$(CONFIG_GPIO_REALTEK_OTTO)		+= gpio-realtek-otto.o
->  obj-$(CONFIG_GPIO_REG)			+= gpio-reg.o
->  obj-$(CONFIG_GPIO_ROCKCHIP)	+= gpio-rockchip.o
-> +obj-$(CONFIG_GPIO_RPMSG)		+= gpio-rpmsg.o
->  obj-$(CONFIG_GPIO_RTD)			+= gpio-rtd.o
->  obj-$(CONFIG_ARCH_SA1100)		+= gpio-sa1100.o
->  obj-$(CONFIG_GPIO_SAMA5D2_PIOBU)	+= gpio-sama5d2-piobu.o
-> diff --git a/drivers/gpio/gpio-rpmsg.c b/drivers/gpio/gpio-rpmsg.c
-> new file mode 100644
-> index 000000000000..163f51fd45b5
-> --- /dev/null
-> +++ b/drivers/gpio/gpio-rpmsg.c
-> @@ -0,0 +1,588 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright 2026 NXP
-> + *
-> + * The driver exports a standard gpiochip interface to control
-> + * the GPIO controllers via RPMSG on a remote processor.
-> + */
+Thanks for the review! This change was made to not let anyone send 
+characters (for example calling `linflex_console_putchar`) while 
+LINFlexD is entering INIT mode. The INIT mode is entered when setting 
+LINFLEXD_LINCR1_INIT in LINCR1. UARTCR should also be protected with a 
+lock since it can be modified from different other places.
+I will update the commit description.
 
-Add newline here.
+Regards,
+Larisa
+>>
+>> Fixes: 09864c1cdf5c ("tty: serial: Add linflexuart driver for S32V234")
+>> Signed-off-by: Radu Pirea <radu-nicolae.pirea@nxp.com>
+>> Signed-off-by: Larisa Grigore <larisa.grigore@oss.nxp.com>
+>> ---
+>>   drivers/tty/serial/fsl_linflexuart.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/tty/serial/fsl_linflexuart.c b/drivers/tty/serial/fsl_linflexuart.c
+>> index e70a56de1fce..5a410e2d56ac 100644
+>> --- a/drivers/tty/serial/fsl_linflexuart.c
+>> +++ b/drivers/tty/serial/fsl_linflexuart.c
+>> @@ -407,6 +407,8 @@ linflex_set_termios(struct uart_port *port, struct ktermios *termios,
+>>   	unsigned long cr, old_cr, cr1;
+>>   	unsigned int old_csize = old ? old->c_cflag & CSIZE : CS8;
+>>
+>> +	uart_port_lock_irqsave(port, &flags);
+>> +
+>>   	cr = readl(port->membase + UARTCR);
+>>   	old_cr = cr;
+>>
+>> @@ -475,8 +477,6 @@ linflex_set_termios(struct uart_port *port, struct ktermios *termios,
+>>   		cr &= ~LINFLEXD_UARTCR_PCE;
+>>   	}
+>>
+>> -	uart_port_lock_irqsave(port, &flags);
+>> -
+>>   	port->read_status_mask = 0;
+>>
+>>   	if (termios->c_iflag & INPCK)
+>> --
+>> 2.47.0
+>>
 
-[snip]
-
-> +
-> +static struct device_node *
-> +rpmsg_get_channel_ofnode(struct rpmsg_device *rpdev, char *chan_name)
-> +{
-> +	struct device_node *np_chan = NULL, *np;
-> +	struct rproc *rproc;
-> +
-> +	rproc = rproc_get_by_child(&rpdev->dev);
-> +	if (!rproc)
-> +		return NULL;
-> +
-> +	np = of_node_get(rproc->dev.of_node);
-> +	if (!np && rproc->dev.parent)
-> +		np = of_node_get(rproc->dev.parent->of_node);
-> +
-> +	if (np) {
-> +		/* Balance the of_node_put() performed by of_find_node_by_name(). */
-> +		of_node_get(np);
-> +		np_chan = of_find_node_by_name(np, chan_name);
-> +		of_node_put(np);
-
-If you put np here, why even bother with "balancing". If you don't do
-of_node_get() before calling of_find_node_by_name(), you'll be in the
-same place, no?
-
-> +	}
-> +
-> +	return np_chan;
-> +}
-> +
-> +static int
-> +rpmsg_gpio_channel_callback(struct rpmsg_device *rpdev, void *data,
-> +			    int len, void *priv, u32 src)
-> +{
-> +	struct gpio_rpmsg_packet *msg = data;
-> +	struct rpmsg_gpio_port *port = NULL;
-> +	struct rpdev_drvdata *drvdata;
-> +
-> +	drvdata = dev_get_drvdata(&rpdev->dev);
-> +	if (drvdata && msg && msg->port_idx < MAX_PORT_PER_CHANNEL)
-> +		port = drvdata->channel_devices[msg->port_idx];
-> +
-> +	if (!port)
-> +		return -ENODEV;
-> +
-> +	if (msg->header.type == GPIO_RPMSG_REPLY) {
-> +		*port->info.reply_msg = *msg;
-> +		complete(&port->info.cmd_complete);
-> +	} else if (msg->header.type == GPIO_RPMSG_NOTIFY) {
-> +		generic_handle_domain_irq_safe(port->gc.irq.domain, msg->pin_idx);
-> +	} else
-> +		dev_err(&rpdev->dev, "wrong command type!\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static int rpmsg_gpio_channel_probe(struct rpmsg_device *rpdev)
-> +{
-> +	struct device *dev = &rpdev->dev;
-> +	struct rpdev_drvdata *drvdata;
-> +	struct device_node *np;
-> +	int ret;
-> +
-> +	if (!dev->of_node) {
-> +		np = rpmsg_get_channel_ofnode(rpdev, rpdev->id.name);
-> +		if (np) {
-> +			dev->of_node = np;
-> +			set_primary_fwnode(dev, of_fwnode_handle(np));
-> +		}
-> +		return -EPROBE_DEFER;
-> +	}
-> +
-> +	drvdata = devm_kzalloc(dev, sizeof(*drvdata), GFP_KERNEL);
-> +	if (!drvdata)
-> +		return -ENOMEM;
-> +
-> +	drvdata->rproc_name = rpmsg_get_rproc_node_name(rpdev);
-> +	dev_set_drvdata(dev, drvdata);
-> +
-> +	for_each_child_of_node_scoped(dev->of_node, child) {
-
-Like mentioned above: this could be:
-
-device_for_each_child_node() {
-	fwnode_device_is_available();
-	...
-}
-
-> +		if (!of_device_is_available(child))
-> +			continue;
-> +
-> +		if (!of_match_node(dev->driver->of_match_table, child))
-> +			continue;
-> +
-> +		ret = rpmsg_gpiochip_register(rpdev, child);
-> +		if (ret < 0)
-> +			dev_err(dev, "Failed to register: %pOF\n", child);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static void rpmsg_gpio_channel_remove(struct rpmsg_device *rpdev)
-> +{
-> +	dev_info(&rpdev->dev, "rpmsg gpio channel driver is removed\n");
-> +}
-
-Please drop this, no need to log it,
-
-> +
-> +static const struct of_device_id rpmsg_gpio_dt_ids[] = {
-> +	{ .compatible = "rpmsg-gpio" },
-> +	{ /* sentinel */ }
-> +};
-> +
-> +static struct rpmsg_device_id rpmsg_gpio_channel_id_table[] = {
-> +	{ .name	= "rpmsg-io-channel" },
-> +	{ },
-> +};
-> +MODULE_DEVICE_TABLE(rpmsg, rpmsg_gpio_channel_id_table);
-> +
-> +static struct rpmsg_driver rpmsg_gpio_channel_client = {
-> +	.drv.name	= KBUILD_MODNAME,
-> +	.drv.of_match_table = rpmsg_gpio_dt_ids,
-
-Can you please do:
-
-	.drv = {
-		.name = "open-coded-name",
-		.of_match_table = ...
-	};
-
-?
-
-Bartosz
-
-> +	.id_table	= rpmsg_gpio_channel_id_table,
-> +	.probe		= rpmsg_gpio_channel_probe,
-> +	.callback	= rpmsg_gpio_channel_callback,
-> +	.remove		= rpmsg_gpio_channel_remove,
-> +};
-> +module_rpmsg_driver(rpmsg_gpio_channel_client);
-> +
-> +MODULE_AUTHOR("Shenwei Wang <shenwei.wang@nxp.com>");
-> +MODULE_DESCRIPTION("generic rpmsg gpio driver");
-> +MODULE_LICENSE("GPL");
-> --
-> 2.43.0
->
->
