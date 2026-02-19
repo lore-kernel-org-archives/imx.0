@@ -1,46 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89DF2D3733;
-	Thu, 19 Feb 2026 02:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C773D30E0F1;
+	Thu, 19 Feb 2026 02:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771466677; cv=none; b=gcqXF+PQSRqgom2NTuR/6ORdJUBFXkI1A/gW7rDGtamu0KVaySgXzxPJIEP7FBAovrt4Om0hmo39MkaccEmTkxtb+2auoe76OT9FC/j+1x1BivmcCwBA9BKGJu/f37eeYy1/kM3wlgYLAcsfjLlFu7wut6jQV1k65gn8ZYY4PIE=
+	t=1771466703; cv=none; b=ocqP5vYu+t3bBLAvHSwruW61V3OeW+jh8oO1RxvcSe6k2YCAoxioISHVfBReo20lmYUurcCnNDk21LkTn2Ldz/RAzRFe96IXBjXnTAOTJaBFC7ZEl8+olq1r4dLw6bwdQiSKmOLxeb8RKSoS8JriwgER14Bw/FapUZNalBB+6uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771466677; c=relaxed/simple;
-	bh=swp5sgbe/xrd6C6QW8h31BIMSEtKXgCDJ3Pyo9y4mA8=;
+	s=arc-20240116; t=1771466703; c=relaxed/simple;
+	bh=lOZidEmx5vk20ZO0QrhgAGaGcoFEhk4bJAlW3AJLUOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d3QhOCsjSP0y7X07VboeJgP/nNkaImGBuJAKBMUJv+yN/sxvqkhvVvQUEsnPQwL1t46dadRZ2PfRkLC+9ftgVJSlGLUbm5FCIPpUTFPBT9yJmSlFevUcMXjIjnYQ2X/Cm73d0FM0d198kYp58XoUAp9+U+odCFI1EAtd0Ojjrh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RRkhAJ0U; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=LlfqR4+2BALZ+KCCO/3b10E+zchA+6NqcalNe/za0C6IJh+3GKCC+lm6DfjR6o1PjhBhmJ/uEVWBUNYe/Nj8JY1gqvhLf6VrOVElNrxhlij0wccVze6SKaWwNegwIAKQHQTAs6PLN9w76dG+jzL0grbAkzmNoIjOMBhLdZ6Ee1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bDrkdjbv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RRkhAJ0U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 937FAC19424;
-	Thu, 19 Feb 2026 02:04:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bDrkdjbv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8320DC19422;
+	Thu, 19 Feb 2026 02:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771466677;
-	bh=swp5sgbe/xrd6C6QW8h31BIMSEtKXgCDJ3Pyo9y4mA8=;
+	s=k20201202; t=1771466703;
+	bh=lOZidEmx5vk20ZO0QrhgAGaGcoFEhk4bJAlW3AJLUOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RRkhAJ0UMsO3EwMBD0WLT7dMs9VNStSIgX2xqPAjp73+IrKLsz1MCIv+xpummAtsF
-	 uv0j42RRuPxkInHgBaEoXahTlSOC8ZoQI/lkidzWSL15fkYFsnQ7OKZwFUhrZPf2eQ
-	 k8dW6z2dEOIKvZyQi7K5GvA5lc1TtInhemBnOS84ULxPL6G3BQdJuYUYaYuc5TazP3
-	 BDtB5ozLW85HQdGrMMb/Yjj1tf8tSmowlMEgCejf0HETQDhOcB1YAuuEQx7Qh9BIGI
-	 qj8bkjsOB3YBxWdz/TIIpoEBparTcSbL0xHuNNYCe6MLFjEDB1tCcDQKtLYJCqm5lJ
-	 IHFPtL+xwFDyQ==
+	b=bDrkdjbvtDnkfPHNkqW2l+/iLzj7A9E2KZ5LDUUqsThA71UtRLrKT8/GtBrU0hKtX
+	 0QnBkfBkl2+pfGFAMeyaCytwZPKIy1l4WRJ+egUX/UK6y9D5/kk40EwITuUJ1d/RfH
+	 oTBBs+eo0JJm+X8QnjVGeFCgbY1ZyVxKCeDDc+076WdGwRDJ/7NjaXUNq3j0fsedaQ
+	 k9JqfvSP3k4QMvEidLcgJlvVkF2bKn/IwM8JKuJzjMJSy4pL4OhCBgZ3H3uACFXgiN
+	 U8uqCKfAnKj72b8ab2N2uBMg2aT4Z4/p/WnPtA4iNZqPlRbjL5LUl7EgfUznrLL6YM
+	 hO2vOUtxbCp5g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Oleksandr Suvorov <cryosay@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+Cc: Xu Yang <xu.yang_2@nxp.com>,
 	Frank Li <Frank.Li@nxp.com>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-watchdog@vger.kernel.org,
+	linux-phy@lists.infradead.org,
 	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.1] watchdog: imx7ulp_wdt: handle the nowayout option
-Date: Wed, 18 Feb 2026 21:03:47 -0500
-Message-ID: <20260219020422.1539798-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.19-5.10] phy: fsl-imx8mq-usb: disable bind/unbind platform driver feature
+Date: Wed, 18 Feb 2026 21:04:07 -0500
+Message-ID: <20260219020422.1539798-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260219020422.1539798-1-sashal@kernel.org>
 References: <20260219020422.1539798-1-sashal@kernel.org>
@@ -53,123 +52,120 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.19.2
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Oleksandr Suvorov <cryosay@gmail.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit d303d37ef5cf86c8c3b2daefd2a7d7fd8ca1ec14 ]
+[ Upstream commit 27ee0869d77b2cb404770ac49bdceae3aedf658b ]
 
-The module parameter `nowayout` indicates whether the watchdog should ever
-be allowed to stop, but the driver currently ignores this option.
+Disabling PHYs in runtime usually causes the client with external abort
+exception or similar issue due to lack of API to notify clients about PHY
+removal. This patch removes the possibility to unbind i.MX PHY drivers in
+runtime.
 
-Pass the `nowayout` parameter to the watchdog core by setting the
-WDOG_NO_WAY_OUT flag accordingly.
-
-Signed-off-by: Oleksandr Suvorov <cryosay@gmail.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Link: https://patch.msgid.link/20260120111712.3159782-1-xu.yang_2@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Classification: Bug Fix
+## Analysis Summary
 
-This is a **real bug fix**, not a feature addition. The driver:
-1. **Already defines** the `nowayout` module parameter (lines 51-54)
-2. **Already advertises** the parameter to users via `MODULE_PARM_DESC`
-3. But **never applies** it to the watchdog device
+### What the commit does
+This commit adds `.suppress_bind_attrs = true` to the i.MX8MQ USB PHY
+platform driver. This single line prevents the kernel from creating
+`/sys/bus/platform/drivers/imx8mq-usb-phy/bind` and
+`/sys/bus/platform/drivers/imx8mq-usb-phy/unbind` sysfs files, thereby
+preventing runtime unbinding of the PHY driver.
 
-This means a user could set `nowayout=1` expecting the watchdog to be
-unstoppable once started, but the driver would silently ignore this
-setting. This is a correctness bug with potential **safety/reliability
-implications** — the `nowayout` feature exists specifically to prevent
-accidental watchdog stops that could leave a system unmonitored.
+### Problem being fixed
+The commit message states that unbinding PHYs at runtime causes
+"external abort exception or similar issue" because there is no API to
+notify PHY clients about PHY removal. An external abort is a serious ARM
+exception that typically results in a kernel crash/oops. If a user or
+management tool writes to the `unbind` sysfs file for this PHY driver,
+the USB controller client would try to access the now-missing PHY
+resources, resulting in a crash.
 
-## Stable Kernel Criteria Assessment
+### Stable kernel rules assessment
+1. **Obviously correct and tested**: Yes - this is a well-established
+   one-line pattern used in 385+ files in the kernel. It's reviewed by
+   the PHY maintainer (Vinod Koul) and reviewed by Frank Li.
+2. **Fixes a real bug**: Yes - runtime unbinding causes a crash
+   (external abort exception). This is a real, triggerable issue.
+3. **Important issue**: Moderate - it prevents a crash, but only
+   triggered by explicit sysfs manipulation (not normal operation).
+   However, system management tools or user error could trigger this.
+4. **Small and contained**: Yes - single one-line addition to a driver
+   struct.
+5. **No new features**: Correct - this removes functionality (ability to
+   unbind), it doesn't add any.
 
-1. **Obviously correct and tested**: Yes. It's a single-line addition of
-   `watchdog_set_nowayout(wdog, nowayout)` — the standard pattern used
-   by 106 other watchdog drivers. Reviewed by Guenter Roeck (watchdog
-   co-maintainer) and Frank Li.
+### Risk assessment
+- **Risk**: Extremely low. This is literally a single boolean field
+  being set in the driver struct. It only affects sysfs attributes. The
+  same pattern exists in 385+ other drivers.
+- **Benefit**: Prevents a crash scenario when the PHY is unbound at
+  runtime.
+- **Dependencies**: None - this is entirely self-contained.
 
-2. **Fixes a real bug**: Yes. The module parameter `nowayout` is defined
-   but ineffective. Users who rely on `nowayout=1` for system safety are
-   not getting the protection they expect.
+### Concerns
+- The bug is only triggerable by explicit sysfs manipulation (writing to
+  `/sys/bus/platform/drivers/imx8mq-usb-phy/unbind`), not by normal
+  system operation.
+- The fix is a defensive measure rather than fixing a root cause in the
+  PHY framework. However, this is the standard kernel approach - the PHY
+  framework doesn't have removal notification, so drivers that can't
+  handle unbinding should suppress it.
+- The change is straightforward and would apply cleanly to any stable
+  tree that has this driver.
 
-3. **Important issue**: Moderate. This is a safety feature for embedded
-   systems using watchdog timers. If a user sets `nowayout=1` expecting
-   the watchdog can never be stopped, but it can be stopped, a system
-   failure could go undetected.
-
-4. **Small and contained**: Yes. Single line addition in one file.
-
-5. **No new features**: Correct. The feature (nowayout parameter)
-   already exists and is already declared. This just makes it work as
-   intended.
-
-6. **Applies cleanly**: The change is a single line insertion with
-   stable context.
-
-## Risk Assessment
-
-- **Risk**: Extremely low. This is a single call to a well-established
-  inline function that sets one bit in a status field. The function is
-  used in 106 other drivers identically.
-- **Benefit**: Users of the imx7ulp watchdog (NXP i.MX7ULP SoC, used in
-  embedded/IoT) get correct `nowayout` behavior.
-- **Regression potential**: Near zero. The only behavioral change is
-  that `nowayout=1` now actually works, which is what users who set it
-  expect.
+### Classification
+This falls into the **hardware quirk/workaround** category. It's a
+defensive fix that prevents a crash scenario. While the trigger requires
+explicit user action (sysfs unbind), this is a well-established pattern
+in the kernel for exactly this purpose.
 
 ## Verification
+- Verified `suppress_bind_attrs = true` is used in 385+ files across the
+  drivers/ directory via Grep search
+- Verified 7 other PHY drivers (Samsung, HiSilicon) already use this
+  pattern
+- Verified no other Freescale PHY drivers currently have this attribute
+  (this is the first)
+- Verified via git log that similar commits exist for other subsystems
+  (gpio, perf)
+- Verified via lore.kernel.org that the patch was reviewed by Frank Li
+  and accepted by PHY maintainer Vinod Koul
+- Verified the commit message describes a real crash scenario (external
+  abort exception)
+- Could NOT verify the specific crash reproduction steps (unverified,
+  but the mechanism is well-understood in the kernel community)
 
-- Verified that `nowayout` module parameter is defined at lines 51-54 of
-  `drivers/watchdog/imx7ulp_wdt.c` but never applied via
-  `watchdog_set_nowayout()` before this patch.
-- Verified that `watchdog_set_nowayout()` is a simple inline function in
-  `include/linux/watchdog.h` that just sets the `WDOG_NO_WAY_OUT` status
-  bit.
-- Verified that 106 other watchdog drivers in `drivers/watchdog/` follow
-  the exact same pattern of calling `watchdog_set_nowayout()` in their
-  probe function.
-- Verified the commit is reviewed by Guenter Roeck (watchdog subsystem
-  co-maintainer) — `Reviewed-by: Guenter Roeck <linux@roeck-us.net>`.
-- Verified the change is a single line addition with no dependencies on
-  other commits.
-- The imx7ulp_wdt driver has existed since at least Linux 4.17 (based on
-  the driver's maturity), meaning this bug affects all stable trees that
-  include this driver.
-
-## Conclusion
-
-This is a clear, minimal bug fix for a watchdog driver that declares a
-safety-critical module parameter but doesn't apply it. The fix is one
-line, follows the established pattern used by 106 other drivers, and was
-reviewed by the watchdog subsystem maintainer. The risk is essentially
-zero and the benefit is correct behavior for a safety feature on
-embedded systems.
+The fix is minimal (one line), extremely low risk, prevents a crash
+scenario, uses a well-established kernel pattern, and was properly
+reviewed. It meets all stable kernel criteria.
 
 **YES**
 
- drivers/watchdog/imx7ulp_wdt.c | 1 +
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/watchdog/imx7ulp_wdt.c b/drivers/watchdog/imx7ulp_wdt.c
-index 0f13a30533574..03479110453ce 100644
---- a/drivers/watchdog/imx7ulp_wdt.c
-+++ b/drivers/watchdog/imx7ulp_wdt.c
-@@ -346,6 +346,7 @@ static int imx7ulp_wdt_probe(struct platform_device *pdev)
- 	watchdog_stop_on_reboot(wdog);
- 	watchdog_stop_on_unregister(wdog);
- 	watchdog_set_drvdata(wdog, imx7ulp_wdt);
-+	watchdog_set_nowayout(wdog, nowayout);
- 
- 	imx7ulp_wdt->hw = of_device_get_match_data(dev);
- 	ret = imx7ulp_wdt_init(imx7ulp_wdt, wdog->timeout * imx7ulp_wdt->hw->wdog_clock_rate);
+diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+index 91b3e62743d3a..b30d01f345d20 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
++++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+@@ -730,6 +730,7 @@ static struct platform_driver imx8mq_usb_phy_driver = {
+ 	.driver = {
+ 		.name	= "imx8mq-usb-phy",
+ 		.of_match_table	= imx8mq_usb_phy_of_match,
++		.suppress_bind_attrs = true,
+ 	}
+ };
+ module_platform_driver(imx8mq_usb_phy_driver);
 -- 
 2.51.0
 
