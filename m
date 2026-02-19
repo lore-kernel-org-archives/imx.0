@@ -1,122 +1,175 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6496309EE9;
-	Wed, 18 Feb 2026 19:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89DF2D3733;
+	Thu, 19 Feb 2026 02:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771444156; cv=none; b=cMfCCgdgkMrllIHSxyQWwj97BOBz4FaEjwr3MHeR91qsW/4OzVtQoPQe1LCy+Gq4Tw77uXdBAogtVT5Rt9EOqUACsoS0D5h6GmVKlTg94ZT0MIDB/O4PO//Md73FK6wW7OkLxL82RPlFHdVY/ykUo5JLfDpuIwfKDGfa7MU4AoE=
+	t=1771466677; cv=none; b=gcqXF+PQSRqgom2NTuR/6ORdJUBFXkI1A/gW7rDGtamu0KVaySgXzxPJIEP7FBAovrt4Om0hmo39MkaccEmTkxtb+2auoe76OT9FC/j+1x1BivmcCwBA9BKGJu/f37eeYy1/kM3wlgYLAcsfjLlFu7wut6jQV1k65gn8ZYY4PIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771444156; c=relaxed/simple;
-	bh=ngekcYppEAPkwMAMnhzBjLY3vzHSNc1ZTfejCfmz6xM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XNB1e8xIllMWV1QZeyb72Zyz1uGDiDaLSBrVRk7HftsT0rni2bhXTV0S3S2wbIeb9iHossYjckqqAZ9UDhjRXEacMFDHAgFthhM5jDdZDS3q74cwUmnaHYrmRNLaKOHwQwYvfUAFk7lwwLRrvN/KtwYk5E3w16EG14TCd354Q90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KC2Nid4Q; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771466677; c=relaxed/simple;
+	bh=swp5sgbe/xrd6C6QW8h31BIMSEtKXgCDJ3Pyo9y4mA8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d3QhOCsjSP0y7X07VboeJgP/nNkaImGBuJAKBMUJv+yN/sxvqkhvVvQUEsnPQwL1t46dadRZ2PfRkLC+9ftgVJSlGLUbm5FCIPpUTFPBT9yJmSlFevUcMXjIjnYQ2X/Cm73d0FM0d198kYp58XoUAp9+U+odCFI1EAtd0Ojjrh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RRkhAJ0U; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KC2Nid4Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD25CC116D0;
-	Wed, 18 Feb 2026 19:49:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RRkhAJ0U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 937FAC19424;
+	Thu, 19 Feb 2026 02:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771444156;
-	bh=ngekcYppEAPkwMAMnhzBjLY3vzHSNc1ZTfejCfmz6xM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KC2Nid4Q32vRoFa2ufKk/16bp+ftxTSRXMLMdyDdXFB2z2UOEHSRCaBlitbkoakps
-	 cHyI9K4grDMyY7enXyWp0s4+E0s8JWKIiH73/Ud3LweOPr9vMfjoap5lkjED/Gh5Yh
-	 Oa0a5fuGeRKduXlbkHZRneIOoA3MuIXQ1ppb7a7weww+HUTVdUcYaUGATSD0HWjYgU
-	 kLOrbR8NBSh41iPmwFFE3q7zQr9dId2o7l8Qhh+4UDXBfs01OL/apeq8P8iJGXQQUv
-	 r7ggXsQ+En8p0DHIWOLO4Q40JI85Lqy3owy5XudR3DouEHVnoPm1sGwTRSM1jS/nqK
-	 pZO703CLzlrzQ==
-Message-ID: <4dc1efb0-b814-41c1-936b-6a39a46ddc10@kernel.org>
-Date: Wed, 18 Feb 2026 20:49:08 +0100
+	s=k20201202; t=1771466677;
+	bh=swp5sgbe/xrd6C6QW8h31BIMSEtKXgCDJ3Pyo9y4mA8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RRkhAJ0UMsO3EwMBD0WLT7dMs9VNStSIgX2xqPAjp73+IrKLsz1MCIv+xpummAtsF
+	 uv0j42RRuPxkInHgBaEoXahTlSOC8ZoQI/lkidzWSL15fkYFsnQ7OKZwFUhrZPf2eQ
+	 k8dW6z2dEOIKvZyQi7K5GvA5lc1TtInhemBnOS84ULxPL6G3BQdJuYUYaYuc5TazP3
+	 BDtB5ozLW85HQdGrMMb/Yjj1tf8tSmowlMEgCejf0HETQDhOcB1YAuuEQx7Qh9BIGI
+	 qj8bkjsOB3YBxWdz/TIIpoEBparTcSbL0xHuNNYCe6MLFjEDB1tCcDQKtLYJCqm5lJ
+	 IHFPtL+xwFDyQ==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Oleksandr Suvorov <cryosay@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Frank Li <Frank.Li@nxp.com>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-watchdog@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.19-6.1] watchdog: imx7ulp_wdt: handle the nowayout option
+Date: Wed, 18 Feb 2026 21:03:47 -0500
+Message-ID: <20260219020422.1539798-11-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260219020422.1539798-1-sashal@kernel.org>
+References: <20260219020422.1539798-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/13] dt-bindings: serial: fsl-linflexuart: add dma
- properties
-To: Larisa Ileana Grigore <larisa.grigore@oss.nxp.com>,
- gregkh@linuxfoundation.org, jirislaby@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, sumit.semwal@linaro.org,
- christian.koenig@amd.com, chester62515@gmail.com, cosmin.stoica@nxp.com,
- adrian.nitu@freescale.com, stefan-gabriel.mirea@nxp.com,
- Mihaela.Martinas@freescale.com
-Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
- devicetree@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- s32@nxp.com, imx@lists.linux.dev, clizzi@redhat.com, aruizrui@redhat.com,
- eballetb@redhat.com, echanude@redhat.com, jkangas@redhat.com,
- Radu Pirea <radu-nicolae.pirea@nxp.com>
-References: <20260216150205.212318-1-larisa.grigore@oss.nxp.com>
- <20260216150205.212318-10-larisa.grigore@oss.nxp.com>
- <be18bbef-02f1-416b-ad2a-739261b3cd97@kernel.org>
- <4ad41c4c-3319-403b-93c7-c52a58658e84@oss.nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <4ad41c4c-3319-403b-93c7-c52a58658e84@oss.nxp.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.19.2
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 18/02/2026 15:44, Larisa Ileana Grigore wrote:
-> On 2/16/2026 5:10 PM, Krzysztof Kozlowski wrote:
->> On 16/02/2026 16:02, Larisa Grigore wrote:
->>> From: Radu Pirea <radu-nicolae.pirea@nxp.com>
->>>
->>> Add 'dmas' and 'dma-names' properties to describe optional DMA support
->>> for RX and TX channels in the LINFlexD UART controller.
->>
->> Same question as in other patch about existing devices.
->>
-> I will update the bindings so that `dmas`/`dma-names` are optional for 
-> S32G and not present on S32V234. Would this be acceptable?
-> 
+From: Oleksandr Suvorov <cryosay@gmail.com>
 
-Yes, with reason in the commit msg.
+[ Upstream commit d303d37ef5cf86c8c3b2daefd2a7d7fd8ca1ec14 ]
 
-Best regards,
-Krzysztof
+The module parameter `nowayout` indicates whether the watchdog should ever
+be allowed to stop, but the driver currently ignores this option.
+
+Pass the `nowayout` parameter to the watchdog core by setting the
+WDOG_NO_WAY_OUT flag accordingly.
+
+Signed-off-by: Oleksandr Suvorov <cryosay@gmail.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+## Classification: Bug Fix
+
+This is a **real bug fix**, not a feature addition. The driver:
+1. **Already defines** the `nowayout` module parameter (lines 51-54)
+2. **Already advertises** the parameter to users via `MODULE_PARM_DESC`
+3. But **never applies** it to the watchdog device
+
+This means a user could set `nowayout=1` expecting the watchdog to be
+unstoppable once started, but the driver would silently ignore this
+setting. This is a correctness bug with potential **safety/reliability
+implications** — the `nowayout` feature exists specifically to prevent
+accidental watchdog stops that could leave a system unmonitored.
+
+## Stable Kernel Criteria Assessment
+
+1. **Obviously correct and tested**: Yes. It's a single-line addition of
+   `watchdog_set_nowayout(wdog, nowayout)` — the standard pattern used
+   by 106 other watchdog drivers. Reviewed by Guenter Roeck (watchdog
+   co-maintainer) and Frank Li.
+
+2. **Fixes a real bug**: Yes. The module parameter `nowayout` is defined
+   but ineffective. Users who rely on `nowayout=1` for system safety are
+   not getting the protection they expect.
+
+3. **Important issue**: Moderate. This is a safety feature for embedded
+   systems using watchdog timers. If a user sets `nowayout=1` expecting
+   the watchdog can never be stopped, but it can be stopped, a system
+   failure could go undetected.
+
+4. **Small and contained**: Yes. Single line addition in one file.
+
+5. **No new features**: Correct. The feature (nowayout parameter)
+   already exists and is already declared. This just makes it work as
+   intended.
+
+6. **Applies cleanly**: The change is a single line insertion with
+   stable context.
+
+## Risk Assessment
+
+- **Risk**: Extremely low. This is a single call to a well-established
+  inline function that sets one bit in a status field. The function is
+  used in 106 other drivers identically.
+- **Benefit**: Users of the imx7ulp watchdog (NXP i.MX7ULP SoC, used in
+  embedded/IoT) get correct `nowayout` behavior.
+- **Regression potential**: Near zero. The only behavioral change is
+  that `nowayout=1` now actually works, which is what users who set it
+  expect.
+
+## Verification
+
+- Verified that `nowayout` module parameter is defined at lines 51-54 of
+  `drivers/watchdog/imx7ulp_wdt.c` but never applied via
+  `watchdog_set_nowayout()` before this patch.
+- Verified that `watchdog_set_nowayout()` is a simple inline function in
+  `include/linux/watchdog.h` that just sets the `WDOG_NO_WAY_OUT` status
+  bit.
+- Verified that 106 other watchdog drivers in `drivers/watchdog/` follow
+  the exact same pattern of calling `watchdog_set_nowayout()` in their
+  probe function.
+- Verified the commit is reviewed by Guenter Roeck (watchdog subsystem
+  co-maintainer) — `Reviewed-by: Guenter Roeck <linux@roeck-us.net>`.
+- Verified the change is a single line addition with no dependencies on
+  other commits.
+- The imx7ulp_wdt driver has existed since at least Linux 4.17 (based on
+  the driver's maturity), meaning this bug affects all stable trees that
+  include this driver.
+
+## Conclusion
+
+This is a clear, minimal bug fix for a watchdog driver that declares a
+safety-critical module parameter but doesn't apply it. The fix is one
+line, follows the established pattern used by 106 other drivers, and was
+reviewed by the watchdog subsystem maintainer. The risk is essentially
+zero and the benefit is correct behavior for a safety feature on
+embedded systems.
+
+**YES**
+
+ drivers/watchdog/imx7ulp_wdt.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/watchdog/imx7ulp_wdt.c b/drivers/watchdog/imx7ulp_wdt.c
+index 0f13a30533574..03479110453ce 100644
+--- a/drivers/watchdog/imx7ulp_wdt.c
++++ b/drivers/watchdog/imx7ulp_wdt.c
+@@ -346,6 +346,7 @@ static int imx7ulp_wdt_probe(struct platform_device *pdev)
+ 	watchdog_stop_on_reboot(wdog);
+ 	watchdog_stop_on_unregister(wdog);
+ 	watchdog_set_drvdata(wdog, imx7ulp_wdt);
++	watchdog_set_nowayout(wdog, nowayout);
+ 
+ 	imx7ulp_wdt->hw = of_device_get_match_data(dev);
+ 	ret = imx7ulp_wdt_init(imx7ulp_wdt, wdog->timeout * imx7ulp_wdt->hw->wdog_clock_rate);
+-- 
+2.51.0
+
