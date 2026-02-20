@@ -1,112 +1,114 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9B5342CBA
-	for <imx@lists.linux.dev>; Fri, 20 Feb 2026 13:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771595184; cv=pass; b=PuIvraFT8OoeSRKw4ue2eu0JbMoCHPN9aw3NzLKc9x+tCmgDFWLCOTKTU/wxDjq+E8pvWZx36PGePZib13MQRgIXqoAMM4YWMiCJM3HQaW50k9gEVTKQFU5wOj3lyPm+ph85y0TuOnEASlj1YhW0/TlAH23a56RLTyHsDvqMFyw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771595184; c=relaxed/simple;
-	bh=XOrJsV7xngK5oabafDdTfaQdbOak3Z+Z+nL4+6By2TE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XO4NQfOFGEFggSb6A/Y5SMGbPty4YR1zmqBjty//N/vZ9S14kFG5DESj+8SB5/jR0vgY64vIq1nmZ66pkozuTU2o9SLc/t3IVc4YssEj0ZS1fksxmj2z43TQV48DAid2+5kertOsS2feUYU/T4Dqtw8hoUZtKZyH4ko1Zu07HAw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dDBKT8lR; arc=pass smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E5E3EBF10;
+	Fri, 20 Feb 2026 13:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771595344; cv=none; b=qMgPywE6hIh8tKTv402XdUYmNZshXzjOF4Y00CpiFDO+Hz74rOPmvx/tFlxZxwfgZydz7BS2nsaiq+0Sp9XSJSZkGI9tZc9hXeu6p1KnmUW0NHjGgvDHCpxI/8a/CPGFwJUwp9xYuC5Aw7YfP/fY9x5Ckdw0EiRvSgbT9z35rLA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771595344; c=relaxed/simple;
+	bh=3BXF1tM0USpaMojgevZ6kSlIUvvjsOnZvrR0swOJu3A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mCCMJCzfDyKA0YDwk9vo8QwBSiZnItjnuTPT9oMyQcMnX9YGguDxJHYQeYXlmRS0wMLrUcrZ4vYEU7rNk+aCec7OEDILbX4YCX72S+BuenxvmUqCJcVfZJUUBFiVFkMCTESC7L8fdlTY4ulhIWAFwE7FfMBBzvJOEE5faN0xOg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dmnFieFE; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dDBKT8lR"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-59e60b3ccdfso3038617e87.0
-        for <imx@lists.linux.dev>; Fri, 20 Feb 2026 05:46:22 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771595181; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IFFXiJhpDRP4fitTY2yBKpaPwCoYVdPk/GI57Ku9GzT3IJVb8/0F20/kJj2xfBn33T
-         N9g6vVHvYNz0l+IeHV6YOiiR/JYDc/0jswDGTP5uhEghXy7Tgz8bEHyVZ6TZc0C4Dxu/
-         SUC1EgzEeJNG17U3OcuL7z9FDOMeT3MXLEkcDGuaVbyh+bEOyz9M19XPDZNTExfJ3GYn
-         XKZwHixOEEc1XX+VlkNgMhDArb3hxt3OjXVL8Lx0Mlr87aUxqKKOQwkTftT1jxsQCmQm
-         Kx7JNkQMGM9PhSTDW3wKOCjI8srMaez9xdAIHiPczFdiekyn3Uos5T2TcDivKbnR0dtD
-         hZNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XOrJsV7xngK5oabafDdTfaQdbOak3Z+Z+nL4+6By2TE=;
-        fh=K2QrOw1AQTObm7Mg9vPNjeAjm8GeJqFpBVU5zhaJWFY=;
-        b=CHds/WEoW1E5NO8nB5ul6+hjeplVVqsn6ksigABI52wFB/yPOmDHmum/QqOzsTZ0no
-         LLeYdWlPKPgUF3YEY49kU9BfsicJynNHrYhqDf8Oor6FrF09Ma9LCYivdE+IDOBzaaCv
-         OXPcmGpO+Q29NXRjLPxmcfG/FfyLFuXoq9WmlR8V0mCRT5rn/8Ft1dimdusVPCYjO3hS
-         6IWoBRX3C+16A+/IB9pmEmYW5yhQ1G63t2idr3z1e28y/OrG+iyYHdEpRH+/VhS27BhG
-         7BFDOmzD7f5Q56u9EwKDKxbAOcFv1qYFGXas/73bdmwna3WZp5l8y+rtGoqtr8ITLFDe
-         NLew==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771595181; x=1772199981; darn=lists.linux.dev;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XOrJsV7xngK5oabafDdTfaQdbOak3Z+Z+nL4+6By2TE=;
-        b=dDBKT8lRByS5sCaMz4R+UZOtnJi52kgQAgTUk8rNMNkmys09cd7+CQBUtB2U4n0Jpm
-         qJE07qOck9KLNRiL0cy6QFjNx/Io4dUEbselb3bG6QXGcwX0J7QCRlM7sXL4sbd/oTke
-         /Pa4Nn0fqDU4UHgWx79y/2RYlTtQejryuBgfJPb9Vn2kAp3HMYyUpdVBsINKiyeUrRM4
-         9bYdCSlTbz3G0OjV4vhQsUhp+CRZePC53u5gwKniVVo/H6M9+uhuyx/OU+fw0rqFqh8E
-         8w5Ma6MJMiPlDwvBa2lnbUu6aYiP4XYfhjAyzLUjKhd21joB2mwe/HFF6BNuRme1xMiS
-         5scA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771595181; x=1772199981;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XOrJsV7xngK5oabafDdTfaQdbOak3Z+Z+nL4+6By2TE=;
-        b=ZX1dUgHPEFLKyvxC5ghoL2t56uvT0fHpWO7GGJuH3g1x031O6+JWkmHYJSma0NUI0C
-         k8X6JKejsKNUlqJ9+C1rCmCyU1i5h/TFDMXVD+vbz2boiY1GR4JO9upXSJcDEsEvpTGW
-         dOy5hNCK6LQKAHHrEcPdF5fKO3E+vuJ+fDaqx8Fp3NxzDskPir1WhPtfyvTccpfjHHJR
-         lliSXG3hJwrMCOV5NMfVnsycHvCK8Ae3K2v3Que/MySgQbG48CF5zwZZXaxOfseg43u4
-         h75RMSIkUlUBZSr/CBNKrG4l4Stj/Wt5MQNKCLvT1wQabvzrWXjLfAnedYQLrxyd0RBi
-         k/Gg==
-X-Forwarded-Encrypted: i=1; AJvYcCX9xImyDTma5EjEsDQEqfYvwkmQRolMvarnqLVUOhtsnI+VSiMK9iFEThShQcAC+dJfwls=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yxj797ZAlyWiEP9IDdSUOTr67a9aa/ZqMccLSMNO8yXLMIhmnlP
-	l2rFsCiGlzHE2o9/hv/daI9ndC17vi7E4OhbT93cImQZpmcbbkyArycCwC3jwVWN5EuAjAL9+VD
-	78vI1E8zMJiG7HX7XKs872xjhvuvqdt0=
-X-Gm-Gg: AZuq6aJQ9saS2LRcuvZ66Xte0+p0smboZoU6yk5NmNdG7quM+EvHwGqlmfzcn+QCpfH
-	u2D7dlJQ+1mdPM+2IzudJe+mgu2mWXg0B32K39QzLj+TSBp6jKziVQt+zTqcIFicFx/8bYPl2xW
-	SUC/oMJRqX/GEbtWXY/Ucz7pC2gzK361kHIIGyckG7K4Id8Dp3EyToengml/0EhFfxSp5DK3a4J
-	3Ohd37p4mBbBf8Uqe6UNXCAg5JFAhZPuxT81Eu+u7XJqqYiQgLecAtKGHKnBAL7s4CJUMSubiog
-	v99oOGaRkoyx8XUI8Zg1u9F43GaMmZlXfiAEFtH0IiQZrShV0CuFI209DnUxuwBpovozDT8=
-X-Received: by 2002:a05:6512:15a3:b0:5a0:4345:3b83 with SMTP id
- 2adb3069b0e04-5a043453cd8mr632693e87.47.1771595180578; Fri, 20 Feb 2026
- 05:46:20 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dmnFieFE"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=wgcfjCXrMQA1cT1ghZ4LtmW9Dgt8xRzzWMSxnFexXNU=; b=dmnFieFEh1bv6Oa0n9DtfZi6b4
+	0tfsxqocUapp/UnR5xKWfCqM2MFoQs+ypcZK8CModT83x1f1RDRNar40G5Wca+Zaf7biknwSiEH3f
+	80daJaSI+HdSociiI7+bdjiqVr6k0dAob755Ub8hodVzhPga0//nfyjgd67hehzGur3w=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vtQsG-0084jE-3N; Fri, 20 Feb 2026 14:48:52 +0100
+Date: Fri, 20 Feb 2026 14:48:52 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+Cc: Shenwei Wang <shenwei.wang@nxp.com>, Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Shuah Khan <skhan@linuxfoundation.org>, linux-gpio@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	devicetree@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-imx@nxp.com, Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v8 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
+Message-ID: <396819f2-dd00-4c09-8bc7-c035a5282a56@lunn.ch>
+References: <20260212213656.662437-1-shenwei.wang@nxp.com>
+ <20260212213656.662437-4-shenwei.wang@nxp.com>
+ <aae7c851-a93b-4d57-a118-43c6e68c4790@foss.st.com>
+ <13f9d767-61d6-4e29-b36e-6dcc860ccb11@lunn.ch>
+ <fd257c80-d97f-45b0-a12f-3a1888ba81db@foss.st.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260218132339.32157-1-Max.Merchel@ew.tq-group.com>
- <20260218132339.32157-2-Max.Merchel@ew.tq-group.com> <CAOMZO5B5k_i_q4cd7SMNAkicF4WfEYNVUSrg8AamQHNpGys5mA@mail.gmail.com>
- <be39b302-a29b-4dcd-a3f1-1f3781476951@ew.tq-group.com> <d1a87e01-f887-44ad-9b95-08c0e29be6ee@ew.tq-group.com>
-In-Reply-To: <d1a87e01-f887-44ad-9b95-08c0e29be6ee@ew.tq-group.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Fri, 20 Feb 2026 10:46:08 -0300
-X-Gm-Features: AaiRm51_GsoZDQD00zZcBnGdIZ49TtjBpvahUOln8EYXFWstEClOh9muiMle6fA
-Message-ID: <CAOMZO5A1+kynXqCDXA=aFw1y9UxnS4SQN2hbQXEmdXVgA8PjUA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] ARM: dts: imx6ul/imx6ull: add boot phase properties
-To: Max Merchel <max.merchel@ew.tq-group.com>
-Cc: Frank Li <Frank.Li@nxp.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, linux@ew.tq-group.com, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fd257c80-d97f-45b0-a12f-3a1888ba81db@foss.st.com>
 
-On Fri, Feb 20, 2026 at 10:14=E2=80=AFAM Max Merchel
-<max.merchel@ew.tq-group.com> wrote:
->
-> Hi Frank,
->
-> I forgot the boot property for the spba-bus in imx6ul.dtsi.
->
-> If Fabio gives me feedback on my suggestion to improved the comment
-> messages, I will send a V2 at the beginning of next week.
+On Fri, Feb 20, 2026 at 10:16:42AM +0100, Arnaud POULIQUEN wrote:
+> 
+> 
+> On 2/19/26 14:42, Andrew Lunn wrote:
+> > > > +	u8 id;		/* Message ID Code */
+> > > > +	u8 vendor;	/* Vendor ID number */
+> > > 
+> > > Does this fields above are mandatory, seems that it is just some constant
+> > > values that are useless.
+> > > 
+> > > > +	u8 version;	/* Vendor-specific version number */
+> > > 
+> > > Why it is vendor specific? the version should represent the rpmsg-tty
+> > > protocol version.
+> > > 
+> > > > +	u8 type;	/* Message type */
+> > > > +	u8 cmd;		/* Command code */
+> > > > +	u8 reserved[5];
+> > > 
+> > > What is the purpose of this reserved field?
+> > 
+> > They have an implementation of the other end running on there systems,
+> > and it sounds like it is widely deployed, and they are trying to keep
+> > backwards compatibility. The protocol also implements more than
+> > GPIO. There is also I2C, maybe watchdog, i don't remember, but early
+> > versions of this patchset had a list. Some of these fields are used
+> > for some of these other devices.
+> > 
+> > I've been arguing it should be a clean design, with the protocol
+> > focusing on GPIO. And that the rpmsg channel makes it clear this is a
+> > GPIO device, the protocol itself does not need to include fields to
+> > differentiate between GPIO, I2C etc.
+> > 
+> > When they start submitting I2C over rpmsg, i expect the same sort of
+> > discussion will start again, so the likelihood of keeping backwards
+> > compatible with there firmware seems low to me.
+> 
+> Agree with you.
 
-Yes, it looks good to me.
+Hi Shenwei
+
+We now have two Maintainers who think you should make a clean
+design...
+
+You should go talk with your Management and decide what they want to
+do. Drop this patch series and only support the out of tree driver? Or
+rework this driver and the firmware to the liking of the mainline
+Maintainers.
+
+	Andrew
