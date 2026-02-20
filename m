@@ -1,50 +1,49 @@
 Received: from mail2.fris.de (mail.fris.de [116.203.77.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571F933DEF2
-	for <imx@lists.linux.dev>; Fri, 20 Feb 2026 10:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E18533E376
+	for <imx@lists.linux.dev>; Fri, 20 Feb 2026 10:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.77.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771583813; cv=none; b=Woay29RInz4GfFYh3wzSzuYalwEjNZcYQJabL+RhV9MAZXLuT7VrW20OMIOrpuEL5n5No/+z4CnNCpFov2nqQ3s0KUbsrspuZLroSYNnlxdAOqxp4vnKl1Dau4i82CEcDn9SX/RSRT6IBJB4wQ4JsTN6i+fJ8M1l6cCKvz187oU=
+	t=1771583813; cv=none; b=eaEOOU7jYS4YQP7bbUgnRH42WQfThg+treb4JfyYjLXgT/a2sxF9ARN5A2Mu+ybLaG23zBPMXWaQSddcC6azS2bqqWivPfygmFL6CgeeJfXEnGct3u4FDyfluwAMPVEG6Z0C68mgelfdR1PYPr1x02m2GJVG5hNYUyXAL/V/j8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771583813; c=relaxed/simple;
-	bh=e2pzlk6qVPYwZHocTIzfk8PbIyHJb3+KeyuuAZOUzlo=;
+	bh=o/Kn47OIJzbhhBAN37bkYpI8xAnDYFpd3oEYxc5XEds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BhD6dLprP6lC5qYF19kTszvitY5Ry330lSJxoYW7UwUvpWoUjsBef2pw6TXwML0cD7xNkW2haDQypWFIzBhOKTa9gKBFIDmZUcaO1NKaTkfGU+waGX1Oxx95U8QAvOYx1c/x/1JiZwOruDq+JAy/LTPWwiGv6+asHDon4MgpL4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=rv53oPSt; arc=none smtp.client-ip=116.203.77.234
+	 MIME-Version; b=V7AiEuQw0ECYzaD3ew8zjqI291fkMGSNFpxWVovFvQt3c//z0vXXER4LKfWvw0LAHr9iGowVC7gS+uywB1PUcCI+nrI9CYkiBSP4LKZrJMDKrPB8ERvsKGI6t3D/pGyVsTvgJj5XVvMV6GJ2JxholxP8yMK50MG7edVMZNTYe30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de; spf=pass smtp.mailfrom=fris.de; dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b=sAsj1GdN; arc=none smtp.client-ip=116.203.77.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="rv53oPSt"
+	dkim=pass (2048-bit key) header.d=fris.de header.i=@fris.de header.b="sAsj1GdN"
 From: Frieder Schrempf <frieder@fris.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fris.de; s=mail;
-	t=1771583803;
+	t=1771583810;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9nxwdodsmrJqTCjHXzmc8/KE3pVW+pHuR2vrlazu10o=;
-	b=rv53oPStcRBBnD19zX4ntmMyBkvFbDD/j16JjHt09rFTQ2GoDktQAhkTYC6HsDFNiirVyj
-	2TRkJ42Ohs4UG82UwaZokthgNDpqJdDBmvkx5xLDTPT6JxQn0Bgu3AfanvyW/EtnPwOqM+
-	/ify3VhcGxkyUbKUA8vDLKPa0RDiLxEgu666h2XNSA0NWwSc+AZZ7M+Vi7DGXAM7QVoujL
-	NE/kt9o/gtA0a+lQchbwfsaO32AdXMjlzTMc5mTmAV8lXGOS6weAwr2QRH+pn4HnmQU5G6
-	DkEtnQKGEKUM8wj5pIrrH45l1Jt79KI7jDpSa/dBicRETMzAYJ2Mx7cwERfh5A==
+	bh=lVNtYA9QYyCyxJhprnVzLPW9iVvkaqf7WAZnQ/Wheq4=;
+	b=sAsj1GdNA83T0bXSX7w/pf3Twi+bsk9hg1RhyEdAnGn9c1QhX5bTxY6Tl4wrFPOMQRbra5
+	MHrQFY4BI2HV4aguAQESQ9jGPA/7z5h7/ElqzXAtQZ/UOzfU2ImPeTSAOX7viYuLYsO3OF
+	pOFH/205YOoFN6xO+8jfOB6/oSNSjubfY9PJUlVJGD5z41lQEg4NKL1gJGd+ehOsgugX23
+	hKc7ju6ZuXcvD85TXmxoNh/UbEs3dPsxVDry+zZXAK+wQoU9sk9kfT1d4mCbTEXz+5leYP
+	DCPGAo1866nXojAJcmI6xLuaiaZzKTq4m+J6r9lWn0+CfaTulQD3eKMfqxR5xQ==
 To: Conor Dooley <conor+dt@kernel.org>,
 	devicetree@vger.kernel.org,
 	Frank Li <Frank.Li@nxp.com>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
 	imx@lists.linux.dev,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Fabio Estevam <festevam@gmail.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>
-Subject: [PATCH v2 1/4] arm64: dts: imx8mp-kontron: Fix touch reset configuration on DL devices
-Date: Fri, 20 Feb 2026 11:36:16 +0100
-Message-ID: <20260220103636.9697-2-frieder@fris.de>
+Subject: [PATCH v2 4/4] arm64: dts: imx8mp-kontron: Use GPIO/IRQ defines in DL devicetree
+Date: Fri, 20 Feb 2026 11:36:19 +0100
+Message-ID: <20260220103636.9697-5-frieder@fris.de>
 In-Reply-To: <20260220103636.9697-1-frieder@fris.de>
 References: <20260220103636.9697-1-frieder@fris.de>
 Precedence: bulk
@@ -57,62 +56,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-The reset signal needs a pullup, but there is no hardware pullup.
-As a workaround, enable the internal pullup to fix the touchscreen.
+To make the code more readable, use the macros for the GPIO and IRQ
+settings.
 
-As this deviates from the default generic GPIO settings in the OSM
-devicetree, add a new node for the touch pinctrl and redefine the
-generic gpio1 pinctrl.
-
-Fixes: 946ab10e3f40f ("arm64: dts: Add support for Kontron OSM-S i.MX8MP SoM and BL carrier board")
 Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 ---
- .../boot/dts/freescale/imx8mp-kontron-dl.dtso | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso b/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso
-index a3cba41d2b531..7131e9a499ae1 100644
+index 7131e9a499ae1..41a2bb74f1565 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso
 +++ b/arch/arm64/boot/dts/freescale/imx8mp-kontron-dl.dtso
-@@ -77,6 +77,8 @@ &i2c1 {
- 	touchscreen@5d {
- 		compatible = "goodix,gt928";
- 		reg = <0x5d>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_touch>;
+@@ -7,6 +7,7 @@
+ /plugin/;
+ 
+ #include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/interrupt-controller/irq.h>
+ #include "imx8mp-pinfunc.h"
+ 
+ &{/} {
+@@ -80,11 +81,11 @@ touchscreen@5d {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_touch>;
  		interrupt-parent = <&gpio1>;
- 		interrupts = <6 8>;
- 		irq-gpios = <&gpio1 6 0>;
-@@ -98,6 +100,16 @@ &lvds_bridge {
- 	status = "okay";
+-		interrupts = <6 8>;
+-		irq-gpios = <&gpio1 6 0>;
++		interrupts = <6 IRQ_TYPE_LEVEL_LOW>;
++		irq-gpios = <&gpio1 6 GPIO_ACTIVE_HIGH>;
+ 		AVDD28-supply = <&reg_vcc_panel>;
+ 		VDDIO-supply = <&reg_vcc_panel>;
+-		reset-gpios = <&gpio1 7 0>;
++		reset-gpios = <&gpio1 7 GPIO_ACTIVE_HIGH>;
+ 	};
  };
  
-+/* redefine to remove touch controller GPIOs */
-+&pinctrl_gpio1 {
-+	fsl,pins = <
-+		MX8MP_IOMUXC_GPIO1_IO00__GPIO1_IO00		0x19 /* GPIO_A_0 */
-+		MX8MP_IOMUXC_GPIO1_IO01__GPIO1_IO01		0x19 /* GPIO_A_1 */
-+		MX8MP_IOMUXC_GPIO1_IO05__GPIO1_IO05		0x19 /* GPIO_A_2 */
-+		MX8MP_IOMUXC_GPIO1_IO08__GPIO1_IO08		0x19 /* GPIO_A_5 */
-+	>;
-+};
-+
- &pwm1 {
- 	status = "okay";
- };
-@@ -108,4 +120,11 @@ pinctrl_panel_stby: panelstbygrp {
- 			MX8MP_IOMUXC_SAI3_RXFS__GPIO4_IO28		0x19
- 		>;
- 	};
-+
-+	pinctrl_touch: touchgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_GPIO1_IO06__GPIO1_IO06		0x19
-+			MX8MP_IOMUXC_GPIO1_IO07__GPIO1_IO07		0x150
-+		>;
-+	};
- };
 -- 
 2.52.0
 
