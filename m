@@ -1,79 +1,139 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mx-relay48-hz3.antispameurope.com (mx-relay48-hz3.antispameurope.com [94.100.134.237])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6623446B7
-	for <imx@lists.linux.dev>; Fri, 20 Feb 2026 12:44:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771591498; cv=none; b=rSowxdokuvqev0u8EE/PC7yiDL9kwLWZCQLlzJqCPB8LAjBLm0li8hqDfXG4925dIlSu0NcoLLGddnaooxo7ix3jQXeZiXw9gjC715jBJVoRYRxID7I59jJR9vrD6LfggxIbagkhmSeLIDlUzF/FGPgrmihYlz9HSGsItrEYBdE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771591498; c=relaxed/simple;
-	bh=1uRygSfYY8fegxzfxzSpHnDlqtTI9l1OIlM0v0EBHUE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=kFVoA8xYwin2RLTWqRQzR7zUe/wIYT7tQ9CW9ir8peo9R8RiSKi19S0PJw62acKOmzvjR3cQtiOtm+zbCAsTenTyIhI1OIeimOI2/0WgSuI6yhv0XLOqEUO7jQhv0kriqqNEOwa5UTAEr1qN51Nn5RISwJZXs0XhUFbklT8rvPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eImEQMnn; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93437345CA2
+	for <imx@lists.linux.dev>; Fri, 20 Feb 2026 13:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.237
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771593290; cv=pass; b=F46v9+CBg5YSf5uLLXdgV6m3UMPk44sdL9M9glMSpMqEhUx8MgG4rVJ5sbKg2RCBoKQUugKtiixxt6s6GNils4zyDYqeW0NUb47XIqBoBxsJF/Fog5rMSF0seTSUc25Ghn3cUWfi1Kem6AIcLc66w1jarUlujV+uaoEOJBNr3pE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771593290; c=relaxed/simple;
+	bh=qM+yIWyw0RFaLdOwB/33YpLqhLZR8QofbkQnw3Dellc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Peh18NmTHdo28rfZMnjXlyyFsh8eKGKI869r30SRoagUtT45SGbOFry/TVhezbDdOISpbptK+i2t34Sad5ZaMuSz8qUHW39RuDmYwmryTx8lX0FXZ9+gCef9SaUjEPb6iYFR/zEUgsqXpgQgLHSI/cpAfGchWCSwl1U5KA7axoU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=oLvN8D/7; arc=pass smtp.client-ip=94.100.134.237
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eImEQMnn"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id B0DE51A0A32;
-	Fri, 20 Feb 2026 12:44:48 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 864745FA8F;
-	Fri, 20 Feb 2026 12:44:48 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 55D29103688C4;
-	Fri, 20 Feb 2026 13:44:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1771591487; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Nj4Sruc+lNxj7h2GpORgNoUmKB3DGWmmf6h/HT8p8z0=;
-	b=eImEQMnnz2rGoBWZL9YrluPhipygkv4r0wZE/3lz+jzY2fGTp0aUQAqiL3K1m9SLpLXurO
-	8XFdf8Qgl5JrTzz1/JBWg65RpUWuZVN7UFxWHBa5vg0bh5Scu4tPDW1UN8G/dfSOedJyoC
-	mznnCBS1Myc6fzgH4WJQxLYDuLQDxh+9coX+vToxA3MIkkVLXp3fauEh78wDyMctSACVxt
-	vuwP9Dt16KaZAx594tXvgIixq7YICPcx+9I/jP58MPPwoaYEks6qBEV+vqs3jBL4nz8Bq1
-	cB+SpHXp7wLyzQoBuSWAaJOXCc6FLj+V0jsLSnlO74dQE+gaU9nf8xrfzJOPmw==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: p.zabel@pengutronix.de, maarten.lankhorst@linux.intel.com, 
- mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, 
- Frank.Li@nxp.com, s.hauer@pengutronix.de, kernel@pengutronix.de, 
- festevam@gmail.com, louis.chauvet@bootlin.com, Chen Ni <nichen@iscas.ac.cn>
-Cc: dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260204090629.2209542-1-nichen@iscas.ac.cn>
-References: <20260204090629.2209542-1-nichen@iscas.ac.cn>
-Subject: Re: [PATCH] drm/imx: parallel-display: check return value of
- devm_drm_bridge_add() in imx_pd_probe()
-Message-Id: <177159148142.510757.5758922562967714281.b4-ty@bootlin.com>
-Date: Fri, 20 Feb 2026 13:44:41 +0100
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="oLvN8D/7"
+ARC-Authentication-Results: i=1; mx-gate48-hz3.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out03-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=2MjKH69EZTy6SNbmhiR8H7qrxFI437dSH1xWPtNSfHA=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1771593267;
+ b=P7ZuXURORX8W8aqKNI/R6xY3dDuv81Xh+Ub/ms2gVTmAbeOtLYj0Zeptp16WV6y0ljJDzwG/
+ SCTo4deMZ1i1mcPy4MZ3VNPbUO2oIdsfw32aoAdOVJL3CVQSh9F1UNa7jyK7M6gSMM3OpVbJEUo
+ jnQl3jN1ZkpkbWC+zDXWijJzQOpIn9DcZpkcU59I7RfYMhdAD6+zza3TBc9agQvFAIQEgee93/o
+ 4HU4MXxidz/0Pkn/GvyuvubM1+Wfy+hlEUb5DqJFCmaQ605/3QkRVRl1g/RoP4kDM9UMEZ2YTOo
+ R8HnnBR8CWmkyJP5xipqDmukwLR6e6FksvGiaXsRXkPCg==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1771593267;
+ b=s7SK397788yX9XxydBSvWYcx9zfNyTsB2+dMJMUfFEAbrDRzVR3d25p6lLRDtI3Bqq3/VW3e
+ dLbePMFzmNbMNwkbIL8CB5Kl9/vS+THrkX4pTMHUgU9n305qQT2YMHtkk2h8a/A5BVglW7JN6OC
+ K8P1X48f5YzNONMloR4pWEYQOhqkjrEHuFc51tZnqfh0HCt9JYiW+Xmb8zhR5mqKcKE4W3IRy6v
+ sXb4i8V5zzH6eOwEMTrH2rJ5+itkwWhg9DrR8i2EBrSvhN5yE30IVuuNZRSA4mU6iGvz/HcArNv
+ aQsOO1x7V8jARAflg3Xv76Bgu39e6bdD1RnH4ZsRUk1Mw==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay48-hz3.antispameurope.com;
+ Fri, 20 Feb 2026 14:14:26 +0100
+Received: from [10.123.75.134] (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: max.merchel@ew.tq-group.com)
+	by hmail-p-smtp01-out03-hz1.hornetsecurity.com (Postfix) with ESMTPSA id 0DBFDCC0E8B;
+	Fri, 20 Feb 2026 14:14:15 +0100 (CET)
+Message-ID: <d1a87e01-f887-44ad-9b95-08c0e29be6ee@ew.tq-group.com>
+Date: Fri, 20 Feb 2026 14:14:14 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] ARM: dts: imx6ul/imx6ull: add boot phase properties
+From: Max Merchel <max.merchel@ew.tq-group.com>
+To: Frank Li <Frank.Li@nxp.com>, Fabio Estevam <festevam@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, linux@ew.tq-group.com,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260218132339.32157-1-Max.Merchel@ew.tq-group.com>
+ <20260218132339.32157-2-Max.Merchel@ew.tq-group.com>
+ <CAOMZO5B5k_i_q4cd7SMNAkicF4WfEYNVUSrg8AamQHNpGys5mA@mail.gmail.com>
+ <be39b302-a29b-4dcd-a3f1-1f3781476951@ew.tq-group.com>
+Content-Language: en-US
+In-Reply-To: <be39b302-a29b-4dcd-a3f1-1f3781476951@ew.tq-group.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-cloud-security-sender:max.merchel@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: max.merchel@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay48-hz3.antispameurope.com with 4fHW1358Myz1kNt4C
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:7ee22832e241a6dc12898e584eefa700
+X-cloud-security:scantime:2.706
+DKIM-Signature: a=rsa-sha256;
+ bh=2MjKH69EZTy6SNbmhiR8H7qrxFI437dSH1xWPtNSfHA=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1771593266; v=1;
+ b=oLvN8D/7ZxY8f7hnB712Sv75y7NOb/9jrG3W0YgPyiyP+ZZL3UP0xBu4Shjp0kxzuGUiFlSe
+ Y9w/eCoF7PEuGS9AJ1JBEPbIshQaNoA/n086bh9v56/a198x538+cTy9LX6v8BxBZtWjfCr8pjb
+ idWAIEiukYMBEgoOaDPwRCl2NG3NsNOqDVozygYB+gsNROYUrGnoTSjqMoGWptpyEMhG87z3AI4
+ nht9mZELcPk6E9Zb+MMSK5CCJKCgSj9lSOiMKtNpd8G0v6NURsnAbmT4ulwW2pDmjQpHpi5Sk95
+ o7sKOJLpaPYn6gSsjB6mkfTJRubBX4bqpj+4rfmpDIDJg==
 
+Hi Frank,
 
-On Wed, 04 Feb 2026 17:06:29 +0800, Chen Ni wrote:
-> Return the value of devm_drm_bridge_add() in order to propagate the
-> error properly, if it fails due to resource allocation failure or bridge
-> registration failure.
+I forgot the boot property for the spba-bus in imx6ul.dtsi.
+
+If Fabio gives me feedback on my suggestion to improved the comment 
+messages, I will send a V2 at the beginning of next week.
+
+Am 20.02.26 um 13:10 schrieb Max Merchel:
 > 
-> This ensures that the probe function fails safely rather than proceeding
-> with a potentially incomplete bridge setup.
 > 
-> [...]
+> Am 18.02.26 um 19:14 schrieb Fabio Estevam:
+>> Hi Max,
+>>
+>> On Wed, Feb 18, 2026 at 10:24 AM Max Merchel
+>> <Max.Merchel@ew.tq-group.com> wrote:
+>>>
+>>> Add boot phase properties from U-Boot device tree.
+>>
+>> The commit logs of this series could be improved. Please take a look
+>> at these examples:
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/ 
+>> commit/?h=v6.19&id=256feb5be482315a91c1bd1a1808276f57ef76dd
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/ 
+>> commit/?h=v6.19&id=2285ea3f8065f47a6a1b62e6fcfa85105c8c261b
+> 
+> Hi Fabio,
+> 
+> I can add sentences to the commits, including the properties, for example:
+> 
+> dtschema/schemas/bootph.yaml describe various node usage during
+> boot phases with DT.
+> 
+> All SoCs require buses (aips and spba), clock, iomuxc and SOC access 
+> during boot process.
+> 
+> 
 
-Applied, thanks!
-
-[1/1] drm/imx: parallel-display: check return value of devm_drm_bridge_add() in imx_pd_probe()
-      commit: c5f8658f97ec392eeaf355d4e9775ae1f23ca1d3
-
-Best regards,
 -- 
-Luca Ceresoli <luca.ceresoli@bootlin.com>
+Best regards,
+Max
+
+TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht München, HRB 105018
+Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
