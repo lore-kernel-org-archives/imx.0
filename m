@@ -1,198 +1,245 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011000.outbound.protection.outlook.com [40.107.130.0])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1153168E8
-	for <imx@lists.linux.dev>; Fri, 20 Feb 2026 09:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.0
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771580565; cv=fail; b=j/aPzhgGITjxHB79x+IvL+kpmseyNeThPoJOCrb7JVTkp6qxj8tOeOavsxZQ9mcP1jM13Q9Gne0PBGQ+BzqH25NjF1tbg7f57sQf3h6FJZBdynIARPdYTBoGF5Xxfw9JyEHGBdQR8oh5Ud9oSCmR1Pi6jAoUk7H/Q6rV5eBSiPE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771580565; c=relaxed/simple;
-	bh=27JrhWVyH+sTlwqrcyRPu9bQFcW4c8Bjg86155ncCQI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=JU/8joQKraVRaIb3nYisUq3C+KVZLJspH56FFcsVMNQYgHlvAcEbzsvbkccGNG52gHOzVZXgvz/INLjQeZb5VBqdEcfV06oNfQOSZRBmGr9yzycDtV4LXjtMqRNB51IJ6WV46xohf0JLCYuoWf6fxX3/DXw4qVJscYTDDm8xCWY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=S0OYYH+T; arc=fail smtp.client-ip=40.107.130.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D571233C1B6;
+	Fri, 20 Feb 2026 10:17:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771582626; cv=none; b=U+u8dPTRlm9DUAHmAykzq5LffYGGvr2dXUBgI11AjeSbwvYJxNUd8eTXUl+hfQDHu3yOUE3n76AWaBvmPG1X0YMhOddc3E4Mf3qR1n9nmLGMhBUfpODqGMai+6vaskDf6MtcHVfZ2zKQT708VBFH9b+CqjUgzxuUprRPyZRSJxc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771582626; c=relaxed/simple;
+	bh=DwJRqwTIxPH4O6waaaWkmQc1GediIB0SchBhEhcUMf0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DMcMpy4b+DAmOemEGEGbJT64NHcErw0iZB5Ue5Vi+A3arnvtIxHMftKdwaKDV3xyDSiYNykHAeYsRsNel/Bwz6zPzP6IVhcFBC7MUAwT7CSp/Vdf7Ri2tCxnIevnZT2IpG9i/PY1hYudeSse8KUQcL3sAsYt9QyL3B8VhhH2ams=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uqJwOIzW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="S0OYYH+T"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GPgps5sKMyw/B0eCWbEglZS4QijexSM0NrX+iCrKMWdJArDwAr8Ci0oAEsz/HLfTjf0hCr9nfE50kkrh0fc/nlNcuztRl9Tg+OPqvDTatW530EMX/6LfZ6KCaMrsJ3ck5qhrmJkt5rij4saTfg+W/LAQlEs0+fYn2oxyHWUwE7yypYOnOvhHTlvhBpEa21PNPTP9+/NlHuXrjhQwM2A1W+986QVHZt+l/aXo7sttG0BVeTz7hdpTUQ1hwuPt5gAheSe+GDrR5m60OosLekXrL58Ppi+TjjHiqRrwa1ZhUDU9x+CKhvYIp1xnLnACsHnKq7/uCFAvcE5Ysjx17A83wg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=27JrhWVyH+sTlwqrcyRPu9bQFcW4c8Bjg86155ncCQI=;
- b=JT3PzzL9JeLV7XZIZ6koX2y5rkgODUILCJYrnzgr9nPQWtEun9YAfzZ4RBN0suGqv41nDsrXtyG39AC2y9tUOwXeLIqO2T9NBoKLbVzeDnzGTGQ/sVKdHy8BiWNC0Io98I7QAm1CNnVugROLY9gGQDSHctMPcUOcNZhmn7dECsximZu3DM4Gshqse2/mzGDC1ZgOQZMBXO7u6hovZsOsxt5Rmgf3fh7ke4x2Dria3/kF8hbXh1fB3u/6CtzOWzxNux5jiG1pJhPqP4N8FizMf5qmtoLHVAdMD+JkD6SKLHgpSo2mTjdKXzXDpARPPWST2HHxujtApj8mWF8NxlIbvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=27JrhWVyH+sTlwqrcyRPu9bQFcW4c8Bjg86155ncCQI=;
- b=S0OYYH+TOGHsQi22sP37IpByMRO6NyEEE2Ar/OvW00mBQgw3wFKjlFNP/Ng5zFKZZkd0FaSpKeWwtlRLYD2YhcpRTHX3dhe7HrXHdEQUnWWFNSlkk0CcYVAQrzdJcRVcHrnjYnrQ8MC+j4o/PmaZ0gw8F7PeliyCJk93ZCujE3oXN+GsZGyhlWk+ySU16R4gqUaRc2eWPcha2d32CtzmHSff0QffhmzfRtCxMK8ia+LBRiynuAGofwnYuk0Os6CcVCET1dHpy3uhiGH+LsxBz7xNfXeDjf/yZ5T6oPpHWTu/JItNhEdGg1XDVbeQLjQ2t4B/cuEp/GOiRTub6aBnyw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com (2603:10a6:20b:3f2::13)
- by DB9PR04MB11557.eurprd04.prod.outlook.com (2603:10a6:10:607::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.16; Fri, 20 Feb
- 2026 09:41:24 +0000
-Received: from AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::e99:f504:ce75:9bed]) by AS8PR04MB8247.eurprd04.prod.outlook.com
- ([fe80::e99:f504:ce75:9bed%3]) with mapi id 15.20.9632.015; Fri, 20 Feb 2026
- 09:41:24 +0000
-Message-ID: <0cdf1d10-74d6-434a-9230-c9e7d5a5c9a1@oss.nxp.com>
-Date: Fri, 20 Feb 2026 11:44:21 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] ARM: dts: TQMa6UL: modify for use in bootloaders
-To: Frank Li <Frank.li@nxp.com>, Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Max Merchel <Max.Merchel@ew.tq-group.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, linux@ew.tq-group.com,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20260218132339.32157-1-Max.Merchel@ew.tq-group.com>
- <aZXw76CuH9u8csFk@lizhi-Precision-Tower-5810>
- <6c001865-c8e3-4133-bf10-46384fdaf511@kernel.org>
- <aZdodgOZcM9Nzh99@lizhi-Precision-Tower-5810>
-Content-Language: en-US
-From: Daniel Baluta <daniel.baluta@oss.nxp.com>
-In-Reply-To: <aZdodgOZcM9Nzh99@lizhi-Precision-Tower-5810>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM0P309CA0017.EURP309.PROD.OUTLOOK.COM
- (2603:10a6:20b:28f::21) To AS8PR04MB8247.eurprd04.prod.outlook.com
- (2603:10a6:20b:3f2::13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uqJwOIzW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67917C116D0;
+	Fri, 20 Feb 2026 10:17:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771582626;
+	bh=DwJRqwTIxPH4O6waaaWkmQc1GediIB0SchBhEhcUMf0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uqJwOIzWN+T6wPgd8AKTu2b9HuLG1WazY+eZbbLoQF4YGr9jtksWgUNv84WxT8uws
+	 2aL2TV6mrWsFt5LUdwnxL19wEz5mltZHnYAGgIVPP0GuorDih2fY1z2EzW2LCVPLhc
+	 Ntvs7TCFBE+VPdGvxq1GsRGNP13X+BP2IzT21I2+UbHzgfMoSHyp1hTOnH4xTjb4mL
+	 Qhw1hge6i0CxrqkQzqDfesNW6evho36iLwI8x7OoLPymOPdY3m1CSS/VwYqs5+uVs9
+	 /oPlMJLScpPxxjddiAq0XHhQlXW+HAscwFm+QzABg2SCnTu5K41aZIv7Npzhm9jYdJ
+	 GQXSsD/uWNnow==
+Message-ID: <edc3a63a-8117-476f-9582-97ae31fefa96@kernel.org>
+Date: Fri, 20 Feb 2026 11:16:58 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8247:EE_|DB9PR04MB11557:EE_
-X-MS-Office365-Filtering-Correlation-Id: e6e2daed-57d5-4d49-de07-08de70643605
-X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|19092799006|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ajhzREZMcnlidkIzNjNodW1RdmNYSy9CNm9wVDQrSzliN001Z1h6bGtmODVS?=
- =?utf-8?B?bld0OUV4elpVTHRKaGZFVmxVMTcwSE9odVphK1VxQVMvcVBqRFZSYUxkRGhK?=
- =?utf-8?B?aE1GclE1R1ZqOWE1MTdKbEFrbnVtc0dSd2E4bTRiSzdSQmFYZEJHLzZXdnpX?=
- =?utf-8?B?SHhxQTRWZ2M5VWZ4VURwQ2hnMTNwREo0Q0cvM1BhMVJ1U2ttaHVkOWRPOVJ2?=
- =?utf-8?B?a3ZnYXp1RitEamJxQnE1WDhZVlBlSlBHU29SeW1aUFVheWJPU0VUbHNabkxG?=
- =?utf-8?B?YUgyMXFoc0xwbXV5MEdJLzdTT2Z3cXRwK0hMRTVkeHZnVGM5SHlHVTd5S1Vh?=
- =?utf-8?B?dzNXZzJBV05JZ1hBSlhHMDVZZEtPZ3FvK1dFUUJqQmsyc3JVbW5YVTNJOStH?=
- =?utf-8?B?SUVmWUl3YTBkR3duU0J3dGdURUFVZDVVMzl6RzZQTE4vdXNSTXpTYk9ackp1?=
- =?utf-8?B?bnljeFp1R25VaysrWFk1dUh6SGFyNE8rUGxrNGJ4TlVlZmVGdFNYYlo5VkhW?=
- =?utf-8?B?WXRjOXpvbnc2VllHaTNJTjN0bG11OHZtODdhbzNzbElBUTBrSnF6c0NDdVY3?=
- =?utf-8?B?dUI5Q2c2ZC9sYnpBRVZUQmQyWjNaN0thMUxSVzJkdVdpTWo5VXdmZ3h2c3dz?=
- =?utf-8?B?NmJ1SWRhN202UEZxa0pDNUFvdmUyUS83RmFFRFZQaDI2a2JyTjlOZTUyblJi?=
- =?utf-8?B?SlVCS3RZRklieU95d3NnTTJDVjlLem1HUXZtTnZOWHBuTzdTbmttMFFsWkYv?=
- =?utf-8?B?K0RtR2lpQ0p2eFhHa25GZXhzK1hLOFZZbGpGMUh3dS91VDV2ZGNSdlhVTEdh?=
- =?utf-8?B?L28xcnQ1Q1BHZ0l5QmtZTW5oZlJpMVJ5YUwvQzJ3bWJzT3RER3dtUGNxUklp?=
- =?utf-8?B?RTdFYkVHV1FOTy84WFhRUEt4bTgzN0ZIb1FRWjU5dnFpS1R4dnl5YmhWOFVQ?=
- =?utf-8?B?MkEyOUJpSVplRDlIOUFSQ2RLWklNWTZUaFpOYmhtOEpqTEhOR3YwUWVRZC9T?=
- =?utf-8?B?cFB0NGNJWGRmdGpKNDZ1THNsMnh2WE1rS2VzSThpN1M1TlhLeURPMllEeW1J?=
- =?utf-8?B?L3VZVkdqNENLcGdoRW9hYi9scU9YZUp0YVdHcnNCL2lxZkdJSTR2T2JrdG9S?=
- =?utf-8?B?VE5SVkdPMFlUNnRHMkhWQ2lXQnlLVklvQ0oyVFNWWEs1ZE5kd1kxMjl4NElX?=
- =?utf-8?B?U0hYdStNMnRMMXJ4RWZiSkpSdjdPYklBclc5NitNZWlRQ1h2UE1VeG9JYng3?=
- =?utf-8?B?MEVSMUdyRGFMSENlMWtrRlZQd3ZSdCs3aGdsRVNhbG1PVEFnY3BGdm41Q0Ni?=
- =?utf-8?B?NVZKU3hMaWhMTHlDd1IrQXVPV0o4cUpYa2RGa0Nld3RrcEhIb0dBeWR0d1BZ?=
- =?utf-8?B?b0Uxd3BlWUhSMVBRd1U1QXl0Q3pSelNqaGlNRzFDaDQyaThtOUJPMHB5d01z?=
- =?utf-8?B?Y2FORTFBVjJzd24xNU5ybzltNmtSTTh4L3BWZUZtLzN6bnd2ZWRGTGc5bjZx?=
- =?utf-8?B?RjRFWkRMcU5lYkkwK0xGUWJyVndQNDREK2hGQjZ1WmRpVXlkY09UazcrZkM4?=
- =?utf-8?B?UnZ3cS9DNG1uc3JZQ0FEcDJqajNMcWRrTlJITHBxQ1B2VFlpYzAwWDU3QmRS?=
- =?utf-8?B?VWhoVG8vdCs5ZkREQTFQcTBtZVFOWWZodDBOajRuTTJxc1VjSkNRTWxHaWhw?=
- =?utf-8?B?NEUzSVJmajk5UThNTEpWRVQ2Y0J5Yk9MTnZpMWtYUiszaThXeDFrTVpQdnpC?=
- =?utf-8?B?YytBZTh0bWNRT0VkUWg3STRrVGhzRG83clpPN3ArdklGZmNCWTFoMWpPT1JV?=
- =?utf-8?B?UnFMTzFIMnNvems4RU9LKzRyS0NPbm1CaFBNODBja2tXSExoUC8wNExEZjRL?=
- =?utf-8?B?d1l5R01ETTRZTjBjNjhzV3pXanBkbDJRT0ppQjh5bWFEMUJhSDZXa0VCRkVX?=
- =?utf-8?B?SG5wRG8yL1dRdEQxYnpjTXo2TjY1MVM0bU9lTWlhUmxSU1hHQWNWcmVQSXVp?=
- =?utf-8?B?cmtsY0xqZHdoM21HYzA5endIZ216aVlSazJvaUE2SEFCWlpiUk5RNFUvSlQ5?=
- =?utf-8?B?T05wek8xSGhySCtBelVETk5nZlE3TUdZZVlyWEw5VTBITm1LaHBjMDNjUmZM?=
- =?utf-8?Q?DZ4c=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8247.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(19092799006)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?U09sQ1QzMm5jQmUycUlMMHB3MlhFNlZkRFZobmo2VkNnMmFPSWJxUUJOdVdm?=
- =?utf-8?B?aHBPNjUzc3E0cnBQd3Z2MWVhY2IvRGJ1Q3FmSlVybWFhcHU4SUxNeDJwYjI3?=
- =?utf-8?B?eGdjeEJiTkxvdUxqQjNRWTNvRzR6REk3MmVrb3g0Z2RrcjVUUFh1YUVTM2lX?=
- =?utf-8?B?SExkR2U0VTRnZm9vamdnVytRM1MxL25BTWJWeWJzQUZTNXJKaU1QNHIyakRt?=
- =?utf-8?B?QklIbWhoeVNaeTBvUTF5T3Iwdk55R2VTMGZjSDNMWHlqM1VlYzFaL2pVeTV6?=
- =?utf-8?B?Ym5SZ0owclJ3emY3OUdpWGhUSVdITkR6Wm1XYVZEaUJmUTNlWXlLVEg3MTBW?=
- =?utf-8?B?YnlRUEdEVCs2K25DWE1TWklLbXN2ampKVms4VE5CRFl6cVVUeEpTQXBDWHgz?=
- =?utf-8?B?LzNJRmh3TjBwVUVGL1ViSmorTnA5K211d2R4V0tJdXh4S2ZmMU8zL3lXWTNK?=
- =?utf-8?B?WVVGWHFZYWJSc0FSSG9tTjg0bWR0aTZSM1Z3bUpYSWE0alZYRjQ3TlR2V2x1?=
- =?utf-8?B?OWJmOFRtTGVFS1hQZm12RWxHa3JKMnZ1SHdCVmpnOUtNbVd2UlVYcGFZNXRz?=
- =?utf-8?B?dkRaVi9QbHZ5dWlZUHFwcUo5OTNSaFovTGlBOGlMMk1mdiswWkZwd2lkWk83?=
- =?utf-8?B?T0V0N0FMc1pHSEZtM2l6RWhJcXZ6Zm5rVEErNDBhdVQ5YVI1NVppSFVDRFpa?=
- =?utf-8?B?WlU4SHhLRHZlejJxcElIWTRpdllZdHpWdmZ5QVROZlBzZStWYzY3aEJ5ck43?=
- =?utf-8?B?VUppYVRsbWwxbHJObFJlSVlNT2VqTmVUb2ZjY3dLbS8ydm45blRGU0MzTkhz?=
- =?utf-8?B?c0VrV1pLNkx1Nm5wTHQrWkovM0YvRFJiS1ZmcGxtRDZOZGo1ZDh4OThhSDNi?=
- =?utf-8?B?WDlkV0FXTHdnV2NscTg1V3Q4TmVPYkpUMGhyL2tCQ0JQOE1BMkdUaWc1cjM3?=
- =?utf-8?B?dGQ3ZFJ0U0ZmQ2w4QzVvdkVLT1VCcVQ4cWtpZTdPaytmTUFHTnBUSXFteHpI?=
- =?utf-8?B?UTd2RWpoRS9pcUIwUXVQUGNUR2RrcHJqVHJDMjN0blc4UmhLOElmK0tMSzJ1?=
- =?utf-8?B?Zk5aMEhzQUFNcHI2amF2Um5ueGhmK1UrdDloZnV1QUNyMlViRnpoejhXQWw2?=
- =?utf-8?B?S0xJYkR6S21yNkVtbXJtUEVPTnZITkgyKy9SSzRSbFg4K3Q5cTc1U1pqODZP?=
- =?utf-8?B?bHMwNFhzS29HUFlxdG0vdGJ1emJXSFJJSDNsNHg0UG1CUjZZTm9pWmJaU1Vv?=
- =?utf-8?B?SkpTSDdLcnhlZExEQVdaOXMvM3R3SGZIdW51NGJWSnpDZCtITEMrbmZadC8r?=
- =?utf-8?B?ZWlwb2xOY0dudFRIMUtnWVpqTVgxdTEweS91YUdMd1N0TDE0ZnVmSjhNNDVt?=
- =?utf-8?B?MFI3UFlIQ0U2VG1BeTEzWXpNWjdMRlNEOTBKSjBLdVlnVXZoMnRTYzdyU3pi?=
- =?utf-8?B?aUMvbEdya3o5Tjg4ODgrU1pVTklUQ3FtdkE5dGhHSTByQXVmZ1l6eTExclVr?=
- =?utf-8?B?aFNqVktpQklJVUVKOUVLeFZFS0JwU1g4aXJvNWhYRkVIemp5cExMSmJBT2x0?=
- =?utf-8?B?ZVRGeDdGZWFQK3J6WGh2Tk5yMlhzWDJGZ1FzM3VCb0lXODV3TGpUV2RvYkQ4?=
- =?utf-8?B?dWk0cyt3QU9FbkdBVnRSVkJuY0xjVjl6ZWFHSVhJU2lQZmlidldraEJLSENX?=
- =?utf-8?B?NHk0ZzIwZXBOWkFCVUoyWWtYa3YrSktNbDZQWnJkWUJyZFFoTG1tbGdnRmdr?=
- =?utf-8?B?VnpyYXhYMXFJMlFucFRuS2pSZFNwem9yWHB1bzNORDJoeDRlblpHb2o1SUpZ?=
- =?utf-8?B?a0g3U0w0UTk1N05YTHZuRmRvZEZJVXRqMXJmYi8zei84Z0tzeUt2d1JsZTVB?=
- =?utf-8?B?VjFrTHpsVCs1ckJOMElpLzlIUUJVaytLa2ZjdUg0WXE1ajlOd1Vib1hyQkMx?=
- =?utf-8?B?dHZjSVdjbHowNVd5UFJydmIvZFc1LzdoTENUaXJJanYxdUgvdXhNcjdSMW5L?=
- =?utf-8?B?SDBTTHlzLzk2MGUvSEYra0hjTjdWc2llRGlPN3VOSVcwLzVMY2g1cEVUOUxs?=
- =?utf-8?B?SVhqK25RLzdmMUlQdTgzeFVxM090OUtEU3Voa05Sa1BQbTNuN21WSEJnTjQr?=
- =?utf-8?B?V2xBSCtIRGtEK2VtcXJ3SytMUUY0NXR0VjNqOFZ3eTZ4aHlaYlJrdUVkenE1?=
- =?utf-8?B?L1RRNkJkcTZLSVpwWUJoTUsxRU1ic2Uwb3NlNVRLUE9YOW9HRzdOQ2xWOEZs?=
- =?utf-8?B?czR3aVdBQWF0NTVGRFZBajkxejF4eTFSdXllZDJDN0hpWFRxdmF4Q1BuVUg5?=
- =?utf-8?B?QXJyQ2Fnc2pBTGpScVlGazY1R1V1WERSR2FTWkhzOXhaUlg2S1JWZz09?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6e2daed-57d5-4d49-de07-08de70643605
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8247.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2026 09:41:24.0938
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X0Zr59yWtbg+wb175asM6oaaZmKf9rkwWcVbuSJ7O96Ejoc2K4u1eweFb/5mzdPZk5nwSH7kS4NtxsZ5u2ZV8w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB11557
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 01/10] dt-bindings: mfd: add support for the NXP SIUL2
+ module
+To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>,
+ Rob Herring <robh@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
+ Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+ Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+ Jacky Bai <ping.bai@nxp.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>,
+ devicetree@vger.kernel.org, Enric Balletbo <eballetb@redhat.com>,
+ Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ "Vincent Guittot devicetree @ vger . kernel . org"
+ <vincent.guittot@linaro.org>
+References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
+ <20260120115923.3463866-2-khristineandreea.barbulescu@oss.nxp.com>
+ <20260121021913.GA1704619-robh@kernel.org>
+ <e956750b-0333-4465-b37e-5f460b5e092f@oss.nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <e956750b-0333-4465-b37e-5f460b5e092f@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 2/19/26 21:45, Frank Li wrote:
-> On Wed, Feb 18, 2026 at 08:44:17PM +0100, Krzysztof Kozlowski wrote:
->> On 18/02/2026 18:03, Frank Li wrote:
->>> On Wed, Feb 18, 2026 at 02:23:33PM +0100, Max Merchel wrote:
->>>> This series contains modifications for using Linux device trees
->>>> in bootloaders. Changes from U-Boot bootloader are incorporated
->>>> directly into the Linux device trees.
->>> Reviewed-by: Frank Li <Frank.Li@nxp.com>
->> Hi Frank,
+On 19/02/2026 12:36, Khristine Andreea Barbulescu wrote:
 >>
->> Why are you giving review tags instead of applying the patches? Aren't
-> Now merge windows, wait for v7.0-rc1 come out. Still waitting for other
-> reviewer's comments. I leave tag here to mark it is basic good to pick up.
->
-I think by this point taking directly the patches into your tree would also mean you reviewed them.
+>>> +      reg:
+>>> +        maxItems: 1
+>>
+>> You have 'reg' so the node name should have unit-address.
+>>
+>> However, there's not any real DT resources in this child node, so you 
+>> should just drop it.
+>>
+> 
+> For context, SIUL2 exposes a set of platform‑capability and SoC identification registers that are split across the two discontiguous ranges: SIUL2-0 and SIUL2-1. These registers are the source of SoC information (e.g. identification and capability flags) that other subsystems are expected to consume (e.g. PCI Express). Because those fields are physically divided between the two SIUL2 ranges, consumers need reliable access to both ranges to correctly discover and configure the platform.
+> 
+> Hence, my proposal is to keep the two 'syscon' child nodes.
 
-I think it is worth adding the patches in your tree sooner than later to allow for testing and also integration in linux-next.
+Please wrap your replies correctly, so this will be easily parseable.
+
+I do not understand the reasoning. If you have two register ranges, you
+have two <reg> entries and having a child node has nothing to do with it.
+
+> 
+>>> +    required:
+>>> +      - compatible
+>>> +      - reg
+>>> +
+>>> +  "-hog(-[0-9]+)?$":
+>>> +    required:
+>>> +      - gpio-hog
+>>> +
+>>> +  "-pins$":
+>>> +    type: object
+>>> +    additionalProperties: false
+>>> +
+>>> +    patternProperties:
+>>> +      "-grp[0-9]$":
+>>> +        type: object
+>>> +        allOf:
+>>> +          - $ref: /schemas/pinctrl/pinmux-node.yaml#
+>>> +          - $ref: /schemas/pinctrl/pincfg-node.yaml#
+>>> +        description:
+>>> +          Pinctrl node's client devices specify pin muxes using subnodes,
+>>> +          which in turn use the standard properties below.
+>>> +
+>>> +        properties:
+>>> +          pinmux:
+>>> +            description: |
+>>> +              An integer array for representing pinmux configurations of
+>>> +              a device. Each integer consists of a PIN_ID and a 4-bit
+>>> +              selected signal source(SSS) as IOMUX setting, which is
+>>> +              calculated as: pinmux = (PIN_ID << 4 | SSS)
+>>> +
+>>> +          slew-rate:
+>>> +            description: Supported slew rate based on Fmax values (MHz)
+>>> +            enum: [83, 133, 150, 166, 208]
+>>> +        required:
+>>> +          - pinmux
+>>> +
+>>> +        unevaluatedProperties: false
+>>> +
+>>> +required:
+>>> +  - compatible
+>>> +  - gpio-controller
+>>> +  - "#gpio-cells"
+>>> +  - gpio-ranges
+>>> +  - interrupts
+>>> +  - interrupt-controller
+>>> +  - "#interrupt-cells"
+>>> +  - "#address-cells"
+>>> +  - "#size-cells"
+>>> +  - ranges
+>>> +
+>>> +additionalProperties: false
+>>> +
+>>> +examples:
+>>> +  - |
+>>> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+>>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>>> +
+>>> +    pinctrl@4009c000 {
+>>> +      compatible = "nxp,s32g2-siul2";
+>>> +      gpio-controller;
+>>> +      #gpio-cells = <2>;
+>>> +      gpio-ranges = <&siul2 0 0 102>, <&siul2 112 112 79>;
+>>> +      interrupt-controller;
+>>> +      #interrupt-cells = <2>;
+>>> +      interrupts = <GIC_SPI 210 IRQ_TYPE_LEVEL_HIGH>;
+>>> +      #address-cells = <1>;
+>>> +      #size-cells = <1>;
+>>> +      ranges;
+>>> +
+>>> +      siul2_0: siul2_0@4009c000 {
+>>> +        compatible = "syscon";
+>>> +        reg = <0x0 0x4009c000 0x0 0x179c>;
+>>> +      };
+>>> +
+>>> +      siul2_1: siul2_1@44010000 {
+>>> +        compatible = "syscon";
+>>> +        reg = <0x0 0x44010000 0x0 0x17b0>;
+>>> +      };
+>>> +
+>>> +      jtag-pins {
+>>> +        jtag-grp0 {
+>>> +          pinmux = <0x0>;
+>>> +          input-enable;
+>>> +          bias-pull-up;
+>>> +          slew-rate = <166>;
+>>> +        };
+>>> +      };
+>>> +    };
+>>> +...
+>>> diff --git a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
+>>> index a24286e4def6..332397a21394 100644
+>>> --- a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
+>>> +++ b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
+>>> @@ -11,6 +11,8 @@ maintainers:
+>>>    - Ghennadi Procopciuc <Ghennadi.Procopciuc@oss.nxp.com>
+>>>    - Chester Lin <chester62515@gmail.com>
+>>>  
+>>> +deprecated: true
+>>> +
+>>
+>> I don't really see why you can't just extend this binding with GPIO and 
+>> interrupt provider properties.
+> 
+> The existing SIUL2 pinctrl binding only describes the MSCR/IMCR registers and treats SIUL2 as a standalone pinctrl block. This is incomplete and does not correctly represent the SIUL2 hardware, which also provides GPIO control, interrupt configuration, and MIDR identification registers across two register windows. Extending the old binding would require incompatible ABI changes and would result in carved-out subregions, which is discouraged.
+
+Can you just add missing register ranges to existing device? I really do
+not see how this is incompatible ABI or how does it result in carved-out
+regions.
 
 
-thanks,
-
-Daniel.
-
+Best regards,
+Krzysztof
