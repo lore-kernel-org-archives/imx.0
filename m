@@ -1,211 +1,391 @@
-Received: from mx-relay94-hz2.antispameurope.com (mx-relay94-hz2.antispameurope.com [94.100.136.194])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011065.outbound.protection.outlook.com [52.101.70.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA56267714
-	for <imx@lists.linux.dev>; Fri, 20 Feb 2026 14:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.136.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722ED26F2BE
+	for <imx@lists.linux.dev>; Fri, 20 Feb 2026 14:36:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771597926; cv=pass; b=asi9MmhYMCloUtTH9bUfHtSQXCAy7FGJK258+5AmQKPrR5XpakJjWy0UX4iiqWouaEfZTp904ySFCBCFpsOy5Jng8caG9feIKUiyaGAmzsaQjhGTw2VOERoH+l5MgJKhVPVx0LUvngwwAX+oz3kgt9K9b5EJyLesVNBoGcUKTEc=
+	t=1771598211; cv=fail; b=tsEfKrJK8snmw+zxYk06AK6nOKJ3V6zxcHRirOQQ7ermNQ9faxH52QedjfrzoJExCX7u0yEOhQIc4kNqJSITUjxrjaAJ+MGUURJGvu7B9DzEX1upeKbUkCHr8dEN/VQNjgqorNbkmIh3BoABO9xfc4uIDar+XTEyW/G3kTLZnx0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771597926; c=relaxed/simple;
-	bh=/bqxzQpzzJ81IQljbkViUoD0W4RZVJhyMGiKRtMNksI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jc9HOtorpotOWFttAkVTr/+NF6ww/wmuIKoPDD+cJphrPF0QJB5nGlyuNgfHYAx/YhpIAcxToDfWKgj9VxYhwac45kQePTF0FEsc/4I/pNr7a/AuEYiPsVy1/+qe4qw6HOGO4k5a6ZUoGNX9PiZLzSbuBKQQUDJuCx9w+0aTekA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=CFTM5UuD; arc=pass smtp.client-ip=94.100.136.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+	s=arc-20240116; t=1771598211; c=relaxed/simple;
+	bh=gSWb91XoYGfO6ojxQRjqvmKlnsHUn7rvkuyF0RH7kas=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=hWzFuQZGJWfxEzYXd/kcnys2gcaz4JVxP4Vmgy0wScetqL+S0cg0lHffeR6JOKvve21cEmlfk5F62ax1gSfkctRbbqFTUBA7SDkvFQ9ixIIu06ayk+S6jTQGUgpCTUhTGC88HRWvezaVgZvymouvoRqy0OX540f9w3u7KKi7IfY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=THpkUIs0; arc=fail smtp.client-ip=52.101.70.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="CFTM5UuD"
-ARC-Authentication-Results: i=1; mx-gate94-hz2.hornetsecurity.com 1; spf=pass
- reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
- smtp.mailfrom=ew.tq-group.com smtp.helo=smtp-out01-hz1.hornetsecurity.com;
- dmarc=pass header.from=ew.tq-group.com orig.disposition=pass
-ARC-Message-Signature: a=rsa-sha256;
- bh=wqJgdoCqiOdzIhzrfhNSF/MhiuLEn1kACd6MHSSRwJY=; c=relaxed/relaxed;
- d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
- t=1771597842;
- b=kDpotTfNeJ8Tm1HKPs8Y/J7ZF+Cq8XkgZf6JEx0zDCC5dwZ2wtOxkRaVQDJO9IfIAlDVyblF
- g727Xu1qFL2FJj0XnzNlj3XYjTYC50gt10GVaQglyKSQ6mWpOtTEYWboippytfUhvSQ7E7bZwJE
- h7OLmpEWpeMt4kJSBxk543Z4Trj0P6ZCYEH39KvWHog2vy9cdivQUj+VJTxmtCSECdrsyKzLRAJ
- zhIK16A/ljNd/P7m/n1cQyW/oVirhxAO62dSEM+kxZHpaKhWrlbVWycdLT6pVSXrUW9UZl4mrhp
- KzYYxDQlMtUkvFbJuG1mF9rHb6WprfcPTnWTEMGJw3YMw==
-ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
- t=1771597842;
- b=KHOM8dnBUuM44RXjd+9k6dA0DV7gbDHMy3ehx3ZvB/ecszFlpHavAh8ZUha+WIC1B7C2AIpI
- 5Ugzc4iE11t6P5qZzPzVBIiguJ2AkYTry0sI2fPb4mdJoIOrP4QeagOAyE1ETchxfRfSLDWS4LI
- F640z2HiWFHIxY6Ok/TIDiVLcA/xomCQs6PxRlIIAYHzOFOICzO6Du1+fEzsMHM/8mCsmHv4EkX
- Oakn2gxz7FQ0oPjc5SoX0w/+CdoGpr73j2Iez/ytkoa9zp4JvhjTvJPIY0qT7nb5PmpE8yPXjGq
- fvj0PDiYp2SDlAPA9lguZlxxcsSSlLV6zE0/a+1N/m/6A==
-Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay94-hz2.antispameurope.com;
- Fri, 20 Feb 2026 15:30:41 +0100
-Received: from merchelm-W2.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
-	(Authenticated sender: max.merchel@ew.tq-group.com)
-	by smtp-out01-hz1.hornetsecurity.com (Postfix) with ESMTPSA id D84CCA41357;
-	Fri, 20 Feb 2026 15:30:29 +0100 (CET)
-From: Max Merchel <Max.Merchel@ew.tq-group.com>
-To: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>
-Cc: Max Merchel <Max.Merchel@ew.tq-group.com>,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/4] ARM: dts: imx6qdl-tqma6: add boot phase properties
-Date: Fri, 20 Feb 2026 15:30:04 +0100
-Message-ID: <20260220143008.186851-4-Max.Merchel@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260220143008.186851-1-Max.Merchel@ew.tq-group.com>
-References: <20260220143008.186851-1-Max.Merchel@ew.tq-group.com>
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="THpkUIs0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=G+o0ayvneGd+DTgRebCuv4w9MJIzCucqSoPZrCg6TE8LK44TO4snjJDqt3z7gl3776Nctc0caop0qgh9djhlMhmhiZ5V4JDZVYUY+Ux+MKmyCr4+BZk0zqw34kHoAfDB1i5i+CPjIGakthSDeevljY7mkwJEsjLj/I3rY/iNcXSeBTv5bTd27KSvQm4H/gEqz3V9UWqHA4Nr1pfCgF8dJtQsvoPJGc4hpJbDZcXUn6OT20tHb3Wpn48tHMP25slQpZAgbBrLBjCFXs9L02PxjSWFaPO3b1YipNusTPcd+bN4cNp4JZm/4EDGa5jQd/e6G0AqQTsA+prFNNR0jM7Xkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sqSSu9VspaIKA3MH/S/iuSmrsLYYefMmKqoO/KNWTWA=;
+ b=X5Ckv87fIoWSMeFVD7joRSIcz+S7WK5uzCBCnvQowStj3O8orpYfPIlZbka6ZqFa72R6lTvCGyW/2rbIV5IyZ4PXYsHAXBY0MQCuia0AillfPv3qtMhv/LQAicTi5rSWJUOxPdhL66GJbB2hE+zl2TMTxq2U+pqmMu+F1FquIu5VrenJK6L6bVVkRxha9rXiRlYw0C4/SkYQcFbh9z2xRF3xuyWSNrPGsNFFmQbalbtoaPracgFMZN5cBhBu8mniM+6EFYP6rWX0msVHkBF4tEyFwHkN++EMSkT/1xfhHm0DV5S4SJqhVrM8Wm8me6EpTLwsUFzDEYomkRuRkmgjBA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sqSSu9VspaIKA3MH/S/iuSmrsLYYefMmKqoO/KNWTWA=;
+ b=THpkUIs0vjDn3W/fmH6sMjSNfBvRATrEXI2HMZOu1l4ZrSlKjsHLMg3mfToSj2ZRELrZ8ywo7HLWYO179u4oILwvwBgR4CoiylIh1x8sLDf1xYxDTIpjBlQmGAxcgg1R++kblaKb/NucxUZj8f6v5YY8qnydOjPqCoUSY0qwob7+v36Bnwqe2s55dHRlAlGUYwh4fjpJMAtPPHItAQ5zwTDaXGWSmX3oHPcZCeXQ3sc9oREE0QspyyXo/oYBsyINWVKP8ZDzptmYuZ/kuhJw54xmR8MAGcy0MEHHsbEUtAaonV/3YG7ylqUOrhZX5BpWQRp1V37knFgndVtSTsrUCg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from PAXPR04MB8190.eurprd04.prod.outlook.com (2603:10a6:102:1bf::23)
+ by GV1PR04MB10478.eurprd04.prod.outlook.com (2603:10a6:150:1d2::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.16; Fri, 20 Feb
+ 2026 14:36:42 +0000
+Received: from PAXPR04MB8190.eurprd04.prod.outlook.com
+ ([fe80::4608:7dcb:899b:e4a1]) by PAXPR04MB8190.eurprd04.prod.outlook.com
+ ([fe80::4608:7dcb:899b:e4a1%4]) with mapi id 15.20.9632.015; Fri, 20 Feb 2026
+ 14:36:42 +0000
+Message-ID: <7d200097-51bc-4404-be8b-f536d0ecfc25@oss.nxp.com>
+Date: Fri, 20 Feb 2026 16:36:37 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 01/10] dt-bindings: mfd: add support for the NXP SIUL2
+ module
+To: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
+ Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+ Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+ Jacky Bai <ping.bai@nxp.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>,
+ devicetree@vger.kernel.org, Enric Balletbo <eballetb@redhat.com>,
+ Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ "Vincent Guittot devicetree @ vger . kernel . org"
+ <vincent.guittot@linaro.org>
+References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
+ <20260120115923.3463866-2-khristineandreea.barbulescu@oss.nxp.com>
+ <20260121021913.GA1704619-robh@kernel.org>
+ <e956750b-0333-4465-b37e-5f460b5e092f@oss.nxp.com>
+ <edc3a63a-8117-476f-9582-97ae31fefa96@kernel.org>
+Content-Language: en-US
+From: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+In-Reply-To: <edc3a63a-8117-476f-9582-97ae31fefa96@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM0PR02CA0189.eurprd02.prod.outlook.com
+ (2603:10a6:20b:28e::26) To PAXPR04MB8190.eurprd04.prod.outlook.com
+ (2603:10a6:102:1bf::23)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-cloud-security-sender:max.merchel@ew.tq-group.com
-X-cloud-security-recipient:imx@lists.linux.dev
-X-cloud-security-crypt: load encryption module
-X-cloud-security-Mailarchiv: E-Mail archived for: max.merchel@ew.tq-group.com
-X-cloud-security-Mailarchivtype:outbound
-X-cloud-security-Virusscan:CLEAN
-X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay94-hz2.antispameurope.com with 4fHXj24CHgz3dG6N
-X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
-X-cloud-security-Digest:c0a012c4c0204103e9d00e65e5abcb83
-X-cloud-security:scantime:2.128
-DKIM-Signature: a=rsa-sha256;
- bh=wqJgdoCqiOdzIhzrfhNSF/MhiuLEn1kACd6MHSSRwJY=; c=relaxed/relaxed;
- d=ew.tq-group.com;
- h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
- t=1771597841; v=1;
- b=CFTM5UuD2jj4K8Zt4T2TLPayYIRPL1QXlcCZ7Jt37zAYJXwbpF+4dM6z3CNsbdwmeTyhbdgx
- jNHXM79Cnt2B8i6RHK7wFK6G2Bxcnh1VwXUvgKeKgGYN8tIwpKN0/FZR36SPOLo+GXJmWrNvUnT
- aQFDvZfS+rpBwMiry2m3+k6evXNtI4e2NsFz/d5IM8xv3zhE+UAAs8QNtH/mvVpHCUb8gfO5fpQ
- R77pYN6LXPIVu0ApsGpBJCGAJwJA/Dhhbmd+eT8QVJmBjc1eFrIb0HI2Yaiy02In4+fQmRTStob
- rkLPtDog1u/vLMZIPkjKyt3AUCNRZCyePNn2zKTqxYXrw==
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8190:EE_|GV1PR04MB10478:EE_
+X-MS-Office365-Filtering-Correlation-Id: 83ab017b-0d8e-43a9-9939-08de708d7703
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|19092799006|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UVdWaG9aQ0s5TVRidFVLVkxYd2N2SS93QlpKN3RoUDZVQkU0aldybG9FODcw?=
+ =?utf-8?B?OXlEWG13cWdZSXh1bitNYmhvYks0aGlDaFFtQ0tRSHB4dFNmdXJmK3kyUjBE?=
+ =?utf-8?B?bGlqZGd0Rkx2VmFZV3N5cXh4WXArNVgxNEVvV0tjTE5BNlBCUk1nR0toZy92?=
+ =?utf-8?B?UzBhMS9mVk9nbmdod3NYK25TNEdSb1dWSTRYNVE0QXpwaitvcDJWbmQ2K24r?=
+ =?utf-8?B?K2t1b0RPTE5QUDFBblJSdlY4M0R2ZndFRHAwbW83N2FkUjVzY291K1VmZnV3?=
+ =?utf-8?B?VFdYNEEyb0wwVmk5MnBnNXVLSlhidXlsdjR6cy9zeUxzeHlrR0FReUVOVERp?=
+ =?utf-8?B?eEIyNGlQUHJUc2txSis3MG5qQWl5dStwQ2dUR0p1SEhBMGErUmtLS0Q0TTdI?=
+ =?utf-8?B?Q3gyMmRwMEc2eGRtWDNMS2F2dGR0QklvV2g4S29vYWIzSTl6ZllwQlhEOXZa?=
+ =?utf-8?B?Q3lldll4azhCZ2lQR0xQZzA3UmdiaUdESDRYMWluMUlkc1dIcG5xem1jSjBK?=
+ =?utf-8?B?RFVCYklwbm90ZE9qOXMvb2dDNXd2S0xOM3JrbFR4aElaa2JxQ0M2NU1YL2Z0?=
+ =?utf-8?B?SFY4dU1melRmTTJjVTFERERWeXBNeURBM2VZL2ZNdm5Hd2JoOE9rU1E3UjY3?=
+ =?utf-8?B?bW9qNkRoOHhKeXBnN0NLQXhiVnVORlFQTTY3Z2VmbEFQSEtFSUY3bVBHck8w?=
+ =?utf-8?B?OHZ0NjFLL2ZNL2J4bkwrMDU0dXRqZ3F3eU41L282S0xQQU1wNC82dEFSM0Q5?=
+ =?utf-8?B?aFRZVWdkUGpmTU5rQ2Jqb2ZiMUFsRWs1Wkh5VEJiZVl2Qjh3dnJZbWFoWFZ0?=
+ =?utf-8?B?Q3gxbEplNklzbGl1T0k5V3B6NWlQVXFmaSt5SEUrNU1nOW9jMWNqM2h2MlZB?=
+ =?utf-8?B?QmZkQ1Zqa2xZWU1xQW52cXpta0ZiNmtSck9NT0VrRDdTbkJMQnFJeXRTKzdi?=
+ =?utf-8?B?NUwra3hmbGZ2SnA3NU9RSWFxQzlwYThNcXFWQ1VjTERnNFZNdkdSTWt3LzFa?=
+ =?utf-8?B?TEJPRTNiaU1MekJmNHpwUk8yTXR6aWZMZ01kWFE2bUZ5ZjBFWFY3d0NVSHU0?=
+ =?utf-8?B?TmtlU0tGTzVtSWhwMDRaelpYQ2NxZ2hBOElZRmFGVExONENZdUFKbHlEallu?=
+ =?utf-8?B?TSttWEppcnVjZ3c2THZuYnE4eDZmck9Xa3pFMnFQUVc5K1c1Y21YdUZ0MHJK?=
+ =?utf-8?B?K1pza2FXZEVVeEJKVnY3UHRQWGZPNGRaalY5bTdHK0trVnRMbDFuVlFsTXVY?=
+ =?utf-8?B?dzV0MUZWYWFsR3lEaTFoQk1EYTlJeFZqS3A2T2Nhck0vcHdZRndveDJZUVJk?=
+ =?utf-8?B?OUVnWFhjY2RpSnRQb09wZHFmbFZVUEJudkp3bXJyd3ltVGxjSWVLSE9lL0Nw?=
+ =?utf-8?B?cVZsLzNjNUVDa0d0WC8zMmtBTVlybE5EK05KQmE2b1NzSXBUa0VXV20rQWdI?=
+ =?utf-8?B?RVVuaGdqM2gvR3VCSDZyaXdhOXlXeEtYdG5IOUFBZ0xqRU9nUlFHbkdMb2V2?=
+ =?utf-8?B?cjQ1aTNrd2crLy9jUTBqUjBYQ0UySlhGMGptekg5M284a0pHTU00bk01enFa?=
+ =?utf-8?B?a3JhRWtYWmQ2RkNWME9MK2FuQWlRWmNrd2dnTnpPcmppV2ptS3lyTk9rRmpS?=
+ =?utf-8?B?b0ZSYitlNUszRm84dkE5VlNhRWxwZEZNaFVmMGJCTlRrTXpFWE4wcXpTUnJD?=
+ =?utf-8?B?WkZvWnhiK3p0QjNVdzlXRnBmck9aa2NLd042RVRjeHpXNUl1YlQxMTkxMVpt?=
+ =?utf-8?B?WjhVT2xabTE2Q2NLMjl2RVNMNTJrOEJCZFlRWlJCY0l0ekhRWCs3YVBwaE9T?=
+ =?utf-8?B?SEJsZHpTM0dCWDJ1eTNCeThxaXpzRWNybTNMNnREVmlkenhLeDZpNlAxcjZI?=
+ =?utf-8?B?Ky85aTQveURyb2F0akJDQzZSWllTeGE4bjZ5ZDBmMUxJR0Z5UzF6a0N5THpE?=
+ =?utf-8?B?SkNyQ2FmZytWRzBJcmZYWU9oc0swajZsRVAzY2d4endFYW43OWpuUnR5bURi?=
+ =?utf-8?B?MjA2dTlpOEM4VjIzaWZZRDhOd1VZc2QwUFJjeWZldXgvRlNSSERBbEwwSWxZ?=
+ =?utf-8?B?b0VQeG4rTlF2MUkrR3RKRjVjNWRQbHpibkEwUHZoK2FaaGtyMTg4a2cyZEVt?=
+ =?utf-8?Q?iggc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8190.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(19092799006)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WlZYMXZuSmNaRXJQVStSOVlZT0w3S0ZJL2djczM3aVg2QWsxd1FoQ1Jma3FQ?=
+ =?utf-8?B?d1ROMlMrRXdLS3NWekU0Sy9oN0h4UGlrb05vRzlick1kK0VncjgrYnFyQ3Vl?=
+ =?utf-8?B?VU5pZGxnYWQ3SGhYckRVRGY1YjJZdWhaeHV1c044QmJubmlGMFp5cWQvQjVD?=
+ =?utf-8?B?dGNsamtSNVVic2pZeGh3ZTMrWHlDdkt1R2ZGS2ZOVmtWK01NNldJY0FxaGpM?=
+ =?utf-8?B?L2Y1ckVJTysxckwySkR2TEFOWit2MmNzcVhjSFJCOUYydWFMZ1VOZzk0ZjJD?=
+ =?utf-8?B?U05HRFdmbTk2ZmwxaFNoTEV2dWIxcXZDUUpCL2h0YTE3WEZjL3dEMk53WHBX?=
+ =?utf-8?B?YkZyVTZLR1ZHaGhralNVOU5JdXA4WWJFUFlmYXBLRmx5STFHN0NOY283QWs3?=
+ =?utf-8?B?Ri9QQ3NkUi9XdkJOMUFmNEZ6dmRmNDZ3TVhudStVa2tZK3pKZGZFb2ZiVnlP?=
+ =?utf-8?B?RVp1bFlsTm02WXkxUWpNYU1JS3lockJWbGlZT3N0QTk1b2tzOVVSRzA5NTA3?=
+ =?utf-8?B?YStsaTBReUpRMmlQUXpQZXhMWEI4NGxWaVpYRGxlQ3FqcU1BRWRZV3ZqRmRX?=
+ =?utf-8?B?MVExTTRtU1VScFVRS2tJUElqY3Fva1R1RFErTk5Ud3hzdjQ3cjFsaVdhRU5G?=
+ =?utf-8?B?TmlEMEhCL0RnKzduZUx4cWxSVWpHbDZ4VGNYbkFOVG4vM0Y0eXJRSmxjNXAw?=
+ =?utf-8?B?RTFlZHZYaGNIOVNzQ1FXMWphdGdVT2c3SHZ5cU1ycklWdDFNVTU4R0NWQUJQ?=
+ =?utf-8?B?ZUNzREFxV29sTFlsbHpvTzhYSU84Vk14S1lNcTZPNzFVbCs4cE1sVkNTb0ND?=
+ =?utf-8?B?Y3J4L1licWxNM2x3R05HOUpLSXh1dHExd0tnekZGZUhZdkE2S3IzMUZxSnQ2?=
+ =?utf-8?B?NGFFdS9VcjRYeitFb2wwL3FNSG9lOTZIUmpVSlFJczRKZm9ZejZlQU5XZFdR?=
+ =?utf-8?B?V0dEMmVONHJTcmJJTzRCRlNnMW9uT1J0M3M1cnorVnpFYW1aVU5OSGFrTGwv?=
+ =?utf-8?B?Unc3UnlxeWErbEt1WTN4Y0N1UzFoS0o1eXQzNGdKcnpLOGJ6UjdIUlJCbXJt?=
+ =?utf-8?B?S0NxT2tUQVl2Vzl6Z1Z5VnBZYXNiOUpNdEoydHMrL1pMSjdXS014elRzQkRk?=
+ =?utf-8?B?UFpEVXg0WDE1Y3BuZnFGUjMzVThCYlQ5eUpMcHdLSUdHNkNUTkhMMkRMNkxv?=
+ =?utf-8?B?aWlubmttWkhpVmFKZjhUd0Nqb0FIdk5nMnMwMWsvVWhkbVN2T3RMc2FCZ3ZB?=
+ =?utf-8?B?OTRtVnFrRFlrSWFXcGZoN2xPR3hKbHZ4QXVMbzVHR2Fzb244eFhGOUk3QmRh?=
+ =?utf-8?B?TFdpMHZUWTlsMjJSeUJzNjNmNzBSNlBVY2R3VjRjaThmdE9pU25WUTBzV1FO?=
+ =?utf-8?B?Nk9scHRVY1VTUW1USXVjckNtcTlNendqcUNKY3o5NnZiV3FSSGl0bjkrcXk3?=
+ =?utf-8?B?ejN4QTQ5KzlucWZlUExsR1liaFY1VnRGWTlsdVBha0hkTkJHQ0ZNNVEwRE0z?=
+ =?utf-8?B?RjM0cC9RNDFRNmtnQmVjaHp0R3I0WWlSYWtWUnczUGxNWE8zb28zb1J2aU8v?=
+ =?utf-8?B?OXNZT3FEaTZIenJJVTBHNjAvTkNNbi9qR2V4OTdTQ2tENk9wN3JlMXNoaDVt?=
+ =?utf-8?B?dmpmTEpOT0VtQk0zYzBjc05Td2MvVzNPMUpuZUp4aUhXVTNsZHczQk10QURa?=
+ =?utf-8?B?ZktFenByNUc4VXhIYU41TTJpOFE2ek80TGg5Z0VPWFlXNjZnWjRFUjVuSnIr?=
+ =?utf-8?B?U1dOWTdCbWVDaUdNVTVZTHhxMUdqWXZyOUF6K01GYXNNbW10NS9EMVpiU0Q1?=
+ =?utf-8?B?U3dvekt3L2JqeUpOb1BtRG9mQ0RlT1Y0Y1NvazVPU0VXbWU3dDR1T0ZUOFp0?=
+ =?utf-8?B?cmltb0tyc2hMUDdGSTEyTVU3ZjUvMVhYMEg0V2Z6SVBDRGdVRTFLa0xUSlJT?=
+ =?utf-8?B?bFpibE5vTFU5dTgwQU5sRkVTNTlSbE5Sc3Q4dXZacTdYUysrUlhrKzhjeDlx?=
+ =?utf-8?B?bkkzeU43UEwzMHEwU2YwRXhGb2Z3ZlV4TFFKSWVDN0FPcC9QOENtSFdwSnZn?=
+ =?utf-8?B?eEsrZFVOeWF6aFM5c1FPRldlemJOYzU0MlFNWVRxUGNCVktHUjJhWURmdnZV?=
+ =?utf-8?B?akhXLzVzU1JXMm9IeHR3cWpUbDJjY1lTRG5NUXZTL0x4Y0JaMXk2WDZraS95?=
+ =?utf-8?B?RVBiOGRQOWpUMklPZnk5Q24zTStEb2ZMdnJ6blpTVEs3WVlyVHkyL1pXOUt3?=
+ =?utf-8?B?QzNBeWtoempvWDN3VkM1ZnAxWVhFalZrckp1Z2Nqc3NIWmN4d0lrblBDSnhr?=
+ =?utf-8?B?c0R3VlY4cUFTNVRnZUhyWTl1YVhMMDhPUXpkSW4vRXBLTWx6dzJOdTg0ODZO?=
+ =?utf-8?Q?a/3Jwa2CX1VLWCX0BOumgRrUToCERE+XluNvM?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 83ab017b-0d8e-43a9-9939-08de708d7703
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8190.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Feb 2026 14:36:42.4389
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lSc4iUU9Jx8A4/s0mZvfKi7Zj/5iL/w/mh1qlGKHdd9VKaVZNqPlSDYdwHYvEdBb7rO30cYiqPn53pvdBauCCjOg+Ntf00LhncSr+XNzZZmA+FsFTMG7nJhMuEjJ2cli
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10478
 
-dtschema/schemas/bootph.yaml describe various node usage during
-boot phases with DT.
+Hello Krzysztof,
 
-TQMa6 need eMMC, I2C, GPIO, regulator and QSPI access during
-boot process.
+On 2/20/2026 12:16 PM, Krzysztof Kozlowski wrote:
+> [You don't often get email from krzk@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> On 19/02/2026 12:36, Khristine Andreea Barbulescu wrote:
+>>>
+>>>> +      reg:
+>>>> +        maxItems: 1
+>>>
+>>> You have 'reg' so the node name should have unit-address.
+>>>
+>>> However, there's not any real DT resources in this child node, so you
+>>> should just drop it.
+>>>
+>>
+>> For context, SIUL2 exposes a set of platform‑capability and SoC identification registers that are split across the two discontiguous ranges: SIUL2-0 and SIUL2-1. These registers are the source of SoC information (e.g. identification and capability flags) that other subsystems are expected to consume (e.g. PCI Express). Because those fields are physically divided between the two SIUL2 ranges, consumers need reliable access to both ranges to correctly discover and configure the platform.
+>>
+>> Hence, my proposal is to keep the two 'syscon' child nodes.
+> 
+> Please wrap your replies correctly, so this will be easily parseable.
+> 
+> I do not understand the reasoning. If you have two register ranges, you
+> have two <reg> entries and having a child node has nothing to do with it.
+> 
 
-Signed-off-by: Max Merchel <Max.Merchel@ew.tq-group.com>
----
- arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6.dtsi  | 11 +++++++++++
- arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6a.dtsi |  1 +
- arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6b.dtsi |  2 ++
- 3 files changed, 14 insertions(+)
+I’ve reorganized the SIUL2 node with two syscon subnodes for the two
+register regions used to read system info, and a separate
+pinctrl/GPIO child (as discussed in the v8 06/10 thread [0]). The parent
+SIUL2 node now carries the bus addressing and ranges:
+ 
+    siul2: siul2@4009c000 {
+        compatible = "nxp,s32g3-siul2", "nxp,s32g2-siul2";
+        #address-cells = <1>;
+        #size-cells = <1>;
+        ranges = <0x4009c000 0x4009c000 0x179c>,
+		 <0x44010000 0x44010000 0x17b0>;
+ 
+        siul20: siul20@4009c000 {
+            compatible = "nxp,s32g-siul2-syscfg", "syscon";
+            reg = <0x4009c000 0x179c>;
+        };
+ 
+        siul21: siul21@44010000 {
+            compatible = "nxp,s32g-siul2-syscfg", "syscon";
+            reg = <0x44010000 0x17b0>;
+        };
+ 
+        pinctrl: pinctrl {
+            compatible = "nxp,s32g-siul2-pinctrl";
+            #gpio-cells = <2>;
+            gpio-controller;
+            gpio-ranges = <&pinctrl 0 0 102>, <&pinctrl 112 112 79>;
+            interrupt-controller;
+            #interrupt-cells = <2>;
+            interrupts = <GIC_SPI 210 IRQ_TYPE_LEVEL_HIGH>;
+ 
+            jtag_pins: jtag-pins {
+                jtag-grp0 {
+                    pinmux = <0x0>;
+                    input-enable;
+                    bias-pull-up;
+                    slew-rate = <166>;
+                };
+            };
+        };
+    };
+ 
+Could you please confirm this matches the intent of your feedback, or let me
+know if I misunderstood any part? If this looks correct, I’ll move ahead
+with the new patch set.
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6.dtsi
-index 07492f63a1f8..14676d1d905a 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6.dtsi
-@@ -11,6 +11,7 @@ &ecspi1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_ecspi1>;
- 	cs-gpios = <&gpio3 19 GPIO_ACTIVE_LOW>;
-+	bootph-pre-ram;
- 	status = "okay";
- 
- 	m25p80: flash@0 {
-@@ -19,6 +20,7 @@ m25p80: flash@0 {
- 		spi-max-frequency = <50000000>;
- 		vcc-supply = <&sw4_reg>;
- 		m25p,fast-read;
-+		bootph-pre-ram;
- 
- 		partitions {
- 			compatible = "fixed-partitions";
-@@ -28,6 +30,10 @@ partitions {
- 	};
- };
- 
-+&gpio3 {
-+	bootph-pre-ram;
-+};
-+
- &iomuxc {
- 	pinctrl_ecspi1: ecspi1grp {
- 		fsl,pins = <
-@@ -38,6 +44,7 @@ MX6QDL_PAD_EIM_D16__ECSPI1_SCLK 0xb099
- 			 /* eCSPI1 SS1 */
- 			MX6QDL_PAD_EIM_D19__GPIO3_IO19 0xb099
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_i2c1: i2c1grp {
-@@ -45,6 +52,7 @@ pinctrl_i2c1: i2c1grp {
- 			MX6QDL_PAD_CSI0_DAT8__I2C1_SDA 0x4001b899
- 			MX6QDL_PAD_CSI0_DAT9__I2C1_SCL 0x4001b899
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_i2c1_recovery: i2c1recoverygrp {
-@@ -73,6 +81,7 @@ MX6QDL_PAD_SD3_DAT5__SD3_DATA5 0x17059
- 			MX6QDL_PAD_SD3_DAT6__SD3_DATA6 0x17059
- 			MX6QDL_PAD_SD3_DAT7__SD3_DATA7 0x17059
- 		>;
-+		bootph-all;
- 	};
- };
- 
-@@ -117,6 +126,7 @@ sw4_reg: sw4 {
- 			regulator-min-microvolt = <3300000>;
- 			regulator-max-microvolt = <3300000>;
- 			regulator-always-on;
-+			bootph-pre-ram;
- 		};
- 
- 		reg_5v_600mA: swbst {
-@@ -186,6 +196,7 @@ &usdhc3 {
- 	bus-width = <8>;
- 	#address-cells = <1>;
- 	#size-cells = <0>;
-+	bootph-all;
- 	status = "okay";
- 
- 	mmccard: mmccard@0 {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6a.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6a.dtsi
-index 1251749a8dd0..67f8f59aff5a 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6a.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6a.dtsi
-@@ -20,6 +20,7 @@ &i2c1 {
- 	scl-gpios = <&gpio5 27 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 	sda-gpios = <&gpio5 26 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 	clock-frequency = <100000>;
-+	bootph-pre-ram;
- 	status = "okay";
- 
- 	pmic: pmic@8 {
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6b.dtsi b/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6b.dtsi
-index 7f526f39e0f2..db552802554d 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6b.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6qdl-tqma6b.dtsi
-@@ -13,6 +13,7 @@ &i2c3 {
- 	scl-gpios = <&gpio1 5 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 	sda-gpios = <&gpio1 6 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 	clock-frequency = <100000>;
-+	bootph-pre-ram;
- 	status = "okay";
- 
- 	pmic: pmic@8 {
-@@ -40,6 +41,7 @@ pinctrl_i2c3: i2c3grp {
- 			MX6QDL_PAD_GPIO_5__I2C3_SCL 0x4001b899
- 			MX6QDL_PAD_GPIO_6__I2C3_SDA 0x4001b899
- 		>;
-+		bootph-pre-ram;
- 	};
- 
- 	pinctrl_i2c3_recovery: i2c3recoverygrp {
--- 
-2.43.0
+>>
+>>>> +    required:
+>>>> +      - compatible
+>>>> +      - reg
+>>>> +
+>>>> +  "-hog(-[0-9]+)?$":
+>>>> +    required:
+>>>> +      - gpio-hog
+>>>> +
+>>>> +  "-pins$":
+>>>> +    type: object
+>>>> +    additionalProperties: false
+>>>> +
+>>>> +    patternProperties:
+>>>> +      "-grp[0-9]$":
+>>>> +        type: object
+>>>> +        allOf:
+>>>> +          - $ref: /schemas/pinctrl/pinmux-node.yaml#
+>>>> +          - $ref: /schemas/pinctrl/pincfg-node.yaml#
+>>>> +        description:
+>>>> +          Pinctrl node's client devices specify pin muxes using subnodes,
+>>>> +          which in turn use the standard properties below.
+>>>> +
+>>>> +        properties:
+>>>> +          pinmux:
+>>>> +            description: |
+>>>> +              An integer array for representing pinmux configurations of
+>>>> +              a device. Each integer consists of a PIN_ID and a 4-bit
+>>>> +              selected signal source(SSS) as IOMUX setting, which is
+>>>> +              calculated as: pinmux = (PIN_ID << 4 | SSS)
+>>>> +
+>>>> +          slew-rate:
+>>>> +            description: Supported slew rate based on Fmax values (MHz)
+>>>> +            enum: [83, 133, 150, 166, 208]
+>>>> +        required:
+>>>> +          - pinmux
+>>>> +
+>>>> +        unevaluatedProperties: false
+>>>> +
+>>>> +required:
+>>>> +  - compatible
+>>>> +  - gpio-controller
+>>>> +  - "#gpio-cells"
+>>>> +  - gpio-ranges
+>>>> +  - interrupts
+>>>> +  - interrupt-controller
+>>>> +  - "#interrupt-cells"
+>>>> +  - "#address-cells"
+>>>> +  - "#size-cells"
+>>>> +  - ranges
+>>>> +
+>>>> +additionalProperties: false
+>>>> +
+>>>> +examples:
+>>>> +  - |
+>>>> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+>>>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>>>> +
+>>>> +    pinctrl@4009c000 {
+>>>> +      compatible = "nxp,s32g2-siul2";
+>>>> +      gpio-controller;
+>>>> +      #gpio-cells = <2>;
+>>>> +      gpio-ranges = <&siul2 0 0 102>, <&siul2 112 112 79>;
+>>>> +      interrupt-controller;
+>>>> +      #interrupt-cells = <2>;
+>>>> +      interrupts = <GIC_SPI 210 IRQ_TYPE_LEVEL_HIGH>;
+>>>> +      #address-cells = <1>;
+>>>> +      #size-cells = <1>;
+>>>> +      ranges;
+>>>> +
+>>>> +      siul2_0: siul2_0@4009c000 {
+>>>> +        compatible = "syscon";
+>>>> +        reg = <0x0 0x4009c000 0x0 0x179c>;
+>>>> +      };
+>>>> +
+>>>> +      siul2_1: siul2_1@44010000 {
+>>>> +        compatible = "syscon";
+>>>> +        reg = <0x0 0x44010000 0x0 0x17b0>;
+>>>> +      };
+>>>> +
+>>>> +      jtag-pins {
+>>>> +        jtag-grp0 {
+>>>> +          pinmux = <0x0>;
+>>>> +          input-enable;
+>>>> +          bias-pull-up;
+>>>> +          slew-rate = <166>;
+>>>> +        };
+>>>> +      };
+>>>> +    };
+>>>> +...
+>>>> diff --git a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
+>>>> index a24286e4def6..332397a21394 100644
+>>>> --- a/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
+>>>> +++ b/Documentation/devicetree/bindings/pinctrl/nxp,s32g2-siul2-pinctrl.yaml
+>>>> @@ -11,6 +11,8 @@ maintainers:
+>>>>    - Ghennadi Procopciuc <Ghennadi.Procopciuc@oss.nxp.com>
+>>>>    - Chester Lin <chester62515@gmail.com>
+>>>>
+>>>> +deprecated: true
+>>>> +
+>>>
+>>> I don't really see why you can't just extend this binding with GPIO and
+>>> interrupt provider properties.
+>>
+>> The existing SIUL2 pinctrl binding only describes the MSCR/IMCR registers and treats SIUL2 as a standalone pinctrl block. This is incomplete and does not correctly represent the SIUL2 hardware, which also provides GPIO control, interrupt configuration, and MIDR identification registers across two register windows. Extending the old binding would require incompatible ABI changes and would result in carved-out subregions, which is discouraged.
+> 
+> Can you just add missing register ranges to existing device? I really do
+> not see how this is incompatible ABI or how does it result in carved-out
+> regions.
+> 
+
+I’m also fine with your proposal to add the missing register ranges to
+the existing device. But that would also mean extending it with the
+GPIO registers and two syscon subnodes for system info, as they all need
+to be provided by this SIUL2 device. This would effectively make the
+existing pinctrl binding an MFD.
+
+Is evolving the existing binding acceptable in this manner, or should
+we continue with this new MFD binding and leave the old pinctrl
+binding deprecated?
+
+> 
+> Best regards,
+> Krzysztof
+
+Best regards,
+Khristine
+
+[0] https://lore.kernel.org/linux-gpio/CAKfTPtD6LOMFGhzG3dhiSQCNbYrGLjBiT83eqz9mmwaDVpNV=w@mail.gmail.com/
 
