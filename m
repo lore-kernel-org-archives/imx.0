@@ -1,127 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE8628F50F
-	for <imx@lists.linux.dev>; Fri, 20 Feb 2026 17:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D7B3358D2;
+	Fri, 20 Feb 2026 17:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771608238; cv=none; b=sm9Cuf68XJzypflQG4JoCRirei7LAzFQ+aOcb+I/0A6rHo3vI4YPcA6EpE3YnqTyuJ45cvIRcTJ7/iukfS1sQg75tsUNXT/7srZpgcpbO+okQ43KC9S2o9NlQIMB0vLWMu/D41Kb31L2BEP8D8xOlvaqmgwMCF9M0S3pwjZyDI8=
+	t=1771609340; cv=none; b=P50lHXxbn0qbEzD9wv0ojZnMRN0Q9kprdpLqJgFdfNOXc3RYWsSVboYW3N6LrCQKKhkf/2DVkSjPbUMItlTdPT1OMTGvHmO9sT31ds8K8HdWfCle9j0cLZiFfB+49l2uAdVrLBxqPOPLfvj+cGMAsP3EpgqOIYxVKk38D10iFnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771608238; c=relaxed/simple;
-	bh=Mg0he7rTdYAnNUNIKLOI2u8YdkNCJER4UeQ52s56cm4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iDdfeHv+eqGskzy9436xi7cdadR1JrSaQXJXyXwhVlmyEc/CYfRNVF6BjZFzHbQAPxsNVlfAOg04XlrQuHC7LFkr1+EpCLXvfNHCGhJrA1KXf4jJrj0O6RnUDLwUcM8bJ+iZTd8TPdgnjThtk/IZjxIwRFGrRZibEEC1xhlpuV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rck8pKVB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771609340; c=relaxed/simple;
+	bh=Z/YROkrVmESRZ8RkdQlsESe9sZcMqjo+0c2DoGATHLo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fBtP8K9AbbtkCy8lBiUqvdoIh68zjmOof6p6sSaNPJUu3KS/Me4mQo+ElnM3h3SGZl/Hgy4FBvVuwqMbqRPxB7EM+TO7V7gnj8cdjDUFTP6NyBtqK2UJVBdSKWpRcQdkhkp0XsbrJ4mQX9jVdssYoOITd5Lm7RCnEKl56rDzsC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=i8sVh473; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rck8pKVB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE40C2BCAF
-	for <imx@lists.linux.dev>; Fri, 20 Feb 2026 17:23:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771608237;
-	bh=Mg0he7rTdYAnNUNIKLOI2u8YdkNCJER4UeQ52s56cm4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rck8pKVB7cftJzsFqe9QBAb9PIE8XjbbeZ3d+VGGVBUWwslTzpA4FFpiLPxmRNiuu
-	 QyFHmyaNQaEoTrplAgxTcfTV/cI0PKKfEK+SP/z+LKQVWaHq9RUYp/IF4GNQ3cIXGa
-	 NXzminlGHlxXYjcmaXaei/UJlj+8yeSyLrUbYeX4DG+E/artH80SYVlj4jLjF6FMNT
-	 9oiXEo2069rfgUVhS/N7CuSBu5z09XMPyQfy1fRofFErQu4Z+7fmJyQANba2RuT3Im
-	 KW5LSAl9SiCCjYqeDNzUg4A9KRYCQRRgxny/H5nQQE3UPS5MLay2CI0jIqT8SwWpPs
-	 hOnNmURhykSQA==
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-408778a8ec4so1849608fac.0
-        for <imx@lists.linux.dev>; Fri, 20 Feb 2026 09:23:57 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVMfNFQ7cVnirkqLQNQvz8HKKLsC9L2N0TOerxrgStZPjSnjOQ9sHvjk5SBJWR8Uc3knjY=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwEnwTuygXRcjfxJgfDDjcz73nq9nsZNiJRehrPVZ9i4fXUUEZU
-	2XTzcRjjRlv2R47Fjdbh1DBDE1UxnFpGqEb07vEPoYZtvAikUnNlTAVtlHAGIGF5myVtgYixz60
-	u2vpHkrx+ZNwdFl0BckeN9p0TqjkdGpM=
-X-Received: by 2002:a05:6820:189a:b0:676:da74:842e with SMTP id
- 006d021491bc7-679c464eea7mr303005eaf.72.1771608236672; Fri, 20 Feb 2026
- 09:23:56 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="i8sVh473"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=vdZF070E8JEKFJ0ME18+O+yF2DoTp5fyPreGsFn+SZ0=; b=i8
+	sVh473vtyNr0NN+4ABdvFxzHyvBLjizBTrtIxTnRKAjRoaWKMkWJHu463u8nW+OWkYS3tckuj74YM
+	uAKLnhkU90bukc0fg8jxUzzyKyBpfRlORCLdxZN1V4t1wHtvdvuD2p6pVW1EcjeUHrr5dEJSO2EVx
+	jdU0AIYbJQG9X1Q=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vtUVx-008670-UJ; Fri, 20 Feb 2026 18:42:05 +0100
+Date: Fri, 20 Feb 2026 18:42:05 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Frank Li <frank.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	dl-linux-imx <linux-imx@nxp.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v8 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
+Message-ID: <68c5f96c-124f-4d81-9dda-8e4b6bacbeab@lunn.ch>
+References: <20260212213656.662437-1-shenwei.wang@nxp.com>
+ <20260212213656.662437-4-shenwei.wang@nxp.com>
+ <aae7c851-a93b-4d57-a118-43c6e68c4790@foss.st.com>
+ <PAXPR04MB918582EE33F7BD5C26259BB2896BA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <7669d7dd-96a5-48a9-b051-875e9fbdad58@foss.st.com>
+ <PAXPR04MB91858E7125B2A4F21DDB78FD8968A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <c9d73e40-ab27-4403-9ff6-a3503568fe3d@lunn.ch>
+ <PAXPR04MB91851BF97AEF1C5B728865448968A@PAXPR04MB9185.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <6245770.lOV4Wx5bFT@rafael.j.wysocki> <15658107.tv2OnDr8pf@rafael.j.wysocki>
- <CAPDyKFrgXG5X-y0teE-wVvqaeNepStMN3=0M4zkZs8Kb88U22A@mail.gmail.com>
- <CAJZ5v0iszxD9WV2Nfy9=usmP84Lf0aE9nCxKTBP-B2=zxqnoYw@mail.gmail.com>
- <CAPDyKFqP1pgyv3F+krKsViE96oyYF-O=Q7+bresDf5Okjeh6RA@mail.gmail.com> <CAJZ5v0gOAdST7KsTqR6EEK_AQZMf3Ls5mt-Xys2tHbmRoaLAZg@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gOAdST7KsTqR6EEK_AQZMf3Ls5mt-Xys2tHbmRoaLAZg@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 20 Feb 2026 18:23:45 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0g6c=odyzEv9xitOOT5=QUKGhy_rhcUNe5Vk-Ziudjxtw@mail.gmail.com>
-X-Gm-Features: AaiRm50fS1AdfTHgvXxqsYty7wm2zENtxzrdNJVERBXECSwO0isV_Aq8CrZT89A
-Message-ID: <CAJZ5v0g6c=odyzEv9xitOOT5=QUKGhy_rhcUNe5Vk-Ziudjxtw@mail.gmail.com>
-Subject: Re: [PATCH v1 19/23] pmdomain: imx: gpcv2: Discard pm_runtime_put()
- return value
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Linux PM <linux-pm@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Brian Norris <briannorris@chromium.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <PAXPR04MB91851BF97AEF1C5B728865448968A@PAXPR04MB9185.eurprd04.prod.outlook.com>
 
-On Fri, Feb 20, 2026 at 5:58=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
->
-> On Fri, Feb 20, 2026 at 5:06=E2=80=AFPM Ulf Hansson <ulf.hansson@linaro.o=
-rg> wrote:
-> >
-> > On Thu, 19 Feb 2026 at 15:07, Rafael J. Wysocki <rafael@kernel.org> wro=
-te:
-> > >
-> > > Hi Ulf,
-> > >
-> > > On Sun, Dec 28, 2025 at 4:52=E2=80=AFPM Ulf Hansson <ulf.hansson@lina=
-ro.org> wrote:
-> > > >
-> > > > On Mon, 22 Dec 2025 at 21:37, Rafael J. Wysocki <rafael@kernel.org>=
- wrote:
-> > > > >
-> > > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > >
-> > > > > Passing pm_runtime_put() return value to the callers is not parti=
-cularly
-> > > > > useful.
-> > > > >
-> > > > > Returning an error code from pm_runtime_put() merely means that i=
-t has
-> > > > > not queued up a work item to check whether or not the device can =
-be
-> > > > > suspended and there are many perfectly valid situations in which =
-that
-> > > > > can happen, like after writing "on" to the devices' runtime PM "c=
-ontrol"
-> > > > > attribute in sysfs for one example.
-> > > > >
-> > > > > Accordingly, update imx_pgc_domain_suspend() to simply discard th=
-e
-> > > > > return value of pm_runtime_put() and always return success to the
-> > > > > caller.
-> > > > >
-> > > > > This will facilitate a planned change of the pm_runtime_put() ret=
-urn
-> > > > > type to void in the future.
-> > > > >
-> > > > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > >
-> > > > Applied for next, thanks!
-> > >
-> > > Since you applied this one, I'm assuming no objections, so I'm going
-> > > to queue it up separately along with the patch changing
-> > > pm_runtime_put() to void because I would prefer to make that change i=
-n
-> > > 7.0 to dragging it for another cycle.
-> > >
-> > > An ACK would be helpful though, I think.
-> >
-> > I was still hoping that Linus was considering to pull my pull-request
-> > for pmdomain, but it seems like that may happen. Assuming that doesn't
-> > change, I can re-base my next branch on Monday to drop $subject patch,
-> > but please wait until my confirmation so we don't end up having two
-> > commits in linux-next for the same change.
->
-> Sure, no problem.
+> > > struct msg_hdr {
+> > >     u8  id;
+> > >     u32 size;
+> > >     u8  flags;
+> > > };
+> > 
+> > That is just a bad design. The point of not allowing __packed is that it forces you
+> > to design your structures correctly. Maybe AI has no idea of taste, but Maintainer
+> > do and would not allow a u32 to be unaligned like this.
+> > 
+> 
+> Let’s keep the discussion technical instead of taste. 😊
+> 
+> My point with the earlier example was simply to illustrate how layout differences can 
+> happen across architectures or compilers. I’m more interested in understanding how 
+> you would prefer this specific structure to be defined so that it avoids unaligned fields 
+> while still maintaining a stable on‑wire format.
 
-That said, git can cope with merging two branches carrying exactly the
-same patch.  It just creates an empty commit for the second copy
-AFAICS.
+struct msg_hdr {
+    u32 size;
+    u8  id;
+    u8  flags;
+};
+
+The compiler will lay this out as you expect, it won't add any padding
+between the fields.
+
+You need to be careful with sizeof(struct msg_hdr). On 8 and 16 bit
+machines, it is probably 6. On 32, or 64 bit machine it is probably 8.
+
+I would say having a 6 byte message is probably a bad design, and you
+should try to make the u32 a u16 if you can. Again, not using the
+__packed is making you think about the design, and probably makes the
+design better as a result.
+
+    Andrew
+
