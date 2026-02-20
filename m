@@ -1,180 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx-relay49-hz3.antispameurope.com (mx-relay49-hz3.antispameurope.com [94.100.134.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97972253F05;
-	Fri, 20 Feb 2026 14:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771598516; cv=none; b=QctFZKmyfutptepMehpMnrM7tAfYlc53Hl9PKXWtROy04/BfqaKZxZX9MDUUfnQJ+5ZUWiJ411xdiPi+LAqJ3OPG1uAq2J+RBfApVvrz2kV1mxWYWvtOr3FYR8Q/XUL2ZWkwuYIsSN3R0t/Iw2W1OCTZt8CHgdr9tT1eSfZddso=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771598516; c=relaxed/simple;
-	bh=FPYykMKPLZ0/GFfHdUq+LMutESpDNc0D6h/gZOCQk/8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gh54BWLkasTS0yb7v7TRUM5siMUpCRf4AVrd8aDC9uxZKAmJ2r6qzQKLviRTnahrJTvHxOSXpOihJRMXI4BsVse6JlZYkgPHeIiIYannnvmKe4EIUcf0kKse2O/1qketJ7MBGc6ZWLXW5crHxCcbPiIS1NR9Op73j50GWBU+oeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PzIeq+La; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB26529D29D
+	for <imx@lists.linux.dev>; Fri, 20 Feb 2026 14:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=94.100.134.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771599591; cv=pass; b=sci5E4BdQIxYbpCtI7cxcvTQBJIdyB1NPFUjWabUk/T6Sympuiy5i4wagwgcL9PgAAcr7Ku3k0dM82F524IAW7CR2M82xlq28Wq9RpF8opL9ywb2IjelkvO9eST8m+um9wiWtyAeOVpLGEP5gCuRET7ioOVD4Lr3tLU7LDWFXcU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771599591; c=relaxed/simple;
+	bh=r691UYeG0Jlc5Tl00/OXFUPY1BQ66KXrinx7M4tDdvg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J+V6eL3oesEL8ZGxPwGgjG0u05Y/OBMauwwIKwYSMn6HFzUIJ30tlJenfgVzps5avqYhk5E46luJ5ZIm96aYA2WOQ4g6BUhfqHEofDNjVwJHRw6I2RKc3SwgsXwYyUZD71wAXHASiPigOC8dxPdnsS2Nz6qV4L5m99EoDFMeN+0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=H4BRb1oU; arc=pass smtp.client-ip=94.100.134.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PzIeq+La"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F04C116D0;
-	Fri, 20 Feb 2026 14:41:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771598516;
-	bh=FPYykMKPLZ0/GFfHdUq+LMutESpDNc0D6h/gZOCQk/8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PzIeq+LaaLyBrPFaT1nFI9p9i/IRkZdghlKDGcvjJxdlfnaD3PUL4fPGS0v8Tk0Ec
-	 hBFI7xgpvFNE8KFNN6wCn2/O+Vqtqw4lDAxOgSOexYi9zEZi4ZiLw/nUXQVazuC1Lm
-	 S42KpHTXDY9Y2xgAMU3N89pIBcQZmRY2yVxy1CzElcOktk4Nn7md0P00jz00tQEP1T
-	 7lSivHI8OWccEjgwnlvrXouLc8dp08NkCeBT7Ke/vgPl4+2PLjzdaxuhr1u2vm7E50
-	 7MeI+NFgBp3MVflT22fFxh9vbZrwSk1l2JkW4EVt9LnxoRdWGtvRSFn+nExETfXFHO
-	 e2rkyCEDOwwhA==
-Message-ID: <21531cdd-5ab9-493e-a722-61b98117e2c4@kernel.org>
-Date: Fri, 20 Feb 2026 15:41:48 +0100
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="H4BRb1oU"
+ARC-Authentication-Results: i=1; mx-gate49-hz3.hornetsecurity.com 1; spf=pass
+ reason=mailfrom (ip=94.100.132.6, headerfrom=ew.tq-group.com)
+ smtp.mailfrom=ew.tq-group.com
+ smtp.helo=hmail-p-smtp01-out04-hz1.hornetsecurity.com; dmarc=pass
+ header.from=ew.tq-group.com orig.disposition=pass
+ARC-Message-Signature: a=rsa-sha256;
+ bh=977B/ic6AJDBhQi658+RVyXZJ76tjyvN895prl/vc1g=; c=relaxed/relaxed;
+ d=hornetsecurity.com; h=from:to:date:subject:mime-version:; i=1; s=hse1;
+ t=1771599574;
+ b=gieL6EDniOJ7nVgmxaURWJjIMPp9ld5PIuL6Td4a4YTONUJMldl0QHZ1g5/yavMQJw7AZNof
+ Ze0lhMyYiKJTTLc0hTp4dbXwLcowTaEzuiVa4vz4KMavbkhPvxWcKJ/TwAw1UDKDSQyiLZeMTZS
+ Ns4ANPoOuN9EDPBpBz2hzkZPZ2lwyY1Vy3mrDOwgCWbO7KHyUC7oTDgRO/8ARqJEsnrswSGUoFP
+ kxbkiB4yNzGRov5cY3w5+ZQJntZ9GFNzJzPlx+jWSKGNILXTirmEb9FhOm9blNWljI6V5xajKW1
+ Zki+lWXdwZmG/bcAD23wbzQ/eQEcPigB+5Cj40SX28Rmg==
+ARC-Seal: a=rsa-sha256; cv=none; d=hornetsecurity.com; i=1; s=hse1;
+ t=1771599574;
+ b=sVNRQrYkMPujYNFVpgu0uEpceiP7SVWAAj4UmzFnqlc7lxf4HfP5T7k5wRI69tfTbQFUToQt
+ Q/zQ6zmMDWKaLwFg4+stEHTz19E0oXeaQbAnq/EDKLPUeDlP9Zih53TIGjsN0VmXZiQO1P/TS0o
+ eOXSbqz5tsizJeqUTlzw1aiQFn6yyskNVy9NXgqT/H5h7jOGf2eYbJkKrGf5H2fR5XDO+se/Zgo
+ DT9jWOXhN72TKLf0gfLY3bxMEpd50sL9o4tDfOKHIISiS7WZKNtTsxGFre+gD+KKuG5iGLz+Bai
+ h+Ui4n/qdChi2xdxb6V9er4IpdomKj770XJUizkDkngsw==
+Received: from he-nlb01-hz1.hornetsecurity.com ([94.100.132.6]) by mx-relay49-hz3.antispameurope.com;
+ Fri, 20 Feb 2026 15:59:34 +0100
+Received: from FEILKEA-LNX-W.tq-net.de (host-82-135-125-110.customer.m-online.net [82.135.125.110])
+	(Authenticated sender: alexander.feilke@ew.tq-group.com)
+	by hmail-p-smtp01-out04-hz1.hornetsecurity.com (Postfix) with ESMTPSA id CCF6B22071C;
+	Fri, 20 Feb 2026 15:59:20 +0100 (CET)
+From: Alexander Feilke <Alexander.Feilke@ew.tq-group.com>
+To: Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linux@ew.tq-group.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Alexander Feilke <Alexander.Feilke@ew.tq-group.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH v2 0/3] ARM: dts: TQMa7: modify for use in bootloaders
+Date: Fri, 20 Feb 2026 15:59:06 +0100
+Message-ID: <20260220145917.1797286-1-Alexander.Feilke@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 01/10] dt-bindings: mfd: add support for the NXP SIUL2
- module
-To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>,
- Rob Herring <robh@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
- Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
- Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
- Jacky Bai <ping.bai@nxp.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>,
- devicetree@vger.kernel.org, Enric Balletbo <eballetb@redhat.com>,
- Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
- linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- "Vincent Guittot devicetree @ vger . kernel . org"
- <vincent.guittot@linaro.org>
-References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
- <20260120115923.3463866-2-khristineandreea.barbulescu@oss.nxp.com>
- <20260121021913.GA1704619-robh@kernel.org>
- <e956750b-0333-4465-b37e-5f460b5e092f@oss.nxp.com>
- <edc3a63a-8117-476f-9582-97ae31fefa96@kernel.org>
- <7d200097-51bc-4404-be8b-f536d0ecfc25@oss.nxp.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <7d200097-51bc-4404-be8b-f536d0ecfc25@oss.nxp.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-cloud-security-sender:alexander.feilke@ew.tq-group.com
+X-cloud-security-recipient:imx@lists.linux.dev
+X-cloud-security-crypt: load encryption module
+X-cloud-security-Mailarchiv: E-Mail archived for: alexander.feilke@ew.tq-group.com
+X-cloud-security-Mailarchivtype:outbound
+X-cloud-security-Virusscan:CLEAN
+X-cloud-security-disclaimer: This E-Mail was scanned by E-Mailservice on mx-relay49-hz3.antispameurope.com with 4fHYLK3dnmz3yZ1l
+X-cloud-security-connect: he-nlb01-hz1.hornetsecurity.com[94.100.132.6], TLS=1, IP=94.100.132.6
+X-cloud-security-Digest:534bcfafd7dddc9c5c6fd6b8117fa64a
+X-cloud-security:scantime:2.046
+DKIM-Signature: a=rsa-sha256;
+ bh=977B/ic6AJDBhQi658+RVyXZJ76tjyvN895prl/vc1g=; c=relaxed/relaxed;
+ d=ew.tq-group.com;
+ h=content-type:mime-version:subject:from:to:message-id:date; s=hse1;
+ t=1771599573; v=1;
+ b=H4BRb1oUzvG6wDUFUjY3zixgEsU1uT5UHwvMnLfE49ohNXHy5HJww9jPPWOIk19I6DpiDbeG
+ AAbgmjtUq0mRV5rE8cNJPNogNeqT91Gd7AO7/kb87ozIF5xdILekdMmpTWBA4cggg940q6JDEn9
+ pzGOxB6Xo7u5ZhGeZx6ZEm3leBAA3xVbFS5ohzte3P+TuGPk9kQ8fAqXmm7L+oCzlgTN1ijsafA
+ RRAHmDuP98w0CTS74+r5D7qoS1QN1JIvcKvPuq1Z0jrzNw2b5YXTpdBUQVGLI3hHz5qgIBRezcO
+ X3x0IUPoMPoBQgr1vGXkYL0OB37KSt7xZYkT9tKdI3OFA==
 
-On 20/02/2026 15:36, Khristine Andreea Barbulescu wrote:
-> Hello Krzysztof,
-> 
-> On 2/20/2026 12:16 PM, Krzysztof Kozlowski wrote:
->> [You don't often get email from krzk@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
->>
->> On 19/02/2026 12:36, Khristine Andreea Barbulescu wrote:
->>>>
->>>>> +      reg:
->>>>> +        maxItems: 1
->>>>
->>>> You have 'reg' so the node name should have unit-address.
->>>>
->>>> However, there's not any real DT resources in this child node, so you
->>>> should just drop it.
->>>>
->>>
->>> For context, SIUL2 exposes a set of platform‑capability and SoC identification registers that are split across the two discontiguous ranges: SIUL2-0 and SIUL2-1. These registers are the source of SoC information (e.g. identification and capability flags) that other subsystems are expected to consume (e.g. PCI Express). Because those fields are physically divided between the two SIUL2 ranges, consumers need reliable access to both ranges to correctly discover and configure the platform.
->>>
->>> Hence, my proposal is to keep the two 'syscon' child nodes.
->>
->> Please wrap your replies correctly, so this will be easily parseable.
->>
->> I do not understand the reasoning. If you have two register ranges, you
->> have two <reg> entries and having a child node has nothing to do with it.
->>
-> 
-> I’ve reorganized the SIUL2 node with two syscon subnodes for the two
-> register regions used to read system info, and a separate
-> pinctrl/GPIO child (as discussed in the v8 06/10 thread [0]). The parent
-> SIUL2 node now carries the bus addressing and ranges:
+This series contains modifications for using Linux device trees
+in bootloaders. Changes from U-Boot bootloader are incorporated
+directly into the Linux device trees.
 
-That's not the answer to the comment. Read again:
+V2:
+- Updated commit messages
+- Added missing QSPI bootph properties to imx7-tqma7.dtsi
 
-1. Reviewer: No resources, so no separate node.
-2. Your answer: some soc capability and two address spaces
-3. Reviewer: Does not matter, address spaces can go again to original place
-4. Irrelevant reply.
+Alexander Feilke (3):
+  ARM: dts: imx7s: add boot phase properties
+  ARM: dts: tqma7: add boot phase properties
+  ARM: dts: imx7-mba7: separate BOOT_CFG circuits after boot
 
-So again, read the first comment - do you have dedicated resources in
-children?
+ arch/arm/boot/dts/nxp/imx/imx7-mba7.dtsi  | 13 +++++++++++++
+ arch/arm/boot/dts/nxp/imx/imx7-tqma7.dtsi |  5 +++++
+ arch/arm/boot/dts/nxp/imx/imx7s.dtsi      |  5 +++++
+ 3 files changed, 23 insertions(+)
 
->  
->     siul2: siul2@4009c000 {
->         compatible = "nxp,s32g3-siul2", "nxp,s32g2-siul2";
->         #address-cells = <1>;
->         #size-cells = <1>;
->         ranges = <0x4009c000 0x4009c000 0x179c>,
-> 		 <0x44010000 0x44010000 0x17b0>;
->  
->         siul20: siul20@4009c000 {
->             compatible = "nxp,s32g-siul2-syscfg", "syscon";
->             reg = <0x4009c000 0x179c>;
+-- 
+2.43.0
 
-0x179c is odd size. Looks fake.
-
-
->         };
->  
->         siul21: siul21@44010000 {
->             compatible = "nxp,s32g-siul2-syscfg", "syscon";
-
-And two same devices with same compatible proof it.
-
-Best regards,
-Krzysztof
