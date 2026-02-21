@@ -1,92 +1,112 @@
-Received: from ms.puri.sm (ms.puri.sm [135.181.196.210])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3D81B0F19
-	for <imx@lists.linux.dev>; Sat, 21 Feb 2026 12:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=135.181.196.210
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771675381; cv=none; b=jaN1JI5lueTlzNe6rdyb1NhZg10BhrdpsVOhVbAicdLzAlcxU43p1GfLfm704b5X4J6F7fvh54nP/0Zv1QlPybyoCnMRR08vuAYr2lYjnTL34ISMZukA1rt9fOW7Z335MizbEwi81OOYGx5IDOtc0CSt3xShhJethUwc9/Hmo/s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771675381; c=relaxed/simple;
-	bh=lElJz2q0mo7Dbf27ywzOet/wsoBKWaPVLwbz02KuJds=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mw7LLnxUAoujpgzwgAboaklt9CFb+ZKC0/Tlv8fGHet1vT7V/7briVgVAqN53ZEKdtpI0jP855lb1BLxDXh98JOSu/mnx7manoNLMw9LwMKahDtKD+tMtEGJ7uo9jzP6wAEuiG6HMcEQ0mkcd28umBifzwNcmaUACNxmnyNsJrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=puri.sm; spf=pass smtp.mailfrom=puri.sm; dkim=pass (2048-bit key) header.d=puri.sm header.i=@puri.sm header.b=PePbW5/K; arc=none smtp.client-ip=135.181.196.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=puri.sm
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=puri.sm
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE382D12F3
+	for <imx@lists.linux.dev>; Sat, 21 Feb 2026 17:52:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771696339; cv=pass; b=trdd/SDwsQh9BH4gV7sJQPVIbscQfj/KW4YiIq0IkDDjz6VZW8om/dVajJf5RiyKvsyrbe8veswa9/ZO14UginYHFrpTSy6AysnRTUqt0IBtoLYsiz1Tkxz6mwKy3+AWs+cRvtyF461ri8XbjK0hXa9IBTEpzPiWR0xOpAe9yi4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771696339; c=relaxed/simple;
+	bh=Tzo7ZNJfQBxoJt9cZySJTmR9nXcZNiJ3cBcDGsr6CBg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S3GgXU8sxB+bObbB6nIbWXFrGjSdMkw32UnzAHa0P3/UbQ77n+yK2ZR4c5SnKRuyo68Q1yTr0AaLAW/Ic180gUL4KvevAW8C5XZ1NOkufYusHsQ70bUv0OY06blV8MpEG7ST4m08ce6WaZ3WfPTUHayW6mY/OZT3wfpfZQ4hLDk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PTutzg7E; arc=pass smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=puri.sm header.i=@puri.sm header.b="PePbW5/K"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=smtp2;
-	t=1771675369; bh=lElJz2q0mo7Dbf27ywzOet/wsoBKWaPVLwbz02KuJds=;
-	h=From:Subject:Date:To:Cc;
-	b=PePbW5/KKgzTyhAAvHH0RLr8d0GQIqE30UMFmYmDDASMHRzX8TwWh6x4wXmBptLGB
-	 WzjiGkWxQKPvNqMFgmme/yNUrRHjCAcCzeBxZnBl2JDtDFzT02IXCpSrku4v4/N2vS
-	 lK5RinxER8AKdcHHY+UQIPnbbABJzAPErYJ0pEMKgQ23THbSCWtwCKY6eteS3zgnNP
-	 XKGQ5MCkZdO5Y8ojUXQ+ZCeAGRl8LBe6fXJxbpmuTaUF6RdhtXRPhPK06ZvVMUyhbB
-	 pv/ybg2DLzG18rg+GqVY2iihmOA7poFTJ6vi35lnrJfq4bJODOfAsnmkkGZX4QHeMm
-	 GzhVrgfq2Ju9g==
-Received: from pliszka.localdomain (79.184.40.11.ipv4.supernova.orange.pl [79.184.40.11])
-	by ms.puri.sm (Postfix) with ESMTPSA id 8AC571F511;
-	Sat, 21 Feb 2026 04:02:48 -0800 (PST)
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Subject: [PATCH 0/2] arm64: dts: imx8mq-librem5: PMIC voltage changes
-Date: Sat, 21 Feb 2026 13:02:09 +0100
-Message-Id: <20260221-l5-voltages-v1-0-daa8aeedc86c@puri.sm>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PTutzg7E"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-59dd4bec4ecso3217585e87.0
+        for <imx@lists.linux.dev>; Sat, 21 Feb 2026 09:52:18 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771696336; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Rw98rh3HuMlWromyfWzeOjQ6EEymsseEyVqf6Nq219f/n38bEXiZd4cexYQlnQEtR2
+         +73gI3H9ctNJFp1FaGSRxPKGwi+uKq33tlM+JwRdc/qGU3pXnf9r+ffImYG+7SVVDzL2
+         QerrCt0CD9H400jPTCSmtpjjcDIj4DElirEpjgRq1O+gGZj5EFTaVV+yUpEL4Ob9OjGo
+         7k894GTWjJ87YzGql8vNU/Quq7lZkh65lKLkYCmqelWdFVgEYFpm5CQo9NUd0bz6DINv
+         jhCdfPy5yWWsTGcWhwFAxclTsteC3lGqiREB8JTSLWvRBQ6OzqWrv4cTYUEiTFLzM6OC
+         M+Aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FMn9qAuINZnFS0In/pDpgcVE4Hl46cXlZoF6dfqeEsY=;
+        fh=vMnNqVCvoxW6B+PTJ8AcZ5NQ83e5SWhU3yKwbAy4fus=;
+        b=ia10BauMHK+o3166VTFnHL2DJlrfueQ3NnrqJuvBA/tkQCbPRZuxP5P5mfn1a2QN2U
+         O3x3y87zgBjuiwy/LMy9oQCsOKV+cFfaUw7vlInQs8UUhC8ZkexT1/zY8gZ5RtZrYExH
+         CYE/AaUkfwJbdpCK9LhfGif0bh5IndYSfwvtkc9NKuhbWx1IZbs9kPihbis4fE1aLZ+e
+         3dckV067+r7iK4FQQpZtJPKGxVpDdNcBE8bXvyz4ZtMMhMDgMLHBVV7z/w+qENO7LsTK
+         jJ9iwIFKqV4BFPjbxDM4S73fB8YfMQjZQDNVHgoP1qT/JTkRID05KQ1wKQLZqZ3qf/LR
+         b93Q==;
+        darn=lists.linux.dev
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771696336; x=1772301136; darn=lists.linux.dev;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FMn9qAuINZnFS0In/pDpgcVE4Hl46cXlZoF6dfqeEsY=;
+        b=PTutzg7E7I0+AIuXBNnXrlDw2IHQYCO09XwIeCo5B+0a66jfHu0mzq7FZDFO/Hxkk4
+         l7pN1t4HUTdGYg7ZCbfNkG1svZKz888bZPMMM+faKIdHLTp+5oUa1phenylBmBjjZxhS
+         7RmlgNkpY2zOZO7UC7lW5oMX4OYssEMhGMhGXZ8rrcPYyKxG0Y/HqYsyOYBnFgxgln48
+         ycCdIXom2Pi128oUsypIefCsDIdmkQ4VmZ/EuEDl3fJcwlbRYXJspeuR+amwElkHcyp+
+         PXH2K0+/gMcgRtV6hItcvXfFAcjkubP7aE2Hz9GCRaLBgmQizp/OjMfHlNdU2eEex6Bt
+         0cCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771696336; x=1772301136;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FMn9qAuINZnFS0In/pDpgcVE4Hl46cXlZoF6dfqeEsY=;
+        b=gaAWro5xSjVpNv4P4blc8ozg4aRorKKnvLrnMA7pbCnNxWG9TAC5EYfTBpB1++SsvE
+         Acoyb9o8bcKIdHGOwKqJpd6odaItXt1xBV8FO/k9HVybZqbP7oZyFXMsp3Kv4Q6SyJ+t
+         /QBounKOomk4R3LWGsrMN2Z8D5jiGayHhQODn3dMgLtgljs8dtH2yBhABtbhfgwqF0be
+         ISs2xUGoA3LG/ioI1kM+VKDfl8f4osSSe99w1krlXwAGrPgqCYYaIY+JLrNZBpUixgGs
+         /UbLfnk8PQAG3X8V6abbEZlY5eWCSU649ZSx0Ju+OXH6D6F79wFG1lgoh03mbgCnfwH2
+         wEPg==
+X-Forwarded-Encrypted: i=1; AJvYcCUxlphjvRf5WB0Yvo6TZtJ9EZJ4R9rI7kuHP0+FG4OuQNi6DIN5i35pyCRss8rMweuoQrc=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzblyA2JhT/kG7yJOSAZpQP5BE8NycXyW0Sw5JSA1Du72pAgsE2
+	IV/8uWmPH1uo40nXQsYcjcL41FfTwEyOoUwS+BQscommcGuRO1+wXuXmJ46jaTbN50fia882xqu
+	U3LOSrabgnXSo8P0MBiV7nZ7CT5JLSNs=
+X-Gm-Gg: AZuq6aIxCKynMJYaJOfXjL1kELzzLQf/tezO63gE5H+pSLUUiG/hrWYi1ZTcLp7Qkae
+	YYYrvgfek1LoUefXgxB5ssy8Z8mr3EkMjWL+wNUzXPREcukoxqrC/meLWBe3hB/R+agnTjWsDjG
+	VV0v5E3sSH+3O0MkVOou8UNIa3Zi7niJTuxFcnprmW4vX3Dlv/xZ7UvRpSed85F+uQX+bA/t/4g
+	T8y+aj+YfdYM5Z0MhcyYjIm5eAjeVXDRl6ypMYW08vOqb/Tr15e8DCjj3JCDviRiaWAj6MATpwG
+	vdnQFiDv9Z1UOhvHGuiJzW8kGDFYZYMO8QTxNPUymDBxSGJt1YXl1PMClw5M+Tiw8cHplJg=
+X-Received: by 2002:a05:6512:32d6:b0:5a0:4cb7:d53d with SMTP id
+ 2adb3069b0e04-5a0ed9b3c62mr1119236e87.38.1771696336186; Sat, 21 Feb 2026
+ 09:52:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MwQqDMAyA4VeRnBdmi1PwVcYOsaYaqHUkKgPx3
- dft+B3+/wRjFTboqxOUDzFZc4G7VRBmyhOjjMXga9/W3jtMDzzWtNHEhpGbrh2bENl1UIq3cpT
- P//Z8FQ9kjINSDvPvkSTvdl/INla4ri+fqr2PfAAAAA==
-X-Change-ID: 20260221-l5-voltages-fe476d4cfe17
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>
-Cc: kernel@puri.sm, devicetree@vger.kernel.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=744;
- i=sebastian.krzyszkowiak@puri.sm; h=from:subject:message-id;
- bh=lElJz2q0mo7Dbf27ywzOet/wsoBKWaPVLwbz02KuJds=;
- b=owEBbQKS/ZANAwAKAejyNc8728P/AcsmYgBpmZ7npDKhokjbX+6yemtwz/V5IQvX4zuTgt7ui
- UgasX+0Gv+JAjMEAAEKAB0WIQQi3Z+uAGoRQ1g2YXzo8jXPO9vD/wUCaZme5wAKCRDo8jXPO9vD
- /1VlEAC5LXbIBRnAzM+KiOwPzEIONlrtBGI2VaxRUQL6HXu3c5vUK7flltSoJ2fgbykdt3aZfTd
- FFgYvpRk/0Lg/2wKPbvJ8AK5W6f8yRGyHysD7lJ7My0evTHO0RO8h3RMbQ+dNrvPYDh9wNpXZup
- fnoeWqnV4VbmwIdww6uUjrXi20v3XTqK+QxjmA2TJXdkLfLy88mu01aUTL08L6TNRfREWtCBSMJ
- IgowFjJICHjat9SlEMoW8bUXhXpJWSO6qMaLvlHinVuBHp0UA0kIckxdTQ5PlomVCfSPyK/W5I6
- vqq6GRSZMW2ZVPZbDE7O1ax6MrCgNeMLlBNvmxt0B6d9trCxYCq1v0wSdM4UIzduACvlFh4962E
- GuUs7X0zwQhU2Z/caLB2CyamUkPl3E1DrBTnGZEJM5wpx3UJ3NA1cuAuXmjPHho2cz7lcm2ueCo
- ejfUkfJ8cKGinD8tWM74awMtvgtDGwjCkkcKGzN61duN6cPmNEDuJDVXKFFBmqtJOXL0Q7eb3SZ
- DW+wt2j939gnbysxyI72Z8r0/kTKHuVbLQhbPvPlI/125IKza6JZUa9zn9MypTqOXVDJNXE0obu
- 98RDAl8Qt/KdtBXOZwcPP5e+1EoQ1urE+FZFqCXbT10aEVVe0zyZLxigsVm8x67KmqixgS1IKJ0
- o2j9iBn3TouUq1g==
-X-Developer-Key: i=sebastian.krzyszkowiak@puri.sm; a=openpgp;
- fpr=22DD9FAE006A11435836617CE8F235CF3BDBC3FF
+References: <20260221-l5-voltages-v1-0-daa8aeedc86c@puri.sm>
+In-Reply-To: <20260221-l5-voltages-v1-0-daa8aeedc86c@puri.sm>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Sat, 21 Feb 2026 14:52:05 -0300
+X-Gm-Features: AaiRm535UxyOOW-KZMHW3TwP7IFUnVHAX3jFIxy0RPK6vWVRSydsJOFop73bf4c
+Message-ID: <CAOMZO5A_Uvq4nTWwR2fXpcT7b6bAHmqf+qS-8FCSJqhkwwKdvQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] arm64: dts: imx8mq-librem5: PMIC voltage changes
+To: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, kernel@puri.sm, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Simple changes to bump the voltages up to their nominal values to ensure
-stable operation across all units.
+On Sat, Feb 21, 2026 at 9:02=E2=80=AFAM Sebastian Krzyszkowiak
+<sebastian.krzyszkowiak@puri.sm> wrote:
+>
+> Simple changes to bump the voltages up to their nominal values to ensure
+> stable operation across all units.
+>
+> Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+> ---
+> Sebastian Krzyszkowiak (2):
+>       Revert "arm64: dts: imx8mq-librem5: Set the DVS voltages lower"
+>       arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V
 
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
----
-Sebastian Krzyszkowiak (2):
-      Revert "arm64: dts: imx8mq-librem5: Set the DVS voltages lower"
-      arm64: dts: imx8mq-librem5: Bump BUCK1 suspend voltage up to 0.85V
-
- .../arm64/boot/dts/freescale/imx8mq-librem5-r3.dts |  2 +-
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi  | 24 +++++++---------------
- 2 files changed, 8 insertions(+), 18 deletions(-)
----
-base-commit: d79526b89571ae447c1a5cfd3d627efa07098348
-change-id: 20260221-l5-voltages-fe476d4cfe17
-
-Best regards,
--- 
-Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-
+Both patches should have a Fixes tag and Cc stable.
