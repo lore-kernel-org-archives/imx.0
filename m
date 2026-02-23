@@ -1,29 +1,29 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F4521CFF6
-	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 13:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95ED523A562
+	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 13:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771854121; cv=none; b=VLWW8Zo3SsjudyGVI35/xBL9PxFZMBjKy+KDAtzvJn9rFuSAE1FUX5cvPFyrH1mK7owNR6tMMZXs9VYM4pcv+KCsRDpRVlXUmZKBkrbM2QDT+6kbVGjKqC5bmjeZR2UsBYkVyxbf64O+EoIUnRCvh17dJBZtU2Xf0mpjetUruaI=
+	t=1771854124; cv=none; b=sveJf7TRzjsT0+doF7TE4/gM3En9RjCkUBaoUYwNXnSgV3wgtK1p9is78DU/2VFVp9vovpSTt9MNtslV8aNOit+/oQma32e+OpuhXI+dI3WOhmTeq3UigBFoA/3lGC5aBp5g9tdTDrENMJ5zG9es+B4G8zdEC43TV+g9kTpfMJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771854121; c=relaxed/simple;
-	bh=xEBoMOJ2UfUkI3gm8CBgEjEdhJluBDxtNLuYWCqt0LM=;
+	s=arc-20240116; t=1771854124; c=relaxed/simple;
+	bh=/oLs1LUwNF2tP7k8TlrR8i3D3zYwfYQop3ycAKL2MfY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XQuJ5A+nrmpAGUWnQ22b7xzxGIF9kmZapo25knr2PHPREWGRdcdi1i0yPeW+DhZKQ6wfcuEPe2i6a0Hj7HYMSHosmjot76CdMFYphdU6tiFGisyy28inEKNGFfPiw2cmChXDfFjVOCsXkpwzSdFhTIrezMn9/dn4Z5VddNwJei4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=ECkZNM7ea06I0vDgQ/bpEKgC7nm0PwNt4ceQ10wBtM6NGABx94xjzwx6hh9B64Ma3FDOlsQX+np1H1e4/0SsNuekS9Xl3Rrp0GxrHgIArXsA3/vJAblGU5LdfioLYu9u2TAJNDoExRKxfNq+jgCY+d2eSYmyly+8ws2qHjY7g4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 82BD71A14BA;
-	Mon, 23 Feb 2026 14:34:44 +0100 (CET)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id C9EDD2015FB;
+	Mon, 23 Feb 2026 14:32:47 +0100 (CET)
 Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6B0901A11FC;
-	Mon, 23 Feb 2026 14:34:44 +0100 (CET)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id AF756201FB9;
+	Mon, 23 Feb 2026 14:32:47 +0100 (CET)
 Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id BBBA1202AE;
-	Mon, 23 Feb 2026 14:34:43 +0100 (CET)
-Date: Mon, 23 Feb 2026 14:34:44 +0100
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 0B4F7202AE;
+	Mon, 23 Feb 2026 14:32:47 +0100 (CET)
+Date: Mon, 23 Feb 2026 14:32:47 +0100
 From: Jan Petrous <jan.petrous@oss.nxp.com>
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: edumazet@google.com, shawnguo@kernel.org, kernel@pengutronix.de,
@@ -35,10 +35,10 @@ Cc: edumazet@google.com, shawnguo@kernel.org, kernel@pengutronix.de,
 	conor+dt@kernel.org, chester62515@gmail.com, festevam@gmail.com,
 	mcoquelin.stm32@gmail.com, ghennadi.procopciuc@oss.nxp.com,
 	devicetree@vger.kernel.org, alexandre.torgue@foss.st.com
-Subject: Re: [v4,4/4] stmmac: s32: enable support for Multi-IRQ mode
-Message-ID: <aZxXdNQGRcG6LeHS@lsv051416.swis.nl-cdc01.nxp.com>
-References: <20260128-dwmac_multi_irq-v4-4-82fa34fcf2f2@oss.nxp.com>
- <20260129051004.375682-1-kuba@kernel.org>
+Subject: Re: [v4,1/4] net: stmmac: platform: read channels irq
+Message-ID: <aZxW/5dBz3XPTxhB@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20260128-dwmac_multi_irq-v4-1-82fa34fcf2f2@oss.nxp.com>
+ <20260129050959.375635-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -47,36 +47,76 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260129051004.375682-1-kuba@kernel.org>
+In-Reply-To: <20260129050959.375635-1-kuba@kernel.org>
 X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Wed, Jan 28, 2026 at 09:10:04PM -0800, Jakub Kicinski wrote:
+On Wed, Jan 28, 2026 at 09:09:59PM -0800, Jakub Kicinski wrote:
 > This is an AI-generated review of your patch. The human sending this
 > email has considered the AI review valid, or at least plausible.
 > 
 > For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 > ---
-> stmmac: s32: enable support for Multi-IRQ mode
+> net: stmmac: platform: read channels irq
 > 
-> Enables Multi-IRQ mode for the S32 GMAC driver when per-queue IRQs
-> are present and more than one RX queue is configured.
+> This patch reads IRQ resources for all rx/tx channels to allow Multi-IRQ
+> mode for platform glue drivers.
 > 
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-> > index 5a485ee98fa7..37a5b7b46973 100644
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> > index 8979a50b5507..94854bfb6e0d 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
 > 
 > [ ... ]
 > 
-> > @@ -149,6 +149,16 @@ static int s32_dwmac_probe(struct platform_device *pdev)
-> >  	plat->core_type = DWMAC_CORE_GMAC4;
-> >  	plat->pmt = 1;
-> >  	plat->flags |= STMMAC_FLAG_SPH_DISABLE;
+> > +	/* RX channels irq */
+> > +	for (i = 0; i < MTL_MAX_RX_QUEUES; i++) {
+> > +		scnprintf(name, sizeof(name), "rx-queue-%d", i);
+> > +		stmmac_res->rx_irq[i] = platform_get_irq_byname_optional(pdev,
+> > +									 name);
+> > +		if (stmmac_res->rx_irq[i] <= 0) {
+> > +			if (stmmac_res->rx_irq[i] == -EPROBE_DEFER)
+> > +				return -EPROBE_DEFER;
+> > +			dev_dbg(&pdev->dev, "IRQ rx-queue-%d not found\n", i);
 > > +
-> > +	/* Check for multi-IRQ config. Assumption: symetrical rx/tx queues */
->                                                    ^^^^^^^^^^
+> > +			/* Stop on first unset rx-queue-%i property member */
+> > +			break;
+> > +		}
+> > +	}
 > 
-> This isn't a bug, but "symetrical" should be "symmetrical".
+> When platform_get_irq_byname_optional() returns a negative error like
+> -ENXIO, that value is stored in stmmac_res->rx_irq[i] before the break.
+> 
+> In stmmac_request_irq_multi_msi(), the check is:
+> 
+>     if (priv->rx_irq[i] == 0)
+>         continue;
+>     ret = request_irq(priv->rx_irq[i], ...);
+> 
+> Should the negative value be cleared before the break? Otherwise if
+> rx_queues_to_use exceeds the number of defined IRQs, the negative error
+> code could be passed to request_irq().
+> 
+> > +
+> > +	/* TX channels irq */
+> > +	for (i = 0; i < MTL_MAX_TX_QUEUES; i++) {
+> > +		scnprintf(name, sizeof(name), "tx-queue-%d", i);
+> > +		stmmac_res->tx_irq[i] = platform_get_irq_byname_optional(pdev,
+> > +									 name);
+> > +		if (stmmac_res->tx_irq[i] <= 0) {
+> > +			if (stmmac_res->tx_irq[i] == -EPROBE_DEFER)
+> > +				return -EPROBE_DEFER;
+> > +			dev_dbg(&pdev->dev, "IRQ tx-queue-%d not found\n", i);
+> > +
+> > +			/* Stop on first unset tx-queue-%i property member */
+> > +			break;
+> > +		}
+> > +	}
+> 
+> Same question here for tx_irq[i].
+> -- 
+> pw-bot: cr
 
-I will fix it in v5.
+Bot is right. I will address it in v5.
 
 Thanks.
 /Jan
