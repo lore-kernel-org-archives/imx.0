@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0028B344DAE
-	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 09:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3409344DAE
+	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 09:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771839283; cv=none; b=AYsDrExVA4iLY6ABs4BniHFBTHD0gF/eOzUqahzO7Net/EIciyuj+jY1Nl3QCdicWZIqdsVEM0gpZlA7bhZCQdQWbN5RGkFtbbqPB60g6tnwMeHqqKtznY8Z248EzZxsecqHlcS9akXUCORvGJRDrnfgMvZAd7r6VC9vFzyjsFA=
+	t=1771839287; cv=none; b=ZzNkuAwu+0twsDOre4KTi/93ZJ1Hw8hKZ0xkw29TLTD1erx3glfn8HPOnna4JWuFc+eYWTnjv170j+a/Y18qEPuSfxUkZvPD1AZX7WgIRCuAwFt7EmwbV3xZ3dnkIgPu/SkWuORzJ9zhUDPuueyKYecJ2nN0c0WEhepB55klWmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771839283; c=relaxed/simple;
-	bh=A0DQa2yit7BilB2edxZew1BCO4LPXoY8VmW6sypuAU4=;
+	s=arc-20240116; t=1771839287; c=relaxed/simple;
+	bh=t4nXy8VV1pdp2AytzCdZm6ysUN4htiCIr75YfoE7VHQ=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=LnwV0YQwW1iQibd8o9ANRCgIXHWTpkZZHwvwZrF2vHB8GzlHoDCewxXVT4WblwapBVDHmmyMo+YN85vwP+hyKWuPmrWpJ4wynwD4WSSzvh0MLmbjJ/0wTMHciU74o5fwFGK1XQ2H3a6zIKWIoRAy2ZD82XaQf1E6nWeh4wau1ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=pi/OTBkE; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=DsXU+Sc9V07Fr5QgkkXDBxLfEisArPVT0KMj9S8ydYnylb+lnVG8WQ4G8Cm5mnDPRGau33ZWq7mzEbLLl8BByTkLyqr286fRwwiddswyV57xoj+yU1LCpALVg2/qUkdDyushDw6as7LMu53vkxx/Sp3gyH/oHyjGwv+SKWOcicI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=iuyCy5/e; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="pi/OTBkE"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="iuyCy5/e"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=/kike56d5i4O56Y5NlWtI02l8CGnSYFWZr81uQ1joGo=; b=pi/OTBkEOT4oGyyTr+mRIeg8qC
-	KBA1AtP5j7VMP5seIdKi/5QstLo4ROiuyWgUo1AYnTEZ4XuBYuMFH7opOTqh8UfBU/Tv5nWhWASNa
-	mwH9PXJVYbAdDrmyTOpXALzMQ01WNdYtlEkls4nnYN9/ydBPQCl+5cQ9T0jAvTeG0H2Xi7HeKqWgz
-	m/VchVkTo+VKz3FNFXd5dX8jF0wsfB3+YTmouh2e9Nod853oiTAZiNz/VACOicbnYNeNLWc39KTu+
-	fNxzat4vOShIr7pbG/9YFGwYIRqPtANXEelohvY4OrwTlzkgf9NZEYOE2gtXcHZEO3r+OOo8oCtWx
-	7uar1Dmg==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:46384 helo=rmk-PC.armlinux.org.uk)
+	bh=xX88IRJ5ZZJcwEtQ+Finc0oqOM/Lw45R/MHMHRGIA+Y=; b=iuyCy5/eATQt1ibrp4ccTrE6F9
+	o3rfnXojxkLjyo16eXhBZ4Fump3b40lpmRILAolBztxBE6W7NHBXlekinWSKEAW1v4nzO7HPdf9Kq
+	gJ9j/nqoL8NDOtVTU6Sj0tevC0TXw7y5uOFfpbH6KJPnFpGfJCmb+6TFBf3cxRKTgTe5Uq7BC2Z5g
+	3FjxLu6WO8V46H/E13IZ5GabPQxM2TYLDE85ZiEloI6gKXEhTs1QFGLpwJNeVXKn3r5nbICePtMsv
+	p6nnXuNE9gvEROxLOmuMpb6dqtwxhvJQ+WDIs7MOChZElTYEUhj77fZau8aF0ohk0oscB9ebjCSKO
+	LjNYUpJQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:52934 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vuSKh-000000003mb-3ecm;
-	Mon, 23 Feb 2026 09:34:27 +0000
+	id 1vuSKo-000000003mv-205i;
+	Mon, 23 Feb 2026 09:34:34 +0000
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vuSKg-0000000ASbv-0iWL;
-	Mon, 23 Feb 2026 09:34:26 +0000
+	id 1vuSKl-0000000ASc1-18ka;
+	Mon, 23 Feb 2026 09:34:31 +0000
 In-Reply-To: <aZwfAFJQcp9f0niI@shell.armlinux.org.uk>
 References: <aZwfAFJQcp9f0niI@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -59,8 +59,8 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH net-next 03/10] net: stmmac: qcom-ethqos: change
- ethqos_configure*() to return void
+Subject: [PATCH net-next 04/10] net: stmmac: qcom-ethqos: move
+ qcom_ethqos_set_sgmii_loopback() up
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -70,73 +70,63 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vuSKg-0000000ASbv-0iWL@rmk-PC.armlinux.org.uk>
+Message-Id: <E1vuSKl-0000000ASc1-18ka@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 23 Feb 2026 09:34:26 +0000
+Date: Mon, 23 Feb 2026 09:34:31 +0000
 
-The ethqos_configure*() family of functions always return zero, and the
-return value is never checked. Change the int return type to void.
+ethqos_set_func_clk_en() configures both SGMII loopback and the RGMII
+functional clock setting. qcom_ethqos_set_sgmii_loopback() is only
+called from within ethqos_set_func_clk_en(), and checks for
+PHY_INTERFACE_MODE_2500BASEX.
+
+Move qcom_ethqos_set_sgmii_loopback() to the callers of
+ethqos_set_func_clk_en() except for ethqos_configure_rgmii() where we
+know that ethqos->phy_mode will not be PHY_INTERFACE_MODE_2500BASEX.
 
 Reviewed-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
 Tested-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- .../net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c  | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index 50b95fd19f9d..168f0fed68c0 100644
+index 168f0fed68c0..964eca46a653 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -100,7 +100,7 @@ struct ethqos_emac_driver_data {
- struct qcom_ethqos {
- 	struct platform_device *pdev;
- 	void __iomem *rgmii_base;
--	int (*configure_func)(struct qcom_ethqos *ethqos, int speed);
-+	void (*configure_func)(struct qcom_ethqos *ethqos, int speed);
+@@ -204,7 +204,6 @@ qcom_ethqos_set_sgmii_loopback(struct qcom_ethqos *ethqos, bool enable)
  
- 	unsigned int link_clk_rate;
- 	struct clk *link_clk;
-@@ -522,7 +522,7 @@ static int ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
- 	return 0;
- }
- 
--static int ethqos_configure_rgmii(struct qcom_ethqos *ethqos, int speed)
-+static void ethqos_configure_rgmii(struct qcom_ethqos *ethqos, int speed)
+ static void ethqos_set_func_clk_en(struct qcom_ethqos *ethqos)
  {
- 	struct device *dev = &ethqos->pdev->dev;
- 	unsigned int i;
-@@ -587,8 +587,6 @@ static int ethqos_configure_rgmii(struct qcom_ethqos *ethqos, int speed)
- 		ethqos_dll_configure(ethqos);
- 
- 	ethqos_rgmii_macro_init(ethqos, speed);
--
--	return 0;
+-	qcom_ethqos_set_sgmii_loopback(ethqos, true);
+ 	rgmii_setmask(ethqos, RGMII_CONFIG_FUNC_CLK_EN, RGMII_IO_MACRO_CONFIG);
  }
  
- static void ethqos_set_serdes_speed(struct qcom_ethqos *ethqos, int speed)
-@@ -607,7 +605,7 @@ static void ethqos_pcs_set_inband(struct stmmac_priv *priv, bool enable)
- /* On interface toggle MAC registers gets reset.
-  * Configure MAC block for SGMII on ethernet phy link up
-  */
--static int ethqos_configure_sgmii(struct qcom_ethqos *ethqos, int speed)
-+static void ethqos_configure_sgmii(struct qcom_ethqos *ethqos, int speed)
- {
- 	struct net_device *dev = platform_get_drvdata(ethqos->pdev);
- 	struct stmmac_priv *priv = netdev_priv(dev);
-@@ -638,11 +636,9 @@ static int ethqos_configure_sgmii(struct qcom_ethqos *ethqos, int speed)
- 		ethqos_pcs_set_inband(priv, true);
- 		break;
- 	}
--
--	return 0;
- }
+@@ -532,6 +531,7 @@ static void ethqos_configure_rgmii(struct qcom_ethqos *ethqos, int speed)
+ 	for (i = 0; i < ethqos->num_rgmii_por; i++)
+ 		rgmii_writel(ethqos, ethqos->rgmii_por[i].value,
+ 			     ethqos->rgmii_por[i].offset);
++
+ 	ethqos_set_func_clk_en(ethqos);
  
--static int ethqos_configure(struct qcom_ethqos *ethqos, int speed)
-+static void ethqos_configure(struct qcom_ethqos *ethqos, int speed)
- {
- 	return ethqos->configure_func(ethqos, speed);
- }
+ 	/* Initialize the DLL first */
+@@ -701,6 +701,7 @@ static int ethqos_clks_config(void *priv, bool enabled)
+ 		 * cycled. The actual configuration will be adjusted once
+ 		 * ethqos_fix_mac_speed() is invoked.
+ 		 */
++		qcom_ethqos_set_sgmii_loopback(ethqos, true);
+ 		ethqos_set_func_clk_en(ethqos);
+ 	} else {
+ 		clk_disable_unprepare(ethqos->link_clk);
+@@ -809,6 +810,8 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
+ 
+ 	ethqos->serdes_speed = SPEED_1000;
+ 	ethqos_update_link_clk(ethqos, SPEED_1000);
++
++	qcom_ethqos_set_sgmii_loopback(ethqos, true);
+ 	ethqos_set_func_clk_en(ethqos);
+ 
+ 	plat_dat->bsp_priv = ethqos;
 -- 
 2.47.3
 
