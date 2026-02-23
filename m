@@ -1,108 +1,249 @@
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013028.outbound.protection.outlook.com [40.107.162.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E17285C98
-	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 14:14:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771856088; cv=none; b=DsPp/MiKFR0+JOB1Ydxufa8Rxw4HbbFZBoSxgLuJzV0GEW3UJjT+3sYzguLw8yGOxVjEIu1ulNWhQFyo+v4rXskwQkH9fSk7RKMtzjiO0y0UB4ZAWxfzFNdoYgRtjPsKMQi4T2hFnDqePRxTcl9jfzp06x+Z+F6Vvml/kpisj7Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771856088; c=relaxed/simple;
-	bh=BPlCyTz8G/El4l0BA0OckJ22InPEejXQZx1TWREEqyA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u5gdDlgvdzHp66lWZzUwkuk0VjVByO/HXuF0A/yINS8zxpbulYwGGQ+EUacMpYkp8oBgddohHizyJcHUAbSzQvbR1wrfkw8N4OYR7S6Y1MgSxzndyc1ahyZTCyfdpaC9PIAsNn92LMWzG1eCvRIr3og0J4Jd3VBBJpm10zQR6vY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7d18f80b5c2so3730922a34.3
-        for <imx@lists.linux.dev>; Mon, 23 Feb 2026 06:14:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771856086; x=1772460886;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nLzVdK8lDfgaTPyV9xNjlD/1kxno0u/2SblofGNbVRQ=;
-        b=CjHY6J5iE2vd9foldp0Tey1ZbKwKrwrR43lYSJ7BhHlSs8d2rdtjTGuIUopkCOFXFI
-         KZG05N59HHlqg+ovaAQrwAoYWdchAl26Qm6Ij8qcvi8tICyfULWvTXKPXPnPipEQd7yk
-         FJUgNOWNAwPjAKmi0Sh/sUUrF4WNdtHZ9wxwaBhh8JXh5MQqD6rQObfUf9T9Rc9zdBIA
-         vurjFIEN1R9LrlWfC2+7XNJIT0QSGtRaYyZeYbJy7SnjCdP32qCSD17L/oUIRHn/QdIW
-         XwwjS7qs63koQQYaaL9sghAg+maOtBpTg7zavcu7s1sMS9YB5rHnaS42Pb342tpMwY9P
-         RddQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVdbi+6R3JASZcZw+2Sc/37cOUiWc3cM4rE+O94/zNdxqDAApA5vvIkG9isMPBub9wm48k=@lists.linux.dev
-X-Gm-Message-State: AOJu0YzuEQiWRNvTOeqtXHjbXtrNt0e7aS9h3oh2nFoN5VcJFqdD6T5I
-	zomqrYknz4CGKP46c3ZaKxHBf3MvoE0U42Q5Yw83xERSabyepCwlD91/daN/MhMy
-X-Gm-Gg: AZuq6aIi1Q+loB/FY5VwLgJRJFq471Eg0LLvuw/mFdhWSFMmgva3p/nIv/fk9T1ts+L
-	dKbzUihDZQvoWS7AX2v5rNqD5QKB/dfzmbif+EJErHooYvjb6wQhL3P22IO5I8EHcX4QJuAmr8h
-	dXE02f+54PPiqBHYCvLizGaAe7atrKqN8ik9HrMiC8ht08pSHfB9bFy2XuRJDExbXoLUHblk2Gt
-	4OdcX8RKEo1vdkU4V9dYlIw/jmnvcSuLHOeVgg7ZMPzQOPONtwmr/i3dva70ByROx0b5WeeS3pp
-	tQFdx35EWwjxpn1MLB2cXW2qE9y452aQ7ERwDZJVB1qnyhF+ObgP5JpMLwwg2mTAaxREedQry9i
-	GEzsIHhoERXh0lqU4VfQctrn+4i0zUTDWG/jmCs9odhmLoy8jN7zMx1mytq/ix5DjwJOYzvSJU5
-	zQ1UMmwER+fR2AX4if53mnpEKE0L5hOa8zebfeDWDUsB1H0q8jileYnMc5ua2Lsb9Q+lzGjbM=
-X-Received: by 2002:a05:6830:2b23:b0:7d4:4d3c:c601 with SMTP id 46e09a7af769-7d52bdf6f79mr5699807a34.5.1771856086548;
-        Mon, 23 Feb 2026 06:14:46 -0800 (PST)
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com. [209.85.210.53])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d52cf78503sm7357585a34.3.2026.02.23.06.14.46
-        for <imx@lists.linux.dev>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Feb 2026 06:14:46 -0800 (PST)
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7d4c383f2fcso3781949a34.0
-        for <imx@lists.linux.dev>; Mon, 23 Feb 2026 06:14:46 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVNNCbt/5hncgis7RuXFANjokYp8BN0uudbPVdM90z/MoQZCcKJDPK6MiGEmmTVqzdnUws=@lists.linux.dev
-X-Received: by 2002:a05:6102:38ce:b0:5ef:a346:a020 with SMTP id
- ada2fe7eead31-5feb2f081dbmr2742454137.17.1771855750377; Mon, 23 Feb 2026
- 06:09:10 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345B7285C8E
+	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 14:24:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771856693; cv=fail; b=NIEk5qSPrgRae9HTvWmLtbmJepefZ6NVSON3BfWSfChwlqTGUgPIVpJR43FIQE6vVsJzTVEbnXAGpdfWJVTwJAQXZpB83+QbjPnB1RlZ8wjPyY6ZiuFkWxTRun6mfooihxGC44CQ/bhqStH3WhJ/fCbTPCIpkrqt05TX36lxL/g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771856693; c=relaxed/simple;
+	bh=02uLXYfv+5QROnxwh5exPesXClFhXtByqrlXY6melr8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=HrKELdU3Z60WloPp2RQBMtvSx3KOzRt1cbDxqj9jl2ruxVRjVrEKj7KVniZ0tyQHkrGduAfgmjzxS+HEtw9D2itru0IOTjD6J3teupXkSFuYKWViCqHSvMJnZnsi+tReI0WiJsPTaDGHxfLw6wMoQPnS8vcS1TKxEsQBjjVWilU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=aPyOv3s2; arc=fail smtp.client-ip=40.107.162.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="aPyOv3s2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q9NdyYP+uky9jVYo+d9k9fmM8/cB/bjL51gppZ6akv72f6DJHVnWY8fHiVUcZDIe0hjue5r5nz94cDX2dBwfyijkuyG8V3Rw9mGvVvtk+Hb6U4REGJBUwl7D1SKKpT/pBhIBDyVDmU6uCxyPwMKxXaP6FAKqkDxU91q2CNA5y/8R0Uxu0v8UIZqfmjCYTUGYJR0H3iT7s7lCER3JNtbLTGzqvUETmTM7rR+V8wRiB82seyOpYabG+lHwKcuG3e+okHFqEqGlV7SP6gRhgj3lQwMW0ANElOL7eSzrH06N56CgfUknt9rFkQX3cCs1N2TiYdzbOE/uesaphVEth5nipg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cq9p+Ax7FXrCAL0P83GVe+3Gm53y0Op6mFJvUwrKNyI=;
+ b=oUpPurNMVLrh3T2HF+nGtZWfWeob+E2dVizNEbeDxEzeHMyh8/g4C2qIjz1E5JkJ3a8/E5KcAQVBB+AtwH3m57Wx2dcngdK/dc2IrXhYa2lEMKAPA2YXUQ+0jQ4giuYlx/gvRrlJeJO6fhNDhxN/u3J8OqY3+mR7qRsbH9zn5TMJKuPS85IrMakaAJCOYIx3maJmy6YPGEwbIWwZ6lMbyk9bXFlSeXQC1EhDJPLYLwGUkWeYcxi9yxxip0Zih2M97odRArlusW5EuGjikIXgjLVEKMkco2wdus/olvWAilDQcp9ExyfBBK0j3m+OPy9SQhp6JPqL7ac1Hj3ExA45OA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 164.130.1.59) smtp.rcpttodomain=kernel.org smtp.mailfrom=foss.st.com;
+ dmarc=fail (p=none sp=none pct=100) action=none header.from=foss.st.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cq9p+Ax7FXrCAL0P83GVe+3Gm53y0Op6mFJvUwrKNyI=;
+ b=aPyOv3s2/S2if0MHwdtdb7R3LLyJc0z29iQ3UGLypMhcPel/qeAhqMNns3fp0APpjfIP+yJKDAR3esrIinSrt6JEPuIEdiV7g7DhDsyHc304gh4vSEViDIWznNZfnLS2dZ+1bYgeBcbfMrK1qyaVX+vqfE9bPpMDrq6e3rI8YbuJJwSk22mtAgVcDZRQ3AzzemLaqYME/ZFtFSHbl6jgP75ztmPTIdqiL4NihuU5wvemRVqf0/7Rz1PxGbzXQ347Zun/mxGJBvn+zVm+7OVe/FrOq1Qr+vOr6YFWRa/ILi8GOaiRvVKcSIfAyVJ2vddfJxhlgX12q665fC8vCwo05g==
+Received: from AM8P190CA0005.EURP190.PROD.OUTLOOK.COM (2603:10a6:20b:219::10)
+ by GV1PR10MB6516.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:84::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Mon, 23 Feb
+ 2026 14:24:47 +0000
+Received: from AM3PEPF0000A791.eurprd04.prod.outlook.com
+ (2603:10a6:20b:219:cafe::f8) by AM8P190CA0005.outlook.office365.com
+ (2603:10a6:20b:219::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.21 via Frontend Transport; Mon,
+ 23 Feb 2026 14:24:13 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.59)
+ smtp.mailfrom=foss.st.com; dkim=none (message not signed)
+ header.d=none;dmarc=fail action=none header.from=foss.st.com;
+Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
+ designate 164.130.1.59 as permitted sender) receiver=protection.outlook.com;
+ client-ip=164.130.1.59; helo=smtpO365.st.com;
+Received: from smtpO365.st.com (164.130.1.59) by
+ AM3PEPF0000A791.mail.protection.outlook.com (10.167.16.120) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9632.12 via Frontend Transport; Mon, 23 Feb 2026 14:24:46 +0000
+Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpo365.st.com
+ (10.250.44.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Mon, 23 Feb
+ 2026 15:27:01 +0100
+Received: from [10.48.87.127] (10.48.87.127) by STKDAG1NODE2.st.com
+ (10.75.128.133) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Mon, 23 Feb
+ 2026 15:24:45 +0100
+Message-ID: <b4c422ce-3538-40aa-8bfa-b70f02774b5d@foss.st.com>
+Date: Mon, 23 Feb 2026 15:24:43 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260223-i2c-adap-dev-config-v2-0-d78db0a6fcf7@oss.qualcomm.com>
-In-Reply-To: <20260223-i2c-adap-dev-config-v2-0-d78db0a6fcf7@oss.qualcomm.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 23 Feb 2026 15:08:59 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWJCc-UeaJLM4dpDN=toDvteXFvOFpTm5AbvNoKf3rTqA@mail.gmail.com>
-X-Gm-Features: AaiRm50V2ONm2B9njU7ZJRcOuR4Nb8zI5Hsqj9aPxNU6M55eyuOZ1HhwjvL4ass
-Message-ID: <CAMuHMdWJCc-UeaJLM4dpDN=toDvteXFvOFpTm5AbvNoKf3rTqA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/12] i2c: configure parent device and OF node through
- the adapter struct
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, 
-	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>, 
-	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>, Andi Shyti <andi.shyti@kernel.org>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Vignesh R <vigneshr@ti.com>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
-	Tony Lindgren <tony@atomide.com>, Andreas Kemnade <andreas@kemnade.info>, 
-	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Patrice Chotard <patrice.chotard@foss.st.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Bartosz Golaszewski <brgl@kernel.org>, linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-rpi-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
+To: Linus Walleij <linusw@kernel.org>, Shenwei Wang <shenwei.wang@nxp.com>
+CC: Andrew Lunn <andrew@lunn.ch>, Bartosz Golaszewski <brgl@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "Bjorn
+ Andersson" <andersson@kernel.org>, Mathieu Poirier
+	<mathieu.poirier@linaro.org>, Frank Li <frank.li@nxp.com>, Sascha Hauer
+	<s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Pengutronix
+ Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
+	"Peng Fan" <peng.fan@nxp.com>, "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>, "linux-remoteproc@vger.kernel.org"
+	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+References: <20260212213656.662437-1-shenwei.wang@nxp.com>
+ <20260212213656.662437-4-shenwei.wang@nxp.com>
+ <aae7c851-a93b-4d57-a118-43c6e68c4790@foss.st.com>
+ <13f9d767-61d6-4e29-b36e-6dcc860ccb11@lunn.ch>
+ <fd257c80-d97f-45b0-a12f-3a1888ba81db@foss.st.com>
+ <396819f2-dd00-4c09-8bc7-c035a5282a56@lunn.ch>
+ <PAXPR04MB9185A908F5090F0CA4FF05F78968A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <b21b9ee5-d84e-47f8-86b5-c111ecc3d43d@lunn.ch>
+ <PAXPR04MB918576D67A268E59242964A08968A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+ <CAD++jLkUVFckLTq=SoivNFoFymhJo4KM=qGmajFcv9T9+7tPmg@mail.gmail.com>
+Content-Language: en-US
+From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
+In-Reply-To: <CAD++jLkUVFckLTq=SoivNFoFymhJo4KM=qGmajFcv9T9+7tPmg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: STKCAS1NODE1.st.com (10.75.128.134) To STKDAG1NODE2.st.com
+ (10.75.128.133)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM3PEPF0000A791:EE_|GV1PR10MB6516:EE_
+X-MS-Office365-Filtering-Correlation-Id: ca4d156f-e8e5-4c6a-35b6-08de72e74bb8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?S3FOOUR5dFprUGV1U2lGZjV6bGJ3SWlhQWxQMXRQeTY1LzMrNU5PVVBqWGxG?=
+ =?utf-8?B?V2dtb1NpWGcyZjdBM3pld1IzYW4yOWY5QnFQOEtNeHBkMFZGem5YK3JhT0Jz?=
+ =?utf-8?B?UzVxQXNUMURqMi90bjUrQXp3R2ljalRIQU9VdVRjdnl6MWQ2WlZ5RFZPREpS?=
+ =?utf-8?B?bXd2V1ZicVBLNGFMQkp3aGs2YjdWdzdKbTBkSXpQM3daZ3RHYjZHd1hQajk4?=
+ =?utf-8?B?RE80TVZBazllYWdqMUFQbnN1UktOUkNYOUlnN28zdzAwU2RPNGZHNXZtR0d3?=
+ =?utf-8?B?MmFld0JoK0EvTUdKWnVRY0l6cW5GV3ZlYjVqL2trOWFPZ2N1QlFoS0pJM3la?=
+ =?utf-8?B?WG5XYTdLN1pJZ1ZiK0kybmp2bWppQmlwYUlNb2hOamQ4SFUwYjFndllIdGVh?=
+ =?utf-8?B?TzNsWDl1bTJUQWppNG1KSEdCV0Y3Sk05NHQ5a1ZIZzRKU0h3VXcxMTYzU0Jt?=
+ =?utf-8?B?WENyUWJHbnMxdzRJUjZHV25odmY2MFQ1VHJ0UTlveXBOc1lsV05LSHVJM1JW?=
+ =?utf-8?B?M3gvS01xNHluMWFjL25EajlzNmJuVk1TZDNtYjdGWlNVeEFoeVorTlQ1V3pN?=
+ =?utf-8?B?TVk5eHZVVnJMKytiSVpTWGJZcjRtTDF5ZzhEQW1nY016VDNRL2MxK2RvSUNE?=
+ =?utf-8?B?cUIranluNkpYTmxHYktDa05tV2JOeUIxZXFrU3JKSmMzNFdkT1N1bWlPeWdS?=
+ =?utf-8?B?SmdFMldrMFI3cWV2TVhUVVVPaTZQZ0wyK0U1ZG1EQlh4OUI0Nzd4YnVpbzcw?=
+ =?utf-8?B?Z2x3NUhndTZ4TnN1Y3p3YVBEZFJhSzJ2elNKTWh6alkzNWNnNWZuUUdIVGl5?=
+ =?utf-8?B?dlVBdGh0dUttSzZ3aThjSmtNVDlPQ3NmVVR0RTZMVWtuR1dGcE9kdXIrRDFu?=
+ =?utf-8?B?L1RJWlIybHc5N3BZMHFKM01ZN3JtS0JPTG93RHVxOU13N2c0eTZ3T1NVcUZT?=
+ =?utf-8?B?WGNhYzJqWTZ2eHB3dWM3TllpWE1KZENMZksrK2Y4cHArWkhTcnBOMTAwNS9o?=
+ =?utf-8?B?TERETHZCRGlnWktlc2V6KytQeW8wT0d1Vm45K29HZWR6REJ2SVVDQzZ6VG13?=
+ =?utf-8?B?MS9vVnVaekhxU2d1Q1Z5TUtwZGJoTitmYUdhcmFST2xyNi9rZkdBUDJhSTNI?=
+ =?utf-8?B?aTNkemU2NHQvUkt1WU0zaFpVOXlEdVF6N0FqQjhkTFh4UWRXYWhnMjlMZ1BQ?=
+ =?utf-8?B?RGI4TjQ0cUlXRGkwWVNYU3M5eTZlR2NWS2VjdXV4UUVIRnVEbWZSbG5FOFRF?=
+ =?utf-8?B?cEp3SWFwZk05N3Zyci9mK2xCNG1EckVSK3p4TDJHb1dNYzNyaHJLYUtkMjVB?=
+ =?utf-8?B?SzFMaWxJdDNRUmVpdlVDekp4aGhUclE5Um11eUdIUXZNY1FmRU9sekJlRHAy?=
+ =?utf-8?B?YVp5NmxmajFiZ3VrQmh1bkVZWENYUGhIRUNwQnlTaEFuWmFPOWRNN3JBUUNY?=
+ =?utf-8?B?c2tBczNKd1cyOTZ3bERxUXE3MUhqaXhLdzhEdm56Y1RXK2hST2pXa1pYSysz?=
+ =?utf-8?B?dmZIUGhLVjJIUTB4aUNZTFo1RG10RWtzR3pPTU53WUNOMFJXY1BGeGZKYWNR?=
+ =?utf-8?B?aDZCUDJrZmpyWi9sZmRybzJ0R2hXNUw2OFpMMHVzcDhaTmw4ci90eGUrSmhI?=
+ =?utf-8?B?Vk9paEprbVZpNjBvTUlTMFdIQWI1OGtvd1JIZ3NwZmNDeUhRTzdTdGdtamxi?=
+ =?utf-8?B?Q3BrakRmTytScUcwT0g0OTM1WnRlbFU5K1RNeTFQN0JpeHVBQjlYcTVrSWtv?=
+ =?utf-8?B?ZlhWS08wVDhsb0tjTm5YL3lGM1g1dFlhaVpOR1FUL1dYS2dhdzJQeGZFeUx6?=
+ =?utf-8?B?aDF2Vjg1bHdQclpVcnVrZmhVeEUybXlBVThMUER3YlpCdTZqWWhLZitUejhS?=
+ =?utf-8?B?M1lvekpUejJsYVE5dkd1S2RiaktBMS9yQXRjbmpIS3FheHZDOGFGZUFaWGdL?=
+ =?utf-8?B?U1FRZHNRK1E4VG5aV0cweC9uVStNQ3F0M2gyVk1WMjJXZEtjR0tLTEp3UXZi?=
+ =?utf-8?B?UlgvQjgyTmp0cUpzVHlhWFk2aGdQRkMralV3R2MyaGowcXVkNFkwZ25EUEMz?=
+ =?utf-8?B?SVducVJON1BQYldVeExnRE1xWlZZdmlXS0Y5bWE2RlpCNGdlOGJib0dNYmRB?=
+ =?utf-8?B?QkpwQ1RxZ0p0UHBnZDBPYm1IRU1rM2NJN2M1YVlkY3R5bTd3bW9RK053UXht?=
+ =?utf-8?B?azlTcEx0aGxwMUhjNDhsdG5ha1FLSWg4YWsyL1NSYlllMk0rL21yaGRmWHNz?=
+ =?utf-8?B?MThDTHNUYmg2MjRoR3pzSStNNHBnPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:164.130.1.59;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ikV5BsX8SRIQc/UE8inwvpvw13u35cjAwxqTIkoM6AVKhOMXAuvsCKwkL5DnmbjJb68fmH6G5qqtYdxp+67BXAmsiQ3WoDrRz8exODpGGiWMiR9cm9dbkPvr8iA5d9Wd0MMz9YDkkYAM97RAhp0qsT5vtGp0NOzwyzKtFbPjT1x1XfaFl4l8RJXqtfEtWrA/QvaB+KuaGG+5mYkmFGXulrmiTgSEEgEOgn+gKmzM1+gdlWnjOu7+SUN2u7idLRwdGan8CaCRD/OUkxxXkvDxAWf/tuGZtAsEf7Hb3mPn0cdOc+pcmp/jyrQcFuotUX5lEJDDoZPJeay13QHbKiTkcoT6MZqAeXB6Ko4kM3SeNIGD9NbEZ3j3ObuEBNYEzvnrO1RrvmP+SYeyxQ8+MDz35yGT9TYMDk4uMWfkFHHymLtioq1vrdLnb29X/7icEenf
+X-OriginatorOrg: foss.st.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2026 14:24:46.5702
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca4d156f-e8e5-4c6a-35b6-08de72e74bb8
+X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.59];Helo=[smtpO365.st.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM3PEPF0000A791.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR10MB6516
 
-Hi Bartosz,
+Hello Linus,
 
-On Mon, 23 Feb 2026 at 10:06, Bartosz Golaszewski
-<bartosz.golaszewski@oss.qualcomm.com> wrote:
-> Changes in v2:
-> - fix a NULL-pointer dereference in gpio-rcar (Geert)
-                                      ^^^^
-I guess that is bound to happen when a GPIO maintainer touches
-the I2C subsystem? ;-)
+On 2/22/26 15:48, Linus Walleij wrote:
+> On Fri, Feb 20, 2026 at 7:57 PM Shenwei Wang <shenwei.wang@nxp.com> wrote:
+> 
+>> Given that, I’d like to hear from the GPIO subsystem maintainers — @Linus Walleij and
+>> @Bartosz Golaszewski — on whether a driver that works with the current hardware/firmware
+>> design could still be acceptable for upstream inclusion. My understanding is that upstream
+>> generally supports existing, real-world hardware as long as the driver meets subsystem standards.
+> 
+> What a swell party this has become.
+> 
+> In this kind of situations I usually refer to
+> Documentation/process/management-style.rst
+>
 
-Gr{oetje,eeting}s,
+Thank you for pointing out the document, I was not aware of its 
+existence. Very informative!
+That help me to understand you proposal below.
 
-                        Geert
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> What is the message I as a maintainer is getting from NXP regarding
+> "gpio: rpmsg: add generic rpmsg GPIO driver"?
+> 
+> Arnaud, who is the only person in this discussion who actually wrote
+> a standard RPMSG driver (drivers/tty/rpmsg_tty.c), must ACK this
+> patch if it wants to call itself a "generic" RPMSG GPIO driver, if he
+> does not, then it isn't.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+In Fact there are already 2 "generic" drivers, the second one it the 
+drivers/rpmsg/rpmsg_char.c, both are used on several platforms.
+
+It is in my plan to test the rpmsg-gpio on ST platform if we go with the 
+generic approach.
+
+> 
+> Is it generic? If it is not, let's call it "NXP rpmsg GPIO driver" and rename
+> files etc accordingly. Maybe it can share code with the actual generic
+> RPMSG driver once that arrives, that is more of a library question.
+
+I would like to (re)express my concerns regarding the creation of an 
+NXP-specific driver. To clarify my concerns, ST, like probably some 
+other SoC vendors, has rpmsg-gpio and rpmsg-i2c drivers in downstream 
+with plans to upstream them.
+
+If we proceed in this direction:
+
+-Any vendor wishing to upstream an rpmsg-gpio driver might submit their 
+own platform-specific version.
+
+- If NXP upstreams other rpmsg drivers, these will likely remain 
+NXP-centric to maintain compatibility with their legacy firmware and the 
+nxp-rpmsg-gpio driver, leading to platform-specific versions in several 
+frameworks.
+
+- The implementation will impact not only the Linux side but also the 
+remote side. Indeed, some operating systems like Zephyr or NuttX 
+implement the rpmsg device side (Zephyr already implements the rpmsg-tty)
+
+Maintaining a generic approach for RPMsg, similar to what is done for 
+Virtio, seems to me a more reliable solution, even though it may induce 
+some downstream costs (ST would also need to break compatibility with 
+legacy ST remote proc firmware).
+
+
+In the end, I am just trying to influence the direction for RPMsg, but 
+based on the discussions in this thread, it seems others share similar 
+expectations, which should probably be taken into account as well.
+
+Thanks and Regards,
+Arnaud
+
+
+I just want to
+
+> 
+> Yours,
+> Linus Walleij
+
