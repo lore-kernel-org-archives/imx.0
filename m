@@ -1,182 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B862701CB;
-	Mon, 23 Feb 2026 13:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E17285C98
+	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 14:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771855095; cv=none; b=tbKKgtSJ5DCLuvrCZBphoxm+Va5rf9c1wTMWkW9iRgy+IaXofz3tSfV0hvmeNsaTRKMfD0KlLJ/QfU/ThaX18qSiXrUaD/UTbkvkteF/N9iXbFNvJHO/jZ0iV5QQ/tX5vp8Ysgv3+bC7bpFFnMFJJHAL6+bOIiNnl0F0WzahGkA=
+	t=1771856088; cv=none; b=DsPp/MiKFR0+JOB1Ydxufa8Rxw4HbbFZBoSxgLuJzV0GEW3UJjT+3sYzguLw8yGOxVjEIu1ulNWhQFyo+v4rXskwQkH9fSk7RKMtzjiO0y0UB4ZAWxfzFNdoYgRtjPsKMQi4T2hFnDqePRxTcl9jfzp06x+Z+F6Vvml/kpisj7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771855095; c=relaxed/simple;
-	bh=N01VjlSoTpSASgSLbp4Klbk3hC1FeU7Tj4FWqL5oj4M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qImbt/zP4IrrtyfafY94t56MqK9ErJ9MfnpLhD51KnPnCYR2+8tM+s0YVsoLPdGCccihKS3Iti6caRJuXTA06wk6JOcWl0hLgiBtU/Rjj4Fu+GG+djdiudbh93Q8uG6qcpHd0/x+fkrodxZgvEBrHoTKBBVe5/KGh//og1+2gRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E3MAzkDw; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E3MAzkDw"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E8D31C2BCB8;
-	Mon, 23 Feb 2026 13:58:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771855095;
-	bh=N01VjlSoTpSASgSLbp4Klbk3hC1FeU7Tj4FWqL5oj4M=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=E3MAzkDwIOjAm0HWClU6Rvfh5Y2EQNH0mqshoiDVSvkiwQed5Arj1Zuq6KItL78ML
-	 Z57NI7NwTsmqFkbfIXtT6hHEtnG9LTwDlCX+gYnL7bTWzWnc4DhIVwwKrfQSyzUwF9
-	 HQ3HseMFYA/xN571OJNGMMTUHKBam4+bKznTqs4n0OCHWr0PnHiLr8fM5Da2EGaW2/
-	 RCS2FD/wG6oag7StV93LMmSo4UnDOWdgMjvelNovUtdxD4Td10bAQ2fGQtYnfLqilr
-	 H+OSpm3TqdOGKHtWAy7MPSpooxnlCudQlsofGCn9Fqr96Ao+aWb+dtArWL3HriFXmo
-	 1LdHvGgv7lbhA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD626EA4FC4;
-	Mon, 23 Feb 2026 13:58:14 +0000 (UTC)
-From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Mon, 23 Feb 2026 14:58:07 +0100
-Subject: [PATCH v5 4/4] stmmac: s32: enable support for Multi-IRQ mode
+	s=arc-20240116; t=1771856088; c=relaxed/simple;
+	bh=BPlCyTz8G/El4l0BA0OckJ22InPEejXQZx1TWREEqyA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u5gdDlgvdzHp66lWZzUwkuk0VjVByO/HXuF0A/yINS8zxpbulYwGGQ+EUacMpYkp8oBgddohHizyJcHUAbSzQvbR1wrfkw8N4OYR7S6Y1MgSxzndyc1ahyZTCyfdpaC9PIAsNn92LMWzG1eCvRIr3og0J4Jd3VBBJpm10zQR6vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7d18f80b5c2so3730922a34.3
+        for <imx@lists.linux.dev>; Mon, 23 Feb 2026 06:14:47 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771856086; x=1772460886;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nLzVdK8lDfgaTPyV9xNjlD/1kxno0u/2SblofGNbVRQ=;
+        b=CjHY6J5iE2vd9foldp0Tey1ZbKwKrwrR43lYSJ7BhHlSs8d2rdtjTGuIUopkCOFXFI
+         KZG05N59HHlqg+ovaAQrwAoYWdchAl26Qm6Ij8qcvi8tICyfULWvTXKPXPnPipEQd7yk
+         FJUgNOWNAwPjAKmi0Sh/sUUrF4WNdtHZ9wxwaBhh8JXh5MQqD6rQObfUf9T9Rc9zdBIA
+         vurjFIEN1R9LrlWfC2+7XNJIT0QSGtRaYyZeYbJy7SnjCdP32qCSD17L/oUIRHn/QdIW
+         XwwjS7qs63koQQYaaL9sghAg+maOtBpTg7zavcu7s1sMS9YB5rHnaS42Pb342tpMwY9P
+         RddQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVdbi+6R3JASZcZw+2Sc/37cOUiWc3cM4rE+O94/zNdxqDAApA5vvIkG9isMPBub9wm48k=@lists.linux.dev
+X-Gm-Message-State: AOJu0YzuEQiWRNvTOeqtXHjbXtrNt0e7aS9h3oh2nFoN5VcJFqdD6T5I
+	zomqrYknz4CGKP46c3ZaKxHBf3MvoE0U42Q5Yw83xERSabyepCwlD91/daN/MhMy
+X-Gm-Gg: AZuq6aIi1Q+loB/FY5VwLgJRJFq471Eg0LLvuw/mFdhWSFMmgva3p/nIv/fk9T1ts+L
+	dKbzUihDZQvoWS7AX2v5rNqD5QKB/dfzmbif+EJErHooYvjb6wQhL3P22IO5I8EHcX4QJuAmr8h
+	dXE02f+54PPiqBHYCvLizGaAe7atrKqN8ik9HrMiC8ht08pSHfB9bFy2XuRJDExbXoLUHblk2Gt
+	4OdcX8RKEo1vdkU4V9dYlIw/jmnvcSuLHOeVgg7ZMPzQOPONtwmr/i3dva70ByROx0b5WeeS3pp
+	tQFdx35EWwjxpn1MLB2cXW2qE9y452aQ7ERwDZJVB1qnyhF+ObgP5JpMLwwg2mTAaxREedQry9i
+	GEzsIHhoERXh0lqU4VfQctrn+4i0zUTDWG/jmCs9odhmLoy8jN7zMx1mytq/ix5DjwJOYzvSJU5
+	zQ1UMmwER+fR2AX4if53mnpEKE0L5hOa8zebfeDWDUsB1H0q8jileYnMc5ua2Lsb9Q+lzGjbM=
+X-Received: by 2002:a05:6830:2b23:b0:7d4:4d3c:c601 with SMTP id 46e09a7af769-7d52bdf6f79mr5699807a34.5.1771856086548;
+        Mon, 23 Feb 2026 06:14:46 -0800 (PST)
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com. [209.85.210.53])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d52cf78503sm7357585a34.3.2026.02.23.06.14.46
+        for <imx@lists.linux.dev>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Feb 2026 06:14:46 -0800 (PST)
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7d4c383f2fcso3781949a34.0
+        for <imx@lists.linux.dev>; Mon, 23 Feb 2026 06:14:46 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVNNCbt/5hncgis7RuXFANjokYp8BN0uudbPVdM90z/MoQZCcKJDPK6MiGEmmTVqzdnUws=@lists.linux.dev
+X-Received: by 2002:a05:6102:38ce:b0:5ef:a346:a020 with SMTP id
+ ada2fe7eead31-5feb2f081dbmr2742454137.17.1771855750377; Mon, 23 Feb 2026
+ 06:09:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260223-dwmac_multi_irq-v5-4-8fc699a5fac4@oss.nxp.com>
-References: <20260223-dwmac_multi_irq-v5-0-8fc699a5fac4@oss.nxp.com>
-In-Reply-To: <20260223-dwmac_multi_irq-v5-0-8fc699a5fac4@oss.nxp.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
- Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
- NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, devicetree@vger.kernel.org, 
- "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771855093; l=3826;
- i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=jkQq847xhb2eYi7ZpXwtstlwheGp8bBouoJWdRAdL7I=;
- b=uNAw/qBP+ZRZKnsOp91pohZ5uydpZcNiHmWPoOdZckfvptrqJXOwWX9sN/C0qgOPefhVBXYdz
- 7wvVGrk5nHJB3XKllqHIcWW+GvPozLi+hQNy+IybBUzVi+kLDhykdu2
-X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
- pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
-X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
- auth_id=217
-X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-Reply-To: jan.petrous@oss.nxp.com
+References: <20260223-i2c-adap-dev-config-v2-0-d78db0a6fcf7@oss.qualcomm.com>
+In-Reply-To: <20260223-i2c-adap-dev-config-v2-0-d78db0a6fcf7@oss.qualcomm.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 23 Feb 2026 15:08:59 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdWJCc-UeaJLM4dpDN=toDvteXFvOFpTm5AbvNoKf3rTqA@mail.gmail.com>
+X-Gm-Features: AaiRm50V2ONm2B9njU7ZJRcOuR4Nb8zI5Hsqj9aPxNU6M55eyuOZ1HhwjvL4ass
+Message-ID: <CAMuHMdWJCc-UeaJLM4dpDN=toDvteXFvOFpTm5AbvNoKf3rTqA@mail.gmail.com>
+Subject: Re: [PATCH v2 00/12] i2c: configure parent device and OF node through
+ the adapter struct
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>, 
+	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>, Andi Shyti <andi.shyti@kernel.org>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Vignesh R <vigneshr@ti.com>, 
+	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+	Tony Lindgren <tony@atomide.com>, Andreas Kemnade <andreas@kemnade.info>, 
+	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Patrice Chotard <patrice.chotard@foss.st.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+	Bartosz Golaszewski <brgl@kernel.org>, linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	imx@lists.linux.dev, linux-rpi-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Hi Bartosz,
 
-To get enabled Multi-IRQ mode, the driver checks:
+On Mon, 23 Feb 2026 at 10:06, Bartosz Golaszewski
+<bartosz.golaszewski@oss.qualcomm.com> wrote:
+> Changes in v2:
+> - fix a NULL-pointer dereference in gpio-rcar (Geert)
+                                      ^^^^
+I guess that is bound to happen when a GPIO maintainer touches
+the I2C subsystem? ;-)
 
-  1) property of 'snps,mtl-xx-config' subnode
-     defines 'snps,xx-queues-to-use' bigger then one, ie:
+Gr{oetje,eeting}s,
 
-     ethernet@4033c000 {
-         compatible = "nxp,s32g2-dwmac";
-         ...
-         snps,mtl-rx-config = <&mtl_rx_setup>;
-         ...
-
-         mtl_rx_setup: rx-queues-config {
-             snps,rx-queues-to-use = <2>;
-         };
-
-  2) queue based IRQs are set, ie:
-
-     ethernet@4033c000 {
-         compatible = "nxp,s32g2-dwmac";
-         ...
-         interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
-                      /* CHN 0: tx, rx */
-                      <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
-                      <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
-                      /* CHN 1: tx, rx */
-                      <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
-                      <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>;
-         interrupt-names = "macirq",
-                           "tx-queue-0", "rx-queue-0",
-                           "tx-queue-1", "rx-queue-1";
-
-If those prerequisites are met, the driver switch to Multi-IRQ mode,
-using per-queue IRQs for rx/tx data pathr:
-
-[    1.387045] s32-dwmac 4033c000.ethernet: Multi-IRQ mode (per queue IRQs) selected
-
-Now the driver owns all queues IRQs:
-
-root@s32g399aevb3:~# grep eth /proc/interrupts
- 29:    0    0    0    0    0    0    0    0    GICv3  89 Level   eth0:mac
- 30:    0    0    0    0    0    0    0    0    GICv3  91 Level   eth0:rx-0
- 31:    0    0    0    0    0    0    0    0    GICv3  93 Level   eth0:rx-1
- 32:    0    0    0    0    0    0    0    0    GICv3  95 Level   eth0:rx-2
- 33:    0    0    0    0    0    0    0    0    GICv3  97 Level   eth0:rx-3
- 34:    0    0    0    0    0    0    0    0    GICv3  99 Level   eth0:rx-4
- 35:    0    0    0    0    0    0    0    0    GICv3  90 Level   eth0:tx-0
- 36:    0    0    0    0    0    0    0    0    GICv3  92 Level   eth0:tx-1
- 37:    0    0    0    0    0    0    0    0    GICv3  94 Level   eth0:tx-2
- 38:    0    0    0    0    0    0    0    0    GICv3  96 Level   eth0:tx-3
- 39:    0    0    0    0    0    0    0    0    GICv3  98 Level   eth0:tx-4
-
-Otherwise, if one of the prerequisite don't met, the driver
-continue with MAC IRQ mode:
-
-[    1.387045] s32-dwmac 4033c000.ethernet: MAC IRQ mode selected
-
-And only MAC IRQ will be attached:
-
-root@s32g399aevb3:~# grep eth /proc/interrupts
- 29:    0    0    0    0    0    0    0    0    GICv3  89 Level   eth0:mac
-
-What represents the original MAC IRQ mode and is fully backward
-compatible.
-
-Reviewed-by: Matthias Brugger <mbrugger@suse.com>
-Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-index af594a096676..4aad7077c9d6 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
-@@ -2,7 +2,7 @@
- /*
-  * NXP S32G/R GMAC glue layer
-  *
-- * Copyright 2019-2024 NXP
-+ * Copyright 2019-2026 NXP
-  *
-  */
- 
-@@ -165,6 +165,16 @@ static int s32_dwmac_probe(struct platform_device *pdev)
- 	plat->core_type = DWMAC_CORE_GMAC4;
- 	plat->pmt = 1;
- 	plat->flags |= STMMAC_FLAG_SPH_DISABLE;
-+
-+	/* Check for multi-IRQ config. Assumption: symmetrical rx/tx queues */
-+	if (plat->rx_queues_to_use > 1 &&
-+	    (res.rx_irq[0] > 0 && res.tx_irq[0] > 0)) {
-+		plat->flags |= STMMAC_FLAG_MULTI_MSI_EN;
-+		dev_info(dev, "Multi-IRQ mode (per queue IRQs) selected\n");
-+	} else {
-+		dev_info(dev, "MAC IRQ mode selected\n");
-+	}
-+
- 	plat->rx_fifo_size = 20480;
- 	plat->tx_fifo_size = 20480;
- 
+                        Geert
 
 -- 
-2.47.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
