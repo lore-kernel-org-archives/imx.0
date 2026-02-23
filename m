@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA779344DAE
-	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 09:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2E434EF09
+	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 09:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771839317; cv=none; b=OBPMwSfEJlUDvqqdsXB21FtLL7zo7q30VAG7FTYLw+aD8DKW8PdEGJmrR5l2si4RgEThe/QPAuUFTLRhqtco7b2rBN4NMKkrHD1pQvbBwbgW3nMXrNm/LlJ/Q1h9MbWpDoxF8/sA86qc5ePeWc+mFc9M3JBArhft0XYrg605PTg=
+	t=1771840202; cv=none; b=J189SwbCv4gTdjX9zcxwsApZ0/AfLQm7Nj6Rr5OjUQihKELOz5dONZgV+PJ/WcffXDE8Tu7gIXAojvd8UZnFV+WMKHBlWctsPZEkTXAC7ZQibLuCjj71J2Rk4Je3AezehCVToX39o6Xs+ffAn6QBApYKRWQAsGcAjZqIIWeyV4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771839317; c=relaxed/simple;
-	bh=gOHSH5T7aN1Q8F433D+dAygA7u1opGVuMgvqvrifxHk=;
+	s=arc-20240116; t=1771840202; c=relaxed/simple;
+	bh=CQaerqaO94SUvC0RBkpmPblTp23xUve9HixX4t4j2L4=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=f4eLYR/lFsIDpVEPqrnqBEE8RCczVqYMGFMaNhFGz9/v+7fYWVuVS6vCivf8NGD2cdb800sE2rY6WKFWMrbdXoBCfqaFIrvg9RhNV0jiO+g/jcnfaYiHGC+XPEoDiLSfGAz2XIG4xCiwTOixqtbDqzofLj5nbScbCUf/tSdPMzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=QVSPFkTi; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=st0Dy/0bnAbUEj4jOiBYetTzLqEOAPUsBwy5tAjnCSa2194kyTrzDjtoUBu9+ZlG4LYPm2uLrqrAelL/F3dS9+4vId7cQkZyxg4/VqxRh89QXRRS/+2MON6+LVIC57sOZavldHbYCL62EPFmhQP8FYfKBErMGOTXKjTH++726mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=ddee/CP6; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="QVSPFkTi"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="ddee/CP6"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Do17YiNZlO1FGZYCmIGfMRB4ftX2C7NWXrIlFxQE5s8=; b=QVSPFkTiCI2m+8WibS0TgADta0
-	i2Bhf6uFaJn/aTr/c15U1LUqg/9F4qBcXyjWoGepyzvAoW/0QwPIbG09JczkqvbjMYc0WnGjrH5bN
-	j+uQtqqTzdgcJrzU8DwoZu2QHFyYZZ/Gcg7QF6Ltpx8r1NmMejZ6Hcvg/qq1p1wpWRwsNAYK2TFlj
-	JYAkgEtOjIX+sSG2b0CxDLFijmfwCLZ46Mt4P9HfsF3hnyX3gB8bbOKJ/SwXUssvHOGpCjgPxCAnF
-	A3yIgjxMA3GRAsmy+XN5dC620I8csyc6+nbuybood48Zo8EzuzolW333qWzAinU5Xkb64KLgFvfpR
-	qhYLpFJw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:48924 helo=rmk-PC.armlinux.org.uk)
+	bh=h1qemJ9T19BWX8RspLLamHrXeBfB/46GJPlusAb73Gw=; b=ddee/CP6H2pArVn5J7X3sQ1ibc
+	av2S6hElHtr7a03FoNfuDzly0TTL8FhQCTdg4i9d4ONJ4hd/FcbRA1+IAyFXWnLTd3pp1u9ra0SNi
+	LfaZpMD7JE5aqbnf3MWBFfJOXAd59eUlNly8mDt9JiY7seqXeRyBu4p6kLfKg7YCV+w8gEQinWyAM
+	J5p+k+1BVe0u6Wk5X8fYSuRvcQEZeKIsa3ZzI7sQcEhNcWGiOAsavHm0jrHsrCXy1v3RE7Ne068gq
+	fe4TKnioGvAYyBKjzCwyeLq/PPSXhaItA/RJSFniE2wREn5WUNbT9LLwXJJUDS7L3RGVB7UH05TAI
+	uKeLFmUA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:47460 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vuSLB-000000003o3-40kW;
-	Mon, 23 Feb 2026 09:34:58 +0000
+	id 1vuSLM-000000003oU-2mCW;
+	Mon, 23 Feb 2026 09:35:08 +0000
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vuSL5-0000000AScX-2wuM;
-	Mon, 23 Feb 2026 09:34:51 +0000
+	id 1vuSLF-0000000ASci-42kh;
+	Mon, 23 Feb 2026 09:35:01 +0000
 In-Reply-To: <aZwfAFJQcp9f0niI@shell.armlinux.org.uk>
 References: <aZwfAFJQcp9f0niI@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -59,8 +59,8 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH net-next 08/10] net: stmmac: qcom-ethqos: use phy interface
- mode for inband
+Subject: [PATCH net-next 10/10] net: stmmac: qcom-ethqos: convert to
+ set_clk_tx_rate() method
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -70,66 +70,84 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vuSL5-0000000AScX-2wuM@rmk-PC.armlinux.org.uk>
+Message-Id: <E1vuSLF-0000000ASci-42kh@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 23 Feb 2026 09:34:51 +0000
+Date: Mon, 23 Feb 2026 09:35:01 +0000
 
-qcom-ethqos currently forces inband to be enabled for the Cisco SGMII
-speeds (1G, 100M and 10M) but not for 2500BASE-X (2.5G).
+Set the RGMII link clock using the set_clk_tx_rate() method rather than
+coding it into the .fix_mac_speed() method. This simplifies ethqos's
+ethqos_fix_mac_speed().
 
-Rather than using the speed to determine the forced inband state, use
-phylink's PHY interface mode which will switch between SGMII for the
-10M, 100M and 1G speeds, and 2500BASE-X for 2.5G.
-
-Reviewed-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
 Tested-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- .../stmicro/stmmac/dwmac-qcom-ethqos.c         | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ .../stmicro/stmmac/dwmac-qcom-ethqos.c        | 21 ++++++++++---------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index e2dd334ffd31..cd6d1660bdb2 100644
+index 153f6abc77cd..ad5b5d950fff 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -615,30 +615,26 @@ static void ethqos_configure_sgmii(struct qcom_ethqos *ethqos,
+@@ -103,7 +103,6 @@ struct qcom_ethqos {
+ 	void (*configure_func)(struct qcom_ethqos *ethqos,
+ 			       phy_interface_t interface, int speed);
  
- 	switch (speed) {
- 	case SPEED_2500:
--		rgmii_setmask(ethqos, RGMII_CONFIG2_RGMII_CLK_SEL_CFG,
--			      RGMII_IO_MACRO_CONFIG2);
--		ethqos_set_serdes_speed(ethqos, SPEED_2500);
--		ethqos_pcs_set_inband(priv, false);
--		break;
- 	case SPEED_1000:
- 		rgmii_setmask(ethqos, RGMII_CONFIG2_RGMII_CLK_SEL_CFG,
- 			      RGMII_IO_MACRO_CONFIG2);
--		ethqos_set_serdes_speed(ethqos, SPEED_1000);
--		ethqos_pcs_set_inband(priv, true);
- 		break;
- 	case SPEED_100:
--		ethqos_set_serdes_speed(ethqos, SPEED_1000);
--		ethqos_pcs_set_inband(priv, true);
- 		break;
- 	case SPEED_10:
- 		rgmii_updatel(ethqos, RGMII_CONFIG_SGMII_CLK_DVDR,
- 			      FIELD_PREP(RGMII_CONFIG_SGMII_CLK_DVDR,
- 					 SGMII_10M_RX_CLK_DVDR),
- 			      RGMII_IO_MACRO_CONFIG);
--		ethqos_set_serdes_speed(ethqos, SPEED_1000);
--		ethqos_pcs_set_inband(priv, true);
- 		break;
- 	}
-+
-+	if (interface == PHY_INTERFACE_MODE_SGMII)
-+		ethqos_set_serdes_speed(ethqos, SPEED_1000);
-+	else
-+		ethqos_set_serdes_speed(ethqos, SPEED_2500);
-+
-+	ethqos_pcs_set_inband(priv, interface == PHY_INTERFACE_MODE_SGMII);
+-	unsigned int link_clk_rate;
+ 	struct clk *link_clk;
+ 	struct phy *serdes_phy;
+ 	int serdes_speed;
+@@ -175,19 +174,20 @@ static void rgmii_dump(void *priv)
+ 		rgmii_readl(ethqos, EMAC_SYSTEM_LOW_POWER_DEBUG));
  }
  
- static void ethqos_configure(struct qcom_ethqos *ethqos,
+-static void
+-ethqos_update_link_clk(struct qcom_ethqos *ethqos, int speed)
++static int ethqos_set_clk_tx_rate(void *bsp_priv, struct clk *clk_tx_i,
++				  phy_interface_t interface, int speed)
+ {
++	struct qcom_ethqos *ethqos = bsp_priv;
+ 	long rate;
+ 
+-	if (!phy_interface_mode_is_rgmii(ethqos->phy_mode))
+-		return;
++	if (!phy_interface_mode_is_rgmii(interface))
++		return 0;
+ 
+ 	rate = rgmii_clock(speed);
+-	if (rate > 0)
+-		ethqos->link_clk_rate = rate * 2;
++	if (rate < 0)
++		return rate;
+ 
+-	clk_set_rate(ethqos->link_clk, ethqos->link_clk_rate);
++	return clk_set_rate(ethqos->link_clk, rate * 2);
+ }
+ 
+ static void
+@@ -643,7 +643,6 @@ static void ethqos_fix_mac_speed(void *priv, phy_interface_t interface,
+ {
+ 	struct qcom_ethqos *ethqos = priv;
+ 
+-	ethqos_update_link_clk(ethqos, speed);
+ 	ethqos_configure(ethqos, interface, speed);
+ }
+ 
+@@ -821,12 +820,14 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
+ 				     "Failed to get serdes phy\n");
+ 
+ 	ethqos->serdes_speed = SPEED_1000;
+-	ethqos_update_link_clk(ethqos, SPEED_1000);
++	ethqos_set_clk_tx_rate(ethqos, NULL, plat_dat->phy_interface,
++			       SPEED_1000);
+ 
+ 	qcom_ethqos_set_sgmii_loopback(ethqos, true);
+ 	ethqos_set_func_clk_en(ethqos);
+ 
+ 	plat_dat->bsp_priv = ethqos;
++	plat_dat->set_clk_tx_rate = ethqos_set_clk_tx_rate;
+ 	plat_dat->fix_mac_speed = ethqos_fix_mac_speed;
+ 	plat_dat->dump_debug_regs = rgmii_dump;
+ 	plat_dat->ptp_clk_freq_config = ethqos_ptp_clk_freq_config;
 -- 
 2.47.3
 
