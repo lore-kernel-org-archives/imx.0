@@ -1,139 +1,199 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811791E49F
-	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 13:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDEE364EB1;
+	Mon, 23 Feb 2026 13:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771851821; cv=none; b=O4TRk2JcR9ofu2fT6hYWLuIUJn9VB764zQ7bGMlRWEK4cBkbMibrEuxnostpE9LazK+ypzsIzhscoWmNlpWmniNz4xI03o9livlg0IuFrUzBp4LEuAnFDAKLejmf5lPEyr6kHgNaM/87sglB+G7BBHU+Klmo6KUXX0EKWva/90I=
+	t=1771852487; cv=none; b=mLl6HKZs+ShqiUopxHb9Lt0Cy6CwR2AfvmYMUsbU2/QC/bDRKkchhmEI/8Jk/fSAccVB7+EG/7IK+KweBqmoVK5WlmSpFnim3+nTkC/S49f0qgLuKB9Agiw26H7sqDVPI3h26yJf64l7rJYr9zf8PKSw9V4eT+lxK6AbwsiXeiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771851821; c=relaxed/simple;
-	bh=B2UErQOEwxaQ5IbCLr5XWExQGBw2GSEK9KtGqxc7fgY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cKGXJtsuHcHu1SiIMwHyAqUpuSajHeuCw0KY5vxmA0sNi5a5wRyWGw3Xx1nFlF0lXR4OSinSTPQzdT5pDtW1ofN4P1llpKEW1i+7a/IkbA4So+nedsIJiueS09nTrTm2EinMlbMDtINjqZPsov2fIcTNTK4sMk7HQrBQM0oC3k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HUcIpGAq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771852487; c=relaxed/simple;
+	bh=8DwFT3SzJIRBOZObvA0LRL2zBy3gdn77newiUsk86b8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=epOsDJFH/3dcCHbAQx3XqqiJLiMiqZlGn+MQaa9q8PC6hJEDdkgphKqkloTCQSvaEQpWZ92baPmixv8YfUP7Tq0j3PsWqhWnFHU5OuAJdJ+LWeKzeVlNdixloOXtWyocUyaav+0XZzo7nBFsSelLaSPyhnDJGjjpjhEuZXbI1K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oL+F96Vg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HUcIpGAq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51EA0C2BCAF
-	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 13:03:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oL+F96Vg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD52C19424;
+	Mon, 23 Feb 2026 13:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771851821;
-	bh=B2UErQOEwxaQ5IbCLr5XWExQGBw2GSEK9KtGqxc7fgY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HUcIpGAq+sjNn/KX7PmSMRev7HMjqD3GK+1Oiy6e0pXqT8TzTk/4mn7AtRH6HxTug
-	 cXHgjxrRlQKaWyeDcnx9lyuH3zqED8yLZsS5pY+iqOA4tvMUdUzgrpHZ+fdTJJLwer
-	 92pbp/uJI7pMPW8qjh055AJ+057MQcQm+oOkpQfTpwIXv3wQh+L4S+IhIoQuQxVKGD
-	 pk5SlJhgSuk6OUES7KU0mVnRpj5YBQm9jQAY60luJijWiXkv/30NGxbNsVABXoJxDf
-	 YHTjXWaqpDCdtQWHFj6an0IUIY4JBZnrCK6jZ5KY2+d7U34+Qh5/zQLvk7diCwycEq
-	 0tZDR7I00Y0Sw==
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-45f18e8f2f5so2829900b6e.3
-        for <imx@lists.linux.dev>; Mon, 23 Feb 2026 05:03:41 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXwoLGXNnhezncLmUxuQyyKgMMsnVaO5dQLL4brMEt3FbbqgThhC5k+QAoDWCCDr3vzCcw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxxVDzg3NKuvikea2OR/OHXG5qyFAOove+6iN9FwRJgzJDadr10
-	h6+M/18BVbdDZzxLjYXrSpw3K6/60W8vf22l65aG3LKrINvid1MmLAns6iS1qr19lpl7qh8JfwL
-	Kw6ju9qI+l109FRuEKKI0x3g2TLzJv+g=
-X-Received: by 2002:a05:6808:1187:b0:45f:16d1:8f52 with SMTP id
- 5614622812f47-464461fd8fcmr4665069b6e.27.1771851820365; Mon, 23 Feb 2026
- 05:03:40 -0800 (PST)
+	s=k20201202; t=1771852487;
+	bh=8DwFT3SzJIRBOZObvA0LRL2zBy3gdn77newiUsk86b8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oL+F96VgfcBJOcHfWjY8OCc7DLRkYL7rvRqvfYaO4zTIWo1qqarm2/KV6YX7QAbox
+	 FM2GZNvfkXO4u1jSmYon1GBy3oC/yas5NKZob5V2/AehahvUA9cFfgFGH/dkGl8uK5
+	 wJujyp/6kO4AlGE7tYKZcnqhSvhqPDDWy/VjYEhPRsBKhT0rrGWgVUpjIVpwY42uQg
+	 THt3FZPxXS27POM6ejDcFCGJZY7H0OpaMrqJsezbDdELEbq8EBCdN2S7IpYLiBYGrh
+	 nCMy7lHyiFv07LSeUEFdq0J3knzGvrHNXO8stz1M37gY2C1+9WwzDjOR9vaI0pq2SL
+	 QCIdNPZWUYj8g==
+Message-ID: <fe755e85-1558-4272-bdd4-af7a2038ab1f@kernel.org>
+Date: Mon, 23 Feb 2026 14:14:39 +0100
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <6245770.lOV4Wx5bFT@rafael.j.wysocki> <15658107.tv2OnDr8pf@rafael.j.wysocki>
- <CAPDyKFrgXG5X-y0teE-wVvqaeNepStMN3=0M4zkZs8Kb88U22A@mail.gmail.com>
- <CAJZ5v0iszxD9WV2Nfy9=usmP84Lf0aE9nCxKTBP-B2=zxqnoYw@mail.gmail.com>
- <CAPDyKFqP1pgyv3F+krKsViE96oyYF-O=Q7+bresDf5Okjeh6RA@mail.gmail.com>
- <CAJZ5v0gOAdST7KsTqR6EEK_AQZMf3Ls5mt-Xys2tHbmRoaLAZg@mail.gmail.com> <CAPDyKFr6YdQ4nHD8RcGQpTdqKH7CszEd23YzF-o-TUVETBaG6w@mail.gmail.com>
-In-Reply-To: <CAPDyKFr6YdQ4nHD8RcGQpTdqKH7CszEd23YzF-o-TUVETBaG6w@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 23 Feb 2026 14:03:28 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0j920aybTFtuQypeorDY+13ZY6GoZVQyFc9xMNuM6iV9A@mail.gmail.com>
-X-Gm-Features: AaiRm53u6VNQZ87lI43bhqydkI5FvW2LICTVi9snIAIeufiemlbFcIdcRN5_9g4
-Message-ID: <CAJZ5v0j920aybTFtuQypeorDY+13ZY6GoZVQyFc9xMNuM6iV9A@mail.gmail.com>
-Subject: Re: [PATCH v1 19/23] pmdomain: imx: gpcv2: Discard pm_runtime_put()
- return value
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Brian Norris <briannorris@chromium.org>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, imx@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 01/10] dt-bindings: mfd: add support for the NXP SIUL2
+ module
+To: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
+ Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+ Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+ Jacky Bai <ping.bai@nxp.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>,
+ devicetree@vger.kernel.org, Enric Balletbo <eballetb@redhat.com>,
+ Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ "Vincent Guittot devicetree @ vger . kernel . org"
+ <vincent.guittot@linaro.org>, Rob Herring <robh@kernel.org>
+References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
+ <20260120115923.3463866-2-khristineandreea.barbulescu@oss.nxp.com>
+ <20260121021913.GA1704619-robh@kernel.org>
+ <e956750b-0333-4465-b37e-5f460b5e092f@oss.nxp.com>
+ <edc3a63a-8117-476f-9582-97ae31fefa96@kernel.org>
+ <7d200097-51bc-4404-be8b-f536d0ecfc25@oss.nxp.com>
+ <21531cdd-5ab9-493e-a722-61b98117e2c4@kernel.org>
+ <22a5a072-847e-4cfd-8abd-e37163f73265@oss.nxp.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <22a5a072-847e-4cfd-8abd-e37163f73265@oss.nxp.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 23, 2026 at 12:04=E2=80=AFPM Ulf Hansson <ulf.hansson@linaro.or=
-g> wrote:
->
-> On Fri, 20 Feb 2026 at 17:58, Rafael J. Wysocki <rafael@kernel.org> wrote=
-:
-> >
-> > On Fri, Feb 20, 2026 at 5:06=E2=80=AFPM Ulf Hansson <ulf.hansson@linaro=
-.org> wrote:
-> > >
-> > > On Thu, 19 Feb 2026 at 15:07, Rafael J. Wysocki <rafael@kernel.org> w=
-rote:
-> > > >
-> > > > Hi Ulf,
-> > > >
-> > > > On Sun, Dec 28, 2025 at 4:52=E2=80=AFPM Ulf Hansson <ulf.hansson@li=
-naro.org> wrote:
-> > > > >
-> > > > > On Mon, 22 Dec 2025 at 21:37, Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
-> > > > > >
-> > > > > > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > > >
-> > > > > > Passing pm_runtime_put() return value to the callers is not par=
-ticularly
-> > > > > > useful.
-> > > > > >
-> > > > > > Returning an error code from pm_runtime_put() merely means that=
- it has
-> > > > > > not queued up a work item to check whether or not the device ca=
-n be
-> > > > > > suspended and there are many perfectly valid situations in whic=
-h that
-> > > > > > can happen, like after writing "on" to the devices' runtime PM =
-"control"
-> > > > > > attribute in sysfs for one example.
-> > > > > >
-> > > > > > Accordingly, update imx_pgc_domain_suspend() to simply discard =
-the
-> > > > > > return value of pm_runtime_put() and always return success to t=
-he
-> > > > > > caller.
-> > > > > >
-> > > > > > This will facilitate a planned change of the pm_runtime_put() r=
-eturn
-> > > > > > type to void in the future.
-> > > > > >
-> > > > > > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > > > >
-> > > > > Applied for next, thanks!
-> > > >
-> > > > Since you applied this one, I'm assuming no objections, so I'm goin=
-g
-> > > > to queue it up separately along with the patch changing
-> > > > pm_runtime_put() to void because I would prefer to make that change=
- in
-> > > > 7.0 to dragging it for another cycle.
-> > > >
-> > > > An ACK would be helpful though, I think.
-> > >
-> > > I was still hoping that Linus was considering to pull my pull-request
-> > > for pmdomain, but it seems like that may happen. Assuming that doesn'=
-t
-> > > change, I can re-base my next branch on Monday to drop $subject patch=
-,
-> > > but please wait until my confirmation so we don't end up having two
-> > > commits in linux-next for the same change.
-> >
-> > Sure, no problem.
->
-> I have updated my next branch and dropped the $subject patch from it.
-> Please add my ack when applying.
->
-> Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
+On 23/02/2026 12:51, Khristine Andreea Barbulescu wrote:
+> On 2/20/2026 4:41 PM, Krzysztof Kozlowski wrote:
+>> On 20/02/2026 15:36, Khristine Andreea Barbulescu wrote:
+>>> Hello Krzysztof,
+>>>
+>>> On 2/20/2026 12:16 PM, Krzysztof Kozlowski wrote:
+>>>> [You don't often get email from krzk@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+>>>>
+>>>> On 19/02/2026 12:36, Khristine Andreea Barbulescu wrote:
+>>>>>>
+>>>>>>> +      reg:
+>>>>>>> +        maxItems: 1
+>>>>>>
+>>>>>> You have 'reg' so the node name should have unit-address.
+>>>>>>
+>>>>>> However, there's not any real DT resources in this child node, so you
+>>>>>> should just drop it.
+>>>>>>
+>>>>>
+>>>>> For context, SIUL2 exposes a set of platform‑capability and SoC identification registers that are split across the two discontiguous ranges: SIUL2-0 and SIUL2-1. These registers are the source of SoC information (e.g. identification and capability flags) that other subsystems are expected to consume (e.g. PCI Express). Because those fields are physically divided between the two SIUL2 ranges, consumers need reliable access to both ranges to correctly discover and configure the platform.
+>>>>>
+>>>>> Hence, my proposal is to keep the two 'syscon' child nodes.
+>>>>
+>>>> Please wrap your replies correctly, so this will be easily parseable.
+>>>>
+>>>> I do not understand the reasoning. If you have two register ranges, you
+>>>> have two <reg> entries and having a child node has nothing to do with it.
+>>>>
+>>>
+>>> I’ve reorganized the SIUL2 node with two syscon subnodes for the two
+>>> register regions used to read system info, and a separate
+>>> pinctrl/GPIO child (as discussed in the v8 06/10 thread [0]). The parent
+>>> SIUL2 node now carries the bus addressing and ranges:
+>>
+>> That's not the answer to the comment. Read again:
+>>
+>> 1. Reviewer: No resources, so no separate node.
+>> 2. Your answer: some soc capability and two address spaces
+>> 3. Reviewer: Does not matter, address spaces can go again to original place
+>> 4. Irrelevant reply.
+>>
+>> So again, read the first comment - do you have dedicated resources in
+>> children?
+>>
+>>>  
+>>>     siul2: siul2@4009c000 {
+>>>         compatible = "nxp,s32g3-siul2", "nxp,s32g2-siul2";
+>>>         #address-cells = <1>;
+>>>         #size-cells = <1>;
+>>>         ranges = <0x4009c000 0x4009c000 0x179c>,
+>>> 		 <0x44010000 0x44010000 0x17b0>;
+>>>  
+>>>         siul20: siul20@4009c000 {
+>>>             compatible = "nxp,s32g-siul2-syscfg", "syscon";
+>>>             reg = <0x4009c000 0x179c>;
+>>
+>> 0x179c is odd size. Looks fake.
+>>
+>>
+>>>         };
+>>>  
+>>>         siul21: siul21@44010000 {
+>>>             compatible = "nxp,s32g-siul2-syscfg", "syscon";
+>>
+>> And two same devices with same compatible proof it.
+>>
+>> Best regards,
+>> Krzysztof
+> 
+> We don’t have dedicated resources for children. In particular,
 
-Thanks!
+Then previous comments/review stay.
+
+> there are no resources allocated specifically for nodes like
+> "nxp,s32g-siul2-syscfg". Their consumers are the pinctrl/gpio
+> driver and other drivers that read SoC‑specific information from
+> those shared registers.
+>  
+> My alternative is to keep two separate syscon providers for the
+
+You got review already.
+
+Best regards,
+Krzysztof
