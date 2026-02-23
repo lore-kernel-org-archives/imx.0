@@ -1,147 +1,314 @@
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012042.outbound.protection.outlook.com [52.101.66.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FBA361643
-	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 11:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE4535BDAF
+	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 11:51:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771846348; cv=pass; b=cR72eoQm5ROnBQq+MdHB5aUudvEBKvdpOrxkdt7y+8kPsMcNwFbb5PfGMA71BhezsqRnXEVZeOHIiIW3w9RAMAMm8D9Hx5/jKMLzkMWoNEHHHBICWAZkvhv00eoPec3ioBqaSquGV50LQ7h/Dhilyk4LdeTTpvU5+UY1cRs/gts=
+	t=1771847522; cv=fail; b=TdlAurmi8jcU+1KTGVAXLkTGavp0UPqjomZRbpZAL5geu6+NqYbVSd+oebpJRCjtMLJhSz2Ql/nn0je+oyUuX7wWod5xN1jLZx1kHq655J2HcwPBfriq7rwe/NVVBLYjUQpDjBr1n5lxQV26WvTYbRk0rolCQNsAEQv6RVRR/bI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771846348; c=relaxed/simple;
-	bh=uHtxhZgqkvvhkDixZGvThzOeJrJuPZvcOjfb03f5dzM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vu4Q09DYZESaQb+aEQ84+wgi3EcyEoJF8Eg9gn1pDQrg4WZUNCbwihLZRXnQvNyWuctxHkQgnaLMT07UpQwZw5g/3Dge7TF/hBKPozstH1qoAIZn4WZoIUG7n8Ado+YMsXdx7F4PMaoVAivoVCFk4KdaZ4nunaG3w50bhU552J0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=d9Xkf9DG; arc=pass smtp.client-ip=74.125.224.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
+	s=arc-20240116; t=1771847522; c=relaxed/simple;
+	bh=rwiLo6c6Oov+f0Xo3tNe3QQvjNFwTDJMzyrV6YKTo10=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=QPV4ulle1JDN8B8AEU8wB3RZGjrohtXKR7L4FOEgRlpZQBffLPinR8Hj5tDflXuGMNFicrhPnBlr0O6bbexAQytRbuSTttp0MZ8q1y4wf+bfvHd7rjnUvaMApb7uT6V3wwFKZzrZbN0kkXXB5UXNmeXsErWPQlnOXdld+zCSElQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=v5aawHpj; arc=fail smtp.client-ip=52.101.66.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="d9Xkf9DG"
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-64ad79dfb7cso3872870d50.2
-        for <imx@lists.linux.dev>; Mon, 23 Feb 2026 03:32:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771846345; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gC0EiOpAENVnDAssEUmpNAGlbb4/CpimkS3it7FylGGaxRphdcdwOZ2gFKJxM6yqO0
-         vd/DsEKFLiRS/HRyuQulSg1WXUClLsxmgqSWIE5mnl2O/ZB1PU7GvSBL6DJLc4IP/aAA
-         ToVVTmg6oBipsAHf1NROJKPGK3Kd1wXRuhqw8U2YBGvzgC7rb6FcHUddwXFg2MRtHGrv
-         zLC0M3RIULtcmoGU6BGj3Re6tXJaxI8E9FhnCuxi1atGQVczxnt46XLzDWs777cY7wGa
-         Mh7ZyR6ftpJ68IyeeeCcziwLI/A6p1ByuIY6bbHRrwxOKOF9S/xzMHMasbXgQcWMQQJU
-         b82g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=JV6MMROodIfNHs5yZIiROnA2XT+gIEtvvO+RXDqEFEw=;
-        fh=BeY4BBHbq7x+KJ9/Uq7B0ztuVRcIp9YMccPiqxE9OgY=;
-        b=jrZRT5d4Ub5T+Kkz0KFUz85tBC9qvEtiI8j6Toy1daD+SoIipExJ1O1nmUiI+JEvxx
-         Chicb2JUTPSJh20KFkN0Vdahqta1WvOYBWjcTxuXOF+GmMA4VlEKl7WiwMLeyCMgUKqp
-         imU0W5LzNLq5D5MS/U5tjQt5r/s7T61Zl7IeBpB9b/q6BHNwOggmgrLWw5Z/tSq9Z7jI
-         8Yl7/LQniZAdySzvngW1ZlKYOGYbaJF3Sbli4+TniDTSoRNLqn2mkUiChGvfhN/3GT2e
-         x5PJI9Ui/KNN0IVKkRR2OLiumg50bwtVfE3GRU2aecP2j5FX3uhRp4WQ18vhHgaKbr6K
-         FrXQ==;
-        darn=lists.linux.dev
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.com; s=google; t=1771846345; x=1772451145; darn=lists.linux.dev;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=JV6MMROodIfNHs5yZIiROnA2XT+gIEtvvO+RXDqEFEw=;
-        b=d9Xkf9DGl3hSTKxKjmKbm2W3ob+W6/c+pj6y5pByQCyP9lvntfVhiDHA4z9fwqgXst
-         W3NqYj9XZhg9GrXYITYUInQLgBdMdLWoLBc1NoxGvTiPJzG58Ar3HJnnlzgMyBLSIYSL
-         BwE4S8URHPAOqjhvSpZZHICUXsBus5OjpdKHaeKuOPmXet4jru9OdJhuqeCwYePSoT99
-         5zKCX+intuaGyVJP8TAS1lKRYlE8/nYeor4yoDHpo0Lsc35hE+lBX2xdHFIgF8D49jWg
-         2Lpul9JocndoX2dA0uos2brb4PhJfPsrm/DjkOAk2alRR+eJ0E0wiREO9EcYUx5e5HS6
-         MKZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771846345; x=1772451145;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JV6MMROodIfNHs5yZIiROnA2XT+gIEtvvO+RXDqEFEw=;
-        b=mF9dCgiA0/HrSeS57RVhB8fFE68oj/Elg4aCpn1iUW5G1+1ILdVl8d1CjrQdQgYdRV
-         SiVzOI4cFDUoYR+PM5u8kKjogHd+XRIhUttDFS0/RK6NupUXvisYAW3efOgB7ZmKZfOo
-         06rqp7RiDAD8yoeIXOi60CP5Ae4LTTVj4iAqcI/5rKlK/SQt0r7hokJ4v5TuFglcQ7fF
-         NdDplKjmTA1XZat7QPqDPeJBayRMpGDwuLUC1hq+ygc3xXIfxvZZA0zD33FslUK1OVBp
-         eil8r5NePvp7iCK6Ub3gqrSPsorPMcjbEf/TcIJrUj0Ymw0qDx2GTaRGjWHSJxQ8jZst
-         0t3g==
-X-Forwarded-Encrypted: i=1; AJvYcCVTKOgVfGPTOrNgDo+QEKrofFRlWsKkLM1zgMRsQDWq3hj3TfJcs0EwCzfVhCvhRZn2O2o=@lists.linux.dev
-X-Gm-Message-State: AOJu0YyEwcRqheNaceGHIELlIroj/apL7d4DBc/7s8ODfdCcjikD5DUo
-	iex0RBFrdP3tJBRYVLYSfXKxQiFeYWoRyQkmBUPYiPNPb7tIoEHUIFHTma4wn14g3/hCMAJGeZQ
-	yWkdIP9WXU3mkhDnJqTJIAJxyb0dqmuCm5U2LjnNXRg==
-X-Gm-Gg: ATEYQzy/GxLOCmUlmgAj7EszGbqTWOufLa2qpyukOq5mHWxjfDVXObuzDarlolpfcEK
-	iSJt76pZbvV1uu/yh/1gn9VkTjLXtVHew0grLmzbV8refBV8qss10ICTOD3bz4Is1OGWU72Vp2O
-	IxYsyMrpSy1tkg5ulTFlSINVkrVfl7DS8jEr5v9GkJmpYzG6+0SMcZ/loRKfCBtOY8ADDnN+naf
-	XMyXvNg5sIeqh/h+aV2qm4K2GsRip4xkHueq/YVs2F+nWBFllKvfIwAAPbvmBc1z3tKsEZNtXxe
-	S3lo2iUHVbCzeva6uuAe7CO9Ht1T4KkMICcCEg==
-X-Received: by 2002:a05:690e:1601:b0:63f:a7dc:5661 with SMTP id
- 956f58d0204a3-64c789c7e4dmr4751859d50.12.1771846345547; Mon, 23 Feb 2026
- 03:32:25 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="v5aawHpj"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wzX0yiOJIBvhFvHySFmQVeyZtv8h6RHKFoPBA2ooyRle4jnnPyTEKpN9QGC4WMPAGWIFpo1RIxAxGOqtDlFVo4H3UGbbgu6UKGaQodfGBelHbEqQLHxbKzHBN5fOdZgrnFGuGETOxMcoeRoT1ROXMMEzFaJVx6hevqvDqgHrnggENneBwNP+4CQPz2mQKLLfN02q6jVtcp4DYnSeVOxDSgcWyykFm7R83PcIAZ2dAeo++vHTYPpsVTnuP3jtrck8Y5xfph73AsxYEFleU4OM7AFyNDeM6PmWoShYwrak/xWehXUYRa+43GIW4rH+MNPH0cn/LtWZyLWxJZ+yNg76Fw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=k+msyEEewmHFvgipVZ69CP/uWEpxdwbAJbzOhCRC/NI=;
+ b=DKC2+7PsqUuZFR9JHPgyw5lC9uuHs9cRGlxDuQovJjWIjBYswDJVpcggMLUMTpl9M+4Sruv9m/MnQSJC4h/AavsgvnsFZtBXDEjzxfQh2ucNpDNB5/Y/ZSAMXn0m5Yc3iG3j751TNdgYuE6+DPL/7nR38LxYexpRy1oQNvE+lYxof6eUyguC+G3533rwlVZrBds8OtyWE4z54CxASjCXqUkN6gti0SnkzhJhAgmHeMxcmD6x3m35W0n7i4rg2fc+pqz2mWjs9CdJOh5QF/wIgjiyFY+m5zJkhmPNxUWQGYegxt6tcZpZ5MoZfRDAwv5ZMuLYUgNs/TpKNLYMPUQuEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=k+msyEEewmHFvgipVZ69CP/uWEpxdwbAJbzOhCRC/NI=;
+ b=v5aawHpj3GRz0VpwI3rWCbO/uwr6I9KCKoBg6mHOhuVp4IMMgAGkRqr3b5yS6qxdvrNzgvd/TqgDSlyTniOVjPnf0snk2I+t+H+Nqf32ncNP0rbQOwJACy28gSH5y5FU5UYMpcc3gdJMMtFuOk6rb2CnRcgeHTlsULKuWcYkKVHoT2k06HZtuad99zy+WVUEtzNHQ9bCpLW2MGUbPv/c1BCsyGQY7HIRDVuDTxR//bwuJGoUcuho4AVynTibQbx+B6Tv8STafFKHfpnUCO4BttBD8pfwI5MB/h73NxRoW3qnG2pQULunATMEgygVyhsQepHlDUHgkDL+sBzPXTjcWg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM9PR04MB8179.eurprd04.prod.outlook.com (2603:10a6:20b:3b5::20)
+ by AMBPR04MB11742.eurprd04.prod.outlook.com (2603:10a6:20b:6f6::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Mon, 23 Feb
+ 2026 11:51:56 +0000
+Received: from AM9PR04MB8179.eurprd04.prod.outlook.com
+ ([fe80::a551:cde0:6730:1d85]) by AM9PR04MB8179.eurprd04.prod.outlook.com
+ ([fe80::a551:cde0:6730:1d85%4]) with mapi id 15.20.9632.017; Mon, 23 Feb 2026
+ 11:51:54 +0000
+Message-ID: <22a5a072-847e-4cfd-8abd-e37163f73265@oss.nxp.com>
+Date: Mon, 23 Feb 2026 13:51:50 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 01/10] dt-bindings: mfd: add support for the NXP SIUL2
+ module
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>,
+ Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+ Larisa Grigore <larisa.grigore@nxp.com>, Lee Jones <lee@kernel.org>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+ Jacky Bai <ping.bai@nxp.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Alberto Ruiz <aruizrui@redhat.com>, Christophe Lizzi <clizzi@redhat.com>,
+ devicetree@vger.kernel.org, Enric Balletbo <eballetb@redhat.com>,
+ Eric Chanudet <echanude@redhat.com>, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, NXP S32 Linux Team <s32@nxp.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ "Vincent Guittot devicetree @ vger . kernel . org"
+ <vincent.guittot@linaro.org>, Rob Herring <robh@kernel.org>
+References: <20260120115923.3463866-1-khristineandreea.barbulescu@oss.nxp.com>
+ <20260120115923.3463866-2-khristineandreea.barbulescu@oss.nxp.com>
+ <20260121021913.GA1704619-robh@kernel.org>
+ <e956750b-0333-4465-b37e-5f460b5e092f@oss.nxp.com>
+ <edc3a63a-8117-476f-9582-97ae31fefa96@kernel.org>
+ <7d200097-51bc-4404-be8b-f536d0ecfc25@oss.nxp.com>
+ <21531cdd-5ab9-493e-a722-61b98117e2c4@kernel.org>
+Content-Language: en-US
+From: Khristine Andreea Barbulescu <khristineandreea.barbulescu@oss.nxp.com>
+In-Reply-To: <21531cdd-5ab9-493e-a722-61b98117e2c4@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AS4P250CA0005.EURP250.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5df::16) To AM9PR04MB8179.eurprd04.prod.outlook.com
+ (2603:10a6:20b:3b5::20)
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260223-i2c-adap-dev-config-v2-0-d78db0a6fcf7@oss.qualcomm.com> <20260223-i2c-adap-dev-config-v2-12-d78db0a6fcf7@oss.qualcomm.com>
-In-Reply-To: <20260223-i2c-adap-dev-config-v2-12-d78db0a6fcf7@oss.qualcomm.com>
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Date: Mon, 23 Feb 2026 11:32:11 +0000
-X-Gm-Features: AaiRm53g18kb_D8a8Rz5gsK9_gN4L3-bPSeoZhzvicFe1V_X2f1sAQaShwQ_SAw
-Message-ID: <CAPY8ntDgMHgjX65ZW8dFvo5jb+yZDUQq6cEJuw=zP6DddmTPrQ@mail.gmail.com>
-Subject: Re: [PATCH v2 12/12] i2c: bcm2835: set device parent and of_node
- through the adapter struct
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, 
-	Mukesh Kumar Savaliya <mukesh.savaliya@oss.qualcomm.com>, 
-	Viken Dadhaniya <viken.dadhaniya@oss.qualcomm.com>, Andi Shyti <andi.shyti@kernel.org>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Vignesh R <vigneshr@ti.com>, 
-	Aaro Koskinen <aaro.koskinen@iki.fi>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
-	Tony Lindgren <tony@atomide.com>, Andreas Kemnade <andreas@kemnade.info>, 
-	Kevin Hilman <khilman@baylibre.com>, Roger Quadros <rogerq@kernel.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Patrice Chotard <patrice.chotard@foss.st.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Linus Walleij <linusw@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
-	Bartosz Golaszewski <brgl@kernel.org>, linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-omap@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-rpi-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8179:EE_|AMBPR04MB11742:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c33daad-3665-47d6-afab-08de72d1f07e
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|1800799024|366016|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VDhOeThVazFwcnBhRW9wZ2hlQm5jMWwrd1VpWUpHOWZ3bEMvMUtvTFh4anNL?=
+ =?utf-8?B?T2gzVE1GYnlRZ0xRRURmdjEwYjhyOXF0L2R1UTExT2FFU0Z2UFlWSVNJWHYr?=
+ =?utf-8?B?dkhuVlJaQTg4OUlieHlPazkxajNMQ3JiRDFuRGk5blUrR0ZIYnRBUklQaEND?=
+ =?utf-8?B?TzlvUHlzdDZFRHlTNmd0OGdBY2VrdmlCVnJIeGVhOElDOHp1dldsY2YzcjdM?=
+ =?utf-8?B?a1hETHRSczNuS2llODhWTldMM2dEdU95a3ZmbFFoQUdaWmkxTGwxUFFhcnZY?=
+ =?utf-8?B?NTJ3d0NubnFZdVdMdStUMTR5ZzFqc1Y3b2VtbGxRSExFaEordUpEd1RiZHdo?=
+ =?utf-8?B?ckhvUjdRRlVwT2I5QzRwYmRnQTNncW56aHk3QUtkbmR0SmtqM2pZQlJiVHRE?=
+ =?utf-8?B?OXZ5bG80Y0pBMlhQeEhrZVE1eHRnMkNGUkVzSEpOdTJ1MSt0Z0NsM3lybnJv?=
+ =?utf-8?B?Q1MwQ0Q2bUpDcnUxYk1GZ1lBUEJHVHpvNmpLSE5Fc29oWlFTR1ZLc3c4S3p6?=
+ =?utf-8?B?VjVRTVJMUFdNS3dUcjBpb0wwV29idlBGbW1laDRyT2pqTTZDK3cwbjZYWkVF?=
+ =?utf-8?B?V24zMkxUUUc1Mmt0VitRdmJ1YjMwd1JEYmNneitlaTYrd2NiaGUra0lDcWpt?=
+ =?utf-8?B?b0xtaDlwQ09GUzd3QmNROXBMbHdtQjg4WnpLOUJnZnBGMU9paWVYU1dXUkRa?=
+ =?utf-8?B?QXBvV1FQQkoyV0FYSzB0QTlYaFRTdE56elFDRFRPbjZsWmh3OTNOdDhCNitl?=
+ =?utf-8?B?K2c0U0YrVWwzOFFrU0NPMmc3dkJVaWlmcG5YQ1BhbW1iZEFjVnh3aXNyZTFH?=
+ =?utf-8?B?RDhXRlFwNjdpdkJiNjdiYitBQnhOMEwwOWJmV3VvbDBaWjRpZjlKZzdOeXZt?=
+ =?utf-8?B?RFpEUEtwckFRaFpMVWhkNk40WGRxc3NTV0pMQ0pTb0JpY3ZVL2N5NE1mTkJP?=
+ =?utf-8?B?UlNDMTBUWk8zbklHZmxzVHBxaHlTNldMa1l3YVM2ZnlxZUsrN1ZMa3ZKbHcr?=
+ =?utf-8?B?aE5DaHF0aEdJMGNJMHNsRCt1V2tzaEV4N05kVXoxcStKNTVSYkYvTkVkNzBz?=
+ =?utf-8?B?STcxbnk1bDNZcGRyVGdvQTBCNlM1NEV2Q3QwMEE0K2JsQW1kNWF5ekYxdGQ2?=
+ =?utf-8?B?bUxHOGNjdUZzQUdjeUVxc0RUeUMvWDFySjFGVzZpQzB0cmx4NW9sUXUrREtS?=
+ =?utf-8?B?dDVuaE5DQzZ2NUg5ODMrTm5Dek5hS0U1VEIvaWJMNUlRQUNSOEx4QnVjcWhN?=
+ =?utf-8?B?RE1mbm04eEI1MElxeFJoN0RTVHhvK0h5L1lMNXBWQzgybHlKdHZDZm55a0lo?=
+ =?utf-8?B?STBNdGVkTmRtVnliV1ZiUU45eVBYOE0xai8wdFZtOW4zMktSY1orcFk3ZE53?=
+ =?utf-8?B?d2pCN1h6K3V0cFEwdE55bmVxSlBHK01HWVZWSENqclVvcDVXMk9TM2VNMVpk?=
+ =?utf-8?B?Ump0OGNWZXZGZG9DVTBJb2MxOTlvZ0MyV3J0K1ovNmtRcDkwb2NGcFdrWGtL?=
+ =?utf-8?B?RW45cVVnQitDanljcm9PWjV6WW12SWpiamtSU0I4MGN0OUtpdXZpWkp1MDlq?=
+ =?utf-8?B?dDdrVE5rSmY0a3NaQVpjYzllUHVmc1pLYXhENXFRVXZibjFLVlhLTTNMUTFE?=
+ =?utf-8?B?NW1yN000R0g3ZVNXQjVLTFEraHpjcHdWZHVwS2FMU0lvaHRveHcrNjIycHlQ?=
+ =?utf-8?B?OW1TZk13OVVhRjBnRExPSUJ0MjJ6YWxxbitwR29XZEJka1V0OHAzOUtPZ21O?=
+ =?utf-8?B?dUZrUmp1cWhjTHNRVi8xd0xsTkx3SUI5UTI4MEEzbUlodlhNUGJ2M3dseFF6?=
+ =?utf-8?B?eGhTMWZNZG94aHRFemFxSVlmYVR4NjI4RlMxbXUvOHErcjhodU80OHNIQ0w2?=
+ =?utf-8?B?WG9BRTRhOU83dlZjWkljSlN1STdtaktVNmk4RzBmVHNyU09McjFzdHBJUGJZ?=
+ =?utf-8?B?eWtUM2tmVFFzQ29Zc1hYMEc3TFdZV3lMczN6RVNlYlFabERTWHY0QVhDaDNz?=
+ =?utf-8?B?djdXblUyYlRBaklpRUo4UTB3bng3Rk1BS2grZW1sOXRGQkhzV0ljeit5ZTkr?=
+ =?utf-8?Q?ETnq5j?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8179.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(366016)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?My9IcTFDS1U4UEZIaTJvQnFJdTBGMEpFWkpTbXF4Unhnb1hPYUxBTXdMMmFq?=
+ =?utf-8?B?eHIyTnJUUVp1ME5aR3FiS1M5TVV6Z0JHdkNtc1JWYmpLWGJlRXBwanR2R0ky?=
+ =?utf-8?B?SUZoV0JkVjlBM2xSNmE3aEhmVVhZOG5pbDVDMlZiVSsrQzFXbDVZZ0UyS3pF?=
+ =?utf-8?B?dlpZeEgwandYZVhUYWVVSHZ0KzY1ekZId2J0aGhacy9QSllxTEUyZ3ZRRUkz?=
+ =?utf-8?B?VFcxYXpoUHNxRmVFUVVRRGNMSmhFYXpIQXBMemZja2hrK2RqWGFieCtDWWVt?=
+ =?utf-8?B?VVhoYnh6UmhlK3VrQjlHeVk0bno5T0MwT2dQbHBnSmIzbnUxdnNWTm9vVmRZ?=
+ =?utf-8?B?T25hTWRkc3BFT1FHZS9hQzM2bzdlMXZlN0hwSHpEbGZ6T0dOU2I0V1FRTzM1?=
+ =?utf-8?B?NjlsSkp0dVJ3ckE4L0tqV21ES3Fab1VXN1Q4cjlsbm4rZ1djYVVVb2dyd0tF?=
+ =?utf-8?B?WVhPd2ZGQmVHMkhFelJTVGlJUXlGN2ZibGZ6ZUJiVkoyeENacWUzdWFDSnA1?=
+ =?utf-8?B?ZWFGTzV0M05rRVlRQ0pHSm9OVzVud2tGUVJVK3E4alJJMUhkL09RTEk2YUFB?=
+ =?utf-8?B?dFBBOG05WEU4SWpZZEwxNVgxdmJVRi9NNFdtZllSTVFtMEpFRktZMVE0enNR?=
+ =?utf-8?B?cHF0U0NwSkEwZURaK0o0d2ZiNmtEc2p0STVwb1BpYmU1WjNNQURXbU8yTVUv?=
+ =?utf-8?B?SHBiQk45V3pkNCtVNjJKYkFzTVdrYjhqd0JLaDZEYllyTmduN0Z4M2RETWd1?=
+ =?utf-8?B?WUh1K1I3NnNpbmRqRWFDK09LRUtZak5oOXFCbDJkYUFYQVJMTzB1OVQ0MFRF?=
+ =?utf-8?B?aFdwak9BbzJNZ3pRR2JyUW5GM3RCZ2xPaXBFUDRMQVJmWEFGZlNWL3B1MzRC?=
+ =?utf-8?B?bm5lMURubGcrbW1TcGdlT1oxV2FCM2RidkZ2dE5hRHlMK3RIZ3U0anBIdlpz?=
+ =?utf-8?B?c1FVb1JVdmFYTWxybjJzMzMzN1NOcGhrUng5MW55aHhMYVhabjQ5aFJaWW11?=
+ =?utf-8?B?TzBhNk5FMkZybjdsY2tCbEx2cVNlejBKY0hSS2ovVHpSOTV1MkVNVXc1MEIr?=
+ =?utf-8?B?NmhLK01LaER0WWFXR0tLV2g0Q01RVUxsYTdYcXZKL2NsakNKVzJqODdhVnJm?=
+ =?utf-8?B?Zm53UDRYTWNuK01KWXpvMVBhaVgxRnc2TlR6dkUwd1haNkxhSk9uQUhsdHNX?=
+ =?utf-8?B?REdnVVhWVjU0OVQwbVBLZGdVVVAvYXhsZzdEM0JKdTBOS0J4SlhRNFNrMnpo?=
+ =?utf-8?B?THpxSHQzVnBLL1Q0V3FUajB2ZGMrK3QySHVrZE50TTVtSjFzOVdDZWZHUUZB?=
+ =?utf-8?B?YVUwNk8wdEFLU2kxMXlTcmM3NEtESEY3QjB4dUdGQjlPd1ZnSlZ5ZzJseW80?=
+ =?utf-8?B?UGowMnZIRDc3dVlHUURHcTUzelBkblhGd1Z6alV4Z3V6UmJzSC9GVk80UmhS?=
+ =?utf-8?B?Tk92VFQxYzhtRTFBeThnMDI0Z0l1ZFBpMjJJMkNYWUhuQU13MHptdThmSUpS?=
+ =?utf-8?B?RE5kQSsrY3dSbHF5Wm9QaFRRZVFIRUNvWlQ1cEVBUXFkSnN3RGNxTFFMZnFN?=
+ =?utf-8?B?RjJqdFRwdE5vVWxwQjRVNkRZeHhrUldHU2VQNjU0Z2tyRkFib0JSK3AyVEtP?=
+ =?utf-8?B?c0xSWENYbG1uRDBZOXR0dll6TGovdXlsK0J4Vm1MaTFWN0RRNUQvSFdQNllo?=
+ =?utf-8?B?ZTlMbTRkTmczQlZiMlUyRDRzQzRzM08yTWRsR0FHd2c0U20yY2x4YnN6aGs1?=
+ =?utf-8?B?TDNSSEZKd2swY0JsdHVLNklaOHY5aXpBLzlla21GL1A0dnFLdkFXOTFzZFZQ?=
+ =?utf-8?B?TEp3bWhGY3R1T0ZXeTk4RkVjZWJjUXR2NVpaSHFwM2NFcjJ1OXkzWDBYMHVn?=
+ =?utf-8?B?N1FrSzU0anBSVzIya3lGSHc4SHFMTythdHZBamtKc1E4bUZYVUplYnIyY3Nz?=
+ =?utf-8?B?UE5iaWQ2VlpOVXZpeG1iZzc1K3VTSnlaTlF6N25qM3hwNDkwUHdtSm1MK05i?=
+ =?utf-8?B?Z2txdjRqMEZwamhyZmIrb0E0ZFRuMld5Wk1SQ3phY1JOd01yWGM4czFWQjZB?=
+ =?utf-8?B?UmlYWjV3eE5ldzNEN0J1a3BFbEVsV0ZudkVvbXpNdGhWdHUyUU01cktMZ0xw?=
+ =?utf-8?B?SkJYd0ZCS1ZVdnVlbFlic2s5TVZiR2IwSHBXTTRUT0h2YXNJMVJLcmt5VjR6?=
+ =?utf-8?B?TjRvTG0ySWhWZ1p4enZKOVdOa2tWVzJwb0h2UTRtK2JrM0Z3VTR0ZVhVQ29V?=
+ =?utf-8?B?YUQvUXRnWDNkeVo4L2luVjdRdW9IcldDNDVRcktDNmZXV0kyN29yWnVvaVBI?=
+ =?utf-8?B?Y0g5M0FucWtvdnVQSWxDaXFYUnplc04vWUJMUWJuQzV3QUhZWE80MEI3TkxP?=
+ =?utf-8?Q?0OpUPt9LOTBaEI9VGBjArP8rZmXsPn3o9mvdF?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c33daad-3665-47d6-afab-08de72d1f07e
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8179.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2026 11:51:54.4423
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vGAqv2kC0+GcJ/yKLytOJ5ygeM1eTxsIMPPGi/E0FJNhCN/dM6yAdW3f7zU/oGNTdV7v1RhEt7lpm29x30LCYF1MfeJlfBNHbIhd6aa8E/ltse6xHGjiuVe3pJ/BbAbf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB11742
 
-On Mon, 23 Feb 2026 at 09:07, Bartosz Golaszewski
-<bartosz.golaszewski@oss.qualcomm.com> wrote:
->
-> Configure the parent device and the OF-node using dedicated fields in
-> struct i2c_adapter and avoid dereferencing the internal struct device.
->
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+On 2/20/2026 4:41 PM, Krzysztof Kozlowski wrote:
+> On 20/02/2026 15:36, Khristine Andreea Barbulescu wrote:
+>> Hello Krzysztof,
+>>
+>> On 2/20/2026 12:16 PM, Krzysztof Kozlowski wrote:
+>>> [You don't often get email from krzk@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+>>>
+>>> On 19/02/2026 12:36, Khristine Andreea Barbulescu wrote:
+>>>>>
+>>>>>> +      reg:
+>>>>>> +        maxItems: 1
+>>>>>
+>>>>> You have 'reg' so the node name should have unit-address.
+>>>>>
+>>>>> However, there's not any real DT resources in this child node, so you
+>>>>> should just drop it.
+>>>>>
+>>>>
+>>>> For context, SIUL2 exposes a set of platform‑capability and SoC identification registers that are split across the two discontiguous ranges: SIUL2-0 and SIUL2-1. These registers are the source of SoC information (e.g. identification and capability flags) that other subsystems are expected to consume (e.g. PCI Express). Because those fields are physically divided between the two SIUL2 ranges, consumers need reliable access to both ranges to correctly discover and configure the platform.
+>>>>
+>>>> Hence, my proposal is to keep the two 'syscon' child nodes.
+>>>
+>>> Please wrap your replies correctly, so this will be easily parseable.
+>>>
+>>> I do not understand the reasoning. If you have two register ranges, you
+>>> have two <reg> entries and having a child node has nothing to do with it.
+>>>
+>>
+>> I’ve reorganized the SIUL2 node with two syscon subnodes for the two
+>> register regions used to read system info, and a separate
+>> pinctrl/GPIO child (as discussed in the v8 06/10 thread [0]). The parent
+>> SIUL2 node now carries the bus addressing and ranges:
+> 
+> That's not the answer to the comment. Read again:
+> 
+> 1. Reviewer: No resources, so no separate node.
+> 2. Your answer: some soc capability and two address spaces
+> 3. Reviewer: Does not matter, address spaces can go again to original place
+> 4. Irrelevant reply.
+> 
+> So again, read the first comment - do you have dedicated resources in
+> children?
+> 
+>>  
+>>     siul2: siul2@4009c000 {
+>>         compatible = "nxp,s32g3-siul2", "nxp,s32g2-siul2";
+>>         #address-cells = <1>;
+>>         #size-cells = <1>;
+>>         ranges = <0x4009c000 0x4009c000 0x179c>,
+>> 		 <0x44010000 0x44010000 0x17b0>;
+>>  
+>>         siul20: siul20@4009c000 {
+>>             compatible = "nxp,s32g-siul2-syscfg", "syscon";
+>>             reg = <0x4009c000 0x179c>;
+> 
+> 0x179c is odd size. Looks fake.
+> 
+> 
+>>         };
+>>  
+>>         siul21: siul21@44010000 {
+>>             compatible = "nxp,s32g-siul2-syscfg", "syscon";
+> 
+> And two same devices with same compatible proof it.
+> 
+> Best regards,
+> Krzysztof
 
-When used alongside [PATCH v2 01/12] i2c: allow setting the parent
-device and OF node through the adapter struct:
+We don’t have dedicated resources for children. In particular,
+there are no resources allocated specifically for nodes like
+"nxp,s32g-siul2-syscfg". Their consumers are the pinctrl/gpio
+driver and other drivers that read SoC‑specific information from
+those shared registers.
+ 
+My alternative is to keep two separate syscon providers for the
+SIUL2-0 and SIUL2-1 and have consumers (pinctrl/gpio , PCIe, etc.)
+reference them via phandles:
 
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+    siul20: syscon@4009c000 {
+        compatible = "nxp,s32g-siul20-syscfg", "syscon";
+        reg = <0x4009c000 0x2000>;
+    };
+ 
+    siul21: syscon@44010000 {
+        compatible = "nxp,s32g-siul21-syscfg", "syscon";
+        reg = <0x44010000 0x2000>;
+    };
+ 
+    pinctrl: pinctrl {
+        compatible = "nxp,s32g-siul2-pinctrl";
+        gpio-controller;
+        #gpio-cells = <2>;
+        gpio-ranges = <&pinctrl 0 0 102>, <&pinctrl 112 112 79>;
+        interrupt-controller;
+        #interrupt-cells = <2>;
+        interrupts = <GIC_SPI 210 IRQ_TYPE_LEVEL_HIGH>;
+        syscon = <&siul20>, <&siul21>;
+ 
+        jtag_pins: jtag-pins {
+            jtag-grp0 {
+                pinmux = <0x0>;
+                input-enable;
+                bias-pull-up;
+                slew-rate = <166>;
+            };
+        };
+    };
+ 
+    pcie@40400000 {
+        reg = <...>;
+        /* PCIe Dev ID */
+        syscon = <&siul20>;
+    };
+ 
+I’ve seen similar approaches upstream [0].
+Would this be acceptable (even if not ideal),
+or do you prefer a different layout?
 
-> ---
->  drivers/i2c/busses/i2c-bcm2835.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/i2c/busses/i2c-bcm2835.c b/drivers/i2c/busses/i2c-bcm2835.c
-> index 0d7e2654a534e92a529f27fdc049812359678522..4f7e4a178b33fdd172657cc625a34018b18f88ca 100644
-> --- a/drivers/i2c/busses/i2c-bcm2835.c
-> +++ b/drivers/i2c/busses/i2c-bcm2835.c
-> @@ -474,8 +474,8 @@ static int bcm2835_i2c_probe(struct platform_device *pdev)
->         snprintf(adap->name, sizeof(adap->name), "bcm2835 (%s)",
->                  of_node_full_name(pdev->dev.of_node));
->         adap->algo = &bcm2835_i2c_algo;
-> -       adap->dev.parent = &pdev->dev;
-> -       adap->dev.of_node = pdev->dev.of_node;
-> +       adap->parent = &pdev->dev;
-> +       adap->of_node = pdev->dev.of_node;
->         adap->quirks = of_device_get_match_data(&pdev->dev);
->
->         /*
->
-> --
-> 2.47.3
->
->
+Best regards,
+Khristine
+ 
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/pinctrl/xlnx,pinctrl-zynq.yaml#n182
+
+
