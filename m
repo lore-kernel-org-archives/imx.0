@@ -1,126 +1,149 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED7B202C5C
-	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 13:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D548218CBE1;
+	Mon, 23 Feb 2026 13:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771854372; cv=none; b=M8k/iG/EYuJKZcKkPnLvS7VRvxOTWLZx6X8XcQ8OeFH77x/hz1gCjpiNvV5XOsGnfvX2bVg1ALS9RZHOKQB0IjbjkFHooJZm4j0gHNnF68eaB5aQTHfGDo8m0gksKsGb7et/t4zOL4YFRkgrvCbOmDW+7BHa4+zLdWI0p6FVhm4=
+	t=1771855094; cv=none; b=VVA1E/Wz2QNGqx7/hBQWUUD+LreTt/EGaNkWhVrLREYVNAvNUu6DD5abMJQ8D7pwFs6QEgezNM957EomLkz5XqJydUy4cx1+D8GFILvu1akZwYRJqPvtmTsOTVwnJdU/v5mlf7WB77c7uYhsf7YN2u00WNWqNLyglGk+Yfrj5SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771854372; c=relaxed/simple;
-	bh=xHD4QsgF9yMDfM9DNpu+nmQETYKEDBFK3tSyRcSPFXU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UjvOtmb0Ea6LmC/K6bnNRFOyXdPza/AVOYBuFzbEDd/vMUqiHfVKhjo/9GqRM4VN0f2Pzcuh2eyR0PTWPGvOjrR9k7zJuMQYjqsr4QjfAyI4yFPyqHH6nsZ6eOx/lB7wJVg6ZenWrXA9xuJaaZ5sJRUZNTyK9t8bkyMn0Uzl4nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GEhfoMxg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771855094; c=relaxed/simple;
+	bh=DjznovYY9GnY3ffzu+BYF+CpnJqumh0Ejt8gP/xAFC0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=FdtSiknDBYpD2SMC+2OdgyPq6URtIXQ+YMqxHkb0z5w5wrJRFhFtJXDEQt5b8DlL+r2/iVJ9PSlOpZtgBtCTXmHLM3E9LoZyaAXj2DeZ0KrmJ9poOukEsYue4vgv/cG0QZ6odOvr0m9iGCKygEifUjeqEHgYNxyju/+Bw8ndUUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r+baHfSw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GEhfoMxg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB79C2BC86
-	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 13:46:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r+baHfSw"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B346FC19424;
+	Mon, 23 Feb 2026 13:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771854371;
-	bh=xHD4QsgF9yMDfM9DNpu+nmQETYKEDBFK3tSyRcSPFXU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GEhfoMxgLPcp6nwBkt61gmLigCTkVgwWzwT0WQNgF2v2B5l7cMU1ELQLt3YHmIdBn
-	 5SAQ9FzxXxdkTsua8QRJaj+XmvK4QG19qdTYwSzCjypit9H1KiTPwRh7FtCZ6tkqcX
-	 WXpeV/sajncXIUIIM0tJHwJ+863yKm8QK5ecZ7hYMEBA+EhmHfW947NBkxOv/P6+k/
-	 5GU11vmBKyLibQb0nd9eewN2w9Z4NQ7gR1ADROg8pSR6Ed5Wd9ZTSFn/kjg+XTxOHP
-	 BfaZYFe56E19NFL/uM6za8z+9EKP3PS01Q5PvG/36tELIOBRvrtFao503jbbYj73m9
-	 ywb3HTeKvIDsw==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-59de8155501so4285700e87.3
-        for <imx@lists.linux.dev>; Mon, 23 Feb 2026 05:46:11 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXD8i/ABQlTF22PQCLnanruoaiblJJUYxZBFOLqqGKgV0BjVKcyFODzpM3lwCloSbGhdJw=@lists.linux.dev
-X-Gm-Message-State: AOJu0YwgRX+5UjSVtjgIPrOdqh0bo7sKNpeK9Vysv8DgDIahkS00iLmz
-	aSrEMYOG5cJqBkulyYKUS9ArdeXNWOUfOZ2H2LnZCQQBZm7sO1ImZXdNyWSkCbLsdmmbfwLyfCZ
-	4UngunSzG7+1Z/3masiKFB0yVhQ/UAQ+xiG1WAq1o6A==
-X-Received: by 2002:a05:6512:1553:20b0:5a0:ef6b:f613 with SMTP id
- 2adb3069b0e04-5a0ef6bf704mr1540983e87.1.1771854370177; Mon, 23 Feb 2026
- 05:46:10 -0800 (PST)
+	s=k20201202; t=1771855094;
+	bh=DjznovYY9GnY3ffzu+BYF+CpnJqumh0Ejt8gP/xAFC0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=r+baHfSwrqu2f3L9q4d2MJkk0sUKotG9SpSFBWFkovWBXoIlJLT98Q6AssTrNaWWj
+	 UnjwEqd2HK8+hwpqvH0/H37/gNc3QVvw0KjroHhOsBoIIQq/7qRtIBacGmRtKs9zd1
+	 J8abbEXpn9o+V8Pm3H8SoFNS1Hye/PLbjib9BT1GOvAquuqN3MxG7FLUEwr8C95waF
+	 f6DXUHoNODcSPpdrVknNPjceepy4/zBPtuAq5JW7mJzsuK4WGndoMl51//j+737zmQ
+	 0mZo2wpjWyK+haq0FyOJlsD74FyxKrYuzSR55oA1c4QeYQ2gBT6t+c028obEh0mP3Y
+	 qphqq3NHQZAqg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4956EA4FC2;
+	Mon, 23 Feb 2026 13:58:14 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Mon, 23 Feb 2026 14:58:04 +0100
+Subject: [PATCH v5 1/4] net: stmmac: platform: read channels irq
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260119-soc-of-root-v1-0-32a0fa9a78b4@oss.qualcomm.com>
- <20260119-soc-of-root-v1-7-32a0fa9a78b4@oss.qualcomm.com> <CAMuHMdU56p9jH8OZ5bpwKq8Q31C-8X85YAjiXZm8amYdo+Xotw@mail.gmail.com>
-In-Reply-To: <CAMuHMdU56p9jH8OZ5bpwKq8Q31C-8X85YAjiXZm8amYdo+Xotw@mail.gmail.com>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Mon, 23 Feb 2026 14:45:58 +0100
-X-Gmail-Original-Message-ID: <CAMRc=MeC-MTzEOVw0j4Kq9T0bSXk2gKJr=jn2jO8tqfS7BEteQ@mail.gmail.com>
-X-Gm-Features: AaiRm53YdoncmLlrYwWxzOjKhAAi91ZYzJ0VCyHsDsiPleMxR8Z5ZNNGKc2eDc4
-Message-ID: <CAMRc=MeC-MTzEOVw0j4Kq9T0bSXk2gKJr=jn2jO8tqfS7BEteQ@mail.gmail.com>
-Subject: Re: [PATCH 7/8] soc: renesas: don't access of_root directly
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
-	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org, 
-	linux-sunxi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260223-dwmac_multi_irq-v5-1-8fc699a5fac4@oss.nxp.com>
+References: <20260223-dwmac_multi_irq-v5-0-8fc699a5fac4@oss.nxp.com>
+In-Reply-To: <20260223-dwmac_multi_irq-v5-0-8fc699a5fac4@oss.nxp.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771855093; l=2333;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=P2zfXa4c18tSAED8W/f714pESbYNY0ZOt8TdNWG7VK0=;
+ b=hiXarSrsA/JbiyKr+PsMd6bbjrGyHXX8vk7ry0gBoLO10unCvRxYzZb5C9C9xTtP2sfCSNG6y
+ lDgDWZJqVCYDGYHr4WLUBkolMSdTx7eXCG92CyX+8rPkB9U869DQROt
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-On Mon, Jan 19, 2026 at 8:25=E2=80=AFPM Geert Uytterhoeven <geert@linux-m68=
-k.org> wrote:
->
-> Hi Bartosz,
->
-> On Mon, 19 Jan 2026 at 11:40, Bartosz Golaszewski
-> <bartosz.golaszewski@oss.qualcomm.com> wrote:
-> > Don't access of_root directly as it reduces the build test coverage for
-> > this driver with COMPILE_TEST=3Dy and OF=3Dn. Use existing helper funct=
-ions
-> > to retrieve the relevant information.
-> >
-> > Suggested-by: Rob Herring <robh@kernel.org>
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.co=
-m>
->
-> Thanks for your patch!
->
-> > --- a/drivers/soc/renesas/renesas-soc.c
-> > +++ b/drivers/soc/renesas/renesas-soc.c
-> > @@ -6,6 +6,7 @@
-> >   */
-> >
-> >  #include <linux/bitfield.h>
-> > +#include <linux/cleanup.h>
-> >  #include <linux/io.h>
-> >  #include <linux/of.h>
-> >  #include <linux/of_address.h>
-> > @@ -468,7 +469,11 @@ static int __init renesas_soc_init(void)
-> >         const char *soc_id;
-> >         int ret;
-> >
-> > -       match =3D of_match_node(renesas_socs, of_root);
-> > +       struct device_node *root __free(device_node) =3D of_find_node_b=
-y_path("/");
-> > +       if (!root)
-> > +               return -ENOENT;
-> > +
-> > +       match =3D of_match_node(renesas_socs, root);
->
-> I am not so fond of these of_find_node_by_path("/") + something replaceme=
-nts.
-> What about adding an of_match_root() helper?
->
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-I removed other instances from this series but not this one. I don't
-want to grow this series with even more new helpers. How about
-addressing this separately?
+Read IRQ resources for all rx/tx channels, to allow Multi-IRQ mode
+for platform glue drivers.
 
-> However, in the previous patch you used a different strategy:
->
-> -       if (!of_match_node(imx8_soc_match, of_root))
-> +       if (!of_machine_device_match(imx8_soc_match))
->
+Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+ .../net/ethernet/stmicro/stmmac/stmmac_platform.c  | 40 +++++++++++++++++++++-
+ 1 file changed, 39 insertions(+), 1 deletion(-)
 
-Because here, we really need the match structure later into the function.
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index 5c9fd91a1db9..6166a9b0c0bb 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -700,6 +700,9 @@ EXPORT_SYMBOL_GPL(stmmac_pltfr_find_clk);
+ int stmmac_get_platform_resources(struct platform_device *pdev,
+ 				  struct stmmac_resources *stmmac_res)
+ {
++	char name[16];
++	int i;
++
+ 	memset(stmmac_res, 0, sizeof(*stmmac_res));
+ 
+ 	/* Get IRQ information early to have an ability to ask for deferred
+@@ -735,7 +738,42 @@ int stmmac_get_platform_resources(struct platform_device *pdev,
+ 
+ 	stmmac_res->addr = devm_platform_ioremap_resource(pdev, 0);
+ 
+-	return PTR_ERR_OR_ZERO(stmmac_res->addr);
++	if (IS_ERR(stmmac_res->addr))
++		return PTR_ERR(stmmac_res->addr);
++
++	/* RX channels irq */
++	for (i = 0; i < MTL_MAX_RX_QUEUES; i++) {
++		scnprintf(name, sizeof(name), "rx-queue-%d", i);
++		stmmac_res->rx_irq[i] = platform_get_irq_byname_optional(pdev,
++									 name);
++		if (stmmac_res->rx_irq[i] <= 0) {
++			if (stmmac_res->rx_irq[i] == -EPROBE_DEFER)
++				return -EPROBE_DEFER;
++			dev_dbg(&pdev->dev, "IRQ rx-queue-%d not found\n", i);
++
++			/* Stop on first unset rx-queue-%i property member */
++			stmmac_res->rx_irq[i] = 0;
++			break;
++		}
++	}
++
++	/* TX channels irq */
++	for (i = 0; i < MTL_MAX_TX_QUEUES; i++) {
++		scnprintf(name, sizeof(name), "tx-queue-%d", i);
++		stmmac_res->tx_irq[i] = platform_get_irq_byname_optional(pdev,
++									 name);
++		if (stmmac_res->tx_irq[i] <= 0) {
++			if (stmmac_res->tx_irq[i] == -EPROBE_DEFER)
++				return -EPROBE_DEFER;
++			dev_dbg(&pdev->dev, "IRQ tx-queue-%d not found\n", i);
++
++			/* Stop on first unset tx-queue-%i property member */
++			stmmac_res->tx_irq[i] = 0;
++			break;
++		}
++	}
++
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(stmmac_get_platform_resources);
+ 
 
-Bart
+-- 
+2.47.0
+
+
