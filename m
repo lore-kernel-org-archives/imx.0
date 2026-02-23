@@ -1,183 +1,82 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B6A23B63E
-	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 13:38:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F4521CFF6
+	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 13:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771853886; cv=none; b=oQILCRoX5A09uVX6ZeIPMFEcNmYRNswctNRiQOqqH5MhRzC24cjHujJ5FHIGwLgzZgZZFQwxR07oqhfPhdShcrhf60cV2LkMSIbgPy6Icu8xcHfDAe9M8aLjtmwbmvsU3aW5k+F1yjDjntV1Rf9sgX3UKYp1VURN6tjPsmW6Vgg=
+	t=1771854121; cv=none; b=VLWW8Zo3SsjudyGVI35/xBL9PxFZMBjKy+KDAtzvJn9rFuSAE1FUX5cvPFyrH1mK7owNR6tMMZXs9VYM4pcv+KCsRDpRVlXUmZKBkrbM2QDT+6kbVGjKqC5bmjeZR2UsBYkVyxbf64O+EoIUnRCvh17dJBZtU2Xf0mpjetUruaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771853886; c=relaxed/simple;
-	bh=1c1gquLfvSJ+JW0V9LV0gRBtqRjxxuGL6ryTeiQhipc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=acSjqnBNL2HUWisFbNA0ZxTpjeMpbHGrL5ysq0tJzxk1W9fO0wtSHKcpZd3b4f87r7KIhl83lBxvzlHwh3UxqeRe77RabbvrgOMKr2a9HtS3TeUuspjZvsrNczsxQtmyMLh45cep4TNyRIOiRi+Pg59jQnVRw7dUgdQJdfysujs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=PlxMz/CR; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CFuboHo/; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="PlxMz/CR";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CFuboHo/"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61NAX4nR3698607
-	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 13:38:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	nHxPv6I4Z6dO3Hj6uV42QIGX3GK7K4BGPsWpNavZvBk=; b=PlxMz/CRZi+cXbvz
-	hmTnU9cezQpHsZ1BcWGZMSnsX9VVcbOyrAG2y3dXhwwbBUa4A3KqDiJWrSkNkuGl
-	QKS/K/sHo7ZDjrP0Li77lnLvmPDrTPRP7rrYWxExqDwNrP35wWqRc8HK6AHXtnFx
-	tModpZVK3yjPTfFfurVauIwIA1IPDzK90YsqjlHQd+c/IuVttP55nql3MIYaj+40
-	5vmzmgQ8yCa8+ZQOLL0Bat+ytPGOayi5kJB1bp+5vyEf7ECaU5tzNMBnOpmbDnhh
-	zM77SAHIBjufLAIZ8iI99y4vki0r1Nz7lONXStJsAruaQZh6ixYlXe+SFASGpw5I
-	0sXFpg==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cgn818fjq-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 13:38:03 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8cb706313beso610787885a.3
-        for <imx@lists.linux.dev>; Mon, 23 Feb 2026 05:38:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1771853883; x=1772458683; darn=lists.linux.dev;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nHxPv6I4Z6dO3Hj6uV42QIGX3GK7K4BGPsWpNavZvBk=;
-        b=CFuboHo/CkPhN1WPG1Fy05gT0hCYe3AIEQkPezFWFFgA0ZXNa/YHuOZwD1yC9HxicE
-         TOqKMkgbrqweXjs40q3DLBCYyrVBKh0uHFK3iDWbJocdIAJFeM6ZB3noc4JDkoZ7qbzg
-         LVd8j2S+Ov8vsqbV51MBngi75RP6SG2Dbk5TH9NM6g6QlJwgsBpfB5lHyw8MBOBkDtIB
-         WkhX5juljY9SCafDR8I1nx8L6gm/BApa/POdiGcRvnBKnhlg4m+irZrabhg39xpL8Du5
-         tmJBVgP/962qRdm6ejqQT0wbbLYy0y0LOcbrwJtx5V39A8YpqkbVVLuwYJ8gTjFgknVw
-         h4zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771853883; x=1772458683;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=nHxPv6I4Z6dO3Hj6uV42QIGX3GK7K4BGPsWpNavZvBk=;
-        b=BJXrkjYKjVzp3FN8e5Tg4L6VK8SlKcvdOwmRvvHH8dlXcK5ert16u0MIH69b+07lQx
-         nwzo6sCy6XsSwFzkDu4zcofclaGYh64w9V5xk0Z9b7wxIdG0vQW0Wv8lhF4fxL6E/a0f
-         Xm0Zjuwa79ZCTXtd97p+U29vNI+XWVJ28Rjx/i5NZ0DsacXNRIDtiP8skQkojHvytoOi
-         zuYXJ3zrZVuyGIV21d/TVuxRfkPi0tvZBHM+DA7n90cG5cCBWf2TY6IRDuT3OXOv+upP
-         NU2emK6lDg6EGL/3g2bgYKeK9eF9z5htlqxj3kRGTGULEoEwYpYdO1eIUulUM8mOLHjI
-         bGmA==
-X-Forwarded-Encrypted: i=1; AJvYcCWUcXUBqpQMGchubIsoH+rqvRTbLD9/FHTtwAGGXbwIKez0rpTXdQzeuIGngTo5G7/DFiA=@lists.linux.dev
-X-Gm-Message-State: AOJu0YxCkG+RzIoUYleFj+jq7oI2Cl/3ZNofaFOi1hWs7IzQkmftfprp
-	HwRz3HbCCbgxjEFrltyAnxuZt5Z031/WWJPtUDDnTiBDxaoECWeJVkjjqOiS3sa0ojcSMG3LWeE
-	Aqzm8w8HEumN0kKoYLM8iqFrECnrjUQZn6xv4oQxT5SUCX7hKe8Jcqng=
-X-Gm-Gg: AZuq6aJk9e+PsTDRWLs4lZkW/qoNvWhEqWpQS4EdXh0iSfPOSLt+SuJBYMhVlMu26d0
-	/5LwrAY+T8Uj42EHaM+8e56YQR+I+gDzLL7/2eCKA4N7cC6qWj0fGaSdt6sVu/gIezFghEsKmkn
-	ns7r7Unz6JXL0oDKfAYBa3UIbINo5zm7LMwAK5I18T8m6GkE8JryFKJPzxIhfT5aq6Zl9+3j5qM
-	ccGacRQ5/gj/XPRfGGuhDSdPxEj5VuLrGlE92CJ3B8n9/mcPhx01l4KCvc/5Gb0W1tJtufzqhru
-	zaIMCvPmlnRTwz/SwST4iHIk7kVWwzS7tnrE4HXMu3trnGIkExMRXzDqMlYP/0oORQnrCPmqXCD
-	dyCep7vTPwYYgCGmlrbZvjzZofls//Lo3+RS0pmjfz0mtrHjBpbY=
-X-Received: by 2002:a05:620a:7082:b0:8c7:f55:2062 with SMTP id af79cd13be357-8cb8ca82021mr971549585a.61.1771853883022;
-        Mon, 23 Feb 2026 05:38:03 -0800 (PST)
-X-Received: by 2002:a05:620a:7082:b0:8c7:f55:2062 with SMTP id af79cd13be357-8cb8ca82021mr971544385a.61.1771853882505;
-        Mon, 23 Feb 2026 05:38:02 -0800 (PST)
-Received: from brgl-qcom.local ([2a01:cb1d:dc:7e00:3fa4:55d7:7aa4:50d6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a42ea5ccsm89398715e9.16.2026.02.23.05.38.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 05:38:01 -0800 (PST)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Date: Mon, 23 Feb 2026 14:37:24 +0100
-Subject: [PATCH v2 9/9] soc: sunxi: mbus: don't access of_root directly
+	s=arc-20240116; t=1771854121; c=relaxed/simple;
+	bh=xEBoMOJ2UfUkI3gm8CBgEjEdhJluBDxtNLuYWCqt0LM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XQuJ5A+nrmpAGUWnQ22b7xzxGIF9kmZapo25knr2PHPREWGRdcdi1i0yPeW+DhZKQ6wfcuEPe2i6a0Hj7HYMSHosmjot76CdMFYphdU6tiFGisyy28inEKNGFfPiw2cmChXDfFjVOCsXkpwzSdFhTIrezMn9/dn4Z5VddNwJei4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 82BD71A14BA;
+	Mon, 23 Feb 2026 14:34:44 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6B0901A11FC;
+	Mon, 23 Feb 2026 14:34:44 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id BBBA1202AE;
+	Mon, 23 Feb 2026 14:34:43 +0100 (CET)
+Date: Mon, 23 Feb 2026 14:34:44 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: edumazet@google.com, shawnguo@kernel.org, kernel@pengutronix.de,
+	krzk+dt@kernel.org, robh@kernel.org, andrew+netdev@lunn.ch,
+	mbrugger@suse.com, davem@davemloft.net, pabeni@redhat.com,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org, s32@nxp.com, imx@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com, s.hauer@pengutronix.de,
+	conor+dt@kernel.org, chester62515@gmail.com, festevam@gmail.com,
+	mcoquelin.stm32@gmail.com, ghennadi.procopciuc@oss.nxp.com,
+	devicetree@vger.kernel.org, alexandre.torgue@foss.st.com
+Subject: Re: [v4,4/4] stmmac: s32: enable support for Multi-IRQ mode
+Message-ID: <aZxXdNQGRcG6LeHS@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20260128-dwmac_multi_irq-v4-4-82fa34fcf2f2@oss.nxp.com>
+ <20260129051004.375682-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260223-soc-of-root-v2-9-b45da45903c8@oss.qualcomm.com>
-References: <20260223-soc-of-root-v2-0-b45da45903c8@oss.qualcomm.com>
-In-Reply-To: <20260223-soc-of-root-v2-0-b45da45903c8@oss.qualcomm.com>
-To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Danilo Krummrich <dakr@kernel.org>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>, Frank Li <Frank.Li@nxp.com>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-        imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
-        linux-sunxi@lists.linux.dev, driver-core@lists.linux.dev,
-        Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1061;
- i=bartosz.golaszewski@oss.qualcomm.com; h=from:subject:message-id;
- bh=1c1gquLfvSJ+JW0V9LV0gRBtqRjxxuGL6ryTeiQhipc=;
- b=owEBbQKS/ZANAwAKAQWdLsv/NoTDAcsmYgBpnFgircAU+0jsrAZZ/Aj6LcHzqbHGAS/DFEYZi
- t34Eup2YjSJAjMEAAEKAB0WIQSR5RMt5bVGHXuiZfwFnS7L/zaEwwUCaZxYIgAKCRAFnS7L/zaE
- wxcPD/47w3hJqf6FKWPzlvr9S86ReIdYy2gUPFLRaYv1Orw7Hx4Mu5VCL3/KMAaPpiCzFahyo9Y
- S0OUQIgsb1kqb7HIj2+UxTES2J22WsLFYkRYulcQij6J/QljIy0cbcn0uAydjmdb6VuQOawjh10
- FnYXW4+Ib3q6Ce98AoC/U1sqR36/lA78aqRwfswkLIVIhwgq9ERvUXZ0F/h2y/8wkYrbfKG+WCN
- 4VlGIAm20rPkLeDtPLAqp1Dcy68aNnI1OLqZ/KsYm9FnrOLtaNxduEseaaxwc8bhbyTtfmjYATL
- EoHz8ee2gD6S7XCtTw3SnuW4Ky64+giBafa0XfNBpPxKAawFQCKd8XByhDvXVlwRdQikXetq0ZA
- k1u8bp6vufJQXZLgmKBXQ6Y3zfD/vgMD5ptFcZr2yn1frat/EBwcg/JBtnoLQPB32Qbk3PmdGhA
- lNFBV7VYN/yATKm2UOsdZH6vEHm2PpcEsINOBkjcwQRrElzKw78vx2mCVTVyBZW8bTWsjBI7ezk
- 7WQr8RJ7fsrPuYLcICCUuDTD3QnT4F+TLDnvFX5AAnnPuPJKX/o7ctAdnVJrTMS+wXIkI6pmqdx
- oNi1zzx0nOQy0/iZYV7/+R8P9uqzqXpWIofRAhYkeXQi3fatpIXd82aahNqjbXS4yNa4bMXD7br
- keRpg4pplWqyjpg==
-X-Developer-Key: i=bartosz.golaszewski@oss.qualcomm.com; a=openpgp;
- fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
-X-Proofpoint-GUID: E3km-2otB3AGe7wYRsa0OXgLMEP8ENcO
-X-Proofpoint-ORIG-GUID: E3km-2otB3AGe7wYRsa0OXgLMEP8ENcO
-X-Authority-Analysis: v=2.4 cv=CbsFJbrl c=1 sm=1 tr=0 ts=699c583b cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=EUspDBNiAAAA:8 a=hcp4X6t0sg7LPBOUZMsA:9 a=QEXdDO2ut3YA:10
- a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjIzMDExNyBTYWx0ZWRfX0v/2hedUVRZK
- c4/FeB19iwxjl9La9Xyr6dhNaoNrfzDxaYUaQHYIx38L6qNRofnS8aNMpGHKvQCQ24SvHiie5Dr
- P6+ow/xQ8JGn/eghW68nOiRok8NMWEPBA+X4QoZmdiyG66uqwvyh4XZ4VkLZA3c1989QNkLyGQf
- qDOceki1gMvNwZRVbyF8Sa0oTqYJJSAePd1dbzi1knvSawk5VPBBJ46vS9Kz4C9GcELcxEewZMk
- eUcQz29SjmRKhFSS38DC62mIdIkgJsFU7BLCbOHip/avAQf75y3+c/U7gylAT9ehUH8mpPcXOZw
- niwD25gw4y/rPlDd497asGaVb4guTc52YkF+Whum3nKBsQwnCP2CiLykEFg/b7MFmvHgjTkKqLx
- 9+Xh3h3T3JcA6ddKBilYLPPJ0g75CfWr4vlq991H7wy0q30U5E/gQVdQyz90rijKUPpZr6NmwbN
- 6cs+xIjgPRPP4ZzX4jw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-23_02,2026-02-23_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 adultscore=0 impostorscore=0 priorityscore=1501
- suspectscore=0 phishscore=0 spamscore=0 malwarescore=0 clxscore=1015
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2602130000
- definitions=main-2602230117
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260129051004.375682-1-kuba@kernel.org>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-Don't access of_root directly as it reduces the build test coverage for
-this driver with COMPILE_TEST=y and OF=n. Use existing helper functions
-to retrieve the relevant information.
+On Wed, Jan 28, 2026 at 09:10:04PM -0800, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> 
+> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+> ---
+> stmmac: s32: enable support for Multi-IRQ mode
+> 
+> Enables Multi-IRQ mode for the S32 GMAC driver when per-queue IRQs
+> are present and more than one RX queue is configured.
+> 
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> > index 5a485ee98fa7..37a5b7b46973 100644
+> 
+> [ ... ]
+> 
+> > @@ -149,6 +149,16 @@ static int s32_dwmac_probe(struct platform_device *pdev)
+> >  	plat->core_type = DWMAC_CORE_GMAC4;
+> >  	plat->pmt = 1;
+> >  	plat->flags |= STMMAC_FLAG_SPH_DISABLE;
+> > +
+> > +	/* Check for multi-IRQ config. Assumption: symetrical rx/tx queues */
+>                                                    ^^^^^^^^^^
+> 
+> This isn't a bug, but "symetrical" should be "symmetrical".
 
-Suggested-by: Rob Herring <robh@kernel.org>
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
----
- drivers/soc/sunxi/sunxi_mbus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I will fix it in v5.
 
-diff --git a/drivers/soc/sunxi/sunxi_mbus.c b/drivers/soc/sunxi/sunxi_mbus.c
-index 1734da357ca21b249740e089698275507ea98a8a..8bc5f62ff258837d3f3b30cb84b60d1872b31c27 100644
---- a/drivers/soc/sunxi/sunxi_mbus.c
-+++ b/drivers/soc/sunxi/sunxi_mbus.c
-@@ -118,7 +118,7 @@ static const char * const sunxi_mbus_platforms[] __initconst = {
- 
- static int __init sunxi_mbus_init(void)
- {
--	if (!of_device_compatible_match(of_root, sunxi_mbus_platforms))
-+	if (!of_machine_compatible_match(sunxi_mbus_platforms))
- 		return 0;
- 
- 	bus_register_notifier(&platform_bus_type, &sunxi_mbus_nb);
-
--- 
-2.47.3
-
+Thanks.
+/Jan
