@@ -1,103 +1,184 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B0D344DAE
-	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 09:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B47334DCC4
+	for <imx@lists.linux.dev>; Mon, 23 Feb 2026 09:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771839248; cv=none; b=hRe7T11vmusAFTqUqpMjgv5FhqE0c+romzXncnsoQ/tHz8dx2rT2+2hqwMLRfoW+voVVRPhx8uUQWvMV3kXIuNI7x+yrmVL5KYgIuO0HgOQUSuHKZtG3hNUqJFD/MEW2419BQnLNO5Cmyuqpnu+Uj/OI+ihxrbDZa8B6gHkgT8E=
+	t=1771839262; cv=none; b=cJAvFUrEMwvaEFuREnPWywIpAF6hT5+d2xvG6AJMJwuMlWCbro9H5rk6M4x/JHsxlBu+bm7qdJ2sIe9WqWzkO06dsUAhz33vqyBISLFcDuc9S16Typxgj7Gt2HacWugsyDmbRCqABaM0yO4y+kxjma+QbOSyTodNvY6VKWitLfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771839248; c=relaxed/simple;
-	bh=RypTf0aMcT3Gvihug4VTgy7+ut33JHRXRF4noGUpbvo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=lFVmBNSIxNTJzNQgTwGBOc1gL1rAZhMptAnWEd0PD+XLeHqbkWmENmQujVDARUVH/4r6gyrV4XImx9X6n16sHbw5gaUxrZfS+9GNSAiUkxFxCsAuNlDvUjtyHaIvV2hSSPVVNxiphu0HoZpiHn4r1naE5EbwuhCjdzSEfaFxfyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=KqTMupwg; arc=none smtp.client-ip=78.32.30.218
+	s=arc-20240116; t=1771839262; c=relaxed/simple;
+	bh=uQIocrFRLt4IT579DzMVKsiOr6g8BtE71pIuV9//rsM=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=px0f4qwr66B3C0kNWoeZ43kl4X+KBlB3U5iDF3siAxApBwigIZYiznNNbG1aRKa2Hebfgjg61kHYP/rOPFzC/2QnHXltSNETJPKCFurzWDnpLDt4s32EtBsZzHMtEo4jmxPwPABc+Oi79Wl+BKTlWmdQc/WPA1HNq0/OTWOYbJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=WvyYcdiS; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="KqTMupwg"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="WvyYcdiS"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=jYLQAmS2V5vH5hD2lJBwU5t9ZdEBHgF8ZElCbh4Vl38=; b=KqTMupwg9pYja1LrDQB6IHXOgf
-	nMKlIz/G73+crJNsBegu4iKfDndmFaAg8ZxegYlGob+Wmq14kOgydAtMmWReeV3lPjU0m/obpOCzv
-	wk5Pt4ig1LUxoIeqnyZ1Fgprt0Os7TAeYYJ484oRSDlbombqK53ahPv+tzhe79izF8HuyW5MvoCPu
-	bg+UwVKp682N6FBHyDHPzOYBieoyGr/eceMPZIivAQLoMDs5G/TcPAdeyTwU9UuUwSWisKozf2N76
-	vvlPGbTBdADqCY53pQ37qQ/1Ntja6rm0Pi8GSl1+uohnold+g0j7V9WGoEU+SxC7IYrYN1ra7pswA
-	dU20lQgg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47704)
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=yOWokYlxysxFm3xjnehGiJbf7ylIL1Rh5bi686HkNhY=; b=WvyYcdiSy78/oBFRO8hlTCWVDc
+	r94yfUhYyXyiw/cGyxhUSRAqeVTiEBfszWKQ3PBwcIT4tgiu/JeZ5oi5gqX+98L9IvjDcDyCINtic
+	u2gcJO/bk5eiKBhn00/o1k/PML5+Aq0j9wTw/cedQvGb4p2uQ2VkYmexySiPmu85fgF4QKKGxPGyx
+	05zEme9d2b/hZ0WVijjf2XBxfCgJJfkhCin4iBFsxxF3tbAs5aoo2jZzCZClV3JtbsvVNx5YzFW/x
+	1H+X03ByhQCe36AfUWT49zLE1+X9C6q+qahz6f4tdSzHm4F+Ql5IE/iST2cBwc9+i1egLTKFsz9jZ
+	HUB+1kUA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:39730 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vuSKD-000000003lh-2rgk;
-	Mon, 23 Feb 2026 09:33:57 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vuSK9-000000007Fx-0IGw;
-	Mon, 23 Feb 2026 09:33:53 +0000
-Date: Mon, 23 Feb 2026 09:33:52 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1vuSKW-000000003m2-2TY9;
+	Mon, 23 Feb 2026 09:34:16 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1vuSKV-0000000ASbg-28JK;
+	Mon, 23 Feb 2026 09:34:15 +0000
+In-Reply-To: <aZwfAFJQcp9f0niI@shell.armlinux.org.uk>
+References: <aZwfAFJQcp9f0niI@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 To: Andrew Lunn <andrew@lunn.ch>
 Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Frank Li <Frank.Li@nxp.com>,
-	imx@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	imx@lists.linux.dev,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-	netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
 	Sascha Hauer <s.hauer@pengutronix.de>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH net-next 00/10] net: stmmac: qcom-ethqos: cleanups and
- re-organise SerDes handling
-Message-ID: <aZwfAFJQcp9f0niI@shell.armlinux.org.uk>
+Subject: [PATCH net-next 01/10] net: stmmac: qcom-ethqos: rename "por" members
+ to "rgmii_por"
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1vuSKV-0000000ASbg-28JK@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Mon, 23 Feb 2026 09:34:15 +0000
 
-Hi,
+Rename the "por" and "num_por" members to indicate that they are for
+RGMII mode only as ethqos_configure_rgmii() is the only place that the
+values are programmed into the registers.
 
-As the last series had issues with stability, I've changed the approach
-in this series to concentrate on keeping much of the SerDes related
-code within the qcom-ethqos driver rather than trying to move it out at
-this stage. This means it should be possible to bisect these patches and
-pinpoint exactly the code movement that causes any instability.
+Reviewed-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+Tested-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ .../stmicro/stmmac/dwmac-qcom-ethqos.c        | 34 +++++++++----------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-This series starts with various cleanups to qcom-ethqos (the first four
-patches) before beginning to move code, passing phylink's phy interface
-(which will change) to the fix_mac_speed() method, and then using that
-to configure the serdes and inband setting before moving the SerDes
-code.
-
-This patch set has been tested.
-
-Thanks.
-
-Changes since RFC:
-- add set_clk_tx_rate() conversion as that was also tested.
-
- .../ethernet/stmicro/stmmac/dwmac-dwc-qos-eth.c    |   3 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c    |  11 +-
- .../net/ethernet/stmicro/stmmac/dwmac-loongson.c   |   3 +-
- .../ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    | 135 ++++++++++++---------
- .../net/ethernet/stmicro/stmmac/dwmac-socfpga.c    |   3 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac-sti.c    |  11 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |   3 +-
- include/linux/stmmac.h                             |   3 +-
- 8 files changed, 101 insertions(+), 71 deletions(-)
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+index af8204c0e188..690bd5c7e1a6 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+@@ -87,8 +87,8 @@ struct ethqos_emac_por {
+ };
+ 
+ struct ethqos_emac_driver_data {
+-	const struct ethqos_emac_por *por;
+-	unsigned int num_por;
++	const struct ethqos_emac_por *rgmii_por;
++	unsigned int num_rgmii_por;
+ 	bool rgmii_config_loopback_en;
+ 	bool has_emac_ge_3;
+ 	const char *link_clk_name;
+@@ -108,8 +108,8 @@ struct qcom_ethqos {
+ 	int serdes_speed;
+ 	phy_interface_t phy_mode;
+ 
+-	const struct ethqos_emac_por *por;
+-	unsigned int num_por;
++	const struct ethqos_emac_por *rgmii_por;
++	unsigned int num_rgmii_por;
+ 	bool rgmii_config_loopback_en;
+ 	bool has_emac_ge_3;
+ 	bool needs_sgmii_loopback;
+@@ -218,8 +218,8 @@ static const struct ethqos_emac_por emac_v2_3_0_por[] = {
+ };
+ 
+ static const struct ethqos_emac_driver_data emac_v2_3_0_data = {
+-	.por = emac_v2_3_0_por,
+-	.num_por = ARRAY_SIZE(emac_v2_3_0_por),
++	.rgmii_por = emac_v2_3_0_por,
++	.num_rgmii_por = ARRAY_SIZE(emac_v2_3_0_por),
+ 	.rgmii_config_loopback_en = true,
+ 	.has_emac_ge_3 = false,
+ };
+@@ -234,8 +234,8 @@ static const struct ethqos_emac_por emac_v2_1_0_por[] = {
+ };
+ 
+ static const struct ethqos_emac_driver_data emac_v2_1_0_data = {
+-	.por = emac_v2_1_0_por,
+-	.num_por = ARRAY_SIZE(emac_v2_1_0_por),
++	.rgmii_por = emac_v2_1_0_por,
++	.num_rgmii_por = ARRAY_SIZE(emac_v2_1_0_por),
+ 	.rgmii_config_loopback_en = false,
+ 	.has_emac_ge_3 = false,
+ };
+@@ -250,8 +250,8 @@ static const struct ethqos_emac_por emac_v3_0_0_por[] = {
+ };
+ 
+ static const struct ethqos_emac_driver_data emac_v3_0_0_data = {
+-	.por = emac_v3_0_0_por,
+-	.num_por = ARRAY_SIZE(emac_v3_0_0_por),
++	.rgmii_por = emac_v3_0_0_por,
++	.num_rgmii_por = ARRAY_SIZE(emac_v3_0_0_por),
+ 	.rgmii_config_loopback_en = false,
+ 	.has_emac_ge_3 = true,
+ 	.dwmac4_addrs = {
+@@ -282,8 +282,8 @@ static const struct ethqos_emac_por emac_v4_0_0_por[] = {
+ };
+ 
+ static const struct ethqos_emac_driver_data emac_v4_0_0_data = {
+-	.por = emac_v4_0_0_por,
+-	.num_por = ARRAY_SIZE(emac_v4_0_0_por),
++	.rgmii_por = emac_v4_0_0_por,
++	.num_rgmii_por = ARRAY_SIZE(emac_v4_0_0_por),
+ 	.rgmii_config_loopback_en = false,
+ 	.has_emac_ge_3 = true,
+ 	.link_clk_name = "phyaux",
+@@ -522,9 +522,9 @@ static int ethqos_configure_rgmii(struct qcom_ethqos *ethqos, int speed)
+ 	u32 val;
+ 
+ 	/* Reset to POR values and enable clk */
+-	for (i = 0; i < ethqos->num_por; i++)
+-		rgmii_writel(ethqos, ethqos->por[i].value,
+-			     ethqos->por[i].offset);
++	for (i = 0; i < ethqos->num_rgmii_por; i++)
++		rgmii_writel(ethqos, ethqos->rgmii_por[i].value,
++			     ethqos->rgmii_por[i].offset);
+ 	ethqos_set_func_clk_en(ethqos);
+ 
+ 	/* Initialize the DLL first */
+@@ -780,8 +780,8 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
+ 				     "Failed to map rgmii resource\n");
+ 
+ 	data = of_device_get_match_data(dev);
+-	ethqos->por = data->por;
+-	ethqos->num_por = data->num_por;
++	ethqos->rgmii_por = data->rgmii_por;
++	ethqos->num_rgmii_por = data->num_rgmii_por;
+ 	ethqos->rgmii_config_loopback_en = data->rgmii_config_loopback_en;
+ 	ethqos->has_emac_ge_3 = data->has_emac_ge_3;
+ 	ethqos->needs_sgmii_loopback = data->needs_sgmii_loopback;
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.47.3
+
