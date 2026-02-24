@@ -1,95 +1,97 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C9E3ACA6C;
-	Tue, 24 Feb 2026 18:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64A529BD90;
+	Tue, 24 Feb 2026 18:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771957609; cv=none; b=QRCfTjlTtZF5S+oNh1Aw1BMganRUkYHka0DS0gmFK8Nkd4RO9sbaue7a9St6JKH7Dnv9pp6ZvADHF01nS3msw6FNYz5UKgkavTIuvoQ5ReP0UvHiE/Ws1ADfNRxf+hu5ixM2f4ha4x+g/bk7GyoYWEB+gdQOsaVvskqxyAsOr98=
+	t=1771957934; cv=none; b=Smj930nUip7wTuOwV6w3ejAc28VBnFTY0xiCmW0Su8lqrUQncrtO95ImJiMaZ64hwyYe9Ko4AgyD5dkBdZtIoGy4Ml6NCC37Q7RzVzFFjXN8Gi6WA7Oh6PgFU4H455vTPevtC8GrpkAqxxsYLeVkQm3R3je4Xk3HcbSPGXrYe7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771957609; c=relaxed/simple;
-	bh=G7/Adg13ZQ0liy4QhOZKarYCYwGHG6kcs1d81upG/jU=;
+	s=arc-20240116; t=1771957934; c=relaxed/simple;
+	bh=pjvAYBrvNS02jtvepugyA12PJiegFiNTbfdgM5xo/i4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OJ7b3DTSMNaB+hPkD1YAXxr4n11+Q8xgFiebTvr1DjxQr6TNkFzicnwJHoAei+8zusf5ESrUlw3O/aRCqGiliC2BwtxmqJLKcKEZhR5WmdUW/cH1v3Sy40aCF1Iiarwi1fbWe/kWPz+QHLgWROkWB++k8qVPfguoBNoQ/WWKbcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=mG8HyCpF; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=TdjDu1Hy6HsHflSILrdO0R46xTmW0ObDvIBHRt5C6Mwwz3pqEVA1e15SfW9Lr/IsnaZ/23HTygwx2vgLT6CdjuTChhrvoiL+0AjRhKHwIjby74pwBEvHmxcWD2RIvkY52+OtZJ2q5wjQruBk5+InMGgUVz7/9OiWJv2fr+N5nYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c7knNeoc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="mG8HyCpF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=H5YAxZr0Jw72bQeCO52v2wrVTxSELxtM46IRbGRfGy4=; b=mG
-	8HyCpF+e3G87XvR62HmC5UuvjuQweothHamhJx4IRZ9OAMnibWEvcfYoV1MhFJQIjwkpDrY2wNogZ
-	aFjmttioOlXiZPAU2HAfkAW6Qi91KxQxWk02aalaDRzKlIK4WWcY7tY96SRoWOOWAnECSFVzszfGz
-	LRU7I7E3wAn+DCQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vux7H-008e3Y-Dy; Tue, 24 Feb 2026 19:26:39 +0100
-Date: Tue, 24 Feb 2026 19:26:39 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Frank Li <frank.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c7knNeoc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52733C116D0;
+	Tue, 24 Feb 2026 18:32:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771957934;
+	bh=pjvAYBrvNS02jtvepugyA12PJiegFiNTbfdgM5xo/i4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c7knNeoc9b86Pn0zEU+63t097NFo8V1DiirlR+tFZ1FEmys2K12aiKxgV26a+Iq89
+	 RW6s0i4WgFsU7xqxe8QBZwCYJNTIVU3fAwl3MGD7Aj4aB1OoJndbEf2iR6U88immAp
+	 lZ+ZXHG/Xi72zzK8VDXb1mAK2vZ0209HXQk7MRNvlQC+u2HbsY+3zcDZ+XYAve07YX
+	 j2P8qGLxSyl/X5aalMr+ZIKOrye9wAb9AsuokDyn+o7qEDIc7rs0g0ENF+WykPsMJB
+	 rB53ZMhwaMGyIXtt5iQf/o7438b0ko4vJZyN2r+EDkjhge4ukxBR8Fm0m2Acp8dlEu
+	 cszWkbq8B5NMg==
+Date: Tue, 24 Feb 2026 12:32:13 -0600
+From: Rob Herring <robh@kernel.org>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Saravana Kannan <saravanak@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
 	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	dl-linux-imx <linux-imx@nxp.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v8 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
-Message-ID: <063dc2bf-8b01-45b6-822a-524f4e7c504d@lunn.ch>
-References: <PAXPR04MB9185A908F5090F0CA4FF05F78968A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <b21b9ee5-d84e-47f8-86b5-c111ecc3d43d@lunn.ch>
- <PAXPR04MB918576D67A268E59242964A08968A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <CAD++jLkUVFckLTq=SoivNFoFymhJo4KM=qGmajFcv9T9+7tPmg@mail.gmail.com>
- <b4c422ce-3538-40aa-8bfa-b70f02774b5d@foss.st.com>
- <PAXPR04MB91859B642802813F908B03DA8977A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <64ef5dbf-6264-4758-a5d8-d8c52c359fcc@foss.st.com>
- <PAXPR04MB9185934EB640E8B21905FF878974A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <79eb8bb8-83cb-4b24-8e56-42a53c710055@lunn.ch>
- <PAXPR04MB9185F1A67384E4886282227A8974A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+	Fabio Estevam <festevam@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>, Chen-Yu Tsai <wens@kernel.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>, Frank Li <Frank.Li@nxp.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev, linux-renesas-soc@vger.kernel.org,
+	linux-sunxi@lists.linux.dev, driver-core@lists.linux.dev
+Subject: Re: [PATCH v2 8/9] soc: renesas: don't access of_root directly
+Message-ID: <20260224183213.GA3239922-robh@kernel.org>
+References: <20260223-soc-of-root-v2-0-b45da45903c8@oss.qualcomm.com>
+ <20260223-soc-of-root-v2-8-b45da45903c8@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PAXPR04MB9185F1A67384E4886282227A8974A@PAXPR04MB9185.eurprd04.prod.outlook.com>
+In-Reply-To: <20260223-soc-of-root-v2-8-b45da45903c8@oss.qualcomm.com>
 
-> Regarding type, it’s needed, especially for the in packets. There are two distinct kinds of incoming 
-> packets: notification‑in and reply‑in. Because of that differences, Combining cmd and type would 
-> blur that distinction and complicate the implementation.
+On Mon, Feb 23, 2026 at 02:37:23PM +0100, Bartosz Golaszewski wrote:
+> Don't access of_root directly as it reduces the build test coverage for
+> this driver with COMPILE_TEST=y and OF=n. Use existing helper functions
+> to retrieve the relevant information.
+> 
+> Suggested-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> ---
+>  drivers/soc/renesas/renesas-soc.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/soc/renesas/renesas-soc.c b/drivers/soc/renesas/renesas-soc.c
+> index 38ff0b823bdaf1ba106bfb57ed423158d9103f8d..bd8ba0ac30fa91fcf2a10edd0d58b064650085cf 100644
+> --- a/drivers/soc/renesas/renesas-soc.c
+> +++ b/drivers/soc/renesas/renesas-soc.c
+> @@ -6,6 +6,7 @@
+>   */
+>  
+>  #include <linux/bitfield.h>
+> +#include <linux/cleanup.h>
+>  #include <linux/io.h>
+>  #include <linux/of.h>
+>  #include <linux/of_address.h>
+> @@ -468,7 +469,11 @@ static int __init renesas_soc_init(void)
+>  	const char *soc_id;
+>  	int ret;
+>  
+> -	match = of_match_node(renesas_socs, of_root);
+> +	struct device_node *root __free(device_node) = of_find_node_by_path("/");
+> +	if (!root)
+> +		return -ENOENT;
+> +
+> +	match = of_match_node(renesas_socs, root);
 
-[Goes and looks at gpio-virtio]
-
-https://elixir.bootlin.com/linux/v6.19.3/source/include/uapi/linux/virtio_gpio.h#L13
-
-/* Virtio GPIO request types */
-#define VIRTIO_GPIO_MSG_GET_NAMES		0x0001
-#define VIRTIO_GPIO_MSG_GET_DIRECTION		0x0002
-#define VIRTIO_GPIO_MSG_SET_DIRECTION		0x0003
-#define VIRTIO_GPIO_MSG_GET_VALUE		0x0004
-#define VIRTIO_GPIO_MSG_SET_VALUE		0x0005
-#define VIRTIO_GPIO_MSG_IRQ_TYPE		0x0006
-
-	Andrew
- 
+Doesn't of_machine_device_match() work here?
