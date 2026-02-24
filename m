@@ -1,169 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0A2279346;
-	Tue, 24 Feb 2026 07:06:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDFD24E4A8
+	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 07:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771916774; cv=none; b=ez5PAYsTsNrLhigvCvhpkGZpSkwIhNmHUcwo5MkiYmd1ttHCK+vkxkvTzxy1vS8zoiqKOqV26zfM4Jb7B7nVwAuSak2lUuNbyizTaRPsDjrOIwxTlg2l/dLLazbLRs2Vh8CpjlKSAuCEo5NoZwn8N/kzskNoGpixlJZq5UaFdyI=
+	t=1771917627; cv=none; b=uCpQQLncVsrb1QmCvLB4DDJsShPtHumTOYjsoeD5mfgGQBRUduqbavKVzyaiPlPxs2pSA6g9VbIsEI907f1SvO9tFOQLjhA4Tx0TcK2iPdtsFpUmNEXnNPO1CkLlMkzj7yVwOubqb+DF345l4derM26ropH8ulUvWLa8uet6ek4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771916774; c=relaxed/simple;
-	bh=+7HAa46+csyyfFenGu741DgQ0m/L/d1UUx6mgp8nvUI=;
+	s=arc-20240116; t=1771917627; c=relaxed/simple;
+	bh=SotjKpgwct8Ny90oVOHr61GQ+UfABjST3ee7OhSA6Yc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gnKgSvUgivD6nQfsG7ciifCVBhJvi1eeal2OlKgEhBVcg/nHfjsmPR2NfcpHCrlfPe10VeQCL8lzNz5wluRKjLCONMHQUOz3hzGNRWHzy0CcVKiWZiJGQ3jsPABConrpoN3bOf/6WmTveWNJw9W3aJxXuLbVaCOQD6KNm193ErI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d31fTtcp; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d31fTtcp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AF6C116D0;
-	Tue, 24 Feb 2026 07:06:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771916774;
-	bh=+7HAa46+csyyfFenGu741DgQ0m/L/d1UUx6mgp8nvUI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d31fTtcpY8I9cJoKWJ3UEniHz7RsfiFq9uU5sAhsntQBf5du4P+x3xpG//OsG3lmN
-	 7OgqoFGzx6hpHFeqMfTKq/hTpv7Ik1HZSU6oSfDEY96qV/mhnMagxUv7yEbOVGuKKd
-	 atR3yi19ndUjIVhw+uV9flLAAzqxcRtvYBZL3YQObRLuamy5AaxwVCBMd+OchiNYzK
-	 BNupMV1fEQXiLypin5s5DLXhZTZCWdpXiJBDgTUCyRou90d4EiJD5K/Ajz6lt+G8pv
-	 Y8B3ZQZDEte86QBesK3IwEbZQ4XaW9BhehybzEkMXn8mSPSm5cIciYoM7VVTaHrar4
-	 9SL7I9nZejwRg==
-Date: Tue, 24 Feb 2026 08:06:11 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, NXP S32 Linux Team <s32@nxp.com>, 
-	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, netdev@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=UGxzwyF+q41pNHubtQj1R1SIcbDboI27CSjVKbSdMZtnWknVhSPs3ZOCU7i1X/1uUjVVyOk41YWJ/SEws6ee8e4KzE0A+e/s42APjietdQBm24ErUrPLin3/0uzK2kgxxSEzkjY44zgSF0b26aLzHmRwfdf/0wiYd40xJE8yjPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 2EF621A2307;
+	Tue, 24 Feb 2026 08:20:25 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 17C9B1A22FD;
+	Tue, 24 Feb 2026 08:20:25 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 1E51A202A7;
+	Tue, 24 Feb 2026 08:20:24 +0100 (CET)
+Date: Tue, 24 Feb 2026 08:20:25 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, devicetree@vger.kernel.org
 Subject: Re: [PATCH v5 2/4] dt-bindings: net: nxp,s32-dwmac: Declare
  per-queue interrupts
-Message-ID: <20260224-diligent-bloodhound-of-hail-3fe982@quoll>
+Message-ID: <aZ1ROUzQdsuOpGFz@lsv051416.swis.nl-cdc01.nxp.com>
 References: <20260223-dwmac_multi_irq-v5-0-8fc699a5fac4@oss.nxp.com>
  <20260223-dwmac_multi_irq-v5-2-8fc699a5fac4@oss.nxp.com>
+ <20260224-diligent-bloodhound-of-hail-3fe982@quoll>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260223-dwmac_multi_irq-v5-2-8fc699a5fac4@oss.nxp.com>
+In-Reply-To: <20260224-diligent-bloodhound-of-hail-3fe982@quoll>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Mon, Feb 23, 2026 at 02:58:05PM +0100, Jan Petrous (OSS) wrote:
-> The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lines,
-> set them to allow using Multi-IRQ mode.
+On Tue, Feb 24, 2026 at 08:06:11AM +0100, Krzysztof Kozlowski wrote:
+> On Mon, Feb 23, 2026 at 02:58:05PM +0100, Jan Petrous (OSS) wrote:
+> > The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lines,
+> > set them to allow using Multi-IRQ mode.
+> > 
+> > Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> > ---
+> >  .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 44 +++++++++++++++++++---
+> >  1 file changed, 39 insertions(+), 5 deletions(-)
+> > 
 > 
-> Reviewed-by: Matthias Brugger <mbrugger@suse.com>
-> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> ---
->  .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 44 +++++++++++++++++++---
->  1 file changed, 39 insertions(+), 5 deletions(-)
+> <form letter>
+> This is a friendly reminder during the review process.
 > 
-
-<form letter>
-This is a friendly reminder during the review process.
-
-It looks like you received a tag and forgot to add it.
-
-If you do not know the process, here is a short explanation:
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions of patchset, under or above your Signed-off-by tag, unless
-patch changed significantly (e.g. new properties added to the DT
-bindings). Tag is "received", when provided in a message replied to you
-on the mailing list. Tools like b4 can help here. However, there's no
-need to repost patches *only* to add the tags. The upstream maintainer
-will do that for tags received on the version they apply.
-
-Please read:
-https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
-
-If a tag was not added on purpose, please state why and what changed.
-</form letter>
-
-> diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
-> index 1b2934f3c87c..3a0e41b63c3d 100644
-> --- a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
-> @@ -1,5 +1,5 @@
->  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> -# Copyright 2021-2024 NXP
-> +# Copyright 2021-2026 NXP
->  %YAML 1.2
->  ---
->  $id: http://devicetree.org/schemas/net/nxp,s32-dwmac.yaml#
-> @@ -16,6 +16,8 @@ description:
->    the SoC S32R45 has two instances. The devices can use RGMII/RMII/MII
->    interface over Pinctrl device or the output can be routed
->    to the embedded SerDes for SGMII connectivity.
-> +  The DWMAC instances have connected all RX/TX queues interrupts,
-> +  enabling load balancing of data traffic across all CPU cores.
->  
->  properties:
->    compatible:
-> @@ -45,10 +47,22 @@ properties:
->        FlexTimer Modules connect to GMAC_0.
->  
->    interrupts:
-> -    maxItems: 1
-> +    minItems: 11
-> +    maxItems: 11
->  
->    interrupt-names:
-> -    const: macirq
-> +    items:
-> +      - const: macirq
-> +      - const: tx-queue-0
-> +      - const: rx-queue-0
-> +      - const: tx-queue-1
-> +      - const: rx-queue-1
-> +      - const: tx-queue-2
-> +      - const: rx-queue-2
-> +      - const: tx-queue-3
-> +      - const: rx-queue-3
-> +      - const: tx-queue-4
-> +      - const: rx-queue-4
->  
->    clocks:
->      items:
-> @@ -88,8 +102,28 @@ examples:
->                <0x0 0x4007c004 0x0 0x4>;    /* GMAC_0_CTRL_STS */
->          nxp,phy-sel = <&gpr 0x4>;
->          interrupt-parent = <&gic>;
-> -        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
-> -        interrupt-names = "macirq";
-> +        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
-> +                     /* CHN 0: tx, rx */
-> +                     <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
-> +                     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
-> +                     /* CHN 1: tx, rx */
-> +                     <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
-> +                     <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>,
-> +                     /* CHN 2: tx, rx */
-> +                     <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
-> +                     <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>,
-> +                     /* CHN 3: tx, rx */
-> +                     <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
-> +                     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>,
-> +                     /* CHN 4: tx, rx */
-> +                     <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
-> +                     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
-> +        interrupt-names = "macirq",
-> +                          "tx-queue-0", "rx-queue-0",
-> +                          "tx-queue-1", "rx-queue-1",
-> +                          "tx-queue-2", "rx-queue-2",
-> +                          "tx-queue-3", "rx-queue-3",
-> +                          "tx-queue-4", "rx-queue-4";
->          snps,mtl-rx-config = <&mtl_rx_setup>;
->          snps,mtl-tx-config = <&mtl_tx_setup>;
->          clocks = <&clks 24>, <&clks 17>, <&clks 16>, <&clks 15>;
+> It looks like you received a tag and forgot to add it.
 > 
-> -- 
-> 2.47.0
+> If you do not know the process, here is a short explanation:
+> Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+> versions of patchset, under or above your Signed-off-by tag, unless
+> patch changed significantly (e.g. new properties added to the DT
+> bindings). Tag is "received", when provided in a message replied to you
+> on the mailing list. Tools like b4 can help here. However, there's no
+> need to repost patches *only* to add the tags. The upstream maintainer
+> will do that for tags received on the version they apply.
 > 
+> Please read:
+> https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
+> 
+> If a tag was not added on purpose, please state why and what changed.
+> </form letter>
+> 
+> > diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+> > index 1b2934f3c87c..3a0e41b63c3d 100644
+> > --- a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+[...]
+
+Hi Krzysztof,
+
+thanks for pointing out the missing Rob's Reviewed-by.
+It was the mistake not by purpose.
+Should I resend v5 series or only this patch 2 or prepare v6?
+
+BR.
+/Jan
