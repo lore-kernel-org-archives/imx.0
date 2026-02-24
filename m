@@ -1,87 +1,87 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930CF378D95
-	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 10:43:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700C53793BB
+	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 10:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771929835; cv=none; b=aZPb0/MyHefntXeV5ten/veZNKh2hY3on76uh+yqZCfqeNgO6CUfc8TvoJNdqqBgZ3Kw5R8x5UGpmjF5My+HfwzEAVgAu+Ld8MY5E8meZIqu7uMsYo9rZl5YIdOGZ++D8zHP+WXagxY1pqA0fvBBTOvjJiGMAKBf5hTOUZdN9Ps=
+	t=1771929837; cv=none; b=FjOzaxFaRxkx/8JnLeCkoEOoSvuAAprWCoO3VPBK9hq74sXiTzrh7Y5Iwvcr6b8nljkij1KD7qCJaBO9jdRh/4wURVammI3AzD8yZHAKA60IQEkhA6MHvl4wr0pnBypnWSEE+ML/sdKMrpW3Zms+vIpPjLQV9I+9YlyrOd/QvNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771929835; c=relaxed/simple;
-	bh=Fe4MjhMn8lZ84KxqMdgpBwRbEDyKHabOEHVEnVI2kpg=;
+	s=arc-20240116; t=1771929837; c=relaxed/simple;
+	bh=7h/Lj1fVzQNHqbpgOXMHGQLnYHp9vdXyxXswRQGiGq0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=G12PzYs01M2M4BBucCToCxEeP4IEtHqcwaSUMCTRUWAqzpAYxfnqdTPi4L83atKH6NmlbmxHNWqVVZosWm/2cS8wgWiW4kjaj+iAQC75Ren6lPOIxvI74JFus7s4Nug2hcY5RTWHwzTNxxHwqfwixtWvMYL+1N0xcyYd3zQ3qG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=D9v3qx8o; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=J0ObtNrm; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:To:Cc; b=m3uMbQmcXpUeMZ+Uc1hb8O60iEBhVqNmG8tEMgXAP/MqD4nK2QDofZwn5NES+P2Opr3nL4ruq71HyhUD7UYi6p+NGtvKrt0d3rDgd9wSrtafR1rduE3jREAOjC8omlngPsdxa+C4ce3059aTaMR0M3vUOYG7gHiQQT8KysV3SNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=TfQuzWYs; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jMwOI534; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="D9v3qx8o";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="J0ObtNrm"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OAFep11775185
-	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 10:43:52 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="TfQuzWYs";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jMwOI534"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OAFRCl3570211
+	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 10:43:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	OZ4E54OvU7h144U3LHJamjkNTkG1gc0xqf9JFK5pbkI=; b=D9v3qx8o/f75VsT/
-	LhL4bFzaO03AVDp1hmkLJWmKeXl6N8puQxT2VpFjhcj5v8ELcW0JtAtalWMSUIZP
-	3pV5FCZLs5BKt95sc/ebDVXvmj48cxHbfbt0CbrGQOxcYkL88Iy70In2gQAaGCdc
-	+cr4iEqs2rCL1kq6FIw4gwDUOd4jW0e3oJWHpk8+8o8w4JZCZDRyHMAXBjYG7AuM
-	qlCbmEoe8IMRhYd/fnXTl59jp0anjm8qrEtDaCOBvQSBODiGRRBY7C6+HahIzx+e
-	NJ256yntk82Jtw+sBmGnspNvusljYofkYBaIz8Ssd1WaVHxqtwrPIOJROK5usNfR
-	UQntIQ==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cgpj8bmr3-1
+	Ne7yOu90dPGQgrUhRBv6heI97JqK1q/WEP2CV9u0asA=; b=TfQuzWYs6V+a7MZr
+	M7JONU3S/pDgfd/PtBI3vHsOjR2pnj6TRjYGhinFdHTNnQ1As5UKVFMMq/2aCnnG
+	NAsCci4nAQWnqM6uKy1CHPYr/ernPrwYcWBL/Xk/LVqQymzHAuAGdO8zhFyRioTV
+	v9rxC1d9vilxIyswyr0jl9S/EIdalqYqCpekjtQ8jCRstzupMTlrbfqmQMVYfTVc
+	xtcLj/ybHn4C11BtZrfq40vrCn26AOQsUbnOKTEv4k4M8peo+H97OiNIIbmPh+bE
+	4+hgJFEEG2eh7ujyCXfNl4E/1MyT/0LnogYRMQaSEXcRlUfOl+DEyhhYOYXOTgoq
+	8Th3sg==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cgn8rby2x-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 10:43:52 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8c70fadd9a3so3229586485a.0
-        for <imx@lists.linux.dev>; Tue, 24 Feb 2026 02:43:52 -0800 (PST)
+	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 10:43:54 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8cb42f56c4aso5038845485a.3
+        for <imx@lists.linux.dev>; Tue, 24 Feb 2026 02:43:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1771929832; x=1772534632; darn=lists.linux.dev;
+        d=oss.qualcomm.com; s=google; t=1771929834; x=1772534634; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=OZ4E54OvU7h144U3LHJamjkNTkG1gc0xqf9JFK5pbkI=;
-        b=J0ObtNrmz9GhiAdgig/3K+77DDzu6rR+izQVvl4WNmXDmXfECYyny6CP6TKFtph5Lz
-         7Pm7PFy7MOFF/rhBru3fE8P3t/AmsoF3tXOKdfil1znOjhRaO6+hVI57wHOB3Ipv6rEk
-         da5ltTSZg9m/1+yUrrgGlND1jdUqgHR1SSGY3MOd7FsXdQg0+GjbZQmfrZyV4eXBURz8
-         Fe89TUzgtBPceR/CJ2SvQBi//q+RGo0KDEsV7XEcHXx3NQ3oA6xgyBKuhsvlbLgc0XPK
-         UxxNVfKCijmvkpksR73p50O6E92jLRy7RS9h2wbd8KXo/Ez/PAXr6mn3BqpuJwtcDGDD
-         5Odg==
+        bh=Ne7yOu90dPGQgrUhRBv6heI97JqK1q/WEP2CV9u0asA=;
+        b=jMwOI534LifL2954mIAcS7CAHg9TTDAgDAjlE7itvam1Ph3fsSaQqnTrDLuzeso79P
+         B83nTtw36XLTt8R0q7qWY+QjneB8h5aFcEBg92RjEqXAFgoPT8999PtkEIByez0o8ToH
+         mpeMq26NxN5EDlbD1/abzAlEQAmhIe3h3Vy2MjzcCjyAfaQxCwrPqiwNUbnY24PgQJvC
+         wJxjH0uObTLGnFz8p/bVPZoyG0Iqw32E3H05hrqIo9rlfSi0XFByun0WDbX9MqIUMc6k
+         6lI/7Lh7LWvo3/LRmaRCvjFnczFMLxq69VipUF1NL32zQqtakTfFlvpobXrVe+7u3OJ3
+         YCXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771929832; x=1772534632;
+        d=1e100.net; s=20230601; t=1771929834; x=1772534634;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=OZ4E54OvU7h144U3LHJamjkNTkG1gc0xqf9JFK5pbkI=;
-        b=L56lPliXucQMNxCLvc5BKMizCUorv9cCzJlsOwILHFcWPv3+D5vdniK7AJmVjNkHqp
-         cbTWQFQQv6zm30FuDO6OA+3QvrTWcE4HCz4xwFgx9zsnjY7oh2Ggu16X6/9++XFkzuvM
-         KZJJS45oglDYz/8/+O7ymWNiQg+dX2NSqDuHEAjJYqoZqWdDtx4MqSvwVcZ0JH2kLR0r
-         TX/f5qVPYszlRzWxvtEJfq+QZtuKPLHIgGh009blzw/i0UrTg5tHywnsey6eNjTM5gcg
-         EF6OMOkEg3FadJMKPbyWc0MAou1IJDMgFpAHa2lw40XRUqmONX+tiLK2ZgbvD39UP0Nf
-         hSHA==
-X-Forwarded-Encrypted: i=1; AJvYcCWyrIdyomZ3xhoMlaZvvG3Ims1jHMB5xkh1uSWsP1qNs0+fx2f5MvrFhV5IshrkV6yIll0=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yz4uLpaL0C2MrmPBvNrUYKxfMvtvUiLHlF/e44yDOdoF7bcJ0Xf
-	tDvKmp69AtPC+6hdwqPniMfwCgotl3T2wy0uVT1VbEmqd1vnPcXD2wWTb+9c7aGnWKVoDQwLb5H
-	Lshg5MII48Wo+QQAabllLGk5sDdZsxy90IMJdhV0yOsM5CiDzVyvb5ec=
-X-Gm-Gg: AZuq6aLZfL2uhClu8FlLwUMumFL3O3YjKyK/DMTkRwiy6vusWMRJjwSGZjGDjywmKvH
-	YcJJnGslgjnRdoqnBr3DRUq9uUlnmzJc9wSRjNgdWQj6LVzAjfkb6EMMkF1iny1UH4DKPyyTsAl
-	LONp1RB2uPioEjlCyx46GkDY27vJ8TtgxTPRN6Waofpxk26z+JrAsfDgcaz4B++d1v9FA5D4fIc
-	ocnwGbI/krSpYSRgwaZllDydo9Gg+dQZ1whGc3Gw2V4v5tnJ3nsl77el0yUIK/0hiVkGtbUqhGs
-	5hDxuNIsv2tAnEA0tNlb2d6JO3+OaltKA9dfBYtrtfzPb6SjubacIMYLOtakxfgou9BsFauwGvA
-	blBjWyyG0fuxHj6pJQJr/hyp02Ona23w2Llgu5FKf4r9YXw==
-X-Received: by 2002:a05:620a:1a93:b0:8ca:ffe3:33a3 with SMTP id af79cd13be357-8cb8c94311fmr1569672985a.0.1771929832044;
-        Tue, 24 Feb 2026 02:43:52 -0800 (PST)
-X-Received: by 2002:a05:620a:1a93:b0:8ca:ffe3:33a3 with SMTP id af79cd13be357-8cb8c94311fmr1569670385a.0.1771929831544;
-        Tue, 24 Feb 2026 02:43:51 -0800 (PST)
+        bh=Ne7yOu90dPGQgrUhRBv6heI97JqK1q/WEP2CV9u0asA=;
+        b=qXY/l7b1kTice4V49+1LWrBXcfd318zlFlgGuwdaN7vAKtdpsa+eU3iwXc0/uDvPKW
+         Kp/gf3XCqAzWWbi3GLg9BJDl47zrOul7VMuXRT4dm6VbguhvS4aYw5bI3hDEFzbf+sAp
+         Woel2NusqDJhy6/Jyjc46bgdlxAvvEJKDJDEzN+vcguTV25iTlA2aUd3yK7Mdl0ahG0B
+         1+jPb40CrLCHVAbLxB1AjC36MKhmV4UUjizghff4vFrZCGdIqHXRcv4loVdXQRu3H1hE
+         bV3uJzvenTk7GRdY4Z9k4aqC20U2c8BlFXtPTUlSVB5EcavSYPPjcFctQChRh7FvwdzU
+         yTjA==
+X-Forwarded-Encrypted: i=1; AJvYcCUV4OoLYsyz+dSbsEJ2X6T2uFOu3MTI/O9Y/Ukk+PZqahwXJEH0vz6AalKQC4qTxB9F6hs=@lists.linux.dev
+X-Gm-Message-State: AOJu0YyKX6XgT3Hx0hYDwfcGObgSPSSYYP4hSy+qnra4Xvg5dd0ah60J
+	rED/8uz0707r2YS3FP46zziWRD04FSMUa2mK9n8rrBQwrn1hQx737HfhnZ3ZJw24++pKU3926QJ
+	oYL91bPQr8WbAOxyZDahFc52fgbbG27xstOhIpYiCSXZGKREx+CPpd74=
+X-Gm-Gg: AZuq6aIP74APaQZR6BVBTmQotPPkphuzBAnGesEK49Nill154ze6fjDxaIbYTyWOpo5
+	4f97EOVe4d4KopxyIT5Qu06Yw3Mxm7RrXDcQTYlBHn4t/7x7C9LSg+/nVYE1z0BGYm+f22o7YH7
+	aC+KyJHucM/KI6pzUzSUCm+0o4gLUNKT+MLR6+wjxOg+hLAPQLN17x9izPW6APbT67oplYokNZU
+	pNLKzg5GFL324FgRZA+AQnZ+vlcHqckAm2JQecoa8y+fQzB+MG0/SOIE1BgwccUT9iU6xjw4xMI
+	Q2sCSRlYJb3YHApccm7uwp7RRJ6rLCyBzZH0pCtCbYinFSrGudJz0whsdHjE2MomFiXZ2+ZUukC
+	9wgZu5xbv52WmFIMVWnbtOL2hBWhhmCYb8E1hWDY4wHrmUA==
+X-Received: by 2002:a05:620a:280c:b0:8c6:ff8f:58af with SMTP id af79cd13be357-8cb8ca674bcmr1328011485a.51.1771929833712;
+        Tue, 24 Feb 2026 02:43:53 -0800 (PST)
+X-Received: by 2002:a05:620a:280c:b0:8c6:ff8f:58af with SMTP id af79cd13be357-8cb8ca674bcmr1328009985a.51.1771929833267;
+        Tue, 24 Feb 2026 02:43:53 -0800 (PST)
 Received: from [127.0.1.1] ([178.197.223.140])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d40004sm25685906f8f.21.2026.02.24.02.43.50
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d40004sm25685906f8f.21.2026.02.24.02.43.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 02:43:50 -0800 (PST)
+        Tue, 24 Feb 2026 02:43:52 -0800 (PST)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Date: Tue, 24 Feb 2026 11:43:41 +0100
-Subject: [PATCH 3/4] firmware: arm_scmi: Use container_of_const() on
- scmi_handle
+Date: Tue, 24 Feb 2026 11:43:42 +0100
+Subject: [PATCH 4/4] firmware: arm_scmi: Use container_of_const() on
+ scmi_protocol_instance
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -90,7 +90,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260224-handle-not-const-v1-3-90bf93b53e27@oss.qualcomm.com>
+Message-Id: <20260224-handle-not-const-v1-4-90bf93b53e27@oss.qualcomm.com>
 References: <20260224-handle-not-const-v1-0-90bf93b53e27@oss.qualcomm.com>
 In-Reply-To: <20260224-handle-not-const-v1-0-90bf93b53e27@oss.qualcomm.com>
 To: Sudeep Holla <sudeep.holla@kernel.org>,
@@ -105,115 +105,151 @@ Cc: arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         imx@lists.linux.dev,
         Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2933;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4567;
  i=krzysztof.kozlowski@oss.qualcomm.com; h=from:subject:message-id;
- bh=Fe4MjhMn8lZ84KxqMdgpBwRbEDyKHabOEHVEnVI2kpg=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBpnYDesakxrpxNl4CWrKKBXT6ZbDgoQ8kFNfECs
- nXEUwiwftSJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaZ2A3gAKCRDBN2bmhouD
- 11AiD/9ru5hTRR38swT4NSjVHe7EPcPuJOJK0VitxSDyeTmSfPuBgQRbAy9FX60bP6ZNbyUcs7J
- 7zbaHko1wWuuTXZYzbrSmHb3mNOKD3/dZkpeqCFPZap8bl7aNABQ/4eE79Pv/RiZbsDOP8BZEfZ
- kK6kKzWftbzhLwIcHfKMBbGQVmJRlir5iynhvi9cTCSnvEdF5tD4c/I+RiggOQkijoLjfwxD2og
- MYA6jylgYDTW1Bk9088jvtfJbNX48H9YfQZnkMxcgHVWXrLPIcWmMNNTkgbw8Zu/4mu/dpYxeDc
- rCL2vtq50RM2JjDXpoxqvPtuYJ+fLSocWFAm/P7wA+FHlr08TEZGiDnCZjO007ST6oO7p3gIpT1
- 2NqT0MLKjwzKwGgk9WN5IkoAz0k8cWo1pOilBgx8ZgbT5eZGSBg8H3jfrMtBdeCTDL6CxGMJEX7
- JUuVdug8yMxTh4QLkTY/YqWNINWPAAv8r4pMJl6oCFPnH8ZExy2V7fUUYjuK/W1WQCDTpEBblcv
- JwpQ/gtTGjPeatMVQvmmHAw422D6PDLpPRKpTRcNxoIrukFBsHcQirWIYdw5zlCRYiaN2C1frLV
- nH0mdavtUPUZfSYjYI65KS7eXUR50nhSFJqYPvNlQYRcEq5Bi8eQ05JGDjo/qKklmOkzTAG/Ggb
- ZIt4m0sUR/ULbfQ==
+ bh=7h/Lj1fVzQNHqbpgOXMHGQLnYHp9vdXyxXswRQGiGq0=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBpnYDf4rZiAuG6azRnIxmXqPEv0a1/T70K4tGK4
+ QP9Dmw1vw6JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaZ2A3wAKCRDBN2bmhouD
+ 1wDdD/43Tz0/D5jgcP/JaZaTJn5X30WjBrCxt9pL9IIr2CExuUF8RvV3UVEFqSDruYaLY5xV+nj
+ AE4rp6GAxvDCXBdFG4xpPkgnVW3BpbCf3z/GvNJ0QrxSQlpG8j5/nEYjECCevxyMMafQYWSNTD7
+ 0UobXEhsOcJDpZJCaslgR+Fz9zAS2M4fYw0MNvt/NKMYEeqfzFz+LOHDm+gD7s+N33ztv6ehEgt
+ FfxiM53R83gSRbQm3C4MDYA5kwh8yZC2pMmW6Ggf3qjL4NBrJqx8mjnODFE9PQK6kiSj3NQnfq8
+ cPBpVYf6zckkoB3wVbdMpHKT2zWoiYxT7w/3p0MF83zkInjpv/E5PwcJBCRLrhA5GBDY+uoIjha
+ j1upzMWegB56pqV2WFHpyXrEGTpKmC56ew0/SjFviE6pf52HCBiZFVihc4inyUt3bGxzRXFhfuB
+ QZe2pAMXJ28FUEaFKuc+AgVrxnAsJg9N8OCRojP33zU1dGlRx5tm8Hrfwz9ACSNrLjp2C/uVKCK
+ MJafuDcbvHS07QMdPslmOIkDT7MseZvDpXBY4IXZiBxq+5/LX5d98P6sEhPFWvEzkV+wXY6TqM4
+ ZUtlBHJOmsCqD2wo2Uk2jjJlTPFWdpdg4LLgbCzjBCxLMUlLcieW35Tn5PI7+emQKJ9h23X2c8G
+ izF8oAxXnVfQFjA==
 X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDA4NyBTYWx0ZWRfX3e0bDdR1nfoU
- INxziG48Brh0K1sj7zOg62K/35zdpF44r4ZD/ufUFr42/WI7WHZbzrXeo0l0zYJbRsC5oYl1sDr
- 2LV7uWc+NvH2qYgYDzSuRCMUYcvStPtJx4bx7Q/zL34apOvN9mTMtbO9mTuyMZuI8CC87BcrFD+
- HdVq//iPV5WQaRgzHUd1pYq4LY9chQqq+o+rlqjLc5YO39sb+7zCBTnWbkW1mT+ukrRYobZaBJa
- rWF4hQNvo1raA6cL6oxGuC5COSQ52H4VbfbfgAfFRquiDQ4rvKgQ4GkUu0R6g1g+1i3do0n3t4x
- e2XhjXGUTyzYx3B+FdK3lExuuYpuPR8NzAshGoCft5dnxLeClNNNiDY17YtiV7TroBoprFFpEOa
- 4Uyj3Z84Y4/HZb+J2g3MgP/qFJSv70jFql1rArZ6tuORmDR6e3svIdDNXyegfAVWh0tHKSJC8vp
- c0cpgMfMk/6Tul3ZIJA==
-X-Proofpoint-GUID: 1qgxz-NRFP2NChoZXQqhI-x9BcnrpJ6E
-X-Authority-Analysis: v=2.4 cv=Z5Lh3XRA c=1 sm=1 tr=0 ts=699d80e8 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=6nO30s3o7FuWeffXwhKHTA==:17
+X-Proofpoint-ORIG-GUID: ULniEC_IoOV8sww_U0HXSt3wiUd_71V6
+X-Authority-Analysis: v=2.4 cv=V7twEOni c=1 sm=1 tr=0 ts=699d80ea cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=6nO30s3o7FuWeffXwhKHTA==:17
  a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=EUspDBNiAAAA:8 a=vFoygJ3d8N6QX0cQTZYA:9 a=QEXdDO2ut3YA:10
- a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-ORIG-GUID: 1qgxz-NRFP2NChoZXQqhI-x9BcnrpJ6E
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=EUspDBNiAAAA:8 a=BpvVLMS52MUaY0b39kYA:9 a=QEXdDO2ut3YA:10
+ a=IoWCM6iH3mJn3m4BftBB:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDA4NyBTYWx0ZWRfX8j6C/olDNL3K
+ U9pdqC2RV+U7yeuAkZok2cs3ehtkdbEycfuvEdVSD0gcSGK8AFoAY0Ps5B/z6rUqWb7hMIveNC6
+ N6nS+WG2bhW4GNLXrd0C5WBqgyAJ3KuwdWA9vVDC7OyAD5n4bbe8tnCl8AJyMYUFOJ/EKQnQiqS
+ NB6/z4oaAM7G/EJPLhns5NltIAMGha7rdamfCkuRgqlrfoP6sh/f748oWENYPAfnoX8wzgWbBny
+ KYsLfHFoiJYp8IR/3cmr+gGFh/oFz1aWvjXG8cBUG/b9r+0iBLkmvHawa1swhXd0bCWbds6x9Av
+ 17u4clzSzJJ5y4+YETpj7Y4Nn9ss5pbGvPJJwPb8THkQ9dC+53dKhTCbP7k5Lza0NV38i3NZZTW
+ nqMD9JpcV4XVgiQpJDY8qIEPxqduURw31EabE5LRjSwAWVXSJ99rGoh3TyzvMfMtXVkWJSs1nLu
+ l7xye1GKintyyny9IDQ==
+X-Proofpoint-GUID: ULniEC_IoOV8sww_U0HXSt3wiUd_71V6
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-24_01,2026-02-23_03,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 bulkscore=0 adultscore=0 impostorscore=0
- priorityscore=1501 phishscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0
+ clxscore=1015 spamscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 malwarescore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602240087
 
-Functions receiving pointer to const scmi_handle and are not modifying
-data in containing struct, can switch to safer container_of_const()
-which does not drop the const while casting.  This improves readability
-because makes the code more obvious.
+Functions receiving pointer to const scmi_protocol_instance, and are not
+modifying data in containing struct, can switch to safer
+container_of_const() which does not drop the const while casting.  This
+improves readability because makes the code more obvious.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
- drivers/firmware/arm_scmi/driver.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/firmware/arm_scmi/driver.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index 951711aa7d33..cc6cdb7017cf 100644
+index cc6cdb7017cf..933b90f42794 100644
 --- a/drivers/firmware/arm_scmi/driver.c
 +++ b/drivers/firmware/arm_scmi/driver.c
-@@ -174,6 +174,7 @@ struct scmi_info {
+@@ -114,6 +114,7 @@ struct scmi_protocol_instance {
  };
  
- #define handle_to_scmi_info(h)	container_of(h, struct scmi_info, handle)
-+#define handle_to_scmi_info_const(h)	container_of_const(h, struct scmi_info, handle)
- #define tx_minfo_to_scmi_info(h) container_of(h, struct scmi_info, tx_minfo)
- #define bus_nb_to_scmi_info(nb)	container_of(nb, struct scmi_info, bus_nb)
- #define req_nb_to_scmi_info(nb)	container_of(nb, struct scmi_info, dev_req_nb)
-@@ -450,7 +451,7 @@ void scmi_notification_instance_data_set(struct scmi_handle *handle,
+ #define ph_to_pi(h)	container_of(h, struct scmi_protocol_instance, ph)
++#define ph_to_pi_const(h)	container_of_const(h, struct scmi_protocol_instance, ph)
  
- void *scmi_notification_instance_data_get(const struct scmi_handle *handle)
+ /**
+  * struct scmi_info - Structure representing a SCMI instance
+@@ -1231,7 +1232,7 @@ static void scmi_rx_callback(struct scmi_chan_info *cinfo, u32 msg_hdr,
+ static void xfer_put(const struct scmi_protocol_handle *ph,
+ 		     struct scmi_xfer *xfer)
  {
--	struct scmi_info *info = handle_to_scmi_info(handle);
-+	const struct scmi_info *info = handle_to_scmi_info_const(handle);
+-	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
++	const struct scmi_protocol_instance *pi = ph_to_pi_const(ph);
+ 	struct scmi_info *info = handle_to_scmi_info(pi->handle);
  
- 	/* Ensure protocols_private_data has been updated */
- 	smp_rmb();
-@@ -866,7 +867,7 @@ static void scmi_bad_message_trace(struct scmi_chan_info *cinfo, u32 msg_hdr,
- 				   enum scmi_bad_msg err)
- {
- 	char *tag;
--	struct scmi_info *info = handle_to_scmi_info(cinfo->handle);
-+	const struct scmi_info *info = handle_to_scmi_info_const(cinfo->handle);
- 
- 	switch (MSG_XTRACT_TYPE(msg_hdr)) {
- 	case MSG_TYPE_COMMAND:
-@@ -1062,7 +1063,7 @@ static inline void scmi_xfer_command_release(struct scmi_info *info,
  	__scmi_xfer_put(&info->tx_minfo, xfer);
+@@ -1394,7 +1395,7 @@ static int do_xfer(const struct scmi_protocol_handle *ph,
+ 		   struct scmi_xfer *xfer)
+ {
+ 	int ret;
+-	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
++	const struct scmi_protocol_instance *pi = ph_to_pi_const(ph);
+ 	struct scmi_info *info = handle_to_scmi_info(pi->handle);
+ 	struct device *dev = info->dev;
+ 	struct scmi_chan_info *cinfo;
+@@ -1473,7 +1474,7 @@ static int do_xfer(const struct scmi_protocol_handle *ph,
+ static void reset_rx_to_maxsz(const struct scmi_protocol_handle *ph,
+ 			      struct scmi_xfer *xfer)
+ {
+-	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
++	const struct scmi_protocol_instance *pi = ph_to_pi_const(ph);
+ 	struct scmi_info *info = handle_to_scmi_info(pi->handle);
+ 
+ 	xfer->rx.len = info->desc->max_msg_size;
+@@ -1556,7 +1557,7 @@ static int xfer_get_init(const struct scmi_protocol_handle *ph,
+ {
+ 	int ret;
+ 	struct scmi_xfer *xfer;
+-	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
++	const struct scmi_protocol_instance *pi = ph_to_pi_const(ph);
+ 	struct scmi_info *info = handle_to_scmi_info(pi->handle);
+ 	struct scmi_xfers_info *minfo = &info->tx_minfo;
+ 	struct device *dev = info->dev;
+@@ -1650,7 +1651,7 @@ static int scmi_set_protocol_priv(struct scmi_protocol_handle *ph,
+  */
+ static void *scmi_get_protocol_priv(const struct scmi_protocol_handle *ph)
+ {
+-	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
++	const struct scmi_protocol_instance *pi = ph_to_pi_const(ph);
+ 
+ 	return pi->priv;
  }
- 
--static inline void scmi_clear_channel(struct scmi_info *info,
-+static inline void scmi_clear_channel(const struct scmi_info *info,
- 				      struct scmi_chan_info *cinfo)
+@@ -1720,7 +1721,7 @@ static int scmi_common_extended_name_get(const struct scmi_protocol_handle *ph,
+  */
+ static int scmi_common_get_max_msg_size(const struct scmi_protocol_handle *ph)
  {
- 	if (!cinfo->is_p2a) {
-@@ -1240,7 +1241,7 @@ static bool scmi_xfer_done_no_timeout(struct scmi_chan_info *cinfo,
- 				      struct scmi_xfer *xfer, ktime_t stop,
- 				      bool *ooo)
- {
--	struct scmi_info *info = handle_to_scmi_info(cinfo->handle);
-+	const struct scmi_info *info = handle_to_scmi_info_const(cinfo->handle);
+-	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
++	const struct scmi_protocol_instance *pi = ph_to_pi_const(ph);
+ 	struct scmi_info *info = handle_to_scmi_info(pi->handle);
  
- 	/*
- 	 * Poll also on xfer->done so that polling can be forcibly terminated
-@@ -3459,7 +3460,7 @@ static struct dentry *scmi_debugfs_init(void)
- int scmi_inflight_count(const struct scmi_handle *handle)
- {
- 	if (IS_ENABLED(CONFIG_ARM_SCMI_DEBUG_COUNTERS)) {
--		struct scmi_info *info = handle_to_scmi_info(handle);
-+		const struct scmi_info *info = handle_to_scmi_info_const(handle);
+ 	return info->desc->max_msg_size;
+@@ -1914,7 +1915,7 @@ scmi_common_fastchannel_init(const struct scmi_protocol_handle *ph,
+ 	struct scmi_fc_db_info *db = NULL;
+ 	struct scmi_msg_get_fc_info *info;
+ 	struct scmi_msg_resp_desc_fc *resp;
+-	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
++	const struct scmi_protocol_instance *pi = ph_to_pi_const(ph);
  
- 		if (!info->dbg)
- 			return 0;
+ 	/* Check if the MSG_ID supports fastchannel */
+ 	ret = scmi_protocol_msg_check(ph, message_id, &attributes);
+@@ -2067,7 +2068,7 @@ static const struct scmi_proto_helpers_ops helpers_ops = {
+ struct scmi_revision_info *
+ scmi_revision_area_get(const struct scmi_protocol_handle *ph)
+ {
+-	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
++	const struct scmi_protocol_instance *pi = ph_to_pi_const(ph);
+ 
+ 	return pi->handle->version;
+ }
+@@ -2366,7 +2367,7 @@ void scmi_protocol_release(struct scmi_handle *handle, u8 protocol_id)
+ void scmi_setup_protocol_implemented(const struct scmi_protocol_handle *ph,
+ 				     u8 *prot_imp)
+ {
+-	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
++	const struct scmi_protocol_instance *pi = ph_to_pi_const(ph);
+ 	struct scmi_info *info = handle_to_scmi_info(pi->handle);
+ 
+ 	info->protocols_imp = prot_imp;
 
 -- 
 2.51.0
