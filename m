@@ -1,316 +1,234 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010054.outbound.protection.outlook.com [52.101.84.54])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B532366DD9
-	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 08:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771922832; cv=fail; b=PPQIeYBpfb2jd8g5XSsz4NFv+QpCnh4kLemHckemiJsmHMNlorW3iH3ZCJ6TrHTn5PuBhpgsXRr8IwXOIUfIhX0y2iCFQUpblBJ5bcOJd9W6G3TON0v+dpSqMW9SI6c5rztpVKv2dEqFqz/CY7IrCKmZ3FhU8dMV21xtaN/Ez0U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771922832; c=relaxed/simple;
-	bh=WaFoOIYQUKuhk6Eu+ZnvnwU/uS8NolYW4dmDST0AeYQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=KkjOKiajjCAH5rx34kvGgKL2uJpK2bnyi3sx9g21/jR7Hvhl2JuYxAGtz1gMynjqt2iUcRpQFbhdtdGKSAzC8D04jAVtxQAF4jRzgJzij77OURJZT26WlwJhKdLnavZl0O7UBX/npba3z0S+iqB0t42Q8CSc5s35i4vCaZ+1fio=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=HljI3TBm; arc=fail smtp.client-ip=52.101.84.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134C136920B
+	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 08:57:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771923483; cv=none; b=c7kyIBYybGXQcWaUdS/A/W8eML7CRX9RYaEARE2BSBXgXbwaMk5bj35v6xapqEuvQFIPP+FVywWzbhwy4KqwYsbYeF4Oft/r8i5vNjtgnZxsB2Re4JMt/t7F2t9kEDU6W4vIDRm1rbDVy3w5dzyvK2YItt11uPkXLsHApozJ5Pg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771923483; c=relaxed/simple;
+	bh=75tIlJhL7lTvbSGE7D59R10soZGFPbIv0b8WGkPwmek=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m6Qjx1H71FqHspi1nYLTFtT6Z+Fi7oL7tXnGGvxvtH2aXSL9y3WARbSVbu5la3cO0MAlxk9gvXalvQmyimxXWpUrcYKjLy4hHsiJhwj+SEzvQQd/6kf8DLV1b7xHo5KWqsn4LI0iSIV9EUVdNnNR66vOX0udYK+t44smWrW1t0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=LiQO4QDA; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="HljI3TBm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Tunv3jJZjBOehSQn+EYKZop4hrV8G/n3jFwKHXRRGCxpxu/RcfcfCosFbqt/mrDYPjgXXMDofJyurEAUksM/tGn/K71RpHusrjz8O6sXuaDNTnlSc709WtXXVJ5kG7EVpkRHHSNyQtdH9Mm/4f2MJB+w5XXUPJS9G7aNXVFGBdTA03OMvqP8jYeSpNVomGK3FrvxSKz/GOpefaRk0THWpd3VWntTVq6jbCChzXE5LLpASvrqSyZdQbaVIFTfacAfxRwVSzdC04uulyTMm3fn99C4iKl3K4JFADziR8VgKb2k49t+GN9eCX3bq4SaY6ZJqMWNrPj8/oysbuDesg06kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZTTLSNYnK9nGExzK9CSYkt6hNF81OW8iDbyT3OwkpJY=;
- b=k5Y6BSWUDHpwBzji6Od66VqNgICNJw7FAmn6kfK4ZFSExdqOrR+1KzmkQPzr4AfLMwMpG9gmYNPGr9eyv7i8yejnRrP7jgQmgEgPQkW22MRcB+/mngE2wzRdM1k3PBW34llTn1F2GEwpyU3hGxyd5RnaIJHfyEUQrFSM8Fg2Q1SmH0CssypiaIZsX6TfDU49zE35k53kToJ9ERsHzSjJr0ify/7QHTNy8anJPnJAThlVdOwQ+H60gE0/QEKUjxhlGxUOt/XZB7j/ruABk5X8wOHKr/AyPQBRMy/mbZI6ceJ48uqbCfXt/xGA1ygRc7CktqLuPSpxgavh6sTLozenlw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 164.130.1.59) smtp.rcpttodomain=nxp.com smtp.mailfrom=foss.st.com; dmarc=fail
- (p=none sp=none pct=100) action=none header.from=foss.st.com; dkim=none
- (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZTTLSNYnK9nGExzK9CSYkt6hNF81OW8iDbyT3OwkpJY=;
- b=HljI3TBmlx0kXPiXY/ijRO5Is9OD7/N8YzEigDPRtlrZ0G8L/AuhDYu9W02yXm4QjQaBPbafbJLy5Rg20Kz/GWtbwP++P2wNQnPvGv0CVkrNzHC9Ub7pgu52ZJk98p2gOzGwq77J4i+QVF6Wtvienwh9tS9wAHSnqqSQCmeVOtIUBZRizzYRdYZkPdxBTwgehhyC3h0H/JJf0zGRmxP5j2/muOX0/CtD5l0B5vybuaMi9k8tTCKnqHYp+/mRRw6ofiiqPw2QwxQpZWabY1mTppy7yXceXA5kdveb5Ya+6Q/VKtgvRqw/T2qZIouaaKYU7YeR5ZLrjLYkK80MCzhosg==
-Received: from DU2PR04CA0061.eurprd04.prod.outlook.com (2603:10a6:10:232::6)
- by VI1PR10MB7854.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:800:1c4::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Tue, 24 Feb
- 2026 08:47:02 +0000
-Received: from DU2PEPF00028D05.eurprd03.prod.outlook.com
- (2603:10a6:10:232:cafe::df) by DU2PR04CA0061.outlook.office365.com
- (2603:10a6:10:232::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.22 via Frontend Transport; Tue,
- 24 Feb 2026 08:46:55 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 164.130.1.59)
- smtp.mailfrom=foss.st.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=foss.st.com;
-Received-SPF: Fail (protection.outlook.com: domain of foss.st.com does not
- designate 164.130.1.59 as permitted sender) receiver=protection.outlook.com;
- client-ip=164.130.1.59; helo=smtpO365.st.com;
-Received: from smtpO365.st.com (164.130.1.59) by
- DU2PEPF00028D05.mail.protection.outlook.com (10.167.242.165) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.12 via Frontend Transport; Tue, 24 Feb 2026 08:46:57 +0000
-Received: from STKDAG1NODE2.st.com (10.75.128.133) by smtpo365.st.com
- (10.250.44.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Tue, 24 Feb
- 2026 09:49:13 +0100
-Received: from [10.48.87.127] (10.48.87.127) by STKDAG1NODE2.st.com
- (10.75.128.133) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.29; Tue, 24 Feb
- 2026 09:46:56 +0100
-Message-ID: <64ef5dbf-6264-4758-a5d8-d8c52c359fcc@foss.st.com>
-Date: Tue, 24 Feb 2026 09:46:54 +0100
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="LiQO4QDA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=from:to:cc:subject:date:message-id
+	:mime-version:content-transfer-encoding; s=k1; bh=LkBWz+K1nxLr/l
+	Bo/t63y5ciaH4V8V92AgZnhwFxGiA=; b=LiQO4QDAIPC7jcFmuXQdpS9cUIzzff
+	rXWVlM9nR60bsKOnCkWjG0KnKQTqD81SwstkLHp6FEz3vYXFtiamSQVd5hgItMGq
+	GV9+bJGPQ50+Ac4ldqd1/vlEg3Mj4E28u/nF02AdxtVuthUCsJE7ELD9+nntiQ7h
+	d0HkE9X1UbIZxLn9T9E1VlZ9/bTfDL/nH/EjGWSGImvrCKh9VZ52v5gdOg2K2Rru
+	LrZjemW/Q8ZwVyzT83Y5GQOkT/mcff8RaSRsEL4wIxcuq3mV1aJSsP7ogw/qBrbz
+	l0XrVuhNFsQj8xLj9ahx68kzfmuU8AEKWck47h34E3GWLiq9ixsTjLgg==
+Received: (qmail 175537 invoked from network); 24 Feb 2026 09:57:54 +0100
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 24 Feb 2026 09:57:54 +0100
+X-UD-Smtp-Session: l3s3148p1@Nso9FY5LUsUgAwDPXzF+ANZpdrMKUeLI
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: linux-renesas-soc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Peter Chen <peter.chen@cixtech.com>,
+	Fugang Duan <fugang.duan@cixtech.com>,
+	CIX Linux Kernel Upstream Group <cix-kernel-upstream@cixtech.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	linux-acpi@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: [RFC PATCH] mailbox: remove superfluous internal header
+Date: Tue, 24 Feb 2026 09:50:21 +0100
+Message-ID: <20260224085720.18055-2-wsa+renesas@sang-engineering.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
-To: Shenwei Wang <shenwei.wang@nxp.com>, Linus Walleij <linusw@kernel.org>
-CC: Andrew Lunn <andrew@lunn.ch>, Bartosz Golaszewski <brgl@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, "Bjorn
- Andersson" <andersson@kernel.org>, Mathieu Poirier
-	<mathieu.poirier@linaro.org>, Frank Li <frank.li@nxp.com>, Sascha Hauer
-	<s.hauer@pengutronix.de>, Shuah Khan <skhan@linuxfoundation.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Pengutronix
- Kernel Team" <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>,
-	"Peng Fan" <peng.fan@nxp.com>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-remoteproc@vger.kernel.org"
-	<linux-remoteproc@vger.kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-References: <20260212213656.662437-1-shenwei.wang@nxp.com>
- <20260212213656.662437-4-shenwei.wang@nxp.com>
- <aae7c851-a93b-4d57-a118-43c6e68c4790@foss.st.com>
- <13f9d767-61d6-4e29-b36e-6dcc860ccb11@lunn.ch>
- <fd257c80-d97f-45b0-a12f-3a1888ba81db@foss.st.com>
- <396819f2-dd00-4c09-8bc7-c035a5282a56@lunn.ch>
- <PAXPR04MB9185A908F5090F0CA4FF05F78968A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <b21b9ee5-d84e-47f8-86b5-c111ecc3d43d@lunn.ch>
- <PAXPR04MB918576D67A268E59242964A08968A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <CAD++jLkUVFckLTq=SoivNFoFymhJo4KM=qGmajFcv9T9+7tPmg@mail.gmail.com>
- <b4c422ce-3538-40aa-8bfa-b70f02774b5d@foss.st.com>
- <PAXPR04MB91859B642802813F908B03DA8977A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
-In-Reply-To: <PAXPR04MB91859B642802813F908B03DA8977A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: STKCAS1NODE1.st.com (10.75.128.134) To STKDAG1NODE2.st.com
- (10.75.128.133)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PEPF00028D05:EE_|VI1PR10MB7854:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4edd8e12-6da1-4a46-99da-08de738144f4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|7416014|376014|82310400026|1800799024|13003099007|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TlRjWEN3R3dvVnFleVQ4YWNDTGc2RFVSdklGcDYxTEdzTHY1aGFCKzVwUVFM?=
- =?utf-8?B?K2xROG42L0x6enM3THNpK21IV0JZd3ZEekt5b084bEpPcGdld0NMZkxsekdw?=
- =?utf-8?B?RVRUNmNGeCt1djdoYU1vTktvTHdDa1pIZExKWFR6ZTMzWnJPSHpBSVorUVV2?=
- =?utf-8?B?TkxwdHNRYS92a2R1dVpBR0JqckNuUTNvWGJaOXZNL0g2TGRvMTFLTERaSzdv?=
- =?utf-8?B?aHJHdXduVC9BRDdkVmd6cmJaNFhpcENyZzZyYlV4Y2dpMHhQdU1EQ1hXam5C?=
- =?utf-8?B?aHUzbitrMlpOSS9wOUEwbUtodk92Q3R2c1U5L2J6QmJXaFpiYytoTkxTZ3dZ?=
- =?utf-8?B?UktPNUdVcTlSek5abEY1b1Fhazl4TnVBV1lPdGptNDZPUzE2SnhsVWlaVnhj?=
- =?utf-8?B?Z1NISFlrNHBJNXM2cVd3M3MrUCtiK0oxZG92eVNqcnVzOGpMckRDNWlYdjBv?=
- =?utf-8?B?b1hub3hrZnFLSWFTZWdKLyt0V2pDWXVyemZXOWJ1YXkxa0Y4emQvWkVBT2lP?=
- =?utf-8?B?c0pSS0pvTWVWTlZVVVhBMWhoa1Z4VHRRUWdpRnlhS3J2TWF6bDBaRktSU2Jj?=
- =?utf-8?B?UktkMnovWGIzcGN4dlRscnpQY2UxVHVLZGo0RmxJRWJHVnJ5WWJPd3FWNFVt?=
- =?utf-8?B?eVhxYzhhZ2ltWS9qbE9zRXRSN2E3SWh5bTU1MUI3L21ReWhBVkNJMEpxZ1Rm?=
- =?utf-8?B?YVN4a2ZlVGZockgwL2Y5ZjRtR2lIUTZWR3ZOK3BxVEZhZWJjU3p1VmQ2UzIy?=
- =?utf-8?B?YnprMWVGZSsvd09PeHJGNndqMFlZejRJTjhUTFBsTW9QY1VuMFZMOTdyVUVn?=
- =?utf-8?B?a2xVS3pVcGczK28vWjZnRHdPTWlrYUQxcjZCalM1Q2JScDVZY09LK3pPWW1S?=
- =?utf-8?B?RFdCK2tRSVMrTjlZcFpZOWNCb2xRQUtmZWVydEFCTC9wbE1wa1BWOGkzLzg0?=
- =?utf-8?B?djFKQ2doSWdRUzhtenpvM053Zi9FcUcvL1pqSWYybmdCWEtOMXpvK1J4d29B?=
- =?utf-8?B?b2FzdXhLcmRzV3hzVW9MdlR5eGQyUWl4TGh2VUh4NXVKcGlRQXpscWZrMmg0?=
- =?utf-8?B?NXpyaC9renluTWNPK2ZLQ2hGLytnM1BIS1pBMGZDZEcvM3ZiU0FncENrYTVl?=
- =?utf-8?B?RzRvUEpid2NmNVNOTXp0OTdkU0pVOUU2bm1NNkdIRlFzMENGZU41UWRScjkw?=
- =?utf-8?B?ZWc5ZzB1RHdyaUt1c0xMWjN2eVR2UXRIanB4RTc4cWFaOVB6djA5eVpGbU9O?=
- =?utf-8?B?QVp6R3dNSkluU082blhVSjdGVmkxSm1OZVFpSzZCQ0E1QytScHpnNENzbHZo?=
- =?utf-8?B?QnU1TFJjNzlOWmthM3RqYzdEblJYdXZ6dk0wczRoMHc1QXpLMVpoM1NJcjQw?=
- =?utf-8?B?NjluTmtnYi9VQk1jc0R4Y0RSZVU5Ly9Fc1ZTV3RjcE1CajlDZ1Vsc0pwRGRw?=
- =?utf-8?B?dE9JRzRTQk9NQUczMEN4aGtXb1RaVmdhNHhLbVFwaFd6NDNyaG9YQWtzZUJT?=
- =?utf-8?B?cGVSRm9ZaktaU3RUMXJZTXlVbDdoL3ZybTdqd21HZ1JPNzRaczBpUWRnT2lS?=
- =?utf-8?B?ejJ4MXNMbXQzZ29zRWhVS21rMnROWW81VHYzSG5zYmk4YUpYTmRoMWdaR2lT?=
- =?utf-8?B?K1huZ0xxV2MyZ3pNTXRlNitVTlYwUnhaRkZZUUhsdHJLdHdlSS9WSVowWlpk?=
- =?utf-8?B?dTUvTzd0WUh0Q0RZNVpjcjBYTzQ1a3oxV0ltQjBadS9RNlVpaThTLzNRMjBK?=
- =?utf-8?B?OFlaREN0M0RtWXUveHpVbGRIUGIya3UxYU5OaXMxSXAvOFI5MW0rWU52UEI0?=
- =?utf-8?B?K2xRQWUzNWIxWDdSS2VPUmZOekxHSGJVdXZ5cHZ1SUZrck5pem0rR0FuQmt1?=
- =?utf-8?B?c2hlbjMxOHZFYk1rbkVFc21wZTdHWFVudVBySzdXZzViVlYzUS9oc0p0TTJ1?=
- =?utf-8?B?bGZSNUw1ZFNZeWovMU1sc3QvOFJxdndMOG8yWDAvRVZUVDVzeXdiWm84UFZk?=
- =?utf-8?B?RUtIdG1BeFRpVkVab1UxbkJnaDlGS2NQNTdjaUwvZkw0cUJqbXZFZHU1eXhp?=
- =?utf-8?B?c295M3luVzIraWEvTU9IMXFZVWhVOWtnNEErYWxkQlMxaDVnT2REYzAxcmxL?=
- =?utf-8?B?NHh2YncvN09IM2NQcldVN1V6TVNoaEpTYWxQMGMvYk5QRWxGcVFmY3M5WndW?=
- =?utf-8?B?V2l2WUlhSXo0SFRZZ3A4MFBGc0xIQ25ZdWdyT0NoN294OFlLTzJSc2l5ZFFQ?=
- =?utf-8?B?SlBQcXdTYlJhSnY3amJ1NzRHZDdBPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:164.130.1.59;CTRY:IT;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:smtpO365.st.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(7416014)(376014)(82310400026)(1800799024)(13003099007)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	K+ZEhVIYgBmaH1oS8xQaHErfhOOjg1T3ek4ePdQioBdRH5G34bGcXVqD24L+fINQLxHG7k0iyy6naK+TxEKjd5+LKHrbNZyAK1KLFiMTact9Itw7NJ1OKM/4YEBcyuiaVkgfSBXCID1b4tNnik68muMk1glw0bZixwlJcvT03yzGi9A0ycnGw64xO7B09+sO2fFVHNNtNJMu6d6/EDl7C8/ovlPiO92yA7pfO07Z5CEEz6UNS/Epr+3BDzH70OVtvRFYASD4iel6JOeFeyh45jHbo6L0672s7frT/7It3EI+p6pCaXkZVvceU6EKzBrOsMFW0ekXtxrHrBMtnuGEhtgRmyzdxK91Bbcnn9y8WNwD/H1aMsTDlADURhQt13u27OJQ3CSUUdbgAdo6z/XevpWrlyHFjJLwN2pbe/lEBQWs65yks0IydOpkwvKbRSTa
-X-OriginatorOrg: foss.st.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 08:46:57.6895
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4edd8e12-6da1-4a46-99da-08de738144f4
-X-MS-Exchange-CrossTenant-Id: 75e027c9-20d5-47d5-b82f-77d7cd041e8f
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=75e027c9-20d5-47d5-b82f-77d7cd041e8f;Ip=[164.130.1.59];Helo=[smtpO365.st.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU2PEPF00028D05.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR10MB7854
 
-Hello Shenwei
+Quite some controller drivers use the defines from the internal header
+already. This prevents controller drivers outside the mailbox directory.
+Move the defines to the public controller header to allow this again as
+the defines are not strictly internal anyhow.
 
-On 2/23/26 21:33, Shenwei Wang wrote:
-> 
-> 
->> -----Original Message-----
->> From: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>
->> Sent: Monday, February 23, 2026 8:25 AM
->> To: Linus Walleij <linusw@kernel.org>; Shenwei Wang
->> <shenwei.wang@nxp.com>
->> Cc: Andrew Lunn <andrew@lunn.ch>; Bartosz Golaszewski <brgl@kernel.org>;
->> Jonathan Corbet <corbet@lwn.net>; Rob Herring <robh@kernel.org>; Krzysztof
->> Kozlowski <krzk+dt@kernel.org>; Conor Dooley <conor+dt@kernel.org>; Bjorn
->> Andersson <andersson@kernel.org>; Mathieu Poirier
->> <mathieu.poirier@linaro.org>; Frank Li <frank.li@nxp.com>; Sascha Hauer
->> <s.hauer@pengutronix.de>; Shuah Khan <skhan@linuxfoundation.org>; linux-
->> gpio@vger.kernel.org; linux-doc@vger.kernel.org; linux-kernel@vger.kernel.org;
->> Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
->> <festevam@gmail.com>; Peng Fan <peng.fan@nxp.com>;
->> devicetree@vger.kernel.org; linux-remoteproc@vger.kernel.org;
->> imx@lists.linux.dev; linux-arm-kernel@lists.infradead.org; dl-linux-imx <linux-
->> imx@nxp.com>; Bartosz Golaszewski <brgl@bgdev.pl>
->> Subject: [EXT] Re: [PATCH v8 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
->> Hello Linus,
->>
->> On 2/22/26 15:48, Linus Walleij wrote:
->>> On Fri, Feb 20, 2026 at 7:57 PM Shenwei Wang <shenwei.wang@nxp.com>
->> wrote:
->>>
->>>> Given that, I’d like to hear from the GPIO subsystem maintainers —
->>>> @Linus Walleij and @Bartosz Golaszewski — on whether a driver that
->>>> works with the current hardware/firmware design could still be
->>>> acceptable for upstream inclusion. My understanding is that upstream
->> generally supports existing, real-world hardware as long as the driver meets
->> subsystem standards.
->>>
->>> What a swell party this has become.
->>>
->>> In this kind of situations I usually refer to
->>> Documentation/process/management-style.rst
->>>
->>
->> Thank you for pointing out the document, I was not aware of its existence. Very
->> informative!
->> That help me to understand you proposal below.
->>
->>
->>> What is the message I as a maintainer is getting from NXP regarding
->>> "gpio: rpmsg: add generic rpmsg GPIO driver"?
->>>
->>> Arnaud, who is the only person in this discussion who actually wrote a
->>> standard RPMSG driver (drivers/tty/rpmsg_tty.c), must ACK this patch
->>> if it wants to call itself a "generic" RPMSG GPIO driver, if he does
->>> not, then it isn't.
->>
->> In Fact there are already 2 "generic" drivers, the second one it the
->> drivers/rpmsg/rpmsg_char.c, both are used on several platforms.
->>
->> It is in my plan to test the rpmsg-gpio on ST platform if we go with the generic
->> approach.
->>
->>>
->>> Is it generic? If it is not, let's call it "NXP rpmsg GPIO driver" and
->>> rename files etc accordingly. Maybe it can share code with the actual
->>> generic RPMSG driver once that arrives, that is more of a library question.
->>
->> I would like to (re)express my concerns regarding the creation of an NXP-specific
->> driver. To clarify my concerns, ST, like probably some other SoC vendors, has
->> rpmsg-gpio and rpmsg-i2c drivers in downstream with plans to upstream them.
->>
-> 
-> Linus, thank you for jumping in and providing the guidance.
-> 
-> I would like to clarify one point here: what we are discussing now is not whether the
-> driver itself is generic, but rather that the current protocol is not as perfect as Arnaud
-> would expect, since it contains a few fields that may not be required on their platforms.
-> 
-> Arnaud, if you agree with the points above, my proposal is the following:
->   - Remove the fields you mentioned in the protocol and update the driver accordingly so
-> that we can establish a true baseline for a generic implementation we all agree.
->   - Then prepare a separate patch to add support for existing NXP platforms by introducing
-> the necessary fix‑up functions.
-> 
-> Please let me know if this approach works for you. My goal is to find a solution that works for
-> everyone — even though I know that pleasing everyone is almost impossible.
-This looks reasonable to me, but I am not a maintainer, so I will let 
-maintainers share their opinions on your proposition.
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
 
-Please note that you have also to answer to Bjorn and Mathieu about the 
-rational to use RPMsg instead of the virtio protocol.
+I need this for a combined driver (mailbox + hwspinlock at least) which
+probably ends up in drivers/soc. But it seems reasonable to me to do
+this anyway. Locally build tested. Still waiting for buildbot results.
+Opinions?
 
-For the ST platform, the main advantage of RPMsg is the ability to mix 
-buses on one virtio interface, whereas Virtio requires allocating vrings 
-and mailbox channels per Virtio type. When data rate is not the 
-priority, RPMsg may be preferable.
+ drivers/mailbox/cix-mailbox.c      |  2 --
+ drivers/mailbox/hi3660-mailbox.c   |  2 --
+ drivers/mailbox/imx-mailbox.c      |  2 --
+ drivers/mailbox/mailbox-sti.c      |  2 --
+ drivers/mailbox/mailbox.c          |  2 --
+ drivers/mailbox/mailbox.h          | 12 ------------
+ drivers/mailbox/omap-mailbox.c     |  2 --
+ drivers/mailbox/pcc.c              |  2 --
+ drivers/mailbox/tegra-hsp.c        |  2 --
+ include/linux/mailbox_controller.h |  5 +++++
+ 10 files changed, 5 insertions(+), 28 deletions(-)
+ delete mode 100644 drivers/mailbox/mailbox.h
 
-Another limitation e observed, when prototyping a virtio-i2c between 
-Linux and a remote processor is the allocation of specific DMA memory 
-region shared between the processors[1].
-
-[1] 
-https://github.com/arnopo/linux/commit/ae47a1cbf95125ab10952283622653d626e56e6a
-
-Thanks and regards,
-Arnaud
-
-> 
-> Thanks,
-> Shenwei
-> 
->> If we proceed in this direction:
->>
->> -Any vendor wishing to upstream an rpmsg-gpio driver might submit their own
->> platform-specific version.
->>
->> - If NXP upstreams other rpmsg drivers, these will likely remain NXP-centric to
->> maintain compatibility with their legacy firmware and the nxp-rpmsg-gpio driver,
->> leading to platform-specific versions in several frameworks.
->>
->> - The implementation will impact not only the Linux side but also the remote side.
->> Indeed, some operating systems like Zephyr or NuttX implement the rpmsg device
->> side (Zephyr already implements the rpmsg-tty)
->>
->> Maintaining a generic approach for RPMsg, similar to what is done for Virtio,
->> seems to me a more reliable solution, even though it may induce some
->> downstream costs (ST would also need to break compatibility with legacy ST
->> remote proc firmware).
->>
->>
->> In the end, I am just trying to influence the direction for RPMsg, but based on the
->> discussions in this thread, it seems others share similar expectations, which
->> should probably be taken into account as well.
->>
->> Thanks and Regards,
->> Arnaud
->>
->>
->> I just want to
->>
->>>
->>> Yours,
->>> Linus Walleij
-> 
+diff --git a/drivers/mailbox/cix-mailbox.c b/drivers/mailbox/cix-mailbox.c
+index 443620e8ae37..864f98f21fc3 100644
+--- a/drivers/mailbox/cix-mailbox.c
++++ b/drivers/mailbox/cix-mailbox.c
+@@ -12,8 +12,6 @@
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ 
+-#include "mailbox.h"
+-
+ /*
+  * The maximum transmission size is 32 words or 128 bytes.
+  */
+diff --git a/drivers/mailbox/hi3660-mailbox.c b/drivers/mailbox/hi3660-mailbox.c
+index 17c29e960fbf..9b727a2b54a5 100644
+--- a/drivers/mailbox/hi3660-mailbox.c
++++ b/drivers/mailbox/hi3660-mailbox.c
+@@ -15,8 +15,6 @@
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+ 
+-#include "mailbox.h"
+-
+ #define MBOX_CHAN_MAX			32
+ 
+ #define MBOX_RX				0x0
+diff --git a/drivers/mailbox/imx-mailbox.c b/drivers/mailbox/imx-mailbox.c
+index 003f9236c35e..22331b579489 100644
+--- a/drivers/mailbox/imx-mailbox.c
++++ b/drivers/mailbox/imx-mailbox.c
+@@ -23,8 +23,6 @@
+ #include <linux/slab.h>
+ #include <linux/workqueue.h>
+ 
+-#include "mailbox.h"
+-
+ #define IMX_MU_CHANS		24
+ /* TX0/RX0/RXDB[0-3] */
+ #define IMX_MU_SCU_CHANS	6
+diff --git a/drivers/mailbox/mailbox-sti.c b/drivers/mailbox/mailbox-sti.c
+index b4b5bdd503cf..b6c9ecbbc8ec 100644
+--- a/drivers/mailbox/mailbox-sti.c
++++ b/drivers/mailbox/mailbox-sti.c
+@@ -21,8 +21,6 @@
+ #include <linux/property.h>
+ #include <linux/slab.h>
+ 
+-#include "mailbox.h"
+-
+ #define STI_MBOX_INST_MAX	4      /* RAM saving: Max supported instances */
+ #define STI_MBOX_CHAN_MAX	20     /* RAM saving: Max supported channels  */
+ 
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index e63b2292ee7a..9d41a1ab9018 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -18,8 +18,6 @@
+ #include <linux/property.h>
+ #include <linux/spinlock.h>
+ 
+-#include "mailbox.h"
+-
+ static LIST_HEAD(mbox_cons);
+ static DEFINE_MUTEX(con_mutex);
+ 
+diff --git a/drivers/mailbox/mailbox.h b/drivers/mailbox/mailbox.h
+deleted file mode 100644
+index e1ec4efab693..000000000000
+--- a/drivers/mailbox/mailbox.h
++++ /dev/null
+@@ -1,12 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-
+-#ifndef __MAILBOX_H
+-#define __MAILBOX_H
+-
+-#include <linux/bits.h>
+-
+-#define TXDONE_BY_IRQ	BIT(0) /* controller has remote RTR irq */
+-#define TXDONE_BY_POLL	BIT(1) /* controller can read status of last TX */
+-#define TXDONE_BY_ACK	BIT(2) /* S/W ACK received by Client ticks the TX */
+-
+-#endif /* __MAILBOX_H */
+diff --git a/drivers/mailbox/omap-mailbox.c b/drivers/mailbox/omap-mailbox.c
+index d9f100c18895..5772c6b9886a 100644
+--- a/drivers/mailbox/omap-mailbox.c
++++ b/drivers/mailbox/omap-mailbox.c
+@@ -22,8 +22,6 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/mailbox_controller.h>
+ 
+-#include "mailbox.h"
+-
+ #define MAILBOX_REVISION		0x000
+ #define MAILBOX_MESSAGE(m)		(0x040 + 4 * (m))
+ #define MAILBOX_FIFOSTATUS(m)		(0x080 + 4 * (m))
+diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
+index 22e70af1ae5d..636879ae1db7 100644
+--- a/drivers/mailbox/pcc.c
++++ b/drivers/mailbox/pcc.c
+@@ -59,8 +59,6 @@
+ #include <linux/io-64-nonatomic-lo-hi.h>
+ #include <acpi/pcc.h>
+ 
+-#include "mailbox.h"
+-
+ #define MBOX_IRQ_NAME		"pcc-mbox"
+ 
+ /**
+diff --git a/drivers/mailbox/tegra-hsp.c b/drivers/mailbox/tegra-hsp.c
+index ed9a0bb2bcd8..2231050bb5a9 100644
+--- a/drivers/mailbox/tegra-hsp.c
++++ b/drivers/mailbox/tegra-hsp.c
+@@ -16,8 +16,6 @@
+ 
+ #include <dt-bindings/mailbox/tegra186-hsp.h>
+ 
+-#include "mailbox.h"
+-
+ #define HSP_INT_IE(x)		(0x100 + ((x) * 4))
+ #define HSP_INT_IV		0x300
+ #define HSP_INT_IR		0x304
+diff --git a/include/linux/mailbox_controller.h b/include/linux/mailbox_controller.h
+index 80a427c7ca29..16fef421c30c 100644
+--- a/include/linux/mailbox_controller.h
++++ b/include/linux/mailbox_controller.h
+@@ -3,6 +3,7 @@
+ #ifndef __MAILBOX_CONTROLLER_H
+ #define __MAILBOX_CONTROLLER_H
+ 
++#include <linux/bits.h>
+ #include <linux/completion.h>
+ #include <linux/device.h>
+ #include <linux/hrtimer.h>
+@@ -11,6 +12,10 @@
+ 
+ struct mbox_chan;
+ 
++#define TXDONE_BY_IRQ	BIT(0) /* controller has remote RTR irq */
++#define TXDONE_BY_POLL	BIT(1) /* controller can read status of last TX */
++#define TXDONE_BY_ACK	BIT(2) /* S/W ACK received by Client ticks the TX */
++
+ /**
+  * struct mbox_chan_ops - methods to control mailbox channels
+  * @send_data:	The API asks the MBOX controller driver, in atomic
+-- 
+2.51.0
 
