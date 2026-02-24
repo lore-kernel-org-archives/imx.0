@@ -1,98 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B891136CDFD
-	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 09:37:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C932226E6E1
+	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 09:38:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771925857; cv=none; b=fnLZbgIy/C1J/3Pb/jmr7YFksjz7JIl9UEkOqSGwAUUYs6YcyE/PzmBvcHDBSZauSENiupyL66ly3zZ7eKjX2zVdh/n75VOGn4iuARLN5ZHolrungtoSAEEjTVGuKGFIX3lKw0Kk3XbBMzYYPjZntyEhSKm/29nBaTulBC7BzNQ=
+	t=1771925923; cv=none; b=Vfr5mX/u8eMukq/cl1TK50fBVqD7szZPZSQEfEWJFHdYMNyoOv7+YV6dBQ3hYzfVTWCFwLlSiyOLKxP7uhDP1ENZx0XJP2W+Hvr1B7Gdw1XVCiNFry6lSzSXWvPtufFUyiDo51VDVZS8ukHFxM+HFGfo+4WsDTJifNNyvj+IdlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771925857; c=relaxed/simple;
-	bh=g8edeZSicPJhy++p3maHG8V56bDu+kyumjD/ZT9RxXk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Eu3FO7qW81SymSBf8F1emyVB2olU+j4XLn/yl5DeiYpQ8/HWJmR3oD8eHZASTBUxdEShOgjp8Hwf3LYuNUogh31rgPoqMvZvLc5OrehBu8EhoYUUNZ+LH6QRvdDRzDOTYHzIyjfAxjCyYXZbxDEi0621dMbIQE3IlV/iiY68pkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ADBNcvUY; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ADBNcvUY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B0CC2BCC6
-	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 09:37:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771925857;
-	bh=g8edeZSicPJhy++p3maHG8V56bDu+kyumjD/ZT9RxXk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ADBNcvUYlfljcYMUK1YXe6mWXiZyA0e20GKeaTNKWidPih5IS7X18yQ7xBzX4XR2k
-	 YLo4ksg5UcaOfk9K/uUe1ZTeYPDFaVCb/xedtqh3u8m9AgfT4i2VqHgVS49GDCYOBi
-	 7qx2tEPJyLOD/bkLqf+HNccjdkP5s8CmUbM+gsKtSChqWvpMCqYNku8h4pyHPh9329
-	 zZ2jAXRogmpLvmoq48k3qr1njxCfKuTnCeijehPzXPelC2kZ1VeYWz6hTZIKNBnjwY
-	 cNrlsiryUdVASp8/fn8bJ3eomuICcrx52MVBwgu4/dX/skjtXmHOIOcReWOZtYKzFK
-	 hVdaitIlxrdkg==
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79853c0f5b9so10810007b3.0
-        for <imx@lists.linux.dev>; Tue, 24 Feb 2026 01:37:37 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUU879zEsmrefVXHy8wYwDhU6P/0ahqUx6sBk5fyeeFgUpXqy27M6lSFOP6TcMBBnJUEx4=@lists.linux.dev
-X-Gm-Message-State: AOJu0YycuObqlfA8+i9HSUNJtKJI8axdOWAD6OI2FzDyPlD4qsa4kfxx
-	RK7DoB5AiwVZCfzxEiSlcPUf16V6jOvWOPEA4Et82UrMZ3k0p/2/CKrusnfW95/aiQfSqnUs53P
-	//NBaSrqkt+xpoWEhrC+C+teplj/Wi6I=
-X-Received: by 2002:a05:690c:e3e5:b0:798:1b2d:4b6c with SMTP id
- 00721157ae682-79828cde4bamr107400237b3.11.1771925856834; Tue, 24 Feb 2026
- 01:37:36 -0800 (PST)
+	s=arc-20240116; t=1771925923; c=relaxed/simple;
+	bh=nDZWRT9ok6KqDF+FIXQn9TUUAY5tlV4lnBU9fGzwDZs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G5WWpOEjBmTofHmpMGFl0ljB7zKaWBH92WEislxj+xZvKagHcKk8w/Nl1vh3qVrJhv5Y+fdDM78JZyksuUmi9xeNnpEFn7gDViiqvuremz9fHt/RFv9DvqDcrM4HUWHmiju1gKTdHRbAeWgUpyztZeMOuU+HTXmP+gECxfuDA4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vuorh-0000Ew-Dj; Tue, 24 Feb 2026 10:38:01 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vuore-002NLK-1B;
+	Tue, 24 Feb 2026 10:37:59 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vuorf-000000030rL-2Q5b;
+	Tue, 24 Feb 2026 10:37:59 +0100
+Date: Tue, 24 Feb 2026 10:37:59 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Frank Li <Frank.li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
+	Liu Ying <victor.liu@nxp.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, luca.ceresoli@bootlin.com, 
+	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v9 0/3] Add i.MX91/93 parallel display support
+Message-ID: <fl2br7rtcjrjj2uqxva7ai3xbvjwrrbbl2ruaoqolrccr2rd5p@z33qfx7dpavf>
+References: <20260115-v6-18-topic-imx93-parallel-display-v9-0-2c5051e4b144@pengutronix.de>
+ <fpnruayalannx3jrsjqfjzawrzxazy7ioo7ufxcwkbwj2eezfp@6i6ty7fz5xtc>
+ <aZNKPVZunRSZ72zt@lizhi-Precision-Tower-5810>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-References: <20260212213656.662437-1-shenwei.wang@nxp.com> <20260212213656.662437-4-shenwei.wang@nxp.com>
- <aae7c851-a93b-4d57-a118-43c6e68c4790@foss.st.com> <13f9d767-61d6-4e29-b36e-6dcc860ccb11@lunn.ch>
- <fd257c80-d97f-45b0-a12f-3a1888ba81db@foss.st.com> <396819f2-dd00-4c09-8bc7-c035a5282a56@lunn.ch>
- <PAXPR04MB9185A908F5090F0CA4FF05F78968A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <b21b9ee5-d84e-47f8-86b5-c111ecc3d43d@lunn.ch> <PAXPR04MB918576D67A268E59242964A08968A@PAXPR04MB9185.eurprd04.prod.outlook.com>
- <CAD++jLkUVFckLTq=SoivNFoFymhJo4KM=qGmajFcv9T9+7tPmg@mail.gmail.com>
- <b4c422ce-3538-40aa-8bfa-b70f02774b5d@foss.st.com> <PAXPR04MB91859B642802813F908B03DA8977A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-In-Reply-To: <PAXPR04MB91859B642802813F908B03DA8977A@PAXPR04MB9185.eurprd04.prod.outlook.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Tue, 24 Feb 2026 10:37:25 +0100
-X-Gmail-Original-Message-ID: <CAD++jLkHwKxcDu7oX+_+N00SSfEMrj4CBEKUYZTEmTZv5Gjb2Q@mail.gmail.com>
-X-Gm-Features: AaiRm53tdO9PraGZNM_tmFUQUZSiJUlpqFoMJNSwiXKqWWTvRU2E_PWdBXxyRms
-Message-ID: <CAD++jLkHwKxcDu7oX+_+N00SSfEMrj4CBEKUYZTEmTZv5Gjb2Q@mail.gmail.com>
-Subject: Re: [PATCH v8 3/4] gpio: rpmsg: add generic rpmsg GPIO driver
-To: Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Arnaud POULIQUEN <arnaud.pouliquen@foss.st.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Frank Li <frank.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Shuah Khan <skhan@linuxfoundation.org>, 
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>, 
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Peng Fan <peng.fan@nxp.com>, 
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, dl-linux-imx <linux-imx@nxp.com>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZNKPVZunRSZ72zt@lizhi-Precision-Tower-5810>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-On Mon, Feb 23, 2026 at 9:33=E2=80=AFPM Shenwei Wang <shenwei.wang@nxp.com>=
- wrote:
+On 26-02-16, Frank Li wrote:
+> On Mon, Feb 16, 2026 at 11:41:26AM +0100, Marco Felsch wrote:
+> > Hi,
+> >
+> > maybe this fell through the cracks due to the maintainership change,
+> > therefore a gentle ping :)
+> >
+> > +To Frank
+> 
+> Please wait for v7.0-rc1 tag create.
 
-> Arnaud, if you agree with the points above, my proposal is the following:
->  - Remove the fields you mentioned in the protocol and update the driver =
-accordingly so
-> that we can establish a true baseline for a generic implementation we all=
- agree.
->  - Then prepare a separate patch to add support for existing NXP platform=
-s by introducing
-> the necessary fix=E2=80=91up functions.
->
-> Please let me know if this approach works for you. My goal is to find a s=
-olution that works for
-> everyone =E2=80=94 even though I know that pleasing everyone is almost im=
-possible.
+Okay :) Now it is out and as reminder, a gentle ping.
 
-This looks good to me, and Arnaud seems happy too so let's go ahead
-with this.
+Regards,
+  Marco
 
-Yours,
-Linus Walleij
+> 
+> Frank
+> 
+> >
+> > Regards,
+> >   Marco
+> >
+> > On 26-01-15, Marco Felsch wrote:
+> > > Hi,
+> > >
+> > > this patchset adds the driver, dt-bindings and dt integration required
+> > > to drive a parallel display on the i.MX93.
+> > >
+> > > Since the i.MX91 register layout equals the one from the i.MX93, I added
+> > > the support for both but tested only the i.MX93 case.
+> > >
+> > > This patchset depends on:
+> > >  - https://lore.kernel.org/all/20251201-v6-18-topic-imx93-blkctrl-v1-0-b57a72e60105@pengutronix.de/
+> > >
+> > > @Conor Dooley
+> > > I dropped your r-b tag since I added the 'bus-width' property.
+> > >
+> > > Regards,
+> > >   Marco
+> > >
+> > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > > ---
+> > > Changes in v9:
+> > > - Link to v8: https://lore.kernel.org/r/20260113-v6-18-topic-imx93-parallel-display-v8-0-4abccdc473a5@pengutronix.de
+> > > - dt-bindings: drop unncessary changes (Frank)
+> > > - imx93-pdfc: drop bridge.driver_private usage (Luca)
+> > > - Kconfig: Adapt Kconfig symbol and prompt (Luca)
+> > >
+> > > Changes in v8:
+> > > - Link to v7: https://lore.kernel.org/r/20251202-v6-18-topic-imx93-parallel-display-v7-0-2cce31d64608@pengutronix.de
+> > > - dt-bindings: add nxp,imx91-pdfc compatible (Liu)
+> > > - dt-bindings: use video-interfaces.yaml# (Liu)
+> > > - dt-bindings: s/data lanes/data lines/ (Liu)
+> > > - dt-bindings: drop 'reg' poperty
+> > > - dt-bindings: drop #address-cells, #size-cells
+> > > - imx93-pdfc: drop drm/drm_print.h include (Liu)
+> > > - imx93-pdfc: s/exist/exists/ (Liu)
+> > > - imx93-pdfc: drop MEDIA_BUS_FMT_FIXED from imx93_pdfc_bus_output_fmts
+> > > - imx93-pdfc: imx93_pdfc_bus_output_fmt_supported: make fmt const
+> > > - imx93-pdfc: Rework input-fmt selection to always fallback to a sane
+> > >               default.
+> > > - imx93-pdfc: imx93_pdfc_bridge_atomic_check: make use of
+> > > 	      imx93_pdfc_bus_output_fmt_supported()
+> > > - imx93-pdfc: drop 'reg' dt-property usage
+> > > - imx93-pdfc: imx93_pdfc_bridge_probe: pass -1 for endpoint reg value (Liu)
+> > >
+> > > Changes in v7:
+> > > - Link to v6: https://lore.kernel.org/r/20251201-v6-18-topic-imx93-parallel-display-v6-0-7b056e1e5b1e@pengutronix.de
+> > > - Add missing bits.h and bitfield.h headers (lkp)
+> > >
+> > > Changes in v6:
+> > > - Link to v5: https://lore.kernel.org/all/20250304082434.834031-1-victor.liu@nxp.com/
+> > > - Add bus-width support
+> > > - rebase onto v6.18-rc1
+> > > - add review feedback (Alexander)
+> > > - driver license "GPL v2" -> "GPL" (checkpatch)
+> > > - make use of reg of-property
+> > > - fix to short Kconfig description (checkpath)
+> > > - add OF integration
+> > >
+> > > ---
+> > > Liu Ying (2):
+> > >       dt-bindings: soc: imx93-media-blk-ctrl: Add PDFC subnode to schema and example
+> > >       drm/bridge: imx: Add i.MX93 parallel display format configuration support
+> > >
+> > > Marco Felsch (1):
+> > >       arm64: dts: imx93: Add parallel display output nodes
+> > >
+> > >  .../bindings/soc/imx/fsl,imx93-media-blk-ctrl.yaml |  78 +++++++
+> > >  arch/arm64/boot/dts/freescale/imx91_93_common.dtsi |  54 +++++
+> > >  arch/arm64/boot/dts/freescale/imx93.dtsi           |  12 ++
+> > >  drivers/gpu/drm/bridge/imx/Kconfig                 |  11 +
+> > >  drivers/gpu/drm/bridge/imx/Makefile                |   1 +
+> > >  drivers/gpu/drm/bridge/imx/imx93-pdfc.c            | 226 +++++++++++++++++++++
+> > >  6 files changed, 382 insertions(+)
+> > > ---
+> > > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> > > change-id: 20251201-v6-18-topic-imx93-parallel-display-95f9234bf6cc
+> > >
+> > > Best regards,
+> > > --
+> > > Marco Felsch <m.felsch@pengutronix.de>
+> > >
+> > >
+> >
+> > --
+> > #gernperDu
+> > #CallMeByMyFirstName
+> >
+> > Pengutronix e.K.                           |                             |
+> > Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+> > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+> 
+
+-- 
+#gernperDu 
+#CallMeByMyFirstName
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
