@@ -1,164 +1,551 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA788378806
-	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 11:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CFB3803E9
+	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 11:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771932818; cv=none; b=CdRzm8DB44Afsharnkjz/O3xZdMQTPc/iIfVhvFedSFopFM6HF+KDsrvocHhOdGWxD6RGyrjZNj2tHNcmkaejWE04s5VTCOUMDu6oYk8nCEKfu7fbzsdhs4MJRvir0rzspA9e5gLuaErDgeqCgN7N2qkE+hYCj8Ic7diGR8O/eg=
+	t=1771933666; cv=none; b=YgJSK0C8H0G1ogOwlv0g9Z28c4tLHmg5Sa8/1cIvvKlcdlCRwEY5DYHqSsUV7hvd7pbimpBgnUkjioMUwkF5RpD5sDu6UtODr9duTPzty64+i10lE9QRIs0u6QqaPQMsOsxvY6yeJOKfYwfs2qRqGkP3+fZmlU2W7D5fRi1LFOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771932818; c=relaxed/simple;
-	bh=ViFWYQQRZYNLeGhLYzhL/VKNYQiAGk3Jy3razAENlmw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WaXVkfTBtS/+bRC7rAoPmSQHjBiYsTG4P/YFyxoKBfCWoC6+Xp9MhIcAM8+0Zwv/X3l5TAB0ya0DoQd9B1VrdVg+yYrvtwQzfGamOAdtAQ7RyqZFjHIhywHZvhbzerq6P5nb0djneghLDYDyDB810W2KM/hpDOBR3CN6B2px+vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=gh5+St6S; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="gh5+St6S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1771932816;
-	bh=ViFWYQQRZYNLeGhLYzhL/VKNYQiAGk3Jy3razAENlmw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gh5+St6SGnu8AD94/BuNXZe1T1VphAruy5XD3/aswoOZs1Bj2QvU2+o6SqZ60cfGz
-	 OrVftyAzQXJYxxVcOQ7cVN2mTsDldDvG8TXv7WgCGDn+U0q9D6+2h8uAk3rZUI9zU/
-	 fBrF6oAIjnEo5CoACl4PHzmJoeYNVRNdjnQbgrRGogHjOSz4jVjM1SEXLihkcFI11c
-	 OBzROU7GWl1WZTFVtbYoCMxeGeluEAZkPdf2/1Ma6EKMuSjUx90+ChCXlamqQl/gTy
-	 fJslWDQ/38g2uwV3HQlvnWo7Eh3a6i2hECZp5fDlsYlrUXbccKpb6kkxBasumP5j0i
-	 4wHupLdCTLVSw==
-Received: from [IPV6:2a01:e0a:212:79f0:be92:a52a:153f:7a60] (unknown [IPv6:2a01:e0a:212:79f0:be92:a52a:153f:7a60])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: aferraris)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 9AFC017E03E5;
-	Tue, 24 Feb 2026 12:33:35 +0100 (CET)
-Message-ID: <30bc5aeb-382b-49e0-824a-303230110313@collabora.com>
-Date: Tue, 24 Feb 2026 12:33:33 +0100
+	s=arc-20240116; t=1771933666; c=relaxed/simple;
+	bh=p8nm0XdI5uzBZcXi1aC1FxXvSnohnEfddPLNJidw3Og=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cuYe9E/gBC2rut1Jb9AdvEpDtaAUf2H/6baRKD9uUSl1N5Bor9Lpnsa/RMt2hzbv4ooR3jHiKwCAemC9HTkjgeEb627Q2TOSzqRWGSL46Lorv1RZocPlZ10A2s863mHbQ4DDx+g/DNT8Rhy2qfieqotdXrkuuggjgqDxacoYr8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <f.pfitzner@pengutronix.de>)
+	id 1vuqsu-0002Ch-Hn; Tue, 24 Feb 2026 12:47:24 +0100
+From: Fabian Pfitzner <f.pfitzner@pengutronix.de>
+Date: Tue, 24 Feb 2026 12:46:35 +0100
+Subject: [PATCH] arm64: dts: imx8mp-frdm: add more features
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "tcpm: allow looking for role_sw device in the
- main node"
-To: Xu Yang <xu.yang_2@nxp.com>, badhri@google.com,
- heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
- dsimic@manjaro.org
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- imx@lists.linux.dev, jun.li@nxp.com
-References: <20260224110139.3812757-1-xu.yang_2@nxp.com>
-From: Arnaud Ferraris <arnaud.ferraris@collabora.com>
-Content-Language: en-US, fr
-Autocrypt: addr=arnaud.ferraris@collabora.com; keydata=
- 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
- L9jD4jU=
-In-Reply-To: <20260224110139.3812757-1-xu.yang_2@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260224-fpf-imx8mp-frdm-v1-1-d7f3b57c18e0@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAJqPnWkC/x3MMQqAMAxA0atIZgMxliJeRRzEJpqhWloQQby7x
+ fEN/z9QJJsUGJsHslxW7DwquraBdV+OTdBCNTCxJ2aHmhQt3kNMqDlEdMSrC0q+J4ZapSxq93+
+ c5vf9AHO2cDZhAAAA
+X-Change-ID: 20260224-fpf-imx8mp-frdm-402c4df06302
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Fabian Pfitzner <f.pfitzner@pengutronix.de>
+X-Mailer: b4 0.14.2
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::54
+X-SA-Exim-Mail-From: f.pfitzner@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: imx@lists.linux.dev
 
-Hi,
+Add support for the following new features:
 
-Le 24/02/2026 à 12:01, Xu Yang a écrit :
-> This reverts commit 1366cd228b0c67b60a2c0c26ef37fe9f7cfedb7f.
+- SD Card
+- Ethernet (FEC + EQOS)
+- Wifi
+- USB
+- HDMI
 
-I believe a plain revert isn't the right solution here, as we'll get to 
-the same point as we were before 1366cd228b0c, where some devices 
-stopped working properly with newer kernels.
+The imx8mp-evk dt and the NXP downstream imx8mp-frdm dts were
+taken as a reference [1].
 
-> 
-> The fwnode_usb_role_switch_get() returns NULL only if no connection is
-> found, returns ERR_PTR(-EPROBE_DEFER) if connection is found but deferred
-> probe is needed, or a valid pointer of usb_role_switch.
-> 
-> When switching from NULL check to IS_ERR_OR_NULL(), usb_role_switch_get()
-> will return NULL pointer which will override ERR_PTR(-EPROBE_DEFER) which
-> is returned by fwnode_usb_role_switch_get(). Then usb role switch can't be
-> obtained because the defer probe info is lost. So the unique error should
-> not be regarded the same as NULL.
-> 
-> Fixes: 1366cd228b0c ("tcpm: allow looking for role_sw device in the main node")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-> 
-> ---
-> Also correct a description in 1366cd228b0c ("tcpm: allow looking for
-> role_sw device in the main node"), if the ports are defined in the tcpc
-> main node, NULL pointer is returned by fwnode_usb_role_switch_get()
-> instead of an error.
-> ---
->   drivers/usb/typec/tcpm/tcpm.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 1d2f3af034c5..8e0e14a2704e 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -7890,7 +7890,7 @@ struct tcpm_port *tcpm_register_port(struct device *dev, struct tcpc_dev *tcpc)
->   	port->partner_desc.identity = &port->partner_ident;
->   
->   	port->role_sw = fwnode_usb_role_switch_get(tcpc->fwnode);
-> -	if (IS_ERR_OR_NULL(port->role_sw))
-> +	if (!port->role_sw)
+[1] https://github.com/nxp-imx/linux-imx
 
-It might be worth saving the error and restoring it after the call to 
-usb_role_switch_get() instead, something like:
+Signed-off-by: Fabian Pfitzner <f.pfitzner@pengutronix.de>
+---
+Add support for the following new features:
 
-	if (IS_ERR_OR_NULL(port->role_sw)) {
-		err = PTR_ERR(port->role_sw);
-		port->role_sw = usb_role_switch_get(port->dev);
-		if (!port->role_sw)
-			port->role_sw = ERR_PTR(err);
-	}
+- SD Card
+- Ethernet (FEC + EQOS)
+- Wifi
+- USB
+- HDMI
 
+The imx8mp-evk dt and the NXP downstream imx8mp-frdm dts were
+taken as a reference [1].
 
->   		port->role_sw = usb_role_switch_get(port->dev);
->   	if (IS_ERR(port->role_sw)) {
->   		err = PTR_ERR(port->role_sw);
+[1] https://github.com/nxp-imx/linux-imx
+---
+ arch/arm64/boot/dts/freescale/imx8mp-frdm.dts | 409 ++++++++++++++++++++++++++
+ 1 file changed, 409 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-frdm.dts b/arch/arm64/boot/dts/freescale/imx8mp-frdm.dts
+index 55690f5e53d7e1fbf7eae8a1f31eb064465ccb6c..09a44ff8fb6aaf8b083c8af06d9cf1926f5ac197 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-frdm.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-frdm.dts
+@@ -42,6 +42,68 @@ memory@40000000 {
+ 		reg = <0x0 0x40000000 0 0xc0000000>,
+ 		      <0x1 0x00000000 0 0x40000000>;
+ 	};
++
++	native-hdmi-connector {
++		compatible = "hdmi-connector";
++		label = "HDMI OUT";
++		type = "a";
++
++		port {
++			hdmi_in: endpoint {
++				remote-endpoint = <&hdmi_tx_out>;
++			};
++		};
++	};
++
++	sdio_pwrseq: usdhc1-pwrseq {
++		compatible = "mmc-pwrseq-simple";
++		reset-gpios = <&gpio2 10 GPIO_ACTIVE_LOW>;
++	};
++
++	reg_usdhc1_vmmc: regulator-wifi-vmmc {
++		compatible = "regulator-fixed";
++		regulator-name = "WLAN_EN";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&pcal6416_1 10 GPIO_ACTIVE_HIGH>;
++		/*
++		 * IW612 wifi chip needs more delay than other wifi chips to complete
++		 * the host interface initialization after power up, otherwise the
++		 * internal state of IW612 may be unstable, resulting in the failure of
++		 * the SDIO3.0 switch voltage.
++		 */
++		enable-active-high;
++		startup-delay-us = <20000>;
++	};
++
++	reg_usdhc1_vqmmc: regulator-wifi-vqmmc {
++		compatible = "regulator-fixed";
++		regulator-name = "regulator-wifi-vqmmc";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		enable-active-high;
++	};
++
++	reg_usdhc2_vmmc: regulator-sd {
++		compatible = "regulator-fixed";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
++		regulator-name = "VSD_3V3";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
++
++	reg_usb_vbus: regulator-vbus {
++		compatible = "regulator-fixed";
++		regulator-name = "USB_VBUS";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		gpio = <&pcal6416_1 5 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
++
+ };
+ 
+ &A53_0 {
+@@ -60,6 +122,148 @@ &A53_3 {
+ 	cpu-supply = <&reg_arm>;
+ };
+ 
++&eqos {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_eqos>;
++	phy-mode = "rgmii-id";
++	phy-handle = <&ethphy0>;
++	snps,force_thresh_dma_mode;
++	snps,mtl-tx-config = <&mtl_tx_setup>;
++	snps,mtl-rx-config = <&mtl_rx_setup>;
++	status = "okay";
++
++	mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethphy0: ethernet-phy@2 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <2>;
++			pinctrl-names = "default";
++			pinctrl-0 = <&pinctrl_eqos_phy>;
++			reset-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <10000>;
++			reset-deassert-us = <80000>;
++			realtek,clkout-disable;
++		};
++	};
++
++	mtl_tx_setup: tx-queues-config {
++		snps,tx-queues-to-use = <5>;
++
++		queue0 {
++			snps,dcb-algorithm;
++			snps,priority = <0x1>;
++		};
++
++		queue1 {
++			snps,dcb-algorithm;
++			snps,priority = <0x2>;
++		};
++
++		queue2 {
++			snps,dcb-algorithm;
++			snps,priority = <0x4>;
++		};
++
++		queue3 {
++			snps,dcb-algorithm;
++			snps,priority = <0x8>;
++		};
++
++		queue4 {
++			snps,dcb-algorithm;
++			snps,priority = <0xf0>;
++		};
++	};
++
++	mtl_rx_setup: rx-queues-config {
++		snps,rx-queues-to-use = <5>;
++		snps,rx-sched-sp;
++
++		queue0 {
++			snps,dcb-algorithm;
++			snps,priority = <0x1>;
++			snps,map-to-dma-channel = <0>;
++		};
++
++		queue1 {
++			snps,dcb-algorithm;
++			snps,priority = <0x2>;
++			snps,map-to-dma-channel = <1>;
++		};
++
++		queue2 {
++			snps,dcb-algorithm;
++			snps,priority = <0x4>;
++			snps,map-to-dma-channel = <2>;
++		};
++
++		queue3 {
++			snps,dcb-algorithm;
++			snps,priority = <0x8>;
++			snps,map-to-dma-channel = <3>;
++		};
++
++		queue4 {
++			snps,dcb-algorithm;
++			snps,priority = <0xf0>;
++			snps,map-to-dma-channel = <4>;
++		};
++	};
++};
++
++&fec {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_fec>;
++	phy-mode = "rgmii-id";
++	phy-handle = <&ethphy1>;
++	fsl,magic-packet;
++	status = "okay";
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethphy1: ethernet-phy@1 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <1>;
++			pinctrl-names = "default";
++			pinctrl-0 = <&pinctrl_fec_phy>;
++			eee-broken-1000t;
++			reset-gpios = <&gpio4 2 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <10000>;
++			reset-deassert-us = <80000>;
++			realtek,aldps-enable;
++			realtek,clkout-disable;
++		};
++	};
++};
++
++
++&hdmi_pvi {
++	status = "okay";
++};
++
++&hdmi_tx {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hdmi>;
++	status = "okay";
++
++	ports {
++		port@1 {
++			hdmi_tx_out: endpoint {
++				remote-endpoint = <&hdmi_in>;
++			};
++		};
++	};
++};
++
++&hdmi_tx_phy {
++	status = "okay";
++};
++
+ &i2c1 {
+ 	clock-frequency = <400000>;
+ 	pinctrl-names = "default";
+@@ -218,6 +422,32 @@ &i2c3 {
+ 	status = "okay";
+ };
+ 
++&lcdif3 {
++	status = "okay";
++};
++
++&usb3_phy0 {
++	status = "okay";
++};
++
++&usb3_0 {
++	status = "okay";
++};
++
++&usb3_phy1 {
++	vbus-supply = <&reg_usb_vbus>;
++	status = "okay";
++};
++
++&usb3_1 {
++	status = "okay";
++};
++
++&usb_dwc3_1 {
++	dr_mode = "host";
++	status = "okay";
++};
++
+ &snvs_pwrkey {
+ 	status = "okay";
+ };
+@@ -237,6 +467,36 @@ &uart3 {
+ 	status = "okay";
+ };
+ 
++&usdhc1 {
++	assigned-clocks = <&clk IMX8MP_CLK_USDHC1>;
++	assigned-clock-rates = <200000000>;
++	pinctrl-names = "default", "state_100mhz", "state_200mhz";
++	pinctrl-0 = <&pinctrl_usdhc1>;
++	pinctrl-1 = <&pinctrl_usdhc1_100mhz>;
++	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
++	mmc-pwrseq = <&sdio_pwrseq>;
++	vmmc-supply = <&reg_usdhc1_vmmc>;
++	vqmmc-supply = <&reg_usdhc1_vqmmc>;
++	bus-width = <4>;
++	non-removable;
++	no-sd;
++	no-mmc;
++	status = "okay";
++};
++
++&usdhc2 {
++	assigned-clocks = <&clk IMX8MP_CLK_USDHC2>;
++	assigned-clock-rates = <400000000>;
++	pinctrl-names = "default", "state_100mhz", "state_200mhz";
++	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
++	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
++	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
++	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
++	vmmc-supply = <&reg_usdhc2_vmmc>;
++	bus-width = <4>;
++	status = "okay";
++};
++
+ &usdhc3 {
+ 	assigned-clocks = <&clk IMX8MP_CLK_USDHC3>;
+ 	assigned-clock-rates = <400000000>;
+@@ -250,6 +510,74 @@ &usdhc3 {
+ };
+ 
+ &iomuxc {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_hog>;
++
++	pinctrl_eqos: eqosgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC				0x2
++			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO				0x2
++			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0			0x90
++			MX8MP_IOMUXC_ENET_RD1__ENET_QOS_RGMII_RD1			0x90
++			MX8MP_IOMUXC_ENET_RD2__ENET_QOS_RGMII_RD2			0x90
++			MX8MP_IOMUXC_ENET_RD3__ENET_QOS_RGMII_RD3			0x90
++			MX8MP_IOMUXC_ENET_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x90
++			MX8MP_IOMUXC_ENET_RX_CTL__ENET_QOS_RGMII_RX_CTL			0x90
++			MX8MP_IOMUXC_ENET_TD0__ENET_QOS_RGMII_TD0			0x16
++			MX8MP_IOMUXC_ENET_TD1__ENET_QOS_RGMII_TD1			0x16
++			MX8MP_IOMUXC_ENET_TD2__ENET_QOS_RGMII_TD2			0x16
++			MX8MP_IOMUXC_ENET_TD3__ENET_QOS_RGMII_TD3			0x16
++			MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL			0x16
++			MX8MP_IOMUXC_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x16
++		>;
++	};
++
++	pinctrl_eqos_phy: eqosphygrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SAI2_RXC__GPIO4_IO22				0x10
++		>;
++	};
++
++	pinctrl_fec: fecgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SAI1_RXD2__ENET1_MDC		0x2
++			MX8MP_IOMUXC_SAI1_RXD3__ENET1_MDIO		0x2
++			MX8MP_IOMUXC_SAI1_RXD4__ENET1_RGMII_RD0		0x90
++			MX8MP_IOMUXC_SAI1_RXD5__ENET1_RGMII_RD1		0x90
++			MX8MP_IOMUXC_SAI1_RXD6__ENET1_RGMII_RD2		0x90
++			MX8MP_IOMUXC_SAI1_RXD7__ENET1_RGMII_RD3		0x90
++			MX8MP_IOMUXC_SAI1_TXC__ENET1_RGMII_RXC		0x90
++			MX8MP_IOMUXC_SAI1_TXFS__ENET1_RGMII_RX_CTL	0x90
++			MX8MP_IOMUXC_SAI1_TXD0__ENET1_RGMII_TD0		0x16
++			MX8MP_IOMUXC_SAI1_TXD1__ENET1_RGMII_TD1		0x16
++			MX8MP_IOMUXC_SAI1_TXD2__ENET1_RGMII_TD2		0x16
++			MX8MP_IOMUXC_SAI1_TXD3__ENET1_RGMII_TD3		0x16
++			MX8MP_IOMUXC_SAI1_TXD4__ENET1_RGMII_TX_CTL	0x16
++			MX8MP_IOMUXC_SAI1_TXD5__ENET1_RGMII_TXC		0x16
++		>;
++	};
++
++	pinctrl_fec_phy: fecphygrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SAI1_RXD0__GPIO4_IO02		0x10
++		>;
++	};
++
++	pinctrl_hdmi: hdmigrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_HDMI_CEC__HDMIMIX_HDMI_CEC		0x10
++		>;
++	};
++
++	pinctrl_hog: hoggrp {
++		fsl,pins = <
++			/* Pin might be required by multiple drivers
++			 * (e. g. HDMI Audio and HDMI TX)
++			 */
++			MX8MP_IOMUXC_HDMI_HPD__HDMIMIX_HDMI_HPD		0x40000010
++		>;
++	};
++
+ 	pinctrl_i2c1: i2c1grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL	0x400001c2
+@@ -289,6 +617,12 @@ MX8MP_IOMUXC_SD1_STROBE__GPIO2_IO11	0x146
+ 		>;
+ 	};
+ 
++	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD2_RESET_B__GPIO2_IO19	0x40
++		>;
++	};
++
+ 	pinctrl_uart2: uart2grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX	0x140
+@@ -305,6 +639,81 @@ MX8MP_IOMUXC_ECSPI1_MISO__UART3_DCE_CTS	0x140
+ 		>;
+ 	};
+ 
++	pinctrl_usdhc1: usdhc1grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x190
++			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD	0x1d0
++			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0	0x1d0
++			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1	0x1d0
++			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2	0x1d0
++			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3	0x1d0
++		>;
++	};
++
++	pinctrl_usdhc1_100mhz: usdhc1-100mhzgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x194
++			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD	0x1d4
++			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0	0x1d4
++			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1	0x1d4
++			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2	0x1d4
++			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3	0x1d4
++		>;
++	};
++
++	pinctrl_usdhc1_200mhz: usdhc1-200mhzgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD1_CLK__USDHC1_CLK	0x196
++			MX8MP_IOMUXC_SD1_CMD__USDHC1_CMD	0x1d6
++			MX8MP_IOMUXC_SD1_DATA0__USDHC1_DATA0	0x1d6
++			MX8MP_IOMUXC_SD1_DATA1__USDHC1_DATA1	0x1d6
++			MX8MP_IOMUXC_SD1_DATA2__USDHC1_DATA2	0x1d6
++			MX8MP_IOMUXC_SD1_DATA3__USDHC1_DATA3	0x1d6
++		>;
++	};
++
++	pinctrl_usdhc2: usdhc2grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK	0x190
++			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD	0x1d0
++			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d0
++			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d0
++			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d0
++			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d0
++			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT	0xc0
++		>;
++	};
++
++	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK	0x194
++			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD	0x1d4
++			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d4
++			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d4
++			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d4
++			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d4
++			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT 0xc0
++		>;
++	};
++
++	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK	0x196
++			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD	0x1d6
++			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0	0x1d6
++			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1	0x1d6
++			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2	0x1d6
++			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3	0x1d6
++			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT 0xc0
++		>;
++	};
++
++	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SD2_CD_B__GPIO2_IO12	0x1c4
++		>;
++	};
++
+ 	pinctrl_usdhc3: usdhc3grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK	0x190
+
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260224-fpf-imx8mp-frdm-402c4df06302
 
 Best regards,
-Arnaud
+-- 
+Fabian Pfitzner <f.pfitzner@pengutronix.de>
 
