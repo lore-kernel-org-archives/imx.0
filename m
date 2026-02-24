@@ -1,208 +1,169 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013024.outbound.protection.outlook.com [52.101.83.24])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C25923EA83
-	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 03:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771903051; cv=fail; b=H1iLsd/iI1qxKkF9BJPmHNxZx+TBvFoWqOCPa1eJqYNkEcI1LD/O7GwW1sCSCdIP8KjTpJTI2y9UAyAmsGPmRu43RlMVnE+YX+ae/wDFOVa7R7ShIt6hXY25uqkakshozkmfK0k7/8btEcbyuI105nd1SclBYwAFGg885d2dwzo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771903051; c=relaxed/simple;
-	bh=HNz56ICkbeNxhK9FVGTOmma5qzNFf4iPGS36RxjrxQE=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=qKSzOkki7oY3W7eQ8/mQkdSHaCZfdkF9jD3azOs7m3SQyJnWIih1LyuCZFZdcQ/15WR6R2Cfx3H3KB+oeoBSvPqrL8wbE3eoaOw0XvLkXVETcZrOLRV8hVhScIpKa7W/gHiicGRKSkO2iNfUFMGndxndhFsHnbiJUzgX1L8vIWA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KmaqCVbA; arc=fail smtp.client-ip=52.101.83.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0A2279346;
+	Tue, 24 Feb 2026 07:06:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771916774; cv=none; b=ez5PAYsTsNrLhigvCvhpkGZpSkwIhNmHUcwo5MkiYmd1ttHCK+vkxkvTzxy1vS8zoiqKOqV26zfM4Jb7B7nVwAuSak2lUuNbyizTaRPsDjrOIwxTlg2l/dLLazbLRs2Vh8CpjlKSAuCEo5NoZwn8N/kzskNoGpixlJZq5UaFdyI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771916774; c=relaxed/simple;
+	bh=+7HAa46+csyyfFenGu741DgQ0m/L/d1UUx6mgp8nvUI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gnKgSvUgivD6nQfsG7ciifCVBhJvi1eeal2OlKgEhBVcg/nHfjsmPR2NfcpHCrlfPe10VeQCL8lzNz5wluRKjLCONMHQUOz3hzGNRWHzy0CcVKiWZiJGQ3jsPABConrpoN3bOf/6WmTveWNJw9W3aJxXuLbVaCOQD6KNm193ErI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d31fTtcp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KmaqCVbA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JQ7cs30+S4ySIJz0M/7/kTua1a/ivQzpWfcqENSyNAZajtfmci63Ltr1Xf7z8KzP35UO+T8hLoyVumTv6kh+tKSax28+6/yXYxjRUXUfJe2qNxQVYy+nGToCN3Jey+CeaovHqz/M1Z0TuZejuuL5qm2stSFbWLz5gBvAshK2dfMB/jruSyrkWcANwEZRclqFHi015Byu8s7GZr5ax0ZWy5AoAF4sgFE8MUqpVPKUhC45XA7mI59F8MVDkhCnN0RiQOU4G2xZwqrx5seTYx7RRmSBcSUFKtaZClzDXUnBLCWiIYeoztB8usr3ZHOtUSaB7awSKvhVzld3BMZRzIdr8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BbAutCZeWSCBq9FrdIIre3PfnmEgzAuWY0bq9tV+YX8=;
- b=Op+iR1P4zkgpDEF9FhkGuJSyi02RRJqqCHN7De72yFHkXctMc2IxSSa8Wm7EyXR97yWWNhwNc93sDKQpSDg0jN06LK5BhzsM5n0WJOjm1uFh2ggi5MilmeM18PWjXZpxvCziC0zxTz048GebDKdCM5UQt4pZlxGMDxAbrzgu79pyOWKgvavdkGpZkH40BHdAdHtjZ6t/kknkYzpN5Zoy3zBIK+wh3Jy1iU1lQZe6CniK3ATUkZCC8cLkDXkb7KGdbRe5ri4gbrNTV5aaaPj7sxLLh7a2Lhk9AGFvbZ5vxpSw7fFE0YfKzvHK+aSoGSbQ4xXbsqkNfD/RNxBXPrOPlA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BbAutCZeWSCBq9FrdIIre3PfnmEgzAuWY0bq9tV+YX8=;
- b=KmaqCVbASZU67HMYU/cq3HsvRQTdH6zM0LBX2+o5Y9cirvyr7ibJmDksJmWSnLF0My736ObYeNZFj0Cn7dA9W7NeCf7orjqApG3YZ/PEl3pm7Hl5B7mIVHgOZPhMZ30Jq65NpGwIHQL4eDBszHWC7yZfs6/Ud6rXTQp5Z0dB0ehnTT+CwfnaRi/FemAG2OEsuy+WMf5rmEb0Et2su25wH4sXQ1CymPNIumEf85CQ0JmYIv5v4M+uNV7tKY52n8YzUCCdaqHI90E9VnoSiQjf0k9cgU5p3aQRZVMEuJmvxZI0UTtpuB2exnbIsZbqRUTzCTn35XRtc4R6uWOzbsVd3g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM9PR04MB8825.eurprd04.prod.outlook.com (2603:10a6:20b:408::7)
- by AMBPR04MB11840.eurprd04.prod.outlook.com (2603:10a6:20b:6f2::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Tue, 24 Feb
- 2026 03:17:26 +0000
-Received: from AM9PR04MB8825.eurprd04.prod.outlook.com
- ([fe80::49d0:5fa7:d131:7781]) by AM9PR04MB8825.eurprd04.prod.outlook.com
- ([fe80::49d0:5fa7:d131:7781%6]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
- 03:17:25 +0000
-From: Xu Yang <xu.yang_2@nxp.com>
-To: gregkh@linuxfoundation.org,
-	m.grzeschik@pengutronix.de,
-	stern@rowland.harvard.edu
-Cc: linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	jun.li@nxp.com
-Subject: [PATCH v2] usb: port: add delay after usb_hub_set_port_power()
-Date: Tue, 24 Feb 2026 11:19:09 +0800
-Message-Id: <20260224031909.3546487-1-xu.yang_2@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR06CA0005.apcprd06.prod.outlook.com
- (2603:1096:4:186::12) To AM9PR04MB8825.eurprd04.prod.outlook.com
- (2603:10a6:20b:408::7)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d31fTtcp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AF6C116D0;
+	Tue, 24 Feb 2026 07:06:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771916774;
+	bh=+7HAa46+csyyfFenGu741DgQ0m/L/d1UUx6mgp8nvUI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d31fTtcpY8I9cJoKWJ3UEniHz7RsfiFq9uU5sAhsntQBf5du4P+x3xpG//OsG3lmN
+	 7OgqoFGzx6hpHFeqMfTKq/hTpv7Ik1HZSU6oSfDEY96qV/mhnMagxUv7yEbOVGuKKd
+	 atR3yi19ndUjIVhw+uV9flLAAzqxcRtvYBZL3YQObRLuamy5AaxwVCBMd+OchiNYzK
+	 BNupMV1fEQXiLypin5s5DLXhZTZCWdpXiJBDgTUCyRou90d4EiJD5K/Ajz6lt+G8pv
+	 Y8B3ZQZDEte86QBesK3IwEbZQ4XaW9BhehybzEkMXn8mSPSm5cIciYoM7VVTaHrar4
+	 9SL7I9nZejwRg==
+Date: Tue, 24 Feb 2026 08:06:11 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, NXP S32 Linux Team <s32@nxp.com>, 
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, imx@lists.linux.dev, devicetree@vger.kernel.org
+Subject: Re: [PATCH v5 2/4] dt-bindings: net: nxp,s32-dwmac: Declare
+ per-queue interrupts
+Message-ID: <20260224-diligent-bloodhound-of-hail-3fe982@quoll>
+References: <20260223-dwmac_multi_irq-v5-0-8fc699a5fac4@oss.nxp.com>
+ <20260223-dwmac_multi_irq-v5-2-8fc699a5fac4@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
 List-Subscribe: <mailto:imx+subscribe@lists.linux.dev>
 List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8825:EE_|AMBPR04MB11840:EE_
-X-MS-Office365-Filtering-Correlation-Id: 64e4c274-c5f1-445a-5d2b-08de73533b15
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|52116014|376014|19092799006|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?RULWiHr3B/9VX96e+UJz36zzJ/g40SO4zkEYsSxOIBqAM1SXaAi8+951DN2/?=
- =?us-ascii?Q?mdd6xnPCKsP6Dm4DCcxJ/DRGMmJ689ricmsS2sCvn5v5ROh6RKVmCvZAnmCW?=
- =?us-ascii?Q?QJ83M6w3UhAlGhHKvKAa8VKacCRbndmzOT4GVGC8a0L5Sx5TOvjkv/HnO8MA?=
- =?us-ascii?Q?oLL+2yU6pjc6gRNwXI0cpbINc3trFBV7UxvjoEsYq+RFqoOcHKTgHQwiGGld?=
- =?us-ascii?Q?+ZGJuG8JUtrtrgX2TMs448ObjsjLigbUqsEzIdpuF+WtSxXW0yIbtoG+n2DH?=
- =?us-ascii?Q?wq0J9x+dSu/yCcWWM45PA63InyimnPRjHTFWXOCVE6PeGbymxlq+o4Q+cp0I?=
- =?us-ascii?Q?2m6AcpoN0esO3lDPqpmkHZPeyzr3pt/l4Q+5B7YCzUHEOEWHNDGC0WjFFE5J?=
- =?us-ascii?Q?ZUAWjHg3krgtJLj8GvmDxWQkkuGJLlS4nbKUUJIfPO6ubwmvBvvr9XqyA32H?=
- =?us-ascii?Q?MbNxDPPs7dhLP2Wm0i193HIdP6DJ18cLX8vTY+LG7997CnaPBEfeJxgvozWU?=
- =?us-ascii?Q?wgqjFATUEol4A62O8v42Ttjx1717fh1K7Zau130xU2XKT51tpBlc6a4Jqcs8?=
- =?us-ascii?Q?5DY7/zwFX4SHQ1X70V16zQZTPNOeON+Yju36ORiE0jH3DpiMQwK4FHF5gpu+?=
- =?us-ascii?Q?/ChTdZtcCijJdgqy+QUOEocfb8ZIMssVrVtfaRchuzaTmQr8nSxGRHErmBgz?=
- =?us-ascii?Q?svJ8Og2vq/uTQDavnRgUIvcvQ2ZSCeFecol80NPTsdGpFZp92Dba2aFnhZzp?=
- =?us-ascii?Q?J0KMpYT9hJIon28qX0NVafKj1BebZnNx/9k6XiLW9TM/CnA4FjpzlsBdI4yq?=
- =?us-ascii?Q?8pQKyj3+JaJXFBI+BhAcqhHSJoYQ17KH6YML4Y+lV4Fk/6KvEO1bTmz8paSm?=
- =?us-ascii?Q?3LSK97iK9+K01BZiWSp4bgaMbX2X7S1kS9TuBaow2MvPz4AipN4r0zpkEnTI?=
- =?us-ascii?Q?IVJVogwnTSR+mZX/ppvaUJ7OovWej67I3H8i8kF+5pjglnyrnUWMvKQyn4Xs?=
- =?us-ascii?Q?5w3Wb4oao+4GtuCBuu97JuAZTjkChgJS0OwhLKoKEr8T1+rlcI4TVug4AWvI?=
- =?us-ascii?Q?3hs4ZPATe1apGCxmuPuetNpnSccgFjzGdxuQfflBLXPzIUCcOKvQUcnGdt9G?=
- =?us-ascii?Q?GNoXaJ5Dvrw6SDRFiG3dpZRcn3ihhxvtxZz/BWglrxdBDk3oSNas41ms6EPM?=
- =?us-ascii?Q?IufC1n/8fvmXlaILgMiCGrs4lqBhlpsGjmz0OF1VlZWllUZM5lb0wN2eYSKF?=
- =?us-ascii?Q?KGlNoMMIGKU5CU/9xLz095OVibE/whfLMYGFtGq5EYU7K4dBzGzpXbFpy8KJ?=
- =?us-ascii?Q?dficwUUzeqlOMX/j8J489gI4Aftxp/phI4U4isercFQY8aES1uIzJtl+dvdQ?=
- =?us-ascii?Q?GZ3pJhTW4GPWtS8aWVMbw0lcS1T8RfoO2LCPh10zexQawYgY/y3CZSwRcDEY?=
- =?us-ascii?Q?f4N6ZX3r6t3p4Ax+q2S+3+E+1m3EZypX6kS3E+c98aIn7bu6UZtoN0uAeD8g?=
- =?us-ascii?Q?5FxpRVYAcvIgY2XTpGjjGhrpkJd6A1tkmMgkx2ePifZuXmLaH9aw8OeqOZfY?=
- =?us-ascii?Q?ngYcqi8OL80V3DgOzzQJaLYretiy4dTm9kIG0ofqtleJKPNN4XaOeM/TR/DS?=
- =?us-ascii?Q?Ghfl7Q2UKMrAUAHpBPjMBFQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8825.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(52116014)(376014)(19092799006)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?A66gsEEaQwScwAANZOSNs5Ex2dzb3lUVtC2Ytdn3nzFG4EKMRC5NC7HfIrhm?=
- =?us-ascii?Q?W8U0QYG5Vftb9x3h2FjpGHyPKaTNDAgI76RnkRGMiHGBN0MGWgLJxFPasIt1?=
- =?us-ascii?Q?HhzmBeIqJUJZiDmFeO+8XZCrcvJqfGP5EBqVf5QWuY8MTjSrieDYMRQphUjn?=
- =?us-ascii?Q?tcBsjoRDV1dgZRPHncoIcESkBOLr+MB9hvRRZ/dTBsyb60SO+Pld7MT2Xgyp?=
- =?us-ascii?Q?/NRu9eT8mQa0v1XjsWIAvIWRv68YkMv8iT7utBtEPsGcK/5qBsnI7J1TAt/2?=
- =?us-ascii?Q?Hl2WdhuE3OUkxachFHZCdLBXU5rkGcT0Zh32Kg+ca+l+LRHQRd2/B8V+3Yq9?=
- =?us-ascii?Q?XuiwG++uvEwyUoaGP31MM58FDZNkqCM/AnfxB9LpShQlyfCSUazQsBjdCGRk?=
- =?us-ascii?Q?ABY+56s6L5HWaOOk70NR08LuNYx93vRIDIIjklp2fOkicDsFsWqZd9qNoHub?=
- =?us-ascii?Q?+1wBOcZrA+79HaqhrtkIfxxhSbl3hV2yj/5m8uhC3V7LAkl6KZ0d3vO5Nbq5?=
- =?us-ascii?Q?E4Zbe4203AnqyTqR7+Zi1bBM76yLyBfatfi3Vu69+HOltR4EjnB6aw0vIkYt?=
- =?us-ascii?Q?IdrPLVnCxM9e1pkMKMCgFwrPMUkXOHCmevFp66fHtokxd1hEIbJmvw5OIxIS?=
- =?us-ascii?Q?w9aDggHuQwvh6GbF+MR28mXQwaWWVZtGNEVBZnD6caSKTIeUPTBy1hk/5jDd?=
- =?us-ascii?Q?fTWdd15xmcb+bbPHyOjptYJwV8W/SFKowxl/BY14D+Sj60I7CwE/lxx0LRXb?=
- =?us-ascii?Q?W7gQGOY4XCysVhdTg/ZxMuuEnpp5Tz1zyx0V5Jquhh/5tYDt72gCLhydyJQQ?=
- =?us-ascii?Q?KaaNnDFLBdOsMjehnfAgsAXVhUNG4bEFBGgP+5KKHJhwpMdj2thTH5gkPupI?=
- =?us-ascii?Q?caafsqP8SxsJlW00Om1DnicPAXPxXiJiKMoxe2e23NZlJqE8wqxShF3mLOdz?=
- =?us-ascii?Q?8Ds83jpevuoOem4Os8MIPd6kMgRsBinZz8qrvgzP4FlVZtc3KLGfi4sW8eva?=
- =?us-ascii?Q?JZiMICEVFlfFncDsF9y2/jXMoxCl0b8YeTbUi4StRx/pV7iTuRh5j+vP91TU?=
- =?us-ascii?Q?dEwaraIFinkfGnCB+seL0Ff+qsIvFwRl9iFN6aajpRnJTPcVy5100VNHWUpc?=
- =?us-ascii?Q?Xl+hnoLEyE3MoBhHXvareHMw+TvGLKI8dURAdmIWE/0RjFas/WZyID2gE2Z1?=
- =?us-ascii?Q?psNh7T0xpJB8cs3VcyzACCylUqA1vKd5Lm9e7sEC2XHTcjNsVIvpUlS45ZQG?=
- =?us-ascii?Q?LTqq8F+6O3Hs1EGcFEGt0weu1kLnv8pe3k0ehGw/1FQ6GOqv6bq8KtFX7t2H?=
- =?us-ascii?Q?wYaMn4ke+UoCNr1EBkQwAEsOFzfZ5f4J6qNp/1ZiohL3/Q1LGxVvse857wIZ?=
- =?us-ascii?Q?9YBVC9jTnjoHbnMK5A1pZVZEA1FRVjuqlSuRMjtr0Apd8sAdC5COt8IRm7cw?=
- =?us-ascii?Q?it6LLc2lpvzvsQrLHpWTzL4GRqtLGul1DLsK+dRp4OI+g2QgWNouhbJnYKzN?=
- =?us-ascii?Q?FmbIMGh+6mkTiNeDnax5s6tx38K4fctDS5HCiely7CVC7X8VfH47TsUB9OBc?=
- =?us-ascii?Q?Y0WoOtqduvvSg/mvwW1e96fvGHa63DJWF6f4gdiNkvqdMFH65LlF9UZZu768?=
- =?us-ascii?Q?ffEbnH18CNPTHHkVxU23h24IrGGmoutiXm8TN+NlbEoNFxoFChxGXlc9OKkj?=
- =?us-ascii?Q?ke5DoMByXhueArw0AwRSHNTqqbFAGQhCguYYrcGS4De6z5BsPcx/1hDnM+4i?=
- =?us-ascii?Q?6Vm1cyjjiw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 64e4c274-c5f1-445a-5d2b-08de73533b15
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8825.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 03:17:25.2890
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HpMtNwPH4q9bRG1sY4k++sJFzgMmahc2msaixwnQcf+aJ9tdnVDbSI+5L3XZEZz8AK1/vn++Si2GstQQRKsiYQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR04MB11840
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260223-dwmac_multi_irq-v5-2-8fc699a5fac4@oss.nxp.com>
 
-When a port is disabled, an attached device will be disconnected.  This
-causes a port-status-change event, which will race with hub autosuspend
-(if the disabled port was the only connected port on its hub), causing
-an immediate resume and a second autosuspend.  Both of these can be
-avoided by adding a short delay after the call to
-usb_hub_set_port_power().
+On Mon, Feb 23, 2026 at 02:58:05PM +0100, Jan Petrous (OSS) wrote:
+> The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lines,
+> set them to allow using Multi-IRQ mode.
+> 
+> Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+> Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> ---
+>  .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 44 +++++++++++++++++++---
+>  1 file changed, 39 insertions(+), 5 deletions(-)
+> 
 
-Below log shows what is happening:
+<form letter>
+This is a friendly reminder during the review process.
 
-$ echo 1 > usb1-port1/disable
-[   37.958239] usb 1-1: USB disconnect, device number 2
-[   37.964101] usb 1-1: unregistering device
-[   37.970070] hub 1-0:1.0: hub_suspend
-[   37.971305] hub 1-0:1.0: state 7 ports 1 chg 0000 evt 0002
-[   37.974412] usb usb1: bus auto-suspend, wakeup 1
-[   37.988175] usb usb1: suspend raced with wakeup event         <---
-[   37.993947] usb usb1: usb auto-resume
-[   37.998401] hub 1-0:1.0: hub_resume
-[   38.105688] usb usb1-port1: status 0000, change 0000, 12 Mb/s
-[   38.112399] hub 1-0:1.0: state 7 ports 1 chg 0000 evt 0000
-[   38.118645] hub 1-0:1.0: hub_suspend
-[   38.122963] usb usb1: bus auto-suspend, wakeup 1
-[   38.200368] usb usb1: usb wakeup-resume
-[   38.204982] usb usb1: usb auto-resume
-[   38.209376] hub 1-0:1.0: hub_resume
-[   38.213676] usb usb1-port1: status 0101 change 0001
-[   38.321552] hub 1-0:1.0: state 7 ports 1 chg 0002 evt 0000
-[   38.327978] usb usb1-port1: status 0101, change 0000, 12 Mb/s
-[   38.457429] usb 1-1: new high-speed USB device number 3 using ci_hdrc
+It looks like you received a tag and forgot to add it.
 
-Then, port change bit will be fixed to the final state and
-usb_clear_port_feature() can correctly clear it after this period. This
-will also avoid usb runtime suspend routine to run because
-usb_autopm_put_interface() not run yet.
+If you do not know the process, here is a short explanation:
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions of patchset, under or above your Signed-off-by tag, unless
+patch changed significantly (e.g. new properties added to the DT
+bindings). Tag is "received", when provided in a message replied to you
+on the mailing list. Tools like b4 can help here. However, there's no
+need to repost patches *only* to add the tags. The upstream maintainer
+will do that for tags received on the version they apply.
 
-Fixes: f061f43d7418 ("usb: hub: port: add sysfs entry to switch port power")
-Cc: stable@kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Please read:
+https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
 
----
-Changes in v2:
- - improve commit message
----
- drivers/usb/core/port.c | 1 +
- 1 file changed, 1 insertion(+)
+If a tag was not added on purpose, please state why and what changed.
+</form letter>
 
-diff --git a/drivers/usb/core/port.c b/drivers/usb/core/port.c
-index 44e38f922bc5..027a5f21c5f7 100644
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -141,6 +141,7 @@ static ssize_t disable_store(struct device *dev, struct device_attribute *attr,
- 		usb_disconnect(&port_dev->child);
- 
- 	rc = usb_hub_set_port_power(hdev, hub, port1, !disabled);
-+	msleep(2 * hub_power_on_good_delay(hub));
- 
- 	if (disabled) {
- 		usb_clear_port_feature(hdev, port1, USB_PORT_FEAT_C_CONNECTION);
--- 
-2.34.1
-
+> diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+> index 1b2934f3c87c..3a0e41b63c3d 100644
+> --- a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+> @@ -1,5 +1,5 @@
+>  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> -# Copyright 2021-2024 NXP
+> +# Copyright 2021-2026 NXP
+>  %YAML 1.2
+>  ---
+>  $id: http://devicetree.org/schemas/net/nxp,s32-dwmac.yaml#
+> @@ -16,6 +16,8 @@ description:
+>    the SoC S32R45 has two instances. The devices can use RGMII/RMII/MII
+>    interface over Pinctrl device or the output can be routed
+>    to the embedded SerDes for SGMII connectivity.
+> +  The DWMAC instances have connected all RX/TX queues interrupts,
+> +  enabling load balancing of data traffic across all CPU cores.
+>  
+>  properties:
+>    compatible:
+> @@ -45,10 +47,22 @@ properties:
+>        FlexTimer Modules connect to GMAC_0.
+>  
+>    interrupts:
+> -    maxItems: 1
+> +    minItems: 11
+> +    maxItems: 11
+>  
+>    interrupt-names:
+> -    const: macirq
+> +    items:
+> +      - const: macirq
+> +      - const: tx-queue-0
+> +      - const: rx-queue-0
+> +      - const: tx-queue-1
+> +      - const: rx-queue-1
+> +      - const: tx-queue-2
+> +      - const: rx-queue-2
+> +      - const: tx-queue-3
+> +      - const: rx-queue-3
+> +      - const: tx-queue-4
+> +      - const: rx-queue-4
+>  
+>    clocks:
+>      items:
+> @@ -88,8 +102,28 @@ examples:
+>                <0x0 0x4007c004 0x0 0x4>;    /* GMAC_0_CTRL_STS */
+>          nxp,phy-sel = <&gpr 0x4>;
+>          interrupt-parent = <&gic>;
+> -        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+> -        interrupt-names = "macirq";
+> +        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
+> +                     /* CHN 0: tx, rx */
+> +                     <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
+> +                     /* CHN 1: tx, rx */
+> +                     <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>,
+> +                     /* CHN 2: tx, rx */
+> +                     <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>,
+> +                     /* CHN 3: tx, rx */
+> +                     <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>,
+> +                     /* CHN 4: tx, rx */
+> +                     <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
+> +                     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
+> +        interrupt-names = "macirq",
+> +                          "tx-queue-0", "rx-queue-0",
+> +                          "tx-queue-1", "rx-queue-1",
+> +                          "tx-queue-2", "rx-queue-2",
+> +                          "tx-queue-3", "rx-queue-3",
+> +                          "tx-queue-4", "rx-queue-4";
+>          snps,mtl-rx-config = <&mtl_rx_setup>;
+>          snps,mtl-tx-config = <&mtl_tx_setup>;
+>          clocks = <&clks 24>, <&clks 17>, <&clks 16>, <&clks 15>;
+> 
+> -- 
+> 2.47.0
+> 
