@@ -1,87 +1,87 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1AF3644B6
-	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 10:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930CF378D95
+	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 10:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771929834; cv=none; b=nBIgunZwqA/ehVwQ123avwsXUf0bxnSI6L33510dbtsXbdmyF+iOB3LvKAhts8OMj05EfqMol2w6Jf8+uLb8Xph7QAPI16x/gVyvah0G8WEsW3AeSE3JJ6wB99a6/ChjV4p9S1OJwlP/a0o5uS02QLDteEqXyMtuoiA6ZqfbVFY=
+	t=1771929835; cv=none; b=aZPb0/MyHefntXeV5ten/veZNKh2hY3on76uh+yqZCfqeNgO6CUfc8TvoJNdqqBgZ3Kw5R8x5UGpmjF5My+HfwzEAVgAu+Ld8MY5E8meZIqu7uMsYo9rZl5YIdOGZ++D8zHP+WXagxY1pqA0fvBBTOvjJiGMAKBf5hTOUZdN9Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771929834; c=relaxed/simple;
-	bh=MtfFLt1YenfsJ/wZknYcaqCTSZ5/bjAtaD9/JYLsnnQ=;
+	s=arc-20240116; t=1771929835; c=relaxed/simple;
+	bh=Fe4MjhMn8lZ84KxqMdgpBwRbEDyKHabOEHVEnVI2kpg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NYfDhPltbI1AqHELlIj6Gy6afXHU4VWWwrAuqd1+m5QaCCDpVOnXWj2skw2Tv+luF/7fR4sJxms5y/P5SK+HPEjuyoinHqTMJ9zyUotc0ne95WFBDZu8jLsBdB5J0wAul5O9CmBcZL8OPY4LHdbj5B+87lsxcMvsvKUgjnkVvqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=cPaYdboO; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=V8ZGryH4; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:To:Cc; b=G12PzYs01M2M4BBucCToCxEeP4IEtHqcwaSUMCTRUWAqzpAYxfnqdTPi4L83atKH6NmlbmxHNWqVVZosWm/2cS8wgWiW4kjaj+iAQC75Ren6lPOIxvI74JFus7s4Nug2hcY5RTWHwzTNxxHwqfwixtWvMYL+1N0xcyYd3zQ3qG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=D9v3qx8o; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=J0ObtNrm; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="cPaYdboO";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="V8ZGryH4"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="D9v3qx8o";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="J0ObtNrm"
 Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OAFKpl1774399
-	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 10:43:51 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61OAFep11775185
+	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 10:43:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	EN2/oaoWAN9Y1ndJ/NXYNONg9LQ3Nd3Tzaq4ZTvo8i0=; b=cPaYdboOJOtS7ulU
-	F+gmThGKKzIQQpHO32G4tCZofOrtl9Mi2ccHv8fQvLAU/099SCESdOMAFH0fwKej
-	zJl2i4yGVsFdd5z19P92egoMpiiwNytSOy0YhTEmQxRT+AUAzmLcHvtT+i65X3OH
-	cdaxxg4u5xDucaSg5G3VNLGRkEos6yVnDW9tiSw72U4+kS3H4s0bCoXRWBOsfjf6
-	1Eio3U5VXiHlqR7tQA3td0DkGrHFfz3To2anQ0yZjclAcPR5d9UCC+EVBe8vZBTu
-	dDc85W3rc30lHjSFhzCHfMq6PdQllFDq8A1k8beM0Cz0ap/5hP5YA9uINV2bfkgF
-	UVbMGg==
+	OZ4E54OvU7h144U3LHJamjkNTkG1gc0xqf9JFK5pbkI=; b=D9v3qx8o/f75VsT/
+	LhL4bFzaO03AVDp1hmkLJWmKeXl6N8puQxT2VpFjhcj5v8ELcW0JtAtalWMSUIZP
+	3pV5FCZLs5BKt95sc/ebDVXvmj48cxHbfbt0CbrGQOxcYkL88Iy70In2gQAaGCdc
+	+cr4iEqs2rCL1kq6FIw4gwDUOd4jW0e3oJWHpk8+8o8w4JZCZDRyHMAXBjYG7AuM
+	qlCbmEoe8IMRhYd/fnXTl59jp0anjm8qrEtDaCOBvQSBODiGRRBY7C6+HahIzx+e
+	NJ256yntk82Jtw+sBmGnspNvusljYofkYBaIz8Ssd1WaVHxqtwrPIOJROK5usNfR
+	UQntIQ==
 Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cgpj8bmr2-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4cgpj8bmr3-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 10:43:51 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8cb37db8b79so2869497085a.3
-        for <imx@lists.linux.dev>; Tue, 24 Feb 2026 02:43:51 -0800 (PST)
+	for <imx@lists.linux.dev>; Tue, 24 Feb 2026 10:43:52 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8c70fadd9a3so3229586485a.0
+        for <imx@lists.linux.dev>; Tue, 24 Feb 2026 02:43:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1771929830; x=1772534630; darn=lists.linux.dev;
+        d=oss.qualcomm.com; s=google; t=1771929832; x=1772534632; darn=lists.linux.dev;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=EN2/oaoWAN9Y1ndJ/NXYNONg9LQ3Nd3Tzaq4ZTvo8i0=;
-        b=V8ZGryH4TwBG7j97RQ+ewrjXiuzyjqCFz8sP7/Ko3CsmoR+R75BAXK4Lp1OUwrMp0t
-         eAgxVe4K/oQ9myb0qU3+eji5rkLGxrlJaDFHWhzzYpguOHWc1OIPx8MvEIG/c2rqsXQL
-         zlweVyVhxkBaRDO5gWRgqclCENc8OUuh2mVXBBhCMAMPbDC4Bm7CP68Ue0qUuKNWsCOZ
-         qPJopjI11pwy5PnjPForwKSD3X0SzOGPeskVaQrM69MP6BoVppzWLEN6VRjEvgBeujcl
-         mcfr+vTqY4Gx2AncJkWSPi6smvVd+ieGHKTMq0G54lb0K/tFuPXcI6qhwDr83zDLP9ZY
-         w4xw==
+        bh=OZ4E54OvU7h144U3LHJamjkNTkG1gc0xqf9JFK5pbkI=;
+        b=J0ObtNrmz9GhiAdgig/3K+77DDzu6rR+izQVvl4WNmXDmXfECYyny6CP6TKFtph5Lz
+         7Pm7PFy7MOFF/rhBru3fE8P3t/AmsoF3tXOKdfil1znOjhRaO6+hVI57wHOB3Ipv6rEk
+         da5ltTSZg9m/1+yUrrgGlND1jdUqgHR1SSGY3MOd7FsXdQg0+GjbZQmfrZyV4eXBURz8
+         Fe89TUzgtBPceR/CJ2SvQBi//q+RGo0KDEsV7XEcHXx3NQ3oA6xgyBKuhsvlbLgc0XPK
+         UxxNVfKCijmvkpksR73p50O6E92jLRy7RS9h2wbd8KXo/Ez/PAXr6mn3BqpuJwtcDGDD
+         5Odg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771929830; x=1772534630;
+        d=1e100.net; s=20230601; t=1771929832; x=1772534632;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=EN2/oaoWAN9Y1ndJ/NXYNONg9LQ3Nd3Tzaq4ZTvo8i0=;
-        b=rjU4CdVKwI3oFuBaK8l1D9p6rIIK1GYWV2QvAFKUlnSEjDfDEeUl52XQEd9DJsp/FD
-         eoAluGMlk/Wlmnf4DgNgkSRAV6bTBbC42vc4eZQ5HH5dglfSfzTtngEKE1wmwwnrBoDT
-         67AoYuIP3Fo3p2yyrV5rYL2EWsrKLUcryhYJ90IL6S11RPKAP63labbbuWw1qnPHmztX
-         Ti3xvZeCOhsNyt18JbD6eRQGbvsiEc4WlB58n18Y+QNTMZt02thtpf/VfxaNz2sE+CyX
-         NzKm44nsLZd+mF73+YASXlbbkkJUjO+MyCo2JKFwMgtlio2T8CgfDabBlByUpHufqsOn
-         J75w==
-X-Forwarded-Encrypted: i=1; AJvYcCWpx1aC87OdWJwiI6ijBA3KpoGQ7UXDgsItcbkPqLszB1mO8lfAas2cTFOi7YmbbTUb8Bs=@lists.linux.dev
-X-Gm-Message-State: AOJu0Yw0DMIMFsZBMETcwg39HR3emZtcWOPg/Sa4+yBiDT7YTJUaIM80
-	mMSGGKLhKIoH+jgcOFZhcV+02CTSch/QmMZ0Z0HfOJOONRxhGtAPVATKm8ic71tklAe5GRc3KxT
-	legIwTT/9sL9RstWo95Rxyi1g7GV5YS2fAyaCTaWPEWeDuxfm5AQzdwQ=
-X-Gm-Gg: AZuq6aLx2NvFm3FdOVQnoZBfVf2ejukVxrBqsmR/zHD7n5y+3u6urdRJfFGsJRMaCH2
-	t7d/0FAiNQ43ihCDsEwAK9kLzUTP7C7qPm5WhIAN6lSAEOfYzFqe7HTW4OByOh0PJUHaOGxs7jf
-	eEiZiRrDn+2zCc8JmyXqE7Y24TN6Dl1JDDSt6KNkgB0tioGstm6ZCVfjc6ySGjSddPyz4VAsFrR
-	Kll0Lk2dskyn+3XMyOmejWX536U+nQf6jRYcghCvM1yZWrQNSJHsYKIzsSOwUP4roTxcURZmHY7
-	cGo0OVSMifEPs9lkceOyrUeZRmTKnQBn0ZakanNhalrL5mUuPphJtVkgCDLup05xvOBt69IquLI
-	4pGw2io42YoVn1pzQrJm4VZYy5ycxmHHFk/YDJRfbFt4b0g==
-X-Received: by 2002:a05:620a:1904:b0:8b6:1877:3689 with SMTP id af79cd13be357-8cb8ca14a2amr1432281585a.35.1771929830429;
-        Tue, 24 Feb 2026 02:43:50 -0800 (PST)
-X-Received: by 2002:a05:620a:1904:b0:8b6:1877:3689 with SMTP id af79cd13be357-8cb8ca14a2amr1432278985a.35.1771929829895;
-        Tue, 24 Feb 2026 02:43:49 -0800 (PST)
+        bh=OZ4E54OvU7h144U3LHJamjkNTkG1gc0xqf9JFK5pbkI=;
+        b=L56lPliXucQMNxCLvc5BKMizCUorv9cCzJlsOwILHFcWPv3+D5vdniK7AJmVjNkHqp
+         cbTWQFQQv6zm30FuDO6OA+3QvrTWcE4HCz4xwFgx9zsnjY7oh2Ggu16X6/9++XFkzuvM
+         KZJJS45oglDYz/8/+O7ymWNiQg+dX2NSqDuHEAjJYqoZqWdDtx4MqSvwVcZ0JH2kLR0r
+         TX/f5qVPYszlRzWxvtEJfq+QZtuKPLHIgGh009blzw/i0UrTg5tHywnsey6eNjTM5gcg
+         EF6OMOkEg3FadJMKPbyWc0MAou1IJDMgFpAHa2lw40XRUqmONX+tiLK2ZgbvD39UP0Nf
+         hSHA==
+X-Forwarded-Encrypted: i=1; AJvYcCWyrIdyomZ3xhoMlaZvvG3Ims1jHMB5xkh1uSWsP1qNs0+fx2f5MvrFhV5IshrkV6yIll0=@lists.linux.dev
+X-Gm-Message-State: AOJu0Yz4uLpaL0C2MrmPBvNrUYKxfMvtvUiLHlF/e44yDOdoF7bcJ0Xf
+	tDvKmp69AtPC+6hdwqPniMfwCgotl3T2wy0uVT1VbEmqd1vnPcXD2wWTb+9c7aGnWKVoDQwLb5H
+	Lshg5MII48Wo+QQAabllLGk5sDdZsxy90IMJdhV0yOsM5CiDzVyvb5ec=
+X-Gm-Gg: AZuq6aLZfL2uhClu8FlLwUMumFL3O3YjKyK/DMTkRwiy6vusWMRJjwSGZjGDjywmKvH
+	YcJJnGslgjnRdoqnBr3DRUq9uUlnmzJc9wSRjNgdWQj6LVzAjfkb6EMMkF1iny1UH4DKPyyTsAl
+	LONp1RB2uPioEjlCyx46GkDY27vJ8TtgxTPRN6Waofpxk26z+JrAsfDgcaz4B++d1v9FA5D4fIc
+	ocnwGbI/krSpYSRgwaZllDydo9Gg+dQZ1whGc3Gw2V4v5tnJ3nsl77el0yUIK/0hiVkGtbUqhGs
+	5hDxuNIsv2tAnEA0tNlb2d6JO3+OaltKA9dfBYtrtfzPb6SjubacIMYLOtakxfgou9BsFauwGvA
+	blBjWyyG0fuxHj6pJQJr/hyp02Ona23w2Llgu5FKf4r9YXw==
+X-Received: by 2002:a05:620a:1a93:b0:8ca:ffe3:33a3 with SMTP id af79cd13be357-8cb8c94311fmr1569672985a.0.1771929832044;
+        Tue, 24 Feb 2026 02:43:52 -0800 (PST)
+X-Received: by 2002:a05:620a:1a93:b0:8ca:ffe3:33a3 with SMTP id af79cd13be357-8cb8c94311fmr1569670385a.0.1771929831544;
+        Tue, 24 Feb 2026 02:43:51 -0800 (PST)
 Received: from [127.0.1.1] ([178.197.223.140])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d40004sm25685906f8f.21.2026.02.24.02.43.48
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d40004sm25685906f8f.21.2026.02.24.02.43.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 02:43:48 -0800 (PST)
+        Tue, 24 Feb 2026 02:43:50 -0800 (PST)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Date: Tue, 24 Feb 2026 11:43:40 +0100
-Subject: [PATCH 2/4] firmware: arm_scmi: Drop fake 'const' on
- scmi_protocol_handle
+Date: Tue, 24 Feb 2026 11:43:41 +0100
+Subject: [PATCH 3/4] firmware: arm_scmi: Use container_of_const() on
+ scmi_handle
 Precedence: bulk
 X-Mailing-List: imx@lists.linux.dev
 List-Id: <imx.lists.linux.dev>
@@ -90,7 +90,7 @@ List-Unsubscribe: <mailto:imx+unsubscribe@lists.linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260224-handle-not-const-v1-2-90bf93b53e27@oss.qualcomm.com>
+Message-Id: <20260224-handle-not-const-v1-3-90bf93b53e27@oss.qualcomm.com>
 References: <20260224-handle-not-const-v1-0-90bf93b53e27@oss.qualcomm.com>
 In-Reply-To: <20260224-handle-not-const-v1-0-90bf93b53e27@oss.qualcomm.com>
 To: Sudeep Holla <sudeep.holla@kernel.org>,
@@ -102,42 +102,42 @@ To: Sudeep Holla <sudeep.holla@kernel.org>,
         Fabio Estevam <festevam@gmail.com>
 Cc: arm-scmi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        imx@lists.linux.dev, stable@vger.kernel.org,
+        imx@lists.linux.dev,
         Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11774;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2933;
  i=krzysztof.kozlowski@oss.qualcomm.com; h=from:subject:message-id;
- bh=MtfFLt1YenfsJ/wZknYcaqCTSZ5/bjAtaD9/JYLsnnQ=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBpnYDenvwWp+Df+vhEBzfsFyDfJYzjKv/jlKST0
- 85yGntKMS2JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaZ2A3gAKCRDBN2bmhouD
- 173fD/9N+O5OTQ5QmfRdqz4D8cWMNwN9LGcibNK0uSezOak//l35xH2ZllrAQyk+rUU2Ewv5+US
- r9O02OyXEQhwZwffW1KGyRq/4JNwVBEPwoZrZ1HacFOiZuvrmIGa4nh4GpRu0eWMLD3giALvetR
- yweybtVUR/g9ghF3ZueROwSANuwdXseWdJFrzFK1nbVe5+pgBxS5nSF3q+kZn5yFlZUHoxbG4aj
- wOG7mGHSgM5RH54+SITR3DaeN+3b9aQPl9yUUyZUHNmUaXiN6RaN3ERcnYli3rOJBNj6aDdBrPj
- Vfpz2Ap5Hq47Q7kOQ27q6aXQk6fX4LQ+ItKiF8mPCHgt6htCiPRm36/k3AN8+hgbX4JVvwWyAbp
- sOuMcleIy+/OtH6CxTmsnRXCniOuXof2YZybukRFER8fjoh7J9Ej2SlpOZkHK9OWgGfC7GS4nrQ
- z8UinGGV5GDZZtAr37unCsWVhqh6EyhsyjYi+MdIHBwAkUE+pXPbvgON25368JXxtPQQ81jg1If
- wUdByQT0kNOLAJHelHoXC4GJTSYco88WUFKlPAn1eUE7rr0TJOdCph4OReDaDOSga856jDVTLeE
- Bt0GCCTu28sMiLuwwKCoqj3NiEBeRSX3mcsMwIPJfBxtPgDS/izQuTZ8GcWChKl8FBI/R9drC8j
- TUEjhd4poi1gumQ==
+ bh=Fe4MjhMn8lZ84KxqMdgpBwRbEDyKHabOEHVEnVI2kpg=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBpnYDesakxrpxNl4CWrKKBXT6ZbDgoQ8kFNfECs
+ nXEUwiwftSJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaZ2A3gAKCRDBN2bmhouD
+ 11AiD/9ru5hTRR38swT4NSjVHe7EPcPuJOJK0VitxSDyeTmSfPuBgQRbAy9FX60bP6ZNbyUcs7J
+ 7zbaHko1wWuuTXZYzbrSmHb3mNOKD3/dZkpeqCFPZap8bl7aNABQ/4eE79Pv/RiZbsDOP8BZEfZ
+ kK6kKzWftbzhLwIcHfKMBbGQVmJRlir5iynhvi9cTCSnvEdF5tD4c/I+RiggOQkijoLjfwxD2og
+ MYA6jylgYDTW1Bk9088jvtfJbNX48H9YfQZnkMxcgHVWXrLPIcWmMNNTkgbw8Zu/4mu/dpYxeDc
+ rCL2vtq50RM2JjDXpoxqvPtuYJ+fLSocWFAm/P7wA+FHlr08TEZGiDnCZjO007ST6oO7p3gIpT1
+ 2NqT0MLKjwzKwGgk9WN5IkoAz0k8cWo1pOilBgx8ZgbT5eZGSBg8H3jfrMtBdeCTDL6CxGMJEX7
+ JUuVdug8yMxTh4QLkTY/YqWNINWPAAv8r4pMJl6oCFPnH8ZExy2V7fUUYjuK/W1WQCDTpEBblcv
+ JwpQ/gtTGjPeatMVQvmmHAw422D6PDLpPRKpTRcNxoIrukFBsHcQirWIYdw5zlCRYiaN2C1frLV
+ nH0mdavtUPUZfSYjYI65KS7eXUR50nhSFJqYPvNlQYRcEq5Bi8eQ05JGDjo/qKklmOkzTAG/Ggb
+ ZIt4m0sUR/ULbfQ==
 X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDA4NyBTYWx0ZWRfX8j+mbEXVcwTY
- UMsaBE0/h+b4Gg2BR922bbcQl0HWhulCk0IqLOFU9HvtdVA2w+fidq7CyuXp29pClwolC9mRr5B
- QCq7PJBy93MD+M39GXScClHZSKnIJe4cfKPmeG9l/obiqGgZL/V+fWLOUvgLuHrpP8FMmnmuCbV
- txnknnCbyczJRhIkFbZ84kNeuOxAkbmZTiOltOd2eUdx5K8KtjqlcqlFe1Yi4O3v9m89eNekPWL
- fWJYfjJKSucQicNMeIT+/mEbEhiMOfF0hReBYWLZQq+p8Ig3E/N5FFweI0WitXsHEOw7UpbSmmJ
- afpcSAKpY1G8EjLF93KNPZRFL15El+/3uPoXItTeNF526sHRG8pHPLeAJrxS2//AgrgKKm9/3d1
- ewRvAC1rsJl76f23zT+Y/27JsvLmsbfZ3KEec4UqVNzqkBGXeoetE8Uj2J8ogtAOYAfwMudPy3M
- Sr0VYTqOwdU904tFn5w==
-X-Proofpoint-GUID: 9Qa1WMnSRGpmnYUhHVYYHFzvw1TSb6wZ
-X-Authority-Analysis: v=2.4 cv=Z5Lh3XRA c=1 sm=1 tr=0 ts=699d80e7 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDA4NyBTYWx0ZWRfX3e0bDdR1nfoU
+ INxziG48Brh0K1sj7zOg62K/35zdpF44r4ZD/ufUFr42/WI7WHZbzrXeo0l0zYJbRsC5oYl1sDr
+ 2LV7uWc+NvH2qYgYDzSuRCMUYcvStPtJx4bx7Q/zL34apOvN9mTMtbO9mTuyMZuI8CC87BcrFD+
+ HdVq//iPV5WQaRgzHUd1pYq4LY9chQqq+o+rlqjLc5YO39sb+7zCBTnWbkW1mT+ukrRYobZaBJa
+ rWF4hQNvo1raA6cL6oxGuC5COSQ52H4VbfbfgAfFRquiDQ4rvKgQ4GkUu0R6g1g+1i3do0n3t4x
+ e2XhjXGUTyzYx3B+FdK3lExuuYpuPR8NzAshGoCft5dnxLeClNNNiDY17YtiV7TroBoprFFpEOa
+ 4Uyj3Z84Y4/HZb+J2g3MgP/qFJSv70jFql1rArZ6tuORmDR6e3svIdDNXyegfAVWh0tHKSJC8vp
+ c0cpgMfMk/6Tul3ZIJA==
+X-Proofpoint-GUID: 1qgxz-NRFP2NChoZXQqhI-x9BcnrpJ6E
+X-Authority-Analysis: v=2.4 cv=Z5Lh3XRA c=1 sm=1 tr=0 ts=699d80e8 cx=c_pps
  a=qKBjSQ1v91RyAK45QCPf5w==:117 a=6nO30s3o7FuWeffXwhKHTA==:17
  a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=s4-Qcg_JpJYA:10
  a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=QOiUi5lJWKzMiGfd4uMA:9 a=QEXdDO2ut3YA:10
+ a=EUspDBNiAAAA:8 a=vFoygJ3d8N6QX0cQTZYA:9 a=QEXdDO2ut3YA:10
  a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-ORIG-GUID: 9Qa1WMnSRGpmnYUhHVYYHFzvw1TSb6wZ
+X-Proofpoint-ORIG-GUID: 1qgxz-NRFP2NChoZXQqhI-x9BcnrpJ6E
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-24_01,2026-02-23_03,2025-10-01_01
@@ -147,276 +147,73 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2602240087
 
-Severale functions operating on the 'handle' pointer, like
-scmi_set_protocol_priv(), are claiming it is a pointer to const thus
-they should not modify the handle.  In fact that's a false statement,
-because first thing these functions do is drop the cast to const with
-container_of:
+Functions receiving pointer to const scmi_handle and are not modifying
+data in containing struct, can switch to safer container_of_const()
+which does not drop the const while casting.  This improves readability
+because makes the code more obvious.
 
-  struct scmi_protocol_instance *pi = ph_to_pi(ph);
-
-And with such cast the handle is easily writable with simple:
-
-  pi->ph.dev = NULL;
-
-If the function really was not modifying the pointed handle, it would
-use the container_of_const() call.
-
-The code is not correct logically, either, because functions like
-scmi_set_protocol_priv() are meant to modify the data behind the handle
-(in containing struct).
-
-The code does not have actual visible bug, but incorrect 'const'
-annotations could lead to incorrect compiler decisions.
-
-Fixes: d7b6cc563a60 ("firmware: arm_scmi: Introduce protocol handle definitions")
-Cc: <stable@vger.kernel.org>
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
- drivers/firmware/arm_scmi/base.c                    | 2 +-
- drivers/firmware/arm_scmi/clock.c                   | 2 +-
- drivers/firmware/arm_scmi/driver.c                  | 2 +-
- drivers/firmware/arm_scmi/perf.c                    | 2 +-
- drivers/firmware/arm_scmi/pinctrl.c                 | 4 ++--
- drivers/firmware/arm_scmi/power.c                   | 2 +-
- drivers/firmware/arm_scmi/powercap.c                | 2 +-
- drivers/firmware/arm_scmi/protocols.h               | 4 ++--
- drivers/firmware/arm_scmi/reset.c                   | 2 +-
- drivers/firmware/arm_scmi/sensors.c                 | 2 +-
- drivers/firmware/arm_scmi/system.c                  | 2 +-
- drivers/firmware/arm_scmi/vendors/imx/imx-sm-bbm.c  | 2 +-
- drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c  | 2 +-
- drivers/firmware/arm_scmi/vendors/imx/imx-sm-lmm.c  | 2 +-
- drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c | 2 +-
- drivers/firmware/arm_scmi/voltage.c                 | 2 +-
- 16 files changed, 18 insertions(+), 18 deletions(-)
+ drivers/firmware/arm_scmi/driver.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/firmware/arm_scmi/base.c b/drivers/firmware/arm_scmi/base.c
-index 22267bbd0f4d..8302aaacdf43 100644
---- a/drivers/firmware/arm_scmi/base.c
-+++ b/drivers/firmware/arm_scmi/base.c
-@@ -371,7 +371,7 @@ static const struct scmi_protocol_events base_protocol_events = {
- 	.num_sources = SCMI_BASE_NUM_SOURCES,
- };
- 
--static int scmi_base_protocol_init(const struct scmi_protocol_handle *ph)
-+static int scmi_base_protocol_init(struct scmi_protocol_handle *ph)
- {
- 	int id, ret;
- 	u8 *prot_imp;
-diff --git a/drivers/firmware/arm_scmi/clock.c b/drivers/firmware/arm_scmi/clock.c
-index ab36871650a1..58cc392c1c80 100644
---- a/drivers/firmware/arm_scmi/clock.c
-+++ b/drivers/firmware/arm_scmi/clock.c
-@@ -1064,7 +1064,7 @@ static const struct scmi_protocol_events clk_protocol_events = {
- 	.num_events = ARRAY_SIZE(clk_events),
- };
- 
--static int scmi_clock_protocol_init(const struct scmi_protocol_handle *ph)
-+static int scmi_clock_protocol_init(struct scmi_protocol_handle *ph)
- {
- 	int clkid, ret;
- 	struct clock_info *cinfo;
 diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index 8b27e74d8a19..951711aa7d33 100644
+index 951711aa7d33..cc6cdb7017cf 100644
 --- a/drivers/firmware/arm_scmi/driver.c
 +++ b/drivers/firmware/arm_scmi/driver.c
-@@ -1630,7 +1630,7 @@ static int version_get(const struct scmi_protocol_handle *ph, u32 *version)
-  *
-  * Return: 0 on Success
-  */
--static int scmi_set_protocol_priv(const struct scmi_protocol_handle *ph,
-+static int scmi_set_protocol_priv(struct scmi_protocol_handle *ph,
- 				  void *priv)
- {
- 	struct scmi_protocol_instance *pi = ph_to_pi(ph);
-diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/arm_scmi/perf.c
-index 4583d02bee1c..1c0a150612a8 100644
---- a/drivers/firmware/arm_scmi/perf.c
-+++ b/drivers/firmware/arm_scmi/perf.c
-@@ -1266,7 +1266,7 @@ static const struct scmi_protocol_events perf_protocol_events = {
- 	.num_events = ARRAY_SIZE(perf_events),
+@@ -174,6 +174,7 @@ struct scmi_info {
  };
  
--static int scmi_perf_protocol_init(const struct scmi_protocol_handle *ph)
-+static int scmi_perf_protocol_init(struct scmi_protocol_handle *ph)
- {
- 	int domain, ret;
- 	struct scmi_perf_info *pinfo;
-diff --git a/drivers/firmware/arm_scmi/pinctrl.c b/drivers/firmware/arm_scmi/pinctrl.c
-index a020e23d7c49..99f98eb6808d 100644
---- a/drivers/firmware/arm_scmi/pinctrl.c
-+++ b/drivers/firmware/arm_scmi/pinctrl.c
-@@ -827,7 +827,7 @@ static const struct scmi_pinctrl_proto_ops pinctrl_proto_ops = {
- 	.pin_free = scmi_pinctrl_pin_free,
- };
+ #define handle_to_scmi_info(h)	container_of(h, struct scmi_info, handle)
++#define handle_to_scmi_info_const(h)	container_of_const(h, struct scmi_info, handle)
+ #define tx_minfo_to_scmi_info(h) container_of(h, struct scmi_info, tx_minfo)
+ #define bus_nb_to_scmi_info(nb)	container_of(nb, struct scmi_info, bus_nb)
+ #define req_nb_to_scmi_info(nb)	container_of(nb, struct scmi_info, dev_req_nb)
+@@ -450,7 +451,7 @@ void scmi_notification_instance_data_set(struct scmi_handle *handle,
  
--static int scmi_pinctrl_protocol_init(const struct scmi_protocol_handle *ph)
-+static int scmi_pinctrl_protocol_init(struct scmi_protocol_handle *ph)
+ void *scmi_notification_instance_data_get(const struct scmi_handle *handle)
  {
- 	int ret;
- 	struct scmi_pinctrl_info *pinfo;
-@@ -861,7 +861,7 @@ static int scmi_pinctrl_protocol_init(const struct scmi_protocol_handle *ph)
- 	return ph->set_priv(ph, pinfo);
+-	struct scmi_info *info = handle_to_scmi_info(handle);
++	const struct scmi_info *info = handle_to_scmi_info_const(handle);
+ 
+ 	/* Ensure protocols_private_data has been updated */
+ 	smp_rmb();
+@@ -866,7 +867,7 @@ static void scmi_bad_message_trace(struct scmi_chan_info *cinfo, u32 msg_hdr,
+ 				   enum scmi_bad_msg err)
+ {
+ 	char *tag;
+-	struct scmi_info *info = handle_to_scmi_info(cinfo->handle);
++	const struct scmi_info *info = handle_to_scmi_info_const(cinfo->handle);
+ 
+ 	switch (MSG_XTRACT_TYPE(msg_hdr)) {
+ 	case MSG_TYPE_COMMAND:
+@@ -1062,7 +1063,7 @@ static inline void scmi_xfer_command_release(struct scmi_info *info,
+ 	__scmi_xfer_put(&info->tx_minfo, xfer);
  }
  
--static int scmi_pinctrl_protocol_deinit(const struct scmi_protocol_handle *ph)
-+static int scmi_pinctrl_protocol_deinit(struct scmi_protocol_handle *ph)
+-static inline void scmi_clear_channel(struct scmi_info *info,
++static inline void scmi_clear_channel(const struct scmi_info *info,
+ 				      struct scmi_chan_info *cinfo)
  {
- 	int i;
- 	struct scmi_pinctrl_info *pi = ph->get_priv(ph);
-diff --git a/drivers/firmware/arm_scmi/power.c b/drivers/firmware/arm_scmi/power.c
-index bb5062ab8280..00a9f53295f6 100644
---- a/drivers/firmware/arm_scmi/power.c
-+++ b/drivers/firmware/arm_scmi/power.c
-@@ -319,7 +319,7 @@ static const struct scmi_protocol_events power_protocol_events = {
- 	.num_events = ARRAY_SIZE(power_events),
- };
- 
--static int scmi_power_protocol_init(const struct scmi_protocol_handle *ph)
-+static int scmi_power_protocol_init(struct scmi_protocol_handle *ph)
+ 	if (!cinfo->is_p2a) {
+@@ -1240,7 +1241,7 @@ static bool scmi_xfer_done_no_timeout(struct scmi_chan_info *cinfo,
+ 				      struct scmi_xfer *xfer, ktime_t stop,
+ 				      bool *ooo)
  {
- 	int domain, ret;
- 	struct scmi_power_info *pinfo;
-diff --git a/drivers/firmware/arm_scmi/powercap.c b/drivers/firmware/arm_scmi/powercap.c
-index ab9733f4458b..ac527f59bc1e 100644
---- a/drivers/firmware/arm_scmi/powercap.c
-+++ b/drivers/firmware/arm_scmi/powercap.c
-@@ -957,7 +957,7 @@ static const struct scmi_protocol_events powercap_protocol_events = {
- };
+-	struct scmi_info *info = handle_to_scmi_info(cinfo->handle);
++	const struct scmi_info *info = handle_to_scmi_info_const(cinfo->handle);
  
- static int
--scmi_powercap_protocol_init(const struct scmi_protocol_handle *ph)
-+scmi_powercap_protocol_init(struct scmi_protocol_handle *ph)
+ 	/*
+ 	 * Poll also on xfer->done so that polling can be forcibly terminated
+@@ -3459,7 +3460,7 @@ static struct dentry *scmi_debugfs_init(void)
+ int scmi_inflight_count(const struct scmi_handle *handle)
  {
- 	int domain, ret;
- 	struct powercap_info *pinfo;
-diff --git a/drivers/firmware/arm_scmi/protocols.h b/drivers/firmware/arm_scmi/protocols.h
-index 4c75970326e6..309e834e5392 100644
---- a/drivers/firmware/arm_scmi/protocols.h
-+++ b/drivers/firmware/arm_scmi/protocols.h
-@@ -183,7 +183,7 @@ struct scmi_protocol_handle {
- 	unsigned int version;
- 	const struct scmi_xfer_ops *xops;
- 	const struct scmi_proto_helpers_ops *hops;
--	int (*set_priv)(const struct scmi_protocol_handle *ph, void *priv);
-+	int (*set_priv)(struct scmi_protocol_handle *ph, void *priv);
- 	void *(*get_priv)(const struct scmi_protocol_handle *ph);
- };
+ 	if (IS_ENABLED(CONFIG_ARM_SCMI_DEBUG_COUNTERS)) {
+-		struct scmi_info *info = handle_to_scmi_info(handle);
++		const struct scmi_info *info = handle_to_scmi_info_const(handle);
  
-@@ -315,7 +315,7 @@ struct scmi_xfer_ops {
- 			 struct scmi_xfer *xfer);
- };
- 
--typedef int (*scmi_prot_init_ph_fn_t)(const struct scmi_protocol_handle *);
-+typedef int (*scmi_prot_init_ph_fn_t)(struct scmi_protocol_handle *);
- 
- /**
-  * struct scmi_protocol  - Protocol descriptor
-diff --git a/drivers/firmware/arm_scmi/reset.c b/drivers/firmware/arm_scmi/reset.c
-index 4bc5c24c2d72..532ebac3286a 100644
---- a/drivers/firmware/arm_scmi/reset.c
-+++ b/drivers/firmware/arm_scmi/reset.c
-@@ -351,7 +351,7 @@ static const struct scmi_protocol_events reset_protocol_events = {
- 	.num_events = ARRAY_SIZE(reset_events),
- };
- 
--static int scmi_reset_protocol_init(const struct scmi_protocol_handle *ph)
-+static int scmi_reset_protocol_init(struct scmi_protocol_handle *ph)
- {
- 	int domain, ret;
- 	struct scmi_reset_info *pinfo;
-diff --git a/drivers/firmware/arm_scmi/sensors.c b/drivers/firmware/arm_scmi/sensors.c
-index 882d55f987d2..0a2b3bb83cc9 100644
---- a/drivers/firmware/arm_scmi/sensors.c
-+++ b/drivers/firmware/arm_scmi/sensors.c
-@@ -1144,7 +1144,7 @@ static const struct scmi_protocol_events sensor_protocol_events = {
- 	.num_events = ARRAY_SIZE(sensor_events),
- };
- 
--static int scmi_sensors_protocol_init(const struct scmi_protocol_handle *ph)
-+static int scmi_sensors_protocol_init(struct scmi_protocol_handle *ph)
- {
- 	int ret;
- 	struct sensors_info *sinfo;
-diff --git a/drivers/firmware/arm_scmi/system.c b/drivers/firmware/arm_scmi/system.c
-index 0f51c36f6a9d..dfb7183d1f14 100644
---- a/drivers/firmware/arm_scmi/system.c
-+++ b/drivers/firmware/arm_scmi/system.c
-@@ -138,7 +138,7 @@ static const struct scmi_protocol_events system_protocol_events = {
- 	.num_sources = SCMI_SYSTEM_NUM_SOURCES,
- };
- 
--static int scmi_system_protocol_init(const struct scmi_protocol_handle *ph)
-+static int scmi_system_protocol_init(struct scmi_protocol_handle *ph)
- {
- 	struct scmi_system_info *pinfo;
- 
-diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-bbm.c b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-bbm.c
-index 33f9ebf6092b..1f569951bb31 100644
---- a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-bbm.c
-+++ b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-bbm.c
-@@ -342,7 +342,7 @@ static const struct scmi_imx_bbm_proto_ops scmi_imx_bbm_proto_ops = {
- 	.button_get = scmi_imx_bbm_button_get,
- };
- 
--static int scmi_imx_bbm_protocol_init(const struct scmi_protocol_handle *ph)
-+static int scmi_imx_bbm_protocol_init(struct scmi_protocol_handle *ph)
- {
- 	int ret;
- 	struct scmi_imx_bbm_info *binfo;
-diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c
-index 753274af11d2..928d93a8603f 100644
---- a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c
-+++ b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-cpu.c
-@@ -230,7 +230,7 @@ static int scmi_imx_cpu_attributes_get(const struct scmi_protocol_handle *ph,
- 	return ret;
- }
- 
--static int scmi_imx_cpu_protocol_init(const struct scmi_protocol_handle *ph)
-+static int scmi_imx_cpu_protocol_init(struct scmi_protocol_handle *ph)
- {
- 	struct scmi_imx_cpu_info *info;
- 	int ret, i;
-diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-lmm.c b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-lmm.c
-index c56ae247774d..0a9af7ed1981 100644
---- a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-lmm.c
-+++ b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-lmm.c
-@@ -223,7 +223,7 @@ static int scmi_imx_lmm_protocol_attributes_get(const struct scmi_protocol_handl
- 	return ret;
- }
- 
--static int scmi_imx_lmm_protocol_init(const struct scmi_protocol_handle *ph)
-+static int scmi_imx_lmm_protocol_init(struct scmi_protocol_handle *ph)
- {
- 	struct scmi_imx_lmm_priv *info;
- 	int ret;
-diff --git a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
-index 0ada753367ef..79c7966888be 100644
---- a/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
-+++ b/drivers/firmware/arm_scmi/vendors/imx/imx-sm-misc.c
-@@ -459,7 +459,7 @@ static const struct scmi_imx_misc_proto_ops scmi_imx_misc_proto_ops = {
- 	.misc_syslog = scmi_imx_misc_syslog_get,
- };
- 
--static int scmi_imx_misc_protocol_init(const struct scmi_protocol_handle *ph)
-+static int scmi_imx_misc_protocol_init(struct scmi_protocol_handle *ph)
- {
- 	struct scmi_imx_misc_info *minfo;
- 	int ret;
-diff --git a/drivers/firmware/arm_scmi/voltage.c b/drivers/firmware/arm_scmi/voltage.c
-index b9391c1ee8a0..60c3405b4999 100644
---- a/drivers/firmware/arm_scmi/voltage.c
-+++ b/drivers/firmware/arm_scmi/voltage.c
-@@ -401,7 +401,7 @@ static const struct scmi_voltage_proto_ops voltage_proto_ops = {
- 	.level_get = scmi_voltage_level_get,
- };
- 
--static int scmi_voltage_protocol_init(const struct scmi_protocol_handle *ph)
-+static int scmi_voltage_protocol_init(struct scmi_protocol_handle *ph)
- {
- 	int ret;
- 	struct voltage_info *vinfo;
+ 		if (!info->dbg)
+ 			return 0;
 
 -- 
 2.51.0
